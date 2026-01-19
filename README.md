@@ -1,5 +1,10 @@
-# tensho-web
-Tensho Mahjong Roguelike
+# Tensho (天翔) — Mahjong Roguelike
+
+> *"Heavenly Ascent"* — A single-player roguelike that reinterprets Riichi Mahjong as a scoring-driven optimization game, inspired by Balatro.
+
+## About
+
+Tensho is a web-based React game that combines the depth of Riichi Mahjong with roguelike progression mechanics. Build your hand, collect Decrees (rule-bending modifiers), and chase high scores across escalating Acts.
 
 ## Setup
 
@@ -27,27 +32,26 @@ bun run dev
 bun run build
 ```
 
-### Linting
+### Linting & Formatting
 
 ```bash
 bun run lint
-```
-
-### Formatting
-
-```bash
 bun run format
 ```
 
 ## Tech Stack
 
-- **React 18** - UI framework
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **Tailwind CSS** - Styling
-- **React Spring** - Animations
-- **TanStack Query** - Data fetching
-- **Zustand** - State management
-- **ESLint** - Linting
-- **Prettier** - Code formatting
+- **React 19** — UI framework
+- **TypeScript** — Type safety
+- **Vite** — Build tool
+- **Tailwind CSS** — Styling
+- **React Spring** — Animations
+- **Zustand** — State management
+- **TanStack Query** — Data fetching
+- **ESLint + Prettier** — Code quality
 
+## Documentation
+
+- [ARCHITECTURE.MD](ARCHITECTURE.MD) — Game design, systems, and mechanics
+- [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) — Complete item lists (Decrees, Seals, Orbs, etc.)
+- [CLAUDE.md](CLAUDE.md) — Development guidance for Claude Code
