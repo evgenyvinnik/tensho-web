@@ -6,11 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Tensho (天翔) Mahjong Roguelike** — A web-based React game reinterpreting Riichi Mahjong as a scoring optimization roguelike (inspired by Balatro).
 
-- **Framework:** React 19
+- **Framework:** React 19 (with experimental React Compiler)
 - **Language:** TypeScript (strict mode)
-- **Build:** Vite
+- **Build:** Vite 6
 - **Runtime:** Bun
-- **Styling:** Tailwind CSS
+- **Styling:** Tailwind CSS v4
 - **State:** Zustand
 - **Animations:** React Spring
 - **Data Fetching:** TanStack Query
@@ -30,7 +30,13 @@ bun run preview      # Preview production build locally
 
 ## Code Architecture
 
-### Directory Structure
+### Current State
+
+This project is in early development. The `src/` directory currently contains only the basic React entry point (`main.tsx`, `App.tsx`).
+
+### Planned Directory Structure
+
+When implementing, follow this structure:
 
 ```
 src/
@@ -49,7 +55,7 @@ src/
 
 ### TypeScript Configuration
 
-- **Strict mode enabled** with `noUnusedLocals`, `noUnusedParameters`
+- **Strict mode enabled** with `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`
 - Target: ES2020
 - Module: ESNext with bundler resolution
 - React JSX transform enabled
