@@ -1,10 +1,10 @@
+/* Import custom fonts - must be first */
+@import './styles/fonts.css';
+
 /* Tailwind CSS imports */
 @import "tailwindcss";
 @config "../tailwind.config.js";
 @source "../";
-
-/* Import custom fonts */
-@import './styles/fonts.css';
 
 /* ============================================================================
    Base Styles
@@ -289,7 +289,7 @@ a {
    Balatro-style CRT Effects
    ============================================================================ */
 
-/* CRT Scanlines overlay */
+/* CRT Scanlines overlay - subtle for green background */
 .crt-scanlines {
   position: absolute;
   inset: 0;
@@ -298,8 +298,8 @@ a {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
+    rgba(28, 58, 46, 0.12) 2px,
+    rgba(28, 58, 46, 0.12) 4px
   );
   z-index: 100;
 }
@@ -315,7 +315,7 @@ a {
   100% { opacity: 1; }
 }
 
-/* Vignette effect */
+/* Vignette effect - uses Dark Forest color for green theme */
 .vignette {
   position: absolute;
   inset: 0;
@@ -323,8 +323,8 @@ a {
   background: radial-gradient(
     ellipse at center,
     transparent 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.5) 100%
+    transparent 40%,
+    rgba(28, 58, 46, 0.6) 100%
   );
   z-index: 90;
 }

@@ -25,7 +25,7 @@ const AnimatedButton = animated('button');
  */
 function LoadingFallback() {
   return (
-    <div className="viewport-full flex items-center justify-center bg-[#0a0a0f]">
+    <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
       <div className="text-center">
         <div className="relative w-20 h-20 mx-auto mb-6">
           <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin" />
@@ -112,8 +112,8 @@ function FloatingTilesBackground({ tiles }: { tiles: FloatingTile[] }) {
               transform: spring.y.to(
                 (y) => `translateY(${y}px) rotate(${spring.rotate.get()}deg) scale(${tile.scale})`
               ),
-              opacity: 0.15,
-              filter: 'blur(1px)',
+              opacity: 0.2,
+              filter: 'blur(0.5px)',
             }}
           >
             <img
@@ -266,13 +266,13 @@ function NeonButton({
 
 /**
  * Menu Screen Component
- * Displays the main menu with background, title, and buttons
- * Layout based on ARCHITECTURE.MD MainMenu specification
+ * Balatro-inspired design with CRT effects and floating tiles
  */
 function MenuScreen() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
+  const [floatingTiles] = useState(() => generateFloatingTiles(12));
   const startNewRun = useGameStore((state) => state.startNewRun);
 
   // Audio hook for background music
@@ -281,16 +281,15 @@ function MenuScreen() {
     loop: true,
   });
 
-  // Preload menu assets
+  // Preload assets including tiles
   useEffect(() => {
-    preloadMenuAssets()
+    Promise.all([preloadMenuAssets(), preloadTileImages()])
       .then(() => {
         setIsLoading(false);
-        // Delay showing content for smooth transition
         setTimeout(() => setShowContent(true), 100);
       })
       .catch((err) => {
-        console.error('Failed to load menu assets:', err);
+        console.error('Failed to load assets:', err);
         setIsLoading(false);
         setShowContent(true);
       });
@@ -298,175 +297,128 @@ function MenuScreen() {
 
   // Title animation
   const titleSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(-50px)' },
+    from: { opacity: 0, scale: 0.8, y: -50 },
     to: {
       opacity: showContent ? 1 : 0,
-      transform: showContent ? 'translateY(0px)' : 'translateY(-50px)',
+      scale: showContent ? 1 : 0.8,
+      y: showContent ? 0 : -50,
     },
-    config: { tension: 120, friction: 14 },
-    delay: 200,
-  });
-
-  // Play button animation (glowing effect)
-  const playButtonSpring = useSpring({
-    from: { opacity: 0, transform: 'scale(0.8)' },
-    to: {
-      opacity: showContent ? 1 : 0,
-      transform: showContent ? 'scale(1)' : 'scale(0.8)',
-    },
-    config: { tension: 200, friction: 20 },
-    delay: 500,
-  });
-
-  // Secondary buttons animation
-  const secondaryButtonsSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: {
-      opacity: showContent ? 1 : 0,
-      transform: showContent ? 'translateY(0px)' : 'translateY(20px)',
-    },
-    config: { tension: 200, friction: 20 },
-    delay: 650,
+    config: { tension: 100, friction: 12 },
+    delay: 300,
   });
 
   // Language selector animation
   const langSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(-20px)' },
+    from: { opacity: 0, y: -20 },
     to: {
       opacity: showContent ? 1 : 0,
-      transform: showContent ? 'translateY(0px)' : 'translateY(-20px)',
+      y: showContent ? 0 : -20,
     },
     config: { tension: 200, friction: 20 },
     delay: 300,
   });
 
-  // Bottom bar animation
-  const bottomSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(50px)' },
-    to: {
-      opacity: showContent ? 1 : 0,
-      transform: showContent ? 'translateY(0px)' : 'translateY(50px)',
-    },
-    config: { tension: 120, friction: 14 },
-    delay: 800,
-  });
-
   const handlePlay = () => {
-    // Start music on first interaction (browser autoplay policy)
-    audio.play('dragonDance');
-    // Start new game run
+    audio.play();
     startNewRun();
   };
 
-  const handleTutorial = () => {
-    console.log('Tutorial clicked');
-    // TODO: Navigate to tutorial
-  };
-
-  const handleCollection = () => {
-    console.log('Collection clicked');
-    // TODO: Navigate to collection
-  };
-
   const handleSettings = () => {
-    // Toggle music for now as settings functionality
     audio.toggle();
     console.log('Settings clicked');
   };
 
+  // Loading screen with Balatro-style spinner
   if (isLoading) {
     return (
       <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[var(--color-beige-white)] text-lg font-ui">{t('common.loading')}</p>
+          <div className="relative w-20 h-20 mx-auto mb-6">
+            <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin" />
+            <div className="absolute inset-2 border-4 border-[var(--color-vibrant-orange)] border-b-transparent rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }} />
+          </div>
+          <p className="text-[var(--color-golden-yellow)] text-lg font-ui neon-text-subtle">
+            {t('common.loading')}
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className="viewport-full relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${menuAssets.background})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <div className="viewport-full relative overflow-hidden bg-[var(--color-forest-green)] crt-glow">
+      {/* Ambient background gradient - using theme colors */}
+      <div
+        className="absolute inset-0 ambient-glow"
+        style={{
+          background: `
+            radial-gradient(ellipse at 30% 20%, rgba(255, 87, 34, 0.12) 0%, transparent 50%),
+            radial-gradient(ellipse at 70% 80%, rgba(255, 213, 79, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 50%, rgba(28, 58, 46, 0.4) 0%, transparent 70%)
+          `,
+        }}
+      />
+
+      {/* Floating tiles background */}
+      <FloatingTilesBackground tiles={floatingTiles} />
+
       {/* Language selector - top right */}
       <AnimatedDiv
-        style={langSpring}
-        className="absolute top-4 right-4 z-10 safe-area-top"
+        className="absolute top-4 right-4 z-20"
+        style={{
+          opacity: langSpring.opacity,
+          transform: langSpring.y.to((y) => `translateY(${y}px)`),
+        }}
       >
         <LanguageSelector />
       </AnimatedDiv>
 
-      {/* Content container - mobile first, portrait layout */}
-      <div className="absolute inset-0 flex flex-col items-center justify-between py-8 px-4 safe-area-top safe-area-bottom">
+      {/* Main content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-between py-12 px-6 safe-area-top safe-area-bottom z-10">
+
         {/* Title section - 天翔 TENSHO */}
         <AnimatedDiv
-          style={titleSpring}
-          className="flex-shrink-0 mt-12 md:mt-20 text-center"
+          className="flex-shrink-0 mt-8 md:mt-16 text-center"
+          style={{
+            opacity: titleSpring.opacity,
+            transform: titleSpring.scale.to(
+              (s) => `scale(${s}) translateY(${titleSpring.y.get()}px)`
+            ),
+          }}
         >
-          <h1 className="text-6xl md:text-8xl font-decorative text-[var(--color-golden-yellow)] text-shadow-lg mb-2">
+          <h1 className="font-decorative text-6xl md:text-8xl text-[var(--color-golden-yellow)] title-glow mb-2">
             天翔
           </h1>
-          <p className="text-2xl md:text-3xl font-ui text-[var(--color-beige-white)] tracking-widest">
+          <h2 className="font-decorative text-3xl md:text-4xl text-[var(--color-vibrant-orange)] neon-text-subtle tracking-widest">
             TENSHO
+          </h2>
+          <p className="font-ui text-sm md:text-base text-[var(--color-beige-white)] opacity-70 mt-4 tracking-wide">
+            {t('menu.subtitle', 'MAHJONG ROGUELIKE')}
           </p>
         </AnimatedDiv>
 
+        {/* Center area - featured dragon tiles */}
+        <div className="flex-1 flex items-center justify-center">
+          <FeaturedTiles show={showContent} />
+        </div>
+
         {/* Buttons section */}
-        <div className="flex flex-col items-center gap-4 flex-shrink-0">
-          {/* PLAY button - glowing primary */}
-          <AnimatedDiv style={playButtonSpring}>
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handlePlay}
-              className="w-[220px] md:w-[280px] text-xl font-bold animate-pulse-glow"
-            >
-              {t('menu.play')}
-            </Button>
-          </AnimatedDiv>
+        <div className="flex flex-col items-center gap-4 flex-shrink-0 mb-8">
+          <NeonButton onClick={handlePlay} variant="primary" delay={600} show={showContent}>
+            {t('menu.play')}
+          </NeonButton>
 
-          {/* Secondary buttons */}
-          <AnimatedDiv style={secondaryButtonsSpring} className="flex flex-col items-center gap-3">
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={handleTutorial}
-              className="w-[200px] md:w-[240px]"
-            >
-              {t('menu.tutorial')}
-            </Button>
-
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={handleCollection}
-              className="w-[200px] md:w-[240px]"
-            >
-              {t('menu.collection')}
-            </Button>
-
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={handleSettings}
-              className="w-[200px] md:w-[240px]"
-            >
-              {t('menu.settings')}
-            </Button>
-          </AnimatedDiv>
+          <NeonButton onClick={handleSettings} variant="secondary" delay={800} show={showContent}>
+            {t('menu.settings')}
+          </NeonButton>
 
           {/* Audio indicator */}
-          <div className="flex items-center gap-2 text-[var(--color-beige-white)] text-sm mt-2">
+          <div className="flex items-center gap-3 text-[var(--color-beige-white)] mt-4">
             <button
               onClick={() => audio.toggleMute()}
-              className="p-2 rounded-full hover:bg-[var(--color-forest-green)] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="p-3 rounded-full bg-[var(--color-dark-forest)] hover:bg-[var(--color-forest-green)]
+                         transition-all duration-200 border-2 border-[var(--color-saddle-brown)]
+                         hover:border-[var(--color-metallic-gold)] hover:scale-110 active:scale-95"
               aria-label={t('accessibility.toggleMusic')}
             >
               {audio.isMuted ? (
@@ -479,33 +431,21 @@ function MenuScreen() {
                 </svg>
               )}
             </button>
-            <span className="opacity-70">
+            <span className="text-sm opacity-60 font-ui">
               {audio.isPlaying ? t('menu.musicOn') : t('menu.musicOff')}
             </span>
           </div>
-        </div>
 
-        {/* Bottom bar - trophy and version */}
-        <AnimatedDiv
-          style={bottomSpring}
-          className="flex-shrink-0 w-full flex items-center justify-between px-4 mb-2"
-        >
-          {/* Trophy/Achievements button */}
-          <button
-            className="p-2 rounded-full hover:bg-[var(--color-forest-green)] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center text-[var(--color-golden-yellow)]"
-            aria-label="Achievements"
-          >
-            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
-            </svg>
-          </button>
-
-          {/* Version number */}
-          <span className="text-[var(--color-beige-white)] text-sm opacity-50">
+          {/* Version */}
+          <span className="text-[var(--color-metallic-gold)] text-xs opacity-50 mt-2">
             v0.1.0
           </span>
-        </AnimatedDiv>
+        </div>
       </div>
+
+      {/* CRT Effects - adjusted for green background */}
+      <div className="vignette" />
+      <div className="crt-scanlines" />
     </div>
   );
 }
