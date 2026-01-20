@@ -13,13 +13,7 @@ import {
   SEAL_DEFINITIONS,
   EDITION_DEFINITIONS,
 } from '../../../core/TileModifier'
-import {
-  ModifierBadgeProps,
-  ModifierOverlayProps,
-  ModifierTooltipProps,
-  ModifierRowProps,
-  ModifierSelectorProps,
-} from './types'
+import { Tile } from '../../../core/Tile'
 import {
   ENHANCEMENT_COLORS,
   SEAL_COLORS,
@@ -28,6 +22,66 @@ import {
   getSealIcon,
   getEditionIcon,
 } from './constants'
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
+/**
+ * Props for ModifierBadge component
+ */
+export interface ModifierBadgeProps {
+  enhancement?: EnhancementType
+  seal?: SealType
+  edition?: EditionType
+  size?: 'small' | 'medium' | 'large'
+  showLabel?: boolean
+  className?: string
+}
+
+/**
+ * Props for ModifierOverlay component
+ */
+export interface ModifierOverlayProps {
+  tile: Tile
+  className?: string
+}
+
+/**
+ * Props for ModifierTooltip component
+ */
+export interface ModifierTooltipProps {
+  tile: Tile
+  className?: string
+}
+
+/**
+ * Props for ModifierRow helper component
+ */
+export interface ModifierRowProps {
+  type: 'enhancement' | 'seal' | 'edition'
+  name: string
+  japaneseName: string
+  description: string
+  colors: { bg: string; border: string; text: string }
+}
+
+/**
+ * Props for ModifierSelector component
+ */
+export interface ModifierSelectorProps {
+  currentEnhancement: EnhancementType
+  currentSeal: SealType
+  currentEdition: EditionType
+  onEnhancementChange?: (enhancement: EnhancementType) => void
+  onSealChange?: (seal: SealType) => void
+  onEditionChange?: (edition: EditionType) => void
+  className?: string
+}
+
+// =============================================================================
+// COMPONENTS
+// =============================================================================
 
 /**
  * Small badge showing a single modifier type

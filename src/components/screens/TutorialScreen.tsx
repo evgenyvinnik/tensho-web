@@ -20,7 +20,7 @@ import {
   CategoryItem,
   CategoryTabs,
   StepContent,
-} from './tutorial'
+} from './tutorial/TutorialComponents'
 import { useTutorialSteps } from './tutorial/useTutorialSteps'
 
 /**

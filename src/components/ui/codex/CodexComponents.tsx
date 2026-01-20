@@ -7,7 +7,33 @@
 import React from 'react'
 import { getTileImagePath } from '../../../utils/assets'
 import { TileSuit } from '../../../core/Tile'
-import { CodexCategory } from './types'
+
+/**
+ * Codex category definition
+ */
+export interface CodexCategory {
+  id: string
+  title: string
+  icon: string
+  sections: CodexSection[]
+}
+
+/**
+ * Codex section within a category
+ */
+export interface CodexSection {
+  id: string
+  title: string
+  content: React.ReactNode
+}
+
+/**
+ * Codex props
+ */
+export interface CodexProps {
+  isOpen: boolean
+  onClose: () => void
+}
 
 /**
  * Tile display helper - shows a group of tiles

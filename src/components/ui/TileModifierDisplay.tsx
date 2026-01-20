@@ -8,7 +8,7 @@
  * - ModifierSelector: UI for selecting modifiers
  */
 
-// Re-export all tile modifier components from the module
+// Re-export all tile modifier components and types from the module
 export {
   ModifierBadge,
   ModifierOverlay,
@@ -23,7 +23,7 @@ export type {
   ModifierTooltipProps,
   ModifierRowProps,
   ModifierSelectorProps,
-} from './tile-modifier/types'
+} from './tile-modifier/ModifierComponents'
 
 export {
   ENHANCEMENT_COLORS,

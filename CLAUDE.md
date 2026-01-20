@@ -52,18 +52,25 @@ src/
 └── utils/          # Helpers and asset paths
 ```
 
-### Import Patterns
+### File Organization Rules
 
-Each major module uses barrel exports via `index.ts`. Import from the directory, not individual files:
+**Do NOT create separate `index.ts` or `types.ts` files.** Keep code consolidated:
+
+- **Types:** Inline interfaces and types directly in the `.ts` or `.tsx` file where they're used
+- **Exports:** Import directly from the source file, not from barrel exports
+- **Components:** Keep related types, constants, and helper functions in the same file as the component
 
 ```typescript
-// Preferred - import from barrel
-import { Tile, Meld, Hand, Wall } from './core'
-import { useGameStore, useHandStore } from './stores'
-
-// Avoid - importing from individual files
+// Preferred - import from source files
 import { Tile } from './core/Tile'
+import { useGameStore } from './stores/gameStore'
+
+// Avoid - barrel imports and separate type files
+import { Tile } from './core'           // No index.ts barrels
+import { TileProps } from './types'     // No separate types.ts files
 ```
+
+This keeps related code together and makes it easier to understand each module in isolation.
 
 ### Game Loop Architecture: GameOrchestrator
 
@@ -127,6 +134,7 @@ const state = gameOrchestrator.getState()
 - `SeasonSystem` — Round-scoped temporal effects
 - `ShopSystem` — Between-round acquisition (legacy)
 - `TeaHouseSystem` — Full shop with item generation, pricing, rerolls
+- `ShopGenerator` — Shop item and pack generation with weighted randomization
 - `PricingCalculator` — Cost formulas with rarity and edition modifiers
 - `TileModifierSystem` — Enhancements, Seals, Editions on tiles
 - `FateSealSystem` — 22 Tarot-style consumables

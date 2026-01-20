@@ -6,8 +6,7 @@
 
 import { useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
-import { CodexCategory } from './types'
-import { TileGroup, InfoBox, DataTable } from './CodexComponents'
+import { CodexCategory, TileGroup, InfoBox, DataTable } from './CodexComponents'
 
 /**
  * Build codex categories and content

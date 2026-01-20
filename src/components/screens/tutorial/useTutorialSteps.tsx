@@ -8,8 +8,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
-import { TutorialStep } from './types'
-import { Highlight, InfoBox, Formula, DataTable } from './TutorialComponents'
+import { TutorialStep, Highlight, InfoBox, Formula, DataTable } from './TutorialComponents'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content

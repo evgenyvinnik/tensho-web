@@ -10,8 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 
 // Import from extracted codex modules
-import { CodexProps } from './codex/types'
-import { CodexSidebar } from './codex/CodexComponents'
+import { CodexProps, CodexSidebar } from './codex/CodexComponents'
 import { useCodexContent } from './codex/useCodexContent'
 
 const AnimatedDiv = animated('div')

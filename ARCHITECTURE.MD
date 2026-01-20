@@ -1003,7 +1003,7 @@ All major roguelike systems have been implemented:
 | Tags | **Omen Tags** | `src/systems/OmenTagSystem.ts`, `src/config/omenDefinitions.ts` (23 omens) | ✅ Complete |
 | Stakes | **Table Stakes** | `src/systems/TableStakeSystem.ts`, `src/config/stakeDefinitions.ts` (8 tiers) | ✅ Complete |
 | Boss Blind Effects | **Boss Mandate Effects** | `src/systems/MandateEffectSystem.ts`, `src/config/mandateDefinitions.ts` (27 mandates) | ✅ Complete |
-| The Shop | **Tea House** | `src/systems/TeaHouseSystem.ts`, `src/systems/PricingCalculator.ts` | ✅ Complete |
+| The Shop | **Tea House** | `src/systems/TeaHouseSystem.ts`, `src/systems/ShopGenerator.ts`, `src/systems/PricingCalculator.ts` | ✅ Complete |
 | Stickers | **Stickers** | `src/systems/StickerSystem.ts` (Eternal, Perishable, Rental) | ✅ Complete |
 | Consumables | **Consumable System** | `src/systems/ConsumableSystem.ts` | ✅ Complete |
 | Decks | **Walls/Table Styles** | ⬜ Not implemented |
