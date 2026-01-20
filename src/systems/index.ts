@@ -250,6 +250,39 @@ export {
 export type { EditionType as PricingEditionType } from './PricingCalculator'
 
 // =============================================================================
+// SHOP GENERATOR
+// =============================================================================
+
+export {
+  // Configuration
+  DEFAULT_GENERATOR_CONFIG,
+  // Weights
+  BASE_ITEM_WEIGHTS,
+  RARITY_WEIGHTS,
+  PACK_SIZE_WEIGHTS as GENERATOR_PACK_SIZE_WEIGHTS,
+  PACK_TYPE_WEIGHTS as GENERATOR_PACK_TYPE_WEIGHTS,
+  EDITION_PROBABILITIES,
+  // Class
+  ShopGenerator,
+  // Singleton
+  shopGenerator,
+} from './ShopGenerator'
+
+export type {
+  // Configuration
+  ShopGeneratorConfig,
+  // Generated item types
+  GeneratedShopItem,
+  GeneratedDecree,
+  GeneratedFateSeal,
+  GeneratedCelestialOrb,
+  GeneratedPack,
+  GeneratedCharter,
+  GeneratedItem,
+  GeneratedShop,
+} from './ShopGenerator'
+
+// =============================================================================
 // TILE MODIFIER SYSTEM (Tile Marks / Card Modifiers)
 // =============================================================================
 
@@ -362,6 +395,14 @@ export {
   THE_WINDOW,
   THE_HEAD,
   THE_PLANT,
+  THE_OX,
+  THE_HOUSE,
+  THE_WHEEL,
+  THE_FISH,
+  THE_SERPENT,
+  THE_TOOTH,
+  THE_MARK,
+  THE_MANACLE,
   // Showdown Mandates
   AMBER_ACORN,
   VERDANT_LEAF,
@@ -433,3 +474,64 @@ export {
   type StickerRollResult,
   type StickerConfig,
 } from './StickerSystem'
+
+// =============================================================================
+// OMEN TAG SYSTEM
+// =============================================================================
+
+export {
+  // Class
+  OmenTagSystem,
+  // Skip value calculator
+  calculateSkipValue,
+  // Utilities
+  getOmenRarityJapaneseName,
+  getOmenCategoryJapaneseName,
+} from './OmenTagSystem'
+
+// Re-export omen types from config
+export type {
+  OmenDefinition,
+  OmenCategory,
+  OmenRarity,
+  OmenTrigger,
+  OmenEffectType,
+} from '../config/omenDefinitions'
+
+export {
+  // Omen Definitions
+  OMEN_OF_CRESCENTS,
+  OMEN_OF_ASH,
+  OMEN_OF_RIVERS,
+  SPEED_OMEN,
+  THROWBACK_OMEN,
+  FORTUNE_OMEN,
+  ORACLES_OMEN,
+  MERCHANTS_OMEN,
+  SEAL_OMEN,
+  DECREE_OMEN,
+  VOID_OMEN,
+  EXPANSION_OMEN,
+  PRECISION_OMEN,
+  ABUNDANCE_OMEN,
+  POLYCHROME_OMEN,
+  FOIL_OMEN,
+  INTEREST_OMEN,
+  SCORE_SURGE_OMEN,
+  MULTIPLICATION_OMEN,
+  BLESSING_PACK_OMEN,
+  NEGATIVE_OMEN,
+  AUSTERITY_OMEN,
+  HOLOGRAPHIC_OMEN,
+  // Collections
+  ALL_OMENS,
+  SMALL_ROUND_OMENS,
+  LARGE_ROUND_OMENS,
+  // Utilities
+  getOmensByRarity,
+  getOmensByCategory,
+  getOmenById,
+  getRandomOmen,
+  getRandomOmenForRound,
+  OMEN_RARITY_WEIGHTS,
+} from '../config/omenDefinitions'

@@ -2,104 +2,40 @@
  * ShopScreen Component
  *
  * Tea House - between-round shop where players purchase decrees, consumables, and packs.
- * Uses the GameOrchestrator via useGameController for purchases.
+ * Uses the shopStore for state management and TeaHouseSystem for shop logic.
  */
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController } from '../../game'
+import { useShopStore } from '../../stores/shopStore'
+import { useDecreeStore, createDecree } from '../../stores/decreeStore'
+import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
+import { Decree, ImperialCharter, BlessingPack } from '../../systems/types'
 import { Button } from '../ui/Button'
-import { Popup, ConfirmPopup } from '../ui/Popup'
+import { ConfirmPopup } from '../ui/Popup'
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
 
 /**
- * Shop item types
+ * Get rarity border color class
  */
-interface ShopItem {
-  id: string
-  name: string
-  description: string
-  cost: number
-  type: 'decree' | 'fateSeal' | 'celestialOrb' | 'charter'
-  rarity: 'common' | 'uncommon' | 'rare' | 'mythic'
-}
-
-/**
- * Blessing pack types
- */
-interface BlessingPack {
-  id: string
-  name: string
-  description: string
-  cost: number
-  size: 'normal' | 'jumbo' | 'mega'
-}
-
-/**
- * Generate shop items (simplified for now)
- */
-function generateShopItems(): ShopItem[] {
-  return [
-    {
-      id: 'decree_1',
-      name: 'River Tax',
-      description: 'Gain 1 Gold per tile discarded this round.',
-      cost: 4,
-      type: 'decree',
-      rarity: 'common',
-    },
-    {
-      id: 'decree_2',
-      name: 'Extended Hand Grant',
-      description: '+3 additional draws before round failure.',
-      cost: 5,
-      type: 'decree',
-      rarity: 'common',
-    },
-    {
-      id: 'decree_3',
-      name: 'Moonlit Seal',
-      description: 'Each Honor tile adds +0.1x multiplier.',
-      cost: 6,
-      type: 'decree',
-      rarity: 'uncommon',
-    },
-  ]
-}
-
-/**
- * Generate blessing packs
- */
-function generateBlessingPacks(): BlessingPack[] {
-  return [
-    {
-      id: 'pack_normal',
-      name: 'Standard Pack',
-      description: '3 Fate Seals, choose 1',
-      cost: 4,
-      size: 'normal',
-    },
-    {
-      id: 'pack_jumbo',
-      name: 'Premium Pack',
-      description: '5 Celestial Orbs, choose 1',
-      cost: 8,
-      size: 'jumbo',
-    },
-  ]
-}
-
-/**
- * Get rarity color
- */
-function getRarityColor(rarity: ShopItem['rarity']): string {
+function getRarityColor(rarity: string): string {
   switch (rarity) {
+    case 'LocalEdict':
     case 'common':
       return 'border-gray-400'
+    case 'RegionalMandate':
     case 'uncommon':
       return 'border-green-500'
+    case 'ImperialDecree':
     case 'rare':
       return 'border-blue-500'
+    case 'HeavenlyOrdinance':
+    case 'legendary':
     case 'mythic':
       return 'border-purple-500'
     default:
@@ -108,76 +44,224 @@ function getRarityColor(rarity: ShopItem['rarity']): string {
 }
 
 /**
- * Shop Item Card Component
+ * Get item type icon
  */
-interface ShopItemCardProps {
-  item: ShopItem
+function getItemTypeIcon(itemType: string): string {
+  switch (itemType) {
+    case 'Decree':
+      return ''
+    case 'FateSeal':
+      return ''
+    case 'CelestialOrb':
+      return ''
+    case 'BlessingPack':
+      return ''
+    case 'ImperialCharter':
+      return ''
+    default:
+      return ''
+  }
+}
+
+/**
+ * Get pack size icon
+ */
+function getPackSizeIcon(size: string): string {
+  switch (size) {
+    case 'Normal':
+      return ''
+    case 'Jumbo':
+      return ''
+    case 'Mega':
+      return ''
+    default:
+      return ''
+  }
+}
+
+// =============================================================================
+// SHOP ITEM CARD COMPONENT
+// =============================================================================
+
+interface ShopOfferingCardProps {
+  offering: TeaHouseOffering
   canAfford: boolean
   onPurchase: () => void
 }
 
-function ShopItemCard({ item, canAfford, onPurchase }: ShopItemCardProps) {
+function ShopOfferingCard({ offering, canAfford, onPurchase }: ShopOfferingCardProps) {
+  // Extract display info based on item type
+  let name = ''
+  let description = ''
+  let rarity = 'common'
+  let icon = getItemTypeIcon(offering.itemType)
+
+  switch (offering.itemType) {
+    case 'Decree': {
+      const decree = offering.item as Decree
+      name = decree.name
+      description = decree.description
+      rarity = decree.rarity
+      break
+    }
+    case 'FateSeal':
+      name = 'Fate Seal'
+      description = 'A mystical seal that alters the current hand'
+      rarity = 'uncommon'
+      break
+    case 'CelestialOrb':
+      name = 'Celestial Orb'
+      description = 'Permanently upgrades a yaku family'
+      rarity = 'uncommon'
+      break
+    default:
+      name = 'Unknown'
+      description = ''
+  }
+
+  const hasDiscount = offering.baseCost + offering.editionCost > offering.finalCost
+
   return (
     <div
-      className={`flex-shrink-0 w-32 bg-[var(--color-dark-forest)] rounded-lg border-2 ${getRarityColor(
-        item.rarity
-      )} p-2 flex flex-col`}
+      className={`flex-shrink-0 w-36 bg-[var(--color-dark-forest)] rounded-lg border-2 ${getRarityColor(
+        rarity
+      )} p-3 flex flex-col`}
     >
-      <div className="text-3xl text-center mb-2">📜</div>
-      <p className="text-xs text-[var(--color-beige-white)] font-bold text-center truncate">
-        {item.name}
+      <div className="text-3xl text-center mb-2">{icon}</div>
+      <p className="text-sm text-[var(--color-beige-white)] font-bold text-center truncate">
+        {name}
       </p>
+      {offering.edition && (
+        <p className="text-xs text-blue-300 text-center mt-1">
+          {offering.edition}
+        </p>
+      )}
       <p className="text-xs text-[var(--color-beige-white)] opacity-70 text-center mt-1 line-clamp-2 flex-1">
-        {item.description}
+        {description}
       </p>
       <button
         onClick={onPurchase}
         disabled={!canAfford}
-        className={`mt-2 py-1 px-2 rounded text-xs font-bold transition-colors ${
+        className={`mt-3 py-2 px-3 rounded text-sm font-bold transition-colors ${
           canAfford
             ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] hover:opacity-90'
             : 'bg-gray-600 text-gray-400 cursor-not-allowed'
         }`}
       >
-        ¥{item.cost}
+        {hasDiscount && (
+          <span className="line-through text-gray-400 mr-1 text-xs">
+            {offering.baseCost + offering.editionCost}G
+          </span>
+        )}
+        {offering.finalCost}G
       </button>
     </div>
   )
 }
 
-/**
- * Blessing Pack Card Component
- */
-interface BlessingPackCardProps {
-  pack: BlessingPack
+// =============================================================================
+// BLESSING PACK CARD COMPONENT
+// =============================================================================
+
+interface PackOfferingCardProps {
+  offering: TeaHouseOffering
   canAfford: boolean
   onPurchase: () => void
 }
 
-function BlessingPackCard({ pack, canAfford, onPurchase }: BlessingPackCardProps) {
-  const emoji = pack.size === 'normal' ? '🎴' : pack.size === 'jumbo' ? '🌟' : '✨'
+function PackOfferingCard({ offering, canAfford, onPurchase }: PackOfferingCardProps) {
+  const pack = offering.item as BlessingPack
+  const icon = getPackSizeIcon(pack.size)
+
+  const packTypeDisplay = {
+    Tile: 'Tile Pack',
+    Arcana: 'Arcana Pack',
+    Celestial: 'Celestial Pack',
+    Decree: 'Decree Pack',
+    Void: 'Void Pack',
+  }[pack.type] || 'Pack'
+
+  const sizeDisplay = {
+    Normal: '3 choices, pick 1',
+    Jumbo: '5 choices, pick 1',
+    Mega: '5 choices, pick 2',
+  }[pack.size] || ''
 
   return (
-    <div className="flex-shrink-0 w-24 bg-[var(--color-dark-forest)] rounded-lg border-2 border-[var(--color-metallic-gold)] p-2 flex flex-col items-center">
-      <div className="text-4xl mb-2">{emoji}</div>
-      <p className="text-xs text-[var(--color-beige-white)] font-bold text-center">{pack.name}</p>
-      <p className="text-xs text-[var(--color-beige-white)] opacity-70 text-center mt-1">
-        {pack.description}
+    <div className="flex-shrink-0 w-28 bg-[var(--color-dark-forest)] rounded-lg border-2 border-[var(--color-metallic-gold)] p-2 flex flex-col items-center">
+      <div className="text-4xl mb-2">{icon}</div>
+      <p className="text-xs text-[var(--color-beige-white)] font-bold text-center">
+        {pack.size}
+      </p>
+      <p className="text-xs text-[var(--color-golden-yellow)] text-center">
+        {packTypeDisplay}
+      </p>
+      <p className="text-xs text-[var(--color-beige-white)] opacity-60 text-center mt-1">
+        {sizeDisplay}
       </p>
       <button
         onClick={onPurchase}
         disabled={!canAfford}
-        className={`mt-2 py-1 px-2 rounded text-xs font-bold transition-colors ${
+        className={`mt-2 py-1 px-3 rounded text-sm font-bold transition-colors ${
           canAfford
             ? 'bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] hover:opacity-90'
             : 'bg-gray-600 text-gray-400 cursor-not-allowed'
         }`}
       >
-        ¥{pack.cost}
+        {offering.finalCost}G
       </button>
     </div>
   )
 }
+
+// =============================================================================
+// CHARTER CARD COMPONENT
+// =============================================================================
+
+interface CharterCardProps {
+  offering: TeaHouseOffering
+  canAfford: boolean
+  onPurchase: () => void
+}
+
+function CharterCard({ offering, canAfford, onPurchase }: CharterCardProps) {
+  const charter = offering.item as ImperialCharter
+
+  return (
+    <div className="bg-[var(--color-dark-forest)] rounded-lg p-4">
+      <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-3">
+        Imperial Charter
+      </h2>
+      <div className="flex items-center gap-4">
+        <div className="text-4xl"></div>
+        <div className="flex-1">
+          <p className="text-[var(--color-beige-white)] font-bold">{charter.name}</p>
+          <p className="text-sm text-[var(--color-beige-white)] opacity-70">
+            {charter.description}
+          </p>
+          {charter.isUpgraded && (
+            <span className="text-xs text-blue-400 mt-1 inline-block">Upgraded</span>
+          )}
+        </div>
+        <button
+          onClick={onPurchase}
+          disabled={!canAfford}
+          className={`px-4 py-2 rounded font-bold transition-colors ${
+            canAfford
+              ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] hover:opacity-90'
+              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          {offering.finalCost}G
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// MAIN SHOP SCREEN COMPONENT
+// =============================================================================
 
 /**
  * ShopScreen - Tea House between-round shop
@@ -187,46 +271,90 @@ export function ShopScreen() {
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
 
-  // Shop state
-  const [shopItems, setShopItems] = useState<ShopItem[]>(() => generateShopItems())
-  const [blessingPacks] = useState<BlessingPack[]>(() => generateBlessingPacks())
-  const [rerollCost, setRerollCost] = useState(5)
-  const [rerollCount, setRerollCount] = useState(0)
+  // Shop store
+  const shopStore = useShopStore()
 
-  // Confirmation popup state
-  const [confirmPurchase, setConfirmPurchase] = useState<ShopItem | BlessingPack | null>(null)
+  // Decree store for adding purchased decrees
+  const decreeStore = useDecreeStore()
+
+  // Local state for confirmation popup
+  const [confirmOffering, setConfirmOffering] = useState<TeaHouseOffering | null>(null)
+
+  // Initialize shop on mount
+  useEffect(() => {
+    if (!shopStore.isShopOpen) {
+      // Get owned decree IDs from decree store
+      const ownedDecreeIds = decreeStore.decrees.map((d) => d.id)
+
+      // Determine if this is after a boss round (round 3 of an act)
+      const isAfterBossRound = game.currentRound === 3 || game.currentRound === 0
+
+      shopStore.openShop(ownedDecreeIds, isAfterBossRound)
+    }
+  }, [shopStore, decreeStore.decrees, game.currentRound])
+
+  // Get available offerings
+  const availableItems = shopStore.getAvailableItems()
+  const availablePacks = shopStore.getAvailablePacks()
+  const availableCharter = shopStore.getAvailableCharter()
+  const rerollCost = shopStore.currentRerollCost
 
   // Handle purchase
   const handlePurchase = useCallback(
-    (item: ShopItem | BlessingPack) => {
-      if (game.gold >= item.cost) {
-        game.purchaseItem(item.id, item.cost)
+    (offering: TeaHouseOffering) => {
+      const result = shopStore.purchaseItem(
+        offering.id,
+        game.gold,
+        game.currentAct,
+        game.currentRound
+      )
 
-        // Remove purchased item from shop (for decrees)
-        if ('type' in item) {
-          setShopItems((prev) => prev.filter((i) => i.id !== item.id))
+      if (result.success && result.offering) {
+        // Deduct gold from game
+        game.purchaseItem(offering.id, result.cost)
+
+        // Handle specific item types
+        if (result.offering.itemType === 'Decree') {
+          const decree = result.offering.item as Decree
+          // Add decree to decree store
+          const newDecree = createDecree(
+            decree.name,
+            decree.name, // Japanese name placeholder
+            decree.description,
+            decree.rarity === 'LocalEdict' ? 'common' :
+            decree.rarity === 'RegionalMandate' ? 'uncommon' :
+            decree.rarity === 'ImperialDecree' ? 'rare' : 'legendary',
+            [], // Effects will be handled by decree system
+            result.offering.sellValue
+          )
+          decreeStore.addDecree(newDecree)
+        } else if (result.offering.itemType === 'ImperialCharter') {
+          const charter = result.offering.item as ImperialCharter
+          shopStore.applyCharter(charter)
         }
       }
-      setConfirmPurchase(null)
+
+      setConfirmOffering(null)
     },
-    [game]
+    [shopStore, game, decreeStore]
   )
 
   // Handle reroll
   const handleReroll = useCallback(() => {
-    if (game.gold >= rerollCost) {
-      game.purchaseItem('reroll', rerollCost)
-      setShopItems(generateShopItems())
-      setRerollCount((prev) => prev + 1)
-      setRerollCost((prev) => prev + 1)
+    const ownedDecreeIds = decreeStore.decrees.map((d) => d.id)
+    const result = shopStore.rerollShop(ownedDecreeIds, game.gold)
+
+    if (result.success) {
+      game.purchaseItem('reroll', result.cost)
     }
-  }, [game, rerollCost])
+  }, [shopStore, game, decreeStore.decrees])
 
   // Handle next act
   const handleNextAct = useCallback(() => {
+    shopStore.closeShop()
     game.exitShop()
     navigateTo(ROUTES.PLAY)
-  }, [game, navigateTo])
+  }, [shopStore, game, navigateTo])
 
   // Handle settings
   const handleSettings = useCallback(() => {
@@ -237,7 +365,7 @@ export function ShopScreen() {
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-3 bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
-        <span className="text-lg font-bold text-[var(--color-golden-yellow)]">¥{game.gold}</span>
+        <span className="text-lg font-bold text-[var(--color-golden-yellow)]">{game.gold}G</span>
         <span className="text-lg font-bold">{t('shop.title')}</span>
         <button
           onClick={handleSettings}
@@ -262,7 +390,7 @@ export function ShopScreen() {
           </p>
         </div>
 
-        {/* Decrees Section */}
+        {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-bold text-[var(--color-golden-yellow)]">
@@ -277,21 +405,21 @@ export function ShopScreen() {
                   : 'bg-gray-600 text-gray-400 cursor-not-allowed'
               }`}
             >
-              Reroll ¥{rerollCost}
+              Reroll {rerollCost}G
             </button>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-2">
-            {shopItems.map((item) => (
-              <ShopItemCard
-                key={item.id}
-                item={item}
-                canAfford={game.gold >= item.cost}
-                onPurchase={() => setConfirmPurchase(item)}
+            {availableItems.map((offering) => (
+              <ShopOfferingCard
+                key={offering.id}
+                offering={offering}
+                canAfford={game.gold >= offering.finalCost}
+                onPurchase={() => setConfirmOffering(offering)}
               />
             ))}
-            {shopItems.length === 0 && (
+            {availableItems.length === 0 && (
               <p className="text-[var(--color-beige-white)] opacity-50 py-8 text-center w-full">
-                All decrees purchased!
+                All items purchased!
               </p>
             )}
           </div>
@@ -303,59 +431,47 @@ export function ShopScreen() {
             {t('shop.packs')}
           </h2>
           <div className="flex gap-3 overflow-x-auto pb-2">
-            {blessingPacks.map((pack) => (
-              <BlessingPackCard
-                key={pack.id}
-                pack={pack}
-                canAfford={game.gold >= pack.cost}
-                onPurchase={() => setConfirmPurchase(pack)}
+            {availablePacks.map((offering) => (
+              <PackOfferingCard
+                key={offering.id}
+                offering={offering}
+                canAfford={game.gold >= offering.finalCost}
+                onPurchase={() => setConfirmOffering(offering)}
               />
             ))}
+            {availablePacks.length === 0 && (
+              <p className="text-[var(--color-beige-white)] opacity-50 py-4 text-center w-full">
+                No packs available
+              </p>
+            )}
           </div>
         </section>
 
-        {/* Imperial Charter (post-boss) */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4">
-          <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-3">
-            Imperial Charter
-          </h2>
-          <div className="flex items-center gap-4">
-            <div className="text-4xl">🏛️</div>
-            <div className="flex-1">
-              <p className="text-[var(--color-beige-white)] font-bold">Abundant Stock</p>
-              <p className="text-sm text-[var(--color-beige-white)] opacity-70">
-                +1 item slot in shop permanently
-              </p>
-            </div>
-            <button
-              disabled={game.gold < 10}
-              className={`px-4 py-2 rounded font-bold transition-colors ${
-                game.gold >= 10
-                  ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] hover:opacity-90'
-                  : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              ¥10
-            </button>
-          </div>
-        </section>
+        {/* Imperial Charter (after boss rounds only) */}
+        {availableCharter && (
+          <CharterCard
+            offering={availableCharter}
+            canAfford={game.gold >= availableCharter.finalCost}
+            onPurchase={() => setConfirmOffering(availableCharter)}
+          />
+        )}
       </div>
 
       {/* Bottom actions */}
       <div className="px-4 py-4 bg-[var(--color-dark-forest)]">
         <Button variant="primary" onClick={handleNextAct} className="w-full">
-          {t('shop.nextAct')} →
+          {t('shop.nextAct')}
         </Button>
       </div>
 
       {/* Purchase confirmation popup */}
-      {confirmPurchase && (
+      {confirmOffering && (
         <ConfirmPopup
           isOpen={true}
-          onClose={() => setConfirmPurchase(null)}
-          onConfirm={() => handlePurchase(confirmPurchase)}
+          onClose={() => setConfirmOffering(null)}
+          onConfirm={() => handlePurchase(confirmOffering)}
           title={t('shop.confirmPurchase')}
-          message={`Purchase ${confirmPurchase.name} for ¥${confirmPurchase.cost}?`}
+          message={`Purchase for ${confirmOffering.finalCost}G?`}
           confirmLabel={t('common.buy')}
           cancelLabel={t('common.cancel')}
         />

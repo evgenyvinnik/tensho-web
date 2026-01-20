@@ -2,20 +2,31 @@
  * Omen Store - Omen Tag state management
  *
  * Manages the Omen Tags system for skip rewards.
- * Omen Tags are one-time destiny modifiers that trigger once, then vanish.
- * They are awarded when skipping Small or Large rounds.
+ * Omen Tags (兆標) are one-time destiny modifiers that trigger once, then vanish.
+ * They are awarded when skipping Small or Large rounds before the Boss round.
+ *
+ * This store integrates with both:
+ * - OmenTagSystem (src/systems/OmenTagSystem.ts) - The 24 official tags from ITEM_LIBRARIES.md A7
+ * - omenDefinitions (src/config/omenDefinitions.ts) - Legacy omen definitions
  */
 
 import { create } from 'zustand'
-import type { SeasonVariant } from '../systems/types'
-import type {
-  OmenDefinition,
-  OmenCategory,
-  OmenRarity,
-  OmenTrigger,
-  OmenEffect,
-  OmenTradeoff,
-} from '../config/omenDefinitions'
+import type { SeasonVariant, DecreeRarity, PackType } from '../systems/types'
+
+// Import from OmenTagSystem for the official 24 tags
+import {
+  OmenTagDefinition,
+  ActiveOmenTag,
+  OmenTriggerCondition,
+  OmenEffectType,
+  TileEdition,
+  ALL_OMEN_TAGS,
+  DEFAULT_UNLOCKED_OMEN_TAGS,
+  getRandomWeightedOmenTag,
+  getOmenTagDisplayName,
+  getOmenTagJapaneseName,
+  getOmenTagDescription,
+} from '../systems/OmenTagSystem'
 
 // =============================================================================
 // TYPES
@@ -30,35 +41,19 @@ export type OmenStatus =
   | 'consumed' // Fully consumed and removed
 
 /**
- * Active omen tag instance
- */
-export interface ActiveOmen {
-  id: string
-  definition: OmenDefinition
-  status: OmenStatus
-  acquiredRound: number
-  acquiredAct: number
-  triggeredRound?: number
-  /** For scaling effects: number of rounds skipped when acquired */
-  skippedRoundsAtAcquisition: number
-  /** For temporary effects: rounds remaining */
-  roundsRemaining?: number
-  /** For scaling effects: current accumulated value */
-  currentScalingValue?: number
-}
-
-/**
  * Omen history entry for tracking consumed omens
  */
 export interface OmenHistoryEntry {
-  omenId: string
+  id: string
   definitionId: string
-  omenName: string
-  acquiredRound: number
+  name: string
+  japaneseName: string
   acquiredAct: number
-  triggeredRound?: number
+  acquiredRound: number
+  consumedAct: number
   consumedRound: number
-  effect: OmenEffect
+  triggerCondition: OmenTriggerCondition
+  effectDescription: string
 }
 
 /**
@@ -74,44 +69,116 @@ export interface LockedSeason {
  * Omen store state
  */
 export interface OmenState {
-  /** Currently active omen tags */
-  activeOmens: ActiveOmen[]
-  /** History of consumed omens */
-  omenHistory: OmenHistoryEntry[]
-  /** Total rounds skipped this run */
-  totalRoundsSkipped: number
-  /** Locked season from omen trade-offs */
+  // Active tags queue (FIFO - oldest first triggers first)
+  activeTags: ActiveOmenTag[]
+
+  // Consumed tags (history for this run)
+  consumedTags: ActiveOmenTag[]
+
+  // Tags pending for next shop
+  pendingShopTags: ActiveOmenTag[]
+
+  // Tags pending for next boss
+  pendingBossTags: ActiveOmenTag[]
+
+  // Run statistics for scaling effects
+  roundsSkippedThisRun: number
+  handsPlayedThisRun: number
+  unusedDiscardsThisRun: number
+
+  // Special states
+  hasDoubleOmenActive: boolean
   lockedSeason: LockedSeason | null
-  /** Rounds without interest from trade-offs */
   noInterestRounds: number
-  /** Current round number for tracking */
-  currentRound: number
-  /** Current act number for tracking */
+
+  // Unlocked tags (persisted across runs)
+  unlockedTagIds: string[]
+
+  // Current position
   currentAct: number
+  currentRound: number
+
+  // History for display
+  omenHistory: OmenHistoryEntry[]
 
   // Actions
-  addOmen: (omen: OmenDefinition) => ActiveOmen | null
-  removeOmen: (omenId: string) => boolean
-  triggerOmen: (omenId: string) => ActiveOmen | null
-  consumeOmen: (omenId: string) => OmenHistoryEntry | null
-  getActiveOmensByTrigger: (trigger: OmenTrigger) => ActiveOmen[]
-  getActiveOmensByCategory: (category: OmenCategory) => ActiveOmen[]
-  incrementSkippedRounds: () => void
-  setRoundInfo: (round: number, act: number) => void
+  addTag: (definitionId: string) => ActiveOmenTag | null
+  awardRandomTag: () => ActiveOmenTag | null
+  consumeTag: (tagId: string) => boolean
+  consumeShopTags: () => ActiveOmenTag[]
+  consumeBossTags: () => ActiveOmenTag[]
+  copyNextTag: () => void
+
+  // State updates
+  setCurrentPosition: (act: number, round: number) => void
+  incrementRoundsSkipped: () => void
+  incrementHandsPlayed: () => void
+  addUnusedDiscards: (count: number) => void
+  unlockTag: (tagId: string) => boolean
+  setLockedSeason: (seasonType: SeasonVariant, omenId: string) => void
   applyLockedSeason: () => SeasonVariant | null
   decrementNoInterestRounds: () => void
-  updateScalingOmens: () => void
-  hasActiveOmenWithEffect: (effectType: string) => boolean
-  getOmenHistoryForRun: () => OmenHistoryEntry[]
-  getTotalSkippedRounds: () => number
-  clearOmens: () => void
-  clearForNewRun: () => void
 
-  // Selectors
-  getPassiveMultBonus: () => number
-  getNextShopEffects: () => ActiveOmen[]
-  getNextRoundEffects: () => ActiveOmen[]
-  getNextHandEffects: () => ActiveOmen[]
+  // Queries
+  getTagDefinition: (definitionId: string) => OmenTagDefinition | undefined
+  getActiveTags: () => ActiveOmenTag[]
+  getInstantTags: () => ActiveOmenTag[]
+  getPendingShopTags: () => ActiveOmenTag[]
+  getPendingBossTags: () => ActiveOmenTag[]
+  getTotalSkippedRounds: () => number
+  getOmenHistory: () => OmenHistoryEntry[]
+  hasActiveOmenWithEffect: (effectType: OmenEffectType) => boolean
+
+  // Effect calculations
+  calculateInstantGold: (tagId: string, currentGold: number) => number
+  calculateScalingGold: (tagId: string) => number
+  hasFreeCoupon: () => boolean
+  hasFreeRerolls: () => boolean
+  getFreeDecreeInfo: () => { rarity: DecreeRarity; edition?: TileEdition }[]
+  getFreePacks: () => { packType: PackType; isMega: boolean }[]
+  getPendingBossGold: () => number
+  hasBossReroll: () => boolean
+  isDoubleOmenActive: () => boolean
+  getHandSizeBonus: () => number
+  getCreatedDecreeCount: () => number
+  getYakuUpgradeLevels: () => number
+
+  // Run lifecycle
+  clearForNewRun: () => void
+}
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+
+/**
+ * Generate unique tag instance ID
+ */
+function generateTagId(definitionId: string): string {
+  return `omen-${definitionId}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+}
+
+/**
+ * Create history entry from consumed tag
+ */
+function createHistoryEntry(
+  tag: ActiveOmenTag,
+  currentAct: number,
+  currentRound: number
+): OmenHistoryEntry {
+  const definition = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+  return {
+    id: tag.id,
+    definitionId: tag.definitionId,
+    name: definition?.name ?? tag.definitionId,
+    japaneseName: definition?.japaneseName ?? '',
+    acquiredAct: tag.acquiredAct,
+    acquiredRound: tag.acquiredRound,
+    consumedAct: currentAct,
+    consumedRound: currentRound,
+    triggerCondition: definition?.triggerCondition ?? 'instant',
+    effectDescription: definition?.effect.description ?? '',
+  }
 }
 
 // =============================================================================
@@ -120,178 +187,222 @@ export interface OmenState {
 
 export const useOmenStore = create<OmenState>()((set, get) => ({
   // Initial state
-  activeOmens: [],
-  omenHistory: [],
-  totalRoundsSkipped: 0,
+  activeTags: [],
+  consumedTags: [],
+  pendingShopTags: [],
+  pendingBossTags: [],
+  roundsSkippedThisRun: 0,
+  handsPlayedThisRun: 0,
+  unusedDiscardsThisRun: 0,
+  hasDoubleOmenActive: false,
   lockedSeason: null,
   noInterestRounds: 0,
-  currentRound: 0,
+  unlockedTagIds: [...DEFAULT_UNLOCKED_OMEN_TAGS],
   currentAct: 1,
+  currentRound: 1,
+  omenHistory: [],
 
-  // Actions
-  addOmen: (omen: OmenDefinition) => {
+  // ==========================================================================
+  // ACTIONS
+  // ==========================================================================
+
+  addTag: (definitionId: string) => {
+    const definition = ALL_OMEN_TAGS.find((t) => t.id === definitionId)
+    if (!definition) return null
+
     const state = get()
-    const newOmen: ActiveOmen = {
-      id: `omen-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      definition: omen,
-      status: 'active',
-      acquiredRound: state.currentRound,
-      acquiredAct: state.currentAct,
-      skippedRoundsAtAcquisition: state.totalRoundsSkipped,
-      currentScalingValue: omen.effect.scalesWithSkips
-        ? (omen.effect.value as number) * state.totalRoundsSkipped
-        : undefined,
+
+    // Check if tag is unlocked
+    if (!state.unlockedTagIds.includes(definitionId)) {
+      return null
     }
 
-    // Handle trade-offs
-    if (omen.tradeoff.type === 'lock_season' && omen.tradeoff.value) {
+    const tag: ActiveOmenTag = {
+      id: generateTagId(definitionId),
+      definitionId,
+      acquiredAct: state.currentAct,
+      acquiredRound: state.currentRound,
+      roundsSkippedThisRun: state.roundsSkippedThisRun,
+      isConsumed: false,
+    }
+
+    // Check for Double Omen duplication
+    if (state.hasDoubleOmenActive && definition.id !== 'double_omen') {
+      const duplicateTag: ActiveOmenTag = {
+        ...tag,
+        id: generateTagId(`${definitionId}-dup`),
+      }
+
+      // Route the duplicate tag
+      const duplicateShopTags =
+        definition.triggerCondition === 'nextShop'
+          ? [...state.pendingShopTags, duplicateTag]
+          : state.pendingShopTags
+      const duplicateBossTags =
+        definition.triggerCondition === 'nextBoss'
+          ? [...state.pendingBossTags, duplicateTag]
+          : state.pendingBossTags
+
       set({
-        lockedSeason: {
-          seasonType: omen.tradeoff.value as SeasonVariant,
-          sourceOmenId: newOmen.id,
-          isApplied: false,
-        },
+        activeTags: [...state.activeTags, duplicateTag],
+        pendingShopTags: duplicateShopTags,
+        pendingBossTags: duplicateBossTags,
+        hasDoubleOmenActive: false,
       })
     }
 
-    if (omen.tradeoff.type === 'no_interest') {
-      set((s) => ({
-        noInterestRounds: s.noInterestRounds + (omen.tradeoff.value as number || 1),
-      }))
+    // Handle Double Omen specially - activates immediately and sets flag
+    if (definition.id === 'double_omen') {
+      const historyEntry = createHistoryEntry(tag, state.currentAct, state.currentRound)
+      set({
+        hasDoubleOmenActive: true,
+        consumedTags: [...state.consumedTags, { ...tag, isConsumed: true }],
+        omenHistory: [...state.omenHistory, historyEntry],
+      })
+      return tag
     }
 
-    // Handle immediate trigger omens
-    if (omen.trigger === 'OnAcquire') {
-      newOmen.status = 'triggered'
-      newOmen.triggeredRound = state.currentRound
+    // Route to appropriate queue based on trigger condition
+    const newPendingShopTags =
+      definition.triggerCondition === 'nextShop'
+        ? [...state.pendingShopTags, tag]
+        : state.pendingShopTags
+    const newPendingBossTags =
+      definition.triggerCondition === 'nextBoss'
+        ? [...state.pendingBossTags, tag]
+        : state.pendingBossTags
 
-      // For scaling effects, keep them active
-      if (!omen.effect.scalesWithSkips && omen.effect.type !== 'mult_per_skip') {
-        // Immediate effects get consumed after applying
-        const historyEntry: OmenHistoryEntry = {
-          omenId: newOmen.id,
-          definitionId: omen.id,
-          omenName: omen.name,
-          acquiredRound: newOmen.acquiredRound,
-          acquiredAct: newOmen.acquiredAct,
-          triggeredRound: newOmen.triggeredRound,
-          consumedRound: state.currentRound,
-          effect: omen.effect,
-        }
+    set({
+      activeTags: [...state.activeTags, tag],
+      pendingShopTags: newPendingShopTags,
+      pendingBossTags: newPendingBossTags,
+    })
 
-        set((s) => ({
-          activeOmens: [...s.activeOmens, newOmen],
-          omenHistory: [...s.omenHistory, historyEntry],
-        }))
-
-        return newOmen
-      }
-    }
-
-    set((s) => ({
-      activeOmens: [...s.activeOmens, newOmen],
-    }))
-
-    return newOmen
+    return tag
   },
 
-  removeOmen: (omenId: string) => {
+  awardRandomTag: () => {
     const state = get()
-    const omen = state.activeOmens.find((o) => o.id === omenId)
-    if (!omen) return false
+    const unlockedTags = ALL_OMEN_TAGS.filter((t) =>
+      state.unlockedTagIds.includes(t.id)
+    )
 
-    set((s) => ({
-      activeOmens: s.activeOmens.filter((o) => o.id !== omenId),
-    }))
+    if (unlockedTags.length === 0) return null
+
+    const definition = getRandomWeightedOmenTag()
+    if (!definition) return null
+
+    return get().addTag(definition.id)
+  },
+
+  consumeTag: (tagId: string) => {
+    const state = get()
+    const tagIndex = state.activeTags.findIndex((t) => t.id === tagId)
+    if (tagIndex === -1) return false
+
+    const tag = state.activeTags[tagIndex]
+    const consumedTag = { ...tag, isConsumed: true }
+    const historyEntry = createHistoryEntry(tag, state.currentAct, state.currentRound)
+
+    set({
+      activeTags: state.activeTags.filter((t) => t.id !== tagId),
+      consumedTags: [...state.consumedTags, consumedTag],
+      pendingShopTags: state.pendingShopTags.filter((t) => t.id !== tagId),
+      pendingBossTags: state.pendingBossTags.filter((t) => t.id !== tagId),
+      omenHistory: [...state.omenHistory, historyEntry],
+    })
 
     return true
   },
 
-  triggerOmen: (omenId: string) => {
+  consumeShopTags: () => {
     const state = get()
-    const omenIndex = state.activeOmens.findIndex((o) => o.id === omenId)
-    if (omenIndex === -1) return null
-
-    const omen = state.activeOmens[omenIndex]
-    if (omen.status !== 'active') return null
-
-    const updatedOmen: ActiveOmen = {
-      ...omen,
-      status: 'triggered',
-      triggeredRound: state.currentRound,
-    }
-
-    const newOmens = [...state.activeOmens]
-    newOmens[omenIndex] = updatedOmen
-
-    set({ activeOmens: newOmens })
-
-    return updatedOmen
-  },
-
-  consumeOmen: (omenId: string) => {
-    const state = get()
-    const omen = state.activeOmens.find((o) => o.id === omenId)
-    if (!omen) return null
-
-    const historyEntry: OmenHistoryEntry = {
-      omenId: omen.id,
-      definitionId: omen.definition.id,
-      omenName: omen.definition.name,
-      acquiredRound: omen.acquiredRound,
-      acquiredAct: omen.acquiredAct,
-      triggeredRound: omen.triggeredRound,
-      consumedRound: state.currentRound,
-      effect: omen.definition.effect,
-    }
-
-    set((s) => ({
-      activeOmens: s.activeOmens.filter((o) => o.id !== omenId),
-      omenHistory: [...s.omenHistory, historyEntry],
-    }))
-
-    return historyEntry
-  },
-
-  getActiveOmensByTrigger: (trigger: OmenTrigger) => {
-    const state = get()
-    return state.activeOmens.filter(
-      (o) => o.definition.trigger === trigger && o.status === 'active'
+    const tags = [...state.pendingShopTags]
+    const consumedTags = tags.map((t) => ({ ...t, isConsumed: true }))
+    const historyEntries = tags.map((t) =>
+      createHistoryEntry(t, state.currentAct, state.currentRound)
     )
-  },
 
-  getActiveOmensByCategory: (category: OmenCategory) => {
-    const state = get()
-    return state.activeOmens.filter(
-      (o) => o.definition.category === category && o.status === 'active'
-    )
-  },
-
-  incrementSkippedRounds: () => {
-    set((state) => {
-      const newTotal = state.totalRoundsSkipped + 1
-
-      // Update scaling omens
-      const updatedOmens = state.activeOmens.map((omen) => {
-        if (omen.definition.effect.scalesWithSkips) {
-          return {
-            ...omen,
-            currentScalingValue:
-              (omen.definition.effect.value as number) * newTotal,
-          }
-        }
-        return omen
-      })
-
-      return {
-        totalRoundsSkipped: newTotal,
-        activeOmens: updatedOmens,
-      }
+    set({
+      activeTags: state.activeTags.filter(
+        (t) => !state.pendingShopTags.some((p) => p.id === t.id)
+      ),
+      consumedTags: [...state.consumedTags, ...consumedTags],
+      pendingShopTags: [],
+      omenHistory: [...state.omenHistory, ...historyEntries],
     })
+
+    return tags
   },
 
-  setRoundInfo: (round: number, act: number) => {
-    set({ currentRound: round, currentAct: act })
+  consumeBossTags: () => {
+    const state = get()
+    const tags = [...state.pendingBossTags]
+    const consumedTags = tags.map((t) => ({ ...t, isConsumed: true }))
+    const historyEntries = tags.map((t) =>
+      createHistoryEntry(t, state.currentAct, state.currentRound)
+    )
+
+    set({
+      activeTags: state.activeTags.filter(
+        (t) => !state.pendingBossTags.some((p) => p.id === t.id)
+      ),
+      consumedTags: [...state.consumedTags, ...consumedTags],
+      pendingBossTags: [],
+      omenHistory: [...state.omenHistory, ...historyEntries],
+    })
+
+    return tags
+  },
+
+  copyNextTag: () => {
+    set({ hasDoubleOmenActive: true })
+  },
+
+  // ==========================================================================
+  // STATE UPDATES
+  // ==========================================================================
+
+  setCurrentPosition: (act: number, round: number) => {
+    set({ currentAct: act, currentRound: round })
+  },
+
+  incrementRoundsSkipped: () => {
+    set((state) => ({
+      roundsSkippedThisRun: state.roundsSkippedThisRun + 1,
+    }))
+  },
+
+  incrementHandsPlayed: () => {
+    set((state) => ({
+      handsPlayedThisRun: state.handsPlayedThisRun + 1,
+    }))
+  },
+
+  addUnusedDiscards: (count: number) => {
+    set((state) => ({
+      unusedDiscardsThisRun: state.unusedDiscardsThisRun + count,
+    }))
+  },
+
+  unlockTag: (tagId: string) => {
+    const tag = ALL_OMEN_TAGS.find((t) => t.id === tagId)
+    if (!tag) return false
+
+    set((state) => ({
+      unlockedTagIds: [...new Set([...state.unlockedTagIds, tagId])],
+    }))
+    return true
+  },
+
+  setLockedSeason: (seasonType: SeasonVariant, omenId: string) => {
+    set({
+      lockedSeason: {
+        seasonType,
+        sourceOmenId: omenId,
+        isApplied: false,
+      },
+    })
   },
 
   applyLockedSeason: () => {
@@ -309,7 +420,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       },
     })
 
-    // Clear the lock after it's applied
+    // Clear after applied
     setTimeout(() => {
       set({ lockedSeason: null })
     }, 0)
@@ -323,93 +434,241 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
     }))
   },
 
-  updateScalingOmens: () => {
+  // ==========================================================================
+  // QUERIES
+  // ==========================================================================
+
+  getTagDefinition: (definitionId: string) => {
+    return ALL_OMEN_TAGS.find((t) => t.id === definitionId)
+  },
+
+  getActiveTags: () => {
+    return get().activeTags.filter((t) => !t.isConsumed)
+  },
+
+  getInstantTags: () => {
     const state = get()
-    const updatedOmens = state.activeOmens.map((omen) => {
-      if (omen.definition.effect.scalesWithSkips) {
-        return {
-          ...omen,
-          currentScalingValue:
-            (omen.definition.effect.value as number) * state.totalRoundsSkipped,
-        }
-      }
-      return omen
+    return state.activeTags.filter((tag) => {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      return def?.triggerCondition === 'instant' && !tag.isConsumed
     })
-
-    set({ activeOmens: updatedOmens })
   },
 
-  hasActiveOmenWithEffect: (effectType: string) => {
-    const state = get()
-    return state.activeOmens.some(
-      (o) => o.definition.effect.type === effectType && o.status === 'active'
-    )
+  getPendingShopTags: () => {
+    return [...get().pendingShopTags]
   },
 
-  getOmenHistoryForRun: () => {
-    return get().omenHistory
+  getPendingBossTags: () => {
+    return [...get().pendingBossTags]
   },
 
   getTotalSkippedRounds: () => {
-    return get().totalRoundsSkipped
+    return get().roundsSkippedThisRun
   },
 
-  clearOmens: () => {
-    set({
-      activeOmens: [],
-    })
+  getOmenHistory: () => {
+    return [...get().omenHistory]
   },
 
-  clearForNewRun: () => {
-    set({
-      activeOmens: [],
-      omenHistory: [],
-      totalRoundsSkipped: 0,
-      lockedSeason: null,
-      noInterestRounds: 0,
-      currentRound: 0,
-      currentAct: 1,
-    })
-  },
-
-  // Selectors
-  getPassiveMultBonus: () => {
+  hasActiveOmenWithEffect: (effectType: OmenEffectType) => {
     const state = get()
-    let totalMult = 0
+    return state.activeTags.some((tag) => {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      return def?.effect.type === effectType && !tag.isConsumed
+    })
+  },
 
-    for (const omen of state.activeOmens) {
-      if (
-        omen.definition.trigger === 'Passive' &&
-        omen.definition.effect.type === 'mult_per_skip'
-      ) {
-        totalMult +=
-          omen.currentScalingValue ??
-          (omen.definition.effect.value as number) * state.totalRoundsSkipped
+  // ==========================================================================
+  // EFFECT CALCULATIONS
+  // ==========================================================================
+
+  calculateInstantGold: (tagId: string, currentGold: number) => {
+    const state = get()
+    const tag = state.activeTags.find((t) => t.id === tagId)
+    if (!tag) return 0
+
+    const definition = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!definition || definition.effect.type !== 'goldBonus') return 0
+
+    // Economy Omen doubles gold with max cap
+    if (definition.id === 'economy_omen') {
+      const bonus = Math.min(currentGold, definition.effect.maxValue ?? 40)
+      return bonus
+    }
+
+    return definition.effect.value ?? 0
+  },
+
+  calculateScalingGold: (tagId: string) => {
+    const state = get()
+    const tag = state.activeTags.find((t) => t.id === tagId)
+    if (!tag) return 0
+
+    const definition = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!definition || definition.effect.type !== 'economyScaling') return 0
+
+    const value = definition.effect.value ?? 1
+    const condition = definition.effect.scalingCondition
+
+    switch (condition) {
+      case 'handsPlayed':
+        return value * state.handsPlayedThisRun
+      case 'unusedDiscards':
+        return value * state.unusedDiscardsThisRun
+      case 'roundsSkipped':
+        // Speed Omen: 5 Gold per skip, minimum 5
+        return Math.max(5, value * state.roundsSkippedThisRun)
+      default:
+        return 0
+    }
+  },
+
+  hasFreeCoupon: () => {
+    const state = get()
+    return state.pendingShopTags.some((tag) => {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      return def?.id === 'coupon_omen'
+    })
+  },
+
+  hasFreeRerolls: () => {
+    const state = get()
+    return state.pendingShopTags.some((tag) => {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      return def?.id === 'd6_omen'
+    })
+  },
+
+  getFreeDecreeInfo: () => {
+    const state = get()
+    const result: { rarity: DecreeRarity; edition?: TileEdition }[] = []
+
+    for (const tag of state.pendingShopTags) {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (!def) continue
+
+      if (def.effect.type === 'freeDecree' && def.effect.rarity) {
+        result.push({ rarity: def.effect.rarity })
+      } else if (def.effect.type === 'freeEdition' && def.effect.edition) {
+        result.push({ rarity: 'LocalEdict', edition: def.effect.edition })
       }
     }
 
-    return totalMult
+    return result
   },
 
-  getNextShopEffects: () => {
+  getFreePacks: () => {
     const state = get()
-    return state.activeOmens.filter(
-      (o) => o.definition.trigger === 'OnNextShop' && o.status === 'active'
-    )
+    const result: { packType: PackType; isMega: boolean }[] = []
+
+    // Check instant tags for free packs
+    for (const tag of state.activeTags) {
+      if (tag.isConsumed) continue
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (!def || def.effect.type !== 'freePack') continue
+
+      // Ethereal (Void) pack is not Mega size
+      const isMega = def.id !== 'ethereal_omen'
+      result.push({ packType: def.effect.packType!, isMega })
+    }
+
+    return result
   },
 
-  getNextRoundEffects: () => {
+  getPendingBossGold: () => {
     const state = get()
-    return state.activeOmens.filter(
-      (o) => o.definition.trigger === 'OnNextRound' && o.status === 'active'
-    )
+    let total = 0
+
+    for (const tag of state.pendingBossTags) {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (!def) continue
+
+      if (def.effect.type === 'goldBonus' && def.id === 'investment_omen') {
+        total += def.effect.value ?? 25
+      }
+    }
+
+    return total
   },
 
-  getNextHandEffects: () => {
+  hasBossReroll: () => {
     const state = get()
-    return state.activeOmens.filter(
-      (o) => o.definition.trigger === 'OnNextHand' && o.status === 'active'
-    )
+    return state.pendingBossTags.some((tag) => {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      return def?.id === 'boss_omen'
+    })
+  },
+
+  isDoubleOmenActive: () => {
+    return get().hasDoubleOmenActive
+  },
+
+  getHandSizeBonus: () => {
+    const state = get()
+    let bonus = 0
+
+    for (const tag of state.pendingShopTags) {
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (def?.id === 'juggle_omen') {
+        bonus += def.effect.value ?? 3
+      }
+    }
+
+    return bonus
+  },
+
+  getCreatedDecreeCount: () => {
+    const state = get()
+    let count = 0
+
+    for (const tag of state.activeTags) {
+      if (tag.isConsumed) continue
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (def?.id === 'topup_omen') {
+        count += def.effect.value ?? 2
+      }
+    }
+
+    return count
+  },
+
+  getYakuUpgradeLevels: () => {
+    const state = get()
+    let levels = 0
+
+    for (const tag of state.activeTags) {
+      if (tag.isConsumed) continue
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (def?.id === 'orbital_omen') {
+        levels += def.effect.value ?? 3
+      }
+    }
+
+    return levels
+  },
+
+  // ==========================================================================
+  // RUN LIFECYCLE
+  // ==========================================================================
+
+  clearForNewRun: () => {
+    set((state) => ({
+      activeTags: [],
+      consumedTags: [],
+      pendingShopTags: [],
+      pendingBossTags: [],
+      roundsSkippedThisRun: 0,
+      handsPlayedThisRun: 0,
+      unusedDiscardsThisRun: 0,
+      hasDoubleOmenActive: false,
+      lockedSeason: null,
+      noInterestRounds: 0,
+      currentAct: 1,
+      currentRound: 1,
+      omenHistory: [],
+      // Keep unlockedTagIds across runs
+      unlockedTagIds: state.unlockedTagIds,
+    }))
   },
 }))
 
@@ -421,24 +680,45 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
  * Get total number of active omens
  */
 export const selectActiveOmenCount = (state: OmenState): number => {
-  return state.activeOmens.filter((o) => o.status === 'active').length
+  return state.activeTags.filter((t) => !t.isConsumed).length
 }
 
 /**
  * Get total number of omens consumed this run
  */
 export const selectConsumedOmenCount = (state: OmenState): number => {
-  return state.omenHistory.length
+  return state.consumedTags.length
 }
 
 /**
- * Get omens by rarity
+ * Get pending shop tag count
  */
-export const selectOmensByRarity = (
-  state: OmenState,
-  rarity: OmenRarity
-): ActiveOmen[] => {
-  return state.activeOmens.filter((o) => o.definition.rarity === rarity)
+export const selectPendingShopTagCount = (state: OmenState): number => {
+  return state.pendingShopTags.length
+}
+
+/**
+ * Get pending boss tag count
+ */
+export const selectPendingBossTagCount = (state: OmenState): number => {
+  return state.pendingBossTags.length
+}
+
+/**
+ * Check if any instant tags are pending
+ */
+export const selectHasInstantTags = (state: OmenState): boolean => {
+  return state.activeTags.some((tag) => {
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    return def?.triggerCondition === 'instant' && !tag.isConsumed
+  })
+}
+
+/**
+ * Get rounds skipped this run
+ */
+export const selectRoundsSkipped = (state: OmenState): number => {
+  return state.roundsSkippedThisRun
 }
 
 /**
@@ -459,127 +739,54 @@ export const selectLockedSeason = (state: OmenState): SeasonVariant | null => {
 }
 
 /**
+ * Check if a specific tag type is pending
+ */
+export const selectHasPendingTagType = (
+  state: OmenState,
+  tagId: string
+): boolean => {
+  return (
+    state.pendingShopTags.some((t) => t.definitionId === tagId) ||
+    state.pendingBossTags.some((t) => t.definitionId === tagId)
+  )
+}
+
+/**
+ * Get all tag definitions with unlock status
+ */
+export const selectTagsWithUnlockStatus = (
+  state: OmenState
+): { definition: OmenTagDefinition; isUnlocked: boolean }[] => {
+  return ALL_OMEN_TAGS.map((def) => ({
+    definition: def,
+    isUnlocked: state.unlockedTagIds.includes(def.id),
+  }))
+}
+
+/**
  * Get shop discount from omens
  */
 export const selectShopDiscountFromOmens = (state: OmenState): number => {
-  let discount = 0
+  // Coupon Omen makes initial items free (100% discount)
+  const hasCoupon = state.pendingShopTags.some((tag) => {
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    return def?.id === 'coupon_omen'
+  })
 
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextShop' &&
-      omen.definition.effect.type === 'discount'
-    ) {
-      discount += omen.definition.effect.value as number
-    }
-  }
-
-  return discount
+  return hasCoupon ? 100 : 0
 }
 
 /**
- * Get free rerolls from omens
+ * Get free rerolls from omens (D6 Omen makes rerolls start at 0)
  */
 export const selectFreeRerollsFromOmens = (state: OmenState): number => {
-  let rerolls = 0
+  const hasD6 = state.pendingShopTags.some((tag) => {
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    return def?.id === 'd6_omen'
+  })
 
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextShop' &&
-      omen.definition.effect.type === 'free_reroll'
-    ) {
-      rerolls += omen.definition.effect.value as number
-    }
-  }
-
-  return rerolls
-}
-
-/**
- * Get guaranteed items for next shop
- */
-export const selectGuaranteedShopItems = (
-  state: OmenState
-): { itemType: string; omenId: string }[] => {
-  const items: { itemType: string; omenId: string }[] = []
-
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextShop' &&
-      omen.definition.effect.type === 'guaranteed_item' &&
-      omen.definition.effect.itemType
-    ) {
-      items.push({
-        itemType: omen.definition.effect.itemType,
-        omenId: omen.id,
-      })
-    }
-  }
-
-  return items
-}
-
-/**
- * Get edition to apply on next decree purchase
- */
-export const selectNextDecreeEdition = (
-  state: OmenState
-): { editionType: string; omenId: string } | null => {
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextShop' &&
-      omen.definition.effect.type === 'edition_apply' &&
-      omen.definition.effect.editionType
-    ) {
-      return {
-        editionType: omen.definition.effect.editionType,
-        omenId: omen.id,
-      }
-    }
-  }
-
-  return null
-}
-
-/**
- * Get bonus draws for next round
- */
-export const selectNextRoundDrawBonus = (state: OmenState): number => {
-  let bonus = 0
-
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextRound' &&
-      omen.definition.effect.type === 'draw_bonus'
-    ) {
-      bonus += omen.definition.effect.value as number
-    }
-  }
-
-  return bonus
-}
-
-/**
- * Get bonus discards for next round
- */
-export const selectNextRoundDiscardBonus = (state: OmenState): number => {
-  let bonus = 0
-
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextRound' &&
-      omen.definition.effect.type === 'discard_refund'
-    ) {
-      bonus += omen.definition.effect.value as number
-    }
-  }
-
-  return bonus
+  // D6 Omen resets reroll cost to 0 (infinite free rerolls until cost increases)
+  return hasD6 ? 999 : 0
 }
 
 /**
@@ -588,13 +795,10 @@ export const selectNextRoundDiscardBonus = (state: OmenState): number => {
 export const selectNextRoundHandSizeBonus = (state: OmenState): number => {
   let bonus = 0
 
-  for (const omen of state.activeOmens) {
-    if (
-      omen.status === 'active' &&
-      omen.definition.trigger === 'OnNextRound' &&
-      omen.definition.effect.type === 'hand_size_bonus'
-    ) {
-      bonus += omen.definition.effect.value as number
+  for (const tag of state.pendingShopTags) {
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (def?.id === 'juggle_omen') {
+      bonus += def.effect.value ?? 3
     }
   }
 
@@ -607,11 +811,24 @@ export const selectNextRoundHandSizeBonus = (state: OmenState): number => {
 export const selectGoldBonusFromOmens = (state: OmenState): number => {
   let gold = 0
 
-  for (const omen of state.activeOmens) {
-    if (omen.definition.effect.type === 'gold_per_skip') {
-      gold +=
-        omen.currentScalingValue ??
-        (omen.definition.effect.value as number) * state.totalRoundsSkipped
+  for (const tag of state.activeTags) {
+    if (tag.isConsumed) continue
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!def || def.effect.type !== 'economyScaling') continue
+
+    const value = def.effect.value ?? 1
+    const condition = def.effect.scalingCondition
+
+    switch (condition) {
+      case 'handsPlayed':
+        gold += value * state.handsPlayedThisRun
+        break
+      case 'unusedDiscards':
+        gold += value * state.unusedDiscardsThisRun
+        break
+      case 'roundsSkipped':
+        gold += Math.max(5, value * state.roundsSkippedThisRun)
+        break
     }
   }
 
@@ -629,3 +846,6 @@ let omenIdCounter = 0
 export function generateOmenId(): string {
   return `omen-${++omenIdCounter}-${Date.now()}`
 }
+
+// Re-export utility functions from OmenTagSystem
+export { getOmenTagDisplayName, getOmenTagJapaneseName, getOmenTagDescription }

@@ -7,7 +7,7 @@
 
 import { create } from 'zustand'
 import { PackType, PackSize, BlessingPack } from '../systems/types'
-import { PackContent, PackOffering } from '../systems/BlessingPackSystem'
+import { PackContent } from '../systems/BlessingPackSystem'
 
 // =============================================================================
 // PACK STATE TYPES

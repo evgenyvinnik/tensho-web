@@ -20,7 +20,6 @@ import {
   type CombinedStakeModifiers,
   type StickerRollResult,
 } from '../config/stakeDefinitions'
-import { StickerType } from '../systems/types'
 
 // =============================================================================
 // TYPES

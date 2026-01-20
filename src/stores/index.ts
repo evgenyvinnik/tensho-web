@@ -210,3 +210,33 @@ export {
   type StakeVictory,
   type WallStakeProgress,
 } from './stakeStore'
+
+// Omen Store - Omen Tags (Tags equivalents)
+export {
+  useOmenStore,
+  // Selectors
+  selectActiveOmenCount,
+  selectConsumedOmenCount,
+  selectPendingShopTagCount,
+  selectPendingBossTagCount,
+  selectHasInstantTags,
+  selectRoundsSkipped,
+  selectIsInterestBlocked,
+  selectLockedSeason,
+  selectHasPendingTagType,
+  selectTagsWithUnlockStatus,
+  selectShopDiscountFromOmens,
+  selectFreeRerollsFromOmens,
+  selectNextRoundHandSizeBonus,
+  selectGoldBonusFromOmens,
+  // Utilities
+  generateOmenId,
+  getOmenTagDisplayName,
+  getOmenTagJapaneseName,
+  getOmenTagDescription,
+  // Types
+  type OmenState,
+  type OmenStatus,
+  type OmenHistoryEntry,
+  type LockedSeason,
+} from './omenStore'

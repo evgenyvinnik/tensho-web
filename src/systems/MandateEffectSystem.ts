@@ -817,6 +817,85 @@ export class MandateEffectSystem {
   }
 
   /**
+   * Get hand size reduction from mandate (The Manacle)
+   */
+  getHandSizeReduction(): number {
+    if (!this.state.activeMandate) return 0
+    if (this.state.activeMandate.effect.type === 'hand_size_reduction') {
+      return (this.state.activeMandate.effect.value as number) ?? 0
+    }
+    return 0
+  }
+
+  /**
+   * Get gold penalty per tile played (The Tooth)
+   */
+  getGoldPenaltyPerTile(): number {
+    if (!this.state.activeMandate) return 0
+    if (this.state.activeMandate.effect.type === 'gold_per_tile') {
+      return (this.state.activeMandate.effect.value as number) ?? 0
+    }
+    return 0
+  }
+
+  /**
+   * Check if playing most-played yaku should zero gold (The Ox)
+   */
+  shouldZeroGoldForMostPlayedYaku(): boolean {
+    if (!this.state.activeMandate) return false
+    return this.state.activeMandate.effect.type === 'most_played_yaku_zeroes_gold'
+  }
+
+  /**
+   * Check if first hand should be face-down (The House)
+   */
+  isFirstHandFaceDown(): boolean {
+    if (!this.state.activeMandate) return false
+    return (
+      this.state.activeMandate.effect.type === 'first_hand_face_down' &&
+      this.state.handsPlayed === 0
+    )
+  }
+
+  /**
+   * Get face-down tile ratio (The Wheel - 1 in N tiles face-down)
+   */
+  getFaceDownTileRatio(): number | null {
+    if (!this.state.activeMandate) return null
+    if (this.state.activeMandate.effect.type === 'tiles_face_down_ratio') {
+      return (this.state.activeMandate.effect.value as number) ?? null
+    }
+    return null
+  }
+
+  /**
+   * Check if tiles should be face-down after play (The Fish)
+   */
+  shouldTilesBeFaceDownAfterPlay(): boolean {
+    if (!this.state.activeMandate) return false
+    return this.state.activeMandate.effect.type === 'tiles_face_down_after_play'
+  }
+
+  /**
+   * Get fixed draw count (The Serpent)
+   */
+  getFixedDrawCount(): number | null {
+    if (!this.state.activeMandate) return null
+    if (this.state.activeMandate.effect.type === 'fixed_draw_count') {
+      return (this.state.activeMandate.effect.value as number) ?? null
+    }
+    return null
+  }
+
+  /**
+   * Check if honor tiles should be face-down (The Mark)
+   */
+  areHonorTilesFaceDown(): boolean {
+    if (!this.state.activeMandate) return false
+    return this.state.activeMandate.effect.type === 'honor_tiles_face_down'
+  }
+
+  /**
    * Check if decree is disabled by mandate
    */
   isDecreeDisabled(decreeId: string): boolean {
