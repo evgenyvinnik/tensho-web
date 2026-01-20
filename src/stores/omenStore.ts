@@ -88,7 +88,7 @@ export interface OmenHistoryEntry {
   acquiredRound: number
   consumedAct: number
   consumedRound: number
-  triggerCondition: OmenTriggerCondition
+  triggerCondition: OmenTriggerCondition // Uses OmenTrigger values: 'OnNextShop', 'OnAcquire', etc.
   effectDescription: string
 }
 
@@ -178,6 +178,16 @@ export interface OmenState {
   getHandSizeBonus: () => number
   getCreatedDecreeCount: () => number
   getYakuUpgradeLevels: () => number
+  getPassiveMultBonus: () => number
+
+  // OmenTagSystem compatibility methods
+  setRoundInfo: (round: number, act: number) => void
+  incrementSkippedRounds: () => void
+  addOmen: (definition: OmenDefinition) => ActiveOmenTag | null
+  getActiveOmensByTrigger: (trigger: OmenTrigger) => Array<ActiveOmenTag & { definition: OmenDefinition }>
+  triggerOmen: (tagId: string) => void
+  consumeOmen: (tagId: string) => boolean
+  getOmenHistoryForRun: () => OmenHistoryEntry[]
 
   // Run lifecycle
   clearForNewRun: () => void
@@ -212,7 +222,7 @@ function createHistoryEntry(
     acquiredRound: tag.acquiredRound,
     consumedAct: currentAct,
     consumedRound: currentRound,
-    triggerCondition: definition?.triggerCondition ?? 'instant',
+    triggerCondition: definition?.trigger ?? 'OnAcquire',
     effectDescription: definition?.effect.description ?? '',
   }
 }
@@ -271,11 +281,11 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
 
       // Route the duplicate tag
       const duplicateShopTags =
-        definition.triggerCondition === 'nextShop'
+        definition.trigger === 'OnNextShop'
           ? [...state.pendingShopTags, duplicateTag]
           : state.pendingShopTags
       const duplicateBossTags =
-        definition.triggerCondition === 'nextBoss'
+        definition.trigger === 'OnNextRound'
           ? [...state.pendingBossTags, duplicateTag]
           : state.pendingBossTags
 
@@ -300,11 +310,11 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
 
     // Route to appropriate queue based on trigger condition
     const newPendingShopTags =
-      definition.triggerCondition === 'nextShop'
+      definition.trigger === 'OnNextShop'
         ? [...state.pendingShopTags, tag]
         : state.pendingShopTags
     const newPendingBossTags =
-      definition.triggerCondition === 'nextBoss'
+      definition.trigger === 'OnNextRound'
         ? [...state.pendingBossTags, tag]
         : state.pendingBossTags
 
@@ -486,7 +496,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
     const state = get()
     return state.activeTags.filter((tag) => {
       const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
-      return def?.triggerCondition === 'instant' && !tag.isConsumed
+      return def?.trigger === 'OnAcquire' && !tag.isConsumed
     })
   },
 
@@ -683,6 +693,74 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
     return levels
   },
 
+  getPassiveMultBonus: () => {
+    const state = get()
+    let bonus = 0
+
+    for (const tag of state.activeTags) {
+      if (tag.isConsumed) continue
+      const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+      if (def?.effect.type === 'mult_bonus') {
+        bonus += def.effect.value ?? 0
+      }
+    }
+
+    return bonus
+  },
+
+  // ==========================================================================
+  // OMEN TAG SYSTEM COMPATIBILITY METHODS
+  // ==========================================================================
+
+  setRoundInfo: (round: number, act: number) => {
+    set({ currentAct: act, currentRound: round })
+  },
+
+  incrementSkippedRounds: () => {
+    set((state) => ({
+      roundsSkippedThisRun: state.roundsSkippedThisRun + 1,
+    }))
+  },
+
+  addOmen: (definition: OmenDefinition) => {
+    return get().addTag(definition.id)
+  },
+
+  getActiveOmensByTrigger: (trigger: OmenTrigger) => {
+    const state = get()
+    return state.activeTags
+      .filter((tag) => {
+        if (tag.isConsumed) return false
+        const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+        return def?.trigger === trigger
+      })
+      .map((tag) => ({
+        ...tag,
+        definition: ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)!,
+      }))
+  },
+
+  triggerOmen: (tagId: string) => {
+    const state = get()
+    const tagIndex = state.activeTags.findIndex((t) => t.id === tagId)
+    if (tagIndex === -1) return
+
+    const updatedTags = [...state.activeTags]
+    updatedTags[tagIndex] = {
+      ...updatedTags[tagIndex],
+      triggeredAt: Date.now(),
+    }
+    set({ activeTags: updatedTags })
+  },
+
+  consumeOmen: (tagId: string) => {
+    return get().consumeTag(tagId)
+  },
+
+  getOmenHistoryForRun: () => {
+    return [...get().omenHistory]
+  },
+
   // ==========================================================================
   // RUN LIFECYCLE
   // ==========================================================================
@@ -746,7 +824,7 @@ export const selectPendingBossTagCount = (state: OmenState): number => {
 export const selectHasInstantTags = (state: OmenState): boolean => {
   return state.activeTags.some((tag) => {
     const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
-    return def?.triggerCondition === 'instant' && !tag.isConsumed
+    return def?.trigger === 'OnAcquire' && !tag.isConsumed
   })
 }
 

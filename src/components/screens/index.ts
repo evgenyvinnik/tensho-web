@@ -11,6 +11,7 @@ export {
 
 // Standalone screen components
 export { AchievementsScreen } from './AchievementsScreen'
+export { CollectionScreen } from './CollectionScreen'
 export { GameplayScreen } from './GameplayScreen'
 export { SettingsScreen } from './SettingsScreen'
 export { ShopScreen } from './ShopScreen'

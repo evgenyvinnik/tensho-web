@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../ui/LanguageSelector'
 import { Tutorial, useTutorial } from '../ui/Tutorial'
 import { SongNotification } from '../ui/SongNotification'
+import { TableStyleButton } from '../menu/TableStyleButton'
 import { getTileImagePath, preloadMenuAssets, preloadTileImages } from '../../utils/assets'
 import { useAudio } from '../../hooks/useAudio'
 import { useGameStore } from '../../stores/gameStore'
@@ -381,6 +382,10 @@ export function MenuScreen() {
     navigateTo(ROUTES.ACHIEVEMENTS)
   }
 
+  const handleCollection = () => {
+    navigateTo(ROUTES.COLLECTION)
+  }
+
   // Loading screen with Balatro-style spinner
   if (isLoading) {
     return (
@@ -457,20 +462,27 @@ export function MenuScreen() {
 
         {/* Buttons section */}
         <div className="flex flex-col items-center gap-4 flex-shrink-0 mb-8">
-          <NeonButton onClick={handlePlay} variant="primary" delay={600} show={showContent}>
+          {/* Table Style Selection Button */}
+          <TableStyleButton delay={550} show={showContent} />
+
+          <NeonButton onClick={handlePlay} variant="primary" delay={650} show={showContent}>
             {t('menu.play')}
           </NeonButton>
 
-          <NeonButton onClick={handleTutorial} variant="secondary" delay={700} show={showContent}>
+          <NeonButton onClick={handleTutorial} variant="secondary" delay={750} show={showContent}>
             {t('menu.tutorial', 'Tutorial')}
           </NeonButton>
 
-          <NeonButton onClick={handleSettings} variant="secondary" delay={800} show={showContent}>
+          <NeonButton onClick={handleSettings} variant="secondary" delay={850} show={showContent}>
             {t('menu.settings')}
           </NeonButton>
 
-          <NeonButton onClick={handleAchievements} variant="secondary" delay={900} show={showContent}>
+          <NeonButton onClick={handleAchievements} variant="secondary" delay={950} show={showContent}>
             {t('menu.achievements', 'Achievements')}
+          </NeonButton>
+
+          <NeonButton onClick={handleCollection} variant="secondary" delay={1050} show={showContent}>
+            {t('menu.collection', 'Collection')}
           </NeonButton>
 
           {/* Audio indicator */}

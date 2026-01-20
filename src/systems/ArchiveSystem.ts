@@ -335,7 +335,7 @@ export class ArchiveSystem {
   isDiscovered(category: ArchiveCategory, itemId: string): boolean {
     const key = createArchiveKey(category, itemId)
     const entry = this.entries.get(key)
-    return entry?.discoveredAt !== null ?? false
+    return entry !== undefined && entry.discoveredAt !== null
   }
 
   /**

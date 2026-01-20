@@ -497,6 +497,16 @@ export class Tile implements TileData {
   // ===========================================================================
 
   /**
+   * Create a tile from suit and rank
+   * @param suit - The tile suit
+   * @param rank - The tile rank
+   * @param id - Optional tile ID (auto-generated if not provided)
+   */
+  static create(suit: TileSuit, rank: number, id?: string): Tile {
+    return new Tile(suit, rank, id ?? generateTileId())
+  }
+
+  /**
    * Create a wind tile
    * @param wind - The wind type (1=East, 2=South, 3=West, 4=North)
    * @param id - Optional tile ID (auto-generated if not provided)

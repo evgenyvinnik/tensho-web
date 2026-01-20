@@ -13,6 +13,7 @@ import { ShopScreen } from './components/screens/ShopScreen'
 import { GameOverScreen } from './components/screens/GameOverScreen'
 import { AchievementsScreen } from './components/screens/AchievementsScreen'
 import { TutorialScreen } from './components/screens/TutorialScreen'
+import { CollectionScreen } from './components/screens/CollectionScreen'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
@@ -50,6 +51,7 @@ function App() {
         GameOverScreen,
         AchievementsScreen,
         TutorialScreen,
+        CollectionScreen,
       }),
     []
   )

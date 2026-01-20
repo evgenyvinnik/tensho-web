@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 import './index.css'
 import './i18n' // Initialize i18next
 import App from './App.tsx'
+import { AppErrorBoundary } from './components/ui/ErrorBoundary'
 
 // Register service worker for PWA
 const updateSW = registerSW({
@@ -19,6 +20,8 @@ const updateSW = registerSW({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <AppErrorBoundary>
+      <App />
+    </AppErrorBoundary>
   </StrictMode>
 )

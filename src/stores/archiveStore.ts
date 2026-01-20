@@ -301,7 +301,7 @@ export const useArchiveStore = create<ArchiveState>()(
       isDiscovered: (category: ArchiveCategory, itemId: string): boolean => {
         const key = createArchiveKey(category, itemId)
         const entry = get().entries[key]
-        return entry?.discoveredAt !== null ?? false
+        return entry !== undefined && entry.discoveredAt !== null
       },
 
       getEntry: (category: ArchiveCategory, itemId: string): ArchiveEntry | undefined => {

@@ -20,6 +20,8 @@ import {
   useParams,
   useNavigate,
   useLocation,
+  useRouteError,
+  isRouteErrorResponse,
 } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +32,7 @@ import {
   changeLanguage,
   type SupportedLanguage,
 } from '../i18n'
+import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -135,6 +138,53 @@ export function RootRedirect() {
 }
 
 /**
+ * Route error boundary component for React Router
+ */
+export function RouteErrorBoundary() {
+  const error = useRouteError()
+
+  // Handle route errors (404, etc.)
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)] p-4">
+        <div className="max-w-md w-full text-center">
+          <div className="text-6xl mb-6">🗺️</div>
+          <h1 className="text-3xl font-bold text-[var(--color-golden-yellow)] mb-3">
+            {error.status === 404 ? 'Page Not Found' : `Error ${error.status}`}
+          </h1>
+          <p className="text-[var(--color-beige-white)] mb-6">
+            {error.status === 404
+              ? "The page you're looking for doesn't exist."
+              : error.statusText || 'Something went wrong.'}
+          </p>
+          <button
+            onClick={() => (window.location.href = '/')}
+            className="px-6 py-3 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
+                       text-white font-bold rounded-lg transition-all hover:scale-105
+                       border-2 border-[var(--color-golden-yellow)]"
+          >
+            Go to Menu
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Handle JavaScript errors
+  const actualError = error instanceof Error ? error : new Error('Unknown error occurred')
+  reportError(actualError)
+
+  return (
+    <ErrorFallback
+      error={actualError}
+      onRetry={() => window.location.reload()}
+      onGoHome={() => (window.location.href = '/')}
+      variant="full"
+    />
+  )
+}
+
+/**
  * Language layout wrapper that provides language sync
  */
 export function LanguageLayout() {
@@ -185,43 +235,53 @@ export function createAppRouter(routes: {
     {
       path: '/',
       element: <RootRedirect />,
+      errorElement: <RouteErrorBoundary />,
     },
     // Language-prefixed routes
     {
       path: '/:lang',
       element: <LanguageLayout />,
+      errorElement: <RouteErrorBoundary />,
       children: [
         {
           index: true,
           element: <MenuScreen />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.PLAY,
           element: <GameplayScreen />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.SHOP,
           element: <ShopScreen />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.GAME_OVER,
           element: <GameOverScreen />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.TUTORIAL,
           element: TutorialScreen ? <TutorialScreen /> : <PlaceholderScreen title="Tutorial" />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.COLLECTION,
           element: CollectionScreen ? <CollectionScreen /> : <PlaceholderScreen title="Collection" />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.SETTINGS,
           element: SettingsScreen ? <SettingsScreen /> : <PlaceholderScreen title="Settings" />,
+          errorElement: <RouteErrorBoundary />,
         },
         {
           path: ROUTES.ACHIEVEMENTS,
           element: AchievementsScreen ? <AchievementsScreen /> : <PlaceholderScreen title="Achievements" />,
+          errorElement: <RouteErrorBoundary />,
         },
         // Catch-all for unknown routes within a language - redirect to menu
         {
