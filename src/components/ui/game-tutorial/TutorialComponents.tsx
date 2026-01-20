@@ -223,10 +223,12 @@ export function TutorialTooltip({
     >
       {/* Tooltip card */}
       <div className="relative bg-[var(--color-dark-forest)] border-2 border-[var(--color-golden-yellow)] rounded-xl p-5 shadow-2xl">
-        {/* Arrow */}
-        <div style={getArrowStyle()}>
-          <Arrow direction={step.arrowDirection} />
-        </div>
+        {/* Arrow - only show when pointing at a target element */}
+        {targetRect && (
+          <div style={getArrowStyle()}>
+            <Arrow direction={step.arrowDirection} />
+          </div>
+        )}
 
         {/* Content */}
         <h3 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-2">

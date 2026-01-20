@@ -11,7 +11,7 @@
  * This is the missing piece that makes the game playable end-to-end.
  */
 
-import { Tile, TileSuit, FlowerType, SeasonType } from '../core/Tile'
+import { Tile, TileSuit, FlowerType, SeasonType, WindType, DragonType } from '../core/Tile'
 import { Hand, ParsedHand } from '../core/Hand'
 import { Meld } from '../core/Meld'
 import { calculateScore, createScoringContext, ScoreBreakdown } from '../rules/ScoringEngine'
@@ -279,29 +279,29 @@ export class GameOrchestrator {
     }
 
     // Winds (4 copies each)
-    const winds = ['east', 'south', 'west', 'north']
+    const winds = [WindType.East, WindType.South, WindType.West, WindType.North]
     for (const wind of winds) {
       for (let copy = 0; copy < 4; copy++) {
-        tiles.push(Tile.createWind(wind as 'east' | 'south' | 'west' | 'north', generateId()))
+        tiles.push(Tile.createWind(wind, generateId()))
       }
     }
 
     // Dragons (4 copies each)
-    const dragons = ['white', 'green', 'red']
+    const dragons = [DragonType.White, DragonType.Green, DragonType.Red]
     for (const dragon of dragons) {
       for (let copy = 0; copy < 4; copy++) {
-        tiles.push(Tile.createDragon(dragon as 'white' | 'green' | 'red', generateId()))
+        tiles.push(Tile.createDragon(dragon, generateId()))
       }
     }
 
     // Flowers (1 copy each)
-    const flowers: FlowerType[] = ['plum', 'orchid', 'chrysanthemum', 'bamboo']
+    const flowers = [FlowerType.Plum, FlowerType.Orchid, FlowerType.Chrysanthemum, FlowerType.Bamboo]
     for (const flower of flowers) {
       tiles.push(Tile.createFlower(flower, generateId()))
     }
 
     // Seasons (1 copy each)
-    const seasons: SeasonType[] = ['spring', 'summer', 'autumn', 'winter']
+    const seasons = [SeasonType.Spring, SeasonType.Summer, SeasonType.Autumn, SeasonType.Winter]
     for (const season of seasons) {
       tiles.push(Tile.createSeason(season, generateId()))
     }

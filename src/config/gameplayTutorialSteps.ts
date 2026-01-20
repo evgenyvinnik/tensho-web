@@ -18,7 +18,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     // === INTRODUCTION ===
     {
       id: 'welcome',
-      position: { x: 50, y: 40 },
+      position: { x: 50, y: 45 },
       arrowDirection: 'top',
       title: t('gameTutorial.welcome.title', 'Welcome to Your First Run!'),
       content: t(
@@ -286,7 +286,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     // === READY TO PLAY ===
     {
       id: 'complete',
-      position: { x: 50, y: 40 },
+      position: { x: 50, y: 45 },
       arrowDirection: 'top',
       title: t('gameTutorial.complete.title', 'You\'re Ready!'),
       content: t(

@@ -31,7 +31,11 @@ export function useGameTutorial(steps: GameTutorialStep[]) {
 
   const skip = useCallback(() => {
     setIsActive(false)
+    setHasCompleted(true)
     setCurrentStep(0)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('tensho_game_tutorial_completed', 'true')
+    }
   }, [])
 
   const complete = useCallback(() => {
