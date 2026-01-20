@@ -128,7 +128,7 @@ export class OmenTagSystem {
     }
 
     // Add the omen to the store
-    const activeOmen = store.addOmen(selectedOmen)
+    store.addOmen(selectedOmen)
 
     // Calculate immediate gold from omen
     let immediateGold = 0

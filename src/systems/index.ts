@@ -535,3 +535,96 @@ export {
   getRandomOmenForRound,
   OMEN_RARITY_WEIGHTS,
 } from '../config/omenDefinitions'
+
+// =============================================================================
+// CONSUMABLE SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type ConsumableType,
+  type ConsumableRarity,
+  type ConsumableEdition,
+  type BaseConsumable,
+  type ConsumableUseResult,
+  type ConsumableEffectResult,
+  type ConsumableInventory,
+  // Constants
+  DEFAULT_CONSUMABLE_SLOTS,
+  MAX_CONSUMABLE_SLOTS,
+  // Class
+  ConsumableSystem,
+  // Utilities
+  generateConsumableInstanceId,
+  resetConsumableInstanceCounter,
+  calculateSellValue as calculateConsumableSellValue,
+  getEditionCostModifier,
+  getConsumableTypeName,
+  getConsumableTypeJapaneseName,
+} from './ConsumableSystem'
+
+// =============================================================================
+// FATE SEAL SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type FateSealEffectType,
+  type FateSealEffect,
+  type FateSeal,
+  type FateSealContext,
+  // Definitions
+  FATE_SEALS,
+  // Functions
+  getAllFateSeals,
+  getFateSealsByRarity,
+  // Class
+  FateSealSystem,
+} from './FateSealSystem'
+
+// =============================================================================
+// CELESTIAL ORB SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type YakuCategory,
+  type CelestialOrbEffect,
+  type CelestialOrb,
+  type OrbAttunement,
+  // Constants
+  DEFAULT_ORB_MAX_LEVEL,
+  LEVEL_UP_THRESHOLDS,
+  // Definitions
+  CELESTIAL_ORBS,
+  // Functions
+  getAllCelestialOrbs,
+  getCelestialOrbsByRarity,
+  getCelestialOrbByYaku,
+  mapYakuIdToCategory,
+  getYakuCategoryJapaneseName,
+  getYakuCategoryDisplayName,
+  // Class
+  CelestialOrbSystem,
+} from './CelestialOrbSystem'
+
+// =============================================================================
+// VOID SCRIPT SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type VoidScriptEffectType,
+  type VoidScriptPenaltyType,
+  type VoidScriptEffect,
+  type VoidScriptPenalty,
+  type VoidScript,
+  type VoidScriptContext,
+  // Definitions
+  VOID_SCRIPTS,
+  // Functions
+  getAllVoidScripts,
+  getVoidScriptsByRarity,
+  // Class
+  VoidScriptSystem,
+} from './VoidScriptSystem'

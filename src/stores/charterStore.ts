@@ -510,10 +510,15 @@ export function generateCharterId(): string {
 // RE-EXPORTS
 // =============================================================================
 
-export {
+// Type exports
+export type {
   CharterDefinition,
   CharterEffect,
   CharterEffectType,
+} from '../config/charterDefinitions'
+
+// Value exports
+export {
   BASE_CHARTERS,
   UPGRADED_CHARTERS,
   ALL_CHARTERS,
