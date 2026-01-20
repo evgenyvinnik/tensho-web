@@ -229,6 +229,10 @@ export {
   selectFreeRerollsFromOmens,
   selectNextRoundHandSizeBonus,
   selectGoldBonusFromOmens,
+  selectGuaranteedShopItems,
+  selectNextDecreeEdition,
+  selectNextRoundDrawBonus,
+  selectNextRoundDiscardBonus,
   // Utilities
   generateOmenId,
   getOmenTagDisplayName,

@@ -56,15 +56,29 @@ Run `bun run sloc` to calculate source lines of code.
 
 | Extension | Lines |
 |-----------|-------|
-| .ts       | 15,364 |
-| .tsx      | 9,391 |
+| .ts       | 37,726 |
+| .tsx      | 15,157 |
 | .js       | 4,645 |
 | .json     | 3,182 |
-| .md       | 2,075 |
+| .md       | 2,100 |
 | .css      | 397 |
 | .mjs      | 108 |
 | .html     | 25 |
-| **Total** | **35,187** |
+| **Total** | **63,340** |
+
+### Implemented Systems
+
+| System | Items |
+|--------|-------|
+| Fate Seals | 22 |
+| Celestial Orbs | 13 |
+| Void Scripts | 20 |
+| Imperial Charters | 32 |
+| Omen Tags | 23 |
+| Boss Mandates | 27 |
+| Table Stakes | 8 tiers |
+| Zustand Stores | 14 |
+| Game Systems | 19 |
 
 ## Documentation
 

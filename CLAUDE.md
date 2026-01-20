@@ -37,11 +37,12 @@ bun run sloc         # Count source lines of code
 
 ```
 src/
-├── core/           # Tile, Hand, Meld, Wall, DeadPool - game primitives
+├── core/           # Tile, Hand, Meld, Wall, DeadPool, TileModifier - game primitives
 ├── rules/          # HandValidator, ShantenCalculator, YakuDetector, ScoringEngine
-├── systems/        # Decree, Flower, Season, Shop, RoundManager, TableStake
+├── systems/        # 19 game systems (Decree, Flower, Season, Shop, Stakes, Mandates, etc.)
+├── config/         # Definition files (charters, mandates, omens, packs, stakes)
 ├── game/           # GameOrchestrator, ActionProcessor, EventBus, DebuffSystem
-├── stores/         # Zustand stores (gameStore, handStore, wallStore, etc.)
+├── stores/         # 14 Zustand stores (game, hand, wall, decree, flora, shop, stake, etc.)
 ├── components/     # React components (tiles/, ui/, effects/, screens/, hand/)
 ├── animations/     # React Spring animation hooks
 ├── hooks/          # Custom React hooks
@@ -82,6 +83,13 @@ The game uses a dual-state pattern:
    - `floraStore` — Collected flowers and active seasons
    - `settingsStore` — User preferences (persisted)
    - `achievementStore` — Achievement tracking (persisted)
+   - `tileMarkStore` — Tile modifiers (enhancements, seals, editions)
+   - `charterStore` — Imperial Charters (permanent upgrades)
+   - `omenStore` — Omen Tags from skipping rounds
+   - `packStore` — Blessing Pack opening state
+   - `shopStore` — Tea House shop state
+   - `stakeStore` — Table Stakes difficulty progression (persisted)
+   - `consumableStore` — Fate Seals, Celestial Orbs, Void Scripts
 
 The orchestrator is the source of truth for game logic; stores may reflect orchestrator state for UI binding.
 
@@ -112,12 +120,25 @@ const state = gameOrchestrator.getState()
 - `HandValidator` — Legal hand validation
 - `ScoringEngine` — Implements the formula: `Final = (Base + Additive) × Multipliers`
 
-**Systems Layer (`src/systems/`)** — Rule modifiers:
+**Systems Layer (`src/systems/`)** — Rule modifiers and roguelike mechanics:
 - `RoundManager` — Act/Round progression, boss mandates, score targets
 - `DecreeSystem` — Rule-bending modifiers (Joker equivalent)
 - `FlowerSystem` — Run-wide persistent scaling modifiers
 - `SeasonSystem` — Round-scoped temporal effects
-- `ShopSystem` — Between-round acquisition
+- `ShopSystem` — Between-round acquisition (legacy)
+- `TeaHouseSystem` — Full shop with item generation, pricing, rerolls
+- `PricingCalculator` — Cost formulas with rarity and edition modifiers
+- `TileModifierSystem` — Enhancements, Seals, Editions on tiles
+- `FateSealSystem` — 22 Tarot-style consumables
+- `CelestialOrbSystem` — 13 Planet-style yaku upgrades
+- `VoidScriptSystem` — 20 Spectral-style powerful effects with downsides
+- `ConsumableSystem` — Base consumable inventory management
+- `CharterSystem` — 32 Imperial Charters (voucher-style permanent upgrades)
+- `BlessingPackSystem` — Booster pack opening mechanics
+- `OmenTagSystem` — 23 skip rewards (one-time triggers)
+- `TableStakeSystem` — 8-tier difficulty progression
+- `StickerSystem` — Eternal/Perishable/Rental decree modifiers
+- `MandateEffectSystem` — 27 Boss Mandate restrictions
 
 ### Event Bus Pattern
 

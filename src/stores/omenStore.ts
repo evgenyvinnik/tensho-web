@@ -835,6 +835,86 @@ export const selectGoldBonusFromOmens = (state: OmenState): number => {
   return gold
 }
 
+/**
+ * Get guaranteed shop items from active omens
+ */
+export const selectGuaranteedShopItems = (
+  state: OmenState
+): { itemType: string; omenId: string }[] => {
+  const items: { itemType: string; omenId: string }[] = []
+
+  for (const tag of state.activeTags) {
+    if (tag.isConsumed) continue
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!def || def.effect.type !== 'guaranteedItem') continue
+
+    if (def.effect.itemType) {
+      items.push({
+        itemType: def.effect.itemType,
+        omenId: tag.id,
+      })
+    }
+  }
+
+  return items
+}
+
+/**
+ * Get next decree edition from active omens
+ */
+export const selectNextDecreeEdition = (
+  state: OmenState
+): { editionType: string; omenId: string } | null => {
+  for (const tag of state.activeTags) {
+    if (tag.isConsumed) continue
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!def || def.effect.type !== 'decreeEdition') continue
+
+    if (def.effect.editionType) {
+      return {
+        editionType: def.effect.editionType,
+        omenId: tag.id,
+      }
+    }
+  }
+
+  return null
+}
+
+/**
+ * Get draw bonus for next round from active omens
+ */
+export const selectNextRoundDrawBonus = (state: OmenState): number => {
+  let bonus = 0
+
+  for (const tag of state.activeTags) {
+    if (tag.isConsumed) continue
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!def || def.effect.type !== 'drawBonus') continue
+
+    bonus += def.effect.value ?? 0
+  }
+
+  return bonus
+}
+
+/**
+ * Get discard bonus for next round from active omens
+ */
+export const selectNextRoundDiscardBonus = (state: OmenState): number => {
+  let bonus = 0
+
+  for (const tag of state.activeTags) {
+    if (tag.isConsumed) continue
+    const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
+    if (!def || def.effect.type !== 'discardBonus') continue
+
+    bonus += def.effect.value ?? 0
+  }
+
+  return bonus
+}
+
 // =============================================================================
 // HELPERS
 // =============================================================================
