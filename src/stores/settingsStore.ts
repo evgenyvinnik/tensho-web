@@ -1,12 +1,13 @@
 /**
  * Settings Store - User settings with localStorage persistence
  *
- * Manages audio settings and other user preferences.
+ * Manages audio settings, language, and other user preferences.
  * Uses Zustand's persist middleware to save settings to localStorage.
  */
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { SupportedLanguage } from '../i18n'
 
 export interface SettingsState {
   // Audio settings
@@ -20,6 +21,9 @@ export interface SettingsState {
   animationSpeed: 'slow' | 'normal' | 'fast'
   reducedMotion: boolean
 
+  // Language setting (synced with i18next via localStorage)
+  language: SupportedLanguage
+
   // Actions
   setMusicVolume: (volume: number) => void
   setSfxVolume: (volume: number) => void
@@ -28,6 +32,7 @@ export interface SettingsState {
   setShowTileHints: (show: boolean) => void
   setAnimationSpeed: (speed: 'slow' | 'normal' | 'fast') => void
   setReducedMotion: (reduced: boolean) => void
+  setLanguage: (language: SupportedLanguage) => void
   resetSettings: () => void
 }
 
@@ -39,6 +44,7 @@ const DEFAULT_SETTINGS = {
   showTileHints: true,
   animationSpeed: 'normal' as const,
   reducedMotion: false,
+  language: 'en' as SupportedLanguage,
 }
 
 /**
@@ -83,6 +89,12 @@ export const useSettingsStore = create<SettingsState>()(
         set({ reducedMotion: reduced })
       },
 
+      setLanguage: (language: SupportedLanguage) => {
+        set({ language })
+        // Also update localStorage for i18next synchronization
+        localStorage.setItem('tensho-language', language)
+      },
+
       resetSettings: () => {
         set(DEFAULT_SETTINGS)
       },
@@ -99,6 +111,7 @@ export const useSettingsStore = create<SettingsState>()(
         showTileHints: state.showTileHints,
         animationSpeed: state.animationSpeed,
         reducedMotion: state.reducedMotion,
+        language: state.language,
       }),
     }
   )

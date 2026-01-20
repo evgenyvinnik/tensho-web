@@ -284,3 +284,197 @@ a {
     color: black;
   }
 }
+
+/* ============================================================================
+   Balatro-style CRT Effects
+   ============================================================================ */
+
+/* CRT Scanlines overlay */
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  z-index: 100;
+}
+
+/* CRT Glow effect */
+.crt-glow {
+  filter: contrast(1.1) brightness(1.05);
+  animation: crt-flicker 0.15s infinite alternate;
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.97; }
+  100% { opacity: 1; }
+}
+
+/* Vignette effect */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: 90;
+}
+
+/* Neon glow text */
+.neon-text {
+  text-shadow:
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+.neon-text-subtle {
+  text-shadow:
+    0 0 3px currentColor,
+    0 0 6px currentColor,
+    0 0 12px currentColor;
+}
+
+/* Neon button glow */
+.neon-button {
+  position: relative;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px currentColor;
+}
+
+.neon-button::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(
+    45deg,
+    var(--color-vibrant-orange),
+    var(--color-golden-yellow),
+    var(--color-vibrant-orange)
+  );
+  opacity: 0;
+  filter: blur(15px);
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.neon-button:hover::before {
+  opacity: 0.6;
+}
+
+.neon-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.neon-button:active {
+  transform: scale(0.98);
+}
+
+/* Floating animation for tiles */
+@keyframes tile-float {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotation, 0deg));
+  }
+  50% {
+    transform: translateY(-20px) rotate(calc(var(--rotation, 0deg) + 5deg));
+  }
+}
+
+.floating-tile {
+  animation: tile-float 4s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Subtle rotation for tiles */
+@keyframes tile-rotate {
+  0% { transform: rotate(-5deg) scale(1); }
+  25% { transform: rotate(5deg) scale(1.02); }
+  50% { transform: rotate(-3deg) scale(1); }
+  75% { transform: rotate(3deg) scale(0.98); }
+  100% { transform: rotate(-5deg) scale(1); }
+}
+
+.rotating-tile {
+  animation: tile-rotate 8s ease-in-out infinite;
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Ambient glow for background */
+@keyframes ambient-glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+.ambient-glow {
+  animation: ambient-glow 6s ease-in-out infinite;
+}
+
+/* Menu title animation */
+@keyframes title-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px var(--color-golden-yellow))
+            drop-shadow(0 0 40px var(--color-vibrant-orange));
+  }
+  50% {
+    filter: drop-shadow(0 0 30px var(--color-golden-yellow))
+            drop-shadow(0 0 60px var(--color-vibrant-orange));
+  }
+}
+
+.title-glow {
+  animation: title-pulse 3s ease-in-out infinite;
+}
+
+/* Button pulse animation */
+@keyframes button-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--color-vibrant-orange),
+                0 0 40px rgba(255, 87, 34, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--color-vibrant-orange),
+                0 0 60px rgba(255, 87, 34, 0.5);
+  }
+}
+
+.button-pulse {
+  animation: button-pulse 2s ease-in-out infinite;
+}

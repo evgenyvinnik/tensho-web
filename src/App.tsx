@@ -2,10 +2,12 @@
  * Tensho Mahjong Roguelike - Main Application Component
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useSpring, animated } from '@react-spring/web';
-import { ImageButton } from './components/ui/Button';
+import { useTranslation } from 'react-i18next';
+import Button from './components/ui/Button';
+import { LanguageSelector } from './components/ui/LanguageSelector';
 import { menuAssets, preloadMenuAssets } from './utils/assets';
 import { useAudio } from './hooks/useAudio';
 
@@ -15,10 +17,25 @@ const queryClient = new QueryClient();
 const AnimatedDiv = animated('div');
 
 /**
+ * Loading fallback for Suspense while i18n loads
+ */
+function LoadingFallback() {
+  return (
+    <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-[var(--color-beige-white)] text-lg font-ui">Loading...</p>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Menu Screen Component
  * Displays the main menu with background, title, and buttons
  */
 function MenuScreen() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
@@ -76,6 +93,17 @@ function MenuScreen() {
     delay: 650,
   });
 
+  // Language selector animation
+  const langSpring = useSpring({
+    from: { opacity: 0, transform: 'translateY(-20px)' },
+    to: {
+      opacity: showContent ? 1 : 0,
+      transform: showContent ? 'translateY(0px)' : 'translateY(-20px)',
+    },
+    config: { tension: 200, friction: 20 },
+    delay: 300,
+  });
+
   // Bottom decoration animation
   const bottomSpring = useSpring({
     from: { opacity: 0, transform: 'translateY(50px)' },
@@ -105,7 +133,7 @@ function MenuScreen() {
       <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[var(--color-beige-white)] text-lg font-ui">Loading...</p>
+          <p className="text-[var(--color-beige-white)] text-lg font-ui">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -121,6 +149,14 @@ function MenuScreen() {
         backgroundRepeat: 'no-repeat',
       }}
     >
+      {/* Language selector - top right */}
+      <AnimatedDiv
+        style={langSpring}
+        className="absolute top-4 right-4 z-10 safe-area-top"
+      >
+        <LanguageSelector />
+      </AnimatedDiv>
+
       {/* Content container - mobile first, portrait layout */}
       <div className="absolute inset-0 flex flex-col items-center justify-between py-8 px-4 safe-area-top safe-area-bottom">
         {/* Title section */}
@@ -139,21 +175,25 @@ function MenuScreen() {
         {/* Buttons section */}
         <div className="flex flex-col items-center gap-6 flex-shrink-0">
           <AnimatedDiv style={playButtonSpring}>
-            <ImageButton
-              src={menuAssets.playButton}
-              alt="Play"
+            <Button
+              variant="primary"
+              size="lg"
               onClick={handlePlay}
-              className="w-[180px] md:w-[220px] hover:scale-105 transition-transform"
-            />
+              className="w-[200px] md:w-[240px] text-xl font-bold"
+            >
+              {t('menu.play')}
+            </Button>
           </AnimatedDiv>
 
           <AnimatedDiv style={optionsButtonSpring}>
-            <ImageButton
-              src={menuAssets.optionButton}
-              alt="Options"
+            <Button
+              variant="secondary"
+              size="md"
               onClick={handleOptions}
-              className="w-[140px] md:w-[180px] hover:scale-105 transition-transform"
-            />
+              className="w-[160px] md:w-[200px]"
+            >
+              {t('menu.options')}
+            </Button>
           </AnimatedDiv>
 
           {/* Audio indicator */}
@@ -161,7 +201,7 @@ function MenuScreen() {
             <button
               onClick={() => audio.toggleMute()}
               className="p-2 rounded-full hover:bg-[var(--color-forest-green)] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label={audio.isMuted ? 'Unmute' : 'Mute'}
+              aria-label={t('accessibility.toggleMusic')}
             >
               {audio.isMuted ? (
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -174,7 +214,7 @@ function MenuScreen() {
               )}
             </button>
             <span className="opacity-70">
-              {audio.isPlaying ? 'Music On' : 'Music Off'}
+              {audio.isPlaying ? t('menu.musicOn') : t('menu.musicOff')}
             </span>
           </div>
         </div>
@@ -203,7 +243,9 @@ function MenuScreen() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <MenuScreen />
+      <Suspense fallback={<LoadingFallback />}>
+        <MenuScreen />
+      </Suspense>
     </QueryClientProvider>
   );
 }
