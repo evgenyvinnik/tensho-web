@@ -89,11 +89,14 @@ export const popupAssets = {
 // ============================================================================
 
 export const audioAssets = {
-  dragonDance: `${ASSET_BASE}/Dragon Dance.wav`,
-  japaneseWinter: `${ASSET_BASE}/JapaneseWinter.wav`,
-  lotusPond: `${ASSET_BASE}/Lotus Pond.wav`,
-  theDojo: `${ASSET_BASE}/TheDojo.wav`,
+  dragonDance: `${ASSET_BASE}/Dragon Dance.mp3`,
+  japaneseWinter: `${ASSET_BASE}/JapaneseWinter.mp3`,
+  lotusPond: `${ASSET_BASE}/Lotus Pond.mp3`,
+  theDojo: `${ASSET_BASE}/TheDojo.mp3`,
 } as const;
+
+/** Array of all music track URLs for random playback */
+export const MUSIC_TRACKS = Object.values(audioAssets);
 
 export type AudioTrack = keyof typeof audioAssets;
 

@@ -30,28 +30,62 @@ bun run preview      # Preview production build locally
 
 ## Code Architecture
 
-### Current State
-
-This project is in early development. The `src/` directory currently contains only the basic React entry point (`main.tsx`, `App.tsx`).
-
-### Planned Directory Structure
-
-When implementing, follow this structure:
+### Directory Structure
 
 ```
 src/
-├── core/           # Tile, Hand, Meld, Wall, DeadPool
+├── core/           # Tile, Hand, Meld, Wall, DeadPool - game primitives
 ├── rules/          # HandValidator, ShantenCalculator, YakuDetector, ScoringEngine
-├── systems/        # Decree, Flower, Season, Shop systems
-├── stores/         # Zustand stores for game state
-├── components/     # React components
-│   ├── tiles/      # Tile display and interaction
-│   ├── hand/       # Hand display
-│   ├── screens/    # MainMenu, Gameplay, Shop, GameOver
-│   └── ui/         # Shared UI components
-├── hooks/          # Custom React hooks
-└── utils/          # Helpers and constants
+├── systems/        # Decree, Flower, Season, Shop, RoundManager
+├── stores/         # Zustand stores (gameStore, handStore, wallStore, decreeStore, floraStore)
+├── components/     # React components (tiles/, ui/)
+├── hooks/          # Custom React hooks (useAudio)
+├── styles/         # Theme configuration
+└── utils/          # Helpers and asset paths
 ```
+
+### Core Layer (`src/core/`)
+
+The foundation layer defining game primitives:
+
+- **`types.ts`** — Foundational enums and type definitions: `Suit`, `ExtendedSuit`, `WindType`, `DragonType`, `FlowerType`, `SeasonType`, `TileType`. Includes type guards (`isNumberedSuit`, `isHonorSuit`, `isBonusSuit`, `isTerminalRank`).
+- **`Tile.ts`** — `Tile` class with factory methods for creating tiles and full 144-tile set generation
+- **`Meld.ts`** — `Meld` class representing sequences, triplets, quads, and pairs
+- **`Hand.ts`** — `Hand` class and `ParsedHand` interface for validated winning hands
+- **`Wall.ts`** — `Wall` class managing the draw pile with dead wall
+- **`DeadPool.ts`** — Discard management
+
+### Rules Layer (`src/rules/`)
+
+Game rules and scoring logic:
+
+- **`YakuDefinition.ts`** — All 21 yaku definitions with tiers (1-4) and multipliers
+- **`YakuDetector.ts`** — Pattern matching to detect yaku in hands, exports `detectYaku()` and `calculateYakuMultiplier()`
+- **`ShantenCalculator.ts`** — Distance-to-tenpai computation
+- **`HandValidator.ts`** — Legal hand validation (4 melds + 1 pair or special forms)
+- **`ScoringEngine.ts`** — Implements the scoring formula: `Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers`
+
+### Systems Layer (`src/systems/`)
+
+Game systems that modify rules and progression:
+
+- **`types.ts`** — Shared types for systems: `RoundState`, `ActState`, `RoundType`, `BossMandate`, `ScoreRequirements`
+- **`RoundManager.ts`** — Act/Round progression, boss mandates, skip mechanics, interest calculation
+- **`DecreeSystem.ts`** — Rule-bending modifiers (Joker equivalent)
+- **`FlowerSystem.ts`** — Run-wide persistent scaling modifiers
+- **`SeasonSystem.ts`** — Round-scoped temporal effects
+- **`ShopSystem.ts`** — Between-round acquisition (Tea House)
+
+### State Management (`src/stores/`)
+
+Zustand stores with flat, action-based patterns:
+
+- **`gameStore.ts`** — Session state: act, round, score, gold, phase (`menu` | `gameplay` | `shop` | `gameOver`)
+- **`handStore.ts`** — Current hand tiles and melds
+- **`wallStore.ts`** — Wall and dead wall state
+- **`decreeStore.ts`** — Active decrees
+- **`floraStore.ts`** — Collected flowers and active seasons
+- **`settingsStore.ts`** — User preferences
 
 ### TypeScript Configuration
 
@@ -60,27 +94,34 @@ src/
 - Module: ESNext with bundler resolution
 - React JSX transform enabled
 
-## Game Domain
+## Key Patterns
 
-### Five-Layer System Model
+### Scoring Formula
 
-| Layer | System | Role |
-|-------|--------|------|
-| **Material** | Tiles | Physical components of play |
-| **Grammar** | Yaku | Scoring language and patterns |
-| **Growth** | Flowers | Persistent scaling modifiers (run-wide) |
-| **Time** | Seasons | Temporal pressure and mutation (round-scoped) |
-| **Law** | Decrees | Rule authority and exceptions (run-wide) |
+```
+Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
+```
 
-### Hierarchy of Authority
+Base points from tiles:
+- Terminals (1, 9): 10 points
+- Simples (2-8): 5 points
+- Honors: 15 points
+
+Structure points: Pair +10, Sequence +20, Triplet +30, Quad +50
+
+### Five-Layer Authority Hierarchy
 
 ```
 Heaven (Seasons) > Court (Decrees) > Nature (Flowers) > Table (Tiles) > Grammar (Yaku)
 ```
 
-This hierarchy governs conflict resolution and effect stacking order.
+Higher layers override lower layers in conflict resolution.
 
-### Domain Terminology
+### Round Structure
+
+Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). Acts 1-8 have defined score targets; Act 9+ uses endless mode scaling.
+
+## Domain Terminology
 
 | Balatro | Tensho |
 |---------|--------|
@@ -93,21 +134,6 @@ This hierarchy governs conflict resolution and effect stacking order.
 | Planet | Celestial Orb |
 | Spectral | Void Script |
 | Voucher | Imperial Charter |
-
-### Tile Set
-
-Standard Riichi Mahjong (136 tiles + 8 bonus):
-- **Suited:** Manzu, Pinzu, Souzu (1-9 × 4 each)
-- **Honors:** Winds (E/S/W/N × 4), Dragons (White/Green/Red × 4)
-- **Bonus:** Flowers (4), Seasons (4)
-
-### Scoring Formula
-
-```
-Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
-```
-
-Base points come from tiles and hand structure. Multipliers stack from Yaku, Decrees, Celestial Orbs, and Seasonal effects.
 
 ## UI Design
 

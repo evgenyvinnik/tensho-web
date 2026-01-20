@@ -1,235 +1,408 @@
 /**
  * useAudio Hook for Tensho Mahjong Roguelike
- * Provides audio playback functionality for background music
+ *
+ * Provides audio playback functionality with:
+ * - Random track selection (shuffled queue, no immediate repeats)
+ * - Seamless looping across tracks
+ * - Crossfade transitions between tracks
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { audioAssets, AudioTrack } from '../utils/assets';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { audioAssets, AudioTrack, MUSIC_TRACKS } from '../utils/assets'
+
+// Crossfade duration in milliseconds
+const CROSSFADE_DURATION = 2500
 
 export interface UseAudioOptions {
   /** Initial volume (0-1) */
-  initialVolume?: number;
-  /** Whether to loop the audio */
-  loop?: boolean;
-  /** Whether to auto-play on mount */
-  autoPlay?: boolean;
+  initialVolume?: number
+  /** Whether to loop through all tracks randomly */
+  loop?: boolean
+  /** Whether to auto-play on mount (usually blocked by browsers) */
+  autoPlay?: boolean
   /** Initial track to play */
-  initialTrack?: AudioTrack;
+  initialTrack?: AudioTrack
 }
 
 export interface UseAudioReturn {
   /** Currently playing track */
-  currentTrack: AudioTrack | null;
+  currentTrack: AudioTrack | null
   /** Whether audio is currently playing */
-  isPlaying: boolean;
+  isPlaying: boolean
   /** Current volume (0-1) */
-  volume: number;
+  volume: number
   /** Whether audio is muted */
-  isMuted: boolean;
+  isMuted: boolean
   /** Whether audio is loading */
-  isLoading: boolean;
-  /** Play a specific track */
-  play: (track?: AudioTrack) => Promise<void>;
+  isLoading: boolean
+  /** Play (optionally a specific track, or random if none specified) */
+  play: (track?: AudioTrack) => Promise<void>
   /** Pause the current audio */
-  pause: () => void;
-  /** Stop the current audio and reset position */
-  stop: () => void;
+  pause: () => void
+  /** Stop the current audio and reset */
+  stop: () => void
   /** Toggle play/pause */
-  toggle: () => void;
+  toggle: () => void
   /** Set the volume (0-1) */
-  setVolume: (volume: number) => void;
+  setVolume: (volume: number) => void
   /** Toggle mute */
-  toggleMute: () => void;
-  /** Switch to a different track */
-  switchTrack: (track: AudioTrack) => Promise<void>;
+  toggleMute: () => void
+  /** Skip to next track with crossfade */
+  next: () => void
   /** Get all available tracks */
-  availableTracks: AudioTrack[];
+  availableTracks: AudioTrack[]
 }
 
 /**
- * Hook for managing background music playback
+ * Shuffle array using Fisher-Yates
+ */
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+/**
+ * Get track name from URL
+ */
+function getTrackNameFromUrl(url: string): AudioTrack | null {
+  for (const [name, path] of Object.entries(audioAssets)) {
+    if (path === url) {
+      return name as AudioTrack
+    }
+  }
+  return null
+}
+
+/**
+ * Hook for managing background music with crossfade
  */
 export function useAudio(options: UseAudioOptions = {}): UseAudioReturn {
-  const {
-    initialVolume = 0.5,
-    loop = true,
-    autoPlay = false,
-    initialTrack,
-  } = options;
+  const { initialVolume = 0.5, loop = true, autoPlay = false } = options
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentTrack, setCurrentTrack] = useState<AudioTrack | null>(initialTrack ?? null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolumeState] = useState(initialVolume);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // State
+  const [currentTrack, setCurrentTrack] = useState<AudioTrack | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [volume, setVolumeState] = useState(initialVolume)
+  const [isMuted, setIsMuted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Initialize audio element
+  // Two audio elements for crossfading
+  const audioARef = useRef<HTMLAudioElement | null>(null)
+  const audioBRef = useRef<HTMLAudioElement | null>(null)
+  const activeAudioRef = useRef<'A' | 'B'>('A')
+
+  // Track queue for random playback
+  const trackQueueRef = useRef<string[]>([])
+  const currentIndexRef = useRef(0)
+
+  // Crossfade animation
+  const fadeAnimationRef = useRef<number | null>(null)
+
+  // Initialize audio elements
   useEffect(() => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-      audioRef.current.loop = loop;
-      audioRef.current.volume = initialVolume;
-    }
+    audioARef.current = new Audio()
+    audioBRef.current = new Audio()
 
-    const audio = audioRef.current;
-
-    // Event handlers
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => {
-      if (!loop) {
-        setIsPlaying(false);
-      }
-    };
-    const handleLoadStart = () => setIsLoading(true);
-    const handleCanPlay = () => setIsLoading(false);
-    const handleError = () => {
-      setIsLoading(false);
-      setIsPlaying(false);
-      console.error('Audio playback error');
-    };
-
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('loadstart', handleLoadStart);
-    audio.addEventListener('canplay', handleCanPlay);
-    audio.addEventListener('error', handleError);
+    audioARef.current.preload = 'auto'
+    audioBRef.current.preload = 'auto'
 
     return () => {
-      audio.removeEventListener('play', handlePlay);
-      audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('loadstart', handleLoadStart);
-      audio.removeEventListener('canplay', handleCanPlay);
-      audio.removeEventListener('error', handleError);
-      audio.pause();
-      audio.src = '';
-    };
-  }, [loop, initialVolume]);
-
-  // Auto-play initial track
-  useEffect(() => {
-    if (autoPlay && initialTrack && audioRef.current) {
-      const audio = audioRef.current;
-      audio.src = audioAssets[initialTrack];
-      audio.play().catch((err) => {
-        // Auto-play might be blocked by browser
-        console.warn('Auto-play blocked:', err);
-      });
+      if (fadeAnimationRef.current) {
+        cancelAnimationFrame(fadeAnimationRef.current)
+      }
+      audioARef.current?.pause()
+      audioBRef.current?.pause()
+      audioARef.current = null
+      audioBRef.current = null
     }
-  }, [autoPlay, initialTrack]);
+  }, [])
 
   /**
-   * Play a track (or resume current)
+   * Get next track from shuffled queue
    */
-  const play = useCallback(async (track?: AudioTrack): Promise<void> => {
-    if (!audioRef.current) return;
-
-    const audio = audioRef.current;
-    const trackToPlay = track ?? currentTrack;
-
-    if (!trackToPlay) {
-      console.warn('No track specified to play');
-      return;
+  const getNextTrack = useCallback((): string => {
+    if (
+      trackQueueRef.current.length === 0 ||
+      currentIndexRef.current >= trackQueueRef.current.length
+    ) {
+      trackQueueRef.current = shuffleArray(MUSIC_TRACKS)
+      currentIndexRef.current = 0
     }
 
-    // If different track, load it
-    if (track && track !== currentTrack) {
-      audio.src = audioAssets[track];
-      setCurrentTrack(track);
+    const track = trackQueueRef.current[currentIndexRef.current]
+    currentIndexRef.current++
+    return track
+  }, [])
+
+  /**
+   * Get effective volume (accounting for mute)
+   */
+  const getEffectiveVolume = useCallback(() => {
+    return isMuted ? 0 : volume
+  }, [isMuted, volume])
+
+  /**
+   * Crossfade to a new track
+   */
+  const crossfadeToTrack = useCallback(
+    (trackUrl: string) => {
+      const outgoingAudio =
+        activeAudioRef.current === 'A' ? audioARef.current : audioBRef.current
+      const incomingAudio =
+        activeAudioRef.current === 'A' ? audioBRef.current : audioARef.current
+
+      if (!incomingAudio) return
+
+      // Setup incoming audio
+      incomingAudio.src = trackUrl
+      incomingAudio.volume = 0
+      incomingAudio.currentTime = 0
+
+      setIsLoading(true)
+
+      // Start playing incoming
+      const playPromise = incomingAudio.play()
+
+      if (playPromise) {
+        playPromise
+          .then(() => {
+            setIsLoading(false)
+
+            // Animate crossfade
+            const startTime = performance.now()
+            const targetVolume = getEffectiveVolume()
+
+            const animateFade = (currentTime: number) => {
+              const elapsed = currentTime - startTime
+              const progress = Math.min(elapsed / CROSSFADE_DURATION, 1)
+
+              // Ease in/out curve
+              const eased =
+                progress < 0.5
+                  ? 2 * progress * progress
+                  : 1 - Math.pow(-2 * progress + 2, 2) / 2
+
+              // Update volumes
+              if (incomingAudio) {
+                incomingAudio.volume = eased * targetVolume
+              }
+              if (outgoingAudio) {
+                outgoingAudio.volume = (1 - eased) * targetVolume
+              }
+
+              if (progress < 1) {
+                fadeAnimationRef.current = requestAnimationFrame(animateFade)
+              } else {
+                // Crossfade complete
+                if (outgoingAudio) {
+                  outgoingAudio.pause()
+                  outgoingAudio.currentTime = 0
+                }
+                // Switch active audio
+                activeAudioRef.current =
+                  activeAudioRef.current === 'A' ? 'B' : 'A'
+              }
+            }
+
+            // Cancel any ongoing fade
+            if (fadeAnimationRef.current) {
+              cancelAnimationFrame(fadeAnimationRef.current)
+            }
+
+            fadeAnimationRef.current = requestAnimationFrame(animateFade)
+          })
+          .catch((error) => {
+            console.warn('Audio playback failed:', error)
+            setIsLoading(false)
+          })
+      }
+
+      // Update current track
+      const trackName = getTrackNameFromUrl(trackUrl)
+      setCurrentTrack(trackName)
+    },
+    [getEffectiveVolume]
+  )
+
+  /**
+   * Handle track ending - play next track with crossfade
+   */
+  const handleTrackEnd = useCallback(() => {
+    if (loop) {
+      const nextTrack = getNextTrack()
+      crossfadeToTrack(nextTrack)
+    } else {
+      setIsPlaying(false)
+    }
+  }, [loop, getNextTrack, crossfadeToTrack])
+
+  // Setup track end listeners
+  useEffect(() => {
+    const audioA = audioARef.current
+    const audioB = audioBRef.current
+
+    if (audioA) {
+      audioA.addEventListener('ended', handleTrackEnd)
+    }
+    if (audioB) {
+      audioB.addEventListener('ended', handleTrackEnd)
     }
 
-    try {
-      await audio.play();
-    } catch (err) {
-      console.warn('Play failed:', err);
+    return () => {
+      if (audioA) {
+        audioA.removeEventListener('ended', handleTrackEnd)
+      }
+      if (audioB) {
+        audioB.removeEventListener('ended', handleTrackEnd)
+      }
     }
-  }, [currentTrack]);
+  }, [handleTrackEnd])
+
+  /**
+   * Play (optionally a specific track)
+   */
+  const play = useCallback(
+    async (track?: AudioTrack): Promise<void> => {
+      if (isPlaying && !track) return
+
+      let trackUrl: string
+
+      if (track) {
+        trackUrl = audioAssets[track]
+      } else {
+        trackUrl = getNextTrack()
+      }
+
+      const audio = audioARef.current
+
+      if (audio && !isPlaying) {
+        // First play - no crossfade needed
+        audio.src = trackUrl
+        audio.volume = getEffectiveVolume()
+        audio.currentTime = 0
+
+        setIsLoading(true)
+
+        try {
+          await audio.play()
+          setIsPlaying(true)
+          setCurrentTrack(getTrackNameFromUrl(trackUrl))
+        } catch (error) {
+          console.warn('Audio playback failed:', error)
+        }
+
+        setIsLoading(false)
+      } else if (track && isPlaying) {
+        // Switch track with crossfade
+        crossfadeToTrack(trackUrl)
+      }
+    },
+    [isPlaying, getNextTrack, getEffectiveVolume, crossfadeToTrack]
+  )
 
   /**
    * Pause the current audio
    */
   const pause = useCallback((): void => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+    const activeAudio =
+      activeAudioRef.current === 'A' ? audioARef.current : audioBRef.current
+
+    if (activeAudio) {
+      activeAudio.pause()
     }
-  }, []);
+
+    setIsPlaying(false)
+  }, [])
 
   /**
-   * Stop the current audio and reset position
+   * Stop and reset
    */
   const stop = useCallback((): void => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    if (fadeAnimationRef.current) {
+      cancelAnimationFrame(fadeAnimationRef.current)
     }
-  }, []);
+
+    audioARef.current?.pause()
+    audioBRef.current?.pause()
+
+    if (audioARef.current) audioARef.current.currentTime = 0
+    if (audioBRef.current) audioBRef.current.currentTime = 0
+
+    trackQueueRef.current = []
+    currentIndexRef.current = 0
+
+    setIsPlaying(false)
+    setCurrentTrack(null)
+  }, [])
 
   /**
    * Toggle play/pause
    */
   const toggle = useCallback((): void => {
     if (isPlaying) {
-      pause();
+      pause()
     } else {
-      play();
+      play()
     }
-  }, [isPlaying, pause, play]);
+  }, [isPlaying, pause, play])
 
   /**
-   * Set the volume (0-1)
+   * Set volume
    */
   const setVolume = useCallback((newVolume: number): void => {
-    const clampedVolume = Math.max(0, Math.min(1, newVolume));
-    setVolumeState(clampedVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : clampedVolume;
+    const clampedVolume = Math.max(0, Math.min(1, newVolume))
+    setVolumeState(clampedVolume)
+
+    const activeAudio =
+      activeAudioRef.current === 'A' ? audioARef.current : audioBRef.current
+
+    if (activeAudio) {
+      activeAudio.volume = clampedVolume
     }
-  }, [isMuted]);
+  }, [])
 
   /**
    * Toggle mute
    */
   const toggleMute = useCallback((): void => {
     setIsMuted((prev) => {
-      const newMuted = !prev;
-      if (audioRef.current) {
-        audioRef.current.volume = newMuted ? 0 : volume;
+      const newMuted = !prev
+      const activeAudio =
+        activeAudioRef.current === 'A' ? audioARef.current : audioBRef.current
+
+      if (activeAudio) {
+        activeAudio.volume = newMuted ? 0 : volume
       }
-      return newMuted;
-    });
-  }, [volume]);
+
+      return newMuted
+    })
+  }, [volume])
 
   /**
-   * Switch to a different track
+   * Skip to next track
    */
-  const switchTrack = useCallback(async (track: AudioTrack): Promise<void> => {
-    if (!audioRef.current) return;
+  const next = useCallback((): void => {
+    if (!isPlaying) return
 
-    const wasPlaying = isPlaying;
-    const audio = audioRef.current;
+    const nextTrack = getNextTrack()
+    crossfadeToTrack(nextTrack)
+  }, [isPlaying, getNextTrack, crossfadeToTrack])
 
-    // Stop current
-    audio.pause();
-    audio.currentTime = 0;
+  // Update volume when it changes
+  useEffect(() => {
+    const activeAudio =
+      activeAudioRef.current === 'A' ? audioARef.current : audioBRef.current
 
-    // Load new track
-    audio.src = audioAssets[track];
-    setCurrentTrack(track);
-
-    // Resume if was playing
-    if (wasPlaying) {
-      try {
-        await audio.play();
-      } catch (err) {
-        console.warn('Switch track play failed:', err);
-      }
+    if (activeAudio && isPlaying) {
+      activeAudio.volume = getEffectiveVolume()
     }
-  }, [isPlaying]);
+  }, [volume, isMuted, isPlaying, getEffectiveVolume])
 
-  const availableTracks = Object.keys(audioAssets) as AudioTrack[];
+  const availableTracks = Object.keys(audioAssets) as AudioTrack[]
 
   return {
     currentTrack,
@@ -243,9 +416,9 @@ export function useAudio(options: UseAudioOptions = {}): UseAudioReturn {
     toggle,
     setVolume,
     toggleMute,
-    switchTrack,
+    next,
     availableTracks,
-  };
+  }
 }
 
-export default useAudio;
+export default useAudio

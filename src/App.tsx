@@ -26,7 +26,6 @@ function MenuScreen() {
   const audio = useAudio({
     initialVolume: 0.3,
     loop: true,
-    initialTrack: 'lotusPond',
   });
 
   // Preload menu assets
