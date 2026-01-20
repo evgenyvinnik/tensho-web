@@ -5,7 +5,7 @@
  */
 
 import { useState, useCallback } from 'react'
-import { GameTutorialStep } from './types'
+import { GameTutorialStep } from './TutorialComponents'
 
 /**
  * Hook to manage in-game tutorial state

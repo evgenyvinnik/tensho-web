@@ -9,11 +9,18 @@ import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 
 // Import from extracted modules
-import { GameTutorialProps } from './game-tutorial/types'
-import { TutorialTooltip, HighlightOverlay } from './game-tutorial/TutorialComponents'
+import {
+  GameTutorialProps,
+  TutorialTooltip,
+  HighlightOverlay,
+} from './game-tutorial/TutorialComponents'
 
-// Re-export types and hook for external use
-export type { ArrowDirection, GameTutorialStep, GameTutorialProps } from './game-tutorial/types'
+// Re-export types and components for external use
+export type {
+  ArrowDirection,
+  GameTutorialStep,
+  GameTutorialProps,
+} from './game-tutorial/TutorialComponents'
 export { Arrow, TutorialTooltip, HighlightOverlay } from './game-tutorial/TutorialComponents'
 export { useGameTutorial } from './game-tutorial/useGameTutorial'
 

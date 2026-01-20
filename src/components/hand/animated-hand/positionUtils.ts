@@ -4,7 +4,14 @@
  * Functions for calculating tile positions in different layouts.
  */
 
-import { TilePosition } from './types'
+/**
+ * Position data for a tile in the hand layout
+ */
+export interface TilePosition {
+  x: number
+  rotation: number
+  zIndex: number
+}
 
 /**
  * Calculate tile positions for fanned layout
