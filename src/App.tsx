@@ -11,6 +11,9 @@ import { useAudio } from './hooks/useAudio';
 
 const queryClient = new QueryClient();
 
+// Create animated div component for React 19 compatibility
+const AnimatedDiv = animated('div');
+
 /**
  * Menu Screen Component
  * Displays the main menu with background, title, and buttons
@@ -122,7 +125,7 @@ function MenuScreen() {
       {/* Content container - mobile first, portrait layout */}
       <div className="absolute inset-0 flex flex-col items-center justify-between py-8 px-4 safe-area-top safe-area-bottom">
         {/* Title section */}
-        <animated.div
+        <AnimatedDiv
           style={titleSpring}
           className="flex-shrink-0 mt-8 md:mt-16"
         >
@@ -132,27 +135,27 @@ function MenuScreen() {
             className="max-w-[280px] md:max-w-[400px] w-full h-auto drop-shadow-lg"
             draggable={false}
           />
-        </animated.div>
+        </AnimatedDiv>
 
         {/* Buttons section */}
         <div className="flex flex-col items-center gap-6 flex-shrink-0">
-          <animated.div style={playButtonSpring}>
+          <AnimatedDiv style={playButtonSpring}>
             <ImageButton
               src={menuAssets.playButton}
               alt="Play"
               onClick={handlePlay}
               className="w-[180px] md:w-[220px] hover:scale-105 transition-transform"
             />
-          </animated.div>
+          </AnimatedDiv>
 
-          <animated.div style={optionsButtonSpring}>
+          <AnimatedDiv style={optionsButtonSpring}>
             <ImageButton
               src={menuAssets.optionButton}
               alt="Options"
               onClick={handleOptions}
               className="w-[140px] md:w-[180px] hover:scale-105 transition-transform"
             />
-          </animated.div>
+          </AnimatedDiv>
 
           {/* Audio indicator */}
           <div className="flex items-center gap-2 text-[var(--color-beige-white)] text-sm">
@@ -178,7 +181,7 @@ function MenuScreen() {
         </div>
 
         {/* Bottom decoration */}
-        <animated.div
+        <AnimatedDiv
           style={bottomSpring}
           className="flex-shrink-0 mb-4"
         >
@@ -189,7 +192,7 @@ function MenuScreen() {
             draggable={false}
             aria-hidden="true"
           />
-        </animated.div>
+        </AnimatedDiv>
       </div>
     </div>
   );

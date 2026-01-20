@@ -185,7 +185,7 @@ function findDecompositions(
   }
 
   // Try each possible pair
-  for (const [key, tileGroup] of counts) {
+  for (const [, tileGroup] of counts) {
     if (tileGroup.length >= 2) {
       // Create a pair with first two tiles
       const pairTiles = tileGroup.slice(0, 2)

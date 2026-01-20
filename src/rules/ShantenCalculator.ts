@@ -15,7 +15,7 @@
 
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld } from '../core/Meld'
-import { isSevenPairs, isKokushi, isCompleteHand, KOKUSHI_TILES } from './HandValidator'
+import { isCompleteHand, KOKUSHI_TILES } from './HandValidator'
 
 /**
  * Result of shanten calculation

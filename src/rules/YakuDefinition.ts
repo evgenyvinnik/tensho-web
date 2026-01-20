@@ -5,9 +5,8 @@
  * Organized by tier (1-4) with corresponding multipliers.
  */
 
-import { Tile, TileSuit, DragonType, WindType } from '../core/Tile'
-import { Meld, MeldType } from '../core/Meld'
-import { ParsedHand, WaitType } from '../core/Hand'
+import { WindType } from '../core/Tile'
+import { ParsedHand } from '../core/Hand'
 
 export enum YakuTier {
   Tier1 = 1, // Basic yaku

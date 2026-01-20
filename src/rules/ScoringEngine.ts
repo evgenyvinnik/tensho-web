@@ -11,7 +11,7 @@
  * - Pair: +10, Sequence: +20, Triplet: +30, Quad: +50
  */
 
-import { Tile, TileSuit, WindType } from '../core/Tile'
+import { Tile, WindType } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
 import { DetectedYaku, YakuContext, detectYaku, calculateYakuMultiplier } from './YakuDetector'

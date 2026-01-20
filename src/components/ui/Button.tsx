@@ -58,6 +58,9 @@ const variantStyles: Record<ButtonVariant, string> = {
   `,
 };
 
+// Create animated button component
+const AnimatedButton = animated('button');
+
 /**
  * Button component with game-themed styling and animations
  */
@@ -109,7 +112,7 @@ export const Button: React.FC<ButtonProps> = ({
   `;
 
   return (
-    <animated.button
+    <AnimatedButton
       className={`
         ${baseStyles}
         ${sizeStyles[size]}
@@ -130,7 +133,7 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {children}
-    </animated.button>
+    </AnimatedButton>
   );
 };
 
@@ -179,7 +182,7 @@ export const ImageButton: React.FC<ImageButtonProps> = ({
   };
 
   return (
-    <animated.button
+    <AnimatedButton
       className={`
         relative
         cursor-pointer
@@ -208,7 +211,7 @@ export const ImageButton: React.FC<ImageButtonProps> = ({
         className="w-full h-full object-contain pointer-events-none"
         draggable={false}
       />
-    </animated.button>
+    </AnimatedButton>
   );
 };
 
