@@ -1,141 +1,137 @@
 /**
  * Animation Constants for Tensho Mahjong Roguelike
  *
- * Centralized timing and easing configurations for consistent animations
- * throughout the game. Uses React Spring physics-based spring configurations.
+ * Subtle, non-distracting animations that enhance without overwhelming.
+ * Uses React Spring physics-based spring configurations.
  */
 
 /**
- * Duration presets in milliseconds
- * Use these for CSS transitions or as reference for spring timing
+ * Duration presets in milliseconds - kept subtle
  */
 export const DURATIONS = {
-  /** Instant feedback (100ms) */
-  instant: 100,
-  /** Fast transitions (200ms) */
-  fast: 200,
-  /** Normal animations (300ms) */
-  normal: 300,
-  /** Slow, deliberate animations (500ms) */
-  slow: 500,
-  /** Dramatic reveals and effects (800ms) */
-  dramatic: 800,
-  /** Extended animations (1200ms) */
-  extended: 1200,
+  /** Instant feedback (80ms) */
+  instant: 80,
+  /** Fast transitions (150ms) */
+  fast: 150,
+  /** Normal animations (250ms) */
+  normal: 250,
+  /** Slow, deliberate animations (400ms) */
+  slow: 400,
+  /** Dramatic reveals (600ms) */
+  dramatic: 600,
+  /** Extended animations (900ms) */
+  extended: 900,
 } as const;
 
 /**
- * React Spring configuration presets
- * These define the physics of spring animations
- * - tension: Spring stiffness (higher = faster, snappier)
- * - friction: Resistance to motion (higher = less bouncy)
+ * React Spring configuration presets - tuned for subtlety
+ * Lower tension = slower, higher friction = less bouncy
  */
 export const SPRINGS = {
-  /** Snappy, responsive feel for UI interactions */
-  snappy: { tension: 300, friction: 20 },
-  /** Bouncy, playful feel for positive feedback */
-  bouncy: { tension: 180, friction: 12 },
-  /** Gentle, smooth feel for subtle transitions */
-  gentle: { tension: 120, friction: 14 },
-  /** Stiff, precise feel for accurate positioning */
-  stiff: { tension: 400, friction: 30 },
-  /** Very bouncy for celebratory effects */
-  wobbly: { tension: 180, friction: 8 },
-  /** Slow and dramatic for reveals */
-  molasses: { tension: 80, friction: 20 },
+  /** Snappy but not jarring */
+  snappy: { tension: 200, friction: 22 },
+  /** Gentle bounce for positive feedback */
+  bouncy: { tension: 150, friction: 14 },
+  /** Smooth, almost imperceptible */
+  gentle: { tension: 100, friction: 18 },
+  /** Precise positioning */
+  stiff: { tension: 280, friction: 26 },
+  /** Very subtle wobble */
+  wobbly: { tension: 140, friction: 12 },
+  /** Slow and smooth */
+  molasses: { tension: 60, friction: 20 },
 } as const;
 
 /**
  * Easing functions for non-spring animations
- * These are CSS timing function values
  */
 export const EASINGS = {
-  /** Standard ease out for most animations */
+  /** Smooth ease out */
   easeOut: 'cubic-bezier(0.33, 1, 0.68, 1)',
-  /** Ease in for exits */
+  /** Gentle ease in */
   easeIn: 'cubic-bezier(0.32, 0, 0.67, 0)',
-  /** Ease in-out for symmetrical animations */
+  /** Balanced ease in-out */
   easeInOut: 'cubic-bezier(0.65, 0, 0.35, 1)',
-  /** Back ease out with slight overshoot */
-  backOut: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-  /** Elastic feel */
-  elastic: 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+  /** Subtle overshoot */
+  backOut: 'cubic-bezier(0.34, 1.2, 0.64, 1)',
+  /** Very gentle elastic */
+  elastic: 'cubic-bezier(0.68, -0.2, 0.32, 1.2)',
 } as const;
 
 /**
- * Animation delay presets for staggered animations
+ * Stagger delays - subtle timing between items
  */
 export const STAGGER = {
-  /** Fast stagger for lists (30ms between items) */
-  fast: 30,
-  /** Normal stagger (50ms between items) */
-  normal: 50,
-  /** Slow stagger for dramatic reveals (100ms between items) */
-  slow: 100,
-  /** Very slow for sequential reveals (200ms between items) */
-  dramatic: 200,
+  /** Quick stagger (20ms) */
+  fast: 20,
+  /** Normal stagger (35ms) */
+  normal: 35,
+  /** Slow stagger (60ms) */
+  slow: 60,
+  /** Sequential reveals (100ms) */
+  dramatic: 100,
 } as const;
 
 /**
- * Scale values for various animation states
+ * Scale values - kept minimal for subtlety
  */
 export const SCALES = {
-  /** Slightly pressed down */
-  pressed: 0.95,
-  /** Normal size */
+  /** Slight press */
+  pressed: 0.97,
+  /** Normal */
   normal: 1,
-  /** Slight pop effect */
-  pop: 1.05,
-  /** Medium emphasis */
-  emphasis: 1.1,
-  /** Large emphasis for reveals */
-  reveal: 1.2,
-  /** Shrunk for exit animations */
-  shrink: 0.8,
-  /** Very small for hide */
-  tiny: 0.5,
+  /** Tiny pop */
+  pop: 1.02,
+  /** Gentle emphasis */
+  emphasis: 1.04,
+  /** Reveal */
+  reveal: 1.06,
+  /** Shrunk */
+  shrink: 0.92,
+  /** Small */
+  tiny: 0.7,
 } as const;
 
 /**
- * Common opacity values
+ * Opacity values
  */
 export const OPACITY = {
   hidden: 0,
-  faint: 0.2,
-  subtle: 0.4,
-  medium: 0.6,
-  visible: 0.8,
+  faint: 0.15,
+  subtle: 0.3,
+  medium: 0.5,
+  visible: 0.75,
   full: 1,
 } as const;
 
 /**
- * Y-offset values for vertical animations (in pixels)
+ * Y-offset values - reduced for subtlety
  */
 export const OFFSETS = {
-  /** Small lift (tile selection) */
-  lift: -8,
-  /** Medium float (score popup) */
-  float: -20,
-  /** Large rise (yaku reveal) */
-  rise: -40,
-  /** Slide in from below */
-  slideIn: 50,
-  /** Slide out above */
-  slideOut: -30,
+  /** Small lift (selection) */
+  lift: -4,
+  /** Gentle float (popups) */
+  float: -12,
+  /** Rise (reveals) */
+  rise: -24,
+  /** Slide in */
+  slideIn: 30,
+  /** Slide out */
+  slideOut: -20,
   /** Drop from above */
-  drop: -100,
+  drop: -60,
 } as const;
 
 /**
- * Rotation values in degrees
+ * Rotation values - minimal
  */
 export const ROTATIONS = {
-  /** Subtle wobble */
-  wobble: 3,
-  /** Light tilt */
-  tilt: 5,
-  /** Medium rotation */
-  turn: 15,
+  /** Tiny wobble */
+  wobble: 1.5,
+  /** Subtle tilt */
+  tilt: 3,
+  /** Light turn */
+  turn: 8,
   /** Quarter turn */
   quarter: 90,
   /** Half turn */
@@ -148,40 +144,25 @@ export const ROTATIONS = {
  * Z-index values for animated elements
  */
 export const ANIMATION_Z_INDEX = {
-  /** Below normal content */
   background: -1,
-  /** Normal level */
   normal: 0,
-  /** Slightly elevated */
   elevated: 10,
-  /** Floating elements */
   floating: 50,
-  /** Overlay effects */
   overlay: 100,
-  /** Top-level effects */
   effects: 200,
-  /** Screen flash and full-screen effects */
   screenEffect: 500,
 } as const;
 
 /**
- * Color values for various animation effects
- * Uses Tensho theme colors
+ * Color values for animation effects (Tensho theme)
  */
 export const ANIMATION_COLORS = {
-  /** Gold for scores and rewards */
   gold: '#FFD54F',
-  /** Orange for actions and highlights */
   orange: '#FF5722',
-  /** Green for success */
   green: '#4CAF50',
-  /** Red for warnings and yakuman */
   red: '#F44336',
-  /** White for general effects */
   white: '#F5F5DC',
-  /** Purple for special effects */
   purple: '#9C27B0',
-  /** Blue for info */
   blue: '#2196F3',
 } as const;
 

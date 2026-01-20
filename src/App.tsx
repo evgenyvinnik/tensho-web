@@ -1,24 +1,26 @@
 /**
  * Tensho Mahjong Roguelike - Main Application Component
- * Balatro-inspired menu with retro CRT aesthetics
+ * Uses React Router for language-prefixed navigation with CRT aesthetics
  */
 
-import { useState, useEffect, useMemo, Suspense } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useSpring, animated, useSprings } from '@react-spring/web';
-import { useTranslation } from 'react-i18next';
-import Button from './components/ui/Button';
-import { LanguageSelector } from './components/ui/LanguageSelector';
-import { getTileImagePath, preloadMenuAssets, preloadTileImages } from './utils/assets';
-import { useAudio } from './hooks/useAudio';
-import { useGameStore } from './stores/gameStore';
-import { TileSuit } from './core/Tile';
+import { useState, useEffect, useMemo, Suspense } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useSpring, animated, useSprings } from '@react-spring/web'
+import { useTranslation } from 'react-i18next'
+import Button from './components/ui/Button'
+import { LanguageSelector } from './components/ui/LanguageSelector'
+import { Tutorial, useTutorial } from './components/ui/Tutorial'
+import { getTileImagePath, preloadMenuAssets, preloadTileImages } from './utils/assets'
+import { useAudio } from './hooks/useAudio'
+import { useGameStore } from './stores/gameStore'
+import { TileSuit } from './core/Tile'
+import { createAppRouter, AppRouterProvider, useAppNavigation, ROUTES } from './router'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 // Create animated components for React 19 compatibility
-const AnimatedDiv = animated('div');
-const AnimatedButton = animated('button');
+const AnimatedDiv = animated('div')
+const AnimatedButton = animated('button')
 
 /**
  * Loading fallback for Suspense while i18n loads
@@ -34,33 +36,33 @@ function LoadingFallback() {
         <p className="text-[var(--color-golden-yellow)] text-lg font-ui neon-text-subtle">Loading...</p>
       </div>
     </div>
-  );
+  )
 }
 
 /**
  * Floating tile configuration for background
  */
 interface FloatingTile {
-  suit: TileSuit;
-  rank: number;
-  x: number;
-  y: number;
-  rotation: number;
-  scale: number;
-  delay: number;
-  duration: number;
+  suit: TileSuit
+  rank: number
+  x: number
+  y: number
+  rotation: number
+  scale: number
+  delay: number
+  duration: number
 }
 
 /**
  * Generate random floating tiles for background
  */
 function generateFloatingTiles(count: number): FloatingTile[] {
-  const tiles: FloatingTile[] = [];
-  const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu, TileSuit.Dragon];
+  const tiles: FloatingTile[] = []
+  const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu, TileSuit.Dragon]
 
   for (let i = 0; i < count; i++) {
-    const suit = suits[Math.floor(Math.random() * suits.length)];
-    const maxRank = suit === TileSuit.Dragon ? 3 : 9;
+    const suit = suits[Math.floor(Math.random() * suits.length)]
+    const maxRank = suit === TileSuit.Dragon ? 3 : 9
 
     tiles.push({
       suit,
@@ -71,10 +73,10 @@ function generateFloatingTiles(count: number): FloatingTile[] {
       scale: 0.6 + Math.random() * 0.4,
       delay: Math.random() * 2000,
       duration: 4000 + Math.random() * 2000,
-    });
+    })
   }
 
-  return tiles;
+  return tiles
 }
 
 /**
@@ -87,20 +89,20 @@ function FloatingTilesBackground({ tiles }: { tiles: FloatingTile[] }) {
       from: { y: 0, rotate: tile.rotation },
       to: async (next: (props: object) => Promise<void>) => {
         while (true) {
-          await next({ y: -20, rotate: tile.rotation + 5 });
-          await next({ y: 0, rotate: tile.rotation });
+          await next({ y: -20, rotate: tile.rotation + 5 })
+          await next({ y: 0, rotate: tile.rotation })
         }
       },
       config: { duration: tile.duration },
       delay: tile.delay,
     }))
-  );
+  )
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {springs.map((spring, index) => {
-        const tile = tiles[index];
-        const imagePath = getTileImagePath(tile.suit, tile.rank);
+        const tile = tiles[index]
+        const imagePath = getTileImagePath(tile.suit, tile.rank)
 
         return (
           <AnimatedDiv
@@ -123,10 +125,10 @@ function FloatingTilesBackground({ tiles }: { tiles: FloatingTile[] }) {
               draggable={false}
             />
           </AnimatedDiv>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
 
 /**
@@ -140,7 +142,7 @@ function FeaturedTiles({ show }: { show: boolean }) {
       { suit: TileSuit.Dragon, rank: 3, label: 'Red Dragon' },
     ],
     []
-  );
+  )
 
   const springs = useSprings(
     featuredTiles.length,
@@ -154,13 +156,13 @@ function FeaturedTiles({ show }: { show: boolean }) {
       config: { tension: 150, friction: 12 },
       delay: show ? 400 + index * 150 : 0,
     }))
-  );
+  )
 
   return (
     <div className="flex items-center gap-4 md:gap-8">
       {springs.map((spring, index) => {
-        const tile = featuredTiles[index];
-        const imagePath = getTileImagePath(tile.suit, tile.rank);
+        const tile = featuredTiles[index]
+        const imagePath = getTileImagePath(tile.suit, tile.rank)
 
         return (
           <AnimatedDiv
@@ -182,10 +184,10 @@ function FeaturedTiles({ show }: { show: boolean }) {
               draggable={false}
             />
           </AnimatedDiv>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
 
 /**
@@ -198,14 +200,14 @@ function NeonButton({
   delay = 0,
   show = true,
 }: {
-  children: React.ReactNode;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
-  delay?: number;
-  show?: boolean;
+  children: React.ReactNode
+  onClick: () => void
+  variant?: 'primary' | 'secondary'
+  delay?: number
+  show?: boolean
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
+  const [isPressed, setIsPressed] = useState(false)
 
   const spring = useSpring({
     from: { opacity: 0, scale: 0.8, y: 30 },
@@ -216,23 +218,23 @@ function NeonButton({
     },
     config: { tension: 200, friction: 15 },
     delay: show ? delay : 0,
-  });
+  })
 
-  const isPrimary = variant === 'primary';
+  const isPrimary = variant === 'primary'
   const baseColor = isPrimary
     ? 'var(--color-vibrant-orange)'
-    : 'var(--color-forest-green)';
+    : 'var(--color-forest-green)'
   const glowColor = isPrimary
     ? 'rgba(255, 87, 34, 0.6)'
-    : 'rgba(45, 95, 74, 0.6)';
+    : 'rgba(45, 95, 74, 0.6)'
 
   return (
     <AnimatedButton
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
-        setIsHovered(false);
-        setIsPressed(false);
+        setIsHovered(false)
+        setIsPressed(false)
       }}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
@@ -261,39 +263,41 @@ function NeonButton({
         <div className="absolute inset-0 shimmer opacity-30" />
       </div>
     </AnimatedButton>
-  );
+  )
 }
 
 /**
  * Menu Screen Component
  * Balatro-inspired design with CRT effects and floating tiles
  */
-function MenuScreen() {
-  const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
-  const [floatingTiles] = useState(() => generateFloatingTiles(12));
-  const startNewRun = useGameStore((state) => state.startNewRun);
+export function MenuScreen() {
+  const { t } = useTranslation()
+  const { navigateTo } = useAppNavigation()
+  const [isLoading, setIsLoading] = useState(true)
+  const [showContent, setShowContent] = useState(false)
+  const [floatingTiles] = useState(() => generateFloatingTiles(12))
+  const { startNewRun, setPhase } = useGameStore()
+  const tutorial = useTutorial()
 
   // Audio hook for background music
   const audio = useAudio({
     initialVolume: 0.3,
     loop: true,
-  });
+  })
 
   // Preload assets including tiles
   useEffect(() => {
     Promise.all([preloadMenuAssets(), preloadTileImages()])
       .then(() => {
-        setIsLoading(false);
-        setTimeout(() => setShowContent(true), 100);
+        setIsLoading(false)
+        setTimeout(() => setShowContent(true), 100)
       })
       .catch((err) => {
-        console.error('Failed to load assets:', err);
-        setIsLoading(false);
-        setShowContent(true);
-      });
-  }, []);
+        console.error('Failed to load assets:', err)
+        setIsLoading(false)
+        setShowContent(true)
+      })
+  }, [])
 
   // Title animation
   const titleSpring = useSpring({
@@ -305,7 +309,7 @@ function MenuScreen() {
     },
     config: { tension: 100, friction: 12 },
     delay: 300,
-  });
+  })
 
   // Language selector animation
   const langSpring = useSpring({
@@ -316,17 +320,22 @@ function MenuScreen() {
     },
     config: { tension: 200, friction: 20 },
     delay: 300,
-  });
+  })
 
   const handlePlay = () => {
-    audio.play();
-    startNewRun();
-  };
+    audio.play()
+    startNewRun()
+    setPhase('gameplay')
+    navigateTo(ROUTES.PLAY)
+  }
+
+  const handleTutorial = () => {
+    tutorial.open()
+  }
 
   const handleSettings = () => {
-    audio.toggle();
-    console.log('Settings clicked');
-  };
+    navigateTo(ROUTES.SETTINGS)
+  }
 
   // Loading screen with Balatro-style spinner
   if (isLoading) {
@@ -342,7 +351,7 @@ function MenuScreen() {
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -408,6 +417,10 @@ function MenuScreen() {
             {t('menu.play')}
           </NeonButton>
 
+          <NeonButton onClick={handleTutorial} variant="secondary" delay={700} show={showContent}>
+            {t('menu.tutorial', 'Tutorial')}
+          </NeonButton>
+
           <NeonButton onClick={handleSettings} variant="secondary" delay={800} show={showContent}>
             {t('menu.settings')}
           </NeonButton>
@@ -443,30 +456,53 @@ function MenuScreen() {
         </div>
       </div>
 
+      {/* Tutorial popup */}
+      <Tutorial
+        isOpen={tutorial.isOpen}
+        onClose={tutorial.close}
+        onComplete={tutorial.complete}
+      />
+
       {/* CRT Effects - adjusted for green background */}
       <div className="vignette" />
       <div className="crt-scanlines" />
     </div>
-  );
+  )
 }
 
 /**
  * Gameplay Screen Component
  * Layout based on ARCHITECTURE.MD GameScene specification
  */
-function GameplayScreen() {
-  const { t } = useTranslation();
-  const { currentAct, currentRound, score, targetScore, gold, resetGame } = useGameStore();
+export function GameplayScreen() {
+  const { t } = useTranslation()
+  const { navigateTo } = useAppNavigation()
+  const { currentAct, currentRound, score, targetScore, gold, setPhase } = useGameStore()
+
+  const handleSettings = () => {
+    navigateTo(ROUTES.SETTINGS)
+  }
+
+  const handleEndRound = () => {
+    setPhase('shop')
+    navigateTo(ROUTES.SHOP)
+  }
+
+  const handleGameOver = () => {
+    setPhase('gameOver')
+    navigateTo(ROUTES.GAME_OVER)
+  }
 
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
         <span className="text-lg font-bold text-[var(--color-golden-yellow)]">¥{gold}</span>
-        <span className="text-lg">ACT {currentAct} - R{currentRound}</span>
+        <span className="text-lg">{t('gameplay.act')} {currentAct} - R{currentRound}</span>
         <button
-          onClick={resetGame}
+          onClick={handleSettings}
           className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center"
+          aria-label={t('menu.settings')}
         >
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
             <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
@@ -491,9 +527,9 @@ function GameplayScreen() {
 
       {/* Round target */}
       <div className="flex-shrink-0 mx-4 my-4 p-4 bg-[var(--color-dark-forest)] rounded-lg text-center">
-        <p className="text-sm text-[var(--color-beige-white)] opacity-70 mb-2">ROUND TARGET</p>
+        <p className="text-sm text-[var(--color-beige-white)] opacity-70 mb-2">{t('gameplay.target').toUpperCase()}</p>
         <p className="text-4xl font-bold text-[var(--color-golden-yellow)] animate-pulse-glow">{targetScore}</p>
-        <p className="text-lg text-[var(--color-beige-white)] mt-2">SCORE: {score}</p>
+        <p className="text-lg text-[var(--color-beige-white)] mt-2">{t('gameplay.score').toUpperCase()}: {score}</p>
       </div>
 
       {/* Play area */}
@@ -514,19 +550,39 @@ function GameplayScreen() {
       {/* Info row */}
       <div className="mx-4 mb-2 flex items-center justify-between text-[var(--color-beige-white)] text-sm">
         <span>🌸×2</span>
-        <span>🍂Autumn</span>
-        <span>Draws: 42</span>
+        <span>🍂{t('flora.autumn')}</span>
+        <span>{t('gameplay.draw')}s: 42</span>
       </div>
 
       {/* Hand area placeholder */}
       <div className="mx-4 mb-2 p-4 bg-[var(--color-dark-forest)] rounded-lg">
         <div className="flex justify-center gap-1 flex-wrap">
-          {['🀇', '🀈', '🀉', '🀊', '🀋', '🀌', '🀍', '🀎', '🀏', '🀐', '🀑', '🀒', '🀓'].map((tile, i) => (
+          {/* Sample hand: 1-9 manzu + 3 dragons + 1 bamboo */}
+          {[
+            { suit: TileSuit.Manzu, rank: 1 },
+            { suit: TileSuit.Manzu, rank: 2 },
+            { suit: TileSuit.Manzu, rank: 3 },
+            { suit: TileSuit.Pinzu, rank: 4 },
+            { suit: TileSuit.Pinzu, rank: 5 },
+            { suit: TileSuit.Pinzu, rank: 6 },
+            { suit: TileSuit.Souzu, rank: 7 },
+            { suit: TileSuit.Souzu, rank: 8 },
+            { suit: TileSuit.Souzu, rank: 9 },
+            { suit: TileSuit.Dragon, rank: 1 },
+            { suit: TileSuit.Dragon, rank: 2 },
+            { suit: TileSuit.Dragon, rank: 3 },
+            { suit: TileSuit.Wind, rank: 1 },
+          ].map((tile, i) => (
             <div
               key={i}
-              className="w-[50px] h-[70px] bg-[var(--color-beige-white)] rounded border-2 border-[var(--color-saddle-brown)] flex items-center justify-center text-2xl shadow-tile cursor-pointer hover:-translate-y-2 transition-transform"
+              className="w-[50px] h-[70px] rounded border-2 border-[var(--color-saddle-brown)] shadow-tile cursor-pointer hover:-translate-y-2 transition-transform overflow-hidden bg-[var(--color-beige-white)]"
             >
-              {tile}
+              <img
+                src={getTileImagePath(tile.suit, tile.rank)}
+                alt={`${tile.suit} ${tile.rank}`}
+                className="w-full h-full object-contain"
+                draggable={false}
+              />
             </div>
           ))}
         </div>
@@ -534,44 +590,69 @@ function GameplayScreen() {
 
       {/* Action buttons */}
       <div className="flex justify-center gap-4 px-4 py-4 bg-[var(--color-dark-forest)]">
-        <Button variant="secondary" size="sm">
-          DRAW
+        <Button variant="secondary" size="sm" onClick={handleGameOver}>
+          {t('gameplay.discard').toUpperCase()}
         </Button>
         <Button variant="secondary" size="sm">
-          SORT
+          {t('gameplay.draw').toUpperCase()}
         </Button>
-        <Button variant="primary" size="sm">
-          TSUMO
+        <Button variant="primary" size="sm" onClick={handleEndRound}>
+          {t('gameplay.tsumo').toUpperCase()}
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
 /**
  * Shop Screen Component (Tea House)
  * Layout based on ARCHITECTURE.MD Shop specification
  */
-function ShopScreen() {
-  const { t } = useTranslation();
-  const { nextAct, gold } = useGameStore();
+export function ShopScreen() {
+  const { t } = useTranslation()
+  const { navigateTo } = useAppNavigation()
+  const { gold, nextAct, setPhase } = useGameStore()
+
+  const handleNextRound = () => {
+    nextAct()
+    setPhase('gameplay')
+    navigateTo(ROUTES.PLAY)
+  }
+
+  const handleSettings = () => {
+    navigateTo(ROUTES.SETTINGS)
+  }
 
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-dark-forest)]">
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-forest-green)]">
         <span className="text-lg font-bold text-[var(--color-golden-yellow)]">¥{gold}</span>
-        <span className="text-lg text-[var(--color-beige-white)]">ROUND COMPLETE</span>
-        <div className="w-8" /> {/* Spacer */}
+        <span className="text-lg text-[var(--color-beige-white)]">{t('results.roundComplete')}</span>
+        <button
+          onClick={handleSettings}
+          className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center text-[var(--color-beige-white)]"
+          aria-label={t('menu.settings')}
+        >
+          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+          </svg>
+        </button>
       </div>
 
       {/* Shop items */}
       <div className="flex-1 overflow-y-auto p-4">
+        {/* Shop title */}
+        <div className="text-center mb-4">
+          <h2 className="text-2xl font-decorative text-[var(--color-golden-yellow)]">{t('shop.title')}</h2>
+          <p className="text-sm text-[var(--color-beige-white)] opacity-70">{t('shop.titleJp')}</p>
+        </div>
+
         {/* Row 1 - Decrees and Seals */}
         <div className="flex gap-3 mb-4 overflow-x-auto pb-2">
           {[
-            { name: 'River Tax', type: 'DECREE', price: 5 },
-            { name: 'Phantom Terminal', type: 'DECREE', price: 8 },
+            { name: 'River Tax', type: t('decrees.title'), price: 5 },
+            { name: 'Phantom Terminal', type: t('decrees.title'), price: 8 },
             { name: 'Lightning', type: 'SEAL', price: 3, icon: '⚡' },
           ].map((item, i) => (
             <div
@@ -616,72 +697,82 @@ function ShopScreen() {
       {/* Bottom buttons */}
       <div className="flex justify-center gap-4 px-4 py-4 border-t border-[var(--color-forest-green)]">
         <Button variant="secondary" size="md">
-          REROLL ¥5
+          {t('shop.rerollCost', { cost: 5 })}
         </Button>
-        <Button variant="primary" size="md" onClick={nextAct}>
-          NEXT ROUND →
+        <Button variant="primary" size="md" onClick={handleNextRound}>
+          {t('shop.nextAct')} →
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
 /**
  * Game Over Screen Component
  */
-function GameOverScreen() {
-  const { t } = useTranslation();
-  const { score, currentAct, resetGame } = useGameStore();
+export function GameOverScreen() {
+  const { t } = useTranslation()
+  const { navigateTo } = useAppNavigation()
+  const { score, currentAct, resetGame } = useGameStore()
+
+  const handlePlayAgain = () => {
+    resetGame()
+    navigateTo(ROUTES.MENU)
+  }
+
+  const handleReturnToMenu = () => {
+    resetGame()
+    navigateTo(ROUTES.MENU)
+  }
 
   return (
     <div className="viewport-full flex flex-col items-center justify-center bg-[var(--color-dark-forest)] p-4">
       <h1 className="text-4xl font-bold text-[var(--color-vibrant-orange)] mb-8">
-        Game Over
+        {t('results.defeat')}
       </h1>
 
       <div className="bg-[var(--color-forest-green)] rounded-lg p-6 mb-8 text-[var(--color-beige-white)] text-center">
-        <p className="text-lg mb-2">Final Act: {currentAct}</p>
-        <p className="text-2xl font-bold text-[var(--color-golden-yellow)]">Score: {score}</p>
+        <p className="text-lg mb-2">{t('gameplay.act')} {currentAct}</p>
+        <p className="text-2xl font-bold text-[var(--color-golden-yellow)]">
+          {t('results.finalScore')}: {score}
+        </p>
       </div>
 
-      <Button variant="primary" size="lg" onClick={resetGame}>
-        {t('menu.play')} Again
-      </Button>
+      <div className="flex flex-col gap-4">
+        <Button variant="primary" size="lg" onClick={handlePlayAgain}>
+          {t('results.tryAgain')}
+        </Button>
+        <Button variant="secondary" size="md" onClick={handleReturnToMenu}>
+          {t('results.returnToMenu')}
+        </Button>
+      </div>
     </div>
-  );
+  )
 }
 
 /**
- * Main App Component with phase-based routing
- */
-function AppContent() {
-  const phase = useGameStore((state) => state.phase);
-
-  switch (phase) {
-    case 'menu':
-      return <MenuScreen />;
-    case 'gameplay':
-      return <GameplayScreen />;
-    case 'shop':
-      return <ShopScreen />;
-    case 'gameOver':
-      return <GameOverScreen />;
-    default:
-      return <MenuScreen />;
-  }
-}
-
-/**
- * Main App Component
+ * Main App Component with Router
  */
 function App() {
+  // Create the router with all screen components
+  const router = useMemo(
+    () =>
+      createAppRouter({
+        MenuScreen,
+        GameplayScreen,
+        ShopScreen,
+        GameOverScreen,
+      }),
+    []
+  )
+
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<LoadingFallback />}>
-        <AppContent />
+        <AppRouterProvider router={router} />
       </Suspense>
     </QueryClientProvider>
-  );
+  )
 }
 
-export default App;
+export default App

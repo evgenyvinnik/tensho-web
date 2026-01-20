@@ -1,9 +1,12 @@
 /**
  * Screen Components Barrel Export
- * All screen components for the router
+ * Re-exports screen components from App.tsx which contains the full implementations
+ * with CRT effects and router integration
  */
 
-export { MenuScreen } from './MenuScreen'
-export { GameplayScreen } from './GameplayScreen'
-export { ShopScreen } from './ShopScreen'
-export { GameOverScreen } from './GameOverScreen'
+export {
+  MenuScreen,
+  GameplayScreen,
+  ShopScreen,
+  GameOverScreen,
+} from '../../App'

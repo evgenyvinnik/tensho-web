@@ -1,10 +1,38 @@
-/* Import custom fonts - must be first */
-@import './styles/fonts.css';
-
-/* Tailwind CSS imports */
+/* Tailwind CSS imports - must come first */
 @import "tailwindcss";
 @config "../tailwind.config.js";
 @source "../";
+
+/* ============================================================================
+   Custom Font Faces (inlined to avoid @import issues)
+   ============================================================================ */
+
+/* LongCang - Traditional Chinese calligraphy font for tile characters */
+@font-face {
+  font-family: 'LongCang';
+  src: url('/assets/LongCang-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Noto Sans JP - Japanese font for UI text */
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('/assets/NotoSansJP-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Go3v2 - Alternative decorative font */
+@font-face {
+  font-family: 'Go3v2';
+  src: url('/assets/go3v2.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ============================================================================
    Base Styles
@@ -60,7 +88,6 @@
 }
 
 html {
-  /* Prevent font size inflation on mobile */
   -moz-text-size-adjust: none;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
@@ -86,44 +113,20 @@ body {
    Typography
    ============================================================================ */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-ui);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-beige-white);
 }
 
-h1 {
-  font-size: 2.5rem;
-}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
 
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
-/* Tile text uses LongCang font */
-.font-tile {
-  font-family: var(--font-tile);
-}
-
-/* UI text uses Noto Sans JP */
-.font-ui {
-  font-family: var(--font-ui);
-}
-
-/* Decorative text uses Go3v2 */
-.font-decorative {
-  font-family: var(--font-decorative);
-}
+.font-tile { font-family: var(--font-tile); }
+.font-ui { font-family: var(--font-ui); }
+.font-decorative { font-family: var(--font-decorative); }
 
 /* ============================================================================
    Links
@@ -143,7 +146,6 @@ a:hover {
    Touch Optimization
    ============================================================================ */
 
-/* Minimum touch target size: 44x44 pixels */
 button,
 [role='button'],
 input[type='button'],
@@ -154,9 +156,7 @@ a {
   min-width: 44px;
 }
 
-/* Remove tap highlight on mobile */
-button,
-a {
+button, a {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -173,24 +173,11 @@ a {
    Utility Classes
    ============================================================================ */
 
-/* Safe area insets for mobile devices with notches */
-.safe-area-top {
-  padding-top: env(safe-area-inset-top);
-}
+.safe-area-top { padding-top: env(safe-area-inset-top); }
+.safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-area-left { padding-left: env(safe-area-inset-left); }
+.safe-area-right { padding-right: env(safe-area-inset-right); }
 
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.safe-area-left {
-  padding-left: env(safe-area-inset-left);
-}
-
-.safe-area-right {
-  padding-right: env(safe-area-inset-right);
-}
-
-/* Full viewport container */
 .viewport-full {
   width: 100vw;
   width: 100dvw;
@@ -198,14 +185,12 @@ a {
   height: 100dvh;
 }
 
-/* Background image utilities */
 .bg-cover-center {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Text shadow for readability on images */
 .text-shadow {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -215,35 +200,93 @@ a {
 }
 
 /* ============================================================================
-   Animation Classes
+   Subtle Animated Background
    ============================================================================ */
 
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 5px var(--color-golden-yellow);
+/* Gentle swirl animation for backgrounds */
+@keyframes gentle-swirl {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.02); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes slow-drift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(10px, -5px); }
+  50% { transform: translate(-5px, 10px); }
+  75% { transform: translate(-10px, -10px); }
+}
+
+@keyframes subtle-wave {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-2px) scaleY(1.01); }
+}
+
+/* Very subtle background pattern animation */
+.animated-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-bg::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    rgba(45, 95, 74, 0.15) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    ellipse at 70% 80%,
+    rgba(200, 178, 115, 0.08) 0%,
+    transparent 40%
+  );
+  animation: slow-drift 60s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle wave overlay */
+.wave-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(45, 95, 74, 0.05) 50%,
+    transparent 100%
+  );
+  animation: subtle-wave 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================================================
+   Subtle Animation Classes
+   ============================================================================ */
+
+@keyframes pulse-glow-subtle {
+  0%, 100% {
+    box-shadow: 0 0 3px var(--color-golden-yellow);
   }
   50% {
-    box-shadow: 0 0 20px var(--color-golden-yellow);
+    box-shadow: 0 0 8px var(--color-golden-yellow);
   }
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-glow-subtle 3s ease-in-out infinite;
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float-subtle 4s ease-in-out infinite;
 }
 
 /* ============================================================================
@@ -268,10 +311,105 @@ a {
   background: var(--color-metallic-gold);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-forest-green) var(--color-dark-forest);
+}
+
+/* ============================================================================
+   Subtle Visual Effects
+   ============================================================================ */
+
+/* Very subtle vignette */
+.vignette-subtle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 60%,
+    rgba(28, 58, 46, 0.3) 100%
+  );
+  z-index: 90;
+}
+
+/* Subtle text glow */
+.text-glow-subtle {
+  text-shadow: 0 0 4px currentColor;
+}
+
+/* Gentle button hover */
+.btn-hover-subtle {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-hover-subtle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-hover-subtle:active {
+  transform: translateY(0);
+}
+
+/* Subtle shimmer effect */
+@keyframes shimmer-subtle {
+  0% { background-position: -100% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-subtle {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-subtle 4s ease-in-out infinite;
+}
+
+/* Subtle title glow */
+@keyframes title-glow-subtle {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px var(--color-golden-yellow));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px var(--color-golden-yellow));
+  }
+}
+
+.title-glow {
+  animation: title-glow-subtle 4s ease-in-out infinite;
+}
+
+/* Gentle button pulse */
+@keyframes button-pulse-subtle {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--color-vibrant-orange);
+  }
+  50% {
+    box-shadow: 0 0 12px var(--color-vibrant-orange);
+  }
+}
+
+.button-pulse {
+  animation: button-pulse-subtle 3s ease-in-out infinite;
+}
+
+/* ============================================================================
+   Reduced Motion Support
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ============================================================================
@@ -283,198 +421,4 @@ a {
     background: white;
     color: black;
   }
-}
-
-/* ============================================================================
-   Balatro-style CRT Effects
-   ============================================================================ */
-
-/* CRT Scanlines overlay - subtle for green background */
-.crt-scanlines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(28, 58, 46, 0.12) 2px,
-    rgba(28, 58, 46, 0.12) 4px
-  );
-  z-index: 100;
-}
-
-/* CRT Glow effect */
-.crt-glow {
-  filter: contrast(1.1) brightness(1.05);
-  animation: crt-flicker 0.15s infinite alternate;
-}
-
-@keyframes crt-flicker {
-  0% { opacity: 0.97; }
-  100% { opacity: 1; }
-}
-
-/* Vignette effect - uses Dark Forest color for green theme */
-.vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    transparent 40%,
-    rgba(28, 58, 46, 0.6) 100%
-  );
-  z-index: 90;
-}
-
-/* Neon glow text */
-.neon-text {
-  text-shadow:
-    0 0 5px currentColor,
-    0 0 10px currentColor,
-    0 0 20px currentColor,
-    0 0 40px currentColor;
-}
-
-.neon-text-subtle {
-  text-shadow:
-    0 0 3px currentColor,
-    0 0 6px currentColor,
-    0 0 12px currentColor;
-}
-
-/* Neon button glow */
-.neon-button {
-  position: relative;
-  transition: all 0.3s ease;
-  text-shadow: 0 0 10px currentColor;
-}
-
-.neon-button::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-  background: linear-gradient(
-    45deg,
-    var(--color-vibrant-orange),
-    var(--color-golden-yellow),
-    var(--color-vibrant-orange)
-  );
-  opacity: 0;
-  filter: blur(15px);
-  transition: opacity 0.3s ease;
-  z-index: -1;
-}
-
-.neon-button:hover::before {
-  opacity: 0.6;
-}
-
-.neon-button:hover {
-  transform: scale(1.05);
-  filter: brightness(1.2);
-}
-
-.neon-button:active {
-  transform: scale(0.98);
-}
-
-/* Floating animation for tiles */
-@keyframes tile-float {
-  0%, 100% {
-    transform: translateY(0) rotate(var(--rotation, 0deg));
-  }
-  50% {
-    transform: translateY(-20px) rotate(calc(var(--rotation, 0deg) + 5deg));
-  }
-}
-
-.floating-tile {
-  animation: tile-float 4s ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
-}
-
-/* Subtle rotation for tiles */
-@keyframes tile-rotate {
-  0% { transform: rotate(-5deg) scale(1); }
-  25% { transform: rotate(5deg) scale(1.02); }
-  50% { transform: rotate(-3deg) scale(1); }
-  75% { transform: rotate(3deg) scale(0.98); }
-  100% { transform: rotate(-5deg) scale(1); }
-}
-
-.rotating-tile {
-  animation: tile-rotate 8s ease-in-out infinite;
-}
-
-/* Shimmer effect */
-@keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-/* Ambient glow for background */
-@keyframes ambient-glow {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.1);
-  }
-}
-
-.ambient-glow {
-  animation: ambient-glow 6s ease-in-out infinite;
-}
-
-/* Menu title animation */
-@keyframes title-pulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 20px var(--color-golden-yellow))
-            drop-shadow(0 0 40px var(--color-vibrant-orange));
-  }
-  50% {
-    filter: drop-shadow(0 0 30px var(--color-golden-yellow))
-            drop-shadow(0 0 60px var(--color-vibrant-orange));
-  }
-}
-
-.title-glow {
-  animation: title-pulse 3s ease-in-out infinite;
-}
-
-/* Button pulse animation */
-@keyframes button-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px var(--color-vibrant-orange),
-                0 0 40px rgba(255, 87, 34, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 30px var(--color-vibrant-orange),
-                0 0 60px rgba(255, 87, 34, 0.5);
-  }
-}
-
-.button-pulse {
-  animation: button-pulse 2s ease-in-out infinite;
 }

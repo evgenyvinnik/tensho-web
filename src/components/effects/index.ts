@@ -4,6 +4,13 @@
  * Central export point for all visual effect components.
  */
 
+// Animated Background
+export {
+  AnimatedBackground,
+  WaveBackground,
+  FloatingParticles,
+} from './AnimatedBackground';
+
 // Particle Effects
 export {
   ParticleEffect,
