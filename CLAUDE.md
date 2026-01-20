@@ -14,6 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **State:** Zustand
 - **Animations:** React Spring
 - **Data Fetching:** TanStack Query
+- **PWA:** vite-plugin-pwa (offline support, installable)
 
 See [ARCHITECTURE.MD](ARCHITECTURE.MD) for detailed game design and [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) for complete item/effect lists.
 
@@ -153,3 +154,24 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 - **Touch targets:** Minimum 44×44 pixels
 - **Hand area:** Bottom-aligned for thumb accessibility
 - **Tile sizing:** 70×98px base, dynamic overlap for large hands
+
+## PWA Features
+
+The app is a fully installable Progressive Web App:
+
+- **Offline Support:** Service worker caches all assets (JS, CSS, images, audio, fonts)
+- **Installable:** Can be added to home screen on iOS/Android/Desktop
+- **Auto-Update:** Prompts users when new content is available
+- **Standalone Mode:** Runs without browser chrome in portrait orientation
+
+### PWA Assets
+
+- `public/icon-192x192.png` — Standard PWA icon
+- `public/icon-512x512.png` — Large PWA icon (also maskable)
+- `public/apple-touch-icon.png` — iOS home screen icon
+
+### Caching Strategy
+
+- **CacheFirst:** Images, audio, and fonts (30-day expiration)
+- **CacheFirst:** Google Fonts (1-year expiration)
+- **AutoUpdate:** Service worker updates on new deployments
