@@ -26,7 +26,8 @@
     "credits": "Kredit",
     "quit": "Keluar",
     "musicOn": "Musik Aktif",
-    "musicOff": "Musik Mati"
+    "musicOff": "Musik Mati",
+    "nowPlaying": "Sedang Diputar"
   },
   "settings": {
     "title": "Pengaturan",

@@ -26,7 +26,8 @@
     "credits": "เครดิต",
     "quit": "ออก",
     "musicOn": "เปิดเพลง",
-    "musicOff": "ปิดเพลง"
+    "musicOff": "ปิดเพลง",
+    "nowPlaying": "กำลังเล่น"
   },
   "settings": {
     "title": "การตั้งค่า",

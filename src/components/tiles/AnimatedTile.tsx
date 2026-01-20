@@ -18,6 +18,9 @@ import {
 } from '../../animations/useTileAnimation';
 import { SPRINGS, ANIMATION_COLORS } from '../../animations/constants';
 
+// Minimum distance (px) before drag activates to distinguish from taps
+const DRAG_THRESHOLD = 8;
+
 export interface AnimatedTileProps {
   /** The tile to display */
   tile: Tile;
@@ -79,6 +82,11 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   const dimensions = tileSizes[size];
   const elementRef = useRef<HTMLDivElement>(null);
 
+  // Track drag start position for smooth offset calculation
+  const dragStartRef = useRef<{ x: number; y: number; hasDragged: boolean } | null>(null);
+  // Track if we're in potential drag mode (pointer down but threshold not reached)
+  const [isPotentialDrag, setIsPotentialDrag] = React.useState(false);
+
   // Interaction animations (hover, press, select, glow)
   const {
     style: interactionStyle,
@@ -129,6 +137,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   }, [disabled, onClick, tile]);
 
   // Handle invalid action (exposed via ref or callback)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleInvalidAction = useCallback(() => {
     triggerShake();
     onInvalidAction?.();
@@ -140,58 +149,92 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
       if (!draggable || disabled) return;
 
       e.preventDefault();
-      startDrag();
-      onDragStart?.(tile);
+
+      // Store initial pointer position
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      dragStartRef.current = { x: clientX, y: clientY, hasDragged: false };
+      setIsPotentialDrag(true);
+
+      // Don't start drag animation yet - wait for threshold
     },
-    [draggable, disabled, startDrag, onDragStart, tile]
+    [draggable, disabled]
   );
 
   const handleDragMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!isDragging) return;
+      if (!dragStartRef.current) return;
 
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
       const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
-      if (elementRef.current) {
-        const rect = elementRef.current.getBoundingClientRect();
-        const startX = rect.left + rect.width / 2;
-        const startY = rect.top + rect.height / 2;
-        updateDrag(clientX - startX, clientY - startY);
+      const deltaX = clientX - dragStartRef.current.x;
+      const deltaY = clientY - dragStartRef.current.y;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Check if we've exceeded the drag threshold
+      if (!dragStartRef.current.hasDragged) {
+        if (distance >= DRAG_THRESHOLD) {
+          dragStartRef.current.hasDragged = true;
+          startDrag();
+          onDragStart?.(tile);
+        } else {
+          return; // Haven't dragged far enough yet
+        }
       }
+
+      // Prevent scrolling while dragging on touch devices
+      if ('touches' in e) {
+        e.preventDefault();
+      }
+
+      // Update drag position
+      updateDrag(deltaX, deltaY);
     },
-    [isDragging, updateDrag]
+    [startDrag, updateDrag, onDragStart, tile]
   );
 
   const handleDragEnd = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!isDragging) return;
+      if (!dragStartRef.current) return;
 
+      const wasDragging = dragStartRef.current.hasDragged;
       const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX;
       const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : e.clientY;
 
-      endDrag();
-      onDragEnd?.(tile, { x: clientX, y: clientY });
+      dragStartRef.current = null;
+      setIsPotentialDrag(false);
+
+      if (wasDragging) {
+        endDrag();
+        onDragEnd?.(tile, { x: clientX, y: clientY });
+      }
     },
-    [isDragging, endDrag, onDragEnd, tile]
+    [endDrag, onDragEnd, tile]
   );
 
-  // Set up global drag listeners
+  // Set up global drag listeners when in potential drag or active drag mode
   React.useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handleDragMove);
-      window.addEventListener('mouseup', handleDragEnd);
-      window.addEventListener('touchmove', handleDragMove);
-      window.addEventListener('touchend', handleDragEnd);
+    if (isPotentialDrag || isDragging) {
+      const moveHandler = handleDragMove;
+      const endHandler = handleDragEnd;
+
+      window.addEventListener('mousemove', moveHandler);
+      window.addEventListener('mouseup', endHandler);
+      // Use passive: false for touch events to allow preventDefault
+      window.addEventListener('touchmove', moveHandler, { passive: false });
+      window.addEventListener('touchend', endHandler);
+      window.addEventListener('touchcancel', endHandler);
 
       return () => {
-        window.removeEventListener('mousemove', handleDragMove);
-        window.removeEventListener('mouseup', handleDragEnd);
-        window.removeEventListener('touchmove', handleDragMove);
-        window.removeEventListener('touchend', handleDragEnd);
+        window.removeEventListener('mousemove', moveHandler);
+        window.removeEventListener('mouseup', endHandler);
+        window.removeEventListener('touchmove', moveHandler);
+        window.removeEventListener('touchend', endHandler);
+        window.removeEventListener('touchcancel', endHandler);
       };
     }
-  }, [isDragging, handleDragMove, handleDragEnd]);
+  }, [isPotentialDrag, isDragging, handleDragMove, handleDragEnd]);
 
   // Combine all transforms
   const combinedStyle = {
@@ -209,9 +252,15 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
       if (shakeTransform && shakeTransform !== 'translateX(0px)') return shakeTransform;
       return `${enterExitTransform} ${interactionTransform}`;
     }),
-    opacity: enterExitSpring.opacity,
-    boxShadow: interactionStyle.boxShadow,
-    cursor: disabled ? 'not-allowed' : draggable ? 'grab' : onClick ? 'pointer' : 'default',
+    opacity: isDragging ? dragStyle.opacity : enterExitSpring.opacity,
+    boxShadow: isDragging ? dragStyle.boxShadow : interactionStyle.boxShadow,
+    cursor: disabled ? 'not-allowed' : isDragging ? 'grabbing' : draggable ? 'grab' : onClick ? 'pointer' : 'default',
+    // Prevent scroll interference while dragging
+    touchAction: draggable ? 'none' : 'auto',
+    // Ensure dragged tile appears above others
+    zIndex: isDragging ? 1000 : undefined,
+    // Smooth will-change hint for performance
+    willChange: isDragging ? 'transform, opacity' : 'auto',
   };
 
   return (

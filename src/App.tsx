@@ -3,20 +3,23 @@
  * Uses React Router for language-prefixed navigation with CRT aesthetics
  */
 
-import { useState, useEffect, useMemo, useCallback, Suspense } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef, Suspense } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSpring, animated, useSprings } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import Button from './components/ui/Button'
 import { LanguageSelector } from './components/ui/LanguageSelector'
 import { Tutorial, useTutorial } from './components/ui/Tutorial'
+import { SongNotification } from './components/ui/SongNotification'
 import { AchievementsScreen } from './components/screens/AchievementsScreen'
 import { getTileImagePath, preloadMenuAssets, preloadTileImages } from './utils/assets'
 import { useAudio } from './hooks/useAudio'
+import { useResponsiveTileSize } from './hooks/useResponsiveTileSize'
 import { useGameStore } from './stores/gameStore'
 import { Tile, TileSuit, generateTileId } from './core/Tile'
 import { HandWithDiscardZone } from './components/hand/AnimatedHand'
 import { createAppRouter, AppRouterProvider, useAppNavigation, ROUTES } from './router'
+import type { AudioTrack } from './utils/assets'
 
 const queryClient = new QueryClient()
 
@@ -287,6 +290,18 @@ export function MenuScreen() {
     loop: true,
   })
 
+  // Track song changes for notification
+  const [notificationTrack, setNotificationTrack] = useState<AudioTrack | null>(null)
+  const previousTrackRef = useRef<AudioTrack | null>(null)
+
+  // Watch for track changes and trigger notification
+  useEffect(() => {
+    if (audio.currentTrack && audio.currentTrack !== previousTrackRef.current && audio.isPlaying) {
+      setNotificationTrack(audio.currentTrack)
+      previousTrackRef.current = audio.currentTrack
+    }
+  }, [audio.currentTrack, audio.isPlaying])
+
   // Preload assets including tiles
   useEffect(() => {
     Promise.all([preloadMenuAssets(), preloadTileImages()])
@@ -487,6 +502,13 @@ export function MenuScreen() {
         onComplete={handleTutorialComplete}
       />
 
+      {/* Song notification - shows when a new track starts playing */}
+      <SongNotification
+        track={notificationTrack}
+        duration={4000}
+        onDismiss={() => setNotificationTrack(null)}
+      />
+
       {/* CRT Effects - adjusted for green background */}
       <div className="vignette" />
       <div className="crt-scanlines" />
@@ -524,6 +546,9 @@ export function GameplayScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const { currentAct, currentRound, score, targetScore, gold, setPhase } = useGameStore()
+
+  // Responsive tile size
+  const tileSize = useResponsiveTileSize()
 
   // Hand state
   const [handTiles, setHandTiles] = useState<Tile[]>(() => createSampleHand())
@@ -641,7 +666,7 @@ export function GameplayScreen() {
       <div className="mx-4 mb-2 p-4 bg-[var(--color-dark-forest)] rounded-lg">
         <HandWithDiscardZone
           tiles={handTiles}
-          size="medium"
+          size={tileSize}
           selectedIds={selectedIds}
           onTileClick={handleTileClick}
           onTileDiscard={handleTileDiscard}
@@ -659,7 +684,7 @@ export function GameplayScreen() {
           {t('gameplay.draw').toUpperCase()}
         </Button>
         <Button variant="primary" size="sm" onClick={handleEndRound}>
-          {t('gameplay.tsumo').toUpperCase()}
+          {t('gameplay.win').toUpperCase()}
         </Button>
       </div>
     </div>

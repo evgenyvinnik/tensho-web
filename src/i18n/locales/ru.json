@@ -26,7 +26,8 @@
     "credits": "Авторы",
     "quit": "Выход",
     "musicOn": "Музыка вкл.",
-    "musicOff": "Музыка выкл."
+    "musicOff": "Музыка выкл.",
+    "nowPlaying": "Сейчас играет"
   },
   "settings": {
     "title": "Настройки",

@@ -25,10 +25,9 @@ import {
   createActionProcessor,
 } from './ActionProcessor'
 import { RoundManager } from '../systems/RoundManager'
-import { DecreeSystem } from '../systems/DecreeSystem'
+import { DecreeSystem, STARTER_DECREES } from '../systems/DecreeSystem'
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
-import { FlowerType, SeasonType } from '../core/types'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -149,6 +148,46 @@ export class GameOrchestrator {
   }
 
   /**
+   * Initialize starter decrees for a new run
+   * Gives player 2 random decrees from the starter pool
+   */
+  private initializeStarterDecrees(seed: number): void {
+    // Create a seeded random for consistent decree selection
+    let s = seed + 12345 // Offset to differ from wall shuffle
+
+    const seededRandom = () => {
+      s += 0x6d2b79f5
+      let t = s
+      t = Math.imul(t ^ (t >>> 15), t | 1)
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+
+    // Shuffle starter decrees and pick 2
+    const shuffled = [...STARTER_DECREES]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(seededRandom() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+
+    // Give player 2 starter decrees
+    const starterCount = 2
+    for (let i = 0; i < starterCount && i < shuffled.length; i++) {
+      this.state.decreeSystem.acquireDecree(shuffled[i])
+    }
+
+    // Emit decree acquired events
+    const ownedDecrees = this.state.decreeSystem.getOwnedDecrees()
+    for (const decree of ownedDecrees) {
+      eventBus.emit('decreeAcquired', {
+        decreeId: decree.id,
+        decreeName: decree.name,
+        rarity: decree.rarity,
+      })
+    }
+  }
+
+  /**
    * Start a new run
    */
   startNewRun(seed?: number, stake: number = 1): void {
@@ -164,6 +203,9 @@ export class GameOrchestrator {
     // Initialize round manager
     this.state.roundManager = new RoundManager(stake)
     this.state.roundManager.startNewRun()
+
+    // Give starter decrees (2 random from the starter pool)
+    this.initializeStarterDecrees(actualSeed)
 
     // Initialize wall
     this.initializeWall(actualSeed)

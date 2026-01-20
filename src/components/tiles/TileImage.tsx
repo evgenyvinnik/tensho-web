@@ -1,9 +1,9 @@
 /**
  * TileImage Component for Tensho Mahjong Roguelike
- * Displays tile images with support for different sizes and states
+ * Displays tile images with support for different sizes, states, and tooltips
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Tile, TileSuit } from '../../core/Tile';
 import { getTileImagePath, getTileBackPath } from '../../utils/assets';
 import { tileSizes } from '../../styles/theme';
@@ -25,6 +25,8 @@ export interface TileImageProps {
   faceDown?: boolean;
   /** Click handler */
   onClick?: (tile: Tile) => void;
+  /** Whether to show tooltip on hover */
+  showTooltip?: boolean;
   /** Additional CSS classes */
   className?: string;
 }
@@ -90,6 +92,100 @@ function getTileAlt(tile: Tile | null | undefined, faceDown: boolean): string {
 }
 
 /**
+ * Get detailed description for a tile (for tooltips)
+ */
+function getTileDescription(tile: Tile | null | undefined, faceDown: boolean): { name: string; description: string; points: string } {
+  if (faceDown || !tile) {
+    return { name: 'Face-down Tile', description: 'An unrevealed tile', points: '' };
+  }
+
+  // Suited tiles
+  if (tile.isSuited) {
+    const suitDescriptions: Record<string, { name: string; desc: string }> = {
+      [TileSuit.Manzu]: { name: 'Characters', desc: 'One of the three numbered suits, showing Chinese characters.' },
+      [TileSuit.Pinzu]: { name: 'Circles', desc: 'One of the three numbered suits, showing circular coins.' },
+      [TileSuit.Souzu]: { name: 'Bamboo', desc: 'One of the three numbered suits, showing bamboo sticks.' },
+    };
+
+    const suit = suitDescriptions[tile.suit] || { name: 'Suited', desc: '' };
+    const isTerminal = tile.rank === 1 || tile.rank === 9;
+    const terminalNote = isTerminal ? ' This is a terminal tile (1 or 9), worth more points.' : '';
+    const redNote = tile.isRed ? ' This is a red dora tile, providing bonus scoring.' : '';
+
+    return {
+      name: `${tile.rank} of ${suit.name}`,
+      description: `${suit.desc}${terminalNote}${redNote}`,
+      points: isTerminal ? '10 base points' : '5 base points',
+    };
+  }
+
+  // Wind tiles
+  if (tile.suit === TileSuit.Wind) {
+    const winds: Record<number, { name: string; desc: string }> = {
+      1: { name: 'East Wind', desc: 'The dealer wind. Valued in many yaku combinations.' },
+      2: { name: 'South Wind', desc: 'Second wind in rotation. Part of wind-based yaku.' },
+      3: { name: 'West Wind', desc: 'Third wind in rotation. Part of wind-based yaku.' },
+      4: { name: 'North Wind', desc: 'Fourth wind in rotation. Part of wind-based yaku.' },
+    };
+    const wind = winds[tile.rank] || { name: 'Wind', desc: '' };
+    return {
+      name: wind.name,
+      description: `${wind.desc} Matching your seat or round wind gives bonus multipliers.`,
+      points: '15 base points',
+    };
+  }
+
+  // Dragon tiles
+  if (tile.suit === TileSuit.Dragon) {
+    const dragons: Record<number, { name: string; desc: string }> = {
+      1: { name: 'White Dragon (Haku)', desc: 'The blank white dragon, representing purity.' },
+      2: { name: 'Green Dragon (Hatsu)', desc: 'The green dragon, representing fortune and prosperity.' },
+      3: { name: 'Red Dragon (Chun)', desc: 'The red dragon, representing success and power.' },
+    };
+    const dragon = dragons[tile.rank] || { name: 'Dragon', desc: '' };
+    return {
+      name: dragon.name,
+      description: `${dragon.desc} A triplet of any dragon scores the Yakuhai yaku.`,
+      points: '15 base points',
+    };
+  }
+
+  // Flower tiles
+  if (tile.suit === TileSuit.Flower) {
+    const flowers: Record<number, { name: string; desc: string }> = {
+      1: { name: 'Plum Blossom', desc: 'Symbol of perseverance and hope. Blooms in late winter.' },
+      2: { name: 'Orchid', desc: 'Symbol of refinement and nobility. A scholarly flower.' },
+      3: { name: 'Chrysanthemum', desc: 'Symbol of vitality and longevity. Autumn\'s flower.' },
+      4: { name: 'Bamboo', desc: 'Symbol of integrity and strength. Evergreen and resilient.' },
+    };
+    const flower = flowers[tile.rank] || { name: 'Flower', desc: '' };
+    return {
+      name: flower.name,
+      description: `${flower.desc} Bonus tiles are auto-collected and provide run-wide scaling bonuses.`,
+      points: 'Bonus tile (scales with collection)',
+    };
+  }
+
+  // Season tiles
+  if (tile.suit === TileSuit.Season) {
+    const seasons: Record<number, { name: string; desc: string }> = {
+      1: { name: 'Spring', desc: 'Season of new beginnings. Grants extra draws per round.' },
+      2: { name: 'Summer', desc: 'Season of growth. Increases gold earned from rounds.' },
+      3: { name: 'Autumn', desc: 'Season of harvest. Boosts score multipliers.' },
+      4: { name: 'Winter', desc: 'Season of rest. Provides defensive bonuses.' },
+    };
+    const season = seasons[tile.rank] || { name: 'Season', desc: '' };
+    return {
+      name: season.name,
+      description: `${season.desc} Season effects last for the current round only.`,
+      points: 'Bonus tile (round effect)',
+    };
+  }
+
+  return { name: tile.toString(), description: '', points: '' };
+}
+
+/**
  * TileImage component displays a single mahjong tile
  */
 export const TileImage: React.FC<TileImageProps> = ({
@@ -100,11 +196,14 @@ export const TileImage: React.FC<TileImageProps> = ({
   disabled = false,
   faceDown = false,
   onClick,
+  showTooltip = true,
   className = '',
 }) => {
+  const [isHovering, setIsHovering] = useState(false);
   const dimensions = tileSizes[size];
   const src = getTileSrc(tile, faceDown);
   const alt = getTileAlt(tile, faceDown);
+  const tileInfo = getTileDescription(tile, faceDown);
 
   const handleClick = () => {
     if (!disabled && tile && onClick) {
@@ -117,6 +216,16 @@ export const TileImage: React.FC<TileImageProps> = ({
       e.preventDefault();
       onClick(tile);
     }
+  };
+
+  const handleMouseEnter = () => {
+    if (showTooltip && tile && !faceDown) {
+      setIsHovering(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
   };
 
   // Build dynamic classes
@@ -149,6 +258,8 @@ export const TileImage: React.FC<TileImageProps> = ({
       }}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
       aria-pressed={isInteractive ? selected : undefined}
@@ -168,6 +279,50 @@ export const TileImage: React.FC<TileImageProps> = ({
       {/* Highlight indicator overlay */}
       {highlighted && !selected && (
         <div className="absolute inset-0 bg-vibrant-orange opacity-10 rounded pointer-events-none animate-pulse" />
+      )}
+      {/* Tooltip popup */}
+      {isHovering && showTooltip && tile && !faceDown && (
+        <div
+          className="absolute z-50 pointer-events-none"
+          style={{
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginBottom: '8px',
+          }}
+        >
+          <div
+            className="bg-dark-forest border border-golden-yellow rounded-lg p-3 shadow-xl min-w-[200px] max-w-[280px]"
+            style={{
+              backgroundColor: 'rgba(28, 58, 46, 0.95)',
+            }}
+          >
+            {/* Tile name */}
+            <div className="text-golden-yellow font-bold text-sm mb-1">
+              {tileInfo.name}
+            </div>
+            {/* Points */}
+            {tileInfo.points && (
+              <div className="text-vibrant-orange text-xs mb-2">
+                {tileInfo.points}
+              </div>
+            )}
+            {/* Description */}
+            {tileInfo.description && (
+              <div className="text-beige-white text-xs leading-relaxed">
+                {tileInfo.description}
+              </div>
+            )}
+            {/* Tooltip arrow */}
+            <div
+              className="absolute left-1/2 -translate-x-1/2 border-8 border-transparent"
+              style={{
+                bottom: '-16px',
+                borderTopColor: 'rgba(28, 58, 46, 0.95)',
+              }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

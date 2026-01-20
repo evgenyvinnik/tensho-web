@@ -26,7 +26,8 @@
     "credits": "Crédits",
     "quit": "Quitter",
     "musicOn": "Musique Activée",
-    "musicOff": "Musique Désactivée"
+    "musicOff": "Musique Désactivée",
+    "nowPlaying": "En cours"
   },
   "settings": {
     "title": "Paramètres",

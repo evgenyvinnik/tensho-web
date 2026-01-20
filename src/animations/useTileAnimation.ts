@@ -5,9 +5,9 @@
  * All animations respect reduced motion preferences.
  */
 
-import { useSpring, useSpringRef, config } from '@react-spring/web';
-import { useCallback, useEffect, useState } from 'react';
-import { SPRINGS, DURATIONS, OFFSETS, SCALES, OPACITY } from './constants';
+import { useSpring, config } from '@react-spring/web';
+import { useCallback, useState } from 'react';
+import { SPRINGS, OFFSETS, SCALES } from './constants';
 import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsStore';
 
 /**
@@ -362,20 +362,30 @@ export function useTileInteractionAnimation(options: {
 /**
  * Hook for drag-to-discard animation
  * Tracks drag state and animates tile during drag
+ * Position follows finger immediately for responsive feel
  */
 export function useTileDragAnimation() {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-  const spring = useSpring({
+  // Visual effects spring (scale, opacity, rotation) - these animate smoothly
+  const visualSpring = useSpring({
+    scale: isDragging ? 1.15 : 1,
+    opacity: isDragging ? 0.9 : 1,
+    shadowOpacity: isDragging ? 0.4 : 0,
+    config: { tension: 400, friction: 25 },
+    immediate: reducedMotion,
+  });
+
+  // Position spring - immediate during drag, animated on release
+  const positionSpring = useSpring({
     x: isDragging ? dragOffset.x : 0,
     y: isDragging ? dragOffset.y : 0,
-    scale: isDragging ? 1.1 : 1,
-    opacity: isDragging ? 0.8 : 1,
-    rotate: isDragging ? dragOffset.x / 20 : 0,
-    config: SPRINGS.stiff,
-    immediate: reducedMotion && !isDragging,
+    rotate: isDragging ? Math.max(-15, Math.min(15, dragOffset.x / 15)) : 0,
+    config: { tension: 500, friction: 30 },
+    // Position follows finger immediately during drag
+    immediate: (key: string) => isDragging && (key === 'x' || key === 'y'),
   });
 
   const startDrag = useCallback(() => {
@@ -393,13 +403,16 @@ export function useTileDragAnimation() {
 
   return {
     style: {
-      transform: spring.x.to(
+      transform: positionSpring.x.to(
         (x) =>
-          `translate(${x}px, ${spring.y.get()}px) scale(${spring.scale.get()}) rotate(${spring.rotate.get()}deg)`
+          `translate(${x}px, ${positionSpring.y.get()}px) scale(${visualSpring.scale.get()}) rotate(${positionSpring.rotate.get()}deg)`
       ),
-      opacity: spring.opacity,
+      opacity: visualSpring.opacity,
+      boxShadow: visualSpring.shadowOpacity.to(
+        (o) => `0 ${8 + o * 12}px ${16 + o * 24}px rgba(0, 0, 0, ${o})`
+      ),
     },
-    spring,
+    spring: positionSpring,
     isDragging,
     startDrag,
     updateDrag,

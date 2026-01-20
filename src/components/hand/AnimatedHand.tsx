@@ -188,6 +188,8 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
     config: SPRINGS.snappy,
     immediate: reducedMotion,
     trail: reducedMotion ? 0 : STAGGER.fast,
+    // Re-run transitions when positions change (e.g., due to size change)
+    deps: [positions, selectedIds],
   });
 
   // Update previous tiles reference

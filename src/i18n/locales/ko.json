@@ -26,7 +26,8 @@
     "credits": "크레딧",
     "quit": "종료",
     "musicOn": "음악 켜짐",
-    "musicOff": "음악 꺼짐"
+    "musicOff": "음악 꺼짐",
+    "nowPlaying": "재생 중"
   },
   "settings": {
     "title": "설정",

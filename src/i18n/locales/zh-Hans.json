@@ -26,7 +26,8 @@
     "credits": "制作人员",
     "quit": "退出",
     "musicOn": "音乐开启",
-    "musicOff": "音乐关闭"
+    "musicOff": "音乐关闭",
+    "nowPlaying": "正在播放"
   },
   "settings": {
     "title": "设置",

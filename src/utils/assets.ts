@@ -95,6 +95,14 @@ export const audioAssets = {
   theDojo: `${ASSET_BASE}/TheDojo.mp3`,
 } as const;
 
+/** Display names for audio tracks */
+export const audioTrackDisplayNames: Record<keyof typeof audioAssets, string> = {
+  dragonDance: 'Dragon Dance',
+  japaneseWinter: 'Japanese Winter',
+  lotusPond: 'Lotus Pond',
+  theDojo: 'The Dojo',
+} as const;
+
 /** Array of all music track URLs for random playback */
 export const MUSIC_TRACKS = Object.values(audioAssets);
 
@@ -105,6 +113,13 @@ export type AudioTrack = keyof typeof audioAssets;
  */
 export function getAudioTracks(): AudioTrack[] {
   return Object.keys(audioAssets) as AudioTrack[];
+}
+
+/**
+ * Get display name for a track
+ */
+export function getTrackDisplayName(track: AudioTrack): string {
+  return audioTrackDisplayNames[track];
 }
 
 // ============================================================================

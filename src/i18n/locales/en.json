@@ -26,7 +26,8 @@
     "credits": "Credits",
     "quit": "Quit",
     "musicOn": "Music On",
-    "musicOff": "Music Off"
+    "musicOff": "Music Off",
+    "nowPlaying": "Now Playing"
   },
   "settings": {
     "title": "Settings",
@@ -34,14 +35,32 @@
     "musicVolume": "Music Volume",
     "sfxVolume": "Sound Effects",
     "display": "Display",
+    "visual": "Visual",
+    "gameplay": "Gameplay",
     "language": "Language",
     "tileHints": "Tile Hints",
+    "tileHintsDesc": "Show hints for valid tile placements",
     "animationSpeed": "Animation Speed",
     "reducedMotion": "Reduced Motion",
-    "slow": "Slow",
-    "normal": "Normal",
-    "fast": "Fast",
-    "resetSettings": "Reset to Default"
+    "reducedMotionDesc": "Minimize animations for accessibility",
+    "muteMusic": "Mute Music",
+    "muteSfx": "Mute Sound Effects",
+    "speed": {
+      "slow": "Slow",
+      "normal": "Normal",
+      "fast": "Fast"
+    },
+    "resetToDefaults": "Reset Settings to Default",
+    "data": "Data & Progress",
+    "resetTutorial": "Reset Tutorial",
+    "resetTutorialDesc": "Show the new player tutorial again",
+    "resetTutorialConfirm": "Reset tutorial guidance?",
+    "resetTutorialSuccess": "Tutorial has been reset. It will show on next visit.",
+    "resetProgress": "Reset All Progress",
+    "resetProgressDesc": "Clear all achievements, statistics, and unlocks",
+    "resetProgressConfirm": "Are you sure? This will permanently delete all your achievements, statistics, and unlocks. This action cannot be undone.",
+    "resetProgressSuccess": "All progress has been reset.",
+    "dangerZone": "Danger Zone"
   },
   "gameplay": {
     "act": "Act",

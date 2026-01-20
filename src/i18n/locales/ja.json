@@ -26,7 +26,8 @@
     "credits": "クレジット",
     "quit": "終了",
     "musicOn": "音楽オン",
-    "musicOff": "音楽オフ"
+    "musicOff": "音楽オフ",
+    "nowPlaying": "再生中"
   },
   "settings": {
     "title": "設定",

@@ -9,11 +9,14 @@ import { useEffect, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game'
+import { useResponsiveTileSize } from '../../hooks/useResponsiveTileSize'
 import { Button } from '../ui/Button'
 import { TablePattern } from '../ui/TablePattern'
 import { HandWithDiscardZone } from '../hand/AnimatedHand'
 import { ScorePopup } from '../effects/ScorePopup'
 import { YakuReveal } from '../effects/YakuReveal'
+import { GameTutorial, useGameTutorial } from '../ui/GameTutorial'
+import { getGameplayTutorialSteps } from '../../config/gameplayTutorialSteps'
 import { Tile } from '../../core/Tile'
 
 /**
@@ -46,6 +49,13 @@ export function GameplayScreen() {
   // Get game controller
   const game = useGameController()
 
+  // Responsive tile size
+  const tileSize = useResponsiveTileSize()
+
+  // Tutorial steps and state
+  const tutorialSteps = getGameplayTutorialSteps(t)
+  const tutorial = useGameTutorial(tutorialSteps)
+
   // Local UI state
   const [scorePopups, setScorePopups] = useState<ScorePopupState[]>([])
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
@@ -57,6 +67,27 @@ export function GameplayScreen() {
       game.startNewRun()
     }
   }, [game.isRunActive, game.phase, game.startNewRun])
+
+  // Start tutorial for first-time players
+  useEffect(() => {
+    if (game.isRunActive && !tutorial.hasCompleted && !tutorial.isActive) {
+      // Small delay to let the UI render first
+      const timer = setTimeout(() => {
+        tutorial.start()
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [game.isRunActive, tutorial.hasCompleted, tutorial.isActive, tutorial.start])
+
+  // Complete tutorial step when user draws a tile
+  useGameEvent('tileDrawn', useCallback(() => {
+    tutorial.completeCurrentStep()
+  }, [tutorial]))
+
+  // Complete tutorial step when user discards a tile
+  useGameEvent('tileDiscarded', useCallback(() => {
+    tutorial.completeCurrentStep()
+  }, [tutorial]))
 
   // Navigate to shop when phase changes
   useEffect(() => {
@@ -155,8 +186,8 @@ export function GameplayScreen() {
       <div className="flex flex-col h-full">
         {/* Top bar */}
         <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
-          <span className="text-lg font-bold text-[var(--color-golden-yellow)]">¥{game.gold}</span>
-          <span className="text-lg">
+          <span data-tutorial="gold" className="text-lg font-bold text-[var(--color-golden-yellow)]">¥{game.gold}</span>
+          <span data-tutorial="act-round" className="text-lg">
             {t('gameplay.act')} {game.currentAct} - R{game.currentRound}
           </span>
           <button
@@ -171,7 +202,7 @@ export function GameplayScreen() {
         </div>
 
         {/* Decree bar */}
-        <div className="flex gap-2 px-4 py-2 overflow-x-auto">
+        <div data-tutorial="decrees" className="flex gap-2 px-4 py-2 overflow-x-auto">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
@@ -190,10 +221,10 @@ export function GameplayScreen() {
           <p className="text-sm text-[var(--color-beige-white)] opacity-70 mb-2">
             {t('gameplay.target').toUpperCase()}
           </p>
-          <p className="text-4xl font-bold text-[var(--color-golden-yellow)] animate-pulse-glow">
+          <p data-tutorial="score-target" className="text-4xl font-bold text-[var(--color-golden-yellow)] animate-pulse-glow">
             {game.targetScore.toLocaleString()}
           </p>
-          <p className="text-lg text-[var(--color-beige-white)] mt-2">
+          <p data-tutorial="current-score" className="text-lg text-[var(--color-beige-white)] mt-2">
             {t('gameplay.score').toUpperCase()}: {game.score.toLocaleString()}
           </p>
 
@@ -210,7 +241,7 @@ export function GameplayScreen() {
         </div>
 
         {/* Play area / Meld display */}
-        <div className="flex-1 mx-4 mb-2 bg-[var(--color-dark-forest)] bg-opacity-50 rounded-lg border-2 border-dashed border-[var(--color-metallic-gold)] flex flex-col items-center justify-center p-4">
+        <div data-tutorial="yaku-display" className="flex-1 mx-4 mb-2 bg-[var(--color-dark-forest)] bg-opacity-50 rounded-lg border-2 border-dashed border-[var(--color-metallic-gold)] flex flex-col items-center justify-center p-4">
           {game.selectedTileIds.length > 0 ? (
             <div className="text-center">
               <p className="text-[var(--color-beige-white)] mb-2">
@@ -243,22 +274,22 @@ export function GameplayScreen() {
           <span className="text-[var(--color-golden-yellow)] font-bold">{shantenDisplay}</span>
           <span className="text-[var(--color-beige-white)] mx-2">•</span>
           <span className="text-[var(--color-beige-white)]">
-            Hands: {game.handsRemaining} | Discards: {game.discardsRemaining}
+            <span data-tutorial="hands-remaining">Hands: {game.handsRemaining}</span> | <span data-tutorial="discards-remaining">Discards: {game.discardsRemaining}</span>
           </span>
         </div>
 
         {/* Info row */}
         <div className="mx-4 mb-2 flex items-center justify-between text-[var(--color-beige-white)] text-sm">
-          <span>🌸×{game.state.flowerSystem.getFlowerCount()}</span>
+          <span data-tutorial="flora">🌸×{game.state.flowerSystem.getFlowerCount()}</span>
           <span>🍂 Season Active</span>
-          <span>Wall: {game.wallRemaining}</span>
+          <span data-tutorial="wall">Wall: {game.wallRemaining}</span>
         </div>
 
         {/* Hand area with drag-to-discard support */}
-        <div className="mx-4 mb-2 p-4 bg-[var(--color-dark-forest)] rounded-lg">
+        <div data-tutorial="hand" className="mx-4 mb-2 p-4 bg-[var(--color-dark-forest)] rounded-lg">
           <HandWithDiscardZone
             tiles={game.handTiles}
-            size="medium"
+            size={tileSize}
             selectedIds={new Set(game.selectedTileIds)}
             onTileClick={handleTileClick}
             onTileDiscard={handleTileDiscard}
@@ -277,9 +308,11 @@ export function GameplayScreen() {
           >
             SKIP
           </Button>
-          <Button variant="secondary" size="sm" onClick={handleDraw} disabled={game.handTiles.length >= 14}>
-            {t('gameplay.draw').toUpperCase()}
-          </Button>
+          <div data-tutorial="draw-button">
+            <Button variant="secondary" size="sm" onClick={handleDraw} disabled={game.handTiles.length >= 14}>
+              {t('gameplay.draw').toUpperCase()}
+            </Button>
+          </div>
           <Button
             variant="primary"
             size="sm"
@@ -290,6 +323,16 @@ export function GameplayScreen() {
           </Button>
         </div>
       </div>
+
+      {/* In-game tutorial overlay */}
+      <GameTutorial
+        isActive={tutorial.isActive}
+        currentStep={tutorial.currentStep}
+        steps={tutorialSteps}
+        onStepComplete={tutorial.nextStep}
+        onSkip={tutorial.skip}
+        onComplete={tutorial.complete}
+      />
     </TablePattern>
   )
 }

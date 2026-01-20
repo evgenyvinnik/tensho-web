@@ -232,6 +232,12 @@ button, a {
   animation: wave-drift 20s linear infinite;
 }
 
+/* Audio visualizer bar animation for song notification */
+@keyframes audio-bar {
+  0% { height: 20%; }
+  100% { height: 100%; }
+}
+
 /* Very subtle background pattern animation */
 .animated-bg {
   position: relative;

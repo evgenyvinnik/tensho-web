@@ -26,7 +26,8 @@
     "credits": "Mga Kredito",
     "quit": "Lumabas",
     "musicOn": "Tumutugtog ang Musika",
-    "musicOff": "Naka-off ang Musika"
+    "musicOff": "Naka-off ang Musika",
+    "nowPlaying": "Pinapatugtog"
   },
   "settings": {
     "title": "Mga Setting",

@@ -26,7 +26,8 @@
     "credits": "Yapımcılar",
     "quit": "Çıkış",
     "musicOn": "Müzik Açık",
-    "musicOff": "Müzik Kapalı"
+    "musicOff": "Müzik Kapalı",
+    "nowPlaying": "Şu an çalıyor"
   },
   "settings": {
     "title": "Ayarlar",
