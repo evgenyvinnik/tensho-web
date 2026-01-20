@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Tutoriel",
     "skip": "Passer le Tutoriel",
-    "next": "Suivant",
+    "next": "Suivant →",
+    "prev": "← Retour",
     "previous": "Précédent",
-    "finish": "Terminer"
+    "finish": "Commencer à Jouer !",
+    "welcome": {
+      "title": "Bienvenue dans Tensho !",
+      "content": "Tensho est un jeu roguelike basé sur le Mahjong Riichi japonais. Votre objectif est de former des mains gagnantes et d'atteindre le score cible à chaque manche."
+    },
+    "tiles": {
+      "title": "Tuiles de Mahjong",
+      "content1": "Il y a trois familles principales : Caractères (萬), Cercles (筒) et Bambous (索), chacune numérotée de 1 à 9."
+    },
+    "honors": {
+      "title": "Tuiles d'Honneur",
+      "content": "Les tuiles d'honneur comprennent les Vents (Est, Sud, Ouest, Nord) et les Dragons (Blanc, Vert, Rouge). Ces tuiles ne peuvent pas former de séquences, seulement des brelans."
+    },
+    "hands": {
+      "title": "Former des Mains",
+      "content1": "Une main gagnante se compose de 4 groupes (combinaisons) plus 1 paire.",
+      "content2": "Les groupes peuvent être des séquences (1-2-3) ou des brelans (3-3-3)."
+    },
+    "yaku": {
+      "title": "Yaku - Motifs de Score",
+      "content1": "Les yaku sont des motifs spéciaux qui multiplient votre score. Chaque yaku a un niveau de 1 à 4.",
+      "content2": "Exemples : Tout Simples (sans terminaux/honneurs), Tout Brelans, Couleur Pure (une seule famille)."
+    },
+    "decrees": {
+      "title": "Décrets - Modificateurs de Règles",
+      "content1": "Les décrets sont des cartes spéciales qui modifient les règles et augmentent votre score.",
+      "content2": "Collectez des décrets puissants à la Maison de Thé (boutique) entre les manches."
+    },
+    "scoring": {
+      "title": "Formule de Score",
+      "formula": "Score = (Base + Bonus) × Multiplicateurs",
+      "content": "Atteignez le score cible à chaque manche pour progresser. Les actes supérieurs nécessitent des scores plus élevés !"
+    },
+    "ready": {
+      "title": "Vous Êtes Prêt !",
+      "content1": "Bonne chance dans votre aventure !",
+      "content2": "Appuyez sur JOUER pour commencer votre première partie."
+    }
   },
   "accessibility": {
     "selectLanguage": "Choisir la Langue",

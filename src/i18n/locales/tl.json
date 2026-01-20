@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Tutorial",
     "skip": "Laktawan ang Tutorial",
-    "next": "Susunod",
+    "next": "Susunod →",
+    "prev": "← Bumalik",
     "previous": "Nakaraan",
-    "finish": "Tapusin"
+    "finish": "Magsimulang Maglaro!",
+    "welcome": {
+      "title": "Maligayang Pagdating sa Tensho!",
+      "content": "Ang Tensho ay isang roguelike na laro batay sa Japanese Riichi Mahjong. Ang iyong layunin ay bumuo ng mga kamay na may puntos at maabot ang target na puntos sa bawat round."
+    },
+    "tiles": {
+      "title": "Mga Tile ng Mahjong",
+      "content1": "May tatlong pangunahing suit: Mga Karakter (萬), Mga Bilog (筒), at Mga Kawayan (索), bawat isa ay may numero 1-9."
+    },
+    "honors": {
+      "title": "Mga Honor Tile",
+      "content": "Kasama sa mga honor tile ang mga Hangin (Silangan, Timog, Kanluran, Hilaga) at mga Dragon (Puti, Berde, Pula). Hindi maaaring bumuo ng sequence ang mga tile na ito, triplet lang."
+    },
+    "hands": {
+      "title": "Pagbuo ng mga Kamay",
+      "content1": "Ang panalong kamay ay binubuo ng 4 na grupo (meld) at 1 pares.",
+      "content2": "Ang mga grupo ay maaaring sequence (1-2-3) o triplet (3-3-3)."
+    },
+    "yaku": {
+      "title": "Yaku - Mga Pattern ng Pag-iskor",
+      "content1": "Ang mga yaku ay espesyal na pattern na nagpaparami ng iyong puntos. Bawat yaku ay may tier mula 1-4.",
+      "content2": "Mga halimbawa: Lahat Simple (walang terminal/honor), Lahat Triplet, Buong Flush (isang suit)."
+    },
+    "decrees": {
+      "title": "Mga Decree - Mga Modifier ng Panuntunan",
+      "content1": "Ang mga decree ay espesyal na kard na nagbabago ng mga panuntunan at nagpapataas ng iyong puntos.",
+      "content2": "Mangolekta ng makapangyarihang mga decree mula sa Bahay ng Tsaa (tindahan) sa pagitan ng mga round."
+    },
+    "scoring": {
+      "title": "Formula ng Pag-iskor",
+      "formula": "Puntos = (Base + Mga Bonus) × Mga Multiplier",
+      "content": "Maabot ang target na puntos sa bawat round para umusad. Ang mas mataas na akto ay nangangailangan ng mas mataas na puntos!"
+    },
+    "ready": {
+      "title": "Handa Ka Na!",
+      "content1": "Good luck sa iyong paglalakbay!",
+      "content2": "Pindutin ang MAGLARO para simulan ang iyong unang laro."
+    }
   },
   "accessibility": {
     "selectLanguage": "Pumili ng Wika",

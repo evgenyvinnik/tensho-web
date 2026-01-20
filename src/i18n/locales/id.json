@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Tutorial",
     "skip": "Lewati Tutorial",
-    "next": "Berikutnya",
+    "next": "Berikutnya →",
+    "prev": "← Kembali",
     "previous": "Sebelumnya",
-    "finish": "Selesai"
+    "finish": "Mulai Bermain!",
+    "welcome": {
+      "title": "Selamat Datang di Tensho!",
+      "content": "Tensho adalah permainan roguelike berdasarkan Mahjong Riichi Jepang. Tujuan Anda adalah membentuk tangan berskor dan mencapai skor target setiap ronde."
+    },
+    "tiles": {
+      "title": "Ubin Mahjong",
+      "content1": "Ada tiga jenis utama: Karakter (萬), Lingkaran (筒), dan Bambu (索), masing-masing bernomor 1-9."
+    },
+    "honors": {
+      "title": "Ubin Kehormatan",
+      "content": "Ubin kehormatan termasuk Angin (Timur, Selatan, Barat, Utara) dan Naga (Putih, Hijau, Merah). Ubin ini tidak bisa membentuk urutan, hanya triplet."
+    },
+    "hands": {
+      "title": "Membentuk Tangan",
+      "content1": "Tangan menang terdiri dari 4 grup (kombinasi) plus 1 pasangan.",
+      "content2": "Grup bisa berupa urutan (1-2-3) atau triplet (3-3-3)."
+    },
+    "yaku": {
+      "title": "Yaku - Pola Penilaian",
+      "content1": "Yaku adalah pola khusus yang mengalikan skor Anda. Setiap yaku memiliki tingkat 1-4.",
+      "content2": "Contoh: Semua Sederhana (tanpa terminal/kehormatan), Semua Triplet, Flush Penuh (satu jenis)."
+    },
+    "decrees": {
+      "title": "Dekrit - Pengubah Aturan",
+      "content1": "Dekrit adalah kartu khusus yang mengubah aturan dan meningkatkan skor Anda.",
+      "content2": "Kumpulkan dekrit kuat dari Rumah Teh (toko) antar ronde."
+    },
+    "scoring": {
+      "title": "Rumus Penilaian",
+      "formula": "Skor = (Dasar + Bonus) × Pengali",
+      "content": "Capai skor target setiap ronde untuk maju. Babak lebih tinggi memerlukan skor lebih tinggi!"
+    },
+    "ready": {
+      "title": "Anda Siap!",
+      "content1": "Semoga beruntung dalam perjalanan Anda!",
+      "content2": "Tekan MAIN untuk memulai permainan pertama Anda."
+    }
   },
   "accessibility": {
     "selectLanguage": "Pilih Bahasa",

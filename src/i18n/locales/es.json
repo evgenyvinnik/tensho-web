@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Tutorial",
     "skip": "Saltar Tutorial",
-    "next": "Siguiente",
+    "next": "Siguiente →",
+    "prev": "← Atrás",
     "previous": "Anterior",
-    "finish": "Finalizar"
+    "finish": "¡Comenzar a Jugar!",
+    "welcome": {
+      "title": "¡Bienvenido a Tensho!",
+      "content": "Tensho es un juego roguelike basado en el Mahjong Riichi japonés. Tu objetivo es formar manos puntuables y alcanzar la puntuación objetivo en cada ronda."
+    },
+    "tiles": {
+      "title": "Fichas de Mahjong",
+      "content1": "Hay tres palos principales: Caracteres (萬), Círculos (筒) y Bambúes (索), cada uno numerado del 1 al 9."
+    },
+    "honors": {
+      "title": "Fichas de Honor",
+      "content": "Las fichas de honor incluyen Vientos (Este, Sur, Oeste, Norte) y Dragones (Blanco, Verde, Rojo). Estas fichas no pueden formar secuencias, solo tripletes."
+    },
+    "hands": {
+      "title": "Formando Manos",
+      "content1": "Una mano ganadora consiste en 4 grupos (combinaciones) más 1 par.",
+      "content2": "Los grupos pueden ser secuencias (1-2-3) o tripletes (3-3-3)."
+    },
+    "yaku": {
+      "title": "Yaku - Patrones de Puntuación",
+      "content1": "Los yaku son patrones especiales que multiplican tu puntuación. Cada yaku tiene un nivel del 1 al 4.",
+      "content2": "Ejemplos: Todos Simples (sin terminales/honores), Todos Tripletes, Color Completo (un solo palo)."
+    },
+    "decrees": {
+      "title": "Decretos - Modificadores de Reglas",
+      "content1": "Los decretos son cartas especiales que modifican las reglas y aumentan tu puntuación.",
+      "content2": "Colecciona decretos poderosos en la Casa de Té (tienda) entre rondas."
+    },
+    "scoring": {
+      "title": "Fórmula de Puntuación",
+      "formula": "Puntuación = (Base + Bonos) × Multiplicadores",
+      "content": "Alcanza la puntuación objetivo en cada ronda para avanzar. ¡Los actos más altos requieren puntuaciones más altas!"
+    },
+    "ready": {
+      "title": "¡Estás Listo!",
+      "content1": "¡Buena suerte en tu viaje!",
+      "content2": "Presiona JUGAR para comenzar tu primera partida."
+    }
   },
   "accessibility": {
     "selectLanguage": "Seleccionar Idioma",

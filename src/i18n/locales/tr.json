@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Öğretici",
     "skip": "Öğreticiyi Atla",
-    "next": "İleri",
+    "next": "İleri →",
+    "prev": "← Geri",
     "previous": "Geri",
-    "finish": "Bitir"
+    "finish": "Oynamaya Başla!",
+    "welcome": {
+      "title": "Tensho'ya Hoş Geldiniz!",
+      "content": "Tensho, Japon Riichi Mahjong'u temel alan bir roguelike oyunudur. Amacınız puanlı eller oluşturmak ve her turda hedef puanı tutturmaktır."
+    },
+    "tiles": {
+      "title": "Mahjong Taşları",
+      "content1": "Üç ana seri vardır: Karakterler (萬), Daireler (筒) ve Bambular (索), her biri 1-9 arası numaralıdır."
+    },
+    "honors": {
+      "title": "Şeref Taşları",
+      "content": "Şeref taşları Rüzgarları (Doğu, Güney, Batı, Kuzey) ve Ejderhaları (Beyaz, Yeşil, Kırmızı) içerir. Bu taşlar seri oluşturamaz, sadece üçlü yapabilir."
+    },
+    "hands": {
+      "title": "El Oluşturma",
+      "content1": "Kazanan bir el 4 grup (kombinasyon) artı 1 çiftten oluşur.",
+      "content2": "Gruplar seri (1-2-3) veya üçlü (3-3-3) olabilir."
+    },
+    "yaku": {
+      "title": "Yaku - Puanlama Kalıpları",
+      "content1": "Yaku'lar puanınızı çoğaltan özel kalıplardır. Her yaku'nun 1-4 arası bir seviyesi vardır.",
+      "content2": "Örnekler: Tüm Basitler (uç/şeref yok), Tüm Üçlüler, Tam Renk (tek seri)."
+    },
+    "decrees": {
+      "title": "Kararnameler - Kural Değiştiriciler",
+      "content1": "Kararnameler kuralları değiştiren ve puanınızı artıran özel kartlardır.",
+      "content2": "Turlar arasında Çay Evi'nden (dükkan) güçlü kararnameler toplayın."
+    },
+    "scoring": {
+      "title": "Puanlama Formülü",
+      "formula": "Puan = (Taban + Bonuslar) × Çarpanlar",
+      "content": "İlerlemek için her turda hedef puanı tutturun. Daha yüksek perdeler daha yüksek puanlar gerektirir!"
+    },
+    "ready": {
+      "title": "Hazırsınız!",
+      "content1": "Yolculuğunuzda iyi şanslar!",
+      "content2": "İlk oyununuza başlamak için OYNA'ya basın."
+    }
   },
   "accessibility": {
     "selectLanguage": "Dil Seçin",

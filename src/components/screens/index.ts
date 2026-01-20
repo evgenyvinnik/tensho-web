@@ -6,10 +6,11 @@
 
 export {
   MenuScreen,
-  GameplayScreen,
-  ShopScreen,
   GameOverScreen,
 } from '../../App'
 
 // Standalone screen components
 export { AchievementsScreen } from './AchievementsScreen'
+export { GameplayScreen } from './GameplayScreen'
+export { SettingsScreen } from './SettingsScreen'
+export { ShopScreen } from './ShopScreen'

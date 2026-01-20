@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Tutorial",
     "skip": "Salta Tutorial",
-    "next": "Avanti",
+    "next": "Avanti →",
+    "prev": "← Indietro",
     "previous": "Indietro",
-    "finish": "Fine"
+    "finish": "Inizia a Giocare!",
+    "welcome": {
+      "title": "Benvenuto in Tensho!",
+      "content": "Tensho è un gioco roguelike basato sul Mahjong Riichi giapponese. Il tuo obiettivo è formare mani vincenti e raggiungere il punteggio obiettivo in ogni round."
+    },
+    "tiles": {
+      "title": "Tessere del Mahjong",
+      "content1": "Ci sono tre semi principali: Caratteri (萬), Cerchi (筒) e Bambù (索), ciascuno numerato da 1 a 9."
+    },
+    "honors": {
+      "title": "Tessere d'Onore",
+      "content": "Le tessere d'onore includono i Venti (Est, Sud, Ovest, Nord) e i Draghi (Bianco, Verde, Rosso). Queste tessere non possono formare sequenze, solo tris."
+    },
+    "hands": {
+      "title": "Formare Mani",
+      "content1": "Una mano vincente consiste in 4 gruppi (combinazioni) più 1 coppia.",
+      "content2": "I gruppi possono essere sequenze (1-2-3) o tris (3-3-3)."
+    },
+    "yaku": {
+      "title": "Yaku - Pattern di Punteggio",
+      "content1": "Gli yaku sono pattern speciali che moltiplicano il tuo punteggio. Ogni yaku ha un livello da 1 a 4.",
+      "content2": "Esempi: Tutti Semplici (senza terminali/onori), Tutti Tris, Colore Pieno (un solo seme)."
+    },
+    "decrees": {
+      "title": "Decreti - Modificatori di Regole",
+      "content1": "I decreti sono carte speciali che modificano le regole e aumentano il tuo punteggio.",
+      "content2": "Raccogli decreti potenti alla Casa del Tè (negozio) tra i round."
+    },
+    "scoring": {
+      "title": "Formula del Punteggio",
+      "formula": "Punteggio = (Base + Bonus) × Moltiplicatori",
+      "content": "Raggiungi il punteggio obiettivo in ogni round per avanzare. Gli atti più alti richiedono punteggi più alti!"
+    },
+    "ready": {
+      "title": "Sei Pronto!",
+      "content1": "Buona fortuna nel tuo viaggio!",
+      "content2": "Premi GIOCA per iniziare la tua prima partita."
+    }
   },
   "accessibility": {
     "selectLanguage": "Seleziona Lingua",
