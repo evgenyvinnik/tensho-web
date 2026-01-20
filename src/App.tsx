@@ -1,33 +1,266 @@
 /**
  * Tensho Mahjong Roguelike - Main Application Component
+ * Balatro-inspired menu with retro CRT aesthetics
  */
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useSpring, animated } from '@react-spring/web';
+import { useSpring, animated, useSprings } from '@react-spring/web';
 import { useTranslation } from 'react-i18next';
 import Button from './components/ui/Button';
 import { LanguageSelector } from './components/ui/LanguageSelector';
-import { menuAssets, preloadMenuAssets } from './utils/assets';
+import { getTileImagePath, preloadMenuAssets, preloadTileImages } from './utils/assets';
 import { useAudio } from './hooks/useAudio';
 import { useGameStore } from './stores/gameStore';
+import { TileSuit } from './core/Tile';
 
 const queryClient = new QueryClient();
 
-// Create animated div component for React 19 compatibility
+// Create animated components for React 19 compatibility
 const AnimatedDiv = animated('div');
+const AnimatedButton = animated('button');
 
 /**
  * Loading fallback for Suspense while i18n loads
  */
 function LoadingFallback() {
   return (
-    <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
+    <div className="viewport-full flex items-center justify-center bg-[#0a0a0f]">
       <div className="text-center">
-        <div className="w-16 h-16 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-[var(--color-beige-white)] text-lg font-ui">Loading...</p>
+        <div className="relative w-20 h-20 mx-auto mb-6">
+          <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin" />
+          <div className="absolute inset-2 border-4 border-[var(--color-vibrant-orange)] border-b-transparent rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }} />
+        </div>
+        <p className="text-[var(--color-golden-yellow)] text-lg font-ui neon-text-subtle">Loading...</p>
       </div>
     </div>
+  );
+}
+
+/**
+ * Floating tile configuration for background
+ */
+interface FloatingTile {
+  suit: TileSuit;
+  rank: number;
+  x: number;
+  y: number;
+  rotation: number;
+  scale: number;
+  delay: number;
+  duration: number;
+}
+
+/**
+ * Generate random floating tiles for background
+ */
+function generateFloatingTiles(count: number): FloatingTile[] {
+  const tiles: FloatingTile[] = [];
+  const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu, TileSuit.Dragon];
+
+  for (let i = 0; i < count; i++) {
+    const suit = suits[Math.floor(Math.random() * suits.length)];
+    const maxRank = suit === TileSuit.Dragon ? 3 : 9;
+
+    tiles.push({
+      suit,
+      rank: Math.floor(Math.random() * maxRank) + 1,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      rotation: (Math.random() - 0.5) * 30,
+      scale: 0.6 + Math.random() * 0.4,
+      delay: Math.random() * 2000,
+      duration: 4000 + Math.random() * 2000,
+    });
+  }
+
+  return tiles;
+}
+
+/**
+ * Floating Tiles Background Component
+ */
+function FloatingTilesBackground({ tiles }: { tiles: FloatingTile[] }) {
+  const springs = useSprings(
+    tiles.length,
+    tiles.map((tile) => ({
+      from: { y: 0, rotate: tile.rotation },
+      to: async (next: (props: object) => Promise<void>) => {
+        while (true) {
+          await next({ y: -20, rotate: tile.rotation + 5 });
+          await next({ y: 0, rotate: tile.rotation });
+        }
+      },
+      config: { duration: tile.duration },
+      delay: tile.delay,
+    }))
+  );
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {springs.map((spring, index) => {
+        const tile = tiles[index];
+        const imagePath = getTileImagePath(tile.suit, tile.rank);
+
+        return (
+          <AnimatedDiv
+            key={index}
+            className="absolute"
+            style={{
+              left: `${tile.x}%`,
+              top: `${tile.y}%`,
+              transform: spring.y.to(
+                (y) => `translateY(${y}px) rotate(${spring.rotate.get()}deg) scale(${tile.scale})`
+              ),
+              opacity: 0.15,
+              filter: 'blur(1px)',
+            }}
+          >
+            <img
+              src={imagePath}
+              alt=""
+              className="w-16 h-20 md:w-20 md:h-24 object-contain"
+              draggable={false}
+            />
+          </AnimatedDiv>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Featured Tiles Display - shows rotating dragon tiles in the center
+ */
+function FeaturedTiles({ show }: { show: boolean }) {
+  const featuredTiles = useMemo(
+    () => [
+      { suit: TileSuit.Dragon, rank: 1, label: 'White Dragon' },
+      { suit: TileSuit.Dragon, rank: 2, label: 'Green Dragon' },
+      { suit: TileSuit.Dragon, rank: 3, label: 'Red Dragon' },
+    ],
+    []
+  );
+
+  const springs = useSprings(
+    featuredTiles.length,
+    featuredTiles.map((_, index) => ({
+      from: { opacity: 0, scale: 0, rotate: -180 },
+      to: {
+        opacity: show ? 1 : 0,
+        scale: show ? 1 : 0,
+        rotate: show ? 0 : -180,
+      },
+      config: { tension: 150, friction: 12 },
+      delay: show ? 400 + index * 150 : 0,
+    }))
+  );
+
+  return (
+    <div className="flex items-center gap-4 md:gap-8">
+      {springs.map((spring, index) => {
+        const tile = featuredTiles[index];
+        const imagePath = getTileImagePath(tile.suit, tile.rank);
+
+        return (
+          <AnimatedDiv
+            key={index}
+            className="rotating-tile"
+            style={{
+              opacity: spring.opacity,
+              transform: spring.scale.to(
+                (s) => `scale(${s}) rotate(${spring.rotate.get()}deg)`
+              ),
+              filter:
+                'drop-shadow(0 0 20px var(--color-golden-yellow)) drop-shadow(0 0 40px rgba(255,87,34,0.5))',
+            }}
+          >
+            <img
+              src={imagePath}
+              alt={tile.label}
+              className="w-20 h-28 md:w-28 md:h-36 object-contain"
+              draggable={false}
+            />
+          </AnimatedDiv>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Neon Button Component for Balatro-style menu
+ */
+function NeonButton({
+  children,
+  onClick,
+  variant = 'primary',
+  delay = 0,
+  show = true,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+  delay?: number;
+  show?: boolean;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+
+  const spring = useSpring({
+    from: { opacity: 0, scale: 0.8, y: 30 },
+    to: {
+      opacity: show ? 1 : 0,
+      scale: show ? (isPressed ? 0.95 : isHovered ? 1.05 : 1) : 0.8,
+      y: show ? 0 : 30,
+    },
+    config: { tension: 200, friction: 15 },
+    delay: show ? delay : 0,
+  });
+
+  const isPrimary = variant === 'primary';
+  const baseColor = isPrimary
+    ? 'var(--color-vibrant-orange)'
+    : 'var(--color-forest-green)';
+  const glowColor = isPrimary
+    ? 'rgba(255, 87, 34, 0.6)'
+    : 'rgba(45, 95, 74, 0.6)';
+
+  return (
+    <AnimatedButton
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsPressed(false);
+      }}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onTouchStart={() => setIsPressed(true)}
+      onTouchEnd={() => setIsPressed(false)}
+      className={`
+        relative px-12 py-4 rounded-lg font-ui font-bold text-xl md:text-2xl
+        text-[var(--color-beige-white)] uppercase tracking-wider
+        border-2 transition-colors duration-200
+        ${isPrimary ? 'border-[var(--color-golden-yellow)]' : 'border-[var(--color-metallic-gold)]'}
+        ${isPrimary ? 'button-pulse' : ''}
+      `}
+      style={{
+        opacity: spring.opacity,
+        transform: spring.scale.to(
+          (s) => `scale(${s}) translateY(${spring.y.get()}px)`
+        ),
+        backgroundColor: baseColor,
+        boxShadow: isHovered
+          ? `0 0 30px ${glowColor}, 0 0 60px ${glowColor}, inset 0 0 20px rgba(255,255,255,0.1)`
+          : `0 0 15px ${glowColor}, 0 0 30px rgba(0,0,0,0.3)`,
+      }}
+    >
+      <span className="relative z-10 neon-text-subtle">{children}</span>
+      <div className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 shimmer opacity-30" />
+      </div>
+    </AnimatedButton>
   );
 }
 
