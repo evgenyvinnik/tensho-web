@@ -148,26 +148,35 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
         id: 'tiles',
         title: t('tutorial.tiles.title', 'Mahjong Tiles'),
         content: (
-          <div className="space-y-2">
-            <p>
-              {t(
-                'tutorial.tiles.content1',
-                'There are three main suits: Characters (萬), Circles (筒), and Bamboo (索), each numbered 1-9.'
-              )}
-            </p>
-            <p>
-              {t(
-                'tutorial.tiles.content2',
-                'Honor tiles include Winds (East, South, West, North) and Dragons (White, Green, Red).'
-              )}
-            </p>
-          </div>
+          <p>
+            {t(
+              'tutorial.tiles.content1',
+              'There are three main suits: Characters (萬), Circles (筒), and Bamboo (索), each numbered 1-9.'
+            )}
+          </p>
         ),
         showTiles: [
           { suit: TileSuit.Manzu, rank: 1 },
           { suit: TileSuit.Pinzu, rank: 5 },
           { suit: TileSuit.Souzu, rank: 9 },
+        ],
+      },
+      {
+        id: 'honors',
+        title: t('tutorial.honors.title', 'Honor Tiles'),
+        content: (
+          <p>
+            {t(
+              'tutorial.honors.content',
+              'Honor tiles include Winds (East, South, West, North) and Dragons (White, Green, Red). These tiles cannot form sequences, only triplets.'
+            )}
+          </p>
+        ),
+        showTiles: [
           { suit: TileSuit.Wind, rank: 1 },
+          { suit: TileSuit.Wind, rank: 2 },
+          { suit: TileSuit.Dragon, rank: 1 },
+          { suit: TileSuit.Dragon, rank: 3 },
         ],
       },
       {
@@ -314,59 +323,67 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
       title={currentStepData.title}
       showCloseButton={true}
       closeOnBackdrop={false}
-      className="w-[400px] md:w-[550px] lg:w-[650px] xl:w-[700px]"
+      className="w-[400px] md:w-[550px] lg:w-[650px] xl:w-[700px] min-h-[500px] md:min-h-[580px] lg:min-h-[650px]"
     >
-      {/* Step content */}
-      <TutorialStepContent step={currentStepData} />
+      {/* Flex container to pin controls at bottom */}
+      <div className="flex flex-col h-full min-h-[380px] md:min-h-[420px] lg:min-h-[480px]">
+        {/* Step content - scrollable area */}
+        <div className="flex-1 overflow-auto">
+          <TutorialStepContent step={currentStepData} />
+        </div>
 
-      {/* Progress dots */}
-      <div className="mt-6 mb-4">
-        <ProgressDots
-          total={steps.length}
-          current={currentStep}
-          onDotClick={handleDotClick}
-        />
+        {/* Fixed controls at bottom */}
+        <div className="flex-shrink-0 pt-6">
+          {/* Progress dots */}
+          <div className="mb-4">
+            <ProgressDots
+              total={steps.length}
+              current={currentStep}
+              onDotClick={handleDotClick}
+            />
+          </div>
+
+          {/* Navigation buttons */}
+          <div className="flex justify-between gap-4">
+            <button
+              onClick={handlePrev}
+              disabled={isFirstStep}
+              className={`
+                px-6 py-3 rounded-lg font-bold
+                border-2 border-[var(--color-metallic-gold)]
+                transition-all hover:scale-105 active:scale-95
+                ${
+                  isFirstStep
+                    ? 'bg-[var(--color-dark-forest)] text-[var(--color-metallic-gold)] opacity-50 cursor-not-allowed'
+                    : 'bg-[var(--color-forest-green)] text-[var(--color-beige-white)] hover:bg-[var(--color-dark-forest)]'
+                }
+              `}
+            >
+              {t('tutorial.prev', '← Back')}
+            </button>
+
+            <button
+              onClick={handleNext}
+              className="px-6 py-3 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
+                         text-[var(--color-beige-white)] font-bold rounded-lg
+                         border-2 border-[var(--color-golden-yellow)]
+                         transition-all hover:scale-105 active:scale-95"
+            >
+              {isLastStep ? t('tutorial.finish', 'Start Playing!') : t('tutorial.next', 'Next →')}
+            </button>
+          </div>
+
+          {/* Skip button */}
+          {!isLastStep && (
+            <button
+              onClick={handleClose}
+              className="w-full mt-4 py-2 text-[var(--color-metallic-gold)] text-sm hover:text-[var(--color-golden-yellow)] transition-colors"
+            >
+              {t('tutorial.skip', 'Skip Tutorial')}
+            </button>
+          )}
+        </div>
       </div>
-
-      {/* Navigation buttons */}
-      <div className="flex justify-between gap-4 mt-6">
-        <button
-          onClick={handlePrev}
-          disabled={isFirstStep}
-          className={`
-            px-6 py-3 rounded-lg font-bold
-            border-2 border-[var(--color-metallic-gold)]
-            transition-all hover:scale-105 active:scale-95
-            ${
-              isFirstStep
-                ? 'bg-[var(--color-dark-forest)] text-[var(--color-metallic-gold)] opacity-50 cursor-not-allowed'
-                : 'bg-[var(--color-forest-green)] text-[var(--color-beige-white)] hover:bg-[var(--color-dark-forest)]'
-            }
-          `}
-        >
-          {t('tutorial.prev', '← Back')}
-        </button>
-
-        <button
-          onClick={handleNext}
-          className="px-6 py-3 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
-                     text-[var(--color-beige-white)] font-bold rounded-lg
-                     border-2 border-[var(--color-golden-yellow)]
-                     transition-all hover:scale-105 active:scale-95"
-        >
-          {isLastStep ? t('tutorial.finish', 'Start Playing!') : t('tutorial.next', 'Next →')}
-        </button>
-      </div>
-
-      {/* Skip button */}
-      {!isLastStep && (
-        <button
-          onClick={handleClose}
-          className="w-full mt-4 py-2 text-[var(--color-metallic-gold)] text-sm hover:text-[var(--color-golden-yellow)] transition-colors"
-        >
-          {t('tutorial.skip', 'Skip Tutorial')}
-        </button>
-      )}
     </Popup>
   )
 }

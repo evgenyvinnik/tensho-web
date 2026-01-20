@@ -325,6 +325,20 @@ export function MenuScreen() {
   })
 
   const handlePlay = () => {
+    // Show tutorial for first-time users
+    if (!tutorial.hasCompleted) {
+      tutorial.open()
+      return
+    }
+    audio.play()
+    startNewRun()
+    setPhase('gameplay')
+    navigateTo(ROUTES.PLAY)
+  }
+
+  // Called when tutorial is completed - start the game
+  const handleTutorialComplete = () => {
+    tutorial.complete()
     audio.play()
     startNewRun()
     setPhase('gameplay')
@@ -470,7 +484,7 @@ export function MenuScreen() {
       <Tutorial
         isOpen={tutorial.isOpen}
         onClose={tutorial.close}
-        onComplete={tutorial.complete}
+        onComplete={handleTutorialComplete}
       />
 
       {/* CRT Effects - adjusted for green background */}

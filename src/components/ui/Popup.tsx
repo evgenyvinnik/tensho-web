@@ -139,7 +139,7 @@ export function Popup({
       onClick={(e) => e.stopPropagation()}
     >
       {/* Inner container with padding for scroll background */}
-      <div className="p-6 pt-8 pb-8 px-8 md:px-10 overflow-auto max-h-[85vh]">
+      <div className="p-6 pt-12 pb-12 px-20 md:px-24 lg:px-28 overflow-auto max-h-[85vh]">
         {/* Header */}
         {(title || showCloseButton) && (
           <div className="flex items-center justify-between mb-4">
@@ -151,13 +151,16 @@ export function Popup({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-[var(--color-forest-green)] transition-colors
-                           text-[var(--color-beige-white)] hover:text-[var(--color-golden-yellow)]
-                           min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)]
+                           border-2 border-[var(--color-metallic-gold)] hover:border-[var(--color-golden-yellow)]
+                           text-[var(--color-beige-white)] hover:text-white
+                           transition-all hover:scale-110 active:scale-95
+                           min-w-[44px] min-h-[44px] flex items-center justify-center
+                           shadow-md"
                 aria-label="Close"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             )}

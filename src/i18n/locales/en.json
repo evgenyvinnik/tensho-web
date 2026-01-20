@@ -186,9 +186,47 @@
   "tutorial": {
     "title": "Tutorial",
     "skip": "Skip Tutorial",
-    "next": "Next",
+    "next": "Next →",
+    "prev": "← Back",
     "previous": "Previous",
-    "finish": "Finish"
+    "finish": "Start Playing!",
+    "welcome": {
+      "title": "Welcome to Tensho!",
+      "content": "Tensho is a roguelike game built around Japanese Riichi Mahjong. Your goal is to build scoring hands and reach the target score each round."
+    },
+    "tiles": {
+      "title": "Mahjong Tiles",
+      "content1": "There are three main suits: Characters (萬), Circles (筒), and Bamboo (索), each numbered 1-9."
+    },
+    "honors": {
+      "title": "Honor Tiles",
+      "content": "Honor tiles include Winds (East, South, West, North) and Dragons (White, Green, Red). These tiles cannot form sequences, only triplets."
+    },
+    "hands": {
+      "title": "Building Hands",
+      "content1": "A winning hand consists of 4 groups (melds) plus 1 pair.",
+      "content2": "Groups can be sequences (1-2-3) or triplets (3-3-3)."
+    },
+    "yaku": {
+      "title": "Yaku - Scoring Patterns",
+      "content1": "Yaku are special patterns that multiply your score. Each yaku has a tier from 1-4.",
+      "content2": "Examples: All Simples (no terminals/honors), All Triplets, Full Flush (single suit)."
+    },
+    "decrees": {
+      "title": "Decrees - Rule Modifiers",
+      "content1": "Decrees are special cards that modify the rules and boost your score.",
+      "content2": "Collect powerful decrees from the Tea House (shop) between rounds."
+    },
+    "scoring": {
+      "title": "Scoring Formula",
+      "formula": "Score = (Base + Bonuses) × Multipliers",
+      "content": "Reach the target score each round to advance. Higher acts require higher scores!"
+    },
+    "ready": {
+      "title": "You're Ready!",
+      "content1": "Good luck on your journey!",
+      "content2": "Press PLAY to begin your first run."
+    }
   },
   "accessibility": {
     "selectLanguage": "Select Language",
