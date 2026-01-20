@@ -75,7 +75,9 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 
 ## 🎯 Implementation Priorities
 
-### Phase 1: Core Prototype (MVP)
+> **Note:** This project was migrated from Unity to React/TypeScript. Status reflects the current web codebase.
+
+### Phase 1: Core Prototype (MVP) ✅
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
@@ -87,44 +89,43 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 | **P0** | Round Loop | Draw/discard cycle, round completion | ✅ Complete |
 | **P0** | Basic UI | Hand display, wall, discard area | ✅ Complete |
 
-### Phase 2: Roguelike Structure
+### Phase 2: Roguelike Structure (Partial)
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
 | **P1** | Run/Act/Round Structure | Session progression with score targets | ✅ Complete |
 | **P1** | Full Yaku System | All 4 tiers including yakuman | ✅ Complete |
 | **P1** | Decree System (Basic) | 3-5 starter decrees for rule-bending | ✅ Complete |
-| **P1** | Shop System | Between-round decree acquisition | ✅ Complete |
+| **P1** | Shop System | Between-round decree acquisition | ⚠️ UI only (no shop logic) |
 | **P1** | Difficulty Scaling | Increasing score requirements per act | ✅ Complete |
 
-### Phase 3: Full Systems
+### Phase 3: Full Systems (Not Started)
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
 | **P2** | Flowers System | Persistent run-wide modifiers | ✅ Complete |
 | **P2** | Seasons System | Round-scoped rule mutations | ✅ Complete |
-| **P2** | Full Decree Library | All 5 decree categories | ✅ Complete |
-| **P2** | Corrupted Seasons | Late-game negative modifiers | ✅ Complete |
-| **P2** | Flower-Decree Interactions | Cross-system synergies | ✅ Complete |
+| **P2** | Full Decree Library | All 150+ decree definitions | ⬜ Not Started |
+| **P2** | Tile Marks System | Card modifiers (Enhancements/Seals/Editions) | ⬜ Not Started |
+| **P2** | Consumables | Fate Seals, Celestial Orbs, Void Scripts | ⬜ Not Started |
 
-### Phase 4: Meta & Polish
+### Phase 4: Meta & Polish (Partial)
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
-| **P3** | Meta-Progression | Persistent unlocks across runs | ✅ Complete |
-| **P3** | Table Styles | Unlockable table themes with starting modifiers | ✅ Complete |
+| **P3** | Meta-Progression | Persistent unlocks across runs | ⬜ Not Started |
+| **P3** | Table Stakes | Difficulty tier system | ⬜ Not Started |
+| **P3** | Table Styles/Walls | Unlockable deck variants | ⬜ Not Started |
 | **P3** | Red Fives | Optional tile variants | ⬜ Not Started |
-| **P3** | Advanced Decrees | Rare/Mythic tier decrees | ✅ Complete |
 | **P3** | Tutorial System | Progressive complexity disclosure | ✅ Complete |
-| **P3** | Audio/VFX Polish | Feedback and juice | ✅ Complete |
+| **P3** | Audio/VFX Polish | Feedback and juice | ⚠️ Partial |
 
-### Phase 5: Monetization & Localization
+### Phase 5: Platform & Localization ✅
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
-| **P4** | Unity Ads Integration | Interstitial ads after each Act | ✅ Complete |
-| **P4** | IAP System | Remove ads purchase ($1.99) | ✅ Complete |
-| **P4** | Localization Framework | Multi-language support | ✅ Complete |
+| **P4** | PWA Support | Offline-first Progressive Web App | ✅ Complete |
+| **P4** | Localization Framework | 13 languages (i18next) | ✅ Complete |
 | **P4** | Achievement System | Progress tracking and unlocks | ✅ Complete |
 
 ---
@@ -959,15 +960,71 @@ TableStyle {
 
 ---
 
-## 📌 Next Steps
+## 📌 Implementation Status Summary
 
-1. ⬜ Implement Tile and Wall systems
-2. ⬜ Build Hand parsing and validation
-3. ⬜ Create Shanten calculator
-4. ⬜ Implement Tier 1 Yaku detection
-5. ⬜ Build basic scoring engine
-6. ⬜ Create minimal playable round loop
-7. ⬜ Design basic UI for hand/wall/discard
+> **Note:** This project has been migrated from Unity to React/TypeScript. The implementation status below reflects the current web codebase.
+
+### Core Systems (Implemented ✅)
+
+| System | Location | Status |
+|--------|----------|--------|
+| Tile Engine | `src/core/Tile.ts` | ✅ Complete |
+| Hand/Meld System | `src/core/Hand.ts`, `src/core/Meld.ts` | ✅ Complete |
+| Wall System | `src/core/Wall.ts` | ✅ Complete |
+| Shanten Calculator | `src/rules/ShantenCalculator.ts` | ✅ Complete |
+| Yaku Detection | `src/rules/YakuDetector.ts` | ✅ Complete |
+| Scoring Engine | `src/rules/ScoringEngine.ts` | ✅ Complete |
+| Game Orchestrator | `src/game/GameOrchestrator.ts` | ✅ Complete |
+| Round Manager | `src/systems/RoundManager.ts` | ✅ Complete |
+| Decree System (Basic) | `src/systems/DecreeSystem.ts` | ✅ Complete |
+| Flower System | `src/systems/FlowerSystem.ts` | ✅ Complete |
+| Season System | `src/systems/SeasonSystem.ts` | ✅ Complete |
+| Debuff System | `src/game/DebuffSystem.ts` | ✅ Complete |
+| Event Bus | `src/game/EventBus.ts` | ✅ Complete |
+
+### Roguelike Systems (Not Implemented ❌)
+
+These systems are **fully documented** but not yet implemented:
+
+| Balatro Equivalent | Tensho System | Status |
+|--------------------|---------------|--------|
+| Card Modifiers | **Tile Marks** (Enhancements, Seals, Editions) | ❌ Not implemented |
+| Tarot Cards | **Fate Seals** | ❌ Not implemented |
+| Planet Cards | **Celestial Orbs** | ❌ Not implemented |
+| Spectral Cards | **Void Scripts** | ❌ Not implemented |
+| Vouchers | **Imperial Charters** | ❌ Not implemented |
+| Booster Packs | **Blessing Packs** | ❌ Not implemented |
+| Tags | **Omen Tags** | ❌ Not implemented |
+| Stakes | **Table Stakes** | ❌ Not implemented |
+| Boss Blind Effects | **Boss Mandate Effects** | ❌ Not implemented |
+| The Shop | **Tea House** | ❌ Not implemented |
+| Decks | **Walls/Table Styles** | ❌ Not implemented |
+| Stickers | **Stickers** | ❌ Not implemented |
+| Collection | **Archive of Hands** | ❌ Not implemented |
+
+### UI/Screens (Partial)
+
+| Component | Status |
+|-----------|--------|
+| Gameplay Screen | ✅ Implemented |
+| Menu Screen | ✅ Implemented |
+| Shop Screen | ⚠️ Basic shell only |
+| Settings Screen | ✅ Implemented |
+| Tutorial System | ✅ Implemented |
+| Tile Components | ✅ Implemented |
+| Hand Display | ✅ Implemented |
+
+### State Management (Implemented ✅)
+
+| Store | Location | Status |
+|-------|----------|--------|
+| Game Store | `src/stores/gameStore.ts` | ✅ Complete |
+| Hand Store | `src/stores/handStore.ts` | ✅ Complete |
+| Wall Store | `src/stores/wallStore.ts` | ✅ Complete |
+| Decree Store | `src/stores/decreeStore.ts` | ✅ Complete |
+| Flora Store | `src/stores/floraStore.ts` | ✅ Complete |
+| Settings Store | `src/stores/settingsStore.ts` | ✅ Complete |
+| Achievement Store | `src/stores/achievementStore.ts` | ✅ Complete |
 
 ---
 
@@ -1090,35 +1147,69 @@ This section defines original, mahjong-themed analogs to several Balatro mechani
 
 ---
 
-## 📦 System Implementation Status (Phase 3)
+## 📦 Balatro Analog Systems - Implementation Roadmap
 
-**ScriptableObjects (Data Models)**
-- ✅ Assets/Scripts/Systems/FateSealDefinition.cs
-- ✅ Assets/Scripts/Systems/CelestialOrbDefinition.cs
-- ✅ Assets/Scripts/Systems/VoidScriptDefinition.cs
-- ✅ Assets/Scripts/Systems/ImperialCharterDefinition.cs
-- ✅ Assets/Scripts/Systems/TileMarkDefinition.cs
-- ✅ Assets/Scripts/Systems/BlessingPackDefinition.cs
-- ✅ Assets/Scripts/Systems/OmenTagDefinition.cs
-- ✅ Assets/Scripts/Systems/MandateDefinition.cs
+> The following systems are **fully designed** (see sections above and ITEM_LIBRARIES.md) but require TypeScript implementation.
 
-**Runtime Systems (Logic)**
-- ✅ Assets/Scripts/GameFlow/RunManager.cs (Manages Mandates, Inventory, State)
-- ⬜ Assets/Scripts/Systems/FateSealSystem.cs
-- ⬜ Assets/Scripts/Systems/CelestialOrbSystem.cs
-- ⬜ Assets/Scripts/Systems/VoidScriptSystem.cs
-- ⬜ Assets/Scripts/Systems/CharterSystem.cs
-- ⬜ Assets/Scripts/Systems/TileMarkSystem.cs
-- ⬜ Assets/Scripts/Systems/BlessingPackSystem.cs
-- ⬜ Assets/Scripts/Systems/OmenTagSystem.cs
+### Priority 1: Tile Marks System (Card Modifiers)
 
-**UI (Presentation)**
-- ⬜ Assets/Scripts/UI/Components/FateSealCardUI.cs
-- ⬜ Assets/Scripts/UI/Components/CelestialOrbUI.cs
-- ⬜ Assets/Scripts/UI/Components/VoidScriptUI.cs
-- ⬜ Assets/Scripts/UI/Components/CharterUI.cs
-- ⬜ Assets/Scripts/UI/Components/OmenTagUI.cs
-- ⬜ Assets/Scripts/UI/Screens/MandateUI.cs
+**Required files to create:**
+- `src/core/TileModifiers.ts` — Types for Enhancement, Seal, Edition
+- `src/systems/TileMarkSystem.ts` — Apply/remove marks, scoring integration
+- `src/components/tiles/MarkedTile.tsx` — Visual display of marked tiles
+
+**Integration points:**
+- Extend `Tile` class or create `MarkedTile` wrapper
+- Integrate with `ScoringEngine.ts` for bonus calculations
+- Integrate with `DebuffSystem.ts` (debuffed tiles don't trigger marks)
+
+### Priority 2: Consumables (Fate Seals, Celestial Orbs, Void Scripts)
+
+**Required files to create:**
+- `src/systems/ConsumableSystem.ts` — Base consumable management
+- `src/systems/FateSealSystem.ts` — Tarot-equivalent effects
+- `src/systems/CelestialOrbSystem.ts` — Planet-equivalent yaku upgrades
+- `src/systems/VoidScriptSystem.ts` — Spectral-equivalent risky effects
+- `src/stores/consumableStore.ts` — Consumable inventory state
+- `src/components/ui/ConsumableCard.tsx` — UI for consumables
+
+### Priority 3: Shop System (Tea House)
+
+**Required files to create:**
+- `src/systems/TeaHouseSystem.ts` — Item generation, pricing, rerolls
+- `src/systems/PricingCalculator.ts` — Cost formulas with discounts
+- `src/stores/shopStore.ts` — Shop state management
+- `src/components/screens/ShopScreen.tsx` — Full shop UI (currently stub)
+
+### Priority 4: Imperial Charters (Vouchers)
+
+**Required files to create:**
+- `src/systems/CharterSystem.ts` — Permanent upgrade management
+- `src/stores/charterStore.ts` — Owned charters state
+
+### Priority 5: Blessing Packs (Booster Packs)
+
+**Required files to create:**
+- `src/systems/BlessingPackSystem.ts` — Pack generation and opening
+- `src/components/ui/PackOpening.tsx` — Pack opening UI/animation
+
+### Priority 6: Omen Tags
+
+**Required files to create:**
+- `src/systems/OmenTagSystem.ts` — Tag rewards for skipping
+- `src/stores/omenStore.ts` — Active tags state
+
+### Priority 7: Table Stakes (Difficulty Tiers)
+
+**Required files to create:**
+- `src/systems/TableStakeSystem.ts` — Stake modifiers and unlocks
+- Extend `RoundManager.ts` with stake-based scaling
+
+### Priority 8: Boss Mandate Effects
+
+**Required files to create:**
+- `src/systems/MandateEffectSystem.ts` — Apply mandate restrictions
+- Integrate with `GameOrchestrator.ts` round flow
 
 ---
 
@@ -1935,93 +2026,6 @@ Accolades are permanent badges earned by meeting specific conditions. Some unloc
 - Accolades cannot be earned during Challenge Runs (except Rule Bender/Breaker)
 - Accolades can be earned after winning a run (continue playing to reach score targets)
 - Some accolades share unlock conditions with specific items
-
----
-
-## 📦 Meta Implementation Status (Phase 4)
-
-**ScriptableObjects**
-- ✅ Assets/Scripts/Systems/TableStakeDefinition.cs
-- ✅ Assets/Scripts/Systems/CourtExchangeDefinition.cs
-- ⬜ Assets/Scripts/Systems/ArchiveEntryDefinition.cs
-
-**Runtime Systems**
-- ⬜ Assets/Scripts/Systems/TableStakeSystem.cs
-- ✅ Assets/Scripts/Systems/Shop/CourtExchangeSystem.cs
-- ⬜ Assets/Scripts/Systems/ArchiveSystem.cs
-- ⬜ Assets/Scripts/Meta/AccoladeManager.cs
-
-**UI**
-- ⬜ Assets/Scripts/UI/Screens/TableStakeSelectUI.cs
-- ⬜ Assets/Scripts/UI/Screens/CourtExchangeUI.cs
-- ⬜ Assets/Scripts/UI/Screens/ArchiveUI.cs
-- ⬜ Assets/Scripts/UI/Components/ArchiveItemUI.cs
-
----
-
-## 📦 Core Mechanics Implementation Status (Phase 5)
-
-**ScriptableObjects (Data Models)**
-- ⬜ Assets/Scripts/Core/TileEditionDefinition.cs
-- ⬜ Assets/Scripts/Systems/StickerDefinition.cs
-- ⬜ Assets/Scripts/Systems/MandateDefinition.cs (Boss Blinds)
-- ⬜ Assets/Scripts/Systems/NegativeEffectDefinition.cs
-
-**Runtime Systems (Logic)**
-- ⬜ Assets/Scripts/Rules/ScoringFormulaEngine.cs
-- ⬜ Assets/Scripts/Rules/ActivationSequencer.cs
-- ⬜ Assets/Scripts/Rules/RetriggerSystem.cs
-- ⬜ Assets/Scripts/Systems/DiscardManager.cs
-- ⬜ Assets/Scripts/Systems/InterestCalculator.cs
-- ⬜ Assets/Scripts/Systems/NegativeEffectSystem.cs
-- ⬜ Assets/Scripts/Systems/StickerSystem.cs
-- ⬜ Assets/Scripts/Systems/SkipRoundSystem.cs
-- ⬜ Assets/Scripts/Systems/MandateSystem.cs
-- ⬜ Assets/Scripts/Systems/TileEditionSystem.cs
-
-**UI (Presentation)**
-- ⬜ Assets/Scripts/UI/Components/StickerDisplayUI.cs
-- ⬜ Assets/Scripts/UI/Components/EditionDisplayUI.cs
-- ⬜ Assets/Scripts/UI/Components/NegativeEffectOverlay.cs
-- ⬜ Assets/Scripts/UI/Components/MandateDisplayUI.cs
-- ⬜ Assets/Scripts/UI/Screens/SkipRoundUI.cs
-
----
-
-## 📦 Meta Systems Implementation Status (Phase 6)
-
-**ScriptableObjects (Data Models)**
-- ⬜ Assets/Scripts/Systems/ImperialCharterDefinition.cs
-- ⬜ Assets/Scripts/Systems/BlessingPackDefinition.cs
-- ⬜ Assets/Scripts/Systems/AccoladeDefinition.cs
-- ⬜ Assets/Scripts/Systems/ArchiveCategoryDefinition.cs
-
-**Runtime Systems (Logic)**
-- ⬜ Assets/Scripts/Systems/Shop/TeaHouseManager.cs
-- ⬜ Assets/Scripts/Systems/Shop/RerollSystem.cs
-- ⬜ Assets/Scripts/Systems/Shop/PricingCalculator.cs
-- ⬜ Assets/Scripts/Systems/Shop/ItemWeightSystem.cs
-- ⬜ Assets/Scripts/Systems/BlessingPackSystem.cs
-- ⬜ Assets/Scripts/Systems/ImperialCharterSystem.cs
-- ⬜ Assets/Scripts/Meta/ArchiveManager.cs
-- ⬜ Assets/Scripts/Meta/AccoladeTracker.cs
-- ⬜ Assets/Scripts/Meta/DiscoverySystem.cs
-- ⬜ Assets/Scripts/Meta/UnlockConditionEvaluator.cs
-- ⬜ Assets/Scripts/Meta/StakeProgressionSystem.cs
-
-**UI (Presentation)**
-- ⬜ Assets/Scripts/UI/Screens/TeaHouseUI.cs
-- ⬜ Assets/Scripts/UI/Screens/BlessingPackUI.cs
-- ⬜ Assets/Scripts/UI/Screens/ImperialCharterUI.cs
-- ⬜ Assets/Scripts/UI/Screens/ArchiveUI.cs
-- ⬜ Assets/Scripts/UI/Screens/AccoladeUI.cs
-- ⬜ Assets/Scripts/UI/Screens/StakeSelectUI.cs
-- ⬜ Assets/Scripts/UI/Components/ShopItemUI.cs
-- ⬜ Assets/Scripts/UI/Components/PackContentsUI.cs
-- ⬜ Assets/Scripts/UI/Components/CharterDisplayUI.cs
-- ⬜ Assets/Scripts/UI/Components/ArchiveEntryUI.cs
-- ⬜ Assets/Scripts/UI/Components/AccoladeBadgeUI.cs
-- ⬜ Assets/Scripts/UI/Components/StakeProgressUI.cs
 
 ---
 

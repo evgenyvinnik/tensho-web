@@ -9,12 +9,18 @@
  * - Simples (2-8): 5 points each
  * - Honors: 15 points each
  * - Pair: +10, Sequence: +20, Triplet: +30, Quad: +50
+ *
+ * Tile modifiers add:
+ * - Enhancement chips/mult (Bonus: +30, Mult: +4, etc.)
+ * - Edition chips/mult (Foil: +50, Holo: +10, Poly: x1.5)
+ * - Seal effects (Gold: ¥3, Red: retrigger, etc.)
  */
 
-import { Tile, WindType } from '../core/Tile'
+import { Tile, WindType, EnhancementType, EditionType } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
 import { DetectedYaku, YakuContext, detectYaku, calculateYakuMultiplier } from './YakuDetector'
+import { tileModifierSystem } from '../systems/TileModifierSystem'
 
 /**
  * Detailed score breakdown
@@ -25,12 +31,26 @@ export interface ScoreBreakdown {
   tilePoints: number
   structurePoints: number
 
+  // Tile modifier bonuses
+  modifierChips: number
+  modifierMult: number
+  modifierMultiplier: number
+
   // Yaku
   detectedYaku: DetectedYaku[]
   yakuMultiplier: number
 
-  // Bonuses
+  // Bonuses from game systems
   additiveBonus: number
+
+  // Retrigger info
+  retriggeredTiles: string[]
+
+  // Shattered tiles (Glass)
+  shatteredTiles: string[]
+
+  // Gold earned from modifiers
+  goldEarned: number
 
   // Final
   subtotal: number
@@ -130,7 +150,23 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     context.parsedHand
   )
 
-  // 2. Create yaku context and detect yaku
+  // 2. Calculate modifier bonuses from played tiles
+  const modifierResult = tileModifierSystem.scoreTilesWithModifiers(context.tiles, 'played')
+  const modifierChips = modifierResult.totalChips
+  const modifierMult = modifierResult.totalMult
+  const modifierMultiplier = modifierResult.totalMultiplier
+  const goldEarned = modifierResult.totalGold
+  const shatteredTiles = modifierResult.shatteredTileIds
+
+  // Track retriggered tiles (Red Seal)
+  const retriggeredTiles: string[] = []
+  for (const tile of context.tiles) {
+    if (tile.retriggers > 0) {
+      retriggeredTiles.push(tile.id)
+    }
+  }
+
+  // 3. Create yaku context and detect yaku
   const yakuContext: YakuContext = {
     tiles: context.tiles,
     parsedHand: context.parsedHand,
@@ -145,14 +181,14 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   const detectedYaku = detectYaku(yakuContext)
 
-  // 3. Calculate yaku multiplier (multiplicative stacking)
+  // 4. Calculate yaku multiplier (multiplicative stacking)
   const yakuMultiplier = calculateYakuMultiplier(detectedYaku)
 
-  // 4. Apply additional bonuses from game systems
-  const additiveBonus = context.additiveBonus ?? 0
-  const multiplicativeBonus = context.multiplicativeBonus ?? 1
+  // 5. Apply additional bonuses from game systems
+  const additiveBonus = (context.additiveBonus ?? 0) + modifierChips + modifierMult
+  const multiplicativeBonus = (context.multiplicativeBonus ?? 1) * modifierMultiplier
 
-  // 5. Calculate final score
+  // 6. Calculate final score
   // Formula: Final Score = (Base Points + Additive Bonuses) x Multiplicative Multipliers
   const subtotal = basePoints + additiveBonus
   const finalScore = Math.floor(subtotal * yakuMultiplier * multiplicativeBonus)
@@ -161,9 +197,15 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     basePoints,
     tilePoints,
     structurePoints,
+    modifierChips,
+    modifierMult,
+    modifierMultiplier,
     detectedYaku,
     yakuMultiplier,
     additiveBonus,
+    retriggeredTiles,
+    shatteredTiles,
+    goldEarned,
     subtotal,
     finalScore,
   }
@@ -223,6 +265,21 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
   lines.push(`Base Points: ${breakdown.basePoints}`)
   lines.push('')
 
+  // Modifier bonuses
+  if (breakdown.modifierChips > 0 || breakdown.modifierMult > 0 || breakdown.modifierMultiplier !== 1) {
+    lines.push('Tile Modifiers:')
+    if (breakdown.modifierChips > 0) {
+      lines.push(`  Bonus Chips: +${breakdown.modifierChips}`)
+    }
+    if (breakdown.modifierMult > 0) {
+      lines.push(`  Bonus Mult: +${breakdown.modifierMult}`)
+    }
+    if (breakdown.modifierMultiplier !== 1) {
+      lines.push(`  Mult Multiplier: x${breakdown.modifierMultiplier.toFixed(2)}`)
+    }
+    lines.push('')
+  }
+
   if (breakdown.detectedYaku.length > 0) {
     lines.push('Yaku:')
     for (const yaku of breakdown.detectedYaku) {
@@ -238,6 +295,24 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
 
   lines.push(`Subtotal: ${breakdown.subtotal}`)
   lines.push('')
+
+  // Retriggers and special effects
+  if (breakdown.retriggeredTiles.length > 0) {
+    lines.push(`Retriggered Tiles: ${breakdown.retriggeredTiles.length}`)
+  }
+
+  if (breakdown.shatteredTiles.length > 0) {
+    lines.push(`Shattered Tiles: ${breakdown.shatteredTiles.length}`)
+  }
+
+  if (breakdown.goldEarned > 0) {
+    lines.push(`Gold Earned: ¥${breakdown.goldEarned}`)
+  }
+
+  if (breakdown.retriggeredTiles.length > 0 || breakdown.shatteredTiles.length > 0 || breakdown.goldEarned > 0) {
+    lines.push('')
+  }
+
   lines.push(`FINAL SCORE: ${breakdown.finalScore}`)
 
   return lines.join('\n')

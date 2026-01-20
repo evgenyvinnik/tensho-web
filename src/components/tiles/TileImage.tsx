@@ -4,9 +4,10 @@
  */
 
 import React, { useState } from 'react';
-import { Tile, TileSuit } from '../../core/Tile';
+import { Tile, TileSuit, EnhancementType, SealType, EditionType } from '../../core/Tile';
 import { getTileImagePath, getTileBackPath } from '../../utils/assets';
 import { tileSizes } from '../../styles/theme';
+import { ModifierOverlay } from '../ui/TileModifierDisplay';
 
 export type TileSize = 'small' | 'medium' | 'large' | 'xlarge';
 
