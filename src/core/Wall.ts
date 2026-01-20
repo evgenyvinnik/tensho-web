@@ -10,7 +10,6 @@
 import {
   Tile,
   createStandardTileSet,
-  createBonusTileSet,
   createFullTileSet,
 } from './Tile'
 

@@ -8,7 +8,7 @@
  */
 
 import { Tile, TileSuit, countTilesByType } from './Tile'
-import { Meld, MeldType } from './Meld'
+import { Meld } from './Meld'
 
 export interface HandState {
   tiles: Tile[] // Concealed tiles in hand

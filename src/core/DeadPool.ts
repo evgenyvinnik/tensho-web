@@ -108,12 +108,12 @@ export class DeadPool {
     const counts = this.getDiscardCounts()
     const fullyDiscarded: Array<{ suit: TileSuit; rank: number }> = []
 
-    for (const [key, count] of counts) {
+    counts.forEach((count, key) => {
       if (count >= 4) {
         const [suit, rank] = key.split('-')
         fullyDiscarded.push({ suit: suit as TileSuit, rank: parseInt(rank) })
       }
-    }
+    })
 
     return fullyDiscarded
   }
