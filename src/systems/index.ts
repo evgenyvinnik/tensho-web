@@ -751,3 +751,46 @@ export {
   // Event processing
   processProgressionEvent,
 } from './MetaProgressionSystem'
+
+// =============================================================================
+// AUDIO SYSTEM
+// =============================================================================
+
+export {
+  // Class
+  AudioSystem,
+  // Singleton
+  audioSystem,
+  // Convenience functions
+  playSFX,
+  TileSFX,
+  UISFX,
+  FeedbackSFX,
+} from './AudioSystem'
+
+// =============================================================================
+// VFX SYSTEM
+// =============================================================================
+
+export {
+  // Class
+  VFXSystem,
+  // Singleton
+  vfxSystem,
+  // Presets
+  SHAKE_PRESETS,
+  FLASH_PRESETS,
+  PARTICLE_PRESETS,
+  // Convenience functions
+  screenShake,
+  screenFlash,
+  particleBurst,
+  showScorePopup,
+  // Types
+  type ShakeIntensity,
+  type ShakeConfig,
+  type FlashConfig,
+  type ParticleBurstConfig,
+  type ScorePopupConfig,
+  type VFXSystemState,
+} from './VFXSystem'

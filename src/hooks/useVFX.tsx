@@ -29,13 +29,8 @@ import { ANIMATION_COLORS, ANIMATION_Z_INDEX, DURATIONS } from '../animations/co
 // TYPES
 // =============================================================================
 
-interface VFXState {
-  shakeOffset: { x: number; y: number };
-  flashActive: boolean;
-  flashConfig: FlashConfig | null;
-  particles: Array<ParticleBurstConfig & { id: string }>;
-  popups: Array<ScorePopupConfig & { id: string }>;
-}
+// VFXState is used for reference but not directly instantiated
+// Kept for documentation of the state shape
 
 interface VFXContextValue {
   // Trigger methods

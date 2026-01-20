@@ -142,6 +142,69 @@ export class Tile implements TileData {
   }
 
   /**
+   * Returns true if this is a flower tile
+   */
+  get isFlower(): boolean {
+    return this.suit === TileSuit.Flower
+  }
+
+  /**
+   * Returns true if this is a season tile
+   */
+  get isSeason(): boolean {
+    return this.suit === TileSuit.Season
+  }
+
+  /**
+   * Returns the FlowerType if this is a flower tile, undefined otherwise
+   */
+  get flowerType(): FlowerType | undefined {
+    if (this.suit !== TileSuit.Flower) return undefined
+    return this.rank as FlowerType
+  }
+
+  /**
+   * Returns the SeasonType if this is a season tile, undefined otherwise
+   */
+  get seasonType(): SeasonType | undefined {
+    if (this.suit !== TileSuit.Season) return undefined
+    return this.rank as SeasonType
+  }
+
+  /**
+   * Returns a human-readable display name for the tile
+   */
+  get displayName(): string {
+    if (this.suit === TileSuit.Flower) {
+      const flowerNames = ['', 'Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
+      return flowerNames[this.rank] || 'Flower'
+    }
+    if (this.suit === TileSuit.Season) {
+      const seasonNames = ['', 'Spring', 'Summer', 'Autumn', 'Winter']
+      return seasonNames[this.rank] || 'Season'
+    }
+    if (this.suit === TileSuit.Wind) {
+      const windNames = ['', 'East Wind', 'South Wind', 'West Wind', 'North Wind']
+      return windNames[this.rank] || 'Wind'
+    }
+    if (this.suit === TileSuit.Dragon) {
+      const dragonNames = ['', 'White Dragon', 'Green Dragon', 'Red Dragon']
+      return dragonNames[this.rank] || 'Dragon'
+    }
+    // Numbered tiles
+    const suitNames: Record<TileSuit, string> = {
+      [TileSuit.Manzu]: 'Characters',
+      [TileSuit.Pinzu]: 'Circles',
+      [TileSuit.Souzu]: 'Bamboo',
+      [TileSuit.Wind]: 'Wind',
+      [TileSuit.Dragon]: 'Dragon',
+      [TileSuit.Flower]: 'Flower',
+      [TileSuit.Season]: 'Season',
+    }
+    return `${this.rank} of ${suitNames[this.suit]}`
+  }
+
+  /**
    * Returns true if this is a terminal or honor tile
    */
   get isTerminalOrHonor(): boolean {
@@ -427,6 +490,57 @@ export class Tile implements TileData {
    */
   clone(newId: string): Tile {
     return new Tile(this.suit, this.rank, newId, this.isRed, { ...this.modifiers })
+  }
+
+  // ===========================================================================
+  // STATIC FACTORY METHODS
+  // ===========================================================================
+
+  /**
+   * Create a wind tile
+   * @param wind - The wind type (1=East, 2=South, 3=West, 4=North)
+   * @param id - Optional tile ID (auto-generated if not provided)
+   */
+  static createWind(wind: WindType, id?: string): Tile {
+    return new Tile(TileSuit.Wind, wind, id ?? generateTileId())
+  }
+
+  /**
+   * Create a dragon tile
+   * @param dragon - The dragon type (1=White, 2=Green, 3=Red)
+   * @param id - Optional tile ID (auto-generated if not provided)
+   */
+  static createDragon(dragon: DragonType, id?: string): Tile {
+    return new Tile(TileSuit.Dragon, dragon, id ?? generateTileId())
+  }
+
+  /**
+   * Create a flower tile
+   * @param flower - The flower type (1=Plum, 2=Orchid, 3=Chrysanthemum, 4=Bamboo)
+   * @param id - Optional tile ID (auto-generated if not provided)
+   */
+  static createFlower(flower: FlowerType, id?: string): Tile {
+    return new Tile(TileSuit.Flower, flower, id ?? generateTileId())
+  }
+
+  /**
+   * Create a season tile
+   * @param season - The season type (1=Spring, 2=Summer, 3=Autumn, 4=Winter)
+   * @param id - Optional tile ID (auto-generated if not provided)
+   */
+  static createSeason(season: SeasonType, id?: string): Tile {
+    return new Tile(TileSuit.Season, season, id ?? generateTileId())
+  }
+
+  /**
+   * Create a numbered tile
+   * @param suit - The suit (Manzu, Pinzu, or Souzu)
+   * @param rank - The rank (1-9)
+   * @param id - Optional tile ID (auto-generated if not provided)
+   * @param isRed - Whether this is a red tile (for 5s)
+   */
+  static createNumbered(suit: TileSuit.Manzu | TileSuit.Pinzu | TileSuit.Souzu, rank: number, id?: string, isRed?: boolean): Tile {
+    return new Tile(suit, rank, id ?? generateTileId(), isRed)
   }
 }
 

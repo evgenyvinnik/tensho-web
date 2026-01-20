@@ -13,11 +13,6 @@ import { useSettingsStore } from '../stores';
 import { audioSystem, playSFX, TileSFX, UISFX, FeedbackSFX } from '../systems/AudioSystem';
 import {
   SoundEffectId,
-  TILE_SOUNDS,
-  UI_SOUNDS,
-  GAME_SOUNDS,
-  SPECIAL_SOUNDS,
-  FEEDBACK_SOUNDS,
   MusicContext,
 } from '../config/audioDefinitions';
 

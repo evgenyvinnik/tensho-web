@@ -272,3 +272,35 @@ export {
   getStakeTierFromName,
   getStakeNameFromTier,
 } from './unlockDefinitions'
+
+// =============================================================================
+// AUDIO DEFINITIONS
+// =============================================================================
+
+export {
+  // Sound Categories
+  TILE_SOUNDS,
+  UI_SOUNDS,
+  GAME_SOUNDS,
+  SPECIAL_SOUNDS,
+  FEEDBACK_SOUNDS,
+  CONSUMABLE_SOUNDS,
+  SHOP_SOUNDS,
+  AMBIENT_SOUNDS,
+  // Sound Config
+  SOUND_EFFECT_CONFIG,
+  // Music
+  MUSIC_CONFIG,
+  getMusicForContext,
+  getRandomMusicForContext,
+  // Utilities
+  getPreloadSounds,
+  getSoundsByCategory,
+  getSoundConfig,
+  // Types
+  type SoundEffectId,
+  type SoundCategory,
+  type SoundEffectConfig,
+  type MusicContext,
+  type MusicTrackConfig,
+} from './audioDefinitions'

@@ -12,7 +12,7 @@
  */
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useSpring, useTrail, animated, config } from '@react-spring/web';
+import { useSpring, useTrail, animated } from '@react-spring/web';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { SPRINGS, DURATIONS, ANIMATION_COLORS, ANIMATION_Z_INDEX } from '../../animations/constants';
 import { colors } from '../../styles/theme';
@@ -351,7 +351,7 @@ export const ScoreCounter: React.FC<ScoreCounterProps> = ({
   const [isPulsing, setIsPulsing] = useState(false);
 
   // Count up animation
-  const spring = useSpring({
+  useSpring({
     from: { value: previousValueRef.current },
     to: { value },
     config: {
@@ -530,7 +530,6 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
   className = '',
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
-  const [completedCount, setCompletedCount] = useState(0);
 
   // Trail animation for staggered entry
   const trail = useTrail(items.length, {
@@ -547,18 +546,12 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
     config: SPRINGS.bouncy,
     immediate: reducedMotion,
     delay: (index: number) => index * staggerDelay,
-  });
-
-  // Handle individual item completion
-  const handleItemComplete = () => {
-    setCompletedCount((prev) => {
-      const newCount = prev + 1;
-      if (newCount >= items.length) {
+    onRest: (_result, _spring, itemIndex) => {
+      if (itemIndex === items.length - 1) {
         onComplete?.();
       }
-      return newCount;
-    });
-  };
+    },
+  });
 
   return (
     <div

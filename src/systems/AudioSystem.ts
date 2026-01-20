@@ -13,7 +13,6 @@ import {
   SoundEffectId,
   SoundEffectConfig,
   SOUND_EFFECT_CONFIG,
-  MUSIC_CONFIG,
   MusicContext,
   getMusicForContext,
   getPreloadSounds,
@@ -24,7 +23,7 @@ import {
   FEEDBACK_SOUNDS,
   SHOP_SOUNDS,
 } from '../config/audioDefinitions';
-import { eventBus, GameEvent, GameEventData } from '../game/EventBus';
+import { eventBus } from '../game/EventBus';
 
 // =============================================================================
 // TYPES

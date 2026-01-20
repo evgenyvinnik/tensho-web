@@ -8,7 +8,7 @@
  * - Integration with EventBus for game events
  */
 
-import { eventBus, GameEvent, GameEventData } from '../game/EventBus';
+import { eventBus } from '../game/EventBus';
 import { ANIMATION_COLORS, DURATIONS } from '../animations/constants';
 
 // =============================================================================

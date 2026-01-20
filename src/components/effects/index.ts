@@ -14,9 +14,17 @@ export {
 // Particle Effects
 export {
   ParticleEffect,
+  ConfettiBurst,
+  StarBurst,
+  SparkleTrail,
+  GoldRain,
   useParticleEffect,
   type ParticleType,
   type ParticleEffectProps,
+  type ConfettiBurstProps,
+  type StarBurstProps,
+  type SparkleTrailProps,
+  type GoldRainProps,
 } from './ParticleEffect';
 
 // Glow Effects
@@ -34,12 +42,21 @@ export {
 // Score Popups
 export {
   ScorePopup,
+  ChipsMultPopup,
+  ScoreCounter,
+  ComboDisplay,
   StackingScorePopup,
   TotalScoreReveal,
+  RetriggerPopup,
   useScorePopups,
   type ScorePopupProps,
+  type ChipsMullPopupProps,
+  type ScoreCounterProps,
+  type ComboDisplayProps,
   type StackingScorePopupProps,
   type TotalScoreRevealProps,
+  type RetriggerPopupProps,
+  type ScoreDisplayStyle,
 } from './ScorePopup';
 
 // Yaku Reveal
