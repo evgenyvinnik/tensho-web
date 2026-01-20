@@ -546,7 +546,10 @@ export function GameplayScreen() {
   }, [game])
 
   // Calculate shanten display (simplified)
-  const shantenDisplay = game.handTiles.length >= 13 ? '聴牌' : `${14 - game.handTiles.length}向聴`
+  const tilesNeeded = 14 - game.handTiles.length
+  const shantenDisplay = game.handTiles.length >= 13
+    ? t('gameplay.tenpai')
+    : t('gameplay.shanten', { count: tilesNeeded })
 
   // Get owned decrees from the game state
   const ownedDecrees = useMemo(() => {
@@ -773,7 +776,7 @@ export function GameplayScreen() {
 
         {/* Shanten status with improved styling */}
         <div className="mx-4 mb-2 px-4 py-2 bg-[var(--color-dark-forest)] rounded-lg flex items-center justify-between">
-          <GlowEffect variant="gold" intensity={shantenDisplay === '聴牌' ? 0.8 : 0.3} pulsing={shantenDisplay === '聴牌'}>
+          <GlowEffect variant="gold" intensity={game.handTiles.length >= 13 ? 0.8 : 0.3} pulsing={game.handTiles.length >= 13}>
             <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{shantenDisplay}</span>
           </GlowEffect>
           <div className="flex items-center gap-4 text-[var(--color-beige-white)]">

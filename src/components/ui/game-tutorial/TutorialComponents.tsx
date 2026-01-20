@@ -105,7 +105,13 @@ export interface ArrowProps {
 // =============================================================================
 
 /**
- * Arrow SVG component
+ * Arrow SVG component for tutorial tooltips
+ *
+ * Renders a directional arrow that points toward the target element.
+ * The arrow rotates based on the specified direction.
+ *
+ * @param direction - The direction the arrow should point
+ * @param className - Additional CSS classes for styling
  */
 export function Arrow({ direction, className }: ArrowProps) {
   const rotations: Record<typeof direction, string> = {
@@ -127,7 +133,23 @@ export function Arrow({ direction, className }: ArrowProps) {
 }
 
 /**
- * Tooltip component with arrow
+ * Tutorial tooltip component with arrow and content
+ *
+ * Displays a floating tooltip that positions itself relative to a target
+ * element. Contains the tutorial step content, optional tile examples,
+ * action hints, and navigation buttons.
+ *
+ * Features:
+ * - Auto-positions based on target element and arrow direction
+ * - Clamps to viewport boundaries
+ * - Animated entrance with spring physics
+ * - Displays optional example tiles with labels
+ *
+ * @param step - Current tutorial step configuration
+ * @param targetRect - Bounding rectangle of the target element
+ * @param onNext - Callback when user clicks next/finish
+ * @param onSkip - Callback when user clicks skip
+ * @param isLastStep - Whether this is the final tutorial step
  */
 export function TutorialTooltip({
   step,
@@ -212,7 +234,7 @@ export function TutorialTooltip({
   return (
     <AnimatedDiv
       ref={tooltipRef}
-      className="fixed z-[1001] max-w-[320px] md:max-w-[400px]"
+      className="fixed z-[1001] max-w-[320px] md:max-w-[400px] pointer-events-none"
       style={{
         left: tooltipPosition.x,
         top: tooltipPosition.y,
@@ -221,8 +243,8 @@ export function TutorialTooltip({
         scale: spring.scale,
       }}
     >
-      {/* Tooltip card */}
-      <div className="relative bg-[var(--color-dark-forest)] border-2 border-[var(--color-golden-yellow)] rounded-xl p-5 shadow-2xl">
+      {/* Tooltip card - this part IS interactive for buttons */}
+      <div className="relative bg-[var(--color-dark-forest)] border-2 border-[var(--color-golden-yellow)] rounded-xl p-5 shadow-2xl pointer-events-auto">
         {/* Arrow - only show when pointing at a target element */}
         {targetRect && (
           <div style={getArrowStyle()}>
@@ -297,7 +319,16 @@ export function TutorialTooltip({
 }
 
 /**
- * Highlight overlay component
+ * Highlight overlay component for tutorial targets
+ *
+ * Creates a glowing golden border around the target element to draw
+ * the user's attention. Uses spring animation for smooth fade-in/out.
+ *
+ * The overlay is non-blocking (pointer-events: none) so users can
+ * still interact with the highlighted element.
+ *
+ * @param targetRect - Bounding rectangle of the element to highlight
+ * @param padding - Extra padding around the highlight (default: 8px)
  */
 export function HighlightOverlay({
   targetRect,

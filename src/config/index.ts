@@ -304,3 +304,29 @@ export {
   type MusicContext,
   type MusicTrackConfig,
 } from './audioDefinitions'
+
+// =============================================================================
+// DECREE DEFINITIONS
+// =============================================================================
+
+export {
+  // Types
+  type DecreeDefinition,
+  // Rarity Collections
+  COMMON_DECREES,
+  UNCOMMON_DECREES,
+  RARE_DECREES,
+  LEGENDARY_DECREES,
+  MYTHIC_DECREES,
+  ALL_DECREES,
+  // Constants
+  DECREE_SHOP_WEIGHTS,
+  DECREE_BASE_COSTS,
+  DECREE_STATS,
+  // Utilities
+  getDecreeDefinitionById,
+  getDecreesByRarity,
+  getUnlockedDecrees,
+  getRandomDecreeByRarity,
+  calculateDecreeCost,
+} from './decreeDefinitions'

@@ -369,21 +369,25 @@ export function useTileDragAnimation() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-  // Visual effects spring (scale, opacity, rotation) - these animate smoothly
+  // Visual effects spring (scale, opacity, glow) - these animate smoothly
   const visualSpring = useSpring({
-    scale: isDragging ? 1.15 : 1,
-    opacity: isDragging ? 0.9 : 1,
-    shadowOpacity: isDragging ? 0.4 : 0,
-    config: { tension: 400, friction: 25 },
+    scale: isDragging ? 1.25 : 1,
+    opacity: isDragging ? 0.95 : 1,
+    shadowOpacity: isDragging ? 0.6 : 0,
+    lift: isDragging ? -8 : 0, // Extra lift effect
+    config: { tension: 300, friction: 20 },
     immediate: reducedMotion,
   });
 
-  // Position spring - immediate during drag, animated on release
+  // Position spring - immediate during drag, bouncy on release
   const positionSpring = useSpring({
     x: isDragging ? dragOffset.x : 0,
     y: isDragging ? dragOffset.y : 0,
-    rotate: isDragging ? Math.max(-15, Math.min(15, dragOffset.x / 15)) : 0,
-    config: { tension: 500, friction: 30 },
+    rotate: isDragging ? Math.max(-20, Math.min(20, dragOffset.x / 10)) : 0,
+    // Bouncy snap-back on release
+    config: isDragging
+      ? { tension: 500, friction: 30 }
+      : { tension: 400, friction: 15 }, // Bouncy return
     // Position follows finger immediately during drag
     immediate: (key: string) => isDragging && (key === 'x' || key === 'y'),
   });
@@ -405,13 +409,13 @@ export function useTileDragAnimation() {
     style: {
       // Use proper interpolation with to() to combine all animated values reactively
       transform: to(
-        [positionSpring.x, positionSpring.y, positionSpring.rotate, visualSpring.scale],
-        (x, y, rotate, scale) =>
-          `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`
+        [positionSpring.x, positionSpring.y, positionSpring.rotate, visualSpring.scale, visualSpring.lift],
+        (x, y, rotate, scale, lift) =>
+          `translate(${x}px, ${y + lift}px) scale(${scale}) rotate(${rotate}deg)`
       ),
       opacity: visualSpring.opacity,
       boxShadow: visualSpring.shadowOpacity.to(
-        (o) => `0 ${8 + o * 12}px ${16 + o * 24}px rgba(0, 0, 0, ${o})`
+        (o) => `0 ${12 + o * 20}px ${24 + o * 32}px rgba(0, 0, 0, ${o * 0.7}), 0 0 ${o * 30}px rgba(255, 87, 34, ${o * 0.3})`
       ),
     },
     // Also expose individual springs for advanced usage

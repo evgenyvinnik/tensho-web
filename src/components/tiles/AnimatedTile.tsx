@@ -19,7 +19,7 @@ import {
 import { SPRINGS, ANIMATION_COLORS } from '../../animations/constants';
 
 // Minimum distance (px) before drag activates to distinguish from taps
-const DRAG_THRESHOLD = 8;
+const DRAG_THRESHOLD = 5;
 
 export interface AnimatedTileProps {
   /** The tile to display */

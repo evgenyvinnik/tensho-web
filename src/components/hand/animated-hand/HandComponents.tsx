@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { animated, useTransition, useSprings, useSpring } from '@react-spring/web'
+import { animated, useTransition, useSprings, useSpring, to } from '@react-spring/web'
 import { Tile } from '../../../core/Tile'
 import { AnimatedTile } from '../../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../../styles/theme'
@@ -240,9 +240,10 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
                 left: '50%',
                 bottom: 0,
                 opacity: style.opacity,
-                transform: style.x.to(
-                  (x) =>
-                    `translateX(calc(-50% + ${x}px)) rotate(${position.rotation}deg) scale(${style.scale.get()})`
+                transform: to(
+                  [style.x, style.scale],
+                  (x, scale) =>
+                    `translateX(calc(-50% + ${x}px)) rotate(${position.rotation}deg) scale(${scale})`
                 ),
                 zIndex: position.zIndex,
               }}
@@ -277,6 +278,7 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const [isDragging, setIsDragging] = useState(false)
+  const [isNearZone, setIsNearZone] = useState(false)
 
   // Handle drag start - show discard zone
   const handleDragStart = useCallback(() => {
@@ -284,14 +286,42 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
   }, [])
 
   // Handle drag end - hide discard zone
-  const handleDragEnd = useCallback(() => {
+  const handleDragEnd = useCallback((_tile: Tile, position: { x: number; y: number }) => {
     setIsDragging(false)
+    setIsNearZone(false)
+    // Check if near discard zone for visual feedback
+    const viewportHeight = window.innerHeight
+    if (position.y < viewportHeight * 0.4) {
+      // Will be discarded - flash effect handled by parent
+    }
   }, [])
 
-  // Animate discard zone visibility
+  // Track mouse/touch position to show "near zone" effect
+  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+    if (!isDragging) return
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    const viewportHeight = window.innerHeight
+    setIsNearZone(clientY < viewportHeight * 0.45)
+  }, [isDragging])
+
+  // Add global move listener when dragging
+  React.useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove)
+      window.addEventListener('touchmove', handleDragMove, { passive: true })
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove)
+        window.removeEventListener('touchmove', handleDragMove)
+      }
+    }
+  }, [isDragging, handleDragMove])
+
+  // Animate discard zone visibility with enhanced effects
   const discardZoneSpring = useSpring({
     opacity: isDragging ? 1 : 0,
-    y: isDragging ? 0 : -20,
+    y: isDragging ? 0 : -30,
+    scale: isNearZone ? 1.1 : 1,
+    glowIntensity: isNearZone ? 1 : 0,
     config: SPRINGS.snappy,
     immediate: reducedMotion,
   })
@@ -300,24 +330,31 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
     <div className="relative w-full">
       {/* Discard zone (appears when dragging) */}
       <animated.div
-        className="absolute top-0 left-0 right-0 flex items-center justify-center py-8"
+        className="absolute top-0 left-0 right-0 flex items-center justify-center py-6"
         style={{
           opacity: discardZoneSpring.opacity,
-          transform: discardZoneSpring.y.to((y) => `translateY(${y}px)`),
+          transform: to(
+            [discardZoneSpring.y, discardZoneSpring.scale],
+            (y, scale) => `translateY(${y}px) scale(${scale})`
+          ),
           pointerEvents: isDragging ? 'auto' : 'none',
           zIndex: 100,
         }}
       >
-        <div
-          className="px-8 py-4 rounded-xl border-2 border-dashed"
+        <animated.div
+          className="px-10 py-5 rounded-xl border-3 border-dashed font-bold text-lg"
           style={{
-            borderColor: '#FF5722',
-            backgroundColor: 'rgba(255, 87, 34, 0.1)',
-            color: '#FF5722',
+            borderColor: isNearZone ? '#FF5722' : '#FF8A65',
+            backgroundColor: isNearZone ? 'rgba(255, 87, 34, 0.25)' : 'rgba(255, 87, 34, 0.1)',
+            color: isNearZone ? '#FF5722' : '#FF8A65',
+            boxShadow: discardZoneSpring.glowIntensity.to(
+              (i) => `0 0 ${i * 30}px rgba(255, 87, 34, ${i * 0.5}), inset 0 0 ${i * 20}px rgba(255, 87, 34, ${i * 0.2})`
+            ),
+            transition: 'border-color 0.15s, background-color 0.15s, color 0.15s',
           }}
         >
-          {discardZoneLabel}
-        </div>
+          {isNearZone ? '🗑️ Release to Discard!' : discardZoneLabel}
+        </animated.div>
       </animated.div>
 
       {/* Hand */}

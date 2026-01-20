@@ -95,11 +95,19 @@ export function clearErrorLogs(): void {
 // ERROR FALLBACK COMPONENTS
 // =============================================================================
 
+/**
+ * Props for the ErrorFallback component
+ */
 export interface ErrorFallbackProps {
+  /** The error that was caught */
   error: Error
+  /** React error info with component stack */
   errorInfo?: React.ErrorInfo
+  /** Callback to retry the failed operation */
   onRetry?: () => void
+  /** Callback to navigate to home/menu */
   onGoHome?: () => void
+  /** Display variant: 'full' (page), 'inline' (section), 'minimal' (compact) */
   variant?: 'full' | 'inline' | 'minimal'
 }
 
@@ -270,18 +278,33 @@ export function ErrorFallback({
 // ERROR BOUNDARY CLASS COMPONENT
 // =============================================================================
 
+/**
+ * Props for the ErrorBoundary component
+ */
 export interface ErrorBoundaryProps {
+  /** Child components to render */
   children: ReactNode
+  /** Custom fallback UI or render function */
   fallback?: ReactNode | ((props: ErrorFallbackProps) => ReactNode)
+  /** Callback when an error is caught */
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void
+  /** Callback to retry the failed operation */
   onRetry?: () => void
+  /** Callback to navigate to home/menu */
   onGoHome?: () => void
+  /** Display variant for the default fallback UI */
   variant?: 'full' | 'inline' | 'minimal'
 }
 
+/**
+ * Internal state for the ErrorBoundary component
+ */
 interface ErrorBoundaryState {
+  /** Whether an error has been caught */
   hasError: boolean
+  /** The caught error, if any */
   error: Error | null
+  /** React error info with component stack */
   errorInfo: React.ErrorInfo | null
 }
 

@@ -110,7 +110,7 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 |----------|--------|-------------|--------|
 | **P2** | Flowers System | Persistent run-wide modifiers | ✅ Complete |
 | **P2** | Seasons System | Round-scoped rule mutations | ✅ Complete |
-| **P2** | Full Decree Library | All 150+ decree definitions | ⬜ Not Started |
+| **P2** | Full Decree Library | All 155 decree definitions | ✅ Complete |
 | **P2** | Tile Marks System | Card modifiers (Enhancements/Seals/Editions) | ✅ Complete |
 | **P2** | Consumables | Fate Seals (22), Celestial Orbs (13), Void Scripts (20) | ✅ Complete |
 | **P2** | Tea House Shop | Shop generation, pricing, rerolls | ✅ Complete |
@@ -337,15 +337,15 @@ Conceptually: a Decree is not a tile, but a **binding rule of play**.
 
 This is the cleanest semantic replacement for the "Joker" concept—grounded in Mahjong's cultural vocabulary for rule authority.
 
-**Decree as ScriptableObject:**
-```csharp
-DecreeDefinition {
-  Id: string
-  DisplayName: string
-  Category: Structural | TileIdentity | YakuDoctrine | Entropy | Scaling
-  Rarity: LocalEdict | RegionalMandate | ImperialDecree | HeavenlyOrdinance
-  Effect: DecreeEffect (scriptable behavior)
-  FlowerRequirement: int (optional)
+**Decree Definition (TypeScript):**
+```typescript
+interface DecreeDefinition {
+  id: string
+  displayName: string
+  category: 'Structural' | 'TileIdentity' | 'YakuDoctrine' | 'Entropy' | 'Scaling'
+  rarity: 'LocalEdict' | 'RegionalMandate' | 'ImperialDecree' | 'HeavenlyOrdinance'
+  effect: DecreeEffect  // Typed effect configuration
+  flowerRequirement?: number
 }
 ```
 
@@ -860,18 +860,20 @@ The visual identity follows **Traditional Chinese Mahjong — Premium Feel** aes
 
 #### Implementation Reference
 
-Color constants are defined in `Assets/Scripts/UI/UITheme.cs`:
+Color constants are defined in `src/styles/theme.ts`:
 
-```csharp
-// Primary palette
-public static readonly Color ForestGreen = HexToColor("#2D5F4A");
-public static readonly Color VibrantOrange = HexToColor("#FF5722");
-public static readonly Color GoldenYellow = HexToColor("#FFD54F");
-public static readonly Color DeepOrange = HexToColor("#D84315");
-public static readonly Color DarkForest = HexToColor("#1C3A2E");
-public static readonly Color BeigeWhite = HexToColor("#F5F5DC");
-public static readonly Color SaddleBrown = HexToColor("#8B4513");
-public static readonly Color MetallicGold = HexToColor("#C8B273");
+```typescript
+// Primary palette (Tailwind CSS classes)
+const colors = {
+  forestGreen: '#2D5F4A',
+  vibrantOrange: '#FF5722',
+  goldenYellow: '#FFD54F',
+  deepOrange: '#D84315',
+  darkForest: '#1C3A2E',
+  beigeWhite: '#F5F5DC',
+  saddleBrown: '#8B4513',
+  metallicGold: '#C8B273',
+}
 ```
 
 ---
@@ -900,17 +902,17 @@ Analogous to Balatro's deck backs ("shirts"), **Table Styles** are unlockable vi
 - Visual distinction: table cloth color/pattern, tile back designs, UI accents
 - Mechanical distinction: starting bonuses, modified rules, or trade-offs
 
-**Data Model:**
-```csharp
-TableStyle {
-  Id: string
-  DisplayName: string
-  Description: string
-  ThemeColor: Color
-  TileBackSprite: Sprite
-  TableClothSprite: Sprite
-  StartingModifier: TableModifier
-  UnlockCondition: UnlockRequirement
+**Data Model (TypeScript):**
+```typescript
+interface TableStyle {
+  id: string
+  displayName: string
+  description: string
+  themeColor: string  // CSS color
+  tileBackImage: string
+  tableClothImage: string
+  startingModifier: TableModifier
+  unlockCondition: UnlockRequirement
 }
 ```
 

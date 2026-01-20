@@ -274,3 +274,206 @@
 | Mandates | Round | Define score targets and penalties |
 | Charters | Run | Permanent slot/economy modifications |
 
+---
+
+## 📜 A11) Complete Decree Library (法令)
+
+> Decrees are run-wide rule modifiers (equivalent to Balatro's Jokers).
+> See `src/config/decreeDefinitions.ts` for the full implementation.
+
+### Rarity Distribution
+
+| Rarity | Count | Shop Weight | Base Cost |
+|--------|-------|-------------|-----------|
+| Common | 40 | 45% | ¥4 |
+| Uncommon | 40 | 30% | ¥6 |
+| Rare | 35 | 18% | ¥8 |
+| Legendary | 25 | 6% | ¥10 |
+| Mythic | 15 | 1% | ¥15 |
+| **Total** | **155** | — | — |
+
+### Common Decrees (Tier 1)
+
+Basic, reliable effects with no conditions.
+
+| Decree | Japanese | Effect |
+|--------|----------|--------|
+| Half Suited | 半着 | +20 Chips |
+| Misty Jade | 霧玉 | +30 Chips |
+| Bamboo Scroll | 竹巻 | +40 Chips |
+| Jade Tablet | 玉板 | +50 Chips |
+| Polished Stone | 磨石 | +60 Chips |
+| Gentle Breeze | 微風 | +2 Mult |
+| Rising Sun | 朝日 | +3 Mult |
+| Lunar Glow | 月光 | +4 Mult |
+| Crimson Banner | 紅旗 | +5 Mult |
+| Golden Seal | 金印 | +6 Mult |
+| Manzu Master | 萬子師 | +3 Mult if hand contains Manzu |
+| Pinzu Perfectionist | 筒子匠 | +3 Mult if hand contains Pinzu |
+| Souzu Scholar | 索子学 | +3 Mult if hand contains Souzu |
+| Wind Walker | 風歩者 | +4 Mult if hand contains Wind |
+| Dragon Disciple | 竜弟子 | +4 Mult if hand contains Dragon |
+| Edge Runner | 端走者 | +20 Chips per Terminal tile |
+| Middle Way | 中道 | +10 Chips per Simple tile |
+| Green Fortune | 緑運 | +15 Chips per green tile |
+| Coin Collector | 銭集 | +¥1 at end of round |
+| Merchant's Favor | 商人恩 | +¥2 at end of round |
+| Lucky Coin | 幸運銭 | +¥3 at end of round |
+| Pair Lover | 対好者 | +30 Chips if hand contains pair |
+| Sequence Seeker | 順子求 | +30 Chips if hand contains sequence |
+| Triplet Tracker | 刻子追 | +40 Chips if hand contains triplet |
+| Flower Friend | 花友 | +10 Chips per collected Flower |
+| Seasonal Blessing | 季福 | +2 Mult per active Season |
+| Wide Grip | 広握 | +1 Hand Size |
+| Second Chance | 再機会 | +1 Discard per round |
+| Balanced Path | 均衡道 | +15 Chips and +2 Mult |
+| Modest Fortune | 謙運 | +20 Chips and +¥1 per round |
+| Humble Power | 謙力 | +2 Mult and +¥1 per round |
+| One Mastery | 壱極 | +25 Chips per 1-tile |
+| Nine Mastery | 九極 | +25 Chips per 9-tile |
+| Five Blessing | 五福 | +35 Chips per 5-tile |
+| Spark | 火花 | ×1.2 Mult |
+| Ember | 残火 | ×1.3 Mult |
+| Riichi Devotee | 立直信者 | +3 Mult when scoring Riichi |
+| Tanyao Tactician | 断么戦術家 | +3 Mult when scoring Tanyao |
+| Pinfu Purist | 平和純粋者 | +3 Mult when scoring Pinfu |
+
+### Uncommon Decrees (Tier 2)
+
+Conditional effects with stronger bonuses.
+
+| Decree | Japanese | Effect |
+|--------|----------|--------|
+| Manzu Emperor | 萬子皇帝 | +8 Mult if hand is half Manzu |
+| Pinzu Princess | 筒子姫 | +8 Mult if hand is half Pinzu |
+| Souzu Sage | 索子賢者 | +8 Mult if hand is half Souzu |
+| Flush Fever | 一色熱 | ×1.5 Mult if single suit |
+| Honor Guard | 字牌守護 | ×1.5 Mult if 3+ Honors |
+| Terminal Tide | 端牌潮流 | ×1.5 Mult if 4+ Terminals |
+| Straight Arrow | 直矢 | +80 Chips if 3 sequences |
+| Run Master | 連続師 | +6 Mult per sequence |
+| Triple Threat | 三重脅威 | +80 Chips if 2+ triplets |
+| Triplet Thunder | 刻子雷 | +8 Mult per triplet |
+| Echo Stone | 反響石 | Retrigger first scoring tile |
+| Mirror Shard | 鏡片 | Retrigger last scoring tile |
+| Dragon Echo | 竜響 | Retrigger all Dragon tiles |
+| Wind Echo | 風響 | Retrigger all Wind tiles |
+| Golden Ratio | 黄金比 | +1 Mult per ¥5 (max +10) |
+| Treasure Hunter | 宝探し | +¥1 per unique suit |
+| Tax Collector | 徴税官 | +¥4 at end of round |
+| Garden Keeper | 庭師 | +4 Mult per Flower |
+| Blossom Storm | 花嵐 | ×1.2 Mult per Flower |
+| Seasonal Wind | 季節風 | +50 Chips per Season |
+| Slow Burn | 遅火 | +2 Mult per round this act |
+| Momentum | 勢い | +15 Chips per hand this round |
+| Crescendo | 漸強 | ×1.1 Mult per hand this round |
+| Waste Not | 無駄無 | +5 Mult if no discards used |
+| Recycler | 再利用者 | +20 Chips per discard used |
+| Yakuhai Zealot | 役牌狂信者 | ×1.5 Mult when scoring Yakuhai |
+| Toitoi Titan | 対々巨人 | ×1.5 Mult when scoring Toitoi |
+| Ittsu Initiate | 一通入門 | ×1.5 Mult when scoring Ittsu |
+| Chinitsu Champion | 清一色王者 | ×2.0 Mult when scoring Chinitsu |
+| Veteran | 古参 | +10 Chips per Act completed |
+| Experience | 経験 | +2 Mult per Act completed |
+| Greater Jade | 大玉 | +80 Chips |
+| Blazing Banner | 烈火旗 | +10 Mult |
+| Flame | 炎 | ×1.5 Mult |
+| Wind and Dragon | 風竜 | +5 Mult if Wind and Dragon |
+| All Suits | 三色揃 | +8 Mult if all 3 suits |
+| Bookends | 端揃 | +60 Chips if has 1 and 9 |
+| Expansive Grip | 拡張握 | +2 Hand Size |
+| Careful Player | 慎重者 | +2 Discards per round |
+
+### Rare Decrees (Tier 3)
+
+Powerful effects with significant impact.
+
+| Decree | Japanese | Effect |
+|--------|----------|--------|
+| Inferno | 業火 | ×2.0 Mult |
+| Supernova | 超新星 | ×2.5 Mult if 2x over target |
+| Perfectionist | 完璧主義 | ×3.0 Mult if first hand wins |
+| Compound Interest | 複利 | +2 Mult per ¥10 |
+| Wealth Engine | 富の機関 | +¥1 per Decree owned |
+| Perpetual Motion | 永久機関 | +5 Mult per hand this run (max +50) |
+| Triple Echo | 三重響 | Retrigger all scoring tiles once |
+| Terminal Resonance | 端牌共鳴 | Retrigger Terminals twice |
+| Honor Resonance | 字牌共鳴 | Retrigger Honors twice |
+| Manzu Monarch | 萬子王 | ×2.0 Mult if all Manzu |
+| Pinzu Potentate | 筒子君主 | ×2.0 Mult if all Pinzu |
+| Souzu Sovereign | 索子主権 | ×2.0 Mult if all Souzu |
+| Flower Emperor | 花帝 | ×1.5 Mult per Flower |
+| Season Lord | 季節主 | +10 Mult per Season |
+| Nature Bond | 自然絆 | +3 Mult/Flower, +30 Chips/Season |
+| Honitsu Herald | 混一色先駆 | ×2.0 Mult when scoring Honitsu |
+| Sanshoku Sage | 三色賢者 | ×2.0 Mult when scoring Sanshoku |
+| Chanta Champion | 全帯幺王者 | ×2.0 Mult when scoring Chanta |
+| Mandate Breaker | 令破壊者 | +15 Mult during Boss rounds |
+| Boss Slayer | 親衛殺し | ×2.0 Mult during Boss rounds |
+| Fortune and Glory | 運と栄光 | +60 Chips, +8 Mult, +¥3/round |
+| Emperor's Blessing | 皇帝祝福 | +100 Chips and +10 Mult |
+| Golden Age | 黄金時代 | +¥8 at end of round |
+| Blueprint | 設計図 | Copies Decree to right |
+| Photograph | 写真 | First scoring tile ×2 Mult |
+| Ancient Scroll | 古代巻物 | +150 Chips, −2 Hand Size |
+| Sacrifice | 犠牲 | ×3.0 Mult, −1 Discard |
+| Transmuter | 変成者 | Simples become Terminals |
+| Harmonizer | 調和者 | Suits match for sequences |
+| Final Act | 終幕 | ×1.5 Mult per Act beyond 4 |
+| Endless Journey | 無限旅 | +20 Chips per Act completed |
+| Master Grip | 達人握 | +3 Hand Size |
+| Infinite Patience | 無限忍耐 | +3 Discards per round |
+
+### Legendary Decrees (Tier 4)
+
+Very powerful, often unique effects.
+
+| Decree | Japanese | Effect |
+|--------|----------|--------|
+| Divine Flame | 神炎 | ×3.0 Mult |
+| Heaven's Wrath | 天罰 | ×4.0 Mult if no Simples |
+| Void Blessing | 虚空祝福 | ×5.0 Mult if all Honors |
+| Eternal Echo | 永遠響 | Retrigger all scoring tiles twice |
+| Dragon King | 竜王 | Retrigger Dragons 3 times |
+| Yaku Amplifier | 役増幅器 | All Yaku ×1.5 |
+| Yakuman Seeker | 役満求道者 | +50 Mult on Yakuman |
+| Four Seasons Master | 四季達人 | ×2.0 Mult per Season |
+| Eternal Garden | 永遠庭園 | +10 Mult/Flower, protected |
+| Midas Touch | 黄金の手 | +¥20 at end of round |
+| Infinite Wealth | 無限財宝 | +1 Mult per ¥5 |
+| Brainstorm | 脳嵐 | Copies leftmost Decree |
+| Doppelganger | 分身 | Copies random Decree |
+| Manzu God | 萬子神 | ×3.0 Mult if all Manzu |
+| Pinzu God | 筒子神 | ×3.0 Mult if all Pinzu |
+| Souzu God | 索子神 | ×3.0 Mult if all Souzu |
+| Glass Cannon | 硝子砲 | ×6.0 Mult, destroyed on loss |
+| Phoenix | 鳳凰 | Prevents one loss |
+| Time Lord | 時の主 | +1 extra hand per round |
+| Exponential | 指数的 | ×1.3 Mult per 100 chips |
+| Chain Reaction | 連鎖反応 | +5 Mult per Yaku this hand |
+| Cosmic Jade | 宇宙玉 | +200 Chips |
+| Solar Banner | 太陽旗 | +25 Mult |
+| Universal Grip | 万能握 | +4 Hand Size |
+
+### Mythic Decrees (Tier 5)
+
+Game-changing, run-defining effects.
+
+| Decree | Japanese | Effect | Unlock |
+|--------|----------|--------|--------|
+| Heavenly Ordinance | 天命 | ×5.0 Mult | Score Yakuman |
+| Celestial Throne | 天座 | ×10.0 Mult, −2 Hand, −1 Discard | — |
+| Void Emperor | 虚帝 | ×8.0 Mult if last hand was 0 | — |
+| Infinite Loop | 無限回廊 | Retrigger all tiles 3 times | — |
+| Echo Dimension | 響次元 | All retriggers trigger twice | — |
+| Clone Army | 複製軍 | Copies effects of all Decrees | Win on Gold Stake |
+| World Tree | 世界樹 | ×2.0/Flower, ×1.5/Season | — |
+| Philosopher's Stone | 賢者の石 | Double all gold gained | — |
+| Dragon Hoard | 竜の宝庫 | +2 Mult per ¥10 | — |
+| Yaku Nexus | 役結節 | All Yaku score at +1 tier | — |
+| Yakuman Blessing | 役満祝福 | ×10.0 Mult on Yakuman | 3 Yakuman in one run |
+| Reality Warp | 現実歪曲 | All tiles are wild | — |
+| Time Master | 時の支配者 | +2 extra hands per round | — |
+| Immortal Decree | 不死勅令 | Cannot lose (halves score) | — |
+| Omega | 終極 | +500 Chips, +50 Mult, ×2.0 | Complete Act 8 |
+

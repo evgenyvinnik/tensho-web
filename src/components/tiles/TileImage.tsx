@@ -233,14 +233,18 @@ export const TileImage: React.FC<TileImageProps> = ({
   const containerClasses = [
     'relative inline-block',
     'transition-all duration-150 ease-out',
+    // Base tile styling - subtle border and shadow for visibility
+    'rounded-md',
+    'border border-amber-800/30',
+    'shadow-sm shadow-black/20',
     // Selection state
-    selected && 'ring-2 ring-golden-yellow ring-offset-2 ring-offset-dark-forest -translate-y-2',
+    selected && 'ring-2 ring-golden-yellow ring-offset-2 ring-offset-dark-forest -translate-y-2 shadow-lg shadow-golden-yellow/30',
     // Highlighted state
     highlighted && !selected && 'ring-2 ring-vibrant-orange ring-offset-1',
     // Disabled state
     disabled && 'opacity-50 grayscale',
     // Interactive state
-    !disabled && onClick && 'cursor-pointer hover:-translate-y-1 hover:shadow-lg',
+    !disabled && onClick && 'cursor-pointer hover:-translate-y-1 hover:shadow-md hover:shadow-black/30 hover:border-amber-700/50',
     // Red dora indicator
     tile?.isRed && !faceDown && 'after:absolute after:bottom-0 after:right-0 after:w-2 after:h-2 after:bg-red-500 after:rounded-full',
     className,
@@ -269,7 +273,7 @@ export const TileImage: React.FC<TileImageProps> = ({
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-contain select-none pointer-events-none"
+        className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
         draggable={false}
         loading="lazy"
       />
@@ -387,12 +391,14 @@ export const TileRow: React.FC<TileRowProps> = ({
   className = '',
 }) => {
   const dimensions = tileSizes[size];
-  // Calculate overlap amount (negative margin)
-  const overlapAmount = overlap ? Math.floor(dimensions.width * 0.3) : 0;
+  // Calculate overlap amount (negative margin) - reduced for better visibility
+  const overlapAmount = overlap ? Math.floor(dimensions.width * 0.2) : 0;
+  // Gap between tiles when not overlapping
+  const gapClass = overlap ? '' : 'gap-1';
 
   return (
     <div
-      className={`flex items-end ${className}`}
+      className={`flex items-end ${gapClass} ${className}`}
       role="group"
       aria-label="Tile row"
     >

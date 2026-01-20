@@ -14,6 +14,7 @@ import { GameOverScreen } from './components/screens/GameOverScreen'
 import { AchievementsScreen } from './components/screens/AchievementsScreen'
 import { TutorialScreen } from './components/screens/TutorialScreen'
 import { CollectionScreen } from './components/screens/CollectionScreen'
+import { SettingsScreen } from './components/screens/SettingsScreen'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
@@ -52,6 +53,7 @@ function App() {
         AchievementsScreen,
         TutorialScreen,
         CollectionScreen,
+        SettingsScreen,
       }),
     []
   )

@@ -71,14 +71,14 @@ Run `bun run sloc` to calculate source lines of code.
 
 | Extension | Lines |
 |-----------|-------|
-| .ts       | 46,755 |
-| .tsx      | 21,504 |
+| .ts       | 48,379 |
+| .tsx      | 21,611 |
 | .js/.mjs  | 5,242 |
 | .json     | 3,112 |
 | .md       | 686 |
 | .css      | 470 |
 | .html     | 109 |
-| **Total** | **77,878** |
+| **Total** | **79,609** |
 
 ### Project Structure
 
@@ -102,7 +102,7 @@ Run `bun run sloc` to calculate source lines of code.
 | Omen Tags | 23 |
 | Boss Mandates | 27 |
 | Table Stakes | 8 tiers |
-| Decrees | 40+ |
+| Decrees | 155 |
 
 ## Features
 
