@@ -33,6 +33,14 @@ export type MandateEffectType =
   | 'fixed_hand_size' // The Psychic: Must play exactly N tiles
   | 'debuff_suit' // The Club/Goad/Window: Specific suit debuffed
   | 'debuff_tile_type' // The Head/Plant: Specific tile type debuffed
+  | 'hand_size_reduction' // The Manacle: Reduce hand size by N
+  | 'gold_per_tile' // The Tooth: Lose gold per tile played
+  | 'most_played_yaku_zeroes_gold' // The Ox: Playing most-played yaku sets gold to 0
+  | 'first_hand_face_down' // The House: First hand drawn face-down
+  | 'tiles_face_down_ratio' // The Wheel: 1 in N tiles drawn face-down
+  | 'tiles_face_down_after_play' // The Fish: Tiles face-down after each hand
+  | 'fixed_draw_count' // The Serpent: Always draw N tiles after play/discard
+  | 'honor_tiles_face_down' // The Mark: All honor tiles drawn face-down
   // Showdown Mandates (Act 8+)
   | 'shuffle_decrees' // Amber Acorn: Decrees shuffled and face-down
   | 'debuff_until_sell' // Verdant Leaf: All tiles debuffed until decree sold
@@ -281,6 +289,118 @@ export const THE_PLANT: MandateDefinition = {
   minAct: 4,
 }
 
+/**
+ * The Ox - Playing most-played Yaku sets gold to 0
+ */
+export const THE_OX: MandateDefinition = {
+  id: 'the_ox',
+  name: 'The Ox',
+  japaneseName: '牛',
+  description: 'Playing most-played Yaku sets gold to 0',
+  category: 'Standard',
+  difficulty: 'Hard',
+  effect: { type: 'most_played_yaku_zeroes_gold' },
+  minAct: 6,
+}
+
+/**
+ * The House - First hand drawn face-down
+ */
+export const THE_HOUSE: MandateDefinition = {
+  id: 'the_house',
+  name: 'The House',
+  japaneseName: '家',
+  description: 'First hand drawn face-down',
+  category: 'Standard',
+  difficulty: 'Medium',
+  effect: { type: 'first_hand_face_down' },
+  minAct: 2,
+}
+
+/**
+ * The Wheel - 1 in 7 tiles drawn face-down
+ */
+export const THE_WHEEL: MandateDefinition = {
+  id: 'the_wheel',
+  name: 'The Wheel',
+  japaneseName: '輪',
+  description: '1 in 7 tiles drawn face-down',
+  category: 'Standard',
+  difficulty: 'Medium',
+  effect: { type: 'tiles_face_down_ratio', value: 7 },
+  minAct: 2,
+}
+
+/**
+ * The Fish - Tiles drawn face-down after each hand
+ */
+export const THE_FISH: MandateDefinition = {
+  id: 'the_fish',
+  name: 'The Fish',
+  japaneseName: '魚',
+  description: 'Tiles drawn face-down after each hand',
+  category: 'Standard',
+  difficulty: 'Medium',
+  effect: { type: 'tiles_face_down_after_play' },
+  minAct: 2,
+}
+
+/**
+ * The Serpent - After play/discard, always draw 3 tiles
+ */
+export const THE_SERPENT: MandateDefinition = {
+  id: 'the_serpent',
+  name: 'The Serpent',
+  japaneseName: '蛇',
+  description: 'After play/discard, always draw 3 tiles',
+  category: 'Standard',
+  difficulty: 'Hard',
+  effect: { type: 'fixed_draw_count', value: 3 },
+  minAct: 5,
+}
+
+/**
+ * The Tooth - Lose 1 gold per tile played
+ */
+export const THE_TOOTH: MandateDefinition = {
+  id: 'the_tooth',
+  name: 'The Tooth',
+  japaneseName: '歯',
+  description: 'Lose 1 gold per tile played',
+  category: 'Standard',
+  difficulty: 'Medium',
+  effect: { type: 'gold_per_tile', value: 1 },
+  minAct: 3,
+}
+
+/**
+ * The Mark - All Honor tiles drawn face-down
+ */
+export const THE_MARK: MandateDefinition = {
+  id: 'the_mark',
+  name: 'The Mark',
+  japaneseName: '印',
+  description: 'All Honor tiles drawn face-down',
+  category: 'Standard',
+  difficulty: 'Medium',
+  effect: { type: 'honor_tiles_face_down' },
+  minAct: 2,
+}
+
+/**
+ * The Manacle - Reduce hand size by 1
+ */
+export const THE_MANACLE: MandateDefinition = {
+  id: 'the_manacle',
+  name: 'The Manacle',
+  japaneseName: '枷',
+  description: '-1 Hand Size',
+  category: 'Standard',
+  difficulty: 'Medium',
+  effect: { type: 'hand_size_reduction', value: 1 },
+  minAct: 1,
+}
+
 // =============================================================================
 // SHOWDOWN MANDATES (Act 8+)
 // =============================================================================
@@ -360,7 +480,7 @@ export const CERULEAN_BELL: MandateDefinition = {
 // =============================================================================
 
 /**
- * All standard boss mandates
+ * All standard boss mandates (23 total per ITEM_LIBRARIES.md A8)
  */
 export const STANDARD_MANDATES: MandateDefinition[] = [
   THE_HOOK,
@@ -378,6 +498,14 @@ export const STANDARD_MANDATES: MandateDefinition[] = [
   THE_WINDOW,
   THE_HEAD,
   THE_PLANT,
+  THE_OX,
+  THE_HOUSE,
+  THE_WHEEL,
+  THE_FISH,
+  THE_SERPENT,
+  THE_TOOTH,
+  THE_MARK,
+  THE_MANACLE,
 ]
 
 /**

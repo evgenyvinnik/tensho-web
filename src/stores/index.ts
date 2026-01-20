@@ -186,3 +186,27 @@ export {
   type ShopPack,
   type OpeningPack,
 } from './packStore'
+
+// Stake Store - Table Stakes difficulty progression (persisted)
+export {
+  useStakeStore,
+  // Selectors
+  selectCurrentStake,
+  selectCurrentStakeColor,
+  selectCurrentStakeName,
+  selectCurrentStakeJapaneseName,
+  selectNoSmallRoundReward,
+  selectScoreScaling,
+  selectRedrawPenalty,
+  selectTotalVictories,
+  selectVictoriesAtStake,
+  selectWallsWithStake,
+  selectHasGoldStakeVictory,
+  // Utilities
+  getWallStakeProgressDisplay,
+  calculateStakeCompletionPercentage,
+  // Types
+  type StakeState,
+  type StakeVictory,
+  type WallStakeProgress,
+} from './stakeStore'

@@ -356,6 +356,9 @@ export class RoundManager {
     roundType: RoundType,
     scoreTarget: number
   ): RoundState {
+    // Calculate effective discards with stake penalty
+    const effectiveDiscards = this.getEffectiveDiscards()
+
     return {
       actNumber,
       roundNumber,
@@ -364,8 +367,8 @@ export class RoundManager {
       currentScore: 0,
       handsPlayed: 0,
       maxHands: DEFAULT_HANDS_PER_ROUND + this.bonusHands,
-      discardsRemaining: DEFAULT_DISCARDS_PER_ROUND + this.bonusDiscards,
-      maxDiscards: DEFAULT_DISCARDS_PER_ROUND + this.bonusDiscards,
+      discardsRemaining: effectiveDiscards,
+      maxDiscards: effectiveDiscards,
       isCompleted: false,
       isWon: false,
     }
@@ -545,7 +548,8 @@ export class RoundManager {
     let gold = 0
     switch (this.currentRound.roundType) {
       case 'Small':
-        gold = this.stake >= 2 ? 0 : 3 // No reward at Red Stake+
+        // No reward at Red Stake+ (uses stake modifiers)
+        gold = this.stakeModifiers.noSmallRoundReward ? 0 : 3
         break
       case 'Large':
         gold = 5
@@ -668,6 +672,7 @@ export class RoundManager {
     bonusHands: number
     bonusDiscards: number
     usedTileIds: string[]
+    stakeModifiers: CombinedStakeModifiers
   } {
     return {
       currentAct: this.currentAct,
@@ -676,6 +681,7 @@ export class RoundManager {
       bonusHands: this.bonusHands,
       bonusDiscards: this.bonusDiscards,
       usedTileIds: Array.from(this.usedTileIds),
+      stakeModifiers: this.stakeModifiers,
     }
   }
 
@@ -689,6 +695,7 @@ export class RoundManager {
     bonusHands: number
     bonusDiscards: number
     usedTileIds: string[]
+    stakeModifiers?: CombinedStakeModifiers
   }): RoundManager {
     const manager = new RoundManager(state.stake)
     manager.currentAct = state.currentAct
@@ -696,6 +703,10 @@ export class RoundManager {
     manager.bonusHands = state.bonusHands
     manager.bonusDiscards = state.bonusDiscards
     manager.usedTileIds = new Set(state.usedTileIds)
+    // Restore modifiers or recalculate if not present
+    if (state.stakeModifiers) {
+      manager.stakeModifiers = state.stakeModifiers
+    }
     return manager
   }
 }

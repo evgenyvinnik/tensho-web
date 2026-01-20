@@ -297,6 +297,46 @@ export class MandateEffectSystem {
         // Handled during draw phase
         result.message += ' - Random tiles will be locked each draw'
         break
+
+      case 'hand_size_reduction':
+        // Handled during hand validation - reduces the max tile count in hand
+        result.message += ` - Hand size reduced by ${mandate.effect.value}`
+        break
+
+      case 'gold_per_tile':
+        // Handled during tile scoring
+        result.message += ` - Lose ${mandate.effect.value} gold per tile played`
+        break
+
+      case 'most_played_yaku_zeroes_gold':
+        // Handled during scoring
+        result.message += ' - Playing most-played Yaku sets gold to 0'
+        break
+
+      case 'first_hand_face_down':
+        // Handled during draw phase - first hand tiles are face-down
+        result.message += ' - First hand drawn face-down'
+        break
+
+      case 'tiles_face_down_ratio':
+        // Handled during draw phase - 1 in N tiles are face-down
+        result.message += ` - 1 in ${mandate.effect.value} tiles drawn face-down`
+        break
+
+      case 'tiles_face_down_after_play':
+        // Handled after each hand play
+        result.message += ' - Tiles drawn face-down after each hand'
+        break
+
+      case 'fixed_draw_count':
+        // Handled during draw phase
+        result.message += ` - After play/discard, always draw ${mandate.effect.value} tiles`
+        break
+
+      case 'honor_tiles_face_down':
+        // Handled during draw phase - honor tiles are face-down
+        result.message += ' - All Honor tiles drawn face-down'
+        break
     }
 
     return result
@@ -392,10 +432,10 @@ export class MandateEffectSystem {
 
       switch (tileType.toLowerCase()) {
         case 'dragon':
-          shouldDebuff = tile.isDragon
+          shouldDebuff = tile.suit === TileSuit.Dragon
           break
         case 'wind':
-          shouldDebuff = tile.isWind
+          shouldDebuff = tile.suit === TileSuit.Wind
           break
         case 'honor':
           shouldDebuff = tile.isHonor

@@ -326,3 +326,110 @@ export {
   canAffordPack,
   getPackEffectiveCost,
 } from './BlessingPackSystem'
+
+// =============================================================================
+// MANDATE EFFECT SYSTEM
+// =============================================================================
+
+export {
+  // Class
+  MandateEffectSystem,
+  // Utilities
+  getMandateDisplayInfo,
+  isShowdownMandate,
+  getMandateDifficultyColor,
+  // Types
+  type MandateState,
+  type MandateApplicationResult,
+  type MandateScoringContext,
+} from './MandateEffectSystem'
+
+// Re-export mandate definitions from config
+export {
+  // Standard Mandates
+  THE_HOOK,
+  THE_WALL,
+  THE_EYE,
+  THE_MOUTH,
+  THE_FLINT,
+  THE_NEEDLE,
+  THE_PILLAR,
+  THE_WATER,
+  THE_ARM,
+  THE_PSYCHIC,
+  THE_CLUB,
+  THE_GOAD,
+  THE_WINDOW,
+  THE_HEAD,
+  THE_PLANT,
+  // Showdown Mandates
+  AMBER_ACORN,
+  VERDANT_LEAF,
+  VIOLET_VESSEL,
+  CRIMSON_HEART,
+  CERULEAN_BELL,
+  // Collections
+  STANDARD_MANDATES,
+  SHOWDOWN_MANDATE_DEFINITIONS,
+  ALL_MANDATES,
+  // Round Type Definitions
+  ROUND_TYPE_DEFINITIONS,
+  // Utility Functions
+  getMandateById,
+  getMandatesForAct,
+  selectRandomMandate,
+  getMandatesByDifficulty,
+  getMandatesByCategory,
+  isScoringMandate,
+  isTileMandate,
+  isResourceMandate,
+  isDecreeMandate,
+  // Types
+  type MandateEffectType,
+  type MandateCategory,
+  type MandateDifficulty,
+  type MandateDefinition,
+  type RoundTypeConfig,
+  type RoundTypeDefinition,
+} from '../config/mandateDefinitions'
+
+// =============================================================================
+// TABLE STAKE SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type StakeModifier,
+  type TableStake,
+  type CombinedStakeModifiers,
+  // Constants
+  TABLE_STAKES,
+  // Class
+  TableStakeSystem,
+  // Utilities
+  getStakeTierByName,
+  getStakeColorByTier,
+  formatStickerProbabilities,
+} from './TableStakeSystem'
+
+// =============================================================================
+// STICKER SYSTEM
+// =============================================================================
+
+export {
+  // Constants
+  PERISHABLE_ROUNDS,
+  RENTAL_GOLD_PER_ROUND,
+  RENTAL_PURCHASE_COST,
+  // Class
+  StickerSystem,
+  // State management
+  type StickerRunState,
+  createStickerRunState,
+  processEndOfRoundStickers,
+  processStartOfRoundStickers,
+  // Re-exports from stakeDefinitions
+  STICKER_DEFINITIONS,
+  type StickerRollResult,
+  type StickerConfig,
+} from './StickerSystem'

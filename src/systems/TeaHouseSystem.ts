@@ -26,8 +26,6 @@
  */
 
 import {
-  ShopState,
-  ShopItem,
   ShopItemType,
   BlessingPack,
   PackSize,

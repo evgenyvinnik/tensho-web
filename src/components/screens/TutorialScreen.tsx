@@ -20,26 +20,43 @@ import { Button } from '../ui/Button'
 const AnimatedDiv = animated('div')
 
 /**
- * Tutorial step interface
+ * Tutorial step configuration
+ * Defines the content and metadata for a single tutorial step
  */
 export interface TutorialStep {
+  /** Unique identifier for the step */
   id: string
+  /** Display title shown in the header */
   title: string
+  /** React content to render in the main area */
   content: React.ReactNode
+  /** Optional image URL to display */
   image?: string
+  /** Optional array of tiles to display as examples */
   showTiles?: Array<{ suit: TileSuit; rank: number }>
+  /** Category grouping for navigation sidebar */
   category?: string
 }
 
 /**
- * Category configuration with icons and colors
+ * Category visual configuration
+ * Maps category names to their display icons and Tailwind color classes
  */
 interface CategoryConfig {
+  /** Unique identifier for the category */
   id: string
+  /** Emoji or icon character to display */
   icon: string
+  /** Tailwind CSS color class for the icon */
   color: string
+  /** Human-readable category label */
   label: string
 }
+
+/**
+ * Predefined category configurations for tutorial sections
+ * Each category has an icon and color theme for visual distinction
+ */
 
 const CATEGORY_CONFIG: Record<string, Omit<CategoryConfig, 'id' | 'label'>> = {
   Introduction: { icon: '🏯', color: 'text-amber-400' },
@@ -56,7 +73,11 @@ const CATEGORY_CONFIG: Record<string, Omit<CategoryConfig, 'id' | 'label'>> = {
 }
 
 /**
- * Helper components for tutorial content
+ * Highlight - Inline text styling component for emphasis
+ * Used to draw attention to key terms and values in tutorial content
+ *
+ * @param children - Text content to highlight
+ * @param color - Color theme: 'golden' (default), 'orange', or 'green'
  */
 function Highlight({ children, color = 'golden' }: { children: React.ReactNode; color?: 'golden' | 'orange' | 'green' }) {
   const colors = {
@@ -67,6 +88,13 @@ function Highlight({ children, color = 'golden' }: { children: React.ReactNode; 
   return <span className={`font-bold ${colors[color]}`}>{children}</span>
 }
 
+/**
+ * InfoBox - Callout box for tips, information, and warnings
+ * Displays content with an icon and colored border based on type
+ *
+ * @param children - Content to display inside the box
+ * @param type - Box variant: 'info' (blue), 'tip' (green), or 'warning' (orange)
+ */
 function InfoBox({ children, type = 'info' }: { children: React.ReactNode; type?: 'info' | 'tip' | 'warning' }) {
   const styles = {
     info: 'bg-blue-900/30 border-blue-400/50',
@@ -82,6 +110,12 @@ function InfoBox({ children, type = 'info' }: { children: React.ReactNode; type?
   )
 }
 
+/**
+ * Formula - Styled container for displaying mathematical formulas
+ * Renders content in a monospace font with a gold border
+ *
+ * @param children - Formula content to display
+ */
 function Formula({ children }: { children: React.ReactNode }) {
   return (
     <div className="font-mono bg-[var(--color-forest-green)] p-3 rounded text-center text-lg border border-[var(--color-metallic-gold)]">
@@ -90,6 +124,13 @@ function Formula({ children }: { children: React.ReactNode }) {
   )
 }
 
+/**
+ * DataTable - Renders a styled HTML table for data presentation
+ * Used to display structured information like tile counts, scoring values, etc.
+ *
+ * @param headers - Array of column header strings
+ * @param rows - 2D array of cell contents (strings or React nodes)
+ */
 function DataTable({ headers, rows }: { headers: string[]; rows: Array<Array<string | React.ReactNode>> }) {
   return (
     <div className="overflow-x-auto">
@@ -123,7 +164,10 @@ function DataTable({ headers, rows }: { headers: string[]; rows: Array<Array<str
 }
 
 /**
- * Tile display component for tutorial examples
+ * TileDisplay - Animated display of mahjong tile examples
+ * Shows tiles with a slide-up animation, respects reduced motion settings
+ *
+ * @param tiles - Array of tile definitions with suit and rank
  */
 function TileDisplay({ tiles }: { tiles: Array<{ suit: TileSuit; rank: number }> }) {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
@@ -157,7 +201,12 @@ function TileDisplay({ tiles }: { tiles: Array<{ suit: TileSuit; rank: number }>
 }
 
 /**
- * Progress bar component
+ * ProgressBar - Visual progress indicator for tutorial completion
+ * Shows current step position and overall percentage complete
+ *
+ * @param current - Current step index (0-based)
+ * @param total - Total number of steps
+ * @param categoryProgress - Optional category-specific progress text
  */
 function ProgressBar({ current, total, categoryProgress }: { current: number; total: number; categoryProgress?: string }) {
   const percentage = ((current + 1) / total) * 100
@@ -179,7 +228,14 @@ function ProgressBar({ current, total, categoryProgress }: { current: number; to
 }
 
 /**
- * Category sidebar item
+ * CategoryItem - Sidebar navigation item for a tutorial category
+ * Shows category icon, name, step count, and completion status
+ *
+ * @param category - Category name to display
+ * @param isActive - Whether this category is currently selected
+ * @param stepCount - Total number of steps in this category
+ * @param completedCount - Number of steps the user has visited
+ * @param onClick - Handler called when the item is clicked
  */
 function CategoryItem({
   category,
@@ -219,7 +275,12 @@ function CategoryItem({
 }
 
 /**
- * Mobile category tabs
+ * CategoryTabs - Horizontal scrollable category navigation for mobile
+ * Displays all categories as compact pill buttons
+ *
+ * @param categories - Array of category names
+ * @param currentCategory - Currently active category name
+ * @param onCategoryClick - Handler called when a category is selected
  */
 function CategoryTabs({
   categories,
@@ -256,7 +317,10 @@ function CategoryTabs({
 }
 
 /**
- * Step content display
+ * StepContent - Animated container for tutorial step content
+ * Renders the step's text content, optional tiles, and images with slide-in animation
+ *
+ * @param step - The tutorial step data to render
  */
 function StepContent({ step }: { step: TutorialStep }) {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
@@ -290,7 +354,13 @@ function StepContent({ step }: { step: TutorialStep }) {
 }
 
 /**
- * Generate all tutorial steps
+ * useTutorialSteps - Hook that generates all tutorial step content
+ *
+ * Creates a memoized array of 40+ tutorial steps organized into 11 categories,
+ * covering everything from basic tile knowledge to advanced strategy.
+ * Content is internationalized using react-i18next.
+ *
+ * @returns Array of TutorialStep objects with localized content
  */
 function useTutorialSteps(): TutorialStep[] {
   const { t } = useTranslation()
@@ -1439,7 +1509,20 @@ function useTutorialSteps(): TutorialStep[] {
 }
 
 /**
- * TutorialScreen - Full-page tutorial/codex experience
+ * TutorialScreen - Full-page tutorial and codex experience
+ *
+ * Provides a comprehensive learning interface for Tensho Mahjong with:
+ * - Category sidebar (desktop) for navigating between tutorial sections
+ * - Horizontal category tabs (mobile) for responsive navigation
+ * - Step indicators showing progress within each category
+ * - Animated step content with tile examples and visual aids
+ * - Progress tracking that persists visited steps
+ * - Navigation controls with Previous/Next buttons
+ * - "Start Playing" action on final step that marks tutorial complete
+ *
+ * The tutorial is accessible from the main menu and covers:
+ * Introduction, Tiles, Hand Building, How to Play, Scoring,
+ * Progression, Decrees, Flora, Economy, Strategy, and a final summary.
  */
 export function TutorialScreen() {
   const { t } = useTranslation()
