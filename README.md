@@ -32,6 +32,18 @@ bun run dev
 bun run build
 ```
 
+### Testing
+
+```bash
+# Unit tests with Vitest
+bun run test           # Watch mode
+bun run test:run       # Single run
+
+# E2E tests with Playwright
+bun run test:e2e       # Headless
+bun run test:e2e:headed # With browser UI
+```
+
 ### Linting & Formatting
 
 ```bash
@@ -41,14 +53,17 @@ bun run format
 
 ## Tech Stack
 
-- **React 19** — UI framework
-- **TypeScript** — Type safety
-- **Vite** — Build tool
-- **Tailwind CSS** — Styling
-- **React Spring** — Animations
-- **Zustand** — State management
-- **TanStack Query** — Data fetching
-- **ESLint + Prettier** — Code quality
+- **React 19** — UI framework with experimental React Compiler
+- **TypeScript** — Strict mode type safety
+- **Vite 6** — Build tool with HMR
+- **Tailwind CSS v4** — Utility-first styling
+- **React Spring** — Physics-based animations
+- **Zustand** — Lightweight state management
+- **TanStack Query** — Data fetching & caching
+- **i18next** — Internationalization (13 locales)
+- **Vitest** — Unit testing framework
+- **Playwright** — E2E browser testing
+- **PWA** — Offline support, installable app
 
 ## Code Statistics
 
@@ -56,15 +71,25 @@ Run `bun run sloc` to calculate source lines of code.
 
 | Extension | Lines |
 |-----------|-------|
-| .ts       | 37,918 |
-| .tsx      | 14,111 |
-| .js       | 4,645 |
-| .json     | 3,247 |
-| .md       | 2,699 |
-| .css      | 471 |
-| .mjs      | 108 |
-| .html     | 25 |
-| **Total** | **63,224** |
+| .ts       | 46,755 |
+| .tsx      | 21,504 |
+| .js/.mjs  | 5,242 |
+| .json     | 3,112 |
+| .md       | 686 |
+| .css      | 470 |
+| .html     | 109 |
+| **Total** | **77,878** |
+
+### Project Structure
+
+| Category | Count |
+|----------|-------|
+| Zustand Stores | 18 |
+| Game Systems | 27 |
+| React Components | 59 |
+| Unit Tests | 33 |
+| E2E Tests | 5 |
+| Supported Locales | 13 |
 
 ### Implemented Systems
 
@@ -77,8 +102,16 @@ Run `bun run sloc` to calculate source lines of code.
 | Omen Tags | 23 |
 | Boss Mandates | 27 |
 | Table Stakes | 8 tiers |
-| Zustand Stores | 14 |
-| Game Systems | 19 |
+| Decrees | 40+ |
+
+## Features
+
+- **Tutorial System** — Interactive first-time player guide with translations
+- **Drag & Drop** — Intuitive tile arrangement with touch support
+- **Responsive Design** — Mobile-first portrait layout
+- **PWA Support** — Install on any device, works offline
+- **Localization** — 13 languages supported
+- **Accessibility** — Keyboard navigation, screen reader support
 
 ## Documentation
 

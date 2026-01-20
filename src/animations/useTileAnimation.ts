@@ -5,7 +5,7 @@
  * All animations respect reduced motion preferences.
  */
 
-import { useSpring, config } from '@react-spring/web';
+import { useSpring, config, to } from '@react-spring/web';
 import { useCallback, useState } from 'react';
 import { SPRINGS, OFFSETS, SCALES } from './constants';
 import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsStore';
@@ -403,16 +403,22 @@ export function useTileDragAnimation() {
 
   return {
     style: {
+      // Use proper interpolation with to() to combine all animated values reactively
       transform: positionSpring.x.to(
-        (x) =>
-          `translate(${x}px, ${positionSpring.y.get()}px) scale(${visualSpring.scale.get()}) rotate(${positionSpring.rotate.get()}deg)`
+        (x, y, rotate, scale) =>
+          `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`,
+        positionSpring.y,
+        positionSpring.rotate,
+        visualSpring.scale
       ),
       opacity: visualSpring.opacity,
       boxShadow: visualSpring.shadowOpacity.to(
         (o) => `0 ${8 + o * 12}px ${16 + o * 24}px rgba(0, 0, 0, ${o})`
       ),
     },
-    spring: positionSpring,
+    // Also expose individual springs for advanced usage
+    positionSpring,
+    visualSpring,
     isDragging,
     startDrag,
     updateDrag,
