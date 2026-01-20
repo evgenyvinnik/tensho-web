@@ -36,8 +36,7 @@ import {
 } from '../config/omenDefinitions'
 import {
   useOmenStore,
-  ActiveOmen,
-  OmenHistoryEntry,
+  ActiveOmenTag,
   selectShopDiscountFromOmens,
   selectFreeRerollsFromOmens,
   selectGuaranteedShopItems,
@@ -47,6 +46,26 @@ import {
   selectNextRoundHandSizeBonus,
   selectGoldBonusFromOmens,
 } from '../stores/omenStore'
+
+// Re-export types that may be needed
+export type { OmenDefinition, OmenCategory, OmenRarity, OmenEffectType }
+export type OmenTrigger = 'OnNextShop' | 'OnNextRound' | 'OnNextHand' | 'OnNextVoidScript' | 'OnAcquire' | 'Passive' | 'OnRoundSkip'
+
+// Type alias for backward compatibility
+export type ActiveOmen = ActiveOmenTag
+
+export interface OmenHistoryEntry {
+  id: string
+  definitionId: string
+  name: string
+  japaneseName: string
+  acquiredAct: number
+  acquiredRound: number
+  consumedAct: number
+  consumedRound: number
+  triggerCondition: string
+  effectDescription: string
+}
 
 // =============================================================================
 // OMEN TAG SYSTEM CLASS

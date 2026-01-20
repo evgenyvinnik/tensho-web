@@ -4,29 +4,63 @@
  * Manages the Omen Tags system for skip rewards.
  * Omen Tags (兆標) are one-time destiny modifiers that trigger once, then vanish.
  * They are awarded when skipping Small or Large rounds before the Boss round.
- *
- * This store integrates with both:
- * - OmenTagSystem (src/systems/OmenTagSystem.ts) - The 24 official tags from ITEM_LIBRARIES.md A7
- * - omenDefinitions (src/config/omenDefinitions.ts) - Legacy omen definitions
  */
 
 import { create } from 'zustand'
 import type { SeasonVariant, DecreeRarity, PackType } from '../systems/types'
 
-// Import from OmenTagSystem for the official 24 tags
+// Import from omenDefinitions for the actual definitions
 import {
-  OmenTagDefinition,
-  ActiveOmenTag,
-  OmenTriggerCondition,
+  OmenDefinition,
+  OmenTrigger,
   OmenEffectType,
-  TileEdition,
-  ALL_OMEN_TAGS,
-  DEFAULT_UNLOCKED_OMEN_TAGS,
-  getRandomWeightedOmenTag,
-  getOmenTagDisplayName,
-  getOmenTagJapaneseName,
-  getOmenTagDescription,
-} from '../systems/OmenTagSystem'
+  ALL_OMENS,
+  getRandomOmen,
+} from '../config/omenDefinitions'
+
+// Re-export types for convenience
+export type OmenTagDefinition = OmenDefinition
+export type OmenTriggerCondition = OmenTrigger
+export { OmenEffectType }
+
+// Tile edition type (for omen effects that grant editions)
+export type TileEdition = 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
+
+// Active omen tag instance
+export interface ActiveOmenTag {
+  id: string
+  definitionId: string
+  acquiredAct: number
+  acquiredRound: number
+  isConsumed: boolean
+  triggeredAt?: number
+}
+
+// Use ALL_OMENS as the tag definitions
+export const ALL_OMEN_TAGS = ALL_OMENS
+
+// Default unlocked tags (all available by default for now)
+export const DEFAULT_UNLOCKED_OMEN_TAGS = ALL_OMENS.map((o) => o.id)
+
+// Helper functions for display
+export function getOmenTagDisplayName(definitionId: string): string {
+  const def = ALL_OMENS.find((o) => o.id === definitionId)
+  return def?.name ?? definitionId
+}
+
+export function getOmenTagJapaneseName(definitionId: string): string {
+  const def = ALL_OMENS.find((o) => o.id === definitionId)
+  return def?.japaneseName ?? ''
+}
+
+export function getOmenTagDescription(definitionId: string): string {
+  const def = ALL_OMENS.find((o) => o.id === definitionId)
+  return def?.effect.description ?? ''
+}
+
+export function getRandomWeightedOmenTag(excludeIds: string[] = []): OmenDefinition | null {
+  return getRandomOmen(excludeIds)
+}
 
 // =============================================================================
 // TYPES
@@ -926,6 +960,3 @@ let omenIdCounter = 0
 export function generateOmenId(): string {
   return `omen-${++omenIdCounter}-${Date.now()}`
 }
-
-// Re-export utility functions from OmenTagSystem
-export { getOmenTagDisplayName, getOmenTagJapaneseName, getOmenTagDescription }
