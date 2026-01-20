@@ -447,8 +447,9 @@ export function resetTileIdCounter(): void {
 
 /**
  * Create a standard 136-tile Riichi Mahjong set (without bonus tiles)
+ * @param includeRedFives - Whether to include red fives (one per suit). Defaults to true.
  */
-export function createStandardTileSet(): Tile[] {
+export function createStandardTileSet(includeRedFives: boolean = true): Tile[] {
   const tiles: Tile[] = []
 
   // Suited tiles: Manzu, Pinzu, Souzu (1-9, 4 copies each)
@@ -456,8 +457,8 @@ export function createStandardTileSet(): Tile[] {
   for (const suit of suitedSuits) {
     for (let rank = 1; rank <= 9; rank++) {
       for (let copy = 0; copy < 4; copy++) {
-        // One red five per suit (copy index 0)
-        const isRed = rank === 5 && copy === 0
+        // One red five per suit (copy index 0) when enabled
+        const isRed = includeRedFives && rank === 5 && copy === 0
         tiles.push(new Tile(suit, rank, generateTileId(), isRed))
       }
     }
@@ -501,9 +502,10 @@ export function createBonusTileSet(): Tile[] {
 
 /**
  * Create a full 144-tile set (136 standard + 8 bonus)
+ * @param includeRedFives - Whether to include red fives (one per suit). Defaults to true.
  */
-export function createFullTileSet(): Tile[] {
-  return [...createStandardTileSet(), ...createBonusTileSet()]
+export function createFullTileSet(includeRedFives: boolean = true): Tile[] {
+  return [...createStandardTileSet(includeRedFives), ...createBonusTileSet()]
 }
 
 /**

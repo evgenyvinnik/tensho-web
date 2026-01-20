@@ -157,3 +157,118 @@ export {
   gameplayTutorialSteps,
   type TutorialStep,
 } from './gameplayTutorialSteps'
+
+// =============================================================================
+// TABLE STYLE DEFINITIONS
+// =============================================================================
+
+export {
+  // Types
+  type TableModifierType,
+  type TableModifier,
+  type UnlockRequirementType,
+  type UnlockRequirement,
+  type TableStyleDefinition,
+  type PlayerUnlockStats,
+  // Style Constants
+  GREEN_FELT,
+  RED_LACQUER,
+  BAMBOO_MAT,
+  IMPERIAL_GOLD,
+  NIGHT_MARKET,
+  TEMPLE_STONE,
+  GHOST_PARLOR,
+  DRAGONS_DEN,
+  // Collections
+  TABLE_STYLE_DEFINITIONS,
+  DEFAULT_TABLE_STYLES,
+  UNLOCKABLE_TABLE_STYLES,
+  // Lookup utilities
+  getTableStyleById,
+  getTableStyleByName,
+  getTableStylesByTheme,
+  getDefaultTableStyle,
+  // Modifier utilities
+  getTableModifiers,
+  hasModifierType,
+  getModifierValue,
+  getDecreeSlotModifier,
+  getFlowerRateModifier,
+  getShopDiscountModifier,
+  getBaseScoreModifier,
+  getYakumanMultiplierModifier,
+  getScoreTargetModifier,
+  areFlowersDisabled,
+  hasEarlyCorruptedSeasons,
+  grantsRegionalMandate,
+  // Unlock utilities
+  isUnlockConditionMet,
+  getUnlockedTableStyles,
+  getLockedTableStyles,
+  getUnlockProgress,
+  // Display utilities
+  formatModifierDescriptions,
+  getBenefitModifiers,
+  getDetrimentModifiers,
+  hasTradeOffs,
+  getThemeInfo,
+} from './tableStyleDefinitions'
+
+// =============================================================================
+// ARCHIVE DEFINITIONS
+// =============================================================================
+
+export {
+  // Types
+  type ArchiveCategory,
+  type ConsumableSubCategory,
+  type ArchiveCategoryDefinition,
+  type PreDiscoveredSet,
+  type WallDefinition,
+  type TileMarkDefinition,
+  type SealDefinition,
+  type EditionDefinition,
+  type PackVariantDefinition,
+  // Constants
+  ARCHIVE_CATEGORIES,
+  PRE_DISCOVERED_ITEMS,
+  WALL_DEFINITIONS,
+  TILE_MARK_DEFINITIONS,
+  SEAL_DEFINITIONS_ARCHIVE,
+  EDITION_DEFINITIONS_ARCHIVE,
+  PACK_VARIANT_DEFINITIONS,
+  // Utilities
+  getTotalExpectedItems,
+  getPreDiscoveredItemIds,
+  getArchiveCategory,
+  getAllArchiveCategories,
+  createArchiveKey,
+  parseArchiveKey,
+  isPreDiscovered,
+} from './archiveDefinitions'
+
+// =============================================================================
+// UNLOCK DEFINITIONS
+// =============================================================================
+
+export {
+  // Types
+  type UnlockCategory,
+  type UnlockConditionType,
+  type UnlockCondition,
+  type UnlockDefinition,
+  // Constants
+  DECREE_UNLOCKS,
+  TABLE_STYLE_UNLOCKS,
+  CHARTER_UNLOCKS,
+  STAKE_UNLOCKS,
+  ALL_UNLOCKS,
+  STAKE_NAME_TO_TIER,
+  // Utilities
+  getUnlockById,
+  getUnlocksForItem,
+  getUnlocksByCategory,
+  getDefaultUnlocks,
+  getStakeTierFromName,
+  getStakeNameFromTier,
+} from './unlockDefinitions'

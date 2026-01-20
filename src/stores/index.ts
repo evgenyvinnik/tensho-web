@@ -267,3 +267,77 @@ export {
   // Types
   type ConsumableState,
 } from './consumableStore'
+
+// Table Style Store - Table Styles (Deck Backs equivalents)
+export {
+  useTableStyleStore,
+  // Selectors
+  selectCurrentStyle,
+  selectCurrentStyleName,
+  selectCurrentStyleJapaneseName,
+  selectCurrentStyleThemeColor,
+  selectCurrentStyleAccentColor,
+  selectDecreeSlotModifier,
+  selectFlowerRateMultiplier,
+  selectShopDiscountPercent,
+  selectBaseScoreMultiplier,
+  selectYakumanMultiplierBonus,
+  selectScoreTargetMultiplier,
+  selectFlowersDisabled,
+  selectEarlyCorruptedSeasons,
+  selectGrantRegionalMandate,
+  selectUnlockedStyleCount,
+  selectTotalStyleCount,
+  selectUnlockCompletionPercent,
+  selectMostRecentUnlock,
+  selectTotalDecreesPurchased,
+  selectHighestActCompleted,
+  selectHasScoredYakuman,
+  // Utilities
+  getStylesWithUnlockStatus,
+  getStyleProgressDisplay,
+  calculateStyleCollectionPercentage,
+  getUnlockRequirementsSummary,
+  // Types
+  type TableStyleState,
+  type TableStyleUnlock,
+  type TableStyleStats,
+} from './tableStyleStore'
+
+// Archive Store - Archive of Hands collection system (persisted)
+export {
+  useArchiveStore,
+  // Selectors
+  useArchiveCompletion,
+  useCategoryCompletions,
+  useRecentDiscoveries,
+  // Utilities
+  initializeArchive,
+  // Types
+  type ArchiveState,
+} from './archiveStore'
+
+// Progression Store - Meta-Progression system (persisted)
+export {
+  useProgressionStore,
+  // Selectors
+  selectTotalUnlocks,
+  selectCategoryUnlockCount,
+  selectRecentUnlocksCount,
+  selectHasPendingUnlockNotifications,
+  selectHighestAct,
+  selectTotalWins,
+  selectTotalGoldSpent,
+  selectHighestHandScore,
+  selectTotalTilesPlayed,
+  selectTotalDecreesPurchased as selectProgressionDecreesPurchased,
+  selectYakumanCount,
+  selectFastestWin,
+  // Utilities
+  getUnlockWithStatus,
+  getAllUnlocksWithStatus,
+  formatLifetimeStat,
+  // Types
+  type ProgressionState,
+  type UnlockRecord,
+} from './progressionStore'

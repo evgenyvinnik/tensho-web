@@ -52,25 +52,19 @@ src/
 └── utils/          # Helpers and asset paths
 ```
 
-### File Organization Rules
+### Import Patterns
 
-**Do NOT create separate `index.ts` or `types.ts` files.** Keep code consolidated:
-
-- **Types:** Inline interfaces and types directly in the `.ts` or `.tsx` file where they're used
-- **Exports:** Import directly from the source file, not from barrel exports
-- **Components:** Keep related types, constants, and helper functions in the same file as the component
+Each major module uses barrel exports via `index.ts`. Import from the directory, not individual files:
 
 ```typescript
-// Preferred - import from source files
+// Preferred - import from barrel
+import { Tile, Meld, Hand, Wall } from './core'
+import { useGameStore, useHandStore } from './stores'
+import { DecreeSystem, FlowerSystem } from './systems'
+
+// Avoid - importing from individual files
 import { Tile } from './core/Tile'
-import { useGameStore } from './stores/gameStore'
-
-// Avoid - barrel imports and separate type files
-import { Tile } from './core'           // No index.ts barrels
-import { TileProps } from './types'     // No separate types.ts files
 ```
-
-This keeps related code together and makes it easier to understand each module in isolation.
 
 ### Game Loop Architecture: GameOrchestrator
 
@@ -126,6 +120,13 @@ const state = gameOrchestrator.getState()
 - `ShantenCalculator` — Distance-to-tenpai computation
 - `HandValidator` — Legal hand validation
 - `ScoringEngine` — Implements the formula: `Final = (Base + Additive) × Multipliers`
+
+**Config Layer (`src/config/`)** — Game content definitions:
+- `charterDefinitions` — 32 Imperial Charter definitions (base + upgraded pairs)
+- `mandateDefinitions` — 27 Boss Mandate effects and restrictions
+- `omenDefinitions` — 23 Omen Tag rewards for skipping rounds
+- `packDefinitions` — Blessing Pack types, sizes, and appearance rates
+- `stakeDefinitions` — 8 Table Stake tiers with cumulative modifiers
 
 **Systems Layer (`src/systems/`)** — Rule modifiers and roguelike mechanics:
 - `RoundManager` — Act/Round progression, boss mandates, score targets
@@ -243,3 +244,41 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 ## PWA
 
 Fully installable Progressive Web App with offline support via service worker (workbox). Assets cached with CacheFirst strategy. See `vite.config.ts` for PWA configuration.
+
+## SEO
+
+### Meta Tags
+
+The app includes comprehensive SEO meta tags in `index.html`:
+- Primary meta tags (title, description, keywords, author)
+- Open Graph tags for Facebook/LinkedIn sharing
+- Twitter Card tags for Twitter sharing
+- Structured data (JSON-LD VideoGame schema)
+- Multi-language alternate links
+
+### Dynamic SEO
+
+Use the `usePageSEO` hook for route-specific meta tags:
+
+```typescript
+import { usePageSEO, getLocalizedSEO } from './utils/seo'
+
+function PlayPage() {
+  const { i18n } = useTranslation()
+
+  usePageSEO(getLocalizedSEO('play', i18n.language))
+  // Sets title to "Play | Tensho", updates canonical, OG tags, etc.
+
+  return <div>...</div>
+}
+```
+
+### SEO Files
+
+- `public/robots.txt` — Crawler instructions
+- `public/sitemap.xml` — URL sitemap with hreflang for 13 languages
+- `public/browserconfig.xml` — Windows tile configuration
+- `public/og-image.png` — Open Graph image (1200×630) [needs creation]
+- `public/screenshot-wide.png` — PWA screenshot landscape [needs creation]
+- `public/screenshot-narrow.png` — PWA screenshot portrait [needs creation]
+

@@ -15,18 +15,38 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png', 'robots.txt', 'sitemap.xml'],
       manifest: {
-        name: 'Tensho - Mahjong Roguelike',
+        name: 'Tensho (天翔) - Mahjong Roguelike',
         short_name: 'Tensho',
-        description: 'A roguelike game built around Japanese Riichi Mahjong mechanics',
+        description: 'A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns.',
         theme_color: '#1a3a2a',
         background_color: '#1a3a2a',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
-        categories: ['games', 'entertainment'],
+        id: '/',
+        categories: ['games', 'entertainment', 'puzzle'],
+        lang: 'en',
+        dir: 'ltr',
+        prefer_related_applications: false,
+        screenshots: [
+          {
+            src: 'screenshot-wide.png',
+            sizes: '1280x720',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Tensho gameplay on desktop',
+          },
+          {
+            src: 'screenshot-narrow.png',
+            sizes: '720x1280',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'Tensho gameplay on mobile',
+          },
+        ],
         icons: [
           {
             src: 'icon-192x192.png',

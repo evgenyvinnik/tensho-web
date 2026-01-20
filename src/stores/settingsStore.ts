@@ -24,6 +24,9 @@ export interface SettingsState {
   // Language setting (synced with i18next via localStorage)
   language: SupportedLanguage
 
+  // Gameplay settings
+  redFivesEnabled: boolean // Enable red fives (aka-dora) for bonus scoring
+
   // Actions
   setMusicVolume: (volume: number) => void
   setSfxVolume: (volume: number) => void
@@ -33,6 +36,7 @@ export interface SettingsState {
   setAnimationSpeed: (speed: 'slow' | 'normal' | 'fast') => void
   setReducedMotion: (reduced: boolean) => void
   setLanguage: (language: SupportedLanguage) => void
+  setRedFivesEnabled: (enabled: boolean) => void
   resetSettings: () => void
 }
 
@@ -45,6 +49,7 @@ const DEFAULT_SETTINGS = {
   animationSpeed: 'normal' as const,
   reducedMotion: false,
   language: 'en' as SupportedLanguage,
+  redFivesEnabled: false, // Red fives disabled by default for backward compatibility
 }
 
 /**
@@ -95,6 +100,10 @@ export const useSettingsStore = create<SettingsState>()(
         localStorage.setItem('tensho-language', language)
       },
 
+      setRedFivesEnabled: (enabled: boolean) => {
+        set({ redFivesEnabled: enabled })
+      },
+
       resetSettings: () => {
         set(DEFAULT_SETTINGS)
       },
@@ -112,6 +121,7 @@ export const useSettingsStore = create<SettingsState>()(
         animationSpeed: state.animationSpeed,
         reducedMotion: state.reducedMotion,
         language: state.language,
+        redFivesEnabled: state.redFivesEnabled,
       }),
     }
   )

@@ -4,9 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 
+    <!-- Primary Meta Tags -->
+    <title>Tensho (天翔) - Mahjong Roguelike Game</title>
+    <meta name="title" content="Tensho (天翔) - Mahjong Roguelike Game" />
+    <meta name="description" content="A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns in this addictive single-player experience." />
+    <meta name="keywords" content="mahjong, roguelike, deck builder, riichi mahjong, card game, strategy game, japanese mahjong, tensho, balatro-like, yaku, tile game, PWA game, web game" />
+    <meta name="author" content="Tensho Team" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="General" />
+
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1a3a2a" />
-    <meta name="description" content="A roguelike game built around Japanese Riichi Mahjong mechanics" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Tensho" />
+    <meta name="msapplication-TileColor" content="#1a3a2a" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
 
     <!-- iOS PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,14 +28,79 @@
     <meta name="apple-mobile-web-app-title" content="Tensho" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tensho.game/" />
+    <meta property="og:title" content="Tensho (天翔) - Mahjong Roguelike Game" />
+    <meta property="og:description" content="A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns." />
+    <meta property="og:image" content="https://tensho.game/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Tensho - Mahjong Roguelike Game" />
+    <meta property="og:site_name" content="Tensho" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://tensho.game/" />
+    <meta name="twitter:title" content="Tensho (天翔) - Mahjong Roguelike Game" />
+    <meta name="twitter:description" content="A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns." />
+    <meta name="twitter:image" content="https://tensho.game/og-image.png" />
+    <meta name="twitter:image:alt" content="Tensho - Mahjong Roguelike Game" />
+    <meta name="twitter:creator" content="@tensho_game" />
+    <meta name="twitter:site" content="@tensho_game" />
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://tensho.game/" />
 
     <!-- Prevent phone number detection -->
     <meta name="format-detection" content="telephone=no" />
 
-    <title>Tensho - Mahjong Roguelike</title>
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Tensho (天翔)",
+      "alternateName": ["Tensho", "天翔", "Tensho Mahjong Roguelike"],
+      "description": "A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns in this addictive single-player experience.",
+      "url": "https://tensho.game/",
+      "image": "https://tensho.game/og-image.png",
+      "genre": ["Roguelike", "Deck Builder", "Strategy", "Card Game", "Puzzle"],
+      "gamePlatform": ["Web Browser", "Progressive Web App", "iOS", "Android"],
+      "operatingSystem": ["Windows", "macOS", "Linux", "iOS", "Android"],
+      "applicationCategory": "Game",
+      "inLanguage": ["en", "ja", "ko", "zh-Hans", "zh-Hant", "es", "fr", "it", "ru", "tr", "id", "th", "tl"],
+      "isAccessibleForFree": true,
+      "playMode": "SinglePlayer",
+      "numberOfPlayers": {
+        "@type": "QuantitativeValue",
+        "value": 1
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1000",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

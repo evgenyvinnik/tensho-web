@@ -9,7 +9,14 @@
     "lint": "eslint .",
     "preview": "node ./node_modules/.bin/vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "sloc": "node scripts/sloc.mjs"
+    "sloc": "node scripts/sloc.mjs",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.4",

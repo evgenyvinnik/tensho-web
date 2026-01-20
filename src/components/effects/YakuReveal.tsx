@@ -7,13 +7,15 @@
  * - Chain animations for multiple yaku
  */
 
-// Re-export all types
+// Re-export all types from components
 export type {
   YakuRevealProps,
   YakuRevealSequenceProps,
   YakuBannerProps,
-  TierStyles,
-} from './yaku-reveal/types'
+} from './yaku-reveal/RevealComponents'
+
+// Re-export TierStyles from tierStyles
+export type { TierStyles } from './yaku-reveal/tierStyles'
 
 // Re-export tier styling utility
 export { getTierStyles } from './yaku-reveal/tierStyles'

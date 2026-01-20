@@ -14,6 +14,9 @@
  * - Enhancement chips/mult (Bonus: +30, Mult: +4, etc.)
  * - Edition chips/mult (Foil: +50, Holo: +10, Poly: x1.5)
  * - Seal effects (Gold: ¥3, Red: retrigger, etc.)
+ *
+ * Red fives (aka-dora) add:
+ * - +50 bonus chips per red five when enabled
  */
 
 import { Tile, WindType, EnhancementType, EditionType } from '../core/Tile'
@@ -21,6 +24,7 @@ import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
 import { DetectedYaku, YakuContext, detectYaku, calculateYakuMultiplier } from './YakuDetector'
 import { tileModifierSystem } from '../systems/TileModifierSystem'
+import { redFiveSystem, countRedFives, isRedFive } from '../systems/RedFiveSystem'
 
 /**
  * Detailed score breakdown
@@ -35,6 +39,10 @@ export interface ScoreBreakdown {
   modifierChips: number
   modifierMult: number
   modifierMultiplier: number
+
+  // Red fives (aka-dora)
+  redFiveCount: number
+  redFiveChips: number
 
   // Yaku
   detectedYaku: DetectedYaku[]
@@ -158,6 +166,10 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const goldEarned = modifierResult.totalGold
   const shatteredTiles = modifierResult.shatteredTileIds
 
+  // 3. Calculate red five bonus chips
+  const redFiveCount = countRedFives(context.tiles)
+  const redFiveChips = redFiveSystem.calculateBonus(context.tiles)
+
   // Track retriggered tiles (Red Seal)
   const retriggeredTiles: string[] = []
   for (const tile of context.tiles) {
@@ -166,7 +178,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     }
   }
 
-  // 3. Create yaku context and detect yaku
+  // 4. Create yaku context and detect yaku
   const yakuContext: YakuContext = {
     tiles: context.tiles,
     parsedHand: context.parsedHand,
@@ -181,14 +193,14 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   const detectedYaku = detectYaku(yakuContext)
 
-  // 4. Calculate yaku multiplier (multiplicative stacking)
+  // 5. Calculate yaku multiplier (multiplicative stacking)
   const yakuMultiplier = calculateYakuMultiplier(detectedYaku)
 
-  // 5. Apply additional bonuses from game systems
-  const additiveBonus = (context.additiveBonus ?? 0) + modifierChips + modifierMult
+  // 6. Apply additional bonuses from game systems (including red fives)
+  const additiveBonus = (context.additiveBonus ?? 0) + modifierChips + modifierMult + redFiveChips
   const multiplicativeBonus = (context.multiplicativeBonus ?? 1) * modifierMultiplier
 
-  // 6. Calculate final score
+  // 7. Calculate final score
   // Formula: Final Score = (Base Points + Additive Bonuses) x Multiplicative Multipliers
   const subtotal = basePoints + additiveBonus
   const finalScore = Math.floor(subtotal * yakuMultiplier * multiplicativeBonus)
@@ -200,6 +212,8 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     modifierChips,
     modifierMult,
     modifierMultiplier,
+    redFiveCount,
+    redFiveChips,
     detectedYaku,
     yakuMultiplier,
     additiveBonus,
@@ -277,6 +291,12 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
     if (breakdown.modifierMultiplier !== 1) {
       lines.push(`  Mult Multiplier: x${breakdown.modifierMultiplier.toFixed(2)}`)
     }
+    lines.push('')
+  }
+
+  // Red fives (aka-dora)
+  if (breakdown.redFiveCount > 0 && breakdown.redFiveChips > 0) {
+    lines.push(`Red Fives: ${breakdown.redFiveCount} (+${breakdown.redFiveChips} chips)`)
     lines.push('')
   }
 

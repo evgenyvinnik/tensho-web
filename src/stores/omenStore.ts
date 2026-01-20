@@ -10,10 +10,12 @@ import { create } from 'zustand'
 import type { SeasonVariant, DecreeRarity, PackType } from '../systems/types'
 
 // Import from omenDefinitions for the actual definitions
-import {
+import type {
   OmenDefinition,
   OmenTrigger,
   OmenEffectType,
+} from '../config/omenDefinitions'
+import {
   ALL_OMENS,
   getRandomOmen,
 } from '../config/omenDefinitions'
@@ -21,7 +23,7 @@ import {
 // Re-export types for convenience
 export type OmenTagDefinition = OmenDefinition
 export type OmenTriggerCondition = OmenTrigger
-export { OmenEffectType }
+export type { OmenEffectType }
 
 // Tile edition type (for omen effects that grant editions)
 export type TileEdition = 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'

@@ -628,3 +628,126 @@ export {
   // Class
   VoidScriptSystem,
 } from './VoidScriptSystem'
+
+// =============================================================================
+// RED FIVE SYSTEM (Aka-Dora)
+// =============================================================================
+
+export {
+  // Constants
+  RED_FIVE_CHIP_BONUS,
+  RED_FIVE_RANK,
+  RED_FIVE_SUITS,
+  RED_FIVE_COUNT,
+  // Types
+  type RedFiveConfig,
+  // Default configuration
+  DEFAULT_RED_FIVE_CONFIG,
+  // Functions
+  isRedFive,
+  canBeRedFive,
+  calculateRedFiveBonus,
+  countRedFives,
+  getRedFives,
+  // Class
+  RedFiveSystem,
+  // Singleton
+  redFiveSystem,
+} from './RedFiveSystem'
+
+// =============================================================================
+// TABLE STYLE SYSTEM
+// =============================================================================
+
+export {
+  // Re-exports from config
+  TABLE_STYLE_DEFINITIONS,
+  getTableStyleById,
+  getDefaultTableStyle,
+  getUnlockedTableStyles,
+  getLockedTableStyles,
+  getUnlockProgress,
+  isUnlockConditionMet,
+  getTableModifiers,
+  getDecreeSlotModifier,
+  getFlowerRateModifier,
+  getShopDiscountModifier,
+  getBaseScoreModifier,
+  getYakumanMultiplierModifier,
+  getScoreTargetModifier,
+  areFlowersDisabled,
+  hasEarlyCorruptedSeasons,
+  grantsRegionalMandate,
+  hasModifierType,
+  formatModifierDescriptions,
+  getBenefitModifiers,
+  getDetrimentModifiers,
+  hasTradeOffs,
+  getThemeInfo,
+  // Types
+  type TableStyleDefinition,
+  type TableModifier,
+  type TableModifierType,
+  type UnlockRequirement,
+  type PlayerUnlockStats,
+  // System-specific exports
+  type ActiveTableModifiers,
+  DEFAULT_TABLE_MODIFIERS,
+  // Class
+  TableStyleSystem,
+  // Utilities
+  getTableStyleByName,
+  getTableStyleByJapaneseName,
+  getTableStyleColor,
+  getTableStyleTheme,
+  formatTableStyleName,
+  getModifierSummary,
+  isPurelyBeneficial,
+  getUnlockedStyleCount,
+  getUnlockCompletionPercent,
+} from './TableStyleSystem'
+
+// =============================================================================
+// ARCHIVE SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type ArchiveEntry,
+  type DiscoveryEvent,
+  type DiscoveryTrigger,
+  type ArchiveStats,
+  // Class
+  ArchiveSystem,
+  // Utilities
+  getDiscoveryTriggerName,
+  getDiscoveryTriggerJapaneseName,
+  formatDiscoveryDate,
+  // Singleton
+  getArchiveSystem,
+  resetArchiveSystem,
+} from './ArchiveSystem'
+
+// =============================================================================
+// META PROGRESSION SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type LifetimeStats,
+  type SerializableLifetimeStats,
+  type UnlockStatus,
+  type UnlockCheckResult,
+  type UnlockContext,
+  type UnlockConditionProgress,
+  type ProgressionEventType,
+  type ProgressionEventPayload,
+  // Constants
+  DEFAULT_LIFETIME_STATS,
+  // Class
+  MetaProgressionSystem,
+  // Singleton
+  metaProgressionSystem,
+  // Event processing
+  processProgressionEvent,
+} from './MetaProgressionSystem'

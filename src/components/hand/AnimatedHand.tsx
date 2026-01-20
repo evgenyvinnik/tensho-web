@@ -14,8 +14,10 @@ export type {
   AnimatedHandProps,
   HandWithDiscardZoneProps,
   CompactHandProps,
-  TilePosition,
-} from './animated-hand/types'
+} from './animated-hand/HandComponents'
+
+// Re-export TilePosition from positionUtils
+export type { TilePosition } from './animated-hand/positionUtils'
 
 // Re-export position utilities
 export {

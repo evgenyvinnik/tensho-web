@@ -58,6 +58,7 @@ export interface WallState {
   deadWallDrawIndex: number
   doraIndicators: number // Number of revealed dora indicators
   seed: number
+  includeRedFives: boolean // Whether red fives are included in the wall
 }
 
 /**
@@ -71,18 +72,20 @@ export class Wall {
   private _doraIndicators: number
   private _seed: number
   private _rng: SeededRandom
+  private _includeRedFives: boolean
 
-  constructor(seed?: number, includeBonusTiles: boolean = false) {
+  constructor(seed?: number, includeBonusTiles: boolean = false, includeRedFives: boolean = true) {
     this._seed = seed ?? Date.now()
     this._rng = new SeededRandom(this._seed)
     this._drawIndex = 0
     this._deadWallDrawIndex = 0
     this._doraIndicators = 1
+    this._includeRedFives = includeRedFives
 
     // Create and shuffle tiles
     const allTiles = includeBonusTiles
-      ? createFullTileSet()
-      : createStandardTileSet()
+      ? createFullTileSet(includeRedFives)
+      : createStandardTileSet(includeRedFives)
     this._rng.shuffle(allTiles)
 
     // Separate dead wall (14 tiles from the end)
@@ -215,6 +218,7 @@ export class Wall {
       deadWallDrawIndex: this._deadWallDrawIndex,
       doraIndicators: this._doraIndicators,
       seed: this._seed,
+      includeRedFives: this._includeRedFives,
     }
   }
 
@@ -230,6 +234,7 @@ export class Wall {
     wall._doraIndicators = state.doraIndicators
     wall._seed = state.seed
     wall._rng = new SeededRandom(state.seed)
+    wall._includeRedFives = state.includeRedFives ?? true
     return wall
   }
 
@@ -245,6 +250,7 @@ export class Wall {
     wall._doraIndicators = 1
     wall._seed = 0
     wall._rng = new SeededRandom(0)
+    wall._includeRedFives = true
     return wall
   }
 }

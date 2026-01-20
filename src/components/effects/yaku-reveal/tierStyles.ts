@@ -7,7 +7,19 @@
 import { YakuTier } from '../../../rules/YakuDefinition'
 import { ANIMATION_COLORS } from '../../../animations/constants'
 import { colors } from '../../../styles/theme'
-import { TierStyles } from './types'
+
+/**
+ * Style configuration for a yaku tier
+ */
+export interface TierStyles {
+  backgroundColor: string
+  borderColor: string
+  glowColor: string
+  textColor: string
+  accentColor: string
+  intensity: number
+  scale: number
+}
 
 /**
  * Get styling based on yaku tier
