@@ -50,6 +50,22 @@ bun run format
 - **TanStack Query** — Data fetching
 - **ESLint + Prettier** — Code quality
 
+## Code Statistics
+
+Run `bun run sloc` to calculate source lines of code.
+
+| Extension | Lines |
+|-----------|-------|
+| .ts       | 11,766 |
+| .tsx      | 5,015 |
+| .js       | 4,645 |
+| .json     | 2,685 |
+| .md       | 2,000 |
+| .css      | 384 |
+| .mjs      | 108 |
+| .html     | 25 |
+| **Total** | **26,628** |
+
 ## Documentation
 
 - [ARCHITECTURE.MD](ARCHITECTURE.MD) — Game design, systems, and mechanics

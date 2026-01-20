@@ -72,3 +72,17 @@ export {
   selectAnimationMultiplier,
   type SettingsState,
 } from './settingsStore'
+
+// Achievement Store - Heavenly Accolades (persisted)
+export {
+  useAchievementStore,
+  getAchievementDefinition,
+  getAchievementsByCategory,
+  ACHIEVEMENT_DEFINITIONS,
+  ACHIEVEMENT_CATEGORIES,
+  type AchievementState,
+  type AchievementDefinition,
+  type AchievementProgress,
+  type AchievementStats,
+  type AchievementCategory,
+} from './achievementStore'

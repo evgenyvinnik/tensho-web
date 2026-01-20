@@ -8,7 +8,8 @@
     "build": "tsc -b && node ./node_modules/.bin/vite build",
     "lint": "eslint .",
     "preview": "node ./node_modules/.bin/vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "sloc": "node scripts/sloc.mjs"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.4",

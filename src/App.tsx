@@ -3,17 +3,19 @@
  * Uses React Router for language-prefixed navigation with CRT aesthetics
  */
 
-import { useState, useEffect, useMemo, Suspense } from 'react'
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSpring, animated, useSprings } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import Button from './components/ui/Button'
 import { LanguageSelector } from './components/ui/LanguageSelector'
 import { Tutorial, useTutorial } from './components/ui/Tutorial'
+import { AchievementsScreen } from './components/screens/AchievementsScreen'
 import { getTileImagePath, preloadMenuAssets, preloadTileImages } from './utils/assets'
 import { useAudio } from './hooks/useAudio'
 import { useGameStore } from './stores/gameStore'
-import { TileSuit } from './core/Tile'
+import { Tile, TileSuit, generateTileId } from './core/Tile'
+import { HandWithDiscardZone } from './components/hand/AnimatedHand'
 import { createAppRouter, AppRouterProvider, useAppNavigation, ROUTES } from './router'
 
 const queryClient = new QueryClient()
@@ -337,6 +339,10 @@ export function MenuScreen() {
     navigateTo(ROUTES.SETTINGS)
   }
 
+  const handleAchievements = () => {
+    navigateTo(ROUTES.ACHIEVEMENTS)
+  }
+
   // Loading screen with Balatro-style spinner
   if (isLoading) {
     return (
@@ -425,6 +431,10 @@ export function MenuScreen() {
             {t('menu.settings')}
           </NeonButton>
 
+          <NeonButton onClick={handleAchievements} variant="secondary" delay={900} show={showContent}>
+            {t('menu.achievements', 'Achievements')}
+          </NeonButton>
+
           {/* Audio indicator */}
           <div className="flex items-center gap-3 text-[var(--color-beige-white)] mt-4">
             <button
@@ -471,6 +481,28 @@ export function MenuScreen() {
 }
 
 /**
+ * Create a sample hand of Tile objects for testing
+ */
+function createSampleHand(): Tile[] {
+  const tiles: Tile[] = [
+    new Tile(TileSuit.Manzu, 1, generateTileId()),
+    new Tile(TileSuit.Manzu, 2, generateTileId()),
+    new Tile(TileSuit.Manzu, 3, generateTileId()),
+    new Tile(TileSuit.Pinzu, 4, generateTileId()),
+    new Tile(TileSuit.Pinzu, 5, generateTileId()),
+    new Tile(TileSuit.Pinzu, 6, generateTileId()),
+    new Tile(TileSuit.Souzu, 7, generateTileId()),
+    new Tile(TileSuit.Souzu, 8, generateTileId()),
+    new Tile(TileSuit.Souzu, 9, generateTileId()),
+    new Tile(TileSuit.Dragon, 1, generateTileId()),
+    new Tile(TileSuit.Dragon, 2, generateTileId()),
+    new Tile(TileSuit.Dragon, 3, generateTileId()),
+    new Tile(TileSuit.Wind, 1, generateTileId()),
+  ]
+  return tiles
+}
+
+/**
  * Gameplay Screen Component
  * Layout based on ARCHITECTURE.MD GameScene specification
  */
@@ -478,6 +510,34 @@ export function GameplayScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const { currentAct, currentRound, score, targetScore, gold, setPhase } = useGameStore()
+
+  // Hand state
+  const [handTiles, setHandTiles] = useState<Tile[]>(() => createSampleHand())
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [isDragging, setIsDragging] = useState(false)
+
+  // Handle tile click (toggle selection)
+  const handleTileClick = useCallback((tile: Tile) => {
+    setSelectedIds((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(tile.id)) {
+        newSet.delete(tile.id)
+      } else {
+        newSet.add(tile.id)
+      }
+      return newSet
+    })
+  }, [])
+
+  // Handle tile discard (when dragged to discard zone)
+  const handleTileDiscard = useCallback((tile: Tile) => {
+    setHandTiles((prev) => prev.filter((t) => t.id !== tile.id))
+    setSelectedIds((prev) => {
+      const newSet = new Set(prev)
+      newSet.delete(tile.id)
+      return newSet
+    })
+  }, [])
 
   const handleSettings = () => {
     navigateTo(ROUTES.SETTINGS)
@@ -492,6 +552,16 @@ export function GameplayScreen() {
     setPhase('gameOver')
     navigateTo(ROUTES.GAME_OVER)
   }
+
+  // Reset hand when navigating back
+  const handleDrawTile = useCallback(() => {
+    // Add a random tile to the hand (simplified for demo)
+    const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu]
+    const suit = suits[Math.floor(Math.random() * suits.length)]
+    const rank = Math.floor(Math.random() * 9) + 1
+    const newTile = new Tile(suit, rank, generateTileId())
+    setHandTiles((prev) => [...prev, newTile])
+  }, [])
 
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
@@ -554,38 +624,19 @@ export function GameplayScreen() {
         <span>{t('gameplay.draw')}s: 42</span>
       </div>
 
-      {/* Hand area placeholder */}
+      {/* Hand area with drag-to-discard support */}
       <div className="mx-4 mb-2 p-4 bg-[var(--color-dark-forest)] rounded-lg">
-        <div className="flex justify-center gap-1 flex-wrap">
-          {/* Sample hand: 1-9 manzu + 3 dragons + 1 bamboo */}
-          {[
-            { suit: TileSuit.Manzu, rank: 1 },
-            { suit: TileSuit.Manzu, rank: 2 },
-            { suit: TileSuit.Manzu, rank: 3 },
-            { suit: TileSuit.Pinzu, rank: 4 },
-            { suit: TileSuit.Pinzu, rank: 5 },
-            { suit: TileSuit.Pinzu, rank: 6 },
-            { suit: TileSuit.Souzu, rank: 7 },
-            { suit: TileSuit.Souzu, rank: 8 },
-            { suit: TileSuit.Souzu, rank: 9 },
-            { suit: TileSuit.Dragon, rank: 1 },
-            { suit: TileSuit.Dragon, rank: 2 },
-            { suit: TileSuit.Dragon, rank: 3 },
-            { suit: TileSuit.Wind, rank: 1 },
-          ].map((tile, i) => (
-            <div
-              key={i}
-              className="w-[50px] h-[70px] rounded border-2 border-[var(--color-saddle-brown)] shadow-tile cursor-pointer hover:-translate-y-2 transition-transform overflow-hidden bg-[var(--color-beige-white)]"
-            >
-              <img
-                src={getTileImagePath(tile.suit, tile.rank)}
-                alt={`${tile.suit} ${tile.rank}`}
-                className="w-full h-full object-contain"
-                draggable={false}
-              />
-            </div>
-          ))}
-        </div>
+        <HandWithDiscardZone
+          tiles={handTiles}
+          size="medium"
+          selectedIds={selectedIds}
+          onTileClick={handleTileClick}
+          onTileDiscard={handleTileDiscard}
+          draggable={true}
+          isDragging={isDragging}
+          discardZoneLabel={t('gameplay.discard')}
+          overlap={true}
+        />
       </div>
 
       {/* Action buttons */}
@@ -593,7 +644,7 @@ export function GameplayScreen() {
         <Button variant="secondary" size="sm" onClick={handleGameOver}>
           {t('gameplay.discard').toUpperCase()}
         </Button>
-        <Button variant="secondary" size="sm">
+        <Button variant="secondary" size="sm" onClick={handleDrawTile}>
           {t('gameplay.draw').toUpperCase()}
         </Button>
         <Button variant="primary" size="sm" onClick={handleEndRound}>
@@ -762,6 +813,7 @@ function App() {
         GameplayScreen,
         ShopScreen,
         GameOverScreen,
+        AchievementsScreen,
       }),
     []
   )
