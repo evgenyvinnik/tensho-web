@@ -89,36 +89,42 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 | **P0** | Round Loop | Draw/discard cycle, round completion | ✅ Complete |
 | **P0** | Basic UI | Hand display, wall, discard area | ✅ Complete |
 
-### Phase 2: Roguelike Structure (Partial)
+### Phase 2: Roguelike Structure ✅
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
 | **P1** | Run/Act/Round Structure | Session progression with score targets | ✅ Complete |
 | **P1** | Full Yaku System | All 4 tiers including yakuman | ✅ Complete |
 | **P1** | Decree System (Basic) | 3-5 starter decrees for rule-bending | ✅ Complete |
-| **P1** | Shop System | Between-round decree acquisition | ⚠️ UI only (no shop logic) |
+| **P1** | Shop System | Between-round decree acquisition | ✅ Complete |
 | **P1** | Difficulty Scaling | Increasing score requirements per act | ✅ Complete |
 
-### Phase 3: Full Systems (Not Started)
+### Phase 3: Full Systems ✅
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
 | **P2** | Flowers System | Persistent run-wide modifiers | ✅ Complete |
 | **P2** | Seasons System | Round-scoped rule mutations | ✅ Complete |
 | **P2** | Full Decree Library | All 150+ decree definitions | ⬜ Not Started |
-| **P2** | Tile Marks System | Card modifiers (Enhancements/Seals/Editions) | ⬜ Not Started |
-| **P2** | Consumables | Fate Seals, Celestial Orbs, Void Scripts | ⬜ Not Started |
+| **P2** | Tile Marks System | Card modifiers (Enhancements/Seals/Editions) | ✅ Complete |
+| **P2** | Consumables | Fate Seals (22), Celestial Orbs (13), Void Scripts (20) | ✅ Complete |
+| **P2** | Tea House Shop | Shop generation, pricing, rerolls | ✅ Complete |
+| **P2** | Imperial Charters | 32 voucher-style permanent upgrades | ✅ Complete |
+| **P2** | Blessing Packs | Booster pack system | ✅ Complete |
+| **P2** | Omen Tags | Skip rewards (23 omens) | ✅ Complete |
+| **P2** | Boss Mandates | 27 mandate effects (22 standard + 5 showdown) | ✅ Complete |
+| **P2** | Table Stakes | 8-tier difficulty system with stickers | ✅ Complete |
 
 ### Phase 4: Meta & Polish (Partial)
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
 | **P3** | Meta-Progression | Persistent unlocks across runs | ⬜ Not Started |
-| **P3** | Table Stakes | Difficulty tier system | ⬜ Not Started |
 | **P3** | Table Styles/Walls | Unlockable deck variants | ⬜ Not Started |
 | **P3** | Red Fives | Optional tile variants | ⬜ Not Started |
 | **P3** | Tutorial System | Progressive complexity disclosure | ✅ Complete |
 | **P3** | Audio/VFX Polish | Feedback and juice | ⚠️ Partial |
+| **P3** | Archive of Hands | Collection/discovery system | ⬜ Not Started |
 
 ### Phase 5: Platform & Localization ✅
 
@@ -982,25 +988,26 @@ TableStyle {
 | Debuff System | `src/game/DebuffSystem.ts` | ✅ Complete |
 | Event Bus | `src/game/EventBus.ts` | ✅ Complete |
 
-### Roguelike Systems (Not Implemented ❌)
+### Roguelike Systems (Implemented ✅)
 
-These systems are **fully documented** but not yet implemented:
+All major roguelike systems have been implemented:
 
-| Balatro Equivalent | Tensho System | Status |
-|--------------------|---------------|--------|
-| Card Modifiers | **Tile Marks** (Enhancements, Seals, Editions) | ❌ Not implemented |
-| Tarot Cards | **Fate Seals** | ❌ Not implemented |
-| Planet Cards | **Celestial Orbs** | ❌ Not implemented |
-| Spectral Cards | **Void Scripts** | ❌ Not implemented |
-| Vouchers | **Imperial Charters** | ❌ Not implemented |
-| Booster Packs | **Blessing Packs** | ❌ Not implemented |
-| Tags | **Omen Tags** | ❌ Not implemented |
-| Stakes | **Table Stakes** | ❌ Not implemented |
-| Boss Blind Effects | **Boss Mandate Effects** | ❌ Not implemented |
-| The Shop | **Tea House** | ❌ Not implemented |
-| Decks | **Walls/Table Styles** | ❌ Not implemented |
-| Stickers | **Stickers** | ❌ Not implemented |
-| Collection | **Archive of Hands** | ❌ Not implemented |
+| Balatro Equivalent | Tensho System | Location | Status |
+|--------------------|---------------|----------|--------|
+| Card Modifiers | **Tile Marks** (Enhancements, Seals, Editions) | `src/systems/TileModifierSystem.ts`, `src/core/TileModifier.ts` | ✅ Complete |
+| Tarot Cards | **Fate Seals** | `src/systems/FateSealSystem.ts` (22 seals) | ✅ Complete |
+| Planet Cards | **Celestial Orbs** | `src/systems/CelestialOrbSystem.ts` (13 orbs) | ✅ Complete |
+| Spectral Cards | **Void Scripts** | `src/systems/VoidScriptSystem.ts` (20 scripts) | ✅ Complete |
+| Vouchers | **Imperial Charters** | `src/systems/CharterSystem.ts`, `src/config/charterDefinitions.ts` (32 charters) | ✅ Complete |
+| Booster Packs | **Blessing Packs** | `src/systems/BlessingPackSystem.ts`, `src/config/packDefinitions.ts` | ✅ Complete |
+| Tags | **Omen Tags** | `src/systems/OmenTagSystem.ts`, `src/config/omenDefinitions.ts` (23 omens) | ✅ Complete |
+| Stakes | **Table Stakes** | `src/systems/TableStakeSystem.ts`, `src/config/stakeDefinitions.ts` (8 tiers) | ✅ Complete |
+| Boss Blind Effects | **Boss Mandate Effects** | `src/systems/MandateEffectSystem.ts`, `src/config/mandateDefinitions.ts` (27 mandates) | ✅ Complete |
+| The Shop | **Tea House** | `src/systems/TeaHouseSystem.ts`, `src/systems/PricingCalculator.ts` | ✅ Complete |
+| Stickers | **Stickers** | `src/systems/StickerSystem.ts` (Eternal, Perishable, Rental) | ✅ Complete |
+| Consumables | **Consumable System** | `src/systems/ConsumableSystem.ts` | ✅ Complete |
+| Decks | **Walls/Table Styles** | ⬜ Not implemented |
+| Collection | **Archive of Hands** | ⬜ Not implemented |
 
 ### UI/Screens (Partial)
 
@@ -1025,6 +1032,13 @@ These systems are **fully documented** but not yet implemented:
 | Flora Store | `src/stores/floraStore.ts` | ✅ Complete |
 | Settings Store | `src/stores/settingsStore.ts` | ✅ Complete |
 | Achievement Store | `src/stores/achievementStore.ts` | ✅ Complete |
+| Tile Mark Store | `src/stores/tileMarkStore.ts` | ✅ Complete |
+| Charter Store | `src/stores/charterStore.ts` | ✅ Complete |
+| Omen Store | `src/stores/omenStore.ts` | ✅ Complete |
+| Pack Store | `src/stores/packStore.ts` | ✅ Complete |
+| Shop Store | `src/stores/shopStore.ts` | ✅ Complete |
+| Stake Store | `src/stores/stakeStore.ts` | ✅ Complete |
+| Consumable Store | `src/stores/consumableStore.ts` | ✅ Complete |
 
 ---
 
