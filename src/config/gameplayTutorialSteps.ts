@@ -87,8 +87,21 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
       title: t('gameTutorial.tileTypes.title', 'Tile Types'),
       content: t(
         'gameTutorial.tileTypes.content',
-        'Suited tiles (Characters, Circles, Bamboo) are numbered 1-9. Honor tiles (Winds, Dragons) can only form triplets, not sequences.'
+        'There are 3 suited tiles (numbered 1-9) and 2 honor types (Winds & Dragons). Honors can only form triplets, not sequences.'
       ),
+      exampleTiles: [
+        // Row 1: Suited tiles (one example from each suit)
+        [
+          { suit: TileSuit.Manzu, rank: 3, label: 'Characters' },
+          { suit: TileSuit.Pinzu, rank: 5, label: 'Circles' },
+          { suit: TileSuit.Souzu, rank: 7, label: 'Bamboo' },
+        ],
+        // Row 2: Honor tiles
+        [
+          { suit: TileSuit.Wind, rank: 1, label: 'Wind' },
+          { suit: TileSuit.Dragon, rank: 2, label: 'Dragon' },
+        ],
+      ],
       highlightPadding: 12,
     },
 
