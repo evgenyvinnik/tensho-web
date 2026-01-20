@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { animated, useTransition, useSprings, config } from '@react-spring/web';
+import { animated, useTransition, useSprings, useSpring, config } from '@react-spring/web';
 import { Tile } from '../../core/Tile';
 import { TileSize } from '../tiles/TileImage';
 import { AnimatedTile } from '../tiles/AnimatedTile';
@@ -31,6 +31,10 @@ export interface AnimatedHandProps {
   glowingIds?: Set<string>;
   /** Handler for tile click */
   onTileClick?: (tile: Tile) => void;
+  /** Handler for tile drag start */
+  onDragStart?: (tile: Tile) => void;
+  /** Handler for tile drag end */
+  onDragEnd?: (tile: Tile, position: { x: number; y: number }) => void;
   /** Handler for tile discard (drag-to-discard) */
   onTileDiscard?: (tile: Tile) => void;
   /** Whether to allow tile dragging */
@@ -115,6 +119,8 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   highlightedIds = new Set(),
   glowingIds = new Set(),
   onTileClick,
+  onDragStart,
+  onDragEnd,
   onTileDiscard,
   draggable = false,
   fanned = false,
@@ -199,9 +205,20 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
     [disabled, onTileClick]
   );
 
+  // Handle drag start
+  const handleDragStart = useCallback(
+    (tile: Tile) => {
+      onDragStart?.(tile);
+    },
+    [onDragStart]
+  );
+
   // Handle drag end (check if in discard zone)
   const handleDragEnd = useCallback(
     (tile: Tile, position: { x: number; y: number }) => {
+      // Call the onDragEnd callback if provided
+      onDragEnd?.(tile, position);
+
       // Check if the tile was dragged high enough to discard
       // This could be more sophisticated with an actual discard zone detection
       const viewportHeight = window.innerHeight;
@@ -209,7 +226,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
         onTileDiscard(tile);
       }
     },
-    [onTileDiscard]
+    [onDragEnd, onTileDiscard]
   );
 
   // Calculate container dimensions
@@ -265,6 +282,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
                 disabled={disabled}
                 draggable={draggable && !disabled}
                 onClick={handleTileClick}
+                onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
               />
             </animated.div>
@@ -279,22 +297,30 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
  * HandWithDiscardZone component
  * Combines AnimatedHand with a visual discard zone
  */
-export interface HandWithDiscardZoneProps extends AnimatedHandProps {
-  /** Whether dragging is currently active */
-  isDragging?: boolean;
+export interface HandWithDiscardZoneProps extends Omit<AnimatedHandProps, 'onDragStart' | 'onDragEnd'> {
   /** Label for the discard zone */
   discardZoneLabel?: string;
 }
 
 export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
-  isDragging = false,
   discardZoneLabel = 'Drag here to discard',
   ...handProps
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Handle drag start - show discard zone
+  const handleDragStart = useCallback(() => {
+    setIsDragging(true);
+  }, []);
+
+  // Handle drag end - hide discard zone
+  const handleDragEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   // Animate discard zone visibility
-  const discardZoneSpring = animated.useSpring({
+  const discardZoneSpring = useSpring({
     opacity: isDragging ? 1 : 0,
     y: isDragging ? 0 : -20,
     config: SPRINGS.snappy,
@@ -310,6 +336,7 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
           opacity: discardZoneSpring.opacity,
           transform: discardZoneSpring.y.to((y) => `translateY(${y}px)`),
           pointerEvents: isDragging ? 'auto' : 'none',
+          zIndex: 100,
         }}
       >
         <div
@@ -325,7 +352,12 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
       </animated.div>
 
       {/* Hand */}
-      <AnimatedHand {...handProps} draggable />
+      <AnimatedHand
+        {...handProps}
+        draggable
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      />
     </div>
   );
 };

@@ -123,8 +123,8 @@ export function Popup({
   const popupContent = (
     <AnimatedDiv
       className={`
-        relative max-w-[90vw] max-h-[85vh] overflow-auto
-        rounded-xl p-6
+        relative max-w-[90vw] max-h-[85vh]
+        rounded-xl
         bg-[var(--color-dark-forest)] border-2 border-[var(--color-saddle-brown)]
         shadow-2xl
         ${className}
@@ -138,32 +138,35 @@ export function Popup({
       }}
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Header */}
-      {(title || showCloseButton) && (
-        <div className="flex items-center justify-between mb-4">
-          {title && (
-            <h2 className="text-2xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-              {title}
-            </h2>
-          )}
-          {showCloseButton && (
-            <button
-              onClick={onClose}
-              className="p-2 rounded-full hover:bg-[var(--color-forest-green)] transition-colors
-                         text-[var(--color-beige-white)] hover:text-[var(--color-golden-yellow)]
-                         min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Close"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
-      )}
+      {/* Inner container with padding for scroll background */}
+      <div className="p-6 pt-8 pb-8 px-8 md:px-10 overflow-auto max-h-[85vh]">
+        {/* Header */}
+        {(title || showCloseButton) && (
+          <div className="flex items-center justify-between mb-4">
+            {title && (
+              <h2 className="text-2xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+                {title}
+              </h2>
+            )}
+            {showCloseButton && (
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full hover:bg-[var(--color-forest-green)] transition-colors
+                           text-[var(--color-beige-white)] hover:text-[var(--color-golden-yellow)]
+                           min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Close"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
 
-      {/* Content */}
-      <div className="text-[var(--color-beige-white)]">{children}</div>
+        {/* Content */}
+        <div className="text-[var(--color-beige-white)]">{children}</div>
+      </div>
     </AnimatedDiv>
   )
 

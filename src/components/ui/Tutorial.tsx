@@ -314,7 +314,7 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
       title={currentStepData.title}
       showCloseButton={true}
       closeOnBackdrop={false}
-      className="w-[400px] md:w-[500px]"
+      className="w-[400px] md:w-[550px] lg:w-[650px] xl:w-[700px]"
     >
       {/* Step content */}
       <TutorialStepContent step={currentStepData} />

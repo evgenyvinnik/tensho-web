@@ -56,15 +56,15 @@ Run `bun run sloc` to calculate source lines of code.
 
 | Extension | Lines |
 |-----------|-------|
-| .ts       | 11,766 |
-| .tsx      | 5,015 |
+| .ts       | 13,709 |
+| .tsx      | 5,326 |
 | .js       | 4,645 |
-| .json     | 2,685 |
-| .md       | 2,000 |
+| .json     | 2,686 |
+| .md       | 2,075 |
 | .css      | 384 |
 | .mjs      | 108 |
 | .html     | 25 |
-| **Total** | **26,628** |
+| **Total** | **28,958** |
 
 ## Documentation
 

@@ -514,7 +514,6 @@ export function GameplayScreen() {
   // Hand state
   const [handTiles, setHandTiles] = useState<Tile[]>(() => createSampleHand())
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
-  const [isDragging, setIsDragging] = useState(false)
 
   // Handle tile click (toggle selection)
   const handleTileClick = useCallback((tile: Tile) => {
@@ -632,8 +631,6 @@ export function GameplayScreen() {
           selectedIds={selectedIds}
           onTileClick={handleTileClick}
           onTileDiscard={handleTileDiscard}
-          draggable={true}
-          isDragging={isDragging}
           discardZoneLabel={t('gameplay.discard')}
           overlap={true}
         />

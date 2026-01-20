@@ -6,15 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Tensho (天翔) Mahjong Roguelike** — A web-based React game reinterpreting Riichi Mahjong as a scoring optimization roguelike (inspired by Balatro).
 
-- **Framework:** React 19 (with experimental React Compiler)
+- **Framework:** React 19
 - **Language:** TypeScript (strict mode)
 - **Build:** Vite 6
 - **Runtime:** Bun
 - **Styling:** Tailwind CSS v4
 - **State:** Zustand
 - **Animations:** React Spring
-- **Data Fetching:** TanStack Query
-- **PWA:** vite-plugin-pwa (offline support, installable)
+- **Routing:** React Router v7
+- **i18n:** i18next (13 languages)
+- **PWA:** vite-plugin-pwa
 
 See [ARCHITECTURE.MD](ARCHITECTURE.MD) for detailed game design and [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) for complete item/effect lists.
 
@@ -27,6 +28,7 @@ bun run build        # TypeScript check + production build
 bun run lint         # Run ESLint
 bun run format       # Format code with Prettier
 bun run preview      # Preview production build locally
+bun run sloc         # Count source lines of code
 ```
 
 ## Code Architecture
@@ -37,12 +39,29 @@ bun run preview      # Preview production build locally
 src/
 ├── core/           # Tile, Hand, Meld, Wall, DeadPool - game primitives
 ├── rules/          # HandValidator, ShantenCalculator, YakuDetector, ScoringEngine
-├── systems/        # Decree, Flower, Season, Shop, RoundManager
-├── stores/         # Zustand stores (gameStore, handStore, wallStore, decreeStore, floraStore)
-├── components/     # React components (tiles/, ui/)
-├── hooks/          # Custom React hooks (useAudio)
+├── systems/        # Decree, Flower, Season, Shop, RoundManager, TableStake
+├── game/           # ActionProcessor, DebuffSystem, EventBus, BonusTileHandler
+├── stores/         # Zustand stores (gameStore, handStore, wallStore, decreeStore, floraStore, etc.)
+├── components/     # React components (tiles/, ui/, effects/, screens/, hand/)
+├── animations/     # React Spring animation hooks (useTileAnimation, useScoreAnimation, etc.)
+├── hooks/          # Custom React hooks (useAudio, useReducedMotion)
+├── router/         # React Router configuration with i18n language-prefixed routes
+├── i18n/           # Internationalization (i18next) configuration
 ├── styles/         # Theme configuration
 └── utils/          # Helpers and asset paths
+```
+
+### Import Patterns
+
+Each major module uses barrel exports via `index.ts`. Import from the directory, not individual files:
+
+```typescript
+// Preferred - import from barrel
+import { Tile, Meld, Hand, Wall } from './core'
+import { useGameStore, useHandStore } from './stores'
+
+// Avoid - importing from individual files
+import { Tile } from './core/Tile'
 ```
 
 ### Core Layer (`src/core/`)
@@ -76,6 +95,16 @@ Game systems that modify rules and progression:
 - **`FlowerSystem.ts`** — Run-wide persistent scaling modifiers
 - **`SeasonSystem.ts`** — Round-scoped temporal effects
 - **`ShopSystem.ts`** — Between-round acquisition (Tea House)
+- **`TableStakeSystem.ts`** — Difficulty tier system with cumulative modifiers
+
+### Game Layer (`src/game/`)
+
+Runtime game logic and event handling:
+
+- **`ActionProcessor.ts`** — Processes player actions (draw, discard, meld)
+- **`DebuffSystem.ts`** — Manages tile/decree debuff states
+- **`EventBus.ts`** — Pub/sub event system for game events
+- **`BonusTileHandler.ts`** — Handles bonus tile (Flower/Season) acquisition
 
 ### State Management (`src/stores/`)
 
@@ -87,13 +116,71 @@ Zustand stores with flat, action-based patterns:
 - **`decreeStore.ts`** — Active decrees
 - **`floraStore.ts`** — Collected flowers and active seasons
 - **`settingsStore.ts`** — User preferences
+- **`achievementStore.ts`** — Achievement/accolade tracking
+
+### Routing (`src/router/`)
+
+Language-prefixed routes using React Router:
+
+- Routes follow pattern: `/:lang/[route]` (e.g., `/en/play`, `/ja/shop`)
+- `useAppNavigation()` hook provides language-aware navigation
+- `buildPath(route, lang?)` constructs full paths with language prefix
+- Supported routes: menu, play, shop, game-over, tutorial, collection, settings, achievements
+
+### Animations (`src/animations/`)
+
+React Spring animation hooks:
+
+- **`useTileAnimation.ts`** — Tile draw, discard, and selection animations
+- **`useScoreAnimation.ts`** — Score counter and popup animations
+- **`useScreenTransition.ts`** — Screen transition effects
+- **`constants.ts`** — Shared animation timing and easing values
 
 ### TypeScript Configuration
 
-- **Strict mode enabled** with `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`
+- **Strict mode enabled** with `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`
 - Target: ES2020
 - Module: ESNext with bundler resolution
 - React JSX transform enabled
+
+### React Compiler
+
+The experimental React Compiler (babel-plugin-react-compiler) is installed but commented out in `vite.config.ts`. To enable:
+```ts
+// In vite.config.ts, uncomment the babel config in react()
+babel: {
+  plugins: [['babel-plugin-react-compiler', {}]],
+}
+```
+
+### Internationalization
+
+Uses i18next with browser language detection:
+
+- **Supported languages:** en, ja, ko, zh-Hans, zh-Hant, es, fr, it, ru, tr, id, th, tl (13 total)
+- Translation files in `src/i18n/locales/`
+- `useTranslation()` hook for translated strings
+- Language persisted in URL path prefix (e.g., `/en/`, `/ja/`)
+- `changeLanguage(lang)` updates both i18n and URL
+
+### Event Bus Pattern
+
+The `EventBus` in `src/game/EventBus.ts` provides decoupled communication between game systems:
+
+```ts
+import { eventBus } from './game/EventBus'
+
+// Subscribe to events
+eventBus.on('roundStart', (data) => { ... })
+
+// Emit events
+eventBus.emit('roundStart', { roundNumber: 1 })
+
+// One-time listener
+eventBus.once('gameOver', (data) => { ... })
+```
+
+Key event categories: game lifecycle (`runStart`, `runEnd`, `gameOver`), round flow (`actStart`, `actComplete`, `roundStart`, `roundEnd`), player actions (`tileDraw`, `tileDiscard`, `meldDeclared`), scoring (`handScored`, `yakuDetected`).
 
 ## Key Patterns
 
