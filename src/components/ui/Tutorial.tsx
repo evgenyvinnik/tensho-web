@@ -145,13 +145,65 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
         ],
       },
       {
+        id: 'runs',
+        title: t('tutorial.runs.title', 'Runs & Sessions'),
+        content: (
+          <p>
+            {t(
+              'tutorial.runs.content',
+              'Each game is a "run" - a single session where you progress through increasingly difficult Acts. If you fail to reach a score target, your run ends and you start fresh.'
+            )}
+          </p>
+        ),
+      },
+      {
+        id: 'acts',
+        title: t('tutorial.acts.title', 'Acts & Rounds'),
+        content: (
+          <div className="space-y-2">
+            <p>
+              {t(
+                'tutorial.acts.content1',
+                'Each Act contains 3 rounds: Small, Large, and Boss.'
+              )}
+            </p>
+            <p>
+              {t(
+                'tutorial.acts.content2',
+                'Boss rounds have special restrictions called Mandates. Complete all 8 Acts to win the run!'
+              )}
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: 'targets',
+        title: t('tutorial.targets.title', 'Score Targets'),
+        content: (
+          <div className="space-y-2">
+            <p>
+              {t(
+                'tutorial.targets.content1',
+                'Each round has a target score you must reach. Larger rounds and later Acts require higher scores.'
+              )}
+            </p>
+            <p>
+              {t(
+                'tutorial.targets.content2',
+                'Small rounds are 1×, Large rounds are 1.5×, and Boss rounds are 2× the base target.'
+              )}
+            </p>
+          </div>
+        ),
+      },
+      {
         id: 'tiles',
-        title: t('tutorial.tiles.title', 'Mahjong Tiles'),
+        title: t('tutorial.tiles.title', 'Suited Tiles'),
         content: (
           <p>
             {t(
               'tutorial.tiles.content1',
-              'There are three main suits: Characters (萬), Circles (筒), and Bamboo (索), each numbered 1-9.'
+              'There are three suits: Characters (萬), Circles (筒), and Bamboo (索). Each suit has tiles numbered 1-9.'
             )}
           </p>
         ),
@@ -168,7 +220,7 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
           <p>
             {t(
               'tutorial.honors.content',
-              'Honor tiles include Winds (East, South, West, North) and Dragons (White, Green, Red). These tiles cannot form sequences, only triplets.'
+              'Winds (East, South, West, North) and Dragons (White, Green, Red) are honor tiles. They can only form triplets, not sequences.'
             )}
           </p>
         ),
@@ -181,19 +233,19 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
       },
       {
         id: 'hands',
-        title: t('tutorial.hands.title', 'Building Hands'),
+        title: t('tutorial.hands.title', 'Winning Hands'),
         content: (
           <div className="space-y-2">
             <p>
               {t(
                 'tutorial.hands.content1',
-                'A winning hand consists of 4 groups (melds) plus 1 pair.'
+                'A winning hand needs 4 groups plus 1 pair (14 tiles total).'
               )}
             </p>
             <p>
               {t(
                 'tutorial.hands.content2',
-                'Groups can be sequences (1-2-3) or triplets (3-3-3).'
+                'Groups are either sequences (1-2-3) or triplets (3-3-3).'
               )}
             </p>
           </div>
@@ -206,19 +258,19 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
       },
       {
         id: 'yaku',
-        title: t('tutorial.yaku.title', 'Yaku - Scoring Patterns'),
+        title: t('tutorial.yaku.title', 'Yaku - Score Multipliers'),
         content: (
           <div className="space-y-2">
             <p>
               {t(
                 'tutorial.yaku.content1',
-                'Yaku are special patterns that multiply your score. Each yaku has a tier from 1-4.'
+                'Yaku are special patterns that multiply your score. They range from Tier 1 to Tier 4 (Yakuman).'
               )}
             </p>
             <p>
               {t(
                 'tutorial.yaku.content2',
-                'Examples: All Simples (no terminals/honors), All Triplets, Full Flush (single suit).'
+                'Examples: Tanyao (all simples), Toitoi (all triplets), Chinitsu (full flush).'
               )}
             </p>
           </div>
@@ -231,19 +283,31 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
       },
       {
         id: 'decrees',
-        title: t('tutorial.decrees.title', 'Decrees - Rule Modifiers'),
+        title: t('tutorial.decrees.title', 'Decrees'),
+        content: (
+          <p>
+            {t(
+              'tutorial.decrees.content',
+              'Decrees are powerful modifiers that bend the rules and boost your score. They persist for your entire run.'
+            )}
+          </p>
+        ),
+      },
+      {
+        id: 'teahouse',
+        title: t('tutorial.teahouse.title', 'The Tea House'),
         content: (
           <div className="space-y-2">
             <p>
               {t(
-                'tutorial.decrees.content1',
-                'Decrees are special cards that modify the rules and boost your score.'
+                'tutorial.teahouse.content1',
+                'After each round, visit the Tea House to spend your Gold on new Decrees and items.'
               )}
             </p>
             <p>
               {t(
-                'tutorial.decrees.content2',
-                'Collect powerful decrees from the Tea House (shop) between rounds.'
+                'tutorial.teahouse.content2',
+                'Build a powerful combination of Decrees to reach the high scores needed in later Acts!'
               )}
             </p>
           </div>
@@ -254,13 +318,13 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
         title: t('tutorial.scoring.title', 'Scoring Formula'),
         content: (
           <div className="space-y-2">
-            <p className="font-mono bg-[var(--color-forest-green)] p-3 rounded text-center">
+            <p className="font-mono bg-[var(--color-forest-green)] p-3 rounded text-center text-sm">
               {t('tutorial.scoring.formula', 'Score = (Base + Bonuses) × Multipliers')}
             </p>
             <p>
               {t(
                 'tutorial.scoring.content',
-                'Reach the target score each round to advance. Higher acts require higher scores!'
+                'Tiles give base points. Yaku and Decrees provide multipliers. Stack them for massive scores!'
               )}
             </p>
           </div>

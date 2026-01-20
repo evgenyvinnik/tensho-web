@@ -222,6 +222,16 @@ button, a {
   50% { transform: translateY(-2px) scaleY(1.01); }
 }
 
+/* Seigaiha wave pattern drift animation */
+@keyframes wave-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 30px; }
+}
+
+.animate-wave-drift {
+  animation: wave-drift 20s linear infinite;
+}
+
 /* Very subtle background pattern animation */
 .animated-bg {
   position: relative;
