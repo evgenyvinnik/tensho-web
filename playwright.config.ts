@@ -57,12 +57,14 @@ export default defineConfig({
 
   // Run local dev server before starting the tests
   // NOTE: If webServer doesn't work, run `bun run dev` manually first
-  webServer: {
-    command: './node_modules/.bin/vite --port 5173',
-    url: 'http://localhost:5173',
-    reuseExistingServer: true,
-    timeout: 60 * 1000,
-    stdout: 'pipe',
-    stderr: 'pipe',
-  },
+  webServer: process.env.SKIP_WEB_SERVER
+    ? undefined
+    : {
+        command: './node_modules/.bin/vite --port 5173',
+        url: 'http://localhost:5173',
+        reuseExistingServer: true,
+        timeout: 120 * 1000,
+        stdout: 'pipe',
+        stderr: 'pipe',
+      },
 })
