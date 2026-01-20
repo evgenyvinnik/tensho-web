@@ -535,21 +535,23 @@ export function groupTilesBySuit(tiles: Tile[]): Map<TileSuit, Tile[]> {
 // RE-EXPORTS FOR CONVENIENCE
 // =============================================================================
 
-export {
-  // Types
+// Type exports (interfaces)
+export type {
   TileModifiers,
-  EnhancementType,
-  SealType,
-  EditionType,
-  // Definitions
   EnhancementDefinition,
   SealDefinition,
   EditionDefinition,
+} from './TileModifier'
+
+// Value exports (enums, constants, functions)
+export {
+  EnhancementType,
+  SealType,
+  EditionType,
   ENHANCEMENT_DEFINITIONS,
   SEAL_DEFINITIONS,
   EDITION_DEFINITIONS,
   DEFAULT_MODIFIERS,
-  // Functions
   calculateModifierEffects,
   rollLuckyEffect,
   rollShatter,

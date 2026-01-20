@@ -7,143 +7,63 @@
  * Each stake adds ALL modifiers from previous stakes, creating exponential challenge.
  */
 
+import {
+  STAKE_DEFINITIONS,
+  STICKER_DEFINITIONS,
+  calculateCombinedModifiers,
+  rollForStickers,
+  getPrimarySticker,
+  getStakeByTier,
+  getStakeColor,
+  getStakeJapaneseName,
+  getStakeModifierDescriptions,
+  getCumulativeModifierDescriptions,
+  formatStickerProbabilities,
+  isWallUnlocked,
+  type StakeDefinition,
+  type CombinedStakeModifiers,
+  type StickerRollResult,
+  type StickerConfig,
+} from '../config/stakeDefinitions'
+import { StickerType, Sticker } from './types'
+
 // =============================================================================
-// TYPES
+// RE-EXPORTS FROM CONFIG
 // =============================================================================
 
-/**
- * Stake modifier that affects gameplay
- */
-export interface StakeModifier {
-  /** No reward Gold from Small Rounds */
-  noSmallRoundReward?: boolean
-  /** Score requirement scaling multiplier */
-  scoreScaling?: number
-  /** Chance for Eternal sticker on shop Decrees (0-1) */
-  eternalChance?: number
-  /** Reduction in redraws per round */
-  redrawPenalty?: number
-  /** Chance for Perishable sticker on shop Decrees (0-1) */
-  perishableChance?: number
-  /** Chance for Rental sticker on shop Decrees (0-1) */
-  rentalChance?: number
+export {
+  STAKE_DEFINITIONS,
+  STICKER_DEFINITIONS,
+  calculateCombinedModifiers,
+  rollForStickers,
+  getPrimarySticker,
+  getStakeByTier,
+  getStakeColor,
+  getStakeJapaneseName,
+  getStakeModifierDescriptions,
+  getCumulativeModifierDescriptions,
+  formatStickerProbabilities,
+  isWallUnlocked,
 }
 
-/**
- * Table stake tier definition
- */
-export interface TableStake {
-  /** Tier number (1-8) */
-  tier: number
-  /** Display name in English */
-  name: string
-  /** Japanese name with kanji */
-  japaneseName: string
-  /** Color hex code for UI */
-  color: string
-  /** New modifier introduced at this stake */
-  modifier: StakeModifier
-  /** Wall variant unlocked at this stake */
-  unlocks?: string
-}
-
-/**
- * Combined modifiers from all active stakes
- */
-export interface CombinedStakeModifiers {
-  noSmallRoundReward: boolean
-  scoreScaling: number
-  eternalChance: number
-  redrawPenalty: number
-  perishableChance: number
-  rentalChance: number
+export type {
+  StakeDefinition,
+  CombinedStakeModifiers,
+  StickerRollResult,
+  StickerConfig,
 }
 
 // =============================================================================
-// STAKE DEFINITIONS
+// LEGACY TYPE ALIASES (for backwards compatibility)
 // =============================================================================
 
-/**
- * All 8 table stakes as defined in ARCHITECTURE.MD
- */
-export const TABLE_STAKES: TableStake[] = [
-  {
-    tier: 1,
-    name: 'White Stake',
-    japaneseName: '白場',
-    color: '#E0E0E0',
-    modifier: {},
-    unlocks: undefined, // Starting tier
-  },
-  {
-    tier: 2,
-    name: 'Red Stake',
-    japaneseName: '赤場',
-    color: '#E53935',
-    modifier: { noSmallRoundReward: true },
-    unlocks: 'crimson_wall',
-  },
-  {
-    tier: 3,
-    name: 'Green Stake',
-    japaneseName: '緑場',
-    color: '#43A047',
-    modifier: { scoreScaling: 1.3 }, // Faster scaling
-    unlocks: 'jade_wall',
-  },
-  {
-    tier: 4,
-    name: 'Black Stake',
-    japaneseName: '黒場',
-    color: '#212121',
-    modifier: { eternalChance: 0.3 },
-    unlocks: 'obsidian_wall',
-  },
-  {
-    tier: 5,
-    name: 'Blue Stake',
-    japaneseName: '青場',
-    color: '#1E88E5',
-    modifier: { redrawPenalty: 1 },
-    unlocks: 'azure_wall',
-  },
-  {
-    tier: 6,
-    name: 'Purple Stake',
-    japaneseName: '紫場',
-    color: '#8E24AA',
-    modifier: { scoreScaling: 1.5 }, // Even faster scaling (stacks with Green)
-    unlocks: undefined,
-  },
-  {
-    tier: 7,
-    name: 'Orange Stake',
-    japaneseName: '橙場',
-    color: '#FB8C00',
-    modifier: { perishableChance: 0.3 },
-    unlocks: 'sunset_wall',
-  },
-  {
-    tier: 8,
-    name: 'Gold Stake',
-    japaneseName: '金場',
-    color: '#FFD700',
-    modifier: { rentalChance: 0.3 },
-    unlocks: undefined, // Maximum difficulty
-  },
-]
+export type TableStake = StakeDefinition
+export type StakeModifier = StakeDefinition['modifier']
 
 /**
- * Default combined modifiers (no stakes active)
+ * Legacy constant - use STAKE_DEFINITIONS instead
  */
-const DEFAULT_MODIFIERS: CombinedStakeModifiers = {
-  noSmallRoundReward: false,
-  scoreScaling: 1.0,
-  eternalChance: 0,
-  redrawPenalty: 0,
-  perishableChance: 0,
-  rentalChance: 0,
-}
+export const TABLE_STAKES = STAKE_DEFINITIONS
 
 // =============================================================================
 // TABLE STAKE SYSTEM CLASS
@@ -169,15 +89,15 @@ export class TableStakeSystem {
   /**
    * Get a stake definition by tier
    */
-  getStake(tier: number): TableStake | undefined {
-    return TABLE_STAKES.find((s) => s.tier === tier)
+  getStake(tier: number): StakeDefinition | undefined {
+    return getStakeByTier(tier)
   }
 
   /**
    * Get all stake definitions
    */
-  getAllStakes(): TableStake[] {
-    return [...TABLE_STAKES]
+  getAllStakes(): StakeDefinition[] {
+    return [...STAKE_DEFINITIONS]
   }
 
   /**
@@ -214,42 +134,7 @@ export class TableStakeSystem {
    * Stakes stack cumulatively - all previous modifiers apply
    */
   getModifiers(stakeTier: number): CombinedStakeModifiers {
-    const combined: CombinedStakeModifiers = { ...DEFAULT_MODIFIERS }
-
-    for (let tier = 1; tier <= Math.min(stakeTier, 8); tier++) {
-      const stake = TABLE_STAKES[tier - 1]
-      if (!stake) continue
-
-      const mod = stake.modifier
-
-      // Boolean modifiers - once true, always true
-      if (mod.noSmallRoundReward) {
-        combined.noSmallRoundReward = true
-      }
-
-      // Score scaling - multiplicative stacking
-      if (mod.scoreScaling) {
-        combined.scoreScaling *= mod.scoreScaling
-      }
-
-      // Sticker chances - additive (capped at 1.0)
-      if (mod.eternalChance) {
-        combined.eternalChance = Math.min(1, combined.eternalChance + mod.eternalChance)
-      }
-      if (mod.perishableChance) {
-        combined.perishableChance = Math.min(1, combined.perishableChance + mod.perishableChance)
-      }
-      if (mod.rentalChance) {
-        combined.rentalChance = Math.min(1, combined.rentalChance + mod.rentalChance)
-      }
-
-      // Redraw penalty - additive
-      if (mod.redrawPenalty) {
-        combined.redrawPenalty += mod.redrawPenalty
-      }
-    }
-
-    return combined
+    return calculateCombinedModifiers(stakeTier)
   }
 
   /**
@@ -262,35 +147,100 @@ export class TableStakeSystem {
   }
 
   /**
-   * Determine which sticker (if any) to apply to a shop decree
-   * Returns null if no sticker should be applied
+   * Get redraw penalty for current stake
    */
-  rollForSticker(stakeTier: number): 'Eternal' | 'Perishable' | 'Rental' | null {
-    const modifiers = this.getModifiers(stakeTier)
+  getRedrawPenalty(stakeTier: number): number {
+    return this.getModifiers(stakeTier).redrawPenalty
+  }
 
-    // Roll for each sticker type independently
-    // A decree can have multiple stickers at high stakes
-    const stickers: Array<'Eternal' | 'Perishable' | 'Rental'> = []
+  /**
+   * Check if small round rewards are disabled
+   */
+  hasNoSmallRoundReward(stakeTier: number): boolean {
+    return this.getModifiers(stakeTier).noSmallRoundReward
+  }
 
-    if (Math.random() < modifiers.eternalChance) {
-      stickers.push('Eternal')
-    }
-    if (Math.random() < modifiers.perishableChance) {
-      stickers.push('Perishable')
-    }
-    if (Math.random() < modifiers.rentalChance) {
-      stickers.push('Rental')
+  // ===========================================================================
+  // STICKER SYSTEM
+  // ===========================================================================
+
+  /**
+   * Roll for stickers on a shop decree
+   * Returns the stickers that should be applied
+   */
+  rollForStickers(stakeTier: number): StickerRollResult {
+    return rollForStickers(stakeTier)
+  }
+
+  /**
+   * Get primary sticker for simpler implementations
+   */
+  getPrimarySticker(stakeTier: number): StickerType | null {
+    return getPrimarySticker(stakeTier)
+  }
+
+  /**
+   * Create a Sticker object from roll result
+   */
+  createSticker(stickerType: StickerType): Sticker {
+    const config = STICKER_DEFINITIONS[stickerType]
+
+    const sticker: Sticker = {
+      type: stickerType,
     }
 
-    // Eternal and Perishable cannot both apply (Eternal wins)
-    if (stickers.includes('Eternal') && stickers.includes('Perishable')) {
-      const idx = stickers.indexOf('Perishable')
-      stickers.splice(idx, 1)
+    if (stickerType === 'Perishable') {
+      sticker.roundsRemaining = config.roundsToDebuff ?? 5
     }
 
-    // For simplicity, return the first sticker
-    // Full implementation would support multiple stickers
-    return stickers[0] ?? null
+    if (stickerType === 'Rental') {
+      sticker.goldPerRound = config.goldPerRound ?? 3
+    }
+
+    return sticker
+  }
+
+  /**
+   * Create stickers from roll result
+   */
+  createStickersFromRoll(result: StickerRollResult): Sticker[] {
+    return result.stickers.map((type) => this.createSticker(type))
+  }
+
+  /**
+   * Apply stickers to a decree in the shop
+   * Returns the modified decree cost and sticker info
+   */
+  applyShopStickers(
+    stakeTier: number,
+    baseCost: number
+  ): {
+    sticker: Sticker | undefined
+    modifiedCost: number
+    isRental: boolean
+  } {
+    const result = this.rollForStickers(stakeTier)
+
+    if (result.stickers.length === 0) {
+      return { sticker: undefined, modifiedCost: baseCost, isRental: false }
+    }
+
+    // Get primary sticker for decree
+    const primaryType = result.stickers[0]
+    const sticker = this.createSticker(primaryType)
+
+    let modifiedCost = baseCost
+
+    // Rental stickers cost only 1 Gold to purchase
+    if (result.stickers.includes('Rental')) {
+      modifiedCost = STICKER_DEFINITIONS.Rental.purchaseCost ?? 1
+    }
+
+    return {
+      sticker,
+      modifiedCost,
+      isRental: result.stickers.includes('Rental'),
+    }
   }
 
   // ===========================================================================
@@ -321,24 +271,22 @@ export class TableStakeSystem {
   }
 
   /**
+   * Get highest stake completed across all walls
+   */
+  getGlobalHighestStake(): number {
+    let highest = 0
+    this.stakeProgressPerWall.forEach((completed) => {
+      highest = Math.max(highest, completed)
+    })
+    return highest
+  }
+
+  /**
    * Check if a wall variant is unlocked based on stake progress
    */
   isWallUnlocked(wallId: string): boolean {
-    // Find which stake unlocks this wall
-    const stake = TABLE_STAKES.find((s) => s.unlocks === wallId)
-    if (!stake) {
-      // Wall doesn't require stake unlock (e.g., Red Wall is default)
-      return true
-    }
-
-    // Check if any wall has completed the required stake
-    for (const [, completedTier] of this.stakeProgressPerWall) {
-      if (completedTier >= stake.tier) {
-        return true
-      }
-    }
-
-    return false
+    const globalHighest = this.getGlobalHighestStake()
+    return isWallUnlocked(wallId, globalHighest)
   }
 
   /**
@@ -356,68 +304,42 @@ export class TableStakeSystem {
    * Get stake color for UI display
    */
   getStakeColor(tier: number): string {
-    return TABLE_STAKES[tier - 1]?.color ?? '#E0E0E0'
+    return getStakeColor(tier)
   }
 
   /**
    * Get stake display name
    */
   getStakeName(tier: number): string {
-    return TABLE_STAKES[tier - 1]?.name ?? 'Unknown Stake'
+    return STAKE_DEFINITIONS[tier - 1]?.name ?? 'Unknown Stake'
   }
 
   /**
    * Get stake Japanese name
    */
   getStakeJapaneseName(tier: number): string {
-    return TABLE_STAKES[tier - 1]?.japaneseName ?? '不明'
+    return getStakeJapaneseName(tier)
   }
 
   /**
    * Format stake modifier description for UI
    */
   getModifierDescription(stakeTier: number): string[] {
-    const descriptions: string[] = []
-    const stake = TABLE_STAKES[stakeTier - 1]
-    if (!stake) return descriptions
-
-    const mod = stake.modifier
-
-    if (mod.noSmallRoundReward) {
-      descriptions.push('Small Rounds give no reward Gold')
-    }
-    if (mod.scoreScaling) {
-      const percent = Math.round((mod.scoreScaling - 1) * 100)
-      descriptions.push(`Score requirements +${percent}% faster scaling`)
-    }
-    if (mod.eternalChance) {
-      descriptions.push(`${Math.round(mod.eternalChance * 100)}% Eternal stickers on shop Decrees`)
-    }
-    if (mod.redrawPenalty) {
-      descriptions.push(`-${mod.redrawPenalty} Redraw per round`)
-    }
-    if (mod.perishableChance) {
-      descriptions.push(`${Math.round(mod.perishableChance * 100)}% Perishable stickers on shop Decrees`)
-    }
-    if (mod.rentalChance) {
-      descriptions.push(`${Math.round(mod.rentalChance * 100)}% Rental stickers on shop Decrees`)
-    }
-
-    return descriptions
+    return getStakeModifierDescriptions(stakeTier)
   }
 
   /**
    * Get cumulative modifier descriptions for current stake
    */
   getCumulativeModifierDescriptions(stakeTier: number): string[] {
-    const allDescriptions: string[] = []
+    return getCumulativeModifierDescriptions(stakeTier)
+  }
 
-    for (let tier = 1; tier <= Math.min(stakeTier, 8); tier++) {
-      const descriptions = this.getModifierDescription(tier)
-      allDescriptions.push(...descriptions)
-    }
-
-    return allDescriptions
+  /**
+   * Format sticker probabilities for UI
+   */
+  formatStickerProbabilities(stakeTier: number): string {
+    return formatStickerProbabilities(stakeTier)
   }
 
   // ===========================================================================
@@ -453,7 +375,7 @@ export class TableStakeSystem {
  * Get stake tier from name (case-insensitive)
  */
 export function getStakeTierByName(name: string): number | undefined {
-  const stake = TABLE_STAKES.find(
+  const stake = STAKE_DEFINITIONS.find(
     (s) => s.name.toLowerCase() === name.toLowerCase()
   )
   return stake?.tier
@@ -463,37 +385,5 @@ export function getStakeTierByName(name: string): number | undefined {
  * Get stake tier color for badge/icon display
  */
 export function getStakeColorByTier(tier: number): string {
-  return TABLE_STAKES[tier - 1]?.color ?? '#E0E0E0'
-}
-
-/**
- * Format stake sticker probability string for UI
- * Example: At Gold Stake: "28% None, 21.6% Eternal, 21.6% Perishable, 21.6% Rental"
- */
-export function formatStickerProbabilities(stakeTier: number): string {
-  const modifiers = new TableStakeSystem().getModifiers(stakeTier)
-
-  const parts: string[] = []
-
-  const eternal = modifiers.eternalChance
-  const perishable = modifiers.perishableChance
-  const rental = modifiers.rentalChance
-
-  // Probability of no sticker
-  const noneProb = (1 - eternal) * (1 - perishable) * (1 - rental)
-
-  if (noneProb > 0) {
-    parts.push(`${Math.round(noneProb * 100)}% None`)
-  }
-  if (eternal > 0) {
-    parts.push(`${Math.round(eternal * 100)}% Eternal`)
-  }
-  if (perishable > 0) {
-    parts.push(`${Math.round(perishable * 100)}% Perishable`)
-  }
-  if (rental > 0) {
-    parts.push(`${Math.round(rental * 100)}% Rental`)
-  }
-
-  return parts.join(', ')
+  return getStakeColor(tier)
 }

@@ -170,6 +170,86 @@ export {
 } from './RoundManager'
 
 // =============================================================================
+// CHARTER SYSTEM
+// =============================================================================
+
+export {
+  // Types
+  type OwnedCharter,
+  type CharterEffects,
+  // Constants
+  DEFAULT_CHARTER_EFFECTS,
+  CHARTER_COST as IMPERIAL_CHARTER_COST,
+  // Class
+  CharterSystem,
+  // Charter definitions
+  BASE_CHARTERS as CHARTER_BASE_DEFINITIONS,
+  UPGRADED_CHARTERS as CHARTER_UPGRADED_DEFINITIONS,
+  ALL_CHARTERS as CHARTER_ALL_DEFINITIONS,
+  // Utilities
+  getCharterById,
+  getUpgradedCharter,
+  getAvailableCharters,
+  isCharterAvailable,
+} from './CharterSystem'
+
+export type {
+  CharterDefinition,
+  CharterEffect,
+  CharterEffectType,
+} from './CharterSystem'
+
+// =============================================================================
+// TEA HOUSE SYSTEM (Enhanced Shop)
+// =============================================================================
+
+export {
+  // Constants
+  TEA_HOUSE_BASE_ITEM_SLOTS,
+  TEA_HOUSE_MAX_ITEM_SLOTS,
+  TEA_HOUSE_PACK_SLOTS,
+  TEA_HOUSE_BASE_REROLL_COST,
+  TEA_HOUSE_REROLL_INCREMENT,
+  ITEM_TYPE_WEIGHTS as TEA_HOUSE_ITEM_WEIGHTS,
+  DECREE_RARITY_WEIGHTS as TEA_HOUSE_DECREE_RARITY_WEIGHTS,
+  PACK_SIZE_WEIGHTS as TEA_HOUSE_PACK_SIZE_WEIGHTS,
+  PACK_TYPE_WEIGHTS as TEA_HOUSE_PACK_TYPE_WEIGHTS,
+  // Charters
+  TEA_HOUSE_BASE_CHARTERS,
+  TEA_HOUSE_UPGRADED_CHARTERS,
+  // Class
+  TeaHouseSystem,
+} from './TeaHouseSystem'
+
+export type {
+  TeaHouseOffering,
+  TeaHouseState,
+  FateSealPlaceholder,
+  CelestialOrbPlaceholder,
+} from './TeaHouseSystem'
+
+// =============================================================================
+// PRICING CALCULATOR
+// =============================================================================
+
+export {
+  // Constants
+  DECREE_BASE_COST_RANGES,
+  EDITION_ADDITIONAL_COSTS,
+  CONSUMABLE_COSTS,
+  PACK_COSTS as PRICING_PACK_COSTS,
+  CHARTER_BASE_COST,
+  // Class
+  PricingCalculator,
+  // Utilities
+  getRarityCostRangeDisplay,
+  getEditionCostDisplay,
+  getEditionsByCost,
+} from './PricingCalculator'
+
+export type { EditionType as PricingEditionType } from './PricingCalculator'
+
+// =============================================================================
 // TILE MODIFIER SYSTEM (Tile Marks / Card Modifiers)
 // =============================================================================
 
@@ -228,3 +308,21 @@ export {
   getRandomEdition,
   formatModifiers,
 } from '../core/TileModifier'
+
+// =============================================================================
+// BLESSING PACK SYSTEM
+// =============================================================================
+
+export {
+  // Class
+  BlessingPackSystem,
+  // Types
+  type PackContent,
+  type PackOffering,
+  type PackGenerationOptions,
+  // Utilities
+  getPackTypeInfo,
+  getPackSizeInfo,
+  canAffordPack,
+  getPackEffectiveCost,
+} from './BlessingPackSystem'

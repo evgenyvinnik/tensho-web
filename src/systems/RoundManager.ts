@@ -6,6 +6,7 @@
  * - Score targets increase per act
  * - Boss rounds have mandates (special restrictions)
  * - Handles win/loss conditions
+ * - Integrates with Table Stakes for difficulty scaling
  */
 
 import {
@@ -16,6 +17,11 @@ import {
   ROUND_MULTIPLIERS,
   ScoreRequirements,
 } from './types'
+
+import {
+  calculateCombinedModifiers,
+  type CombinedStakeModifiers,
+} from '../config/stakeDefinitions'
 
 // =============================================================================
 // SCORE REQUIREMENTS
@@ -38,6 +44,7 @@ export const BASE_SCORE_TARGETS: Record<number, number[]> = {
 
 /**
  * Score scaling for higher stakes
+ * @deprecated Use calculateCombinedModifiers from stakeDefinitions instead
  */
 export const STAKE_SCORE_MULTIPLIERS: Record<number, number> = {
   1: 1.0, // White Stake
@@ -45,9 +52,9 @@ export const STAKE_SCORE_MULTIPLIERS: Record<number, number> = {
   3: 1.3, // Green Stake
   4: 1.3, // Black Stake
   5: 1.3, // Blue Stake
-  6: 1.6, // Purple Stake
+  6: 1.6, // Purple Stake (1.3 * 1.5 = 1.95, rounded)
   7: 1.6, // Orange Stake
-  8: 2.0, // Gold Stake
+  8: 2.0, // Gold Stake (1.3 * 1.5 = 1.95, rounded to 2.0)
 }
 
 /**
@@ -250,9 +257,33 @@ export class RoundManager {
   private bonusHands: number = 0
   private bonusDiscards: number = 0
   private usedTileIds: Set<string> = new Set()
+  private stakeModifiers: CombinedStakeModifiers
 
   constructor(stake: number = 1) {
     this.stake = stake
+    this.stakeModifiers = calculateCombinedModifiers(stake)
+  }
+
+  /**
+   * Update stake and recalculate modifiers
+   */
+  setStake(stake: number): void {
+    this.stake = stake
+    this.stakeModifiers = calculateCombinedModifiers(stake)
+  }
+
+  /**
+   * Get current stake tier
+   */
+  getStake(): number {
+    return this.stake
+  }
+
+  /**
+   * Get current stake modifiers
+   */
+  getStakeModifiers(): CombinedStakeModifiers {
+    return this.stakeModifiers
   }
 
   /**
@@ -270,6 +301,15 @@ export class RoundManager {
   }
 
   /**
+   * Get effective discards per round (accounting for stake penalties)
+   */
+  getEffectiveDiscards(): number {
+    const base = DEFAULT_DISCARDS_PER_ROUND + this.bonusDiscards
+    const penalty = this.stakeModifiers.redrawPenalty
+    return Math.max(0, base - penalty)
+  }
+
+  /**
    * Start a new run at Act 1
    */
   startNewRun(): ActState {
@@ -281,7 +321,8 @@ export class RoundManager {
    */
   startAct(actNumber: number): ActState {
     const baseTargets = this.getScoreTargetsForAct(actNumber)
-    const stakeMultiplier = STAKE_SCORE_MULTIPLIERS[this.stake] ?? 1.0
+    // Use cumulative score scaling from stake modifiers
+    const stakeMultiplier = this.stakeModifiers.scoreScaling
 
     const rounds: RoundState[] = [
       this.createRound(actNumber, 1, 'Small', Math.floor(baseTargets[0] * stakeMultiplier)),
