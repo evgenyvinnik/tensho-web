@@ -23,6 +23,19 @@ export type {
   ScoreComparisonProps,
 } from './ScoreBreakdownDisplay'
 
+export {
+  ModifierBadge,
+  ModifierOverlay,
+  ModifierTooltip,
+  ModifierSelector,
+} from './TileModifierDisplay'
+export type {
+  ModifierBadgeProps,
+  ModifierOverlayProps,
+  ModifierTooltipProps,
+  ModifierSelectorProps,
+} from './TileModifierDisplay'
+
 export { LanguageSelector } from './LanguageSelector'
 export { Popup, ConfirmPopup } from './Popup'
 export { Tutorial } from './Tutorial'

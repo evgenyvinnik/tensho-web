@@ -96,3 +96,47 @@ export type { WallState } from './Wall'
 // DeadPool system
 export { DeadPool } from './DeadPool'
 export type { DeadPoolState } from './DeadPool'
+
+// Tile Modifier system (Tile Marks)
+export {
+  // Enhancement types
+  EnhancementType,
+  // Seal types
+  SealType,
+  // Edition types
+  EditionType,
+  // Default modifiers
+  DEFAULT_MODIFIERS,
+  // Definitions
+  ENHANCEMENT_DEFINITIONS,
+  SEAL_DEFINITIONS,
+  EDITION_DEFINITIONS,
+  // Utility functions
+  hasModifiers,
+  calculateModifierChips,
+  calculateModifierMult,
+  calculateModifierMultiplier,
+  getRetriggers,
+  isWild,
+  alwaysScores,
+  canShatter,
+  hasHeldEffect,
+  isLucky,
+  rollLuckyEffect,
+  rollShatter,
+  calculateModifierEffects,
+  getAllEnhancements,
+  getAllSeals,
+  getSpecialEditions,
+  getRandomEnhancement,
+  getRandomSeal,
+  getRandomEdition,
+  formatModifiers,
+} from './TileModifier'
+export type {
+  TileModifiers,
+  EnhancementDefinition,
+  SealDefinition,
+  EditionDefinition,
+  ModifierScoringResult,
+} from './TileModifier'

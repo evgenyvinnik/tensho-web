@@ -86,3 +86,28 @@ export {
   type AchievementStats,
   type AchievementCategory,
 } from './achievementStore'
+
+// Tile Mark Store - Tile Modifiers (Enhancements, Seals, Editions)
+export {
+  useTileMarkStore,
+  // Selectors
+  selectTotalModifierChips,
+  selectTotalModifierMult,
+  selectTotalModifierMultiplier,
+  selectTotalRetriggers,
+  selectMarkedTileCount,
+  selectEnhancementCount,
+  selectSealCount,
+  selectNegativeEditionCount,
+  // Helper functions
+  getModifierDisplayInfo,
+  formatTileMarks,
+  // Decay configurations
+  ENHANCEMENT_DECAY_CONFIG,
+  SEAL_DECAY_CONFIG,
+  // Types
+  type TileMarkState,
+  type TileMarkData,
+  type PendingConsumable,
+  type MarkDecayConfig,
+} from './tileMarkStore'

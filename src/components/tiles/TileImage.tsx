@@ -281,6 +281,10 @@ export const TileImage: React.FC<TileImageProps> = ({
       {highlighted && !selected && (
         <div className="absolute inset-0 bg-vibrant-orange opacity-10 rounded pointer-events-none animate-pulse" />
       )}
+      {/* Modifier overlay (enhancement, seal, edition indicators) */}
+      {tile && !faceDown && tile.hasModifiers && (
+        <ModifierOverlay tile={tile} />
+      )}
       {/* Tooltip popup */}
       {isHovering && showTooltip && tile && !faceDown && (
         <div
@@ -312,6 +316,33 @@ export const TileImage: React.FC<TileImageProps> = ({
             {tileInfo.description && (
               <div className="text-beige-white text-xs leading-relaxed">
                 {tileInfo.description}
+              </div>
+            )}
+            {/* Modifier information */}
+            {tile.hasModifiers && (
+              <div className="mt-2 pt-2 border-t border-gray-600">
+                <div className="text-golden-yellow text-xs font-medium mb-1">Modifiers:</div>
+                {tile.enhancement !== EnhancementType.None && (
+                  <div className="text-blue-400 text-xs">
+                    {tile.enhancementDef.name}: {tile.enhancementDef.description}
+                  </div>
+                )}
+                {tile.seal !== SealType.None && (
+                  <div className="text-red-400 text-xs">
+                    {tile.sealDef.name}: {tile.sealDef.description}
+                  </div>
+                )}
+                {tile.edition !== EditionType.Base && (
+                  <div className="text-purple-400 text-xs">
+                    {tile.editionDef.name}: {tile.editionDef.description}
+                  </div>
+                )}
+                {/* Stats summary */}
+                <div className="mt-1 text-xs text-gray-300">
+                  {tile.modifierChips > 0 && <span className="text-blue-300">+{tile.modifierChips} Chips </span>}
+                  {tile.modifierMult > 0 && <span className="text-red-300">+{tile.modifierMult} Mult </span>}
+                  {tile.modifierMultiplier !== 1 && <span className="text-purple-300">×{tile.modifierMultiplier.toFixed(1)} </span>}
+                </div>
               </div>
             )}
             {/* Tooltip arrow */}

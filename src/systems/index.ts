@@ -168,3 +168,63 @@ export {
   formatScoreTarget,
   getRoundTypeDisplayName,
 } from './RoundManager'
+
+// =============================================================================
+// TILE MODIFIER SYSTEM (Tile Marks / Card Modifiers)
+// =============================================================================
+
+export {
+  // Class
+  TileModifierSystem,
+  // Singleton instance
+  tileModifierSystem,
+  // Store types
+  type TileModifierStore,
+  type MarkDecayConfig,
+  // Factory functions
+  createModifierStore,
+  // Decay configurations
+  ENHANCEMENT_DECAY_CONFIG,
+  SEAL_DECAY_CONFIG,
+  // Helper functions
+  getModifierSummary,
+  anyTileHasModifiers,
+  countModifiedTiles,
+  getExtraDecreeSlots,
+} from './TileModifierSystem'
+
+// Re-export core types for convenience
+export {
+  // Types
+  type TileModifiers,
+  EnhancementType,
+  SealType,
+  EditionType,
+  // Default values
+  DEFAULT_MODIFIERS,
+  // Definitions
+  ENHANCEMENT_DEFINITIONS,
+  SEAL_DEFINITIONS,
+  EDITION_DEFINITIONS,
+  // Utility functions
+  hasModifiers,
+  calculateModifierChips,
+  calculateModifierMult,
+  calculateModifierMultiplier,
+  getRetriggers,
+  isWild,
+  alwaysScores,
+  canShatter,
+  hasHeldEffect,
+  isLucky,
+  rollLuckyEffect,
+  rollShatter,
+  calculateModifierEffects,
+  getAllEnhancements,
+  getAllSeals,
+  getSpecialEditions,
+  getRandomEnhancement,
+  getRandomSeal,
+  getRandomEdition,
+  formatModifiers,
+} from '../core/TileModifier'
