@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node ./node_modules/.bin/vite",
+    "build": "tsc -b && node ./node_modules/.bin/vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "node ./node_modules/.bin/vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
