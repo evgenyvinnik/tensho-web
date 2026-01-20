@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useRef } from 'react';
-import { animated, useSpring } from '@react-spring/web';
+import { animated, useSpring, to } from '@react-spring/web';
 import { Tile } from '../../core/Tile';
 import { TileImage, TileSize } from './TileImage';
 import { tileSizes } from '../../styles/theme';
@@ -236,22 +236,27 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
     }
   }, [isPotentialDrag, isDragging, handleDragMove, handleDragEnd]);
 
-  // Combine all transforms
+  // Combine all transforms - use drag transform directly when dragging
+  // Otherwise combine enter/exit with interaction transforms
+  const combinedTransform = isDragging
+    ? dragStyle.transform
+    : to(
+        [enterExitSpring.x, enterExitSpring.scale],
+        (x, scale) => {
+          const interactionTransform = interactionStyle.transform?.get?.() ?? '';
+          const shakeTransform = shakeStyle.transform?.get?.() ?? '';
+          const enterExitTransform = `translateX(${x}px) scale(${scale})`;
+
+          if (shakeTransform && shakeTransform !== 'translateX(0px)') return shakeTransform;
+          return `${enterExitTransform} ${interactionTransform}`;
+        }
+      );
+
   const combinedStyle = {
     ...style,
     width: dimensions.width,
     height: dimensions.height,
-    transform: enterExitSpring.x.to((x) => {
-      const interactionTransform = interactionStyle.transform?.get?.() ?? '';
-      const shakeTransform = shakeStyle.transform?.get?.() ?? '';
-      const dragTransform = isDragging ? dragStyle.transform?.get?.() ?? '' : '';
-      const enterExitTransform = `translateX(${x}px) scale(${enterExitSpring.scale.get()})`;
-
-      // Only apply the most relevant transform to avoid conflicts
-      if (isDragging) return dragTransform;
-      if (shakeTransform && shakeTransform !== 'translateX(0px)') return shakeTransform;
-      return `${enterExitTransform} ${interactionTransform}`;
-    }),
+    transform: combinedTransform,
     opacity: isDragging ? dragStyle.opacity : enterExitSpring.opacity,
     boxShadow: isDragging ? dragStyle.boxShadow : interactionStyle.boxShadow,
     cursor: disabled ? 'not-allowed' : isDragging ? 'grabbing' : draggable ? 'grab' : onClick ? 'pointer' : 'default',

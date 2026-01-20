@@ -57,10 +57,15 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 
 | Attribute | Value |
 |-----------|-------|
-| **Engine** | Unity 6 (6000.0.23f1+) |
-| **Platforms** | iOS, iPadOS, Android, Steam (Windows/macOS/Linux) |
-| **Rendering** | 2D (UI-heavy, tile-based) |
-| **Orientation** | Portrait-first (mobile), Landscape (desktop) |
+| **Framework** | React 19 + TypeScript (Strict Mode) |
+| **Build** | Vite 6 + Bun |
+| **Platforms** | Web (PWA), iOS, Android (installable) |
+| **Rendering** | 2D (Canvas/DOM, tile-based) |
+| **Orientation** | Portrait-first (mobile), Responsive (desktop) |
+| **State** | Zustand (18 stores) |
+| **Animations** | React Spring |
+| **Testing** | Vitest + Playwright |
+| **i18n** | i18next (13 locales) |
 
 **Core Concept:** Replace multiplayer opposition with systemic pressure, rule mutation, and probabilistic risk management while preserving Mahjong's combinatorial depth.
 
@@ -140,24 +145,24 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 
 ### 1. Tile System (P0)
 
-**Data Model:**
-```csharp
+**Data Model (TypeScript):**
+```typescript
 // Standard Tiles (136 total: 34 unique × 4 copies)
-Tile {
-  Suit: Manzu | Pinzu | Souzu | Honor
-  Rank: 1-9 (suited) | Wind/Dragon (honors)
-  IsRed: bool (for red fives)
-  Id: unique identifier
+interface Tile {
+  suit: TileSuit  // Manzu | Pinzu | Souzu | Wind | Dragon | Flower | Season
+  rank: number    // 1-9 (suited) | 1-4 (winds) | 1-3 (dragons) | 1-4 (bonus)
+  isRed: boolean  // for red fives
+  id: string      // unique identifier
 }
 
-Wall {
-  Tiles[144]: shuffled array (136 standard + 8 bonus)
-  DrawIndex: current position
-  DeadWall[14]: reserved tiles for replacements
+class Wall {
+  tiles: Tile[]       // shuffled array (144 total)
+  drawIndex: number   // current position
+  deadWall: Tile[]    // reserved tiles for replacements
 }
 
-DeadPool {
-  Discards[]: tiles that cannot be redrawn
+class DeadPool {
+  discards: Tile[]    // tiles that cannot be redrawn
 }
 ```
 
@@ -194,17 +199,17 @@ The game includes **8 bonus tiles** that exist outside normal hand play but trig
 | **Flowers** | Plum, Orchid, Chrysanthemum, Bamboo | 梅, 兰, 菊, 竹 | 4 |
 | **Seasons** | Spring, Summer, Autumn, Winter | 春, 夏, 秋, 冬 | 4 |
 
-**Data Model:**
-```csharp
-BonusTile {
-  Type: Flower | Season
-  Name: string
-  Id: unique identifier
+**Data Model (TypeScript):**
+```typescript
+interface BonusTile {
+  type: 'Flower' | 'Season'
+  name: string
+  id: string
 }
 
-FloraTrack {
-  Flowers[]: collected flower tiles (run-wide)
-  Seasons[]: active season tiles (round-scoped)
+interface FloraTrack {
+  flowers: Tile[]   // collected flower tiles (run-wide)
+  seasons: Tile[]   // active season tiles (round-scoped)
 }
 ```
 
@@ -233,18 +238,18 @@ FloraTrack {
 
 ### 2. Hand & Meld System (P0)
 
-**Hand Structure:**
-```csharp
-Hand {
-  Tiles[13-14]: current tiles
-  Melds[]: declared melds (open)
-  ConcealedMelds[]: for scoring only
+**Hand Structure (TypeScript):**
+```typescript
+interface Hand {
+  tiles: Tile[]           // current tiles (13-14)
+  melds: Meld[]           // declared melds (open)
+  concealedMelds: Meld[]  // for scoring only
 }
 
-Meld {
-  Type: Sequence | Triplet | Quad | Pair
-  Tiles[3-4]: component tiles
-  IsConcealed: bool
+interface Meld {
+  type: 'Sequence' | 'Triplet' | 'Quad' | 'Pair'
+  tiles: Tile[]    // component tiles (3-4)
+  isConcealed: boolean
 }
 ```
 
@@ -258,15 +263,15 @@ Meld {
 
 ### 3. Yaku Detection System (P0/P1)
 
-**Yaku as ScriptableObjects:**
-```csharp
-YakuDefinition {
-  Id: string
-  DisplayName: string
-  Tier: 1-4
-  Multiplier: float
-  Conditions: YakuCondition[]
-  RequiresConcealed: bool
+**Yaku Definition (TypeScript):**
+```typescript
+interface YakuDefinition {
+  id: string
+  displayName: string
+  tier: 1 | 2 | 3 | 4
+  multiplier: number
+  conditions: YakuCondition[]
+  requiresConcealed: boolean
 }
 ```
 

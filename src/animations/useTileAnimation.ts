@@ -404,12 +404,10 @@ export function useTileDragAnimation() {
   return {
     style: {
       // Use proper interpolation with to() to combine all animated values reactively
-      transform: positionSpring.x.to(
+      transform: to(
+        [positionSpring.x, positionSpring.y, positionSpring.rotate, visualSpring.scale],
         (x, y, rotate, scale) =>
-          `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`,
-        positionSpring.y,
-        positionSpring.rotate,
-        visualSpring.scale
+          `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`
       ),
       opacity: visualSpring.opacity,
       boxShadow: visualSpring.shadowOpacity.to(
