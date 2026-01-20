@@ -264,7 +264,7 @@ export function ChineseScroll({
   className = '',
   showBorder = true,
 }: ChineseScrollProps) {
-  const endCapWidth = 28
+  const endCapWidth = 24
   const sideEdgeWidth = 14
 
   return (
@@ -275,11 +275,11 @@ export function ChineseScroll({
       {/* Top Roller Assembly */}
       <div
         className="flex items-center relative z-20"
-        style={{ width: width + sideEdgeWidth * 2 + endCapWidth * 2 + 8 }}
+        style={{ width: width + sideEdgeWidth * 2 + endCapWidth * 2 + 16 }}
       >
-        <WoodenEndCap />
+        <WoodenEndCap side="left" />
         <RollerBar isTop={true} />
-        <WoodenEndCap />
+        <WoodenEndCap side="right" />
       </div>
 
       {/* Main Scroll Body */}
@@ -341,13 +341,13 @@ export function ChineseScroll({
       <div
         className="flex items-center relative z-20"
         style={{
-          width: width + sideEdgeWidth * 2 + endCapWidth * 2 + 8,
+          width: width + sideEdgeWidth * 2 + endCapWidth * 2 + 16,
           marginTop: -4,
         }}
       >
-        <WoodenEndCap />
+        <WoodenEndCap side="left" />
         <RollerBar isTop={false} />
-        <WoodenEndCap />
+        <WoodenEndCap side="right" />
       </div>
     </div>
   )

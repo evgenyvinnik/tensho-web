@@ -31,6 +31,39 @@ bun run preview      # Preview production build locally
 bun run sloc         # Count source lines of code
 ```
 
+## Testing
+
+### Unit Tests (Vitest)
+
+```bash
+bun run test              # Run tests in watch mode
+bun run test:run          # Run tests once
+bun run test:ui           # Run tests with Vitest UI
+bun run test:coverage     # Run tests with coverage report
+
+# Run a single test file
+bun run test src/core/Tile.test.ts
+
+# Run tests matching a pattern
+bun run test -- --grep "Tile"
+```
+
+### E2E Tests (Playwright)
+
+```bash
+bun run test:e2e          # Run E2E tests headless
+bun run test:e2e:ui       # Run with Playwright UI
+bun run test:e2e:headed   # Run in visible browser
+
+# Run a single E2E test file
+bunx playwright test e2e/app.spec.ts
+
+# Skip auto-starting dev server (if already running)
+SKIP_WEB_SERVER=1 bun run test:e2e
+```
+
+Test files: Unit tests use `*.test.ts` in `src/`, E2E tests use `*.spec.ts` in `e2e/`.
+
 ## Code Architecture
 
 ### Directory Structure
@@ -64,6 +97,12 @@ import { DecreeSystem, FlowerSystem } from './systems'
 
 // Avoid - importing from individual files
 import { Tile } from './core/Tile'
+```
+
+The `@/` path alias resolves to `src/` for absolute imports:
+
+```typescript
+import { Tile } from '@/core'
 ```
 
 ### Game Loop Architecture: GameOrchestrator
