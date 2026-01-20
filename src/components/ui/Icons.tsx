@@ -220,6 +220,213 @@ export const MinusIcon: React.FC<IconProps> = ({
   </svg>
 );
 
+// =============================================================================
+// TILE MODIFIER ICONS - Enhancements
+// =============================================================================
+
+/**
+ * Bonus Enhancement Icon - Plus with chip effect
+ */
+export const EnhancementBonusIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+  </svg>
+);
+
+/**
+ * Mult Enhancement Icon - Multiplication symbol
+ */
+export const EnhancementMultIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+  </svg>
+);
+
+/**
+ * Wild Enhancement Icon - Star/wildcard
+ */
+export const EnhancementWildIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+  </svg>
+);
+
+/**
+ * Glass Enhancement Icon - Crystal/diamond shape
+ */
+export const EnhancementGlassIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2L4 10l8 12 8-12L12 2zm0 3.5L17.5 10 12 17.5 6.5 10 12 5.5z" />
+  </svg>
+);
+
+/**
+ * Steel Enhancement Icon - Shield
+ */
+export const EnhancementSteelIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+  </svg>
+);
+
+/**
+ * Stone Enhancement Icon - Solid circle/rock
+ */
+export const EnhancementStoneIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+  </svg>
+);
+
+/**
+ * Gold Enhancement Icon - Yen/coin
+ */
+export const EnhancementGoldIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h-2v-2h2v-1h-2v-2h1.5l-2-4h2.3l1.7 3.4 1.7-3.4h2.3l-2 4H15v2h2v2h-2v1h2v2h-2v2z" />
+  </svg>
+);
+
+/**
+ * Lucky Enhancement Icon - Four-leaf clover
+ */
+export const EnhancementLuckyIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 12c-1.1 0-2-.9-2-2 0-.55.22-1.05.59-1.41C10.22 8.22 10 7.72 10 7c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .72-.22 1.22-.59 1.59.37.36.59.86.59 1.41 0 1.1-.9 2-2 2zm0 0c1.1 0 2 .9 2 2 0 .55-.22 1.05-.59 1.41.37.37.59.87.59 1.59 0 1.66-1.34 3-3 3s-3-1.34-3-3c0-.72.22-1.22.59-1.59-.37-.36-.59-.86-.59-1.41 0-1.1.9-2 2-2zm0 0c0-1.1-.9-2-2-2-.55 0-1.05.22-1.41.59C8.22 10.22 7.72 10 7 10c-1.66 0-3 1.34-3 3s1.34 3 3 3c.72 0 1.22-.22 1.59-.59.36.37.86.59 1.41.59 1.1 0 2-.9 2-2zm0 0c0 1.1.9 2 2 2 .55 0 1.05-.22 1.41-.59.37.37.87.59 1.59.59 1.66 0 3-1.34 3-3s-1.34-3-3-3c-.72 0-1.22.22-1.59.59-.36-.37-.86-.59-1.41-.59-1.1 0-2 .9-2 2z" />
+  </svg>
+);
+
+// =============================================================================
+// TILE MODIFIER ICONS - Seals
+// =============================================================================
+
+/**
+ * Gold Seal Icon - Coin with shine
+ */
+export const SealGoldIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z" />
+    <circle cx="12" cy="12" r="6" />
+  </svg>
+);
+
+/**
+ * Red Seal Icon - Retrigger/refresh arrows
+ */
+export const SealRedIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" />
+  </svg>
+);
+
+/**
+ * Blue Seal Icon - Star/orb
+ */
+export const SealBlueIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8 5.6 21.2 8 14 2 9.2h7.6L12 2z" />
+  </svg>
+);
+
+/**
+ * Purple Seal Icon - Diamond
+ */
+export const SealPurpleIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M19 3H5L2 9l10 13L22 9l-3-6zm-7 14.3L6.5 9.5 8 6h8l1.5 3.5L12 17.3z" />
+  </svg>
+);
+
+// =============================================================================
+// TILE MODIFIER ICONS - Editions
+// =============================================================================
+
+/**
+ * Foil Edition Icon - Sparkle
+ */
+export const EditionFoilIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 3l1.45 4.55L18 9l-4.55 1.45L12 15l-1.45-4.55L6 9l4.55-1.45L12 3zm6.5 6l.72 2.28L22 12l-2.78.72L18.5 15l-.72-2.28L15 12l2.78-.72L18.5 9zM7 14l.72 2.28L10.5 17l-2.78.72L7 20l-.72-2.28L3.5 17l2.78-.72L7 14z" />
+  </svg>
+);
+
+/**
+ * Holographic Edition Icon - Rainbow prism
+ */
+export const EditionHoloIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2L2 22h20L12 2zm0 4l7 14H5l7-14z" />
+    <path d="M12 8l-4 10h8l-4-10z" opacity="0.5" />
+  </svg>
+);
+
+/**
+ * Polychrome Edition Icon - Multi-color sphere
+ */
+export const EditionPolyIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-4.42-4.03-8-10-8z" opacity="0.7" />
+  </svg>
+);
+
+/**
+ * Negative Edition Icon - Half-filled circle (inverted)
+ */
+export const EditionNegativeIcon: React.FC<IconProps> = ({
+  className = defaultProps.className,
+  color = defaultProps.color,
+}) => (
+  <svg className={className} fill={color} viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8v16z" />
+  </svg>
+);
+
 export default {
   VolumeOnIcon,
   VolumeMutedIcon,
@@ -238,4 +445,23 @@ export default {
   CheckIcon,
   PlusIcon,
   MinusIcon,
+  // Enhancement Icons
+  EnhancementBonusIcon,
+  EnhancementMultIcon,
+  EnhancementWildIcon,
+  EnhancementGlassIcon,
+  EnhancementSteelIcon,
+  EnhancementStoneIcon,
+  EnhancementGoldIcon,
+  EnhancementLuckyIcon,
+  // Seal Icons
+  SealGoldIcon,
+  SealRedIcon,
+  SealBlueIcon,
+  SealPurpleIcon,
+  // Edition Icons
+  EditionFoilIcon,
+  EditionHoloIcon,
+  EditionPolyIcon,
+  EditionNegativeIcon,
 };

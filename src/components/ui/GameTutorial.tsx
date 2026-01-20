@@ -18,6 +18,7 @@ import {
 // Re-export types and components for external use
 export type {
   ArrowDirection,
+  TileExample,
   GameTutorialStep,
   GameTutorialProps,
 } from './game-tutorial/TutorialComponents'
@@ -89,11 +90,6 @@ export function GameTutorial({
         targetRect={targetRect}
         padding={step.highlightPadding ?? 8}
       />
-
-      {/* Click blocker (except for highlighted area if waiting for action) */}
-      {!step.waitForAction && (
-        <div className="fixed inset-0 z-[1000]" onClick={(e) => e.stopPropagation()} />
-      )}
 
       {/* Tooltip */}
       <TutorialTooltip

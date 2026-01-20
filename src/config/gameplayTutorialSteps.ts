@@ -6,7 +6,8 @@
  * Explains all game mechanics in context as players see them.
  */
 
-import type { GameTutorialStep } from '../components/ui/GameTutorial'
+import type { GameTutorialStep, TileExample } from '../components/ui/GameTutorial'
+import { TileSuit } from '../core/Tile'
 
 /**
  * Default gameplay tutorial steps
@@ -99,8 +100,26 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
       title: t('gameTutorial.tileValues.title', 'Tile Values'),
       content: t(
         'gameTutorial.tileValues.content',
-        'Terminals (1,9): 10 pts. Simples (2-8): 5 pts. Honors: 15 pts. Structures add more: Pair +10, Sequence +20, Triplet +30.'
+        'Each tile has a point value. Terminals (1,9) = 10 pts, Simples (2-8) = 5 pts, Honors = 15 pts. Structures add more!'
       ),
+      exampleTiles: [
+        // Row 1: Terminals (10 pts each)
+        [
+          { suit: TileSuit.Pinzu, rank: 1, label: '10 pts' },
+          { suit: TileSuit.Manzu, rank: 9, label: '10 pts' },
+        ],
+        // Row 2: Simples (5 pts each)
+        [
+          { suit: TileSuit.Souzu, rank: 2, label: '5 pts' },
+          { suit: TileSuit.Pinzu, rank: 5, label: '5 pts' },
+          { suit: TileSuit.Manzu, rank: 8, label: '5 pts' },
+        ],
+        // Row 3: Honors (15 pts each)
+        [
+          { suit: TileSuit.Wind, rank: 1, label: '15 pts' },
+          { suit: TileSuit.Dragon, rank: 3, label: '15 pts' },
+        ],
+      ],
       highlightPadding: 12,
     },
 

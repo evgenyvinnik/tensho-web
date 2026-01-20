@@ -7,6 +7,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
+import { TileSuit, Tile } from '../../../core/Tile'
+import { TileImage } from '../../tiles/TileImage'
 
 const AnimatedDiv = animated('div')
 
@@ -18,6 +20,15 @@ const AnimatedDiv = animated('div')
  * Arrow direction for tooltip positioning
  */
 export type ArrowDirection = 'top' | 'bottom' | 'left' | 'right'
+
+/**
+ * Tile example for displaying in tutorial
+ */
+export interface TileExample {
+  suit: TileSuit
+  rank: number
+  label?: string
+}
 
 /**
  * Tutorial step definition for in-game tutorial
@@ -40,6 +51,8 @@ export interface GameTutorialStep {
   actionHint?: string
   /** Highlight padding around the target element */
   highlightPadding?: number
+  /** Example tiles to display with optional labels */
+  exampleTiles?: TileExample[][]
 }
 
 /**
@@ -223,6 +236,29 @@ export function TutorialTooltip({
           {step.content}
         </p>
 
+        {/* Example tiles */}
+        {step.exampleTiles && step.exampleTiles.length > 0 && (
+          <div className="mb-4 space-y-2">
+            {step.exampleTiles.map((tileRow, rowIndex) => (
+              <div key={rowIndex} className="flex items-center gap-2 flex-wrap">
+                {tileRow.map((tileExample, tileIndex) => {
+                  const tile = Tile.create(tileExample.suit, tileExample.rank)
+                  return (
+                    <div key={tileIndex} className="flex flex-col items-center gap-1">
+                      <TileImage tile={tile} size="small" />
+                      {tileExample.label && (
+                        <span className="text-xs text-[var(--color-metallic-gold)]">
+                          {tileExample.label}
+                        </span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Action hint */}
         {step.waitForAction && step.actionHint && (
           <p className="text-[var(--color-vibrant-orange)] text-sm mb-4 italic">
@@ -265,15 +301,15 @@ export function HighlightOverlay({
   targetRect,
   padding = 8,
 }: HighlightOverlayProps) {
-  if (!targetRect) return null
-
   const highlightSpring = useSpring({
     from: { opacity: 0 },
-    to: { opacity: 1 },
+    to: { opacity: targetRect ? 1 : 0 },
     config: { tension: 200, friction: 20 },
   })
 
-  // Create a "spotlight" effect using box-shadow
+  if (!targetRect) return null
+
+  // Create a highlight effect around the target element
   const left = targetRect.left - padding
   const top = targetRect.top - padding
   const width = targetRect.width + padding * 2
@@ -281,20 +317,7 @@ export function HighlightOverlay({
 
   return (
     <>
-      {/* Dark overlay with cutout */}
-      <AnimatedDiv
-        className="fixed inset-0 z-[999] pointer-events-none"
-        style={{
-          opacity: highlightSpring.opacity,
-          background: `
-            linear-gradient(to right, rgba(0,0,0,0.75) ${left}px, transparent ${left}px, transparent ${left + width}px, rgba(0,0,0,0.75) ${left + width}px),
-            linear-gradient(to bottom, rgba(0,0,0,0.75) ${top}px, transparent ${top}px, transparent ${top + height}px, rgba(0,0,0,0.75) ${top + height}px)
-          `,
-          backgroundBlendMode: 'multiply',
-        }}
-      />
-
-      {/* Highlight border */}
+      {/* Highlight border with golden glow (no blackout) */}
       <AnimatedDiv
         className="fixed z-[1000] pointer-events-none border-2 border-[var(--color-golden-yellow)] rounded-lg"
         style={{
@@ -303,7 +326,7 @@ export function HighlightOverlay({
           width: width,
           height: height,
           opacity: highlightSpring.opacity,
-          boxShadow: '0 0 0 9999px rgba(0,0,0,0.7), 0 0 20px var(--color-golden-yellow)',
+          boxShadow: '0 0 30px var(--color-golden-yellow), 0 0 60px var(--color-golden-yellow), inset 0 0 20px rgba(255,213,79,0.3)',
         }}
       />
     </>

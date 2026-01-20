@@ -80,6 +80,16 @@ export interface ModifierSelectorProps {
 }
 
 // =============================================================================
+// HELPER - Icon size classes
+// =============================================================================
+
+const iconSizeClasses = {
+  small: 'w-3 h-3',
+  medium: 'w-4 h-4',
+  large: 'w-5 h-5',
+}
+
+// =============================================================================
 // COMPONENTS
 // =============================================================================
 
@@ -104,7 +114,7 @@ export function ModifierBadge({
   if (enhancement && enhancement !== EnhancementType.None) {
     const colors = ENHANCEMENT_COLORS[enhancement]
     const def = ENHANCEMENT_DEFINITIONS[enhancement]
-    const icon = getEnhancementIcon(enhancement)
+    const IconComponent = getEnhancementIcon(enhancement)
 
     return (
       <div
@@ -112,7 +122,7 @@ export function ModifierBadge({
         style={{ backgroundColor: colors.bg, borderColor: colors.border, color: colors.text, borderWidth: 1 }}
         title={`${def.name}: ${def.description}`}
       >
-        {icon}
+        {IconComponent && <IconComponent className={iconSizeClasses[size]} color={colors.text} />}
         {showLabel && <span className="ml-1">{def.name}</span>}
       </div>
     )
@@ -122,6 +132,7 @@ export function ModifierBadge({
   if (seal && seal !== SealType.None) {
     const colors = SEAL_COLORS[seal]
     const def = SEAL_DEFINITIONS[seal]
+    const IconComponent = getSealIcon(seal)
 
     return (
       <div
@@ -129,7 +140,7 @@ export function ModifierBadge({
         style={{ backgroundColor: colors.bg, borderColor: colors.border, borderWidth: 2 }}
         title={`${def.name}: ${def.description}`}
       >
-        {getSealIcon(seal)}
+        {IconComponent && <IconComponent className={iconSizeClasses[size]} color="#FFF" />}
         {showLabel && <span className="ml-1 text-white">{def.name}</span>}
       </div>
     )
@@ -139,13 +150,14 @@ export function ModifierBadge({
   if (edition && edition !== EditionType.Base) {
     const def = EDITION_DEFINITIONS[edition]
     const effects = EDITION_EFFECTS[edition]
+    const IconComponent = getEditionIcon(edition)
 
     return (
       <div
         className={`${sizeClasses[size]} rounded flex items-center justify-center ${effects.overlay} ${className}`}
         title={`${def.name}: ${def.description}`}
       >
-        {getEditionIcon(edition)}
+        {IconComponent && <IconComponent className={iconSizeClasses[size]} />}
         {showLabel && <span className="ml-1">{def.name}</span>}
       </div>
     )

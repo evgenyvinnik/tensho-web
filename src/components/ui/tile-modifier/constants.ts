@@ -4,7 +4,26 @@
  * Color schemes and effect definitions for tile modifiers.
  */
 
+import React from 'react'
 import { EnhancementType, SealType, EditionType } from '../../../core/TileModifier'
+import {
+  EnhancementBonusIcon,
+  EnhancementMultIcon,
+  EnhancementWildIcon,
+  EnhancementGlassIcon,
+  EnhancementSteelIcon,
+  EnhancementStoneIcon,
+  EnhancementGoldIcon,
+  EnhancementLuckyIcon,
+  SealGoldIcon,
+  SealRedIcon,
+  SealBlueIcon,
+  SealPurpleIcon,
+  EditionFoilIcon,
+  EditionHoloIcon,
+  EditionPolyIcon,
+  EditionNegativeIcon,
+} from '../Icons'
 
 /**
  * Color scheme for enhancement types
@@ -44,9 +63,52 @@ export const EDITION_EFFECTS: Record<EditionType, { className: string; overlay: 
 }
 
 /**
- * Get icon for enhancement type
+ * Get SVG icon component for enhancement type
  */
-export function getEnhancementIcon(enhancement: EnhancementType): string {
+export function getEnhancementIcon(enhancement: EnhancementType): React.FC<{ className?: string; color?: string }> | null {
+  switch (enhancement) {
+    case EnhancementType.Bonus: return EnhancementBonusIcon
+    case EnhancementType.Mult: return EnhancementMultIcon
+    case EnhancementType.Wild: return EnhancementWildIcon
+    case EnhancementType.Glass: return EnhancementGlassIcon
+    case EnhancementType.Steel: return EnhancementSteelIcon
+    case EnhancementType.Stone: return EnhancementStoneIcon
+    case EnhancementType.Gold: return EnhancementGoldIcon
+    case EnhancementType.Lucky: return EnhancementLuckyIcon
+    default: return null
+  }
+}
+
+/**
+ * Get SVG icon component for seal type
+ */
+export function getSealIcon(seal: SealType): React.FC<{ className?: string; color?: string }> | null {
+  switch (seal) {
+    case SealType.Gold: return SealGoldIcon
+    case SealType.Red: return SealRedIcon
+    case SealType.Blue: return SealBlueIcon
+    case SealType.Purple: return SealPurpleIcon
+    default: return null
+  }
+}
+
+/**
+ * Get SVG icon component for edition type
+ */
+export function getEditionIcon(edition: EditionType): React.FC<{ className?: string; color?: string }> | null {
+  switch (edition) {
+    case EditionType.Foil: return EditionFoilIcon
+    case EditionType.Holographic: return EditionHoloIcon
+    case EditionType.Polychrome: return EditionPolyIcon
+    case EditionType.Negative: return EditionNegativeIcon
+    default: return null
+  }
+}
+
+/**
+ * Get text fallback icon for enhancement type (for small displays)
+ */
+export function getEnhancementIconText(enhancement: EnhancementType): string {
   switch (enhancement) {
     case EnhancementType.Bonus: return '+'
     case EnhancementType.Mult: return '×'
@@ -61,9 +123,9 @@ export function getEnhancementIcon(enhancement: EnhancementType): string {
 }
 
 /**
- * Get icon for seal type
+ * Get text fallback icon for seal type (for small displays)
  */
-export function getSealIcon(seal: SealType): string {
+export function getSealIconText(seal: SealType): string {
   switch (seal) {
     case SealType.Gold: return '¥'
     case SealType.Red: return '↻'
@@ -74,9 +136,9 @@ export function getSealIcon(seal: SealType): string {
 }
 
 /**
- * Get icon for edition type
+ * Get text fallback icon for edition type (for small displays)
  */
-export function getEditionIcon(edition: EditionType): string {
+export function getEditionIconText(edition: EditionType): string {
   switch (edition) {
     case EditionType.Foil: return '◈'
     case EditionType.Holographic: return '◎'

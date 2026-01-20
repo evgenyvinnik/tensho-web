@@ -115,16 +115,16 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 | **P2** | Boss Mandates | 27 mandate effects (22 standard + 5 showdown) | ✅ Complete |
 | **P2** | Table Stakes | 8-tier difficulty system with stickers | ✅ Complete |
 
-### Phase 4: Meta & Polish (Partial)
+### Phase 4: Meta & Polish ✅
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
-| **P3** | Meta-Progression | Persistent unlocks across runs | ⬜ Not Started |
-| **P3** | Table Styles/Walls | Unlockable deck variants | ⬜ Not Started |
-| **P3** | Red Fives | Optional tile variants | ⬜ Not Started |
+| **P3** | Meta-Progression | Persistent unlocks across runs | ✅ Complete |
+| **P3** | Table Styles/Walls | Unlockable deck variants | ✅ Complete |
+| **P3** | Red Fives | Optional tile variants | ✅ Complete |
 | **P3** | Tutorial System | Progressive complexity disclosure | ✅ Complete |
-| **P3** | Audio/VFX Polish | Feedback and juice | ⚠️ Partial |
-| **P3** | Archive of Hands | Collection/discovery system | ⬜ Not Started |
+| **P3** | Audio/VFX Polish | Feedback and juice | ✅ Complete |
+| **P3** | Archive of Hands | Collection/discovery system | ✅ Complete |
 
 ### Phase 5: Platform & Localization ✅
 
@@ -1006,16 +1006,20 @@ All major roguelike systems have been implemented:
 | The Shop | **Tea House** | `src/systems/TeaHouseSystem.ts`, `src/systems/ShopGenerator.ts`, `src/systems/PricingCalculator.ts` | ✅ Complete |
 | Stickers | **Stickers** | `src/systems/StickerSystem.ts` (Eternal, Perishable, Rental) | ✅ Complete |
 | Consumables | **Consumable System** | `src/systems/ConsumableSystem.ts` | ✅ Complete |
-| Decks | **Walls/Table Styles** | ⬜ Not implemented |
-| Collection | **Archive of Hands** | ⬜ Not implemented |
+| Decks | **Walls/Table Styles** | `src/systems/TableStyleSystem.ts`, `src/config/tableStyleDefinitions.ts` (8 styles) | ✅ Complete |
+| Collection | **Archive of Hands** | `src/systems/ArchiveSystem.ts`, `src/stores/archiveStore.ts` (352+ items) | ✅ Complete |
+| Red Fives | **Red Fives** | `src/systems/RedFiveSystem.ts` (+50 chips per red five) | ✅ Complete |
+| Meta-Progression | **Meta-Progression** | `src/systems/MetaProgressionSystem.ts`, `src/config/unlockDefinitions.ts` | ✅ Complete |
+| Audio/SFX | **Audio System** | `src/systems/AudioSystem.ts`, `src/config/audioDefinitions.ts` | ✅ Complete |
+| VFX/Juice | **VFX System** | `src/systems/VFXSystem.ts`, `src/hooks/useVFX.tsx` | ✅ Complete |
 
-### UI/Screens (Partial)
+### UI/Screens ✅
 
 | Component | Status |
 |-----------|--------|
 | Gameplay Screen | ✅ Implemented |
 | Menu Screen | ✅ Implemented |
-| Shop Screen | ⚠️ Basic shell only |
+| Shop Screen | ✅ Implemented |
 | Settings Screen | ✅ Implemented |
 | Tutorial System | ✅ Implemented |
 | Tile Components | ✅ Implemented |
@@ -1039,6 +1043,9 @@ All major roguelike systems have been implemented:
 | Shop Store | `src/stores/shopStore.ts` | ✅ Complete |
 | Stake Store | `src/stores/stakeStore.ts` | ✅ Complete |
 | Consumable Store | `src/stores/consumableStore.ts` | ✅ Complete |
+| Table Style Store | `src/stores/tableStyleStore.ts` | ✅ Complete |
+| Archive Store | `src/stores/archiveStore.ts` | ✅ Complete |
+| Progression Store | `src/stores/progressionStore.ts` | ✅ Complete |
 
 ---
 

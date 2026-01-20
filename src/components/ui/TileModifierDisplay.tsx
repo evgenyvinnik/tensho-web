@@ -32,6 +32,9 @@ export {
   getEnhancementIcon,
   getSealIcon,
   getEditionIcon,
+  getEnhancementIconText,
+  getSealIconText,
+  getEditionIconText,
 } from './tile-modifier/constants'
 
 // Default export for backwards compatibility
