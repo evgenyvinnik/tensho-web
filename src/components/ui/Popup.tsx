@@ -175,6 +175,9 @@ export function Popup({
 
   // Native popover rendering
   if (hasNativeSupport) {
+    // Don't render anything if not open (native popover should handle this, but as a safety)
+    if (!isOpen) return null
+
     return (
       <div
         ref={popoverRef}
