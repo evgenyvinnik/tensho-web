@@ -50,7 +50,9 @@ export function Popup({
   useNativePopover = true,
 }: PopupProps) {
   const popoverRef = useRef<HTMLDivElement>(null)
-  const hasNativeSupport = useNativePopover && supportsPopover()
+  // Disable native popover API due to cross-browser inconsistencies
+  // The portal fallback is more reliable
+  const hasNativeSupport = false // useNativePopover && supportsPopover()
 
   // Animation spring
   const spring = useSpring({

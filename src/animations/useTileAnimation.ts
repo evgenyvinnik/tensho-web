@@ -125,7 +125,10 @@ export function useTileDiscardAnimation() {
 
   return {
     style: {
-      transform: spring.y.to((y) => `translateY(${y}px) scale(${spring.scale.get()})`),
+      transform: to(
+        [spring.y, spring.scale],
+        (y, scale) => `translateY(${y}px) scale(${scale})`
+      ),
       opacity: spring.opacity,
     },
     spring,
@@ -151,8 +154,9 @@ export function useTileSelectAnimation(isSelected: boolean = false) {
 
   return {
     style: {
-      transform: spring.y.to(
-        (y) => `translateY(${y}px) scale(${spring.scale.get()})`
+      transform: to(
+        [spring.y, spring.scale],
+        (y, scale) => `translateY(${y}px) scale(${scale})`
       ),
     },
     spring,
@@ -249,8 +253,9 @@ export function useTileHoverAnimation() {
 
   return {
     style: {
-      transform: spring.y.to(
-        (y) => `translateY(${y}px) scale(${spring.scale.get()})`
+      transform: to(
+        [spring.y, spring.scale],
+        (y, scale) => `translateY(${y}px) scale(${scale})`
       ),
     },
     spring,
@@ -345,8 +350,9 @@ export function useTileInteractionAnimation(options: {
 
   return {
     style: {
-      transform: spring.y.to(
-        (y) => `translateY(${y}px) scale(${spring.scale.get()})`
+      transform: to(
+        [spring.y, spring.scale],
+        (y, scale) => `translateY(${y}px) scale(${scale})`
       ),
       boxShadow: spring.glowIntensity.to(
         (i) => `0 0 ${i * 20}px ${i * 10}px rgba(255, 213, 79, ${i * 0.6})`

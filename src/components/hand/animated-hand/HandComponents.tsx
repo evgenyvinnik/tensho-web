@@ -4,7 +4,7 @@
  * Components for displaying and animating tile hands.
  */
 
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { animated, useTransition, useSprings, useSpring, to } from '@react-spring/web'
 import { Tile } from '../../../core/Tile'
 import { AnimatedTile } from '../../tiles/AnimatedTile'
@@ -162,10 +162,18 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
     trail: reducedMotion ? 0 : STAGGER.fast,
     // Re-run transitions when positions change (e.g., due to size change)
     deps: [positions, selectedIds],
+    // Cleanup callback when animation completes
+    onRest: (_result, _ctrl, item) => {
+      // Animation completed - item will be removed from DOM if it was leaving
+      // This helps ensure proper cleanup of exited items
+    },
+    // Ensure exiting items are fully removed
+    expires: true,
   })
 
-  // Update previous tiles reference
-  React.useEffect(() => {
+  // Update previous tiles reference BEFORE paint using useLayoutEffect
+  // This prevents race condition where transition sees stale previousTilesRef
+  useLayoutEffect(() => {
     previousTilesRef.current = tiles
   }, [tiles])
 

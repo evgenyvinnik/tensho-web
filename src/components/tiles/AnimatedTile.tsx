@@ -90,6 +90,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   // Interaction animations (hover, press, select, glow)
   const {
     style: interactionStyle,
+    spring: interactionSpring,
     handlers: interactionHandlers,
   } = useTileInteractionAnimation({
     isSelected: selected,
@@ -100,6 +101,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   // Shake animation for invalid actions
   const {
     style: shakeStyle,
+    spring: shakeSpring,
     trigger: triggerShake,
   } = useTileShakeAnimation();
 
@@ -237,18 +239,32 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   }, [isPotentialDrag, isDragging, handleDragMove, handleDragEnd]);
 
   // Combine all transforms - use drag transform directly when dragging
-  // Otherwise combine enter/exit with interaction transforms
+  // Otherwise combine enter/exit with interaction transforms reactively
   const combinedTransform = isDragging
     ? dragStyle.transform
     : to(
-        [enterExitSpring.x, enterExitSpring.scale],
-        (x, scale) => {
-          const interactionTransform = interactionStyle.transform?.get?.() ?? '';
-          const shakeTransform = shakeStyle.transform?.get?.() ?? '';
-          const enterExitTransform = `translateX(${x}px) scale(${scale})`;
+        [
+          enterExitSpring.x,
+          enterExitSpring.scale,
+          interactionSpring.y,
+          interactionSpring.scale,
+          shakeSpring.x,
+        ],
+        (enterX, enterScale, interY, interScale, shakeX) => {
+          // Calculate shake offset from shake spring
+          const shakeOffset = shakeX === 0 ? 0 : Math.sin(shakeX * Math.PI * 8) * 5;
 
-          if (shakeTransform && shakeTransform !== 'translateX(0px)') return shakeTransform;
-          return `${enterExitTransform} ${interactionTransform}`;
+          // If shaking, prioritize shake transform
+          if (shakeOffset !== 0) {
+            return `translateX(${shakeOffset}px)`;
+          }
+
+          // Combine enter/exit transform with interaction transform
+          const totalX = enterX;
+          const totalY = interY;
+          const totalScale = enterScale * interScale;
+
+          return `translate(${totalX}px, ${totalY}px) scale(${totalScale})`;
         }
       );
 

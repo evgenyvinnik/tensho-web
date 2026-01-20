@@ -28,22 +28,39 @@ interface SliderProps {
 }
 
 function Slider({ value, onChange, min = 0, max = 100, step = 1, label, disabled }: SliderProps) {
+  const percentage = ((value - min) / (max - min)) * 100
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <label className="text-[var(--color-beige-white)]">{label}</label>
-        <span className="text-[var(--color-golden-yellow)] font-mono">{value}%</span>
+        <span className="text-[var(--color-golden-yellow)] font-mono font-bold">{value}%</span>
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        disabled={disabled}
-        className="w-full h-2 bg-[var(--color-dark-forest)] rounded-lg appearance-none cursor-pointer accent-[var(--color-vibrant-orange)] disabled:opacity-50"
-      />
+      <div className="relative h-6 flex items-center">
+        {/* Track background */}
+        <div className="absolute w-full h-3 bg-[var(--color-dark-forest)] rounded-full border border-[var(--color-metallic-gold)]" />
+        {/* Filled track */}
+        <div
+          className="absolute h-3 bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)] rounded-full"
+          style={{ width: `${percentage}%` }}
+        />
+        {/* Input */}
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          disabled={disabled}
+          className="absolute w-full h-6 opacity-0 cursor-pointer disabled:cursor-not-allowed"
+        />
+        {/* Thumb indicator */}
+        <div
+          className={`absolute w-5 h-5 bg-[var(--color-beige-white)] rounded-full border-2 border-[var(--color-golden-yellow)] shadow-lg pointer-events-none transition-opacity ${disabled ? 'opacity-50' : ''}`}
+          style={{ left: `calc(${percentage}% - 10px)` }}
+        />
+      </div>
     </div>
   )
 }
