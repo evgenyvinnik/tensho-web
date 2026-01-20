@@ -1,0 +1,30 @@
+/**
+ * Custom Font Faces for Tensho Mahjong Roguelike
+ */
+
+/* LongCang - Traditional Chinese calligraphy font for tile characters */
+@font-face {
+  font-family: 'LongCang';
+  src: url('/assets/LongCang-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Noto Sans JP - Japanese font for UI text */
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('/assets/NotoSansJP-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Go3v2 - Alternative decorative font */
+@font-face {
+  font-family: 'Go3v2';
+  src: url('/assets/go3v2.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

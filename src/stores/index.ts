@@ -1,0 +1,74 @@
+/**
+ * Stores Index - Central export for all Zustand stores
+ *
+ * This file provides a unified import point for all game state stores.
+ */
+
+// Game Store - Main game session state
+export {
+  useGameStore,
+  type GameState,
+  type GamePhase,
+} from './gameStore'
+
+// Hand Store - Current hand tiles and melds
+export {
+  useHandStore,
+  selectSelectedTiles,
+  selectUnselectedTiles,
+  selectIsTileSelected,
+  type HandState,
+} from './handStore'
+
+// Wall Store - Wall, dead wall, and discards
+export {
+  useWallStore,
+  selectVisibleDiscards,
+  selectIsWallExhausted,
+  selectDrawnTiles,
+  type WallState,
+} from './wallStore'
+
+// Decree Store - Decrees (Joker equivalents)
+export {
+  useDecreeStore,
+  selectEffectiveMaxSlots,
+  selectAvailableSlots,
+  selectTotalSellValue,
+  generateDecreeId,
+  createDecree,
+  type DecreeState,
+  type Decree,
+  type DecreeRarity,
+  type DecreeEdition,
+  type DecreeSticker,
+  type DecreeEffect,
+  type DecreeEffectType,
+} from './decreeStore'
+
+// Flora Store - Flowers and Seasons
+export {
+  useFloraStore,
+  selectFlowerCounts,
+  selectHasAllFlowers,
+  selectHasAllSeasons,
+  selectSeasonEffectsByType,
+  generateFlowerId,
+  generateSeasonId,
+  createFlowerTile,
+  createSeasonTile,
+  type FloraState,
+  type FlowerTile,
+  type FlowerEffect,
+  type SeasonTile,
+  type SeasonEffect,
+} from './floraStore'
+
+// Settings Store - User preferences (persisted)
+export {
+  useSettingsStore,
+  selectEffectiveMusicVolume,
+  selectEffectiveSfxVolume,
+  selectAnimationMultiplier,
+  type SettingsState,
+} from './settingsStore'
