@@ -119,7 +119,9 @@ export function SettingsScreen() {
     resetSettings,
   } = useSettingsStore()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const effectiveMusicVolume = useSettingsStore(selectEffectiveMusicVolume)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const effectiveSfxVolume = useSettingsStore(selectEffectiveSfxVolume)
 
   // Reset tutorial handler

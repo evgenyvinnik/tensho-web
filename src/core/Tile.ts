@@ -4,7 +4,34 @@
  * Standard Riichi Mahjong set:
  * - 136 standard tiles (34 unique × 4 copies)
  * - 8 bonus tiles (4 Flowers + 4 Seasons)
+ *
+ * With modifier support:
+ * - Enhancements (Marks): Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky
+ * - Seals: Gold, Red, Blue, Purple
+ * - Editions: Base, Foil, Holographic, Polychrome, Negative
  */
+
+import {
+  TileModifiers,
+  EnhancementType,
+  SealType,
+  EditionType,
+  DEFAULT_MODIFIERS,
+  hasModifiers as checkHasModifiers,
+  calculateModifierChips,
+  calculateModifierMult,
+  calculateModifierMultiplier,
+  getRetriggers,
+  isWild as checkIsWild,
+  alwaysScores as checkAlwaysScores,
+  canShatter as checkCanShatter,
+  hasHeldEffect as checkHasHeldEffect,
+  isLucky as checkIsLucky,
+  formatModifiers,
+  ENHANCEMENT_DEFINITIONS,
+  SEAL_DEFINITIONS,
+  EDITION_DEFINITIONS,
+} from './TileModifier'
 
 export enum TileSuit {
   Manzu = 'manzu', // Characters (萬子)
@@ -48,6 +75,7 @@ export interface TileData {
   rank: number // 1-9 for suited, 1-4 for winds, 1-3 for dragons, 1-4 for flowers/seasons
   id: string // Unique identifier for this specific tile instance
   isRed: boolean // For red fives (aka-dora)
+  modifiers: TileModifiers // Enhancement, seal, and edition modifiers
 }
 
 /**
@@ -58,12 +86,20 @@ export class Tile implements TileData {
   readonly rank: number
   readonly id: string
   readonly isRed: boolean
+  readonly modifiers: TileModifiers
 
-  constructor(suit: TileSuit, rank: number, id: string, isRed: boolean = false) {
+  constructor(
+    suit: TileSuit,
+    rank: number,
+    id: string,
+    isRed: boolean = false,
+    modifiers: TileModifiers = { ...DEFAULT_MODIFIERS }
+  ) {
     this.suit = suit
     this.rank = rank
     this.id = id
     this.isRed = isRed
+    this.modifiers = modifiers
   }
 
   /**
@@ -112,10 +148,195 @@ export class Tile implements TileData {
     return this.isTerminal || this.isHonor
   }
 
+  // ===========================================================================
+  // MODIFIER PROPERTIES
+  // ===========================================================================
+
+  /**
+   * Returns true if this tile has any modifiers (enhancement, seal, or edition)
+   */
+  get hasModifiers(): boolean {
+    return checkHasModifiers(this.modifiers)
+  }
+
+  /**
+   * Returns true if this tile is wild (counts as every suit)
+   */
+  get isWild(): boolean {
+    return checkIsWild(this.modifiers)
+  }
+
+  /**
+   * Returns true if this tile always scores (Stone mark)
+   */
+  get alwaysScores(): boolean {
+    return checkAlwaysScores(this.modifiers)
+  }
+
+  /**
+   * Returns true if this tile can shatter (Glass mark)
+   */
+  get canShatter(): boolean {
+    return checkCanShatter(this.modifiers)
+  }
+
+  /**
+   * Returns true if this tile has a held effect (Steel mark)
+   */
+  get hasHeldEffect(): boolean {
+    return checkHasHeldEffect(this.modifiers)
+  }
+
+  /**
+   * Returns true if this tile has lucky effect
+   */
+  get isLucky(): boolean {
+    return checkIsLucky(this.modifiers)
+  }
+
+  /**
+   * Get enhancement type
+   */
+  get enhancement(): EnhancementType {
+    return this.modifiers.enhancement
+  }
+
+  /**
+   * Get seal type
+   */
+  get seal(): SealType {
+    return this.modifiers.seal
+  }
+
+  /**
+   * Get edition type
+   */
+  get edition(): EditionType {
+    return this.modifiers.edition
+  }
+
+  /**
+   * Get chip bonus from modifiers
+   */
+  get modifierChips(): number {
+    return calculateModifierChips(this.modifiers)
+  }
+
+  /**
+   * Get additive mult bonus from modifiers
+   */
+  get modifierMult(): number {
+    return calculateModifierMult(this.modifiers)
+  }
+
+  /**
+   * Get multiplicative mult from modifiers
+   */
+  get modifierMultiplier(): number {
+    return calculateModifierMultiplier(this.modifiers)
+  }
+
+  /**
+   * Get number of retriggers from seal
+   */
+  get retriggers(): number {
+    return getRetriggers(this.modifiers)
+  }
+
+  /**
+   * Get formatted modifier string for display
+   */
+  get modifierDisplay(): string {
+    return formatModifiers(this.modifiers)
+  }
+
+  /**
+   * Get enhancement definition
+   */
+  get enhancementDef() {
+    return ENHANCEMENT_DEFINITIONS[this.modifiers.enhancement]
+  }
+
+  /**
+   * Get seal definition
+   */
+  get sealDef() {
+    return SEAL_DEFINITIONS[this.modifiers.seal]
+  }
+
+  /**
+   * Get edition definition
+   */
+  get editionDef() {
+    return EDITION_DEFINITIONS[this.modifiers.edition]
+  }
+
+  // ===========================================================================
+  // MODIFIER METHODS
+  // ===========================================================================
+
+  /**
+   * Create a new tile with a specific enhancement
+   */
+  withEnhancement(enhancement: EnhancementType): Tile {
+    return new Tile(this.suit, this.rank, this.id, this.isRed, {
+      ...this.modifiers,
+      enhancement,
+    })
+  }
+
+  /**
+   * Create a new tile with a specific seal
+   */
+  withSeal(seal: SealType): Tile {
+    return new Tile(this.suit, this.rank, this.id, this.isRed, {
+      ...this.modifiers,
+      seal,
+    })
+  }
+
+  /**
+   * Create a new tile with a specific edition
+   */
+  withEdition(edition: EditionType): Tile {
+    return new Tile(this.suit, this.rank, this.id, this.isRed, {
+      ...this.modifiers,
+      edition,
+    })
+  }
+
+  /**
+   * Create a new tile with all modifiers replaced
+   */
+  withModifiers(modifiers: Partial<TileModifiers>): Tile {
+    return new Tile(this.suit, this.rank, this.id, this.isRed, {
+      ...this.modifiers,
+      ...modifiers,
+    })
+  }
+
+  /**
+   * Create a new tile with modifiers cleared
+   */
+  withoutModifiers(): Tile {
+    return new Tile(this.suit, this.rank, this.id, this.isRed, { ...DEFAULT_MODIFIERS })
+  }
+
+  // ===========================================================================
+  // MATCHING METHODS
+  // ===========================================================================
+
   /**
    * Returns true if this tile matches another tile's suit and rank
+   * Wild tiles match any suit
    */
   matches(other: Tile): boolean {
+    // Wild tiles match any suit (but still need same rank for suited tiles)
+    if (this.isWild || other.isWild) {
+      if (this.isSuited && other.isSuited) {
+        return this.rank === other.rank
+      }
+    }
     return this.suit === other.suit && this.rank === other.rank
   }
 
@@ -205,7 +426,7 @@ export class Tile implements TileData {
    * Create a copy of this tile with a new ID
    */
   clone(newId: string): Tile {
-    return new Tile(this.suit, this.rank, newId, this.isRed)
+    return new Tile(this.suit, this.rank, newId, this.isRed, { ...this.modifiers })
   }
 }
 
@@ -309,3 +530,33 @@ export function groupTilesBySuit(tiles: Tile[]): Map<TileSuit, Tile[]> {
   }
   return groups
 }
+
+// =============================================================================
+// RE-EXPORTS FOR CONVENIENCE
+// =============================================================================
+
+export {
+  // Types
+  TileModifiers,
+  EnhancementType,
+  SealType,
+  EditionType,
+  // Definitions
+  EnhancementDefinition,
+  SealDefinition,
+  EditionDefinition,
+  ENHANCEMENT_DEFINITIONS,
+  SEAL_DEFINITIONS,
+  EDITION_DEFINITIONS,
+  DEFAULT_MODIFIERS,
+  // Functions
+  calculateModifierEffects,
+  rollLuckyEffect,
+  rollShatter,
+  getAllEnhancements,
+  getAllSeals,
+  getSpecialEditions,
+  getRandomEnhancement,
+  getRandomSeal,
+  getRandomEdition,
+} from './TileModifier'

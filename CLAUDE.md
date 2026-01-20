@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Build:** Vite 6
 - **Runtime:** Bun
 - **Styling:** Tailwind CSS v4
-- **State:** Zustand
+- **State:** Zustand + GameOrchestrator pattern
 - **Animations:** React Spring
 - **Routing:** React Router v7
 - **i18n:** i18next (13 languages)
@@ -40,13 +40,13 @@ src/
 ├── core/           # Tile, Hand, Meld, Wall, DeadPool - game primitives
 ├── rules/          # HandValidator, ShantenCalculator, YakuDetector, ScoringEngine
 ├── systems/        # Decree, Flower, Season, Shop, RoundManager, TableStake
-├── game/           # ActionProcessor, DebuffSystem, EventBus, BonusTileHandler
-├── stores/         # Zustand stores (gameStore, handStore, wallStore, decreeStore, floraStore, etc.)
+├── game/           # GameOrchestrator, ActionProcessor, EventBus, DebuffSystem
+├── stores/         # Zustand stores (gameStore, handStore, wallStore, etc.)
 ├── components/     # React components (tiles/, ui/, effects/, screens/, hand/)
-├── animations/     # React Spring animation hooks (useTileAnimation, useScoreAnimation, etc.)
-├── hooks/          # Custom React hooks (useAudio, useReducedMotion)
-├── router/         # React Router configuration with i18n language-prefixed routes
-├── i18n/           # Internationalization (i18next) configuration
+├── animations/     # React Spring animation hooks
+├── hooks/          # Custom React hooks
+├── router/         # React Router with i18n language-prefixed routes
+├── i18n/           # Internationalization configuration
 ├── styles/         # Theme configuration
 └── utils/          # Helpers and asset paths
 ```
@@ -64,125 +64,98 @@ import { useGameStore, useHandStore } from './stores'
 import { Tile } from './core/Tile'
 ```
 
-### Core Layer (`src/core/`)
+### Game Loop Architecture: GameOrchestrator
 
-The foundation layer defining game primitives:
+The game uses a dual-state pattern:
 
-- **`types.ts`** — Foundational enums and type definitions: `Suit`, `ExtendedSuit`, `WindType`, `DragonType`, `FlowerType`, `SeasonType`, `TileType`. Includes type guards (`isNumberedSuit`, `isHonorSuit`, `isBonusSuit`, `isTerminalRank`).
-- **`Tile.ts`** — `Tile` class with factory methods for creating tiles and full 144-tile set generation
-- **`Meld.ts`** — `Meld` class representing sequences, triplets, quads, and pairs
-- **`Hand.ts`** — `Hand` class and `ParsedHand` interface for validated winning hands
-- **`Wall.ts`** — `Wall` class managing the draw pile with dead wall
-- **`DeadPool.ts`** — Discard management
+1. **GameOrchestrator** (`src/game/GameOrchestrator.ts`) — Central game loop controller that owns:
+   - Complete game state (`OrchestratorState`)
+   - Action validation and execution via `ActionProcessor`
+   - System integration (DecreeSystem, FlowerSystem, SeasonSystem, RoundManager)
+   - Wall/hand management and scoring
 
-### Rules Layer (`src/rules/`)
+2. **Zustand Stores** (`src/stores/`) — UI-focused state slices:
+   - `gameStore` — Session state (act, round, score, gold, phase)
+   - `handStore` — Current hand tiles and melds
+   - `wallStore` — Wall and dead wall state
+   - `decreeStore` — Active decrees
+   - `floraStore` — Collected flowers and active seasons
+   - `settingsStore` — User preferences (persisted)
+   - `achievementStore` — Achievement tracking (persisted)
 
-Game rules and scoring logic:
+The orchestrator is the source of truth for game logic; stores may reflect orchestrator state for UI binding.
 
-- **`YakuDefinition.ts`** — All 21 yaku definitions with tiers (1-4) and multipliers
-- **`YakuDetector.ts`** — Pattern matching to detect yaku in hands, exports `detectYaku()` and `calculateYakuMultiplier()`
-- **`ShantenCalculator.ts`** — Distance-to-tenpai computation
-- **`HandValidator.ts`** — Legal hand validation (4 melds + 1 pair or special forms)
-- **`ScoringEngine.ts`** — Implements the scoring formula: `Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers`
+```typescript
+import { gameOrchestrator } from './game/GameOrchestrator'
 
-### Systems Layer (`src/systems/`)
+// Start a new run
+gameOrchestrator.startNewRun(seed, stake)
 
-Game systems that modify rules and progression:
+// Process player actions
+const result = gameOrchestrator.processAction({ type: 'play', tileIds: [...] })
 
-- **`types.ts`** — Shared types for systems: `RoundState`, `ActState`, `RoundType`, `BossMandate`, `ScoreRequirements`
-- **`RoundManager.ts`** — Act/Round progression, boss mandates, skip mechanics, interest calculation
-- **`DecreeSystem.ts`** — Rule-bending modifiers (Joker equivalent)
-- **`FlowerSystem.ts`** — Run-wide persistent scaling modifiers
-- **`SeasonSystem.ts`** — Round-scoped temporal effects
-- **`ShopSystem.ts`** — Between-round acquisition (Tea House)
-- **`TableStakeSystem.ts`** — Difficulty tier system with cumulative modifiers
-
-### Game Layer (`src/game/`)
-
-Runtime game logic and event handling:
-
-- **`ActionProcessor.ts`** — Processes player actions (draw, discard, meld)
-- **`DebuffSystem.ts`** — Manages tile/decree debuff states
-- **`EventBus.ts`** — Pub/sub event system for game events
-- **`BonusTileHandler.ts`** — Handles bonus tile (Flower/Season) acquisition
-
-### State Management (`src/stores/`)
-
-Zustand stores with flat, action-based patterns:
-
-- **`gameStore.ts`** — Session state: act, round, score, gold, phase (`menu` | `gameplay` | `shop` | `gameOver`)
-- **`handStore.ts`** — Current hand tiles and melds
-- **`wallStore.ts`** — Wall and dead wall state
-- **`decreeStore.ts`** — Active decrees
-- **`floraStore.ts`** — Collected flowers and active seasons
-- **`settingsStore.ts`** — User preferences
-- **`achievementStore.ts`** — Achievement/accolade tracking
-
-### Routing (`src/router/`)
-
-Language-prefixed routes using React Router:
-
-- Routes follow pattern: `/:lang/[route]` (e.g., `/en/play`, `/ja/shop`)
-- `useAppNavigation()` hook provides language-aware navigation
-- `buildPath(route, lang?)` constructs full paths with language prefix
-- Supported routes: menu, play, shop, game-over, tutorial, collection, settings, achievements
-
-### Animations (`src/animations/`)
-
-React Spring animation hooks:
-
-- **`useTileAnimation.ts`** — Tile draw, discard, and selection animations
-- **`useScoreAnimation.ts`** — Score counter and popup animations
-- **`useScreenTransition.ts`** — Screen transition effects
-- **`constants.ts`** — Shared animation timing and easing values
-
-### TypeScript Configuration
-
-- **Strict mode enabled** with `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`
-- Target: ES2020
-- Module: ESNext with bundler resolution
-- React JSX transform enabled
-
-### React Compiler
-
-The experimental React Compiler (babel-plugin-react-compiler) is installed but commented out in `vite.config.ts`. To enable:
-```ts
-// In vite.config.ts, uncomment the babel config in react()
-babel: {
-  plugins: [['babel-plugin-react-compiler', {}]],
-}
+// Get current state
+const state = gameOrchestrator.getState()
 ```
 
-### Internationalization
+### Core Layers
 
-Uses i18next with browser language detection:
+**Core Layer (`src/core/`)** — Foundation primitives:
+- `Tile` class with factory methods for all tile types (suited, honors, bonus)
+- `Meld` class for sequences, triplets, quads, pairs
+- `Hand` class and `ParsedHand` interface for validated winning hands
+- `Wall` class managing draw pile with dead wall
 
-- **Supported languages:** en, ja, ko, zh-Hans, zh-Hant, es, fr, it, ru, tr, id, th, tl (13 total)
-- Translation files in `src/i18n/locales/`
-- `useTranslation()` hook for translated strings
-- Language persisted in URL path prefix (e.g., `/en/`, `/ja/`)
-- `changeLanguage(lang)` updates both i18n and URL
+**Rules Layer (`src/rules/`)** — Scoring and validation:
+- `YakuDetector` — Pattern matching for 21 yaku definitions
+- `ShantenCalculator` — Distance-to-tenpai computation
+- `HandValidator` — Legal hand validation
+- `ScoringEngine` — Implements the formula: `Final = (Base + Additive) × Multipliers`
+
+**Systems Layer (`src/systems/`)** — Rule modifiers:
+- `RoundManager` — Act/Round progression, boss mandates, score targets
+- `DecreeSystem` — Rule-bending modifiers (Joker equivalent)
+- `FlowerSystem` — Run-wide persistent scaling modifiers
+- `SeasonSystem` — Round-scoped temporal effects
+- `ShopSystem` — Between-round acquisition
 
 ### Event Bus Pattern
 
-The `EventBus` in `src/game/EventBus.ts` provides decoupled communication between game systems:
+Decoupled communication between game systems:
 
-```ts
+```typescript
 import { eventBus } from './game/EventBus'
 
-// Subscribe to events
 eventBus.on('roundStart', (data) => { ... })
-
-// Emit events
 eventBus.emit('roundStart', { roundNumber: 1 })
-
-// One-time listener
 eventBus.once('gameOver', (data) => { ... })
 ```
 
-Key event categories: game lifecycle (`runStart`, `runEnd`, `gameOver`), round flow (`actStart`, `actComplete`, `roundStart`, `roundEnd`), player actions (`tileDraw`, `tileDiscard`, `meldDeclared`), scoring (`handScored`, `yakuDetected`).
+Key events: `runStart`, `roundStart`, `roundEnd`, `handPlayed`, `tileDrawn`, `scoreUpdate`, `yakuScored`, `decreeAcquired`, `phaseChanged`, `shopEntered`, `gameOver`.
 
-## Key Patterns
+### Routing
+
+Language-prefixed routes using React Router:
+- Pattern: `/:lang/[route]` (e.g., `/en/play`, `/ja/shop`)
+- `useAppNavigation()` provides language-aware navigation
+- `buildPath(route, lang?)` constructs full paths
+- Routes: menu, play, shop, game-over, tutorial, collection, settings, achievements
+
+### Internationalization
+
+- **13 languages:** en, ja, ko, zh-Hans, zh-Hant, es, fr, it, ru, tr, id, th, tl
+- Translation files in `src/i18n/locales/`
+- `useTranslation()` hook for translated strings
+- `changeLanguage(lang)` updates both i18n and URL
+
+### TypeScript Configuration
+
+Strict mode with enhanced linting:
+- `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`
+- Target: ES2020
+- Module: ESNext with bundler resolution
+
+## Key Game Patterns
 
 ### Scoring Formula
 
@@ -190,12 +163,8 @@ Key event categories: game lifecycle (`runStart`, `runEnd`, `gameOver`), round f
 Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
 ```
 
-Base points from tiles:
-- Terminals (1, 9): 10 points
-- Simples (2-8): 5 points
-- Honors: 15 points
-
-Structure points: Pair +10, Sequence +20, Triplet +30, Quad +50
+Base points: Terminals (1,9) = 10, Simples (2-8) = 5, Honors = 15
+Structure: Pair +10, Sequence +20, Triplet +30, Quad +50
 
 ### Five-Layer Authority Hierarchy
 
@@ -203,11 +172,11 @@ Structure points: Pair +10, Sequence +20, Triplet +30, Quad +50
 Heaven (Seasons) > Court (Decrees) > Nature (Flowers) > Table (Tiles) > Grammar (Yaku)
 ```
 
-Higher layers override lower layers in conflict resolution.
+Higher layers override lower in conflict resolution.
 
 ### Round Structure
 
-Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). Acts 1-8 have defined score targets; Act 9+ uses endless mode scaling.
+Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). Acts 1-8 have defined targets; Act 9+ uses endless mode scaling.
 
 ## Domain Terminology
 
@@ -242,23 +211,6 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 - **Hand area:** Bottom-aligned for thumb accessibility
 - **Tile sizing:** 70×98px base, dynamic overlap for large hands
 
-## PWA Features
+## PWA
 
-The app is a fully installable Progressive Web App:
-
-- **Offline Support:** Service worker caches all assets (JS, CSS, images, audio, fonts)
-- **Installable:** Can be added to home screen on iOS/Android/Desktop
-- **Auto-Update:** Prompts users when new content is available
-- **Standalone Mode:** Runs without browser chrome in portrait orientation
-
-### PWA Assets
-
-- `public/icon-192x192.png` — Standard PWA icon
-- `public/icon-512x512.png` — Large PWA icon (also maskable)
-- `public/apple-touch-icon.png` — iOS home screen icon
-
-### Caching Strategy
-
-- **CacheFirst:** Images, audio, and fonts (30-day expiration)
-- **CacheFirst:** Google Fonts (1-year expiration)
-- **AutoUpdate:** Service worker updates on new deployments
+Fully installable Progressive Web App with offline support via service worker (workbox). Assets cached with CacheFirst strategy. See `vite.config.ts` for PWA configuration.

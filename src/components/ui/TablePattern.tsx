@@ -9,18 +9,18 @@ import React, { useMemo } from 'react'
 import { colors as themeColors } from '../../styles/theme'
 
 export interface TablePatternColors {
-  /** Background gradient start color */
-  backgroundStart: string
-  /** Background gradient end color */
-  backgroundEnd: string
-  /** Primary wave arc color */
-  waveStroke: string
-  /** Secondary/inner wave arc color */
-  waveStrokeSecondary: string
-  /** Corner ornament color */
-  ornamentColor: string
-  /** Vignette color for edge darkening */
-  vignetteColor: string
+  /** Dark green for background */
+  greenDark: string
+  /** Mid green for background */
+  greenMid: string
+  /** Light green for gradient center */
+  greenLight: string
+  /** Gold color for ornaments and accents */
+  gold: string
+  /** Bright gold for highlights */
+  goldBright: string
+  /** Wave pattern color */
+  waveColor: string
 }
 
 export interface TablePatternProps {
@@ -40,65 +40,45 @@ export interface TablePatternProps {
 
 /** Default colors based on theme */
 const defaultColors: TablePatternColors = {
-  backgroundStart: themeColors.forestGreen,
-  backgroundEnd: themeColors.darkForest,
-  waveStroke: themeColors.metallicGold,
-  waveStrokeSecondary: `${themeColors.metallicGold}40`, // 25% opacity
-  ornamentColor: themeColors.metallicGold,
-  vignetteColor: 'rgba(0, 0, 0, 0.6)',
+  gold: themeColors.metallicGold,
+  goldBright: themeColors.goldenYellow,
+  greenDark: '#1F3A1F',
+  greenMid: themeColors.forestGreen,
+  greenLight: '#4A6B4A',
+  waveColor: 'rgba(90, 120, 80, 0.4)',
 }
 
 /**
- * Generates an SVG data URI for the Seigaiha wave pattern
+ * Generates an SVG data URI for the Seigaiha wave pattern using circles
  */
-function generateSeigaihaPattern(
-  strokeColor: string,
-  strokeColorSecondary: string,
-  scale: number = 1
-): string {
-  const size = Math.round(60 * scale)
+function generateSeigaihaPattern(waveColor: string, scale: number = 1): string {
+  const size = Math.round(56 * scale)
   const halfSize = size / 2
-  const arcRadius1 = size * 0.5
-  const arcRadius2 = size * 0.35
-  const arcRadius3 = size * 0.2
 
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${halfSize}" viewBox="0 0 ${size} ${halfSize}">
-      <defs>
-        <pattern id="wave" x="0" y="0" width="${size}" height="${halfSize}" patternUnits="userSpaceOnUse">
-          <!-- Row 1 - Main arcs -->
-          <g transform="translate(${halfSize}, ${halfSize})">
-            <path d="M ${-arcRadius1} 0 A ${arcRadius1} ${arcRadius1} 0 0 1 ${arcRadius1} 0"
-                  fill="none" stroke="${strokeColor}" stroke-width="1" opacity="0.3"/>
-            <path d="M ${-arcRadius2} 0 A ${arcRadius2} ${arcRadius2} 0 0 1 ${arcRadius2} 0"
-                  fill="none" stroke="${strokeColorSecondary}" stroke-width="0.75"/>
-            <path d="M ${-arcRadius3} 0 A ${arcRadius3} ${arcRadius3} 0 0 1 ${arcRadius3} 0"
-                  fill="none" stroke="${strokeColor}" stroke-width="0.5" opacity="0.2"/>
-          </g>
-          <!-- Left partial arc -->
-          <g transform="translate(0, ${halfSize})">
-            <path d="M ${-arcRadius1} 0 A ${arcRadius1} ${arcRadius1} 0 0 1 ${arcRadius1} 0"
-                  fill="none" stroke="${strokeColor}" stroke-width="1" opacity="0.3"/>
-            <path d="M ${-arcRadius2} 0 A ${arcRadius2} ${arcRadius2} 0 0 1 ${arcRadius2} 0"
-                  fill="none" stroke="${strokeColorSecondary}" stroke-width="0.75"/>
-          </g>
-          <!-- Right partial arc -->
-          <g transform="translate(${size}, ${halfSize})">
-            <path d="M ${-arcRadius1} 0 A ${arcRadius1} ${arcRadius1} 0 0 1 ${arcRadius1} 0"
-                  fill="none" stroke="${strokeColor}" stroke-width="1" opacity="0.3"/>
-            <path d="M ${-arcRadius2} 0 A ${arcRadius2} ${arcRadius2} 0 0 1 ${arcRadius2} 0"
-                  fill="none" stroke="${strokeColorSecondary}" stroke-width="0.75"/>
-          </g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#wave)"/>
+      <!-- Left wave cluster -->
+      <circle cx="0" cy="${halfSize}" r="26" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+      <circle cx="0" cy="${halfSize}" r="19" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+      <circle cx="0" cy="${halfSize}" r="12" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+
+      <!-- Center wave cluster -->
+      <circle cx="${halfSize}" cy="${halfSize}" r="26" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+      <circle cx="${halfSize}" cy="${halfSize}" r="19" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+      <circle cx="${halfSize}" cy="${halfSize}" r="12" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+
+      <!-- Right wave cluster -->
+      <circle cx="${size}" cy="${halfSize}" r="26" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+      <circle cx="${size}" cy="${halfSize}" r="19" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
+      <circle cx="${size}" cy="${halfSize}" r="12" fill="none" stroke="${waveColor}" stroke-width="1.5"/>
     </svg>
   `
+
   return `data:image/svg+xml,${encodeURIComponent(svg.trim())}`
 }
 
 /**
- * Corner Ornament Component
+ * Corner Ornament Component - L-bracket style with decorative elements
  */
 interface CornerOrnamentProps {
   position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
@@ -109,64 +89,43 @@ interface CornerOrnamentProps {
 const CornerOrnament: React.FC<CornerOrnamentProps> = ({
   position,
   color,
-  size = 40
+  size = 40,
 }) => {
-  const positionClasses: Record<string, string> = {
-    'top-left': 'top-4 left-4',
-    'top-right': 'top-4 right-4',
-    'bottom-left': 'bottom-4 left-4',
-    'bottom-right': 'bottom-4 right-4',
-  }
-
-  const rotationClasses: Record<string, string> = {
-    'top-left': 'rotate-0',
-    'top-right': 'rotate-90',
-    'bottom-left': '-rotate-90',
-    'bottom-right': 'rotate-180',
+  const positionStyles: Record<string, React.CSSProperties> = {
+    'top-left': { top: 20, left: 20, transform: 'none' },
+    'top-right': { top: 20, right: 20, transform: 'scaleX(-1)' },
+    'bottom-left': { bottom: 20, left: 20, transform: 'scaleY(-1)' },
+    'bottom-right': { bottom: 20, right: 20, transform: 'scale(-1, -1)' },
   }
 
   return (
-    <div
-      className={`absolute ${positionClasses[position]} ${rotationClasses[position]} pointer-events-none`}
-      style={{ width: size, height: size }}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
+      style={{
+        position: 'absolute',
+        pointerEvents: 'none',
+        ...positionStyles[position],
+      }}
     >
-      {/* L-bracket ornament */}
-      <svg
-        viewBox="0 0 40 40"
-        className="w-full h-full"
-        style={{ opacity: 0.6 }}
-      >
-        {/* Outer L-bracket */}
-        <path
-          d="M 0 40 L 0 0 L 40 0"
-          fill="none"
-          stroke={color}
-          strokeWidth="2"
-          strokeLinecap="square"
-        />
-        {/* Inner decorative line */}
-        <path
-          d="M 4 32 L 4 4 L 32 4"
-          fill="none"
-          stroke={color}
-          strokeWidth="1"
-          strokeLinecap="square"
-          opacity="0.5"
-        />
-        {/* Corner decorative square */}
-        <rect
-          x="8"
-          y="8"
-          width="6"
-          height="6"
-          fill={color}
-          opacity="0.3"
-        />
-        {/* Small accent dots */}
-        <circle cx="20" cy="4" r="1.5" fill={color} opacity="0.4" />
-        <circle cx="4" cy="20" r="1.5" fill={color} opacity="0.4" />
-      </svg>
-    </div>
+      {/* Outer L-bracket */}
+      <path d="M 0 0 L 40 0 L 40 6 L 6 6 L 6 40 L 0 40 Z" fill={color} />
+      {/* Inner decorative square */}
+      <rect
+        x="12"
+        y="12"
+        width="12"
+        height="12"
+        fill="none"
+        stroke={color}
+        strokeWidth="3"
+      />
+      {/* Horizontal connecting line */}
+      <rect x="6" y="16.5" width="6" height="3" fill={color} />
+      {/* Vertical connecting line */}
+      <rect x="16.5" y="6" width="3" height="6" fill={color} />
+    </svg>
   )
 }
 
@@ -182,35 +141,52 @@ export const TablePattern: React.FC<TablePatternProps> = ({
   className = '',
 }) => {
   // Merge custom colors with defaults
-  const colors = useMemo(() => ({
-    ...defaultColors,
-    ...customColors,
-  }), [customColors])
+  const colors = useMemo(
+    () => ({
+      ...defaultColors,
+      ...customColors,
+    }),
+    [customColors]
+  )
 
   // Generate the SVG pattern
   const patternUrl = useMemo(
-    () => generateSeigaihaPattern(colors.waveStroke, colors.waveStrokeSecondary, patternScale),
-    [colors.waveStroke, colors.waveStrokeSecondary, patternScale]
+    () => generateSeigaihaPattern(colors.waveColor, patternScale),
+    [colors.waveColor, patternScale]
   )
 
+  const patternSize = Math.round(56 * patternScale)
+  const patternHalfSize = Math.round(28 * patternScale)
+
   return (
-    <div className={`relative w-full h-full overflow-hidden ${className}`}>
-      {/* Background gradient */}
+    <div
+      className={`relative w-full h-full overflow-hidden ${className}`}
+      style={{
+        backgroundColor: colors.greenMid,
+      }}
+    >
+      {/* Radial gradient background */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(180deg, ${colors.backgroundStart} 0%, ${colors.backgroundEnd} 100%)`,
+          background: `radial-gradient(
+            ellipse 80% 60% at 50% 30%,
+            ${colors.greenLight} 0%,
+            #3D5C3D 30%,
+            ${colors.greenMid} 60%,
+            ${colors.greenDark} 100%
+          )`,
         }}
       />
 
       {/* Seigaiha wave pattern overlay */}
       <div
-        className={`absolute inset-0 ${animated ? 'animate-wave-drift' : ''}`}
+        className="absolute inset-0"
         style={{
           backgroundImage: `url("${patternUrl}")`,
           backgroundRepeat: 'repeat',
-          backgroundSize: `${60 * patternScale}px ${30 * patternScale}px`,
-          opacity: 0.8,
+          backgroundSize: `${patternSize}px ${patternHalfSize}px`,
+          animation: animated ? 'waveShift 15s ease-in-out infinite' : 'none',
         }}
       />
 
@@ -218,25 +194,49 @@ export const TablePattern: React.FC<TablePatternProps> = ({
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse at center, transparent 30%, ${colors.vignetteColor} 100%)`,
+          background: `radial-gradient(
+            ellipse 70% 50% at 50% 40%,
+            transparent 0%,
+            transparent 40%,
+            rgba(20, 40, 20, 0.5) 100%
+          )`,
         }}
       />
 
-      {/* Corner ornaments */}
+      {/* Gold border frame */}
       {showOrnaments && (
-        <>
-          <CornerOrnament position="top-left" color={colors.ornamentColor} />
-          <CornerOrnament position="top-right" color={colors.ornamentColor} />
-          <CornerOrnament position="bottom-left" color={colors.ornamentColor} />
-          <CornerOrnament position="bottom-right" color={colors.ornamentColor} />
-        </>
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            top: 28,
+            left: 28,
+            right: 28,
+            bottom: 28,
+            border: `3px solid ${colors.gold}`,
+          }}
+        >
+          <CornerOrnament position="top-left" color={colors.gold} />
+          <CornerOrnament position="top-right" color={colors.gold} />
+          <CornerOrnament position="bottom-left" color={colors.gold} />
+          <CornerOrnament position="bottom-right" color={colors.gold} />
+        </div>
       )}
 
       {/* Content layer */}
-      {children && (
-        <div className="relative z-10 w-full h-full">
-          {children}
-        </div>
+      {children && <div className="relative z-10 w-full h-full">{children}</div>}
+
+      {/* Keyframe animation for wave pattern */}
+      {animated && (
+        <style>{`
+          @keyframes waveShift {
+            0%, 100% {
+              background-position: 0 0;
+            }
+            50% {
+              background-position: ${patternHalfSize}px ${patternHalfSize / 2}px;
+            }
+          }
+        `}</style>
       )}
     </div>
   )
