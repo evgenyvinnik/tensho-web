@@ -44,7 +44,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'score-target',
       targetSelector: '[data-tutorial="score-target"]',
-      arrowDirection: 'right',
+      arrowDirection: 'bottom',
       title: t('gameTutorial.target.title', 'Score Target'),
       content: t(
         'gameTutorial.target.content',
@@ -57,7 +57,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'current-score',
       targetSelector: '[data-tutorial="current-score"]',
-      arrowDirection: 'right',
+      arrowDirection: 'top',
       title: t('gameTutorial.score.title', 'Your Score'),
       content: t(
         'gameTutorial.score.content',
