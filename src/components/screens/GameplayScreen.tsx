@@ -30,6 +30,7 @@ import { GameplayTopBar } from '../gameplay/GameplayTopBar'
 import { ScorePanel } from '../gameplay/ScorePanel'
 import { ActionBar } from '../gameplay/ActionBar'
 import { PlayArea } from '../gameplay/PlayArea'
+import { WallDisplay } from '../gameplay/WallDisplay'
 import { RoundType, ScorePopupState, YakuRevealState } from '../gameplay/gameplayTypes'
 
 // =============================================================================
@@ -424,7 +425,7 @@ export function GameplayScreen() {
           onYakuComplete={handleYakuComplete}
         />
 
-        {/* Play Surface with Flora panel */}
+        {/* Play Surface with Flora panel and Wall display */}
         <div className="flex-1 flex mx-2 mb-2 min-h-[340px] gap-2">
           <div data-tutorial="flora" className="flex-shrink-0">
             <FloraTrackCompact
@@ -449,6 +450,10 @@ export function GameplayScreen() {
               discardsRemaining={game.discardsRemaining}
               t={t}
             />
+          </div>
+
+          <div data-tutorial="wall" className="flex-shrink-0 w-48">
+            <WallDisplay wallTiles={game.wallTiles} />
           </div>
         </div>
 

@@ -95,7 +95,7 @@ interface RoundConfig {
 
 const DEFAULT_ROUND_CONFIG: RoundConfig = {
   handsPerRound: 4,
-  discardsPerRound: 3,
+  discardsPerRound: 14, // Can discard up to entire hand
   redrawsPerRound: 3,
   startingHandSize: 13,
 }
@@ -395,6 +395,50 @@ export class GameOrchestrator {
     }
 
     return tile
+  }
+
+  /**
+   * Refill hand to standard size (13 tiles) by drawing from wall
+   */
+  private refillHand(effects: Effect[]): void {
+    const STANDARD_HAND_SIZE = 13
+
+    while (this.state.handTiles.length < STANDARD_HAND_SIZE) {
+      const tile = this.drawTileInternal()
+
+      if (!tile) {
+        // No more tiles in wall
+        break
+      }
+
+      // Check for bonus tile
+      if (tile.isFlower || tile.isSeason) {
+        this.handleBonusTile(tile)
+        effects.push({
+          type: 'bonus_tile_drawn',
+          description: `Drew bonus tile: ${tile.displayName}`,
+          tile,
+          isFlower: tile.isFlower,
+        })
+        // Bonus tiles don't count toward hand size, continue drawing
+      } else {
+        this.state.handTiles.push(tile)
+
+        effects.push({
+          type: 'tile_added',
+          description: `Drew tile: ${tile.displayName}`,
+          tile,
+        })
+
+        eventBus.emit('tileDrawn', {
+          tileId: tile.id,
+          tilesRemaining: this.state.wall.length - this.state.drawIndex,
+        })
+      }
+    }
+
+    // Sort hand after all draws
+    this.state.handTiles.sort(Tile.compare)
   }
 
   /**
@@ -713,6 +757,11 @@ export class GameOrchestrator {
 
     // Check round completion
     this.checkRoundCompletion(effects)
+
+    // Auto-draw to refill hand if not round completed
+    if (this.state.phase === 'gameplay') {
+      this.refillHand(effects)
+    }
 
     return { success: true, effects }
   }
