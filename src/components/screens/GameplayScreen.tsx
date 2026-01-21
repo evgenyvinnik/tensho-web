@@ -243,17 +243,17 @@ function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicatorProps)
 }
 
 /**
- * ChipsMultDisplay - Balatro-style Chips x Mult scoring visualization
+ * PointsMultDisplay - Points x Mult scoring visualization
  */
-interface ChipsMultDisplayProps {
-  chips: number
+interface PointsMultDisplayProps {
+  points: number
   mult: number
   isAnimating?: boolean
 }
 
-function ChipsMultDisplay({ chips, mult, isAnimating = false }: ChipsMultDisplayProps) {
-  const chipsSpring = useSpring({
-    value: chips,
+function PointsMultDisplay({ points, mult, isAnimating = false }: PointsMultDisplayProps) {
+  const pointsSpring = useSpring({
+    value: points,
     from: { value: 0 },
     config: { tension: 120, friction: 14 },
   })
@@ -266,12 +266,12 @@ function ChipsMultDisplay({ chips, mult, isAnimating = false }: ChipsMultDisplay
 
   return (
     <div className="flex items-center justify-center gap-2">
-      {/* Chips */}
+      {/* Points */}
       <GlowEffect variant="blue" intensity={isAnimating ? 0.8 : 0.3} pulsing={isAnimating}>
         <div className="flex items-center gap-1 px-3 py-1 bg-blue-900/60 rounded-lg border border-blue-500">
-          <span className="text-xs text-blue-300 font-medium">CHIPS</span>
+          <span className="text-xs text-blue-300 font-medium">POINTS</span>
           <animated.span className="text-lg font-bold text-blue-400 font-mono">
-            {chipsSpring.value.to((v) => Math.floor(v).toLocaleString())}
+            {pointsSpring.value.to((v) => Math.floor(v).toLocaleString())}
           </animated.span>
         </div>
       </GlowEffect>
@@ -295,8 +295,8 @@ function ChipsMultDisplay({ chips, mult, isAnimating = false }: ChipsMultDisplay
       {/* Result */}
       <GlowEffect variant="gold" intensity={isAnimating ? 1 : 0.4} pulsing={isAnimating}>
         <animated.span className="text-xl font-bold text-[var(--color-golden-yellow)] font-mono">
-          {chipsSpring.value.to((c) => {
-            const result = Math.floor(c * mult)
+          {pointsSpring.value.to((p) => {
+            const result = Math.floor(p * mult)
             return result.toLocaleString()
           })}
         </animated.span>
@@ -450,6 +450,7 @@ export function GameplayScreen() {
   // Local UI state
   const [scorePopups, setScorePopups] = useState<ScorePopupState[]>([])
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
+  const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
   const popupIdCounterRef = useRef(0)
 
   // Start new run if not active
@@ -595,6 +596,11 @@ export function GameplayScreen() {
     game.discard(tile.id)
   }, [game])
 
+  // Handler for when tiles are staged in PlaySurface
+  const handleTilesStaged = useCallback((tiles: Tile[]) => {
+    setStagedTileIds(tiles.map(t => t.id))
+  }, [])
+
   // Draw tile handler
   const handleDraw = useCallback(() => {
     game.draw()
@@ -602,14 +608,18 @@ export function GameplayScreen() {
 
   // Play hand handler
   const handlePlayHand = useCallback(() => {
-    if (game.selectedTileIds.length > 0) {
+    // Use staged tiles if available, otherwise use selected tiles, otherwise all tiles
+    if (stagedTileIds.length > 0) {
+      game.playHand(stagedTileIds)
+      setStagedTileIds([]) // Clear staged tiles after playing
+    } else if (game.selectedTileIds.length > 0) {
       game.playHand()
     } else {
       // Select all and play
       game.selectAllTiles()
       game.playHand()
     }
-  }, [game])
+  }, [game, stagedTileIds])
 
   // Settings navigation
   const handleSettings = useCallback(() => {
@@ -676,16 +686,16 @@ export function GameplayScreen() {
     return undefined
   }, [roundType, game.state.roundManager])
 
-  // Calculate chips and mult for display
-  const [currentChips, setCurrentChips] = useState(0)
+  // Calculate points and mult for display
+  const [currentPoints, setCurrentPoints] = useState(0)
   const [currentMult, setCurrentMult] = useState(1)
   const [isScoreAnimating, setIsScoreAnimating] = useState(false)
 
-  // Track score for chips/mult display
+  // Track score for points/mult display
   useGameEvent('handPlayed', useCallback((data) => {
-    // Estimate chips based on tile values
-    const baseChips = data.score / (currentMult || 1)
-    setCurrentChips(baseChips)
+    // Estimate points based on tile values
+    const basePoints = data.score / (currentMult || 1)
+    setCurrentPoints(basePoints)
     setIsScoreAnimating(true)
     setTimeout(() => setIsScoreAnimating(false), 1500)
   }, [currentMult]))
@@ -695,9 +705,9 @@ export function GameplayScreen() {
     setCurrentMult((prev) => prev * data.multiplier)
   }, []))
 
-  // Reset chips/mult on round start
+  // Reset points/mult on round start
   useGameEvent('roundStart', useCallback(() => {
-    setCurrentChips(0)
+    setCurrentPoints(0)
     setCurrentMult(1)
   }, []))
 
@@ -860,6 +870,7 @@ export function GameplayScreen() {
             selectedIds={new Set(game.selectedTileIds)}
             onTileSelect={handleTileClick}
             onTileDiscard={handleTileDiscard}
+            onTilesStaged={handleTilesStaged}
             disabled={false}
             shantenDisplay={shantenDisplay}
             handsRemaining={game.handsRemaining}

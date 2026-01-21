@@ -104,7 +104,7 @@ export function getProgressiveHints(
       id: 'hand-intro',
       trigger: 'firstDraw',
       targetSelector: '[data-tutorial="hand"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - tooltip above PlaySurface, arrow pointing down
       title: t('progressiveHints.hand.title', 'Your Hand'),
       content: t(
         'progressiveHints.hand.content',
@@ -117,7 +117,7 @@ export function getProgressiveHints(
       id: 'draw-button',
       trigger: 'firstDraw',
       targetSelector: '[data-tutorial="draw-button"]',
-      arrowDirection: 'left',
+      arrowDirection: 'top', // Changed from 'left' - tooltip above action buttons, arrow pointing up
       title: t('progressiveHints.draw.title', 'Draw Tiles'),
       content: t(
         'progressiveHints.draw.content',
@@ -132,7 +132,7 @@ export function getProgressiveHints(
       id: 'discard-intro',
       trigger: 'firstDiscard',
       targetSelector: '[data-tutorial="hand"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - tooltip above PlaySurface
       title: t('progressiveHints.discard.title', 'Discard a Tile'),
       content: t(
         'progressiveHints.discard.content',
@@ -147,7 +147,7 @@ export function getProgressiveHints(
       id: 'yaku-intro',
       trigger: 'firstHandPlayed',
       targetSelector: '[data-tutorial="yaku-display"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - yaku display is in middle of screen
       title: t('progressiveHints.yaku.title', 'Yaku = Multipliers'),
       content: t(
         'progressiveHints.yaku.content',
@@ -160,7 +160,7 @@ export function getProgressiveHints(
       id: 'scoring-formula',
       trigger: 'firstHandPlayed',
       targetSelector: '[data-tutorial="current-score"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - score is near top of screen
       title: t('progressiveHints.scoring.title', 'Scoring Formula'),
       content: t(
         'progressiveHints.scoring.content',
@@ -203,7 +203,7 @@ export function getProgressiveHints(
       id: 'flora-intro',
       trigger: 'flowerDrawn',
       targetSelector: '[data-tutorial="flora"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - flora is near top of screen
       title: t('progressiveHints.flora.title', 'Flowers & Seasons'),
       content: t(
         'progressiveHints.flora.content',
@@ -233,7 +233,7 @@ export function getProgressiveHints(
       id: 'decrees-intro',
       trigger: 'decreeAcquired',
       targetSelector: '[data-tutorial="decrees"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - decrees bar is near top of screen
       title: t('progressiveHints.decrees.title', 'Decrees'),
       content: t(
         'progressiveHints.decrees.content',
@@ -246,7 +246,7 @@ export function getProgressiveHints(
       id: 'decree-types',
       trigger: 'decreeAcquired',
       targetSelector: '[data-tutorial="decrees"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Changed from 'top' - decrees bar is near top of screen
       title: t('progressiveHints.decreeTypes.title', '5 Decree Types'),
       content: t(
         'progressiveHints.decreeTypes.content',

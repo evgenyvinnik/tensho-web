@@ -57,7 +57,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'current-score',
       targetSelector: '[data-tutorial="current-score"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Score is near top of screen, tooltip above with arrow pointing down
       title: t('gameTutorial.score.title', 'Your Score'),
       content: t(
         'gameTutorial.score.content',
@@ -140,7 +140,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'wall-intro',
       targetSelector: '[data-tutorial="wall"]',
-      arrowDirection: 'top',
+      arrowDirection: 'top', // Wall indicator is in action buttons at bottom, tooltip above
       title: t('gameTutorial.wall.title', 'The Wall'),
       content: t(
         'gameTutorial.wall.content',
@@ -153,7 +153,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'draw-action',
       targetSelector: '[data-tutorial="draw-button"]',
-      arrowDirection: 'left',
+      arrowDirection: 'top', // Button at bottom, tooltip above with arrow pointing down to button
       title: t('gameTutorial.draw.title', 'Draw a Tile'),
       content: t(
         'gameTutorial.draw.content',
@@ -183,7 +183,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'yaku-intro',
       targetSelector: '[data-tutorial="yaku-display"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Yaku display is in middle, tooltip above with arrow pointing down
       title: t('gameTutorial.yaku.title', 'Yaku - Score Multipliers'),
       content: t(
         'gameTutorial.yaku.content',
@@ -196,7 +196,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'yaku-tiers',
       targetSelector: '[data-tutorial="yaku-display"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Yaku display is in middle, tooltip above with arrow pointing down
       title: t('gameTutorial.yakuTiers.title', 'Yaku Tiers'),
       content: t(
         'gameTutorial.yakuTiers.content',
@@ -209,7 +209,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'gold',
       targetSelector: '[data-tutorial="gold"]',
-      arrowDirection: 'left',
+      arrowDirection: 'bottom', // Gold is in header near top, tooltip above with arrow pointing down
       title: t('gameTutorial.gold.title', 'Gold'),
       content: t(
         'gameTutorial.gold.content',
@@ -222,7 +222,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'decrees',
       targetSelector: '[data-tutorial="decrees"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Decrees bar is near top of screen, tooltip above with arrow pointing down
       title: t('gameTutorial.decrees.title', 'Decrees'),
       content: t(
         'gameTutorial.decrees.content',
@@ -235,7 +235,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'decree-types',
       targetSelector: '[data-tutorial="decrees"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Decrees bar is near top of screen, tooltip above with arrow pointing down
       title: t('gameTutorial.decreeTypes.title', 'Decree Types'),
       content: t(
         'gameTutorial.decreeTypes.content',
@@ -248,7 +248,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'hands-remaining',
       targetSelector: '[data-tutorial="hands-remaining"]',
-      arrowDirection: 'right',
+      arrowDirection: 'bottom', // Hands remaining is in PlaySurface header, tooltip above with arrow pointing down
       title: t('gameTutorial.handsRemaining.title', 'Hands Remaining'),
       content: t(
         'gameTutorial.handsRemaining.content',
@@ -261,7 +261,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'discards-remaining',
       targetSelector: '[data-tutorial="discards-remaining"]',
-      arrowDirection: 'right',
+      arrowDirection: 'bottom', // Discards remaining is in discard zone, tooltip above with arrow pointing down
       title: t('gameTutorial.discardsRemaining.title', 'Discards Remaining'),
       content: t(
         'gameTutorial.discardsRemaining.content',
@@ -274,7 +274,7 @@ export function getGameplayTutorialSteps(t: (key: string, fallback: string) => s
     {
       id: 'flora',
       targetSelector: '[data-tutorial="flora"]',
-      arrowDirection: 'top',
+      arrowDirection: 'bottom', // Flora is near top of screen, tooltip above with arrow pointing down
       title: t('gameTutorial.flora.title', 'Flowers & Seasons'),
       content: t(
         'gameTutorial.flora.content',

@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
 import { PACK_TYPE_DEFINITIONS, PACK_SIZE_DEFINITIONS } from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
+import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 
 const AnimatedDiv = animated('div')
 
@@ -184,8 +185,18 @@ function PackContentCard({
 
       {/* Content */}
       <div className="relative p-3 flex flex-col items-center min-h-[160px]">
-        {/* Icon */}
-        <div className="text-3xl mb-2">{icon}</div>
+        {/* Icon - Use unique icon for decrees */}
+        <div className="text-3xl mb-2">
+          {content.type === 'Decree' ? (
+            <DecreeUniqueIcon
+              decreeId={content.id}
+              size={48}
+              color={rarityColor}
+            />
+          ) : (
+            icon
+          )}
+        </div>
 
         {/* Rarity indicator */}
         <div className="flex items-center gap-1 mb-1">

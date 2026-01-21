@@ -8,6 +8,7 @@
 import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { Decree, OwnedDecree, DecreeRarity, DecreeCategory } from '../../systems/types'
+import { DecreeUniqueIcon } from './svg/DecreeIcons'
 
 /**
  * Rarity color mapping
@@ -38,6 +39,16 @@ const CATEGORY_ICONS: Record<DecreeCategory, string> = {
   YakuDoctrine: '📖',
   Entropy: '🎲',
   Scaling: '📈',
+}
+
+/**
+ * Rarity icon color mapping
+ */
+const RARITY_ICON_COLORS: Record<DecreeRarity, string> = {
+  LocalEdict: '#9CA3AF', // gray-400
+  RegionalMandate: '#22C55E', // green-500
+  ImperialDecree: '#3B82F6', // blue-500
+  HeavenlyOrdinance: '#A855F7', // purple-500
 }
 
 export type DecreeCardMode = 'shop' | 'inventory' | 'compact'
@@ -118,9 +129,13 @@ export function DecreeCard({
         }
       }}
     >
-      {/* Category icon */}
-      <div className="absolute top-1 left-1 text-lg">
-        {CATEGORY_ICONS[decree.category]}
+      {/* Unique decree icon */}
+      <div className="absolute top-1 left-1">
+        <DecreeUniqueIcon
+          decreeId={decree.id}
+          size={mode === 'compact' ? 20 : 28}
+          color={RARITY_ICON_COLORS[decree.rarity]}
+        />
       </div>
 
       {/* Rarity indicator */}

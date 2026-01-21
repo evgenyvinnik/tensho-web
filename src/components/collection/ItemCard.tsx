@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import type { ArchiveCategory } from '../../config/archiveDefinitions'
+import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 
 const AnimatedDiv = animated('div')
 
@@ -30,6 +31,27 @@ export interface ItemCardProps {
   displayInfo: ItemDisplayInfo | null
   delay?: number
   onClick?: () => void
+}
+
+/**
+ * Get rarity icon color
+ */
+function getRarityIconColor(rarity?: string): string {
+  switch (rarity) {
+    case 'HeavenlyOrdinance':
+    case 'mythic':
+      return '#A855F7' // purple-500
+    case 'ImperialDecree':
+    case 'rare':
+      return '#3B82F6' // blue-500
+    case 'RegionalMandate':
+    case 'uncommon':
+      return '#22C55E' // green-500
+    case 'legendary':
+      return '#A855F7' // purple-500
+    default:
+      return '#9CA3AF' // gray-400
+  }
 }
 
 /**
@@ -128,6 +150,17 @@ export function ItemCard({ entry, displayInfo, delay = 0, onClick }: ItemCardPro
 
       {isDiscovered && displayInfo ? (
         <>
+          {/* Decree icon for decree category items */}
+          {displayInfo.category === 'decrees' && (
+            <div className="absolute top-2 right-2">
+              <DecreeUniqueIcon
+                decreeId={displayInfo.id}
+                size={24}
+                color={getRarityIconColor(displayInfo.rarity)}
+              />
+            </div>
+          )}
+
           {/* Item Name */}
           <h3 className="text-sm font-bold text-[var(--color-beige-white)] line-clamp-2 mb-1">
             {displayInfo.name}

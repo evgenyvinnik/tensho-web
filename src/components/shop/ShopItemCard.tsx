@@ -19,6 +19,7 @@ import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { Decree, Sticker } from '../../systems/types'
 import { EditionType } from '../../systems/PricingCalculator'
 import { getCurrentLanguage } from '../../i18n'
+import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 
 const AnimatedDiv = animated('div')
 
@@ -272,6 +273,7 @@ export function ShopItemCard({
   let description = ''
   let rarity = 'common'
   let sticker: Sticker | undefined
+  let decreeId: string | undefined
 
   switch (offering.itemType) {
     case 'Decree': {
@@ -281,6 +283,7 @@ export function ShopItemCard({
       description = decree.description
       rarity = decree.rarity
       sticker = decree.sticker
+      decreeId = decree.id
       break
     }
     case 'FateSeal':
@@ -354,7 +357,17 @@ export function ShopItemCard({
       <div className="relative p-3 flex flex-col h-full min-h-[180px]">
         {/* Icon and type */}
         <div className="text-center mb-2">
-          <span className="text-3xl">{icon}</span>
+          {decreeId ? (
+            <div className="flex justify-center">
+              <DecreeUniqueIcon
+                decreeId={decreeId}
+                size={48}
+                color={rarityColor}
+              />
+            </div>
+          ) : (
+            <span className="text-3xl">{icon}</span>
+          )}
           {showCJK && (
             <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
               {getItemTypeJapaneseName(offering.itemType)}

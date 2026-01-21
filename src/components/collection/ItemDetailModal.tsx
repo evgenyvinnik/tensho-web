@@ -16,6 +16,7 @@ import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
 import type { ArchiveCategory, ArchiveCategoryDefinition } from '../../config/archiveDefinitions'
 import type { ItemDisplayInfo } from './ItemCard'
+import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 
 const AnimatedDiv = animated('div')
 
@@ -42,6 +43,27 @@ function getRarityInfo(rarity?: string): { label: string; color: string; bgColor
       return { label: 'Common', color: 'text-gray-300', bgColor: 'bg-gray-500/20' }
     default:
       return { label: 'Standard', color: 'text-[var(--color-beige-white)]', bgColor: 'bg-[var(--color-dark-forest)]' }
+  }
+}
+
+/**
+ * Get rarity icon color for decree icons
+ */
+function getRarityIconColor(rarity?: string): string {
+  switch (rarity) {
+    case 'HeavenlyOrdinance':
+    case 'mythic':
+      return '#A855F7' // purple-500
+    case 'ImperialDecree':
+    case 'rare':
+      return '#3B82F6' // blue-500
+    case 'RegionalMandate':
+    case 'uncommon':
+      return '#22C55E' // green-500
+    case 'legendary':
+      return '#A855F7' // purple-500
+    default:
+      return '#9CA3AF' // gray-400
   }
 }
 
@@ -85,30 +107,43 @@ export function ItemDetailModal({
         {/* Header with rarity gradient */}
         <div className={`p-4 ${rarityInfo.bgColor} border-b border-[var(--color-saddle-brown)]`}>
           <div className="flex items-start justify-between">
-            <div className="flex-1">
-              {/* Category badge */}
-              {categoryInfo && (
-                <span className="inline-block px-2 py-0.5 text-xs rounded bg-[var(--color-forest-green)] text-[var(--color-metallic-gold)] mb-2">
-                  {categoryInfo.name}
+            <div className="flex-1 flex items-start gap-3">
+              {/* Decree icon for decree category items */}
+              {displayInfo.category === 'decrees' && (
+                <div className="flex-shrink-0 p-2 rounded-lg bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
+                  <DecreeUniqueIcon
+                    decreeId={displayInfo.id}
+                    size={40}
+                    color={getRarityIconColor(displayInfo.rarity)}
+                  />
+                </div>
+              )}
+
+              <div className="flex-1">
+                {/* Category badge */}
+                {categoryInfo && (
+                  <span className="inline-block px-2 py-0.5 text-xs rounded bg-[var(--color-forest-green)] text-[var(--color-metallic-gold)] mb-2">
+                    {categoryInfo.name}
+                  </span>
+                )}
+
+                {/* Name */}
+                <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+                  {displayInfo.name}
+                </h2>
+
+                {/* Japanese name */}
+                {displayInfo.japaneseName && (
+                  <p className="text-sm text-[var(--color-metallic-gold)] font-tile mt-1">
+                    {displayInfo.japaneseName}
+                  </p>
+                )}
+
+                {/* Rarity */}
+                <span className={`inline-block mt-2 px-2 py-0.5 text-xs font-bold rounded ${rarityInfo.color} ${rarityInfo.bgColor}`}>
+                  {rarityInfo.label}
                 </span>
-              )}
-
-              {/* Name */}
-              <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-                {displayInfo.name}
-              </h2>
-
-              {/* Japanese name */}
-              {displayInfo.japaneseName && (
-                <p className="text-sm text-[var(--color-metallic-gold)] font-tile mt-1">
-                  {displayInfo.japaneseName}
-                </p>
-              )}
-
-              {/* Rarity */}
-              <span className={`inline-block mt-2 px-2 py-0.5 text-xs font-bold rounded ${rarityInfo.color} ${rarityInfo.bgColor}`}>
-                {rarityInfo.label}
-              </span>
+              </div>
             </div>
 
             {/* Close button */}

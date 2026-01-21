@@ -8,6 +8,7 @@
 import React from 'react'
 import { DecreeRarity, DecreeCategory } from '../../../systems/types'
 import { RARITY_PALETTES, CATEGORY_PALETTES } from './Patterns'
+import { DecreeUniqueIcon } from './DecreeIcons'
 
 /**
  * Get pattern ID based on category
@@ -335,6 +336,7 @@ export function DecreeIcon({
 }
 
 export interface DecreeSVGProps {
+  id?: string // Decree ID for unique icon
   rarity: DecreeRarity
   category: DecreeCategory
   name: string
@@ -345,9 +347,20 @@ export interface DecreeSVGProps {
 }
 
 /**
+ * Rarity icon color mapping for DecreeSVG
+ */
+const RARITY_ICON_COLORS: Record<DecreeRarity, string> = {
+  LocalEdict: '#9CA3AF', // gray-400
+  RegionalMandate: '#22C55E', // green-500
+  ImperialDecree: '#3B82F6', // blue-500
+  HeavenlyOrdinance: '#A855F7', // purple-500
+}
+
+/**
  * DecreeSVG - Complete decree card with background and icon
  */
 export function DecreeSVG({
+  id,
   rarity,
   category,
   name,
@@ -370,9 +383,17 @@ export function DecreeSVG({
         className="absolute inset-0"
       />
 
-      {/* Icon */}
+      {/* Icon - Use unique icon if ID provided, otherwise category icon */}
       <div className="absolute top-8 left-1/2 transform -translate-x-1/2">
-        <DecreeIcon category={category} size={48} />
+        {id ? (
+          <DecreeUniqueIcon
+            decreeId={id}
+            size={48}
+            color={RARITY_ICON_COLORS[rarity]}
+          />
+        ) : (
+          <DecreeIcon category={category} size={48} />
+        )}
       </div>
 
       {/* Name */}

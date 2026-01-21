@@ -3,14 +3,14 @@
  *
  * A redesigned, intuitive play surface for the Tensho Mahjong Roguelike.
  * Features:
- * - Always-visible discard zone at the top
  * - Central staging area where tiles can be freely arranged
  * - Hand area at the bottom with smooth drag-and-drop
+ * - Small discard square next to the hand tiles
  * - Clear visual hierarchy and feedback
  */
 
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useSpring, animated, to, config } from '@react-spring/web'
+import { useSpring, animated, config } from '@react-spring/web'
 import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../styles/theme'
@@ -62,8 +62,7 @@ type DropZone = 'hand' | 'staging' | 'discard' | null
 // CONSTANTS
 // =============================================================================
 
-const DISCARD_ZONE_HEIGHT = 80
-const STAGING_ZONE_MIN_HEIGHT = 120
+const STAGING_ZONE_MIN_HEIGHT = 140
 const HAND_ZONE_HEIGHT = 140
 
 // =============================================================================
@@ -108,15 +107,23 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Determine which zone a point is in
   const getDropZone = useCallback((x: number, y: number): DropZone => {
+    // Check discard zone first (it's a small square, need precise detection)
+    if (discardZoneRef.current) {
+      const discardRect = discardZoneRef.current.getBoundingClientRect()
+      if (
+        x >= discardRect.left &&
+        x <= discardRect.right &&
+        y >= discardRect.top &&
+        y <= discardRect.bottom
+      ) {
+        return 'discard'
+      }
+    }
+
     if (!containerRef.current) return null
 
     const containerRect = containerRef.current.getBoundingClientRect()
     const relativeY = y - containerRect.top
-
-    // Discard zone is at the top
-    if (relativeY < DISCARD_ZONE_HEIGHT) {
-      return 'discard'
-    }
 
     // Hand zone is at the bottom
     const handZoneTop = containerRect.height - HAND_ZONE_HEIGHT
@@ -229,18 +236,17 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Discard zone spring animation
   const discardZoneSpring = useSpring({
-    scale: currentDropZone === 'discard' ? 1.05 : 1,
-    glowIntensity: currentDropZone === 'discard' ? 1 : dragState ? 0.3 : 0,
+    scale: currentDropZone === 'discard' ? 1.1 : 1,
     backgroundColor: currentDropZone === 'discard'
-      ? 'rgba(239, 68, 68, 0.3)'
+      ? 'rgba(255, 87, 34, 0.8)'
       : dragState
-        ? 'rgba(239, 68, 68, 0.1)'
-        : 'rgba(239, 68, 68, 0.05)',
+        ? 'rgba(255, 87, 34, 0.5)'
+        : 'rgba(255, 87, 34, 0.3)',
     borderColor: currentDropZone === 'discard'
-      ? '#EF4444'
+      ? '#FF5722'
       : dragState
-        ? '#F87171'
-        : '#7F1D1D',
+        ? '#FF8A65'
+        : '#E64A19',
     config: config.stiff,
     immediate: reducedMotion,
   })
@@ -291,48 +297,18 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     }))
   }, [stagedTiles, dimensions.width])
 
+  // Discard zone size (slightly larger than a tile)
+  const discardSize = Math.max(dimensions.width, dimensions.height) + 16
+
   return (
     <div
       ref={containerRef}
       className="relative w-full flex flex-col select-none"
       style={{
-        height: DISCARD_ZONE_HEIGHT + STAGING_ZONE_MIN_HEIGHT + HAND_ZONE_HEIGHT,
+        height: STAGING_ZONE_MIN_HEIGHT + HAND_ZONE_HEIGHT,
         touchAction: 'none',
       }}
     >
-      {/* ===== DISCARD ZONE ===== */}
-      <animated.div
-        ref={discardZoneRef}
-        className="relative flex items-center justify-center border-2 border-dashed rounded-xl mx-2"
-        style={{
-          height: DISCARD_ZONE_HEIGHT,
-          backgroundColor: discardZoneSpring.backgroundColor,
-          borderColor: discardZoneSpring.borderColor,
-          transform: discardZoneSpring.scale.to(s => `scale(${s})`),
-          boxShadow: discardZoneSpring.glowIntensity.to(
-            i => `0 0 ${i * 30}px rgba(239, 68, 68, ${i * 0.5}), inset 0 0 ${i * 20}px rgba(239, 68, 68, ${i * 0.2})`
-          ),
-        }}
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">🗑️</span>
-          <span
-            className="text-lg font-bold tracking-wide uppercase"
-            style={{
-              color: currentDropZone === 'discard' ? '#EF4444' : '#F87171',
-              textShadow: currentDropZone === 'discard' ? '0 0 10px rgba(239, 68, 68, 0.5)' : 'none',
-            }}
-          >
-            {currentDropZone === 'discard' ? 'Release to Discard!' : 'Discard Zone'}
-          </span>
-          {discardsRemaining > 0 && (
-            <span data-tutorial="discards-remaining" className="px-2 py-0.5 rounded-full bg-red-900/50 text-red-300 text-sm font-medium">
-              {discardsRemaining} left
-            </span>
-          )}
-        </div>
-      </animated.div>
-
       {/* ===== STAGING/PLAY ZONE ===== */}
       <animated.div
         ref={stagingZoneRef}
@@ -409,7 +385,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       {/* ===== HAND ZONE ===== */}
       <animated.div
         ref={handZoneRef}
-        className="relative flex items-center justify-center px-2 rounded-t-xl"
+        className="relative flex items-center px-2 rounded-t-xl"
         style={{
           height: HAND_ZONE_HEIGHT,
           backgroundColor: 'rgba(28, 58, 46, 0.8)',
@@ -426,13 +402,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           </span>
         </div>
 
-        {/* Hand tiles */}
+        {/* Hand tiles container - centered with space for discard zone on right */}
         <div
-          className="relative flex items-end justify-center"
+          className="relative flex items-end justify-center flex-1"
           style={{
-            width: '100%',
             height: dimensions.height + 30,
             marginTop: 20,
+            marginRight: discardSize + 16, // Make room for discard zone
           }}
         >
           {tilesInHand.map((tile, index) => {
@@ -465,6 +441,35 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             )
           })}
         </div>
+
+        {/* ===== DISCARD ZONE (small square on right side) ===== */}
+        <animated.div
+          ref={discardZoneRef}
+          className="absolute right-3 flex flex-col items-center justify-center rounded-xl border-2 border-dashed"
+          style={{
+            width: discardSize,
+            height: discardSize,
+            top: '50%',
+            transform: discardZoneSpring.scale.to(s => `translateY(-50%) scale(${s})`),
+            backgroundColor: discardZoneSpring.backgroundColor,
+            borderColor: discardZoneSpring.borderColor,
+            boxShadow: currentDropZone === 'discard'
+              ? '0 0 20px rgba(255, 87, 34, 0.6), inset 0 0 15px rgba(255, 87, 34, 0.3)'
+              : dragState
+                ? '0 0 10px rgba(255, 87, 34, 0.3)'
+                : 'none',
+          }}
+        >
+          <span className="text-2xl">🗑️</span>
+          {discardsRemaining > 0 && (
+            <span
+              data-tutorial="discards-remaining"
+              className="text-xs font-bold text-white mt-1"
+            >
+              {discardsRemaining}
+            </span>
+          )}
+        </animated.div>
       </animated.div>
 
       {/* ===== DRAGGING TILE OVERLAY ===== */}
