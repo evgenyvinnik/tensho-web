@@ -72,10 +72,10 @@ Test files: Unit tests use `*.test.ts` in `src/`, E2E tests use `*.spec.ts` in `
 src/
 ├── core/           # Tile, Hand, Meld, Wall, DeadPool, TileModifier - game primitives
 ├── rules/          # HandValidator, ShantenCalculator, YakuDetector, ScoringEngine
-├── systems/        # 19 game systems (Decree, Flower, Season, Shop, Stakes, Mandates, etc.)
+├── systems/        # 26 game systems (Decree, Flower, Season, Shop, Stakes, Mandates, etc.)
 ├── config/         # Definition files (charters, mandates, omens, packs, stakes)
 ├── game/           # GameOrchestrator, ActionProcessor, EventBus, DebuffSystem
-├── stores/         # 14 Zustand stores (game, hand, wall, decree, flora, shop, stake, etc.)
+├── stores/         # 17 Zustand stores (game, hand, wall, decree, flora, shop, stake, etc.)
 ├── components/     # React components (tiles/, ui/, effects/, screens/, hand/)
 ├── animations/     # React Spring animation hooks
 ├── hooks/          # Custom React hooks
@@ -98,12 +98,6 @@ import { DecreeSystem } from './systems/DecreeSystem'
 
 // Avoid - importing from barrel files (index.ts)
 import { Tile, Meld, Hand, Wall } from './core'
-```
-
-The `@/` path alias resolves to `src/` for absolute imports:
-
-```typescript
-import { Tile } from '@/core/Tile'
 ```
 
 ### Game Loop Architecture: GameOrchestrator
@@ -131,6 +125,9 @@ The game uses a dual-state pattern:
    - `shopStore` — Tea House shop state
    - `stakeStore` — Table Stakes difficulty progression (persisted)
    - `consumableStore` — Fate Seals, Celestial Orbs, Void Scripts
+   - `progressionStore` — Meta-progression tracking
+   - `tableStyleStore` — Table/wall style selection
+   - `archiveStore` — Hand archive/collection
 
 The orchestrator is the source of truth for game logic; stores may reflect orchestrator state for UI binding.
 
@@ -188,6 +185,12 @@ const state = gameOrchestrator.getState()
 - `TableStakeSystem` — 8-tier difficulty progression
 - `StickerSystem` — Eternal/Perishable/Rental decree modifiers
 - `MandateEffectSystem` — 27 Boss Mandate restrictions
+- `RedFiveSystem` — Red five tile variants
+- `TableStyleSystem` — Deck/table style variants
+- `MetaProgressionSystem` — Persistent unlock tracking
+- `AudioSystem` — Sound effects and music
+- `VFXSystem` — Visual effects
+- `ArchiveSystem` — Hand collection/discovery
 
 ### Event Bus Pattern
 
