@@ -28,6 +28,9 @@ import { RoundManager } from '../systems/RoundManager'
 import { DecreeSystem, STARTER_DECREES } from '../systems/DecreeSystem'
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
+import { ScoringContext as SystemScoringContext, ScoreBreakdown as SystemScoreBreakdown } from '../systems/types'
+import { ConsumableSystem } from '../systems/ConsumableSystem'
+import { CelestialOrbSystem, YakuCategory } from '../systems/CelestialOrbSystem'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -72,6 +75,8 @@ export interface OrchestratorState {
   flowerSystem: FlowerSystem
   seasonSystem: SeasonSystem
   roundManager: RoundManager
+  consumableSystem: ConsumableSystem
+  celestialOrbSystem: CelestialOrbSystem
 
   // Phase
   phase: 'menu' | 'gameplay' | 'shop' | 'gameOver'
@@ -143,6 +148,8 @@ export class GameOrchestrator {
       flowerSystem: new FlowerSystem(),
       seasonSystem: new SeasonSystem(),
       roundManager: new RoundManager(),
+      consumableSystem: new ConsumableSystem(),
+      celestialOrbSystem: new CelestialOrbSystem(),
       phase: 'menu',
     }
   }
@@ -582,6 +589,26 @@ export class GameOrchestrator {
     // Get selected tiles
     const selectedTiles = this.state.handTiles.filter((t) => tileIds.includes(t.id))
 
+    // Check boss mandate: fixed_hand_size
+    const fixedHandMandate = this.state.roundManager.checkMandateEffect('fixed_hand_size')
+    if (fixedHandMandate.active && selectedTiles.length !== fixedHandMandate.value) {
+      return {
+        success: false,
+        effects,
+        errors: [`Boss Mandate: Must play exactly ${fixedHandMandate.value} tiles`],
+      }
+    }
+
+    // Check boss mandate: single_hand (only one hand allowed)
+    const singleHandMandate = this.state.roundManager.checkMandateEffect('single_hand')
+    if (singleHandMandate.active && this.config.handsPerRound - this.state.handsRemaining > 0) {
+      return {
+        success: false,
+        effects,
+        errors: ['Boss Mandate: Only one hand allowed this round'],
+      }
+    }
+
     if (selectedTiles.length < 2) {
       return {
         success: false,
@@ -829,27 +856,159 @@ export class GameOrchestrator {
    * Calculate score for a complete hand
    */
   private calculateHandScore(tiles: Tile[], parsedHand: ParsedHand): ScoreBreakdown {
-    // Calculate base multipliers from systems
-    // FlowerSystem uses calculateFlowerBonus with a ScoringContext
-    const flowerBonus = this.state.flowerSystem.getFlowerCount() > 0 ?
-      1 + (this.state.flowerSystem.getFlowerCount() * 0.1) : 1
+    // Build the full ScoringContext for system integrations
+    const roundState = this.state.roundManager.getCurrentRound()
 
-    // SeasonSystem provides score modifier
-    const seasonMultiplier = this.state.seasonSystem.calculateScoreModifier()
+    const systemContext: SystemScoringContext = {
+      hand: parsedHand,
+      tiles,
+      melds: parsedHand.melds,
+      decrees: this.state.decreeSystem.getOwnedDecrees(),
+      flowers: this.state.flowerSystem.getCollection(),
+      season: this.state.seasonSystem.getState(),
+      round: {
+        actNumber: this.state.currentAct,
+        roundNumber: this.state.currentRound,
+        roundType: roundState?.roundType ?? 'Small',
+        scoreTarget: this.state.targetScore,
+        currentScore: this.state.score,
+        handsPlayed: this.config.handsPerRound - this.state.handsRemaining,
+        maxHands: this.config.handsPerRound,
+        discardsRemaining: this.state.discardsRemaining,
+        maxDiscards: this.config.discardsPerRound,
+        bossMandate: roundState?.bossMandate,
+        isCompleted: false,
+        isWon: false,
+      },
+      yakuMultipliers: new Map(),
+      isConcealed: true,
+      winningTile: tiles[tiles.length - 1],
+    }
 
-    // DecreeSystem provides additional draws and rule modifications
-    // For now, use a base multiplier
-    const decreeMultiplier = 1.0
+    // Apply season modifiers (includes corrupted effects)
+    const seasonModifiers = this.state.seasonSystem.applySeasonModifiers(systemContext)
+
+    // Calculate flower bonus with season suppression check
+    const flowerBonus = seasonModifiers.flowersSuppressed
+      ? 1.0
+      : this.state.flowerSystem.calculateFlowerBonus(systemContext)
+
+    // Apply yaku bonus from seasons (Autumn: +20% to yaku multipliers)
+    const yakuSeasonBonus = seasonModifiers.yakuBonus
+
+    // Calculate Celestial Orb bonuses for detected yaku
+    let celestialOrbMultBonus = 0
+    let celestialOrbChipsBonus = 0
+
+    // Map yaku IDs to categories for Celestial Orb system
+    const yakuToCategoryMap: Record<string, YakuCategory> = {
+      riichi: 'Riichi',
+      tanyao: 'Tanyao',
+      yakuhai: 'Yakuhai',
+      pinfu: 'Pinfu',
+      ikkitsuukan: 'Ittsu',
+      honitsu: 'Honitsu',
+      toitoi: 'Toitoi',
+      chinitsu: 'Chinitsu',
+      sanshoku_doujun: 'Sanshoku',
+      sanshoku_doukou: 'Sanshoku',
+      chiitoitsu: 'SevenPairs',
+      junchan: 'Chanta',
+      chanta: 'Chanta',
+      kokushi_musou: 'Kokushi',
+    }
 
     // Create scoring context with system bonuses
     const context = createScoringContext(tiles, parsedHand, {
       isConcealed: true,
       isTsumo: true,
       additiveBonus: 0,
-      multiplicativeBonus: flowerBonus * seasonMultiplier * decreeMultiplier,
+      multiplicativeBonus: flowerBonus * seasonModifiers.scoreMultiplier,
     })
 
-    return calculateScore(context)
+    // Calculate base score
+    const baseBreakdown = calculateScore(context)
+
+    // Apply celestial orb bonuses for each detected yaku
+    for (const detectedYaku of baseBreakdown.detectedYaku) {
+      const category = yakuToCategoryMap[detectedYaku.definition.id]
+      if (category) {
+        const orbBonus = this.state.celestialOrbSystem.calculateYakuBonus(category)
+        celestialOrbMultBonus += orbBonus.mult
+        celestialOrbChipsBonus += orbBonus.chips
+
+        // Trigger yaku for leveling
+        this.state.celestialOrbSystem.triggerYaku(category)
+      }
+
+      // Also check 'All' category (Black Hole Orb)
+      const allBonus = this.state.celestialOrbSystem.calculateYakuBonus('All')
+      celestialOrbMultBonus += allBonus.mult
+      celestialOrbChipsBonus += allBonus.chips
+    }
+
+    // Build system breakdown for decree application
+    const systemBreakdown: SystemScoreBreakdown = {
+      basePoints: baseBreakdown.basePoints,
+      tilePoints: baseBreakdown.tilePoints,
+      structurePoints: baseBreakdown.structurePoints,
+      additiveBonus: baseBreakdown.additiveBonus,
+      yakuMultiplier: baseBreakdown.yakuMultiplier * (1 + yakuSeasonBonus),
+      decreeMultiplier: 1.0,
+      flowerMultiplier: flowerBonus,
+      seasonMultiplier: seasonModifiers.scoreMultiplier,
+      finalScore: baseBreakdown.finalScore,
+      bonusGold: baseBreakdown.goldEarned ?? 0,
+    }
+
+    // Apply decree effects (with Frostbite halving if active)
+    const decreeModifiedBreakdown = this.state.decreeSystem.applyDecreeEffects(
+      systemContext,
+      systemBreakdown
+    )
+
+    // Apply Frostbite modifier to decree effects if active
+    let finalDecreeMultiplier = decreeModifiedBreakdown.decreeMultiplier
+    if (seasonModifiers.decreeModifier !== 1.0) {
+      // Frostbite: halve the decree bonus (not the entire multiplier)
+      const decreeBonus = finalDecreeMultiplier - 1.0
+      finalDecreeMultiplier = 1.0 + decreeBonus * seasonModifiers.decreeModifier
+    }
+
+    // Apply Decay penalty
+    const decayPenalty = seasonModifiers.decayPenalty
+
+    // Apply boss mandate effects
+    let mandateMultiplier = 1.0
+
+    // The Flint: Base points and Mult halved
+    const halveScoreMandate = this.state.roundManager.checkMandateEffect('halve_score')
+    if (halveScoreMandate.active) {
+      mandateMultiplier *= halveScoreMandate.value as number
+    }
+
+    // The Wall: Extra large score requirement (already handled in RoundManager score targets)
+    // but we can add it to the breakdown for visibility
+
+    // Calculate final score with all multipliers
+    // Formula: (Base + Additive + CelestialChips) * (Yaku + CelestialMult) * Flower * Season * Decree * Mandate - Decay
+    const subtotal = baseBreakdown.basePoints + decreeModifiedBreakdown.additiveBonus + celestialOrbChipsBonus
+    const finalMultiplier =
+      (decreeModifiedBreakdown.yakuMultiplier + celestialOrbMultBonus) *
+      flowerBonus *
+      seasonModifiers.scoreMultiplier *
+      finalDecreeMultiplier *
+      mandateMultiplier
+
+    const calculatedFinalScore = Math.max(0, Math.floor(subtotal * finalMultiplier) - decayPenalty)
+
+    // Return the breakdown in the format expected by the rest of the system
+    return {
+      ...baseBreakdown,
+      yakuMultiplier: decreeModifiedBreakdown.yakuMultiplier,
+      additiveBonus: decreeModifiedBreakdown.additiveBonus,
+      finalScore: calculatedFinalScore,
+    }
   }
 
   /**
@@ -1020,6 +1179,25 @@ export class GameOrchestrator {
     const extraDraws = this.state.decreeSystem.getAdditionalDraws()
     this.state.handsRemaining += extraDraws
 
+    // Apply boss mandate effects on resources
+    // The Water: Start with 0 discards
+    const noDiscardsMandate = this.state.roundManager.checkMandateEffect('no_discards')
+    if (noDiscardsMandate.active) {
+      this.state.discardsRemaining = 0
+    }
+
+    // The Needle: Only 1 hand allowed
+    const singleHandMandate = this.state.roundManager.checkMandateEffect('single_hand')
+    if (singleHandMandate.active) {
+      this.state.handsRemaining = 1
+    }
+
+    // Notify decree system of round start
+    this.state.decreeSystem.onRoundStart()
+
+    // Set act number for season corruption
+    this.state.seasonSystem.setAct(this.state.currentAct)
+
     // Reinitialize wall for new round
     this.initializeWall(this.state.seed + this.state.currentAct * 100 + this.state.currentRound)
     this.drawStartingHand()
@@ -1030,6 +1208,15 @@ export class GameOrchestrator {
       roundType: roundState.roundType,
       target: this.state.targetScore,
     })
+
+    // Emit mandate info if boss round
+    if (roundState.bossMandate) {
+      eventBus.emit('mandateActivated', {
+        mandateId: roundState.bossMandate.id,
+        mandateName: roundState.bossMandate.name,
+        effect: roundState.bossMandate.description,
+      })
+    }
   }
 
   // ===========================================================================

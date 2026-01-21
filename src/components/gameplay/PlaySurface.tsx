@@ -364,19 +364,14 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 )
               })}
             </div>
-
-            {/* Shanten display when tiles staged */}
-            <div className="mt-2 px-4 py-1.5 rounded-full bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
-              <span className="text-[var(--color-golden-yellow)] font-bold">{shantenDisplay}</span>
-            </div>
           </>
         ) : (
           <div className="text-center px-6">
             <p className="text-[var(--color-beige-white)] text-lg font-medium opacity-70">
-              Drag tiles here to stage
+              Tap tiles to select, then Play Hand
             </p>
             <p className="text-[var(--color-beige-white)] text-sm opacity-50 mt-1">
-              Arrange your hand before playing
+              Or drag tiles here to stage them
             </p>
           </div>
         )}
@@ -392,14 +387,26 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           filter: handZoneSpring.brightness.to(b => `brightness(${b})`),
         }}
       >
-        {/* Hand header */}
-        <div className="absolute top-2 left-4 flex items-center gap-3">
-          <span className="text-[var(--color-beige-white)] text-sm opacity-70">
-            Hand ({tilesInHand.length})
-          </span>
-          <span data-tutorial="hands-remaining" className="text-blue-400 text-sm">
-            🖐 {handsRemaining}
-          </span>
+        {/* Hand header - leave space on right for discard zone */}
+        <div
+          className="absolute top-2 left-4 flex items-center justify-between"
+          style={{ right: discardSize + 20 }}
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-[var(--color-beige-white)] text-sm opacity-70">
+              Hand ({tilesInHand.length})
+            </span>
+            <span data-tutorial="hands-remaining" className="text-blue-400 text-sm">
+              🖐 {handsRemaining}
+            </span>
+          </div>
+
+          {/* Shanten/Tenpai display - always visible */}
+          {shantenDisplay && (
+            <div className="px-3 py-1 rounded-full bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
+              <span className="text-[var(--color-golden-yellow)] font-bold text-sm">{shantenDisplay}</span>
+            </div>
+          )}
         </div>
 
         {/* Hand tiles container - centered with space for discard zone on right */}

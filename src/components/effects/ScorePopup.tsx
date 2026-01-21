@@ -131,11 +131,11 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
 };
 
 // =============================================================================
-// CHIPS AND MULT POPUP
+// POINTS AND MULT POPUP
 // =============================================================================
 
 export interface ChipsMullPopupProps {
-  /** Base chips value */
+  /** Base points value */
   chips: number;
   /** Multiplier value */
   mult: number;
@@ -151,7 +151,7 @@ export interface ChipsMullPopupProps {
 
 /**
  * ChipsMultPopup component
- * Shows Balatro-style chips x mult display
+ * Shows points x mult scoring display
  */
 export const ChipsMultPopup: React.FC<ChipsMullPopupProps> = ({
   chips,
@@ -245,9 +245,9 @@ export const ChipsMultPopup: React.FC<ChipsMullPopupProps> = ({
         gap: '8px',
       }}
     >
-      {/* Chips x Mult row */}
+      {/* Points x Mult row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        {/* Chips */}
+        {/* Points */}
         <animated.div
           style={{
             transform: chipsSpring.scale.to((s) => `scale(${s})`),

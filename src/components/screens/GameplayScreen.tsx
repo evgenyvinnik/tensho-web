@@ -19,11 +19,13 @@ import { ScorePopup } from '../effects/ScorePopup'
 import { YakuReveal } from '../effects/YakuReveal'
 import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
-import { Tile } from '../../core/Tile'
+import { Tile, TileSuit } from '../../core/Tile'
+import { TileImage } from '../tiles/TileImage'
 import { DecreeRarity, OwnedDecree } from '../../systems/types'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
 import { GlowEffect } from '../effects/GlowEffect'
 import { getCurrentLanguage } from '../../i18n'
+import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 
 /** Check if current language uses CJK characters */
 function isCJKLanguage(): boolean {
@@ -95,13 +97,23 @@ const DECREE_RARITY_COLORS: Record<DecreeRarity, string> = {
 }
 
 /**
- * Flower display data
+ * Decree rarity icon colors for unique icons
  */
-const FLOWER_DATA: Record<FlowerVariant, { emoji: string; color: string }> = {
-  Plum: { emoji: '🌸', color: 'from-pink-400 to-pink-600' },
-  Orchid: { emoji: '🌺', color: 'from-purple-400 to-purple-600' },
-  Chrysanthemum: { emoji: '🌼', color: 'from-yellow-400 to-yellow-600' },
-  Bamboo: { emoji: '🎋', color: 'from-green-400 to-green-600' },
+const DECREE_ICON_COLORS: Record<DecreeRarity, string> = {
+  LocalEdict: '#9CA3AF', // gray-400
+  RegionalMandate: '#22C55E', // green-500
+  ImperialDecree: '#3B82F6', // blue-500
+  HeavenlyOrdinance: '#A855F7', // purple-500
+}
+
+/**
+ * Flower display data with tile rank and effect description
+ */
+const FLOWER_DATA: Record<FlowerVariant, { rank: number; effect: string; color: string }> = {
+  Plum: { rank: 1, effect: '+5% per sequence', color: 'from-pink-400 to-pink-600' },
+  Orchid: { rank: 2, effect: '+5% per honor', color: 'from-purple-400 to-purple-600' },
+  Chrysanthemum: { rank: 3, effect: '+5% per concealed', color: 'from-yellow-400 to-yellow-600' },
+  Bamboo: { rank: 4, effect: '+5% per terminal', color: 'from-green-400 to-green-600' },
 }
 
 /**
@@ -143,15 +155,13 @@ function DecreeCardCompact({ decree, onTap }: DecreeCardCompactProps) {
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      {/* Icon based on category */}
+      {/* Unique decree icon */}
       <div className="flex items-center justify-center h-full">
-        <span className="text-2xl">
-          {decree.category === 'Structural' && '🏛️'}
-          {decree.category === 'TileIdentity' && '🎭'}
-          {decree.category === 'YakuDoctrine' && '📖'}
-          {decree.category === 'Entropy' && '🎲'}
-          {decree.category === 'Scaling' && '📈'}
-        </span>
+        <DecreeUniqueIcon
+          decreeId={decree.id}
+          size={36}
+          color={DECREE_ICON_COLORS[decree.rarity]}
+        />
       </div>
 
       {/* Sticker indicator */}
@@ -306,7 +316,7 @@ function PointsMultDisplay({ points, mult, isAnimating = false }: PointsMultDisp
 }
 
 /**
- * FloraTrackCompact - Compact flower and season display
+ * FloraTrackCompact - Compact flower and season display using actual tile images
  */
 interface FloraTrackCompactProps {
   flowers: FlowerVariant[]
@@ -316,58 +326,78 @@ interface FloraTrackCompactProps {
 }
 
 function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand }: FloraTrackCompactProps) {
+  const [showTooltip, setShowTooltip] = useState<FlowerVariant | null>(null)
   const collectedSet = new Set(flowers)
   const allFlowers: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
 
   return (
     <div
-      className="flex items-center gap-3 px-3 py-2 bg-[var(--color-dark-forest)] rounded-lg cursor-pointer hover:bg-[var(--color-forest-green)] transition-colors"
+      className="flex flex-col gap-1 p-2 bg-[var(--color-dark-forest)] rounded-lg"
       onClick={onExpand}
     >
-      {/* Flowers */}
-      <div className="flex items-center gap-1">
+      {/* Flowers using actual tile images */}
+      <div className="flex flex-col gap-1">
         {allFlowers.map((flower) => {
           const isCollected = collectedSet.has(flower)
           const data = FLOWER_DATA[flower]
+          const flowerTile = Tile.create(TileSuit.Flower, data.rank)
+
           return (
             <div
               key={flower}
-              className={`
-                w-8 h-8 flex items-center justify-center rounded-full
-                ${isCollected ? `bg-gradient-to-b ${data.color}` : 'bg-gray-800/50 opacity-40'}
-                transition-all duration-300
-                min-w-[32px] min-h-[32px]
-              `}
-              title={flower}
+              className="relative flex items-center gap-2"
+              onMouseEnter={() => setShowTooltip(flower)}
+              onMouseLeave={() => setShowTooltip(null)}
             >
-              <span className="text-base">{isCollected ? data.emoji : '?'}</span>
+              {/* Tile image */}
+              <div
+                className={`
+                  transition-all duration-300
+                  ${!isCollected ? 'opacity-30 grayscale' : ''}
+                `}
+              >
+                <TileImage
+                  tile={flowerTile}
+                  size="small"
+                  disabled={!isCollected}
+                  showTooltip={false}
+                />
+              </div>
+
+              {/* Effect text (only show for collected flowers) */}
+              {isCollected && (
+                <span className="text-xs text-[var(--color-golden-yellow)] font-medium whitespace-nowrap">
+                  {data.effect}
+                </span>
+              )}
+
+              {/* Tooltip for uncollected */}
+              {showTooltip === flower && !isCollected && (
+                <div className="absolute left-full ml-2 z-50 px-2 py-1 bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)] rounded text-xs text-[var(--color-beige-white)] whitespace-nowrap">
+                  {flower}: {data.effect}
+                </div>
+              )}
             </div>
           )
         })}
-        <span className="text-sm text-[var(--color-golden-yellow)] font-bold ml-1">
-          {flowers.length}/4
-        </span>
       </div>
 
-      {/* Separator */}
-      <div className="w-px h-6 bg-[var(--color-metallic-gold)] opacity-30" />
+      {/* Set bonus indicator */}
+      {flowers.length >= 2 && (
+        <div className="text-xs text-green-400 text-center mt-1">
+          {flowers.length >= 4 ? 'x2 All Effects!' : flowers.length >= 3 ? 'Special Decrees' : '+1 Decree Slot'}
+        </div>
+      )}
 
       {/* Active Season */}
-      <div className="flex items-center gap-1">
-        {activeSeason ? (
-          <>
-            <span className="text-lg">{SEASON_DATA[activeSeason].emoji}</span>
-            <span className={`text-sm font-bold ${isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color}`}>
-              {isCorrupted ? '腐' : SEASON_DATA[activeSeason].japanese}
-            </span>
-          </>
-        ) : (
-          <span className="text-sm text-[var(--color-beige-white)] opacity-50">No Season</span>
-        )}
-      </div>
-
-      {/* Expand indicator */}
-      <span className="text-[var(--color-beige-white)] opacity-50 text-xs">▼</span>
+      {activeSeason && (
+        <div className="flex items-center justify-center gap-1 mt-1 pt-1 border-t border-[var(--color-metallic-gold)]/30">
+          <span className="text-sm">{SEASON_DATA[activeSeason].emoji}</span>
+          <span className={`text-xs font-bold ${isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color}`}>
+            {isCorrupted ? 'Corrupted' : activeSeason}
+          </span>
+        </div>
+      )}
     </div>
   )
 }
@@ -608,16 +638,28 @@ export function GameplayScreen() {
 
   // Play hand handler
   const handlePlayHand = useCallback(() => {
-    // Use staged tiles if available, otherwise use selected tiles, otherwise all tiles
+    let result
+
+    // Priority: staged tiles > selected tiles > all tiles
     if (stagedTileIds.length > 0) {
-      game.playHand(stagedTileIds)
+      result = game.playHand(stagedTileIds)
       setStagedTileIds([]) // Clear staged tiles after playing
     } else if (game.selectedTileIds.length > 0) {
-      game.playHand()
+      // Play selected tiles - explicitly pass the IDs
+      const selectedIds = Array.from(game.selectedTileIds)
+      result = game.playHand(selectedIds)
+      game.clearSelection() // Clear selection after playing
     } else {
-      // Select all and play
-      game.selectAllTiles()
-      game.playHand()
+      // Play all hand tiles directly by passing their IDs
+      const allTileIds = game.handTiles.map(t => t.id)
+      if (allTileIds.length > 0) {
+        result = game.playHand(allTileIds)
+      }
+    }
+
+    // Log any errors for debugging
+    if (result && !result.success && result.errors) {
+      console.warn('Play hand failed:', result.errors)
     }
   }, [game, stagedTileIds])
 
@@ -770,16 +812,8 @@ export function GameplayScreen() {
           ))}
         </div>
 
-        {/* Flora track and consumables row */}
-        <div className="flex items-center justify-between px-4 py-2 gap-2">
-          <div data-tutorial="flora">
-            <FloraTrackCompact
-              flowers={collectedFlowers}
-              activeSeason={seasonState.activeSeason}
-              isCorrupted={seasonState.isCorrupted}
-              onExpand={() => setIsFloraExpanded(!isFloraExpanded)}
-            />
-          </div>
+        {/* Consumables row (flora moved to hand area) */}
+        <div className="flex items-center justify-end px-4 py-2 gap-2">
           <ConsumablesBar
             fateSeals={consumables.fateSeals}
             celestialOrbs={consumables.celestialOrbs}
@@ -798,10 +832,10 @@ export function GameplayScreen() {
             </p>
           </GlowEffect>
 
-          {/* Chips x Mult display */}
+          {/* Points x Mult display */}
           <div className="my-3">
-            <ChipsMultDisplay
-              chips={currentChips || game.score}
+            <PointsMultDisplay
+              points={currentPoints || game.score}
               mult={currentMult}
               isAnimating={isScoreAnimating}
             />
@@ -845,9 +879,14 @@ export function GameplayScreen() {
               </p>
             </div>
           ) : (
-            <p className="text-[var(--color-beige-white)] opacity-50 text-center px-4">
-              Select tiles to play
-            </p>
+            <div className="text-center">
+              <p className="text-[var(--color-beige-white)] opacity-50 px-4">
+                Tap tiles to select, or play all
+              </p>
+              <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
+                Press "Play Hand" to score your hand
+              </p>
+            </div>
           )}
 
           {/* Yaku reveals */}
@@ -862,21 +901,34 @@ export function GameplayScreen() {
           ))}
         </div>
 
-        {/* Play Surface - Unified hand, staging, and discard area */}
-        <div data-tutorial="hand" className="flex-1 mx-2 mb-2 min-h-[340px]">
-          <PlaySurface
-            handTiles={game.handTiles}
-            tileSize={tileSize}
-            selectedIds={new Set(game.selectedTileIds)}
-            onTileSelect={handleTileClick}
-            onTileDiscard={handleTileDiscard}
-            onTilesStaged={handleTilesStaged}
-            disabled={false}
-            shantenDisplay={shantenDisplay}
-            handsRemaining={game.handsRemaining}
-            discardsRemaining={game.discardsRemaining}
-            t={t}
-          />
+        {/* Play Surface with Flora panel on left */}
+        <div className="flex-1 flex mx-2 mb-2 min-h-[340px] gap-2">
+          {/* Flora panel on left side of hand area */}
+          <div data-tutorial="flora" className="flex-shrink-0">
+            <FloraTrackCompact
+              flowers={collectedFlowers}
+              activeSeason={seasonState.activeSeason}
+              isCorrupted={seasonState.isCorrupted}
+              onExpand={() => setIsFloraExpanded(!isFloraExpanded)}
+            />
+          </div>
+
+          {/* Play Surface - Unified hand, staging, and discard area */}
+          <div data-tutorial="hand" className="flex-1">
+            <PlaySurface
+              handTiles={game.handTiles}
+              tileSize={tileSize}
+              selectedIds={new Set(game.selectedTileIds)}
+              onTileSelect={handleTileClick}
+              onTileDiscard={handleTileDiscard}
+              onTilesStaged={handleTilesStaged}
+              disabled={false}
+              shantenDisplay={shantenDisplay}
+              handsRemaining={game.handsRemaining}
+              discardsRemaining={game.discardsRemaining}
+              t={t}
+            />
+          </div>
         </div>
 
         {/* Action buttons */}
