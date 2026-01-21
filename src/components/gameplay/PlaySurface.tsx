@@ -43,6 +43,8 @@ export interface PlaySurfaceProps {
   handsRemaining?: number
   /** Discards remaining */
   discardsRemaining?: number
+  /** Score preview for staged/selected tiles */
+  scorePreview?: { points: number; mult: number; total: number } | null
   /** Translation function */
   t?: (key: string) => string
 }
@@ -81,6 +83,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   shantenDisplay = '',
   handsRemaining = 0,
   discardsRemaining = 0,
+  scorePreview = null,
   t = (key) => key,
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
@@ -364,6 +367,16 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 )
               })}
             </div>
+            {/* Score preview for staged tiles */}
+            {scorePreview && (
+              <div className="flex items-center justify-center gap-2 mt-2 px-3 py-1.5 bg-[var(--color-dark-forest)] rounded-lg">
+                <span className="text-blue-400 font-bold">{scorePreview.points.toLocaleString()}</span>
+                <span className="text-[var(--color-golden-yellow)]">×</span>
+                <span className="text-red-400 font-bold">{scorePreview.mult.toFixed(1)}</span>
+                <span className="text-[var(--color-golden-yellow)]">=</span>
+                <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{scorePreview.total.toLocaleString()}</span>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-center px-6">

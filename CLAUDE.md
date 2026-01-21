@@ -87,22 +87,23 @@ src/
 
 ### Import Patterns
 
-Each major module uses barrel exports via `index.ts`. Import from the directory, not individual files:
+Prefer direct imports from individual files over barrel exports (`index.ts` files). Direct imports improve tree-shaking, reduce circular dependency issues, and make the codebase easier to navigate:
 
 ```typescript
-// Preferred - import from barrel
-import { Tile, Meld, Hand, Wall } from './core'
-import { useGameStore, useHandStore } from './stores'
-import { DecreeSystem, FlowerSystem } from './systems'
-
-// Avoid - importing from individual files
+// Preferred - import from individual files
 import { Tile } from './core/Tile'
+import { Meld } from './core/Meld'
+import { useGameStore } from './stores/gameStore'
+import { DecreeSystem } from './systems/DecreeSystem'
+
+// Avoid - importing from barrel files (index.ts)
+import { Tile, Meld, Hand, Wall } from './core'
 ```
 
 The `@/` path alias resolves to `src/` for absolute imports:
 
 ```typescript
-import { Tile } from '@/core'
+import { Tile } from '@/core/Tile'
 ```
 
 ### Game Loop Architecture: GameOrchestrator
