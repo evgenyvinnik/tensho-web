@@ -13,24 +13,23 @@ import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game/useGameController'
 import { useResponsiveTileSize } from '../../hooks/useResponsiveTileSize'
 import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
-import { Button } from '../ui/Button'
 import { TablePattern } from '../ui/TablePattern'
 import { PlaySurface } from '../gameplay/PlaySurface'
-import { ScorePopup } from '../effects/ScorePopup'
-import { YakuReveal } from '../effects/YakuReveal'
 import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
 import { ConfirmPopup } from '../ui/Popup'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
-import { GlowEffect } from '../effects/GlowEffect'
+import { checkTanyao, TANYAO, HONITSU, CHINITSU, HONROUTOU, TOITOI, YakuDefinition } from '../../rules/YakuDetector'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
-import { RoundTypeIndicator } from '../gameplay/RoundTypeIndicator'
-import { PointsMultDisplay } from '../gameplay/PointsMultDisplay'
 import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
 import { ConsumablesBar } from '../gameplay/ConsumablesBar'
+import { GameplayTopBar } from '../gameplay/GameplayTopBar'
+import { ScorePanel } from '../gameplay/ScorePanel'
+import { ActionBar } from '../gameplay/ActionBar'
+import { PlayArea } from '../gameplay/PlayArea'
 import { RoundType, ScorePopupState, YakuRevealState } from '../gameplay/gameplayTypes'
 
 // =============================================================================
@@ -97,14 +96,14 @@ export function GameplayScreen() {
   // EFFECTS - Game lifecycle
   // ==========================================================================
 
-  // Start new run if not active
   useEffect(() => {
+    console.log('[GameplayScreen] Mount check - isRunActive:', game.isRunActive, 'phase:', game.phase)
     if (!game.isRunActive && game.phase === 'menu') {
+      console.log('[GameplayScreen] Starting new run...')
       game.startNewRun()
     }
   }, [game.isRunActive, game.phase, game.startNewRun])
 
-  // Navigate to shop/game over when phase changes
   useEffect(() => {
     if (game.phase === 'shop') {
       navigateTo(ROUTES.SHOP)
@@ -117,18 +116,14 @@ export function GameplayScreen() {
   // EFFECTS - Tutorial triggers
   // ==========================================================================
 
-  // Trigger gameStart hints when run becomes active
   useEffect(() => {
     if (game.isRunActive && !hasTriggeredGameStart.current) {
       hasTriggeredGameStart.current = true
-      const timer = setTimeout(() => {
-        tutorial.triggerHints('gameStart')
-      }, 800)
+      const timer = setTimeout(() => tutorial.triggerHints('gameStart'), 800)
       return () => clearTimeout(timer)
     }
   }, [game.isRunActive, tutorial])
 
-  // Reset trigger refs when starting a new run
   useEffect(() => {
     if (!game.isRunActive) {
       hasTriggeredGameStart.current = false
@@ -140,7 +135,6 @@ export function GameplayScreen() {
     }
   }, [game.isRunActive])
 
-  // Trigger firstDraw hints before first draw
   useEffect(() => {
     if (game.isRunActive && !hasTriggeredFirstDraw.current && game.handTiles.length > 0) {
       const timer = setTimeout(() => {
@@ -153,7 +147,6 @@ export function GameplayScreen() {
     }
   }, [game.isRunActive, game.handTiles.length, tutorial])
 
-  // Trigger bossRound hints when entering boss round
   useEffect(() => {
     if (game.currentRound === 3 && !hasTriggeredBossRound.current) {
       hasTriggeredBossRound.current = true
@@ -165,115 +158,65 @@ export function GameplayScreen() {
   // EVENT HANDLERS - Game events
   // ==========================================================================
 
-  // Trigger firstDiscard hints after first draw action
-  useGameEvent(
-    'tileDrawn',
-    useCallback(() => {
-      if (!hasTriggeredFirstDiscard.current) {
-        hasTriggeredFirstDiscard.current = true
-        setTimeout(() => {
-          tutorial.triggerHints('firstDiscard')
-        }, 500)
-      }
-    }, [tutorial])
-  )
+  useGameEvent('tileDrawn', useCallback(() => {
+    if (!hasTriggeredFirstDiscard.current) {
+      hasTriggeredFirstDiscard.current = true
+      setTimeout(() => tutorial.triggerHints('firstDiscard'), 500)
+    }
+  }, [tutorial]))
 
-  // Trigger firstHandPlayed hints after playing first hand
-  useGameEvent(
-    'handPlayed',
-    useCallback(() => {
-      if (!hasTriggeredFirstHand.current) {
-        hasTriggeredFirstHand.current = true
-        setTimeout(() => {
-          tutorial.triggerHints('firstHandPlayed')
-        }, 1000)
-      }
-    }, [tutorial])
-  )
+  useGameEvent('handPlayed', useCallback(() => {
+    if (!hasTriggeredFirstHand.current) {
+      hasTriggeredFirstHand.current = true
+      setTimeout(() => tutorial.triggerHints('firstHandPlayed'), 1000)
+    }
+  }, [tutorial]))
 
-  // Trigger roundComplete hints after completing a round
-  useGameEvent(
-    'roundEnd',
-    useCallback(() => {
-      if (!hasTriggeredRoundComplete.current) {
-        hasTriggeredRoundComplete.current = true
-        tutorial.triggerHints('roundComplete')
-      }
-    }, [tutorial])
-  )
+  useGameEvent('roundEnd', useCallback(() => {
+    if (!hasTriggeredRoundComplete.current) {
+      hasTriggeredRoundComplete.current = true
+      tutorial.triggerHints('roundComplete')
+    }
+  }, [tutorial]))
 
-  // Trigger flowerDrawn hints when a flower is collected
-  useGameEvent(
-    'flowerCollected',
-    useCallback(() => {
-      tutorial.triggerHints('flowerDrawn')
-    }, [tutorial])
-  )
+  useGameEvent('flowerCollected', useCallback(() => {
+    tutorial.triggerHints('flowerDrawn')
+  }, [tutorial]))
 
-  // Listen for score updates to show popups
-  useGameEvent(
-    'scoreUpdate',
-    useCallback((data) => {
-      popupIdCounterRef.current += 1
-      const newId = popupIdCounterRef.current
-      setScorePopups((popups) => [
-        ...popups,
-        {
-          id: newId,
-          score: data.delta,
-          variant: data.delta >= 1000 ? 'critical' : data.delta >= 500 ? 'bonus' : 'default',
-        },
-      ])
-    }, [])
-  )
-
-  // Listen for yaku scored events
-  useGameEvent(
-    'yakuScored',
-    useCallback((data) => {
-      const tier = data.multiplier >= 4 ? 4 : data.multiplier >= 2 ? 3 : data.multiplier >= 1.5 ? 2 : 1
-      setYakuReveals((reveals) => [
-        ...reveals,
-        {
-          id: data.yakuId,
-          japaneseName: data.yakuName,
-          multiplier: data.multiplier,
-          tier: tier as 1 | 2 | 3 | 4,
-        },
-      ])
-    }, [])
-  )
-
-  // Track score for points/mult display
-  useGameEvent(
-    'handPlayed',
-    useCallback(
-      (data) => {
-        const basePoints = data.score / (currentMult || 1)
-        setCurrentPoints(basePoints)
-        setIsScoreAnimating(true)
-        setTimeout(() => setIsScoreAnimating(false), 1500)
+  useGameEvent('scoreUpdate', useCallback((data) => {
+    popupIdCounterRef.current += 1
+    setScorePopups((popups) => [
+      ...popups,
+      {
+        id: popupIdCounterRef.current,
+        score: data.delta,
+        variant: data.delta >= 1000 ? 'critical' : data.delta >= 500 ? 'bonus' : 'default',
       },
-      [currentMult]
-    )
-  )
+    ])
+  }, []))
 
-  // Update mult when yaku is scored
-  useGameEvent(
-    'yakuScored',
-    useCallback((data) => {
-      setCurrentMult((prev) => prev * data.multiplier)
-    }, [])
-  )
+  useGameEvent('yakuScored', useCallback((data) => {
+    const tier = data.multiplier >= 4 ? 4 : data.multiplier >= 2 ? 3 : data.multiplier >= 1.5 ? 2 : 1
+    setYakuReveals((reveals) => [
+      ...reveals,
+      { id: data.yakuId, japaneseName: data.yakuName, multiplier: data.multiplier, tier: tier as 1 | 2 | 3 | 4 },
+    ])
+  }, []))
 
-  // Reset points/mult on round start
-  useGameEvent(
-    'roundStart',
-    useCallback(() => {
-      setCurrentPoints(0)
-      setCurrentMult(1)
-    }, [])
-  )
+  useGameEvent('handPlayed', useCallback((data) => {
+    setCurrentPoints(data.score / (currentMult || 1))
+    setIsScoreAnimating(true)
+    setTimeout(() => setIsScoreAnimating(false), 1500)
+  }, [currentMult]))
+
+  useGameEvent('yakuScored', useCallback((data) => {
+    setCurrentMult((prev) => prev * data.multiplier)
+  }, []))
+
+  useGameEvent('roundStart', useCallback(() => {
+    setCurrentPoints(0)
+    setCurrentMult(1)
+  }, []))
 
   // ==========================================================================
   // CALLBACKS - UI interaction handlers
@@ -287,82 +230,66 @@ export function GameplayScreen() {
     setYakuReveals((reveals) => reveals.filter((r) => r.id !== id))
   }, [])
 
-  const handleTileClick = useCallback(
-    (tile: Tile) => {
-      game.toggleTileSelection(tile.id)
-    },
-    [game]
-  )
-
-  const handleTileDiscard = useCallback(
-    (tile: Tile) => {
-      game.discard(tile.id)
-    },
-    [game]
-  )
-
-  const handleTilesStaged = useCallback((tiles: Tile[]) => {
-    const ids = tiles.map((t) => t.id)
-    setStagedTileIds(ids)
-  }, [])
-
-  const handleDraw = useCallback(() => {
-    game.draw()
+  const handleTileClick = useCallback((tile: Tile) => {
+    game.toggleTileSelection(tile.id)
   }, [game])
 
-  const handlePlayHand = useCallback(() => {
-    let tileIds: string[] = []
+  const handleTileDiscard = useCallback((tile: Tile) => {
+    game.discard(tile.id)
+  }, [game])
 
-    // Priority: staged tiles > selected tiles > all tiles
+  const handleTilesStaged = useCallback((tiles: Tile[]) => {
+    setStagedTileIds(tiles.map((t) => t.id))
+  }, [])
+
+  const handleDraw = useCallback(() => game.draw(), [game])
+  const handleSkip = useCallback(() => game.skipRound(), [game])
+  const handleSettings = useCallback(() => navigateTo(ROUTES.SETTINGS), [navigateTo])
+
+  const handlePlayHand = useCallback(() => {
+    console.log('[PlayHand] Button clicked! isRunActive:', game.isRunActive, 'phase:', game.phase)
+
+    const currentHandTiles = game.handTiles
+    const currentSelectedIds = game.selectedTileIds
+
+    let tileIds: string[] = []
     if (stagedTileIds.length > 0) {
       tileIds = stagedTileIds
-    } else if (game.selectedTileIds.length > 0) {
-      tileIds = Array.from(game.selectedTileIds)
+    } else if (currentSelectedIds.length > 0) {
+      tileIds = [...currentSelectedIds]
     } else {
-      tileIds = game.handTiles.map((t) => t.id)
+      tileIds = currentHandTiles.map((t) => t.id)
     }
 
-    if (tileIds.length === 0) {
-      return
-    }
+    if (tileIds.length === 0) return
 
+    console.log('[PlayHand] Playing', tileIds.length, 'tiles')
     const result = game.playHand(tileIds)
+    console.log('[PlayHand] Result:', result)
 
     if (result?.success) {
-      if (stagedTileIds.length > 0) {
-        setStagedTileIds([])
-      } else if (game.selectedTileIds.length > 0) {
-        game.clearSelection()
-      }
+      if (stagedTileIds.length > 0) setStagedTileIds([])
+      else if (currentSelectedIds.length > 0) game.clearSelection()
+    } else if (result?.errors) {
+      console.error('[PlayHand] Errors:', result.errors)
     }
-  }, [game, stagedTileIds])
-
-  const handleSettings = useCallback(() => {
-    navigateTo(ROUTES.SETTINGS)
-  }, [navigateTo])
+  }, [game, stagedTileIds, game.handTiles, game.selectedTileIds, game.handsRemaining, game.isRunActive, game.phase])
 
   const handleExitGame = useCallback(() => {
     game.endRun()
     navigateTo(ROUTES.MENU)
   }, [game, navigateTo])
 
-  const handleSkip = useCallback(() => {
-    game.skipRound()
-  }, [game])
-
   // ==========================================================================
   // COMPUTED VALUES
   // ==========================================================================
 
-  // Shanten display
-  const tilesNeeded = 14 - game.handTiles.length
-  const shantenDisplay =
-    game.handTiles.length >= 13 ? t('gameplay.tenpai') : t('gameplay.shanten', { count: tilesNeeded })
+  const shantenDisplay = game.handTiles.length >= 13
+    ? t('gameplay.tenpai')
+    : t('gameplay.shanten', { count: 14 - game.handTiles.length })
 
-  // Score preview for staged/selected tiles
   const scorePreview = useMemo(() => {
     let previewTiles: Tile[] = []
-
     if (stagedTileIds.length > 0) {
       previewTiles = game.handTiles.filter((t) => stagedTileIds.includes(t.id))
     } else if (game.selectedTileIds.length > 0) {
@@ -373,21 +300,21 @@ export function GameplayScreen() {
 
     if (previewTiles.length === 0) return null
 
-    // Calculate base points from tiles
+    const detectedYaku: YakuDefinition[] = []
+    if (checkTanyao(previewTiles)) detectedYaku.push(TANYAO)
+
+    const suits = new Set(previewTiles.filter((t) => !t.isHonor).map((t) => t.suit))
+    const hasHonors = previewTiles.some((t) => t.isHonor)
+    const allHonorsOrTerminals = previewTiles.every((t) => t.isHonor || t.rank === 1 || t.rank === 9)
+
+    if (suits.size === 1 && !hasHonors && previewTiles.length >= 2) detectedYaku.push(CHINITSU)
+    else if (suits.size === 1 && hasHonors && previewTiles.length >= 2) detectedYaku.push(HONITSU)
+    if (allHonorsOrTerminals && previewTiles.length >= 2) detectedYaku.push(HONROUTOU)
+
     let basePoints = 0
     for (const tile of previewTiles) {
-      if (tile.isHonor) {
-        basePoints += 15
-      } else if (tile.rank === 1 || tile.rank === 9) {
-        basePoints += 10
-      } else {
-        basePoints += 5
-      }
+      basePoints += tile.isHonor ? 15 : (tile.rank === 1 || tile.rank === 9) ? 10 : 5
     }
-
-    // Structure points estimate
-    const pairBonus = 10
-    const tripletBonus = 30
 
     const suitRankCounts = new Map<string, number>()
     for (const tile of previewTiles) {
@@ -397,78 +324,36 @@ export function GameplayScreen() {
 
     let structurePoints = 0
     for (const count of suitRankCounts.values()) {
-      if (count >= 3) structurePoints += tripletBonus
-      else if (count === 2) structurePoints += pairBonus
+      structurePoints += count >= 3 ? 30 : count === 2 ? 10 : 0
     }
 
-    const totalPoints = basePoints + structurePoints
-
-    // Base multiplier plus estimates
     let mult = 1.0
+    for (const yaku of detectedYaku) mult *= yaku.multiplier
 
-    // Check for all simples (Tanyao)
-    const hasTerminalsOrHonors = previewTiles.some((t) => t.isHonor || t.rank === 1 || t.rank === 9)
-    if (!hasTerminalsOrHonors && previewTiles.length >= 13) {
-      mult += 0.3
+    const allPairsOrTriplets = [...suitRankCounts.values()].every((count) => count >= 2)
+    if (allPairsOrTriplets && previewTiles.length >= 4 && !detectedYaku.some((y) => y.id === TOITOI.id)) {
+      detectedYaku.push(TOITOI)
+      mult *= TOITOI.multiplier
     }
 
-    // Check for all one suit
-    const suits = new Set(previewTiles.filter((t) => !t.isHonor).map((t) => t.suit))
-    if (suits.size === 1 && previewTiles.length >= 13) {
-      mult += 0.5
-    }
-
-    const total = Math.floor(totalPoints * mult)
-
-    return { points: totalPoints, mult, total }
+    return { points: basePoints + structurePoints, mult, total: Math.floor((basePoints + structurePoints) * mult), yaku: detectedYaku }
   }, [stagedTileIds, game.handTiles, game.selectedTileIds])
 
-  // Owned decrees from game state
-  const ownedDecrees = useMemo(() => {
-    return game.state.decreeSystem.getOwnedDecrees()
-  }, [game.state.decreeSystem])
+  const ownedDecrees = useMemo(() => game.state.decreeSystem.getOwnedDecrees(), [game.state.decreeSystem])
+  const maxDecreeSlots = useMemo(() => 5 + game.state.flowerSystem.getBonusDecreeSlots(), [game.state.flowerSystem])
+  const collectedFlowers = useMemo<FlowerVariant[]>(() => game.state.flowerSystem.getFlowers().map((f) => f.type), [game.state.flowerSystem])
 
-  const maxDecreeSlots = useMemo(() => {
-    const baseSlots = 5
-    const bonusSlots = game.state.flowerSystem.getBonusDecreeSlots()
-    return baseSlots + bonusSlots
-  }, [game.state.flowerSystem])
-
-  // Collected flowers
-  const collectedFlowers = useMemo<FlowerVariant[]>(() => {
-    const flowers = game.state.flowerSystem.getFlowers()
-    return flowers.map((f) => f.type)
-  }, [game.state.flowerSystem])
-
-  // Active season
   const seasonState = useMemo(() => {
     const state = game.state.seasonSystem.getState()
-    return {
-      activeSeason: state.activeSeason?.type as SeasonVariant | null,
-      isCorrupted: state.isCorruptedRound,
-    }
+    return { activeSeason: state.activeSeason?.type as SeasonVariant | null, isCorrupted: state.isCorruptedRound }
   }, [game.state.seasonSystem])
 
-  // Round type based on round number
   const roundType: RoundType = useMemo(() => {
-    switch (game.currentRound) {
-      case 1:
-        return 'Small'
-      case 2:
-        return 'Large'
-      case 3:
-        return 'Boss'
-      default:
-        return 'Small'
-    }
+    return game.currentRound === 1 ? 'Small' : game.currentRound === 2 ? 'Large' : 'Boss'
   }, [game.currentRound])
 
-  // Boss mandate if applicable
   const bossMandate = useMemo(() => {
-    if (roundType === 'Boss') {
-      const roundState = game.state.roundManager.getCurrentRound()
-      return roundState?.bossMandate?.name
-    }
+    if (roundType === 'Boss') return game.state.roundManager.getCurrentRound()?.bossMandate?.name
     return undefined
   }, [roundType, game.state.roundManager])
 
@@ -480,50 +365,15 @@ export function GameplayScreen() {
     <TablePattern showOrnaments={true} animated={false} patternScale={1} className="viewport-full">
       <div className="flex flex-col h-full">
         {/* Top bar */}
-        <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
-          {/* Gold display */}
-          <GlowEffect variant="gold" intensity={0.4} pulsing={false}>
-            <span data-tutorial="gold" className="text-lg font-bold text-[var(--color-golden-yellow)]">
-              ¥{game.gold}
-            </span>
-          </GlowEffect>
-
-          {/* Act/Round with Round Type indicator */}
-          <div data-tutorial="act-round" className="flex items-center gap-2">
-            <span className="text-lg">
-              {t('gameplay.act')} {game.currentAct}
-            </span>
-            <RoundTypeIndicator roundType={roundType} mandateName={bossMandate} />
-          </div>
-
-          <div className="flex items-center gap-2">
-            {/* Exit button */}
-            <button
-              onClick={() => setShowExitConfirm(true)}
-              className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center text-red-400 hover:text-red-300"
-              aria-label={t('common.exit', 'Exit')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-            </button>
-
-            {/* Settings button */}
-            <button
-              onClick={handleSettings}
-              className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label={t('menu.settings')}
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <GameplayTopBar
+          gold={game.gold}
+          currentAct={game.currentAct}
+          roundType={roundType}
+          mandateName={bossMandate}
+          t={t}
+          onExit={() => setShowExitConfirm(true)}
+          onSettings={handleSettings}
+        />
 
         {/* Decree bar */}
         <div data-tutorial="decrees" className="flex gap-2 px-4 py-2 overflow-x-auto">
@@ -537,92 +387,30 @@ export function GameplayScreen() {
 
         {/* Consumables row */}
         <div className="flex items-center justify-end px-4 py-2 gap-2">
-          <ConsumablesBar
-            fateSeals={consumables.fateSeals}
-            celestialOrbs={consumables.celestialOrbs}
-            voidScripts={consumables.voidScripts}
-          />
+          <ConsumablesBar {...consumables} />
         </div>
 
-        {/* Round target and score display */}
-        <div className="flex-shrink-0 mx-4 my-2 p-4 bg-[var(--color-dark-forest)] rounded-lg text-center relative">
-          <p className="text-sm text-[var(--color-beige-white)] opacity-70 mb-1">{t('gameplay.target').toUpperCase()}</p>
-          <GlowEffect
-            variant="gold"
-            intensity={game.score >= game.targetScore ? 0.8 : 0.4}
-            pulsing={game.score >= game.targetScore}
-          >
-            <p data-tutorial="score-target" className="text-3xl font-bold text-[var(--color-golden-yellow)]">
-              {game.targetScore.toLocaleString()}
-            </p>
-          </GlowEffect>
+        {/* Score panel */}
+        <ScorePanel
+          targetScore={game.targetScore}
+          currentScore={game.score}
+          currentPoints={currentPoints}
+          currentMult={currentMult}
+          isScoreAnimating={isScoreAnimating}
+          scorePopups={scorePopups}
+          onPopupComplete={handlePopupComplete}
+          t={t}
+        />
 
-          {/* Points x Mult display */}
-          <div className="my-3">
-            <PointsMultDisplay points={currentPoints || game.score} mult={currentMult} isAnimating={isScoreAnimating} />
-          </div>
+        {/* Play area */}
+        <PlayArea
+          selectedTileCount={game.selectedTileIds.length}
+          yakuReveals={yakuReveals}
+          onYakuComplete={handleYakuComplete}
+        />
 
-          <p data-tutorial="current-score" className="text-lg text-[var(--color-beige-white)]">
-            {t('gameplay.score').toUpperCase()}:{' '}
-            <span className="font-bold text-[var(--color-golden-yellow)]">{game.score.toLocaleString()}</span>
-          </p>
-
-          {/* Progress bar */}
-          <div className="w-full h-2 bg-gray-800 rounded-full mt-2 overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-500 ${
-                game.score >= game.targetScore ? 'bg-green-500' : 'bg-[var(--color-vibrant-orange)]'
-              }`}
-              style={{ width: `${Math.min(100, (game.score / game.targetScore) * 100)}%` }}
-            />
-          </div>
-
-          {/* Score popups */}
-          {scorePopups.map((popup) => (
-            <ScorePopup
-              key={popup.id}
-              points={popup.score}
-              variant={popup.variant}
-              position={{ x: 50, y: 20 }}
-              onComplete={() => handlePopupComplete(popup.id)}
-            />
-          ))}
-        </div>
-
-        {/* Play area / Meld display */}
-        <div
-          data-tutorial="yaku-display"
-          className="flex-1 mx-4 mb-2 bg-[var(--color-dark-forest)] bg-opacity-50 rounded-lg border-2 border-dashed border-[var(--color-metallic-gold)] flex flex-col items-center justify-center p-4 min-h-[100px]"
-        >
-          {game.selectedTileIds.length > 0 ? (
-            <div className="text-center">
-              <p className="text-[var(--color-beige-white)] mb-2">{game.selectedTileIds.length} tiles selected</p>
-              <p className="text-[var(--color-golden-yellow)] text-sm">Tap "Play Hand" to score</p>
-            </div>
-          ) : (
-            <div className="text-center">
-              <p className="text-[var(--color-beige-white)] opacity-50 px-4">Tap tiles to select, or play all</p>
-              <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
-                Press "Play Hand" to score your hand
-              </p>
-            </div>
-          )}
-
-          {/* Yaku reveals */}
-          {yakuReveals.map((yaku) => (
-            <YakuReveal
-              key={yaku.id}
-              japaneseName={yaku.japaneseName}
-              multiplier={yaku.multiplier}
-              tier={yaku.tier}
-              onComplete={() => handleYakuComplete(yaku.id)}
-            />
-          ))}
-        </div>
-
-        {/* Play Surface with Flora panel on left */}
+        {/* Play Surface with Flora panel */}
         <div className="flex-1 flex mx-2 mb-2 min-h-[340px] gap-2">
-          {/* Flora panel */}
           <div data-tutorial="flora" className="flex-shrink-0">
             <FloraTrackCompact
               flowers={collectedFlowers}
@@ -632,7 +420,6 @@ export function GameplayScreen() {
             />
           </div>
 
-          {/* Play Surface */}
           <div data-tutorial="hand" className="flex-1">
             <PlaySurface
               handTiles={game.handTiles}
@@ -651,32 +438,20 @@ export function GameplayScreen() {
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex justify-center items-center gap-4 px-4 py-4 bg-[var(--color-dark-forest)]">
-          {/* Wall remaining indicator */}
-          <span data-tutorial="wall" className="flex items-center gap-1 text-[var(--color-beige-white)] text-sm">
-            <span className="text-gray-400">📦</span> {game.wallRemaining}
-          </span>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleSkip}
-            disabled={game.currentRound === 3} // Can't skip boss rounds
-          >
-            SKIP
-          </Button>
-          <div data-tutorial="draw-button">
-            <Button variant="secondary" size="sm" onClick={handleDraw} disabled={game.handTiles.length >= 14}>
-              {t('gameplay.draw').toUpperCase()}
-            </Button>
-          </div>
-          <Button variant="primary" size="sm" onClick={handlePlayHand} disabled={game.handsRemaining <= 0}>
-            PLAY HAND
-          </Button>
-        </div>
+        {/* Action bar */}
+        <ActionBar
+          wallRemaining={game.wallRemaining}
+          handTileCount={game.handTiles.length}
+          handsRemaining={game.handsRemaining}
+          currentRound={game.currentRound}
+          onSkip={handleSkip}
+          onDraw={handleDraw}
+          onPlayHand={handlePlayHand}
+          t={t}
+        />
       </div>
 
-      {/* Progressive tutorial hint overlay */}
+      {/* Tutorial overlay */}
       <ProgressiveHintOverlay
         hint={tutorial.currentHint}
         onDismiss={tutorial.dismissHint}
@@ -684,7 +459,7 @@ export function GameplayScreen() {
         queueCount={tutorial.hintQueue.length}
       />
 
-      {/* Exit confirmation popup */}
+      {/* Exit confirmation */}
       <ConfirmPopup
         isOpen={showExitConfirm}
         onClose={() => setShowExitConfirm(false)}
@@ -697,9 +472,5 @@ export function GameplayScreen() {
     </TablePattern>
   )
 }
-
-// =============================================================================
-// EXPORTS
-// =============================================================================
 
 export default GameplayScreen

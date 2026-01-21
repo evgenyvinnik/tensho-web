@@ -15,6 +15,7 @@ import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../styles/theme'
 import { useSettingsStore } from '../../stores/settingsStore'
+import { YakuDefinition } from '../../rules/YakuDetector'
 
 // =============================================================================
 // TYPES
@@ -44,7 +45,7 @@ export interface PlaySurfaceProps {
   /** Discards remaining */
   discardsRemaining?: number
   /** Score preview for staged/selected tiles */
-  scorePreview?: { points: number; mult: number; total: number } | null
+  scorePreview?: { points: number; mult: number; total: number; yaku?: YakuDefinition[] } | null
   /** Translation function */
   t?: (key: string) => string
 }
@@ -198,8 +199,43 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   const handleDragEnd = useCallback(() => {
     if (!dragState) return
 
-    const dropZone = getDropZone(dragState.currentX, dragState.currentY)
-    const { tile, originZone } = dragState
+    const { tile, originZone, startX, startY, currentX, currentY } = dragState
+
+    // Calculate movement distance
+    const dx = Math.abs(currentX - startX)
+    const dy = Math.abs(currentY - startY)
+    const movedDistance = Math.sqrt(dx * dx + dy * dy)
+
+    console.log('[PlaySurface] handleDragEnd - movedDistance:', movedDistance, 'tile:', tile.id)
+
+    // If minimal movement (< 10px), treat as a click - toggle staging
+    const CLICK_THRESHOLD = 10
+    if (movedDistance < CLICK_THRESHOLD) {
+      console.log('[PlaySurface] Treating as click - toggling staging for tile:', tile.id)
+      // Toggle tile between hand and staging
+      if (originZone === 'staging') {
+        // Move from staging back to hand
+        setStagedTiles(prev => {
+          const newStaged = prev.filter(t => t.id !== tile.id)
+          console.log('[PlaySurface] Unstaged tile, new count:', newStaged.length)
+          return newStaged
+        })
+      } else {
+        // Move from hand to staging
+        setStagedTiles(prev => {
+          const newStaged = [...prev, tile]
+          console.log('[PlaySurface] Staged tile, new count:', newStaged.length)
+          return newStaged
+        })
+      }
+      setDragState(null)
+      setCurrentDropZone(null)
+      return
+    }
+
+    // Otherwise, handle as a drag
+    const dropZone = getDropZone(currentX, currentY)
+    console.log('[PlaySurface] handleDragEnd - drag to zone:', dropZone)
 
     if (dropZone === 'discard') {
       // Discard the tile
@@ -387,12 +423,29 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             </div>
             {/* Score preview for staged tiles */}
             {scorePreview && (
-              <div className="flex items-center justify-center gap-2 mt-2 px-3 py-1.5 bg-[var(--color-dark-forest)] rounded-lg">
-                <span className="text-blue-400 font-bold">{scorePreview.points.toLocaleString()}</span>
-                <span className="text-[var(--color-golden-yellow)]">×</span>
-                <span className="text-red-400 font-bold">{scorePreview.mult.toFixed(1)}</span>
-                <span className="text-[var(--color-golden-yellow)]">=</span>
-                <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{scorePreview.total.toLocaleString()}</span>
+              <div className="flex flex-col items-center gap-1 mt-2 px-3 py-1.5 bg-[var(--color-dark-forest)] rounded-lg">
+                {/* Yaku display */}
+                {scorePreview.yaku && scorePreview.yaku.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-1 mb-1">
+                    {scorePreview.yaku.map((yaku) => (
+                      <span
+                        key={yaku.id}
+                        className="px-2 py-0.5 rounded text-xs font-bold bg-purple-600 text-white"
+                        title={yaku.description}
+                      >
+                        {yaku.japaneseName} ({yaku.multiplier}×)
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {/* Points x Mult = Total */}
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-blue-400 font-bold">{scorePreview.points.toLocaleString()}</span>
+                  <span className="text-[var(--color-golden-yellow)]">×</span>
+                  <span className="text-red-400 font-bold">{scorePreview.mult.toFixed(1)}</span>
+                  <span className="text-[var(--color-golden-yellow)]">=</span>
+                  <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{scorePreview.total.toLocaleString()}</span>
+                </div>
               </div>
             )}
           </>
@@ -473,7 +526,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   selected={selectedIds.has(tile.id)}
                   glowing={glowingIds.has(tile.id)}
                   disabled={disabled}
-                  onClick={() => onTileSelect?.(tile)}
+                  onClick={() => handleTileClick(tile)}
                 />
               </div>
             )
