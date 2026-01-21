@@ -83,7 +83,7 @@ function AchievementCard({
                 ${unlocked ? 'text-[var(--color-golden-yellow)]' : 'text-[var(--color-beige-white)]'}
               `}
             >
-              {t(definition.nameKey, definition.nameKey.split('.').pop())}
+              {t(definition.nameKey, definition.nameKey.split('.').pop() ?? definition.nameKey)}
             </h3>
             {unlocked && <span className="text-green-400 text-sm">✓</span>}
           </div>
@@ -111,7 +111,7 @@ function AchievementCard({
       {isExpanded && (
         <div className="mt-3 pt-3 border-t border-[var(--color-forest-green)]">
           <p className="text-sm text-[var(--color-beige-white)]">
-            {t(definition.descriptionKey, definition.descriptionKey.split('.').pop())}
+            {t(definition.descriptionKey, definition.descriptionKey.split('.').pop() ?? definition.descriptionKey)}
           </p>
 
           {definition.unlocks && (

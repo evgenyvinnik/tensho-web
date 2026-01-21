@@ -9,7 +9,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { Tile } from '../../core/Tile'
-import { getTileImagePath } from '../../utils/assetPaths'
+import { getTileImagePath } from '../../utils/assets'
 import { Suit, ExtendedSuit } from '../../core/types'
 
 // =============================================================================
@@ -217,7 +217,7 @@ export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
                 title={`${tile.displayName} (${count} remaining)`}
               >
                 <img
-                  src={getTileImagePath(tile)}
+                  src={getTileImagePath(tile.suit, tile.rank)}
                   alt={tile.displayName}
                   className={`w-full h-auto rounded ${count === 0 ? 'opacity-30 grayscale' : ''}`}
                 />
