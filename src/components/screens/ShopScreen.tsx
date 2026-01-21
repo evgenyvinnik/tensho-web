@@ -16,7 +16,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
-import { useGameController } from '../../game'
+import { useGameController } from '../../game/useGameController'
 import { useShopStore } from '../../stores/shopStore'
 import { useDecreeStore, createDecree } from '../../stores/decreeStore'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'

@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
-import { useSettingsStore } from '../stores';
+import { useSettingsStore } from '../stores/settingsStore';
 import { audioSystem, playSFX, TileSFX, UISFX, FeedbackSFX } from '../systems/AudioSystem';
 import {
   SoundEffectId,

@@ -17,7 +17,7 @@ import {
   getAchievementsByCategory,
   type AchievementCategory,
   type AchievementDefinition,
-} from '../../stores'
+} from '../../stores/achievementStore'
 
 const AnimatedDiv = animated('div')
 

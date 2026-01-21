@@ -20,7 +20,7 @@ import {
   getPackDisplayInfo,
   getPackJapaneseName,
   getPackIconColor,
-} from '../../stores'
+} from '../../stores/packStore'
 
 // =============================================================================
 // TYPE DEFINITIONS
