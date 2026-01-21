@@ -676,102 +676,192 @@ This hierarchy governs conflict resolution and effect stacking order.
 
 ## 🏗 Technical Architecture
 
-### Unity Project Structure
+### React/TypeScript Project Structure
 
 ```
-Assets/
-├── Scripts/
-│   ├── Core/
-│   │   ├── Tile.cs
-│   │   ├── Wall.cs
-│   │   ├── Hand.cs
-│   │   ├── Meld.cs
-│   │   └── DeadPool.cs
-│   ├── Rules/
-│   │   ├── HandValidator.cs
-│   │   ├── ShantenCalculator.cs
-│   │   ├── YakuDefinition.cs
-│   │   ├── YakuDetector.cs
-│   │   └── ScoringEngine.cs
-│   ├── Systems/
-│   │   ├── DecreeDefinition.cs
-│   │   ├── FlowerDefinition.cs
-│   │   ├── FlowerSystem.cs
-│   │   ├── SeasonDefinition.cs
-│   │   ├── SeasonSystem.cs
-│   │   └── Shop/
-│   │       ├── ShopManager.cs
-│   │       ├── ShopOffer.cs
-│   │       └── DecreeInventory.cs
-│   ├── GameFlow/
-│   │   ├── GameManager.cs
-│   │   ├── GameState.cs
-│   │   └── RoundManager.cs
-│   ├── UI/
-│   │   ├── TileDisplay.cs
-│   │   ├── HandDisplay.cs
-│   │   ├── TileSpriteMapping.cs
-│   │   ├── Screens/
-│   │   │   ├── SplashScreenUI.cs
-│   │   │   ├── MainMenuUI.cs
-│   │   │   ├── GameplayUI.cs
-│   │   │   ├── ShopUI.cs
-│   │   │   ├── GameOverUI.cs
-│   │   │   ├── PauseMenuUI.cs
-│   │   │   └── SettingsUI.cs
-│   │   └── Components/
-│   │       ├── DecreeCardUI.cs
-│   │       ├── FlowerTrackUI.cs
-│   │       ├── SeasonIndicatorUI.cs
-│   │       ├── ScoreDisplayUI.cs
-│   │       └── YakuListUI.cs
-│   ├── Audio/
-│   │   ├── AudioManager.cs
-│   │   └── UIButtonSFX.cs
-│   ├── VFX/
-│   │   ├── TileAnimator.cs
-│   │   ├── ScorePopupAnimator.cs
-│   │   ├── YakuRevealAnimator.cs
-│   │   ├── UIFeedbackEffects.cs
-│   │   └── ScreenTransitions.cs
-│   ├── Tutorial/
-│   │   ├── TutorialManager.cs
-│   │   ├── TutorialStep.cs
-│   │   ├── TutorialOverlay.cs
-│   │   ├── TutorialFlow.cs
-│   │   ├── TutorialFlowStep.cs
-│   │   ├── TutorialFlowController.cs
-│   │   ├── TileDescriptor.cs
-│   │   └── TutorialRunConfig.cs
-│   ├── Localization/
-│   │   ├── LocalizationManager.cs
-│   │   └── LocalizedTextBinder.cs
-│   ├── Monetization/
-│   │   ├── AdManager.cs
-│   │   └── IAPManager.cs
-│   ├── Meta/
-│   │   ├── AchievementDefinition.cs
-│   │   ├── AchievementManager.cs
-│   │   ├── MetaProgressionManager.cs
-│   │   ├── TableStyleDefinition.cs
-│   │   └── SaveManager.cs
-│   └── Editor/
-│       └── ScriptableObjectGenerator.cs
-├── ScriptableObjects/
-│   ├── Yaku/           (21 yaku definitions)
-│   ├── Decrees/        (20+ decree definitions)
-│   ├── Flowers/        (4 flower definitions)
-│   ├── Seasons/        (8 season definitions)
-│   ├── TableStyles/    (8 table style definitions)
-│   └── Achievements/   (15+ achievement definitions)
-└── Prefabs/
-    ├── Tiles/
-    └── UI/
+src/
+├── core/                    # Game primitives
+│   ├── Tile.ts              # Tile class with factory methods
+│   ├── Hand.ts              # Hand class and ParsedHand interface
+│   ├── Meld.ts              # Meld representations (sequence, triplet, quad)
+│   ├── Wall.ts              # Wall management with dead wall
+│   ├── DeadPool.ts          # Discard management
+│   ├── TileModifier.ts      # Tile mark types (Enhancement, Seal, Edition)
+│   └── types.ts             # Core enums: TileSuit, DragonType, WindType
+│
+├── rules/                   # Game rules and scoring
+│   ├── HandValidator.ts     # Legal hand validation
+│   ├── ShantenCalculator.ts # Distance-to-tenpai computation
+│   ├── YakuDefinition.ts    # 21 yaku definitions with tiers
+│   ├── YakuDetector.ts      # Pattern matching for yaku detection
+│   └── ScoringEngine.ts     # Score calculation with multipliers
+│
+├── systems/                 # Game systems (27 files)
+│   ├── DecreeSystem.ts      # Rule-bending modifiers
+│   ├── FlowerSystem.ts      # Persistent run-wide scaling
+│   ├── SeasonSystem.ts      # Round-scoped effects
+│   ├── RoundManager.ts      # Act/Round progression
+│   ├── TeaHouseSystem.ts    # Shop generation and logic
+│   ├── ShopGenerator.ts     # Item generation for shop
+│   ├── PricingCalculator.ts # Cost formulas with discounts
+│   ├── FateSealSystem.ts    # Tarot-equivalent (22 seals)
+│   ├── CelestialOrbSystem.ts # Planet-equivalent (13 orbs)
+│   ├── VoidScriptSystem.ts  # Spectral-equivalent (20 scripts)
+│   ├── CharterSystem.ts     # Voucher-equivalent (32 charters)
+│   ├── BlessingPackSystem.ts # Booster pack system
+│   ├── OmenTagSystem.ts     # Skip rewards (23 omens)
+│   ├── TableStakeSystem.ts  # 8-tier difficulty system
+│   ├── MandateEffectSystem.ts # Boss mandate restrictions
+│   ├── TileModifierSystem.ts # Tile mark application
+│   ├── StickerSystem.ts     # Eternal, Perishable, Rental
+│   ├── ConsumableSystem.ts  # Consumable management
+│   ├── TableStyleSystem.ts  # Deck variants (8 styles)
+│   ├── RedFiveSystem.ts     # Red five tile variants
+│   ├── ArchiveSystem.ts     # Collection tracking (352+ items)
+│   ├── MetaProgressionSystem.ts # Persistent unlocks
+│   ├── AudioSystem.ts       # Audio playback
+│   ├── VFXSystem.ts         # Visual effects
+│   └── types.ts             # Shared system types
+│
+├── stores/                  # Zustand state management (18 stores)
+│   ├── gameStore.ts         # Session state: act, round, score, gold
+│   ├── handStore.ts         # Current hand tiles and melds
+│   ├── wallStore.ts         # Wall and dead wall state
+│   ├── decreeStore.ts       # Active decrees
+│   ├── floraStore.ts        # Flowers and seasons
+│   ├── settingsStore.ts     # User preferences
+│   ├── achievementStore.ts  # Achievement tracking
+│   ├── tileMarkStore.ts     # Tile modifications
+│   ├── charterStore.ts      # Owned charters
+│   ├── omenStore.ts         # Active omen tags
+│   ├── packStore.ts         # Pack state
+│   ├── shopStore.ts         # Shop state
+│   ├── stakeStore.ts        # Difficulty tier
+│   ├── consumableStore.ts   # Consumable inventory
+│   ├── tableStyleStore.ts   # Selected table style
+│   ├── archiveStore.ts      # Collection discovery
+│   ├── progressionStore.ts  # Meta-progression
+│   └── index.ts             # Store exports
+│
+├── config/                  # Game content definitions
+│   ├── decreeDefinitions.ts # 155 decree definitions
+│   ├── charterDefinitions.ts # 32 charter definitions
+│   ├── mandateDefinitions.ts # 27 mandate definitions
+│   ├── omenDefinitions.ts   # 23 omen definitions
+│   ├── stakeDefinitions.ts  # 8 stake tier definitions
+│   ├── packDefinitions.ts   # Blessing pack types
+│   ├── tableStyleDefinitions.ts # 8 table style definitions
+│   ├── audioDefinitions.ts  # Audio asset mappings
+│   ├── archiveDefinitions.ts # Collection items
+│   └── unlockDefinitions.ts # Meta-progression unlocks
+│
+├── game/                    # Game orchestration
+│   ├── GameOrchestrator.ts  # Main game controller
+│   ├── EventBus.ts          # Event system
+│   ├── DebuffSystem.ts      # Debuff management
+│   └── index.ts             # Game exports
+│
+├── components/              # React components
+│   ├── screens/             # Full-page screens
+│   │   ├── MenuScreen.tsx   # Main menu with floating tiles
+│   │   ├── GameplayScreen.tsx # Core gameplay UI
+│   │   ├── ShopScreen.tsx   # Tea House shop
+│   │   ├── SettingsScreen.tsx # User preferences
+│   │   ├── GameOverScreen.tsx # End-of-run screen
+│   │   ├── TutorialScreen.tsx # Tutorial flow
+│   │   ├── AchievementsScreen.tsx # Heavenly Accolades
+│   │   └── CollectionScreen.tsx # Archive of Hands
+│   ├── ui/                  # Reusable UI components
+│   │   ├── Button.tsx       # Animated button with variants
+│   │   ├── BackButton.tsx   # Navigation back button
+│   │   ├── IconButton.tsx   # Icon-only button
+│   │   ├── Slider.tsx       # Volume/value slider
+│   │   ├── Toggle.tsx       # Switch toggle
+│   │   ├── Popup.tsx        # Modal dialogs (Alert, Confirm)
+│   │   ├── DecreeCard.tsx   # Decree display card
+│   │   ├── FlowerTrack.tsx  # Flower collection display
+│   │   ├── Codex.tsx        # Game encyclopedia
+│   │   ├── Tutorial.tsx     # Tutorial overlay
+│   │   ├── Icons.tsx        # SVG icon components
+│   │   └── ErrorBoundary.tsx # Error handling
+│   ├── tiles/               # Tile rendering
+│   │   ├── TileImage.tsx    # Static tile display
+│   │   └── AnimatedTile.tsx # Animated tile with springs
+│   ├── hand/                # Hand display
+│   │   └── AnimatedHand.tsx # Hand with drag-and-drop
+│   ├── shop/                # Shop components
+│   │   ├── ShopHeader.tsx   # Gold, reroll, settings
+│   │   ├── ShopItemCard.tsx # Item purchase card
+│   │   ├── PackCard.tsx     # Blessing pack card
+│   │   ├── CharterCard.tsx  # Imperial charter card
+│   │   └── PackOpeningModal.tsx # Pack opening animation
+│   ├── effects/             # Visual effects
+│   │   ├── GlowEffect.tsx   # Glowing highlights
+│   │   ├── ParticleEffect.tsx # Particle systems
+│   │   ├── ScorePopup.tsx   # Score animations
+│   │   ├── YakuReveal.tsx   # Yaku announcement
+│   │   ├── ScreenFlash.tsx  # Screen flash effect
+│   │   └── AnimatedBackground.tsx # Background effects
+│   ├── menu/                # Menu-specific components
+│   │   ├── TableStyleButton.tsx
+│   │   ├── TableStyleCard.tsx
+│   │   └── TableStyleModal.tsx
+│   ├── collection/          # Collection components
+│   │   ├── ItemCard.tsx     # Archive item display
+│   │   ├── ItemGrid.tsx     # Grid layout
+│   │   ├── CategoryTabs.tsx # Category navigation
+│   │   └── ItemDetailModal.tsx # Item details
+│   └── gameplay/            # Gameplay components
+│       └── PlaySurface.tsx  # Game table surface
+│
+├── hooks/                   # Custom React hooks
+│   ├── useAudio.ts          # Audio playback hook
+│   ├── useVFX.tsx           # Visual effects hook
+│   └── index.ts             # Hook exports
+│
+├── animations/              # Animation utilities
+│   └── springs.ts           # React Spring configurations
+│
+├── router/                  # Navigation
+│   └── index.tsx            # React Router setup
+│
+├── i18n/                    # Internationalization
+│   ├── index.ts             # i18next configuration
+│   └── locales/             # 13 language files
+│       ├── en.json          # English
+│       ├── ja.json          # Japanese
+│       ├── zh-Hans.json     # Simplified Chinese
+│       ├── zh-Hant.json     # Traditional Chinese
+│       ├── ko.json          # Korean
+│       ├── es.json          # Spanish
+│       ├── fr.json          # French
+│       ├── it.json          # Italian
+│       ├── ru.json          # Russian
+│       ├── th.json          # Thai
+│       ├── id.json          # Indonesian
+│       ├── tr.json          # Turkish
+│       └── tl.json          # Tagalog
+│
+├── styles/                  # Styling
+│   └── theme.ts             # Color palette and theme
+│
+├── utils/                   # Utilities
+│   └── assets.ts            # Asset path helpers
+│
+├── types/                   # TypeScript types
+│   └── index.ts             # Shared type definitions
+│
+├── test/                    # Test utilities
+│   └── setup.ts             # Vitest setup
+│
+├── App.tsx                  # Root React component
+├── main.tsx                 # Application entry point
+└── index.css                # Global styles with Tailwind
 ```
 
 ### Architecture Goals
 
-- **Data-driven rules** — ScriptableObjects for all game content
+- **Data-driven rules** — TypeScript definition files for all game content
 - **Deterministic RNG** — Seeded random for reproducibility
 - **Separation of concerns** — Rules engine completely independent from UI
 - **Modular systems** — Each system (Decree/Flower/Season) pluggable

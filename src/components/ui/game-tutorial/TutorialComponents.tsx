@@ -238,9 +238,8 @@ export function TutorialTooltip({
       style={{
         left: tooltipPosition.x,
         top: tooltipPosition.y,
-        transform: 'translate(-50%, -50%)',
+        transform: spring.scale.to((s) => `translate(-50%, -50%) scale(${s})`),
         opacity: spring.opacity,
-        scale: spring.scale,
       }}
     >
       {/* Tooltip card - this part IS interactive for buttons */}
@@ -294,7 +293,7 @@ export function TutorialTooltip({
         <div className="flex justify-between items-center gap-3">
           <button
             onClick={onSkip}
-            className="text-[var(--color-metallic-gold)] text-sm hover:text-[var(--color-golden-yellow)] transition-colors"
+            className="min-h-[44px] px-3 py-2 text-[var(--color-metallic-gold)] text-sm hover:text-[var(--color-golden-yellow)] transition-colors"
           >
             {t('gameTutorial.skip', 'Skip Tutorial')}
           </button>

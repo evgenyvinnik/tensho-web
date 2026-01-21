@@ -9,6 +9,7 @@ import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated, useSprings } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
+import { BackButton } from '../ui/BackButton'
 import {
   useAchievementStore,
   ACHIEVEMENT_DEFINITIONS,
@@ -255,15 +256,7 @@ export function AchievementsScreen() {
         className="flex-shrink-0 px-4 py-3 bg-[var(--color-forest-green)] border-b-2 border-[var(--color-saddle-brown)]"
       >
         <div className="flex items-center justify-between mb-3">
-          <button
-            onClick={handleBack}
-            className="p-2 rounded-lg hover:bg-[var(--color-dark-forest)] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-            aria-label={t('common.back', 'Back')}
-          >
-            <svg className="w-6 h-6 text-[var(--color-beige-white)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+          <BackButton onClick={handleBack} ariaLabel={t('common.back', 'Back')} />
 
           <div className="text-center">
             <h1 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">

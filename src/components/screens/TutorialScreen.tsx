@@ -12,6 +12,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { Button } from '../ui/Button'
+import { BackButton } from '../ui/BackButton'
 
 // Import from extracted tutorial modules
 import {
@@ -124,15 +125,7 @@ export function TutorialScreen() {
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4 bg-[var(--color-dark-forest)]">
-        <button
-          onClick={goBack}
-          className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center text-[var(--color-beige-white)]"
-          aria-label={t('common.back')}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+        <BackButton onClick={goBack} ariaLabel={t('common.back')} />
         <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
           {t('tutorial.title', 'Codex')}
         </h1>

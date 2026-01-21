@@ -11,96 +11,11 @@ import { useAppNavigation } from '../../router'
 import { useSettingsStore, selectEffectiveMusicVolume, selectEffectiveSfxVolume } from '../../stores/settingsStore'
 import { useAchievementStore } from '../../stores/achievementStore'
 import { Button } from '../ui/Button'
+import { BackButton } from '../ui/BackButton'
+import { Slider } from '../ui/Slider'
+import { Toggle } from '../ui/Toggle'
 import { LanguageSelector } from '../ui/LanguageSelector'
 import { ConfirmPopup, AlertPopup } from '../ui/Popup'
-
-/**
- * Slider component for volume controls
- */
-interface SliderProps {
-  value: number
-  onChange: (value: number) => void
-  min?: number
-  max?: number
-  step?: number
-  label: string
-  disabled?: boolean
-}
-
-function Slider({ value, onChange, min = 0, max = 100, step = 1, label, disabled }: SliderProps) {
-  const percentage = ((value - min) / (max - min)) * 100
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-center">
-        <label className="text-[var(--color-beige-white)]">{label}</label>
-        <span className="text-[var(--color-golden-yellow)] font-mono font-bold">{value}%</span>
-      </div>
-      <div className="relative h-6 flex items-center">
-        {/* Track background */}
-        <div className="absolute w-full h-3 bg-[var(--color-dark-forest)] rounded-full border border-[var(--color-metallic-gold)]" />
-        {/* Filled track */}
-        <div
-          className="absolute h-3 bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)] rounded-full"
-          style={{ width: `${percentage}%` }}
-        />
-        {/* Input */}
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          disabled={disabled}
-          className="absolute w-full h-6 opacity-0 cursor-pointer disabled:cursor-not-allowed"
-        />
-        {/* Thumb indicator */}
-        <div
-          className={`absolute w-5 h-5 bg-[var(--color-beige-white)] rounded-full border-2 border-[var(--color-golden-yellow)] shadow-lg pointer-events-none transition-opacity ${disabled ? 'opacity-50' : ''}`}
-          style={{ left: `calc(${percentage}% - 10px)` }}
-        />
-      </div>
-    </div>
-  )
-}
-
-/**
- * Toggle switch component
- */
-interface ToggleProps {
-  checked: boolean
-  onChange: (checked: boolean) => void
-  label: string
-  description?: string
-}
-
-function Toggle({ checked, onChange, label, description }: ToggleProps) {
-  return (
-    <div className="flex items-center justify-between py-2">
-      <div>
-        <p className="text-[var(--color-beige-white)]">{label}</p>
-        {description && (
-          <p className="text-sm text-[var(--color-beige-white)] opacity-60">{description}</p>
-        )}
-      </div>
-      <button
-        onClick={() => onChange(!checked)}
-        className={`relative w-12 h-6 rounded-full transition-colors ${
-          checked ? 'bg-[var(--color-vibrant-orange)]' : 'bg-[var(--color-dark-forest)]'
-        }`}
-        role="switch"
-        aria-checked={checked}
-      >
-        <span
-          className={`absolute top-1 w-4 h-4 bg-[var(--color-beige-white)] rounded-full transition-transform ${
-            checked ? 'translate-x-7' : 'translate-x-1'
-          }`}
-        />
-      </button>
-    </div>
-  )
-}
 
 /**
  * SettingsScreen - User preferences page
@@ -168,15 +83,7 @@ export function SettingsScreen() {
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4 bg-[var(--color-dark-forest)]">
-        <button
-          onClick={goBack}
-          className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center text-[var(--color-beige-white)]"
-          aria-label={t('common.back')}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+        <BackButton onClick={goBack} ariaLabel={t('common.back')} />
         <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
           {t('menu.settings')}
         </h1>

@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useArchiveStore } from '../../stores/archiveStore'
+import { BackButton } from '../ui/BackButton'
 import {
   ARCHIVE_CATEGORIES,
   getAllArchiveCategories,
@@ -288,15 +289,7 @@ export function CollectionScreen() {
       >
         <div className="flex items-center justify-between mb-3">
           {/* Back button */}
-          <button
-            onClick={handleBack}
-            className="p-2 rounded-lg hover:bg-[var(--color-dark-forest)] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-            aria-label={t('common.back', 'Back')}
-          >
-            <svg className="w-6 h-6 text-[var(--color-beige-white)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+          <BackButton onClick={handleBack} ariaLabel={t('common.back', 'Back')} />
 
           {/* Title */}
           <div className="text-center">

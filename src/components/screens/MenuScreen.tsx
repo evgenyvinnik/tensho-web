@@ -350,11 +350,7 @@ export function MenuScreen() {
   })
 
   const handlePlay = () => {
-    // Show tutorial for first-time users
-    if (!tutorial.hasCompleted) {
-      tutorial.open()
-      return
-    }
+    // Go directly to game - progressive tutorial will show hints during gameplay
     audio.play()
     startNewRun()
     setPhase('gameplay')

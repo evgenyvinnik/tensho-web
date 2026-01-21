@@ -7,6 +7,8 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useSpring, animated } from '@react-spring/web'
 import { popupAssets } from '../../utils/assets'
+import { Button } from './Button'
+import { IconButton, Icons } from './IconButton'
 
 const AnimatedDiv = animated('div')
 
@@ -142,20 +144,15 @@ export function Popup({
     >
       {/* Close button - positioned at top right edge */}
       {showCloseButton && (
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-3 z-10 p-2 rounded-lg bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)]
-                     border-2 border-[var(--color-metallic-gold)] hover:border-[var(--color-golden-yellow)]
-                     text-[var(--color-beige-white)] hover:text-white
-                     transition-all hover:scale-110 active:scale-95
-                     min-w-[44px] min-h-[44px] flex items-center justify-center
-                     shadow-md"
-          aria-label="Close"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        <div className="absolute top-5 right-3 z-10">
+          <IconButton
+            icon={<Icons.Close />}
+            ariaLabel="Close"
+            variant="secondary"
+            size="md"
+            onClick={onClose}
+          />
+        </div>
       )}
 
       {/* Inner container with padding for scroll background */}
@@ -231,15 +228,9 @@ export function AlertPopup({
     <Popup isOpen={isOpen} onClose={onClose} title={title} showCloseButton={false}>
       <p className="mb-6 text-lg">{message}</p>
       <div className="flex justify-center">
-        <button
-          onClick={onClose}
-          className="px-8 py-3 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
-                     text-[var(--color-beige-white)] font-bold rounded-lg
-                     border-2 border-[var(--color-golden-yellow)]
-                     transition-all hover:scale-105 active:scale-95"
-        >
+        <Button variant="primary" size="md" onClick={onClose}>
           {confirmText}
-        </button>
+        </Button>
       </div>
     </Popup>
   )
@@ -276,24 +267,12 @@ export function ConfirmPopup({
     <Popup isOpen={isOpen} onClose={onClose} title={title} showCloseButton={false}>
       <p className="mb-6 text-lg">{message}</p>
       <div className="flex justify-center gap-4">
-        <button
-          onClick={onClose}
-          className="px-6 py-3 bg-[var(--color-forest-green)] hover:bg-[var(--color-dark-forest)]
-                     text-[var(--color-beige-white)] font-bold rounded-lg
-                     border-2 border-[var(--color-metallic-gold)]
-                     transition-all hover:scale-105 active:scale-95"
-        >
+        <Button variant="secondary" size="md" onClick={onClose}>
           {cancelText}
-        </button>
-        <button
-          onClick={handleConfirm}
-          className="px-6 py-3 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
-                     text-[var(--color-beige-white)] font-bold rounded-lg
-                     border-2 border-[var(--color-golden-yellow)]
-                     transition-all hover:scale-105 active:scale-95"
-        >
+        </Button>
+        <Button variant="primary" size="md" onClick={handleConfirm}>
           {confirmText}
-        </button>
+        </Button>
       </div>
     </Popup>
   )

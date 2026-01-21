@@ -336,34 +336,36 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
 
   return (
     <div className="relative w-full">
-      {/* Discard zone (appears when dragging) */}
-      <animated.div
-        className="absolute top-0 left-0 right-0 flex items-center justify-center py-6"
-        style={{
-          opacity: discardZoneSpring.opacity,
-          transform: to(
-            [discardZoneSpring.y, discardZoneSpring.scale],
-            (y, scale) => `translateY(${y}px) scale(${scale})`
-          ),
-          pointerEvents: isDragging ? 'auto' : 'none',
-          zIndex: 100,
-        }}
-      >
+      {/* Discard zone (only render when dragging to avoid z-index conflicts) */}
+      {isDragging && (
         <animated.div
-          className="px-10 py-5 rounded-xl border-3 border-dashed font-bold text-lg"
+          className="absolute top-0 left-0 right-0 flex items-center justify-center py-6"
           style={{
-            borderColor: isNearZone ? '#FF5722' : '#FF8A65',
-            backgroundColor: isNearZone ? 'rgba(255, 87, 34, 0.25)' : 'rgba(255, 87, 34, 0.1)',
-            color: isNearZone ? '#FF5722' : '#FF8A65',
-            boxShadow: discardZoneSpring.glowIntensity.to(
-              (i) => `0 0 ${i * 30}px rgba(255, 87, 34, ${i * 0.5}), inset 0 0 ${i * 20}px rgba(255, 87, 34, ${i * 0.2})`
+            opacity: discardZoneSpring.opacity,
+            transform: to(
+              [discardZoneSpring.y, discardZoneSpring.scale],
+              (y, scale) => `translateY(${y}px) scale(${scale})`
             ),
-            transition: 'border-color 0.15s, background-color 0.15s, color 0.15s',
+            pointerEvents: 'auto',
+            zIndex: 100,
           }}
         >
-          {isNearZone ? '🗑️ Release to Discard!' : discardZoneLabel}
+          <animated.div
+            className="px-10 py-5 rounded-xl border-3 border-dashed font-bold text-lg"
+            style={{
+              borderColor: isNearZone ? '#FF5722' : '#FF8A65',
+              backgroundColor: isNearZone ? 'rgba(255, 87, 34, 0.25)' : 'rgba(255, 87, 34, 0.1)',
+              color: isNearZone ? '#FF5722' : '#FF8A65',
+              boxShadow: discardZoneSpring.glowIntensity.to(
+                (i) => `0 0 ${i * 30}px rgba(255, 87, 34, ${i * 0.5}), inset 0 0 ${i * 20}px rgba(255, 87, 34, ${i * 0.2})`
+              ),
+              transition: 'border-color 0.15s, background-color 0.15s, color 0.15s',
+            }}
+          >
+            {isNearZone ? '🗑️ Release to Discard!' : discardZoneLabel}
+          </animated.div>
         </animated.div>
-      </animated.div>
+      )}
 
       {/* Hand */}
       <AnimatedHand

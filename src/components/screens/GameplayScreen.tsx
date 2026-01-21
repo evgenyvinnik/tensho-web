@@ -14,6 +14,7 @@ import { useResponsiveTileSize } from '../../hooks/useResponsiveTileSize'
 import { Button } from '../ui/Button'
 import { TablePattern } from '../ui/TablePattern'
 import { HandWithDiscardZone } from '../hand/AnimatedHand'
+import { PlaySurface } from '../gameplay/PlaySurface'
 import { ScorePopup } from '../effects/ScorePopup'
 import { YakuReveal } from '../effects/YakuReveal'
 import { GameTutorial, useGameTutorial } from '../ui/GameTutorial'
@@ -774,34 +775,19 @@ export function GameplayScreen() {
           ))}
         </div>
 
-        {/* Shanten status with improved styling */}
-        <div className="mx-4 mb-2 px-4 py-2 bg-[var(--color-dark-forest)] rounded-lg flex items-center justify-between">
-          <GlowEffect variant="gold" intensity={game.handTiles.length >= 13 ? 0.8 : 0.3} pulsing={game.handTiles.length >= 13}>
-            <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{shantenDisplay}</span>
-          </GlowEffect>
-          <div className="flex items-center gap-4 text-[var(--color-beige-white)]">
-            <span data-tutorial="hands-remaining" className="flex items-center gap-1">
-              <span className="text-blue-400">🖐</span> {game.handsRemaining}
-            </span>
-            <span data-tutorial="discards-remaining" className="flex items-center gap-1">
-              <span className="text-red-400">🗑</span> {game.discardsRemaining}
-            </span>
-            <span data-tutorial="wall" className="flex items-center gap-1">
-              <span className="text-gray-400">📦</span> {game.wallRemaining}
-            </span>
-          </div>
-        </div>
-
-        {/* Hand area with drag-to-discard support */}
-        <div data-tutorial="hand" className="mx-4 mb-2 p-4 bg-[var(--color-dark-forest)] rounded-lg">
-          <HandWithDiscardZone
-            tiles={game.handTiles}
-            size={tileSize}
+        {/* Play Surface - Unified hand, staging, and discard area */}
+        <div data-tutorial="hand" className="flex-1 mx-2 mb-2 min-h-[340px]">
+          <PlaySurface
+            handTiles={game.handTiles}
+            tileSize={tileSize}
             selectedIds={new Set(game.selectedTileIds)}
-            onTileClick={handleTileClick}
+            onTileSelect={handleTileClick}
             onTileDiscard={handleTileDiscard}
-            discardZoneLabel={t('gameplay.discard')}
-            overlap={true}
+            disabled={false}
+            shantenDisplay={shantenDisplay}
+            handsRemaining={game.handsRemaining}
+            discardsRemaining={game.discardsRemaining}
+            t={t}
           />
         </div>
 
