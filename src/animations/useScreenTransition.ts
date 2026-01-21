@@ -5,9 +5,9 @@
  * Uses React Spring for smooth, physics-based transitions.
  */
 
-import { useSpring, useTransition, config } from '@react-spring/web';
+import { useSpring, useTransition } from '@react-spring/web';
 import { useCallback, useState } from 'react';
-import { SPRINGS, DURATIONS, OPACITY } from './constants';
+import { SPRINGS, DURATIONS } from './constants';
 import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsStore';
 
 export type SlideDirection = 'left' | 'right' | 'up' | 'down';
@@ -339,7 +339,7 @@ export function useScreenShake() {
   });
 
   const trigger = useCallback(
-    (intensity: 'light' | 'medium' | 'heavy' = 'medium') => {
+    (_intensity: 'light' | 'medium' | 'heavy' = 'medium') => {
       if (!reducedMotion) {
         setIsShaking(true);
       }

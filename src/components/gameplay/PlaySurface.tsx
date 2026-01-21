@@ -81,7 +81,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   shantenDisplay = '',
   handsRemaining = 0,
   discardsRemaining = 0,
-  t = (key) => key,
+  t: _t = (key) => key,
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[tileSize]
@@ -156,7 +156,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   }, [disabled, stagedTiles])
 
   // Handle tile click - toggle between hand and staging
-  const handleTileClick = useCallback((tile: Tile) => {
+  const _handleTileClick = useCallback((tile: Tile) => {
     if (disabled) return
 
     const isStaged = stagedTiles.some(t => t.id === tile.id)

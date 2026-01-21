@@ -43,7 +43,7 @@ vi.mock('@react-spring/web', () => ({
   config: {
     stiff: {},
   },
-  to: (...args: unknown[]) => 'none',
+  to: (..._args: unknown[]) => 'none',
 }))
 
 // Mock the tile animations

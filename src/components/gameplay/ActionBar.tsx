@@ -55,7 +55,7 @@ export function ActionBar({
   currentRound,
   onSkip,
   onPlayHand,
-  t,
+  t: _t,
 }: ActionBarProps) {
   const canPlay = handsRemaining > 0
   const canSkip = currentRound !== 3 // Can't skip boss rounds

@@ -14,7 +14,7 @@ import { useSpring, animated } from '@react-spring/web'
 import { createPortal } from 'react-dom'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
-import type { ArchiveCategory, ArchiveCategoryDefinition } from '../../config/archiveDefinitions'
+import type { ArchiveCategoryDefinition } from '../../config/archiveDefinitions'
 import type { ItemDisplayInfo } from './ItemCard'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 

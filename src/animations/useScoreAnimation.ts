@@ -5,9 +5,9 @@
  * Uses React Spring for smooth, physics-based animations.
  */
 
-import { useSpring, useTrail, config } from '@react-spring/web';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { SPRINGS, DURATIONS, SCALES, OFFSETS } from './constants';
+import { useSpring, useTrail } from '@react-spring/web';
+import { useCallback, useRef, useState } from 'react';
+import { SPRINGS, DURATIONS, SCALES } from './constants';
 import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsStore';
 
 /**

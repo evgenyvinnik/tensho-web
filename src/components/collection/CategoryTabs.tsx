@@ -84,7 +84,7 @@ export function CategoryTabs({
   onCategoryChange,
   categoryCounts,
 }: CategoryTabsProps) {
-  const { t } = useTranslation()
+  useTranslation()
 
   return (
     <div className="overflow-x-auto pb-2 scrollbar-hide">

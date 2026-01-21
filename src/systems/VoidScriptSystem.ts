@@ -656,89 +656,101 @@ export class VoidScriptSystem {
 
     // Apply the main effect
     switch (script.effect.type) {
-      case 'destroy_and_create':
+      case 'destroy_and_create': {
         const createResult = this.handleDestroyAndCreate(script, context)
         effects.push(...createResult.effects)
         message = createResult.message
         success = createResult.success
         break
+      }
 
-      case 'apply_seal_to_tile':
+      case 'apply_seal_to_tile': {
         const sealResult = this.handleApplySeal(script, context)
         effects.push(...sealResult.effects)
         message = sealResult.message
         success = sealResult.success
         break
+      }
 
-      case 'apply_edition':
+      case 'apply_edition': {
         const editionResult = this.handleApplyEdition(script, context)
         effects.push(...editionResult.effects)
         message = editionResult.message
         success = editionResult.success
         break
+      }
 
-      case 'create_rare_decree':
+      case 'create_rare_decree': {
         const decreeResult = this.handleCreateRareDecree(script, context)
         effects.push(...decreeResult.effects)
         message = decreeResult.message
         success = decreeResult.success
         break
+      }
 
-      case 'suit_conversion':
+      case 'suit_conversion': {
         const suitResult = this.handleSuitConversion(script, context)
         effects.push(...suitResult.effects)
         message = suitResult.message
         success = suitResult.success
         break
+      }
 
-      case 'rank_conversion':
+      case 'rank_conversion': {
         const rankResult = this.handleRankConversion(script, context)
         effects.push(...rankResult.effects)
         message = rankResult.message
         success = rankResult.success
         break
+      }
 
-      case 'add_negative_edition':
+      case 'add_negative_edition': {
         const negResult = this.handleAddNegativeEdition(script, context)
         effects.push(...negResult.effects)
         message = negResult.message
         success = negResult.success
         break
+      }
 
-      case 'destroy_for_gold':
+      case 'destroy_for_gold': {
         const goldResult = this.handleDestroyForGold(script, context)
         effects.push(...goldResult.effects)
         message = goldResult.message
         success = goldResult.success
         break
+      }
 
-      case 'copy_decree':
+      case 'copy_decree': {
         const copyResult = this.handleCopyDecree(script, context)
         effects.push(...copyResult.effects)
         message = copyResult.message
         success = copyResult.success
         break
+      }
 
-      case 'create_legendary':
+      case 'create_legendary': {
         const legResult = this.handleCreateLegendary(script, context)
         effects.push(...legResult.effects)
         message = legResult.message
         success = legResult.success
         break
+      }
 
-      case 'upgrade_all_yaku':
+      case 'upgrade_all_yaku': {
         const yakuResult = this.handleUpgradeAllYaku(script, context)
         effects.push(...yakuResult.effects)
         message = yakuResult.message
         success = yakuResult.success
         break
+      }
 
-      case 'duplicate_tile':
+      case 'duplicate_tile': {
         const dupResult = this.handleDuplicateTile(script, context)
         effects.push(...dupResult.effects)
         message = dupResult.message
         success = dupResult.success
         break
+      }
 
       default:
         message = 'Unknown script effect'
@@ -1019,7 +1031,7 @@ export class VoidScriptSystem {
    */
   private handleSuitConversion(
     script: VoidScript,
-    context: VoidScriptContext
+    _context: VoidScriptContext
   ): ConsumableUseResult {
     const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu]
     const targetSuit = suits[Math.floor(Math.random() * suits.length)]
@@ -1042,7 +1054,7 @@ export class VoidScriptSystem {
    */
   private handleRankConversion(
     script: VoidScript,
-    context: VoidScriptContext
+    _context: VoidScriptContext
   ): ConsumableUseResult {
     const targetRank = Math.floor(Math.random() * 9) + 1
 
@@ -1093,7 +1105,7 @@ export class VoidScriptSystem {
    */
   private handleDestroyForGold(
     script: VoidScript,
-    context: VoidScriptContext
+    _context: VoidScriptContext
   ): ConsumableUseResult {
     const destroyCount = script.effect.destroyCount || 5
     const goldAmount = script.effect.goldAmount || 20
@@ -1180,7 +1192,7 @@ export class VoidScriptSystem {
    */
   private handleUpgradeAllYaku(
     script: VoidScript,
-    context: VoidScriptContext
+    _context: VoidScriptContext
   ): ConsumableUseResult {
     return {
       success: true,

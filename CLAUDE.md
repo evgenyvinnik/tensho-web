@@ -72,7 +72,7 @@ Test files: Unit tests use `*.test.ts` in `src/`, E2E tests use `*.spec.ts` in `
 src/
 ├── core/           # Tile, Hand, Meld, Wall, DeadPool, TileModifier - game primitives
 ├── rules/          # HandValidator, ShantenCalculator, YakuDetector, ScoringEngine
-├── systems/        # 26 game systems (Decree, Flower, Season, Shop, Stakes, Mandates, etc.)
+├── systems/        # 22 game systems + RoundManager, PricingCalculator, ShopGenerator
 ├── config/         # Definition files (charters, mandates, omens, packs, stakes)
 ├── game/           # GameOrchestrator, ActionProcessor, EventBus, DebuffSystem
 ├── stores/         # 17 Zustand stores (game, hand, wall, decree, flora, shop, stake, etc.)

@@ -76,7 +76,7 @@ function getRarityColor(rarity?: string): string {
 /**
  * Get category icon
  */
-function getCategoryIcon(category: ArchiveCategory): string {
+function _getCategoryIcon(category: ArchiveCategory): string {
   const icons: Record<ArchiveCategory, string> = {
     decrees: 'scroll',
     walls: 'wall',
