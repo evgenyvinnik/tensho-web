@@ -94,7 +94,7 @@ function getRarityDisplayName(rarity: string): string {
 /**
  * Get Japanese rarity name
  */
-function getRarityJapaneseName(rarity: string): string {
+function _getRarityJapaneseName(rarity: string): string {
   switch (rarity) {
     case 'LocalEdict':
       return '\u5730\u65B9\u4EE4' // Local Edict

@@ -7,7 +7,7 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSpring, animated, useSprings } from '@react-spring/web'
+import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
 import { BackButton } from '../ui/BackButton'
 import {

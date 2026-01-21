@@ -7,7 +7,7 @@
 
 import React from 'react'
 import { useSpring, animated, useTrail } from '@react-spring/web'
-import { FlowerVariant, FlowerTile, FlowerSetBonus, FlowerCollection } from '../../systems/types'
+import { FlowerVariant, FlowerTile, FlowerSetBonus } from '../../systems/types'
 
 /**
  * Flower variant visual data

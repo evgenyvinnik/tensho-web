@@ -13,7 +13,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react'
-import { useSpring, useSprings, animated } from '@react-spring/web'
+import { useSpring, animated } from '@react-spring/web'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
@@ -119,7 +119,7 @@ interface PackContentCardProps {
 
 function PackContentCard({
   content,
-  index,
+  index: _index,
   isSelected,
   canSelect,
   onToggle,

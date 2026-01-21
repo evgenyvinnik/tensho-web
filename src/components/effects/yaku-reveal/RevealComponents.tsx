@@ -265,8 +265,8 @@ export const YakuRevealSequence: React.FC<YakuRevealSequenceProps> = ({
   className = '',
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [completedCount, setCompletedCount] = useState(0)
+  const [_currentIndex, _setCurrentIndex] = useState(0)
+  const [_completedCount, setCompletedCount] = useState(0)
 
   // Sort by tier (highest first) for dramatic effect
   const sortedYaku = [...yakuList].sort(

@@ -5,7 +5,7 @@
  * Shows a grid of table style cards with unlock status.
  */
 
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'

@@ -5,18 +5,16 @@
  * Based on ARCHITECTURE.MD Section 29 - Archive of Hands.
  */
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useArchiveStore } from '../../stores/archiveStore'
 import { BackButton } from '../ui/BackButton'
 import {
-  ARCHIVE_CATEGORIES,
   getAllArchiveCategories,
   getArchiveCategory,
   type ArchiveCategory,
-  type ArchiveCategoryDefinition,
   WALL_DEFINITIONS,
   TILE_MARK_DEFINITIONS,
   SEAL_DEFINITIONS_ARCHIVE,

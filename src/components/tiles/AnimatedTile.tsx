@@ -100,7 +100,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
 
   // Shake animation for invalid actions
   const {
-    style: shakeStyle,
+    style: _shakeStyle,
     spring: shakeSpring,
     trigger: triggerShake,
   } = useTileShakeAnimation();

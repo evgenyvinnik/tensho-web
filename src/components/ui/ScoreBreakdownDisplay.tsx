@@ -30,7 +30,7 @@ export function ScoreBreakdownDisplay({
   const [displayScore, setDisplayScore] = useState(0)
 
   // Animate the final score counter
-  const scoreSpring = useSpring({
+  const _scoreSpring = useSpring({
     score: breakdown.finalScore,
     from: { score: 0 },
     config: { tension: 50, friction: 20 },
@@ -321,7 +321,7 @@ export function ScoreCounter({
 }: ScoreCounterProps) {
   const [displayValue, setDisplayValue] = useState(score)
 
-  const spring = useSpring({
+  const _spring = useSpring({
     value: score,
     config: { tension: 80, friction: 20 },
     onChange: ({ value }: { value: { value: number } }) => {

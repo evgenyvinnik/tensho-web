@@ -33,7 +33,7 @@ const RARITY_LABELS: Record<DecreeRarity, string> = {
 /**
  * Category icon mapping
  */
-const CATEGORY_ICONS: Record<DecreeCategory, string> = {
+const _CATEGORY_ICONS: Record<DecreeCategory, string> = {
   Structural: '🏛️',
   TileIdentity: '🎭',
   YakuDoctrine: '📖',

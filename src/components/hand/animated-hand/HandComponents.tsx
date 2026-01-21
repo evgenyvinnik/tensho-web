@@ -100,10 +100,10 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   overlap = true,
   disabled = false,
   className = '',
-  layout = 'horizontal',
+  layout: _layout = 'horizontal',
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
-  const animationMultiplier = useSettingsStore(selectAnimationMultiplier)
+  const _animationMultiplier = useSettingsStore(selectAnimationMultiplier)
   const dimensions = tileSizes[size]
 
   // Track previous tiles for animation
@@ -118,7 +118,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   }, [tiles.length, dimensions.width, maxFanAngle, overlap, fanned])
 
   // Springs for smooth position transitions when sorting
-  const [springs, api] = useSprings(
+  const [_springs, _api] = useSprings(
     tiles.length,
     (index) => ({
       x: positions[index]?.x ?? 0,
@@ -163,7 +163,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
     // Re-run transitions when positions change (e.g., due to size change)
     deps: [positions, selectedIds],
     // Cleanup callback when animation completes
-    onRest: (_result, _ctrl, item) => {
+    onRest: (_result, _ctrl, _item) => {
       // Animation completed - item will be removed from DOM if it was leaving
       // This helps ensure proper cleanup of exited items
     },
