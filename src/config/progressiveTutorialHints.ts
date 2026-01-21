@@ -6,6 +6,7 @@
  */
 
 import { TileSuit } from '../core/Tile'
+import { TFunction } from 'i18next'
 
 /**
  * Trigger types for progressive hints
@@ -55,7 +56,7 @@ export interface ProgressiveHint {
  * Get all progressive tutorial hints
  */
 export function getProgressiveHints(
-  t: (key: string, fallback: string) => string
+  t: TFunction
 ): ProgressiveHint[] {
   return [
     // === GAME START HINTS (shown immediately on first run) ===

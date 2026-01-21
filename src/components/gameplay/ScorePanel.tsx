@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import { TFunction } from 'i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { ScorePopup } from '../effects/ScorePopup'
 import { PointsMultDisplay } from './PointsMultDisplay'
@@ -36,7 +37,7 @@ export interface ScorePanelProps {
   /** Handler for popup completion */
   onPopupComplete: (id: number) => void
   /** Translation function for i18n */
-  t: (key: string) => string
+  t: TFunction
 }
 
 // =============================================================================

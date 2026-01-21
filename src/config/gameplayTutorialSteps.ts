@@ -8,12 +8,13 @@
 
 import type { GameTutorialStep } from '../components/ui/GameTutorial'
 import { TileSuit } from '../core/Tile'
+import { TFunction } from 'i18next'
 
 /**
  * Default gameplay tutorial steps
  * These target specific elements in the gameplay UI and explain mechanics in depth
  */
-export function getGameplayTutorialSteps(t: (key: string, fallback: string) => string): GameTutorialStep[] {
+export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
   return [
     // === INTRODUCTION ===
     {

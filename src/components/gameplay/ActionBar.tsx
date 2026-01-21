@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import { TFunction } from 'i18next'
 import { Button } from '../ui/Button'
 
 // =============================================================================
@@ -31,7 +32,7 @@ export interface ActionBarProps {
   /** Handler for play hand action */
   onPlayHand: () => void
   /** Translation function for i18n */
-  t: (key: string) => string
+  t: TFunction
 }
 
 // =============================================================================

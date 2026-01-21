@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import { TFunction } from 'i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { RoundTypeIndicator } from './RoundTypeIndicator'
 import { RoundType } from './gameplayTypes'
@@ -29,7 +30,7 @@ export interface GameplayTopBarProps {
   /** Boss mandate name (if applicable) */
   mandateName?: string
   /** Translation function for i18n */
-  t: (key: string, fallback?: string) => string
+  t: TFunction
   /** Handler for exit button */
   onExit: () => void
   /** Handler for settings button */
