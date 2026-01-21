@@ -5,24 +5,31 @@
  * This is the interactive gameplay interface for Tensho Mahjong Roguelike.
  */
 
-import { useEffect, useCallback, useState, useMemo } from 'react'
+import { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game'
 import { useResponsiveTileSize } from '../../hooks/useResponsiveTileSize'
+import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { Button } from '../ui/Button'
 import { TablePattern } from '../ui/TablePattern'
-import { HandWithDiscardZone } from '../hand/AnimatedHand'
 import { PlaySurface } from '../gameplay/PlaySurface'
 import { ScorePopup } from '../effects/ScorePopup'
 import { YakuReveal } from '../effects/YakuReveal'
-import { GameTutorial, useGameTutorial } from '../ui/GameTutorial'
-import { getGameplayTutorialSteps } from '../../config/gameplayTutorialSteps'
+import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
+import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
 import { DecreeRarity, OwnedDecree } from '../../systems/types'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
 import { GlowEffect } from '../effects/GlowEffect'
+import { getCurrentLanguage } from '../../i18n'
+
+/** Check if current language uses CJK characters */
+function isCJKLanguage(): boolean {
+  const lang = getCurrentLanguage()
+  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+}
 
 /**
  * Score popup state
@@ -214,6 +221,7 @@ interface RoundTypeIndicatorProps {
 
 function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicatorProps) {
   const config = ROUND_TYPE_CONFIG[roundType]
+  const showCJK = isCJKLanguage()
 
   return (
     <div
@@ -223,7 +231,9 @@ function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicatorProps)
         border rounded-full
       `}
     >
-      <span className={`font-bold ${config.color}`}>{config.japaneseName}</span>
+      {showCJK && (
+        <span className={`font-bold ${config.color}`}>{config.japaneseName}</span>
+      )}
       <span className="text-[var(--color-beige-white)] text-sm">{roundType}</span>
       {mandateName && (
         <span className="text-xs text-red-400 font-medium">| {mandateName}</span>
@@ -425,14 +435,22 @@ export function GameplayScreen() {
   // Responsive tile size
   const tileSize = useResponsiveTileSize()
 
-  // Tutorial steps and state
-  const tutorialSteps = getGameplayTutorialSteps(t)
-  const tutorial = useGameTutorial(tutorialSteps)
+  // Progressive tutorial hints
+  const progressiveHints = useMemo(() => getProgressiveHints(t), [t])
+  const tutorial = useProgressiveTutorial(progressiveHints)
+
+  // Track if we've triggered initial hints and specific actions
+  const hasTriggeredGameStart = useRef(false)
+  const hasTriggeredFirstDraw = useRef(false)
+  const hasTriggeredFirstDiscard = useRef(false)
+  const hasTriggeredFirstHand = useRef(false)
+  const hasTriggeredRoundComplete = useRef(false)
+  const hasTriggeredBossRound = useRef(false)
 
   // Local UI state
   const [scorePopups, setScorePopups] = useState<ScorePopupState[]>([])
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
-  const [popupIdCounter, setPopupIdCounter] = useState(0)
+  const popupIdCounterRef = useRef(0)
 
   // Start new run if not active
   useEffect(() => {
@@ -441,25 +459,84 @@ export function GameplayScreen() {
     }
   }, [game.isRunActive, game.phase, game.startNewRun])
 
-  // Start tutorial for first-time players
+  // Trigger gameStart hints when run becomes active
   useEffect(() => {
-    if (game.isRunActive && !tutorial.hasCompleted && !tutorial.isActive) {
+    if (game.isRunActive && !hasTriggeredGameStart.current) {
+      hasTriggeredGameStart.current = true
       // Small delay to let the UI render first
       const timer = setTimeout(() => {
-        tutorial.start()
-      }, 500)
+        tutorial.triggerHints('gameStart')
+      }, 800)
       return () => clearTimeout(timer)
     }
-  }, [game.isRunActive, tutorial.hasCompleted, tutorial.isActive, tutorial.start])
+  }, [game.isRunActive, tutorial])
 
-  // Complete tutorial step when user draws a tile
+  // Reset trigger refs when starting a new run
+  useEffect(() => {
+    if (!game.isRunActive) {
+      hasTriggeredGameStart.current = false
+      hasTriggeredFirstDraw.current = false
+      hasTriggeredFirstDiscard.current = false
+      hasTriggeredFirstHand.current = false
+      hasTriggeredRoundComplete.current = false
+      hasTriggeredBossRound.current = false
+    }
+  }, [game.isRunActive])
+
+  // Trigger firstDraw hints before first draw
+  useEffect(() => {
+    if (game.isRunActive && !hasTriggeredFirstDraw.current && game.handTiles.length > 0) {
+      // Trigger after game start hints have had a chance to show
+      const timer = setTimeout(() => {
+        if (!hasTriggeredFirstDraw.current) {
+          hasTriggeredFirstDraw.current = true
+          tutorial.triggerHints('firstDraw')
+        }
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [game.isRunActive, game.handTiles.length, tutorial])
+
+  // Trigger firstDiscard hints after first draw action
   useGameEvent('tileDrawn', useCallback(() => {
-    tutorial.completeCurrentStep()
+    if (!hasTriggeredFirstDiscard.current) {
+      hasTriggeredFirstDiscard.current = true
+      // Small delay after draw action
+      setTimeout(() => {
+        tutorial.triggerHints('firstDiscard')
+      }, 500)
+    }
   }, [tutorial]))
 
-  // Complete tutorial step when user discards a tile
-  useGameEvent('tileDiscarded', useCallback(() => {
-    tutorial.completeCurrentStep()
+  // Trigger firstHandPlayed hints after playing first hand
+  useGameEvent('handPlayed', useCallback(() => {
+    if (!hasTriggeredFirstHand.current) {
+      hasTriggeredFirstHand.current = true
+      setTimeout(() => {
+        tutorial.triggerHints('firstHandPlayed')
+      }, 1000)
+    }
+  }, [tutorial]))
+
+  // Trigger roundComplete hints after completing a round
+  useGameEvent('roundEnd', useCallback(() => {
+    if (!hasTriggeredRoundComplete.current) {
+      hasTriggeredRoundComplete.current = true
+      tutorial.triggerHints('roundComplete')
+    }
+  }, [tutorial]))
+
+  // Trigger bossRound hints when entering boss round
+  useEffect(() => {
+    if (game.currentRound === 3 && !hasTriggeredBossRound.current) {
+      hasTriggeredBossRound.current = true
+      tutorial.triggerHints('bossRound')
+    }
+  }, [game.currentRound, tutorial])
+
+  // Trigger flowerDrawn hints when a flower is collected
+  useGameEvent('flowerCollected', useCallback(() => {
+    tutorial.triggerHints('flowerDrawn')
   }, [tutorial]))
 
   // Navigate to shop when phase changes
@@ -473,18 +550,16 @@ export function GameplayScreen() {
 
   // Listen for score updates to show popups
   useGameEvent('scoreUpdate', useCallback((data) => {
-    setPopupIdCounter((prev) => {
-      const newId = prev + 1
-      setScorePopups((popups) => [
-        ...popups,
-        {
-          id: newId,
-          score: data.delta,
-          variant: data.delta >= 1000 ? 'critical' : data.delta >= 500 ? 'bonus' : 'default',
-        },
-      ])
-      return newId
-    })
+    popupIdCounterRef.current += 1
+    const newId = popupIdCounterRef.current
+    setScorePopups((popups) => [
+      ...popups,
+      {
+        id: newId,
+        score: data.delta,
+        variant: data.delta >= 1000 ? 'critical' : data.delta >= 500 ? 'bonus' : 'default',
+      },
+    ])
   }, []))
 
   // Listen for yaku scored events
@@ -817,14 +892,12 @@ export function GameplayScreen() {
         </div>
       </div>
 
-      {/* In-game tutorial overlay */}
-      <GameTutorial
-        isActive={tutorial.isActive}
-        currentStep={tutorial.currentStep}
-        steps={tutorialSteps}
-        onStepComplete={tutorial.nextStep}
-        onSkip={tutorial.skip}
-        onComplete={tutorial.complete}
+      {/* Progressive tutorial hint overlay */}
+      <ProgressiveHintOverlay
+        hint={tutorial.currentHint}
+        onDismiss={tutorial.dismissHint}
+        onDisableHints={tutorial.disableHints}
+        queueCount={tutorial.hintQueue.length}
       />
     </TablePattern>
   )

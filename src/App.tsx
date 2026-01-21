@@ -12,7 +12,7 @@ import { GameplayScreen } from './components/screens/GameplayScreen'
 import { ShopScreen } from './components/screens/ShopScreen'
 import { GameOverScreen } from './components/screens/GameOverScreen'
 import { AchievementsScreen } from './components/screens/AchievementsScreen'
-import { TutorialScreen } from './components/screens/TutorialScreen'
+import { CodexScreen } from './components/screens/CodexScreen'
 import { CollectionScreen } from './components/screens/CollectionScreen'
 import { SettingsScreen } from './components/screens/SettingsScreen'
 
@@ -51,7 +51,7 @@ function App() {
         ShopScreen,
         GameOverScreen,
         AchievementsScreen,
-        TutorialScreen,
+        CodexScreen,
         CollectionScreen,
         SettingsScreen,
       }),

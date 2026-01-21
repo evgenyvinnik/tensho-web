@@ -1,9 +1,9 @@
 /**
  * Popup Component for Tensho Mahjong Roguelike
- * Uses the native Popover API with fallback for older browsers
+ * Uses React portal for modal rendering
  */
 
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useSpring, animated } from '@react-spring/web'
 import { popupAssets } from '../../utils/assets'
@@ -27,19 +27,10 @@ export interface PopupProps {
   closeOnBackdrop?: boolean
   /** Custom class name */
   className?: string
-  /** Use native popover API if available */
-  useNativePopover?: boolean
 }
 
 /**
- * Check if Popover API is supported
- */
-function supportsPopover(): boolean {
-  return typeof HTMLElement !== 'undefined' && 'popover' in HTMLElement.prototype
-}
-
-/**
- * Popup component with Popover API support
+ * Popup component with portal rendering
  */
 export function Popup({
   isOpen,
@@ -49,13 +40,7 @@ export function Popup({
   showCloseButton = true,
   closeOnBackdrop = true,
   className = '',
-  useNativePopover = true,
 }: PopupProps) {
-  const popoverRef = useRef<HTMLDivElement>(null)
-  // Disable native popover API due to cross-browser inconsistencies
-  // The portal fallback is more reliable
-  const hasNativeSupport = false // useNativePopover && supportsPopover()
-
   // Animation spring
   const spring = useSpring({
     opacity: isOpen ? 1 : 0,
@@ -63,45 +48,9 @@ export function Popup({
     config: { tension: 300, friction: 20 },
   })
 
-  // Handle native popover
+  // Handle escape key
   useEffect(() => {
-    const element = popoverRef.current
-    if (!element || !hasNativeSupport) return
-
-    if (isOpen) {
-      try {
-        element.showPopover()
-      } catch {
-        // Popover already shown or not supported
-      }
-    } else {
-      try {
-        element.hidePopover()
-      } catch {
-        // Popover already hidden or not supported
-      }
-    }
-  }, [isOpen, hasNativeSupport])
-
-  // Handle toggle event from native popover
-  useEffect(() => {
-    const element = popoverRef.current
-    if (!element || !hasNativeSupport) return
-
-    const handleToggle = (event: Event) => {
-      const toggleEvent = event as ToggleEvent
-      if (toggleEvent.newState === 'closed') {
-        onClose()
-      }
-    }
-
-    element.addEventListener('toggle', handleToggle)
-    return () => element.removeEventListener('toggle', handleToggle)
-  }, [hasNativeSupport, onClose])
-
-  // Handle escape key for non-native popover
-  useEffect(() => {
-    if (hasNativeSupport || !isOpen) return
+    if (!isOpen) return
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -111,7 +60,7 @@ export function Popup({
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [hasNativeSupport, isOpen, onClose])
+  }, [isOpen, onClose])
 
   // Handle backdrop click
   const handleBackdropClick = useCallback(
@@ -172,26 +121,7 @@ export function Popup({
     </AnimatedDiv>
   )
 
-  // Native popover rendering
-  if (hasNativeSupport) {
-    // Don't render anything if not open (native popover should handle this, but as a safety)
-    if (!isOpen) return null
-
-    return (
-      <div
-        ref={popoverRef}
-        // @ts-expect-error - popover attribute not yet in React types
-        popover="manual"
-        className="fixed inset-0 m-0 p-0 border-0 bg-transparent max-w-none max-h-none w-full h-full flex items-center justify-center"
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
-        onClick={handleBackdropClick}
-      >
-        {popupContent}
-      </div>
-    )
-  }
-
-  // Fallback portal rendering
+  // Portal rendering
   if (!isOpen) return null
 
   return createPortal(

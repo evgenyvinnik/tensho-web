@@ -6,7 +6,8 @@
  * - /:lang/play - Gameplay
  * - /:lang/shop - Tea House shop
  * - /:lang/game-over - Game over screen
- * - /:lang/tutorial - Tutorial
+ * - /:lang/codex - Codex (game reference guide)
+ * - /:lang/tutorial - Legacy redirect to Codex
  * - /:lang/collection - Collection
  * - /:lang/settings - Settings
  * - /:lang/achievements - Achievements
@@ -45,7 +46,8 @@ export const ROUTES = {
   PLAY: 'play',
   SHOP: 'shop',
   GAME_OVER: 'game-over',
-  TUTORIAL: 'tutorial',
+  CODEX: 'codex',
+  TUTORIAL: 'tutorial', // Legacy alias for CODEX
   COLLECTION: 'collection',
   SETTINGS: 'settings',
   ACHIEVEMENTS: 'achievements',
@@ -204,7 +206,8 @@ export function createAppRouter(routes: {
   GameplayScreen: React.ComponentType
   ShopScreen: React.ComponentType
   GameOverScreen: React.ComponentType
-  TutorialScreen?: React.ComponentType
+  CodexScreen?: React.ComponentType
+  TutorialScreen?: React.ComponentType // Legacy alias for CodexScreen
   CollectionScreen?: React.ComponentType
   SettingsScreen?: React.ComponentType
   AchievementsScreen?: React.ComponentType
@@ -214,11 +217,15 @@ export function createAppRouter(routes: {
     GameplayScreen,
     ShopScreen,
     GameOverScreen,
+    CodexScreen,
     TutorialScreen,
     CollectionScreen,
     SettingsScreen,
     AchievementsScreen,
   } = routes
+
+  // Use CodexScreen if available, fall back to TutorialScreen for backwards compatibility
+  const ActualCodexScreen = CodexScreen || TutorialScreen
 
   // Placeholder component for unimplemented screens
   const PlaceholderScreen = ({ title }: { title: string }) => (
@@ -264,9 +271,14 @@ export function createAppRouter(routes: {
           errorElement: <RouteErrorBoundary />,
         },
         {
-          path: ROUTES.TUTORIAL,
-          element: TutorialScreen ? <TutorialScreen /> : <PlaceholderScreen title="Tutorial" />,
+          path: ROUTES.CODEX,
+          element: ActualCodexScreen ? <ActualCodexScreen /> : <PlaceholderScreen title="Codex" />,
           errorElement: <RouteErrorBoundary />,
+        },
+        {
+          // Legacy tutorial route redirects to Codex
+          path: ROUTES.TUTORIAL,
+          element: <Navigate to={`../${ROUTES.CODEX}`} replace />,
         },
         {
           path: ROUTES.COLLECTION,

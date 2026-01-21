@@ -366,8 +366,8 @@ export function MenuScreen() {
     navigateTo(ROUTES.PLAY)
   }
 
-  const handleTutorial = () => {
-    navigateTo(ROUTES.TUTORIAL)
+  const handleCodex = () => {
+    navigateTo(ROUTES.CODEX)
   }
 
   const handleSettings = () => {
@@ -465,8 +465,8 @@ export function MenuScreen() {
             {t('menu.play')}
           </NeonButton>
 
-          <NeonButton onClick={handleTutorial} variant="secondary" delay={750} show={showContent}>
-            {t('menu.tutorial', 'Tutorial')}
+          <NeonButton onClick={handleCodex} variant="secondary" delay={750} show={showContent}>
+            📜 {t('menu.codex', 'Codex')}
           </NeonButton>
 
           <NeonButton onClick={handleSettings} variant="secondary" delay={850} show={showContent}>

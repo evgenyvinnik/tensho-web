@@ -5,15 +5,22 @@
  * Shows a grid of table style cards with unlock status.
  */
 
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { TableStyleCard } from './TableStyleCard'
 import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { TABLE_STYLE_DEFINITIONS } from '../../config/tableStyleDefinitions'
+import { getCurrentLanguage } from '../../i18n'
 
 const AnimatedDiv = animated('div')
+
+/** Check if current language uses CJK characters */
+function isCJKLanguage(): boolean {
+  const lang = getCurrentLanguage()
+  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+}
 
 export interface TableStyleModalProps {
   /** Whether the modal is open */
@@ -33,6 +40,7 @@ export function TableStyleModal({
   onConfirm,
 }: TableStyleModalProps) {
   const { t } = useTranslation()
+  const showCJK = isCJKLanguage()
   const {
     currentStyleId,
     selectStyle,
@@ -191,10 +199,12 @@ export function TableStyleModal({
               </p>
             </div>
 
-            {/* Japanese title */}
-            <span className="ml-auto text-3xl font-decorative text-[var(--color-metallic-gold)] opacity-70 pr-12">
-              {t('tableStyle.titleJp', '卓風')}
-            </span>
+            {/* Japanese title - only show for CJK languages */}
+            {showCJK && (
+              <span className="ml-auto text-3xl font-decorative text-[var(--color-metallic-gold)] opacity-70 pr-12">
+                {t('tableStyle.titleJp', '卓風')}
+              </span>
+            )}
           </div>
         </div>
 
@@ -235,9 +245,11 @@ export function TableStyleModal({
               <span className="ml-2 text-[var(--color-beige-white)] font-bold">
                 {selectedStyle.displayName}
               </span>
-              <span className="ml-2 text-[var(--color-metallic-gold)] font-decorative">
-                ({selectedStyle.japaneseName})
-              </span>
+              {showCJK && (
+                <span className="ml-2 text-[var(--color-metallic-gold)] font-decorative">
+                  ({selectedStyle.japaneseName})
+                </span>
+              )}
             </div>
           </div>
 

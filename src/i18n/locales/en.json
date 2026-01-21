@@ -18,6 +18,7 @@
     "play": "Play",
     "continue": "Continue",
     "newRun": "New Run",
+    "codex": "Codex",
     "tutorial": "Tutorial",
     "options": "Options",
     "settings": "Settings",
@@ -402,6 +403,26 @@
       "content1": "Good luck on your journey!",
       "content2": "Press PLAY to begin your first run."
     }
+  },
+  "codex": {
+    "title": "Codex",
+    "subtitle": "Game Reference Guide",
+    "skip": "Skip",
+    "next": "Next",
+    "prev": "Back",
+    "previous": "Previous",
+    "finish": "Start Playing!",
+    "introduction": "Introduction",
+    "tiles": "Tiles",
+    "handBuilding": "Hand Building",
+    "howToPlay": "How to Play",
+    "scoring": "Scoring",
+    "progression": "Progression",
+    "decrees": "Decrees",
+    "flora": "Flora",
+    "economy": "Economy",
+    "strategy": "Strategy",
+    "summary": "Summary"
   },
   "accessibility": {
     "selectLanguage": "Select Language",

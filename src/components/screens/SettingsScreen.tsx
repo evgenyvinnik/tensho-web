@@ -16,6 +16,10 @@ import { Slider } from '../ui/Slider'
 import { Toggle } from '../ui/Toggle'
 import { LanguageSelector } from '../ui/LanguageSelector'
 import { ConfirmPopup, AlertPopup } from '../ui/Popup'
+import {
+  PROGRESSIVE_HINTS_STORAGE_KEY,
+  HINTS_DISABLED_STORAGE_KEY,
+} from '../../config/progressiveTutorialHints'
 
 /**
  * SettingsScreen - User preferences page
@@ -62,6 +66,10 @@ export function SettingsScreen() {
     // Clear tutorial completion from localStorage
     if (typeof window !== 'undefined') {
       localStorage.removeItem('tensho_tutorial_completed')
+      localStorage.removeItem('tensho_game_tutorial_completed')
+      // Also clear progressive hints so they show again
+      localStorage.removeItem(PROGRESSIVE_HINTS_STORAGE_KEY)
+      localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
     }
     setShowResetTutorialConfirm(false)
     setShowTutorialResetSuccess(true)
@@ -71,9 +79,12 @@ export function SettingsScreen() {
   const handleResetProgress = useCallback(() => {
     // Reset achievements and stats
     resetAchievements()
-    // Also reset tutorial
+    // Also reset tutorial and progressive hints
     if (typeof window !== 'undefined') {
       localStorage.removeItem('tensho_tutorial_completed')
+      localStorage.removeItem('tensho_game_tutorial_completed')
+      localStorage.removeItem(PROGRESSIVE_HINTS_STORAGE_KEY)
+      localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
     }
     setShowResetProgressConfirm(false)
     setShowProgressResetSuccess(true)

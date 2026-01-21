@@ -49,3 +49,5 @@ export {
   type ParticleBurstConfig,
   type ScorePopupConfig,
 } from './useVFX'
+
+export { useProgressiveTutorial } from './useProgressiveTutorial'

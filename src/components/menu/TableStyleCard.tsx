@@ -8,8 +8,15 @@
 import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import type { TableStyleDefinition } from '../../config/tableStyleDefinitions'
+import { getCurrentLanguage } from '../../i18n'
 
 const AnimatedDiv = animated('div')
+
+/** Check if current language uses CJK characters */
+function isCJKLanguage(): boolean {
+  const lang = getCurrentLanguage()
+  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+}
 
 export interface TableStyleCardProps {
   /** Table style definition */
@@ -152,12 +159,14 @@ export function TableStyleCard({
           <h3 className="text-lg font-bold text-[var(--color-beige-white)]">
             {style.displayName}
           </h3>
-          <span
-            className="text-lg font-decorative"
-            style={{ color: style.themeColor }}
-          >
-            {style.japaneseName}
-          </span>
+          {isCJKLanguage() && (
+            <span
+              className="text-lg font-decorative"
+              style={{ color: style.themeColor }}
+            >
+              {style.japaneseName}
+            </span>
+          )}
         </div>
 
         {/* Description */}
