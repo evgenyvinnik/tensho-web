@@ -19,12 +19,12 @@
  * - +50 bonus chips per red five when enabled
  */
 
-import { Tile, WindType, EnhancementType, EditionType } from '../core/Tile'
+import { Tile, WindType } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
 import { DetectedYaku, YakuContext, detectYaku, calculateYakuMultiplier } from './YakuDetector'
 import { tileModifierSystem } from '../systems/TileModifierSystem'
-import { redFiveSystem, countRedFives, isRedFive } from '../systems/RedFiveSystem'
+import { redFiveSystem, countRedFives } from '../systems/RedFiveSystem'
 
 /**
  * Detailed score breakdown

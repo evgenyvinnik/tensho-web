@@ -17,8 +17,7 @@
  */
 
 import { Tile, TileSuit } from '../core/Tile'
-import { Meld, MeldType } from '../core/Meld'
-import { ParsedHand } from '../core/Hand'
+import { MeldType } from '../core/Meld'
 import {
   FlowerTile,
   FlowerVariant,
@@ -393,7 +392,7 @@ export class FlowerSystem {
   /**
    * Check if drought season suppresses flowers
    */
-  applySuppression(isDrought: boolean): void {
+  applySuppression(_isDrought: boolean): void {
     // Drought suppression is handled in scoring by returning 1.0 multiplier
   }
 

@@ -16,7 +16,7 @@ import { Hand, ParsedHand } from '../core/Hand'
 import { Meld } from '../core/Meld'
 import { calculateScore, createScoringContext, ScoreBreakdown } from '../rules/ScoringEngine'
 import { validateHand } from '../rules/HandValidator'
-import { eventBus, GameEventData } from './EventBus'
+import { eventBus } from './EventBus'
 import {
   ActionProcessor,
   PlayerAction,

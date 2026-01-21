@@ -27,7 +27,6 @@ import {
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  SUPPORTED_LANGUAGES,
   isSupportedLanguage,
   getCurrentLanguage,
   changeLanguage,
@@ -315,7 +314,7 @@ export function createAppRouter(routes: {
  */
 export function AppRouterProvider({
   router,
-  children,
+  children: _children,
 }: {
   router: ReturnType<typeof createBrowserRouter>
   children?: React.ReactNode

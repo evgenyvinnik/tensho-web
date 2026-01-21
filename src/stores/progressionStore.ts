@@ -23,7 +23,6 @@ import {
 import {
   type UnlockCategory,
   type UnlockDefinition,
-  ALL_UNLOCKS,
   getUnlockById,
   getUnlocksByCategory,
   getDefaultUnlocks,

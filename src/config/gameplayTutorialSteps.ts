@@ -6,7 +6,7 @@
  * Explains all game mechanics in context as players see them.
  */
 
-import type { GameTutorialStep, TileExample } from '../components/ui/GameTutorial'
+import type { GameTutorialStep } from '../components/ui/GameTutorial'
 import { TileSuit } from '../core/Tile'
 
 /**

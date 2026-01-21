@@ -15,8 +15,6 @@ import {
   SeasonEffect,
   createFlowerTile,
   createSeasonTile,
-  generateFlowerId,
-  generateSeasonId,
 } from '../stores/floraStore'
 
 // =============================================================================

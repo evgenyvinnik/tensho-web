@@ -83,7 +83,7 @@ export interface FateSeal extends BaseConsumable {
 /**
  * Generate a base Fate Seal ID
  */
-function createFateSealId(name: string): string {
+function _createFateSealId(name: string): string {
   return `fate_seal_${name.toLowerCase().replace(/\s+/g, '_')}`
 }
 
@@ -633,82 +633,93 @@ export class FateSealSystem {
     let success = true
 
     switch (seal.effect.type) {
-      case 'enhance_tiles':
+      case 'enhance_tiles': {
         const enhanceResult = this.applyEnhancement(seal, context)
         effects.push(...enhanceResult.effects)
         message = enhanceResult.message
         success = enhanceResult.success
         break
+      }
 
-      case 'convert_suit':
+      case 'convert_suit': {
         const convertResult = this.applySuitConversion(seal, context)
         effects.push(...convertResult.effects)
         message = convertResult.message
         success = convertResult.success
         break
+      }
 
-      case 'convert_to_wild':
+      case 'convert_to_wild': {
         const wildResult = this.applyWildConversion(seal, context)
         effects.push(...wildResult.effects)
         message = wildResult.message
         success = wildResult.success
         break
+      }
 
-      case 'create_consumable':
+      case 'create_consumable': {
         const createResult = this.createConsumables(seal, context)
         effects.push(...createResult.effects)
         message = createResult.message
         success = createResult.success
         break
+      }
 
-      case 'duplicate_consumable':
+      case 'duplicate_consumable': {
         const dupResult = this.duplicateLastConsumable(context)
         effects.push(...dupResult.effects)
         message = dupResult.message
         success = dupResult.success
         break
+      }
 
-      case 'gold_generation':
+      case 'gold_generation': {
         const goldResult = this.generateGold(seal, context)
         effects.push(...goldResult.effects)
         message = goldResult.message
         success = goldResult.success
         break
+      }
 
-      case 'sell_value_bonus':
+      case 'sell_value_bonus': {
         const sellResult = this.getSellValueBonus(seal, context)
         effects.push(...sellResult.effects)
         message = sellResult.message
         success = sellResult.success
         break
+      }
 
-      case 'rank_modification':
+      case 'rank_modification': {
         const rankResult = this.modifyRanks(seal, context)
         effects.push(...rankResult.effects)
         message = rankResult.message
         success = rankResult.success
         break
+      }
 
-      case 'destroy_tiles':
+      case 'destroy_tiles': {
         const destroyResult = this.destroyTiles(seal, context)
         effects.push(...destroyResult.effects)
         message = destroyResult.message
         success = destroyResult.success
         break
+      }
 
-      case 'copy_tile':
+      case 'copy_tile': {
         const copyResult = this.copyTile(seal, context)
         effects.push(...copyResult.effects)
         message = copyResult.message
         success = copyResult.success
         break
+      }
 
-      case 'apply_edition':
+      case 'apply_edition': {
         const editionResult = this.applyEdition(seal, context)
         effects.push(...editionResult.effects)
         message = editionResult.message
         success = editionResult.success
         break
+      }
 
       default:
         message = 'Unknown seal effect'
@@ -1113,7 +1124,7 @@ export class FateSealSystem {
    */
   private applyEdition(
     seal: FateSeal,
-    context: FateSealContext
+    _context: FateSealContext
   ): ConsumableUseResult {
     // 25% chance to apply edition
     if (Math.random() >= 0.25) {

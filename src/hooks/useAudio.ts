@@ -81,7 +81,7 @@ function getTrackNameFromUrl(url: string): AudioTrack | null {
  * Hook for managing background music with crossfade
  */
 export function useAudio(options: UseAudioOptions = {}): UseAudioReturn {
-  const { initialVolume = 0.5, loop = true, autoPlay = false } = options
+  const { initialVolume = 0.5, loop = true, autoPlay: _autoPlay = false } = options
 
   // State
   const [currentTrack, setCurrentTrack] = useState<AudioTrack | null>(null)

@@ -6,11 +6,12 @@
  */
 
 import type { SpringValue, Interpolation } from '@react-spring/web'
-import type { CSSProperties, ReactNode, ComponentType, ForwardRefExoticComponent } from 'react'
+import type { CSSProperties, ReactNode, ComponentType, ForwardRefExoticComponent, SVGProps } from 'react'
 
 declare module '@react-spring/web' {
   // Animated style type with spring values
   type AnimatedStyle<T = CSSProperties> = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [P in keyof T]?: T[P] | SpringValue<T[P]> | Interpolation<any, T[P]>
   }
 
@@ -19,7 +20,7 @@ declare module '@react-spring/web' {
     className?: string
     children?: ReactNode
     style?: AnimatedStyle
-    [key: string]: any
+    [key: string]: unknown
   }
 
   // Type for animated HTML elements
@@ -29,12 +30,20 @@ declare module '@react-spring/web' {
     }
   >
 
+  // SVG animated component type
+  type AnimatedSVGComponent<T extends keyof JSX.IntrinsicElements> = ForwardRefExoticComponent<
+    SVGProps<SVGElement> & JSX.IntrinsicElements[T] & {
+      style?: AnimatedStyle
+    }
+  >
+
   // Animated factory and namespace
   interface AnimatedFactory {
     // Factory function: animated('div')
     <T extends keyof JSX.IntrinsicElements>(element: T): AnimatedComponent<T>
     // Factory function for custom components
-    <T extends ComponentType<any>>(component: T): ForwardRefExoticComponent<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <T extends ComponentType<any>>(component: T): ForwardRefExoticComponent<T extends ComponentType<infer P> ? P : Record<string, unknown>>
   }
 
   // Extend animated with both factory function and element access
@@ -49,11 +58,11 @@ declare module '@react-spring/web' {
     button: AnimatedComponent<'button'>
     img: AnimatedComponent<'img'>
     svg: AnimatedComponent<'svg'>
-    path: ForwardRefExoticComponent<any>
-    circle: ForwardRefExoticComponent<any>
-    rect: ForwardRefExoticComponent<any>
-    g: ForwardRefExoticComponent<any>
-    [key: string]: any
+    path: AnimatedSVGComponent<'path'>
+    circle: AnimatedSVGComponent<'circle'>
+    rect: AnimatedSVGComponent<'rect'>
+    g: AnimatedSVGComponent<'g'>
+    [key: string]: AnimatedComponent<keyof JSX.IntrinsicElements> | ((...args: unknown[]) => unknown)
   }
 
   export const animated: AnimatedElements

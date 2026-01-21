@@ -14,11 +14,7 @@
 
 import {
   CharterDefinition,
-  CharterEffectType,
   CharterEffect,
-  BASE_CHARTERS,
-  UPGRADED_CHARTERS,
-  ALL_CHARTERS,
   getCharterById,
   getUpgradedCharter,
   isCharterAvailable,

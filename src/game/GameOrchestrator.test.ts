@@ -332,7 +332,7 @@ describe('GameOrchestrator', () => {
 
       const state = game.getState()
       const handTiles = game.getHandTiles()
-      const tileIds = handTiles.slice(0, 3).map((t) => t.id) // Play few tiles for low score
+      const _tileIds = handTiles.slice(0, 3).map((t) => t.id) // Play few tiles for low score
 
       // Play all hands
       for (let i = 0; i < state.handsRemaining; i++) {

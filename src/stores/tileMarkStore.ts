@@ -393,7 +393,7 @@ export const useTileMarkStore = create<TileMarkState>()((set, get) => ({
       return { decayed: false, consumableCreated: null }
     }
 
-    const { modifiers, discardCount } = markData
+    const { modifiers, discardCount: _discardCount } = markData
     let decayed = false
     let consumableCreated: PendingConsumable | null = null
 

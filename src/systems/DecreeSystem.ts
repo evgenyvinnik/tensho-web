@@ -7,19 +7,13 @@
  * Hierarchy: Heaven (Seasons) > Court (Decrees) > Nature (Flowers) > Table (Tiles) > Grammar (Yaku)
  */
 
-import { Tile, TileSuit } from '../core/Tile'
-import { Meld, MeldType } from '../core/Meld'
-import { ParsedHand } from '../core/Hand'
 import {
   Decree,
-  DecreeCategory,
   DecreeRarity,
-  DecreeEffect,
   OwnedDecree,
   ScoringContext,
   ScoreBreakdown,
   Sticker,
-  StickerType,
 } from './types'
 
 // =============================================================================
@@ -517,11 +511,12 @@ export class DecreeSystem {
         // Gold effects are handled separately
         break
 
-      case 'scaling':
+      case 'scaling': {
         const scalingValue = this.calculateScalingValue(decree, context)
         decree.scalingValue = scalingValue
         result.decreeMultiplier *= 1 + scalingValue * flowerBonus
         break
+      }
 
       case 'conditional':
         if (this.checkCondition(effect.condition, context)) {
@@ -689,7 +684,7 @@ export class DecreeSystem {
   /**
    * Apply seasonal effects (Frostbite halves decree effects)
    */
-  applySeasonalDebuff(isFrostbite: boolean): void {
+  applySeasonalDebuff(_isFrostbite: boolean): void {
     // Frostbite is handled by reducing effectiveness in applyDecreeEffect
     // This is tracked in the ScoringContext
   }
