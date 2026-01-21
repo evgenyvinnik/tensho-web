@@ -18,8 +18,15 @@ import { useSpring, animated } from '@react-spring/web'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { Decree, Sticker } from '../../systems/types'
 import { EditionType } from '../../systems/PricingCalculator'
+import { getCurrentLanguage } from '../../i18n'
 
 const AnimatedDiv = animated('div')
+
+/** Check if current language uses CJK characters */
+function isCJKLanguage(): boolean {
+  const lang = getCurrentLanguage()
+  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+}
 
 // =============================================================================
 // TYPES
@@ -169,18 +176,18 @@ function getEditionStyle(edition?: EditionType): React.CSSProperties {
 /**
  * Get edition label
  */
-function getEditionLabel(edition?: EditionType): string | null {
+function getEditionLabel(edition?: EditionType, showCJK: boolean = false): string | null {
   if (!edition) return null
 
   switch (edition) {
     case 'Foil':
-      return '\u7B94\u62BC' // Foil
+      return showCJK ? '\u7B94\u62BC' : 'Foil'
     case 'Holographic':
-      return '\u8679\u5F69' // Holographic
+      return showCJK ? '\u8679\u5F69' : 'Holo'
     case 'Polychrome':
-      return '\u6975\u5F69' // Polychrome
+      return showCJK ? '\u6975\u5F69' : 'Poly'
     case 'Negative':
-      return '\u9670' // Negative
+      return showCJK ? '\u9670' : 'Neg'
     default:
       return null
   }
@@ -257,6 +264,8 @@ export function ShopItemCard({
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
+  const showCJK = isCJKLanguage()
+
   // Extract item info based on type
   let name = ''
   let japaneseName = ''
@@ -276,13 +285,13 @@ export function ShopItemCard({
     }
     case 'FateSeal':
       name = 'Fate Seal'
-      japaneseName = '\u904B\u547D\u7B26'
+      japaneseName = showCJK ? '\u904B\u547D\u7B26' : ''
       description = 'A mystical seal that alters the current hand'
       rarity = 'uncommon'
       break
     case 'CelestialOrb':
       name = 'Celestial Orb'
-      japaneseName = '\u5929\u7403'
+      japaneseName = showCJK ? '\u5929\u7403' : ''
       description = 'Permanently upgrades a yaku family'
       rarity = 'uncommon'
       break
@@ -295,7 +304,7 @@ export function ShopItemCard({
   const rarityColor = getRarityBorderColor(rarity)
   const hasDiscount = offering.baseCost + offering.editionCost > offering.finalCost
   const editionStyle = getEditionStyle(offering.edition)
-  const editionLabel = getEditionLabel(offering.edition)
+  const editionLabel = getEditionLabel(offering.edition, showCJK)
 
   // Animation spring
   const spring = useSpring({
@@ -346,9 +355,11 @@ export function ShopItemCard({
         {/* Icon and type */}
         <div className="text-center mb-2">
           <span className="text-3xl">{icon}</span>
-          <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
-            {getItemTypeJapaneseName(offering.itemType)}
-          </p>
+          {showCJK && (
+            <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
+              {getItemTypeJapaneseName(offering.itemType)}
+            </p>
+          )}
         </div>
 
         {/* Name */}

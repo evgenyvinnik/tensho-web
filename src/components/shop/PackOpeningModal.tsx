@@ -18,8 +18,15 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
 import { PACK_TYPE_DEFINITIONS, PACK_SIZE_DEFINITIONS } from '../../config/packDefinitions'
+import { getCurrentLanguage } from '../../i18n'
 
 const AnimatedDiv = animated('div')
+
+/** Check if current language uses CJK characters */
+function isCJKLanguage(): boolean {
+  const lang = getCurrentLanguage()
+  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+}
 
 // =============================================================================
 // TYPES
@@ -220,6 +227,8 @@ export function PackOpeningModal({
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
   const [isRevealed, setIsRevealed] = useState(false)
 
+  const showCJK = isCJKLanguage()
+
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen && packOffering) {
@@ -314,7 +323,7 @@ export function PackOpeningModal({
                 {sizeInfo?.name} {typeInfo?.name}
               </h2>
               <p className="text-sm text-[var(--color-metallic-gold)]">
-                {typeInfo?.japaneseName} \u2022 {sizeInfo?.description}
+                {showCJK && typeInfo?.japaneseName ? `${typeInfo.japaneseName} \u2022 ` : ''}{sizeInfo?.description}
               </p>
             </div>
             <button

@@ -326,7 +326,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             {currentDropZone === 'discard' ? 'Release to Discard!' : 'Discard Zone'}
           </span>
           {discardsRemaining > 0 && (
-            <span className="px-2 py-0.5 rounded-full bg-red-900/50 text-red-300 text-sm font-medium">
+            <span data-tutorial="discards-remaining" className="px-2 py-0.5 rounded-full bg-red-900/50 text-red-300 text-sm font-medium">
               {discardsRemaining} left
             </span>
           )}
@@ -368,10 +368,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                     className="absolute transition-transform"
                     style={{
                       left: '50%',
-                      transform: `translateX(calc(-50% + ${position.x}px))`,
+                      top: '50%',
+                      transform: `translate(calc(-50% + ${position.x}px), -50%)`,
                       zIndex: isDraggingThis ? 1000 : position.zIndex,
                       opacity: isDraggingThis ? 0.5 : 1,
                     }}
+                    onMouseDown={(e) => handleDragStart(tile, e)}
+                    onTouchStart={(e) => handleDragStart(tile, e)}
                   >
                     <AnimatedTile
                       tile={tile}
@@ -379,9 +382,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                       selected={selectedIds.has(tile.id)}
                       glowing={glowingIds.has(tile.id)}
                       disabled={disabled}
-                      draggable={!disabled}
                       onClick={() => onTileSelect?.(tile)}
-                      onDragStart={(t) => handleDragStart(t, {} as React.MouseEvent)}
                     />
                   </div>
                 )
@@ -420,7 +421,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           <span className="text-[var(--color-beige-white)] text-sm opacity-70">
             Hand ({tilesInHand.length})
           </span>
-          <span className="text-blue-400 text-sm">
+          <span data-tutorial="hands-remaining" className="text-blue-400 text-sm">
             🖐 {handsRemaining}
           </span>
         </div>

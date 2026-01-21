@@ -762,12 +762,14 @@ export function GameplayScreen() {
 
         {/* Flora track and consumables row */}
         <div className="flex items-center justify-between px-4 py-2 gap-2">
-          <FloraTrackCompact
-            flowers={collectedFlowers}
-            activeSeason={seasonState.activeSeason}
-            isCorrupted={seasonState.isCorrupted}
-            onExpand={() => setIsFloraExpanded(!isFloraExpanded)}
-          />
+          <div data-tutorial="flora">
+            <FloraTrackCompact
+              flowers={collectedFlowers}
+              activeSeason={seasonState.activeSeason}
+              isCorrupted={seasonState.isCorrupted}
+              onExpand={() => setIsFloraExpanded(!isFloraExpanded)}
+            />
+          </div>
           <ConsumablesBar
             fateSeals={consumables.fateSeals}
             celestialOrbs={consumables.celestialOrbs}
@@ -867,7 +869,11 @@ export function GameplayScreen() {
         </div>
 
         {/* Action buttons */}
-        <div className="flex justify-center gap-4 px-4 py-4 bg-[var(--color-dark-forest)]">
+        <div className="flex justify-center items-center gap-4 px-4 py-4 bg-[var(--color-dark-forest)]">
+          {/* Wall remaining indicator */}
+          <span data-tutorial="wall" className="flex items-center gap-1 text-[var(--color-beige-white)] text-sm">
+            <span className="text-gray-400">📦</span> {game.wallRemaining}
+          </span>
           <Button
             variant="secondary"
             size="sm"

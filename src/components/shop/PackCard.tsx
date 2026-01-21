@@ -16,8 +16,15 @@ import { useState, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { BlessingPack, PackType, PackSize } from '../../systems/types'
 import { PACK_TYPE_DEFINITIONS, PACK_SIZE_DEFINITIONS } from '../../config/packDefinitions'
+import { getCurrentLanguage } from '../../i18n'
 
 const AnimatedDiv = animated('div')
+
+/** Check if current language uses CJK characters */
+function isCJKLanguage(): boolean {
+  const lang = getCurrentLanguage()
+  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+}
 
 // =============================================================================
 // TYPES
@@ -61,14 +68,14 @@ function getPackTypeIcon(type: PackType): string {
 /**
  * Get pack size visual indicator
  */
-function getPackSizeIndicator(size: PackSize): { scale: number; label: string } {
+function getPackSizeIndicator(size: PackSize, showCJK: boolean): { scale: number; label: string } {
   switch (size) {
     case 'Normal':
       return { scale: 1, label: '' }
     case 'Jumbo':
-      return { scale: 1.15, label: '\u5927' } // Large
+      return { scale: 1.15, label: showCJK ? '\u5927' : 'L' } // Large
     case 'Mega':
-      return { scale: 1.3, label: '\u7279\u5927' } // Extra Large
+      return { scale: 1.3, label: showCJK ? '\u7279\u5927' : 'XL' } // Extra Large
     default:
       return { scale: 1, label: '' }
   }
@@ -107,10 +114,11 @@ export function PackCard({ pack, finalCost, canAfford, onPurchase }: PackCardPro
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
+  const showCJK = isCJKLanguage()
   const typeInfo = PACK_TYPE_DEFINITIONS[pack.type]
   const sizeInfo = PACK_SIZE_DEFINITIONS[pack.size]
   const icon = getPackTypeIcon(pack.type)
-  const sizeIndicator = getPackSizeIndicator(pack.size)
+  const sizeIndicator = getPackSizeIndicator(pack.size, showCJK)
   const gradient = getPackGradient(pack.type)
 
   // Animation spring
@@ -191,10 +199,12 @@ export function PackCard({ pack, finalCost, canAfford, onPurchase }: PackCardPro
           {typeInfo?.name || pack.type}
         </p>
 
-        {/* Japanese name */}
-        <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
-          {typeInfo?.japaneseName || ''}
-        </p>
+        {/* Japanese name - only show for CJK languages */}
+        {showCJK && typeInfo?.japaneseName && (
+          <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
+            {typeInfo.japaneseName}
+          </p>
+        )}
 
         {/* Choice info */}
         <p className="text-xs text-[var(--color-beige-white)] opacity-60 text-center mt-2">
