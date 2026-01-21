@@ -88,6 +88,12 @@ export type GameEvent =
   | 'mandateActivated'
   | 'mandateDefeated'
 
+  // Tile Modifier Events
+  | 'tileModified'
+  | 'tileShattered'
+  | 'markDecayed'
+  | 'consumableCreated'
+
   // Error/Debug
   | 'error'
   | 'debug'
@@ -164,6 +170,12 @@ export interface GameEventData {
   // Mandate Events
   mandateActivated: { mandateId: string; mandateName: string; effect: string }
   mandateDefeated: { mandateId: string }
+
+  // Tile Modifier Events
+  tileModified: { tileId: string; modifierType: 'enhancement' | 'seal' | 'edition'; value: string }
+  tileShattered: { tileId: string; tileName: string }
+  markDecayed: { tileId: string; markType: 'enhancement' | 'seal' | 'edition'; trigger: 'discard' | 'reshuffle' }
+  consumableCreated: { type: 'orb' | 'seal'; source: string; tileId: string }
 
   // Error/Debug
   error: { code: string; message: string; context?: Record<string, unknown> }

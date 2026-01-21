@@ -476,7 +476,7 @@ export const selectUnlockedStyleCount = (state: TableStyleState): number => {
 /**
  * Select total style count
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 export const selectTotalStyleCount = (_state: TableStyleState): number => {
   return TABLE_STYLE_DEFINITIONS.length
 }

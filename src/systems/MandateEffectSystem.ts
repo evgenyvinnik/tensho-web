@@ -14,18 +14,10 @@
 
 import { Tile, TileSuit } from '../core/Tile'
 import { DebuffSystem, DebuffSource } from '../game/DebuffSystem'
-import { OwnedDecree, RoundState } from './types'
+import { OwnedDecree } from './types'
 import {
   MandateDefinition,
-  MandateEffectType,
-  getMandatesForAct,
   selectRandomMandate,
-  isScoringMandate,
-  isTileMandate,
-  isResourceMandate,
-  isDecreeMandate,
-  STANDARD_MANDATES,
-  SHOWDOWN_MANDATE_DEFINITIONS,
 } from '../config/mandateDefinitions'
 
 // =============================================================================
@@ -591,7 +583,7 @@ export class MandateEffectSystem {
   /**
    * Handle decree sold event (for Verdant Leaf)
    */
-  onDecreeSold(tiles: Tile[]): boolean {
+  onDecreeSold(_tiles: Tile[]): boolean {
     if (!this.state.activeMandate) return false
 
     if (
@@ -632,7 +624,7 @@ export class MandateEffectSystem {
         result.multiplier = result.multiplier * 0.5
         break
 
-      case 'decrease_yaku_tier':
+      case 'decrease_yaku_tier': {
         const tierDecrease = mandate.effect.value as number
         const adjustedTiers = new Map<string, number>()
         for (const [yakuId, tier] of result.yakuTiers) {
@@ -640,6 +632,7 @@ export class MandateEffectSystem {
         }
         result.yakuTiers = adjustedTiers
         break
+      }
 
       case 'no_repeat_yaku':
         // Filter out already scored yaku

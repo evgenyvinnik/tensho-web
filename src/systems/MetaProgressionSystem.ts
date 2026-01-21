@@ -15,7 +15,6 @@ import {
   getUnlocksByCategory,
   getDefaultUnlocks,
   getStakeTierFromName,
-  STAKE_NAME_TO_TIER,
 } from '../config/unlockDefinitions'
 
 // =============================================================================

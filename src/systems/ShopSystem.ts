@@ -27,7 +27,7 @@ import {
   Sticker,
   StickerType,
 } from './types'
-import { DecreeSystem, ALL_DECREES } from './DecreeSystem'
+import { ALL_DECREES } from './DecreeSystem'
 
 // =============================================================================
 // SHOP CONSTANTS

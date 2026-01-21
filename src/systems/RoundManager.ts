@@ -14,8 +14,6 @@ import {
   ActState,
   RoundType,
   BossMandate,
-  ROUND_MULTIPLIERS,
-  ScoreRequirements,
 } from './types'
 
 import {

@@ -21,7 +21,6 @@
 import { Tile, EnhancementType, SealType, EditionType } from '../core/Tile'
 import {
   TileModifiers,
-  DEFAULT_MODIFIERS,
   calculateModifierEffects,
   ModifierScoringResult,
   getRandomEnhancement,
@@ -31,8 +30,6 @@ import {
   SEAL_DEFINITIONS,
   EDITION_DEFINITIONS,
   hasModifiers,
-  rollShatter,
-  rollLuckyEffect,
   isWild,
   alwaysScores,
 } from '../core/TileModifier'
@@ -202,7 +199,7 @@ export class TileModifierSystem {
     const newMods: TileModifiers = { ...currentMods, enhancement }
     this.store.modifiers.set(tile.id, newMods)
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'enhancement',
       value: enhancement,
@@ -219,7 +216,7 @@ export class TileModifierSystem {
     const newMods: TileModifiers = { ...currentMods, seal }
     this.store.modifiers.set(tile.id, newMods)
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'seal',
       value: seal,
@@ -236,7 +233,7 @@ export class TileModifierSystem {
     const newMods: TileModifiers = { ...currentMods, edition }
     this.store.modifiers.set(tile.id, newMods)
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'edition',
       value: edition,
@@ -283,7 +280,7 @@ export class TileModifierSystem {
       this.store.modifiers.set(tile.id, newMods)
     }
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'enhancement',
       value: EnhancementType.None,
@@ -305,7 +302,7 @@ export class TileModifierSystem {
       this.store.modifiers.set(tile.id, newMods)
     }
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'seal',
       value: SealType.None,
@@ -327,7 +324,7 @@ export class TileModifierSystem {
       this.store.modifiers.set(tile.id, newMods)
     }
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'edition',
       value: EditionType.Base,
@@ -342,7 +339,7 @@ export class TileModifierSystem {
   clearModifiers(tile: Tile): Tile {
     this.store.modifiers.delete(tile.id)
 
-    eventBus.emit('tileModified' as any, {
+    eventBus.emit('tileModified', {
       tileId: tile.id,
       modifierType: 'cleared',
       value: null,
@@ -390,7 +387,7 @@ export class TileModifierSystem {
         tileId: tile.id,
       })
 
-      eventBus.emit('consumableCreated' as any, {
+      eventBus.emit('consumableCreated', {
         type: result.createdConsumable,
         source: 'seal',
         tileId: tile.id,
@@ -406,7 +403,7 @@ export class TileModifierSystem {
     if (enhancementConfig.decaysOnDiscard && Math.random() < enhancementConfig.decayChance) {
       decayed = true
       this.removeEnhancement(tile)
-      eventBus.emit('markDecayed' as any, {
+      eventBus.emit('markDecayed', {
         tileId: tile.id,
         markType: 'enhancement',
         trigger: 'discard',
@@ -418,7 +415,7 @@ export class TileModifierSystem {
     if (sealConfig.decaysOnDiscard && Math.random() < sealConfig.decayChance) {
       decayed = true
       this.removeSeal(tile)
-      eventBus.emit('markDecayed' as any, {
+      eventBus.emit('markDecayed', {
         tileId: tile.id,
         markType: 'seal',
         trigger: 'discard',
@@ -441,7 +438,7 @@ export class TileModifierSystem {
         tileId: tile.id,
       })
 
-      eventBus.emit('consumableCreated' as any, {
+      eventBus.emit('consumableCreated', {
         type: result.createdConsumable,
         source: 'seal',
         tileId: tile.id,
@@ -468,7 +465,7 @@ export class TileModifierSystem {
   shatterTile(tile: Tile): void {
     this.store.shatteredTileIds.add(tile.id)
 
-    eventBus.emit('tileShattered' as any, {
+    eventBus.emit('tileShattered', {
       tileId: tile.id,
       tileName: tile.toString(),
     })
@@ -520,7 +517,7 @@ export class TileModifierSystem {
       if (enhancementConfig.decaysOnReshuffle && Math.random() < enhancementConfig.decayChance) {
         decayed = true
         this.removeEnhancement(tile)
-        eventBus.emit('markDecayed' as any, {
+        eventBus.emit('markDecayed', {
           tileId: tile.id,
           markType: 'enhancement',
           trigger: 'reshuffle',
@@ -634,7 +631,11 @@ export class TileModifierSystem {
   /**
    * Deserialize store from saved data
    */
-  deserialize(data: any): void {
+  deserialize(data: {
+    modifiers?: Array<[string, TileModifiers]>
+    shatteredTileIds?: string[]
+    pendingConsumables?: Array<{ type: 'orb' | 'seal'; tileId: string }>
+  }): void {
     if (data.modifiers) {
       this.store.modifiers = new Map(data.modifiers)
     }

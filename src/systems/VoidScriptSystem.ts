@@ -772,7 +772,7 @@ export class VoidScriptSystem {
    */
   private applyPenalty(
     penalty: VoidScriptPenalty,
-    context: VoidScriptContext
+    _context: VoidScriptContext
   ): { message: string; effects: ConsumableEffectResult[] } {
     const effects: ConsumableEffectResult[] = []
     let message = ''
@@ -849,7 +849,7 @@ export class VoidScriptSystem {
    */
   private handleDestroyAndCreate(
     script: VoidScript,
-    context: VoidScriptContext
+    _context: VoidScriptContext
   ): ConsumableUseResult {
     const destroyCount = script.effect.destroyCount || 1
     const createCount = script.effect.createCount || 1

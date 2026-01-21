@@ -200,7 +200,7 @@ export class SeasonSystem {
   /**
    * Determine if a season should be corrupted
    */
-  private shouldBeCorrupted(seasonVariant: SeasonVariant): boolean {
+  private shouldBeCorrupted(_seasonVariant: SeasonVariant): boolean {
     // Corrupted seasons only appear from Act II onwards
     if (this.currentAct < 2) {
       return false
@@ -369,7 +369,7 @@ export class SeasonSystem {
   /**
    * Apply all season modifiers to scoring context
    */
-  applySeasonModifiers(context: ScoringContext): {
+  applySeasonModifiers(_context: ScoringContext): {
     scoreMultiplier: number
     yakuBonus: number
     flowersSuppressed: boolean
