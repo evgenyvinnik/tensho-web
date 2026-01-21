@@ -15,6 +15,7 @@ import { Tile, TileSuit, FlowerType, SeasonType, WindType, DragonType } from '..
 import { Hand, ParsedHand } from '../core/Hand'
 import { Meld } from '../core/Meld'
 import { calculateScore, createScoringContext, ScoreBreakdown } from '../rules/ScoringEngine'
+import { validateHand } from '../rules/HandValidator'
 import { eventBus, GameEventData } from './EventBus'
 import {
   ActionProcessor,
@@ -442,12 +443,16 @@ export class GameOrchestrator {
    * Process a player action
    */
   processAction(action: PlayerAction): ActionResult {
+    console.log('[GameOrchestrator] processAction:', action.type)
+
     // Create state snapshot for validation
     const snapshot = this.createStateSnapshot()
+    console.log('[GameOrchestrator] Snapshot - handTiles:', snapshot.handTiles.length, 'handsRemaining:', snapshot.handsRemaining)
 
     // Validate action
     const validation = this.actionProcessor.validate(action, snapshot)
     if (!validation.isValid) {
+      console.error('[GameOrchestrator] Validation failed:', validation.errors)
       return {
         success: false,
         effects: [],
@@ -455,6 +460,7 @@ export class GameOrchestrator {
       }
     }
 
+    console.log('[GameOrchestrator] Validation passed, executing action')
     // Execute action
     return this.executeAction(action)
   }
@@ -586,8 +592,11 @@ export class GameOrchestrator {
    * Execute play action (play hand)
    */
   private executePlay(tileIds: string[], effects: Effect[]): ActionResult {
+    console.log('[executePlay] Starting with', tileIds.length, 'tile IDs')
+
     // Get selected tiles
     const selectedTiles = this.state.handTiles.filter((t) => tileIds.includes(t.id))
+    console.log('[executePlay] Found', selectedTiles.length, 'matching tiles in hand')
 
     // Check boss mandate: fixed_hand_size
     const fixedHandMandate = this.state.roundManager.checkMandateEffect('fixed_hand_size')
@@ -629,14 +638,18 @@ export class GameOrchestrator {
     }
 
     // Check if hand is valid (can form a winning hand)
-    const parsedHand = hand.findBestParse()
+    const validation = validateHand(hand)
+    const parsedHand = validation.parsedHands.length > 0 ? validation.parsedHands[0] : null
+    console.log('[executePlay] Parsed hand:', parsedHand ? 'valid' : 'partial')
 
     if (!parsedHand) {
       // Even without a complete winning hand, we can still score
       // This is the Tensho roguelike twist - you can play partial hands
+      console.log('[executePlay] No complete hand, executing partial play')
       return this.executePartialPlay(selectedTiles, effects)
     }
 
+    console.log('[executePlay] Complete hand found, calculating score')
     // Calculate score for complete hand
     const scoreResult = this.calculateHandScore(allTiles, parsedHand)
 
@@ -645,11 +658,12 @@ export class GameOrchestrator {
     this.state.score += scoreResult.finalScore
     this.state.handsRemaining--
 
-    // Remove played tiles (in Tensho, the hand is depleted)
+    // Remove played tiles and add to discards
     for (const tileId of tileIds) {
       const idx = this.state.handTiles.findIndex((t) => t.id === tileId)
       if (idx !== -1) {
-        this.state.handTiles.splice(idx, 1)
+        const [tile] = this.state.handTiles.splice(idx, 1)
+        this.state.discards.push(tile)
       }
     }
 
@@ -707,6 +721,8 @@ export class GameOrchestrator {
    * Execute partial play (for when hand doesn't form a complete winning hand)
    */
   private executePartialPlay(selectedTiles: Tile[], effects: Effect[]): ActionResult {
+    console.log('[executePartialPlay] Starting with', selectedTiles.length, 'tiles')
+
     // Calculate a simpler score based on tile values
     let basePoints = 0
     for (const tile of selectedTiles) {
@@ -718,17 +734,20 @@ export class GameOrchestrator {
     // Apply basic multiplier
     const multiplier = 1.0
     const finalScore = Math.floor(basePoints * multiplier)
+    console.log('[executePartialPlay] Calculated score - basePoints:', basePoints, 'finalScore:', finalScore)
 
     // Apply score
     const previousScore = this.state.score
     this.state.score += finalScore
     this.state.handsRemaining--
+    console.log('[executePartialPlay] Score updated from', previousScore, 'to', this.state.score, 'handsRemaining:', this.state.handsRemaining)
 
-    // Remove played tiles
+    // Remove played tiles and add to discards
     for (const tile of selectedTiles) {
       const idx = this.state.handTiles.findIndex((t) => t.id === tile.id)
       if (idx !== -1) {
         this.state.handTiles.splice(idx, 1)
+        this.state.discards.push(tile)
       }
     }
 
@@ -750,20 +769,24 @@ export class GameOrchestrator {
       },
     })
 
+    console.log('[executePartialPlay] Emitting handPlayed event')
     eventBus.emit('handPlayed', {
       tiles: selectedTiles.map((t) => t.id),
       score: finalScore,
       yakuIds: [],
     })
 
+    console.log('[executePartialPlay] Emitting scoreUpdate event')
     eventBus.emit('scoreUpdate', {
       previousScore,
       newScore: this.state.score,
       delta: finalScore,
     })
 
+    console.log('[executePartialPlay] Checking round completion')
     this.checkRoundCompletion(effects)
 
+    console.log('[executePartialPlay] Returning success')
     return { success: true, effects }
   }
 

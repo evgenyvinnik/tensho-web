@@ -112,6 +112,16 @@ export function GameplayScreen() {
     }
   }, [game.phase, navigateTo])
 
+  // Auto-draw to 14 tiles (standard Mahjong hand size)
+  useEffect(() => {
+    if (game.isRunActive && game.phase === 'gameplay' && game.handTiles.length < 14 && game.wallRemaining > 0) {
+      const timer = setTimeout(() => {
+        game.draw()
+      }, 150) // Small delay for smooth animation
+      return () => clearTimeout(timer)
+    }
+  }, [game.isRunActive, game.phase, game.handTiles.length, game.wallRemaining, game.draw])
+
   // ==========================================================================
   // EFFECTS - Tutorial triggers
   // ==========================================================================
@@ -242,7 +252,6 @@ export function GameplayScreen() {
     setStagedTileIds(tiles.map((t) => t.id))
   }, [])
 
-  const handleDraw = useCallback(() => game.draw(), [game])
   const handleSkip = useCallback(() => game.skipRound(), [game])
   const handleSettings = useCallback(() => navigateTo(ROUTES.SETTINGS), [navigateTo])
 
@@ -289,13 +298,16 @@ export function GameplayScreen() {
     : t('gameplay.shanten', { count: 14 - game.handTiles.length })
 
   const scorePreview = useMemo(() => {
+    // Only show preview when tiles are explicitly selected or staged
+    if (stagedTileIds.length === 0 && game.selectedTileIds.length === 0) {
+      return null
+    }
+
     let previewTiles: Tile[] = []
     if (stagedTileIds.length > 0) {
       previewTiles = game.handTiles.filter((t) => stagedTileIds.includes(t.id))
-    } else if (game.selectedTileIds.length > 0) {
-      previewTiles = game.handTiles.filter((t) => game.selectedTileIds.includes(t.id))
     } else {
-      previewTiles = game.handTiles
+      previewTiles = game.handTiles.filter((t) => game.selectedTileIds.includes(t.id))
     }
 
     if (previewTiles.length === 0) return null
@@ -405,6 +417,9 @@ export function GameplayScreen() {
         {/* Play area */}
         <PlayArea
           selectedTileCount={game.selectedTileIds.length}
+          stagedTileCount={stagedTileIds.length}
+          handTileCount={game.handTiles.length}
+          scorePreview={scorePreview}
           yakuReveals={yakuReveals}
           onYakuComplete={handleYakuComplete}
         />
@@ -432,7 +447,6 @@ export function GameplayScreen() {
               shantenDisplay={shantenDisplay}
               handsRemaining={game.handsRemaining}
               discardsRemaining={game.discardsRemaining}
-              scorePreview={scorePreview}
               t={t}
             />
           </div>
@@ -441,11 +455,10 @@ export function GameplayScreen() {
         {/* Action bar */}
         <ActionBar
           wallRemaining={game.wallRemaining}
-          handTileCount={game.handTiles.length}
           handsRemaining={game.handsRemaining}
+          discardsRemaining={game.discardsRemaining}
           currentRound={game.currentRound}
           onSkip={handleSkip}
-          onDraw={handleDraw}
           onPlayHand={handlePlayHand}
           t={t}
         />

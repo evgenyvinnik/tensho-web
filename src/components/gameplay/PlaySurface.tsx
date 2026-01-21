@@ -15,7 +15,6 @@ import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../styles/theme'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { YakuDefinition } from '../../rules/YakuDetector'
 
 // =============================================================================
 // TYPES
@@ -44,8 +43,6 @@ export interface PlaySurfaceProps {
   handsRemaining?: number
   /** Discards remaining */
   discardsRemaining?: number
-  /** Score preview for staged/selected tiles */
-  scorePreview?: { points: number; mult: number; total: number; yaku?: YakuDefinition[] } | null
   /** Translation function */
   t?: (key: string) => string
 }
@@ -84,7 +81,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   shantenDisplay = '',
   handsRemaining = 0,
   discardsRemaining = 0,
-  scorePreview = null,
   t = (key) => key,
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
@@ -228,6 +224,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           return newStaged
         })
       }
+      // Also call external select handler for syncing with game state
+      onTileSelect?.(tile)
       setDragState(null)
       setCurrentDropZone(null)
       return
@@ -415,40 +413,18 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                       selected={selectedIds.has(tile.id)}
                       glowing={glowingIds.has(tile.id)}
                       disabled={disabled}
-                      onClick={() => handleTileClick(tile)}
                     />
                   </div>
                 )
               })}
             </div>
-            {/* Score preview for staged tiles */}
-            {scorePreview && (
-              <div className="flex flex-col items-center gap-1 mt-2 px-3 py-1.5 bg-[var(--color-dark-forest)] rounded-lg">
-                {/* Yaku display */}
-                {scorePreview.yaku && scorePreview.yaku.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-1 mb-1">
-                    {scorePreview.yaku.map((yaku) => (
-                      <span
-                        key={yaku.id}
-                        className="px-2 py-0.5 rounded text-xs font-bold bg-purple-600 text-white"
-                        title={yaku.description}
-                      >
-                        {yaku.japaneseName} ({yaku.multiplier}×)
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {/* Points x Mult = Total */}
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-blue-400 font-bold">{scorePreview.points.toLocaleString()}</span>
-                  <span className="text-[var(--color-golden-yellow)]">×</span>
-                  <span className="text-red-400 font-bold">{scorePreview.mult.toFixed(1)}</span>
-                  <span className="text-[var(--color-golden-yellow)]">=</span>
-                  <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{scorePreview.total.toLocaleString()}</span>
-                </div>
-              </div>
+            {/* Staged tile count indicator */}
+            {stagedTiles.length > 0 && (
+              <p className="text-[var(--color-beige-white)] text-sm opacity-60 mt-2 text-center">
+                {stagedTiles.length} tile{stagedTiles.length > 1 ? 's' : ''} ready to play
+              </p>
             )}
-          </>
+</>
         ) : (
           <div className="text-center px-6">
             <p className="text-[var(--color-beige-white)] text-lg font-medium opacity-70">
@@ -526,7 +502,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   selected={selectedIds.has(tile.id)}
                   glowing={glowingIds.has(tile.id)}
                   disabled={disabled}
-                  onClick={() => handleTileClick(tile)}
                 />
               </div>
             )

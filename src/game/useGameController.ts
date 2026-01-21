@@ -41,6 +41,7 @@ export interface GameController {
 
   // Wall
   wallRemaining: number
+  wallTiles: Tile[]
   deadWallRemaining: number
 
   // Actions
@@ -68,6 +69,7 @@ export interface GameController {
   getAvailableActions: () => PlayerAction['type'][]
   canPerformAction: (action: PlayerAction) => boolean
   resetGame: () => void
+  endRun: () => void
 }
 
 // =============================================================================
@@ -164,7 +166,12 @@ export function useGameController(
   const playHand = useCallback(
     (tileIds?: string[]) => {
       const ids = tileIds ?? orchestrator.getSelectedTileIds()
-      return orchestrator.processAction({ type: 'play', tileIds: ids })
+      console.log('[useGameController.playHand] Called with', ids.length, 'tile IDs:', ids)
+      console.log('[useGameController.playHand] Current state - score:', orchestrator.getState().score, 'handsRemaining:', orchestrator.getState().handsRemaining)
+      const result = orchestrator.processAction({ type: 'play', tileIds: ids })
+      console.log('[useGameController.playHand] Result:', result)
+      console.log('[useGameController.playHand] After state - score:', orchestrator.getState().score, 'handsRemaining:', orchestrator.getState().handsRemaining)
+      return result
     },
     [orchestrator]
   )
@@ -252,6 +259,13 @@ export function useGameController(
     orchestrator.startNewRun()
   }, [orchestrator])
 
+  const endRun = useCallback(() => {
+    // End the current run by resetting to menu state
+    // This will be handled by the orchestrator or we just navigate away
+    // For now, just clear the state to prevent further actions
+    orchestrator.clearSelection()
+  }, [orchestrator])
+
   return {
     // State
     state,
@@ -274,6 +288,7 @@ export function useGameController(
 
     // Wall
     wallRemaining: state.wall.length - state.drawIndex,
+    wallTiles: state.wall.slice(state.drawIndex),
     deadWallRemaining: state.deadWall.length,
 
     // Actions
@@ -301,6 +316,7 @@ export function useGameController(
     getAvailableActions,
     canPerformAction,
     resetGame,
+    endRun,
   }
 }
 
