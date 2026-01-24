@@ -267,61 +267,19 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 
 ## UI Design
 
-### Color Palette
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Forest Green | `#2D5F4A` | Primary background, game table |
-| Vibrant Orange | `#FF5722` | Buttons, call-to-action |
-| Golden Yellow | `#FFD54F` | Accents, score displays |
-| Beige White | `#F5F5DC` | Tile backgrounds, text |
-| Dark Forest | `#1C3A2E` | Borders, overlays |
-
-### Layout Principles
-
 - **Mobile-first (portrait):** 1080×1920 reference resolution
 - **Touch targets:** Minimum 44×44 pixels
 - **Hand area:** Bottom-aligned for thumb accessibility
-- **Tile sizing:** 70×98px base, dynamic overlap for large hands
+- **Color theme:** Forest green (`#2D5F4A`) primary, orange (`#FF5722`) CTA, golden yellow (`#FFD54F`) accents
 
-## PWA
+## Tailwind CSS v4
 
-Fully installable Progressive Web App with offline support via service worker (workbox). Assets cached with CacheFirst strategy. See `vite.config.ts` for PWA configuration.
+This project uses Tailwind CSS v4, which has different import syntax than v3:
 
-## SEO
-
-### Meta Tags
-
-The app includes comprehensive SEO meta tags in `index.html`:
-- Primary meta tags (title, description, keywords, author)
-- Open Graph tags for Facebook/LinkedIn sharing
-- Twitter Card tags for Twitter sharing
-- Structured data (JSON-LD VideoGame schema)
-- Multi-language alternate links
-
-### Dynamic SEO
-
-Use the `usePageSEO` hook for route-specific meta tags:
-
-```typescript
-import { usePageSEO, getLocalizedSEO } from './utils/seo'
-
-function PlayPage() {
-  const { i18n } = useTranslation()
-
-  usePageSEO(getLocalizedSEO('play', i18n.language))
-  // Sets title to "Play | Tensho", updates canonical, OG tags, etc.
-
-  return <div>...</div>
-}
+```css
+/* index.css - v4 uses @import instead of @tailwind directives */
+@import "tailwindcss";
 ```
 
-### SEO Files
-
-- `public/robots.txt` — Crawler instructions
-- `public/sitemap.xml` — URL sitemap with hreflang for 13 languages
-- `public/browserconfig.xml` — Windows tile configuration
-- `public/og-image.png` — Open Graph image (1200×630) [needs creation]
-- `public/screenshot-wide.png` — PWA screenshot landscape [needs creation]
-- `public/screenshot-narrow.png` — PWA screenshot portrait [needs creation]
+Configuration is in `tailwind.config.ts`. The v4 API uses CSS-first configuration with `@theme` blocks when needed.
 
