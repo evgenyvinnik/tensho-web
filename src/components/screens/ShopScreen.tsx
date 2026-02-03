@@ -19,9 +19,13 @@ import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController } from '../../game/useGameController'
 import { useShopStore } from '../../stores/shopStore'
 import { useDecreeStore, createDecree } from '../../stores/decreeStore'
+import { useConsumableStore } from '../../stores/consumableStore'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { BlessingPackSystem, PackOffering } from '../../systems/BlessingPackSystem'
 import { Decree, ImperialCharter, BlessingPack } from '../../systems/types'
+import { FateSeal } from '../../systems/FateSealSystem'
+import { CelestialOrb } from '../../systems/CelestialOrbSystem'
+import { VoidScript } from '../../systems/VoidScriptSystem'
 import { Button } from '../ui/Button'
 import { ConfirmPopup } from '../ui/Popup'
 import { ShopHeader } from '../shop/ShopHeader'
@@ -54,6 +58,9 @@ export function ShopScreen() {
 
   // Decree store for adding purchased decrees
   const decreeStore = useDecreeStore()
+
+  // Consumable store for adding purchased consumables
+  const consumableStore = useConsumableStore()
 
   // Local state
   const [confirmOffering, setConfirmOffering] = useState<TeaHouseOffering | null>(null)
@@ -129,6 +136,15 @@ export function ShopScreen() {
         } else if (result.offering.itemType === 'ImperialCharter') {
           const charter = result.offering.item as ImperialCharter
           shopStore.applyCharter(charter)
+        } else if (result.offering.itemType === 'FateSeal') {
+          const seal = result.offering.item as FateSeal
+          consumableStore.addFateSeal(seal)
+        } else if (result.offering.itemType === 'CelestialOrb') {
+          const orb = result.offering.item as CelestialOrb
+          consumableStore.addCelestialOrb(orb)
+        } else if (result.offering.itemType === 'VoidScript') {
+          const script = result.offering.item as VoidScript
+          consumableStore.addVoidScript(script)
         }
 
         setSelectedItemId(null)
@@ -136,7 +152,7 @@ export function ShopScreen() {
 
       setConfirmOffering(null)
     },
-    [shopStore, game, decreeStore]
+    [shopStore, game, decreeStore, consumableStore]
   )
 
   // Handle pack purchase
@@ -188,7 +204,7 @@ export function ShopScreen() {
       // Get selected contents
       const selectedContents = blessingPackSystem.confirmSelection(purchasedPackId)
 
-      // Apply selected contents (simplified - just add decrees for now)
+      // Apply selected contents
       for (const content of selectedContents) {
         if (content.type === 'Decree') {
           const decree = content.data as Decree
@@ -207,15 +223,20 @@ export function ShopScreen() {
             0
           )
           decreeStore.addDecree(newDecree)
+        } else if (content.type === 'FateSeal') {
+          consumableStore.addFateSeal(content.data as FateSeal)
+        } else if (content.type === 'CelestialOrb') {
+          consumableStore.addCelestialOrb(content.data as CelestialOrb)
+        } else if (content.type === 'VoidScript') {
+          consumableStore.addVoidScript(content.data as VoidScript)
         }
-        // Other content types would be handled here
       }
 
       setPackModalOpen(false)
       setCurrentPackOffering(null)
       setPurchasedPackId(null)
     },
-    [currentPackOffering, purchasedPackId, decreeStore]
+    [currentPackOffering, purchasedPackId, decreeStore, consumableStore]
   )
 
   // Handle pack skip

@@ -59,7 +59,7 @@
 | **P3** | Table Styles/Walls | Unlockable deck variants | ✅ Complete |
 | **P3** | Red Fives | Optional tile variants | ✅ Complete |
 | **P3** | Tutorial System | Progressive complexity disclosure | ✅ Complete |
-| **P3** | Audio/VFX Polish | Feedback and juice | ⚠️ Definitions complete, **no audio assets** |
+| **P3** | Audio/VFX Polish | Feedback and juice | ⚠️ Music complete, **SFX assets missing** |
 | **P3** | Archive of Hands | Collection/discovery system | ✅ Complete |
 
 ### Phase 5: Platform & Localization ✅
@@ -112,7 +112,7 @@
 | Collection | **Archive of Hands** | `src/systems/ArchiveSystem.ts`, `src/stores/archiveStore.ts` (352+ items) | ✅ Complete |
 | Red Fives | **Red Fives** | `src/systems/RedFiveSystem.ts` (+50 chips per red five) | ✅ Complete |
 | Meta-Progression | **Meta-Progression** | `src/systems/MetaProgressionSystem.ts`, `src/config/unlockDefinitions.ts` | ✅ Complete |
-| Audio/SFX | **Audio System** | `src/systems/AudioSystem.ts`, `src/config/audioDefinitions.ts` | ⚠️ Definitions complete, no audio assets |
+| Audio/SFX | **Audio System** | `src/systems/AudioSystem.ts`, `src/config/audioDefinitions.ts` | ⚠️ Music complete (4 tracks), SFX assets missing |
 | VFX/Juice | **VFX System** | `src/systems/VFXSystem.ts`, `src/hooks/useVFX.tsx` | ✅ Complete |
 
 ---
@@ -230,15 +230,17 @@
 | Pack system uses hardcoded items | `BlessingPackSystem.ts` now imports from real `FateSealSystem`, `CelestialOrbSystem`, `VoidScriptSystem` |
 | Gameplay consumables placeholder | `GameplayScreen.tsx` now uses real consumable data from `useGameController()` |
 | Consumables UI not connected | Added consumable selection panel with use functionality |
+| Shop purchase handler missing consumables | `ShopScreen.tsx` `handleItemPurchase()` now adds FateSeal, CelestialOrb, VoidScript to `consumableStore` |
+| Pack opening missing non-Decree content | `ShopScreen.tsx` `handlePackConfirm()` now adds consumables from packs to inventory |
 
 ### Remaining (Low Priority)
 
 | Issue | Location | Description |
 |-------|----------|-------------|
-| No audio assets | `public/audio/`, `public/sounds/` | Directories are empty, audio definitions have placeholder paths |
-| ActionProcessor validation incomplete | `src/game/ActionProcessor.ts:404-442` | `validateUseSeal` and `validateUseScript` have stub implementations |
+| SFX assets missing | `public/assets/sfx/` | Directory doesn't exist; `SOUND_EFFECT_CONFIG` has placeholder paths. Music (4 tracks) works. |
+| ActionProcessor validation incomplete | `src/game/ActionProcessor.ts:404-443` | `validateUseSeal` and `validateUseScript` only check ID exists, not ownership/targets |
 
 ### To Fix
 
-1. Add audio assets or implement graceful silent fallback
+1. Add SFX assets to `public/assets/sfx/` or implement graceful silent fallback
 2. Complete ActionProcessor validation for consumable actions (optional - basic validation works)
