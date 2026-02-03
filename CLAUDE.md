@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Tensho (天翔) Mahjong Roguelike** — A web-based React game reinterpreting Riichi Mahjong as a scoring optimization roguelike (inspired by Balatro).
 
-- **Framework:** React 19
+- **Framework:** React 19 + React Compiler (experimental)
 - **Language:** TypeScript (strict mode)
 - **Build:** Vite 6
 - **Runtime:** Bun
@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Animations:** React Spring
 - **Routing:** React Router v7
 - **i18n:** i18next (13 languages)
+- **Testing:** Vitest 4 (unit), Playwright (E2E)
 - **PWA:** vite-plugin-pwa
 
 See [ARCHITECTURE.MD](ARCHITECTURE.MD) for detailed game design and [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) for complete item/effect lists.
@@ -110,24 +111,14 @@ The game uses a dual-state pattern:
    - System integration (DecreeSystem, FlowerSystem, SeasonSystem, RoundManager)
    - Wall/hand management and scoring
 
-2. **Zustand Stores** (`src/stores/`) — UI-focused state slices:
+2. **Zustand Stores** (`src/stores/`) — UI-focused state slices synced from orchestrator:
    - `gameStore` — Session state (act, round, score, gold, phase)
    - `handStore` — Current hand tiles and melds
    - `wallStore` — Wall and dead wall state
    - `decreeStore` — Active decrees
    - `floraStore` — Collected flowers and active seasons
-   - `settingsStore` — User preferences (persisted)
-   - `achievementStore` — Achievement tracking (persisted)
-   - `tileMarkStore` — Tile modifiers (enhancements, seals, editions)
-   - `charterStore` — Imperial Charters (permanent upgrades)
-   - `omenStore` — Omen Tags from skipping rounds
-   - `packStore` — Blessing Pack opening state
-   - `shopStore` — Tea House shop state
-   - `stakeStore` — Table Stakes difficulty progression (persisted)
-   - `consumableStore` — Fate Seals, Celestial Orbs, Void Scripts
-   - `progressionStore` — Meta-progression tracking
-   - `tableStyleStore` — Table/wall style selection
-   - `archiveStore` — Hand archive/collection
+   - `settingsStore`, `achievementStore`, `stakeStore` — Persisted user data
+   - Plus 10 more specialized stores for tile marks, charters, omens, packs, shop, consumables, progression, table style, and archive
 
 The orchestrator is the source of truth for game logic; stores may reflect orchestrator state for UI binding.
 
@@ -165,32 +156,15 @@ const state = gameOrchestrator.getState()
 - `packDefinitions` — Blessing Pack types, sizes, and appearance rates
 - `stakeDefinitions` — 8 Table Stake tiers with cumulative modifiers
 
-**Systems Layer (`src/systems/`)** — Rule modifiers and roguelike mechanics:
+**Systems Layer (`src/systems/`)** — 27 game systems for rule modifiers and roguelike mechanics. Key systems:
 - `RoundManager` — Act/Round progression, boss mandates, score targets
 - `DecreeSystem` — Rule-bending modifiers (Joker equivalent)
-- `FlowerSystem` — Run-wide persistent scaling modifiers
-- `SeasonSystem` — Round-scoped temporal effects
-- `ShopSystem` — Between-round acquisition (legacy)
-- `TeaHouseSystem` — Full shop with item generation, pricing, rerolls
-- `ShopGenerator` — Shop item and pack generation with weighted randomization
-- `PricingCalculator` — Cost formulas with rarity and edition modifiers
+- `FlowerSystem` / `SeasonSystem` — Run-wide and round-scoped effects
+- `TeaHouseSystem` / `ShopGenerator` / `PricingCalculator` — Shop mechanics
 - `TileModifierSystem` — Enhancements, Seals, Editions on tiles
-- `FateSealSystem` — 22 Tarot-style consumables
-- `CelestialOrbSystem` — 13 Planet-style yaku upgrades
-- `VoidScriptSystem` — 20 Spectral-style powerful effects with downsides
-- `ConsumableSystem` — Base consumable inventory management
-- `CharterSystem` — 32 Imperial Charters (voucher-style permanent upgrades)
-- `BlessingPackSystem` — Booster pack opening mechanics
-- `OmenTagSystem` — 23 skip rewards (one-time triggers)
-- `TableStakeSystem` — 8-tier difficulty progression
-- `StickerSystem` — Eternal/Perishable/Rental decree modifiers
-- `MandateEffectSystem` — 27 Boss Mandate restrictions
-- `RedFiveSystem` — Red five tile variants
-- `TableStyleSystem` — Deck/table style variants
-- `MetaProgressionSystem` — Persistent unlock tracking
-- `AudioSystem` — Sound effects and music
-- `VFXSystem` — Visual effects
-- `ArchiveSystem` — Hand collection/discovery
+- `FateSealSystem` / `CelestialOrbSystem` / `VoidScriptSystem` — Consumables
+- `CharterSystem` / `BlessingPackSystem` / `OmenTagSystem` — Permanent upgrades and rewards
+- `TableStakeSystem` / `MandateEffectSystem` — Difficulty and boss restrictions
 
 ### Event Bus Pattern
 
@@ -282,4 +256,15 @@ This project uses Tailwind CSS v4, which has different import syntax than v3:
 ```
 
 Configuration is in `tailwind.config.ts`. The v4 API uses CSS-first configuration with `@theme` blocks when needed.
+
+## Adding Game Content
+
+To add new items (decrees, seals, orbs, etc.), follow the data-driven pattern:
+
+1. **Add definition** to the appropriate config file in `src/config/` (e.g., `decreeDefinitions.ts`)
+2. **Add translations** to all 13 locale files in `src/i18n/locales/`
+3. **Update the system** if new effect types are needed (e.g., `DecreeSystem.ts`)
+4. **Add tests** in corresponding `*.test.ts` files
+
+The item libraries in [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) serve as the canonical reference for all game content.
 

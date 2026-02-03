@@ -44,6 +44,12 @@ export interface GameController {
   wallTiles: Tile[]
   deadWallRemaining: number
 
+  // Consumables
+  consumableCounts: { fateSeals: number; celestialOrbs: number; voidScripts: number }
+  fateSeals: unknown[]
+  celestialOrbs: unknown[]
+  voidScripts: unknown[]
+
   // Actions
   startNewRun: (seed?: number, stake?: number) => void
   processAction: (action: PlayerAction) => ActionResult
@@ -52,6 +58,10 @@ export interface GameController {
   playHand: (tileIds?: string[]) => ActionResult
   redraw: (tileIds?: string[]) => ActionResult
   skipRound: () => ActionResult
+
+  // Consumable actions
+  useFateSeal: (sealId: string, targetTileIds?: string[]) => ActionResult
+  useVoidScript: (scriptId: string, targetTileIds?: string[]) => ActionResult
 
   // Tile selection
   selectTile: (tileId: string) => void
@@ -188,6 +198,23 @@ export function useGameController(
     return orchestrator.processAction({ type: 'skip' })
   }, [orchestrator])
 
+  // Consumable actions
+  const useFateSeal = useCallback(
+    (sealId: string, targetTileIds?: string[]) => {
+      const targets = targetTileIds ?? orchestrator.getSelectedTileIds()
+      return orchestrator.processAction({ type: 'useSeal', sealId, targets })
+    },
+    [orchestrator]
+  )
+
+  const useVoidScript = useCallback(
+    (scriptId: string, targetTileIds?: string[]) => {
+      const targets = targetTileIds ?? orchestrator.getSelectedTileIds()
+      return orchestrator.processAction({ type: 'useScript', scriptId, targets })
+    },
+    [orchestrator]
+  )
+
   // Tile selection
   const selectTile = useCallback(
     (tileId: string) => {
@@ -291,6 +318,12 @@ export function useGameController(
     wallTiles: state.wall.slice(state.drawIndex),
     deadWallRemaining: state.deadWall.length,
 
+    // Consumables
+    consumableCounts: orchestrator.getConsumableCounts(),
+    fateSeals: orchestrator.getFateSeals(),
+    celestialOrbs: orchestrator.getCelestialOrbs(),
+    voidScripts: orchestrator.getVoidScripts(),
+
     // Actions
     startNewRun,
     processAction,
@@ -299,6 +332,10 @@ export function useGameController(
     playHand,
     redraw,
     skipRound,
+
+    // Consumable actions
+    useFateSeal,
+    useVoidScript,
 
     // Tile selection
     selectTile,

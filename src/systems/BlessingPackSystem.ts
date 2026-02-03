@@ -31,6 +31,10 @@ import {
   SKIP_SYNERGY_DECREES,
   ContentRarityWeights,
 } from '../config/packDefinitions'
+import { getFateSealsByRarity, FateSeal } from './FateSealSystem'
+import { getCelestialOrbsByRarity, CelestialOrb } from './CelestialOrbSystem'
+import { getVoidScriptsByRarity, VoidScript } from './VoidScriptSystem'
+import { ConsumableRarity } from './ConsumableSystem'
 
 // =============================================================================
 // PACK CONTENT TYPES
@@ -228,13 +232,28 @@ export class BlessingPackSystem {
     rarity: keyof ContentRarityWeights,
     existingContents: PackContent[]
   ): PackContent {
-    // Placeholder Fate Seal definitions
-    const fateSeals = this.getFateSealsByRarity(rarity)
+    // Map content rarity to consumable rarity
+    const consumableRarity = this.mapToConsumableRarity(rarity)
+    const fateSeals = getFateSealsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
 
     // Filter out already-present seals
     const available = fateSeals.filter((seal) => !existingIds.has(seal.id))
     const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : fateSeals[0]
+
+    if (!selected) {
+      // Fallback if no seals of this rarity
+      const allSeals = getFateSealsByRarity('Common')
+      const fallback = allSeals[Math.floor(Math.random() * allSeals.length)]
+      return {
+        id: `fate-seal-${fallback.id}-${Date.now()}`,
+        type: 'FateSeal',
+        name: fallback.name,
+        description: fallback.description,
+        rarity,
+        data: fallback,
+      }
+    }
 
     return {
       id: `fate-seal-${selected.id}-${Date.now()}`,
@@ -247,30 +266,21 @@ export class BlessingPackSystem {
   }
 
   /**
-   * Get placeholder Fate Seals by rarity
+   * Map content rarity to consumable rarity
    */
-  private getFateSealsByRarity(
-    rarity: keyof ContentRarityWeights
-  ): { id: string; name: string; description: string }[] {
-    const seals: Record<keyof ContentRarityWeights, { id: string; name: string; description: string }[]> = {
-      common: [
-        { id: 'seal_of_balance', name: 'Seal of Balance', description: 'Swap ranks of two suited tiles in hand.' },
-        { id: 'seal_of_stillness', name: 'Seal of Stillness', description: 'One chosen tile cannot be discarded this round.' },
-      ],
-      uncommon: [
-        { id: 'seal_of_harmony', name: 'Seal of Harmony', description: 'Convert one isolated tile into a sequence fit by shifting its rank by 1.' },
-        { id: 'seal_of_fortune', name: 'Seal of Fortune', description: 'Gain +5 Gold immediately.' },
-      ],
-      rare: [
-        { id: 'seal_of_transmutation', name: 'Seal of Transmutation', description: 'Transform one tile into any tile of your choice.' },
-        { id: 'seal_of_revelation', name: 'Seal of Revelation', description: 'View the next 5 tiles in the wall.' },
-      ],
-      legendary: [
-        { id: 'seal_of_heaven', name: 'Seal of Heaven', description: 'Complete your hand immediately if at 1-shanten.' },
-      ],
+  private mapToConsumableRarity(rarity: keyof ContentRarityWeights): ConsumableRarity {
+    switch (rarity) {
+      case 'common':
+        return 'Common'
+      case 'uncommon':
+        return 'Uncommon'
+      case 'rare':
+        return 'Rare'
+      case 'legendary':
+        return 'Legendary'
+      default:
+        return 'Common'
     }
-
-    return seals[rarity] || seals.common
   }
 
   /**
@@ -280,10 +290,25 @@ export class BlessingPackSystem {
     rarity: keyof ContentRarityWeights,
     existingContents: PackContent[]
   ): PackContent {
-    const orbs = this.getCelestialOrbsByRarity(rarity)
+    const consumableRarity = this.mapToConsumableRarity(rarity)
+    const orbs = getCelestialOrbsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = orbs.filter((orb) => !existingIds.has(orb.id))
     const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : orbs[0]
+
+    if (!selected) {
+      // Fallback if no orbs of this rarity
+      const allOrbs = getCelestialOrbsByRarity('Common')
+      const fallback = allOrbs[Math.floor(Math.random() * allOrbs.length)]
+      return {
+        id: `celestial-orb-${fallback.id}-${Date.now()}`,
+        type: 'CelestialOrb',
+        name: fallback.name,
+        description: fallback.description,
+        rarity,
+        data: fallback,
+      }
+    }
 
     return {
       id: `celestial-orb-${selected.id}-${Date.now()}`,
@@ -293,33 +318,6 @@ export class BlessingPackSystem {
       rarity,
       data: selected,
     }
-  }
-
-  /**
-   * Get placeholder Celestial Orbs by rarity
-   */
-  private getCelestialOrbsByRarity(
-    rarity: keyof ContentRarityWeights
-  ): { id: string; name: string; description: string; yakuFamily: string }[] {
-    const orbs: Record<keyof ContentRarityWeights, { id: string; name: string; description: string; yakuFamily: string }[]> = {
-      common: [
-        { id: 'sequence_star', name: 'Sequence Star', description: '+5% multiplier to sequence-heavy hands.', yakuFamily: 'sequence' },
-        { id: 'triplet_star', name: 'Triplet Star', description: '+5% multiplier to triplet-heavy hands.', yakuFamily: 'triplet' },
-      ],
-      uncommon: [
-        { id: 'dragon_star', name: 'Dragon Star', description: '+10% multiplier to dragon-based yaku.', yakuFamily: 'dragon' },
-        { id: 'wind_star', name: 'Wind Star', description: '+10% multiplier to wind-based yaku.', yakuFamily: 'wind' },
-      ],
-      rare: [
-        { id: 'terminal_star', name: 'Terminal Star', description: '+15% multiplier to terminal-based hands.', yakuFamily: 'terminal' },
-        { id: 'honor_star', name: 'Honor Star', description: '+15% multiplier to all honor-based yaku.', yakuFamily: 'honor' },
-      ],
-      legendary: [
-        { id: 'yakuman_star', name: 'Yakuman Star', description: '+25% multiplier to yakuman hands.', yakuFamily: 'yakuman' },
-      ],
-    }
-
-    return orbs[rarity] || orbs.common
   }
 
   /**
@@ -438,10 +436,25 @@ export class BlessingPackSystem {
     rarity: keyof ContentRarityWeights,
     existingContents: PackContent[]
   ): PackContent {
-    const scripts = this.getVoidScriptsByRarity(rarity)
+    const consumableRarity = this.mapToConsumableRarity(rarity)
+    const scripts = getVoidScriptsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = scripts.filter((script) => !existingIds.has(script.id))
     const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : scripts[0]
+
+    if (!selected) {
+      // Fallback if no scripts of this rarity
+      const allScripts = getVoidScriptsByRarity('Common')
+      const fallback = allScripts[Math.floor(Math.random() * allScripts.length)]
+      return {
+        id: `void-script-${fallback.id}-${Date.now()}`,
+        type: 'VoidScript',
+        name: fallback.name,
+        description: fallback.description,
+        rarity,
+        data: fallback,
+      }
+    }
 
     return {
       id: `void-script-${selected.id}-${Date.now()}`,
@@ -451,32 +464,6 @@ export class BlessingPackSystem {
       rarity,
       data: selected,
     }
-  }
-
-  /**
-   * Get placeholder Void Scripts by rarity
-   */
-  private getVoidScriptsByRarity(
-    rarity: keyof ContentRarityWeights
-  ): { id: string; name: string; description: string; downside: string }[] {
-    const scripts: Record<keyof ContentRarityWeights, { id: string; name: string; description: string; downside: string }[]> = {
-      common: [
-        { id: 'script_of_mirrors', name: 'Script of Mirrors', description: 'Duplicate one tile in hand.', downside: 'Lock a random tile in Dead Pool.' },
-      ],
-      uncommon: [
-        { id: 'script_of_silence', name: 'Script of Silence', description: 'Ignore one invalid meld this round.', downside: 'Halve base score.' },
-        { id: 'script_of_whispers', name: 'Script of Whispers', description: 'View all face-down tiles.', downside: 'Lose 5 Gold.' },
-      ],
-      rare: [
-        { id: 'script_of_eclipse', name: 'Script of Eclipse', description: 'Score at 1-shanten immediately.', downside: 'Lose a Decree slot next round.' },
-        { id: 'script_of_reversal', name: 'Script of Reversal', description: 'Swap your hand with 13 random wall tiles.', downside: 'Cannot redraw this round.' },
-      ],
-      legendary: [
-        { id: 'script_of_void', name: 'Script of the Void', description: 'Double your final score this round.', downside: 'Destroy a random Decree.' },
-      ],
-    }
-
-    return scripts[rarity] || scripts.common
   }
 
   /**

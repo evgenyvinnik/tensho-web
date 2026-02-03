@@ -76,6 +76,7 @@ export function GameplayScreen() {
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
   const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
   const [showExitConfirm, setShowExitConfirm] = useState(false)
+  const [showConsumablesPanel, setShowConsumablesPanel] = useState<'fateSeals' | 'celestialOrbs' | 'voidScripts' | null>(null)
   const popupIdCounterRef = useRef(0)
 
   // Points/Mult display state
@@ -86,12 +87,8 @@ export function GameplayScreen() {
   // Flora panel expanded state
   const [isFloraExpanded, setIsFloraExpanded] = useState(false)
 
-  // Consumables state (placeholder - would connect to actual store)
-  const [consumables] = useState({
-    fateSeals: 0,
-    celestialOrbs: 0,
-    voidScripts: 0,
-  })
+  // Consumables from game controller
+  const consumables = game.consumableCounts
 
   // ==========================================================================
   // EFFECTS - Game lifecycle
@@ -290,6 +287,39 @@ export function GameplayScreen() {
     navigateTo(ROUTES.MENU)
   }, [game, navigateTo])
 
+  // Consumable handlers
+  const handleShowFateSeals = useCallback(() => {
+    if (game.consumableCounts.fateSeals > 0) {
+      setShowConsumablesPanel('fateSeals')
+    }
+  }, [game.consumableCounts.fateSeals])
+
+  const handleShowCelestialOrbs = useCallback(() => {
+    if (game.consumableCounts.celestialOrbs > 0) {
+      setShowConsumablesPanel('celestialOrbs')
+    }
+  }, [game.consumableCounts.celestialOrbs])
+
+  const handleShowVoidScripts = useCallback(() => {
+    if (game.consumableCounts.voidScripts > 0) {
+      setShowConsumablesPanel('voidScripts')
+    }
+  }, [game.consumableCounts.voidScripts])
+
+  const handleUseFateSeal = useCallback((sealId: string) => {
+    const result = game.useFateSeal(sealId)
+    if (result.success) {
+      setShowConsumablesPanel(null)
+    }
+  }, [game])
+
+  const handleUseVoidScript = useCallback((scriptId: string) => {
+    const result = game.useVoidScript(scriptId)
+    if (result.success) {
+      setShowConsumablesPanel(null)
+    }
+  }, [game])
+
   // ==========================================================================
   // COMPUTED VALUES
   // ==========================================================================
@@ -400,7 +430,12 @@ export function GameplayScreen() {
 
         {/* Consumables row */}
         <div className="flex items-center justify-end px-4 py-2 gap-2">
-          <ConsumablesBar {...consumables} />
+          <ConsumablesBar
+            {...consumables}
+            onUseFateSeal={handleShowFateSeals}
+            onUseCelestialOrb={handleShowCelestialOrbs}
+            onUseVoidScript={handleShowVoidScripts}
+          />
         </div>
 
         {/* Score panel */}
@@ -487,6 +522,89 @@ export function GameplayScreen() {
         confirmText={t('common.exit', 'Exit')}
         cancelText={t('common.cancel', 'Cancel')}
       />
+
+      {/* Consumables selection panel */}
+      {showConsumablesPanel && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-[var(--color-dark-forest)] border border-[var(--color-forest-green)] rounded-lg p-4 m-4 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-[var(--color-golden-accent)]">
+                {showConsumablesPanel === 'fateSeals' && t('consumables.fateSeals', 'Fate Seals')}
+                {showConsumablesPanel === 'celestialOrbs' && t('consumables.celestialOrbs', 'Celestial Orbs')}
+                {showConsumablesPanel === 'voidScripts' && t('consumables.voidScripts', 'Void Scripts')}
+              </h3>
+              <button
+                onClick={() => setShowConsumablesPanel(null)}
+                className="text-[var(--color-beige-white)] hover:text-white text-xl px-2"
+                aria-label={t('common.close', 'Close')}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {showConsumablesPanel === 'fateSeals' && game.fateSeals.map((seal: any, index: number) => (
+                <button
+                  key={seal.instanceId || index}
+                  onClick={() => handleUseFateSeal(seal.id)}
+                  className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-purple-500/50 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🎴</span>
+                    <div>
+                      <div className="font-medium text-[var(--color-beige-white)]">{seal.name}</div>
+                      <div className="text-sm text-[var(--color-beige-white)]/70">{seal.description}</div>
+                    </div>
+                  </div>
+                </button>
+              ))}
+
+              {showConsumablesPanel === 'celestialOrbs' && game.celestialOrbs.map((orb: any, index: number) => (
+                <div
+                  key={orb.instanceId || index}
+                  className="p-3 bg-[var(--color-forest-green)]/50 rounded-lg border border-blue-500/50"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🔮</span>
+                    <div>
+                      <div className="font-medium text-[var(--color-beige-white)]">{orb.name}</div>
+                      <div className="text-sm text-[var(--color-beige-white)]/70">{orb.description}</div>
+                      <div className="text-xs text-blue-300">Level: {orb.currentLevel || 1}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {showConsumablesPanel === 'voidScripts' && game.voidScripts.map((script: any, index: number) => (
+                <button
+                  key={script.instanceId || index}
+                  onClick={() => handleUseVoidScript(script.id)}
+                  className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-gray-500/50 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">📜</span>
+                    <div>
+                      <div className="font-medium text-[var(--color-beige-white)]">{script.name}</div>
+                      <div className="text-sm text-[var(--color-beige-white)]/70">{script.description}</div>
+                      {script.penalty && (
+                        <div className="text-xs text-red-400 mt-1">⚠️ {script.penalty.description}</div>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              ))}
+
+              {((showConsumablesPanel === 'fateSeals' && game.fateSeals.length === 0) ||
+                (showConsumablesPanel === 'celestialOrbs' && game.celestialOrbs.length === 0) ||
+                (showConsumablesPanel === 'voidScripts' && game.voidScripts.length === 0)) && (
+                <div className="text-center text-[var(--color-beige-white)]/50 py-4">
+                  {t('consumables.none', 'No consumables available')}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </TablePattern>
   )
 }

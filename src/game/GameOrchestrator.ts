@@ -31,7 +31,9 @@ import { FlowerSystem } from '../systems/FlowerSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { ScoringContext as SystemScoringContext, ScoreBreakdown as SystemScoreBreakdown } from '../systems/types'
 import { ConsumableSystem } from '../systems/ConsumableSystem'
-import { CelestialOrbSystem, YakuCategory } from '../systems/CelestialOrbSystem'
+import { CelestialOrbSystem, CelestialOrb, YakuCategory } from '../systems/CelestialOrbSystem'
+import { FateSealSystem, FateSeal, FateSealContext } from '../systems/FateSealSystem'
+import { VoidScriptSystem, VoidScript, VoidScriptContext } from '../systems/VoidScriptSystem'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -78,6 +80,13 @@ export interface OrchestratorState {
   roundManager: RoundManager
   consumableSystem: ConsumableSystem
   celestialOrbSystem: CelestialOrbSystem
+  fateSealSystem: FateSealSystem
+  voidScriptSystem: VoidScriptSystem
+
+  // Consumable inventory (owned items)
+  fateSeals: FateSeal[]
+  celestialOrbs: CelestialOrb[]
+  voidScripts: VoidScript[]
 
   // Phase
   phase: 'menu' | 'gameplay' | 'shop' | 'gameOver'
@@ -151,6 +160,11 @@ export class GameOrchestrator {
       roundManager: new RoundManager(),
       consumableSystem: new ConsumableSystem(),
       celestialOrbSystem: new CelestialOrbSystem(),
+      fateSealSystem: new FateSealSystem(),
+      voidScriptSystem: new VoidScriptSystem(),
+      fateSeals: [],
+      celestialOrbs: [],
+      voidScripts: [],
       phase: 'menu',
     }
   }
@@ -550,6 +564,12 @@ export class GameOrchestrator {
       case 'skip':
         return this.executeSkip(effects)
 
+      case 'useSeal':
+        return this.executeUseSeal(action.sealId, action.targets, effects)
+
+      case 'useScript':
+        return this.executeUseScript(action.scriptId, action.targets, effects)
+
       default:
         return { success: false, effects, errors: ['Unknown action type'] }
     }
@@ -920,6 +940,147 @@ export class GameOrchestrator {
 
     // Advance to next round
     this.advanceRound()
+
+    return { success: true, effects }
+  }
+
+  /**
+   * Execute use seal action - use a Fate Seal consumable
+   */
+  private executeUseSeal(
+    sealId: string,
+    targets: string[] | undefined,
+    effects: Effect[]
+  ): ActionResult {
+    // Find the seal in inventory
+    const sealIndex = this.state.fateSeals.findIndex((s) => s.instanceId === sealId)
+    if (sealIndex === -1) {
+      return {
+        success: false,
+        effects,
+        errors: ['Seal not found in inventory'],
+      }
+    }
+
+    const seal = this.state.fateSeals[sealIndex]
+
+    // Build the context for seal usage
+    const selectedTiles = targets
+      ? this.state.handTiles.filter((t) => targets.includes(t.id))
+      : []
+
+    const context: FateSealContext = {
+      selectedTiles,
+      currentGold: this.state.gold,
+      totalDecreeSellValue: this.state.decreeSystem.getOwnedDecrees().reduce(
+        (sum, d) => sum + (d.sellValue ?? Math.floor(d.cost / 2)),
+        0
+      ),
+      currentHand: this.state.handTiles,
+      currentMelds: this.state.melds,
+      getAvailableSlots: () => 3, // Default slots available
+    }
+
+    // Use the seal
+    const result = this.state.fateSealSystem.useSeal(seal, context)
+
+    if (!result.success) {
+      return {
+        success: false,
+        effects,
+        errors: [result.message],
+      }
+    }
+
+    // Remove the seal from inventory
+    this.state.fateSeals.splice(sealIndex, 1)
+
+    // Apply effects from the seal
+    for (const effectResult of result.effects) {
+      // Handle gold changes
+      if (effectResult.type === 'gold' && typeof effectResult.value === 'number') {
+        this.state.gold += effectResult.value
+      }
+
+      effects.push({
+        type: 'consumable_effect',
+        description: effectResult.description,
+      })
+    }
+
+    eventBus.emit('fateSealUsed', {
+      sealId: seal.id,
+      effect: seal.effect.description,
+    })
+
+    return { success: true, effects }
+  }
+
+  /**
+   * Execute use script action - use a Void Script consumable
+   */
+  private executeUseScript(
+    scriptId: string,
+    targets: string[] | undefined,
+    effects: Effect[]
+  ): ActionResult {
+    // Find the script in inventory
+    const scriptIndex = this.state.voidScripts.findIndex((s) => s.instanceId === scriptId)
+    if (scriptIndex === -1) {
+      return {
+        success: false,
+        effects,
+        errors: ['Script not found in inventory'],
+      }
+    }
+
+    const script = this.state.voidScripts[scriptIndex]
+
+    // Build the context for script usage
+    const selectedTiles = targets
+      ? this.state.handTiles.filter((t) => targets.includes(t.id))
+      : []
+
+    const context: VoidScriptContext = {
+      selectedTiles,
+      currentGold: this.state.gold,
+      currentHand: this.state.handTiles,
+      getAvailableDecreeSlots: () => this.state.decreeSystem.getAvailableSlots(),
+      getDecreeCount: () => this.state.decreeSystem.getOwnedDecrees().length,
+    }
+
+    // Use the script
+    const result = this.state.voidScriptSystem.useScript(script, context)
+
+    if (!result.success) {
+      return {
+        success: false,
+        effects,
+        errors: [result.message],
+      }
+    }
+
+    // Remove the script from inventory
+    this.state.voidScripts.splice(scriptIndex, 1)
+
+    // Apply effects from the script
+    for (const effectResult of result.effects) {
+      // Handle gold changes
+      if (effectResult.type === 'gold' && typeof effectResult.value === 'number') {
+        this.state.gold += effectResult.value
+      }
+
+      effects.push({
+        type: 'consumable_effect',
+        description: effectResult.description,
+      })
+    }
+
+    eventBus.emit('voidScriptUsed', {
+      scriptId: script.id,
+      effect: script.effect.description,
+      downside: script.penalty.description,
+    })
 
     return { success: true, effects }
   }
@@ -1436,6 +1597,78 @@ export class GameOrchestrator {
    */
   canPerformAction(action: PlayerAction): boolean {
     return this.actionProcessor.canPerform(action, this.createStateSnapshot())
+  }
+
+  // ===========================================================================
+  // CONSUMABLE MANAGEMENT
+  // ===========================================================================
+
+  /**
+   * Add a Fate Seal to inventory
+   */
+  addFateSeal(seal: FateSeal): boolean {
+    // Check if we have room (max 3 by default)
+    if (this.state.fateSeals.length >= 3) {
+      return false
+    }
+    this.state.fateSeals.push(seal)
+    return true
+  }
+
+  /**
+   * Add a Void Script to inventory
+   */
+  addVoidScript(script: VoidScript): boolean {
+    // Check if we have room (max 3 by default)
+    if (this.state.voidScripts.length >= 3) {
+      return false
+    }
+    this.state.voidScripts.push(script)
+    return true
+  }
+
+  /**
+   * Add a Celestial Orb to inventory
+   */
+  addCelestialOrb(orb: CelestialOrb): boolean {
+    // Check if we have room (max 3 by default)
+    if (this.state.celestialOrbs.length >= 3) {
+      return false
+    }
+    this.state.celestialOrbs.push(orb)
+    return true
+  }
+
+  /**
+   * Get Fate Seals in inventory
+   */
+  getFateSeals(): FateSeal[] {
+    return [...this.state.fateSeals]
+  }
+
+  /**
+   * Get Void Scripts in inventory
+   */
+  getVoidScripts(): VoidScript[] {
+    return [...this.state.voidScripts]
+  }
+
+  /**
+   * Get Celestial Orbs in inventory
+   */
+  getCelestialOrbs(): CelestialOrb[] {
+    return [...this.state.celestialOrbs]
+  }
+
+  /**
+   * Get consumable counts
+   */
+  getConsumableCounts(): { fateSeals: number; celestialOrbs: number; voidScripts: number } {
+    return {
+      fateSeals: this.state.fateSeals.length,
+      celestialOrbs: this.state.celestialOrbs.length,
+      voidScripts: this.state.voidScripts.length,
+    }
   }
 }
 

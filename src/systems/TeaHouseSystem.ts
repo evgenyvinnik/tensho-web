@@ -42,6 +42,8 @@ import {
   EditionType,
   DECREE_BASE_COST_RANGES,
 } from './PricingCalculator'
+import { FateSeal, FateSealSystem } from './FateSealSystem'
+import { CelestialOrb, CelestialOrbSystem } from './CelestialOrbSystem'
 
 // =============================================================================
 // TEA HOUSE CONSTANTS
@@ -284,7 +286,7 @@ export interface TeaHouseOffering {
   id: string
   slotIndex: number
   itemType: ShopItemType
-  item: Decree | BlessingPack | ImperialCharter | FateSealPlaceholder | CelestialOrbPlaceholder
+  item: Decree | BlessingPack | ImperialCharter | FateSeal | CelestialOrb
   baseCost: number
   editionCost: number
   finalCost: number
@@ -292,24 +294,6 @@ export interface TeaHouseOffering {
   edition?: EditionType
   isPurchased: boolean
   isLocked: boolean
-}
-
-/**
- * Placeholder for Fate Seal (actual seal system not implemented yet)
- */
-export interface FateSealPlaceholder {
-  id: string
-  name: string
-  type: 'FateSeal'
-}
-
-/**
- * Placeholder for Celestial Orb (actual orb system not implemented yet)
- */
-export interface CelestialOrbPlaceholder {
-  id: string
-  name: string
-  type: 'CelestialOrb'
 }
 
 /**
@@ -543,12 +527,13 @@ export class TeaHouseSystem {
   /**
    * Generate a Fate Seal offering
    */
-  private generateFateSealOffering(slotIndex: number): TeaHouseOffering {
-    const seal: FateSealPlaceholder = {
-      id: `fate_seal_${Date.now()}_${Math.random()}`,
-      name: 'Random Fate Seal',
-      type: 'FateSeal',
+  private generateFateSealOffering(slotIndex: number): TeaHouseOffering | null {
+    const sealDef = FateSealSystem.getRandomFateSeal()
+    if (!sealDef) {
+      return null
     }
+
+    const seal = FateSealSystem.createFateSealInstance(sealDef)
 
     const { finalCost, sellValue } = this.pricingCalculator.calculateFateSealCost()
 
@@ -557,7 +542,7 @@ export class TeaHouseSystem {
       slotIndex,
       itemType: 'FateSeal',
       item: seal,
-      baseCost: 3,
+      baseCost: seal.cost,
       editionCost: 0,
       finalCost,
       sellValue,
@@ -569,12 +554,13 @@ export class TeaHouseSystem {
   /**
    * Generate a Celestial Orb offering
    */
-  private generateCelestialOrbOffering(slotIndex: number): TeaHouseOffering {
-    const orb: CelestialOrbPlaceholder = {
-      id: `celestial_orb_${Date.now()}_${Math.random()}`,
-      name: 'Random Celestial Orb',
-      type: 'CelestialOrb',
+  private generateCelestialOrbOffering(slotIndex: number): TeaHouseOffering | null {
+    const orbDef = CelestialOrbSystem.getRandomCelestialOrb()
+    if (!orbDef) {
+      return null
     }
+
+    const orb = CelestialOrbSystem.createCelestialOrbInstance(orbDef)
 
     const { finalCost, sellValue } = this.pricingCalculator.calculateCelestialOrbCost()
 
@@ -583,7 +569,7 @@ export class TeaHouseSystem {
       slotIndex,
       itemType: 'CelestialOrb',
       item: orb,
-      baseCost: 3,
+      baseCost: orb.cost,
       editionCost: 0,
       finalCost,
       sellValue,

@@ -51,7 +51,7 @@
 | **P2** | Boss Mandates | 27 mandate effects (22 standard + 5 showdown) | ✅ Complete |
 | **P2** | Table Stakes | 8-tier difficulty system with stickers | ✅ Complete |
 
-### Phase 4: Meta & Polish ✅
+### Phase 4: Meta & Polish ⚠️ Partial
 
 | Priority | System | Description | Status |
 |----------|--------|-------------|--------|
@@ -59,7 +59,7 @@
 | **P3** | Table Styles/Walls | Unlockable deck variants | ✅ Complete |
 | **P3** | Red Fives | Optional tile variants | ✅ Complete |
 | **P3** | Tutorial System | Progressive complexity disclosure | ✅ Complete |
-| **P3** | Audio/VFX Polish | Feedback and juice | ✅ Complete |
+| **P3** | Audio/VFX Polish | Feedback and juice | ⚠️ Definitions complete, **no audio assets** |
 | **P3** | Archive of Hands | Collection/discovery system | ✅ Complete |
 
 ### Phase 5: Platform & Localization ✅
@@ -112,7 +112,7 @@
 | Collection | **Archive of Hands** | `src/systems/ArchiveSystem.ts`, `src/stores/archiveStore.ts` (352+ items) | ✅ Complete |
 | Red Fives | **Red Fives** | `src/systems/RedFiveSystem.ts` (+50 chips per red five) | ✅ Complete |
 | Meta-Progression | **Meta-Progression** | `src/systems/MetaProgressionSystem.ts`, `src/config/unlockDefinitions.ts` | ✅ Complete |
-| Audio/SFX | **Audio System** | `src/systems/AudioSystem.ts`, `src/config/audioDefinitions.ts` | ✅ Complete |
+| Audio/SFX | **Audio System** | `src/systems/AudioSystem.ts`, `src/config/audioDefinitions.ts` | ⚠️ Definitions complete, no audio assets |
 | VFX/Juice | **VFX System** | `src/systems/VFXSystem.ts`, `src/hooks/useVFX.tsx` | ✅ Complete |
 
 ---
@@ -128,6 +128,7 @@
 | Tutorial System | ✅ Implemented |
 | Tile Components | ✅ Implemented |
 | Hand Display | ✅ Implemented |
+| Consumables UI | ✅ Implemented |
 
 ---
 
@@ -213,3 +214,31 @@
 **Files created:**
 - `src/systems/MandateEffectSystem.ts` — Apply mandate restrictions
 - Integrated with `GameOrchestrator.ts` round flow
+
+---
+
+## Known Integration Gaps
+
+> Most critical integration gaps have been resolved. Remaining items are polish/enhancement issues.
+
+### Resolved ✅
+
+| Issue | Resolution |
+|-------|------------|
+| Consumable actions not executable | Added `useSeal` and `useScript` cases to `GameOrchestrator.executeAction()` |
+| Shop uses placeholder consumables | `TeaHouseSystem.ts` now imports real types from `FateSealSystem` and `CelestialOrbSystem` |
+| Pack system uses hardcoded items | `BlessingPackSystem.ts` now imports from real `FateSealSystem`, `CelestialOrbSystem`, `VoidScriptSystem` |
+| Gameplay consumables placeholder | `GameplayScreen.tsx` now uses real consumable data from `useGameController()` |
+| Consumables UI not connected | Added consumable selection panel with use functionality |
+
+### Remaining (Low Priority)
+
+| Issue | Location | Description |
+|-------|----------|-------------|
+| No audio assets | `public/audio/`, `public/sounds/` | Directories are empty, audio definitions have placeholder paths |
+| ActionProcessor validation incomplete | `src/game/ActionProcessor.ts:404-442` | `validateUseSeal` and `validateUseScript` have stub implementations |
+
+### To Fix
+
+1. Add audio assets or implement graceful silent fallback
+2. Complete ActionProcessor validation for consumable actions (optional - basic validation works)
