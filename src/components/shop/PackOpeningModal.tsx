@@ -309,7 +309,7 @@ export function PackOpeningModal({
         opacity: backdropSpring.opacity,
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
       }}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
           onClose()
         }
@@ -324,7 +324,7 @@ export function PackOpeningModal({
           border: `3px solid ${typeInfo?.iconColor || '#C8B273'}`,
           boxShadow: `0 0 50px ${typeInfo?.iconColor}40, 0 25px 50px rgba(0, 0, 0, 0.5)`,
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="p-4 border-b border-[var(--color-metallic-gold)] border-opacity-30">

@@ -123,7 +123,7 @@ export function DecreeCard({
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter' || e.key === ' ') {
           handleClick()
         }

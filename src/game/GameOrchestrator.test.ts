@@ -212,6 +212,16 @@ describe('GameOrchestrator', () => {
       }
     })
 
+    it('should refill the hand after playing a partial selection', () => {
+      const handTiles = game.getHandTiles()
+      const tilesToPlay = handTiles.slice(0, 5).map((t) => t.id)
+
+      game.processAction({ type: 'play', tileIds: tilesToPlay })
+
+      expect(game.getHandTiles()).toHaveLength(13)
+      expect(game.getState().handsRemaining).toBe(3)
+    })
+
     it('should return effects with score information', () => {
       const handTiles = game.getHandTiles()
       const tileIds = handTiles.map((t) => t.id)
@@ -323,6 +333,41 @@ describe('GameOrchestrator', () => {
       // Should advance (could be next round or next act)
       const roundAfter = game.getState().currentRound
       expect(roundAfter).not.toBe(roundBefore)
+    })
+
+    it('should award an omen when skipping a non-boss round', () => {
+      const result = game.processAction({ type: 'skip' })
+
+      expect(result.success).toBe(true)
+      expect(game.getState().omenSystem.getTotalSkippedRounds()).toBe(1)
+      expect(game.getState().currentRound).toBe(2)
+    })
+  })
+
+  describe('round progression', () => {
+    it('should open the shop only after the Boss round', () => {
+      game.startNewRun(12345)
+
+      const completeCurrentRound = () => {
+        const currentRound = game.getState().roundManager.getCurrentRound() as any
+        currentRound.scoreTarget = 1
+        ;(game.getState() as any).targetScore = 1
+        game.processAction({
+          type: 'play',
+          tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+        })
+      }
+
+      completeCurrentRound()
+      expect(game.getState().currentRound).toBe(2)
+      expect(game.getState().phase).toBe('gameplay')
+
+      completeCurrentRound()
+      expect(game.getState().currentRound).toBe(3)
+      expect(game.getState().phase).toBe('gameplay')
+
+      completeCurrentRound()
+      expect(game.getState().phase).toBe('shop')
     })
   })
 

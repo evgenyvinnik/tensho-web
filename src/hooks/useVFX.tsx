@@ -343,7 +343,7 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
         left: `${position.x * 100}%`,
         top: `${position.y * 100}%`,
         transform: spring.scale.to(
-          (s) => `translate(-50%, -50%) scale(${s}) translateY(${spring.y?.get() ?? 0}px)`
+          (s: number) => `translate(-50%, -50%) scale(${s}) translateY(${spring.y?.get() ?? 0}px)`
         ),
         opacity: spring.opacity,
         color,

@@ -89,7 +89,7 @@ export function Popup({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
     >
       {/* Close button - positioned at top right edge */}
       {showCloseButton && (

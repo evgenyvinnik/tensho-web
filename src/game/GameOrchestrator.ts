@@ -34,6 +34,7 @@ import { ConsumableSystem } from '../systems/ConsumableSystem'
 import { CelestialOrbSystem, CelestialOrb, YakuCategory } from '../systems/CelestialOrbSystem'
 import { FateSealSystem, FateSeal, FateSealContext } from '../systems/FateSealSystem'
 import { VoidScriptSystem, VoidScript, VoidScriptContext } from '../systems/VoidScriptSystem'
+import type { Decree } from '../systems/types'
 import { OmenTagSystem } from '../systems/OmenTagSystem'
 
 // =============================================================================
@@ -244,6 +245,7 @@ export class GameOrchestrator {
       this.state.targetScore = roundState.scoreTarget
       this.state.currentAct = roundState.actNumber
       this.state.currentRound = roundState.roundNumber
+      this.state.omenSystem.setRoundInfo(this.state.currentAct, this.state.currentRound)
     }
 
     // Emit events
@@ -1437,6 +1439,7 @@ export class GameOrchestrator {
     // Update state from round manager
     this.state.currentAct = roundState.actNumber
     this.state.currentRound = roundState.roundNumber
+    this.state.omenSystem.setRoundInfo(this.state.currentAct, this.state.currentRound)
     this.state.targetScore = roundState.scoreTarget
     this.state.score = 0
     this.state.handsRemaining = this.config.handsPerRound
@@ -1540,6 +1543,11 @@ export class GameOrchestrator {
     })
 
     return true
+  }
+
+  /** Add a purchased decree to the authoritative run inventory. */
+  addDecree(decree: Decree): boolean {
+    return this.state.decreeSystem.acquireDecree(decree) !== null
   }
 
   // ===========================================================================

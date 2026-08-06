@@ -130,7 +130,7 @@ function ContentCard({
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter' || e.key === ' ') {
           handleClick()
         }
@@ -488,7 +488,7 @@ export function PackCard({
       onClick={() => !isPurchased && canAfford && onPurchase()}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
         if ((e.key === 'Enter' || e.key === ' ') && !isPurchased && canAfford) {
           onPurchase()
         }

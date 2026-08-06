@@ -92,7 +92,7 @@ export function ItemDetailModal({
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
@@ -102,7 +102,7 @@ export function ItemDetailModal({
           opacity: spring.opacity,
           transform: spring.scale.to((s) => `scale(${s})`),
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header with rarity gradient */}
         <div className={`p-4 ${rarityInfo.bgColor} border-b border-[var(--color-saddle-brown)]`}>

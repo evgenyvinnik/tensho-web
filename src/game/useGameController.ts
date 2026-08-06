@@ -14,6 +14,10 @@ import {
   gameOrchestrator,
 } from './GameOrchestrator'
 import { PlayerAction, ActionResult } from './ActionProcessor'
+import type { Decree } from '../systems/types'
+import type { FateSeal } from '../systems/FateSealSystem'
+import type { CelestialOrb } from '../systems/CelestialOrbSystem'
+import type { VoidScript } from '../systems/VoidScriptSystem'
 
 // =============================================================================
 // HOOK RETURN TYPE
@@ -74,6 +78,10 @@ export interface GameController {
   // Shop
   exitShop: () => void
   purchaseItem: (itemId: string, cost: number) => boolean
+  addDecree: (decree: Decree) => boolean
+  addFateSeal: (seal: FateSeal) => boolean
+  addCelestialOrb: (orb: CelestialOrb) => boolean
+  addVoidScript: (script: VoidScript) => boolean
 
   // Utilities
   getAvailableActions: () => PlayerAction['type'][]
@@ -269,6 +277,11 @@ export function useGameController(
     [orchestrator]
   )
 
+  const addDecree = useCallback((decree: Decree) => orchestrator.addDecree(decree), [orchestrator])
+  const addFateSeal = useCallback((seal: FateSeal) => orchestrator.addFateSeal(seal), [orchestrator])
+  const addCelestialOrb = useCallback((orb: CelestialOrb) => orchestrator.addCelestialOrb(orb), [orchestrator])
+  const addVoidScript = useCallback((script: VoidScript) => orchestrator.addVoidScript(script), [orchestrator])
+
   // Utilities
   const getAvailableActions = useCallback(() => {
     return orchestrator.getAvailableActions()
@@ -344,6 +357,10 @@ export function useGameController(
     // Shop
     exitShop,
     purchaseItem,
+    addDecree,
+    addFateSeal,
+    addCelestialOrb,
+    addVoidScript,
 
     // Utilities
     getAvailableActions,

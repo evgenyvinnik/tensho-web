@@ -82,7 +82,7 @@ export function TableStyleCard({
       onClick={isUnlocked ? onClick : undefined}
       role="button"
       tabIndex={isUnlocked ? 0 : -1}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
         if ((e.key === 'Enter' || e.key === ' ') && isUnlocked) {
           onClick()
         }

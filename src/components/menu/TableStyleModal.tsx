@@ -141,7 +141,7 @@ export function TableStyleModal({
           ),
           backgroundColor: 'var(--color-dark-forest)',
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}
         <div

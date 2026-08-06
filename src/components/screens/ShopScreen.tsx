@@ -18,8 +18,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController } from '../../game/useGameController'
 import { useShopStore } from '../../stores/shopStore'
-import { useDecreeStore, createDecree } from '../../stores/decreeStore'
-import { useConsumableStore } from '../../stores/consumableStore'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { BlessingPackSystem, PackOffering } from '../../systems/BlessingPackSystem'
 import { Decree, ImperialCharter, BlessingPack } from '../../systems/types'
@@ -56,12 +54,6 @@ export function ShopScreen() {
   // Shop store
   const shopStore = useShopStore()
 
-  // Decree store for adding purchased decrees
-  const decreeStore = useDecreeStore()
-
-  // Consumable store for adding purchased consumables
-  const consumableStore = useConsumableStore()
-
   // Local state
   const [confirmOffering, setConfirmOffering] = useState<TeaHouseOffering | null>(null)
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
@@ -72,8 +64,7 @@ export function ShopScreen() {
   // Initialize shop on mount
   useEffect(() => {
     if (!shopStore.isShopOpen) {
-      // Get owned decree IDs from decree store
-      const ownedDecreeIds = decreeStore.decrees.map((d) => d.id)
+      const ownedDecreeIds = game.state.decreeSystem.getOwnedDecrees().map((d) => d.id)
 
       // Determine if this is after a boss round (round 3 of an act)
       const isAfterBossRound = game.currentRound === 3 || game.currentRound === 0
@@ -86,7 +77,7 @@ export function ShopScreen() {
         currentAct: game.currentAct,
       })
     }
-  }, [shopStore, decreeStore.decrees, game.currentRound, game.currentAct])
+  }, [shopStore, game.state.decreeSystem, game.currentRound, game.currentAct])
 
   // Get available offerings
   const availableItems = shopStore.getAvailableItems()
@@ -117,31 +108,16 @@ export function ShopScreen() {
         // Handle specific item types
         if (result.offering.itemType === 'Decree') {
           const decree = result.offering.item as Decree
-          // Add decree to decree store
-          const newDecree = createDecree(
-            decree.name,
-            decree.name, // Japanese name placeholder
-            decree.description,
-            decree.rarity === 'LocalEdict'
-              ? 'common'
-              : decree.rarity === 'RegionalMandate'
-                ? 'uncommon'
-                : decree.rarity === 'ImperialDecree'
-                  ? 'rare'
-                  : 'legendary',
-            [], // Effects will be handled by decree system
-            result.offering.sellValue
-          )
-          decreeStore.addDecree(newDecree)
+          game.addDecree(decree)
         } else if (result.offering.itemType === 'ImperialCharter') {
           const charter = result.offering.item as ImperialCharter
           shopStore.applyCharter(charter)
         } else if (result.offering.itemType === 'FateSeal') {
           const seal = result.offering.item as FateSeal
-          consumableStore.addFateSeal(seal)
+          game.addFateSeal(seal)
         } else if (result.offering.itemType === 'CelestialOrb') {
           const orb = result.offering.item as CelestialOrb
-          consumableStore.addCelestialOrb(orb)
+          game.addCelestialOrb(orb)
         }
 
         setSelectedItemId(null)
@@ -149,7 +125,7 @@ export function ShopScreen() {
 
       setConfirmOffering(null)
     },
-    [shopStore, game, decreeStore, consumableStore]
+    [shopStore, game]
   )
 
   // Handle pack purchase
@@ -205,27 +181,13 @@ export function ShopScreen() {
       for (const content of selectedContents) {
         if (content.type === 'Decree') {
           const decree = content.data as Decree
-          const newDecree = createDecree(
-            decree.name,
-            decree.name,
-            decree.description,
-            content.rarity === 'common'
-              ? 'common'
-              : content.rarity === 'uncommon'
-                ? 'uncommon'
-                : content.rarity === 'rare'
-                  ? 'rare'
-                  : 'legendary',
-            [],
-            0
-          )
-          decreeStore.addDecree(newDecree)
+          game.addDecree(decree)
         } else if (content.type === 'FateSeal') {
-          consumableStore.addFateSeal(content.data as FateSeal)
+          game.addFateSeal(content.data as FateSeal)
         } else if (content.type === 'CelestialOrb') {
-          consumableStore.addCelestialOrb(content.data as CelestialOrb)
+          game.addCelestialOrb(content.data as CelestialOrb)
         } else if (content.type === 'VoidScript') {
-          consumableStore.addVoidScript(content.data as VoidScript)
+          game.addVoidScript(content.data as VoidScript)
         }
       }
 
@@ -233,7 +195,7 @@ export function ShopScreen() {
       setCurrentPackOffering(null)
       setPurchasedPackId(null)
     },
-    [currentPackOffering, purchasedPackId, decreeStore, consumableStore]
+    [currentPackOffering, purchasedPackId, game]
   )
 
   // Handle pack skip
@@ -249,13 +211,13 @@ export function ShopScreen() {
 
   // Handle reroll
   const handleReroll = useCallback(() => {
-    const ownedDecreeIds = decreeStore.decrees.map((d) => d.id)
+    const ownedDecreeIds = game.state.decreeSystem.getOwnedDecrees().map((d) => d.id)
     const result = shopStore.rerollShop(ownedDecreeIds, game.gold)
 
     if (result.success) {
       game.purchaseItem('reroll', result.cost)
     }
-  }, [shopStore, game, decreeStore.decrees])
+  }, [shopStore, game, game.state.decreeSystem])
 
   // Handle next round
   const handleNextRound = useCallback(() => {

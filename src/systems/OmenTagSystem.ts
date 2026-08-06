@@ -97,6 +97,7 @@ export class OmenTagSystem {
     this.lockedSeasonType = null
     this.pendingOmens = []
     this.triggeredOmensThisRound = []
+    useOmenStore.getState().clearForNewRun()
   }
 
   /**

@@ -130,7 +130,7 @@ export function ItemCard({ entry, displayInfo, delay = 0, onClick }: ItemCardPro
       onClick={onClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
         if ((e.key === 'Enter' || e.key === ' ') && onClick) {
           onClick()
         }
