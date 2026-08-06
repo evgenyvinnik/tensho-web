@@ -13,7 +13,7 @@ import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsS
 /**
  * Get adjusted spring config based on animation speed setting
  */
-function useAdjustedSpring(baseConfig: typeof SPRINGS.snappy) {
+function useAdjustedSpring(baseConfig: { tension: number; friction: number }) {
   const multiplier = useSettingsStore(selectAnimationMultiplier);
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
 

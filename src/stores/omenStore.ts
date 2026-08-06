@@ -36,6 +36,7 @@ export interface ActiveOmenTag {
   acquiredRound: number
   isConsumed: boolean
   triggeredAt?: number
+  roundsSkippedThisRun?: number
 }
 
 // Use ALL_OMENS as the tag definitions
@@ -61,7 +62,7 @@ export function getOmenTagDescription(definitionId: string): string {
 }
 
 export function getRandomWeightedOmenTag(excludeIds: string[] = []): OmenDefinition | null {
-  return getRandomOmen(excludeIds)
+  return getRandomOmen('Small', excludeIds)
 }
 
 // =============================================================================
@@ -202,6 +203,15 @@ export interface OmenState {
  */
 function generateTagId(definitionId: string): string {
   return `omen-${definitionId}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+}
+
+function numericEffectValue(value: number | string | undefined, fallback = 0): number {
+  if (typeof value === 'number') return value
+  if (typeof value === 'string') {
+    const parsed = Number(value)
+    return Number.isFinite(parsed) ? parsed : fallback
+  }
+  return fallback
 }
 
 /**
@@ -542,7 +552,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       return bonus
     }
 
-    return definition.effect.value ?? 0
+    return numericEffectValue(definition.effect.value)
   },
 
   calculateScalingGold: (tagId: string) => {
@@ -553,7 +563,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
     const definition = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
     if (!definition || definition.effect.type !== 'economyScaling') return 0
 
-    const value = definition.effect.value ?? 1
+    const value = numericEffectValue(definition.effect.value, 1)
     const condition = definition.effect.scalingCondition
 
     switch (condition) {
@@ -630,7 +640,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       if (!def) continue
 
       if (def.effect.type === 'goldBonus' && def.id === 'investment_omen') {
-        total += def.effect.value ?? 25
+        total += numericEffectValue(def.effect.value, 25)
       }
     }
 
@@ -656,7 +666,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
     for (const tag of state.pendingShopTags) {
       const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
       if (def?.id === 'juggle_omen') {
-        bonus += def.effect.value ?? 3
+        bonus += numericEffectValue(def.effect.value, 3)
       }
     }
 
@@ -671,7 +681,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       if (tag.isConsumed) continue
       const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
       if (def?.id === 'topup_omen') {
-        count += def.effect.value ?? 2
+        count += numericEffectValue(def.effect.value, 2)
       }
     }
 
@@ -686,7 +696,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       if (tag.isConsumed) continue
       const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
       if (def?.id === 'orbital_omen') {
-        levels += def.effect.value ?? 3
+        levels += numericEffectValue(def.effect.value, 3)
       }
     }
 
@@ -701,7 +711,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       if (tag.isConsumed) continue
       const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
       if (def?.effect.type === 'mult_bonus') {
-        bonus += def.effect.value ?? 0
+        bonus += numericEffectValue(def.effect.value)
       }
     }
 
@@ -912,7 +922,7 @@ export const selectNextRoundHandSizeBonus = (state: OmenState): number => {
   for (const tag of state.pendingShopTags) {
     const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
     if (def?.id === 'juggle_omen') {
-      bonus += def.effect.value ?? 3
+      bonus += numericEffectValue(def.effect.value, 3)
     }
   }
 
@@ -930,7 +940,7 @@ export const selectGoldBonusFromOmens = (state: OmenState): number => {
     const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
     if (!def || def.effect.type !== 'economyScaling') continue
 
-    const value = def.effect.value ?? 1
+    const value = numericEffectValue(def.effect.value, 1)
     const condition = def.effect.scalingCondition
 
     switch (condition) {
@@ -1006,7 +1016,7 @@ export const selectNextRoundDrawBonus = (state: OmenState): number => {
     const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
     if (!def || def.effect.type !== 'drawBonus') continue
 
-    bonus += def.effect.value ?? 0
+    bonus += numericEffectValue(def.effect.value)
   }
 
   return bonus
@@ -1023,7 +1033,7 @@ export const selectNextRoundDiscardBonus = (state: OmenState): number => {
     const def = ALL_OMEN_TAGS.find((t) => t.id === tag.definitionId)
     if (!def || def.effect.type !== 'discardBonus') continue
 
-    bonus += def.effect.value ?? 0
+  bonus += numericEffectValue(def.effect.value)
   }
 
   return bonus

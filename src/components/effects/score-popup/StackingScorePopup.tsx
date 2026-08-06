@@ -27,7 +27,7 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
 
   // Trail animation for staggered entry
-  const trail = useTrail(items.length, {
+  const trail = (useTrail as any)(items.length, {
     from: {
       opacity: 0,
       y: 20,
@@ -41,12 +41,12 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
     config: SPRINGS.bouncy,
     immediate: reducedMotion,
     delay: (index: number) => index * staggerDelay,
-    onRest: (_result, _spring, itemIndex) => {
+    onRest: (_result: unknown, _spring: unknown, itemIndex: number) => {
       if (itemIndex === items.length - 1) {
         onComplete?.()
       }
     },
-  })
+  }) as any[]
 
   return (
     <div
@@ -67,7 +67,7 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
             style={{
               opacity: style.opacity,
               transform: style.y.to(
-                (y) => `translateY(${y}px) scale(${style.scale.get()})`
+                (y: number) => `translateY(${y}px) scale(${style.scale.get()})`
               ),
             }}
           >

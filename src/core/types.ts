@@ -30,6 +30,10 @@ export enum Suit {
   Pinzu = 'pinzu', // Circles (筒子)
   Souzu = 'souzu', // Bamboo (索子)
   Honor = 'honor', // Honor tiles (字牌)
+  // Legacy aliases used by the wall display.
+  Characters = 'manzu',
+  Circles = 'pinzu',
+  Bamboo = 'souzu',
 }
 
 /**

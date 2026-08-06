@@ -108,7 +108,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Lucky Mark to 2 tiles',
       tileCount: 2,
-      enhancement: 'Lucky',
+      enhancement: EnhancementType.Lucky,
       requiresSelection: true,
       selectionCount: 2,
     },
@@ -129,7 +129,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Bonus Mark to 2 tiles',
       tileCount: 2,
-      enhancement: 'Bonus',
+      enhancement: EnhancementType.Bonus,
       requiresSelection: true,
       selectionCount: 2,
     },
@@ -150,7 +150,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Chip Bonus Mark to 2 tiles',
       tileCount: 2,
-      enhancement: 'Bonus',
+      enhancement: EnhancementType.Bonus,
       requiresSelection: true,
       selectionCount: 2,
     },
@@ -171,7 +171,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'convert_to_wild',
       description: 'Make 1 tile wild',
       tileCount: 1,
-      enhancement: 'Wild',
+      enhancement: EnhancementType.Wild,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -192,7 +192,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Steel Mark to 1 tile',
       tileCount: 1,
-      enhancement: 'Steel',
+      enhancement: EnhancementType.Steel,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -213,7 +213,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Glass Mark to 1 tile',
       tileCount: 1,
-      enhancement: 'Glass',
+      enhancement: EnhancementType.Glass,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -234,7 +234,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Gold Mark to 1 tile',
       tileCount: 1,
-      enhancement: 'Gold',
+      enhancement: EnhancementType.Gold,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -255,7 +255,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       type: 'enhance_tiles',
       description: 'Apply Stone Mark to 1 tile',
       tileCount: 1,
-      enhancement: 'Stone',
+      enhancement: EnhancementType.Stone,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -1141,7 +1141,7 @@ export class FateSealSystem {
     }
 
     // Choose random edition
-    const editions: EditionType[] = ['Foil', 'Holographic', 'Polychrome']
+    const editions: EditionType[] = [EditionType.Foil, EditionType.Holographic, EditionType.Polychrome]
     const edition = editions[Math.floor(Math.random() * editions.length)]
 
     return {

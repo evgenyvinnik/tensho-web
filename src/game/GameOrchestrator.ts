@@ -463,14 +463,14 @@ export class GameOrchestrator {
       // FlowerSystem.addFlower expects a Tile object
       this.state.flowerSystem.addFlower(tile)
       eventBus.emit('flowerCollected', {
-        flowerType: tile.flowerType ?? 'plum',
+        flowerType: String(tile.flowerType ?? 'plum'),
         totalFlowers: this.state.flowerSystem.getFlowerCount(),
       })
     } else if (tile.isSeason) {
       // SeasonSystem.addSeason expects a Tile object
       this.state.seasonSystem.addSeason(tile)
       eventBus.emit('seasonActivated', {
-        seasonType: tile.seasonType ?? 'spring',
+        seasonType: String(tile.seasonType ?? 'spring'),
         effect: 'Season effect activated',
       })
     }
@@ -830,9 +830,17 @@ export class GameOrchestrator {
         basePoints,
         tilePoints: basePoints,
         structurePoints: 0,
+        modifierChips: 0,
+        modifierMult: 0,
+        modifierMultiplier: 1,
+        redFiveCount: 0,
+        redFiveChips: 0,
         detectedYaku: [],
         yakuMultiplier: 1,
         additiveBonus: 0,
+        retriggeredTiles: [],
+        shatteredTiles: [],
+        goldEarned: 0,
         subtotal: basePoints,
         finalScore,
       },

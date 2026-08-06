@@ -8,9 +8,8 @@
  */
 
 import React, { useState, useMemo } from 'react'
-import { Tile } from '../../core/Tile'
+import { Tile, TileSuit } from '../../core/Tile'
 import { getTileImagePath } from '../../utils/assets'
-import { Suit, ExtendedSuit } from '../../core/types'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -24,7 +23,7 @@ export interface WallDisplayProps {
 }
 
 interface TileCount {
-  suit: ExtendedSuit
+  suit: TileSuit
   rank: number | null
   count: number
   tile: Tile
@@ -37,13 +36,13 @@ interface TileCount {
 /**
  * Get display order for suits
  */
-function getSuitOrder(suit: ExtendedSuit): number {
+function getSuitOrder(suit: TileSuit): number {
   switch (suit) {
-    case Suit.Characters:
+    case TileSuit.Manzu:
       return 0
-    case Suit.Circles:
+    case TileSuit.Pinzu:
       return 1
-    case Suit.Bamboo:
+    case TileSuit.Souzu:
       return 2
     case 'wind':
       return 3
@@ -61,13 +60,13 @@ function getSuitOrder(suit: ExtendedSuit): number {
 /**
  * Get suit display name
  */
-function getSuitName(suit: ExtendedSuit): string {
+function getSuitName(suit: TileSuit): string {
   switch (suit) {
-    case Suit.Characters:
+    case TileSuit.Manzu:
       return 'Characters'
-    case Suit.Circles:
+    case TileSuit.Pinzu:
       return 'Circles'
-    case Suit.Bamboo:
+    case TileSuit.Souzu:
       return 'Bamboo'
     case 'wind':
       return 'Winds'
@@ -85,13 +84,13 @@ function getSuitName(suit: ExtendedSuit): string {
 /**
  * Get suit color class
  */
-function getSuitColorClass(suit: ExtendedSuit): string {
+function getSuitColorClass(suit: TileSuit): string {
   switch (suit) {
-    case Suit.Characters:
+    case TileSuit.Manzu:
       return 'text-red-400'
-    case Suit.Circles:
+    case TileSuit.Pinzu:
       return 'text-blue-400'
-    case Suit.Bamboo:
+    case TileSuit.Souzu:
       return 'text-green-400'
     case 'wind':
       return 'text-gray-300'
@@ -133,7 +132,7 @@ export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
         existing.count++
       } else {
         groups.set(key, {
-          suit: tile.suit as ExtendedSuit,
+          suit: tile.suit,
           rank: tile.rank,
           count: 1,
           tile,
@@ -151,9 +150,9 @@ export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
 
   // Group by suit for summary view
   const suitSummary = useMemo(() => {
-    const summary = new Map<ExtendedSuit, number>()
+    const summary = new Map<TileSuit, number>()
     for (const tile of wallTiles) {
-      const suit = tile.suit as ExtendedSuit
+      const suit = tile.suit
       summary.set(suit, (summary.get(suit) || 0) + 1)
     }
     return Array.from(summary.entries())

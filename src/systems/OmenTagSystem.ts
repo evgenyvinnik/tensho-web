@@ -24,19 +24,19 @@
  * - Scaling Decrees that need more rounds
  */
 
-import { RoundType, SeasonVariant } from './types'
+import type { RoundType, SeasonVariant } from './types'
 import {
-  OmenDefinition,
-  OmenCategory,
-  OmenRarity,
-  OmenEffectType,
+  type OmenDefinition,
+  type OmenCategory,
+  type OmenRarity,
+  type OmenEffectType,
   getRandomOmenForRound,
   SMALL_ROUND_OMENS,
   LARGE_ROUND_OMENS,
 } from '../config/omenDefinitions'
 import {
   useOmenStore,
-  ActiveOmenTag,
+  type ActiveOmenTag,
   selectShopDiscountFromOmens,
   selectFreeRerollsFromOmens,
   selectGuaranteedShopItems,
@@ -48,11 +48,10 @@ import {
 } from '../stores/omenStore'
 
 // Re-export types that may be needed
-export type { OmenDefinition, OmenCategory, OmenRarity, OmenEffectType }
 export type OmenTrigger = 'OnNextShop' | 'OnNextRound' | 'OnNextHand' | 'OnNextVoidScript' | 'OnAcquire' | 'Passive' | 'OnRoundSkip'
 
 // Type alias for backward compatibility
-export type ActiveOmen = ActiveOmenTag
+export type ActiveOmen = ActiveOmenTag & { definition: OmenDefinition }
 
 export interface OmenHistoryEntry {
   id: string
@@ -446,7 +445,12 @@ export class OmenTagSystem {
    */
   getActiveOmens(): ActiveOmen[] {
     const store = useOmenStore.getState()
-    return store.activeOmens.filter((o) => o.status === 'active')
+    return store.getActiveTags()
+      .map((tag) => ({
+        ...tag,
+        definition: store.getTagDefinition(tag.definitionId),
+      }))
+      .filter((omen): omen is ActiveOmen => Boolean(omen.definition))
   }
 
   /**
@@ -710,15 +714,3 @@ export function getOmenCategoryJapaneseName(category: OmenCategory): string {
       return '成長'
   }
 }
-
-/**
- * Export types for external use
- */
-export type {
-  OmenDefinition,
-  OmenCategory,
-  OmenRarity,
-  OmenTrigger,
-  OmenEffectType,
-} from '../config/omenDefinitions'
-export type { ActiveOmen, OmenHistoryEntry } from '../stores/omenStore'

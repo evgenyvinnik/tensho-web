@@ -237,7 +237,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
           height: dimensions.height,
         }}
       >
-        {transitions((style, tile, _, index) => {
+        {transitions((style: any, tile, _, index) => {
           const position = positions[index] || { x: 0, rotation: 0, zIndex: index }
 
           return (

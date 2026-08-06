@@ -281,7 +281,7 @@ export function useScoreBreakdownAnimation(
   const multiplier = useSettingsStore(selectAnimationMultiplier);
   const adjustedDelay = reducedMotion ? 0 : staggerDelay * multiplier;
 
-  const trail = useTrail(items.length, {
+  const trail = (useTrail as any)(items.length, {
     from: {
       opacity: 0,
       x: -30,
@@ -295,12 +295,12 @@ export function useScoreBreakdownAnimation(
     config: SPRINGS.snappy,
     immediate: reducedMotion,
     delay: (index: number) => index * adjustedDelay,
-    onRest: (_, __, index) => {
+    onRest: (_: unknown, __: unknown, index: number) => {
       if (index === items.length - 1) {
         onComplete?.();
       }
     },
-  });
+  }) as any[];
 
   return {
     trail,

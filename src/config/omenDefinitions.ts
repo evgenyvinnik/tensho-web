@@ -7,7 +7,9 @@
  * Based on ARCHITECTURE.MD Section 7 (Omen Tags) and Section 20 (Skipping Rounds).
  */
 
-import type { SeasonVariant } from '../systems/types'
+import type { SeasonVariant, DecreeRarity, PackType } from '../systems/types'
+
+type TileEdition = 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
 
 // =============================================================================
 // OMEN TYPES
@@ -65,6 +67,16 @@ export type OmenEffectType =
   | 'edition_apply' // Apply edition to tiles/decrees
   | 'interest_boost' // Increased interest cap
   | 'season_lock' // Locks next season type
+  // Legacy aliases retained for consumers written against the first Omen API.
+  | 'goldBonus'
+  | 'economyScaling'
+  | 'freeDecree'
+  | 'freeEdition'
+  | 'freePack'
+  | 'guaranteedItem'
+  | 'decreeEdition'
+  | 'drawBonus'
+  | 'discardBonus'
 
 /**
  * Omen effect data
@@ -79,6 +91,12 @@ export interface OmenEffect {
   editionType?: 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
   /** For mult_per_skip: whether it scales per skip */
   scalesWithSkips?: boolean
+  /** Legacy effect fields used by older integrations. */
+  maxValue?: number
+  scalingCondition?: 'handsPlayed' | 'unusedDiscards' | 'roundsSkipped'
+  rarity?: DecreeRarity
+  edition?: TileEdition
+  packType?: PackType
 }
 
 /**

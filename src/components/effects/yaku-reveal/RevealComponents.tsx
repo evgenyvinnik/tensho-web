@@ -21,7 +21,10 @@ import { getTierStyles } from './tierStyles'
  */
 export interface YakuRevealProps {
   /** Yaku to reveal */
-  yaku: YakuDefinition
+  yaku?: YakuDefinition
+  /** Legacy presentation props used by the gameplay overlay. */
+  japaneseName?: string
+  tier?: YakuTier
   /** Multiplier value for this yaku */
   multiplier: number
   /** Whether the reveal is active */
@@ -81,6 +84,8 @@ export interface YakuBannerProps {
  */
 export const YakuReveal: React.FC<YakuRevealProps> = ({
   yaku,
+  japaneseName,
+  tier,
   multiplier,
   isVisible = true,
   delay = 0,
@@ -88,7 +93,16 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
   className = '',
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
-  const tierStyles = getTierStyles(yaku.tier)
+  const revealYaku: YakuDefinition = yaku ?? {
+    id: japaneseName ?? 'yaku',
+    name: japaneseName ?? 'Yaku',
+    japaneseName: japaneseName ?? '役',
+    tier: tier ?? YakuTier.Tier1,
+    multiplier,
+    requiresConcealed: false,
+    description: '',
+  }
+  const tierStyles = getTierStyles(revealYaku.tier)
   const [phase, setPhase] = useState<'enter' | 'hold' | 'exit'>('enter')
 
   // Sequence through phases
@@ -98,7 +112,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
     const timers: NodeJS.Timeout[] = []
 
     const enterDelay = reducedMotion ? 0 : delay
-    const holdDuration = yaku.tier === YakuTier.Tier4 ? DURATIONS.extended : DURATIONS.dramatic
+    const holdDuration = revealYaku.tier === YakuTier.Tier4 ? DURATIONS.extended : DURATIONS.dramatic
     const exitDelay = enterDelay + holdDuration
 
     timers.push(setTimeout(() => setPhase('hold'), enterDelay + DURATIONS.normal))
@@ -106,7 +120,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
     timers.push(setTimeout(() => onComplete?.(), exitDelay + DURATIONS.normal))
 
     return () => timers.forEach(clearTimeout)
-  }, [isVisible, delay, yaku.tier, reducedMotion, onComplete])
+  }, [isVisible, delay, revealYaku.tier, reducedMotion, onComplete])
 
   // Main container animation
   const containerSpring = useSpring({
@@ -121,7 +135,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
       y: phase === 'exit' ? -50 : 0,
     },
     delay: reducedMotion ? 0 : delay,
-    config: yaku.tier === YakuTier.Tier4 ? SPRINGS.bouncy : SPRINGS.snappy,
+    config: revealYaku.tier === YakuTier.Tier4 ? SPRINGS.bouncy : SPRINGS.snappy,
     immediate: reducedMotion,
   })
 
@@ -154,9 +168,9 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
 
   // Glow pulse for yakuman
   const glowSpring = useSpring({
-    loop: yaku.tier === YakuTier.Tier4 && phase === 'hold' && !reducedMotion,
+    loop: revealYaku.tier === YakuTier.Tier4 && phase === 'hold' && !reducedMotion,
     from: { glowSize: 10 },
-    to: yaku.tier === YakuTier.Tier4
+    to: revealYaku.tier === YakuTier.Tier4
       ? [{ glowSize: 30 }, { glowSize: 10 }]
       : { glowSize: 15 * tierStyles.intensity },
     config: { duration: DURATIONS.slow },
@@ -193,7 +207,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
           color: colors.darkForest,
         }}
       >
-        {yaku.tier === YakuTier.Tier4 ? 'YAKUMAN' : `Tier ${yaku.tier}`}
+        {revealYaku.tier === YakuTier.Tier4 ? 'YAKUMAN' : `Tier ${revealYaku.tier}`}
       </div>
 
       {/* Japanese name */}
@@ -207,7 +221,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
           textShadow: `0 0 10px ${tierStyles.glowColor}`,
         }}
       >
-        {yaku.japaneseName}
+        {revealYaku.japaneseName}
       </animated.div>
 
       {/* English name */}
@@ -219,7 +233,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
           color: colors.beigeWhite,
         }}
       >
-        {yaku.name}
+        {revealYaku.name}
       </animated.div>
 
       {/* Multiplier display */}
@@ -247,7 +261,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
         className="text-sm text-center mt-4"
         style={{ color: colors.beigeWhite, opacity: 0.7 }}
       >
-        {yaku.description}
+        {revealYaku.description}
       </div>
     </animated.div>
   )

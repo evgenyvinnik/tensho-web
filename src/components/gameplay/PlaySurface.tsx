@@ -45,6 +45,13 @@ export interface PlaySurfaceProps {
   discardsRemaining?: number
   /** Translation function */
   t?: (key: string) => string
+  /** Optional legacy preview contract used by embedded play-surface consumers. */
+  scorePreview?: {
+    points: number
+    mult: number
+    total: number
+    yaku: unknown[]
+  }
 }
 
 interface DragState {

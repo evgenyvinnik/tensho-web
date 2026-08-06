@@ -13,8 +13,9 @@
  */
 
 import {
-  CharterDefinition,
-  CharterEffect,
+  type CharterDefinition,
+  type CharterEffect,
+  type CharterEffectType,
   getCharterById,
   getUpgradedCharter,
   isCharterAvailable,
@@ -440,10 +441,12 @@ export class CharterSystem {
 // EXPORTS
 // =============================================================================
 
-export {
+export type {
   CharterDefinition,
   CharterEffectType,
   CharterEffect,
+}
+export {
   BASE_CHARTERS,
   UPGRADED_CHARTERS,
   ALL_CHARTERS,

@@ -172,7 +172,7 @@ export interface GameEventData {
   mandateDefeated: { mandateId: string }
 
   // Tile Modifier Events
-  tileModified: { tileId: string; modifierType: 'enhancement' | 'seal' | 'edition'; value: string }
+  tileModified: { tileId: string; modifierType: 'enhancement' | 'seal' | 'edition' | 'cleared'; value: string | null }
   tileShattered: { tileId: string; tileName: string }
   markDecayed: { tileId: string; markType: 'enhancement' | 'seal' | 'edition'; trigger: 'discard' | 'reshuffle' }
   consumableCreated: { type: 'orb' | 'seal'; source: string; tileId: string }

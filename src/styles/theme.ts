@@ -70,6 +70,9 @@ export const tileSizes = {
   xlarge: { width: 90, height: 126 },
 } as const;
 
+/** Named tile size used by gameplay components. */
+export type TileSize = keyof typeof tileSizes;
+
 // Touch target minimum size (44x44 pixels)
 export const touchTargetMinSize = 44;
 

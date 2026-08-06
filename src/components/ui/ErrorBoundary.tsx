@@ -329,7 +329,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Report the error
-    reportError(error, errorInfo.componentStack)
+    reportError(error, errorInfo.componentStack ?? undefined)
 
     // Update state with error info
     this.setState({ errorInfo })

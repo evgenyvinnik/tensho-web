@@ -159,7 +159,7 @@ export function useScreenFlash() {
   const [flashConfig, setFlashConfig] = useState<FlashConfig | null>(null);
   const [isActive, setIsActive] = useState(false);
 
-  const spring = useSpring({
+  const spring = useSpring<any>({
     opacity: isActive ? (flashConfig?.intensity ?? 0.5) : 0,
     config: {
       duration: reducedMotion ? 0 : flashConfig?.duration ?? DURATIONS.fast,
@@ -329,7 +329,7 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
     }
   };
 
-  const spring = useSpring({
+  const spring = useSpring<any>({
     ...getAnimationConfig(),
     config: config.gentle,
     immediate: reducedMotion,

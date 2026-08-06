@@ -570,6 +570,11 @@ export class CelestialOrbSystem {
     this.yakuTriggerCounts.set(yaku, currentCount + 1)
   }
 
+  /** Backward-compatible name used by the orchestrator. */
+  triggerYaku(yaku: YakuCategory): void {
+    this.onYakuScored(yaku)
+  }
+
   /**
    * Get trigger count for a yaku
    */

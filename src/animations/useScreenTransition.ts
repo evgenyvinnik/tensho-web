@@ -304,7 +304,7 @@ export function useStaggeredReveal(
   return {
     transitions,
     getItemStyle: (index: number) => {
-      const item = transitions[index];
+      const item = (transitions as any)[index] as any;
       if (!item) return { opacity: 1, transform: 'translateY(0)' };
       return {
         opacity: item.opacity,

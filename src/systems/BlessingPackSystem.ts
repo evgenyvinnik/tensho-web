@@ -207,7 +207,7 @@ export class BlessingPackSystem {
     options: PackGenerationOptions,
     existingContents: PackContent[]
   ): PackContent | null {
-    const rarity = this.selectWeightedRandom(rarityWeights) as keyof ContentRarityWeights
+    const rarity = this.selectWeightedRandom(rarityWeights as unknown as Record<string, number>) as keyof ContentRarityWeights
 
     switch (packType) {
       case 'Arcana':

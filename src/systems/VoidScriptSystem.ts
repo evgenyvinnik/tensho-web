@@ -247,7 +247,7 @@ export const VOID_SCRIPTS: Record<
     effect: {
       type: 'apply_seal_to_tile',
       description: 'Apply Gold Seal',
-      sealType: 'Gold',
+      sealType: SealType.Gold,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -271,7 +271,7 @@ export const VOID_SCRIPTS: Record<
     effect: {
       type: 'apply_seal_to_tile',
       description: 'Apply Red Seal (retrigger)',
-      sealType: 'Red',
+      sealType: SealType.Red,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -295,7 +295,7 @@ export const VOID_SCRIPTS: Record<
     effect: {
       type: 'apply_seal_to_tile',
       description: 'Apply Blue Seal',
-      sealType: 'Blue',
+      sealType: SealType.Blue,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -319,7 +319,7 @@ export const VOID_SCRIPTS: Record<
     effect: {
       type: 'apply_seal_to_tile',
       description: 'Apply Purple Seal',
-      sealType: 'Purple',
+      sealType: SealType.Purple,
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -436,7 +436,7 @@ export const VOID_SCRIPTS: Record<
     effect: {
       type: 'apply_edition',
       description: 'Add Prismatic edition to Decree',
-      editionType: 'Polychrome',
+      editionType: EditionType.Polychrome,
     },
     penalty: {
       type: 'destroy_decrees',
@@ -950,7 +950,7 @@ export class VoidScriptSystem {
     context: VoidScriptContext
   ): ConsumableUseResult {
     // If specific edition, use it; otherwise random
-    const editions: EditionType[] = ['Foil', 'Holographic', 'Polychrome']
+    const editions: EditionType[] = [EditionType.Foil, EditionType.Holographic, EditionType.Polychrome]
     const edition =
       script.effect.editionType ||
       editions[Math.floor(Math.random() * editions.length)]

@@ -142,9 +142,6 @@ export function ShopScreen() {
         } else if (result.offering.itemType === 'CelestialOrb') {
           const orb = result.offering.item as CelestialOrb
           consumableStore.addCelestialOrb(orb)
-        } else if (result.offering.itemType === 'VoidScript') {
-          const script = result.offering.item as VoidScript
-          consumableStore.addVoidScript(script)
         }
 
         setSelectedItemId(null)
