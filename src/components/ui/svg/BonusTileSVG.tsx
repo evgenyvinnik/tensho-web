@@ -6,7 +6,6 @@
  * - Seasons (Spring, Summer, Autumn, Winter)
  */
 
-import React from 'react'
 
 /**
  * Flower color palettes

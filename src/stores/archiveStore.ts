@@ -80,7 +80,6 @@ export interface ArchiveState {
  */
 function createInitialEntries(): Record<string, ArchiveEntry> {
   const entries: Record<string, ArchiveEntry> = {}
-  const _preDiscovered = getPreDiscoveredItemIds()
 
   // This will be populated when initializeEntries is called
   // Pre-discovered items get their discoveredAt set to 0

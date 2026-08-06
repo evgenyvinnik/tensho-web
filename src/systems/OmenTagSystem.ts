@@ -80,7 +80,6 @@ export class OmenTagSystem {
   private totalSkippedRounds: number = 0
   private lockedSeasonType: SeasonVariant | null = null
   private pendingOmens: OmenDefinition[] = []
-  private triggeredOmensThisRound: string[] = []
 
   constructor() {
     this.reset()
@@ -96,7 +95,6 @@ export class OmenTagSystem {
     this.totalSkippedRounds = 0
     this.lockedSeasonType = null
     this.pendingOmens = []
-    this.triggeredOmensThisRound = []
     useOmenStore.getState().clearForNewRun()
   }
 
@@ -482,7 +480,6 @@ export class OmenTagSystem {
    */
   onActStart(): void {
     this.skippedRoundsThisAct = 0
-    this.triggeredOmensThisRound = []
   }
 
   /**

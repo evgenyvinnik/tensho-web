@@ -54,6 +54,7 @@ export type GameEvent =
   | 'charterRedeemed'
 
   // Consumables
+  | 'consumableAcquired'
   | 'fateSealUsed'
   | 'celestialOrbUsed'
   | 'voidScriptUsed'
@@ -137,6 +138,11 @@ export interface GameEventData {
   charterRedeemed: { charterId: string; charterName: string }
 
   // Consumables
+  consumableAcquired: {
+    consumableType: 'FateSeal' | 'CelestialOrb' | 'VoidScript'
+    instanceId: string
+    name: string
+  }
   fateSealUsed: { sealId: string; effect: string }
   celestialOrbUsed: { orbId: string; yakuCategory: string; newLevel: number }
   voidScriptUsed: { scriptId: string; effect: string; downside: string }

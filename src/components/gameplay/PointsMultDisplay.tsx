@@ -7,7 +7,6 @@
  * @module components/gameplay/PointsMultDisplay
  */
 
-import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { GlowEffect } from '../effects/GlowEffect'
 

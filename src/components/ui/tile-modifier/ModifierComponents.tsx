@@ -4,7 +4,6 @@
  * Visual components for displaying tile modifiers.
  */
 
-import React from 'react'
 import {
   EnhancementType,
   SealType,

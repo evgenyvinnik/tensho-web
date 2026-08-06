@@ -81,13 +81,6 @@ export interface FateSeal extends BaseConsumable {
 // =============================================================================
 
 /**
- * Generate a base Fate Seal ID
- */
-function _createFateSealId(name: string): string {
-  return `fate_seal_${name.toLowerCase().replace(/\s+/g, '_')}`
-}
-
-/**
  * Complete Fate Seal library from ITEM_LIBRARIES.md
  */
 export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>> = {
@@ -615,7 +608,6 @@ export function getFateSealsByRarity(
  */
 export class FateSealSystem {
   private lastUsedConsumable: BaseConsumable | null = null
-  private yakuLevels: Map<string, number> = new Map()
 
   constructor() {
     this.lastUsedConsumable = null

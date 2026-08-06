@@ -7,7 +7,7 @@
  * @module components/gameplay/FloraTrackCompact
  */
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Tile, TileSuit } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'

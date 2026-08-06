@@ -92,24 +92,6 @@ function getRarityDisplayName(rarity: string): string {
 }
 
 /**
- * Get Japanese rarity name
- */
-function _getRarityJapaneseName(rarity: string): string {
-  switch (rarity) {
-    case 'LocalEdict':
-      return '\u5730\u65B9\u4EE4' // Local Edict
-    case 'RegionalMandate':
-      return '\u5730\u57DF\u4EE4' // Regional
-    case 'ImperialDecree':
-      return '\u7687\u52C5' // Imperial
-    case 'HeavenlyOrdinance':
-      return '\u5929\u4EE4' // Heavenly
-    default:
-      return ''
-  }
-}
-
-/**
  * Get item type icon
  */
 function getItemTypeIcon(itemType: string): string {

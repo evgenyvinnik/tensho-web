@@ -9,7 +9,7 @@ import { animated, useTransition, useSprings, useSpring, to } from '@react-sprin
 import { Tile } from '../../../core/Tile'
 import { AnimatedTile } from '../../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../../styles/theme'
-import { useSettingsStore, selectAnimationMultiplier } from '../../../stores/settingsStore'
+import { useSettingsStore } from '../../../stores/settingsStore'
 import { SPRINGS, STAGGER } from '../../../animations/constants'
 import { calculateFannedPositions, calculateStraightPositions } from './positionUtils'
 
@@ -103,7 +103,6 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   layout: _layout = 'horizontal',
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
-  const _animationMultiplier = useSettingsStore(selectAnimationMultiplier)
   const dimensions = tileSizes[size]
 
   // Track previous tiles for animation
@@ -143,7 +142,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
         scale: 0.8,
       }
     },
-    enter: (tile, index) => ({
+    enter: (_tile, index) => ({
       opacity: 1,
       x: positions[index]?.x ?? 0,
       scale: 1,

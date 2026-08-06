@@ -8,7 +8,7 @@
 import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation } from '../../router'
-import { useSettingsStore, selectEffectiveMusicVolume, selectEffectiveSfxVolume } from '../../stores/settingsStore'
+import { useSettingsStore } from '../../stores/settingsStore'
 import { useAchievementStore } from '../../stores/achievementStore'
 import { Button } from '../ui/Button'
 import { BackButton } from '../ui/BackButton'
@@ -56,10 +56,6 @@ export function SettingsScreen() {
     resetSettings,
   } = useSettingsStore()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const effectiveMusicVolume = useSettingsStore(selectEffectiveMusicVolume)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const effectiveSfxVolume = useSettingsStore(selectEffectiveSfxVolume)
 
   // Reset tutorial handler
   const handleResetTutorial = useCallback(() => {

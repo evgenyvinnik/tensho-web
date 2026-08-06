@@ -7,7 +7,6 @@
  * @module components/gameplay/GameplayTopBar
  */
 
-import React from 'react'
 import { TFunction } from 'i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { RoundTypeIndicator } from './RoundTypeIndicator'

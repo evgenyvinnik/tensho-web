@@ -7,7 +7,6 @@
  * @module components/gameplay/ConsumablesBar
  */
 
-import React from 'react'
 
 // =============================================================================
 // TYPE DEFINITIONS

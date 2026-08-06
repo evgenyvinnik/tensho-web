@@ -16,7 +16,7 @@
  * ```
  */
 
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { OwnedDecree } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'

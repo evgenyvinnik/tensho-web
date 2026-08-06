@@ -7,7 +7,6 @@
  * @module components/gameplay/ActionBar
  */
 
-import React from 'react'
 import { TFunction } from 'i18next'
 import { Button } from '../ui/Button'
 

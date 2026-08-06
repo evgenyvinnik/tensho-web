@@ -6,7 +6,7 @@
  * @module components/gameplay/PlayArea
  */
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { YakuReveal } from '../effects/YakuReveal'
 import { GlowEffect } from '../effects/GlowEffect'
 import { YakuRevealState } from './gameplayTypes'

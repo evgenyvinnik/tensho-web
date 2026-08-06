@@ -5,7 +5,6 @@
  * Includes traditional Chinese/Japanese-inspired geometric patterns.
  */
 
-import React from 'react'
 
 /**
  * Color palettes for different rarities

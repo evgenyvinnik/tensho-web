@@ -162,24 +162,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     })
   }, [disabled, stagedTiles])
 
-  // Handle tile click - toggle between hand and staging
-  const _handleTileClick = useCallback((tile: Tile) => {
-    if (disabled) return
-
-    const isStaged = stagedTiles.some(t => t.id === tile.id)
-
-    if (isStaged) {
-      // Move from staging back to hand
-      setStagedTiles(prev => prev.filter(t => t.id !== tile.id))
-    } else {
-      // Move from hand to staging
-      setStagedTiles(prev => [...prev, tile])
-    }
-
-    // Also trigger the external select handler if provided
-    onTileSelect?.(tile)
-  }, [disabled, stagedTiles, onTileSelect])
-
   // Handle drag move
   const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
     if (!dragState) return

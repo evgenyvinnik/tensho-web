@@ -7,7 +7,7 @@
 
 import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
-import { Decree, OwnedDecree, DecreeRarity, DecreeCategory } from '../../systems/types'
+import { Decree, OwnedDecree, DecreeRarity } from '../../systems/types'
 import { DecreeUniqueIcon } from './svg/DecreeIcons'
 
 /**
@@ -28,17 +28,6 @@ const RARITY_LABELS: Record<DecreeRarity, string> = {
   RegionalMandate: 'Uncommon',
   ImperialDecree: 'Rare',
   HeavenlyOrdinance: 'Mythic',
-}
-
-/**
- * Category icon mapping
- */
-const _CATEGORY_ICONS: Record<DecreeCategory, string> = {
-  Structural: '🏛️',
-  TileIdentity: '🎭',
-  YakuDoctrine: '📖',
-  Entropy: '🎲',
-  Scaling: '📈',
 }
 
 /**

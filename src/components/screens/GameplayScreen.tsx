@@ -546,7 +546,7 @@ export function GameplayScreen() {
               {showConsumablesPanel === 'fateSeals' && game.fateSeals.map((seal: any, index: number) => (
                 <button
                   key={seal.instanceId || index}
-                  onClick={() => handleUseFateSeal(seal.id)}
+                  onClick={() => handleUseFateSeal(seal.instanceId)}
                   className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-purple-500/50 transition-colors"
                 >
                   <div className="flex items-center gap-2">
@@ -578,7 +578,7 @@ export function GameplayScreen() {
               {showConsumablesPanel === 'voidScripts' && game.voidScripts.map((script: any, index: number) => (
                 <button
                   key={script.instanceId || index}
-                  onClick={() => handleUseVoidScript(script.id)}
+                  onClick={() => handleUseVoidScript(script.instanceId)}
                   className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-gray-500/50 transition-colors"
                 >
                   <div className="flex items-center gap-2">

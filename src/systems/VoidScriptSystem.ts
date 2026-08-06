@@ -632,16 +632,11 @@ export function getVoidScriptsByRarity(
  * Manages Void Script usage, penalties, and effects
  */
 export class VoidScriptSystem {
-  private pendingPenalties: VoidScriptPenalty[] = []
   private decreeSlotsLostNextRound: number = 0
   private handSizePenalty: number = 0
   private allowShantenScoring: boolean = false
   private bypassMeldValidation: boolean = false
   private baseScoreHalved: boolean = false
-
-  constructor() {
-    this.pendingPenalties = []
-  }
 
   /**
    * Use a Void Script

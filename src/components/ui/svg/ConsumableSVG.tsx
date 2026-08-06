@@ -7,7 +7,6 @@
  * - Void Scripts (Spectral analog)
  */
 
-import React from 'react'
 
 /**
  * Color palettes for consumables

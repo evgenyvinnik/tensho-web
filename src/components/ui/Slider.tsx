@@ -5,7 +5,6 @@
  * Styled to match the game's visual theme.
  */
 
-import React from 'react'
 
 export interface SliderProps {
   /** Current value */

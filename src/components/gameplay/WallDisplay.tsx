@@ -7,7 +7,7 @@
  * @module components/gameplay/WallDisplay
  */
 
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Tile, TileSuit } from '../../core/Tile'
 import { getTileImagePath } from '../../utils/assets'
 

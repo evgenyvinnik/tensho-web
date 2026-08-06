@@ -31,9 +31,9 @@ import {
   SKIP_SYNERGY_DECREES,
   ContentRarityWeights,
 } from '../config/packDefinitions'
-import { getFateSealsByRarity, FateSeal } from './FateSealSystem'
-import { getCelestialOrbsByRarity, CelestialOrb } from './CelestialOrbSystem'
-import { getVoidScriptsByRarity, VoidScript } from './VoidScriptSystem'
+import { getFateSealsByRarity } from './FateSealSystem'
+import { getCelestialOrbsByRarity } from './CelestialOrbSystem'
+import { getVoidScriptsByRarity } from './VoidScriptSystem'
 import { ConsumableRarity } from './ConsumableSystem'
 
 // =============================================================================

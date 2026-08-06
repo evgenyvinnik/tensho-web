@@ -7,7 +7,6 @@
  * @module components/gameplay/RoundTypeIndicator
  */
 
-import React from 'react'
 import { RoundType, ROUND_TYPE_CONFIG, isCJKLanguage } from './gameplayTypes'
 
 // =============================================================================

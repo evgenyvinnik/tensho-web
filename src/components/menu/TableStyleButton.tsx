@@ -5,7 +5,7 @@
  * and opens the table style selection modal when clicked.
  */
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { TableStyleModal } from './TableStyleModal'

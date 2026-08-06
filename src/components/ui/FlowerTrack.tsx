@@ -5,7 +5,6 @@
  * Shows visual representation of the four flower types and set bonuses.
  */
 
-import React from 'react'
 import { useSpring, animated, useTrail } from '@react-spring/web'
 import { FlowerVariant, FlowerTile, FlowerSetBonus } from '../../systems/types'
 

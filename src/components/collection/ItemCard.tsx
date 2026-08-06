@@ -74,25 +74,6 @@ function getRarityColor(rarity?: string): string {
 }
 
 /**
- * Get category icon
- */
-function _getCategoryIcon(category: ArchiveCategory): string {
-  const icons: Record<ArchiveCategory, string> = {
-    decrees: 'scroll',
-    walls: 'wall',
-    charters: 'certificate',
-    consumables: 'potion',
-    tileMarks: 'sparkle',
-    seals: 'seal',
-    editions: 'shine',
-    packs: 'package',
-    omens: 'tag',
-    mandates: 'challenge',
-  }
-  return icons[category] || 'item'
-}
-
-/**
  * ItemCard - Single item display in collection grid
  */
 export function ItemCard({ entry, displayInfo, delay = 0, onClick }: ItemCardProps) {

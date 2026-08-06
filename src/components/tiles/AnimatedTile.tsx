@@ -131,19 +131,15 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
     immediate: reducedMotion,
   });
 
-  // Handle click
+  // Handle click - shake to signal the tap was rejected
   const handleClick = useCallback(() => {
-    if (!disabled && onClick) {
-      onClick(tile);
+    if (disabled) {
+      triggerShake();
+      onInvalidAction?.();
+      return;
     }
-  }, [disabled, onClick, tile]);
-
-  // Handle invalid action (exposed via ref or callback)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleInvalidAction = useCallback(() => {
-    triggerShake();
-    onInvalidAction?.();
-  }, [triggerShake, onInvalidAction]);
+    onClick?.(tile);
+  }, [disabled, onClick, tile, triggerShake, onInvalidAction]);
 
   // Drag handlers
   const handleDragStart = useCallback(

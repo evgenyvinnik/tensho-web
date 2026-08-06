@@ -5,7 +5,7 @@
  * Shows base points, multipliers, bonuses, and final score with animations.
  */
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useSpring, animated, useTrail } from '@react-spring/web'
 import { ScoreBreakdown } from '../../systems/types'
 
@@ -30,7 +30,7 @@ export function ScoreBreakdownDisplay({
   const [displayScore, setDisplayScore] = useState(0)
 
   // Animate the final score counter
-  const _scoreSpring = useSpring({
+  useSpring({
     score: breakdown.finalScore,
     from: { score: 0 },
     config: { tension: 50, friction: 20 },
@@ -321,7 +321,7 @@ export function ScoreCounter({
 }: ScoreCounterProps) {
   const [displayValue, setDisplayValue] = useState(score)
 
-  const _spring = useSpring({
+  useSpring({
     value: score,
     config: { tension: 80, friction: 20 },
     onChange: ({ value }: { value: { value: number } }) => {

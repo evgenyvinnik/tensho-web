@@ -205,14 +205,14 @@ export class BonusTileHandler {
   /**
    * Create a FlowerTile from a raw Tile
    */
-  private createFlowerFromTile(tile: Tile, type: FlowerType): FlowerTile {
+  private createFlowerFromTile(_tile: Tile, type: FlowerType): FlowerTile {
     return createFlowerTile(type)
   }
 
   /**
    * Create a SeasonTile from a raw Tile
    */
-  private createSeasonFromTile(tile: Tile, type: SeasonType): SeasonTile {
+  private createSeasonFromTile(_tile: Tile, type: SeasonType): SeasonTile {
     const effect = getSeasonEffect(type)
     return createSeasonTile(type, effect)
   }
