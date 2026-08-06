@@ -14,7 +14,7 @@ import { SongNotification } from '../ui/SongNotification'
 import { TableStyleButton } from '../menu/TableStyleButton'
 import { getTileImagePath, preloadMenuAssets, preloadTileImages } from '../../utils/assets'
 import { useAudio } from '../../hooks/useAudio'
-import { useGameStore } from '../../stores/gameStore'
+import { useGameController } from '../../game/useGameController'
 import { TileSuit } from '../../core/Tile'
 import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
@@ -291,7 +291,7 @@ export function MenuScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [showContent, setShowContent] = useState(false)
   const [floatingTiles] = useState(() => generateFloatingTiles(12))
-  const { startNewRun, setPhase } = useGameStore()
+  const { startNewRun } = useGameController()
   const tutorial = useTutorial()
 
   // Audio hook for background music
@@ -353,7 +353,6 @@ export function MenuScreen() {
     // Go directly to game - progressive tutorial will show hints during gameplay
     audio.play()
     startNewRun()
-    setPhase('gameplay')
     navigateTo(ROUTES.PLAY)
   }
 
@@ -362,7 +361,6 @@ export function MenuScreen() {
     tutorial.complete()
     audio.play()
     startNewRun()
-    setPhase('gameplay')
     navigateTo(ROUTES.PLAY)
   }
 

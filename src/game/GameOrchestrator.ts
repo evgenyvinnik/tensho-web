@@ -34,6 +34,7 @@ import { ConsumableSystem } from '../systems/ConsumableSystem'
 import { CelestialOrbSystem, CelestialOrb, YakuCategory } from '../systems/CelestialOrbSystem'
 import { FateSealSystem, FateSeal, FateSealContext } from '../systems/FateSealSystem'
 import { VoidScriptSystem, VoidScript, VoidScriptContext } from '../systems/VoidScriptSystem'
+import { OmenTagSystem } from '../systems/OmenTagSystem'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -82,6 +83,7 @@ export interface OrchestratorState {
   celestialOrbSystem: CelestialOrbSystem
   fateSealSystem: FateSealSystem
   voidScriptSystem: VoidScriptSystem
+  omenSystem: OmenTagSystem
 
   // Consumable inventory (owned items)
   fateSeals: FateSeal[]
@@ -162,6 +164,7 @@ export class GameOrchestrator {
       celestialOrbSystem: new CelestialOrbSystem(),
       fateSealSystem: new FateSealSystem(),
       voidScriptSystem: new VoidScriptSystem(),
+      omenSystem: new OmenTagSystem(),
       fateSeals: [],
       celestialOrbs: [],
       voidScripts: [],
@@ -260,6 +263,16 @@ export class GameOrchestrator {
     eventBus.emit('phaseChanged', {
       previousPhase: 'menu',
       newPhase: 'gameplay',
+    })
+  }
+
+  /** Reset the authoritative run state and return to the menu phase. */
+  resetGame(): void {
+    const previousPhase = this.state.phase
+    this.state = this.createInitialState()
+    eventBus.emit('phaseChanged', {
+      previousPhase,
+      newPhase: 'menu',
     })
   }
 
@@ -694,10 +707,12 @@ export class GameOrchestrator {
     // The entire hand (or selected tiles) is played at once
     // We need at least a valid structure to score
 
-    // Try to parse the hand
-    const allTiles = [...this.state.handTiles]
+    // Parse the tiles the player actually chose. The old implementation parsed
+    // the entire hand, which made a five-tile selection score as a hidden
+    // fourteen-tile hand and broke the core selection loop.
+    const tilesToScore = [...selectedTiles]
     const hand = new Hand()
-    for (const tile of allTiles) {
+    for (const tile of tilesToScore) {
       hand.addTile(tile)
     }
 
@@ -715,7 +730,7 @@ export class GameOrchestrator {
 
     console.log('[executePlay] Complete hand found, calculating score')
     // Calculate score for complete hand
-    const scoreResult = this.calculateHandScore(allTiles, parsedHand)
+    const scoreResult = this.calculateHandScore(tilesToScore, parsedHand)
 
     // Apply score
     const previousScore = this.state.score
@@ -863,6 +878,10 @@ export class GameOrchestrator {
     console.log('[executePartialPlay] Checking round completion')
     this.checkRoundCompletion(effects)
 
+    if (this.state.phase === 'gameplay') {
+      this.refillHand(effects)
+    }
+
     console.log('[executePartialPlay] Returning success')
     return { success: true, effects }
   }
@@ -938,8 +957,19 @@ export class GameOrchestrator {
       }
     }
 
-    // Skip the round
+    // Skip the round and award the documented Omen reward.
+    const skipResult = this.state.omenSystem.handleRoundSkip(roundState.roundType)
     this.state.roundManager.skipRound()
+
+    if (skipResult.immediateGold > 0) {
+      this.state.gold += skipResult.immediateGold
+      eventBus.emit('goldChanged', {
+        previousGold: this.state.gold - skipResult.immediateGold,
+        newGold: this.state.gold,
+        delta: skipResult.immediateGold,
+        reason: 'Omen skip reward',
+      })
+    }
 
     eventBus.emit('roundSkipped', {
       roundType: roundState.roundType,
@@ -1270,11 +1300,12 @@ export class GameOrchestrator {
    * Handle round win
    */
   private handleRoundWin(effects: Effect[]): void {
-    // Submit score to round manager
+    // Capture the completed round before RoundManager advances its cursor.
+    const completedRound = this.state.roundManager.getCurrentRound()
     this.state.roundManager.submitScore(this.state.score)
 
     // Calculate gold reward
-    const roundState = this.state.roundManager.getCurrentRound()
+    const roundState = completedRound
     let goldReward = 0
 
     if (roundState) {

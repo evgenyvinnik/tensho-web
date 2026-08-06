@@ -282,15 +282,11 @@ export function useGameController(
   )
 
   const resetGame = useCallback(() => {
-    // Reset orchestrator to initial state
-    orchestrator.startNewRun()
+    orchestrator.resetGame()
   }, [orchestrator])
 
   const endRun = useCallback(() => {
-    // End the current run by resetting to menu state
-    // This will be handled by the orchestrator or we just navigate away
-    // For now, just clear the state to prevent further actions
-    orchestrator.clearSelection()
+    orchestrator.resetGame()
   }, [orchestrator])
 
   return {

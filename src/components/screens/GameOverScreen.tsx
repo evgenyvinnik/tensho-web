@@ -7,7 +7,7 @@
 
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
-import { useGameStore } from '../../stores/gameStore'
+import { useGameController } from '../../game/useGameController'
 import { Button } from '../ui/Button'
 
 /**
@@ -16,11 +16,11 @@ import { Button } from '../ui/Button'
 export function GameOverScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
-  const { score, currentAct, resetGame } = useGameStore()
+  const { score, currentAct, resetGame } = useGameController()
 
   const handlePlayAgain = () => {
     resetGame()
-    navigateTo(ROUTES.MENU)
+    navigateTo(ROUTES.PLAY)
   }
 
   const handleReturnToMenu = () => {
