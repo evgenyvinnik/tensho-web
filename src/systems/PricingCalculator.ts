@@ -32,7 +32,7 @@
  * sell_value = floor(buy_cost / 2)
  */
 
-import { DecreeRarity, PackSize } from './types'
+import { DecreeRarity, PackSize, type DecreeEdition } from './types'
 
 // =============================================================================
 // EDITION TYPES
@@ -41,7 +41,7 @@ import { DecreeRarity, PackSize } from './types'
 /**
  * Edition types that can modify items
  */
-export type EditionType = 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
+export type EditionType = DecreeEdition
 
 // =============================================================================
 // COST CONSTANTS

@@ -72,6 +72,7 @@ export interface AdditiveScoreEffect extends BaseEffect {
 export interface MultiplicativeScoreEffect extends BaseEffect {
   type: 'multiplicative_score'
   multiplier: number // Multiplied with total
+  perTileCondition?: 'dominant_suit'
 }
 
 /**
@@ -154,6 +155,8 @@ export type DecreeEffect =
  */
 export type StickerType = 'Eternal' | 'Perishable' | 'Rental'
 
+export type DecreeEdition = 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
+
 /**
  * Sticker data attached to a decree
  */
@@ -177,6 +180,7 @@ export interface Decree {
   cost: number // Base purchase cost in gold
   sellValue?: number // Value when sold (default: cost / 2)
   sticker?: Sticker
+  edition?: DecreeEdition
   isDebuffed?: boolean // If true, effect is disabled
 }
 
@@ -309,7 +313,14 @@ export interface SeasonState {
 /**
  * Types of items available in the shop
  */
-export type ShopItemType = 'Decree' | 'FateSeal' | 'CelestialOrb' | 'Tile' | 'BlessingPack' | 'ImperialCharter'
+export type ShopItemType =
+  | 'Decree'
+  | 'FateSeal'
+  | 'CelestialOrb'
+  | 'VoidScript'
+  | 'Tile'
+  | 'BlessingPack'
+  | 'ImperialCharter'
 
 /**
  * Pack sizes for blessing packs
@@ -355,7 +366,7 @@ export interface ImperialCharter {
   cost: number
   effect: {
     type: string
-    value: number | string
+    value: number | string | boolean
   }
   upgradeId?: string // ID of the upgraded version
   isUpgraded: boolean

@@ -742,6 +742,8 @@ export type ProgressionEventType =
   | 'gold_spent'
   | 'decree_purchased'
   | 'charter_purchased'
+  | 'tile_purchased'
+  | 'consumable_acquired'
   | 'fate_seal_used'
   | 'celestial_orb_used'
   | 'void_script_used'
@@ -760,6 +762,7 @@ export interface ProgressionEventPayload {
   value?: number
   itemId?: string
   itemType?: string
+  source?: 'purchase' | 'pack_open' | 'generated' | 'starting'
   stakeTier?: number
   wallId?: string
   wasMaxInterest?: boolean
@@ -788,6 +791,9 @@ export function processProgressionEvent(
 
     case 'run_completed':
       updates.totalRunsCompleted = stats.totalRunsCompleted + 1
+      if ((event.value ?? 0) > stats.highestRunScore) {
+        updates.highestRunScore = event.value
+      }
       break
 
     case 'run_won':
@@ -815,6 +821,9 @@ export function processProgressionEvent(
     case 'round_completed':
       updates.totalRoundsCompleted = stats.totalRoundsCompleted + 1
       updates.currentRunRoundsCompleted = stats.currentRunRoundsCompleted + 1
+      if ((event.value ?? 0) > stats.highestRoundScore) {
+        updates.highestRoundScore = event.value
+      }
       break
 
     case 'round_skipped':
@@ -892,6 +901,33 @@ export function processProgressionEvent(
         if (event.itemId === 'empty_scroll') {
           updates.emptyScrollRedeems = stats.emptyScrollRedeems + 1
         }
+      }
+      break
+
+    case 'tile_purchased':
+      updates.totalTilesBought = stats.totalTilesBought + 1
+      break
+
+    case 'consumable_acquired':
+      if (!event.itemId) break
+      if (event.itemType === 'FateSeal') {
+        const discovered = new Set(stats.fateSealsDiscovered)
+        discovered.add(event.itemId)
+        updates.fateSealsDiscovered = discovered
+        if (event.source === 'purchase') {
+          updates.totalFateSealsBought = stats.totalFateSealsBought + 1
+        }
+      } else if (event.itemType === 'CelestialOrb') {
+        const discovered = new Set(stats.celestialOrbsDiscovered)
+        discovered.add(event.itemId)
+        updates.celestialOrbsDiscovered = discovered
+        if (event.source === 'purchase') {
+          updates.totalCelestialOrbsBought = stats.totalCelestialOrbsBought + 1
+        }
+      } else if (event.itemType === 'VoidScript') {
+        const discovered = new Set(stats.voidScriptsDiscovered)
+        discovered.add(event.itemId)
+        updates.voidScriptsDiscovered = discovered
       }
       break
 

@@ -77,6 +77,7 @@ export function GameplayScreen() {
   const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showConsumablesPanel, setShowConsumablesPanel] = useState<'fateSeals' | 'celestialOrbs' | 'voidScripts' | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
   const popupIdCounterRef = useRef(0)
 
   // Points/Mult display state
@@ -95,12 +96,10 @@ export function GameplayScreen() {
   // ==========================================================================
 
   useEffect(() => {
-    console.log('[GameplayScreen] Mount check - isRunActive:', game.isRunActive, 'phase:', game.phase)
     if (!game.isRunActive && game.phase === 'menu') {
-      console.log('[GameplayScreen] Starting new run...')
       game.startNewRun()
     }
-  }, [game.isRunActive, game.phase, game.startNewRun])
+  }, [game])
 
   useEffect(() => {
     if (game.phase === 'shop') {
@@ -109,16 +108,6 @@ export function GameplayScreen() {
       navigateTo(ROUTES.GAME_OVER)
     }
   }, [game.phase, navigateTo])
-
-  // Auto-draw to 14 tiles (standard Mahjong hand size)
-  useEffect(() => {
-    if (game.isRunActive && game.phase === 'gameplay' && game.handTiles.length < 14 && game.wallRemaining > 0) {
-      const timer = setTimeout(() => {
-        game.draw()
-      }, 150) // Small delay for smooth animation
-      return () => clearTimeout(timer)
-    }
-  }, [game.isRunActive, game.phase, game.handTiles.length, game.wallRemaining, game.draw])
 
   // ==========================================================================
   // EFFECTS - Tutorial triggers
@@ -243,19 +232,42 @@ export function GameplayScreen() {
   }, [game])
 
   const handleTileDiscard = useCallback((tile: Tile) => {
-    game.discard(tile.id)
+    const result = game.discard(tile.id)
+    setActionError(result.success ? null : result.errors?.[0] ?? 'Unable to discard tile')
   }, [game])
 
   const handleTilesStaged = useCallback((tiles: Tile[]) => {
     setStagedTileIds(tiles.map((t) => t.id))
   }, [])
 
-  const handleSkip = useCallback(() => game.skipRound(), [game])
+  const handleSkip = useCallback(() => {
+    const result = game.skipRound()
+    setActionError(result.success ? null : result.errors?.[0] ?? 'Unable to skip round')
+  }, [game])
+  const handleSellDecree = useCallback((decreeId: string) => {
+    const result = game.sellDecree(decreeId)
+    setActionError(result.success ? null : result.errors?.[0] ?? 'Unable to sell Decree')
+  }, [game])
+  const handleRerollBossMandate = useCallback(() => {
+    const result = game.rerollBossMandate()
+    setActionError(
+      result.success
+        ? null
+        : result.errors?.[0] ?? 'Unable to reroll Boss Mandate'
+    )
+  }, [game])
+  const handleDeadWallDraw = useCallback(() => {
+    const tileId = stagedTileIds[0] ?? game.selectedTileIds[0]
+    if (!tileId) return
+    const result = game.useDeadWallWrit(tileId)
+    setActionError(
+      result.success ? null : result.errors?.[0] ?? 'Unable to draw from Dead Wall'
+    )
+    if (result.success) setStagedTileIds([])
+  }, [game, stagedTileIds])
   const handleSettings = useCallback(() => navigateTo(ROUTES.SETTINGS), [navigateTo])
 
   const handlePlayHand = useCallback(() => {
-    console.log('[PlayHand] Button clicked! isRunActive:', game.isRunActive, 'phase:', game.phase)
-
     const currentHandTiles = game.handTiles
     const currentSelectedIds = game.selectedTileIds
 
@@ -265,22 +277,39 @@ export function GameplayScreen() {
     } else if (currentSelectedIds.length > 0) {
       tileIds = [...currentSelectedIds]
     } else {
-      tileIds = currentHandTiles.map((t) => t.id)
+      tileIds = currentHandTiles.map((tile) => tile.id)
     }
 
-    if (tileIds.length === 0) return
+    if (tileIds.length < 2) {
+      setActionError(t('gameplay.selectAtLeastTwo', 'Select at least 2 tiles to play.'))
+      return
+    }
 
-    console.log('[PlayHand] Playing', tileIds.length, 'tiles')
     const result = game.playHand(tileIds)
-    console.log('[PlayHand] Result:', result)
 
     if (result?.success) {
+      setActionError(null)
       if (stagedTileIds.length > 0) setStagedTileIds([])
       else if (currentSelectedIds.length > 0) game.clearSelection()
     } else if (result?.errors) {
-      console.error('[PlayHand] Errors:', result.errors)
+      setActionError(result.errors[0])
     }
-  }, [game, stagedTileIds, game.handTiles, game.selectedTileIds, game.handsRemaining, game.isRunActive, game.phase])
+  }, [game, stagedTileIds, t])
+
+  const handleRedraw = useCallback(() => {
+    const tileIds = stagedTileIds.length > 0
+      ? stagedTileIds
+      : game.selectedTileIds
+
+    const result = game.redraw(tileIds)
+    if (result.success) {
+      setActionError(null)
+      setStagedTileIds([])
+      game.clearSelection()
+    } else {
+      setActionError(result.errors?.[0] ?? 'Unable to redraw tiles')
+    }
+  }, [game, stagedTileIds])
 
   const handleExitGame = useCallback(() => {
     game.endRun()
@@ -320,13 +349,53 @@ export function GameplayScreen() {
     }
   }, [game])
 
+  const handleUseCelestialOrb = useCallback((orbId: string) => {
+    const result = game.useCelestialOrb(orbId)
+    if (result.success) {
+      setActionError(null)
+      setShowConsumablesPanel(null)
+    } else {
+      setActionError(result.errors?.[0] ?? 'Unable to use Celestial Orb')
+    }
+  }, [game])
+
   // ==========================================================================
   // COMPUTED VALUES
   // ==========================================================================
 
-  const shantenDisplay = game.handTiles.length >= 13
-    ? t('gameplay.tenpai')
-    : t('gameplay.shanten', { count: 14 - game.handTiles.length })
+  const faceDownTileIds = useMemo(
+    () => new Set(game.faceDownTileIds),
+    [game.faceDownTileIds]
+  )
+  const lockedTileIds = useMemo(
+    () => new Set(game.lockedTileIds),
+    [game.lockedTileIds]
+  )
+  const debuffedTileIds = useMemo(
+    () => new Set(game.debuffedTileIds),
+    [game.debuffedTileIds]
+  )
+
+  const shantenDisplay = game.handTiles.some((tile) => faceDownTileIds.has(tile.id))
+    ? '???'
+    : game.handTiles.length >= 13
+      ? t('gameplay.tenpai')
+      : t('gameplay.shanten', { count: 14 - game.handTiles.length })
+
+  const previewTileIds = stagedTileIds.length > 0
+    ? stagedTileIds
+    : game.selectedTileIds
+  const scorePreviewHidden = previewTileIds.some((tileId) =>
+    faceDownTileIds.has(tileId)
+  )
+  const tanyaoAllowsTerminals = game.state.decreeSystem
+    .getActiveDecrees()
+    .some(
+      (decree) =>
+        decree.effect.type === 'rule_modification' &&
+        decree.effect.ruleId === 'tanyao_terminals' &&
+        !game.state.mandateEffectSystem.isDecreeDisabled(decree.id)
+    )
 
   const scorePreview = useMemo(() => {
     // Only show preview when tiles are explicitly selected or staged
@@ -341,10 +410,13 @@ export function GameplayScreen() {
       previewTiles = game.handTiles.filter((t) => game.selectedTileIds.includes(t.id))
     }
 
-    if (previewTiles.length === 0) return null
+    if (
+      previewTiles.length === 0 ||
+      previewTiles.some((tile) => faceDownTileIds.has(tile.id))
+    ) return null
 
     const detectedYaku: YakuDefinition[] = []
-    if (checkTanyao(previewTiles)) detectedYaku.push(TANYAO)
+    if (checkTanyao(previewTiles, tanyaoAllowsTerminals)) detectedYaku.push(TANYAO)
 
     const suits = new Set(previewTiles.filter((t) => !t.isHonor).map((t) => t.suit))
     const hasHonors = previewTiles.some((t) => t.isHonor)
@@ -380,25 +452,62 @@ export function GameplayScreen() {
     }
 
     return { points: basePoints + structurePoints, mult, total: Math.floor((basePoints + structurePoints) * mult), yaku: detectedYaku }
-  }, [stagedTileIds, game.handTiles, game.selectedTileIds])
+  }, [
+    stagedTileIds,
+    game.handTiles,
+    game.selectedTileIds,
+    faceDownTileIds,
+    tanyaoAllowsTerminals,
+  ])
 
-  const ownedDecrees = useMemo(() => game.state.decreeSystem.getOwnedDecrees(), [game.state.decreeSystem])
-  const maxDecreeSlots = useMemo(() => 5 + game.state.flowerSystem.getBonusDecreeSlots(), [game.state.flowerSystem])
-  const collectedFlowers = useMemo<FlowerVariant[]>(() => game.state.flowerSystem.getFlowers().map((f) => f.type), [game.state.flowerSystem])
+  const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
+  const displayedDecrees = useMemo(() => {
+    if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0) {
+      return ownedDecrees
+    }
 
-  const seasonState = useMemo(() => {
-    const state = game.state.seasonSystem.getState()
-    return { activeSeason: state.activeSeason?.type as SeasonVariant | null, isCorrupted: state.isCorruptedRound }
-  }, [game.state.seasonSystem])
+    const remaining = [...ownedDecrees]
+    const ordered = game.decreeDisplayOrderIds.flatMap((decreeId) => {
+      const index = remaining.findIndex((decree) => decree.id === decreeId)
+      return index === -1 ? [] : remaining.splice(index, 1)
+    })
+    return [...ordered, ...remaining]
+  }, [ownedDecrees, game.decreesFaceDown, game.decreeDisplayOrderIds])
+  const disabledDecreeIds = new Set(game.disabledDecreeIds)
+  const maxDecreeSlots = game.state.decreeSystem.getMaxSlots()
+  const collectedFlowers: FlowerVariant[] = game.state.flowerSystem
+    .getFlowers()
+    .map((flower) => flower.type)
+
+  const currentSeasonState = game.state.seasonSystem.getState()
+  const seasonState = {
+    activeSeason: currentSeasonState.activeSeason?.type as SeasonVariant | null,
+    isCorrupted: currentSeasonState.isCorruptedRound,
+  }
 
   const roundType: RoundType = useMemo(() => {
     return game.currentRound === 1 ? 'Small' : game.currentRound === 2 ? 'Large' : 'Boss'
   }, [game.currentRound])
 
-  const bossMandate = useMemo(() => {
-    if (roundType === 'Boss') return game.state.roundManager.getCurrentRound()?.bossMandate?.name
-    return undefined
-  }, [roundType, game.state.roundManager])
+  const bossMandate = roundType === 'Boss'
+    ? game.state.roundManager.getCurrentRound()?.bossMandate?.name
+    : undefined
+  const mandateRerollsRemaining =
+    game.state.charterSystem.getMandateRerollsRemaining()
+  const upcomingMandate =
+    roundType !== 'Boss' && mandateRerollsRemaining !== 0
+      ? game.state.roundManager
+          .getCurrentAct()
+          ?.rounds.find((round) => round.roundType === 'Boss')
+          ?.bossMandate?.name
+      : undefined
+  const hasDeadWallWrit = displayedDecrees.some(
+    (decree) =>
+      decree.effect.type === 'rule_modification' &&
+      decree.effect.ruleId === 'dead_wall_draw' &&
+      !disabledDecreeIds.has(decree.id)
+  )
+  const deadWallTileId = stagedTileIds[0] ?? game.selectedTileIds[0]
 
   // ==========================================================================
   // RENDER
@@ -406,37 +515,53 @@ export function GameplayScreen() {
 
   return (
     <TablePattern showOrnaments={true} animated={false} patternScale={1} className="viewport-full">
-      <div className="flex flex-col h-full">
+      <div className="flex h-full min-h-0 flex-col overflow-hidden">
         {/* Top bar */}
         <GameplayTopBar
           gold={game.gold}
           currentAct={game.currentAct}
           roundType={roundType}
           mandateName={bossMandate}
+          upcomingMandateName={upcomingMandate}
+          canRerollMandate={game.canRerollBossMandate()}
+          onRerollMandate={handleRerollBossMandate}
           t={t}
           onExit={() => setShowExitConfirm(true)}
           onSettings={handleSettings}
         />
 
-        {/* Decree bar */}
-        <div data-tutorial="decrees" className="flex gap-2 px-4 py-2 overflow-x-auto">
-          {ownedDecrees.map((decree) => (
-            <DecreeCardCompact key={decree.id} decree={decree} />
-          ))}
-          {Array.from({ length: Math.max(0, maxDecreeSlots - ownedDecrees.length) }).map((_, i) => (
-            <DecreeSlotEmpty key={`empty-${i}`} isLocked={i >= maxDecreeSlots - ownedDecrees.length} />
-          ))}
+        <div className="flex flex-shrink-0 items-center gap-2 px-3 py-1.5">
+          {/* Decree bar */}
+          <div data-tutorial="decrees" className="flex min-w-0 flex-1 gap-2 overflow-x-auto py-1">
+            {displayedDecrees.map((decree, index) => (
+              <DecreeCardCompact
+                key={`${decree.id}-${index}`}
+                decree={decree}
+                faceDown={game.decreesFaceDown}
+                disabledByMandate={disabledDecreeIds.has(decree.id)}
+                onSell={() => handleSellDecree(decree.id)}
+              />
+            ))}
+            {Array.from({ length: Math.max(0, maxDecreeSlots - ownedDecrees.length) }).map((_, i) => (
+              <DecreeSlotEmpty key={`empty-${i}`} isLocked={i >= maxDecreeSlots - ownedDecrees.length} />
+            ))}
+          </div>
+
+          <div className="flex-shrink-0">
+            <ConsumablesBar
+              {...consumables}
+              onUseFateSeal={handleShowFateSeals}
+              onUseCelestialOrb={handleShowCelestialOrbs}
+              onUseVoidScript={handleShowVoidScripts}
+            />
+          </div>
         </div>
 
-        {/* Consumables row */}
-        <div className="flex items-center justify-end px-4 py-2 gap-2">
-          <ConsumablesBar
-            {...consumables}
-            onUseFateSeal={handleShowFateSeals}
-            onUseCelestialOrb={handleShowCelestialOrbs}
-            onUseVoidScript={handleShowVoidScripts}
-          />
-        </div>
+        {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
+          <div className="mx-4 mb-2 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
+            Verdant Leaf: all tiles are debuffed. Sell one Decree above to clear it.
+          </div>
+        )}
 
         {/* Score panel */}
         <ScorePanel
@@ -456,12 +581,13 @@ export function GameplayScreen() {
           stagedTileCount={stagedTileIds.length}
           handTileCount={game.handTiles.length}
           scorePreview={scorePreview}
+          scorePreviewHidden={scorePreviewHidden}
           yakuReveals={yakuReveals}
           onYakuComplete={handleYakuComplete}
         />
 
         {/* Play Surface with Flora panel and Wall display */}
-        <div className="flex-1 flex mx-2 mb-2 min-h-[340px] gap-2">
+        <div className="mx-2 mb-1 flex min-h-0 flex-1 items-end gap-2">
           <div data-tutorial="flora" className="flex-shrink-0">
             <FloraTrackCompact
               flowers={collectedFlowers}
@@ -471,11 +597,14 @@ export function GameplayScreen() {
             />
           </div>
 
-          <div data-tutorial="hand" className="flex-1">
+          <div data-tutorial="hand" className="min-w-0 flex-1">
             <PlaySurface
               handTiles={game.handTiles}
               tileSize={tileSize}
               selectedIds={new Set(game.selectedTileIds)}
+              faceDownIds={faceDownTileIds}
+              lockedIds={lockedTileIds}
+              debuffedIds={debuffedTileIds}
               onTileSelect={handleTileClick}
               onTileDiscard={handleTileDiscard}
               onTilesStaged={handleTilesStaged}
@@ -492,14 +621,31 @@ export function GameplayScreen() {
           </div>
         </div>
 
+        {actionError && (
+          <div
+            role="alert"
+            className="mx-4 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
+          >
+            {actionError}
+          </div>
+        )}
+
         {/* Action bar */}
         <ActionBar
           wallRemaining={game.wallRemaining}
           handsRemaining={game.handsRemaining}
           discardsRemaining={game.discardsRemaining}
+          redrawsRemaining={game.redrawsRemaining}
+          selectedTileCount={stagedTileIds.length || game.selectedTileIds.length}
           currentRound={game.currentRound}
           onSkip={handleSkip}
+          onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          canUseDeadWallWrit={
+            (stagedTileIds.length || game.selectedTileIds.length) === 1 &&
+            game.canUseDeadWallWrit(deadWallTileId)
+          }
+          onDeadWallDraw={hasDeadWallWrit ? handleDeadWallDraw : undefined}
           t={t}
         />
       </div>
@@ -543,7 +689,7 @@ export function GameplayScreen() {
             </div>
 
             <div className="space-y-2">
-              {showConsumablesPanel === 'fateSeals' && game.fateSeals.map((seal: any, index: number) => (
+              {showConsumablesPanel === 'fateSeals' && game.fateSeals.map((seal, index) => (
                 <button
                   key={seal.instanceId || index}
                   onClick={() => handleUseFateSeal(seal.instanceId)}
@@ -559,10 +705,11 @@ export function GameplayScreen() {
                 </button>
               ))}
 
-              {showConsumablesPanel === 'celestialOrbs' && game.celestialOrbs.map((orb: any, index: number) => (
-                <div
+              {showConsumablesPanel === 'celestialOrbs' && game.celestialOrbs.map((orb, index) => (
+                <button
                   key={orb.instanceId || index}
-                  className="p-3 bg-[var(--color-forest-green)]/50 rounded-lg border border-blue-500/50"
+                  onClick={() => handleUseCelestialOrb(orb.instanceId)}
+                  className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-blue-500/50 transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-lg">🔮</span>
@@ -572,10 +719,10 @@ export function GameplayScreen() {
                       <div className="text-xs text-blue-300">Level: {orb.currentLevel || 1}</div>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
 
-              {showConsumablesPanel === 'voidScripts' && game.voidScripts.map((script: any, index: number) => (
+              {showConsumablesPanel === 'voidScripts' && game.voidScripts.map((script, index) => (
                 <button
                   key={script.instanceId || index}
                   onClick={() => handleUseVoidScript(script.instanceId)}

@@ -37,14 +37,6 @@ import {
 import {
   useOmenStore,
   type ActiveOmenTag,
-  selectShopDiscountFromOmens,
-  selectFreeRerollsFromOmens,
-  selectGuaranteedShopItems,
-  selectNextDecreeEdition,
-  selectNextRoundDrawBonus,
-  selectNextRoundDiscardBonus,
-  selectNextRoundHandSizeBonus,
-  selectGoldBonusFromOmens,
 } from '../stores/omenStore'
 
 // Re-export types that may be needed
@@ -80,6 +72,9 @@ export class OmenTagSystem {
   private totalSkippedRounds: number = 0
   private lockedSeasonType: SeasonVariant | null = null
   private pendingOmens: OmenDefinition[] = []
+  private interestCapBonus: number = 0
+  private interestBoostRoundsRemaining: number = 0
+  private seededRandom: (() => number) | null = null
 
   constructor() {
     this.reset()
@@ -95,7 +90,21 @@ export class OmenTagSystem {
     this.totalSkippedRounds = 0
     this.lockedSeasonType = null
     this.pendingOmens = []
+    this.interestCapBonus = 0
+    this.interestBoostRoundsRemaining = 0
     useOmenStore.getState().clearForNewRun()
+  }
+
+  /** Seed skip rewards so replaying a run produces the same Omen sequence. */
+  setSeed(seed: number): void {
+    let state = seed
+    this.seededRandom = () => {
+      state += 0x6d2b79f5
+      let value = state
+      value = Math.imul(value ^ (value >>> 15), value | 1)
+      value ^= value + Math.imul(value ^ (value >>> 7), value | 61)
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296
+    }
   }
 
   /**
@@ -123,10 +132,18 @@ export class OmenTagSystem {
     omen: OmenDefinition | null
     immediateGold: number
     lockedSeason: SeasonVariant | null
+    decreeSlotBonus: number
+    immediateDecreeEdition: string | null
   } {
     // Boss rounds cannot be skipped
     if (roundType === 'Boss') {
-      return { omen: null, immediateGold: 0, lockedSeason: null }
+      return {
+        omen: null,
+        immediateGold: 0,
+        lockedSeason: null,
+        decreeSlotBonus: 0,
+        immediateDecreeEdition: null,
+      }
     }
 
     // Increment skip counters
@@ -138,17 +155,29 @@ export class OmenTagSystem {
     store.incrementSkippedRounds()
 
     // Select a random omen based on round type
-    const selectedOmen = getRandomOmenForRound(roundType, excludeOmenIds)
+    const selectedOmen = getRandomOmenForRound(
+      roundType,
+      excludeOmenIds,
+      this.seededRandom ?? Math.random
+    )
 
     if (!selectedOmen) {
-      return { omen: null, immediateGold: 0, lockedSeason: null }
+      return {
+        omen: null,
+        immediateGold: 0,
+        lockedSeason: null,
+        decreeSlotBonus: 0,
+        immediateDecreeEdition: null,
+      }
     }
 
     // Add the omen to the store
-    store.addOmen(selectedOmen)
+    const activeOmen = store.addOmen(selectedOmen)
 
     // Calculate immediate gold from omen
     let immediateGold = 0
+    let decreeSlotBonus = 0
+    let immediateDecreeEdition: string | null = null
     if (
       selectedOmen.trigger === 'OnAcquire' &&
       selectedOmen.effect.type === 'gold_bonus'
@@ -160,6 +189,23 @@ export class OmenTagSystem {
     ) {
       immediateGold =
         (selectedOmen.effect.value as number) * this.totalSkippedRounds
+    } else if (
+      selectedOmen.trigger === 'OnAcquire' &&
+      selectedOmen.effect.type === 'decree_slot'
+    ) {
+      decreeSlotBonus = Number(selectedOmen.effect.value) || 0
+    } else if (
+      selectedOmen.trigger === 'OnAcquire' &&
+      selectedOmen.effect.type === 'interest_boost'
+    ) {
+      this.interestCapBonus = Number(selectedOmen.effect.value) || 0
+      this.interestBoostRoundsRemaining = 3
+    } else if (
+      selectedOmen.trigger === 'OnAcquire' &&
+      selectedOmen.effect.type === 'edition_apply' &&
+      selectedOmen.effect.editionType
+    ) {
+      immediateDecreeEdition = selectedOmen.effect.editionType
     }
 
     // Handle season lock trade-off
@@ -170,6 +216,19 @@ export class OmenTagSystem {
     ) {
       lockedSeason = selectedOmen.tradeoff.value as SeasonVariant
       this.lockedSeasonType = lockedSeason
+      if (activeOmen) store.setLockedSeason(lockedSeason, activeOmen.id)
+    } else if (selectedOmen.tradeoff.type === 'no_interest') {
+      useOmenStore.setState((state) => ({
+        noInterestRounds: Math.max(
+          state.noInterestRounds,
+          Number(selectedOmen.tradeoff.value) || 1
+        ),
+      }))
+    }
+
+    if (selectedOmen.trigger === 'OnAcquire' && activeOmen) {
+      store.triggerOmen(activeOmen.id)
+      store.consumeOmen(activeOmen.id)
     }
 
     // Add to pending omens for display
@@ -179,6 +238,8 @@ export class OmenTagSystem {
       omen: selectedOmen,
       immediateGold,
       lockedSeason,
+      decreeSlotBonus,
+      immediateDecreeEdition,
     }
   }
 
@@ -281,22 +342,37 @@ export class OmenTagSystem {
     freeRerolls: number
     guaranteedItems: { itemType: string; omenId: string }[]
     decreeEdition: { editionType: string; omenId: string } | null
+    goldPenalty: number
     consumedOmenIds: string[]
   } {
     const store = useOmenStore.getState()
-    const state = store
-
-    // Get effects from active omens
-    const discount = selectShopDiscountFromOmens(state)
-    const freeRerolls = selectFreeRerollsFromOmens(state)
-    const guaranteedItems = selectGuaranteedShopItems(state)
-    const decreeEdition = selectNextDecreeEdition(state)
+    let discount = 0
+    let freeRerolls = 0
+    let decreeEdition: { editionType: string; omenId: string } | null = null
+    let goldPenalty = 0
+    const guaranteedItems: { itemType: string; omenId: string }[] = []
 
     // Consume the triggered omens
     const consumedOmenIds: string[] = []
     const shopOmens = store.getActiveOmensByTrigger('OnNextShop')
 
     for (const omen of shopOmens) {
+      const effect = omen.definition.effect
+      if (effect.type === 'discount') {
+        const rawDiscount = Number(effect.value) || 0
+        discount += rawDiscount <= 1 ? rawDiscount * 100 : rawDiscount
+      } else if (effect.type === 'free_reroll') {
+        freeRerolls += Number(effect.value) || 0
+      } else if (effect.type === 'guaranteed_item' && effect.itemType) {
+        guaranteedItems.push({ itemType: effect.itemType, omenId: omen.id })
+      } else if (effect.type === 'edition_apply' && effect.editionType) {
+        decreeEdition = { editionType: effect.editionType, omenId: omen.id }
+      }
+
+      if (omen.definition.tradeoff.type === 'lose_gold') {
+        goldPenalty += Number(omen.definition.tradeoff.value) || 0
+      }
+
       store.triggerOmen(omen.id)
       store.consumeOmen(omen.id)
       consumedOmenIds.push(omen.id)
@@ -307,6 +383,7 @@ export class OmenTagSystem {
       freeRerolls,
       guaranteedItems,
       decreeEdition,
+      goldPenalty,
       consumedOmenIds,
     }
   }
@@ -321,25 +398,31 @@ export class OmenTagSystem {
     consumedOmenIds: string[]
   } {
     const store = useOmenStore.getState()
-    const state = store
-
-    // Get effects from active omens
-    const drawBonus = selectNextRoundDrawBonus(state)
-    const discardBonus = selectNextRoundDiscardBonus(state)
-    const handSizeBonus = selectNextRoundHandSizeBonus(state)
+    let drawBonus = 0
+    let discardBonus = 0
+    let handSizeBonus = 0
 
     // Consume the triggered omens
     const consumedOmenIds: string[] = []
     const roundOmens = store.getActiveOmensByTrigger('OnNextRound')
 
     for (const omen of roundOmens) {
+      const effect = omen.definition.effect
+      if (effect.type === 'draw_bonus' || effect.type === 'drawBonus') {
+        drawBonus += Number(effect.value) || 0
+      } else if (
+        effect.type === 'discard_refund' ||
+        effect.type === 'discardBonus'
+      ) {
+        discardBonus += Number(effect.value) || 0
+      } else if (effect.type === 'hand_size_bonus') {
+        handSizeBonus += Number(effect.value) || 0
+      }
+
       store.triggerOmen(omen.id)
       store.consumeOmen(omen.id)
       consumedOmenIds.push(omen.id)
     }
-
-    // Decrement no-interest rounds
-    store.decrementNoInterestRounds()
 
     return {
       drawBonus,
@@ -415,20 +498,56 @@ export class OmenTagSystem {
     }
   }
 
+  /** Check protection before attempting a Script so failed uses do not consume it. */
+  hasVoidScriptDownsideProtection(): boolean {
+    const store = useOmenStore.getState()
+    return store
+      .getActiveOmensByTrigger('OnNextVoidScript')
+      .some((omen) => omen.definition.effect.type === 'consumable_upgrade')
+  }
+
   /**
    * Get passive multiplier bonus from scaling omens
    */
   getPassiveMultBonus(): number {
     const store = useOmenStore.getState()
-    return store.getPassiveMultBonus()
+    let bonus = 0
+
+    for (const omen of store.getActiveOmensByTrigger('Passive')) {
+      const effect = omen.definition.effect
+      if (effect.type === 'mult_per_skip') {
+        bonus += (Number(effect.value) || 0) * store.getTotalSkippedRounds()
+      } else if (effect.type === 'mult_bonus') {
+        bonus += Number(effect.value) || 0
+      }
+    }
+
+    return bonus
   }
 
   /**
    * Get gold bonus from omens (Speed Omen etc.)
    */
   getGoldBonus(): number {
+    return 0
+  }
+
+  getInterestCapBonus(): number {
+    return this.interestBoostRoundsRemaining > 0 ? this.interestCapBonus : 0
+  }
+
+  /** Advance duration-based economy effects after the round payout. */
+  onRoundEnd(): void {
     const store = useOmenStore.getState()
-    return selectGoldBonusFromOmens(store)
+    store.decrementNoInterestRounds()
+    if (this.interestBoostRoundsRemaining > 0) {
+      this.interestBoostRoundsRemaining--
+      if (this.interestBoostRoundsRemaining === 0) this.interestCapBonus = 0
+    }
+  }
+
+  recordHandPlayed(): void {
+    useOmenStore.getState().incrementHandsPlayed()
   }
 
   /**

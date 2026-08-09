@@ -36,6 +36,10 @@ export interface AnimatedTileProps {
   disabled?: boolean;
   /** Whether to show face-down */
   faceDown?: boolean;
+  /** Whether the tile must be included in the next played hand. */
+  locked?: boolean;
+  /** Whether the tile contributes no score while still forming structure. */
+  debuffed?: boolean;
   /** Whether dragging is enabled */
   draggable?: boolean;
   /** Click handler */
@@ -68,6 +72,8 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   glowing = false,
   disabled = false,
   faceDown = false,
+  locked = false,
+  debuffed = false,
   draggable = false,
   onClick,
   onDragStart,
@@ -303,6 +309,30 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
         faceDown={faceDown}
         className="w-full h-full"
       />
+
+      {debuffed && (
+        <div
+          className="absolute inset-0 pointer-events-none rounded bg-slate-950/45 ring-2 ring-slate-400/70"
+          title="Debuffed tile"
+          aria-hidden="true"
+        >
+          <span className="absolute left-1 top-1 rounded bg-slate-950/90 px-1 text-xs text-slate-100">
+            🚫
+          </span>
+        </div>
+      )}
+
+      {locked && (
+        <div
+          className="absolute inset-0 pointer-events-none rounded ring-2 ring-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.75)]"
+          title="Locked tile: must be played"
+          aria-hidden="true"
+        >
+          <span className="absolute right-0.5 top-0.5 rounded bg-cyan-950/90 px-1 text-xs text-cyan-100">
+            🔒
+          </span>
+        </div>
+      )}
 
       {/* Glow overlay */}
       {glowing && (

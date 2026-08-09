@@ -624,6 +624,20 @@ export class FateSealSystem {
     let message = ''
     let success = true
 
+    if (seal.id === 'seal_of_the_void') {
+      this.lastUsedConsumable = seal
+      return {
+        success: true,
+        message: `${seal.name}: All Yaku upgraded by 1 level!`,
+        effects: [
+          {
+            type: 'all_yaku_upgraded',
+            description: 'All Yaku levels increased by 1',
+          },
+        ],
+      }
+    }
+
     switch (seal.effect.type) {
       case 'enhance_tiles': {
         const enhanceResult = this.applyEnhancement(seal, context)

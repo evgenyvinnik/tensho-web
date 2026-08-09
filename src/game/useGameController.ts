@@ -5,7 +5,7 @@
  * Synchronizes orchestrator state with React component rendering.
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Tile } from '../core/Tile'
 import { eventBus, GameEvent, GameEventData } from './EventBus'
 import {
@@ -14,10 +14,11 @@ import {
   gameOrchestrator,
 } from './GameOrchestrator'
 import { PlayerAction, ActionResult } from './ActionProcessor'
-import type { Decree } from '../systems/types'
+import type { Decree, ImperialCharter } from '../systems/types'
 import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
 import type { VoidScript } from '../systems/VoidScriptSystem'
+import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 
 // =============================================================================
 // HOOK RETURN TYPE
@@ -28,6 +29,12 @@ export interface GameController {
   state: OrchestratorState
   handTiles: Tile[]
   selectedTileIds: string[]
+  faceDownTileIds: string[]
+  lockedTileIds: string[]
+  debuffedTileIds: string[]
+  disabledDecreeIds: string[]
+  decreesFaceDown: boolean
+  decreeDisplayOrderIds: string[]
   isRunActive: boolean
   phase: 'menu' | 'gameplay' | 'shop' | 'gameOver'
 
@@ -35,6 +42,8 @@ export interface GameController {
   currentAct: number
   currentRound: number
   score: number
+  runScore: number
+  hasWonRun: boolean
   targetScore: number
   gold: number
 
@@ -50,9 +59,9 @@ export interface GameController {
 
   // Consumables
   consumableCounts: { fateSeals: number; celestialOrbs: number; voidScripts: number }
-  fateSeals: unknown[]
-  celestialOrbs: unknown[]
-  voidScripts: unknown[]
+  fateSeals: FateSeal[]
+  celestialOrbs: CelestialOrb[]
+  voidScripts: VoidScript[]
 
   // Actions
   startNewRun: (seed?: number, stake?: number) => void
@@ -62,9 +71,11 @@ export interface GameController {
   playHand: (tileIds?: string[]) => ActionResult
   redraw: (tileIds?: string[]) => ActionResult
   skipRound: () => ActionResult
+  sellDecree: (decreeId: string) => ActionResult
 
   // Consumable actions
   useFateSeal: (sealId: string, targetTileIds?: string[]) => ActionResult
+  useCelestialOrb: (orbId: string) => ActionResult
   useVoidScript: (scriptId: string, targetTileIds?: string[]) => ActionResult
 
   // Tile selection
@@ -76,12 +87,35 @@ export interface GameController {
   isTileSelected: (tileId: string) => boolean
 
   // Shop
+  prepareShopVisit: () => TeaHouseVisitModifiers
+  continueEndless: () => boolean
   exitShop: () => void
-  purchaseItem: (itemId: string, cost: number) => boolean
-  addDecree: (decree: Decree) => boolean
-  addFateSeal: (seal: FateSeal) => boolean
-  addCelestialOrb: (orb: CelestialOrb) => boolean
-  addVoidScript: (script: VoidScript) => boolean
+  purchaseItem: (itemId: string, cost: number, itemType?: string) => boolean
+  addDecree: (
+    decree: Decree,
+    source?: 'purchase' | 'pack_open' | 'generated'
+  ) => boolean
+  canAddDecree: (decree: Decree) => boolean
+  addImperialCharter: (charter: ImperialCharter) => boolean
+  canAddImperialCharter: (charter: ImperialCharter) => boolean
+  addFateSeal: (
+    seal: FateSeal,
+    source?: 'purchase' | 'pack_open' | 'generated'
+  ) => boolean
+  addCelestialOrb: (
+    orb: CelestialOrb,
+    source?: 'purchase' | 'pack_open' | 'generated'
+  ) => boolean
+  addVoidScript: (
+    script: VoidScript,
+    source?: 'purchase' | 'pack_open' | 'generated'
+  ) => boolean
+  addTileToWall: (tile: Tile) => boolean
+  canAddConsumable: () => boolean
+  canRerollBossMandate: () => boolean
+  rerollBossMandate: () => ActionResult
+  canUseDeadWallWrit: (tileId?: string) => boolean
+  useDeadWallWrit: (tileId: string) => ActionResult
 
   // Utilities
   getAvailableActions: () => PlayerAction['type'][]
@@ -125,6 +159,12 @@ export function useGameController(
       'flowerCollected',
       'seasonActivated',
       'decreeAcquired',
+      'itemSold',
+      'charterRedeemed',
+      'consumableAcquired',
+      'fateSealUsed',
+      'celestialOrbUsed',
+      'voidScriptUsed',
       'shopEntered',
       'shopExited',
       'gameOver',
@@ -146,14 +186,10 @@ export function useGameController(
     }
   }, [orchestrator])
 
-  // Memoized hand tiles
-  const handTiles = useMemo(() => orchestrator.getHandTiles(), [state.handTiles])
-
-  // Memoized selected IDs
-  const selectedTileIds = useMemo(
-    () => orchestrator.getSelectedTileIds(),
-    [state.selectedTileIds]
-  )
+  // The orchestrator mutates round collections in place. Read fresh snapshots
+  // on every event-driven render so React never displays a stale hand/selection.
+  const handTiles = orchestrator.getHandTiles()
+  const selectedTileIds = orchestrator.getSelectedTileIds()
 
   // Actions
   const startNewRun = useCallback(
@@ -184,12 +220,7 @@ export function useGameController(
   const playHand = useCallback(
     (tileIds?: string[]) => {
       const ids = tileIds ?? orchestrator.getSelectedTileIds()
-      console.log('[useGameController.playHand] Called with', ids.length, 'tile IDs:', ids)
-      console.log('[useGameController.playHand] Current state - score:', orchestrator.getState().score, 'handsRemaining:', orchestrator.getState().handsRemaining)
-      const result = orchestrator.processAction({ type: 'play', tileIds: ids })
-      console.log('[useGameController.playHand] Result:', result)
-      console.log('[useGameController.playHand] After state - score:', orchestrator.getState().score, 'handsRemaining:', orchestrator.getState().handsRemaining)
-      return result
+      return orchestrator.processAction({ type: 'play', tileIds: ids })
     },
     [orchestrator]
   )
@@ -206,6 +237,11 @@ export function useGameController(
     return orchestrator.processAction({ type: 'skip' })
   }, [orchestrator])
 
+  const sellDecree = useCallback(
+    (decreeId: string) => orchestrator.sellDecree(decreeId),
+    [orchestrator]
+  )
+
   // Consumable actions
   const useFateSeal = useCallback(
     (sealId: string, targetTileIds?: string[]) => {
@@ -220,6 +256,11 @@ export function useGameController(
       const targets = targetTileIds ?? orchestrator.getSelectedTileIds()
       return orchestrator.processAction({ type: 'useScript', scriptId, targets })
     },
+    [orchestrator]
+  )
+
+  const useCelestialOrb = useCallback(
+    (orbId: string) => orchestrator.processAction({ type: 'useOrb', orbId }),
     [orchestrator]
   )
 
@@ -260,9 +301,9 @@ export function useGameController(
 
   const isTileSelected = useCallback(
     (tileId: string) => {
-      return state.selectedTileIds.has(tileId)
+      return orchestrator.getSelectedTileIds().includes(tileId)
     },
-    [state.selectedTileIds]
+    [orchestrator]
   )
 
   // Shop actions
@@ -270,17 +311,64 @@ export function useGameController(
     orchestrator.exitShop()
   }, [orchestrator])
 
+  const continueEndless = useCallback(
+    () => orchestrator.continueEndless(),
+    [orchestrator]
+  )
+
   const purchaseItem = useCallback(
-    (itemId: string, cost: number) => {
-      return orchestrator.purchaseItem(itemId, cost)
+    (itemId: string, cost: number, itemType?: string) => {
+      return orchestrator.purchaseItem(itemId, cost, itemType)
     },
     [orchestrator]
   )
 
-  const addDecree = useCallback((decree: Decree) => orchestrator.addDecree(decree), [orchestrator])
-  const addFateSeal = useCallback((seal: FateSeal) => orchestrator.addFateSeal(seal), [orchestrator])
-  const addCelestialOrb = useCallback((orb: CelestialOrb) => orchestrator.addCelestialOrb(orb), [orchestrator])
-  const addVoidScript = useCallback((script: VoidScript) => orchestrator.addVoidScript(script), [orchestrator])
+  const addDecree = useCallback(
+    (decree: Decree, source?: 'purchase' | 'pack_open' | 'generated') =>
+      orchestrator.addDecree(decree, source),
+    [orchestrator]
+  )
+  const canAddDecree = useCallback((decree: Decree) => orchestrator.canAddDecree(decree), [orchestrator])
+  const addImperialCharter = useCallback((charter: ImperialCharter) => orchestrator.addImperialCharter(charter), [orchestrator])
+  const canAddImperialCharter = useCallback((charter: ImperialCharter) => orchestrator.canAddImperialCharter(charter), [orchestrator])
+  const addFateSeal = useCallback(
+    (seal: FateSeal, source?: 'purchase' | 'pack_open' | 'generated') =>
+      orchestrator.addFateSeal(seal, source),
+    [orchestrator]
+  )
+  const addCelestialOrb = useCallback(
+    (orb: CelestialOrb, source?: 'purchase' | 'pack_open' | 'generated') =>
+      orchestrator.addCelestialOrb(orb, source),
+    [orchestrator]
+  )
+  const addVoidScript = useCallback(
+    (script: VoidScript, source?: 'purchase' | 'pack_open' | 'generated') =>
+      orchestrator.addVoidScript(script, source),
+    [orchestrator]
+  )
+  const prepareShopVisit = useCallback(
+    () => orchestrator.prepareShopVisit(),
+    [orchestrator]
+  )
+  const addTileToWall = useCallback((tile: Tile) => orchestrator.addTileToWall(tile), [orchestrator])
+  const canAddConsumable = useCallback(() => orchestrator.canAddConsumable(), [orchestrator])
+  const canRerollBossMandate = useCallback(
+    () => orchestrator.canRerollBossMandate(),
+    [orchestrator]
+  )
+  const rerollBossMandate = useCallback(() => {
+    const result = orchestrator.rerollBossMandate()
+    if (result.success) setTick((tick) => tick + 1)
+    return result
+  }, [orchestrator])
+  const canUseDeadWallWrit = useCallback(
+    (tileId?: string) => orchestrator.canUseDeadWallWrit(tileId),
+    [orchestrator]
+  )
+  const useDeadWallWrit = useCallback(
+    (tileId: string) => orchestrator.useDeadWallWrit(tileId),
+    [orchestrator]
+  )
 
   // Utilities
   const getAvailableActions = useCallback(() => {
@@ -307,6 +395,12 @@ export function useGameController(
     state,
     handTiles,
     selectedTileIds,
+    faceDownTileIds: orchestrator.getFaceDownTileIds(),
+    lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
+    debuffedTileIds: Array.from(state.debuffSystem.getDebuffedTileIds()),
+    disabledDecreeIds: state.mandateEffectSystem.getDisabledDecreeIds(),
+    decreesFaceDown: state.mandateEffectSystem.areDecreesShuffled(),
+    decreeDisplayOrderIds: state.mandateEffectSystem.getShuffledDecreeIds(),
     isRunActive: state.isRunActive,
     phase: state.phase,
 
@@ -314,6 +408,8 @@ export function useGameController(
     currentAct: state.currentAct,
     currentRound: state.currentRound,
     score: state.score,
+    runScore: state.runScore,
+    hasWonRun: state.hasWonRun,
     targetScore: state.targetScore,
     gold: state.gold,
 
@@ -341,9 +437,11 @@ export function useGameController(
     playHand,
     redraw,
     skipRound,
+    sellDecree,
 
     // Consumable actions
     useFateSeal,
+    useCelestialOrb,
     useVoidScript,
 
     // Tile selection
@@ -355,12 +453,23 @@ export function useGameController(
     isTileSelected,
 
     // Shop
+    prepareShopVisit,
+    continueEndless,
     exitShop,
     purchaseItem,
     addDecree,
+    canAddDecree,
+    addImperialCharter,
+    canAddImperialCharter,
     addFateSeal,
     addCelestialOrb,
     addVoidScript,
+    addTileToWall,
+    canAddConsumable,
+    canRerollBossMandate,
+    rerollBossMandate,
+    canUseDeadWallWrit,
+    useDeadWallWrit,
 
     // Utilities
     getAvailableActions,

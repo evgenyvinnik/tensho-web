@@ -44,6 +44,19 @@ import {
 } from './PricingCalculator'
 import { FateSeal, FateSealSystem } from './FateSealSystem'
 import { CelestialOrb, CelestialOrbSystem } from './CelestialOrbSystem'
+import { VoidScript, VoidScriptSystem } from './VoidScriptSystem'
+import { Tile, TileSuit, DragonType, WindType } from '../core/Tile'
+import {
+  EditionType as TileEditionType,
+  EnhancementType,
+} from '../core/TileModifier'
+import {
+  BASE_CHARTERS as CANONICAL_BASE_CHARTERS,
+  UPGRADED_CHARTERS as CANONICAL_UPGRADED_CHARTERS,
+  getCharterById,
+  type CharterDefinition,
+  type CharterEffect,
+} from '../config/charterDefinitions'
 
 // =============================================================================
 // TEA HOUSE CONSTANTS
@@ -85,6 +98,7 @@ export const ITEM_TYPE_WEIGHTS: Record<ShopItemType, number> = {
   Decree: 20,
   FateSeal: 4,
   CelestialOrb: 4,
+  VoidScript: 0, // Guaranteed by Omens or found in Void packs
   Tile: 0, // Only with Tile Trading charter
   BlessingPack: 0, // Separate slots
   ImperialCharter: 0, // Separate slot
@@ -127,153 +141,28 @@ export const PACK_TYPE_WEIGHTS: Record<PackType, number> = {
 // IMPERIAL CHARTERS (from ARCHITECTURE.MD Section 28)
 // =============================================================================
 
-/**
- * Base Imperial Charters available for purchase
- */
-export const TEA_HOUSE_BASE_CHARTERS: ImperialCharter[] = [
-  {
-    id: 'abundant_stock',
-    name: 'Abundant Stock',
-    description: '+1 shop slot (to 3)',
-    cost: 10,
-    effect: { type: 'shop_slots', value: 1 },
-    upgradeId: 'plentiful_stock',
-    isUpgraded: false,
-  },
-  {
-    id: 'discount_sale',
-    name: 'Discount Sale',
-    description: '25% off all shop items',
-    cost: 10,
-    effect: { type: 'discount', value: 25 },
-    upgradeId: 'liquidation_sale',
-    isUpgraded: false,
-  },
-  {
-    id: 'reroll_surplus',
-    name: 'Reroll Surplus',
-    description: 'Rerolls cost 2 Gold less',
-    cost: 10,
-    effect: { type: 'reroll_discount', value: 2 },
-    upgradeId: 'reroll_abundance',
-    isUpgraded: false,
-  },
-  {
-    id: 'steady_hand',
-    name: 'Steady Hand',
-    description: '+1 hand per round',
-    cost: 10,
-    effect: { type: 'hands', value: 1 },
-    upgradeId: 'swift_hand',
-    isUpgraded: false,
-  },
-  {
-    id: 'frugal_discard',
-    name: 'Frugal Discard',
-    description: '+1 redraw per round',
-    cost: 10,
-    effect: { type: 'discards', value: 1 },
-    upgradeId: 'wasteful_plenty',
-    isUpgraded: false,
-  },
-  {
-    id: 'seed_pouch',
-    name: 'Seed Pouch',
-    description: 'Interest cap raised to 10 Gold',
-    cost: 10,
-    effect: { type: 'interest_cap', value: 10 },
-    upgradeId: 'money_tree',
-    isUpgraded: false,
-  },
-  {
-    id: 'seal_merchant',
-    name: 'Seal Merchant',
-    description: 'Fate Seals appear 2x more often',
-    cost: 10,
-    effect: { type: 'seal_weight', value: 2 },
-    upgradeId: 'seal_tycoon',
-    isUpgraded: false,
-  },
-  {
-    id: 'orb_merchant',
-    name: 'Orb Merchant',
-    description: 'Celestial Orbs appear 2x more often',
-    cost: 10,
-    effect: { type: 'orb_weight', value: 2 },
-    upgradeId: 'orb_tycoon',
-    isUpgraded: false,
-  },
-]
+function toImperialCharter(definition: CharterDefinition): ImperialCharter {
+  const primaryEffect = definition.effects[0]
+  return {
+    id: definition.id,
+    name: definition.name,
+    description: definition.description,
+    cost: definition.cost,
+    effect: {
+      type: primaryEffect.type,
+      value: primaryEffect.value,
+    },
+    upgradeId: definition.upgradeId,
+    isUpgraded: definition.isUpgraded,
+  }
+}
 
-/**
- * Upgraded Imperial Charters (available after purchasing base version)
- */
-export const TEA_HOUSE_UPGRADED_CHARTERS: ImperialCharter[] = [
-  {
-    id: 'plentiful_stock',
-    name: 'Plentiful Stock',
-    description: '+1 shop slot (to 4)',
-    cost: 10,
-    effect: { type: 'shop_slots', value: 1 },
-    isUpgraded: true,
-  },
-  {
-    id: 'liquidation_sale',
-    name: 'Liquidation Sale',
-    description: '50% off all shop items',
-    cost: 10,
-    effect: { type: 'discount', value: 25 }, // Additional 25% on top of base
-    isUpgraded: true,
-  },
-  {
-    id: 'reroll_abundance',
-    name: 'Reroll Abundance',
-    description: 'Rerolls cost 2 Gold less again',
-    cost: 10,
-    effect: { type: 'reroll_discount', value: 2 },
-    isUpgraded: true,
-  },
-  {
-    id: 'swift_hand',
-    name: 'Swift Hand',
-    description: '+1 additional hand per round',
-    cost: 10,
-    effect: { type: 'hands', value: 1 },
-    isUpgraded: true,
-  },
-  {
-    id: 'wasteful_plenty',
-    name: 'Wasteful Plenty',
-    description: '+1 additional redraw per round',
-    cost: 10,
-    effect: { type: 'discards', value: 1 },
-    isUpgraded: true,
-  },
-  {
-    id: 'money_tree',
-    name: 'Money Tree',
-    description: 'Interest cap raised to 20 Gold',
-    cost: 10,
-    effect: { type: 'interest_cap', value: 20 },
-    isUpgraded: true,
-  },
-  {
-    id: 'seal_tycoon',
-    name: 'Seal Tycoon',
-    description: 'Fate Seals appear 4x more often',
-    cost: 10,
-    effect: { type: 'seal_weight', value: 2 }, // 2x on top of base 2x
-    isUpgraded: true,
-  },
-  {
-    id: 'orb_tycoon',
-    name: 'Orb Tycoon',
-    description: 'Celestial Orbs appear 4x more often',
-    cost: 10,
-    effect: { type: 'orb_weight', value: 2 },
-    isUpgraded: true,
-  },
-]
+/** Tea House presentation adapters over the canonical Charter catalog. */
+export const TEA_HOUSE_BASE_CHARTERS: ImperialCharter[] =
+  CANONICAL_BASE_CHARTERS.map(toImperialCharter)
+
+export const TEA_HOUSE_UPGRADED_CHARTERS: ImperialCharter[] =
+  CANONICAL_UPGRADED_CHARTERS.map(toImperialCharter)
 
 // =============================================================================
 // TEA HOUSE OFFERING TYPES
@@ -286,7 +175,14 @@ export interface TeaHouseOffering {
   id: string
   slotIndex: number
   itemType: ShopItemType
-  item: Decree | BlessingPack | ImperialCharter | FateSeal | CelestialOrb
+  item:
+    | Decree
+    | BlessingPack
+    | ImperialCharter
+    | FateSeal
+    | CelestialOrb
+    | VoidScript
+    | Tile
   baseCost: number
   editionCost: number
   finalCost: number
@@ -294,6 +190,13 @@ export interface TeaHouseOffering {
   edition?: EditionType
   isPurchased: boolean
   isLocked: boolean
+}
+
+export interface TeaHouseVisitModifiers {
+  discountPercentage?: number
+  freeRerolls?: number
+  guaranteedItemTypes?: string[]
+  decreeEdition?: EditionType
 }
 
 /**
@@ -318,11 +221,15 @@ export interface TeaHouseState {
  */
 export class TeaHouseSystem {
   private pricingCalculator: PricingCalculator
+  private readonly random: () => number
   private itemSlotCount: number = TEA_HOUSE_BASE_ITEM_SLOTS
   private discountPercentage: number = 0
   private rerollDiscount: number = 0
   private sealWeightMultiplier: number = 1
   private orbWeightMultiplier: number = 1
+  private editionFrequencyMultiplier: number = 1
+  private canBuyTiles: boolean = false
+  private tilesHaveEditions: boolean = false
   private purchasedCharterIds: Set<string> = new Set()
   private currentStake: number = 1
   private offeringCounter: number = 0
@@ -333,9 +240,12 @@ export class TeaHouseSystem {
   private charterOffering: TeaHouseOffering | null = null
   private rerollsThisVisit: number = 0
   private totalRerollsRun: number = 0
+  private visitDiscountPercentage: number = 0
+  private freeRerollsThisVisit: number = 0
 
-  constructor(stake: number = 1) {
+  constructor(stake: number = 1, random: () => number = () => Math.random()) {
     this.currentStake = stake
+    this.random = random
     this.pricingCalculator = new PricingCalculator(0) // Will update discount via applyCharters
   }
 
@@ -354,27 +264,58 @@ export class TeaHouseSystem {
    * Apply effects from purchased charters
    */
   applyCharter(charter: ImperialCharter): void {
+    if (this.purchasedCharterIds.has(charter.id)) return
     this.purchasedCharterIds.add(charter.id)
 
-    switch (charter.effect.type) {
+    const canonical = getCharterById(charter.id)
+    const legacyType =
+      charter.effect.type === 'seal_weight'
+        ? 'seal_frequency'
+        : charter.effect.type === 'orb_weight'
+          ? 'orb_frequency'
+          : charter.effect.type
+    const effects: CharterEffect[] = canonical?.effects ?? [
+      {
+        type: legacyType as CharterEffect['type'],
+        value: charter.effect.value,
+        description: charter.description,
+      },
+    ]
+
+    for (const effect of effects) {
+      this.applyShopCharterEffect(effect)
+    }
+  }
+
+  private applyShopCharterEffect(effect: CharterEffect): void {
+    switch (effect.type) {
       case 'shop_slots':
         this.itemSlotCount = Math.min(
-          this.itemSlotCount + (charter.effect.value as number),
+          this.itemSlotCount + (effect.value as number),
           TEA_HOUSE_MAX_ITEM_SLOTS
         )
         break
       case 'discount':
-        this.discountPercentage += charter.effect.value as number
+        this.discountPercentage += effect.value as number
         this.pricingCalculator = new PricingCalculator(this.discountPercentage)
         break
+      case 'edition_frequency':
+        this.editionFrequencyMultiplier *= effect.value as number
+        break
       case 'reroll_discount':
-        this.rerollDiscount += charter.effect.value as number
+        this.rerollDiscount += effect.value as number
         break
-      case 'seal_weight':
-        this.sealWeightMultiplier *= charter.effect.value as number
+      case 'seal_frequency':
+        this.sealWeightMultiplier *= effect.value as number
         break
-      case 'orb_weight':
-        this.orbWeightMultiplier *= charter.effect.value as number
+      case 'orb_frequency':
+        this.orbWeightMultiplier *= effect.value as number
+        break
+      case 'tile_shop':
+        this.canBuyTiles = Boolean(effect.value)
+        break
+      case 'tile_editions':
+        this.tilesHaveEditions = Boolean(effect.value)
         break
     }
   }
@@ -396,10 +337,13 @@ export class TeaHouseSystem {
    */
   generateShop(
     ownedDecreeIds: string[] = [],
-    isAfterBossRound: boolean = false
+    isAfterBossRound: boolean = false,
+    modifiers: TeaHouseVisitModifiers = {}
   ): TeaHouseState {
     // Reset reroll count for this visit
     this.rerollsThisVisit = 0
+    this.visitDiscountPercentage = Math.max(0, modifiers.discountPercentage ?? 0)
+    this.freeRerollsThisVisit = Math.max(0, modifiers.freeRerolls ?? 0)
 
     // Generate item offerings
     this.itemOfferings = []
@@ -423,6 +367,20 @@ export class TeaHouseSystem {
       this.charterOffering = this.generateCharterOffering()
     }
 
+    this.applyGuaranteedItems(modifiers.guaranteedItemTypes ?? [], ownedDecreeIds)
+    if (modifiers.decreeEdition) {
+      this.applyGuaranteedDecreeEdition(modifiers.decreeEdition, ownedDecreeIds)
+    }
+    this.itemOfferings = this.itemOfferings.map((offering) =>
+      this.applyVisitDiscount(offering)
+    )
+    this.packOfferings = this.packOfferings.map((offering) =>
+      this.applyVisitDiscount(offering)
+    )
+    if (this.charterOffering) {
+      this.charterOffering = this.applyVisitDiscount(this.charterOffering)
+    }
+
     return this.getState()
   }
 
@@ -442,6 +400,10 @@ export class TeaHouseSystem {
         return this.generateFateSealOffering(slotIndex)
       case 'CelestialOrb':
         return this.generateCelestialOrbOffering(slotIndex)
+      case 'VoidScript':
+        return this.generateVoidScriptOffering(slotIndex)
+      case 'Tile':
+        return this.generateTileOffering(slotIndex)
       default:
         return null
     }
@@ -456,6 +418,7 @@ export class TeaHouseSystem {
     // Apply weight multipliers from charters
     weights.FateSeal *= this.sealWeightMultiplier
     weights.CelestialOrb *= this.orbWeightMultiplier
+    if (this.canBuyTiles) weights.Tile = 4
 
     return this.selectWeightedRandom(weights) as ShopItemType
   }
@@ -484,7 +447,7 @@ export class TeaHouseSystem {
       return null
     }
 
-    const decree = candidates[Math.floor(Math.random() * candidates.length)]
+    const decree = candidates[Math.floor(this.random() * candidates.length)]
 
     // Determine edition (random chance for special editions)
     const edition = this.generateRandomEdition()
@@ -497,7 +460,7 @@ export class TeaHouseSystem {
     const baseCost =
       sticker?.type === 'Rental'
         ? 1 // Rental items cost only 1 Gold
-        : Math.floor(Math.random() * (costRange.max - costRange.min + 1)) + costRange.min
+        : Math.floor(this.random() * (costRange.max - costRange.min + 1)) + costRange.min
 
     const { finalCost, editionCost, sellValue } = this.pricingCalculator.calculateDecreeCost(
       baseCost,
@@ -507,6 +470,7 @@ export class TeaHouseSystem {
     const decreeWithSticker: Decree = {
       ...decree,
       sticker,
+      edition,
     }
 
     return {
@@ -578,6 +542,159 @@ export class TeaHouseSystem {
     }
   }
 
+  private generateVoidScriptOffering(slotIndex: number): TeaHouseOffering | null {
+    const scriptDef = VoidScriptSystem.getRandomVoidScript()
+    if (!scriptDef) return null
+
+    const script = VoidScriptSystem.createVoidScriptInstance(scriptDef)
+    const { baseCost, finalCost, sellValue } =
+      this.pricingCalculator.calculateVoidScriptCost()
+
+    return {
+      id: this.generateOfferingId(),
+      slotIndex,
+      itemType: 'VoidScript',
+      item: script,
+      baseCost,
+      editionCost: 0,
+      finalCost,
+      sellValue,
+      isPurchased: false,
+      isLocked: false,
+    }
+  }
+
+  /** Generate a purchasable wall tile unlocked by Tile Trading. */
+  private generateTileOffering(slotIndex: number): TeaHouseOffering {
+    const tileFace = Math.floor(this.random() * 34)
+    let tile: Tile
+
+    if (tileFace < 27) {
+      const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu] as const
+      tile = Tile.createNumbered(
+        suits[Math.floor(tileFace / 9)],
+        (tileFace % 9) + 1
+      )
+    } else if (tileFace < 31) {
+      tile = Tile.createWind((tileFace - 26) as WindType)
+    } else {
+      tile = Tile.createDragon((tileFace - 30) as DragonType)
+    }
+
+    // Illusion Tiles gives each shop tile a chance to carry an edition or mark.
+    if (this.tilesHaveEditions && this.random() < 0.5) {
+      if (this.random() < 0.5) {
+        const enhancements = [
+          EnhancementType.Bonus,
+          EnhancementType.Mult,
+          EnhancementType.Wild,
+          EnhancementType.Glass,
+          EnhancementType.Steel,
+          EnhancementType.Gold,
+          EnhancementType.Lucky,
+        ]
+        tile = tile.withEnhancement(
+          enhancements[Math.floor(this.random() * enhancements.length)]
+        )
+      } else {
+        const editions = [
+          TileEditionType.Foil,
+          TileEditionType.Holographic,
+          TileEditionType.Polychrome,
+          TileEditionType.Negative,
+        ]
+        tile = tile.withEdition(
+          editions[Math.floor(this.random() * editions.length)]
+        )
+      }
+    }
+
+    const { baseCost, finalCost, sellValue } =
+      this.pricingCalculator.calculateTileCost()
+    return {
+      id: this.generateOfferingId(),
+      slotIndex,
+      itemType: 'Tile',
+      item: tile,
+      baseCost,
+      editionCost: 0,
+      finalCost,
+      sellValue,
+      isPurchased: false,
+      isLocked: false,
+    }
+  }
+
+  private applyGuaranteedItems(itemTypes: string[], ownedDecreeIds: string[]): void {
+    let itemSlot = 0
+    let packSlot = 0
+
+    for (const itemType of itemTypes) {
+      if (itemType === 'BlessingPack') {
+        const pack = this.packOfferings[packSlot++]
+        if (pack) pack.finalCost = 0
+        continue
+      }
+
+      if (itemSlot >= this.itemSlotCount) break
+      let offering: TeaHouseOffering | null = null
+      if (itemType === 'Decree') {
+        offering = this.generateDecreeOffering(itemSlot, ownedDecreeIds)
+      } else if (itemType === 'FateSeal') {
+        offering = this.generateFateSealOffering(itemSlot)
+      } else if (itemType === 'CelestialOrb') {
+        offering = this.generateCelestialOrbOffering(itemSlot)
+      } else if (itemType === 'VoidScript') {
+        offering = this.generateVoidScriptOffering(itemSlot)
+      } else if (itemType === 'Tile' && this.canBuyTiles) {
+        offering = this.generateTileOffering(itemSlot)
+      }
+
+      if (offering) this.itemOfferings[itemSlot++] = offering
+    }
+  }
+
+  private applyVisitDiscount(offering: TeaHouseOffering): TeaHouseOffering {
+    if (this.visitDiscountPercentage <= 0 || offering.finalCost === 0) return offering
+
+    const finalCost = Math.max(
+      0,
+      Math.floor(offering.finalCost * (1 - this.visitDiscountPercentage / 100))
+    )
+    return {
+      ...offering,
+      finalCost,
+      sellValue: PricingCalculator.calculateBaseSellValue(finalCost),
+    }
+  }
+
+  private applyGuaranteedDecreeEdition(
+    edition: EditionType,
+    ownedDecreeIds: string[]
+  ): void {
+    let index = this.itemOfferings.findIndex(
+      (offering) => offering.itemType === 'Decree'
+    )
+    if (index === -1) {
+      index = 0
+      const decreeOffering = this.generateDecreeOffering(index, ownedDecreeIds)
+      if (!decreeOffering) return
+      this.itemOfferings[index] = decreeOffering
+    }
+
+    const offering = this.itemOfferings[index]
+    const decree = offering.item as Decree
+    this.itemOfferings[index] = {
+      ...offering,
+      item: { ...decree, edition },
+      edition,
+      editionCost: this.pricingCalculator.getEditionCost(edition),
+      // Edition Omens make the affected base Decree free.
+      finalCost: 0,
+      sellValue: 0,
+    }
+  }
+
   /**
    * Generate a Blessing Pack offering
    */
@@ -620,7 +737,7 @@ export class TeaHouseSystem {
       return null
     }
 
-    const charter = available[Math.floor(Math.random() * available.length)]
+    const charter = available[Math.floor(this.random() * available.length)]
     const { finalCost, sellValue } = this.pricingCalculator.calculateCharterCost()
 
     return {
@@ -670,15 +787,16 @@ export class TeaHouseSystem {
    * Small chance for special editions
    */
   private generateRandomEdition(): EditionType | undefined {
-    const roll = Math.random()
+    const roll = this.random()
+    const frequency = Math.max(1, this.editionFrequencyMultiplier)
 
-    if (roll < 0.02) {
+    if (roll < Math.min(1, 0.02 * frequency)) {
       return 'Negative'
-    } else if (roll < 0.05) {
+    } else if (roll < Math.min(1, 0.05 * frequency)) {
       return 'Polychrome'
-    } else if (roll < 0.10) {
+    } else if (roll < Math.min(1, 0.1 * frequency)) {
       return 'Holographic'
-    } else if (roll < 0.20) {
+    } else if (roll < Math.min(1, 0.2 * frequency)) {
       return 'Foil'
     }
 
@@ -696,17 +814,17 @@ export class TeaHouseSystem {
     const stickers: StickerType[] = []
 
     // Eternal at stake 4+ (Black Stake)
-    if (this.currentStake >= 4 && Math.random() < stickerChance) {
+    if (this.currentStake >= 4 && this.random() < stickerChance) {
       stickers.push('Eternal')
     }
 
     // Perishable at stake 7+ (Orange Stake)
-    if (this.currentStake >= 7 && Math.random() < stickerChance) {
+    if (this.currentStake >= 7 && this.random() < stickerChance) {
       stickers.push('Perishable')
     }
 
     // Rental at stake 8+ (Gold Stake)
-    if (this.currentStake >= 8 && Math.random() < stickerChance) {
+    if (this.currentStake >= 8 && this.random() < stickerChance) {
       stickers.push('Rental')
     }
 
@@ -739,6 +857,7 @@ export class TeaHouseSystem {
    * Get the current reroll cost
    */
   getCurrentRerollCost(): number {
+    if (this.rerollsThisVisit < this.freeRerollsThisVisit) return 0
     const baseCost = TEA_HOUSE_BASE_REROLL_COST + this.rerollsThisVisit * TEA_HOUSE_REROLL_INCREMENT
     return Math.max(0, baseCost - this.rerollDiscount)
   }
@@ -765,7 +884,7 @@ export class TeaHouseSystem {
       } else {
         const offering = this.generateItemOffering(i, ownedDecreeIds)
         if (offering) {
-          newItems.push(offering)
+          newItems.push(this.applyVisitDiscount(offering))
         }
       }
     }
@@ -877,6 +996,8 @@ export class TeaHouseSystem {
     this.packOfferings = []
     this.charterOffering = null
     this.rerollsThisVisit = 0
+    this.visitDiscountPercentage = 0
+    this.freeRerollsThisVisit = 0
   }
 
   /**
@@ -889,8 +1010,13 @@ export class TeaHouseSystem {
     this.rerollDiscount = 0
     this.sealWeightMultiplier = 1
     this.orbWeightMultiplier = 1
+    this.editionFrequencyMultiplier = 1
+    this.canBuyTiles = false
+    this.tilesHaveEditions = false
     this.purchasedCharterIds.clear()
     this.totalRerollsRun = 0
+    this.visitDiscountPercentage = 0
+    this.freeRerollsThisVisit = 0
     this.pricingCalculator = new PricingCalculator(0)
   }
 
@@ -916,7 +1042,7 @@ export class TeaHouseSystem {
       return entries[0]?.[0] ?? ''
     }
 
-    let random = Math.random() * totalWeight
+    let random = this.random() * totalWeight
 
     for (const [key, weight] of entries) {
       random -= weight
@@ -941,6 +1067,9 @@ export class TeaHouseSystem {
     rerollDiscount: number
     sealWeightMultiplier: number
     orbWeightMultiplier: number
+    editionFrequencyMultiplier: number
+    canBuyTiles: boolean
+    tilesHaveEditions: boolean
     purchasedCharterIds: string[]
     currentStake: number
     itemOfferings: TeaHouseOffering[]
@@ -956,6 +1085,9 @@ export class TeaHouseSystem {
       rerollDiscount: this.rerollDiscount,
       sealWeightMultiplier: this.sealWeightMultiplier,
       orbWeightMultiplier: this.orbWeightMultiplier,
+      editionFrequencyMultiplier: this.editionFrequencyMultiplier,
+      canBuyTiles: this.canBuyTiles,
+      tilesHaveEditions: this.tilesHaveEditions,
       purchasedCharterIds: Array.from(this.purchasedCharterIds),
       currentStake: this.currentStake,
       itemOfferings: this.itemOfferings,
@@ -976,6 +1108,9 @@ export class TeaHouseSystem {
     rerollDiscount: number
     sealWeightMultiplier: number
     orbWeightMultiplier: number
+    editionFrequencyMultiplier?: number
+    canBuyTiles?: boolean
+    tilesHaveEditions?: boolean
     purchasedCharterIds: string[]
     currentStake: number
     itemOfferings: TeaHouseOffering[]
@@ -991,6 +1126,9 @@ export class TeaHouseSystem {
     system.rerollDiscount = state.rerollDiscount
     system.sealWeightMultiplier = state.sealWeightMultiplier
     system.orbWeightMultiplier = state.orbWeightMultiplier
+    system.editionFrequencyMultiplier = state.editionFrequencyMultiplier ?? 1
+    system.canBuyTiles = state.canBuyTiles ?? false
+    system.tilesHaveEditions = state.tilesHaveEditions ?? false
     system.purchasedCharterIds = new Set(state.purchasedCharterIds)
     system.itemOfferings = state.itemOfferings
     system.packOfferings = state.packOfferings

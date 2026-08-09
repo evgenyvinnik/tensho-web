@@ -20,6 +20,7 @@ import {
   calculateCombinedModifiers,
   type CombinedStakeModifiers,
 } from '../config/stakeDefinitions'
+import { STANDARD_MANDATES as COMPLETE_STANDARD_MANDATES } from '../config/mandateDefinitions'
 
 // =============================================================================
 // SCORE REQUIREMENTS
@@ -29,16 +30,19 @@ import {
  * Score targets by act (base requirements)
  * Each act has 3 rounds: Small (1.0x), Large (1.5x), Boss (2.0x)
  */
-export const BASE_SCORE_TARGETS: Record<number, number[]> = {
-  1: [300, 800, 2000],
-  2: [5000, 11000, 20000],
-  3: [35000, 60000, 100000],
-  4: [150000, 250000, 400000],
-  5: [600000, 1000000, 1600000],
-  6: [2400000, 4000000, 6000000],
-  7: [9000000, 15000000, 25000000],
-  8: [40000000, 70000000, 100000000],
+export const BASE_SCORE_TARGETS: Record<number, number> = {
+  1: 300,
+  2: 800,
+  3: 2_000,
+  4: 5_000,
+  5: 11_000,
+  6: 20_000,
+  7: 35_000,
+  8: 50_000,
 }
+
+/** Small, Large, and Boss target multipliers from GAME_MECHANICS.md. */
+export const ROUND_SCORE_MULTIPLIERS = [1, 1.5, 2] as const
 
 /**
  * Score scaling for higher stakes
@@ -195,6 +199,21 @@ export const BOSS_MANDATES: BossMandate[] = [
   },
 ]
 
+// RoundManager historically carried only the original 15 definitions. Include
+// the extended canonical library so later-Act bosses can actually be selected.
+for (const mandate of COMPLETE_STANDARD_MANDATES) {
+  if (!BOSS_MANDATES.some((candidate) => candidate.id === mandate.id)) {
+    BOSS_MANDATES.push({
+      id: mandate.id,
+      name: mandate.name,
+      japaneseName: mandate.japaneseName,
+      description: mandate.description,
+      effect: mandate.effect,
+      minAct: mandate.minAct,
+    })
+  }
+}
+
 /**
  * Showdown mandates (Act 8+)
  */
@@ -256,10 +275,20 @@ export class RoundManager {
   private bonusDiscards: number = 0
   private usedTileIds: Set<string> = new Set()
   private stakeModifiers: CombinedStakeModifiers
+  private rngState: number
 
-  constructor(stake: number = 1) {
+  constructor(stake: number = 1, seed: number = Date.now()) {
     this.stake = stake
     this.stakeModifiers = calculateCombinedModifiers(stake)
+    this.rngState = seed >>> 0
+  }
+
+  private random(): number {
+    this.rngState += 0x6d2b79f5
+    let value = this.rngState
+    value = Math.imul(value ^ (value >>> 15), value | 1)
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61)
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296
   }
 
   /**
@@ -331,6 +360,17 @@ export class RoundManager {
     // Add boss mandate to the boss round
     rounds[2].bossMandate = this.selectBossMandate(actNumber)
 
+    // Score-target mandates replace the normal 2x Boss multiplier. The old
+    // implementation displayed The Wall/Violet Vessel but never changed the
+    // target, so those mandates had no gameplay effect.
+    if (rounds[2].bossMandate.effect.type === 'score_multiplier') {
+      rounds[2].scoreTarget = Math.floor(
+        baseTargets[0] *
+          (rounds[2].bossMandate.effect.value as number) *
+          stakeMultiplier
+      )
+    }
+
     this.currentAct = {
       actNumber,
       rounds,
@@ -377,15 +417,21 @@ export class RoundManager {
    */
   private getScoreTargetsForAct(actNumber: number): number[] {
     if (BASE_SCORE_TARGETS[actNumber]) {
-      return BASE_SCORE_TARGETS[actNumber]
+      const baseTarget = BASE_SCORE_TARGETS[actNumber]
+      return ROUND_SCORE_MULTIPLIERS.map((multiplier) =>
+        Math.floor(baseTarget * multiplier)
+      )
     }
 
     // Endless mode scaling for acts beyond 8
     const baseAct8 = BASE_SCORE_TARGETS[8]
     const actDiff = actNumber - 8
     const scalingFactor = Math.pow(1.6 + 0.75 * actDiff, actDiff * (1 + 0.2 * actDiff))
+    const baseTarget = Math.floor(baseAct8 * scalingFactor)
 
-    return baseAct8.map((target) => Math.floor(target * scalingFactor))
+    return ROUND_SCORE_MULTIPLIERS.map((multiplier) =>
+      Math.floor(baseTarget * multiplier)
+    )
   }
 
   /**
@@ -405,7 +451,38 @@ export class RoundManager {
       availableMandates = BOSS_MANDATES.filter((m) => m.minAct === 1)
     }
 
-    return availableMandates[Math.floor(Math.random() * availableMandates.length)]
+    return availableMandates[Math.floor(this.random() * availableMandates.length)]
+  }
+
+  /** Replace the upcoming Boss Mandate and recalculate its score target. */
+  rerollBossMandate(): BossMandate | null {
+    if (!this.currentAct) return null
+
+    const bossRound = this.currentAct.rounds.find(
+      (round) => round.roundType === 'Boss'
+    )
+    if (!bossRound?.bossMandate || bossRound.isCompleted) return null
+
+    const previousId = bossRound.bossMandate.id
+    let replacement = bossRound.bossMandate
+    for (let attempt = 0; attempt < 12 && replacement.id === previousId; attempt++) {
+      replacement = this.selectBossMandate(this.currentAct.actNumber)
+    }
+    if (replacement.id === previousId) return null
+
+    bossRound.bossMandate = replacement
+    const baseTargets = this.getScoreTargetsForAct(this.currentAct.actNumber)
+    const stakeMultiplier = this.stakeModifiers.scoreScaling
+    bossRound.scoreTarget = Math.floor(baseTargets[2] * stakeMultiplier)
+    if (replacement.effect.type === 'score_multiplier') {
+      bossRound.scoreTarget = Math.floor(
+        baseTargets[0] *
+          (replacement.effect.value as number) *
+          stakeMultiplier
+      )
+    }
+
+    return replacement
   }
 
   /**
@@ -671,6 +748,7 @@ export class RoundManager {
     bonusDiscards: number
     usedTileIds: string[]
     stakeModifiers: CombinedStakeModifiers
+    rngState: number
   } {
     return {
       currentAct: this.currentAct,
@@ -680,6 +758,7 @@ export class RoundManager {
       bonusDiscards: this.bonusDiscards,
       usedTileIds: Array.from(this.usedTileIds),
       stakeModifiers: this.stakeModifiers,
+      rngState: this.rngState,
     }
   }
 
@@ -694,13 +773,15 @@ export class RoundManager {
     bonusDiscards: number
     usedTileIds: string[]
     stakeModifiers?: CombinedStakeModifiers
+    rngState?: number
   }): RoundManager {
-    const manager = new RoundManager(state.stake)
+    const manager = new RoundManager(state.stake, state.rngState)
     manager.currentAct = state.currentAct
     manager.currentRound = state.currentRound
     manager.bonusHands = state.bonusHands
     manager.bonusDiscards = state.bonusDiscards
     manager.usedTileIds = new Set(state.usedTileIds)
+    manager.rngState = state.rngState ?? manager.rngState
     // Restore modifiers or recalculate if not present
     if (state.stakeModifiers) {
       manager.stakeModifiers = state.stakeModifiers

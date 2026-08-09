@@ -1,10 +1,9 @@
 /**
  * useResponsiveTileSize Hook
  *
- * Determines the appropriate tile size based on viewport width.
- * - Mobile (< 768px): medium tiles (50x70px)
- * - Tablet (768-1279px): large tiles (70x98px)
- * - Desktop (>= 1280px): xlarge tiles (90x126px)
+ * Determines tile size from both viewport width and height. Height matters on
+ * laptop screens where x-large tiles can otherwise push the action bar below
+ * the fixed game viewport.
  */
 
 import { useLayoutEffect, useState } from 'react'
@@ -15,8 +14,8 @@ import type { TileSize } from '../components/tiles/TileImage'
  */
 function calculateTileSize(): TileSize {
   if (typeof window === 'undefined') return 'medium'
-  if (window.innerWidth >= 1280) return 'xlarge'
-  if (window.innerWidth >= 768) return 'large'
+  if (window.innerWidth >= 1440 && window.innerHeight >= 900) return 'xlarge'
+  if (window.innerWidth >= 900 && window.innerHeight >= 680) return 'large'
   return 'medium'
 }
 

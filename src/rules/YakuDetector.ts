@@ -50,6 +50,8 @@ export interface YakuContext {
   seatWind: WindType
   roundWind: WindType
   winningTile: Tile | null
+  /** Tanyao Dispensation: terminals are legal, while Honors remain excluded. */
+  tanyaoAllowsTerminals?: boolean
 }
 
 // ============================================================================
@@ -317,8 +319,13 @@ export const ALL_YAKU: YakuDefinition[] = [
 /**
  * Check if hand satisfies Tanyao (all simples)
  */
-export function checkTanyao(tiles: Tile[]): boolean {
-  return tiles.every((t) => t.isSimple)
+export function checkTanyao(
+  tiles: Tile[],
+  allowTerminals: boolean = false
+): boolean {
+  return tiles.every((tile) =>
+    allowTerminals ? tile.isSuited : tile.isSimple
+  )
 }
 
 /**
@@ -694,7 +701,7 @@ export function detectYaku(context: YakuContext): DetectedYaku[] {
     detected.push({ definition: SEVEN_PAIRS, isApplicable: true })
 
     // Seven pairs can combine with some yaku
-    if (checkTanyao(context.tiles)) {
+    if (checkTanyao(context.tiles, context.tanyaoAllowsTerminals)) {
       detected.push({ definition: TANYAO, isApplicable: true })
     }
     if (checkHonitsu(context)) {
@@ -742,7 +749,7 @@ export function detectYaku(context: YakuContext): DetectedYaku[] {
     detected.push({ definition: MENZEN_TSUMO, isApplicable: true })
   }
 
-  if (checkTanyao(context.tiles)) {
+  if (checkTanyao(context.tiles, context.tanyaoAllowsTerminals)) {
     detected.push({ definition: TANYAO, isApplicable: true })
   }
 

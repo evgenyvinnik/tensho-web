@@ -16,11 +16,12 @@ import {
   ARCHIVE_CATEGORIES,
   getAllArchiveCategories,
 } from '../config/archiveDefinitions'
-import type {
-  ArchiveEntry,
-  DiscoveryEvent,
-  DiscoveryTrigger,
-  ArchiveStats,
+import {
+  getArchiveSystem,
+  type ArchiveEntry,
+  type DiscoveryEvent,
+  type DiscoveryTrigger,
+  type ArchiveStats,
 } from '../systems/ArchiveSystem'
 
 // =============================================================================
@@ -243,12 +244,14 @@ export const useArchiveStore = create<ArchiveState>()(
           discoverItem(category, itemId, 'purchase')
         }
 
+        const latestEntry = get().entries[key] ?? entry
+
         set({
           entries: {
-            ...entries,
+            ...get().entries,
             [key]: {
-              ...entry,
-              timesUsed: entry.timesUsed + 1,
+              ...latestEntry,
+              timesUsed: latestEntry.timesUsed + 1,
             },
           },
         })
@@ -429,96 +432,14 @@ export const useArchiveStore = create<ArchiveState>()(
  * Call this on app startup after all item definitions are loaded
  */
 export function initializeArchive(): void {
-  // Import here to avoid circular dependencies
-  import('../systems/DecreeSystem').then(({ ALL_DECREES }) => {
-    import('../config/charterDefinitions').then(({ ALL_CHARTERS }) => {
-      import('../config/omenDefinitions').then(({ ALL_OMENS }) => {
-        import('../config/mandateDefinitions').then(({ ALL_MANDATES }) => {
-          import('../systems/FateSealSystem').then(({ getAllFateSeals }) => {
-            import('../systems/CelestialOrbSystem').then(({ getAllCelestialOrbs }) => {
-              import('../systems/VoidScriptSystem').then(({ getAllVoidScripts }) => {
-                import('../config/archiveDefinitions').then(({
-                  WALL_DEFINITIONS,
-                  TILE_MARK_DEFINITIONS,
-                  SEAL_DEFINITIONS_ARCHIVE,
-                  EDITION_DEFINITIONS_ARCHIVE,
-                  PACK_VARIANT_DEFINITIONS,
-                }) => {
-                  const allItems: { category: ArchiveCategory; itemId: string; unlockCondition?: string }[] = []
-
-                  // Decrees
-                  for (const decree of ALL_DECREES) {
-                    allItems.push({ category: 'decrees', itemId: decree.id })
-                  }
-
-                  // Walls
-                  for (const wall of WALL_DEFINITIONS) {
-                    allItems.push({
-                      category: 'walls',
-                      itemId: wall.id,
-                      unlockCondition: wall.unlockCondition,
-                    })
-                  }
-
-                  // Charters
-                  for (const charter of ALL_CHARTERS) {
-                    allItems.push({
-                      category: 'charters',
-                      itemId: charter.id,
-                      unlockCondition: charter.unlockCondition?.description,
-                    })
-                  }
-
-                  // Consumables
-                  for (const seal of getAllFateSeals()) {
-                    allItems.push({ category: 'consumables', itemId: seal.id })
-                  }
-                  for (const orb of getAllCelestialOrbs()) {
-                    allItems.push({ category: 'consumables', itemId: orb.id })
-                  }
-                  for (const script of getAllVoidScripts()) {
-                    allItems.push({ category: 'consumables', itemId: script.id })
-                  }
-
-                  // Tile Marks
-                  for (const mark of TILE_MARK_DEFINITIONS) {
-                    allItems.push({ category: 'tileMarks', itemId: mark.id })
-                  }
-
-                  // Seals
-                  for (const seal of SEAL_DEFINITIONS_ARCHIVE) {
-                    allItems.push({ category: 'seals', itemId: seal.id })
-                  }
-
-                  // Editions
-                  for (const edition of EDITION_DEFINITIONS_ARCHIVE) {
-                    allItems.push({ category: 'editions', itemId: edition.id })
-                  }
-
-                  // Packs
-                  for (const pack of PACK_VARIANT_DEFINITIONS) {
-                    allItems.push({ category: 'packs', itemId: pack.id })
-                  }
-
-                  // Omens
-                  for (const omen of ALL_OMENS) {
-                    allItems.push({ category: 'omens', itemId: omen.id })
-                  }
-
-                  // Mandates
-                  for (const mandate of ALL_MANDATES) {
-                    allItems.push({ category: 'mandates', itemId: mandate.id })
-                  }
-
-                  useArchiveStore.getState().initializeEntries(allItems)
-                })
-              })
-            })
-          })
-        })
-      })
-    })
-  })
+  const allItems = getArchiveSystem()
+    .toState()
+    .entries.map(([, entry]) => ({
+      category: entry.category,
+      itemId: entry.itemId,
+      unlockCondition: entry.unlockCondition,
+    }))
+  useArchiveStore.getState().initializeEntries(allItems)
 }
 
 // =============================================================================

@@ -25,6 +25,7 @@
 
 import React, { useState, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -174,10 +175,11 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const [isPressed, setIsPressed] = useState(false)
+  const reduceMotion = useReducedMotion()
 
   // Spring animation for press effect
   const springProps = useSpring({
-    scale: animate && isPressed ? 0.95 : 1,
+    scale: animate && !reduceMotion && isPressed ? 0.95 : 1,
     config: { tension: 300, friction: 10 },
   })
 
@@ -248,10 +250,11 @@ export const ImageButton: React.FC<ImageButtonProps> = ({
   ...props
 }) => {
   const [isPressed, setIsPressed] = useState(false)
+  const reduceMotion = useReducedMotion()
 
   // Spring animation for press effect
   const springProps = useSpring({
-    scale: animate && isPressed ? 0.95 : 1,
+    scale: animate && !reduceMotion && isPressed ? 0.95 : 1,
     config: { tension: 300, friction: 10 },
   })
 

@@ -44,6 +44,8 @@ export interface MandateState {
   disabledDecreeIds: Set<string>
   /** Whether decrees are shuffled/hidden (for Amber Acorn) */
   decreesShuffled: boolean
+  /** Stable shuffled presentation order for hidden Decrees (for Amber Acorn) */
+  shuffledDecreeIds: string[]
   /** Whether all tiles are debuffed until decree sold (for Verdant Leaf) */
   allTilesDebuffed: boolean
   /** Modified redraws for this round (for The Water) */
@@ -109,6 +111,7 @@ export class MandateEffectSystem {
       lockedTileIds: new Set(),
       disabledDecreeIds: new Set(),
       decreesShuffled: false,
+      shuffledDecreeIds: [],
       allTilesDebuffed: false,
       modifiedRedraws: null,
       modifiedMaxHands: null,
@@ -271,6 +274,14 @@ export class MandateEffectSystem {
 
       case 'shuffle_decrees':
         this.state.decreesShuffled = true
+        this.state.shuffledDecreeIds = decrees.map((decree) => decree.id)
+        for (let i = this.state.shuffledDecreeIds.length - 1; i > 0; i--) {
+          const j = Math.floor(this.getRandom() * (i + 1))
+          ;[this.state.shuffledDecreeIds[i], this.state.shuffledDecreeIds[j]] = [
+            this.state.shuffledDecreeIds[j],
+            this.state.shuffledDecreeIds[i],
+          ]
+        }
         result.message += ' - All decrees shuffled and face-down'
         break
 
@@ -350,6 +361,7 @@ export class MandateEffectSystem {
     this.state.lockedTileIds.clear()
     this.state.disabledDecreeIds.clear()
     this.state.decreesShuffled = false
+    this.state.shuffledDecreeIds = []
     this.state.allTilesDebuffed = false
     this.state.modifiedRedraws = null
     this.state.modifiedMaxHands = null
@@ -568,12 +580,14 @@ export class MandateEffectSystem {
     // Track used tiles for The Pillar
     for (const tileId of playedTileIds) {
       this.state.usedTileIds.add(tileId)
+      this.state.lockedTileIds.delete(tileId)
     }
 
     if (!this.state.activeMandate) return result
 
     // Crimson Heart: Disable random decree each hand
     if (this.state.activeMandate.effect.type === 'disable_random_decree') {
+      this.state.disabledDecreeIds.clear()
       result.disabledDecreeIds = this.applyDisableRandomDecree(decrees)
     }
 
@@ -781,6 +795,11 @@ export class MandateEffectSystem {
     return Array.from(this.state.disabledDecreeIds)
   }
 
+  /** Get the stable hidden presentation order generated for Amber Acorn. */
+  getShuffledDecreeIds(): string[] {
+    return [...this.state.shuffledDecreeIds]
+  }
+
   /**
    * Check if decrees are shuffled/hidden
    */
@@ -889,6 +908,25 @@ export class MandateEffectSystem {
   }
 
   /**
+   * Resolve whether a newly drawn tile is hidden by the active mandate.
+   * Ratio checks consume the mandate's seeded RNG so identical runs reveal the
+   * same information.
+   */
+  shouldTileBeFaceDown(
+    tile: Tile,
+    context: { isStartingHand?: boolean; afterHandPlay?: boolean } = {}
+  ): boolean {
+    if (!this.state.activeMandate) return false
+
+    if (context.isStartingHand && this.isFirstHandFaceDown()) return true
+    if (context.afterHandPlay && this.shouldTilesBeFaceDownAfterPlay()) return true
+    if (this.areHonorTilesFaceDown() && tile.isHonor) return true
+
+    const ratio = this.getFaceDownTileRatio()
+    return ratio !== null && ratio > 0 && this.getRandom() < 1 / ratio
+  }
+
+  /**
    * Check if decree is disabled by mandate
    */
   isDecreeDisabled(decreeId: string): boolean {
@@ -911,6 +949,7 @@ export class MandateEffectSystem {
     lockedTileIds: string[]
     disabledDecreeIds: string[]
     decreesShuffled: boolean
+    shuffledDecreeIds: string[]
     allTilesDebuffed: boolean
     modifiedRedraws: number | null
     modifiedMaxHands: number | null
@@ -926,6 +965,7 @@ export class MandateEffectSystem {
       lockedTileIds: Array.from(this.state.lockedTileIds),
       disabledDecreeIds: Array.from(this.state.disabledDecreeIds),
       decreesShuffled: this.state.decreesShuffled,
+      shuffledDecreeIds: [...this.state.shuffledDecreeIds],
       allTilesDebuffed: this.state.allTilesDebuffed,
       modifiedRedraws: this.state.modifiedRedraws,
       modifiedMaxHands: this.state.modifiedMaxHands,
@@ -946,6 +986,7 @@ export class MandateEffectSystem {
     lockedTileIds: string[]
     disabledDecreeIds: string[]
     decreesShuffled: boolean
+    shuffledDecreeIds?: string[]
     allTilesDebuffed: boolean
     modifiedRedraws: number | null
     modifiedMaxHands: number | null
@@ -962,6 +1003,7 @@ export class MandateEffectSystem {
       lockedTileIds: new Set(data.lockedTileIds),
       disabledDecreeIds: new Set(data.disabledDecreeIds),
       decreesShuffled: data.decreesShuffled,
+      shuffledDecreeIds: [...(data.shuffledDecreeIds ?? [])],
       allTilesDebuffed: data.allTilesDebuffed,
       modifiedRedraws: data.modifiedRedraws,
       modifiedMaxHands: data.modifiedMaxHands,

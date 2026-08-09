@@ -29,7 +29,7 @@ export default defineConfig({
   // Shared settings for all projects
   use: {
     // Base URL for tests
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://127.0.0.1:4173',
 
     // Collect trace when retrying a failed test
     trace: 'on-first-retry',
@@ -60,9 +60,10 @@ export default defineConfig({
   webServer: process.env.SKIP_WEB_SERVER
     ? undefined
     : {
-        command: './node_modules/.bin/vite --port 5173',
-        url: 'http://localhost:5173',
-        reuseExistingServer: true,
+        command:
+          './node_modules/.bin/vite --host 127.0.0.1 --port 4173 --strictPort',
+        url: 'http://127.0.0.1:4173',
+        reuseExistingServer: false,
         timeout: 120 * 1000,
         stdout: 'pipe',
         stderr: 'pipe',

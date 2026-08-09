@@ -38,6 +38,8 @@ export interface PlayAreaProps {
   handTileCount: number
   /** Score preview with detected yaku */
   scorePreview: ScorePreviewData | null
+  /** Whether selected face-down tiles conceal all preview information. */
+  scorePreviewHidden?: boolean
   /** Active yaku reveal animations */
   yakuReveals: YakuRevealState[]
   /** Handler for yaku reveal completion */
@@ -163,6 +165,7 @@ export function PlayArea({
   stagedTileCount,
   handTileCount,
   scorePreview,
+  scorePreviewHidden = false,
   yakuReveals,
   onYakuComplete,
 }: PlayAreaProps) {
@@ -175,11 +178,23 @@ export function PlayArea({
   return (
     <div
       data-tutorial="yaku-display"
-      className="flex-1 mx-4 mb-2 bg-[var(--color-dark-forest)] bg-opacity-50 rounded-lg border-2 border-dashed border-[var(--color-metallic-gold)] flex flex-col items-center justify-center p-4 min-h-[120px]"
+      className="mx-3 mb-1 flex min-h-[68px] max-h-[150px] flex-shrink-0 flex-col items-center justify-center overflow-y-auto rounded-xl border border-dashed border-[var(--color-metallic-gold)]/70 bg-[var(--color-dark-forest)]/55 p-2"
       onClick={() => setSelectedYakuId(null)} // Close tooltip when clicking outside
     >
       {/* Score Preview Panel */}
-      {scorePreview ? (
+      {scorePreviewHidden ? (
+        <div className="text-center" aria-label="Score preview concealed">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300/70">
+            Hidden hand
+          </p>
+          <p className="mt-1 text-4xl font-black text-[var(--color-golden-yellow)]">
+            ???
+          </p>
+          <p className="mt-2 text-sm text-[var(--color-beige-white)] opacity-60">
+            Face-down tiles conceal patterns and score until played.
+          </p>
+        </div>
+      ) : scorePreview ? (
         <div className="w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
           {/* Yaku Badges Section */}
           {scorePreview.yaku && scorePreview.yaku.length > 0 ? (

@@ -534,7 +534,9 @@ export class CelestialOrbSystem {
       return 0
     }
 
-    return orbDef.effect.multPerLevel * level
+    // Level 1 is the unupgraded baseline. Only Orb-granted levels add a
+    // bonus; otherwise every fresh run receives a free Orb bonus.
+    return orbDef.effect.multPerLevel * Math.max(0, level - 1)
   }
 
   /**
@@ -548,7 +550,7 @@ export class CelestialOrbSystem {
       return 0
     }
 
-    return orbDef.effect.chipsPerLevel * level
+    return orbDef.effect.chipsPerLevel * Math.max(0, level - 1)
   }
 
   /**

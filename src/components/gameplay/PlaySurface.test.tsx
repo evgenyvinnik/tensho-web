@@ -249,6 +249,41 @@ describe('PlaySurface', () => {
       // Tiles with selected state should render (visual test would check styling)
       expect(screen.getByText(/Hand \(5\)/)).toBeInTheDocument()
     })
+
+    it('renders mandate-concealed tiles face-down', () => {
+      const tiles = createTestTiles(3)
+
+      render(
+        <PlaySurface
+          handTiles={tiles}
+          faceDownIds={new Set([tiles[0].id])}
+          onTileSelect={mockOnTileSelect}
+          onTileDiscard={mockOnTileDiscard}
+          onTilesStaged={mockOnTilesStaged}
+        />
+      )
+
+      expect(screen.getByAltText('Face-down tile')).toBeInTheDocument()
+      expect(screen.queryByAltText('1 of Characters')).not.toBeInTheDocument()
+    })
+
+    it('shows lock and debuff mandate overlays without disabling play selection', () => {
+      const tiles = createTestTiles(3)
+
+      render(
+        <PlaySurface
+          handTiles={tiles}
+          lockedIds={new Set([tiles[0].id])}
+          debuffedIds={new Set([tiles[1].id])}
+          onTileSelect={mockOnTileSelect}
+          onTileDiscard={mockOnTileDiscard}
+          onTilesStaged={mockOnTilesStaged}
+        />
+      )
+
+      expect(screen.getByTitle('Locked tile: must be played')).toBeInTheDocument()
+      expect(screen.getByTitle('Debuffed tile')).toBeInTheDocument()
+    })
   })
 
   describe('glowing tiles display', () => {

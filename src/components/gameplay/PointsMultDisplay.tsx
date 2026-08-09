@@ -58,36 +58,36 @@ export function PointsMultDisplay({ points, mult, isAnimating = false }: PointsM
   })
 
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-1 sm:gap-2">
       {/* Points section */}
       <GlowEffect variant="blue" intensity={isAnimating ? 0.8 : 0.3} pulsing={isAnimating}>
-        <div className="flex items-center gap-1 px-3 py-1 bg-blue-900/60 rounded-lg border border-blue-500">
-          <span className="text-xs text-blue-300 font-medium">POINTS</span>
-          <animated.span className="text-lg font-bold text-blue-400 font-mono">
+        <div className="flex items-center gap-1 rounded-lg border border-blue-500 bg-blue-900/60 px-2 py-0.5 sm:px-3 sm:py-1">
+          <span className="hidden text-xs font-medium text-blue-300 sm:inline">POINTS</span>
+          <animated.span className="font-mono text-base font-bold text-blue-400 sm:text-lg">
             {pointsSpring.value.to((v) => Math.floor(v).toLocaleString())}
           </animated.span>
         </div>
       </GlowEffect>
 
       {/* Multiplication symbol */}
-      <span className="text-2xl font-bold text-[var(--color-golden-yellow)]">×</span>
+      <span className="text-lg font-bold text-[var(--color-golden-yellow)] sm:text-2xl">×</span>
 
       {/* Mult section */}
       <GlowEffect variant="red" intensity={isAnimating ? 0.8 : 0.3} pulsing={isAnimating}>
-        <div className="flex items-center gap-1 px-3 py-1 bg-red-900/60 rounded-lg border border-red-500">
-          <span className="text-xs text-red-300 font-medium">MULT</span>
-          <animated.span className="text-lg font-bold text-red-400 font-mono">
+        <div className="flex items-center gap-1 rounded-lg border border-red-500 bg-red-900/60 px-2 py-0.5 sm:px-3 sm:py-1">
+          <span className="hidden text-xs font-medium text-red-300 sm:inline">MULT</span>
+          <animated.span className="font-mono text-base font-bold text-red-400 sm:text-lg">
             {multSpring.value.to((v) => v.toFixed(2))}
           </animated.span>
         </div>
       </GlowEffect>
 
       {/* Equals symbol */}
-      <span className="text-2xl font-bold text-[var(--color-golden-yellow)]">=</span>
+      <span className="text-lg font-bold text-[var(--color-golden-yellow)] sm:text-2xl">=</span>
 
       {/* Result section */}
       <GlowEffect variant="gold" intensity={isAnimating ? 1 : 0.4} pulsing={isAnimating}>
-        <animated.span className="text-xl font-bold text-[var(--color-golden-yellow)] font-mono">
+        <animated.span className="font-mono text-lg font-bold text-[var(--color-golden-yellow)] sm:text-xl">
           {pointsSpring.value.to((p) => {
             const result = Math.floor(p * mult)
             return result.toLocaleString()

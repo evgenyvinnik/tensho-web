@@ -20,6 +20,7 @@ import { Decree, Sticker } from '../../systems/types'
 import { EditionType } from '../../systems/PricingCalculator'
 import { getCurrentLanguage } from '../../i18n'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { Tile } from '../../core/Tile'
 
 const AnimatedDiv = animated('div')
 
@@ -102,6 +103,10 @@ function getItemTypeIcon(itemType: string): string {
       return '\uD83D\uDD2E' // Crystal ball
     case 'CelestialOrb':
       return '\u2B50' // Star
+    case 'VoidScript':
+      return '\uD83C\uDF0C' // Milky Way
+    case 'Tile':
+      return '\uD83C\uDC04' // Mahjong tile
     default:
       return '\u2753' // Question mark
   }
@@ -118,6 +123,10 @@ function getItemTypeJapaneseName(itemType: string): string {
       return '\u904B\u547D\u7B26' // Fate Seal
     case 'CelestialOrb':
       return '\u5929\u7403' // Celestial Orb
+    case 'VoidScript':
+      return '\u865A\u7A7A' // Void
+    case 'Tile':
+      return '\u724C' // Tile
     default:
       return ''
   }
@@ -280,6 +289,22 @@ export function ShopItemCard({
       description = 'Permanently upgrades a yaku family'
       rarity = 'uncommon'
       break
+    case 'VoidScript': {
+      const script = offering.item as { name: string; description: string; rarity: string }
+      name = script.name
+      description = script.description
+      rarity = script.rarity.toLowerCase()
+      break
+    }
+    case 'Tile': {
+      const tile = offering.item as Tile
+      name = tile.displayName
+      description = tile.hasModifiers
+        ? tile.modifierDisplay
+        : 'Add this tile to the run wall'
+      rarity = tile.hasModifiers ? 'uncommon' : 'common'
+      break
+    }
     default:
       name = 'Unknown'
       description = ''

@@ -3,7 +3,7 @@
 > Detailed scoring, economy, and gameplay mechanics for Tensho Mahjong Roguelike.
 
 **Related Documents:**
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — Project overview and technical architecture
+- [ARCHITECTURE.MD](../ARCHITECTURE.MD) — Project overview and technical architecture
 - [GAME_SYSTEMS.md](GAME_SYSTEMS.md) — Core systems (Tile, Decree, Flowers)
 - [UI_DESIGN.md](UI_DESIGN.md) — Visual design guide
 - [ITEM_LIBRARIES.md](../ITEM_LIBRARIES.md) — Complete item lists
@@ -180,15 +180,16 @@ Some Mandates cause tiles to be drawn face-down:
 - Player cannot see rank or suit
 - Tiles sort correctly when auto-arranged (revealing hints)
 - Playing face-down tiles shows "???" for hand type
-- Using consumables briefly reveals the tile
+- Using a targeted consumable reveals the tile for the rest of the current hand
 
 **Face-Down Sources:**
 
 | Source | Effect |
 |--------|--------|
-| **Blind Draw Mandate** | First 5 tiles drawn are face-down |
-| **Fog of War Season** | 1 in 5 tiles drawn are face-down |
-| **Shadowfall** | All tiles face-down after first redraw |
+| **The House** | The opening hand is face-down |
+| **The Wheel** | 1 in 7 tiles drawn is face-down |
+| **The Fish** | Replacement tiles drawn after playing are face-down |
+| **The Mark** | Honor tiles are face-down |
 
 ### 5d. Locked Tiles (拘束牌)
 
@@ -196,6 +197,7 @@ A locked tile cannot be discarded or redrawn:
 - Must be included in any played hand
 - Disrupts optimal hand formation
 - Can only be removed by destroying the tile
+- Displays a cyan lock marker while held
 
 ---
 

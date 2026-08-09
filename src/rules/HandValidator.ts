@@ -23,6 +23,21 @@ export interface ValidationResult {
   errors: string[]
 }
 
+/** Structural exceptions granted by active Decrees. */
+export interface HandValidationOptions {
+  /** Broken Stair Edict: one rank may be skipped inside a sequence. */
+  allowSequenceSkip?: boolean
+  /** False Eye Mandate: one meld may also satisfy the pair role. */
+  meldMayServeAsPair?: boolean
+  /** Celestial Wildcard: one tile may impersonate any regular tile type. */
+  wildcardCount?: number
+}
+
+export interface OneAwayCompletion {
+  completionTile: Tile
+  parsedHand: ParsedHand
+}
+
 /**
  * The 13 terminal and honor tile types for Kokushi
  */
@@ -122,7 +137,8 @@ export function isKokushi(tiles: Tile[]): boolean {
 export function parseStandardForm(
   tiles: Tile[],
   declaredMelds: Meld[] = [],
-  winningTile?: Tile
+  winningTile?: Tile,
+  options: HandValidationOptions = {}
 ): ParsedHand[] {
   const results: ParsedHand[] = []
 
@@ -130,7 +146,7 @@ export function parseStandardForm(
   const neededMelds = 4 - declaredMelds.length
 
   // Find all valid decompositions
-  const decompositions = findDecompositions(tiles, neededMelds)
+  const decompositions = findDecompositions(tiles, neededMelds, options)
 
   for (const decomposition of decompositions) {
     const { melds, pair } = decomposition
@@ -171,9 +187,23 @@ interface Decomposition {
  */
 function findDecompositions(
   tiles: Tile[],
-  neededMelds: number
+  neededMelds: number,
+  options: HandValidationOptions
 ): Decomposition[] {
   const results: Decomposition[] = []
+
+  if (options.meldMayServeAsPair && tiles.length === neededMelds * 3) {
+    const meldResults = findMelds(tiles, neededMelds, options)
+    for (const melds of meldResults) {
+      const pairSource = melds[0]?.tiles.slice(0, 2)
+      if (pairSource?.length === 2) {
+        results.push({
+          melds,
+          pair: new Meld(MeldType.Pair, pairSource, true),
+        })
+      }
+    }
+  }
 
   // Get tile counts
   const counts = new Map<string, Tile[]>()
@@ -193,7 +223,7 @@ function findDecompositions(
 
       // Remove pair tiles and try to form melds with the rest
       const remaining = removeTiles(tiles, pairTiles)
-      const meldResults = findMelds(remaining, neededMelds)
+      const meldResults = findMelds(remaining, neededMelds, options)
 
       for (const melds of meldResults) {
         results.push({ melds, pair })
@@ -221,7 +251,11 @@ function removeTiles(tiles: Tile[], toRemove: Tile[]): Tile[] {
 /**
  * Find all ways to decompose tiles into exactly N melds
  */
-function findMelds(tiles: Tile[], count: number): Meld[][] {
+function findMelds(
+  tiles: Tile[],
+  count: number,
+  options: HandValidationOptions
+): Meld[][] {
   if (count === 0) {
     return tiles.length === 0 ? [[]] : []
   }
@@ -243,29 +277,36 @@ function findMelds(tiles: Tile[], count: number): Meld[][] {
     const tripletTiles = [firstTile, matchingTiles[0], matchingTiles[1]]
     const triplet = new Meld(MeldType.Triplet, tripletTiles, true)
     const afterTriplet = removeTiles(sortedTiles, tripletTiles)
-    const subResults = findMelds(afterTriplet, count - 1)
+    const subResults = findMelds(afterTriplet, count - 1, options)
     for (const sub of subResults) {
       results.push([triplet, ...sub])
     }
   }
 
-  // Try sequence (only for suited tiles)
-  if (firstTile.isSuited && firstTile.rank <= 7) {
-    const second = remaining.find(
-      (t) => t.suit === firstTile.suit && t.rank === firstTile.rank + 1
-    )
-    const third = remaining.find(
-      (t) =>
-        t.suit === firstTile.suit &&
-        t.rank === firstTile.rank + 2 &&
-        (!second || t.id !== second.id)
-    )
+  // Try normal sequences and, when authorized, either one-rank broken stair.
+  if (firstTile.isSuited) {
+    const rankPatterns = [[1, 2]]
+    if (options.allowSequenceSkip) rankPatterns.push([1, 3], [2, 3])
 
-    if (second && third) {
+    for (const [secondOffset, thirdOffset] of rankPatterns) {
+      if (firstTile.rank + thirdOffset > 9) continue
+      const second = remaining.find(
+        (tile) =>
+          tile.suit === firstTile.suit &&
+          tile.rank === firstTile.rank + secondOffset
+      )
+      const third = remaining.find(
+        (tile) =>
+          tile.suit === firstTile.suit &&
+          tile.rank === firstTile.rank + thirdOffset &&
+          (!second || tile.id !== second.id)
+      )
+      if (!second || !third) continue
+
       const sequenceTiles = [firstTile, second, third]
       const sequence = new Meld(MeldType.Sequence, sequenceTiles, true)
       const afterSequence = removeTiles(sortedTiles, sequenceTiles)
-      const subResults = findMelds(afterSequence, count - 1)
+      const subResults = findMelds(afterSequence, count - 1, options)
       for (const sub of subResults) {
         results.push([sequence, ...sub])
       }
@@ -323,7 +364,11 @@ function determineWaitType(
 /**
  * Validate if a hand is complete (can declare a win)
  */
-export function validateHand(hand: Hand, winningTile?: Tile): ValidationResult {
+export function validateHand(
+  hand: Hand,
+  winningTile?: Tile,
+  options: HandValidationOptions = {}
+): ValidationResult {
   const tiles = hand.allTiles
   const declaredMelds = hand.declaredMelds
   const errors: string[] = []
@@ -349,8 +394,42 @@ export function validateHand(hand: Hand, winningTile?: Tile): ValidationResult {
     declaredMelds.length === 0 && isSevenPairs(regularTiles)
   const checkKokushi = declaredMelds.length === 0 && isKokushi(regularTiles)
 
-  // Try to parse as standard form
-  const parsedHands = parseStandardForm(regularTiles, declaredMelds, winningTile)
+  // Try to parse as standard form, including any Court-authorized exceptions.
+  let standardParsedHands = parseStandardForm(
+    regularTiles,
+    declaredMelds,
+    winningTile,
+    options
+  )
+  if (standardParsedHands.length === 0 && (options.wildcardCount ?? 0) > 0) {
+    standardParsedHands = findWildcardParsings(
+      regularTiles,
+      declaredMelds,
+      winningTile,
+      options
+    )
+  }
+  const parsedHands = [...standardParsedHands]
+
+  // Special hands still need a ParsedHand shell so the scoring engine can
+  // detect their Yaku instead of incorrectly falling through to partial play.
+  if ((checkSevenPairs || checkKokushi) && parsedHands.length === 0) {
+    const duplicateKey = [...countByType(regularTiles).entries()].find(
+      ([, count]) => count >= 2
+    )?.[0]
+    if (duplicateKey) {
+      const pairTiles = regularTiles
+        .filter((tile) => tile.typeKey === duplicateKey)
+        .slice(0, 2)
+      parsedHands.push({
+        melds: [],
+        pair: new Meld(MeldType.Pair, pairTiles, true),
+        waitType: WaitType.Tanki,
+        winningTile: winningTile ?? regularTiles[regularTiles.length - 1],
+        isConcealed: true,
+      })
+    }
+  }
 
   const isComplete =
     checkSevenPairs || checkKokushi || parsedHands.length > 0
@@ -359,10 +438,49 @@ export function validateHand(hand: Hand, winningTile?: Tile): ValidationResult {
     isComplete,
     isSevenPairs: checkSevenPairs,
     isKokushi: checkKokushi,
-    isStandardForm: parsedHands.length > 0,
+    isStandardForm: standardParsedHands.length > 0,
     parsedHands,
     errors,
   }
+}
+
+/** Deterministically try each held tile as the single Celestial Wildcard. */
+function findWildcardParsings(
+  tiles: Tile[],
+  declaredMelds: Meld[],
+  winningTile: Tile | undefined,
+  options: HandValidationOptions
+): ParsedHand[] {
+  const candidateTypes: Array<{ suit: TileSuit; maxRank: number }> = [
+    { suit: TileSuit.Manzu, maxRank: 9 },
+    { suit: TileSuit.Pinzu, maxRank: 9 },
+    { suit: TileSuit.Souzu, maxRank: 9 },
+    { suit: TileSuit.Wind, maxRank: 4 },
+    { suit: TileSuit.Dragon, maxRank: 3 },
+  ]
+  const optionsWithoutWildcard = { ...options, wildcardCount: 0 }
+
+  for (let wildcardIndex = 0; wildcardIndex < tiles.length; wildcardIndex++) {
+    const original = tiles[wildcardIndex]
+    for (const { suit, maxRank } of candidateTypes) {
+      for (let rank = 1; rank <= maxRank; rank++) {
+        if (original.suit === suit && original.rank === rank) continue
+        const transformed = [...tiles]
+        transformed[wildcardIndex] = new Tile(suit, rank, original.id)
+        const parsed = parseStandardForm(
+          transformed,
+          declaredMelds,
+          winningTile?.id === original.id
+            ? transformed[wildcardIndex]
+            : winningTile,
+          optionsWithoutWildcard
+        )
+        if (parsed.length > 0) return parsed
+      }
+    }
+  }
+
+  return []
 }
 
 /**
@@ -390,6 +508,50 @@ export function isCompleteHand(
   // Check standard form
   const parsedHands = parseStandardForm(regularTiles, declaredMelds)
   return parsedHands.length > 0
+}
+
+/**
+ * Find a legal tile that completes a 1-shanten hand. This is intentionally
+ * deterministic (tile type order, then rank) so Shanten Clemency produces the
+ * same scoring interpretation for a seeded run.
+ */
+export function findOneAwayCompletion(
+  tiles: Tile[],
+  declaredMelds: Meld[] = [],
+  options: HandValidationOptions = {}
+): OneAwayCompletion | null {
+  const candidates: Array<{ suit: TileSuit; maxRank: number }> = [
+    { suit: TileSuit.Manzu, maxRank: 9 },
+    { suit: TileSuit.Pinzu, maxRank: 9 },
+    { suit: TileSuit.Souzu, maxRank: 9 },
+    { suit: TileSuit.Wind, maxRank: 4 },
+    { suit: TileSuit.Dragon, maxRank: 3 },
+  ]
+  const counts = countByType(tiles)
+
+  for (const { suit, maxRank } of candidates) {
+    for (let rank = 1; rank <= maxRank; rank++) {
+      if ((counts.get(getTileTypeKey(suit, rank)) ?? 0) >= 4) continue
+      const completionTile = new Tile(
+        suit,
+        rank,
+        `shanten-completion-${suit}-${rank}`
+      )
+      const validation = validateHand(
+        new Hand([...tiles, completionTile], declaredMelds),
+        completionTile,
+        options
+      )
+      if (validation.isComplete && validation.parsedHands[0]) {
+        return {
+          completionTile,
+          parsedHand: validation.parsedHands[0],
+        }
+      }
+    }
+  }
+
+  return null
 }
 
 /**

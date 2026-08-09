@@ -28,6 +28,12 @@ export interface GameplayTopBarProps {
   roundType: RoundType
   /** Boss mandate name (if applicable) */
   mandateName?: string
+  /** Upcoming Boss mandate exposed by a reroll Charter */
+  upcomingMandateName?: string
+  /** Whether the paid reroll can currently be used */
+  canRerollMandate?: boolean
+  /** Handler for the paid Boss Mandate reroll */
+  onRerollMandate?: () => void
   /** Translation function for i18n */
   t: TFunction
   /** Handler for exit button */
@@ -74,6 +80,9 @@ export function GameplayTopBar({
   currentAct,
   roundType,
   mandateName,
+  upcomingMandateName,
+  canRerollMandate = false,
+  onRerollMandate,
   t,
   onExit,
   onSettings,
@@ -93,6 +102,18 @@ export function GameplayTopBar({
           {t('gameplay.act')} {currentAct}
         </span>
         <RoundTypeIndicator roundType={roundType} mandateName={mandateName} />
+        {upcomingMandateName && onRerollMandate && (
+          <button
+            type="button"
+            onClick={onRerollMandate}
+            disabled={!canRerollMandate}
+            className="min-h-[44px] max-w-40 rounded border border-[var(--color-metallic-gold)] px-2 py-1 text-xs text-[var(--color-golden-yellow)] disabled:cursor-not-allowed disabled:opacity-45"
+            title={`Reroll upcoming Boss Mandate for 10 Gold: ${upcomingMandateName}`}
+            aria-label={`Reroll ${upcomingMandateName} for 10 Gold`}
+          >
+            ↻ {upcomingMandateName} · 10G
+          </button>
+        )}
       </div>
 
       <div className="flex items-center gap-2">

@@ -24,12 +24,22 @@ export interface ActionBarProps {
   handsRemaining: number
   /** Number of discards remaining this round */
   discardsRemaining: number
+  /** Number of redraw actions remaining */
+  redrawsRemaining: number
+  /** Number of tiles currently staged/selected */
+  selectedTileCount: number
   /** Current round number (1-3) */
   currentRound: number
   /** Handler for skip action */
   onSkip: () => void
+  /** Handler for replacing the selected tiles */
+  onRedraw: () => void
   /** Handler for play hand action */
   onPlayHand: () => void
+  /** Whether Dead Wall Writ can replace the selected tile */
+  canUseDeadWallWrit?: boolean
+  /** Handler for the once-per-round Dead Wall draw */
+  onDeadWallDraw?: () => void
   /** Translation function for i18n */
   t: TFunction
 }
@@ -52,18 +62,26 @@ export function ActionBar({
   wallRemaining,
   handsRemaining,
   discardsRemaining,
+  redrawsRemaining,
+  selectedTileCount,
   currentRound,
   onSkip,
+  onRedraw,
   onPlayHand,
+  canUseDeadWallWrit = false,
+  onDeadWallDraw,
   t: _t,
 }: ActionBarProps) {
-  const canPlay = handsRemaining > 0
+  // With no staged selection, Play Hand submits the full Mahjong hand.
+  const canPlay = handsRemaining > 0 && (selectedTileCount === 0 || selectedTileCount >= 2)
+  const canRedraw =
+    redrawsRemaining > 0 && selectedTileCount > 0 && selectedTileCount <= 3
   const canSkip = currentRound !== 3 // Can't skip boss rounds
 
   return (
-    <div className="flex justify-center items-center gap-4 px-4 py-4 bg-[var(--color-dark-forest)]">
+    <div className="z-20 flex flex-shrink-0 items-center justify-center gap-2 border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] sm:gap-3 sm:px-4">
       {/* Resource indicators */}
-      <div className="flex items-center gap-3 text-sm">
+      <div className="hidden items-center gap-3 text-sm md:flex">
         {/* Wall remaining */}
         <div className="flex items-center gap-1 text-[var(--color-beige-white)]" title="Tiles in wall">
           <span className="text-gray-400">📦</span>
@@ -81,12 +99,32 @@ export function ActionBar({
           <span className="text-red-400">🗑️</span>
           <span>{discardsRemaining}</span>
         </div>
+
+        <div className="flex items-center gap-1 text-[var(--color-beige-white)]" title="Redraws remaining">
+          <span className="text-purple-300">↻</span>
+          <span>{redrawsRemaining}</span>
+        </div>
       </div>
 
       {/* Skip button */}
       <Button variant="secondary" size="sm" onClick={onSkip} disabled={!canSkip}>
         SKIP
       </Button>
+
+      <Button variant="secondary" size="sm" onClick={onRedraw} disabled={!canRedraw}>
+        REDRAW
+      </Button>
+
+      {onDeadWallDraw && (
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={onDeadWallDraw}
+          disabled={!canUseDeadWallWrit}
+        >
+          DEAD DRAW
+        </Button>
+      )}
 
       {/* Play Hand button */}
       <Button variant="primary" size="sm" onClick={onPlayHand} disabled={!canPlay}>

@@ -10,9 +10,11 @@ import {
   TeaHouseSystem,
   TeaHouseState,
   TeaHouseOffering,
+  TeaHouseVisitModifiers,
   TEA_HOUSE_BASE_ITEM_SLOTS,
 } from '../systems/TeaHouseSystem'
 import { ImperialCharter, BlessingPack, Decree } from '../systems/types'
+import { Tile } from '../core/Tile'
 
 // =============================================================================
 // TYPES
@@ -69,7 +71,11 @@ export interface ShopStoreState {
   isAfterBossRound: boolean
 
   // Actions
-  openShop: (ownedDecreeIds: string[], isAfterBossRound: boolean) => void
+  openShop: (
+    ownedDecreeIds: string[],
+    isAfterBossRound: boolean,
+    modifiers?: TeaHouseVisitModifiers
+  ) => void
   closeShop: () => void
   purchaseItem: (offeringId: string, currentGold: number, act: number, round: number) => {
     success: boolean
@@ -126,10 +132,18 @@ export const useShopStore = create<ShopStoreState>()((set, get) => ({
   /**
    * Open the shop and generate new offerings
    */
-  openShop: (ownedDecreeIds: string[], isAfterBossRound: boolean) => {
+  openShop: (
+    ownedDecreeIds: string[],
+    isAfterBossRound: boolean,
+    modifiers: TeaHouseVisitModifiers = {}
+  ) => {
     const { teaHouseSystem } = get()
 
-    const shopState = teaHouseSystem.generateShop(ownedDecreeIds, isAfterBossRound)
+    const shopState = teaHouseSystem.generateShop(
+      ownedDecreeIds,
+      isAfterBossRound,
+      modifiers
+    )
 
     set({
       isShopOpen: true,
@@ -165,12 +179,28 @@ export const useShopStore = create<ShopStoreState>()((set, get) => ({
     act: number,
     round: number
   ) => {
-    const { teaHouseSystem, purchaseHistory, totalGoldSpentThisRun, purchasedCharterIds } = get()
+    const {
+      teaHouseSystem,
+      purchaseHistory,
+      totalGoldSpentThisRun,
+      purchasedCharterIds,
+      itemOfferings,
+      packOfferings,
+      charterOffering,
+    } = get()
 
-    // Find the offering
-    const result = teaHouseSystem.purchaseOffering(offeringId)
+    // Check affordability before TeaHouseSystem marks the offering purchased.
+    const candidate =
+      itemOfferings.find((offering) => offering.id === offeringId) ??
+      packOfferings.find((offering) => offering.id === offeringId) ??
+      (charterOffering?.id === offeringId ? charterOffering : null)
 
-    if (!result.success || !result.offering) {
+    if (
+      !candidate ||
+      candidate.isPurchased ||
+      candidate.isLocked ||
+      currentGold < candidate.finalCost
+    ) {
       return {
         success: false,
         cost: 0,
@@ -179,8 +209,10 @@ export const useShopStore = create<ShopStoreState>()((set, get) => ({
       }
     }
 
-    // Check if player can afford it
-    if (currentGold < result.cost) {
+    // Find the offering
+    const result = teaHouseSystem.purchaseOffering(offeringId)
+
+    if (!result.success || !result.offering) {
       return {
         success: false,
         cost: 0,
@@ -444,6 +476,10 @@ function getItemName(offering: TeaHouseOffering): string {
       return 'Fate Seal'
     case 'CelestialOrb':
       return 'Celestial Orb'
+    case 'VoidScript':
+      return 'Void Script'
+    case 'Tile':
+      return (offering.item as Tile).displayName
     default:
       return 'Unknown Item'
   }

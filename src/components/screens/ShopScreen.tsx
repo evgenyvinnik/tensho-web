@@ -24,6 +24,7 @@ import { Decree, ImperialCharter, BlessingPack } from '../../systems/types'
 import { FateSeal } from '../../systems/FateSealSystem'
 import { CelestialOrb } from '../../systems/CelestialOrbSystem'
 import { VoidScript } from '../../systems/VoidScriptSystem'
+import { Tile } from '../../core/Tile'
 import { Button } from '../ui/Button'
 import { ConfirmPopup } from '../ui/Popup'
 import { ShopHeader } from '../shop/ShopHeader'
@@ -31,6 +32,7 @@ import { ShopItemCard } from '../shop/ShopItemCard'
 import { PackCard } from '../shop/PackCard'
 import { CharterCard } from '../shop/CharterCard'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
+import { eventBus } from '../../game/EventBus'
 
 // =============================================================================
 // BLESSING PACK SYSTEM INSTANCE
@@ -60,24 +62,40 @@ export function ShopScreen() {
   const [packModalOpen, setPackModalOpen] = useState(false)
   const [currentPackOffering, setCurrentPackOffering] = useState<PackOffering | null>(null)
   const [purchasedPackId, setPurchasedPackId] = useState<string | null>(null)
+  const [shopError, setShopError] = useState<string | null>(null)
 
   // Initialize shop on mount
   useEffect(() => {
     if (!shopStore.isShopOpen) {
       const ownedDecreeIds = game.state.decreeSystem.getOwnedDecrees().map((d) => d.id)
 
-      // Determine if this is after a boss round (round 3 of an act)
-      const isAfterBossRound = game.currentRound === 3 || game.currentRound === 0
+      const isAfterBossRound = game.state.lastCompletedRoundType === 'Boss'
 
-      shopStore.openShop(ownedDecreeIds, isAfterBossRound)
+      const omenModifiers = game.prepareShopVisit()
+      shopStore.openShop(ownedDecreeIds, isAfterBossRound, omenModifiers)
 
-      // Generate pack offerings
-      blessingPackSystem.generatePackOfferings({
+      const teaHousePacks = shopStore.teaHouseSystem
+        .getState()
+        .packOfferings.map((offering) => offering.item as BlessingPack)
+      const charterEffects = game.state.charterSystem.calculateEffects()
+      const favoredOrb = charterEffects.celestialFavor
+        ? game.state.celestialOrbSystem.getOrbForMostPlayedYaku()
+        : null
+      blessingPackSystem.generateOfferingsForPacks(teaHousePacks, {
         ownedDecreeIds,
         currentAct: game.currentAct,
+        preferredYaku: favoredOrb?.effect.targetYaku,
+        voidScriptsInArcana: charterEffects.voidInArcana,
       })
     }
-  }, [shopStore, game.state.decreeSystem, game.currentRound, game.currentAct])
+  }, [
+    shopStore,
+    game,
+    game.prepareShopVisit,
+    game.state.decreeSystem,
+    game.state.lastCompletedRoundType,
+    game.currentAct,
+  ])
 
   // Get available offerings
   const availableItems = shopStore.getAvailableItems()
@@ -94,6 +112,29 @@ export function ShopScreen() {
   // Handle item purchase
   const handleItemPurchase = useCallback(
     (offering: TeaHouseOffering) => {
+      const canReceive = (() => {
+        if (offering.itemType === 'Decree') {
+          return game.canAddDecree(offering.item as Decree)
+        }
+        if (offering.itemType === 'ImperialCharter') {
+          return game.canAddImperialCharter(offering.item as ImperialCharter)
+        }
+        if (offering.itemType === 'Tile') return true
+        return game.canAddConsumable()
+      })()
+
+      if (!canReceive) {
+        setShopError(
+          offering.itemType === 'Decree'
+            ? t('shop.decreeSlotsFull', 'No Decree slots are available.')
+            : offering.itemType === 'ImperialCharter'
+              ? t('shop.charterUnavailable', 'This Charter is not available for this run.')
+              : t('shop.consumableSlotsFull', 'No consumable slots are available.')
+        )
+        setConfirmOffering(null)
+        return
+      }
+
       const result = shopStore.purchaseItem(
         offering.id,
         game.gold,
@@ -103,7 +144,16 @@ export function ShopScreen() {
 
       if (result.success && result.offering) {
         // Deduct gold from game
-        game.purchaseItem(offering.id, result.cost)
+        const charged = game.purchaseItem(
+          offering.id,
+          result.cost,
+          result.offering.itemType
+        )
+        if (!charged) {
+          setShopError(t('shop.purchaseFailed', 'Purchase could not be completed.'))
+          setConfirmOffering(null)
+          return
+        }
 
         // Handle specific item types
         if (result.offering.itemType === 'Decree') {
@@ -111,21 +161,29 @@ export function ShopScreen() {
           game.addDecree(decree)
         } else if (result.offering.itemType === 'ImperialCharter') {
           const charter = result.offering.item as ImperialCharter
-          shopStore.applyCharter(charter)
+          game.addImperialCharter(charter)
         } else if (result.offering.itemType === 'FateSeal') {
           const seal = result.offering.item as FateSeal
           game.addFateSeal(seal)
         } else if (result.offering.itemType === 'CelestialOrb') {
           const orb = result.offering.item as CelestialOrb
           game.addCelestialOrb(orb)
+        } else if (result.offering.itemType === 'VoidScript') {
+          const script = result.offering.item as VoidScript
+          game.addVoidScript(script)
+        } else if (result.offering.itemType === 'Tile') {
+          game.addTileToWall(result.offering.item as Tile)
         }
 
         setSelectedItemId(null)
+        setShopError(null)
+      } else {
+        setShopError(t('shop.purchaseFailed', 'Purchase could not be completed.'))
       }
 
       setConfirmOffering(null)
     },
-    [shopStore, game]
+    [shopStore, game, t]
   )
 
   // Handle pack purchase
@@ -134,7 +192,10 @@ export function ShopScreen() {
       const pack = offering.item as BlessingPack
 
       // Check if player can afford
-      if (game.gold < offering.finalCost) return
+      if (game.gold < offering.finalCost) {
+        setShopError(t('shop.notEnoughGold', 'Not enough gold.'))
+        return
+      }
 
       // Purchase the pack
       const result = shopStore.purchaseItem(
@@ -145,7 +206,7 @@ export function ShopScreen() {
       )
 
       if (result.success) {
-        game.purchaseItem(offering.id, result.cost)
+        game.purchaseItem(offering.id, result.cost, 'BlessingPack')
 
         // Find the corresponding pack offering in the system
         const packOfferingFromSystem = packOfferings.find((p) => p.pack.id === pack.id)
@@ -154,14 +215,22 @@ export function ShopScreen() {
           // Open the pack
           const opened = blessingPackSystem.openPack(pack.id)
           if (opened) {
+            eventBus.emit('packOpened', {
+              packId: pack.id,
+              packType: pack.type,
+              packSize: pack.size,
+            })
             setCurrentPackOffering(opened)
             setPurchasedPackId(pack.id)
             setPackModalOpen(true)
           }
         }
+        setShopError(null)
+      } else {
+        setShopError(t('shop.purchaseFailed', 'Purchase could not be completed.'))
       }
     },
-    [shopStore, game, packOfferings]
+    [shopStore, game, packOfferings, t]
   )
 
   // Handle pack opening confirmation
@@ -179,15 +248,22 @@ export function ShopScreen() {
 
       // Apply selected contents
       for (const content of selectedContents) {
+        let added = false
         if (content.type === 'Decree') {
           const decree = content.data as Decree
-          game.addDecree(decree)
+          added = game.addDecree(decree, 'pack_open')
         } else if (content.type === 'FateSeal') {
-          game.addFateSeal(content.data as FateSeal)
+          added = game.addFateSeal(content.data as FateSeal, 'pack_open')
         } else if (content.type === 'CelestialOrb') {
-          game.addCelestialOrb(content.data as CelestialOrb)
+          added = game.addCelestialOrb(content.data as CelestialOrb, 'pack_open')
         } else if (content.type === 'VoidScript') {
-          game.addVoidScript(content.data as VoidScript)
+          added = game.addVoidScript(content.data as VoidScript, 'pack_open')
+        } else if (content.type === 'Tile') {
+          added = game.addTileToWall(content.data as Tile)
+        }
+
+        if (!added) {
+          setShopError(t('shop.inventoryFull', 'One or more pack rewards could not be added because inventory is full.'))
         }
       }
 
@@ -195,7 +271,7 @@ export function ShopScreen() {
       setCurrentPackOffering(null)
       setPurchasedPackId(null)
     },
-    [currentPackOffering, purchasedPackId, game]
+    [currentPackOffering, purchasedPackId, game, t]
   )
 
   // Handle pack skip
@@ -215,9 +291,16 @@ export function ShopScreen() {
     const result = shopStore.rerollShop(ownedDecreeIds, game.gold)
 
     if (result.success) {
-      game.purchaseItem('reroll', result.cost)
+      game.purchaseItem('reroll', result.cost, 'Reroll')
+      eventBus.emit('shopRerolled', {
+        cost: result.cost,
+        newRerollCost: shopStore.teaHouseSystem.getCurrentRerollCost(),
+      })
+      setShopError(null)
+    } else {
+      setShopError(t('shop.rerollFailed', 'Unable to reroll the shop.'))
     }
-  }, [shopStore, game, game.state.decreeSystem])
+  }, [shopStore, game, t])
 
   // Handle next round
   const handleNextRound = useCallback(() => {
@@ -347,6 +430,12 @@ export function ShopScreen() {
       </div>
 
       {/* Bottom action bar */}
+      {shopError && (
+        <div role="alert" className="mx-4 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100">
+          {shopError}
+        </div>
+      )}
+
       <div className="px-4 py-4 bg-[var(--color-dark-forest)] border-t-2 border-[var(--color-saddle-brown)]">
         <Button variant="primary" onClick={handleNextRound} className="w-full text-lg">
           {t('shop.nextRound', 'Continue to Next Round')}

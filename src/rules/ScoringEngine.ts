@@ -80,6 +80,8 @@ export interface ScoringContext {
   winningTile: Tile
   additiveBonus?: number // Extra additive bonuses from game systems
   multiplicativeBonus?: number // Extra multiplicative bonuses from game systems
+  debuffedTileIds?: ReadonlySet<string> // Suppressed for points/marks, still valid structurally
+  tanyaoAllowsTerminals?: boolean // Tanyao Dispensation rule rewrite
 }
 
 /**
@@ -152,14 +154,17 @@ export function calculateBasePoints(
  * Calculate the complete score for a winning hand
  */
 export function calculateScore(context: ScoringContext): ScoreBreakdown {
+  const scoringTiles = context.debuffedTileIds
+    ? context.tiles.filter((tile) => !context.debuffedTileIds?.has(tile.id))
+    : context.tiles
+
   // 1. Calculate base points
-  const { tilePoints, structurePoints, basePoints } = calculateBasePoints(
-    context.tiles,
-    context.parsedHand
-  )
+  const tilePoints = calculateTilePoints(scoringTiles)
+  const structurePoints = calculateStructurePoints(context.parsedHand)
+  const basePoints = tilePoints + structurePoints
 
   // 2. Calculate modifier bonuses from played tiles
-  const modifierResult = tileModifierSystem.scoreTilesWithModifiers(context.tiles, 'played')
+  const modifierResult = tileModifierSystem.scoreTilesWithModifiers(scoringTiles, 'played')
   const modifierChips = modifierResult.totalChips
   const modifierMult = modifierResult.totalMult
   const modifierMultiplier = modifierResult.totalMultiplier
@@ -167,12 +172,12 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const shatteredTiles = modifierResult.shatteredTileIds
 
   // 3. Calculate red five bonus chips
-  const redFiveCount = countRedFives(context.tiles)
-  const redFiveChips = redFiveSystem.calculateBonus(context.tiles)
+  const redFiveCount = countRedFives(scoringTiles)
+  const redFiveChips = redFiveSystem.calculateBonus(scoringTiles)
 
   // Track retriggered tiles (Red Seal)
   const retriggeredTiles: string[] = []
-  for (const tile of context.tiles) {
+  for (const tile of scoringTiles) {
     if (tile.retriggers > 0) {
       retriggeredTiles.push(tile.id)
     }
@@ -189,6 +194,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     seatWind: context.seatWind,
     roundWind: context.roundWind,
     winningTile: context.winningTile,
+    tanyaoAllowsTerminals: context.tanyaoAllowsTerminals,
   }
 
   const detectedYaku = detectYaku(yakuContext)
@@ -241,6 +247,8 @@ export function createScoringContext(
     winningTile?: Tile
     additiveBonus?: number
     multiplicativeBonus?: number
+    debuffedTileIds?: ReadonlySet<string>
+    tanyaoAllowsTerminals?: boolean
   } = {}
 ): ScoringContext {
   return {
@@ -255,6 +263,8 @@ export function createScoringContext(
     winningTile: options.winningTile ?? tiles[tiles.length - 1],
     additiveBonus: options.additiveBonus,
     multiplicativeBonus: options.multiplicativeBonus,
+    debuffedTileIds: options.debuffedTileIds,
+    tanyaoAllowsTerminals: options.tanyaoAllowsTerminals,
   }
 }
 

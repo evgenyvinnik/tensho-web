@@ -55,7 +55,7 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 | **Platforms** | Web (PWA), iOS, Android (installable) |
 | **Rendering** | 2D (Canvas/DOM, tile-based) |
 | **Orientation** | Portrait-first (mobile), Responsive (desktop) |
-| **State** | Zustand (18 stores) |
+| **State** | `GameOrchestrator` for active runs; Zustand for UI, shop, and legacy feature slices |
 | **Animations** | React Spring |
 | **Testing** | Vitest + Playwright |
 | **i18n** | i18next (13 locales) |
@@ -259,30 +259,45 @@ src/
 ### Architecture Goals
 
 - **Data-driven rules** — TypeScript definition files for all game content
-- **Deterministic RNG** — Seeded random for reproducibility
+- **Deterministic RNG** — Seed the wall and starter content; migrate remaining gameplay randomness to the run seed
 - **Separation of concerns** — Rules engine completely independent from UI
 - **Modular systems** — Each system (Decree/Flower/Season) pluggable
 - **Platform abstraction** — Monetization behind interfaces for easy swapping
 
 ### Game Loop Architecture: GameOrchestrator
 
-The game uses a dual-state pattern:
+The active run uses one authoritative runtime state:
 
 1. **GameOrchestrator** (`src/game/GameOrchestrator.ts`) — Central game loop controller that owns:
    - Complete game state (`OrchestratorState`)
    - Action validation and execution via `ActionProcessor`
-   - System integration (DecreeSystem, FlowerSystem, SeasonSystem, RoundManager)
+   - System integration (Decrees, Flowers, Seasons, Charters, Omens, Stakes, Orbs, debuffs, and `RoundManager`)
    - Wall/hand management and scoring
 
-2. **Zustand Stores** (`src/stores/`) — UI-focused state slices:
-   - `gameStore` — Session state (act, round, score, gold, phase)
-   - `handStore` — Current hand tiles and melds
-   - `wallStore` — Wall and dead wall state
-   - `decreeStore` — Active decrees
-   - `floraStore` — Collected flowers and active seasons
-   - And 13 more specialized stores...
+2. **`useGameController`** (`src/game/useGameController.ts`) — React binding that reads orchestrator snapshots, dispatches actions, and rerenders from `EventBus` events.
 
-The orchestrator is the source of truth for game logic; stores may reflect orchestrator state for UI binding.
+3. **Zustand stores** (`src/stores/`) — Settings, meta-progression, isolated screen state, and legacy feature APIs. The Tea House store owns generated offers and purchase history, but purchased gold/items are committed through the orchestrator.
+
+React screens must not independently draw/refill tiles, advance rounds, deduct run gold, or mirror the current hand. Legacy `gameStore`, `handStore`, and `wallStore` values are not authoritative for the active browser loop.
+
+### Runtime State Machine
+
+```mermaid
+stateDiagram-v2
+  [*] --> menu
+  menu --> gameplay: startNewRun
+  gameplay --> gameplay: draw / discard / redraw / play
+  gameplay --> shop: target reached
+  gameplay --> gameplay: skip Small or Large
+  gameplay --> gameOver: hands exhausted below target
+  shop --> gameplay: exitShop
+  gameOver --> gameplay: play again
+  gameOver --> menu: reset
+```
+
+Every completed Small, Large, or Boss round enters the Tea House. Exiting advances to the next round; exiting after a Boss advances to the next Act first. A skipped Small/Large round awards an Omen and advances directly without visiting the Tea House.
+
+For each play, discard, or redraw, validation, resource consumption, tile movement, replacement draws, effect execution, and event emission happen in the orchestrator before control returns to React.
 
 ### Event Bus Pattern
 

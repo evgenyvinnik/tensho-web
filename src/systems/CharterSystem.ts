@@ -298,11 +298,11 @@ export class CharterSystem {
         break
 
       case 'hands_penalty':
-        effects.handsPenalty += effect.value as number
+        effects.handsPenalty += Math.abs(effect.value as number)
         break
 
       case 'redraws_penalty':
-        effects.redrawsPenalty += effect.value as number
+        effects.redrawsPenalty += Math.abs(effect.value as number)
         break
 
       case 'mandate_reroll':

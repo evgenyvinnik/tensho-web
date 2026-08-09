@@ -67,21 +67,30 @@ export function ScorePanel({
   const progressPercentage = Math.min(100, (currentScore / targetScore) * 100)
 
   return (
-    <div className="flex-shrink-0 mx-4 my-2 p-4 bg-[var(--color-dark-forest)] rounded-lg text-center relative">
-      {/* Target label */}
-      <p className="text-sm text-[var(--color-beige-white)] opacity-70 mb-1">
-        {t('gameplay.target').toUpperCase()}
-      </p>
+    <div className="relative mx-3 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-2 text-center shadow-lg">
+      <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
+        <div className="flex min-w-0 items-baseline gap-2 text-left">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
+            {t('gameplay.target')}
+          </span>
+          <GlowEffect variant="gold" intensity={hasReachedTarget ? 0.8 : 0.4} pulsing={hasReachedTarget}>
+            <span data-tutorial="score-target" className="text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
+              {targetScore.toLocaleString()}
+            </span>
+          </GlowEffect>
+        </div>
 
-      {/* Target score with glow */}
-      <GlowEffect variant="gold" intensity={hasReachedTarget ? 0.8 : 0.4} pulsing={hasReachedTarget}>
-        <p data-tutorial="score-target" className="text-3xl font-bold text-[var(--color-golden-yellow)]">
-          {targetScore.toLocaleString()}
-        </p>
-      </GlowEffect>
+        <div className="flex min-w-0 items-baseline gap-2 text-right">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
+            {t('gameplay.score')}
+          </span>
+          <span data-tutorial="current-score" className="text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
+            {currentScore.toLocaleString()}
+          </span>
+        </div>
+      </div>
 
-      {/* Points x Mult display */}
-      <div className="my-3">
+      <div className="mt-1">
         <PointsMultDisplay
           points={currentPoints || currentScore}
           mult={currentMult}
@@ -89,14 +98,15 @@ export function ScorePanel({
         />
       </div>
 
-      {/* Current score */}
-      <p data-tutorial="current-score" className="text-lg text-[var(--color-beige-white)]">
-        {t('gameplay.score').toUpperCase()}:{' '}
-        <span className="font-bold text-[var(--color-golden-yellow)]">{currentScore.toLocaleString()}</span>
-      </p>
-
       {/* Progress bar */}
-      <div className="w-full h-2 bg-gray-800 rounded-full mt-2 overflow-hidden">
+      <div
+        className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-gray-800"
+        role="progressbar"
+        aria-label={`${currentScore} of ${targetScore} points`}
+        aria-valuenow={currentScore}
+        aria-valuemin={0}
+        aria-valuemax={targetScore}
+      >
         <div
           className={`h-full rounded-full transition-all duration-500 ${
             hasReachedTarget ? 'bg-green-500' : 'bg-[var(--color-vibrant-orange)]'

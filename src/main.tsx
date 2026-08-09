@@ -5,6 +5,11 @@ import './index.css'
 import './i18n' // Initialize i18next
 import App from './App.tsx'
 import { AppErrorBoundary } from './components/ui/ErrorBoundary'
+import { initializeMetaProgressionBridge } from './game/MetaProgressionBridge'
+
+// Install persisted Archive, lifetime progression, and achievement tracking
+// before any run can emit gameplay events.
+initializeMetaProgressionBridge()
 
 // Register service worker for PWA
 const updateSW = registerSW({

@@ -3,7 +3,7 @@
 > Core game systems and mechanics for Tensho Mahjong Roguelike.
 
 **Related Documents:**
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — Project overview and technical architecture
+- [ARCHITECTURE.MD](../ARCHITECTURE.MD) — Project overview and technical architecture
 - [GAME_MECHANICS.md](GAME_MECHANICS.md) — Detailed scoring and economy mechanics
 - [UI_DESIGN.md](UI_DESIGN.md) — Visual design guide
 - [ITEM_LIBRARIES.md](../ITEM_LIBRARIES.md) — Complete item lists

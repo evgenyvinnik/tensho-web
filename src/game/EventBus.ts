@@ -52,6 +52,7 @@ export type GameEvent =
   | 'seasonActivated'
   | 'seasonCorrupted'
   | 'charterRedeemed'
+  | 'packOpened'
 
   // Consumables
   | 'consumableAcquired'
@@ -129,19 +130,27 @@ export interface GameEventData {
   itemSold: { itemType: string; itemId: string; value: number }
 
   // Items
-  decreeAcquired: { decreeId: string; decreeName: string; rarity: string }
+  decreeAcquired: {
+    decreeId: string
+    decreeName: string
+    rarity: string
+    source?: 'starting' | 'purchase' | 'pack_open' | 'generated'
+  }
   decreeTriggered: { decreeId: string; effect: string }
   decreeDebuffed: { decreeId: string; reason: string }
   flowerCollected: { flowerType: string; totalFlowers: number }
   seasonActivated: { seasonType: string; effect: string }
   seasonCorrupted: { corruptedType: string; effect: string }
-  charterRedeemed: { charterId: string; charterName: string }
+  charterRedeemed: { charterId: string; charterName: string; actNumber: number }
+  packOpened: { packId: string; packType: string; packSize: string }
 
   // Consumables
   consumableAcquired: {
     consumableType: 'FateSeal' | 'CelestialOrb' | 'VoidScript'
+    itemId: string
     instanceId: string
     name: string
+    source?: 'purchase' | 'pack_open' | 'generated'
   }
   fateSealUsed: { sealId: string; effect: string }
   celestialOrbUsed: { orbId: string; yakuCategory: string; newLevel: number }

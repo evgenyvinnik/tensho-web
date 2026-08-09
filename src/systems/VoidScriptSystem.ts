@@ -884,11 +884,6 @@ export class VoidScriptSystem {
       message: `${script.name}: Destroyed ${destroyCount} tile(s), created ${createCount} ${createType} tile(s)`,
       effects: [
         {
-          type: 'tiles_destroyed',
-          description: `Destroyed ${destroyCount} tile(s)`,
-          value: destroyCount,
-        },
-        {
           type: 'tiles_created',
           description: `Created ${createCount} ${createType} tile(s)`,
           value: createCount,

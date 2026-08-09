@@ -54,6 +54,12 @@ export interface UseSealAction {
   targets?: string[]
 }
 
+/** Use a Celestial Orb to permanently upgrade its attuned yaku. */
+export interface UseOrbAction {
+  type: 'useOrb'
+  orbId: string
+}
+
 /**
  * Use Void Script action
  */
@@ -79,6 +85,7 @@ export type PlayerAction =
   | PlayAction
   | RedrawAction
   | UseSealAction
+  | UseOrbAction
   | UseScriptAction
   | SkipAction
 
@@ -213,6 +220,13 @@ export interface GameStateSnapshot {
   // Resources
   gold: number
 
+  // Consumable inventory and round-scoped usage
+  fateSealIds: string[]
+  celestialOrbIds: string[]
+  voidScriptIds: string[]
+  fateSealUsesRemaining: number
+  voidScriptUsesRemaining: number
+
   // Restrictions from mandates
   mandateRestrictions?: MandateRestrictions
 }
@@ -251,6 +265,8 @@ export class ActionProcessor {
         return this.validateRedraw(action, state)
       case 'useSeal':
         return this.validateUseSeal(action, state)
+      case 'useOrb':
+        return this.validateUseOrb(action, state)
       case 'useScript':
         return this.validateUseScript(action, state)
       case 'skip':
@@ -370,9 +386,9 @@ export class ActionProcessor {
       errors.push('No redraws remaining')
     }
 
-    // Check tile count (max 5 tiles at once)
-    if (action.tileIds.length > 5) {
-      errors.push('Can only redraw up to 5 tiles at once')
+    // GAME_MECHANICS.md defines redraws as replacing up to 3 tiles.
+    if (action.tileIds.length > 3) {
+      errors.push('Can only redraw up to 3 tiles at once')
     }
 
     if (action.tileIds.length === 0) {
@@ -403,16 +419,21 @@ export class ActionProcessor {
    */
   private validateUseSeal(
     action: UseSealAction,
-    _state: GameStateSnapshot
+    state: GameStateSnapshot
   ): ValidationResult {
     const errors: string[] = []
 
     if (!action.sealId) {
       errors.push('No seal specified')
+    } else if (!state.fateSealIds.includes(action.sealId)) {
+      errors.push('Seal not found in inventory')
     }
 
-    // Additional validation would check if player owns the seal
-    // and if targets are valid for the seal type
+    if (state.fateSealUsesRemaining <= 0) {
+      errors.push('No Fate Seal uses remaining this round')
+    }
+
+    errors.push(...this.validateConsumableTargets(action.targets, state))
 
     return {
       isValid: errors.length === 0,
@@ -425,21 +446,61 @@ export class ActionProcessor {
    */
   private validateUseScript(
     action: UseScriptAction,
-    _state: GameStateSnapshot
+    state: GameStateSnapshot
   ): ValidationResult {
     const errors: string[] = []
 
     if (!action.scriptId) {
       errors.push('No script specified')
+    } else if (!state.voidScriptIds.includes(action.scriptId)) {
+      errors.push('Script not found in inventory')
     }
 
-    // Additional validation would check if player owns the script
-    // and if targets are valid for the script type
+    if (state.voidScriptUsesRemaining <= 0) {
+      errors.push('No Void Script uses remaining this round')
+    }
+
+    errors.push(...this.validateConsumableTargets(action.targets, state))
 
     return {
       isValid: errors.length === 0,
       errors,
     }
+  }
+
+  private validateUseOrb(
+    action: UseOrbAction,
+    state: GameStateSnapshot
+  ): ValidationResult {
+    if (!action.orbId) {
+      return { isValid: false, errors: ['No orb specified'] }
+    }
+
+    if (!state.celestialOrbIds.includes(action.orbId)) {
+      return { isValid: false, errors: ['Orb not found in inventory'] }
+    }
+
+    return { isValid: true, errors: [] }
+  }
+
+  private validateConsumableTargets(
+    targets: string[] | undefined,
+    state: GameStateSnapshot
+  ): string[] {
+    if (!targets) return []
+
+    const errors: string[] = []
+    if (new Set(targets).size !== targets.length) {
+      errors.push('Consumable targets must be unique')
+    }
+
+    for (const tileId of targets) {
+      if (!state.handTiles.some((tile) => tile.id === tileId)) {
+        errors.push(`Tile ${tileId} not found in hand`)
+      }
+    }
+
+    return errors
   }
 
   /**
@@ -473,6 +534,18 @@ export class ActionProcessor {
       state.handTiles.length > 0
     ) {
       available.push('redraw')
+    }
+
+    if (state.fateSealUsesRemaining > 0 && state.fateSealIds.length > 0) {
+      available.push('useSeal')
+    }
+
+    if (state.celestialOrbIds.length > 0) {
+      available.push('useOrb')
+    }
+
+    if (state.voidScriptUsesRemaining > 0 && state.voidScriptIds.length > 0) {
+      available.push('useScript')
     }
 
     available.push('skip')

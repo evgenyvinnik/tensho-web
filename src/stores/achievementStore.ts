@@ -56,6 +56,7 @@ export interface AchievementStats {
   // Progression
   highestActReached: number
   runsCompleted: number
+  runsWon: number
 
   // Cumulative
   totalTilesPlayed: number
@@ -70,6 +71,7 @@ export interface AchievementStats {
   highestSingleHandScore: number
   totalWindYakuScored: number
   totalDragonYakuScored: number
+  totalYakumanScored: number
 
   // Skill
   fastestWinRounds: number
@@ -117,6 +119,7 @@ export interface AchievementState {
 const DEFAULT_STATS: AchievementStats = {
   highestActReached: 0,
   runsCompleted: 0,
+  runsWon: 0,
   totalTilesPlayed: 0,
   totalTilesDiscarded: 0,
   totalGoldEarned: 0,
@@ -127,6 +130,7 @@ const DEFAULT_STATS: AchievementStats = {
   highestSingleHandScore: 0,
   totalWindYakuScored: 0,
   totalDragonYakuScored: 0,
+  totalYakumanScored: 0,
   fastestWinRounds: Infinity,
   chartersPurchasedByAct4: 0,
   fateSealsDiscovered: 0,
@@ -576,7 +580,7 @@ export const useAchievementStore = create<AchievementState>()(
               shouldUnlock = stats.highestActReached >= (condition.target || 0)
               break
             case 'win_run':
-              shouldUnlock = stats.runsCompleted > 0
+              shouldUnlock = (stats.runsWon ?? 0) > 0
               break
             case 'tiles_played':
               shouldUnlock = stats.totalTilesPlayed >= (condition.target || 0)
@@ -592,6 +596,30 @@ export const useAchievementStore = create<AchievementState>()(
               break
             case 'fate_seals_used':
               shouldUnlock = stats.totalFateSealsUsed >= (condition.target || 0)
+              break
+            case 'charters_by_act':
+              shouldUnlock = stats.chartersPurchasedByAct4 >= (condition.target || 0)
+              break
+            case 'score_yakuman':
+              shouldUnlock = (stats.totalYakumanScored ?? 0) > 0
+              break
+            case 'wind_yaku_in_run':
+              shouldUnlock = stats.totalWindYakuScored >= (condition.target || 0)
+              break
+            case 'discover_all_seals':
+              shouldUnlock = stats.fateSealsDiscovered >= 22
+              break
+            case 'discover_all_orbs':
+              shouldUnlock = stats.celestialOrbsDiscovered >= 13
+              break
+            case 'discover_all_scripts':
+              shouldUnlock = stats.voidScriptsDiscovered >= 20
+              break
+            case 'discover_all_charters':
+              shouldUnlock = stats.chartersDiscovered >= 32
+              break
+            case 'discover_all':
+              shouldUnlock = stats.totalItemsDiscovered >= 352
               break
             case 'win_in_rounds':
               shouldUnlock = stats.fastestWinRounds <= (condition.target || Infinity)
@@ -637,11 +665,27 @@ export const useAchievementStore = create<AchievementState>()(
     }),
     {
       name: 'tensho-achievements',
-      version: 1,
+      version: 2,
       partialize: (state) => ({
         achievements: state.achievements,
         stats: state.stats,
       }),
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<
+          Pick<AchievementState, 'achievements' | 'stats'>
+        >
+        return {
+          ...current,
+          achievements: {
+            ...current.achievements,
+            ...saved.achievements,
+          },
+          stats: {
+            ...DEFAULT_STATS,
+            ...saved.stats,
+          },
+        }
+      },
     }
   )
 )

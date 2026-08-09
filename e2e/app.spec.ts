@@ -13,8 +13,8 @@ test.describe('Application Smoke Tests', () => {
     // Wait for the app to load
     await page.waitForLoadState('networkidle')
 
-    // The page should have loaded successfully
-    expect(page.url()).toContain('localhost')
+    await expect(page).toHaveURL(/\/en$/)
+    await expect(page.getByRole('heading', { name: 'TENSHO' })).toBeVisible()
   })
 
   test('should display the main menu', async ({ page }) => {
@@ -61,6 +61,45 @@ test.describe('Application Smoke Tests', () => {
 })
 
 test.describe('Game Navigation', () => {
+  test('starts a real round and resolves a play through the core loop', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+
+    await expect(page).toHaveURL(/\/en\/play$/)
+    await expect(page.getByText('300', { exact: true })).toBeVisible()
+    await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
+    const initialHands = Number(
+      (await page.getByTitle('Hands remaining').textContent())?.match(/\d+/)?.[0]
+    )
+    expect(initialHands).toBeGreaterThan(0)
+
+    const tutorialDismiss = page.getByRole('button', { name: 'Got it' })
+    if (await tutorialDismiss.isVisible()) {
+      await tutorialDismiss.click()
+    }
+
+    const initialTileLabels = await page.locator('img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]').evaluateAll(
+      (images) => images.map((image) => image.getAttribute('alt'))
+    )
+
+    await page.getByRole('button', { name: 'PLAY HAND' }).click()
+
+    await expect(async () => {
+      const path = new URL(page.url()).pathname
+      if (path.endsWith('/shop')) {
+        await expect(page.getByText('Round Complete!', { exact: true })).toBeVisible()
+        return
+      }
+
+      await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
+      await expect(page.getByTitle('Hands remaining')).toContainText(String(initialHands - 1))
+      const nextTileLabels = await page.locator('img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]').evaluateAll(
+        (images) => images.map((image) => image.getAttribute('alt'))
+      )
+      expect(nextTileLabels).not.toEqual(initialTileLabels)
+    }).toPass()
+  })
+
   test('should have clickable buttons', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')

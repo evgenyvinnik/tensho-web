@@ -759,7 +759,8 @@ export const OMEN_RARITY_WEIGHTS: Record<OmenRarity, number> = {
  */
 export function getRandomOmen(
   roundType: 'Small' | 'Large',
-  excludeIds: string[] = []
+  excludeIds: string[] = [],
+  random: () => number = Math.random
 ): OmenDefinition | null {
   const availableOmens =
     roundType === 'Small' ? SMALL_ROUND_OMENS : LARGE_ROUND_OMENS
@@ -776,7 +777,7 @@ export function getRandomOmen(
   )
 
   // Random selection based on weights
-  let roll = Math.random() * totalWeight
+  let roll = random() * totalWeight
   for (const omen of filteredOmens) {
     roll -= OMEN_RARITY_WEIGHTS[omen.rarity]
     if (roll <= 0) {
@@ -794,7 +795,8 @@ export function getRandomOmen(
  */
 export function getRandomOmenForRound(
   roundType: 'Small' | 'Large',
-  excludeIds: string[] = []
+  excludeIds: string[] = [],
+  random: () => number = Math.random
 ): OmenDefinition | null {
   // Large rounds have boosted rare/legendary rates
   const adjustedWeights: Record<OmenRarity, number> =
@@ -822,7 +824,7 @@ export function getRandomOmenForRound(
   )
 
   // Random selection based on weights
-  let roll = Math.random() * totalWeight
+  let roll = random() * totalWeight
   for (const omen of filteredOmens) {
     roll -= adjustedWeights[omen.rarity]
     if (roll <= 0) {
