@@ -5,7 +5,7 @@
  * contextually as the player encounters each game mechanic.
  */
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   ProgressiveHint,
   TutorialTrigger,
@@ -138,7 +138,10 @@ export function useProgressiveTutorial(
 
       // Get hints for this trigger that haven't been shown
       const availableHints = getHintsForTrigger(allHints, trigger).filter(
-        (hint) => !shownHints.has(hint.id)
+        (hint) =>
+          !shownHints.has(hint.id) &&
+          currentHint?.id !== hint.id &&
+          !hintQueue.some((queuedHint) => queuedHint.id === hint.id)
       )
 
       if (availableHints.length === 0) return
@@ -152,7 +155,7 @@ export function useProgressiveTutorial(
         setHintQueue(availableHints)
       }
     },
-    [allHints, shownHints, isDisabled, currentHint]
+    [allHints, shownHints, isDisabled, currentHint, hintQueue]
   )
 
   // Dismiss the current hint
@@ -202,15 +205,28 @@ export function useProgressiveTutorial(
     [shownHints]
   )
 
-  return {
-    currentHint,
-    hintQueue,
-    isDisabled,
-    triggerHints,
-    dismissHint,
-    disableHints,
-    enableHints,
-    resetAllHints,
-    hasHintBeenShown,
-  }
+  return useMemo(
+    () => ({
+      currentHint,
+      hintQueue,
+      isDisabled,
+      triggerHints,
+      dismissHint,
+      disableHints,
+      enableHints,
+      resetAllHints,
+      hasHintBeenShown,
+    }),
+    [
+      currentHint,
+      hintQueue,
+      isDisabled,
+      triggerHints,
+      dismissHint,
+      disableHints,
+      enableHints,
+      resetAllHints,
+      hasHintBeenShown,
+    ]
+  )
 }

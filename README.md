@@ -87,8 +87,8 @@ Run `bun run sloc` to calculate source lines of code.
 | Zustand Stores | 18 |
 | Game Systems | 27 |
 | React Components | 59 |
-| Unit Tests | 33 |
-| E2E Tests | 5 |
+| Unit Test Files | 9 (138 tests) |
+| E2E Scenarios | 10 (20 desktop/mobile checks) |
 | Supported Locales | 13 |
 
 ### Implemented Systems
@@ -106,7 +106,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Features
 
-- **Tutorial System** — Interactive first-time player guide with translations
+- **Tutorial System** — Dismissible contextual guidance that never blocks gameplay
 - **Drag & Drop** — Intuitive tile arrangement with touch support
 - **Responsive Design** — Mobile-first portrait layout
 - **PWA Support** — Install on any device, works offline

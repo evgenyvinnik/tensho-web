@@ -63,41 +63,15 @@ export function getProgressiveHints(
     {
       id: 'welcome',
       trigger: 'gameStart',
-      position: { x: 50, y: 40 },
-      arrowDirection: 'top',
       title: t('progressiveHints.welcome.title', 'Welcome to Tensho!'),
       content: t(
         'progressiveHints.welcome.content',
-        "Build mahjong hands to score points. Reach the target before running out of hands. Let's learn as you play!"
+        'Reach the highlighted target before your hands run out. Each Act has three rounds; clear Act 8 to secure a win. Tips appear only when a new system matters.'
       ),
       priority: 1,
-      autoDismissMs: 6000,
-    },
-    {
-      id: 'score-target',
-      trigger: 'gameStart',
       targetSelector: '[data-tutorial="score-target"]',
       arrowDirection: 'bottom',
-      title: t('progressiveHints.target.title', 'Score Target'),
-      content: t(
-        'progressiveHints.target.content',
-        'Reach this score to complete the round. Fail and your run ends!'
-      ),
-      priority: 2,
-      autoDismissMs: 5000,
-    },
-    {
-      id: 'act-round-intro',
-      trigger: 'gameStart',
-      targetSelector: '[data-tutorial="act-round"]',
-      arrowDirection: 'bottom',
-      title: t('progressiveHints.actRound.title', 'Acts & Rounds'),
-      content: t(
-        'progressiveHints.actRound.content',
-        'Complete 3 rounds per Act. 8 Acts to win the run!'
-      ),
-      priority: 3,
-      autoDismissMs: 5000,
+      autoDismissMs: 7500,
     },
 
     // === FIRST DRAW HINTS ===
@@ -109,23 +83,10 @@ export function getProgressiveHints(
       title: t('progressiveHints.hand.title', 'Your Hand'),
       content: t(
         'progressiveHints.hand.content',
-        'Your tiles! Form 4 groups + 1 pair to win. Groups: sequences (1-2-3) or triplets (3-3-3).'
+        'Tap tiles to stage them, then Play Hand. A complete hand is four groups plus a pair; the wall refills your hand automatically after each cycle.'
       ),
       priority: 1,
       autoDismissMs: 7000,
-    },
-    {
-      id: 'draw-button',
-      trigger: 'firstDraw',
-      targetSelector: '[data-tutorial="draw-button"]',
-      arrowDirection: 'top', // Changed from 'left' - tooltip above action buttons, arrow pointing up
-      title: t('progressiveHints.draw.title', 'Draw Tiles'),
-      content: t(
-        'progressiveHints.draw.content',
-        'Tap Draw to take a tile from the wall. Then discard one you don\'t need.'
-      ),
-      priority: 2,
-      autoDismissMs: 6000,
     },
 
     // === FIRST DISCARD HINTS ===
@@ -137,7 +98,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.discard.title', 'Discard a Tile'),
       content: t(
         'progressiveHints.discard.content',
-        'Tap a tile to select it, then discard. Think about what patterns you\'re building!'
+        'Drag an unwanted tile into the orange discard well. Use Redraw when you want to replace up to three selected tiles at once.'
       ),
       priority: 1,
       autoDismissMs: 6000,
@@ -152,51 +113,10 @@ export function getProgressiveHints(
       title: t('progressiveHints.yaku.title', 'Yaku = Multipliers'),
       content: t(
         'progressiveHints.yaku.content',
-        'Special patterns that multiply your score! Tanyao (all simples), Toitoi (all triplets), and more.'
+        'Yaku are scoring patterns that multiply your base points. The preview updates as you stage tiles, so you can compare a hand before committing.'
       ),
       priority: 1,
       autoDismissMs: 7000,
-    },
-    {
-      id: 'scoring-formula',
-      trigger: 'firstHandPlayed',
-      targetSelector: '[data-tutorial="current-score"]',
-      arrowDirection: 'bottom', // Changed from 'top' - score is near top of screen
-      title: t('progressiveHints.scoring.title', 'Scoring Formula'),
-      content: t(
-        'progressiveHints.scoring.content',
-        'Score = (Base Points + Bonuses) × Multipliers. Stack Yaku for big scores!'
-      ),
-      priority: 2,
-      autoDismissMs: 6000,
-    },
-
-    // === ROUND COMPLETE HINTS ===
-    {
-      id: 'gold-intro',
-      trigger: 'roundComplete',
-      targetSelector: '[data-tutorial="gold"]',
-      arrowDirection: 'bottom',
-      title: t('progressiveHints.gold.title', 'Gold'),
-      content: t(
-        'progressiveHints.gold.content',
-        'Earned from winning hands. Spend at the Tea House. Keep 25+ for max interest!'
-      ),
-      priority: 1,
-      autoDismissMs: 6000,
-    },
-    {
-      id: 'hands-discards',
-      trigger: 'roundComplete',
-      targetSelector: '[data-tutorial="hands-remaining"]',
-      arrowDirection: 'right',
-      title: t('progressiveHints.handsRemaining.title', 'Limited Attempts'),
-      content: t(
-        'progressiveHints.handsRemaining.content',
-        'You have limited hands and discards per round. Use them wisely!'
-      ),
-      priority: 2,
-      autoDismissMs: 5000,
     },
 
     // === FLOWER DRAWN HINTS ===
@@ -223,7 +143,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.shop.title', 'The Tea House'),
       content: t(
         'progressiveHints.shop.content',
-        'Buy Decrees and upgrades between rounds. Reroll if you don\'t like the selection!'
+        'Spend round rewards on Decrees, consumables, tiles, and packs—or save Gold for interest. Reroll only when the new options are worth its rising cost.'
       ),
       priority: 1,
       autoDismissMs: 7000,
@@ -238,23 +158,10 @@ export function getProgressiveHints(
       title: t('progressiveHints.decrees.title', 'Decrees'),
       content: t(
         'progressiveHints.decrees.content',
-        'Powerful rule modifiers! Change what\'s legal, boost multipliers, alter tile behavior.'
+        'Decrees are persistent rule modifiers. They can change legal hands, scoring, economy, and tile behavior; inspect or sell them from this row.'
       ),
       priority: 1,
       autoDismissMs: 7000,
-    },
-    {
-      id: 'decree-types',
-      trigger: 'decreeAcquired',
-      targetSelector: '[data-tutorial="decrees"]',
-      arrowDirection: 'bottom', // Changed from 'top' - decrees bar is near top of screen
-      title: t('progressiveHints.decreeTypes.title', '5 Decree Types'),
-      content: t(
-        'progressiveHints.decreeTypes.content',
-        'Structural, Tile Identity, Yaku Doctrine, Entropy, and Scaling. Collect them all!'
-      ),
-      priority: 2,
-      autoDismissMs: 6000,
     },
 
     // === BOSS ROUND HINTS ===

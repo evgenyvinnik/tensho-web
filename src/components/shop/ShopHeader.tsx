@@ -49,11 +49,11 @@ function GoldDisplay({ gold }: GoldDisplayProps) {
   })
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-2xl" role="img" aria-label="gold">
+    <div className="flex items-center gap-1 sm:gap-2">
+      <span className="text-xl sm:text-2xl" role="img" aria-label="gold">
         &#x5186;
       </span>
-      <AnimatedSpan className="text-2xl font-bold text-[var(--color-golden-yellow)]">
+      <AnimatedSpan className="text-xl font-bold text-[var(--color-golden-yellow)] sm:text-2xl">
         {spring.number.to((n) => Math.floor(n).toLocaleString())}
       </AnimatedSpan>
     </div>
@@ -85,9 +85,9 @@ function RerollButton({ cost, canAfford, onClick, rerollCount }: RerollButtonPro
       onClick={handleClick}
       disabled={!canAfford}
       className={`
-        flex items-center gap-2 px-4 py-2 rounded-lg
+        flex items-center gap-1 px-2 py-2 rounded-lg sm:gap-2 sm:px-4
         font-bold text-sm transition-all duration-200
-        min-w-[100px] min-h-[44px] justify-center
+        min-w-[76px] min-h-[44px] justify-center sm:min-w-[100px]
         border-2
         ${
           canAfford
@@ -168,18 +168,18 @@ export function ShopHeader({
   const { t } = useTranslation()
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-[var(--color-dark-forest)] border-b-2 border-[var(--color-saddle-brown)]">
+    <header className="flex items-center justify-between gap-2 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] px-2 py-3 sm:px-4">
       {/* Gold display */}
       <GoldDisplay gold={gold} />
 
       {/* Title */}
-      <h1 className="text-xl font-bold text-[var(--color-beige-white)] font-decorative tracking-wide">
+      <h1 className="whitespace-nowrap text-base font-bold tracking-wide text-[var(--color-beige-white)] font-decorative sm:text-xl">
         {t('shop.title', 'Tea House')}
-        <span className="text-[var(--color-metallic-gold)] ml-2 text-lg">&#x8336;&#x5BE5;</span>
+        <span className="ml-2 hidden text-lg text-[var(--color-metallic-gold)] sm:inline">&#x8336;&#x5BE5;</span>
       </h1>
 
       {/* Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <RerollButton
           cost={rerollCost}
           canAfford={canAffordReroll}

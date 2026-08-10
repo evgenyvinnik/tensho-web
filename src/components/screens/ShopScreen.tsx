@@ -13,10 +13,12 @@
  * Uses the shopStore for state management and TeaHouseSystem for shop logic.
  */
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
-import { useGameController } from '../../game/useGameController'
+import { useGameController, useGameEvent } from '../../game/useGameController'
+import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
+import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { useShopStore } from '../../stores/shopStore'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { BlessingPackSystem, PackOffering } from '../../systems/BlessingPackSystem'
@@ -33,6 +35,7 @@ import { PackCard } from '../shop/PackCard'
 import { CharterCard } from '../shop/CharterCard'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { eventBus } from '../../game/EventBus'
+import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
 
 // =============================================================================
 // BLESSING PACK SYSTEM INSTANCE
@@ -52,6 +55,9 @@ export function ShopScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
+  const tutorialHints = useMemo(() => getProgressiveHints(t), [t])
+  const tutorial = useProgressiveTutorial(tutorialHints)
+  const hasTriggeredShopHint = useRef(false)
 
   // Shop store
   const shopStore = useShopStore()
@@ -63,6 +69,18 @@ export function ShopScreen() {
   const [currentPackOffering, setCurrentPackOffering] = useState<PackOffering | null>(null)
   const [purchasedPackId, setPurchasedPackId] = useState<string | null>(null)
   const [shopError, setShopError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (hasTriggeredShopHint.current) return
+    hasTriggeredShopHint.current = true
+    const timer = window.setTimeout(() => tutorial.triggerHints('shopEntered'), 700)
+    return () => window.clearTimeout(timer)
+  }, [tutorial])
+
+  useGameEvent(
+    'decreeAcquired',
+    useCallback(() => tutorial.triggerHints('decreeAcquired'), [tutorial])
+  )
 
   // Initialize shop on mount
   useEffect(() => {
@@ -379,7 +397,7 @@ export function ShopScreen() {
           <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
             {t('shop.packs', 'Blessing Packs')}
             <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-              \u795D\u798F\u888B
+              祝福袋
             </span>
           </h2>
 
@@ -462,6 +480,13 @@ export function ShopScreen() {
         onConfirm={handlePackConfirm}
         onSkip={handlePackSkip}
         onClose={() => setPackModalOpen(false)}
+      />
+
+      <ProgressiveHintOverlay
+        hint={tutorial.currentHint}
+        onDismiss={tutorial.dismissHint}
+        onDisableHints={tutorial.disableHints}
+        queueCount={tutorial.hintQueue.length}
       />
     </div>
   )

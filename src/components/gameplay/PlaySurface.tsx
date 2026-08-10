@@ -110,6 +110,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Drag state
   const [dragState, setDragState] = useState<DragState | null>(null)
   const [currentDropZone, setCurrentDropZone] = useState<DropZone>(null)
+  const [surfaceWidth, setSurfaceWidth] = useState(() =>
+    typeof window === 'undefined' ? 640 : window.innerWidth
+  )
 
   // Staged tiles (tiles moved to staging area)
   const [stagedTiles, setStagedTiles] = useState<Tile[]>([])
@@ -268,6 +271,23 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     }
   }, [dragState, handleDragMove, handleDragEnd])
 
+  // Keep overlapping tile rows inside the actual play surface. Width-only
+  // breakpoints cannot account for the mobile side panels and discard zone.
+  useEffect(() => {
+    const element = containerRef.current
+    if (!element) return
+
+    const updateWidth = () => setSurfaceWidth(element.clientWidth)
+    updateWidth()
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(element)
+    window.addEventListener('resize', updateWidth)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', updateWidth)
+    }
+  }, [])
+
   // Notify parent when staged tiles change
   useEffect(() => {
     onTilesStaged?.(stagedTiles)
@@ -318,11 +338,22 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     immediate: reducedMotion,
   })
 
-  // Calculate hand tile positions
+  // Discard zone size (slightly larger than a tile)
+  const discardSize = Math.max(dimensions.width, dimensions.height) + 16
+
+  // Calculate hand tile positions, increasing overlap when space is tight.
   const handPositions = useMemo(() => {
     const tiles = tilesInHand
-    const overlapFactor = 0.7
-    const spacing = dimensions.width * overlapFactor
+    const preferredSpacing = dimensions.width * 0.7
+    const availableWidth = Math.max(
+      dimensions.width,
+      surfaceWidth - discardSize - 48
+    )
+    const fittedSpacing =
+      tiles.length > 1
+        ? (availableWidth - dimensions.width) / (tiles.length - 1)
+        : preferredSpacing
+    const spacing = Math.max(10, Math.min(preferredSpacing, fittedSpacing))
     const totalWidth = Math.max(0, (tiles.length - 1)) * spacing + dimensions.width
     const startX = -totalWidth / 2 + dimensions.width / 2
 
@@ -330,12 +361,18 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       x: startX + index * spacing,
       zIndex: index,
     }))
-  }, [tilesInHand, dimensions.width])
+  }, [tilesInHand, dimensions.width, surfaceWidth, discardSize])
 
   // Calculate staged tile positions (spread evenly in staging area)
   const stagedPositions = useMemo(() => {
     const tiles = stagedTiles
-    const spacing = dimensions.width * 0.8
+    const preferredSpacing = dimensions.width * 0.8
+    const availableWidth = Math.max(dimensions.width, surfaceWidth - 32)
+    const fittedSpacing =
+      tiles.length > 1
+        ? (availableWidth - dimensions.width) / (tiles.length - 1)
+        : preferredSpacing
+    const spacing = Math.max(10, Math.min(preferredSpacing, fittedSpacing))
     const totalWidth = Math.max(0, (tiles.length - 1)) * spacing + dimensions.width
     const startX = -totalWidth / 2 + dimensions.width / 2
 
@@ -343,10 +380,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       x: startX + index * spacing,
       zIndex: index,
     }))
-  }, [stagedTiles, dimensions.width])
-
-  // Discard zone size (slightly larger than a tile)
-  const discardSize = Math.max(dimensions.width, dimensions.height) + 16
+  }, [stagedTiles, dimensions.width, surfaceWidth])
 
   return (
     <div

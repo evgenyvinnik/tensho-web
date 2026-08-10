@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { ProgressiveHint } from '../../config/progressiveTutorialHints'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 const AnimatedDiv = animated('div')
 
@@ -92,6 +93,7 @@ export function ProgressiveHintOverlay({
   queueCount,
 }: ProgressiveHintOverlayProps) {
   const { t } = useTranslation()
+  const reduceMotion = useReducedMotion()
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
@@ -101,7 +103,17 @@ export function ProgressiveHintOverlay({
     from: { opacity: 0, scale: 0.9, y: 10 },
     to: { opacity: hint ? 1 : 0, scale: hint ? 1 : 0.9, y: hint ? 0 : 10 },
     config: { tension: 300, friction: 22 },
+    immediate: reduceMotion,
   })
+
+  useEffect(() => {
+    if (!hint) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onDismiss()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [hint, onDismiss])
 
   // Find and track target element position
   useEffect(() => {
@@ -229,7 +241,7 @@ export function ProgressiveHintOverlay({
       {/* Tooltip */}
       <AnimatedDiv
         ref={tooltipRef}
-        className="fixed z-[1001] max-w-[280px] pointer-events-none"
+        className="pointer-events-none fixed z-[1001] w-[calc(100vw-24px)] max-w-[320px]"
         style={{
           left: tooltipPosition.x,
           top: tooltipPosition.y,
@@ -239,7 +251,20 @@ export function ProgressiveHintOverlay({
           opacity: spring.opacity,
         }}
       >
-        <div className="relative bg-[var(--color-dark-forest)] border-2 border-[var(--color-vibrant-orange)] rounded-xl p-4 shadow-2xl pointer-events-auto">
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="pointer-events-auto relative rounded-2xl border border-[var(--color-vibrant-orange)] bg-[var(--color-dark-forest)]/95 p-4 shadow-2xl backdrop-blur-md"
+        >
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="absolute right-2 top-2 flex min-h-[36px] min-w-[36px] items-center justify-center rounded-full text-[var(--color-beige-white)]/60 transition-colors hover:bg-white/10 hover:text-white"
+            aria-label={t('common.close', 'Close tip')}
+          >
+            ×
+          </button>
           {/* Arrow */}
           {targetRect && (
             <div style={getArrowStyle()}>
@@ -248,7 +273,7 @@ export function ProgressiveHintOverlay({
           )}
 
           {/* Content */}
-          <h3 className="text-base font-bold text-[var(--color-vibrant-orange)] mb-1.5">
+          <h3 className="mb-1.5 pr-8 text-base font-bold text-[var(--color-vibrant-orange)]">
             {hint.title}
           </h3>
           <p className="text-sm text-[var(--color-beige-white)] mb-3 leading-relaxed">

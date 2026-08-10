@@ -68,6 +68,29 @@ test.describe('Game Navigation', () => {
     await expect(page).toHaveURL(/\/en\/play$/)
     await expect(page.getByText('300', { exact: true })).toBeVisible()
     await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
+    const viewport = page.viewportSize()
+    const playButtonBounds = await page
+      .getByRole('button', { name: 'PLAY HAND' })
+      .boundingBox()
+    expect(playButtonBounds).not.toBeNull()
+    expect(playButtonBounds!.y + playButtonBounds!.height).toBeLessThanOrEqual(
+      viewport!.height
+    )
+
+    const handBounds = await page
+      .locator(
+        'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
+      )
+      .evaluateAll((images) =>
+        images.map((image) => {
+          const rect = image.getBoundingClientRect()
+          return { left: rect.left, right: rect.right }
+        })
+      )
+    expect(Math.min(...handBounds.map((bounds) => bounds.left))).toBeGreaterThanOrEqual(0)
+    expect(Math.max(...handBounds.map((bounds) => bounds.right))).toBeLessThanOrEqual(
+      viewport!.width
+    )
     const initialHands = Number(
       (await page.getByTitle('Hands remaining').textContent())?.match(/\d+/)?.[0]
     )
@@ -111,6 +134,21 @@ test.describe('Game Navigation', () => {
     for (const button of buttons.slice(0, 5)) { // Check first 5 buttons
       await expect(button).toBeVisible()
     }
+  })
+
+  test('shows a dismissible contextual tip without disabling gameplay', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.removeItem('tensho_progressive_hints_shown')
+      localStorage.removeItem('tensho_hints_disabled')
+    })
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+
+    const tip = page.getByRole('status')
+    await expect(tip).toBeVisible({ timeout: 5_000 })
+    await expect(page.getByRole('button', { name: 'PLAY HAND' })).toBeEnabled()
+    await page.getByRole('button', { name: /Close/ }).click()
+    await expect(tip).toBeHidden()
   })
 
   test('should not have console errors on load', async ({ page }) => {

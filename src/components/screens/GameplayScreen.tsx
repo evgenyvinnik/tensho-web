@@ -68,7 +68,6 @@ export function GameplayScreen() {
   const hasTriggeredFirstDraw = useRef(false)
   const hasTriggeredFirstDiscard = useRef(false)
   const hasTriggeredFirstHand = useRef(false)
-  const hasTriggeredRoundComplete = useRef(false)
   const hasTriggeredBossRound = useRef(false)
 
   // Local UI state
@@ -127,7 +126,6 @@ export function GameplayScreen() {
       hasTriggeredFirstDraw.current = false
       hasTriggeredFirstDiscard.current = false
       hasTriggeredFirstHand.current = false
-      hasTriggeredRoundComplete.current = false
       hasTriggeredBossRound.current = false
     }
   }, [game.isRunActive])
@@ -166,13 +164,6 @@ export function GameplayScreen() {
     if (!hasTriggeredFirstHand.current) {
       hasTriggeredFirstHand.current = true
       setTimeout(() => tutorial.triggerHints('firstHandPlayed'), 1000)
-    }
-  }, [tutorial]))
-
-  useGameEvent('roundEnd', useCallback(() => {
-    if (!hasTriggeredRoundComplete.current) {
-      hasTriggeredRoundComplete.current = true
-      tutorial.triggerHints('roundComplete')
     }
   }, [tutorial]))
 
@@ -587,8 +578,8 @@ export function GameplayScreen() {
         />
 
         {/* Play Surface with Flora panel and Wall display */}
-        <div className="mx-2 mb-1 flex min-h-0 flex-1 items-end gap-2">
-          <div data-tutorial="flora" className="flex-shrink-0">
+        <div className="relative mx-2 mb-1 flex min-h-0 flex-1 items-end gap-2">
+          <div data-tutorial="flora" className="absolute left-0 top-0 z-10 md:static md:flex-shrink-0">
             <FloraTrackCompact
               flowers={collectedFlowers}
               activeSeason={seasonState.activeSeason}
@@ -616,8 +607,13 @@ export function GameplayScreen() {
             />
           </div>
 
-          <div data-tutorial="wall" className="flex-shrink-0 w-48">
-            <WallDisplay wallTiles={game.wallTiles} />
+          <div data-tutorial="wall" className="absolute right-0 top-0 z-10 md:static md:w-48 md:flex-shrink-0">
+            <div className="md:hidden">
+              <WallDisplay wallTiles={game.wallTiles} compact />
+            </div>
+            <div className="hidden md:block">
+              <WallDisplay wallTiles={game.wallTiles} />
+            </div>
           </div>
         </div>
 

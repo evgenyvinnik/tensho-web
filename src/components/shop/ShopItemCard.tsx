@@ -383,7 +383,7 @@ export function ShopItemCard({
         </div>
 
         {/* Name */}
-        <h3 className="text-sm font-bold text-[var(--color-beige-white)] text-center truncate">
+        <h3 className="line-clamp-2 min-h-10 text-center text-sm font-bold leading-5 text-[var(--color-beige-white)]">
           {name}
         </h3>
         {japaneseName && (

@@ -53,9 +53,12 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
   const allFlowers: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
 
   return (
-    <div className="flex flex-col gap-1 p-2 bg-[var(--color-dark-forest)] rounded-lg" onClick={onExpand}>
+    <div
+      className="flex flex-row items-center gap-1 rounded-lg bg-[var(--color-dark-forest)] p-1 shadow-lg md:flex-col md:items-stretch md:p-2"
+      onClick={onExpand}
+    >
       {/* Flowers using actual tile images */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-row gap-1 md:flex-col">
         {allFlowers.map((flower) => {
           const isCollected = collectedSet.has(flower)
           const data = FLOWER_DATA[flower]
@@ -80,7 +83,7 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
 
               {/* Effect text (only show for collected flowers) */}
               {isCollected && (
-                <span className="text-xs text-[var(--color-golden-yellow)] font-medium whitespace-nowrap">
+                <span className="hidden whitespace-nowrap text-xs font-medium text-[var(--color-golden-yellow)] md:inline">
                   {data.effect}
                 </span>
               )}
@@ -98,14 +101,14 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
 
       {/* Set bonus indicator */}
       {flowers.length >= 2 && (
-        <div className="text-xs text-green-400 text-center mt-1">
+        <div className="hidden text-center text-xs text-green-400 md:mt-1 md:block">
           {flowers.length >= 4 ? 'x2 All Effects!' : flowers.length >= 3 ? 'Special Decrees' : '+1 Decree Slot'}
         </div>
       )}
 
       {/* Active Season */}
       {activeSeason && (
-        <div className="flex flex-col gap-0.5 mt-1 pt-1 border-t border-[var(--color-metallic-gold)]/30">
+        <div className="hidden flex-col gap-0.5 border-t border-[var(--color-metallic-gold)]/30 md:mt-1 md:flex md:pt-1">
           <div className="flex items-center justify-center gap-1">
             <span className="text-xs text-[var(--color-beige-white)] opacity-60">Season:</span>
             <span className="text-sm">{SEASON_DATA[activeSeason].emoji}</span>
@@ -119,6 +122,18 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
             {SEASON_BASE_EFFECTS[activeSeason].description}
           </p>
         </div>
+      )}
+
+      {activeSeason && (
+        <span
+          className={`px-1 text-sm md:hidden ${
+            isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color
+          }`}
+          title={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason}: ${SEASON_BASE_EFFECTS[activeSeason].description}`}
+          aria-label={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason} season`}
+        >
+          {SEASON_DATA[activeSeason].emoji}
+        </span>
       )}
     </div>
   )

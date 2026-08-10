@@ -24,7 +24,7 @@
 | Tea House | Opens after every completed round; supports items, packs, rerolls, capacity checks, and authoritative gold deduction | Working |
 | Round progression | Small → Tea House → Large → Tea House → Boss → Tea House → next Act | Working |
 | Skip | Small/Large rounds may be skipped for an Omen; Boss rounds cannot be skipped | Working |
-| Run end | Failed rounds enter Game Over; reset and Play Again create a clean run | Working |
+| Run end | Failed rounds enter Game Over; defeating Act 8 records a victory, presents the completed run, and allows an explicit continuation into Endless Act 9+ | Working |
 
 The documented base targets are in use: 300, 800, 2,000, 5,000, 11,000, 20,000, 35,000, and 50,000 by Act. Small, Large, and Boss rounds use 1×, 1.5×, and 2× multipliers before stake and mandate modifiers.
 
@@ -52,22 +52,23 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 | Omen Tags | Complete | Yes for immediate rewards, next-round resources/hand size, next-hand score/Mult, passive skip Mult, interest effects, shop discounts/rerolls/guarantees/Decree editions, season locks, and Void downside protection |
 | Table Stakes | Complete | Partially; score/resource/reward modifiers are connected; full sticker/unlock progression needs an end-to-end audit |
 | Boss Mandates | Complete definition library | Yes; all 23 standard and 5 Showdown definitions are selectable, with target, hand/draw limits, hidden tiles/Decrees, forced locks, discard hooks, debuffs, Decree suppression and selling, gold penalties, and Eye/Mouth/Arm/Flint scoring connected |
-| Meta progression/archive | Implemented separately | Not fully driven by the active run event stream |
+| Meta progression/archive | Complete event bridge | Yes; run starts/ends, discoveries, item usage, purchases, scoring, victories, and unlock checks are driven from the active orchestrator/shop event stream and persisted with migration-safe defaults |
 | Audio/VFX | Framework present | Partial; music works and SFX assets remain incomplete |
+| Responsive UI/tutorial | Complete gameplay pass | Yes; the hand, score, Flora, action bar, and Tea House fit desktop and portrait mobile viewports, with reduced-motion-aware feedback and dismissible contextual tips that never block gameplay |
 
 ## Verification
 
 - Strict application TypeScript check passes.
 - Production build passes.
-- Unit/component suite passes with 133 tests.
-- Eighteen Chromium E2E checks pass across desktop and mobile projects, including a real play/resource/refill scenario.
+- Unit/component suite passes with 138 tests.
+- Twenty Chromium E2E checks pass across desktop and mobile projects, including a real play/resource/refill scenario, viewport-fit assertions, clean console checks, and a dismissible non-modal tutorial tip.
 - A manual browser walkthrough verified menu → Small round → repeated scoring/refill → Tea House → purchase Orb → Large round → use Orb.
 - Repository-wide ESLint still reports pre-existing errors and warnings outside the changed core-loop files. Changed loop files are checked separately during implementation.
 
 ## Remaining Work, in Priority Order
 
-1. Drive archive, achievements, Charter upgrade unlocks, and stake progression from orchestrator events with persistence/migration tests.
-2. Expand deterministic Playwright coverage to consumable targeting, Omen-modified shops, packs, Boss mandates, and Boss-to-next-Act progression.
+1. Finish the Table Stake/sticker and Charter-upgrade unlock audit, including the remaining account-level progression UI.
+2. Expand deterministic Playwright coverage to consumable targeting, Omen-modified shops, packs, Boss mandates, Act 8 victory, and Endless continuation.
 3. Resolve the repository-wide lint backlog, migrate the remaining gameplay randomness to the run seed, split oversized bundles, and add the missing SFX assets.
 
 ## Status Rule
