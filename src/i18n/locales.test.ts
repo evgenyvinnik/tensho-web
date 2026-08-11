@@ -165,3 +165,51 @@ describe('tutorial <Trans> markup', () => {
     expect(mismatched).toEqual([])
   })
 })
+
+/**
+ * Translations are written per language, and a stray word from the wrong
+ * language is invisible in review - it renders as ordinary text. These checks
+ * catch the two ways that happens: a character from a script the language
+ * never uses, and an untranslated English word left behind mid-sentence.
+ */
+describe('translation script purity', () => {
+  const CYRILLIC = /[\u0400-\u04FF]/
+  const CJK = /[\u3040-\u30FF\u4E00-\u9FFF]/
+  // Lowercase runs only: an uppercase UI label such as PLAY is a deliberate
+  // reference to a button, while "competing" left mid-sentence is a mistake.
+  const STRAY_ENGLISH = /\b[a-z]{3,}\b/
+
+  const stringsOf = (locale: Locale): Array<[string, string]> => {
+    const out: Array<[string, string]> = []
+    const walk = (node: unknown, path: string) => {
+      if (typeof node === 'string') out.push([path, node])
+      else if (node && typeof node === 'object') {
+        for (const [k, v] of Object.entries(node)) walk(v, path ? `${path}.${k}` : k)
+      }
+    }
+    walk(locale, '')
+    return out
+  }
+
+  it('never leaks Cyrillic into a language that does not use it', () => {
+    const leaks: string[] = []
+    for (const [lang, locale] of Object.entries(LOCALES)) {
+      if (lang === 'ru') continue
+      for (const [key, value] of stringsOf(locale)) {
+        if (CYRILLIC.test(value)) leaks.push(`${lang}:${key}`)
+      }
+    }
+    expect(leaks).toEqual([])
+  })
+
+  it('never leaves an English word inside CJK tutorial copy', () => {
+    const leaks: string[] = []
+    for (const lang of ['ja', 'ko', 'zh-Hans', 'zh-Hant']) {
+      for (const [key, value] of stringsOf(LOCALES[lang])) {
+        if (!key.startsWith('tutorial.') || !CJK.test(value)) continue
+        if (STRAY_ENGLISH.test(value)) leaks.push(`${lang}:${key}`)
+      }
+    }
+    expect(leaks).toEqual([])
+  })
+})
