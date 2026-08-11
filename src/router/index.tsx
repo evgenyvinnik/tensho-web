@@ -33,6 +33,7 @@ import {
   type SupportedLanguage,
 } from '../i18n'
 import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
+import { APP_BASE_URL, APP_ROUTER_BASENAME } from '../utils/basePath'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -67,6 +68,7 @@ export function buildPath(route: RoutePath, lang?: SupportedLanguage): string {
  */
 export function useAppNavigation() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { lang } = useParams<{ lang: string }>()
   const currentLang = (isSupportedLanguage(lang || '') ? lang : getCurrentLanguage()) as SupportedLanguage
 
@@ -83,7 +85,8 @@ export function useAppNavigation() {
      */
     changeLanguage: async (newLang: SupportedLanguage) => {
       await changeLanguage(newLang)
-      const currentPath = window.location.pathname
+      // Router locations are already stripped of the deployment basename.
+      const currentPath = location.pathname
       const pathWithoutLang = currentPath.replace(/^\/[^/]+/, '')
       navigate(`/${newLang}${pathWithoutLang || ''}`)
     },
@@ -159,7 +162,7 @@ export function RouteErrorBoundary() {
               : error.statusText || 'Something went wrong.'}
           </p>
           <button
-            onClick={() => (window.location.href = '/')}
+            onClick={() => (window.location.href = APP_BASE_URL)}
             className="px-6 py-3 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
                        text-white font-bold rounded-lg transition-all hover:scale-105
                        border-2 border-[var(--color-golden-yellow)]"
@@ -179,7 +182,7 @@ export function RouteErrorBoundary() {
     <ErrorFallback
       error={actualError}
       onRetry={() => window.location.reload()}
-      onGoHome={() => (window.location.href = '/')}
+      onGoHome={() => (window.location.href = APP_BASE_URL)}
       variant="full"
     />
   )
@@ -306,7 +309,9 @@ export function createAppRouter(routes: {
       path: '*',
       element: <RootRedirect />,
     },
-  ])
+  ], {
+    basename: APP_ROUTER_BASENAME,
+  })
 }
 
 /**

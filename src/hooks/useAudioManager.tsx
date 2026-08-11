@@ -15,17 +15,13 @@ import {
   SoundEffectId,
   MusicContext,
 } from '../config/audioDefinitions';
+import { MUSIC_TRACKS as MUSIC_ASSET_TRACKS } from '../utils/assets';
 
 // =============================================================================
 // MUSIC TRACKS
 // =============================================================================
 
-const MUSIC_TRACKS = [
-  '/assets/Dragon Dance.mp3',
-  '/assets/JapaneseWinter.mp3',
-  '/assets/Lotus Pond.mp3',
-  '/assets/TheDojo.mp3',
-];
+const MUSIC_TRACKS = [...MUSIC_ASSET_TRACKS];
 
 // Crossfade duration in milliseconds
 const CROSSFADE_DURATION = 2000;

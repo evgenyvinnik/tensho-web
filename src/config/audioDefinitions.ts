@@ -5,6 +5,8 @@
  * Sound effects are categorized by type for easy organization.
  */
 
+import { withBasePath } from '../utils/basePath';
+
 // =============================================================================
 // SOUND EFFECT CATEGORIES
 // =============================================================================
@@ -177,7 +179,7 @@ export interface SoundEffectConfig {
 export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfig>> = {
   // Tile sounds - high priority, should be responsive
   [TILE_SOUNDS.draw]: {
-    path: '/assets/sfx/tile_draw.mp3',
+    path: withBasePath('assets/sfx/tile_draw.mp3'),
     volume: 0.6,
     category: 'tile',
     allowOverlap: true,
@@ -187,7 +189,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [TILE_SOUNDS.discard]: {
-    path: '/assets/sfx/tile_discard.mp3',
+    path: withBasePath('assets/sfx/tile_discard.mp3'),
     volume: 0.5,
     category: 'tile',
     allowOverlap: true,
@@ -197,7 +199,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [TILE_SOUNDS.select]: {
-    path: '/assets/sfx/tile_select.mp3',
+    path: withBasePath('assets/sfx/tile_select.mp3'),
     volume: 0.4,
     category: 'tile',
     allowOverlap: true,
@@ -207,7 +209,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [TILE_SOUNDS.deselect]: {
-    path: '/assets/sfx/tile_deselect.mp3',
+    path: withBasePath('assets/sfx/tile_deselect.mp3'),
     volume: 0.3,
     category: 'tile',
     allowOverlap: true,
@@ -217,7 +219,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [TILE_SOUNDS.slide]: {
-    path: '/assets/sfx/tile_slide.mp3',
+    path: withBasePath('assets/sfx/tile_slide.mp3'),
     volume: 0.3,
     category: 'tile',
     allowOverlap: false,
@@ -228,7 +230,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
 
   // UI sounds - medium priority
   [UI_SOUNDS.buttonClick]: {
-    path: '/assets/sfx/ui_click.mp3',
+    path: withBasePath('assets/sfx/ui_click.mp3'),
     volume: 0.5,
     category: 'ui',
     allowOverlap: false,
@@ -237,7 +239,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [UI_SOUNDS.buttonHover]: {
-    path: '/assets/sfx/ui_hover.mp3',
+    path: withBasePath('assets/sfx/ui_hover.mp3'),
     volume: 0.2,
     category: 'ui',
     allowOverlap: false,
@@ -246,7 +248,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [UI_SOUNDS.menuOpen]: {
-    path: '/assets/sfx/ui_menu_open.mp3',
+    path: withBasePath('assets/sfx/ui_menu_open.mp3'),
     volume: 0.4,
     category: 'ui',
     allowOverlap: false,
@@ -255,7 +257,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [UI_SOUNDS.menuClose]: {
-    path: '/assets/sfx/ui_menu_close.mp3',
+    path: withBasePath('assets/sfx/ui_menu_close.mp3'),
     volume: 0.4,
     category: 'ui',
     allowOverlap: false,
@@ -266,7 +268,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
 
   // Game sounds - high priority
   [GAME_SOUNDS.scoreTally]: {
-    path: '/assets/sfx/score_tally.mp3',
+    path: withBasePath('assets/sfx/score_tally.mp3'),
     volume: 0.6,
     category: 'game',
     allowOverlap: false,
@@ -275,7 +277,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [GAME_SOUNDS.scoreChip]: {
-    path: '/assets/sfx/score_chip.mp3',
+    path: withBasePath('assets/sfx/score_chip.mp3'),
     volume: 0.4,
     category: 'game',
     allowOverlap: true,
@@ -285,7 +287,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [GAME_SOUNDS.goldEarned]: {
-    path: '/assets/sfx/gold_earned.mp3',
+    path: withBasePath('assets/sfx/gold_earned.mp3'),
     volume: 0.5,
     category: 'game',
     allowOverlap: true,
@@ -294,7 +296,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [GAME_SOUNDS.roundComplete]: {
-    path: '/assets/sfx/round_complete.mp3',
+    path: withBasePath('assets/sfx/round_complete.mp3'),
     volume: 0.7,
     category: 'game',
     allowOverlap: false,
@@ -303,7 +305,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [GAME_SOUNDS.roundFailed]: {
-    path: '/assets/sfx/round_failed.mp3',
+    path: withBasePath('assets/sfx/round_failed.mp3'),
     volume: 0.7,
     category: 'game',
     allowOverlap: false,
@@ -314,7 +316,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
 
   // Special sounds - highest priority
   [SPECIAL_SOUNDS.yakuScored]: {
-    path: '/assets/sfx/yaku_scored.mp3',
+    path: withBasePath('assets/sfx/yaku_scored.mp3'),
     volume: 0.7,
     category: 'special',
     allowOverlap: false,
@@ -323,7 +325,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [SPECIAL_SOUNDS.yakumanScored]: {
-    path: '/assets/sfx/yakuman.mp3',
+    path: withBasePath('assets/sfx/yakuman.mp3'),
     volume: 0.9,
     category: 'special',
     allowOverlap: false,
@@ -332,7 +334,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [SPECIAL_SOUNDS.decreeAcquired]: {
-    path: '/assets/sfx/decree_acquired.mp3',
+    path: withBasePath('assets/sfx/decree_acquired.mp3'),
     volume: 0.6,
     category: 'special',
     allowOverlap: false,
@@ -341,7 +343,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [SPECIAL_SOUNDS.packOpening]: {
-    path: '/assets/sfx/pack_opening.mp3',
+    path: withBasePath('assets/sfx/pack_opening.mp3'),
     volume: 0.7,
     category: 'special',
     allowOverlap: false,
@@ -352,7 +354,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
 
   // Feedback sounds - medium priority
   [FEEDBACK_SOUNDS.error]: {
-    path: '/assets/sfx/error.mp3',
+    path: withBasePath('assets/sfx/error.mp3'),
     volume: 0.5,
     category: 'feedback',
     allowOverlap: false,
@@ -361,7 +363,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [FEEDBACK_SOUNDS.invalidAction]: {
-    path: '/assets/sfx/invalid.mp3',
+    path: withBasePath('assets/sfx/invalid.mp3'),
     volume: 0.4,
     category: 'feedback',
     allowOverlap: false,
@@ -370,7 +372,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: true,
   },
   [FEEDBACK_SOUNDS.success]: {
-    path: '/assets/sfx/success.mp3',
+    path: withBasePath('assets/sfx/success.mp3'),
     volume: 0.5,
     category: 'feedback',
     allowOverlap: false,
@@ -381,7 +383,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
 
   // Shop sounds
   [SHOP_SOUNDS.purchase]: {
-    path: '/assets/sfx/shop_purchase.mp3',
+    path: withBasePath('assets/sfx/shop_purchase.mp3'),
     volume: 0.6,
     category: 'shop',
     allowOverlap: false,
@@ -390,7 +392,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: false,
   },
   [SHOP_SOUNDS.reroll]: {
-    path: '/assets/sfx/shop_reroll.mp3',
+    path: withBasePath('assets/sfx/shop_reroll.mp3'),
     volume: 0.5,
     category: 'shop',
     allowOverlap: false,
@@ -399,7 +401,7 @@ export const SOUND_EFFECT_CONFIG: Partial<Record<SoundEffectId, SoundEffectConfi
     preload: false,
   },
   [SHOP_SOUNDS.cantAfford]: {
-    path: '/assets/sfx/cant_afford.mp3',
+    path: withBasePath('assets/sfx/cant_afford.mp3'),
     volume: 0.4,
     category: 'shop',
     allowOverlap: false,
@@ -441,7 +443,7 @@ export interface MusicTrackConfig {
  */
 export const MUSIC_CONFIG: MusicTrackConfig[] = [
   {
-    path: '/assets/Dragon Dance.mp3',
+    path: withBasePath('assets/Dragon Dance.mp3'),
     name: 'Dragon Dance',
     volume: 0.7,
     loop: true,
@@ -449,7 +451,7 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     bpm: 120,
   },
   {
-    path: '/assets/JapaneseWinter.mp3',
+    path: withBasePath('assets/JapaneseWinter.mp3'),
     name: 'Japanese Winter',
     volume: 0.7,
     loop: true,
@@ -457,7 +459,7 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     bpm: 90,
   },
   {
-    path: '/assets/Lotus Pond.mp3',
+    path: withBasePath('assets/Lotus Pond.mp3'),
     name: 'Lotus Pond',
     volume: 0.7,
     loop: true,
@@ -465,7 +467,7 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     bpm: 80,
   },
   {
-    path: '/assets/TheDojo.mp3',
+    path: withBasePath('assets/TheDojo.mp3'),
     name: 'The Dojo',
     volume: 0.7,
     loop: true,
@@ -516,7 +518,7 @@ export interface AudioSprite {
  * In production, these would be combined into a single file
  */
 export const TILE_SPRITE: AudioSprite = {
-  src: '/assets/sfx/tiles_sprite.mp3',
+  src: withBasePath('assets/sfx/tiles_sprite.mp3'),
   sprites: {
     draw: { start: 0, duration: 200 },
     discard: { start: 200, duration: 250 },

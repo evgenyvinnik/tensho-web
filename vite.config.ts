@@ -2,8 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const deploymentBase = process.env.VITE_BASE_PATH || '/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: deploymentBase,
   plugins: [
     react({
       // React Compiler is experimental - uncomment when using React 19+
@@ -24,9 +27,9 @@ export default defineConfig({
         background_color: '#1a3a2a',
         display: 'standalone',
         orientation: 'portrait',
-        scope: '/',
-        start_url: '/',
-        id: '/',
+        scope: deploymentBase,
+        start_url: deploymentBase,
+        id: deploymentBase,
         categories: ['games', 'entertainment', 'puzzle'],
         lang: 'en',
         dir: 'ltr',

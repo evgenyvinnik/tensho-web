@@ -4,114 +4,114 @@
 
   <!-- Home / Menu -->
   <url>
-    <loc>https://tensho.game/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tensho.game/en/" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://tensho.game/ja/" />
-    <xhtml:link rel="alternate" hreflang="ko" href="https://tensho.game/ko/" />
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://tensho.game/zh-Hans/" />
-    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://tensho.game/zh-Hant/" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://tensho.game/es/" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://tensho.game/fr/" />
-    <xhtml:link rel="alternate" hreflang="it" href="https://tensho.game/it/" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tensho.game/ru/" />
-    <xhtml:link rel="alternate" hreflang="tr" href="https://tensho.game/tr/" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://tensho.game/id/" />
-    <xhtml:link rel="alternate" hreflang="th" href="https://tensho.game/th/" />
-    <xhtml:link rel="alternate" hreflang="tl" href="https://tensho.game/tl/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tensho.game/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://evgenyvinnik.github.io/tensho-web/en/" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://evgenyvinnik.github.io/tensho-web/ja/" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://evgenyvinnik.github.io/tensho-web/ko/" />
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://evgenyvinnik.github.io/tensho-web/zh-Hans/" />
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://evgenyvinnik.github.io/tensho-web/zh-Hant/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://evgenyvinnik.github.io/tensho-web/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://evgenyvinnik.github.io/tensho-web/fr/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://evgenyvinnik.github.io/tensho-web/it/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://evgenyvinnik.github.io/tensho-web/ru/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://evgenyvinnik.github.io/tensho-web/tr/" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://evgenyvinnik.github.io/tensho-web/id/" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://evgenyvinnik.github.io/tensho-web/th/" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://evgenyvinnik.github.io/tensho-web/tl/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://evgenyvinnik.github.io/tensho-web/" />
   </url>
 
   <!-- English Routes -->
   <url>
-    <loc>https://tensho.game/en/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/en/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tensho.game/en/play</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/en/play</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tensho.game/en/tutorial</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/en/tutorial</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tensho.game/en/settings</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/en/settings</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tensho.game/en/achievements</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/en/achievements</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tensho.game/en/collection</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/en/collection</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- Japanese Routes -->
   <url>
-    <loc>https://tensho.game/ja/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/ja/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tensho.game/ja/play</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/ja/play</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Korean Routes -->
   <url>
-    <loc>https://tensho.game/ko/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/ko/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Chinese Simplified Routes -->
   <url>
-    <loc>https://tensho.game/zh-Hans/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/zh-Hans/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Chinese Traditional Routes -->
   <url>
-    <loc>https://tensho.game/zh-Hant/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/zh-Hant/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Spanish Routes -->
   <url>
-    <loc>https://tensho.game/es/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/es/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- French Routes -->
   <url>
-    <loc>https://tensho.game/fr/</loc>
-    <lastmod>2025-01-19</lastmod>
+    <loc>https://evgenyvinnik.github.io/tensho-web/fr/</loc>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

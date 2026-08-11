@@ -7,6 +7,7 @@
 
 import React, { Component, ReactNode, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { APP_BASE_URL } from '../../utils/basePath'
 
 // =============================================================================
 // ERROR REPORTING
@@ -384,7 +385,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
  */
 export function AppErrorBoundary({ children }: { children: ReactNode }) {
   const handleGoHome = useCallback(() => {
-    window.location.href = '/'
+    window.location.href = APP_BASE_URL
   }, [])
 
   return (
@@ -405,7 +406,7 @@ export function ScreenErrorBoundary({
   screenName?: string
 }) {
   const handleGoHome = useCallback(() => {
-    window.location.href = '/'
+    window.location.href = APP_BASE_URL
   }, [])
 
   const handleError = useCallback(

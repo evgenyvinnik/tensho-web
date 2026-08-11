@@ -4,9 +4,10 @@
  */
 
 import { TileSuit } from '../core/Tile';
+import { withBasePath } from './basePath';
 
 // Base paths for assets
-const ASSET_BASE = '/assets';
+const ASSET_BASE = withBasePath('assets');
 const MAHJONG_PNG_BASE = `${ASSET_BASE}/Mahjong/file/png`;
 
 // ============================================================================
