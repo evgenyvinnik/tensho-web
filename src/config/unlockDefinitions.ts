@@ -273,7 +273,7 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
   {
     id: 'unlock_green_felt',
     name: 'Green Felt',
-    japaneseName: '默认',
+    japaneseName: '青畳',
     description: 'Classic table style - always available',
     category: 'table_style',
     conditions: [],

@@ -1053,7 +1053,10 @@
     "finish": "Start Playing!",
     "welcome": {
       "title": "Welcome to Tensho!",
-      "content": "Tensho is a roguelike game built around Japanese Riichi Mahjong. Your goal is to build scoring hands and reach the target score each round."
+      "content": "Tensho is a roguelike game built around Japanese Riichi Mahjong. Your goal is to build scoring hands and reach the target score each round.",
+      "p1": "<0>Tensho (天翔)</0> means \"Heavenly Ascent\" in Japanese. This is a <3>roguelike game</3> built around the classic tile game of <6>Riichi Mahjong</6>.",
+      "p2": "Your goal is simple: <2>build scoring hands</2> and reach the target score each round. Fail to reach the target, and your run ends.",
+      "note1": "Don't worry if you've never played Mahjong before! This tutorial will teach you everything you need to know, step by step."
     },
     "tiles": {
       "title": "Mahjong Tiles",
@@ -1086,7 +1089,206 @@
     "ready": {
       "title": "You're Ready!",
       "content1": "Good luck on your journey!",
-      "content2": "Press PLAY to begin your first run."
+      "content2": "Press PLAY to begin your first run.",
+      "note1": "You can <1>reroll</1> the shop offerings for 5 gold. Each reroll costs +1 more.",
+      "note2": "Holding <1>25+ gold</1> maximizes interest! But spending on good decrees is usually worth more.",
+      "p1": "Don't worry about memorizing everything — you'll learn by playing!",
+      "note3": "You can always return to this codex from the Settings menu if you need a refresher."
+    },
+    "game_concept": {
+      "p1": "Unlike traditional Mahjong which is played against opponents, Tensho is a <1>single-player puzzle game</1>. You're racing against the score target, not other players.",
+      "p2": "Each run consists of multiple <2>Acts</2>, and each Act has <5>3 Rounds</5>. The score targets increase as you progress.",
+      "p3": "Between rounds, you'll visit the <2>Tea House</2> (shop) to acquire powerful <5>Decrees</5> that modify the rules and boost your scoring potential."
+    },
+    "tiles_overview": {
+      "p1": "The game uses <1>144 tiles</1> in total:"
+    },
+    "numbered_suits": {
+      "note1": "Each standard tile appears <1>4 times</1> in the game. This is important for planning your hand!",
+      "p1": "There are <1>three numbered suits</1>, each with tiles ranked 1-9:",
+      "p2": "<0>Characters (萬子 / Manzu)</0> — Feature Chinese numerals with the character 萬 (wan, meaning \"ten thousand\")",
+      "p3": "<0>Circles (筒子 / Pinzu)</0> — Show circular patterns representing coins or dots",
+      "p4": "<0>Bamboo (索子 / Souzu)</0> — Depict bamboo sticks (the 1 of Bamboo shows a bird instead)"
+    },
+    "terminals_simples": {
+      "p1": "Numbered tiles are divided into two important categories:"
+    },
+    "wind_tiles": {
+      "note1": "Terminals are worth double the points of simples! Many yaku also specifically require or exclude terminals.",
+      "p1": "There are <1>four Wind tiles</1>, representing the cardinal directions:",
+      "p2": "Wind tiles are <1>Honor tiles</1> and are worth <4>15 points</4> each — the highest base value!"
+    },
+    "dragon_tiles": {
+      "note1": "Winds cannot form sequences. They can only form triplets or pairs.",
+      "p1": "There are <1>three Dragon tiles</1>:",
+      "p2": "<0>白 (White Dragon / Haku)</0> — A blank or framed tile, representing purity or emptiness",
+      "p3": "<0>發 (Green Dragon / Hatsu)</0> — The character 發 in green, meaning \"prosperity\" or \"to emit\"",
+      "p4": "<0>中 (Red Dragon / Chun)</0> — The character 中 in red, meaning \"center\" or \"middle\"",
+      "p5": "Like Winds, Dragons are <1>Honor tiles</1> worth <4>15 points</4> and cannot form sequences."
+    },
+    "bonus_tiles": {
+      "p1": "<0>Bonus tiles</0> are special tiles that don't form part of your hand:"
+    },
+    "sequences": {
+      "note1": "When you draw a bonus tile, it's immediately revealed and you draw a replacement tile. Flowers and Seasons provide scaling bonuses and effects!",
+      "p1": "A <1>sequence</1> is <4>3 consecutive tiles of the same suit</4>.",
+      "p2": "Examples of valid sequences:"
+    },
+    "melds_overview": {
+      "p1": "A <1>meld</1> (also called a \"group\" or \"set\") is a specific combination of tiles:",
+      "p2": "Understanding melds is <1>essential</1> — your winning hand is made up of these building blocks!"
+    },
+    "triplets": {
+      "li1": "1-2-3 of Circles",
+      "li2": "4-5-6 of Characters",
+      "li3": "7-8-9 of Bamboo",
+      "p1": "A <1>triplet</1> is <4>3 identical tiles</4>.",
+      "p2": "Examples of valid triplets:"
+    },
+    "quads": {
+      "li1": "Sequences must be in the <1>same suit</1>",
+      "li2": "They <2>cannot wrap around</2> (no 9-1-2)",
+      "li3": "Honor tiles <2>cannot form sequences</2>",
+      "p1": "A <1>quad</1> (also called \"kong\" or \"kan\") is <4>4 identical tiles</4>.",
+      "p2": "Quads are the rarest meld type since you need all 4 copies of a tile!"
+    },
+    "pairs": {
+      "li1": "Three 5s of Bamboo",
+      "li2": "Three East Winds",
+      "li3": "Three Red Dragons",
+      "p1": "A <1>pair</1> is simply <4>2 identical tiles</4>.",
+      "p2": "Every standard winning hand requires <2>exactly one pair</2>. This is sometimes called the \"head\" (雀頭) of the hand."
+    },
+    "winning_hand": {
+      "note1": "Triplets are worth <1>+30 points</1> — more than sequences (+20)! However, they're harder to complete since you need 3 of the same tile, and each tile only appears 4 times in the game.",
+      "li1": "Worth <1>+50 points</1> — the most of any meld",
+      "li2": "Counts as a single meld despite having 4 tiles",
+      "li3": "When declared, you draw a replacement tile",
+      "p1": "A standard winning hand consists of:"
+    },
+    "gameplay_overview": {
+      "note1": "The pair is worth <1>+10 points</1>. Any tile can form a pair — numbered tiles, winds, or dragons.",
+      "li1": "1-2-3 Circles (sequence)",
+      "li2": "5-5-5 Bamboo (triplet)",
+      "li3": "6-7-8 Characters (sequence)",
+      "li4": "East-East-East (triplet)",
+      "li5": "Red Dragon pair",
+      "p1": "Each round follows a simple cycle:"
+    },
+    "special_hands": {
+      "p1": "Two special hand structures don't follow the 4 melds + 1 pair rule:"
+    },
+    "discarding": {
+      "li1": "<0>Start</0> with 13 tiles in your hand",
+      "li2": "<0>Draw</0> a tile from the wall",
+      "li3": "Check if you can <1>win</1> (valid hand + score target)",
+      "li4": "If not, <1>discard</1> one tile you don't need",
+      "p1": "After drawing (if you haven't won), you must <2>discard one tile</2> to return to 13 tiles.",
+      "p2": "<0>How to discard:</0>"
+    },
+    "shanten": {
+      "li1": "Repeat until you win or the wall is empty",
+      "p1": "<0>Shanten (向聴)</0> is the number of tiles you need to change to complete a winning hand."
+    },
+    "scoring_overview": {
+      "note1": "If the wall empties before you complete a winning hand, the round ends in <1>failure</1> and your run is over!",
+      "p1": "Your score is calculated using this formula:"
+    },
+    "drawing": {
+      "p1": "At the start of your turn, you <2>draw one tile</2> from the wall. This gives you 14 tiles temporarily.",
+      "p2": "The <1>wall</1> starts with 70 drawable tiles (after the dead wall is reserved). Watch the remaining tiles counter!"
+    },
+    "base_points": {
+      "note1": "When you draw a <1>bonus tile</1> (Flower or Season), it's automatically revealed and you draw a replacement. This doesn't cost a turn!",
+      "li1": "<0>Tap/click</0> a tile to select it",
+      "li2": "<0>Drag upward</0> to the discard zone",
+      "li3": "Discarded tiles go to the <1>Dead Pool</1>",
+      "p1": "Every tile in your winning hand contributes <2>base points</2>:"
+    },
+    "yaku_intro": {
+      "note1": "Discarded tiles are <2>gone forever</2> — you cannot retrieve them! Choose carefully which tiles to discard.",
+      "li1": "<0>Base Points</0> — From your tiles themselves",
+      "li2": "<0>Structure Points</0> — From your melds and pair",
+      "li3": "<0>Multipliers</0> — From Yaku, Decrees, and effects",
+      "p1": "<0>Yaku (役)</0> are special patterns that <3>multiply your score</3>. This is where the big points come from!",
+      "p2": "There are <1>21 yaku</1> in Tensho, organized into 4 tiers:"
+    },
+    "yaku_examples": {
+      "note1": "The game shows your current shanten. Lower is better! Aim to reduce your shanten quickly each turn.",
+      "p1": "Here are some yaku you'll encounter often:"
+    },
+    "boss_mandates": {
+      "note1": "Honor tiles give <1>3× more points</1> than simples! A hand full of honors will have a much higher base score.",
+      "p1": "Every <1>Boss Round</1> has a special <3>Mandate</3> — a restriction or challenge:"
+    },
+    "structure_points": {
+      "p1": "Your melds add <1>structure points</1> to your base:",
+      "p2": "<0>Example:</0> A hand with 2 sequences, 2 triplets, and a pair:"
+    },
+    "decree_categories": {
+      "note1": "Yaku <1>stack multiplicatively</1>! A hand with ×1.3 and ×2.0 yaku gets ×2.6 total. Build combos for massive scores!",
+      "p1": "Decrees are organized into <1>5 categories</1>:"
+    },
+    "acts_rounds": {
+      "p1": "Your run is divided into <1>Acts</1>, and each Act contains <3>3 Rounds</3>:",
+      "p2": "Score targets increase with each Act. Act 1 starts easy, but by Act 8 you'll need powerful combos to survive!"
+    },
+    "decree_slots": {
+      "note1": "Some Decrees can help counter specific mandates. Plan your build accordingly!",
+      "li1": "<0>Modify scoring</0> — Add multipliers or flat bonuses",
+      "li2": "<0>Bend rules</0> — Change what makes a legal hand",
+      "li3": "<0>Grant abilities</0> — Extra draws, redraws, or effects",
+      "p1": "You have a limited number of <1>Decree Slots</1>. You start with <3>5 slots</3> and can earn more through:"
+    },
+    "skipping": {
+      "p1": "You can <1>skip</1> the Small Round or Large Round before facing the Boss. Why would you do this?"
+    },
+    "decree_rarities": {
+      "li1": "Receive an Omen Tag",
+      "li2": "Save Decrees with timers",
+      "li3": "Avoid unfavorable walls",
+      "li4": "No shop access",
+      "li5": "No gold earned",
+      "li6": "No interest growth",
+      "p1": "Decrees come in <1>4 rarity tiers</1>:"
+    },
+    "decrees_intro": {
+      "p1": "<0>Decrees (法令)</0> are rule-modifying cards that persist throughout your run. Think of them as Tensho's equivalent of \"Jokers\" in Balatro.",
+      "p2": "Decrees can:"
+    },
+    "flowers_system": {
+      "li1": "<0>Generate gold</0> — Economy boosters",
+      "p1": "<0>Flowers</0> provide <3>permanent bonuses</3> that last your entire run:",
+      "p2": "Collecting multiple flowers unlocks <2>set bonuses</2>: 2 flowers = +1 decree slot, 4 flowers = double flower effectiveness!"
+    },
+    "interest": {
+      "note1": "Higher rarity decrees are more expensive and rarer in the shop. Build synergies between multiple common decrees for powerful combos!",
+      "p1": "At the end of each round, you earn <2>interest</2> on saved gold:"
+    },
+    "hierarchy": {
+      "li1": "Collecting <1>Flower sets</1> (2+ flowers = +1 slot)",
+      "li2": "Purchasing <1>Imperial Charters</1>",
+      "li3": "Certain <1>Decree effects</1>",
+      "p1": "When effects conflict, Tensho uses a <2>hierarchy of authority</2>:"
+    },
+    "tips": {
+      "note1": "You can <1>sell</1> Decrees for gold. This frees up a slot and gives you half the purchase price back."
+    },
+    "seasons_system": {
+      "p1": "<0>Seasons</0> are <3>temporary modifiers</3> that last only for the current round:"
+    },
+    "more_tips": {
+      "note1": "From Act 2 onward, <2>Corrupted Seasons</2> can appear with negative effects!",
+      "li1": "<0>Winning rounds</0> — Base payout scales with score",
+      "li2": "<0>Interest</0> — 1 gold per 5 gold saved (max 5/round)",
+      "li3": "<0>Selling Decrees</0> — Get half the purchase price",
+      "li4": "<0>Decree effects</0> — Some generate gold"
+    },
+    "tea_house": {
+      "p1": "After each round, you visit the <2>Tea House (茶寮)</2> to spend your gold:"
+    },
+    "gold_economy": {
+      "p1": "You earn <1>gold</1> in several ways:"
     }
   },
   "codex": {

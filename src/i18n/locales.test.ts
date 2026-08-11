@@ -117,3 +117,51 @@ describe('locale item translations', () => {
     expect(incomplete).toEqual([])
   })
 })
+
+/**
+ * Tutorial copy goes through <Trans>, where each element in a sentence is
+ * addressed by index (`<0>`, `<3>`). A translation that drops or renumbers a
+ * tag silently loses the highlighted words - the sentence renders with gaps
+ * rather than throwing - so the tag set is compared against English here.
+ */
+describe('tutorial <Trans> markup', () => {
+  const tagsOf = (value: string): string =>
+    (value.match(/<\/?\d+\/?>/g) ?? []).sort().join('')
+
+  const tutorialKeys = (locale: Locale): Record<string, string> => {
+    const group = (locale.tutorial ?? {}) as Record<string, unknown>
+    const out: Record<string, string> = {}
+    for (const [step, entries] of Object.entries(group)) {
+      if (typeof entries !== 'object' || entries === null) continue
+      for (const [name, value] of Object.entries(entries as Record<string, unknown>)) {
+        if (typeof value === 'string' && /^(p|li|note)\d+$/.test(name)) {
+          out[`${step}.${name}`] = value
+        }
+      }
+    }
+    return out
+  }
+
+  it('gives English a source string for every Trans block', () => {
+    expect(Object.keys(tutorialKeys(en)).length).toBeGreaterThanOrEqual(126)
+  })
+
+  it('keeps every translation on the same tag indices as English', () => {
+    const source = tutorialKeys(en)
+    const mismatched: string[] = []
+
+    for (const [lang, locale] of Object.entries(LOCALES)) {
+      if (lang === 'en') continue
+      for (const [key, value] of Object.entries(tutorialKeys(locale))) {
+        const expected = source[key]
+        if (expected === undefined) {
+          mismatched.push(`${lang}:${key} (no English source)`)
+        } else if (tagsOf(value) !== tagsOf(expected)) {
+          mismatched.push(`${lang}:${key}`)
+        }
+      }
+    }
+
+    expect(mismatched).toEqual([])
+  })
+})

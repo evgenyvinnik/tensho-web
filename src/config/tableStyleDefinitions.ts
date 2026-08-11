@@ -106,7 +106,7 @@ export interface TableStyleDefinition {
 export const GREEN_FELT: TableStyleDefinition = {
   id: 'green_felt',
   displayName: 'Green Felt',
-  japaneseName: '默认',
+  japaneseName: '青畳',
   description:
     'The classic mahjong table. A traditional green felt surface, worn smooth by countless hands. No special modifiers - just pure skill.',
   theme: 'Classic',
