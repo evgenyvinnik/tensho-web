@@ -10,7 +10,8 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { GameOrchestrator } from './GameOrchestrator'
 import { ALL_DECREES, RULE_DECREES } from '../systems/DecreeSystem'
-import { LIBRARY_DECREES } from '../config/decreeLibrary'
+import { LIBRARY_DECREES, UNSUPPORTED_DECREE_IDS } from '../config/decreeLibrary'
+import { ALL_DECREES as AUTHORED_DECREES } from '../config/decreeDefinitions'
 import type { Decree } from '../systems/types'
 import type { ScoreAddedEffect } from './ActionProcessor'
 
@@ -167,9 +168,9 @@ describe('authored Decree library', () => {
     expect(orchestrator.getState().decreeSystem.getHandSizeBonus()).toBe(match.delta)
   })
 
-  it('keeps a Decree that needs unimplemented mechanics out of the pool', () => {
-    // "Blueprint" copies another Decree, which the engine cannot express yet.
-    expect(ALL_DECREES.some((d) => d.id === 'decree-blueprint')).toBe(false)
+  it('publishes every authored Decree, withholding none', () => {
+    expect(UNSUPPORTED_DECREE_IDS).toEqual([])
+    expect(LIBRARY_DECREES).toHaveLength(AUTHORED_DECREES.length)
   })
 
   it('still exposes the hand-written rule Decrees', () => {

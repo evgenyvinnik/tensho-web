@@ -7,10 +7,10 @@
  * reach the shop and the score.
  *
  * A definition is only published when every one of its effects maps to
- * behaviour the engine implements. Effects that would need mechanics the
- * engine does not have yet (tile retriggering, Decree copying, and other
- * bespoke rules) are reported by `UNSUPPORTED_DECREE_IDS` rather than shipped
- * as items that silently do nothing.
+ * behaviour the engine implements, so a Decree that reaches the shop always
+ * does what its text says. Every authored Decree currently qualifies and
+ * `UNSUPPORTED_DECREE_IDS` is empty; it stays here as the guard rail for new
+ * content, which lands unpublished until its mechanic exists.
  */
 
 import type { DecreeDefinition } from './decreeDefinitions'
@@ -24,6 +24,8 @@ import type {
   DecreeCategory,
   DecreeEffect,
   DecreeRarity,
+  RetriggerTarget,
+  ScalingSource,
 } from '../systems/types'
 
 /** Library rarities are a five-tier scale; the engine uses four. */
@@ -43,7 +45,158 @@ const SUPPORTED_EFFECT_TYPES = new Set<LibraryEffect['type']>([
   'gold_gain',
   'hand_size',
   'discard_count',
+  'retrigger',
+  'tile_transform',
+  'special',
 ])
+
+/**
+ * Author conditions that mean "once per X", mapped to the run quantity they
+ * scale with. A Decree reading "+10 Mult per Flower" pays 10 for each Flower
+ * held rather than a flat 10.
+ */
+const SCALING_CONDITIONS: Record<string, ScalingSource> = {
+  'per Flower': 'flower_count',
+  'per Season': 'season_count',
+  'per active Season': 'season_count',
+}
+
+/**
+ * Retrigger conditions the library authors wrote, mapped to engine targets.
+ * A condition absent from this table has no engine meaning and disqualifies
+ * its Decree rather than silently retriggering nothing.
+ */
+const RETRIGGER_TARGETS: Record<string, RetriggerTarget> = {
+  'all scoring tiles': 'all',
+  'first scoring tile': 'first',
+  'last scoring tile': 'last',
+  'all Dragon tiles': 'dragon',
+  'Dragon tiles': 'dragon',
+  'all Wind tiles': 'wind',
+  'Wind tiles': 'wind',
+  'Honor tiles': 'honor',
+  'Terminal tiles': 'terminal',
+}
+
+/**
+ * Bespoke `special` effects, keyed by the author's condition text. Each entry
+ * returns the engine effect that implements it; anything not listed here is
+ * still withheld from the pool.
+ */
+const SPECIAL_EFFECTS: Record<
+  string,
+  (value: number, description: string) => DecreeEffect
+> = {
+  'all Yaku ×1.5': (value, description) => ({
+    type: 'yaku_modifier',
+    trigger: 'Independent',
+    description,
+    multiplier: value,
+  }),
+  '+1 Yaku tier': (value, description) => ({
+    type: 'yaku_modifier',
+    trigger: 'Independent',
+    description,
+    tierBonus: value,
+  }),
+  'double retriggers': (value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'retrigger_amplifier',
+    modification: { factor: value },
+  }),
+  'double gold gain': (value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'gold_multiplier',
+    modification: { factor: value },
+  }),
+  'extra hand': (value, description) => ({
+    type: 'draw',
+    trigger: 'Passive',
+    description,
+    additionalDraws: value,
+  }),
+  'extra hands': (value, description) => ({
+    type: 'draw',
+    trigger: 'Passive',
+    description,
+    additionalDraws: value,
+  }),
+  'copies Decree to right': (_value, description) => ({
+    type: 'copy_decree',
+    trigger: 'Independent',
+    description,
+    source: 'right',
+  }),
+  'copies leftmost Decree': (_value, description) => ({
+    type: 'copy_decree',
+    trigger: 'Independent',
+    description,
+    source: 'left',
+  }),
+  'copies random Decree': (_value, description) => ({
+    type: 'copy_decree',
+    trigger: 'Independent',
+    description,
+    source: 'random',
+  }),
+  'copies all Decrees': (_value, description) => ({
+    type: 'copy_decree',
+    trigger: 'Independent',
+    description,
+    source: 'all',
+  }),
+  'suits match for sequences': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'suits_match',
+    modification: { suitsMatch: true },
+  }),
+  'tiles are wild': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'all_wild',
+    modification: { allWild: true },
+  }),
+  'Flowers protected': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'flowers_protected',
+    modification: { protected: true },
+  }),
+  'prevents one loss': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'prevent_loss',
+    modification: { consumedOnUse: true },
+  }),
+  'cannot lose': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'prevent_loss',
+    modification: { consumedOnUse: false, scorePenalty: 0.5 },
+  }),
+  'destroyed on boss loss': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'destroy_on_boss_loss',
+    modification: { destroy: true },
+  }),
+}
+
+/** The run quantity an author condition scales with, if any. */
+function scalingFor(condition: string | undefined): ScalingSource | undefined {
+  return condition ? SCALING_CONDITIONS[condition] : undefined
+}
 
 /**
  * Translate one authored effect. Returns null when the engine has no
@@ -60,6 +213,7 @@ function convertEffect(
         trigger: 'OnScored',
         description,
         basePoints: effect.value,
+        scaleBy: scalingFor(effect.condition),
       }
 
     case 'additive_mult':
@@ -68,6 +222,7 @@ function convertEffect(
         trigger: 'OnScored',
         description,
         multiplier: effect.value,
+        scaleBy: scalingFor(effect.condition),
       }
 
     case 'multiplicative_mult':
@@ -76,6 +231,7 @@ function convertEffect(
         trigger: 'Independent',
         description,
         multiplier: effect.value,
+        scaleBy: scalingFor(effect.condition),
       }
 
     case 'gold_gain':
@@ -105,6 +261,34 @@ function convertEffect(
         ruleId: 'discard_count',
         modification: { delta: effect.value },
       }
+
+    case 'retrigger': {
+      const target = effect.condition ? RETRIGGER_TARGETS[effect.condition] : undefined
+      if (!target) return null
+      return {
+        type: 'retrigger',
+        trigger: 'OnScored',
+        description,
+        target,
+        times: effect.value,
+      }
+    }
+
+    // The one authored transform rewrites what tiles are worth when scored.
+    case 'tile_transform':
+      if (effect.condition !== 'Simples become Terminals') return null
+      return {
+        type: 'rule_modification',
+        trigger: 'Passive',
+        description,
+        ruleId: 'simples_as_terminals',
+        modification: { transform: true },
+      }
+
+    case 'special': {
+      const build = effect.condition ? SPECIAL_EFFECTS[effect.condition] : undefined
+      return build ? build(effect.value, description) : null
+    }
 
     default:
       return null

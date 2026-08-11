@@ -31,6 +31,8 @@ export interface HandValidationOptions {
   meldMayServeAsPair?: boolean
   /** Celestial Wildcard: one tile may impersonate any regular tile type. */
   wildcardCount?: number
+  /** Harmonizer: sequences may draw their ranks from any suits. */
+  suitsMatchForSequences?: boolean
 }
 
 export interface OneAwayCompletion {
@@ -288,16 +290,18 @@ function findMelds(
     const rankPatterns = [[1, 2]]
     if (options.allowSequenceSkip) rankPatterns.push([1, 3], [2, 3])
 
+    // Harmonizer lets a sequence span suits, so only the ranks must line up.
+    const sameSuit = (tile: Tile): boolean =>
+      options.suitsMatchForSequences ? tile.isSuited : tile.suit === firstTile.suit
+
     for (const [secondOffset, thirdOffset] of rankPatterns) {
       if (firstTile.rank + thirdOffset > 9) continue
       const second = remaining.find(
-        (tile) =>
-          tile.suit === firstTile.suit &&
-          tile.rank === firstTile.rank + secondOffset
+        (tile) => sameSuit(tile) && tile.rank === firstTile.rank + secondOffset
       )
       const third = remaining.find(
         (tile) =>
-          tile.suit === firstTile.suit &&
+          sameSuit(tile) &&
           tile.rank === firstTile.rank + thirdOffset &&
           (!second || tile.id !== second.id)
       )

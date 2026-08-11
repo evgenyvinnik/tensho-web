@@ -8,14 +8,18 @@
  */
 
 import {
+  CopyDecreeEffect,
   Decree,
   DecreeEffect,
   DecreeRarity,
   OwnedDecree,
+  RetriggerTarget,
+  ScalingSource,
   ScoringContext,
   ScoreBreakdown,
   Sticker,
 } from './types'
+import { Tile, TileSuit } from '../core/Tile'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 
 /**
@@ -25,6 +29,49 @@ import { LIBRARY_DECREES } from '../config/decreeLibrary'
  */
 function allEffectsOf(decree: Decree): DecreeEffect[] {
   return decree.extraEffects ? [decree.effect, ...decree.extraEffects] : [decree.effect]
+}
+
+/**
+ * How many units of a scaling source the run currently holds.
+ *
+ * Seasons count the whole stack, falling back to the active Season, so a
+ * "per Season" Decree pays for every Season in play rather than only the
+ * topmost one.
+ */
+function countScalingSource(source: ScalingSource, context: ScoringContext): number {
+  switch (source) {
+    case 'flower_count':
+      return context.flowers.flowers.length
+    case 'season_count':
+      return Math.max(
+        context.season.seasonStack.length,
+        context.season.activeSeason ? 1 : 0
+      )
+    default:
+      return 0
+  }
+}
+
+/** The played tiles a retrigger effect applies to. */
+function matchRetriggerTargets(tiles: Tile[], target: RetriggerTarget): Tile[] {
+  switch (target) {
+    case 'all':
+      return tiles
+    case 'first':
+      return tiles.slice(0, 1)
+    case 'last':
+      return tiles.slice(-1)
+    case 'dragon':
+      return tiles.filter((tile) => tile.suit === TileSuit.Dragon)
+    case 'wind':
+      return tiles.filter((tile) => tile.suit === TileSuit.Wind)
+    case 'honor':
+      return tiles.filter((tile) => tile.isHonor)
+    case 'terminal':
+      return tiles.filter((tile) => tile.isTerminal)
+    default:
+      return []
+  }
 }
 
 // =============================================================================
@@ -538,6 +585,166 @@ export class DecreeSystem {
   }
 
   /**
+   * The effects a Decree contributes this scoring pass, with `copy_decree`
+   * replaced by whatever it points at.
+   *
+   * Copies resolve one level deep: a copier that targets another copier gains
+   * nothing from it. That keeps two copiers pointed at each other from looping
+   * forever, and matches how the effect reads - it copies a Decree's effect,
+   * not its copying.
+   */
+  private resolveEffects(
+    decree: OwnedDecree,
+    ownedInOrder: OwnedDecree[]
+  ): DecreeEffect[] {
+    const resolved: DecreeEffect[] = []
+
+    for (const effect of allEffectsOf(decree)) {
+      if (effect.type !== 'copy_decree') {
+        resolved.push(effect)
+        continue
+      }
+
+      for (const target of this.copyTargets(decree, effect.source, ownedInOrder)) {
+        resolved.push(
+          ...allEffectsOf(target).filter((inner) => inner.type !== 'copy_decree')
+        )
+      }
+    }
+
+    return resolved
+  }
+
+  /** The Decrees a copy effect draws from, in owned order. */
+  private copyTargets(
+    decree: OwnedDecree,
+    source: CopyDecreeEffect['source'],
+    ownedInOrder: OwnedDecree[]
+  ): OwnedDecree[] {
+    const others = ownedInOrder.filter((candidate) => candidate.id !== decree.id)
+    if (others.length === 0) return []
+
+    switch (source) {
+      case 'all':
+        return others
+      case 'left':
+        return [others[0]]
+      case 'right': {
+        const index = ownedInOrder.findIndex((c) => c.id === decree.id)
+        const neighbour = ownedInOrder[index + 1]
+        return neighbour ? [neighbour] : []
+      }
+      case 'random': {
+        // Seeded by the copier's position so a hand scores the same twice -
+        // the preview must not disagree with the play it is previewing.
+        const index = Math.max(0, ownedInOrder.findIndex((c) => c.id === decree.id))
+        return [others[index % others.length]]
+      }
+      default:
+        return []
+    }
+  }
+
+  /**
+   * How many extra times each played tile should score, from Decree retriggers.
+   *
+   * Returns tile id to extra trigger count; a tile absent from the map scores
+   * once as usual.
+   */
+  calculateRetriggers(tiles: Tile[]): Map<string, number> {
+    const extra = new Map<string, number>()
+    if (tiles.length === 0) return extra
+
+    const active = this.getActiveDecrees()
+    const amplifier = this.getRetriggerAmplifier()
+
+    for (const decree of active) {
+      for (const effect of this.resolveEffects(decree, active)) {
+        if (effect.type !== 'retrigger') continue
+
+        const times = effect.times * amplifier
+        for (const tile of matchRetriggerTargets(tiles, effect.target)) {
+          extra.set(tile.id, (extra.get(tile.id) ?? 0) + times)
+        }
+      }
+    }
+
+    return extra
+  }
+
+  /** Multiplier applied to every retrigger count (Echo Dimension). */
+  private getRetriggerAmplifier(): number {
+    let factor = 1
+
+    for (const decree of this.getActiveDecrees()) {
+      for (const effect of allEffectsOf(decree)) {
+        if (effect.type !== 'rule_modification') continue
+        if (effect.ruleId !== 'retrigger_amplifier') continue
+        const value = effect.modification.factor
+        if (typeof value === 'number' && value > 0) factor *= value
+      }
+    }
+
+    return factor
+  }
+
+  /**
+   * Yaku amplification from Decrees: a multiplier applied to the combined yaku
+   * multiplier, and a tier bonus that scores each yaku as if it ranked higher.
+   */
+  getYakuModifiers(): { multiplier: number; tierBonus: number } {
+    let multiplier = 1
+    let tierBonus = 0
+
+    const active = this.getActiveDecrees()
+    for (const decree of active) {
+      for (const effect of this.resolveEffects(decree, active)) {
+        if (effect.type !== 'yaku_modifier') continue
+        if (effect.multiplier) multiplier *= effect.multiplier
+        if (effect.tierBonus) tierBonus += effect.tierBonus
+      }
+    }
+
+    return { multiplier, tierBonus }
+  }
+
+  /** Whether any active Decree turns on the named rule. */
+  hasActiveRule(ruleId: string): boolean {
+    return this.hasRuleModification(ruleId)
+  }
+
+  /** Gold multiplier from Decrees (Philosopher's Stone). */
+  getGoldMultiplier(): number {
+    let multiplier = 1
+
+    for (const decree of this.getActiveDecrees()) {
+      for (const effect of allEffectsOf(decree)) {
+        if (effect.type !== 'rule_modification') continue
+        if (effect.ruleId !== 'gold_multiplier') continue
+        const value = effect.modification.factor
+        if (typeof value === 'number' && value > 0) multiplier *= value
+      }
+    }
+
+    return multiplier
+  }
+
+  /**
+   * The Decrees that can save the run from a lost round, best first.
+   *
+   * Phoenix-style Decrees are consumed when they save a run; Immortal-style
+   * ones persist but exact a permanent score penalty.
+   */
+  getLossPreventionDecrees(): OwnedDecree[] {
+    return this.getActiveDecrees().filter((decree) =>
+      allEffectsOf(decree).some(
+        (effect) =>
+          effect.type === 'rule_modification' && effect.ruleId === 'prevent_loss'
+      )
+    )
+  }
+
+  /**
    * Apply decree effects during scoring
    */
   applyDecreeEffects(
@@ -552,7 +759,7 @@ export class DecreeSystem {
     )
 
     for (const decree of activeDecrees) {
-      for (const effect of allEffectsOf(decree)) {
+      for (const effect of this.resolveEffects(decree, activeDecrees)) {
         breakdown = this.applyDecreeEffect(decree, effect, context, breakdown)
       }
       switch (decree.edition) {
@@ -590,14 +797,18 @@ export class DecreeSystem {
     const flowerBonus = 1 + context.flowers.flowers.length * 0.1
 
     switch (effect.type) {
-      case 'additive_score':
+      case 'additive_score': {
+        // A scaled bonus is paid once per unit it scales with, so an empty
+        // collection pays nothing rather than the flat amount.
+        const stacks = effect.scaleBy ? countScalingSource(effect.scaleBy, context) : 1
         if (effect.basePoints) {
-          result.additiveBonus += effect.basePoints * flowerBonus
+          result.additiveBonus += effect.basePoints * stacks * flowerBonus
         }
         if (effect.multiplier) {
-          result.decreeMultiplier += effect.multiplier * flowerBonus
+          result.decreeMultiplier += effect.multiplier * stacks * flowerBonus
         }
         break
+      }
 
       case 'multiplicative_score':
         if (effect.perTileCondition === 'dominant_suit') {
@@ -607,6 +818,11 @@ export class DecreeSystem {
           }
           const dominantSuitCount = Math.max(0, ...suitedCounts.values())
           result.decreeMultiplier *= effect.multiplier ** dominantSuitCount
+        } else if (effect.scaleBy) {
+          // Compounds per unit, matching how dominant-suit scaling already
+          // reads: one application of the multiplier for each one.
+          const stacks = countScalingSource(effect.scaleBy, context)
+          result.decreeMultiplier *= effect.multiplier ** stacks
         } else {
           result.decreeMultiplier *= effect.multiplier
         }

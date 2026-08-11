@@ -58,12 +58,22 @@ export interface BaseEffect {
 }
 
 /**
+ * A run quantity a Decree effect can scale with, so "+10 Mult per Flower"
+ * grows as the collection does instead of paying a flat bonus.
+ */
+export type ScalingSource =
+  | 'flower_count' // Flowers collected this run
+  | 'season_count' // Seasons active this round
+
+/**
  * Additive score bonus effect
  */
 export interface AdditiveScoreEffect extends BaseEffect {
   type: 'additive_score'
   basePoints?: number // Added to base points
   multiplier?: number // Added to multiplier
+  /** When set, the bonus is paid once per unit of this quantity. */
+  scaleBy?: ScalingSource
 }
 
 /**
@@ -73,6 +83,8 @@ export interface MultiplicativeScoreEffect extends BaseEffect {
   type: 'multiplicative_score'
   multiplier: number // Multiplied with total
   perTileCondition?: 'dominant_suit'
+  /** When set, the multiplier compounds once per unit of this quantity. */
+  scaleBy?: ScalingSource
 }
 
 /**
@@ -100,6 +112,47 @@ export interface RuleModificationEffect extends BaseEffect {
   type: 'rule_modification'
   ruleId: string // Identifier for the rule being modified
   modification: Record<string, unknown>
+}
+
+/**
+ * Which scoring tiles a retrigger effect repeats.
+ */
+export type RetriggerTarget =
+  | 'all' // Every scoring tile
+  | 'first' // The first tile in the played selection
+  | 'last' // The last tile in the played selection
+  | 'dragon'
+  | 'wind'
+  | 'honor' // Winds and dragons
+  | 'terminal' // 1s and 9s
+
+/**
+ * Repeat scoring for matching tiles. A retriggered tile contributes its base
+ * points and its modifier bonuses again, once per extra trigger.
+ */
+export interface RetriggerEffect extends BaseEffect {
+  type: 'retrigger'
+  target: RetriggerTarget
+  times: number
+}
+
+/**
+ * Copy another owned Decree's effect. Resolved against the Decree order held
+ * by the player, so the copy follows whatever it is pointed at.
+ */
+export interface CopyDecreeEffect extends BaseEffect {
+  type: 'copy_decree'
+  source: 'right' | 'left' | 'random' | 'all'
+}
+
+/**
+ * Amplify detected yaku, either by scaling every yaku multiplier or by scoring
+ * each yaku as though it sat a number of tiers higher.
+ */
+export interface YakuModifierEffect extends BaseEffect {
+  type: 'yaku_modifier'
+  multiplier?: number
+  tierBonus?: number
 }
 
 /**
@@ -149,6 +202,9 @@ export type DecreeEffect =
   | RuleModificationEffect
   | ScalingEffect
   | ConditionalEffect
+  | RetriggerEffect
+  | CopyDecreeEffect
+  | YakuModifierEffect
 
 /**
  * Sticker types that can be applied to decrees at higher stakes

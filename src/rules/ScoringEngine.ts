@@ -90,6 +90,11 @@ export interface ScoringContext {
   partialMelds?: Meld[]
   /** Score without mutating tile state, for the pre-play preview. */
   previewMode?: boolean
+  /**
+   * Extra scoring repetitions per tile id, contributed by Decrees. A tile with
+   * one extra trigger contributes its points and modifier bonuses twice.
+   */
+  extraRetriggers?: ReadonlyMap<string, number>
 }
 
 /**
@@ -168,7 +173,15 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 1. Calculate base points
   const isPartial = context.partialMelds !== undefined
-  const tilePoints = calculateTilePoints(scoringTiles)
+  // A retriggered tile scores its whole contribution again, so expand the
+  // scoring list rather than only repeating modifier bonuses.
+  const triggerCountFor = (tile: Tile): number =>
+    1 + Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0)
+  const triggeredTiles = scoringTiles.flatMap((tile) =>
+    new Array<Tile>(triggerCountFor(tile)).fill(tile)
+  )
+
+  const tilePoints = calculateTilePoints(triggeredTiles)
   const structurePoints = isPartial
     ? context.partialMelds!.reduce((sum, meld) => sum + getMeldStructurePoints(meld), 0)
     : calculateStructurePoints(context.parsedHand)
@@ -176,7 +189,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 2. Calculate modifier bonuses from played tiles
   const modifierResult = tileModifierSystem.scoreTilesWithModifiers(
-    scoringTiles,
+    triggeredTiles,
     'played',
     { preview: context.previewMode }
   )
@@ -184,16 +197,16 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const modifierMult = modifierResult.totalMult
   const modifierMultiplier = modifierResult.totalMultiplier
   const goldEarned = modifierResult.totalGold
-  const shatteredTiles = modifierResult.shatteredTileIds
+  const shatteredTiles = [...new Set(modifierResult.shatteredTileIds)]
 
   // 3. Calculate red five bonus chips
-  const redFiveCount = countRedFives(scoringTiles)
-  const redFiveChips = redFiveSystem.calculateBonus(scoringTiles)
+  const redFiveCount = countRedFives(triggeredTiles)
+  const redFiveChips = redFiveSystem.calculateBonus(triggeredTiles)
 
-  // Track retriggered tiles (Red Seal)
+  // Track retriggered tiles (Red Seal and Decree retriggers)
   const retriggeredTiles: string[] = []
   for (const tile of scoringTiles) {
-    if (tile.retriggers > 0) {
+    if (tile.retriggers > 0 || triggerCountFor(tile) > 1) {
       retriggeredTiles.push(tile.id)
     }
   }
@@ -267,6 +280,7 @@ export function createScoringContext(
     tanyaoAllowsTerminals?: boolean
     partialMelds?: Meld[]
     previewMode?: boolean
+    extraRetriggers?: ReadonlyMap<string, number>
   } = {}
 ): ScoringContext {
   return {
@@ -285,6 +299,7 @@ export function createScoringContext(
     tanyaoAllowsTerminals: options.tanyaoAllowsTerminals,
     partialMelds: options.partialMelds,
     previewMode: options.previewMode,
+    extraRetriggers: options.extraRetriggers,
   }
 }
 

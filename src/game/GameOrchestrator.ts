@@ -13,8 +13,8 @@
 
 import { Tile, TileSuit, FlowerType, SeasonType, WindType, DragonType } from '../core/Tile'
 import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
-import { Hand, ParsedHand } from '../core/Hand'
-import { Meld } from '../core/Meld'
+import { Hand, ParsedHand, WaitType } from '../core/Hand'
+import { Meld, MeldType } from '../core/Meld'
 import { calculateScore, createScoringContext, ScoreBreakdown } from '../rules/ScoringEngine'
 import { findOneAwayCompletion, validateHand } from '../rules/HandValidator'
 import { parsePartialHand, toPartialParsedHand } from '../rules/PartialHandParser'
@@ -122,6 +122,11 @@ export interface OrchestratorState {
    * measured against this rather than against `config.handsPerRound`.
    */
   handsAllowance: number
+  /**
+   * Permanent score multiplier charged by a Decree that refused a loss
+   * (Immortal Decree). 1 while no such rescue has happened.
+   */
+  lossPreventionScorePenalty: number
   discardsRemaining: number
   redrawsRemaining: number
   targetScore: number
@@ -202,6 +207,20 @@ const DEFAULT_ROUND_CONFIG: RoundConfig = {
   startingHandSize: 14,
 }
 
+/**
+ * Score a simple (2-8) as though it were a terminal, for Transmuter.
+ *
+ * Returns a scoring stand-in rather than mutating the tile: the player's wall
+ * keeps its real tiles, and the promotion lasts only for this hand. Rank 1 is
+ * the terminal the tile is promoted to; the id is preserved so retriggers,
+ * debuffs, and modifier lookups still resolve.
+ */
+function promoteSimpleToTerminal(tile: Tile): Tile {
+  if (!tile.isSimple) return tile
+
+  return new Tile(tile.suit, 1, tile.id, tile.isRed, tile.modifiers)
+}
+
 // =============================================================================
 // GAME ORCHESTRATOR CLASS
 // =============================================================================
@@ -245,6 +264,7 @@ export class GameOrchestrator {
       gold: 4,
       handsRemaining: this.config.handsPerRound,
       handsAllowance: this.config.handsPerRound,
+      lossPreventionScorePenalty: 1,
       discardsRemaining: this.config.discardsPerRound,
       redrawsRemaining: this.config.redrawsPerRound,
       targetScore: 300,
@@ -441,6 +461,42 @@ export class GameOrchestrator {
     }
 
     this.state.handsAllowance = this.state.handsRemaining
+  }
+
+  /** Structural exceptions the active Decrees grant to hand validation. */
+  private getValidationOptions() {
+    return {
+      allowSequenceSkip: this.isDecreeRuleActive('sequence_skip'),
+      meldMayServeAsPair: this.isDecreeRuleActive('meld_as_pair'),
+      wildcardCount: this.isDecreeRuleActive('wildcard_tile') ? 1 : 0,
+      suitsMatchForSequences: this.isDecreeRuleActive('suits_match'),
+    }
+  }
+
+  /**
+   * Reality Warp: every tile counts as every suit and rank, so any fourteen
+   * tiles already form a winning hand.
+   *
+   * The decomposition is built directly rather than searched. With no tile
+   * identity left to constrain it, a search would grind through equivalent
+   * permutations to reach the same answer this returns immediately.
+   */
+  private parseAsAllWild(tiles: Tile[]): ParsedHand | null {
+    if (!this.isDecreeRuleActive('all_wild')) return null
+    if (tiles.length !== 14) return null
+
+    const melds: Meld[] = []
+    for (let i = 0; i < 4; i++) {
+      melds.push(new Meld(MeldType.Triplet, tiles.slice(i * 3, i * 3 + 3), true))
+    }
+
+    return {
+      melds,
+      pair: new Meld(MeldType.Pair, tiles.slice(12, 14), true),
+      waitType: WaitType.Tanki,
+      winningTile: tiles[tiles.length - 1],
+      isConcealed: true,
+    }
   }
 
   private getHandSizeLimit(): number {
@@ -1072,17 +1128,15 @@ export class GameOrchestrator {
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
 
-    const validationOptions = {
-      allowSequenceSkip: this.isDecreeRuleActive('sequence_skip'),
-      meldMayServeAsPair: this.isDecreeRuleActive('meld_as_pair'),
-      wildcardCount: this.isDecreeRuleActive('wildcard_tile') ? 1 : 0,
-    }
+    const validationOptions = this.getValidationOptions()
     const hand = new Hand()
     for (const tile of tilesToScore) {
       hand.addTile(tile)
     }
     const validation = validateHand(hand, undefined, validationOptions)
-    const parsedHand = validation.parsedHands.length > 0 ? validation.parsedHands[0] : null
+    const parsedHand =
+      this.parseAsAllWild(tilesToScore) ??
+      (validation.parsedHands.length > 0 ? validation.parsedHands[0] : null)
 
     if (parsedHand) {
       const complete = this.calculateHandScore(tilesToScore, parsedHand, undefined, true)
@@ -1165,13 +1219,11 @@ export class GameOrchestrator {
     }
 
     // Check if hand is valid (can form a winning hand)
-    const validationOptions = {
-      allowSequenceSkip: this.isDecreeRuleActive('sequence_skip'),
-      meldMayServeAsPair: this.isDecreeRuleActive('meld_as_pair'),
-      wildcardCount: this.isDecreeRuleActive('wildcard_tile') ? 1 : 0,
-    }
+    const validationOptions = this.getValidationOptions()
     const validation = validateHand(hand, undefined, validationOptions)
-    let parsedHand = validation.parsedHands.length > 0 ? validation.parsedHands[0] : null
+    let parsedHand =
+      this.parseAsAllWild(tilesToScore) ??
+      (validation.parsedHands.length > 0 ? validation.parsedHands[0] : null)
     let tilesToScoreWithRules = tilesToScore
     let usedShantenClemency = false
 
@@ -2251,8 +2303,14 @@ export class GameOrchestrator {
 
   private changeGold(delta: number, reason: string, effects: Effect[]): void {
     if (delta === 0) return
+    // Philosopher's Stone doubles gold gained; penalties are untouched, so a
+    // gold multiplier can never deepen a loss.
+    const amount =
+      delta > 0
+        ? Math.floor(delta * this.state.decreeSystem.getGoldMultiplier())
+        : delta
     const previousGold = this.state.gold
-    this.state.gold = Math.max(0, this.state.gold + delta)
+    this.state.gold = Math.max(0, this.state.gold + amount)
     const actualDelta = this.state.gold - previousGold
 
     effects.push({
@@ -2496,10 +2554,15 @@ export class GameOrchestrator {
     // Apply season modifiers (includes corrupted effects)
     const seasonModifiers = this.state.seasonSystem.applySeasonModifiers(systemContext)
 
-    // Calculate flower bonus with season suppression check
-    const flowerBonus = seasonModifiers.flowersSuppressed
-      ? 1.0
-      : this.state.flowerSystem.calculateFlowerBonus(systemContext)
+    // Calculate flower bonus with season suppression check. Eternal Garden's
+    // protection outranks the Season that would otherwise silence Flowers -
+    // Court authority overriding Heaven is the one exception the hierarchy
+    // grants a Decree.
+    const flowersProtected = this.isDecreeRuleActive('flowers_protected')
+    const flowerBonus =
+      seasonModifiers.flowersSuppressed && !flowersProtected
+        ? 1.0
+        : this.state.flowerSystem.calculateFlowerBonus(systemContext)
 
     // Apply yaku bonus from seasons (Autumn: +20% to yaku multipliers)
     const yakuSeasonBonus = seasonModifiers.yakuBonus
@@ -2526,8 +2589,14 @@ export class GameOrchestrator {
       kokushi_musou: 'Kokushi',
     }
 
+    // Transmuter rewrites simples into terminals before anything is counted,
+    // so every downstream layer sees the promoted tiles.
+    const scoredTiles = this.isDecreeRuleActive('simples_as_terminals')
+      ? tiles.map((tile) => promoteSimpleToTerminal(tile))
+      : tiles
+
     // Create scoring context with system bonuses
-    const context = createScoringContext(tiles, parsedHand, {
+    const context = createScoringContext(scoredTiles, parsedHand, {
       isConcealed: true,
       isTsumo: true,
       additiveBonus: 0,
@@ -2536,6 +2605,7 @@ export class GameOrchestrator {
       tanyaoAllowsTerminals: this.isDecreeRuleActive('tanyao_terminals'),
       partialMelds,
       previewMode: preview,
+      extraRetriggers: this.state.decreeSystem.calculateRetriggers(scoredTiles),
     })
 
     // Calculate base score
@@ -2563,6 +2633,9 @@ export class GameOrchestrator {
       allowedYakuIds.has(yaku.definition.id)
     )
     baseBreakdown.basePoints = mandateScoring.basePoints
+    // Yaku Nexus scores each yaku as if it ranked higher; Yaku Amplifier scales
+    // the combined multiplier. Both are Court authority over Grammar.
+    const yakuDecreeModifiers = this.state.decreeSystem.getYakuModifiers()
     baseBreakdown.yakuMultiplier = baseBreakdown.detectedYaku.reduce(
       (multiplier, yaku) => {
         const adjustedTier = mandateScoring.yakuTiers.get(yaku.definition.id)
@@ -2573,10 +2646,20 @@ export class GameOrchestrator {
           const tierRatio = adjustedTier / yaku.definition.tier
           return multiplier * (1 + (yaku.definition.multiplier - 1) * tierRatio)
         }
+        if (yakuDecreeModifiers.tierBonus > 0) {
+          // A tier is worth its share of the yaku's own multiplier, so a tier
+          // bonus lifts weak yaku by the same proportion it lifts strong ones.
+          const boostedTier = yaku.definition.tier + yakuDecreeModifiers.tierBonus
+          const tierRatio = boostedTier / yaku.definition.tier
+          return multiplier * (1 + (yaku.definition.multiplier - 1) * tierRatio)
+        }
         return multiplier * yaku.definition.multiplier
       },
       1
     )
+    if (baseBreakdown.detectedYaku.length > 0) {
+      baseBreakdown.yakuMultiplier *= yakuDecreeModifiers.multiplier
+    }
     if (this.state.roundManager.checkMandateEffect('halve_score').active) {
       baseBreakdown.yakuMultiplier *= 0.5
     }
@@ -2645,7 +2728,11 @@ export class GameOrchestrator {
         this.state.celestialOrbs.length
       )
 
-    const calculatedFinalScore = Math.max(0, Math.floor(subtotal * finalMultiplier) - decayPenalty)
+    const calculatedFinalScore = Math.max(
+      0,
+      Math.floor(subtotal * finalMultiplier * this.state.lossPreventionScorePenalty) -
+        decayPenalty
+    )
 
     // Return the breakdown in the format expected by the rest of the system
     return {
@@ -2694,6 +2781,95 @@ export class GameOrchestrator {
       redrawsRemaining: this.state.redrawsRemaining,
     })
     this.handleRoundLoss(effects)
+  }
+
+  /**
+   * Let a loss-preventing Decree rescue the round.
+   *
+   * The round is treated as cleared and the run continues into the Tea House.
+   * A single-use Decree (Phoenix) is spent doing it; a permanent one (Immortal
+   * Decree) survives but applies its score penalty for the rest of the run.
+   *
+   * Returns true when the loss was prevented.
+   */
+  private tryPreventLoss(effects: Effect[]): boolean {
+    const savers = this.state.decreeSystem.getLossPreventionDecrees()
+    if (savers.length === 0) return false
+
+    // Prefer a permanent saver so a one-shot is not burned unnecessarily.
+    const permanent = savers.find((decree) =>
+      this.lossPreventionRule(decree)?.consumedOnUse === false
+    )
+    const saver = permanent ?? savers[0]
+    const rule = this.lossPreventionRule(saver)
+    if (!rule) return false
+
+    if (typeof rule.scorePenalty === 'number') {
+      this.state.lossPreventionScorePenalty = rule.scorePenalty
+    }
+
+    if (rule.consumedOnUse) {
+      this.state.decreeSystem.removeDecree(saver.id)
+      effects.push({
+        type: 'decree_triggered',
+        description: `${saver.name} prevented the loss and was consumed`,
+      })
+    } else {
+      effects.push({
+        type: 'decree_triggered',
+        description: `${saver.name} prevented the loss`,
+      })
+    }
+
+    eventBus.emit('decreeTriggered', {
+      decreeId: saver.id,
+      effect: 'loss prevented',
+    })
+
+    // Treat the round as cleared so the run continues through the Tea House.
+    this.state.score = Math.max(this.state.score, this.state.targetScore)
+    this.handleRoundWin(effects)
+    return true
+  }
+
+  /** The prevent_loss rule carried by a Decree, if it has one. */
+  private lossPreventionRule(
+    decree: Decree
+  ): { consumedOnUse?: boolean; scorePenalty?: number } | null {
+    const effects = decree.extraEffects
+      ? [decree.effect, ...decree.extraEffects]
+      : [decree.effect]
+
+    for (const effect of effects) {
+      if (effect.type !== 'rule_modification') continue
+      if (effect.ruleId !== 'prevent_loss') continue
+      return effect.modification as { consumedOnUse?: boolean; scorePenalty?: number }
+    }
+
+    return null
+  }
+
+  /** Destroy Decrees that do not survive a lost Boss round (Glass Cannon). */
+  private destroyBossLossDecrees(effects: Effect[]): void {
+    const roundState = this.state.roundManager.getCurrentRound()
+    if (roundState?.roundType !== 'Boss') return
+
+    for (const decree of this.state.decreeSystem.getOwnedDecrees()) {
+      const doomed = (
+        decree.extraEffects ? [decree.effect, ...decree.extraEffects] : [decree.effect]
+      ).some(
+        (effect) =>
+          effect.type === 'rule_modification' &&
+          effect.ruleId === 'destroy_on_boss_loss'
+      )
+      if (!doomed) continue
+
+      this.state.decreeSystem.removeDecree(decree.id)
+      effects.push({
+        type: 'decree_triggered',
+        description: `${decree.name} shattered with the lost Boss round`,
+      })
+    }
   }
 
   /** Whether any selection of the current hand could still be played. */
@@ -2752,8 +2928,13 @@ export class GameOrchestrator {
       (tile) => tile.modifiers.enhancement === EnhancementType.Gold
     ).length * 3
     const rentalCost = this.state.decreeSystem.calculateRentalCosts()
-    const netGoldChange =
-      goldReward + interest + decreeGold + heldGoldMarkReward - rentalCost
+    // Philosopher's Stone doubles what the round pays in, before the costs it
+    // charges out.
+    const goldMultiplier = this.state.decreeSystem.getGoldMultiplier()
+    const grossGold = Math.floor(
+      (goldReward + interest + decreeGold + heldGoldMarkReward) * goldMultiplier
+    )
+    const netGoldChange = grossGold - rentalCost
 
     const goldBefore = this.state.gold
     this.state.gold += netGoldChange
@@ -2878,6 +3059,14 @@ export class GameOrchestrator {
    * Handle round loss
    */
   private handleRoundLoss(effects: Effect[]): void {
+    // A Decree may stand between the player and defeat. Phoenix spends itself
+    // to do so; Immortal Decree keeps standing but halves what the run scores.
+    if (this.tryPreventLoss(effects)) {
+      return
+    }
+
+    this.destroyBossLossDecrees(effects)
+
     eventBus.emit('roundEnd', {
       won: false,
       score: this.state.score,
