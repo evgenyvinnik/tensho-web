@@ -12,6 +12,7 @@ import { TableStyleModal } from './TableStyleModal'
 import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { useStakeStore } from '../../stores/stakeStore'
 import { getStakeByTier } from '../../config/stakeDefinitions'
+import { getTableStyleIllustration } from '../../utils/assets'
 
 const AnimatedButton = animated('button')
 
@@ -25,7 +26,10 @@ export interface TableStyleButtonProps {
 /**
  * TableStyleButton - Shows current table style and opens selection modal
  */
-export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonProps) {
+export function TableStyleButton({
+  delay = 0,
+  show = true,
+}: TableStyleButtonProps) {
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -71,7 +75,7 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
         onTouchStart={() => setIsPressed(true)}
         onTouchEnd={() => setIsPressed(false)}
         className="
-          relative flex w-full items-center justify-center gap-3 px-4 py-3 rounded-lg
+          relative flex min-h-[72px] w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 sm:px-4
           font-ui font-bold text-base md:text-lg
           text-[var(--color-beige-white)]
           border-2 border-[var(--color-metallic-gold)]
@@ -90,35 +94,42 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
         }}
         aria-label={t('tableStyle.chooseTable', 'Choose table and stake')}
       >
-        {/* Color swatch showing current style */}
+        <img
+          src={getTableStyleIllustration(currentStyle.id)}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover opacity-55 transition duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/75" />
         <div
-          className="w-8 h-8 rounded-lg flex-shrink-0 border-2 border-white/30"
+          aria-hidden="true"
+          className="relative h-10 w-1 shrink-0 rounded-full shadow-[0_0_12px_currentColor]"
           style={{
+            color: currentStyle.themeColor,
             backgroundColor: currentStyle.themeColor,
-            boxShadow: `inset 0 -2px 4px ${currentStyle.accentColor}`,
           }}
         />
 
         {/* Label and current style name */}
-        <div className="flex flex-col items-start leading-tight">
+        <div className="relative flex min-w-0 flex-1 flex-col items-start leading-tight">
           <span className="text-xs text-[var(--color-metallic-gold)] uppercase tracking-wide">
             {t('tableStyle.table', 'Run setup')}
           </span>
-          <span className="text-[var(--color-beige-white)]">
+          <span className="max-w-full truncate text-[var(--color-beige-white)] drop-shadow-lg">
             {currentStyle.displayName}
           </span>
         </div>
 
         {/* Japanese name badge */}
         <span
-          className="ml-2 text-lg font-decorative"
-          style={{ color: currentStyle.themeColor }}
+          className="relative hidden shrink-0 text-lg font-decorative drop-shadow-lg sm:block"
+          style={{ color: 'var(--color-golden-yellow)' }}
         >
           {currentStyle.japaneseName}
         </span>
 
         <span
-          className="ml-1 rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide"
+          className="relative shrink-0 rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide backdrop-blur-sm"
           style={{
             color: currentStake?.color,
             borderColor: `${currentStake?.color ?? '#E0E0E0'}80`,
@@ -130,7 +141,7 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
 
         {/* Chevron icon */}
         <svg
-          className="w-5 h-5 ml-1 text-[var(--color-metallic-gold)]"
+          className="relative h-5 w-5 shrink-0 text-[var(--color-metallic-gold)]"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -143,17 +154,13 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
           />
         </svg>
 
-        {/* Shimmer effect */}
-        <div className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden rounded-lg pointer-events-none">
           <div className="absolute inset-0 shimmer opacity-20" />
         </div>
       </AnimatedButton>
 
       {/* Selection modal */}
-      <TableStyleModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
+      <TableStyleModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   )
 }

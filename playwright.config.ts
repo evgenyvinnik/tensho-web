@@ -63,7 +63,7 @@ export default defineConfig({
     ? undefined
     : {
         command:
-          './node_modules/.bin/vite --host 127.0.0.1 --port 4173 --strictPort',
+          './node_modules/.bin/vite --mode test --host 127.0.0.1 --port 4173 --strictPort',
         url: 'http://127.0.0.1:4173',
         reuseExistingServer: false,
         timeout: 120 * 1000,

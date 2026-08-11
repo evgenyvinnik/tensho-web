@@ -55,6 +55,76 @@ test.describe('Application Smoke Tests', () => {
     const body = await page.locator('body')
     await expect(body).toBeVisible()
   })
+
+  test('keeps the illustrated table selector readable and in bounds', async ({
+    page,
+  }) => {
+    await page.goto('/')
+    await page
+      .getByRole('button', { name: 'Choose table and stake' })
+      .click()
+
+    const modal = page.locator('[data-table-style-modal]')
+    const greenFelt = page.getByRole('button', {
+      name: 'Green Felt, Classic table',
+    })
+    await expect(modal).toBeVisible()
+    await expect(greenFelt).toBeVisible()
+    await expect(greenFelt.locator('img')).toHaveAttribute(
+      'src',
+      /green_felt\.webp$/
+    )
+    await expect(page.getByRole('button', { name: 'Confirm' })).toBeVisible()
+
+    const layout = await page.evaluate(() => {
+      const modal = document.querySelector<HTMLElement>(
+        '[data-table-style-modal]'
+      )
+      const header = document.querySelector<HTMLElement>(
+        '[data-table-style-header]'
+      )
+      const footer = document.querySelector<HTMLElement>(
+        '[data-table-style-footer]'
+      )
+      const list = document.querySelector<HTMLElement>(
+        '[data-table-style-list]'
+      )
+      const images = Array.from(
+        document.querySelectorAll<HTMLImageElement>(
+          'img[src*="/illustrations/tables/"]'
+        )
+      )
+
+      return {
+        noHorizontalOverflow:
+          document.documentElement.scrollWidth <= window.innerWidth,
+        headerFits: !!header && header.scrollHeight <= header.clientHeight,
+        footerFits: !!footer && footer.scrollHeight <= footer.clientHeight,
+        listScrolls: !!list && getComputedStyle(list).overflowY === 'auto',
+        modalFits:
+          !!modal &&
+          modal.getBoundingClientRect().left >= 0 &&
+          modal.getBoundingClientRect().right <= window.innerWidth &&
+          modal.getBoundingClientRect().top >= 0 &&
+          modal.getBoundingClientRect().bottom <= window.innerHeight,
+        imagesLoaded: images.every(
+          (image) =>
+            image.complete &&
+            image.naturalWidth === 1280 &&
+            image.naturalHeight === 720
+        ),
+      }
+    })
+
+    expect(layout).toEqual({
+      noHorizontalOverflow: true,
+      headerFits: true,
+      footerFits: true,
+      listScrolls: true,
+      modalFits: true,
+      imagesLoaded: true,
+    })
+  })
 })
 
 test.describe('Game Navigation', () => {

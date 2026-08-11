@@ -22,6 +22,7 @@ import { useAudio } from '../../hooks/useAudio'
 import { useGameController } from '../../game/useGameController'
 import { useStakeStore } from '../../stores/stakeStore'
 import { useTableStyleStore } from '../../stores/tableStyleStore'
+import { FORMATTED_APP_VERSION } from '../../utils/version'
 import { TileSuit } from '../../core/Tile'
 import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
@@ -592,7 +593,7 @@ export function MenuScreen() {
 
               {/* Version */}
               <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
-                v0.1.0
+                {FORMATTED_APP_VERSION}
               </span>
             </section>
           </div>

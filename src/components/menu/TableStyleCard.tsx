@@ -1,41 +1,31 @@
 /**
- * TableStyleCard Component
- *
- * Displays an individual table style with its name, theme color,
- * modifiers, and unlock status for selection.
+ * Illustrated table-style option used by the run setup modal.
  */
 
 import React from 'react'
-import { useSpring, animated } from '@react-spring/web'
+import { animated, useSpring } from '@react-spring/web'
 import type { TableStyleDefinition } from '../../config/tableStyleDefinitions'
 import { getCurrentLanguage } from '../../i18n'
+import { getTableStyleIllustration } from '../../utils/assets'
 
-const AnimatedDiv = animated('div')
+const AnimatedButton = animated('button')
 
-/** Check if current language uses CJK characters */
 function isCJKLanguage(): boolean {
   const lang = getCurrentLanguage()
-  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  return (
+    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  )
 }
 
 export interface TableStyleCardProps {
-  /** Table style definition */
   style: TableStyleDefinition
-  /** Whether this style is unlocked */
   isUnlocked: boolean
-  /** Whether this style is currently selected */
   isSelected: boolean
-  /** Progress toward unlocking (0-1), only used if locked */
   unlockProgress?: number
-  /** Click handler */
   onClick: () => void
-  /** Animation delay for staggered entrance */
   delay?: number
 }
 
-/**
- * TableStyleCard - Displays a table style with visual effects based on theme
- */
 export function TableStyleCard({
   style,
   isUnlocked,
@@ -45,223 +35,177 @@ export function TableStyleCard({
   delay = 0,
 }: TableStyleCardProps) {
   const [isHovered, setIsHovered] = React.useState(false)
+  const artwork = getTableStyleIllustration(style.id)
+  const benefits = style.startingModifiers.filter(
+    (modifier) => modifier.isBenefit && modifier.type !== 'none'
+  )
+  const detriments = style.startingModifiers.filter(
+    (modifier) => !modifier.isBenefit
+  )
 
-  const springProps = useSpring({
-    from: { opacity: 0, scale: 0.9, y: 20 },
+  const spring = useSpring({
+    from: { opacity: 0, transform: 'translateY(18px) scale(0.96)' },
     to: {
       opacity: 1,
-      scale: isHovered && isUnlocked ? 1.03 : 1,
-      y: isHovered && isUnlocked ? -4 : 0,
+      transform:
+        isHovered && isUnlocked
+          ? 'translateY(-3px) scale(1.015)'
+          : 'translateY(0px) scale(1)',
     },
     delay,
-    config: { tension: 300, friction: 20 },
+    config: { tension: 300, friction: 22 },
   })
 
-  // Get benefits and detriments for display
-  const benefits = style.startingModifiers.filter((m) => m.isBenefit && m.type !== 'none')
-  const detriments = style.startingModifiers.filter((m) => !m.isBenefit)
-
   return (
-    <AnimatedDiv
-      className={`
-        relative flex-shrink-0 w-full
-        bg-[var(--color-dark-forest)] rounded-xl
-        border-3 transition-all duration-200
-        ${isSelected && isUnlocked ? 'ring-3 ring-[var(--color-golden-yellow)] border-[var(--color-golden-yellow)]' : 'border-[var(--color-saddle-brown)]'}
-        ${!isUnlocked ? 'opacity-60 grayscale-[50%]' : 'cursor-pointer hover:shadow-xl'}
-        overflow-hidden
-      `}
-      style={{
-        opacity: springProps.opacity,
-        transform: springProps.scale.to(
-          (s) => `scale(${s}) translateY(${springProps.y.get()}px)`
-        ),
-      }}
+    <AnimatedButton
+      type="button"
+      disabled={!isUnlocked}
+      onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={isUnlocked ? onClick : undefined}
-      role="button"
-      tabIndex={isUnlocked ? 0 : -1}
-      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-        if ((e.key === 'Enter' || e.key === ' ') && isUnlocked) {
-          onClick()
-        }
+      aria-pressed={isUnlocked ? isSelected : undefined}
+      aria-label={
+        isUnlocked
+          ? `${style.displayName}, ${style.theme} table`
+          : `${style.displayName}, locked: ${style.unlockCondition.description}`
+      }
+      className={`relative w-full overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)] text-left shadow-lg transition-[border-color,box-shadow,filter] duration-200 ${
+        isSelected && isUnlocked
+          ? 'border-[var(--color-golden-yellow)] ring-2 ring-[var(--color-golden-yellow)]/70'
+          : 'border-[var(--color-saddle-brown)]'
+      } ${
+        isUnlocked
+          ? 'cursor-pointer hover:border-[var(--color-metallic-gold)] hover:shadow-2xl'
+          : 'cursor-not-allowed grayscale-[35%]'
+      }`}
+      style={{
+        ...spring,
+        boxShadow:
+          isSelected && isUnlocked
+            ? `0 0 22px ${style.themeColor}70`
+            : isHovered && isUnlocked
+              ? `0 12px 28px rgba(0,0,0,.42), 0 0 18px ${style.themeColor}35`
+              : '0 8px 20px rgba(0,0,0,.28)',
       }}
-      aria-disabled={!isUnlocked}
     >
-      {/* Theme color header strip */}
-      <div
-        className="h-14 w-full relative overflow-hidden"
-        style={{
-          backgroundColor: style.themeColor,
-          boxShadow: `inset 0 -4px 8px ${style.accentColor}`,
-        }}
-      >
-        {/* Theme pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 20% 50%, rgba(255,255,255,0.2) 0%, transparent 30%),
-              radial-gradient(circle at 80% 50%, rgba(255,255,255,0.15) 0%, transparent 25%)
-            `,
-          }}
+      <div className="relative aspect-[16/7] min-h-[108px] overflow-hidden bg-black">
+        <img
+          src={artwork}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className={`h-full w-full object-cover transition duration-500 ${
+            isHovered && isUnlocked ? 'scale-[1.045]' : 'scale-100'
+          } ${isUnlocked ? 'brightness-90' : 'brightness-[.42] grayscale'}`}
         />
-
-        {/* Theme label */}
-        <div className="absolute top-2 left-3">
-          <span
-            className="text-xs font-bold px-2 py-0.5 rounded-full"
-            style={{
-              backgroundColor: style.accentColor,
-              color: 'rgba(255,255,255,0.9)',
-            }}
-          >
-            {style.theme}
-          </span>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-forest)] via-transparent to-black/25"
+        />
+        <div className="absolute left-3 top-3 rounded-full border border-white/20 bg-black/65 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-white shadow-lg backdrop-blur-sm">
+          {style.theme}
         </div>
 
-        {/* Lock icon for locked styles */}
-        {!isUnlocked && (
-          <div className="absolute top-2 right-3">
-            <span className="text-xl drop-shadow-lg">
-              <svg
-                className="w-6 h-6 text-white drop-shadow-lg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+        <div className="absolute right-3 top-3 flex min-h-8 min-w-8 items-center justify-center rounded-full border border-white/25 bg-black/65 text-white shadow-lg backdrop-blur-sm">
+          {isUnlocked ? (
+            isSelected ? (
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
               </svg>
-            </span>
-          </div>
-        )}
+            ) : (
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: style.themeColor }}
+              />
+            )
+          ) : (
+            <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm3.1-9H8.9V6a3.1 3.1 0 0 1 6.2 0v2Z" />
+            </svg>
+          )}
+        </div>
 
-        {/* Selected checkmark */}
-        {isSelected && isUnlocked && (
-          <div className="absolute top-2 right-3">
-            <span className="text-xl text-white drop-shadow-lg">
-              <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-              </svg>
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="p-4">
-        {/* Name row */}
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-bold text-[var(--color-beige-white)]">
+        <div className="absolute inset-x-3 bottom-2 flex items-end justify-between gap-3">
+          <h3 className="min-w-0 text-lg font-bold leading-tight text-white drop-shadow-lg sm:text-xl">
             {style.displayName}
           </h3>
           {isCJKLanguage() && (
-            <span
-              className="text-lg font-decorative"
-              style={{ color: style.themeColor }}
-            >
+            <span className="shrink-0 font-decorative text-lg text-[var(--color-golden-yellow)] drop-shadow-lg">
               {style.japaneseName}
             </span>
           )}
         </div>
+      </div>
 
-        {/* Description */}
-        <p className="text-xs text-[var(--color-beige-white)] opacity-70 mb-3 line-clamp-2">
+      <div className="px-3.5 pb-3.5 pt-2.5 sm:px-4 sm:pb-4">
+        <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
           {style.description}
         </p>
 
-        {/* Modifiers */}
-        <div className="space-y-1">
-          {benefits.length > 0 && benefits.map((mod, idx) => (
+        <div className="space-y-1.5">
+          {benefits.map((modifier) => (
             <div
-              key={`benefit-${idx}`}
-              className="flex items-center gap-2 text-sm"
+              key={`${modifier.type}-${modifier.description}`}
+              className="flex items-start gap-2 text-xs sm:text-sm"
             >
-              <span className="text-green-400">+</span>
-              <span className="text-green-300">{mod.description}</span>
+              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 font-black text-emerald-300">
+                +
+              </span>
+              <span className="text-emerald-200/90">
+                {modifier.description}
+              </span>
             </div>
           ))}
 
-          {detriments.map((mod, idx) => (
+          {detriments.map((modifier) => (
             <div
-              key={`detriment-${idx}`}
-              className="flex items-center gap-2 text-sm"
+              key={`${modifier.type}-${modifier.description}`}
+              className="flex items-start gap-2 text-xs sm:text-sm"
             >
-              <span className="text-red-400">-</span>
-              <span className="text-red-300">{mod.description}</span>
+              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-rose-400/15 font-black text-rose-300">
+                −
+              </span>
+              <span className="text-rose-200/90">{modifier.description}</span>
             </div>
           ))}
 
-          {/* No modifiers case */}
           {benefits.length === 0 && detriments.length === 0 && (
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-[var(--color-metallic-gold)]">*</span>
-              <span className="text-[var(--color-beige-white)] opacity-70">
+            <div className="flex items-start gap-2 text-xs sm:text-sm">
+              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--color-metallic-gold)]/15 text-[var(--color-golden-yellow)]">
+                •
+              </span>
+              <span className="text-[var(--color-beige-white)]/70">
                 No special modifiers
               </span>
             </div>
           )}
         </div>
 
-        {/* Unlock condition for locked styles */}
         {!isUnlocked && (
-          <div className="mt-4 pt-3 border-t border-[var(--color-saddle-brown)]">
-            <div className="flex items-center gap-2 text-xs text-[var(--color-beige-white)] opacity-80">
-              <svg
-                className="w-4 h-4 text-[var(--color-golden-yellow)]"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-              </svg>
-              <span>{style.unlockCondition.description}</span>
+          <div className="mt-3 border-t border-[var(--color-saddle-brown)]/70 pt-3">
+            <p className="text-xs font-semibold text-[var(--color-metallic-gold)]">
+              Unlock: {style.unlockCondition.description}
+            </p>
+            <div
+              className="mt-2 h-1.5 overflow-hidden rounded-full border border-white/10 bg-black/35"
+              role="progressbar"
+              aria-label={`Progress toward ${style.displayName}`}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.floor(unlockProgress * 100)}
+            >
+              <div
+                className="h-full rounded-full bg-[var(--color-golden-yellow)] transition-[width] duration-500"
+                style={{
+                  width: `${Math.max(0, Math.min(1, unlockProgress)) * 100}%`,
+                }}
+              />
             </div>
-
-            {/* Progress bar */}
-            {unlockProgress > 0 && unlockProgress < 1 && (
-              <div className="mt-2">
-                <div className="h-1.5 bg-[var(--color-dark-forest)] rounded-full overflow-hidden border border-[var(--color-saddle-brown)]">
-                  <div
-                    className="h-full bg-[var(--color-golden-yellow)] transition-all duration-300"
-                    style={{ width: `${unlockProgress * 100}%` }}
-                  />
-                </div>
-                <span className="text-xs text-[var(--color-metallic-gold)] mt-1">
-                  {Math.floor(unlockProgress * 100)}% complete
-                </span>
-              </div>
-            )}
           </div>
         )}
       </div>
-
-      {/* Hover glow effect for unlocked */}
-      {isUnlocked && (
-        <div
-          className={`
-            absolute inset-0 pointer-events-none rounded-xl transition-opacity duration-200
-            ${isHovered ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={{
-            boxShadow: `0 0 20px ${style.themeColor}40, 0 0 40px ${style.themeColor}20`,
-          }}
-        />
-      )}
-
-      {/* Selection indicator glow */}
-      {isSelected && isUnlocked && (
-        <div
-          className="absolute inset-0 pointer-events-none rounded-xl"
-          style={{
-            boxShadow: `0 0 15px var(--color-golden-yellow), inset 0 0 10px ${style.themeColor}30`,
-          }}
-        />
-      )}
-    </AnimatedDiv>
+    </AnimatedButton>
   )
 }
 

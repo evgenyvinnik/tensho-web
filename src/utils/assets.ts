@@ -108,7 +108,28 @@ export const illustrationAssets = {
   currency: {
     gold: `${ASSET_BASE}/illustrations/currency/tensho-gold.png`,
   },
+  tables: {
+    green_felt: `${ASSET_BASE}/illustrations/tables/green_felt.webp`,
+    red_lacquer: `${ASSET_BASE}/illustrations/tables/red_lacquer.webp`,
+    bamboo_mat: `${ASSET_BASE}/illustrations/tables/bamboo_mat.webp`,
+    imperial_gold: `${ASSET_BASE}/illustrations/tables/imperial_gold.webp`,
+    night_market: `${ASSET_BASE}/illustrations/tables/night_market.webp`,
+    temple_stone: `${ASSET_BASE}/illustrations/tables/temple_stone.webp`,
+    ghost_parlor: `${ASSET_BASE}/illustrations/tables/ghost_parlor.webp`,
+    dragons_den: `${ASSET_BASE}/illustrations/tables/dragons_den.webp`,
+  },
 } as const
+
+export type IllustratedTableStyleId = keyof typeof illustrationAssets.tables
+
+/** Return the generated environment art for a table, with Green Felt as fallback. */
+export function getTableStyleIllustration(styleId?: string): string {
+  if (!styleId || !(styleId in illustrationAssets.tables)) {
+    return illustrationAssets.tables.green_felt
+  }
+
+  return illustrationAssets.tables[styleId as IllustratedTableStyleId]
+}
 
 const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([
   'script_of_kinship',

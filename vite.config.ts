@@ -1,12 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { readFileSync } from 'node:fs'
 
 const deploymentBase = process.env.VITE_BASE_PATH || '/'
+const packageVersion = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8')
+).version as string
+const appVersion = process.env.VITE_APP_VERSION || packageVersion
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   base: deploymentBase,
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion),
+  },
   plugins: [
     react({
       // React Compiler is experimental - uncomment when using React 19+
@@ -122,8 +130,10 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: true,
+        // Service-worker regeneration triggers full-page reloads. Keep it out
+        // of deterministic browser tests while retaining local PWA testing.
+        enabled: mode !== 'test',
       },
     }),
   ],
-})
+}))

@@ -15,6 +15,7 @@ import { TABLE_STYLE_DEFINITIONS } from '../../config/tableStyleDefinitions'
 import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { useStakeStore } from '../../stores/stakeStore'
+import { getTableStyleIllustration } from '../../utils/assets'
 
 const AnimatedDiv = animated('div')
 
@@ -156,6 +157,7 @@ export function TableStyleModal({
 
   return createPortal(
     <AnimatedDiv
+      data-table-style-backdrop
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{
         opacity: backdropSpring.opacity,
@@ -164,6 +166,7 @@ export function TableStyleModal({
       onClick={handleBackdropClick}
     >
       <AnimatedDiv
+        data-table-style-modal
         className="relative flex w-full max-w-4xl max-h-[90vh] flex-col overflow-hidden rounded-2xl border-3 border-[var(--color-saddle-brown)]"
         style={{
           opacity: modalSpring.opacity,
@@ -176,11 +179,17 @@ export function TableStyleModal({
       >
         {/* Header */}
         <div
-          className="relative border-b-2 border-[var(--color-saddle-brown)] px-4 py-4 sm:px-6 sm:py-5"
-          style={{
-            background: `linear-gradient(135deg, ${selectedStyle.themeColor}30 0%, var(--color-dark-forest) 100%)`,
-          }}
+          data-table-style-header
+          className="relative flex-shrink-0 overflow-hidden border-b-2 border-[var(--color-saddle-brown)] px-4 py-4 sm:px-6 sm:py-5"
         >
+          <img
+            src={getTableStyleIllustration(selectedStyle.id)}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center transition duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-[var(--color-dark-forest)]/80 to-black/65" />
+
           {/* Close button */}
           <button
             onClick={handleCancel}
@@ -206,19 +215,18 @@ export function TableStyleModal({
             </svg>
           </button>
 
-          <div className="flex items-center gap-3 pr-12 sm:gap-4 sm:pr-0">
-            {/* Table icon */}
+          <div className="relative flex items-center gap-3 pr-12 sm:gap-4 sm:pr-0">
+            {/* Selected table miniature */}
             <div
-              className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl sm:h-14 sm:w-14"
-              style={{ backgroundColor: selectedStyle.themeColor }}
+              className="hidden h-12 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 border-white/25 shadow-lg sm:block sm:h-14 sm:w-20"
+              style={{ boxShadow: `0 0 16px ${selectedStyle.themeColor}55` }}
             >
-              <svg
-                className="h-7 w-7 text-white sm:h-8 sm:w-8"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8 20H4v-4h4v4zm0-6H4v-4h4v4zm0-6H4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4z" />
-              </svg>
+              <img
+                src={getTableStyleIllustration(selectedStyle.id)}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-cover"
+              />
             </div>
 
             <div>
@@ -313,7 +321,10 @@ export function TableStyleModal({
         </section>
 
         {/* Content - Scrollable grid */}
-        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+        <div
+          data-table-style-list
+          className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {TABLE_STYLE_DEFINITIONS.map((style, index) => {
               const unlocked = isStyleUnlocked(style.id)
@@ -335,14 +346,19 @@ export function TableStyleModal({
         </div>
 
         {/* Footer with buttons */}
-        <div className="flex flex-col gap-3 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
+        <div
+          data-table-style-footer
+          className="flex flex-shrink-0 flex-col gap-3 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4"
+        >
           {/* Currently selected info */}
           <div className="flex min-w-0 items-center gap-3">
-            <div
-              className="w-8 h-8 rounded-lg"
-              style={{ backgroundColor: selectedStyle.themeColor }}
+            <img
+              src={getTableStyleIllustration(selectedStyle.id)}
+              alt=""
+              aria-hidden="true"
+              className="h-10 w-14 shrink-0 rounded-lg border border-white/20 object-cover shadow-md"
             />
-            <div>
+            <div className="min-w-0">
               <span className="text-sm text-[var(--color-beige-white)] opacity-70">
                 {t('tableStyle.selected', 'Selected:')}
               </span>

@@ -7,6 +7,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FORMATTED_APP_VERSION } from '../../utils/version'
 import { useAppNavigation } from '../../router'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { useAchievementStore } from '../../stores/achievementStore'
@@ -268,7 +269,7 @@ export function SettingsScreen() {
 
           {/* Version info */}
           <p className="text-center text-sm text-[var(--color-beige-white)] opacity-50 lg:col-span-2">
-            Tensho v0.1.0
+            Tensho {FORMATTED_APP_VERSION}
           </p>
         </div>
       </div>

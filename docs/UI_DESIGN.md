@@ -186,6 +186,11 @@ interface TableStyle {
 | Ambient effects | Subtle particles, lighting mood |
 | Audio theme | Background music variation |
 
+Each playable table has a dedicated 16:9 environment illustration in
+`public/assets/illustrations/tables`. The same artwork appears in the run setup
+card, selected-table preview, and at low contrast beneath the gameplay surface
+so a table choice remains visually recognizable throughout the run.
+
 ---
 
 ## Design Risks to Monitor

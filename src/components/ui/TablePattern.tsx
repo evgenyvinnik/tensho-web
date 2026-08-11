@@ -37,6 +37,10 @@ export interface TablePatternProps {
   children?: React.ReactNode
   /** Additional CSS classes */
   className?: string
+  /** Optional table-style environment artwork */
+  artwork?: string
+  /** Opacity of the environment artwork */
+  artworkOpacity?: number
 }
 
 /** Default colors based on theme */
@@ -142,6 +146,8 @@ export const TablePattern: React.FC<TablePatternProps> = ({
   patternScale = 1,
   children,
   className = '',
+  artwork = backgroundAssets.gameplay,
+  artworkOpacity = 1,
 }) => {
   // Merge custom colors with defaults
   const colors = useMemo(
@@ -172,8 +178,11 @@ export const TablePattern: React.FC<TablePatternProps> = ({
       <div
         data-table-artwork
         aria-hidden="true"
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url("${backgroundAssets.gameplay}")` }}
+        className="absolute inset-0 bg-cover bg-center transition-[background-image,opacity] duration-700"
+        style={{
+          backgroundImage: `url("${artwork}")`,
+          opacity: artworkOpacity,
+        }}
       />
 
       {/* Radial gradient background */}

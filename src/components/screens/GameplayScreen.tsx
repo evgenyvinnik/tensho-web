@@ -28,7 +28,11 @@ import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
 import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
 import { ConsumablesBar } from '../gameplay/ConsumablesBar'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
-import { illustrationAssets } from '../../utils/assets'
+import {
+  getTableStyleIllustration,
+  illustrationAssets,
+} from '../../utils/assets'
+import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { GameplayTopBar } from '../gameplay/GameplayTopBar'
 import { ScorePanel } from '../gameplay/ScorePanel'
 import { ActionBar } from '../gameplay/ActionBar'
@@ -63,6 +67,9 @@ export function GameplayScreen() {
   // Game controller
   const game = useGameController()
   const itemText = useItemText()
+  const currentTableStyle = useTableStyleStore((state) =>
+    state.getCurrentStyle()
+  )
 
   // Responsive tile size
   const tileSize = useResponsiveTileSize()
@@ -596,6 +603,8 @@ export function GameplayScreen() {
       showOrnaments={true}
       animated={false}
       patternScale={1}
+      artwork={getTableStyleIllustration(currentTableStyle.id)}
+      artworkOpacity={0.48}
       className="viewport-full"
     >
       <div className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl">

@@ -1,4 +1,4 @@
-name: Deploy Tensho to GitHub Pages
+name: Version and deploy Tensho to GitHub Pages
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -16,10 +16,60 @@ concurrency:
 
 jobs:
   build:
+    if: github.actor != 'github-actions[bot]' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Calculate deployment version
+        id: version
+        shell: bash
+        run: |
+          VERSION_DATE=$(date -u +"%y%m%d")
+          EXISTING_TAGS=$(git tag -l "v1.0.${VERSION_DATE}-*" | wc -l | tr -d ' ')
+          BUILD=$((EXISTING_TAGS + 1))
+          VERSION="1.0.${VERSION_DATE}-${BUILD}"
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "date=${VERSION_DATE}" >> "$GITHUB_OUTPUT"
+          echo "build=${BUILD}" >> "$GITHUB_OUTPUT"
+
+      - name: Update package version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+
+          const path = 'package.json';
+          const manifest = JSON.parse(readFileSync(path, 'utf8'));
+          manifest.version = process.env.VERSION;
+          writeFileSync(path, JSON.stringify(manifest, null, 2) + '\n');
+          NODE
+
+      - name: Commit and tag deployment version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add package.json
+          if git diff --cached --quiet; then
+            echo "Package already records ${VERSION}; reusing the current commit."
+          else
+            git commit -m "chore: bump version to ${VERSION}"
+          fi
+
+          git tag "v${VERSION}"
+          git push origin "HEAD:${{ github.ref }}"
+          git push origin "v${VERSION}"
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
@@ -31,6 +81,7 @@ jobs:
 
       - name: Build project site
         env:
+          VITE_APP_VERSION: ${{ steps.version.outputs.version }}
           VITE_BASE_PATH: /tensho-web/
         run: bun run build
 
@@ -55,3 +106,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Log deployed version
+        run: echo "Deployed Tensho v${{ needs.build.outputs.version }}"

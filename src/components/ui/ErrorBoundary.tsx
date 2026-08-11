@@ -8,6 +8,7 @@
 import React, { Component, ReactNode, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { APP_BASE_URL } from '../../utils/basePath'
+import { APP_VERSION, FORMATTED_APP_VERSION } from '../../utils/version'
 
 // =============================================================================
 // ERROR REPORTING
@@ -37,7 +38,7 @@ export function reportError(error: Error, componentStack?: string): ErrorReport 
     timestamp: new Date(),
     url: typeof window !== 'undefined' ? window.location.href : '',
     userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
-    appVersion: import.meta.env.VITE_APP_VERSION || 'development',
+    appVersion: APP_VERSION,
   }
 
   // Log to console with styling
@@ -268,7 +269,7 @@ export function ErrorFallback({
 
         {/* Version info */}
         <p className="mt-6 text-xs text-gray-500">
-          Tensho v{import.meta.env.VITE_APP_VERSION || 'dev'} | {new Date().toISOString()}
+          Tensho {FORMATTED_APP_VERSION} | {new Date().toISOString()}
         </p>
       </div>
     </div>
