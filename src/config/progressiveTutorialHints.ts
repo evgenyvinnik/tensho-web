@@ -83,7 +83,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.hand.title', 'Your Hand'),
       content: t(
         'progressiveHints.hand.content',
-        'The forecast shows exactly what Play Hand will score. Tap tiles to compare a smaller play, or play everything now while you shape the next hand.'
+        'The forecast matches the action button. Play All uses the whole hand; select 2+ tiles to compare and play a smaller group.'
       ),
       priority: 1,
       autoDismissMs: 6000,

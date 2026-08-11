@@ -181,6 +181,9 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
  * - Dashed border to indicate the play area
  */
 export function PlayArea({
+  selectedTileCount,
+  stagedTileCount,
+  handTileCount,
   scorePreview,
   scorePreviewHidden = false,
   previewLabel = 'Play forecast',
@@ -190,6 +193,7 @@ export function PlayArea({
   onYakuComplete,
 }: PlayAreaProps) {
   const [selectedYakuId, setSelectedYakuId] = useState<string | null>(null)
+  const activeTileCount = stagedTileCount || selectedTileCount
   const requiredPerHand = Math.ceil(
     remainingToTarget / Math.max(1, handsRemaining)
   )
@@ -296,10 +300,14 @@ export function PlayArea({
         /* Default state when no tiles */
         <div className="text-center">
           <p className="text-[var(--color-beige-white)] opacity-50 px-4">
-            Tap tiles to select, or play all
+            {activeTileCount === 1
+              ? 'Select one more tile to play this group'
+              : 'Select 2+ tiles for a smaller play'}
           </p>
           <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
-            Press "Play Hand" to score your hand
+            {activeTileCount === 0
+              ? `Play All uses all ${handTileCount} tiles`
+              : 'Deselect the tile to return to Play All'}
           </p>
         </div>
       )}

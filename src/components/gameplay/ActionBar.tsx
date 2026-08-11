@@ -1,7 +1,7 @@
 /**
  * ActionBar Component for Tensho Mahjong Roguelike
  *
- * Bottom action bar with gameplay buttons (Skip, Play Hand)
+ * Bottom action bar with gameplay buttons (Skip, Redraw, Play)
  * and wall remaining indicator.
  *
  * @module components/gameplay/ActionBar
@@ -28,6 +28,8 @@ export interface ActionBarProps {
   redrawsRemaining: number
   /** Number of tiles currently staged/selected */
   selectedTileCount: number
+  /** Total number of tiles currently in hand */
+  handTileCount: number
   /** Current round number (1-3) */
   currentRound: number
   /** Handler for skip action */
@@ -59,7 +61,7 @@ export interface ActionBarProps {
  * - Wall remaining indicator
  * - Hands/Discards remaining indicators
  * - Skip button (disabled for boss rounds)
- * - Play Hand button (disabled when no hands remaining)
+ * - Contextual Play button (full hand or selected group)
  * - 44px minimum touch targets for accessibility
  */
 export function ActionBar({
@@ -68,6 +70,7 @@ export function ActionBar({
   discardsRemaining,
   redrawsRemaining,
   selectedTileCount,
+  handTileCount,
   currentRound,
   onSkip,
   onRedraw,
@@ -78,12 +81,30 @@ export function ActionBar({
   onDeadWallDraw,
   t: _t,
 }: ActionBarProps) {
-  // With no staged selection, Play Hand submits the full Mahjong hand.
+  // With no staged selection, the Play action submits the full Mahjong hand.
   const canPlay =
     handsRemaining > 0 && (selectedTileCount === 0 || selectedTileCount >= 2)
   const canRedraw =
     redrawsRemaining > 0 && selectedTileCount > 0 && selectedTileCount <= 3
   const canSkip = currentRound !== 3 // Can't skip boss rounds
+  const playLabel =
+    selectedTileCount === 0
+      ? 'PLAY ALL'
+      : selectedTileCount === 1
+        ? 'SELECT 1 MORE'
+        : `PLAY ${selectedTileCount}`
+  const playDescription =
+    selectedTileCount === 1
+      ? 'Select one more tile before playing'
+      : `Play ${
+          selectedTileCount === 0
+            ? `all ${handTileCount} tiles`
+            : `${selectedTileCount} selected tiles`
+        }${
+          projectedScore !== undefined
+            ? ` for a forecast of ${projectedScore.toLocaleString()} points`
+            : ''
+        }${willClear ? ', enough to win the round' : ''}`
 
   return (
     <div
@@ -166,24 +187,27 @@ export function ActionBar({
         </Button>
       )}
 
-      {/* Play Hand button */}
+      {/* Contextual play button */}
       <Button
         data-game-action="play"
         variant="primary"
         size="sm"
         onClick={onPlayHand}
         disabled={!canPlay}
-        aria-label="PLAY HAND"
-        className={`min-w-[82px] flex-1 px-2 sm:max-w-[220px] sm:px-4 ${willClear ? 'shadow-[0_0_22px_rgba(74,222,128,0.45)]' : ''}`}
+        aria-label={playDescription}
+        title={playDescription}
+        className={`inline-flex min-w-[82px] flex-1 items-center justify-center px-2 sm:max-w-[220px] sm:px-4 ${willClear ? 'shadow-[0_0_22px_rgba(74,222,128,0.45)]' : ''}`}
       >
-        <span className="whitespace-nowrap">
-          {willClear ? 'CLEAR' : 'PLAY HAND'}
+        <span className="flex flex-col items-center leading-none">
+          <span className="whitespace-nowrap">{playLabel}</span>
+          {willClear && canPlay && (
+            <span className="mt-1 whitespace-nowrap text-[9px] font-black uppercase tracking-wide text-emerald-100">
+              Wins round
+            </span>
+          )}
         </span>
         {projectedScore !== undefined && (
-          <span
-            data-game-action-score
-            className="ml-1.5 text-xs opacity-75"
-          >
+          <span data-game-action-score className="ml-1.5 text-xs opacity-75">
             +{projectedScore.toLocaleString()}
           </span>
         )}

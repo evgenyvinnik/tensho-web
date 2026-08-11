@@ -481,10 +481,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ) : (
           <div className="text-center px-6">
             <p className="game-play-instruction text-sm font-medium text-[var(--color-beige-white)] opacity-70 sm:text-lg">
-              Tap tiles to select, then Play Hand
+              Select 2+ tiles for a smaller play — or Play All
             </p>
             <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
-              Or drag tiles here to stage them
+              Tap tiles or drag them here to stage them
             </p>
           </div>
         )}

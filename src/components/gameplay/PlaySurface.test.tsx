@@ -114,7 +114,7 @@ describe('PlaySurface', () => {
         />
       )
 
-      expect(screen.getByText(/Tap tiles to select/)).toBeInTheDocument()
+      expect(screen.getByText(/Select 2\+ tiles/)).toBeInTheDocument()
     })
 
     it('should show discard zone', () => {

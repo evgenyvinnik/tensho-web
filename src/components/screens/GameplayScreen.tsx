@@ -650,8 +650,8 @@ export function GameplayScreen() {
           scorePreviewHidden={scorePreviewHidden}
           previewLabel={
             stagedTileIds.length > 0 || game.selectedTileIds.length > 0
-              ? `${previewTileIds.length}-tile play`
-              : 'Full hand forecast'
+              ? `${previewTileIds.length} selected tiles`
+              : `No selection · all ${previewTileIds.length} tiles`
           }
           remainingToTarget={Math.max(0, game.targetScore - game.score)}
           handsRemaining={game.handsRemaining}
@@ -723,6 +723,7 @@ export function GameplayScreen() {
           selectedTileCount={
             stagedTileIds.length || game.selectedTileIds.length
           }
+          handTileCount={game.handTiles.length}
           currentRound={game.currentRound}
           onSkip={handleSkip}
           onRedraw={handleRedraw}

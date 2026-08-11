@@ -168,7 +168,7 @@ test.describe('Game Navigation', () => {
 
     const viewport = page.viewportSize()
     const playButtonBounds = await page
-      .getByRole('button', { name: 'PLAY HAND' })
+      .locator('[data-game-action="play"]')
       .boundingBox()
     expect(playButtonBounds).not.toBeNull()
     expect(playButtonBounds!.y + playButtonBounds!.height).toBeLessThanOrEqual(
@@ -203,7 +203,7 @@ test.describe('Game Navigation', () => {
       (images) => images.map((image) => image.getAttribute('alt'))
     )
 
-    await page.getByRole('button', { name: 'PLAY HAND' }).click()
+    await page.locator('[data-game-action="play"]').click()
 
     await expect(async () => {
       const path = new URL(page.url()).pathname
@@ -226,7 +226,7 @@ test.describe('Game Navigation', () => {
     await page.goto('/')
     await page.getByRole('button', { name: 'Play', exact: true }).click()
     await expect(page).toHaveURL(/\/en\/play$/)
-    await expect(page.getByRole('button', { name: 'PLAY HAND' })).toBeVisible()
+    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
 
     const layout = await page.evaluate(() => {
       const rect = (selector: string) => {
@@ -315,14 +315,14 @@ test.describe('Game Navigation', () => {
       )
 
     // With nothing selected the panel forecasts the whole hand, which is also
-    // what PLAY HAND commits.
+    // what PLAY ALL commits.
     const previewTotal = page.getByTestId('score-preview-total')
     await expect(previewTotal).toBeVisible()
     const previewed = Number((await previewTotal.textContent())?.replace(/[^\d]/g, '') ?? '0')
     expect(previewed).toBeGreaterThan(0)
 
     const scoreBefore = await readScore()
-    await page.getByRole('button', { name: 'PLAY HAND' }).click()
+    await page.locator('[data-game-action="play"]').click()
 
     // The preview resolves chance-based tile effects to their guaranteed
     // outcome, so it is a floor the real play never undercuts.
@@ -358,7 +358,7 @@ test.describe('Game Navigation', () => {
 
     const tip = page.getByRole('status')
     await expect(tip).toBeVisible({ timeout: 5_000 })
-    await expect(page.getByRole('button', { name: 'PLAY HAND' })).toBeEnabled()
+    await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
     await page.getByRole('button', { name: /Close/ }).click()
     await expect(tip).toBeHidden()
   })
