@@ -1,0 +1,119 @@
+/**
+ * Locale integrity tests.
+ *
+ * These guard the two failure modes that are invisible at runtime, because
+ * i18next falls back to English rather than erroring:
+ *
+ *  - a translation keyed to an item id that no longer exists (dead weight that
+ *    silently never resolves), and
+ *  - an item library shipping without an English entry, which leaves every
+ *    language showing whatever the config happens to hold.
+ */
+
+import { describe, it, expect } from 'vitest'
+import en from './locales/en.json'
+import es from './locales/es.json'
+import fr from './locales/fr.json'
+import idID from './locales/id.json'
+// `it` would shadow Vitest's test function, so locale imports are suffixed.
+import itIT from './locales/it.json'
+import ja from './locales/ja.json'
+import ko from './locales/ko.json'
+import ru from './locales/ru.json'
+import th from './locales/th.json'
+import tl from './locales/tl.json'
+import tr from './locales/tr.json'
+import zhHans from './locales/zh-Hans.json'
+import zhHant from './locales/zh-Hant.json'
+
+import { ALL_DECREES } from '../systems/DecreeSystem'
+import { ALL_CHARTERS } from '../config/charterDefinitions'
+import { ALL_OMENS } from '../config/omenDefinitions'
+import { ALL_MANDATES } from '../config/mandateDefinitions'
+import { getAllFateSeals } from '../systems/FateSealSystem'
+import { getAllCelestialOrbs } from '../systems/CelestialOrbSystem'
+import { getAllVoidScripts } from '../systems/VoidScriptSystem'
+
+type Locale = Record<string, unknown>
+
+const LOCALES: Record<string, Locale> = {
+  en,
+  es,
+  fr,
+  id: idID,
+  it: itIT,
+  ja,
+  ko,
+  ru,
+  th,
+  tl,
+  tr,
+  'zh-Hans': zhHans,
+  'zh-Hant': zhHant,
+}
+
+/** The item libraries that carry per-item translations, with their real ids. */
+const LIBRARIES: Record<string, string[]> = {
+  decrees: ALL_DECREES.map((d) => d.id),
+  charters: ALL_CHARTERS.map((c) => c.id),
+  omens: ALL_OMENS.map((o) => o.id),
+  mandates: ALL_MANDATES.map((m) => m.id),
+  seals: getAllFateSeals().map((s) => s.id),
+  orbs: getAllCelestialOrbs().map((o) => o.id),
+  scripts: getAllVoidScripts().map((s) => s.id),
+}
+
+function itemsOf(locale: Locale, kind: string): Record<string, unknown> {
+  const group = locale[kind] as { items?: Record<string, unknown> } | undefined
+  return group?.items ?? {}
+}
+
+describe('locale item translations', () => {
+  it('gives en an entry for every item the game can show', () => {
+    const missing: string[] = []
+
+    for (const [kind, realIds] of Object.entries(LIBRARIES)) {
+      const translated = new Set(Object.keys(itemsOf(en, kind)))
+      for (const itemId of realIds) {
+        if (!translated.has(itemId)) missing.push(`${kind}.${itemId}`)
+      }
+    }
+
+    expect(missing).toEqual([])
+  })
+
+  it('carries no translation for an item that does not exist', () => {
+    const stale: string[] = []
+
+    for (const [lang, locale] of Object.entries(LOCALES)) {
+      for (const [kind, realIds] of Object.entries(LIBRARIES)) {
+        const known = new Set(realIds)
+        for (const itemId of Object.keys(itemsOf(locale, kind))) {
+          if (!known.has(itemId)) stale.push(`${lang}:${kind}.${itemId}`)
+        }
+      }
+    }
+
+    expect(stale).toEqual([])
+  })
+
+  it('gives every item entry both a name and a description', () => {
+    const incomplete: string[] = []
+
+    for (const [lang, locale] of Object.entries(LOCALES)) {
+      for (const kind of Object.keys(LIBRARIES)) {
+        for (const [itemId, value] of Object.entries(itemsOf(locale, kind))) {
+          const entry = value as { name?: unknown; description?: unknown }
+          if (
+            typeof entry?.name !== 'string' ||
+            typeof entry?.description !== 'string'
+          ) {
+            incomplete.push(`${lang}:${kind}.${itemId}`)
+          }
+        }
+      }
+    }
+
+    expect(incomplete).toEqual([])
+  })
+})

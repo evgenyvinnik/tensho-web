@@ -714,6 +714,62 @@
       "decree-omega": {
         "name": "Omega",
         "description": "+500 Chips, +50 Mult, x2.0 Mult"
+      },
+      "river_tax": {
+        "name": "River Tax",
+        "description": "Gain 1 Gold per tile discarded this round."
+      },
+      "extended_hand_grant": {
+        "name": "Extended Hand Grant",
+        "description": "+3 additional draws before round failure."
+      },
+      "tanyao_dispensation": {
+        "name": "Tanyao Dispensation",
+        "description": "Terminal tiles (1s and 9s) are allowed in Tanyao hands."
+      },
+      "moonlit_seal": {
+        "name": "Moonlit Seal",
+        "description": "Each Honor tile in your winning hand adds +0.1x to multiplier."
+      },
+      "pure_suit_asceticism": {
+        "name": "Pure Suit Asceticism",
+        "description": "Tiles of your dominant suit gain +10% score each. Stacks multiplicatively."
+      },
+      "broken_stair_edict": {
+        "name": "Broken Stair Edict",
+        "description": "Sequences may skip one rank (e.g., 1-3-4 is valid)."
+      },
+      "false_eye_mandate": {
+        "name": "False Eye Mandate",
+        "description": "One meld may serve as the pair for hand validation."
+      },
+      "honor_transmutation": {
+        "name": "Honor Transmutation",
+        "description": "Honor tiles may count as suited tiles of your most common suit."
+      },
+      "celestial_wildcard": {
+        "name": "Celestial Wildcard",
+        "description": "One tile per hand may impersonate any other tile."
+      },
+      "dead_wall_writ": {
+        "name": "Dead Wall Writ",
+        "description": "Once per round, draw from the discard pool instead of the wall."
+      },
+      "shanten_clemency": {
+        "name": "Shanten Clemency",
+        "description": "Hands may score at 1-shanten with a 50% score penalty."
+      },
+      "closed_hand_austerity": {
+        "name": "Closed-Hand Austerity",
+        "description": "Fully concealed hands gain x1.5 score multiplier."
+      },
+      "terminal_devotion": {
+        "name": "Terminal Devotion",
+        "description": "Each terminal tile in your hand adds +5% to final score."
+      },
+      "yaku_repetition_charter": {
+        "name": "Yaku Repetition Charter",
+        "description": "Scoring the same yaku type in consecutive rounds compounds multipliers."
       }
     }
   },
