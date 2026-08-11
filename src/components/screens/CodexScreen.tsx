@@ -18,10 +18,10 @@ import { BackButton } from '../ui/BackButton'
 
 // Import from extracted tutorial modules (reused for Codex)
 import {
-  CATEGORY_CONFIG,
   ProgressBar,
   CategoryItem,
   CategoryTabs,
+  CodexCategoryHero,
   StepContent,
 } from './tutorial/TutorialComponents'
 import { useTutorialSteps } from './tutorial/useTutorialSteps'
@@ -202,20 +202,11 @@ export function CodexScreen() {
           {/* Scrollable content */}
           <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-5 md:p-6">
             <div className="mx-auto w-full max-w-4xl">
-              {/* Step title */}
-              <div className="mb-6">
-                {currentStepData.category && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1 text-sm rounded-full bg-[var(--color-dark-forest)] text-[var(--color-metallic-gold)] border border-[var(--color-metallic-gold)]/30 mb-3">
-                    <span>
-                      {CATEGORY_CONFIG[currentStepData.category]?.icon || '📖'}
-                    </span>
-                    <span>{currentStepData.category}</span>
-                  </div>
-                )}
-                <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-golden-yellow)]">
-                  {currentStepData.title}
-                </h2>
-              </div>
+              <CodexCategoryHero
+                key={`${currentCategory}-${currentStepData.id}`}
+                category={currentCategory}
+                title={currentStepData.title}
+              />
 
               {/* Step content */}
               <div className="prose prose-invert max-w-none text-[var(--color-beige-white)]">

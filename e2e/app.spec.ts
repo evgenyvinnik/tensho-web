@@ -18,7 +18,9 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/')
 
     // Wait for the menu to be visible
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // Look for common menu elements
     // These selectors should be updated based on actual implementation
@@ -30,13 +32,17 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/')
 
     // Wait for the app to load
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // Try to find and click a tutorial/codex button
-    const tutorialButton = page.getByRole('button', { name: /tutorial|codex|help/i })
+    const tutorialButton = page.getByRole('button', {
+      name: /tutorial|codex|help/i,
+    })
 
     // If the button exists, click it
-    if (await tutorialButton.count() > 0) {
+    if ((await tutorialButton.count()) > 0) {
       await tutorialButton.first().click()
 
       // Wait for navigation away from the menu.
@@ -44,12 +50,61 @@ test.describe('Application Smoke Tests', () => {
     }
   })
 
+  test('keeps illustrated Codex categories readable on a narrow phone', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 740 })
+    await page.goto('/en/codex')
+
+    const hero = page.locator('[data-codex-category-hero]')
+    const image = page.locator('[data-codex-category-image]')
+
+    await expect(hero).toBeVisible()
+    await expect(image).toHaveAttribute('src', /codex\/archive\.webp$/)
+
+    await page.getByRole('button', { name: /Flora/ }).click()
+    await expect(image).toHaveAttribute('src', /codex\/flora\.webp$/)
+
+    const layout = await page.evaluate(() => {
+      const hero = document.querySelector<HTMLElement>(
+        '[data-codex-category-hero]'
+      )
+      const image = document.querySelector<HTMLImageElement>(
+        '[data-codex-category-image]'
+      )
+      const bounds = hero?.getBoundingClientRect()
+
+      return {
+        noHorizontalOverflow:
+          document.documentElement.scrollWidth <= window.innerWidth,
+        heroFits:
+          !!bounds &&
+          bounds.left >= 0 &&
+          bounds.right <= window.innerWidth &&
+          bounds.height >= 120,
+        imageLoaded:
+          !!image &&
+          image.complete &&
+          image.naturalWidth === 1280 &&
+          image.naturalHeight === 720,
+      }
+    })
+
+    expect(layout).toEqual({
+      noHorizontalOverflow: true,
+      heroFits: true,
+      imageLoaded: true,
+    })
+  })
+
   test('should be responsive on mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
 
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // The page should still be functional on mobile
     const body = await page.locator('body')
@@ -60,9 +115,7 @@ test.describe('Application Smoke Tests', () => {
     page,
   }) => {
     await page.goto('/')
-    await page
-      .getByRole('button', { name: 'Choose table and stake' })
-      .click()
+    await page.getByRole('button', { name: 'Choose table and stake' }).click()
 
     const modal = page.locator('[data-table-style-modal]')
     const greenFelt = page.getByRole('button', {
@@ -128,7 +181,9 @@ test.describe('Application Smoke Tests', () => {
 })
 
 test.describe('Game Navigation', () => {
-  test('starts a real round and resolves a play through the core loop', async ({ page }) => {
+  test('starts a real round and resolves a play through the core loop', async ({
+    page,
+  }) => {
     await page.goto('/')
     await page.getByRole('button', { name: 'Play', exact: true }).click()
 
@@ -186,9 +241,7 @@ test.describe('Game Navigation', () => {
       expect(row.x + roundingTolerance).toBeGreaterThanOrEqual(
         left.x + left.width
       )
-      expect(row.x + row.width).toBeLessThanOrEqual(
-        right.x + roundingTolerance
-      )
+      expect(row.x + row.width).toBeLessThanOrEqual(right.x + roundingTolerance)
     }
 
     expectRowToClearCorners(
@@ -255,12 +308,16 @@ test.describe('Game Navigation', () => {
           return { left: rect.left, right: rect.right }
         })
       )
-    expect(Math.min(...handBounds.map((bounds) => bounds.left))).toBeGreaterThanOrEqual(0)
-    expect(Math.max(...handBounds.map((bounds) => bounds.right))).toBeLessThanOrEqual(
-      viewport!.width
-    )
+    expect(
+      Math.min(...handBounds.map((bounds) => bounds.left))
+    ).toBeGreaterThanOrEqual(0)
+    expect(
+      Math.max(...handBounds.map((bounds) => bounds.right))
+    ).toBeLessThanOrEqual(viewport!.width)
     const initialHands = Number(
-      (await page.getByTitle('Hands remaining').textContent())?.match(/\d+/)?.[0]
+      (await page.getByTitle('Hands remaining').textContent())?.match(
+        /\d+/
+      )?.[0]
     )
     expect(initialHands).toBeGreaterThan(0)
 
@@ -269,9 +326,11 @@ test.describe('Game Navigation', () => {
       await tutorialDismiss.click()
     }
 
-    const initialTileLabels = await page.locator('img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]').evaluateAll(
-      (images) => images.map((image) => image.getAttribute('alt'))
-    )
+    const initialTileLabels = await page
+      .locator(
+        'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
+      )
+      .evaluateAll((images) => images.map((image) => image.getAttribute('alt')))
 
     const handTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
     await handTiles.last().click()
@@ -282,20 +341,30 @@ test.describe('Game Navigation', () => {
     await expect(async () => {
       const path = new URL(page.url()).pathname
       if (path.endsWith('/shop')) {
-        await expect(page.getByText('Round Complete!', { exact: true })).toBeVisible()
+        await expect(
+          page.getByText('Round Complete!', { exact: true })
+        ).toBeVisible()
         return
       }
 
       await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
-      await expect(page.getByTitle('Hands remaining')).toContainText(String(initialHands - 1))
-      const nextTileLabels = await page.locator('img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]').evaluateAll(
-        (images) => images.map((image) => image.getAttribute('alt'))
+      await expect(page.getByTitle('Hands remaining')).toContainText(
+        String(initialHands - 1)
       )
+      const nextTileLabels = await page
+        .locator(
+          'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
+        )
+        .evaluateAll((images) =>
+          images.map((image) => image.getAttribute('alt'))
+        )
       expect(nextTileLabels).not.toEqual(initialTileLabels)
     }).toPass()
   })
 
-  test('keeps the ornamental corners free on a 320px phone', async ({ page }) => {
+  test('keeps the ornamental corners free on a 320px phone', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 320, height: 568 })
     await page.goto('/')
     await page.getByRole('button', { name: 'Play', exact: true }).click()
@@ -402,10 +471,9 @@ test.describe('Game Navigation', () => {
 
     const readScore = async () =>
       Number(
-        (await page.locator('[data-tutorial="current-score"]').textContent())?.replace(
-          /[^\d]/g,
-          ''
-        ) ?? '0'
+        (
+          await page.locator('[data-tutorial="current-score"]').textContent()
+        )?.replace(/[^\d]/g, '') ?? '0'
       )
 
     const handTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
@@ -415,7 +483,9 @@ test.describe('Game Navigation', () => {
     // The panel forecasts the exact tactical group that will be committed.
     const previewTotal = page.getByTestId('score-preview-total')
     await expect(previewTotal).toBeVisible()
-    const previewed = Number((await previewTotal.textContent())?.replace(/[^\d]/g, '') ?? '0')
+    const previewed = Number(
+      (await previewTotal.textContent())?.replace(/[^\d]/g, '') ?? '0'
+    )
     expect(previewed).toBeGreaterThan(0)
 
     const scoreBefore = await readScore()
@@ -426,26 +496,31 @@ test.describe('Game Navigation', () => {
     await expect(async () => {
       const path = new URL(page.url()).pathname
       const scoreAfter = path.endsWith('/shop') ? previewed : await readScore()
-      expect(scoreAfter - (path.endsWith('/shop') ? 0 : scoreBefore)).toBeGreaterThanOrEqual(
-        previewed
-      )
+      expect(
+        scoreAfter - (path.endsWith('/shop') ? 0 : scoreBefore)
+      ).toBeGreaterThanOrEqual(previewed)
     }).toPass({ timeout: 10_000 })
   })
 
   test('should have clickable buttons', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // Find all buttons on the page
     const buttons = await page.getByRole('button').all()
 
     // Each button should be visible and enabled
-    for (const button of buttons.slice(0, 5)) { // Check first 5 buttons
+    for (const button of buttons.slice(0, 5)) {
+      // Check first 5 buttons
       await expect(button).toBeVisible()
     }
   })
 
-  test('shows a dismissible contextual tip without disabling gameplay', async ({ page }) => {
+  test('shows a dismissible contextual tip without disabling gameplay', async ({
+    page,
+  }) => {
     await page.addInitScript(() => {
       localStorage.removeItem('tensho_progressive_hints_shown')
       localStorage.removeItem('tensho_hints_disabled')
@@ -470,13 +545,13 @@ test.describe('Game Navigation', () => {
     })
 
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // Filter out known acceptable errors (like missing resources during dev)
     const criticalErrors = errors.filter(
-      (e) =>
-        !e.includes('Failed to load resource') &&
-        !e.includes('net::ERR_')
+      (e) => !e.includes('Failed to load resource') && !e.includes('net::ERR_')
     )
 
     // Should have no critical console errors
@@ -487,7 +562,9 @@ test.describe('Game Navigation', () => {
 test.describe('Accessibility', () => {
   test('should have proper heading structure', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // Check for at least one heading
     const headings = await page.locator('h1, h2, h3').all()
@@ -496,14 +573,16 @@ test.describe('Accessibility', () => {
 
   test('should have visible focus indicators', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Play', exact: true })
+    ).toBeVisible()
 
     // Tab to the first focusable element
     await page.keyboard.press('Tab')
 
     // The focused element should be visible
     const focusedElement = await page.locator(':focus')
-    if (await focusedElement.count() > 0) {
+    if ((await focusedElement.count()) > 0) {
       await expect(focusedElement).toBeVisible()
     }
   })

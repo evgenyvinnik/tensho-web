@@ -108,6 +108,13 @@ export const illustrationAssets = {
   currency: {
     gold: `${ASSET_BASE}/illustrations/currency/tensho-gold.png`,
   },
+  codex: {
+    archive: `${ASSET_BASE}/illustrations/codex/archive.webp`,
+    ascent: `${ASSET_BASE}/illustrations/codex/ascent.webp`,
+    decrees: `${ASSET_BASE}/illustrations/codex/decrees.webp`,
+    flora: `${ASSET_BASE}/illustrations/codex/flora.webp`,
+    strategy: `${ASSET_BASE}/illustrations/codex/strategy.webp`,
+  },
   tables: {
     green_felt: `${ASSET_BASE}/illustrations/tables/green_felt.webp`,
     red_lacquer: `${ASSET_BASE}/illustrations/tables/red_lacquer.webp`,
@@ -129,6 +136,28 @@ export function getTableStyleIllustration(styleId?: string): string {
   }
 
   return illustrationAssets.tables[styleId as IllustratedTableStyleId]
+}
+
+const CODEX_CATEGORY_ILLUSTRATIONS: Record<string, string> = {
+  Introduction: illustrationAssets.codex.archive,
+  Tiles: illustrationAssets.tables.temple_stone,
+  'Hand Building': illustrationAssets.tables.red_lacquer,
+  'How to Play': illustrationAssets.tables.night_market,
+  Scoring: illustrationAssets.codex.ascent,
+  Progression: illustrationAssets.codex.ascent,
+  Decrees: illustrationAssets.codex.decrees,
+  Flora: illustrationAssets.codex.flora,
+  Economy: `${ASSET_BASE}/backgrounds/shop.webp`,
+  Strategy: illustrationAssets.codex.strategy,
+  'Ready!': illustrationAssets.codex.archive,
+}
+
+/** Return immersive category art for the Codex, with the archive as fallback. */
+export function getCodexCategoryIllustration(category?: string): string {
+  if (!category) return illustrationAssets.codex.archive
+  return (
+    CODEX_CATEGORY_ILLUSTRATIONS[category] || illustrationAssets.codex.archive
+  )
 }
 
 const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([

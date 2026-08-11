@@ -11,7 +11,10 @@
 import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useSettingsStore } from '../../../stores/settingsStore'
-import { getTileImagePath } from '../../../utils/assets'
+import {
+  getCodexCategoryIllustration,
+  getTileImagePath,
+} from '../../../utils/assets'
 import { TileSuit } from '../../../core/Tile'
 
 const AnimatedDiv = animated('div')
@@ -258,6 +261,55 @@ export function TileDisplay({
           draggable={false}
         />
       ))}
+    </AnimatedDiv>
+  )
+}
+
+/**
+ * Atmospheric category banner for the Codex. Mechanical examples remain in
+ * the content below so the illustration never has to carry rules or labels.
+ */
+export function CodexCategoryHero({
+  category,
+  title,
+}: {
+  category: string
+  title: string
+}) {
+  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const spring = useSpring({
+    from: { opacity: 0, scale: 1.035 },
+    to: { opacity: 1, scale: 1 },
+    reset: true,
+    immediate: reducedMotion,
+    config: { tension: 170, friction: 24 },
+  })
+
+  return (
+    <AnimatedDiv
+      data-codex-category-hero
+      className="relative mb-5 h-32 overflow-hidden rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)] shadow-xl sm:h-40 md:h-44"
+      style={{ opacity: spring.opacity }}
+    >
+      <animated.img
+        data-codex-category-image
+        src={getCodexCategoryIllustration(category)}
+        alt={`${category}: ${title}`}
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ transform: spring.scale.to((scale) => `scale(${scale})`) }}
+        draggable={false}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[var(--color-dark-forest)]/95 to-transparent" />
+
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+        <div className="mb-1 text-[0.65rem] font-bold uppercase tracking-[0.24em] text-[var(--color-metallic-gold)] sm:text-xs">
+          {category}
+        </div>
+        <h2 className="max-w-2xl font-decorative text-2xl font-bold leading-tight text-[var(--color-golden-yellow)] drop-shadow-lg sm:text-3xl">
+          {title}
+        </h2>
+      </div>
     </AnimatedDiv>
   )
 }
