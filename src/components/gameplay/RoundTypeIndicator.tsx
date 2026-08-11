@@ -8,6 +8,7 @@
  */
 
 import { RoundType, ROUND_TYPE_CONFIG, isCJKLanguage } from './gameplayTypes'
+import { useTranslation } from 'react-i18next'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -38,8 +39,10 @@ export interface RoundTypeIndicatorProps {
  * Japanese names are shown when the UI language is CJK.
  */
 export function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicatorProps) {
+  const { t } = useTranslation()
   const config = ROUND_TYPE_CONFIG[roundType]
   const showCJK = isCJKLanguage()
+  const localizedRoundType = t(`rounds.${roundType.toLowerCase()}`, roundType)
 
   return (
     <div
@@ -49,11 +52,16 @@ export function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicato
         border rounded-full
       `}
     >
-      {/* Japanese name (shown for CJK languages) */}
-      {showCJK && <span className={`font-bold ${config.color}`}>{config.japaneseName}</span>}
+      {/* Japanese name, shown for CJK languages unless it duplicates the
+          localized label below - in Japanese the two are the same word. */}
+      {showCJK && config.japaneseName !== localizedRoundType && (
+        <span className={`font-bold ${config.color}`}>{config.japaneseName}</span>
+      )}
 
-      {/* English round type */}
-      <span className="text-xs text-[var(--color-beige-white)] sm:text-sm">{roundType}</span>
+      {/* Localized round type */}
+      <span className="text-xs text-[var(--color-beige-white)] sm:text-sm">
+        {localizedRoundType}
+      </span>
 
       {/* Mandate name for boss rounds */}
       {mandateName && <span className="text-xs text-red-400 font-medium">| {mandateName}</span>}

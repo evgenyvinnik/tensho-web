@@ -7,6 +7,7 @@
  */
 
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { YakuReveal } from '../effects/YakuReveal'
 import { GlowEffect } from '../effects/GlowEffect'
 import { YakuRevealState } from './gameplayTypes'
@@ -192,6 +193,7 @@ export function PlayArea({
   yakuReveals,
   onYakuComplete,
 }: PlayAreaProps) {
+  const { t } = useTranslation()
   const [selectedYakuId, setSelectedYakuId] = useState<string | null>(null)
   const activeTileCount = stagedTileCount || selectedTileCount
   const requiredPerHand = Math.ceil(
@@ -210,15 +212,15 @@ export function PlayArea({
     >
       {/* Score Preview Panel */}
       {scorePreviewHidden ? (
-        <div className="text-center" aria-label="Score preview concealed">
+        <div className="text-center" aria-label={t('gameplay.previewConcealed', 'Score preview concealed')}>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300/70">
-            Hidden hand
+            {t('gameplay.hiddenHand', 'Hidden hand')}
           </p>
           <p className="mt-1 text-4xl font-black text-[var(--color-golden-yellow)]">
             ???
           </p>
           <p className="mt-2 text-sm text-[var(--color-beige-white)] opacity-60">
-            Face-down tiles conceal patterns and score until played.
+            {t('gameplay.hiddenHandDesc', 'Face-down tiles conceal patterns and score until played.')}
           </p>
         </div>
       ) : scorePreview ? (
@@ -304,11 +306,11 @@ export function PlayArea({
               ? 'Select one more tile to play this group'
               : activeTileCount > 5
                 ? 'This selection is not a complete Mahjong hand'
-                : 'Select 2–5 tiles for a tactical play'}
+                : t('gameplay.tacticalHint', 'Select {{min}}–{{max}} tiles for a tactical play', { min: 2, max: 5 })}
           </p>
           <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
             {activeTileCount === 0
-              ? `Complete all ${handTileCount} tiles to unlock Stage Hand`
+              ? t('gameplay.completeToUnlockStage', 'Complete all {{count}} tiles to unlock Stage Hand', { count: handTileCount })
               : activeTileCount > 5
                 ? 'Return tiles until 5 remain, or finish a complete hand'
                 : 'Useful groups score now; complete hands unlock Yaku'}

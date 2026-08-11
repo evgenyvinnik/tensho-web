@@ -198,7 +198,7 @@ export function TableStyleModal({
                        text-[var(--color-beige-white)] hover:text-white
                        transition-all hover:scale-110 active:scale-95
                        min-w-[44px] min-h-[44px] flex items-center justify-center"
-            aria-label="Close"
+            aria-label={t('common.close', 'Close')}
           >
             <svg
               className="w-6 h-6"
@@ -252,7 +252,7 @@ export function TableStyleModal({
           <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]">
-                Table Stake · Difficulty
+                {t('menu.tableStakeDifficulty', 'Table Stake · Difficulty')}
               </p>
               <p className="text-sm font-bold text-[var(--color-beige-white)]">
                 {selectedStake?.name}{' '}
@@ -269,7 +269,7 @@ export function TableStyleModal({
           <div
             className="grid grid-cols-4 gap-1.5 sm:grid-cols-8"
             role="radiogroup"
-            aria-label="Table stake"
+            aria-label={t('menu.tableStake', 'Table stake')}
           >
             {STAKE_DEFINITIONS.map((stake) => {
               const unlocked = stake.tier <= highestAvailableStake
@@ -369,7 +369,7 @@ export function TableStyleModal({
                 className="ml-2 text-xs font-black uppercase"
                 style={{ color: selectedStake?.color }}
               >
-                · Stake {tempStakeTier}
+                · {t('gameplay.stake', 'Stake {{tier}}', { tier: tempStakeTier })}
               </span>
               {showCJK && (
                 <span className="ml-2 text-[var(--color-metallic-gold)] font-decorative">

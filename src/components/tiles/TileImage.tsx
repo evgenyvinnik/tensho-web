@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit, EnhancementType, SealType, EditionType } from '../../core/Tile';
 import { getTileImagePath, getTileBackPath } from '../../utils/assets';
 import { tileSizes } from '../../styles/theme';
@@ -200,6 +201,7 @@ export const TileImage: React.FC<TileImageProps> = ({
   showTooltip = true,
   className = '',
 }) => {
+  const { t } = useTranslation()
   const [isHovering, setIsHovering] = useState(false);
   const dimensions = tileSizes[size];
   const src = getTileSrc(tile, faceDown);
@@ -325,7 +327,7 @@ export const TileImage: React.FC<TileImageProps> = ({
             {/* Modifier information */}
             {tile.hasModifiers && (
               <div className="mt-2 pt-2 border-t border-gray-600">
-                <div className="text-golden-yellow text-xs font-medium mb-1">Modifiers:</div>
+                <div className="text-golden-yellow text-xs font-medium mb-1">{t('tiles.modifiers', 'Modifiers:')}</div>
                 {tile.enhancement !== EnhancementType.None && (
                   <div className="text-blue-400 text-xs">
                     {tile.enhancementDef.name}: {tile.enhancementDef.description}
@@ -390,6 +392,7 @@ export const TileRow: React.FC<TileRowProps> = ({
   overlap = false,
   className = '',
 }) => {
+  const { t } = useTranslation()
   const dimensions = tileSizes[size];
   // Calculate overlap amount (negative margin) - reduced for better visibility
   const overlapAmount = overlap ? Math.floor(dimensions.width * 0.2) : 0;
@@ -400,7 +403,7 @@ export const TileRow: React.FC<TileRowProps> = ({
     <div
       className={`flex items-end ${gapClass} ${className}`}
       role="group"
-      aria-label="Tile row"
+      aria-label={t('tiles.tileRow', 'Tile row')}
     >
       {tiles.map((tile, index) => (
         <div

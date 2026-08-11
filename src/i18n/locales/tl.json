@@ -28,7 +28,11 @@
     "musicOn": "Tumutugtog ang Musika",
     "musicOff": "Naka-off ang Musika",
     "nowPlaying": "Pinapatugtog",
-    "codex": "Kodeks"
+    "codex": "Kodeks",
+    "tableStakeDifficulty": "Table Stake · Hirap",
+    "tableStake": "Table stake",
+    "noSpecialModifiers": "Walang espesyal na modifier",
+    "promise": "Pangako"
   },
   "settings": {
     "title": "Mga Setting",
@@ -85,7 +89,53 @@
     "resume": "Ipagpatuloy",
     "tenpai": "Tenpai",
     "shanten": "{{count}} kulang",
-    "ready": "Handa"
+    "ready": "Handa",
+    "deadDraw": "DEAD DRAW",
+    "deadWallDraw": "DEAD WALL DRAW",
+    "winsRound": "Panalo sa round",
+    "tilesInWall": "Mga tile sa wall",
+    "handsRemaining": "Natitirang kamay",
+    "discardsRemaining": "Natitirang discard",
+    "redrawsRemaining": "Natitirang redraw",
+    "redrawSelected": "I-redraw ang mga piniling tile",
+    "redrawHint": "Ibalik ang hanggang 3 piniling tile at kumuha ng kapalit",
+    "decreeDisabledByMandate": "Naka-disable ng Crimson Heart ngayong kamay",
+    "season": "Panahon:",
+    "endless": "Walang Hanggan",
+    "wall": "Wall:",
+    "playerHand": "Kamay ng manlalaro",
+    "hiddenHand": "Nakatagong kamay",
+    "hiddenHandDesc": "Tinatago ng mga nakataob na tile ang pattern at puntos hanggang malaro.",
+    "basePlayHint": "Batayang laro · buuin ang pattern para ma-unlock ang Yaku",
+    "forecast": "Forecast",
+    "previewConcealed": "Nakatago ang preview ng puntos",
+    "stageHint": "Maghanda ng 2–5 tile para sa taktikal na laro",
+    "stageUnlockHint": "Ina-unlock ng kumpletong kamay ang dalawang hakbang na Stage Hand",
+    "gameOver": "Tapos na ang Laro",
+    "redraw": "MAG-REDRAW",
+    "selectRange": "PUMILI NG {{min}}–{{max}}",
+    "handCount": "Kamay ({{count}})",
+    "tacticalHint": "Pumili ng {{min}}–{{max}} tile para sa taktikal na laro",
+    "tacticalHintLong": "Pumili ng {{min}}–{{max}} tile para sa taktikal na laro, o buuin ang kamay bago ideklara.",
+    "sell": "Ibenta",
+    "stakeLabel": "STAKE {{tier}}",
+    "selectExact": "PUMILI NG {{count}}",
+    "stageHand": "IHANDA ANG KAMAY",
+    "selectMore": "PUMILI PA NG {{count}}",
+    "returnTiles": "IBALIK ANG {{count}}",
+    "confirmHand": "KUMPIRMAHIN ANG KAMAY",
+    "notComplete": "HINDI KUMPLETO",
+    "playCount": "LARUIN ANG {{count}}",
+    "pointsToClear": "kulang {{count}}",
+    "targetCleared": "Naabot ang target",
+    "stake": "Stake {{tier}}",
+    "requiredTiles": "{{count}} TILE",
+    "completeToUnlockStage": "Buuin ang lahat ng {{count}} tile para ma-unlock ang Stage Hand",
+    "tilesRange": "{{min}}–{{max}} TILE",
+    "sellFor": "Ibenta sa ¥{{value}}",
+    "sellHidden": "Ibenta ang nakatagong Decree",
+    "sellNamed": "Ibenta ang {{name}}",
+    "hiddenDecree": "nakatagong Decree"
   },
   "rounds": {
     "small": "Maliit na Round",
@@ -104,7 +154,15 @@
     "rerollCost": "Reroll ({{cost}}G)",
     "nextAct": "Susunod na Akto",
     "sold": "Naibenta",
-    "cantAfford": "Hindi sapat ang ginto"
+    "cantAfford": "Hindi sapat ang ginto",
+    "tapToBuy": "Pindutin para Bumili",
+    "upgraded": "Na-upgrade",
+    "purchased": "Nabili",
+    "roundCleared": "Tapos ang round",
+    "cashOut": "Mag-cash out",
+    "payoutBreakdown": "Breakdown ng bayad sa round",
+    "selectionConfirmed": "Nakumpirma ang Pinili!",
+    "packSkipped": "Nilaktawan ang Pack"
   },
   "decrees": {
     "title": "Mga Decree",
@@ -197,7 +255,14 @@
     "north": "Hilaga",
     "white": "Puting Dragon",
     "green": "Berdeng Dragon",
-    "red": "Pulang Dragon"
+    "red": "Pulang Dragon",
+    "modifiers": "Mga modifier:",
+    "tileModifiers": "Mga Modifier ng Tile",
+    "enhancement": "Pagpapahusay",
+    "edition": "Edisyon",
+    "debuffed": "Pinahinang tile",
+    "lockedMustPlay": "Naka-lock na tile: kailangang laruin",
+    "tileRow": "Hanay ng tile"
   },
   "melds": {
     "pair": "Pares",
@@ -311,5 +376,27 @@
     "summary": "Buod",
     "tiles": "Mga Tile",
     "title": "Kodeks"
+  },
+  "scoring": {
+    "basePoints": "Batayang puntos",
+    "totalScore": "Kabuuang puntos",
+    "subtotal": "Subtotal",
+    "multipliers": "Mga multiplier",
+    "totalMultiplier": "Kabuuang multiplier",
+    "finalScore": "Panghuling puntos"
+  },
+  "collection": {
+    "locked": "Naka-lock",
+    "empty": "Walang item sa kategoryang ito",
+    "effect": "Epekto",
+    "voidCost": "Halaga ng void",
+    "timesUsed": "Beses na ginamit",
+    "runsWon": "Napanalunang laro",
+    "unlock": "I-unlock:"
+  },
+  "errors": {
+    "failedToLoad": "Nabigong i-load ang component",
+    "stackTrace": "Stack trace:",
+    "componentStack": "Component stack:"
   }
 }

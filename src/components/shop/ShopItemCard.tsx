@@ -14,6 +14,7 @@
  */
 
 import { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { Decree, Sticker } from '../../systems/types'
@@ -286,6 +287,7 @@ export function ShopItemCard({
   onSelect,
   isSelected = false,
 }: ShopItemCardProps) {
+  const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const itemText = useItemText()
@@ -503,7 +505,7 @@ export function ShopItemCard({
       {isSelected && (
         <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] rounded-xl pointer-events-none">
           <div className="absolute top-0 left-0 right-0 bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] text-xs font-bold text-center py-0.5">
-            Tap to Buy
+            {t('shop.tapToBuy', 'Tap to Buy')}
           </div>
         </div>
       )}

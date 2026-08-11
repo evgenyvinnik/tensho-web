@@ -21,6 +21,7 @@ import {
   getSealIcon,
   getEditionIcon,
 } from './constants'
+import { useTranslation } from 'react-i18next'
 
 // =============================================================================
 // TYPES
@@ -233,6 +234,7 @@ export function ModifierRow({ name, japaneseName, description, colors }: Modifie
  * Detailed tooltip showing all modifiers
  */
 export function ModifierTooltip({ tile, className = '' }: ModifierTooltipProps) {
+  const { t } = useTranslation()
   if (!tile.hasModifiers) {
     return null
   }
@@ -242,7 +244,7 @@ export function ModifierTooltip({ tile, className = '' }: ModifierTooltipProps) 
       className={`bg-dark-forest border border-golden-yellow rounded-lg p-3 shadow-xl min-w-[200px] ${className}`}
       style={{ backgroundColor: 'rgba(28, 58, 46, 0.95)' }}
     >
-      <div className="text-golden-yellow font-bold text-sm mb-2">Tile Modifiers</div>
+      <div className="text-golden-yellow font-bold text-sm mb-2">{t('tiles.tileModifiers', 'Tile Modifiers')}</div>
 
       {/* Enhancement */}
       {tile.enhancement !== EnhancementType.None && (
@@ -308,6 +310,7 @@ export function ModifierSelector({
   onEditionChange,
   className = '',
 }: ModifierSelectorProps) {
+  const { t } = useTranslation()
   const enhancements = Object.values(EnhancementType)
   const seals = Object.values(SealType)
   const editions = Object.values(EditionType)
@@ -317,7 +320,7 @@ export function ModifierSelector({
       {/* Enhancement selector */}
       {onEnhancementChange && (
         <div>
-          <div className="text-sm font-medium text-beige-white mb-2">Enhancement</div>
+          <div className="text-sm font-medium text-beige-white mb-2">{t('tiles.enhancement', 'Enhancement')}</div>
           <div className="flex flex-wrap gap-2">
             {enhancements.map((enhancement) => {
               const def = ENHANCEMENT_DEFINITIONS[enhancement]
@@ -382,7 +385,7 @@ export function ModifierSelector({
       {/* Edition selector */}
       {onEditionChange && (
         <div>
-          <div className="text-sm font-medium text-beige-white mb-2">Edition</div>
+          <div className="text-sm font-medium text-beige-white mb-2">{t('tiles.edition', 'Edition')}</div>
           <div className="flex flex-wrap gap-2">
             {editions.map((edition) => {
               const def = EDITION_DEFINITIONS[edition]

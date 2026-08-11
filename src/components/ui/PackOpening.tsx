@@ -8,6 +8,7 @@
  */
 
 import React, { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { createPortal } from 'react-dom'
 import { useSpring, animated, useTrail } from '@react-spring/web'
 import { PackContent } from '../../systems/BlessingPackSystem'
@@ -236,6 +237,7 @@ export function PackOpening({
   onSkip,
   className = '',
 }: PackOpeningProps) {
+  const { t } = useTranslation()
   const {
     openingPack,
     selectContent,
@@ -406,7 +408,7 @@ export function PackOpening({
         {isConfirmed && (
           <div className="text-center mb-4">
             <p className="text-[var(--color-golden-yellow)] font-bold text-lg">
-              Selection Confirmed!
+              {t('shop.selectionConfirmed', 'Selection Confirmed!')}
             </p>
           </div>
         )}
@@ -415,7 +417,7 @@ export function PackOpening({
         {isSkipped && (
           <div className="text-center mb-4">
             <p className="text-[var(--color-metallic-gold)] font-bold text-lg">
-              Pack Skipped
+              {t('shop.packSkipped', 'Pack Skipped')}
             </p>
           </div>
         )}
@@ -444,7 +446,7 @@ export function PackOpening({
                            : 'bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed'
                        }`}
             >
-              Confirm
+              {t('common.confirm', 'Confirm')}
             </button>
           </div>
         )}
@@ -479,6 +481,7 @@ export function PackCard({
   onPurchase,
   className = '',
 }: PackCardProps) {
+  const { t } = useTranslation()
   const [isHovered, setIsHovered] = React.useState(false)
 
   const springProps = useSpring({
@@ -564,7 +567,7 @@ export function PackCard({
         <div className="mt-auto">
           {isPurchased ? (
             <div className="text-center py-1">
-              <span className="text-xs text-gray-400">Purchased</span>
+              <span className="text-xs text-gray-400">{t('shop.purchased', 'Purchased')}</span>
             </div>
           ) : (
             <button

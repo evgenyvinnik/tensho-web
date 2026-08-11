@@ -11,6 +11,7 @@
  */
 
 import { useSpring, animated } from '@react-spring/web'
+import { useTranslation } from 'react-i18next'
 import { createPortal } from 'react-dom'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
@@ -103,6 +104,7 @@ export function ItemDetailModal({
   displayInfo,
   categoryInfo,
 }: ItemDetailModalProps) {
+  const { t } = useTranslation()
   const spring = useSpring({
     opacity: isOpen ? 1 : 0,
     scale: isOpen ? 1 : 0.9,
@@ -196,7 +198,7 @@ export function ItemDetailModal({
                          text-[var(--color-beige-white)] hover:text-white
                          transition-all hover:scale-110 active:scale-95
                          min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Close"
+              aria-label={t('common.close', 'Close')}
             >
               <svg
                 className="w-5 h-5"
@@ -220,7 +222,7 @@ export function ItemDetailModal({
           {/* Description */}
           <div>
             <h3 className="text-sm font-bold text-[var(--color-golden-yellow)] mb-1">
-              Effect
+              {t('collection.effect', 'Effect')}
             </h3>
             <p className="text-sm text-[var(--color-beige-white)]">
               {displayInfo.description}
@@ -230,7 +232,7 @@ export function ItemDetailModal({
           {voidScript && (
             <div className="rounded-lg border border-red-400/35 bg-red-950/35 p-3">
               <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-red-300">
-                Void cost
+                {t('collection.voidCost', 'Void cost')}
               </h3>
               <p className="mt-1 text-sm text-red-100">
                 {voidScript.penalty.description}
@@ -247,7 +249,7 @@ export function ItemDetailModal({
               {/* Times Used */}
               <div className="p-3 rounded-lg bg-[var(--color-forest-green)] border border-[var(--color-metallic-gold)]">
                 <p className="text-xs text-[var(--color-metallic-gold)]">
-                  Times Used
+                  {t('collection.timesUsed', 'Times Used')}
                 </p>
                 <p className="text-xl font-bold text-[var(--color-golden-yellow)]">
                   {entry.timesUsed.toLocaleString()}
@@ -257,7 +259,7 @@ export function ItemDetailModal({
               {/* Times Won With */}
               <div className="p-3 rounded-lg bg-[var(--color-forest-green)] border border-[var(--color-metallic-gold)]">
                 <p className="text-xs text-[var(--color-metallic-gold)]">
-                  Runs Won
+                  {t('collection.runsWon', 'Runs Won')}
                 </p>
                 <p className="text-xl font-bold text-green-400">
                   {entry.timesWonWith.toLocaleString()}
@@ -296,7 +298,7 @@ export function ItemDetailModal({
                   />
                 </svg>
                 <p className="text-sm text-gray-400">
-                  <span className="font-bold">Unlock: </span>
+                  <span className="font-bold">{t('collection.unlock', 'Unlock:')} </span>
                   {entry.unlockCondition}
                 </p>
               </div>

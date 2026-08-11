@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { animated, useSpring } from '@react-spring/web'
 import type { TableStyleDefinition } from '../../config/tableStyleDefinitions'
 import { getCurrentLanguage } from '../../i18n'
@@ -34,6 +35,7 @@ export function TableStyleCard({
   onClick,
   delay = 0,
 }: TableStyleCardProps) {
+  const { t } = useTranslation()
   const [isHovered, setIsHovered] = React.useState(false)
   const artwork = getTableStyleIllustration(style.id)
   const benefits = style.startingModifiers.filter(
@@ -176,7 +178,7 @@ export function TableStyleCard({
                 •
               </span>
               <span className="text-[var(--color-beige-white)]/70">
-                No special modifiers
+                {t('menu.noSpecialModifiers', 'No special modifiers')}
               </span>
             </div>
           )}

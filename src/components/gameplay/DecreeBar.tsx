@@ -17,6 +17,7 @@
  */
 
 import { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { OwnedDecree } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'
@@ -56,6 +57,7 @@ export function DecreeCardCompact({
   disabledByMandate = false,
   onSell,
 }: DecreeCardCompactProps) {
+  const { t } = useTranslation()
   const [showTooltip, setShowTooltip] = useState(false)
   const itemText = useItemText()
   const decreeName = itemText.name('decrees', decree)
@@ -123,7 +125,7 @@ export function DecreeCardCompact({
           </p>
           {disabledByMandate && !faceDown && (
             <p className="mt-2 text-xs font-semibold text-red-300">
-              Disabled by Crimson Heart this hand
+              {t('gameplay.decreeDisabledByMandate', 'Disabled by Crimson Heart this hand')}
             </p>
           )}
           {onSell && (
@@ -139,8 +141,8 @@ export function DecreeCardCompact({
             >
               {canSell
                 ? faceDown
-                  ? 'Sell hidden Decree'
-                  : `Sell for ¥${sellValue}`
+                  ? t('gameplay.sellHidden', 'Sell hidden Decree')
+                  : t('gameplay.sellFor', 'Sell for ¥{{value}}', { value: sellValue })
                 : 'Eternal · Cannot sell'}
             </button>
           )}
@@ -153,7 +155,7 @@ export function DecreeCardCompact({
           disabled={!canSell}
           aria-label={
             canSell
-              ? `Sell ${faceDown ? 'hidden Decree' : decreeName}`
+              ? t('gameplay.sellNamed', 'Sell {{name}}', { name: faceDown ? t('gameplay.hiddenDecree', 'hidden Decree') : decreeName })
               : `${decreeName} is Eternal and cannot be sold`
           }
           onClick={(event) => {
@@ -162,7 +164,7 @@ export function DecreeCardCompact({
           }}
           className="absolute -bottom-1 left-1/2 z-20 -translate-x-1/2 rounded border border-amber-300/70 bg-amber-950 px-1.5 py-0.5 text-[10px] font-bold text-amber-100 shadow hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Sell
+          {t('gameplay.sell', 'Sell')}
         </button>
       )}
 

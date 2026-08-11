@@ -6,6 +6,7 @@
  */
 
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated, to } from '@react-spring/web'
 import { useSettingsStore } from '../../stores/settingsStore'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
@@ -79,6 +80,7 @@ function getRarityColor(rarity?: string): string {
  * ItemCard - Single item display in collection grid
  */
 export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
+  const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
 
@@ -142,7 +144,7 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
-            <span className="text-xs text-gray-400">Locked</span>
+            <span className="text-xs text-gray-400">{t('collection.locked', 'Locked')}</span>
           </div>
         </div>
       )}

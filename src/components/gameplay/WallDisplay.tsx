@@ -8,6 +8,7 @@
  */
 
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
 import { getTileImagePath } from '../../utils/assets'
 
@@ -119,6 +120,7 @@ function getSuitColorClass(suit: TileSuit): string {
  * - Visual tile thumbnails
  */
 export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Group tiles by suit and rank
@@ -166,7 +168,7 @@ export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
         onClick={() => setIsExpanded(!isExpanded)}
         className="flex items-center gap-2 px-3 py-2 bg-[var(--color-dark-forest)] rounded-lg border border-[var(--color-metallic-gold)] border-opacity-40 hover:border-opacity-70 transition-colors"
       >
-        <span className="text-gray-400 text-sm">Wall:</span>
+        <span className="text-gray-400 text-sm">{t('gameplay.wall', 'Wall:')}</span>
         <span className="text-[var(--color-golden-yellow)] font-bold">{wallTiles.length}</span>
       </button>
     )

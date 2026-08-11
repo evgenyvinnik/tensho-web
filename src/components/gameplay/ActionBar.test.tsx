@@ -4,7 +4,14 @@ import type React from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { ActionBar } from './ActionBar'
 
-const t = ((key: string) => key) as TFunction
+// Mirrors i18next: a missing key resolves to the supplied default string,
+// with {{placeholders}} filled from the interpolation values.
+const t = ((key: string, fallback?: unknown, vars?: Record<string, unknown>) => {
+  if (typeof fallback !== 'string') return key
+  return fallback.replace(/\{\{(\w+)\}\}/g, (whole, name: string) =>
+    vars && name in vars ? String(vars[name]) : whole
+  )
+}) as unknown as TFunction
 
 function renderActionBar(
   overrides: Partial<React.ComponentProps<typeof ActionBar>> = {}

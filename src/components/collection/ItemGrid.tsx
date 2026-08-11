@@ -6,6 +6,7 @@
  */
 
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { ItemCard, ItemDisplayInfo } from './ItemCard'
 
@@ -28,6 +29,7 @@ export function ItemGrid({
   onItemClick,
   isLoading = false,
 }: ItemGridProps) {
+  const { t } = useTranslation()
   // Sort entries: discovered first, then by name
   const sortedEntries = useMemo(() => {
     return [...entries].sort((a, b) => {
@@ -76,7 +78,7 @@ export function ItemGrid({
           </svg>
         </div>
         <p className="text-[var(--color-metallic-gold)]">
-          No items in this category
+          {t('collection.empty', 'No items in this category')}
         </p>
       </div>
     )

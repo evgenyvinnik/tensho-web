@@ -28,7 +28,11 @@
     "musicOn": "Musik Aktif",
     "musicOff": "Musik Mati",
     "nowPlaying": "Sedang Diputar",
-    "codex": "Kodeks"
+    "codex": "Kodeks",
+    "tableStakeDifficulty": "Taruhan Meja · Kesulitan",
+    "tableStake": "Taruhan meja",
+    "noSpecialModifiers": "Tanpa pengubah khusus",
+    "promise": "Janji"
   },
   "settings": {
     "title": "Pengaturan",
@@ -85,7 +89,53 @@
     "resume": "Lanjutkan",
     "tenpai": "Tenpai",
     "shanten": "{{count}} lagi",
-    "ready": "Siap"
+    "ready": "Siap",
+    "deadDraw": "TARIK MATI",
+    "deadWallDraw": "TARIK TEMBOK MATI",
+    "winsRound": "Memenangkan ronde",
+    "tilesInWall": "Ubin di tembok",
+    "handsRemaining": "Sisa tangan",
+    "discardsRemaining": "Sisa buangan",
+    "redrawsRemaining": "Sisa penarikan ulang",
+    "redrawSelected": "Tarik ulang ubin terpilih",
+    "redrawHint": "Kembalikan hingga 3 ubin terpilih dan ambil gantinya",
+    "decreeDisabledByMandate": "Dinonaktifkan oleh Crimson Heart tangan ini",
+    "season": "Musim:",
+    "endless": "Tanpa Batas",
+    "wall": "Tembok:",
+    "playerHand": "Tangan pemain",
+    "hiddenHand": "Tangan tersembunyi",
+    "hiddenHandDesc": "Ubin tertelungkup menyembunyikan pola dan skor sampai dimainkan.",
+    "basePlayHint": "Permainan dasar · lengkapi pola untuk membuka Yaku",
+    "forecast": "Perkiraan",
+    "previewConcealed": "Pratinjau skor disembunyikan",
+    "stageHint": "Siapkan 2–5 ubin untuk permainan taktis",
+    "stageUnlockHint": "Tangan lengkap membuka deklarasi Tangan Siap dua langkah",
+    "gameOver": "Permainan Berakhir",
+    "redraw": "TARIK ULANG",
+    "selectRange": "PILIH {{min}}–{{max}}",
+    "handCount": "Tangan ({{count}})",
+    "tacticalHint": "Pilih {{min}}–{{max}} ubin untuk permainan taktis",
+    "tacticalHintLong": "Pilih {{min}}–{{max}} ubin untuk permainan taktis, atau lengkapi tangan sebelum mendeklarasikannya.",
+    "sell": "Jual",
+    "stakeLabel": "TARUHAN {{tier}}",
+    "selectExact": "PILIH {{count}}",
+    "stageHand": "SIAPKAN TANGAN",
+    "selectMore": "PILIH {{count}} LAGI",
+    "returnTiles": "KEMBALIKAN {{count}}",
+    "confirmHand": "KONFIRMASI TANGAN",
+    "notComplete": "BELUM LENGKAP",
+    "playCount": "MAINKAN {{count}}",
+    "pointsToClear": "kurang {{count}}",
+    "targetCleared": "Target tercapai",
+    "stake": "Taruhan {{tier}}",
+    "requiredTiles": "{{count}} UBIN",
+    "completeToUnlockStage": "Lengkapi {{count}} ubin untuk membuka Tangan Siap",
+    "tilesRange": "{{min}}–{{max}} UBIN",
+    "sellFor": "Jual seharga ¥{{value}}",
+    "sellHidden": "Jual Dekrit tersembunyi",
+    "sellNamed": "Jual {{name}}",
+    "hiddenDecree": "Dekrit tersembunyi"
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -104,7 +154,15 @@
     "rerollCost": "Acak Ulang ({{cost}}E)",
     "nextAct": "Babak Berikutnya",
     "sold": "Terjual",
-    "cantAfford": "Emas tidak cukup"
+    "cantAfford": "Emas tidak cukup",
+    "tapToBuy": "Ketuk untuk Membeli",
+    "upgraded": "Ditingkatkan",
+    "purchased": "Dibeli",
+    "roundCleared": "Ronde selesai",
+    "cashOut": "Cairkan",
+    "payoutBreakdown": "Rincian pembayaran ronde",
+    "selectionConfirmed": "Pilihan Dikonfirmasi!",
+    "packSkipped": "Paket Dilewati"
   },
   "decrees": {
     "title": "Dekrit",
@@ -769,7 +827,14 @@
     "north": "Utara",
     "white": "Naga Putih",
     "green": "Naga Hijau",
-    "red": "Naga Merah"
+    "red": "Naga Merah",
+    "modifiers": "Pengubah:",
+    "tileModifiers": "Pengubah Ubin",
+    "enhancement": "Peningkatan",
+    "edition": "Edisi",
+    "debuffed": "Ubin dilemahkan",
+    "lockedMustPlay": "Ubin terkunci: harus dimainkan",
+    "tileRow": "Baris ubin"
   },
   "melds": {
     "pair": "Pasangan",
@@ -883,5 +948,27 @@
     "summary": "Ringkasan",
     "tiles": "Ubin",
     "title": "Kodeks"
+  },
+  "scoring": {
+    "basePoints": "Poin dasar",
+    "totalScore": "Skor total",
+    "subtotal": "Subtotal",
+    "multipliers": "Pengali",
+    "totalMultiplier": "Total pengali",
+    "finalScore": "Skor akhir"
+  },
+  "collection": {
+    "locked": "Terkunci",
+    "empty": "Tidak ada item di kategori ini",
+    "effect": "Efek",
+    "voidCost": "Biaya kehampaan",
+    "timesUsed": "Kali digunakan",
+    "runsWon": "Permainan dimenangkan",
+    "unlock": "Buka kunci:"
+  },
+  "errors": {
+    "failedToLoad": "Gagal memuat komponen",
+    "stackTrace": "Jejak tumpukan:",
+    "componentStack": "Tumpukan komponen:"
   }
 }

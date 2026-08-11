@@ -28,7 +28,11 @@
     "musicOn": "เปิดเพลง",
     "musicOff": "ปิดเพลง",
     "nowPlaying": "กำลังเล่น",
-    "codex": "โคเด็กซ์"
+    "codex": "โคเด็กซ์",
+    "tableStakeDifficulty": "เดิมพันโต๊ะ · ความยาก",
+    "tableStake": "เดิมพันโต๊ะ",
+    "noSpecialModifiers": "ไม่มีตัวปรับแต่งพิเศษ",
+    "promise": "คำมั่น"
   },
   "settings": {
     "title": "การตั้งค่า",
@@ -85,7 +89,53 @@
     "resume": "เล่นต่อ",
     "tenpai": "เทนไป",
     "shanten": "เหลือ {{count}}",
-    "ready": "พร้อม"
+    "ready": "พร้อม",
+    "deadDraw": "จั่วไพ่ตาย",
+    "deadWallDraw": "จั่วจากกำแพงตาย",
+    "winsRound": "ชนะรอบ",
+    "tilesInWall": "ไพ่ในกำแพง",
+    "handsRemaining": "มือที่เหลือ",
+    "discardsRemaining": "การทิ้งที่เหลือ",
+    "redrawsRemaining": "การจั่วใหม่ที่เหลือ",
+    "redrawSelected": "จั่วไพ่ที่เลือกใหม่",
+    "redrawHint": "คืนไพ่ที่เลือกได้สูงสุด 3 ใบแล้วจั่วใหม่",
+    "decreeDisabledByMandate": "ถูกปิดใช้งานโดย Crimson Heart ในมือนี้",
+    "season": "ฤดูกาล:",
+    "endless": "ไม่รู้จบ",
+    "wall": "กำแพง:",
+    "playerHand": "มือผู้เล่น",
+    "hiddenHand": "มือที่ซ่อนอยู่",
+    "hiddenHandDesc": "ไพ่คว่ำจะซ่อนรูปแบบและคะแนนไว้จนกว่าจะลง",
+    "basePlayHint": "การลงพื้นฐาน · ทำรูปแบบให้ครบเพื่อปลดล็อก Yaku",
+    "forecast": "การคาดการณ์",
+    "previewConcealed": "ซ่อนตัวอย่างคะแนน",
+    "stageHint": "เตรียมไพ่ 2–5 ใบสำหรับการเล่นเชิงกลยุทธ์",
+    "stageUnlockHint": "มือที่สมบูรณ์จะปลดล็อกการประกาศ Stage Hand สองขั้น",
+    "gameOver": "จบเกม",
+    "redraw": "จั่วใหม่",
+    "selectRange": "เลือก {{min}}–{{max}} ใบ",
+    "handCount": "มือ ({{count}})",
+    "tacticalHint": "เลือกไพ่ {{min}}–{{max}} ใบสำหรับการเล่นเชิงกลยุทธ์",
+    "tacticalHintLong": "เลือกไพ่ {{min}}–{{max}} ใบสำหรับการเล่นเชิงกลยุทธ์ หรือทำมือให้สมบูรณ์ก่อนประกาศ",
+    "sell": "ขาย",
+    "stakeLabel": "เดิมพัน {{tier}}",
+    "selectExact": "เลือก {{count}} ใบ",
+    "stageHand": "เตรียมมือ",
+    "selectMore": "เลือกอีก {{count}} ใบ",
+    "returnTiles": "คืน {{count}} ใบ",
+    "confirmHand": "ยืนยันมือ",
+    "notComplete": "ยังไม่สมบูรณ์",
+    "playCount": "ลง {{count}} ใบ",
+    "pointsToClear": "เหลืออีก {{count}}",
+    "targetCleared": "ถึงเป้าหมายแล้ว",
+    "stake": "เดิมพัน {{tier}}",
+    "requiredTiles": "{{count}} ใบ",
+    "completeToUnlockStage": "ทำครบ {{count}} ใบเพื่อปลดล็อก Stage Hand",
+    "tilesRange": "{{min}}–{{max}} ใบ",
+    "sellFor": "ขายในราคา ¥{{value}}",
+    "sellHidden": "ขายประกาศิตที่ซ่อนอยู่",
+    "sellNamed": "ขาย {{name}}",
+    "hiddenDecree": "ประกาศิตที่ซ่อนอยู่"
   },
   "rounds": {
     "small": "รอบเล็ก",
@@ -104,7 +154,15 @@
     "rerollCost": "สุ่มใหม่ ({{cost}}ท)",
     "nextAct": "องก์ถัดไป",
     "sold": "ขายแล้ว",
-    "cantAfford": "ทองไม่พอ"
+    "cantAfford": "ทองไม่พอ",
+    "tapToBuy": "แตะเพื่อซื้อ",
+    "upgraded": "อัปเกรดแล้ว",
+    "purchased": "ซื้อแล้ว",
+    "roundCleared": "ผ่านรอบแล้ว",
+    "cashOut": "รับเงิน",
+    "payoutBreakdown": "รายละเอียดรางวัลของรอบ",
+    "selectionConfirmed": "ยืนยันการเลือกแล้ว!",
+    "packSkipped": "ข้ามแพ็ก"
   },
   "decrees": {
     "title": "ประกาศิต",
@@ -197,7 +255,14 @@
     "north": "เหนือ",
     "white": "มังกรขาว",
     "green": "มังกรเขียว",
-    "red": "มังกรแดง"
+    "red": "มังกรแดง",
+    "modifiers": "ตัวปรับแต่ง:",
+    "tileModifiers": "ตัวปรับแต่งไพ่",
+    "enhancement": "การเสริม",
+    "edition": "รุ่น",
+    "debuffed": "ไพ่ที่ถูกลดพลัง",
+    "lockedMustPlay": "ไพ่ที่ถูกล็อก: ต้องลง",
+    "tileRow": "แถวไพ่"
   },
   "melds": {
     "pair": "คู่",
@@ -311,5 +376,27 @@
     "summary": "สรุป",
     "tiles": "ไพ่นกกระจอก",
     "title": "โคเด็กซ์"
+  },
+  "scoring": {
+    "basePoints": "คะแนนพื้นฐาน",
+    "totalScore": "คะแนนรวม",
+    "subtotal": "ยอดรวมย่อย",
+    "multipliers": "ตัวคูณ",
+    "totalMultiplier": "ตัวคูณรวม",
+    "finalScore": "คะแนนสุดท้าย"
+  },
+  "collection": {
+    "locked": "ล็อกอยู่",
+    "empty": "ไม่มีรายการในหมวดนี้",
+    "effect": "ผล",
+    "voidCost": "ค่าความว่างเปล่า",
+    "timesUsed": "จำนวนครั้งที่ใช้",
+    "runsWon": "จำนวนรอบที่ชนะ",
+    "unlock": "ปลดล็อก:"
+  },
+  "errors": {
+    "failedToLoad": "โหลดคอมโพเนนต์ไม่สำเร็จ",
+    "stackTrace": "การติดตามสแตก:",
+    "componentStack": "สแตกคอมโพเนนต์:"
   }
 }

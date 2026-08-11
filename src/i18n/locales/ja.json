@@ -28,7 +28,11 @@
     "musicOn": "音楽オン",
     "musicOff": "音楽オフ",
     "nowPlaying": "再生中",
-    "codex": "コーデックス"
+    "codex": "コーデックス",
+    "tableStakeDifficulty": "卓のステーク · 難易度",
+    "tableStake": "卓のステーク",
+    "noSpecialModifiers": "特別な修正なし",
+    "promise": "約定"
   },
   "settings": {
     "title": "設定",
@@ -85,7 +89,53 @@
     "resume": "再開",
     "tenpai": "聴牌",
     "shanten": "{{count}}向聴",
-    "ready": "聴牌"
+    "ready": "聴牌",
+    "deadDraw": "王牌ツモ",
+    "deadWallDraw": "王牌からツモ",
+    "winsRound": "局に勝利",
+    "tilesInWall": "山の残り牌",
+    "handsRemaining": "残り手数",
+    "discardsRemaining": "残り打牌数",
+    "redrawsRemaining": "残り引き直し数",
+    "redrawSelected": "選択した牌を引き直す",
+    "redrawHint": "選んだ牌を最大3枚戻して引き直します",
+    "decreeDisabledByMandate": "この手は緋の心により無効",
+    "season": "季節:",
+    "endless": "エンドレス",
+    "wall": "山:",
+    "playerHand": "自分の手牌",
+    "hiddenHand": "伏せた手",
+    "hiddenHandDesc": "裏向きの牌は、打つまで役と点数を隠します。",
+    "basePlayHint": "基本の手 · 役を成立させると倍率が付きます",
+    "forecast": "予測",
+    "previewConcealed": "得点プレビュー非表示",
+    "stageHint": "2〜5枚を戦術的に構えます",
+    "stageUnlockHint": "完成手で二段構えの「構え宣言」が解放されます",
+    "gameOver": "ゲームオーバー",
+    "redraw": "引き直し",
+    "selectRange": "{{min}}〜{{max}}枚選択",
+    "handCount": "手牌 ({{count}})",
+    "tacticalHint": "{{min}}〜{{max}}枚を選んで戦術的に打ちます",
+    "tacticalHintLong": "{{min}}〜{{max}}枚を選んで打つか、手を完成させてから宣言してください。",
+    "sell": "売却",
+    "stakeLabel": "ステーク {{tier}}",
+    "selectExact": "{{count}}枚選択",
+    "stageHand": "手を構える",
+    "selectMore": "あと{{count}}枚選択",
+    "returnTiles": "{{count}}枚戻す",
+    "confirmHand": "手を確定",
+    "notComplete": "未完成",
+    "playCount": "{{count}}枚打つ",
+    "pointsToClear": "あと{{count}}点",
+    "targetCleared": "目標達成",
+    "stake": "ステーク {{tier}}",
+    "requiredTiles": "{{count}}枚",
+    "completeToUnlockStage": "{{count}}枚すべて揃えると手を構えられます",
+    "tilesRange": "{{min}}〜{{max}}枚",
+    "sellFor": "¥{{value}} で売却",
+    "sellHidden": "伏せた法令を売却",
+    "sellNamed": "{{name}}を売却",
+    "hiddenDecree": "伏せた法令"
   },
   "rounds": {
     "small": "小局",
@@ -104,7 +154,15 @@
     "rerollCost": "更新 ({{cost}}G)",
     "nextAct": "次の幕へ",
     "sold": "売却済み",
-    "cantAfford": "金貨が足りません"
+    "cantAfford": "金貨が足りません",
+    "tapToBuy": "タップで購入",
+    "upgraded": "強化済み",
+    "purchased": "購入済み",
+    "roundCleared": "局クリア",
+    "cashOut": "精算する",
+    "payoutBreakdown": "局の報酬内訳",
+    "selectionConfirmed": "選択を確定しました！",
+    "packSkipped": "パックをスキップ"
   },
   "decrees": {
     "title": "法令",
@@ -769,7 +827,14 @@
     "north": "北",
     "white": "白",
     "green": "發",
-    "red": "中"
+    "red": "中",
+    "modifiers": "修飾:",
+    "tileModifiers": "牌の修飾",
+    "enhancement": "強化",
+    "edition": "エディション",
+    "debuffed": "弱体化した牌",
+    "lockedMustPlay": "ロック牌: 必ず打つ必要があります",
+    "tileRow": "牌の列"
   },
   "melds": {
     "pair": "対子",
@@ -883,5 +948,27 @@
     "summary": "まとめ",
     "tiles": "牌",
     "title": "コーデックス"
+  },
+  "scoring": {
+    "basePoints": "基本点",
+    "totalScore": "合計スコア",
+    "subtotal": "小計",
+    "multipliers": "倍率",
+    "totalMultiplier": "合計倍率",
+    "finalScore": "最終スコア"
+  },
+  "collection": {
+    "locked": "未解放",
+    "empty": "このカテゴリーに項目はありません",
+    "effect": "効果",
+    "voidCost": "虚無コスト",
+    "timesUsed": "使用回数",
+    "runsWon": "勝利数",
+    "unlock": "解放条件:"
+  },
+  "errors": {
+    "failedToLoad": "コンポーネントの読み込みに失敗しました",
+    "stackTrace": "スタックトレース:",
+    "componentStack": "コンポーネントスタック:"
   }
 }

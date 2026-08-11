@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { useSettingsStore } from '../../../stores/settingsStore'
 import { SPRINGS, DURATIONS, ANIMATION_COLORS } from '../../../animations/constants'
@@ -25,6 +26,7 @@ export const TotalScoreReveal: React.FC<TotalScoreRevealProps> = ({
   onComplete,
   className = '',
 }) => {
+  const { t } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const [phase, setPhase] = useState<'base' | 'multiplier' | 'total'>('base')
 
@@ -96,7 +98,7 @@ export const TotalScoreReveal: React.FC<TotalScoreRevealProps> = ({
           className="text-sm"
           style={{ color: colors.beigeWhite, opacity: 0.7 }}
         >
-          Base Points
+          {t('scoring.basePoints', 'Base Points')}
         </div>
         <div className="text-2xl font-bold" style={{ color: colors.beigeWhite }}>
           {basePoints.toLocaleString()}
@@ -136,7 +138,7 @@ export const TotalScoreReveal: React.FC<TotalScoreRevealProps> = ({
         }}
       >
         <div className="text-sm" style={{ color: ANIMATION_COLORS.gold }}>
-          Total Score
+          {t('scoring.totalScore', 'Total Score')}
         </div>
         <div
           className="text-4xl font-bold"

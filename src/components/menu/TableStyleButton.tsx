@@ -136,7 +136,7 @@ export function TableStyleButton({
             backgroundColor: `${currentStake?.color ?? '#E0E0E0'}18`,
           }}
         >
-          Stake {currentStakeTier}
+          {t('gameplay.stake', 'Stake {{tier}}', { tier: currentStakeTier })}
         </span>
 
         {/* Chevron icon */}

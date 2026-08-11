@@ -123,7 +123,7 @@ export function GameplayTopBar({
           style={{ color: stakeDefinition?.color }}
           title={stakeDefinition?.description}
         >
-          Stake {stake}
+          {t('gameplay.stake', 'Stake {{tier}}', { tier: stake })}
         </span>
         <span
           data-gameplay-top-bar-compact-progress
@@ -163,7 +163,7 @@ export function GameplayTopBar({
             </div>
           ) : (
             <span className="text-[9px] font-bold uppercase tracking-widest text-purple-300">
-              Endless
+              {t('gameplay.endless', 'Endless')}
             </span>
           )}
         </div>

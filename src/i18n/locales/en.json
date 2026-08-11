@@ -28,7 +28,11 @@
     "quit": "Quit",
     "musicOn": "Music On",
     "musicOff": "Music Off",
-    "nowPlaying": "Now Playing"
+    "nowPlaying": "Now Playing",
+    "tableStakeDifficulty": "Table Stake · Difficulty",
+    "tableStake": "Table stake",
+    "noSpecialModifiers": "No special modifiers",
+    "promise": "Promise"
   },
   "settings": {
     "title": "Settings",
@@ -81,7 +85,53 @@
     "resume": "Resume",
     "tenpai": "Tenpai",
     "shanten": "{{count}} away",
-    "ready": "Ready"
+    "ready": "Ready",
+    "deadDraw": "DEAD DRAW",
+    "deadWallDraw": "DEAD WALL DRAW",
+    "winsRound": "Wins round",
+    "tilesInWall": "Tiles in wall",
+    "handsRemaining": "Hands remaining",
+    "discardsRemaining": "Discards remaining",
+    "redrawsRemaining": "Redraws remaining",
+    "redrawSelected": "Redraw selected tiles",
+    "redrawHint": "Return up to 3 selected tiles and draw replacements",
+    "decreeDisabledByMandate": "Disabled by Crimson Heart this hand",
+    "season": "Season:",
+    "endless": "Endless",
+    "wall": "Wall:",
+    "playerHand": "Player hand",
+    "hiddenHand": "Hidden hand",
+    "hiddenHandDesc": "Face-down tiles conceal patterns and score until played.",
+    "basePlayHint": "Base play · complete a pattern to unlock Yaku",
+    "forecast": "Forecast",
+    "previewConcealed": "Score preview concealed",
+    "stageHint": "Stage 2–5 tiles for a tactical play",
+    "stageUnlockHint": "Complete hands unlock a two-step Stage Hand declaration",
+    "gameOver": "Game Over",
+    "redraw": "REDRAW",
+    "selectRange": "SELECT {{min}}–{{max}}",
+    "handCount": "Hand ({{count}})",
+    "tacticalHint": "Select {{min}}–{{max}} tiles for a tactical play",
+    "tacticalHintLong": "Select {{min}}–{{max}} tiles for a tactical play, or complete the hand before declaring it.",
+    "sell": "Sell",
+    "stakeLabel": "STAKE {{tier}}",
+    "selectExact": "SELECT {{count}}",
+    "stageHand": "STAGE HAND",
+    "selectMore": "SELECT {{count}} MORE",
+    "returnTiles": "RETURN {{count}}",
+    "confirmHand": "CONFIRM HAND",
+    "notComplete": "NOT COMPLETE",
+    "playCount": "PLAY {{count}}",
+    "pointsToClear": "{{count}} to clear",
+    "targetCleared": "Target cleared",
+    "stake": "Stake {{tier}}",
+    "requiredTiles": "{{count}} TILES",
+    "completeToUnlockStage": "Complete all {{count}} tiles to unlock Stage Hand",
+    "tilesRange": "{{min}}–{{max}} TILES",
+    "sellFor": "Sell for ¥{{value}}",
+    "sellHidden": "Sell hidden Decree",
+    "sellNamed": "Sell {{name}}",
+    "hiddenDecree": "hidden Decree"
   },
   "rounds": {
     "small": "Small Round",
@@ -100,7 +150,15 @@
     "rerollCost": "Reroll ({{cost}}G)",
     "nextAct": "Next Act",
     "sold": "Sold",
-    "cantAfford": "Not enough gold"
+    "cantAfford": "Not enough gold",
+    "tapToBuy": "Tap to Buy",
+    "upgraded": "Upgraded",
+    "purchased": "Purchased",
+    "roundCleared": "Round cleared",
+    "cashOut": "Cash out",
+    "payoutBreakdown": "Round payout breakdown",
+    "selectionConfirmed": "Selection Confirmed!",
+    "packSkipped": "Pack Skipped"
   },
   "decrees": {
     "title": "Decrees",
@@ -821,7 +879,14 @@
     "north": "North",
     "white": "White Dragon",
     "green": "Green Dragon",
-    "red": "Red Dragon"
+    "red": "Red Dragon",
+    "modifiers": "Modifiers:",
+    "tileModifiers": "Tile Modifiers",
+    "enhancement": "Enhancement",
+    "edition": "Edition",
+    "debuffed": "Debuffed tile",
+    "lockedMustPlay": "Locked tile: must be played",
+    "tileRow": "Tile row"
   },
   "melds": {
     "pair": "Pair",
@@ -1521,5 +1586,27 @@
         "description": "Ignore one invalid meld this hand"
       }
     }
+  },
+  "scoring": {
+    "basePoints": "Base Points",
+    "totalScore": "Total Score",
+    "subtotal": "Subtotal",
+    "multipliers": "Multipliers",
+    "totalMultiplier": "Total Multiplier",
+    "finalScore": "Final Score"
+  },
+  "collection": {
+    "locked": "Locked",
+    "empty": "No items in this category",
+    "effect": "Effect",
+    "voidCost": "Void cost",
+    "timesUsed": "Times Used",
+    "runsWon": "Runs Won",
+    "unlock": "Unlock:"
+  },
+  "errors": {
+    "failedToLoad": "Failed to load component",
+    "stackTrace": "Stack trace:",
+    "componentStack": "Component stack:"
   }
 }

@@ -392,7 +392,7 @@ export function PackOpeningModal({
             <button
               onClick={onClose}
               className="absolute right-0 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg p-2 text-[var(--color-beige-white)] hover:bg-[var(--color-forest-green)]"
-              aria-label="Close"
+              aria-label={t('common.close', 'Close')}
             >
               <svg
                 className="w-6 h-6"

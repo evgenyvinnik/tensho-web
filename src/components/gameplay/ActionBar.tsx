@@ -90,7 +90,7 @@ export function ActionBar({
   willClear = false,
   canUseDeadWallWrit = false,
   onDeadWallDraw,
-  t: _t,
+  t,
 }: ActionBarProps) {
   const isStageAction = selectedTileCount === 0
   const mandateCount = isStageAction ? handTileCount : selectedTileCount
@@ -114,21 +114,21 @@ export function ActionBar({
     requiredPlaySize === undefined ? 0 : requiredPlaySize - mandateCount
   const playLabel = isStageAction
     ? requiredPlaySize !== undefined && !meetsMandate
-      ? `SELECT ${requiredPlaySize}`
+      ? t('gameplay.selectExact', 'SELECT {{count}}', { count: requiredPlaySize })
       : isCompleteHandSelection
-        ? 'STAGE HAND'
-        : `SELECT ${MIN_TACTICAL_PLAY_TILES}–${MAX_TACTICAL_PLAY_TILES}`
+        ? t('gameplay.stageHand', 'STAGE HAND')
+        : t('gameplay.selectRange', 'SELECT {{min}}–{{max}}', { min: MIN_TACTICAL_PLAY_TILES, max: MAX_TACTICAL_PLAY_TILES })
     : mandateDelta > 0
-      ? `SELECT ${mandateDelta} MORE`
+      ? t('gameplay.selectMore', 'SELECT {{count}} MORE', { count: mandateDelta })
       : mandateDelta < 0
-        ? `RETURN ${Math.abs(mandateDelta)}`
+        ? t('gameplay.returnTiles', 'RETURN {{count}}', { count: Math.abs(mandateDelta) })
         : selectedTileCount === 1
-          ? 'SELECT 1 MORE'
+          ? t('gameplay.selectMore', 'SELECT {{count}} MORE', { count: 1 })
           : isCompleteSelection
-            ? 'CONFIRM HAND'
+            ? t('gameplay.confirmHand', 'CONFIRM HAND')
             : selectedTileCount > MAX_TACTICAL_PLAY_TILES
-              ? 'NOT COMPLETE'
-              : `PLAY ${selectedTileCount}`
+              ? t('gameplay.notComplete', 'NOT COMPLETE')
+              : t('gameplay.playCount', 'PLAY {{count}}', { count: selectedTileCount })
   const forecastDescription =
     projectedScore !== undefined
       ? ` Forecast: ${projectedScore.toLocaleString()} points${willClear ? ', enough to win the round' : ''}.`
@@ -152,10 +152,10 @@ export function ActionBar({
               : `Play ${selectedTileCount} selected tiles.${forecastDescription}`
   const compactPlayLabel = isStageAction
     ? requiredPlaySize !== undefined && !meetsMandate
-      ? `${requiredPlaySize} TILES`
+      ? t('gameplay.requiredTiles', '{{count}} TILES', { count: requiredPlaySize })
       : isCompleteHandSelection
         ? 'STAGE'
-        : `${MIN_TACTICAL_PLAY_TILES}–${MAX_TACTICAL_PLAY_TILES} TILES`
+        : t('gameplay.tilesRange', '{{min}}–{{max}} TILES', { min: MIN_TACTICAL_PLAY_TILES, max: MAX_TACTICAL_PLAY_TILES })
     : isCompleteSelection
       ? 'CONFIRM'
       : mandateDelta !== 0 || selectedTileCount > MAX_TACTICAL_PLAY_TILES
@@ -174,7 +174,7 @@ export function ActionBar({
         {/* Wall remaining */}
         <div
           className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title="Tiles in wall"
+          title={t('gameplay.tilesInWall', 'Tiles in wall')}
         >
           <span className="text-gray-400">📦</span>
           <span>{wallRemaining}</span>
@@ -183,7 +183,7 @@ export function ActionBar({
         {/* Hands remaining */}
         <div
           className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title="Hands remaining"
+          title={t('gameplay.handsRemaining', 'Hands remaining')}
         >
           <span className="text-blue-400">✋</span>
           <span>{handsRemaining}</span>
@@ -192,7 +192,7 @@ export function ActionBar({
         {/* Discards remaining */}
         <div
           className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title="Discards remaining"
+          title={t('gameplay.discardsRemaining', 'Discards remaining')}
         >
           <span className="text-red-400">🗑️</span>
           <span>{discardsRemaining}</span>
@@ -200,7 +200,7 @@ export function ActionBar({
 
         <div
           className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title="Redraws remaining"
+          title={t('gameplay.redrawsRemaining', 'Redraws remaining')}
         >
           <span className="text-purple-300">↻</span>
           <span>{redrawsRemaining}</span>
@@ -216,7 +216,7 @@ export function ActionBar({
         disabled={!canSkip}
         className="min-w-[52px] px-2 sm:min-w-[80px] sm:px-4"
       >
-        SKIP
+        {t('gameplay.skip', 'SKIP')}
       </Button>
 
       <Button
@@ -225,12 +225,12 @@ export function ActionBar({
         size="sm"
         onClick={onRedraw}
         disabled={!canRedraw}
-        aria-label="Redraw selected tiles"
-        title="Return up to 3 selected tiles and draw replacements"
+        aria-label={t('gameplay.redrawSelected', 'Redraw selected tiles')}
+        title={t('gameplay.redrawHint', 'Return up to 3 selected tiles and draw replacements')}
         className="!min-w-[58px] !px-1 text-[10px] sm:!min-w-[80px] sm:!px-4 sm:text-sm"
       >
-        <span className="sm:hidden">DRAW</span>
-        <span className="hidden sm:inline">REDRAW</span>
+        <span className="sm:hidden">{t('gameplay.draw', 'DRAW')}</span>
+        <span className="hidden sm:inline">{t('gameplay.redraw', 'REDRAW')}</span>
       </Button>
 
       {onDeadWallDraw && (
@@ -240,11 +240,11 @@ export function ActionBar({
           size="sm"
           onClick={onDeadWallDraw}
           disabled={!canUseDeadWallWrit}
-          aria-label="DEAD WALL DRAW"
+          aria-label={t('gameplay.deadWallDraw', 'DEAD WALL DRAW')}
           className="min-w-[52px] px-2 sm:min-w-[92px] sm:px-3"
         >
           <span className="sm:hidden">WALL</span>
-          <span className="hidden sm:inline">DEAD DRAW</span>
+          <span className="hidden sm:inline">{t('gameplay.deadDraw', 'DEAD DRAW')}</span>
         </Button>
       )}
 
@@ -264,7 +264,7 @@ export function ActionBar({
           <span className="hidden whitespace-nowrap sm:inline">{playLabel}</span>
           {willClear && canCommitSelection && (
             <span className="mt-1 whitespace-nowrap text-[9px] font-black uppercase tracking-wide text-emerald-100">
-              Wins round
+              {t('gameplay.winsRound', 'Wins round')}
             </span>
           )}
         </span>

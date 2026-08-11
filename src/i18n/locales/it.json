@@ -28,7 +28,11 @@
     "musicOn": "Musica Attiva",
     "musicOff": "Musica Disattivata",
     "nowPlaying": "In riproduzione",
-    "codex": "Codice"
+    "codex": "Codice",
+    "tableStakeDifficulty": "Posta del tavolo · Difficoltà",
+    "tableStake": "Posta del tavolo",
+    "noSpecialModifiers": "Nessun modificatore speciale",
+    "promise": "Promessa"
   },
   "settings": {
     "title": "Impostazioni",
@@ -85,7 +89,53 @@
     "resume": "Riprendi",
     "tenpai": "Tenpai",
     "shanten": "{{count}} mancanti",
-    "ready": "Pronto"
+    "ready": "Pronto",
+    "deadDraw": "PESCA MORTA",
+    "deadWallDraw": "PESCA DAL MURO MORTO",
+    "winsRound": "Vince il round",
+    "tilesInWall": "Tessere nel muro",
+    "handsRemaining": "Mani rimaste",
+    "discardsRemaining": "Scarti rimasti",
+    "redrawsRemaining": "Ripescate rimaste",
+    "redrawSelected": "Ripesca le tessere selezionate",
+    "redrawHint": "Restituisce fino a 3 tessere selezionate e ne pesca altrettante",
+    "decreeDisabledByMandate": "Disattivato da Cuore Cremisi in questa mano",
+    "season": "Stagione:",
+    "endless": "Infinito",
+    "wall": "Muro:",
+    "playerHand": "Mano del giocatore",
+    "hiddenHand": "Mano nascosta",
+    "hiddenHandDesc": "Le tessere coperte nascondono schemi e punteggio finché non vengono giocate.",
+    "basePlayHint": "Giocata base · completa uno schema per sbloccare gli Yaku",
+    "forecast": "Previsione",
+    "previewConcealed": "Anteprima punteggio nascosta",
+    "stageHint": "Prepara 2–5 tessere per una giocata tattica",
+    "stageUnlockHint": "Le mani complete sbloccano la dichiarazione Mano Pronta in due fasi",
+    "gameOver": "Partita finita",
+    "redraw": "RIPESCA",
+    "selectRange": "SCEGLI {{min}}–{{max}}",
+    "handCount": "Mano ({{count}})",
+    "tacticalHint": "Scegli da {{min}} a {{max}} tessere per una giocata tattica",
+    "tacticalHintLong": "Scegli da {{min}} a {{max}} tessere per una giocata tattica, oppure completa la mano prima di dichiararla.",
+    "sell": "Vendi",
+    "stakeLabel": "POSTA {{tier}}",
+    "selectExact": "SCEGLI {{count}}",
+    "stageHand": "PREPARA LA MANO",
+    "selectMore": "SCEGLI {{count}} IN PIÙ",
+    "returnTiles": "RESTITUISCI {{count}}",
+    "confirmHand": "CONFERMA LA MANO",
+    "notComplete": "INCOMPLETA",
+    "playCount": "GIOCA {{count}}",
+    "pointsToClear": "mancano {{count}}",
+    "targetCleared": "Obiettivo raggiunto",
+    "stake": "Posta {{tier}}",
+    "requiredTiles": "{{count}} TESSERE",
+    "completeToUnlockStage": "Completa tutte le {{count}} tessere per sbloccare la Mano Pronta",
+    "tilesRange": "{{min}}–{{max}} TESSERE",
+    "sellFor": "Vendi per ¥{{value}}",
+    "sellHidden": "Vendi il Decreto nascosto",
+    "sellNamed": "Vendi {{name}}",
+    "hiddenDecree": "Decreto nascosto"
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -104,7 +154,15 @@
     "rerollCost": "Rigenera ({{cost}}O)",
     "nextAct": "Prossimo Atto",
     "sold": "Venduto",
-    "cantAfford": "Oro insufficiente"
+    "cantAfford": "Oro insufficiente",
+    "tapToBuy": "Tocca per acquistare",
+    "upgraded": "Potenziato",
+    "purchased": "Acquistato",
+    "roundCleared": "Round superato",
+    "cashOut": "Riscuoti",
+    "payoutBreakdown": "Dettaglio del premio del round",
+    "selectionConfirmed": "Selezione confermata!",
+    "packSkipped": "Pacchetto saltato"
   },
   "decrees": {
     "title": "Decreti",
@@ -197,7 +255,14 @@
     "north": "Nord",
     "white": "Drago Bianco",
     "green": "Drago Verde",
-    "red": "Drago Rosso"
+    "red": "Drago Rosso",
+    "modifiers": "Modificatori:",
+    "tileModifiers": "Modificatori tessera",
+    "enhancement": "Potenziamento",
+    "edition": "Edizione",
+    "debuffed": "Tessera indebolita",
+    "lockedMustPlay": "Tessera bloccata: va giocata",
+    "tileRow": "Fila di tessere"
   },
   "melds": {
     "pair": "Coppia",
@@ -311,5 +376,27 @@
     "summary": "Riepilogo",
     "tiles": "Tessere",
     "title": "Codice"
+  },
+  "scoring": {
+    "basePoints": "Punti base",
+    "totalScore": "Punteggio totale",
+    "subtotal": "Subtotale",
+    "multipliers": "Moltiplicatori",
+    "totalMultiplier": "Moltiplicatore totale",
+    "finalScore": "Punteggio finale"
+  },
+  "collection": {
+    "locked": "Bloccato",
+    "empty": "Nessun oggetto in questa categoria",
+    "effect": "Effetto",
+    "voidCost": "Costo del vuoto",
+    "timesUsed": "Volte usato",
+    "runsWon": "Partite vinte",
+    "unlock": "Sblocco:"
+  },
+  "errors": {
+    "failedToLoad": "Impossibile caricare il componente",
+    "stackTrace": "Traccia dello stack:",
+    "componentStack": "Stack dei componenti:"
   }
 }

@@ -6,6 +6,7 @@
  */
 
 import React, { useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Tile } from '../../core/Tile'
 import { TileImage, TileSize } from './TileImage'
@@ -84,6 +85,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   className = '',
   style,
 }) => {
+  const { t } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[size]
   const elementRef = useRef<HTMLDivElement>(null)
@@ -330,7 +332,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
       {debuffed && (
         <div
           className="absolute inset-0 pointer-events-none rounded bg-slate-950/45 ring-2 ring-slate-400/70"
-          title="Debuffed tile"
+          title={t('tiles.debuffed', 'Debuffed tile')}
           aria-hidden="true"
         >
           <span className="absolute left-1 top-1 rounded bg-slate-950/90 px-1 text-xs text-slate-100">
@@ -342,7 +344,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
       {locked && (
         <div
           className="absolute inset-0 pointer-events-none rounded ring-2 ring-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.75)]"
-          title="Locked tile: must be played"
+          title={t('tiles.lockedMustPlay', 'Locked tile: must be played')}
           aria-hidden="true"
         >
           <span className="absolute right-0.5 top-0.5 rounded bg-cyan-950/90 px-1 text-xs text-cyan-100">
@@ -403,6 +405,7 @@ export const AnimatedTileRow: React.FC<AnimatedTileRowProps> = ({
   staggerDelay = 50,
   className = '',
 }) => {
+  const { t } = useTranslation()
   const dimensions = tileSizes[size]
   const overlapAmount = overlap ? Math.floor(dimensions.width * 0.3) : 0
 
@@ -410,7 +413,7 @@ export const AnimatedTileRow: React.FC<AnimatedTileRowProps> = ({
     <div
       className={`flex items-end ${className}`}
       role="group"
-      aria-label="Tile row"
+      aria-label={t('tiles.tileRow', 'Tile row')}
     >
       {tiles.map((tile, index) => (
         <div

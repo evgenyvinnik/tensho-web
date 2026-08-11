@@ -8,6 +8,7 @@
  */
 
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
@@ -54,6 +55,7 @@ export function FloraTrackCompact({
   isCorrupted,
   onExpand,
 }: FloraTrackCompactProps) {
+  const { t } = useTranslation()
   const [showTooltip, setShowTooltip] = useState<FlowerVariant | null>(null)
   const collectedSet = new Set(flowers)
   const allFlowers: FlowerVariant[] = [
@@ -131,7 +133,7 @@ export function FloraTrackCompact({
         <div className="hidden flex-col gap-0.5 border-t border-[var(--color-metallic-gold)]/30 md:mt-1 md:flex md:pt-1">
           <div className="flex items-center justify-center gap-1">
             <span className="text-xs text-[var(--color-beige-white)] opacity-60">
-              Season:
+              {t('gameplay.season', 'Season:')}
             </span>
             <img
               src={getTileImagePath(

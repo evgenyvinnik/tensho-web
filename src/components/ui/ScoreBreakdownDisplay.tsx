@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated, useTrail } from '@react-spring/web'
 import { ScoreBreakdown } from '../../systems/types'
 import { TileSuit } from '../../core/Tile'
@@ -92,6 +93,7 @@ function FullBreakdown({
   showGold,
   className,
 }: FullBreakdownProps) {
+  const { t } = useTranslation()
   const nativeTileIcon = (suit: TileSuit, rank: number) => (
     <img
       src={getTileImagePath(suit, rank)}
@@ -132,7 +134,7 @@ function FullBreakdown({
       {/* Base Points Section */}
       <div className="border-b border-[var(--color-forest-green)] pb-3 mb-3">
         <h3 className="text-sm font-bold text-[var(--color-golden-yellow)] mb-2">
-          Base Points
+          {t('scoring.basePoints', 'Base Points')}
         </h3>
         <div className="space-y-1">
           {visibleRows.map((row) => (
@@ -151,7 +153,7 @@ function FullBreakdown({
           ))}
         </div>
         <div className="flex justify-between items-center text-sm mt-2 pt-2 border-t border-[var(--color-forest-green)]">
-          <span className="text-[var(--color-beige-white)] font-bold">Subtotal</span>
+          <span className="text-[var(--color-beige-white)] font-bold">{t('scoring.subtotal', 'Subtotal')}</span>
           <span className="text-[var(--color-golden-yellow)] font-mono font-bold">
             {breakdown.basePoints.toLocaleString()}
           </span>
@@ -162,7 +164,7 @@ function FullBreakdown({
       {visibleMultipliers.length > 0 && (
         <div className="border-b border-[var(--color-forest-green)] pb-3 mb-3">
           <h3 className="text-sm font-bold text-[var(--color-golden-yellow)] mb-2">
-            Multipliers
+            {t('scoring.multipliers', 'Multipliers')}
           </h3>
           <div className="space-y-1">
             {visibleMultipliers.map((mult) => (
@@ -189,7 +191,7 @@ function FullBreakdown({
             ))}
           </div>
           <div className="flex justify-between items-center text-sm mt-2 pt-2 border-t border-[var(--color-forest-green)]">
-            <span className="text-[var(--color-beige-white)] font-bold">Total Multiplier</span>
+            <span className="text-[var(--color-beige-white)] font-bold">{t('scoring.totalMultiplier', 'Total Multiplier')}</span>
             <span className="text-[var(--color-golden-yellow)] font-mono font-bold">
               ×{(
                 breakdown.yakuMultiplier *
@@ -208,7 +210,7 @@ function FullBreakdown({
         className="flex justify-between items-center"
       >
         <span className="text-lg font-bold text-[var(--color-beige-white)]">
-          Final Score
+          {t('scoring.finalScore', 'Final Score')}
         </span>
         <span className="text-2xl font-bold text-[var(--color-golden-yellow)] font-mono animate-pulse-glow">
           {displayScore.toLocaleString()}

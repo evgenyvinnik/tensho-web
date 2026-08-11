@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom'
 import { animated, useSpring } from '@react-spring/web'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import { getVoidScriptIllustration } from '../../utils/assets'
+import { useTranslation } from 'react-i18next'
 
 type VoidScriptDisplay = Pick<
   VoidScript,
@@ -68,6 +69,7 @@ export function VoidScriptArtwork({
   focusable = true,
   showPopover = true,
 }: VoidScriptArtworkProps) {
+  const { t } = useTranslation()
   const anchorRef = useRef<HTMLSpanElement>(null)
   const popoverRef = useRef<HTMLDivElement>(null)
   const tooltipId = useId()
@@ -228,7 +230,7 @@ export function VoidScriptArtwork({
               {penaltyDescription && (
                 <div className="mt-3 rounded-lg border border-red-400/35 bg-red-950/45 px-2.5 py-2">
                   <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-red-300">
-                    Void cost
+                    {t('collection.voidCost', 'Void cost')}
                   </p>
                   <p className="mt-0.5 text-xs leading-relaxed text-red-100">
                     {penaltyDescription}

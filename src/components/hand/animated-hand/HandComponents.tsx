@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, useMemo, useRef, useState, useLayoutEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { animated, useTransition, useSprings, useSpring, to } from '@react-spring/web'
 import { Tile } from '../../../core/Tile'
 import { AnimatedTile } from '../../tiles/AnimatedTile'
@@ -102,6 +103,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   className = '',
   layout: _layout = 'horizontal',
 }) => {
+  const { t } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[size]
 
@@ -226,7 +228,7 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
         width: '100%',
       }}
       role="group"
-      aria-label="Player hand"
+      aria-label={t('gameplay.playerHand', 'Player hand')}
     >
       {/* Container for centered positioning */}
       <div

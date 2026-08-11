@@ -7,6 +7,10 @@
 
 import '@testing-library/jest-dom'
 
+// Initialise i18n so components under test resolve real strings instead of
+// raw keys. Tests assert on the English copy players actually see.
+import '../i18n'
+
 // Mock window.matchMedia for responsive components
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

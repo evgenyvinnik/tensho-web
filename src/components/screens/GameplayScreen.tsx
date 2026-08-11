@@ -359,7 +359,7 @@ export function GameplayScreen() {
         setActionError(
           t(
             'gameplay.completeOrSelectTactical',
-            'Select 2–5 tiles for a tactical play, or complete the hand before declaring it.'
+            t('gameplay.tacticalHintLong', 'Select {{min}}–{{max}} tiles for a tactical play, or complete the hand before declaring it.', { min: 2, max: 5 })
           )
         )
         return

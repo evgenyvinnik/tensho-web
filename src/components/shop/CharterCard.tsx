@@ -169,7 +169,7 @@ export function CharterCard({
       {charter.isUpgraded && (
         <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] text-xs font-bold flex items-center gap-1">
           <span>\u2B06</span>
-          <span>Upgraded</span>
+          <span>{t('shop.upgraded', 'Upgraded')}</span>
         </div>
       )}
 

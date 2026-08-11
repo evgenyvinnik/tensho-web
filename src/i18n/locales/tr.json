@@ -28,7 +28,11 @@
     "musicOn": "Müzik Açık",
     "musicOff": "Müzik Kapalı",
     "nowPlaying": "Şu an çalıyor",
-    "codex": "Kodeks"
+    "codex": "Kodeks",
+    "tableStakeDifficulty": "Masa Bahsi · Zorluk",
+    "tableStake": "Masa bahsi",
+    "noSpecialModifiers": "Özel değiştirici yok",
+    "promise": "Yemin"
   },
   "settings": {
     "title": "Ayarlar",
@@ -85,7 +89,53 @@
     "resume": "Devam Et",
     "tenpai": "Tenpai",
     "shanten": "{{count}} kaldı",
-    "ready": "Hazır"
+    "ready": "Hazır",
+    "deadDraw": "ÖLÜ ÇEKİM",
+    "deadWallDraw": "ÖLÜ DUVARDAN ÇEKİM",
+    "winsRound": "Turu kazanır",
+    "tilesInWall": "Duvardaki taşlar",
+    "handsRemaining": "Kalan el",
+    "discardsRemaining": "Kalan atma",
+    "redrawsRemaining": "Kalan yeniden çekiş",
+    "redrawSelected": "Seçili taşları yeniden çek",
+    "redrawHint": "En fazla 3 seçili taşı geri verip yenisini çeker",
+    "decreeDisabledByMandate": "Bu elde Kızıl Kalp tarafından devre dışı",
+    "season": "Mevsim:",
+    "endless": "Sonsuz",
+    "wall": "Duvar:",
+    "playerHand": "Oyuncu eli",
+    "hiddenHand": "Gizli el",
+    "hiddenHandDesc": "Kapalı taşlar, oynanana dek deseni ve puanı gizler.",
+    "basePlayHint": "Temel oyun · Yaku açmak için bir deseni tamamlayın",
+    "forecast": "Tahmin",
+    "previewConcealed": "Puan önizlemesi gizli",
+    "stageHint": "Taktik bir oyun için 2–5 taş hazırlayın",
+    "stageUnlockHint": "Tamamlanmış eller iki adımlı Hazır El bildirimini açar",
+    "gameOver": "Oyun Bitti",
+    "redraw": "YENİDEN ÇEK",
+    "selectRange": "{{min}}–{{max}} SEÇ",
+    "handCount": "El ({{count}})",
+    "tacticalHint": "Taktik bir oyun için {{min}}–{{max}} taş seçin",
+    "tacticalHintLong": "Taktik bir oyun için {{min}}–{{max}} taş seçin ya da bildirmeden önce eli tamamlayın.",
+    "sell": "Sat",
+    "stakeLabel": "BAHİS {{tier}}",
+    "selectExact": "{{count}} SEÇ",
+    "stageHand": "ELİ HAZIRLA",
+    "selectMore": "{{count}} DAHA SEÇ",
+    "returnTiles": "{{count}} GERİ VER",
+    "confirmHand": "ELİ ONAYLA",
+    "notComplete": "TAMAMLANMADI",
+    "playCount": "{{count}} OYNA",
+    "pointsToClear": "{{count}} kaldı",
+    "targetCleared": "Hedefe ulaşıldı",
+    "stake": "Bahis {{tier}}",
+    "requiredTiles": "{{count}} TAŞ",
+    "completeToUnlockStage": "Hazır El'i açmak için {{count}} taşın tamamını tamamlayın",
+    "tilesRange": "{{min}}–{{max}} TAŞ",
+    "sellFor": "¥{{value}} karşılığında sat",
+    "sellHidden": "Gizli Kararnameyi sat",
+    "sellNamed": "{{name}} sat",
+    "hiddenDecree": "gizli Kararname"
   },
   "rounds": {
     "small": "Küçük Tur",
@@ -104,7 +154,15 @@
     "rerollCost": "Yenile ({{cost}}A)",
     "nextAct": "Sonraki Perde",
     "sold": "Satıldı",
-    "cantAfford": "Yetersiz altın"
+    "cantAfford": "Yetersiz altın",
+    "tapToBuy": "Satın almak için dokunun",
+    "upgraded": "Geliştirildi",
+    "purchased": "Satın alındı",
+    "roundCleared": "Tur tamamlandı",
+    "cashOut": "Bozdur",
+    "payoutBreakdown": "Tur ödemesi dökümü",
+    "selectionConfirmed": "Seçim Onaylandı!",
+    "packSkipped": "Paket Atlandı"
   },
   "decrees": {
     "title": "Kararnameler",
@@ -197,7 +255,14 @@
     "north": "Kuzey",
     "white": "Beyaz Ejderha",
     "green": "Yeşil Ejderha",
-    "red": "Kırmızı Ejderha"
+    "red": "Kırmızı Ejderha",
+    "modifiers": "Değiştiriciler:",
+    "tileModifiers": "Taş Değiştiricileri",
+    "enhancement": "Geliştirme",
+    "edition": "Sürüm",
+    "debuffed": "Zayıflatılmış taş",
+    "lockedMustPlay": "Kilitli taş: oynanmalı",
+    "tileRow": "Taş sırası"
   },
   "melds": {
     "pair": "Çift",
@@ -311,5 +376,27 @@
     "summary": "Özet",
     "tiles": "Taşlar",
     "title": "Kodeks"
+  },
+  "scoring": {
+    "basePoints": "Temel puan",
+    "totalScore": "Toplam puan",
+    "subtotal": "Ara toplam",
+    "multipliers": "Çarpanlar",
+    "totalMultiplier": "Toplam çarpan",
+    "finalScore": "Nihai puan"
+  },
+  "collection": {
+    "locked": "Kilitli",
+    "empty": "Bu kategoride öğe yok",
+    "effect": "Etki",
+    "voidCost": "Boşluk maliyeti",
+    "timesUsed": "Kullanım sayısı",
+    "runsWon": "Kazanılan oyun",
+    "unlock": "Kilit açma:"
+  },
+  "errors": {
+    "failedToLoad": "Bileşen yüklenemedi",
+    "stackTrace": "Yığın izi:",
+    "componentStack": "Bileşen yığını:"
   }
 }

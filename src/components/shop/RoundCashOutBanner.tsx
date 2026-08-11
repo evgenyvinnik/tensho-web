@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { animated, useSpring, to } from '@react-spring/web'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -43,6 +44,7 @@ export function RoundCashOutBanner({
   interestCap,
   interestBlocked = false,
 }: RoundCashOutBannerProps) {
+  const { t } = useTranslation()
   const reduceMotion = useReducedMotion()
   const [hasEntered, setHasEntered] = useState(reduceMotion)
   const projectedInterest = interestBlocked
@@ -86,7 +88,7 @@ export function RoundCashOutBanner({
       <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300">
-            Round cleared
+            {t('shop.roundCleared', 'Round cleared')}
           </p>
           <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h2 className="text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
@@ -100,7 +102,7 @@ export function RoundCashOutBanner({
 
           <div
             className="mt-3 flex flex-wrap gap-1.5"
-            aria-label="Round payout breakdown"
+            aria-label={t('shop.payoutBreakdown', 'Round payout breakdown')}
           >
             <PayoutChip label="Clear" value={summary.baseReward} alwaysShow />
             <PayoutChip label="Interest" value={summary.interest} alwaysShow />
@@ -112,7 +114,7 @@ export function RoundCashOutBanner({
 
         <div className="flex flex-shrink-0 items-center justify-between gap-4 rounded-xl border border-white/10 bg-black/20 px-4 py-3 sm:min-w-44 sm:flex-col sm:items-end sm:gap-0">
           <span className="text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50">
-            Cash out
+            {t('shop.cashOut', 'Cash out')}
           </span>
           <strong
             className={`inline-flex items-center gap-1 text-3xl font-black tabular-nums ${

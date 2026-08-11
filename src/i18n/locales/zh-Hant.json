@@ -28,7 +28,11 @@
     "musicOn": "音樂開啟",
     "musicOff": "音樂關閉",
     "nowPlaying": "正在播放",
-    "codex": "法典"
+    "codex": "法典",
+    "tableStakeDifficulty": "牌桌賭注 · 難度",
+    "tableStake": "牌桌賭注",
+    "noSpecialModifiers": "無特殊修正",
+    "promise": "誓約"
   },
   "settings": {
     "title": "設定",
@@ -85,7 +89,53 @@
     "resume": "繼續",
     "tenpai": "聽牌",
     "shanten": "{{count}}向聽",
-    "ready": "聽牌"
+    "ready": "聽牌",
+    "deadDraw": "王牌摸牌",
+    "deadWallDraw": "從王牌摸牌",
+    "winsRound": "可通關",
+    "tilesInWall": "牌山剩餘",
+    "handsRemaining": "剩餘手數",
+    "discardsRemaining": "剩餘棄牌",
+    "redrawsRemaining": "剩餘重抽",
+    "redrawSelected": "重抽選取的牌",
+    "redrawHint": "最多退回3張選取的牌並補抽",
+    "decreeDisabledByMandate": "本手因緋紅之心而失效",
+    "season": "季節：",
+    "endless": "無盡",
+    "wall": "牌山：",
+    "playerHand": "玩家手牌",
+    "hiddenHand": "隱藏手牌",
+    "hiddenHandDesc": "背面牌在打出前會隱藏牌型與分數。",
+    "basePlayHint": "基礎出牌 · 完成牌型可解鎖役",
+    "forecast": "預測",
+    "previewConcealed": "得分預覽已隱藏",
+    "stageHint": "準備2–5張牌進行戰術出牌",
+    "stageUnlockHint": "完成的手牌可解鎖兩段式「預備宣言」",
+    "gameOver": "遊戲結束",
+    "redraw": "重抽",
+    "selectRange": "選擇{{min}}–{{max}}張",
+    "handCount": "手牌 ({{count}})",
+    "tacticalHint": "選擇{{min}}–{{max}}張牌進行戰術出牌",
+    "tacticalHintLong": "選擇{{min}}–{{max}}張牌進行戰術出牌，或先完成手牌再宣言。",
+    "sell": "出售",
+    "stakeLabel": "賭注 {{tier}}",
+    "selectExact": "選擇{{count}}張",
+    "stageHand": "預備手牌",
+    "selectMore": "再選{{count}}張",
+    "returnTiles": "退回{{count}}張",
+    "confirmHand": "確認手牌",
+    "notComplete": "未完成",
+    "playCount": "打出{{count}}張",
+    "pointsToClear": "還差{{count}}",
+    "targetCleared": "已達成目標",
+    "stake": "賭注 {{tier}}",
+    "requiredTiles": "{{count}}張",
+    "completeToUnlockStage": "集齊{{count}}張即可解鎖預備手牌",
+    "tilesRange": "{{min}}–{{max}}張",
+    "sellFor": "以¥{{value}}出售",
+    "sellHidden": "出售隱藏法令",
+    "sellNamed": "出售{{name}}",
+    "hiddenDecree": "隱藏法令"
   },
   "rounds": {
     "small": "小局",
@@ -104,7 +154,15 @@
     "rerollCost": "重新整理 ({{cost}}金)",
     "nextAct": "下一幕",
     "sold": "已售出",
-    "cantAfford": "金幣不足"
+    "cantAfford": "金幣不足",
+    "tapToBuy": "點擊購買",
+    "upgraded": "已升級",
+    "purchased": "已購買",
+    "roundCleared": "回合通過",
+    "cashOut": "結算",
+    "payoutBreakdown": "回合收益明細",
+    "selectionConfirmed": "選擇已確認！",
+    "packSkipped": "已跳過卡包"
   },
   "decrees": {
     "title": "法令",
@@ -769,7 +827,14 @@
     "north": "北",
     "white": "白",
     "green": "發",
-    "red": "中"
+    "red": "中",
+    "modifiers": "修飾：",
+    "tileModifiers": "牌面修飾",
+    "enhancement": "強化",
+    "edition": "版本",
+    "debuffed": "被削弱的牌",
+    "lockedMustPlay": "鎖定牌：必須打出",
+    "tileRow": "牌列"
   },
   "melds": {
     "pair": "對子",
@@ -883,5 +948,27 @@
     "summary": "總結",
     "tiles": "牌",
     "title": "法典"
+  },
+  "scoring": {
+    "basePoints": "基礎點數",
+    "totalScore": "總分",
+    "subtotal": "小計",
+    "multipliers": "倍率",
+    "totalMultiplier": "總倍率",
+    "finalScore": "最終得分"
+  },
+  "collection": {
+    "locked": "未解鎖",
+    "empty": "此分類暫無內容",
+    "effect": "效果",
+    "voidCost": "虛空消耗",
+    "timesUsed": "使用次數",
+    "runsWon": "獲勝局數",
+    "unlock": "解鎖條件："
+  },
+  "errors": {
+    "failedToLoad": "元件載入失敗",
+    "stackTrace": "堆疊追蹤：",
+    "componentStack": "元件堆疊："
   }
 }

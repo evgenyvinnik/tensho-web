@@ -28,7 +28,11 @@
     "musicOn": "Música Activada",
     "musicOff": "Música Desactivada",
     "nowPlaying": "Reproduciendo",
-    "codex": "Códice"
+    "codex": "Códice",
+    "tableStakeDifficulty": "Apuesta de mesa · Dificultad",
+    "tableStake": "Apuesta de mesa",
+    "noSpecialModifiers": "Sin modificadores especiales",
+    "promise": "Promesa"
   },
   "settings": {
     "title": "Ajustes",
@@ -85,7 +89,53 @@
     "resume": "Reanudar",
     "tenpai": "Tenpai",
     "shanten": "{{count}} restantes",
-    "ready": "Listo"
+    "ready": "Listo",
+    "deadDraw": "ROBO MURO",
+    "deadWallDraw": "ROBO DEL MURO MUERTO",
+    "winsRound": "Gana la ronda",
+    "tilesInWall": "Fichas en el muro",
+    "handsRemaining": "Manos restantes",
+    "discardsRemaining": "Descartes restantes",
+    "redrawsRemaining": "Recambios restantes",
+    "redrawSelected": "Recambiar fichas seleccionadas",
+    "redrawHint": "Devuelve hasta 3 fichas seleccionadas y roba reemplazos",
+    "decreeDisabledByMandate": "Desactivado por Corazón Carmesí esta mano",
+    "season": "Estación:",
+    "endless": "Infinito",
+    "wall": "Muro:",
+    "playerHand": "Mano del jugador",
+    "hiddenHand": "Mano oculta",
+    "hiddenHandDesc": "Las fichas boca abajo ocultan patrones y puntos hasta jugarse.",
+    "basePlayHint": "Jugada base · completa un patrón para desbloquear Yaku",
+    "forecast": "Previsión",
+    "previewConcealed": "Vista previa oculta",
+    "stageHint": "Prepara 2–5 fichas para una jugada táctica",
+    "stageUnlockHint": "Las manos completas desbloquean la declaración Mano Preparada en dos pasos",
+    "gameOver": "Fin de la partida",
+    "redraw": "RECAMBIAR",
+    "selectRange": "ELIGE {{min}}–{{max}}",
+    "handCount": "Mano ({{count}})",
+    "tacticalHint": "Elige {{min}}–{{max}} fichas para una jugada táctica",
+    "tacticalHintLong": "Elige {{min}}–{{max}} fichas para una jugada táctica, o completa la mano antes de declararla.",
+    "sell": "Vender",
+    "stakeLabel": "APUESTA {{tier}}",
+    "selectExact": "ELIGE {{count}}",
+    "stageHand": "PREPARAR MANO",
+    "selectMore": "ELIGE {{count}} MÁS",
+    "returnTiles": "DEVUELVE {{count}}",
+    "confirmHand": "CONFIRMAR MANO",
+    "notComplete": "INCOMPLETA",
+    "playCount": "JUGAR {{count}}",
+    "pointsToClear": "faltan {{count}}",
+    "targetCleared": "Objetivo alcanzado",
+    "stake": "Apuesta {{tier}}",
+    "requiredTiles": "{{count}} FICHAS",
+    "completeToUnlockStage": "Completa las {{count}} fichas para desbloquear Mano Preparada",
+    "tilesRange": "{{min}}–{{max}} FICHAS",
+    "sellFor": "Vender por ¥{{value}}",
+    "sellHidden": "Vender Decreto oculto",
+    "sellNamed": "Vender {{name}}",
+    "hiddenDecree": "Decreto oculto"
   },
   "rounds": {
     "small": "Ronda Pequeña",
@@ -104,7 +154,15 @@
     "rerollCost": "Renovar ({{cost}}O)",
     "nextAct": "Siguiente Acto",
     "sold": "Vendido",
-    "cantAfford": "Oro insuficiente"
+    "cantAfford": "Oro insuficiente",
+    "tapToBuy": "Toca para comprar",
+    "upgraded": "Mejorado",
+    "purchased": "Comprado",
+    "roundCleared": "Ronda superada",
+    "cashOut": "Cobrar",
+    "payoutBreakdown": "Desglose del pago de ronda",
+    "selectionConfirmed": "¡Selección confirmada!",
+    "packSkipped": "Sobre omitido"
   },
   "decrees": {
     "title": "Decretos",
@@ -769,7 +827,14 @@
     "north": "Norte",
     "white": "Dragón Blanco",
     "green": "Dragón Verde",
-    "red": "Dragón Rojo"
+    "red": "Dragón Rojo",
+    "modifiers": "Modificadores:",
+    "tileModifiers": "Modificadores de ficha",
+    "enhancement": "Mejora",
+    "edition": "Edición",
+    "debuffed": "Ficha debilitada",
+    "lockedMustPlay": "Ficha bloqueada: debe jugarse",
+    "tileRow": "Fila de fichas"
   },
   "melds": {
     "pair": "Par",
@@ -883,5 +948,27 @@
     "summary": "Resumen",
     "tiles": "Fichas",
     "title": "Códice"
+  },
+  "scoring": {
+    "basePoints": "Puntos base",
+    "totalScore": "Puntuación total",
+    "subtotal": "Subtotal",
+    "multipliers": "Multiplicadores",
+    "totalMultiplier": "Multiplicador total",
+    "finalScore": "Puntuación final"
+  },
+  "collection": {
+    "locked": "Bloqueado",
+    "empty": "No hay objetos en esta categoría",
+    "effect": "Efecto",
+    "voidCost": "Coste de vacío",
+    "timesUsed": "Veces usado",
+    "runsWon": "Partidas ganadas",
+    "unlock": "Desbloqueo:"
+  },
+  "errors": {
+    "failedToLoad": "Error al cargar el componente",
+    "stackTrace": "Traza de pila:",
+    "componentStack": "Pila de componentes:"
   }
 }

@@ -28,7 +28,11 @@
     "musicOn": "음악 켜짐",
     "musicOff": "음악 꺼짐",
     "nowPlaying": "재생 중",
-    "codex": "코덱스"
+    "codex": "코덱스",
+    "tableStakeDifficulty": "테이블 스테이크 · 난이도",
+    "tableStake": "테이블 스테이크",
+    "noSpecialModifiers": "특수 수정 없음",
+    "promise": "약속"
   },
   "settings": {
     "title": "설정",
@@ -85,7 +89,53 @@
     "resume": "재개",
     "tenpai": "텐파이",
     "shanten": "{{count}}샹텐",
-    "ready": "텐파이"
+    "ready": "텐파이",
+    "deadDraw": "왕패 뽑기",
+    "deadWallDraw": "왕패에서 뽑기",
+    "winsRound": "라운드 승리",
+    "tilesInWall": "벽에 남은 패",
+    "handsRemaining": "남은 손",
+    "discardsRemaining": "남은 버리기",
+    "redrawsRemaining": "남은 다시 뽑기",
+    "redrawSelected": "선택한 패 다시 뽑기",
+    "redrawHint": "선택한 패를 최대 3장 되돌리고 새로 뽑습니다",
+    "decreeDisabledByMandate": "이번 손은 진홍의 심장으로 비활성",
+    "season": "계절:",
+    "endless": "엔들리스",
+    "wall": "벽:",
+    "playerHand": "플레이어 손패",
+    "hiddenHand": "숨겨진 손",
+    "hiddenHandDesc": "뒷면 패는 낼 때까지 패턴과 점수를 숨깁니다.",
+    "basePlayHint": "기본 플레이 · 패턴을 완성하면 역이 열립니다",
+    "forecast": "예측",
+    "previewConcealed": "점수 미리보기 가려짐",
+    "stageHint": "전술적 플레이를 위해 2~5장을 준비하세요",
+    "stageUnlockHint": "완성된 손은 2단계 준비 선언을 해제합니다",
+    "gameOver": "게임 오버",
+    "redraw": "다시 뽑기",
+    "selectRange": "{{min}}~{{max}}장 선택",
+    "handCount": "손패 ({{count}})",
+    "tacticalHint": "전술적 플레이를 위해 {{min}}~{{max}}장을 선택하세요",
+    "tacticalHintLong": "전술적 플레이를 위해 {{min}}~{{max}}장을 선택하거나, 손을 완성한 뒤 선언하세요.",
+    "sell": "판매",
+    "stakeLabel": "스테이크 {{tier}}",
+    "selectExact": "{{count}}장 선택",
+    "stageHand": "손패 준비",
+    "selectMore": "{{count}}장 더 선택",
+    "returnTiles": "{{count}}장 반환",
+    "confirmHand": "손패 확정",
+    "notComplete": "미완성",
+    "playCount": "{{count}}장 내기",
+    "pointsToClear": "{{count}}점 남음",
+    "targetCleared": "목표 달성",
+    "stake": "스테이크 {{tier}}",
+    "requiredTiles": "{{count}}장",
+    "completeToUnlockStage": "{{count}}장을 모두 갖추면 손패 준비가 열립니다",
+    "tilesRange": "{{min}}~{{max}}장",
+    "sellFor": "¥{{value}}에 판매",
+    "sellHidden": "숨겨진 법령 판매",
+    "sellNamed": "{{name}} 판매",
+    "hiddenDecree": "숨겨진 법령"
   },
   "rounds": {
     "small": "소국",
@@ -104,7 +154,15 @@
     "rerollCost": "새로고침 ({{cost}}G)",
     "nextAct": "다음 막",
     "sold": "판매됨",
-    "cantAfford": "골드가 부족합니다"
+    "cantAfford": "골드가 부족합니다",
+    "tapToBuy": "눌러서 구매",
+    "upgraded": "업그레이드됨",
+    "purchased": "구매함",
+    "roundCleared": "라운드 완료",
+    "cashOut": "정산하기",
+    "payoutBreakdown": "라운드 보상 내역",
+    "selectionConfirmed": "선택 확정!",
+    "packSkipped": "팩 건너뜀"
   },
   "decrees": {
     "title": "법령",
@@ -769,7 +827,14 @@
     "north": "북",
     "white": "백",
     "green": "발",
-    "red": "중"
+    "red": "중",
+    "modifiers": "수식:",
+    "tileModifiers": "패 수식",
+    "enhancement": "강화",
+    "edition": "에디션",
+    "debuffed": "약화된 패",
+    "lockedMustPlay": "잠긴 패: 반드시 내야 합니다",
+    "tileRow": "패 열"
   },
   "melds": {
     "pair": "또이쯔",
@@ -883,5 +948,27 @@
     "summary": "요약",
     "tiles": "패",
     "title": "코덱스"
+  },
+  "scoring": {
+    "basePoints": "기본 점수",
+    "totalScore": "총점",
+    "subtotal": "소계",
+    "multipliers": "배수",
+    "totalMultiplier": "총 배수",
+    "finalScore": "최종 점수"
+  },
+  "collection": {
+    "locked": "잠김",
+    "empty": "이 분류에 항목이 없습니다",
+    "effect": "효과",
+    "voidCost": "공허 비용",
+    "timesUsed": "사용 횟수",
+    "runsWon": "승리한 판",
+    "unlock": "해제 조건:"
+  },
+  "errors": {
+    "failedToLoad": "컴포넌트를 불러오지 못했습니다",
+    "stackTrace": "스택 추적:",
+    "componentStack": "컴포넌트 스택:"
   }
 }

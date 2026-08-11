@@ -28,7 +28,11 @@
     "musicOn": "Музыка вкл.",
     "musicOff": "Музыка выкл.",
     "nowPlaying": "Сейчас играет",
-    "codex": "Кодекс"
+    "codex": "Кодекс",
+    "tableStakeDifficulty": "Ставка стола · Сложность",
+    "tableStake": "Ставка стола",
+    "noSpecialModifiers": "Особых модификаторов нет",
+    "promise": "Обет"
   },
   "settings": {
     "title": "Настройки",
@@ -85,7 +89,53 @@
     "resume": "Продолжить",
     "tenpai": "Темпай",
     "shanten": "{{count}} осталось",
-    "ready": "Готов"
+    "ready": "Готов",
+    "deadDraw": "ДОБОР ИЗ МЁРТВОЙ",
+    "deadWallDraw": "ДОБОР ИЗ МЁРТВОЙ СТЕНЫ",
+    "winsRound": "Побеждает в раунде",
+    "tilesInWall": "Костей в стене",
+    "handsRemaining": "Осталось рук",
+    "discardsRemaining": "Осталось сбросов",
+    "redrawsRemaining": "Осталось пересдач",
+    "redrawSelected": "Пересдать выбранные кости",
+    "redrawHint": "Вернуть до 3 выбранных костей и добрать замену",
+    "decreeDisabledByMandate": "Отключено Багровым Сердцем в этой руке",
+    "season": "Сезон:",
+    "endless": "Бесконечность",
+    "wall": "Стена:",
+    "playerHand": "Рука игрока",
+    "hiddenHand": "Скрытая рука",
+    "hiddenHandDesc": "Кости рубашкой вверх скрывают комбинации и очки до розыгрыша.",
+    "basePlayHint": "Базовый розыгрыш · соберите комбинацию, чтобы открыть яку",
+    "forecast": "Прогноз",
+    "previewConcealed": "Предпросмотр очков скрыт",
+    "stageHint": "Подготовьте 2–5 костей для тактического хода",
+    "stageUnlockHint": "Завершённые руки открывают двухэтапное объявление «Готовая рука»",
+    "gameOver": "Игра окончена",
+    "redraw": "ПЕРЕСДАЧА",
+    "selectRange": "ВЫБЕРИТЕ {{min}}–{{max}}",
+    "handCount": "Рука ({{count}})",
+    "tacticalHint": "Выберите {{min}}–{{max}} костей для тактического хода",
+    "tacticalHintLong": "Выберите {{min}}–{{max}} костей для тактического хода или соберите руку перед объявлением.",
+    "sell": "Продать",
+    "stakeLabel": "СТАВКА {{tier}}",
+    "selectExact": "ВЫБЕРИТЕ {{count}}",
+    "stageHand": "ГОТОВИТЬ РУКУ",
+    "selectMore": "ВЫБЕРИТЕ ЕЩЁ {{count}}",
+    "returnTiles": "ВЕРНУТЬ {{count}}",
+    "confirmHand": "ПОДТВЕРДИТЬ РУКУ",
+    "notComplete": "НЕ ЗАВЕРШЕНО",
+    "playCount": "СЫГРАТЬ {{count}}",
+    "pointsToClear": "осталось {{count}}",
+    "targetCleared": "Цель достигнута",
+    "stake": "Ставка {{tier}}",
+    "requiredTiles": "{{count}} КОСТЕЙ",
+    "completeToUnlockStage": "Соберите все {{count}} костей, чтобы открыть «Готовую руку»",
+    "tilesRange": "{{min}}–{{max}} КОСТЕЙ",
+    "sellFor": "Продать за ¥{{value}}",
+    "sellHidden": "Продать скрытый указ",
+    "sellNamed": "Продать: {{name}}",
+    "hiddenDecree": "скрытый указ"
   },
   "rounds": {
     "small": "Малый раунд",
@@ -104,7 +154,15 @@
     "rerollCost": "Обновить ({{cost}}З)",
     "nextAct": "Следующий акт",
     "sold": "Продано",
-    "cantAfford": "Недостаточно золота"
+    "cantAfford": "Недостаточно золота",
+    "tapToBuy": "Нажмите, чтобы купить",
+    "upgraded": "Улучшено",
+    "purchased": "Куплено",
+    "roundCleared": "Раунд пройден",
+    "cashOut": "Забрать",
+    "payoutBreakdown": "Разбор выплаты за раунд",
+    "selectionConfirmed": "Выбор подтверждён!",
+    "packSkipped": "Набор пропущен"
   },
   "decrees": {
     "title": "Указы",
@@ -197,7 +255,14 @@
     "north": "Север",
     "white": "Белый дракон",
     "green": "Зелёный дракон",
-    "red": "Красный дракон"
+    "red": "Красный дракон",
+    "modifiers": "Модификаторы:",
+    "tileModifiers": "Модификаторы кости",
+    "enhancement": "Улучшение",
+    "edition": "Издание",
+    "debuffed": "Ослабленная кость",
+    "lockedMustPlay": "Заблокированная кость: нужно разыграть",
+    "tileRow": "Ряд костей"
   },
   "melds": {
     "pair": "Пара",
@@ -311,5 +376,27 @@
     "summary": "Итоги",
     "tiles": "Кости",
     "title": "Кодекс"
+  },
+  "scoring": {
+    "basePoints": "Базовые очки",
+    "totalScore": "Общий счёт",
+    "subtotal": "Промежуточный итог",
+    "multipliers": "Множители",
+    "totalMultiplier": "Общий множитель",
+    "finalScore": "Итоговый счёт"
+  },
+  "collection": {
+    "locked": "Заблокировано",
+    "empty": "В этой категории пусто",
+    "effect": "Эффект",
+    "voidCost": "Цена пустоты",
+    "timesUsed": "Использовано раз",
+    "runsWon": "Побед в забегах",
+    "unlock": "Открытие:"
+  },
+  "errors": {
+    "failedToLoad": "Не удалось загрузить компонент",
+    "stackTrace": "Трассировка стека:",
+    "componentStack": "Стек компонентов:"
   }
 }

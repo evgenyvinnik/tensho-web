@@ -10,6 +10,7 @@
  */
 
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated, config } from '@react-spring/web'
 import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
@@ -99,6 +100,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   discardsRemaining = 0,
   t: _t = (key) => key,
 }) => {
+  const { t } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[tileSize]
   const stagingZoneMinHeight = Math.max(96, dimensions.height + 12)
@@ -500,10 +502,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ) : (
           <div className="text-center px-6">
             <p className="game-play-instruction text-sm font-medium text-[var(--color-beige-white)] opacity-70 sm:text-lg">
-              Stage 2–5 tiles for a tactical play
+              {t('gameplay.stageHint', 'Stage 2–5 tiles for a tactical play')}
             </p>
             <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
-              Complete hands unlock a two-step Stage Hand declaration
+              {t('gameplay.stageUnlockHint', 'Complete hands unlock a two-step Stage Hand declaration')}
             </p>
           </div>
         )}
@@ -527,7 +529,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         >
           <div className="flex items-center gap-3">
             <span className="text-[var(--color-beige-white)] text-sm opacity-70">
-              Hand ({tilesInHand.length})
+              {t('gameplay.handCount', 'Hand ({{count}})', { count: tilesInHand.length })}
             </span>
             <span
               data-tutorial="hands-remaining"

@@ -28,7 +28,11 @@
     "musicOn": "Musique Activée",
     "musicOff": "Musique Désactivée",
     "nowPlaying": "En cours",
-    "codex": "Codex"
+    "codex": "Codex",
+    "tableStakeDifficulty": "Mise de table · Difficulté",
+    "tableStake": "Mise de table",
+    "noSpecialModifiers": "Aucun modificateur spécial",
+    "promise": "Promesse"
   },
   "settings": {
     "title": "Paramètres",
@@ -85,7 +89,53 @@
     "resume": "Reprendre",
     "tenpai": "Tenpai",
     "shanten": "{{count}} restants",
-    "ready": "Prêt"
+    "ready": "Prêt",
+    "deadDraw": "PIOCHE MORTE",
+    "deadWallDraw": "PIOCHE DU MUR MORT",
+    "winsRound": "Gagne la manche",
+    "tilesInWall": "Tuiles dans le mur",
+    "handsRemaining": "Mains restantes",
+    "discardsRemaining": "Défausses restantes",
+    "redrawsRemaining": "Repioches restantes",
+    "redrawSelected": "Repiocher les tuiles sélectionnées",
+    "redrawHint": "Rend jusqu'à 3 tuiles sélectionnées et en pioche autant",
+    "decreeDisabledByMandate": "Désactivé par Cœur Cramoisi cette main",
+    "season": "Saison :",
+    "endless": "Infini",
+    "wall": "Mur :",
+    "playerHand": "Main du joueur",
+    "hiddenHand": "Main cachée",
+    "hiddenHandDesc": "Les tuiles face cachée dissimulent motifs et score jusqu'à leur jeu.",
+    "basePlayHint": "Jeu de base · complétez un motif pour débloquer un Yaku",
+    "forecast": "Prévision",
+    "previewConcealed": "Aperçu du score masqué",
+    "stageHint": "Préparez 2–5 tuiles pour un coup tactique",
+    "stageUnlockHint": "Les mains complètes débloquent la déclaration Main Préparée en deux temps",
+    "gameOver": "Partie terminée",
+    "redraw": "REPIOCHER",
+    "selectRange": "CHOISIR {{min}}–{{max}}",
+    "handCount": "Main ({{count}})",
+    "tacticalHint": "Choisissez {{min}} à {{max}} tuiles pour un coup tactique",
+    "tacticalHintLong": "Choisissez {{min}} à {{max}} tuiles pour un coup tactique, ou complétez la main avant de la déclarer.",
+    "sell": "Vendre",
+    "stakeLabel": "MISE {{tier}}",
+    "selectExact": "CHOISIR {{count}}",
+    "stageHand": "PRÉPARER LA MAIN",
+    "selectMore": "CHOISIR {{count}} DE PLUS",
+    "returnTiles": "RENDRE {{count}}",
+    "confirmHand": "CONFIRMER LA MAIN",
+    "notComplete": "INCOMPLÈTE",
+    "playCount": "JOUER {{count}}",
+    "pointsToClear": "{{count}} restants",
+    "targetCleared": "Objectif atteint",
+    "stake": "Mise {{tier}}",
+    "requiredTiles": "{{count}} TUILES",
+    "completeToUnlockStage": "Complétez les {{count}} tuiles pour débloquer la Main Préparée",
+    "tilesRange": "{{min}}–{{max}} TUILES",
+    "sellFor": "Vendre pour ¥{{value}}",
+    "sellHidden": "Vendre le Décret caché",
+    "sellNamed": "Vendre {{name}}",
+    "hiddenDecree": "Décret caché"
   },
   "rounds": {
     "small": "Petite Manche",
@@ -104,7 +154,15 @@
     "rerollCost": "Relancer ({{cost}}O)",
     "nextAct": "Acte Suivant",
     "sold": "Vendu",
-    "cantAfford": "Or insuffisant"
+    "cantAfford": "Or insuffisant",
+    "tapToBuy": "Toucher pour acheter",
+    "upgraded": "Amélioré",
+    "purchased": "Acheté",
+    "roundCleared": "Manche réussie",
+    "cashOut": "Encaisser",
+    "payoutBreakdown": "Détail des gains de la manche",
+    "selectionConfirmed": "Sélection confirmée !",
+    "packSkipped": "Paquet ignoré"
   },
   "decrees": {
     "title": "Décrets",
@@ -769,7 +827,14 @@
     "north": "Nord",
     "white": "Dragon Blanc",
     "green": "Dragon Vert",
-    "red": "Dragon Rouge"
+    "red": "Dragon Rouge",
+    "modifiers": "Modificateurs :",
+    "tileModifiers": "Modificateurs de tuile",
+    "enhancement": "Amélioration",
+    "edition": "Édition",
+    "debuffed": "Tuile affaiblie",
+    "lockedMustPlay": "Tuile verrouillée : doit être jouée",
+    "tileRow": "Rangée de tuiles"
   },
   "melds": {
     "pair": "Paire",
@@ -883,5 +948,27 @@
     "summary": "Résumé",
     "tiles": "Tuiles",
     "title": "Codex"
+  },
+  "scoring": {
+    "basePoints": "Points de base",
+    "totalScore": "Score total",
+    "subtotal": "Sous-total",
+    "multipliers": "Multiplicateurs",
+    "totalMultiplier": "Multiplicateur total",
+    "finalScore": "Score final"
+  },
+  "collection": {
+    "locked": "Verrouillé",
+    "empty": "Aucun objet dans cette catégorie",
+    "effect": "Effet",
+    "voidCost": "Coût du vide",
+    "timesUsed": "Fois utilisé",
+    "runsWon": "Parties gagnées",
+    "unlock": "Déblocage :"
+  },
+  "errors": {
+    "failedToLoad": "Échec du chargement du composant",
+    "stackTrace": "Trace de pile :",
+    "componentStack": "Pile de composants :"
   }
 }

@@ -9,6 +9,7 @@
  */
 
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { DURATIONS, ANIMATION_COLORS, ANIMATION_Z_INDEX } from '../../animations/constants';
@@ -343,6 +344,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
   onReady,
   className = '',
 }) => {
+  const { t } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
 
   const overlaySpring = useSpring({
@@ -394,7 +396,7 @@ export const GameOverOverlay: React.FC<GameOverOverlayProps> = ({
             fontFamily: "'Noto Sans JP', serif",
           }}
         >
-          Game Over
+          {t('gameplay.gameOver', 'Game Over')}
         </h1>
         {finalScore !== undefined && (
           <div
