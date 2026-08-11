@@ -9,6 +9,7 @@ import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { Decree, OwnedDecree, DecreeRarity } from '../../systems/types'
 import { DecreeUniqueIcon } from './svg/DecreeIcons'
+import { useItemText } from '../../i18n/useItemText'
 
 /**
  * Rarity color mapping
@@ -69,6 +70,7 @@ export function DecreeCard({
   className = '',
 }: DecreeCardProps) {
   const [isHovered, setIsHovered] = React.useState(false)
+  const itemText = useItemText()
 
   const springProps = useSpring({
     scale: isHovered ? 1.02 : 1,
@@ -152,13 +154,13 @@ export function DecreeCard({
             mode === 'compact' ? 'text-xs' : 'text-sm'
           } line-clamp-2`}
         >
-          {decree.name}
+          {itemText.name('decrees', decree)}
         </p>
 
         {/* Description */}
         {mode !== 'compact' && (
           <p className="text-xs text-[var(--color-beige-white)] opacity-70 text-center mt-1 flex-1 line-clamp-3">
-            {decree.description}
+            {itemText.description('decrees', decree)}
           </p>
         )}
 

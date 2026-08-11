@@ -15,6 +15,7 @@ import { useState, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { ImperialCharter } from '../../systems/types'
+import { useItemText } from '../../i18n/useItemText'
 
 const AnimatedDiv = animated('div')
 
@@ -103,6 +104,7 @@ export function CharterCard({
   onPurchase,
 }: CharterCardProps) {
   const { t } = useTranslation()
+  const itemText = useItemText()
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
@@ -185,7 +187,7 @@ export function CharterCard({
             {/* Title */}
             <div className="flex items-center gap-2 mb-1">
               <h3 className="text-lg font-bold text-[var(--color-golden-yellow)] truncate">
-                {charter.name}
+                {itemText.name('charters', charter)}
               </h3>
             </div>
 
@@ -196,7 +198,7 @@ export function CharterCard({
 
             {/* Description */}
             <p className="text-sm text-[var(--color-beige-white)] opacity-80 mt-2">
-              {charter.description}
+              {itemText.description('charters', charter)}
             </p>
           </div>
 

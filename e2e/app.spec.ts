@@ -65,6 +65,107 @@ test.describe('Game Navigation', () => {
     await expect(page).toHaveURL(/\/en\/play$/)
     await expect(page.getByText('300', { exact: true })).toBeVisible()
     await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
+
+    const frameBounds = await page.locator('[data-table-frame]').boundingBox()
+    const gameplayBounds = await page
+      .locator('[data-table-content] > :first-child')
+      .boundingBox()
+    expect(frameBounds).not.toBeNull()
+    expect(gameplayBounds).not.toBeNull()
+    expect(gameplayBounds!.x).toBeGreaterThanOrEqual(frameBounds!.x)
+    expect(gameplayBounds!.y).toBeGreaterThanOrEqual(frameBounds!.y)
+    expect(gameplayBounds!.x + gameplayBounds!.width).toBeLessThanOrEqual(
+      frameBounds!.x + frameBounds!.width
+    )
+    expect(gameplayBounds!.y + gameplayBounds!.height).toBeLessThanOrEqual(
+      frameBounds!.y + frameBounds!.height
+    )
+
+    const topBarBounds = await page
+      .locator('[data-frame-corner-row="top"]')
+      .boundingBox()
+    const bottomBarBounds = await page
+      .locator('[data-frame-corner-row="bottom"]')
+      .boundingBox()
+    const topLeftOrnamentBounds = await page
+      .locator('[data-table-ornament="top-left"]')
+      .boundingBox()
+    const topRightOrnamentBounds = await page
+      .locator('[data-table-ornament="top-right"]')
+      .boundingBox()
+    const bottomLeftOrnamentBounds = await page
+      .locator('[data-table-ornament="bottom-left"]')
+      .boundingBox()
+    const bottomRightOrnamentBounds = await page
+      .locator('[data-table-ornament="bottom-right"]')
+      .boundingBox()
+
+    expect(topBarBounds).not.toBeNull()
+    expect(bottomBarBounds).not.toBeNull()
+    expect(topLeftOrnamentBounds).not.toBeNull()
+    expect(topRightOrnamentBounds).not.toBeNull()
+    expect(bottomLeftOrnamentBounds).not.toBeNull()
+    expect(bottomRightOrnamentBounds).not.toBeNull()
+
+    const expectRowToClearCorners = (
+      row: NonNullable<typeof topBarBounds>,
+      left: NonNullable<typeof topLeftOrnamentBounds>,
+      right: NonNullable<typeof topRightOrnamentBounds>
+    ) => {
+      const roundingTolerance = 0.5
+      expect(row.x + roundingTolerance).toBeGreaterThanOrEqual(
+        left.x + left.width
+      )
+      expect(row.x + row.width).toBeLessThanOrEqual(
+        right.x + roundingTolerance
+      )
+    }
+
+    expectRowToClearCorners(
+      topBarBounds!,
+      topLeftOrnamentBounds!,
+      topRightOrnamentBounds!
+    )
+    expectRowToClearCorners(
+      bottomBarBounds!,
+      bottomLeftOrnamentBounds!,
+      bottomRightOrnamentBounds!
+    )
+
+    const topBarContentWidth = await page
+      .locator('[data-frame-corner-row="top"]')
+      .evaluate((element) => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+      }))
+    expect(topBarContentWidth.scrollWidth).toBeLessThanOrEqual(
+      topBarContentWidth.clientWidth
+    )
+    const bottomBarContentWidth = await page
+      .locator('[data-frame-corner-row="bottom"]')
+      .evaluate((element) => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+      }))
+    expect(bottomBarContentWidth.scrollWidth).toBeLessThanOrEqual(
+      bottomBarContentWidth.clientWidth
+    )
+
+    const topBarButtonBounds = await page
+      .locator('[data-frame-corner-row="top"] button')
+      .evaluateAll((buttons) =>
+        buttons.map((button) => {
+          const rect = button.getBoundingClientRect()
+          return { left: rect.left, right: rect.right }
+        })
+      )
+    for (const button of topBarButtonBounds) {
+      expect(button.left + 0.5).toBeGreaterThanOrEqual(topBarBounds!.x)
+      expect(button.right).toBeLessThanOrEqual(
+        topBarBounds!.x + topBarBounds!.width + 0.5
+      )
+    }
+
     const viewport = page.viewportSize()
     const playButtonBounds = await page
       .getByRole('button', { name: 'PLAY HAND' })

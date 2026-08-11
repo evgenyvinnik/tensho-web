@@ -27,7 +27,8 @@
     "quit": "Quitter",
     "musicOn": "Musique Activée",
     "musicOff": "Musique Désactivée",
-    "nowPlaying": "En cours"
+    "nowPlaying": "En cours",
+    "codex": "Codex"
   },
   "settings": {
     "title": "Paramètres",
@@ -42,7 +43,29 @@
     "slow": "Lent",
     "normal": "Normal",
     "fast": "Rapide",
-    "resetSettings": "Réinitialiser"
+    "resetSettings": "Réinitialiser",
+    "dangerZone": "Zone sensible",
+    "data": "Données et progression",
+    "gameplay": "Jeu",
+    "muteMusic": "Couper la musique",
+    "muteSfx": "Couper les effets sonores",
+    "reducedMotionDesc": "Réduit les animations pour l'accessibilité",
+    "resetProgress": "Réinitialiser toute la progression",
+    "resetProgressConfirm": "Êtes-vous sûr ? Cela supprimera définitivement tous vos succès, statistiques et déblocages. Cette action est irréversible.",
+    "resetProgressDesc": "Efface tous les succès, statistiques et déblocages",
+    "resetProgressSuccess": "Toute la progression a été réinitialisée.",
+    "resetToDefaults": "Réinitialiser les paramètres par défaut",
+    "resetTutorial": "Réinitialiser le tutoriel",
+    "resetTutorialConfirm": "Réinitialiser les conseils du tutoriel ?",
+    "resetTutorialDesc": "Réaffiche le tutoriel pour nouveaux joueurs",
+    "resetTutorialSuccess": "Le tutoriel a été réinitialisé. Il s'affichera à la prochaine visite.",
+    "speed": {
+      "fast": "Rapide",
+      "normal": "Normale",
+      "slow": "Lente"
+    },
+    "tileHintsDesc": "Affiche des indices sur les placements valides",
+    "visual": "Visuel"
   },
   "gameplay": {
     "act": "Acte",
@@ -96,156 +119,606 @@
       "mythic": "Ordonnance Céleste"
     },
     "items": {
-      "decree-half-suited": { "name": "Demi-Couleur", "description": "+20 Jetons" },
-      "decree-misty-jade": { "name": "Jade Brumeux", "description": "+30 Jetons" },
-      "decree-bamboo-scroll": { "name": "Rouleau de Bambou", "description": "+40 Jetons" },
-      "decree-jade-tablet": { "name": "Tablette de Jade", "description": "+50 Jetons" },
-      "decree-polished-stone": { "name": "Pierre Polie", "description": "+60 Jetons" },
-      "decree-gentle-breeze": { "name": "Brise Légère", "description": "+2 Mult" },
-      "decree-rising-sun": { "name": "Soleil Levant", "description": "+3 Mult" },
-      "decree-lunar-glow": { "name": "Lueur Lunaire", "description": "+4 Mult" },
-      "decree-crimson-banner": { "name": "Bannière Cramoisie", "description": "+5 Mult" },
-      "decree-golden-seal": { "name": "Sceau Doré", "description": "+6 Mult" },
-      "decree-manzu-master": { "name": "Maître Manzu", "description": "+3 Mult si main contient Manzu" },
-      "decree-pinzu-perfectionist": { "name": "Perfectionniste Pinzu", "description": "+3 Mult si main contient Pinzu" },
-      "decree-souzu-scholar": { "name": "Érudit Souzu", "description": "+3 Mult si main contient Souzu" },
-      "decree-wind-walker": { "name": "Marcheur du Vent", "description": "+4 Mult si main contient Vent" },
-      "decree-dragon-disciple": { "name": "Disciple du Dragon", "description": "+4 Mult si main contient Dragon" },
-      "decree-edge-runner": { "name": "Coureur de Bords", "description": "+20 Jetons par Terminal" },
-      "decree-middle-way": { "name": "Voie du Milieu", "description": "+10 Jetons par Simple" },
-      "decree-green-fortune": { "name": "Fortune Verte", "description": "+15 Jetons par tuile verte (2,3,4,6,8 Souzu)" },
-      "decree-coin-collector": { "name": "Collecteur de Pièces", "description": "+1O en fin de manche" },
-      "decree-merchants-favor": { "name": "Faveur du Marchand", "description": "+2O en fin de manche" },
-      "decree-lucky-coin": { "name": "Pièce Porte-Bonheur", "description": "+3O en fin de manche" },
-      "decree-pair-lover": { "name": "Amateur de Paires", "description": "+30 Jetons si main contient une paire" },
-      "decree-sequence-seeker": { "name": "Chercheur de Séquences", "description": "+30 Jetons si main contient une séquence" },
-      "decree-triplet-tracker": { "name": "Traqueur de Brelans", "description": "+40 Jetons si main contient un brelan" },
-      "decree-flower-friend": { "name": "Ami des Fleurs", "description": "+10 Jetons par Fleur collectée" },
-      "decree-seasonal-blessing": { "name": "Bénédiction Saisonnière", "description": "+2 Mult par Saison active" },
-      "decree-wide-grip": { "name": "Prise Large", "description": "+1 Taille de Main" },
-      "decree-second-chance": { "name": "Seconde Chance", "description": "+1 Défausse par manche" },
-      "decree-balanced-path": { "name": "Chemin Équilibré", "description": "+15 Jetons et +2 Mult" },
-      "decree-modest-fortune": { "name": "Fortune Modeste", "description": "+20 Jetons et +1O par manche" },
-      "decree-humble-power": { "name": "Pouvoir Humble", "description": "+2 Mult et +1O par manche" },
-      "decree-one-mastery": { "name": "Maîtrise du Un", "description": "+25 Jetons par tuile de 1" },
-      "decree-nine-mastery": { "name": "Maîtrise du Neuf", "description": "+25 Jetons par tuile de 9" },
-      "decree-five-blessing": { "name": "Bénédiction du Cinq", "description": "+35 Jetons par tuile de 5" },
-      "decree-spark": { "name": "Étincelle", "description": "x1.2 Mult" },
-      "decree-ember": { "name": "Braise", "description": "x1.3 Mult" },
-      "decree-riichi-devotee": { "name": "Dévot du Riichi", "description": "+3 Mult en scorant Riichi" },
-      "decree-tanyao-tactician": { "name": "Tacticien Tanyao", "description": "+3 Mult en scorant Tanyao" },
-      "decree-pinfu-purist": { "name": "Puriste Pinfu", "description": "+3 Mult en scorant Pinfu" },
-      "decree-manzu-emperor": { "name": "Empereur Manzu", "description": "+8 Mult si moitié ou plus est Manzu" },
-      "decree-pinzu-princess": { "name": "Princesse Pinzu", "description": "+8 Mult si moitié ou plus est Pinzu" },
-      "decree-souzu-sage": { "name": "Sage Souzu", "description": "+8 Mult si moitié ou plus est Souzu" },
-      "decree-flush-fever": { "name": "Fièvre de Couleur", "description": "x1.5 Mult si main d'une seule couleur" },
-      "decree-honor-guard": { "name": "Garde d'Honneur", "description": "x1.5 Mult si 3+ Honneurs" },
-      "decree-terminal-tide": { "name": "Marée Terminale", "description": "x1.5 Mult si 4+ Terminaux" },
-      "decree-straight-arrow": { "name": "Flèche Droite", "description": "+80 Jetons si 3 séquences" },
-      "decree-run-master": { "name": "Maître des Suites", "description": "+6 Mult par séquence" },
-      "decree-triple-threat": { "name": "Triple Menace", "description": "+80 Jetons si 2+ brelans" },
-      "decree-triplet-thunder": { "name": "Tonnerre de Brelans", "description": "+8 Mult par brelan" },
-      "decree-echo-stone": { "name": "Pierre d'Écho", "description": "Redéclenche la première tuile" },
-      "decree-mirror-shard": { "name": "Éclat de Miroir", "description": "Redéclenche la dernière tuile" },
-      "decree-dragon-echo": { "name": "Écho du Dragon", "description": "Redéclenche tous les Dragons" },
-      "decree-wind-echo": { "name": "Écho du Vent", "description": "Redéclenche tous les Vents" },
-      "decree-golden-ratio": { "name": "Nombre d'Or", "description": "+1 Mult par 5O (max +10)" },
-      "decree-treasure-hunter": { "name": "Chasseur de Trésors", "description": "+1O par couleur unique" },
-      "decree-tax-collector": { "name": "Percepteur", "description": "+4O en fin de manche" },
-      "decree-garden-keeper": { "name": "Gardien du Jardin", "description": "+4 Mult par Fleur collectée" },
-      "decree-blossom-storm": { "name": "Tempête de Fleurs", "description": "x1.2 Mult par Fleur collectée" },
-      "decree-seasonal-wind": { "name": "Vent Saisonnier", "description": "+50 Jetons par Saison active" },
-      "decree-slow-burn": { "name": "Combustion Lente", "description": "+2 Mult par manche jouée cet acte" },
-      "decree-momentum": { "name": "Élan", "description": "+15 Jetons par main jouée cette manche" },
-      "decree-crescendo": { "name": "Crescendo", "description": "x1.1 Mult par main jouée cette manche" },
-      "decree-waste-not": { "name": "Rien Gaspillé", "description": "+5 Mult si aucune défausse cette manche" },
-      "decree-recycler": { "name": "Recycleur", "description": "+20 Jetons par défausse utilisée" },
-      "decree-yakuhai-zealot": { "name": "Zélote Yakuhai", "description": "x1.5 Mult en scorant Yakuhai" },
-      "decree-toitoi-titan": { "name": "Titan Toitoi", "description": "x1.5 Mult en scorant Toitoi" },
-      "decree-ittsu-initiate": { "name": "Initié Ittsu", "description": "x1.5 Mult en scorant Ittsu" },
-      "decree-chinitsu-champion": { "name": "Champion Chinitsu", "description": "x2.0 Mult en scorant Chinitsu" },
-      "decree-veteran": { "name": "Vétéran", "description": "+10 Jetons par Acte complété" },
-      "decree-experience": { "name": "Expérience", "description": "+2 Mult par Acte complété" },
-      "decree-greater-jade": { "name": "Grand Jade", "description": "+80 Jetons" },
-      "decree-blazing-banner": { "name": "Bannière Flamboyante", "description": "+10 Mult" },
-      "decree-flame": { "name": "Flamme", "description": "x1.5 Mult" },
-      "decree-wind-dragon": { "name": "Vent et Dragon", "description": "+5 Mult si Vent et Dragon présents" },
-      "decree-all-suits": { "name": "Toutes Couleurs", "description": "+8 Mult si les 3 couleurs présentes" },
-      "decree-bookends": { "name": "Extrémités", "description": "+60 Jetons si 1 et 9 présents" },
-      "decree-expansive-grip": { "name": "Prise Expansive", "description": "+2 Taille de Main" },
-      "decree-careful-player": { "name": "Joueur Prudent", "description": "+2 Défausses par manche" },
-      "decree-inferno": { "name": "Inferno", "description": "x2.0 Mult" },
-      "decree-supernova": { "name": "Supernova", "description": "x2.5 Mult si score dépasse objectif x2" },
-      "decree-perfectionist": { "name": "Perfectionniste", "description": "x3.0 Mult si première main gagne" },
-      "decree-compound-interest": { "name": "Intérêts Composés", "description": "+2 Mult par 10O" },
-      "decree-wealth-engine": { "name": "Machine à Richesse", "description": "+1O par Décret possédé" },
-      "decree-perpetual-motion": { "name": "Mouvement Perpétuel", "description": "+5 Mult par main jouée (max +50)" },
-      "decree-triple-echo": { "name": "Triple Écho", "description": "Redéclenche toutes les tuiles une fois" },
-      "decree-terminal-resonance": { "name": "Résonance Terminale", "description": "Redéclenche Terminaux deux fois" },
-      "decree-honor-resonance": { "name": "Résonance d'Honneur", "description": "Redéclenche Honneurs deux fois" },
-      "decree-manzu-monarch": { "name": "Monarque Manzu", "description": "x2.0 Mult si tout est Manzu" },
-      "decree-pinzu-potentate": { "name": "Potentat Pinzu", "description": "x2.0 Mult si tout est Pinzu" },
-      "decree-souzu-sovereign": { "name": "Souverain Souzu", "description": "x2.0 Mult si tout est Souzu" },
-      "decree-flower-emperor": { "name": "Empereur des Fleurs", "description": "x1.5 Mult par Fleur collectée" },
-      "decree-season-lord": { "name": "Seigneur des Saisons", "description": "+10 Mult par Saison active" },
-      "decree-nature-bond": { "name": "Lien Naturel", "description": "+3 Mult par Fleur, +30 Jetons par Saison" },
-      "decree-honitsu-herald": { "name": "Héraut Honitsu", "description": "x2.0 Mult en scorant Honitsu" },
-      "decree-sanshoku-sage": { "name": "Sage Sanshoku", "description": "x2.0 Mult en scorant Sanshoku" },
-      "decree-chanta-champion": { "name": "Champion Chanta", "description": "x2.0 Mult en scorant Chanta" },
-      "decree-mandate-breaker": { "name": "Briseur de Mandats", "description": "+15 Mult en manches Boss" },
-      "decree-boss-slayer": { "name": "Tueur de Boss", "description": "x2.0 Mult en manches Boss" },
-      "decree-fortune-and-glory": { "name": "Fortune et Gloire", "description": "+60 Jetons, +8 Mult, +3O par manche" },
-      "decree-emperors-blessing": { "name": "Bénédiction de l'Empereur", "description": "+100 Jetons et +10 Mult" },
-      "decree-golden-age": { "name": "Âge d'Or", "description": "+8O en fin de manche" },
-      "decree-blueprint": { "name": "Plan", "description": "Copie l'effet du Décret à droite" },
-      "decree-photograph": { "name": "Photographie", "description": "Première tuile donne x2 Mult" },
-      "decree-ancient-scroll": { "name": "Rouleau Ancien", "description": "+150 Jetons, -2 Taille de Main" },
-      "decree-sacrifice": { "name": "Sacrifice", "description": "x3.0 Mult, -1 Défausse par manche" },
-      "decree-transmuter": { "name": "Transmuteur", "description": "Les Simples deviennent Terminaux" },
-      "decree-harmonizer": { "name": "Harmoniseur", "description": "Toutes couleurs correspondent pour séquences" },
-      "decree-final-act": { "name": "Acte Final", "description": "x1.5 Mult par Acte après le 4" },
-      "decree-endless-journey": { "name": "Voyage Sans Fin", "description": "+20 Jetons par Acte complété" },
-      "decree-master-grip": { "name": "Prise Maître", "description": "+3 Taille de Main" },
-      "decree-infinite-patience": { "name": "Patience Infinie", "description": "+3 Défausses par manche" },
-      "decree-divine-flame": { "name": "Flamme Divine", "description": "x3.0 Mult" },
-      "decree-heavens-wrath": { "name": "Colère des Cieux", "description": "x4.0 Mult si aucun Simple" },
-      "decree-void-blessing": { "name": "Bénédiction du Vide", "description": "x5.0 Mult si que des Honneurs" },
-      "decree-eternal-echo": { "name": "Écho Éternel", "description": "Redéclenche toutes les tuiles deux fois" },
-      "decree-dragon-king": { "name": "Roi Dragon", "description": "Redéclenche Dragons 3 fois" },
-      "decree-yaku-amplifier": { "name": "Amplificateur de Yaku", "description": "Tous les Yaku augmentés de x1.5" },
-      "decree-yakuman-seeker": { "name": "Chercheur de Yakuman", "description": "+50 Mult en scorant Yakuman" },
-      "decree-four-seasons-master": { "name": "Maître des Saisons", "description": "x2.0 Mult par Saison active" },
-      "decree-eternal-garden": { "name": "Jardin Éternel", "description": "+10 Mult par Fleur, protégées" },
-      "decree-midas-touch": { "name": "Toucher de Midas", "description": "+20O en fin de manche" },
-      "decree-infinite-wealth": { "name": "Richesse Infinie", "description": "+1 Mult par 5O" },
-      "decree-brainstorm": { "name": "Remue-Méninges", "description": "Copie le Décret le plus à gauche" },
-      "decree-doppelganger": { "name": "Doppelganger", "description": "Ajoute copie d'un Décret aléatoire" },
-      "decree-manzu-god": { "name": "Dieu Manzu", "description": "x3.0 Mult si tout est Manzu" },
-      "decree-pinzu-god": { "name": "Dieu Pinzu", "description": "x3.0 Mult si tout est Pinzu" },
-      "decree-souzu-god": { "name": "Dieu Souzu", "description": "x3.0 Mult si tout est Souzu" },
-      "decree-glass-cannon": { "name": "Canon de Verre", "description": "x6.0 Mult, détruit si Boss perdu" },
-      "decree-phoenix": { "name": "Phénix", "description": "Empêche une défaite, puis se vend" },
-      "decree-time-lord": { "name": "Seigneur du Temps", "description": "+1 main supplémentaire par manche" },
-      "decree-exponential": { "name": "Exponentiel", "description": "x1.3 Mult par 100 jetons de base" },
-      "decree-chain-reaction": { "name": "Réaction en Chaîne", "description": "+5 Mult par Yaku scoré" },
-      "decree-cosmic-jade": { "name": "Jade Cosmique", "description": "+200 Jetons" },
-      "decree-solar-banner": { "name": "Bannière Solaire", "description": "+25 Mult" },
-      "decree-universal-grip": { "name": "Prise Universelle", "description": "+4 Taille de Main" },
-      "decree-heavenly-ordinance": { "name": "Ordonnance Céleste", "description": "x5.0 Mult" },
-      "decree-celestial-throne": { "name": "Trône Céleste", "description": "x10.0 Mult, -2 Taille, -1 Défausse" },
-      "decree-void-emperor": { "name": "Empereur du Vide", "description": "x8.0 Mult si dernière main était 0" },
-      "decree-infinite-loop": { "name": "Boucle Infinie", "description": "Redéclenche toutes les tuiles 3 fois" },
-      "decree-echo-dimension": { "name": "Dimension d'Écho", "description": "Les redéclencheurs agissent 2 fois" },
-      "decree-clone-army": { "name": "Armée de Clones", "description": "Copie tous les autres Décrets" },
-      "decree-world-tree": { "name": "Arbre-Monde", "description": "x2.0 Mult par Fleur, x1.5 par Saison" },
-      "decree-philosophers-stone": { "name": "Pierre Philosophale", "description": "Double tout l'or gagné" },
-      "decree-dragon-hoard": { "name": "Trésor du Dragon", "description": "+2 Mult par 10O" },
-      "decree-yaku-nexus": { "name": "Nexus de Yaku", "description": "Tous les Yaku +1 niveau" },
-      "decree-yakuman-blessing": { "name": "Bénédiction Yakuman", "description": "x10.0 Mult en scorant Yakuman" },
-      "decree-reality-warp": { "name": "Distorsion de Réalité", "description": "Les tuiles comptent comme tout" },
-      "decree-time-master": { "name": "Maître du Temps", "description": "+2 mains supplémentaires par manche" },
-      "decree-immortal-decree": { "name": "Décret Immortel", "description": "Empêche les défaites (score divisé par 2)" },
-      "decree-omega": { "name": "Oméga", "description": "+500 Jetons, +50 Mult, x2.0 Mult" }
+      "decree-half-suited": {
+        "name": "Demi-Couleur",
+        "description": "+20 Jetons"
+      },
+      "decree-misty-jade": {
+        "name": "Jade Brumeux",
+        "description": "+30 Jetons"
+      },
+      "decree-bamboo-scroll": {
+        "name": "Rouleau de Bambou",
+        "description": "+40 Jetons"
+      },
+      "decree-jade-tablet": {
+        "name": "Tablette de Jade",
+        "description": "+50 Jetons"
+      },
+      "decree-polished-stone": {
+        "name": "Pierre Polie",
+        "description": "+60 Jetons"
+      },
+      "decree-gentle-breeze": {
+        "name": "Brise Légère",
+        "description": "+2 Mult"
+      },
+      "decree-rising-sun": {
+        "name": "Soleil Levant",
+        "description": "+3 Mult"
+      },
+      "decree-lunar-glow": {
+        "name": "Lueur Lunaire",
+        "description": "+4 Mult"
+      },
+      "decree-crimson-banner": {
+        "name": "Bannière Cramoisie",
+        "description": "+5 Mult"
+      },
+      "decree-golden-seal": {
+        "name": "Sceau Doré",
+        "description": "+6 Mult"
+      },
+      "decree-manzu-master": {
+        "name": "Maître Manzu",
+        "description": "+3 Mult si main contient Manzu"
+      },
+      "decree-pinzu-perfectionist": {
+        "name": "Perfectionniste Pinzu",
+        "description": "+3 Mult si main contient Pinzu"
+      },
+      "decree-souzu-scholar": {
+        "name": "Érudit Souzu",
+        "description": "+3 Mult si main contient Souzu"
+      },
+      "decree-wind-walker": {
+        "name": "Marcheur du Vent",
+        "description": "+4 Mult si main contient Vent"
+      },
+      "decree-dragon-disciple": {
+        "name": "Disciple du Dragon",
+        "description": "+4 Mult si main contient Dragon"
+      },
+      "decree-edge-runner": {
+        "name": "Coureur de Bords",
+        "description": "+20 Jetons par Terminal"
+      },
+      "decree-middle-way": {
+        "name": "Voie du Milieu",
+        "description": "+10 Jetons par Simple"
+      },
+      "decree-green-fortune": {
+        "name": "Fortune Verte",
+        "description": "+15 Jetons par tuile verte (2,3,4,6,8 Souzu)"
+      },
+      "decree-coin-collector": {
+        "name": "Collecteur de Pièces",
+        "description": "+1O en fin de manche"
+      },
+      "decree-merchants-favor": {
+        "name": "Faveur du Marchand",
+        "description": "+2O en fin de manche"
+      },
+      "decree-lucky-coin": {
+        "name": "Pièce Porte-Bonheur",
+        "description": "+3O en fin de manche"
+      },
+      "decree-pair-lover": {
+        "name": "Amateur de Paires",
+        "description": "+30 Jetons si main contient une paire"
+      },
+      "decree-sequence-seeker": {
+        "name": "Chercheur de Séquences",
+        "description": "+30 Jetons si main contient une séquence"
+      },
+      "decree-triplet-tracker": {
+        "name": "Traqueur de Brelans",
+        "description": "+40 Jetons si main contient un brelan"
+      },
+      "decree-flower-friend": {
+        "name": "Ami des Fleurs",
+        "description": "+10 Jetons par Fleur collectée"
+      },
+      "decree-seasonal-blessing": {
+        "name": "Bénédiction Saisonnière",
+        "description": "+2 Mult par Saison active"
+      },
+      "decree-wide-grip": {
+        "name": "Prise Large",
+        "description": "+1 Taille de Main"
+      },
+      "decree-second-chance": {
+        "name": "Seconde Chance",
+        "description": "+1 Défausse par manche"
+      },
+      "decree-balanced-path": {
+        "name": "Chemin Équilibré",
+        "description": "+15 Jetons et +2 Mult"
+      },
+      "decree-modest-fortune": {
+        "name": "Fortune Modeste",
+        "description": "+20 Jetons et +1O par manche"
+      },
+      "decree-humble-power": {
+        "name": "Pouvoir Humble",
+        "description": "+2 Mult et +1O par manche"
+      },
+      "decree-one-mastery": {
+        "name": "Maîtrise du Un",
+        "description": "+25 Jetons par tuile de 1"
+      },
+      "decree-nine-mastery": {
+        "name": "Maîtrise du Neuf",
+        "description": "+25 Jetons par tuile de 9"
+      },
+      "decree-five-blessing": {
+        "name": "Bénédiction du Cinq",
+        "description": "+35 Jetons par tuile de 5"
+      },
+      "decree-spark": {
+        "name": "Étincelle",
+        "description": "x1.2 Mult"
+      },
+      "decree-ember": {
+        "name": "Braise",
+        "description": "x1.3 Mult"
+      },
+      "decree-riichi-devotee": {
+        "name": "Dévot du Riichi",
+        "description": "+3 Mult en scorant Riichi"
+      },
+      "decree-tanyao-tactician": {
+        "name": "Tacticien Tanyao",
+        "description": "+3 Mult en scorant Tanyao"
+      },
+      "decree-pinfu-purist": {
+        "name": "Puriste Pinfu",
+        "description": "+3 Mult en scorant Pinfu"
+      },
+      "decree-manzu-emperor": {
+        "name": "Empereur Manzu",
+        "description": "+8 Mult si moitié ou plus est Manzu"
+      },
+      "decree-pinzu-princess": {
+        "name": "Princesse Pinzu",
+        "description": "+8 Mult si moitié ou plus est Pinzu"
+      },
+      "decree-souzu-sage": {
+        "name": "Sage Souzu",
+        "description": "+8 Mult si moitié ou plus est Souzu"
+      },
+      "decree-flush-fever": {
+        "name": "Fièvre de Couleur",
+        "description": "x1.5 Mult si main d'une seule couleur"
+      },
+      "decree-honor-guard": {
+        "name": "Garde d'Honneur",
+        "description": "x1.5 Mult si 3+ Honneurs"
+      },
+      "decree-terminal-tide": {
+        "name": "Marée Terminale",
+        "description": "x1.5 Mult si 4+ Terminaux"
+      },
+      "decree-straight-arrow": {
+        "name": "Flèche Droite",
+        "description": "+80 Jetons si 3 séquences"
+      },
+      "decree-run-master": {
+        "name": "Maître des Suites",
+        "description": "+6 Mult par séquence"
+      },
+      "decree-triple-threat": {
+        "name": "Triple Menace",
+        "description": "+80 Jetons si 2+ brelans"
+      },
+      "decree-triplet-thunder": {
+        "name": "Tonnerre de Brelans",
+        "description": "+8 Mult par brelan"
+      },
+      "decree-echo-stone": {
+        "name": "Pierre d'Écho",
+        "description": "Redéclenche la première tuile"
+      },
+      "decree-mirror-shard": {
+        "name": "Éclat de Miroir",
+        "description": "Redéclenche la dernière tuile"
+      },
+      "decree-dragon-echo": {
+        "name": "Écho du Dragon",
+        "description": "Redéclenche tous les Dragons"
+      },
+      "decree-wind-echo": {
+        "name": "Écho du Vent",
+        "description": "Redéclenche tous les Vents"
+      },
+      "decree-golden-ratio": {
+        "name": "Nombre d'Or",
+        "description": "+1 Mult par 5O (max +10)"
+      },
+      "decree-treasure-hunter": {
+        "name": "Chasseur de Trésors",
+        "description": "+1O par couleur unique"
+      },
+      "decree-tax-collector": {
+        "name": "Percepteur",
+        "description": "+4O en fin de manche"
+      },
+      "decree-garden-keeper": {
+        "name": "Gardien du Jardin",
+        "description": "+4 Mult par Fleur collectée"
+      },
+      "decree-blossom-storm": {
+        "name": "Tempête de Fleurs",
+        "description": "x1.2 Mult par Fleur collectée"
+      },
+      "decree-seasonal-wind": {
+        "name": "Vent Saisonnier",
+        "description": "+50 Jetons par Saison active"
+      },
+      "decree-slow-burn": {
+        "name": "Combustion Lente",
+        "description": "+2 Mult par manche jouée cet acte"
+      },
+      "decree-momentum": {
+        "name": "Élan",
+        "description": "+15 Jetons par main jouée cette manche"
+      },
+      "decree-crescendo": {
+        "name": "Crescendo",
+        "description": "x1.1 Mult par main jouée cette manche"
+      },
+      "decree-waste-not": {
+        "name": "Rien Gaspillé",
+        "description": "+5 Mult si aucune défausse cette manche"
+      },
+      "decree-recycler": {
+        "name": "Recycleur",
+        "description": "+20 Jetons par défausse utilisée"
+      },
+      "decree-yakuhai-zealot": {
+        "name": "Zélote Yakuhai",
+        "description": "x1.5 Mult en scorant Yakuhai"
+      },
+      "decree-toitoi-titan": {
+        "name": "Titan Toitoi",
+        "description": "x1.5 Mult en scorant Toitoi"
+      },
+      "decree-ittsu-initiate": {
+        "name": "Initié Ittsu",
+        "description": "x1.5 Mult en scorant Ittsu"
+      },
+      "decree-chinitsu-champion": {
+        "name": "Champion Chinitsu",
+        "description": "x2.0 Mult en scorant Chinitsu"
+      },
+      "decree-veteran": {
+        "name": "Vétéran",
+        "description": "+10 Jetons par Acte complété"
+      },
+      "decree-experience": {
+        "name": "Expérience",
+        "description": "+2 Mult par Acte complété"
+      },
+      "decree-greater-jade": {
+        "name": "Grand Jade",
+        "description": "+80 Jetons"
+      },
+      "decree-blazing-banner": {
+        "name": "Bannière Flamboyante",
+        "description": "+10 Mult"
+      },
+      "decree-flame": {
+        "name": "Flamme",
+        "description": "x1.5 Mult"
+      },
+      "decree-wind-dragon": {
+        "name": "Vent et Dragon",
+        "description": "+5 Mult si Vent et Dragon présents"
+      },
+      "decree-all-suits": {
+        "name": "Toutes Couleurs",
+        "description": "+8 Mult si les 3 couleurs présentes"
+      },
+      "decree-bookends": {
+        "name": "Extrémités",
+        "description": "+60 Jetons si 1 et 9 présents"
+      },
+      "decree-expansive-grip": {
+        "name": "Prise Expansive",
+        "description": "+2 Taille de Main"
+      },
+      "decree-careful-player": {
+        "name": "Joueur Prudent",
+        "description": "+2 Défausses par manche"
+      },
+      "decree-inferno": {
+        "name": "Inferno",
+        "description": "x2.0 Mult"
+      },
+      "decree-supernova": {
+        "name": "Supernova",
+        "description": "x2.5 Mult si score dépasse objectif x2"
+      },
+      "decree-perfectionist": {
+        "name": "Perfectionniste",
+        "description": "x3.0 Mult si première main gagne"
+      },
+      "decree-compound-interest": {
+        "name": "Intérêts Composés",
+        "description": "+2 Mult par 10O"
+      },
+      "decree-wealth-engine": {
+        "name": "Machine à Richesse",
+        "description": "+1O par Décret possédé"
+      },
+      "decree-perpetual-motion": {
+        "name": "Mouvement Perpétuel",
+        "description": "+5 Mult par main jouée (max +50)"
+      },
+      "decree-triple-echo": {
+        "name": "Triple Écho",
+        "description": "Redéclenche toutes les tuiles une fois"
+      },
+      "decree-terminal-resonance": {
+        "name": "Résonance Terminale",
+        "description": "Redéclenche Terminaux deux fois"
+      },
+      "decree-honor-resonance": {
+        "name": "Résonance d'Honneur",
+        "description": "Redéclenche Honneurs deux fois"
+      },
+      "decree-manzu-monarch": {
+        "name": "Monarque Manzu",
+        "description": "x2.0 Mult si tout est Manzu"
+      },
+      "decree-pinzu-potentate": {
+        "name": "Potentat Pinzu",
+        "description": "x2.0 Mult si tout est Pinzu"
+      },
+      "decree-souzu-sovereign": {
+        "name": "Souverain Souzu",
+        "description": "x2.0 Mult si tout est Souzu"
+      },
+      "decree-flower-emperor": {
+        "name": "Empereur des Fleurs",
+        "description": "x1.5 Mult par Fleur collectée"
+      },
+      "decree-season-lord": {
+        "name": "Seigneur des Saisons",
+        "description": "+10 Mult par Saison active"
+      },
+      "decree-nature-bond": {
+        "name": "Lien Naturel",
+        "description": "+3 Mult par Fleur, +30 Jetons par Saison"
+      },
+      "decree-honitsu-herald": {
+        "name": "Héraut Honitsu",
+        "description": "x2.0 Mult en scorant Honitsu"
+      },
+      "decree-sanshoku-sage": {
+        "name": "Sage Sanshoku",
+        "description": "x2.0 Mult en scorant Sanshoku"
+      },
+      "decree-chanta-champion": {
+        "name": "Champion Chanta",
+        "description": "x2.0 Mult en scorant Chanta"
+      },
+      "decree-mandate-breaker": {
+        "name": "Briseur de Mandats",
+        "description": "+15 Mult en manches Boss"
+      },
+      "decree-boss-slayer": {
+        "name": "Tueur de Boss",
+        "description": "x2.0 Mult en manches Boss"
+      },
+      "decree-fortune-and-glory": {
+        "name": "Fortune et Gloire",
+        "description": "+60 Jetons, +8 Mult, +3O par manche"
+      },
+      "decree-emperors-blessing": {
+        "name": "Bénédiction de l'Empereur",
+        "description": "+100 Jetons et +10 Mult"
+      },
+      "decree-golden-age": {
+        "name": "Âge d'Or",
+        "description": "+8O en fin de manche"
+      },
+      "decree-blueprint": {
+        "name": "Plan",
+        "description": "Copie l'effet du Décret à droite"
+      },
+      "decree-photograph": {
+        "name": "Photographie",
+        "description": "Première tuile donne x2 Mult"
+      },
+      "decree-ancient-scroll": {
+        "name": "Rouleau Ancien",
+        "description": "+150 Jetons, -2 Taille de Main"
+      },
+      "decree-sacrifice": {
+        "name": "Sacrifice",
+        "description": "x3.0 Mult, -1 Défausse par manche"
+      },
+      "decree-transmuter": {
+        "name": "Transmuteur",
+        "description": "Les Simples deviennent Terminaux"
+      },
+      "decree-harmonizer": {
+        "name": "Harmoniseur",
+        "description": "Toutes couleurs correspondent pour séquences"
+      },
+      "decree-final-act": {
+        "name": "Acte Final",
+        "description": "x1.5 Mult par Acte après le 4"
+      },
+      "decree-endless-journey": {
+        "name": "Voyage Sans Fin",
+        "description": "+20 Jetons par Acte complété"
+      },
+      "decree-master-grip": {
+        "name": "Prise Maître",
+        "description": "+3 Taille de Main"
+      },
+      "decree-infinite-patience": {
+        "name": "Patience Infinie",
+        "description": "+3 Défausses par manche"
+      },
+      "decree-divine-flame": {
+        "name": "Flamme Divine",
+        "description": "x3.0 Mult"
+      },
+      "decree-heavens-wrath": {
+        "name": "Colère des Cieux",
+        "description": "x4.0 Mult si aucun Simple"
+      },
+      "decree-void-blessing": {
+        "name": "Bénédiction du Vide",
+        "description": "x5.0 Mult si que des Honneurs"
+      },
+      "decree-eternal-echo": {
+        "name": "Écho Éternel",
+        "description": "Redéclenche toutes les tuiles deux fois"
+      },
+      "decree-dragon-king": {
+        "name": "Roi Dragon",
+        "description": "Redéclenche Dragons 3 fois"
+      },
+      "decree-yaku-amplifier": {
+        "name": "Amplificateur de Yaku",
+        "description": "Tous les Yaku augmentés de x1.5"
+      },
+      "decree-yakuman-seeker": {
+        "name": "Chercheur de Yakuman",
+        "description": "+50 Mult en scorant Yakuman"
+      },
+      "decree-four-seasons-master": {
+        "name": "Maître des Saisons",
+        "description": "x2.0 Mult par Saison active"
+      },
+      "decree-eternal-garden": {
+        "name": "Jardin Éternel",
+        "description": "+10 Mult par Fleur, protégées"
+      },
+      "decree-midas-touch": {
+        "name": "Toucher de Midas",
+        "description": "+20O en fin de manche"
+      },
+      "decree-infinite-wealth": {
+        "name": "Richesse Infinie",
+        "description": "+1 Mult par 5O"
+      },
+      "decree-brainstorm": {
+        "name": "Remue-Méninges",
+        "description": "Copie le Décret le plus à gauche"
+      },
+      "decree-doppelganger": {
+        "name": "Doppelganger",
+        "description": "Ajoute copie d'un Décret aléatoire"
+      },
+      "decree-manzu-god": {
+        "name": "Dieu Manzu",
+        "description": "x3.0 Mult si tout est Manzu"
+      },
+      "decree-pinzu-god": {
+        "name": "Dieu Pinzu",
+        "description": "x3.0 Mult si tout est Pinzu"
+      },
+      "decree-souzu-god": {
+        "name": "Dieu Souzu",
+        "description": "x3.0 Mult si tout est Souzu"
+      },
+      "decree-glass-cannon": {
+        "name": "Canon de Verre",
+        "description": "x6.0 Mult, détruit si Boss perdu"
+      },
+      "decree-phoenix": {
+        "name": "Phénix",
+        "description": "Empêche une défaite, puis se vend"
+      },
+      "decree-time-lord": {
+        "name": "Seigneur du Temps",
+        "description": "+1 main supplémentaire par manche"
+      },
+      "decree-exponential": {
+        "name": "Exponentiel",
+        "description": "x1.3 Mult par 100 jetons de base"
+      },
+      "decree-chain-reaction": {
+        "name": "Réaction en Chaîne",
+        "description": "+5 Mult par Yaku scoré"
+      },
+      "decree-cosmic-jade": {
+        "name": "Jade Cosmique",
+        "description": "+200 Jetons"
+      },
+      "decree-solar-banner": {
+        "name": "Bannière Solaire",
+        "description": "+25 Mult"
+      },
+      "decree-universal-grip": {
+        "name": "Prise Universelle",
+        "description": "+4 Taille de Main"
+      },
+      "decree-heavenly-ordinance": {
+        "name": "Ordonnance Céleste",
+        "description": "x5.0 Mult"
+      },
+      "decree-celestial-throne": {
+        "name": "Trône Céleste",
+        "description": "x10.0 Mult, -2 Taille, -1 Défausse"
+      },
+      "decree-void-emperor": {
+        "name": "Empereur du Vide",
+        "description": "x8.0 Mult si dernière main était 0"
+      },
+      "decree-infinite-loop": {
+        "name": "Boucle Infinie",
+        "description": "Redéclenche toutes les tuiles 3 fois"
+      },
+      "decree-echo-dimension": {
+        "name": "Dimension d'Écho",
+        "description": "Les redéclencheurs agissent 2 fois"
+      },
+      "decree-clone-army": {
+        "name": "Armée de Clones",
+        "description": "Copie tous les autres Décrets"
+      },
+      "decree-world-tree": {
+        "name": "Arbre-Monde",
+        "description": "x2.0 Mult par Fleur, x1.5 par Saison"
+      },
+      "decree-philosophers-stone": {
+        "name": "Pierre Philosophale",
+        "description": "Double tout l'or gagné"
+      },
+      "decree-dragon-hoard": {
+        "name": "Trésor du Dragon",
+        "description": "+2 Mult par 10O"
+      },
+      "decree-yaku-nexus": {
+        "name": "Nexus de Yaku",
+        "description": "Tous les Yaku +1 niveau"
+      },
+      "decree-yakuman-blessing": {
+        "name": "Bénédiction Yakuman",
+        "description": "x10.0 Mult en scorant Yakuman"
+      },
+      "decree-reality-warp": {
+        "name": "Distorsion de Réalité",
+        "description": "Les tuiles comptent comme tout"
+      },
+      "decree-time-master": {
+        "name": "Maître du Temps",
+        "description": "+2 mains supplémentaires par manche"
+      },
+      "decree-immortal-decree": {
+        "name": "Décret Immortel",
+        "description": "Empêche les défaites (score divisé par 2)"
+      },
+      "decree-omega": {
+        "name": "Oméga",
+        "description": "+500 Jetons, +50 Mult, x2.0 Mult"
+      }
     }
   },
   "flora": {
@@ -390,5 +863,25 @@
     "currentLanguage": "Langue actuelle : {{language}}",
     "toggleMusic": "Basculer la Musique",
     "toggleSound": "Basculer le Son"
+  },
+  "codex": {
+    "decrees": "Décrets",
+    "economy": "Économie",
+    "finish": "Commencer à jouer !",
+    "flora": "Flore",
+    "handBuilding": "Construction de main",
+    "howToPlay": "Comment jouer",
+    "introduction": "Introduction",
+    "next": "Suivant",
+    "prev": "Retour",
+    "previous": "Précédent",
+    "progression": "Progression",
+    "scoring": "Score",
+    "skip": "Passer",
+    "strategy": "Stratégie",
+    "subtitle": "Guide de référence du jeu",
+    "summary": "Résumé",
+    "tiles": "Tuiles",
+    "title": "Codex"
   }
 }

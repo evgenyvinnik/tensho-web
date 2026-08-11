@@ -34,6 +34,7 @@ import { CategoryTabs } from '../collection/CategoryTabs'
 import { ItemGrid } from '../collection/ItemGrid'
 import { ItemDetailModal } from '../collection/ItemDetailModal'
 import type { ItemDisplayInfo } from '../collection/ItemCard'
+import { useItemText, type ItemText } from '../../i18n/useItemText'
 
 const AnimatedDiv = animated('div')
 
@@ -41,7 +42,8 @@ const AnimatedDiv = animated('div')
  * Build display info map for a category
  */
 function buildDisplayInfoMap(
-  category: ArchiveCategory
+  category: ArchiveCategory,
+  itemText: ItemText
 ): Map<string, ItemDisplayInfo> {
   const map = new Map<string, ItemDisplayInfo>()
 
@@ -50,8 +52,8 @@ function buildDisplayInfoMap(
       for (const decree of ALL_DECREES) {
         map.set(decree.id, {
           id: decree.id,
-          name: decree.name,
-          description: decree.description,
+          name: itemText.name('decrees', decree),
+          description: itemText.description('decrees', decree),
           rarity: decree.rarity,
           category: 'decrees',
         })
@@ -74,9 +76,9 @@ function buildDisplayInfoMap(
       for (const charter of ALL_CHARTERS) {
         map.set(charter.id, {
           id: charter.id,
-          name: charter.name,
+          name: itemText.name('charters', charter),
           japaneseName: charter.japaneseName,
-          description: charter.description,
+          description: itemText.description('charters', charter),
           rarity: charter.isUpgraded ? 'Rare' : 'Common',
           category: 'charters',
         })
@@ -88,9 +90,9 @@ function buildDisplayInfoMap(
       for (const seal of getAllFateSeals()) {
         map.set(seal.id, {
           id: seal.id,
-          name: seal.name,
+          name: itemText.name('seals', seal),
           japaneseName: seal.japaneseName,
-          description: seal.description,
+          description: itemText.description('seals', seal),
           category: 'consumables',
         })
       }
@@ -98,9 +100,9 @@ function buildDisplayInfoMap(
       for (const orb of getAllCelestialOrbs()) {
         map.set(orb.id, {
           id: orb.id,
-          name: orb.name,
+          name: itemText.name('orbs', orb),
           japaneseName: orb.japaneseName,
-          description: orb.description,
+          description: itemText.description('orbs', orb),
           category: 'consumables',
         })
       }
@@ -108,9 +110,9 @@ function buildDisplayInfoMap(
       for (const script of getAllVoidScripts()) {
         map.set(script.id, {
           id: script.id,
-          name: script.name,
+          name: itemText.name('scripts', script),
           japaneseName: script.japaneseName,
-          description: script.description,
+          description: itemText.description('scripts', script),
           category: 'consumables',
         })
       }
@@ -168,9 +170,9 @@ function buildDisplayInfoMap(
       for (const omen of ALL_OMENS) {
         map.set(omen.id, {
           id: omen.id,
-          name: omen.name,
+          name: itemText.name('omens', omen),
           japaneseName: omen.japaneseName,
-          description: omen.description,
+          description: itemText.description('omens', omen),
           category: 'omens',
         })
       }
@@ -180,9 +182,9 @@ function buildDisplayInfoMap(
       for (const mandate of ALL_MANDATES) {
         map.set(mandate.id, {
           id: mandate.id,
-          name: mandate.name,
+          name: itemText.name('mandates', mandate),
           japaneseName: mandate.japaneseName,
-          description: mandate.description,
+          description: itemText.description('mandates', mandate),
           rarity: mandate.difficulty,
           category: 'mandates',
         })
@@ -198,6 +200,7 @@ function buildDisplayInfoMap(
  */
 export function CollectionScreen() {
   const { t } = useTranslation()
+  const itemText = useItemText()
   const { navigateTo } = useAppNavigation()
 
   // Archive store
@@ -233,8 +236,8 @@ export function CollectionScreen() {
 
   // Build display info map for active category
   const displayInfoMap = useMemo(
-    () => buildDisplayInfoMap(activeCategory),
-    [activeCategory]
+    () => buildDisplayInfoMap(activeCategory, itemText),
+    [activeCategory, itemText]
   )
 
   // Category counts
@@ -393,7 +396,8 @@ export function CollectionScreen() {
                       string,
                     ]
                     const infoMap = buildDisplayInfoMap(
-                      category as ArchiveCategory
+                      category as ArchiveCategory,
+                      itemText
                     )
                     const info = infoMap.get(itemId)
 

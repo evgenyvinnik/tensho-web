@@ -21,6 +21,7 @@ import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
 import { calculateShanten } from '../../rules/ShantenCalculator'
+import { useItemText } from '../../i18n/useItemText'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -59,6 +60,7 @@ export function GameplayScreen() {
 
   // Game controller
   const game = useGameController()
+  const itemText = useItemText()
 
   // Responsive tile size
   const tileSize = useResponsiveTileSize()
@@ -795,7 +797,7 @@ export function GameplayScreen() {
                       <span className="text-lg">🎴</span>
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
-                          {seal.name}
+                          {itemText.name('seals', seal)}
                         </div>
                         <div className="text-sm text-[var(--color-beige-white)]/70">
                           {seal.description}
@@ -816,7 +818,7 @@ export function GameplayScreen() {
                       <span className="text-lg">🔮</span>
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
-                          {orb.name}
+                          {itemText.name('orbs', orb)}
                         </div>
                         <div className="text-sm text-[var(--color-beige-white)]/70">
                           {orb.description}
@@ -840,7 +842,7 @@ export function GameplayScreen() {
                       <span className="text-lg">📜</span>
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
-                          {script.name}
+                          {itemText.name('scripts', script)}
                         </div>
                         <div className="text-sm text-[var(--color-beige-white)]/70">
                           {script.description}

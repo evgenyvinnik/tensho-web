@@ -21,6 +21,7 @@ import { EditionType } from '../../systems/PricingCalculator'
 import { getCurrentLanguage } from '../../i18n'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { Tile } from '../../core/Tile'
+import { useItemText } from '../../i18n/useItemText'
 
 const AnimatedDiv = animated('div')
 
@@ -270,6 +271,7 @@ export function ShopItemCard({
 }: ShopItemCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const itemText = useItemText()
 
   const showCJK = isCJKLanguage()
 
@@ -284,9 +286,9 @@ export function ShopItemCard({
   switch (offering.itemType) {
     case 'Decree': {
       const decree = offering.item as Decree
-      name = decree.name
+      name = itemText.name('decrees', decree)
       japaneseName = '' // Would come from localization
-      description = decree.description
+      description = itemText.description('decrees', decree)
       rarity = decree.rarity
       sticker = decree.sticker
       decreeId = decree.id
@@ -306,12 +308,13 @@ export function ShopItemCard({
       break
     case 'VoidScript': {
       const script = offering.item as {
+        id: string
         name: string
         description: string
         rarity: string
       }
-      name = script.name
-      description = script.description
+      name = itemText.name('scripts', script)
+      description = itemText.description('scripts', script)
       rarity = script.rarity.toLowerCase()
       break
     }

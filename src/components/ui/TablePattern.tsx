@@ -92,14 +92,16 @@ const CornerOrnament: React.FC<CornerOrnamentProps> = ({
   size = 40,
 }) => {
   const positionStyles: Record<string, React.CSSProperties> = {
-    'top-left': { top: 20, left: 20, transform: 'none' },
-    'top-right': { top: 20, right: 20, transform: 'scaleX(-1)' },
-    'bottom-left': { bottom: 20, left: 20, transform: 'scaleY(-1)' },
-    'bottom-right': { bottom: 20, right: 20, transform: 'scale(-1, -1)' },
+    'top-left': { top: -3, left: -3, transform: 'none' },
+    'top-right': { top: -3, right: -3, transform: 'scaleX(-1)' },
+    'bottom-left': { bottom: -3, left: -3, transform: 'scaleY(-1)' },
+    'bottom-right': { bottom: -3, right: -3, transform: 'scale(-1, -1)' },
   }
 
   return (
     <svg
+      data-table-ornament={position}
+      className="table-pattern-ornament"
       width={size}
       height={size}
       viewBox="0 0 40 40"
@@ -160,7 +162,7 @@ export const TablePattern: React.FC<TablePatternProps> = ({
 
   return (
     <div
-      className={`relative w-full h-full overflow-hidden ${className}`}
+      className={`table-pattern relative h-full w-full overflow-hidden ${className}`}
       style={{
         backgroundColor: colors.greenMid,
       }}
@@ -206,12 +208,9 @@ export const TablePattern: React.FC<TablePatternProps> = ({
       {/* Gold border frame */}
       {showOrnaments && (
         <div
-          className="absolute pointer-events-none"
+          data-table-frame
+          className="table-pattern-frame absolute pointer-events-none"
           style={{
-            top: 28,
-            left: 28,
-            right: 28,
-            bottom: 28,
             border: `3px solid ${colors.gold}`,
           }}
         >
@@ -223,7 +222,16 @@ export const TablePattern: React.FC<TablePatternProps> = ({
       )}
 
       {/* Content layer */}
-      {children && <div className="relative z-10 w-full h-full">{children}</div>}
+      {children && (
+        <div
+          data-table-content
+          className={`table-pattern-content relative z-10 h-full w-full ${
+            showOrnaments ? 'table-pattern-content-framed' : ''
+          }`}
+        >
+          {children}
+        </div>
+      )}
 
       {/* Keyframe animation for wave pattern */}
       {animated && (

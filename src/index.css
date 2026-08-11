@@ -211,6 +211,119 @@ a {
   height: 100dvh;
 }
 
+/*
+ * The ornamental table frame is also the gameplay safe boundary. Its spacing
+ * scales down on phones so the frame remains visible without squeezing the
+ * controls, while larger screens retain the original 28px inset.
+ */
+.table-pattern {
+  --table-frame-inset: clamp(8px, 2.2vw, 28px);
+  --table-frame-gap: clamp(4px, 0.65vw, 8px);
+  --table-frame-content-inset: calc(
+    var(--table-frame-inset) + var(--table-frame-gap)
+  );
+  --table-frame-ornament-size: clamp(28px, 3vw, 40px);
+  /*
+   * Once the 1280px gameplay canvas is centered, its natural side gutter may
+   * already clear the ornaments. Only reserve the clearance still missing.
+   */
+  --table-frame-canvas-gutter: max(
+    0px,
+    calc(50dvw - var(--table-frame-content-inset) - 640px)
+  );
+  --table-frame-corner-clearance: max(
+    0px,
+    calc(
+      var(--table-frame-ornament-size) - var(--table-frame-gap) -
+        var(--table-frame-canvas-gutter)
+    )
+  );
+}
+
+.table-pattern-frame {
+  inset: var(--table-frame-inset);
+  z-index: 5;
+}
+
+.table-pattern-ornament {
+  width: var(--table-frame-ornament-size);
+  height: var(--table-frame-ornament-size);
+}
+
+.table-pattern-content {
+  min-width: 0;
+  min-height: 0;
+}
+
+.table-pattern-content-framed {
+  padding-top: max(var(--table-frame-content-inset), env(safe-area-inset-top));
+  padding-right: max(
+    var(--table-frame-content-inset),
+    env(safe-area-inset-right)
+  );
+  padding-bottom: max(
+    var(--table-frame-content-inset),
+    env(safe-area-inset-bottom)
+  );
+  padding-left: max(
+    var(--table-frame-content-inset),
+    env(safe-area-inset-left)
+  );
+}
+
+/* Top and bottom chrome must not paint beneath the ornamental corner marks. */
+.gameplay-frame-corner-row {
+  margin-inline: var(--table-frame-corner-clearance, 0px);
+}
+
+/*
+ * At the narrowest supported width, keep every control at a 44px touch size by
+ * folding Act into the gold readout instead of shrinking or clipping buttons.
+ */
+@media (max-width: 359px) {
+  [data-gameplay-top-bar-stake],
+  [data-gameplay-top-bar-act],
+  [data-gameplay-top-bar-reroll-label] {
+    display: none;
+  }
+
+  [data-gameplay-top-bar-compact-progress],
+  [data-gameplay-top-bar-reroll-compact] {
+    display: block;
+  }
+
+  [data-frame-corner-row='bottom'] {
+    gap: 4px;
+    padding-inline: 4px;
+  }
+
+  [data-frame-corner-row='bottom'] [data-game-action] {
+    min-width: 0;
+    padding-inline: 6px;
+    font-size: 0.75rem;
+  }
+
+  [data-game-action='skip'] {
+    flex: 0 0 44px;
+  }
+
+  [data-game-action='redraw'] {
+    flex: 0 0 54px;
+  }
+
+  [data-game-action='dead-wall'] {
+    flex: 0 0 44px;
+  }
+
+  [data-game-action='play'] {
+    flex: 1 1 auto;
+  }
+
+  [data-game-action-score] {
+    display: none;
+  }
+}
+
 /* Shared responsive canvas for full-screen game surfaces. */
 .screen-canvas {
   width: min(100%, 80rem);
@@ -272,7 +385,8 @@ a {
 
   .game-score-remaining,
   .game-forecast-explainer,
-  .game-forecast-pace {
+  .game-forecast-pace,
+  .game-play-instruction {
     display: none;
   }
 

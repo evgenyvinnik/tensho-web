@@ -44,7 +44,7 @@ export function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicato
   return (
     <div
       className={`
-        inline-flex items-center gap-2 px-3 py-1
+        inline-flex items-center gap-2 px-2 py-1 sm:px-3
         ${config.bgColor} ${config.borderColor}
         border rounded-full
       `}
@@ -53,7 +53,7 @@ export function RoundTypeIndicator({ roundType, mandateName }: RoundTypeIndicato
       {showCJK && <span className={`font-bold ${config.color}`}>{config.japaneseName}</span>}
 
       {/* English round type */}
-      <span className="text-[var(--color-beige-white)] text-sm">{roundType}</span>
+      <span className="text-xs text-[var(--color-beige-white)] sm:text-sm">{roundType}</span>
 
       {/* Mandate name for boss rounds */}
       {mandateName && <span className="text-xs text-red-400 font-medium">| {mandateName}</span>}

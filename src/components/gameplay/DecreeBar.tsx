@@ -20,6 +20,7 @@ import { useState, useCallback } from 'react'
 import { OwnedDecree } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'
+import { useItemText } from '../../i18n/useItemText'
 
 // =============================================================================
 // DECREE CARD COMPACT
@@ -56,6 +57,8 @@ export function DecreeCardCompact({
   onSell,
 }: DecreeCardCompactProps) {
   const [showTooltip, setShowTooltip] = useState(false)
+  const itemText = useItemText()
+  const decreeName = itemText.name('decrees', decree)
   const isSuppressed = decree.isDebuffed || disabledByMandate
   const canSell = decree.sticker?.type !== 'Eternal'
   const sellValue = decree.sellValue ?? Math.floor(decree.cost / 2)
@@ -79,7 +82,7 @@ export function DecreeCardCompact({
       onClick={handleClick}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
-      aria-label={faceDown ? 'Face-down Decree' : decree.name}
+      aria-label={faceDown ? 'Face-down Decree' : decreeName}
     >
       {/* Unique decree icon */}
       <div className="flex items-center justify-center h-full">
@@ -111,12 +114,12 @@ export function DecreeCardCompact({
       {showTooltip && (
         <div className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)] rounded-lg shadow-xl">
           <p className="text-sm font-bold text-[var(--color-beige-white)]">
-            {faceDown ? 'Hidden Decree' : decree.name}
+            {faceDown ? 'Hidden Decree' : decreeName}
           </p>
           <p className="text-xs text-[var(--color-beige-white)] opacity-70 mt-1">
             {faceDown
               ? 'Amber Acorn conceals this Decree until the Showdown ends.'
-              : decree.description}
+              : itemText.description('decrees', decree)}
           </p>
           {disabledByMandate && !faceDown && (
             <p className="mt-2 text-xs font-semibold text-red-300">
@@ -150,8 +153,8 @@ export function DecreeCardCompact({
           disabled={!canSell}
           aria-label={
             canSell
-              ? `Sell ${faceDown ? 'hidden Decree' : decree.name}`
-              : `${decree.name} is Eternal and cannot be sold`
+              ? `Sell ${faceDown ? 'hidden Decree' : decreeName}`
+              : `${decreeName} is Eternal and cannot be sold`
           }
           onClick={(event) => {
             event.stopPropagation()

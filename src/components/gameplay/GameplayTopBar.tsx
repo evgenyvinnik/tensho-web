@@ -94,7 +94,10 @@ export function GameplayTopBar({
   const stakeDefinition = getStakeByTier(stake)
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
+    <div
+      data-frame-corner-row="top"
+      className="gameplay-frame-corner-row flex items-center justify-between rounded-sm bg-[var(--color-dark-forest)] px-1 py-2 text-[var(--color-beige-white)] sm:px-4"
+    >
       {/* Gold display */}
       <div className="flex flex-col items-start">
         <GlowEffect variant="gold" intensity={0.4} pulsing={false}>
@@ -103,17 +106,26 @@ export function GameplayTopBar({
           </span>
         </GlowEffect>
         <span
+          data-gameplay-top-bar-stake
           className="text-[9px] font-black uppercase tracking-wider"
           style={{ color: stakeDefinition?.color }}
           title={stakeDefinition?.description}
         >
           Stake {stake}
         </span>
+        <span
+          data-gameplay-top-bar-compact-progress
+          className="hidden text-[9px] font-black uppercase tracking-wider"
+          style={{ color: stakeDefinition?.color }}
+          title={stakeDefinition?.description}
+        >
+          {t('gameplay.act')} {currentAct} · S{stake}
+        </span>
       </div>
 
       {/* Act/Round with Round Type indicator */}
-      <div data-tutorial="act-round" className="flex items-center gap-2">
-        <div className="flex flex-col items-center">
+      <div data-tutorial="act-round" className="flex items-center gap-1 sm:gap-2">
+        <div data-gameplay-top-bar-act className="flex flex-col items-center">
           <span className="text-base leading-tight sm:text-lg">
             {t('gameplay.act')} {currentAct}
           </span>
@@ -150,12 +162,17 @@ export function GameplayTopBar({
             title={`Reroll upcoming Boss Mandate for 10 Gold: ${upcomingMandateName}`}
             aria-label={`Reroll ${upcomingMandateName} for 10 Gold`}
           >
-            ↻ {upcomingMandateName} · 10G
+            <span data-gameplay-top-bar-reroll-label>
+              ↻ {upcomingMandateName} · 10G
+            </span>
+            <span data-gameplay-top-bar-reroll-compact className="hidden">
+              ↻ 10G
+            </span>
           </button>
         )}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-0 sm:gap-2">
         {/* Exit button */}
         <button
           onClick={onExit}

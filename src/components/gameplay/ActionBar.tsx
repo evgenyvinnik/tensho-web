@@ -86,7 +86,10 @@ export function ActionBar({
   const canSkip = currentRound !== 3 // Can't skip boss rounds
 
   return (
-    <div className="z-20 flex flex-shrink-0 items-center justify-center gap-1.5 border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4">
+    <div
+      data-frame-corner-row="bottom"
+      className="gameplay-frame-corner-row z-20 flex flex-shrink-0 items-center justify-center gap-1.5 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4"
+    >
       {/* Resource indicators */}
       <div className="hidden items-center gap-3 text-sm md:flex">
         {/* Wall remaining */}
@@ -127,6 +130,7 @@ export function ActionBar({
 
       {/* Skip button */}
       <Button
+        data-game-action="skip"
         variant="secondary"
         size="sm"
         onClick={onSkip}
@@ -137,6 +141,7 @@ export function ActionBar({
       </Button>
 
       <Button
+        data-game-action="redraw"
         variant="secondary"
         size="sm"
         onClick={onRedraw}
@@ -148,6 +153,7 @@ export function ActionBar({
 
       {onDeadWallDraw && (
         <Button
+          data-game-action="dead-wall"
           variant="secondary"
           size="sm"
           onClick={onDeadWallDraw}
@@ -162,6 +168,7 @@ export function ActionBar({
 
       {/* Play Hand button */}
       <Button
+        data-game-action="play"
         variant="primary"
         size="sm"
         onClick={onPlayHand}
@@ -173,7 +180,10 @@ export function ActionBar({
           {willClear ? 'CLEAR' : 'PLAY HAND'}
         </span>
         {projectedScore !== undefined && (
-          <span className="ml-1.5 text-xs opacity-75">
+          <span
+            data-game-action-score
+            className="ml-1.5 text-xs opacity-75"
+          >
             +{projectedScore.toLocaleString()}
           </span>
         )}
