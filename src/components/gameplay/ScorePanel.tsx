@@ -65,6 +65,7 @@ export function ScorePanel({
 }: ScorePanelProps) {
   const hasReachedTarget = currentScore >= targetScore
   const progressPercentage = Math.min(100, (currentScore / targetScore) * 100)
+  const remainingScore = Math.max(0, targetScore - currentScore)
 
   return (
     <div className="relative mx-3 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-2 text-center shadow-lg">
@@ -114,6 +115,16 @@ export function ScorePanel({
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
+      <p className={`mt-1 text-right text-[10px] font-semibold tabular-nums ${
+        hasReachedTarget ? 'text-emerald-300' : 'text-[var(--color-beige-white)]/45'
+      }`}>
+        {hasReachedTarget
+          ? t('gameplay.targetCleared', 'Target cleared')
+          : t('gameplay.pointsToClear', {
+              count: remainingScore,
+              defaultValue: '{{count}} to clear',
+            })}
+      </p>
 
       {/* Score popups */}
       {scorePopups.map((popup) => (

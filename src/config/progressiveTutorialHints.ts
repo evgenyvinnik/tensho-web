@@ -66,12 +66,12 @@ export function getProgressiveHints(
       title: t('progressiveHints.welcome.title', 'Welcome to Tensho!'),
       content: t(
         'progressiveHints.welcome.content',
-        'Reach the highlighted target before your hands run out. Each Act has three rounds; clear Act 8 to secure a win. Tips appear only when a new system matters.'
+        'Clear the target before your hands run out. Each Act is Small → Large → Boss; defeat Act 8 to win. Tips only appear when a new system becomes relevant.'
       ),
       priority: 1,
       targetSelector: '[data-tutorial="score-target"]',
       arrowDirection: 'bottom',
-      autoDismissMs: 7500,
+      autoDismissMs: 6000,
     },
 
     // === FIRST DRAW HINTS ===
@@ -83,10 +83,10 @@ export function getProgressiveHints(
       title: t('progressiveHints.hand.title', 'Your Hand'),
       content: t(
         'progressiveHints.hand.content',
-        'Tap tiles to stage them, then Play Hand. A complete hand is four groups plus a pair; the wall refills your hand automatically after each cycle.'
+        'The forecast shows exactly what Play Hand will score. Tap tiles to compare a smaller play, or play everything now while you shape the next hand.'
       ),
       priority: 1,
-      autoDismissMs: 7000,
+      autoDismissMs: 6000,
     },
 
     // === FIRST DISCARD HINTS ===
@@ -95,10 +95,10 @@ export function getProgressiveHints(
       trigger: 'firstDiscard',
       targetSelector: '[data-tutorial="hand"]',
       arrowDirection: 'bottom', // Changed from 'top' - tooltip above PlaySurface
-      title: t('progressiveHints.discard.title', 'Discard a Tile'),
+      title: t('progressiveHints.discard.title', 'Hand Improved'),
       content: t(
         'progressiveHints.discard.content',
-        'Drag an unwanted tile into the orange discard well. Use Redraw when you want to replace up to three selected tiles at once.'
+        'Discards replace one unwanted tile without spending a hand. Watch the shanten badge: lower is closer to a complete pattern. Redraw replaces up to three selected tiles.'
       ),
       priority: 1,
       autoDismissMs: 6000,
@@ -113,7 +113,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.yaku.title', 'Yaku = Multipliers'),
       content: t(
         'progressiveHints.yaku.content',
-        'Yaku are scoring patterns that multiply your base points. The preview updates as you stage tiles, so you can compare a hand before committing.'
+        'Partial structures always score, while a complete pattern unlocks Yaku multipliers. Use the forecast to decide between points now and improving the hand you keep.'
       ),
       priority: 1,
       autoDismissMs: 7000,
@@ -143,7 +143,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.shop.title', 'The Tea House'),
       content: t(
         'progressiveHints.shop.content',
-        'Spend round rewards on Decrees, consumables, tiles, and packs—or save Gold for interest. Reroll only when the new options are worth its rising cost.'
+        'Your cash-out explains every Gold gained. Buy a synergy now or keep savings for interest; ordinary item purchases are immediate, while Charters still ask for confirmation.'
       ),
       priority: 1,
       autoDismissMs: 7000,

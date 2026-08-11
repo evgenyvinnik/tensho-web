@@ -36,6 +36,10 @@ export interface ActionBarProps {
   onRedraw: () => void
   /** Handler for play hand action */
   onPlayHand: () => void
+  /** Forecast for the exact tiles that will be played */
+  projectedScore?: number
+  /** Whether the forecast reaches the remaining round target */
+  willClear?: boolean
   /** Whether Dead Wall Writ can replace the selected tile */
   canUseDeadWallWrit?: boolean
   /** Handler for the once-per-round Dead Wall draw */
@@ -68,6 +72,8 @@ export function ActionBar({
   onSkip,
   onRedraw,
   onPlayHand,
+  projectedScore,
+  willClear = false,
   canUseDeadWallWrit = false,
   onDeadWallDraw,
   t: _t,
@@ -127,8 +133,18 @@ export function ActionBar({
       )}
 
       {/* Play Hand button */}
-      <Button variant="primary" size="sm" onClick={onPlayHand} disabled={!canPlay}>
-        PLAY HAND
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={onPlayHand}
+        disabled={!canPlay}
+        aria-label="PLAY HAND"
+        className={willClear ? 'shadow-[0_0_22px_rgba(74,222,128,0.45)]' : ''}
+      >
+        <span>{willClear ? 'CLEAR ROUND' : 'PLAY HAND'}</span>
+        {projectedScore !== undefined && (
+          <span className="ml-1.5 text-xs opacity-75">+{projectedScore.toLocaleString()}</span>
+        )}
       </Button>
     </div>
   )

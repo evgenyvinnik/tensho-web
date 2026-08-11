@@ -176,6 +176,12 @@ export interface Decree {
   category: DecreeCategory
   rarity: DecreeRarity
   effect: DecreeEffect
+  /**
+   * Additional effects for Decrees that do more than one thing (e.g. "+150
+   * Chips, -2 Hand Size"). Applied alongside `effect` everywhere effects are
+   * read, so a multi-part Decree is never partially honoured.
+   */
+  extraEffects?: DecreeEffect[]
   flowerRequirement?: number // Number of flowers needed to activate
   cost: number // Base purchase cost in gold
   sellValue?: number // Value when sold (default: cost / 2)

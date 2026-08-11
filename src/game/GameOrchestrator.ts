@@ -74,6 +74,25 @@ import { getMandateById } from '../config/mandateDefinitions'
 // GAME ORCHESTRATOR STATE
 // =============================================================================
 
+/** Transparent payout and progression context retained for the Tea House. */
+export interface RoundCashOutSummary {
+  actNumber: number
+  roundNumber: number
+  roundType: RoundType
+  score: number
+  target: number
+  baseReward: number
+  interest: number
+  decreeGold: number
+  heldGoldMarkReward: number
+  rentalCost: number
+  netGoldChange: number
+  goldBefore: number
+  goldAfter: number
+  nextRoundType: RoundType | null
+  nextTarget: number | null
+}
+
 /**
  * Complete game state managed by the orchestrator
  */
@@ -142,6 +161,7 @@ export interface OrchestratorState {
 
   // Transition context retained while the between-round shop is open
   lastCompletedRoundType: RoundType | null
+  lastRoundSummary: RoundCashOutSummary | null
 
   // Void Script capacity loss that lasts for the currently active round.
   temporaryDecreeSlotPenalty: number
@@ -253,6 +273,7 @@ export class GameOrchestrator {
       celestialOrbs: [],
       voidScripts: [],
       lastCompletedRoundType: null,
+      lastRoundSummary: null,
       temporaryDecreeSlotPenalty: 0,
       omenHandSizeBonus: 0,
       omenDiscardBonus: 0,
@@ -310,7 +331,7 @@ export class GameOrchestrator {
   /**
    * Start a new run
    */
-  startNewRun(seed?: number, stake: number = 1): void {
+  startNewRun(seed?: number, stake: number = 1, wallVariant = 'green_felt'): void {
     const actualSeed = seed ?? Date.now()
 
     // Reset state
@@ -332,7 +353,7 @@ export class GameOrchestrator {
     eventBus.emit('runStart', {
       seed: actualSeed,
       stake,
-      wallVariant: 'green_felt',
+      wallVariant,
     })
 
     // Give starter decrees (2 random from the starter pool)
@@ -396,7 +417,9 @@ export class GameOrchestrator {
     )
     this.state.discardsRemaining = Math.max(
       0,
-      this.config.discardsPerRound + this.state.omenDiscardBonus
+      this.config.discardsPerRound +
+        this.state.omenDiscardBonus +
+        this.state.decreeSystem.getAdditionalDiscards()
     )
     this.state.redrawsRemaining = Math.max(
       0,
@@ -427,7 +450,8 @@ export class GameOrchestrator {
         this.state.charterSystem.calculateEffects().handSizeBonus -
         this.state.voidScriptSystem.getHandSizePenalty() +
         this.state.omenHandSizeBonus -
-        this.state.mandateEffectSystem.getHandSizeReduction()
+        this.state.mandateEffectSystem.getHandSizeReduction() +
+        this.state.decreeSystem.getHandSizeBonus()
     )
   }
 
@@ -1296,6 +1320,7 @@ export class GameOrchestrator {
     // Auto-draw to refill hand if not round completed
     if (this.state.phase === 'gameplay') {
       this.refillAfterCycle(effects, true)
+      this.enforcePlayability(effects)
     }
 
     return { success: true, effects }
@@ -1398,6 +1423,7 @@ export class GameOrchestrator {
 
     if (this.state.phase === 'gameplay') {
       this.refillAfterCycle(effects, true)
+      this.enforcePlayability(effects)
     }
 
     return { success: true, effects }
@@ -1509,6 +1535,8 @@ export class GameOrchestrator {
       this.state.handTiles.filter((tile) => !previousTileIds.has(tile.id)),
       effects
     )
+
+    this.enforcePlayability(effects)
 
     return { success: true, effects }
   }
@@ -2674,7 +2702,11 @@ export class GameOrchestrator {
     if (available < 2) return false
 
     const fixedHandMandate = this.state.roundManager.checkMandateEffect('fixed_hand_size')
-    if (fixedHandMandate.active && available < (fixedHandMandate.value ?? 0)) {
+    if (
+      fixedHandMandate.active &&
+      typeof fixedHandMandate.value === 'number' &&
+      available < fixedHandMandate.value
+    ) {
       return false
     }
 
@@ -2688,6 +2720,7 @@ export class GameOrchestrator {
     // Capture the completed round before RoundManager advances its cursor.
     const completedRound = this.state.roundManager.getCurrentRound()
     this.state.roundManager.submitScore(this.state.score)
+    if (!completedRound) return
 
     const roundState = completedRound
     let goldReward = 0
@@ -2722,8 +2755,32 @@ export class GameOrchestrator {
     const netGoldChange =
       goldReward + interest + decreeGold + heldGoldMarkReward - rentalCost
 
+    const goldBefore = this.state.gold
     this.state.gold += netGoldChange
     this.state.omenSystem.onRoundEnd()
+
+    const upcomingRound = this.state.roundManager.getCurrentRound()
+    const hasUpcomingRound =
+      upcomingRound !== null &&
+      (upcomingRound.actNumber !== roundState.actNumber ||
+        upcomingRound.roundNumber !== roundState.roundNumber)
+    this.state.lastRoundSummary = {
+      actNumber: roundState.actNumber,
+      roundNumber: roundState.roundNumber,
+      roundType: roundState.roundType,
+      score: this.state.score,
+      target: this.state.targetScore,
+      baseReward: goldReward,
+      interest,
+      decreeGold,
+      heldGoldMarkReward,
+      rentalCost,
+      netGoldChange,
+      goldBefore,
+      goldAfter: this.state.gold,
+      nextRoundType: hasUpcomingRound ? upcomingRound.roundType : null,
+      nextTarget: hasUpcomingRound ? upcomingRound.scoreTarget : null,
+    }
 
     eventBus.emit('roundEnd', {
       won: true,
@@ -2751,8 +2808,6 @@ export class GameOrchestrator {
       delta: netGoldChange,
       newTotal: this.state.gold,
     })
-
-    if (!roundState) return
 
     this.state.lastCompletedRoundType = roundState.roundType
     this.state.previousRoundYakuIds = new Set(this.state.currentRoundYakuIds)

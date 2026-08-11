@@ -15,6 +15,7 @@ import {
 } from '../stores/achievementStore'
 import { initializeArchive, useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
+import { useStakeStore } from '../stores/stakeStore'
 import type {
   ProgressionEventPayload,
   UnlockCheckResult,
@@ -361,7 +362,7 @@ export function initializeMetaProgressionBridge(): () => void {
     processProgressionEvent({ type: 'interest_collected', wasMaxInterest: amount >= 5 })
   })
 
-  subscription.subscribe('runEnd', ({ victory, score }) => {
+  subscription.subscribe('runEnd', ({ victory, score, act }) => {
     const progression = useProgressionStore.getState()
     const roundsCompleted = progression.stats.currentRunRoundsCompleted
     processProgressionEvent({ type: 'run_completed', value: score })
@@ -379,6 +380,12 @@ export function initializeMetaProgressionBridge(): () => void {
 
     incrementAchievementStat('runsCompleted')
     if (victory) {
+      useStakeStore.getState().recordVictory(
+        score,
+        act,
+        activeRun?.wallId ?? 'green_felt',
+        activeRun?.stake ?? 1
+      )
       incrementAchievementStat('runsWon')
       minimizeAchievementStat('fastestWinRounds', roundsCompleted)
       useArchiveStore.getState().incrementWins(useArchiveStore.getState().currentRunItems)

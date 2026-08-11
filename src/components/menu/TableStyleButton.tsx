@@ -10,6 +10,8 @@ import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { TableStyleModal } from './TableStyleModal'
 import { useTableStyleStore } from '../../stores/tableStyleStore'
+import { useStakeStore } from '../../stores/stakeStore'
+import { getStakeByTier } from '../../config/stakeDefinitions'
 
 const AnimatedButton = animated('button')
 
@@ -31,6 +33,10 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
 
   const { getCurrentStyle } = useTableStyleStore()
   const currentStyle = getCurrentStyle()
+  const currentStakeTier = useStakeStore((state) =>
+    state.currentWallId === currentStyle.id ? state.currentStakeTier : 1
+  )
+  const currentStake = getStakeByTier(currentStakeTier)
 
   const spring = useSpring({
     from: { opacity: 0, scale: 0.8, y: 30 },
@@ -65,7 +71,7 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
         onTouchStart={() => setIsPressed(true)}
         onTouchEnd={() => setIsPressed(false)}
         className="
-          relative flex items-center gap-3 px-6 py-3 rounded-lg
+          relative flex w-full items-center justify-center gap-3 px-4 py-3 rounded-lg
           font-ui font-bold text-base md:text-lg
           text-[var(--color-beige-white)]
           border-2 border-[var(--color-metallic-gold)]
@@ -82,7 +88,7 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
             ? `0 0 20px ${currentStyle.themeColor}60, 0 0 40px rgba(0,0,0,0.3)`
             : `0 0 10px rgba(0,0,0,0.3)`,
         }}
-        aria-label={t('tableStyle.chooseTable', 'Choose Table Style')}
+        aria-label={t('tableStyle.chooseTable', 'Choose table and stake')}
       >
         {/* Color swatch showing current style */}
         <div
@@ -96,7 +102,7 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
         {/* Label and current style name */}
         <div className="flex flex-col items-start leading-tight">
           <span className="text-xs text-[var(--color-metallic-gold)] uppercase tracking-wide">
-            {t('tableStyle.table', 'Table')}
+            {t('tableStyle.table', 'Run setup')}
           </span>
           <span className="text-[var(--color-beige-white)]">
             {currentStyle.displayName}
@@ -109,6 +115,17 @@ export function TableStyleButton({ delay = 0, show = true }: TableStyleButtonPro
           style={{ color: currentStyle.themeColor }}
         >
           {currentStyle.japaneseName}
+        </span>
+
+        <span
+          className="ml-1 rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide"
+          style={{
+            color: currentStake?.color,
+            borderColor: `${currentStake?.color ?? '#E0E0E0'}80`,
+            backgroundColor: `${currentStake?.color ?? '#E0E0E0'}18`,
+          }}
+        >
+          Stake {currentStakeTier}
         </span>
 
         {/* Chevron icon */}

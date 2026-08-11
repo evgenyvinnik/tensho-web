@@ -11,6 +11,7 @@ import { TFunction } from 'i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { RoundTypeIndicator } from './RoundTypeIndicator'
 import { RoundType } from './gameplayTypes'
+import { getStakeByTier } from '../../config/stakeDefinitions'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -22,6 +23,8 @@ import { RoundType } from './gameplayTypes'
 export interface GameplayTopBarProps {
   /** Current gold amount */
   gold: number
+  /** Active difficulty tier */
+  stake: number
   /** Current act number */
   currentAct: number
   /** Current round type */
@@ -77,6 +80,7 @@ const SettingsIcon = () => (
  */
 export function GameplayTopBar({
   gold,
+  stake,
   currentAct,
   roundType,
   mandateName,
@@ -87,20 +91,55 @@ export function GameplayTopBar({
   onExit,
   onSettings,
 }: GameplayTopBarProps) {
+  const stakeDefinition = getStakeByTier(stake)
+
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
       {/* Gold display */}
-      <GlowEffect variant="gold" intensity={0.4} pulsing={false}>
-        <span data-tutorial="gold" className="text-lg font-bold text-[var(--color-golden-yellow)]">
-          ¥{gold}
+      <div className="flex flex-col items-start">
+        <GlowEffect variant="gold" intensity={0.4} pulsing={false}>
+          <span data-tutorial="gold" className="text-lg font-bold text-[var(--color-golden-yellow)]">
+            ¥{gold}
+          </span>
+        </GlowEffect>
+        <span
+          className="text-[9px] font-black uppercase tracking-wider"
+          style={{ color: stakeDefinition?.color }}
+          title={stakeDefinition?.description}
+        >
+          Stake {stake}
         </span>
-      </GlowEffect>
+      </div>
 
       {/* Act/Round with Round Type indicator */}
       <div data-tutorial="act-round" className="flex items-center gap-2">
-        <span className="text-lg">
-          {t('gameplay.act')} {currentAct}
-        </span>
+        <div className="flex flex-col items-center">
+          <span className="text-base leading-tight sm:text-lg">
+            {t('gameplay.act')} {currentAct}
+          </span>
+          {currentAct <= 8 ? (
+            <div
+              className="mt-1 flex gap-1"
+              aria-label={`Act ${currentAct} of 8`}
+              title={`Act ${currentAct} of 8`}
+            >
+              {Array.from({ length: 8 }, (_, index) => (
+                <span
+                  key={index}
+                  className={`h-1 w-2 rounded-full ${
+                    index < currentAct
+                      ? 'bg-[var(--color-golden-yellow)]'
+                      : 'bg-white/15'
+                  }`}
+                />
+              ))}
+            </div>
+          ) : (
+            <span className="text-[9px] font-bold uppercase tracking-widest text-purple-300">
+              Endless
+            </span>
+          )}
+        </div>
         <RoundTypeIndicator roundType={roundType} mandateName={mandateName} />
         {upcomingMandateName && onRerollMandate && (
           <button

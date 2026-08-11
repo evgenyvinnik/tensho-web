@@ -269,6 +269,9 @@ export class VFXSystem {
 
   // Event unsubscribers
   private eventUnsubscribers: Array<() => void> = [];
+  private initialized = false;
+  private motionMediaQuery: MediaQueryList | null = null;
+  private motionPreferenceListener: ((event: MediaQueryListEvent) => void) | null = null;
 
   // =============================================================================
   // INITIALIZATION
@@ -278,14 +281,18 @@ export class VFXSystem {
    * Initialize the VFX system
    */
   initialize(): void {
+    if (this.initialized) return;
+    this.initialized = true;
+
     // Check for reduced motion preference
     if (typeof window !== 'undefined' && window.matchMedia) {
-      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-      this.state.reducedMotion = mediaQuery.matches;
+      this.motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      this.state.reducedMotion = this.motionMediaQuery.matches;
+      this.motionPreferenceListener = (event) => {
+        this.state.reducedMotion = event.matches;
+      };
 
-      mediaQuery.addEventListener('change', (e) => {
-        this.state.reducedMotion = e.matches;
-      });
+      this.motionMediaQuery.addEventListener('change', this.motionPreferenceListener);
     }
 
     // Subscribe to game events
@@ -299,6 +306,13 @@ export class VFXSystem {
     // Unsubscribe from events
     this.eventUnsubscribers.forEach((unsubscribe) => unsubscribe());
     this.eventUnsubscribers = [];
+
+    if (this.motionMediaQuery && this.motionPreferenceListener) {
+      this.motionMediaQuery.removeEventListener('change', this.motionPreferenceListener);
+    }
+    this.motionMediaQuery = null;
+    this.motionPreferenceListener = null;
+    this.initialized = false;
 
     // Clear callbacks
     this.shakeCallbacks.clear();

@@ -39,7 +39,8 @@ function shopPhase(orch: GameOrchestrator, stats: RunStats): void {
         const aDecree = a.itemType === 'Decree' ? 0 : 1
         const bDecree = b.itemType === 'Decree' ? 0 : 1
         if (aDecree !== bDecree) return aDecree - bDecree
-        return a.finalCost - b.finalCost
+        // Costlier Decrees are the stronger ones; a competent player buys up.
+        return b.finalCost - a.finalCost
       })
 
     const pick = affordable[0]

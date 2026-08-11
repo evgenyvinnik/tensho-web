@@ -33,6 +33,7 @@ import { ShopHeader } from '../shop/ShopHeader'
 import { ShopItemCard } from '../shop/ShopItemCard'
 import { PackCard } from '../shop/PackCard'
 import { CharterCard } from '../shop/CharterCard'
+import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { eventBus } from '../../game/EventBus'
 import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
@@ -90,6 +91,7 @@ export function ShopScreen() {
       const isAfterBossRound = game.state.lastCompletedRoundType === 'Boss'
 
       const omenModifiers = game.prepareShopVisit()
+      shopStore.setStake(game.state.stake)
       shopStore.openShop(ownedDecreeIds, isAfterBossRound, omenModifiers)
 
       const teaHousePacks = shopStore.teaHouseSystem
@@ -112,6 +114,7 @@ export function ShopScreen() {
     game.prepareShopVisit,
     game.state.decreeSystem,
     game.state.lastCompletedRoundType,
+    game.state.stake,
     game.currentAct,
   ])
 
@@ -121,6 +124,10 @@ export function ShopScreen() {
   const availableCharter = shopStore.getAvailableCharter()
   const rerollCost = shopStore.currentRerollCost
   const packOfferings = blessingPackSystem.getCurrentOfferings()
+  const roundSummary = game.state.lastRoundSummary
+  const interestCap =
+    game.state.charterSystem.calculateEffects().interestCap +
+    game.state.omenSystem.getInterestCapBonus()
 
   // Handle item selection (tap to view details)
   const handleItemSelect = useCallback((offering: TeaHouseOffering) => {
@@ -346,19 +353,24 @@ export function ShopScreen() {
 
       {/* Content area */}
       <div className="flex-1 overflow-y-auto">
-        {/* Round complete banner */}
-        <div className="mx-4 mt-4 bg-[var(--color-dark-forest)] rounded-xl p-4 text-center border-2 border-[var(--color-metallic-gold)]">
-          <p className="text-2xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-            {t('shop.roundComplete', 'Round Complete!')}
-          </p>
-          <p className="text-sm text-[var(--color-beige-white)] opacity-70 mt-1">
-            {t('shop.subtitle', 'Visit the Tea House to prepare for the next challenge')}
-          </p>
-          <p className="text-lg text-[var(--color-metallic-gold)] mt-2">
-            {t('gameplay.act', 'Act')} {game.currentAct} - {t('gameplay.round', 'Round')}{' '}
-            {game.currentRound}
-          </p>
-        </div>
+        {/* Round payoff and next challenge — informative, never modal. */}
+        {roundSummary ? (
+          <RoundCashOutBanner
+            summary={roundSummary}
+            currentGold={game.gold}
+            interestCap={interestCap}
+            interestBlocked={game.state.omenSystem.isInterestBlocked()}
+          />
+        ) : (
+          <div className="mx-4 mt-4 rounded-xl border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] p-4 text-center">
+            <p className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+              {t('shop.title', 'Tea House')}
+            </p>
+            <p className="mt-1 text-sm text-[var(--color-beige-white)]/65">
+              {t('shop.subtitle', 'Prepare for the next challenge')}
+            </p>
+          </div>
+        )}
 
         {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
         <section className="px-4 mt-6">
@@ -377,7 +389,7 @@ export function ShopScreen() {
                 key={offering.id}
                 offering={offering}
                 canAfford={game.gold >= offering.finalCost}
-                onPurchase={() => setConfirmOffering(offering)}
+                onPurchase={() => handleItemPurchase(offering)}
                 onSelect={() => handleItemSelect(offering)}
                 isSelected={selectedItemId === offering.id}
               />

@@ -40,6 +40,12 @@ export interface PlayAreaProps {
   scorePreview: ScorePreviewData | null
   /** Whether selected face-down tiles conceal all preview information. */
   scorePreviewHidden?: boolean
+  /** Human-readable description of the exact play being forecast. */
+  previewLabel?: string
+  /** Points still needed to clear the active round. */
+  remainingToTarget?: number
+  /** Hands available to cover the remaining target. */
+  handsRemaining?: number
   /** Active yaku reveal animations */
   yakuReveals: YakuRevealState[]
   /** Handler for yaku reveal completion */
@@ -102,7 +108,7 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
       <button
         onClick={onToggle}
         className={`
-          px-3 py-1.5 rounded-lg
+          rounded-lg px-2 py-1
           bg-gradient-to-br ${getYakuTierColor(yaku.tier)}
           border shadow-lg
           transform hover:scale-105 transition-transform
@@ -110,8 +116,8 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
           ${isSelected ? 'ring-2 ring-white ring-opacity-70' : ''}
         `}
       >
-        <span className="text-white font-bold text-sm drop-shadow-sm">{yaku.name}</span>
-        <span className="text-white/70 text-xs ml-2">×{yaku.multiplier}</span>
+        <span className="text-xs font-bold text-white drop-shadow-sm">{yaku.name}</span>
+        <span className="ml-1.5 text-[10px] text-white/70">×{yaku.multiplier}</span>
       </button>
 
       {/* Tooltip popup */}
@@ -161,15 +167,18 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
  * - Dashed border to indicate the play area
  */
 export function PlayArea({
-  selectedTileCount,
-  stagedTileCount,
-  handTileCount,
   scorePreview,
   scorePreviewHidden = false,
+  previewLabel = 'Play forecast',
+  remainingToTarget = 0,
+  handsRemaining = 1,
   yakuReveals,
   onYakuComplete,
 }: PlayAreaProps) {
   const [selectedYakuId, setSelectedYakuId] = useState<string | null>(null)
+  const requiredPerHand = Math.ceil(
+    remainingToTarget / Math.max(1, handsRemaining)
+  )
 
   const handleYakuToggle = (yakuId: string) => {
     setSelectedYakuId((prev) => (prev === yakuId ? null : yakuId))
@@ -178,7 +187,7 @@ export function PlayArea({
   return (
     <div
       data-tutorial="yaku-display"
-      className="mx-3 mb-1 flex min-h-[68px] max-h-[150px] flex-shrink-0 flex-col items-center justify-center overflow-y-auto rounded-xl border border-dashed border-[var(--color-metallic-gold)]/70 bg-[var(--color-dark-forest)]/55 p-2"
+      className="mx-3 mb-1 flex min-h-[68px] flex-shrink-0 flex-col items-center justify-center rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)]/70 px-3 py-2 shadow-inner"
       onClick={() => setSelectedYakuId(null)} // Close tooltip when clicking outside
     >
       {/* Score Preview Panel */}
@@ -195,82 +204,70 @@ export function PlayArea({
           </p>
         </div>
       ) : scorePreview ? (
-        <div className="w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
-          {/* Yaku Badges Section */}
-          {scorePreview.yaku && scorePreview.yaku.length > 0 ? (
-            <div className="mb-4">
-              <p className="text-xs text-[var(--color-metallic-gold)] text-center mb-2 uppercase tracking-widest font-semibold">
-                Detected Patterns
+        <div
+          className="flex w-full items-center justify-between gap-3"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <p className="mr-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]">
+                {previewLabel}
               </p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {scorePreview.yaku.map((yaku) => (
+              {scorePreview.yaku && scorePreview.yaku.length > 0 ? (
+                scorePreview.yaku.map((yaku) => (
                   <YakuBadge
                     key={yaku.id}
                     yaku={yaku}
                     isSelected={selectedYakuId === yaku.id}
                     onToggle={() => handleYakuToggle(yaku.id)}
                   />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="mb-3 text-center">
-              <p className="text-[var(--color-beige-white)] opacity-40 text-sm italic">
-                No special patterns detected
-              </p>
-            </div>
-          )}
-
-          {/* Score Calculation Card */}
-          <div className="bg-gradient-to-br from-[var(--color-dark-forest)] to-[#0D1F17] rounded-xl p-4 border border-[var(--color-metallic-gold)] border-opacity-40 shadow-xl">
-            <div className="flex items-center justify-center gap-4">
-              {/* Points */}
-              <div className="text-center min-w-[60px]">
-                <p className="text-[10px] text-[var(--color-beige-white)] opacity-50 uppercase tracking-wide mb-1">
-                  Points
-                </p>
-                <p className="text-2xl font-bold text-blue-400 drop-shadow-glow-blue">
-                  {scorePreview.points.toLocaleString()}
-                </p>
-              </div>
-
-              {/* Multiply symbol */}
-              <span className="text-3xl text-[var(--color-golden-yellow)] font-light">×</span>
-
-              {/* Multiplier */}
-              <div className="text-center min-w-[50px]">
-                <p className="text-[10px] text-[var(--color-beige-white)] opacity-50 uppercase tracking-wide mb-1">
-                  Mult
-                </p>
-                <p className="text-2xl font-bold text-red-400 drop-shadow-glow-red">
-                  {scorePreview.mult.toFixed(1)}
-                </p>
-              </div>
-
-              {/* Equals symbol */}
-              <span className="text-3xl text-[var(--color-golden-yellow)] font-light">=</span>
-
-              {/* Total */}
-              <div className="text-center min-w-[80px]">
-                <p className="text-[10px] text-[var(--color-beige-white)] opacity-50 uppercase tracking-wide mb-1">
-                  Total
-                </p>
-                <GlowEffect variant="gold" intensity={0.6} pulsing={scorePreview.yaku && scorePreview.yaku.length > 0}>
-                  <p className="text-3xl font-bold text-[var(--color-golden-yellow)]">
-                    {scorePreview.total.toLocaleString()}
-                  </p>
-                </GlowEffect>
-              </div>
+                ))
+              ) : (
+                <span className="text-xs text-[var(--color-beige-white)]/40">
+                  Base play · complete a pattern to unlock Yaku
+                </span>
+              )}
             </div>
 
-            {/* Tile count indicator */}
-            <p className="text-center text-[var(--color-beige-white)] opacity-40 text-xs mt-3">
-              {stagedTileCount > 0
-                ? `${stagedTileCount} tiles staged for play`
-                : selectedTileCount > 0
-                  ? `${selectedTileCount} tiles selected`
-                  : `${handTileCount} tiles in hand`}
+            <div className="mt-1.5 flex items-baseline gap-2 text-sm tabular-nums">
+              <strong className="text-blue-300">{scorePreview.points.toLocaleString()}</strong>
+              <span className="text-[var(--color-golden-yellow)]/60">×</span>
+              <strong className="text-red-300">{scorePreview.mult.toFixed(1)}</strong>
+              <span className="text-[var(--color-beige-white)]/30">·</span>
+              <span
+                className={
+                  scorePreview.total >= remainingToTarget && remainingToTarget > 0
+                    ? 'font-bold text-emerald-300'
+                    : 'text-[var(--color-beige-white)]/55'
+                }
+              >
+                {scorePreview.total >= remainingToTarget && remainingToTarget > 0
+                  ? 'Clears the round'
+                  : `${Math.min(999, Math.round((scorePreview.total / Math.max(1, remainingToTarget)) * 100))}% of what remains · ${
+                      scorePreview.total >= requiredPerHand
+                        ? 'on pace'
+                        : `need ${requiredPerHand.toLocaleString()}/hand`
+                    }`}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex-shrink-0 text-right">
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/45">
+              Forecast
             </p>
+            <GlowEffect
+              variant="gold"
+              intensity={0.6}
+              pulsing={Boolean(scorePreview.yaku && scorePreview.yaku.length > 0)}
+            >
+              <p
+                data-testid="score-preview-total"
+                className="text-2xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-3xl"
+              >
+                +{scorePreview.total.toLocaleString()}
+              </p>
+            </GlowEffect>
           </div>
         </div>
       ) : (

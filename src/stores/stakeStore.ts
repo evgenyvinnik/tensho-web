@@ -72,7 +72,12 @@ export interface StakeState {
   /** Select a stake tier for a new run */
   selectStake: (wallId: string, stakeTier: number) => boolean
   /** Record a victory at current stake */
-  recordVictory: (finalScore: number, actsCompleted: number) => void
+  recordVictory: (
+    finalScore: number,
+    actsCompleted: number,
+    wallId?: string,
+    stakeTier?: number
+  ) => void
   /** Check if a stake is unlocked for a wall */
   isStakeUnlocked: (wallId: string, stakeTier: number) => boolean
   /** Check if a wall is unlocked */
@@ -164,30 +169,33 @@ export const useStakeStore = create<StakeState>()(
         return true
       },
 
-      recordVictory: (finalScore: number, actsCompleted: number) => {
+      recordVictory: (finalScore, actsCompleted, wallId, stakeTier) => {
         const { currentStakeTier, currentWallId, wallProgress, globalHighestCompleted } = get()
+        const completedWallId = wallId ?? currentWallId
+        const completedStakeTier = stakeTier ?? currentStakeTier
 
         const victory: StakeVictory = {
-          wallId: currentWallId,
-          stakeTier: currentStakeTier,
+          wallId: completedWallId,
+          stakeTier: completedStakeTier,
           completedAt: Date.now(),
           finalScore,
           actsCompleted,
         }
 
         // Get or create wall progress
-        const progress = wallProgress[currentWallId] ?? createDefaultWallProgress(currentWallId)
+        const progress =
+          wallProgress[completedWallId] ?? createDefaultWallProgress(completedWallId)
 
         // Update highest completed for this wall
-        const newHighestCompleted = Math.max(progress.highestCompleted, currentStakeTier)
+        const newHighestCompleted = Math.max(progress.highestCompleted, completedStakeTier)
 
         // Update global highest
-        const newGlobalHighest = Math.max(globalHighestCompleted, currentStakeTier)
+        const newGlobalHighest = Math.max(globalHighestCompleted, completedStakeTier)
 
         set({
           wallProgress: {
             ...wallProgress,
-            [currentWallId]: {
+            [completedWallId]: {
               ...progress,
               highestCompleted: newHighestCompleted,
               victories: [...progress.victories, victory],

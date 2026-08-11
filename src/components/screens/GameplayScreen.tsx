@@ -20,6 +20,7 @@ import { ConfirmPopup } from '../ui/Popup'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
+import { calculateShanten } from '../../rules/ShantenCalculator'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -152,7 +153,7 @@ export function GameplayScreen() {
   // EVENT HANDLERS - Game events
   // ==========================================================================
 
-  useGameEvent('tileDrawn', useCallback(() => {
+  useGameEvent('tileDiscarded', useCallback(() => {
     if (!hasTriggeredFirstDiscard.current) {
       hasTriggeredFirstDiscard.current = true
       setTimeout(() => tutorial.triggerHints('firstDiscard'), 500)
@@ -366,25 +367,30 @@ export function GameplayScreen() {
     [game.debuffedTileIds]
   )
 
-  const shantenDisplay = game.handTiles.some((tile) => faceDownTileIds.has(tile.id))
-    ? '???'
-    : game.handTiles.length >= 13
-      ? t('gameplay.tenpai')
-      : t('gameplay.shanten', { count: 14 - game.handTiles.length })
+  const shantenDisplay = useMemo(() => {
+    if (game.handTiles.some((tile) => faceDownTileIds.has(tile.id))) return '???'
+    const result = calculateShanten(game.handTiles, game.state.melds)
+    if (result.shanten < 0) {
+      return t('gameplay.completeHand', 'Complete hand')
+    }
+    if (result.shanten === 0) return t('gameplay.tenpai', 'Tenpai')
+    return t('gameplay.shanten', { count: result.shanten })
+  }, [game.handTiles, game.state.melds, faceDownTileIds, t])
 
   const previewTileIds = stagedTileIds.length > 0
     ? stagedTileIds
-    : game.selectedTileIds
+    : game.selectedTileIds.length > 0
+      ? game.selectedTileIds
+      : game.handTiles.map((tile) => tile.id)
   const scorePreviewHidden = previewTileIds.some((tileId) =>
     faceDownTileIds.has(tileId)
   )
   const scorePreview = useMemo(() => {
-    // Only show preview when tiles are explicitly selected or staged
-    if (stagedTileIds.length === 0 && game.selectedTileIds.length === 0) {
-      return null
-    }
-
-    const previewIds = stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
+    const previewIds = stagedTileIds.length > 0
+      ? stagedTileIds
+      : game.selectedTileIds.length > 0
+        ? game.selectedTileIds
+        : game.handTiles.map((tile) => tile.id)
     const previewTiles = game.handTiles.filter((tile) => previewIds.includes(tile.id))
 
     if (
@@ -408,8 +414,6 @@ export function GameplayScreen() {
   }, [
     stagedTileIds,
     game,
-    game.handTiles,
-    game.selectedTileIds,
     faceDownTileIds,
   ])
 
@@ -472,6 +476,7 @@ export function GameplayScreen() {
         {/* Top bar */}
         <GameplayTopBar
           gold={game.gold}
+          stake={game.state.stake}
           currentAct={game.currentAct}
           roundType={roundType}
           mandateName={bossMandate}
@@ -535,6 +540,13 @@ export function GameplayScreen() {
           handTileCount={game.handTiles.length}
           scorePreview={scorePreview}
           scorePreviewHidden={scorePreviewHidden}
+          previewLabel={
+            stagedTileIds.length > 0 || game.selectedTileIds.length > 0
+              ? `${previewTileIds.length}-tile play`
+              : 'Full hand forecast'
+          }
+          remainingToTarget={Math.max(0, game.targetScore - game.score)}
+          handsRemaining={game.handsRemaining}
           yakuReveals={yakuReveals}
           onYakuComplete={handleYakuComplete}
         />
@@ -599,6 +611,11 @@ export function GameplayScreen() {
           onSkip={handleSkip}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          projectedScore={scorePreview?.total}
+          willClear={
+            scorePreview !== null &&
+            scorePreview.total >= Math.max(0, game.targetScore - game.score)
+          }
           canUseDeadWallWrit={
             (stagedTileIds.length || game.selectedTileIds.length) === 1 &&
             game.canUseDeadWallWrit(deadWallTileId)

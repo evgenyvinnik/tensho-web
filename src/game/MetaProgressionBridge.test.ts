@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { useAchievementStore } from '../stores/achievementStore'
 import { initializeArchive, useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
+import { useStakeStore } from '../stores/stakeStore'
 import { eventBus } from './EventBus'
 import { GameOrchestrator } from './GameOrchestrator'
 import {
@@ -26,6 +27,7 @@ describe('MetaProgressionBridge', () => {
     initializeArchive()
     useArchiveStore.getState().resetArchive()
     useProgressionStore.getState().resetProgression()
+    useStakeStore.getState().resetAllProgress()
     useAchievementStore.getState().resetAchievements()
     initializeMetaProgressionBridge()
   })
@@ -172,5 +174,27 @@ describe('MetaProgressionBridge', () => {
     expect(currentEntries.filter((entry) => entry.category === 'decrees')).toHaveLength(2)
     expect(archive.getEntry('walls', 'green_felt')?.timesUsed).toBe(1)
     expect(useProgressionStore.getState().stats.totalRunsStarted).toBe(1)
+  })
+
+  it('records a victory against the wall and stake that actually completed the run', () => {
+    eventBus.emit('runStart', { seed: 11, stake: 3, wallVariant: 'green_felt' })
+    eventBus.emit('runEnd', {
+      victory: true,
+      score: 48_000,
+      act: 8,
+      round: 3,
+    })
+
+    const progress = useStakeStore.getState().getWallProgress('green_felt')
+    expect(progress.highestCompleted).toBe(3)
+    expect(progress.victories).toEqual([
+      expect.objectContaining({
+        wallId: 'green_felt',
+        stakeTier: 3,
+        finalScore: 48_000,
+        actsCompleted: 8,
+      }),
+    ])
+    expect(useStakeStore.getState().getHighestAvailableStake('green_felt')).toBe(4)
   })
 })

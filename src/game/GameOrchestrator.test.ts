@@ -484,6 +484,15 @@ describe('GameOrchestrator', () => {
       expect(game.getState().currentRound).toBe(1)
       expect(game.getState().lastCompletedRoundType).toBe('Small')
       expect(game.getState().phase).toBe('shop')
+      expect(game.getState().lastRoundSummary).toMatchObject({
+        actNumber: 1,
+        roundNumber: 1,
+        roundType: 'Small',
+        target: 1,
+        baseReward: 3,
+        nextRoundType: 'Large',
+        nextTarget: 450,
+      })
 
       game.exitShop()
       expect(game.getState().currentRound).toBe(2)

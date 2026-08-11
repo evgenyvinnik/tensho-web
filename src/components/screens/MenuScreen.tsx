@@ -15,6 +15,8 @@ import { TableStyleButton } from '../menu/TableStyleButton'
 import { getTileImagePath, preloadMenuAssets, preloadTileImages } from '../../utils/assets'
 import { useAudio } from '../../hooks/useAudio'
 import { useGameController } from '../../game/useGameController'
+import { useStakeStore } from '../../stores/stakeStore'
+import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { TileSuit } from '../../core/Tile'
 import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
@@ -203,6 +205,7 @@ interface NeonButtonProps {
   children: React.ReactNode
   onClick: () => void
   variant?: 'primary' | 'secondary'
+  compact?: boolean
   delay?: number
   show?: boolean
 }
@@ -214,6 +217,7 @@ function NeonButton({
   children,
   onClick,
   variant = 'primary',
+  compact = false,
   delay = 0,
   show = true,
 }: NeonButtonProps) {
@@ -252,7 +256,8 @@ function NeonButton({
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
       className={`
-        relative px-12 py-4 rounded-lg font-ui font-bold text-xl md:text-2xl
+        relative w-full rounded-lg font-ui font-bold
+        ${compact ? 'px-4 py-2.5 text-sm sm:text-base' : 'px-10 py-3.5 text-xl md:text-2xl'}
         text-[var(--color-beige-white)] uppercase tracking-wider
         border-2 transition-colors duration-200
         ${isPrimary ? 'border-[var(--color-golden-yellow)]' : 'border-[var(--color-metallic-gold)]'}
@@ -292,6 +297,10 @@ export function MenuScreen() {
   const [showContent, setShowContent] = useState(false)
   const [floatingTiles] = useState(() => generateFloatingTiles(12))
   const { startNewRun } = useGameController()
+  const currentStyleId = useTableStyleStore((state) => state.currentStyleId)
+  const currentStakeTier = useStakeStore((state) => state.currentStakeTier)
+  const currentStakeWallId = useStakeStore((state) => state.currentWallId)
+  const selectStake = useStakeStore((state) => state.selectStake)
   const tutorial = useTutorial()
 
   // Audio hook for background music
@@ -349,10 +358,16 @@ export function MenuScreen() {
     delay: 300,
   })
 
+  const startConfiguredRun = () => {
+    const stakeTier = currentStakeWallId === currentStyleId ? currentStakeTier : 1
+    selectStake(currentStyleId, stakeTier)
+    startNewRun(undefined, stakeTier, currentStyleId)
+  }
+
   const handlePlay = () => {
     // Go directly to game - progressive tutorial will show hints during gameplay
     audio.play()
-    startNewRun()
+    startConfiguredRun()
     navigateTo(ROUTES.PLAY)
   }
 
@@ -360,7 +375,7 @@ export function MenuScreen() {
   const handleTutorialComplete = () => {
     tutorial.complete()
     audio.play()
-    startNewRun()
+    startConfiguredRun()
     navigateTo(ROUTES.PLAY)
   }
 
@@ -426,11 +441,11 @@ export function MenuScreen() {
       </AnimatedDiv>
 
       {/* Main content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-between py-12 px-6 safe-area-top safe-area-bottom z-10">
+      <div className="absolute inset-0 z-10 flex min-h-0 flex-col items-center overflow-y-auto px-5 py-4 safe-area-top safe-area-bottom sm:px-6 md:py-6">
 
         {/* Title section - 天翔 TENSHO */}
         <AnimatedDiv
-          className="flex-shrink-0 mt-8 md:mt-16 text-center"
+          className="flex-shrink-0 text-center"
           style={{
             opacity: titleSpring.opacity,
             transform: titleSpring.scale.to(
@@ -438,24 +453,24 @@ export function MenuScreen() {
             ),
           }}
         >
-          <h1 className="font-decorative text-6xl md:text-8xl text-[var(--color-golden-yellow)] title-glow mb-2">
+          <h1 className="mb-1 font-decorative text-5xl text-[var(--color-golden-yellow)] title-glow md:text-7xl">
             天翔
           </h1>
-          <h2 className="font-decorative text-3xl md:text-4xl text-[var(--color-vibrant-orange)] neon-text-subtle tracking-widest">
+          <h2 className="font-decorative text-2xl text-[var(--color-vibrant-orange)] neon-text-subtle tracking-widest md:text-3xl">
             TENSHO
           </h2>
-          <p className="font-ui text-sm md:text-base text-[var(--color-beige-white)] opacity-70 mt-4 tracking-wide">
+          <p className="mt-2 font-ui text-xs text-[var(--color-beige-white)] opacity-70 tracking-wide md:text-sm">
             {t('menu.subtitle', 'MAHJONG ROGUELIKE')}
           </p>
         </AnimatedDiv>
 
         {/* Center area - featured dragon tiles */}
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex min-h-[130px] flex-1 items-center justify-center py-3 md:min-h-[150px] md:py-4">
           <FeaturedTiles show={showContent} />
         </div>
 
         {/* Buttons section */}
-        <div className="flex flex-col items-center gap-4 flex-shrink-0 mb-8">
+        <div className="flex w-full max-w-md flex-shrink-0 flex-col items-center gap-3 pb-4">
           {/* Table Style Selection Button */}
           <TableStyleButton delay={550} show={showContent} />
 
@@ -463,24 +478,26 @@ export function MenuScreen() {
             {t('menu.play')}
           </NeonButton>
 
-          <NeonButton onClick={handleCodex} variant="secondary" delay={750} show={showContent}>
-            📜 {t('menu.codex', 'Codex')}
-          </NeonButton>
+          <div className="grid w-full grid-cols-2 gap-3">
+            <NeonButton compact onClick={handleCodex} variant="secondary" delay={750} show={showContent}>
+              📜 {t('menu.codex', 'Codex')}
+            </NeonButton>
 
-          <NeonButton onClick={handleSettings} variant="secondary" delay={850} show={showContent}>
-            {t('menu.settings')}
-          </NeonButton>
+            <NeonButton compact onClick={handleSettings} variant="secondary" delay={850} show={showContent}>
+              {t('menu.settings')}
+            </NeonButton>
 
-          <NeonButton onClick={handleAchievements} variant="secondary" delay={950} show={showContent}>
-            {t('menu.achievements', 'Achievements')}
-          </NeonButton>
+            <NeonButton compact onClick={handleAchievements} variant="secondary" delay={950} show={showContent}>
+              {t('menu.achievements', 'Achievements')}
+            </NeonButton>
 
-          <NeonButton onClick={handleCollection} variant="secondary" delay={1050} show={showContent}>
-            {t('menu.collection', 'Collection')}
-          </NeonButton>
+            <NeonButton compact onClick={handleCollection} variant="secondary" delay={1050} show={showContent}>
+              {t('menu.collection', 'Collection')}
+            </NeonButton>
+          </div>
 
           {/* Audio indicator */}
-          <div className="flex items-center gap-3 text-[var(--color-beige-white)] mt-4">
+          <div className="mt-1 flex items-center gap-3 text-[var(--color-beige-white)]">
             <button
               onClick={() => audio.toggle()}
               className="p-3 rounded-full bg-[var(--color-dark-forest)] hover:bg-[var(--color-forest-green)]
@@ -504,7 +521,7 @@ export function MenuScreen() {
           </div>
 
           {/* Version */}
-          <span className="text-[var(--color-metallic-gold)] text-xs opacity-50 mt-2">
+          <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
             v0.1.0
           </span>
         </div>

@@ -159,7 +159,7 @@ export function useScreenFlash() {
   const [flashConfig, setFlashConfig] = useState<FlashConfig | null>(null);
   const [isActive, setIsActive] = useState(false);
 
-  const spring = useSpring<any>({
+  const spring = useSpring({
     opacity: isActive ? (flashConfig?.intensity ?? 0.5) : 0,
     config: {
       duration: reducedMotion ? 0 : flashConfig?.duration ?? DURATIONS.fast,
@@ -294,13 +294,20 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
   onComplete,
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  type PopupAnimationValues = {
+    opacity: number;
+    x: number;
+    y: number;
+    scale: number;
+  };
+  type PopupAnimationNext = (props: Partial<PopupAnimationValues>) => Promise<void>;
 
   const getAnimationConfig = () => {
     switch (style) {
       case 'pop':
         return {
-          from: { opacity: 0, scale: 0.5, y: 0 },
-          to: async (next: (props: object) => Promise<void>) => {
+          from: { opacity: 0, x: 0, scale: 0.5, y: 0 },
+          to: async (next: PopupAnimationNext) => {
             await next({ opacity: 1, scale: 1.2, y: -10 });
             await next({ scale: 1, y: -20 });
             await new Promise((resolve) => setTimeout(resolve, duration));
@@ -309,8 +316,8 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
         };
       case 'slide':
         return {
-          from: { opacity: 0, x: -30, y: 0 },
-          to: async (next: (props: object) => Promise<void>) => {
+          from: { opacity: 0, x: -30, y: 0, scale: 1 },
+          to: async (next: PopupAnimationNext) => {
             await next({ opacity: 1, x: 0 });
             await new Promise((resolve) => setTimeout(resolve, duration));
             await next({ opacity: 0, x: 30 });
@@ -319,8 +326,8 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
       case 'float':
       default:
         return {
-          from: { opacity: 0, y: 0, scale: 0.8 },
-          to: async (next: (props: object) => Promise<void>) => {
+          from: { opacity: 0, x: 0, y: 0, scale: 0.8 },
+          to: async (next: PopupAnimationNext) => {
             await next({ opacity: 1, scale: 1 });
             await new Promise((resolve) => setTimeout(resolve, duration * 0.5));
             await next({ opacity: 0, y: -60, scale: 0.9 });
@@ -329,7 +336,7 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
     }
   };
 
-  const spring = useSpring<any>({
+  const spring = useSpring<PopupAnimationValues>({
     ...getAnimationConfig(),
     config: config.gentle,
     immediate: reducedMotion,
@@ -381,9 +388,14 @@ export function useVFX() {
   const { showPopup, PopupContainer } = useScorePopups();
   const reducedMotion = useSettingsStore((state) => state.reducedMotion);
 
-  // Initialize VFX system
+  // Initialize the global event bridge once for this provider lifecycle.
   useEffect(() => {
     vfxSystem.initialize();
+    return () => vfxSystem.destroy();
+  }, []);
+
+  // Keep accessibility settings synchronized without duplicating listeners.
+  useEffect(() => {
     vfxSystem.setReducedMotion(reducedMotion);
   }, [reducedMotion]);
 

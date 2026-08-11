@@ -7,6 +7,8 @@
 
 import { defineConfig, devices } from '@playwright/test'
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:4173'
+
 export default defineConfig({
   // Test directory
   testDir: './e2e',
@@ -29,7 +31,7 @@ export default defineConfig({
   // Shared settings for all projects
   use: {
     // Base URL for tests
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL,
 
     // Collect trace when retrying a failed test
     trace: 'on-first-retry',

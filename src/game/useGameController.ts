@@ -65,7 +65,7 @@ export interface GameController {
   voidScripts: VoidScript[]
 
   // Actions
-  startNewRun: (seed?: number, stake?: number) => void
+  startNewRun: (seed?: number, stake?: number, wallVariant?: string) => void
   processAction: (action: PlayerAction) => ActionResult
   draw: () => ActionResult
   discard: (tileId: string) => ActionResult
@@ -195,8 +195,8 @@ export function useGameController(
 
   // Actions
   const startNewRun = useCallback(
-    (seed?: number, stake?: number) => {
-      orchestrator.startNewRun(seed, stake)
+    (seed?: number, stake?: number, wallVariant?: string) => {
+      orchestrator.startNewRun(seed, stake, wallVariant)
     },
     [orchestrator]
   )

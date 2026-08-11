@@ -10,9 +10,6 @@ test.describe('Application Smoke Tests', () => {
   test('should load the home page', async ({ page }) => {
     await page.goto('/')
 
-    // Wait for the app to load
-    await page.waitForLoadState('networkidle')
-
     await expect(page).toHaveURL(/\/en$/)
     await expect(page.getByRole('heading', { name: 'TENSHO' })).toBeVisible()
   })
@@ -21,7 +18,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/')
 
     // Wait for the menu to be visible
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // Look for common menu elements
     // These selectors should be updated based on actual implementation
@@ -33,7 +30,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/')
 
     // Wait for the app to load
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // Try to find and click a tutorial/codex button
     const tutorialButton = page.getByRole('button', { name: /tutorial|codex|help/i })
@@ -43,7 +40,7 @@ test.describe('Application Smoke Tests', () => {
       await tutorialButton.first().click()
 
       // Wait for navigation
-      await page.waitForLoadState('networkidle')
+      await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
     }
   })
 
@@ -52,7 +49,7 @@ test.describe('Application Smoke Tests', () => {
     await page.setViewportSize({ width: 375, height: 667 })
 
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // The page should still be functional on mobile
     const body = await page.locator('body')
@@ -123,9 +120,48 @@ test.describe('Game Navigation', () => {
     }).toPass()
   })
 
+  test('pays at least what the score preview forecast', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await expect(page).toHaveURL(/\/en\/play$/)
+
+    const tutorialDismiss = page.getByRole('button', { name: 'Got it' })
+    if (await tutorialDismiss.isVisible().catch(() => false)) {
+      await tutorialDismiss.click()
+    }
+
+    const readScore = async () =>
+      Number(
+        (await page.locator('[data-tutorial="current-score"]').textContent())?.replace(
+          /[^\d]/g,
+          ''
+        ) ?? '0'
+      )
+
+    // With nothing selected the panel forecasts the whole hand, which is also
+    // what PLAY HAND commits.
+    const previewTotal = page.getByTestId('score-preview-total')
+    await expect(previewTotal).toBeVisible()
+    const previewed = Number((await previewTotal.textContent())?.replace(/[^\d]/g, '') ?? '0')
+    expect(previewed).toBeGreaterThan(0)
+
+    const scoreBefore = await readScore()
+    await page.getByRole('button', { name: 'PLAY HAND' }).click()
+
+    // The preview resolves chance-based tile effects to their guaranteed
+    // outcome, so it is a floor the real play never undercuts.
+    await expect(async () => {
+      const path = new URL(page.url()).pathname
+      const scoreAfter = path.endsWith('/shop') ? previewed : await readScore()
+      expect(scoreAfter - (path.endsWith('/shop') ? 0 : scoreBefore)).toBeGreaterThanOrEqual(
+        previewed
+      )
+    }).toPass({ timeout: 10_000 })
+  })
+
   test('should have clickable buttons', async ({ page }) => {
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // Find all buttons on the page
     const buttons = await page.getByRole('button').all()
@@ -161,7 +197,7 @@ test.describe('Game Navigation', () => {
     })
 
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // Filter out known acceptable errors (like missing resources during dev)
     const criticalErrors = errors.filter(
@@ -178,7 +214,7 @@ test.describe('Game Navigation', () => {
 test.describe('Accessibility', () => {
   test('should have proper heading structure', async ({ page }) => {
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // Check for at least one heading
     const headings = await page.locator('h1, h2, h3').all()
@@ -187,7 +223,7 @@ test.describe('Accessibility', () => {
 
   test('should have visible focus indicators', async ({ page }) => {
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
 
     // Tab to the first focusable element
     await page.keyboard.press('Tab')

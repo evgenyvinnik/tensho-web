@@ -97,11 +97,31 @@ export function ProgressiveHintOverlay({
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
+  const [hasEntered, setHasEntered] = useState(false)
+  const hintId = hint?.id
+
+  // Give each newly queued hint an explicit closed -> open transition. React
+  // Spring can otherwise retain the initial hidden `from` state when a portal
+  // mounts before the first hint is available (especially after hydration/HMR).
+  useEffect(() => {
+    if (!hintId) {
+      setHasEntered(false)
+      return
+    }
+
+    setHasEntered(false)
+    const frame = requestAnimationFrame(() => setHasEntered(true))
+    return () => cancelAnimationFrame(frame)
+  }, [hintId])
 
   // Animation spring
   const spring = useSpring({
     from: { opacity: 0, scale: 0.9, y: 10 },
-    to: { opacity: hint ? 1 : 0, scale: hint ? 1 : 0.9, y: hint ? 0 : 10 },
+    to: {
+      opacity: hint && hasEntered ? 1 : 0,
+      scale: hint && hasEntered ? 1 : 0.9,
+      y: hint && hasEntered ? 0 : 10,
+    },
     config: { tension: 300, friction: 22 },
     immediate: reduceMotion,
   })

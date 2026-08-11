@@ -12,7 +12,9 @@ import { useTranslation } from 'react-i18next'
 import { TableStyleCard } from './TableStyleCard'
 import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { TABLE_STYLE_DEFINITIONS } from '../../config/tableStyleDefinitions'
+import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
 import { getCurrentLanguage } from '../../i18n'
+import { useStakeStore } from '../../stores/stakeStore'
 
 const AnimatedDiv = animated('div')
 
@@ -48,16 +50,26 @@ export function TableStyleModal({
     getUnlockProgress,
     getCurrentStyle,
   } = useTableStyleStore()
+  const {
+    currentStakeTier,
+    currentWallId,
+    selectStake,
+    getHighestAvailableStake,
+  } = useStakeStore()
 
   // Track temporarily selected style (before confirmation)
   const [tempSelectedId, setTempSelectedId] = React.useState(currentStyleId)
+  const [tempStakeTier, setTempStakeTier] = React.useState(
+    currentWallId === currentStyleId ? currentStakeTier : 1
+  )
 
   // Reset temp selection when modal opens
   React.useEffect(() => {
     if (isOpen) {
       setTempSelectedId(currentStyleId)
+      setTempStakeTier(currentWallId === currentStyleId ? currentStakeTier : 1)
     }
-  }, [isOpen, currentStyleId])
+  }, [isOpen, currentStyleId, currentStakeTier, currentWallId])
 
   // Animation spring for modal
   const backdropSpring = useSpring({
@@ -99,27 +111,32 @@ export function TableStyleModal({
   // Handle style selection
   const handleStyleSelect = useCallback((styleId: string) => {
     setTempSelectedId(styleId)
-  }, [])
+    setTempStakeTier((tier) => Math.min(tier, getHighestAvailableStake(styleId)))
+  }, [getHighestAvailableStake])
 
   // Handle confirm
   const handleConfirm = useCallback(() => {
-    const success = selectStyle(tempSelectedId)
-    if (success) {
+    const styleSelected = selectStyle(tempSelectedId)
+    const stakeSelected = selectStake(tempSelectedId, tempStakeTier)
+    if (styleSelected && stakeSelected) {
       onConfirm?.(tempSelectedId)
       onClose()
     }
-  }, [tempSelectedId, selectStyle, onConfirm, onClose])
+  }, [tempSelectedId, tempStakeTier, selectStyle, selectStake, onConfirm, onClose])
 
   // Handle cancel
   const handleCancel = useCallback(() => {
     setTempSelectedId(currentStyleId) // Reset to original
+    setTempStakeTier(currentWallId === currentStyleId ? currentStakeTier : 1)
     onClose()
-  }, [currentStyleId, onClose])
+  }, [currentStyleId, currentStakeTier, currentWallId, onClose])
 
   // Get the currently selected style for preview
   const selectedStyle = TABLE_STYLE_DEFINITIONS.find(
     (s) => s.id === tempSelectedId
   ) ?? getCurrentStyle()
+  const selectedStake = STAKE_DEFINITIONS[tempStakeTier - 1]
+  const highestAvailableStake = getHighestAvailableStake(tempSelectedId)
 
   if (!isOpen) return null
 
@@ -133,7 +150,7 @@ export function TableStyleModal({
       onClick={handleBackdropClick}
     >
       <AnimatedDiv
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl border-3 border-[var(--color-saddle-brown)]"
+        className="relative flex w-full max-w-4xl max-h-[90vh] flex-col overflow-hidden rounded-2xl border-3 border-[var(--color-saddle-brown)]"
         style={{
           opacity: modalSpring.opacity,
           transform: modalSpring.scale.to(
@@ -145,7 +162,7 @@ export function TableStyleModal({
       >
         {/* Header */}
         <div
-          className="relative px-6 py-5 border-b-2 border-[var(--color-saddle-brown)]"
+          className="relative border-b-2 border-[var(--color-saddle-brown)] px-4 py-4 sm:px-6 sm:py-5"
           style={{
             background: `linear-gradient(135deg, ${selectedStyle.themeColor}30 0%, var(--color-dark-forest) 100%)`,
           }}
@@ -175,14 +192,14 @@ export function TableStyleModal({
             </svg>
           </button>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 pr-12 sm:gap-4 sm:pr-0">
             {/* Table icon */}
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center"
+              className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl sm:h-14 sm:w-14"
               style={{ backgroundColor: selectedStyle.themeColor }}
             >
               <svg
-                className="w-8 h-8 text-white"
+                className="h-7 w-7 text-white sm:h-8 sm:w-8"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -191,10 +208,10 @@ export function TableStyleModal({
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+              <h2 className="font-decorative text-xl font-bold text-[var(--color-golden-yellow)] sm:text-2xl">
                 {t('tableStyle.title', 'Choose Table')}
               </h2>
-              <p className="text-sm text-[var(--color-beige-white)] opacity-70">
+              <p className="text-xs text-[var(--color-beige-white)] opacity-70 sm:text-sm">
                 {t('tableStyle.subtitle', 'Select a table style for your run')}
               </p>
             </div>
@@ -208,8 +225,68 @@ export function TableStyleModal({
           </div>
         </div>
 
+        {/* Stake selection: difficulty and per-table progression */}
+        <section className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-black/15 px-4 py-3 sm:px-6">
+          <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]">
+                Table Stake · Difficulty
+              </p>
+              <p className="text-sm font-bold text-[var(--color-beige-white)]">
+                {selectedStake?.name} <span className="opacity-60">{selectedStake?.japaneseName}</span>
+              </p>
+            </div>
+            <p className="max-w-md text-right text-xs text-[var(--color-beige-white)]/70">
+              {selectedStake?.description}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-8 gap-1.5" role="radiogroup" aria-label="Table stake">
+            {STAKE_DEFINITIONS.map((stake) => {
+              const unlocked = stake.tier <= highestAvailableStake
+              const selected = stake.tier === tempStakeTier
+
+              return (
+                <button
+                  key={stake.tier}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  aria-label={`${stake.name}: ${unlocked ? stake.description : 'Locked; defeat the previous stake on this table'}`}
+                  disabled={!unlocked}
+                  onClick={() => setTempStakeTier(stake.tier)}
+                  className={`min-h-[42px] rounded-lg border text-sm font-black transition-all duration-150 sm:min-h-[46px] ${
+                    selected
+                      ? 'scale-[1.04] text-white shadow-lg'
+                      : unlocked
+                        ? 'text-white/75 hover:-translate-y-0.5 hover:text-white'
+                        : 'cursor-not-allowed border-white/5 bg-black/25 text-white/20'
+                  }`}
+                  style={
+                    unlocked
+                      ? {
+                          borderColor: `${stake.color}${selected ? 'FF' : '70'}`,
+                          backgroundColor: `${stake.color}${selected ? '35' : '12'}`,
+                          boxShadow: selected ? `0 0 16px ${stake.color}45` : undefined,
+                        }
+                      : undefined
+                  }
+                  title={unlocked ? stake.description : 'Defeat the previous stake on this table to unlock'}
+                >
+                  {unlocked ? stake.tier : '·'}
+                </button>
+              )
+            })}
+          </div>
+          <p className="mt-2 text-[10px] text-[var(--color-beige-white)]/50">
+            {tempStakeTier < 8
+              ? `Progress is tracked separately for each table. Win Stake ${tempStakeTier} to unlock Stake ${tempStakeTier + 1} here.`
+              : 'Gold Stake is the final challenge for this table.'}
+          </p>
+        </section>
+
         {/* Content - Scrollable grid */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {TABLE_STYLE_DEFINITIONS.map((style, index) => {
               const unlocked = isStyleUnlocked(style.id)
@@ -231,9 +308,9 @@ export function TableStyleModal({
         </div>
 
         {/* Footer with buttons */}
-        <div className="px-6 py-4 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] flex justify-between items-center">
+        <div className="flex flex-col gap-3 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
           {/* Currently selected info */}
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <div
               className="w-8 h-8 rounded-lg"
               style={{ backgroundColor: selectedStyle.themeColor }}
@@ -245,6 +322,9 @@ export function TableStyleModal({
               <span className="ml-2 text-[var(--color-beige-white)] font-bold">
                 {selectedStyle.displayName}
               </span>
+              <span className="ml-2 text-xs font-black uppercase" style={{ color: selectedStake?.color }}>
+                · Stake {tempStakeTier}
+              </span>
               {showCJK && (
                 <span className="ml-2 text-[var(--color-metallic-gold)] font-decorative">
                   ({selectedStyle.japaneseName})
@@ -254,14 +334,14 @@ export function TableStyleModal({
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-3">
+          <div className="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto">
             <button
               onClick={handleCancel}
               className="px-6 py-3 bg-[var(--color-forest-green)] hover:bg-[var(--color-dark-forest)]
                          text-[var(--color-beige-white)] font-bold rounded-lg
                          border-2 border-[var(--color-metallic-gold)]
                          transition-all hover:scale-105 active:scale-95
-                         min-w-[100px]"
+                         w-full sm:min-w-[100px]"
             >
               {t('common.cancel', 'Cancel')}
             </button>
@@ -271,7 +351,7 @@ export function TableStyleModal({
                          text-[var(--color-beige-white)] font-bold rounded-lg
                          border-2 border-[var(--color-golden-yellow)]
                          transition-all hover:scale-105 active:scale-95
-                         min-w-[100px]"
+                         w-full sm:min-w-[100px]"
             >
               {t('common.confirm', 'Confirm')}
             </button>

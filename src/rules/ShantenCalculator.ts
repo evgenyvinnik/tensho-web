@@ -195,12 +195,13 @@ function calculateShantenWithPair(
   melds += honorResult.melds
   taatsu += honorResult.taatsu
 
-  // Calculate shanten
-  // Formula: (neededMelds - 1) - melds - min(taatsu, neededMelds - melds)
+  // Standard shanten weights a complete meld as two steps and a partial meld
+  // as one. The former formula counted both equally, which mislabeled many
+  // ordinary hands as tenpai.
   const maxUsefulTaatsu = Math.max(0, neededMelds - melds)
   const usefulTaatsu = Math.min(taatsu, maxUsefulTaatsu)
 
-  return neededMelds - 1 - melds - usefulTaatsu
+  return neededMelds * 2 - melds * 2 - usefulTaatsu - 1
 }
 
 /**
@@ -228,12 +229,11 @@ function calculateShantenWithoutPair(
   melds += honorResult.melds
   taatsu += honorResult.taatsu
 
-  // Without pair, shanten is higher
-  // Formula: neededMelds - melds - min(taatsu, neededMelds - melds)
+  // Without a head pair, one additional step remains.
   const maxUsefulTaatsu = Math.max(0, neededMelds - melds)
   const usefulTaatsu = Math.min(taatsu, maxUsefulTaatsu)
 
-  return neededMelds - melds - usefulTaatsu
+  return neededMelds * 2 - melds * 2 - usefulTaatsu
 }
 
 /**

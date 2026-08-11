@@ -15,6 +15,7 @@ import { AchievementsScreen } from './components/screens/AchievementsScreen'
 import { CodexScreen } from './components/screens/CodexScreen'
 import { CollectionScreen } from './components/screens/CollectionScreen'
 import { SettingsScreen } from './components/screens/SettingsScreen'
+import { VFXProvider } from './hooks/useVFX'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
@@ -60,9 +61,11 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<LoadingFallback />}>
-        <AppRouterProvider router={router} />
-      </Suspense>
+      <VFXProvider>
+        <Suspense fallback={<LoadingFallback />}>
+          <AppRouterProvider router={router} />
+        </Suspense>
+      </VFXProvider>
     </QueryClientProvider>
   )
 }
