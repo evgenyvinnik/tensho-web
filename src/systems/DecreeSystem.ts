@@ -12,6 +12,7 @@ import {
   Decree,
   DecreeEffect,
   DecreeRarity,
+  GateCondition,
   OwnedDecree,
   RetriggerTarget,
   ScalingSource,
@@ -20,6 +21,7 @@ import {
   Sticker,
 } from './types'
 import { Tile, TileSuit } from '../core/Tile'
+import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 
 /**
@@ -49,6 +51,127 @@ function countScalingSource(source: ScalingSource, context: ScoringContext): num
       )
     default:
       return 0
+  }
+}
+
+/** Yaku gate names mapped to the yaku ids that satisfy them. */
+const YAKU_GATE_IDS: Partial<Record<GateCondition, readonly string[]>> = {
+  yaku_riichi: ['riichi'],
+  yaku_tanyao: ['tanyao'],
+  yaku_pinfu: ['pinfu'],
+  yaku_yakuhai: ['yakuhai'],
+  yaku_ittsu: ['ittsu'],
+  yaku_toitoi: ['toitoi'],
+  yaku_sanshoku: ['sanshoku_doujun'],
+  yaku_honitsu: ['honitsu'],
+  yaku_chinitsu: ['chinitsu'],
+  yaku_chanta: ['chanta', 'junchan'],
+  // Every hand worth a yakuman, by id.
+  yaku_yakuman: [
+    'kokushi',
+    'suu_ankou',
+    'dai_sangen',
+    'chinroutou',
+    'chuuren_poutou',
+  ],
+}
+
+/**
+ * Whether a gated effect is allowed to pay out.
+ *
+ * Composition gates read the tiles actually played, structure gates read the
+ * melds found in them, and round gates read the round in progress. A gate the
+ * context cannot answer returns false, so an unproven requirement never pays.
+ */
+function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
+  const tiles = context.tiles
+  const suited = tiles.filter((tile) => tile.isSuited)
+  const suitsPresent = new Set(suited.map((tile) => tile.suit))
+
+  const allOfSuit = (suit: TileSuit): boolean =>
+    tiles.length > 0 && tiles.every((tile) => tile.suit === suit)
+  const halfOfSuit = (suit: TileSuit): boolean =>
+    tiles.length > 0 &&
+    tiles.filter((tile) => tile.suit === suit).length * 2 >= tiles.length
+  const meldCount = (type: MeldType): number =>
+    context.melds.filter((meld) => meld.type === type).length
+
+  const yakuIds = context.detectedYakuIds
+  const yakuGate = YAKU_GATE_IDS[gate]
+  if (yakuGate) {
+    return yakuGate.some((id) => yakuIds?.has(id) ?? false)
+  }
+
+  switch (gate) {
+    case 'all_manzu':
+      return allOfSuit(TileSuit.Manzu)
+    case 'all_pinzu':
+      return allOfSuit(TileSuit.Pinzu)
+    case 'all_souzu':
+      return allOfSuit(TileSuit.Souzu)
+    case 'contains_manzu':
+      return tiles.some((tile) => tile.suit === TileSuit.Manzu)
+    case 'contains_pinzu':
+      return tiles.some((tile) => tile.suit === TileSuit.Pinzu)
+    case 'contains_souzu':
+      return tiles.some((tile) => tile.suit === TileSuit.Souzu)
+    case 'contains_wind':
+      return tiles.some((tile) => tile.suit === TileSuit.Wind)
+    case 'contains_dragon':
+      return tiles.some((tile) => tile.suit === TileSuit.Dragon)
+    case 'half_manzu':
+      return halfOfSuit(TileSuit.Manzu)
+    case 'half_pinzu':
+      return halfOfSuit(TileSuit.Pinzu)
+    case 'half_souzu':
+      return halfOfSuit(TileSuit.Souzu)
+    case 'single_suit':
+      return suitsPresent.size === 1
+    case 'all_three_suits':
+      return suitsPresent.size === 3
+    case 'all_honors':
+      return tiles.length > 0 && tiles.every((tile) => tile.isHonor)
+    case 'three_plus_honors':
+      return tiles.filter((tile) => tile.isHonor).length >= 3
+    case 'four_plus_terminals':
+      return tiles.filter((tile) => tile.isTerminal).length >= 4
+    case 'no_simples':
+      return tiles.length > 0 && !tiles.some((tile) => tile.isSimple)
+    case 'has_one_and_nine':
+      return (
+        tiles.some((tile) => tile.isSuited && tile.rank === 1) &&
+        tiles.some((tile) => tile.isSuited && tile.rank === 9)
+      )
+    case 'wind_and_dragon':
+      return (
+        tiles.some((tile) => tile.suit === TileSuit.Wind) &&
+        tiles.some((tile) => tile.suit === TileSuit.Dragon)
+      )
+
+    case 'contains_pair':
+      return meldCount(MeldType.Pair) > 0 || context.hand?.pair?.tiles.length === 2
+    case 'contains_sequence':
+      return meldCount(MeldType.Sequence) > 0
+    case 'contains_triplet':
+      return meldCount(MeldType.Triplet) > 0
+    case 'two_plus_triplets':
+      return meldCount(MeldType.Triplet) >= 2
+    case 'three_sequences':
+      return meldCount(MeldType.Sequence) >= 3
+
+    case 'boss_round':
+      return context.round.roundType === 'Boss'
+    case 'no_discards_used':
+      return context.round.discardsRemaining >= context.round.maxDiscards
+    case 'first_hand':
+      return context.round.handsPlayed === 0
+    case 'last_hand_scored_zero':
+      return context.lastHandScore === 0
+    case 'double_target':
+      return context.round.currentScore >= context.round.scoreTarget * 2
+
+    default:
+      return false
   }
 }
 
@@ -798,6 +921,7 @@ export class DecreeSystem {
 
     switch (effect.type) {
       case 'additive_score': {
+        if (effect.requires && !gateAllows(effect.requires, context)) break
         // A scaled bonus is paid once per unit it scales with, so an empty
         // collection pays nothing rather than the flat amount.
         const stacks = effect.scaleBy ? countScalingSource(effect.scaleBy, context) : 1
@@ -811,6 +935,7 @@ export class DecreeSystem {
       }
 
       case 'multiplicative_score':
+        if (effect.requires && !gateAllows(effect.requires, context)) break
         if (effect.perTileCondition === 'dominant_suit') {
           const suitedCounts = new Map<string, number>()
           for (const tile of context.tiles.filter((candidate) => candidate.isSuited)) {

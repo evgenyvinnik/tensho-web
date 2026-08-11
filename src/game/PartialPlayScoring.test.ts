@@ -65,9 +65,16 @@ describe('partial play scoring', () => {
       baseline.processAction({ type: 'play', tileIds }).effects
     )
 
-    // A pure "x Mult" Decree from the authored library must move the score.
+    // An unconditional "x Mult" Decree must move the score on any hand. Gated
+    // and per-unit Decrees are excluded here: they are meant to pay nothing
+    // when their requirement is unmet, and are covered by their own tests.
     const multDecree = LIBRARY_DECREES.find(
-      (d) => d.effect.type === 'multiplicative_score' && d.effect.multiplier >= 2
+      (d) =>
+        d.effect.type === 'multiplicative_score' &&
+        d.effect.multiplier >= 2 &&
+        !d.effect.requires &&
+        !d.effect.scaleBy &&
+        !d.effect.perTileCondition
     )
     expect(multDecree).toBeDefined()
 

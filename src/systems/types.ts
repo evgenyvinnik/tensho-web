@@ -66,6 +66,57 @@ export type ScalingSource =
   | 'season_count' // Seasons active this round
 
 /**
+ * A requirement that must hold for an effect to pay out at all. Gated Decrees
+ * are conditional rewards: they contribute nothing unless the played hand or
+ * the round state satisfies them.
+ */
+export type GateCondition =
+  // Composition of the played tiles
+  | 'all_manzu'
+  | 'all_pinzu'
+  | 'all_souzu'
+  | 'contains_manzu'
+  | 'contains_pinzu'
+  | 'contains_souzu'
+  | 'contains_wind'
+  | 'contains_dragon'
+  | 'half_manzu'
+  | 'half_pinzu'
+  | 'half_souzu'
+  | 'single_suit'
+  | 'all_three_suits'
+  | 'all_honors'
+  | 'three_plus_honors'
+  | 'four_plus_terminals'
+  | 'no_simples'
+  | 'has_one_and_nine'
+  | 'wind_and_dragon'
+  // Structure of the played hand
+  | 'contains_pair'
+  | 'contains_sequence'
+  | 'contains_triplet'
+  | 'two_plus_triplets'
+  | 'three_sequences'
+  // Round state
+  | 'boss_round'
+  | 'no_discards_used'
+  | 'first_hand'
+  | 'last_hand_scored_zero'
+  | 'double_target'
+  // Yaku scored by this hand
+  | 'yaku_riichi'
+  | 'yaku_tanyao'
+  | 'yaku_pinfu'
+  | 'yaku_yakuhai'
+  | 'yaku_ittsu'
+  | 'yaku_toitoi'
+  | 'yaku_sanshoku'
+  | 'yaku_honitsu'
+  | 'yaku_chinitsu'
+  | 'yaku_chanta'
+  | 'yaku_yakuman'
+
+/**
  * Additive score bonus effect
  */
 export interface AdditiveScoreEffect extends BaseEffect {
@@ -74,6 +125,8 @@ export interface AdditiveScoreEffect extends BaseEffect {
   multiplier?: number // Added to multiplier
   /** When set, the bonus is paid once per unit of this quantity. */
   scaleBy?: ScalingSource
+  /** When set, the bonus pays nothing unless this requirement holds. */
+  requires?: GateCondition
 }
 
 /**
@@ -85,6 +138,8 @@ export interface MultiplicativeScoreEffect extends BaseEffect {
   perTileCondition?: 'dominant_suit'
   /** When set, the multiplier compounds once per unit of this quantity. */
   scaleBy?: ScalingSource
+  /** When set, the multiplier is inert unless this requirement holds. */
+  requires?: GateCondition
 }
 
 /**
@@ -541,6 +596,10 @@ export interface ScoringContext {
   yakuMultipliers: Map<string, number>
   isConcealed: boolean
   winningTile: Tile
+  /** Yaku this hand actually scored, after Mandate filtering. */
+  detectedYakuIds?: ReadonlySet<string>
+  /** Points the previous hand of this round scored, if any was played. */
+  lastHandScore?: number
 }
 
 /**

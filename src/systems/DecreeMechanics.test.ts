@@ -7,7 +7,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { GameOrchestrator } from '../game/GameOrchestrator'
 import { DecreeSystem, ALL_DECREES } from './DecreeSystem'
+import { LIBRARY_DECREES } from '../config/decreeLibrary'
 import { Tile, TileSuit, DragonType, WindType } from '../core/Tile'
+import { MeldType } from '../core/Meld'
 import type { Decree } from './types'
 import type { ScoreAddedEffect } from '../game/ActionProcessor'
 
@@ -197,6 +199,383 @@ describe('yaku, gold, and resource Decrees', () => {
     orchestrator.addDecree(decreeById('decree-time-master'))
 
     expect(orchestrator.getState().decreeSystem.getAdditionalDraws()).toBe(before + 2)
+  })
+})
+
+describe('per-Flower and per-Season scaling', () => {
+  const emptyBreakdown = () => ({
+    basePoints: 100,
+    tilePoints: 100,
+    structurePoints: 0,
+    additiveBonus: 0,
+    yakuMultiplier: 1,
+    decreeMultiplier: 1,
+    flowerMultiplier: 1,
+    seasonMultiplier: 1,
+    finalScore: 100,
+    bonusGold: 0,
+  })
+
+  /** A scoring context carrying a given number of Flowers and Seasons. */
+  function contextWith(flowerCount: number, seasonCount: number, decrees: Decree[]) {
+    const flowers = Array.from({ length: flowerCount }, (_, i) => ({
+      id: `flower-${i}`,
+    }))
+    const seasons = Array.from({ length: seasonCount }, (_, i) => ({
+      id: `season-${i}`,
+    }))
+
+    return {
+      hand: { melds: [], pair: null, waitType: 'tanki', winningTile: null, isConcealed: true },
+      tiles: [],
+      melds: [],
+      decrees,
+      flowers: { flowers, activeBonuses: [], totalEffectiveness: 1 },
+      season: {
+        activeSeason: seasons[0] ?? null,
+        seasonStack: seasons,
+        isCorruptedRound: false,
+        effectMultiplier: 1,
+      },
+      round: {
+        actNumber: 1,
+        roundNumber: 1,
+        roundType: 'Small',
+        scoreTarget: 300,
+        currentScore: 0,
+        handsPlayed: 0,
+        maxHands: 4,
+        discardsRemaining: 3,
+        maxDiscards: 3,
+        isCompleted: false,
+        isWon: false,
+      },
+      yakuMultipliers: new Map(),
+      isConcealed: true,
+      winningTile: null,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any
+  }
+
+  it('pays an additive Flower bonus once per Flower held', () => {
+    const system = new DecreeSystem(10)
+    // Eternal Garden: +10 Mult per Flower.
+    const decree = decreeById('decree-eternal-garden')
+    system.acquireDecree(decree)
+    const owned = system.getOwnedDecrees()
+
+    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
+    const three = system.applyDecreeEffects(contextWith(3, 0, owned), emptyBreakdown())
+
+    // No Flowers means no bonus at all; three Flowers pay three times over.
+    expect(none.decreeMultiplier).toBe(1)
+    expect(three.decreeMultiplier).toBeGreaterThan(none.decreeMultiplier)
+  })
+
+  it('compounds a multiplicative Flower bonus per Flower', () => {
+    const system = new DecreeSystem(10)
+    const decree = LIBRARY_DECREES.find(
+      (d) =>
+        d.effect.type === 'multiplicative_score' &&
+        d.effect.scaleBy === 'flower_count'
+    )
+    expect(decree).toBeDefined()
+    system.acquireDecree(decree!)
+    const owned = system.getOwnedDecrees()
+
+    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
+    const one = system.applyDecreeEffects(contextWith(1, 0, owned), emptyBreakdown())
+    const two = system.applyDecreeEffects(contextWith(2, 0, owned), emptyBreakdown())
+
+    // With no Flowers the multiplier is inert, then compounds per Flower.
+    expect(none.decreeMultiplier).toBe(1)
+    expect(one.decreeMultiplier).toBeGreaterThan(1)
+    expect(two.decreeMultiplier).toBeGreaterThan(one.decreeMultiplier)
+  })
+
+  it('scales a Season bonus with the number of Seasons in play', () => {
+    const system = new DecreeSystem(10)
+    const decree = LIBRARY_DECREES.find(
+      (d) =>
+        d.effect.type === 'additive_score' &&
+        d.effect.scaleBy === 'season_count' &&
+        d.effect.basePoints
+    )
+    expect(decree).toBeDefined()
+    system.acquireDecree(decree!)
+    const owned = system.getOwnedDecrees()
+
+    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
+    const two = system.applyDecreeEffects(contextWith(0, 2, owned), emptyBreakdown())
+
+    expect(none.additiveBonus).toBe(0)
+    expect(two.additiveBonus).toBeGreaterThan(0)
+  })
+
+  it('leaves unconditioned Decrees paying a flat bonus', () => {
+    const system = new DecreeSystem(10)
+    const flat = LIBRARY_DECREES.find(
+      (d) => d.effect.type === 'additive_score' && !d.effect.scaleBy && d.effect.basePoints
+    )
+    expect(flat).toBeDefined()
+    system.acquireDecree(flat!)
+    const owned = system.getOwnedDecrees()
+
+    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
+    const many = system.applyDecreeEffects(contextWith(5, 3, owned), emptyBreakdown())
+
+    // Flower empowerment still scales it, but it pays with zero Flowers held.
+    expect(none.additiveBonus).toBeGreaterThan(0)
+    expect(many.additiveBonus).toBeGreaterThanOrEqual(none.additiveBonus)
+  })
+
+  it('marks every authored per-Flower and per-Season Decree as scaling', () => {
+    const scaled = LIBRARY_DECREES.filter((decree) =>
+      [decree.effect, ...(decree.extraEffects ?? [])].some(
+        (effect) =>
+          (effect.type === 'additive_score' ||
+            effect.type === 'multiplicative_score') &&
+          effect.scaleBy !== undefined
+      )
+    )
+
+    // Seven per-Flower and six per-Season effects exist in the library.
+    expect(scaled.length).toBeGreaterThanOrEqual(10)
+  })
+})
+
+describe('gated (conditional) Decrees', () => {
+  const breakdown = () => ({
+    basePoints: 100,
+    tilePoints: 100,
+    structurePoints: 0,
+    additiveBonus: 0,
+    yakuMultiplier: 1,
+    decreeMultiplier: 1,
+    flowerMultiplier: 1,
+    seasonMultiplier: 1,
+    finalScore: 100,
+    bonusGold: 0,
+  })
+
+  /** A scoring context built around a specific played hand and round state. */
+  function contextFor(options: {
+    tiles?: Tile[]
+    melds?: { type: MeldType }[]
+    decrees: Decree[]
+    roundType?: string
+    handsPlayed?: number
+    discardsRemaining?: number
+    currentScore?: number
+    yakuIds?: string[]
+    lastHandScore?: number
+  }) {
+    return {
+      hand: { melds: [], pair: null, waitType: 'tanki', winningTile: null, isConcealed: true },
+      tiles: options.tiles ?? [],
+      melds: options.melds ?? [],
+      decrees: options.decrees,
+      flowers: { flowers: [], activeBonuses: [], totalEffectiveness: 1 },
+      season: {
+        activeSeason: null,
+        seasonStack: [],
+        isCorruptedRound: false,
+        effectMultiplier: 1,
+      },
+      round: {
+        actNumber: 1,
+        roundNumber: 1,
+        roundType: options.roundType ?? 'Small',
+        scoreTarget: 300,
+        currentScore: options.currentScore ?? 0,
+        handsPlayed: options.handsPlayed ?? 1,
+        maxHands: 4,
+        discardsRemaining: options.discardsRemaining ?? 0,
+        maxDiscards: 3,
+        isCompleted: false,
+        isWon: false,
+      },
+      yakuMultipliers: new Map(),
+      detectedYakuIds: new Set(options.yakuIds ?? []),
+      lastHandScore: options.lastHandScore,
+      isConcealed: true,
+      winningTile: null,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any
+  }
+
+  /** Find a live decree whose (only) score effect carries this gate. */
+  function gatedDecree(gate: string): Decree {
+    const found = LIBRARY_DECREES.find((d) =>
+      [d.effect, ...(d.extraEffects ?? [])].some(
+        (e) =>
+          (e.type === 'additive_score' || e.type === 'multiplicative_score') &&
+          e.requires === gate
+      )
+    )
+    if (!found) throw new Error(`no decree gated on ${gate}`)
+    return found
+  }
+
+  function multiplierWith(decree: Decree, ctx: ReturnType<typeof contextFor>) {
+    const system = new DecreeSystem(10)
+    system.acquireDecree(decree)
+    const owned = system.getOwnedDecrees()
+    ctx.decrees = owned
+    const result = system.applyDecreeEffects(ctx, breakdown())
+    return { mult: result.decreeMultiplier, additive: result.additiveBonus }
+  }
+
+  const manzu = (rank: number, id: string) => new Tile(TileSuit.Manzu, rank, id)
+
+  it('pays a single-suit Decree only on a single-suit hand', () => {
+    const decree = gatedDecree('all_manzu')
+
+    const pure = multiplierWith(
+      decree,
+      contextFor({ tiles: [manzu(2, 'a'), manzu(3, 'b')], decrees: [] })
+    )
+    const mixed = multiplierWith(
+      decree,
+      contextFor({
+        tiles: [manzu(2, 'a'), new Tile(TileSuit.Pinzu, 3, 'b')],
+        decrees: [],
+      })
+    )
+
+    expect(pure.mult).toBeGreaterThan(1)
+    expect(mixed.mult).toBe(1)
+  })
+
+  it('pays an honors Decree only when enough honors are played', () => {
+    const decree = gatedDecree('three_plus_honors')
+
+    const enough = multiplierWith(
+      decree,
+      contextFor({
+        tiles: [
+          Tile.createWind(WindType.East, 'w1'),
+          Tile.createWind(WindType.South, 'w2'),
+          Tile.createDragon(DragonType.Red, 'd1'),
+        ],
+        decrees: [],
+      })
+    )
+    const notEnough = multiplierWith(
+      decree,
+      contextFor({ tiles: [Tile.createWind(WindType.East, 'w1')], decrees: [] })
+    )
+
+    expect(enough.mult).toBeGreaterThan(1)
+    expect(notEnough.mult).toBe(1)
+  })
+
+  it('pays a structure Decree only when the meld is present', () => {
+    const decree = gatedDecree('two_plus_triplets')
+
+    const withTriplets = multiplierWith(
+      decree,
+      contextFor({
+        melds: [{ type: MeldType.Triplet }, { type: MeldType.Triplet }],
+        decrees: [],
+      })
+    )
+    const withOne = multiplierWith(
+      decree,
+      contextFor({ melds: [{ type: MeldType.Triplet }], decrees: [] })
+    )
+
+    expect(withTriplets.additive + withTriplets.mult).toBeGreaterThan(
+      withOne.additive + withOne.mult
+    )
+  })
+
+  it('pays a Boss-round Decree only during a Boss round', () => {
+    const decree = gatedDecree('boss_round')
+
+    const boss = multiplierWith(decree, contextFor({ roundType: 'Boss', decrees: [] }))
+    const small = multiplierWith(decree, contextFor({ roundType: 'Small', decrees: [] }))
+
+    expect(boss.additive + boss.mult).toBeGreaterThan(small.additive + small.mult)
+  })
+
+  it('pays a yaku Decree only when that yaku scored', () => {
+    const decree = gatedDecree('yaku_toitoi')
+
+    const scored = multiplierWith(decree, contextFor({ yakuIds: ['toitoi'], decrees: [] }))
+    const notScored = multiplierWith(
+      decree,
+      contextFor({ yakuIds: ['tanyao'], decrees: [] })
+    )
+
+    expect(scored.mult).toBeGreaterThan(1)
+    expect(notScored.mult).toBe(1)
+  })
+
+  it('treats every yakuman as satisfying the yakuman gate', () => {
+    const decree = gatedDecree('yaku_yakuman')
+
+    const kokushi = multiplierWith(decree, contextFor({ yakuIds: ['kokushi'], decrees: [] }))
+    const daiSangen = multiplierWith(
+      decree,
+      contextFor({ yakuIds: ['dai_sangen'], decrees: [] })
+    )
+    const ordinary = multiplierWith(
+      decree,
+      contextFor({ yakuIds: ['tanyao'], decrees: [] })
+    )
+
+    expect(kokushi.additive + kokushi.mult).toBeGreaterThan(
+      ordinary.additive + ordinary.mult
+    )
+    expect(daiSangen.additive + daiSangen.mult).toBeGreaterThan(
+      ordinary.additive + ordinary.mult
+    )
+  })
+
+  it('pays a no-discards Decree only on an untouched discard budget', () => {
+    const decree = gatedDecree('no_discards_used')
+
+    const untouched = multiplierWith(
+      decree,
+      contextFor({ discardsRemaining: 3, decrees: [] })
+    )
+    const spent = multiplierWith(
+      decree,
+      contextFor({ discardsRemaining: 1, decrees: [] })
+    )
+
+    expect(untouched.additive + untouched.mult).toBeGreaterThan(
+      spent.additive + spent.mult
+    )
+  })
+
+  it('never fires the last-hand gate before a hand has been played', () => {
+    const decree = gatedDecree('last_hand_scored_zero')
+
+    const noHandYet = multiplierWith(
+      decree,
+      contextFor({ lastHandScore: undefined, decrees: [] })
+    )
+    const scoredZero = multiplierWith(
+      decree,
+      contextFor({ lastHandScore: 0, decrees: [] })
+    )
+
+    expect(noHandYet.mult).toBe(1)
+    expect(scoredZero.mult).toBeGreaterThan(1)
+  })
+
+  it('gates every authored conditional Decree', () => {
+    const gated = LIBRARY_DECREES.filter((d) =>
+      [d.effect, ...(d.extraEffects ?? [])].some(
+        (e) =>
+          (e.type === 'additive_score' || e.type === 'multiplicative_score') &&
+          e.requires !== undefined
+      )
+    )
+
+    expect(gated.length).toBeGreaterThanOrEqual(40)
   })
 })
 

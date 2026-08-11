@@ -24,6 +24,7 @@ import type {
   DecreeCategory,
   DecreeEffect,
   DecreeRarity,
+  GateCondition,
   RetriggerTarget,
   ScalingSource,
 } from '../systems/types'
@@ -59,6 +60,58 @@ const SCALING_CONDITIONS: Record<string, ScalingSource> = {
   'per Flower': 'flower_count',
   'per Season': 'season_count',
   'per active Season': 'season_count',
+}
+
+/**
+ * Author conditions that gate an effect, mapped to the requirement the engine
+ * checks. A gated Decree pays nothing unless its requirement holds, which is
+ * the difference between a conditional reward and an unconditional one.
+ */
+const GATE_CONDITIONS: Record<string, GateCondition> = {
+  // Tile composition
+  'if all Manzu': 'all_manzu',
+  'if all Pinzu': 'all_pinzu',
+  'if all Souzu': 'all_souzu',
+  'if hand contains Manzu': 'contains_manzu',
+  'if hand contains Pinzu': 'contains_pinzu',
+  'if hand contains Souzu': 'contains_souzu',
+  'if hand contains Wind': 'contains_wind',
+  'if hand contains Dragon': 'contains_dragon',
+  'if hand is half Manzu': 'half_manzu',
+  'if hand is half Pinzu': 'half_pinzu',
+  'if hand is half Souzu': 'half_souzu',
+  'if single suit': 'single_suit',
+  'if all 3 suits': 'all_three_suits',
+  'if all Honors': 'all_honors',
+  'if 3+ Honors': 'three_plus_honors',
+  'if 4+ Terminals': 'four_plus_terminals',
+  'if no Simples': 'no_simples',
+  'if has 1 and 9': 'has_one_and_nine',
+  'if Wind and Dragon': 'wind_and_dragon',
+  // Hand structure
+  'if hand contains pair': 'contains_pair',
+  'if hand contains sequence': 'contains_sequence',
+  'if hand contains triplet': 'contains_triplet',
+  'if 2+ triplets': 'two_plus_triplets',
+  'if 3 sequences': 'three_sequences',
+  // Round state
+  'during Boss rounds': 'boss_round',
+  'if no discards used': 'no_discards_used',
+  'if first hand wins': 'first_hand',
+  'if last hand was 0': 'last_hand_scored_zero',
+  'if 2x over target': 'double_target',
+  // Yaku scored
+  'when scoring Riichi': 'yaku_riichi',
+  'when scoring Tanyao': 'yaku_tanyao',
+  'when scoring Pinfu': 'yaku_pinfu',
+  'when scoring Yakuhai': 'yaku_yakuhai',
+  'when scoring Ittsu': 'yaku_ittsu',
+  'when scoring Toitoi': 'yaku_toitoi',
+  'when scoring Sanshoku': 'yaku_sanshoku',
+  'when scoring Honitsu': 'yaku_honitsu',
+  'when scoring Chinitsu': 'yaku_chinitsu',
+  'when scoring Chanta': 'yaku_chanta',
+  'when scoring Yakuman': 'yaku_yakuman',
 }
 
 /**
@@ -198,6 +251,11 @@ function scalingFor(condition: string | undefined): ScalingSource | undefined {
   return condition ? SCALING_CONDITIONS[condition] : undefined
 }
 
+/** The requirement an author condition gates on, if any. */
+function gateFor(condition: string | undefined): GateCondition | undefined {
+  return condition ? GATE_CONDITIONS[condition] : undefined
+}
+
 /**
  * Translate one authored effect. Returns null when the engine has no
  * implementation for it, which disqualifies the whole Decree.
@@ -214,6 +272,7 @@ function convertEffect(
         description,
         basePoints: effect.value,
         scaleBy: scalingFor(effect.condition),
+        requires: gateFor(effect.condition),
       }
 
     case 'additive_mult':
@@ -223,6 +282,7 @@ function convertEffect(
         description,
         multiplier: effect.value,
         scaleBy: scalingFor(effect.condition),
+        requires: gateFor(effect.condition),
       }
 
     case 'multiplicative_mult':
@@ -232,6 +292,7 @@ function convertEffect(
         description,
         multiplier: effect.value,
         scaleBy: scalingFor(effect.condition),
+        requires: gateFor(effect.condition),
       }
 
     case 'gold_gain':

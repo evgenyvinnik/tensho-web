@@ -127,6 +127,11 @@ export interface OrchestratorState {
    * (Immortal Decree). 1 while no such rescue has happened.
    */
   lossPreventionScorePenalty: number
+  /**
+   * What the previous hand of this round scored. Undefined before the round's
+   * first hand, so a Decree gated on "last hand was 0" cannot fire on it.
+   */
+  lastHandScore: number | undefined
   discardsRemaining: number
   redrawsRemaining: number
   targetScore: number
@@ -265,6 +270,7 @@ export class GameOrchestrator {
       handsRemaining: this.config.handsPerRound,
       handsAllowance: this.config.handsPerRound,
       lossPreventionScorePenalty: 1,
+      lastHandScore: undefined,
       discardsRemaining: this.config.discardsPerRound,
       redrawsRemaining: this.config.redrawsPerRound,
       targetScore: 300,
@@ -461,6 +467,7 @@ export class GameOrchestrator {
     }
 
     this.state.handsAllowance = this.state.handsRemaining
+    this.state.lastHandScore = undefined
   }
 
   /** Structural exceptions the active Decrees grant to hand validation. */
@@ -1273,6 +1280,7 @@ export class GameOrchestrator {
     const previousScore = this.state.score
     this.state.score += scoreResult.finalScore
     this.state.runScore += scoreResult.finalScore
+    this.state.lastHandScore = scoreResult.finalScore
     this.state.handsRemaining--
 
     if (scoreResult.goldEarned > 0) {
@@ -1404,6 +1412,7 @@ export class GameOrchestrator {
     const previousScore = this.state.score
     this.state.score += finalScore
     this.state.runScore += finalScore
+    this.state.lastHandScore = finalScore
     this.state.handsRemaining--
 
     if (scoreResult.goldEarned > 0) {
@@ -2549,6 +2558,7 @@ export class GameOrchestrator {
       yakuMultipliers: new Map(),
       isConcealed: true,
       winningTile: tiles[tiles.length - 1],
+      lastHandScore: this.state.lastHandScore,
     }
 
     // Apply season modifiers (includes corrupted effects)
@@ -2663,6 +2673,12 @@ export class GameOrchestrator {
     if (this.state.roundManager.checkMandateEffect('halve_score').active) {
       baseBreakdown.yakuMultiplier *= 0.5
     }
+
+    // Gates that ask "did this hand score X?" must see the final yaku list,
+    // after Mandates have removed any they suppress.
+    systemContext.detectedYakuIds = new Set(
+      baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id)
+    )
 
     // Apply celestial orb bonuses for each detected yaku
     for (const detectedYaku of baseBreakdown.detectedYaku) {
