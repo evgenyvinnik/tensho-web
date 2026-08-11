@@ -108,10 +108,8 @@ export function Popup({
       <div className="max-h-[calc(100dvh-24px)] overflow-auto px-12 pb-7 pt-14 sm:px-16 sm:pb-9 md:px-20">
         {/* Header */}
         {title && (
-          <div
-            className={`mb-4 flex items-center justify-between ${showCloseButton ? 'pr-10' : ''}`}
-          >
-            <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-2xl">
+          <div className="mb-4 flex items-center justify-center">
+            <h2 className="w-full text-center text-xl font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-2xl">
               {title}
             </h2>
           </div>
