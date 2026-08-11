@@ -553,6 +553,28 @@ a {
   animation: float-subtle 4s ease-in-out infinite;
 }
 
+/* Generated miniatures share one restrained interaction language. */
+.game-illustration {
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.45));
+  transform: translateY(0) scale(1);
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.group:not(:disabled):hover .game-illustration,
+button:not(:disabled):hover .game-illustration,
+[role='button']:hover .game-illustration {
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 5px rgba(224, 165, 0, 0.3));
+  transform: translateY(-1px) scale(1.06);
+}
+
+button:active .game-illustration,
+[role='button']:active .game-illustration {
+  transform: translateY(0) scale(0.98);
+}
+
 /* ============================================================================
    Scrollbar Styling
    ============================================================================ */

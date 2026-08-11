@@ -7,6 +7,8 @@
  * @module components/gameplay/ConsumablesBar
  */
 
+import { illustrationAssets } from '../../utils/assets'
+
 // =============================================================================
 // TYPE DEFINITIONS
 // =============================================================================
@@ -21,8 +23,8 @@ interface ConsumableItem {
   japanese: string
   /** Current count */
   count: number
-  /** Emoji icon */
-  emoji: string
+  /** Generated miniature illustration */
+  illustration: string
   /** Border color class */
   color: string
   /** Use handler */
@@ -55,9 +57,9 @@ export interface ConsumablesBarProps {
  * Horizontal bar for accessing consumable items.
  *
  * Displays three consumable types with counts:
- * - Fate Seals (運命) - Purple border, 🎴 icon
- * - Celestial Orbs (天球) - Blue border, 🔮 icon
- * - Void Scripts (虚空) - Gray border, 📜 icon
+ * - Fate Seals (運命) - Purple border, lacquer seal illustration
+ * - Celestial Orbs (天球) - Blue border, armillary orb illustration
+ * - Void Scripts (虚空) - Gray border, lacquer scroll illustration
  *
  * Each button is disabled when count is 0.
  * Meets 44px minimum touch target requirement.
@@ -75,7 +77,7 @@ export function ConsumablesBar({
       name: 'Fate Seal',
       japanese: '運命',
       count: fateSeals,
-      emoji: '🎴',
+      illustration: illustrationAssets.consumables.fateSeal,
       color: 'border-purple-500',
       onUse: onUseFateSeal,
     },
@@ -83,7 +85,7 @@ export function ConsumablesBar({
       name: 'Celestial Orb',
       japanese: '天球',
       count: celestialOrbs,
-      emoji: '🔮',
+      illustration: illustrationAssets.consumables.celestialOrb,
       color: 'border-blue-500',
       onUse: onUseCelestialOrb,
     },
@@ -91,7 +93,7 @@ export function ConsumablesBar({
       name: 'Void Script',
       japanese: '虚空',
       count: voidScripts,
-      emoji: '📜',
+      illustration: illustrationAssets.consumables.voidScript,
       color: 'border-gray-500',
       onUse: onUseVoidScript,
     },
@@ -105,7 +107,7 @@ export function ConsumablesBar({
           onClick={item.onUse}
           disabled={item.count === 0}
           className={`
-            game-consumable flex items-center justify-center gap-0 px-1 py-1 min-[360px]:gap-1 min-[360px]:px-2
+            game-consumable group flex items-center justify-center gap-0 px-1 py-1 min-[360px]:gap-1 min-[360px]:px-2
             bg-[var(--color-dark-forest)] rounded-lg
             border ${item.color}
             ${item.count > 0 ? 'opacity-100 hover:bg-[var(--color-forest-green)]' : 'opacity-40'}
@@ -114,7 +116,12 @@ export function ConsumablesBar({
           title={item.name}
           aria-label={`${item.name} (${item.count} available)`}
         >
-          <span className="text-lg">{item.emoji}</span>
+          <img
+            src={item.illustration}
+            alt=""
+            aria-hidden="true"
+            className="game-illustration h-8 w-8 shrink-0 object-contain"
+          />
           <span className="hidden text-sm text-[var(--color-beige-white)] font-mono min-[360px]:inline">
             ×{item.count}
           </span>

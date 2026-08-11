@@ -22,6 +22,7 @@ import { getCurrentLanguage } from '../../i18n'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
+import { illustrationAssets } from '../../utils/assets'
 
 const AnimatedDiv = animated('div')
 
@@ -112,6 +113,20 @@ function getItemTypeIcon(itemType: string): string {
       return '\uD83C\uDC04' // Mahjong tile
     default:
       return '\u2753' // Question mark
+  }
+}
+
+/** Get generated artwork for the consumable item types that have it. */
+function getItemTypeIllustration(itemType: string): string | null {
+  switch (itemType) {
+    case 'FateSeal':
+      return illustrationAssets.consumables.fateSeal
+    case 'CelestialOrb':
+      return illustrationAssets.consumables.celestialOrb
+    case 'VoidScript':
+      return illustrationAssets.consumables.voidScript
+    default:
+      return null
   }
 }
 
@@ -333,6 +348,7 @@ export function ShopItemCard({
   }
 
   const icon = getItemTypeIcon(offering.itemType)
+  const illustration = getItemTypeIllustration(offering.itemType)
   const rarityColor = getRarityBorderColor(rarity)
   const hasDiscount =
     offering.baseCost + offering.editionCost > offering.finalCost
@@ -358,7 +374,7 @@ export function ShopItemCard({
 
   return (
     <AnimatedDiv
-      className="relative min-w-0 w-full rounded-xl overflow-hidden cursor-pointer"
+      className="group relative min-w-0 w-full rounded-xl overflow-hidden cursor-pointer"
       style={{
         transform: spring.scale.to((s) => `scale(${s})`),
         borderWidth: spring.borderWidth.to((w) => `${w}px`),
@@ -395,6 +411,13 @@ export function ShopItemCard({
                 color={rarityColor}
               />
             </div>
+          ) : illustration ? (
+            <img
+              src={illustration}
+              alt=""
+              aria-hidden="true"
+              className="game-illustration mx-auto h-14 w-14 object-contain"
+            />
           ) : (
             <span className="text-3xl">{icon}</span>
           )}

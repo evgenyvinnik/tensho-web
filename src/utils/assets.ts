@@ -3,12 +3,12 @@
  * Provides utilities for accessing game assets (images, audio, fonts)
  */
 
-import { TileSuit } from '../core/Tile';
-import { withBasePath } from './basePath';
+import { TileSuit } from '../core/Tile'
+import { withBasePath } from './basePath'
 
 // Base paths for assets
-const ASSET_BASE = withBasePath('assets');
-const MAHJONG_PNG_BASE = `${ASSET_BASE}/Mahjong/file/png`;
+const ASSET_BASE = withBasePath('assets')
+const MAHJONG_PNG_BASE = `${ASSET_BASE}/Mahjong/file/png`
 
 // ============================================================================
 // Tile Image Paths
@@ -25,7 +25,7 @@ const SUIT_TO_FILE_PREFIX: Record<TileSuit, string> = {
   [TileSuit.Dragon]: 'Dragons',
   [TileSuit.Flower]: 'Flower',
   [TileSuit.Season]: 'Seasons',
-};
+}
 
 /**
  * Get the image path for a specific tile
@@ -34,15 +34,15 @@ const SUIT_TO_FILE_PREFIX: Record<TileSuit, string> = {
  * @returns The path to the tile image
  */
 export function getTileImagePath(suit: TileSuit, rank: number): string {
-  const prefix = SUIT_TO_FILE_PREFIX[suit];
-  return `${MAHJONG_PNG_BASE}/tiles/${prefix} (${rank}).png`;
+  const prefix = SUIT_TO_FILE_PREFIX[suit]
+  return `${MAHJONG_PNG_BASE}/tiles/${prefix} (${rank}).png`
 }
 
 /**
  * Get the path for a tile back image
  */
 export function getTileBackPath(): string {
-  return `${MAHJONG_PNG_BASE}/tiles/Mahjon2g_05.png`;
+  return `${MAHJONG_PNG_BASE}/tiles/Mahjon2g_05.png`
 }
 
 // ============================================================================
@@ -55,7 +55,7 @@ export const menuAssets = {
   playButton: `${MAHJONG_PNG_BASE}/menu screen/Play Button.png`,
   optionButton: `${MAHJONG_PNG_BASE}/menu screen/Option Button.png`,
   bottom: `${MAHJONG_PNG_BASE}/menu screen/Botom.png`,
-} as const;
+} as const
 
 export const gameScreenAssets = {
   background: `${MAHJONG_PNG_BASE}/game screen/BG.png`,
@@ -70,7 +70,7 @@ export const gameScreenAssets = {
   icon3: `${MAHJONG_PNG_BASE}/game screen/Icon (3).png`,
   star: `${MAHJONG_PNG_BASE}/game screen/Star.png`,
   textArea: `${MAHJONG_PNG_BASE}/game screen/Text Area.png`,
-} as const;
+} as const
 
 export const popupAssets = {
   background: `${MAHJONG_PNG_BASE}/popup/BG.png`,
@@ -83,7 +83,27 @@ export const popupAssets = {
   checkboxOn: `${MAHJONG_PNG_BASE}/popup/CheckBox ON.png`,
   checkboxOff: `${MAHJONG_PNG_BASE}/popup/CheckBox OFF.png`,
   star: `${MAHJONG_PNG_BASE}/popup/Star.png`,
-} as const;
+} as const
+
+/**
+ * Generated miniature illustrations used for high-value game concepts.
+ *
+ * These stay separate from small functional controls, which should continue
+ * to use SVG so they remain crisp at every size.
+ */
+export const illustrationAssets = {
+  consumables: {
+    fateSeal: `${ASSET_BASE}/illustrations/fate-seal.png`,
+    celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.png`,
+    voidScript: `${ASSET_BASE}/illustrations/void-script.png`,
+  },
+  seasons: {
+    Spring: `${ASSET_BASE}/illustrations/season-spring.png`,
+    Summer: `${ASSET_BASE}/illustrations/season-summer.png`,
+    Autumn: `${ASSET_BASE}/illustrations/season-autumn.png`,
+    Winter: `${ASSET_BASE}/illustrations/season-winter.png`,
+  },
+} as const
 
 // ============================================================================
 // Audio Asset Paths
@@ -94,33 +114,34 @@ export const audioAssets = {
   japaneseWinter: `${ASSET_BASE}/JapaneseWinter.mp3`,
   lotusPond: `${ASSET_BASE}/Lotus Pond.mp3`,
   theDojo: `${ASSET_BASE}/TheDojo.mp3`,
-} as const;
+} as const
 
 /** Display names for audio tracks */
-export const audioTrackDisplayNames: Record<keyof typeof audioAssets, string> = {
-  dragonDance: 'Dragon Dance',
-  japaneseWinter: 'Japanese Winter',
-  lotusPond: 'Lotus Pond',
-  theDojo: 'The Dojo',
-} as const;
+export const audioTrackDisplayNames: Record<keyof typeof audioAssets, string> =
+  {
+    dragonDance: 'Dragon Dance',
+    japaneseWinter: 'Japanese Winter',
+    lotusPond: 'Lotus Pond',
+    theDojo: 'The Dojo',
+  } as const
 
 /** Array of all music track URLs for random playback */
-export const MUSIC_TRACKS = Object.values(audioAssets);
+export const MUSIC_TRACKS = Object.values(audioAssets)
 
-export type AudioTrack = keyof typeof audioAssets;
+export type AudioTrack = keyof typeof audioAssets
 
 /**
  * Get all available audio tracks
  */
 export function getAudioTracks(): AudioTrack[] {
-  return Object.keys(audioAssets) as AudioTrack[];
+  return Object.keys(audioAssets) as AudioTrack[]
 }
 
 /**
  * Get display name for a track
  */
 export function getTrackDisplayName(track: AudioTrack): string {
-  return audioTrackDisplayNames[track];
+  return audioTrackDisplayNames[track]
 }
 
 // ============================================================================
@@ -131,7 +152,7 @@ export const fontAssets = {
   longCang: `${ASSET_BASE}/LongCang-Regular.ttf`,
   notoSansJP: `${ASSET_BASE}/NotoSansJP-Regular.ttf`,
   go3v2: `${ASSET_BASE}/go3v2.ttf`,
-} as const;
+} as const
 
 // ============================================================================
 // Image Preloading Utilities
@@ -142,72 +163,74 @@ export const fontAssets = {
  */
 export function preloadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = src
+  })
 }
 
 /**
  * Preload multiple images in parallel
  */
-export async function preloadImages(sources: string[]): Promise<HTMLImageElement[]> {
-  return Promise.all(sources.map(preloadImage));
+export async function preloadImages(
+  sources: string[]
+): Promise<HTMLImageElement[]> {
+  return Promise.all(sources.map(preloadImage))
 }
 
 /**
  * Preload all tile images
  */
 export async function preloadTileImages(): Promise<void> {
-  const tilePaths: string[] = [];
+  const tilePaths: string[] = []
 
   // Suited tiles (1-9)
-  const suitedSuits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu];
+  const suitedSuits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu]
   for (const suit of suitedSuits) {
     for (let rank = 1; rank <= 9; rank++) {
-      tilePaths.push(getTileImagePath(suit, rank));
+      tilePaths.push(getTileImagePath(suit, rank))
     }
   }
 
   // Wind tiles (1-4)
   for (let rank = 1; rank <= 4; rank++) {
-    tilePaths.push(getTileImagePath(TileSuit.Wind, rank));
+    tilePaths.push(getTileImagePath(TileSuit.Wind, rank))
   }
 
   // Dragon tiles (1-3)
   for (let rank = 1; rank <= 3; rank++) {
-    tilePaths.push(getTileImagePath(TileSuit.Dragon, rank));
+    tilePaths.push(getTileImagePath(TileSuit.Dragon, rank))
   }
 
   // Flower tiles (1-4)
   for (let rank = 1; rank <= 4; rank++) {
-    tilePaths.push(getTileImagePath(TileSuit.Flower, rank));
+    tilePaths.push(getTileImagePath(TileSuit.Flower, rank))
   }
 
   // Season tiles (1-4)
   for (let rank = 1; rank <= 4; rank++) {
-    tilePaths.push(getTileImagePath(TileSuit.Season, rank));
+    tilePaths.push(getTileImagePath(TileSuit.Season, rank))
   }
 
   // Tile back
-  tilePaths.push(getTileBackPath());
+  tilePaths.push(getTileBackPath())
 
-  await preloadImages(tilePaths);
+  await preloadImages(tilePaths)
 }
 
 /**
  * Preload menu screen assets
  */
 export async function preloadMenuAssets(): Promise<void> {
-  await preloadImages(Object.values(menuAssets));
+  await preloadImages(Object.values(menuAssets))
 }
 
 /**
  * Preload game screen assets
  */
 export async function preloadGameScreenAssets(): Promise<void> {
-  await preloadImages(Object.values(gameScreenAssets));
+  await preloadImages(Object.values(gameScreenAssets))
 }
 
 /**
@@ -218,12 +241,12 @@ export async function preloadAllUIAssets(): Promise<void> {
     preloadMenuAssets(),
     preloadGameScreenAssets(),
     preloadImages(Object.values(popupAssets)),
-  ]);
+  ])
 }
 
 /**
  * Preload all game assets (tiles + UI)
  */
 export async function preloadAllAssets(): Promise<void> {
-  await Promise.all([preloadTileImages(), preloadAllUIAssets()]);
+  await Promise.all([preloadTileImages(), preloadAllUIAssets()])
 }

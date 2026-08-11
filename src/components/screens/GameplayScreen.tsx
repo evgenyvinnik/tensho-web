@@ -27,6 +27,7 @@ import { useItemText } from '../../i18n/useItemText'
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
 import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
 import { ConsumablesBar } from '../gameplay/ConsumablesBar'
+import { illustrationAssets } from '../../utils/assets'
 import { GameplayTopBar } from '../gameplay/GameplayTopBar'
 import { ScorePanel } from '../gameplay/ScorePanel'
 import { ActionBar } from '../gameplay/ActionBar'
@@ -795,7 +796,12 @@ export function GameplayScreen() {
                     className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-purple-500/50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">🎴</span>
+                      <img
+                        src={illustrationAssets.consumables.fateSeal}
+                        alt=""
+                        aria-hidden="true"
+                        className="game-illustration h-11 w-11 shrink-0 object-contain"
+                      />
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
                           {itemText.name('seals', seal)}
@@ -816,7 +822,12 @@ export function GameplayScreen() {
                     className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-blue-500/50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">🔮</span>
+                      <img
+                        src={illustrationAssets.consumables.celestialOrb}
+                        alt=""
+                        aria-hidden="true"
+                        className="game-illustration h-11 w-11 shrink-0 object-contain"
+                      />
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
                           {itemText.name('orbs', orb)}
@@ -840,7 +851,12 @@ export function GameplayScreen() {
                     className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-gray-500/50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">📜</span>
+                      <img
+                        src={illustrationAssets.consumables.voidScript}
+                        alt=""
+                        aria-hidden="true"
+                        className="game-illustration h-11 w-11 shrink-0 object-contain"
+                      />
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
                           {itemText.name('scripts', script)}

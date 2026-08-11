@@ -47,10 +47,20 @@ export interface FloraTrackCompactProps {
  * - Shows active season with corruption indicator
  * - Tooltips on hover for uncollected flowers
  */
-export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand }: FloraTrackCompactProps) {
+export function FloraTrackCompact({
+  flowers,
+  activeSeason,
+  isCorrupted,
+  onExpand,
+}: FloraTrackCompactProps) {
   const [showTooltip, setShowTooltip] = useState<FlowerVariant | null>(null)
   const collectedSet = new Set(flowers)
-  const allFlowers: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
+  const allFlowers: FlowerVariant[] = [
+    'Plum',
+    'Orchid',
+    'Chrysanthemum',
+    'Bamboo',
+  ]
 
   return (
     <div
@@ -78,7 +88,12 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
                   ${!isCollected ? 'opacity-30 grayscale' : ''}
                 `}
               >
-                <TileImage tile={flowerTile} size="small" disabled={!isCollected} showTooltip={false} />
+                <TileImage
+                  tile={flowerTile}
+                  size="small"
+                  disabled={!isCollected}
+                  showTooltip={false}
+                />
               </div>
 
               {/* Effect text (only show for collected flowers) */}
@@ -102,7 +117,11 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
       {/* Set bonus indicator */}
       {flowers.length >= 2 && (
         <div className="hidden text-center text-xs text-green-400 md:mt-1 md:block">
-          {flowers.length >= 4 ? 'x2 All Effects!' : flowers.length >= 3 ? 'Special Decrees' : '+1 Decree Slot'}
+          {flowers.length >= 4
+            ? 'x2 All Effects!'
+            : flowers.length >= 3
+              ? 'Special Decrees'
+              : '+1 Decree Slot'}
         </div>
       )}
 
@@ -110,9 +129,18 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
       {activeSeason && (
         <div className="hidden flex-col gap-0.5 border-t border-[var(--color-metallic-gold)]/30 md:mt-1 md:flex md:pt-1">
           <div className="flex items-center justify-center gap-1">
-            <span className="text-xs text-[var(--color-beige-white)] opacity-60">Season:</span>
-            <span className="text-sm">{SEASON_DATA[activeSeason].emoji}</span>
-            <span className={`text-xs font-bold ${isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color}`}>
+            <span className="text-xs text-[var(--color-beige-white)] opacity-60">
+              Season:
+            </span>
+            <img
+              src={SEASON_DATA[activeSeason].illustration}
+              alt=""
+              aria-hidden="true"
+              className={`game-illustration h-6 w-6 object-contain ${isCorrupted ? 'grayscale' : ''}`}
+            />
+            <span
+              className={`text-xs font-bold ${isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color}`}
+            >
               {isCorrupted ? 'Corrupted' : activeSeason}
             </span>
           </div>
@@ -126,13 +154,18 @@ export function FloraTrackCompact({ flowers, activeSeason, isCorrupted, onExpand
 
       {activeSeason && (
         <span
-          className={`px-1 text-sm md:hidden ${
+          className={`px-1 md:hidden ${
             isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color
           }`}
           title={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason}: ${SEASON_BASE_EFFECTS[activeSeason].description}`}
           aria-label={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason} season`}
         >
-          {SEASON_DATA[activeSeason].emoji}
+          <img
+            src={SEASON_DATA[activeSeason].illustration}
+            alt=""
+            aria-hidden="true"
+            className={`game-illustration h-7 w-7 object-contain ${isCorrupted ? 'grayscale' : ''}`}
+          />
         </span>
       )}
     </div>

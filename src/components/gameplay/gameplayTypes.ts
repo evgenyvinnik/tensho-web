@@ -8,6 +8,7 @@
 
 import { DecreeRarity, FlowerVariant, SeasonVariant } from '../../systems/types'
 import { getCurrentLanguage } from '../../i18n'
+import { illustrationAssets } from '../../utils/assets'
 
 // =============================================================================
 // ROUND TYPE CONFIGURATION
@@ -103,10 +104,26 @@ export interface FlowerDisplayData {
  * Flower display configurations
  */
 export const FLOWER_DATA: Record<FlowerVariant, FlowerDisplayData> = {
-  Plum: { rank: 1, effect: '+5% per sequence', color: 'from-pink-400 to-pink-600' },
-  Orchid: { rank: 2, effect: '+5% per honor', color: 'from-purple-400 to-purple-600' },
-  Chrysanthemum: { rank: 3, effect: '+5% per concealed', color: 'from-yellow-400 to-yellow-600' },
-  Bamboo: { rank: 4, effect: '+5% per terminal', color: 'from-green-400 to-green-600' },
+  Plum: {
+    rank: 1,
+    effect: '+5% per sequence',
+    color: 'from-pink-400 to-pink-600',
+  },
+  Orchid: {
+    rank: 2,
+    effect: '+5% per honor',
+    color: 'from-purple-400 to-purple-600',
+  },
+  Chrysanthemum: {
+    rank: 3,
+    effect: '+5% per concealed',
+    color: 'from-yellow-400 to-yellow-600',
+  },
+  Bamboo: {
+    rank: 4,
+    effect: '+5% per terminal',
+    color: 'from-green-400 to-green-600',
+  },
 }
 
 // =============================================================================
@@ -117,8 +134,8 @@ export const FLOWER_DATA: Record<FlowerVariant, FlowerDisplayData> = {
  * Display data for each season
  */
 export interface SeasonDisplayData {
-  /** Emoji representation */
-  emoji: string
+  /** Generated miniature illustration */
+  illustration: string
   /** Japanese name */
   japanese: string
   /** Text color class */
@@ -129,10 +146,26 @@ export interface SeasonDisplayData {
  * Season display configurations
  */
 export const SEASON_DATA: Record<SeasonVariant, SeasonDisplayData> = {
-  Spring: { emoji: '🌱', japanese: '春', color: 'text-green-400' },
-  Summer: { emoji: '☀️', japanese: '夏', color: 'text-yellow-400' },
-  Autumn: { emoji: '🍂', japanese: '秋', color: 'text-orange-400' },
-  Winter: { emoji: '❄️', japanese: '冬', color: 'text-blue-400' },
+  Spring: {
+    illustration: illustrationAssets.seasons.Spring,
+    japanese: '春',
+    color: 'text-green-400',
+  },
+  Summer: {
+    illustration: illustrationAssets.seasons.Summer,
+    japanese: '夏',
+    color: 'text-yellow-400',
+  },
+  Autumn: {
+    illustration: illustrationAssets.seasons.Autumn,
+    japanese: '秋',
+    color: 'text-orange-400',
+  },
+  Winter: {
+    illustration: illustrationAssets.seasons.Winter,
+    japanese: '冬',
+    color: 'text-blue-400',
+  },
 }
 
 // =============================================================================
@@ -177,5 +210,7 @@ export interface YakuRevealState {
  */
 export function isCJKLanguage(): boolean {
   const lang = getCurrentLanguage()
-  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  return (
+    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  )
 }
