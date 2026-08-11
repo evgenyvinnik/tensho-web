@@ -20,7 +20,7 @@ import {
   ScoreBreakdown,
   Sticker,
 } from './types'
-import { Tile, TileSuit } from '../core/Tile'
+import { DragonType, Tile, TileSuit } from '../core/Tile'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 
@@ -40,7 +40,18 @@ function allEffectsOf(decree: Decree): DecreeEffect[] {
  * "per Season" Decree pays for every Season in play rather than only the
  * topmost one.
  */
-function countScalingSource(source: ScalingSource, context: ScoringContext): number {
+function countScalingSource(
+  source: ScalingSource,
+  context: ScoringContext,
+  breakdown: ScoreBreakdown
+): number {
+  const tiles = context.tiles
+  const countTiles = (predicate: (tile: Tile) => boolean): number =>
+    tiles.filter(predicate).length
+  const meldCount = (type: MeldType): number =>
+    context.melds.filter((meld) => meld.type === type).length
+  const round = context.round
+
   switch (source) {
     case 'flower_count':
       return context.flowers.flowers.length
@@ -49,9 +60,60 @@ function countScalingSource(source: ScalingSource, context: ScoringContext): num
         context.season.seasonStack.length,
         context.season.activeSeason ? 1 : 0
       )
+
+    case 'terminal_tiles':
+      return countTiles((tile) => tile.isTerminal)
+    case 'simple_tiles':
+      return countTiles((tile) => tile.isSimple)
+    case 'green_tiles':
+      return countTiles(isGreenTile)
+    case 'rank_one_tiles':
+      return countTiles((tile) => tile.isSuited && tile.rank === 1)
+    case 'rank_five_tiles':
+      return countTiles((tile) => tile.isSuited && tile.rank === 5)
+    case 'rank_nine_tiles':
+      return countTiles((tile) => tile.isSuited && tile.rank === 9)
+
+    case 'sequences':
+      return meldCount(MeldType.Sequence)
+    case 'triplets':
+      return meldCount(MeldType.Triplet)
+    case 'yaku_this_hand':
+      return context.detectedYakuIds?.size ?? 0
+    case 'base_chips_per_100':
+      return Math.floor(breakdown.basePoints / 100)
+
+    case 'hands_this_round':
+      return round.handsPlayed
+    case 'hands_this_run':
+      return context.handsPlayedThisRun ?? 0
+    case 'rounds_this_act':
+      return Math.max(0, round.roundNumber - 1)
+    case 'discards_used':
+      return Math.max(0, round.maxDiscards - round.discardsRemaining)
+    case 'acts_completed':
+      return Math.max(0, round.actNumber - 1)
+    case 'acts_beyond_four':
+      return Math.max(0, round.actNumber - 4)
+
+    case 'gold_per_5':
+      return Math.floor((context.gold ?? 0) / 5)
+    case 'gold_per_10':
+      return Math.floor((context.gold ?? 0) / 10)
+
     default:
       return 0
   }
+}
+
+/**
+ * The green tiles of Ryuuiisou: Souzu 2, 3, 4, 6, 8 and the Green Dragon.
+ * These are the only tiles printed entirely in green.
+ */
+function isGreenTile(tile: Tile): boolean {
+  if (tile.suit === TileSuit.Dragon) return tile.rank === DragonType.Green
+  if (tile.suit !== TileSuit.Souzu) return false
+  return [2, 3, 4, 6, 8].includes(tile.rank)
 }
 
 /** Yaku gate names mapped to the yaku ids that satisfy them. */
@@ -924,12 +986,21 @@ export class DecreeSystem {
         if (effect.requires && !gateAllows(effect.requires, context)) break
         // A scaled bonus is paid once per unit it scales with, so an empty
         // collection pays nothing rather than the flat amount.
-        const stacks = effect.scaleBy ? countScalingSource(effect.scaleBy, context) : 1
+        const stacks = effect.scaleBy
+          ? countScalingSource(effect.scaleBy, context, breakdown)
+          : 1
+        // Some Decrees cap their own growth; the cap bounds the scaled bonus
+        // before Flower empowerment, so the printed ceiling is the one meant.
+        const capped = (value: number): number =>
+          effect.maxBonus === undefined
+            ? value * stacks
+            : Math.min(value * stacks, effect.maxBonus)
+
         if (effect.basePoints) {
-          result.additiveBonus += effect.basePoints * stacks * flowerBonus
+          result.additiveBonus += capped(effect.basePoints) * flowerBonus
         }
         if (effect.multiplier) {
-          result.decreeMultiplier += effect.multiplier * stacks * flowerBonus
+          result.decreeMultiplier += capped(effect.multiplier) * flowerBonus
         }
         break
       }
@@ -946,7 +1017,7 @@ export class DecreeSystem {
         } else if (effect.scaleBy) {
           // Compounds per unit, matching how dominant-suit scaling already
           // reads: one application of the multiplier for each one.
-          const stacks = countScalingSource(effect.scaleBy, context)
+          const stacks = countScalingSource(effect.scaleBy, context, breakdown)
           result.decreeMultiplier *= effect.multiplier ** stacks
         } else {
           result.decreeMultiplier *= effect.multiplier

@@ -132,6 +132,8 @@ export interface OrchestratorState {
    * first hand, so a Decree gated on "last hand was 0" cannot fire on it.
    */
   lastHandScore: number | undefined
+  /** Hands played across the whole run, for Decrees that scale with tempo. */
+  handsPlayedThisRun: number
   discardsRemaining: number
   redrawsRemaining: number
   targetScore: number
@@ -271,6 +273,7 @@ export class GameOrchestrator {
       handsAllowance: this.config.handsPerRound,
       lossPreventionScorePenalty: 1,
       lastHandScore: undefined,
+      handsPlayedThisRun: 0,
       discardsRemaining: this.config.discardsPerRound,
       redrawsRemaining: this.config.redrawsPerRound,
       targetScore: 300,
@@ -1281,6 +1284,7 @@ export class GameOrchestrator {
     this.state.score += scoreResult.finalScore
     this.state.runScore += scoreResult.finalScore
     this.state.lastHandScore = scoreResult.finalScore
+    this.state.handsPlayedThisRun++
     this.state.handsRemaining--
 
     if (scoreResult.goldEarned > 0) {
@@ -1413,6 +1417,7 @@ export class GameOrchestrator {
     this.state.score += finalScore
     this.state.runScore += finalScore
     this.state.lastHandScore = finalScore
+    this.state.handsPlayedThisRun++
     this.state.handsRemaining--
 
     if (scoreResult.goldEarned > 0) {
@@ -2559,6 +2564,8 @@ export class GameOrchestrator {
       isConcealed: true,
       winningTile: tiles[tiles.length - 1],
       lastHandScore: this.state.lastHandScore,
+      gold: this.state.gold,
+      handsPlayedThisRun: this.state.handsPlayedThisRun,
     }
 
     // Apply season modifiers (includes corrupted effects)

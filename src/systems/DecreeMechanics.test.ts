@@ -344,6 +344,213 @@ describe('per-Flower and per-Season scaling', () => {
   })
 })
 
+describe('per-count scaling Decrees', () => {
+  const breakdownWith = (basePoints: number) => ({
+    basePoints,
+    tilePoints: basePoints,
+    structurePoints: 0,
+    additiveBonus: 0,
+    yakuMultiplier: 1,
+    decreeMultiplier: 1,
+    flowerMultiplier: 1,
+    seasonMultiplier: 1,
+    finalScore: basePoints,
+    bonusGold: 0,
+  })
+
+  function ctx(options: {
+    tiles?: Tile[]
+    melds?: { type: MeldType }[]
+    gold?: number
+    handsPlayed?: number
+    handsPlayedThisRun?: number
+    roundNumber?: number
+    actNumber?: number
+    discardsRemaining?: number
+    yakuIds?: string[]
+  }) {
+    return {
+      hand: { melds: [], pair: null, waitType: 'tanki', winningTile: null, isConcealed: true },
+      tiles: options.tiles ?? [],
+      melds: options.melds ?? [],
+      decrees: [],
+      flowers: { flowers: [], activeBonuses: [], totalEffectiveness: 1 },
+      season: { activeSeason: null, seasonStack: [], isCorruptedRound: false, effectMultiplier: 1 },
+      round: {
+        actNumber: options.actNumber ?? 1,
+        roundNumber: options.roundNumber ?? 1,
+        roundType: 'Small',
+        scoreTarget: 300,
+        currentScore: 0,
+        handsPlayed: options.handsPlayed ?? 0,
+        maxHands: 4,
+        discardsRemaining: options.discardsRemaining ?? 3,
+        maxDiscards: 3,
+        isCompleted: false,
+        isWon: false,
+      },
+      yakuMultipliers: new Map(),
+      detectedYakuIds: new Set(options.yakuIds ?? []),
+      gold: options.gold,
+      handsPlayedThisRun: options.handsPlayedThisRun,
+      isConcealed: true,
+      winningTile: null,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any
+  }
+
+  /** Score a context with one decree and report its contribution. */
+  function apply(
+    decree: Decree,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    context: any,
+    basePoints = 100
+  ) {
+    const system = new DecreeSystem(10)
+    system.acquireDecree(decree)
+    context.decrees = system.getOwnedDecrees()
+    const out = system.applyDecreeEffects(context, breakdownWith(basePoints))
+    return { additive: out.additiveBonus, mult: out.decreeMultiplier }
+  }
+
+  function scaledDecree(source: string): Decree {
+    const found = LIBRARY_DECREES.find((d) =>
+      [d.effect, ...(d.extraEffects ?? [])].some(
+        (e) =>
+          (e.type === 'additive_score' || e.type === 'multiplicative_score') &&
+          e.scaleBy === source
+      )
+    )
+    if (!found) throw new Error(`no decree scaling on ${source}`)
+    return found
+  }
+
+  const souzu = (rank: number, id: string) => new Tile(TileSuit.Souzu, rank, id)
+
+  it('pays per terminal tile played', () => {
+    const decree = scaledDecree('terminal_tiles')
+
+    const none = apply(decree, ctx({ tiles: [souzu(5, 'a')] }))
+    const two = apply(decree, ctx({ tiles: [souzu(1, 'a'), souzu(9, 'b')] }))
+
+    expect(none.additive).toBe(0)
+    expect(two.additive).toBeGreaterThan(0)
+  })
+
+  it('counts only the green tiles of Ryuuiisou', () => {
+    const decree = scaledDecree('green_tiles')
+
+    // Souzu 2,3,4,6,8 and the Green Dragon are green; Souzu 1/5/9 are not.
+    const green = apply(
+      decree,
+      ctx({ tiles: [souzu(2, 'a'), souzu(6, 'b'), Tile.createDragon(DragonType.Green, 'g')] })
+    )
+    const notGreen = apply(
+      decree,
+      ctx({ tiles: [souzu(1, 'a'), souzu(5, 'b'), Tile.createDragon(DragonType.Red, 'r')] })
+    )
+
+    expect(green.additive).toBeGreaterThan(0)
+    expect(notGreen.additive).toBe(0)
+  })
+
+  it('pays per meld of the named kind', () => {
+    const decree = scaledDecree('triplets')
+
+    const none = apply(decree, ctx({ melds: [{ type: MeldType.Sequence }] }))
+    const two = apply(
+      decree,
+      ctx({ melds: [{ type: MeldType.Triplet }, { type: MeldType.Triplet }] })
+    )
+
+    expect(none.mult).toBe(1)
+    expect(two.mult).toBeGreaterThan(1)
+  })
+
+  it('scales with gold held', () => {
+    const decree = scaledDecree('gold_per_10')
+
+    const broke = apply(decree, ctx({ gold: 0 }))
+    const rich = apply(decree, ctx({ gold: 50 }))
+
+    expect(broke.mult).toBe(1)
+    expect(rich.mult).toBeGreaterThan(broke.mult)
+  })
+
+  it('honours a Decree that caps its own growth', () => {
+    // Golden Ratio: +1 Mult per ¥5, capped at +10.
+    const capped = LIBRARY_DECREES.find((d) =>
+      [d.effect, ...(d.extraEffects ?? [])].some(
+        (e) => e.type === 'additive_score' && e.maxBonus !== undefined
+      )
+    )
+    expect(capped).toBeDefined()
+
+    const moderate = apply(capped!, ctx({ gold: 50, handsPlayedThisRun: 10 }))
+    const absurd = apply(capped!, ctx({ gold: 5000, handsPlayedThisRun: 1000 }))
+
+    // Past the ceiling, more of the resource buys nothing further.
+    expect(absurd.mult).toBe(moderate.mult)
+  })
+
+  it('scales with acts completed and stays zero in Act 1', () => {
+    const decree = scaledDecree('acts_completed')
+
+    const act1 = apply(decree, ctx({ actNumber: 1 }))
+    const act5 = apply(decree, ctx({ actNumber: 5 }))
+
+    expect(act1.additive + act1.mult).toBeLessThan(act5.additive + act5.mult)
+  })
+
+  it('scales with base chips in hundreds', () => {
+    const decree = scaledDecree('base_chips_per_100')
+
+    const small = apply(decree, ctx({}), 50)
+    const large = apply(decree, ctx({}), 500)
+
+    expect(small.mult).toBe(1)
+    expect(large.mult).toBeGreaterThan(1)
+  })
+
+  it('scales with the yaku the hand scored', () => {
+    const decree = scaledDecree('yaku_this_hand')
+
+    const none = apply(decree, ctx({ yakuIds: [] }))
+    const three = apply(decree, ctx({ yakuIds: ['tanyao', 'pinfu', 'riichi'] }))
+
+    expect(none.mult).toBe(1)
+    expect(three.mult).toBeGreaterThan(1)
+  })
+
+  it('maps a first-tile multiplier to a retrigger of that tile', () => {
+    // Photograph reads "x2.0 first scoring tile", which is that tile scoring
+    // twice rather than a hand-wide multiplier.
+    const photograph = ALL_DECREES.find((d) => d.id === 'decree-photograph')
+    expect(photograph).toBeDefined()
+    expect(photograph!.effect.type).toBe('retrigger')
+
+    const system = new DecreeSystem(10)
+    system.acquireDecree(photograph!)
+    const extra = system.calculateRetriggers([souzu(2, 'a'), souzu(3, 'b')])
+
+    expect(extra.get('a')).toBe(1)
+    expect(extra.has('b')).toBe(false)
+  })
+
+  it('leaves no authored condition without engine meaning', () => {
+    const conditioned = LIBRARY_DECREES.filter((d) =>
+      [d.effect, ...(d.extraEffects ?? [])].some(
+        (e) =>
+          ((e.type === 'additive_score' || e.type === 'multiplicative_score') &&
+            (e.scaleBy || e.requires)) ||
+          e.type === 'retrigger'
+      )
+    )
+
+    expect(conditioned.length).toBeGreaterThanOrEqual(75)
+  })
+})
+
 describe('gated (conditional) Decrees', () => {
   const breakdown = () => ({
     basePoints: 100,

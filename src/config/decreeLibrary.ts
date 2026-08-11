@@ -57,9 +57,48 @@ const SUPPORTED_EFFECT_TYPES = new Set<LibraryEffect['type']>([
  * held rather than a flat 10.
  */
 const SCALING_CONDITIONS: Record<string, ScalingSource> = {
+  // Run collections
   'per Flower': 'flower_count',
   'per Season': 'season_count',
   'per active Season': 'season_count',
+  // Played tiles
+  'per Terminal tile': 'terminal_tiles',
+  'per Simple tile': 'simple_tiles',
+  'per green tile': 'green_tiles',
+  'per 1-tile': 'rank_one_tiles',
+  'per 5-tile': 'rank_five_tiles',
+  'per 9-tile': 'rank_nine_tiles',
+  // Hand structure
+  'per sequence': 'sequences',
+  'per triplet': 'triplets',
+  'per Yaku this hand': 'yaku_this_hand',
+  'per 100 base chips': 'base_chips_per_100',
+  // Round and run progress
+  'per hand this round': 'hands_this_round',
+  'per hand this run': 'hands_this_run',
+  'per round this act': 'rounds_this_act',
+  'per discard used': 'discards_used',
+  'per Act completed': 'acts_completed',
+  'per Act beyond 4': 'acts_beyond_four',
+  // Economy
+  'per ¥5': 'gold_per_5',
+  'per ¥10': 'gold_per_10',
+}
+
+/**
+ * Author conditions carry their own cap inline, as in "per ¥5 (max +10)".
+ * Split the cap off so the condition can be looked up and the ceiling applied.
+ */
+const CAP_PATTERN = /^(.*?)\s*\(max \+(\d+)\)$/
+
+function splitCap(condition: string | undefined): {
+  condition: string | undefined
+  cap?: number
+} {
+  if (!condition) return { condition }
+  const match = CAP_PATTERN.exec(condition)
+  if (!match) return { condition }
+  return { condition: match[1], cap: Number(match[2]) }
 }
 
 /**
@@ -265,35 +304,55 @@ function convertEffect(
   description: string
 ): DecreeEffect | null {
   switch (effect.type) {
-    case 'additive_chips':
+    case 'additive_chips': {
+      const { condition, cap } = splitCap(effect.condition)
       return {
         type: 'additive_score',
         trigger: 'OnScored',
         description,
         basePoints: effect.value,
-        scaleBy: scalingFor(effect.condition),
-        requires: gateFor(effect.condition),
+        scaleBy: scalingFor(condition),
+        maxBonus: cap,
+        requires: gateFor(condition),
       }
+    }
 
-    case 'additive_mult':
+    case 'additive_mult': {
+      const { condition, cap } = splitCap(effect.condition)
       return {
         type: 'additive_score',
         trigger: 'OnScored',
         description,
         multiplier: effect.value,
-        scaleBy: scalingFor(effect.condition),
-        requires: gateFor(effect.condition),
+        scaleBy: scalingFor(condition),
+        maxBonus: cap,
+        requires: gateFor(condition),
       }
+    }
 
-    case 'multiplicative_mult':
+    case 'multiplicative_mult': {
+      const { condition } = splitCap(effect.condition)
+      // "x2.0 on the first scoring tile" is that tile scoring twice, which is
+      // exactly a retrigger - and retriggers already repeat points, modifiers
+      // and marks together.
+      if (condition === 'first scoring tile') {
+        return {
+          type: 'retrigger',
+          trigger: 'OnScored',
+          description,
+          target: 'first',
+          times: Math.max(1, Math.round(effect.value) - 1),
+        }
+      }
       return {
         type: 'multiplicative_score',
         trigger: 'Independent',
         description,
         multiplier: effect.value,
-        scaleBy: scalingFor(effect.condition),
-        requires: gateFor(effect.condition),
+        scaleBy: scalingFor(condition),
+        requires: gateFor(condition),
       }
+    }
 
     case 'gold_gain':
       return {

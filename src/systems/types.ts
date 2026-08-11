@@ -62,8 +62,31 @@ export interface BaseEffect {
  * grows as the collection does instead of paying a flat bonus.
  */
 export type ScalingSource =
+  // Run collections
   | 'flower_count' // Flowers collected this run
   | 'season_count' // Seasons active this round
+  // Composition of the played tiles
+  | 'terminal_tiles'
+  | 'simple_tiles'
+  | 'green_tiles' // Souzu 2/3/4/6/8 and the Green Dragon
+  | 'rank_one_tiles'
+  | 'rank_five_tiles'
+  | 'rank_nine_tiles'
+  // Structure of the played hand
+  | 'sequences'
+  | 'triplets'
+  | 'yaku_this_hand'
+  | 'base_chips_per_100'
+  // Round and run progress
+  | 'hands_this_round'
+  | 'hands_this_run'
+  | 'rounds_this_act'
+  | 'discards_used'
+  | 'acts_completed'
+  | 'acts_beyond_four'
+  // Economy
+  | 'gold_per_5'
+  | 'gold_per_10'
 
 /**
  * A requirement that must hold for an effect to pay out at all. Gated Decrees
@@ -125,6 +148,8 @@ export interface AdditiveScoreEffect extends BaseEffect {
   multiplier?: number // Added to multiplier
   /** When set, the bonus is paid once per unit of this quantity. */
   scaleBy?: ScalingSource
+  /** Upper bound on the scaled bonus, for Decrees that cap their own growth. */
+  maxBonus?: number
   /** When set, the bonus pays nothing unless this requirement holds. */
   requires?: GateCondition
 }
@@ -600,6 +625,10 @@ export interface ScoringContext {
   detectedYakuIds?: ReadonlySet<string>
   /** Points the previous hand of this round scored, if any was played. */
   lastHandScore?: number
+  /** Gold held as the hand is scored, for economy-scaled Decrees. */
+  gold?: number
+  /** Hands played so far across the whole run. */
+  handsPlayedThisRun?: number
 }
 
 /**
