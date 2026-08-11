@@ -1149,7 +1149,11 @@
     "subtitle": "게임 참조 가이드",
     "summary": "요약",
     "tiles": "패",
-    "title": "코덱스"
+    "title": "코덱스",
+    "percentComplete": "{{percent}}% 완료",
+    "stepOf": "{{total}}단계 중 {{current}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} 단계"
   },
   "scoring": {
     "basePoints": "기본 점수",

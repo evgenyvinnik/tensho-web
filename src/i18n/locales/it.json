@@ -375,7 +375,11 @@
     "subtitle": "Guida di riferimento del gioco",
     "summary": "Riepilogo",
     "tiles": "Tessere",
-    "title": "Codice"
+    "title": "Codice",
+    "percentComplete": "{{percent}}% completato",
+    "stepOf": "Passo {{current}} di {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} passi"
   },
   "scoring": {
     "basePoints": "Punti base",

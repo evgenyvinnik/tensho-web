@@ -1309,7 +1309,11 @@
     "flora": "Flora",
     "economy": "Economy",
     "strategy": "Strategy",
-    "summary": "Summary"
+    "summary": "Summary",
+    "percentComplete": "{{percent}}% complete",
+    "stepOf": "Step {{current}} of {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} steps"
   },
   "accessibility": {
     "selectLanguage": "Select Language",

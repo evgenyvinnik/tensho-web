@@ -25,6 +25,7 @@ import {
   StepContent,
 } from './tutorial/TutorialComponents'
 import { useTutorialSteps } from './tutorial/useTutorialSteps'
+import { useCategoryLabel } from '../../i18n/categoryLabel'
 
 /**
  * CodexScreen - Full-page Codex and reference guide experience
@@ -44,6 +45,7 @@ import { useTutorialSteps } from './tutorial/useTutorialSteps'
  */
 export function CodexScreen() {
   const { t } = useTranslation()
+  const categoryLabel = useCategoryLabel()
   const { goBack, navigateTo } = useAppNavigation()
   const steps = useTutorialSteps()
 
@@ -223,7 +225,15 @@ export function CodexScreen() {
                 <ProgressBar
                   current={currentStep}
                   total={steps.length}
-                  categoryProgress={`${currentStepData.category}: ${stepIndexInCategory + 1}/${currentCategorySteps.length}`}
+                  categoryProgress={t(
+                    'codex.categoryProgress',
+                    '{{category}}: {{current}}/{{total}}',
+                    {
+                      category: categoryLabel(currentStepData.category || ''),
+                      current: stepIndexInCategory + 1,
+                      total: currentCategorySteps.length,
+                    }
+                  )}
                 />
               </div>
 

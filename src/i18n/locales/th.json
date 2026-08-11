@@ -375,7 +375,11 @@
     "subtitle": "คู่มืออ้างอิงเกม",
     "summary": "สรุป",
     "tiles": "ไพ่นกกระจอก",
-    "title": "โคเด็กซ์"
+    "title": "โคเด็กซ์",
+    "percentComplete": "เสร็จแล้ว {{percent}}%",
+    "stepOf": "ขั้นที่ {{current}} จาก {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} ขั้น"
   },
   "scoring": {
     "basePoints": "คะแนนพื้นฐาน",

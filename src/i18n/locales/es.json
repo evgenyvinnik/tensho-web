@@ -947,7 +947,11 @@
     "subtitle": "Guía de referencia del juego",
     "summary": "Resumen",
     "tiles": "Fichas",
-    "title": "Códice"
+    "title": "Códice",
+    "percentComplete": "{{percent}}% completado",
+    "stepOf": "Paso {{current}} de {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} pasos"
   },
   "scoring": {
     "basePoints": "Puntos base",

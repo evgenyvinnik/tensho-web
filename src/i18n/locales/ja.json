@@ -1149,7 +1149,11 @@
     "subtitle": "ゲーム参照ガイド",
     "summary": "まとめ",
     "tiles": "牌",
-    "title": "コーデックス"
+    "title": "コーデックス",
+    "percentComplete": "{{percent}}% 完了",
+    "stepOf": "{{total}}ステップ中 {{current}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} ステップ"
   },
   "scoring": {
     "basePoints": "基本点",

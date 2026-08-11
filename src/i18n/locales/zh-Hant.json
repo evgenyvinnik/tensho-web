@@ -1149,7 +1149,11 @@
     "subtitle": "遊戲參考指南",
     "summary": "總結",
     "tiles": "牌",
-    "title": "法典"
+    "title": "法典",
+    "percentComplete": "已完成 {{percent}}%",
+    "stepOf": "第 {{current}} 步，共 {{total}} 步",
+    "categoryProgress": "{{category}}：{{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} 步"
   },
   "scoring": {
     "basePoints": "基礎點數",

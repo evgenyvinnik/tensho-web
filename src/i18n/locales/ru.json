@@ -375,7 +375,11 @@
     "subtitle": "Справочное руководство по игре",
     "summary": "Итоги",
     "tiles": "Кости",
-    "title": "Кодекс"
+    "title": "Кодекс",
+    "percentComplete": "Выполнено {{percent}}%",
+    "stepOf": "Шаг {{current}} из {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} шагов"
   },
   "scoring": {
     "basePoints": "Базовые очки",

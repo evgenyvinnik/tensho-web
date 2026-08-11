@@ -375,7 +375,11 @@
     "subtitle": "Oyun Başvuru Kılavuzu",
     "summary": "Özet",
     "tiles": "Taşlar",
-    "title": "Kodeks"
+    "title": "Kodeks",
+    "percentComplete": "%{{percent}} tamamlandı",
+    "stepOf": "Adım {{current}} / {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} adım"
   },
   "scoring": {
     "basePoints": "Temel puan",

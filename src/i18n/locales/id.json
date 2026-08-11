@@ -947,7 +947,11 @@
     "subtitle": "Panduan Referensi Permainan",
     "summary": "Ringkasan",
     "tiles": "Ubin",
-    "title": "Kodeks"
+    "title": "Kodeks",
+    "percentComplete": "{{percent}}% selesai",
+    "stepOf": "Langkah {{current}} dari {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} langkah"
   },
   "scoring": {
     "basePoints": "Poin dasar",

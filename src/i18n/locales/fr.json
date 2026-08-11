@@ -947,7 +947,11 @@
     "subtitle": "Guide de référence du jeu",
     "summary": "Résumé",
     "tiles": "Tuiles",
-    "title": "Codex"
+    "title": "Codex",
+    "percentComplete": "{{percent}} % terminé",
+    "stepOf": "Étape {{current}} sur {{total}}",
+    "categoryProgress": "{{category}} : {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} étapes"
   },
   "scoring": {
     "basePoints": "Points de base",

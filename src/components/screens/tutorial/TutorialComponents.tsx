@@ -16,6 +16,8 @@ import {
   getTileImagePath,
 } from '../../../utils/assets'
 import { TileSuit } from '../../../core/Tile'
+import { useTranslation } from 'react-i18next'
+import { useCategoryLabel } from '../../../i18n/categoryLabel'
 
 const AnimatedDiv = animated('div')
 
@@ -276,6 +278,7 @@ export function CodexCategoryHero({
   category: string
   title: string
 }) {
+  const categoryLabel = useCategoryLabel()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const spring = useSpring({
     from: { opacity: 0, scale: 1.035 },
@@ -304,7 +307,7 @@ export function CodexCategoryHero({
 
       <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
         <div className="mb-1 text-[0.65rem] font-bold uppercase tracking-[0.24em] text-[var(--color-metallic-gold)] sm:text-xs">
-          {category}
+          {categoryLabel(category)}
         </div>
         <h2 className="max-w-2xl font-decorative text-2xl font-bold leading-tight text-[var(--color-golden-yellow)] drop-shadow-lg sm:text-3xl">
           {title}
@@ -335,13 +338,24 @@ export function ProgressBar({
   total: number
   categoryProgress?: string
 }) {
+  const { t } = useTranslation()
   const percentage = ((current + 1) / total) * 100
 
   return (
     <div className="w-full">
       <div className="flex justify-between text-xs text-[var(--color-metallic-gold)] mb-1">
-        <span>{categoryProgress || `Step ${current + 1} of ${total}`}</span>
-        <span>{Math.round(percentage)}% complete</span>
+        <span>
+          {categoryProgress ||
+            t('codex.stepOf', 'Step {{current}} of {{total}}', {
+              current: current + 1,
+              total,
+            })}
+        </span>
+        <span>
+          {t('codex.percentComplete', '{{percent}}% complete', {
+            percent: Math.round(percentage),
+          })}
+        </span>
       </div>
       <div className="w-full h-2 bg-[var(--color-dark-forest)] rounded-full overflow-hidden">
         <div
@@ -376,6 +390,8 @@ export function CategoryItem({
   completedCount: number
   onClick: () => void
 }) {
+  const { t } = useTranslation()
+  const categoryLabel = useCategoryLabel()
   const config = CATEGORY_CONFIG[category] || {
     icon: '📖',
     color: 'text-gray-400',
@@ -396,9 +412,12 @@ export function CategoryItem({
         {config.icon}
       </span>
       <div className="flex-1 min-w-0">
-        <p className="font-medium truncate">{category}</p>
+        <p className="font-medium truncate">{categoryLabel(category)}</p>
         <p className="text-xs opacity-70">
-          {completedCount}/{stepCount} steps
+          {t('codex.stepsCount', '{{done}}/{{total}} steps', {
+            done: completedCount,
+            total: stepCount,
+          })}
         </p>
       </div>
       {isComplete && <span className="text-green-400">✓</span>}
@@ -423,6 +442,8 @@ export function CategoryTabs({
   currentCategory: string
   onCategoryClick: (category: string) => void
 }) {
+  const categoryLabel = useCategoryLabel()
+
   return (
     <div className="scroll-rail overflow-x-auto pb-1">
       <div className="flex min-w-max gap-2 px-1">
@@ -447,7 +468,7 @@ export function CategoryTabs({
               <span className={!isActive ? config.color : ''}>
                 {config.icon}
               </span>
-              <span className="whitespace-nowrap">{cat}</span>
+              <span className="whitespace-nowrap">{categoryLabel(cat)}</span>
             </button>
           )
         })}

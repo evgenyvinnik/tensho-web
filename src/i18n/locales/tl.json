@@ -375,7 +375,11 @@
     "subtitle": "Gabay sa Sanggunian ng Laro",
     "summary": "Buod",
     "tiles": "Mga Tile",
-    "title": "Kodeks"
+    "title": "Kodeks",
+    "percentComplete": "{{percent}}% tapos na",
+    "stepOf": "Hakbang {{current}} sa {{total}}",
+    "categoryProgress": "{{category}}: {{current}}/{{total}}",
+    "stepsCount": "{{done}}/{{total}} hakbang"
   },
   "scoring": {
     "basePoints": "Batayang puntos",
