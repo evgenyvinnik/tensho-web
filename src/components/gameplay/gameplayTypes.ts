@@ -8,7 +8,6 @@
 
 import { DecreeRarity, FlowerVariant, SeasonVariant } from '../../systems/types'
 import { getCurrentLanguage } from '../../i18n'
-import { illustrationAssets } from '../../utils/assets'
 
 // =============================================================================
 // ROUND TYPE CONFIGURATION
@@ -134,8 +133,8 @@ export const FLOWER_DATA: Record<FlowerVariant, FlowerDisplayData> = {
  * Display data for each season
  */
 export interface SeasonDisplayData {
-  /** Generated miniature illustration */
-  illustration: string
+  /** Rank in the native Mahjong season-tile set */
+  rank: number
   /** Japanese name */
   japanese: string
   /** Text color class */
@@ -147,22 +146,22 @@ export interface SeasonDisplayData {
  */
 export const SEASON_DATA: Record<SeasonVariant, SeasonDisplayData> = {
   Spring: {
-    illustration: illustrationAssets.seasons.Spring,
+    rank: 1,
     japanese: '春',
     color: 'text-green-400',
   },
   Summer: {
-    illustration: illustrationAssets.seasons.Summer,
+    rank: 2,
     japanese: '夏',
     color: 'text-yellow-400',
   },
   Autumn: {
-    illustration: illustrationAssets.seasons.Autumn,
+    rank: 3,
     japanese: '秋',
     color: 'text-orange-400',
   },
   Winter: {
-    illustration: illustrationAssets.seasons.Winter,
+    rank: 4,
     japanese: '冬',
     color: 'text-blue-400',
   },

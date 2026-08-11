@@ -8,6 +8,8 @@
 import { useState, useEffect } from 'react'
 import { useSpring, animated, useTrail } from '@react-spring/web'
 import { ScoreBreakdown } from '../../systems/types'
+import { TileSuit } from '../../core/Tile'
+import { getTileImagePath } from '../../utils/assets'
 
 export interface ScoreBreakdownDisplayProps {
   breakdown: ScoreBreakdown
@@ -90,6 +92,16 @@ function FullBreakdown({
   showGold,
   className,
 }: FullBreakdownProps) {
+  const nativeTileIcon = (suit: TileSuit, rank: number) => (
+    <img
+      src={getTileImagePath(suit, rank)}
+      alt=""
+      aria-hidden="true"
+      className="mr-1 inline-block h-7 w-5 object-contain align-middle drop-shadow-sm"
+      draggable={false}
+    />
+  )
+
   const rows = [
     { label: 'Tile Points', value: breakdown.tilePoints, icon: '🀄' },
     { label: 'Structure Points', value: breakdown.structurePoints, icon: '🏗️' },
@@ -99,8 +111,8 @@ function FullBreakdown({
   const multipliers = [
     { label: 'Yaku', value: breakdown.yakuMultiplier, icon: '📜', show: breakdown.yakuMultiplier !== 1 },
     { label: 'Decree', value: breakdown.decreeMultiplier, icon: '⚖️', show: breakdown.decreeMultiplier !== 1 },
-    { label: 'Flower', value: breakdown.flowerMultiplier, icon: '🌸', show: breakdown.flowerMultiplier !== 1 },
-    { label: 'Season', value: breakdown.seasonMultiplier, icon: '🍂', show: breakdown.seasonMultiplier !== 1 },
+    { label: 'Flower', value: breakdown.flowerMultiplier, icon: nativeTileIcon(TileSuit.Flower, 1), show: breakdown.flowerMultiplier !== 1 },
+    { label: 'Season', value: breakdown.seasonMultiplier, icon: nativeTileIcon(TileSuit.Season, 3), show: breakdown.seasonMultiplier !== 1 },
   ]
 
   const visibleRows = rows.filter((r) => r.show !== false)

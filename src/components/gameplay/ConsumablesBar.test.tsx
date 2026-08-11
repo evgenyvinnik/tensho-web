@@ -1,27 +1,21 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { illustrationAssets } from '../../utils/assets'
 import { ConsumablesBar } from './ConsumablesBar'
 
 describe('ConsumablesBar illustrations', () => {
-  it('uses generated artwork for every consumable', () => {
+  it('uses native SVG artwork for every compact consumable', () => {
     render(<ConsumablesBar fateSeals={2} celestialOrbs={1} voidScripts={3} />)
 
-    const expectedSources = [
-      ['Fate Seal', illustrationAssets.consumables.fateSeal],
-      ['Celestial Orb', illustrationAssets.consumables.celestialOrb],
-      ['Void Script', illustrationAssets.consumables.voidScript],
-    ] as const
+    const names = ['Fate Seal', 'Celestial Orb', 'Void Script'] as const
 
-    for (const [name, source] of expectedSources) {
+    for (const name of names) {
       const button = screen.getByRole('button', {
         name: new RegExp(`${name} \\(`),
       })
-      const image = button.querySelector('img')
+      const icon = button.querySelector('svg')
 
-      expect(image).not.toBeNull()
-      expect(image).toHaveAttribute('src', source)
-      expect(image).toHaveAttribute('aria-hidden', 'true')
+      expect(icon).not.toBeNull()
+      expect(button).not.toHaveTextContent(/[🎴🔮📜]/u)
     }
   })
 

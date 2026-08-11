@@ -97,12 +97,6 @@ export const illustrationAssets = {
     celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.png`,
     voidScript: `${ASSET_BASE}/illustrations/void-script.png`,
   },
-  seasons: {
-    Spring: `${ASSET_BASE}/illustrations/season-spring.png`,
-    Summer: `${ASSET_BASE}/illustrations/season-summer.png`,
-    Autumn: `${ASSET_BASE}/illustrations/season-autumn.png`,
-    Winter: `${ASSET_BASE}/illustrations/season-winter.png`,
-  },
 } as const
 
 // ============================================================================

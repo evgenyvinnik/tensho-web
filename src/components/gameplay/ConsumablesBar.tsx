@@ -7,7 +7,8 @@
  * @module components/gameplay/ConsumablesBar
  */
 
-import { illustrationAssets } from '../../utils/assets'
+import type { ReactNode } from 'react'
+import { OrbSVG, ScriptSVG, SealSVG } from '../ui/svg/ConsumableSVG'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -23,8 +24,8 @@ interface ConsumableItem {
   japanese: string
   /** Current count */
   count: number
-  /** Generated miniature illustration */
-  illustration: string
+  /** Native compact icon */
+  icon: ReactNode
   /** Border color class */
   color: string
   /** Use handler */
@@ -57,9 +58,9 @@ export interface ConsumablesBarProps {
  * Horizontal bar for accessing consumable items.
  *
  * Displays three consumable types with counts:
- * - Fate Seals (運命) - Purple border, lacquer seal illustration
- * - Celestial Orbs (天球) - Blue border, armillary orb illustration
- * - Void Scripts (虚空) - Gray border, lacquer scroll illustration
+ * - Fate Seals (運命) - Purple border, native seal SVG
+ * - Celestial Orbs (天球) - Blue border, native orb SVG
+ * - Void Scripts (虚空) - Gray border, native script SVG
  *
  * Each button is disabled when count is 0.
  * Meets 44px minimum touch target requirement.
@@ -77,7 +78,7 @@ export function ConsumablesBar({
       name: 'Fate Seal',
       japanese: '運命',
       count: fateSeals,
-      illustration: illustrationAssets.consumables.fateSeal,
+      icon: <SealSVG variant="wisdom" size={32} />,
       color: 'border-purple-500',
       onUse: onUseFateSeal,
     },
@@ -85,7 +86,7 @@ export function ConsumablesBar({
       name: 'Celestial Orb',
       japanese: '天球',
       count: celestialOrbs,
-      illustration: illustrationAssets.consumables.celestialOrb,
+      icon: <OrbSVG variant="neptune" size={32} />,
       color: 'border-blue-500',
       onUse: onUseCelestialOrb,
     },
@@ -93,7 +94,7 @@ export function ConsumablesBar({
       name: 'Void Script',
       japanese: '虚空',
       count: voidScripts,
-      illustration: illustrationAssets.consumables.voidScript,
+      icon: <ScriptSVG size={32} />,
       color: 'border-gray-500',
       onUse: onUseVoidScript,
     },
@@ -116,12 +117,12 @@ export function ConsumablesBar({
           title={item.name}
           aria-label={`${item.name} (${item.count} available)`}
         >
-          <img
-            src={item.illustration}
-            alt=""
+          <span
             aria-hidden="true"
-            className="game-illustration h-8 w-8 shrink-0 object-contain"
-          />
+            className="game-illustration inline-flex h-8 w-8 shrink-0 items-center justify-center"
+          >
+            {item.icon}
+          </span>
           <span className="hidden text-sm text-[var(--color-beige-white)] font-mono min-[360px]:inline">
             ×{item.count}
           </span>

@@ -13,6 +13,7 @@ import { TileImage } from '../tiles/TileImage'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
 import { SEASON_BASE_EFFECTS } from '../../systems/SeasonSystem'
 import { FLOWER_DATA, SEASON_DATA } from './gameplayTypes'
+import { getTileImagePath } from '../../utils/assets'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -133,10 +134,14 @@ export function FloraTrackCompact({
               Season:
             </span>
             <img
-              src={SEASON_DATA[activeSeason].illustration}
+              src={getTileImagePath(
+                TileSuit.Season,
+                SEASON_DATA[activeSeason].rank
+              )}
               alt=""
               aria-hidden="true"
-              className={`game-illustration h-6 w-6 object-contain ${isCorrupted ? 'grayscale' : ''}`}
+              className={`h-8 w-6 object-contain drop-shadow-md ${isCorrupted ? 'grayscale' : ''}`}
+              draggable={false}
             />
             <span
               className={`text-xs font-bold ${isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color}`}
@@ -161,10 +166,14 @@ export function FloraTrackCompact({
           aria-label={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason} season`}
         >
           <img
-            src={SEASON_DATA[activeSeason].illustration}
+            src={getTileImagePath(
+              TileSuit.Season,
+              SEASON_DATA[activeSeason].rank
+            )}
             alt=""
             aria-hidden="true"
-            className={`game-illustration h-7 w-7 object-contain ${isCorrupted ? 'grayscale' : ''}`}
+            className={`h-9 w-7 object-contain drop-shadow-md ${isCorrupted ? 'grayscale' : ''}`}
+            draggable={false}
           />
         </span>
       )}

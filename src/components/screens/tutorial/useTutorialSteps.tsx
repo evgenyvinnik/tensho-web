@@ -8,7 +8,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
-import { TutorialStep, Highlight, InfoBox, Formula, DataTable } from './TutorialComponents'
+import { TutorialStep, Highlight, InfoBox, Formula, DataTable, TileLabel } from './TutorialComponents'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -259,12 +259,16 @@ export function useTutorialSteps(): TutorialStep[] {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg">
-                <p className="font-bold text-pink-400 mb-2">🌸 Flowers</p>
+                <p className="font-bold text-pink-400 mb-2">
+                  <TileLabel suit={TileSuit.Flower} rank={1} label="Flowers" />
+                </p>
                 <p className="text-sm">Plum, Orchid, Chrysanthemum, Bamboo</p>
                 <p className="text-xs text-[var(--color-metallic-gold)] mt-1">Persist across your entire run</p>
               </div>
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg">
-                <p className="font-bold text-cyan-400 mb-2">🍂 Seasons</p>
+                <p className="font-bold text-cyan-400 mb-2">
+                  <TileLabel suit={TileSuit.Season} rank={3} label="Seasons" />
+                </p>
                 <p className="text-sm">Spring, Summer, Autumn, Winter</p>
                 <p className="text-xs text-[var(--color-metallic-gold)] mt-1">Active only for the current round</p>
               </div>
@@ -909,10 +913,10 @@ export function useTutorialSteps(): TutorialStep[] {
             <DataTable
               headers={['Flower', 'Japanese', 'Effect']}
               rows={[
-                [<span className="text-pink-400">🌸 Plum</span>, '梅', '+5% score per sequence'],
-                [<span className="text-purple-400">🌺 Orchid</span>, '兰', '+5% score per honor tile'],
-                [<span className="text-yellow-400">🌼 Chrysanthemum</span>, '菊', '+5% score per concealed meld'],
-                [<span className="text-green-400">🎋 Bamboo</span>, '竹', '+5% score per terminal'],
+                [<TileLabel suit={TileSuit.Flower} rank={1} label="Plum" className="text-pink-400" />, '梅', '+5% score per sequence'],
+                [<TileLabel suit={TileSuit.Flower} rank={2} label="Orchid" className="text-purple-400" />, '兰', '+5% score per honor tile'],
+                [<TileLabel suit={TileSuit.Flower} rank={3} label="Chrysanthemum" className="text-yellow-400" />, '菊', '+5% score per concealed meld'],
+                [<TileLabel suit={TileSuit.Flower} rank={4} label="Bamboo" className="text-green-400" />, '竹', '+5% score per terminal'],
               ]}
             />
             <p>
@@ -935,10 +939,10 @@ export function useTutorialSteps(): TutorialStep[] {
             <DataTable
               headers={['Season', 'Japanese', 'Effect']}
               rows={[
-                [<span className="text-green-300">🌱 Spring</span>, '春', '+2 draws per hand'],
-                [<span className="text-yellow-300">☀️ Summer</span>, '夏', '+30% base score, -20% wall size'],
-                [<span className="text-orange-300">🍂 Autumn</span>, '秋', '+20% yaku multipliers'],
-                [<span className="text-blue-300">❄️ Winter</span>, '冬', 'Looser hand rules, -25% score'],
+                [<TileLabel suit={TileSuit.Season} rank={1} label="Spring" className="text-green-300" />, '春', '+2 draws per hand'],
+                [<TileLabel suit={TileSuit.Season} rank={2} label="Summer" className="text-yellow-300" />, '夏', '+30% base score, -20% wall size'],
+                [<TileLabel suit={TileSuit.Season} rank={3} label="Autumn" className="text-orange-300" />, '秋', '+20% yaku multipliers'],
+                [<TileLabel suit={TileSuit.Season} rank={4} label="Winter" className="text-blue-300" />, '冬', 'Looser hand rules, -25% score'],
               ]}
             />
             <InfoBox type="warning">

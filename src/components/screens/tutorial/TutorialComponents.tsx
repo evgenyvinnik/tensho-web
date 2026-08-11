@@ -191,6 +191,32 @@ export function DataTable({
   )
 }
 
+/** Inline label backed by the project's existing Mahjong tile artwork. */
+export function TileLabel({
+  suit,
+  rank,
+  label,
+  className = '',
+}: {
+  suit: TileSuit
+  rank: number
+  label: string
+  className?: string
+}) {
+  return (
+    <span className={`inline-flex items-center gap-2 ${className}`}>
+      <img
+        src={getTileImagePath(suit, rank)}
+        alt=""
+        aria-hidden="true"
+        className="h-9 w-7 shrink-0 object-contain drop-shadow-sm"
+        draggable={false}
+      />
+      <span>{label}</span>
+    </span>
+  )
+}
+
 // =============================================================================
 // TILE DISPLAY COMPONENT
 // =============================================================================
