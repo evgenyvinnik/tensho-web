@@ -1,7 +1,7 @@
 {
   "name": "tensho-web",
   "private": true,
-  "version": "1.0.260811-1",
+  "version": "1.0.260811-2",
   "type": "module",
   "scripts": {
     "dev": "node ./node_modules/.bin/vite",
