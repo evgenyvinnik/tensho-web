@@ -14,6 +14,7 @@ import {
   gameOrchestrator,
 } from './GameOrchestrator'
 import { PlayerAction, ActionResult } from './ActionProcessor'
+import type { ScoreBreakdown } from '../rules/ScoringEngine'
 import type { Decree, ImperialCharter } from '../systems/types'
 import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
@@ -120,6 +121,7 @@ export interface GameController {
   // Utilities
   getAvailableActions: () => PlayerAction['type'][]
   canPerformAction: (action: PlayerAction) => boolean
+  previewScore: (tileIds: string[]) => ScoreBreakdown | null
   resetGame: () => void
   endRun: () => void
 }
@@ -382,6 +384,11 @@ export function useGameController(
     [orchestrator]
   )
 
+  const previewScore = useCallback(
+    (tileIds: string[]) => orchestrator.previewScore(tileIds),
+    [orchestrator]
+  )
+
   const resetGame = useCallback(() => {
     orchestrator.resetGame()
   }, [orchestrator])
@@ -474,6 +481,7 @@ export function useGameController(
     // Utilities
     getAvailableActions,
     canPerformAction,
+    previewScore,
     resetGame,
     endRun,
   }

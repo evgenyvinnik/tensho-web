@@ -17,6 +17,7 @@ import { Hand, ParsedHand } from '../core/Hand'
 import { Meld } from '../core/Meld'
 import { calculateScore, createScoringContext, ScoreBreakdown } from '../rules/ScoringEngine'
 import { findOneAwayCompletion, validateHand } from '../rules/HandValidator'
+import { parsePartialHand, toPartialParsedHand } from '../rules/PartialHandParser'
 import { eventBus } from './EventBus'
 import {
   ActionProcessor,
@@ -96,6 +97,12 @@ export interface OrchestratorState {
 
   // Round state
   handsRemaining: number
+  /**
+   * Hands granted at the start of this round. Charters, Decrees and Mandates
+   * all move the allowance off the config default, so hands-played must be
+   * measured against this rather than against `config.handsPerRound`.
+   */
+  handsAllowance: number
   discardsRemaining: number
   redrawsRemaining: number
   targetScore: number
@@ -217,6 +224,7 @@ export class GameOrchestrator {
       score: 0,
       gold: 4,
       handsRemaining: this.config.handsPerRound,
+      handsAllowance: this.config.handsPerRound,
       discardsRemaining: this.config.discardsPerRound,
       redrawsRemaining: this.config.redrawsPerRound,
       targetScore: 300,
@@ -408,6 +416,8 @@ export class GameOrchestrator {
     if (noDiscardsMandate.active) {
       this.state.redrawsRemaining = 0
     }
+
+    this.state.handsAllowance = this.state.handsRemaining
   }
 
   private getHandSizeLimit(): number {
@@ -1014,8 +1024,61 @@ export class GameOrchestrator {
     // A discard is a complete cycle: immediately draw its replacement so the
     // game loop works independently of React timing/effects.
     this.refillAfterCycle(effects)
+    this.enforcePlayability(effects)
 
     return { success: true, effects }
+  }
+
+  /**
+   * Score a prospective selection without playing it.
+   *
+   * Runs the same pipeline the play itself will run - the same partial parse,
+   * the same Decrees, modifiers, Flowers, Seasons and Orbs - so the number the
+   * player sees before committing is the number they get. Chance-based tile
+   * effects resolve to their guaranteed outcome, making the preview a floor
+   * rather than a promise the roll might not keep.
+   *
+   * Returns null when the selection can't be scored (fewer than two tiles).
+   */
+  previewScore(tileIds: string[]): ScoreBreakdown | null {
+    const selectedTiles = this.state.handTiles.filter((tile) => tileIds.includes(tile.id))
+    if (selectedTiles.length < 2) return null
+
+    const tilesToScore = this.isDecreeRuleActive('honor_as_suited')
+      ? this.transmuteHonorsToDominantSuit(selectedTiles)
+      : [...selectedTiles]
+
+    const validationOptions = {
+      allowSequenceSkip: this.isDecreeRuleActive('sequence_skip'),
+      meldMayServeAsPair: this.isDecreeRuleActive('meld_as_pair'),
+      wildcardCount: this.isDecreeRuleActive('wildcard_tile') ? 1 : 0,
+    }
+    const hand = new Hand()
+    for (const tile of tilesToScore) {
+      hand.addTile(tile)
+    }
+    const validation = validateHand(hand, undefined, validationOptions)
+    const parsedHand = validation.parsedHands.length > 0 ? validation.parsedHands[0] : null
+
+    if (parsedHand) {
+      const complete = this.calculateHandScore(tilesToScore, parsedHand, undefined, true)
+      if (this.state.voidScriptSystem.isBaseScoreHalved()) {
+        complete.finalScore = Math.floor(complete.finalScore / 2)
+      }
+      return complete
+    }
+
+    const parse = parsePartialHand(tilesToScore)
+    const partial = this.calculateHandScore(
+      tilesToScore,
+      toPartialParsedHand(parse, tilesToScore),
+      parse.groups,
+      true
+    )
+    if (this.state.voidScriptSystem.isBaseScoreHalved()) {
+      partial.finalScore = Math.floor(partial.finalScore / 2)
+    }
+    return partial
   }
 
   /**
@@ -1037,7 +1100,7 @@ export class GameOrchestrator {
 
     // Check boss mandate: single_hand (only one hand allowed)
     const singleHandMandate = this.state.roundManager.checkMandateEffect('single_hand')
-    if (singleHandMandate.active && this.config.handsPerRound - this.state.handsRemaining > 0) {
+    if (singleHandMandate.active && this.state.handsAllowance - this.state.handsRemaining > 0) {
       return {
         success: false,
         effects,
@@ -1239,42 +1302,64 @@ export class GameOrchestrator {
   }
 
   /**
-   * Execute partial play (for when hand doesn't form a complete winning hand)
+   * Execute partial play (for when the selection isn't a complete winning hand).
+   *
+   * This is the common case in Tensho: the player is paid for whatever
+   * structure the selection contains. It runs the same scoring pipeline as a
+   * complete hand so Decrees, tile modifiers, Flowers, Seasons and Celestial
+   * Orbs all apply - only yaku are withheld, since those need a winning hand.
    */
   private executePartialPlay(selectedTiles: Tile[], effects: Effect[]): ActionResult {
-    // Calculate a simpler score based on tile values
-    let basePoints = 0
-    for (const tile of this.state.debuffSystem.filterNonDebuffedTiles(selectedTiles)) {
-      if (tile.isHonor) basePoints += 15
-      else if (tile.isTerminal) basePoints += 10
-      else if (tile.isSimple) basePoints += 5
-    }
+    const tilesToScore = this.isDecreeRuleActive('honor_as_suited')
+      ? this.transmuteHonorsToDominantSuit(selectedTiles)
+      : [...selectedTiles]
 
-    // Apply basic multiplier
-    const multiplier = 1.0
-    let finalScore = Math.floor(basePoints * multiplier)
+    const parse = parsePartialHand(tilesToScore)
+    const parsedHand = toPartialParsedHand(parse, tilesToScore)
+
+    const scoreResult = this.calculateHandScore(tilesToScore, parsedHand, parse.groups)
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
-      finalScore = Math.floor(finalScore / 2)
+      scoreResult.finalScore = Math.floor(scoreResult.finalScore / 2)
     }
+    this.applyOmenScoreBonuses(scoreResult)
 
-    const omenScore = this.state.omenSystem.triggerHandScoredOmens()
-    const passiveOmenMult = this.state.omenSystem.getPassiveMultBonus()
-    finalScore = Math.floor(
-      (finalScore + omenScore.scoreBonus) *
-        (omenScore.multBonus > 0 ? omenScore.multBonus : 1) *
-        (1 + passiveOmenMult)
-    )
-    this.state.omenSystem.recordHandPlayed()
-    // Apply score
+    const finalScore = scoreResult.finalScore
     const previousScore = this.state.score
     this.state.score += finalScore
     this.state.runScore += finalScore
     this.state.handsRemaining--
-    this.applyPlayedTileMandates(
-      selectedTiles.map((tile) => tile.id),
-      [],
-      effects
-    )
+
+    if (scoreResult.goldEarned > 0) {
+      const previousGold = this.state.gold
+      this.state.gold += scoreResult.goldEarned
+      effects.push({
+        type: 'gold_changed',
+        description: `Earned ${scoreResult.goldEarned} gold from tile effects`,
+        delta: scoreResult.goldEarned,
+        newTotal: this.state.gold,
+      })
+      eventBus.emit('goldChanged', {
+        previousGold,
+        newGold: this.state.gold,
+        delta: scoreResult.goldEarned,
+        reason: 'Scoring tile effect',
+      })
+    }
+
+    const tileIds = selectedTiles.map((tile) => tile.id)
+    this.applyPlayedTileMandates(tileIds, [], effects)
+
+    if (scoreResult.shatteredTiles.length > 0) {
+      this.destroyTiles(scoreResult.shatteredTiles, effects)
+    }
+
+    if (
+      this.state.score >= this.state.targetScore &&
+      selectedTiles.some((tile) => tile.modifiers.seal === SealType.Blue)
+    ) {
+      this.createRandomConsumable('CelestialOrb', effects)
+    }
+
     // Remove played tiles and add to discards
     for (const tile of selectedTiles) {
       const idx = this.state.handTiles.findIndex((t) => t.id === tile.id)
@@ -1286,34 +1371,17 @@ export class GameOrchestrator {
     }
 
     this.state.selectedTileIds.clear()
-    this.state.roundManager.trackUsedTiles(selectedTiles.map((tile) => tile.id))
+    this.state.roundManager.trackUsedTiles(tileIds)
 
     effects.push({
       type: 'score_added',
       description: `Scored ${finalScore} points (partial hand)`,
       score: finalScore,
-      breakdown: {
-        basePoints,
-        tilePoints: basePoints,
-        structurePoints: 0,
-        modifierChips: 0,
-        modifierMult: 0,
-        modifierMultiplier: 1,
-        redFiveCount: 0,
-        redFiveChips: 0,
-        detectedYaku: [],
-        yakuMultiplier: 1,
-        additiveBonus: 0,
-        retriggeredTiles: [],
-        shatteredTiles: [],
-        goldEarned: 0,
-        subtotal: basePoints,
-        finalScore,
-      },
+      breakdown: scoreResult,
     })
 
     eventBus.emit('handPlayed', {
-      tiles: selectedTiles.map((t) => t.id),
+      tiles: tileIds,
       score: finalScore,
       yakuIds: [],
     })
@@ -2351,9 +2419,19 @@ export class GameOrchestrator {
   }
 
   /**
-   * Calculate score for a complete hand
+   * Calculate score for a played selection.
+   *
+   * `partialMelds` is supplied when the selection is not a complete winning
+   * hand. Partial plays earn no yaku, but every other layer - tile modifiers,
+   * Decrees, Flowers, Seasons, Celestial Orbs, Mandates - applies exactly as it
+   * does for a complete hand.
    */
-  private calculateHandScore(tiles: Tile[], parsedHand: ParsedHand): ScoreBreakdown {
+  private calculateHandScore(
+    tiles: Tile[],
+    parsedHand: ParsedHand,
+    partialMelds?: Meld[],
+    preview: boolean = false
+  ): ScoreBreakdown {
     // Build the full ScoringContext for system integrations
     const roundState = this.state.roundManager.getCurrentRound()
 
@@ -2374,8 +2452,8 @@ export class GameOrchestrator {
         roundType: roundState?.roundType ?? 'Small',
         scoreTarget: this.state.targetScore,
         currentScore: this.state.score,
-        handsPlayed: this.config.handsPerRound - this.state.handsRemaining,
-        maxHands: this.config.handsPerRound,
+        handsPlayed: this.state.handsAllowance - this.state.handsRemaining,
+        maxHands: this.state.handsAllowance,
         discardsRemaining: this.state.discardsRemaining,
         maxDiscards: this.config.discardsPerRound,
         bossMandate: roundState?.bossMandate,
@@ -2428,6 +2506,8 @@ export class GameOrchestrator {
       multiplicativeBonus: flowerBonus * seasonModifiers.scoreMultiplier,
       debuffedTileIds: this.state.debuffSystem.getDebuffedTileIds(),
       tanyaoAllowsTerminals: this.isDecreeRuleActive('tanyao_terminals'),
+      partialMelds,
+      previewMode: preview,
     })
 
     // Calculate base score
@@ -2481,8 +2561,10 @@ export class GameOrchestrator {
         celestialOrbMultBonus += orbBonus.mult
         celestialOrbChipsBonus += orbBonus.chips
 
-        // Trigger yaku for leveling
-        this.state.celestialOrbSystem.triggerYaku(category)
+        // Trigger yaku for leveling (a preview must not advance progression)
+        if (!preview) {
+          this.state.celestialOrbSystem.triggerYaku(category)
+        }
       }
 
       // Also check 'All' category (Black Hole Orb)
@@ -2558,6 +2640,45 @@ export class GameOrchestrator {
     } else if (handsExhausted) {
       this.handleRoundLoss(effects)
     }
+  }
+
+  /**
+   * End the round when the player still has hands left but no legal play.
+   *
+   * A drained wall can leave the hand below the minimum a play requires. That
+   * is mahjong's exhaustive draw: with no way left to score, the round is over
+   * rather than stuck waiting for an action the player cannot take.
+   */
+  private enforcePlayability(effects: Effect[]): void {
+    if (this.state.phase !== 'gameplay' || !this.state.isRunActive) return
+    if (this.canMakeLegalPlay()) return
+
+    if (this.state.score >= this.state.targetScore) {
+      this.handleRoundWin(effects)
+      return
+    }
+
+    effects.push({
+      type: 'round_state_changed' as const,
+      description: 'Wall exhausted - no legal play remains',
+      handsRemaining: this.state.handsRemaining,
+      discardsRemaining: this.state.discardsRemaining,
+      redrawsRemaining: this.state.redrawsRemaining,
+    })
+    this.handleRoundLoss(effects)
+  }
+
+  /** Whether any selection of the current hand could still be played. */
+  private canMakeLegalPlay(): boolean {
+    const available = this.state.handTiles.length
+    if (available < 2) return false
+
+    const fixedHandMandate = this.state.roundManager.checkMandateEffect('fixed_hand_size')
+    if (fixedHandMandate.active && available < (fixedHandMandate.value ?? 0)) {
+      return false
+    }
+
+    return true
   }
 
   /**

@@ -82,6 +82,14 @@ export interface ScoringContext {
   multiplicativeBonus?: number // Extra multiplicative bonuses from game systems
   debuffedTileIds?: ReadonlySet<string> // Suppressed for points/marks, still valid structurally
   tanyaoAllowsTerminals?: boolean // Tanyao Dispensation rule rewrite
+  /**
+   * Set for a partial play: the selection is not a complete winning hand, so
+   * structure comes from these groups and no yaku are awarded. Everything else
+   * (tile points, modifiers, red fives, retriggers) scores normally.
+   */
+  partialMelds?: Meld[]
+  /** Score without mutating tile state, for the pre-play preview. */
+  previewMode?: boolean
 }
 
 /**
@@ -159,12 +167,19 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     : context.tiles
 
   // 1. Calculate base points
+  const isPartial = context.partialMelds !== undefined
   const tilePoints = calculateTilePoints(scoringTiles)
-  const structurePoints = calculateStructurePoints(context.parsedHand)
+  const structurePoints = isPartial
+    ? context.partialMelds!.reduce((sum, meld) => sum + getMeldStructurePoints(meld), 0)
+    : calculateStructurePoints(context.parsedHand)
   const basePoints = tilePoints + structurePoints
 
   // 2. Calculate modifier bonuses from played tiles
-  const modifierResult = tileModifierSystem.scoreTilesWithModifiers(scoringTiles, 'played')
+  const modifierResult = tileModifierSystem.scoreTilesWithModifiers(
+    scoringTiles,
+    'played',
+    { preview: context.previewMode }
+  )
   const modifierChips = modifierResult.totalChips
   const modifierMult = modifierResult.totalMult
   const modifierMultiplier = modifierResult.totalMultiplier
@@ -197,7 +212,8 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     tanyaoAllowsTerminals: context.tanyaoAllowsTerminals,
   }
 
-  const detectedYaku = detectYaku(yakuContext)
+  // Yaku require a complete winning hand; a partial selection never earns one.
+  const detectedYaku = isPartial ? [] : detectYaku(yakuContext)
 
   // 5. Calculate yaku multiplier (multiplicative stacking)
   const yakuMultiplier = calculateYakuMultiplier(detectedYaku)
@@ -249,6 +265,8 @@ export function createScoringContext(
     multiplicativeBonus?: number
     debuffedTileIds?: ReadonlySet<string>
     tanyaoAllowsTerminals?: boolean
+    partialMelds?: Meld[]
+    previewMode?: boolean
   } = {}
 ): ScoringContext {
   return {
@@ -265,6 +283,8 @@ export function createScoringContext(
     multiplicativeBonus: options.multiplicativeBonus,
     debuffedTileIds: options.debuffedTileIds,
     tanyaoAllowsTerminals: options.tanyaoAllowsTerminals,
+    partialMelds: options.partialMelds,
+    previewMode: options.previewMode,
   }
 }
 

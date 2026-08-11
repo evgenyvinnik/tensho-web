@@ -555,10 +555,15 @@ export class TileModifierSystem {
   /**
    * Score multiple tiles with modifiers
    * Returns total chips, mult, and multiplier from all tiles
+   *
+   * `preview` scores without touching state: no Glass tile is shattered and
+   * chance-based effects resolve to their guaranteed outcome, so the same call
+   * can drive the pre-play score preview.
    */
   scoreTilesWithModifiers(
     tiles: Tile[],
-    context: 'played' | 'held'
+    context: 'played' | 'held',
+    options: { preview?: boolean } = {}
   ): {
     totalChips: number
     totalMult: number
@@ -567,6 +572,7 @@ export class TileModifierSystem {
     shatteredTileIds: string[]
     consumables: Array<{ type: 'orb' | 'seal'; tileId: string }>
   } {
+    const preview = options.preview ?? false
     let totalChips = 0
     let totalMult = 0
     let totalMultiplier = 1
@@ -578,7 +584,11 @@ export class TileModifierSystem {
       // Skip shattered tiles
       if (this.isShattered(tile.id)) continue
 
-      const result = context === 'played' ? this.onTilePlayed(tile) : this.onTileHeld(tile)
+      const result = preview
+        ? calculateModifierEffects(tile.modifiers, context, { deterministic: true })
+        : context === 'played'
+          ? this.onTilePlayed(tile)
+          : this.onTileHeld(tile)
 
       // Handle retriggers (Red Seal)
       const retriggers = this.getRetriggerCount(tile)

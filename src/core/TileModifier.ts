@@ -478,12 +478,17 @@ export interface ModifierScoringResult {
  * Calculate scoring effects from modifiers
  * @param modifiers The tile's modifiers
  * @param context 'played' | 'held' | 'discarded' | 'won'
+ * @param options `deterministic` resolves chance-based effects (Lucky, Glass)
+ *   to their guaranteed outcome. Used by score previews so the number shown
+ *   before a play is the floor, never a roll the real play won't repeat.
  * @returns Scoring result with all bonuses
  */
 export function calculateModifierEffects(
   modifiers: TileModifiers,
-  context: 'played' | 'held' | 'discarded' | 'won'
+  context: 'played' | 'held' | 'discarded' | 'won',
+  options: { deterministic?: boolean } = {}
 ): ModifierScoringResult {
+  const deterministic = options.deterministic ?? false
   const enhancement = ENHANCEMENT_DEFINITIONS[modifiers.enhancement]
   const seal = SEAL_DEFINITIONS[modifiers.seal]
   const edition = EDITION_DEFINITIONS[modifiers.edition]
@@ -506,7 +511,7 @@ export function calculateModifierEffects(
     }
 
     // Lucky effect
-    if (enhancement.special === 'lucky') {
+    if (enhancement.special === 'lucky' && !deterministic) {
       const lucky = rollLuckyEffect()
       multBonus += lucky.multBonus
       goldBonus += lucky.goldBonus
@@ -514,7 +519,7 @@ export function calculateModifierEffects(
 
     // Shatter check for Glass
     if (enhancement.special === 'shatter') {
-      shattered = rollShatter()
+      shattered = deterministic ? false : rollShatter()
     }
 
     // Edition bonuses when played

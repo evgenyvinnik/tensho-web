@@ -20,7 +20,6 @@ import { ConfirmPopup } from '../ui/Popup'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
 import { FlowerVariant, SeasonVariant } from '../../systems/types'
-import { checkTanyao, TANYAO, HONITSU, CHINITSU, HONROUTOU, TOITOI, YakuDefinition } from '../../rules/YakuDetector'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -379,76 +378,39 @@ export function GameplayScreen() {
   const scorePreviewHidden = previewTileIds.some((tileId) =>
     faceDownTileIds.has(tileId)
   )
-  const tanyaoAllowsTerminals = game.state.decreeSystem
-    .getActiveDecrees()
-    .some(
-      (decree) =>
-        decree.effect.type === 'rule_modification' &&
-        decree.effect.ruleId === 'tanyao_terminals' &&
-        !game.state.mandateEffectSystem.isDecreeDisabled(decree.id)
-    )
-
   const scorePreview = useMemo(() => {
     // Only show preview when tiles are explicitly selected or staged
     if (stagedTileIds.length === 0 && game.selectedTileIds.length === 0) {
       return null
     }
 
-    let previewTiles: Tile[] = []
-    if (stagedTileIds.length > 0) {
-      previewTiles = game.handTiles.filter((t) => stagedTileIds.includes(t.id))
-    } else {
-      previewTiles = game.handTiles.filter((t) => game.selectedTileIds.includes(t.id))
-    }
+    const previewIds = stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
+    const previewTiles = game.handTiles.filter((tile) => previewIds.includes(tile.id))
 
     if (
       previewTiles.length === 0 ||
       previewTiles.some((tile) => faceDownTileIds.has(tile.id))
     ) return null
 
-    const detectedYaku: YakuDefinition[] = []
-    if (checkTanyao(previewTiles, tanyaoAllowsTerminals)) detectedYaku.push(TANYAO)
+    // Preview runs the real scoring pipeline, so what is shown is what is paid.
+    const breakdown = game.previewScore(previewTiles.map((tile) => tile.id))
+    if (!breakdown) return null
 
-    const suits = new Set(previewTiles.filter((t) => !t.isHonor).map((t) => t.suit))
-    const hasHonors = previewTiles.some((t) => t.isHonor)
-    const allHonorsOrTerminals = previewTiles.every((t) => t.isHonor || t.rank === 1 || t.rank === 9)
+    const points = breakdown.basePoints + breakdown.additiveBonus
+    const mult = points > 0 ? breakdown.finalScore / points : breakdown.yakuMultiplier
 
-    if (suits.size === 1 && !hasHonors && previewTiles.length >= 2) detectedYaku.push(CHINITSU)
-    else if (suits.size === 1 && hasHonors && previewTiles.length >= 2) detectedYaku.push(HONITSU)
-    if (allHonorsOrTerminals && previewTiles.length >= 2) detectedYaku.push(HONROUTOU)
-
-    let basePoints = 0
-    for (const tile of previewTiles) {
-      basePoints += tile.isHonor ? 15 : (tile.rank === 1 || tile.rank === 9) ? 10 : 5
+    return {
+      points,
+      mult,
+      total: breakdown.finalScore,
+      yaku: breakdown.detectedYaku.map((detected) => detected.definition),
     }
-
-    const suitRankCounts = new Map<string, number>()
-    for (const tile of previewTiles) {
-      const key = `${tile.suit}-${tile.rank}`
-      suitRankCounts.set(key, (suitRankCounts.get(key) || 0) + 1)
-    }
-
-    let structurePoints = 0
-    for (const count of suitRankCounts.values()) {
-      structurePoints += count >= 3 ? 30 : count === 2 ? 10 : 0
-    }
-
-    let mult = 1.0
-    for (const yaku of detectedYaku) mult *= yaku.multiplier
-
-    const allPairsOrTriplets = [...suitRankCounts.values()].every((count) => count >= 2)
-    if (allPairsOrTriplets && previewTiles.length >= 4 && !detectedYaku.some((y) => y.id === TOITOI.id)) {
-      detectedYaku.push(TOITOI)
-      mult *= TOITOI.multiplier
-    }
-
-    return { points: basePoints + structurePoints, mult, total: Math.floor((basePoints + structurePoints) * mult), yaku: detectedYaku }
   }, [
     stagedTileIds,
+    game,
     game.handTiles,
     game.selectedTileIds,
     faceDownTileIds,
-    tanyaoAllowsTerminals,
   ])
 
   const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
