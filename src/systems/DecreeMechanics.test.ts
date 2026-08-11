@@ -93,7 +93,7 @@ describe('retrigger Decrees', () => {
   it('raises the score of a real play', () => {
     const baseline = new GameOrchestrator()
     baseline.startNewRun(4242, 1)
-    const baseIds = baseline.getState().handTiles.slice(0, 6).map((t) => t.id)
+    const baseIds = baseline.getState().handTiles.slice(0, 5).map((t) => t.id)
     const baseScore = scoreOf(
       baseline.processAction({ type: 'play', tileIds: baseIds }).effects
     )
@@ -101,7 +101,7 @@ describe('retrigger Decrees', () => {
     const boosted = new GameOrchestrator()
     boosted.startNewRun(4242, 1)
     boosted.addDecree(decreeById('decree-triple-echo'))
-    const boostIds = boosted.getState().handTiles.slice(0, 6).map((t) => t.id)
+    const boostIds = boosted.getState().handTiles.slice(0, 5).map((t) => t.id)
     const boostScore = scoreOf(
       boosted.processAction({ type: 'play', tileIds: boostIds }).effects
     )
@@ -790,13 +790,13 @@ describe('tile transformation Decrees', () => {
   it('scores simples as terminals under Transmuter', () => {
     const baseline = new GameOrchestrator()
     baseline.startNewRun(31337, 1)
-    const baseIds = baseline.getState().handTiles.map((t) => t.id)
+    const baseIds = baseline.getState().handTiles.slice(0, 5).map((t) => t.id)
     const basePreview = baseline.previewScore(baseIds)
 
     const transmuted = new GameOrchestrator()
     transmuted.startNewRun(31337, 1)
     transmuted.addDecree(decreeById('decree-transmuter'))
-    const transIds = transmuted.getState().handTiles.map((t) => t.id)
+    const transIds = transmuted.getState().handTiles.slice(0, 5).map((t) => t.id)
     const transPreview = transmuted.previewScore(transIds)
 
     // Simples are worth 5, terminals 10, so promoting them can only add points.

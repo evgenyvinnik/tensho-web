@@ -20,7 +20,13 @@ import {
   getPackDisplayInfo,
   getPackJapaneseName,
 } from '../../stores/packStore'
-import { getTileBackPath, illustrationAssets } from '../../utils/assets'
+import {
+  getTileBackPath,
+  getVoidScriptIllustration,
+  illustrationAssets,
+} from '../../utils/assets'
+import type { VoidScript } from '../../systems/VoidScriptSystem'
+import { VoidScriptArtwork } from './VoidScriptArtwork'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -46,7 +52,6 @@ const CONTENT_TYPE_ARTWORK: Record<string, string> = {
   CelestialOrb: illustrationAssets.consumables.celestialOrb,
   Tile: getTileBackPath(),
   Decree: illustrationAssets.packs.Decree,
-  VoidScript: illustrationAssets.consumables.voidScript,
 }
 
 const RARITY_COLORS: Record<string, string> = {
@@ -102,7 +107,12 @@ function ContentCard({
 
   const rarityClass = RARITY_COLORS[content.rarity] || RARITY_COLORS.common
   const rarityLabel = RARITY_LABELS[content.rarity] || 'Common'
-  const contentArtwork = CONTENT_TYPE_ARTWORK[content.type]
+  const contentArtwork =
+    content.type === 'VoidScript'
+      ? getVoidScriptIllustration(content.id)
+      : CONTENT_TYPE_ARTWORK[content.type]
+  const voidScript =
+    content.type === 'VoidScript' ? (content.data as VoidScript) : null
 
   return (
     <animated.div
@@ -133,7 +143,14 @@ function ContentCard({
       }}
     >
       {/* Content type artwork */}
-      {contentArtwork && (
+      {voidScript ? (
+        <VoidScriptArtwork
+          script={voidScript}
+          name={content.name}
+          description={content.description}
+          className="absolute left-2 top-2 h-12 w-12"
+        />
+      ) : contentArtwork ? (
         <img
           src={contentArtwork}
           alt=""
@@ -141,7 +158,7 @@ function ContentCard({
           className="game-illustration absolute left-2 top-2 h-8 w-8 object-contain"
           draggable={false}
         />
-      )}
+      ) : null}
 
       {/* Rarity indicator */}
       <div className="absolute top-2 right-2">

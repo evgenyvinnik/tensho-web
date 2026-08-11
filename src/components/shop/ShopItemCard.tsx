@@ -23,6 +23,8 @@ import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
 import { illustrationAssets } from '../../utils/assets'
+import type { VoidScript } from '../../systems/VoidScriptSystem'
+import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -297,6 +299,7 @@ export function ShopItemCard({
   let rarity = 'common'
   let sticker: Sticker | undefined
   let decreeId: string | undefined
+  let voidScript: VoidScript | undefined
 
   switch (offering.itemType) {
     case 'Decree': {
@@ -331,6 +334,7 @@ export function ShopItemCard({
       name = itemText.name('scripts', script)
       description = itemText.description('scripts', script)
       rarity = script.rarity.toLowerCase()
+      voidScript = offering.item as VoidScript
       break
     }
     case 'Tile': {
@@ -411,6 +415,13 @@ export function ShopItemCard({
                 color={rarityColor}
               />
             </div>
+          ) : voidScript ? (
+            <VoidScriptArtwork
+              script={voidScript}
+              name={name}
+              description={description}
+              className="mx-auto h-16 w-16"
+            />
           ) : illustration ? (
             <img
               src={illustration}

@@ -17,6 +17,8 @@ import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
 import type { ArchiveCategoryDefinition } from '../../config/archiveDefinitions'
 import type { ItemDisplayInfo } from './ItemCard'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
+import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -111,6 +113,7 @@ export function ItemDetailModal({
 
   const isDiscovered = entry.discoveredAt !== null
   const rarityInfo = getRarityInfo(displayInfo.rarity)
+  const voidScript = VOID_SCRIPTS[displayInfo.id]
 
   const modalContent = (
     <div
@@ -143,6 +146,17 @@ export function ItemDetailModal({
                     color={getRarityIconColor(displayInfo.rarity)}
                   />
                 </div>
+              )}
+
+              {voidScript && (
+                <VoidScriptArtwork
+                  script={voidScript}
+                  name={displayInfo.name}
+                  description={displayInfo.description}
+                  focusable={false}
+                  showPopover={false}
+                  className="h-20 w-20 sm:h-24 sm:w-24"
+                />
               )}
 
               <div className="flex-1">
@@ -212,6 +226,20 @@ export function ItemDetailModal({
               {displayInfo.description}
             </p>
           </div>
+
+          {voidScript && (
+            <div className="rounded-lg border border-red-400/35 bg-red-950/35 p-3">
+              <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-red-300">
+                Void cost
+              </h3>
+              <p className="mt-1 text-sm text-red-100">
+                {voidScript.penalty.description}
+              </p>
+              <p className="mt-2 text-xs italic text-[var(--color-metallic-gold)]">
+                {voidScript.mahjongTwist}
+              </p>
+            </div>
+          )}
 
           {/* Stats section */}
           {isDiscovered && (

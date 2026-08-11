@@ -11,6 +11,8 @@ import { useSettingsStore } from '../../stores/settingsStore'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import type { ArchiveCategory } from '../../config/archiveDefinitions'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
+import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -94,6 +96,7 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
   const rarityClass = isDiscovered
     ? getRarityColor(displayInfo?.rarity)
     : 'border-gray-600 bg-gray-800/50'
+  const voidScript = displayInfo ? VOID_SCRIPTS[displayInfo.id] : undefined
 
   return (
     <AnimatedDiv
@@ -157,8 +160,20 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
             </div>
           )}
 
+          {voidScript && (
+            <VoidScriptArtwork
+              script={voidScript}
+              name={displayInfo.name}
+              description={displayInfo.description}
+              focusable={false}
+              className="absolute right-1 top-1 h-16 w-16 sm:right-2 sm:top-2"
+            />
+          )}
+
           {/* Item Name */}
-          <h3 className="text-sm font-bold text-[var(--color-beige-white)] line-clamp-2 mb-1">
+          <h3
+            className={`mb-1 line-clamp-2 text-sm font-bold text-[var(--color-beige-white)] ${voidScript ? 'pr-14 sm:pr-16' : ''}`}
+          >
             {displayInfo.name}
           </h3>
 
@@ -170,7 +185,9 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
           )}
 
           {/* Description (truncated) */}
-          <p className="text-xs text-[var(--color-beige-white)] opacity-70 line-clamp-2">
+          <p
+            className={`line-clamp-2 text-xs text-[var(--color-beige-white)] opacity-70 ${voidScript ? 'pr-12 sm:pr-14' : ''}`}
+          >
             {displayInfo.description}
           </p>
 

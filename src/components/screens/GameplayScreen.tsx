@@ -27,6 +27,7 @@ import { useItemText } from '../../i18n/useItemText'
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
 import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
 import { ConsumablesBar } from '../gameplay/ConsumablesBar'
+import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 import { illustrationAssets } from '../../utils/assets'
 import { GameplayTopBar } from '../gameplay/GameplayTopBar'
 import { ScorePanel } from '../gameplay/ScorePanel'
@@ -81,6 +82,7 @@ export function GameplayScreen() {
   const [scorePopups, setScorePopups] = useState<ScorePopupState[]>([])
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
   const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
+  const [stageAllRequestId, setStageAllRequestId] = useState(0)
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showConsumablesPanel, setShowConsumablesPanel] = useState<
     'fateSeals' | 'celestialOrbs' | 'voidScripts' | null
@@ -346,6 +348,20 @@ export function GameplayScreen() {
       tileIds = [...currentSelectedIds]
     } else {
       tileIds = currentHandTiles.map((tile) => tile.id)
+      if (!game.isCompleteHand(tileIds)) {
+        setActionError(
+          t(
+            'gameplay.completeOrSelectTactical',
+            'Select 2–5 tiles for a tactical play, or complete the hand before declaring it.'
+          )
+        )
+        return
+      }
+
+      setActionError(null)
+      game.selectAllTiles()
+      setStageAllRequestId((requestId) => requestId + 1)
+      return
     }
 
     if (tileIds.length < 2) {
@@ -507,6 +523,11 @@ export function GameplayScreen() {
     }
   }, [stagedTileIds, game, faceDownTileIds])
 
+  const isCompleteHandSelection =
+    previewTileIds.length > 5 &&
+    !scorePreviewHidden &&
+    game.isCompleteHand(previewTileIds)
+
   const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
   const displayedDecrees = useMemo(() => {
     if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0) {
@@ -544,6 +565,11 @@ export function GameplayScreen() {
     roundType === 'Boss'
       ? game.state.roundManager.getCurrentRound()?.bossMandate?.name
       : undefined
+  const fixedHandMandate =
+    game.state.roundManager.checkMandateEffect('fixed_hand_size')
+  const requiredPlaySize = fixedHandMandate.active
+    ? Number(fixedHandMandate.value)
+    : undefined
   const mandateRerollsRemaining =
     game.state.charterSystem.getMandateRerollsRemaining()
   const upcomingMandate =
@@ -650,9 +676,13 @@ export function GameplayScreen() {
           scorePreview={scorePreview}
           scorePreviewHidden={scorePreviewHidden}
           previewLabel={
-            stagedTileIds.length > 0 || game.selectedTileIds.length > 0
-              ? `${previewTileIds.length} selected tiles`
-              : `No selection · all ${previewTileIds.length} tiles`
+            stagedTileIds.length > 5 && isCompleteHandSelection
+              ? `${previewTileIds.length} staged tiles · confirm declaration`
+              : stagedTileIds.length > 0 || game.selectedTileIds.length > 0
+                ? `${previewTileIds.length} selected tiles`
+                : isCompleteHandSelection
+                  ? `Complete ${previewTileIds.length}-tile hand · stage to declare`
+                  : 'Choose a tactical group'
           }
           remainingToTarget={Math.max(0, game.targetScore - game.score)}
           handsRemaining={game.handsRemaining}
@@ -685,6 +715,7 @@ export function GameplayScreen() {
               onTileSelect={handleTileClick}
               onTileDiscard={handleTileDiscard}
               onTilesStaged={handleTilesStaged}
+              stageAllRequestId={stageAllRequestId}
               disabled={false}
               shantenDisplay={shantenDisplay}
               handsRemaining={game.handsRemaining}
@@ -725,6 +756,8 @@ export function GameplayScreen() {
             stagedTileIds.length || game.selectedTileIds.length
           }
           handTileCount={game.handTiles.length}
+          isCompleteHandSelection={isCompleteHandSelection}
+          requiredPlaySize={requiredPlaySize}
           currentRound={game.currentRound}
           onSkip={handleSkip}
           onRedraw={handleRedraw}
@@ -851,22 +884,23 @@ export function GameplayScreen() {
                     className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-gray-500/50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <img
-                        src={illustrationAssets.consumables.voidScript}
-                        alt=""
-                        aria-hidden="true"
-                        className="game-illustration h-11 w-11 shrink-0 object-contain"
+                      <VoidScriptArtwork
+                        script={script}
+                        name={itemText.name('scripts', script)}
+                        description={itemText.description('scripts', script)}
+                        focusable={false}
+                        className="h-14 w-14"
                       />
                       <div>
                         <div className="font-medium text-[var(--color-beige-white)]">
                           {itemText.name('scripts', script)}
                         </div>
                         <div className="text-sm text-[var(--color-beige-white)]/70">
-                          {script.description}
+                          {itemText.description('scripts', script)}
                         </div>
                         {script.penalty && (
                           <div className="text-xs text-red-400 mt-1">
-                            ⚠️ {script.penalty.description}
+                            Void cost: {script.penalty.description}
                           </div>
                         )}
                       </div>

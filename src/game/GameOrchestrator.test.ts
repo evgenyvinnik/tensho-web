@@ -219,7 +219,7 @@ describe('GameOrchestrator', () => {
       game.startNewRun(12345)
     })
 
-    it('should play hand with all tiles and score points', () => {
+    it('should reject an incomplete full-hand play', () => {
       const handTiles = game.getHandTiles()
       const tileIds = handTiles.map((t) => t.id)
 
@@ -228,8 +228,8 @@ describe('GameOrchestrator', () => {
         tileIds,
       })
 
-      expect(result.success).toBe(true)
-      expect(result.errors).toBeUndefined()
+      expect(result.success).toBe(false)
+      expect(result.errors?.[0]).toContain('limited to 5 tiles')
     })
 
     it('should reduce hands remaining after playing', () => {
@@ -237,7 +237,7 @@ describe('GameOrchestrator', () => {
       const handsRemainingBefore = stateBefore.handsRemaining
 
       const handTiles = game.getHandTiles()
-      const tileIds = handTiles.map((t) => t.id)
+      const tileIds = handTiles.slice(0, 5).map((t) => t.id)
 
       game.processAction({ type: 'play', tileIds })
 
@@ -249,7 +249,7 @@ describe('GameOrchestrator', () => {
       const scoreBefore = game.getState().score
 
       const handTiles = game.getHandTiles()
-      const tileIds = handTiles.map((t) => t.id)
+      const tileIds = handTiles.slice(0, 5).map((t) => t.id)
 
       game.processAction({ type: 'play', tileIds })
 
@@ -325,7 +325,7 @@ describe('GameOrchestrator', () => {
 
     it('should return effects with score information', () => {
       const handTiles = game.getHandTiles()
-      const tileIds = handTiles.map((t) => t.id)
+      const tileIds = handTiles.slice(0, 5).map((t) => t.id)
 
       const result = game.processAction({
         type: 'play',

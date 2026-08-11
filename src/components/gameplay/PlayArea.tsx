@@ -302,12 +302,16 @@ export function PlayArea({
           <p className="text-[var(--color-beige-white)] opacity-50 px-4">
             {activeTileCount === 1
               ? 'Select one more tile to play this group'
-              : 'Select 2+ tiles for a smaller play'}
+              : activeTileCount > 5
+                ? 'This selection is not a complete Mahjong hand'
+                : 'Select 2–5 tiles for a tactical play'}
           </p>
           <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
             {activeTileCount === 0
-              ? `Play All uses all ${handTileCount} tiles`
-              : 'Deselect the tile to return to Play All'}
+              ? `Complete all ${handTileCount} tiles to unlock Stage Hand`
+              : activeTileCount > 5
+                ? 'Return tiles until 5 remain, or finish a complete hand'
+                : 'Useful groups score now; complete hands unlock Yaku'}
           </p>
         </div>
       )}

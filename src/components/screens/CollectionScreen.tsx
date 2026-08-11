@@ -113,6 +113,7 @@ function buildDisplayInfoMap(
           name: itemText.name('scripts', script),
           japaneseName: script.japaneseName,
           description: itemText.description('scripts', script),
+          rarity: script.rarity,
           category: 'consumables',
         })
       }

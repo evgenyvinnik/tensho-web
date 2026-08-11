@@ -24,7 +24,13 @@ import {
 import { getCurrentLanguage } from '../../i18n'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { Tile } from '../../core/Tile'
-import { getTileImagePath, illustrationAssets } from '../../utils/assets'
+import {
+  getTileImagePath,
+  getVoidScriptIllustration,
+  illustrationAssets,
+} from '../../utils/assets'
+import type { VoidScript } from '../../systems/VoidScriptSystem'
+import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -82,7 +88,7 @@ function getContentArtwork(content: PackContent): string | null {
     case 'CelestialOrb':
       return illustrationAssets.consumables.celestialOrb
     case 'VoidScript':
-      return illustrationAssets.consumables.voidScript
+      return getVoidScriptIllustration(content.id)
     case 'Tile': {
       const tile = content.data as Tile
       return tile?.suit && tile?.rank
@@ -135,6 +141,8 @@ function PackContentCard({
 
   const rarityColor = getRarityColor(content.rarity)
   const artwork = getContentArtwork(content)
+  const voidScript =
+    content.type === 'VoidScript' ? (content.data as VoidScript) : null
   const glow = getRarityGlow(content.rarity)
 
   // Entry animation
@@ -198,12 +206,21 @@ function PackContentCard({
       {/* Content */}
       <div className="relative p-3 flex flex-col items-center min-h-[160px]">
         {/* Icon - Use unique icon for decrees */}
-        <div className="mb-2 flex h-12 w-12 items-center justify-center">
+        <div
+          className={`mb-2 flex items-center justify-center ${voidScript ? 'h-16 w-16' : 'h-12 w-12'}`}
+        >
           {content.type === 'Decree' ? (
             <DecreeUniqueIcon
               decreeId={content.id}
               size={48}
               color={rarityColor}
+            />
+          ) : voidScript ? (
+            <VoidScriptArtwork
+              script={voidScript}
+              name={content.name}
+              description={content.description}
+              className="h-16 w-16"
             />
           ) : artwork ? (
             <img

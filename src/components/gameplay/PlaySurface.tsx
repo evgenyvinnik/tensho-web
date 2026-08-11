@@ -41,6 +41,8 @@ export interface PlaySurfaceProps {
   onTileDiscard?: (tile: Tile) => void
   /** Handler when tiles are staged for play */
   onTilesStaged?: (tiles: Tile[]) => void
+  /** Increment to move the complete hand into the staging zone */
+  stageAllRequestId?: number
   /** Whether interactions are disabled */
   disabled?: boolean
   /** Shanten display text */
@@ -90,6 +92,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   onTileSelect,
   onTileDiscard,
   onTilesStaged,
+  stageAllRequestId = 0,
   disabled = false,
   shantenDisplay = '',
   handsRemaining = 0,
@@ -116,6 +119,19 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Staged tiles (tiles moved to staging area)
   const [stagedTiles, setStagedTiles] = useState<Tile[]>([])
+  const handledStageAllRequestRef = useRef(stageAllRequestId)
+
+  const toggleStagedTile = useCallback(
+    (tile: Tile, originZone: 'hand' | 'staging') => {
+      setStagedTiles((previous) =>
+        originZone === 'staging'
+          ? previous.filter((staged) => staged.id !== tile.id)
+          : [...previous, tile]
+      )
+      onTileSelect?.(tile)
+    },
+    [onTileSelect]
+  )
 
   // Tiles remaining in hand (excluding staged)
   const tilesInHand = useMemo(() => {
@@ -220,22 +236,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     // If minimal movement (< 10px), treat as a click - toggle staging
     const CLICK_THRESHOLD = 10
     if (movedDistance < CLICK_THRESHOLD) {
-      // Toggle tile between hand and staging
-      if (originZone === 'staging') {
-        // Move from staging back to hand
-        setStagedTiles((prev) => {
-          const newStaged = prev.filter((t) => t.id !== tile.id)
-          return newStaged
-        })
-      } else {
-        // Move from hand to staging
-        setStagedTiles((prev) => {
-          const newStaged = [...prev, tile]
-          return newStaged
-        })
-      }
-      // Also call external select handler for syncing with game state
-      onTileSelect?.(tile)
+      toggleStagedTile(tile, originZone)
       setDragState(null)
       setCurrentDropZone(null)
       return
@@ -259,7 +260,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
     setDragState(null)
     setCurrentDropZone(null)
-  }, [dragState, getDropZone, onTileDiscard, onTileSelect])
+  }, [dragState, getDropZone, onTileDiscard, toggleStagedTile])
 
   // Global event listeners for drag
   useEffect(() => {
@@ -307,6 +308,14 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   useEffect(() => {
     onTilesStaged?.(stagedTiles)
   }, [stagedTiles, onTilesStaged])
+
+  // A complete-hand declaration is deliberately two-step: the action bar
+  // moves every tile here first, then the player confirms the staged hand.
+  useEffect(() => {
+    if (stageAllRequestId <= handledStageAllRequestRef.current) return
+    handledStageAllRequestRef.current = stageAllRequestId
+    setStagedTiles([...handTiles])
+  }, [stageAllRequestId, handTiles])
 
   // Clear staged tiles when hand changes significantly
   useEffect(() => {
@@ -414,6 +423,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       {/* ===== STAGING/PLAY ZONE ===== */}
       <animated.div
         ref={stagingZoneRef}
+        data-play-zone="staging"
         className="relative flex-1 flex flex-col items-center justify-center mx-2 my-2 rounded-xl border-2"
         style={{
           minHeight: stagingZoneMinHeight,
@@ -445,6 +455,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 return (
                   <div
                     key={tile.id}
+                    data-play-tile={tile.id}
                     className="absolute transition-transform"
                     style={{
                       left: '50%',
@@ -455,6 +466,14 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                     }}
                     onMouseDown={(e) => handleDragStart(tile, e)}
                     onTouchStart={(e) => handleDragStart(tile, e)}
+                    onKeyDown={(event) => {
+                      if (event.key !== 'Enter' && event.key !== ' ') return
+                      event.preventDefault()
+                      toggleStagedTile(tile, 'staging')
+                    }}
+                    role="button"
+                    tabIndex={disabled ? -1 : 0}
+                    aria-label={`Return ${tile.displayName} to hand`}
                   >
                     <AnimatedTile
                       tile={tile}
@@ -481,10 +500,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ) : (
           <div className="text-center px-6">
             <p className="game-play-instruction text-sm font-medium text-[var(--color-beige-white)] opacity-70 sm:text-lg">
-              Select 2+ tiles for a smaller play — or Play All
+              Stage 2–5 tiles for a tactical play
             </p>
             <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
-              Tap tiles or drag them here to stage them
+              Complete hands unlock a two-step Stage Hand declaration
             </p>
           </div>
         )}
@@ -493,6 +512,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       {/* ===== HAND ZONE ===== */}
       <animated.div
         ref={handZoneRef}
+        data-play-zone="hand"
         className="relative flex items-center px-2 rounded-t-xl"
         style={{
           height: handZoneHeight,
@@ -543,6 +563,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             return (
               <div
                 key={tile.id}
+                data-play-tile={tile.id}
                 className="absolute transition-transform"
                 style={{
                   left: '50%',
@@ -553,6 +574,14 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 }}
                 onMouseDown={(e) => handleDragStart(tile, e)}
                 onTouchStart={(e) => handleDragStart(tile, e)}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') return
+                  event.preventDefault()
+                  toggleStagedTile(tile, 'hand')
+                }}
+                role="button"
+                tabIndex={disabled ? -1 : 0}
+                aria-label={`Stage ${tile.displayName}`}
               >
                 <AnimatedTile
                   tile={tile}

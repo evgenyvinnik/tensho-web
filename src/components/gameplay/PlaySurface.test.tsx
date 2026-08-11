@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { PlaySurface } from './PlaySurface'
 import { Tile, TileSuit } from '../../core/Tile'
 
@@ -114,7 +114,7 @@ describe('PlaySurface', () => {
         />
       )
 
-      expect(screen.getByText(/Select 2\+ tiles/)).toBeInTheDocument()
+      expect(screen.getByText(/Stage 2–5 tiles/)).toBeInTheDocument()
     })
 
     it('should show discard zone', () => {
@@ -184,6 +184,30 @@ describe('PlaySurface', () => {
 
       // Initial render calls onTilesStaged with empty array
       expect(mockOnTilesStaged).toHaveBeenCalledWith([])
+    })
+
+    it('stages the full hand when a declaration is requested', async () => {
+      const tiles = createTestTiles(5)
+      const { rerender } = render(
+        <PlaySurface
+          handTiles={tiles}
+          stageAllRequestId={0}
+          onTilesStaged={mockOnTilesStaged}
+        />
+      )
+
+      rerender(
+        <PlaySurface
+          handTiles={tiles}
+          stageAllRequestId={1}
+          onTilesStaged={mockOnTilesStaged}
+        />
+      )
+
+      await waitFor(() => {
+        expect(mockOnTilesStaged).toHaveBeenLastCalledWith(tiles)
+      })
+      expect(screen.getByText('5 tiles ready to play')).toBeInTheDocument()
     })
   })
 

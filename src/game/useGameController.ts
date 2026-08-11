@@ -121,6 +121,7 @@ export interface GameController {
   // Utilities
   getAvailableActions: () => PlayerAction['type'][]
   canPerformAction: (action: PlayerAction) => boolean
+  isCompleteHand: (tileIds: string[]) => boolean
   previewScore: (tileIds: string[]) => ScoreBreakdown | null
   resetGame: () => void
   endRun: () => void
@@ -389,6 +390,11 @@ export function useGameController(
     [orchestrator]
   )
 
+  const isCompleteHand = useCallback(
+    (tileIds: string[]) => orchestrator.isCompleteHand(tileIds),
+    [orchestrator]
+  )
+
   const resetGame = useCallback(() => {
     orchestrator.resetGame()
   }, [orchestrator])
@@ -481,6 +487,7 @@ export function useGameController(
     // Utilities
     getAvailableActions,
     canPerformAction,
+    isCompleteHand,
     previewScore,
     resetGame,
     endRun,

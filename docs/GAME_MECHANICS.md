@@ -50,6 +50,13 @@ Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
 4. Apply multiplicative Mult bonuses in order (left-to-right for Decrees)
 5. Apply Season modifiers (highest authority)
 
+### Play Size and Hand Declaration
+
+- An ordinary **tactical play** contains **2–5 tiles**. It scores the useful pairs, sequences, triplets, or quads in that selection, cycles those tiles, and consumes one Hand.
+- A selection above five tiles is legal only when it resolves as a **complete Mahjong hand** under the active rules. The normal form is 14 tiles (four melds and a pair), while specific Decrees may authorize altered forms or sizes.
+- Declaring the whole hand is a deliberate two-step UI action: **Stage Hand** first moves the tiles to the board without scoring or consuming resources; **Confirm Hand** then scores it and consumes one Hand.
+- An incomplete selection above five tiles cannot be previewed or scored. This prevents full-hand cycling from multiplying every per-tile effect for the same cost as a small tactical play.
+
 ---
 
 ## 2. Activation Types (効果発動)
@@ -103,7 +110,7 @@ Decrees, Tile Marks, and other effects have specific **activation types** that d
 - **River Drought:** Some mandates penalize heavy discarding
 
 **Pseudo-Discards:**
-If all redraws are used, players may "play through" unwanted tiles by including them in valid but suboptimal hands to cycle cards without formal redraw penalties.
+If all redraws are used, players may "play through" unwanted tiles by including them in a valid but suboptimal 2–5 tile tactical group. This cycles those tiles, but still spends one of the round's Hands.
 
 ---
 

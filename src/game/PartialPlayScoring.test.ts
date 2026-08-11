@@ -137,6 +137,21 @@ describe('partial play scoring', () => {
     const tileIds = orchestrator.getState().handTiles.slice(0, 1).map((t) => t.id)
     expect(orchestrator.previewScore(tileIds)).toBeNull()
   })
+
+  it('rejects an oversized incomplete play without consuming the hand', () => {
+    const before = orchestrator.getState()
+    const tileIds = before.handTiles.slice(0, 6).map((tile) => tile.id)
+    const handsBefore = before.handsRemaining
+    const scoreBefore = before.score
+
+    expect(orchestrator.previewScore(tileIds)).toBeNull()
+    const result = orchestrator.processAction({ type: 'play', tileIds })
+
+    expect(result.success).toBe(false)
+    expect(result.errors?.[0]).toContain('limited to 5 tiles')
+    expect(orchestrator.getState().handsRemaining).toBe(handsBefore)
+    expect(orchestrator.getState().score).toBe(scoreBefore)
+  })
 })
 
 describe('authored Decree library', () => {

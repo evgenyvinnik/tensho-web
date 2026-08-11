@@ -83,7 +83,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.hand.title', 'Your Hand'),
       content: t(
         'progressiveHints.hand.content',
-        'The forecast matches the action button. Play All uses the whole hand; select 2+ tiles to compare and play a smaller group.'
+        'Stage 2–5 tiles to score a tactical group. A complete Mahjong hand unlocks Stage Hand: press once to move it to the board, then confirm the declaration.'
       ),
       priority: 1,
       autoDismissMs: 6000,

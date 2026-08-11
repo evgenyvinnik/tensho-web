@@ -69,6 +69,7 @@ import { DebuffSystem } from './DebuffSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
+import { MAX_TACTICAL_PLAY_TILES } from './playRules'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -1120,6 +1121,23 @@ export class GameOrchestrator {
   }
 
   /**
+   * Return whether the selected tiles resolve as a complete hand under the
+   * run's active rule-changing Decrees.
+   */
+  isCompleteHand(tileIds: string[]): boolean {
+    const selectedTiles = this.state.handTiles.filter((tile) =>
+      tileIds.includes(tile.id)
+    )
+    if (selectedTiles.length !== new Set(tileIds).size) return false
+
+    const tilesToScore = this.isDecreeRuleActive('honor_as_suited')
+      ? this.transmuteHonorsToDominantSuit(selectedTiles)
+      : [...selectedTiles]
+
+    return this.resolveCompleteHand(tilesToScore) !== null
+  }
+
+  /**
    * Score a prospective selection without playing it.
    *
    * Runs the same pipeline the play itself will run - the same partial parse,
@@ -1128,7 +1146,9 @@ export class GameOrchestrator {
    * effects resolve to their guaranteed outcome, making the preview a floor
    * rather than a promise the roll might not keep.
    *
-   * Returns null when the selection can't be scored (fewer than two tiles).
+   * Returns null when the selection can't be scored. Incomplete tactical
+   * plays are limited to five tiles; larger selections must form a complete
+   * hand under the active rules.
    */
   previewScore(tileIds: string[]): ScoreBreakdown | null {
     const selectedTiles = this.state.handTiles.filter((tile) => tileIds.includes(tile.id))
@@ -1138,23 +1158,25 @@ export class GameOrchestrator {
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
 
-    const validationOptions = this.getValidationOptions()
-    const hand = new Hand()
-    for (const tile of tilesToScore) {
-      hand.addTile(tile)
-    }
-    const validation = validateHand(hand, undefined, validationOptions)
-    const parsedHand =
-      this.parseAsAllWild(tilesToScore) ??
-      (validation.parsedHands.length > 0 ? validation.parsedHands[0] : null)
+    const completeHand = this.resolveCompleteHand(tilesToScore)
 
-    if (parsedHand) {
-      const complete = this.calculateHandScore(tilesToScore, parsedHand, undefined, true)
+    if (completeHand) {
+      const complete = this.calculateHandScore(
+        completeHand.tilesToScore,
+        completeHand.parsedHand,
+        undefined,
+        true
+      )
+      if (completeHand.usedShantenClemency) {
+        complete.finalScore = Math.floor(complete.finalScore * 0.5)
+      }
       if (this.state.voidScriptSystem.isBaseScoreHalved()) {
         complete.finalScore = Math.floor(complete.finalScore / 2)
       }
       return complete
     }
+
+    if (selectedTiles.length > MAX_TACTICAL_PLAY_TILES) return null
 
     const parse = parsePartialHand(tilesToScore)
     const partial = this.calculateHandScore(
@@ -1167,6 +1189,45 @@ export class GameOrchestrator {
       partial.finalScore = Math.floor(partial.finalScore / 2)
     }
     return partial
+  }
+
+  private resolveCompleteHand(tilesToScore: Tile[]): {
+    parsedHand: ParsedHand
+    tilesToScore: Tile[]
+    usedShantenClemency: boolean
+  } | null {
+    const validationOptions = this.getValidationOptions()
+    const hand = new Hand()
+    for (const tile of tilesToScore) {
+      hand.addTile(tile)
+    }
+
+    const validation = validateHand(hand, undefined, validationOptions)
+    const parsedHand =
+      this.parseAsAllWild(tilesToScore) ??
+      (validation.parsedHands.length > 0 ? validation.parsedHands[0] : null)
+
+    if (parsedHand) {
+      return {
+        parsedHand,
+        tilesToScore,
+        usedShantenClemency: false,
+      }
+    }
+
+    if (!this.isDecreeRuleActive('shanten_clemency')) return null
+    const completion = findOneAwayCompletion(
+      tilesToScore,
+      this.state.melds,
+      validationOptions
+    )
+    if (!completion) return null
+
+    return {
+      parsedHand: completion.parsedHand,
+      tilesToScore: [...tilesToScore, completion.completionTile],
+      usedShantenClemency: true,
+    }
   }
 
   /**
@@ -1223,19 +1284,7 @@ export class GameOrchestrator {
     const tilesToScore = this.isDecreeRuleActive('honor_as_suited')
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
-    const hand = new Hand()
-    for (const tile of tilesToScore) {
-      hand.addTile(tile)
-    }
-
-    // Check if hand is valid (can form a winning hand)
-    const validationOptions = this.getValidationOptions()
-    const validation = validateHand(hand, undefined, validationOptions)
-    let parsedHand =
-      this.parseAsAllWild(tilesToScore) ??
-      (validation.parsedHands.length > 0 ? validation.parsedHands[0] : null)
-    let tilesToScoreWithRules = tilesToScore
-    let usedShantenClemency = false
+    const completeHand = this.resolveCompleteHand(tilesToScore)
 
     if (
       this.isDecreeRuleActive('honor_as_suited') &&
@@ -1247,27 +1296,28 @@ export class GameOrchestrator {
       })
     }
 
-    if (!parsedHand && this.isDecreeRuleActive('shanten_clemency')) {
-      const completion = findOneAwayCompletion(
-        tilesToScore,
-        this.state.melds,
-        validationOptions
-      )
-      if (completion) {
-        parsedHand = completion.parsedHand
-        tilesToScoreWithRules = [...tilesToScore, completion.completionTile]
-        usedShantenClemency = true
+    if (!completeHand) {
+      if (selectedTiles.length > MAX_TACTICAL_PLAY_TILES) {
+        return {
+          success: false,
+          effects,
+          errors: [
+            `Incomplete plays are limited to ${MAX_TACTICAL_PLAY_TILES} tiles. Stage a complete Mahjong hand to declare more.`,
+          ],
+        }
       }
-    }
-    if (!parsedHand) {
-      // Even without a complete winning hand, we can still score
-      // This is the Tensho roguelike twist - you can play partial hands
+
+      // Tactical selections still score their useful groups, but are kept
+      // deliberately small so playing every tile is not the dominant choice.
       return this.executePartialPlay(selectedTiles, effects)
     }
 
     // Calculate score for complete hand
-    const scoreResult = this.calculateHandScore(tilesToScoreWithRules, parsedHand)
-    if (usedShantenClemency) {
+    const scoreResult = this.calculateHandScore(
+      completeHand.tilesToScore,
+      completeHand.parsedHand
+    )
+    if (completeHand.usedShantenClemency) {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore * 0.5)
       effects.push({
         type: 'decree_triggered',

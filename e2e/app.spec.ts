@@ -203,6 +203,10 @@ test.describe('Game Navigation', () => {
       (images) => images.map((image) => image.getAttribute('alt'))
     )
 
+    const handTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
+    await handTiles.last().click()
+    await handTiles.last().click()
+    await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
     await page.locator('[data-game-action="play"]').click()
 
     await expect(async () => {
@@ -271,6 +275,23 @@ test.describe('Game Navigation', () => {
               )
             })
         ),
+        buttonMetrics: [top, bottom].flatMap((row) =>
+          row
+            ? Array.from(row.querySelectorAll('button')).map((button) => {
+                const rowBounds = row.getBoundingClientRect()
+                const buttonBounds = button.getBoundingClientRect()
+                return {
+                  action: button.dataset.gameAction ?? button.ariaLabel,
+                  clientWidth: button.clientWidth,
+                  left: buttonBounds.left,
+                  right: buttonBounds.right,
+                  rowLeft: rowBounds.left,
+                  rowRight: rowBounds.right,
+                  scrollWidth: button.scrollWidth,
+                }
+              })
+            : []
+        ),
         hasPageOverflow:
           document.documentElement.scrollWidth > window.innerWidth ||
           document.documentElement.scrollHeight > window.innerHeight,
@@ -292,7 +313,10 @@ test.describe('Game Navigation', () => {
       layout.bottomRight!.left + 0.5
     )
     expect(layout.rowsFit).toBe(true)
-    expect(layout.buttonsFit).toBe(true)
+    expect(
+      layout.buttonsFit,
+      JSON.stringify(layout.buttonMetrics, null, 2)
+    ).toBe(true)
     expect(layout.hasPageOverflow).toBe(false)
   })
 
@@ -314,8 +338,11 @@ test.describe('Game Navigation', () => {
         ) ?? '0'
       )
 
-    // With nothing selected the panel forecasts the whole hand, which is also
-    // what PLAY ALL commits.
+    const handTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
+    await handTiles.last().click()
+    await handTiles.last().click()
+
+    // The panel forecasts the exact tactical group that will be committed.
     const previewTotal = page.getByTestId('score-preview-total')
     await expect(previewTotal).toBeVisible()
     const previewed = Number((await previewTotal.textContent())?.replace(/[^\d]/g, '') ?? '0')
@@ -358,7 +385,7 @@ test.describe('Game Navigation', () => {
 
     const tip = page.getByRole('status')
     await expect(tip).toBeVisible({ timeout: 5_000 })
-    await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
+    await expect(page.locator('[data-game-action="skip"]')).toBeEnabled()
     await page.getByRole('button', { name: /Close/ }).click()
     await expect(tip).toBeHidden()
   })

@@ -126,6 +126,11 @@ interface Meld {
 - **Tenpai Detector:** Identify waiting tiles
 - **Legal Hand Validator:** Confirm 4 melds + 1 pair (or special forms)
 
+**Play Contract:**
+- Incomplete tactical groups are limited to 2–5 tiles.
+- More than five tiles must pass the Legal Hand Validator (including any active rule-changing Decrees) before they can score.
+- Complete-hand declaration is staged on the board and confirmed separately; staging alone never scores or consumes a Hand.
+
 ---
 
 ## 3. Yaku Detection System

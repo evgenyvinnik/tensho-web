@@ -110,6 +110,39 @@ export const illustrationAssets = {
   },
 } as const
 
+const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([
+  'script_of_kinship',
+  'script_of_the_grave',
+  'script_of_incantation',
+  'script_of_immolation',
+  'script_of_the_cryptid',
+  'script_of_the_gold_seal',
+  'script_of_deja_vu',
+  'script_of_the_trance',
+  'script_of_the_medium',
+  'script_of_aura',
+  'script_of_ectoplasm',
+  'script_of_the_wraith',
+  'script_of_the_ankh',
+  'script_of_the_hex',
+  'script_of_the_sigil',
+  'script_of_the_ouija',
+  'script_of_the_soul',
+  'script_of_the_singularity',
+  'script_of_eclipse',
+  'script_of_mirrors',
+  'script_of_silence',
+])
+
+/** Return a script-specific illustration, with the generic scroll as fallback. */
+export function getVoidScriptIllustration(scriptId?: string): string {
+  if (!scriptId || !VOID_SCRIPT_ILLUSTRATION_IDS.has(scriptId)) {
+    return illustrationAssets.consumables.voidScript
+  }
+
+  return `${ASSET_BASE}/illustrations/scripts/${scriptId}.png`
+}
+
 /** Low-contrast generated environments designed to sit behind live UI. */
 export const backgroundAssets = {
   menu: `${ASSET_BASE}/backgrounds/menu.webp`,
