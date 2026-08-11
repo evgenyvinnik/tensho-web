@@ -221,6 +221,81 @@ test.describe('Game Navigation', () => {
     }).toPass()
   })
 
+  test('keeps the ornamental corners free on a 320px phone', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 568 })
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await expect(page).toHaveURL(/\/en\/play$/)
+    await expect(page.getByRole('button', { name: 'PLAY HAND' })).toBeVisible()
+
+    const layout = await page.evaluate(() => {
+      const rect = (selector: string) => {
+        const element = document.querySelector(selector)
+        if (!element) return null
+        const bounds = element.getBoundingClientRect()
+        return {
+          left: bounds.left,
+          right: bounds.right,
+        }
+      }
+
+      const top = document.querySelector<HTMLElement>(
+        '[data-frame-corner-row="top"]'
+      )
+      const bottom = document.querySelector<HTMLElement>(
+        '[data-frame-corner-row="bottom"]'
+      )
+
+      return {
+        top: rect('[data-frame-corner-row="top"]'),
+        bottom: rect('[data-frame-corner-row="bottom"]'),
+        topLeft: rect('[data-table-ornament="top-left"]'),
+        topRight: rect('[data-table-ornament="top-right"]'),
+        bottomLeft: rect('[data-table-ornament="bottom-left"]'),
+        bottomRight: rect('[data-table-ornament="bottom-right"]'),
+        rowsFit:
+          !!top &&
+          !!bottom &&
+          top.scrollWidth <= top.clientWidth &&
+          bottom.scrollWidth <= bottom.clientWidth,
+        buttonsFit: [top, bottom].every(
+          (row) =>
+            !!row &&
+            Array.from(row.querySelectorAll('button')).every((button) => {
+              const rowBounds = row.getBoundingClientRect()
+              const buttonBounds = button.getBoundingClientRect()
+              return (
+                buttonBounds.left >= rowBounds.left - 0.5 &&
+                buttonBounds.right <= rowBounds.right + 0.5 &&
+                button.scrollWidth <= button.clientWidth
+              )
+            })
+        ),
+        hasPageOverflow:
+          document.documentElement.scrollWidth > window.innerWidth ||
+          document.documentElement.scrollHeight > window.innerHeight,
+      }
+    })
+
+    expect(layout.top).not.toBeNull()
+    expect(layout.bottom).not.toBeNull()
+    expect(layout.topLeft).not.toBeNull()
+    expect(layout.topRight).not.toBeNull()
+    expect(layout.bottomLeft).not.toBeNull()
+    expect(layout.bottomRight).not.toBeNull()
+    expect(layout.top!.left + 0.5).toBeGreaterThanOrEqual(layout.topLeft!.right)
+    expect(layout.top!.right).toBeLessThanOrEqual(layout.topRight!.left + 0.5)
+    expect(layout.bottom!.left + 0.5).toBeGreaterThanOrEqual(
+      layout.bottomLeft!.right
+    )
+    expect(layout.bottom!.right).toBeLessThanOrEqual(
+      layout.bottomRight!.left + 0.5
+    )
+    expect(layout.rowsFit).toBe(true)
+    expect(layout.buttonsFit).toBe(true)
+    expect(layout.hasPageOverflow).toBe(false)
+  })
+
   test('pays at least what the score preview forecast', async ({ page }) => {
     await page.goto('/')
     await page.getByRole('button', { name: 'Play', exact: true }).click()

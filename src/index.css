@@ -308,7 +308,7 @@ a {
   }
 
   [data-game-action='redraw'] {
-    flex: 0 0 54px;
+    flex: 0 0 58px;
   }
 
   [data-game-action='dead-wall'] {
