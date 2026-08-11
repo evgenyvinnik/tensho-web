@@ -12,7 +12,11 @@ import { LanguageSelector } from '../ui/LanguageSelector'
 import { Tutorial, useTutorial } from '../ui/Tutorial'
 import { SongNotification } from '../ui/SongNotification'
 import { TableStyleButton } from '../menu/TableStyleButton'
-import { getTileImagePath, preloadMenuAssets, preloadTileImages } from '../../utils/assets'
+import {
+  getTileImagePath,
+  preloadMenuAssets,
+  preloadTileImages,
+} from '../../utils/assets'
 import { useAudio } from '../../hooks/useAudio'
 import { useGameController } from '../../game/useGameController'
 import { useStakeStore } from '../../stores/stakeStore'
@@ -52,7 +56,12 @@ interface FloatingTile {
  */
 function generateFloatingTiles(count: number): FloatingTile[] {
   const tiles: FloatingTile[] = []
-  const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu, TileSuit.Dragon]
+  const suits = [
+    TileSuit.Manzu,
+    TileSuit.Pinzu,
+    TileSuit.Souzu,
+    TileSuit.Dragon,
+  ]
 
   for (let i = 0; i < count; i++) {
     const suit = suits[Math.floor(Math.random() * suits.length)]
@@ -111,7 +120,8 @@ function FloatingTilesBackground({ tiles }: FloatingTilesBackgroundProps) {
               left: `${tile.x}%`,
               top: `${tile.y}%`,
               transform: spring.y.to(
-                (y) => `translateY(${y}px) rotate(${spring.rotate.get()}deg) scale(${tile.scale})`
+                (y) =>
+                  `translateY(${y}px) rotate(${spring.rotate.get()}deg) scale(${tile.scale})`
               ),
               opacity: 0.2,
               filter: 'blur(0.5px)',
@@ -310,12 +320,18 @@ export function MenuScreen() {
   })
 
   // Track song changes for notification
-  const [notificationTrack, setNotificationTrack] = useState<AudioTrack | null>(null)
+  const [notificationTrack, setNotificationTrack] = useState<AudioTrack | null>(
+    null
+  )
   const previousTrackRef = useRef<AudioTrack | null>(null)
 
   // Watch for track changes and trigger notification
   useEffect(() => {
-    if (audio.currentTrack && audio.currentTrack !== previousTrackRef.current && audio.isPlaying) {
+    if (
+      audio.currentTrack &&
+      audio.currentTrack !== previousTrackRef.current &&
+      audio.isPlaying
+    ) {
       setNotificationTrack(audio.currentTrack)
       previousTrackRef.current = audio.currentTrack
     }
@@ -359,7 +375,8 @@ export function MenuScreen() {
   })
 
   const startConfiguredRun = () => {
-    const stakeTier = currentStakeWallId === currentStyleId ? currentStakeTier : 1
+    const stakeTier =
+      currentStakeWallId === currentStyleId ? currentStakeTier : 1
     selectStake(currentStyleId, stakeTier)
     startNewRun(undefined, stakeTier, currentStyleId)
   }
@@ -402,7 +419,13 @@ export function MenuScreen() {
         <div className="text-center">
           <div className="relative w-20 h-20 mx-auto mb-6">
             <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin" />
-            <div className="absolute inset-2 border-4 border-[var(--color-vibrant-orange)] border-b-transparent rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }} />
+            <div
+              className="absolute inset-2 border-4 border-[var(--color-vibrant-orange)] border-b-transparent rounded-full animate-spin"
+              style={{
+                animationDirection: 'reverse',
+                animationDuration: '0.8s',
+              }}
+            />
           </div>
           <p className="text-[var(--color-golden-yellow)] text-lg font-ui neon-text-subtle">
             {t('common.loading')}
@@ -441,91 +464,133 @@ export function MenuScreen() {
       </AnimatedDiv>
 
       {/* Main content */}
-      <div className="absolute inset-0 z-10 flex min-h-0 flex-col items-center overflow-y-auto px-5 py-4 safe-area-top safe-area-bottom sm:px-6 md:py-6">
+      <main className="absolute inset-0 z-10 overflow-y-auto safe-area-top safe-area-bottom">
+        <div className="screen-canvas flex min-h-full items-center px-5 pb-5 pt-16 sm:px-6 sm:py-7 lg:px-10">
+          <div className="grid w-full items-center gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] lg:gap-12 xl:gap-20">
+            <section className="flex min-w-0 flex-col items-center justify-center lg:gap-6">
+              {/* Title section - 天翔 TENSHO */}
+              <AnimatedDiv
+                className="flex-shrink-0 text-center"
+                style={{
+                  opacity: titleSpring.opacity,
+                  transform: titleSpring.scale.to(
+                    (s) => `scale(${s}) translateY(${titleSpring.y.get()}px)`
+                  ),
+                }}
+              >
+                <h1 className="mb-1 font-decorative text-5xl text-[var(--color-golden-yellow)] title-glow md:text-7xl xl:text-8xl">
+                  天翔
+                </h1>
+                <h2 className="font-decorative text-2xl text-[var(--color-vibrant-orange)] neon-text-subtle tracking-widest md:text-3xl">
+                  TENSHO
+                </h2>
+                <p className="mt-2 font-ui text-xs text-[var(--color-beige-white)] opacity-70 tracking-wide md:text-sm">
+                  {t('menu.subtitle', 'MAHJONG ROGUELIKE')}
+                </p>
+              </AnimatedDiv>
 
-        {/* Title section - 天翔 TENSHO */}
-        <AnimatedDiv
-          className="flex-shrink-0 text-center"
-          style={{
-            opacity: titleSpring.opacity,
-            transform: titleSpring.scale.to(
-              (s) => `scale(${s}) translateY(${titleSpring.y.get()}px)`
-            ),
-          }}
-        >
-          <h1 className="mb-1 font-decorative text-5xl text-[var(--color-golden-yellow)] title-glow md:text-7xl">
-            天翔
-          </h1>
-          <h2 className="font-decorative text-2xl text-[var(--color-vibrant-orange)] neon-text-subtle tracking-widest md:text-3xl">
-            TENSHO
-          </h2>
-          <p className="mt-2 font-ui text-xs text-[var(--color-beige-white)] opacity-70 tracking-wide md:text-sm">
-            {t('menu.subtitle', 'MAHJONG ROGUELIKE')}
-          </p>
-        </AnimatedDiv>
+              {/* Featured dragon tiles */}
+              <div className="flex min-h-[126px] items-center justify-center py-2 md:min-h-[150px] md:py-3 lg:min-h-[220px]">
+                <FeaturedTiles show={showContent} />
+              </div>
+            </section>
 
-        {/* Center area - featured dragon tiles */}
-        <div className="flex min-h-[130px] flex-1 items-center justify-center py-3 md:min-h-[150px] md:py-4">
-          <FeaturedTiles show={showContent} />
-        </div>
+            {/* Run setup and navigation */}
+            <section className="mx-auto flex w-full max-w-md flex-col items-center gap-3 rounded-2xl border border-[var(--color-metallic-gold)]/25 bg-[var(--color-dark-forest)]/55 p-3 shadow-2xl backdrop-blur-sm sm:p-4 lg:bg-[var(--color-dark-forest)]/75 lg:p-5">
+              {/* Table Style Selection Button */}
+              <TableStyleButton delay={550} show={showContent} />
 
-        {/* Buttons section */}
-        <div className="flex w-full max-w-md flex-shrink-0 flex-col items-center gap-3 pb-4">
-          {/* Table Style Selection Button */}
-          <TableStyleButton delay={550} show={showContent} />
+              <NeonButton
+                onClick={handlePlay}
+                variant="primary"
+                delay={650}
+                show={showContent}
+              >
+                {t('menu.play')}
+              </NeonButton>
 
-          <NeonButton onClick={handlePlay} variant="primary" delay={650} show={showContent}>
-            {t('menu.play')}
-          </NeonButton>
+              <div className="grid w-full grid-cols-2 gap-3">
+                <NeonButton
+                  compact
+                  onClick={handleCodex}
+                  variant="secondary"
+                  delay={750}
+                  show={showContent}
+                >
+                  📜 {t('menu.codex', 'Codex')}
+                </NeonButton>
 
-          <div className="grid w-full grid-cols-2 gap-3">
-            <NeonButton compact onClick={handleCodex} variant="secondary" delay={750} show={showContent}>
-              📜 {t('menu.codex', 'Codex')}
-            </NeonButton>
+                <NeonButton
+                  compact
+                  onClick={handleSettings}
+                  variant="secondary"
+                  delay={850}
+                  show={showContent}
+                >
+                  {t('menu.settings')}
+                </NeonButton>
 
-            <NeonButton compact onClick={handleSettings} variant="secondary" delay={850} show={showContent}>
-              {t('menu.settings')}
-            </NeonButton>
+                <NeonButton
+                  compact
+                  onClick={handleAchievements}
+                  variant="secondary"
+                  delay={950}
+                  show={showContent}
+                >
+                  {t('menu.achievements', 'Achievements')}
+                </NeonButton>
 
-            <NeonButton compact onClick={handleAchievements} variant="secondary" delay={950} show={showContent}>
-              {t('menu.achievements', 'Achievements')}
-            </NeonButton>
+                <NeonButton
+                  compact
+                  onClick={handleCollection}
+                  variant="secondary"
+                  delay={1050}
+                  show={showContent}
+                >
+                  {t('menu.collection', 'Collection')}
+                </NeonButton>
+              </div>
 
-            <NeonButton compact onClick={handleCollection} variant="secondary" delay={1050} show={showContent}>
-              {t('menu.collection', 'Collection')}
-            </NeonButton>
-          </div>
-
-          {/* Audio indicator */}
-          <div className="mt-1 flex items-center gap-3 text-[var(--color-beige-white)]">
-            <button
-              onClick={() => audio.toggle()}
-              className="p-3 rounded-full bg-[var(--color-dark-forest)] hover:bg-[var(--color-forest-green)]
+              {/* Audio indicator */}
+              <div className="mt-1 flex items-center gap-3 text-[var(--color-beige-white)]">
+                <button
+                  onClick={() => audio.toggle()}
+                  className="p-3 rounded-full bg-[var(--color-dark-forest)] hover:bg-[var(--color-forest-green)]
                          transition-all duration-200 border-2 border-[var(--color-saddle-brown)]
                          hover:border-[var(--color-metallic-gold)] hover:scale-110 active:scale-95"
-              aria-label={t('accessibility.toggleMusic')}
-            >
-              {!audio.isPlaying ? (
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                </svg>
-              )}
-            </button>
-            <span className="text-sm opacity-60 font-ui">
-              {audio.isPlaying ? t('menu.musicOn') : t('menu.musicOff')}
-            </span>
-          </div>
+                  aria-label={t('accessibility.toggleMusic')}
+                >
+                  {!audio.isPlaying ? (
+                    <svg
+                      className="w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                    </svg>
+                  )}
+                </button>
+                <span className="text-sm opacity-60 font-ui">
+                  {audio.isPlaying ? t('menu.musicOn') : t('menu.musicOff')}
+                </span>
+              </div>
 
-          {/* Version */}
-          <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
-            v0.1.0
-          </span>
+              {/* Version */}
+              <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
+                v0.1.0
+              </span>
+            </section>
+          </div>
         </div>
-      </div>
+      </main>
 
       {/* Tutorial popup */}
       <Tutorial

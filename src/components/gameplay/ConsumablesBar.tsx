@@ -7,7 +7,6 @@
  * @module components/gameplay/ConsumablesBar
  */
 
-
 // =============================================================================
 // TYPE DEFINITIONS
 // =============================================================================
@@ -99,14 +98,14 @@ export function ConsumablesBar({
   ]
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1 min-[360px]:gap-2">
       {consumables.map((item) => (
         <button
           key={item.name}
           onClick={item.onUse}
           disabled={item.count === 0}
           className={`
-            flex items-center gap-1 px-2 py-1
+            game-consumable flex items-center justify-center gap-0 px-1 py-1 min-[360px]:gap-1 min-[360px]:px-2
             bg-[var(--color-dark-forest)] rounded-lg
             border ${item.color}
             ${item.count > 0 ? 'opacity-100 hover:bg-[var(--color-forest-green)]' : 'opacity-40'}
@@ -116,7 +115,9 @@ export function ConsumablesBar({
           aria-label={`${item.name} (${item.count} available)`}
         >
           <span className="text-lg">{item.emoji}</span>
-          <span className="text-sm text-[var(--color-beige-white)] font-mono">×{item.count}</span>
+          <span className="hidden text-sm text-[var(--color-beige-white)] font-mono min-[360px]:inline">
+            ×{item.count}
+          </span>
         </button>
       ))}
     </div>

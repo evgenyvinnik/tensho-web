@@ -31,18 +31,42 @@ export interface ItemDetailModalProps {
 /**
  * Get rarity display info
  */
-function getRarityInfo(rarity?: string): { label: string; color: string; bgColor: string } {
+function getRarityInfo(rarity?: string): {
+  label: string
+  color: string
+  bgColor: string
+} {
   switch (rarity) {
     case 'HeavenlyOrdinance':
-      return { label: 'Legendary', color: 'text-purple-300', bgColor: 'bg-purple-500/20' }
+      return {
+        label: 'Legendary',
+        color: 'text-purple-300',
+        bgColor: 'bg-purple-500/20',
+      }
     case 'ImperialDecree':
-      return { label: 'Rare', color: 'text-blue-300', bgColor: 'bg-blue-500/20' }
+      return {
+        label: 'Rare',
+        color: 'text-blue-300',
+        bgColor: 'bg-blue-500/20',
+      }
     case 'RegionalMandate':
-      return { label: 'Uncommon', color: 'text-green-300', bgColor: 'bg-green-500/20' }
+      return {
+        label: 'Uncommon',
+        color: 'text-green-300',
+        bgColor: 'bg-green-500/20',
+      }
     case 'LocalEdict':
-      return { label: 'Common', color: 'text-gray-300', bgColor: 'bg-gray-500/20' }
+      return {
+        label: 'Common',
+        color: 'text-gray-300',
+        bgColor: 'bg-gray-500/20',
+      }
     default:
-      return { label: 'Standard', color: 'text-[var(--color-beige-white)]', bgColor: 'bg-[var(--color-dark-forest)]' }
+      return {
+        label: 'Standard',
+        color: 'text-[var(--color-beige-white)]',
+        bgColor: 'bg-[var(--color-dark-forest)]',
+      }
   }
 }
 
@@ -90,14 +114,14 @@ export function ItemDetailModal({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 safe-area-top safe-area-bottom"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
       onClick={(e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
       <AnimatedDiv
-        className="relative max-w-md w-full mx-4 rounded-xl bg-[var(--color-dark-forest)] border-2 border-[var(--color-saddle-brown)] shadow-2xl overflow-hidden"
+        className="relative max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-xl border-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] shadow-2xl"
         style={{
           opacity: spring.opacity,
           transform: spring.scale.to((s) => `scale(${s})`),
@@ -105,7 +129,9 @@ export function ItemDetailModal({
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header with rarity gradient */}
-        <div className={`p-4 ${rarityInfo.bgColor} border-b border-[var(--color-saddle-brown)]`}>
+        <div
+          className={`p-4 ${rarityInfo.bgColor} border-b border-[var(--color-saddle-brown)]`}
+        >
           <div className="flex items-start justify-between">
             <div className="flex-1 flex items-start gap-3">
               {/* Decree icon for decree category items */}
@@ -140,7 +166,9 @@ export function ItemDetailModal({
                 )}
 
                 {/* Rarity */}
-                <span className={`inline-block mt-2 px-2 py-0.5 text-xs font-bold rounded ${rarityInfo.color} ${rarityInfo.bgColor}`}>
+                <span
+                  className={`inline-block mt-2 px-2 py-0.5 text-xs font-bold rounded ${rarityInfo.color} ${rarityInfo.bgColor}`}
+                >
                   {rarityInfo.label}
                 </span>
               </div>
@@ -156,8 +184,18 @@ export function ItemDetailModal({
                          min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Close"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -167,7 +205,9 @@ export function ItemDetailModal({
         <div className="p-4 space-y-4">
           {/* Description */}
           <div>
-            <h3 className="text-sm font-bold text-[var(--color-golden-yellow)] mb-1">Effect</h3>
+            <h3 className="text-sm font-bold text-[var(--color-golden-yellow)] mb-1">
+              Effect
+            </h3>
             <p className="text-sm text-[var(--color-beige-white)]">
               {displayInfo.description}
             </p>
@@ -178,7 +218,9 @@ export function ItemDetailModal({
             <div className="grid grid-cols-2 gap-3">
               {/* Times Used */}
               <div className="p-3 rounded-lg bg-[var(--color-forest-green)] border border-[var(--color-metallic-gold)]">
-                <p className="text-xs text-[var(--color-metallic-gold)]">Times Used</p>
+                <p className="text-xs text-[var(--color-metallic-gold)]">
+                  Times Used
+                </p>
                 <p className="text-xl font-bold text-[var(--color-golden-yellow)]">
                   {entry.timesUsed.toLocaleString()}
                 </p>
@@ -186,7 +228,9 @@ export function ItemDetailModal({
 
               {/* Times Won With */}
               <div className="p-3 rounded-lg bg-[var(--color-forest-green)] border border-[var(--color-metallic-gold)]">
-                <p className="text-xs text-[var(--color-metallic-gold)]">Runs Won</p>
+                <p className="text-xs text-[var(--color-metallic-gold)]">
+                  Runs Won
+                </p>
                 <p className="text-xl font-bold text-green-400">
                   {entry.timesWonWith.toLocaleString()}
                 </p>
@@ -198,7 +242,10 @@ export function ItemDetailModal({
           {isDiscovered && (
             <div className="pt-3 border-t border-[var(--color-forest-green)]">
               <p className="text-xs text-[var(--color-metallic-gold)]">
-                Discovered: <span className="text-[var(--color-beige-white)]">{formatDiscoveryDate(entry.discoveredAt)}</span>
+                Discovered:{' '}
+                <span className="text-[var(--color-beige-white)]">
+                  {formatDiscoveryDate(entry.discoveredAt)}
+                </span>
               </p>
             </div>
           )}
@@ -207,8 +254,18 @@ export function ItemDetailModal({
           {!entry.isUnlocked && entry.unlockCondition && (
             <div className="p-3 rounded-lg bg-gray-800/50 border border-gray-600">
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-5 h-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
                 </svg>
                 <p className="text-sm text-gray-400">
                   <span className="font-bold">Unlock: </span>

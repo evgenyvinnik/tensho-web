@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { animated, useSpring } from '@react-spring/web'
+import { animated, useSpring, to } from '@react-spring/web'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
@@ -25,7 +25,8 @@ function PayoutChip({ label, value, alwaysShow = false }: PayoutChipProps) {
     <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-[var(--color-beige-white)]/75">
       {label}{' '}
       <strong className={value < 0 ? 'text-red-300' : 'text-emerald-300'}>
-        {value >= 0 ? '+' : ''}{value}G
+        {value >= 0 ? '+' : ''}
+        {value}G
       </strong>
     </span>
   )
@@ -75,8 +76,9 @@ export function RoundCashOutBanner({
       className="mx-3 mt-3 overflow-hidden rounded-2xl border border-[var(--color-golden-yellow)]/70 bg-[linear-gradient(135deg,rgba(19,52,39,0.98),rgba(9,29,22,0.98))] shadow-[0_16px_50px_rgba(0,0,0,0.3)] sm:mx-4"
       style={{
         opacity: entrance.opacity,
-        transform: entrance.y.to(
-          (y) => `translateY(${y}px) scale(${entrance.scale.get()})`
+        transform: to(
+          [entrance.y, entrance.scale],
+          (y, scale) => `translateY(${y}px) scale(${scale})`
         ),
       }}
     >
@@ -90,11 +92,15 @@ export function RoundCashOutBanner({
               Act {summary.actNumber} · {summary.roundType}
             </h2>
             <span className="text-sm tabular-nums text-[var(--color-beige-white)]/65">
-              {summary.score.toLocaleString()} / {summary.target.toLocaleString()}
+              {summary.score.toLocaleString()} /{' '}
+              {summary.target.toLocaleString()}
             </span>
           </div>
 
-          <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Round payout breakdown">
+          <div
+            className="mt-3 flex flex-wrap gap-1.5"
+            aria-label="Round payout breakdown"
+          >
             <PayoutChip label="Clear" value={summary.baseReward} alwaysShow />
             <PayoutChip label="Interest" value={summary.interest} alwaysShow />
             <PayoutChip label="Decrees" value={summary.decreeGold} />
@@ -112,7 +118,8 @@ export function RoundCashOutBanner({
               summary.netGoldChange >= 0 ? 'text-emerald-300' : 'text-red-300'
             }`}
           >
-            {summary.netGoldChange >= 0 ? '+' : ''}{summary.netGoldChange}G
+            {summary.netGoldChange >= 0 ? '+' : ''}
+            {summary.netGoldChange}G
           </strong>
           <span className="text-xs tabular-nums text-[var(--color-beige-white)]/55">
             {summary.goldBefore}G → {summary.goldAfter}G
@@ -122,7 +129,9 @@ export function RoundCashOutBanner({
 
       <div className="grid border-t border-white/10 bg-black/15 text-xs sm:grid-cols-2">
         <p className="px-4 py-2.5 text-[var(--color-beige-white)]/65">
-          <span className="mr-1.5" aria-hidden="true">◎</span>
+          <span className="mr-1.5" aria-hidden="true">
+            ◎
+          </span>
           {interestCoach}
         </p>
         <p className="border-t border-white/10 px-4 py-2.5 text-right font-semibold text-[var(--color-metallic-gold)] sm:border-l sm:border-t-0">

@@ -6,7 +6,8 @@
  */
 
 import { useState } from 'react'
-import { useSpring, animated } from '@react-spring/web'
+import { useSpring, animated, to } from '@react-spring/web'
+import { useSettingsStore } from '../../stores/settingsStore'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import type { ArchiveCategory } from '../../config/archiveDefinitions'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
@@ -29,7 +30,6 @@ export interface ItemDisplayInfo {
 export interface ItemCardProps {
   entry: ArchiveEntry
   displayInfo: ItemDisplayInfo | null
-  delay?: number
   onClick?: () => void
 }
 
@@ -76,34 +76,39 @@ function getRarityColor(rarity?: string): string {
 /**
  * ItemCard - Single item display in collection grid
  */
-export function ItemCard({ entry, displayInfo, delay = 0, onClick }: ItemCardProps) {
+export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
 
   const isDiscovered = entry.discoveredAt !== null
   const isLocked = !entry.isUnlocked
 
   const spring = useSpring({
-    from: { opacity: 0, scale: 0.8, y: 20 },
-    to: { opacity: 1, scale: isHovered ? 1.05 : 1, y: 0 },
-    delay,
+    opacity: 1,
+    scale: isHovered ? 1.04 : 1,
+    y: 0,
     config: { tension: 200, friction: 20 },
+    immediate: reducedMotion,
   })
 
-  const rarityClass = isDiscovered ? getRarityColor(displayInfo?.rarity) : 'border-gray-600 bg-gray-800/50'
+  const rarityClass = isDiscovered
+    ? getRarityColor(displayInfo?.rarity)
+    : 'border-gray-600 bg-gray-800/50'
 
   return (
     <AnimatedDiv
       className={`
-        relative p-3 rounded-lg border-2 cursor-pointer
-        transition-all duration-200 min-h-[120px]
+        relative min-w-0 rounded-lg border-2 p-2.5 cursor-pointer sm:p-3
+        transition-all duration-200 min-h-[128px]
         ${rarityClass}
         ${isLocked ? 'opacity-50' : ''}
         hover:shadow-lg
       `}
       style={{
         opacity: spring.opacity,
-        transform: spring.scale.to(
-          (s) => `scale(${s}) translateY(${spring.y.get()}px)`
+        transform: to(
+          [spring.scale, spring.y],
+          (scale, y) => `scale(${scale}) translateY(${y}px)`
         ),
       }}
       onMouseEnter={() => setIsHovered(true)}
@@ -121,8 +126,18 @@ export function ItemCard({ entry, displayInfo, delay = 0, onClick }: ItemCardPro
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg z-10">
           <div className="text-center">
-            <svg className="w-8 h-8 text-gray-400 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            <svg
+              className="w-8 h-8 text-gray-400 mx-auto mb-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
             </svg>
             <span className="text-xs text-gray-400">Locked</span>
           </div>

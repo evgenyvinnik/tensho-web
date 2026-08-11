@@ -102,7 +102,7 @@ Run `bun run sloc` to calculate source lines of code.
 | Omen Tags | 23 |
 | Boss Mandates | 27 |
 | Table Stakes | 8 tiers |
-| Decrees | 155 |
+| Decrees | 137 playable (123 from the authored library + 14 rule-bending; 27 authored Decrees await engine support) |
 
 ## Features
 

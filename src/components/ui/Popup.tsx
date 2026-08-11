@@ -76,7 +76,7 @@ export function Popup({
   const popupContent = (
     <AnimatedDiv
       className={`
-        relative max-w-[90vw] max-h-[85vh]
+        relative w-[calc(100vw-24px)] max-w-xl max-h-[calc(100dvh-24px)]
         rounded-xl
         bg-[var(--color-dark-forest)] border-2 border-[var(--color-saddle-brown)]
         shadow-2xl
@@ -105,11 +105,13 @@ export function Popup({
       )}
 
       {/* Inner container with padding for scroll background */}
-      <div className="p-6 pt-12 pb-12 px-20 md:px-24 lg:px-28 overflow-auto max-h-[85vh]">
+      <div className="max-h-[calc(100dvh-24px)] overflow-auto px-12 pb-7 pt-14 sm:px-16 sm:pb-9 md:px-20">
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between mb-4 pr-10">
-            <h2 className="text-2xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+          <div
+            className={`mb-4 flex items-center justify-between ${showCloseButton ? 'pr-10' : ''}`}
+          >
+            <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-2xl">
               {title}
             </h2>
           </div>
@@ -126,7 +128,7 @@ export function Popup({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 safe-area-top safe-area-bottom"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
       onClick={handleBackdropClick}
     >
@@ -155,10 +157,20 @@ export function AlertPopup({
   confirmText = 'OK',
 }: AlertPopupProps) {
   return (
-    <Popup isOpen={isOpen} onClose={onClose} title={title} showCloseButton={false}>
-      <p className="mb-6 text-lg">{message}</p>
+    <Popup
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      showCloseButton={false}
+    >
+      <p className="mb-6 text-base leading-relaxed sm:text-lg">{message}</p>
       <div className="flex justify-center">
-        <Button variant="primary" size="md" onClick={onClose}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={onClose}
+          className="min-w-0 px-5"
+        >
           {confirmText}
         </Button>
       </div>
@@ -194,13 +206,28 @@ export function ConfirmPopup({
   }
 
   return (
-    <Popup isOpen={isOpen} onClose={onClose} title={title} showCloseButton={false}>
-      <p className="mb-6 text-lg">{message}</p>
-      <div className="flex justify-center gap-4">
-        <Button variant="secondary" size="md" onClick={onClose}>
+    <Popup
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      showCloseButton={false}
+    >
+      <p className="mb-6 text-base leading-relaxed sm:text-lg">{message}</p>
+      <div className="grid grid-cols-2 gap-3 sm:flex sm:justify-center sm:gap-4">
+        <Button
+          variant="secondary"
+          size="md"
+          onClick={onClose}
+          className="w-full min-w-0 px-2 sm:w-auto sm:min-w-[120px] sm:px-6"
+        >
           {cancelText}
         </Button>
-        <Button variant="primary" size="md" onClick={handleConfirm}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={handleConfirm}
+          className="w-full min-w-0 px-2 sm:w-auto sm:min-w-[120px] sm:px-6"
+        >
           {confirmText}
         </Button>
       </div>

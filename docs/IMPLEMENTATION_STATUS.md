@@ -18,9 +18,11 @@
 |---|---|---|
 | Start run | The Run Setup card selects a table and an unlocked Stake, then creates Act 1 Small, starter Decrees, a shuffled wall, and a ready 14-tile hand | Working |
 | Play hand | The default full-hand forecast matches the Play Hand action; selected subsets can be compared, the hand is scored, one hand is consumed, effects resolve, and the wall refills | Working |
+| Partial plays | A selection that is not a complete winning hand is decomposed into its best quads/triplets/sequences/pairs and run through the same pipeline as a complete hand — Decrees, tile modifiers, Flowers, Seasons, Orbs and Mandates all apply. Only yaku are withheld, since those require a winning hand | Working |
+| Score preview | The pre-play forecast is produced by the scoring pipeline itself, so the number shown is the number paid. Chance-based tile effects (Lucky, Glass) resolve to their guaranteed outcome, making the preview a floor rather than a gamble | Working |
 | Discard | Consumes one discard, moves the tile to the discard pile, applies discard rewards, draws a replacement, and resolves bonus tiles | Working |
 | Redraw | Replaces selected tiles and consumes one of three redraws | Working |
-| Win/loss | A round ends immediately when its target is met or when no hands remain | Working |
+| Win/loss | A round ends immediately when its target is met, when no hands remain, or when a drained wall leaves no legal play | Working |
 | Tea House | Opens after every completed round with an exact payout/interest breakdown and next target; supports immediate ordinary purchases, confirmed Charters, packs, rerolls, capacity checks, and authoritative gold deduction | Working |
 | Round progression | Small → Tea House → Large → Tea House → Boss → Tea House → next Act | Working |
 | Skip | Small/Large rounds may be skipped for an Omen; Boss rounds cannot be skipped | Working |
@@ -41,7 +43,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 | Tile wall, dead wall, bonus replacement | Complete | Yes |
 | Hand/yaku detection and scoring | Complete | Yes |
 | Tile Enhancements, Seals, and Editions | Complete | Yes, for supported scoring/economy effects |
-| Decrees | Large definition library | Yes for the active loop; scoring, resource, economy, slot, rental, edition, and specialized rule effects are connected, including Honor Transmutation and the once-per-round Dead Wall Writ swap |
+| Decrees | Large definition library | Yes. The authored library in `config/decreeDefinitions.ts` is translated into engine effects by `config/decreeLibrary.ts` and published into the live shop pool alongside the hand-written rule Decrees. Scoring, resource, economy, slot, rental, edition, hand-size, discard-count, and specialized rule effects are connected. Decrees needing mechanics the engine cannot express yet (tile retriggering, Decree copying, other bespoke rules) are withheld from the pool and listed in `UNSUPPORTED_DECREE_IDS` rather than shipped as no-ops |
 | Flowers and Seasons | Complete | Yes; Flowers persist and Seasons reset by round |
 | Celestial Orbs | Complete | Yes; purchase, inventory, use, yaku level, chips, and Mult are connected |
 | Fate Seals | Complete | Yes for authoritative ownership/use limits, exact tile targets, persistent tile mutation/destruction/copying, gold, consumable/Decree creation, duplication, Decree editions, and all-Yaku upgrades |

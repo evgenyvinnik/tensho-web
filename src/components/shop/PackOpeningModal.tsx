@@ -17,7 +17,10 @@ import { useSpring, animated } from '@react-spring/web'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
-import { PACK_TYPE_DEFINITIONS, PACK_SIZE_DEFINITIONS } from '../../config/packDefinitions'
+import {
+  PACK_TYPE_DEFINITIONS,
+  PACK_SIZE_DEFINITIONS,
+} from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 
@@ -26,7 +29,9 @@ const AnimatedDiv = animated('div')
 /** Check if current language uses CJK characters */
 function isCJKLanguage(): boolean {
   const lang = getCurrentLanguage()
-  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  return (
+    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  )
 }
 
 // =============================================================================
@@ -161,7 +166,9 @@ function PackContentCard({
         borderWidth: interactionSpring.borderWidth.to((w) => `${w}px`),
         borderStyle: 'solid',
         borderColor: isSelected ? 'var(--color-golden-yellow)' : rarityColor,
-        boxShadow: isSelected ? `0 0 25px rgba(255, 215, 79, 0.5), ${glow}` : glow,
+        boxShadow: isSelected
+          ? `0 0 25px rgba(255, 215, 79, 0.5), ${glow}`
+          : glow,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -173,7 +180,11 @@ function PackContentCard({
       {/* Selected checkmark */}
       {isSelected && (
         <div className="absolute top-1 right-1 w-6 h-6 rounded-full bg-[var(--color-golden-yellow)] flex items-center justify-center z-10">
-          <svg className="w-4 h-4 text-[var(--color-dark-forest)]" fill="currentColor" viewBox="0 0 20 20">
+          <svg
+            className="w-4 h-4 text-[var(--color-dark-forest)]"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
             <path
               fillRule="evenodd"
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -200,7 +211,10 @@ function PackContentCard({
 
         {/* Rarity indicator */}
         <div className="flex items-center gap-1 mb-1">
-          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: rarityColor }} />
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: rarityColor }}
+          />
           <span className="text-xs capitalize" style={{ color: rarityColor }}>
             {content.rarity}
           </span>
@@ -304,7 +318,7 @@ export function PackOpeningModal({
 
   return createPortal(
     <AnimatedDiv
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 safe-area-top safe-area-bottom sm:p-4"
       style={{
         opacity: backdropSpring.opacity,
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
@@ -316,7 +330,7 @@ export function PackOpeningModal({
       }}
     >
       <AnimatedDiv
-        className="relative w-full max-w-2xl mx-4 rounded-2xl overflow-hidden"
+        className="relative flex max-h-[calc(100dvh-24px)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl"
         style={{
           opacity: modalSpring.opacity,
           transform: modalSpring.scale.to((s) => `scale(${s})`),
@@ -327,14 +341,17 @@ export function PackOpeningModal({
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-4 border-b border-[var(--color-metallic-gold)] border-opacity-30">
+        <div className="flex-shrink-0 border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
                 {sizeInfo?.name} {typeInfo?.name}
               </h2>
               <p className="text-sm text-[var(--color-metallic-gold)]">
-                {showCJK && typeInfo?.japaneseName ? `${typeInfo.japaneseName} \u2022 ` : ''}{sizeInfo?.description}
+                {showCJK && typeInfo?.japaneseName
+                  ? `${typeInfo.japaneseName} \u2022 `
+                  : ''}
+                {sizeInfo?.description}
               </p>
             </div>
             <button
@@ -342,23 +359,36 @@ export function PackOpeningModal({
               className="p-2 rounded-lg hover:bg-[var(--color-forest-green)] text-[var(--color-beige-white)] min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Close"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         </div>
 
         {/* Content grid */}
-        <div className="p-6">
-          <div className="flex flex-wrap justify-center gap-4">
+        <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-6">
+          <div className="grid grid-cols-2 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
             {packOffering.contents.map((content, index) => (
               <PackContentCard
                 key={content.id}
                 content={content}
                 index={index}
                 isSelected={selectedIndices.includes(index)}
-                canSelect={selectedIndices.length < maxSelections || selectedIndices.includes(index)}
+                canSelect={
+                  selectedIndices.length < maxSelections ||
+                  selectedIndices.includes(index)
+                }
                 onToggle={() => handleToggleSelection(index)}
                 animationDelay={isRevealed ? 100 + index * 100 : 0}
               />
@@ -374,12 +404,12 @@ export function PackOpeningModal({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-[var(--color-metallic-gold)] border-opacity-30 flex items-center justify-between gap-4">
+        <div className="grid flex-shrink-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-t border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:gap-4 sm:p-4">
           {/* Skip button */}
           <button
             onClick={onSkip}
             className="
-              px-6 py-3 rounded-lg font-bold
+              px-4 py-3 rounded-lg font-bold sm:px-6
               bg-[var(--color-forest-green)] text-[var(--color-beige-white)]
               border-2 border-[var(--color-metallic-gold)]
               hover:bg-[var(--color-dark-forest)]
@@ -395,7 +425,7 @@ export function PackOpeningModal({
             onClick={handleConfirm}
             disabled={selectedIndices.length === 0}
             className={`
-              flex-1 px-8 py-3 rounded-lg font-bold text-lg
+              w-full px-4 py-3 rounded-lg font-bold text-sm sm:px-8 sm:text-lg
               transition-all duration-200
               min-h-[48px]
               ${

@@ -68,14 +68,21 @@ export function ScorePanel({
   const remainingScore = Math.max(0, targetScore - currentScore)
 
   return (
-    <div className="relative mx-3 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-2 text-center shadow-lg">
+    <div className="game-score-panel relative mx-3 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-2 text-center shadow-lg">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
         <div className="flex min-w-0 items-baseline gap-2 text-left">
           <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
             {t('gameplay.target')}
           </span>
-          <GlowEffect variant="gold" intensity={hasReachedTarget ? 0.8 : 0.4} pulsing={hasReachedTarget}>
-            <span data-tutorial="score-target" className="text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
+          <GlowEffect
+            variant="gold"
+            intensity={hasReachedTarget ? 0.8 : 0.4}
+            pulsing={hasReachedTarget}
+          >
+            <span
+              data-tutorial="score-target"
+              className="text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl"
+            >
               {targetScore.toLocaleString()}
             </span>
           </GlowEffect>
@@ -85,7 +92,10 @@ export function ScorePanel({
           <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
             {t('gameplay.score')}
           </span>
-          <span data-tutorial="current-score" className="text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
+          <span
+            data-tutorial="current-score"
+            className="text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl"
+          >
             {currentScore.toLocaleString()}
           </span>
         </div>
@@ -110,14 +120,20 @@ export function ScorePanel({
       >
         <div
           className={`h-full rounded-full transition-all duration-500 ${
-            hasReachedTarget ? 'bg-green-500' : 'bg-[var(--color-vibrant-orange)]'
+            hasReachedTarget
+              ? 'bg-green-500'
+              : 'bg-[var(--color-vibrant-orange)]'
           }`}
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
-      <p className={`mt-1 text-right text-[10px] font-semibold tabular-nums ${
-        hasReachedTarget ? 'text-emerald-300' : 'text-[var(--color-beige-white)]/45'
-      }`}>
+      <p
+        className={`game-score-remaining mt-1 text-right text-[10px] font-semibold tabular-nums ${
+          hasReachedTarget
+            ? 'text-emerald-300'
+            : 'text-[var(--color-beige-white)]/45'
+        }`}
+      >
         {hasReachedTarget
           ? t('gameplay.targetCleared', 'Target cleared')
           : t('gameplay.pointsToClear', {

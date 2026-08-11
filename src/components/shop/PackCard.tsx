@@ -13,9 +13,12 @@
  */
 
 import { useState, useCallback } from 'react'
-import { useSpring, animated } from '@react-spring/web'
+import { useSpring, animated, to } from '@react-spring/web'
 import { BlessingPack, PackType, PackSize } from '../../systems/types'
-import { PACK_TYPE_DEFINITIONS, PACK_SIZE_DEFINITIONS } from '../../config/packDefinitions'
+import {
+  PACK_TYPE_DEFINITIONS,
+  PACK_SIZE_DEFINITIONS,
+} from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 
 const AnimatedDiv = animated('div')
@@ -23,7 +26,9 @@ const AnimatedDiv = animated('div')
 /** Check if current language uses CJK characters */
 function isCJKLanguage(): boolean {
   const lang = getCurrentLanguage()
-  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  return (
+    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  )
 }
 
 // =============================================================================
@@ -68,7 +73,10 @@ function getPackTypeIcon(type: PackType): string {
 /**
  * Get pack size visual indicator
  */
-function getPackSizeIndicator(size: PackSize, showCJK: boolean): { scale: number; label: string } {
+function getPackSizeIndicator(
+  size: PackSize,
+  showCJK: boolean
+): { scale: number; label: string } {
   switch (size) {
     case 'Normal':
       return { scale: 1, label: '' }
@@ -110,7 +118,12 @@ function getPackGradient(type: PackType): string {
 /**
  * PackCard - Displays a purchasable blessing pack
  */
-export function PackCard({ pack, finalCost, canAfford, onPurchase }: PackCardProps) {
+export function PackCard({
+  pack,
+  finalCost,
+  canAfford,
+  onPurchase,
+}: PackCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
@@ -142,10 +155,12 @@ export function PackCard({ pack, finalCost, canAfford, onPurchase }: PackCardPro
 
   return (
     <AnimatedDiv
-      className="relative flex-shrink-0 w-32 rounded-xl overflow-hidden cursor-pointer"
+      className="relative min-w-0 w-full rounded-xl overflow-hidden cursor-pointer"
       style={{
-        transform: spring.scale.to(
-          (s) => `scale(${s}) perspective(500px) rotateY(${spring.rotateY.get()}deg)`
+        transform: to(
+          [spring.scale, spring.rotateY],
+          (scale, rotateY) =>
+            `perspective(500px) rotateY(${rotateY}deg) scale(${scale})`
         ),
         background: gradient,
         border: `2px solid ${typeInfo?.iconColor || '#C8B273'}`,
@@ -175,7 +190,7 @@ export function PackCard({ pack, finalCost, canAfford, onPurchase }: PackCardPro
       )}
 
       {/* Content */}
-      <div className="p-3 flex flex-col items-center min-h-[160px]">
+      <div className="flex min-h-[184px] flex-col items-center p-3">
         {/* Icon */}
         <animated.div
           className="text-4xl mb-2"

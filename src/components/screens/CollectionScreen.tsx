@@ -40,7 +40,9 @@ const AnimatedDiv = animated('div')
 /**
  * Build display info map for a category
  */
-function buildDisplayInfoMap(category: ArchiveCategory): Map<string, ItemDisplayInfo> {
+function buildDisplayInfoMap(
+  category: ArchiveCategory
+): Map<string, ItemDisplayInfo> {
   const map = new Map<string, ItemDisplayInfo>()
 
   switch (category) {
@@ -199,31 +201,35 @@ export function CollectionScreen() {
   const { navigateTo } = useAppNavigation()
 
   // Archive store
-  const entries = useArchiveStore((state) => state.entries)
-  const getEntriesByCategory = useArchiveStore((state) => state.getEntriesByCategory)
+  // Subscribe so derived store helpers refresh as discoveries change.
+  useArchiveStore((state) => state.entries)
+  const getEntriesByCategory = useArchiveStore(
+    (state) => state.getEntriesByCategory
+  )
   const getStats = useArchiveStore((state) => state.getStats)
-  const getRecentDiscoveries = useArchiveStore((state) => state.getRecentDiscoveries)
+  const getRecentDiscoveries = useArchiveStore(
+    (state) => state.getRecentDiscoveries
+  )
 
   // Local state
-  const [activeCategory, setActiveCategory] = useState<ArchiveCategory>('decrees')
+  const [activeCategory, setActiveCategory] =
+    useState<ArchiveCategory>('decrees')
   const [selectedEntry, setSelectedEntry] = useState<ArchiveEntry | null>(null)
-  const [selectedDisplayInfo, setSelectedDisplayInfo] = useState<ItemDisplayInfo | null>(null)
+  const [selectedDisplayInfo, setSelectedDisplayInfo] =
+    useState<ItemDisplayInfo | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Get all categories
   const categories = useMemo(() => getAllArchiveCategories(), [])
 
   // Get stats
-  const stats = useMemo(() => getStats(), [entries])
+  const stats = getStats()
 
   // Get recent discoveries
-  const recentDiscoveries = useMemo(() => getRecentDiscoveries(5), [entries])
+  const recentDiscoveries = getRecentDiscoveries(5)
 
   // Get entries for active category
-  const categoryEntries = useMemo(
-    () => getEntriesByCategory(activeCategory),
-    [activeCategory, entries]
-  )
+  const categoryEntries = getEntriesByCategory(activeCategory)
 
   // Build display info map for active category
   const displayInfoMap = useMemo(
@@ -232,8 +238,11 @@ export function CollectionScreen() {
   )
 
   // Category counts
-  const categoryCounts = useMemo(() => {
-    const counts: Record<ArchiveCategory, { discovered: number; total: number }> = {} as Record<ArchiveCategory, { discovered: number; total: number }>
+  const categoryCounts = (() => {
+    const counts: Record<
+      ArchiveCategory,
+      { discovered: number; total: number }
+    > = {} as Record<ArchiveCategory, { discovered: number; total: number }>
     for (const cat of categories) {
       const catEntries = getEntriesByCategory(cat.id)
       counts[cat.id] = {
@@ -242,7 +251,7 @@ export function CollectionScreen() {
       }
     }
     return counts
-  }, [entries, categories])
+  })()
 
   // Active category info
   const activeCategoryInfo = useMemo(
@@ -252,8 +261,8 @@ export function CollectionScreen() {
 
   // Header animation
   const headerSpring = useSpring({
-    from: { opacity: 0, y: -20 },
-    to: { opacity: 1, y: 0 },
+    opacity: 1,
+    y: 0,
     config: { tension: 200, friction: 20 },
   })
 
@@ -264,7 +273,10 @@ export function CollectionScreen() {
   })
 
   // Handle item click
-  const handleItemClick = (entry: ArchiveEntry, displayInfo: ItemDisplayInfo | null) => {
+  const handleItemClick = (
+    entry: ArchiveEntry,
+    displayInfo: ItemDisplayInfo | null
+  ) => {
     // Only open modal for discovered items or if we have display info
     if (entry.discoveredAt !== null || displayInfo) {
       setSelectedEntry(entry)
@@ -283,111 +295,125 @@ export function CollectionScreen() {
       {/* Header */}
       <AnimatedDiv
         style={headerSpring}
-        className="flex-shrink-0 px-4 py-3 bg-[var(--color-forest-green)] border-b-2 border-[var(--color-saddle-brown)]"
+        className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-forest-green)]"
       >
-        <div className="flex items-center justify-between mb-3">
-          {/* Back button */}
-          <BackButton onClick={handleBack} ariaLabel={t('common.back', 'Back')} />
-
-          {/* Title */}
-          <div className="text-center">
-            <h1 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-              {t('collection.title', 'Archive of Hands')}
-            </h1>
-            <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
-              手牌録
-            </p>
-          </div>
-
-          {/* Spacer */}
-          <div className="w-[44px]" />
-        </div>
-
-        {/* Overall progress */}
-        <div className="bg-[var(--color-dark-forest)] rounded-lg p-3">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-[var(--color-beige-white)]">
-              {t('collection.progress', 'Collection Progress')}
-            </span>
-            <span className="text-[var(--color-golden-yellow)]">
-              {stats.totalDiscovered} / {stats.totalItems}
-            </span>
-          </div>
-          <div className="h-2 bg-[var(--color-forest-green)] rounded-full overflow-hidden">
-            <AnimatedDiv
-              className="h-full bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)]"
-              style={progressSpring}
+        <div className="screen-canvas grid gap-3 px-3 py-3 sm:px-5 md:grid-cols-[minmax(260px,0.7fr)_minmax(380px,1.3fr)] md:items-center md:gap-6 md:py-4">
+          <div className="flex items-center justify-between">
+            <BackButton
+              onClick={handleBack}
+              ariaLabel={t('common.back', 'Back')}
             />
+
+            <div className="text-center">
+              <h1 className="text-base font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-xl">
+                <span className="sm:hidden">
+                  {t('menu.collection', 'Collection')}
+                </span>
+                <span className="hidden sm:inline">
+                  {t('collection.title', 'Archive of Hands')}
+                </span>
+              </h1>
+              <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
+                手牌録
+              </p>
+            </div>
+
+            <div className="w-[44px]" />
           </div>
-          <div className="flex justify-between text-xs mt-1 text-[var(--color-metallic-gold)]">
-            <span>{stats.completionPercentage.toFixed(1)}% Complete</span>
-            <span>{stats.totalItems - stats.totalDiscovered} remaining</span>
+
+          <div className="rounded-lg bg-[var(--color-dark-forest)] px-3 py-2.5">
+            <div className="mb-1.5 flex justify-between text-sm">
+              <span className="text-[var(--color-beige-white)]">
+                {t('collection.progress', 'Collection Progress')}
+              </span>
+              <span className="text-[var(--color-golden-yellow)]">
+                {stats.totalDiscovered} / {stats.totalItems}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-[var(--color-forest-green)]">
+              <AnimatedDiv
+                className="h-full bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)]"
+                style={progressSpring}
+              />
+            </div>
+            <div className="mt-1 hidden justify-between text-xs text-[var(--color-metallic-gold)] sm:flex">
+              <span>{stats.completionPercentage.toFixed(1)}% Complete</span>
+              <span>{stats.totalItems - stats.totalDiscovered} remaining</span>
+            </div>
           </div>
         </div>
       </AnimatedDiv>
 
       {/* Category tabs */}
-      <div className="flex-shrink-0 px-4 py-3 border-b border-[var(--color-forest-green)]">
-        <CategoryTabs
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-          categoryCounts={categoryCounts}
-        />
-      </div>
-
-      {/* Category description */}
-      {activeCategoryInfo && (
-        <div className="flex-shrink-0 px-4 py-2 bg-[var(--color-forest-green)]/30">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
-              {activeCategoryInfo.name}
-            </span>
-            <span className="text-xs text-[var(--color-metallic-gold)] font-tile">
-              ({activeCategoryInfo.japaneseName})
-            </span>
-          </div>
-          <p className="text-xs text-[var(--color-beige-white)] opacity-70 mt-1">
-            {activeCategoryInfo.description}
-          </p>
+      <div className="flex-shrink-0 border-b border-[var(--color-forest-green)]">
+        <div className="screen-canvas px-2 py-2.5 sm:px-5 lg:py-3">
+          <CategoryTabs
+            categories={categories}
+            activeCategory={activeCategory}
+            onCategoryChange={setActiveCategory}
+            categoryCounts={categoryCounts}
+          />
         </div>
-      )}
-
-      {/* Item grid */}
-      <div className="flex-1 overflow-y-auto px-4 py-4">
-        <ItemGrid
-          entries={categoryEntries}
-          displayInfoMap={displayInfoMap}
-          onItemClick={handleItemClick}
-        />
       </div>
 
-      {/* Recent discoveries summary (fixed at bottom) */}
-      {recentDiscoveries.length > 0 && (
-        <div className="flex-shrink-0 px-4 py-3 bg-[var(--color-forest-green)] border-t border-[var(--color-saddle-brown)]">
-          <p className="text-xs text-[var(--color-metallic-gold)] mb-2">
-            {t('collection.recentDiscoveries', 'Recent Discoveries')}
-          </p>
-          <div className="flex gap-2 overflow-x-auto">
-            {recentDiscoveries.slice(0, 5).map((event, index) => {
-              const [category, itemId] = event.key.split(':') as [ArchiveCategory, string]
-              const infoMap = buildDisplayInfoMap(category as ArchiveCategory)
-              const info = infoMap.get(itemId)
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="screen-canvas">
+          {activeCategoryInfo && (
+            <div className="border-b border-white/5 bg-[var(--color-forest-green)]/30 px-3 py-2.5 sm:px-5">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
+                  {activeCategoryInfo.name}
+                </span>
+                <span className="text-xs text-[var(--color-metallic-gold)] font-tile">
+                  {activeCategoryInfo.japaneseName}
+                </span>
+                <p className="w-full text-xs text-[var(--color-beige-white)]/70 sm:w-auto sm:flex-1">
+                  {activeCategoryInfo.description}
+                </p>
+              </div>
+            </div>
+          )}
 
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 px-3 py-1 rounded bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)] text-xs"
-                >
-                  <span className="text-[var(--color-golden-yellow)]">
-                    {info?.name || itemId}
-                  </span>
+          <div className="px-3 py-3 sm:px-5 sm:py-5">
+            <ItemGrid
+              entries={categoryEntries}
+              displayInfoMap={displayInfoMap}
+              onItemClick={handleItemClick}
+            />
+
+            {recentDiscoveries.length > 0 && (
+              <aside className="mt-5 rounded-xl border border-[var(--color-saddle-brown)]/70 bg-[var(--color-forest-green)]/60 p-3">
+                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[var(--color-metallic-gold)]">
+                  {t('collection.recentDiscoveries', 'Recent Discoveries')}
+                </p>
+                <div className="scroll-rail flex gap-2 overflow-x-auto pb-1">
+                  {recentDiscoveries.slice(0, 5).map((event, index) => {
+                    const [category, itemId] = event.key.split(':') as [
+                      ArchiveCategory,
+                      string,
+                    ]
+                    const infoMap = buildDisplayInfoMap(
+                      category as ArchiveCategory
+                    )
+                    const info = infoMap.get(itemId)
+
+                    return (
+                      <div
+                        key={index}
+                        className="flex-shrink-0 rounded border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] px-3 py-1 text-xs"
+                      >
+                        <span className="text-[var(--color-golden-yellow)]">
+                          {info?.name || itemId}
+                        </span>
+                      </div>
+                    )
+                  })}
                 </div>
-              )
-            })}
+              </aside>
+            )}
           </div>
         </div>
-      )}
+      </div>
 
       {/* Item detail modal */}
       <ItemDetailModal

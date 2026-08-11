@@ -39,8 +39,8 @@ test.describe('Application Smoke Tests', () => {
     if (await tutorialButton.count() > 0) {
       await tutorialButton.first().click()
 
-      // Wait for navigation
-      await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible()
+      // Wait for navigation away from the menu.
+      await expect(page).not.toHaveURL(/\/en$/)
     }
   })
 

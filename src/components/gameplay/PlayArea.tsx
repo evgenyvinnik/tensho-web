@@ -116,8 +116,12 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
           ${isSelected ? 'ring-2 ring-white ring-opacity-70' : ''}
         `}
       >
-        <span className="text-xs font-bold text-white drop-shadow-sm">{yaku.name}</span>
-        <span className="ml-1.5 text-[10px] text-white/70">×{yaku.multiplier}</span>
+        <span className="text-xs font-bold text-white drop-shadow-sm">
+          {yaku.name}
+        </span>
+        <span className="ml-1.5 text-[10px] text-white/70">
+          ×{yaku.multiplier}
+        </span>
       </button>
 
       {/* Tooltip popup */}
@@ -129,22 +133,32 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
 
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[var(--color-golden-yellow)] font-bold">{yaku.name}</span>
-              <span className={`text-xs px-2 py-0.5 rounded bg-gradient-to-r ${getYakuTierColor(yaku.tier)}`}>
+              <span className="text-[var(--color-golden-yellow)] font-bold">
+                {yaku.name}
+              </span>
+              <span
+                className={`text-xs px-2 py-0.5 rounded bg-gradient-to-r ${getYakuTierColor(yaku.tier)}`}
+              >
                 {getYakuTierLabel(yaku.tier)}
               </span>
             </div>
 
             {/* Japanese name */}
-            <p className="text-[var(--color-beige-white)] text-xs opacity-60 mb-2">{yaku.japaneseName}</p>
+            <p className="text-[var(--color-beige-white)] text-xs opacity-60 mb-2">
+              {yaku.japaneseName}
+            </p>
 
             {/* Description */}
-            <p className="text-[var(--color-beige-white)] text-sm leading-relaxed">{yaku.description}</p>
+            <p className="text-[var(--color-beige-white)] text-sm leading-relaxed">
+              {yaku.description}
+            </p>
 
             {/* Multiplier */}
             <div className="mt-2 pt-2 border-t border-[var(--color-metallic-gold)] border-opacity-30">
               <span className="text-red-400 font-bold">×{yaku.multiplier}</span>
-              <span className="text-[var(--color-beige-white)] text-xs opacity-60 ml-2">multiplier</span>
+              <span className="text-[var(--color-beige-white)] text-xs opacity-60 ml-2">
+                multiplier
+              </span>
             </div>
           </div>
         </div>
@@ -187,7 +201,7 @@ export function PlayArea({
   return (
     <div
       data-tutorial="yaku-display"
-      className="mx-3 mb-1 flex min-h-[68px] flex-shrink-0 flex-col items-center justify-center rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)]/70 px-3 py-2 shadow-inner"
+      className="game-play-area mx-3 mb-1 flex min-h-[68px] flex-shrink-0 flex-col items-center justify-center rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)]/70 px-3 py-2 shadow-inner"
       onClick={() => setSelectedYakuId(null)} // Close tooltip when clicking outside
     >
       {/* Score Preview Panel */}
@@ -223,25 +237,31 @@ export function PlayArea({
                   />
                 ))
               ) : (
-                <span className="text-xs text-[var(--color-beige-white)]/40">
+                <span className="game-forecast-explainer text-xs text-[var(--color-beige-white)]/40">
                   Base play · complete a pattern to unlock Yaku
                 </span>
               )}
             </div>
 
             <div className="mt-1.5 flex items-baseline gap-2 text-sm tabular-nums">
-              <strong className="text-blue-300">{scorePreview.points.toLocaleString()}</strong>
+              <strong className="text-blue-300">
+                {scorePreview.points.toLocaleString()}
+              </strong>
               <span className="text-[var(--color-golden-yellow)]/60">×</span>
-              <strong className="text-red-300">{scorePreview.mult.toFixed(1)}</strong>
+              <strong className="text-red-300">
+                {scorePreview.mult.toFixed(1)}
+              </strong>
               <span className="text-[var(--color-beige-white)]/30">·</span>
               <span
-                className={
-                  scorePreview.total >= remainingToTarget && remainingToTarget > 0
+                className={`game-forecast-pace ${
+                  scorePreview.total >= remainingToTarget &&
+                  remainingToTarget > 0
                     ? 'font-bold text-emerald-300'
                     : 'text-[var(--color-beige-white)]/55'
-                }
+                }`}
               >
-                {scorePreview.total >= remainingToTarget && remainingToTarget > 0
+                {scorePreview.total >= remainingToTarget &&
+                remainingToTarget > 0
                   ? 'Clears the round'
                   : `${Math.min(999, Math.round((scorePreview.total / Math.max(1, remainingToTarget)) * 100))}% of what remains · ${
                       scorePreview.total >= requiredPerHand
@@ -259,7 +279,9 @@ export function PlayArea({
             <GlowEffect
               variant="gold"
               intensity={0.6}
-              pulsing={Boolean(scorePreview.yaku && scorePreview.yaku.length > 0)}
+              pulsing={Boolean(
+                scorePreview.yaku && scorePreview.yaku.length > 0
+              )}
             >
               <p
                 data-testid="score-preview-total"
@@ -273,7 +295,9 @@ export function PlayArea({
       ) : (
         /* Default state when no tiles */
         <div className="text-center">
-          <p className="text-[var(--color-beige-white)] opacity-50 px-4">Tap tiles to select, or play all</p>
+          <p className="text-[var(--color-beige-white)] opacity-50 px-4">
+            Tap tiles to select, or play all
+          </p>
           <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
             Press "Play Hand" to score your hand
           </p>

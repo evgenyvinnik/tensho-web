@@ -68,7 +68,7 @@ export function DecreeCardCompact({
   return (
     <div
       className={`
-        relative flex-shrink-0 w-16 h-20
+        game-decree-card relative flex-shrink-0 w-16 h-20
         bg-[var(--color-dark-forest)] rounded-lg
         border-2 ${DECREE_RARITY_COLORS[decree.rarity]}
         ${isSuppressed ? 'opacity-50 grayscale' : ''}
@@ -88,7 +88,11 @@ export function DecreeCardCompact({
             ?
           </div>
         ) : (
-          <DecreeUniqueIcon decreeId={decree.id} size={36} color={DECREE_ICON_COLORS[decree.rarity]} />
+          <DecreeUniqueIcon
+            decreeId={decree.id}
+            size={36}
+            color={DECREE_ICON_COLORS[decree.rarity]}
+          />
         )}
       </div>
 
@@ -191,7 +195,7 @@ export function DecreeSlotEmpty({ isLocked = false }: DecreeSlotEmptyProps) {
   return (
     <div
       className={`
-        flex-shrink-0 w-16 h-20
+        game-decree-card flex-shrink-0 w-16 h-20
         bg-[var(--color-dark-forest)] rounded-lg
         border-2 border-dashed
         ${isLocked ? 'border-gray-600 opacity-40' : 'border-[var(--color-metallic-gold)] opacity-60'}
@@ -237,10 +241,17 @@ export function DecreeBar({ decrees, maxSlots, onDecreeTap }: DecreeBarProps) {
   const emptySlotCount = Math.max(0, maxSlots - decrees.length)
 
   return (
-    <div data-tutorial="decrees" className="flex gap-2 px-4 py-2 overflow-x-auto">
+    <div
+      data-tutorial="decrees"
+      className="flex gap-2 px-4 py-2 overflow-x-auto"
+    >
       {/* Render owned decrees */}
       {decrees.map((decree) => (
-        <DecreeCardCompact key={decree.id} decree={decree} onTap={() => onDecreeTap?.(decree)} />
+        <DecreeCardCompact
+          key={decree.id}
+          decree={decree}
+          onTap={() => onDecreeTap?.(decree)}
+        />
       ))}
 
       {/* Render empty slots */}

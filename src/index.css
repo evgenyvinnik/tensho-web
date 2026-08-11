@@ -1,5 +1,5 @@
 /* Tailwind CSS imports - must come first */
-@import "tailwindcss";
+@import 'tailwindcss';
 @config "../tailwind.config.js";
 @source "../";
 
@@ -40,22 +40,22 @@
 
 :root {
   /* Theme colors from ARCHITECTURE.MD */
-  --color-forest-green: #2D5F4A;
-  --color-vibrant-orange: #FF5722;
-  --color-golden-yellow: #FFD54F;
-  --color-deep-orange: #D84315;
-  --color-dark-forest: #1C3A2E;
-  --color-beige-white: #F5F5DC;
-  --color-saddle-brown: #8B4513;
-  --color-metallic-gold: #C8B273;
+  --color-forest-green: #2d5f4a;
+  --color-vibrant-orange: #ff5722;
+  --color-golden-yellow: #ffd54f;
+  --color-deep-orange: #d84315;
+  --color-dark-forest: #1c3a2e;
+  --color-beige-white: #f5f5dc;
+  --color-saddle-brown: #8b4513;
+  --color-metallic-gold: #c8b273;
 
   /* Rarity colors */
-  --color-rarity-common: #9E9E9E;
-  --color-rarity-uncommon: #4CAF50;
-  --color-rarity-rare: #2196F3;
-  --color-rarity-epic: #9C27B0;
-  --color-rarity-legendary: #FFD54F;
-  --color-rarity-mythic: #FF5722;
+  --color-rarity-common: #9e9e9e;
+  --color-rarity-uncommon: #4caf50;
+  --color-rarity-rare: #2196f3;
+  --color-rarity-epic: #9c27b0;
+  --color-rarity-legendary: #ffd54f;
+  --color-rarity-mythic: #ff5722;
 
   /* Font families */
   --font-tile: 'LongCang', serif;
@@ -113,20 +113,37 @@ body {
    Typography
    ============================================================================ */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-ui);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-beige-white);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
 
-.font-tile { font-family: var(--font-tile); }
-.font-ui { font-family: var(--font-ui); }
-.font-decorative { font-family: var(--font-decorative); }
+.font-tile {
+  font-family: var(--font-tile);
+}
+.font-ui {
+  font-family: var(--font-ui);
+}
+.font-decorative {
+  font-family: var(--font-decorative);
+}
 
 /* ============================================================================
    Links
@@ -156,7 +173,8 @@ a {
   min-width: 44px;
 }
 
-button, a {
+button,
+a {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -173,16 +191,97 @@ button, a {
    Utility Classes
    ============================================================================ */
 
-.safe-area-top { padding-top: env(safe-area-inset-top); }
-.safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
-.safe-area-left { padding-left: env(safe-area-inset-left); }
-.safe-area-right { padding-right: env(safe-area-inset-right); }
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
 
 .viewport-full {
   width: 100vw;
   width: 100dvw;
   height: 100vh;
   height: 100dvh;
+}
+
+/* Shared responsive canvas for full-screen game surfaces. */
+.screen-canvas {
+  width: min(100%, 80rem);
+  margin-inline: auto;
+}
+
+/* Keep horizontal navigation discoverable without permanently showing a bar. */
+.scroll-rail {
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline proximity;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(
+      in srgb,
+      var(--color-metallic-gold) 55%,
+      transparent
+    )
+    transparent;
+}
+
+.scroll-rail > * > * {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 639px) {
+  .scroll-rail {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      black 10px,
+      black calc(100% - 18px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      black 10px,
+      black calc(100% - 18px),
+      transparent 100%
+    );
+  }
+}
+
+/* Ultra-compact phones need the full game loop, not a cropped desktop HUD. */
+@media (max-width: 600px) and (max-height: 650px) {
+  .gameplay-inventory-row {
+    max-height: 58px;
+    padding-block: 2px !important;
+  }
+
+  .game-decree-card {
+    width: 44px !important;
+    height: 52px !important;
+  }
+
+  .game-score-panel {
+    margin-block: 2px !important;
+    padding-block: 4px !important;
+  }
+
+  .game-score-remaining,
+  .game-forecast-explainer,
+  .game-forecast-pace {
+    display: none;
+  }
+
+  .game-play-area {
+    max-height: 90px;
+    min-height: 72px !important;
+    overflow: hidden;
+    padding-block: 5px !important;
+  }
 }
 
 .bg-cover-center {
@@ -205,27 +304,51 @@ button, a {
 
 /* Gentle swirl animation for backgrounds */
 @keyframes gentle-swirl {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.02); }
-  100% { transform: rotate(360deg) scale(1); }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.02);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
 
 @keyframes slow-drift {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(10px, -5px); }
-  50% { transform: translate(-5px, 10px); }
-  75% { transform: translate(-10px, -10px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10px, -5px);
+  }
+  50% {
+    transform: translate(-5px, 10px);
+  }
+  75% {
+    transform: translate(-10px, -10px);
+  }
 }
 
 @keyframes subtle-wave {
-  0%, 100% { transform: translateY(0) scaleY(1); }
-  50% { transform: translateY(-2px) scaleY(1.01); }
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-2px) scaleY(1.01);
+  }
 }
 
 /* Seigaiha wave pattern drift animation */
 @keyframes wave-drift {
-  0% { background-position: 0 0; }
-  100% { background-position: 60px 30px; }
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 60px 30px;
+  }
 }
 
 .animate-wave-drift {
@@ -234,8 +357,12 @@ button, a {
 
 /* Audio visualizer bar animation for song notification */
 @keyframes audio-bar {
-  0% { height: 20%; }
-  100% { height: 100%; }
+  0% {
+    height: 20%;
+  }
+  100% {
+    height: 100%;
+  }
 }
 
 /* Very subtle background pattern animation */
@@ -248,16 +375,17 @@ button, a {
   content: '';
   position: absolute;
   inset: -50%;
-  background: radial-gradient(
-    ellipse at 30% 20%,
-    rgba(45, 95, 74, 0.15) 0%,
-    transparent 50%
-  ),
-  radial-gradient(
-    ellipse at 70% 80%,
-    rgba(200, 178, 115, 0.08) 0%,
-    transparent 40%
-  );
+  background:
+    radial-gradient(
+      ellipse at 30% 20%,
+      rgba(45, 95, 74, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 70% 80%,
+      rgba(200, 178, 115, 0.08) 0%,
+      transparent 40%
+    );
   animation: slow-drift 60s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
@@ -284,7 +412,8 @@ button, a {
    ============================================================================ */
 
 @keyframes pulse-glow-subtle {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 3px var(--color-golden-yellow);
   }
   50% {
@@ -297,8 +426,13 @@ button, a {
 }
 
 @keyframes float-subtle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 .animate-float {
@@ -357,7 +491,9 @@ button, a {
 
 /* Gentle button hover */
 .btn-hover-subtle {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-hover-subtle:hover {
@@ -371,8 +507,12 @@ button, a {
 
 /* Subtle shimmer effect */
 @keyframes shimmer-subtle {
-  0% { background-position: -100% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -100% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 .shimmer-subtle {
@@ -388,7 +528,8 @@ button, a {
 
 /* Subtle title glow */
 @keyframes title-glow-subtle {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 8px var(--color-golden-yellow));
   }
   50% {
@@ -402,7 +543,8 @@ button, a {
 
 /* Gentle button pulse */
 @keyframes button-pulse-subtle {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 8px var(--color-vibrant-orange);
   }
   50% {

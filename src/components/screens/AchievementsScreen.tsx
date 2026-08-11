@@ -18,8 +18,27 @@ import {
   type AchievementCategory,
   type AchievementDefinition,
 } from '../../stores/achievementStore'
+import { useSettingsStore } from '../../stores/settingsStore'
 
 const AnimatedDiv = animated('div')
+
+function humanizeIdentifier(value: string): string {
+  return value
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+function getFallbackDescription(definition: AchievementDefinition): string {
+  const { type, target, value } = definition.condition
+  const suffix =
+    target !== undefined
+      ? ` · ${target.toLocaleString()}`
+      : value
+        ? ` · ${humanizeIdentifier(value)}`
+        : ''
+  return `${humanizeIdentifier(type)}${suffix}`
+}
 
 /**
  * Single achievement card component
@@ -28,25 +47,29 @@ function AchievementCard({
   definition,
   unlocked,
   progress,
-  delay,
 }: {
   definition: AchievementDefinition
   unlocked: boolean
   progress?: number
-  delay: number
 }) {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
+  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
 
   const spring = useSpring({
-    from: { opacity: 0, y: 20 },
-    to: { opacity: 1, y: 0 },
-    delay,
+    opacity: 1,
+    y: 0,
     config: { tension: 200, friction: 20 },
+    immediate: reducedMotion,
   })
 
   const target = definition.condition.target
-  const progressPercent = target && progress !== undefined ? Math.min((progress / target) * 100, 100) : 0
+  const progressPercent =
+    target && progress !== undefined
+      ? Math.min((progress / target) * 100, 100)
+      : 0
+  const fallbackName = humanizeIdentifier(definition.id)
+  const fallbackDescription = getFallbackDescription(definition)
 
   return (
     <AnimatedDiv
@@ -83,12 +106,14 @@ function AchievementCard({
                 ${unlocked ? 'text-[var(--color-golden-yellow)]' : 'text-[var(--color-beige-white)]'}
               `}
             >
-              {t(definition.nameKey, definition.nameKey.split('.').pop() ?? definition.nameKey)}
+              {t(definition.nameKey, { defaultValue: fallbackName })}
             </h3>
             {unlocked && <span className="text-green-400 text-sm">✓</span>}
           </div>
 
-          <p className="text-xs text-[var(--color-metallic-gold)] font-tile">{definition.japaneseTitle}</p>
+          <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
+            {definition.japaneseTitle}
+          </p>
 
           {/* Progress bar for cumulative achievements */}
           {target && !unlocked && progress !== undefined && (
@@ -111,7 +136,9 @@ function AchievementCard({
       {isExpanded && (
         <div className="mt-3 pt-3 border-t border-[var(--color-forest-green)]">
           <p className="text-sm text-[var(--color-beige-white)]">
-            {t(definition.descriptionKey, definition.descriptionKey.split('.').pop() ?? definition.descriptionKey)}
+            {t(definition.descriptionKey, {
+              defaultValue: fallbackDescription,
+            })}
           </p>
 
           {definition.unlocks && (
@@ -158,7 +185,9 @@ function CategoryTab({
       `}
     >
       <span className="mr-1">{category.icon}</span>
-      <span className="hidden sm:inline">{t(category.nameKey, category.id)}</span>
+      <span className="hidden sm:inline">
+        {t(category.nameKey, category.id)}
+      </span>
       <span className="ml-1 text-xs opacity-70">
         {unlockedCount}/{totalCount}
       </span>
@@ -172,7 +201,8 @@ function CategoryTab({
 export function AchievementsScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
-  const [activeCategory, setActiveCategory] = useState<AchievementCategory>('progression')
+  const [activeCategory, setActiveCategory] =
+    useState<AchievementCategory>('progression')
 
   const achievements = useAchievementStore((state) => state.achievements)
   const stats = useAchievementStore((state) => state.stats)
@@ -191,7 +221,10 @@ export function AchievementsScreen() {
 
   // Calculate category counts
   const categoryCounts = useMemo(() => {
-    const counts: Record<AchievementCategory, { unlocked: number; total: number }> = {
+    const counts: Record<
+      AchievementCategory,
+      { unlocked: number; total: number }
+    > = {
       progression: { unlocked: 0, total: 0 },
       cumulative: { unlocked: 0, total: 0 },
       skill: { unlocked: 0, total: 0 },
@@ -233,8 +266,8 @@ export function AchievementsScreen() {
 
   // Header animation
   const headerSpring = useSpring({
-    from: { opacity: 0, y: -20 },
-    to: { opacity: 1, y: 0 },
+    opacity: 1,
+    y: 0,
     config: { tension: 200, friction: 20 },
   })
 
@@ -253,41 +286,54 @@ export function AchievementsScreen() {
       {/* Header */}
       <AnimatedDiv
         style={headerSpring}
-        className="flex-shrink-0 px-4 py-3 bg-[var(--color-forest-green)] border-b-2 border-[var(--color-saddle-brown)]"
+        className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-forest-green)]"
       >
-        <div className="flex items-center justify-between mb-3">
-          <BackButton onClick={handleBack} ariaLabel={t('common.back', 'Back')} />
-
-          <div className="text-center">
-            <h1 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-              {t('achievements.title', 'Heavenly Accolades')}
-            </h1>
-            <p className="text-xs text-[var(--color-metallic-gold)] font-tile">天賞</p>
-          </div>
-
-          <div className="w-[44px]" /> {/* Spacer for centering */}
-        </div>
-
-        {/* Overall progress */}
-        <div className="bg-[var(--color-dark-forest)] rounded-lg p-3">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-[var(--color-beige-white)]">{t('achievements.progress', 'Progress')}</span>
-            <span className="text-[var(--color-golden-yellow)]">
-              {totalUnlocked} / {ACHIEVEMENT_DEFINITIONS.length}
-            </span>
-          </div>
-          <div className="h-2 bg-[var(--color-forest-green)] rounded-full overflow-hidden">
-            <AnimatedDiv
-              className="h-full bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)]"
-              style={progressSpring}
+        <div className="screen-canvas grid gap-3 px-3 py-3 sm:px-5 md:grid-cols-[minmax(260px,0.7fr)_minmax(380px,1.3fr)] md:items-center md:gap-6 md:py-4">
+          <div className="flex items-center justify-between">
+            <BackButton
+              onClick={handleBack}
+              ariaLabel={t('common.back', 'Back')}
             />
+
+            <div className="text-center">
+              <h1 className="text-base font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-xl">
+                <span className="sm:hidden">
+                  {t('achievements.shortTitle', 'Accolades')}
+                </span>
+                <span className="hidden sm:inline">
+                  {t('achievements.title', 'Heavenly Accolades')}
+                </span>
+              </h1>
+              <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
+                天賞
+              </p>
+            </div>
+
+            <div className="w-[44px]" />
+          </div>
+
+          <div className="rounded-lg bg-[var(--color-dark-forest)] px-3 py-2.5">
+            <div className="mb-1.5 flex justify-between text-sm">
+              <span className="text-[var(--color-beige-white)]">
+                {t('achievements.progress', 'Progress')}
+              </span>
+              <span className="text-[var(--color-golden-yellow)]">
+                {totalUnlocked} / {ACHIEVEMENT_DEFINITIONS.length}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-[var(--color-forest-green)]">
+              <AnimatedDiv
+                className="h-full bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)]"
+                style={progressSpring}
+              />
+            </div>
           </div>
         </div>
       </AnimatedDiv>
 
       {/* Category tabs */}
-      <div className="flex-shrink-0 px-4 py-3 overflow-x-auto">
-        <div className="flex gap-2">
+      <div className="scroll-rail flex-shrink-0 overflow-x-auto border-b border-white/5 lg:overflow-visible">
+        <div className="screen-canvas flex min-w-max gap-2 px-3 py-2.5 sm:px-5 lg:min-w-0 lg:flex-wrap lg:py-3">
           {ACHIEVEMENT_CATEGORIES.map((category) => (
             <CategoryTab
               key={category.id}
@@ -302,22 +348,24 @@ export function AchievementsScreen() {
       </div>
 
       {/* Achievement list */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {categoryAchievements.map((def, index) => (
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="screen-canvas grid gap-3 px-3 py-3 sm:grid-cols-2 sm:px-5 sm:py-5 lg:grid-cols-3">
+          {categoryAchievements.map((def) => (
             <AchievementCard
               key={def.id}
               definition={def}
               unlocked={achievements[def.id]?.unlocked || false}
               progress={getProgress(def)}
-              delay={index * 50}
             />
           ))}
         </div>
 
         {categoryAchievements.length === 0 && (
-          <div className="text-center py-12 text-[var(--color-metallic-gold)]">
-            {t('achievements.noAchievements', 'No achievements in this category')}
+          <div className="screen-canvas py-12 text-center text-[var(--color-metallic-gold)]">
+            {t(
+              'achievements.noAchievements',
+              'No achievements in this category'
+            )}
           </div>
         )}
       </div>

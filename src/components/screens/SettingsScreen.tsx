@@ -29,13 +29,19 @@ export function SettingsScreen() {
   const { goBack } = useAppNavigation()
 
   // Confirmation dialog states
-  const [showResetTutorialConfirm, setShowResetTutorialConfirm] = useState(false)
-  const [showResetProgressConfirm, setShowResetProgressConfirm] = useState(false)
-  const [showTutorialResetSuccess, setShowTutorialResetSuccess] = useState(false)
-  const [showProgressResetSuccess, setShowProgressResetSuccess] = useState(false)
+  const [showResetTutorialConfirm, setShowResetTutorialConfirm] =
+    useState(false)
+  const [showResetProgressConfirm, setShowResetProgressConfirm] =
+    useState(false)
+  const [showTutorialResetSuccess, setShowTutorialResetSuccess] =
+    useState(false)
+  const [showProgressResetSuccess, setShowProgressResetSuccess] =
+    useState(false)
 
   // Achievement store for resetting progress
-  const resetAchievements = useAchievementStore((state) => state.resetAchievements)
+  const resetAchievements = useAchievementStore(
+    (state) => state.resetAchievements
+  )
 
   // Settings store
   const {
@@ -55,7 +61,6 @@ export function SettingsScreen() {
     setShowTileHints,
     resetSettings,
   } = useSettingsStore()
-
 
   // Reset tutorial handler
   const handleResetTutorial = useCallback(() => {
@@ -89,173 +94,183 @@ export function SettingsScreen() {
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-4 bg-[var(--color-dark-forest)]">
-        <BackButton onClick={goBack} ariaLabel={t('common.back')} />
-        <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
-          {t('menu.settings')}
-        </h1>
-        <div className="w-[44px]" /> {/* Spacer for centering */}
+      <div className="flex-shrink-0 bg-[var(--color-dark-forest)] shadow-lg">
+        <div className="screen-canvas flex items-center justify-between px-3 py-3 sm:px-5 sm:py-4">
+          <BackButton onClick={goBack} ariaLabel={t('common.back')} />
+          <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
+            {t('menu.settings')}
+          </h1>
+          <div className="w-[44px]" />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {/* Language Section */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4">
-          <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
-            {t('settings.language')}
-          </h2>
-          <LanguageSelector />
-        </section>
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="screen-canvas grid items-start gap-3 p-3 sm:gap-4 sm:p-5 lg:grid-cols-2 lg:gap-5 lg:py-6">
+          {/* Language Section */}
+          <section className="rounded-xl border border-white/5 bg-[var(--color-dark-forest)] p-4 shadow-lg">
+            <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
+              {t('settings.language')}
+            </h2>
+            <LanguageSelector />
+          </section>
 
-        {/* Audio Section */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4 space-y-4">
-          <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
-            {t('settings.audio')}
-          </h2>
+          {/* Audio Section */}
+          <section className="rounded-xl border border-white/5 bg-[var(--color-dark-forest)] p-4 shadow-lg space-y-4 lg:row-span-2">
+            <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
+              {t('settings.audio')}
+            </h2>
 
-          <Slider
-            label={t('settings.musicVolume')}
-            value={Math.round(musicVolume * 100)}
-            onChange={(v) => setMusicVolume(v / 100)}
-            disabled={!musicEnabled}
-          />
+            <Slider
+              label={t('settings.musicVolume')}
+              value={Math.round(musicVolume * 100)}
+              onChange={(v) => setMusicVolume(v / 100)}
+              disabled={!musicEnabled}
+            />
 
-          <Toggle
-            label={t('settings.muteMusic')}
-            checked={!musicEnabled}
-            onChange={toggleMusic}
-          />
+            <Toggle
+              label={t('settings.muteMusic')}
+              checked={!musicEnabled}
+              onChange={toggleMusic}
+            />
 
-          <div className="border-t border-[var(--color-forest-green)] my-2" />
+            <div className="border-t border-[var(--color-forest-green)] my-2" />
 
-          <Slider
-            label={t('settings.sfxVolume')}
-            value={Math.round(sfxVolume * 100)}
-            onChange={(v) => setSfxVolume(v / 100)}
-            disabled={!sfxEnabled}
-          />
+            <Slider
+              label={t('settings.sfxVolume')}
+              value={Math.round(sfxVolume * 100)}
+              onChange={(v) => setSfxVolume(v / 100)}
+              disabled={!sfxEnabled}
+            />
 
-          <Toggle
-            label={t('settings.muteSfx')}
-            checked={!sfxEnabled}
-            onChange={toggleSfx}
-          />
-        </section>
+            <Toggle
+              label={t('settings.muteSfx')}
+              checked={!sfxEnabled}
+              onChange={toggleSfx}
+            />
+          </section>
 
-        {/* Visual Section */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4 space-y-4">
-          <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
-            {t('settings.visual')}
-          </h2>
+          {/* Visual Section */}
+          <section className="rounded-xl border border-white/5 bg-[var(--color-dark-forest)] p-4 shadow-lg space-y-4">
+            <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
+              {t('settings.visual')}
+            </h2>
 
-          <div className="space-y-2">
-            <label className="text-[var(--color-beige-white)]">{t('settings.animationSpeed')}</label>
-            <div className="flex gap-2">
-              {(['slow', 'normal', 'fast'] as const).map((speed) => (
-                <button
-                  key={speed}
-                  onClick={() => setAnimationSpeed(speed)}
-                  className={`flex-1 py-2 px-3 rounded-lg transition-colors ${
-                    animationSpeed === speed
-                      ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)]'
-                      : 'bg-[var(--color-forest-green)] text-[var(--color-beige-white)] hover:bg-opacity-80'
-                  }`}
-                >
-                  {t(`settings.speed.${speed}`)}
-                </button>
-              ))}
+            <div className="space-y-2">
+              <label className="text-[var(--color-beige-white)]">
+                {t('settings.animationSpeed')}
+              </label>
+              <div className="flex gap-2">
+                {(['slow', 'normal', 'fast'] as const).map((speed) => (
+                  <button
+                    key={speed}
+                    onClick={() => setAnimationSpeed(speed)}
+                    className={`flex-1 py-2 px-3 rounded-lg transition-colors ${
+                      animationSpeed === speed
+                        ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)]'
+                        : 'bg-[var(--color-forest-green)] text-[var(--color-beige-white)] hover:bg-opacity-80'
+                    }`}
+                  >
+                    {t(`settings.speed.${speed}`)}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <Toggle
-            label={t('settings.reducedMotion')}
-            description={t('settings.reducedMotionDesc')}
-            checked={reducedMotion}
-            onChange={setReducedMotion}
-          />
-        </section>
+            <Toggle
+              label={t('settings.reducedMotion')}
+              description={t('settings.reducedMotionDesc')}
+              checked={reducedMotion}
+              onChange={setReducedMotion}
+            />
+          </section>
 
-        {/* Gameplay Section */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4 space-y-4">
-          <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
-            {t('settings.gameplay')}
-          </h2>
+          {/* Gameplay Section */}
+          <section className="rounded-xl border border-white/5 bg-[var(--color-dark-forest)] p-4 shadow-lg space-y-4">
+            <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
+              {t('settings.gameplay')}
+            </h2>
 
-          <Toggle
-            label={t('settings.tileHints')}
-            description={t('settings.tileHintsDesc')}
-            checked={showTileHints}
-            onChange={setShowTileHints}
-          />
-        </section>
+            <Toggle
+              label={t('settings.tileHints')}
+              description={t('settings.tileHintsDesc')}
+              checked={showTileHints}
+              onChange={setShowTileHints}
+            />
+          </section>
 
-        {/* Data & Progress Section */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4 space-y-4">
-          <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
-            {t('settings.data')}
-          </h2>
+          {/* Data & Progress Section */}
+          <section className="rounded-xl border border-white/5 bg-[var(--color-dark-forest)] p-4 shadow-lg space-y-4">
+            <h2 className="text-lg font-bold text-[var(--color-golden-yellow)] mb-4">
+              {t('settings.data')}
+            </h2>
 
-          {/* Reset Tutorial */}
-          <div className="flex items-center justify-between py-2">
-            <div>
-              <p className="text-[var(--color-beige-white)]">{t('settings.resetTutorial')}</p>
-              <p className="text-sm text-[var(--color-beige-white)] opacity-60">
-                {t('settings.resetTutorialDesc')}
-              </p>
-            </div>
-            <button
-              onClick={() => setShowResetTutorialConfirm(true)}
-              className="px-4 py-2 bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)]
+            {/* Reset Tutorial */}
+            <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-[var(--color-beige-white)]">
+                  {t('settings.resetTutorial')}
+                </p>
+                <p className="text-sm text-[var(--color-beige-white)] opacity-60">
+                  {t('settings.resetTutorialDesc')}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowResetTutorialConfirm(true)}
+                className="w-full flex-shrink-0 px-4 py-2 bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)] sm:w-auto
                          text-[var(--color-beige-white)] font-bold rounded-lg text-sm
                          border-2 border-[var(--color-metallic-gold)]
                          transition-all hover:scale-105 active:scale-95"
-            >
-              {t('settings.resetTutorial')}
-            </button>
-          </div>
-        </section>
-
-        {/* Danger Zone Section */}
-        <section className="bg-red-950/30 rounded-lg p-4 space-y-4 border border-red-500/30">
-          <h2 className="text-lg font-bold text-red-400 mb-4">
-            {t('settings.dangerZone')}
-          </h2>
-
-          {/* Reset All Progress */}
-          <div className="flex items-center justify-between py-2">
-            <div>
-              <p className="text-[var(--color-beige-white)]">{t('settings.resetProgress')}</p>
-              <p className="text-sm text-red-300 opacity-80">
-                {t('settings.resetProgressDesc')}
-              </p>
+              >
+                {t('settings.resetTutorial')}
+              </button>
             </div>
-            <button
-              onClick={() => setShowResetProgressConfirm(true)}
-              className="px-4 py-2 bg-red-700 hover:bg-red-600
+          </section>
+
+          {/* Danger Zone Section */}
+          <section className="rounded-xl bg-red-950/30 p-4 shadow-lg space-y-4 border border-red-500/30">
+            <h2 className="text-lg font-bold text-red-400 mb-4">
+              {t('settings.dangerZone')}
+            </h2>
+
+            {/* Reset All Progress */}
+            <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-[var(--color-beige-white)]">
+                  {t('settings.resetProgress')}
+                </p>
+                <p className="text-sm text-red-300 opacity-80">
+                  {t('settings.resetProgressDesc')}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowResetProgressConfirm(true)}
+                className="w-full flex-shrink-0 px-4 py-2 bg-red-700 hover:bg-red-600 sm:w-auto
                          text-white font-bold rounded-lg text-sm
                          border-2 border-red-400
                          transition-all hover:scale-105 active:scale-95"
+              >
+                {t('settings.resetProgress')}
+              </button>
+            </div>
+          </section>
+
+          {/* Reset Settings Section */}
+          <section className="rounded-xl border border-white/5 bg-[var(--color-dark-forest)] p-4 shadow-lg lg:col-span-2">
+            <Button
+              variant="secondary"
+              onClick={resetSettings}
+              className="w-full"
             >
-              {t('settings.resetProgress')}
-            </button>
-          </div>
-        </section>
+              {t('settings.resetToDefaults')}
+            </Button>
+          </section>
 
-        {/* Reset Settings Section */}
-        <section className="bg-[var(--color-dark-forest)] rounded-lg p-4">
-          <Button
-            variant="secondary"
-            onClick={resetSettings}
-            className="w-full"
-          >
-            {t('settings.resetToDefaults')}
-          </Button>
-        </section>
-
-        {/* Version info */}
-        <p className="text-center text-sm text-[var(--color-beige-white)] opacity-50">
-          Tensho v0.1.0
-        </p>
+          {/* Version info */}
+          <p className="text-center text-sm text-[var(--color-beige-white)] opacity-50 lg:col-span-2">
+            Tensho v0.1.0
+          </p>
+        </div>
       </div>
 
       {/* Confirmation Dialogs */}

@@ -51,7 +51,9 @@ export function CodexScreen() {
   const [currentStep, setCurrentStep] = useState(0)
 
   // Track visited steps
-  const [visitedSteps, setVisitedSteps] = useState<Set<number>>(() => new Set([0]))
+  const [visitedSteps, setVisitedSteps] = useState<Set<number>>(
+    () => new Set([0])
+  )
 
   // Mark current step as visited when it changes
   useEffect(() => {
@@ -126,26 +128,34 @@ export function CodexScreen() {
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-4 bg-[var(--color-dark-forest)]">
-        <BackButton onClick={goBack} ariaLabel={t('common.back')} />
-        <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
-          📜 {t('codex.title', 'Codex')}
-        </h1>
-        <div className="w-[44px]" />
+      <div className="flex-shrink-0 bg-[var(--color-dark-forest)] shadow-lg">
+        <div className="screen-canvas flex items-center justify-between px-3 py-3 sm:px-5 sm:py-4">
+          <BackButton onClick={goBack} ariaLabel={t('common.back')} />
+          <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
+            📜 {t('codex.title', 'Codex')}
+          </h1>
+          <div className="w-[44px]" />
+        </div>
       </div>
 
       {/* Mobile category tabs */}
-      <div className="lg:hidden px-4 py-3 bg-[var(--color-dark-forest)] border-t border-[var(--color-forest-green)]">
-        <CategoryTabs categories={categories} currentCategory={currentCategory} onCategoryClick={handleCategoryClick} />
+      <div className="lg:hidden border-t border-[var(--color-forest-green)] bg-[var(--color-dark-forest)] px-2 py-2">
+        <CategoryTabs
+          categories={categories}
+          currentCategory={currentCategory}
+          onCategoryClick={handleCategoryClick}
+        />
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="screen-canvas flex min-h-0 flex-1 overflow-hidden border-x border-white/5">
         {/* Desktop sidebar */}
-        <div className="hidden lg:flex lg:flex-col lg:w-72 bg-[var(--color-dark-forest)] border-r border-[var(--color-forest-green)] overflow-y-auto p-4 gap-2">
+        <aside className="hidden bg-[var(--color-dark-forest)] lg:flex lg:w-64 lg:flex-col lg:gap-2 lg:overflow-y-auto lg:border-r lg:border-[var(--color-forest-green)] lg:p-4 xl:w-72">
           {categories.map((category) => {
             const catSteps = categorySteps[category] || []
-            const completedCount = catSteps.filter((i) => visitedSteps.has(i)).length
+            const completedCount = catSteps.filter((i) =>
+              visitedSteps.has(i)
+            ).length
 
             return (
               <CategoryItem
@@ -158,12 +168,12 @@ export function CodexScreen() {
               />
             )
           })}
-        </div>
+        </aside>
 
         {/* Content area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Step indicators for current category */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-[var(--color-dark-forest)] overflow-x-auto scrollbar-hide">
+          <div className="scroll-rail flex items-center gap-2 overflow-x-auto bg-[var(--color-dark-forest)] px-3 py-2 sm:px-4">
             {currentCategorySteps.map((stepIndex, i) => {
               const step = steps[stepIndex]
               const isActive = stepIndex === currentStep
@@ -174,11 +184,12 @@ export function CodexScreen() {
                   key={stepIndex}
                   onClick={() => handleStepClick(stepIndex)}
                   className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
-                    ${isActive
-                      ? 'bg-[var(--color-vibrant-orange)] text-white scale-110'
-                      : isVisited
-                        ? 'bg-[var(--color-forest-green)] text-[var(--color-golden-yellow)]'
-                        : 'bg-[var(--color-dark-forest)] text-[var(--color-beige-white)] opacity-50'
+                    ${
+                      isActive
+                        ? 'bg-[var(--color-vibrant-orange)] text-white scale-110'
+                        : isVisited
+                          ? 'bg-[var(--color-forest-green)] text-[var(--color-golden-yellow)]'
+                          : 'bg-[var(--color-dark-forest)] text-[var(--color-beige-white)] opacity-50'
                     }`}
                   title={step.title}
                 >
@@ -189,52 +200,71 @@ export function CodexScreen() {
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-6">
-            {/* Step title */}
-            <div className="mb-6">
-              {currentStepData.category && (
-                <div className="inline-flex items-center gap-2 px-3 py-1 text-sm rounded-full bg-[var(--color-dark-forest)] text-[var(--color-metallic-gold)] border border-[var(--color-metallic-gold)]/30 mb-3">
-                  <span>{CATEGORY_CONFIG[currentStepData.category]?.icon || '📖'}</span>
-                  <span>{currentStepData.category}</span>
-                </div>
-              )}
-              <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-golden-yellow)]">
-                {currentStepData.title}
-              </h2>
-            </div>
+          <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-5 md:p-6">
+            <div className="mx-auto w-full max-w-4xl">
+              {/* Step title */}
+              <div className="mb-6">
+                {currentStepData.category && (
+                  <div className="inline-flex items-center gap-2 px-3 py-1 text-sm rounded-full bg-[var(--color-dark-forest)] text-[var(--color-metallic-gold)] border border-[var(--color-metallic-gold)]/30 mb-3">
+                    <span>
+                      {CATEGORY_CONFIG[currentStepData.category]?.icon || '📖'}
+                    </span>
+                    <span>{currentStepData.category}</span>
+                  </div>
+                )}
+                <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-golden-yellow)]">
+                  {currentStepData.title}
+                </h2>
+              </div>
 
-            {/* Step content */}
-            <div className="prose prose-invert max-w-none text-[var(--color-beige-white)]">
-              <StepContent key={currentStep} step={currentStepData} />
+              {/* Step content */}
+              <div className="prose prose-invert max-w-none text-[var(--color-beige-white)]">
+                <StepContent key={currentStep} step={currentStepData} />
+              </div>
             </div>
           </div>
 
           {/* Bottom navigation */}
-          <div className="px-4 py-4 bg-[var(--color-dark-forest)] border-t border-[var(--color-forest-green)]">
-            {/* Progress bar */}
-            <div className="mb-4">
-              <ProgressBar
-                current={currentStep}
-                total={steps.length}
-                categoryProgress={`${currentStepData.category}: ${stepIndexInCategory + 1}/${currentCategorySteps.length}`}
-              />
-            </div>
+          <div className="safe-area-bottom border-t border-[var(--color-forest-green)] bg-[var(--color-dark-forest)] px-3 py-3 sm:px-5 sm:py-4">
+            <div className="mx-auto w-full max-w-4xl">
+              {/* Progress bar */}
+              <div className="mb-4">
+                <ProgressBar
+                  current={currentStep}
+                  total={steps.length}
+                  categoryProgress={`${currentStepData.category}: ${stepIndexInCategory + 1}/${currentCategorySteps.length}`}
+                />
+              </div>
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between gap-4">
-              <Button variant="secondary" onClick={handlePrev} disabled={isFirstStep} className="flex-1 max-w-[150px]">
-                ← {t('codex.previous', 'Back')}
-              </Button>
+              {/* Navigation buttons */}
+              <div className="flex justify-between gap-4">
+                <Button
+                  variant="secondary"
+                  onClick={handlePrev}
+                  disabled={isFirstStep}
+                  className="flex-1 max-w-[150px]"
+                >
+                  ← {t('codex.previous', 'Back')}
+                </Button>
 
-              {isLastStep ? (
-                <Button variant="primary" onClick={handleStartPlaying} className="flex-1 max-w-[200px]">
-                  {t('codex.finish', 'Start Playing!')}
-                </Button>
-              ) : (
-                <Button variant="primary" onClick={handleNext} className="flex-1 max-w-[150px]">
-                  {t('codex.next', 'Next')} →
-                </Button>
-              )}
+                {isLastStep ? (
+                  <Button
+                    variant="primary"
+                    onClick={handleStartPlaying}
+                    className="flex-1 max-w-[200px]"
+                  >
+                    {t('codex.finish', 'Start Playing!')}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="primary"
+                    onClick={handleNext}
+                    className="flex-1 max-w-[150px]"
+                  >
+                    {t('codex.next', 'Next')} →
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

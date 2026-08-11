@@ -96,7 +96,12 @@ function getEffectJapaneseName(effectType: string): string {
 /**
  * CharterCard - Displays an Imperial Charter for purchase
  */
-export function CharterCard({ charter, finalCost, canAfford, onPurchase }: CharterCardProps) {
+export function CharterCard({
+  charter,
+  finalCost,
+  canAfford,
+  onPurchase,
+}: CharterCardProps) {
   const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
@@ -169,7 +174,7 @@ export function CharterCard({ charter, finalCost, canAfford, onPurchase }: Chart
       {/* Content */}
       <div className="relative p-4">
         {/* Header */}
-        <div className="flex items-start gap-4">
+        <div className="flex flex-wrap items-start gap-3 sm:flex-nowrap sm:gap-4">
           {/* Icon */}
           <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-[var(--color-dark-forest)] border-2 border-[var(--color-metallic-gold)] flex items-center justify-center">
             <span className="text-3xl">{effectIcon}</span>
@@ -203,7 +208,7 @@ export function CharterCard({ charter, finalCost, canAfford, onPurchase }: Chart
             }}
             disabled={!canAfford}
             className={`
-              flex-shrink-0 px-6 py-3 rounded-lg font-bold text-lg
+              order-last w-full flex-shrink-0 px-6 py-3 rounded-lg font-bold text-lg sm:order-none sm:w-auto
               transition-all duration-200
               min-w-[100px] min-h-[48px]
               ${
@@ -223,7 +228,9 @@ export function CharterCard({ charter, finalCost, canAfford, onPurchase }: Chart
             {t('shop.imperialCharter', 'Imperial Charter')}
           </span>
           <span className="text-xs text-[var(--color-metallic-gold)]">
-            {charter.isUpgraded ? '\u7D1A\u4E0A\u3052\u7248' : '\u57FA\u672C\u7248'}
+            {charter.isUpgraded
+              ? '\u7D1A\u4E0A\u3052\u7248'
+              : '\u57FA\u672C\u7248'}
           </span>
         </div>
       </div>

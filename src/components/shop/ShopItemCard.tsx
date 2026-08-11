@@ -27,7 +27,9 @@ const AnimatedDiv = animated('div')
 /** Check if current language uses CJK characters */
 function isCJKLanguage(): boolean {
   const lang = getCurrentLanguage()
-  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  return (
+    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  )
 }
 
 // =============================================================================
@@ -141,24 +143,29 @@ function getEditionStyle(edition?: EditionType): React.CSSProperties {
   switch (edition) {
     case 'Foil':
       return {
-        background: 'linear-gradient(135deg, rgba(192,192,192,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(192,192,192,0.3) 100%)',
+        background:
+          'linear-gradient(135deg, rgba(192,192,192,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(192,192,192,0.3) 100%)',
         boxShadow: '0 0 10px rgba(192,192,192,0.5)',
       }
     case 'Holographic':
       return {
-        background: 'linear-gradient(135deg, rgba(255,0,0,0.15) 0%, rgba(255,127,0,0.15) 17%, rgba(255,255,0,0.15) 33%, rgba(0,255,0,0.15) 50%, rgba(0,0,255,0.15) 67%, rgba(75,0,130,0.15) 83%, rgba(148,0,211,0.15) 100%)',
+        background:
+          'linear-gradient(135deg, rgba(255,0,0,0.15) 0%, rgba(255,127,0,0.15) 17%, rgba(255,255,0,0.15) 33%, rgba(0,255,0,0.15) 50%, rgba(0,0,255,0.15) 67%, rgba(75,0,130,0.15) 83%, rgba(148,0,211,0.15) 100%)',
         boxShadow: '0 0 15px rgba(148,0,211,0.4)',
       }
     case 'Polychrome':
       return {
-        background: 'linear-gradient(135deg, rgba(255,0,128,0.2) 0%, rgba(0,255,255,0.2) 50%, rgba(255,255,0,0.2) 100%)',
+        background:
+          'linear-gradient(135deg, rgba(255,0,128,0.2) 0%, rgba(0,255,255,0.2) 50%, rgba(255,255,0,0.2) 100%)',
         boxShadow: '0 0 20px rgba(255,0,128,0.5)',
         animation: 'polychrome-shift 3s ease-in-out infinite',
       }
     case 'Negative':
       return {
-        background: 'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(60,60,60,0.3) 100%)',
-        boxShadow: '0 0 15px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.1)',
+        background:
+          'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(60,60,60,0.3) 100%)',
+        boxShadow:
+          '0 0 15px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.1)',
       }
     default:
       return {}
@@ -168,7 +175,10 @@ function getEditionStyle(edition?: EditionType): React.CSSProperties {
 /**
  * Get edition label
  */
-function getEditionLabel(edition?: EditionType, showCJK: boolean = false): string | null {
+function getEditionLabel(
+  edition?: EditionType,
+  showCJK: boolean = false
+): string | null {
   if (!edition) return null
 
   switch (edition) {
@@ -194,7 +204,12 @@ interface StickerIndicatorProps {
 }
 
 function StickerIndicator({ sticker }: StickerIndicatorProps) {
-  const getStyle = (): { bg: string; text: string; label: string; japaneseLabel: string } => {
+  const getStyle = (): {
+    bg: string
+    text: string
+    label: string
+    japaneseLabel: string
+  } => {
     switch (sticker.type) {
       case 'Eternal':
         return {
@@ -290,7 +305,11 @@ export function ShopItemCard({
       rarity = 'uncommon'
       break
     case 'VoidScript': {
-      const script = offering.item as { name: string; description: string; rarity: string }
+      const script = offering.item as {
+        name: string
+        description: string
+        rarity: string
+      }
       name = script.name
       description = script.description
       rarity = script.rarity.toLowerCase()
@@ -312,7 +331,8 @@ export function ShopItemCard({
 
   const icon = getItemTypeIcon(offering.itemType)
   const rarityColor = getRarityBorderColor(rarity)
-  const hasDiscount = offering.baseCost + offering.editionCost > offering.finalCost
+  const hasDiscount =
+    offering.baseCost + offering.editionCost > offering.finalCost
   const editionStyle = getEditionStyle(offering.edition)
   const editionLabel = getEditionLabel(offering.edition, showCJK)
 
@@ -335,7 +355,7 @@ export function ShopItemCard({
 
   return (
     <AnimatedDiv
-      className="relative flex-shrink-0 w-40 rounded-xl overflow-hidden cursor-pointer"
+      className="relative min-w-0 w-full rounded-xl overflow-hidden cursor-pointer"
       style={{
         transform: spring.scale.to((s) => `scale(${s})`),
         borderWidth: spring.borderWidth.to((w) => `${w}px`),
@@ -361,7 +381,7 @@ export function ShopItemCard({
       {sticker && <StickerIndicator sticker={sticker} />}
 
       {/* Content */}
-      <div className="relative p-3 flex flex-col h-full min-h-[180px]">
+      <div className="relative flex h-full min-h-[194px] flex-col p-3 sm:min-h-[210px]">
         {/* Icon and type */}
         <div className="text-center mb-2">
           {decreeId ? (
@@ -387,7 +407,9 @@ export function ShopItemCard({
           {name}
         </h3>
         {japaneseName && (
-          <p className="text-xs text-[var(--color-metallic-gold)] text-center">{japaneseName}</p>
+          <p className="text-xs text-[var(--color-metallic-gold)] text-center">
+            {japaneseName}
+          </p>
         )}
 
         {/* Rarity */}

@@ -71,7 +71,12 @@ interface RerollButtonProps {
   rerollCount: number
 }
 
-function RerollButton({ cost, canAfford, onClick, rerollCount }: RerollButtonProps) {
+function RerollButton({
+  cost,
+  canAfford,
+  onClick,
+  rerollCount,
+}: RerollButtonProps) {
   const { t } = useTranslation()
 
   const handleClick = useCallback(() => {
@@ -168,25 +173,29 @@ export function ShopHeader({
   const { t } = useTranslation()
 
   return (
-    <header className="flex items-center justify-between gap-2 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] px-2 py-3 sm:px-4">
-      {/* Gold display */}
-      <GoldDisplay gold={gold} />
+    <header className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-top">
+      <div className="screen-canvas flex items-center justify-between gap-2 px-2 py-2.5 sm:px-5 sm:py-3">
+        {/* Gold display */}
+        <GoldDisplay gold={gold} />
 
-      {/* Title */}
-      <h1 className="whitespace-nowrap text-base font-bold tracking-wide text-[var(--color-beige-white)] font-decorative sm:text-xl">
-        {t('shop.title', 'Tea House')}
-        <span className="ml-2 hidden text-lg text-[var(--color-metallic-gold)] sm:inline">&#x8336;&#x5BE5;</span>
-      </h1>
+        {/* Title */}
+        <h1 className="min-w-0 truncate whitespace-nowrap text-sm font-bold tracking-wide text-[var(--color-beige-white)] font-decorative sm:text-xl">
+          {t('shop.title', 'Tea House')}
+          <span className="ml-2 hidden text-lg text-[var(--color-metallic-gold)] md:inline">
+            &#x8336;&#x5BE5;
+          </span>
+        </h1>
 
-      {/* Actions */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        <RerollButton
-          cost={rerollCost}
-          canAfford={canAffordReroll}
-          onClick={onReroll}
-          rerollCount={rerollCount}
-        />
-        <SettingsButton onClick={onSettings} />
+        {/* Actions */}
+        <div className="flex items-center gap-1.5 sm:gap-3">
+          <RerollButton
+            cost={rerollCost}
+            canAfford={canAffordReroll}
+            onClick={onReroll}
+            rerollCount={rerollCount}
+          />
+          <SettingsButton onClick={onSettings} />
+        </div>
       </div>
     </header>
   )

@@ -119,77 +119,92 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Tiles remaining in hand (excluding staged)
   const tilesInHand = useMemo(() => {
-    const stagedIds = new Set(stagedTiles.map(t => t.id))
-    return handTiles.filter(t => !stagedIds.has(t.id))
+    const stagedIds = new Set(stagedTiles.map((t) => t.id))
+    return handTiles.filter((t) => !stagedIds.has(t.id))
   }, [handTiles, stagedTiles])
 
   // Determine which zone a point is in
-  const getDropZone = useCallback((x: number, y: number): DropZone => {
-    // Check discard zone first (it's a small square, need precise detection)
-    if (discardZoneRef.current) {
-      const discardRect = discardZoneRef.current.getBoundingClientRect()
-      if (
-        x >= discardRect.left &&
-        x <= discardRect.right &&
-        y >= discardRect.top &&
-        y <= discardRect.bottom
-      ) {
-        return 'discard'
+  const getDropZone = useCallback(
+    (x: number, y: number): DropZone => {
+      // Check discard zone first (it's a small square, need precise detection)
+      if (discardZoneRef.current) {
+        const discardRect = discardZoneRef.current.getBoundingClientRect()
+        if (
+          x >= discardRect.left &&
+          x <= discardRect.right &&
+          y >= discardRect.top &&
+          y <= discardRect.bottom
+        ) {
+          return 'discard'
+        }
       }
-    }
 
-    if (!containerRef.current) return null
+      if (!containerRef.current) return null
 
-    const containerRect = containerRef.current.getBoundingClientRect()
-    const relativeY = y - containerRect.top
+      const containerRect = containerRef.current.getBoundingClientRect()
+      const relativeY = y - containerRect.top
 
-    // Hand zone is at the bottom
-    const handZoneTop = containerRect.height - handZoneHeight
-    if (relativeY > handZoneTop) {
-      return 'hand'
-    }
+      // Hand zone is at the bottom
+      const handZoneTop = containerRect.height - handZoneHeight
+      if (relativeY > handZoneTop) {
+        return 'hand'
+      }
 
-    // Everything else is staging
-    return 'staging'
-  }, [handZoneHeight])
+      // Everything else is staging
+      return 'staging'
+    },
+    [handZoneHeight]
+  )
 
   // Handle drag start
-  const handleDragStart = useCallback((tile: Tile, e: React.MouseEvent | React.TouchEvent) => {
-    if (disabled) return
+  const handleDragStart = useCallback(
+    (tile: Tile, e: React.MouseEvent | React.TouchEvent) => {
+      if (disabled) return
 
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
-    // Determine origin zone
-    const originZone = stagedTiles.some(t => t.id === tile.id) ? 'staging' : 'hand'
+      // Determine origin zone
+      const originZone = stagedTiles.some((t) => t.id === tile.id)
+        ? 'staging'
+        : 'hand'
 
-    setDragState({
-      tile,
-      startX: clientX,
-      startY: clientY,
-      currentX: clientX,
-      currentY: clientY,
-      originZone,
-    })
-  }, [disabled, stagedTiles])
+      setDragState({
+        tile,
+        startX: clientX,
+        startY: clientY,
+        currentX: clientX,
+        currentY: clientY,
+        originZone,
+      })
+    },
+    [disabled, stagedTiles]
+  )
 
   // Handle drag move
-  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
-    if (!dragState) return
+  const handleDragMove = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (!dragState) return
 
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
-    setDragState(prev => prev ? {
-      ...prev,
-      currentX: clientX,
-      currentY: clientY,
-    } : null)
+      setDragState((prev) =>
+        prev
+          ? {
+              ...prev,
+              currentX: clientX,
+              currentY: clientY,
+            }
+          : null
+      )
 
-    // Update current drop zone for visual feedback
-    const zone = getDropZone(clientX, clientY)
-    setCurrentDropZone(zone)
-  }, [dragState, getDropZone])
+      // Update current drop zone for visual feedback
+      const zone = getDropZone(clientX, clientY)
+      setCurrentDropZone(zone)
+    },
+    [dragState, getDropZone]
+  )
 
   // Handle drag end
   const handleDragEnd = useCallback(() => {
@@ -208,13 +223,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       // Toggle tile between hand and staging
       if (originZone === 'staging') {
         // Move from staging back to hand
-        setStagedTiles(prev => {
-          const newStaged = prev.filter(t => t.id !== tile.id)
+        setStagedTiles((prev) => {
+          const newStaged = prev.filter((t) => t.id !== tile.id)
           return newStaged
         })
       } else {
         // Move from hand to staging
-        setStagedTiles(prev => {
+        setStagedTiles((prev) => {
           const newStaged = [...prev, tile]
           return newStaged
         })
@@ -232,13 +247,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       // Discard the tile
       onTileDiscard?.(tile)
       // Remove from staged if it was there
-      setStagedTiles(prev => prev.filter(t => t.id !== tile.id))
+      setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
     } else if (dropZone === 'staging' && originZone === 'hand') {
       // Move from hand to staging
-      setStagedTiles(prev => [...prev, tile])
+      setStagedTiles((prev) => [...prev, tile])
     } else if (dropZone === 'hand' && originZone === 'staging') {
       // Move from staging back to hand
-      setStagedTiles(prev => prev.filter(t => t.id !== tile.id))
+      setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
     }
     // If dropped in same zone, just reset
 
@@ -295,9 +310,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Clear staged tiles when hand changes significantly
   useEffect(() => {
-    const handIds = new Set(handTiles.map(t => t.id))
-    setStagedTiles(prev => {
-      const filtered = prev.filter(t => handIds.has(t.id))
+    const handIds = new Set(handTiles.map((t) => t.id))
+    setStagedTiles((prev) => {
+      const filtered = prev.filter((t) => handIds.has(t.id))
       return filtered.length === prev.length ? prev : filtered
     })
   }, [handTiles])
@@ -305,16 +320,18 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Discard zone spring animation
   const discardZoneSpring = useSpring({
     scale: currentDropZone === 'discard' ? 1.1 : 1,
-    backgroundColor: currentDropZone === 'discard'
-      ? 'rgba(255, 87, 34, 0.8)'
-      : dragState
-        ? 'rgba(255, 87, 34, 0.5)'
-        : 'rgba(255, 87, 34, 0.3)',
-    borderColor: currentDropZone === 'discard'
-      ? '#FF5722'
-      : dragState
-        ? '#FF8A65'
-        : '#E64A19',
+    backgroundColor:
+      currentDropZone === 'discard'
+        ? 'rgba(255, 87, 34, 0.8)'
+        : dragState
+          ? 'rgba(255, 87, 34, 0.5)'
+          : 'rgba(255, 87, 34, 0.3)',
+    borderColor:
+      currentDropZone === 'discard'
+        ? '#FF5722'
+        : dragState
+          ? '#FF8A65'
+          : '#E64A19',
     config: config.stiff,
     immediate: reducedMotion,
   })
@@ -325,7 +342,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Staging zone spring animation
   const stagingZoneSpring = useSpring({
     scale: currentDropZone === 'staging' ? 1.01 : 1,
-    borderOpacity: currentDropZone === 'staging' ? 1 : stagingZoneActive ? 0.6 : 0.3,
+    borderOpacity:
+      currentDropZone === 'staging' ? 1 : stagingZoneActive ? 0.6 : 0.3,
     glowIntensity: currentDropZone === 'staging' ? 0.5 : 0,
     config: config.stiff,
     immediate: reducedMotion,
@@ -354,7 +372,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ? (availableWidth - dimensions.width) / (tiles.length - 1)
         : preferredSpacing
     const spacing = Math.max(10, Math.min(preferredSpacing, fittedSpacing))
-    const totalWidth = Math.max(0, (tiles.length - 1)) * spacing + dimensions.width
+    const totalWidth =
+      Math.max(0, tiles.length - 1) * spacing + dimensions.width
     const startX = -totalWidth / 2 + dimensions.width / 2
 
     return tiles.map((_, index) => ({
@@ -373,7 +392,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ? (availableWidth - dimensions.width) / (tiles.length - 1)
         : preferredSpacing
     const spacing = Math.max(10, Math.min(preferredSpacing, fittedSpacing))
-    const totalWidth = Math.max(0, (tiles.length - 1)) * spacing + dimensions.width
+    const totalWidth =
+      Math.max(0, tiles.length - 1) * spacing + dimensions.width
     const startX = -totalWidth / 2 + dimensions.width / 2
 
     return tiles.map((_, index) => ({
@@ -385,9 +405,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full flex flex-col select-none"
+      className="relative flex h-full w-full flex-col select-none"
       style={{
-        height: stagingZoneMinHeight + handZoneHeight,
+        minHeight: stagingZoneMinHeight + handZoneHeight,
         touchAction: 'none',
       }}
     >
@@ -398,11 +418,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         style={{
           minHeight: stagingZoneMinHeight,
           backgroundColor: 'rgba(45, 95, 74, 0.3)',
-          borderColor: stagingZoneSpring.borderOpacity.to(o => `rgba(255, 213, 79, ${o * 0.5})`),
+          borderColor: stagingZoneSpring.borderOpacity.to(
+            (o) => `rgba(255, 213, 79, ${o * 0.5})`
+          ),
           borderStyle: stagedTiles.length > 0 ? 'solid' : 'dashed',
-          transform: stagingZoneSpring.scale.to(s => `scale(${s})`),
+          transform: stagingZoneSpring.scale.to((s) => `scale(${s})`),
           boxShadow: stagingZoneSpring.glowIntensity.to(
-            i => `inset 0 0 ${i * 30}px rgba(255, 213, 79, ${i * 0.2})`
+            (i) => `inset 0 0 ${i * 30}px rgba(255, 213, 79, ${i * 0.2})`
           ),
         }}
       >
@@ -451,16 +473,17 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             {/* Staged tile count indicator */}
             {stagedTiles.length > 0 && (
               <p className="text-[var(--color-beige-white)] text-sm opacity-60 mt-2 text-center">
-                {stagedTiles.length} tile{stagedTiles.length > 1 ? 's' : ''} ready to play
+                {stagedTiles.length} tile{stagedTiles.length > 1 ? 's' : ''}{' '}
+                ready to play
               </p>
             )}
-</>
+          </>
         ) : (
           <div className="text-center px-6">
-            <p className="text-[var(--color-beige-white)] text-lg font-medium opacity-70">
+            <p className="text-sm font-medium text-[var(--color-beige-white)] opacity-70 sm:text-lg">
               Tap tiles to select, then Play Hand
             </p>
-            <p className="text-[var(--color-beige-white)] text-sm opacity-50 mt-1">
+            <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
               Or drag tiles here to stage them
             </p>
           </div>
@@ -474,7 +497,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         style={{
           height: handZoneHeight,
           backgroundColor: 'rgba(28, 58, 46, 0.8)',
-          filter: handZoneSpring.brightness.to(b => `brightness(${b})`),
+          filter: handZoneSpring.brightness.to((b) => `brightness(${b})`),
         }}
       >
         {/* Hand header - leave space on right for discard zone */}
@@ -486,7 +509,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             <span className="text-[var(--color-beige-white)] text-sm opacity-70">
               Hand ({tilesInHand.length})
             </span>
-            <span data-tutorial="hands-remaining" className="text-blue-400 text-sm">
+            <span
+              data-tutorial="hands-remaining"
+              className="text-blue-400 text-sm"
+            >
               🖐 {handsRemaining}
             </span>
           </div>
@@ -494,7 +520,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           {/* Shanten/Tenpai display - always visible */}
           {shantenDisplay && (
             <div className="px-3 py-1 rounded-full bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
-              <span className="text-[var(--color-golden-yellow)] font-bold text-sm">{shantenDisplay}</span>
+              <span className="text-[var(--color-golden-yellow)] font-bold text-sm">
+                {shantenDisplay}
+              </span>
             </div>
           )}
         </div>
@@ -549,14 +577,17 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             width: discardSize,
             height: discardSize,
             top: '50%',
-            transform: discardZoneSpring.scale.to(s => `translateY(-50%) scale(${s})`),
+            transform: discardZoneSpring.scale.to(
+              (s) => `translateY(-50%) scale(${s})`
+            ),
             backgroundColor: discardZoneSpring.backgroundColor,
             borderColor: discardZoneSpring.borderColor,
-            boxShadow: currentDropZone === 'discard'
-              ? '0 0 20px rgba(255, 87, 34, 0.6), inset 0 0 15px rgba(255, 87, 34, 0.3)'
-              : dragState
-                ? '0 0 10px rgba(255, 87, 34, 0.3)'
-                : 'none',
+            boxShadow:
+              currentDropZone === 'discard'
+                ? '0 0 20px rgba(255, 87, 34, 0.6), inset 0 0 15px rgba(255, 87, 34, 0.3)'
+                : dragState
+                  ? '0 0 10px rgba(255, 87, 34, 0.3)'
+                  : 'none',
           }}
         >
           <span className="text-2xl">🗑️</span>

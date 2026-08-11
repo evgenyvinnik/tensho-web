@@ -5,59 +5,59 @@
  * Integrates tile animations with hover, press, select, and glow effects.
  */
 
-import React, { useCallback, useRef } from 'react';
-import { animated, useSpring, to } from '@react-spring/web';
-import { Tile } from '../../core/Tile';
-import { TileImage, TileSize } from './TileImage';
-import { tileSizes } from '../../styles/theme';
-import { useSettingsStore } from '../../stores/settingsStore';
+import React, { useCallback, useRef } from 'react'
+import { animated, useSpring, to } from '@react-spring/web'
+import { Tile } from '../../core/Tile'
+import { TileImage, TileSize } from './TileImage'
+import { tileSizes } from '../../styles/theme'
+import { useSettingsStore } from '../../stores/settingsStore'
 import {
   useTileInteractionAnimation,
   useTileShakeAnimation,
   useTileDragAnimation,
-} from '../../animations/useTileAnimation';
-import { SPRINGS, ANIMATION_COLORS } from '../../animations/constants';
+} from '../../animations/useTileAnimation'
+import { SPRINGS, ANIMATION_COLORS } from '../../animations/constants'
 
 // Minimum distance (px) before drag activates to distinguish from taps
-const DRAG_THRESHOLD = 5;
+const DRAG_THRESHOLD = 5
 
 export interface AnimatedTileProps {
   /** The tile to display */
-  tile: Tile;
+  tile: Tile
   /** Size of the tile */
-  size?: TileSize;
+  size?: TileSize
   /** Whether the tile is selected */
-  selected?: boolean;
+  selected?: boolean
   /** Whether the tile is highlighted (e.g., for hints) */
-  highlighted?: boolean;
+  highlighted?: boolean
   /** Whether the tile is glowing (e.g., winning tile) */
-  glowing?: boolean;
+  glowing?: boolean
   /** Whether the tile is disabled */
-  disabled?: boolean;
+  disabled?: boolean
   /** Whether to show face-down */
-  faceDown?: boolean;
+  faceDown?: boolean
   /** Whether the tile must be included in the next played hand. */
-  locked?: boolean;
+  locked?: boolean
   /** Whether the tile contributes no score while still forming structure. */
-  debuffed?: boolean;
+  debuffed?: boolean
   /** Whether dragging is enabled */
-  draggable?: boolean;
+  draggable?: boolean
   /** Click handler */
-  onClick?: (tile: Tile) => void;
+  onClick?: (tile: Tile) => void
   /** Drag start handler */
-  onDragStart?: (tile: Tile) => void;
+  onDragStart?: (tile: Tile) => void
   /** Drag end handler */
-  onDragEnd?: (tile: Tile, position: { x: number; y: number }) => void;
+  onDragEnd?: (tile: Tile, position: { x: number; y: number }) => void
   /** Invalid action handler (triggers shake) */
-  onInvalidAction?: () => void;
+  onInvalidAction?: () => void
   /** Animation state for entering/exiting */
-  animationState?: 'entering' | 'idle' | 'exiting';
+  animationState?: 'entering' | 'idle' | 'exiting'
   /** Delay for enter animation */
-  enterDelay?: number;
+  enterDelay?: number
   /** Additional CSS class */
-  className?: string;
+  className?: string
   /** Custom style */
-  style?: React.CSSProperties;
+  style?: React.CSSProperties
 }
 
 /**
@@ -84,14 +84,18 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   className = '',
   style,
 }) => {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
-  const dimensions = tileSizes[size];
-  const elementRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const dimensions = tileSizes[size]
+  const elementRef = useRef<HTMLDivElement>(null)
 
   // Track drag start position for smooth offset calculation
-  const dragStartRef = useRef<{ x: number; y: number; hasDragged: boolean } | null>(null);
+  const dragStartRef = useRef<{
+    x: number
+    y: number
+    hasDragged: boolean
+  } | null>(null)
   // Track if we're in potential drag mode (pointer down but threshold not reached)
-  const [isPotentialDrag, setIsPotentialDrag] = React.useState(false);
+  const [isPotentialDrag, setIsPotentialDrag] = React.useState(false)
 
   // Interaction animations (hover, press, select, glow)
   const {
@@ -102,14 +106,14 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
     isSelected: selected,
     isGlowing: glowing,
     disabled,
-  });
+  })
 
   // Shake animation for invalid actions
   const {
     style: _shakeStyle,
     spring: shakeSpring,
     trigger: triggerShake,
-  } = useTileShakeAnimation();
+  } = useTileShakeAnimation()
 
   // Drag animation
   const {
@@ -118,14 +122,16 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
     startDrag,
     updateDrag,
     endDrag,
-  } = useTileDragAnimation();
+  } = useTileDragAnimation()
 
   // Enter/exit animation spring
   const enterExitSpring = useSpring({
     from: {
-      opacity: 0,
+      // Idle tiles are core controls and must be visible on the first frame.
+      // Only tiles explicitly marked as entering get the deal-in animation.
+      opacity: animationState === 'entering' ? 0 : 1,
       x: animationState === 'entering' ? 100 : 0,
-      scale: 0.8,
+      scale: animationState === 'entering' ? 0.8 : 1,
     },
     to: {
       opacity: animationState === 'exiting' ? 0 : 1,
@@ -135,110 +141,112 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
     delay: animationState === 'entering' && !reducedMotion ? enterDelay : 0,
     config: SPRINGS.snappy,
     immediate: reducedMotion,
-  });
+  })
 
   // Handle click - shake to signal the tap was rejected
   const handleClick = useCallback(() => {
     if (disabled) {
-      triggerShake();
-      onInvalidAction?.();
-      return;
+      triggerShake()
+      onInvalidAction?.()
+      return
     }
-    onClick?.(tile);
-  }, [disabled, onClick, tile, triggerShake, onInvalidAction]);
+    onClick?.(tile)
+  }, [disabled, onClick, tile, triggerShake, onInvalidAction])
 
   // Drag handlers
   const handleDragStart = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
-      if (!draggable || disabled) return;
+      if (!draggable || disabled) return
 
-      e.preventDefault();
+      e.preventDefault()
 
       // Store initial pointer position
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-      dragStartRef.current = { x: clientX, y: clientY, hasDragged: false };
-      setIsPotentialDrag(true);
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+      dragStartRef.current = { x: clientX, y: clientY, hasDragged: false }
+      setIsPotentialDrag(true)
 
       // Don't start drag animation yet - wait for threshold
     },
     [draggable, disabled]
-  );
+  )
 
   const handleDragMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!dragStartRef.current) return;
+      if (!dragStartRef.current) return
 
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
-      const deltaX = clientX - dragStartRef.current.x;
-      const deltaY = clientY - dragStartRef.current.y;
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const deltaX = clientX - dragStartRef.current.x
+      const deltaY = clientY - dragStartRef.current.y
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
 
       // Check if we've exceeded the drag threshold
       if (!dragStartRef.current.hasDragged) {
         if (distance >= DRAG_THRESHOLD) {
-          dragStartRef.current.hasDragged = true;
-          startDrag();
-          onDragStart?.(tile);
+          dragStartRef.current.hasDragged = true
+          startDrag()
+          onDragStart?.(tile)
         } else {
-          return; // Haven't dragged far enough yet
+          return // Haven't dragged far enough yet
         }
       }
 
       // Prevent scrolling while dragging on touch devices
       if ('touches' in e) {
-        e.preventDefault();
+        e.preventDefault()
       }
 
       // Update drag position
-      updateDrag(deltaX, deltaY);
+      updateDrag(deltaX, deltaY)
     },
     [startDrag, updateDrag, onDragStart, tile]
-  );
+  )
 
   const handleDragEnd = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!dragStartRef.current) return;
+      if (!dragStartRef.current) return
 
-      const wasDragging = dragStartRef.current.hasDragged;
-      const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX;
-      const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : e.clientY;
+      const wasDragging = dragStartRef.current.hasDragged
+      const clientX =
+        'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX
+      const clientY =
+        'changedTouches' in e ? e.changedTouches[0].clientY : e.clientY
 
-      dragStartRef.current = null;
-      setIsPotentialDrag(false);
+      dragStartRef.current = null
+      setIsPotentialDrag(false)
 
       if (wasDragging) {
-        endDrag();
-        onDragEnd?.(tile, { x: clientX, y: clientY });
+        endDrag()
+        onDragEnd?.(tile, { x: clientX, y: clientY })
       }
     },
     [endDrag, onDragEnd, tile]
-  );
+  )
 
   // Set up global drag listeners when in potential drag or active drag mode
   React.useEffect(() => {
     if (isPotentialDrag || isDragging) {
-      const moveHandler = handleDragMove;
-      const endHandler = handleDragEnd;
+      const moveHandler = handleDragMove
+      const endHandler = handleDragEnd
 
-      window.addEventListener('mousemove', moveHandler);
-      window.addEventListener('mouseup', endHandler);
+      window.addEventListener('mousemove', moveHandler)
+      window.addEventListener('mouseup', endHandler)
       // Use passive: false for touch events to allow preventDefault
-      window.addEventListener('touchmove', moveHandler, { passive: false });
-      window.addEventListener('touchend', endHandler);
-      window.addEventListener('touchcancel', endHandler);
+      window.addEventListener('touchmove', moveHandler, { passive: false })
+      window.addEventListener('touchend', endHandler)
+      window.addEventListener('touchcancel', endHandler)
 
       return () => {
-        window.removeEventListener('mousemove', moveHandler);
-        window.removeEventListener('mouseup', endHandler);
-        window.removeEventListener('touchmove', moveHandler);
-        window.removeEventListener('touchend', endHandler);
-        window.removeEventListener('touchcancel', endHandler);
-      };
+        window.removeEventListener('mousemove', moveHandler)
+        window.removeEventListener('mouseup', endHandler)
+        window.removeEventListener('touchmove', moveHandler)
+        window.removeEventListener('touchend', endHandler)
+        window.removeEventListener('touchcancel', endHandler)
+      }
     }
-  }, [isPotentialDrag, isDragging, handleDragMove, handleDragEnd]);
+  }, [isPotentialDrag, isDragging, handleDragMove, handleDragEnd])
 
   // Combine all transforms - use drag transform directly when dragging
   // Otherwise combine enter/exit with interaction transforms reactively
@@ -254,21 +262,22 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
         ],
         (enterX, enterScale, interY, interScale, shakeX) => {
           // Calculate shake offset from shake spring
-          const shakeOffset = shakeX === 0 ? 0 : Math.sin(shakeX * Math.PI * 8) * 5;
+          const shakeOffset =
+            shakeX === 0 ? 0 : Math.sin(shakeX * Math.PI * 8) * 5
 
           // If shaking, prioritize shake transform
           if (shakeOffset !== 0) {
-            return `translateX(${shakeOffset}px)`;
+            return `translateX(${shakeOffset}px)`
           }
 
           // Combine enter/exit transform with interaction transform
-          const totalX = enterX;
-          const totalY = interY;
-          const totalScale = enterScale * interScale;
+          const totalX = enterX
+          const totalY = interY
+          const totalScale = enterScale * interScale
 
-          return `translate(${totalX}px, ${totalY}px) scale(${totalScale})`;
+          return `translate(${totalX}px, ${totalY}px) scale(${totalScale})`
         }
-      );
+      )
 
   const combinedStyle = {
     ...style,
@@ -277,14 +286,22 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
     transform: combinedTransform,
     opacity: isDragging ? dragStyle.opacity : enterExitSpring.opacity,
     boxShadow: isDragging ? dragStyle.boxShadow : interactionStyle.boxShadow,
-    cursor: disabled ? 'not-allowed' : isDragging ? 'grabbing' : draggable ? 'grab' : onClick ? 'pointer' : 'default',
+    cursor: disabled
+      ? 'not-allowed'
+      : isDragging
+        ? 'grabbing'
+        : draggable
+          ? 'grab'
+          : onClick
+            ? 'pointer'
+            : 'default',
     // Prevent scroll interference while dragging
     touchAction: draggable ? 'none' : 'auto',
     // Ensure dragged tile appears above others
     zIndex: isDragging ? 1000 : undefined,
     // Smooth will-change hint for performance
     willChange: isDragging ? 'transform, opacity' : 'auto',
-  };
+  }
 
   return (
     <animated.div
@@ -356,23 +373,23 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
         />
       )}
     </animated.div>
-  );
-};
+  )
+}
 
 /**
  * AnimatedTileRow component
  * Row of animated tiles with staggered animations
  */
 export interface AnimatedTileRowProps {
-  tiles: Tile[];
-  size?: TileSize;
-  selectedIds?: Set<string>;
-  highlightedIds?: Set<string>;
-  glowingIds?: Set<string>;
-  onTileClick?: (tile: Tile) => void;
-  overlap?: boolean;
-  staggerDelay?: number;
-  className?: string;
+  tiles: Tile[]
+  size?: TileSize
+  selectedIds?: Set<string>
+  highlightedIds?: Set<string>
+  glowingIds?: Set<string>
+  onTileClick?: (tile: Tile) => void
+  overlap?: boolean
+  staggerDelay?: number
+  className?: string
 }
 
 export const AnimatedTileRow: React.FC<AnimatedTileRowProps> = ({
@@ -386,8 +403,8 @@ export const AnimatedTileRow: React.FC<AnimatedTileRowProps> = ({
   staggerDelay = 50,
   className = '',
 }) => {
-  const dimensions = tileSizes[size];
-  const overlapAmount = overlap ? Math.floor(dimensions.width * 0.3) : 0;
+  const dimensions = tileSizes[size]
+  const overlapAmount = overlap ? Math.floor(dimensions.width * 0.3) : 0
 
   return (
     <div
@@ -416,7 +433,7 @@ export const AnimatedTileRow: React.FC<AnimatedTileRowProps> = ({
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default AnimatedTile;
+export default AnimatedTile

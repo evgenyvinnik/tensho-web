@@ -21,7 +21,9 @@ const AnimatedDiv = animated('div')
 /** Check if current language uses CJK characters */
 function isCJKLanguage(): boolean {
   const lang = getCurrentLanguage()
-  return lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  return (
+    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
+  )
 }
 
 export interface TableStyleModalProps {
@@ -109,10 +111,15 @@ export function TableStyleModal({
   }, [isOpen, onClose])
 
   // Handle style selection
-  const handleStyleSelect = useCallback((styleId: string) => {
-    setTempSelectedId(styleId)
-    setTempStakeTier((tier) => Math.min(tier, getHighestAvailableStake(styleId)))
-  }, [getHighestAvailableStake])
+  const handleStyleSelect = useCallback(
+    (styleId: string) => {
+      setTempSelectedId(styleId)
+      setTempStakeTier((tier) =>
+        Math.min(tier, getHighestAvailableStake(styleId))
+      )
+    },
+    [getHighestAvailableStake]
+  )
 
   // Handle confirm
   const handleConfirm = useCallback(() => {
@@ -122,7 +129,14 @@ export function TableStyleModal({
       onConfirm?.(tempSelectedId)
       onClose()
     }
-  }, [tempSelectedId, tempStakeTier, selectStyle, selectStake, onConfirm, onClose])
+  }, [
+    tempSelectedId,
+    tempStakeTier,
+    selectStyle,
+    selectStake,
+    onConfirm,
+    onClose,
+  ])
 
   // Handle cancel
   const handleCancel = useCallback(() => {
@@ -132,9 +146,9 @@ export function TableStyleModal({
   }, [currentStyleId, currentStakeTier, currentWallId, onClose])
 
   // Get the currently selected style for preview
-  const selectedStyle = TABLE_STYLE_DEFINITIONS.find(
-    (s) => s.id === tempSelectedId
-  ) ?? getCurrentStyle()
+  const selectedStyle =
+    TABLE_STYLE_DEFINITIONS.find((s) => s.id === tempSelectedId) ??
+    getCurrentStyle()
   const selectedStake = STAKE_DEFINITIONS[tempStakeTier - 1]
   const highestAvailableStake = getHighestAvailableStake(tempSelectedId)
 
@@ -233,7 +247,10 @@ export function TableStyleModal({
                 Table Stake · Difficulty
               </p>
               <p className="text-sm font-bold text-[var(--color-beige-white)]">
-                {selectedStake?.name} <span className="opacity-60">{selectedStake?.japaneseName}</span>
+                {selectedStake?.name}{' '}
+                <span className="opacity-60">
+                  {selectedStake?.japaneseName}
+                </span>
               </p>
             </div>
             <p className="max-w-md text-right text-xs text-[var(--color-beige-white)]/70">
@@ -241,7 +258,11 @@ export function TableStyleModal({
             </p>
           </div>
 
-          <div className="grid grid-cols-8 gap-1.5" role="radiogroup" aria-label="Table stake">
+          <div
+            className="grid grid-cols-4 gap-1.5 sm:grid-cols-8"
+            role="radiogroup"
+            aria-label="Table stake"
+          >
             {STAKE_DEFINITIONS.map((stake) => {
               const unlocked = stake.tier <= highestAvailableStake
               const selected = stake.tier === tempStakeTier
@@ -267,11 +288,17 @@ export function TableStyleModal({
                       ? {
                           borderColor: `${stake.color}${selected ? 'FF' : '70'}`,
                           backgroundColor: `${stake.color}${selected ? '35' : '12'}`,
-                          boxShadow: selected ? `0 0 16px ${stake.color}45` : undefined,
+                          boxShadow: selected
+                            ? `0 0 16px ${stake.color}45`
+                            : undefined,
                         }
                       : undefined
                   }
-                  title={unlocked ? stake.description : 'Defeat the previous stake on this table to unlock'}
+                  title={
+                    unlocked
+                      ? stake.description
+                      : 'Defeat the previous stake on this table to unlock'
+                  }
                 >
                   {unlocked ? stake.tier : '·'}
                 </button>
@@ -322,7 +349,10 @@ export function TableStyleModal({
               <span className="ml-2 text-[var(--color-beige-white)] font-bold">
                 {selectedStyle.displayName}
               </span>
-              <span className="ml-2 text-xs font-black uppercase" style={{ color: selectedStake?.color }}>
+              <span
+                className="ml-2 text-xs font-black uppercase"
+                style={{ color: selectedStake?.color }}
+              >
                 · Stake {tempStakeTier}
               </span>
               {showCJK && (

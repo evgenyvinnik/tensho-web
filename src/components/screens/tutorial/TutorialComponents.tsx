@@ -58,7 +58,10 @@ export interface CategoryConfig {
  * Predefined category configurations for tutorial sections
  * Each category has an icon and color theme for visual distinction
  */
-export const CATEGORY_CONFIG: Record<string, Omit<CategoryConfig, 'id' | 'label'>> = {
+export const CATEGORY_CONFIG: Record<
+  string,
+  Omit<CategoryConfig, 'id' | 'label'>
+> = {
   Introduction: { icon: '🏯', color: 'text-amber-400' },
   Tiles: { icon: '🀄', color: 'text-blue-400' },
   'Hand Building': { icon: '🤲', color: 'text-green-400' },
@@ -173,7 +176,10 @@ export function DataTable({
           {rows.map((row, i) => (
             <tr key={i}>
               {row.map((cell, j) => (
-                <td key={j} className="border border-[var(--color-metallic-gold)]/30 p-2">
+                <td
+                  key={j}
+                  className="border border-[var(--color-metallic-gold)]/30 p-2"
+                >
                   {cell}
                 </td>
               ))}
@@ -195,7 +201,11 @@ export function DataTable({
  *
  * @param tiles - Array of tile definitions with suit and rank
  */
-export function TileDisplay({ tiles }: { tiles: Array<{ suit: TileSuit; rank: number }> }) {
+export function TileDisplay({
+  tiles,
+}: {
+  tiles: Array<{ suit: TileSuit; rank: number }>
+}) {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const spring = useSpring({
     from: { opacity: 0, y: 20 },
@@ -288,7 +298,10 @@ export function CategoryItem({
   completedCount: number
   onClick: () => void
 }) {
-  const config = CATEGORY_CONFIG[category] || { icon: '📖', color: 'text-gray-400' }
+  const config = CATEGORY_CONFIG[category] || {
+    icon: '📖',
+    color: 'text-gray-400',
+  }
   const isComplete = completedCount >= stepCount
 
   return (
@@ -301,7 +314,9 @@ export function CategoryItem({
             : 'bg-[var(--color-dark-forest)] hover:bg-[var(--color-forest-green)] text-[var(--color-beige-white)]'
         }`}
     >
-      <span className={`text-xl ${!isActive ? config.color : ''}`}>{config.icon}</span>
+      <span className={`text-xl ${!isActive ? config.color : ''}`}>
+        {config.icon}
+      </span>
       <div className="flex-1 min-w-0">
         <p className="font-medium truncate">{category}</p>
         <p className="text-xs opacity-70">
@@ -331,27 +346,34 @@ export function CategoryTabs({
   onCategoryClick: (category: string) => void
 }) {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-      {categories.map((cat) => {
-        const config = CATEGORY_CONFIG[cat] || { icon: '📖', color: 'text-gray-400' }
-        const isActive = cat === currentCategory
+    <div className="scroll-rail overflow-x-auto pb-1">
+      <div className="flex min-w-max gap-2 px-1">
+        {categories.map((cat) => {
+          const config = CATEGORY_CONFIG[cat] || {
+            icon: '📖',
+            color: 'text-gray-400',
+          }
+          const isActive = cat === currentCategory
 
-        return (
-          <button
-            key={cat}
-            onClick={() => onCategoryClick(cat)}
-            className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm
+          return (
+            <button
+              key={cat}
+              onClick={() => onCategoryClick(cat)}
+              className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm
               ${
                 isActive
                   ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)]'
                   : 'bg-[var(--color-dark-forest)] text-[var(--color-beige-white)] hover:bg-[var(--color-forest-green)]'
               }`}
-          >
-            <span className={!isActive ? config.color : ''}>{config.icon}</span>
-            <span className="whitespace-nowrap">{cat}</span>
-          </button>
-        )
-      })}
+            >
+              <span className={!isActive ? config.color : ''}>
+                {config.icon}
+              </span>
+              <span className="whitespace-nowrap">{cat}</span>
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -386,7 +408,9 @@ export function StepContent({ step }: { step: TutorialStep }) {
     >
       <div className="text-base leading-relaxed">{step.content}</div>
 
-      {step.showTiles && step.showTiles.length > 0 && <TileDisplay tiles={step.showTiles} />}
+      {step.showTiles && step.showTiles.length > 0 && (
+        <TileDisplay tiles={step.showTiles} />
+      )}
 
       {step.image && (
         <div className="flex justify-center py-4">

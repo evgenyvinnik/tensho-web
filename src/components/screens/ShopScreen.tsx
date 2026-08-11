@@ -21,7 +21,10 @@ import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { useShopStore } from '../../stores/shopStore'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
-import { BlessingPackSystem, PackOffering } from '../../systems/BlessingPackSystem'
+import {
+  BlessingPackSystem,
+  PackOffering,
+} from '../../systems/BlessingPackSystem'
 import { Decree, ImperialCharter, BlessingPack } from '../../systems/types'
 import { FateSeal } from '../../systems/FateSealSystem'
 import { CelestialOrb } from '../../systems/CelestialOrbSystem'
@@ -64,17 +67,22 @@ export function ShopScreen() {
   const shopStore = useShopStore()
 
   // Local state
-  const [confirmOffering, setConfirmOffering] = useState<TeaHouseOffering | null>(null)
+  const [confirmOffering, setConfirmOffering] =
+    useState<TeaHouseOffering | null>(null)
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
   const [packModalOpen, setPackModalOpen] = useState(false)
-  const [currentPackOffering, setCurrentPackOffering] = useState<PackOffering | null>(null)
+  const [currentPackOffering, setCurrentPackOffering] =
+    useState<PackOffering | null>(null)
   const [purchasedPackId, setPurchasedPackId] = useState<string | null>(null)
   const [shopError, setShopError] = useState<string | null>(null)
 
   useEffect(() => {
     if (hasTriggeredShopHint.current) return
     hasTriggeredShopHint.current = true
-    const timer = window.setTimeout(() => tutorial.triggerHints('shopEntered'), 700)
+    const timer = window.setTimeout(
+      () => tutorial.triggerHints('shopEntered'),
+      700
+    )
     return () => window.clearTimeout(timer)
   }, [tutorial])
 
@@ -86,7 +94,9 @@ export function ShopScreen() {
   // Initialize shop on mount
   useEffect(() => {
     if (!shopStore.isShopOpen) {
-      const ownedDecreeIds = game.state.decreeSystem.getOwnedDecrees().map((d) => d.id)
+      const ownedDecreeIds = game.state.decreeSystem
+        .getOwnedDecrees()
+        .map((d) => d.id)
 
       const isAfterBossRound = game.state.lastCompletedRoundType === 'Boss'
 
@@ -153,8 +163,14 @@ export function ShopScreen() {
           offering.itemType === 'Decree'
             ? t('shop.decreeSlotsFull', 'No Decree slots are available.')
             : offering.itemType === 'ImperialCharter'
-              ? t('shop.charterUnavailable', 'This Charter is not available for this run.')
-              : t('shop.consumableSlotsFull', 'No consumable slots are available.')
+              ? t(
+                  'shop.charterUnavailable',
+                  'This Charter is not available for this run.'
+                )
+              : t(
+                  'shop.consumableSlotsFull',
+                  'No consumable slots are available.'
+                )
         )
         setConfirmOffering(null)
         return
@@ -175,7 +191,9 @@ export function ShopScreen() {
           result.offering.itemType
         )
         if (!charged) {
-          setShopError(t('shop.purchaseFailed', 'Purchase could not be completed.'))
+          setShopError(
+            t('shop.purchaseFailed', 'Purchase could not be completed.')
+          )
           setConfirmOffering(null)
           return
         }
@@ -203,7 +221,9 @@ export function ShopScreen() {
         setSelectedItemId(null)
         setShopError(null)
       } else {
-        setShopError(t('shop.purchaseFailed', 'Purchase could not be completed.'))
+        setShopError(
+          t('shop.purchaseFailed', 'Purchase could not be completed.')
+        )
       }
 
       setConfirmOffering(null)
@@ -234,7 +254,9 @@ export function ShopScreen() {
         game.purchaseItem(offering.id, result.cost, 'BlessingPack')
 
         // Find the corresponding pack offering in the system
-        const packOfferingFromSystem = packOfferings.find((p) => p.pack.id === pack.id)
+        const packOfferingFromSystem = packOfferings.find(
+          (p) => p.pack.id === pack.id
+        )
 
         if (packOfferingFromSystem) {
           // Open the pack
@@ -252,7 +274,9 @@ export function ShopScreen() {
         }
         setShopError(null)
       } else {
-        setShopError(t('shop.purchaseFailed', 'Purchase could not be completed.'))
+        setShopError(
+          t('shop.purchaseFailed', 'Purchase could not be completed.')
+        )
       }
     },
     [shopStore, game, packOfferings, t]
@@ -269,7 +293,8 @@ export function ShopScreen() {
       }
 
       // Get selected contents
-      const selectedContents = blessingPackSystem.confirmSelection(purchasedPackId)
+      const selectedContents =
+        blessingPackSystem.confirmSelection(purchasedPackId)
 
       // Apply selected contents
       for (const content of selectedContents) {
@@ -280,7 +305,10 @@ export function ShopScreen() {
         } else if (content.type === 'FateSeal') {
           added = game.addFateSeal(content.data as FateSeal, 'pack_open')
         } else if (content.type === 'CelestialOrb') {
-          added = game.addCelestialOrb(content.data as CelestialOrb, 'pack_open')
+          added = game.addCelestialOrb(
+            content.data as CelestialOrb,
+            'pack_open'
+          )
         } else if (content.type === 'VoidScript') {
           added = game.addVoidScript(content.data as VoidScript, 'pack_open')
         } else if (content.type === 'Tile') {
@@ -288,7 +316,12 @@ export function ShopScreen() {
         }
 
         if (!added) {
-          setShopError(t('shop.inventoryFull', 'One or more pack rewards could not be added because inventory is full.'))
+          setShopError(
+            t(
+              'shop.inventoryFull',
+              'One or more pack rewards could not be added because inventory is full.'
+            )
+          )
         }
       }
 
@@ -312,7 +345,9 @@ export function ShopScreen() {
 
   // Handle reroll
   const handleReroll = useCallback(() => {
-    const ownedDecreeIds = game.state.decreeSystem.getOwnedDecrees().map((d) => d.id)
+    const ownedDecreeIds = game.state.decreeSystem
+      .getOwnedDecrees()
+      .map((d) => d.id)
     const result = shopStore.rerollShop(ownedDecreeIds, game.gold)
 
     if (result.success) {
@@ -352,124 +387,137 @@ export function ShopScreen() {
       />
 
       {/* Content area */}
-      <div className="flex-1 overflow-y-auto">
-        {/* Round payoff and next challenge — informative, never modal. */}
-        {roundSummary ? (
-          <RoundCashOutBanner
-            summary={roundSummary}
-            currentGold={game.gold}
-            interestCap={interestCap}
-            interestBlocked={game.state.omenSystem.isInterestBlocked()}
-          />
-        ) : (
-          <div className="mx-4 mt-4 rounded-xl border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] p-4 text-center">
-            <p className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-              {t('shop.title', 'Tea House')}
-            </p>
-            <p className="mt-1 text-sm text-[var(--color-beige-white)]/65">
-              {t('shop.subtitle', 'Prepare for the next challenge')}
-            </p>
-          </div>
-        )}
-
-        {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
-        <section className="px-4 mt-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-              {t('shop.items', 'Items')}
-              <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-                ({availableItems.length} available)
-              </span>
-            </h2>
-          </div>
-
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            {availableItems.map((offering) => (
-              <ShopItemCard
-                key={offering.id}
-                offering={offering}
-                canAfford={game.gold >= offering.finalCost}
-                onPurchase={() => handleItemPurchase(offering)}
-                onSelect={() => handleItemSelect(offering)}
-                isSelected={selectedItemId === offering.id}
-              />
-            ))}
-            {availableItems.length === 0 && (
-              <div className="w-full py-8 text-center">
-                <p className="text-[var(--color-beige-white)] opacity-50">
-                  {t('shop.allPurchased', 'All items purchased!')}
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Blessing Packs Section */}
-        <section className="px-4 mt-6">
-          <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
-            {t('shop.packs', 'Blessing Packs')}
-            <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-              祝福袋
-            </span>
-          </h2>
-
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            {availablePacks.map((offering) => {
-              const pack = offering.item as BlessingPack
-              return (
-                <PackCard
-                  key={offering.id}
-                  pack={pack}
-                  finalCost={offering.finalCost}
-                  canAfford={game.gold >= offering.finalCost}
-                  onPurchase={() => handlePackPurchase(offering)}
-                />
-              )
-            })}
-            {availablePacks.length === 0 && (
-              <div className="w-full py-4 text-center">
-                <p className="text-[var(--color-beige-white)] opacity-50">
-                  {t('shop.noPacks', 'No packs available')}
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Imperial Charter Section (after boss rounds only) */}
-        {availableCharter && (
-          <section className="px-4 mt-6 mb-4">
-            <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
-              {t('shop.imperialCharter', 'Imperial Charter')}
-              <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-                \u7687\u52C5
-              </span>
-            </h2>
-
-            <CharterCard
-              charter={availableCharter.item as ImperialCharter}
-              finalCost={availableCharter.finalCost}
-              canAfford={game.gold >= availableCharter.finalCost}
-              onPurchase={() => setConfirmOffering(availableCharter)}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="screen-canvas pb-4">
+          {/* Round payoff and next challenge — informative, never modal. */}
+          {roundSummary ? (
+            <RoundCashOutBanner
+              summary={roundSummary}
+              currentGold={game.gold}
+              interestCap={interestCap}
+              interestBlocked={game.state.omenSystem.isInterestBlocked()}
             />
-          </section>
-        )}
+          ) : (
+            <div className="mx-3 mt-3 rounded-xl border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] p-4 text-center sm:mx-5 sm:mt-4">
+              <p className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+                {t('shop.title', 'Tea House')}
+              </p>
+              <p className="mt-1 text-sm text-[var(--color-beige-white)]/65">
+                {t('shop.subtitle', 'Prepare for the next challenge')}
+              </p>
+            </div>
+          )}
 
-        {/* Spacer for bottom padding */}
-        <div className="h-4" />
+          <div className="grid items-start gap-5 px-3 pt-5 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6 lg:pt-6">
+            {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
+            <section className="min-w-0">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
+                  {t('shop.items', 'Items')}
+                  <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
+                    ({availableItems.length} available)
+                  </span>
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                {availableItems.map((offering) => (
+                  <ShopItemCard
+                    key={offering.id}
+                    offering={offering}
+                    canAfford={game.gold >= offering.finalCost}
+                    onPurchase={() => handleItemPurchase(offering)}
+                    onSelect={() => handleItemSelect(offering)}
+                    isSelected={selectedItemId === offering.id}
+                  />
+                ))}
+                {availableItems.length === 0 && (
+                  <div className="w-full py-8 text-center">
+                    <p className="text-[var(--color-beige-white)] opacity-50">
+                      {t('shop.allPurchased', 'All items purchased!')}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* Blessing Packs Section */}
+            <section className="min-w-0">
+              <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
+                {t('shop.packs', 'Blessing Packs')}
+                <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
+                  祝福袋
+                </span>
+              </h2>
+
+              <div className="grid grid-cols-2 gap-3 lg:grid-cols-1 xl:grid-cols-2">
+                {availablePacks.map((offering) => {
+                  const pack = offering.item as BlessingPack
+                  return (
+                    <PackCard
+                      key={offering.id}
+                      pack={pack}
+                      finalCost={offering.finalCost}
+                      canAfford={game.gold >= offering.finalCost}
+                      onPurchase={() => handlePackPurchase(offering)}
+                    />
+                  )
+                })}
+                {availablePacks.length === 0 && (
+                  <div className="w-full py-4 text-center">
+                    <p className="text-[var(--color-beige-white)] opacity-50">
+                      {t('shop.noPacks', 'No packs available')}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+
+          {/* Imperial Charter Section (after boss rounds only) */}
+          {availableCharter && (
+            <section className="mx-3 mt-6 mb-4 sm:mx-5">
+              <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
+                {t('shop.imperialCharter', 'Imperial Charter')}
+                <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
+                  \u7687\u52C5
+                </span>
+              </h2>
+
+              <CharterCard
+                charter={availableCharter.item as ImperialCharter}
+                finalCost={availableCharter.finalCost}
+                canAfford={game.gold >= availableCharter.finalCost}
+                onPurchase={() => setConfirmOffering(availableCharter)}
+              />
+            </section>
+          )}
+
+          {/* Spacer for bottom padding */}
+          <div className="h-4" />
+        </div>
       </div>
 
       {/* Bottom action bar */}
       {shopError && (
-        <div role="alert" className="mx-4 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100">
+        <div
+          role="alert"
+          className="screen-canvas mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
+        >
           {shopError}
         </div>
       )}
 
-      <div className="px-4 py-4 bg-[var(--color-dark-forest)] border-t-2 border-[var(--color-saddle-brown)]">
-        <Button variant="primary" onClick={handleNextRound} className="w-full text-lg">
-          {t('shop.nextRound', 'Continue to Next Round')}
-        </Button>
+      <div className="flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
+        <div className="screen-canvas px-3 py-3 sm:px-5 sm:py-4">
+          <Button
+            variant="primary"
+            onClick={handleNextRound}
+            className="w-full text-lg"
+          >
+            {t('shop.nextRound', 'Continue to Next Round')}
+          </Button>
+        </div>
       </div>
 
       {/* Purchase confirmation popup */}
