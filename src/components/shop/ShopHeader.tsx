@@ -12,6 +12,7 @@
 import { useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
+import { GoldIcon } from '../ui/GoldIcon'
 
 const AnimatedSpan = animated('span')
 
@@ -49,10 +50,11 @@ function GoldDisplay({ gold }: GoldDisplayProps) {
   })
 
   return (
-    <div className="flex items-center gap-1 sm:gap-2">
-      <span className="text-xl sm:text-2xl" role="img" aria-label="gold">
-        &#x5186;
-      </span>
+    <div
+      className="flex items-center gap-1 sm:gap-2"
+      aria-label={`${gold.toLocaleString()} gold`}
+    >
+      <GoldIcon className="h-8 w-8 sm:h-9 sm:w-9" />
       <AnimatedSpan className="text-xl font-bold text-[var(--color-golden-yellow)] sm:text-2xl">
         {spring.number.to((n) => Math.floor(n).toLocaleString())}
       </AnimatedSpan>
@@ -115,7 +117,10 @@ function RerollButton({
           d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
         />
       </svg>
-      <span>{cost}G</span>
+      <span className="inline-flex items-center gap-1">
+        <GoldIcon className="h-4 w-4" />
+        {cost}
+      </span>
       {rerollCount > 0 && (
         <span className="text-xs opacity-70">(+{rerollCount})</span>
       )}
@@ -173,7 +178,7 @@ export function ShopHeader({
   const { t } = useTranslation()
 
   return (
-    <header className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-top">
+    <header className="relative z-10 flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)]/95 safe-area-top backdrop-blur-sm">
       <div className="screen-canvas flex items-center justify-between gap-2 px-2 py-2.5 sm:px-5 sm:py-3">
         {/* Gold display */}
         <GoldDisplay gold={gold} />

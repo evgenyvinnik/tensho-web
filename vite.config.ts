@@ -18,11 +18,19 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png', 'robots.txt', 'sitemap.xml'],
+      includeAssets: [
+        'favicon.ico',
+        'apple-touch-icon.png',
+        'icon-192x192.png',
+        'icon-512x512.png',
+        'robots.txt',
+        'sitemap.xml',
+      ],
       manifest: {
         name: 'Tensho (天翔) - Mahjong Roguelike',
         short_name: 'Tensho',
-        description: 'A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns.',
+        description:
+          'A strategic roguelike deck-builder inspired by Riichi Mahjong. Build powerful tile combinations, collect Decrees, and master Yaku patterns.',
         theme_color: '#1a3a2a',
         background_color: '#1a3a2a',
         display: 'standalone',
@@ -70,7 +78,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3,ttf,woff,woff2}'],
+        globPatterns: [
+          '**/*.{js,css,html,ico,png,webp,svg,mp3,ttf,woff,woff2}',
+        ],
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MB for large font files
         runtimeCaching: [
           {
@@ -88,7 +98,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+            urlPattern: /\.(?:png|jpg|jpeg|webp|svg|gif)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'images-cache',

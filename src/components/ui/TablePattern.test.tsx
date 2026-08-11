@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { TablePattern } from './TablePattern'
+import { backgroundAssets } from '../../utils/assets'
 
 describe('TablePattern', () => {
   it('uses the ornamental frame as the content boundary', () => {
@@ -12,6 +13,7 @@ describe('TablePattern', () => {
 
     const frame = container.querySelector('[data-table-frame]')
     const content = container.querySelector('[data-table-content]')
+    const artwork = container.querySelector('[data-table-artwork]')
 
     expect(frame).toBeInTheDocument()
     expect(frame?.querySelectorAll('svg')).toHaveLength(4)
@@ -22,6 +24,9 @@ describe('TablePattern', () => {
       frame?.querySelector('[data-table-ornament="bottom-right"]')
     ).toBeInTheDocument()
     expect(content).toHaveClass('table-pattern-content-framed')
+    expect(artwork).toHaveStyle({
+      backgroundImage: `url("${backgroundAssets.gameplay}")`,
+    })
     expect(screen.getByText('Gameplay UI')).toBeInTheDocument()
   })
 

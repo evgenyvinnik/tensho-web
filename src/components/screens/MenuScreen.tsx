@@ -13,6 +13,7 @@ import { Tutorial, useTutorial } from '../ui/Tutorial'
 import { SongNotification } from '../ui/SongNotification'
 import { TableStyleButton } from '../menu/TableStyleButton'
 import {
+  backgroundAssets,
   getTileImagePath,
   preloadMenuAssets,
   preloadTileImages,
@@ -437,6 +438,12 @@ export function MenuScreen() {
 
   return (
     <div className="viewport-full relative overflow-hidden bg-[var(--color-forest-green)] crt-glow">
+      <div
+        aria-hidden="true"
+        className="immersive-background absolute inset-0"
+        style={{ backgroundImage: `url("${backgroundAssets.menu}")` }}
+      />
+
       {/* Ambient background gradient - using theme colors */}
       <div
         className="absolute inset-0 ambient-glow"

@@ -20,6 +20,8 @@ import {
   PACK_SIZE_DEFINITIONS,
 } from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
+import { illustrationAssets } from '../../utils/assets'
+import { GoldIcon } from '../ui/GoldIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -49,26 +51,6 @@ export interface PackCardProps {
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
-
-/**
- * Get pack type icon
- */
-function getPackTypeIcon(type: PackType): string {
-  switch (type) {
-    case 'Arcana':
-      return '\uD83D\uDD2E' // Crystal ball
-    case 'Celestial':
-      return '\u2B50' // Star
-    case 'Tile':
-      return '\uD83C\uDC04' // Mahjong tile
-    case 'Decree':
-      return '\uD83D\uDCDC' // Scroll
-    case 'Void':
-      return '\uD83C\uDF11' // New moon
-    default:
-      return '\uD83C\uDF81' // Gift
-  }
-}
 
 /**
  * Get pack size visual indicator
@@ -130,7 +112,7 @@ export function PackCard({
   const showCJK = isCJKLanguage()
   const typeInfo = PACK_TYPE_DEFINITIONS[pack.type]
   const sizeInfo = PACK_SIZE_DEFINITIONS[pack.size]
-  const icon = getPackTypeIcon(pack.type)
+  const artwork = illustrationAssets.packs[pack.type]
   const sizeIndicator = getPackSizeIndicator(pack.size, showCJK)
   const gradient = getPackGradient(pack.type)
 
@@ -141,8 +123,8 @@ export function PackCard({
     config: { tension: 400, friction: 30 },
   })
 
-  // Icon spring for size emphasis
-  const iconSpring = useSpring({
+  // Artwork spring for size emphasis
+  const artworkSpring = useSpring({
     scale: sizeIndicator.scale * (isHovered ? 1.1 : 1),
     config: { tension: 300, friction: 20 },
   })
@@ -190,15 +172,21 @@ export function PackCard({
       )}
 
       {/* Content */}
-      <div className="flex min-h-[184px] flex-col items-center p-3">
-        {/* Icon */}
+      <div className="flex min-h-[232px] flex-col items-center p-3">
+        {/* Pack artwork */}
         <animated.div
-          className="text-4xl mb-2"
+          className="mb-1 flex h-24 w-full items-center justify-center sm:h-28"
           style={{
-            transform: iconSpring.scale.to((s) => `scale(${s})`),
+            transform: artworkSpring.scale.to((s) => `scale(${s})`),
           }}
         >
-          {icon}
+          <img
+            src={artwork}
+            alt=""
+            aria-hidden="true"
+            className="game-illustration h-full w-full object-contain"
+            draggable={false}
+          />
         </animated.div>
 
         {/* Pack size */}
@@ -246,7 +234,10 @@ export function PackCard({
             }
           `}
         >
-          {finalCost}G
+          <span className="inline-flex items-center justify-center gap-1.5">
+            <GoldIcon className="h-5 w-5" />
+            {finalCost}
+          </span>
         </button>
       </div>
 

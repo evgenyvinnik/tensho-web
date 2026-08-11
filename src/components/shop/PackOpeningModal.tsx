@@ -23,6 +23,8 @@ import {
 } from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { Tile } from '../../core/Tile'
+import { getTileImagePath, illustrationAssets } from '../../utils/assets'
 
 const AnimatedDiv = animated('div')
 
@@ -73,23 +75,22 @@ function getRarityColor(rarity: string): string {
   }
 }
 
-/**
- * Get content type icon
- */
-function getContentTypeIcon(type: string): string {
-  switch (type) {
+function getContentArtwork(content: PackContent): string | null {
+  switch (content.type) {
     case 'FateSeal':
-      return '\uD83D\uDD2E' // Crystal ball
+      return illustrationAssets.consumables.fateSeal
     case 'CelestialOrb':
-      return '\u2B50' // Star
-    case 'Tile':
-      return '\uD83C\uDC04' // Mahjong tile
-    case 'Decree':
-      return '\uD83D\uDCDC' // Scroll
+      return illustrationAssets.consumables.celestialOrb
     case 'VoidScript':
-      return '\uD83C\uDF11' // New moon
+      return illustrationAssets.consumables.voidScript
+    case 'Tile': {
+      const tile = content.data as Tile
+      return tile?.suit && tile?.rank
+        ? getTileImagePath(tile.suit, tile.rank)
+        : null
+    }
     default:
-      return '\u2753' // Question mark
+      return null
   }
 }
 
@@ -133,7 +134,7 @@ function PackContentCard({
   const [isHovered, setIsHovered] = useState(false)
 
   const rarityColor = getRarityColor(content.rarity)
-  const icon = getContentTypeIcon(content.type)
+  const artwork = getContentArtwork(content)
   const glow = getRarityGlow(content.rarity)
 
   // Entry animation
@@ -197,15 +198,25 @@ function PackContentCard({
       {/* Content */}
       <div className="relative p-3 flex flex-col items-center min-h-[160px]">
         {/* Icon - Use unique icon for decrees */}
-        <div className="text-3xl mb-2">
+        <div className="mb-2 flex h-12 w-12 items-center justify-center">
           {content.type === 'Decree' ? (
             <DecreeUniqueIcon
               decreeId={content.id}
               size={48}
               color={rarityColor}
             />
+          ) : artwork ? (
+            <img
+              src={artwork}
+              alt=""
+              aria-hidden="true"
+              className="game-illustration h-full w-full object-contain"
+              draggable={false}
+            />
           ) : (
-            icon
+            <span className="text-2xl text-[var(--color-metallic-gold)]">
+              ?
+            </span>
           )}
         </div>
 
@@ -342,8 +353,15 @@ export function PackOpeningModal({
       >
         {/* Header */}
         <div className="flex-shrink-0 border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="relative flex items-center justify-center gap-3 pr-12 text-center sm:gap-4">
+            <img
+              src={illustrationAssets.packs[pack.type]}
+              alt=""
+              aria-hidden="true"
+              className="game-illustration h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
+              draggable={false}
+            />
+            <div className="min-w-0">
               <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
                 {sizeInfo?.name} {typeInfo?.name}
               </h2>
@@ -356,7 +374,7 @@ export function PackOpeningModal({
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg hover:bg-[var(--color-forest-green)] text-[var(--color-beige-white)] min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="absolute right-0 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg p-2 text-[var(--color-beige-white)] hover:bg-[var(--color-forest-green)]"
               aria-label="Close"
             >
               <svg

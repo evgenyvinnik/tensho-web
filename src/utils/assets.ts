@@ -4,6 +4,7 @@
  */
 
 import { TileSuit } from '../core/Tile'
+import type { PackType } from '../systems/types'
 import { withBasePath } from './basePath'
 
 // Base paths for assets
@@ -97,6 +98,23 @@ export const illustrationAssets = {
     celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.png`,
     voidScript: `${ASSET_BASE}/illustrations/void-script.png`,
   },
+  packs: {
+    Arcana: `${ASSET_BASE}/illustrations/packs/arcana-pack.png`,
+    Celestial: `${ASSET_BASE}/illustrations/packs/celestial-pack.png`,
+    Tile: `${ASSET_BASE}/illustrations/packs/tile-pack.png`,
+    Decree: `${ASSET_BASE}/illustrations/packs/decree-pack.png`,
+    Void: `${ASSET_BASE}/illustrations/packs/void-pack.png`,
+  } satisfies Record<PackType, string>,
+  currency: {
+    gold: `${ASSET_BASE}/illustrations/currency/tensho-gold.png`,
+  },
+} as const
+
+/** Low-contrast generated environments designed to sit behind live UI. */
+export const backgroundAssets = {
+  menu: `${ASSET_BASE}/backgrounds/menu.webp`,
+  shop: `${ASSET_BASE}/backgrounds/shop.webp`,
+  gameplay: `${ASSET_BASE}/backgrounds/gameplay.webp`,
 } as const
 
 // ============================================================================
@@ -217,7 +235,7 @@ export async function preloadTileImages(): Promise<void> {
  * Preload menu screen assets
  */
 export async function preloadMenuAssets(): Promise<void> {
-  await preloadImages(Object.values(menuAssets))
+  await preloadImages([...Object.values(menuAssets), backgroundAssets.menu])
 }
 
 /**

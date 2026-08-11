@@ -7,6 +7,7 @@
 
 import React, { useMemo } from 'react'
 import { colors as themeColors } from '../../styles/theme'
+import { backgroundAssets } from '../../utils/assets'
 
 export interface TablePatternColors {
   /** Dark green for background */
@@ -167,9 +168,17 @@ export const TablePattern: React.FC<TablePatternProps> = ({
         backgroundColor: colors.greenMid,
       }}
     >
+      {/* Painterly lacquer base; all gameplay chrome remains above it. */}
+      <div
+        data-table-artwork
+        aria-hidden="true"
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url("${backgroundAssets.gameplay}")` }}
+      />
+
       {/* Radial gradient background */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-55"
         style={{
           background: `radial-gradient(
             ellipse 80% 60% at 50% 30%,
@@ -183,7 +192,7 @@ export const TablePattern: React.FC<TablePatternProps> = ({
 
       {/* Seigaiha wave pattern overlay */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-50"
         style={{
           backgroundImage: `url("${patternUrl}")`,
           backgroundRepeat: 'repeat',

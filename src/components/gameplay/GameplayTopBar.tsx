@@ -12,6 +12,7 @@ import { GlowEffect } from '../effects/GlowEffect'
 import { RoundTypeIndicator } from './RoundTypeIndicator'
 import { RoundType } from './gameplayTypes'
 import { getStakeByTier } from '../../config/stakeDefinitions'
+import { GoldIcon } from '../ui/GoldIcon'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -50,7 +51,13 @@ export interface GameplayTopBarProps {
 // =============================================================================
 
 const ExitIcon = () => (
-  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+  <svg
+    className="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -101,8 +108,13 @@ export function GameplayTopBar({
       {/* Gold display */}
       <div className="flex flex-col items-start">
         <GlowEffect variant="gold" intensity={0.4} pulsing={false}>
-          <span data-tutorial="gold" className="text-lg font-bold text-[var(--color-golden-yellow)]">
-            ¥{gold}
+          <span
+            data-tutorial="gold"
+            className="inline-flex items-center gap-1 text-lg font-bold text-[var(--color-golden-yellow)]"
+            aria-label={`${gold} gold`}
+          >
+            <GoldIcon className="h-6 w-6" />
+            {gold}
           </span>
         </GlowEffect>
         <span
@@ -124,7 +136,10 @@ export function GameplayTopBar({
       </div>
 
       {/* Act/Round with Round Type indicator */}
-      <div data-tutorial="act-round" className="flex items-center gap-1 sm:gap-2">
+      <div
+        data-tutorial="act-round"
+        className="flex items-center gap-1 sm:gap-2"
+      >
         <div data-gameplay-top-bar-act className="flex flex-col items-center">
           <span className="text-base leading-tight sm:text-lg">
             {t('gameplay.act')} {currentAct}

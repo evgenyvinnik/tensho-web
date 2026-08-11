@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { animated, useSpring, to } from '@react-spring/web'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { GoldIcon } from '../ui/GoldIcon'
 
 const AnimatedSection = animated('section')
 
@@ -114,10 +115,11 @@ export function RoundCashOutBanner({
             Cash out
           </span>
           <strong
-            className={`text-3xl font-black tabular-nums ${
+            className={`inline-flex items-center gap-1 text-3xl font-black tabular-nums ${
               summary.netGoldChange >= 0 ? 'text-emerald-300' : 'text-red-300'
             }`}
           >
+            <GoldIcon className="h-7 w-7" />
             {summary.netGoldChange >= 0 ? '+' : ''}
             {summary.netGoldChange}G
           </strong>

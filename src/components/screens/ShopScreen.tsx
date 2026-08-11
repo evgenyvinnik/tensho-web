@@ -40,6 +40,7 @@ import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { eventBus } from '../../game/EventBus'
 import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
+import { backgroundAssets } from '../../utils/assets'
 
 // =============================================================================
 // BLESSING PACK SYSTEM INSTANCE
@@ -375,7 +376,17 @@ export function ShopScreen() {
   }, [navigateTo])
 
   return (
-    <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
+    <div className="viewport-full relative isolate flex flex-col overflow-hidden bg-[var(--color-forest-green)]">
+      <div
+        aria-hidden="true"
+        className="immersive-background absolute inset-0"
+        style={{ backgroundImage: `url("${backgroundAssets.shop}")` }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[var(--color-dark-forest)]/45"
+      />
+
       {/* Header with gold, reroll, settings */}
       <ShopHeader
         gold={game.gold}
@@ -387,7 +398,7 @@ export function ShopScreen() {
       />
 
       {/* Content area */}
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="relative z-10 min-h-0 flex-1 overflow-y-auto">
         <div className="screen-canvas pb-4">
           {/* Round payoff and next challenge — informative, never modal. */}
           {roundSummary ? (
