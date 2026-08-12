@@ -598,7 +598,11 @@
     "voidCost": "Цена пустоты",
     "timesUsed": "Использовано раз",
     "runsWon": "Побед в забегах",
-    "unlock": "Открытие:"
+    "unlock": "Открытие:",
+    "title": "Архив рук",
+    "progress": "Прогресс коллекции",
+    "recentDiscoveries": "Недавние находки",
+    "undiscovered": "Не открыто"
   },
   "errors": {
     "failedToLoad": "Не удалось загрузить компонент",

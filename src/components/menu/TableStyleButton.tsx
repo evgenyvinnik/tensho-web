@@ -13,6 +13,7 @@ import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { useStakeStore } from '../../stores/stakeStore'
 import { getStakeByTier } from '../../config/stakeDefinitions'
 import { getTableStyleIllustration } from '../../utils/assets'
+import { useItemText } from '../../i18n/useItemText'
 
 const AnimatedButton = animated('button')
 
@@ -30,6 +31,7 @@ export function TableStyleButton({
   delay = 0,
   show = true,
 }: TableStyleButtonProps) {
+  const itemText = useItemText()
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -116,7 +118,7 @@ export function TableStyleButton({
             {t('tableStyle.table', 'Run setup')}
           </span>
           <span className="max-w-full truncate text-[var(--color-beige-white)] drop-shadow-lg">
-            {currentStyle.displayName}
+            {itemText.name('tableStyles', { ...currentStyle, name: currentStyle.displayName })}
           </span>
         </div>
 

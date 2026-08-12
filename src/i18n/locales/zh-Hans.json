@@ -1340,7 +1340,11 @@
     "voidCost": "虚空消耗",
     "timesUsed": "使用次数",
     "runsWon": "获胜局数",
-    "unlock": "解锁条件："
+    "unlock": "解锁条件：",
+    "title": "手牌录",
+    "progress": "收集进度",
+    "recentDiscoveries": "最近发现",
+    "undiscovered": "未发现"
   },
   "errors": {
     "failedToLoad": "组件加载失败",

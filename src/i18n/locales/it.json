@@ -598,7 +598,11 @@
     "voidCost": "Costo del vuoto",
     "timesUsed": "Volte usato",
     "runsWon": "Partite vinte",
-    "unlock": "Sblocco:"
+    "unlock": "Sblocco:",
+    "title": "Archivio delle Mani",
+    "progress": "Progressi della collezione",
+    "recentDiscoveries": "Scoperte recenti",
+    "undiscovered": "Non scoperto"
   },
   "errors": {
     "failedToLoad": "Impossibile caricare il componente",

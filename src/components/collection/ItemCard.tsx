@@ -216,7 +216,9 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
             <span className="text-2xl text-gray-500">?</span>
           </div>
           <span className="text-xs text-gray-500">
-            {isLocked ? 'Locked' : 'Undiscovered'}
+            {isLocked
+              ? t('collection.locked', 'Locked')
+              : t('collection.undiscovered', 'Undiscovered')}
           </span>
         </div>
       )}

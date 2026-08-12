@@ -33,6 +33,15 @@ import { ALL_MANDATES } from '../config/mandateDefinitions'
 import { getAllFateSeals } from '../systems/FateSealSystem'
 import { getAllCelestialOrbs } from '../systems/CelestialOrbSystem'
 import { getAllVoidScripts } from '../systems/VoidScriptSystem'
+import {
+  ARCHIVE_CATEGORIES,
+  WALL_DEFINITIONS,
+  TILE_MARK_DEFINITIONS,
+  SEAL_DEFINITIONS_ARCHIVE,
+  EDITION_DEFINITIONS_ARCHIVE,
+  PACK_VARIANT_DEFINITIONS,
+} from '../config/archiveDefinitions'
+import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 
 type Locale = Record<string, unknown>
 
@@ -61,6 +70,13 @@ const LIBRARIES: Record<string, string[]> = {
   seals: getAllFateSeals().map((s) => s.id),
   orbs: getAllCelestialOrbs().map((o) => o.id),
   scripts: getAllVoidScripts().map((s) => s.id),
+  archiveCategories: Object.values(ARCHIVE_CATEGORIES).map((c) => c.id),
+  walls: WALL_DEFINITIONS.map((w) => w.id),
+  tileMarks: TILE_MARK_DEFINITIONS.map((m) => m.id),
+  archiveSeals: SEAL_DEFINITIONS_ARCHIVE.map((s) => s.id),
+  editions: EDITION_DEFINITIONS_ARCHIVE.map((e) => e.id),
+  packs: PACK_VARIANT_DEFINITIONS.map((p) => p.id),
+  tableStyles: TABLE_STYLE_DEFINITIONS.map((t) => t.id),
 }
 
 function itemsOf(locale: Locale, kind: string): Record<string, unknown> {

@@ -22,6 +22,14 @@ export type ItemKind =
   | 'seals'
   | 'orbs'
   | 'scripts'
+  // Archive libraries: the Collection screen's own catalogue
+  | 'archiveCategories'
+  | 'walls'
+  | 'tileMarks'
+  | 'archiveSeals'
+  | 'editions'
+  | 'packs'
+  | 'tableStyles'
 
 /** The shape every translatable item shares. */
 export interface TranslatableItem {

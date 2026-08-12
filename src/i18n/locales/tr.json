@@ -598,7 +598,11 @@
     "voidCost": "Boşluk maliyeti",
     "timesUsed": "Kullanım sayısı",
     "runsWon": "Kazanılan oyun",
-    "unlock": "Kilit açma:"
+    "unlock": "Kilit açma:",
+    "title": "Eller Arşivi",
+    "progress": "Koleksiyon ilerlemesi",
+    "recentDiscoveries": "Son keşifler",
+    "undiscovered": "Keşfedilmedi"
   },
   "errors": {
     "failedToLoad": "Bileşen yüklenemedi",

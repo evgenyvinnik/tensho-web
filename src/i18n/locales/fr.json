@@ -1340,7 +1340,11 @@
     "voidCost": "Coût du vide",
     "timesUsed": "Fois utilisé",
     "runsWon": "Parties gagnées",
-    "unlock": "Déblocage :"
+    "unlock": "Déblocage :",
+    "title": "Archive des Mains",
+    "progress": "Progression de la collection",
+    "recentDiscoveries": "Découvertes récentes",
+    "undiscovered": "Non découvert"
   },
   "errors": {
     "failedToLoad": "Échec du chargement du composant",

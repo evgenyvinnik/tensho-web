@@ -1170,7 +1170,11 @@
     "voidCost": "虛空消耗",
     "timesUsed": "使用次數",
     "runsWon": "獲勝局數",
-    "unlock": "解鎖條件："
+    "unlock": "解鎖條件：",
+    "title": "手牌錄",
+    "progress": "收集進度",
+    "recentDiscoveries": "最近發現",
+    "undiscovered": "未發現"
   },
   "errors": {
     "failedToLoad": "元件載入失敗",

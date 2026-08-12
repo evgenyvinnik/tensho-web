@@ -1340,7 +1340,11 @@
     "voidCost": "공허 비용",
     "timesUsed": "사용 횟수",
     "runsWon": "승리한 판",
-    "unlock": "해제 조건:"
+    "unlock": "해제 조건:",
+    "title": "패의 기록",
+    "progress": "수집 진행도",
+    "recentDiscoveries": "최근 발견",
+    "undiscovered": "미발견"
   },
   "errors": {
     "failedToLoad": "컴포넌트를 불러오지 못했습니다",

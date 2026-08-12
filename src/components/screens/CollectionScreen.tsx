@@ -64,9 +64,9 @@ function buildDisplayInfoMap(
       for (const wall of WALL_DEFINITIONS) {
         map.set(wall.id, {
           id: wall.id,
-          name: wall.name,
+          name: itemText.name('walls', wall),
           japaneseName: wall.japaneseName,
-          description: wall.description,
+          description: itemText.description('walls', wall),
           category: 'walls',
         })
       }
@@ -123,9 +123,9 @@ function buildDisplayInfoMap(
       for (const mark of TILE_MARK_DEFINITIONS) {
         map.set(mark.id, {
           id: mark.id,
-          name: mark.name,
+          name: itemText.name('tileMarks', mark),
           japaneseName: mark.japaneseName,
-          description: `${mark.description}. ${mark.effect}`,
+          description: itemText.description('tileMarks', mark),
           category: 'tileMarks',
         })
       }
@@ -135,9 +135,9 @@ function buildDisplayInfoMap(
       for (const seal of SEAL_DEFINITIONS_ARCHIVE) {
         map.set(seal.id, {
           id: seal.id,
-          name: seal.name,
+          name: itemText.name('archiveSeals', seal),
           japaneseName: seal.japaneseName,
-          description: `${seal.description}. ${seal.effect}`,
+          description: itemText.description('archiveSeals', seal),
           category: 'seals',
         })
       }
@@ -147,9 +147,9 @@ function buildDisplayInfoMap(
       for (const edition of EDITION_DEFINITIONS_ARCHIVE) {
         map.set(edition.id, {
           id: edition.id,
-          name: edition.name,
+          name: itemText.name('editions', edition),
           japaneseName: edition.japaneseName,
-          description: `${edition.description}. ${edition.effect}`,
+          description: itemText.description('editions', edition),
           category: 'editions',
         })
       }
@@ -159,9 +159,9 @@ function buildDisplayInfoMap(
       for (const pack of PACK_VARIANT_DEFINITIONS) {
         map.set(pack.id, {
           id: pack.id,
-          name: pack.name,
+          name: itemText.name('packs', pack),
           japaneseName: pack.japaneseName,
-          description: pack.description,
+          description: itemText.description('packs', pack),
           category: 'packs',
         })
       }
@@ -366,13 +366,13 @@ export function CollectionScreen() {
             <div className="border-b border-white/5 bg-[var(--color-forest-green)]/30 px-3 py-2.5 sm:px-5">
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
-                  {activeCategoryInfo.name}
+                  {itemText.name('archiveCategories', activeCategoryInfo)}
                 </span>
                 <span className="text-xs text-[var(--color-metallic-gold)] font-tile">
                   {activeCategoryInfo.japaneseName}
                 </span>
                 <p className="w-full text-xs text-[var(--color-beige-white)]/70 sm:w-auto sm:flex-1">
-                  {activeCategoryInfo.description}
+                  {itemText.description('archiveCategories', activeCategoryInfo)}
                 </p>
               </div>
             </div>

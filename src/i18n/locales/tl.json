@@ -598,7 +598,11 @@
     "voidCost": "Halaga ng void",
     "timesUsed": "Beses na ginamit",
     "runsWon": "Napanalunang laro",
-    "unlock": "I-unlock:"
+    "unlock": "I-unlock:",
+    "title": "Talaan ng mga Kamay",
+    "progress": "Progreso ng koleksyon",
+    "recentDiscoveries": "Mga bagong natuklasan",
+    "undiscovered": "Hindi pa natutuklasan"
   },
   "errors": {
     "failedToLoad": "Nabigong i-load ang component",

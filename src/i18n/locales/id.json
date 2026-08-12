@@ -1170,7 +1170,11 @@
     "voidCost": "Biaya kehampaan",
     "timesUsed": "Kali digunakan",
     "runsWon": "Permainan dimenangkan",
-    "unlock": "Buka kunci:"
+    "unlock": "Buka kunci:",
+    "title": "Arsip Tangan",
+    "progress": "Kemajuan koleksi",
+    "recentDiscoveries": "Penemuan terbaru",
+    "undiscovered": "Belum ditemukan"
   },
   "errors": {
     "failedToLoad": "Gagal memuat komponen",

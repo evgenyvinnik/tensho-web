@@ -1340,7 +1340,11 @@
     "voidCost": "虚無コスト",
     "timesUsed": "使用回数",
     "runsWon": "勝利数",
-    "unlock": "解放条件:"
+    "unlock": "解放条件:",
+    "title": "手牌録",
+    "progress": "収集の進み",
+    "recentDiscoveries": "最近の発見",
+    "undiscovered": "未発見"
   },
   "errors": {
     "failedToLoad": "コンポーネントの読み込みに失敗しました",
@@ -1826,5 +1830,293 @@
     "table": "挑戦の準備",
     "selected": "選択中:",
     "chooseTable": "卓とステークを選ぶ"
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "法令",
+        "description": "局をまたいで持続する規則改変"
+      },
+      "walls": {
+        "name": "山",
+        "description": "独自の牌構成を持つ山の種類"
+      },
+      "charters": {
+        "name": "皇勅",
+        "description": "親局の勅命を破ったのちに購入できる恒久的な強化"
+      },
+      "consumables": {
+        "name": "消耗品",
+        "description": "使い切りの品：運命符・天球・虚空文"
+      },
+      "tileMarks": {
+        "name": "牌印",
+        "description": "牌の挙動を変える強化の種類"
+      },
+      "seals": {
+        "name": "封印",
+        "description": "牌に効果を加える特別な封"
+      },
+      "editions": {
+        "name": "版",
+        "description": "品物の見た目と効果の変種"
+      },
+      "packs": {
+        "name": "祝福袋",
+        "description": "様々な強化が入った袋"
+      },
+      "omens": {
+        "name": "兆符",
+        "description": "局を飛ばすと得られる一度きりの運命改変"
+      },
+      "mandates": {
+        "name": "勅命",
+        "description": "親局の制限と試練"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "青畳の山",
+        "description": "136枚からなる標準の山"
+      },
+      "red_wall": {
+        "name": "紅の山",
+        "description": "赤ドラが強化された山"
+      },
+      "blue_wall": {
+        "name": "蒼の山",
+        "description": "筒子に偏った山"
+      },
+      "black_wall": {
+        "name": "黒の山",
+        "description": "字牌が強化された山"
+      },
+      "gold_wall": {
+        "name": "金の山",
+        "description": "黄金の強化を受けた牌の山"
+      },
+      "crimson_wall": {
+        "name": "緋の山",
+        "description": "強力な三元牌を備えた山"
+      },
+      "obsidian_wall": {
+        "name": "黒曜の山",
+        "description": "風牌が強化された山"
+      },
+      "jade_wall": {
+        "name": "翡翠の山",
+        "description": "索子に偏った山"
+      },
+      "ivory_wall": {
+        "name": "象牙の山",
+        "description": "么九牌を中心とした構成の山"
+      },
+      "bamboo_wall": {
+        "name": "竹の山",
+        "description": "索子が支配的な構成の山"
+      },
+      "cherry_wall": {
+        "name": "桜の山",
+        "description": "花牌が強化された山"
+      },
+      "moon_wall": {
+        "name": "月の山",
+        "description": "季節牌が強化された山"
+      },
+      "star_wall": {
+        "name": "星の山",
+        "description": "天の恩恵を備えた山"
+      },
+      "void_wall": {
+        "name": "虚空の山",
+        "description": "虚空に触れた牌の山"
+      },
+      "imperial_wall": {
+        "name": "皇の山",
+        "description": "王家の構成を持つ山"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "加点の印",
+        "description": "牌が追加得点を得る。計上時に+30チップ"
+      },
+      "mult": {
+        "name": "倍率の印",
+        "description": "牌が倍率を加える。計上時に+4倍率"
+      },
+      "wild": {
+        "name": "万能の印",
+        "description": "どの種類としても扱える。役の判定でどの種類にもなる"
+      },
+      "glass": {
+        "name": "硝子の印",
+        "description": "脆いが強力。計上時×2倍率、25%の確率で砕ける"
+      },
+      "steel": {
+        "name": "鋼の印",
+        "description": "持っている間の恩恵。手に持つ間×1.5倍率"
+      },
+      "stone": {
+        "name": "石の印",
+        "description": "常に寄与する。+50チップ、和了手でなくても常に計上"
+      },
+      "gold": {
+        "name": "黄金の印",
+        "description": "ゴールドを生む。局終了時に持っていれば+3ゴールド"
+      },
+      "lucky": {
+        "name": "幸運の印",
+        "description": "偶然の恩恵。計上時に1/5の確率で+20倍率"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "金の封",
+        "description": "打つとゴールドを得る。手で計上時に+3ゴールド"
+      },
+      "red": {
+        "name": "赤の封",
+        "description": "牌が二度発動する。計上時に一度再計上される"
+      },
+      "blue": {
+        "name": "青の封",
+        "description": "天球を生む。最後の手の役に対して天球を生成する"
+      },
+      "purple": {
+        "name": "紫の封",
+        "description": "捨てると運命符を生む。捨てたとき無作為な運命符を生成する"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "通常",
+        "description": "標準の見た目。追加効果なし"
+      },
+      "foil": {
+        "name": "箔",
+        "description": "きらめく金属の仕上げ。計上時に+50チップ"
+      },
+      "holographic": {
+        "name": "幻影",
+        "description": "虹色のホログラム効果。計上時に+10倍率"
+      },
+      "polychrome": {
+        "name": "多彩",
+        "description": "移ろう虹の色彩。計上時×1.5倍率"
+      },
+      "negative": {
+        "name": "負影",
+        "description": "反転した色、超越の証。法令に付けると法令枠+1"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "秘儀の袋",
+        "description": "運命符3つから1つを選ぶ"
+      },
+      "arcana_jumbo": {
+        "name": "大秘儀の袋",
+        "description": "運命符5つから1つを選ぶ"
+      },
+      "arcana_mega": {
+        "name": "特大秘儀の袋",
+        "description": "運命符5つから2つを選ぶ"
+      },
+      "celestial_normal": {
+        "name": "天球の袋",
+        "description": "天球3つから1つを選ぶ"
+      },
+      "celestial_jumbo": {
+        "name": "大天球の袋",
+        "description": "天球5つから1つを選ぶ"
+      },
+      "celestial_mega": {
+        "name": "特大天球の袋",
+        "description": "天球5つから2つを選ぶ"
+      },
+      "tile_normal": {
+        "name": "牌の袋",
+        "description": "加工された牌3枚から1枚を選ぶ"
+      },
+      "tile_jumbo": {
+        "name": "大牌の袋",
+        "description": "加工された牌5枚から1枚を選ぶ"
+      },
+      "tile_mega": {
+        "name": "特大牌の袋",
+        "description": "加工された牌5枚から2枚を選ぶ"
+      },
+      "decree_normal": {
+        "name": "法令の袋",
+        "description": "法令3つから1つを選ぶ"
+      },
+      "decree_jumbo": {
+        "name": "大法令の袋",
+        "description": "法令5つから1つを選ぶ"
+      },
+      "decree_mega": {
+        "name": "特大法令の袋",
+        "description": "法令5つから2つを選ぶ"
+      },
+      "void_normal": {
+        "name": "虚空の袋",
+        "description": "虚空文3つから1つを選ぶ"
+      },
+      "void_jumbo": {
+        "name": "大虚空の袋",
+        "description": "虚空文5つから1つを選ぶ"
+      },
+      "void_mega": {
+        "name": "特大虚空の袋",
+        "description": "虚空文5つから2つを選ぶ"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "青畳",
+        "description": "古典的な麻雀卓。数え切れぬ手に磨かれた、伝統的な緑の羅紗。特別な修正はなく、腕だけがものを言う。"
+      },
+      "red_lacquer": {
+        "name": "紅漆",
+        "description": "鮮やかな朱の漆で仕上げられた豪奢な卓。富と幸運を象徴する。"
+      },
+      "bamboo_mat": {
+        "name": "竹筵",
+        "description": "庭の東屋で低い卓に広げた、素朴な竹編みの筵。"
+      },
+      "imperial_gold": {
+        "name": "皇金",
+        "description": "宮廷から出た壮麗な卓。金箔と玉が象嵌されている。"
+      },
+      "night_market": {
+        "name": "夜市",
+        "description": "賑わう夜市に据えられた仮の卓。提灯の灯りに照らされる。"
+      },
+      "temple_stone": {
+        "name": "寺石",
+        "description": "山寺の禁欲的な空気に置かれた冷たい石の卓。ここに花は咲かない。"
+      },
+      "ghost_parlor": {
+        "name": "幽霊荘",
+        "description": "霊がなお打ち続ける廃れた雀荘。現世との境が薄れている。"
+      },
+      "dragons_den": {
+        "name": "竜窟",
+        "description": "龍の骨から削り出された伝説の卓。山の洞に隠されている。"
+      }
+    }
   }
 }

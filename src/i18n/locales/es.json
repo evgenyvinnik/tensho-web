@@ -1340,7 +1340,11 @@
     "voidCost": "Coste de vacío",
     "timesUsed": "Veces usado",
     "runsWon": "Partidas ganadas",
-    "unlock": "Desbloqueo:"
+    "unlock": "Desbloqueo:",
+    "title": "Archivo de Manos",
+    "progress": "Progreso de colección",
+    "recentDiscoveries": "Descubrimientos recientes",
+    "undiscovered": "Sin descubrir"
   },
   "errors": {
     "failedToLoad": "Error al cargar el componente",

@@ -10,6 +10,7 @@ import type {
   ArchiveCategory,
   ArchiveCategoryDefinition,
 } from '../../config/archiveDefinitions'
+import { useItemText } from '../../i18n/useItemText'
 
 export interface CategoryTabsProps {
   categories: ArchiveCategoryDefinition[]
@@ -187,6 +188,7 @@ export function CategoryTabs({
   onCategoryChange,
   categoryCounts,
 }: CategoryTabsProps) {
+  const itemText = useItemText()
   useTranslation()
 
   return (
@@ -225,7 +227,9 @@ export function CategoryTabs({
               </span>
 
               {/* Name (hidden on mobile for space) */}
-              <span className="hidden sm:inline">{category.name}</span>
+              <span className="hidden sm:inline">
+                {itemText.name('archiveCategories', category)}
+              </span>
 
               {/* Japanese name on mobile */}
               <span className="sm:hidden">{category.japaneseName}</span>

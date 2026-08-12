@@ -8,6 +8,7 @@ import { animated, useSpring } from '@react-spring/web'
 import type { TableStyleDefinition } from '../../config/tableStyleDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { getTableStyleIllustration } from '../../utils/assets'
+import { useItemText } from '../../i18n/useItemText'
 
 const AnimatedButton = animated('button')
 
@@ -35,6 +36,7 @@ export function TableStyleCard({
   onClick,
   delay = 0,
 }: TableStyleCardProps) {
+  const itemText = useItemText()
   const { t } = useTranslation()
   const [isHovered, setIsHovered] = React.useState(false)
   const artwork = getTableStyleIllustration(style.id)
@@ -130,7 +132,7 @@ export function TableStyleCard({
 
         <div className="absolute inset-x-3 bottom-2 flex items-end justify-between gap-3">
           <h3 className="min-w-0 text-lg font-bold leading-tight text-white drop-shadow-lg sm:text-xl">
-            {style.displayName}
+            {itemText.name('tableStyles', { ...style, name: style.displayName })}
           </h3>
           {isCJKLanguage() && (
             <span className="shrink-0 font-decorative text-lg text-[var(--color-golden-yellow)] drop-shadow-lg">

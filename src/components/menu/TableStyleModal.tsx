@@ -16,6 +16,7 @@ import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { useStakeStore } from '../../stores/stakeStore'
 import { getTableStyleIllustration } from '../../utils/assets'
+import { useItemText } from '../../i18n/useItemText'
 
 const AnimatedDiv = animated('div')
 
@@ -44,6 +45,7 @@ export function TableStyleModal({
   onClose,
   onConfirm,
 }: TableStyleModalProps) {
+  const itemText = useItemText()
   const { t } = useTranslation()
   const showCJK = isCJKLanguage()
   const {
@@ -363,7 +365,7 @@ export function TableStyleModal({
                 {t('tableStyle.selected', 'Selected:')}
               </span>
               <span className="ml-2 text-[var(--color-beige-white)] font-bold">
-                {selectedStyle.displayName}
+                {itemText.name('tableStyles', { ...selectedStyle, name: selectedStyle.displayName })}
               </span>
               <span
                 className="ml-2 text-xs font-black uppercase"

@@ -1808,7 +1808,11 @@
     "voidCost": "Void cost",
     "timesUsed": "Times Used",
     "runsWon": "Runs Won",
-    "unlock": "Unlock:"
+    "unlock": "Unlock:",
+    "undiscovered": "Undiscovered",
+    "title": "Archive of Hands",
+    "progress": "Collection Progress",
+    "recentDiscoveries": "Recent Discoveries"
   },
   "errors": {
     "failedToLoad": "Failed to load component",
@@ -1822,5 +1826,293 @@
     "table": "Run setup",
     "selected": "Selected:",
     "chooseTable": "Choose table and stake"
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Decrees",
+        "description": "Rule-bending modifiers that persist across rounds"
+      },
+      "walls": {
+        "name": "Walls",
+        "description": "Deck variants with unique tile compositions"
+      },
+      "charters": {
+        "name": "Imperial Charters",
+        "description": "Permanent upgrades purchased after defeating Boss Mandates"
+      },
+      "consumables": {
+        "name": "Consumables",
+        "description": "Single-use items: Fate Seals, Celestial Orbs, Void Scripts"
+      },
+      "tileMarks": {
+        "name": "Tile Marks",
+        "description": "Enhancement types that modify tile behavior"
+      },
+      "seals": {
+        "name": "Seals",
+        "description": "Special seals that add effects to tiles"
+      },
+      "editions": {
+        "name": "Editions",
+        "description": "Visual and gameplay variants of items"
+      },
+      "packs": {
+        "name": "Blessing Packs",
+        "description": "Booster packs containing mixed upgrades"
+      },
+      "omens": {
+        "name": "Omen Tags",
+        "description": "One-time destiny modifiers from skipping rounds"
+      },
+      "mandates": {
+        "name": "Mandates",
+        "description": "Boss round restrictions and challenges"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Green Felt",
+        "description": "Standard starting wall with 136 tiles"
+      },
+      "red_wall": {
+        "name": "Red Wall",
+        "description": "Wall with enhanced red dora tiles"
+      },
+      "blue_wall": {
+        "name": "Blue Wall",
+        "description": "Wall focused on Pinzu suit tiles"
+      },
+      "black_wall": {
+        "name": "Black Wall",
+        "description": "Wall with enhanced honor tiles"
+      },
+      "gold_wall": {
+        "name": "Gold Wall",
+        "description": "Wall with gold-enhanced tiles"
+      },
+      "crimson_wall": {
+        "name": "Crimson Wall",
+        "description": "Wall with powerful dragon tiles"
+      },
+      "obsidian_wall": {
+        "name": "Obsidian Wall",
+        "description": "Wall with wind-enhanced tiles"
+      },
+      "jade_wall": {
+        "name": "Jade Wall",
+        "description": "Wall focused on bamboo suit tiles"
+      },
+      "ivory_wall": {
+        "name": "Ivory Wall",
+        "description": "Wall with terminal-focused composition"
+      },
+      "bamboo_wall": {
+        "name": "Bamboo Wall",
+        "description": "Wall with Souzu-dominant composition"
+      },
+      "cherry_wall": {
+        "name": "Cherry Wall",
+        "description": "Wall with flower-enhanced tiles"
+      },
+      "moon_wall": {
+        "name": "Moon Wall",
+        "description": "Wall with season-enhanced tiles"
+      },
+      "star_wall": {
+        "name": "Star Wall",
+        "description": "Wall with celestial bonuses"
+      },
+      "void_wall": {
+        "name": "Void Wall",
+        "description": "Wall with void-touched tiles"
+      },
+      "imperial_wall": {
+        "name": "Imperial Wall",
+        "description": "Wall with royal composition"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Bonus Mark",
+        "description": "Tile scores extra points. +30 Chips when scored"
+      },
+      "mult": {
+        "name": "Mult Mark",
+        "description": "Tile adds multiplier. +4 Mult when scored"
+      },
+      "wild": {
+        "name": "Wild Mark",
+        "description": "Tile can act as any suit. Counts as any suit for yaku"
+      },
+      "glass": {
+        "name": "Glass Mark",
+        "description": "Fragile but powerful. x2 Mult when scored, 25% chance to shatter"
+      },
+      "steel": {
+        "name": "Steel Mark",
+        "description": "Bonus when held. x1.5 Mult while held in hand"
+      },
+      "stone": {
+        "name": "Stone Mark",
+        "description": "Always contributes. +50 Chips, always scores even if not in winning hand"
+      },
+      "gold": {
+        "name": "Gold Mark",
+        "description": "Generates gold. +3 Gold when held at round end"
+      },
+      "lucky": {
+        "name": "Lucky Mark",
+        "description": "Random bonus chance. 1 in 5 chance for +20 Mult when scored"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "Gold Seal",
+        "description": "Earns gold when played. +3 Gold when scored in hand"
+      },
+      "red": {
+        "name": "Red Seal",
+        "description": "Tile triggers twice. Retriggers once when scored"
+      },
+      "blue": {
+        "name": "Blue Seal",
+        "description": "Creates Celestial Orb. Creates Celestial Orb for final hand yaku"
+      },
+      "purple": {
+        "name": "Purple Seal",
+        "description": "Creates Fate Seal on discard. Creates random Fate Seal when discarded"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Base",
+        "description": "Standard appearance. No additional effect"
+      },
+      "foil": {
+        "name": "Foil",
+        "description": "Shimmering metallic finish. +50 Chips when scored"
+      },
+      "holographic": {
+        "name": "Holographic",
+        "description": "Rainbow holographic effect. +10 Mult when scored"
+      },
+      "polychrome": {
+        "name": "Polychrome",
+        "description": "Prismatic color shifting. x1.5 Mult when scored"
+      },
+      "negative": {
+        "name": "Negative",
+        "description": "Inverted colors, transcendent. +1 Decree slot when applied to Decree"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Arcana Pack",
+        "description": "Choose 1 from 3 Fate Seals"
+      },
+      "arcana_jumbo": {
+        "name": "Jumbo Arcana Pack",
+        "description": "Choose 1 from 5 Fate Seals"
+      },
+      "arcana_mega": {
+        "name": "Mega Arcana Pack",
+        "description": "Choose 2 from 5 Fate Seals"
+      },
+      "celestial_normal": {
+        "name": "Celestial Pack",
+        "description": "Choose 1 from 3 Celestial Orbs"
+      },
+      "celestial_jumbo": {
+        "name": "Jumbo Celestial Pack",
+        "description": "Choose 1 from 5 Celestial Orbs"
+      },
+      "celestial_mega": {
+        "name": "Mega Celestial Pack",
+        "description": "Choose 2 from 5 Celestial Orbs"
+      },
+      "tile_normal": {
+        "name": "Tile Pack",
+        "description": "Choose 1 from 3 modified tiles"
+      },
+      "tile_jumbo": {
+        "name": "Jumbo Tile Pack",
+        "description": "Choose 1 from 5 modified tiles"
+      },
+      "tile_mega": {
+        "name": "Mega Tile Pack",
+        "description": "Choose 2 from 5 modified tiles"
+      },
+      "decree_normal": {
+        "name": "Decree Pack",
+        "description": "Choose 1 from 3 Decrees"
+      },
+      "decree_jumbo": {
+        "name": "Jumbo Decree Pack",
+        "description": "Choose 1 from 5 Decrees"
+      },
+      "decree_mega": {
+        "name": "Mega Decree Pack",
+        "description": "Choose 2 from 5 Decrees"
+      },
+      "void_normal": {
+        "name": "Void Pack",
+        "description": "Choose 1 from 3 Void Scripts"
+      },
+      "void_jumbo": {
+        "name": "Jumbo Void Pack",
+        "description": "Choose 1 from 5 Void Scripts"
+      },
+      "void_mega": {
+        "name": "Mega Void Pack",
+        "description": "Choose 2 from 5 Void Scripts"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Green Felt",
+        "description": "The classic mahjong table. A traditional green felt surface, worn smooth by countless hands. No special modifiers - just pure skill."
+      },
+      "red_lacquer": {
+        "name": "Red Lacquer",
+        "description": "A luxurious table finished in brilliant vermillion lacquer, symbolizing good fortune and prosperity. The auspicious color attracts additional decrees."
+      },
+      "bamboo_mat": {
+        "name": "Bamboo Mat",
+        "description": "A simple woven bamboo mat spread over a low table in a garden pavilion. The natural setting attracts more flowers to bloom."
+      },
+      "imperial_gold": {
+        "name": "Imperial Gold",
+        "description": "A magnificent table from the imperial palace, inlaid with gold leaf and jade. Those who play here receive royal favor."
+      },
+      "night_market": {
+        "name": "Night Market",
+        "description": "A makeshift table in the bustling night market, lit by paper lanterns. Vendors offer discounts, but space is limited."
+      },
+      "temple_stone": {
+        "name": "Temple Stone",
+        "description": "A cold stone table in an ascetic mountain temple. No flowers grow in this austere place, but the purity of focus enhances your base scoring."
+      },
+      "ghost_parlor": {
+        "name": "Ghost Parlor",
+        "description": "An abandoned mahjong hall where spirits still play. The veil between worlds is thin here, allowing corrupted seasons to manifest from the very beginning."
+      },
+      "dragons_den": {
+        "name": "Dragon's Den",
+        "description": "A legendary table carved from dragon bone, hidden in a mountain cavern. Yakuman hands are amplified here, but the dragon demands greater tribute."
+      }
+    }
   }
 }
