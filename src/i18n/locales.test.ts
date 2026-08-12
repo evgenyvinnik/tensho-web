@@ -178,6 +178,9 @@ describe('translation script purity', () => {
   // Lowercase runs only: an uppercase UI label such as PLAY is a deliberate
   // reference to a button, while "competing" left mid-sentence is a mistake.
   const STRAY_ENGLISH = /\b[a-z]{3,}\b/
+  // {{count}} and friends are interpolation slots, not prose.
+  const withoutPlaceholders = (value: string): string =>
+    value.replace(/\{\{[^}]*\}\}/g, '')
 
   const stringsOf = (locale: Locale): Array<[string, string]> => {
     const out: Array<[string, string]> = []
@@ -202,12 +205,14 @@ describe('translation script purity', () => {
     expect(leaks).toEqual([])
   })
 
-  it('never leaves an English word inside CJK tutorial copy', () => {
+  it('never leaves an English word inside CJK copy', () => {
     const leaks: string[] = []
     for (const lang of ['ja', 'ko', 'zh-Hans', 'zh-Hant']) {
       for (const [key, value] of stringsOf(LOCALES[lang])) {
-        if (!key.startsWith('tutorial.') || !CJK.test(value)) continue
-        if (STRAY_ENGLISH.test(value)) leaks.push(`${lang}:${key}`)
+        if (!CJK.test(value)) continue
+        if (STRAY_ENGLISH.test(withoutPlaceholders(value))) {
+          leaks.push(`${lang}:${key}`)
+        }
       }
     }
     expect(leaks).toEqual([])

@@ -776,6 +776,62 @@
       "decree-omega": {
         "name": "終極",
         "description": "+500チップ、+50倍率、x2.0倍率"
+      },
+      "river_tax": {
+        "name": "河の税",
+        "description": "この局に捨てた牌1枚につき1ゴールドを得る。"
+      },
+      "extended_hand_grant": {
+        "name": "延手の勅許",
+        "description": "局の失敗までに+3回のツモ。"
+      },
+      "tanyao_dispensation": {
+        "name": "断么の特免",
+        "description": "断么九の手に么九牌（1と9）を認める。"
+      },
+      "moonlit_seal": {
+        "name": "月光の封",
+        "description": "和了手の字牌1枚につき倍率+0.1x。"
+      },
+      "pure_suit_asceticism": {
+        "name": "純色の苦行",
+        "description": "主要な種類の牌1枚につき得点+10%。乗算で累積。"
+      },
+      "broken_stair_edict": {
+        "name": "破階の勅",
+        "description": "順子は1つ飛ばしてよい（1-3-4も有効）。"
+      },
+      "false_eye_mandate": {
+        "name": "仮眼の勅命",
+        "description": "面子1つを雀頭として扱ってよい。"
+      },
+      "honor_transmutation": {
+        "name": "字牌変成",
+        "description": "字牌を最も多い種類の数牌として数えてよい。"
+      },
+      "celestial_wildcard": {
+        "name": "天の万能牌",
+        "description": "1手につき1枚が他のどの牌にもなれる。"
+      },
+      "dead_wall_writ": {
+        "name": "王牌の令状",
+        "description": "1局に1度、山ではなく捨て牌から引ける。"
+      },
+      "shanten_clemency": {
+        "name": "向聴の恩赦",
+        "description": "1向聴でも50%減点で計上できる。"
+      },
+      "closed_hand_austerity": {
+        "name": "門前の禁欲",
+        "description": "完全な門前手は×1.5倍率を得る。"
+      },
+      "terminal_devotion": {
+        "name": "么九の献身",
+        "description": "手牌の么九牌1枚につき最終得点+5%。"
+      },
+      "yaku_repetition_charter": {
+        "name": "役反復の勅許",
+        "description": "前局と同じ役を再び計上すると倍率が増す。"
       }
     }
   },
@@ -865,7 +921,121 @@
     "theNeedle": "針",
     "thePillar": "柱",
     "theWater": "水",
-    "theArm": "腕"
+    "theArm": "腕",
+    "items": {
+      "the_hook": {
+        "name": "鉤",
+        "description": "ツモのたびに手牌から無作為に2枚が捨てられる"
+      },
+      "the_wall": {
+        "name": "壁",
+        "description": "必要点が特大（2倍ではなく4倍）"
+      },
+      "the_eye": {
+        "name": "眼",
+        "description": "この局は役の重複不可（各役は一度だけ計上）"
+      },
+      "the_mouth": {
+        "name": "口",
+        "description": "この局は一種類の役しか計上できない"
+      },
+      "the_flint": {
+        "name": "燧石",
+        "description": "局の間ずっと基礎点と倍率が半減"
+      },
+      "the_needle": {
+        "name": "針",
+        "description": "ちょうど1手で和了しなければならない（やり直し不可）"
+      },
+      "the_pillar": {
+        "name": "柱",
+        "description": "この幕で既に使った牌が弱体化する"
+      },
+      "the_water": {
+        "name": "水",
+        "description": "この局は引き直し0から始まる"
+      },
+      "the_arm": {
+        "name": "腕",
+        "description": "計上時に役の階級が1下がる"
+      },
+      "the_psychic": {
+        "name": "霊視者",
+        "description": "1手でちょうど5枚打たなければならない"
+      },
+      "the_club": {
+        "name": "棍",
+        "description": "索子がすべて弱体化"
+      },
+      "the_goad": {
+        "name": "刺",
+        "description": "筒子がすべて弱体化"
+      },
+      "the_window": {
+        "name": "窓",
+        "description": "萬子がすべて弱体化"
+      },
+      "the_head": {
+        "name": "首",
+        "description": "三元牌がすべて弱体化"
+      },
+      "the_plant": {
+        "name": "草",
+        "description": "字牌がすべて弱体化"
+      },
+      "the_ox": {
+        "name": "牛",
+        "description": "最も多く使った役を打つとゴールドが0になる"
+      },
+      "the_house": {
+        "name": "家",
+        "description": "最初の手が伏せて配られる"
+      },
+      "the_wheel": {
+        "name": "輪",
+        "description": "7枚に1枚が伏せて配られる"
+      },
+      "the_fish": {
+        "name": "魚",
+        "description": "各手のあと、牌が伏せて配られる"
+      },
+      "the_serpent": {
+        "name": "蛇",
+        "description": "打牌・捨牌のあと、必ず3枚引く"
+      },
+      "the_tooth": {
+        "name": "歯",
+        "description": "打った牌1枚につき1ゴールドを失う"
+      },
+      "the_mark": {
+        "name": "印",
+        "description": "字牌はすべて伏せて配られる"
+      },
+      "the_manacle": {
+        "name": "枷",
+        "description": "手牌の枚数-1"
+      },
+      "amber_acorn": {
+        "name": "琥珀の実",
+        "description": "すべての法令が伏せられ、順序が入れ替わる"
+      },
+      "verdant_leaf": {
+        "name": "翠の葉",
+        "description": "法令を1つ売るまで全ての牌が弱体化"
+      },
+      "violet_vessel": {
+        "name": "菫の器",
+        "description": "目標が超特大（2倍ではなく6倍）"
+      },
+      "crimson_heart": {
+        "name": "緋の心",
+        "description": "1手ごとに無作為な法令1つが無効化される"
+      },
+      "cerulean_bell": {
+        "name": "蒼の鈴",
+        "description": "ツモのたびに牌が1枚強制的に固定される"
+      }
+    }
   },
   "stakes": {
     "title": "場代",
@@ -1176,5 +1346,477 @@
     "failedToLoad": "コンポーネントの読み込みに失敗しました",
     "stackTrace": "スタックトレース:",
     "componentStack": "コンポーネントスタック:"
+  },
+  "charters": {
+    "items": {
+      "abundant_stock": {
+        "name": "豊富な品揃え",
+        "description": "店の枠+1（3枠に）"
+      },
+      "discount_sale": {
+        "name": "値引き市",
+        "description": "店の全商品が25%引き"
+      },
+      "sharp_edge": {
+        "name": "鋭い縁",
+        "description": "エディションの出現率2倍"
+      },
+      "reroll_surplus": {
+        "name": "引き直しの余裕",
+        "description": "引き直しの費用が2ゴールド安く"
+      },
+      "crystal_lens": {
+        "name": "水晶の眼鏡",
+        "description": "消耗品の枠+1"
+      },
+      "star_chart": {
+        "name": "星図",
+        "description": "天球パックに最も使った役の天球が入る"
+      },
+      "steady_hand": {
+        "name": "安定した手",
+        "description": "1局あたりの手数+1"
+      },
+      "frugal_discard": {
+        "name": "倹約の打牌",
+        "description": "1局あたりの引き直し+1"
+      },
+      "seal_merchant": {
+        "name": "符の商人",
+        "description": "運命符の出現率2倍"
+      },
+      "orb_merchant": {
+        "name": "天球の商人",
+        "description": "天球の出現率2倍"
+      },
+      "seed_pouch": {
+        "name": "種袋",
+        "description": "利息上限が10ゴールドに"
+      },
+      "empty_scroll": {
+        "name": "白紙の巻物",
+        "description": "効果なし"
+      },
+      "tile_trading": {
+        "name": "牌の商い",
+        "description": "店で牌を購入できる"
+      },
+      "ancient_script": {
+        "name": "古文書",
+        "description": "幕-1、1局あたりの手数-1"
+      },
+      "directors_take": {
+        "name": "興行主の取り分",
+        "description": "勅命を1幕につき1回引き直せる（10ゴールド）"
+      },
+      "brush_stroke": {
+        "name": "一筆",
+        "description": "手牌の枚数+1"
+      },
+      "plentiful_stock": {
+        "name": "潤沢な品揃え",
+        "description": "店の枠+1（4枠に）"
+      },
+      "liquidation_sale": {
+        "name": "在庫一掃",
+        "description": "店の全商品が50%引き"
+      },
+      "radiant_edge": {
+        "name": "輝く縁",
+        "description": "エディションの出現率4倍"
+      },
+      "reroll_abundance": {
+        "name": "引き直しの潤沢",
+        "description": "引き直しの費用が4ゴールド安く"
+      },
+      "omen_lens": {
+        "name": "兆しの眼鏡",
+        "description": "秘儀パックに虚空文が入ることがある"
+      },
+      "observatory": {
+        "name": "観星台",
+        "description": "所持している天球1つにつき×1.5倍率"
+      },
+      "swift_hand": {
+        "name": "迅速な手",
+        "description": "1局あたりの手数がさらに+1"
+      },
+      "wasteful_plenty": {
+        "name": "浪費の豊穣",
+        "description": "1局あたりの引き直しがさらに+1"
+      },
+      "seal_tycoon": {
+        "name": "符の豪商",
+        "description": "運命符の出現率4倍"
+      },
+      "orb_tycoon": {
+        "name": "天球の豪商",
+        "description": "天球の出現率4倍"
+      },
+      "money_tree": {
+        "name": "金のなる木",
+        "description": "利息上限が20ゴールドに"
+      },
+      "void_matter": {
+        "name": "虚空の物質",
+        "description": "法令枠+1"
+      },
+      "illusion_tiles": {
+        "name": "幻の牌",
+        "description": "店の牌にエディションが付くことがある"
+      },
+      "stone_script": {
+        "name": "石文",
+        "description": "幕がさらに-1、1局あたりの引き直し-1"
+      },
+      "final_cut": {
+        "name": "最終編集",
+        "description": "勅命を何度でも引き直せる（各10ゴールド）"
+      },
+      "full_palette": {
+        "name": "満ちた 画帳",
+        "description": "手牌の枚数がさらに+1"
+      }
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "冥王星球",
+        "description": "立直の役に感応。1段階につき+1倍率、+10チップ。"
+      },
+      "mercury_orb": {
+        "name": "水星球",
+        "description": "断么九の役に感応。1段階につき+1倍率、+15チップ。"
+      },
+      "uranus_orb": {
+        "name": "天王星球",
+        "description": "役牌の役に感応。1段階につき+1倍率、+20チップ。"
+      },
+      "venus_orb": {
+        "name": "金星球",
+        "description": "平和の役に感応。1段階につき+2倍率、+20チップ。"
+      },
+      "saturn_orb": {
+        "name": "土星球",
+        "description": "一気通貫の役に感応。1段階につき+3倍率、+30チップ。"
+      },
+      "jupiter_orb": {
+        "name": "木星球",
+        "description": "混一色の役に感応。1段階につき+2倍率、+15チップ。"
+      },
+      "earth_orb": {
+        "name": "地球球",
+        "description": "対々和の役に感応。1段階につき+2倍率、+25チップ。"
+      },
+      "mars_orb": {
+        "name": "火星球",
+        "description": "清一色の役に感応。1段階につき+3倍率、+30チップ。"
+      },
+      "neptune_orb": {
+        "name": "海王星球",
+        "description": "三色同順の役に感応。1段階につき+4倍率、+40チップ。"
+      },
+      "planet_x_orb": {
+        "name": "惑星X球",
+        "description": "七対子の役に感応。1段階につき+3倍率、+35チップ。"
+      },
+      "ceres_orb": {
+        "name": "ケレス球",
+        "description": "混全帯么九の役に感応。1段階につき+4倍率、+40チップ。"
+      },
+      "eris_orb": {
+        "name": "エリス球",
+        "description": "国士無双の役に感応。1段階につき+3倍率、+50チップ。"
+      },
+      "black_hole_orb": {
+        "name": "黒洞球",
+        "description": "使用するとすべての役が1段階上がる。"
+      }
+    }
+  },
+  "omens": {
+    "items": {
+      "omen_of_crescents": {
+        "name": "三日月の兆し",
+        "description": "次の店の商品枠に天球が必ず並ぶ。"
+      },
+      "omen_of_ash": {
+        "name": "灰の兆し",
+        "description": "次に使う虚空文の代償がなくなる。"
+      },
+      "omen_of_rivers": {
+        "name": "川の兆し",
+        "description": "次の局は打牌+1回で始まる。"
+      },
+      "speed_omen": {
+        "name": "疾風の兆し",
+        "description": "この挑戦で飛ばした局1つにつき5ゴールドを得る。"
+      },
+      "throwback_omen": {
+        "name": "回顧の兆し",
+        "description": "飛ばした局1つにつき、挑戦の残りの間×0.25倍率を得る。"
+      },
+      "fortune_omen": {
+        "name": "幸運の兆し",
+        "description": "即座に10ゴールドを得る。"
+      },
+      "oracles_omen": {
+        "name": "神託の兆し",
+        "description": "次の店で2回無料の引き直しができる。"
+      },
+      "merchants_omen": {
+        "name": "商人の兆し",
+        "description": "次の店で全商品が25%引きになる。"
+      },
+      "seal_omen": {
+        "name": "符の兆し",
+        "description": "次の店の商品枠に運命符が必ず並ぶ。"
+      },
+      "decree_omen": {
+        "name": "法令の兆し",
+        "description": "次の店にレア以上の法令が必ず並ぶ。"
+      },
+      "void_omen": {
+        "name": "虚空の兆し",
+        "description": "次の店の商品枠に虚空文が並ぶ。"
+      },
+      "expansion_omen": {
+        "name": "拡張の兆し",
+        "description": "法令枠を恒久的に+1する。"
+      },
+      "precision_omen": {
+        "name": "精緻の兆し",
+        "description": "次の局は手牌+2枚。"
+      },
+      "abundance_omen": {
+        "name": "豊穣の兆し",
+        "description": "次の局はツモ+2回で始まる。"
+      },
+      "polychrome_omen": {
+        "name": "多彩の兆し",
+        "description": "所持する法令1つを無作為に多彩エディションにする。"
+      },
+      "foil_omen": {
+        "name": "箔の兆し",
+        "description": "次に購入する法令が箔エディションになる。"
+      },
+      "interest_omen": {
+        "name": "利息の兆し",
+        "description": "3局の間、利息上限が2増える。"
+      },
+      "score_surge_omen": {
+        "name": "高波の兆し",
+        "description": "次に計上する手の基礎点+100。"
+      },
+      "multiplication_omen": {
+        "name": "増倍の兆し",
+        "description": "次に計上する手が×1.5倍率を得る。"
+      },
+      "blessing_pack_omen": {
+        "name": "祝福袋の兆し",
+        "description": "次の店に無料の祝福パックが並ぶ。"
+      },
+      "negative_omen": {
+        "name": "負影の兆し",
+        "description": "次に購入する法令が負影エディションになる（枠+1）。"
+      },
+      "austerity_omen": {
+        "name": "倹約の兆し",
+        "description": "即座に15ゴールドを得るが、次の局は利息なし。"
+      },
+      "holographic_omen": {
+        "name": "幻影の兆し",
+        "description": "次に購入する法令が幻影エディションになる。"
+      }
+    }
+  },
+  "seals": {
+    "items": {
+      "seal_of_the_alchemist": {
+        "name": "錬金術師の符",
+        "description": "選んだ2枚を幸運の印にする"
+      },
+      "seal_of_the_empress": {
+        "name": "女帝の符",
+        "description": "選んだ2枚を加点の印にする"
+      },
+      "seal_of_the_sage": {
+        "name": "賢者の符",
+        "description": "選んだ2枚をチップの印にする"
+      },
+      "seal_of_harmony": {
+        "name": "調和の符",
+        "description": "牌1枚を万能牌にする（どの種類としても数える）"
+      },
+      "seal_of_fortitude": {
+        "name": "剛毅の符",
+        "description": "牌1枚を鋼の印にする（手に持つ間×1.5倍率）"
+      },
+      "seal_of_glass": {
+        "name": "硝子の符",
+        "description": "牌1枚を硝子の印にする（×2倍率、砕けることがある）"
+      },
+      "seal_of_wealth": {
+        "name": "富貴の符",
+        "description": "牌1枚を黄金の印にする（局終了時に持っていれば+3ゴールド）"
+      },
+      "seal_of_stone": {
+        "name": "石の符",
+        "description": "牌1枚を石の印にする（+50チップ、常に計上）"
+      },
+      "seal_of_manzu": {
+        "name": "萬子の符",
+        "description": "最大3枚を萬子に変える"
+      },
+      "seal_of_pinzu": {
+        "name": "筒子の符",
+        "description": "最大3枚を筒子に変える"
+      },
+      "seal_of_souzu": {
+        "name": "索子の符",
+        "description": "最大3枚を索子に変える"
+      },
+      "seal_of_unity": {
+        "name": "統一の符",
+        "description": "最大3枚を字牌に変える"
+      },
+      "seal_of_the_oracle": {
+        "name": "神託の符",
+        "description": "無作為な天球を最大2つ作る（空きがあれば）"
+      },
+      "seal_of_the_emperor": {
+        "name": "皇帝の符",
+        "description": "無作為な運命符を最大2つ作る（空きがあれば）"
+      },
+      "seal_of_the_fool": {
+        "name": "愚者の符",
+        "description": "この挑戦で最後に使った運命符か天球を作る"
+      },
+      "seal_of_judgment": {
+        "name": "審判の符",
+        "description": "無作為な法令を1つ作る（空きがあれば）"
+      },
+      "seal_of_the_hermit": {
+        "name": "隠者の符",
+        "description": "ゴールドを2倍にする（最大+20ゴールド）"
+      },
+      "seal_of_balance": {
+        "name": "均衡の符",
+        "description": "所持する法令の売却額の合計を得る（最大50ゴールド）"
+      },
+      "seal_of_strength": {
+        "name": "剛力の符",
+        "description": "最大2枚の数を1上げる（最大9）"
+      },
+      "seal_of_release": {
+        "name": "解放の符",
+        "description": "選んだ最大2枚を永久に破壊する"
+      },
+      "seal_of_transmutation": {
+        "name": "変成の符",
+        "description": "2枚を選び、左を右の複製にする"
+      },
+      "seal_of_fortune": {
+        "name": "僥倖の符",
+        "description": "1/4の確率で無作為な法令に箔・幻影・虹彩を付ける"
+      },
+      "seal_of_the_immortal": {
+        "name": "不死の符",
+        "description": "神話級の法令を作る（空きがあれば）"
+      },
+      "seal_of_the_void": {
+        "name": "虚無の符",
+        "description": "すべての役を1段階上げる"
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_kinship": {
+        "name": "縁の文",
+        "description": "無作為な牌1枚を破壊し、強化された字牌を無作為に3枚加える"
+      },
+      "script_of_the_grave": {
+        "name": "墓の文",
+        "description": "無作為な牌1枚を破壊し、強化された么九牌を無作為に2枚加える"
+      },
+      "script_of_incantation": {
+        "name": "呪文の文",
+        "description": "無作為な牌1枚を破壊し、強化された数牌を無作為に4枚加える"
+      },
+      "script_of_immolation": {
+        "name": "焼身の文",
+        "description": "手牌から無作為に5枚を破壊する。20ゴールドを得る。"
+      },
+      "script_of_the_cryptid": {
+        "name": "幻獣の文",
+        "description": "手牌から選んだ1枚の複製を2枚作る"
+      },
+      "script_of_the_gold_seal": {
+        "name": "金印の文",
+        "description": "選んだ牌1枚に金の封を付ける"
+      },
+      "script_of_deja_vu": {
+        "name": "既視の文",
+        "description": "選んだ牌1枚に赤の封を付ける（再計上）"
+      },
+      "script_of_the_trance": {
+        "name": "恍惚の文",
+        "description": "牌1枚に青の封を付ける（最後の手で天球を生む）"
+      },
+      "script_of_the_medium": {
+        "name": "霊媒の文",
+        "description": "牌1枚に紫の封を付ける（捨てると符を生む）"
+      },
+      "script_of_aura": {
+        "name": "霊気の文",
+        "description": "選んだ牌1枚に箔・幻影・虹彩を付ける"
+      },
+      "script_of_ectoplasm": {
+        "name": "霊質の文",
+        "description": "無作為な法令に負影を付ける（法令枠+1）"
+      },
+      "script_of_the_wraith": {
+        "name": "亡霊の文",
+        "description": "無作為なレアの法令を作る"
+      },
+      "script_of_the_ankh": {
+        "name": "アンクの文",
+        "description": "無作為な法令を複製し、他の法令をすべて破壊する"
+      },
+      "script_of_the_hex": {
+        "name": "呪詛の文",
+        "description": "無作為な法令に虹彩を付け、他をすべて破壊する"
+      },
+      "script_of_the_sigil": {
+        "name": "印形の文",
+        "description": "手牌のすべてを無作為な一種類に変える"
+      },
+      "script_of_the_ouija": {
+        "name": "交霊の文",
+        "description": "手牌のすべてを無作為な一つの数に変える"
+      },
+      "script_of_the_soul": {
+        "name": "魂の文",
+        "description": "伝説級（天勅）の法令を作る"
+      },
+      "script_of_the_singularity": {
+        "name": "特異点の文",
+        "description": "すべての役を1段階上げる"
+      },
+      "script_of_eclipse": {
+        "name": "蝕の文",
+        "description": "この局は1向聴でも計上できる"
+      },
+      "script_of_mirrors": {
+        "name": "鏡の文",
+        "description": "手牌の1枚を複製する"
+      },
+      "script_of_silence": {
+        "name": "静寂の文",
+        "description": "この手では不正な面子を1つ無視する"
+      }
+    }
   }
 }
