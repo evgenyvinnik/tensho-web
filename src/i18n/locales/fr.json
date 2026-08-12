@@ -776,6 +776,62 @@
       "decree-omega": {
         "name": "Oméga",
         "description": "+500 Jetons, +50 Mult, x2.0 Mult"
+      },
+      "river_tax": {
+        "name": "Taxe de la Rivière",
+        "description": "Vous gagnez 1 pièce d'or par tuile défaussée cette manche."
+      },
+      "extended_hand_grant": {
+        "name": "Octroi de Main Étendue",
+        "description": "+3 pioches supplémentaires avant l'échec de la manche."
+      },
+      "tanyao_dispensation": {
+        "name": "Dispense de Tanyao",
+        "description": "Les tuiles terminales (1 et 9) sont autorisées dans les mains Tanyao."
+      },
+      "moonlit_seal": {
+        "name": "Sceau de Clair de Lune",
+        "description": "Chaque tuile d'Honneur de votre main gagnante ajoute +0,1x au multiplicateur."
+      },
+      "pure_suit_asceticism": {
+        "name": "Ascèse de Couleur Pure",
+        "description": "Chaque tuile de votre famille dominante donne +10 % de score. Se cumule en multipliant."
+      },
+      "broken_stair_edict": {
+        "name": "Édit de l'Escalier Brisé",
+        "description": "Les suites peuvent sauter un rang (1-3-4 est valide)."
+      },
+      "false_eye_mandate": {
+        "name": "Mandat du Faux Œil",
+        "description": "Une combinaison peut aussi tenir lieu de paire."
+      },
+      "honor_transmutation": {
+        "name": "Transmutation des Honneurs",
+        "description": "Les tuiles d'Honneur peuvent compter comme des tuiles de votre famille la plus fréquente."
+      },
+      "celestial_wildcard": {
+        "name": "Joker Céleste",
+        "description": "Une tuile par main peut se faire passer pour n'importe quelle autre."
+      },
+      "dead_wall_writ": {
+        "name": "Acte du Mur Mort",
+        "description": "Une fois par manche, piochez dans la défausse plutôt que dans le mur."
+      },
+      "shanten_clemency": {
+        "name": "Clémence de Shanten",
+        "description": "Les mains peuvent compter à 1-shanten avec 50 % de pénalité."
+      },
+      "closed_hand_austerity": {
+        "name": "Austérité de Main Fermée",
+        "description": "Les mains entièrement fermées gagnent ×1,5 au multiplicateur."
+      },
+      "terminal_devotion": {
+        "name": "Dévotion Terminale",
+        "description": "Chaque tuile terminale de votre main ajoute +5 % au score final."
+      },
+      "yaku_repetition_charter": {
+        "name": "Charte de Répétition de Yaku",
+        "description": "Rejouer un yaku de la manche précédente augmente le multiplicateur."
       }
     }
   },
@@ -865,7 +921,121 @@
     "theNeedle": "L'Aiguille",
     "thePillar": "Le Pilier",
     "theWater": "L'Eau",
-    "theArm": "Le Bras"
+    "theArm": "Le Bras",
+    "items": {
+      "the_hook": {
+        "name": "L'Hameçon",
+        "description": "2 tuiles au hasard sont défaussées après chaque pioche"
+      },
+      "the_wall": {
+        "name": "Le Mur",
+        "description": "Exigence de score démesurée (4x au lieu de 2x)"
+      },
+      "the_eye": {
+        "name": "L'Œil",
+        "description": "Aucun yaku répété cette manche (chaque yaku ne compte qu'une fois)"
+      },
+      "the_mouth": {
+        "name": "La Bouche",
+        "description": "Un seul type de yaku peut compter cette manche"
+      },
+      "the_flint": {
+        "name": "Le Silex",
+        "description": "Points de base et Mult réduits de moitié toute la manche"
+      },
+      "the_needle": {
+        "name": "L'Aiguille",
+        "description": "La main doit être bouclée en exactement 1 main (sans reprise)"
+      },
+      "the_pillar": {
+        "name": "Le Pilier",
+        "description": "Les tuiles utilisées lors des manches précédentes de cet Acte sont affaiblies"
+      },
+      "the_water": {
+        "name": "L'Eau",
+        "description": "La manche commence avec 0 repioche"
+      },
+      "the_arm": {
+        "name": "Le Bras",
+        "description": "Le palier de yaku baisse de 1 au décompte"
+      },
+      "the_psychic": {
+        "name": "Le Médium",
+        "description": "Il faut jouer exactement 5 tuiles par main"
+      },
+      "the_club": {
+        "name": "La Massue",
+        "description": "Toutes les tuiles de Bambous sont affaiblies"
+      },
+      "the_goad": {
+        "name": "L'Aiguillon",
+        "description": "Toutes les tuiles de Cercles sont affaiblies"
+      },
+      "the_window": {
+        "name": "La Fenêtre",
+        "description": "Toutes les tuiles de Caractères sont affaiblies"
+      },
+      "the_head": {
+        "name": "La Tête",
+        "description": "Toutes les tuiles de Dragon sont affaiblies"
+      },
+      "the_plant": {
+        "name": "La Plante",
+        "description": "Toutes les tuiles d'Honneur sont affaiblies"
+      },
+      "the_ox": {
+        "name": "Le Bœuf",
+        "description": "Jouer le yaku le plus utilisé ramène l'or à 0"
+      },
+      "the_house": {
+        "name": "La Maison",
+        "description": "La première main est distribuée face cachée"
+      },
+      "the_wheel": {
+        "name": "La Roue",
+        "description": "1 tuile sur 7 est piochée face cachée"
+      },
+      "the_fish": {
+        "name": "Le Poisson",
+        "description": "Les tuiles sont piochées face cachée après chaque main"
+      },
+      "the_serpent": {
+        "name": "Le Serpent",
+        "description": "Après avoir joué ou défaussé, vous piochez toujours 3 tuiles"
+      },
+      "the_tooth": {
+        "name": "La Dent",
+        "description": "Vous perdez 1 pièce d'or par tuile jouée"
+      },
+      "the_mark": {
+        "name": "La Marque",
+        "description": "Toutes les tuiles d'Honneur sont piochées face cachée"
+      },
+      "the_manacle": {
+        "name": "L'Entrave",
+        "description": "-1 à la taille de la main"
+      },
+      "amber_acorn": {
+        "name": "Gland d'Ambre",
+        "description": "Tous les Décrets sont mélangés et face cachée"
+      },
+      "verdant_leaf": {
+        "name": "Feuille Verdoyante",
+        "description": "Toutes les tuiles affaiblies jusqu'à la vente d'un Décret"
+      },
+      "violet_vessel": {
+        "name": "Vase Violet",
+        "description": "Objectif démesuré (6x au lieu de 2x)"
+      },
+      "crimson_heart": {
+        "name": "Cœur Cramoisi",
+        "description": "Un Décret au hasard est désactivé à chaque cycle de main"
+      },
+      "cerulean_bell": {
+        "name": "Cloche Céruléenne",
+        "description": "Une tuile est verrouillée de force à chaque pioche"
+      }
+    }
   },
   "stakes": {
     "title": "Niveaux de Table",
@@ -1184,5 +1354,477 @@
     "table": "Préparation",
     "selected": "Sélectionné :",
     "chooseTable": "Choisir table et mise"
+  },
+  "charters": {
+    "items": {
+      "abundant_stock": {
+        "name": "Stock abondant",
+        "description": "+1 emplacement de boutique (à 3)"
+      },
+      "discount_sale": {
+        "name": "Soldes",
+        "description": "25 % de remise sur toute la boutique"
+      },
+      "sharp_edge": {
+        "name": "Bordure acérée",
+        "description": "Les éditions apparaissent 2 fois plus souvent"
+      },
+      "reroll_surplus": {
+        "name": "Surplus de relance",
+        "description": "Les relances coûtent 2 pièces d'or de moins"
+      },
+      "crystal_lens": {
+        "name": "Lentille de cristal",
+        "description": "+1 emplacement de consommable"
+      },
+      "star_chart": {
+        "name": "Carte du ciel",
+        "description": "Les Paquets célestes contiennent l'orbe du yaku le plus utilisé"
+      },
+      "steady_hand": {
+        "name": "Main sûre",
+        "description": "+1 main par manche"
+      },
+      "frugal_discard": {
+        "name": "Défausse frugale",
+        "description": "+1 repioche par manche"
+      },
+      "seal_merchant": {
+        "name": "Marchand de sceaux",
+        "description": "Les Sceaux du Destin apparaissent 2 fois plus souvent"
+      },
+      "orb_merchant": {
+        "name": "Marchand d'orbes",
+        "description": "Les Orbes célestes apparaissent 2 fois plus souvent"
+      },
+      "seed_pouch": {
+        "name": "Bourse de graines",
+        "description": "Plafond des intérêts porté à 10 pièces d'or"
+      },
+      "empty_scroll": {
+        "name": "Parchemin vierge",
+        "description": "Sans effet"
+      },
+      "tile_trading": {
+        "name": "Commerce de tuiles",
+        "description": "Des tuiles peuvent être achetées en boutique"
+      },
+      "ancient_script": {
+        "name": "Écriture ancienne",
+        "description": "-1 Acte, -1 main par manche"
+      },
+      "directors_take": {
+        "name": "Part du directeur",
+        "description": "Relancer le Mandat du Boss 1 fois par Acte (10 pièces d'or)"
+      },
+      "brush_stroke": {
+        "name": "Coup de pinceau",
+        "description": "+1 à la taille de la main"
+      },
+      "plentiful_stock": {
+        "name": "Stock généreux",
+        "description": "+1 emplacement de boutique (à 4)"
+      },
+      "liquidation_sale": {
+        "name": "Liquidation",
+        "description": "50 % de remise sur toute la boutique"
+      },
+      "radiant_edge": {
+        "name": "Bordure radieuse",
+        "description": "Les éditions apparaissent 4 fois plus souvent"
+      },
+      "reroll_abundance": {
+        "name": "Abondance de relance",
+        "description": "Les relances coûtent 4 pièces d'or de moins"
+      },
+      "omen_lens": {
+        "name": "Lentille des présages",
+        "description": "Des Guides du Vide peuvent apparaître dans les Paquets d'Arcanes"
+      },
+      "observatory": {
+        "name": "Observatoire",
+        "description": "Chaque Orbe céleste possédé donne ×1,5 Mult"
+      },
+      "swift_hand": {
+        "name": "Main preste",
+        "description": "+1 main supplémentaire par manche"
+      },
+      "wasteful_plenty": {
+        "name": "Abondance gaspillée",
+        "description": "+1 repioche supplémentaire par manche"
+      },
+      "seal_tycoon": {
+        "name": "Magnat des sceaux",
+        "description": "Les Sceaux du Destin apparaissent 4 fois plus souvent"
+      },
+      "orb_tycoon": {
+        "name": "Magnat des orbes",
+        "description": "Les Orbes célestes apparaissent 4 fois plus souvent"
+      },
+      "money_tree": {
+        "name": "Arbre à monnaie",
+        "description": "Plafond des intérêts porté à 20 pièces d'or"
+      },
+      "void_matter": {
+        "name": "Matière du vide",
+        "description": "+1 emplacement de Décret"
+      },
+      "illusion_tiles": {
+        "name": "Tuiles d'illusion",
+        "description": "Les tuiles de la boutique peuvent porter des éditions"
+      },
+      "stone_script": {
+        "name": "Écriture sur pierre",
+        "description": "-1 Acte de nouveau, -1 repioche par manche"
+      },
+      "final_cut": {
+        "name": "Montage final",
+        "description": "Relancer le Mandat du Boss sans limite (10 pièces d'or chaque fois)"
+      },
+      "full_palette": {
+        "name": "Palette complète",
+        "description": "+1 à la taille de la main de nouveau"
+      }
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "Orbe de Pluton",
+        "description": "S'accorde au yaku Riichi. +1 Mult, +10 Jetons par niveau."
+      },
+      "mercury_orb": {
+        "name": "Orbe de Mercure",
+        "description": "S'accorde au yaku Tanyao. +1 Mult, +15 Jetons par niveau."
+      },
+      "uranus_orb": {
+        "name": "Orbe d'Uranus",
+        "description": "S'accorde au yaku Yakuhai. +1 Mult, +20 Jetons par niveau."
+      },
+      "venus_orb": {
+        "name": "Orbe de Vénus",
+        "description": "S'accorde au yaku Pinfu. +2 Mult, +20 Jetons par niveau."
+      },
+      "saturn_orb": {
+        "name": "Orbe de Saturne",
+        "description": "S'accorde au yaku Ittsu (Suite). +3 Mult, +30 Jetons par niveau."
+      },
+      "jupiter_orb": {
+        "name": "Orbe de Jupiter",
+        "description": "S'accorde au yaku Honitsu (Demi-couleur). +2 Mult, +15 Jetons par niveau."
+      },
+      "earth_orb": {
+        "name": "Orbe de la Terre",
+        "description": "S'accorde au yaku Toitoi. +2 Mult, +25 Jetons par niveau."
+      },
+      "mars_orb": {
+        "name": "Orbe de Mars",
+        "description": "S'accorde au yaku Chinitsu (Couleur pure). +3 Mult, +30 Jetons par niveau."
+      },
+      "neptune_orb": {
+        "name": "Orbe de Neptune",
+        "description": "S'accorde au yaku Sanshoku (Triple mixte). +4 Mult, +40 Jetons par niveau."
+      },
+      "planet_x_orb": {
+        "name": "Orbe de la Planète X",
+        "description": "S'accorde au yaku Sept Paires. +3 Mult, +35 Jetons par niveau."
+      },
+      "ceres_orb": {
+        "name": "Orbe de Cérès",
+        "description": "S'accorde au yaku Chanta (Terminales). +4 Mult, +40 Jetons par niveau."
+      },
+      "eris_orb": {
+        "name": "Orbe d'Éris",
+        "description": "S'accorde au yaku Kokushi Musou. +3 Mult, +50 Jetons par niveau."
+      },
+      "black_hole_orb": {
+        "name": "Orbe du Trou Noir",
+        "description": "À l'usage, monte TOUS les Yaku d'un niveau."
+      }
+    }
+  },
+  "omens": {
+    "items": {
+      "omen_of_crescents": {
+        "name": "Présage des Croissants",
+        "description": "La prochaine boutique garantit un Orbe céleste parmi les objets."
+      },
+      "omen_of_ash": {
+        "name": "Présage de Cendre",
+        "description": "Le prochain Guide du Vide utilisé n'a aucune contrepartie."
+      },
+      "omen_of_rivers": {
+        "name": "Présage des Rivières",
+        "description": "La prochaine manche commence avec +1 défausse supplémentaire."
+      },
+      "speed_omen": {
+        "name": "Présage de Vitesse",
+        "description": "Octroie 5 pièces d'or par manche sautée dans cette partie."
+      },
+      "throwback_omen": {
+        "name": "Présage du Retour",
+        "description": "Gagne ×0,25 Mult par manche sautée pour le reste de la partie."
+      },
+      "fortune_omen": {
+        "name": "Présage de Fortune",
+        "description": "Vous gagnez immédiatement 10 pièces d'or."
+      },
+      "oracles_omen": {
+        "name": "Présage de l'Oracle",
+        "description": "La prochaine boutique offre 2 relances gratuites."
+      },
+      "merchants_omen": {
+        "name": "Présage du Marchand",
+        "description": "La prochaine boutique applique 25 % de remise sur tout."
+      },
+      "seal_omen": {
+        "name": "Présage du Sceau",
+        "description": "La prochaine boutique garantit un Sceau du Destin parmi les objets."
+      },
+      "decree_omen": {
+        "name": "Présage du Décret",
+        "description": "La prochaine boutique garantit un Décret Rare ou mieux."
+      },
+      "void_omen": {
+        "name": "Présage du Vide",
+        "description": "La prochaine boutique propose un Guide du Vide parmi les objets."
+      },
+      "expansion_omen": {
+        "name": "Présage d'Expansion",
+        "description": "Vous gagnez +1 emplacement de Décret définitivement."
+      },
+      "precision_omen": {
+        "name": "Présage de Précision",
+        "description": "Prochaine manche : +2 à la taille de la main."
+      },
+      "abundance_omen": {
+        "name": "Présage d'Abondance",
+        "description": "La prochaine manche commence avec +2 pioches supplémentaires."
+      },
+      "polychrome_omen": {
+        "name": "Présage Polychrome",
+        "description": "Applique l'édition Polychrome à un Décret possédé au hasard."
+      },
+      "foil_omen": {
+        "name": "Présage de Feuille",
+        "description": "Le prochain Décret acheté gagne l'édition Feuille."
+      },
+      "interest_omen": {
+        "name": "Présage d'Intérêts",
+        "description": "Le plafond des intérêts augmente de 2 pendant 3 manches."
+      },
+      "score_surge_omen": {
+        "name": "Présage de Vague",
+        "description": "La prochaine main comptée gagne +100 points de base."
+      },
+      "multiplication_omen": {
+        "name": "Présage de Multiplication",
+        "description": "La prochaine main comptée gagne ×1,5 Mult."
+      },
+      "blessing_pack_omen": {
+        "name": "Présage de Bénédiction",
+        "description": "La prochaine boutique inclut un Paquet de Bénédiction gratuit."
+      },
+      "negative_omen": {
+        "name": "Présage Négatif",
+        "description": "Le prochain Décret acheté gagne l'édition Négative (+1 emplacement)."
+      },
+      "austerity_omen": {
+        "name": "Présage d'Austérité",
+        "description": "Vous gagnez 15 pièces d'or, mais aucun intérêt la manche suivante."
+      },
+      "holographic_omen": {
+        "name": "Présage Holographique",
+        "description": "Le prochain Décret acheté gagne l'édition Holographique."
+      }
+    }
+  },
+  "seals": {
+    "items": {
+      "seal_of_the_alchemist": {
+        "name": "Sceau de l'Alchimiste",
+        "description": "Améliore 2 tuiles choisies avec la Marque de Chance"
+      },
+      "seal_of_the_empress": {
+        "name": "Sceau de l'Impératrice",
+        "description": "Améliore 2 tuiles choisies avec la Marque de Bonus"
+      },
+      "seal_of_the_sage": {
+        "name": "Sceau du Sage",
+        "description": "Améliore 2 tuiles choisies avec la Marque de Jetons"
+      },
+      "seal_of_harmony": {
+        "name": "Sceau de l'Harmonie",
+        "description": "Convertit 1 tuile en Joker (compte comme n'importe quelle famille)"
+      },
+      "seal_of_fortitude": {
+        "name": "Sceau de la Ténacité",
+        "description": "Améliore 1 tuile en Marque d'Acier (×1,5 Mult tant qu'elle est en main)"
+      },
+      "seal_of_glass": {
+        "name": "Sceau de Verre",
+        "description": "Améliore 1 tuile en Marque de Verre (×2 Mult, peut se briser)"
+      },
+      "seal_of_wealth": {
+        "name": "Sceau de la Richesse",
+        "description": "Améliore 1 tuile en Marque d'Or (+3 pièces d'or si conservée en fin de manche)"
+      },
+      "seal_of_stone": {
+        "name": "Sceau de Pierre",
+        "description": "Améliore 1 tuile en Marque de Pierre (+50 Jetons, compte toujours)"
+      },
+      "seal_of_manzu": {
+        "name": "Sceau des Caractères",
+        "description": "Convertit jusqu'à 3 tuiles en Caractères"
+      },
+      "seal_of_pinzu": {
+        "name": "Sceau des Cercles",
+        "description": "Convertit jusqu'à 3 tuiles en Cercles"
+      },
+      "seal_of_souzu": {
+        "name": "Sceau des Bambous",
+        "description": "Convertit jusqu'à 3 tuiles en Bambous"
+      },
+      "seal_of_unity": {
+        "name": "Sceau de l'Unité",
+        "description": "Convertit jusqu'à 3 tuiles en tuiles d'Honneur"
+      },
+      "seal_of_the_oracle": {
+        "name": "Sceau de l'Oracle",
+        "description": "Crée jusqu'à 2 Orbes célestes au hasard (si la place le permet)"
+      },
+      "seal_of_the_emperor": {
+        "name": "Sceau de l'Empereur",
+        "description": "Crée jusqu'à 2 Sceaux du Destin au hasard (si la place le permet)"
+      },
+      "seal_of_the_fool": {
+        "name": "Sceau du Mat",
+        "description": "Crée le dernier Sceau du Destin ou Orbe céleste utilisé dans la partie"
+      },
+      "seal_of_judgment": {
+        "name": "Sceau du Jugement",
+        "description": "Crée un Décret au hasard (si la place le permet)"
+      },
+      "seal_of_the_hermit": {
+        "name": "Sceau de l'Ermite",
+        "description": "Double l'or (max +20 pièces d'or)"
+      },
+      "seal_of_balance": {
+        "name": "Sceau de l'Équilibre",
+        "description": "Donne la valeur de revente totale de tous les Décrets (max 50 pièces d'or)"
+      },
+      "seal_of_strength": {
+        "name": "Sceau de la Force",
+        "description": "Augmente de 1 le rang de 2 tuiles au plus (max 9)"
+      },
+      "seal_of_release": {
+        "name": "Sceau de la Délivrance",
+        "description": "Détruit définitivement jusqu'à 2 tuiles choisies"
+      },
+      "seal_of_transmutation": {
+        "name": "Sceau de la Transmutation",
+        "description": "Choisissez 2 tuiles : celle de gauche devient une copie de celle de droite"
+      },
+      "seal_of_fortune": {
+        "name": "Sceau du Hasard",
+        "description": "1 chance sur 4 d'ajouter Feuille/Holo/Prismatique à un Décret au hasard"
+      },
+      "seal_of_the_immortal": {
+        "name": "Sceau de l'Immortel",
+        "description": "Crée un Décret Mythique (si la place le permet)"
+      },
+      "seal_of_the_void": {
+        "name": "Sceau du Vide",
+        "description": "Monte tous les Yaku d'un niveau"
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_kinship": {
+        "name": "Guide de la Parenté",
+        "description": "Détruit 1 tuile au hasard, ajoute 3 tuiles d'Honneur améliorées au hasard (Vents/Dragons)"
+      },
+      "script_of_the_grave": {
+        "name": "Guide de la Tombe",
+        "description": "Détruit 1 tuile au hasard, ajoute 2 tuiles Terminales améliorées au hasard"
+      },
+      "script_of_incantation": {
+        "name": "Guide de l'Incantation",
+        "description": "Détruit 1 tuile au hasard, ajoute 4 tuiles numérotées améliorées au hasard"
+      },
+      "script_of_immolation": {
+        "name": "Guide de l'Immolation",
+        "description": "Détruit 5 tuiles au hasard dans la main. Vous gagnez 20 pièces d'or."
+      },
+      "script_of_the_cryptid": {
+        "name": "Guide du Cryptide",
+        "description": "Crée 2 copies d'une tuile choisie dans la main"
+      },
+      "script_of_the_gold_seal": {
+        "name": "Guide du Sceau d'Or",
+        "description": "Ajoute le Sceau d'Or à 1 tuile choisie"
+      },
+      "script_of_deja_vu": {
+        "name": "Guide du Déjà-vu",
+        "description": "Ajoute le Sceau Rouge à 1 tuile choisie (recompte)"
+      },
+      "script_of_the_trance": {
+        "name": "Guide de la Transe",
+        "description": "Ajoute le Sceau Bleu à 1 tuile (crée un Orbe à la dernière main)"
+      },
+      "script_of_the_medium": {
+        "name": "Guide du Médium",
+        "description": "Ajoute le Sceau Violet à 1 tuile (crée un Sceau à la défausse)"
+      },
+      "script_of_aura": {
+        "name": "Guide de l'Aura",
+        "description": "Ajoute Feuille/Holo/Prismatique à 1 tuile choisie"
+      },
+      "script_of_ectoplasm": {
+        "name": "Guide de l'Ectoplasme",
+        "description": "Ajoute Négative à un Décret au hasard (+1 emplacement de Décret)"
+      },
+      "script_of_the_wraith": {
+        "name": "Guide du Spectre",
+        "description": "Crée un Décret Rare au hasard"
+      },
+      "script_of_the_ankh": {
+        "name": "Guide de l'Ankh",
+        "description": "Copie un Décret au hasard et détruit tous les autres"
+      },
+      "script_of_the_hex": {
+        "name": "Guide du Maléfice",
+        "description": "Ajoute Prismatique à un Décret au hasard et détruit tous les autres"
+      },
+      "script_of_the_sigil": {
+        "name": "Guide du Sigil",
+        "description": "Convertit TOUTES les tuiles de la main en une seule famille au hasard"
+      },
+      "script_of_the_ouija": {
+        "name": "Guide de l'Ouija",
+        "description": "Convertit TOUTES les tuiles de la main en un seul rang au hasard"
+      },
+      "script_of_the_soul": {
+        "name": "Guide de l'Âme",
+        "description": "Crée un Décret Légendaire (Ordonnance Céleste)"
+      },
+      "script_of_the_singularity": {
+        "name": "Guide de la Singularité",
+        "description": "Monte tous les Yaku d'un niveau"
+      },
+      "script_of_eclipse": {
+        "name": "Guide de l'Éclipse",
+        "description": "Compte à 1-shanten cette manche"
+      },
+      "script_of_mirrors": {
+        "name": "Guide des Miroirs",
+        "description": "Duplique une tuile de la main"
+      },
+      "script_of_silence": {
+        "name": "Guide du Silence",
+        "description": "Ignore une combinaison invalide pour cette main"
+      }
+    }
   }
 }
