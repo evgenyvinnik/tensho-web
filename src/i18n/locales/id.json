@@ -887,7 +887,10 @@
     "finish": "Mulai Bermain!",
     "welcome": {
       "title": "Selamat Datang di Tensho!",
-      "content": "Tensho adalah permainan roguelike berdasarkan Mahjong Riichi Jepang. Tujuan Anda adalah membentuk tangan berskor dan mencapai skor target setiap ronde."
+      "content": "Tensho adalah permainan roguelike berdasarkan Mahjong Riichi Jepang. Tujuan Anda adalah membentuk tangan berskor dan mencapai skor target setiap ronde.",
+      "p1": "<0>Tensho (天翔)</0> berarti «Naik ke Langit» dalam bahasa Jepang. Ini adalah game <3>roguelike</3> yang dibangun di atas permainan ubin klasik <6>Riichi Mahjong</6>.",
+      "p2": "Tujuannya sederhana: <2>susun tangan yang menghasilkan poin</2> dan capai skor target setiap ronde. Jika gagal, permainanmu berakhir.",
+      "note1": "Jangan khawatir jika kamu belum pernah bermain Mahjong! Tutorial ini akan mengajarkan semuanya, langkah demi langkah."
     },
     "tiles": {
       "title": "Ubin Mahjong",
@@ -920,7 +923,206 @@
     "ready": {
       "title": "Anda Siap!",
       "content1": "Semoga beruntung dalam perjalanan Anda!",
-      "content2": "Tekan MAIN untuk memulai permainan pertama Anda."
+      "content2": "Tekan MAIN untuk memulai permainan pertama Anda.",
+      "note1": "Kamu bisa <1>mengocok ulang</1> tawaran toko seharga 5 emas. Setiap pengocokan berikutnya bertambah 1.",
+      "note2": "Menyimpan <1>25 emas atau lebih</1> memaksimalkan bunga! Namun membeli Dekrit yang bagus biasanya lebih menguntungkan.",
+      "p1": "Tak perlu menghafal semuanya — kamu akan belajar sambil bermain!",
+      "note3": "Kamu selalu bisa kembali ke kodeks ini dari menu pengaturan jika perlu penyegaran."
+    },
+    "game_concept": {
+      "p1": "Berbeda dari Mahjong tradisional yang dimainkan melawan lawan, Tensho adalah <1>permainan teka-teki satu pemain</1>. Kamu berlomba melawan skor target, bukan pemain lain.",
+      "p2": "Setiap permainan terdiri dari beberapa <2>Babak</2>, dan tiap Babak memiliki <5>3 ronde</5>. Skor target meningkat seiring kemajuanmu.",
+      "p3": "Di antara ronde, kamu akan mengunjungi <2>Kedai Teh</2> (toko) untuk mendapatkan <5>Dekrit</5> kuat yang mengubah aturan dan meningkatkan potensi skormu."
+    },
+    "tiles_overview": {
+      "p1": "Permainan ini memakai total <1>144 ubin</1>:"
+    },
+    "numbered_suits": {
+      "note1": "Setiap ubin standar muncul <1>4 kali</1> dalam permainan. Ini penting untuk merencanakan tanganmu!",
+      "p1": "Ada <1>tiga jenis angka</1>, masing-masing bernilai 1 sampai 9:",
+      "p2": "<0>Karakter (萬子 / Manzu)</0> — Menampilkan angka Tionghoa dengan karakter 萬 (wan, «sepuluh ribu»)",
+      "p3": "<0>Lingkaran (筒子 / Pinzu)</0> — Menampilkan pola bundar yang melambangkan koin atau titik",
+      "p4": "<0>Bambu (索子 / Souzu)</0> — Menggambarkan batang bambu (Bambu 1 menampilkan burung)"
+    },
+    "terminals_simples": {
+      "p1": "Ubin berangka terbagi menjadi dua kategori penting:"
+    },
+    "wind_tiles": {
+      "note1": "Ubin terminal bernilai dua kali lipat ubin sederhana! Banyak yaku juga secara khusus mensyaratkan atau melarangnya.",
+      "p1": "Ada <1>empat ubin Angin</1> yang melambangkan arah mata angin:",
+      "p2": "Ubin Angin adalah <1>ubin Kehormatan</1> dan bernilai <4>15 poin</4> masing-masing — nilai dasar tertinggi!"
+    },
+    "dragon_tiles": {
+      "note1": "Angin tidak bisa membentuk urutan. Hanya tripel atau pasangan.",
+      "p1": "Ada <1>tiga ubin Naga</1>:",
+      "p2": "<0>白 (Naga Putih / Haku)</0> — Ubin kosong atau berbingkai, melambangkan kemurnian atau kekosongan",
+      "p3": "<0>發 (Naga Hijau / Hatsu)</0> — Karakter 發 berwarna hijau, berarti «kemakmuran» atau «memancar»",
+      "p4": "<0>中 (Naga Merah / Chun)</0> — Karakter 中 berwarna merah, berarti «pusat»",
+      "p5": "Seperti Angin, Naga juga <1>ubin Kehormatan</1> bernilai <4>15 poin</4> dan tidak bisa membentuk urutan."
+    },
+    "bonus_tiles": {
+      "p1": "<0>Ubin bonus</0> adalah ubin khusus yang bukan bagian dari tanganmu:"
+    },
+    "sequences": {
+      "note1": "Saat kamu mengambil ubin bonus, ubin itu langsung terbuka dan kamu mengambil penggantinya. Bunga dan Musim memberi bonus dan efek yang terus tumbuh!",
+      "p1": "<1>Urutan</1> adalah <4>3 ubin berurutan dari jenis yang sama</4>.",
+      "p2": "Contoh urutan yang sah:"
+    },
+    "melds_overview": {
+      "p1": "<1>Rangkaian</1> (disebut juga «kelompok») adalah kombinasi ubin tertentu:",
+      "p2": "Memahami rangkaian itu <1>penting</1> — tangan pemenangmu tersusun dari bagian-bagian ini!"
+    },
+    "triplets": {
+      "li1": "Lingkaran 1-2-3",
+      "li2": "Karakter 4-5-6",
+      "li3": "Bambu 7-8-9",
+      "p1": "<1>Tripel</1> adalah <4>3 ubin identik</4>.",
+      "p2": "Contoh tripel yang sah:"
+    },
+    "quads": {
+      "li1": "Urutan harus dari <1>jenis yang sama</1>",
+      "li2": "Urutan <2>tidak bisa memutar kembali</2> (tidak ada 9-1-2)",
+      "li3": "Ubin Kehormatan <2>tidak bisa membentuk urutan</2>",
+      "p1": "<1>Kuartet</1> (disebut juga «kong» atau «kan») adalah <4>4 ubin identik</4>.",
+      "p2": "Kuartet adalah rangkaian paling langka karena kamu butuh keempat salinan sebuah ubin!"
+    },
+    "pairs": {
+      "li1": "Tiga Bambu 5",
+      "li2": "Tiga Angin Timur",
+      "li3": "Tiga Naga Merah",
+      "p1": "<1>Pasangan</1> hanyalah <4>2 ubin identik</4>.",
+      "p2": "Setiap tangan pemenang standar membutuhkan <2>tepat satu pasangan</2>. Ini kadang disebut «kepala» (雀頭) tangan."
+    },
+    "winning_hand": {
+      "note1": "Tripel bernilai <1>+30 poin</1> — lebih tinggi dari urutan (+20)! Namun lebih sulit dilengkapi karena butuh 3 ubin sama, sedangkan tiap ubin hanya muncul 4 kali.",
+      "li1": "Bernilai <1>+50 poin</1> — tertinggi di antara semua rangkaian",
+      "li2": "Dihitung sebagai satu rangkaian meski terdiri dari 4 ubin",
+      "li3": "Saat dideklarasikan, kamu mengambil ubin pengganti",
+      "p1": "Tangan pemenang standar terdiri dari:"
+    },
+    "gameplay_overview": {
+      "note1": "Pasangan bernilai <1>+10 poin</1>. Ubin apa pun bisa membentuk pasangan — angka, angin, atau naga.",
+      "li1": "Lingkaran 1-2-3 (urutan)",
+      "li2": "Bambu 5-5-5 (tripel)",
+      "li3": "Karakter 6-7-8 (urutan)",
+      "li4": "Timur-Timur-Timur (tripel)",
+      "li5": "Pasangan Naga Merah",
+      "p1": "Setiap ronde mengikuti siklus sederhana:"
+    },
+    "special_hands": {
+      "p1": "Dua struktur tangan khusus tidak mengikuti aturan 4 rangkaian + 1 pasangan:"
+    },
+    "discarding": {
+      "li1": "<0>Mulai</0> dengan 13 ubin di tangan",
+      "li2": "<0>Ambil</0> satu ubin dari tembok",
+      "li3": "Periksa apakah kamu bisa <1>menang</1> (tangan sah + skor target)",
+      "li4": "Jika belum, <1>buang</1> satu ubin yang tidak kamu perlukan",
+      "p1": "Setelah mengambil (jika belum menang), kamu harus <2>membuang satu ubin</2> untuk kembali ke 13 ubin.",
+      "p2": "<0>Cara membuang:</0>"
+    },
+    "shanten": {
+      "li1": "Ulangi sampai kamu menang atau tembok habis",
+      "p1": "<0>Shanten (向聴)</0> adalah jumlah ubin yang harus kamu ganti untuk melengkapi tangan pemenang."
+    },
+    "scoring_overview": {
+      "note1": "Jika tembok habis sebelum kamu melengkapi tangan pemenang, ronde berakhir <1>gagal</1> dan permainanmu selesai!",
+      "p1": "Skormu dihitung dengan rumus ini:"
+    },
+    "drawing": {
+      "p1": "Di awal giliranmu, kamu <2>mengambil satu ubin</2> dari tembok. Ini membuatmu memiliki 14 ubin untuk sementara.",
+      "p2": "<1>Tembok</1> dimulai dengan 70 ubin yang bisa diambil (setelah tembok mati disisihkan). Perhatikan penghitung sisa ubin!"
+    },
+    "base_points": {
+      "note1": "Saat kamu mengambil <1>ubin bonus</1> (Bunga atau Musim), ubin itu terbuka otomatis dan kamu mengambil penggantinya. Ini tidak menghabiskan giliran!",
+      "li1": "<0>Ketuk atau klik</0> ubin untuk memilihnya",
+      "li2": "<0>Seret ke atas</0> menuju zona pembuangan",
+      "li3": "Ubin yang dibuang masuk ke <1>Kolam Mati</1>",
+      "p1": "Setiap ubin dalam tangan pemenangmu menyumbang <2>poin dasar</2>:"
+    },
+    "yaku_intro": {
+      "note1": "Ubin yang dibuang <2>hilang selamanya</2> — pilih dengan cermat ubin mana yang kamu buang!",
+      "li1": "<0>Poin dasar</0> — Dari ubin itu sendiri",
+      "li2": "<0>Poin struktur</0> — Dari rangkaian dan pasanganmu",
+      "li3": "<0>Pengali</0> — Dari Yaku, Dekrit, dan efek",
+      "p1": "<0>Yaku (役)</0> adalah pola khusus yang <3>melipatgandakan skormu</3>. Dari sinilah poin besar berasal!",
+      "p2": "Ada <1>21 yaku</1> di Tensho, tersusun dalam 4 tingkatan:"
+    },
+    "yaku_examples": {
+      "note1": "Permainan menampilkan shanten-mu saat ini. Makin rendah makin baik! Usahakan menurunkannya setiap giliran.",
+      "p1": "Berikut beberapa yaku yang akan sering kamu temui:"
+    },
+    "boss_mandates": {
+      "note1": "Ubin Kehormatan memberi <1>3 kali lipat poin</1> dibanding ubin sederhana! Tangan penuh ubin kehormatan punya skor dasar jauh lebih tinggi.",
+      "p1": "Setiap <1>Ronde Boss</1> punya <3>Mandat</3> khusus — sebuah batasan atau tantangan:"
+    },
+    "structure_points": {
+      "p1": "Rangkaianmu menambahkan <1>poin struktur</1> ke poin dasar:",
+      "p2": "<0>Contoh:</0> tangan dengan 2 urutan, 2 tripel, dan satu pasangan:"
+    },
+    "decree_categories": {
+      "note1": "Yaku <1>bertumpuk secara perkalian</1>! Tangan dengan yaku ×1,3 dan ×2,0 memperoleh ×2,6 total. Bangun kombinasi untuk skor besar!",
+      "p1": "Dekrit tersusun dalam <1>5 kategori</1>:"
+    },
+    "acts_rounds": {
+      "p1": "Permainanmu terbagi menjadi <1>Babak</1>, dan setiap Babak berisi <3>3 ronde</3>:",
+      "p2": "Skor target meningkat tiap Babak. Babak 1 terasa mudah, tetapi di Babak 8 kamu butuh kombinasi kuat untuk bertahan!"
+    },
+    "decree_slots": {
+      "note1": "Beberapa Dekrit membantu melawan mandat tertentu. Rencanakan susunanmu sesuai itu!",
+      "li1": "<0>Mengubah penilaian</0> — Menambah pengali atau bonus tetap",
+      "li2": "<0>Membengkokkan aturan</0> — Mengubah apa yang dianggap tangan sah",
+      "li3": "<0>Memberi kemampuan</0> — Pengambilan tambahan, pengocokan ulang, atau efek",
+      "p1": "Jumlah <1>slot Dekrit</1>-mu terbatas. Kamu mulai dengan <3>5 slot</3> dan bisa menambahnya melalui:"
+    },
+    "skipping": {
+      "p1": "Kamu bisa <1>melewati</1> ronde Kecil atau Besar sebelum menghadapi Boss. Mengapa melakukannya?"
+    },
+    "decree_rarities": {
+      "li1": "Menerima Tanda Pertanda",
+      "li2": "Menyelamatkan Dekrit berbatas waktu",
+      "li3": "Menghindari tembok yang merugikan",
+      "li4": "Tidak ada akses ke toko",
+      "li5": "Tidak memperoleh emas",
+      "li6": "Bunga tidak bertambah",
+      "p1": "Dekrit hadir dalam <1>4 tingkat kelangkaan</1>:"
+    },
+    "decrees_intro": {
+      "p1": "<0>Dekrit (法令)</0> adalah kartu pengubah aturan yang bertahan sepanjang permainan. Anggap saja padanan «Joker» di Balatro.",
+      "p2": "Dekrit dapat:"
+    },
+    "flowers_system": {
+      "li1": "<0>Menghasilkan emas</0> — Pendorong ekonomi",
+      "p1": "<0>Bunga</0> memberi <3>bonus permanen</3> yang bertahan sepanjang permainan:",
+      "p2": "Mengumpulkan beberapa bunga membuka <2>bonus set</2>: 2 bunga = +1 slot Dekrit, 4 bunga = efek bunga berlipat dua!"
+    },
+    "interest": {
+      "note1": "Dekrit yang makin langka makin mahal dan makin jarang muncul di toko. Sinergi antara beberapa Dekrit biasa pun bisa membentuk kombinasi kuat!",
+      "p1": "Di akhir setiap ronde, kamu memperoleh <2>bunga</2> dari emas yang kamu simpan:"
+    },
+    "hierarchy": {
+      "li1": "Mengumpulkan <1>set Bunga</1> (2+ bunga = +1 slot)",
+      "li2": "Membeli <1>Piagam Kekaisaran</1>",
+      "li3": "<1>Efek Dekrit</1> tertentu",
+      "p1": "Saat efek saling bertentangan, Tensho memakai <2>hierarki kewenangan</2>:"
+    },
+    "tips": {
+      "note1": "Kamu bisa <1>menjual</1> Dekrit untuk emas. Ini mengosongkan satu slot dan mengembalikan separuh harga beli."
+    },
+    "seasons_system": {
+      "p1": "<0>Musim</0> adalah <3>pengubah sementara</3> yang hanya bertahan pada ronde berjalan:"
+    },
+    "more_tips": {
+      "note1": "Mulai Babak 2, <2>Musim Ternoda</2> dengan efek negatif bisa muncul!",
+      "li1": "<0>Memenangkan ronde</0> — Bayaran dasar naik seiring skor",
+      "li2": "<0>Bunga</0> — 1 emas per 5 emas yang disimpan (maks 5 per ronde)",
+      "li3": "<0>Menjual Dekrit</0> — Dapat separuh harga beli",
+      "li4": "<0>Efek Dekrit</0> — Sebagian menghasilkan emas"
+    },
+    "tea_house": {
+      "p1": "Setelah setiap ronde, kamu mengunjungi <2>Kedai Teh (茶寮)</2> untuk membelanjakan emasmu:"
+    },
+    "gold_economy": {
+      "p1": "Kamu memperoleh <1>emas</1> dengan beberapa cara:"
     }
   },
   "accessibility": {

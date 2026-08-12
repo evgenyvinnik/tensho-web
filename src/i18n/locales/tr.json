@@ -315,7 +315,10 @@
     "finish": "Oynamaya Başla!",
     "welcome": {
       "title": "Tensho'ya Hoş Geldiniz!",
-      "content": "Tensho, Japon Riichi Mahjong'u temel alan bir roguelike oyunudur. Amacınız puanlı eller oluşturmak ve her turda hedef puanı tutturmaktır."
+      "content": "Tensho, Japon Riichi Mahjong'u temel alan bir roguelike oyunudur. Amacınız puanlı eller oluşturmak ve her turda hedef puanı tutturmaktır.",
+      "p1": "<0>Tensho (天翔)</0> Japoncada «Göklere Yükseliş» demektir. Klasik taş oyunu <6>Riichi Mahjong</6> üzerine kurulmuş bir <3>roguelike</3> oyundur.",
+      "p2": "Amaç basit: <2>puan getiren eller kurun</2> ve her turun hedef puanına ulaşın. Ulaşamazsanız oyununuz sona erer.",
+      "note1": "Daha önce hiç Mahjong oynamadıysanız endişelenmeyin! Bu öğretici bilmeniz gereken her şeyi adım adım anlatır."
     },
     "tiles": {
       "title": "Mahjong Taşları",
@@ -348,7 +351,206 @@
     "ready": {
       "title": "Hazırsınız!",
       "content1": "Yolculuğunuzda iyi şanslar!",
-      "content2": "İlk oyununuza başlamak için OYNA'ya basın."
+      "content2": "İlk oyununuza başlamak için OYNA'ya basın.",
+      "note1": "Dükkândaki ürünleri 5 altına <1>yenileyebilirsiniz</1>. Her yenileme 1 altın daha pahalıdır.",
+      "note2": "<1>25 ve üzeri altın</1> tutmak faizi en üst düzeye çıkarır! Yine de iyi Kararnamelere harcamak çoğunlukla daha kârlıdır.",
+      "p1": "Her şeyi ezberlemeye çalışmayın; oynadıkça öğreneceksiniz!",
+      "note3": "Tazelemek isterseniz bu kodekse ayarlar menüsünden istediğiniz zaman dönebilirsiniz."
+    },
+    "game_concept": {
+      "p1": "Rakiplere karşı oynanan geleneksel Mahjong'un aksine Tensho bir <1>tek kişilik bulmaca oyunudur</1>. Rakibiniz diğer oyuncular değil, hedef puandır.",
+      "p2": "Her oyun birden çok <2>Perde</2>den oluşur ve her Perdede <5>3 tur</5> vardır. Hedef puanlar ilerledikçe yükselir.",
+      "p3": "Turlar arasında <2>Çayevi</2>ni (dükkân) ziyaret ederek kuralları değiştiren ve puan potansiyelinizi artıran güçlü <5>Kararnameler</5> edinirsiniz."
+    },
+    "tiles_overview": {
+      "p1": "Oyunda toplam <1>144 taş</1> kullanılır:"
+    },
+    "numbered_suits": {
+      "note1": "Her standart taş oyunda <1>4 kez</1> bulunur. Elinizi planlarken bu çok önemlidir!",
+      "p1": "<1>Üç sayı takımı</1> vardır; her biri 1'den 9'a kadar sıralanır:",
+      "p2": "<0>Karakterler (萬子 / Manzu)</0> — 萬 (wan, «on bin») karakteriyle Çin rakamları taşır",
+      "p3": "<0>Daireler (筒子 / Pinzu)</0> — Sikke ya da noktaları temsil eden dairesel desenler",
+      "p4": "<0>Bambu (索子 / Souzu)</0> — Bambu çubuklarını gösterir (Bambu 1'de bir kuş bulunur)"
+    },
+    "terminals_simples": {
+      "p1": "Sayı taşları iki önemli kategoriye ayrılır:"
+    },
+    "wind_tiles": {
+      "note1": "Uç taşlar sade taşların iki katı değerindedir! Birçok yaku da onları özellikle ister ya da dışlar.",
+      "p1": "Ana yönleri temsil eden <1>dört Rüzgâr taşı</1> vardır:",
+      "p2": "Rüzgâr taşları <1>Onur taşıdır</1> ve her biri <4>15 puan</4> değerindedir — en yüksek temel değer!"
+    },
+    "dragon_tiles": {
+      "note1": "Rüzgârlar sıra oluşturamaz. Yalnızca üçlü ya da çift yapabilirler.",
+      "p1": "<1>Üç Ejderha taşı</1> vardır:",
+      "p2": "<0>白 (Beyaz Ejderha / Haku)</0> — Boş ya da çerçeveli taş; saflığı veya boşluğu temsil eder",
+      "p3": "<0>發 (Yeşil Ejderha / Hatsu)</0> — Yeşil 發 karakteri; «bereket» ya da «yayılmak» anlamına gelir",
+      "p4": "<0>中 (Kırmızı Ejderha / Chun)</0> — Kırmızı 中 karakteri; «merkez» anlamına gelir",
+      "p5": "Rüzgârlar gibi Ejderhalar da <1>Onur taşıdır</1>, <4>15 puan</4> eder ve sıra oluşturamaz."
+    },
+    "bonus_tiles": {
+      "p1": "<0>Bonus taşlar</0>, elinizin parçası olmayan özel taşlardır:"
+    },
+    "sequences": {
+      "note1": "Bonus taş çektiğinizde anında açılır ve yerine bir taş çekersiniz. Çiçekler ve Mevsimler büyüyen bonuslar ve etkiler verir!",
+      "p1": "<1>Sıra</1>, <4>aynı takımdan ardışık 3 taştır</4>.",
+      "p2": "Geçerli sıra örnekleri:"
+    },
+    "melds_overview": {
+      "p1": "<1>Grup</1> (bazen «takım» da denir), taşların belirli bir birleşimidir:",
+      "p2": "Grupları anlamak <1>şarttır</1> — kazanan eliniz bu yapı taşlarından oluşur!"
+    },
+    "triplets": {
+      "li1": "Daireler 1-2-3",
+      "li2": "Karakterler 4-5-6",
+      "li3": "Bambu 7-8-9",
+      "p1": "<1>Üçlü</1>, <4>3 özdeş taştır</4>.",
+      "p2": "Geçerli üçlü örnekleri:"
+    },
+    "quads": {
+      "li1": "Sıralar <1>aynı takımdan</1> olmalıdır",
+      "li2": "<2>Başa dönemezler</2> (9-1-2 olmaz)",
+      "li3": "Onur taşları <2>sıra oluşturamaz</2>",
+      "p1": "<1>Dörtlü</1> («kong» ya da «kan» da denir), <4>4 özdeş taştır</4>.",
+      "p2": "Bir taşın 4 kopyasının da gerekmesi nedeniyle dörtlü en nadir grup türüdür!"
+    },
+    "pairs": {
+      "li1": "Üç adet Bambu 5",
+      "li2": "Üç adet Doğu Rüzgârı",
+      "li3": "Üç adet Kırmızı Ejderha",
+      "p1": "<1>Çift</1>, yalnızca <4>2 özdeş taştır</4>.",
+      "p2": "Her standart kazanan el <2>tam olarak bir çift</2> gerektirir. Buna bazen elin «başı» (雀頭) denir."
+    },
+    "winning_hand": {
+      "note1": "Üçlüler <1>+30 puan</1> eder — sıralardan (+20) fazla! Ancak tamamlaması daha zordur: 3 aynı taş gerekir ve her taş oyunda yalnızca 4 kez bulunur.",
+      "li1": "<1>+50 puan</1> eder — tüm gruplar içinde en yükseği",
+      "li2": "4 taşı olmasına rağmen tek grup sayılır",
+      "li3": "Bildirildiğinde yerine bir taş çekersiniz",
+      "p1": "Standart bir kazanan el şunlardan oluşur:"
+    },
+    "gameplay_overview": {
+      "note1": "Çift <1>+10 puan</1> eder. Herhangi bir taş çift yapabilir — sayı, rüzgâr ya da ejderha.",
+      "li1": "Daireler 1-2-3 (sıra)",
+      "li2": "Bambu 5-5-5 (üçlü)",
+      "li3": "Karakterler 6-7-8 (sıra)",
+      "li4": "Doğu-Doğu-Doğu (üçlü)",
+      "li5": "Kırmızı Ejderha çifti",
+      "p1": "Her tur basit bir döngü izler:"
+    },
+    "special_hands": {
+      "p1": "İki özel el yapısı «4 grup + 1 çift» kuralına uymaz:"
+    },
+    "discarding": {
+      "li1": "Elinizde 13 taşla <0>başlayın</0>",
+      "li2": "Duvardan bir taş <0>çekin</0>",
+      "li3": "<1>Kazanıp</1> kazanamayacağınızı kontrol edin (geçerli el + hedef puan)",
+      "li4": "Kazanamıyorsanız ihtiyacınız olmayan bir taşı <1>atın</1>",
+      "p1": "Çektikten sonra (kazanmadıysanız) 13 taşa dönmek için <2>bir taş atmalısınız</2>.",
+      "p2": "<0>Nasıl atılır:</0>"
+    },
+    "shanten": {
+      "li1": "Kazanana ya da duvar bitene kadar tekrarlayın",
+      "p1": "<0>Shanten (向聴)</0>, kazanan bir eli tamamlamak için değiştirmeniz gereken taş sayısıdır."
+    },
+    "scoring_overview": {
+      "note1": "Kazanan bir eli tamamlamadan duvar biterse tur <1>başarısızlıkla</1> sonuçlanır ve oyununuz biter!",
+      "p1": "Puanınız şu formülle hesaplanır:"
+    },
+    "drawing": {
+      "p1": "Sıranızın başında duvardan <2>bir taş çekersiniz</2>. Böylece geçici olarak 14 taşınız olur.",
+      "p2": "<1>Duvar</1>, ölü duvar ayrıldıktan sonra 70 çekilebilir taşla başlar. Kalan taş sayacını izleyin!"
+    },
+    "base_points": {
+      "note1": "<1>Bonus taş</1> (Çiçek ya da Mevsim) çektiğinizde otomatik olarak açılır ve yerine bir taş çekersiniz. Bu bir sıra harcamaz!",
+      "li1": "Bir taşı seçmek için <0>dokunun ya da tıklayın</0>",
+      "li2": "Atma bölgesine <0>yukarı sürükleyin</0>",
+      "li3": "Atılan taşlar <1>Ölü Havuza</1> gider",
+      "p1": "Kazanan elinizdeki her taş <2>temel puan</2> katar:"
+    },
+    "yaku_intro": {
+      "note1": "Atılan taşlar <2>sonsuza dek gider</2> — hangi taşı attığınızı dikkatle seçin!",
+      "li1": "<0>Temel puan</0> — Taşların kendisinden",
+      "li2": "<0>Yapı puanı</0> — Gruplarınızdan ve çiftinizden",
+      "li3": "<0>Çarpanlar</0> — Yaku, Kararname ve etkilerden",
+      "p1": "<0>Yaku (役)</0>, <3>puanınızı katlayan</3> özel desenlerdir. Büyük puanlar buradan gelir!",
+      "p2": "Tensho'da 4 kademeye ayrılmış <1>21 yaku</1> vardır:"
+    },
+    "yaku_examples": {
+      "note1": "Oyun güncel shanten değerinizi gösterir. Düşük olması iyidir! Her elde onu azaltmaya çalışın.",
+      "p1": "Sık karşılaşacağınız bazı yaku'lar:"
+    },
+    "boss_mandates": {
+      "note1": "Onur taşları sade taşlardan <1>3 kat fazla puan</1> verir! Onur taşlarıyla dolu bir elin temel puanı çok daha yüksek olur.",
+      "p1": "Her <1>Boss turunda</1> özel bir <3>Ferman</3> bulunur — bir kısıtlama ya da meydan okuma:"
+    },
+    "structure_points": {
+      "p1": "Gruplarınız temel puana <1>yapı puanı</1> ekler:",
+      "p2": "<0>Örnek:</0> 2 sıra, 2 üçlü ve bir çiftten oluşan bir el:"
+    },
+    "decree_categories": {
+      "note1": "Yaku'lar <1>çarpılarak birikir</1>! ×1,3 ve ×2,0 yaku içeren bir el toplamda ×2,6 alır. Devasa puanlar için kombinasyon kurun!",
+      "p1": "Kararnameler <1>5 kategoriye</1> ayrılır:"
+    },
+    "acts_rounds": {
+      "p1": "Oyununuz <1>Perdelere</1> bölünür ve her Perde <3>3 tur</3> içerir:",
+      "p2": "Hedef puanlar her Perdede yükselir. 1. Perde kolaydır ama 8. Perdede hayatta kalmak için güçlü kombinasyonlar gerekir!"
+    },
+    "decree_slots": {
+      "note1": "Bazı Kararnameler belirli fermanlara karşı işe yarar. Yapınızı buna göre planlayın!",
+      "li1": "<0>Puanlamayı değiştirmek</0> — Çarpan ya da sabit bonus eklemek",
+      "li2": "<0>Kuralları esnetmek</0> — Neyin geçerli el sayıldığını değiştirmek",
+      "li3": "<0>Yetenek vermek</0> — Ek çekiş, yeniden çekiş ya da etkiler",
+      "p1": "Sınırlı sayıda <1>Kararname yuvanız</1> vardır. <3>5 yuvayla</3> başlarsınız ve şu yollarla artırabilirsiniz:"
+    },
+    "skipping": {
+      "p1": "Boss ile karşılaşmadan önce Küçük ya da Büyük turu <1>atlayabilirsiniz</1>. Bunu neden yapasınız?"
+    },
+    "decree_rarities": {
+      "li1": "Bir Alâmet İşareti alırsınız",
+      "li2": "Süreli Kararnameleri korursunuz",
+      "li3": "Elverişsiz duvarlardan kaçınırsınız",
+      "li4": "Dükkâna erişim yok",
+      "li5": "Altın kazanılmaz",
+      "li6": "Faiz artmaz",
+      "p1": "Kararnameler <1>4 nadirlik kademesinde</1> gelir:"
+    },
+    "decrees_intro": {
+      "p1": "<0>Kararnameler (法令)</0>, oyun boyunca kalan ve kuralları değiştiren kartlardır. Onları Balatro'daki «Jokerlerin» karşılığı olarak düşünün.",
+      "p2": "Kararnameler şunları yapabilir:"
+    },
+    "flowers_system": {
+      "li1": "<0>Altın üretmek</0> — Ekonomiyi güçlendirir",
+      "p1": "<0>Çiçekler</0>, oyun boyunca süren <3>kalıcı bonuslar</3> verir:",
+      "p2": "Birden çok çiçek toplamak <2>set bonuslarını</2> açar: 2 çiçek = +1 Kararname yuvası, 4 çiçek = çiçek etkisi iki katı!"
+    },
+    "interest": {
+      "note1": "Nadirliği yüksek Kararnameler daha pahalıdır ve dükkânda daha seyrek çıkar. Birden çok sıradan Kararname arasındaki uyum da güçlü kombinasyonlar kurar!",
+      "p1": "Her turun sonunda biriktirdiğiniz altına <2>faiz</2> işler:"
+    },
+    "hierarchy": {
+      "li1": "<1>Çiçek setleri</1> toplamak (2+ çiçek = +1 yuva)",
+      "li2": "<1>İmparatorluk Beratları</1> satın almak",
+      "li3": "Belirli <1>Kararname etkileri</1>",
+      "p1": "Etkiler çakıştığında Tensho bir <2>yetki sıradüzeni</2> uygular:"
+    },
+    "tips": {
+      "note1": "Kararnameleri altın karşılığında <1>satabilirsiniz</1>. Bu bir yuva boşaltır ve alış fiyatının yarısını geri verir."
+    },
+    "seasons_system": {
+      "p1": "<0>Mevsimler</0>, yalnızca içinde bulunulan tur süren <3>geçici değiştiricilerdir</3>:"
+    },
+    "more_tips": {
+      "note1": "2. Perdeden itibaren olumsuz etkileri olan <2>Bozulmuş Mevsimler</2> çıkabilir!",
+      "li1": "<0>Tur kazanmak</0> — Temel ödeme puana göre ölçeklenir",
+      "li2": "<0>Faiz</0> — Biriken her 5 altın için 1 altın (tur başına en çok 5)",
+      "li3": "<0>Kararname satmak</0> — Alış fiyatının yarısını alırsınız",
+      "li4": "<0>Kararname etkileri</0> — Bazıları altın üretir"
+    },
+    "tea_house": {
+      "p1": "Her turdan sonra altınınızı harcamak için <2>Çayevi (茶寮)</2>ni ziyaret edersiniz:"
+    },
+    "gold_economy": {
+      "p1": "<1>Altını</1> birkaç yolla kazanırsınız:"
     }
   },
   "accessibility": {

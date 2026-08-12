@@ -315,7 +315,10 @@
     "finish": "Magsimulang Maglaro!",
     "welcome": {
       "title": "Maligayang Pagdating sa Tensho!",
-      "content": "Ang Tensho ay isang roguelike na laro batay sa Japanese Riichi Mahjong. Ang iyong layunin ay bumuo ng mga kamay na may puntos at maabot ang target na puntos sa bawat round."
+      "content": "Ang Tensho ay isang roguelike na laro batay sa Japanese Riichi Mahjong. Ang iyong layunin ay bumuo ng mga kamay na may puntos at maabot ang target na puntos sa bawat round.",
+      "p1": "Ang <0>Tensho (天翔)</0> ay nangangahulugang «Pag-akyat sa Langit» sa Hapon. Isa itong <3>roguelike</3> na itinayo sa klasikong larong tile na <6>Riichi Mahjong</6>.",
+      "p2": "Simple lang ang layunin: <2>bumuo ng mga kamay na may puntos</2> at abutin ang target na iskor bawat round. Kapag hindi mo naabot, tapos na ang takbo mo.",
+      "note1": "Huwag mag-alala kung hindi ka pa nakapaglaro ng Mahjong! Ituturo ng tutorial na ito ang lahat, hakbang-hakbang."
     },
     "tiles": {
       "title": "Mga Tile ng Mahjong",
@@ -348,7 +351,206 @@
     "ready": {
       "title": "Handa Ka Na!",
       "content1": "Good luck sa iyong paglalakbay!",
-      "content2": "Pindutin ang MAGLARO para simulan ang iyong unang laro."
+      "content2": "Pindutin ang MAGLARO para simulan ang iyong unang laro.",
+      "note1": "Puwede mong <1>i-reroll</1> ang alok ng tindahan sa halagang 5 ginto. Bawat reroll ay dagdag ng 1.",
+      "note2": "Ang pag-iipon ng <1>25 ginto pataas</1> ang nagpapalaki ng interes! Pero kadalasan mas sulit ang gastusin ito sa magagandang Decree.",
+      "p1": "Huwag mo nang isaulo ang lahat — matututo ka habang naglalaro!",
+      "note3": "Puwede kang bumalik sa kodeks na ito mula sa menu ng mga setting kapag kailangan mong magbalik-aral."
+    },
+    "game_concept": {
+      "p1": "Hindi tulad ng tradisyunal na Mahjong na nilalaro laban sa kalaban, ang Tensho ay <1>palaisipang pang-isahan</1>. Ang kalaban mo ay ang target na iskor, hindi ibang manlalaro.",
+      "p2": "Binubuo ang bawat takbo ng ilang <2>Yugto</2>, at may <5>3 round</5> ang bawat Yugto. Tumataas ang target na iskor habang sumusulong ka.",
+      "p3": "Sa pagitan ng mga round, bibisita ka sa <2>Bahay ng Tsaa</2> (tindahan) para kumuha ng malalakas na <5>Decree</5> na bumabago ng patakaran at nagpapataas ng iyong puntos."
+    },
+    "tiles_overview": {
+      "p1": "Gumagamit ang laro ng kabuuang <1>144 tile</1>:"
+    },
+    "numbered_suits": {
+      "note1": "Bawat karaniwang tile ay lumalabas nang <1>4 na beses</1> sa laro. Mahalaga ito sa pagpaplano ng kamay mo!",
+      "p1": "May <1>tatlong may-numerong suit</1>, tig-1 hanggang 9:",
+      "p2": "<0>Mga Karakter (萬子 / Manzu)</0> — Nagpapakita ng bilang Tsino kasama ang karakter na 萬 (wan, «sampung libo»)",
+      "p3": "<0>Mga Bilog (筒子 / Pinzu)</0> — Nagpapakita ng bilog na disenyo na kumakatawan sa barya o tuldok",
+      "p4": "<0>Kawayan (索子 / Souzu)</0> — Naglalarawan ng mga tangkay ng kawayan (may ibon ang 1 ng Kawayan)"
+    },
+    "terminals_simples": {
+      "p1": "Nahahati ang mga may-numerong tile sa dalawang mahalagang uri:"
+    },
+    "wind_tiles": {
+      "note1": "Doble ang halaga ng terminal kaysa sa simple! Marami ring yaku ang partikular na humihingi o nagbabawal sa kanila.",
+      "p1": "May <1>apat na tile ng Hangin</1> na kumakatawan sa mga direksyon:",
+      "p2": "Ang mga tile ng Hangin ay <1>tile ng Karangalan</1> at nagkakahalaga ng <4>15 puntos</4> bawat isa — ang pinakamataas na batayang halaga!"
+    },
+    "dragon_tiles": {
+      "note1": "Hindi makabubuo ng sunuran ang Hangin. Tripleta o pares lamang.",
+      "p1": "May <1>tatlong tile ng Dragon</1>:",
+      "p2": "<0>白 (Puting Dragon / Haku)</0> — Blangko o may kuwadradong tile, sumasagisag sa kadalisayan o kawalan",
+      "p3": "<0>發 (Berdeng Dragon / Hatsu)</0> — Ang karakter na 發 sa berde, ibig sabihin ay «kasaganaan» o «pagsibol»",
+      "p4": "<0>中 (Pulang Dragon / Chun)</0> — Ang karakter na 中 sa pula, ibig sabihin ay «gitna»",
+      "p5": "Gaya ng Hangin, ang mga Dragon ay <1>tile ng Karangalan</1> na nagkakahalaga ng <4>15 puntos</4> at hindi makabubuo ng sunuran."
+    },
+    "bonus_tiles": {
+      "p1": "Ang <0>mga bonus tile</0> ay espesyal na tile na hindi bahagi ng kamay mo:"
+    },
+    "sequences": {
+      "note1": "Kapag nakakuha ka ng bonus tile, agad itong nabubunyag at kukuha ka ng kapalit. Nagbibigay ang mga Bulaklak at Panahon ng lumalaking bonus at epekto!",
+      "p1": "Ang <1>sunuran</1> ay <4>3 magkakasunod na tile ng iisang suit</4>.",
+      "p2": "Mga halimbawa ng wastong sunuran:"
+    },
+    "melds_overview": {
+      "p1": "Ang <1>meld</1> (tinatawag ding «grupo») ay tiyak na kombinasyon ng mga tile:",
+      "p2": "<1>Mahalagang</1> maintindihan ang mga meld — gawa sa mga sangkap na ito ang panalong kamay mo!"
+    },
+    "triplets": {
+      "li1": "1-2-3 ng Bilog",
+      "li2": "4-5-6 ng Karakter",
+      "li3": "7-8-9 ng Kawayan",
+      "p1": "Ang <1>tripleta</1> ay <4>3 magkaparehong tile</4>.",
+      "p2": "Mga halimbawa ng wastong tripleta:"
+    },
+    "quads": {
+      "li1": "Dapat iisang <1>suit</1> ang sunuran",
+      "li2": "<2>Hindi ito puwedeng umikot pabalik</2> (walang 9-1-2)",
+      "li3": "Ang mga tile ng Karangalan ay <2>hindi makabubuo ng sunuran</2>",
+      "p1": "Ang <1>kuwarteto</1> (tinatawag ding «kong» o «kan») ay <4>4 na magkaparehong tile</4>.",
+      "p2": "Ang kuwarteto ang pinakabihirang meld dahil kailangan mo ang lahat ng 4 na kopya ng isang tile!"
+    },
+    "pairs": {
+      "li1": "Tatlong 5 ng Kawayan",
+      "li2": "Tatlong Hanging Silangan",
+      "li3": "Tatlong Pulang Dragon",
+      "p1": "Ang <1>pares</1> ay simpleng <4>2 magkaparehong tile</4>.",
+      "p2": "Bawat karaniwang panalong kamay ay nangangailangan ng <2>eksaktong isang pares</2>. Tinatawag itong «ulo» (雀頭) ng kamay."
+    },
+    "winning_hand": {
+      "note1": "Nagkakahalaga ang tripleta ng <1>+30 puntos</1> — mas mataas kaysa sunuran (+20)! Pero mas mahirap buuin dahil kailangan mo ng 3 magkaparehong tile at 4 lang ang bawat tile sa laro.",
+      "li1": "Nagkakahalaga ng <1>+50 puntos</1> — pinakamataas sa lahat ng meld",
+      "li2": "Bilang isang meld lamang kahit 4 ang tile",
+      "li3": "Kapag idineklara, kukuha ka ng kapalit na tile",
+      "p1": "Binubuo ang karaniwang panalong kamay ng:"
+    },
+    "gameplay_overview": {
+      "note1": "Nagkakahalaga ang pares ng <1>+10 puntos</1>. Kahit anong tile ay puwedeng maging pares — may numero, hangin, o dragon.",
+      "li1": "1-2-3 Bilog (sunuran)",
+      "li2": "5-5-5 Kawayan (tripleta)",
+      "li3": "6-7-8 Karakter (sunuran)",
+      "li4": "Silangan-Silangan-Silangan (tripleta)",
+      "li5": "Pares ng Pulang Dragon",
+      "p1": "Sumusunod ang bawat round sa simpleng siklo:"
+    },
+    "special_hands": {
+      "p1": "May dalawang espesyal na istruktura na hindi sumusunod sa patakarang 4 meld + 1 pares:"
+    },
+    "discarding": {
+      "li1": "<0>Magsimula</0> nang may 13 tile sa kamay",
+      "li2": "<0>Kumuha</0> ng tile mula sa pader",
+      "li3": "Tingnan kung puwede kang <1>manalo</1> (wastong kamay + target na iskor)",
+      "li4": "Kung hindi, <1>magtapon</1> ng isang tile na hindi mo kailangan",
+      "p1": "Pagkatapos kumuha (kung hindi ka pa panalo), kailangan mong <2>magtapon ng isang tile</2> para bumalik sa 13.",
+      "p2": "<0>Paano magtapon:</0>"
+    },
+    "shanten": {
+      "li1": "Ulitin hanggang manalo ka o maubos ang pader",
+      "p1": "Ang <0>shanten (向聴)</0> ay bilang ng tile na kailangan mong palitan para makabuo ng panalong kamay."
+    },
+    "scoring_overview": {
+      "note1": "Kung maubos ang pader bago mo mabuo ang panalong kamay, magtatapos ang round sa <1>kabiguan</1> at tapos na ang takbo mo!",
+      "p1": "Kinakalkula ang iskor mo gamit ang pormulang ito:"
+    },
+    "drawing": {
+      "p1": "Sa simula ng iyong turno, <2>kumukuha ka ng isang tile</2> mula sa pader. Magkakaroon ka ng 14 tile pansamantala.",
+      "p2": "Nagsisimula ang <1>pader</1> sa 70 tile na mabubunot (matapos ilaan ang patay na pader). Bantayan ang bilang ng natitira!"
+    },
+    "base_points": {
+      "note1": "Kapag kumuha ka ng <1>bonus tile</1> (Bulaklak o Panahon), awtomatiko itong nabubunyag at kukuha ka ng kapalit. Hindi ito umuubos ng turno!",
+      "li1": "<0>I-tap o i-click</0> ang tile para piliin ito",
+      "li2": "<0>I-drag pataas</0> patungo sa lugar ng pagtatapon",
+      "li3": "Napupunta sa <1>Dead Pool</1> ang mga itinapong tile",
+      "p1": "Bawat tile sa panalong kamay mo ay nagdaragdag ng <2>batayang puntos</2>:"
+    },
+    "yaku_intro": {
+      "note1": "Ang mga itinapong tile ay <2>tuluyan nang nawawala</2> — piliin nang mabuti kung ano ang itatapon mo!",
+      "li1": "<0>Batayang puntos</0> — Mula sa mga tile mismo",
+      "li2": "<0>Puntos ng istruktura</0> — Mula sa iyong mga meld at pares",
+      "li3": "<0>Mga multiplier</0> — Mula sa Yaku, Decree, at mga epekto",
+      "p1": "Ang <0>Yaku (役)</0> ay espesyal na pattern na <3>nagpaparami ng iskor mo</3>. Dito nanggagaling ang malalaking puntos!",
+      "p2": "May <1>21 yaku</1> sa Tensho, nakaayos sa 4 na antas:"
+    },
+    "yaku_examples": {
+      "note1": "Ipinapakita ng laro ang kasalukuyang shanten mo. Mas mababa, mas mabuti! Layuning ibaba ito bawat turno.",
+      "p1": "Narito ang ilang yaku na madalas mong makakasalubong:"
+    },
+    "boss_mandates": {
+      "note1": "Nagbibigay ang mga tile ng Karangalan ng <1>3 beses na mas maraming puntos</1> kaysa simple! Mas mataas ang batayang iskor ng kamay na puro karangalan.",
+      "p1": "Bawat <1>Boss Round</1> ay may espesyal na <3>Mandato</3> — isang restriksyon o hamon:"
+    },
+    "structure_points": {
+      "p1": "Nagdaragdag ang iyong mga meld ng <1>puntos ng istruktura</1> sa batayan:",
+      "p2": "<0>Halimbawa:</0> kamay na may 2 sunuran, 2 tripleta, at isang pares:"
+    },
+    "decree_categories": {
+      "note1": "<1>Nagpaparami</1> ang mga yaku kapag nagsalansan! Ang kamay na may yaku na ×1.3 at ×2.0 ay nagiging ×2.6 lahat. Bumuo ng kombinasyon para sa malalaking iskor!",
+      "p1": "Nakaayos ang mga Decree sa <1>5 kategorya</1>:"
+    },
+    "acts_rounds": {
+      "p1": "Nahahati ang takbo mo sa mga <1>Yugto</1>, at may <3>3 round</3> ang bawat Yugto:",
+      "p2": "Tumataas ang target bawat Yugto. Madali ang Yugto 1, pero pagsapit ng Yugto 8 kailangan mo ng malalakas na kombinasyon para mabuhay!"
+    },
+    "decree_slots": {
+      "note1": "May mga Decree na tumutulong laban sa tiyak na mandato. Planuhin ang build mo nang naaayon!",
+      "li1": "<0>Baguhin ang pagpuntos</0> — Magdagdag ng multiplier o tiyak na bonus",
+      "li2": "<0>Baluktutin ang patakaran</0> — Baguhin kung ano ang wastong kamay",
+      "li3": "<0>Magbigay ng kakayahan</0> — Dagdag na pagbunot, muling pagbunot, o epekto",
+      "p1": "May limitadong bilang ka ng <1>slot ng Decree</1>. Nagsisimula ka sa <3>5 slot</3> at makadaragdag sa pamamagitan ng:"
+    },
+    "skipping": {
+      "p1": "Puwede mong <1>laktawan</1> ang Maliit o Malaking round bago harapin ang Boss. Bakit mo gagawin ito?"
+    },
+    "decree_rarities": {
+      "li1": "Tumanggap ng Tanda ng Pangitain",
+      "li2": "Maisalba ang mga Decree na may takdang panahon",
+      "li3": "Maiwasan ang di-kanais-nais na pader",
+      "li4": "Walang akses sa tindahan",
+      "li5": "Walang kitang ginto",
+      "li6": "Walang paglago ng interes",
+      "p1": "May <1>4 na antas ng kabihiraan</1> ang mga Decree:"
+    },
+    "decrees_intro": {
+      "p1": "Ang <0>mga Decree (法令)</0> ay mga baraha na bumabago ng patakaran at nananatili sa buong takbo. Ituring mo silang katumbas ng «Jokers» sa Balatro.",
+      "p2": "Kaya ng mga Decree na:"
+    },
+    "flowers_system": {
+      "li1": "<0>Gumawa ng ginto</0> — Pampalakas ng ekonomiya",
+      "p1": "Nagbibigay ang <0>mga Bulaklak</0> ng <3>permanenteng bonus</3> na tumatagal sa buong takbo:",
+      "p2": "Ang pagkolekta ng maraming bulaklak ay nagbubukas ng <2>set bonus</2>: 2 bulaklak = +1 slot ng Decree, 4 na bulaklak = doble ang bisa ng bulaklak!"
+    },
+    "interest": {
+      "note1": "Mas bihira ang Decree, mas mahal at mas madalang sa tindahan. Ang sinerhiya ng ilang karaniwang Decree ay nakabubuo rin ng malakas na kombinasyon!",
+      "p1": "Sa katapusan ng bawat round, kumikita ka ng <2>interes</2> sa naipong ginto:"
+    },
+    "hierarchy": {
+      "li1": "Kolektahin ang <1>set ng Bulaklak</1> (2+ bulaklak = +1 slot)",
+      "li2": "Bumili ng <1>Imperyal na Kartilya</1>",
+      "li3": "Ilang <1>epekto ng Decree</1>",
+      "p1": "Kapag nagsalungat ang mga epekto, gumagamit ang Tensho ng <2>hirarkiya ng awtoridad</2>:"
+    },
+    "tips": {
+      "note1": "Puwede mong <1>ibenta</1> ang mga Decree para sa ginto. Nagbabakante ito ng slot at ibinabalik ang kalahati ng presyo."
+    },
+    "seasons_system": {
+      "p1": "Ang <0>mga Panahon</0> ay <3>pansamantalang modifier</3> na tumatagal lamang sa kasalukuyang round:"
+    },
+    "more_tips": {
+      "note1": "Mula Yugto 2, puwedeng lumitaw ang <2>Nasirang Panahon</2> na may negatibong epekto!",
+      "li1": "<0>Panalo sa round</0> — Lumalaki ang batayang bayad kasabay ng iskor",
+      "li2": "<0>Interes</0> — 1 ginto kada 5 gintong naipon (hanggang 5 kada round)",
+      "li3": "<0>Pagbebenta ng Decree</0> — Makukuha ang kalahati ng presyo",
+      "li4": "<0>Epekto ng Decree</0> — May ilang gumagawa ng ginto"
+    },
+    "tea_house": {
+      "p1": "Pagkatapos ng bawat round, bibisita ka sa <2>Bahay ng Tsaa (茶寮)</2> para gastusin ang ginto mo:"
+    },
+    "gold_economy": {
+      "p1": "Kumikita ka ng <1>ginto</1> sa ilang paraan:"
     }
   },
   "accessibility": {

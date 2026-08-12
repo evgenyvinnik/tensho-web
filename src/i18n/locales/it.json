@@ -315,7 +315,10 @@
     "finish": "Inizia a Giocare!",
     "welcome": {
       "title": "Benvenuto in Tensho!",
-      "content": "Tensho è un gioco roguelike basato sul Mahjong Riichi giapponese. Il tuo obiettivo è formare mani vincenti e raggiungere il punteggio obiettivo in ogni round."
+      "content": "Tensho è un gioco roguelike basato sul Mahjong Riichi giapponese. Il tuo obiettivo è formare mani vincenti e raggiungere il punteggio obiettivo in ogni round.",
+      "p1": "<0>Tensho (天翔)</0> significa «Ascesa Celeste» in giapponese. È un <3>roguelike</3> costruito attorno al classico gioco di tessere <6>Riichi Mahjong</6>.",
+      "p2": "L'obiettivo è semplice: <2>componi mani che segnano punti</2> e raggiungi il punteggio obiettivo di ogni round. Se non ci riesci, la partita finisce.",
+      "note1": "Non preoccuparti se non hai mai giocato a Mahjong! Questo tutorial ti insegnerà tutto, passo dopo passo."
     },
     "tiles": {
       "title": "Tessere del Mahjong",
@@ -348,7 +351,206 @@
     "ready": {
       "title": "Sei Pronto!",
       "content1": "Buona fortuna nel tuo viaggio!",
-      "content2": "Premi GIOCA per iniziare la tua prima partita."
+      "content2": "Premi GIOCA per iniziare la tua prima partita.",
+      "note1": "Puoi <1>rigenerare</1> l'offerta del negozio per 5 monete d'oro. Ogni rigenerazione costa 1 in più.",
+      "note2": "Tenere <1>25 o più monete d'oro</1> massimizza gli interessi! Però spendere in buoni Decreti di solito rende di più.",
+      "p1": "Non serve memorizzare tutto: imparerai giocando!",
+      "note3": "Puoi sempre tornare a questo codice dal menu delle impostazioni se ti serve un ripasso."
+    },
+    "game_concept": {
+      "p1": "A differenza del Mahjong tradizionale, che si gioca contro avversari, Tensho è un <1>gioco di enigmi per un solo giocatore</1>. Corri contro il punteggio obiettivo, non contro altri giocatori.",
+      "p2": "Ogni partita si compone di più <2>Atti</2>, e ogni Atto ha <5>3 round</5>. I punteggi obiettivo crescono man mano che avanzi.",
+      "p3": "Tra un round e l'altro visiterai la <2>Casa del Tè</2> (negozio) per procurarti potenti <5>Decreti</5> che modificano le regole e aumentano il tuo potenziale di punteggio."
+    },
+    "tiles_overview": {
+      "p1": "Il gioco usa <1>144 tessere</1> in tutto:"
+    },
+    "numbered_suits": {
+      "note1": "Ogni tessera standard compare <1>4 volte</1> nel gioco. È importante per pianificare la mano!",
+      "p1": "Ci sono <1>tre semi numerati</1>, ciascuno con tessere da 1 a 9:",
+      "p2": "<0>Caratteri (萬子 / Manzu)</0> — Mostrano numeri cinesi con il carattere 萬 (wan, «diecimila»)",
+      "p3": "<0>Cerchi (筒子 / Pinzu)</0> — Mostrano motivi circolari che rappresentano monete o punti",
+      "p4": "<0>Bambù (索子 / Souzu)</0> — Raffigurano canne di bambù (l'1 di Bambù mostra un uccello)"
+    },
+    "terminals_simples": {
+      "p1": "Le tessere numerate si dividono in due categorie importanti:"
+    },
+    "wind_tiles": {
+      "note1": "Le terminali valgono il doppio delle semplici! Molti yaku le richiedono o le escludono esplicitamente.",
+      "p1": "Ci sono <1>quattro tessere del Vento</1>, che rappresentano i punti cardinali:",
+      "p2": "Le tessere del Vento sono <1>tessere d'Onore</1> e valgono <4>15 punti</4> ciascuna: il valore base più alto!"
+    },
+    "dragon_tiles": {
+      "note1": "I Venti non possono formare scale. Solo tris o coppie.",
+      "p1": "Ci sono <1>tre tessere del Drago</1>:",
+      "p2": "<0>白 (Drago Bianco / Haku)</0> — Una tessera vuota o incorniciata, che rappresenta purezza o vuoto",
+      "p3": "<0>發 (Drago Verde / Hatsu)</0> — Il carattere 發 in verde, che significa «prosperità» o «emettere»",
+      "p4": "<0>中 (Drago Rosso / Chun)</0> — Il carattere 中 in rosso, che significa «centro»",
+      "p5": "Come i Venti, i Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4> e non possono formare scale."
+    },
+    "bonus_tiles": {
+      "p1": "Le <0>tessere bonus</0> sono tessere speciali che non fanno parte della mano:"
+    },
+    "sequences": {
+      "note1": "Quando peschi una tessera bonus viene scoperta subito e ne peschi una sostitutiva. Fiori e Stagioni danno bonus ed effetti crescenti!",
+      "p1": "Una <1>scala</1> è composta da <4>3 tessere consecutive dello stesso seme</4>.",
+      "p2": "Esempi di scale valide:"
+    },
+    "melds_overview": {
+      "p1": "Una <1>combinazione</1> (detta anche «gruppo») è un insieme preciso di tessere:",
+      "p2": "Capire le combinazioni è <1>essenziale</1>: la tua mano vincente è fatta di questi mattoni!"
+    },
+    "triplets": {
+      "li1": "1-2-3 di Cerchi",
+      "li2": "4-5-6 di Caratteri",
+      "li3": "7-8-9 di Bambù",
+      "p1": "Un <1>tris</1> è composto da <4>3 tessere identiche</4>.",
+      "p2": "Esempi di tris validi:"
+    },
+    "quads": {
+      "li1": "Le scale devono essere dello <1>stesso seme</1>",
+      "li2": "<2>Non possono chiudersi ad anello</2> (niente 9-1-2)",
+      "li3": "Le tessere d'Onore <2>non possono formare scale</2>",
+      "p1": "Un <1>poker</1> (detto anche «kong» o «kan») è composto da <4>4 tessere identiche</4>.",
+      "p2": "I poker sono la combinazione più rara, perché servono tutte e 4 le copie di una tessera!"
+    },
+    "pairs": {
+      "li1": "Tre 5 di Bambù",
+      "li2": "Tre Venti d'Est",
+      "li3": "Tre Draghi Rossi",
+      "p1": "Una <1>coppia</1> è semplicemente <4>2 tessere identiche</4>.",
+      "p2": "Ogni mano vincente standard richiede <2>esattamente una coppia</2>. A volte viene chiamata la «testa» (雀頭) della mano."
+    },
+    "winning_hand": {
+      "note1": "I tris valgono <1>+30 punti</1>, più delle scale (+20)! Sono però più difficili da completare: servono 3 tessere uguali e ogni tessera compare solo 4 volte.",
+      "li1": "Vale <1>+50 punti</1>: il massimo tra le combinazioni",
+      "li2": "Conta come una sola combinazione pur avendo 4 tessere",
+      "li3": "Quando lo dichiari, peschi una tessera sostitutiva",
+      "p1": "Una mano vincente standard è composta da:"
+    },
+    "gameplay_overview": {
+      "note1": "La coppia vale <1>+10 punti</1>. Qualsiasi tessera può formare una coppia: numerate, venti o draghi.",
+      "li1": "1-2-3 Cerchi (scala)",
+      "li2": "5-5-5 Bambù (tris)",
+      "li3": "6-7-8 Caratteri (scala)",
+      "li4": "Est-Est-Est (tris)",
+      "li5": "Coppia di Drago Rosso",
+      "p1": "Ogni round segue un ciclo semplice:"
+    },
+    "special_hands": {
+      "p1": "Due strutture speciali non seguono la regola delle 4 combinazioni + 1 coppia:"
+    },
+    "discarding": {
+      "li1": "<0>Inizia</0> con 13 tessere in mano",
+      "li2": "<0>Pesca</0> una tessera dal muro",
+      "li3": "Controlla se puoi <1>vincere</1> (mano valida + punteggio obiettivo)",
+      "li4": "Altrimenti <1>scarta</1> una tessera che non ti serve",
+      "p1": "Dopo la pescata (se non hai vinto) devi <2>scartare una tessera</2> per tornare a 13.",
+      "p2": "<0>Come scartare:</0>"
+    },
+    "shanten": {
+      "li1": "Ripeti finché non vinci o il muro non si esaurisce",
+      "p1": "Lo <0>shanten (向聴)</0> è il numero di tessere che devi cambiare per completare una mano vincente."
+    },
+    "scoring_overview": {
+      "note1": "Se il muro si esaurisce prima che tu completi una mano vincente, il round finisce in <1>sconfitta</1> e la partita è finita!",
+      "p1": "Il tuo punteggio si calcola con questa formula:"
+    },
+    "drawing": {
+      "p1": "All'inizio del turno <2>peschi una tessera</2> dal muro. Così hai temporaneamente 14 tessere.",
+      "p2": "Il <1>muro</1> parte con 70 tessere pescabili (dopo aver riservato il muro morto). Tieni d'occhio il contatore!"
+    },
+    "base_points": {
+      "note1": "Quando peschi una <1>tessera bonus</1> (Fiore o Stagione) viene scoperta automaticamente e ne peschi una sostitutiva. Non costa un turno!",
+      "li1": "<0>Tocca o clicca</0> una tessera per selezionarla",
+      "li2": "<0>Trascina verso l'alto</0> fino alla zona di scarto",
+      "li3": "Le tessere scartate finiscono nella <1>Riserva dei Morti</1>",
+      "p1": "Ogni tessera della tua mano vincente aggiunge <2>punti base</2>:"
+    },
+    "yaku_intro": {
+      "note1": "Le tessere scartate sono <2>perse per sempre</2>: scegli con attenzione cosa scartare!",
+      "li1": "<0>Punti base</0> — Dalle tessere stesse",
+      "li2": "<0>Punti di struttura</0> — Dalle combinazioni e dalla coppia",
+      "li3": "<0>Moltiplicatori</0> — Da Yaku, Decreti ed effetti",
+      "p1": "Gli <0>Yaku (役)</0> sono schemi speciali che <3>moltiplicano il punteggio</3>. È da qui che arrivano i punti grossi!",
+      "p2": "In Tensho ci sono <1>21 yaku</1>, divisi in 4 livelli:"
+    },
+    "yaku_examples": {
+      "note1": "Il gioco mostra il tuo shanten attuale. Più è basso, meglio è! Cerca di ridurlo a ogni turno.",
+      "p1": "Ecco alcuni yaku che incontrerai spesso:"
+    },
+    "boss_mandates": {
+      "note1": "Le tessere d'Onore danno <1>3 volte più punti</1> delle semplici! Una mano piena di onori avrà una base molto più alta.",
+      "p1": "Ogni <1>round Boss</1> ha un <3>Mandato</3> speciale: una restrizione o una sfida."
+    },
+    "structure_points": {
+      "p1": "Le combinazioni aggiungono <1>punti di struttura</1> alla base:",
+      "p2": "<0>Esempio:</0> una mano con 2 scale, 2 tris e una coppia:"
+    },
+    "decree_categories": {
+      "note1": "Gli yaku <1>si accumulano moltiplicandosi</1>! Una mano con yaku ×1,3 e ×2,0 ottiene ×2,6 in totale. Combina per punteggi enormi!",
+      "p1": "I Decreti sono divisi in <1>5 categorie</1>:"
+    },
+    "acts_rounds": {
+      "p1": "La partita si divide in <1>Atti</1>, e ogni Atto contiene <3>3 round</3>:",
+      "p2": "Gli obiettivi crescono a ogni Atto. L'Atto 1 è facile, ma all'Atto 8 serviranno combo potenti per sopravvivere!"
+    },
+    "decree_slots": {
+      "note1": "Alcuni Decreti aiutano a contrastare mandati specifici. Pianifica la build di conseguenza!",
+      "li1": "<0>Modificare il punteggio</0> — Aggiungere moltiplicatori o bonus fissi",
+      "li2": "<0>Piegare le regole</0> — Cambiare cosa rende valida una mano",
+      "li3": "<0>Concedere abilità</0> — Pescate extra, ripescate o effetti",
+      "p1": "Hai un numero limitato di <1>slot per Decreti</1>. Inizi con <3>5 slot</3> e puoi ottenerne altri tramite:"
+    },
+    "skipping": {
+      "p1": "Puoi <1>saltare</1> il round Piccolo o quello Grande prima di affrontare il Boss. Perché farlo?"
+    },
+    "decree_rarities": {
+      "li1": "Ricevi un Segno Premonitore",
+      "li2": "Conservi Decreti a tempo",
+      "li3": "Eviti muri sfavorevoli",
+      "li4": "Nessun accesso al negozio",
+      "li5": "Nessun oro guadagnato",
+      "li6": "Nessuna crescita degli interessi",
+      "p1": "I Decreti hanno <1>4 livelli di rarità</1>:"
+    },
+    "decrees_intro": {
+      "p1": "I <0>Decreti (法令)</0> sono carte che modificano le regole e restano per tutta la partita. Consideralii l'equivalente dei «Jolly» di Balatro.",
+      "p2": "I Decreti possono:"
+    },
+    "flowers_system": {
+      "li1": "<0>Generare oro</0> — Spinte per l'economia",
+      "p1": "I <0>Fiori</0> danno <3>bonus permanenti</3> che durano tutta la partita:",
+      "p2": "Raccogliere più fiori sblocca <2>bonus di collezione</2>: 2 fiori = +1 slot Decreto, 4 fiori = effetto floreale raddoppiato!"
+    },
+    "interest": {
+      "note1": "I Decreti più rari costano di più e compaiono meno spesso nel negozio. Anche le sinergie tra più Decreti comuni creano combo potenti!",
+      "p1": "Alla fine di ogni round guadagni <2>interessi</2> sull'oro risparmiato:"
+    },
+    "hierarchy": {
+      "li1": "Raccogliere <1>collezioni di Fiori</1> (2 o più = +1 slot)",
+      "li2": "Acquistare <1>Statuti Imperiali</1>",
+      "li3": "Certi <1>effetti dei Decreti</1>",
+      "p1": "Quando gli effetti entrano in conflitto, Tensho applica una <2>gerarchia di autorità</2>:"
+    },
+    "tips": {
+      "note1": "Puoi <1>vendere</1> i Decreti per ottenere oro. Questo libera uno slot e ti restituisce metà del prezzo d'acquisto."
+    },
+    "seasons_system": {
+      "p1": "Le <0>Stagioni</0> sono <3>modificatori temporanei</3> che durano solo per il round in corso:"
+    },
+    "more_tips": {
+      "note1": "Dall'Atto 2 in poi possono comparire <2>Stagioni Corrotte</2> con effetti negativi!",
+      "li1": "<0>Vincere i round</0> — Il pagamento base cresce col punteggio",
+      "li2": "<0>Interessi</0> — 1 oro ogni 5 risparmiati (max 5 per round)",
+      "li3": "<0>Vendere Decreti</0> — Recuperi metà del prezzo",
+      "li4": "<0>Effetti dei Decreti</0> — Alcuni generano oro"
+    },
+    "tea_house": {
+      "p1": "Dopo ogni round visiti la <2>Casa del Tè (茶寮)</2> per spendere il tuo oro:"
+    },
+    "gold_economy": {
+      "p1": "Guadagni <1>oro</1> in diversi modi:"
     }
   },
   "accessibility": {
