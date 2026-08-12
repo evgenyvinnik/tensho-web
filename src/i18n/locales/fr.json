@@ -887,7 +887,10 @@
     "finish": "Commencer à Jouer !",
     "welcome": {
       "title": "Bienvenue dans Tensho !",
-      "content": "Tensho est un jeu roguelike basé sur le Mahjong Riichi japonais. Votre objectif est de former des mains gagnantes et d'atteindre le score cible à chaque manche."
+      "content": "Tensho est un jeu roguelike basé sur le Mahjong Riichi japonais. Votre objectif est de former des mains gagnantes et d'atteindre le score cible à chaque manche.",
+      "p1": "<0>Tensho (天翔)</0> signifie « Ascension céleste » en japonais. C'est un <3>roguelike</3> bâti autour du jeu de tuiles classique qu'est le <6>Riichi Mahjong</6>.",
+      "p2": "Le but est simple : <2>composer des mains qui marquent</2> et atteindre le score cible de chaque manche. À défaut, la partie s'arrête.",
+      "note1": "Ne vous inquiétez pas si vous n'avez jamais joué au Mahjong ! Ce tutoriel vous apprendra tout, étape par étape."
     },
     "tiles": {
       "title": "Tuiles de Mahjong",
@@ -920,7 +923,206 @@
     "ready": {
       "title": "Vous Êtes Prêt !",
       "content1": "Bonne chance dans votre aventure !",
-      "content2": "Appuyez sur JOUER pour commencer votre première partie."
+      "content2": "Appuyez sur JOUER pour commencer votre première partie.",
+      "note1": "Vous pouvez <1>relancer</1> l'offre de la boutique pour 5 pièces d'or. Chaque relance coûte 1 de plus.",
+      "note2": "Conserver <1>25 pièces d'or ou plus</1> maximise les intérêts ! Mais investir dans de bons Décrets rapporte souvent davantage.",
+      "p1": "Inutile de tout retenir : vous apprendrez en jouant !",
+      "note3": "Vous pouvez revenir à ce codex depuis le menu des paramètres si besoin d'une piqûre de rappel."
+    },
+    "game_concept": {
+      "p1": "Contrairement au Mahjong traditionnel qui se joue contre des adversaires, Tensho est un <1>jeu de réflexion solo</1>. Vous courez après le score cible, pas après d'autres joueurs.",
+      "p2": "Une partie comporte plusieurs <2>Actes</2>, et chaque Acte compte <5>3 manches</5>. Les scores cibles augmentent à mesure que vous progressez.",
+      "p3": "Entre les manches, vous visitez la <2>Maison de Thé</2> (boutique) pour acquérir de puissants <5>Décrets</5> qui modifient les règles et augmentent votre potentiel de score."
+    },
+    "tiles_overview": {
+      "p1": "Le jeu utilise <1>144 tuiles</1> au total :"
+    },
+    "numbered_suits": {
+      "note1": "Chaque tuile standard apparaît <1>4 fois</1> dans le jeu. C'est essentiel pour planifier votre main !",
+      "p1": "Il existe <1>trois familles numérotées</1>, chacune allant de 1 à 9 :",
+      "p2": "<0>Caractères (萬子 / Manzu)</0> — Chiffres chinois accompagnés du caractère 萬 (wan, « dix mille »)",
+      "p3": "<0>Cercles (筒子 / Pinzu)</0> — Motifs circulaires représentant des pièces ou des points",
+      "p4": "<0>Bambous (索子 / Souzu)</0> — Représentent des tiges de bambou (le 1 de Bambou montre un oiseau)"
+    },
+    "terminals_simples": {
+      "p1": "Les tuiles numérotées se divisent en deux catégories importantes :"
+    },
+    "wind_tiles": {
+      "note1": "Les terminales valent le double des simples ! De nombreux yaku les exigent ou les excluent explicitement.",
+      "p1": "Il existe <1>quatre tuiles de Vent</1>, représentant les points cardinaux :",
+      "p2": "Les Vents sont des <1>tuiles d'Honneur</1> et valent <4>15 points</4> chacune — la valeur de base la plus élevée !"
+    },
+    "dragon_tiles": {
+      "note1": "Les Vents ne peuvent pas former de suites. Uniquement des brelans ou des paires.",
+      "p1": "Il existe <1>trois tuiles de Dragon</1> :",
+      "p2": "<0>白 (Dragon Blanc / Haku)</0> — Une tuile vierge ou encadrée, symbole de pureté ou de vide",
+      "p3": "<0>發 (Dragon Vert / Hatsu)</0> — Le caractère 發 en vert, signifiant « prospérité » ou « émettre »",
+      "p4": "<0>中 (Dragon Rouge / Chun)</0> — Le caractère 中 en rouge, signifiant « centre »",
+      "p5": "Comme les Vents, les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4> et ne peuvent pas former de suites."
+    },
+    "bonus_tiles": {
+      "p1": "Les <0>tuiles bonus</0> sont des tuiles spéciales qui ne font pas partie de votre main :"
+    },
+    "sequences": {
+      "note1": "Quand vous piochez une tuile bonus, elle est aussitôt révélée et vous piochez une tuile de remplacement. Fleurs et Saisons offrent des bonus et des effets évolutifs !",
+      "p1": "Une <1>suite</1>, ce sont <4>3 tuiles consécutives de la même famille</4>.",
+      "p2": "Exemples de suites valides :"
+    },
+    "melds_overview": {
+      "p1": "Une <1>combinaison</1> (aussi appelée « groupe ») est un assemblage précis de tuiles :",
+      "p2": "Comprendre les combinaisons est <1>essentiel</1> : votre main gagnante en est faite !"
+    },
+    "triplets": {
+      "li1": "1-2-3 de Cercles",
+      "li2": "4-5-6 de Caractères",
+      "li3": "7-8-9 de Bambous",
+      "p1": "Un <1>brelan</1>, ce sont <4>3 tuiles identiques</4>.",
+      "p2": "Exemples de brelans valides :"
+    },
+    "quads": {
+      "li1": "Les suites doivent être de la <1>même famille</1>",
+      "li2": "Elles <2>ne peuvent pas boucler</2> (pas de 9-1-2)",
+      "li3": "Les tuiles d'Honneur <2>ne peuvent pas former de suites</2>",
+      "p1": "Un <1>carré</1> (aussi appelé « kong » ou « kan »), ce sont <4>4 tuiles identiques</4>.",
+      "p2": "Les carrés sont la combinaison la plus rare, car il faut les 4 exemplaires d'une tuile !"
+    },
+    "pairs": {
+      "li1": "Trois 5 de Bambous",
+      "li2": "Trois Vents d'Est",
+      "li3": "Trois Dragons Rouges",
+      "p1": "Une <1>paire</1>, ce sont simplement <4>2 tuiles identiques</4>.",
+      "p2": "Toute main gagnante standard exige <2>exactement une paire</2>. On l'appelle parfois la « tête » (雀頭) de la main."
+    },
+    "winning_hand": {
+      "note1": "Les brelans valent <1>+30 points</1>, davantage que les suites (+20) ! Ils sont toutefois plus durs à réunir : il faut 3 tuiles identiques, et chaque tuile n'existe qu'en 4 exemplaires.",
+      "li1": "Vaut <1>+50 points</1> — le maximum pour une combinaison",
+      "li2": "Compte pour une seule combinaison malgré ses 4 tuiles",
+      "li3": "À la déclaration, vous piochez une tuile de remplacement",
+      "p1": "Une main gagnante standard se compose de :"
+    },
+    "gameplay_overview": {
+      "note1": "La paire vaut <1>+10 points</1>. N'importe quelle tuile peut former une paire : numérotée, vent ou dragon.",
+      "li1": "1-2-3 Cercles (suite)",
+      "li2": "5-5-5 Bambous (brelan)",
+      "li3": "6-7-8 Caractères (suite)",
+      "li4": "Est-Est-Est (brelan)",
+      "li5": "Paire de Dragon Rouge",
+      "p1": "Chaque manche suit un cycle simple :"
+    },
+    "special_hands": {
+      "p1": "Deux structures spéciales ne suivent pas la règle des 4 combinaisons + 1 paire :"
+    },
+    "discarding": {
+      "li1": "<0>Commencez</0> avec 13 tuiles en main",
+      "li2": "<0>Piochez</0> une tuile dans le mur",
+      "li3": "Vérifiez si vous pouvez <1>gagner</1> (main valide + score cible)",
+      "li4": "Sinon, <1>défaussez</1> une tuile dont vous n'avez pas besoin",
+      "p1": "Après la pioche (si vous n'avez pas gagné), vous devez <2>défausser une tuile</2> pour revenir à 13.",
+      "p2": "<0>Comment défausser :</0>"
+    },
+    "shanten": {
+      "li1": "Répétez jusqu'à la victoire ou l'épuisement du mur",
+      "p1": "Le <0>shanten (向聴)</0> est le nombre de tuiles à changer pour compléter une main gagnante."
+    },
+    "scoring_overview": {
+      "note1": "Si le mur s'épuise avant que vous ne complétiez une main gagnante, la manche se solde par un <1>échec</1> et la partie s'arrête !",
+      "p1": "Votre score est calculé avec cette formule :"
+    },
+    "drawing": {
+      "p1": "Au début de votre tour, vous <2>piochez une tuile</2> dans le mur. Vous avez alors 14 tuiles temporairement.",
+      "p2": "Le <1>mur</1> commence avec 70 tuiles piochables (une fois le mur mort réservé). Surveillez le compteur !"
+    },
+    "base_points": {
+      "note1": "Quand vous piochez une <1>tuile bonus</1> (Fleur ou Saison), elle est révélée automatiquement et vous piochez une remplaçante. Cela ne coûte pas de tour !",
+      "li1": "<0>Touchez ou cliquez</0> une tuile pour la sélectionner",
+      "li2": "<0>Faites glisser vers le haut</0> jusqu'à la zone de défausse",
+      "li3": "Les tuiles défaussées rejoignent la <1>Réserve des morts</1>",
+      "p1": "Chaque tuile de votre main gagnante apporte des <2>points de base</2> :"
+    },
+    "yaku_intro": {
+      "note1": "Les tuiles défaussées sont <2>perdues à jamais</2> — choisissez soigneusement !",
+      "li1": "<0>Points de base</0> — Des tuiles elles-mêmes",
+      "li2": "<0>Points de structure</0> — De vos combinaisons et de votre paire",
+      "li3": "<0>Multiplicateurs</0> — Des Yaku, Décrets et effets",
+      "p1": "Les <0>Yaku (役)</0> sont des motifs spéciaux qui <3>multiplient votre score</3>. C'est de là que viennent les gros points !",
+      "p2": "Tensho compte <1>21 yaku</1>, répartis en 4 paliers :"
+    },
+    "yaku_examples": {
+      "note1": "Le jeu affiche votre shanten actuel. Plus il est bas, mieux c'est ! Cherchez à le réduire à chaque tour.",
+      "p1": "Voici quelques yaku que vous rencontrerez souvent :"
+    },
+    "boss_mandates": {
+      "note1": "Les tuiles d'Honneur rapportent <1>3 fois plus de points</1> que les simples ! Une main pleine d'honneurs aura une base bien plus élevée.",
+      "p1": "Chaque <1>manche de Boss</1> impose un <3>Mandat</3> spécial — une restriction ou un défi :"
+    },
+    "structure_points": {
+      "p1": "Vos combinaisons ajoutent des <1>points de structure</1> à votre base :",
+      "p2": "<0>Exemple :</0> une main avec 2 suites, 2 brelans et une paire :"
+    },
+    "decree_categories": {
+      "note1": "Les yaku <1>se cumulent en multipliant</1> ! Une main avec des yaku ×1,3 et ×2,0 obtient ×2,6 au total. Combinez pour des scores massifs !",
+      "p1": "Les Décrets sont répartis en <1>5 catégories</1> :"
+    },
+    "acts_rounds": {
+      "p1": "Votre partie se divise en <1>Actes</1>, et chaque Acte contient <3>3 manches</3> :",
+      "p2": "Les scores cibles montent à chaque Acte. L'Acte 1 est facile, mais à l'Acte 8 il vous faudra de puissantes combinaisons pour survivre !"
+    },
+    "decree_slots": {
+      "note1": "Certains Décrets aident à contrer des mandats précis. Planifiez votre build en conséquence !",
+      "li1": "<0>Modifier le score</0> — Ajouter des multiplicateurs ou des bonus fixes",
+      "li2": "<0>Infléchir les règles</0> — Changer ce qui constitue une main légale",
+      "li3": "<0>Accorder des capacités</0> — Pioches, repioches ou effets supplémentaires",
+      "p1": "Vous disposez d'un nombre limité d'<1>emplacements de Décret</1>. Vous commencez avec <3>5 emplacements</3> et pouvez en gagner via :"
+    },
+    "skipping": {
+      "p1": "Vous pouvez <1>sauter</1> la manche Petite ou Grande avant d'affronter le Boss. Pourquoi le faire ?"
+    },
+    "decree_rarities": {
+      "li1": "Recevoir une Marque de Présage",
+      "li2": "Préserver des Décrets à minuterie",
+      "li3": "Éviter des murs défavorables",
+      "li4": "Aucun accès à la boutique",
+      "li5": "Aucun or gagné",
+      "li6": "Aucune croissance des intérêts",
+      "p1": "Les Décrets existent en <1>4 niveaux de rareté</1> :"
+    },
+    "decrees_intro": {
+      "p1": "Les <0>Décrets (法令)</0> sont des cartes qui modifient les règles et persistent toute la partie. Voyez-les comme l'équivalent des « Jokers » de Balatro.",
+      "p2": "Les Décrets peuvent :"
+    },
+    "flowers_system": {
+      "li1": "<0>Générer de l'or</0> — Moteurs économiques",
+      "p1": "Les <0>Fleurs</0> confèrent des <3>bonus permanents</3> qui durent toute la partie :",
+      "p2": "Réunir plusieurs fleurs débloque des <2>bonus de collection</2> : 2 fleurs = +1 emplacement de Décret, 4 fleurs = effet floral doublé !"
+    },
+    "interest": {
+      "note1": "Les Décrets rares coûtent plus cher et sont plus rares en boutique. Les synergies entre plusieurs Décrets communs forment aussi de puissants combos !",
+      "p1": "À la fin de chaque manche, vous gagnez des <2>intérêts</2> sur l'or économisé :"
+    },
+    "hierarchy": {
+      "li1": "Réunir des <1>collections de Fleurs</1> (2 fleurs ou plus = +1 emplacement)",
+      "li2": "Acheter des <1>Chartes impériales</1>",
+      "li3": "Certains <1>effets de Décret</1>",
+      "p1": "En cas de conflit entre effets, Tensho applique une <2>hiérarchie d'autorité</2> :"
+    },
+    "tips": {
+      "note1": "Vous pouvez <1>vendre</1> des Décrets contre de l'or. Cela libère un emplacement et vous rend la moitié du prix d'achat."
+    },
+    "seasons_system": {
+      "p1": "Les <0>Saisons</0> sont des <3>modificateurs temporaires</3> qui ne durent que la manche en cours :"
+    },
+    "more_tips": {
+      "note1": "À partir de l'Acte 2, des <2>Saisons corrompues</2> peuvent apparaître avec des effets négatifs !",
+      "li1": "<0>Gagner des manches</0> — Le gain de base évolue avec le score",
+      "li2": "<0>Intérêts</0> — 1 or pour 5 or économisés (max. 5 par manche)",
+      "li3": "<0>Vendre des Décrets</0> — Récupérez la moitié du prix d'achat",
+      "li4": "<0>Effets de Décret</0> — Certains génèrent de l'or"
+    },
+    "tea_house": {
+      "p1": "Après chaque manche, vous visitez la <2>Maison de Thé (茶寮)</2> pour dépenser votre or :"
+    },
+    "gold_economy": {
+      "p1": "Vous gagnez de l'<1>or</1> de plusieurs façons :"
     }
   },
   "accessibility": {

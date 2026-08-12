@@ -887,7 +887,10 @@
     "finish": "¡Comenzar a Jugar!",
     "welcome": {
       "title": "¡Bienvenido a Tensho!",
-      "content": "Tensho es un juego roguelike basado en el Mahjong Riichi japonés. Tu objetivo es formar manos puntuables y alcanzar la puntuación objetivo en cada ronda."
+      "content": "Tensho es un juego roguelike basado en el Mahjong Riichi japonés. Tu objetivo es formar manos puntuables y alcanzar la puntuación objetivo en cada ronda.",
+      "p1": "<0>Tensho (天翔)</0> significa «Ascenso Celestial» en japonés. Es un <3>roguelike</3> construido sobre el clásico juego de fichas <6>Riichi Mahjong</6>.",
+      "p2": "El objetivo es simple: <2>forma manos que puntúen</2> y alcanza la puntuación objetivo de cada ronda. Si no la alcanzas, tu partida termina.",
+      "note1": "¡No te preocupes si nunca has jugado al Mahjong! Este tutorial te enseñará todo lo necesario, paso a paso."
     },
     "tiles": {
       "title": "Fichas de Mahjong",
@@ -920,7 +923,206 @@
     "ready": {
       "title": "¡Estás Listo!",
       "content1": "¡Buena suerte en tu viaje!",
-      "content2": "Presiona JUGAR para comenzar tu primera partida."
+      "content2": "Presiona JUGAR para comenzar tu primera partida.",
+      "note1": "Puedes <1>renovar</1> la oferta de la tienda por 5 de oro. Cada renovación cuesta 1 más.",
+      "note2": "¡Guardar <1>25 o más de oro</1> maximiza los intereses! Aunque gastar en buenos decretos suele rendir más.",
+      "p1": "No te preocupes por memorizarlo todo: ¡aprenderás jugando!",
+      "note3": "Siempre puedes volver a este códice desde el menú de ajustes si necesitas repasar."
+    },
+    "game_concept": {
+      "p1": "A diferencia del Mahjong tradicional, que se juega contra rivales, Tensho es un <1>juego de puzles para un jugador</1>. Compites contra la puntuación objetivo, no contra otros jugadores.",
+      "p2": "Cada partida consta de varios <2>Actos</2>, y cada Acto tiene <5>3 rondas</5>. Los objetivos de puntuación suben conforme avanzas.",
+      "p3": "Entre rondas visitarás la <2>Casa de Té</2> (tienda) para conseguir <5>Decretos</5> poderosos que modifican las reglas y aumentan tu puntuación."
+    },
+    "tiles_overview": {
+      "p1": "El juego usa <1>144 fichas</1> en total:"
+    },
+    "numbered_suits": {
+      "note1": "Cada ficha estándar aparece <1>4 veces</1> en el juego. ¡Es importante para planificar tu mano!",
+      "p1": "Hay <1>tres palos numerados</1>, cada uno con fichas del 1 al 9:",
+      "p2": "<0>Caracteres (萬子 / Manzu)</0> — Muestran numerales chinos con el carácter 萬 (wan, «diez mil»)",
+      "p3": "<0>Círculos (筒子 / Pinzu)</0> — Muestran patrones circulares que representan monedas o puntos",
+      "p4": "<0>Bambú (索子 / Souzu)</0> — Representan cañas de bambú (el 1 de Bambú muestra un pájaro)"
+    },
+    "terminals_simples": {
+      "p1": "Las fichas numeradas se dividen en dos categorías importantes:"
+    },
+    "wind_tiles": {
+      "note1": "¡Los terminales valen el doble que los simples! Muchos yaku también los exigen o los excluyen expresamente.",
+      "p1": "Hay <1>cuatro fichas de Viento</1>, que representan los puntos cardinales:",
+      "p2": "Las fichas de Viento son <1>fichas de Honor</1> y valen <4>15 puntos</4> cada una: ¡el valor base más alto!"
+    },
+    "dragon_tiles": {
+      "note1": "Los Vientos no pueden formar escaleras. Solo tríos o parejas.",
+      "p1": "Hay <1>tres fichas de Dragón</1>:",
+      "p2": "<0>白 (Dragón Blanco / Haku)</0> — Una ficha en blanco o enmarcada, que representa la pureza o el vacío",
+      "p3": "<0>發 (Dragón Verde / Hatsu)</0> — El carácter 發 en verde, que significa «prosperidad» o «emitir»",
+      "p4": "<0>中 (Dragón Rojo / Chun)</0> — El carácter 中 en rojo, que significa «centro»",
+      "p5": "Como los Vientos, los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4> y no pueden formar escaleras."
+    },
+    "bonus_tiles": {
+      "p1": "Las <0>fichas de bonificación</0> son fichas especiales que no forman parte de tu mano:"
+    },
+    "sequences": {
+      "note1": "Cuando robas una ficha de bonificación, se revela al instante y robas otra en su lugar. ¡Flores y Estaciones dan bonificaciones y efectos crecientes!",
+      "p1": "Una <1>escalera</1> son <4>3 fichas consecutivas del mismo palo</4>.",
+      "p2": "Ejemplos de escaleras válidas:"
+    },
+    "melds_overview": {
+      "p1": "Un <1>grupo</1> (también llamado «combinación») es una combinación concreta de fichas:",
+      "p2": "Entender los grupos es <1>esencial</1>: ¡tu mano ganadora se compone de estas piezas!"
+    },
+    "triplets": {
+      "li1": "1-2-3 de Círculos",
+      "li2": "4-5-6 de Caracteres",
+      "li3": "7-8-9 de Bambú",
+      "p1": "Un <1>trío</1> son <4>3 fichas idénticas</4>.",
+      "p2": "Ejemplos de tríos válidos:"
+    },
+    "quads": {
+      "li1": "Las escaleras deben ser del <1>mismo palo</1>",
+      "li2": "<2>No pueden dar la vuelta</2> (no vale 9-1-2)",
+      "li3": "Las fichas de Honor <2>no pueden formar escaleras</2>",
+      "p1": "Un <1>cuarteto</1> (también llamado «kong» o «kan») son <4>4 fichas idénticas</4>.",
+      "p2": "¡Los cuartetos son el grupo más raro, ya que necesitas las 4 copias de una ficha!"
+    },
+    "pairs": {
+      "li1": "Tres 5 de Bambú",
+      "li2": "Tres Vientos del Este",
+      "li3": "Tres Dragones Rojos",
+      "p1": "Una <1>pareja</1> son simplemente <4>2 fichas idénticas</4>.",
+      "p2": "Toda mano ganadora estándar necesita <2>exactamente una pareja</2>. A veces se la llama la «cabeza» (雀頭) de la mano."
+    },
+    "winning_hand": {
+      "note1": "Los tríos valen <1>+30 puntos</1>, más que las escaleras (+20). Sin embargo, son más difíciles de completar: necesitas 3 fichas iguales y cada ficha solo aparece 4 veces.",
+      "li1": "Vale <1>+50 puntos</1>: lo máximo de cualquier grupo",
+      "li2": "Cuenta como un solo grupo pese a tener 4 fichas",
+      "li3": "Al declararlo, robas una ficha de reemplazo",
+      "p1": "Una mano ganadora estándar se compone de:"
+    },
+    "gameplay_overview": {
+      "note1": "La pareja vale <1>+10 puntos</1>. Cualquier ficha puede formar pareja: numeradas, vientos o dragones.",
+      "li1": "1-2-3 de Círculos (escalera)",
+      "li2": "5-5-5 de Bambú (trío)",
+      "li3": "6-7-8 de Caracteres (escalera)",
+      "li4": "Este-Este-Este (trío)",
+      "li5": "Pareja de Dragón Rojo",
+      "p1": "Cada ronda sigue un ciclo sencillo:"
+    },
+    "special_hands": {
+      "p1": "Dos estructuras especiales no siguen la regla de 4 grupos + 1 pareja:"
+    },
+    "discarding": {
+      "li1": "<0>Empieza</0> con 13 fichas en la mano",
+      "li2": "<0>Roba</0> una ficha del muro",
+      "li3": "Comprueba si puedes <1>ganar</1> (mano válida + puntuación objetivo)",
+      "li4": "Si no, <1>descarta</1> una ficha que no necesites",
+      "p1": "Tras robar (si no has ganado), debes <2>descartar una ficha</2> para volver a 13.",
+      "p2": "<0>Cómo descartar:</0>"
+    },
+    "shanten": {
+      "li1": "Repite hasta ganar o hasta que el muro se agote",
+      "p1": "El <0>shanten (向聴)</0> es el número de fichas que debes cambiar para completar una mano ganadora."
+    },
+    "scoring_overview": {
+      "note1": "Si el muro se agota antes de completar una mano ganadora, la ronda termina en <1>derrota</1> y tu partida acaba.",
+      "p1": "Tu puntuación se calcula con esta fórmula:"
+    },
+    "drawing": {
+      "p1": "Al inicio de tu turno, <2>robas una ficha</2> del muro. Así tienes 14 fichas temporalmente.",
+      "p2": "El <1>muro</1> empieza con 70 fichas robables (tras reservar el muro muerto). ¡Vigila el contador de fichas restantes!"
+    },
+    "base_points": {
+      "note1": "Cuando robas una <1>ficha de bonificación</1> (Flor o Estación), se revela automáticamente y robas otra. ¡No cuesta turno!",
+      "li1": "<0>Toca o haz clic</0> en una ficha para seleccionarla",
+      "li2": "<0>Arrastra hacia arriba</0> hasta la zona de descarte",
+      "li3": "Las fichas descartadas van al <1>Pozo Muerto</1>",
+      "p1": "Cada ficha de tu mano ganadora aporta <2>puntos base</2>:"
+    },
+    "yaku_intro": {
+      "note1": "Las fichas descartadas <2>se pierden para siempre</2>: ¡elige con cuidado qué descartas!",
+      "li1": "<0>Puntos base</0> — De las propias fichas",
+      "li2": "<0>Puntos de estructura</0> — De tus grupos y tu pareja",
+      "li3": "<0>Multiplicadores</0> — De Yaku, Decretos y efectos",
+      "p1": "Los <0>Yaku (役)</0> son patrones especiales que <3>multiplican tu puntuación</3>. ¡De aquí salen los grandes puntos!",
+      "p2": "Hay <1>21 yaku</1> en Tensho, organizados en 4 niveles:"
+    },
+    "yaku_examples": {
+      "note1": "El juego muestra tu shanten actual. ¡Cuanto más bajo, mejor! Intenta reducirlo cada turno.",
+      "p1": "Estos son algunos yaku que encontrarás a menudo:"
+    },
+    "boss_mandates": {
+      "note1": "¡Las fichas de Honor dan <1>3 veces más puntos</1> que las simples! Una mano llena de honores tendrá una base mucho más alta.",
+      "p1": "Cada <1>ronda de Jefe</1> tiene un <3>Mandato</3> especial: una restricción o un desafío."
+    },
+    "structure_points": {
+      "p1": "Tus grupos añaden <1>puntos de estructura</1> a la base:",
+      "p2": "<0>Ejemplo:</0> una mano con 2 escaleras, 2 tríos y una pareja:"
+    },
+    "decree_categories": {
+      "note1": "¡Los yaku <1>se acumulan multiplicando</1>! Una mano con yaku ×1,3 y ×2,0 obtiene ×2,6 en total. ¡Combina para puntuaciones enormes!",
+      "p1": "Los Decretos se organizan en <1>5 categorías</1>:"
+    },
+    "acts_rounds": {
+      "p1": "Tu partida se divide en <1>Actos</1>, y cada Acto contiene <3>3 rondas</3>:",
+      "p2": "Los objetivos suben con cada Acto. El Acto 1 es fácil, ¡pero en el Acto 8 necesitarás combos potentes para sobrevivir!"
+    },
+    "decree_slots": {
+      "note1": "Algunos Decretos ayudan a contrarrestar mandatos concretos. ¡Planifica tu construcción en consecuencia!",
+      "li1": "<0>Modificar la puntuación</0> — Añadir multiplicadores o bonificaciones fijas",
+      "li2": "<0>Doblar las reglas</0> — Cambiar qué es una mano legal",
+      "li3": "<0>Otorgar habilidades</0> — Robos extra, recambios o efectos",
+      "p1": "Tienes un número limitado de <1>ranuras de Decreto</1>. Empiezas con <3>5 ranuras</3> y puedes conseguir más mediante:"
+    },
+    "skipping": {
+      "p1": "Puedes <1>saltarte</1> la ronda Pequeña o la Grande antes de enfrentarte al Jefe. ¿Por qué harías eso?"
+    },
+    "decree_rarities": {
+      "li1": "Recibes una Marca de Presagio",
+      "li2": "Conservas Decretos con temporizador",
+      "li3": "Evitas muros desfavorables",
+      "li4": "Sin acceso a la tienda",
+      "li5": "Sin ganancia de oro",
+      "li6": "Sin crecimiento de intereses",
+      "p1": "Los Decretos tienen <1>4 niveles de rareza</1>:"
+    },
+    "decrees_intro": {
+      "p1": "Los <0>Decretos (法令)</0> son cartas que modifican las reglas y permanecen toda la partida. Son el equivalente de los «comodines» de Balatro.",
+      "p2": "Los Decretos pueden:"
+    },
+    "flowers_system": {
+      "li1": "<0>Generar oro</0> — Impulsores económicos",
+      "p1": "Las <0>Flores</0> otorgan <3>bonificaciones permanentes</3> que duran toda la partida:",
+      "p2": "Reunir varias flores desbloquea <2>bonificaciones de conjunto</2>: 2 flores = +1 ranura de Decreto, 4 flores = ¡efecto floral doble!"
+    },
+    "interest": {
+      "note1": "Los Decretos más raros son más caros y menos frecuentes en la tienda. ¡Las sinergias entre varios Decretos comunes también forman combos potentes!",
+      "p1": "Al final de cada ronda ganas <2>intereses</2> sobre el oro ahorrado:"
+    },
+    "hierarchy": {
+      "li1": "Reunir <1>conjuntos de Flores</1> (2 o más = +1 ranura)",
+      "li2": "Comprar <1>Cartas Imperiales</1>",
+      "li3": "Ciertos <1>efectos de Decreto</1>",
+      "p1": "Cuando los efectos entran en conflicto, Tensho aplica una <2>jerarquía de autoridad</2>:"
+    },
+    "tips": {
+      "note1": "Puedes <1>vender</1> Decretos por oro. Eso libera una ranura y te devuelve la mitad del precio de compra."
+    },
+    "seasons_system": {
+      "p1": "Las <0>Estaciones</0> son <3>modificadores temporales</3> que solo duran la ronda actual:"
+    },
+    "more_tips": {
+      "note1": "¡A partir del Acto 2 pueden aparecer <2>Estaciones Corruptas</2> con efectos negativos!",
+      "li1": "<0>Ganar rondas</0> — El pago base escala con la puntuación",
+      "li2": "<0>Intereses</0> — 1 de oro por cada 5 ahorrados (máx. 5 por ronda)",
+      "li3": "<0>Vender Decretos</0> — Recuperas la mitad del precio",
+      "li4": "<0>Efectos de Decreto</0> — Algunos generan oro"
+    },
+    "tea_house": {
+      "p1": "Tras cada ronda visitas la <2>Casa de Té (茶寮)</2> para gastar tu oro:"
+    },
+    "gold_economy": {
+      "p1": "Ganas <1>oro</1> de varias formas:"
     }
   },
   "accessibility": {
