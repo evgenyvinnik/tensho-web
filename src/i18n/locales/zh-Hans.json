@@ -1344,7 +1344,9 @@
     "title": "手牌录",
     "progress": "收集进度",
     "recentDiscoveries": "最近发现",
-    "undiscovered": "未发现"
+    "undiscovered": "未发现",
+    "percentComplete": "已完成 {{percent}}%",
+    "remaining": "还剩 {{count}}"
   },
   "errors": {
     "failedToLoad": "组件加载失败",

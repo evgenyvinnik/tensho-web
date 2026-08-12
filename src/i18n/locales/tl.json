@@ -602,7 +602,9 @@
     "title": "Talaan ng mga Kamay",
     "progress": "Progreso ng koleksyon",
     "recentDiscoveries": "Mga bagong natuklasan",
-    "undiscovered": "Hindi pa natutuklasan"
+    "undiscovered": "Hindi pa natutuklasan",
+    "percentComplete": "{{percent}}% tapos na",
+    "remaining": "{{count}} ang natitira"
   },
   "errors": {
     "failedToLoad": "Nabigong i-load ang component",

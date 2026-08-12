@@ -341,8 +341,16 @@ export function CollectionScreen() {
               />
             </div>
             <div className="mt-1 hidden justify-between text-xs text-[var(--color-metallic-gold)] sm:flex">
-              <span>{stats.completionPercentage.toFixed(1)}% Complete</span>
-              <span>{stats.totalItems - stats.totalDiscovered} remaining</span>
+              <span>
+                {t('collection.percentComplete', '{{percent}}% Complete', {
+                  percent: stats.completionPercentage.toFixed(1),
+                })}
+              </span>
+              <span>
+                {t('collection.remaining', '{{count}} remaining', {
+                  count: stats.totalItems - stats.totalDiscovered,
+                })}
+              </span>
             </div>
           </div>
         </div>

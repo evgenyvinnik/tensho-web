@@ -602,7 +602,9 @@
     "title": "Eller Arşivi",
     "progress": "Koleksiyon ilerlemesi",
     "recentDiscoveries": "Son keşifler",
-    "undiscovered": "Keşfedilmedi"
+    "undiscovered": "Keşfedilmedi",
+    "percentComplete": "%{{percent}} tamamlandı",
+    "remaining": "{{count}} kaldı"
   },
   "errors": {
     "failedToLoad": "Bileşen yüklenemedi",

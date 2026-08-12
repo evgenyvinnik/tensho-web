@@ -1344,7 +1344,9 @@
     "title": "手牌録",
     "progress": "収集の進み",
     "recentDiscoveries": "最近の発見",
-    "undiscovered": "未発見"
+    "undiscovered": "未発見",
+    "percentComplete": "{{percent}}% 完了",
+    "remaining": "残り {{count}}"
   },
   "errors": {
     "failedToLoad": "コンポーネントの読み込みに失敗しました",

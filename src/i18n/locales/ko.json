@@ -1344,7 +1344,9 @@
     "title": "패의 기록",
     "progress": "수집 진행도",
     "recentDiscoveries": "최근 발견",
-    "undiscovered": "미발견"
+    "undiscovered": "미발견",
+    "percentComplete": "{{percent}}% 완료",
+    "remaining": "{{count}}개 남음"
   },
   "errors": {
     "failedToLoad": "컴포넌트를 불러오지 못했습니다",

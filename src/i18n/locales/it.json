@@ -602,7 +602,9 @@
     "title": "Archivio delle Mani",
     "progress": "Progressi della collezione",
     "recentDiscoveries": "Scoperte recenti",
-    "undiscovered": "Non scoperto"
+    "undiscovered": "Non scoperto",
+    "percentComplete": "{{percent}}% completato",
+    "remaining": "ne mancano {{count}}"
   },
   "errors": {
     "failedToLoad": "Impossibile caricare il componente",

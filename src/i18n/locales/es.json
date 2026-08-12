@@ -1344,7 +1344,9 @@
     "title": "Archivo de Manos",
     "progress": "Progreso de colección",
     "recentDiscoveries": "Descubrimientos recientes",
-    "undiscovered": "Sin descubrir"
+    "undiscovered": "Sin descubrir",
+    "percentComplete": "{{percent}}% completado",
+    "remaining": "quedan {{count}}"
   },
   "errors": {
     "failedToLoad": "Error al cargar el componente",

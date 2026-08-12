@@ -1344,7 +1344,9 @@
     "title": "Archive des Mains",
     "progress": "Progression de la collection",
     "recentDiscoveries": "Découvertes récentes",
-    "undiscovered": "Non découvert"
+    "undiscovered": "Non découvert",
+    "percentComplete": "{{percent}} % terminé",
+    "remaining": "{{count}} restants"
   },
   "errors": {
     "failedToLoad": "Échec du chargement du composant",

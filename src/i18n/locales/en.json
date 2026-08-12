@@ -1812,7 +1812,9 @@
     "undiscovered": "Undiscovered",
     "title": "Archive of Hands",
     "progress": "Collection Progress",
-    "recentDiscoveries": "Recent Discoveries"
+    "recentDiscoveries": "Recent Discoveries",
+    "percentComplete": "{{percent}}% Complete",
+    "remaining": "{{count}} remaining"
   },
   "errors": {
     "failedToLoad": "Failed to load component",

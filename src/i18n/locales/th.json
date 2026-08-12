@@ -602,7 +602,9 @@
     "title": "บันทึกมือไพ่",
     "progress": "ความคืบหน้าการสะสม",
     "recentDiscoveries": "การค้นพบล่าสุด",
-    "undiscovered": "ยังไม่ค้นพบ"
+    "undiscovered": "ยังไม่ค้นพบ",
+    "percentComplete": "เสร็จแล้ว {{percent}}%",
+    "remaining": "เหลืออีก {{count}}"
   },
   "errors": {
     "failedToLoad": "โหลดคอมโพเนนต์ไม่สำเร็จ",

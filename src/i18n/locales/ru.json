@@ -602,7 +602,9 @@
     "title": "Архив рук",
     "progress": "Прогресс коллекции",
     "recentDiscoveries": "Недавние находки",
-    "undiscovered": "Не открыто"
+    "undiscovered": "Не открыто",
+    "percentComplete": "Выполнено {{percent}}%",
+    "remaining": "осталось {{count}}"
   },
   "errors": {
     "failedToLoad": "Не удалось загрузить компонент",

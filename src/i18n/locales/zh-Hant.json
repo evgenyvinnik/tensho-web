@@ -776,6 +776,62 @@
       "decree-omega": {
         "name": "終極",
         "description": "+500籌碼，+50倍率，x2.0倍率"
+      },
+      "river_tax": {
+        "name": "河川稅",
+        "description": "本回合每棄1張牌獲得1金幣。"
+      },
+      "extended_hand_grant": {
+        "name": "延手敕許",
+        "description": "回合失敗前額外+3次摸牌。"
+      },
+      "tanyao_dispensation": {
+        "name": "斷么特許",
+        "description": "斷么九手牌中允許出現么九牌（1與9）。"
+      },
+      "moonlit_seal": {
+        "name": "月光之封",
+        "description": "和牌中每張字牌使倍率+0.1x。"
+      },
+      "pure_suit_asceticism": {
+        "name": "純色苦行",
+        "description": "主花色的每張牌使得分+10%，以乘法疊加。"
+      },
+      "broken_stair_edict": {
+        "name": "斷階敕令",
+        "description": "順子可跳過一個點數（如1-3-4亦有效）。"
+      },
+      "false_eye_mandate": {
+        "name": "偽眼敕命",
+        "description": "一個面子可兼作將牌。"
+      },
+      "honor_transmutation": {
+        "name": "字牌嬗變",
+        "description": "字牌可算作你最多花色的數牌。"
+      },
+      "celestial_wildcard": {
+        "name": "天之萬能牌",
+        "description": "每手可有1張牌充當任意其他牌。"
+      },
+      "dead_wall_writ": {
+        "name": "王牌令狀",
+        "description": "每回合一次，可從牌河而非牌山摸牌。"
+      },
+      "shanten_clemency": {
+        "name": "向聽寬宥",
+        "description": "一向聽亦可計分，但扣減50%得分。"
+      },
+      "closed_hand_austerity": {
+        "name": "門清苦修",
+        "description": "完全門清的手牌獲得×1.5倍率。"
+      },
+      "terminal_devotion": {
+        "name": "么九虔信",
+        "description": "手中每張么九牌使最終得分+5%。"
+      },
+      "yaku_repetition_charter": {
+        "name": "役重複敕許",
+        "description": "重複計入上一回合的役可提升倍率。"
       }
     }
   },
@@ -865,7 +921,121 @@
     "theNeedle": "針",
     "thePillar": "柱",
     "theWater": "水",
-    "theArm": "腕"
+    "theArm": "腕",
+    "items": {
+      "the_hook": {
+        "name": "鉤",
+        "description": "每次摸牌後隨機棄掉手中2張牌"
+      },
+      "the_wall": {
+        "name": "牆",
+        "description": "超大分數要求（4倍而非2倍）"
+      },
+      "the_eye": {
+        "name": "眼",
+        "description": "本回合不得重複役（每種役只計一次）"
+      },
+      "the_mouth": {
+        "name": "口",
+        "description": "本回合只能計一種役"
+      },
+      "the_flint": {
+        "name": "燧石",
+        "description": "整回合基礎分與倍率減半"
+      },
+      "the_needle": {
+        "name": "針",
+        "description": "必須在恰好1手內完成（不得重試）"
+      },
+      "the_pillar": {
+        "name": "柱",
+        "description": "本幕先前回合用過的牌被削弱"
+      },
+      "the_water": {
+        "name": "水",
+        "description": "本回合起始重抽為0"
+      },
+      "the_arm": {
+        "name": "臂",
+        "description": "計分時役的等級降低1"
+      },
+      "the_psychic": {
+        "name": "靈視者",
+        "description": "每手必須恰好打出5張牌"
+      },
+      "the_club": {
+        "name": "棍",
+        "description": "所有索子被削弱"
+      },
+      "the_goad": {
+        "name": "刺棒",
+        "description": "所有筒子被削弱"
+      },
+      "the_window": {
+        "name": "窗",
+        "description": "所有萬子被削弱"
+      },
+      "the_head": {
+        "name": "首",
+        "description": "所有箭牌被削弱"
+      },
+      "the_plant": {
+        "name": "草木",
+        "description": "所有字牌被削弱"
+      },
+      "the_ox": {
+        "name": "牛",
+        "description": "打出最常用的役會使金幣歸零"
+      },
+      "the_house": {
+        "name": "屋",
+        "description": "首手背面發牌"
+      },
+      "the_wheel": {
+        "name": "輪",
+        "description": "每7張牌中有1張背面發出"
+      },
+      "the_fish": {
+        "name": "魚",
+        "description": "每手之後所摸的牌為背面"
+      },
+      "the_serpent": {
+        "name": "蛇",
+        "description": "出牌或棄牌後必定摸3張"
+      },
+      "the_tooth": {
+        "name": "齒",
+        "description": "每打出1張牌損失1金幣"
+      },
+      "the_mark": {
+        "name": "印記",
+        "description": "所有字牌背面發出"
+      },
+      "the_manacle": {
+        "name": "鐐銬",
+        "description": "手牌上限-1"
+      },
+      "amber_acorn": {
+        "name": "琥珀橡實",
+        "description": "所有法令被洗亂並翻至背面"
+      },
+      "verdant_leaf": {
+        "name": "翠葉",
+        "description": "售出1個法令前所有牌被削弱"
+      },
+      "violet_vessel": {
+        "name": "紫器",
+        "description": "超超大目標（6倍而非2倍）"
+      },
+      "crimson_heart": {
+        "name": "緋紅之心",
+        "description": "每個出牌迴圈隨機禁用1個法令"
+      },
+      "cerulean_bell": {
+        "name": "蔚藍之鈴",
+        "description": "每次摸牌強制鎖定1張牌"
+      }
+    }
   },
   "stakes": {
     "title": "難度等級",
@@ -1174,7 +1344,9 @@
     "title": "手牌錄",
     "progress": "收集進度",
     "recentDiscoveries": "最近發現",
-    "undiscovered": "未發現"
+    "undiscovered": "未發現",
+    "percentComplete": "已完成 {{percent}}%",
+    "remaining": "還剩 {{count}}"
   },
   "errors": {
     "failedToLoad": "元件載入失敗",
@@ -1188,5 +1360,765 @@
     "table": "開局設定",
     "selected": "已選擇：",
     "chooseTable": "選擇牌桌與賭注"
+  },
+  "charters": {
+    "items": {
+      "abundant_stock": {
+        "name": "貨源充足",
+        "description": "商店欄位+1（至3）"
+      },
+      "discount_sale": {
+        "name": "折扣特賣",
+        "description": "全店商品降價25%"
+      },
+      "sharp_edge": {
+        "name": "鋒銳邊飾",
+        "description": "版本出現率提高2倍"
+      },
+      "reroll_surplus": {
+        "name": "重擲盈餘",
+        "description": "重擲費用減少2金幣"
+      },
+      "crystal_lens": {
+        "name": "水晶透鏡",
+        "description": "消耗品欄位+1"
+      },
+      "star_chart": {
+        "name": "星圖",
+        "description": "天球包內含最常用役的天球"
+      },
+      "steady_hand": {
+        "name": "穩健之手",
+        "description": "每回合手數+1"
+      },
+      "frugal_discard": {
+        "name": "儉省棄牌",
+        "description": "每回合重抽+1"
+      },
+      "seal_merchant": {
+        "name": "符商",
+        "description": "命運符出現率提高2倍"
+      },
+      "orb_merchant": {
+        "name": "天球商",
+        "description": "天球出現率提高2倍"
+      },
+      "seed_pouch": {
+        "name": "種袋",
+        "description": "利息上限提高至10金幣"
+      },
+      "empty_scroll": {
+        "name": "空白卷軸",
+        "description": "沒有效果"
+      },
+      "tile_trading": {
+        "name": "牌市",
+        "description": "可在商店購買牌"
+      },
+      "ancient_script": {
+        "name": "古卷",
+        "description": "幕-1，每回合手數-1"
+      },
+      "directors_take": {
+        "name": "班主分成",
+        "description": "每幕可重擲敕令1次（10金幣）"
+      },
+      "brush_stroke": {
+        "name": "一筆",
+        "description": "手牌上限+1"
+      },
+      "plentiful_stock": {
+        "name": "貨源豐沛",
+        "description": "商店欄位+1（至4）"
+      },
+      "liquidation_sale": {
+        "name": "清倉大甩賣",
+        "description": "全店商品降價50%"
+      },
+      "radiant_edge": {
+        "name": "輝光邊飾",
+        "description": "版本出現率提高4倍"
+      },
+      "reroll_abundance": {
+        "name": "重擲豐盈",
+        "description": "重擲費用減少4金幣"
+      },
+      "omen_lens": {
+        "name": "預兆透鏡",
+        "description": "秘儀包中可能出現虛空文"
+      },
+      "observatory": {
+        "name": "觀星臺",
+        "description": "持有的天球每個提供×1.5倍率"
+      },
+      "swift_hand": {
+        "name": "迅捷之手",
+        "description": "每回合手數再+1"
+      },
+      "wasteful_plenty": {
+        "name": "揮霍豐饒",
+        "description": "每回合重抽再+1"
+      },
+      "seal_tycoon": {
+        "name": "符業巨賈",
+        "description": "命運符出現率提高4倍"
+      },
+      "orb_tycoon": {
+        "name": "天球巨賈",
+        "description": "天球出現率提高4倍"
+      },
+      "money_tree": {
+        "name": "搖錢樹",
+        "description": "利息上限提高至20金幣"
+      },
+      "void_matter": {
+        "name": "虛空之質",
+        "description": "法令欄位+1"
+      },
+      "illusion_tiles": {
+        "name": "幻影之牌",
+        "description": "商店的牌可能帶有版本"
+      },
+      "stone_script": {
+        "name": "石刻",
+        "description": "幕再-1，每回合重抽-1"
+      },
+      "final_cut": {
+        "name": "終剪",
+        "description": "可無限次重擲敕令（每次10金幣）"
+      },
+      "full_palette": {
+        "name": "全色調色",
+        "description": "手牌上限再+1"
+      }
+    }
+  },
+  "omens": {
+    "items": {
+      "omen_of_crescents": {
+        "name": "新月之兆",
+        "description": "下次商店的商品欄必定出現天球。"
+      },
+      "omen_of_ash": {
+        "name": "灰燼之兆",
+        "description": "下一個使用的虛空文沒有負面代價。"
+      },
+      "omen_of_rivers": {
+        "name": "河川之兆",
+        "description": "下回合起始棄牌+1。"
+      },
+      "speed_omen": {
+        "name": "疾風之兆",
+        "description": "本次旅程每跳過一回合便獲得5金幣。"
+      },
+      "throwback_omen": {
+        "name": "回溯之兆",
+        "description": "每跳過一回合，本次旅程餘下時間獲得×0.25倍率。"
+      },
+      "fortune_omen": {
+        "name": "福運之兆",
+        "description": "立即獲得10金幣。"
+      },
+      "oracles_omen": {
+        "name": "神諭之兆",
+        "description": "下次商店有2次免費重擲。"
+      },
+      "merchants_omen": {
+        "name": "商賈之兆",
+        "description": "下次商店全部商品打75折。"
+      },
+      "seal_omen": {
+        "name": "符印之兆",
+        "description": "下次商店的商品欄必定出現命運符。"
+      },
+      "decree_omen": {
+        "name": "法令之兆",
+        "description": "下次商店必定出現稀有或更高階的法令。"
+      },
+      "void_omen": {
+        "name": "虛空之兆",
+        "description": "下次商店的商品欄提供虛空文。"
+      },
+      "expansion_omen": {
+        "name": "擴張之兆",
+        "description": "永久獲得法令欄位+1。"
+      },
+      "precision_omen": {
+        "name": "精準之兆",
+        "description": "下回合手牌上限+2。"
+      },
+      "abundance_omen": {
+        "name": "豐饒之兆",
+        "description": "下回合起始摸牌+2。"
+      },
+      "polychrome_omen": {
+        "name": "多彩之兆",
+        "description": "為隨機一個已有法令附加多彩版本。"
+      },
+      "foil_omen": {
+        "name": "箔光之兆",
+        "description": "下一個購買的法令獲得箔光版本。"
+      },
+      "interest_omen": {
+        "name": "利息之兆",
+        "description": "利息上限提高2，持續3回合。"
+      },
+      "score_surge_omen": {
+        "name": "湧分之兆",
+        "description": "下一次計分的手牌獲得+100基礎分。"
+      },
+      "multiplication_omen": {
+        "name": "倍增之兆",
+        "description": "下一次計分的手牌獲得×1.5倍率。"
+      },
+      "blessing_pack_omen": {
+        "name": "祝福包之兆",
+        "description": "下次商店贈送一個祝福包。"
+      },
+      "negative_omen": {
+        "name": "負影之兆",
+        "description": "下一個購買的法令獲得負影版本（欄位+1）。"
+      },
+      "austerity_omen": {
+        "name": "緊縮之兆",
+        "description": "立即獲得15金幣，但下回合沒有利息。"
+      },
+      "holographic_omen": {
+        "name": "全息之兆",
+        "description": "下一個購買的法令獲得全息版本。"
+      }
+    }
+  },
+  "seals": {
+    "items": {
+      "seal_of_the_alchemist": {
+        "name": "鍊金術士之符",
+        "description": "為選中的2張牌附加幸運印記"
+      },
+      "seal_of_the_empress": {
+        "name": "女帝之符",
+        "description": "為選中的2張牌附加加分印記"
+      },
+      "seal_of_the_sage": {
+        "name": "賢者之符",
+        "description": "為選中的2張牌附加籌碼印記"
+      },
+      "seal_of_harmony": {
+        "name": "和諧之符",
+        "description": "將1張牌轉為萬能牌（可當作任意花色）"
+      },
+      "seal_of_fortitude": {
+        "name": "堅毅之符",
+        "description": "將1張牌強化為鋼鐵印記（持有時×1.5倍率）"
+      },
+      "seal_of_glass": {
+        "name": "琉璃之符",
+        "description": "將1張牌強化為玻璃印記（×2倍率，可能碎裂）"
+      },
+      "seal_of_wealth": {
+        "name": "財富之符",
+        "description": "將1張牌強化為黃金印記（回合結束時持有則+3金幣）"
+      },
+      "seal_of_stone": {
+        "name": "磐石之符",
+        "description": "將1張牌強化為石之印記（+50籌碼，始終計分）"
+      },
+      "seal_of_manzu": {
+        "name": "萬子之符",
+        "description": "最多將3張牌轉為萬子"
+      },
+      "seal_of_pinzu": {
+        "name": "筒子之符",
+        "description": "最多將3張牌轉為筒子"
+      },
+      "seal_of_souzu": {
+        "name": "索子之符",
+        "description": "最多將3張牌轉為索子"
+      },
+      "seal_of_unity": {
+        "name": "統合之符",
+        "description": "最多將3張牌轉為字牌"
+      },
+      "seal_of_the_oracle": {
+        "name": "先知之符",
+        "description": "最多創造2個隨機天球（若有空位）"
+      },
+      "seal_of_the_emperor": {
+        "name": "皇帝之符",
+        "description": "最多創造2個隨機命運符（若有空位）"
+      },
+      "seal_of_the_fool": {
+        "name": "愚者之符",
+        "description": "創造本次旅程最後使用的命運符或天球"
+      },
+      "seal_of_judgment": {
+        "name": "審判之符",
+        "description": "創造一個隨機法令（若有空位）"
+      },
+      "seal_of_the_hermit": {
+        "name": "隱士之符",
+        "description": "金幣翻倍（最多+20金幣）"
+      },
+      "seal_of_balance": {
+        "name": "均衡之符",
+        "description": "獲得所有法令的售價總額（最多50金幣）"
+      },
+      "seal_of_strength": {
+        "name": "力量之符",
+        "description": "最多將2張牌的點數+1（上限9）"
+      },
+      "seal_of_release": {
+        "name": "解脫之符",
+        "description": "永久銷燬選中的最多2張牌"
+      },
+      "seal_of_transmutation": {
+        "name": "嬗變之符",
+        "description": "選擇2張牌，左邊變為右邊的複製"
+      },
+      "seal_of_fortune": {
+        "name": "機運之符",
+        "description": "有1/4機率為隨機法令附加箔光／全息／稜彩"
+      },
+      "seal_of_the_immortal": {
+        "name": "不朽之符",
+        "description": "創造一個神話法令（若有空位）"
+      },
+      "seal_of_the_void": {
+        "name": "虛無之符",
+        "description": "所有役提升1級"
+      }
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "冥王星球",
+        "description": "契合立直役。每級+1倍率、+10籌碼。"
+      },
+      "mercury_orb": {
+        "name": "水星球",
+        "description": "契合斷么九役。每級+1倍率、+15籌碼。"
+      },
+      "uranus_orb": {
+        "name": "天王星球",
+        "description": "契合役牌役。每級+1倍率、+20籌碼。"
+      },
+      "venus_orb": {
+        "name": "金星球",
+        "description": "契合平和役。每級+2倍率、+20籌碼。"
+      },
+      "saturn_orb": {
+        "name": "土星球",
+        "description": "契合一氣通貫役。每級+3倍率、+30籌碼。"
+      },
+      "jupiter_orb": {
+        "name": "木星球",
+        "description": "契合混一色役。每級+2倍率、+15籌碼。"
+      },
+      "earth_orb": {
+        "name": "地球球",
+        "description": "契合對對和役。每級+2倍率、+25籌碼。"
+      },
+      "mars_orb": {
+        "name": "火星球",
+        "description": "契合清一色役。每級+3倍率、+30籌碼。"
+      },
+      "neptune_orb": {
+        "name": "海王星球",
+        "description": "契合三色同順役。每級+4倍率、+40籌碼。"
+      },
+      "planet_x_orb": {
+        "name": "X行星球",
+        "description": "契合七對子役。每級+3倍率、+35籌碼。"
+      },
+      "ceres_orb": {
+        "name": "穀神星球",
+        "description": "契合混全帶么九役。每級+4倍率、+40籌碼。"
+      },
+      "eris_orb": {
+        "name": "鬩神星球",
+        "description": "契合國士無雙役。每級+3倍率、+50籌碼。"
+      },
+      "black_hole_orb": {
+        "name": "黑洞球",
+        "description": "使用時所有役提升1級。"
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_kinship": {
+        "name": "血親之文",
+        "description": "銷燬1張隨機牌，加入3張隨機強化字牌（風／箭）"
+      },
+      "script_of_the_grave": {
+        "name": "墳塋之文",
+        "description": "銷燬1張隨機牌，加入2張隨機強化么九牌"
+      },
+      "script_of_incantation": {
+        "name": "咒言之文",
+        "description": "銷燬1張隨機牌，加入4張隨機強化數牌"
+      },
+      "script_of_immolation": {
+        "name": "焚身之文",
+        "description": "銷燬手中5張隨機牌。獲得20金幣。"
+      },
+      "script_of_the_cryptid": {
+        "name": "秘獸之文",
+        "description": "為手中選中的1張牌創造2份複製"
+      },
+      "script_of_the_gold_seal": {
+        "name": "金印之文",
+        "description": "為選中的1張牌附加金封"
+      },
+      "script_of_deja_vu": {
+        "name": "既視之文",
+        "description": "為選中的1張牌附加紅封（重複計分）"
+      },
+      "script_of_the_trance": {
+        "name": "恍惚之文",
+        "description": "為1張牌附加藍封（最終手牌時生成天球）"
+      },
+      "script_of_the_medium": {
+        "name": "通靈之文",
+        "description": "為1張牌附加紫封（棄牌時生成符印）"
+      },
+      "script_of_aura": {
+        "name": "靈光之文",
+        "description": "為選中的1張牌附加箔光／全息／稜彩"
+      },
+      "script_of_ectoplasm": {
+        "name": "靈質之文",
+        "description": "為隨機法令附加負影（法令欄位+1）"
+      },
+      "script_of_the_wraith": {
+        "name": "幽魂之文",
+        "description": "創造一個隨機稀有法令"
+      },
+      "script_of_the_ankh": {
+        "name": "生命之符文",
+        "description": "複製一個隨機法令，銷燬其餘全部法令"
+      },
+      "script_of_the_hex": {
+        "name": "咒詛之文",
+        "description": "為隨機法令附加稜彩，銷燬其餘全部"
+      },
+      "script_of_the_sigil": {
+        "name": "符印之文",
+        "description": "將手中所有牌轉為隨機的單一花色"
+      },
+      "script_of_the_ouija": {
+        "name": "通靈板之文",
+        "description": "將手中所有牌轉為隨機的單一點數"
+      },
+      "script_of_the_soul": {
+        "name": "靈魂之文",
+        "description": "創造一個傳說（天啟）法令"
+      },
+      "script_of_the_singularity": {
+        "name": "奇點之文",
+        "description": "所有役提升1級"
+      },
+      "script_of_eclipse": {
+        "name": "蝕之文",
+        "description": "本回合可在一向聽時計分"
+      },
+      "script_of_mirrors": {
+        "name": "鏡之文",
+        "description": "複製手中的1張牌"
+      },
+      "script_of_silence": {
+        "name": "寂靜之文",
+        "description": "本手忽略一個不合法的面子"
+      }
+    }
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "法令",
+        "description": "跨回合持續生效的規則改寫"
+      },
+      "walls": {
+        "name": "牌山",
+        "description": "擁有獨特牌型構成的牌山變體"
+      },
+      "charters": {
+        "name": "皇家敕許",
+        "description": "擊敗敕令後可購買的永久強化"
+      },
+      "consumables": {
+        "name": "消耗品",
+        "description": "一次性物品：命運符、天球、虛空文"
+      },
+      "tileMarks": {
+        "name": "牌印",
+        "description": "改變牌之行為的強化型別"
+      },
+      "seals": {
+        "name": "封印",
+        "description": "為牌附加效果的特殊封印"
+      },
+      "editions": {
+        "name": "版本",
+        "description": "物品的外觀與效果變體"
+      },
+      "packs": {
+        "name": "祝福包",
+        "description": "內含各類強化的補充包"
+      },
+      "omens": {
+        "name": "預兆標記",
+        "description": "跳過回合可得的一次性命運改寫"
+      },
+      "mandates": {
+        "name": "敕令",
+        "description": "Boss回合的限制與挑戰"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "綠絨牌山",
+        "description": "含136張牌的標準起始牌山"
+      },
+      "red_wall": {
+        "name": "赤紅牌山",
+        "description": "強化紅寶牌的牌山"
+      },
+      "blue_wall": {
+        "name": "靛藍牌山",
+        "description": "偏重筒子的牌山"
+      },
+      "black_wall": {
+        "name": "玄黑牌山",
+        "description": "強化字牌的牌山"
+      },
+      "gold_wall": {
+        "name": "鎏金牌山",
+        "description": "帶有黃金強化之牌的牌山"
+      },
+      "crimson_wall": {
+        "name": "緋紅牌山",
+        "description": "擁有強力箭牌的牌山"
+      },
+      "obsidian_wall": {
+        "name": "黑曜牌山",
+        "description": "強化風牌的牌山"
+      },
+      "jade_wall": {
+        "name": "碧玉牌山",
+        "description": "偏重索子的牌山"
+      },
+      "ivory_wall": {
+        "name": "象牙牌山",
+        "description": "以么九牌為主的牌山"
+      },
+      "bamboo_wall": {
+        "name": "翠竹牌山",
+        "description": "索子佔主導的牌山"
+      },
+      "cherry_wall": {
+        "name": "櫻色牌山",
+        "description": "強化花牌的牌山"
+      },
+      "moon_wall": {
+        "name": "皓月牌山",
+        "description": "強化季節牌的牌山"
+      },
+      "star_wall": {
+        "name": "星辰牌山",
+        "description": "帶有天界加成的牌山"
+      },
+      "void_wall": {
+        "name": "虛空牌山",
+        "description": "沾染虛空之力的牌山"
+      },
+      "imperial_wall": {
+        "name": "御製牌山",
+        "description": "具備皇室構成的牌山"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "加分印記",
+        "description": "該牌獲得額外分數。計分時+30籌碼"
+      },
+      "mult": {
+        "name": "倍率印記",
+        "description": "該牌增加倍率。計分時+4倍率"
+      },
+      "wild": {
+        "name": "萬能印記",
+        "description": "該牌可充當任意花色。判定役時可視為任意花色"
+      },
+      "glass": {
+        "name": "玻璃印記",
+        "description": "脆弱卻強大。計分時×2倍率，有25%機率碎裂"
+      },
+      "steel": {
+        "name": "鋼鐵印記",
+        "description": "持有時獲益。留在手中時×1.5倍率"
+      },
+      "stone": {
+        "name": "磐石印記",
+        "description": "始終有所貢獻。+50籌碼，即使不在和牌中也計分"
+      },
+      "gold": {
+        "name": "黃金印記",
+        "description": "產出金幣。回合結束時持有則+3金幣"
+      },
+      "lucky": {
+        "name": "幸運印記",
+        "description": "隨機的額外收益。計分時有1/5機率+20倍率"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "金封",
+        "description": "打出時獲得金幣。在手牌中計分時+3金幣"
+      },
+      "red": {
+        "name": "紅封",
+        "description": "該牌觸發兩次。計分時額外重複一次"
+      },
+      "blue": {
+        "name": "藍封",
+        "description": "生成天球。為最終手牌的役生成天球"
+      },
+      "purple": {
+        "name": "紫封",
+        "description": "棄牌時生成命運符。被棄出時生成隨機命運符"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "普通",
+        "description": "標準外觀。沒有額外效果"
+      },
+      "foil": {
+        "name": "箔光",
+        "description": "閃爍的金屬質感。計分時+50籌碼"
+      },
+      "holographic": {
+        "name": "全息",
+        "description": "彩虹般的全息效果。計分時+10倍率"
+      },
+      "polychrome": {
+        "name": "多彩",
+        "description": "流轉變幻的稜彩。計分時×1.5倍率"
+      },
+      "negative": {
+        "name": "負影",
+        "description": "色彩倒轉，超然物外。附於法令時法令欄位+1"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "秘儀包",
+        "description": "從3個命運符中選1個"
+      },
+      "arcana_jumbo": {
+        "name": "大秘儀包",
+        "description": "從5個命運符中選1個"
+      },
+      "arcana_mega": {
+        "name": "特大秘儀包",
+        "description": "從5個命運符中選2個"
+      },
+      "celestial_normal": {
+        "name": "天球包",
+        "description": "從3個天球中選1個"
+      },
+      "celestial_jumbo": {
+        "name": "大天球包",
+        "description": "從5個天球中選1個"
+      },
+      "celestial_mega": {
+        "name": "特大天球包",
+        "description": "從5個天球中選2個"
+      },
+      "tile_normal": {
+        "name": "牌包",
+        "description": "從3張改造牌中選1張"
+      },
+      "tile_jumbo": {
+        "name": "大牌包",
+        "description": "從5張改造牌中選1張"
+      },
+      "tile_mega": {
+        "name": "特大牌包",
+        "description": "從5張改造牌中選2張"
+      },
+      "decree_normal": {
+        "name": "法令包",
+        "description": "從3個法令中選1個"
+      },
+      "decree_jumbo": {
+        "name": "大法令包",
+        "description": "從5個法令中選1個"
+      },
+      "decree_mega": {
+        "name": "特大法令包",
+        "description": "從5個法令中選2個"
+      },
+      "void_normal": {
+        "name": "虛空包",
+        "description": "從3個虛空文中選1個"
+      },
+      "void_jumbo": {
+        "name": "大虛空包",
+        "description": "從5個虛空文中選1個"
+      },
+      "void_mega": {
+        "name": "特大虛空包",
+        "description": "從5個虛空文中選2個"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "綠絨臺",
+        "description": "經典的麻將桌。傳統的綠色絨面，被無數雙手磨得光滑。沒有特殊修正，只憑本事。"
+      },
+      "red_lacquer": {
+        "name": "朱漆臺",
+        "description": "以鮮豔朱漆髹飾的華貴之桌，象徵財富與好運。"
+      },
+      "bamboo_mat": {
+        "name": "竹蓆臺",
+        "description": "園中亭下矮桌上鋪開的一張素樸竹蓆。"
+      },
+      "imperial_gold": {
+        "name": "御金臺",
+        "description": "出自宮廷的華美之桌，鑲嵌金箔與美玉。"
+      },
+      "night_market": {
+        "name": "夜市臺",
+        "description": "喧鬧夜市中臨時搭起的桌子，燈籠映照其上。"
+      },
+      "temple_stone": {
+        "name": "寺石臺",
+        "description": "山中苦修寺院裡的冰冷石桌。此處不生花木。"
+      },
+      "ghost_parlor": {
+        "name": "幽靈館",
+        "description": "荒廢的麻將館，亡魂仍在此對局。幽明之隔已然稀薄。"
+      },
+      "dragons_den": {
+        "name": "龍窟臺",
+        "description": "以龍骨雕成的傳說之桌，藏於山中洞窟。"
+      }
+    }
   }
 }

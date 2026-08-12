@@ -1174,7 +1174,9 @@
     "title": "Arsip Tangan",
     "progress": "Kemajuan koleksi",
     "recentDiscoveries": "Penemuan terbaru",
-    "undiscovered": "Belum ditemukan"
+    "undiscovered": "Belum ditemukan",
+    "percentComplete": "{{percent}}% selesai",
+    "remaining": "sisa {{count}}"
   },
   "errors": {
     "failedToLoad": "Gagal memuat komponen",
