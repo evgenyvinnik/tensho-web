@@ -1830,5 +1830,293 @@
         "description": "本手忽略一个不合法的面子"
       }
     }
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "法令",
+        "description": "跨回合持续生效的规则改写"
+      },
+      "walls": {
+        "name": "牌山",
+        "description": "拥有独特牌型构成的牌山变体"
+      },
+      "charters": {
+        "name": "皇家敕许",
+        "description": "击败敕令后可购买的永久强化"
+      },
+      "consumables": {
+        "name": "消耗品",
+        "description": "一次性物品：命运符、天球、虚空文"
+      },
+      "tileMarks": {
+        "name": "牌印",
+        "description": "改变牌之行为的强化类型"
+      },
+      "seals": {
+        "name": "封印",
+        "description": "为牌附加效果的特殊封印"
+      },
+      "editions": {
+        "name": "版本",
+        "description": "物品的外观与效果变体"
+      },
+      "packs": {
+        "name": "祝福包",
+        "description": "内含各类强化的补充包"
+      },
+      "omens": {
+        "name": "预兆标记",
+        "description": "跳过回合可得的一次性命运改写"
+      },
+      "mandates": {
+        "name": "敕令",
+        "description": "Boss回合的限制与挑战"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "绿绒牌山",
+        "description": "含136张牌的标准起始牌山"
+      },
+      "red_wall": {
+        "name": "赤红牌山",
+        "description": "强化红宝牌的牌山"
+      },
+      "blue_wall": {
+        "name": "靛蓝牌山",
+        "description": "偏重筒子的牌山"
+      },
+      "black_wall": {
+        "name": "玄黑牌山",
+        "description": "强化字牌的牌山"
+      },
+      "gold_wall": {
+        "name": "鎏金牌山",
+        "description": "带有黄金强化之牌的牌山"
+      },
+      "crimson_wall": {
+        "name": "绯红牌山",
+        "description": "拥有强力箭牌的牌山"
+      },
+      "obsidian_wall": {
+        "name": "黑曜牌山",
+        "description": "强化风牌的牌山"
+      },
+      "jade_wall": {
+        "name": "碧玉牌山",
+        "description": "偏重索子的牌山"
+      },
+      "ivory_wall": {
+        "name": "象牙牌山",
+        "description": "以幺九牌为主的牌山"
+      },
+      "bamboo_wall": {
+        "name": "翠竹牌山",
+        "description": "索子占主导的牌山"
+      },
+      "cherry_wall": {
+        "name": "樱色牌山",
+        "description": "强化花牌的牌山"
+      },
+      "moon_wall": {
+        "name": "皓月牌山",
+        "description": "强化季节牌的牌山"
+      },
+      "star_wall": {
+        "name": "星辰牌山",
+        "description": "带有天界加成的牌山"
+      },
+      "void_wall": {
+        "name": "虚空牌山",
+        "description": "沾染虚空之力的牌山"
+      },
+      "imperial_wall": {
+        "name": "御制牌山",
+        "description": "具备皇室构成的牌山"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "加分印记",
+        "description": "该牌获得额外分数。计分时+30筹码"
+      },
+      "mult": {
+        "name": "倍率印记",
+        "description": "该牌增加倍率。计分时+4倍率"
+      },
+      "wild": {
+        "name": "万能印记",
+        "description": "该牌可充当任意花色。判定役时可视为任意花色"
+      },
+      "glass": {
+        "name": "玻璃印记",
+        "description": "脆弱却强大。计分时×2倍率，有25%机率碎裂"
+      },
+      "steel": {
+        "name": "钢铁印记",
+        "description": "持有时获益。留在手中时×1.5倍率"
+      },
+      "stone": {
+        "name": "磐石印记",
+        "description": "始终有所贡献。+50筹码，即使不在和牌中也计分"
+      },
+      "gold": {
+        "name": "黄金印记",
+        "description": "产出金币。回合结束时持有则+3金币"
+      },
+      "lucky": {
+        "name": "幸运印记",
+        "description": "随机的额外收益。计分时有1/5机率+20倍率"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "金封",
+        "description": "打出时获得金币。在手牌中计分时+3金币"
+      },
+      "red": {
+        "name": "红封",
+        "description": "该牌触发两次。计分时额外重复一次"
+      },
+      "blue": {
+        "name": "蓝封",
+        "description": "生成天球。为最终手牌的役生成天球"
+      },
+      "purple": {
+        "name": "紫封",
+        "description": "弃牌时生成命运符。被弃出时生成随机命运符"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "普通",
+        "description": "标准外观。没有额外效果"
+      },
+      "foil": {
+        "name": "箔光",
+        "description": "闪烁的金属质感。计分时+50筹码"
+      },
+      "holographic": {
+        "name": "全息",
+        "description": "彩虹般的全息效果。计分时+10倍率"
+      },
+      "polychrome": {
+        "name": "多彩",
+        "description": "流转变幻的棱彩。计分时×1.5倍率"
+      },
+      "negative": {
+        "name": "负影",
+        "description": "色彩倒转，超然物外。附于法令时法令栏位+1"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "秘仪包",
+        "description": "从3个命运符中选1个"
+      },
+      "arcana_jumbo": {
+        "name": "大秘仪包",
+        "description": "从5个命运符中选1个"
+      },
+      "arcana_mega": {
+        "name": "特大秘仪包",
+        "description": "从5个命运符中选2个"
+      },
+      "celestial_normal": {
+        "name": "天球包",
+        "description": "从3个天球中选1个"
+      },
+      "celestial_jumbo": {
+        "name": "大天球包",
+        "description": "从5个天球中选1个"
+      },
+      "celestial_mega": {
+        "name": "特大天球包",
+        "description": "从5个天球中选2个"
+      },
+      "tile_normal": {
+        "name": "牌包",
+        "description": "从3张改造牌中选1张"
+      },
+      "tile_jumbo": {
+        "name": "大牌包",
+        "description": "从5张改造牌中选1张"
+      },
+      "tile_mega": {
+        "name": "特大牌包",
+        "description": "从5张改造牌中选2张"
+      },
+      "decree_normal": {
+        "name": "法令包",
+        "description": "从3个法令中选1个"
+      },
+      "decree_jumbo": {
+        "name": "大法令包",
+        "description": "从5个法令中选1个"
+      },
+      "decree_mega": {
+        "name": "特大法令包",
+        "description": "从5个法令中选2个"
+      },
+      "void_normal": {
+        "name": "虚空包",
+        "description": "从3个虚空文中选1个"
+      },
+      "void_jumbo": {
+        "name": "大虚空包",
+        "description": "从5个虚空文中选1个"
+      },
+      "void_mega": {
+        "name": "特大虚空包",
+        "description": "从5个虚空文中选2个"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "绿绒台",
+        "description": "经典的麻将桌。传统的绿色绒面，被无数双手磨得光滑。没有特殊修正，只凭本事。"
+      },
+      "red_lacquer": {
+        "name": "朱漆台",
+        "description": "以鲜艳朱漆髹饰的华贵之桌，象征财富与好运。"
+      },
+      "bamboo_mat": {
+        "name": "竹席台",
+        "description": "园中亭下矮桌上铺开的一张素朴竹席。"
+      },
+      "imperial_gold": {
+        "name": "御金台",
+        "description": "出自宫廷的华美之桌，镶嵌金箔与美玉。"
+      },
+      "night_market": {
+        "name": "夜市台",
+        "description": "喧闹夜市中临时搭起的桌子，灯笼映照其上。"
+      },
+      "temple_stone": {
+        "name": "寺石台",
+        "description": "山中苦修寺院里的冰冷石桌。此处不生花木。"
+      },
+      "ghost_parlor": {
+        "name": "幽灵馆",
+        "description": "荒废的麻将馆，亡魂仍在此对局。幽明之隔已然稀薄。"
+      },
+      "dragons_den": {
+        "name": "龙窟台",
+        "description": "以龙骨雕成的传说之桌，藏于山中洞窟。"
+      }
+    }
   }
 }

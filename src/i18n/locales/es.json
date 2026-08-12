@@ -1830,5 +1830,293 @@
         "description": "Ignora una combinación inválida en esta mano"
       }
     }
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Decretos",
+        "description": "Modificadores de reglas que persisten entre rondas"
+      },
+      "walls": {
+        "name": "Muros",
+        "description": "Variantes de muro con composiciones de fichas propias"
+      },
+      "charters": {
+        "name": "Cartas Imperiales",
+        "description": "Mejoras permanentes que se compran tras vencer Mandatos de Jefe"
+      },
+      "consumables": {
+        "name": "Consumibles",
+        "description": "Objetos de un solo uso: Sellos del Destino, Orbes Celestes, Guiones del Vacío"
+      },
+      "tileMarks": {
+        "name": "Marcas de ficha",
+        "description": "Tipos de mejora que alteran el comportamiento de las fichas"
+      },
+      "seals": {
+        "name": "Sellos",
+        "description": "Sellos especiales que añaden efectos a las fichas"
+      },
+      "editions": {
+        "name": "Ediciones",
+        "description": "Variantes visuales y de juego de los objetos"
+      },
+      "packs": {
+        "name": "Paquetes de Bendición",
+        "description": "Sobres con mejoras variadas"
+      },
+      "omens": {
+        "name": "Marcas de Presagio",
+        "description": "Modificadores de destino de un solo uso por saltar rondas"
+      },
+      "mandates": {
+        "name": "Mandatos",
+        "description": "Restricciones y desafíos de las rondas de Jefe"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Fieltro Verde",
+        "description": "Muro inicial estándar de 136 fichas"
+      },
+      "red_wall": {
+        "name": "Muro Rojo",
+        "description": "Muro con fichas dora rojas mejoradas"
+      },
+      "blue_wall": {
+        "name": "Muro Azul",
+        "description": "Muro centrado en el palo de Círculos"
+      },
+      "black_wall": {
+        "name": "Muro Negro",
+        "description": "Muro con fichas de Honor mejoradas"
+      },
+      "gold_wall": {
+        "name": "Muro Dorado",
+        "description": "Muro con fichas mejoradas con oro"
+      },
+      "crimson_wall": {
+        "name": "Muro Carmesí",
+        "description": "Muro con poderosas fichas de Dragón"
+      },
+      "obsidian_wall": {
+        "name": "Muro de Obsidiana",
+        "description": "Muro con fichas de Viento mejoradas"
+      },
+      "jade_wall": {
+        "name": "Muro de Jade",
+        "description": "Muro centrado en el palo de Bambú"
+      },
+      "ivory_wall": {
+        "name": "Muro de Marfil",
+        "description": "Muro con composición centrada en terminales"
+      },
+      "bamboo_wall": {
+        "name": "Muro de Bambú",
+        "description": "Muro con composición dominada por Bambú"
+      },
+      "cherry_wall": {
+        "name": "Muro Cerezo",
+        "description": "Muro con fichas de Flor mejoradas"
+      },
+      "moon_wall": {
+        "name": "Muro Lunar",
+        "description": "Muro con fichas de Estación mejoradas"
+      },
+      "star_wall": {
+        "name": "Muro Estelar",
+        "description": "Muro con bonificaciones celestes"
+      },
+      "void_wall": {
+        "name": "Muro del Vacío",
+        "description": "Muro con fichas tocadas por el vacío"
+      },
+      "imperial_wall": {
+        "name": "Muro Imperial",
+        "description": "Muro con composición real"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Marca de Bonificación",
+        "description": "La ficha puntúa de más. +30 Fichas al puntuar"
+      },
+      "mult": {
+        "name": "Marca de Mult",
+        "description": "La ficha añade multiplicador. +4 Mult al puntuar"
+      },
+      "wild": {
+        "name": "Marca Comodín",
+        "description": "La ficha puede hacer de cualquier palo. Cuenta como cualquier palo para los yaku"
+      },
+      "glass": {
+        "name": "Marca de Cristal",
+        "description": "Frágil pero poderosa. ×2 Mult al puntuar, 25% de probabilidad de romperse"
+      },
+      "steel": {
+        "name": "Marca de Acero",
+        "description": "Bonificación al conservarla. ×1,5 Mult mientras esté en la mano"
+      },
+      "stone": {
+        "name": "Marca de Piedra",
+        "description": "Siempre aporta. +50 Fichas, puntúa aunque no esté en la mano ganadora"
+      },
+      "gold": {
+        "name": "Marca de Oro",
+        "description": "Genera oro. +3 de oro si la conservas al final de la ronda"
+      },
+      "lucky": {
+        "name": "Marca de Suerte",
+        "description": "Bonificación aleatoria. 1 de cada 5 veces da +20 Mult al puntuar"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "Sello Dorado",
+        "description": "Da oro al jugarse. +3 de oro al puntuar en la mano"
+      },
+      "red": {
+        "name": "Sello Rojo",
+        "description": "La ficha se activa dos veces. Vuelve a puntuar una vez"
+      },
+      "blue": {
+        "name": "Sello Azul",
+        "description": "Crea un Orbe Celeste. Crea un Orbe Celeste para el yaku de la mano final"
+      },
+      "purple": {
+        "name": "Sello Púrpura",
+        "description": "Crea un Sello del Destino al descartar. Crea un Sello del Destino al azar al descartarla"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Base",
+        "description": "Aspecto estándar. Sin efecto adicional"
+      },
+      "foil": {
+        "name": "Lámina",
+        "description": "Acabado metálico reluciente. +50 Fichas al puntuar"
+      },
+      "holographic": {
+        "name": "Holográfica",
+        "description": "Efecto holográfico de arcoíris. +10 Mult al puntuar"
+      },
+      "polychrome": {
+        "name": "Policroma",
+        "description": "Color prismático cambiante. ×1,5 Mult al puntuar"
+      },
+      "negative": {
+        "name": "Negativa",
+        "description": "Colores invertidos, trascendente. +1 ranura de Decreto al aplicarla a un Decreto"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Paquete de Arcanos",
+        "description": "Elige 1 de 3 Sellos del Destino"
+      },
+      "arcana_jumbo": {
+        "name": "Paquete de Arcanos Grande",
+        "description": "Elige 1 de 5 Sellos del Destino"
+      },
+      "arcana_mega": {
+        "name": "Paquete de Arcanos Mega",
+        "description": "Elige 2 de 5 Sellos del Destino"
+      },
+      "celestial_normal": {
+        "name": "Paquete Celeste",
+        "description": "Elige 1 de 3 Orbes Celestes"
+      },
+      "celestial_jumbo": {
+        "name": "Paquete Celeste Grande",
+        "description": "Elige 1 de 5 Orbes Celestes"
+      },
+      "celestial_mega": {
+        "name": "Paquete Celeste Mega",
+        "description": "Elige 2 de 5 Orbes Celestes"
+      },
+      "tile_normal": {
+        "name": "Paquete de Fichas",
+        "description": "Elige 1 de 3 fichas modificadas"
+      },
+      "tile_jumbo": {
+        "name": "Paquete de Fichas Grande",
+        "description": "Elige 1 de 5 fichas modificadas"
+      },
+      "tile_mega": {
+        "name": "Paquete de Fichas Mega",
+        "description": "Elige 2 de 5 fichas modificadas"
+      },
+      "decree_normal": {
+        "name": "Paquete de Decretos",
+        "description": "Elige 1 de 3 Decretos"
+      },
+      "decree_jumbo": {
+        "name": "Paquete de Decretos Grande",
+        "description": "Elige 1 de 5 Decretos"
+      },
+      "decree_mega": {
+        "name": "Paquete de Decretos Mega",
+        "description": "Elige 2 de 5 Decretos"
+      },
+      "void_normal": {
+        "name": "Paquete del Vacío",
+        "description": "Elige 1 de 3 Guiones del Vacío"
+      },
+      "void_jumbo": {
+        "name": "Paquete del Vacío Grande",
+        "description": "Elige 1 de 5 Guiones del Vacío"
+      },
+      "void_mega": {
+        "name": "Paquete del Vacío Mega",
+        "description": "Elige 2 de 5 Guiones del Vacío"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Fieltro Verde",
+        "description": "La mesa de mahjong clásica. Una superficie tradicional de fieltro verde, pulida por incontables manos. Sin modificadores especiales: solo destreza."
+      },
+      "red_lacquer": {
+        "name": "Laca Roja",
+        "description": "Una mesa lujosa acabada en brillante laca bermellón, símbolo de riqueza y buena fortuna."
+      },
+      "bamboo_mat": {
+        "name": "Estera de Bambú",
+        "description": "Una sencilla estera de bambú tejido, extendida sobre una mesa baja en un pabellón del jardín."
+      },
+      "imperial_gold": {
+        "name": "Oro Imperial",
+        "description": "Una mesa magnífica del palacio imperial, con incrustaciones de pan de oro y jade."
+      },
+      "night_market": {
+        "name": "Mercado Nocturno",
+        "description": "Una mesa improvisada en el bullicioso mercado nocturno, iluminada por farolillos de papel."
+      },
+      "temple_stone": {
+        "name": "Piedra del Templo",
+        "description": "Una fría mesa de piedra en un templo ascético de montaña. Aquí no crecen flores."
+      },
+      "ghost_parlor": {
+        "name": "Salón de Fantasmas",
+        "description": "Un salón de mahjong abandonado donde los espíritus aún juegan. El velo entre mundos es fino."
+      },
+      "dragons_den": {
+        "name": "Guarida del Dragón",
+        "description": "Una mesa legendaria tallada en hueso de dragón, oculta en una caverna de montaña."
+      }
+    }
   }
 }

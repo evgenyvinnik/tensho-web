@@ -1830,5 +1830,293 @@
         "description": "이번 손에서 잘못된 멘츠 하나를 무시"
       }
     }
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "법령",
+        "description": "라운드를 넘어 지속되는 규칙 변형"
+      },
+      "walls": {
+        "name": "패산",
+        "description": "고유한 패 구성을 지닌 패산 변형"
+      },
+      "charters": {
+        "name": "황실 칙허",
+        "description": "보스 칙령을 물리친 뒤 구매하는 영구 강화"
+      },
+      "consumables": {
+        "name": "소모품",
+        "description": "일회용 물품: 운명 부적, 천구, 공허 문서"
+      },
+      "tileMarks": {
+        "name": "패 표식",
+        "description": "패의 작동을 바꾸는 강화 종류"
+      },
+      "seals": {
+        "name": "봉인",
+        "description": "패에 효과를 더하는 특별한 봉인"
+      },
+      "editions": {
+        "name": "에디션",
+        "description": "물품의 외형과 효과 변형"
+      },
+      "packs": {
+        "name": "축복 팩",
+        "description": "여러 강화가 담긴 보충 팩"
+      },
+      "omens": {
+        "name": "징조 표식",
+        "description": "라운드를 건너뛰어 얻는 일회성 운명 변형"
+      },
+      "mandates": {
+        "name": "칙령",
+        "description": "보스 라운드의 제약과 도전"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "초록 융단 패산",
+        "description": "136장으로 이루어진 기본 시작 패산"
+      },
+      "red_wall": {
+        "name": "붉은 패산",
+        "description": "적도라가 강화된 패산"
+      },
+      "blue_wall": {
+        "name": "푸른 패산",
+        "description": "통자에 치우친 패산"
+      },
+      "black_wall": {
+        "name": "검은 패산",
+        "description": "자패가 강화된 패산"
+      },
+      "gold_wall": {
+        "name": "황금 패산",
+        "description": "황금으로 강화된 패의 패산"
+      },
+      "crimson_wall": {
+        "name": "진홍 패산",
+        "description": "강력한 삼원패를 갖춘 패산"
+      },
+      "obsidian_wall": {
+        "name": "흑요석 패산",
+        "description": "풍패가 강화된 패산"
+      },
+      "jade_wall": {
+        "name": "비취 패산",
+        "description": "삭자에 치우친 패산"
+      },
+      "ivory_wall": {
+        "name": "상아 패산",
+        "description": "노두패 중심으로 구성된 패산"
+      },
+      "bamboo_wall": {
+        "name": "대나무 패산",
+        "description": "삭자가 지배적인 패산"
+      },
+      "cherry_wall": {
+        "name": "벚꽃 패산",
+        "description": "꽃패가 강화된 패산"
+      },
+      "moon_wall": {
+        "name": "달 패산",
+        "description": "계절패가 강화된 패산"
+      },
+      "star_wall": {
+        "name": "별 패산",
+        "description": "천상의 보너스를 지닌 패산"
+      },
+      "void_wall": {
+        "name": "공허 패산",
+        "description": "공허가 스민 패의 패산"
+      },
+      "imperial_wall": {
+        "name": "황실 패산",
+        "description": "왕가의 구성을 지닌 패산"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "보너스 표식",
+        "description": "패가 추가 점수를 얻습니다. 계산 시 +30 칩"
+      },
+      "mult": {
+        "name": "배수 표식",
+        "description": "패가 배수를 더합니다. 계산 시 +4 배수"
+      },
+      "wild": {
+        "name": "만능 표식",
+        "description": "어떤 종류로도 쓸 수 있습니다. 역 판정에서 아무 종류로나 계산"
+      },
+      "glass": {
+        "name": "유리 표식",
+        "description": "약하지만 강력합니다. 계산 시 ×2 배수, 25% 확률로 깨짐"
+      },
+      "steel": {
+        "name": "강철 표식",
+        "description": "들고 있을 때의 보너스. 손에 있는 동안 ×1.5 배수"
+      },
+      "stone": {
+        "name": "돌 표식",
+        "description": "항상 기여합니다. +50 칩, 화료 손이 아니어도 항상 계산"
+      },
+      "gold": {
+        "name": "황금 표식",
+        "description": "골드를 만듭니다. 라운드 종료 시 들고 있으면 +3골드"
+      },
+      "lucky": {
+        "name": "행운 표식",
+        "description": "무작위 보너스. 계산 시 1/5 확률로 +20 배수"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "금색 봉인",
+        "description": "낼 때 골드를 얻습니다. 손에서 계산되면 +3골드"
+      },
+      "red": {
+        "name": "붉은 봉인",
+        "description": "패가 두 번 발동합니다. 계산 시 한 번 더 계산"
+      },
+      "blue": {
+        "name": "푸른 봉인",
+        "description": "천구를 생성합니다. 마지막 손의 역에 맞춰 천구를 만듦"
+      },
+      "purple": {
+        "name": "보라 봉인",
+        "description": "버릴 때 부적을 생성합니다. 버려질 때 무작위 운명 부적 생성"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "기본",
+        "description": "표준 외형. 추가 효과 없음"
+      },
+      "foil": {
+        "name": "박막",
+        "description": "반짝이는 금속 마감. 계산 시 +50 칩"
+      },
+      "holographic": {
+        "name": "홀로그램",
+        "description": "무지갯빛 홀로그램 효과. 계산 시 +10 배수"
+      },
+      "polychrome": {
+        "name": "다색",
+        "description": "프리즘처럼 변하는 색채. 계산 시 ×1.5 배수"
+      },
+      "negative": {
+        "name": "음영",
+        "description": "반전된 색, 초월의 증표. 법령에 적용 시 법령 칸 +1"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "비의 팩",
+        "description": "운명 부적 3개 중 1개 선택"
+      },
+      "arcana_jumbo": {
+        "name": "대형 비의 팩",
+        "description": "운명 부적 5개 중 1개 선택"
+      },
+      "arcana_mega": {
+        "name": "초대형 비의 팩",
+        "description": "운명 부적 5개 중 2개 선택"
+      },
+      "celestial_normal": {
+        "name": "천구 팩",
+        "description": "천구 3개 중 1개 선택"
+      },
+      "celestial_jumbo": {
+        "name": "대형 천구 팩",
+        "description": "천구 5개 중 1개 선택"
+      },
+      "celestial_mega": {
+        "name": "초대형 천구 팩",
+        "description": "천구 5개 중 2개 선택"
+      },
+      "tile_normal": {
+        "name": "패 팩",
+        "description": "가공된 패 3장 중 1장 선택"
+      },
+      "tile_jumbo": {
+        "name": "대형 패 팩",
+        "description": "가공된 패 5장 중 1장 선택"
+      },
+      "tile_mega": {
+        "name": "초대형 패 팩",
+        "description": "가공된 패 5장 중 2장 선택"
+      },
+      "decree_normal": {
+        "name": "법령 팩",
+        "description": "법령 3개 중 1개 선택"
+      },
+      "decree_jumbo": {
+        "name": "대형 법령 팩",
+        "description": "법령 5개 중 1개 선택"
+      },
+      "decree_mega": {
+        "name": "초대형 법령 팩",
+        "description": "법령 5개 중 2개 선택"
+      },
+      "void_normal": {
+        "name": "공허 팩",
+        "description": "공허 문서 3개 중 1개 선택"
+      },
+      "void_jumbo": {
+        "name": "대형 공허 팩",
+        "description": "공허 문서 5개 중 1개 선택"
+      },
+      "void_mega": {
+        "name": "초대형 공허 팩",
+        "description": "공허 문서 5개 중 2개 선택"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "초록 융단",
+        "description": "고전적인 마작 탁자. 수많은 손길에 닳아 매끄러워진 전통 초록 융단. 특별한 보정 없이 오직 실력만이 통합니다."
+      },
+      "red_lacquer": {
+        "name": "붉은 옻칠",
+        "description": "선명한 주홍 옻으로 마감한 호화로운 탁자. 부와 행운을 상징합니다."
+      },
+      "bamboo_mat": {
+        "name": "대나무 자리",
+        "description": "정원 정자의 낮은 탁자에 펼친 소박한 대나무 자리."
+      },
+      "imperial_gold": {
+        "name": "황실의 금",
+        "description": "금박과 옥을 상감한 궁궐의 화려한 탁자."
+      },
+      "night_market": {
+        "name": "야시장",
+        "description": "북적이는 야시장에 임시로 놓인 탁자. 종이등이 비춥니다."
+      },
+      "temple_stone": {
+        "name": "사원의 돌",
+        "description": "금욕적인 산사의 차가운 돌 탁자. 이곳에는 꽃이 피지 않습니다."
+      },
+      "ghost_parlor": {
+        "name": "유령 마작관",
+        "description": "혼령이 여전히 대국하는 버려진 마작관. 이승과 저승의 경계가 얇습니다."
+      },
+      "dragons_den": {
+        "name": "용의 굴",
+        "description": "용의 뼈로 깎아 만든 전설의 탁자. 산속 동굴에 숨겨져 있습니다."
+      }
+    }
   }
 }

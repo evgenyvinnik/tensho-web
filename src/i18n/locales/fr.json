@@ -1830,5 +1830,293 @@
         "description": "Ignore une combinaison invalide pour cette main"
       }
     }
+  },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Décrets",
+        "description": "Modificateurs de règles qui persistent d'une manche à l'autre"
+      },
+      "walls": {
+        "name": "Murs",
+        "description": "Variantes de mur aux compositions de tuiles particulières"
+      },
+      "charters": {
+        "name": "Chartes impériales",
+        "description": "Améliorations permanentes achetées après avoir vaincu des Mandats de Boss"
+      },
+      "consumables": {
+        "name": "Consommables",
+        "description": "Objets à usage unique : Sceaux du Destin, Orbes célestes, Guides du Vide"
+      },
+      "tileMarks": {
+        "name": "Marques de tuile",
+        "description": "Types d'amélioration qui modifient le comportement des tuiles"
+      },
+      "seals": {
+        "name": "Sceaux",
+        "description": "Sceaux spéciaux qui ajoutent des effets aux tuiles"
+      },
+      "editions": {
+        "name": "Éditions",
+        "description": "Variantes visuelles et de jeu des objets"
+      },
+      "packs": {
+        "name": "Paquets de Bénédiction",
+        "description": "Paquets contenant des améliorations variées"
+      },
+      "omens": {
+        "name": "Marques de Présage",
+        "description": "Modificateurs de destin à usage unique obtenus en sautant des manches"
+      },
+      "mandates": {
+        "name": "Mandats",
+        "description": "Restrictions et défis des manches de Boss"
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Feutre Vert",
+        "description": "Mur de départ standard de 136 tuiles"
+      },
+      "red_wall": {
+        "name": "Mur Rouge",
+        "description": "Mur aux tuiles dora rouges améliorées"
+      },
+      "blue_wall": {
+        "name": "Mur Bleu",
+        "description": "Mur axé sur la famille des Cercles"
+      },
+      "black_wall": {
+        "name": "Mur Noir",
+        "description": "Mur aux tuiles d'Honneur améliorées"
+      },
+      "gold_wall": {
+        "name": "Mur Doré",
+        "description": "Mur aux tuiles rehaussées d'or"
+      },
+      "crimson_wall": {
+        "name": "Mur Cramoisi",
+        "description": "Mur aux puissantes tuiles de Dragon"
+      },
+      "obsidian_wall": {
+        "name": "Mur d'Obsidienne",
+        "description": "Mur aux tuiles de Vent améliorées"
+      },
+      "jade_wall": {
+        "name": "Mur de Jade",
+        "description": "Mur axé sur la famille des Bambous"
+      },
+      "ivory_wall": {
+        "name": "Mur d'Ivoire",
+        "description": "Mur à composition centrée sur les terminales"
+      },
+      "bamboo_wall": {
+        "name": "Mur de Bambou",
+        "description": "Mur à dominante de Bambous"
+      },
+      "cherry_wall": {
+        "name": "Mur Cerisier",
+        "description": "Mur aux tuiles de Fleur améliorées"
+      },
+      "moon_wall": {
+        "name": "Mur Lunaire",
+        "description": "Mur aux tuiles de Saison améliorées"
+      },
+      "star_wall": {
+        "name": "Mur Stellaire",
+        "description": "Mur doté de bonus célestes"
+      },
+      "void_wall": {
+        "name": "Mur du Vide",
+        "description": "Mur aux tuiles touchées par le vide"
+      },
+      "imperial_wall": {
+        "name": "Mur Impérial",
+        "description": "Mur à composition royale"
+      }
+    }
+  },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Marque de Bonus",
+        "description": "La tuile rapporte davantage. +30 Jetons au décompte"
+      },
+      "mult": {
+        "name": "Marque de Mult",
+        "description": "La tuile ajoute du multiplicateur. +4 Mult au décompte"
+      },
+      "wild": {
+        "name": "Marque Joker",
+        "description": "La tuile peut tenir lieu de n'importe quelle famille. Compte comme toute famille pour les yaku"
+      },
+      "glass": {
+        "name": "Marque de Verre",
+        "description": "Fragile mais puissante. ×2 Mult au décompte, 25 % de risque de se briser"
+      },
+      "steel": {
+        "name": "Marque d'Acier",
+        "description": "Bonus tant qu'elle est gardée. ×1,5 Mult tant qu'elle est en main"
+      },
+      "stone": {
+        "name": "Marque de Pierre",
+        "description": "Contribue toujours. +50 Jetons, compte même hors de la main gagnante"
+      },
+      "gold": {
+        "name": "Marque d'Or",
+        "description": "Génère de l'or. +3 pièces d'or si conservée en fin de manche"
+      },
+      "lucky": {
+        "name": "Marque de Chance",
+        "description": "Bonus aléatoire. 1 chance sur 5 d'obtenir +20 Mult au décompte"
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "gold": {
+        "name": "Sceau d'Or",
+        "description": "Rapporte de l'or quand la tuile est jouée. +3 pièces d'or au décompte"
+      },
+      "red": {
+        "name": "Sceau Rouge",
+        "description": "La tuile se déclenche deux fois. Recompte une fois"
+      },
+      "blue": {
+        "name": "Sceau Bleu",
+        "description": "Crée un Orbe céleste. Crée un Orbe céleste pour le yaku de la dernière main"
+      },
+      "purple": {
+        "name": "Sceau Violet",
+        "description": "Crée un Sceau du Destin à la défausse. Crée un Sceau du Destin au hasard quand la tuile est défaussée"
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Base",
+        "description": "Apparence standard. Aucun effet supplémentaire"
+      },
+      "foil": {
+        "name": "Feuille",
+        "description": "Fini métallique chatoyant. +50 Jetons au décompte"
+      },
+      "holographic": {
+        "name": "Holographique",
+        "description": "Effet holographique arc-en-ciel. +10 Mult au décompte"
+      },
+      "polychrome": {
+        "name": "Polychrome",
+        "description": "Couleurs prismatiques changeantes. ×1,5 Mult au décompte"
+      },
+      "negative": {
+        "name": "Négative",
+        "description": "Couleurs inversées, transcendante. +1 emplacement de Décret si appliquée à un Décret"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Paquet d'Arcanes",
+        "description": "Choisissez 1 Sceau du Destin parmi 3"
+      },
+      "arcana_jumbo": {
+        "name": "Grand Paquet d'Arcanes",
+        "description": "Choisissez 1 Sceau du Destin parmi 5"
+      },
+      "arcana_mega": {
+        "name": "Méga Paquet d'Arcanes",
+        "description": "Choisissez 2 Sceaux du Destin parmi 5"
+      },
+      "celestial_normal": {
+        "name": "Paquet Céleste",
+        "description": "Choisissez 1 Orbe céleste parmi 3"
+      },
+      "celestial_jumbo": {
+        "name": "Grand Paquet Céleste",
+        "description": "Choisissez 1 Orbe céleste parmi 5"
+      },
+      "celestial_mega": {
+        "name": "Méga Paquet Céleste",
+        "description": "Choisissez 2 Orbes célestes parmi 5"
+      },
+      "tile_normal": {
+        "name": "Paquet de Tuiles",
+        "description": "Choisissez 1 tuile modifiée parmi 3"
+      },
+      "tile_jumbo": {
+        "name": "Grand Paquet de Tuiles",
+        "description": "Choisissez 1 tuile modifiée parmi 5"
+      },
+      "tile_mega": {
+        "name": "Méga Paquet de Tuiles",
+        "description": "Choisissez 2 tuiles modifiées parmi 5"
+      },
+      "decree_normal": {
+        "name": "Paquet de Décrets",
+        "description": "Choisissez 1 Décret parmi 3"
+      },
+      "decree_jumbo": {
+        "name": "Grand Paquet de Décrets",
+        "description": "Choisissez 1 Décret parmi 5"
+      },
+      "decree_mega": {
+        "name": "Méga Paquet de Décrets",
+        "description": "Choisissez 2 Décrets parmi 5"
+      },
+      "void_normal": {
+        "name": "Paquet du Vide",
+        "description": "Choisissez 1 Guide du Vide parmi 3"
+      },
+      "void_jumbo": {
+        "name": "Grand Paquet du Vide",
+        "description": "Choisissez 1 Guide du Vide parmi 5"
+      },
+      "void_mega": {
+        "name": "Méga Paquet du Vide",
+        "description": "Choisissez 2 Guides du Vide parmi 5"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Feutre Vert",
+        "description": "La table de mahjong classique. Une surface traditionnelle en feutre vert, polie par d'innombrables mains. Aucun modificateur particulier : rien que l'adresse."
+      },
+      "red_lacquer": {
+        "name": "Laque Rouge",
+        "description": "Une table luxueuse finie d'une laque vermillon éclatante, symbole de richesse et de bonne fortune."
+      },
+      "bamboo_mat": {
+        "name": "Natte de Bambou",
+        "description": "Une simple natte de bambou tressé étalée sur une table basse dans un pavillon de jardin."
+      },
+      "imperial_gold": {
+        "name": "Or Impérial",
+        "description": "Une table magnifique du palais impérial, incrustée de feuille d'or et de jade."
+      },
+      "night_market": {
+        "name": "Marché de Nuit",
+        "description": "Une table de fortune dans le marché de nuit animé, éclairée par des lanternes de papier."
+      },
+      "temple_stone": {
+        "name": "Pierre du Temple",
+        "description": "Une table de pierre froide dans un temple ascétique de montagne. Aucune fleur n'y pousse."
+      },
+      "ghost_parlor": {
+        "name": "Salon des Fantômes",
+        "description": "Une salle de mahjong abandonnée où les esprits jouent encore. Le voile entre les mondes y est mince."
+      },
+      "dragons_den": {
+        "name": "Antre du Dragon",
+        "description": "Une table légendaire taillée dans l'os de dragon, cachée dans une caverne de montagne."
+      }
+    }
   }
 }
