@@ -604,5 +604,13 @@
     "failedToLoad": "Nabigong i-load ang component",
     "stackTrace": "Stack trace:",
     "componentStack": "Component stack:"
+  },
+  "tableStyle": {
+    "title": "Pumili ng mesa",
+    "titleJp": "卓風",
+    "subtitle": "Pumili ng estilo ng mesa para sa takbo mo",
+    "table": "Paghahanda ng laro",
+    "selected": "Napili:",
+    "chooseTable": "Pumili ng mesa at stake"
   }
 }

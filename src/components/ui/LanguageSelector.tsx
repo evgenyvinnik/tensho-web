@@ -11,10 +11,10 @@ import {
   SUPPORTED_LANGUAGES,
   LANGUAGE_NAMES,
   LANGUAGE_NAMES_EN,
-  changeLanguage,
   getCurrentLanguage,
   type SupportedLanguage,
 } from '../../i18n'
+import { useAppNavigation } from '../../router'
 
 interface LanguageSelectorProps {
   className?: string
@@ -26,6 +26,7 @@ interface LanguageSelectorProps {
  */
 export function LanguageSelector({ className = '', compact = false }: LanguageSelectorProps) {
   const { t } = useTranslation()
+  const { changeLanguage: switchLanguage } = useAppNavigation()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -59,8 +60,11 @@ export function LanguageSelector({ className = '', compact = false }: LanguageSe
     }
   }, [])
 
+  // The URL carries the language, and LanguageSync mirrors it back into
+  // i18next on every render. Switching i18next alone would be undone on the
+  // next pass, so the navigation helper moves the URL as well.
   const handleLanguageChange = async (lang: SupportedLanguage) => {
-    await changeLanguage(lang)
+    await switchLanguage(lang)
     setIsOpen(false)
   }
 

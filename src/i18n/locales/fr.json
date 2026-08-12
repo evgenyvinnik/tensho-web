@@ -1176,5 +1176,13 @@
     "failedToLoad": "Échec du chargement du composant",
     "stackTrace": "Trace de pile :",
     "componentStack": "Pile de composants :"
+  },
+  "tableStyle": {
+    "title": "Choisir la table",
+    "titleJp": "卓風",
+    "subtitle": "Choisissez un style de table pour votre partie",
+    "table": "Préparation",
+    "selected": "Sélectionné :",
+    "chooseTable": "Choisir table et mise"
   }
 }

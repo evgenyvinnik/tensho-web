@@ -604,5 +604,13 @@
     "failedToLoad": "Bileşen yüklenemedi",
     "stackTrace": "Yığın izi:",
     "componentStack": "Bileşen yığını:"
+  },
+  "tableStyle": {
+    "title": "Masa seç",
+    "titleJp": "卓風",
+    "subtitle": "Oyunun için bir masa stili seç",
+    "table": "Oyun kurulumu",
+    "selected": "Seçili:",
+    "chooseTable": "Masa ve bahis seç"
   }
 }

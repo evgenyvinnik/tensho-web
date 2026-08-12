@@ -1176,5 +1176,13 @@
     "failedToLoad": "元件載入失敗",
     "stackTrace": "堆疊追蹤：",
     "componentStack": "元件堆疊："
+  },
+  "tableStyle": {
+    "title": "選擇牌桌",
+    "titleJp": "卓風",
+    "subtitle": "為本次旅程選擇牌桌樣式",
+    "table": "開局設定",
+    "selected": "已選擇：",
+    "chooseTable": "選擇牌桌與賭注"
   }
 }

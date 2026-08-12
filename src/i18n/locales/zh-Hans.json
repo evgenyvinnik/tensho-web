@@ -1176,5 +1176,13 @@
     "failedToLoad": "组件加载失败",
     "stackTrace": "堆栈追踪：",
     "componentStack": "组件堆栈："
+  },
+  "tableStyle": {
+    "title": "选择牌桌",
+    "titleJp": "卓風",
+    "subtitle": "为本次旅程选择牌桌样式",
+    "table": "开局设置",
+    "selected": "已选择：",
+    "chooseTable": "选择牌桌与赌注"
   }
 }

@@ -1176,5 +1176,13 @@
     "failedToLoad": "Gagal memuat komponen",
     "stackTrace": "Jejak tumpukan:",
     "componentStack": "Tumpukan komponen:"
+  },
+  "tableStyle": {
+    "title": "Pilih meja",
+    "titleJp": "卓風",
+    "subtitle": "Pilih gaya meja untuk permainanmu",
+    "table": "Persiapan permainan",
+    "selected": "Dipilih:",
+    "chooseTable": "Pilih meja dan taruhan"
   }
 }

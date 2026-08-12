@@ -604,5 +604,13 @@
     "failedToLoad": "Impossibile caricare il componente",
     "stackTrace": "Traccia dello stack:",
     "componentStack": "Stack dei componenti:"
+  },
+  "tableStyle": {
+    "title": "Scegli il tavolo",
+    "titleJp": "卓風",
+    "subtitle": "Scegli uno stile di tavolo per la partita",
+    "table": "Preparazione",
+    "selected": "Selezionato:",
+    "chooseTable": "Scegli tavolo e posta"
   }
 }

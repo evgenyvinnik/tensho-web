@@ -1176,5 +1176,13 @@
     "failedToLoad": "Error al cargar el componente",
     "stackTrace": "Traza de pila:",
     "componentStack": "Pila de componentes:"
+  },
+  "tableStyle": {
+    "title": "Elegir mesa",
+    "titleJp": "卓風",
+    "subtitle": "Elige un estilo de mesa para tu partida",
+    "table": "Preparar partida",
+    "selected": "Seleccionado:",
+    "chooseTable": "Elige mesa y apuesta"
   }
 }

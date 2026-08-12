@@ -1818,5 +1818,13 @@
         "description": "この手では不正な面子を1つ無視する"
       }
     }
+  },
+  "tableStyle": {
+    "title": "卓を選ぶ",
+    "titleJp": "卓風",
+    "subtitle": "この挑戦で使う卓を選びましょう",
+    "table": "挑戦の準備",
+    "selected": "選択中:",
+    "chooseTable": "卓とステークを選ぶ"
   }
 }
