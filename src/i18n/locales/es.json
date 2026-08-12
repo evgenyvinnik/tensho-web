@@ -776,6 +776,62 @@
       "decree-omega": {
         "name": "Omega",
         "description": "+500 Fichas, +50 Mult, x2.0 Mult"
+      },
+      "river_tax": {
+        "name": "Impuesto del Río",
+        "description": "Ganas 1 de oro por cada ficha descartada esta ronda."
+      },
+      "extended_hand_grant": {
+        "name": "Concesión de Mano Extendida",
+        "description": "+3 robos adicionales antes de fallar la ronda."
+      },
+      "tanyao_dispensation": {
+        "name": "Dispensa de Tanyao",
+        "description": "Las fichas terminales (1 y 9) se permiten en manos Tanyao."
+      },
+      "moonlit_seal": {
+        "name": "Sello de Luz de Luna",
+        "description": "Cada ficha de Honor en tu mano ganadora suma +0,1x al multiplicador."
+      },
+      "pure_suit_asceticism": {
+        "name": "Ascetismo de Palo Puro",
+        "description": "Cada ficha de tu palo dominante da +10% de puntuación. Se acumula multiplicando."
+      },
+      "broken_stair_edict": {
+        "name": "Edicto de la Escalera Rota",
+        "description": "Las escaleras pueden saltar un número (1-3-4 es válida)."
+      },
+      "false_eye_mandate": {
+        "name": "Mandato del Ojo Falso",
+        "description": "Una combinación puede servir también de pareja."
+      },
+      "honor_transmutation": {
+        "name": "Transmutación de Honores",
+        "description": "Las fichas de Honor pueden contar como fichas de tu palo más común."
+      },
+      "celestial_wildcard": {
+        "name": "Comodín Celestial",
+        "description": "Una ficha por mano puede hacerse pasar por cualquier otra."
+      },
+      "dead_wall_writ": {
+        "name": "Auto del Muro Muerto",
+        "description": "Una vez por ronda, roba del descarte en vez del muro."
+      },
+      "shanten_clemency": {
+        "name": "Clemencia de Shanten",
+        "description": "Las manos pueden puntuar a 1-shanten con un 50% de penalización."
+      },
+      "closed_hand_austerity": {
+        "name": "Austeridad de Mano Cerrada",
+        "description": "Las manos totalmente cerradas ganan ×1,5 al multiplicador."
+      },
+      "terminal_devotion": {
+        "name": "Devoción Terminal",
+        "description": "Cada ficha terminal en tu mano suma +5% a la puntuación final."
+      },
+      "yaku_repetition_charter": {
+        "name": "Carta de Repetición de Yaku",
+        "description": "Repetir un yaku de la ronda anterior aumenta el multiplicador."
       }
     }
   },
@@ -865,7 +921,121 @@
     "theNeedle": "La Aguja",
     "thePillar": "El Pilar",
     "theWater": "El Agua",
-    "theArm": "El Brazo"
+    "theArm": "El Brazo",
+    "items": {
+      "the_hook": {
+        "name": "El Anzuelo",
+        "description": "Se descartan 2 fichas al azar tras cada robo"
+      },
+      "the_wall": {
+        "name": "El Muro",
+        "description": "Requisito de puntuación enorme (4x en vez de 2x)"
+      },
+      "the_eye": {
+        "name": "El Ojo",
+        "description": "Sin yaku repetidos esta ronda (cada yaku puntúa una vez)"
+      },
+      "the_mouth": {
+        "name": "La Boca",
+        "description": "Solo se puede puntuar un tipo de yaku esta ronda"
+      },
+      "the_flint": {
+        "name": "El Pedernal",
+        "description": "Puntos base y Mult a la mitad toda la ronda"
+      },
+      "the_needle": {
+        "name": "La Aguja",
+        "description": "Debes completar la mano en exactamente 1 mano (sin reintentos)"
+      },
+      "the_pillar": {
+        "name": "El Pilar",
+        "description": "Las fichas usadas en rondas previas de este Acto quedan debilitadas"
+      },
+      "the_water": {
+        "name": "El Agua",
+        "description": "Empiezas la ronda con 0 recambios"
+      },
+      "the_arm": {
+        "name": "El Brazo",
+        "description": "El nivel de yaku baja 1 al puntuar"
+      },
+      "the_psychic": {
+        "name": "El Vidente",
+        "description": "Debes jugar exactamente 5 fichas por mano"
+      },
+      "the_club": {
+        "name": "La Porra",
+        "description": "Todas las fichas de Bambú quedan debilitadas"
+      },
+      "the_goad": {
+        "name": "La Aguijada",
+        "description": "Todas las fichas de Círculos quedan debilitadas"
+      },
+      "the_window": {
+        "name": "La Ventana",
+        "description": "Todas las fichas de Caracteres quedan debilitadas"
+      },
+      "the_head": {
+        "name": "La Cabeza",
+        "description": "Todas las fichas de Dragón quedan debilitadas"
+      },
+      "the_plant": {
+        "name": "La Planta",
+        "description": "Todas las fichas de Honor quedan debilitadas"
+      },
+      "the_ox": {
+        "name": "El Buey",
+        "description": "Jugar el yaku más usado deja el oro a 0"
+      },
+      "the_house": {
+        "name": "La Casa",
+        "description": "La primera mano se reparte boca abajo"
+      },
+      "the_wheel": {
+        "name": "La Rueda",
+        "description": "1 de cada 7 fichas se roba boca abajo"
+      },
+      "the_fish": {
+        "name": "El Pez",
+        "description": "Las fichas se roban boca abajo tras cada mano"
+      },
+      "the_serpent": {
+        "name": "La Serpiente",
+        "description": "Tras jugar o descartar, siempre robas 3 fichas"
+      },
+      "the_tooth": {
+        "name": "El Diente",
+        "description": "Pierdes 1 de oro por cada ficha jugada"
+      },
+      "the_mark": {
+        "name": "La Marca",
+        "description": "Todas las fichas de Honor se roban boca abajo"
+      },
+      "the_manacle": {
+        "name": "El Grillete",
+        "description": "-1 al tamaño de la mano"
+      },
+      "amber_acorn": {
+        "name": "Bellota de Ámbar",
+        "description": "Todos los Decretos se barajan y quedan boca abajo"
+      },
+      "verdant_leaf": {
+        "name": "Hoja Verdeante",
+        "description": "Todas las fichas debilitadas hasta vender 1 Decreto"
+      },
+      "violet_vessel": {
+        "name": "Vasija Violeta",
+        "description": "Objetivo descomunal (6x en vez de 2x)"
+      },
+      "crimson_heart": {
+        "name": "Corazón Carmesí",
+        "description": "Un Decreto al azar se desactiva cada ciclo de mano"
+      },
+      "cerulean_bell": {
+        "name": "Campana Cerúlea",
+        "description": "Una ficha queda bloqueada a la fuerza en cada robo"
+      }
+    }
   },
   "stakes": {
     "title": "Niveles de Mesa",
@@ -1184,5 +1354,477 @@
     "table": "Preparar partida",
     "selected": "Seleccionado:",
     "chooseTable": "Elige mesa y apuesta"
+  },
+  "charters": {
+    "items": {
+      "abundant_stock": {
+        "name": "Surtido abundante",
+        "description": "+1 espacio de tienda (a 3)"
+      },
+      "discount_sale": {
+        "name": "Rebajas",
+        "description": "25% de descuento en toda la tienda"
+      },
+      "sharp_edge": {
+        "name": "Filo afilado",
+        "description": "Las ediciones aparecen 2 veces más a menudo"
+      },
+      "reroll_surplus": {
+        "name": "Excedente de renovación",
+        "description": "Las renovaciones cuestan 2 de oro menos"
+      },
+      "crystal_lens": {
+        "name": "Lente de cristal",
+        "description": "+1 espacio de consumible"
+      },
+      "star_chart": {
+        "name": "Carta estelar",
+        "description": "Los Paquetes Celestes traen el orbe del yaku más usado"
+      },
+      "steady_hand": {
+        "name": "Mano firme",
+        "description": "+1 mano por ronda"
+      },
+      "frugal_discard": {
+        "name": "Descarte frugal",
+        "description": "+1 recambio por ronda"
+      },
+      "seal_merchant": {
+        "name": "Mercader de sellos",
+        "description": "Los Sellos del Destino aparecen 2 veces más a menudo"
+      },
+      "orb_merchant": {
+        "name": "Mercader de orbes",
+        "description": "Los Orbes Celestes aparecen 2 veces más a menudo"
+      },
+      "seed_pouch": {
+        "name": "Bolsa de semillas",
+        "description": "Tope de intereses subido a 10 de oro"
+      },
+      "empty_scroll": {
+        "name": "Pergamino en blanco",
+        "description": "No hace nada"
+      },
+      "tile_trading": {
+        "name": "Comercio de fichas",
+        "description": "Se pueden comprar fichas en la tienda"
+      },
+      "ancient_script": {
+        "name": "Escritura antigua",
+        "description": "-1 Acto, -1 mano por ronda"
+      },
+      "directors_take": {
+        "name": "Parte del director",
+        "description": "Renovar el Mandato del Jefe 1 vez por Acto (10 de oro)"
+      },
+      "brush_stroke": {
+        "name": "Pincelada",
+        "description": "+1 al tamaño de la mano"
+      },
+      "plentiful_stock": {
+        "name": "Surtido copioso",
+        "description": "+1 espacio de tienda (a 4)"
+      },
+      "liquidation_sale": {
+        "name": "Liquidación",
+        "description": "50% de descuento en toda la tienda"
+      },
+      "radiant_edge": {
+        "name": "Filo radiante",
+        "description": "Las ediciones aparecen 4 veces más a menudo"
+      },
+      "reroll_abundance": {
+        "name": "Abundancia de renovación",
+        "description": "Las renovaciones cuestan 4 de oro menos"
+      },
+      "omen_lens": {
+        "name": "Lente de presagios",
+        "description": "Los Guiones del Vacío pueden salir en Paquetes de Arcanos"
+      },
+      "observatory": {
+        "name": "Observatorio",
+        "description": "Cada Orbe Celeste en tu poder da ×1,5 Mult"
+      },
+      "swift_hand": {
+        "name": "Mano veloz",
+        "description": "+1 mano adicional por ronda"
+      },
+      "wasteful_plenty": {
+        "name": "Derroche",
+        "description": "+1 recambio adicional por ronda"
+      },
+      "seal_tycoon": {
+        "name": "Magnate de sellos",
+        "description": "Los Sellos del Destino aparecen 4 veces más a menudo"
+      },
+      "orb_tycoon": {
+        "name": "Magnate de orbes",
+        "description": "Los Orbes Celestes aparecen 4 veces más a menudo"
+      },
+      "money_tree": {
+        "name": "Árbol del dinero",
+        "description": "Tope de intereses subido a 20 de oro"
+      },
+      "void_matter": {
+        "name": "Materia del vacío",
+        "description": "+1 ranura de Decreto"
+      },
+      "illusion_tiles": {
+        "name": "Fichas ilusorias",
+        "description": "Las fichas de la tienda pueden tener ediciones"
+      },
+      "stone_script": {
+        "name": "Escritura en piedra",
+        "description": "-1 Acto otra vez, -1 recambio por ronda"
+      },
+      "final_cut": {
+        "name": "Corte final",
+        "description": "Renovar el Mandato del Jefe sin límite (10 de oro cada vez)"
+      },
+      "full_palette": {
+        "name": "Paleta completa",
+        "description": "+1 al tamaño de la mano otra vez"
+      }
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "Orbe de Plutón",
+        "description": "Se afina con el yaku Riichi. +1 Mult, +10 Fichas por nivel."
+      },
+      "mercury_orb": {
+        "name": "Orbe de Mercurio",
+        "description": "Se afina con el yaku Tanyao. +1 Mult, +15 Fichas por nivel."
+      },
+      "uranus_orb": {
+        "name": "Orbe de Urano",
+        "description": "Se afina con el yaku Yakuhai. +1 Mult, +20 Fichas por nivel."
+      },
+      "venus_orb": {
+        "name": "Orbe de Venus",
+        "description": "Se afina con el yaku Pinfu. +2 Mult, +20 Fichas por nivel."
+      },
+      "saturn_orb": {
+        "name": "Orbe de Saturno",
+        "description": "Se afina con el yaku Ittsu (Escalera). +3 Mult, +30 Fichas por nivel."
+      },
+      "jupiter_orb": {
+        "name": "Orbe de Júpiter",
+        "description": "Se afina con el yaku Honitsu (Medio color). +2 Mult, +15 Fichas por nivel."
+      },
+      "earth_orb": {
+        "name": "Orbe de la Tierra",
+        "description": "Se afina con el yaku Toitoi. +2 Mult, +25 Fichas por nivel."
+      },
+      "mars_orb": {
+        "name": "Orbe de Marte",
+        "description": "Se afina con el yaku Chinitsu (Color puro). +3 Mult, +30 Fichas por nivel."
+      },
+      "neptune_orb": {
+        "name": "Orbe de Neptuno",
+        "description": "Se afina con el yaku Sanshoku (Triple mixto). +4 Mult, +40 Fichas por nivel."
+      },
+      "planet_x_orb": {
+        "name": "Orbe del Planeta X",
+        "description": "Se afina con el yaku Siete Parejas. +3 Mult, +35 Fichas por nivel."
+      },
+      "ceres_orb": {
+        "name": "Orbe de Ceres",
+        "description": "Se afina con el yaku Chanta (Terminales). +4 Mult, +40 Fichas por nivel."
+      },
+      "eris_orb": {
+        "name": "Orbe de Eris",
+        "description": "Se afina con el yaku Kokushi Musou. +3 Mult, +50 Fichas por nivel."
+      },
+      "black_hole_orb": {
+        "name": "Orbe de Agujero Negro",
+        "description": "Al usarlo sube TODOS los Yaku 1 nivel."
+      }
+    }
+  },
+  "omens": {
+    "items": {
+      "omen_of_crescents": {
+        "name": "Presagio de Crecientes",
+        "description": "La próxima tienda garantiza un Orbe Celeste entre los objetos."
+      },
+      "omen_of_ash": {
+        "name": "Presagio de Ceniza",
+        "description": "El próximo Guion del Vacío usado no tiene contrapartida."
+      },
+      "omen_of_rivers": {
+        "name": "Presagio de Ríos",
+        "description": "La próxima ronda empieza con +1 descarte adicional."
+      },
+      "speed_omen": {
+        "name": "Presagio de Velocidad",
+        "description": "Otorga 5 de oro por cada ronda saltada en esta partida."
+      },
+      "throwback_omen": {
+        "name": "Presagio de Retorno",
+        "description": "Gana ×0,25 Mult por ronda saltada durante el resto de la partida."
+      },
+      "fortune_omen": {
+        "name": "Presagio de Fortuna",
+        "description": "Ganas 10 de oro al instante."
+      },
+      "oracles_omen": {
+        "name": "Presagio del Oráculo",
+        "description": "La próxima tienda tiene 2 renovaciones gratis."
+      },
+      "merchants_omen": {
+        "name": "Presagio del Mercader",
+        "description": "La próxima tienda tiene un 25% de descuento en todo."
+      },
+      "seal_omen": {
+        "name": "Presagio del Sello",
+        "description": "La próxima tienda garantiza un Sello del Destino entre los objetos."
+      },
+      "decree_omen": {
+        "name": "Presagio del Decreto",
+        "description": "La próxima tienda garantiza un Decreto Raro o mejor."
+      },
+      "void_omen": {
+        "name": "Presagio del Vacío",
+        "description": "La próxima tienda ofrece un Guion del Vacío entre los objetos."
+      },
+      "expansion_omen": {
+        "name": "Presagio de Expansión",
+        "description": "Ganas +1 ranura de Decreto de forma permanente."
+      },
+      "precision_omen": {
+        "name": "Presagio de Precisión",
+        "description": "Próxima ronda: +2 al tamaño de la mano."
+      },
+      "abundance_omen": {
+        "name": "Presagio de Abundancia",
+        "description": "La próxima ronda empieza con +2 robos adicionales."
+      },
+      "polychrome_omen": {
+        "name": "Presagio Policromo",
+        "description": "Aplica la edición Policroma a un Decreto al azar que poseas."
+      },
+      "foil_omen": {
+        "name": "Presagio de Lámina",
+        "description": "El próximo Decreto comprado gana la edición Lámina."
+      },
+      "interest_omen": {
+        "name": "Presagio de Intereses",
+        "description": "El tope de intereses sube 2 durante 3 rondas."
+      },
+      "score_surge_omen": {
+        "name": "Presagio de Oleada",
+        "description": "La próxima mano puntuada gana +100 puntos base."
+      },
+      "multiplication_omen": {
+        "name": "Presagio de Multiplicación",
+        "description": "La próxima mano puntuada gana ×1,5 Mult."
+      },
+      "blessing_pack_omen": {
+        "name": "Presagio de Bendición",
+        "description": "La próxima tienda incluye un Paquete de Bendición gratis."
+      },
+      "negative_omen": {
+        "name": "Presagio Negativo",
+        "description": "El próximo Decreto comprado gana la edición Negativa (+1 ranura)."
+      },
+      "austerity_omen": {
+        "name": "Presagio de Austeridad",
+        "description": "Ganas 15 de oro al instante, pero sin intereses la próxima ronda."
+      },
+      "holographic_omen": {
+        "name": "Presagio Holográfico",
+        "description": "El próximo Decreto comprado gana la edición Holográfica."
+      }
+    }
+  },
+  "seals": {
+    "items": {
+      "seal_of_the_alchemist": {
+        "name": "Sello del Alquimista",
+        "description": "Mejora 2 fichas elegidas con la Marca de la Suerte"
+      },
+      "seal_of_the_empress": {
+        "name": "Sello de la Emperatriz",
+        "description": "Mejora 2 fichas elegidas con la Marca de Bonificación"
+      },
+      "seal_of_the_sage": {
+        "name": "Sello del Sabio",
+        "description": "Mejora 2 fichas elegidas con la Marca de Fichas"
+      },
+      "seal_of_harmony": {
+        "name": "Sello de la Armonía",
+        "description": "Convierte 1 ficha en Comodín (cuenta como cualquier palo)"
+      },
+      "seal_of_fortitude": {
+        "name": "Sello de la Fortaleza",
+        "description": "Mejora 1 ficha a Marca de Acero (×1,5 Mult mientras la tengas)"
+      },
+      "seal_of_glass": {
+        "name": "Sello de Cristal",
+        "description": "Mejora 1 ficha a Marca de Cristal (×2 Mult, puede romperse)"
+      },
+      "seal_of_wealth": {
+        "name": "Sello de la Riqueza",
+        "description": "Mejora 1 ficha a Marca de Oro (+3 de oro si la conservas al final de ronda)"
+      },
+      "seal_of_stone": {
+        "name": "Sello de Piedra",
+        "description": "Mejora 1 ficha a Marca de Piedra (+50 Fichas, siempre puntúa)"
+      },
+      "seal_of_manzu": {
+        "name": "Sello de Manzu",
+        "description": "Convierte hasta 3 fichas al palo de Caracteres"
+      },
+      "seal_of_pinzu": {
+        "name": "Sello de Pinzu",
+        "description": "Convierte hasta 3 fichas al palo de Círculos"
+      },
+      "seal_of_souzu": {
+        "name": "Sello de Souzu",
+        "description": "Convierte hasta 3 fichas al palo de Bambú"
+      },
+      "seal_of_unity": {
+        "name": "Sello de la Unidad",
+        "description": "Convierte hasta 3 fichas en fichas de Honor"
+      },
+      "seal_of_the_oracle": {
+        "name": "Sello del Oráculo",
+        "description": "Crea hasta 2 Orbes Celestes al azar (si hay sitio)"
+      },
+      "seal_of_the_emperor": {
+        "name": "Sello del Emperador",
+        "description": "Crea hasta 2 Sellos del Destino al azar (si hay sitio)"
+      },
+      "seal_of_the_fool": {
+        "name": "Sello del Loco",
+        "description": "Crea el último Sello del Destino u Orbe Celeste usado en la partida"
+      },
+      "seal_of_judgment": {
+        "name": "Sello del Juicio",
+        "description": "Crea un Decreto al azar (si hay sitio)"
+      },
+      "seal_of_the_hermit": {
+        "name": "Sello del Ermitaño",
+        "description": "Duplica el oro (máx. +20 de oro)"
+      },
+      "seal_of_balance": {
+        "name": "Sello del Equilibrio",
+        "description": "Da el valor de venta total de todos los Decretos (máx. 50 de oro)"
+      },
+      "seal_of_strength": {
+        "name": "Sello de la Fuerza",
+        "description": "Sube 1 el número de hasta 2 fichas (máx. 9)"
+      },
+      "seal_of_release": {
+        "name": "Sello de la Liberación",
+        "description": "Destruye hasta 2 fichas elegidas de forma permanente"
+      },
+      "seal_of_transmutation": {
+        "name": "Sello de la Transmutación",
+        "description": "Elige 2 fichas: la izquierda se vuelve copia de la derecha"
+      },
+      "seal_of_fortune": {
+        "name": "Sello del Azar",
+        "description": "1 de cada 4 veces añade Lámina/Holo/Prismática a un Decreto al azar"
+      },
+      "seal_of_the_immortal": {
+        "name": "Sello del Inmortal",
+        "description": "Crea un Decreto Mítico (si hay sitio)"
+      },
+      "seal_of_the_void": {
+        "name": "Sello del Vacío",
+        "description": "Sube todos los Yaku 1 nivel"
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_kinship": {
+        "name": "Guion del Parentesco",
+        "description": "Destruye 1 ficha al azar y añade 3 fichas de Honor mejoradas al azar (Vientos/Dragones)"
+      },
+      "script_of_the_grave": {
+        "name": "Guion de la Tumba",
+        "description": "Destruye 1 ficha al azar y añade 2 fichas Terminales mejoradas al azar"
+      },
+      "script_of_incantation": {
+        "name": "Guion del Conjuro",
+        "description": "Destruye 1 ficha al azar y añade 4 fichas numeradas mejoradas al azar"
+      },
+      "script_of_immolation": {
+        "name": "Guion de la Inmolación",
+        "description": "Destruye 5 fichas al azar de la mano. Ganas 20 de oro."
+      },
+      "script_of_the_cryptid": {
+        "name": "Guion del Críptido",
+        "description": "Crea 2 copias de 1 ficha elegida de la mano"
+      },
+      "script_of_the_gold_seal": {
+        "name": "Guion del Sello Dorado",
+        "description": "Añade el Sello Dorado a 1 ficha elegida"
+      },
+      "script_of_deja_vu": {
+        "name": "Guion del Déjà Vu",
+        "description": "Añade el Sello Rojo a 1 ficha elegida (vuelve a puntuar)"
+      },
+      "script_of_the_trance": {
+        "name": "Guion del Trance",
+        "description": "Añade el Sello Azul a 1 ficha (crea un Orbe en la mano final)"
+      },
+      "script_of_the_medium": {
+        "name": "Guion del Médium",
+        "description": "Añade el Sello Púrpura a 1 ficha (crea un Sello al descartar)"
+      },
+      "script_of_aura": {
+        "name": "Guion del Aura",
+        "description": "Añade Lámina/Holo/Prismática a 1 ficha elegida"
+      },
+      "script_of_ectoplasm": {
+        "name": "Guion del Ectoplasma",
+        "description": "Añade Negativa a un Decreto al azar (+1 ranura de Decreto)"
+      },
+      "script_of_the_wraith": {
+        "name": "Guion del Espectro",
+        "description": "Crea un Decreto Raro al azar"
+      },
+      "script_of_the_ankh": {
+        "name": "Guion del Anj",
+        "description": "Copia un Decreto al azar y destruye todos los demás"
+      },
+      "script_of_the_hex": {
+        "name": "Guion del Maleficio",
+        "description": "Añade Prismática a un Decreto al azar y destruye el resto"
+      },
+      "script_of_the_sigil": {
+        "name": "Guion del Sigilo",
+        "description": "Convierte TODAS las fichas de la mano a un solo palo al azar"
+      },
+      "script_of_the_ouija": {
+        "name": "Guion de la Ouija",
+        "description": "Convierte TODAS las fichas de la mano a un solo número al azar"
+      },
+      "script_of_the_soul": {
+        "name": "Guion del Alma",
+        "description": "Crea un Decreto Legendario (Ordenanza Celestial)"
+      },
+      "script_of_the_singularity": {
+        "name": "Guion de la Singularidad",
+        "description": "Sube todos los Yaku 1 nivel"
+      },
+      "script_of_eclipse": {
+        "name": "Guion del Eclipse",
+        "description": "Puntúa a 1-shanten esta ronda"
+      },
+      "script_of_mirrors": {
+        "name": "Guion de los Espejos",
+        "description": "Duplica una ficha de la mano"
+      },
+      "script_of_silence": {
+        "name": "Guion del Silencio",
+        "description": "Ignora una combinación inválida en esta mano"
+      }
+    }
   }
 }
