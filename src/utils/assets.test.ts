@@ -2,9 +2,21 @@ import { describe, expect, it } from 'vitest'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import {
   getCodexCategoryIllustration,
+  getDecreeScrollIllustration,
   getTableStyleIllustration,
   illustrationAssets,
 } from './assets'
+
+describe('Decree scroll illustrations', () => {
+  it('maps Decree rarities to illustrated scrolls', () => {
+    expect(getDecreeScrollIllustration('LocalEdict')).toMatch(
+      /decrees\/local-edict\.png$/
+    )
+    expect(getDecreeScrollIllustration('HeavenlyOrdinance')).toMatch(
+      /decrees\/heavenly-ordinance\.png$/
+    )
+  })
+})
 
 describe('table style illustrations', () => {
   it('provides unique artwork for every playable table style', () => {

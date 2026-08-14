@@ -378,6 +378,11 @@ a {
     height: 52px !important;
   }
 
+  .gameplay-table-chip {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
   .game-score-panel {
     margin-block: 2px !important;
     padding-block: 4px !important;

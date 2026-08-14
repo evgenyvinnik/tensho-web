@@ -776,6 +776,62 @@
       "decree-omega": {
         "name": "Omega",
         "description": "+500 Chip, +50 Mult, x2.0 Mult"
+      },
+      "river_tax": {
+        "name": "Pajak Sungai",
+        "description": "Dapat 1 emas per ubin yang dibuang ronde ini."
+      },
+      "extended_hand_grant": {
+        "name": "Anugerah Tangan Panjang",
+        "description": "+3 pengambilan tambahan sebelum ronde gagal."
+      },
+      "tanyao_dispensation": {
+        "name": "Dispensasi Tanyao",
+        "description": "Ubin terminal (1 dan 9) diperbolehkan dalam tangan Tanyao."
+      },
+      "moonlit_seal": {
+        "name": "Segel Cahaya Bulan",
+        "description": "Tiap ubin Kehormatan dalam tangan pemenang menambah +0,1x pengali."
+      },
+      "pure_suit_asceticism": {
+        "name": "Pertapaan Warna Murni",
+        "description": "Tiap ubin dari jenis dominanmu memberi +10% skor. Bertumpuk secara perkalian."
+      },
+      "broken_stair_edict": {
+        "name": "Dekrit Tangga Patah",
+        "description": "Urutan boleh melewati satu angka (1-3-4 pun sah)."
+      },
+      "false_eye_mandate": {
+        "name": "Mandat Mata Palsu",
+        "description": "Satu rangkaian boleh sekaligus berperan sebagai pasangan."
+      },
+      "honor_transmutation": {
+        "name": "Transmutasi Kehormatan",
+        "description": "Ubin Kehormatan boleh dihitung sebagai ubin jenis terbanyakmu."
+      },
+      "celestial_wildcard": {
+        "name": "Kartu Bebas Langit",
+        "description": "Satu ubin per tangan dapat menyamar jadi ubin lain mana pun."
+      },
+      "dead_wall_writ": {
+        "name": "Surat Tembok Mati",
+        "description": "Sekali per ronde, ambil dari buangan alih-alih tembok."
+      },
+      "shanten_clemency": {
+        "name": "Keringanan Shanten",
+        "description": "Tangan dapat dinilai pada 1-shanten dengan potongan skor 50%."
+      },
+      "closed_hand_austerity": {
+        "name": "Kesederhanaan Tangan Tertutup",
+        "description": "Tangan yang sepenuhnya tertutup mendapat ×1,5 pengali."
+      },
+      "terminal_devotion": {
+        "name": "Pengabdian Terminal",
+        "description": "Tiap ubin terminal di tanganmu menambah +5% skor akhir."
+      },
+      "yaku_repetition_charter": {
+        "name": "Piagam Pengulangan Yaku",
+        "description": "Mengulang yaku dari ronde sebelumnya menaikkan pengali."
       }
     }
   },
@@ -865,7 +921,121 @@
     "theNeedle": "Jarum",
     "thePillar": "Pilar",
     "theWater": "Air",
-    "theArm": "Lengan"
+    "theArm": "Lengan",
+    "items": {
+      "the_hook": {
+        "name": "Sang Kail",
+        "description": "2 ubin acak dibuang dari tangan setelah tiap pengambilan"
+      },
+      "the_wall": {
+        "name": "Sang Tembok",
+        "description": "Syarat skor sangat besar (4x, bukan 2x)"
+      },
+      "the_eye": {
+        "name": "Sang Mata",
+        "description": "Tidak boleh yaku berulang ronde ini (tiap yaku dihitung sekali)"
+      },
+      "the_mouth": {
+        "name": "Sang Mulut",
+        "description": "Hanya satu jenis yaku yang dapat dihitung ronde ini"
+      },
+      "the_flint": {
+        "name": "Sang Batu Api",
+        "description": "Poin dasar dan Pengali dipangkas separuh sepanjang ronde"
+      },
+      "the_needle": {
+        "name": "Sang Jarum",
+        "description": "Harus menyelesaikan tangan dalam tepat 1 tangan (tanpa ulang)"
+      },
+      "the_pillar": {
+        "name": "Sang Pilar",
+        "description": "Ubin yang dipakai di ronde sebelumnya pada Babak ini dilemahkan"
+      },
+      "the_water": {
+        "name": "Sang Air",
+        "description": "Ronde dimulai dengan 0 penarikan ulang"
+      },
+      "the_arm": {
+        "name": "Sang Lengan",
+        "description": "Tingkat yaku turun 1 saat penilaian"
+      },
+      "the_psychic": {
+        "name": "Sang Cenayang",
+        "description": "Harus memainkan tepat 5 ubin tiap tangan"
+      },
+      "the_club": {
+        "name": "Sang Pentung",
+        "description": "Semua ubin Bambu dilemahkan"
+      },
+      "the_goad": {
+        "name": "Sang Tongkat",
+        "description": "Semua ubin Lingkaran dilemahkan"
+      },
+      "the_window": {
+        "name": "Sang Jendela",
+        "description": "Semua ubin Karakter dilemahkan"
+      },
+      "the_head": {
+        "name": "Sang Kepala",
+        "description": "Semua ubin Naga dilemahkan"
+      },
+      "the_plant": {
+        "name": "Sang Tumbuhan",
+        "description": "Semua ubin Kehormatan dilemahkan"
+      },
+      "the_ox": {
+        "name": "Sang Lembu",
+        "description": "Memainkan yaku yang paling sering dipakai membuat emas jadi 0"
+      },
+      "the_house": {
+        "name": "Sang Rumah",
+        "description": "Tangan pertama dibagikan tertutup"
+      },
+      "the_wheel": {
+        "name": "Sang Roda",
+        "description": "1 dari 7 ubin diambil dalam keadaan tertutup"
+      },
+      "the_fish": {
+        "name": "Sang Ikan",
+        "description": "Ubin diambil tertutup setelah tiap tangan"
+      },
+      "the_serpent": {
+        "name": "Sang Ular",
+        "description": "Setelah bermain atau membuang, selalu ambil 3 ubin"
+      },
+      "the_tooth": {
+        "name": "Sang Gigi",
+        "description": "Kehilangan 1 emas per ubin yang dimainkan"
+      },
+      "the_mark": {
+        "name": "Sang Tanda",
+        "description": "Semua ubin Kehormatan diambil tertutup"
+      },
+      "the_manacle": {
+        "name": "Sang Belenggu",
+        "description": "-1 ukuran tangan"
+      },
+      "amber_acorn": {
+        "name": "Biji Ambar",
+        "description": "Semua Dekrit diacak dan ditutup"
+      },
+      "verdant_leaf": {
+        "name": "Daun Hijau",
+        "description": "Semua ubin dilemahkan sampai 1 Dekrit dijual"
+      },
+      "violet_vessel": {
+        "name": "Bejana Ungu",
+        "description": "Target luar biasa besar (6x, bukan 2x)"
+      },
+      "crimson_heart": {
+        "name": "Jantung Merah",
+        "description": "Satu Dekrit acak dinonaktifkan tiap siklus tangan"
+      },
+      "cerulean_bell": {
+        "name": "Lonceng Biru",
+        "description": "Satu ubin dikunci paksa tiap pengambilan"
+      }
+    }
   },
   "stakes": {
     "title": "Tingkat Meja",
@@ -1190,5 +1360,513 @@
     "table": "Persiapan permainan",
     "selected": "Dipilih:",
     "chooseTable": "Pilih meja dan taruhan"
+  },
+  "charters": {
+    "items": {
+      "abundant_stock": {
+        "name": "Stok Melimpah",
+        "description": "+1 slot toko (jadi 3)"
+      },
+      "discount_sale": {
+        "name": "Obral Diskon",
+        "description": "Diskon 25% untuk semua barang toko"
+      },
+      "sharp_edge": {
+        "name": "Tepi Tajam",
+        "description": "Edisi muncul 2x lebih sering"
+      },
+      "reroll_surplus": {
+        "name": "Surplus Pengocokan",
+        "description": "Biaya pengocokan berkurang 2 emas"
+      },
+      "crystal_lens": {
+        "name": "Lensa Kristal",
+        "description": "+1 slot barang sekali pakai"
+      },
+      "star_chart": {
+        "name": "Peta Bintang",
+        "description": "Paket Langit berisi orb untuk yaku yang paling sering dipakai"
+      },
+      "steady_hand": {
+        "name": "Tangan Mantap",
+        "description": "+1 tangan per ronde"
+      },
+      "frugal_discard": {
+        "name": "Buangan Hemat",
+        "description": "+1 penarikan ulang per ronde"
+      },
+      "seal_merchant": {
+        "name": "Pedagang Segel",
+        "description": "Segel Takdir muncul 2x lebih sering"
+      },
+      "orb_merchant": {
+        "name": "Pedagang Orb",
+        "description": "Orb Langit muncul 2x lebih sering"
+      },
+      "seed_pouch": {
+        "name": "Kantong Benih",
+        "description": "Batas bunga dinaikkan jadi 10 emas"
+      },
+      "empty_scroll": {
+        "name": "Gulungan Kosong",
+        "description": "Tidak berefek"
+      },
+      "tile_trading": {
+        "name": "Perdagangan Ubin",
+        "description": "Ubin dapat dibeli di toko"
+      },
+      "ancient_script": {
+        "name": "Naskah Kuno",
+        "description": "-1 Babak, -1 tangan per ronde"
+      },
+      "directors_take": {
+        "name": "Bagian Sutradara",
+        "description": "Kocok ulang Mandat Boss 1x per Babak (10 emas)"
+      },
+      "brush_stroke": {
+        "name": "Sapuan Kuas",
+        "description": "+1 ukuran tangan"
+      },
+      "plentiful_stock": {
+        "name": "Stok Berlimpah",
+        "description": "+1 slot toko (jadi 4)"
+      },
+      "liquidation_sale": {
+        "name": "Cuci Gudang",
+        "description": "Diskon 50% untuk semua barang toko"
+      },
+      "radiant_edge": {
+        "name": "Tepi Berkilau",
+        "description": "Edisi muncul 4x lebih sering"
+      },
+      "reroll_abundance": {
+        "name": "Kelimpahan Pengocokan",
+        "description": "Biaya pengocokan berkurang 4 emas"
+      },
+      "omen_lens": {
+        "name": "Lensa Pertanda",
+        "description": "Naskah Kehampaan dapat muncul di Paket Arcana"
+      },
+      "observatory": {
+        "name": "Observatorium",
+        "description": "Setiap Orb Langit yang dimiliki memberi ×1,5 Pengali"
+      },
+      "swift_hand": {
+        "name": "Tangan Cekatan",
+        "description": "+1 tangan tambahan per ronde"
+      },
+      "wasteful_plenty": {
+        "name": "Kelimpahan Boros",
+        "description": "+1 penarikan ulang tambahan per ronde"
+      },
+      "seal_tycoon": {
+        "name": "Taipan Segel",
+        "description": "Segel Takdir muncul 4x lebih sering"
+      },
+      "orb_tycoon": {
+        "name": "Taipan Orb",
+        "description": "Orb Langit muncul 4x lebih sering"
+      },
+      "money_tree": {
+        "name": "Pohon Uang",
+        "description": "Batas bunga dinaikkan jadi 20 emas"
+      },
+      "void_matter": {
+        "name": "Materi Kehampaan",
+        "description": "+1 slot Dekrit"
+      },
+      "illusion_tiles": {
+        "name": "Ubin Ilusi",
+        "description": "Ubin di toko dapat memiliki edisi"
+      },
+      "stone_script": {
+        "name": "Naskah Batu",
+        "description": "-1 Babak lagi, -1 penarikan ulang per ronde"
+      },
+      "final_cut": {
+        "name": "Potongan Akhir",
+        "description": "Kocok ulang Mandat Boss tanpa batas (10 emas tiap kali)"
+      },
+      "full_palette": {
+        "name": "Palet Penuh",
+        "description": "+1 ukuran tangan lagi"
+      }
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "Orb Pluto",
+        "description": "Selaras dengan yaku Riichi. +1 Pengali, +10 Chip per level."
+      },
+      "mercury_orb": {
+        "name": "Orb Merkurius",
+        "description": "Selaras dengan yaku Tanyao. +1 Pengali, +15 Chip per level."
+      },
+      "uranus_orb": {
+        "name": "Orb Uranus",
+        "description": "Selaras dengan yaku Yakuhai. +1 Pengali, +20 Chip per level."
+      },
+      "venus_orb": {
+        "name": "Orb Venus",
+        "description": "Selaras dengan yaku Pinfu. +2 Pengali, +20 Chip per level."
+      },
+      "saturn_orb": {
+        "name": "Orb Saturnus",
+        "description": "Selaras dengan yaku Ittsu (Runtun). +3 Pengali, +30 Chip per level."
+      },
+      "jupiter_orb": {
+        "name": "Orb Jupiter",
+        "description": "Selaras dengan yaku Honitsu (Setengah Warna). +2 Pengali, +15 Chip per level."
+      },
+      "earth_orb": {
+        "name": "Orb Bumi",
+        "description": "Selaras dengan yaku Toitoi. +2 Pengali, +25 Chip per level."
+      },
+      "mars_orb": {
+        "name": "Orb Mars",
+        "description": "Selaras dengan yaku Chinitsu (Warna Penuh). +3 Pengali, +30 Chip per level."
+      },
+      "neptune_orb": {
+        "name": "Orb Neptunus",
+        "description": "Selaras dengan yaku Sanshoku (Tiga Warna). +4 Pengali, +40 Chip per level."
+      },
+      "planet_x_orb": {
+        "name": "Orb Planet X",
+        "description": "Selaras dengan yaku Tujuh Pasang. +3 Pengali, +35 Chip per level."
+      },
+      "ceres_orb": {
+        "name": "Orb Ceres",
+        "description": "Selaras dengan yaku Chanta (Terminal). +4 Pengali, +40 Chip per level."
+      },
+      "eris_orb": {
+        "name": "Orb Eris",
+        "description": "Selaras dengan yaku Kokushi Musou. +3 Pengali, +50 Chip per level."
+      },
+      "black_hole_orb": {
+        "name": "Orb Lubang Hitam",
+        "description": "Saat dipakai, menaikkan SEMUA Yaku 1 level."
+      }
+    }
+  },
+  "omens": {
+    "items": {
+      "omen_of_crescents": {
+        "name": "Pertanda Bulan Sabit",
+        "description": "Toko berikutnya dijamin menyediakan Orb Langit di slot barang."
+      },
+      "omen_of_ash": {
+        "name": "Pertanda Abu",
+        "description": "Naskah Kehampaan berikutnya yang dipakai tidak punya efek buruk."
+      },
+      "omen_of_rivers": {
+        "name": "Pertanda Sungai",
+        "description": "Ronde berikutnya dimulai dengan +1 buangan tambahan."
+      },
+      "speed_omen": {
+        "name": "Pertanda Kecepatan",
+        "description": "Memberi 5 emas per ronde yang dilewati dalam permainan ini."
+      },
+      "throwback_omen": {
+        "name": "Pertanda Kilas Balik",
+        "description": "Mendapat ×0,25 Pengali per ronde yang dilewati untuk sisa permainan."
+      },
+      "fortune_omen": {
+        "name": "Pertanda Keberuntungan",
+        "description": "Langsung mendapat 10 emas."
+      },
+      "oracles_omen": {
+        "name": "Pertanda Peramal",
+        "description": "Toko berikutnya punya 2 pengocokan gratis."
+      },
+      "merchants_omen": {
+        "name": "Pertanda Saudagar",
+        "description": "Toko berikutnya memberi diskon 25% untuk semua barang."
+      },
+      "seal_omen": {
+        "name": "Pertanda Segel",
+        "description": "Toko berikutnya dijamin menyediakan Segel Takdir di slot barang."
+      },
+      "decree_omen": {
+        "name": "Pertanda Dekrit",
+        "description": "Toko berikutnya dijamin menyediakan Dekrit Langka atau lebih baik."
+      },
+      "void_omen": {
+        "name": "Pertanda Kehampaan",
+        "description": "Toko berikutnya menawarkan Naskah Kehampaan di slot barang."
+      },
+      "expansion_omen": {
+        "name": "Pertanda Perluasan",
+        "description": "Mendapat +1 slot Dekrit secara permanen."
+      },
+      "precision_omen": {
+        "name": "Pertanda Ketepatan",
+        "description": "Ronde berikutnya: +2 ukuran tangan."
+      },
+      "abundance_omen": {
+        "name": "Pertanda Kelimpahan",
+        "description": "Ronde berikutnya dimulai dengan +2 pengambilan tambahan."
+      },
+      "polychrome_omen": {
+        "name": "Pertanda Polikrom",
+        "description": "Menerapkan edisi Polikrom pada satu Dekrit acak yang dimiliki."
+      },
+      "foil_omen": {
+        "name": "Pertanda Foil",
+        "description": "Dekrit berikutnya yang dibeli mendapat edisi Foil."
+      },
+      "interest_omen": {
+        "name": "Pertanda Bunga",
+        "description": "Batas bunga naik 2 selama 3 ronde."
+      },
+      "score_surge_omen": {
+        "name": "Pertanda Lonjakan Skor",
+        "description": "Tangan berikutnya yang dinilai mendapat +100 poin dasar."
+      },
+      "multiplication_omen": {
+        "name": "Pertanda Penggandaan",
+        "description": "Tangan berikutnya yang dinilai mendapat ×1,5 Pengali."
+      },
+      "blessing_pack_omen": {
+        "name": "Pertanda Paket Berkah",
+        "description": "Toko berikutnya menyertakan Paket Berkah gratis."
+      },
+      "negative_omen": {
+        "name": "Pertanda Negatif",
+        "description": "Dekrit berikutnya yang dibeli mendapat edisi Negatif (+1 slot)."
+      },
+      "austerity_omen": {
+        "name": "Pertanda Penghematan",
+        "description": "Langsung mendapat 15 emas, tetapi tanpa bunga ronde berikutnya."
+      },
+      "holographic_omen": {
+        "name": "Pertanda Holografik",
+        "description": "Dekrit berikutnya yang dibeli mendapat edisi Holografik."
+      }
+    }
+  },
+  "seals": {
+    "items": {
+      "seal_of_the_alchemist": {
+        "name": "Segel Sang Alkemis",
+        "description": "Meningkatkan 2 ubin terpilih dengan Tanda Keberuntungan"
+      },
+      "seal_of_the_empress": {
+        "name": "Segel Sang Permaisuri",
+        "description": "Meningkatkan 2 ubin terpilih dengan Tanda Bonus Skor"
+      },
+      "seal_of_the_sage": {
+        "name": "Segel Sang Bijak",
+        "description": "Meningkatkan 2 ubin terpilih dengan Tanda Bonus Chip"
+      },
+      "seal_of_harmony": {
+        "name": "Segel Keselarasan",
+        "description": "Mengubah 1 ubin jadi Bebas (dihitung sebagai jenis apa pun)"
+      },
+      "seal_of_fortitude": {
+        "name": "Segel Keteguhan",
+        "description": "Meningkatkan 1 ubin jadi Tanda Baja (×1,5 Pengali selama dipegang)"
+      },
+      "seal_of_glass": {
+        "name": "Segel Kaca",
+        "description": "Meningkatkan 1 ubin jadi Tanda Kaca (×2 Pengali, bisa pecah)"
+      },
+      "seal_of_wealth": {
+        "name": "Segel Kekayaan",
+        "description": "Meningkatkan 1 ubin jadi Tanda Emas (+3 emas bila dipegang di akhir ronde)"
+      },
+      "seal_of_stone": {
+        "name": "Segel Batu",
+        "description": "Meningkatkan 1 ubin jadi Tanda Batu (+50 Chip, selalu dinilai)"
+      },
+      "seal_of_manzu": {
+        "name": "Segel Manzu",
+        "description": "Mengubah hingga 3 ubin jadi Karakter"
+      },
+      "seal_of_pinzu": {
+        "name": "Segel Pinzu",
+        "description": "Mengubah hingga 3 ubin jadi Lingkaran"
+      },
+      "seal_of_souzu": {
+        "name": "Segel Souzu",
+        "description": "Mengubah hingga 3 ubin jadi Bambu"
+      },
+      "seal_of_unity": {
+        "name": "Segel Persatuan",
+        "description": "Mengubah hingga 3 ubin jadi ubin Kehormatan"
+      },
+      "seal_of_the_oracle": {
+        "name": "Segel Sang Peramal",
+        "description": "Membuat hingga 2 Orb Langit acak (bila ada tempat)"
+      },
+      "seal_of_the_emperor": {
+        "name": "Segel Sang Kaisar",
+        "description": "Membuat hingga 2 Segel Takdir acak (bila ada tempat)"
+      },
+      "seal_of_the_fool": {
+        "name": "Segel Sang Pandir",
+        "description": "Membuat Segel Takdir atau Orb Langit terakhir yang dipakai"
+      },
+      "seal_of_judgment": {
+        "name": "Segel Penghakiman",
+        "description": "Membuat satu Dekrit acak (bila ada tempat)"
+      },
+      "seal_of_the_hermit": {
+        "name": "Segel Sang Pertapa",
+        "description": "Menggandakan emas (maks +20 emas)"
+      },
+      "seal_of_balance": {
+        "name": "Segel Keseimbangan",
+        "description": "Memberi total nilai jual semua Dekrit (maks 50 emas)"
+      },
+      "seal_of_strength": {
+        "name": "Segel Kekuatan",
+        "description": "Menaikkan angka hingga 2 ubin sebesar 1 (maks 9)"
+      },
+      "seal_of_release": {
+        "name": "Segel Pelepasan",
+        "description": "Menghancurkan hingga 2 ubin terpilih secara permanen"
+      },
+      "seal_of_transmutation": {
+        "name": "Segel Transmutasi",
+        "description": "Pilih 2 ubin, yang kiri jadi salinan yang kanan"
+      },
+      "seal_of_fortune": {
+        "name": "Segel Peruntungan",
+        "description": "Peluang 1 dari 4 menambahkan Foil/Holo/Prismatik ke Dekrit acak"
+      },
+      "seal_of_the_immortal": {
+        "name": "Segel Sang Abadi",
+        "description": "Membuat Dekrit Mitos (bila ada tempat)"
+      },
+      "seal_of_the_void": {
+        "name": "Segel Kehampaan",
+        "description": "Menaikkan setiap Yaku 1 level"
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_kinship": {
+        "name": "Naskah Pertalian",
+        "description": "Hancurkan 1 ubin acak, tambahkan 3 ubin Kehormatan acak yang ditingkatkan (Angin/Naga)"
+      },
+      "script_of_the_grave": {
+        "name": "Naskah Kubur",
+        "description": "Hancurkan 1 ubin acak, tambahkan 2 ubin Terminal acak yang ditingkatkan"
+      },
+      "script_of_incantation": {
+        "name": "Naskah Mantra",
+        "description": "Hancurkan 1 ubin acak, tambahkan 4 ubin angka acak yang ditingkatkan"
+      },
+      "script_of_immolation": {
+        "name": "Naskah Pembakaran",
+        "description": "Hancurkan 5 ubin acak dari tangan. Dapat 20 emas."
+      },
+      "script_of_the_cryptid": {
+        "name": "Naskah Makhluk Gaib",
+        "description": "Buat 2 salinan dari 1 ubin terpilih di tangan"
+      },
+      "script_of_the_gold_seal": {
+        "name": "Naskah Segel Emas",
+        "description": "Tambahkan Segel Emas ke 1 ubin terpilih"
+      },
+      "script_of_deja_vu": {
+        "name": "Naskah Déjà Vu",
+        "description": "Tambahkan Segel Merah ke 1 ubin terpilih (dinilai ulang)"
+      },
+      "script_of_the_trance": {
+        "name": "Naskah Kesurupan",
+        "description": "Tambahkan Segel Biru ke 1 ubin (membuat Orb untuk tangan terakhir)"
+      },
+      "script_of_the_medium": {
+        "name": "Naskah Perantara",
+        "description": "Tambahkan Segel Ungu ke 1 ubin (membuat Segel saat dibuang)"
+      },
+      "script_of_aura": {
+        "name": "Naskah Aura",
+        "description": "Tambahkan Foil/Holo/Prismatik ke 1 ubin terpilih"
+      },
+      "script_of_ectoplasm": {
+        "name": "Naskah Ektoplasma",
+        "description": "Tambahkan Negatif ke Dekrit acak (+1 slot Dekrit)"
+      },
+      "script_of_the_wraith": {
+        "name": "Naskah Arwah",
+        "description": "Membuat satu Dekrit Langka acak"
+      },
+      "script_of_the_ankh": {
+        "name": "Naskah Ankh",
+        "description": "Salin satu Dekrit acak, hancurkan semua Dekrit lain"
+      },
+      "script_of_the_hex": {
+        "name": "Naskah Kutukan",
+        "description": "Tambahkan Prismatik ke Dekrit acak, hancurkan sisanya"
+      },
+      "script_of_the_sigil": {
+        "name": "Naskah Sigil",
+        "description": "Ubah SEMUA ubin di tangan jadi satu jenis acak"
+      },
+      "script_of_the_ouija": {
+        "name": "Naskah Ouija",
+        "description": "Ubah SEMUA ubin di tangan jadi satu angka acak"
+      },
+      "script_of_the_soul": {
+        "name": "Naskah Jiwa",
+        "description": "Membuat Dekrit Legendaris (Titah Langit)"
+      },
+      "script_of_the_singularity": {
+        "name": "Naskah Singularitas",
+        "description": "Menaikkan setiap Yaku 1 level"
+      },
+      "script_of_eclipse": {
+        "name": "Naskah Gerhana",
+        "description": "Dapat dinilai pada 1-shanten ronde ini"
+      },
+      "script_of_mirrors": {
+        "name": "Naskah Cermin",
+        "description": "Menggandakan satu ubin di tangan"
+      },
+      "script_of_silence": {
+        "name": "Naskah Kesunyian",
+        "description": "Abaikan satu rangkaian tidak sah pada tangan ini"
+      }
+    }
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Felt Hijau",
+        "description": "Meja mahjong klasik dengan permukaan felt hijau tradisional yang halus karena tak terhitung banyaknya permainan. Tanpa pengubah khusus—hanya keahlian murni."
+      },
+      "red_lacquer": {
+        "name": "Pernis Merah",
+        "description": "Meja mewah berlapis pernis merah terang, lambang keberuntungan dan kemakmuran. Warna yang bertuah ini menarik lebih banyak Dekrit."
+      },
+      "bamboo_mat": {
+        "name": "Tikar Bambu",
+        "description": "Tikar bambu anyaman sederhana yang dibentangkan di atas meja rendah dalam paviliun taman. Suasana alaminya membuat bunga lebih sering bermekaran."
+      },
+      "imperial_gold": {
+        "name": "Emas Kekaisaran",
+        "description": "Meja megah dari istana kekaisaran, bertatahkan daun emas dan giok. Mereka yang bermain di sini menerima restu kerajaan."
+      },
+      "night_market": {
+        "name": "Pasar Malam",
+        "description": "Meja darurat di tengah pasar malam yang ramai, diterangi lentera kertas. Para pedagang memberi diskon, tetapi ruangnya terbatas."
+      },
+      "temple_stone": {
+        "name": "Batu Kuil",
+        "description": "Meja batu dingin di kuil gunung yang asketis. Tidak ada bunga yang tumbuh di sini, tetapi kejernihan fokus meningkatkan skor dasar."
+      },
+      "ghost_parlor": {
+        "name": "Ruang Hantu",
+        "description": "Balai mahjong terbengkalai tempat para arwah masih bermain. Tabir antardunia menipis, sehingga Musim Terkutuk dapat muncul sejak awal."
+      },
+      "dragons_den": {
+        "name": "Sarang Naga",
+        "description": "Meja legendaris dari tulang naga yang tersembunyi di gua pegunungan. Tangan Yakuman diperkuat, tetapi sang naga menuntut persembahan lebih besar."
+      }
+    }
   }
 }

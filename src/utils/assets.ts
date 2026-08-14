@@ -4,7 +4,7 @@
  */
 
 import { TileSuit } from '../core/Tile'
-import type { PackType } from '../systems/types'
+import type { DecreeRarity, PackType } from '../systems/types'
 import { withBasePath } from './basePath'
 
 // Base paths for assets
@@ -108,6 +108,12 @@ export const illustrationAssets = {
   currency: {
     gold: `${ASSET_BASE}/illustrations/currency/tensho-gold.png`,
   },
+  decreeScrolls: {
+    LocalEdict: `${ASSET_BASE}/illustrations/decrees/local-edict.png`,
+    RegionalMandate: `${ASSET_BASE}/illustrations/decrees/regional-mandate.png`,
+    ImperialDecree: `${ASSET_BASE}/illustrations/decrees/imperial-decree.png`,
+    HeavenlyOrdinance: `${ASSET_BASE}/illustrations/decrees/heavenly-ordinance.png`,
+  } satisfies Record<DecreeRarity, string>,
   codex: {
     archive: `${ASSET_BASE}/illustrations/codex/archive.webp`,
     ascent: `${ASSET_BASE}/illustrations/codex/ascent.webp`,
@@ -126,6 +132,11 @@ export const illustrationAssets = {
     dragons_den: `${ASSET_BASE}/illustrations/tables/dragons_den.webp`,
   },
 } as const
+
+/** Return the illustrated scroll frame for a Decree rarity. */
+export function getDecreeScrollIllustration(rarity: DecreeRarity): string {
+  return illustrationAssets.decreeScrolls[rarity]
+}
 
 export type IllustratedTableStyleId = keyof typeof illustrationAssets.tables
 

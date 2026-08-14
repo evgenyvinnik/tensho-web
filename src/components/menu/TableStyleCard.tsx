@@ -40,6 +40,21 @@ export function TableStyleCard({
   const { t } = useTranslation()
   const [isHovered, setIsHovered] = React.useState(false)
   const artwork = getTableStyleIllustration(style.id)
+  const localizedName = itemText.name('tableStyles', {
+    ...style,
+    name: style.displayName,
+  })
+  const localizedDescription = itemText.description('tableStyles', {
+    ...style,
+    name: style.displayName,
+  })
+  const localizedTheme = t(`tableStyles.items.${style.id}.theme`, style.theme)
+  const localizedUnlock = t(
+    `tableStyles.items.${style.id}.unlock`,
+    style.unlockCondition.description
+  )
+  const modifierText = (index: number, authoredText: string) =>
+    t(`tableStyles.items.${style.id}.modifiers.${index}`, authoredText)
   const benefits = style.startingModifiers.filter(
     (modifier) => modifier.isBenefit && modifier.type !== 'none'
   )
@@ -70,10 +85,18 @@ export function TableStyleCard({
       aria-pressed={isUnlocked ? isSelected : undefined}
       aria-label={
         isUnlocked
-          ? `${style.displayName}, ${style.theme} table`
-          : `${style.displayName}, locked: ${style.unlockCondition.description}`
+          ? t('tableStyle.optionLabel', '{{name}}, {{theme}} table', {
+              name: localizedName,
+              theme: localizedTheme,
+            })
+          : t(
+              'tableStyle.lockedOptionLabel',
+              '{{name}}, locked: {{requirement}}',
+              { name: localizedName, requirement: localizedUnlock }
+            )
       }
-      className={`relative w-full overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)] text-left shadow-lg transition-[border-color,box-shadow,filter] duration-200 ${
+      data-table-style-card={style.id}
+      className={`relative h-auto w-full self-start overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)] text-left shadow-lg transition-[border-color,box-shadow,filter] duration-200 ${
         isSelected && isUnlocked
           ? 'border-[var(--color-golden-yellow)] ring-2 ring-[var(--color-golden-yellow)]/70'
           : 'border-[var(--color-saddle-brown)]'
@@ -108,7 +131,7 @@ export function TableStyleCard({
           className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-forest)] via-transparent to-black/25"
         />
         <div className="absolute left-3 top-3 rounded-full border border-white/20 bg-black/65 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-white shadow-lg backdrop-blur-sm">
-          {style.theme}
+          {localizedTheme}
         </div>
 
         <div className="absolute right-3 top-3 flex min-h-8 min-w-8 items-center justify-center rounded-full border border-white/25 bg-black/65 text-white shadow-lg backdrop-blur-sm">
@@ -132,7 +155,7 @@ export function TableStyleCard({
 
         <div className="absolute inset-x-3 bottom-2 flex items-end justify-between gap-3">
           <h3 className="min-w-0 text-lg font-bold leading-tight text-white drop-shadow-lg sm:text-xl">
-            {itemText.name('tableStyles', { ...style, name: style.displayName })}
+            {localizedName}
           </h3>
           {isCJKLanguage() && (
             <span className="shrink-0 font-decorative text-lg text-[var(--color-golden-yellow)] drop-shadow-lg">
@@ -143,36 +166,47 @@ export function TableStyleCard({
       </div>
 
       <div className="px-3.5 pb-3.5 pt-2.5 sm:px-4 sm:pb-4">
-        <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
-          {style.description}
+        <p
+          data-table-description
+          className="mb-3 break-words text-xs leading-relaxed text-[var(--color-beige-white)]/75 sm:text-[13px]"
+        >
+          {localizedDescription}
         </p>
 
         <div className="space-y-1.5">
-          {benefits.map((modifier) => (
-            <div
-              key={`${modifier.type}-${modifier.description}`}
-              className="flex items-start gap-2 text-xs sm:text-sm"
-            >
-              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 font-black text-emerald-300">
-                +
-              </span>
-              <span className="text-emerald-200/90">
-                {modifier.description}
-              </span>
-            </div>
-          ))}
+          {benefits.map((modifier) => {
+            const modifierIndex = style.startingModifiers.indexOf(modifier)
+            return (
+              <div
+                key={`${modifier.type}-${modifier.description}`}
+                className="flex items-start gap-2 text-xs sm:text-sm"
+              >
+                <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 font-black text-emerald-300">
+                  +
+                </span>
+                <span className="min-w-0 break-words text-emerald-200/90">
+                  {modifierText(modifierIndex, modifier.description)}
+                </span>
+              </div>
+            )
+          })}
 
-          {detriments.map((modifier) => (
-            <div
-              key={`${modifier.type}-${modifier.description}`}
-              className="flex items-start gap-2 text-xs sm:text-sm"
-            >
-              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-rose-400/15 font-black text-rose-300">
-                −
-              </span>
-              <span className="text-rose-200/90">{modifier.description}</span>
-            </div>
-          ))}
+          {detriments.map((modifier) => {
+            const modifierIndex = style.startingModifiers.indexOf(modifier)
+            return (
+              <div
+                key={`${modifier.type}-${modifier.description}`}
+                className="flex items-start gap-2 text-xs sm:text-sm"
+              >
+                <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-rose-400/15 font-black text-rose-300">
+                  −
+                </span>
+                <span className="min-w-0 break-words text-rose-200/90">
+                  {modifierText(modifierIndex, modifier.description)}
+                </span>
+              </div>
+            )
+          })}
 
           {benefits.length === 0 && detriments.length === 0 && (
             <div className="flex items-start gap-2 text-xs sm:text-sm">
@@ -189,12 +223,18 @@ export function TableStyleCard({
         {!isUnlocked && (
           <div className="mt-3 border-t border-[var(--color-saddle-brown)]/70 pt-3">
             <p className="text-xs font-semibold text-[var(--color-metallic-gold)]">
-              Unlock: {style.unlockCondition.description}
+              {t('tableStyle.unlock', 'Unlock: {{requirement}}', {
+                requirement: localizedUnlock,
+              })}
             </p>
             <div
               className="mt-2 h-1.5 overflow-hidden rounded-full border border-white/10 bg-black/35"
               role="progressbar"
-              aria-label={`Progress toward ${style.displayName}`}
+              aria-label={t(
+                'tableStyle.unlockProgress',
+                'Progress toward {{name}}',
+                { name: localizedName }
+              )}
               aria-valuemin={0}
               aria-valuemax={100}
               aria-valuenow={Math.floor(unlockProgress * 100)}

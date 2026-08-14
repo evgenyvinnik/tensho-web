@@ -29,15 +29,36 @@ describe('DecreeCardCompact mandate states', () => {
     expect(screen.getByLabelText('Face-down Decree')).toBeInTheDocument()
     expect(screen.queryByText('River Tax')).not.toBeInTheDocument()
 
+    fireEvent.click(screen.getByLabelText('Face-down Decree'))
     fireEvent.click(screen.getByRole('button', { name: 'Sell hidden Decree' }))
     expect(onSell).toHaveBeenCalledOnce()
+  })
+
+  it('uses rarity scroll artwork and keeps Sell inside the details popover', () => {
+    render(<DecreeCardCompact decree={decree} onSell={vi.fn()} />)
+
+    const decreeButton = screen.getByRole('button', { name: 'River Tax' })
+    expect(decreeButton.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringMatching(/decrees\/local-edict\.png$/)
+    )
+    expect(
+      screen.queryByRole('button', { name: 'Sell River Tax' })
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(decreeButton)
+    expect(
+      screen.getByRole('button', { name: 'Sell River Tax' })
+    ).toBeInTheDocument()
   })
 
   it('labels a Crimson Heart-disabled Decree', () => {
     render(<DecreeCardCompact decree={decree} disabledByMandate />)
 
     fireEvent.mouseEnter(screen.getByLabelText('River Tax'))
-    expect(screen.getByText('Disabled by Crimson Heart this hand')).toBeInTheDocument()
+    expect(
+      screen.getByText('Disabled by Crimson Heart this hand')
+    ).toBeInTheDocument()
   })
 
   it('prevents Eternal Decrees from being sold', () => {
@@ -48,6 +69,7 @@ describe('DecreeCardCompact mandate states', () => {
     }
     render(<DecreeCardCompact decree={eternalDecree} onSell={onSell} />)
 
+    fireEvent.click(screen.getByRole('button', { name: 'River Tax' }))
     const sellButton = screen.getByRole('button', {
       name: 'River Tax is Eternal and cannot be sold',
     })

@@ -22,6 +22,14 @@ describe('TableStyleCard', () => {
       'src',
       expect.stringMatching(/green_felt\.webp$/)
     )
+    expect(
+      container.querySelector('[data-table-description]')
+    ).toHaveTextContent(
+      'The classic mahjong table. A traditional green felt surface, worn smooth by countless hands.'
+    )
+    expect(container.querySelector('[data-table-description]')).not.toHaveClass(
+      'line-clamp-2'
+    )
 
     fireEvent.click(option)
     expect(onClick).toHaveBeenCalledOnce()

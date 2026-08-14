@@ -618,5 +618,41 @@
     "table": "Paghahanda ng laro",
     "selected": "Napili:",
     "chooseTable": "Pumili ng mesa at stake"
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Lunting Felt",
+        "description": "Ang klasikong mesa ng mahjong, na may tradisyonal na lunting felt na pinakinis ng di-mabilang na laro. Walang espesyal na modifier—purong husay lamang."
+      },
+      "red_lacquer": {
+        "name": "Pulang Barnis",
+        "description": "Isang marangyang mesa na binalutan ng matingkad na pulang barnis, sagisag ng suwerte at kasaganaan. Humihikayat ang mapalad na kulay ng dagdag na mga Decree."
+      },
+      "bamboo_mat": {
+        "name": "Habas na Kawayan",
+        "description": "Isang payak na hinabing banig na kawayan sa mababang mesa ng pavilion sa hardin. Mas madalas mamukadkad ang mga bulaklak sa likas na paligid."
+      },
+      "imperial_gold": {
+        "name": "Gintong Imperyal",
+        "description": "Isang maringal na mesa mula sa palasyo, may palamuting gintong dahon at jade. Tumatanggap ng pabor ng hari ang mga naglalaro rito."
+      },
+      "night_market": {
+        "name": "Pamilihan sa Gabi",
+        "description": "Isang pansamantalang mesa sa mataong pamilihan sa gabi na sinisindihan ng mga parolang papel. May diskuwento ang mga tindero, ngunit limitado ang espasyo."
+      },
+      "temple_stone": {
+        "name": "Batong Templo",
+        "description": "Isang malamig na mesang bato sa payak na templo sa bundok. Walang bulaklak dito, ngunit pinatataas ng dalisay na pokus ang batayang puntos."
+      },
+      "ghost_parlor": {
+        "name": "Bulwagan ng Multo",
+        "description": "Isang abandonadong bulwagan ng mahjong kung saan naglalaro pa rin ang mga espiritu. Manipis ang tabing sa pagitan ng mga mundo kaya maaaring lumitaw agad ang Corrupted Seasons."
+      },
+      "dragons_den": {
+        "name": "Yungib ng Dragon",
+        "description": "Isang maalamat na mesang inukit mula sa buto ng dragon at nakatago sa kuweba sa bundok. Mas malakas ang mga Yakuman, ngunit mas malaking tributo ang hinihingi ng dragon."
+      }
+    }
   }
 }

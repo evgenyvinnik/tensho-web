@@ -618,5 +618,41 @@
     "table": "Preparazione",
     "selected": "Selezionato:",
     "chooseTable": "Scegli tavolo e posta"
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Feltro Verde",
+        "description": "Il classico tavolo da mahjong, con il tradizionale feltro verde levigato da innumerevoli mani. Nessun modificatore speciale: soltanto pura abilità."
+      },
+      "red_lacquer": {
+        "name": "Lacca Rossa",
+        "description": "Un tavolo lussuoso rifinito in brillante lacca vermiglia, simbolo di fortuna e prosperità. Il colore propizio attira Decreti aggiuntivi."
+      },
+      "bamboo_mat": {
+        "name": "Stuoia di Bambù",
+        "description": "Una semplice stuoia di bambù intrecciato su un tavolo basso in un padiglione da giardino. L'ambiente naturale fa sbocciare più fiori."
+      },
+      "imperial_gold": {
+        "name": "Oro Imperiale",
+        "description": "Un magnifico tavolo del palazzo imperiale, intarsiato con foglia d'oro e giada. Chi gioca qui riceve il favore reale."
+      },
+      "night_market": {
+        "name": "Mercato Notturno",
+        "description": "Un tavolo improvvisato nel vivace mercato notturno, illuminato da lanterne di carta. I mercanti offrono sconti, ma lo spazio è limitato."
+      },
+      "temple_stone": {
+        "name": "Pietra del Tempio",
+        "description": "Un freddo tavolo di pietra in un austero tempio di montagna. Qui non crescono fiori, ma la purezza della concentrazione aumenta il punteggio base."
+      },
+      "ghost_parlor": {
+        "name": "Salone degli Spiriti",
+        "description": "Una sala da mahjong abbandonata dove gli spiriti giocano ancora. Il velo fra i mondi è sottile e le Stagioni Corrotte possono apparire fin dall'inizio."
+      },
+      "dragons_den": {
+        "name": "Tana del Drago",
+        "description": "Un tavolo leggendario scolpito nell'osso di drago e nascosto in una caverna montana. Le mani Yakuman sono amplificate, ma il drago esige un tributo maggiore."
+      }
+    }
   }
 }

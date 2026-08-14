@@ -359,7 +359,11 @@ export function GameplayScreen() {
         setActionError(
           t(
             'gameplay.completeOrSelectTactical',
-            t('gameplay.tacticalHintLong', 'Select {{min}}–{{max}} tiles for a tactical play, or complete the hand before declaring it.', { min: 2, max: 5 })
+            t(
+              'gameplay.tacticalHintLong',
+              'Select {{min}}–{{max}} tiles for a tactical play, or complete the hand before declaring it.',
+              { min: 2, max: 5 }
+            )
           )
         )
         return
@@ -604,7 +608,7 @@ export function GameplayScreen() {
       animated={false}
       patternScale={1}
       artwork={getTableStyleIllustration(currentTableStyle.id)}
-      artworkOpacity={0.48}
+      artworkOpacity={0.68}
       className="viewport-full"
     >
       <div className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl">
@@ -624,6 +628,51 @@ export function GameplayScreen() {
         />
 
         <div className="gameplay-inventory-row flex flex-shrink-0 items-center gap-2 px-3 py-1.5">
+          <div
+            data-gameplay-table-identity
+            data-table-style-id={currentTableStyle.id}
+            role="img"
+            aria-label={t('gameplay.activeTable', 'Active table: {{name}}', {
+              name: itemText.name('tableStyles', {
+                ...currentTableStyle,
+                name: currentTableStyle.displayName,
+              }),
+            })}
+            title={itemText.name('tableStyles', {
+              ...currentTableStyle,
+              name: currentTableStyle.displayName,
+            })}
+            className="gameplay-table-chip relative flex h-16 w-16 shrink-0 items-end overflow-hidden rounded-xl border-2 bg-black/45 shadow-lg sm:w-36"
+            style={{
+              borderColor: currentTableStyle.themeColor,
+              boxShadow: `0 0 18px ${currentTableStyle.themeColor}45`,
+            }}
+          >
+            <img
+              src={getTableStyleIllustration(currentTableStyle.id)}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <span className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1"
+              style={{ backgroundColor: currentTableStyle.themeColor }}
+            />
+            <span className="relative hidden min-w-0 px-2 pb-1.5 text-left sm:block">
+              <span className="block text-[9px] font-black uppercase tracking-[0.16em] text-[var(--color-metallic-gold)]">
+                {t('gameplay.activeTableLabel', 'Table')}
+              </span>
+              <span className="block truncate text-xs font-bold text-white drop-shadow">
+                {itemText.name('tableStyles', {
+                  ...currentTableStyle,
+                  name: currentTableStyle.displayName,
+                })}
+              </span>
+            </span>
+          </div>
+
           {/* Decree bar */}
           <div
             data-tutorial="decrees"

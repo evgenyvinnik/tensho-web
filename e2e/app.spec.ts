@@ -177,10 +177,61 @@ test.describe('Application Smoke Tests', () => {
       modalFits: true,
       imagesLoaded: true,
     })
+
+    const descriptionsFit = await page
+      .locator('[data-table-description]')
+      .evaluateAll((descriptions) =>
+        descriptions.every(
+          (description) => description.scrollHeight <= description.clientHeight
+        )
+      )
+    expect(descriptionsFit).toBe(true)
+  })
+
+  test('localizes table names and descriptions', async ({ page }) => {
+    await page.goto('/es/')
+    await page.getByRole('button', { name: 'Elige mesa y apuesta' }).click()
+
+    await expect(
+      page.getByRole('heading', { name: 'Fieltro Verde', exact: true })
+    ).toBeVisible()
+    await expect(
+      page.getByText(/La mesa de mahjong clásica/, { exact: false })
+    ).toBeVisible()
   })
 })
 
 test.describe('Game Navigation', () => {
+  test('opens illustrated Decree details and keeps Sell contextual', async ({
+    page,
+  }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await expect(page).toHaveURL(/\/en\/play$/)
+
+    const firstDecree = page.locator('[data-decree-scroll]').first()
+    await expect(firstDecree).toBeVisible()
+    await expect(firstDecree.locator('img')).toHaveAttribute(
+      'src',
+      /\/illustrations\/decrees\/.+\.png$/
+    )
+    await expect(page.getByRole('button', { name: /^Sell / })).toHaveCount(0)
+
+    await firstDecree.click()
+    const details = page.locator('[role="dialog"]')
+    await expect(details).toBeVisible()
+    await expect(details.getByRole('button', { name: /^Sell / })).toBeVisible()
+
+    const bounds = await details.boundingBox()
+    const viewport = page.viewportSize()
+    expect(bounds).not.toBeNull()
+    expect(viewport).not.toBeNull()
+    expect(bounds!.x).toBeGreaterThanOrEqual(0)
+    expect(bounds!.y).toBeGreaterThanOrEqual(0)
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport!.width)
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport!.height)
+  })
+
   test('starts a real round and resolves a play through the core loop', async ({
     page,
   }) => {
@@ -190,6 +241,15 @@ test.describe('Game Navigation', () => {
     await expect(page).toHaveURL(/\/en\/play$/)
     await expect(page.getByText('300', { exact: true })).toBeVisible()
     await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
+    const activeTable = page.locator('[data-gameplay-table-identity]')
+    await expect(activeTable).toHaveAttribute(
+      'data-table-style-id',
+      'green_felt'
+    )
+    await expect(activeTable.locator('img')).toHaveAttribute(
+      'src',
+      /green_felt\.webp$/
+    )
 
     const frameBounds = await page.locator('[data-table-frame]').boundingBox()
     const gameplayBounds = await page

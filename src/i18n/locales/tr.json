@@ -618,5 +618,41 @@
     "table": "Oyun kurulumu",
     "selected": "Seçili:",
     "chooseTable": "Masa ve bahis seç"
+  },
+  "tableStyles": {
+    "items": {
+      "green_felt": {
+        "name": "Yeşil Keçe",
+        "description": "Sayısız elin aşındırıp pürüzsüzleştirdiği geleneksel yeşil keçeli klasik mahjong masası. Özel değiştirici yok—yalnızca saf beceri."
+      },
+      "red_lacquer": {
+        "name": "Kırmızı Lake",
+        "description": "Şans ve refahı simgeleyen parlak kızıl lake kaplı lüks bir masa. Uğurlu rengi ek Fermanları kendine çeker."
+      },
+      "bamboo_mat": {
+        "name": "Bambu Hasır",
+        "description": "Bahçe köşkünde alçak bir masaya serilmiş sade bambu hasır. Doğal ortam çiçeklerin daha sık açmasını sağlar."
+      },
+      "imperial_gold": {
+        "name": "İmparatorluk Altını",
+        "description": "İmparatorluk sarayından, altın varak ve yeşim kakmalı görkemli bir masa. Burada oynayanlar kraliyet lütfuna erişir."
+      },
+      "night_market": {
+        "name": "Gece Pazarı",
+        "description": "Kâğıt fenerlerle aydınlanan kalabalık gece pazarında kurulmuş geçici bir masa. Satıcılar indirim sunar, ancak alan dardır."
+      },
+      "temple_stone": {
+        "name": "Tapınak Taşı",
+        "description": "Sade bir dağ tapınağındaki soğuk taş masa. Burada çiçek yetişmez, fakat berrak odaklanma temel puanı artırır."
+      },
+      "ghost_parlor": {
+        "name": "Hayalet Salonu",
+        "description": "Ruhların hâlâ oynadığı terk edilmiş bir mahjong salonu. Dünyalar arasındaki perde ince olduğundan Bozulmuş Mevsimler en baştan belirebilir."
+      },
+      "dragons_den": {
+        "name": "Ejderha İni",
+        "description": "Dağ mağarasında saklı, ejderha kemiğinden oyulmuş efsanevi masa. Yakuman elleri güçlenir, ancak ejderha daha büyük haraç ister."
+      }
+    }
   }
 }

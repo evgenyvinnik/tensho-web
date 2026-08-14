@@ -327,7 +327,7 @@ export function TableStyleModal({
           data-table-style-list
           className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
             {TABLE_STYLE_DEFINITIONS.map((style, index) => {
               const unlocked = isStyleUnlocked(style.id)
               const progress = unlocked ? 1 : getUnlockProgress(style.id)
@@ -365,13 +365,17 @@ export function TableStyleModal({
                 {t('tableStyle.selected', 'Selected:')}
               </span>
               <span className="ml-2 text-[var(--color-beige-white)] font-bold">
-                {itemText.name('tableStyles', { ...selectedStyle, name: selectedStyle.displayName })}
+                {itemText.name('tableStyles', {
+                  ...selectedStyle,
+                  name: selectedStyle.displayName,
+                })}
               </span>
               <span
                 className="ml-2 text-xs font-black uppercase"
                 style={{ color: selectedStake?.color }}
               >
-                · {t('gameplay.stake', 'Stake {{tier}}', { tier: tempStakeTier })}
+                ·{' '}
+                {t('gameplay.stake', 'Stake {{tier}}', { tier: tempStakeTier })}
               </span>
               {showCJK && (
                 <span className="ml-2 text-[var(--color-metallic-gold)] font-decorative">
