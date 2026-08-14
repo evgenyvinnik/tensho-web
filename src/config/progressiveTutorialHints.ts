@@ -7,6 +7,7 @@
 
 import { TileSuit } from '../core/Tile'
 import { TFunction } from 'i18next'
+import type { BeginnerPatternKind } from '../gameplay/beginnerCoach'
 
 /**
  * Trigger types for progressive hints
@@ -56,37 +57,35 @@ export interface ProgressiveHint {
  * Get all progressive tutorial hints
  */
 export function getProgressiveHints(
-  t: TFunction
+  t: TFunction,
+  beginnerPattern?: BeginnerPatternKind
 ): ProgressiveHint[] {
+  const patternName =
+    beginnerPattern && beginnerPattern !== 'redraw'
+      ? t(`melds.${beginnerPattern}`, beginnerPattern)
+      : null
+
   return [
     // === GAME START HINTS (shown immediately on first run) ===
     {
-      id: 'welcome',
+      id: 'guided-first-move-v2',
       trigger: 'gameStart',
-      title: t('progressiveHints.welcome.title', 'Welcome to Tensho!'),
-      content: t(
-        'progressiveHints.welcome.content',
-        'Clear the target before your hands run out. Each Act is Small → Large → Boss; defeat Act 8 to win. Tips only appear when a new system becomes relevant.'
-      ),
+      title: t('gameplay.firstMoveTitle', 'Your first move is already here'),
+      content:
+        beginnerPattern === 'redraw'
+          ? t(
+              'gameplay.firstMoveContentRedraw',
+              'You do not need to know Mahjong yet. The glowing tiles are isolated; select them and use Redraw to look for a Pair, Sequence, or Triplet. Open Learn patterns whenever you want the visual primer.'
+            )
+          : t(
+              'gameplay.firstMoveContentPattern',
+              'You do not need to know Mahjong yet. The glowing tiles already make a {{pattern}}. Tap them, read the exact forecast, then Play. Open Learn patterns whenever you want the visual primer.',
+              { pattern: patternName ?? t('gameplay.pattern', 'shape') }
+            ),
       priority: 1,
-      targetSelector: '[data-tutorial="score-target"]',
-      arrowDirection: 'bottom',
-      autoDismissMs: 6000,
-    },
-
-    // === FIRST DRAW HINTS ===
-    {
-      id: 'hand-intro',
-      trigger: 'firstDraw',
       targetSelector: '[data-tutorial="hand"]',
-      arrowDirection: 'bottom', // Changed from 'top' - tooltip above PlaySurface, arrow pointing down
-      title: t('progressiveHints.hand.title', 'Your Hand'),
-      content: t(
-        'progressiveHints.hand.content',
-        'Stage 2–5 tiles to score a tactical group. A complete Mahjong hand unlocks Stage Hand: press once to move it to the board, then confirm the declaration.'
-      ),
-      priority: 1,
-      autoDismissMs: 6000,
+      arrowDirection: 'bottom',
+      autoDismissMs: 12_000,
     },
 
     // === FIRST DISCARD HINTS ===

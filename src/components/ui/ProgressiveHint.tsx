@@ -171,6 +171,8 @@ export function ProgressiveHintOverlay({
 
     const padding = 16
     const arrowOffset = 32
+    const tooltipWidth = tooltipRef.current?.offsetWidth || 280
+    const tooltipHeight = tooltipRef.current?.offsetHeight || 150
     let x: number, y: number
 
     if (hint.position) {
@@ -183,18 +185,18 @@ export function ProgressiveHintOverlay({
       switch (hint.arrowDirection) {
         case 'top':
           x = centerX
-          y = targetRect.bottom + arrowOffset
+          y = targetRect.bottom + arrowOffset + tooltipHeight / 2
           break
         case 'bottom':
           x = centerX
-          y = targetRect.top - arrowOffset
+          y = targetRect.top - arrowOffset - tooltipHeight / 2
           break
         case 'left':
-          x = targetRect.right + arrowOffset
+          x = targetRect.right + arrowOffset + tooltipWidth / 2
           y = centerY
           break
         case 'right':
-          x = targetRect.left - arrowOffset
+          x = targetRect.left - arrowOffset - tooltipWidth / 2
           y = centerY
           break
       }
@@ -204,9 +206,6 @@ export function ProgressiveHintOverlay({
     }
 
     // Clamp to viewport
-    const tooltipWidth = tooltipRef.current?.offsetWidth || 280
-    const tooltipHeight = tooltipRef.current?.offsetHeight || 150
-
     x = Math.max(
       padding + tooltipWidth / 2,
       Math.min(window.innerWidth - padding - tooltipWidth / 2, x)

@@ -16,6 +16,7 @@ import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../styles/theme'
 import { useSettingsStore } from '../../stores/settingsStore'
+import type { BeginnerSuggestion } from '../../gameplay/beginnerCoach'
 
 // =============================================================================
 // TYPES
@@ -30,6 +31,8 @@ export interface PlaySurfaceProps {
   selectedIds?: Set<string>
   /** Glowing tile IDs (winning tiles) */
   glowingIds?: Set<string>
+  /** Tile IDs highlighted by contextual teaching or hint systems */
+  highlightedIds?: Set<string>
   /** Tile IDs concealed by active hidden-information effects. */
   faceDownIds?: Set<string>
   /** Tile IDs that must be included in the next play. */
@@ -56,6 +59,10 @@ export interface PlaySurfaceProps {
   tableThemeColor?: string
   /** Secondary color of the selected table style */
   tableAccentColor?: string
+  /** First-move teaching suggestion derived from the current hand */
+  beginnerSuggestion?: BeginnerSuggestion | null
+  /** Opens the concise visual tile and pattern guide */
+  onOpenBeginnerGuide?: () => void
   /** Translation function */
   t?: (key: string) => string
   /** Optional legacy preview contract used by embedded play-surface consumers. */
@@ -91,6 +98,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   tileSize = 'medium',
   selectedIds = new Set(),
   glowingIds = new Set(),
+  highlightedIds = new Set(),
   faceDownIds = new Set(),
   lockedIds = new Set(),
   debuffedIds = new Set(),
@@ -104,6 +112,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   discardsRemaining = 0,
   tableThemeColor = '#C8B273',
   tableAccentColor = '#2D5F4A',
+  beginnerSuggestion = null,
+  onOpenBeginnerGuide,
   t: _t = (key) => key,
 }) => {
   const { t } = useTranslation()
@@ -111,6 +121,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   const dimensions = tileSizes[tileSize]
   const stagingZoneMinHeight = Math.max(96, dimensions.height + 12)
   const handZoneHeight = Math.max(108, dimensions.height + 24)
+  const beginnerPatternLabel =
+    beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
+      ? t(`melds.${beginnerSuggestion.kind}`, beginnerSuggestion.kind)
+      : null
 
   // Refs for zone detection
   const containerRef = useRef<HTMLDivElement>(null)
@@ -419,6 +433,17 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     }))
   }, [stagedTiles, dimensions.width, surfaceWidth])
 
+  const beginnerProgress = beginnerSuggestion
+    ? beginnerSuggestion.tileIds.filter((tileId) =>
+        stagedTiles.some((tile) => tile.id === tileId)
+      ).length
+    : 0
+  const beginnerSuggestionComplete = Boolean(
+    beginnerSuggestion &&
+    beginnerProgress === beginnerSuggestion.tileIds.length &&
+    stagedTiles.length === beginnerSuggestion.tileIds.length
+  )
+
   return (
     <div
       ref={containerRef}
@@ -473,12 +498,19 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   <div
                     key={tile.id}
                     data-play-tile={tile.id}
+                    data-beginner-highlighted={
+                      highlightedIds.has(tile.id) ? 'true' : undefined
+                    }
                     className="absolute transition-transform"
                     style={{
                       left: '50%',
                       top: '50%',
                       transform: `translate(calc(-50% + ${position.x}px), -50%)`,
-                      zIndex: isDraggingThis ? 1000 : position.zIndex,
+                      zIndex: isDraggingThis
+                        ? 1000
+                        : highlightedIds.has(tile.id)
+                          ? 100 + index
+                          : position.zIndex,
                       opacity: isDraggingThis ? 0.5 : 1,
                     }}
                     onMouseDown={(e) => handleDragStart(tile, e)}
@@ -496,6 +528,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                       tile={tile}
                       size={tileSize}
                       selected={selectedIds.has(tile.id)}
+                      highlighted={highlightedIds.has(tile.id)}
                       glowing={glowingIds.has(tile.id)}
                       faceDown={faceDownIds.has(tile.id)}
                       locked={lockedIds.has(tile.id)}
@@ -506,11 +539,42 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 )
               })}
             </div>
-            {/* Staged tile count indicator */}
-            {stagedTiles.length > 0 && (
-              <p className="text-[var(--color-beige-white)] text-sm opacity-60 mt-2 text-center">
-                {stagedTiles.length} tile{stagedTiles.length > 1 ? 's' : ''}{' '}
-                ready to play
+            {beginnerSuggestion ? (
+              <div
+                data-beginner-coach
+                data-beginner-suggestion={beginnerSuggestion.kind}
+                className="mx-3 mt-2 max-w-xl rounded-lg border border-amber-300/30 bg-black/25 px-3 py-2 text-center"
+              >
+                <p className="text-xs font-semibold leading-relaxed text-[var(--color-beige-white)]/80 sm:text-sm">
+                  {beginnerSuggestionComplete
+                    ? beginnerSuggestion.kind === 'redraw'
+                      ? t(
+                          'gameplay.beginnerRedrawReady',
+                          'Ready — press Redraw to replace these isolated tiles.'
+                        )
+                      : t(
+                          'gameplay.beginnerPatternComplete',
+                          'Beautiful — this {{pattern}} earns +{{points}} shape points. Check the forecast, then Play.',
+                          {
+                            pattern: beginnerPatternLabel,
+                            points: beginnerSuggestion.structurePoints,
+                          }
+                        )
+                    : t(
+                        'gameplay.beginnerSelectedProgress',
+                        '{{current}} of {{total}} glowing tiles staged',
+                        {
+                          current: beginnerProgress,
+                          total: beginnerSuggestion.tileIds.length,
+                        }
+                      )}
+                </p>
+              </div>
+            ) : (
+              <p className="mt-2 text-center text-sm text-[var(--color-beige-white)] opacity-60">
+                {t('gameplay.tilesReady', '{{count}} tiles ready to play', {
+                  count: stagedTiles.length,
+                })}
               </p>
             )}
           </>
@@ -525,21 +589,72 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 boxShadow: `0 0 14px ${tableThemeColor}`,
               }}
             />
-            <p
-              className="game-play-instruction text-sm font-semibold sm:text-lg"
-              style={{
-                color: `color-mix(in srgb, ${tableThemeColor} 48%, white)`,
-                textShadow: `0 0 16px ${tableThemeColor}75`,
-              }}
-            >
-              {t('gameplay.stageHint', 'Build your play')}
-            </p>
-            <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
-              {t(
-                'gameplay.stageUnlockHint',
-                'Complete hands unlock a two-step Stage Hand declaration'
-              )}
-            </p>
+            {beginnerSuggestion ? (
+              <div
+                data-beginner-coach
+                data-beginner-suggestion={beginnerSuggestion.kind}
+              >
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-golden-yellow)]">
+                  {t('gameplay.guidedMove', 'Guided first move')}
+                </p>
+                <p
+                  className="game-play-instruction mt-1 text-base font-bold sm:text-xl"
+                  style={{
+                    color: `color-mix(in srgb, ${tableThemeColor} 42%, white)`,
+                    textShadow: `0 0 16px ${tableThemeColor}75`,
+                  }}
+                >
+                  {beginnerSuggestion.kind === 'redraw'
+                    ? t(
+                        'gameplay.beginnerRedrawTitle',
+                        'Refresh isolated tiles'
+                      )
+                    : t('gameplay.beginnerPatternReady', '{{pattern}} ready', {
+                        pattern: beginnerPatternLabel,
+                      })}
+                </p>
+                <p className="mx-auto mt-1 max-w-lg text-xs leading-relaxed text-[var(--color-beige-white)]/65 sm:text-sm">
+                  {beginnerSuggestion.kind === 'redraw'
+                    ? t(
+                        'gameplay.beginnerRedrawHelp',
+                        'Tap the glowing isolated tiles, then press Redraw to look for a Pair, Sequence, or Triplet.'
+                      )
+                    : t(
+                        'gameplay.beginnerTapGlowing',
+                        'Tap the {{count}} glowing tiles below. They already form a scoring shape.',
+                        { count: beginnerSuggestion.tileIds.length }
+                      )}
+                </p>
+              </div>
+            ) : (
+              <>
+                <p
+                  className="game-play-instruction text-sm font-semibold sm:text-lg"
+                  style={{
+                    color: `color-mix(in srgb, ${tableThemeColor} 48%, white)`,
+                    textShadow: `0 0 16px ${tableThemeColor}75`,
+                  }}
+                >
+                  {t('gameplay.stageHint', 'Build your play')}
+                </p>
+                <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
+                  {t(
+                    'gameplay.stageUnlockHint',
+                    'Complete hands unlock a two-step Stage Hand declaration'
+                  )}
+                </p>
+              </>
+            )}
+            {onOpenBeginnerGuide && (
+              <button
+                type="button"
+                data-open-beginner-guide
+                onClick={onOpenBeginnerGuide}
+                className="mt-2 min-h-9 rounded-full border border-[var(--color-metallic-gold)]/45 bg-black/20 px-3 py-1 text-xs font-semibold text-[var(--color-metallic-gold)] transition-colors hover:border-[var(--color-golden-yellow)] hover:text-[var(--color-golden-yellow)]"
+              >
+                ? {t('gameplay.learnPatterns', 'Learn the tiles')}
+              </button>
+            )}
           </div>
         )}
       </animated.div>
@@ -601,12 +716,19 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
               <div
                 key={tile.id}
                 data-play-tile={tile.id}
+                data-beginner-highlighted={
+                  highlightedIds.has(tile.id) ? 'true' : undefined
+                }
                 className="absolute transition-transform"
                 style={{
                   left: '50%',
                   bottom: 10,
                   transform: `translateX(calc(-50% + ${position.x}px))`,
-                  zIndex: isDraggingThis ? 1000 : position.zIndex,
+                  zIndex: isDraggingThis
+                    ? 1000
+                    : highlightedIds.has(tile.id)
+                      ? 100 + index
+                      : position.zIndex,
                   opacity: isDraggingThis ? 0.5 : 1,
                 }}
                 onMouseDown={(e) => handleDragStart(tile, e)}
@@ -624,6 +746,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   tile={tile}
                   size={tileSize}
                   selected={selectedIds.has(tile.id)}
+                  highlighted={highlightedIds.has(tile.id)}
                   glowing={glowingIds.has(tile.id)}
                   faceDown={faceDownIds.has(tile.id)}
                   locked={lockedIds.has(tile.id)}

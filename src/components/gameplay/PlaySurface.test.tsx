@@ -6,9 +6,10 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PlaySurface } from './PlaySurface'
 import { Tile, TileSuit } from '../../core/Tile'
+import { MeldType } from '../../core/Meld'
 
 // Mock the settingsStore with all required exports
 vi.mock('../../stores/settingsStore', () => ({
@@ -139,6 +140,37 @@ describe('PlaySurface', () => {
           'linear-gradient(145deg, #C6282830, #4A1B1820 48%, rgba(8, 28, 21, 0.62))',
       })
       expect(stagingAccent).toHaveStyle({ backgroundColor: '#C62828' })
+    })
+
+    it('guides a beginner through a real highlighted shape', () => {
+      const tiles = createTestTiles(5)
+      const onOpenGuide = vi.fn()
+      const { container } = render(
+        <PlaySurface
+          handTiles={tiles}
+          onTileSelect={mockOnTileSelect}
+          onTileDiscard={mockOnTileDiscard}
+          onTilesStaged={mockOnTilesStaged}
+          highlightedIds={new Set([tiles[0].id, tiles[1].id])}
+          beginnerSuggestion={{
+            kind: MeldType.Pair,
+            tileIds: [tiles[0].id, tiles[1].id],
+            structurePoints: 10,
+          }}
+          onOpenBeginnerGuide={onOpenGuide}
+        />
+      )
+
+      expect(screen.getByText('Guided first move')).toBeInTheDocument()
+      expect(screen.getByText('Pair ready')).toBeInTheDocument()
+      expect(
+        container.querySelector(
+          `[data-play-tile="${tiles[0].id}"] .ring-vibrant-orange`
+        )
+      ).toBeInTheDocument()
+
+      fireEvent.click(screen.getByRole('button', { name: /Learn the tiles/i }))
+      expect(onOpenGuide).toHaveBeenCalledOnce()
     })
 
     it('should show discard zone', () => {

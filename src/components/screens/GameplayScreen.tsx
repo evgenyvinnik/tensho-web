@@ -38,6 +38,11 @@ import { ScorePanel } from '../gameplay/ScorePanel'
 import { ActionBar } from '../gameplay/ActionBar'
 import { PlayArea } from '../gameplay/PlayArea'
 import { WallDisplay } from '../gameplay/WallDisplay'
+import { BeginnerGuide } from '../gameplay/BeginnerGuide'
+import {
+  findBeginnerSuggestion,
+  selectionMatchesSuggestion,
+} from '../../gameplay/beginnerCoach'
 import {
   RoundType,
   ScorePopupState,
@@ -71,16 +76,23 @@ export function GameplayScreen() {
     state.getCurrentStyle()
   )
 
+  const beginnerSuggestion = useMemo(
+    () => findBeginnerSuggestion(game.handTiles, new Set(game.faceDownTileIds)),
+    [game.handTiles, game.faceDownTileIds]
+  )
+
   // Responsive tile size
   const tileSize = useResponsiveTileSize()
 
   // Progressive tutorial hints
-  const progressiveHints = useMemo(() => getProgressiveHints(t), [t])
+  const progressiveHints = useMemo(
+    () => getProgressiveHints(t, beginnerSuggestion?.kind),
+    [t, beginnerSuggestion?.kind]
+  )
   const tutorial = useProgressiveTutorial(progressiveHints)
 
   // Tutorial trigger refs
   const hasTriggeredGameStart = useRef(false)
-  const hasTriggeredFirstDraw = useRef(false)
   const hasTriggeredFirstDiscard = useRef(false)
   const hasTriggeredFirstHand = useRef(false)
   const hasTriggeredBossRound = useRef(false)
@@ -91,6 +103,9 @@ export function GameplayScreen() {
   const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
   const [stageAllRequestId, setStageAllRequestId] = useState(0)
   const [showExitConfirm, setShowExitConfirm] = useState(false)
+  const [showBeginnerGuide, setShowBeginnerGuide] = useState(false)
+  const [hasCompletedFirstPlay, setHasCompletedFirstPlay] = useState(false)
+  const [forceBeginnerCoach, setForceBeginnerCoach] = useState(false)
   const [showConsumablesPanel, setShowConsumablesPanel] = useState<
     'fateSeals' | 'celestialOrbs' | 'voidScripts' | null
   >(null)
@@ -131,38 +146,31 @@ export function GameplayScreen() {
   // ==========================================================================
 
   useEffect(() => {
-    if (game.isRunActive && !hasTriggeredGameStart.current) {
-      hasTriggeredGameStart.current = true
-      const timer = setTimeout(() => tutorial.triggerHints('gameStart'), 800)
+    if (
+      game.isRunActive &&
+      beginnerSuggestion &&
+      !hasTriggeredGameStart.current
+    ) {
+      const timer = setTimeout(() => {
+        if (!hasTriggeredGameStart.current) {
+          hasTriggeredGameStart.current = true
+          tutorial.triggerHints('gameStart')
+        }
+      }, 800)
       return () => clearTimeout(timer)
     }
-  }, [game.isRunActive, tutorial])
+  }, [beginnerSuggestion, game.isRunActive, tutorial])
 
   useEffect(() => {
     if (!game.isRunActive) {
       hasTriggeredGameStart.current = false
-      hasTriggeredFirstDraw.current = false
       hasTriggeredFirstDiscard.current = false
       hasTriggeredFirstHand.current = false
       hasTriggeredBossRound.current = false
+      setHasCompletedFirstPlay(false)
+      setForceBeginnerCoach(false)
     }
   }, [game.isRunActive])
-
-  useEffect(() => {
-    if (
-      game.isRunActive &&
-      !hasTriggeredFirstDraw.current &&
-      game.handTiles.length > 0
-    ) {
-      const timer = setTimeout(() => {
-        if (!hasTriggeredFirstDraw.current) {
-          hasTriggeredFirstDraw.current = true
-          tutorial.triggerHints('firstDraw')
-        }
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [game.isRunActive, game.handTiles.length, tutorial])
 
   useEffect(() => {
     if (game.currentRound === 3 && !hasTriggeredBossRound.current) {
@@ -188,6 +196,8 @@ export function GameplayScreen() {
   useGameEvent(
     'handPlayed',
     useCallback(() => {
+      setHasCompletedFirstPlay(true)
+      setForceBeginnerCoach(false)
       if (!hasTriggeredFirstHand.current) {
         hasTriggeredFirstHand.current = true
         setTimeout(() => tutorial.triggerHints('firstHandPlayed'), 1000)
@@ -343,6 +353,10 @@ export function GameplayScreen() {
     () => navigateTo(ROUTES.SETTINGS),
     [navigateTo]
   )
+  const handleOpenBeginnerGuide = useCallback(() => {
+    setForceBeginnerCoach(true)
+    setShowBeginnerGuide(true)
+  }, [])
 
   const handlePlayHand = useCallback(() => {
     const currentHandTiles = game.handTiles
@@ -498,6 +512,47 @@ export function GameplayScreen() {
       : game.selectedTileIds.length > 0
         ? game.selectedTileIds
         : game.handTiles.map((tile) => tile.id)
+  const activePreviewTileIds =
+    stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
+  const beginnerCoachActive = Boolean(
+    beginnerSuggestion &&
+    (forceBeginnerCoach || (!hasCompletedFirstPlay && !tutorial.isDisabled))
+  )
+  const beginnerHighlightedIds = useMemo(
+    () =>
+      new Set(
+        beginnerCoachActive && beginnerSuggestion
+          ? beginnerSuggestion.tileIds
+          : []
+      ),
+    [beginnerCoachActive, beginnerSuggestion]
+  )
+  const beginnerSelectionMatches = Boolean(
+    beginnerSuggestion &&
+    selectionMatchesSuggestion(beginnerSuggestion, activePreviewTileIds)
+  )
+  const beginnerPatternLabel =
+    beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
+      ? t(`melds.${beginnerSuggestion.kind}`, beginnerSuggestion.kind)
+      : null
+  const beginnerPreviewLabel = beginnerSelectionMatches
+    ? beginnerSuggestion?.kind === 'redraw'
+      ? t('gameplay.beginnerRedrawForecast', 'Ready to Redraw')
+      : t(
+          'gameplay.beginnerPatternForecast',
+          '{{pattern}} · +{{points}} shape points',
+          {
+            pattern: beginnerPatternLabel,
+            points: beginnerSuggestion?.structurePoints ?? 0,
+          }
+        )
+    : beginnerCoachActive && beginnerSuggestion
+      ? beginnerSuggestion.kind === 'redraw'
+        ? t('gameplay.beginnerChooseRedraw', 'Choose the glowing tiles')
+        : t('gameplay.beginnerFindPattern', 'Find the glowing {{pattern}}', {
+            pattern: beginnerPatternLabel,
+          })
+      : null
   const scorePreviewHidden = previewTileIds.some((tileId) =>
     faceDownTileIds.has(tileId)
   )
@@ -736,11 +791,16 @@ export function GameplayScreen() {
           previewLabel={
             stagedTileIds.length > 5 && isCompleteHandSelection
               ? `${previewTileIds.length} staged tiles · confirm declaration`
-              : stagedTileIds.length > 0 || game.selectedTileIds.length > 0
-                ? `${previewTileIds.length} selected tiles`
-                : isCompleteHandSelection
-                  ? `Complete ${previewTileIds.length}-tile hand · stage to declare`
-                  : t('gameplay.chooseTacticalGroup', 'Choose a tactical group')
+              : beginnerPreviewLabel
+                ? beginnerPreviewLabel
+                : stagedTileIds.length > 0 || game.selectedTileIds.length > 0
+                  ? `${previewTileIds.length} selected tiles`
+                  : isCompleteHandSelection
+                    ? `Complete ${previewTileIds.length}-tile hand · stage to declare`
+                    : t(
+                        'gameplay.chooseTacticalGroup',
+                        'Choose a tactical group'
+                      )
           }
           remainingToTarget={Math.max(0, game.targetScore - game.score)}
           handsRemaining={game.handsRemaining}
@@ -769,6 +829,7 @@ export function GameplayScreen() {
               handTiles={game.handTiles}
               tileSize={tileSize}
               selectedIds={new Set(game.selectedTileIds)}
+              highlightedIds={beginnerHighlightedIds}
               faceDownIds={faceDownTileIds}
               lockedIds={lockedTileIds}
               debuffedIds={debuffedTileIds}
@@ -782,6 +843,10 @@ export function GameplayScreen() {
               discardsRemaining={game.discardsRemaining}
               tableThemeColor={currentTableStyle.themeColor}
               tableAccentColor={currentTableStyle.accentColor}
+              beginnerSuggestion={
+                beginnerCoachActive ? beginnerSuggestion : null
+              }
+              onOpenBeginnerGuide={handleOpenBeginnerGuide}
               t={t}
             />
           </div>
@@ -844,6 +909,11 @@ export function GameplayScreen() {
         onDismiss={tutorial.dismissHint}
         onDisableHints={tutorial.disableHints}
         queueCount={tutorial.hintQueue.length}
+      />
+
+      <BeginnerGuide
+        isOpen={showBeginnerGuide}
+        onClose={() => setShowBeginnerGuide(false)}
       />
 
       {/* Exit confirmation */}

@@ -202,6 +202,84 @@ test.describe('Application Smoke Tests', () => {
 })
 
 test.describe('Game Navigation', () => {
+  test('teaches a first scoring move with real tiles and a visual primer', async ({
+    page,
+  }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await expect(page).toHaveURL(/\/en\/play$/)
+
+    const coach = page.locator('[data-beginner-coach]').first()
+    await expect(coach).toBeVisible()
+    const suggestion = await coach.getAttribute('data-beginner-suggestion')
+    expect(suggestion).toMatch(/^(pair|sequence|triplet|quad|redraw)$/)
+
+    const highlightedHandTiles = page.locator(
+      '[data-play-zone="hand"] [data-beginner-highlighted="true"]'
+    )
+    await expect(highlightedHandTiles.first()).toBeVisible()
+    expect(await highlightedHandTiles.count()).toBeGreaterThanOrEqual(2)
+
+    const firstMoveHint = page.getByRole('status')
+    await expect(firstMoveHint).toContainText('Your first move')
+    const hintBounds = await firstMoveHint.boundingBox()
+    const handBounds = await page
+      .locator('[data-tutorial="hand"]')
+      .boundingBox()
+    expect(hintBounds).not.toBeNull()
+    expect(handBounds).not.toBeNull()
+    expect(hintBounds!.y + hintBounds!.height).toBeLessThanOrEqual(
+      handBounds!.y + 1
+    )
+    await page.getByRole('button', { name: 'Got it' }).click()
+
+    await page.getByRole('button', { name: 'Learn the tiles' }).click()
+    const guide = page.locator('[data-beginner-guide]')
+    await expect(
+      page.getByRole('heading', { name: 'Mahjong in one minute' })
+    ).toBeVisible()
+    await expect(guide).toContainText('Read the tile families')
+    await expect(guide).toContainText('The shapes to spot')
+    await expect(guide).toContainText('Your turn, every time')
+    await expect(guide.locator('img')).toHaveCount(17)
+
+    const guideLayout = await guide.evaluate((element) => {
+      const bounds = element.getBoundingClientRect()
+      return {
+        noHorizontalOverflow:
+          document.documentElement.scrollWidth <= window.innerWidth,
+        fitsViewport:
+          bounds.left >= 0 &&
+          bounds.right <= window.innerWidth &&
+          bounds.top >= 0 &&
+          bounds.bottom <= window.innerHeight,
+        scrollable: getComputedStyle(element).overflowY === 'auto',
+      }
+    })
+    expect(guideLayout).toEqual({
+      noHorizontalOverflow: true,
+      fitsViewport: true,
+      scrollable: true,
+    })
+
+    await page.getByRole('button', { name: 'Show me a move' }).click()
+    while ((await highlightedHandTiles.count()) > 0) {
+      await highlightedHandTiles.last().click()
+    }
+
+    const stagedCoach = page.locator(
+      '[data-play-zone="staging"] [data-beginner-coach]'
+    )
+    await expect(stagedCoach).toBeVisible()
+    if (suggestion === 'redraw') {
+      await expect(stagedCoach).toContainText('press Redraw')
+      await expect(page.locator('[data-game-action="redraw"]')).toBeEnabled()
+    } else {
+      await expect(stagedCoach).toContainText(/Beautiful|shape points/)
+      await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
+    }
+  })
+
   test('opens illustrated Decree details and keeps Sell contextual', async ({
     page,
   }) => {
@@ -265,11 +343,9 @@ test.describe('Game Navigation', () => {
       'background-color',
       'rgb(45, 95, 74)'
     )
+    await expect(page.locator('[data-beginner-coach]').first()).toBeVisible()
     await expect(page.locator('.game-play-instruction')).toHaveText(
-      'Build your play'
-    )
-    await expect(page.locator('.game-play-area')).toContainText(
-      'Choose a tactical group'
+      /ready|Refresh isolated tiles/
     )
     await expect(page.locator('.game-play-area')).not.toContainText(/2[–-]5/)
     await expect(page.locator('[data-game-action="play"]')).toContainText(
