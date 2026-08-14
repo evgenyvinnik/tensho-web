@@ -19,7 +19,8 @@ vi.mock('../../stores/settingsStore', () => ({
     }
     return selector ? selector(mockState) : mockState
   }),
-  selectAnimationMultiplier: (state: { animationMultiplier: number }) => state.animationMultiplier,
+  selectAnimationMultiplier: (state: { animationMultiplier: number }) =>
+    state.animationMultiplier,
 }))
 
 // Mock react-spring to avoid animation issues in tests
@@ -114,7 +115,30 @@ describe('PlaySurface', () => {
         />
       )
 
-      expect(screen.getByText(/Stage 2–5 tiles/)).toBeInTheDocument()
+      expect(screen.getByText('Build your play')).toBeInTheDocument()
+    })
+
+    it('uses the selected table colors on the staging surface', () => {
+      const { container } = render(
+        <PlaySurface
+          handTiles={createTestTiles(5)}
+          onTileSelect={mockOnTileSelect}
+          onTileDiscard={mockOnTileDiscard}
+          onTilesStaged={mockOnTilesStaged}
+          tableThemeColor="#C62828"
+          tableAccentColor="#4A1B18"
+        />
+      )
+
+      const stagingZone = container.querySelector('[data-play-zone="staging"]')
+      const stagingAccent = container.querySelector('[data-table-stage-accent]')
+
+      expect(stagingZone).toHaveAttribute('data-table-theme-color', '#C62828')
+      expect(stagingZone).toHaveStyle({
+        background:
+          'linear-gradient(145deg, #C6282830, #4A1B1820 48%, rgba(8, 28, 21, 0.62))',
+      })
+      expect(stagingAccent).toHaveStyle({ backgroundColor: '#C62828' })
     })
 
     it('should show discard zone', () => {
@@ -305,7 +329,9 @@ describe('PlaySurface', () => {
         />
       )
 
-      expect(screen.getByTitle('Locked tile: must be played')).toBeInTheDocument()
+      expect(
+        screen.getByTitle('Locked tile: must be played')
+      ).toBeInTheDocument()
       expect(screen.getByTitle('Debuffed tile')).toBeInTheDocument()
     })
   })

@@ -390,36 +390,42 @@ export function DecreeCardCompact({
               )}
 
               {onSell && (
-                <button
-                  type="button"
-                  disabled={!canSell}
-                  aria-label={
-                    canSell
+                <div className="mt-3 flex justify-end border-t border-amber-200/15 pt-2">
+                  <button
+                    type="button"
+                    data-decree-sell
+                    disabled={!canSell}
+                    aria-label={
+                      canSell
+                        ? faceDown
+                          ? t('gameplay.sellHidden', 'Sell hidden Decree')
+                          : t('gameplay.sellNamed', 'Sell {{name}}', {
+                              name: decreeName,
+                            })
+                        : t(
+                            'gameplay.eternalCannotSellNamed',
+                            '{{name}} is Eternal and cannot be sold',
+                            { name: decreeName }
+                          )
+                    }
+                    onClick={() => {
+                      onSell()
+                      closePopover()
+                    }}
+                    className="min-h-9 rounded-md border border-amber-300/60 bg-amber-900/65 px-3 py-1.5 text-xs font-bold text-amber-50 shadow-sm transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-45"
+                  >
+                    {canSell
                       ? faceDown
                         ? t('gameplay.sellHidden', 'Sell hidden Decree')
-                        : t('gameplay.sellNamed', 'Sell {{name}}', {
-                            name: decreeName,
+                        : t('gameplay.sellFor', 'Sell for ¥{{value}}', {
+                            value: sellValue,
                           })
                       : t(
-                          'gameplay.eternalCannotSellNamed',
-                          '{{name}} is Eternal and cannot be sold',
-                          { name: decreeName }
-                        )
-                  }
-                  onClick={() => {
-                    onSell()
-                    closePopover()
-                  }}
-                  className="mt-3 min-h-11 w-full rounded-lg border border-amber-300/70 bg-amber-900/75 px-3 py-2 text-sm font-bold text-amber-50 shadow transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-45"
-                >
-                  {canSell
-                    ? faceDown
-                      ? t('gameplay.sellHidden', 'Sell hidden Decree')
-                      : t('gameplay.sellFor', 'Sell for ¥{{value}}', {
-                          value: sellValue,
-                        })
-                    : t('gameplay.eternalCannotSell', 'Eternal · Cannot sell')}
-                </button>
+                          'gameplay.eternalCannotSell',
+                          'Eternal · Cannot sell'
+                        )}
+                  </button>
+                </div>
               )}
             </div>
           </animated.div>,

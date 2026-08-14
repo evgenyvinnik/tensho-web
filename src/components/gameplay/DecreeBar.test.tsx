@@ -46,10 +46,11 @@ describe('DecreeCardCompact mandate states', () => {
       screen.queryByRole('button', { name: 'Sell River Tax' })
     ).not.toBeInTheDocument()
 
-    fireEvent.click(decreeButton)
-    expect(
-      screen.getByRole('button', { name: 'Sell River Tax' })
-    ).toBeInTheDocument()
+    fireEvent.mouseEnter(decreeButton)
+    expect(screen.getByText(/Gain .*Gold.*discard/i)).toBeInTheDocument()
+    const sellButton = screen.getByRole('button', { name: 'Sell River Tax' })
+    expect(sellButton).toHaveAttribute('data-decree-sell')
+    expect(sellButton).not.toHaveClass('w-full')
   })
 
   it('labels a Crimson Heart-disabled Decree', () => {

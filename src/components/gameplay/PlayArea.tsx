@@ -51,6 +51,10 @@ export interface PlayAreaProps {
   yakuReveals: YakuRevealState[]
   /** Handler for yaku reveal completion */
   onYakuComplete: (id: string) => void
+  /** Primary color of the selected table style */
+  tableThemeColor?: string
+  /** Secondary color of the selected table style */
+  tableAccentColor?: string
 }
 
 // =============================================================================
@@ -192,6 +196,8 @@ export function PlayArea({
   handsRemaining = 1,
   yakuReveals,
   onYakuComplete,
+  tableThemeColor = '#C8B273',
+  tableAccentColor = '#2D5F4A',
 }: PlayAreaProps) {
   const { t } = useTranslation()
   const [selectedYakuId, setSelectedYakuId] = useState<string | null>(null)
@@ -208,11 +214,19 @@ export function PlayArea({
     <div
       data-tutorial="yaku-display"
       className="game-play-area mx-3 mb-1 flex min-h-[68px] flex-shrink-0 flex-col items-center justify-center rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)]/70 px-3 py-2 shadow-inner"
+      style={{
+        borderColor: `${tableThemeColor}80`,
+        background: `linear-gradient(105deg, ${tableAccentColor}24, rgba(12, 38, 29, 0.76) 46%, ${tableThemeColor}18)`,
+        boxShadow: `inset 0 0 28px ${tableThemeColor}18`,
+      }}
       onClick={() => setSelectedYakuId(null)} // Close tooltip when clicking outside
     >
       {/* Score Preview Panel */}
       {scorePreviewHidden ? (
-        <div className="text-center" aria-label={t('gameplay.previewConcealed', 'Score preview concealed')}>
+        <div
+          className="text-center"
+          aria-label={t('gameplay.previewConcealed', 'Score preview concealed')}
+        >
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300/70">
             {t('gameplay.hiddenHand', 'Hidden hand')}
           </p>
@@ -220,7 +234,10 @@ export function PlayArea({
             ???
           </p>
           <p className="mt-2 text-sm text-[var(--color-beige-white)] opacity-60">
-            {t('gameplay.hiddenHandDesc', 'Face-down tiles conceal patterns and score until played.')}
+            {t(
+              'gameplay.hiddenHandDesc',
+              'Face-down tiles conceal patterns and score until played.'
+            )}
           </p>
         </div>
       ) : scorePreview ? (
@@ -306,11 +323,15 @@ export function PlayArea({
               ? 'Select one more tile to play this group'
               : activeTileCount > 5
                 ? 'This selection is not a complete Mahjong hand'
-                : t('gameplay.tacticalHint', 'Select {{min}}–{{max}} tiles for a tactical play', { min: 2, max: 5 })}
+                : previewLabel}
           </p>
           <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
             {activeTileCount === 0
-              ? t('gameplay.completeToUnlockStage', 'Complete all {{count}} tiles to unlock Stage Hand', { count: handTileCount })
+              ? t(
+                  'gameplay.completeToUnlockStage',
+                  'Complete all {{count}} tiles to unlock Stage Hand',
+                  { count: handTileCount }
+                )
               : activeTileCount > 5
                 ? 'Return tiles until 5 remain, or finish a complete hand'
                 : 'Useful groups score now; complete hands unlock Yaku'}

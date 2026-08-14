@@ -220,16 +220,21 @@ test.describe('Game Navigation', () => {
     await firstDecree.click()
     const details = page.locator('[role="dialog"]')
     await expect(details).toBeVisible()
-    await expect(details.getByRole('button', { name: /^Sell / })).toBeVisible()
+    const sellButton = details.getByRole('button', { name: /^Sell / })
+    await expect(sellButton).toBeVisible()
 
     const bounds = await details.boundingBox()
+    const sellBounds = await sellButton.boundingBox()
     const viewport = page.viewportSize()
     expect(bounds).not.toBeNull()
+    expect(sellBounds).not.toBeNull()
     expect(viewport).not.toBeNull()
     expect(bounds!.x).toBeGreaterThanOrEqual(0)
     expect(bounds!.y).toBeGreaterThanOrEqual(0)
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport!.width)
     expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport!.height)
+    expect(sellBounds!.width).toBeLessThan(bounds!.width * 0.65)
+    expect(sellBounds!.height).toBeLessThanOrEqual(48)
   })
 
   test('starts a real round and resolves a play through the core loop', async ({
@@ -249,6 +254,26 @@ test.describe('Game Navigation', () => {
     await expect(activeTable.locator('img')).toHaveAttribute(
       'src',
       /green_felt\.webp$/
+    )
+
+    const stagingZone = page.locator('[data-play-zone="staging"]')
+    await expect(stagingZone).toHaveAttribute(
+      'data-table-theme-color',
+      '#2D5F4A'
+    )
+    await expect(page.locator('[data-table-stage-accent]')).toHaveCSS(
+      'background-color',
+      'rgb(45, 95, 74)'
+    )
+    await expect(page.locator('.game-play-instruction')).toHaveText(
+      'Build your play'
+    )
+    await expect(page.locator('.game-play-area')).toContainText(
+      'Choose a tactical group'
+    )
+    await expect(page.locator('.game-play-area')).not.toContainText(/2[–-]5/)
+    await expect(page.locator('[data-game-action="play"]')).toContainText(
+      /2[–-]5/
     )
 
     const frameBounds = await page.locator('[data-table-frame]').boundingBox()

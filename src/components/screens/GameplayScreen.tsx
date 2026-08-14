@@ -740,12 +740,14 @@ export function GameplayScreen() {
                 ? `${previewTileIds.length} selected tiles`
                 : isCompleteHandSelection
                   ? `Complete ${previewTileIds.length}-tile hand · stage to declare`
-                  : 'Choose a tactical group'
+                  : t('gameplay.chooseTacticalGroup', 'Choose a tactical group')
           }
           remainingToTarget={Math.max(0, game.targetScore - game.score)}
           handsRemaining={game.handsRemaining}
           yakuReveals={yakuReveals}
           onYakuComplete={handleYakuComplete}
+          tableThemeColor={currentTableStyle.themeColor}
+          tableAccentColor={currentTableStyle.accentColor}
         />
 
         {/* Play Surface with Flora panel and Wall display */}
@@ -778,6 +780,8 @@ export function GameplayScreen() {
               shantenDisplay={shantenDisplay}
               handsRemaining={game.handsRemaining}
               discardsRemaining={game.discardsRemaining}
+              tableThemeColor={currentTableStyle.themeColor}
+              tableAccentColor={currentTableStyle.accentColor}
               t={t}
             />
           </div>

@@ -52,6 +52,10 @@ export interface PlaySurfaceProps {
   handsRemaining?: number
   /** Discards remaining */
   discardsRemaining?: number
+  /** Primary color of the selected table style */
+  tableThemeColor?: string
+  /** Secondary color of the selected table style */
+  tableAccentColor?: string
   /** Translation function */
   t?: (key: string) => string
   /** Optional legacy preview contract used by embedded play-surface consumers. */
@@ -98,6 +102,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   shantenDisplay = '',
   handsRemaining = 0,
   discardsRemaining = 0,
+  tableThemeColor = '#C8B273',
+  tableAccentColor = '#2D5F4A',
   t: _t = (key) => key,
 }) => {
   const { t } = useTranslation()
@@ -426,17 +432,26 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       <animated.div
         ref={stagingZoneRef}
         data-play-zone="staging"
+        data-table-theme-color={tableThemeColor}
         className="relative flex-1 flex flex-col items-center justify-center mx-2 my-2 rounded-xl border-2"
         style={{
           minHeight: stagingZoneMinHeight,
-          backgroundColor: 'rgba(45, 95, 74, 0.3)',
+          background: `linear-gradient(145deg, ${tableThemeColor}30, ${tableAccentColor}20 48%, rgba(8, 28, 21, 0.62))`,
           borderColor: stagingZoneSpring.borderOpacity.to(
-            (o) => `rgba(255, 213, 79, ${o * 0.5})`
+            (o) =>
+              `${tableThemeColor}${Math.round(Math.min(1, o) * 190)
+                .toString(16)
+                .padStart(2, '0')}`
           ),
           borderStyle: stagedTiles.length > 0 ? 'solid' : 'dashed',
           transform: stagingZoneSpring.scale.to((s) => `scale(${s})`),
           boxShadow: stagingZoneSpring.glowIntensity.to(
-            (i) => `inset 0 0 ${i * 30}px rgba(255, 213, 79, ${i * 0.2})`
+            (i) =>
+              `inset 0 0 ${18 + i * 30}px ${tableThemeColor}${Math.round(
+                24 + i * 36
+              )
+                .toString(16)
+                .padStart(2, '0')}, 0 0 ${8 + i * 14}px ${tableThemeColor}24`
           ),
         }}
       >
@@ -501,11 +516,29 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           </>
         ) : (
           <div className="text-center px-6">
-            <p className="game-play-instruction text-sm font-medium text-[var(--color-beige-white)] opacity-70 sm:text-lg">
-              {t('gameplay.stageHint', 'Stage 2–5 tiles for a tactical play')}
+            <span
+              data-table-stage-accent
+              aria-hidden="true"
+              className="mx-auto mb-2 block h-1 w-16 rounded-full transition-[background-color,box-shadow] duration-500"
+              style={{
+                backgroundColor: tableThemeColor,
+                boxShadow: `0 0 14px ${tableThemeColor}`,
+              }}
+            />
+            <p
+              className="game-play-instruction text-sm font-semibold sm:text-lg"
+              style={{
+                color: `color-mix(in srgb, ${tableThemeColor} 48%, white)`,
+                textShadow: `0 0 16px ${tableThemeColor}75`,
+              }}
+            >
+              {t('gameplay.stageHint', 'Build your play')}
             </p>
             <p className="mt-1 hidden text-sm text-[var(--color-beige-white)] opacity-50 sm:block">
-              {t('gameplay.stageUnlockHint', 'Complete hands unlock a two-step Stage Hand declaration')}
+              {t(
+                'gameplay.stageUnlockHint',
+                'Complete hands unlock a two-step Stage Hand declaration'
+              )}
             </p>
           </div>
         )}
@@ -529,7 +562,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         >
           <div className="flex items-center gap-3">
             <span className="text-[var(--color-beige-white)] text-sm opacity-70">
-              {t('gameplay.handCount', 'Hand ({{count}})', { count: tilesInHand.length })}
+              {t('gameplay.handCount', 'Hand ({{count}})', {
+                count: tilesInHand.length,
+              })}
             </span>
             <span
               data-tutorial="hands-remaining"
