@@ -2179,7 +2179,8 @@
       "replace": "교체",
       "filled": "{{type}}이(가) 놓여 있음",
       "empty": "비어 있음",
-      "forecast": "점수는 {{total}}"
+      "forecast": "점수는 {{total}}",
+      "multCost": "{{mult}} 배수를 잃습니다"
     },
     "milestones": {
       "title": "패턴",
@@ -2219,9 +2220,9 @@
         "name": "기다리는 또이쯔",
         "description": "탁자에 이미 놓인 면자 하나마다 또이쯔가 +30점."
       },
-      "dragon_lantern": {
-        "name": "용의 등불",
-        "description": "삼원패 면자는 그 칸에 불을 밝힙니다. 밝혀진 칸 옆에 나중에 놓는 면자는 +0.5 배수."
+      "watch_fire": {
+        "name": "봉화",
+        "description": "커쯔와 깡쯔는 +0.5 배수를 얻고 그 칸에 불을 켭니다. 불이 켜진 칸 옆에 놓은 면자는 +0.5 배수."
       },
       "twin_flame": {
         "name": "쌍염",
@@ -2260,11 +2261,14 @@
       "terminalGate": "노두의 문 +{{bonus}}",
       "honorCourt": "자패의 궁정 +{{mult}} 배수",
       "patientPair": "기다리는 또이쯔 +{{bonus}} (기다린 면자 {{melds}})",
-      "dragonLantern": "용의 등불, 밝혀진 칸에서 +{{mult}} 배수",
+      "watchFire": "봉화 불이 켜진 칸에서 +{{mult}} 배수",
       "echoingBamboo": "메아리 대나무 — 이 순자는 두 번 점수를 냅니다",
-      "milestone": "{{name}} +{{points}}, 이번 국 +{{mult}} 배수",
+      "milestone": "{{name}} +{{points}}, 형태가 남아 있는 동안 +{{mult}} 배수",
       "completion": "탁자 완성 — {{base}} × {{mult}}",
-      "total": "목표에 더해짐"
+      "total": "목표에 더해짐",
+      "milestoneBroken": "{{name}}이(가) 무너졌습니다 — {{mult}} 배수를 잃음",
+      "replaces": "{{tiles}}을(를) 교체 — {{points}}는 이미 지급됨",
+      "watchFireSet": "봉화 커쯔에 +{{mult}} 배수"
     },
     "roundEnd": {
       "target": "국을 확보",
@@ -2359,7 +2363,8 @@
       "label": "내 손패"
     },
     "selection": {
-      "noGroup": "아직 면자가 아닙니다 · {{tiles}}"
+      "noGroup": "아직 면자가 아닙니다 · {{tiles}}",
+      "multCost": "패턴이 무너집니다 · −{{mult}} 배수"
     },
     "draft": {
       "title": "제안패",

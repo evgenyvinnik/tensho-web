@@ -26,6 +26,13 @@ import type {
  * Named descriptively first, as the document asks. Traditional names belong in
  * the detail panel, not in the rule, because these are Tensho bonuses rather
  * than claims about Riichi scoring.
+ *
+ * `points` are paid once, the first time the table shows the pattern. `mult` is
+ * carried only while the pattern is still standing, so breaking it — by
+ * revising one of its groups, or by placing something that ends it — gives the
+ * multiplier back. Section 10 asked whether revision should be universal;
+ * measuring it found a policy spending half its actions revising because doing
+ * so cost nothing but the action.
  */
 export const MILESTONES: readonly MilestoneDefinition[] = [
   {
@@ -108,15 +115,31 @@ export const TABLE_DECREES: readonly TableDecreeDefinition[] = [
   {
     id: 'patient_pair',
     name: 'Patient Pair',
+    // Measured at 45% of runs finished against 22% and 11%, and trimmed for
+    // it — then measured again once revisions stopped paying full price. Most
+    // of its lead had been the pair slot being re-scored over and over, so the
+    // trim was undoing an exploit rather than a Decree. Restored.
     description: 'The pair scores +30 for every meld already on the table.',
     isStarter: true,
     cost: 10,
   },
   {
-    id: 'dragon_lantern',
-    name: 'Dragon Lantern',
+    id: 'watch_fire',
+    name: 'Watch Fire',
+    // Began as the document's Dragon Lantern, a pure neighbour bonus, and was
+    // measured four times. Dragon groups fired in 25% of runs — the wall
+    // offered sixteen across three hundred. Doubling the reward moved it one
+    // point; widening the trigger to Honor groups reached 12%; widening it to
+    // any set reached 10%. A policy that deliberately set up adjacency did
+    // worse still, and so did every other Decree under it. The finding is
+    // structural: with five slots and about four placements a round, there are
+    // not enough placements left after a setup for adjacency alone to pay.
+    //
+    // So the adjacency is upside on a base that always does something. Sets are
+    // common, which makes this the third legible build beside Bamboo runs and
+    // pair timing, and the slot still lights, so where you put it still matters.
     description:
-      'A Dragon group lights its slot. Every later group placed beside a lit slot gains +0.5 Mult.',
+      'A triplet or quad scores +0.5 Mult and lights its slot. A group beside a lit slot gains +0.5 Mult.',
     isStarter: true,
     cost: 10,
   },

@@ -396,3 +396,44 @@ test.describe('Table Loop practice deal (section 7)', () => {
     await expect(guide).not.toContainText('Practice deal')
   })
 })
+
+test.describe('Table Loop revision pricing', () => {
+  test('a slot already paid for is worth less than an empty one', async ({
+    page,
+  }) => {
+    // The practice deal guarantees a second run identical to the first, which
+    // makes this comparison deterministic.
+    await page.setViewportSize(PHONE)
+    await page.goto('/en/table-loop?practice=1')
+    await expect(page.getByTestId('table-loop-rack')).toBeVisible()
+
+    await page.getByTestId('practice-inspect-run').click()
+    const freshForecast = Number(
+      ((await page.getByTestId('table-slot-0').innerText()).match(
+        /\+([\d,]+)/
+      )?.[1] ?? '0').replace(/,/g, '')
+    )
+    expect(freshForecast).toBeGreaterThan(0)
+    await page.getByTestId('table-slot-0').click()
+
+    // Select the answering run and aim it at the slot that is already paid for.
+    const second = findGroup(await readRack(page))
+    expect(second).not.toBeNull()
+    for (const tile of second!) await tile.button.click()
+
+    const replaceText = await page.getByTestId('table-slot-0').innerText()
+    expect(replaceText.toLowerCase()).toContain('replace')
+    const replaceForecast = Number(
+      (replaceText.match(/\+([\d,]+)/)?.[1] ?? '0').replace(/,/g, '')
+    )
+    const emptyForecast = Number(
+      ((await page.getByTestId('table-slot-1').innerText()).match(
+        /\+([\d,]+)/
+      )?.[1] ?? '0').replace(/,/g, '')
+    )
+
+    // Replacing an equal group pays nothing; the empty slot pays in full.
+    expect(emptyForecast).toBeGreaterThan(replaceForecast)
+    expect(replaceForecast).toBe(0)
+  })
+})

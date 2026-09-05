@@ -713,7 +713,8 @@
       "replace": "Sostituisci",
       "filled": "contiene un {{type}}",
       "empty": "vuota",
-      "forecast": "renderebbe {{total}}"
+      "forecast": "renderebbe {{total}}",
+      "multCost": "e costerebbe {{mult}} Molt"
     },
     "milestones": {
       "title": "Figure",
@@ -753,9 +754,9 @@
         "name": "Coppia Paziente",
         "description": "La coppia guadagna +30 per ogni combinazione già sul tavolo."
       },
-      "dragon_lantern": {
-        "name": "Lanterna del Drago",
-        "description": "Una combinazione di Draghi accende la sua casella. Ogni combinazione posata dopo accanto a una casella accesa guadagna +0,5 Molt."
+      "watch_fire": {
+        "name": "Fuoco di Guardia",
+        "description": "Un tris o un poker guadagna +0,5 Molt e accende la sua casella. Una combinazione accanto a una casella accesa guadagna +0,5 Molt."
       },
       "twin_flame": {
         "name": "Fiamma Gemella",
@@ -794,11 +795,14 @@
       "terminalGate": "Porta Terminale +{{bonus}}",
       "honorCourt": "Corte degli Onori +{{mult}} Molt",
       "patientPair": "Coppia Paziente +{{bonus}} ({{melds}} combinazioni in attesa)",
-      "dragonLantern": "Lanterna del Drago +{{mult}} Molt dalla casella accesa",
+      "watchFire": "Fuoco di Guardia +{{mult}} Molt dalla casella accesa",
       "echoingBamboo": "Bambù che Risuona: questa sequenza conta due volte",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Molt per il round",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Molt finché regge",
       "completion": "Tavolo completo — {{base}} × {{mult}}",
-      "total": "Finisce sull’obiettivo"
+      "total": "Finisce sull’obiettivo",
+      "milestoneBroken": "{{name}} spezzata — {{mult}} Molt persi",
+      "replaces": "Sostituisce {{tiles}} — {{points}} già pagati",
+      "watchFireSet": "Fuoco di Guardia +{{mult}} Molt per il tris"
     },
     "roundEnd": {
       "target": "Round messo al sicuro",
@@ -893,7 +897,8 @@
       "label": "La tua rastrelliera"
     },
     "selection": {
-      "noGroup": "Non è ancora una combinazione · {{tiles}}"
+      "noGroup": "Non è ancora una combinazione · {{tiles}}",
+      "multCost": "spezza una figura · −{{mult}} Molt"
     },
     "draft": {
       "title": "Offerte",

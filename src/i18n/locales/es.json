@@ -2179,7 +2179,8 @@
       "replace": "Sustituir",
       "filled": "contiene un {{type}}",
       "empty": "vacía",
-      "forecast": "sumaría {{total}}"
+      "forecast": "sumaría {{total}}",
+      "multCost": "y costaría {{mult}} de Mult"
     },
     "milestones": {
       "title": "Figuras",
@@ -2219,9 +2220,9 @@
         "name": "Par Paciente",
         "description": "El par suma +30 por cada grupo que ya esté en la mesa."
       },
-      "dragon_lantern": {
-        "name": "Farol del Dragón",
-        "description": "Un grupo de Dragones enciende su casilla. Cada grupo colocado después junto a una casilla encendida gana +0,5 Mult."
+      "watch_fire": {
+        "name": "Fuego de Guardia",
+        "description": "Un trío o cuarteto suma +0,5 Mult y enciende su casilla. Un grupo junto a una casilla encendida gana +0,5 Mult."
       },
       "twin_flame": {
         "name": "Llama Gemela",
@@ -2260,11 +2261,14 @@
       "terminalGate": "Puerta Terminal +{{bonus}}",
       "honorCourt": "Corte de Honores +{{mult}} Mult",
       "patientPair": "Par Paciente +{{bonus}} ({{melds}} grupos esperando)",
-      "dragonLantern": "Farol del Dragón +{{mult}} Mult desde la casilla encendida",
+      "watchFire": "Fuego de Guardia +{{mult}} Mult desde la casilla encendida",
       "echoingBamboo": "Bambú que Resuena: esta secuencia puntúa dos veces",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Mult durante la ronda",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Mult mientras se mantenga",
       "completion": "Mesa completa — {{base}} × {{mult}}",
-      "total": "Cae sobre el objetivo"
+      "total": "Cae sobre el objetivo",
+      "milestoneBroken": "{{name}} deshecho: se pierden {{mult}} de Mult",
+      "replaces": "Sustituye {{tiles}}: {{points}} ya pagados",
+      "watchFireSet": "Fuego de Guardia +{{mult}} Mult por el trío"
     },
     "roundEnd": {
       "target": "Ronda asegurada",
@@ -2359,7 +2363,8 @@
       "label": "Tu atril"
     },
     "selection": {
-      "noGroup": "Todavía no es un grupo · {{tiles}}"
+      "noGroup": "Todavía no es un grupo · {{tiles}}",
+      "multCost": "rompe una figura · −{{mult}} Mult"
     },
     "draft": {
       "title": "Ofertas",

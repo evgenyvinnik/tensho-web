@@ -171,13 +171,16 @@ export function TableLoopScreen() {
     [state, selectedTiles]
   )
 
-  const forecasts = useMemo(() => {
-    const map = new Map<number, number>()
+  const { forecasts, multCosts } = useMemo(() => {
+    const totals = new Map<number, number>()
+    const costs = new Map<number, number>()
     for (const slot of [...placeable, ...revisable]) {
       const forecast = store.engine.previewPlacement(selectedTileIds, slot)
-      if (forecast) map.set(slot, forecast.total)
+      if (!forecast) continue
+      totals.set(slot, forecast.total)
+      if (forecast.multLost > 0) costs.set(slot, forecast.multLost)
     }
-    return map
+    return { forecasts: totals, multCosts: costs }
   }, [store.engine, selectedTileIds, placeable, revisable])
 
   const selectionType = useMemo(() => {
@@ -189,6 +192,11 @@ export function TableLoopScreen() {
   const bestForecast = forecasts.size
     ? Math.max(...forecasts.values())
     : null
+  const bestSlot = bestForecast === null
+    ? null
+    : [...forecasts.entries()].find(([, total]) => total === bestForecast)?.[0]
+  const bestMultCost =
+    bestSlot === undefined || bestSlot === null ? 0 : (multCosts.get(bestSlot) ?? 0)
 
   // The chain re-emits its highlight on every render, so this must be a no-op
   // when nothing changed; storing a fresh array each time would re-render the
@@ -470,6 +478,7 @@ export function TableLoopScreen() {
         revisable={revisable}
         highlighted={highlightedSlots}
         forecasts={forecasts}
+        multCosts={multCosts}
         onPlace={store.place}
         onRevise={store.revise}
       />
@@ -536,6 +545,7 @@ export function TableLoopScreen() {
         tiles={selectedTiles}
         groupType={selectionType}
         bestForecast={bestForecast}
+        multCost={bestMultCost}
         onClear={store.clearSelection}
       />
 

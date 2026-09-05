@@ -85,7 +85,7 @@ export interface MilestoneDefinition {
 export type TableDecreeId =
   | 'echoing_bamboo'
   | 'patient_pair'
-  | 'dragon_lantern'
+  | 'watch_fire'
   | 'twin_flame'
   | 'river_merchant'
   | 'jade_ledger'
@@ -153,6 +153,13 @@ export interface PlacementScore {
   readonly points: number
   readonly mult: number
   readonly total: number
+  /**
+   * Standing multiplier this placement would give up by breaking a pattern the
+   * table is currently showing. Zero for an ordinary placement. It is part of
+   * the forecast because the cost lands on *later* placements, and a preview
+   * that only showed the immediate total would be exact and still misleading.
+   */
+  readonly multLost: number
   readonly stages: readonly CausalStage[]
   /** Milestones newly claimed by this placement. */
   readonly claimedMilestones: readonly MilestoneId[]

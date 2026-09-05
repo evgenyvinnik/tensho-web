@@ -2179,7 +2179,8 @@
       "replace": "置き換え",
       "filled": "{{type}}が入っています",
       "empty": "空き",
-      "forecast": "得点は{{total}}"
+      "forecast": "得点は{{total}}",
+      "multCost": "倍率を{{mult}}失います"
     },
     "milestones": {
       "title": "型",
@@ -2219,9 +2220,9 @@
         "name": "忍耐の対子",
         "description": "卓にすでにある面子一つにつき、対子が+30点。"
       },
-      "dragon_lantern": {
-        "name": "龍灯",
-        "description": "三元牌の面子は枠を灯します。灯った枠の隣に後から置いた面子は+0.5倍率。"
+      "watch_fire": {
+        "name": "烽火",
+        "description": "刻子と槓子は+0.5倍率を得て、その枠を灯します。灯った枠の隣に置いた面子は+0.5倍率。"
       },
       "twin_flame": {
         "name": "双炎",
@@ -2260,11 +2261,14 @@
       "terminalGate": "老頭の門 +{{bonus}}",
       "honorCourt": "字牌の宮廷 +{{mult}} 倍率",
       "patientPair": "忍耐の対子 +{{bonus}}（待っている面子{{melds}}）",
-      "dragonLantern": "龍灯 灯った枠から +{{mult}} 倍率",
+      "watchFire": "烽火 灯った枠から+{{mult}}倍率",
       "echoingBamboo": "反響の竹 — この順子は二度得点します",
-      "milestone": "{{name}} +{{points}}、この局は+{{mult}}倍率",
+      "milestone": "{{name}} +{{points}}、形が残るあいだ+{{mult}}倍率",
       "completion": "卓が完成 — {{base}} × {{mult}}",
-      "total": "目標に加算"
+      "total": "目標に加算",
+      "milestoneBroken": "{{name}}が崩れました — {{mult}}倍率を失う",
+      "replaces": "{{tiles}}と入れ替え — {{points}}は支払い済み",
+      "watchFireSet": "烽火 刻子に+{{mult}}倍率"
     },
     "roundEnd": {
       "target": "局を確保",
@@ -2359,7 +2363,8 @@
       "label": "手元の牌"
     },
     "selection": {
-      "noGroup": "まだ面子ではありません · {{tiles}}"
+      "noGroup": "まだ面子ではありません · {{tiles}}",
+      "multCost": "型が崩れます · −{{mult}}倍率"
     },
     "draft": {
       "title": "差し出し",

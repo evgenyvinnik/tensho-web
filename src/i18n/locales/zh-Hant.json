@@ -2179,7 +2179,8 @@
       "replace": "替換",
       "filled": "放著一副{{type}}",
       "empty": "空著",
-      "forecast": "可得 {{total}} 分"
+      "forecast": "可得 {{total}} 分",
+      "multCost": "並失去 {{mult}} 倍率"
     },
     "milestones": {
       "title": "牌型",
@@ -2219,9 +2220,9 @@
         "name": "耐心的對子",
         "description": "桌上每有一副面子，對子就多得 30 分。"
       },
-      "dragon_lantern": {
-        "name": "龍燈",
-        "description": "三元牌的面子會點亮它的格位。之後放在亮格旁邊的面子獲得 +0.5 倍率。"
+      "watch_fire": {
+        "name": "烽火",
+        "description": "刻子或槓子獲得 +0.5 倍率，並點亮它的格位。放在亮格旁邊的面子獲得 +0.5 倍率。"
       },
       "twin_flame": {
         "name": "雙焰",
@@ -2260,11 +2261,14 @@
       "terminalGate": "老頭之門 +{{bonus}}",
       "honorCourt": "字牌之庭 +{{mult}} 倍率",
       "patientPair": "耐心的對子 +{{bonus}}（等著的面子 {{melds}} 副）",
-      "dragonLantern": "龍燈，從亮起的格位得到 +{{mult}} 倍率",
+      "watchFire": "烽火 從點亮的格位得到 +{{mult}} 倍率",
       "echoingBamboo": "回聲之竹 — 這副順子計分兩次",
-      "milestone": "{{name}} +{{points}}，本局 +{{mult}} 倍率",
+      "milestone": "{{name}} +{{points}}，牌型還在時 +{{mult}} 倍率",
       "completion": "牌桌完成 — {{base}} × {{mult}}",
-      "total": "落到目標上"
+      "total": "落到目標上",
+      "milestoneBroken": "{{name}}被拆掉了 — 失去 {{mult}} 倍率",
+      "replaces": "替換 {{tiles}} — 其中 {{points}} 已經付過",
+      "watchFireSet": "烽火 刻子 +{{mult}} 倍率"
     },
     "roundEnd": {
       "target": "本局已穩",
@@ -2359,7 +2363,8 @@
       "label": "你的手牌"
     },
     "selection": {
-      "noGroup": "還不成面子 · {{tiles}}"
+      "noGroup": "還不成面子 · {{tiles}}",
+      "multCost": "會拆掉一個牌型 · −{{mult}} 倍率"
     },
     "draft": {
       "title": "攤開的牌",

@@ -39,10 +39,11 @@ A second, self-contained core loop lives at `/:lang/table-loop`, reachable from 
 | ----- | ---------------- | ------ |
 | Build choice | The run pauses before dealing and offers three starter Decrees; the chosen one is owned before the first rack exists | Working |
 | Place | A selection is accepted only as a complete sequence, triplet, quad or pair, and only into a compatible empty slot; it costs one placement action and the rack refills from the wall | Working |
-| Revise | An occupied slot may be replaced by a group of the same slot kind for one placement action; displaced tiles go to the river and already-claimed milestones stay claimed | Working |
+| Revise | An occupied slot may be replaced by a group of the same slot kind for one placement action. The replacement pays only the difference over the group it turns out, credited at the current multiplier, so a slot cannot be sold twice; displaced tiles go to the river and already-claimed milestones stay claimed | Working |
+| Standing multiplier | Derived from the patterns the table currently shows, not accumulated. A milestone's points are paid once and kept; its multiplier lasts only while the pattern stands, and the forecast names the cost before a placement breaks one | Working |
 | Exchange | One to three rack tiles for fresh draws, costing an exchange allowance — or, once those are gone, one placement action as a recovery play | Working |
 | River recovery | With Whispering Merchant, one tile per round returns from the river to the rack | Working |
-| Milestones | Six cross-slot patterns, each paid once per round, each raising a standing multiplier for the rest of the round | Working |
+| Milestones | Six cross-slot patterns, each paid once per round, each raising the standing multiplier for as long as the table still shows it | Working |
 | Forecast | Slot forecasts run the committed scoring pipeline against the projected table, so the number shown is the number paid | Working |
 | Causal chain | Each resolution returns ordered stages — group, boss rule, table momentum, Decrees, milestones, completion, total — paced in the UI, skippable, and shown at once under reduced motion | Working |
 | Round end | Meeting the target enables an explicit Finish; completing the table pays a one-time bonus and ends the round; exhaustion settles against the target | Working |
@@ -54,7 +55,7 @@ A second, self-contained core loop lives at `/:lang/table-loop`, reachable from 
 | Celebration | Escalates with what actually happened — silent for an ordinary placement, a brief named flourish for a newly claimed milestone, a stronger one for a completed table. Dismissible, and absent entirely under reduced motion, where the causal chain carries the same information | Working |
 | Keyboard and screen readers | Rack tiles are named toggle buttons with `aria-pressed` and focus rings, slots announce their state and the exact forecast, and the score, resolution and offers row are polite live regions. A group can be selected and committed without a mouse | Working |
 
-Targets, rack size, and structure points were set with [`scripts/tableloop-sim.mts`](../scripts/tableloop-sim.mts) rather than inherited from the classic curve. Section 0 of the experiments document records what the measurements changed.
+Targets, rack size, and structure points were set with [`scripts/tableloop-sim.mts`](../scripts/tableloop-sim.mts) rather than inherited from the classic curve, and [`scripts/tableloop-questions.mts`](../scripts/tableloop-questions.mts) answers two of the experiments document's open design questions. Between them they found a slot that could be sold twice, a milestone multiplier that outlived its pattern, and an opening choice with a 4.5× spread. Section 0 of that document records what each measurement changed.
 
 Scope held back on purpose: living tiles, the route map, seasons, wagers, and every existing Decree, Flower, Season, consumable and Mandate. None of the 164 classic Decrees have been reinterpreted for a table where groups persist.
 
@@ -91,11 +92,11 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 - Strict application TypeScript check passes.
 - Production build passes.
-- Unit/component/simulation suite passes with 341 tests across 32 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
-- The Table Loop prototype adds 74 tests covering the practice deal and group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, offers-row claiming and declining, and a tile-conservation invariant asserted after every action.
+- Unit/component/simulation suite passes with 356 tests across 32 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
+- The Table Loop prototype adds 92 tests covering the practice deal and group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, offers-row claiming and declining, and a tile-conservation invariant asserted after every action.
 - The Table Loop interface is translated in all 13 locales, and a locale test holds the `tableLoop` and `gameplay.coach` namespaces to exact key parity with English rather than letting them fall back silently.
 - Production browser walkthroughs at desktop and 390px portrait mobile verified disabled empty-selection behavior, a real tactical scoring/refill cycle, keyboard/touch staging, exact score forecasts, a complete guided first move, a scrollable visual tile primer, non-overlapping contextual tips, and a bottom action bar contained by the ornamental frame.
-- All 66 Playwright checks pass across desktop Chromium and mobile Chrome profiles, including the real scoring loop, first-run tile guidance, forecast parity, 320px frame constraints, tutorials, console health, accessibility smoke coverage, and the Table Loop prototype's build choice, slot legality, forecast parity, seed replay, keyboard-only placement, screen-reader labelling, the offers-row variant, the whole first-session teaching sequence, and the Japanese interface.
+- All 68 Playwright checks pass across desktop Chromium and mobile Chrome profiles, including the real scoring loop, first-run tile guidance, forecast parity, 320px frame constraints, tutorials, console health, accessibility smoke coverage, and the Table Loop prototype's build choice, slot legality, forecast parity, seed replay, keyboard-only placement, screen-reader labelling, the offers-row variant, the whole first-session teaching sequence, and the Japanese interface.
 - The current deterministic no-strategy simulation reaches median Act 2 without shopping and median Act 5 (maximum Act 7) while buying Decrees. It does not discard, redraw, target Yaku, use consumables, buy packs, or optimize synergies, so it remains a regression/calibration signal rather than a human win-rate model.
 - Repository-wide ESLint still reports pre-existing errors and warnings outside the changed core-loop files. Changed loop files are checked separately during implementation.
 

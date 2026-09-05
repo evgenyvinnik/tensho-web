@@ -713,7 +713,8 @@
       "replace": "Palitan",
       "filled": "may nakalapag na {{type}}",
       "empty": "walang laman",
-      "forecast": "magiging {{total}} ang puntos"
+      "forecast": "magiging {{total}} ang puntos",
+      "multCost": "at magkakahalaga ng {{mult}} Multiplier"
     },
     "milestones": {
       "title": "Mga Hugis",
@@ -753,9 +754,9 @@
         "name": "Matiyagang Pares",
         "description": "Dagdag na +30 ang pares sa bawat grupong nasa mesa na."
       },
-      "dragon_lantern": {
-        "name": "Parol ng Dragon",
-        "description": "Sinisindihan ng grupo ng Dragon ang puwesto nito. Ang bawat grupong ilalapag mamaya sa tabi ng sinindihang puwesto ay may +0.5 Multiplier."
+      "watch_fire": {
+        "name": "Apoy ng Bantay",
+        "description": "Ang tatluhan o apatan ay may +0.5 Multiplier at sinisindihan ang puwesto nito. Ang grupong nasa tabi ng sinindihang puwesto ay may +0.5 Multiplier."
       },
       "twin_flame": {
         "name": "Kambal na Apoy",
@@ -794,11 +795,14 @@
       "terminalGate": "Pintuan ng Dulo +{{bonus}}",
       "honorCourt": "Korte ng mga Karangalan +{{mult}} Multiplier",
       "patientPair": "Matiyagang Pares +{{bonus}} ({{melds}} grupong naghihintay)",
-      "dragonLantern": "Parol ng Dragon, +{{mult}} Multiplier mula sa sinindihang puwesto",
+      "watchFire": "Apoy ng Bantay +{{mult}} Multiplier mula sa sinindihang puwesto",
       "echoingBamboo": "Umaalingawngaw na Kawayan: dalawang beses nagpupuntos ang sequence na ito",
-      "milestone": "{{name}} +{{points}}, at +{{mult}} Multiplier sa buong round",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Multiplier habang nakatayo ito",
       "completion": "Kumpleto ang mesa — {{base}} × {{mult}}",
-      "total": "Dumadapo sa target"
+      "total": "Dumadapo sa target",
+      "milestoneBroken": "Nasira ang {{name}} — nawala ang {{mult}} Multiplier",
+      "replaces": "Pinapalitan ang {{tiles}} — bayad na ang {{points}}",
+      "watchFireSet": "Apoy ng Bantay +{{mult}} Multiplier para sa tatluhan"
     },
     "roundEnd": {
       "target": "Nasiguro ang round",
@@ -893,7 +897,8 @@
       "label": "Ang rack mo"
     },
     "selection": {
-      "noGroup": "Hindi pa grupo · {{tiles}}"
+      "noGroup": "Hindi pa grupo · {{tiles}}",
+      "multCost": "sisira ng isang hugis · −{{mult}} Multiplier"
     },
     "draft": {
       "title": "Mga Alok",

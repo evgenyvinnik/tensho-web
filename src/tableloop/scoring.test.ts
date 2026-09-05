@@ -153,14 +153,14 @@ describe('decrees', () => {
     expect(result.points).toBe(20 + 15 + 60)
   })
 
-  it('Dragon Lantern only lights groups placed later beside the Dragon', () => {
+  it('Watch Fire only lights groups placed later beside the set', () => {
     const dragonFirst = score(
       [
         { slot: 1, type: MeldType.Triplet, tiles: trip(TileSuit.Dragon, DragonType.Green) },
         { slot: 2, type: MeldType.Sequence, tiles: seq(TileSuit.Manzu, 2) },
       ],
       2,
-      { decrees: ['dragon_lantern'] }
+      { decrees: ['watch_fire'] }
     )
     expect(dragonFirst.mult).toBeCloseTo(1.5)
 
@@ -170,7 +170,7 @@ describe('decrees', () => {
         { slot: 1, type: MeldType.Triplet, tiles: trip(TileSuit.Dragon, DragonType.Green) },
       ],
       2,
-      { decrees: ['dragon_lantern'] }
+      { decrees: ['watch_fire'] }
     )
     expect(dragonLater.mult).toBe(1)
 
@@ -180,9 +180,61 @@ describe('decrees', () => {
         { slot: 3, type: MeldType.Sequence, tiles: seq(TileSuit.Manzu, 2) },
       ],
       3,
-      { decrees: ['dragon_lantern'] }
+      { decrees: ['watch_fire'] }
     )
     expect(notAdjacent.mult).toBe(1)
+  })
+
+  it('Watch Fire lights for any set, and never for a run', () => {
+    const suitedSet = score(
+      [
+        { slot: 1, type: MeldType.Triplet, tiles: trip(TileSuit.Manzu, 5) },
+        { slot: 2, type: MeldType.Sequence, tiles: seq(TileSuit.Pinzu, 2) },
+      ],
+      2,
+      { decrees: ['watch_fire'] }
+    )
+    expect(suitedSet.mult).toBeCloseTo(1.5)
+
+    const honorSet = score(
+      [
+        { slot: 1, type: MeldType.Triplet, tiles: trip(TileSuit.Wind, WindType.North) },
+        { slot: 2, type: MeldType.Sequence, tiles: seq(TileSuit.Manzu, 2) },
+      ],
+      2,
+      { decrees: ['watch_fire'] }
+    )
+    expect(honorSet.mult).toBeCloseTo(1.5)
+
+    // The set itself is paid whether or not anything sits beside it.
+    const loneSet = score(
+      [{ slot: 0, type: MeldType.Triplet, tiles: trip(TileSuit.Pinzu, 4) }],
+      0,
+      { decrees: ['watch_fire'] }
+    )
+    expect(loneSet.mult).toBeCloseTo(1.5)
+
+    // Both halves stack when a set lands beside a set.
+    const setBesideSet = score(
+      [
+        { slot: 1, type: MeldType.Triplet, tiles: trip(TileSuit.Manzu, 5) },
+        { slot: 2, type: MeldType.Triplet, tiles: trip(TileSuit.Pinzu, 3) },
+      ],
+      2,
+      { decrees: ['watch_fire'] }
+    )
+    expect(setBesideSet.mult).toBeCloseTo(2)
+
+    // A run lights nothing, so where a set goes still has to be earned.
+    const runFirst = score(
+      [
+        { slot: 1, type: MeldType.Sequence, tiles: seq(TileSuit.Souzu, 5) },
+        { slot: 2, type: MeldType.Sequence, tiles: seq(TileSuit.Manzu, 2) },
+      ],
+      2,
+      { decrees: ['watch_fire'] }
+    )
+    expect(runFirst.mult).toBe(1)
   })
 
   it('Honor Court pays per honor tile, and Terminal Gate per qualifying group', () => {

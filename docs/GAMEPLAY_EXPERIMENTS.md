@@ -114,6 +114,78 @@ to authoring one. Reach it from the opening panel or with `?practice=1`.
 Every step is derived from run state rather than a counter, so the guide cannot
 claim progress the table does not show.
 
+### Two of section 10's open questions, measured
+
+[`scripts/tableloop-questions.mts`](../scripts/tableloop-questions.mts) runs the
+same seeds under policies that differ in exactly one habit. Answering the
+questions turned up a bigger problem than either of them.
+
+**A slot could be sold twice.** A revision cost one action and paid the new
+group in full, so a greedy policy spent **two thirds of its placements cycling
+the pair slot** — place a pair, replace it with a slightly better pair, repeat.
+Section 9 asks for exactly this to be prevented. A revision now pays the
+difference over the group it turns out, credited at the current multiplier, and
+the slot's forecast shows `+0` before you commit rather than after. Replacing
+like with like is worth nothing; replacing weak with strong is worth the
+upgrade.
+
+What that one rule did to the loop:
+
+| | before | after |
+| --- | ---: | ---: |
+| Revisions | 46% of actions | 19.7% |
+| Placements that were sequences | 30.2% | 50.9% |
+| Placements that were pairs | 66.0% | 40.9% |
+
+Shape recognition went from a third of what players do to half of it, which is
+what section 1.1 was asking for in the first place.
+
+**A milestone's multiplier now belongs to the pattern, not the ledger.** It used
+to be banked for the round, so a player could build a Twin Sequence, keep the
+multiplier, and demolish one of the twins for free. It is derived from the table
+each time it changes: the points it paid are kept, the claim is kept so it can
+never be sold twice, and the multiplier goes when the pattern does. The forecast
+names the cost — "breaks a pattern · −0.5 Mult" — before the commitment, not
+after it. This is what gives "Pure Suit" the weight of an actual suit
+commitment.
+
+**Q4 — should revision be universal?** Yes. At 19.2% of actions, with 97.7% of
+them taken when no ordinary placement was legal, it is a recovery valve rather
+than an optimisation. Making it a Decree would remove the only thing keeping a
+mismatched rack from ending a round early. It now has a price, which is what it
+was missing.
+
+**Q6 — does holding the pair back become mandatory?** It leans that way without
+being one: holding it back clears 1.69 rounds a run against 1.60 for spending it
+early, and 1.49 against 1.35 with Patient Pair, whose whole identity is that
+timing. A lean, not a mandate.
+
+### The opening choice was a trap, and is not any more
+
+Under one policy the three starters finished **45% / 22% / 10%** of their runs.
+A 4.5× spread is not a choice. Chasing it produced the session's most useful
+mistake:
+
+- Dragon Lantern, exactly as this document proposes it, fired at all in a
+  quarter of runs — the wall offered sixteen Dragon groups across three hundred.
+- Doubling its multiplier moved the win rate one point, so the reward was never
+  the problem.
+- Widening the trigger to any Honor group reached 12%; to any set, 10%. Only
+  3.8% of placements were sets.
+- A policy that deliberately set up adjacency did worse — and so did every other
+  Decree under it.
+
+The finding is structural: with five slots and about four placements a round,
+there are not enough placements after a setup for a neighbour bonus alone to
+pay. It is now **Watch Fire**, where a set scores +0.5 Mult outright *and*
+lights its slot; the adjacency is upside on a base that always does something,
+and where you put a set still matters.
+
+Patient Pair was trimmed for dominating, then restored once the revision fix
+landed — most of its lead had been the pair slot being re-scored, so the trim
+was undoing an exploit rather than a Decree. The three now finish **33% / 30% /
+26%**: a 1.27× spread.
+
 ### Celebration, and what is blocked (section 7)
 
 Intensity escalates with the chain rather than with every score update: an

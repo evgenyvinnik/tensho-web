@@ -2179,7 +2179,8 @@
       "replace": "Remplacer",
       "filled": "contient un {{type}}",
       "empty": "vide",
-      "forecast": "rapporterait {{total}}"
+      "forecast": "rapporterait {{total}}",
+      "multCost": "et coûterait {{mult}} Mult"
     },
     "milestones": {
       "title": "Figures",
@@ -2219,9 +2220,9 @@
         "name": "Paire Patiente",
         "description": "La paire gagne +30 pour chaque combinaison déjà sur la table."
       },
-      "dragon_lantern": {
-        "name": "Lanterne du Dragon",
-        "description": "Une combinaison de Dragons allume son emplacement. Toute combinaison posée ensuite à côté d’un emplacement allumé gagne +0,5 Mult."
+      "watch_fire": {
+        "name": "Feu de Garde",
+        "description": "Un brelan ou un carré gagne +0,5 Mult et allume son emplacement. Une combinaison posée à côté d’un emplacement allumé gagne +0,5 Mult."
       },
       "twin_flame": {
         "name": "Flamme Jumelle",
@@ -2260,11 +2261,14 @@
       "terminalGate": "Porte Terminale +{{bonus}}",
       "honorCourt": "Cour des Honneurs +{{mult}} Mult",
       "patientPair": "Paire Patiente +{{bonus}} ({{melds}} combinaisons en attente)",
-      "dragonLantern": "Lanterne du Dragon +{{mult}} Mult depuis l’emplacement allumé",
+      "watchFire": "Feu de Garde +{{mult}} Mult depuis l’emplacement allumé",
       "echoingBamboo": "Bambou qui Résonne : cette séquence compte deux fois",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Mult pour la manche",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Mult tant qu’elle tient",
       "completion": "Table complète — {{base}} × {{mult}}",
-      "total": "Se pose sur l’objectif"
+      "total": "Se pose sur l’objectif",
+      "milestoneBroken": "{{name}} rompue — {{mult}} Mult perdus",
+      "replaces": "Remplace {{tiles}} — {{points}} déjà payés",
+      "watchFireSet": "Feu de Garde +{{mult}} Mult pour le brelan"
     },
     "roundEnd": {
       "target": "Manche assurée",
@@ -2359,7 +2363,8 @@
       "label": "Votre chevalet"
     },
     "selection": {
-      "noGroup": "Pas encore une combinaison · {{tiles}}"
+      "noGroup": "Pas encore une combinaison · {{tiles}}",
+      "multCost": "rompt une figure · −{{mult}} Mult"
     },
     "draft": {
       "title": "Offres",

@@ -27,10 +27,11 @@ import {
   classifyGroup,
   createEmptySlots,
   hasLegalPlacement,
+  hasLegalRevision,
   isTableComplete,
   slotAccepts,
 } from './groupRules'
-import { multFromMilestones, scorePlacement } from './scoring'
+import { scorePlacement, standingMult } from './scoring'
 import { PRACTICE_DECREE, createPracticeCollection } from './practice'
 import {
   type CausalStage,
@@ -333,6 +334,7 @@ export class TableLoopEngine {
       return TableLoopEngine.settleRound(state, 'exhausted')
     }
     if (hasLegalPlacement(state.rack, state.slots)) return state
+    if (hasLegalRevision(state.rack, state.slots)) return state
     // An unclaimed offer is still a tile the rack has not seen.
     if (state.pendingDraftPick) return state
     // A recovery exchange can still change the rack while an action remains.
@@ -433,6 +435,8 @@ export class TableLoopEngine {
     const score = scorePlacement(group, {
       slots,
       slotIndex,
+      previousSlots: state.slots,
+      displacedGroup: slot.group ?? undefined,
       ownedDecrees: state.ownedDecrees,
       tableMult: state.tableMult,
       claimedMilestones: state.claimedMilestones,
@@ -540,8 +544,11 @@ export class TableLoopEngine {
     }
 
     const usedIds = new Set(tileIds)
-    const earnedMult = multFromMilestones(projected.score.claimedMilestones)
     const completed = isTableComplete(projected.slots)
+    const allClaimed = [
+      ...state.claimedMilestones,
+      ...projected.score.claimedMilestones,
+    ]
 
     let next: TableLoopState = {
       ...state,
@@ -551,11 +558,10 @@ export class TableLoopEngine {
       score: state.score + projected.score.total,
       gold: state.gold + projected.score.gold,
       placementActionsRemaining: state.placementActionsRemaining - 1,
-      claimedMilestones: [
-        ...state.claimedMilestones,
-        ...projected.score.claimedMilestones,
-      ],
-      tableMult: state.tableMult + earnedMult,
+      claimedMilestones: allClaimed,
+      // Derived from the table, not accumulated: a pattern the player breaks
+      // takes its multiplier with it.
+      tableMult: standingMult(projected.slots, allClaimed),
       tableCompleted: state.tableCompleted || completed,
       lastResolution: projected.score.stages,
       lastError: null,

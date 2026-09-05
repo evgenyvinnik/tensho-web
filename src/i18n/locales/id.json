@@ -1927,7 +1927,8 @@
       "replace": "Ganti",
       "filled": "berisi satu {{type}}",
       "empty": "kosong",
-      "forecast": "akan bernilai {{total}}"
+      "forecast": "akan bernilai {{total}}",
+      "multCost": "dan menghabiskan {{mult}} Pengali"
     },
     "milestones": {
       "title": "Pola",
@@ -1967,9 +1968,9 @@
         "name": "Pasangan Sabar",
         "description": "Pasangan mendapat +30 untuk setiap kelompok yang sudah ada di meja."
       },
-      "dragon_lantern": {
-        "name": "Lentera Naga",
-        "description": "Kelompok Naga menyalakan slotnya. Setiap kelompok yang diletakkan kemudian di sebelah slot yang menyala mendapat +0,5 Pengali."
+      "watch_fire": {
+        "name": "Api Jaga",
+        "description": "Triplet atau kuartet mendapat +0,5 Pengali dan menyalakan slotnya. Kelompok di sebelah slot yang menyala mendapat +0,5 Pengali."
       },
       "twin_flame": {
         "name": "Nyala Kembar",
@@ -2008,11 +2009,14 @@
       "terminalGate": "Gerbang Ujung +{{bonus}}",
       "honorCourt": "Istana Kehormatan +{{mult}} Pengali",
       "patientPair": "Pasangan Sabar +{{bonus}} ({{melds}} kelompok menunggu)",
-      "dragonLantern": "Lentera Naga +{{mult}} Pengali dari slot yang menyala",
+      "watchFire": "Api Jaga +{{mult}} Pengali dari slot yang menyala",
       "echoingBamboo": "Bambu Bergema: urutan ini menghasilkan skor dua kali",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Pengali untuk ronde ini",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Pengali selama polanya bertahan",
       "completion": "Meja lengkap — {{base}} × {{mult}}",
-      "total": "Mendarat di target"
+      "total": "Mendarat di target",
+      "milestoneBroken": "{{name}} rusak — kehilangan {{mult}} Pengali",
+      "replaces": "Menggantikan {{tiles}} — {{points}} sudah dibayar",
+      "watchFireSet": "Api Jaga +{{mult}} Pengali untuk triplet"
     },
     "roundEnd": {
       "target": "Ronde diamankan",
@@ -2107,7 +2111,8 @@
       "label": "Rakmu"
     },
     "selection": {
-      "noGroup": "Belum jadi kelompok · {{tiles}}"
+      "noGroup": "Belum jadi kelompok · {{tiles}}",
+      "multCost": "merusak sebuah pola · −{{mult}} Pengali"
     },
     "draft": {
       "title": "Tawaran",

@@ -53,7 +53,7 @@ describe('opening build choice (E03)', () => {
 
   it('refuses a Decree that was not offered', () => {
     const engine = new TableLoopEngine(42)
-    const notOffered = (['echoing_bamboo', 'patient_pair', 'dragon_lantern'] as const).find(
+    const notOffered = (['echoing_bamboo', 'patient_pair', 'watch_fire'] as const).find(
       (id) => !engine.getState().starterChoices.includes(id)
     )
     const result = engine.chooseStarter(notOffered ?? 'twin_flame')
@@ -636,5 +636,332 @@ describe('the draft row (E06)', () => {
     const after = allTrackedTileIds(engine.getState())
     expect(new Set(after).size).toBe(after.length)
     expect(after.length).toBe(engine.getState().collection.length)
+  })
+})
+
+// =============================================================================
+// THE IRREVERSIBLE TRANSITIONS SECTION 9 ASKS TO COVER
+// =============================================================================
+
+describe('legal completion with quads', () => {
+  it('completes on four melds and a pair even when that is more than fourteen tiles', () => {
+    const quad = [
+      t(TileSuit.Pinzu, 5),
+      t(TileSuit.Pinzu, 5),
+      t(TileSuit.Pinzu, 5),
+      t(TileSuit.Pinzu, 5),
+    ]
+    const melds = [seq(TileSuit.Manzu, 1), seq(TileSuit.Manzu, 4), trip(TileSuit.Souzu, 7)]
+    const pair = [t(TileSuit.Manzu, 9), t(TileSuit.Manzu, 9)]
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: [...quad, ...melds.flat(), ...pair] })
+    )
+
+    engine.place(ids(quad), 0)
+    expect(engine.getState().slots[0].group?.type).toBe(MeldType.Quad)
+
+    melds.forEach((group, index) => engine.place(ids(group), index + 1))
+    expect(engine.getState().phase).toBe('playing')
+
+    const finish = engine.place(ids(pair), PAIR_SLOT_INDEX)
+    expect(finish.success).toBe(true)
+
+    // The contract is four meld slots and the pair slot, not a tile count.
+    const onTable = engine
+      .getState()
+      .slots.reduce((sum, slot) => sum + (slot.group?.tiles.length ?? 0), 0)
+    expect(onTable).toBe(15)
+    expect(engine.getState().tableCompleted).toBe(true)
+    expect(
+      finish.score?.stages.some((stage) => stage.kind === 'completion')
+    ).toBe(true)
+  })
+
+  it('scores a quad above a triplet of the same tile', () => {
+    const quad = [
+      t(TileSuit.Souzu, 2),
+      t(TileSuit.Souzu, 2),
+      t(TileSuit.Souzu, 2),
+      t(TileSuit.Souzu, 2),
+    ]
+    const withQuad = TableLoopEngine.fromState(playing({ rack: quad }))
+    const asQuad = withQuad.previewPlacement(ids(quad), 0)
+
+    const asTriplet = TableLoopEngine.fromState(
+      playing({ rack: quad.slice(0, 3) })
+    ).previewPlacement(ids(quad.slice(0, 3)), 0)
+
+    expect(asQuad!.total).toBeGreaterThan(asTriplet!.total)
+  })
+})
+
+describe('previewing consumes nothing', () => {
+  it('leaves the run byte-for-byte unchanged', () => {
+    const engine = new TableLoopEngine(31)
+    engine.chooseStarter(engine.getState().starterChoices[0])
+
+    const group = enumerateRackGroups(engine.getState().rack).find(
+      (candidate) => candidate.length >= 2
+    )
+    expect(group).toBeDefined()
+
+    const before = JSON.stringify(engine.getState())
+    for (let repeat = 0; repeat < 5; repeat += 1) {
+      for (const slot of engine.getState().slots) {
+        engine.previewPlacement(
+          group!.map((tile) => tile.id),
+          slot.index
+        )
+      }
+    }
+    expect(JSON.stringify(engine.getState())).toBe(before)
+  })
+
+  it('never claims a milestone, spends an action, or moves a tile', () => {
+    const first = seq(TileSuit.Souzu, 3)
+    const second = seq(TileSuit.Souzu, 3)
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: [...first, ...second], wall: [t(TileSuit.Pinzu, 1)] })
+    )
+    engine.place(ids(first), 0)
+
+    const before = engine.getState()
+    // This placement would claim Twin Sequence; forecasting it must not.
+    const forecast = engine.previewPlacement(ids(second), 1)
+    expect(forecast?.claimedMilestones).toContain('twin_sequence')
+
+    const after = engine.getState()
+    expect(after.claimedMilestones).toEqual(before.claimedMilestones)
+    expect(after.tableMult).toBe(before.tableMult)
+    expect(after.placementActionsRemaining).toBe(before.placementActionsRemaining)
+    expect(after.score).toBe(before.score)
+    expect(after.rack).toEqual(before.rack)
+    expect(after.slots[1].group).toBeNull()
+  })
+})
+
+describe('bounded retriggers', () => {
+  it('repeats an Echoing Bamboo sequence exactly twice, never more', () => {
+    const group = seq(TileSuit.Souzu, 3)
+    const plain = TableLoopEngine.fromState(
+      playing({ rack: group })
+    ).previewPlacement(ids(group), 0)
+
+    const echoed = TableLoopEngine.fromState(
+      playing({ rack: group, ownedDecrees: ['echoing_bamboo'] })
+    ).previewPlacement(ids(group), 0)
+
+    expect(echoed!.total).toBe(plain!.total * 2)
+  })
+
+  it('stays bounded when every Decree fires at once', () => {
+    const group = [t(TileSuit.Souzu, 1), t(TileSuit.Souzu, 2), t(TileSuit.Souzu, 3)]
+    const owned = [
+      'echoing_bamboo',
+      'terminal_gate',
+      'twin_flame',
+      'honor_court',
+      'watch_fire',
+      'patient_pair',
+      'jade_ledger',
+      'river_merchant',
+    ] as const
+
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: group, ownedDecrees: [...owned], tableMult: 2 })
+    )
+    const forecast = engine.previewPlacement(ids(group), 0)
+
+    // Points: two simples and a terminal (20) + sequence (40) + Terminal Gate
+    // (40). Mult: 1 + table momentum 2. Echoing Bamboo doubles the result once.
+    expect(forecast!.points).toBe(100)
+    expect(forecast!.mult).toBe(3)
+    expect(forecast!.total).toBe(600)
+
+    // One copy level: the doubling applies to the group, not to milestones.
+    const echoStages = forecast!.stages.filter(
+      (stage) => stage.kind === 'decree'
+    )
+    expect(echoStages.length).toBeLessThanOrEqual(owned.length)
+  })
+})
+
+describe('a milestone multiplier belongs to the pattern', () => {
+  it('gives the multiplier back when a revision breaks the pattern', () => {
+    const first = seq(TileSuit.Souzu, 3)
+    const second = seq(TileSuit.Souzu, 3)
+    const other = trip(TileSuit.Manzu, 5)
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: [...first, ...second, ...other] })
+    )
+
+    engine.place(ids(first), 0)
+    engine.place(ids(second), 1)
+    expect(engine.getState().claimedMilestones).toContain('twin_sequence')
+    const earned = engine.getState().tableMult
+    expect(earned).toBeGreaterThan(0)
+    const scoreAfterTwin = engine.getState().score
+
+    const broken = engine.revise(ids(other), 1)
+    expect(broken.success).toBe(true)
+
+    // The points it paid are kept, the claim is kept so it cannot be sold
+    // twice, and the multiplier goes with the pattern.
+    expect(engine.getState().score).toBeGreaterThan(scoreAfterTwin)
+    expect(engine.getState().claimedMilestones).toContain('twin_sequence')
+    expect(engine.getState().tableMult).toBeLessThan(earned)
+    expect(
+      broken.score?.stages.some(
+        (stage) => stage.labelKey === 'tableLoop.stage.milestoneBroken'
+      )
+    ).toBe(true)
+  })
+
+  it('does not pay the milestone again when the pattern is rebuilt', () => {
+    const first = seq(TileSuit.Souzu, 3)
+    const second = seq(TileSuit.Souzu, 3)
+    const other = trip(TileSuit.Manzu, 5)
+    const third = seq(TileSuit.Souzu, 3)
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: [...first, ...second, ...other, ...third] })
+    )
+
+    engine.place(ids(first), 0)
+    engine.place(ids(second), 1)
+    engine.revise(ids(other), 1)
+    const beforeRebuild = engine.getState().tableMult
+
+    const rebuilt = engine.revise(ids(third), 1)
+    expect(rebuilt.score?.claimedMilestones).toEqual([])
+    // The multiplier returns with the pattern; the points do not.
+    expect(engine.getState().tableMult).toBeGreaterThan(beforeRebuild)
+    expect(
+      engine.getState().claimedMilestones.filter((id) => id === 'twin_sequence')
+    ).toHaveLength(1)
+  })
+
+  it('leaves the multiplier alone when a placement keeps the pattern', () => {
+    const first = seq(TileSuit.Souzu, 3)
+    const second = seq(TileSuit.Souzu, 3)
+    const third = trip(TileSuit.Souzu, 8)
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: [...first, ...second, ...third] })
+    )
+
+    engine.place(ids(first), 0)
+    engine.place(ids(second), 1)
+    const earned = engine.getState().tableMult
+
+    // Still all Bamboo, still twin runs: nothing is broken.
+    engine.place(ids(third), 2)
+    expect(engine.getState().tableMult).toBe(earned)
+  })
+
+  it('charges an ordinary placement that abandons a suit commitment', () => {
+    const first = seq(TileSuit.Souzu, 3)
+    const second = seq(TileSuit.Souzu, 3)
+    const offSuit = trip(TileSuit.Manzu, 5)
+    const engine = TableLoopEngine.fromState(
+      playing({ rack: [...first, ...second, ...offSuit] })
+    )
+
+    engine.place(ids(first), 0)
+    engine.place(ids(second), 1)
+    const claimed = engine.getState().claimedMilestones
+    expect(claimed).toEqual(
+      expect.arrayContaining(['twin_sequence', 'pure_suit'])
+    )
+    const earned = engine.getState().tableMult
+
+    // Pure Suit means every group shares a suit; a Characters triplet ends it.
+    const result = engine.place(ids(offSuit), 2)
+    expect(engine.getState().tableMult).toBeLessThan(earned)
+    expect(engine.getState().claimedMilestones).toContain('pure_suit')
+    expect(
+      result.score?.stages.some(
+        (stage) => stage.labelKey === 'tableLoop.stage.milestoneBroken'
+      )
+    ).toBe(true)
+
+    // Twin Sequence is untouched: those two runs are still standing.
+    expect(engine.getState().tableMult).toBeGreaterThan(0)
+  })
+})
+
+describe('a revision pays the upgrade, not the group again', () => {
+  it('pays nothing for swapping a group for one of equal value', () => {
+    const first = [t(TileSuit.Pinzu, 9), t(TileSuit.Pinzu, 9)]
+    const same = [t(TileSuit.Manzu, 9), t(TileSuit.Manzu, 9)]
+    const engine = TableLoopEngine.fromState(
+      playing({
+        rack: [...first, ...same],
+        wall: [t(TileSuit.Manzu, 2), t(TileSuit.Souzu, 6)],
+      })
+    )
+
+    engine.place(ids(first), PAIR_SLOT_INDEX)
+    const afterFirst = engine.getState().score
+    expect(afterFirst).toBeGreaterThan(0)
+
+    const swap = engine.revise(ids(same), PAIR_SLOT_INDEX)
+    expect(swap.success).toBe(true)
+    expect(engine.getState().score).toBe(afterFirst)
+    expect(swap.score?.total).toBe(0)
+  })
+
+  it('pays the difference when the replacement is better', () => {
+    const weak = [t(TileSuit.Pinzu, 3), t(TileSuit.Pinzu, 3)]
+    const strong = [t(TileSuit.Dragon, DragonType.Red), t(TileSuit.Dragon, DragonType.Red)]
+    const engine = TableLoopEngine.fromState(
+      playing({
+        rack: [...weak, ...strong],
+        wall: [t(TileSuit.Manzu, 2), t(TileSuit.Souzu, 6)],
+      })
+    )
+
+    engine.place(ids(weak), PAIR_SLOT_INDEX)
+    const afterWeak = engine.getState().score
+
+    const upgrade = engine.revise(ids(strong), PAIR_SLOT_INDEX)
+    const paid = engine.getState().score - afterWeak
+
+    // Two simples (5 each) against two honours (15 each): a 20-point upgrade.
+    expect(paid).toBe(20)
+    expect(upgrade.score?.total).toBe(20)
+    expect(
+      upgrade.score?.stages.some(
+        (stage) => stage.labelKey === 'tableLoop.stage.replaces'
+      )
+    ).toBe(true)
+  })
+
+  it('never pays a negative score for a downgrade', () => {
+    const strong = [t(TileSuit.Dragon, DragonType.Red), t(TileSuit.Dragon, DragonType.Red)]
+    const weak = [t(TileSuit.Pinzu, 3), t(TileSuit.Pinzu, 3)]
+    const engine = TableLoopEngine.fromState(
+      playing({
+        rack: [...strong, ...weak],
+        wall: [t(TileSuit.Manzu, 2), t(TileSuit.Souzu, 6)],
+      })
+    )
+
+    engine.place(ids(strong), PAIR_SLOT_INDEX)
+    const afterStrong = engine.getState().score
+
+    engine.revise(ids(weak), PAIR_SLOT_INDEX)
+    expect(engine.getState().score).toBe(afterStrong)
+  })
+
+  it('leaves an ordinary placement paying in full', () => {
+    const group = seq(TileSuit.Souzu, 3)
+    const engine = TableLoopEngine.fromState(playing({ rack: group }))
+    const forecast = engine.previewPlacement(ids(group), 0)
+
+    expect(forecast!.total).toBe(55)
+    expect(
+      forecast!.stages.some(
+        (stage) => stage.labelKey === 'tableLoop.stage.replaces'
+      )
+    ).toBe(false)
   })
 })

@@ -24,6 +24,8 @@ export interface SelectionStripProps {
   groupType: MeldType | null
   /** Best forecast among the slots this selection fits, if any. */
   bestForecast: number | null
+  /** Standing multiplier the best slot would cost, if any. */
+  multCost?: number
   onClear: () => void
 }
 
@@ -31,6 +33,7 @@ export function SelectionStrip({
   tiles,
   groupType,
   bestForecast,
+  multCost = 0,
   onClear,
 }: SelectionStripProps) {
   const { t } = useTranslation()
@@ -62,6 +65,13 @@ export function SelectionStrip({
         {bestForecast !== null && (
           <span className="ml-1.5 font-bold tabular-nums text-[var(--color-golden-yellow)]">
             +{bestForecast.toLocaleString()}
+          </span>
+        )}
+        {multCost > 0 && (
+          <span className="ml-1.5 font-bold tabular-nums text-rose-300">
+            {t('tableLoop.selection.multCost', 'breaks a pattern · −{{mult}} Mult', {
+              mult: multCost.toFixed(1),
+            })}
           </span>
         )}
       </p>

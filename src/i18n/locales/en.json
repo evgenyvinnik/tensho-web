@@ -2175,7 +2175,8 @@
       "replace": "Replace",
       "filled": "holds a {{type}}",
       "empty": "empty",
-      "forecast": "would score {{total}}"
+      "forecast": "would score {{total}}",
+      "multCost": "and cost {{mult}} Mult"
     },
     "milestones": {
       "title": "Patterns",
@@ -2215,9 +2216,9 @@
         "name": "Patient Pair",
         "description": "The pair scores +30 for every meld already on the table."
       },
-      "dragon_lantern": {
-        "name": "Dragon Lantern",
-        "description": "A Dragon group lights its slot. Every later group placed beside a lit slot gains +0.5 Mult."
+      "watch_fire": {
+        "name": "Watch Fire",
+        "description": "A triplet or quad scores +0.5 Mult and lights its slot. A group beside a lit slot gains +0.5 Mult."
       },
       "twin_flame": {
         "name": "Twin Flame",
@@ -2256,11 +2257,14 @@
       "terminalGate": "Terminal Gate +{{bonus}}",
       "honorCourt": "Honor Court +{{mult}} Mult",
       "patientPair": "Patient Pair +{{bonus}} ({{melds}} melds waiting)",
-      "dragonLantern": "Dragon Lantern +{{mult}} Mult from the lit slot",
+      "watchFire": "Watch Fire +{{mult}} Mult from the lit slot",
       "echoingBamboo": "Echoing Bamboo — this sequence scores twice",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Mult for the round",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Mult while it stands",
       "completion": "Table complete — {{base}} × {{mult}}",
-      "total": "Lands on the target"
+      "total": "Lands on the target",
+      "milestoneBroken": "{{name}} broken — {{mult}} Mult lost",
+      "replaces": "Replaces {{tiles}} — {{points}} already paid",
+      "watchFireSet": "Watch Fire +{{mult}} Mult for the set"
     },
     "roundEnd": {
       "target": "Round secured",
@@ -2355,7 +2359,8 @@
       "label": "Your rack"
     },
     "selection": {
-      "noGroup": "Not a group yet · {{tiles}}"
+      "noGroup": "Not a group yet · {{tiles}}",
+      "multCost": "breaks a pattern · −{{mult}} Mult"
     },
     "draft": {
       "title": "Offers",

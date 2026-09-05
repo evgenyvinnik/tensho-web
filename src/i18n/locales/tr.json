@@ -713,7 +713,8 @@
       "replace": "Değiştir",
       "filled": "içinde bir {{type}} var",
       "empty": "boş",
-      "forecast": "{{total}} puan getirir"
+      "forecast": "{{total}} puan getirir",
+      "multCost": "ve {{mult}} Çarpana mal olur"
     },
     "milestones": {
       "title": "Şekiller",
@@ -753,9 +754,9 @@
         "name": "Sabırlı Çift",
         "description": "Masada duran her grup için çift +30 kazanır."
       },
-      "dragon_lantern": {
-        "name": "Ejderha Feneri",
-        "description": "Bir Ejderha grubu kendi yuvasını yakar. Yanan bir yuvanın yanına sonradan konan her grup +0,5 Çarpan alır."
+      "watch_fire": {
+        "name": "Nöbet Ateşi",
+        "description": "Bir üçlü ya da dörtlü +0,5 Çarpan alır ve yuvasını yakar. Yanan bir yuvanın yanındaki grup +0,5 Çarpan alır."
       },
       "twin_flame": {
         "name": "İkiz Alev",
@@ -794,11 +795,14 @@
       "terminalGate": "Uç Taş Kapısı +{{bonus}}",
       "honorCourt": "Onur Sarayı +{{mult}} Çarpan",
       "patientPair": "Sabırlı Çift +{{bonus}} (bekleyen grup: {{melds}})",
-      "dragonLantern": "Ejderha Feneri, yanan yuvadan +{{mult}} Çarpan",
+      "watchFire": "Nöbet Ateşi, yanan yuvadan +{{mult}} Çarpan",
       "echoingBamboo": "Yankılanan Bambu: bu seri iki kez puan verir",
-      "milestone": "{{name}} +{{points}}, tur boyunca +{{mult}} Çarpan",
+      "milestone": "{{name}} +{{points}}, şekil durdukça +{{mult}} Çarpan",
       "completion": "Masa tamam — {{base}} × {{mult}}",
-      "total": "Hedefe ekleniyor"
+      "total": "Hedefe ekleniyor",
+      "milestoneBroken": "{{name}} bozuldu — {{mult}} Çarpan kayboldu",
+      "replaces": "{{tiles}} yerine geçer — {{points}} zaten ödendi",
+      "watchFireSet": "Nöbet Ateşi üçlü için +{{mult}} Çarpan"
     },
     "roundEnd": {
       "target": "Tur güvenceye alındı",
@@ -893,7 +897,8 @@
       "label": "Rafın"
     },
     "selection": {
-      "noGroup": "Henüz bir grup değil · {{tiles}}"
+      "noGroup": "Henüz bir grup değil · {{tiles}}",
+      "multCost": "bir şekli bozar · −{{mult}} Çarpan"
     },
     "draft": {
       "title": "Teklifler",

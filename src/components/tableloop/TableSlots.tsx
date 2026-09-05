@@ -23,6 +23,8 @@ export interface TableSlotsProps {
   highlighted?: readonly number[]
   /** Forecast for each slot the selection fits, keyed by slot index. */
   forecasts?: ReadonlyMap<number, number>
+  /** Standing multiplier each slot would cost, keyed by slot index. */
+  multCosts?: ReadonlyMap<number, number>
   onPlace: (slotIndex: number) => void
   onRevise: (slotIndex: number) => void
 }
@@ -43,6 +45,7 @@ export function TableSlots({
   revisable,
   highlighted = [],
   forecasts,
+  multCosts,
   onPlace,
   onRevise,
 }: TableSlotsProps) {
@@ -60,6 +63,7 @@ export function TableSlots({
         const isPair = slot.index === PAIR_SLOT_INDEX
         const interactive = canPlace.has(slot.index) || canRevise.has(slot.index)
         const forecast = forecasts?.get(slot.index)
+        const multCost = multCosts?.get(slot.index) ?? 0
 
         return (
           <button
@@ -84,6 +88,11 @@ export function TableSlots({
               forecast !== undefined
                 ? t('tableLoop.slot.forecast', 'would score {{total}}', {
                     total: forecast,
+                  })
+                : null,
+              multCost > 0
+                ? t('tableLoop.slot.multCost', 'and cost {{mult}} Mult', {
+                    mult: multCost.toFixed(1),
                   })
                 : null,
             ]
@@ -125,6 +134,15 @@ export function TableSlots({
             {forecast !== undefined && (
               <span className="mt-0.5 text-[11px] font-bold tabular-nums text-[var(--color-golden-yellow)]">
                 +{forecast.toLocaleString()}
+              </span>
+            )}
+
+            {multCost > 0 && (
+              <span
+                data-testid={`slot-mult-cost-${slot.index}`}
+                className="text-[10px] font-bold tabular-nums text-rose-300"
+              >
+                −{multCost.toFixed(1)}x
               </span>
             )}
 

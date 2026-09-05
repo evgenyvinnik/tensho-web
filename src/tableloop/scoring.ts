@@ -17,8 +17,8 @@ import {
   TABLE_COMPLETION_POINTS,
   getMilestone,
 } from './content'
-import { dragonTypeOf, isTableComplete } from './groupRules'
-import { newlyClaimedMilestones } from './milestones'
+import { isTableComplete } from './groupRules'
+import { newlyClaimedMilestones, satisfiedMilestones } from './milestones'
 import {
   PAIR_SLOT_INDEX,
   type BossRuleId,
@@ -37,12 +37,27 @@ export interface PlacementContext {
   /** Slot the group is going into. */
   readonly slotIndex: number
   readonly ownedDecrees: readonly TableDecreeId[]
-  /** Standing multiplier already earned by milestones this round. */
+  /** Standing multiplier the table is carrying before this placement. */
   readonly tableMult: number
   readonly claimedMilestones: readonly MilestoneId[]
+  /**
+   * The table as it looked before this placement, so a revision that breaks a
+   * pattern can be reported. Optional: an ordinary placement never breaks one.
+   */
+  readonly previousSlots?: readonly TableSlot[]
   readonly bossRule: BossRuleId | null
   /** Set when the table was already complete before this placement (revision). */
   readonly completionAlreadyPaid: boolean
+  /**
+   * The group this placement is turning out of its slot, if any.
+   *
+   * A revision pays the difference rather than the whole group again. Without
+   * that, a slot can be re-scored indefinitely: measured, a greedy policy spent
+   * two thirds of its placements cycling the pair slot, because replacing a
+   * pair with another pair paid full price every time. Section 9 asks for
+   * exactly this to be prevented.
+   */
+  readonly displacedGroup?: PlacedGroup
 }
 
 const GROUP_LABELS: Record<MeldType, string> = {
@@ -128,6 +143,18 @@ const TABLE_STRUCTURE_POINTS: Record<MeldType, number> = {
 function structurePointsFor(type: MeldType): number {
   return TABLE_STRUCTURE_POINTS[type]
 }
+
+/** Points the Patient Pair adds for each meld already waiting on the table. */
+const PATIENT_PAIR_BONUS = 30
+
+/** Multiplier Watch Fire pays a set outright, and again to each lit neighbour. */
+const WATCH_FIRE_MULT = 0.5
+
+/** Group types that light a slot: a set, as opposed to a run or a pair. */
+const LIGHTING_TYPES: ReadonlySet<MeldType> = new Set([
+  MeldType.Triplet,
+  MeldType.Quad,
+])
 
 /** Slots directly left and right of `index` on the single row of five. */
 export function neighborSlots(index: number): number[] {
@@ -217,7 +244,7 @@ export function scorePlacement(
       (slot) => slot.index !== PAIR_SLOT_INDEX && slot.group !== null
     ).length
     if (melds > 0) {
-      const bonus = melds * 30
+      const bonus = melds * PATIENT_PAIR_BONUS
       points += bonus
       stages.push({
         kind: 'decree',
@@ -252,20 +279,36 @@ export function scorePlacement(
     })
   }
 
-  if (owned.has('dragon_lantern')) {
+  if (owned.has('watch_fire')) {
+    // The base: a set is worth more for being a set.
+    if (LIGHTING_TYPES.has(group.type)) {
+      mult += WATCH_FIRE_MULT
+      stages.push({
+        kind: 'decree',
+        label: `Watch Fire +${WATCH_FIRE_MULT.toFixed(1)} Mult for the set`,
+        labelKey: 'tableLoop.stage.watchFireSet',
+        labelVars: { mult: WATCH_FIRE_MULT.toFixed(1) },
+        mult: WATCH_FIRE_MULT,
+        runningPoints: points,
+        runningMult: mult,
+        highlightTileIds: tileIds,
+      })
+    }
+
+    // The upside: sitting beside one already on the table.
     const litNeighbors = neighborSlots(context.slotIndex).filter((index) => {
       const slot = context.slots[index]
       if (!slot?.group) return false
       if (slot.group.placementOrder >= group.placementOrder) return false
-      return dragonTypeOf(slot.group.tiles) !== null
+      return LIGHTING_TYPES.has(slot.group.type)
     })
     if (litNeighbors.length > 0) {
-      const bonus = 0.5 * litNeighbors.length
+      const bonus = WATCH_FIRE_MULT * litNeighbors.length
       mult += bonus
       stages.push({
         kind: 'decree',
-        label: `Dragon Lantern +${bonus.toFixed(1)} Mult from the lit slot`,
-        labelKey: 'tableLoop.stage.dragonLantern',
+        label: `Watch Fire +${bonus.toFixed(1)} Mult from the lit slot`,
+        labelKey: 'tableLoop.stage.watchFire',
         labelVars: { mult: bonus.toFixed(1) },
         mult: bonus,
         runningPoints: points,
@@ -291,13 +334,38 @@ export function scorePlacement(
     })
   }
 
-  const groupTotal = Math.floor(points * mult) * repeats
+  let groupTotal = Math.floor(points * mult) * repeats
+
+  // --- 3b. What the slot was already worth ------------------------------------
+  if (context.displacedGroup) {
+    const displaced = context.displacedGroup
+    const displacedValue = Math.floor(
+      (groupTilePoints(displaced.tiles, context.bossRule) +
+        structurePointsFor(displaced.type)) *
+        mult
+    )
+    const credited = Math.min(groupTotal, displacedValue)
+    if (credited > 0) {
+      groupTotal -= credited
+      stages.push({
+        kind: 'table',
+        label: `Replaces ${describeGroup(displaced.tiles)} — ${credited} already paid`,
+        labelKey: 'tableLoop.stage.replaces',
+        labelVars: { tiles: describeGroup(displaced.tiles), points: credited },
+        points: -credited,
+        runningPoints: points,
+        runningMult: mult,
+        highlightSlots: [context.slotIndex],
+      })
+    }
+  }
 
   // --- 4. Milestones ---------------------------------------------------------
   const claimed = newlyClaimedMilestones(context.slots, context.claimedMilestones)
   const twinFlame = owned.has('twin_flame')
   let milestoneTotal = 0
   let earnedMult = 0
+  let multLost = 0
 
   for (const id of claimed) {
     const definition = getMilestone(id)
@@ -306,7 +374,7 @@ export function scorePlacement(
     earnedMult += definition.mult
     stages.push({
       kind: 'milestone',
-      label: `${definition.name} +${award}, +${definition.mult.toFixed(1)} Mult for the round`,
+      label: `${definition.name} +${award}, +${definition.mult.toFixed(1)} Mult while it stands`,
       labelKey: 'tableLoop.stage.milestone',
       labelVars: {
         name: definition.name,
@@ -322,6 +390,36 @@ export function scorePlacement(
         .filter((slot) => slot.group !== null)
         .map((slot) => slot.index),
     })
+  }
+
+  // --- 4b. Anything this placement broke -------------------------------------
+  // A milestone's multiplier belongs to the pattern, not to the ledger. Replacing
+  // one of the groups that formed it gives the multiplier back, which is what
+  // makes a revision a decision rather than a free second placement. The points
+  // it already paid are kept, and it stays claimed so it cannot be sold twice.
+  if (context.previousSlots) {
+    const claimedSet = new Set(context.claimedMilestones)
+    const before = satisfiedMilestones(context.previousSlots).filter((id) =>
+      claimedSet.has(id)
+    )
+    const after = new Set(satisfiedMilestones(context.slots))
+    for (const id of before) {
+      if (after.has(id)) continue
+      const definition = getMilestone(id)
+      earnedMult -= definition.mult
+      multLost += definition.mult
+      stages.push({
+        kind: 'table',
+        label: `${definition.name} broken — ${definition.mult.toFixed(1)} Mult lost`,
+        labelKey: 'tableLoop.stage.milestoneBroken',
+        labelVars: { name: definition.name, mult: definition.mult.toFixed(1) },
+        labelVarKeys: { name: `tableLoop.milestones.${id}.name` },
+        mult: -definition.mult,
+        runningPoints: points,
+        runningMult: mult + earnedMult,
+        highlightSlots: [context.slotIndex],
+      })
+    }
   }
 
   // --- 5. Completing the table ----------------------------------------------
@@ -359,12 +457,39 @@ export function scorePlacement(
 
   const gold = owned.has('jade_ledger') ? 2 : 0
 
-  return { points, mult, total, stages, claimedMilestones: claimed, gold }
+  return {
+    points,
+    mult,
+    total,
+    multLost,
+    stages,
+    claimedMilestones: claimed,
+    gold,
+  }
 }
 
 /** Standing multiplier a set of claimed milestones is worth. */
 export function multFromMilestones(ids: readonly MilestoneId[]): number {
   return ids.reduce((sum, id) => sum + getMilestone(id).mult, 0)
+}
+
+/**
+ * The multiplier the table is currently carrying.
+ *
+ * A milestone pays its points once, but its multiplier lasts only while the
+ * table still shows the pattern. Section 10 asks whether revision should be
+ * available to everyone; measuring it showed a policy spending half its actions
+ * on revisions because replacing a group cost nothing but the action. Tying the
+ * multiplier to the pattern gives that choice a price.
+ */
+export function standingMult(
+  slots: readonly TableSlot[],
+  claimed: readonly MilestoneId[]
+): number {
+  const claimedSet = new Set(claimed)
+  return satisfiedMilestones(slots)
+    .filter((id) => claimedSet.has(id))
+    .reduce((sum, id) => sum + getMilestone(id).mult, 0)
 }
 
 /** Every milestone definition, for the progress track. */

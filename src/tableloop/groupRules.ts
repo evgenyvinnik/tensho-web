@@ -162,21 +162,41 @@ export function enumerateRackGroups(rack: readonly Tile[]): Tile[][] {
  * True when at least one rack group fits at least one empty slot.
  *
  * A table with only the pair slot open needs a pair; a rack full of sequences
- * is then a dead end, and the round should end rather than stall.
+ * is then a dead end for *placement*, though a revision may still be legal.
  */
 export function hasLegalPlacement(
   rack: readonly Tile[],
   slots: readonly TableSlot[]
 ): boolean {
-  const openKinds = new Set(
-    slots.filter((slot) => slot.group === null).map((slot) => slot.kind)
-  )
-  if (openKinds.size === 0) return false
+  return fitsAnySlot(rack, slots, (slot) => slot.group === null)
+}
+
+/**
+ * True when at least one rack group could replace a committed one.
+ *
+ * The round is over when no *action* remains, not when no empty slot does. A
+ * table with every slot filled and an upgrade sitting in the rack is still a
+ * position with something to do in it.
+ */
+export function hasLegalRevision(
+  rack: readonly Tile[],
+  slots: readonly TableSlot[]
+): boolean {
+  return fitsAnySlot(rack, slots, (slot) => slot.group !== null)
+}
+
+function fitsAnySlot(
+  rack: readonly Tile[],
+  slots: readonly TableSlot[],
+  wanted: (slot: TableSlot) => boolean
+): boolean {
+  const kinds = new Set(slots.filter(wanted).map((slot) => slot.kind))
+  if (kinds.size === 0) return false
 
   return enumerateRackGroups(rack).some((group) => {
     const classification = classifyGroup(group)
     if (!classification.ok) return false
-    return [...openKinds].some((kind) => slotAccepts(kind, classification.type))
+    return [...kinds].some((kind) => slotAccepts(kind, classification.type))
   })
 }
 
