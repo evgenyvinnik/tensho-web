@@ -161,3 +161,163 @@ test.describe('Table Loop prototype', () => {
     await expect(page.locator('body')).not.toContainText('Choose how you will play')
   })
 })
+
+test.describe('Table Loop readability and keyboard', () => {
+  test('names every rack tile and reports which are selected', async ({
+    page,
+  }) => {
+    await startRun(page)
+
+    const tiles = page.locator('[data-testid^="rack-tile-"]')
+    const first = tiles.first()
+    await expect(first).toHaveAttribute('aria-pressed', 'false')
+    await expect(first).toHaveAttribute('aria-label', /.+/)
+
+    await first.click()
+    await expect(first).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  test('shows the selection separately and says what it forms', async ({
+    page,
+  }) => {
+    await startRun(page)
+
+    const group = findGroup(await readRack(page))
+    expect(group).not.toBeNull()
+    for (const tile of group!) await tile.button.click()
+
+    const strip = page.getByTestId('selection-strip')
+    await expect(strip).toBeVisible()
+    // Named shape, plus the exact score it would land.
+    await expect(strip).toContainText(/Sequence|Triplet|Quad|Pair/)
+    await expect(strip).toContainText(/\+\d/)
+  })
+
+  test('announces each slot state and forecast to assistive technology', async ({
+    page,
+  }) => {
+    await startRun(page)
+
+    const pairSlot = page.getByTestId('table-slot-4')
+    await expect(pairSlot).toHaveAttribute('aria-label', /Pair slot, empty/)
+
+    const group = findGroup(await readRack(page))
+    for (const tile of group!) await tile.button.click()
+
+    const open = page
+      .locator('[data-testid^="table-slot-"]:not([disabled])')
+      .first()
+    await expect(open).toHaveAttribute('aria-label', /would score \d+/)
+  })
+
+  test('plays a group with the keyboard alone', async ({ page }) => {
+    await startRun(page)
+
+    const group = findGroup(await readRack(page))
+    expect(group).not.toBeNull()
+
+    // Focus each tile in turn and press it, without ever using the mouse.
+    for (const tile of group!) {
+      await tile.button.focus()
+      await page.keyboard.press('Enter')
+    }
+
+    const open = page
+      .locator('[data-testid^="table-slot-"]:not([disabled])')
+      .first()
+    await open.focus()
+    await page.keyboard.press('Enter')
+
+    await expect(page.getByTestId('causal-chain')).toContainText('placed')
+    await expect(page.locator('body')).toContainText('5 actions')
+  })
+})
+
+test.describe('Table Loop offers row (E06)', () => {
+  test('is off by default and on with the variant', async ({ page }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto(`/en/table-loop?seed=${SEED}`)
+    await expect(page.getByTestId('draft-toggle')).toHaveAttribute(
+      'aria-checked',
+      'false'
+    )
+    await page.locator('[data-testid^="table-decree-"]').first().click()
+    await expect(page.getByTestId('draft-row')).toHaveCount(0)
+
+    await page.goto(`/en/table-loop?seed=${SEED}&draft=1`)
+    await expect(page.getByTestId('draft-toggle')).toHaveAttribute(
+      'aria-checked',
+      'true'
+    )
+    await page.locator('[data-testid^="table-decree-"]').first().click()
+    await expect(page.locator('[data-testid^="draft-tile-"]')).toHaveCount(3)
+  })
+
+  test('replaces only the offer that was claimed', async ({ page }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto(`/en/table-loop?seed=${SEED}&draft=1`)
+    await page.locator('[data-testid^="table-decree-"]').first().click()
+    await expect(page.getByTestId('table-loop-rack')).toBeVisible()
+
+    // No pick is owed until a group is placed.
+    await expect(page.getByTestId('draft-pass')).toHaveCount(0)
+
+    const group = findGroup(await readRack(page))
+    expect(group).not.toBeNull()
+    for (const tile of group!) await tile.button.click()
+    await page
+      .locator('[data-testid^="table-slot-"]:not([disabled])')
+      .first()
+      .click()
+
+    // The refill holds a slot open for the player's choice.
+    await expect(page.getByTestId('draft-pass')).toBeVisible()
+    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(11)
+
+    const offers = page.locator('[data-testid^="draft-tile-"]')
+    const before = await offers.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-testid'))
+    )
+
+    await offers.nth(1).click()
+
+    const after = await offers.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-testid'))
+    )
+    expect(after[0]).toBe(before[0])
+    expect(after[2]).toBe(before[2])
+    expect(after[1]).not.toBe(before[1])
+
+    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(12)
+    await expect(page.getByTestId('draft-pass')).toHaveCount(0)
+  })
+
+  test('can decline the offers and take the wall tile instead', async ({
+    page,
+  }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto(`/en/table-loop?seed=${SEED}&draft=1`)
+    await page.locator('[data-testid^="table-decree-"]').first().click()
+
+    const group = findGroup(await readRack(page))
+    for (const tile of group!) await tile.button.click()
+    await page
+      .locator('[data-testid^="table-slot-"]:not([disabled])')
+      .first()
+      .click()
+
+    const offers = page.locator('[data-testid^="draft-tile-"]')
+    const before = await offers.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-testid'))
+    )
+
+    await page.getByTestId('draft-pass').click()
+
+    // The rack fills from the wall and every offer is untouched.
+    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(12)
+    const after = await offers.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-testid'))
+    )
+    expect(after).toEqual(before)
+  })
+})

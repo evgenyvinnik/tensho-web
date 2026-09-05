@@ -48,11 +48,13 @@ A second, self-contained core loop lives at `/:lang/table-loop`, reachable from 
 | Round end | Meeting the target enables an explicit Finish; completing the table pays a one-time bonus and ends the round; exhaustion settles against the target | Working |
 | Shop | Three unowned Decrees between rounds from a pool of eight, with authoritative gold deduction | Working |
 | Run end | Three rounds — two ordinary and one telegraphed boss — then a run summary and restart | Working |
-| Seeded replay | `?seed=<n>` on the route restarts the run from that seed, so a confusing deal can be handed to the next playtester unchanged | Working |
+| Offers row (variant) | Off by default. With it on, three face-up tiles are dealt and each placement holds one refill slot open; claiming replaces only that offer, declining or acting otherwise takes the wall tile | Working |
+| Seeded replay | `?seed=<n>` restarts the run from that seed and `&draft=1` selects the offers variant, so a confusing deal can be handed to the next playtester unchanged and the variant can be compared against the base loop | Working |
+| Keyboard and screen readers | Rack tiles are named toggle buttons with `aria-pressed` and focus rings, slots announce their state and the exact forecast, and the score, resolution and offers row are polite live regions. A group can be selected and committed without a mouse | Working |
 
 Targets, rack size, and structure points were set with [`scripts/tableloop-sim.mts`](../scripts/tableloop-sim.mts) rather than inherited from the classic curve. Section 0 of the experiments document records what the measurements changed.
 
-Scope held back on purpose: the draft row, living tiles, the route map, seasons, wagers, and every existing Decree, Flower, Season, consumable and Mandate. None of the 164 classic Decrees have been reinterpreted for a table where groups persist.
+Scope held back on purpose: living tiles, the route map, seasons, wagers, and every existing Decree, Flower, Season, consumable and Mandate. None of the 164 classic Decrees have been reinterpreted for a table where groups persist.
 
 ## Runtime Ownership
 
@@ -87,11 +89,11 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 - Strict application TypeScript check passes.
 - Production build passes.
-- Unit/component/simulation suite passes with 322 tests across 30 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
-- The Table Loop prototype adds 58 tests covering group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, and a tile-conservation invariant asserted after every action.
+- Unit/component/simulation suite passes with 329 tests across 30 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
+- The Table Loop prototype adds 65 tests covering group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, offers-row claiming and declining, and a tile-conservation invariant asserted after every action.
 - The Table Loop interface is translated in all 13 locales, and a locale test holds the `tableLoop` and `gameplay.coach` namespaces to exact key parity with English rather than letting them fall back silently.
 - Production browser walkthroughs at desktop and 390px portrait mobile verified disabled empty-selection behavior, a real tactical scoring/refill cycle, keyboard/touch staging, exact score forecasts, a complete guided first move, a scrollable visual tile primer, non-overlapping contextual tips, and a bottom action bar contained by the ornamental frame.
-- All 46 Playwright checks pass across desktop Chromium and mobile Chrome profiles, including the real scoring loop, first-run tile guidance, forecast parity, 320px frame constraints, tutorials, console health, accessibility smoke coverage, and the Table Loop prototype's build choice, slot legality, forecast parity, seed replay and Japanese interface.
+- All 60 Playwright checks pass across desktop Chromium and mobile Chrome profiles, including the real scoring loop, first-run tile guidance, forecast parity, 320px frame constraints, tutorials, console health, accessibility smoke coverage, and the Table Loop prototype's build choice, slot legality, forecast parity, seed replay, keyboard-only placement, screen-reader labelling, the offers-row variant, and the Japanese interface.
 - The current deterministic no-strategy simulation reaches median Act 2 without shopping and median Act 5 (maximum Act 7) while buying Decrees. It does not discard, redraw, target Yaku, use consumables, buy packs, or optimize synergies, so it remains a regression/calibration signal rather than a human win-rate model.
 - Repository-wide ESLint still reports pre-existing errors and warnings outside the changed core-loop files. Changed loop files are checked separately during implementation.
 

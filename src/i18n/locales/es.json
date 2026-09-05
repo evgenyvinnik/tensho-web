@@ -2176,7 +2176,10 @@
       "pairShort": "Par",
       "emptyMeld": "secuencia o trío",
       "emptyPair": "dos iguales",
-      "replace": "Sustituir"
+      "replace": "Sustituir",
+      "filled": "contiene un {{type}}",
+      "empty": "vacía",
+      "forecast": "sumaría {{total}}"
     },
     "milestones": {
       "title": "Figuras",
@@ -2287,7 +2290,8 @@
     "hint": {
       "select": "Toca fichas para formar una secuencia, un trío o un par, y luego elige una casilla.",
       "choose": "Toca una casilla resaltada para confirmarla.",
-      "noSlot": "Ninguna casilla acepta ese grupo. Cambia las fichas o elige otra figura."
+      "noSlot": "Ninguna casilla acepta ese grupo. Cambia las fichas o elige otra figura.",
+      "draft": "Toma una oferta o roba del muro. Cualquier otra acción se queda con la ficha del muro."
     },
     "action": {
       "clear": "Limpiar",
@@ -2345,7 +2349,24 @@
       "targetNotMet": "Alcanza el objetivo antes de terminar la ronda.",
       "notBetweenRounds": "La tienda abre entre rondas.",
       "shopClosed": "La tienda está cerrada.",
-      "tooExpensive": "No puedes permitírtelo."
+      "tooExpensive": "No puedes permitírtelo.",
+      "noDraftPick": "Coloca un grupo para ganar una elección entre las ofertas.",
+      "notInDraft": "Esa ficha no está entre las ofertas."
+    },
+    "rack": {
+      "label": "Tu atril"
+    },
+    "selection": {
+      "noGroup": "Todavía no es un grupo · {{tiles}}"
+    },
+    "draft": {
+      "title": "Ofertas",
+      "claimable": "Ofertas: toma una para esta reposición",
+      "pass": "Del muro",
+      "variant": "Variante: fila de ofertas",
+      "variantHint": "Tres fichas boca arriba. Cada grupo que coloques permite que una reposición venga de aquí en vez del muro.",
+      "on": "Sí",
+      "off": "No"
     }
   }
 }

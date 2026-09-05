@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { Tile, TileSuit, DragonType } from '../core/Tile'
 import { MeldType } from '../core/Meld'
 import { TableLoopEngine, allTrackedTileIds, clearReward } from './TableLoopEngine'
-import { createEmptySlots } from './groupRules'
+import { createEmptySlots, enumerateRackGroups } from './groupRules'
 import { RACK_SIZE, TABLE_ROUNDS } from './content'
 import { PAIR_SLOT_INDEX, type TableLoopState } from './types'
 
@@ -506,5 +506,135 @@ describe('the boss round', () => {
     const result = engine.place(ids(group), 0)
     // 45 tile points would be the ordinary value; the boss halves them.
     expect(result.state.score).toBe(21 + 45)
+  })
+})
+
+describe('the draft row (E06)', () => {
+  it('is off unless the run asks for it', () => {
+    const plain = new TableLoopEngine(3)
+    plain.chooseStarter(plain.getState().starterChoices[0])
+    expect(plain.getState().draftEnabled).toBe(false)
+    expect(plain.getState().draftRow).toEqual([])
+  })
+
+  it('deals three face-up offers and reserves one replacement per placement', () => {
+    const engine = new TableLoopEngine(7, true)
+    engine.chooseStarter(engine.getState().starterChoices[0])
+
+    const dealt = engine.getState()
+    expect(dealt.draftRow).toHaveLength(3)
+    expect(dealt.rack).toHaveLength(RACK_SIZE)
+    expect(dealt.pendingDraftPick).toBe(false)
+
+    const group = enumerateRackGroups(dealt.rack).find(
+      (candidate) => candidate.length === 3
+    )
+    expect(group, 'seed 7 deals a rack with a meld in it').toBeDefined()
+    engine.place(ids(group!), 0)
+
+    // One slot is held back for the player to fill from the offers.
+    expect(engine.getState().pendingDraftPick).toBe(true)
+    expect(engine.getState().rack).toHaveLength(RACK_SIZE - 1)
+  })
+
+  it('claims only the taken offer and refills that one from the wall', () => {
+    const offers = [t(TileSuit.Pinzu, 1), t(TileSuit.Pinzu, 2), t(TileSuit.Pinzu, 3)]
+    const engine = TableLoopEngine.fromState(
+      playing({
+        draftEnabled: true,
+        draftRow: offers,
+        pendingDraftPick: true,
+        rack: [t(TileSuit.Manzu, 4)],
+        wall: [t(TileSuit.Souzu, 8)],
+      })
+    )
+
+    const result = engine.claimDraft(offers[1].id)
+    expect(result.success).toBe(true)
+    expect(result.state.rack.map((tile) => tile.id)).toContain(offers[1].id)
+    expect(result.state.pendingDraftPick).toBe(false)
+
+    const row = result.state.draftRow.map((tile) => tile.id)
+    expect(row[0]).toBe(offers[0].id)
+    expect(row[2]).toBe(offers[2].id)
+    expect(row[1]).not.toBe(offers[1].id)
+    expect(result.state.wall).toHaveLength(0)
+  })
+
+  it('refuses a claim without a pick, and refuses a tile outside the offers', () => {
+    const offers = [t(TileSuit.Pinzu, 1)]
+    const idle = TableLoopEngine.fromState(
+      playing({ draftEnabled: true, draftRow: offers, pendingDraftPick: false })
+    )
+    expect(idle.claimDraft(offers[0].id).errorKey).toBe(
+      'tableLoop.reject.noDraftPick'
+    )
+
+    const waiting = TableLoopEngine.fromState(
+      playing({ draftEnabled: true, draftRow: offers, pendingDraftPick: true })
+    )
+    expect(waiting.claimDraft('not-an-offer').errorKey).toBe(
+      'tableLoop.reject.notInDraft'
+    )
+  })
+
+  it('passes the offer and takes the replacement off the wall instead', () => {
+    const engine = TableLoopEngine.fromState(
+      playing({
+        draftEnabled: true,
+        draftRow: [t(TileSuit.Pinzu, 1)],
+        pendingDraftPick: true,
+        rack: [t(TileSuit.Manzu, 4)],
+        wall: [t(TileSuit.Souzu, 8), t(TileSuit.Souzu, 9)],
+      })
+    )
+    const before = engine.getState().rack.length
+
+    const result = engine.passDraft()
+    expect(result.success).toBe(true)
+    expect(result.state.pendingDraftPick).toBe(false)
+    expect(result.state.rack.length).toBeGreaterThan(before)
+    expect(result.state.draftRow).toHaveLength(1)
+  })
+
+  it('resolves a forgotten offer from the wall before the next action', () => {
+    const group = seq(TileSuit.Manzu, 1)
+    const engine = TableLoopEngine.fromState(
+      playing({
+        draftEnabled: true,
+        draftRow: [t(TileSuit.Pinzu, 1)],
+        pendingDraftPick: true,
+        rack: [...group],
+        wall: [t(TileSuit.Souzu, 8), t(TileSuit.Souzu, 9)],
+      })
+    )
+
+    engine.place(ids(group), 0)
+    expect(engine.getState().draftRow.map((tile) => tile.suit)).toEqual([
+      TileSuit.Pinzu,
+    ])
+  })
+
+  it('keeps every tile in exactly one place with the offers in play', () => {
+    const engine = new TableLoopEngine(11, true)
+    engine.chooseStarter(engine.getState().starterChoices[0])
+
+    const tracked = allTrackedTileIds(engine.getState())
+    expect(new Set(tracked).size).toBe(tracked.length)
+    expect(tracked.length).toBe(engine.getState().collection.length)
+
+    const group = enumerateRackGroups(engine.getState().rack).find(
+      (candidate) => candidate.length === 3
+    )
+    if (group) {
+      engine.place(ids(group), 0)
+      if (engine.getState().pendingDraftPick) {
+        engine.claimDraft(engine.getState().draftRow[0].id)
+      }
+    }
+
+    const after = allTrackedTileIds(engine.getState())
+    expect(new Set(after).size).toBe(after.length)
+    expect(after.length).toBe(engine.getState().collection.length)
   })
 })

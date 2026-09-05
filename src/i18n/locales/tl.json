@@ -710,7 +710,10 @@
       "pairShort": "Pares",
       "emptyMeld": "sunod-sunod o tatluhan",
       "emptyPair": "dalawang magkapareho",
-      "replace": "Palitan"
+      "replace": "Palitan",
+      "filled": "may nakalapag na {{type}}",
+      "empty": "walang laman",
+      "forecast": "magiging {{total}} ang puntos"
     },
     "milestones": {
       "title": "Mga Hugis",
@@ -821,7 +824,8 @@
     "hint": {
       "select": "Pindutin ang mga tile para bumuo ng sunod-sunod, tatluhan o pares, tapos pumili ng puwesto.",
       "choose": "Pindutin ang naka-highlight na puwesto para ilapag ito.",
-      "noSlot": "Walang puwestong tatanggap sa grupong iyon. Palitan ang mga tile o pumili ng ibang hugis."
+      "noSlot": "Walang puwestong tatanggap sa grupong iyon. Palitan ang mga tile o pumili ng ibang hugis.",
+      "draft": "Kumuha ng isang alok, o kumuha sa pader. Kapag ibang aksyon ang ginawa mo, sa pader na ito kukunin."
     },
     "action": {
       "clear": "Linisin",
@@ -879,7 +883,24 @@
       "targetNotMet": "Abutin ang target bago tapusin ang round.",
       "notBetweenRounds": "Bumubukas ang tindahan sa pagitan ng mga round.",
       "shopClosed": "Sarado ang tindahan.",
-      "tooExpensive": "Hindi mo kayang bilhin iyon."
+      "tooExpensive": "Hindi mo kayang bilhin iyon.",
+      "noDraftPick": "Maglapag muna ng grupo para makapili sa mga alok.",
+      "notInDraft": "Wala ang tile na iyon sa mga alok."
+    },
+    "rack": {
+      "label": "Ang rack mo"
+    },
+    "selection": {
+      "noGroup": "Hindi pa grupo · {{tiles}}"
+    },
+    "draft": {
+      "title": "Mga Alok",
+      "claimable": "Mga Alok — kumuha ng isa para sa pagpupuno ngayon",
+      "pass": "Mula sa pader",
+      "variant": "Baryant: hanay ng mga alok",
+      "variantHint": "Tatlong nakataob-taas na tile. Sa bawat grupong ilalapag mo, isang kapalit ang puwedeng galing dito sa halip na sa pader.",
+      "on": "Bukas",
+      "off": "Sarado"
     }
   }
 }

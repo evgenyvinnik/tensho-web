@@ -235,3 +235,6 @@ export const RACK_SIZE = 12
 
 /** Most rack tiles a single redraw may exchange. */
 export const MAX_REDRAW_TILES = 3
+
+/** Face-up offers in the draft row when that variant is on (E06). */
+export const DRAFT_ROW_SIZE = 3

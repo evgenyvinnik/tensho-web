@@ -33,11 +33,13 @@ interface TableLoopStore {
   revise: (slotIndex: number) => void
   redraw: () => void
   recoverFromRiver: (tileId: string) => void
+  claimDraft: (tileId: string) => void
+  passDraft: () => void
   finishRound: () => void
   openShop: () => void
   buyDecree: (id: TableDecreeId) => void
   nextRound: () => void
-  restart: (seed?: number) => void
+  restart: (seed?: number, draftEnabled?: boolean) => void
 
   previewPlacement: (slotIndex: number) => PlacementScore | null
 }
@@ -101,6 +103,16 @@ export const useTableLoopStore = create<TableLoopStore>((set, get) => {
       publish(false)
     },
 
+    claimDraft: (tileId) => {
+      get().engine.claimDraft(tileId)
+      publish(false)
+    },
+
+    passDraft: () => {
+      get().engine.passDraft()
+      publish(false)
+    },
+
     finishRound: () => {
       get().engine.finishRound()
       publish(true)
@@ -121,8 +133,8 @@ export const useTableLoopStore = create<TableLoopStore>((set, get) => {
       publish(true)
     },
 
-    restart: (seed) => {
-      get().engine.restart(seed)
+    restart: (seed, draftEnabled) => {
+      get().engine.restart(seed, draftEnabled)
       publish(true)
     },
 

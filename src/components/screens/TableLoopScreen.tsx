@@ -20,6 +20,9 @@ import { useSearchParams } from 'react-router-dom'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useTableLoopStore } from '../../stores/tableLoopStore'
 import { TileImage } from '../tiles/TileImage'
+import { DraftRow } from '../tableloop/DraftRow'
+import { RackRow } from '../tableloop/RackRow'
+import { SelectionStrip } from '../tableloop/SelectionStrip'
 import { TableSlots } from '../tableloop/TableSlots'
 import { MilestoneTrack } from '../tableloop/MilestoneTrack'
 import { CausalChain } from '../tableloop/CausalChain'
@@ -27,6 +30,7 @@ import {
   placeableSlots,
   revisableSlots,
 } from '../../tableloop/TableLoopEngine'
+import { classifyGroup } from '../../tableloop/groupRules'
 import { MAX_REDRAW_TILES, TABLE_ROUNDS, getTableDecree } from '../../tableloop/content'
 import type { TableDecreeId } from '../../tableloop/types'
 
@@ -118,19 +122,23 @@ export function TableLoopScreen() {
   const { state, selectedTileIds } = store
   const [highlightedSlots, setHighlightedSlots] = useState<readonly number[]>([])
 
-  // `?seed=` replays an exact run. The playtest plan in section 8 of the
-  // experiments document depends on being able to hand someone the same deal
-  // that confused a previous player, and it makes browser tests deterministic.
+  // `?seed=` replays an exact run and `?draft=1` selects the offers variant.
+  // The playtest plan in section 8 of the experiments document depends on
+  // handing someone the same deal that confused a previous player, and on
+  // running the variant and the base loop against each other.
   const [searchParams] = useSearchParams()
   const requestedSeed = Number(searchParams.get('seed'))
-  const appliedSeed = useRef<number | null>(null)
+  const requestedDraft = searchParams.get('draft') === '1'
+  const applied = useRef<string | null>(null)
   const { restart } = store
   useEffect(() => {
-    if (!Number.isFinite(requestedSeed) || requestedSeed === 0) return
-    if (appliedSeed.current === requestedSeed) return
-    appliedSeed.current = requestedSeed
-    restart(requestedSeed)
-  }, [requestedSeed, restart])
+    const hasSeed = Number.isFinite(requestedSeed) && requestedSeed !== 0
+    if (!hasSeed && !requestedDraft) return
+    const key = `${hasSeed ? requestedSeed : 'auto'}:${requestedDraft}`
+    if (applied.current === key) return
+    applied.current = key
+    restart(hasSeed ? requestedSeed : undefined, requestedDraft)
+  }, [requestedSeed, requestedDraft, restart])
 
   const selectedTiles = useMemo(
     () => state.rack.filter((tile) => selectedTileIds.includes(tile.id)),
@@ -154,6 +162,16 @@ export function TableLoopScreen() {
     }
     return map
   }, [store.engine, selectedTileIds, placeable, revisable])
+
+  const selectionType = useMemo(() => {
+    if (selectedTiles.length === 0) return null
+    const classified = classifyGroup(selectedTiles)
+    return classified.ok ? classified.type : null
+  }, [selectedTiles])
+
+  const bestForecast = forecasts.size
+    ? Math.max(...forecasts.values())
+    : null
 
   // The chain re-emits its highlight on every render, so this must be a no-op
   // when nothing changed; storing a fresh array each time would re-render the
@@ -188,6 +206,39 @@ export function TableLoopScreen() {
             actionLabel={t('tableLoop.start.take', 'Begin with this')}
           />
         ))}
+
+        <button
+          type="button"
+          data-testid="draft-toggle"
+          role="switch"
+          aria-checked={state.draftEnabled}
+          onClick={() => store.restart(state.seed, !state.draftEnabled)}
+          className="mt-1 flex items-center justify-between gap-3 rounded-xl border border-[var(--color-metallic-gold)]/30 px-3 py-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
+        >
+          <span className="min-w-0">
+            <span className="block text-xs font-semibold text-[var(--color-beige-white)]">
+              {t('tableLoop.draft.variant', 'Variant: offers row')}
+            </span>
+            <span className="mt-0.5 block text-[10px] leading-snug text-[var(--color-beige-white)]/55">
+              {t(
+                'tableLoop.draft.variantHint',
+                'Three face-up tiles. Each group you place lets one replacement come from them instead of the wall.'
+              )}
+            </span>
+          </span>
+          <span
+            className={`flex-shrink-0 rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider ${
+              state.draftEnabled
+                ? 'border-emerald-400 text-emerald-300'
+                : 'border-[var(--color-metallic-gold)]/35 text-[var(--color-beige-white)]/45'
+            }`}
+          >
+            {state.draftEnabled
+              ? t('tableLoop.draft.on', 'On')
+              : t('tableLoop.draft.off', 'Off')}
+          </span>
+        </button>
+
         <button
           onClick={() => navigateTo(ROUTES.MENU)}
           className="mt-2 text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50"
@@ -332,7 +383,11 @@ export function TableLoopScreen() {
           </p>
         </div>
 
-        <div className="mt-1 flex items-baseline gap-2 text-sm tabular-nums">
+        <div
+          role="status"
+          aria-live="polite"
+          className="mt-1 flex items-baseline gap-2 text-sm tabular-nums"
+        >
           <strong className="text-[var(--color-golden-yellow)]">
             {state.score.toLocaleString()}
           </strong>
@@ -403,6 +458,14 @@ export function TableLoopScreen() {
 
       <div className="flex-1" />
 
+      {/* Offers (E06) */}
+      <DraftRow
+        tiles={state.draftRow}
+        claimable={state.pendingDraftPick}
+        onClaim={store.claimDraft}
+        onPass={store.passDraft}
+      />
+
       {/* River */}
       {state.river.length > 0 && (
         <div className="px-3 pb-1">
@@ -426,30 +489,29 @@ export function TableLoopScreen() {
         </div>
       )}
 
-      {/* Rack */}
-      <div data-testid="table-loop-rack" className="px-2 pb-1">
-        <div className="flex flex-wrap justify-center gap-1">
-          {state.rack.map((tile) => (
-            <button
-              key={tile.id}
-              data-testid={`rack-tile-${tile.id}`}
-              onClick={() => store.toggleTile(tile.id)}
-              className={`rounded transition-transform ${
-                selectedTileIds.includes(tile.id)
-                  ? '-translate-y-1.5 ring-2 ring-[var(--color-golden-yellow)]'
-                  : ''
-              }`}
-            >
-              <TileImage tile={tile} size="medium" />
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* What you have picked, and what it forms */}
+      <SelectionStrip
+        tiles={selectedTiles}
+        groupType={selectionType}
+        bestForecast={bestForecast}
+        onClear={store.clearSelection}
+      />
+
+      <RackRow
+        tiles={state.rack}
+        selectedIds={selectedTileIds}
+        onToggle={store.toggleTile}
+      />
 
       {/* Actions */}
       <footer className="flex-shrink-0 gap-2 px-3 pb-3 pt-1">
         <p className="mb-1 text-center text-[11px] leading-snug text-[var(--color-beige-white)]/55">
-          {selectedTileIds.length === 0
+          {state.pendingDraftPick
+            ? t(
+                'tableLoop.hint.draft',
+                'Take an offer, or draw from the wall. Doing anything else takes the wall tile.'
+              )
+            : selectedTileIds.length === 0
             ? t(
                 'tableLoop.hint.select',
                 'Tap tiles to build a run, a set or a pair, then choose a slot.'

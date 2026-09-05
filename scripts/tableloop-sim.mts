@@ -9,7 +9,10 @@
  *
  * It is a measurement tool, not a claim about enjoyment.
  *
- *   bun scripts/tableloop-sim.mts [runs]
+ *   bun scripts/tableloop-sim.mts [runs] [--draft]
+ *
+ * `--draft` turns on the E06 offers row so the variant can be compared against
+ * the base loop, which is what Phase C of the plan asks for.
  */
 
 import { TableLoopEngine } from '../src/tableloop/TableLoopEngine.ts'
@@ -17,7 +20,9 @@ import { enumerateRackGroups } from '../src/tableloop/groupRules.ts'
 import { TABLE_DECREES, TABLE_ROUNDS } from '../src/tableloop/content.ts'
 import type { TableLoopState } from '../src/tableloop/types.ts'
 
-const RUNS = Number(process.argv[2] ?? 400)
+const ARGS = process.argv.slice(2)
+const DRAFT = ARGS.includes('--draft')
+const RUNS = Number(ARGS.find((arg) => !arg.startsWith('--')) ?? 400)
 
 /** Best empty-slot placement the rack offers, by forecast total. */
 function bestPlacement(engine: TableLoopEngine) {
@@ -67,8 +72,22 @@ interface RoundOutcome {
   exchanges: number
 }
 
+/** With the offers row on, take the tile that most improves the rack. */
+function bestOffer(engine: TableLoopEngine): string | null {
+  const state = engine.getState()
+  if (!state.pendingDraftPick) return null
+
+  let best: { id: string; groups: number } | null = null
+  for (const offer of state.draftRow) {
+    const groups = enumerateRackGroups([...state.rack, offer]).length
+    if (!best || groups > best.groups) best = { id: offer.id, groups }
+  }
+  const baseline = enumerateRackGroups(state.rack).length
+  return best && best.groups > baseline ? best.id : null
+}
+
 function playRun(seed: number): RoundOutcome[] {
-  const engine = new TableLoopEngine(seed)
+  const engine = new TableLoopEngine(seed, DRAFT)
   const start = engine.getState().starterChoices[seed % 3]
   engine.chooseStarter(start)
 
@@ -82,6 +101,14 @@ function playRun(seed: number): RoundOutcome[] {
 
     if (state.phase === 'playing') {
       lastPlaying = state
+
+      if (state.pendingDraftPick) {
+        const offer = bestOffer(engine)
+        if (offer) engine.claimDraft(offer)
+        else engine.passDraft()
+        continue
+      }
+
       const placement = bestPlacement(engine)
       if (placement) {
         engine.place(placement.tileIds, placement.slot)
@@ -149,7 +176,9 @@ for (let seed = 1; seed <= RUNS; seed += 1) {
   }
 }
 
-console.log(`Table Loop simulation — ${RUNS} runs, greedy policy\n`)
+console.log(
+  `Table Loop simulation — ${RUNS} runs, greedy policy${DRAFT ? ', offers row on' : ''}\n`
+)
 for (const round of TABLE_ROUNDS) {
   const outcomes = byRound.get(round.index) ?? []
   if (outcomes.length === 0) {

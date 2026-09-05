@@ -2176,7 +2176,10 @@
       "pairShort": "Paire",
       "emptyMeld": "séquence ou brelan",
       "emptyPair": "deux identiques",
-      "replace": "Remplacer"
+      "replace": "Remplacer",
+      "filled": "contient un {{type}}",
+      "empty": "vide",
+      "forecast": "rapporterait {{total}}"
     },
     "milestones": {
       "title": "Figures",
@@ -2287,7 +2290,8 @@
     "hint": {
       "select": "Touchez des tuiles pour former une séquence, un brelan ou une paire, puis choisissez un emplacement.",
       "choose": "Touchez un emplacement mis en avant pour valider.",
-      "noSlot": "Aucun emplacement n’accepte cette combinaison. Échangez les tuiles ou choisissez une autre figure."
+      "noSlot": "Aucun emplacement n’accepte cette combinaison. Échangez les tuiles ou choisissez une autre figure.",
+      "draft": "Prenez une offre, ou piochez au mur. Toute autre action prend la tuile du mur."
     },
     "action": {
       "clear": "Effacer",
@@ -2345,7 +2349,24 @@
       "targetNotMet": "Atteignez l’objectif avant de terminer la manche.",
       "notBetweenRounds": "La boutique ouvre entre les manches.",
       "shopClosed": "La boutique est fermée.",
-      "tooExpensive": "Vous ne pouvez pas vous le permettre."
+      "tooExpensive": "Vous ne pouvez pas vous le permettre.",
+      "noDraftPick": "Posez une combinaison pour gagner un choix parmi les offres.",
+      "notInDraft": "Cette tuile ne fait pas partie des offres."
+    },
+    "rack": {
+      "label": "Votre chevalet"
+    },
+    "selection": {
+      "noGroup": "Pas encore une combinaison · {{tiles}}"
+    },
+    "draft": {
+      "title": "Offres",
+      "claimable": "Offres : prenez-en une pour ce remplacement",
+      "pass": "Du mur",
+      "variant": "Variante : rangée d’offres",
+      "variantHint": "Trois tuiles face visible. Chaque combinaison posée permet à un remplacement de venir d’ici plutôt que du mur.",
+      "on": "Oui",
+      "off": "Non"
     }
   }
 }

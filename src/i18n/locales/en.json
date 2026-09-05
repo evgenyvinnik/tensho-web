@@ -2172,7 +2172,10 @@
       "pairShort": "Pair",
       "emptyMeld": "run or set",
       "emptyPair": "two alike",
-      "replace": "Replace"
+      "replace": "Replace",
+      "filled": "holds a {{type}}",
+      "empty": "empty",
+      "forecast": "would score {{total}}"
     },
     "milestones": {
       "title": "Patterns",
@@ -2283,7 +2286,8 @@
     "hint": {
       "select": "Tap tiles to build a run, a set or a pair, then choose a slot.",
       "choose": "Tap a highlighted slot to commit it.",
-      "noSlot": "No slot takes that group. Exchange the tiles or pick a different shape."
+      "noSlot": "No slot takes that group. Exchange the tiles or pick a different shape.",
+      "draft": "Take an offer, or draw from the wall. Doing anything else takes the wall tile."
     },
     "action": {
       "clear": "Clear",
@@ -2341,7 +2345,24 @@
       "targetNotMet": "Reach the target before finishing the round.",
       "notBetweenRounds": "The shop opens between rounds.",
       "shopClosed": "The shop is closed.",
-      "tooExpensive": "You cannot afford that."
+      "tooExpensive": "You cannot afford that.",
+      "noDraftPick": "Place a group to earn a pick from the offers.",
+      "notInDraft": "That tile is not one of the offers."
+    },
+    "rack": {
+      "label": "Your rack"
+    },
+    "selection": {
+      "noGroup": "Not a group yet · {{tiles}}"
+    },
+    "draft": {
+      "title": "Offers",
+      "claimable": "Offers — take one for this refill",
+      "pass": "From the wall",
+      "variant": "Variant: offers row",
+      "variantHint": "Three face-up tiles. Each group you place lets one replacement come from them instead of the wall.",
+      "on": "On",
+      "off": "Off"
     }
   }
 }

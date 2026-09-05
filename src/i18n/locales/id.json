@@ -1924,7 +1924,10 @@
       "pairShort": "Pasangan",
       "emptyMeld": "urutan atau triplet",
       "emptyPair": "dua yang sama",
-      "replace": "Ganti"
+      "replace": "Ganti",
+      "filled": "berisi satu {{type}}",
+      "empty": "kosong",
+      "forecast": "akan bernilai {{total}}"
     },
     "milestones": {
       "title": "Pola",
@@ -2035,7 +2038,8 @@
     "hint": {
       "select": "Ketuk ubin untuk membentuk urutan, triplet, atau pasangan, lalu pilih sebuah slot.",
       "choose": "Ketuk slot yang menyala untuk mengunci kelompoknya.",
-      "noSlot": "Tidak ada slot yang menerima kelompok itu. Tukar ubinnya atau pilih bentuk lain."
+      "noSlot": "Tidak ada slot yang menerima kelompok itu. Tukar ubinnya atau pilih bentuk lain.",
+      "draft": "Ambil satu tawaran, atau tarik dari tembok. Tindakan lain akan mengambil ubin tembok."
     },
     "action": {
       "clear": "Bersihkan",
@@ -2093,7 +2097,24 @@
       "targetNotMet": "Capai target sebelum mengakhiri ronde.",
       "notBetweenRounds": "Kedai buka di antara ronde.",
       "shopClosed": "Kedai sedang tutup.",
-      "tooExpensive": "Uangmu tidak cukup."
+      "tooExpensive": "Uangmu tidak cukup.",
+      "noDraftPick": "Letakkan sebuah kelompok dulu agar bisa memilih dari tawaran.",
+      "notInDraft": "Ubin itu tidak ada di antara tawaran."
+    },
+    "rack": {
+      "label": "Rakmu"
+    },
+    "selection": {
+      "noGroup": "Belum jadi kelompok · {{tiles}}"
+    },
+    "draft": {
+      "title": "Tawaran",
+      "claimable": "Tawaran: ambil satu untuk pengisian ini",
+      "pass": "Dari tembok",
+      "variant": "Varian: baris tawaran",
+      "variantHint": "Tiga ubin terbuka. Setiap kelompok yang kamu letakkan membuat satu pengisian bisa diambil dari sini, bukan dari tembok.",
+      "on": "Nyala",
+      "off": "Mati"
     }
   }
 }

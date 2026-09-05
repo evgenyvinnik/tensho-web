@@ -224,6 +224,21 @@ export interface TableLoopState {
   /** River recoveries left this round (Whispering Merchant). */
   readonly riverRecoveriesRemaining: number
 
+  /**
+   * Whether this run uses the draft row (E06). Off by default: the experiments
+   * document asks for it to be compared against the base loop rather than
+   * folded into it.
+   */
+  readonly draftEnabled: boolean
+  /** Face-up tiles a placement may draw one replacement from. */
+  readonly draftRow: readonly Tile[]
+  /**
+   * True while a placement's last replacement is still unclaimed. The rack sits
+   * one tile short until the player takes an offer or draws from the wall; any
+   * other action resolves it from the wall.
+   */
+  readonly pendingDraftPick: boolean
+
   /** The most recent resolution, for the causal-chain display. */
   readonly lastResolution: readonly CausalStage[]
   /** Human-readable reason the last action was refused. */

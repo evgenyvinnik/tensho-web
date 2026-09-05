@@ -710,7 +710,10 @@
       "pairShort": "Coppia",
       "emptyMeld": "sequenza o tris",
       "emptyPair": "due uguali",
-      "replace": "Sostituisci"
+      "replace": "Sostituisci",
+      "filled": "contiene un {{type}}",
+      "empty": "vuota",
+      "forecast": "renderebbe {{total}}"
     },
     "milestones": {
       "title": "Figure",
@@ -821,7 +824,8 @@
     "hint": {
       "select": "Tocca le tessere per formare una sequenza, un tris o una coppia, poi scegli una casella.",
       "choose": "Tocca una casella evidenziata per confermarla.",
-      "noSlot": "Nessuna casella accetta quella combinazione. Scambia le tessere o scegli un’altra figura."
+      "noSlot": "Nessuna casella accetta quella combinazione. Scambia le tessere o scegli un’altra figura.",
+      "draft": "Prendi un’offerta oppure pesca dal muro. Qualsiasi altra azione prende la tessera del muro."
     },
     "action": {
       "clear": "Azzera",
@@ -879,7 +883,24 @@
       "targetNotMet": "Raggiungi l’obiettivo prima di chiudere il round.",
       "notBetweenRounds": "Il negozio apre tra un round e l’altro.",
       "shopClosed": "Il negozio è chiuso.",
-      "tooExpensive": "Non puoi permettertelo."
+      "tooExpensive": "Non puoi permettertelo.",
+      "noDraftPick": "Posa una combinazione per guadagnare una scelta fra le offerte.",
+      "notInDraft": "Quella tessera non è fra le offerte."
+    },
+    "rack": {
+      "label": "La tua rastrelliera"
+    },
+    "selection": {
+      "noGroup": "Non è ancora una combinazione · {{tiles}}"
+    },
+    "draft": {
+      "title": "Offerte",
+      "claimable": "Offerte: prendine una per questo rifornimento",
+      "pass": "Dal muro",
+      "variant": "Variante: fila di offerte",
+      "variantHint": "Tre tessere scoperte. Ogni combinazione che posi permette a un rifornimento di venire da qui invece che dal muro.",
+      "on": "Sì",
+      "off": "No"
     }
   }
 }

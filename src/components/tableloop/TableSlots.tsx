@@ -64,21 +64,36 @@ export function TableSlots({
         return (
           <button
             key={slot.index}
+            type="button"
             data-testid={`table-slot-${slot.index}`}
             disabled={!interactive}
             onClick={() =>
               canPlace.has(slot.index) ? onPlace(slot.index) : onRevise(slot.index)
             }
-            aria-label={
+            aria-label={[
               isPair
                 ? t('tableLoop.slot.pair', 'Pair slot')
                 : t('tableLoop.slot.meld', 'Meld slot {{number}}', {
                     number: slot.index + 1,
+                  }),
+              slot.group
+                ? t('tableLoop.slot.filled', 'holds a {{type}}', {
+                    type: t(`melds.${slot.group.type}`, slot.group.type),
                   })
-            }
+                : t('tableLoop.slot.empty', 'empty'),
+              forecast !== undefined
+                ? t('tableLoop.slot.forecast', 'would score {{total}}', {
+                    total: forecast,
+                  })
+                : null,
+            ]
+              .filter(Boolean)
+              .join(', ')}
             className={`
               relative flex min-h-[76px] min-w-[76px] flex-1 flex-col items-center justify-center
               rounded-lg border-2 px-1.5 py-1 transition-colors
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]
+              focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)]
               ${isPair ? 'border-dashed' : 'border-solid'}
               ${
                 lit.has(slot.index)

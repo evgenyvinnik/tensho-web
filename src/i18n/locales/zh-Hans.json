@@ -2176,7 +2176,10 @@
       "pairShort": "对子",
       "emptyMeld": "顺子或刻子",
       "emptyPair": "两张相同",
-      "replace": "替换"
+      "replace": "替换",
+      "filled": "放着一副{{type}}",
+      "empty": "空着",
+      "forecast": "可得 {{total}} 分"
     },
     "milestones": {
       "title": "牌型",
@@ -2287,7 +2290,8 @@
     "hint": {
       "select": "点选牌组成顺子、刻子或对子，然后选一个格位。",
       "choose": "点亮起的格位即可落定。",
-      "noSlot": "没有格位能收这副面子。换掉这些牌，或者换个牌型。"
+      "noSlot": "没有格位能收这副面子。换掉这些牌，或者换个牌型。",
+      "draft": "从摊开的牌里挑一张，或从牌墙补。做别的动作就自动补牌墙的那张。"
     },
     "action": {
       "clear": "取消",
@@ -2345,7 +2349,24 @@
       "targetNotMet": "先达到目标，再结束本局。",
       "notBetweenRounds": "茶寮在两局之间开门。",
       "shopClosed": "茶寮已经打烊。",
-      "tooExpensive": "钱不够。"
+      "tooExpensive": "钱不够。",
+      "noDraftPick": "先放下一副面子，才能从摊开的牌里挑。",
+      "notInDraft": "那张牌不在摊开的牌里。"
+    },
+    "rack": {
+      "label": "你的手牌"
+    },
+    "selection": {
+      "noGroup": "还不成面子 · {{tiles}}"
+    },
+    "draft": {
+      "title": "摊开的牌",
+      "claimable": "摊开的牌 — 这次补牌可挑一张",
+      "pass": "从牌墙补",
+      "variant": "变体：摊牌列",
+      "variantHint": "三张明牌。你每放下一副面子，补的其中一张可以从这里取，而不是从牌墙。",
+      "on": "开",
+      "off": "关"
     }
   }
 }

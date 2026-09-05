@@ -92,6 +92,8 @@ export function CausalChain({ stages, onHighlight }: CausalChainProps) {
   return (
     <div
       data-testid="causal-chain"
+      role="status"
+      aria-live="polite"
       className="mx-2 rounded-lg border border-[var(--color-metallic-gold)]/30 bg-black/30 px-2.5 py-1.5"
     >
       <div className="mb-1 flex items-center justify-between">
@@ -100,6 +102,7 @@ export function CausalChain({ stages, onHighlight }: CausalChainProps) {
         </p>
         {!isComplete && (
           <button
+            type="button"
             onClick={() => setRevealed(stages.length)}
             className="text-[10px] uppercase tracking-wider text-[var(--color-beige-white)]/50 hover:text-[var(--color-beige-white)]"
           >

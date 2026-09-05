@@ -1,7 +1,7 @@
 # Making Tensho Fun: Gameplay Experiments and Wild Ideas
 
 **Created:** September 4, 2026  
-**Status:** Mostly design proposals. E01–E05 and the section 1.4 coach are now built — see [Section 0](#0-what-has-been-built). Everything else in this document remains a proposal, not an approved backlog.  
+**Status:** Mostly design proposals. E01–E06 and the section 1.4 coach are now built — see [Section 0](#0-what-has-been-built). Everything else in this document remains a proposal, not an approved backlog.  
 **Baseline inspected:** `77e0345` on `main`.
 
 This document captures the discussion about why Tensho still feels unengaging, proposes a different core loop, and collects ambitious experiments that could give the game a stronger identity. Numbers in proposed mechanics are starting points for playtests, not established balance values. Several ideas are deliberately incompatible alternatives; building all of them would defeat the purpose.
@@ -50,13 +50,55 @@ session can compare the two.
 | E03 build choice | Three starter Decrees offered before the first tile is dealt |
 | E04 shop | Eight interacting Decrees; three unowned offers between rounds |
 | E05 causal chain | [`scoring.ts`](../src/tableloop/scoring.ts) emits ordered stages; [`CausalChain.tsx`](../src/components/tableloop/CausalChain.tsx) paces them, and they can be skipped or shown at once under reduced motion |
+| E06 offers row | [`DraftRow.tsx`](../src/components/tableloop/DraftRow.tsx) and `claimDraft`/`passDraft` on the engine — a variant, off by default |
 
 `/:lang/table-loop?seed=<n>` replays an exact deal, so a hand that confused
 someone during a session can be handed to the next player unchanged.
+`&draft=1` selects the offers variant for a side-by-side comparison.
 
-Deliberately **not** built here: the draft row (E06), river rescue beyond the
-one Decree, living tiles, the route map, seasons, and wagers. Keeping them out
-is what makes it possible to learn whether building across turns helps at all.
+Deliberately **not** built here: living tiles, the route map, seasons, and
+wagers. Keeping them out is what makes it possible to learn whether building
+across turns helps at all.
+
+### E06, the offers row, as a separate variant
+
+Phase C names the visible draft row as the next source of agency to try, and
+insists it be tested on its own. It ships as a **run variant**, off by default:
+a toggle on the opening panel, or `?draft=1`.
+
+Three face-up tiles. Each group you place holds one refill slot open, and that
+one replacement may come from the offers instead of the wall. Only the claimed
+offer is replaced, so the two you passed on stay visible and remain a plan.
+Declining takes the wall tile; so does doing anything else, which the interface
+says before it happens.
+
+The simulation runs the variant too (`--draft`), and it is not free:
+
+| | base loop | offers row |
+| --- | ---: | ---: |
+| Rounds cleared | 82% / 54% / 47% | 85% / 63% / 59% |
+| Table finished | 50% / 44% / 43% | 57% / 55% / 56% |
+| Exchanges spent | 4.0 / 4.0 / 3.7 | 3.6 / 3.5 / 3.2 |
+
+One guided replacement per placement is worth roughly half an exchange, and it
+lifts the later rounds by nine to twelve points of clear rate. That is the risk
+the document names — "too much choice removes the need to adapt" — showing up
+as a number rather than a hunch. Whether it also makes the turn more
+interesting is a question for people, not for the simulator.
+
+### Readability and keyboard (sections 7 and 9)
+
+- Rack tiles are real toggle buttons: keyboard reachable, named, `aria-pressed`,
+  with a visible focus ring. A whole group can be selected and committed
+  without a mouse, which is what the section 9 walkthrough asks for.
+- Slots announce their kind, whether they are filled, and the exact score the
+  current selection would land.
+- A selection strip shows the tiles you picked separately from the rack,
+  together with what they form — "Sequence · 3·4·5 索 +55" — answering the
+  section 7 request to show the current combination rather than making the
+  player read it off the rack.
+- The score line, the causal chain and the offers row are polite live regions,
+  so a result is announced rather than only drawn.
 
 ### Numbers came from measurement, not from the classic curve
 

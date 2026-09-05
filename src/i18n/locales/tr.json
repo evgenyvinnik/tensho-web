@@ -710,7 +710,10 @@
       "pairShort": "Çift",
       "emptyMeld": "seri ya da üçlü",
       "emptyPair": "iki aynı",
-      "replace": "Değiştir"
+      "replace": "Değiştir",
+      "filled": "içinde bir {{type}} var",
+      "empty": "boş",
+      "forecast": "{{total}} puan getirir"
     },
     "milestones": {
       "title": "Şekiller",
@@ -821,7 +824,8 @@
     "hint": {
       "select": "Taşlara dokunup bir seri, üçlü ya da çift kur, sonra bir yuva seç.",
       "choose": "Onaylamak için vurgulanan yuvaya dokun.",
-      "noSlot": "Hiçbir yuva bu grubu almıyor. Taşları değiştir ya da başka bir şekil seç."
+      "noSlot": "Hiçbir yuva bu grubu almıyor. Taşları değiştir ya da başka bir şekil seç.",
+      "draft": "Bir teklif al ya da duvardan çek. Başka bir şey yaparsan duvardaki taş gelir."
     },
     "action": {
       "clear": "Temizle",
@@ -879,7 +883,24 @@
       "targetNotMet": "Turu bitirmeden önce hedefe ulaş.",
       "notBetweenRounds": "Dükkân turlar arasında açılır.",
       "shopClosed": "Dükkân kapalı.",
-      "tooExpensive": "Buna paran yetmiyor."
+      "tooExpensive": "Buna paran yetmiyor.",
+      "noDraftPick": "Tekliflerden seçebilmek için önce bir grup yerleştir.",
+      "notInDraft": "O taş tekliflerin arasında değil."
+    },
+    "rack": {
+      "label": "Rafın"
+    },
+    "selection": {
+      "noGroup": "Henüz bir grup değil · {{tiles}}"
+    },
+    "draft": {
+      "title": "Teklifler",
+      "claimable": "Teklifler: bu tamamlama için birini al",
+      "pass": "Duvardan",
+      "variant": "Varyant: teklif sırası",
+      "variantHint": "Açık duran üç taş. Yerleştirdiğin her grup, bir tamamlamanın duvar yerine buradan gelmesine izin verir.",
+      "on": "Açık",
+      "off": "Kapalı"
     }
   }
 }

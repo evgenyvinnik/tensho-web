@@ -15,6 +15,7 @@
 
 import { Tile, createStandardTileSet } from '../core/Tile'
 import {
+  DRAFT_ROW_SIZE,
   MAX_REDRAW_TILES,
   RACK_SIZE,
   STARTER_DECREE_IDS,
@@ -115,8 +116,8 @@ export function clearReward(state: TableLoopState): number {
 export class TableLoopEngine {
   private state: TableLoopState
 
-  constructor(seed: number = Date.now()) {
-    this.state = TableLoopEngine.createRun(seed)
+  constructor(seed: number = Date.now(), draftEnabled: boolean = false) {
+    this.state = TableLoopEngine.createRun(seed, draftEnabled)
   }
 
   getState(): TableLoopState {
@@ -141,7 +142,7 @@ export class TableLoopEngine {
    * The wall is not dealt yet: the chosen Decree should be able to influence
    * the very first rack, so dealing waits until the choice is made.
    */
-  static createRun(seed: number): TableLoopState {
+  static createRun(seed: number, draftEnabled: boolean = false): TableLoopState {
     const random = createRandom(seed)
     const collection = createStandardTileSet(true)
     const starterChoices = shuffle(STARTER_DECREE_IDS, random).slice(0, OFFER_COUNT)
@@ -168,6 +169,9 @@ export class TableLoopEngine {
       tableMult: 0,
       tableCompleted: false,
       riverRecoveriesRemaining: 0,
+      draftEnabled,
+      draftRow: [],
+      pendingDraftPick: false,
       lastResolution: [],
       lastError: null,
       lastErrorKey: null,
@@ -219,6 +223,9 @@ export class TableLoopEngine {
     const random = createRandom(state.seed + roundIndex * 7919)
     const wall = shuffle(state.collection, random)
     const rack = wall.slice(0, RACK_SIZE)
+    const draftRow = state.draftEnabled
+      ? wall.slice(RACK_SIZE, RACK_SIZE + DRAFT_ROW_SIZE)
+      : []
     const owned = new Set(state.ownedDecrees)
 
     return {
@@ -233,7 +240,9 @@ export class TableLoopEngine {
         round.redraws - (owned.has('jade_ledger') ? 1 : 0)
       ),
       rack,
-      wall: wall.slice(RACK_SIZE),
+      wall: wall.slice(RACK_SIZE + draftRow.length),
+      draftRow,
+      pendingDraftPick: false,
       slots: createEmptySlots(),
       river: [],
       claimedMilestones: [],
@@ -301,15 +310,24 @@ export class TableLoopEngine {
       return TableLoopEngine.settleRound(state, 'exhausted')
     }
     if (hasLegalPlacement(state.rack, state.slots)) return state
+    // An unclaimed offer is still a tile the rack has not seen.
+    if (state.pendingDraftPick) return state
     // A recovery exchange can still change the rack while an action remains.
     if (state.wall.length > 0) return state
     if (state.riverRecoveriesRemaining > 0 && state.river.length > 0) return state
     return TableLoopEngine.settleRound(state, 'exhausted')
   }
 
-  /** Draw back up to the rack size while the wall lasts. */
-  private static refillRack(state: TableLoopState): TableLoopState {
-    const needed = Math.max(0, RACK_SIZE - state.rack.length)
+  /**
+   * Draw back up to the rack size while the wall lasts.
+   *
+   * `reserve` holds back that many slots so a draft offer can fill them (E06).
+   */
+  private static refillRack(
+    state: TableLoopState,
+    reserve: number = 0
+  ): TableLoopState {
+    const needed = Math.max(0, RACK_SIZE - reserve - state.rack.length)
     if (needed === 0 || state.wall.length === 0) return state
     const drawn = state.wall.slice(0, needed)
     return {
@@ -317,6 +335,17 @@ export class TableLoopEngine {
       rack: [...state.rack, ...drawn],
       wall: state.wall.slice(drawn.length),
     }
+  }
+
+  /**
+   * Fill an unclaimed draft slot from the wall.
+   *
+   * Called before any other action so a forgotten offer never stalls the round,
+   * and so the rack a placement is validated against is the real one.
+   */
+  private static resolvePendingDraft(state: TableLoopState): TableLoopState {
+    if (!state.pendingDraftPick) return state
+    return TableLoopEngine.refillRack({ ...state, pendingDraftPick: false })
   }
 
   // ---------------------------------------------------------------------------
@@ -411,6 +440,9 @@ export class TableLoopEngine {
     slotIndex: number,
     isRevision: boolean
   ): TableActionResult {
+    // A forgotten draft offer resolves from the wall, so the rack this
+    // placement is checked against is the rack the player can actually see.
+    this.state = TableLoopEngine.resolvePendingDraft(this.state)
     const state = this.state
     if (state.phase !== 'playing') {
       return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
@@ -507,7 +539,15 @@ export class TableLoopEngine {
       lastErrorKey: null,
     }
 
-    next = TableLoopEngine.refillRack(next)
+    // With the draft row on, one of this placement's replacements is the
+    // player's to choose (E06); the rest come from the wall. The offer only
+    // stands if the refill actually left a slot for it.
+    const offersDraft = next.draftEnabled && next.draftRow.length > 0
+    next = TableLoopEngine.refillRack(next, offersDraft ? 1 : 0)
+    next = {
+      ...next,
+      pendingDraftPick: offersDraft && next.rack.length < RACK_SIZE,
+    }
 
     // Finishing the table is a scoring route that ends the round, not a
     // separate confirmation step.
@@ -534,6 +574,7 @@ export class TableLoopEngine {
    * decision.
    */
   redraw(tileIds: readonly string[]): TableActionResult {
+    this.state = TableLoopEngine.resolvePendingDraft(this.state)
     const state = this.state
     if (state.phase !== 'playing') {
       return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
@@ -590,6 +631,7 @@ export class TableLoopEngine {
    * the rack must have space, so a discard is still a real commitment.
    */
   recoverFromRiver(tileId: string): TableActionResult {
+    this.state = TableLoopEngine.resolvePendingDraft(this.state)
     const state = this.state
     if (state.phase !== 'playing') {
       return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
@@ -628,6 +670,76 @@ export class TableLoopEngine {
     }
     this.state = next
     return { success: true, state: next }
+  }
+
+  // ---------------------------------------------------------------------------
+  // DRAFT ROW (E06)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Take one face-up offer into the rack.
+   *
+   * Only the claimed offer is replaced, so the two the player passed on stay
+   * where they are and remain a visible plan for the next placement.
+   */
+  claimDraft(tileId: string): TableActionResult {
+    const state = this.state
+    if (state.phase !== 'playing') {
+      return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
+    }
+    if (!state.pendingDraftPick) {
+      return refuse(
+        state,
+        'tableLoop.reject.noDraftPick',
+        'Place a group to earn a pick from the offers.'
+      )
+    }
+    const index = state.draftRow.findIndex((tile) => tile.id === tileId)
+    if (index === -1) {
+      return refuse(
+        state,
+        'tableLoop.reject.notInDraft',
+        'That tile is not one of the offers.'
+      )
+    }
+
+    const claimed = state.draftRow[index]
+    const replacement = state.wall.slice(0, 1)
+    const next: TableLoopState = {
+      ...state,
+      rack: [...state.rack, claimed],
+      draftRow: [
+        ...state.draftRow.slice(0, index),
+        ...replacement,
+        ...state.draftRow.slice(index + 1),
+      ],
+      wall: state.wall.slice(replacement.length),
+      pendingDraftPick: false,
+      lastError: null,
+      lastErrorKey: null,
+    }
+
+    this.state = TableLoopEngine.endIfResourcesSpent(next)
+    return { success: true, state: this.state }
+  }
+
+  /** Decline the offers and take the replacement off the wall instead. */
+  passDraft(): TableActionResult {
+    const state = this.state
+    if (!state.pendingDraftPick) {
+      return refuse(
+        state,
+        'tableLoop.reject.noDraftPick',
+        'There is no offer waiting.'
+      )
+    }
+    const next = TableLoopEngine.resolvePendingDraft({
+      ...state,
+      lastError: null,
+      lastErrorKey: null,
+    })
+    this.state = TableLoopEngine.endIfResourcesSpent(next)
+    return { success: true, state: this.state }
   }
 
   // ---------------------------------------------------------------------------
@@ -745,8 +857,11 @@ export class TableLoopEngine {
   }
 
   /** Start over from the opening choice, keeping nothing. */
-  restart(seed: number = Date.now()): TableActionResult {
-    this.state = TableLoopEngine.createRun(seed)
+  restart(
+    seed: number = Date.now(),
+    draftEnabled: boolean = this.state.draftEnabled
+  ): TableActionResult {
+    this.state = TableLoopEngine.createRun(seed, draftEnabled)
     return { success: true, state: this.state }
   }
 }
@@ -790,6 +905,7 @@ export function allTrackedTileIds(state: TableLoopState): string[] {
   return [
     ...state.wall.map((tile) => tile.id),
     ...state.rack.map((tile) => tile.id),
+    ...state.draftRow.map((tile) => tile.id),
     ...state.river.map((tile) => tile.id),
     ...state.slots.flatMap((slot) => slot.group?.tiles.map((tile) => tile.id) ?? []),
   ]
