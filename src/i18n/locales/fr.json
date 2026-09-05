@@ -2351,7 +2351,9 @@
       "shopClosed": "La boutique est fermée.",
       "tooExpensive": "Vous ne pouvez pas vous le permettre.",
       "noDraftPick": "Posez une combinaison pour gagner un choix parmi les offres.",
-      "notInDraft": "Cette tuile ne fait pas partie des offres."
+      "notInDraft": "Cette tuile ne fait pas partie des offres.",
+      "notPractice": "Cette offre appartient à la donne d’entraînement.",
+      "alreadyOwned": "Vous l’avez déjà."
     },
     "rack": {
       "label": "Votre chevalet"
@@ -2367,6 +2369,30 @@
       "variantHint": "Trois tuiles face visible. Chaque combinaison posée permet à un remplacement de venir d’ici plutôt que du mur.",
       "on": "Oui",
       "off": "Non"
+    },
+    "practice": {
+      "label": "Donne d’entraînement",
+      "begin": "Première fois ? Commencez par la donne d’entraînement",
+      "inspectRun": "Montrez-moi la séquence · {{slot}}",
+      "inspectPair": "Montrez-moi la paire · {{slot}}",
+      "takeDecree": "Prendre {{name}}",
+      "startReal": "Commencer une vraie partie",
+      "choose": {
+        "title": "Deux coups, et ce ne sont pas les mêmes",
+        "body": "Votre chevalet contient une séquence de bambous et une paire de neuf. Une séquence va dans un emplacement de combinaison, une paire n’entre que dans celui de la paire. Touchez une combinaison, puis l’emplacement qui s’allume : la prévision affichée est exactement ce qu’il rapportera."
+      },
+      "interact": {
+        "title": "Vos combinaisons peuvent se répondre",
+        "body": "Cette combinaison reste sur la table jusqu’à la fin de la manche. Cherchez une deuxième séquence identique à la première : deux séquences identiques côte à côte valent plus que chacune séparément."
+      },
+      "upgrade": {
+        "title": "C’était une Séquence Jumelle",
+        "body": "Elle a payé une fois, et elle a relevé le multiplicateur de tout ce que vous poserez ensuite. Bambou qui Résonne convient à une table bâtie ainsi : une séquence de bambous compte deux fois dès que vous la posez."
+      },
+      "ready": {
+        "title": "Voilà toute la boucle",
+        "body": "Posez des combinaisons, regardez-les se répondre, et dépensez vos gains en Décrets adaptés à la table que vous construisez. La donne d’entraînement est écrite ; une vraie partie est distribuée d’un mur mélangé."
+      }
     }
   }
 }

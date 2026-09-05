@@ -885,7 +885,9 @@
       "shopClosed": "Il negozio è chiuso.",
       "tooExpensive": "Non puoi permettertelo.",
       "noDraftPick": "Posa una combinazione per guadagnare una scelta fra le offerte.",
-      "notInDraft": "Quella tessera non è fra le offerte."
+      "notInDraft": "Quella tessera non è fra le offerte.",
+      "notPractice": "Quell’offerta appartiene alla mano di pratica.",
+      "alreadyOwned": "Ce l’hai già."
     },
     "rack": {
       "label": "La tua rastrelliera"
@@ -901,6 +903,30 @@
       "variantHint": "Tre tessere scoperte. Ogni combinazione che posi permette a un rifornimento di venire da qui invece che dal muro.",
       "on": "Sì",
       "off": "No"
+    },
+    "practice": {
+      "label": "Mano di pratica",
+      "begin": "È la prima volta? Comincia dalla mano di pratica",
+      "inspectRun": "Mostrami la sequenza · {{slot}}",
+      "inspectPair": "Mostrami la coppia · {{slot}}",
+      "takeDecree": "Prendi {{name}}",
+      "startReal": "Comincia una partita vera",
+      "choose": {
+        "title": "Due mosse, e non sono la stessa mossa",
+        "body": "Sulla rastrelliera hai una sequenza di bambù e una coppia di nove. Una sequenza va in una casella combinazione, una coppia entra solo in quella della coppia. Tocca una combinazione, poi la casella che si accende: la previsione sulla casella è esattamente quello che pagherà."
+      },
+      "interact": {
+        "title": "Le tue combinazioni possono rispondersi",
+        "body": "Quella combinazione resta sul tavolo per tutto il round. Cerca una seconda sequenza uguale alla prima: due sequenze identiche affiancate valgono più di ciascuna da sola."
+      },
+      "upgrade": {
+        "title": "Quella era una Sequenza Gemella",
+        "body": "Ha pagato una volta e ha alzato il moltiplicatore di tutto ciò che poserai da qui in avanti. Bambù che Risuona si adatta a un tavolo così: una sequenza di bambù conta due volte nel momento in cui la posi."
+      },
+      "ready": {
+        "title": "Questo è tutto il ciclo",
+        "body": "Posa combinazioni, guardale rispondersi e spendi quello che guadagni in Decreti adatti al tavolo che stai costruendo. La mano di pratica è scritta; una partita vera si distribuisce da un muro mescolato."
+      }
     }
   }
 }

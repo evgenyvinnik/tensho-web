@@ -2099,7 +2099,9 @@
       "shopClosed": "Kedai sedang tutup.",
       "tooExpensive": "Uangmu tidak cukup.",
       "noDraftPick": "Letakkan sebuah kelompok dulu agar bisa memilih dari tawaran.",
-      "notInDraft": "Ubin itu tidak ada di antara tawaran."
+      "notInDraft": "Ubin itu tidak ada di antara tawaran.",
+      "notPractice": "Tawaran itu hanya ada di bagian latihan.",
+      "alreadyOwned": "Kamu sudah punya."
     },
     "rack": {
       "label": "Rakmu"
@@ -2115,6 +2117,30 @@
       "variantHint": "Tiga ubin terbuka. Setiap kelompok yang kamu letakkan membuat satu pengisian bisa diambil dari sini, bukan dari tembok.",
       "on": "Nyala",
       "off": "Mati"
+    },
+    "practice": {
+      "label": "Bagian latihan",
+      "begin": "Baru pertama kali? Mainkan bagian latihan dulu",
+      "inspectRun": "Tunjukkan urutannya · {{slot}}",
+      "inspectPair": "Tunjukkan pasangannya · {{slot}}",
+      "takeDecree": "Ambil {{name}}",
+      "startReal": "Mulai perjalanan sungguhan",
+      "choose": {
+        "title": "Dua langkah, dan keduanya tidak sama",
+        "body": "Di rakmu ada satu urutan Bambu dan satu pasangan angka sembilan. Urutan masuk ke slot kelompok, pasangan hanya muat di slot pasangan. Ketuk sebuah kelompok, lalu ketuk slot yang menyala — perkiraan di slot itu persis yang akan kamu dapat."
+      },
+      "interact": {
+        "title": "Kelompokmu bisa saling menyahut",
+        "body": "Kelompok itu tinggal di meja sampai ronde ini selesai. Cari urutan kedua yang persis sama dengan yang pertama: dua urutan kembar yang berdampingan lebih berharga daripada masing-masing sendirian."
+      },
+      "upgrade": {
+        "title": "Tadi itu Urutan Kembar",
+        "body": "Ia membayar sekali, lalu menaikkan pengali untuk semua yang kamu letakkan sesudahnya. Bambu Bergema cocok untuk meja seperti ini: urutan Bambu menghasilkan skor dua kali begitu kamu meletakkannya."
+      },
+      "ready": {
+        "title": "Itulah seluruh putarannya",
+        "body": "Letakkan kelompok, lihat mereka saling menyahut, dan belanjakan hasilnya untuk Dekrit yang cocok dengan meja yang sedang kamu bangun. Bagian latihan ini disusun; perjalanan sungguhan dibagikan dari tembok yang dikocok."
+      }
     }
   }
 }

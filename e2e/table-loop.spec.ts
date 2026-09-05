@@ -321,3 +321,78 @@ test.describe('Table Loop offers row (E06)', () => {
     expect(after).toEqual(before)
   })
 })
+
+test.describe('Table Loop practice deal (section 7)', () => {
+  test('walks the first session in the order the document sets out', async ({
+    page,
+  }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto('/en/table-loop?practice=1')
+
+    // 1. A short deal, clearly labelled as practice, dealt without a build
+    //    choice to make first.
+    const guide = page.getByTestId('practice-guide')
+    await expect(guide).toBeVisible()
+    await expect(guide).toContainText('Practice deal')
+    await expect(guide).toHaveAttribute('data-practice-step', 'choose')
+    await expect(page.locator('[data-testid^="table-decree-"]')).toHaveCount(0)
+
+    // 2. Both outcomes can be inspected, and each names its own slot.
+    await page.getByTestId('practice-inspect-pair').click()
+    await expect(page.getByTestId('selection-strip')).toContainText('Pair')
+    await expect(page.getByTestId('table-slot-4')).toBeEnabled()
+    await expect(page.getByTestId('table-slot-0')).toBeDisabled()
+
+    await page.getByTestId('practice-inspect-run').click()
+    await expect(page.getByTestId('selection-strip')).toContainText('Sequence')
+    await expect(page.getByTestId('table-slot-0')).toBeEnabled()
+    await expect(page.getByTestId('table-slot-4')).toBeDisabled()
+
+    // 3. The chosen group is committed and stays visible.
+    await page.getByTestId('table-slot-0').click()
+    await expect(guide).toHaveAttribute('data-practice-step', 'interact')
+
+    // 4. The rack refills with the answering run; the guide points at the
+    //    opportunity without playing it.
+    await expect(page.getByTestId('practice-inspect-run')).toHaveCount(0)
+
+    const second = findGroup(await readRack(page))
+    expect(second).not.toBeNull()
+    for (const tile of second!) await tile.button.click()
+    await page.getByTestId('table-slot-1').click()
+
+    // 5. The interaction resolves visibly and is named after it happened.
+    await expect(page.getByTestId('causal-chain')).toContainText('Twin Sequence')
+    await expect(guide).toHaveAttribute('data-practice-step', 'upgrade')
+    await expect(guide).toContainText('That was a Twin Sequence')
+
+    // 6. One upgrade, obviously connected to what just happened.
+    await page.getByTestId('practice-take-decree').click()
+    await expect(guide).toHaveAttribute('data-practice-step', 'ready')
+
+    // 7. Control passes to ordinary seeded play.
+    await page.getByTestId('practice-start-real').click()
+    await expect(
+      page.getByRole('heading', { name: 'Choose how you will play' })
+    ).toBeVisible()
+    await expect(page.getByTestId('practice-guide')).toHaveCount(0)
+  })
+
+  test('offers the practice deal from the opening panel', async ({ page }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto(`/en/table-loop?seed=${SEED}`)
+    await expect(page.getByTestId('practice-guide')).toHaveCount(0)
+
+    await page.getByTestId('practice-start').click()
+    await expect(page.getByTestId('practice-guide')).toBeVisible()
+  })
+
+  test('teaches in the interface language', async ({ page }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto('/ja/table-loop?practice=1')
+
+    const guide = page.getByTestId('practice-guide')
+    await expect(guide).toContainText('練習の配牌')
+    await expect(guide).not.toContainText('Practice deal')
+  })
+})

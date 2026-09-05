@@ -10,6 +10,7 @@
 
 import { create } from 'zustand'
 import { TableLoopEngine } from '../tableloop/TableLoopEngine'
+import type { RunOptions } from '../tableloop/TableLoopEngine'
 import type {
   PlacementScore,
   TableDecreeId,
@@ -39,7 +40,8 @@ interface TableLoopStore {
   openShop: () => void
   buyDecree: (id: TableDecreeId) => void
   nextRound: () => void
-  restart: (seed?: number, draftEnabled?: boolean) => void
+  restart: (seed?: number, options?: RunOptions) => void
+  takePracticeDecree: () => void
 
   previewPlacement: (slotIndex: number) => PlacementScore | null
 }
@@ -133,9 +135,14 @@ export const useTableLoopStore = create<TableLoopStore>((set, get) => {
       publish(true)
     },
 
-    restart: (seed, draftEnabled) => {
-      get().engine.restart(seed, draftEnabled)
+    restart: (seed, options) => {
+      get().engine.restart(seed, options)
       publish(true)
+    },
+
+    takePracticeDecree: () => {
+      get().engine.takePracticeDecree()
+      publish(false)
     },
 
     previewPlacement: (slotIndex) =>

@@ -2347,7 +2347,9 @@
       "shopClosed": "The shop is closed.",
       "tooExpensive": "You cannot afford that.",
       "noDraftPick": "Place a group to earn a pick from the offers.",
-      "notInDraft": "That tile is not one of the offers."
+      "notInDraft": "That tile is not one of the offers.",
+      "notPractice": "That offer belongs to the practice deal.",
+      "alreadyOwned": "You already have it."
     },
     "rack": {
       "label": "Your rack"
@@ -2363,6 +2365,30 @@
       "variantHint": "Three face-up tiles. Each group you place lets one replacement come from them instead of the wall.",
       "on": "On",
       "off": "Off"
+    },
+    "practice": {
+      "label": "Practice deal",
+      "begin": "New here? Play the practice deal first",
+      "inspectRun": "Show me the run · {{slot}}",
+      "inspectPair": "Show me the pair · {{slot}}",
+      "takeDecree": "Take {{name}}",
+      "startReal": "Start a real run",
+      "choose": {
+        "title": "Two moves, and they are not the same move",
+        "body": "Your rack holds one run of Bamboo and one pair of nines. A run goes in a meld slot, a pair only fits the pair slot. Tap a group, then tap the slot it lights up — the forecast on the slot is exactly what it will pay."
+      },
+      "interact": {
+        "title": "Your groups can answer each other",
+        "body": "That group stays on the table for the rest of the round. Look for a second run just like the first one: two identical runs standing together are worth more than either of them alone."
+      },
+      "upgrade": {
+        "title": "That was a Twin Sequence",
+        "body": "It paid once, and it raised the multiplier for everything you place afterwards. Echoing Bamboo suits a table built this way: a Bamboo run scores twice the moment you place it."
+      },
+      "ready": {
+        "title": "That is the whole loop",
+        "body": "Place groups, watch them answer each other, and spend what you earn on Decrees that suit the table you are building. The practice deal was authored; a real run is dealt from a shuffled wall."
+      }
     }
   }
 }

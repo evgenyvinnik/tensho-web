@@ -31,6 +31,7 @@ import {
   slotAccepts,
 } from './groupRules'
 import { multFromMilestones, scorePlacement } from './scoring'
+import { PRACTICE_DECREE, createPracticeCollection } from './practice'
 import {
   type CausalStage,
   type PlacedGroup,
@@ -43,6 +44,14 @@ import {
 
 /** Number of shop offers, and of opening build choices. */
 const OFFER_COUNT = 3
+
+/** How a run is set up. Both variants are off unless asked for. */
+export interface RunOptions {
+  /** Use the E06 offers row. */
+  readonly draftEnabled?: boolean
+  /** Use the authored teaching deal from section 7. */
+  readonly practice?: boolean
+}
 
 // =============================================================================
 // SEEDED RANDOMNESS
@@ -116,8 +125,8 @@ export function clearReward(state: TableLoopState): number {
 export class TableLoopEngine {
   private state: TableLoopState
 
-  constructor(seed: number = Date.now(), draftEnabled: boolean = false) {
-    this.state = TableLoopEngine.createRun(seed, draftEnabled)
+  constructor(seed: number = Date.now(), options: RunOptions = {}) {
+    this.state = TableLoopEngine.createRun(seed, options)
   }
 
   getState(): TableLoopState {
@@ -142,12 +151,20 @@ export class TableLoopEngine {
    * The wall is not dealt yet: the chosen Decree should be able to influence
    * the very first rack, so dealing waits until the choice is made.
    */
-  static createRun(seed: number, draftEnabled: boolean = false): TableLoopState {
+  static createRun(seed: number, options: RunOptions = {}): TableLoopState {
+    const practice = options.practice ?? false
     const random = createRandom(seed)
-    const collection = createStandardTileSet(true)
-    const starterChoices = shuffle(STARTER_DECREE_IDS, random).slice(0, OFFER_COUNT)
+    // The practice deal is authored, so its wall is a fixed order rather than a
+    // shuffle, and it grants no opening Decree — the upgrade is the reward for
+    // the interaction, not a choice made before the player knows anything.
+    const collection = practice
+      ? createPracticeCollection()
+      : createStandardTileSet(true)
+    const starterChoices = practice
+      ? []
+      : shuffle(STARTER_DECREE_IDS, random).slice(0, OFFER_COUNT)
 
-    return {
+    const initial: TableLoopState = {
       phase: 'choosingStart',
       seed,
       roundIndex: 0,
@@ -169,13 +186,17 @@ export class TableLoopEngine {
       tableMult: 0,
       tableCompleted: false,
       riverRecoveriesRemaining: 0,
-      draftEnabled,
+      practice,
+      draftEnabled: options.draftEnabled ?? false,
       draftRow: [],
       pendingDraftPick: false,
       lastResolution: [],
       lastError: null,
       lastErrorKey: null,
     }
+
+    // Practice skips the opening build choice and deals immediately.
+    return practice ? TableLoopEngine.beginRound(initial, 0) : initial
   }
 
   /** Take one of the three opening Decrees and deal the first round. */
@@ -221,7 +242,9 @@ export class TableLoopEngine {
   ): TableLoopState {
     const round = TABLE_ROUNDS[roundIndex]
     const random = createRandom(state.seed + roundIndex * 7919)
-    const wall = shuffle(state.collection, random)
+    const wall = state.practice
+      ? [...state.collection]
+      : shuffle(state.collection, random)
     const rack = wall.slice(0, RACK_SIZE)
     const draftRow = state.draftEnabled
       ? wall.slice(RACK_SIZE, RACK_SIZE + DRAFT_ROW_SIZE)
@@ -857,11 +880,43 @@ export class TableLoopEngine {
   }
 
   /** Start over from the opening choice, keeping nothing. */
-  restart(
-    seed: number = Date.now(),
-    draftEnabled: boolean = this.state.draftEnabled
-  ): TableActionResult {
-    this.state = TableLoopEngine.createRun(seed, draftEnabled)
+  restart(seed: number = Date.now(), options: RunOptions = {}): TableActionResult {
+    this.state = TableLoopEngine.createRun(seed, {
+      draftEnabled: options.draftEnabled ?? this.state.draftEnabled,
+      practice: options.practice ?? false,
+    })
+    return { success: true, state: this.state }
+  }
+
+  /**
+   * Hand the practice deal its one upgrade.
+   *
+   * Practice only: an ordinary run buys Decrees, and letting a real run grant
+   * one for free would quietly change its economy.
+   */
+  takePracticeDecree(): TableActionResult {
+    const state = this.state
+    if (!state.practice) {
+      return refuse(
+        state,
+        'tableLoop.reject.notPractice',
+        'That offer belongs to the practice deal.'
+      )
+    }
+    if (state.ownedDecrees.includes(PRACTICE_DECREE)) {
+      return refuse(
+        state,
+        'tableLoop.reject.alreadyOwned',
+        'You already have it.'
+      )
+    }
+
+    this.state = {
+      ...state,
+      ownedDecrees: [...state.ownedDecrees, PRACTICE_DECREE],
+      lastError: null,
+      lastErrorKey: null,
+    }
     return { success: true, state: this.state }
   }
 }

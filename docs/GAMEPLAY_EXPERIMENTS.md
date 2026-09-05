@@ -51,10 +51,12 @@ session can compare the two.
 | E04 shop | Eight interacting Decrees; three unowned offers between rounds |
 | E05 causal chain | [`scoring.ts`](../src/tableloop/scoring.ts) emits ordered stages; [`CausalChain.tsx`](../src/components/tableloop/CausalChain.tsx) paces them, and they can be skipped or shown at once under reduced motion |
 | E06 offers row | [`DraftRow.tsx`](../src/components/tableloop/DraftRow.tsx) and `claimDraft`/`passDraft` on the engine — a variant, off by default |
+| Section 7 first session | [`practice.ts`](../src/tableloop/practice.ts) authors the deal and derives the guide steps from run state |
 
 `/:lang/table-loop?seed=<n>` replays an exact deal, so a hand that confused
 someone during a session can be handed to the next player unchanged.
-`&draft=1` selects the offers variant for a side-by-side comparison.
+`&draft=1` selects the offers variant for a side-by-side comparison, and
+`?practice=1` opens the authored teaching deal.
 
 Deliberately **not** built here: living tiles, the route map, seasons, and
 wagers. Keeping them out is what makes it possible to learn whether building
@@ -85,6 +87,32 @@ lifts the later rounds by nine to twelve points of clear rate. That is the risk
 the document names — "too much choice removes the need to adapt" — showing up
 as a number rather than a hunch. Whether it also makes the turn more
 interesting is a question for people, not for the simulator.
+
+### The first session (section 7)
+
+The teaching sequence runs in the order the document sets out, as an authored
+practice deal — labelled as practice, which is the condition section 3 attaches
+to authoring one. Reach it from the opening panel or with `?practice=1`.
+
+1. A short deal holding exactly two groups: an obvious Bamboo run and a pair of
+   nines. Nothing else in the twelve tiles combines, so the first decision is
+   legible.
+2. Both moves can be inspected before committing. Selecting one lights the
+   slots it fits and shows the exact score there — the run offers four meld
+   slots at 55, the pair offers the pair slot at 35 — which is the document's
+   "explain the score and which table slot each choice occupies".
+3. The chosen group stays visible while the rack refills.
+4. The wall behind the deal is authored so a matching run arrives whichever
+   group was committed first. The guide points at the opportunity and does not
+   play it.
+5. The player finds it. The causal chain resolves and **then** the guide names
+   it: "That was a Twin Sequence."
+6. One upgrade follows, obviously connected to what just happened — Echoing
+   Bamboo repeats exactly the kind of run they just doubled.
+7. Control passes to ordinary seeded play.
+
+Every step is derived from run state rather than a counter, so the guide cannot
+claim progress the table does not show.
 
 ### Readability and keyboard (sections 7 and 9)
 
@@ -138,6 +166,30 @@ forecast once the player selects something, so the coach occupies no vertical
 space of its own. That is not cosmetic: the gameplay screen has no slack at
 720px tall, and a 54px strip of its own was enough to push the hand zone under
 the action bar.
+
+**The diagnostic, repeated.** Section 8 asks for the opening-score measurement
+to be run again after any change to the coach.
+[`scripts/coach-diagnostic.mts`](../scripts/coach-diagnostic.mts) does that over
+the same seeds 1-100, and reproduces the original figures exactly before
+reporting the new ones:
+
+| Observation | Then | Now |
+| ----------- | ---: | --: |
+| Starts with a suggested scoring shape | 99 | 99 |
+| Starts suggesting a redraw | 1 | 1 |
+| Median score of the taught shape | 36 | 36 |
+| Taught shape below target / remaining plays | 85 of 99 | 85 of 99 |
+| Median score the coach's other option finds | — | 95 |
+| That option below target / remaining plays | — | 11 of 100 |
+| Median points it adds over the taught shape | — | 55 |
+
+The teaching suggestion is unchanged on purpose: it still answers "which tiles
+form a group?", which is a different question. What changed is that the player
+is now also shown a move that keeps pace, and told which is which.
+
+Finding more points is not the same as being right, and the panel does not
+claim otherwise — it shows both options and names the tradeoff. This remains an
+opening-move measurement, not a win rate.
 
 ## 1. What the current game is missing
 

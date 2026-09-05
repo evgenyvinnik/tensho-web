@@ -518,7 +518,7 @@ describe('the draft row (E06)', () => {
   })
 
   it('deals three face-up offers and reserves one replacement per placement', () => {
-    const engine = new TableLoopEngine(7, true)
+    const engine = new TableLoopEngine(7, { draftEnabled: true })
     engine.chooseStarter(engine.getState().starterChoices[0])
 
     const dealt = engine.getState()
@@ -616,7 +616,7 @@ describe('the draft row (E06)', () => {
   })
 
   it('keeps every tile in exactly one place with the offers in play', () => {
-    const engine = new TableLoopEngine(11, true)
+    const engine = new TableLoopEngine(11, { draftEnabled: true })
     engine.chooseStarter(engine.getState().starterChoices[0])
 
     const tracked = allTrackedTileIds(engine.getState())

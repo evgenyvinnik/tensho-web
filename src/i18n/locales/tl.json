@@ -885,7 +885,9 @@
       "shopClosed": "Sarado ang tindahan.",
       "tooExpensive": "Hindi mo kayang bilhin iyon.",
       "noDraftPick": "Maglapag muna ng grupo para makapili sa mga alok.",
-      "notInDraft": "Wala ang tile na iyon sa mga alok."
+      "notInDraft": "Wala ang tile na iyon sa mga alok.",
+      "notPractice": "Sa pansanay na deal lang ang alok na iyon.",
+      "alreadyOwned": "Meron ka na niyan."
     },
     "rack": {
       "label": "Ang rack mo"
@@ -901,6 +903,30 @@
       "variantHint": "Tatlong nakataob-taas na tile. Sa bawat grupong ilalapag mo, isang kapalit ang puwedeng galing dito sa halip na sa pader.",
       "on": "Bukas",
       "off": "Sarado"
+    },
+    "practice": {
+      "label": "Pansanay na deal",
+      "begin": "Bago ka pa lang? Subukan muna ang pansanay na deal",
+      "inspectRun": "Ipakita ang sunod-sunod · {{slot}}",
+      "inspectPair": "Ipakita ang pares · {{slot}}",
+      "takeDecree": "Kunin ang {{name}}",
+      "startReal": "Magsimula ng tunay na takbo",
+      "choose": {
+        "title": "Dalawang galaw, at hindi sila magkapareho",
+        "body": "May isang sunod-sunod na Kawayan at isang pares ng siyam sa rack mo. Ang sunod-sunod ay napupunta sa puwesto ng grupo; ang pares ay kasya lang sa puwesto ng pares. Pindutin ang isang grupo, tapos ang puwestong magliliwanag — ang tantiya sa puwesto ang eksaktong ibabayad nito."
+      },
+      "interact": {
+        "title": "Puwedeng magtugon ang mga grupo mo",
+        "body": "Mananatili ang grupong iyon sa mesa hanggang matapos ang round. Maghanap ng pangalawang sunod-sunod na kapareho ng una: mas malaki ang halaga ng dalawang magkaparehong sunod-sunod na magkatabi kaysa sa alinman sa kanila nang mag-isa."
+      },
+      "upgrade": {
+        "title": "Kambal na Sequence iyon",
+        "body": "Minsan itong nagbayad, at itinaas nito ang multiplier ng lahat ng ilalapag mo pagkatapos. Bagay sa ganitong mesa ang Umaalingawngaw na Kawayan: dalawang beses nagpupuntos ang sunod-sunod na Kawayan sa oras na ilapag mo ito."
+      },
+      "ready": {
+        "title": "Iyan na ang buong ikot",
+        "body": "Maglapag ng mga grupo, panoorin silang magtugon, at gastusin ang kinita mo sa mga Decree na bagay sa mesang binubuo mo. Isinulat ang pansanay na deal; ang tunay na takbo ay mula sa binalasang pader."
+      }
     }
   }
 }

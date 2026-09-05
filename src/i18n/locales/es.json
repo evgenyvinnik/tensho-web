@@ -2351,7 +2351,9 @@
       "shopClosed": "La tienda está cerrada.",
       "tooExpensive": "No puedes permitírtelo.",
       "noDraftPick": "Coloca un grupo para ganar una elección entre las ofertas.",
-      "notInDraft": "Esa ficha no está entre las ofertas."
+      "notInDraft": "Esa ficha no está entre las ofertas.",
+      "notPractice": "Esa oferta pertenece al reparto de práctica.",
+      "alreadyOwned": "Ya lo tienes."
     },
     "rack": {
       "label": "Tu atril"
@@ -2367,6 +2369,30 @@
       "variantHint": "Tres fichas boca arriba. Cada grupo que coloques permite que una reposición venga de aquí en vez del muro.",
       "on": "Sí",
       "off": "No"
+    },
+    "practice": {
+      "label": "Reparto de práctica",
+      "begin": "¿Es tu primera vez? Empieza por el reparto de práctica",
+      "inspectRun": "Enséñame la secuencia · {{slot}}",
+      "inspectPair": "Enséñame el par · {{slot}}",
+      "takeDecree": "Quedarte con {{name}}",
+      "startReal": "Empezar una partida de verdad",
+      "choose": {
+        "title": "Dos jugadas, y no son la misma jugada",
+        "body": "Tu atril tiene una secuencia de bambúes y un par de nueves. Una secuencia va a una casilla de grupo; un par solo cabe en la casilla del par. Toca un grupo y luego la casilla que se ilumine: la previsión de la casilla es exactamente lo que pagará."
+      },
+      "interact": {
+        "title": "Tus grupos pueden responderse entre sí",
+        "body": "Ese grupo se queda en la mesa el resto de la ronda. Busca una segunda secuencia igual que la primera: dos secuencias idénticas juntas valen más que cualquiera de ellas por separado."
+      },
+      "upgrade": {
+        "title": "Eso ha sido una Secuencia Gemela",
+        "body": "Ha pagado una vez y ha subido el multiplicador de todo lo que coloques a partir de ahora. Bambú que Resuena encaja con una mesa así: una secuencia de bambúes puntúa dos veces en cuanto la colocas."
+      },
+      "ready": {
+        "title": "Eso es el bucle entero",
+        "body": "Coloca grupos, mira cómo se responden y gasta lo que ganes en Decretos que encajen con la mesa que estás construyendo. El reparto de práctica está escrito; una partida de verdad se reparte de un muro barajado."
+      }
     }
   }
 }

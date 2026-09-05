@@ -225,6 +225,13 @@ export interface TableLoopState {
   readonly riverRecoveriesRemaining: number
 
   /**
+   * The authored teaching deal from section 7, clearly labelled as practice.
+   * A practice run uses a fixed wall so the promised interaction always
+   * arrives, and it ends by handing over to ordinary seeded play.
+   */
+  readonly practice: boolean
+
+  /**
    * Whether this run uses the draft row (E06). Off by default: the experiments
    * document asks for it to be compared against the base loop rather than
    * folded into it.

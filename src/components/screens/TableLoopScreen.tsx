@@ -21,6 +21,7 @@ import { useAppNavigation, ROUTES } from '../../router'
 import { useTableLoopStore } from '../../stores/tableLoopStore'
 import { TileImage } from '../tiles/TileImage'
 import { DraftRow } from '../tableloop/DraftRow'
+import { PracticeGuide } from '../tableloop/PracticeGuide'
 import { RackRow } from '../tableloop/RackRow'
 import { SelectionStrip } from '../tableloop/SelectionStrip'
 import { TableSlots } from '../tableloop/TableSlots'
@@ -31,6 +32,7 @@ import {
   revisableSlots,
 } from '../../tableloop/TableLoopEngine'
 import { classifyGroup } from '../../tableloop/groupRules'
+import { practiceStep } from '../../tableloop/practice'
 import { MAX_REDRAW_TILES, TABLE_ROUNDS, getTableDecree } from '../../tableloop/content'
 import type { TableDecreeId } from '../../tableloop/types'
 
@@ -129,16 +131,30 @@ export function TableLoopScreen() {
   const [searchParams] = useSearchParams()
   const requestedSeed = Number(searchParams.get('seed'))
   const requestedDraft = searchParams.get('draft') === '1'
+  const requestedPractice = searchParams.get('practice') === '1'
   const applied = useRef<string | null>(null)
   const { restart } = store
   useEffect(() => {
     const hasSeed = Number.isFinite(requestedSeed) && requestedSeed !== 0
-    if (!hasSeed && !requestedDraft) return
-    const key = `${hasSeed ? requestedSeed : 'auto'}:${requestedDraft}`
+    if (!hasSeed && !requestedDraft && !requestedPractice) return
+    const key = `${hasSeed ? requestedSeed : 'auto'}:${requestedDraft}:${requestedPractice}`
     if (applied.current === key) return
     applied.current = key
-    restart(hasSeed ? requestedSeed : undefined, requestedDraft)
-  }, [requestedSeed, requestedDraft, restart])
+    restart(hasSeed ? requestedSeed : undefined, {
+      draftEnabled: requestedDraft,
+      practice: requestedPractice,
+    })
+  }, [requestedSeed, requestedDraft, requestedPractice, restart])
+
+  const guideStep = practiceStep(state)
+
+  const handleInspect = useCallback(
+    (tileIds: string[]) => {
+      store.clearSelection()
+      for (const tileId of tileIds) store.toggleTile(tileId)
+    },
+    [store]
+  )
 
   const selectedTiles = useMemo(
     () => state.rack.filter((tile) => selectedTileIds.includes(tile.id)),
@@ -212,7 +228,9 @@ export function TableLoopScreen() {
           data-testid="draft-toggle"
           role="switch"
           aria-checked={state.draftEnabled}
-          onClick={() => store.restart(state.seed, !state.draftEnabled)}
+          onClick={() =>
+            store.restart(state.seed, { draftEnabled: !state.draftEnabled })
+          }
           className="mt-1 flex items-center justify-between gap-3 rounded-xl border border-[var(--color-metallic-gold)]/30 px-3 py-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
         >
           <span className="min-w-0">
@@ -237,6 +255,15 @@ export function TableLoopScreen() {
               ? t('tableLoop.draft.on', 'On')
               : t('tableLoop.draft.off', 'Off')}
           </span>
+        </button>
+
+        <button
+          type="button"
+          data-testid="practice-start"
+          onClick={() => store.restart(state.seed, { practice: true })}
+          className="mt-1 rounded-xl border border-sky-400/50 px-3 py-2 text-xs font-semibold text-sky-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
+        >
+          {t('tableLoop.practice.begin', 'New here? Play the practice deal first')}
         </button>
 
         <button
@@ -372,10 +399,12 @@ export function TableLoopScreen() {
               {t(`tableLoop.rounds.${state.round.index}`, state.round.name)}
             </p>
             <p className="text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/45">
-              {t('tableLoop.hud.round', 'Round {{current}} of {{total}}', {
-                current: state.roundIndex + 1,
-                total: TABLE_ROUNDS.length,
-              })}
+              {state.practice
+                ? t('tableLoop.practice.label', 'Practice deal')
+                : t('tableLoop.hud.round', 'Round {{current}} of {{total}}', {
+                    current: state.roundIndex + 1,
+                    total: TABLE_ROUNDS.length,
+                  })}
             </p>
           </div>
           <p className="flex-shrink-0 text-sm font-bold tabular-nums text-emerald-300">
@@ -420,6 +449,16 @@ export function TableLoopScreen() {
           </p>
         )}
       </header>
+
+      {guideStep && (
+        <PracticeGuide
+          state={state}
+          step={guideStep}
+          onInspect={handleInspect}
+          onTakeDecree={store.takePracticeDecree}
+          onStartRealRun={() => store.restart(undefined, { practice: false })}
+        />
+      )}
 
       {/* The persistent table */}
       <TableSlots

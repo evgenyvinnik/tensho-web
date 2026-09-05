@@ -885,7 +885,9 @@
       "shopClosed": "Dükkân kapalı.",
       "tooExpensive": "Buna paran yetmiyor.",
       "noDraftPick": "Tekliflerden seçebilmek için önce bir grup yerleştir.",
-      "notInDraft": "O taş tekliflerin arasında değil."
+      "notInDraft": "O taş tekliflerin arasında değil.",
+      "notPractice": "O teklif alıştırma dağıtımına aittir.",
+      "alreadyOwned": "Zaten sende var."
     },
     "rack": {
       "label": "Rafın"
@@ -901,6 +903,30 @@
       "variantHint": "Açık duran üç taş. Yerleştirdiğin her grup, bir tamamlamanın duvar yerine buradan gelmesine izin verir.",
       "on": "Açık",
       "off": "Kapalı"
+    },
+    "practice": {
+      "label": "Alıştırma dağıtımı",
+      "begin": "İlk kez mi? Önce alıştırma dağıtımını oyna",
+      "inspectRun": "Seriyi göster · {{slot}}",
+      "inspectPair": "Çifti göster · {{slot}}",
+      "takeDecree": "{{name}} al",
+      "startReal": "Gerçek bir tur başlat",
+      "choose": {
+        "title": "İki hamle, ve aynı hamle değiller",
+        "body": "Rafında bir bambu serisi ve bir dokuzlu çift var. Seri bir grup yuvasına, çift ise yalnızca çift yuvasına girer. Bir grup seç, sonra yanan yuvaya dokun: yuvadaki tahmin, tam olarak vereceği puandır."
+      },
+      "interact": {
+        "title": "Grupların birbirine karşılık verebilir",
+        "body": "O grup turun sonuna kadar masada kalır. Birincisinin aynısı olan ikinci bir seri ara: yan yana duran iki özdeş seri, tek başlarına olduklarından daha değerlidir."
+      },
+      "upgrade": {
+        "title": "İşte bu bir İkiz Seriydi",
+        "body": "Bir kez ödedi ve bundan sonra yerleştireceğin her şeyin çarpanını yükseltti. Yankılanan Bambu böyle bir masaya yakışır: bir bambu serisi, koyduğun anda iki kez puan verir."
+      },
+      "ready": {
+        "title": "Döngünün tamamı bu",
+        "body": "Grupları yerleştir, birbirlerine karşılık verişlerini izle ve kazandığını kurduğun masaya yakışan Kararnamelere harca. Alıştırma dağıtımı yazılmıştır; gerçek bir tur karıştırılmış duvardan dağıtılır."
+      }
     }
   }
 }

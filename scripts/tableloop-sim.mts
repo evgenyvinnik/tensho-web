@@ -87,7 +87,7 @@ function bestOffer(engine: TableLoopEngine): string | null {
 }
 
 function playRun(seed: number): RoundOutcome[] {
-  const engine = new TableLoopEngine(seed, DRAFT)
+  const engine = new TableLoopEngine(seed, { draftEnabled: DRAFT })
   const start = engine.getState().starterChoices[seed % 3]
   engine.chooseStarter(start)
 

@@ -87,8 +87,8 @@ Run `bun run sloc` to calculate source lines of code.
 | Zustand Stores | 18 |
 | Game Systems | 27 |
 | React Components | 59 |
-| Unit Test Files | 30 (329 tests) |
-| E2E Scenarios | 30 (60 desktop/mobile checks) |
+| Unit Test Files | 31 (338 tests) |
+| E2E Scenarios | 33 (66 desktop/mobile checks) |
 | Supported Locales | 13 |
 
 ### Implemented Systems
@@ -106,7 +106,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Features
 
-- **Table Loop (experiment)** — A second three-round core loop where every group you play stays on the table, patterns pay before the table is finished, and each score resolves as a readable chain; playable end to end with the keyboard, with an optional offers-row variant
+- **Table Loop (experiment)** — A second three-round core loop where every group you play stays on the table, patterns pay before the table is finished, and each score resolves as a readable chain; playable end to end with the keyboard, opening on an authored practice deal, with an optional offers-row variant
 - **Tutorial System** — Dismissible contextual guidance that never blocks gameplay
 - **Drag & Drop** — Intuitive tile arrangement with touch support
 - **Responsive Design** — Mobile-first portrait layout
