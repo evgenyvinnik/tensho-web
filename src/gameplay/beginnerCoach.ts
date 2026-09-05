@@ -17,7 +17,7 @@
 
 import { MeldType } from '../core/Meld'
 import { Tile } from '../core/Tile'
-import { getTilePoints } from '../rules/ScoringEngine'
+import { STRUCTURE_POINTS_BY_TYPE, getTilePoints } from '../rules/ScoringEngine'
 import { parsePartialHand } from '../rules/PartialHandParser'
 import { MAX_TACTICAL_PLAY_TILES, MIN_TACTICAL_PLAY_TILES } from '../game/playRules'
 
@@ -27,13 +27,6 @@ export interface BeginnerSuggestion {
   kind: BeginnerPatternKind
   tileIds: string[]
   structurePoints: number
-}
-
-const STRUCTURE_POINTS: Record<MeldType, number> = {
-  [MeldType.Pair]: 10,
-  [MeldType.Sequence]: 20,
-  [MeldType.Triplet]: 30,
-  [MeldType.Quad]: 50,
 }
 
 const TEACHING_PRIORITY: Record<MeldType, number> = {
@@ -63,7 +56,7 @@ export function findBeginnerSuggestion(
   const parsed = parsePartialHand(visibleTiles)
   const group = [...parsed.groups].sort((left, right) => {
     const pointDifference =
-      STRUCTURE_POINTS[right.type] - STRUCTURE_POINTS[left.type]
+      STRUCTURE_POINTS_BY_TYPE[right.type] - STRUCTURE_POINTS_BY_TYPE[left.type]
     return pointDifference !== 0
       ? pointDifference
       : TEACHING_PRIORITY[right.type] - TEACHING_PRIORITY[left.type]
@@ -73,7 +66,7 @@ export function findBeginnerSuggestion(
     return {
       kind: group.type,
       tileIds: group.tiles.map((tile) => tile.id),
-      structurePoints: STRUCTURE_POINTS[group.type],
+      structurePoints: STRUCTURE_POINTS_BY_TYPE[group.type],
     }
   }
 

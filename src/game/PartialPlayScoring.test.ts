@@ -54,7 +54,7 @@ describe('partial play scoring', () => {
     const breakdown = (
       result.effects.find((e) => e.type === 'score_added') as ScoreAddedEffect
     ).breakdown
-    expect(breakdown.structurePoints).toBe(10)
+    expect(breakdown.structurePoints).toBe(15)
   })
 
   it('applies Decree multipliers to a partial play', () => {

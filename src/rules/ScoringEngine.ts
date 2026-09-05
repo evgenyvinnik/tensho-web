@@ -8,7 +8,8 @@
  * - Terminals (1,9): 10 points each
  * - Simples (2-8): 5 points each
  * - Honors: 15 points each
- * - Pair: +10, Sequence: +20, Triplet: +30, Quad: +50
+ * - Pair: +15, Sequence: +30, Triplet: +40, Quad: +65
+ * - A tile in a tactical play that belongs to no group scores half
  *
  * Tile modifiers add:
  * - Enhancement chips/mult (Bonus: +30, Mult: +4, etc.)
@@ -98,6 +99,25 @@ export interface ScoringContext {
 }
 
 /**
+ * Share of its face value a tile keeps when it belongs to no group.
+ *
+ * Section 1.1 of `docs/GAMEPLAY_EXPERIMENTS.md` records the problem this
+ * solves: a player who learned to spot a sequence (15 tile points + 20
+ * structure = 35) scored less than one who tapped three unrelated Honors (45
+ * and no structure). Recognising a pattern has to be worth learning.
+ *
+ * Halving rather than zeroing is deliberate. The document asks for loose-tile
+ * strategies to stay possible rather than be deleted, and for different builds
+ * to keep valuing different things — an Honor triplet still beats a run of
+ * simples.
+ *
+ * Complete hands are untouched by construction: every tile in a winning hand
+ * belongs to a meld or the pair, so nothing about the eight-Act target curve or
+ * the Decrees that scale off it moves.
+ */
+export const UNGROUPED_TILE_SHARE = 0.5
+
+/**
  * Get points for a single tile based on its type
  */
 export function getTilePoints(tile: Tile): number {
@@ -108,21 +128,30 @@ export function getTilePoints(tile: Tile): number {
 }
 
 /**
+ * Points a group is worth for being a group.
+ *
+ * Raised from 10/20/30/50 alongside the ungrouped-tile discount above. The two
+ * changes move value from loose tiles into recognised shapes rather than taking
+ * it out of the game: measured over 150 seeded runs, a policy that always plays
+ * its highest-scoring selection clears 1.37 rounds a run against 1.32 before,
+ * so the Act curve is where it was while the reward for spotting a pattern is
+ * not. See `scripts/classic-balance.mts`.
+ *
+ * The one table. `PartialHandParser` searches with these weights and the coach
+ * ranks with them, so they may not be copied.
+ */
+export const STRUCTURE_POINTS_BY_TYPE: Record<MeldType, number> = {
+  [MeldType.Pair]: 15,
+  [MeldType.Sequence]: 30,
+  [MeldType.Triplet]: 40,
+  [MeldType.Quad]: 65,
+}
+
+/**
  * Get points for a meld structure
  */
 export function getMeldStructurePoints(meld: Meld): number {
-  switch (meld.type) {
-    case MeldType.Pair:
-      return 10
-    case MeldType.Sequence:
-      return 20
-    case MeldType.Triplet:
-      return 30
-    case MeldType.Quad:
-      return 50
-    default:
-      return 0
-  }
+  return STRUCTURE_POINTS_BY_TYPE[meld.type] ?? 0
 }
 
 /**
@@ -181,7 +210,24 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     new Array<Tile>(triggerCountFor(tile)).fill(tile)
   )
 
-  const tilePoints = calculateTilePoints(triggeredTiles)
+  // A tactical selection pays full price only for the tiles it actually
+  // organised; the rest are loose change. `partialMelds` is undefined for a
+  // complete hand, where every tile is grouped anyway.
+  const groupedTileIds = isPartial
+    ? new Set(
+        context.partialMelds!.flatMap((meld) => meld.tiles.map((tile) => tile.id))
+      )
+    : null
+  const tilePointsFor = (tile: Tile): number => {
+    const base = getTilePoints(tile)
+    if (!groupedTileIds || groupedTileIds.has(tile.id)) return base
+    return Math.floor(base * UNGROUPED_TILE_SHARE)
+  }
+
+  const tilePoints = triggeredTiles.reduce(
+    (sum, tile) => sum + tilePointsFor(tile),
+    0
+  )
   const structurePoints = isPartial
     ? context.partialMelds!.reduce((sum, meld) => sum + getMeldStructurePoints(meld), 0)
     : calculateStructurePoints(context.parsedHand)

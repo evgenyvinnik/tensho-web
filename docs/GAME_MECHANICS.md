@@ -26,10 +26,21 @@ Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
   - Simples (2-8): 5 points each
   - Honor tiles: 15 points each (dragons/winds)
 - **Hand Structure:** Base points from the poker-hand-like structure
-  - Pair: +10
-  - Sequence: +20
-  - Triplet: +30
-  - Quad: +50
+  - Pair: +15
+  - Sequence: +30
+  - Triplet: +40
+  - Quad: +65
+- **Loose tiles:** In a tactical play, a tile that belongs to no group scores
+  half its tile points. Complete hands are unaffected, because every tile in one
+  already belongs to a meld or the pair.
+
+  This is the answer to the diagnosis in section 1.1 of
+  [the experiments document](GAMEPLAY_EXPERIMENTS.md): a recognised Bamboo run
+  used to be worth 35 against 45 for three unrelated Honors, so learning to spot
+  a pattern paid less than not learning to. It is now 45 against 22. Honors are
+  still the most valuable tiles — an Honor triplet beats a run of simples — and
+  a selection with no group in it still scores something, both of which that
+  section asks for.
 
 **Additive Bonuses (加点):**
 - Tile Marks add flat bonuses when scored

@@ -211,7 +211,13 @@ Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
 ```
 
 Base points: Terminals (1,9) = 10, Simples (2-8) = 5, Honors = 15
-Structure: Pair +10, Sequence +20, Triplet +30, Quad +50
+Structure: Pair +15, Sequence +30, Triplet +40, Quad +65
+
+In a tactical play, a tile that belongs to no group scores half its tile points.
+Complete hands are unaffected: every tile in one is already in a meld or the
+pair. `STRUCTURE_POINTS_BY_TYPE` in `ScoringEngine` is the single source for
+those values — `PartialHandParser` searches with them and the coach ranks with
+them, so do not copy the table.
 
 ### Five-Layer Authority Hierarchy
 

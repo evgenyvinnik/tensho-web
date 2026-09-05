@@ -276,7 +276,10 @@ export function PlayArea({
                 ))
               ) : (
                 <span className="game-forecast-explainer text-xs text-[var(--color-beige-white)]/40">
-                  Base play · complete a pattern to unlock Yaku
+                  {t(
+                    'gameplay.forecast.looseTiles',
+                    'Loose tiles score half · group them for full points'
+                  )}
                 </span>
               )}
             </div>
@@ -300,19 +303,36 @@ export function PlayArea({
               >
                 {scorePreview.total >= remainingToTarget &&
                 remainingToTarget > 0
-                  ? 'Clears the round'
-                  : `${Math.min(999, Math.round((scorePreview.total / Math.max(1, remainingToTarget)) * 100))}% of what remains · ${
-                      scorePreview.total >= requiredPerHand
-                        ? 'on pace'
-                        : `need ${requiredPerHand.toLocaleString()}/hand`
-                    }`}
+                  ? t('gameplay.forecast.clears', 'Clears the round')
+                  : t(
+                      'gameplay.forecast.share',
+                      '{{percent}}% of what remains · {{pace}}',
+                      {
+                        percent: Math.min(
+                          999,
+                          Math.round(
+                            (scorePreview.total /
+                              Math.max(1, remainingToTarget)) *
+                              100
+                          )
+                        ),
+                        pace:
+                          scorePreview.total >= requiredPerHand
+                            ? t('gameplay.forecast.onPace', 'on pace')
+                            : t(
+                                'gameplay.forecast.needPerHand',
+                                'need {{points}}/hand',
+                                { points: requiredPerHand.toLocaleString() }
+                              ),
+                      }
+                    )}
               </span>
             </div>
           </div>
 
           <div className="flex-shrink-0 text-right">
             <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/45">
-              Forecast
+              {t('gameplay.forecast.label', 'Forecast')}
             </p>
             <GlowEffect
               variant="gold"
@@ -344,9 +364,15 @@ export function PlayArea({
         <div className="text-center">
           <p className="text-[var(--color-beige-white)] opacity-50 px-4">
             {activeTileCount === 1
-              ? 'Select one more tile to play this group'
+              ? t(
+                  'gameplay.forecast.selectOneMore',
+                  'Select one more tile to play this group'
+                )
               : activeTileCount > 5
-                ? 'This selection is not a complete Mahjong hand'
+                ? t(
+                    'gameplay.forecast.notCompleteHand',
+                    'This selection is not a complete Mahjong hand'
+                  )
                 : previewLabel}
           </p>
           <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
@@ -357,8 +383,14 @@ export function PlayArea({
                   { count: handTileCount }
                 )
               : activeTileCount > 5
-                ? 'Return tiles until 5 remain, or finish a complete hand'
-                : 'Useful groups score now; complete hands unlock Yaku'}
+                ? t(
+                    'gameplay.forecast.returnTiles',
+                    'Return tiles until 5 remain, or finish a complete hand'
+                  )
+                : t(
+                    'gameplay.forecast.groupToScore',
+                    'Group your tiles to score in full; complete hands unlock Yaku'
+                  )}
           </p>
         </div>
       )}

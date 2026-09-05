@@ -13,7 +13,7 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand, WaitType } from '../core/Hand'
-import { getMeldStructurePoints } from './ScoringEngine'
+import { STRUCTURE_POINTS_BY_TYPE, getMeldStructurePoints } from './ScoringEngine'
 
 /**
  * A decomposition of a tile selection into scoring groups.
@@ -192,15 +192,4 @@ function solveSuit(
 
   memo.set(key, best)
   return best
-}
-
-/**
- * Structure points per group type, mirroring getMeldStructurePoints. The search
- * runs before any Meld exists, so it scores plans by type alone.
- */
-const STRUCTURE_POINTS_BY_TYPE: Record<MeldType, number> = {
-  [MeldType.Pair]: 10,
-  [MeldType.Sequence]: 20,
-  [MeldType.Triplet]: 30,
-  [MeldType.Quad]: 50,
 }

@@ -1,7 +1,7 @@
 # Making Tensho Fun: Gameplay Experiments and Wild Ideas
 
 **Created:** September 4, 2026  
-**Status:** Mostly design proposals. E01–E06 and the section 1.4 coach are now built — see [Section 0](#0-what-has-been-built). Everything else in this document remains a proposal, not an approved backlog.  
+**Status:** Mostly design proposals. E01–E06, the section 1.4 coach and the section 1.1 scoring baseline are now built — see [Section 0](#0-what-has-been-built). Everything else in this document remains a proposal, not an approved backlog.  
 **Baseline inspected:** `77e0345` on `main`.
 
 This document captures the discussion about why Tensho still feels unengaging, proposes a different core loop, and collects ambitious experiments that could give the game a stronger identity. Numbers in proposed mechanics are starting points for playtests, not established balance values. Several ideas are deliberately incompatible alternatives; building all of them would defeat the purpose.
@@ -113,6 +113,51 @@ to authoring one. Reach it from the opening panel or with `?practice=1`.
 
 Every step is derived from run state rather than a counter, so the guide cannot
 claim progress the table does not show.
+
+### The scoring baseline, in the live game (section 1.1)
+
+This is the one change in section 0 that is **not** confined to the prototype.
+
+The complaint was specific: a Bamboo run paid 15 tile points plus 20 structure
+for 35, while three unrelated Honors paid 45 and no structure. Learning to spot
+a pattern paid less than not learning to. The prototype dodged it structurally,
+by refusing to accept anything but a complete group; the live game could not,
+because that is its whole tactical layer.
+
+Two changes, made together so that value moves rather than leaves:
+
+- A tile in a tactical play that belongs to **no group** scores half its tile
+  points. Halved rather than zeroed, because the document asks for loose-tile
+  strategies to stay possible.
+- Structure points rise from 10/20/30/50 to **15/30/40/65**.
+
+The comparison is now 45 against 22. The things the document says should stay
+true still do, and are pinned as tests: an Honor triplet still beats a run of
+simples, a selection with no group in it still scores something, and a complete
+hand is untouched — every tile in one already belongs to a meld or the pair, so
+neither the eight-Act target curve nor the Decrees that scale off it move.
+
+Balance was measured rather than asserted.
+[`scripts/classic-balance.mts`](../scripts/classic-balance.mts) is the harness
+the implementation-status document has had outstanding; it plays the
+highest-scoring legal selection every hand and reports how far the run gets.
+
+| | before | discount only | both changes |
+| --- | ---: | ---: | ---: |
+| Rounds cleared per run | 1.32 | 0.97 | 1.34 |
+| Median run score | 751 | 656 | 763 |
+| Runs reaching Act 2 | 5% | 5% | 8% |
+
+The discount on its own was a 27% difficulty regression. Paired with the
+structure raise it is neutral, which is the point: the same game, with the
+reward pointed at recognising a shape. And the rule is stated where the decision
+is made — the forecast reads "Loose tiles score half · group them for full
+points".
+
+One incidental fix: that table of structure values existed in three copies —
+the scoring engine, the partial-hand parser's search weights, and the coach's
+ranking. They are one exported table now, because a search optimising weights
+the scorer no longer uses is a bug waiting to happen.
 
 ### Two of section 10's open questions, measured
 

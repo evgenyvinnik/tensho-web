@@ -26,7 +26,7 @@ describe('beginner coach', () => {
     expect(suggestion).toEqual({
       kind: MeldType.Triplet,
       tileIds: ['east-a', 'east-b', 'east-c'],
-      structurePoints: 30,
+      structurePoints: 40,
     })
   })
 
@@ -40,7 +40,7 @@ describe('beginner coach', () => {
 
     expect(suggestion?.kind).toBe(MeldType.Sequence)
     expect(suggestion?.tileIds).toEqual(['five', 'six', 'seven'])
-    expect(suggestion?.structurePoints).toBe(20)
+    expect(suggestion?.structurePoints).toBe(30)
   })
 
   it('suggests a redraw when no finished shape is visible', () => {
@@ -59,7 +59,7 @@ describe('beginner coach', () => {
     const suggestion = {
       kind: MeldType.Pair,
       tileIds: ['pair-a', 'pair-b'],
-      structurePoints: 10,
+      structurePoints: 15,
     }
 
     expect(selectionMatchesSuggestion(suggestion, ['pair-b', 'pair-a'])).toBe(

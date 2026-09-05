@@ -87,7 +87,7 @@ Run `bun run sloc` to calculate source lines of code.
 | Zustand Stores | 18 |
 | Game Systems | 27 |
 | React Components | 59 |
-| Unit Test Files | 32 (356 tests) |
+| Unit Test Files | 33 (361 tests) |
 | E2E Scenarios | 34 (68 desktop/mobile checks) |
 | Supported Locales | 13 |
 

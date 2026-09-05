@@ -27,7 +27,7 @@ describe('parsePartialHand', () => {
 
     expect(parse.groups).toHaveLength(1)
     expect(parse.groups[0].type).toBe(MeldType.Triplet)
-    expect(parse.structurePoints).toBe(30)
+    expect(parse.structurePoints).toBe(40)
     expect(parse.leftovers).toHaveLength(0)
   })
 
@@ -42,7 +42,7 @@ describe('parsePartialHand', () => {
 
     expect(parse.groups).toHaveLength(1)
     expect(parse.groups[0].type).toBe(MeldType.Sequence)
-    expect(parse.structurePoints).toBe(20)
+    expect(parse.structurePoints).toBe(30)
   })
 
   it('never forms a sequence across suits', () => {
@@ -82,7 +82,7 @@ describe('parsePartialHand', () => {
     const parse = parsePartialHand(tiles)
 
     expect(parse.groups[0].type).toBe(MeldType.Triplet)
-    expect(parse.structurePoints).toBe(30)
+    expect(parse.structurePoints).toBe(40)
   })
 
   it('picks the decomposition worth the most, not the first one found', () => {
@@ -101,7 +101,7 @@ describe('parsePartialHand', () => {
 
     const parse = parsePartialHand(tiles)
 
-    expect(parse.structurePoints).toBe(30)
+    expect(parse.structurePoints).toBe(45)
   })
 
   it('prefers two sequences over a single triplet when that scores more', () => {
@@ -117,7 +117,7 @@ describe('parsePartialHand', () => {
 
     const parse = parsePartialHand(tiles)
 
-    expect(parse.structurePoints).toBe(40)
+    expect(parse.structurePoints).toBe(60)
     expect(parse.groups.every((group) => group.type === MeldType.Sequence)).toBe(true)
   })
 
@@ -132,7 +132,7 @@ describe('parsePartialHand', () => {
     const parse = parsePartialHand(tiles)
 
     expect(parse.groups[0].type).toBe(MeldType.Quad)
-    expect(parse.structurePoints).toBe(50)
+    expect(parse.structurePoints).toBe(65)
   })
 
   it('reports structure points that agree with the scoring engine', () => {
@@ -151,7 +151,7 @@ describe('parsePartialHand', () => {
     )
 
     expect(parse.structurePoints).toBe(fromEngine)
-    expect(parse.structurePoints).toBe(30) // sequence 20 + pair 10
+    expect(parse.structurePoints).toBe(45) // sequence 30 + pair 15
   })
 
   it('never assigns one tile to two groups', () => {
