@@ -234,3 +234,79 @@ describe('translation script purity', () => {
     expect(leaks).toEqual([])
   })
 })
+
+// =============================================================================
+// FULL-COVERAGE NAMESPACES
+// =============================================================================
+
+/**
+ * Namespaces where English falling back is a bug rather than a stopgap.
+ *
+ * Most of the interface tolerates a missing key: i18next quietly shows English.
+ * For a screen that was translated in full, that silence is what lets coverage
+ * rot, so these namespaces are held to exact parity with English.
+ */
+const FULLY_TRANSLATED_PATHS = ['tableLoop', 'gameplay.coach']
+
+function readPath(locale: Locale, path: string): unknown {
+  return path
+    .split('.')
+    .reduce<unknown>(
+      (node, part) =>
+        node && typeof node === 'object'
+          ? (node as Record<string, unknown>)[part]
+          : undefined,
+      locale
+    )
+}
+
+function leafKeys(node: unknown, prefix = ''): string[] {
+  if (node === null || typeof node !== 'object') return [prefix]
+  return Object.entries(node).flatMap(([key, value]) =>
+    leafKeys(value, prefix ? `${prefix}.${key}` : key)
+  )
+}
+
+describe('fully translated namespaces', () => {
+  it.each(FULLY_TRANSLATED_PATHS)(
+    'gives every language the same %s keys as English',
+    (path) => {
+      const expected = leafKeys(readPath(en, path)).sort()
+      expect(expected.length).toBeGreaterThan(0)
+
+      const problems: string[] = []
+      for (const [lang, locale] of Object.entries(LOCALES)) {
+        if (lang === 'en') continue
+        const actual = leafKeys(readPath(locale, path) ?? {}).sort()
+        const missing = expected.filter((key) => !actual.includes(key))
+        const stale = actual.filter((key) => !expected.includes(key))
+        if (missing.length) problems.push(`${lang} missing ${missing.join(', ')}`)
+        if (stale.length) problems.push(`${lang} stale ${stale.join(', ')}`)
+      }
+      expect(problems).toEqual([])
+    }
+  )
+
+  it('never leaves a translation identical to the English string', () => {
+    // A handful of names are the same word in several languages; the check is
+    // for whole namespaces copied over untranslated, so it allows a few.
+    const copied: string[] = []
+    for (const path of FULLY_TRANSLATED_PATHS) {
+      const source = readPath(en, path)
+      for (const [lang, locale] of Object.entries(LOCALES)) {
+        if (lang === 'en') continue
+        const target = readPath(locale, path)
+        const keys = leafKeys(source)
+        const same = keys.filter((key) => {
+          const a = readPath(source as Locale, key)
+          const b = readPath((target ?? {}) as Locale, key)
+          return typeof a === 'string' && a === b && a.length > 12
+        })
+        if (same.length > keys.length / 4) {
+          copied.push(`${lang}.${path} (${same.length}/${keys.length})`)
+        }
+      }
+    }
+    expect(copied).toEqual([])
+  })
+})

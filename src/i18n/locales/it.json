@@ -10,7 +10,8 @@
     "close": "Chiudi",
     "yes": "Sì",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "Menu principale"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Posta del tavolo · Difficoltà",
     "tableStake": "Posta del tavolo",
     "noSpecialModifiers": "Nessun modificatore speciale",
-    "promise": "Promessa"
+    "promise": "Promessa",
+    "tableLoop": "Ciclo del tavolo (esperimento)"
   },
   "settings": {
     "title": "Impostazioni",
@@ -169,7 +171,18 @@
     "sellFor": "Vendi per ¥{{value}}",
     "sellHidden": "Vendi il Decreto nascosto",
     "sellNamed": "Vendi {{name}}",
-    "hiddenDecree": "Decreto nascosto"
+    "hiddenDecree": "Decreto nascosto",
+    "coach": {
+      "title": "Due modi di giocare questa mano",
+      "dismiss": "Nascondi",
+      "pointsNow": "Punti subito",
+      "keepsPace": "Tiene il ritmo: questa mano chiede {{required}}.",
+      "behindPace": "Resta sotto i {{required}} che questa mano chiede.",
+      "buildToward": "Costruire verso una {{pattern}}",
+      "buildTowardPlain": "Costruire verso una figura",
+      "shapeCost": "Rende {{difference}} in meno adesso, e lascia in mano una figura che sai nominare.",
+      "tradeoff": "Il numero più grande non è per forza la mossa migliore: una figura che conservi può valere di più dopo."
+    }
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -687,6 +700,186 @@
         "name": "Tana del Drago",
         "description": "Un tavolo leggendario scolpito nell'osso di drago e nascosto in una caverna montana. Le mani Yakuman sono amplificate, ma il drago esige un tributo maggiore."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Casella combinazione {{number}}",
+      "pair": "Casella della coppia",
+      "meldShort": "Combinazione",
+      "pairShort": "Coppia",
+      "emptyMeld": "sequenza o tris",
+      "emptyPair": "due uguali",
+      "replace": "Sostituisci"
+    },
+    "milestones": {
+      "title": "Figure",
+      "momentum": "Slancio del tavolo +{{mult}} Molt",
+      "claimed": "ottenuta",
+      "twin_sequence": {
+        "name": "Sequenza Gemella",
+        "description": "Due sequenze identiche stanno affiancate sul tavolo."
+      },
+      "pure_suit": {
+        "name": "Seme Puro",
+        "description": "Due combinazioni o più, tutte dello stesso seme."
+      },
+      "three_suit_sequence": {
+        "name": "Sequenza dei Tre Semi",
+        "description": "La stessa corsa di tre numeri, una volta in ogni seme."
+      },
+      "dragon_duet": {
+        "name": "Duetto di Draghi",
+        "description": "Due Draghi diversi tengono il tavolo."
+      },
+      "dragon_court": {
+        "name": "Corte dei Draghi",
+        "description": "Tutti e tre i Draghi si rispondono."
+      },
+      "four_sequences": {
+        "name": "Quattro Sequenze",
+        "description": "Ogni casella combinazione porta una sequenza, e la coppia è posata."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Bambù che Risuona",
+        "description": "Una sequenza di Bambù conta due volte quando la posi."
+      },
+      "patient_pair": {
+        "name": "Coppia Paziente",
+        "description": "La coppia guadagna +30 per ogni combinazione già sul tavolo."
+      },
+      "dragon_lantern": {
+        "name": "Lanterna del Drago",
+        "description": "Una combinazione di Draghi accende la sua casella. Ogni combinazione posata dopo accanto a una casella accesa guadagna +0,5 Molt."
+      },
+      "twin_flame": {
+        "name": "Fiamma Gemella",
+        "description": "I premi delle figure pagano il doppio dei punti."
+      },
+      "river_merchant": {
+        "name": "Mercante che Sussurra",
+        "description": "Una volta per round, riprendi una tessera dal fiume e rimettila sulla rastrelliera."
+      },
+      "jade_ledger": {
+        "name": "Registro di Giada",
+        "description": "Guadagni ¥2 per ogni combinazione posata. Inizi ogni round con uno scambio in meno."
+      },
+      "honor_court": {
+        "name": "Corte degli Onori",
+        "description": "Le combinazioni di Venti o Draghi guadagnano +0,3 Molt per ciascuna tessera."
+      },
+      "terminal_gate": {
+        "name": "Porta Terminale",
+        "description": "Una combinazione che contiene un 1 o un 9 guadagna +40."
+      }
+    },
+    "chain": {
+      "title": "Come ha fatto punti",
+      "skip": "Salta"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Sequenza posata — {{tiles}}",
+        "triplet": "Tris posato — {{tiles}}",
+        "quad": "Poker posato — {{tiles}}",
+        "pair": "Coppia posata — {{tiles}}"
+      },
+      "frostMagistrate": "Magistrato di Brina: gli onori valgono la metà",
+      "momentum": "Slancio del tavolo +{{mult}} Molt",
+      "terminalGate": "Porta Terminale +{{bonus}}",
+      "honorCourt": "Corte degli Onori +{{mult}} Molt",
+      "patientPair": "Coppia Paziente +{{bonus}} ({{melds}} combinazioni in attesa)",
+      "dragonLantern": "Lanterna del Drago +{{mult}} Molt dalla casella accesa",
+      "echoingBamboo": "Bambù che Risuona: questa sequenza conta due volte",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Molt per il round",
+      "completion": "Tavolo completo — {{base}} × {{mult}}",
+      "total": "Finisce sull’obiettivo"
+    },
+    "roundEnd": {
+      "target": "Round messo al sicuro",
+      "completed": "Tavolo completato",
+      "exhausted": "Risorse esaurite"
+    },
+    "rounds": {
+      "0": "Prima Luce",
+      "1": "Corte Nascente",
+      "2": "Magistrato di Brina"
+    },
+    "boss": {
+      "frost_magistrate": "Magistrato di Brina: in questo round le tessere onore valgono metà dei loro punti."
+    },
+    "hud": {
+      "round": "Round {{current}} di {{total}}",
+      "resources": "{{actions}} azioni · {{redraws}} scambi"
+    },
+    "river": {
+      "title": "Fiume",
+      "recover": "Fiume: tocca per riprenderne una"
+    },
+    "hint": {
+      "select": "Tocca le tessere per formare una sequenza, un tris o una coppia, poi scegli una casella.",
+      "choose": "Tocca una casella evidenziata per confermarla.",
+      "noSlot": "Nessuna casella accetta quella combinazione. Scambia le tessere o scegli un’altra figura."
+    },
+    "action": {
+      "clear": "Azzera",
+      "exchange": "Scambia ({{left}})",
+      "recover": "Scambia (1 azione)",
+      "finish": "Chiudi il round",
+      "needMore": "Mancano {{remaining}}"
+    },
+    "start": {
+      "title": "Scegli come giocherai",
+      "subtitle": "Un Decreto, scelto prima della prima tessera. Deve cambiare quali tessere desideri.",
+      "take": "Comincia con questo"
+    },
+    "cleared": {
+      "title": "Round superato",
+      "subtitle": "{{score}} contro un obiettivo di {{target}}. Borsa: ¥{{gold}}.",
+      "shop": "Passa dalla casa del tè",
+      "skipShop": "Direttamente al prossimo round"
+    },
+    "shop": {
+      "title": "Casa del Tè",
+      "subtitle": "Borsa: ¥{{gold}}",
+      "empty": "Sullo scaffale non è rimasto nulla.",
+      "buy": "Compra",
+      "leave": "Prossimo round"
+    },
+    "end": {
+      "won": "Tre round, tutti superati",
+      "lost": "Il tavolo si è esaurito",
+      "summary": "Punteggio della partita {{score}}",
+      "again": "Un’altra partita"
+    },
+    "reject": {
+      "tooFew": "Seleziona almeno due tessere che formino una combinazione.",
+      "tooMany": "Una combinazione ha al massimo quattro tessere.",
+      "bonusTile": "Fiori e Stagioni non si possono posare come combinazione.",
+      "notAGroup": "Queste tessere non formano una sequenza, un tris, un poker o una coppia.",
+      "notChoosing": "La scelta di apertura è già stata fatta.",
+      "notOffered": "Quel Decreto non era in offerta.",
+      "notPlaying": "Il round è finito.",
+      "noActions": "Non restano azioni di posa.",
+      "noSlot": "Quella casella non esiste.",
+      "slotTaken": "Quella casella contiene già una combinazione.",
+      "slotEmpty": "In quella casella non c’è nulla da sostituire.",
+      "notInRack": "Quelle tessere non sono sulla tua rastrelliera.",
+      "pairSlotOnly": "La casella della coppia accetta solo una coppia.",
+      "meldSlotOnly": "Una casella combinazione accetta una sequenza, un tris o un poker.",
+      "illegalPlacement": "Quella combinazione non può andare lì.",
+      "noRedraws": "Non restano scambi.",
+      "redrawSize": "Scambia da una a tre tessere.",
+      "wallEmpty": "Il muro è vuoto.",
+      "noRecoveries": "Non restano recuperi dal fiume in questo round.",
+      "rackFull": "La rastrelliera è piena; prima posa o scambia.",
+      "notInRiver": "Quella tessera non è nel fiume.",
+      "targetNotMet": "Raggiungi l’obiettivo prima di chiudere il round.",
+      "notBetweenRounds": "Il negozio apre tra un round e l’altro.",
+      "shopClosed": "Il negozio è chiuso.",
+      "tooExpensive": "Non puoi permettertelo."
     }
   }
 }

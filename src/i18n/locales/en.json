@@ -10,7 +10,8 @@
     "close": "Close",
     "yes": "Yes",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "Main menu"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Table Stake · Difficulty",
     "tableStake": "Table stake",
     "noSpecialModifiers": "No special modifiers",
-    "promise": "Promise"
+    "promise": "Promise",
+    "tableLoop": "Table Loop (experiment)"
   },
   "settings": {
     "title": "Settings",
@@ -165,7 +167,18 @@
     "sellFor": "Sell for ¥{{value}}",
     "sellHidden": "Sell hidden Decree",
     "sellNamed": "Sell {{name}}",
-    "hiddenDecree": "hidden Decree"
+    "hiddenDecree": "hidden Decree",
+    "coach": {
+      "title": "Two ways to play this",
+      "dismiss": "Hide",
+      "pointsNow": "Points now",
+      "keepsPace": "Keeps pace: this hand needs {{required}}.",
+      "behindPace": "Short of the {{required}} this hand needs.",
+      "buildToward": "Build toward a {{pattern}}",
+      "buildTowardPlain": "Build toward a shape",
+      "shapeCost": "Scores {{difference}} less now, and keeps a pattern you can name.",
+      "tradeoff": "The bigger number is not automatically the better move — a shape you keep can be worth more later."
+    }
   },
   "rounds": {
     "small": "Small Round",
@@ -2149,6 +2162,186 @@
         "name": "Dragon's Den",
         "description": "A legendary table carved from dragon bone, hidden in a mountain cavern. Yakuman hands are amplified here, but the dragon demands greater tribute."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Meld slot {{number}}",
+      "pair": "Pair slot",
+      "meldShort": "Meld",
+      "pairShort": "Pair",
+      "emptyMeld": "run or set",
+      "emptyPair": "two alike",
+      "replace": "Replace"
+    },
+    "milestones": {
+      "title": "Patterns",
+      "momentum": "Table momentum +{{mult}} Mult",
+      "claimed": "paid",
+      "twin_sequence": {
+        "name": "Twin Sequence",
+        "description": "Two identical sequences stand together on the table."
+      },
+      "pure_suit": {
+        "name": "Pure Suit",
+        "description": "Two or more groups, every one of them in the same suit."
+      },
+      "three_suit_sequence": {
+        "name": "Three-Suit Sequence",
+        "description": "The same run of three ranks, once in every suit."
+      },
+      "dragon_duet": {
+        "name": "Dragon Duet",
+        "description": "Two different Dragons hold the table."
+      },
+      "dragon_court": {
+        "name": "Dragon Court",
+        "description": "All three Dragons answer one another."
+      },
+      "four_sequences": {
+        "name": "Four Sequences",
+        "description": "Every meld slot holds a sequence, and the pair is placed."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Echoing Bamboo",
+        "description": "A Bamboo sequence scores twice when you place it."
+      },
+      "patient_pair": {
+        "name": "Patient Pair",
+        "description": "The pair scores +30 for every meld already on the table."
+      },
+      "dragon_lantern": {
+        "name": "Dragon Lantern",
+        "description": "A Dragon group lights its slot. Every later group placed beside a lit slot gains +0.5 Mult."
+      },
+      "twin_flame": {
+        "name": "Twin Flame",
+        "description": "Milestone rewards pay double points."
+      },
+      "river_merchant": {
+        "name": "Whispering Merchant",
+        "description": "Once per round, take one tile back out of the river into your rack."
+      },
+      "jade_ledger": {
+        "name": "Jade Ledger",
+        "description": "Earn ¥2 for every group you place. Start each round with one fewer redraw."
+      },
+      "honor_court": {
+        "name": "Honor Court",
+        "description": "Groups of Winds or Dragons gain +0.3 Mult for each of their tiles."
+      },
+      "terminal_gate": {
+        "name": "Terminal Gate",
+        "description": "A group containing a 1 or a 9 scores +40."
+      }
+    },
+    "chain": {
+      "title": "How it scored",
+      "skip": "Skip"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Sequence placed — {{tiles}}",
+        "triplet": "Triplet placed — {{tiles}}",
+        "quad": "Quad placed — {{tiles}}",
+        "pair": "Pair placed — {{tiles}}"
+      },
+      "frostMagistrate": "Frost Magistrate — Honor tiles score half",
+      "momentum": "Table momentum +{{mult}} Mult",
+      "terminalGate": "Terminal Gate +{{bonus}}",
+      "honorCourt": "Honor Court +{{mult}} Mult",
+      "patientPair": "Patient Pair +{{bonus}} ({{melds}} melds waiting)",
+      "dragonLantern": "Dragon Lantern +{{mult}} Mult from the lit slot",
+      "echoingBamboo": "Echoing Bamboo — this sequence scores twice",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Mult for the round",
+      "completion": "Table complete — {{base}} × {{mult}}",
+      "total": "Lands on the target"
+    },
+    "roundEnd": {
+      "target": "Round secured",
+      "completed": "Table finished",
+      "exhausted": "Resources spent"
+    },
+    "rounds": {
+      "0": "First Light",
+      "1": "Rising Court",
+      "2": "Frost Magistrate"
+    },
+    "boss": {
+      "frost_magistrate": "Frost Magistrate — Honor tiles score half their points this round."
+    },
+    "hud": {
+      "round": "Round {{current}} of {{total}}",
+      "resources": "{{actions}} actions · {{redraws}} exchanges"
+    },
+    "river": {
+      "title": "River",
+      "recover": "River — tap to take one back"
+    },
+    "hint": {
+      "select": "Tap tiles to build a run, a set or a pair, then choose a slot.",
+      "choose": "Tap a highlighted slot to commit it.",
+      "noSlot": "No slot takes that group. Exchange the tiles or pick a different shape."
+    },
+    "action": {
+      "clear": "Clear",
+      "exchange": "Exchange ({{left}})",
+      "recover": "Exchange (1 action)",
+      "finish": "Finish round",
+      "needMore": "{{remaining}} to go"
+    },
+    "start": {
+      "title": "Choose how you will play",
+      "subtitle": "One Decree, chosen before the first tile. It should change which tiles you want.",
+      "take": "Begin with this"
+    },
+    "cleared": {
+      "title": "Round cleared",
+      "subtitle": "{{score}} against a target of {{target}}. Purse: ¥{{gold}}.",
+      "shop": "Visit the tea house",
+      "skipShop": "Straight to the next round"
+    },
+    "shop": {
+      "title": "Tea house",
+      "subtitle": "Purse: ¥{{gold}}",
+      "empty": "Nothing left on the shelf.",
+      "buy": "Buy",
+      "leave": "Next round"
+    },
+    "end": {
+      "won": "Three rounds, cleared",
+      "lost": "The table ran out",
+      "summary": "Run score {{score}}",
+      "again": "Another run"
+    },
+    "reject": {
+      "tooFew": "Select at least two tiles that form a group.",
+      "tooMany": "A group is at most four tiles.",
+      "bonusTile": "Flowers and Seasons cannot be placed as a group.",
+      "notAGroup": "These tiles do not form a sequence, triplet, quad or pair.",
+      "notChoosing": "The opening choice has already been made.",
+      "notOffered": "That Decree was not offered.",
+      "notPlaying": "The round is over.",
+      "noActions": "No placement actions remain.",
+      "noSlot": "That slot does not exist.",
+      "slotTaken": "That slot already holds a group.",
+      "slotEmpty": "There is nothing in that slot to revise.",
+      "notInRack": "Those tiles are not in your rack.",
+      "pairSlotOnly": "The pair slot only takes a pair.",
+      "meldSlotOnly": "A meld slot takes a sequence, triplet or quad.",
+      "illegalPlacement": "That group cannot go there.",
+      "noRedraws": "No exchanges remain.",
+      "redrawSize": "Exchange one to three tiles.",
+      "wallEmpty": "The wall is empty.",
+      "noRecoveries": "No river recoveries remain this round.",
+      "rackFull": "Your rack is full; place or exchange first.",
+      "notInRiver": "That tile is not in the river.",
+      "targetNotMet": "Reach the target before finishing the round.",
+      "notBetweenRounds": "The shop opens between rounds.",
+      "shopClosed": "The shop is closed.",
+      "tooExpensive": "You cannot afford that."
     }
   }
 }

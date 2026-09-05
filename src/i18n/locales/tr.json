@@ -10,7 +10,8 @@
     "close": "Kapat",
     "yes": "Evet",
     "no": "Hayır",
-    "ok": "Tamam"
+    "ok": "Tamam",
+    "mainMenu": "Ana menü"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Masa Bahsi · Zorluk",
     "tableStake": "Masa bahsi",
     "noSpecialModifiers": "Özel değiştirici yok",
-    "promise": "Yemin"
+    "promise": "Yemin",
+    "tableLoop": "Masa Döngüsü (deney)"
   },
   "settings": {
     "title": "Ayarlar",
@@ -169,7 +171,18 @@
     "sellFor": "¥{{value}} karşılığında sat",
     "sellHidden": "Gizli Kararnameyi sat",
     "sellNamed": "{{name}} sat",
-    "hiddenDecree": "gizli Kararname"
+    "hiddenDecree": "gizli Kararname",
+    "coach": {
+      "title": "Bu eli oynamanın iki yolu",
+      "dismiss": "Gizle",
+      "pointsNow": "Şimdiki puan",
+      "keepsPace": "Tempoyu tutuyor: bu el {{required}} istiyor.",
+      "behindPace": "Bu elin istediği {{required}} puanın altında kalıyor.",
+      "buildToward": "{{pattern}} hedefine doğru kur",
+      "buildTowardPlain": "Bir şekle doğru kur",
+      "shapeCost": "Şimdi {{difference}} daha az kazandırır ama adını koyabileceğin bir şekli elinde bırakır.",
+      "tradeoff": "Büyük sayı her zaman daha iyi hamle değildir; elde tuttuğun şekil sonradan daha çok değebilir."
+    }
   },
   "rounds": {
     "small": "Küçük Tur",
@@ -687,6 +700,186 @@
         "name": "Ejderha İni",
         "description": "Dağ mağarasında saklı, ejderha kemiğinden oyulmuş efsanevi masa. Yakuman elleri güçlenir, ancak ejderha daha büyük haraç ister."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Grup yuvası {{number}}",
+      "pair": "Çift yuvası",
+      "meldShort": "Grup",
+      "pairShort": "Çift",
+      "emptyMeld": "seri ya da üçlü",
+      "emptyPair": "iki aynı",
+      "replace": "Değiştir"
+    },
+    "milestones": {
+      "title": "Şekiller",
+      "momentum": "Masa ivmesi +{{mult}} Çarpan",
+      "claimed": "alındı",
+      "twin_sequence": {
+        "name": "İkiz Seri",
+        "description": "Aynı seriden iki tanesi masada yan yana durur."
+      },
+      "pure_suit": {
+        "name": "Saf Renk",
+        "description": "İki ya da daha çok grup, hepsi aynı renkten."
+      },
+      "three_suit_sequence": {
+        "name": "Üç Renkli Seri",
+        "description": "Aynı üçlü sayı dizisi, her renkte birer kez."
+      },
+      "dragon_duet": {
+        "name": "Ejderha İkilisi",
+        "description": "İki farklı Ejderha masayı tutar."
+      },
+      "dragon_court": {
+        "name": "Ejderha Sarayı",
+        "description": "Üç Ejderha da birbirine karşılık verir."
+      },
+      "four_sequences": {
+        "name": "Dört Seri",
+        "description": "Her grup yuvasında bir seri var ve çift de yerleştirildi."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Yankılanan Bambu",
+        "description": "Bir Bambu serisi yerleştirdiğinde iki kez puan verir."
+      },
+      "patient_pair": {
+        "name": "Sabırlı Çift",
+        "description": "Masada duran her grup için çift +30 kazanır."
+      },
+      "dragon_lantern": {
+        "name": "Ejderha Feneri",
+        "description": "Bir Ejderha grubu kendi yuvasını yakar. Yanan bir yuvanın yanına sonradan konan her grup +0,5 Çarpan alır."
+      },
+      "twin_flame": {
+        "name": "İkiz Alev",
+        "description": "Şekil ödülleri iki katı puan öder."
+      },
+      "river_merchant": {
+        "name": "Fısıldayan Tüccar",
+        "description": "Her turda bir kez, nehirden bir taşı rafına geri al."
+      },
+      "jade_ledger": {
+        "name": "Yeşim Defteri",
+        "description": "Yerleştirdiğin her grup için ¥2 kazan. Her tura bir değişim eksiğiyle başla."
+      },
+      "honor_court": {
+        "name": "Onur Sarayı",
+        "description": "Rüzgâr ya da Ejderha grupları her taşı için +0,3 Çarpan alır."
+      },
+      "terminal_gate": {
+        "name": "Uç Taş Kapısı",
+        "description": "İçinde 1 ya da 9 bulunan grup +40 kazanır."
+      }
+    },
+    "chain": {
+      "title": "Puan nasıl oluştu",
+      "skip": "Atla"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Seri yerleştirildi — {{tiles}}",
+        "triplet": "Üçlü yerleştirildi — {{tiles}}",
+        "quad": "Dörtlü yerleştirildi — {{tiles}}",
+        "pair": "Çift yerleştirildi — {{tiles}}"
+      },
+      "frostMagistrate": "Kırağı Yargıcı: onur taşları yarım puan",
+      "momentum": "Masa ivmesi +{{mult}} Çarpan",
+      "terminalGate": "Uç Taş Kapısı +{{bonus}}",
+      "honorCourt": "Onur Sarayı +{{mult}} Çarpan",
+      "patientPair": "Sabırlı Çift +{{bonus}} (bekleyen grup: {{melds}})",
+      "dragonLantern": "Ejderha Feneri, yanan yuvadan +{{mult}} Çarpan",
+      "echoingBamboo": "Yankılanan Bambu: bu seri iki kez puan verir",
+      "milestone": "{{name}} +{{points}}, tur boyunca +{{mult}} Çarpan",
+      "completion": "Masa tamam — {{base}} × {{mult}}",
+      "total": "Hedefe ekleniyor"
+    },
+    "roundEnd": {
+      "target": "Tur güvenceye alındı",
+      "completed": "Masa tamamlandı",
+      "exhausted": "Kaynaklar tükendi"
+    },
+    "rounds": {
+      "0": "İlk Işık",
+      "1": "Yükselen Saray",
+      "2": "Kırağı Yargıcı"
+    },
+    "boss": {
+      "frost_magistrate": "Kırağı Yargıcı: bu turda onur taşları puanlarının yarısını verir."
+    },
+    "hud": {
+      "round": "{{total}} turdan {{current}}. tur",
+      "resources": "{{actions}} hamle · {{redraws}} değişim"
+    },
+    "river": {
+      "title": "Nehir",
+      "recover": "Nehir: birini geri almak için dokun"
+    },
+    "hint": {
+      "select": "Taşlara dokunup bir seri, üçlü ya da çift kur, sonra bir yuva seç.",
+      "choose": "Onaylamak için vurgulanan yuvaya dokun.",
+      "noSlot": "Hiçbir yuva bu grubu almıyor. Taşları değiştir ya da başka bir şekil seç."
+    },
+    "action": {
+      "clear": "Temizle",
+      "exchange": "Değiştir ({{left}})",
+      "recover": "Değiştir (1 hamle)",
+      "finish": "Turu bitir",
+      "needMore": "{{remaining}} kaldı"
+    },
+    "start": {
+      "title": "Nasıl oynayacağını seç",
+      "subtitle": "İlk taştan önce seçilen tek bir Kararname. Hangi taşları istediğini değiştirmeli.",
+      "take": "Bununla başla"
+    },
+    "cleared": {
+      "title": "Tur geçildi",
+      "subtitle": "{{target}} hedefine karşı {{score}}. Kese: ¥{{gold}}.",
+      "shop": "Çay evine uğra",
+      "skipShop": "Doğrudan sonraki tura"
+    },
+    "shop": {
+      "title": "Çay Evi",
+      "subtitle": "Kese: ¥{{gold}}",
+      "empty": "Rafta bir şey kalmadı.",
+      "buy": "Satın al",
+      "leave": "Sonraki tur"
+    },
+    "end": {
+      "won": "Üç tur, hepsi geçildi",
+      "lost": "Masa tükendi",
+      "summary": "Tur toplamı {{score}}",
+      "again": "Bir tur daha"
+    },
+    "reject": {
+      "tooFew": "Grup oluşturan en az iki taş seç.",
+      "tooMany": "Bir grup en fazla dört taştır.",
+      "bonusTile": "Çiçek ve mevsim taşları grup olarak yerleştirilemez.",
+      "notAGroup": "Bu taşlar seri, üçlü, dörtlü ya da çift oluşturmuyor.",
+      "notChoosing": "Açılış seçimi zaten yapıldı.",
+      "notOffered": "O Kararname sunulmadı.",
+      "notPlaying": "Tur bitti.",
+      "noActions": "Yerleştirme hamlesi kalmadı.",
+      "noSlot": "Böyle bir yuva yok.",
+      "slotTaken": "O yuvada zaten bir grup var.",
+      "slotEmpty": "O yuvada değiştirilecek bir şey yok.",
+      "notInRack": "O taşlar rafında değil.",
+      "pairSlotOnly": "Çift yuvası yalnızca çift alır.",
+      "meldSlotOnly": "Grup yuvası seri, üçlü ya da dörtlü alır.",
+      "illegalPlacement": "O grup oraya konamaz.",
+      "noRedraws": "Değişim hakkı kalmadı.",
+      "redrawSize": "Bir ile üç taş arasında değiştir.",
+      "wallEmpty": "Duvar boş.",
+      "noRecoveries": "Bu turda nehirden geri alma hakkı kalmadı.",
+      "rackFull": "Rafın dolu; önce yerleştir ya da değiştir.",
+      "notInRiver": "O taş nehirde değil.",
+      "targetNotMet": "Turu bitirmeden önce hedefe ulaş.",
+      "notBetweenRounds": "Dükkân turlar arasında açılır.",
+      "shopClosed": "Dükkân kapalı.",
+      "tooExpensive": "Buna paran yetmiyor."
     }
   }
 }

@@ -10,7 +10,8 @@
     "close": "Fermer",
     "yes": "Oui",
     "no": "Non",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "Menu principal"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Mise de table · Difficulté",
     "tableStake": "Mise de table",
     "noSpecialModifiers": "Aucun modificateur spécial",
-    "promise": "Promesse"
+    "promise": "Promesse",
+    "tableLoop": "Boucle de table (expérience)"
   },
   "settings": {
     "title": "Paramètres",
@@ -169,7 +171,18 @@
     "sellFor": "Vendre pour ¥{{value}}",
     "sellHidden": "Vendre le Décret caché",
     "sellNamed": "Vendre {{name}}",
-    "hiddenDecree": "Décret caché"
+    "hiddenDecree": "Décret caché",
+    "coach": {
+      "title": "Deux façons de jouer ce coup",
+      "dismiss": "Masquer",
+      "pointsNow": "Des points tout de suite",
+      "keepsPace": "Tient le rythme : cette main demande {{required}}.",
+      "behindPace": "En dessous des {{required}} que demande cette main.",
+      "buildToward": "Construire vers une {{pattern}}",
+      "buildTowardPlain": "Construire vers une figure",
+      "shapeCost": "Rapporte {{difference}} de moins maintenant, et garde une figure que vous savez nommer.",
+      "tradeoff": "Le plus gros chiffre n’est pas forcément le meilleur coup : une figure conservée peut valoir davantage plus tard."
+    }
   },
   "rounds": {
     "small": "Petite Manche",
@@ -2153,6 +2166,186 @@
         "name": "Antre du Dragon",
         "description": "Une table légendaire taillée dans l'os de dragon, cachée dans une caverne de montagne."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Emplacement de combinaison {{number}}",
+      "pair": "Emplacement de la paire",
+      "meldShort": "Combinaison",
+      "pairShort": "Paire",
+      "emptyMeld": "séquence ou brelan",
+      "emptyPair": "deux identiques",
+      "replace": "Remplacer"
+    },
+    "milestones": {
+      "title": "Figures",
+      "momentum": "Élan de la table +{{mult}} Mult",
+      "claimed": "acquise",
+      "twin_sequence": {
+        "name": "Séquence Jumelle",
+        "description": "Deux séquences identiques se dressent côte à côte sur la table."
+      },
+      "pure_suit": {
+        "name": "Famille Pure",
+        "description": "Deux combinaisons ou plus, toutes de la même famille."
+      },
+      "three_suit_sequence": {
+        "name": "Séquence des Trois Familles",
+        "description": "La même suite de trois rangs, une fois dans chaque famille."
+      },
+      "dragon_duet": {
+        "name": "Duo de Dragons",
+        "description": "Deux Dragons différents tiennent la table."
+      },
+      "dragon_court": {
+        "name": "Cour des Dragons",
+        "description": "Les trois Dragons se répondent."
+      },
+      "four_sequences": {
+        "name": "Quatre Séquences",
+        "description": "Chaque emplacement de combinaison porte une séquence, et la paire est posée."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Bambou qui Résonne",
+        "description": "Une séquence de Bambous compte deux fois quand vous la posez."
+      },
+      "patient_pair": {
+        "name": "Paire Patiente",
+        "description": "La paire gagne +30 pour chaque combinaison déjà sur la table."
+      },
+      "dragon_lantern": {
+        "name": "Lanterne du Dragon",
+        "description": "Une combinaison de Dragons allume son emplacement. Toute combinaison posée ensuite à côté d’un emplacement allumé gagne +0,5 Mult."
+      },
+      "twin_flame": {
+        "name": "Flamme Jumelle",
+        "description": "Les récompenses de figure versent le double de points."
+      },
+      "river_merchant": {
+        "name": "Marchand qui Chuchote",
+        "description": "Une fois par manche, reprenez une tuile de la rivière dans votre chevalet."
+      },
+      "jade_ledger": {
+        "name": "Registre de Jade",
+        "description": "Gagnez ¥2 pour chaque combinaison posée. Commencez chaque manche avec un échange de moins."
+      },
+      "honor_court": {
+        "name": "Cour des Honneurs",
+        "description": "Les combinaisons de Vents ou de Dragons gagnent +0,3 Mult par tuile."
+      },
+      "terminal_gate": {
+        "name": "Porte Terminale",
+        "description": "Une combinaison contenant un 1 ou un 9 gagne +40."
+      }
+    },
+    "chain": {
+      "title": "Comment ça a compté",
+      "skip": "Passer"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Séquence posée — {{tiles}}",
+        "triplet": "Brelan posé — {{tiles}}",
+        "quad": "Carré posé — {{tiles}}",
+        "pair": "Paire posée — {{tiles}}"
+      },
+      "frostMagistrate": "Magistrat de Givre : les honneurs comptent moitié",
+      "momentum": "Élan de la table +{{mult}} Mult",
+      "terminalGate": "Porte Terminale +{{bonus}}",
+      "honorCourt": "Cour des Honneurs +{{mult}} Mult",
+      "patientPair": "Paire Patiente +{{bonus}} ({{melds}} combinaisons en attente)",
+      "dragonLantern": "Lanterne du Dragon +{{mult}} Mult depuis l’emplacement allumé",
+      "echoingBamboo": "Bambou qui Résonne : cette séquence compte deux fois",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Mult pour la manche",
+      "completion": "Table complète — {{base}} × {{mult}}",
+      "total": "Se pose sur l’objectif"
+    },
+    "roundEnd": {
+      "target": "Manche assurée",
+      "completed": "Table achevée",
+      "exhausted": "Ressources épuisées"
+    },
+    "rounds": {
+      "0": "Première Lueur",
+      "1": "Cour Montante",
+      "2": "Magistrat de Givre"
+    },
+    "boss": {
+      "frost_magistrate": "Magistrat de Givre : cette manche, les tuiles d’honneur ne comptent que la moitié de leurs points."
+    },
+    "hud": {
+      "round": "Manche {{current}} sur {{total}}",
+      "resources": "{{actions}} actions · {{redraws}} échanges"
+    },
+    "river": {
+      "title": "Rivière",
+      "recover": "Rivière : touchez pour en reprendre une"
+    },
+    "hint": {
+      "select": "Touchez des tuiles pour former une séquence, un brelan ou une paire, puis choisissez un emplacement.",
+      "choose": "Touchez un emplacement mis en avant pour valider.",
+      "noSlot": "Aucun emplacement n’accepte cette combinaison. Échangez les tuiles ou choisissez une autre figure."
+    },
+    "action": {
+      "clear": "Effacer",
+      "exchange": "Échanger ({{left}})",
+      "recover": "Échanger (1 action)",
+      "finish": "Terminer la manche",
+      "needMore": "Encore {{remaining}}"
+    },
+    "start": {
+      "title": "Choisissez votre façon de jouer",
+      "subtitle": "Un Décret, choisi avant la première tuile. Il doit changer les tuiles que vous voulez.",
+      "take": "Commencer avec celui-ci"
+    },
+    "cleared": {
+      "title": "Manche réussie",
+      "subtitle": "{{score}} pour un objectif de {{target}}. Bourse : ¥{{gold}}.",
+      "shop": "Passer à la maison de thé",
+      "skipShop": "Directement à la manche suivante"
+    },
+    "shop": {
+      "title": "Maison de Thé",
+      "subtitle": "Bourse : ¥{{gold}}",
+      "empty": "Il ne reste rien sur l’étagère.",
+      "buy": "Acheter",
+      "leave": "Manche suivante"
+    },
+    "end": {
+      "won": "Trois manches, toutes franchies",
+      "lost": "La table s’est épuisée",
+      "summary": "Score de la partie {{score}}",
+      "again": "Une autre partie"
+    },
+    "reject": {
+      "tooFew": "Sélectionnez au moins deux tuiles qui forment une combinaison.",
+      "tooMany": "Une combinaison compte au plus quatre tuiles.",
+      "bonusTile": "Les fleurs et les saisons ne peuvent pas être posées comme combinaison.",
+      "notAGroup": "Ces tuiles ne forment ni séquence, ni brelan, ni carré, ni paire.",
+      "notChoosing": "Le choix d’ouverture est déjà fait.",
+      "notOffered": "Ce Décret n’a pas été proposé.",
+      "notPlaying": "La manche est terminée.",
+      "noActions": "Il ne reste plus d’action de pose.",
+      "noSlot": "Cet emplacement n’existe pas.",
+      "slotTaken": "Cet emplacement contient déjà une combinaison.",
+      "slotEmpty": "Il n’y a rien à remplacer dans cet emplacement.",
+      "notInRack": "Ces tuiles ne sont pas dans votre chevalet.",
+      "pairSlotOnly": "L’emplacement de la paire n’accepte qu’une paire.",
+      "meldSlotOnly": "Un emplacement de combinaison accepte une séquence, un brelan ou un carré.",
+      "illegalPlacement": "Cette combinaison ne peut pas aller là.",
+      "noRedraws": "Il ne reste plus d’échange.",
+      "redrawSize": "Échangez une à trois tuiles.",
+      "wallEmpty": "Le mur est vide.",
+      "noRecoveries": "Plus aucune reprise dans la rivière pour cette manche.",
+      "rackFull": "Votre chevalet est plein ; posez ou échangez d’abord.",
+      "notInRiver": "Cette tuile n’est pas dans la rivière.",
+      "targetNotMet": "Atteignez l’objectif avant de terminer la manche.",
+      "notBetweenRounds": "La boutique ouvre entre les manches.",
+      "shopClosed": "La boutique est fermée.",
+      "tooExpensive": "Vous ne pouvez pas vous le permettre."
     }
   }
 }

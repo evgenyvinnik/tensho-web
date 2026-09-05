@@ -1,0 +1,502 @@
+/**
+ * TableLoopScreen
+ *
+ * The playable prototype for experiments E01–E05 of
+ * `docs/GAMEPLAY_EXPERIMENTS.md`: a three-round run where every group you play
+ * stays on the table, patterns pay before the table is finished, the run opens
+ * with a build choice, a small shop sells effects that interact, and each score
+ * resolves as a readable chain.
+ *
+ * It runs beside the classic loop rather than replacing it, so the two can be
+ * played back to back during a session — which is what the playtest plan in
+ * section 8 asks for.
+ *
+ * @module components/screens/TableLoopScreen
+ */
+
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
+import { useAppNavigation, ROUTES } from '../../router'
+import { useTableLoopStore } from '../../stores/tableLoopStore'
+import { TileImage } from '../tiles/TileImage'
+import { TableSlots } from '../tableloop/TableSlots'
+import { MilestoneTrack } from '../tableloop/MilestoneTrack'
+import { CausalChain } from '../tableloop/CausalChain'
+import {
+  placeableSlots,
+  revisableSlots,
+} from '../../tableloop/TableLoopEngine'
+import { MAX_REDRAW_TILES, TABLE_ROUNDS, getTableDecree } from '../../tableloop/content'
+import type { TableDecreeId } from '../../tableloop/types'
+
+// =============================================================================
+// SHARED PIECES
+// =============================================================================
+
+function DecreeCard({
+  id,
+  onChoose,
+  actionLabel,
+  disabled,
+  showCost,
+}: {
+  id: TableDecreeId
+  onChoose: (id: TableDecreeId) => void
+  actionLabel: string
+  disabled?: boolean
+  showCost?: boolean
+}) {
+  const { t } = useTranslation()
+  const definition = getTableDecree(id)
+
+  return (
+    <button
+      data-testid={`table-decree-${id}`}
+      disabled={disabled}
+      onClick={() => onChoose(id)}
+      className={`flex w-full flex-col rounded-xl border-2 px-3 py-2.5 text-left transition-colors ${
+        disabled
+          ? 'border-[var(--color-metallic-gold)]/15 opacity-50'
+          : 'border-[var(--color-metallic-gold)]/50 hover:border-[var(--color-golden-yellow)] hover:bg-[var(--color-golden-yellow)]/10'
+      }`}
+    >
+      <span className="flex items-baseline justify-between gap-2">
+        <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
+          {t(`tableLoop.decrees.${id}.name`, definition.name)}
+        </span>
+        {showCost && (
+          <span className="text-xs font-bold tabular-nums text-emerald-300">
+            ¥{definition.cost}
+          </span>
+        )}
+      </span>
+      <span className="mt-1 text-xs leading-snug text-[var(--color-beige-white)]/75">
+        {t(`tableLoop.decrees.${id}.description`, definition.description)}
+      </span>
+      <span className="mt-1.5 text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/45">
+        {actionLabel}
+      </span>
+    </button>
+  )
+}
+
+function Panel({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string
+  subtitle?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="viewport-full flex flex-col items-center justify-center gap-4 bg-[var(--color-dark-forest)] px-4 py-6">
+      <div className="w-full max-w-md text-center">
+        <h1 className="text-xl font-black text-[var(--color-golden-yellow)]">
+          {title}
+        </h1>
+        {subtitle && (
+          <p className="mt-1 text-sm text-[var(--color-beige-white)]/70">
+            {subtitle}
+          </p>
+        )}
+      </div>
+      <div className="flex w-full max-w-md flex-col gap-2">{children}</div>
+    </div>
+  )
+}
+
+// =============================================================================
+// SCREEN
+// =============================================================================
+
+export function TableLoopScreen() {
+  const { t } = useTranslation()
+  const { navigateTo } = useAppNavigation()
+  const store = useTableLoopStore()
+  const { state, selectedTileIds } = store
+  const [highlightedSlots, setHighlightedSlots] = useState<readonly number[]>([])
+
+  // `?seed=` replays an exact run. The playtest plan in section 8 of the
+  // experiments document depends on being able to hand someone the same deal
+  // that confused a previous player, and it makes browser tests deterministic.
+  const [searchParams] = useSearchParams()
+  const requestedSeed = Number(searchParams.get('seed'))
+  const appliedSeed = useRef<number | null>(null)
+  const { restart } = store
+  useEffect(() => {
+    if (!Number.isFinite(requestedSeed) || requestedSeed === 0) return
+    if (appliedSeed.current === requestedSeed) return
+    appliedSeed.current = requestedSeed
+    restart(requestedSeed)
+  }, [requestedSeed, restart])
+
+  const selectedTiles = useMemo(
+    () => state.rack.filter((tile) => selectedTileIds.includes(tile.id)),
+    [state.rack, selectedTileIds]
+  )
+
+  const placeable = useMemo(
+    () => (selectedTiles.length ? placeableSlots(state, selectedTiles) : []),
+    [state, selectedTiles]
+  )
+  const revisable = useMemo(
+    () => (selectedTiles.length ? revisableSlots(state, selectedTiles) : []),
+    [state, selectedTiles]
+  )
+
+  const forecasts = useMemo(() => {
+    const map = new Map<number, number>()
+    for (const slot of [...placeable, ...revisable]) {
+      const forecast = store.engine.previewPlacement(selectedTileIds, slot)
+      if (forecast) map.set(slot, forecast.total)
+    }
+    return map
+  }, [store.engine, selectedTileIds, placeable, revisable])
+
+  // The chain re-emits its highlight on every render, so this must be a no-op
+  // when nothing changed; storing a fresh array each time would re-render the
+  // screen forever.
+  const handleHighlight = useCallback((slots: readonly number[]) => {
+    setHighlightedSlots((current) =>
+      current.length === slots.length &&
+      current.every((value, index) => value === slots[index])
+        ? current
+        : slots
+    )
+  }, [])
+
+  // ---------------------------------------------------------------------------
+  // PHASES OUTSIDE PLAY
+  // ---------------------------------------------------------------------------
+
+  if (state.phase === 'choosingStart') {
+    return (
+      <Panel
+        title={t('tableLoop.start.title', 'Choose how you will play')}
+        subtitle={t(
+          'tableLoop.start.subtitle',
+          'One Decree, chosen before the first tile. It should change which tiles you want.'
+        )}
+      >
+        {state.starterChoices.map((id) => (
+          <DecreeCard
+            key={id}
+            id={id}
+            onChoose={store.chooseStarter}
+            actionLabel={t('tableLoop.start.take', 'Begin with this')}
+          />
+        ))}
+        <button
+          onClick={() => navigateTo(ROUTES.MENU)}
+          className="mt-2 text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50"
+        >
+          {t('common.back', 'Back')}
+        </button>
+      </Panel>
+    )
+  }
+
+  // How the round stopped, so the panel can say which of the three endings it
+  // was rather than leaving the player to infer it from the numbers.
+  const endingStage = state.lastResolution.find((stage) => stage.labelKey?.startsWith('tableLoop.roundEnd.'))
+  const endingLabel = endingStage
+    ? t(endingStage.labelKey!, endingStage.label)
+    : undefined
+
+  if (state.phase === 'roundCleared') {
+    return (
+      <Panel
+        title={endingLabel ?? t('tableLoop.cleared.title', 'Round cleared')}
+        subtitle={t(
+          'tableLoop.cleared.subtitle',
+          '{{score}} against a target of {{target}}. Purse: ¥{{gold}}.',
+          { score: state.score, target: state.round.target, gold: state.gold }
+        )}
+      >
+        <button
+          onClick={store.openShop}
+          className="rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
+        >
+          {t('tableLoop.cleared.shop', 'Visit the tea house')}
+        </button>
+        <button
+          onClick={store.nextRound}
+          className="rounded-xl border border-[var(--color-metallic-gold)]/40 px-4 py-2.5 text-sm text-[var(--color-beige-white)]/80"
+        >
+          {t('tableLoop.cleared.skipShop', 'Straight to the next round')}
+        </button>
+      </Panel>
+    )
+  }
+
+  if (state.phase === 'shop') {
+    return (
+      <Panel
+        title={t('tableLoop.shop.title', 'Tea house')}
+        subtitle={t('tableLoop.shop.subtitle', 'Purse: ¥{{gold}}', {
+          gold: state.gold,
+        })}
+      >
+        {state.shopOffers.length === 0 ? (
+          <p className="text-center text-sm text-[var(--color-beige-white)]/60">
+            {t('tableLoop.shop.empty', 'Nothing left on the shelf.')}
+          </p>
+        ) : (
+          state.shopOffers.map((id) => (
+            <DecreeCard
+              key={id}
+              id={id}
+              showCost
+              disabled={state.gold < getTableDecree(id).cost}
+              onChoose={store.buyDecree}
+              actionLabel={t('tableLoop.shop.buy', 'Buy')}
+            />
+          ))
+        )}
+        <button
+          onClick={store.nextRound}
+          className="mt-2 rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
+        >
+          {t('tableLoop.shop.leave', 'Next round')}
+        </button>
+      </Panel>
+    )
+  }
+
+  if (state.phase === 'runComplete' || state.phase === 'runFailed') {
+    const won = state.phase === 'runComplete'
+    return (
+      <Panel
+        title={
+          won
+            ? t('tableLoop.end.won', 'Three rounds, cleared')
+            : t('tableLoop.end.lost', 'The table ran out')
+        }
+        subtitle={t('tableLoop.end.summary', 'Run score {{score}}', {
+          score: state.runScore,
+        })}
+      >
+        <button
+          onClick={() => store.restart()}
+          className="rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
+        >
+          {t('tableLoop.end.again', 'Another run')}
+        </button>
+        <button
+          onClick={() => navigateTo(ROUTES.MENU)}
+          className="rounded-xl border border-[var(--color-metallic-gold)]/40 px-4 py-2.5 text-sm text-[var(--color-beige-white)]/80"
+        >
+          {t('common.mainMenu', 'Main menu')}
+        </button>
+      </Panel>
+    )
+  }
+
+  // ---------------------------------------------------------------------------
+  // PLAYING
+  // ---------------------------------------------------------------------------
+
+  const remaining = Math.max(0, state.round.target - state.score)
+  const progress = Math.min(100, (state.score / state.round.target) * 100)
+  // Once the exchange allowance is spent, an exchange becomes a recovery play
+  // paid for with a placement action.
+  const exchangeCostsAction = state.redrawsRemaining <= 0
+  const canRedraw =
+    (state.redrawsRemaining > 0 || state.placementActionsRemaining > 0) &&
+    selectedTileIds.length > 0 &&
+    selectedTileIds.length <= MAX_REDRAW_TILES &&
+    state.wall.length > 0
+  const canRecover =
+    state.riverRecoveriesRemaining > 0 && state.river.length > 0
+
+  return (
+    <div className="viewport-full flex flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
+      {/* Header */}
+      <header className="flex-shrink-0 px-3 pt-2">
+        <div className="flex items-baseline justify-between gap-2">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-bold text-[var(--color-golden-yellow)]">
+              {t(`tableLoop.rounds.${state.round.index}`, state.round.name)}
+            </p>
+            <p className="text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/45">
+              {t('tableLoop.hud.round', 'Round {{current}} of {{total}}', {
+                current: state.roundIndex + 1,
+                total: TABLE_ROUNDS.length,
+              })}
+            </p>
+          </div>
+          <p className="flex-shrink-0 text-sm font-bold tabular-nums text-emerald-300">
+            ¥{state.gold}
+          </p>
+        </div>
+
+        <div className="mt-1 flex items-baseline gap-2 text-sm tabular-nums">
+          <strong className="text-[var(--color-golden-yellow)]">
+            {state.score.toLocaleString()}
+          </strong>
+          <span className="text-[var(--color-beige-white)]/40">
+            / {state.round.target.toLocaleString()}
+          </span>
+          <span className="ml-auto text-[11px] text-[var(--color-beige-white)]/55">
+            {t('tableLoop.hud.resources', '{{actions}} actions · {{redraws}} exchanges', {
+              actions: state.placementActionsRemaining,
+              redraws: state.redrawsRemaining,
+            })}
+          </span>
+        </div>
+        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-black/40">
+          <div
+            className="h-full rounded-full bg-[var(--color-golden-yellow)] transition-all"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        {state.round.bossRule && (
+          <p
+            data-testid="boss-banner"
+            className="mt-1.5 rounded-md border border-rose-400/50 bg-rose-950/40 px-2 py-1 text-[11px] leading-snug text-rose-100"
+          >
+            {t(
+              `tableLoop.boss.${state.round.bossRule}`,
+              'Frost Magistrate — Honor tiles score half their points this round.'
+            )}
+          </p>
+        )}
+      </header>
+
+      {/* The persistent table */}
+      <TableSlots
+        slots={state.slots}
+        placeable={placeable}
+        revisable={revisable}
+        highlighted={highlightedSlots}
+        forecasts={forecasts}
+        onPlace={store.place}
+        onRevise={store.revise}
+      />
+
+      <MilestoneTrack
+        slots={state.slots}
+        claimed={state.claimedMilestones}
+        tableMult={state.tableMult}
+      />
+
+      {state.lastResolution.length > 0 && (
+        <CausalChain
+          stages={state.lastResolution}
+          onHighlight={handleHighlight}
+        />
+      )}
+
+      {state.lastError && (
+        <p
+          role="alert"
+          className="mx-3 mt-1 rounded-md border border-red-400/50 bg-red-950/50 px-2 py-1 text-[11px] text-red-100"
+        >
+          {state.lastErrorKey
+            ? t(state.lastErrorKey, state.lastError)
+            : state.lastError}
+        </p>
+      )}
+
+      <div className="flex-1" />
+
+      {/* River */}
+      {state.river.length > 0 && (
+        <div className="px-3 pb-1">
+          <p className="mb-0.5 text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/40">
+            {canRecover
+              ? t('tableLoop.river.recover', 'River — tap to take one back')
+              : t('tableLoop.river.title', 'River')}
+          </p>
+          <div className="flex gap-0.5 overflow-x-auto pb-1">
+            {state.river.map((tile) => (
+              <button
+                key={tile.id}
+                disabled={!canRecover}
+                onClick={() => store.recoverFromRiver(tile.id)}
+                className={canRecover ? 'opacity-90' : 'opacity-40'}
+              >
+                <TileImage tile={tile} size="small" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Rack */}
+      <div data-testid="table-loop-rack" className="px-2 pb-1">
+        <div className="flex flex-wrap justify-center gap-1">
+          {state.rack.map((tile) => (
+            <button
+              key={tile.id}
+              data-testid={`rack-tile-${tile.id}`}
+              onClick={() => store.toggleTile(tile.id)}
+              className={`rounded transition-transform ${
+                selectedTileIds.includes(tile.id)
+                  ? '-translate-y-1.5 ring-2 ring-[var(--color-golden-yellow)]'
+                  : ''
+              }`}
+            >
+              <TileImage tile={tile} size="medium" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <footer className="flex-shrink-0 gap-2 px-3 pb-3 pt-1">
+        <p className="mb-1 text-center text-[11px] leading-snug text-[var(--color-beige-white)]/55">
+          {selectedTileIds.length === 0
+            ? t(
+                'tableLoop.hint.select',
+                'Tap tiles to build a run, a set or a pair, then choose a slot.'
+              )
+            : placeable.length + revisable.length > 0
+              ? t('tableLoop.hint.choose', 'Tap a highlighted slot to commit it.')
+              : t(
+                  'tableLoop.hint.noSlot',
+                  'No slot takes that group. Exchange the tiles or pick a different shape.'
+                )}
+        </p>
+        <div className="flex gap-2">
+          <button
+            onClick={store.clearSelection}
+            disabled={selectedTileIds.length === 0}
+            className="flex-1 rounded-lg border border-[var(--color-metallic-gold)]/35 py-2 text-xs uppercase tracking-wider text-[var(--color-beige-white)]/75 disabled:opacity-35"
+          >
+            {t('tableLoop.action.clear', 'Clear')}
+          </button>
+          <button
+            data-testid="table-loop-exchange"
+            onClick={store.redraw}
+            disabled={!canRedraw}
+            className="flex-1 rounded-lg border border-sky-400/50 py-2 text-xs uppercase tracking-wider text-sky-200 disabled:opacity-35"
+          >
+            {exchangeCostsAction
+              ? t('tableLoop.action.recover', 'Exchange (1 action)')
+              : t('tableLoop.action.exchange', 'Exchange ({{left}})', {
+                  left: state.redrawsRemaining,
+                })}
+          </button>
+          <button
+            data-testid="table-loop-finish"
+            onClick={store.finishRound}
+            disabled={state.score < state.round.target}
+            className="flex-1 rounded-lg border-2 border-[var(--color-golden-yellow)] py-2 text-xs font-bold uppercase tracking-wider text-[var(--color-golden-yellow)] disabled:opacity-35"
+          >
+            {state.score >= state.round.target
+              ? t('tableLoop.action.finish', 'Finish round')
+              : t('tableLoop.action.needMore', '{{remaining}} to go', {
+                  remaining: remaining.toLocaleString(),
+                })}
+          </button>
+        </div>
+      </footer>
+    </div>
+  )
+}
+
+export default TableLoopScreen

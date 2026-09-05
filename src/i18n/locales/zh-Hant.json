@@ -10,7 +10,8 @@
     "close": "關閉",
     "yes": "是",
     "no": "否",
-    "ok": "確定"
+    "ok": "確定",
+    "mainMenu": "主選單"
   },
   "menu": {
     "title": "天翔",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "牌桌賭注 · 難度",
     "tableStake": "牌桌賭注",
     "noSpecialModifiers": "無特殊修正",
-    "promise": "誓約"
+    "promise": "誓約",
+    "tableLoop": "牌桌循環（實驗）"
   },
   "settings": {
     "title": "設定",
@@ -169,7 +171,18 @@
     "sellFor": "以¥{{value}}出售",
     "sellHidden": "出售隱藏法令",
     "sellNamed": "出售{{name}}",
-    "hiddenDecree": "隱藏法令"
+    "hiddenDecree": "隱藏法令",
+    "coach": {
+      "title": "這手牌的兩種打法",
+      "dismiss": "隱藏",
+      "pointsNow": "當下的分數",
+      "keepsPace": "跟得上：這一手需要 {{required}} 分。",
+      "behindPace": "距離這一手所需的 {{required}} 分還差一截。",
+      "buildToward": "朝著{{pattern}}去做",
+      "buildTowardPlain": "朝著一個牌型去做",
+      "shapeCost": "現在少得 {{difference}} 分，但留下了一個叫得出名字的牌型。",
+      "tradeoff": "更大的數字未必是更好的一手，留下的牌型往往之後更值錢。"
+    }
   },
   "rounds": {
     "small": "小局",
@@ -2153,6 +2166,186 @@
         "name": "龍窟臺",
         "description": "以龍骨雕成的傳說之桌，藏於山中洞窟。"
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "面子格 {{number}}",
+      "pair": "對子格",
+      "meldShort": "面子",
+      "pairShort": "對子",
+      "emptyMeld": "順子或刻子",
+      "emptyPair": "兩張相同",
+      "replace": "替換"
+    },
+    "milestones": {
+      "title": "牌型",
+      "momentum": "牌桌氣勢 +{{mult}} 倍率",
+      "claimed": "已得",
+      "twin_sequence": {
+        "name": "雙生順子",
+        "description": "兩副相同的順子並排立在桌上。"
+      },
+      "pure_suit": {
+        "name": "清一之兆",
+        "description": "兩副以上的面子，全都出自同一種花色。"
+      },
+      "three_suit_sequence": {
+        "name": "三色順子",
+        "description": "同樣的三連數，在三種花色裡各成一副。"
+      },
+      "dragon_duet": {
+        "name": "雙龍",
+        "description": "兩種不同的三元牌坐鎮桌面。"
+      },
+      "dragon_court": {
+        "name": "三元之庭",
+        "description": "三種三元牌彼此呼應。"
+      },
+      "four_sequences": {
+        "name": "四副順子",
+        "description": "每個面子格都是順子，對子也已落位。"
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "回聲之竹",
+        "description": "放下索子順子時，它會計分兩次。"
+      },
+      "patient_pair": {
+        "name": "耐心的對子",
+        "description": "桌上每有一副面子，對子就多得 30 分。"
+      },
+      "dragon_lantern": {
+        "name": "龍燈",
+        "description": "三元牌的面子會點亮它的格位。之後放在亮格旁邊的面子獲得 +0.5 倍率。"
+      },
+      "twin_flame": {
+        "name": "雙焰",
+        "description": "牌型獎勵的分數翻倍。"
+      },
+      "river_merchant": {
+        "name": "低語的商人",
+        "description": "每局一次，從牌河裡取回一張牌到手上。"
+      },
+      "jade_ledger": {
+        "name": "翡翠帳簿",
+        "description": "每放下一副面子得 ¥2，但每局少一次換牌。"
+      },
+      "honor_court": {
+        "name": "字牌之庭",
+        "description": "風牌或三元牌的面子，每張牌帶來 +0.3 倍率。"
+      },
+      "terminal_gate": {
+        "name": "老頭之門",
+        "description": "含有一或九的面子多得 40 分。"
+      }
+    },
+    "chain": {
+      "title": "分數是怎麼來的",
+      "skip": "跳過"
+    },
+    "stage": {
+      "group": {
+        "sequence": "放下順子 — {{tiles}}",
+        "triplet": "放下刻子 — {{tiles}}",
+        "quad": "放下槓子 — {{tiles}}",
+        "pair": "放下對子 — {{tiles}}"
+      },
+      "frostMagistrate": "霜臺判官 — 字牌的牌點減半",
+      "momentum": "牌桌氣勢 +{{mult}} 倍率",
+      "terminalGate": "老頭之門 +{{bonus}}",
+      "honorCourt": "字牌之庭 +{{mult}} 倍率",
+      "patientPair": "耐心的對子 +{{bonus}}（等著的面子 {{melds}} 副）",
+      "dragonLantern": "龍燈，從亮起的格位得到 +{{mult}} 倍率",
+      "echoingBamboo": "回聲之竹 — 這副順子計分兩次",
+      "milestone": "{{name}} +{{points}}，本局 +{{mult}} 倍率",
+      "completion": "牌桌完成 — {{base}} × {{mult}}",
+      "total": "落到目標上"
+    },
+    "roundEnd": {
+      "target": "本局已穩",
+      "completed": "牌桌完成",
+      "exhausted": "資源用盡"
+    },
+    "rounds": {
+      "0": "初曉",
+      "1": "升起的朝堂",
+      "2": "霜臺判官"
+    },
+    "boss": {
+      "frost_magistrate": "霜臺判官 — 本局字牌的牌點減半。"
+    },
+    "hud": {
+      "round": "第 {{current}} 局，共 {{total}} 局",
+      "resources": "放置 {{actions}} · 換牌 {{redraws}}"
+    },
+    "river": {
+      "title": "牌河",
+      "recover": "牌河 — 點一下取回一張"
+    },
+    "hint": {
+      "select": "點選牌組成順子、刻子或對子，然後選一個格位。",
+      "choose": "點亮起的格位即可落定。",
+      "noSlot": "沒有格位能收這副面子。換掉這些牌，或者換個牌型。"
+    },
+    "action": {
+      "clear": "取消",
+      "exchange": "換牌（{{left}}）",
+      "recover": "換牌（耗一次放置）",
+      "finish": "結束本局",
+      "needMore": "還差 {{remaining}}"
+    },
+    "start": {
+      "title": "先決定怎麼打",
+      "subtitle": "在第一張牌之前挑一道法令，它應當改變你想要的牌。",
+      "take": "就用這個開局"
+    },
+    "cleared": {
+      "title": "本局過關",
+      "subtitle": "目標 {{target}}，得到 {{score}}。錢袋 ¥{{gold}}。",
+      "shop": "去茶寮看看",
+      "skipShop": "直接進入下一局"
+    },
+    "shop": {
+      "title": "茶寮",
+      "subtitle": "錢袋 ¥{{gold}}",
+      "empty": "架上已經空了。",
+      "buy": "買下",
+      "leave": "下一局"
+    },
+    "end": {
+      "won": "三局，全數過關",
+      "lost": "牌桌走到了盡頭",
+      "summary": "本輪總分 {{score}}",
+      "again": "再來一輪"
+    },
+    "reject": {
+      "tooFew": "至少選兩張能組成面子的牌。",
+      "tooMany": "一副面子最多四張。",
+      "bonusTile": "花牌和季節牌不能當作面子放下。",
+      "notAGroup": "這些牌組不成順子、刻子、槓子或對子。",
+      "notChoosing": "開局的選擇已經做過了。",
+      "notOffered": "那道法令並未提供。",
+      "notPlaying": "本局已經結束。",
+      "noActions": "放置次數已經用完。",
+      "noSlot": "沒有這個格位。",
+      "slotTaken": "那個格位已經有面子了。",
+      "slotEmpty": "那個格位沒有可替換的東西。",
+      "notInRack": "這些牌不在你手上。",
+      "pairSlotOnly": "對子格只收對子。",
+      "meldSlotOnly": "面子格收順子、刻子或槓子。",
+      "illegalPlacement": "這副面子放不進那裡。",
+      "noRedraws": "換牌次數已經用完。",
+      "redrawSize": "一次可換一到三張牌。",
+      "wallEmpty": "牌牆已空。",
+      "noRecoveries": "本局已經不能再從牌河取牌。",
+      "rackFull": "手上已經滿了，先放牌或換牌。",
+      "notInRiver": "那張牌不在牌河裡。",
+      "targetNotMet": "先達到目標，再結束本局。",
+      "notBetweenRounds": "茶寮在兩局之間開門。",
+      "shopClosed": "茶寮已經打烊。",
+      "tooExpensive": "錢不夠。"
     }
   }
 }

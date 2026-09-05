@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 // Screen imports
 import { MenuScreen } from './components/screens/MenuScreen'
 import { GameplayScreen } from './components/screens/GameplayScreen'
+import { TableLoopScreen } from './components/screens/TableLoopScreen'
 import { ShopScreen } from './components/screens/ShopScreen'
 import { GameOverScreen } from './components/screens/GameOverScreen'
 import { AchievementsScreen } from './components/screens/AchievementsScreen'
@@ -49,6 +50,7 @@ function App() {
       createAppRouter({
         MenuScreen,
         GameplayScreen,
+        TableLoopScreen,
         ShopScreen,
         GameOverScreen,
         AchievementsScreen,

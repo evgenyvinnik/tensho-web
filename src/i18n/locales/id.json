@@ -10,7 +10,8 @@
     "close": "Tutup",
     "yes": "Ya",
     "no": "Tidak",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "Menu utama"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Taruhan Meja · Kesulitan",
     "tableStake": "Taruhan meja",
     "noSpecialModifiers": "Tanpa pengubah khusus",
-    "promise": "Janji"
+    "promise": "Janji",
+    "tableLoop": "Putaran Meja (eksperimen)"
   },
   "settings": {
     "title": "Pengaturan",
@@ -169,7 +171,18 @@
     "sellFor": "Jual seharga ¥{{value}}",
     "sellHidden": "Jual Dekrit tersembunyi",
     "sellNamed": "Jual {{name}}",
-    "hiddenDecree": "Dekrit tersembunyi"
+    "hiddenDecree": "Dekrit tersembunyi",
+    "coach": {
+      "title": "Dua cara memainkan ini",
+      "dismiss": "Sembunyikan",
+      "pointsNow": "Poin sekarang",
+      "keepsPace": "Mengejar target: tangan ini butuh {{required}}.",
+      "behindPace": "Masih kurang dari {{required}} yang dibutuhkan tangan ini.",
+      "buildToward": "Bangun menuju {{pattern}}",
+      "buildTowardPlain": "Bangun menuju sebuah bentuk",
+      "shapeCost": "Menghasilkan {{difference}} lebih sedikit sekarang, tetapi menyisakan bentuk yang bisa kamu sebut namanya.",
+      "tradeoff": "Angka yang lebih besar belum tentu langkah yang lebih baik: bentuk yang kamu simpan bisa lebih berharga nanti."
+    }
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -1901,6 +1914,186 @@
         "name": "Sarang Naga",
         "description": "Meja legendaris dari tulang naga yang tersembunyi di gua pegunungan. Tangan Yakuman diperkuat, tetapi sang naga menuntut persembahan lebih besar."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Slot kelompok {{number}}",
+      "pair": "Slot pasangan",
+      "meldShort": "Kelompok",
+      "pairShort": "Pasangan",
+      "emptyMeld": "urutan atau triplet",
+      "emptyPair": "dua yang sama",
+      "replace": "Ganti"
+    },
+    "milestones": {
+      "title": "Pola",
+      "momentum": "Momentum meja +{{mult}} Pengali",
+      "claimed": "sudah dibayar",
+      "twin_sequence": {
+        "name": "Urutan Kembar",
+        "description": "Dua urutan yang sama berdiri berdampingan di meja."
+      },
+      "pure_suit": {
+        "name": "Satu Jenis",
+        "description": "Dua kelompok atau lebih, semuanya dari jenis yang sama."
+      },
+      "three_suit_sequence": {
+        "name": "Urutan Tiga Jenis",
+        "description": "Deret tiga angka yang sama, satu kali di setiap jenis."
+      },
+      "dragon_duet": {
+        "name": "Duet Naga",
+        "description": "Dua Naga berbeda menguasai meja."
+      },
+      "dragon_court": {
+        "name": "Istana Naga",
+        "description": "Ketiga Naga saling menyahut."
+      },
+      "four_sequences": {
+        "name": "Empat Urutan",
+        "description": "Setiap slot kelompok berisi urutan, dan pasangan sudah diletakkan."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Bambu Bergema",
+        "description": "Urutan Bambu menghasilkan skor dua kali saat kamu meletakkannya."
+      },
+      "patient_pair": {
+        "name": "Pasangan Sabar",
+        "description": "Pasangan mendapat +30 untuk setiap kelompok yang sudah ada di meja."
+      },
+      "dragon_lantern": {
+        "name": "Lentera Naga",
+        "description": "Kelompok Naga menyalakan slotnya. Setiap kelompok yang diletakkan kemudian di sebelah slot yang menyala mendapat +0,5 Pengali."
+      },
+      "twin_flame": {
+        "name": "Nyala Kembar",
+        "description": "Hadiah pola membayar poin dua kali lipat."
+      },
+      "river_merchant": {
+        "name": "Pedagang Berbisik",
+        "description": "Sekali per ronde, ambil satu ubin dari sungai kembali ke rakmu."
+      },
+      "jade_ledger": {
+        "name": "Buku Giok",
+        "description": "Dapat ¥2 untuk setiap kelompok yang kamu letakkan. Mulai setiap ronde dengan satu penukaran lebih sedikit."
+      },
+      "honor_court": {
+        "name": "Istana Kehormatan",
+        "description": "Kelompok Angin atau Naga mendapat +0,3 Pengali untuk setiap ubinnya."
+      },
+      "terminal_gate": {
+        "name": "Gerbang Ujung",
+        "description": "Kelompok yang memuat angka 1 atau 9 mendapat +40."
+      }
+    },
+    "chain": {
+      "title": "Bagaimana skornya tersusun",
+      "skip": "Lewati"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Urutan diletakkan — {{tiles}}",
+        "triplet": "Triplet diletakkan — {{tiles}}",
+        "quad": "Kuartet diletakkan — {{tiles}}",
+        "pair": "Pasangan diletakkan — {{tiles}}"
+      },
+      "frostMagistrate": "Hakim Embun Beku: ubin kehormatan bernilai separuh",
+      "momentum": "Momentum meja +{{mult}} Pengali",
+      "terminalGate": "Gerbang Ujung +{{bonus}}",
+      "honorCourt": "Istana Kehormatan +{{mult}} Pengali",
+      "patientPair": "Pasangan Sabar +{{bonus}} ({{melds}} kelompok menunggu)",
+      "dragonLantern": "Lentera Naga +{{mult}} Pengali dari slot yang menyala",
+      "echoingBamboo": "Bambu Bergema: urutan ini menghasilkan skor dua kali",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Pengali untuk ronde ini",
+      "completion": "Meja lengkap — {{base}} × {{mult}}",
+      "total": "Mendarat di target"
+    },
+    "roundEnd": {
+      "target": "Ronde diamankan",
+      "completed": "Meja diselesaikan",
+      "exhausted": "Sumber daya habis"
+    },
+    "rounds": {
+      "0": "Cahaya Pertama",
+      "1": "Istana yang Naik",
+      "2": "Hakim Embun Beku"
+    },
+    "boss": {
+      "frost_magistrate": "Hakim Embun Beku: pada ronde ini ubin kehormatan hanya bernilai separuh poinnya."
+    },
+    "hud": {
+      "round": "Ronde {{current}} dari {{total}}",
+      "resources": "{{actions}} aksi · {{redraws}} penukaran"
+    },
+    "river": {
+      "title": "Sungai",
+      "recover": "Sungai: ketuk untuk mengambil satu kembali"
+    },
+    "hint": {
+      "select": "Ketuk ubin untuk membentuk urutan, triplet, atau pasangan, lalu pilih sebuah slot.",
+      "choose": "Ketuk slot yang menyala untuk mengunci kelompoknya.",
+      "noSlot": "Tidak ada slot yang menerima kelompok itu. Tukar ubinnya atau pilih bentuk lain."
+    },
+    "action": {
+      "clear": "Bersihkan",
+      "exchange": "Tukar ({{left}})",
+      "recover": "Tukar (1 aksi)",
+      "finish": "Akhiri ronde",
+      "needMore": "Kurang {{remaining}}"
+    },
+    "start": {
+      "title": "Pilih caramu bermain",
+      "subtitle": "Satu Dekrit, dipilih sebelum ubin pertama. Ia harus mengubah ubin mana yang kamu inginkan.",
+      "take": "Mulai dengan ini"
+    },
+    "cleared": {
+      "title": "Ronde tuntas",
+      "subtitle": "{{score}} dari target {{target}}. Kantong: ¥{{gold}}.",
+      "shop": "Mampir ke kedai teh",
+      "skipShop": "Langsung ke ronde berikutnya"
+    },
+    "shop": {
+      "title": "Kedai Teh",
+      "subtitle": "Kantong: ¥{{gold}}",
+      "empty": "Tidak ada lagi di rak.",
+      "buy": "Beli",
+      "leave": "Ronde berikutnya"
+    },
+    "end": {
+      "won": "Tiga ronde, semuanya tuntas",
+      "lost": "Meja kehabisan langkah",
+      "summary": "Skor perjalanan {{score}}",
+      "again": "Sekali lagi"
+    },
+    "reject": {
+      "tooFew": "Pilih setidaknya dua ubin yang membentuk sebuah kelompok.",
+      "tooMany": "Satu kelompok paling banyak empat ubin.",
+      "bonusTile": "Bunga dan Musim tidak bisa diletakkan sebagai kelompok.",
+      "notAGroup": "Ubin ini tidak membentuk urutan, triplet, kuartet, atau pasangan.",
+      "notChoosing": "Pilihan pembuka sudah diambil.",
+      "notOffered": "Dekrit itu tidak ditawarkan.",
+      "notPlaying": "Ronde sudah selesai.",
+      "noActions": "Tidak ada aksi peletakan tersisa.",
+      "noSlot": "Slot itu tidak ada.",
+      "slotTaken": "Slot itu sudah berisi kelompok.",
+      "slotEmpty": "Tidak ada yang bisa diganti di slot itu.",
+      "notInRack": "Ubin itu tidak ada di rakmu.",
+      "pairSlotOnly": "Slot pasangan hanya menerima pasangan.",
+      "meldSlotOnly": "Slot kelompok menerima urutan, triplet, atau kuartet.",
+      "illegalPlacement": "Kelompok itu tidak bisa diletakkan di sana.",
+      "noRedraws": "Tidak ada penukaran tersisa.",
+      "redrawSize": "Tukar satu sampai tiga ubin.",
+      "wallEmpty": "Tembok sudah kosong.",
+      "noRecoveries": "Tidak ada pengambilan dari sungai tersisa pada ronde ini.",
+      "rackFull": "Rakmu penuh; letakkan atau tukar dulu.",
+      "notInRiver": "Ubin itu tidak ada di sungai.",
+      "targetNotMet": "Capai target sebelum mengakhiri ronde.",
+      "notBetweenRounds": "Kedai buka di antara ronde.",
+      "shopClosed": "Kedai sedang tutup.",
+      "tooExpensive": "Uangmu tidak cukup."
     }
   }
 }

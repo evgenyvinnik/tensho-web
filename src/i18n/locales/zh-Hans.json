@@ -10,7 +10,8 @@
     "close": "关闭",
     "yes": "是",
     "no": "否",
-    "ok": "确定"
+    "ok": "确定",
+    "mainMenu": "主菜单"
   },
   "menu": {
     "title": "天翔",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "牌桌赌注 · 难度",
     "tableStake": "牌桌赌注",
     "noSpecialModifiers": "无特殊修正",
-    "promise": "誓约"
+    "promise": "誓约",
+    "tableLoop": "牌桌循环（实验）"
   },
   "settings": {
     "title": "设置",
@@ -169,7 +171,18 @@
     "sellFor": "以¥{{value}}出售",
     "sellHidden": "出售隐藏法令",
     "sellNamed": "出售{{name}}",
-    "hiddenDecree": "隐藏法令"
+    "hiddenDecree": "隐藏法令",
+    "coach": {
+      "title": "这手牌的两种打法",
+      "dismiss": "隐藏",
+      "pointsNow": "当下的分数",
+      "keepsPace": "跟得上：这一手需要 {{required}} 分。",
+      "behindPace": "距离这一手所需的 {{required}} 分还差一截。",
+      "buildToward": "朝着{{pattern}}去做",
+      "buildTowardPlain": "朝着一个牌型去做",
+      "shapeCost": "现在少得 {{difference}} 分，但留下了一个叫得出名字的牌型。",
+      "tradeoff": "更大的数字未必是更好的一手，留下的牌型往往之后更值钱。"
+    }
   },
   "rounds": {
     "small": "小局",
@@ -2153,6 +2166,186 @@
         "name": "龙窟台",
         "description": "以龙骨雕成的传说之桌，藏于山中洞窟。"
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "面子格 {{number}}",
+      "pair": "对子格",
+      "meldShort": "面子",
+      "pairShort": "对子",
+      "emptyMeld": "顺子或刻子",
+      "emptyPair": "两张相同",
+      "replace": "替换"
+    },
+    "milestones": {
+      "title": "牌型",
+      "momentum": "牌桌气势 +{{mult}} 倍率",
+      "claimed": "已得",
+      "twin_sequence": {
+        "name": "双生顺子",
+        "description": "两副相同的顺子并排立在桌上。"
+      },
+      "pure_suit": {
+        "name": "清一之兆",
+        "description": "两副以上的面子，全都出自同一种花色。"
+      },
+      "three_suit_sequence": {
+        "name": "三色顺子",
+        "description": "同样的三连数，在三种花色里各成一副。"
+      },
+      "dragon_duet": {
+        "name": "双龙",
+        "description": "两种不同的三元牌坐镇桌面。"
+      },
+      "dragon_court": {
+        "name": "三元之庭",
+        "description": "三种三元牌彼此呼应。"
+      },
+      "four_sequences": {
+        "name": "四副顺子",
+        "description": "每个面子格都是顺子，对子也已落位。"
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "回声之竹",
+        "description": "放下索子顺子时，它会计分两次。"
+      },
+      "patient_pair": {
+        "name": "耐心的对子",
+        "description": "桌上每有一副面子，对子就多得 30 分。"
+      },
+      "dragon_lantern": {
+        "name": "龙灯",
+        "description": "三元牌的面子会点亮它的格位。之后放在亮格旁边的面子获得 +0.5 倍率。"
+      },
+      "twin_flame": {
+        "name": "双焰",
+        "description": "牌型奖励的分数翻倍。"
+      },
+      "river_merchant": {
+        "name": "低语的商人",
+        "description": "每局一次，从牌河里取回一张牌到手上。"
+      },
+      "jade_ledger": {
+        "name": "翡翠账簿",
+        "description": "每放下一副面子得 ¥2，但每局少一次换牌。"
+      },
+      "honor_court": {
+        "name": "字牌之庭",
+        "description": "风牌或三元牌的面子，每张牌带来 +0.3 倍率。"
+      },
+      "terminal_gate": {
+        "name": "老头之门",
+        "description": "含有一或九的面子多得 40 分。"
+      }
+    },
+    "chain": {
+      "title": "分数是怎么来的",
+      "skip": "跳过"
+    },
+    "stage": {
+      "group": {
+        "sequence": "放下顺子 — {{tiles}}",
+        "triplet": "放下刻子 — {{tiles}}",
+        "quad": "放下杠子 — {{tiles}}",
+        "pair": "放下对子 — {{tiles}}"
+      },
+      "frostMagistrate": "霜台判官 — 字牌的牌点减半",
+      "momentum": "牌桌气势 +{{mult}} 倍率",
+      "terminalGate": "老头之门 +{{bonus}}",
+      "honorCourt": "字牌之庭 +{{mult}} 倍率",
+      "patientPair": "耐心的对子 +{{bonus}}（等着的面子 {{melds}} 副）",
+      "dragonLantern": "龙灯，从亮起的格位得到 +{{mult}} 倍率",
+      "echoingBamboo": "回声之竹 — 这副顺子计分两次",
+      "milestone": "{{name}} +{{points}}，本局 +{{mult}} 倍率",
+      "completion": "牌桌完成 — {{base}} × {{mult}}",
+      "total": "落到目标上"
+    },
+    "roundEnd": {
+      "target": "本局已稳",
+      "completed": "牌桌完成",
+      "exhausted": "资源用尽"
+    },
+    "rounds": {
+      "0": "初晓",
+      "1": "升起的朝堂",
+      "2": "霜台判官"
+    },
+    "boss": {
+      "frost_magistrate": "霜台判官 — 本局字牌的牌点减半。"
+    },
+    "hud": {
+      "round": "第 {{current}} 局，共 {{total}} 局",
+      "resources": "放置 {{actions}} · 换牌 {{redraws}}"
+    },
+    "river": {
+      "title": "牌河",
+      "recover": "牌河 — 点一下取回一张"
+    },
+    "hint": {
+      "select": "点选牌组成顺子、刻子或对子，然后选一个格位。",
+      "choose": "点亮起的格位即可落定。",
+      "noSlot": "没有格位能收这副面子。换掉这些牌，或者换个牌型。"
+    },
+    "action": {
+      "clear": "取消",
+      "exchange": "换牌（{{left}}）",
+      "recover": "换牌（耗一次放置）",
+      "finish": "结束本局",
+      "needMore": "还差 {{remaining}}"
+    },
+    "start": {
+      "title": "先决定怎么打",
+      "subtitle": "在第一张牌之前挑一道法令，它应当改变你想要的牌。",
+      "take": "就用这个开局"
+    },
+    "cleared": {
+      "title": "本局过关",
+      "subtitle": "目标 {{target}}，得到 {{score}}。钱袋 ¥{{gold}}。",
+      "shop": "去茶寮看看",
+      "skipShop": "直接进入下一局"
+    },
+    "shop": {
+      "title": "茶寮",
+      "subtitle": "钱袋 ¥{{gold}}",
+      "empty": "架上已经空了。",
+      "buy": "买下",
+      "leave": "下一局"
+    },
+    "end": {
+      "won": "三局，全数过关",
+      "lost": "牌桌走到了尽头",
+      "summary": "本轮总分 {{score}}",
+      "again": "再来一轮"
+    },
+    "reject": {
+      "tooFew": "至少选两张能组成面子的牌。",
+      "tooMany": "一副面子最多四张。",
+      "bonusTile": "花牌和季节牌不能当作面子放下。",
+      "notAGroup": "这些牌组不成顺子、刻子、杠子或对子。",
+      "notChoosing": "开局的选择已经做过了。",
+      "notOffered": "那道法令并未提供。",
+      "notPlaying": "本局已经结束。",
+      "noActions": "放置次数已经用完。",
+      "noSlot": "没有这个格位。",
+      "slotTaken": "那个格位已经有面子了。",
+      "slotEmpty": "那个格位没有可替换的东西。",
+      "notInRack": "这些牌不在你手上。",
+      "pairSlotOnly": "对子格只收对子。",
+      "meldSlotOnly": "面子格收顺子、刻子或杠子。",
+      "illegalPlacement": "这副面子放不进那里。",
+      "noRedraws": "换牌次数已经用完。",
+      "redrawSize": "一次可换一到三张牌。",
+      "wallEmpty": "牌墙已空。",
+      "noRecoveries": "本局已经不能再从牌河取牌。",
+      "rackFull": "手上已经满了，先放牌或换牌。",
+      "notInRiver": "那张牌不在牌河里。",
+      "targetNotMet": "先达到目标，再结束本局。",
+      "notBetweenRounds": "茶寮在两局之间开门。",
+      "shopClosed": "茶寮已经打烊。",
+      "tooExpensive": "钱不够。"
     }
   }
 }

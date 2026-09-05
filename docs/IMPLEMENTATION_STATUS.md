@@ -2,7 +2,7 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** August 14, 2026
+**Last verified:** September 5, 2026
 
 **Related documents:**
 
@@ -11,6 +11,7 @@
 - [Game mechanics](GAME_MECHANICS.md)
 - [UI design](UI_DESIGN.md)
 - [Item libraries](../ITEM_LIBRARIES.md)
+- [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md)
 
 ## Playable Core Loop
 
@@ -29,6 +30,29 @@
 | Run end           | Failed rounds enter Game Over; defeating Act 8 records the table-specific Stake victory, unlocks the next Stake, presents the completed run, and allows an explicit continuation into Endless Act 9+                                                                                                                                                       | Working |
 
 The documented base targets are in use: 300, 800, 2,000, 5,000, 11,000, 20,000, 35,000, and 50,000 by Act. Small, Large, and Boss rounds use 1×, 1.5×, and 2× multipliers before stake and mandate modifiers.
+
+## Table Loop Prototype
+
+A second, self-contained core loop lives at `/:lang/table-loop`, reachable from the main menu. It is the playable answer to experiments E01–E05 in [GAMEPLAY_EXPERIMENTS.md](GAMEPLAY_EXPERIMENTS.md) and runs beside the classic loop rather than replacing it, so a session can compare the two.
+
+| Stage | Runtime behavior | Status |
+| ----- | ---------------- | ------ |
+| Build choice | The run pauses before dealing and offers three starter Decrees; the chosen one is owned before the first rack exists | Working |
+| Place | A selection is accepted only as a complete sequence, triplet, quad or pair, and only into a compatible empty slot; it costs one placement action and the rack refills from the wall | Working |
+| Revise | An occupied slot may be replaced by a group of the same slot kind for one placement action; displaced tiles go to the river and already-claimed milestones stay claimed | Working |
+| Exchange | One to three rack tiles for fresh draws, costing an exchange allowance — or, once those are gone, one placement action as a recovery play | Working |
+| River recovery | With Whispering Merchant, one tile per round returns from the river to the rack | Working |
+| Milestones | Six cross-slot patterns, each paid once per round, each raising a standing multiplier for the rest of the round | Working |
+| Forecast | Slot forecasts run the committed scoring pipeline against the projected table, so the number shown is the number paid | Working |
+| Causal chain | Each resolution returns ordered stages — group, boss rule, table momentum, Decrees, milestones, completion, total — paced in the UI, skippable, and shown at once under reduced motion | Working |
+| Round end | Meeting the target enables an explicit Finish; completing the table pays a one-time bonus and ends the round; exhaustion settles against the target | Working |
+| Shop | Three unowned Decrees between rounds from a pool of eight, with authoritative gold deduction | Working |
+| Run end | Three rounds — two ordinary and one telegraphed boss — then a run summary and restart | Working |
+| Seeded replay | `?seed=<n>` on the route restarts the run from that seed, so a confusing deal can be handed to the next playtester unchanged | Working |
+
+Targets, rack size, and structure points were set with [`scripts/tableloop-sim.mts`](../scripts/tableloop-sim.mts) rather than inherited from the classic curve. Section 0 of the experiments document records what the measurements changed.
+
+Scope held back on purpose: the draft row, living tiles, the route map, seasons, wagers, and every existing Decree, Flower, Season, consumable and Mandate. None of the 164 classic Decrees have been reinterpreted for a table where groups persist.
 
 ## Runtime Ownership
 
@@ -63,9 +87,11 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 - Strict application TypeScript check passes.
 - Production build passes.
-- Unit/component/simulation suite passes with 255 tests across 26 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
+- Unit/component/simulation suite passes with 322 tests across 30 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
+- The Table Loop prototype adds 58 tests covering group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, and a tile-conservation invariant asserted after every action.
+- The Table Loop interface is translated in all 13 locales, and a locale test holds the `tableLoop` and `gameplay.coach` namespaces to exact key parity with English rather than letting them fall back silently.
 - Production browser walkthroughs at desktop and 390px portrait mobile verified disabled empty-selection behavior, a real tactical scoring/refill cycle, keyboard/touch staging, exact score forecasts, a complete guided first move, a scrollable visual tile primer, non-overlapping contextual tips, and a bottom action bar contained by the ornamental frame.
-- All 34 Playwright checks pass across desktop Chromium and mobile Chrome profiles, including the real scoring loop, first-run tile guidance, forecast parity, 320px frame constraints, tutorials, console health, and accessibility smoke coverage.
+- All 46 Playwright checks pass across desktop Chromium and mobile Chrome profiles, including the real scoring loop, first-run tile guidance, forecast parity, 320px frame constraints, tutorials, console health, accessibility smoke coverage, and the Table Loop prototype's build choice, slot legality, forecast parity, seed replay and Japanese interface.
 - The current deterministic no-strategy simulation reaches median Act 2 without shopping and median Act 5 (maximum Act 7) while buying Decrees. It does not discard, redraw, target Yaku, use consumables, buy packs, or optimize synergies, so it remains a regression/calibration signal rather than a human win-rate model.
 - Repository-wide ESLint still reports pre-existing errors and warnings outside the changed core-loop files. Changed loop files are checked separately during implementation.
 
@@ -75,6 +101,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 2. Build a strategy-aware balance harness (discards, redraws, Yaku selection, packs, and consumables), then tune ordinary-run Act 6–8 power growth from measured completion rates.
 3. Expand the current 34-check Playwright suite to Stake selection/unlocks, consumable targeting, Omen-modified shops, packs, Boss mandates, Act 8 victory, and Endless continuation.
 4. Resolve the repository-wide lint backlog, migrate the remaining gameplay randomness to the run seed, split oversized bundles, and add the missing SFX assets.
+5. Observe people playing the Table Loop prototype against the classic loop, following section 8 of the experiments document. The simulation says the targets are not arbitrary; it says nothing about whether the loop is enjoyable.
 
 ## Status Rule
 

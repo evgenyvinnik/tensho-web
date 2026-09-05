@@ -10,7 +10,8 @@
     "close": "閉じる",
     "yes": "はい",
     "no": "いいえ",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "メインメニュー"
   },
   "menu": {
     "title": "天翔",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "卓のステーク · 難易度",
     "tableStake": "卓のステーク",
     "noSpecialModifiers": "特別な修正なし",
-    "promise": "約定"
+    "promise": "約定",
+    "tableLoop": "卓上ループ（実験）"
   },
   "settings": {
     "title": "設定",
@@ -169,7 +171,18 @@
     "sellFor": "¥{{value}} で売却",
     "sellHidden": "伏せた法令を売却",
     "sellNamed": "{{name}}を売却",
-    "hiddenDecree": "伏せた法令"
+    "hiddenDecree": "伏せた法令",
+    "coach": {
+      "title": "この手の二つの選び方",
+      "dismiss": "隠す",
+      "pointsNow": "今すぐの点数",
+      "keepsPace": "ペース維持：この手に必要なのは{{required}}点です。",
+      "behindPace": "この手に必要な{{required}}点には届きません。",
+      "buildToward": "{{pattern}}を目指して組む",
+      "buildTowardPlain": "形を目指して組む",
+      "shapeCost": "今は{{difference}}点少ないですが、名前のある形が手元に残ります。",
+      "tradeoff": "大きい数字が必ずしも良い手とは限りません。残した形が後で効くこともあります。"
+    }
   },
   "rounds": {
     "small": "小局",
@@ -2153,6 +2166,186 @@
         "name": "竜窟",
         "description": "龍の骨から削り出された伝説の卓。山の洞に隠されている。"
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "面子の枠{{number}}",
+      "pair": "対子の枠",
+      "meldShort": "面子",
+      "pairShort": "対子",
+      "emptyMeld": "順子か刻子",
+      "emptyPair": "同じ牌が二枚",
+      "replace": "置き換え"
+    },
+    "milestones": {
+      "title": "型",
+      "momentum": "卓の勢い +{{mult}} 倍率",
+      "claimed": "獲得済",
+      "twin_sequence": {
+        "name": "双子順子",
+        "description": "同じ順子が二つ、卓に並びます。"
+      },
+      "pure_suit": {
+        "name": "清一の兆し",
+        "description": "二つ以上の面子が、すべて同じ種類の牌でできています。"
+      },
+      "three_suit_sequence": {
+        "name": "三色順子",
+        "description": "同じ数の並びを、三つの種類すべてで揃えます。"
+      },
+      "dragon_duet": {
+        "name": "双龍",
+        "description": "異なる三元牌の面子が二つ、卓を占めます。"
+      },
+      "dragon_court": {
+        "name": "三元の宮廷",
+        "description": "三種類の三元牌がすべて呼応します。"
+      },
+      "four_sequences": {
+        "name": "四順子",
+        "description": "すべての面子の枠が順子で、対子も置かれています。"
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "反響の竹",
+        "description": "索子の順子を置くと、二度得点します。"
+      },
+      "patient_pair": {
+        "name": "忍耐の対子",
+        "description": "卓にすでにある面子一つにつき、対子が+30点。"
+      },
+      "dragon_lantern": {
+        "name": "龍灯",
+        "description": "三元牌の面子は枠を灯します。灯った枠の隣に後から置いた面子は+0.5倍率。"
+      },
+      "twin_flame": {
+        "name": "双炎",
+        "description": "型の報酬の点数が二倍になります。"
+      },
+      "river_merchant": {
+        "name": "囁きの商人",
+        "description": "各局に一度、河から牌を一枚だけ手元に戻せます。"
+      },
+      "jade_ledger": {
+        "name": "翡翠の帳簿",
+        "description": "面子を置くたびに¥2。各局の交換回数が一つ減ります。"
+      },
+      "honor_court": {
+        "name": "字牌の宮廷",
+        "description": "風牌か三元牌の面子は、牌一枚につき+0.3倍率。"
+      },
+      "terminal_gate": {
+        "name": "老頭の門",
+        "description": "一か九を含む面子は+40点。"
+      }
+    },
+    "chain": {
+      "title": "得点の流れ",
+      "skip": "早送り"
+    },
+    "stage": {
+      "group": {
+        "sequence": "順子を配置 — {{tiles}}",
+        "triplet": "刻子を配置 — {{tiles}}",
+        "quad": "槓子を配置 — {{tiles}}",
+        "pair": "対子を配置 — {{tiles}}"
+      },
+      "frostMagistrate": "霜奉行 — 字牌の牌点は半分",
+      "momentum": "卓の勢い +{{mult}} 倍率",
+      "terminalGate": "老頭の門 +{{bonus}}",
+      "honorCourt": "字牌の宮廷 +{{mult}} 倍率",
+      "patientPair": "忍耐の対子 +{{bonus}}（待っている面子{{melds}}）",
+      "dragonLantern": "龍灯 灯った枠から +{{mult}} 倍率",
+      "echoingBamboo": "反響の竹 — この順子は二度得点します",
+      "milestone": "{{name}} +{{points}}、この局は+{{mult}}倍率",
+      "completion": "卓が完成 — {{base}} × {{mult}}",
+      "total": "目標に加算"
+    },
+    "roundEnd": {
+      "target": "局を確保",
+      "completed": "卓を完成",
+      "exhausted": "資源を使い切り"
+    },
+    "rounds": {
+      "0": "曙光",
+      "1": "昇る宮廷",
+      "2": "霜奉行"
+    },
+    "boss": {
+      "frost_magistrate": "霜奉行 — この局、字牌の牌点は半分になります。"
+    },
+    "hud": {
+      "round": "第{{current}}局／全{{total}}局",
+      "resources": "配置{{actions}}・交換{{redraws}}"
+    },
+    "river": {
+      "title": "河",
+      "recover": "河 — 触れて一枚だけ戻す"
+    },
+    "hint": {
+      "select": "牌を選んで順子・刻子・対子を作り、枠を選びます。",
+      "choose": "光っている枠に触れて確定します。",
+      "noSlot": "その面子が入る枠がありません。牌を交換するか、別の形を選びます。"
+    },
+    "action": {
+      "clear": "解除",
+      "exchange": "交換（{{left}}）",
+      "recover": "交換（配置一回）",
+      "finish": "局を終える",
+      "needMore": "あと{{remaining}}"
+    },
+    "start": {
+      "title": "打ち方を選ぶ",
+      "subtitle": "最初の一牌より前に選ぶ法令が一つ。欲しい牌が変わるはずです。",
+      "take": "これで始める"
+    },
+    "cleared": {
+      "title": "局クリア",
+      "subtitle": "目標{{target}}に対して{{score}}。所持金¥{{gold}}。",
+      "shop": "茶寮に寄る",
+      "skipShop": "そのまま次の局へ"
+    },
+    "shop": {
+      "title": "茶寮",
+      "subtitle": "所持金 ¥{{gold}}",
+      "empty": "棚には何も残っていません。",
+      "buy": "買う",
+      "leave": "次の局へ"
+    },
+    "end": {
+      "won": "三局、走破",
+      "lost": "卓が尽きました",
+      "summary": "総得点 {{score}}",
+      "again": "もう一度"
+    },
+    "reject": {
+      "tooFew": "面子になる牌を二枚以上選んでください。",
+      "tooMany": "面子は最大で四枚です。",
+      "bonusTile": "花牌と季節牌は面子として置けません。",
+      "notAGroup": "この牌では順子・刻子・槓子・対子になりません。",
+      "notChoosing": "最初の選択はすでに済んでいます。",
+      "notOffered": "その法令は提示されていません。",
+      "notPlaying": "この局は終わりました。",
+      "noActions": "配置の回数が残っていません。",
+      "noSlot": "その枠は存在しません。",
+      "slotTaken": "その枠にはすでに面子があります。",
+      "slotEmpty": "その枠には置き換えるものがありません。",
+      "notInRack": "その牌は手元にありません。",
+      "pairSlotOnly": "対子の枠には対子しか置けません。",
+      "meldSlotOnly": "面子の枠には順子・刻子・槓子を置きます。",
+      "illegalPlacement": "その面子はそこに置けません。",
+      "noRedraws": "交換の回数が残っていません。",
+      "redrawSize": "交換できるのは一枚から三枚までです。",
+      "wallEmpty": "山が尽きました。",
+      "noRecoveries": "この局に河から戻せる回数は残っていません。",
+      "rackFull": "手元がいっぱいです。先に置くか交換してください。",
+      "notInRiver": "その牌は河にありません。",
+      "targetNotMet": "目標に届いてから局を終えてください。",
+      "notBetweenRounds": "茶寮は局と局の間に開きます。",
+      "shopClosed": "茶寮は閉まっています。",
+      "tooExpensive": "所持金が足りません。"
     }
   }
 }

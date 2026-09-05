@@ -10,7 +10,8 @@
     "close": "Isara",
     "yes": "Oo",
     "no": "Hindi",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "Pangunahing menu"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Table Stake · Hirap",
     "tableStake": "Table stake",
     "noSpecialModifiers": "Walang espesyal na modifier",
-    "promise": "Pangako"
+    "promise": "Pangako",
+    "tableLoop": "Ikot ng Mesa (eksperimento)"
   },
   "settings": {
     "title": "Mga Setting",
@@ -169,7 +171,18 @@
     "sellFor": "Ibenta sa ¥{{value}}",
     "sellHidden": "Ibenta ang nakatagong Decree",
     "sellNamed": "Ibenta ang {{name}}",
-    "hiddenDecree": "nakatagong Decree"
+    "hiddenDecree": "nakatagong Decree",
+    "coach": {
+      "title": "Dalawang paraan para laruin ito",
+      "dismiss": "Itago",
+      "pointsNow": "Puntos ngayon",
+      "keepsPace": "Nakakahabol: kailangan ng kamay na ito ng {{required}}.",
+      "behindPace": "Kulang sa {{required}} na kailangan ng kamay na ito.",
+      "buildToward": "Bumuo patungo sa {{pattern}}",
+      "buildTowardPlain": "Bumuo patungo sa isang hugis",
+      "shapeCost": "Mas mababa ng {{difference}} ngayon, pero nananatili ang hugis na kaya mong pangalanan.",
+      "tradeoff": "Hindi laging mas magandang galaw ang mas malaking bilang: ang hugis na itinabi mo ay maaaring mas malaki ang halaga mamaya."
+    }
   },
   "rounds": {
     "small": "Maliit na Round",
@@ -687,6 +700,186 @@
         "name": "Yungib ng Dragon",
         "description": "Isang maalamat na mesang inukit mula sa buto ng dragon at nakatago sa kuweba sa bundok. Mas malakas ang mga Yakuman, ngunit mas malaking tributo ang hinihingi ng dragon."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Puwesto ng grupo {{number}}",
+      "pair": "Puwesto ng pares",
+      "meldShort": "Grupo",
+      "pairShort": "Pares",
+      "emptyMeld": "sunod-sunod o tatluhan",
+      "emptyPair": "dalawang magkapareho",
+      "replace": "Palitan"
+    },
+    "milestones": {
+      "title": "Mga Hugis",
+      "momentum": "Momentum ng mesa +{{mult}} Multiplier",
+      "claimed": "nabayaran",
+      "twin_sequence": {
+        "name": "Kambal na Sequence",
+        "description": "Dalawang magkaparehong sequence ang magkatabi sa mesa."
+      },
+      "pure_suit": {
+        "name": "Iisang Uri",
+        "description": "Dalawa o higit pang grupo, at pare-pareho ang uri ng lahat."
+      },
+      "three_suit_sequence": {
+        "name": "Sequence sa Tatlong Uri",
+        "description": "Iisang sunod na tatlong numero, isang beses sa bawat uri."
+      },
+      "dragon_duet": {
+        "name": "Duweto ng mga Dragon",
+        "description": "Dalawang magkaibang Dragon ang humahawak sa mesa."
+      },
+      "dragon_court": {
+        "name": "Korte ng mga Dragon",
+        "description": "Nagtutugon ang lahat ng tatlong Dragon."
+      },
+      "four_sequences": {
+        "name": "Apat na Sequence",
+        "description": "Sequence ang laman ng bawat puwesto ng grupo, at nakalapag na ang pares."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Umaalingawngaw na Kawayan",
+        "description": "Dalawang beses nagpupuntos ang sequence ng Kawayan kapag inilapag mo ito."
+      },
+      "patient_pair": {
+        "name": "Matiyagang Pares",
+        "description": "Dagdag na +30 ang pares sa bawat grupong nasa mesa na."
+      },
+      "dragon_lantern": {
+        "name": "Parol ng Dragon",
+        "description": "Sinisindihan ng grupo ng Dragon ang puwesto nito. Ang bawat grupong ilalapag mamaya sa tabi ng sinindihang puwesto ay may +0.5 Multiplier."
+      },
+      "twin_flame": {
+        "name": "Kambal na Apoy",
+        "description": "Doble ang puntos na ibinabayad ng mga gantimpala sa hugis."
+      },
+      "river_merchant": {
+        "name": "Bumubulong na Mangangalakal",
+        "description": "Minsan sa bawat round, kunin ang isang tile mula sa ilog pabalik sa iyong rack."
+      },
+      "jade_ledger": {
+        "name": "Talaan ng Jade",
+        "description": "Kumita ng ¥2 sa bawat grupong ilalapag mo. Magsisimula ang bawat round na kulang ng isang palit."
+      },
+      "honor_court": {
+        "name": "Korte ng mga Karangalan",
+        "description": "Ang mga grupo ng Hangin o Dragon ay may +0.3 Multiplier sa bawat tile nila."
+      },
+      "terminal_gate": {
+        "name": "Pintuan ng Dulo",
+        "description": "Ang grupong may 1 o 9 ay may dagdag na +40."
+      }
+    },
+    "chain": {
+      "title": "Paano ito nagpuntos",
+      "skip": "Laktawan"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Nailapag na sequence — {{tiles}}",
+        "triplet": "Nailapag na tatluhan — {{tiles}}",
+        "quad": "Nailapag na apatan — {{tiles}}",
+        "pair": "Nailapag na pares — {{tiles}}"
+      },
+      "frostMagistrate": "Hukom ng Hamog na Yelo: kalahati ang puntos ng mga tile ng karangalan",
+      "momentum": "Momentum ng mesa +{{mult}} Multiplier",
+      "terminalGate": "Pintuan ng Dulo +{{bonus}}",
+      "honorCourt": "Korte ng mga Karangalan +{{mult}} Multiplier",
+      "patientPair": "Matiyagang Pares +{{bonus}} ({{melds}} grupong naghihintay)",
+      "dragonLantern": "Parol ng Dragon, +{{mult}} Multiplier mula sa sinindihang puwesto",
+      "echoingBamboo": "Umaalingawngaw na Kawayan: dalawang beses nagpupuntos ang sequence na ito",
+      "milestone": "{{name}} +{{points}}, at +{{mult}} Multiplier sa buong round",
+      "completion": "Kumpleto ang mesa — {{base}} × {{mult}}",
+      "total": "Dumadapo sa target"
+    },
+    "roundEnd": {
+      "target": "Nasiguro ang round",
+      "completed": "Natapos ang mesa",
+      "exhausted": "Naubos ang mga rekurso"
+    },
+    "rounds": {
+      "0": "Unang Liwanag",
+      "1": "Sumisikat na Korte",
+      "2": "Hukom ng Hamog na Yelo"
+    },
+    "boss": {
+      "frost_magistrate": "Hukom ng Hamog na Yelo: sa round na ito, kalahati lang ng puntos ang ibinibigay ng mga tile ng karangalan."
+    },
+    "hud": {
+      "round": "Round {{current}} ng {{total}}",
+      "resources": "{{actions}} aksyon · {{redraws}} palit"
+    },
+    "river": {
+      "title": "Ilog",
+      "recover": "Ilog: pindutin para kunin ang isa pabalik"
+    },
+    "hint": {
+      "select": "Pindutin ang mga tile para bumuo ng sunod-sunod, tatluhan o pares, tapos pumili ng puwesto.",
+      "choose": "Pindutin ang naka-highlight na puwesto para ilapag ito.",
+      "noSlot": "Walang puwestong tatanggap sa grupong iyon. Palitan ang mga tile o pumili ng ibang hugis."
+    },
+    "action": {
+      "clear": "Linisin",
+      "exchange": "Palitan ({{left}})",
+      "recover": "Palitan (1 aksyon)",
+      "finish": "Tapusin ang round",
+      "needMore": "{{remaining}} pa"
+    },
+    "start": {
+      "title": "Piliin kung paano ka maglalaro",
+      "subtitle": "Isang Decree, piniling bago ang unang tile. Dapat nitong baguhin kung anong mga tile ang gusto mo.",
+      "take": "Simulan gamit ito"
+    },
+    "cleared": {
+      "title": "Pasado ang round",
+      "subtitle": "{{score}} laban sa target na {{target}}. Pitaka: ¥{{gold}}.",
+      "shop": "Dumaan sa bahay ng tsaa",
+      "skipShop": "Diretso sa susunod na round"
+    },
+    "shop": {
+      "title": "Bahay ng Tsaa",
+      "subtitle": "Pitaka: ¥{{gold}}",
+      "empty": "Wala nang natira sa istante.",
+      "buy": "Bilhin",
+      "leave": "Susunod na round"
+    },
+    "end": {
+      "won": "Tatlong round, lahat pasado",
+      "lost": "Naubusan ang mesa",
+      "summary": "Puntos ng takbo {{score}}",
+      "again": "Isa pang takbo"
+    },
+    "reject": {
+      "tooFew": "Pumili ng hindi bababa sa dalawang tile na bumubuo ng grupo.",
+      "tooMany": "Hanggang apat na tile lang ang isang grupo.",
+      "bonusTile": "Hindi puwedeng ilapag bilang grupo ang mga Bulaklak at Panahon.",
+      "notAGroup": "Hindi bumubuo ang mga tile na ito ng sunod-sunod, tatluhan, apatan o pares.",
+      "notChoosing": "Nagawa na ang pambungad na pagpili.",
+      "notOffered": "Hindi inalok ang Decree na iyon.",
+      "notPlaying": "Tapos na ang round.",
+      "noActions": "Wala nang natitirang aksyon sa paglalapag.",
+      "noSlot": "Wala ang puwestong iyon.",
+      "slotTaken": "May grupo na ang puwestong iyon.",
+      "slotEmpty": "Walang mapapalitan sa puwestong iyon.",
+      "notInRack": "Wala sa rack mo ang mga tile na iyon.",
+      "pairSlotOnly": "Pares lang ang tinatanggap ng puwesto ng pares.",
+      "meldSlotOnly": "Sunod-sunod, tatluhan o apatan ang tinatanggap ng puwesto ng grupo.",
+      "illegalPlacement": "Hindi puwedeng ilagay diyan ang grupong iyon.",
+      "noRedraws": "Wala nang natitirang palit.",
+      "redrawSize": "Isa hanggang tatlong tile ang maaaring palitan.",
+      "wallEmpty": "Wala nang laman ang pader.",
+      "noRecoveries": "Wala nang natitirang pagkuha mula sa ilog sa round na ito.",
+      "rackFull": "Puno na ang rack mo; maglapag o magpalit muna.",
+      "notInRiver": "Wala sa ilog ang tile na iyon.",
+      "targetNotMet": "Abutin ang target bago tapusin ang round.",
+      "notBetweenRounds": "Bumubukas ang tindahan sa pagitan ng mga round.",
+      "shopClosed": "Sarado ang tindahan.",
+      "tooExpensive": "Hindi mo kayang bilhin iyon."
     }
   }
 }

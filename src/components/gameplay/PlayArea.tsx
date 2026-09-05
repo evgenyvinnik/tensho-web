@@ -12,6 +12,8 @@ import { YakuReveal } from '../effects/YakuReveal'
 import { GlowEffect } from '../effects/GlowEffect'
 import { YakuRevealState } from './gameplayTypes'
 import { YakuDefinition } from '../../rules/YakuDetector'
+import { CoachPanel } from './CoachPanel'
+import type { CoachAdvice } from '../../gameplay/beginnerCoach'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -51,6 +53,16 @@ export interface PlayAreaProps {
   yakuReveals: YakuRevealState[]
   /** Handler for yaku reveal completion */
   onYakuComplete: (id: string) => void
+  /**
+   * Two priced alternatives for this turn, shown while nothing is selected.
+   * The idle play area is where the player is deciding, and putting the coach
+   * here costs no vertical space on a screen that has none to spare.
+   */
+  coachAdvice?: CoachAdvice | null
+  /** Apply a coach option's selection to the hand. */
+  onCoachChoose?: (tileIds: string[]) => void
+  /** Hide the coach for the rest of the session. */
+  onCoachDismiss?: () => void
   /** Primary color of the selected table style */
   tableThemeColor?: string
   /** Secondary color of the selected table style */
@@ -196,6 +208,9 @@ export function PlayArea({
   handsRemaining = 1,
   yakuReveals,
   onYakuComplete,
+  coachAdvice = null,
+  onCoachChoose,
+  onCoachDismiss,
   tableThemeColor = '#C8B273',
   tableAccentColor = '#2D5F4A',
 }: PlayAreaProps) {
@@ -314,6 +329,15 @@ export function PlayArea({
               </p>
             </GlowEffect>
           </div>
+        </div>
+      ) : coachAdvice && activeTileCount === 0 && onCoachChoose ? (
+        /* Nothing selected: show the two moves worth weighing. */
+        <div className="w-full" onClick={(event) => event.stopPropagation()}>
+          <CoachPanel
+            advice={coachAdvice}
+            onChoose={onCoachChoose}
+            onDismiss={onCoachDismiss}
+          />
         </div>
       ) : (
         /* Default state when no tiles */

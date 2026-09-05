@@ -398,6 +398,13 @@ export function MenuScreen() {
     navigateTo(ROUTES.PLAY)
   }
 
+  // The persistent-table prototype from docs/GAMEPLAY_EXPERIMENTS.md. It runs
+  // beside the classic loop so the two can be compared in one session.
+  const handleTableLoop = () => {
+    audio.play()
+    navigateTo(ROUTES.TABLE_LOOP)
+  }
+
   const handleCodex = () => {
     navigateTo(ROUTES.CODEX)
   }
@@ -515,6 +522,15 @@ export function MenuScreen() {
                 show={showContent}
               >
                 {t('menu.play')}
+              </NeonButton>
+
+              <NeonButton
+                onClick={handleTableLoop}
+                variant="secondary"
+                delay={700}
+                show={showContent}
+              >
+                {t('menu.tableLoop', 'Table Loop (experiment)')}
               </NeonButton>
 
               <div className="grid w-full grid-cols-2 gap-3">

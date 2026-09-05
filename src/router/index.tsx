@@ -4,6 +4,7 @@
  * Implements language-prefixed routes for i18n support:
  * - /:lang/ - Menu (default)
  * - /:lang/play - Gameplay
+ * - /:lang/table-loop - Table Loop prototype (persistent-table experiment)
  * - /:lang/shop - Tea House shop
  * - /:lang/game-over - Game over screen
  * - /:lang/codex - Codex (game reference guide)
@@ -44,6 +45,7 @@ export { useNavigate, useLocation, useParams }
 export const ROUTES = {
   MENU: '',
   PLAY: 'play',
+  TABLE_LOOP: 'table-loop',
   SHOP: 'shop',
   GAME_OVER: 'game-over',
   CODEX: 'codex',
@@ -206,6 +208,7 @@ export function LanguageLayout() {
 export function createAppRouter(routes: {
   MenuScreen: React.ComponentType
   GameplayScreen: React.ComponentType
+  TableLoopScreen?: React.ComponentType
   ShopScreen: React.ComponentType
   GameOverScreen: React.ComponentType
   CodexScreen?: React.ComponentType
@@ -217,6 +220,7 @@ export function createAppRouter(routes: {
   const {
     MenuScreen,
     GameplayScreen,
+    TableLoopScreen,
     ShopScreen,
     GameOverScreen,
     CodexScreen,
@@ -260,6 +264,15 @@ export function createAppRouter(routes: {
         {
           path: ROUTES.PLAY,
           element: <GameplayScreen />,
+          errorElement: <RouteErrorBoundary />,
+        },
+        {
+          path: ROUTES.TABLE_LOOP,
+          element: TableLoopScreen ? (
+            <TableLoopScreen />
+          ) : (
+            <PlaceholderScreen title="Table Loop" />
+          ),
           errorElement: <RouteErrorBoundary />,
         },
         {

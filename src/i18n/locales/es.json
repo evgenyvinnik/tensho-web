@@ -10,7 +10,8 @@
     "close": "Cerrar",
     "yes": "Sí",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "mainMenu": "Menú principal"
   },
   "menu": {
     "title": "Tensho",
@@ -32,7 +33,8 @@
     "tableStakeDifficulty": "Apuesta de mesa · Dificultad",
     "tableStake": "Apuesta de mesa",
     "noSpecialModifiers": "Sin modificadores especiales",
-    "promise": "Promesa"
+    "promise": "Promesa",
+    "tableLoop": "Bucle de mesa (experimento)"
   },
   "settings": {
     "title": "Ajustes",
@@ -169,7 +171,18 @@
     "sellFor": "Vender por ¥{{value}}",
     "sellHidden": "Vender Decreto oculto",
     "sellNamed": "Vender {{name}}",
-    "hiddenDecree": "Decreto oculto"
+    "hiddenDecree": "Decreto oculto",
+    "coach": {
+      "title": "Dos formas de jugar esto",
+      "dismiss": "Ocultar",
+      "pointsNow": "Puntos ahora",
+      "keepsPace": "Mantiene el ritmo: esta mano necesita {{required}}.",
+      "behindPace": "Se queda corto de los {{required}} que pide esta mano.",
+      "buildToward": "Construir hacia {{pattern}}",
+      "buildTowardPlain": "Construir hacia una figura",
+      "shapeCost": "Puntúa {{difference}} menos ahora y conserva una figura que sabes nombrar.",
+      "tradeoff": "El número mayor no es automáticamente la mejor jugada: una figura que conservas puede valer más después."
+    }
   },
   "rounds": {
     "small": "Ronda Pequeña",
@@ -2153,6 +2166,186 @@
         "name": "Guarida del Dragón",
         "description": "Una mesa legendaria tallada en hueso de dragón, oculta en una caverna de montaña."
       }
+    }
+  },
+  "tableLoop": {
+    "slot": {
+      "meld": "Casilla de grupo {{number}}",
+      "pair": "Casilla del par",
+      "meldShort": "Grupo",
+      "pairShort": "Par",
+      "emptyMeld": "secuencia o trío",
+      "emptyPair": "dos iguales",
+      "replace": "Sustituir"
+    },
+    "milestones": {
+      "title": "Figuras",
+      "momentum": "Impulso de mesa +{{mult}} Mult",
+      "claimed": "cobrada",
+      "twin_sequence": {
+        "name": "Secuencia Gemela",
+        "description": "Dos secuencias idénticas se alzan juntas en la mesa."
+      },
+      "pure_suit": {
+        "name": "Palo Puro",
+        "description": "Dos grupos o más, todos del mismo palo."
+      },
+      "three_suit_sequence": {
+        "name": "Secuencia de Tres Palos",
+        "description": "La misma tirada de tres números, una vez en cada palo."
+      },
+      "dragon_duet": {
+        "name": "Dúo de Dragones",
+        "description": "Dos Dragones distintos dominan la mesa."
+      },
+      "dragon_court": {
+        "name": "Corte de Dragones",
+        "description": "Los tres Dragones se responden entre sí."
+      },
+      "four_sequences": {
+        "name": "Cuatro Secuencias",
+        "description": "Cada casilla de grupo guarda una secuencia y el par ya está puesto."
+      }
+    },
+    "decrees": {
+      "echoing_bamboo": {
+        "name": "Bambú que Resuena",
+        "description": "Una secuencia de Bambúes puntúa dos veces al colocarla."
+      },
+      "patient_pair": {
+        "name": "Par Paciente",
+        "description": "El par suma +30 por cada grupo que ya esté en la mesa."
+      },
+      "dragon_lantern": {
+        "name": "Farol del Dragón",
+        "description": "Un grupo de Dragones enciende su casilla. Cada grupo colocado después junto a una casilla encendida gana +0,5 Mult."
+      },
+      "twin_flame": {
+        "name": "Llama Gemela",
+        "description": "Las recompensas de figura pagan el doble de puntos."
+      },
+      "river_merchant": {
+        "name": "Mercader que Susurra",
+        "description": "Una vez por ronda, recupera una ficha del río y devuélvela a tu atril."
+      },
+      "jade_ledger": {
+        "name": "Libro de Jade",
+        "description": "Gana ¥2 por cada grupo que coloques. Empieza cada ronda con un cambio menos."
+      },
+      "honor_court": {
+        "name": "Corte de Honores",
+        "description": "Los grupos de Vientos o Dragones ganan +0,3 Mult por cada una de sus fichas."
+      },
+      "terminal_gate": {
+        "name": "Puerta Terminal",
+        "description": "Un grupo que contenga un 1 o un 9 suma +40."
+      }
+    },
+    "chain": {
+      "title": "Cómo puntuó",
+      "skip": "Saltar"
+    },
+    "stage": {
+      "group": {
+        "sequence": "Secuencia colocada — {{tiles}}",
+        "triplet": "Trío colocado — {{tiles}}",
+        "quad": "Cuarteto colocado — {{tiles}}",
+        "pair": "Par colocado — {{tiles}}"
+      },
+      "frostMagistrate": "Magistrado de Escarcha: los honores puntúan la mitad",
+      "momentum": "Impulso de mesa +{{mult}} Mult",
+      "terminalGate": "Puerta Terminal +{{bonus}}",
+      "honorCourt": "Corte de Honores +{{mult}} Mult",
+      "patientPair": "Par Paciente +{{bonus}} ({{melds}} grupos esperando)",
+      "dragonLantern": "Farol del Dragón +{{mult}} Mult desde la casilla encendida",
+      "echoingBamboo": "Bambú que Resuena: esta secuencia puntúa dos veces",
+      "milestone": "{{name}} +{{points}}, +{{mult}} Mult durante la ronda",
+      "completion": "Mesa completa — {{base}} × {{mult}}",
+      "total": "Cae sobre el objetivo"
+    },
+    "roundEnd": {
+      "target": "Ronda asegurada",
+      "completed": "Mesa terminada",
+      "exhausted": "Recursos agotados"
+    },
+    "rounds": {
+      "0": "Primera Luz",
+      "1": "Corte Naciente",
+      "2": "Magistrado de Escarcha"
+    },
+    "boss": {
+      "frost_magistrate": "Magistrado de Escarcha: esta ronda las fichas de honor puntúan la mitad."
+    },
+    "hud": {
+      "round": "Ronda {{current}} de {{total}}",
+      "resources": "{{actions}} acciones · {{redraws}} cambios"
+    },
+    "river": {
+      "title": "Río",
+      "recover": "Río: toca para recuperar una ficha"
+    },
+    "hint": {
+      "select": "Toca fichas para formar una secuencia, un trío o un par, y luego elige una casilla.",
+      "choose": "Toca una casilla resaltada para confirmarla.",
+      "noSlot": "Ninguna casilla acepta ese grupo. Cambia las fichas o elige otra figura."
+    },
+    "action": {
+      "clear": "Limpiar",
+      "exchange": "Cambiar ({{left}})",
+      "recover": "Cambiar (1 acción)",
+      "finish": "Terminar ronda",
+      "needMore": "Faltan {{remaining}}"
+    },
+    "start": {
+      "title": "Elige cómo vas a jugar",
+      "subtitle": "Un Decreto, elegido antes de la primera ficha. Debería cambiar qué fichas quieres.",
+      "take": "Empezar con este"
+    },
+    "cleared": {
+      "title": "Ronda superada",
+      "subtitle": "{{score}} frente a un objetivo de {{target}}. Bolsa: ¥{{gold}}.",
+      "shop": "Pasar por la casa de té",
+      "skipShop": "Directo a la siguiente ronda"
+    },
+    "shop": {
+      "title": "Casa de Té",
+      "subtitle": "Bolsa: ¥{{gold}}",
+      "empty": "No queda nada en el estante.",
+      "buy": "Comprar",
+      "leave": "Siguiente ronda"
+    },
+    "end": {
+      "won": "Tres rondas, superadas",
+      "lost": "La mesa se quedó sin recursos",
+      "summary": "Puntuación de la partida {{score}}",
+      "again": "Otra partida"
+    },
+    "reject": {
+      "tooFew": "Selecciona al menos dos fichas que formen un grupo.",
+      "tooMany": "Un grupo tiene como mucho cuatro fichas.",
+      "bonusTile": "Las flores y las estaciones no se pueden colocar como grupo.",
+      "notAGroup": "Estas fichas no forman una secuencia, un trío, un cuarteto ni un par.",
+      "notChoosing": "La elección de apertura ya está hecha.",
+      "notOffered": "Ese Decreto no se ofreció.",
+      "notPlaying": "La ronda ha terminado.",
+      "noActions": "No quedan acciones de colocación.",
+      "noSlot": "Esa casilla no existe.",
+      "slotTaken": "Esa casilla ya tiene un grupo.",
+      "slotEmpty": "No hay nada que sustituir en esa casilla.",
+      "notInRack": "Esas fichas no están en tu atril.",
+      "pairSlotOnly": "La casilla del par solo acepta un par.",
+      "meldSlotOnly": "Una casilla de grupo acepta una secuencia, un trío o un cuarteto.",
+      "illegalPlacement": "Ese grupo no puede ir ahí.",
+      "noRedraws": "No quedan cambios.",
+      "redrawSize": "Cambia de una a tres fichas.",
+      "wallEmpty": "El muro está vacío.",
+      "noRecoveries": "No quedan recuperaciones del río en esta ronda.",
+      "rackFull": "Tu atril está lleno; coloca o cambia primero.",
+      "notInRiver": "Esa ficha no está en el río.",
+      "targetNotMet": "Alcanza el objetivo antes de terminar la ronda.",
+      "notBetweenRounds": "La tienda abre entre rondas.",
+      "shopClosed": "La tienda está cerrada.",
+      "tooExpensive": "No puedes permitírtelo."
     }
   }
 }

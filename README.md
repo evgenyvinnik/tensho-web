@@ -87,8 +87,8 @@ Run `bun run sloc` to calculate source lines of code.
 | Zustand Stores | 18 |
 | Game Systems | 27 |
 | React Components | 59 |
-| Unit Test Files | 15 (159 tests) |
-| E2E Scenarios | 11 (22 desktop/mobile checks) |
+| Unit Test Files | 30 (322 tests) |
+| E2E Scenarios | 23 (46 desktop/mobile checks) |
 | Supported Locales | 13 |
 
 ### Implemented Systems
@@ -106,6 +106,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Features
 
+- **Table Loop (experiment)** — A second three-round core loop where every group you play stays on the table, patterns pay before the table is finished, and each score resolves as a readable chain
 - **Tutorial System** — Dismissible contextual guidance that never blocks gameplay
 - **Drag & Drop** — Intuitive tile arrangement with touch support
 - **Responsive Design** — Mobile-first portrait layout
@@ -115,6 +116,8 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Documentation
 
+- [Gameplay experiments and wild ideas](docs/GAMEPLAY_EXPERIMENTS.md) — Design diagnosis, the built Table Loop prototype, 64 experiments, and a playtest plan
+- [Implementation status](docs/IMPLEMENTATION_STATUS.md) — What is actually connected to a playable loop
 - [ARCHITECTURE.MD](ARCHITECTURE.MD) — Game design, systems, and mechanics
 - [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) — Complete item lists (Decrees, Seals, Orbs, etc.)
 - [CLAUDE.md](CLAUDE.md) — Development guidance for Claude Code

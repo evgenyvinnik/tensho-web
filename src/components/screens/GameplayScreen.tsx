@@ -40,6 +40,7 @@ import { PlayArea } from '../gameplay/PlayArea'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
 import {
+  buildCoachAdvice,
   findBeginnerSuggestion,
   selectionMatchesSuggestion,
 } from '../../gameplay/beginnerCoach'
@@ -106,6 +107,9 @@ export function GameplayScreen() {
   const [showBeginnerGuide, setShowBeginnerGuide] = useState(false)
   const [hasCompletedFirstPlay, setHasCompletedFirstPlay] = useState(false)
   const [forceBeginnerCoach, setForceBeginnerCoach] = useState(false)
+  // Hides the two-option coach for the rest of the session once the player
+  // says they no longer need it. Manual hints stay available.
+  const [coachDismissed, setCoachDismissed] = useState(false)
   const [showConsumablesPanel, setShowConsumablesPanel] = useState<
     'fateSeals' | 'celestialOrbs' | 'voidScripts' | null
   >(null)
@@ -553,6 +557,28 @@ export function GameplayScreen() {
             pattern: beginnerPatternLabel,
           })
       : null
+  // The coach prices real selections with the game's own preview, so its two
+  // recommendations cannot drift from what a play actually pays.
+  const coachAdvice = useMemo(() => {
+    if (!beginnerCoachActive || coachDismissed) return null
+    return buildCoachAdvice({
+      tiles: game.handTiles,
+      concealedIds: faceDownTileIds,
+      scoreSelection: (tileIds) => game.previewScore(tileIds)?.finalScore ?? null,
+      remainingToTarget: Math.max(0, game.targetScore - game.score),
+      handsRemaining: game.handsRemaining,
+    })
+  }, [beginnerCoachActive, coachDismissed, game, faceDownTileIds])
+
+  const handleCoachChoose = useCallback(
+    (tileIds: string[]) => {
+      setStagedTileIds([])
+      game.clearSelection()
+      for (const tileId of tileIds) game.selectTile(tileId)
+    },
+    [game]
+  )
+
   const scorePreviewHidden = previewTileIds.some((tileId) =>
     faceDownTileIds.has(tileId)
   )
@@ -804,6 +830,9 @@ export function GameplayScreen() {
           }
           remainingToTarget={Math.max(0, game.targetScore - game.score)}
           handsRemaining={game.handsRemaining}
+          coachAdvice={coachAdvice}
+          onCoachChoose={handleCoachChoose}
+          onCoachDismiss={() => setCoachDismissed(true)}
           yakuReveals={yakuReveals}
           onYakuComplete={handleYakuComplete}
           tableThemeColor={currentTableStyle.themeColor}
