@@ -22,6 +22,7 @@ import { useTableLoopStore } from '../../stores/tableLoopStore'
 import { TileImage } from '../tiles/TileImage'
 import { DraftRow } from '../tableloop/DraftRow'
 import { PracticeGuide } from '../tableloop/PracticeGuide'
+import { ResolutionFlourish } from '../tableloop/ResolutionFlourish'
 import { RackRow } from '../tableloop/RackRow'
 import { SelectionStrip } from '../tableloop/SelectionStrip'
 import { TableSlots } from '../tableloop/TableSlots'
@@ -390,7 +391,9 @@ export function TableLoopScreen() {
     state.riverRecoveriesRemaining > 0 && state.river.length > 0
 
   return (
-    <div className="viewport-full flex flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
+    <div className="viewport-full relative flex flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
+      <ResolutionFlourish stages={state.lastResolution} />
+
       {/* Header */}
       <header className="flex-shrink-0 px-3 pt-2">
         <div className="flex items-baseline justify-between gap-2">

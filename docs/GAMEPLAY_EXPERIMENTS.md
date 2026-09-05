@@ -114,6 +114,21 @@ to authoring one. Reach it from the opening panel or with `?practice=1`.
 Every step is derived from run state rather than a counter, so the guide cannot
 claim progress the table does not show.
 
+### Celebration, and what is blocked (section 7)
+
+Intensity escalates with the chain rather than with every score update: an
+ordinary placement gets nothing, a newly discovered milestone gets a brief
+named flourish, and a completed table gets a stronger one. It is dismissible,
+it holds for about a second, and it is marked `aria-hidden` because the causal
+chain already announces the same event. Under reduced motion it does not render
+at all — the chain is the readable static result the document asks to preserve.
+
+The sound half of that section is **not built and cannot be**: `public/assets/sfx/`
+is empty, so there is no settling sound to play and no motif for a related group
+to answer with. Authoring audio is outside what this change can do; the visual
+escalation is written so a sound layer can hang off the same levels
+(`none` / `milestone` / `completion`) when the assets exist.
+
 ### Readability and keyboard (sections 7 and 9)
 
 - Rack tiles are real toggle buttons: keyboard reachable, named, `aria-pressed`,

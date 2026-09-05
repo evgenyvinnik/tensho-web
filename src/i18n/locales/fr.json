@@ -2393,6 +2393,9 @@
         "title": "Voilà toute la boucle",
         "body": "Posez des combinaisons, regardez-les se répondre, et dépensez vos gains en Décrets adaptés à la table que vous construisez. La donne d’entraînement est écrite ; une vraie partie est distribuée d’un mur mélangé."
       }
+    },
+    "flourish": {
+      "completion": "Table complète"
     }
   }
 }

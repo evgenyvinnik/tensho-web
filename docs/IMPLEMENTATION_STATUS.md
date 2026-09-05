@@ -51,6 +51,7 @@ A second, self-contained core loop lives at `/:lang/table-loop`, reachable from 
 | Offers row (variant) | Off by default. With it on, three face-up tiles are dealt and each placement holds one refill slot open; claiming replaces only that offer, declining or acting otherwise takes the wall tile | Working |
 | Seeded replay | `?seed=<n>` restarts the run from that seed and `&draft=1` selects the offers variant, so a confusing deal can be handed to the next playtester unchanged and the variant can be compared against the base loop | Working |
 | Practice deal | An authored twelve-tile deal holding exactly one run and one pair, with a wall that guarantees the answering run whichever group is committed first. A four-step guide derived from run state inspects both opening moves, names the Twin Sequence only after it fires, offers one connected Decree, then hands over to seeded play | Working |
+| Celebration | Escalates with what actually happened — silent for an ordinary placement, a brief named flourish for a newly claimed milestone, a stronger one for a completed table. Dismissible, and absent entirely under reduced motion, where the causal chain carries the same information | Working |
 | Keyboard and screen readers | Rack tiles are named toggle buttons with `aria-pressed` and focus rings, slots announce their state and the exact forecast, and the score, resolution and offers row are polite live regions. A group can be selected and committed without a mouse | Working |
 
 Targets, rack size, and structure points were set with [`scripts/tableloop-sim.mts`](../scripts/tableloop-sim.mts) rather than inherited from the classic curve. Section 0 of the experiments document records what the measurements changed.
@@ -90,7 +91,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 - Strict application TypeScript check passes.
 - Production build passes.
-- Unit/component/simulation suite passes with 338 tests across 31 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
+- Unit/component/simulation suite passes with 341 tests across 32 files, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
 - The Table Loop prototype adds 74 tests covering the practice deal and group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, offers-row claiming and declining, and a tile-conservation invariant asserted after every action.
 - The Table Loop interface is translated in all 13 locales, and a locale test holds the `tableLoop` and `gameplay.coach` namespaces to exact key parity with English rather than letting them fall back silently.
 - Production browser walkthroughs at desktop and 390px portrait mobile verified disabled empty-selection behavior, a real tactical scoring/refill cycle, keyboard/touch staging, exact score forecasts, a complete guided first move, a scrollable visual tile primer, non-overlapping contextual tips, and a bottom action bar contained by the ornamental frame.
@@ -103,7 +104,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 1. Connect every Table Style's documented visual/mechanical modifier to authoritative run state and reconcile the legacy Wall/Table identifier catalogs.
 2. Build a strategy-aware balance harness (discards, redraws, Yaku selection, packs, and consumables), then tune ordinary-run Act 6–8 power growth from measured completion rates.
 3. Expand the current 34-check Playwright suite to Stake selection/unlocks, consumable targeting, Omen-modified shops, packs, Boss mandates, Act 8 victory, and Endless continuation.
-4. Resolve the repository-wide lint backlog, migrate the remaining gameplay randomness to the run seed, split oversized bundles, and add the missing SFX assets.
+4. Resolve the repository-wide lint backlog, migrate the remaining gameplay randomness to the run seed, split oversized bundles, and add the missing SFX assets. `public/assets/sfx/` is empty, which is what blocks the sound half of the experiments document's section 7 — the Table Loop's visual escalation already exposes the levels a sound layer would key off.
 5. Observe people playing the Table Loop prototype against the classic loop, following section 8 of the experiments document. The simulation says the targets are not arbitrary; it says nothing about whether the loop is enjoyable.
 
 ## Status Rule
