@@ -788,6 +788,14 @@
       "terminal_gate": {
         "name": "Pintuan ng Dulo",
         "description": "Ang grupong may 1 o 9 ay may dagdag na +40."
+      },
+      "wide_rack": {
+        "name": "Malapad na Rack",
+        "description": "Magkarga ng dalawa pang tile sa rack mo."
+      },
+      "gap_bridge": {
+        "name": "Tulay",
+        "description": "Minsan sa bawat round, puwedeng laktawan ng isang sunod-sunod ang isang numero: 3·4·6 ay bilang sequence."
       }
     },
     "chain": {
@@ -830,7 +838,8 @@
     },
     "hud": {
       "round": "Round {{current}} ng {{total}}",
-      "resources": "{{actions}} aksyon · {{redraws}} palit"
+      "resources": "{{actions}} aksyon · {{redraws}} palit",
+      "bridges": "· {{count}} tulay"
     },
     "river": {
       "title": "Ilog",
@@ -909,7 +918,8 @@
     },
     "selection": {
       "noGroup": "Hindi pa grupo · {{tiles}}",
-      "multCost": "sisira ng isang hugis · −{{mult}} Multiplier"
+      "multCost": "sisira ng isang hugis · −{{mult}} Multiplier",
+      "bridged": "{{type}} (may tulay) · {{tiles}}"
     },
     "draft": {
       "title": "Mga Alok",

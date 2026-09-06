@@ -47,7 +47,7 @@ A second, self-contained core loop lives at `/:lang/table-loop`, reachable from 
 | Forecast | Slot forecasts run the committed scoring pipeline against the projected table, so the number shown is the number paid | Working |
 | Causal chain | Each resolution returns ordered stages — group, boss rule, table momentum, Decrees, milestones, completion, total — paced in the UI, skippable, and shown at once under reduced motion | Working |
 | Round end | Meeting the target enables an explicit Finish; completing the table pays a one-time bonus and ends the round; exhaustion settles against the target | Working |
-| Shop | Three unowned Decrees between rounds from a pool of eight, with authoritative gold deduction | Working |
+| Shop | Three unowned Decrees between rounds from a pool of ten, with authoritative gold deduction. Two of them act on the rack rather than the score — Wide Rack adds two rack tiles, Gap Bridge lets one run a round leave a rank out — because measurement showed the passive ones did not change what a player placed | Working |
 | Run end | Three rounds — two ordinary and one telegraphed boss — then a run summary and restart | Working |
 | Offers row (variant) | Off by default. With it on, three face-up tiles are dealt and each placement holds one refill slot open; claiming replaces only that offer, declining or acting otherwise takes the wall tile | Working |
 | Seeded replay | `?seed=<n>` restarts the run from that seed and `&draft=1` selects the offers variant, so a confusing deal can be handed to the next playtester unchanged and the variant can be compared against the base loop | Working |
@@ -92,7 +92,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 - Strict application TypeScript check passes.
 - Production build passes.
-- Unit/component/simulation suite passes with 361 tests across 33 files, including the section 1.1 scoring-baseline comparison and the properties that must survive it, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
+- Unit/component/simulation suite passes with 372 tests across 34 files, including the section 1.1 scoring-baseline comparison and the properties that must survive it, including the authoritative play-size rule, complete-hand declaration, preview parity, beginner move selection, localized tile literacy, and staging behavior.
 - The Table Loop prototype adds 92 tests covering the practice deal and group legality, slot compatibility, milestone one-time awards, revision cost and displacement, boss scoring, forecast/committed parity, exhaustion, round resets, shop purchases, offers-row claiming and declining, and a tile-conservation invariant asserted after every action.
 - The Table Loop interface is translated in all 13 locales, and a locale test holds the `tableLoop` and `gameplay.coach` namespaces to exact key parity with English rather than letting them fall back silently.
 - Production browser walkthroughs at desktop and 390px portrait mobile verified disabled empty-selection behavior, a real tactical scoring/refill cycle, keyboard/touch staging, exact score forecasts, a complete guided first move, a scrollable visual tile primer, non-overlapping contextual tips, and a bottom action bar contained by the ornamental frame.

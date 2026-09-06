@@ -24,6 +24,8 @@ export interface SelectionStripProps {
   groupType: MeldType | null
   /** Best forecast among the slots this selection fits, if any. */
   bestForecast: number | null
+  /** True when only Gap Bridge makes this selection a group. */
+  usedGap?: boolean
   /** Standing multiplier the best slot would cost, if any. */
   multCost?: number
   onClear: () => void
@@ -33,14 +35,21 @@ export function SelectionStrip({
   tiles,
   groupType,
   bestForecast,
+  usedGap = false,
   multCost = 0,
   onClear,
 }: SelectionStripProps) {
   const { t } = useTranslation()
   if (tiles.length === 0) return null
 
-  const identity = groupType
-    ? `${t(`melds.${groupType}`, groupType)} · ${describeGroup(tiles)}`
+  const name = groupType ? t(`melds.${groupType}`, groupType) : null
+  const identity = name
+    ? usedGap
+      ? t('tableLoop.selection.bridged', '{{type}} (bridged) · {{tiles}}', {
+          type: name,
+          tiles: describeGroup(tiles),
+        })
+      : `${name} · ${describeGroup(tiles)}`
     : t('tableLoop.selection.noGroup', 'Not a group yet · {{tiles}}', {
         tiles: describeGroup(tiles),
       })

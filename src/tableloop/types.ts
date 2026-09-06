@@ -86,6 +86,8 @@ export type TableDecreeId =
   | 'echoing_bamboo'
   | 'patient_pair'
   | 'watch_fire'
+  | 'wide_rack'
+  | 'gap_bridge'
   | 'twin_flame'
   | 'river_merchant'
   | 'jade_ledger'
@@ -211,6 +213,8 @@ export interface TableLoopState {
   readonly redrawsRemaining: number
 
   readonly rack: readonly Tile[]
+  /** Tiles this run's rack holds. Raised by Wide Rack. */
+  readonly rackSize: number
   readonly slots: readonly TableSlot[]
   readonly river: readonly Tile[]
   /** Tiles not yet drawn this round. */
@@ -230,6 +234,8 @@ export interface TableLoopState {
 
   /** River recoveries left this round (Whispering Merchant). */
   readonly riverRecoveriesRemaining: number
+  /** Gapped runs left this round (Gap Bridge). */
+  readonly gapBridgesRemaining: number
 
   /**
    * The authored teaching deal from section 7, clearly labelled as practice.

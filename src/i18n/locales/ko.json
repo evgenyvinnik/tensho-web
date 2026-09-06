@@ -2254,6 +2254,14 @@
       "terminal_gate": {
         "name": "노두의 문",
         "description": "일이나 구를 포함한 면자는 +40점."
+      },
+      "wide_rack": {
+        "name": "넓은 손패",
+        "description": "손패를 두 장 더 들 수 있습니다."
+      },
+      "gap_bridge": {
+        "name": "가교",
+        "description": "각 국에 한 번, 한 칸 건너뛴 배열도 순자로 칩니다(3·4·6 등)."
       }
     },
     "chain": {
@@ -2296,7 +2304,8 @@
     },
     "hud": {
       "round": "{{total}}국 중 {{current}}국",
-      "resources": "배치 {{actions}} · 교환 {{redraws}}"
+      "resources": "배치 {{actions}} · 교환 {{redraws}}",
+      "bridges": "· 가교 {{count}}"
     },
     "river": {
       "title": "강",
@@ -2375,7 +2384,8 @@
     },
     "selection": {
       "noGroup": "아직 면자가 아닙니다 · {{tiles}}",
-      "multCost": "패턴이 무너집니다 · −{{mult}} 배수"
+      "multCost": "패턴이 무너집니다 · −{{mult}} 배수",
+      "bridged": "{{type}} (가교) · {{tiles}}"
     },
     "draft": {
       "title": "제안패",

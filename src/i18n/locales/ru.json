@@ -788,6 +788,14 @@
       "terminal_gate": {
         "name": "Врата единицы и девятки",
         "description": "Набор, где есть 1 или 9, получает +40."
+      },
+      "wide_rack": {
+        "name": "Широкая стойка",
+        "description": "Держите на стойке на две кости больше."
+      },
+      "gap_bridge": {
+        "name": "Мост",
+        "description": "Раз за раунд ряд может пропустить один номер: 3·4·6 считается последовательностью."
       }
     },
     "chain": {
@@ -830,7 +838,8 @@
     },
     "hud": {
       "round": "Раунд {{current}} из {{total}}",
-      "resources": "{{actions}} действий · {{redraws}} обменов"
+      "resources": "{{actions}} действий · {{redraws}} обменов",
+      "bridges": "· мостов: {{count}}"
     },
     "river": {
       "title": "Река",
@@ -909,7 +918,8 @@
     },
     "selection": {
       "noGroup": "Пока не набор · {{tiles}}",
-      "multCost": "разрушит узор · −{{mult}} множителя"
+      "multCost": "разрушит узор · −{{mult}} множителя",
+      "bridged": "{{type}} (через мост) · {{tiles}}"
     },
     "draft": {
       "title": "Предложения",

@@ -2250,6 +2250,14 @@
       "terminal_gate": {
         "name": "Terminal Gate",
         "description": "A group containing a 1 or a 9 scores +40."
+      },
+      "wide_rack": {
+        "name": "Wide Rack",
+        "description": "Hold two more tiles in your rack."
+      },
+      "gap_bridge": {
+        "name": "Gap Bridge",
+        "description": "Once a round, a run may skip one rank: 3·4·6 counts as a sequence."
       }
     },
     "chain": {
@@ -2292,7 +2300,8 @@
     },
     "hud": {
       "round": "Round {{current}} of {{total}}",
-      "resources": "{{actions}} actions · {{redraws}} exchanges"
+      "resources": "{{actions}} actions · {{redraws}} exchanges",
+      "bridges": "· {{count}} bridge"
     },
     "river": {
       "title": "River",
@@ -2371,7 +2380,8 @@
     },
     "selection": {
       "noGroup": "Not a group yet · {{tiles}}",
-      "multCost": "breaks a pattern · −{{mult}} Mult"
+      "multCost": "breaks a pattern · −{{mult}} Mult",
+      "bridged": "{{type}} (bridged) · {{tiles}}"
     },
     "draft": {
       "title": "Offers",

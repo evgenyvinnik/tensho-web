@@ -173,6 +173,26 @@ export const TABLE_DECREES: readonly TableDecreeDefinition[] = [
     cost: 12,
   },
   {
+    id: 'wide_rack',
+    name: 'Wide Rack',
+    // The pool was eight passive score modifiers. Measured, owning one barely
+    // changed what a player placed: 17.5% Bamboo runs with Echoing Bamboo
+    // against 17.0% with an unrelated Decree. E04 asks a purchase to change
+    // the next draw you want, and principle 3 prefers an effect that changes
+    // what you keep or place over another percentage. These last two do that.
+    description: 'Hold two more tiles in your rack.',
+    isStarter: false,
+    cost: 12,
+  },
+  {
+    id: 'gap_bridge',
+    name: 'Gap Bridge',
+    description:
+      'Once a round, a run may skip one rank: 3·5·7 counts as a sequence.',
+    isStarter: false,
+    cost: 11,
+  },
+  {
     id: 'terminal_gate',
     name: 'Terminal Gate',
     description: 'A group containing a 1 or a 9 scores +40.',

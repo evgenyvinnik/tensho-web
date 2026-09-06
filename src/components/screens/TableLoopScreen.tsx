@@ -183,11 +183,15 @@ export function TableLoopScreen() {
     return { forecasts: totals, multCosts: costs }
   }, [store.engine, selectedTileIds, placeable, revisable])
 
-  const selectionType = useMemo(() => {
-    if (selectedTiles.length === 0) return null
-    const classified = classifyGroup(selectedTiles)
-    return classified.ok ? classified.type : null
-  }, [selectedTiles])
+  const selection = useMemo(() => {
+    if (selectedTiles.length === 0) return { type: null, usedGap: false }
+    const classified = classifyGroup(selectedTiles, {
+      allowGap: state.gapBridgesRemaining > 0,
+    })
+    return classified.ok
+      ? { type: classified.type, usedGap: Boolean(classified.usedGap) }
+      : { type: null, usedGap: false }
+  }, [selectedTiles, state.gapBridgesRemaining])
 
   const bestForecast = forecasts.size
     ? Math.max(...forecasts.values())
@@ -439,6 +443,13 @@ export function TableLoopScreen() {
               actions: state.placementActionsRemaining,
               redraws: state.redrawsRemaining,
             })}
+            {state.gapBridgesRemaining > 0 && (
+              <span className="ml-1.5 text-sky-300">
+                {t('tableLoop.hud.bridges', '· {{count}} bridge', {
+                  count: state.gapBridgesRemaining,
+                })}
+              </span>
+            )}
           </span>
         </div>
         <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-black/40">
@@ -543,7 +554,8 @@ export function TableLoopScreen() {
       {/* What you have picked, and what it forms */}
       <SelectionStrip
         tiles={selectedTiles}
-        groupType={selectionType}
+        groupType={selection.type}
+        usedGap={selection.usedGap}
         bestForecast={bestForecast}
         multCost={bestMultCost}
         onClear={store.clearSelection}

@@ -2002,6 +2002,14 @@
       "terminal_gate": {
         "name": "Gerbang Ujung",
         "description": "Kelompok yang memuat angka 1 atau 9 mendapat +40."
+      },
+      "wide_rack": {
+        "name": "Rak Lebar",
+        "description": "Simpan dua ubin lagi di rakmu."
+      },
+      "gap_bridge": {
+        "name": "Jembatan",
+        "description": "Sekali per ronde, satu urutan boleh melompati satu angka: 3·4·6 dihitung sebagai urutan."
       }
     },
     "chain": {
@@ -2044,7 +2052,8 @@
     },
     "hud": {
       "round": "Ronde {{current}} dari {{total}}",
-      "resources": "{{actions}} aksi · {{redraws}} penukaran"
+      "resources": "{{actions}} aksi · {{redraws}} penukaran",
+      "bridges": "· {{count}} jembatan"
     },
     "river": {
       "title": "Sungai",
@@ -2123,7 +2132,8 @@
     },
     "selection": {
       "noGroup": "Belum jadi kelompok · {{tiles}}",
-      "multCost": "merusak sebuah pola · −{{mult}} Pengali"
+      "multCost": "merusak sebuah pola · −{{mult}} Pengali",
+      "bridged": "{{type}} (berjembatan) · {{tiles}}"
     },
     "draft": {
       "title": "Tawaran",

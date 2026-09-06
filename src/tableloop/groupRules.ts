@@ -21,8 +21,42 @@ export interface GroupRejection {
 }
 
 export type GroupClassification =
-  | { readonly ok: true; readonly type: MeldType }
+  | {
+      readonly ok: true
+      readonly type: MeldType
+      /** True when only Gap Bridge made this legal. */
+      readonly usedGap?: boolean
+    }
   | { readonly ok: false; readonly rejection: GroupRejection }
+
+export interface GroupOptions {
+  /** Allow a run to leave one gap, as Gap Bridge does. */
+  readonly allowGap?: boolean
+}
+
+/**
+ * A run of three with exactly one rank missing, e.g. 3·4·6 or 3·5·6.
+ *
+ * E18 warns that an exception like this needs a visible rule and limited uses
+ * or sequence structure stops meaning anything, so the engine allows it once a
+ * round and only while Gap Bridge is owned.
+ */
+export function isGappedRun(tiles: readonly Tile[]): boolean {
+  if (tiles.length !== 3) return false
+  const suit = tiles[0].suit
+  if (!isSuitedSuit(suit)) return false
+  if (!tiles.every((tile) => tile.suit === suit)) return false
+
+  const ranks = tiles.map((tile) => tile.rank).sort((a, b) => a - b)
+  if (new Set(ranks).size !== 3) return false
+  return ranks[2] - ranks[0] === 3
+}
+
+function isSuitedSuit(suit: TileSuit): boolean {
+  return (
+    suit === TileSuit.Manzu || suit === TileSuit.Pinzu || suit === TileSuit.Souzu
+  )
+}
 
 /**
  * Classify a selection as a placeable group.
@@ -30,7 +64,10 @@ export type GroupClassification =
  * Bonus tiles (Flowers and Seasons) never form a group, so they are rejected
  * up front rather than silently ignored.
  */
-export function classifyGroup(tiles: readonly Tile[]): GroupClassification {
+export function classifyGroup(
+  tiles: readonly Tile[],
+  options: GroupOptions = {}
+): GroupClassification {
   if (tiles.length < 2) {
     return {
       ok: false,
@@ -60,16 +97,19 @@ export function classifyGroup(tiles: readonly Tile[]): GroupClassification {
   }
 
   const meld = Meld.tryCreate([...tiles])
-  if (!meld) {
-    return {
-      ok: false,
-      rejection: {
-        key: 'tableLoop.reject.notAGroup',
-        text: 'These tiles do not form a sequence, triplet, quad or pair.',
-      },
-    }
+  if (meld) return { ok: true, type: meld.type }
+
+  if (options.allowGap && isGappedRun(tiles)) {
+    return { ok: true, type: MeldType.Sequence, usedGap: true }
   }
-  return { ok: true, type: meld.type }
+
+  return {
+    ok: false,
+    rejection: {
+      key: 'tableLoop.reject.notAGroup',
+      text: 'These tiles do not form a sequence, triplet, quad or pair.',
+    },
+  }
 }
 
 /** Meld slots hold sequences, triplets and quads; the pair slot holds pairs. */
@@ -112,7 +152,10 @@ export function compatibleEmptySlots(
  * Selections are deduplicated by group identity, not by tile identity, so two
  * interchangeable copies of the same triplet are reported once.
  */
-export function enumerateRackGroups(rack: readonly Tile[]): Tile[][] {
+export function enumerateRackGroups(
+  rack: readonly Tile[],
+  options: GroupOptions = {}
+): Tile[][] {
   const tiles = rack.filter((tile) => !tile.isBonus)
   const byKey = new Map<string, Tile[]>()
 
@@ -155,6 +198,29 @@ export function enumerateRackGroups(rack: readonly Tile[]): Tile[][] {
     }
   }
 
+  // Runs with one rank missing, when Gap Bridge is available to pay for them.
+  if (options.allowGap) {
+    for (const suit of [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu]) {
+      for (let start = 1; start <= 6; start += 1) {
+        for (const missing of [start + 1, start + 2]) {
+          const wanted = [start, start + 1, start + 2, start + 3].filter(
+            (rank) => rank !== missing
+          )
+          const run: Tile[] = []
+          for (const rank of wanted) {
+            const match = tiles.find(
+              (tile) =>
+                tile.suit === suit && tile.rank === rank && !run.includes(tile)
+            )
+            if (!match) break
+            run.push(match)
+          }
+          if (run.length === 3) remember(run)
+        }
+      }
+    }
+  }
+
   return [...byKey.values()]
 }
 
@@ -166,9 +232,10 @@ export function enumerateRackGroups(rack: readonly Tile[]): Tile[][] {
  */
 export function hasLegalPlacement(
   rack: readonly Tile[],
-  slots: readonly TableSlot[]
+  slots: readonly TableSlot[],
+  options: GroupOptions = {}
 ): boolean {
-  return fitsAnySlot(rack, slots, (slot) => slot.group === null)
+  return fitsAnySlot(rack, slots, (slot) => slot.group === null, options)
 }
 
 /**
@@ -180,21 +247,23 @@ export function hasLegalPlacement(
  */
 export function hasLegalRevision(
   rack: readonly Tile[],
-  slots: readonly TableSlot[]
+  slots: readonly TableSlot[],
+  options: GroupOptions = {}
 ): boolean {
-  return fitsAnySlot(rack, slots, (slot) => slot.group !== null)
+  return fitsAnySlot(rack, slots, (slot) => slot.group !== null, options)
 }
 
 function fitsAnySlot(
   rack: readonly Tile[],
   slots: readonly TableSlot[],
-  wanted: (slot: TableSlot) => boolean
+  wanted: (slot: TableSlot) => boolean,
+  options: GroupOptions = {}
 ): boolean {
   const kinds = new Set(slots.filter(wanted).map((slot) => slot.kind))
   if (kinds.size === 0) return false
 
-  return enumerateRackGroups(rack).some((group) => {
-    const classification = classifyGroup(group)
+  return enumerateRackGroups(rack, options).some((group) => {
+    const classification = classifyGroup(group, options)
     if (!classification.ok) return false
     return [...kinds].some((kind) => slotAccepts(kind, classification.type))
   })

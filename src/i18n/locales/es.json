@@ -2254,6 +2254,14 @@
       "terminal_gate": {
         "name": "Puerta Terminal",
         "description": "Un grupo que contenga un 1 o un 9 suma +40."
+      },
+      "wide_rack": {
+        "name": "Atril Amplio",
+        "description": "Sostén dos fichas más en tu atril."
+      },
+      "gap_bridge": {
+        "name": "Puente",
+        "description": "Una vez por ronda, una escalera puede saltarse un número: 3·4·6 cuenta como secuencia."
       }
     },
     "chain": {
@@ -2296,7 +2304,8 @@
     },
     "hud": {
       "round": "Ronda {{current}} de {{total}}",
-      "resources": "{{actions}} acciones · {{redraws}} cambios"
+      "resources": "{{actions}} acciones · {{redraws}} cambios",
+      "bridges": "· {{count}} puente"
     },
     "river": {
       "title": "Río",
@@ -2375,7 +2384,8 @@
     },
     "selection": {
       "noGroup": "Todavía no es un grupo · {{tiles}}",
-      "multCost": "rompe una figura · −{{mult}} Mult"
+      "multCost": "rompe una figura · −{{mult}} Mult",
+      "bridged": "{{type}} (con puente) · {{tiles}}"
     },
     "draft": {
       "title": "Ofertas",

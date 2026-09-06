@@ -965,3 +965,69 @@ describe('a revision pays the upgrade, not the group again', () => {
     ).toBe(false)
   })
 })
+
+describe('Decrees that change what you look for', () => {
+  it('Wide Rack deals and refills a larger rack', () => {
+    const plain = TableLoopEngine.fromState(
+      playing({ phase: 'roundCleared', ownedDecrees: [] })
+    )
+    plain.nextRound()
+    expect(plain.getState().rack).toHaveLength(RACK_SIZE)
+
+    const wide = TableLoopEngine.fromState(
+      playing({ phase: 'roundCleared', ownedDecrees: ['wide_rack'] })
+    )
+    wide.nextRound()
+    expect(wide.getState().rackSize).toBe(RACK_SIZE + 2)
+    expect(wide.getState().rack).toHaveLength(RACK_SIZE + 2)
+  })
+
+  it('Gap Bridge makes one gapped run placeable per round, then no more', () => {
+    const bridged = [t(TileSuit.Manzu, 3), t(TileSuit.Manzu, 4), t(TileSuit.Manzu, 6)]
+    const second = [t(TileSuit.Pinzu, 2), t(TileSuit.Pinzu, 4), t(TileSuit.Pinzu, 5)]
+    const engine = TableLoopEngine.fromState(
+      playing({
+        // The spare pair keeps the round alive after the bridge is spent, so
+        // the refusal below is the rule talking and not exhaustion.
+        rack: [...bridged, ...second, t(TileSuit.Souzu, 7), t(TileSuit.Souzu, 7)],
+        wall: [t(TileSuit.Souzu, 1), t(TileSuit.Souzu, 5)],
+        ownedDecrees: ['gap_bridge'],
+        gapBridgesRemaining: 1,
+      })
+    )
+
+    // The forecast offers it while the bridge is unspent.
+    expect(engine.previewPlacement(ids(bridged), 0)).not.toBeNull()
+
+    const placed = engine.place(ids(bridged), 0)
+    expect(placed.success).toBe(true)
+    expect(engine.getState().slots[0].group?.type).toBe(MeldType.Sequence)
+    expect(engine.getState().gapBridgesRemaining).toBe(0)
+
+    // Spent: the next gapped run is not a group again.
+    expect(engine.previewPlacement(ids(second), 1)).toBeNull()
+    expect(engine.place(ids(second), 1).errorKey).toBe(
+      'tableLoop.reject.notAGroup'
+    )
+  })
+
+  it('refuses a gapped run outright without the Decree', () => {
+    const bridged = [t(TileSuit.Manzu, 3), t(TileSuit.Manzu, 4), t(TileSuit.Manzu, 6)]
+    const engine = TableLoopEngine.fromState(playing({ rack: bridged }))
+    expect(engine.place(ids(bridged), 0).errorKey).toBe(
+      'tableLoop.reject.notAGroup'
+    )
+  })
+
+  it('restores the bridge when the next round is dealt', () => {
+    const engine = TableLoopEngine.fromState(
+      playing({
+        phase: 'roundCleared',
+        ownedDecrees: ['gap_bridge'],
+        gapBridgesRemaining: 0,
+      })
+    )
+    engine.nextRound()
+    expect(engine.getState().gapBridgesRemaining).toBe(1)
+  })
+})

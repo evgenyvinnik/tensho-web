@@ -46,6 +46,9 @@ import {
 /** Number of shop offers, and of opening build choices. */
 const OFFER_COUNT = 3
 
+/** Extra rack tiles Wide Rack grants. */
+const WIDE_RACK_BONUS = 2
+
 /** How a run is set up. Both variants are off unless asked for. */
 export interface RunOptions {
   /** Use the E06 offers row. */
@@ -135,6 +138,25 @@ export class TableLoopEngine {
   }
 
   /**
+   * Grant a Decree outside the shop, for balance measurement only.
+   *
+   * `scripts/tableloop-shop.mts` isolates what one Decree changes by giving it
+   * to an otherwise identical run. Nothing in the game calls this.
+   */
+  grantForMeasurement(id: TableDecreeId): void {
+    if (this.state.ownedDecrees.includes(id)) return
+    this.state = TableLoopEngine.beginRound(
+      { ...this.state, ownedDecrees: [...this.state.ownedDecrees, id] },
+      this.state.roundIndex
+    )
+  }
+
+  /** Group-legality options for the current run, i.e. whether a gap is spendable. */
+  private groupOptions(state: TableLoopState = this.state) {
+    return { allowGap: state.gapBridgesRemaining > 0 }
+  }
+
+  /**
    * Resume from a state snapshot.
    *
    * The engine holds no state outside `TableLoopState`, so a saved run — or a
@@ -176,6 +198,7 @@ export class TableLoopEngine {
       placementActionsRemaining: TABLE_ROUNDS[0].placementActions,
       redrawsRemaining: TABLE_ROUNDS[0].redraws,
       rack: [],
+      rackSize: RACK_SIZE,
       slots: createEmptySlots(),
       river: [],
       wall: [],
@@ -187,6 +210,7 @@ export class TableLoopEngine {
       tableMult: 0,
       tableCompleted: false,
       riverRecoveriesRemaining: 0,
+      gapBridgesRemaining: 0,
       practice,
       draftEnabled: options.draftEnabled ?? false,
       draftRow: [],
@@ -246,11 +270,12 @@ export class TableLoopEngine {
     const wall = state.practice
       ? [...state.collection]
       : shuffle(state.collection, random)
-    const rack = wall.slice(0, RACK_SIZE)
-    const draftRow = state.draftEnabled
-      ? wall.slice(RACK_SIZE, RACK_SIZE + DRAFT_ROW_SIZE)
-      : []
     const owned = new Set(state.ownedDecrees)
+    const rackSize = RACK_SIZE + (owned.has('wide_rack') ? WIDE_RACK_BONUS : 0)
+    const rack = wall.slice(0, rackSize)
+    const draftRow = state.draftEnabled
+      ? wall.slice(rackSize, rackSize + DRAFT_ROW_SIZE)
+      : []
 
     return {
       ...state,
@@ -264,7 +289,8 @@ export class TableLoopEngine {
         round.redraws - (owned.has('jade_ledger') ? 1 : 0)
       ),
       rack,
-      wall: wall.slice(RACK_SIZE + draftRow.length),
+      rackSize,
+      wall: wall.slice(rackSize + draftRow.length),
       draftRow,
       pendingDraftPick: false,
       slots: createEmptySlots(),
@@ -273,6 +299,7 @@ export class TableLoopEngine {
       tableMult: 0,
       tableCompleted: false,
       riverRecoveriesRemaining: owned.has('river_merchant') ? 1 : 0,
+      gapBridgesRemaining: owned.has('gap_bridge') ? 1 : 0,
       lastResolution: [],
       lastError: null,
       lastErrorKey: null,
@@ -333,8 +360,9 @@ export class TableLoopEngine {
     if (state.placementActionsRemaining <= 0) {
       return TableLoopEngine.settleRound(state, 'exhausted')
     }
-    if (hasLegalPlacement(state.rack, state.slots)) return state
-    if (hasLegalRevision(state.rack, state.slots)) return state
+    const groups = { allowGap: state.gapBridgesRemaining > 0 }
+    if (hasLegalPlacement(state.rack, state.slots, groups)) return state
+    if (hasLegalRevision(state.rack, state.slots, groups)) return state
     // An unclaimed offer is still a tile the rack has not seen.
     if (state.pendingDraftPick) return state
     // A recovery exchange can still change the rack while an action remains.
@@ -352,7 +380,7 @@ export class TableLoopEngine {
     state: TableLoopState,
     reserve: number = 0
   ): TableLoopState {
-    const needed = Math.max(0, RACK_SIZE - reserve - state.rack.length)
+    const needed = Math.max(0, state.rackSize - reserve - state.rack.length)
     if (needed === 0 || state.wall.length === 0) return state
     const drawn = state.wall.slice(0, needed)
     return {
@@ -418,7 +446,7 @@ export class TableLoopEngine {
       .filter((tile): tile is Tile => tile !== undefined)
     if (tiles.length !== tileIds.length) return null
 
-    const classification = classifyGroup(tiles)
+    const classification = classifyGroup(tiles, this.groupOptions())
     if (!classification.ok) return null
     if (!slotAccepts(slot.kind, classification.type)) return null
 
@@ -512,7 +540,7 @@ export class TableLoopEngine {
       )
     }
 
-    const classification = classifyGroup(tiles)
+    const classification = classifyGroup(tiles, this.groupOptions(state))
     if (!classification.ok) {
       return refuse(
         state,
@@ -563,6 +591,9 @@ export class TableLoopEngine {
       // takes its multiplier with it.
       tableMult: standingMult(projected.slots, allClaimed),
       tableCompleted: state.tableCompleted || completed,
+      // A gapped run spends the round's one bridge.
+      gapBridgesRemaining:
+        state.gapBridgesRemaining - (classification.usedGap ? 1 : 0),
       lastResolution: projected.score.stages,
       lastError: null,
       lastErrorKey: null,
@@ -575,7 +606,7 @@ export class TableLoopEngine {
     next = TableLoopEngine.refillRack(next, offersDraft ? 1 : 0)
     next = {
       ...next,
-      pendingDraftPick: offersDraft && next.rack.length < RACK_SIZE,
+      pendingDraftPick: offersDraft && next.rack.length < next.rackSize,
     }
 
     // Finishing the table is a scoring route that ends the round, not a
@@ -672,7 +703,7 @@ export class TableLoopEngine {
         'No river recoveries remain this round.'
       )
     }
-    if (state.rack.length >= RACK_SIZE) {
+    if (state.rack.length >= state.rackSize) {
       return refuse(
         state,
         'tableLoop.reject.rackFull',
@@ -936,7 +967,9 @@ export function placeableSlots(
   state: TableLoopState,
   tiles: readonly Tile[]
 ): number[] {
-  const classification = classifyGroup(tiles)
+  const classification = classifyGroup(tiles, {
+    allowGap: state.gapBridgesRemaining > 0,
+  })
   if (!classification.ok) return []
   return state.slots
     .filter((slot) => slot.group === null && slotAccepts(slot.kind, classification.type))
@@ -948,7 +981,9 @@ export function revisableSlots(
   state: TableLoopState,
   tiles: readonly Tile[]
 ): number[] {
-  const classification = classifyGroup(tiles)
+  const classification = classifyGroup(tiles, {
+    allowGap: state.gapBridgesRemaining > 0,
+  })
   if (!classification.ok) return []
   return state.slots
     .filter((slot) => slot.group !== null && slotAccepts(slot.kind, classification.type))

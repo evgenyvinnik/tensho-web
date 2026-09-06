@@ -2254,6 +2254,14 @@
       "terminal_gate": {
         "name": "老頭の門",
         "description": "一か九を含む面子は+40点。"
+      },
+      "wide_rack": {
+        "name": "広い手元",
+        "description": "手元に牌を二枚多く持てます。"
+      },
+      "gap_bridge": {
+        "name": "橋渡し",
+        "description": "各局に一度、一つ飛ばしの並びも順子として扱えます（3・4・6など）。"
       }
     },
     "chain": {
@@ -2296,7 +2304,8 @@
     },
     "hud": {
       "round": "第{{current}}局／全{{total}}局",
-      "resources": "配置{{actions}}・交換{{redraws}}"
+      "resources": "配置{{actions}}・交換{{redraws}}",
+      "bridges": "· 橋渡し{{count}}"
     },
     "river": {
       "title": "河",
@@ -2375,7 +2384,8 @@
     },
     "selection": {
       "noGroup": "まだ面子ではありません · {{tiles}}",
-      "multCost": "型が崩れます · −{{mult}}倍率"
+      "multCost": "型が崩れます · −{{mult}}倍率",
+      "bridged": "{{type}}（橋渡し） · {{tiles}}"
     },
     "draft": {
       "title": "差し出し",

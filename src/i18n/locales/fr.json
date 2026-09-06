@@ -2254,6 +2254,14 @@
       "terminal_gate": {
         "name": "Porte Terminale",
         "description": "Une combinaison contenant un 1 ou un 9 gagne +40."
+      },
+      "wide_rack": {
+        "name": "Chevalet Large",
+        "description": "Gardez deux tuiles de plus sur votre chevalet."
+      },
+      "gap_bridge": {
+        "name": "Passerelle",
+        "description": "Une fois par manche, une suite peut sauter un rang : 3·4·6 compte comme une séquence."
       }
     },
     "chain": {
@@ -2296,7 +2304,8 @@
     },
     "hud": {
       "round": "Manche {{current}} sur {{total}}",
-      "resources": "{{actions}} actions · {{redraws}} échanges"
+      "resources": "{{actions}} actions · {{redraws}} échanges",
+      "bridges": "· {{count}} passerelle"
     },
     "river": {
       "title": "Rivière",
@@ -2375,7 +2384,8 @@
     },
     "selection": {
       "noGroup": "Pas encore une combinaison · {{tiles}}",
-      "multCost": "rompt une figure · −{{mult}} Mult"
+      "multCost": "rompt une figure · −{{mult}} Mult",
+      "bridged": "{{type}} (avec passerelle) · {{tiles}}"
     },
     "draft": {
       "title": "Offres",

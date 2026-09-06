@@ -8,6 +8,7 @@ import {
   dragonTypeOf,
   enumerateRackGroups,
   hasLegalPlacement,
+  isGappedRun,
   isTableComplete,
   slotAccepts,
   slotKindFor,
@@ -175,5 +176,62 @@ describe('dragonTypeOf', () => {
     expect(dragonTypeOf([dragon(DragonType.Green), dragon(DragonType.Red)])).toBeNull()
     expect(dragonTypeOf([wind(WindType.East), wind(WindType.East)])).toBeNull()
     expect(dragonTypeOf([])).toBeNull()
+  })
+})
+
+describe('Gap Bridge', () => {
+  const gapped = [
+    suited(TileSuit.Manzu, 3),
+    suited(TileSuit.Manzu, 4),
+    suited(TileSuit.Manzu, 6),
+  ]
+
+  it('is not a group unless a bridge is available', () => {
+    expect(classifyGroup(gapped).ok).toBe(false)
+
+    const bridged = classifyGroup(gapped, { allowGap: true })
+    expect(bridged.ok).toBe(true)
+    if (bridged.ok) {
+      expect(bridged.type).toBe(MeldType.Sequence)
+      expect(bridged.usedGap).toBe(true)
+    }
+  })
+
+  it('accepts either shape of one-rank gap, and nothing wider', () => {
+    const early = [
+      suited(TileSuit.Pinzu, 2),
+      suited(TileSuit.Pinzu, 4),
+      suited(TileSuit.Pinzu, 5),
+    ]
+    expect(isGappedRun(early)).toBe(true)
+    expect(isGappedRun(gapped)).toBe(true)
+
+    // Two ranks missing spans four, not three.
+    const wide = [
+      suited(TileSuit.Pinzu, 2),
+      suited(TileSuit.Pinzu, 4),
+      suited(TileSuit.Pinzu, 6),
+    ]
+    expect(isGappedRun(wide)).toBe(false)
+
+    // Honors have no ranks to bridge.
+    expect(
+      isGappedRun([wind(WindType.East), wind(WindType.South), wind(WindType.West)])
+    ).toBe(false)
+
+    // A real run is not a gapped one.
+    expect(
+      isGappedRun([
+        suited(TileSuit.Souzu, 3),
+        suited(TileSuit.Souzu, 4),
+        suited(TileSuit.Souzu, 5),
+      ])
+    ).toBe(false)
+  })
+
+  it('does not report a bridged run as placeable without the bridge', () => {
+    const slots = createEmptySlots()
+    expect(hasLegalPlacement(gapped, slots)).toBe(false)
+    expect(hasLegalPlacement(gapped, slots, { allowGap: true })).toBe(true)
   })
 })

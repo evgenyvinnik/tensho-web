@@ -114,6 +114,48 @@ to authoring one. Reach it from the opening panel or with `?practice=1`.
 Every step is derived from run state rather than a counter, so the guide cannot
 claim progress the table does not show.
 
+### E04's actual test, and what the shop failed
+
+E04 sets two conditions: an early shop should keep at least two viable
+directions open, and **a purchase should regularly change the next draw the
+player wants**. The shop was built to spec and never checked against either.
+[`scripts/tableloop-shop.mts`](../scripts/tableloop-shop.mts) checks both.
+
+Money was never the problem — 91% of shop visits could afford two or more of
+the three offers. The second condition failed outright. Owning a Decree barely
+changed what a player placed:
+
+| Owned | Bamboo run | other run | set | pair |
+| --- | ---: | ---: | ---: | ---: |
+| Echoing Bamboo | 17.5% | 33.6% | 8.2% | 40.7% |
+| Watch Fire *(unrelated)* | 17.0% | 33.5% | 8.7% | 40.8% |
+
+Two different Decrees, indistinguishable behaviour. The reason is that all eight
+were passive score modifiers: they change how much a placement is worth, not
+what you go looking for. Echoing Bamboo doubles a Bamboo run, but you cannot
+*find* more Bamboo runs — you place what the rack gives you. Principle 3 says
+this in advance: prefer an effect that changes what a player keeps, places,
+redraws or buys over another percentage.
+
+Two Decrees that act on the rack and the rules instead:
+
+- **Wide Rack** — two more tiles in the rack, so every placement has more to
+  choose between.
+- **Gap Bridge** — once a round, a run may leave one rank out: 3·4·6 counts as
+  a sequence. This is E18's bridge, with the limited use that section demands,
+  and it changes which tiles are worth keeping rather than what they pay.
+
+| Owned | Bamboo run | other run | set | pair |
+| --- | ---: | ---: | ---: | ---: |
+| baseline | 17.5% | 33.6% | 8.2% | 40.7% |
+| + Wide Rack | 19.1% | 35.5% | 10.1% | **35.4%** |
+| + Gap Bridge | 20.2% | **37.9%** | 7.7% | **34.1%** |
+
+Sequences up four points, pairs down six, and more of the round's actions turn
+into placements. That is a Decree changing what the player wants, which is what
+E04 asked for. The pool is ten now, still inside the "six to ten" the section
+opens with, and 82% of visits still afford two of them.
+
 ### The scoring baseline, in the live game (section 1.1)
 
 This is the one change in section 0 that is **not** confined to the prototype.

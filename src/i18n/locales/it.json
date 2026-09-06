@@ -788,6 +788,14 @@
       "terminal_gate": {
         "name": "Porta Terminale",
         "description": "Una combinazione che contiene un 1 o un 9 guadagna +40."
+      },
+      "wide_rack": {
+        "name": "Rastrelliera Ampia",
+        "description": "Tieni due tessere in più sulla rastrelliera."
+      },
+      "gap_bridge": {
+        "name": "Ponte",
+        "description": "Una volta per round, una scala può saltare un numero: 3·4·6 conta come sequenza."
       }
     },
     "chain": {
@@ -830,7 +838,8 @@
     },
     "hud": {
       "round": "Round {{current}} di {{total}}",
-      "resources": "{{actions}} azioni · {{redraws}} scambi"
+      "resources": "{{actions}} azioni · {{redraws}} scambi",
+      "bridges": "· {{count}} ponte"
     },
     "river": {
       "title": "Fiume",
@@ -909,7 +918,8 @@
     },
     "selection": {
       "noGroup": "Non è ancora una combinazione · {{tiles}}",
-      "multCost": "spezza una figura · −{{mult}} Molt"
+      "multCost": "spezza una figura · −{{mult}} Molt",
+      "bridged": "{{type}} (con ponte) · {{tiles}}"
     },
     "draft": {
       "title": "Offerte",

@@ -788,6 +788,14 @@
       "terminal_gate": {
         "name": "Uç Taş Kapısı",
         "description": "İçinde 1 ya da 9 bulunan grup +40 kazanır."
+      },
+      "wide_rack": {
+        "name": "Geniş Raf",
+        "description": "Rafında iki taş daha tut."
+      },
+      "gap_bridge": {
+        "name": "Köprü",
+        "description": "Turda bir kez, bir seri bir sayı atlayabilir: 3·4·6 seri sayılır."
       }
     },
     "chain": {
@@ -830,7 +838,8 @@
     },
     "hud": {
       "round": "{{total}} turdan {{current}}. tur",
-      "resources": "{{actions}} hamle · {{redraws}} değişim"
+      "resources": "{{actions}} hamle · {{redraws}} değişim",
+      "bridges": "· {{count}} köprü"
     },
     "river": {
       "title": "Nehir",
@@ -909,7 +918,8 @@
     },
     "selection": {
       "noGroup": "Henüz bir grup değil · {{tiles}}",
-      "multCost": "bir şekli bozar · −{{mult}} Çarpan"
+      "multCost": "bir şekli bozar · −{{mult}} Çarpan",
+      "bridged": "{{type}} (köprülü) · {{tiles}}"
     },
     "draft": {
       "title": "Teklifler",

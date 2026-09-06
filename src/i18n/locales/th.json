@@ -788,6 +788,14 @@
       "terminal_gate": {
         "name": "ประตูปลายแถว",
         "description": "ชุดที่มีเลขหนึ่งหรือเลขเก้าได้ +40"
+      },
+      "wide_rack": {
+        "name": "รางกว้าง",
+        "description": "ถือไพ่ในรางได้เพิ่มอีกสองใบ"
+      },
+      "gap_bridge": {
+        "name": "สะพาน",
+        "description": "รอบละหนึ่งครั้ง ลำดับข้ามหนึ่งเลขได้ เช่น 3·4·6 นับเป็นลำดับ"
       }
     },
     "chain": {
@@ -830,7 +838,8 @@
     },
     "hud": {
       "round": "รอบที่ {{current}} จาก {{total}}",
-      "resources": "วาง {{actions}} · แลก {{redraws}}"
+      "resources": "วาง {{actions}} · แลก {{redraws}}",
+      "bridges": "· สะพาน {{count}}"
     },
     "river": {
       "title": "แม่น้ำ",
@@ -909,7 +918,8 @@
     },
     "selection": {
       "noGroup": "ยังไม่เป็นชุด · {{tiles}}",
-      "multCost": "จะทำลายรูปแบบหนึ่ง · −{{mult}} ตัวคูณ"
+      "multCost": "จะทำลายรูปแบบหนึ่ง · −{{mult}} ตัวคูณ",
+      "bridged": "{{type}} (ใช้สะพาน) · {{tiles}}"
     },
     "draft": {
       "title": "ไพ่ที่เสนอ",

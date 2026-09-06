@@ -2254,6 +2254,14 @@
       "terminal_gate": {
         "name": "老頭之門",
         "description": "含有一或九的面子多得 40 分。"
+      },
+      "wide_rack": {
+        "name": "寬手牌",
+        "description": "手牌可以多拿兩張。"
+      },
+      "gap_bridge": {
+        "name": "搭橋",
+        "description": "每局一次，跳過一個數的排列也算順子（例如 3·4·6）。"
       }
     },
     "chain": {
@@ -2296,7 +2304,8 @@
     },
     "hud": {
       "round": "第 {{current}} 局，共 {{total}} 局",
-      "resources": "放置 {{actions}} · 換牌 {{redraws}}"
+      "resources": "放置 {{actions}} · 換牌 {{redraws}}",
+      "bridges": "· 搭橋 {{count}}"
     },
     "river": {
       "title": "牌河",
@@ -2375,7 +2384,8 @@
     },
     "selection": {
       "noGroup": "還不成面子 · {{tiles}}",
-      "multCost": "會拆掉一個牌型 · −{{mult}} 倍率"
+      "multCost": "會拆掉一個牌型 · −{{mult}} 倍率",
+      "bridged": "{{type}}（搭橋） · {{tiles}}"
     },
     "draft": {
       "title": "攤開的牌",
