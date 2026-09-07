@@ -31,9 +31,28 @@ jobs:
         id: version
         shell: bash
         run: |
+          set -euo pipefail
           VERSION_DATE=$(date -u +"%y%m%d")
-          EXISTING_TAGS=$(git tag -l "v1.0.${VERSION_DATE}-*" | wc -l | tr -d ' ')
-          BUILD=$((EXISTING_TAGS + 1))
+
+          # Take the highest build already tagged for today rather than counting
+          # the tags. Counting only works while the sequence is unbroken: delete
+          # one tag, or land two builds out of order, and the count names a
+          # version that already exists, `git tag` refuses it, and the whole
+          # deploy fails with nothing published.
+          # `|| true` matters: on the first deploy of a new day nothing matches,
+          # `grep` exits 1, and under `pipefail` that would abort the step.
+          LAST_BUILD=$(git tag -l "v1.0.${VERSION_DATE}-*" \
+            | sed "s/^v1\.0\.${VERSION_DATE}-//" \
+            | grep -E '^[0-9]+$' \
+            | sort -n \
+            | tail -1 || true)
+          BUILD=$(( ${LAST_BUILD:-0} + 1 ))
+
+          # Belt and braces: never hand back a tag that somehow exists already.
+          while git rev-parse -q --verify "refs/tags/v1.0.${VERSION_DATE}-${BUILD}" >/dev/null; do
+            BUILD=$((BUILD + 1))
+          done
+
           VERSION="1.0.${VERSION_DATE}-${BUILD}"
 
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
@@ -68,7 +87,22 @@ jobs:
           fi
 
           git tag "v${VERSION}"
-          git push origin "HEAD:${{ github.ref }}"
+
+          # Another commit can land between the checkout and this push. Rebase
+          # onto it and retry rather than failing the deploy; the tag is only
+          # pushed once the branch is in.
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${{ github.ref }}"; then
+              break
+            fi
+            if [ "${attempt}" = "3" ]; then
+              echo "Could not push the version bump after ${attempt} attempts." >&2
+              exit 1
+            fi
+            git fetch origin "${{ github.ref }}"
+            git rebase "origin/${GITHUB_REF_NAME}"
+          done
+
           git push origin "v${VERSION}"
 
       - name: Set up Bun
