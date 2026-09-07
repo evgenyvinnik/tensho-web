@@ -32,3 +32,10 @@ pnpm-lock.yaml
 *.njsproj
 *.sln
 *.sw?
+
+# Generated artifacts. `test-results/` being tracked made a stash conflict
+# mid-session, and `dev-dist/` is the dev server's service worker, which
+# rewrites its revision hash on every run.
+test-results/
+playwright-report/
+dev-dist/

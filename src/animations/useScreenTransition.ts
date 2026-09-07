@@ -5,7 +5,7 @@
  * Uses React Spring for smooth, physics-based transitions.
  */
 
-import { useSpring, useTransition } from '@react-spring/web';
+import { useSpring, useTransition, type SpringValue } from '@react-spring/web';
 import { useCallback, useState } from 'react';
 import { SPRINGS, DURATIONS } from './constants';
 import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsStore';
@@ -266,6 +266,12 @@ export function useCurtainTransition(
   };
 }
 
+/** The two animated values `useStaggeredReveal` drives per item. */
+interface StaggeredItemSpring {
+  opacity: SpringValue<number>;
+  y?: SpringValue<number>;
+}
+
 /**
  * Hook for staggered content reveal on screen enter
  */
@@ -301,10 +307,15 @@ export function useStaggeredReveal(
     immediate: reducedMotion,
   });
 
+  // `useTransition` returns a callable `TransitionFn`, not an array, so the
+  // per-item springs are reached by index through this narrow shape rather
+  // than by widening the whole thing.
+  const springs = transitions as unknown as StaggeredItemSpring[];
+
   return {
     transitions,
     getItemStyle: (index: number) => {
-      const item = (transitions as any)[index] as any;
+      const item = springs[index];
       if (!item) return { opacity: 1, transform: 'translateY(0)' };
       return {
         opacity: item.opacity,

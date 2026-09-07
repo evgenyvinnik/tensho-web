@@ -6,13 +6,26 @@
 
 import React, { useCallback, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { animated, useTransition, useSprings, useSpring, to } from '@react-spring/web'
+import { animated, useTransition, useSprings, useSpring, to, type SpringValue } from '@react-spring/web'
 import { Tile } from '../../../core/Tile'
 import { AnimatedTile } from '../../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../../styles/theme'
 import { useSettingsStore } from '../../../stores/settingsStore'
 import { SPRINGS, STAGGER } from '../../../animations/constants'
 import { calculateFannedPositions, calculateStraightPositions } from './positionUtils'
+
+/**
+ * The animated values the hand transition drives per tile.
+ *
+ * `useTransition` infers the render callback's argument as an empty record when
+ * `from` is a function, so naming the three values this actually animates keeps
+ * the call site type-checked instead of widening it.
+ */
+interface TileTransitionStyle {
+  opacity: SpringValue<number>
+  x: SpringValue<number>
+  scale: SpringValue<number>
+}
 
 // =============================================================================
 // TYPES
@@ -238,7 +251,8 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
           height: dimensions.height,
         }}
       >
-        {transitions((style: any, tile, _, index) => {
+        {transitions((values, tile, _, index) => {
+          const style = values as unknown as TileTransitionStyle
           const position = positions[index] || { x: 0, rotation: 0, zIndex: index }
 
           return (

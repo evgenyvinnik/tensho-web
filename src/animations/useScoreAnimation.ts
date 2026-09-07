@@ -5,7 +5,7 @@
  * Uses React Spring for smooth, physics-based animations.
  */
 
-import { useSpring, useTrail } from '@react-spring/web';
+import { useSpring, useTrail, type SpringValue } from '@react-spring/web';
 import { useCallback, useRef, useState } from 'react';
 import { SPRINGS, DURATIONS, SCALES } from './constants';
 import { useSettingsStore, selectAnimationMultiplier } from '../stores/settingsStore';
@@ -265,6 +265,19 @@ export function useTotalScoreReveal(isRevealed: boolean = false) {
   };
 }
 
+/** The values a stagger trail animates for one item. */
+interface TrailItemSpring {
+  opacity: SpringValue<number>;
+  x: SpringValue<number>;
+  value: SpringValue<number>;
+}
+
+/** `useTrail` with the per-item delay callback react-spring does not type. */
+type TrailFactory = (
+  count: number,
+  config: Record<string, unknown>
+) => TrailItemSpring[];
+
 /**
  * Hook for score breakdown animation
  * Animates individual score components appearing one by one
@@ -281,7 +294,10 @@ export function useScoreBreakdownAnimation(
   const multiplier = useSettingsStore(selectAnimationMultiplier);
   const adjustedDelay = reducedMotion ? 0 : staggerDelay * multiplier;
 
-  const trail = (useTrail as any)(items.length, {
+  // react-spring's `useTrail` overloads do not cover the per-item `delay`
+  // callback this needs, so the call goes through a narrow local signature
+  // instead of widening the hook.
+  const trail = (useTrail as unknown as TrailFactory)(items.length, {
     from: {
       opacity: 0,
       x: -30,
@@ -300,7 +316,7 @@ export function useScoreBreakdownAnimation(
         onComplete?.();
       }
     },
-  }) as any[];
+  });
 
   return {
     trail,

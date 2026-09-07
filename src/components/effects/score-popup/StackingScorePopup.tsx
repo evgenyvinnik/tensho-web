@@ -5,13 +5,25 @@
  */
 
 import React from 'react'
-import { useTrail, animated } from '@react-spring/web'
+import { useTrail, animated, type SpringValue } from '@react-spring/web'
 import { useSettingsStore } from '../../../stores/settingsStore'
 import { SPRINGS, ANIMATION_COLORS, ANIMATION_Z_INDEX } from '../../../animations/constants'
 import { colors } from '../../../styles/theme'
 import type { StackingScorePopupProps } from './types'
 
 export type { StackingScorePopupProps }
+
+/** The values a stacking popup animates for one entry. */
+interface StackTrailSpring {
+  opacity: SpringValue<number>
+  y: SpringValue<number>
+  scale: SpringValue<number>
+}
+
+type StackTrailFactory = (
+  count: number,
+  config: Record<string, unknown>
+) => StackTrailSpring[]
 
 /**
  * StackingScorePopup component
@@ -26,8 +38,10 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
 }) => {
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
 
-  // Trail animation for staggered entry
-  const trail = (useTrail as any)(items.length, {
+  // react-spring's `useTrail` overloads do not cover the per-item `delay`
+  // callback, so the call goes through a narrow local signature rather than
+  // widening the hook.
+  const trail = (useTrail as unknown as StackTrailFactory)(items.length, {
     from: {
       opacity: 0,
       y: 20,
@@ -46,7 +60,7 @@ export const StackingScorePopup: React.FC<StackingScorePopupProps> = ({
         onComplete?.()
       }
     },
-  }) as any[]
+  })
 
   return (
     <div
