@@ -6,6 +6,7 @@
  */
 
 import type { DecreeRarity, DecreeEffect, DecreeEffectType } from '../stores/decreeStore'
+import { runRandom } from '../game/RunRandom'
 
 /**
  * Decree definition blueprint
@@ -1602,7 +1603,7 @@ export function getRandomDecreeByRarity(
 ): DecreeDefinition | undefined {
   const available = getDecreesByRarity(rarity).filter((d) => !excludeIds.has(d.id))
   if (available.length === 0) return undefined
-  return available[Math.floor(Math.random() * available.length)]
+  return available[Math.floor(runRandom.next('decrees') * available.length)]
 }
 
 /**

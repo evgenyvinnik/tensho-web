@@ -42,6 +42,7 @@ import { VoidScriptSystem, getVoidScriptsByRarity } from './VoidScriptSystem'
 import { ConsumableRarity } from './ConsumableSystem'
 import { Tile, TileSuit } from '../core/Tile'
 import { EditionType, EnhancementType } from '../core/TileModifier'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // PACK CONTENT TYPES
@@ -236,7 +237,7 @@ export class BlessingPackSystem {
 
     switch (packType) {
       case 'Arcana':
-        if (options.voidScriptsInArcana && Math.random() < 0.2) {
+        if (options.voidScriptsInArcana && runRandom.next('packs') < 0.2) {
           return this.generateVoidScriptContent(rarity, existingContents)
         }
         return this.generateFateSealContent(rarity, existingContents)
@@ -271,12 +272,12 @@ export class BlessingPackSystem {
 
     // Filter out already-present seals
     const available = fateSeals.filter((seal) => !existingIds.has(seal.id))
-    const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : fateSeals[0]
+    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : fateSeals[0]
 
     if (!selected) {
       // Fallback if no seals of this rarity
       const allSeals = getFateSealsByRarity('Common')
-      const fallback = allSeals[Math.floor(Math.random() * allSeals.length)]
+      const fallback = allSeals[Math.floor(runRandom.next('packs') * allSeals.length)]
       return {
         id: `fate-seal-${fallback.id}-${Date.now()}`,
         type: 'FateSeal',
@@ -344,12 +345,12 @@ export class BlessingPackSystem {
     const orbs = getCelestialOrbsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = orbs.filter((orb) => !existingIds.has(orb.id))
-    const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : orbs[0]
+    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : orbs[0]
 
     if (!selected) {
       // Fallback if no orbs of this rarity
       const allOrbs = getCelestialOrbsByRarity('Common')
-      const fallback = allOrbs[Math.floor(Math.random() * allOrbs.length)]
+      const fallback = allOrbs[Math.floor(runRandom.next('packs') * allOrbs.length)]
       return {
         id: `celestial-orb-${fallback.id}-${Date.now()}`,
         type: 'CelestialOrb',
@@ -380,12 +381,12 @@ export class BlessingPackSystem {
     const tiles = this.getModifiedTilesByRarity(rarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = tiles.filter((tile) => !existingIds.has(tile.id))
-    const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : tiles[0]
+    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : tiles[0]
 
     const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu] as const
     let tile = Tile.createNumbered(
-      suits[Math.floor(Math.random() * suits.length)],
-      Math.floor(Math.random() * 9) + 1
+      suits[Math.floor(runRandom.next('packs') * suits.length)],
+      Math.floor(runRandom.next('packs') * 9) + 1
     )
 
     switch (selected.modifier) {
@@ -482,7 +483,7 @@ export class BlessingPackSystem {
       candidates = ALL_DECREES.filter((d) => d.rarity === decreeRarity)
     }
 
-    const selected = candidates[Math.floor(Math.random() * candidates.length)]
+    const selected = candidates[Math.floor(runRandom.next('packs') * candidates.length)]
 
     return {
       id: `decree-${selected.id}-${Date.now()}`,
@@ -523,12 +524,12 @@ export class BlessingPackSystem {
     const scripts = getVoidScriptsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = scripts.filter((script) => !existingIds.has(script.id))
-    const selected = available.length > 0 ? available[Math.floor(Math.random() * available.length)] : scripts[0]
+    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : scripts[0]
 
     if (!selected) {
       // Fallback if no scripts of this rarity
       const allScripts = getVoidScriptsByRarity('Common')
-      const fallback = allScripts[Math.floor(Math.random() * allScripts.length)]
+      const fallback = allScripts[Math.floor(runRandom.next('packs') * allScripts.length)]
       return {
         id: `void-script-${fallback.id}-${Date.now()}`,
         type: 'VoidScript',
@@ -699,7 +700,7 @@ export class BlessingPackSystem {
   private selectWeightedRandom(weights: Record<string, number>): string {
     const entries = Object.entries(weights)
     const totalWeight = entries.reduce((sum, [, weight]) => sum + weight, 0)
-    let random = Math.random() * totalWeight
+    let random = runRandom.next('packs') * totalWeight
 
     for (const [key, weight] of entries) {
       random -= weight

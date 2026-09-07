@@ -27,6 +27,7 @@ import {
   CorruptedSeasonEffect,
   ScoringContext,
 } from './types'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // SEASON DEFINITIONS
@@ -209,7 +210,7 @@ export class SeasonSystem {
     // Probability increases with act number
     // Act 2: 20%, Act 3: 30%, Act 4+: 40%
     const baseProbability = Math.min(0.2 + (this.currentAct - 2) * 0.1, 0.4)
-    return Math.random() < baseProbability
+    return runRandom.next('wall') < baseProbability
   }
 
   /**
@@ -516,7 +517,7 @@ export function createSeasonTile(
   }
 
   // Determine corruption
-  const shouldCorrupt = currentAct >= 2 && Math.random() < Math.min(0.2 + (currentAct - 2) * 0.1, 0.4)
+  const shouldCorrupt = currentAct >= 2 && runRandom.next('wall') < Math.min(0.2 + (currentAct - 2) * 0.1, 0.4)
   const corruptedVariant = shouldCorrupt
     ? (Object.entries(CORRUPTED_TO_BASE_SEASON).find(([, v]) => v === variant)?.[0] as CorruptedSeasonVariant)
     : undefined

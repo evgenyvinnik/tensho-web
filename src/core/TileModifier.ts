@@ -10,6 +10,8 @@
  * Effects stack multiplicatively where appropriate.
  */
 
+import { runRandom } from '../game/RunRandom'
+
 // =============================================================================
 // ENHANCEMENT TYPES (Marks)
 // =============================================================================
@@ -434,7 +436,7 @@ export function isLucky(modifiers: TileModifiers): boolean {
  * Roll lucky effect and return bonus mult/gold
  */
 export function rollLuckyEffect(): { multBonus: number; goldBonus: number } {
-  const roll = Math.random()
+  const roll = runRandom.next('modifiers')
 
   // 1/5 chance for +20 Mult
   if (roll < 0.2) {
@@ -454,7 +456,7 @@ export function rollLuckyEffect(): { multBonus: number; goldBonus: number } {
  * @returns true if tile shatters
  */
 export function rollShatter(): boolean {
-  return Math.random() < 0.25 // 1/4 chance
+  return runRandom.next('modifiers') < 0.25 // 1/4 chance
 }
 
 // =============================================================================
@@ -593,7 +595,7 @@ export function getSpecialEditions(): EditionType[] {
  */
 export function getRandomEnhancement(): EnhancementType {
   const enhancements = getAllEnhancements()
-  return enhancements[Math.floor(Math.random() * enhancements.length)]
+  return enhancements[Math.floor(runRandom.next('modifiers') * enhancements.length)]
 }
 
 /**
@@ -601,7 +603,7 @@ export function getRandomEnhancement(): EnhancementType {
  */
 export function getRandomSeal(): SealType {
   const seals = getAllSeals()
-  return seals[Math.floor(Math.random() * seals.length)]
+  return seals[Math.floor(runRandom.next('modifiers') * seals.length)]
 }
 
 /**
@@ -612,7 +614,7 @@ export function getRandomEdition(): EditionType {
   const weights = editions.map((e) => 1 / EDITION_DEFINITIONS[e].rarity)
   const totalWeight = weights.reduce((sum, w) => sum + w, 0)
 
-  let roll = Math.random() * totalWeight
+  let roll = runRandom.next('modifiers') * totalWeight
   for (let i = 0; i < editions.length; i++) {
     roll -= weights[i]
     if (roll <= 0) {

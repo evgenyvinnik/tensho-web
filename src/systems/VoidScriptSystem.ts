@@ -26,6 +26,7 @@ import {
   generateConsumableInstanceId,
   calculateSellValue,
 } from './ConsumableSystem'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // VOID SCRIPT TYPES
@@ -943,7 +944,7 @@ export class VoidScriptSystem {
     const editions: EditionType[] = [EditionType.Foil, EditionType.Holographic, EditionType.Polychrome]
     const edition =
       script.effect.editionType ||
-      editions[Math.floor(Math.random() * editions.length)]
+      editions[Math.floor(runRandom.next('consumables') * editions.length)]
 
     const isDecreeTarget =
       script.id === 'script_of_the_hex' ||
@@ -1024,7 +1025,7 @@ export class VoidScriptSystem {
     _context: VoidScriptContext
   ): ConsumableUseResult {
     const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu]
-    const targetSuit = suits[Math.floor(Math.random() * suits.length)]
+    const targetSuit = suits[Math.floor(runRandom.next('consumables') * suits.length)]
 
     return {
       success: true,
@@ -1046,7 +1047,7 @@ export class VoidScriptSystem {
     script: VoidScript,
     _context: VoidScriptContext
   ): ConsumableUseResult {
-    const targetRank = Math.floor(Math.random() * 9) + 1
+    const targetRank = Math.floor(runRandom.next('consumables') * 9) + 1
 
     return {
       success: true,
@@ -1302,7 +1303,7 @@ export class VoidScriptSystem {
 
     if (available.length === 0) return null
 
-    const roll = Math.random()
+    const roll = runRandom.next('consumables')
     let targetRarity: ConsumableRarity
 
     if (roll < 0.5) {
@@ -1316,10 +1317,10 @@ export class VoidScriptSystem {
     const candidates = available.filter((script) => script.rarity === targetRarity)
 
     if (candidates.length === 0) {
-      return available[Math.floor(Math.random() * available.length)]
+      return available[Math.floor(runRandom.next('consumables') * available.length)]
     }
 
-    return candidates[Math.floor(Math.random() * candidates.length)]
+    return candidates[Math.floor(runRandom.next('consumables') * candidates.length)]
   }
 
   /**

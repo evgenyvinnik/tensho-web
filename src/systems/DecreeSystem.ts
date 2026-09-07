@@ -23,6 +23,7 @@ import {
 import { DragonType, Tile, TileSuit } from '../core/Tile'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
+import { runRandom } from '../game/RunRandom'
 
 /**
  * Every effect a Decree carries: its primary effect plus any extras from
@@ -1245,7 +1246,7 @@ export class DecreeSystem {
     const available = ALL_DECREES.filter((d) => !excludeIds.includes(d.id))
     if (available.length === 0) return null
 
-    const roll = Math.random()
+    const roll = runRandom.next('decrees')
     let targetRarity: DecreeRarity
 
     if (roll < 0.7) {
@@ -1260,10 +1261,10 @@ export class DecreeSystem {
 
     if (candidates.length === 0) {
       // Fallback to any available decree
-      return available[Math.floor(Math.random() * available.length)]
+      return available[Math.floor(runRandom.next('decrees') * available.length)]
     }
 
-    return candidates[Math.floor(Math.random() * candidates.length)]
+    return candidates[Math.floor(runRandom.next('decrees') * candidates.length)]
   }
 
   /**

@@ -38,6 +38,7 @@ import {
   useOmenStore,
   type ActiveOmenTag,
 } from '../stores/omenStore'
+import { createSeededRandom } from '../game/RunRandom'
 
 // Re-export types that may be needed
 export type OmenTrigger = 'OnNextShop' | 'OnNextRound' | 'OnNextHand' | 'OnNextVoidScript' | 'OnAcquire' | 'Passive' | 'OnRoundSkip'
@@ -97,14 +98,7 @@ export class OmenTagSystem {
 
   /** Seed skip rewards so replaying a run produces the same Omen sequence. */
   setSeed(seed: number): void {
-    let state = seed
-    this.seededRandom = () => {
-      state += 0x6d2b79f5
-      let value = state
-      value = Math.imul(value ^ (value >>> 15), value | 1)
-      value ^= value + Math.imul(value ^ (value >>> 7), value | 61)
-      return ((value ^ (value >>> 14)) >>> 0) / 4294967296
-    }
+    this.seededRandom = createSeededRandom(seed)
   }
 
   /**

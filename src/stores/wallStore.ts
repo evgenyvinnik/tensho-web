@@ -6,25 +6,14 @@
 
 import { create } from 'zustand'
 import { Tile, createStandardTileSet, createBonusTileSet } from '../core/Tile'
-
-/**
- * Simple seeded random number generator (mulberry32)
- */
-function mulberry32(seed: number): () => number {
-  return function () {
-    let t = (seed += 0x6d2b79f5)
-    t = Math.imul(t ^ (t >>> 15), t | 1)
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
+import { createSeededRandom } from '../game/RunRandom'
 
 /**
  * Fisher-Yates shuffle with optional seed
  */
 function shuffleArray<T>(array: T[], seed?: number): T[] {
   const shuffled = [...array]
-  const random = seed !== undefined ? mulberry32(seed) : Math.random
+  const random = seed !== undefined ? createSeededRandom(seed) : Math.random
 
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1))

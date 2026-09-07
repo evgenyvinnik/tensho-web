@@ -28,6 +28,7 @@ import {
   SEAL_DEFINITIONS,
   EDITION_DEFINITIONS,
 } from '../core/TileModifier'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // MARK DECAY CONFIGURATION
@@ -408,14 +409,14 @@ export const useTileMarkStore = create<TileMarkState>()((set, get) => ({
 
     // Check enhancement decay
     const enhancementConfig = ENHANCEMENT_DECAY_CONFIG[modifiers.enhancement]
-    if (enhancementConfig.decaysOnDiscard && Math.random() < enhancementConfig.decayChance) {
+    if (enhancementConfig.decaysOnDiscard && runRandom.next('modifiers') < enhancementConfig.decayChance) {
       decayed = true
       get().removeEnhancement(tileId)
     }
 
     // Check seal decay
     const sealConfig = SEAL_DECAY_CONFIG[modifiers.seal]
-    if (sealConfig.decaysOnDiscard && Math.random() < sealConfig.decayChance) {
+    if (sealConfig.decaysOnDiscard && runRandom.next('modifiers') < sealConfig.decayChance) {
       decayed = true
       get().removeSeal(tileId)
     }
@@ -465,7 +466,7 @@ export const useTileMarkStore = create<TileMarkState>()((set, get) => ({
 
       // Check enhancement decay on reshuffle
       const enhancementConfig = ENHANCEMENT_DECAY_CONFIG[modifiers.enhancement]
-      if (enhancementConfig.decaysOnReshuffle && Math.random() < enhancementConfig.decayChance) {
+      if (enhancementConfig.decaysOnReshuffle && runRandom.next('modifiers') < enhancementConfig.decayChance) {
         decayedTileIds.push(tileId)
         get().removeEnhancement(tileId)
       }

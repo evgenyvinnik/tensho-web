@@ -23,6 +23,7 @@ import {
 } from './types'
 import { ALL_DECREES } from './DecreeSystem'
 import { PricingCalculator, EditionType } from './PricingCalculator'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // GENERATION CONFIGURATION
@@ -340,7 +341,7 @@ export class ShopGenerator {
     }
 
     // Select random decree
-    const decree = candidates[Math.floor(Math.random() * candidates.length)]
+    const decree = candidates[Math.floor(runRandom.next('shop') * candidates.length)]
 
     // Generate optional edition
     const edition = this.generateEdition()
@@ -460,7 +461,7 @@ export class ShopGenerator {
       return null
     }
 
-    const charter = available[Math.floor(Math.random() * available.length)]
+    const charter = available[Math.floor(runRandom.next('shop') * available.length)]
     const pricing = this.pricingCalculator.calculateCharterCost()
 
     return {
@@ -623,7 +624,7 @@ export class ShopGenerator {
    * Generate a random edition for an item
    */
   generateEdition(): EditionType | undefined {
-    const roll = Math.random()
+    const roll = runRandom.next('shop')
     let cumulative = 0
 
     for (const [edition, probability] of Object.entries(EDITION_PROBABILITIES)) {
@@ -646,17 +647,17 @@ export class ShopGenerator {
     const stickers: StickerType[] = []
 
     // Eternal at stake 4+ (Black Stake)
-    if (stakeLevel >= 4 && Math.random() < stickerChance) {
+    if (stakeLevel >= 4 && runRandom.next('shop') < stickerChance) {
       stickers.push('Eternal')
     }
 
     // Perishable at stake 7+ (Orange Stake)
-    if (stakeLevel >= 7 && Math.random() < stickerChance) {
+    if (stakeLevel >= 7 && runRandom.next('shop') < stickerChance) {
       stickers.push('Perishable')
     }
 
     // Rental at stake 8+ (Gold Stake)
-    if (stakeLevel >= 8 && Math.random() < stickerChance) {
+    if (stakeLevel >= 8 && runRandom.next('shop') < stickerChance) {
       stickers.push('Rental')
     }
 
@@ -704,7 +705,7 @@ export class ShopGenerator {
       return entries[0]?.[0] ?? ''
     }
 
-    let random = Math.random() * totalWeight
+    let random = runRandom.next('shop') * totalWeight
 
     for (const [key, weight] of entries) {
       random -= weight

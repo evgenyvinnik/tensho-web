@@ -57,6 +57,7 @@ import {
   type CharterDefinition,
   type CharterEffect,
 } from '../config/charterDefinitions'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // TEA HOUSE CONSTANTS
@@ -243,7 +244,7 @@ export class TeaHouseSystem {
   private visitDiscountPercentage: number = 0
   private freeRerollsThisVisit: number = 0
 
-  constructor(stake: number = 1, random: () => number = () => Math.random()) {
+  constructor(stake: number = 1, random: () => number = () => runRandom.next('shop')) {
     this.currentStake = stake
     this.random = random
     this.pricingCalculator = new PricingCalculator(0) // Will update discount via applyCharters

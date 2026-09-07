@@ -12,6 +12,8 @@
  * | Boss Round | 2.0x | Cannot skip, has Boss Mandate |
  */
 
+import { createSeededRandom, runRandom } from '../game/RunRandom'
+
 // =============================================================================
 // MANDATE EFFECT TYPES
 // =============================================================================
@@ -614,14 +616,14 @@ export function selectRandomMandate(
     // Fallback to early game mandates
     const fallback = STANDARD_MANDATES.filter((m) => m.minAct === 1)
     const index = seed !== undefined
-      ? Math.floor(mulberry32(seed)() * fallback.length)
-      : Math.floor(Math.random() * fallback.length)
+      ? Math.floor(createSeededRandom(seed)() * fallback.length)
+      : Math.floor(runRandom.next('mandates') * fallback.length)
     return fallback[index]
   }
 
   const index = seed !== undefined
-    ? Math.floor(mulberry32(seed)() * available.length)
-    : Math.floor(Math.random() * available.length)
+    ? Math.floor(createSeededRandom(seed)() * available.length)
+    : Math.floor(runRandom.next('mandates') * available.length)
 
   return available[index]
 }
@@ -692,14 +694,3 @@ export function isDecreeMandate(mandate: MandateDefinition): boolean {
   ].includes(mandate.effect.type)
 }
 
-/**
- * Simple seeded random number generator (mulberry32)
- */
-function mulberry32(seed: number): () => number {
-  return function () {
-    let t = (seed += 0x6d2b79f5)
-    t = Math.imul(t ^ (t >>> 15), t | 1)
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}

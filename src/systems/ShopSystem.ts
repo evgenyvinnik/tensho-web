@@ -28,6 +28,7 @@ import {
   StickerType,
 } from './types'
 import { ALL_DECREES } from './DecreeSystem'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // SHOP CONSTANTS
@@ -369,11 +370,11 @@ export class ShopSystem {
       // Fallback to any available decree
       const allCandidates = ALL_DECREES.filter((d) => !excludeIds.includes(d.id))
       if (allCandidates.length === 0) return null
-      const decree = allCandidates[Math.floor(Math.random() * allCandidates.length)]
+      const decree = allCandidates[Math.floor(runRandom.next('shop') * allCandidates.length)]
       return this.createDecreeShopItem(decree)
     }
 
-    const decree = candidates[Math.floor(Math.random() * candidates.length)]
+    const decree = candidates[Math.floor(runRandom.next('shop') * candidates.length)]
     return this.createDecreeShopItem(decree)
   }
 
@@ -383,7 +384,7 @@ export class ShopSystem {
   private createDecreeShopItem(decree: Decree): ShopItem {
     const costRange = DECREE_COST_RANGES[decree.rarity]
     const baseCost =
-      Math.floor(Math.random() * (costRange.max - costRange.min + 1)) + costRange.min
+      Math.floor(runRandom.next('shop') * (costRange.max - costRange.min + 1)) + costRange.min
 
     // Determine sticker based on stake
     const sticker = this.generateSticker()
@@ -420,17 +421,17 @@ export class ShopSystem {
     const stickers: StickerType[] = []
 
     // Eternal at stake 4+
-    if (this.currentStake >= 4 && Math.random() < stickerChance) {
+    if (this.currentStake >= 4 && runRandom.next('shop') < stickerChance) {
       stickers.push('Eternal')
     }
 
     // Perishable at stake 7+
-    if (this.currentStake >= 7 && Math.random() < stickerChance) {
+    if (this.currentStake >= 7 && runRandom.next('shop') < stickerChance) {
       stickers.push('Perishable')
     }
 
     // Rental at stake 8+
-    if (this.currentStake >= 8 && Math.random() < stickerChance) {
+    if (this.currentStake >= 8 && runRandom.next('shop') < stickerChance) {
       stickers.push('Rental')
     }
 
@@ -529,7 +530,7 @@ export class ShopSystem {
       return null
     }
 
-    const charter = available[Math.floor(Math.random() * available.length)]
+    const charter = available[Math.floor(runRandom.next('shop') * available.length)]
     const discountedCost = this.applyDiscount(charter.cost)
 
     return {
@@ -677,7 +678,7 @@ export class ShopSystem {
   private selectWeightedRandom(weights: Record<string, number>): string {
     const entries = Object.entries(weights)
     const totalWeight = entries.reduce((sum, [, weight]) => sum + weight, 0)
-    let random = Math.random() * totalWeight
+    let random = runRandom.next('shop') * totalWeight
 
     for (const [key, weight] of entries) {
       random -= weight

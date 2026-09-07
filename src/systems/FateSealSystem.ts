@@ -24,6 +24,7 @@ import {
   generateConsumableInstanceId,
   calculateSellValue,
 } from './ConsumableSystem'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // FATE SEAL TYPES
@@ -1133,7 +1134,7 @@ export class FateSealSystem {
     _context: FateSealContext
   ): ConsumableUseResult {
     // 25% chance to apply edition
-    if (Math.random() >= 0.25) {
+    if (runRandom.next('consumables') >= 0.25) {
       return {
         success: true,
         message: `${seal.name}: The wheel did not favor you this time`,
@@ -1148,7 +1149,7 @@ export class FateSealSystem {
 
     // Choose random edition
     const editions: EditionType[] = [EditionType.Foil, EditionType.Holographic, EditionType.Polychrome]
-    const edition = editions[Math.floor(Math.random() * editions.length)]
+    const edition = editions[Math.floor(runRandom.next('consumables') * editions.length)]
 
     return {
       success: true,
@@ -1188,7 +1189,7 @@ export class FateSealSystem {
 
     if (available.length === 0) return null
 
-    const roll = Math.random()
+    const roll = runRandom.next('consumables')
     let targetRarity: ConsumableRarity
 
     if (roll < 0.7) {
@@ -1203,10 +1204,10 @@ export class FateSealSystem {
 
     if (candidates.length === 0) {
       // Fallback to any available seal
-      return available[Math.floor(Math.random() * available.length)]
+      return available[Math.floor(runRandom.next('consumables') * available.length)]
     }
 
-    return candidates[Math.floor(Math.random() * candidates.length)]
+    return candidates[Math.floor(runRandom.next('consumables') * candidates.length)]
   }
 
   /**

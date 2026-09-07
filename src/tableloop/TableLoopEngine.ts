@@ -14,6 +14,7 @@
  */
 
 import { Tile, createStandardTileSet } from '../core/Tile'
+import { createSeededRandom } from '../game/RunRandom'
 import {
   DRAFT_ROW_SIZE,
   MAX_REDRAW_TILES,
@@ -61,22 +62,6 @@ export interface RunOptions {
 // SEEDED RANDOMNESS
 // =============================================================================
 
-/**
- * Deterministic 32-bit generator.
- *
- * A run is reproducible from its seed so a confusing hand can be replayed
- * during playtests, which the plan in section 8 depends on.
- */
-function createRandom(seed: number): () => number {
-  let state = seed >>> 0 || 1
-  return () => {
-    state = (state + 0x6d2b79f5) >>> 0
-    let t = state
-    t = Math.imul(t ^ (t >>> 15), t | 1)
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
 
 function shuffle<T>(items: readonly T[], random: () => number): T[] {
   const result = [...items]
@@ -176,7 +161,7 @@ export class TableLoopEngine {
    */
   static createRun(seed: number, options: RunOptions = {}): TableLoopState {
     const practice = options.practice ?? false
-    const random = createRandom(seed)
+    const random = createSeededRandom(seed)
     // The practice deal is authored, so its wall is a fixed order rather than a
     // shuffle, and it grants no opening Decree — the upgrade is the reward for
     // the interaction, not a choice made before the player knows anything.
@@ -266,7 +251,7 @@ export class TableLoopEngine {
     roundIndex: number
   ): TableLoopState {
     const round = TABLE_ROUNDS[roundIndex]
-    const random = createRandom(state.seed + roundIndex * 7919)
+    const random = createSeededRandom(state.seed + roundIndex * 7919)
     const wall = state.practice
       ? [...state.collection]
       : shuffle(state.collection, random)
@@ -855,7 +840,7 @@ export class TableLoopEngine {
       )
     }
     const owned = new Set(state.ownedDecrees)
-    const random = createRandom(state.seed + 104729 * (state.roundIndex + 1))
+    const random = createSeededRandom(state.seed + 104729 * (state.roundIndex + 1))
     const offers = shuffle(
       TABLE_DECREES.filter((decree) => !owned.has(decree.id)).map((d) => d.id),
       random

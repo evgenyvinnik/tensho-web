@@ -33,6 +33,7 @@
  */
 
 import { DecreeRarity, PackSize, type DecreeEdition } from './types'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // EDITION TYPES
@@ -143,7 +144,7 @@ export class PricingCalculator {
    */
   getRandomDecreeBaseCost(rarity: DecreeRarity): number {
     const range = DECREE_BASE_COST_RANGES[rarity]
-    return Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
+    return Math.floor(runRandom.next('shop') * (range.max - range.min + 1)) + range.min
   }
 
   /**

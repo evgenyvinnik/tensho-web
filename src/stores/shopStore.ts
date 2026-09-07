@@ -15,6 +15,7 @@ import {
 } from '../systems/TeaHouseSystem'
 import { ImperialCharter, BlessingPack, Decree } from '../systems/types'
 import { Tile } from '../core/Tile'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // TYPES
@@ -226,7 +227,7 @@ export const useShopStore = create<ShopStoreState>()((set, get) => ({
     // Create purchase record
     const itemName = getItemName(result.offering)
     const purchaseRecord: PurchaseRecord = {
-      id: `purchase_${Date.now()}_${Math.random()}`,
+      id: `purchase_${Date.now()}_${runRandom.next('shop')}`,
       offeringId,
       itemType: result.offering.itemType,
       itemName,

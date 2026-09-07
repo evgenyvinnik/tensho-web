@@ -59,6 +59,16 @@ Targets, rack size, and structure points were set with [`scripts/tableloop-sim.m
 
 Scope held back on purpose: living tiles, the route map, seasons, wagers, and every existing Decree, Flower, Season, consumable and Mandate. None of the 164 classic Decrees have been reinterpreted for a table where groups persist.
 
+## Determinism
+
+A run follows from its seed. [`RunRandom.ts`](../src/game/RunRandom.ts) is the one generator; `startNewRun` seeds it, and every draw that decides a run outcome comes from it — shop offers, pack contents, consumables, tile modifiers, Decrees, Charters, mandates, omens and the wall.
+
+Draws are grouped into named streams derived from the seed, so adding a roll in one system cannot shift another's results. Without that, one new call anywhere would change every later outcome and two builds would disagree about what a seed means.
+
+Six copies of the same mulberry32 generator have been collapsed into it. `RoundManager` keeps its own on purpose: its position is serialised into save state as a plain number, which a closure cannot be, and it says so at the call site.
+
+Left unseeded deliberately: audio variation and the ~23 draws in components and hooks that jitter particles and animations. Reproducing those costs a call site and buys nothing.
+
 ## Runtime Ownership
 
 `GameOrchestrator` is the authoritative owner of the active run. React reads it through `useGameController`; gameplay screens no longer advance the draw loop independently. The Tea House store owns generated offers and purchase history, while every purchased gameplay asset is committed back into the orchestrator's run inventory.
@@ -105,7 +115,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 1. Connect every Table Style's documented visual/mechanical modifier to authoritative run state and reconcile the legacy Wall/Table identifier catalogs.
 2. Extend [`scripts/classic-balance.mts`](../scripts/classic-balance.mts) into a strategy-aware harness (discards, redraws, Yaku selection, packs, and consumables), then tune ordinary-run Act 6–8 power growth from measured completion rates. It currently plays the best immediate score every hand, which is enough to compare two rule sets but not to judge one.
 3. Expand the current 34-check Playwright suite to Stake selection/unlocks, consumable targeting, Omen-modified shops, packs, Boss mandates, Act 8 victory, and Endless continuation.
-4. Resolve the repository-wide lint backlog, migrate the remaining gameplay randomness to the run seed, split oversized bundles, and add the missing SFX assets. `public/assets/sfx/` is empty, which is what blocks the sound half of the experiments document's section 7 — the Table Loop's visual escalation already exposes the levels a sound layer would key off.
+4. Add the missing SFX assets. `public/assets/sfx/` is empty, which is what blocks the sound half of the experiments document's section 7 — the Table Loop's visual escalation already exposes the levels a sound layer would key off. `public/assets/sfx/` is empty, which is what blocks the sound half of the experiments document's section 7 — the Table Loop's visual escalation already exposes the levels a sound layer would key off.
 5. Observe people playing the Table Loop prototype against the classic loop, following section 8 of the experiments document. The simulation says the targets are not arbitrary; it says nothing about whether the loop is enjoyable.
 
 ## Status Rule

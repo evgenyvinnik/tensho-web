@@ -70,6 +70,7 @@ import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import { MAX_TACTICAL_PLAY_TILES } from './playRules'
+import { createSeededRandom, runRandom } from './RunRandom'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -322,18 +323,9 @@ export class GameOrchestrator {
    * Gives player 2 random decrees from the starter pool
    */
   private initializeStarterDecrees(seed: number): void {
-    // Create a seeded random for consistent decree selection
-    let s = seed + 12345 // Offset to differ from wall shuffle
+    // Offset so this draws differently from the wall shuffle on the same seed.
+    const seededRandom = createSeededRandom(seed + 12345)
 
-    const seededRandom = () => {
-      s += 0x6d2b79f5
-      let t = s
-      t = Math.imul(t ^ (t >>> 15), t | 1)
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-    }
-
-    // Shuffle starter decrees and pick 2
     const shuffled = [...STARTER_DECREES]
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(seededRandom() * (i + 1))
@@ -368,6 +360,7 @@ export class GameOrchestrator {
     this.state = this.createInitialState()
     this.state.seed = actualSeed
     this.runtimeItemCounter = 0
+    runRandom.start(actualSeed)
     this.state.mandateEffectSystem.setSeed(actualSeed)
     this.state.omenSystem.setSeed(actualSeed + 0x0a11ce)
     this.state.stake = stake
@@ -659,20 +652,10 @@ export class GameOrchestrator {
     return tiles
   }
 
-  /**
-   * Seeded shuffle using mulberry32
-   */
+  /** Seeded shuffle, so the same seed always deals the same wall. */
   private seededShuffle<T>(array: T[], seed: number): T[] {
     const result = [...array]
-    let s = seed
-
-    const random = () => {
-      s += 0x6d2b79f5
-      let t = s
-      t = Math.imul(t ^ (t >>> 15), t | 1)
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-    }
+    const random = createSeededRandom(seed)
 
     for (let i = result.length - 1; i > 0; i--) {
       const j = Math.floor(random() * (i + 1))
@@ -2288,7 +2271,7 @@ export class GameOrchestrator {
     const selected: string[] = []
 
     while (selected.length < count && candidates.length > 0) {
-      const index = Math.floor(Math.random() * candidates.length)
+      const index = Math.floor(runRandom.next('decrees') * candidates.length)
       selected.push(candidates.splice(index, 1)[0].id)
     }
 
@@ -2304,25 +2287,25 @@ export class GameOrchestrator {
     let tile: Tile
 
     if (createType === 'face') {
-      if (Math.random() < 0.5) {
+      if (runRandom.next('decrees') < 0.5) {
         tile = Tile.createWind(
-          (Math.floor(Math.random() * 4) + 1) as WindType,
+          (Math.floor(runRandom.next('decrees') * 4) + 1) as WindType,
           this.nextRuntimeTileId()
         )
       } else {
         tile = Tile.createDragon(
-          (Math.floor(Math.random() * 3) + 1) as DragonType,
+          (Math.floor(runRandom.next('decrees') * 3) + 1) as DragonType,
           this.nextRuntimeTileId()
         )
       }
     } else {
-      const suit = suits[Math.floor(Math.random() * suits.length)]
+      const suit = suits[Math.floor(runRandom.next('decrees') * suits.length)]
       const rank =
         createType === 'terminal'
-          ? Math.random() < 0.5
+          ? runRandom.next('decrees') < 0.5
             ? 1
             : 9
-          : Math.floor(Math.random() * 7) + 2
+          : Math.floor(runRandom.next('decrees') * 7) + 2
       tile = new Tile(suit, rank, this.nextRuntimeTileId())
     }
 
@@ -2332,7 +2315,7 @@ export class GameOrchestrator {
       EnhancementType.Lucky,
     ]
     return tile.withEnhancement(
-      enhancements[Math.floor(Math.random() * enhancements.length)]
+      enhancements[Math.floor(runRandom.next('decrees') * enhancements.length)]
     )
   }
 
@@ -2486,7 +2469,7 @@ export class GameOrchestrator {
       ? ALL_DECREES.filter((decree) => decree.rarity === rarity)
       : ALL_DECREES
     if (pool.length === 0) return false
-    const decree = pool[Math.floor(Math.random() * pool.length)]
+    const decree = pool[Math.floor(runRandom.next('decrees') * pool.length)]
     return this.addDecree(decree, 'generated')
   }
 
@@ -2510,7 +2493,7 @@ export class GameOrchestrator {
   private applyRandomDecreeEdition(edition: DecreeEdition): boolean {
     const decrees = this.state.decreeSystem.getOwnedDecrees()
     if (decrees.length === 0) return false
-    const decree = decrees[Math.floor(Math.random() * decrees.length)]
+    const decree = decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
     return this.state.decreeSystem.applyEdition(decree.id, edition)
   }
 
@@ -2520,7 +2503,7 @@ export class GameOrchestrator {
       return null
     }
 
-    const decree = decrees[Math.floor(Math.random() * decrees.length)]
+    const decree = decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
     return this.state.decreeSystem.acquireDecree(decree) ? decree.id : null
   }
 

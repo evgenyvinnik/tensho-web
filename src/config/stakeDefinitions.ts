@@ -8,6 +8,7 @@
  */
 
 import { StickerType } from '../systems/types'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // STAKE TYPES
@@ -308,9 +309,9 @@ export function rollForStickers(stakeTier: number): StickerRollResult {
   const stickers: StickerType[] = []
 
   // Roll for each sticker type independently
-  const hasEternal = Math.random() < modifiers.eternalChance
-  const hasPerishable = Math.random() < modifiers.perishableChance
-  const hasRental = Math.random() < modifiers.rentalChance
+  const hasEternal = runRandom.next('wall') < modifiers.eternalChance
+  const hasPerishable = runRandom.next('wall') < modifiers.perishableChance
+  const hasRental = runRandom.next('wall') < modifiers.rentalChance
 
   // Apply Eternal (Eternal wins over Perishable)
   if (hasEternal) {

@@ -22,6 +22,7 @@ import {
   getAvailableCharters,
   CHARTER_COST,
 } from '../config/charterDefinitions'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // CHARTER SYSTEM TYPES
@@ -197,15 +198,15 @@ export class CharterSystem {
     const availableUpgrades = available.filter((c) => c.isUpgraded)
 
     // 70% chance to show base charter if available, 30% for upgrade
-    if (availableBases.length > 0 && (availableUpgrades.length === 0 || Math.random() < 0.7)) {
-      return availableBases[Math.floor(Math.random() * availableBases.length)]
+    if (availableBases.length > 0 && (availableUpgrades.length === 0 || runRandom.next('charters') < 0.7)) {
+      return availableBases[Math.floor(runRandom.next('charters') * availableBases.length)]
     }
 
     if (availableUpgrades.length > 0) {
-      return availableUpgrades[Math.floor(Math.random() * availableUpgrades.length)]
+      return availableUpgrades[Math.floor(runRandom.next('charters') * availableUpgrades.length)]
     }
 
-    return available[Math.floor(Math.random() * available.length)]
+    return available[Math.floor(runRandom.next('charters') * available.length)]
   }
 
   /**

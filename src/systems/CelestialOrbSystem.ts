@@ -25,6 +25,7 @@ import {
   generateConsumableInstanceId,
   calculateSellValue,
 } from './ConsumableSystem'
+import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
 // CELESTIAL ORB TYPES
@@ -644,7 +645,7 @@ export class CelestialOrbSystem {
 
     if (available.length === 0) return null
 
-    const roll = Math.random()
+    const roll = runRandom.next('consumables')
     let targetRarity: ConsumableRarity
 
     if (roll < 0.6) {
@@ -658,10 +659,10 @@ export class CelestialOrbSystem {
     const candidates = available.filter((orb) => orb.rarity === targetRarity)
 
     if (candidates.length === 0) {
-      return available[Math.floor(Math.random() * available.length)]
+      return available[Math.floor(runRandom.next('consumables') * available.length)]
     }
 
-    return candidates[Math.floor(Math.random() * candidates.length)]
+    return candidates[Math.floor(runRandom.next('consumables') * candidates.length)]
   }
 
   /**

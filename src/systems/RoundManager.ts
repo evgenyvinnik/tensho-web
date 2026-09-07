@@ -283,6 +283,13 @@ export class RoundManager {
     this.rngState = seed >>> 0
   }
 
+  /**
+   * Steps its own generator rather than using the shared one.
+   *
+   * `rngState` is serialised by `toState` and restored by `fromState`, so this
+   * needs its position to be a plain number a save file can hold. The shared
+   * `createSeededRandom` hands back a closure, whose position cannot be.
+   */
   private random(): number {
     this.rngState += 0x6d2b79f5
     let value = this.rngState
