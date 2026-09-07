@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { registerSW } from 'virtual:pwa-register'
 import './index.css'
-import './i18n' // Initialize i18next
+import { i18nReady } from './i18n' // Initialize i18next
 import App from './App.tsx'
 import { AppErrorBoundary } from './components/ui/ErrorBoundary'
 import { initializeMetaProgressionBridge } from './game/MetaProgressionBridge'
@@ -23,10 +23,14 @@ const updateSW = registerSW({
   },
 })
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AppErrorBoundary>
-      <App />
-    </AppErrorBoundary>
-  </StrictMode>
-)
+// Only English is bundled up front; the detected language is fetched first so
+// the interface does not render once in English and then again translated.
+void i18nReady.finally(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <AppErrorBoundary>
+        <App />
+      </AppErrorBoundary>
+    </StrictMode>
+  )
+})
