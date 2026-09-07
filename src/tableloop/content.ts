@@ -23,6 +23,19 @@ import type {
 /**
  * Patterns that pay before the table is complete.
  *
+ * Open question 2 asks whether these should pay fixed points, an additive
+ * multiplier, a multiplicative bonus, or a small combination.
+ * `scripts/tableloop-attribution.mts` walks the causal chain and adds up who
+ * paid: multiplication accounted for 9.4% of all score, against 59.9% for group
+ * base and 13.2% for these rewards. In a four-placement round a multiplier
+ * earned midway has almost nothing left to multiply.
+ *
+ * So the points are the income, and the multiplier is not — its real job is to
+ * be what a pattern costs to break, the commitment that stopped a slot being
+ * re-scored indefinitely. Sized for that job rather than for income, it is
+ * double what it was: breaking Pure Suit now actually hurts, while measured
+ * clear rates are unchanged at 82/57/50%.
+ *
  * Named descriptively first, as the document asks. Traditional names belong in
  * the detail panel, not in the rule, because these are Tensho bonuses rather
  * than claims about Riichi scoring.
@@ -40,42 +53,42 @@ export const MILESTONES: readonly MilestoneDefinition[] = [
     name: 'Twin Sequence',
     description: 'Two identical sequences stand together on the table.',
     points: 80,
-    mult: 0.5,
+    mult: 1.0,
   },
   {
     id: 'pure_suit',
     name: 'Pure Suit',
     description: 'Two or more groups, every one of them in the same suit.',
     points: 60,
-    mult: 0.4,
+    mult: 0.8,
   },
   {
     id: 'three_suit_sequence',
     name: 'Three-Suit Sequence',
     description: 'The same run of three ranks, once in every suit.',
     points: 150,
-    mult: 1,
+    mult: 2,
   },
   {
     id: 'dragon_duet',
     name: 'Dragon Duet',
     description: 'Two different Dragons hold the table.',
-    points: 90,
-    mult: 0.6,
+    points: 180,
+    mult: 1.2,
   },
   {
     id: 'dragon_court',
     name: 'Dragon Court',
     description: 'All three Dragons answer one another.',
     points: 200,
-    mult: 1.5,
+    mult: 3.0,
   },
   {
     id: 'four_sequences',
     name: 'Four Sequences',
     description: 'Every meld slot holds a sequence, and the pair is placed.',
-    points: 180,
-    mult: 1,
+    points: 90,
+    mult: 2,
   },
 ]
 

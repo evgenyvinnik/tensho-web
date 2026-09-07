@@ -114,6 +114,57 @@ to authoring one. Reach it from the opening panel or with `?practice=1`.
 Every step is derived from run state rather than a counter, so the guide cannot
 claim progress the table does not show.
 
+### Where a round's score comes from (questions 2, 3 and 7)
+
+Three of the open design decisions are one question asked from different sides,
+and the causal chain built for E05 already carries the answer: every resolution
+reports its stages and each stage says what it added.
+[`scripts/tableloop-attribution.mts`](../scripts/tableloop-attribution.mts)
+walks them and adds up who paid.
+
+| Source | Share of all score |
+| --- | ---: |
+| Group base — tiles and structure | 59.9% |
+| Completing the table | 19.4% |
+| Milestone rewards | 13.2% |
+| Decree flat points | 11.1% |
+| Everything the multipliers add | 9.4% |
+| Revision credit | −13.0% |
+
+**Q3 — how large must shape rewards be?** They already are. Group base is the
+single largest source by a wide margin, which is what section 1.1 wanted. The
+half of the question about loose-tile play does not apply here, because this
+loop accepts nothing but complete groups; it applies to the classic loop, and
+is answered above.
+
+**Q7 — is the completion reward exciting without making partial progress
+irrelevant?** Yes, and by a comfortable margin. Completion is a fifth of the
+score while partial progress is roughly three quarters, and rounds are cleared
+more often than tables are finished (82% against 51% in round one). Both halves
+of the question are satisfied, so nothing changed.
+
+**Q2 — fixed points, additive multiplier, multiplicative bonus, or a small
+combination?** This one had a real answer hiding in it. Multiplication accounts
+for **9.4%** of all score — the "deliberately small combination" is, in
+practice, fixed points with a decorative multiplier. Doubling every milestone
+multiplier moved that share only to 10.6%, and mostly by inflating the
+completion bonus rather than ordinary placements. The reason is structural, and
+it is the same one that sank the neighbour bonus: **in a four-placement round, a
+multiplier earned midway has almost nothing left to multiply.**
+
+So patterns pay fixed points — that is the income, and the measurement says so
+plainly. What the multiplier is actually for is something else entirely: it is
+what a pattern *costs to break*, the commitment that stopped a slot being
+re-scored indefinitely. Sized for that job rather than for income, every
+milestone multiplier is doubled. Breaking Pure Suit now genuinely hurts,
+multiplication's share rises to 12.1%, and measured clear rates do not move at
+all — 82/57/50% before and after.
+
+That is worth stating as a design fact rather than a tuning note: **in this
+loop, multipliers are a commitment device, not an income source.** Any future
+effect that hopes to pay through multiplication needs a longer round to do it
+in.
+
 ### E04's actual test, and what the shop failed
 
 E04 sets two conditions: an early shop should keep at least two viable

@@ -310,9 +310,9 @@ describe('milestones in a placement', () => {
     )
     expect(result.total).toBe(55 + 160 + 120)
     const twin = result.stages.find(
-      (stage) => stage.kind === 'milestone' && stage.mult === 0.5
+      (stage) => stage.kind === 'milestone' && stage.mult === 1
     )
-    expect(twin?.mult).toBe(0.5)
+    expect(twin?.mult).toBe(1)
   })
 
   it('applies standing table momentum to the new group', () => {
@@ -343,8 +343,8 @@ describe('completing the table', () => {
     const result = score(fullTable, PAIR_SLOT_INDEX)
     const completion = result.stages.find((stage) => stage.kind === 'completion')
     expect(completion).toBeDefined()
-    // Pure Suit (0.4) is claimed by this same placement and lifts the bonus.
-    expect(completion?.points).toBe(Math.floor(TABLE_COMPLETION_POINTS * 1.4))
+    // Pure Suit (0.8) is claimed by this same placement and lifts the bonus.
+    expect(completion?.points).toBe(Math.floor(TABLE_COMPLETION_POINTS * 1.8))
   })
 
   it('never pays the completion bonus twice', () => {
