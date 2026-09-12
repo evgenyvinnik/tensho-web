@@ -201,7 +201,7 @@ export const TABLE_DECREES: readonly TableDecreeDefinition[] = [
     id: 'gap_bridge',
     name: 'Gap Bridge',
     description:
-      'Once a round, a run may skip one rank: 3·5·7 counts as a sequence.',
+      'Once a round, a run may skip one rank: 3·4·6 counts as a sequence.',
     isStarter: false,
     cost: 11,
   },

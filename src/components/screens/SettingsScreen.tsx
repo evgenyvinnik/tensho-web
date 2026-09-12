@@ -10,17 +10,16 @@ import { useTranslation } from 'react-i18next'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
 import { useAppNavigation } from '../../router'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { useAchievementStore } from '../../stores/achievementStore'
+import {
+  resetAllProgress,
+  resetTutorialProgress,
+} from '../../game/resetProgress'
 import { Button } from '../ui/Button'
 import { BackButton } from '../ui/BackButton'
 import { Slider } from '../ui/Slider'
 import { Toggle } from '../ui/Toggle'
 import { LanguageSelector } from '../ui/LanguageSelector'
 import { ConfirmPopup, AlertPopup } from '../ui/Popup'
-import {
-  PROGRESSIVE_HINTS_STORAGE_KEY,
-  HINTS_DISABLED_STORAGE_KEY,
-} from '../../config/progressiveTutorialHints'
 
 /**
  * SettingsScreen - User preferences page
@@ -39,10 +38,9 @@ export function SettingsScreen() {
   const [showProgressResetSuccess, setShowProgressResetSuccess] =
     useState(false)
 
-  // Achievement store for resetting progress
-  const resetAchievements = useAchievementStore(
-    (state) => state.resetAchievements
-  )
+  const [resetError, setResetError] = useState<
+    'resetFailed' | 'resetPartial' | null
+  >(null)
 
   // Settings store
   const {
@@ -65,32 +63,19 @@ export function SettingsScreen() {
 
   // Reset tutorial handler
   const handleResetTutorial = useCallback(() => {
-    // Clear tutorial completion from localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('tensho_tutorial_completed')
-      localStorage.removeItem('tensho_game_tutorial_completed')
-      // Also clear progressive hints so they show again
-      localStorage.removeItem(PROGRESSIVE_HINTS_STORAGE_KEY)
-      localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
-    }
+    const result = resetTutorialProgress()
     setShowResetTutorialConfirm(false)
-    setShowTutorialResetSuccess(true)
+    if (result.success) setShowTutorialResetSuccess(true)
+    else setResetError(result.restored ? 'resetFailed' : 'resetPartial')
   }, [])
 
   // Reset all progress handler
   const handleResetProgress = useCallback(() => {
-    // Reset achievements and stats
-    resetAchievements()
-    // Also reset tutorial and progressive hints
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('tensho_tutorial_completed')
-      localStorage.removeItem('tensho_game_tutorial_completed')
-      localStorage.removeItem(PROGRESSIVE_HINTS_STORAGE_KEY)
-      localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
-    }
+    const result = resetAllProgress()
     setShowResetProgressConfirm(false)
-    setShowProgressResetSuccess(true)
-  }, [resetAchievements])
+    if (result.success) setShowProgressResetSuccess(true)
+    else setResetError(result.restored ? 'resetFailed' : 'resetPartial')
+  }, [])
 
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
@@ -290,7 +275,7 @@ export function SettingsScreen() {
         onClose={() => setShowResetProgressConfirm(false)}
         onConfirm={handleResetProgress}
         title={t('settings.resetProgress')}
-        message={t('settings.resetProgressConfirm')}
+        message={`${t('settings.resetProgressConfirm')} ${t('settings.resetProgressScope')}`}
         confirmText={t('common.confirm')}
         cancelText={t('common.cancel')}
       />
@@ -308,6 +293,14 @@ export function SettingsScreen() {
         onClose={() => setShowProgressResetSuccess(false)}
         title={t('settings.resetProgress')}
         message={t('settings.resetProgressSuccess')}
+        confirmText={t('common.ok')}
+      />
+
+      <AlertPopup
+        isOpen={resetError !== null}
+        onClose={() => setResetError(null)}
+        title={t('common.error')}
+        message={resetError ? t(`settings.${resetError}`) : ''}
         confirmText={t('common.ok')}
       />
     </div>

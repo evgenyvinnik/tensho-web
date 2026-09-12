@@ -13,6 +13,7 @@ import { useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { GoldIcon } from '../ui/GoldIcon'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 const AnimatedSpan = animated('span')
 
@@ -44,19 +45,23 @@ interface GoldDisplayProps {
 }
 
 function GoldDisplay({ gold }: GoldDisplayProps) {
+  const { t, i18n } = useTranslation()
+  const reduceMotion = useReducedMotion()
+  const number = new Intl.NumberFormat(i18n.resolvedLanguage).format
   const spring = useSpring({
     number: gold,
     config: { tension: 300, friction: 30 },
+    immediate: reduceMotion,
   })
 
   return (
     <div
-      className="flex items-center gap-1 sm:gap-2"
-      aria-label={`${gold.toLocaleString()} gold`}
+      className="flex min-w-0 items-center gap-1 sm:gap-2"
+      aria-label={t('shop.ui.goldBalance', { amount: number(gold) })}
     >
       <GoldIcon className="h-8 w-8 sm:h-9 sm:w-9" />
-      <AnimatedSpan className="text-xl font-bold text-[var(--color-golden-yellow)] sm:text-2xl">
-        {spring.number.to((n) => Math.floor(n).toLocaleString())}
+      <AnimatedSpan className="min-w-0 break-all text-xl font-bold leading-tight tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
+        {spring.number.to((n) => number(Math.floor(n)))}
       </AnimatedSpan>
     </div>
   )
@@ -79,7 +84,8 @@ function RerollButton({
   onClick,
   rerollCount,
 }: RerollButtonProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const reduceMotion = useReducedMotion()
 
   const handleClick = useCallback(() => {
     if (canAfford) {
@@ -98,11 +104,14 @@ function RerollButton({
         border-2
         ${
           canAfford
-            ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] border-[var(--color-golden-yellow)] hover:bg-[var(--color-deep-orange)] hover:scale-105 active:scale-95'
+            ? `bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] border-[var(--color-golden-yellow)] hover:bg-[var(--color-deep-orange)] ${reduceMotion ? '' : 'hover:scale-105 active:scale-95'}`
             : 'bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed opacity-60'
         }
       `}
       aria-label={t('shop.reroll')}
+      aria-description={t('shop.rerollCost', {
+        cost: cost.toLocaleString(i18n.resolvedLanguage),
+      })}
     >
       <svg
         className="w-5 h-5"
@@ -119,10 +128,15 @@ function RerollButton({
       </svg>
       <span className="inline-flex items-center gap-1">
         <GoldIcon className="h-4 w-4" />
-        {cost}
+        {cost.toLocaleString(i18n.resolvedLanguage)}
       </span>
       {rerollCount > 0 && (
-        <span className="text-xs opacity-70">(+{rerollCount})</span>
+        <span
+          className="text-xs opacity-70"
+          aria-label={t('shop.ui.rerollsUsed', { count: rerollCount })}
+        >
+          (+{rerollCount.toLocaleString(i18n.resolvedLanguage)})
+        </span>
       )}
     </button>
   )
@@ -179,20 +193,17 @@ export function ShopHeader({
 
   return (
     <header className="relative z-10 flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)]/95 safe-area-top backdrop-blur-sm">
-      <div className="screen-canvas flex items-center justify-between gap-2 px-2 py-2.5 sm:px-5 sm:py-3">
+      <div className="screen-canvas grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-2 py-2.5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:px-5 sm:py-3">
         {/* Gold display */}
         <GoldDisplay gold={gold} />
 
         {/* Title */}
-        <h1 className="min-w-0 truncate whitespace-nowrap text-sm font-bold tracking-wide text-[var(--color-beige-white)] font-decorative sm:text-xl">
+        <h1 className="col-span-2 row-start-2 min-w-0 break-words text-center text-base font-bold text-[var(--color-beige-white)] sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:text-xl">
           {t('shop.title', 'Tea House')}
-          <span className="ml-2 hidden text-lg text-[var(--color-metallic-gold)] md:inline">
-            &#x8336;&#x5BE5;
-          </span>
         </h1>
 
         {/* Actions */}
-        <div className="flex items-center gap-1.5 sm:gap-3">
+        <div className="col-start-2 row-start-1 flex items-center gap-1.5 sm:col-start-3 sm:gap-3">
           <RerollButton
             cost={rerollCost}
             canAfford={canAffordReroll}

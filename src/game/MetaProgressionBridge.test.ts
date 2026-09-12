@@ -3,6 +3,10 @@ import { useAchievementStore } from '../stores/achievementStore'
 import { initializeArchive, useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
 import { useStakeStore } from '../stores/stakeStore'
+import { useTableStyleStore } from '../stores/tableStyleStore'
+import { ArchiveSystem } from '../systems/ArchiveSystem'
+import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
+import { createArchiveKey } from '../config/archiveDefinitions'
 import { eventBus } from './EventBus'
 import { GameOrchestrator } from './GameOrchestrator'
 import {
@@ -17,7 +21,8 @@ function getUndiscoveredItemId(
     .getState()
     .getEntriesByCategory(category)
     .find((candidate) => candidate.discoveredAt === null)
-  if (!entry) throw new Error(`Expected an undiscovered ${category} Archive item`)
+  if (!entry)
+    throw new Error(`Expected an undiscovered ${category} Archive item`)
   return entry.itemId
 }
 
@@ -28,12 +33,189 @@ describe('MetaProgressionBridge', () => {
     useArchiveStore.getState().resetArchive()
     useProgressionStore.getState().resetProgression()
     useStakeStore.getState().resetAllProgress()
+    useTableStyleStore.getState().resetAllProgress()
     useAchievementStore.getState().resetAchievements()
     initializeMetaProgressionBridge()
   })
 
   afterEach(() => {
     shutdownMetaProgressionBridge()
+  })
+
+  it('catalogs exactly the eight playable tables and preserves retired wall history', () => {
+    const system = new ArchiveSystem()
+    const old = {
+      ...system.getEntry('walls', 'green_felt')!,
+      itemId: 'red_wall',
+      timesUsed: 9,
+      discoveredAt: 123,
+    }
+    const saved = system.toState()
+    saved.entries.push([createArchiveKey('walls', 'red_wall'), old])
+    const restored = ArchiveSystem.fromState(saved)
+    expect(
+      restored.getEntriesByCategory('walls').map((entry) => entry.itemId)
+    ).toEqual(TABLE_STYLE_DEFINITIONS.map((table) => table.id))
+    expect(restored.getEntry('walls', 'red_wall')?.timesUsed).toBe(9)
+    expect(restored.toState().entries).toContainEqual([
+      createArchiveKey('walls', 'red_wall'),
+      old,
+    ])
+    useArchiveStore
+      .getState()
+      .initializeEntries(restored.toState().entries.map(([, entry]) => entry))
+    expect(
+      useArchiveStore.getState().getEntriesByCategory('walls')
+    ).toHaveLength(8)
+    expect(
+      useArchiveStore
+        .getState()
+        .getDiscoveredEntries()
+        .some((entry) => entry.itemId === 'red_wall')
+    ).toBe(false)
+    expect(
+      useArchiveStore.getState().getStats().categoryCounts.walls.total
+    ).toBe(8)
+  })
+
+  it('makes an earned table selectable immediately and restores persisted unlocks idempotently', () => {
+    eventBus.emit('actComplete', { actNumber: 3, totalScore: 5000 })
+    expect(useTableStyleStore.getState().selectStyle('red_lacquer')).toBe(true)
+    expect(
+      useArchiveStore.getState().getEntry('walls', 'red_lacquer')?.isUnlocked
+    ).toBe(true)
+    useProgressionStore.getState().updateStats({ totalDecreesPurchased: 20 })
+    shutdownMetaProgressionBridge()
+    useTableStyleStore.getState().resetAllProgress()
+    initializeMetaProgressionBridge()
+    expect(useTableStyleStore.getState().isStyleUnlocked('red_lacquer')).toBe(
+      true
+    )
+    shutdownMetaProgressionBridge()
+    initializeMetaProgressionBridge()
+    expect(useTableStyleStore.getState().stats.totalDecreesPurchased).toBe(20)
+    expect(useTableStyleStore.getState().unlockHistory).toHaveLength(1)
+    new GameOrchestrator().startNewRun(7, 1, 'red_lacquer')
+    expect(
+      useArchiveStore.getState().getEntry('walls', 'red_lacquer')?.timesUsed
+    ).toBe(1)
+  })
+
+  it('requires four distinct Flowers in one run, not repeated draws of one type', () => {
+    eventBus.emit('runStart', { seed: 7, stake: 1, wallVariant: 'green_felt' })
+    for (let i = 0; i < 4; i++)
+      eventBus.emit('flowerCollected', { flowerType: 'Plum', totalFlowers: 1 })
+    expect(useTableStyleStore.getState().isStyleUnlocked('bamboo_mat')).toBe(
+      false
+    )
+    for (const flowerType of ['Orchid', 'Chrysanthemum', 'Bamboo']) {
+      eventBus.emit('flowerCollected', { flowerType, totalFlowers: 4 })
+    }
+    expect(useTableStyleStore.getState().isStyleUnlocked('bamboo_mat')).toBe(
+      true
+    )
+    expect(useTableStyleStore.getState().stats.maxFlowersInRun).toBe(4)
+  })
+
+  it('checks owned Decrees at victory, not purchases or a win on an earlier run', () => {
+    eventBus.emit('runStart', { seed: 7, stake: 1, wallVariant: 'green_felt' })
+    eventBus.emit('runEnd', {
+      victory: true,
+      score: 100,
+      act: 8,
+      round: 3,
+      decreesOwned: 2,
+    })
+    eventBus.emit('runStart', { seed: 8, stake: 1, wallVariant: 'green_felt' })
+    for (let i = 0; i < 20; i++) {
+      eventBus.emit('decreeAcquired', {
+        decreeId: `test-${i}`,
+        decreeName: 'Test',
+        rarity: 'Common',
+        source: 'purchase',
+      })
+    }
+    expect(useTableStyleStore.getState().isStyleUnlocked('night_market')).toBe(
+      true
+    )
+    expect(useTableStyleStore.getState().isStyleUnlocked('imperial_gold')).toBe(
+      false
+    )
+    eventBus.emit('runEnd', {
+      victory: true,
+      score: 100,
+      act: 8,
+      round: 3,
+      decreesOwned: 4,
+    })
+    expect(useTableStyleStore.getState().isStyleUnlocked('imperial_gold')).toBe(
+      false
+    )
+    eventBus.emit('runStart', { seed: 9, stake: 1, wallVariant: 'green_felt' })
+    eventBus.emit('runEnd', {
+      victory: true,
+      score: 100,
+      act: 8,
+      round: 3,
+      decreesOwned: 5,
+    })
+    expect(useTableStyleStore.getState().selectStyle('imperial_gold')).toBe(
+      true
+    )
+    expect(useTableStyleStore.getState().stats.maxDecreesInWin).toBe(5)
+  })
+
+  it('counts corrupted Seasons only after surviving their round and never across runs', () => {
+    const corrupt = () =>
+      eventBus.emit('seasonCorrupted', {
+        corruptedType: 'Drought',
+        effect: 'Test',
+      })
+    const win = () =>
+      eventBus.emit('roundEnd', { won: true, score: 100, target: 100 })
+    eventBus.emit('runStart', { seed: 7, stake: 1, wallVariant: 'green_felt' })
+    corrupt()
+    corrupt()
+    win()
+    eventBus.emit('runStart', { seed: 8, stake: 1, wallVariant: 'green_felt' })
+    corrupt()
+    win()
+    expect(useTableStyleStore.getState().isStyleUnlocked('ghost_parlor')).toBe(
+      false
+    )
+    corrupt()
+    corrupt()
+    eventBus.emit('roundEnd', { won: false, score: 0, target: 100 })
+    win()
+    expect(useTableStyleStore.getState().isStyleUnlocked('ghost_parlor')).toBe(
+      false
+    )
+    corrupt()
+    corrupt()
+    win()
+    expect(useTableStyleStore.getState().isStyleUnlocked('ghost_parlor')).toBe(
+      true
+    )
+    expect(
+      useTableStyleStore.getState().stats.maxCorruptedSeasonsSurvived
+    ).toBe(3)
+  })
+
+  it('unlocks Dragon’s Den from a Yakuman and Temple Stone only from a flower-free win', () => {
+    eventBus.emit('runStart', { seed: 7, stake: 1, wallVariant: 'green_felt' })
+    eventBus.emit('yakumanScored', {
+      yakuId: 'kokushi',
+      yakuName: 'Thirteen Orphans',
+    })
+    expect(useTableStyleStore.getState().selectStyle('dragons_den')).toBe(true)
+    eventBus.emit('flowerCollected', { flowerType: 'Plum', totalFlowers: 1 })
+    eventBus.emit('runEnd', { victory: true, score: 100, act: 8, round: 3 })
+    expect(useTableStyleStore.getState().isStyleUnlocked('temple_stone')).toBe(
+      false
+    )
+    eventBus.emit('runStart', { seed: 8, stake: 1, wallVariant: 'green_felt' })
+    eventBus.emit('runEnd', { victory: true, score: 100, act: 8, round: 3 })
+    expect(useTableStyleStore.getState().selectStyle('temple_stone')).toBe(true)
   })
 
   it('initializes the Archive and records gameplay in every persisted meta system', () => {
@@ -92,7 +274,11 @@ describe('MetaProgressionBridge', () => {
       yakuIds: [],
     })
     eventBus.emit('tileDiscarded', { tileId: 'tile-4', toDeadPool: false })
-    eventBus.emit('itemPurchased', { itemType: 'Tile', itemId: 'tile-5', cost: 3 })
+    eventBus.emit('itemPurchased', {
+      itemType: 'Tile',
+      itemId: 'tile-5',
+      cost: 3,
+    })
     eventBus.emit('goldChanged', {
       previousGold: 4,
       newGold: 14,
@@ -170,8 +356,12 @@ describe('MetaProgressionBridge', () => {
       .map((key) => archive.entries[key])
       .filter(Boolean)
 
-    expect(currentEntries.filter((entry) => entry.category === 'walls')).toHaveLength(1)
-    expect(currentEntries.filter((entry) => entry.category === 'decrees')).toHaveLength(2)
+    expect(
+      currentEntries.filter((entry) => entry.category === 'walls')
+    ).toHaveLength(1)
+    expect(
+      currentEntries.filter((entry) => entry.category === 'decrees')
+    ).toHaveLength(2)
     expect(archive.getEntry('walls', 'green_felt')?.timesUsed).toBe(1)
     expect(useProgressionStore.getState().stats.totalRunsStarted).toBe(1)
   })
@@ -195,6 +385,8 @@ describe('MetaProgressionBridge', () => {
         actsCompleted: 8,
       }),
     ])
-    expect(useStakeStore.getState().getHighestAvailableStake('green_felt')).toBe(4)
+    expect(
+      useStakeStore.getState().getHighestAvailableStake('green_felt')
+    ).toBe(4)
   })
 })

@@ -1,4 +1,37 @@
 {
+  "consumableUse": {
+    "unityMapping": "Original rank → Wind",
+    "errorMaxLevel": "This upgrade is already at its maximum level.",
+    "errorNoRoom": "Make space for the reward before using this item.",
+    "errorNoDecrees": "You need an owned Decree for this effect.",
+    "errorNoPrevious": "First use an item from {{seals}} or {{orbs}}.",
+    "copyResult": "Creates: {{name}}",
+    "errorNoGold": "This effect would grant no gold right now.",
+    "hiddenOutcome": "The outcome for concealed targets is checked only when you confirm.",
+    "available": "{{name}} ({{count}} available)",
+    "penalty_lose_tile": "Lose 1 random tile.",
+    "penalty_lose_gold": "Lose all gold.",
+    "penalty_lose_hand_size": "Permanently lose {{count}} rack space.",
+    "penalty_lock_tile": "Lock 1 random tile in the Dead Pool.",
+    "penalty_lose_decree_slot": "Lose {{count}} Decree slot next round.",
+    "penalty_halve_base_score": "Halve base points for the next hand.",
+    "penalty_destroy_decrees": "Destroy all other Decrees.",
+    "penalty_none": "No additional penalty.",
+    "protected": "Omen protection cancels the additional penalty.",
+    "errorSuit": "Choose a suited tile of a different suit.",
+    "errorRank": "Choose a suited tile whose new rank is between 1 and 9.",
+    "choose": "Choose an item, then confirm its use.",
+    "targets": "Tile targets",
+    "count": "Targets: {{selected}} / {{required}}",
+    "copyOrder": "Tile 1 becomes a copy of tile 2. Choose the tile to change first.",
+    "cost": "Void cost",
+    "failed": "This item could not be used.",
+    "unavailable": "Check the targets and this round’s use limit.",
+    "confirm": "Use item",
+    "fateSeals": "Fate Seals",
+    "celestialOrbs": "Celestial Orbs",
+    "voidScripts": "Void Scripts"
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",
@@ -37,6 +70,9 @@
     "tableLoop": "Table Loop (experiment)"
   },
   "settings": {
+    "resetProgressScope": "This also deletes discoveries and active or saved runs. Language, audio, and accessibility settings are kept.",
+    "resetFailed": "Reset failed. Your progress has been kept. Check browser storage and try again.",
+    "resetPartial": "Reset could not finish, and some progress may have changed. Check browser storage and try again.",
     "title": "Settings",
     "audio": "Audio",
     "musicVolume": "Music Volume",
@@ -200,6 +236,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "Common",
+      "rarity_uncommon": "Uncommon",
+      "rarity_rare": "Rare",
+      "rarity_legendary": "Legendary",
+      "subtitle": "Prepare for the next challenge",
+      "items": "Items",
+      "availableCount": "Available: {{count}}",
+      "allPurchased": "All items purchased!",
+      "packs": "Blessing Packs",
+      "noPacks": "No packs available",
+      "imperialCharter": "Imperial Charter",
+      "nextRound": "Continue to Next Round",
+      "confirmPurchase": "Confirm Purchase",
+      "purchasePrompt": "Buy {{name}} for {{cost}}G?",
+      "baseEdition": "Base edition",
+      "goldBalance": "{{amount}} gold",
+      "rerollsUsed": "Rerolls used: {{count}}"
+    },
+    "payout": {
+      "heading": "Act {{act}} · {{round}}",
+      "clear": "Clear",
+      "interest": "Interest",
+      "decrees": "Decrees",
+      "goldTiles": "Gold tiles",
+      "bonus": "Reward bonus",
+      "rentals": "Rentals",
+      "interestBlocked": "Interest is currently blocked.",
+      "interestCap": "Savings have reached the {{interest}}G interest cap.",
+      "interestSave": "With current savings: {{interest}}G interest. Save {{needed}}G more for {{next}}G.",
+      "nextRound": "Next: {{round}} · {{target}} target",
+      "nextAct": "Next: Act {{act}} ascent"
+    },
+    "packChoices": "Choose up to {{max}} from {{count}} rewards",
+    "packInventoryFull": "Not enough space for this selection. Choose fewer or different rewards, or skip the pack.",
+    "inventoryFull": "Not enough inventory space for this reward.",
+    "skipRewards": "Skip rewards",
+    "purchaseFailed": "Purchase could not be completed.",
+    "packSelected": "{{count}} / {{max}} selected",
+    "confirmSelection": "Confirm Selection",
+    "selectItems": "Select Items",
     "title": "Tea House",
     "titleJp": "茶寮",
     "buy": "Buy",
@@ -890,6 +967,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "Collected Flowers last for this run. Uncollected bonuses are previews.",
+      "roundScope": "Shown in draw order. Seasons expire after this round.",
+      "collected": "Collected",
+      "missing": "Not collected",
+      "noSeasons": "No Seasons this round.",
+      "suppressed": "Drought suppresses your Flower scoring bonuses.",
+      "protected": "A Decree protects your Flower bonuses from Drought.",
+      "decayPenalty": "Decay penalty per play: −{{points}} points.",
+      "partial": "Some Season rules are still being implemented. Only current effects are shown.",
+      "unwired": "Not connected yet.",
+      "summer": "Score ×1.3.",
+      "autumn": "Yaku multiplier +20%.",
+      "winter": "Score ×0.75.",
+      "drought": "Suppresses Flower scoring bonuses unless protected.",
+      "frostbite": "Halves Decree multiplier bonuses.",
+      "decay": "−10 score per discarded tile this round, with a minimum score of zero.",
+      "droughtName": "Drought",
+      "monsoonName": "Monsoon",
+      "frostbiteName": "Frostbite",
+      "decayName": "Decay",
+      "corruptedName": "Corrupted",
+      "flowerPlum": "+{{percent}}% score per sequence.",
+      "flowerOrchid": "+{{percent}}% score per Honor tile.",
+      "flowerChrysanthemum": "+{{percent}}% score per concealed meld.",
+      "flowerBamboo": "+{{percent}}% score per terminal tile.",
+      "setTwo": "2 Flowers: +1 Decree slot.",
+      "setThree": "3 Flowers: special shop unlock is not connected yet.",
+      "setFour": "4 Flowers: double Flower bonuses."
+    },
     "flowers": "Flowers",
     "seasons": "Seasons",
     "plum": "Plum",
@@ -953,6 +1060,12 @@
     "quad": "Quad"
   },
   "results": {
+    "endlessComplete": "Endless Ascent Complete",
+    "victorySubtitle": "The Act 8 Showdown is yours. Your run is secured.",
+    "endlessSubtitle": "Your victory stands—even though this ascent has ended.",
+    "defeatSubtitle": "Try a different plan on your next run.",
+    "showdownCleared": "Showdown cleared",
+    "continueEndless": "Continue into Endless",
     "victory": "Victory!",
     "defeat": "Defeat",
     "roundComplete": "Round Complete!",
@@ -1655,7 +1768,7 @@
       },
       "seal_of_unity": {
         "name": "Seal of Unity",
-        "description": "Converts up to 3 tiles to Honor tiles"
+        "description": "Converts up to 3 suited tiles to Winds. Ranks cycle East, South, West, North."
       },
       "seal_of_the_oracle": {
         "name": "Seal of the Oracle",
@@ -2047,7 +2160,7 @@
       },
       "purple": {
         "name": "Purple Seal",
-        "description": "Creates Fate Seal on discard. Creates random Fate Seal when discarded"
+        "description": "Creates a random Fate Seal when this tile is discarded or redrawn, if there is room."
       }
     }
   },
@@ -2142,40 +2255,71 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "Classic",
+        "unlock": "Available from the start",
+        "modifiers": { "0": "No special modifiers" },
         "name": "Green Felt",
         "description": "The classic mahjong table. A traditional green felt surface, worn smooth by countless hands. No special modifiers - just pure skill."
       },
       "red_lacquer": {
+        "theme": "Auspicious",
+        "unlock": "Complete Act 3",
+        "modifiers": { "0": "+1 starting Decree slot" },
         "name": "Red Lacquer",
         "description": "A luxurious table finished in brilliant vermillion lacquer, symbolizing good fortune and prosperity. The auspicious color attracts additional decrees."
       },
       "bamboo_mat": {
+        "theme": "Natural",
+        "unlock": "Collect all 4 Flowers in one run",
+        "modifiers": { "0": "+25% Flower draw weight (same four Flowers)" },
         "name": "Bamboo Mat",
         "description": "A simple woven bamboo mat spread over a low table in a garden pavilion. The natural setting attracts more flowers to bloom."
       },
       "imperial_gold": {
+        "theme": "Royal",
+        "unlock": "Win a run with 5+ Decrees",
+        "modifiers": { "0": "Start with 1 random Regional Mandate" },
         "name": "Imperial Gold",
         "description": "A magnificent table from the imperial palace, inlaid with gold leaf and jade. Those who play here receive royal favor."
       },
       "night_market": {
+        "theme": "Street",
+        "unlock": "Purchase 20 Decrees across all runs",
+        "modifiers": { "0": "Shop prices −20%", "1": "−1 Decree slot" },
         "name": "Night Market",
         "description": "A makeshift table in the bustling night market, lit by paper lanterns. Vendors offer discounts, but space is limited."
       },
       "temple_stone": {
+        "theme": "Austere",
+        "unlock": "Win a run without collecting Flowers",
+        "modifiers": { "0": "No Flowers", "1": "+50% base score" },
         "name": "Temple Stone",
         "description": "A cold stone table in an ascetic mountain temple. No flowers grow in this austere place, but the purity of focus enhances your base scoring."
       },
       "ghost_parlor": {
+        "theme": "Haunted",
+        "unlock": "Survive 3 Corrupted Seasons in one run",
+        "modifiers": { "0": "Corrupted Seasons can appear from Act I" },
         "name": "Ghost Parlor",
         "description": "An abandoned mahjong hall where spirits still play. The veil between worlds is thin here, allowing corrupted seasons to manifest from the very beginning."
       },
       "dragons_den": {
+        "theme": "Mythic",
+        "unlock": "Score a Yakuman",
+        "modifiers": {
+          "0": "Yakuman multipliers +1.0×",
+          "1": "+25% score targets"
+        },
         "name": "Dragon's Den",
         "description": "A legendary table carved from dragon bone, hidden in a mountain cavern. Yakuman hands are amplified here, but the dragon demands greater tribute."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "The previous save could not be restored. Start a new run to replace it.",
+      "unavailable": "Progress cannot be saved on this device. Keep this tab open to continue your run."
+    },
     "slot": {
       "meld": "Meld slot {{number}}",
       "pair": "Pair slot",

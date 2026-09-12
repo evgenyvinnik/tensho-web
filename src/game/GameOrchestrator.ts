@@ -11,24 +11,47 @@
  * This is the missing piece that makes the game playable end-to-end.
  */
 
-import { Tile, TileSuit, FlowerType, SeasonType, WindType, DragonType } from '../core/Tile'
+import {
+  Tile,
+  TileSuit,
+  FlowerType,
+  SeasonType,
+  WindType,
+  DragonType,
+} from '../core/Tile'
 import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
 import { Hand, ParsedHand, WaitType } from '../core/Hand'
 import { Meld, MeldType } from '../core/Meld'
-import { calculateScore, createScoringContext, ScoreBreakdown } from '../rules/ScoringEngine'
+import {
+  calculateScore,
+  createScoringContext,
+  ScoreBreakdown,
+} from '../rules/ScoringEngine'
 import { findOneAwayCompletion, validateHand } from '../rules/HandValidator'
-import { parsePartialHand, toPartialParsedHand } from '../rules/PartialHandParser'
+import {
+  parsePartialHand,
+  toPartialParsedHand,
+} from '../rules/PartialHandParser'
 import { eventBus } from './EventBus'
+import { ShopSession } from './ShopSession'
+import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
 import {
   ActionProcessor,
   PlayerAction,
   ActionResult,
+  ValidationResult,
   Effect,
   GameStateSnapshot,
   createActionProcessor,
 } from './ActionProcessor'
 import { RoundManager } from '../systems/RoundManager'
-import { ALL_DECREES, DecreeSystem, STARTER_DECREES } from '../systems/DecreeSystem'
+import { flowerWeightedWall, resolveTableRules } from './tableStyleRules'
+import type { ActiveTableModifiers } from '../systems/TableStyleSystem'
+import {
+  ALL_DECREES,
+  DecreeSystem,
+  STARTER_DECREES,
+} from '../systems/DecreeSystem'
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import {
@@ -58,7 +81,10 @@ import {
   FateSealContext,
 } from '../systems/FateSealSystem'
 import {
-  VOID_SCRIPTS,
+  convertSuitedTile,
+  convertSuitedTileRank,
+} from '../core/tileTransformations'
+import {
   VoidScriptSystem,
   VoidScript,
   VoidScriptContext,
@@ -103,6 +129,8 @@ export interface OrchestratorState {
   isRunActive: boolean
   seed: number
   stake: number
+  tableStyleId: string
+  tableModifiers: Readonly<ActiveTableModifiers>
 
   // Progression
   currentAct: number
@@ -111,6 +139,8 @@ export interface OrchestratorState {
   runScore: number
   /** True after the Act 8 Showdown has been defeated. */
   hasWonRun: boolean
+  /** Remains true after entering Endless, even when a Charter rewinds Acts. */
+  hasEnteredEndless: boolean
 
   // Resources
   score: number
@@ -238,6 +268,7 @@ function promoteSimpleToTerminal(tile: Tile): Tile {
  * Central game loop controller
  */
 export class GameOrchestrator {
+  readonly shop = new ShopSession(this)
   private state: OrchestratorState
   private actionProcessor: ActionProcessor
   private config: RoundConfig
@@ -267,8 +298,11 @@ export class GameOrchestrator {
       stake: 1,
       currentAct: 1,
       currentRound: 1,
+      tableStyleId: 'green_felt',
+      tableModifiers: resolveTableRules('green_felt').modifiers,
       runScore: 0,
       hasWonRun: false,
+      hasEnteredEndless: false,
       score: 0,
       gold: 4,
       handsRemaining: this.config.handsPerRound,
@@ -338,6 +372,17 @@ export class GameOrchestrator {
       this.state.decreeSystem.acquireDecree(shuffled[i])
     }
 
+    if (this.state.tableModifiers.grantRegionalMandate) {
+      const owned = new Set(
+        this.state.decreeSystem.getOwnedDecrees().map((decree) => decree.id)
+      )
+      const regional = ALL_DECREES.filter(
+        (decree) => decree.rarity === 'RegionalMandate' && !owned.has(decree.id)
+      )
+      const decree = regional[Math.floor(seededRandom() * regional.length)]
+      if (decree) this.state.decreeSystem.acquireDecree(decree)
+    }
+
     // Emit decree acquired events
     const ownedDecrees = this.state.decreeSystem.getOwnedDecrees()
     for (const decree of ownedDecrees) {
@@ -353,22 +398,40 @@ export class GameOrchestrator {
   /**
    * Start a new run
    */
-  startNewRun(seed?: number, stake: number = 1, wallVariant = 'green_felt'): void {
+  startNewRun(
+    seed?: number,
+    stake: number = 1,
+    wallVariant = 'green_felt'
+  ): void {
     const actualSeed = seed ?? Date.now()
 
     // Reset state
     this.state = this.createInitialState()
+    this.shop.reset()
     this.state.seed = actualSeed
     this.runtimeItemCounter = 0
     runRandom.start(actualSeed)
     this.state.mandateEffectSystem.setSeed(actualSeed)
     this.state.omenSystem.setSeed(actualSeed + 0x0a11ce)
     this.state.stake = stake
+    const table = resolveTableRules(wallVariant)
+    this.state.tableStyleId = table.id
+    this.state.tableModifiers = table.modifiers
+    this.state.decreeSystem = new DecreeSystem(
+      5 + table.modifiers.decreeSlotModifier
+    )
+    this.state.seasonSystem = new SeasonSystem(
+      table.modifiers.earlyCorruptedSeasons
+    )
     this.state.isRunActive = true
     this.state.phase = 'gameplay'
 
     // Initialize round manager
-    this.state.roundManager = new RoundManager(stake, actualSeed)
+    this.state.roundManager = new RoundManager(
+      stake,
+      actualSeed,
+      table.modifiers.scoreTargetMultiplier
+    )
     this.state.roundManager.startNewRun()
 
     // Start meta-progression before starter items are granted so they remain in
@@ -376,7 +439,7 @@ export class GameOrchestrator {
     eventBus.emit('runStart', {
       seed: actualSeed,
       stake,
-      wallVariant,
+      wallVariant: table.id,
     })
 
     // Give starter decrees (2 random from the starter pool)
@@ -388,10 +451,16 @@ export class GameOrchestrator {
       this.state.targetScore = roundState.scoreTarget
       this.state.currentAct = roundState.actNumber
       this.state.currentRound = roundState.roundNumber
-      this.state.omenSystem.setRoundInfo(this.state.currentAct, this.state.currentRound)
+      this.state.omenSystem.setRoundInfo(
+        this.state.currentAct,
+        this.state.currentRound
+      )
     }
 
-    this.state.charterSystem.updateProgress(this.state.currentAct, this.state.currentRound)
+    this.state.charterSystem.updateProgress(
+      this.state.currentAct,
+      this.state.currentRound
+    )
     this.state.decreeSystem.onRoundStart()
     this.state.consumableSystem.onRoundStart()
     this.initializeRoundResources()
@@ -418,6 +487,7 @@ export class GameOrchestrator {
   resetGame(): void {
     const previousPhase = this.state.phase
     this.state = this.createInitialState()
+    this.shop.reset()
     this.runtimeItemCounter = 0
     eventBus.emit('phaseChanged', {
       previousPhase,
@@ -428,7 +498,8 @@ export class GameOrchestrator {
   /** Calculate the resources granted for the active round. */
   private initializeRoundResources(): void {
     const charterEffects = this.state.charterSystem.calculateEffects()
-    const stakePenalty = this.state.roundManager.getStakeModifiers().redrawPenalty
+    const stakePenalty =
+      this.state.roundManager.getStakeModifiers().redrawPenalty
     this.state.deadWallWritUsedThisRound = false
 
     this.state.handsRemaining = Math.max(
@@ -453,12 +524,14 @@ export class GameOrchestrator {
         stakePenalty
     )
 
-    const singleHandMandate = this.state.roundManager.checkMandateEffect('single_hand')
+    const singleHandMandate =
+      this.state.roundManager.checkMandateEffect('single_hand')
     if (singleHandMandate.active) {
       this.state.handsRemaining = 1
     }
 
-    const noDiscardsMandate = this.state.roundManager.checkMandateEffect('no_discards')
+    const noDiscardsMandate =
+      this.state.roundManager.checkMandateEffect('no_discards')
     if (noDiscardsMandate.active) {
       this.state.redrawsRemaining = 0
     }
@@ -491,7 +564,9 @@ export class GameOrchestrator {
 
     const melds: Meld[] = []
     for (let i = 0; i < 4; i++) {
-      melds.push(new Meld(MeldType.Triplet, tiles.slice(i * 3, i * 3 + 3), true))
+      melds.push(
+        new Meld(MeldType.Triplet, tiles.slice(i * 3, i * 3 + 3), true)
+      )
     }
 
     return {
@@ -521,12 +596,16 @@ export class GameOrchestrator {
 
   /** Resolve a Decree rule while respecting per-hand mandate suppression. */
   private isDecreeRuleActive(ruleId: string): boolean {
-    return this.state.decreeSystem.getActiveDecrees().some(
-      (decree) =>
-        decree.effect.type === 'rule_modification' &&
-        decree.effect.ruleId === ruleId &&
-        !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
-    )
+    return this.state.decreeSystem
+      .getActiveDecrees()
+      .some(
+        (decree) =>
+          [decree.effect, ...(decree.extraEffects ?? [])].some(
+            (effect) =>
+              effect.type === 'rule_modification' && effect.ruleId === ruleId
+          ) &&
+          !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
+      )
   }
 
   /** Apply the current Boss Mandate to this round's tile instances. */
@@ -549,7 +628,10 @@ export class GameOrchestrator {
     }
 
     if (mandate.effect.type === 'debuff_suit' && mandate.effect.target) {
-      this.state.debuffSystem.applyMandateRestriction(allTiles, mandate.effect.target)
+      this.state.debuffSystem.applyMandateRestriction(
+        allTiles,
+        mandate.effect.target
+      )
       return
     }
 
@@ -592,7 +674,14 @@ export class GameOrchestrator {
     }
 
     // Shuffle with seed
-    const shuffled = this.seededShuffle(this.state.wallTemplate, seed)
+    const shuffled =
+      this.state.tableModifiers.flowerRateMultiplier === 1
+        ? this.seededShuffle(this.state.wallTemplate, seed)
+        : flowerWeightedWall(
+            this.state.wallTemplate,
+            this.state.tableModifiers.flowerRateMultiplier,
+            createSeededRandom(seed)
+          )
 
     // Separate dead wall (last 14 tiles)
     const deadWallSize = 14
@@ -638,18 +727,30 @@ export class GameOrchestrator {
     }
 
     // Flowers (1 copy each)
-    const flowers = [FlowerType.Plum, FlowerType.Orchid, FlowerType.Chrysanthemum, FlowerType.Bamboo]
+    const flowers = [
+      FlowerType.Plum,
+      FlowerType.Orchid,
+      FlowerType.Chrysanthemum,
+      FlowerType.Bamboo,
+    ]
     for (const flower of flowers) {
       tiles.push(Tile.createFlower(flower, generateId()))
     }
 
     // Seasons (1 copy each)
-    const seasons = [SeasonType.Spring, SeasonType.Summer, SeasonType.Autumn, SeasonType.Winter]
+    const seasons = [
+      SeasonType.Spring,
+      SeasonType.Summer,
+      SeasonType.Autumn,
+      SeasonType.Winter,
+    ]
     for (const season of seasons) {
       tiles.push(Tile.createSeason(season, generateId()))
     }
 
-    return tiles
+    return this.state.tableModifiers.flowersDisabled
+      ? tiles.filter((tile) => !tile.isFlower)
+      : tiles
   }
 
   /** Seeded shuffle, so the same seed always deals the same wall. */
@@ -857,10 +958,12 @@ export class GameOrchestrator {
       })
     } else if (tile.isSeason) {
       const lockedSeason = this.state.omenSystem.applyLockedSeason()
-      if (lockedSeason) {
-        this.state.seasonSystem.forceSetSeason(lockedSeason)
-      } else {
-        this.state.seasonSystem.addSeason(tile)
+      const season = this.state.seasonSystem.addSeason(tile, lockedSeason ?? undefined)
+      if (season?.isCorrupted && season.corruptedType) {
+        eventBus.emit('seasonCorrupted', {
+          corruptedType: season.corruptedType,
+          effect: season.corruptedEffect?.description ?? '',
+        })
       }
       eventBus.emit('seasonActivated', {
         seasonType: lockedSeason ?? String(tile.seasonType ?? 'spring'),
@@ -906,7 +1009,14 @@ export class GameOrchestrator {
     const snapshot = this.createStateSnapshot()
 
     // Validate action
-    const validation = this.actionProcessor.validate(action, snapshot)
+    const validation =
+      action.type === 'play'
+        ? this.validatePlaySelection(action.tileIds)
+        : action.type === 'useSeal' ||
+            action.type === 'useScript' ||
+            action.type === 'useOrb'
+          ? this.validateConsumableAction(action)
+          : this.actionProcessor.validate(action, snapshot)
     if (!validation.isValid) {
       return {
         success: false,
@@ -924,19 +1034,30 @@ export class GameOrchestrator {
    */
   private createStateSnapshot(): GameStateSnapshot {
     return {
+      roundType: this.state.roundManager.getCurrentRound()?.roundType ?? null,
       handTiles: this.state.handTiles,
       melds: this.state.melds,
       selectedTileIds: Array.from(this.state.selectedTileIds),
       wallRemaining: this.state.wall.length - this.state.drawIndex,
       deadWallRemaining: this.state.deadWall.length,
+      redrawReplacementCapacity: this.getRedrawReplacementCapacity(),
+      mandateRestrictions: {
+        lockedTileIds: this.state.mandateEffectSystem.getLockedTileIds(),
+      },
       handsRemaining: this.state.handsRemaining,
       discardsRemaining: this.state.discardsRemaining,
       redrawsRemaining: this.state.redrawsRemaining,
       currentScore: this.state.score,
       targetScore: this.state.targetScore,
       gold: this.state.gold,
-      fateSealIds: this.state.fateSeals.flatMap((seal) => [seal.instanceId, seal.id]),
-      celestialOrbIds: this.state.celestialOrbs.flatMap((orb) => [orb.instanceId, orb.id]),
+      fateSealIds: this.state.fateSeals.flatMap((seal) => [
+        seal.instanceId,
+        seal.id,
+      ]),
+      celestialOrbIds: this.state.celestialOrbs.flatMap((orb) => [
+        orb.instanceId,
+        orb.id,
+      ]),
       voidScriptIds: this.state.voidScripts.flatMap((script) => [
         script.instanceId,
         script.id,
@@ -988,7 +1109,9 @@ export class GameOrchestrator {
    * Execute draw action
    */
   private executeDraw(effects: Effect[]): ActionResult {
-    const previousTileIds = new Set(this.state.handTiles.map((handTile) => handTile.id))
+    const previousTileIds = new Set(
+      this.state.handTiles.map((handTile) => handTile.id)
+    )
     const tile = this.drawTileInternal()
 
     if (!tile) {
@@ -1027,7 +1150,9 @@ export class GameOrchestrator {
     })
 
     this.applyMandateDrawState(
-      this.state.handTiles.filter((handTile) => !previousTileIds.has(handTile.id)),
+      this.state.handTiles.filter(
+        (handTile) => !previousTileIds.has(handTile.id)
+      ),
       effects
     )
 
@@ -1059,6 +1184,7 @@ export class GameOrchestrator {
     this.state.handTiles.splice(tileIndex, 1)
     this.state.discards.push(tile)
     this.state.discardsRemaining--
+    this.state.seasonSystem.onDiscard()
     this.state.selectedTileIds.delete(tileId)
     this.state.faceDownTileIds.delete(tileId)
 
@@ -1121,6 +1247,50 @@ export class GameOrchestrator {
   }
 
   /**
+   * Side-effect-free legality shared by forecasts, controls, and committed plays.
+   * Shape recognition (`isCompleteHand`) is deliberately separate: recognizing
+   * Mahjong does not exempt a selection from this round's boss restrictions.
+   */
+  validatePlaySelection(tileIds: string[]): ValidationResult {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') {
+      return {
+        isValid: false,
+        errors: ['Gameplay actions are only available during an active round'],
+      }
+    }
+    const basic = this.actionProcessor.validate(
+      { type: 'play', tileIds },
+      this.createStateSnapshot()
+    )
+    if (!basic.isValid) return basic
+
+    const errors: string[] = []
+    const fixed = this.state.roundManager.checkMandateEffect('fixed_hand_size')
+    if (fixed.active && tileIds.length !== fixed.value) {
+      errors.push(`Boss Mandate: Must play exactly ${fixed.value} tiles`)
+    }
+    const single = this.state.roundManager.checkMandateEffect('single_hand')
+    if (
+      single.active &&
+      this.state.handsAllowance - this.state.handsRemaining > 0
+    ) {
+      errors.push('Boss Mandate: Only one hand allowed this round')
+    }
+    const mandate = this.state.mandateEffectSystem.validateHandPlay(tileIds)
+    if (!mandate.valid)
+      errors.push(mandate.error ?? 'Boss Mandate blocks this play')
+    if (
+      tileIds.length > MAX_TACTICAL_PLAY_TILES &&
+      !this.isCompleteHand(tileIds)
+    ) {
+      errors.push(
+        `Incomplete plays are limited to ${MAX_TACTICAL_PLAY_TILES} tiles. Stage a complete Mahjong hand to declare more.`
+      )
+    }
+    return { isValid: errors.length === 0, errors }
+  }
+
+  /**
    * Score a prospective selection without playing it.
    *
    * Runs the same pipeline the play itself will run - the same partial parse,
@@ -1134,7 +1304,10 @@ export class GameOrchestrator {
    * hand under the active rules.
    */
   previewScore(tileIds: string[]): ScoreBreakdown | null {
-    const selectedTiles = this.state.handTiles.filter((tile) => tileIds.includes(tile.id))
+    if (!this.validatePlaySelection(tileIds).isValid) return null
+    const selectedTiles = this.state.handTiles.filter((tile) =>
+      tileIds.includes(tile.id)
+    )
     if (selectedTiles.length < 2) return null
 
     const tilesToScore = this.isDecreeRuleActive('honor_as_suited')
@@ -1156,6 +1329,7 @@ export class GameOrchestrator {
       if (this.state.voidScriptSystem.isBaseScoreHalved()) {
         complete.finalScore = Math.floor(complete.finalScore / 2)
       }
+      this.applyOmenScoreBonuses(complete, true)
       return complete
     }
 
@@ -1171,6 +1345,7 @@ export class GameOrchestrator {
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
       partial.finalScore = Math.floor(partial.finalScore / 2)
     }
+    this.applyOmenScoreBonuses(partial, true)
     return partial
   }
 
@@ -1218,44 +1393,11 @@ export class GameOrchestrator {
    */
   private executePlay(tileIds: string[], effects: Effect[]): ActionResult {
     // Get selected tiles
-    const selectedTiles = this.state.handTiles.filter((t) => tileIds.includes(t.id))
+    const selectedTiles = this.state.handTiles.filter((t) =>
+      tileIds.includes(t.id)
+    )
 
-    // Check boss mandate: fixed_hand_size
-    const fixedHandMandate = this.state.roundManager.checkMandateEffect('fixed_hand_size')
-    if (fixedHandMandate.active && selectedTiles.length !== fixedHandMandate.value) {
-      return {
-        success: false,
-        effects,
-        errors: [`Boss Mandate: Must play exactly ${fixedHandMandate.value} tiles`],
-      }
-    }
-
-    // Check boss mandate: single_hand (only one hand allowed)
-    const singleHandMandate = this.state.roundManager.checkMandateEffect('single_hand')
-    if (singleHandMandate.active && this.state.handsAllowance - this.state.handsRemaining > 0) {
-      return {
-        success: false,
-        effects,
-        errors: ['Boss Mandate: Only one hand allowed this round'],
-      }
-    }
-
-    if (selectedTiles.length < 2) {
-      return {
-        success: false,
-        effects,
-        errors: ['Must select at least 2 tiles to play'],
-      }
-    }
-
-    const mandateValidation = this.state.mandateEffectSystem.validateHandPlay(tileIds)
-    if (!mandateValidation.valid) {
-      return {
-        success: false,
-        effects,
-        errors: [mandateValidation.error ?? 'Boss Mandate blocks this play'],
-      }
-    }
+    // processAction has already checked the shared play validator.
 
     // For Tensho, we use a simplified hand model:
     // The entire hand (or selected tiles) is played at once
@@ -1275,21 +1417,12 @@ export class GameOrchestrator {
     ) {
       effects.push({
         type: 'decree_triggered',
-        description: 'Honor Transmutation treated honors as dominant-suit tiles',
+        description:
+          'Honor Transmutation treated honors as dominant-suit tiles',
       })
     }
 
     if (!completeHand) {
-      if (selectedTiles.length > MAX_TACTICAL_PLAY_TILES) {
-        return {
-          success: false,
-          effects,
-          errors: [
-            `Incomplete plays are limited to ${MAX_TACTICAL_PLAY_TILES} tiles. Stage a complete Mahjong hand to declare more.`,
-          ],
-        }
-      }
-
       // Tactical selections still score their useful groups, but are kept
       // deliberately small so playing every tile is not the dominant choice.
       return this.executePartialPlay(selectedTiles, effects)
@@ -1304,7 +1437,8 @@ export class GameOrchestrator {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore * 0.5)
       effects.push({
         type: 'decree_triggered',
-        description: 'Shanten Clemency completed the hand at a 50% score penalty',
+        description:
+          'Shanten Clemency completed the hand at a 50% score penalty',
       })
     }
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
@@ -1431,7 +1565,10 @@ export class GameOrchestrator {
    * complete hand so Decrees, tile modifiers, Flowers, Seasons and Celestial
    * Orbs all apply - only yaku are withheld, since those need a winning hand.
    */
-  private executePartialPlay(selectedTiles: Tile[], effects: Effect[]): ActionResult {
+  private executePartialPlay(
+    selectedTiles: Tile[],
+    effects: Effect[]
+  ): ActionResult {
     const tilesToScore = this.isDecreeRuleActive('honor_as_suited')
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
@@ -1439,7 +1576,11 @@ export class GameOrchestrator {
     const parse = parsePartialHand(tilesToScore)
     const parsedHand = toPartialParsedHand(parse, tilesToScore)
 
-    const scoreResult = this.calculateHandScore(tilesToScore, parsedHand, parse.groups)
+    const scoreResult = this.calculateHandScore(
+      tilesToScore,
+      parsedHand,
+      parse.groups
+    )
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore / 2)
     }
@@ -1528,8 +1669,10 @@ export class GameOrchestrator {
     return { success: true, effects }
   }
 
-  private applyOmenScoreBonuses(score: ScoreBreakdown): void {
-    const omenScore = this.state.omenSystem.triggerHandScoredOmens()
+  private applyOmenScoreBonuses(score: ScoreBreakdown, preview = false): void {
+    const omenScore = preview
+      ? this.state.omenSystem.peekHandScoredOmens()
+      : this.state.omenSystem.triggerHandScoredOmens()
     const passiveOmenMult = this.state.omenSystem.getPassiveMultBonus()
     score.additiveBonus += omenScore.scoreBonus
     score.finalScore = Math.floor(
@@ -1537,7 +1680,7 @@ export class GameOrchestrator {
         (omenScore.multBonus > 0 ? omenScore.multBonus : 1) *
         (1 + passiveOmenMult)
     )
-    this.state.omenSystem.recordHandPlayed()
+    if (!preview) this.state.omenSystem.recordHandPlayed()
   }
 
   private applyPlayedTileMandates(
@@ -1578,10 +1721,38 @@ export class GameOrchestrator {
   }
 
   /**
+   * Dry-run at most three replacement cycles. Bonus tiles draw from the dead
+   * wall, which replenishes from the main wall's tail. Counting raw wall tiles
+   * alone can promise replacements that these chains cannot actually supply.
+   * This reads no random stream and collects no bonus or consumable rewards.
+   */
+  private getRedrawReplacementCapacity(): number {
+    const wall = this.state.wall.slice(this.state.drawIndex)
+    const deadWall = [...this.state.deadWall]
+    let capacity = 0
+    while (capacity < 3 && wall.length > 0) {
+      let tile = wall.shift()
+      while (tile && (tile.isFlower || tile.isSeason)) {
+        tile = deadWall.shift()
+        if (!tile) break
+        const replenish = wall.pop()
+        if (replenish) deadWall.push(replenish)
+      }
+      if (!tile) break
+      capacity++
+    }
+    return capacity
+  }
+
+  /**
    * Execute redraw action
    */
   private executeRedraw(tileIds: string[], effects: Effect[]): ActionResult {
-    if (tileIds.some((tileId) => this.state.mandateEffectSystem.isTileLocked(tileId))) {
+    if (
+      tileIds.some((tileId) =>
+        this.state.mandateEffectSystem.isTileLocked(tileId)
+      )
+    ) {
       return {
         success: false,
         effects,
@@ -1599,6 +1770,11 @@ export class GameOrchestrator {
         this.state.handTiles.splice(idx, 1)
         this.state.selectedTileIds.delete(tileId)
         this.state.faceDownTileIds.delete(tileId)
+        effects.push({
+          type: 'tile_removed',
+          description: `Returned tile: ${removedTiles[removedTiles.length - 1].displayName}`,
+          tileId,
+        })
       }
     }
 
@@ -1614,9 +1790,14 @@ export class GameOrchestrator {
       }
     }
 
-    // Put removed tiles back into the wall (shuffle position)
-    // In Tensho, redrawn tiles go to a limbo and aren't immediately drawable
-    this.state.discards.push(...removedTiles)
+    // Return tiles only after replacing them, so they cannot be their own
+    // immediate replacement. Drop the consumed prefix: it is draw history,
+    // not a second physical copy of a tile being returned to circulation.
+    this.state.wall = runRandom.shuffle('wall', [
+      ...this.state.wall.slice(this.state.drawIndex),
+      ...removedTiles,
+    ])
+    this.state.drawIndex = 0
 
     this.state.handTiles.sort(Tile.compare)
     this.state.redrawsRemaining--
@@ -1629,11 +1810,26 @@ export class GameOrchestrator {
       redrawsRemaining: this.state.redrawsRemaining,
     })
 
-    for (const tile of removedTiles) previousTileIds.delete(tile.id)
-    this.applyMandateDrawState(
-      this.state.handTiles.filter((tile) => !previousTileIds.has(tile.id)),
-      effects
+    const drawnTiles = this.state.handTiles.filter(
+      (tile) => !previousTileIds.has(tile.id)
     )
+    for (const tile of drawnTiles) {
+      effects.push({
+        type: 'tile_added',
+        description: `Drew tile: ${tile.displayName}`,
+        tile,
+      })
+      eventBus.emit('tileDrawn', {
+        tileId: tile.id,
+        tilesRemaining: this.state.wall.length,
+      })
+    }
+    for (const tile of removedTiles) {
+      if (tile.modifiers.seal === SealType.Purple) {
+        this.createRandomConsumable('FateSeal', effects)
+      }
+    }
+    this.applyMandateDrawState(drawnTiles, effects)
 
     this.enforcePlayability(effects)
 
@@ -1652,6 +1848,7 @@ export class GameOrchestrator {
       if (index === -1) continue
       const [tile] = this.state.handTiles.splice(index, 1)
       this.state.discards.push(tile)
+      this.state.seasonSystem.onDiscard()
       this.state.selectedTileIds.delete(tile.id)
       this.state.faceDownTileIds.delete(tile.id)
       effects.push({
@@ -1697,8 +1894,13 @@ export class GameOrchestrator {
     }
 
     // Skip the round and award the documented Omen reward.
-    const skipResult = this.state.omenSystem.handleRoundSkip(roundState.roundType)
+    const skipResult = this.state.omenSystem.handleRoundSkip(
+      roundState.roundType
+    )
     this.state.roundManager.skipRound()
+    // Seasons and their discard penalties belong to the skipped round, not
+    // the incoming deal. Pending Omen season locks live in a separate system.
+    this.state.seasonSystem.clear()
     this.state.previousRoundYakuIds = new Set()
     this.state.currentRoundYakuIds.clear()
 
@@ -1706,7 +1908,9 @@ export class GameOrchestrator {
       this.state.decreeSystem.addSlot()
     }
     if (skipResult.immediateDecreeEdition) {
-      const edition = this.normalizeDecreeEdition(skipResult.immediateDecreeEdition)
+      const edition = this.normalizeDecreeEdition(
+        skipResult.immediateDecreeEdition
+      )
       if (edition) this.applyRandomDecreeEdition(edition)
     }
 
@@ -1754,37 +1958,19 @@ export class GameOrchestrator {
     const seal = this.state.fateSeals[sealIndex]
 
     // Build the context for seal usage
-    const selectedTiles = targets
-      ? this.state.handTiles.filter((t) => targets.includes(t.id))
-      : []
+    const selectedTiles = (targets ?? []).map(
+      (id) => this.state.handTiles.find((tile) => tile.id === id)!
+    )
 
-    const selectionError = this.validateConsumableSelection(
-      seal.effect.requiresSelection,
-      seal.effect.selectionCount,
+    const selectionError = validateConsumableTargetCount(
+      seal.effect,
       selectedTiles.length
     )
     if (selectionError) {
       return { success: false, effects, errors: [selectionError] }
     }
 
-    const context: FateSealContext = {
-      selectedTiles,
-      currentGold: this.state.gold,
-      totalDecreeSellValue: this.state.decreeSystem.getOwnedDecrees().reduce(
-        (sum, d) => sum + (d.sellValue ?? Math.floor(d.cost / 2)),
-        0
-      ),
-      currentHand: this.state.handTiles,
-      currentMelds: this.state.melds,
-      // The Seal itself leaves inventory when the effect resolves.
-      getAvailableSlots: () =>
-        seal.id === 'seal_of_judgment' || seal.id === 'seal_of_the_immortal'
-          ? this.state.decreeSystem.getAvailableSlots()
-          : Math.max(
-              0,
-              this.getConsumableCapacity() - this.getTotalConsumableCount() + 1
-            ),
-    }
+    const context = this.createFateSealContext(seal, selectedTiles)
 
     // Use the seal
     const result = this.state.fateSealSystem.useSeal(seal, context)
@@ -1891,30 +2077,24 @@ export class GameOrchestrator {
     const script = this.state.voidScripts[scriptIndex]
 
     // Build the context for script usage
-    const selectedTiles = targets
-      ? this.state.handTiles.filter((t) => targets.includes(t.id))
-      : []
+    const selectedTiles = (targets ?? []).map(
+      (id) => this.state.handTiles.find((tile) => tile.id === id)!
+    )
 
-    const selectionError = this.validateConsumableSelection(
-      script.effect.requiresSelection,
-      script.effect.selectionCount,
+    const selectionError = validateConsumableTargetCount(
+      script.effect,
       selectedTiles.length
     )
     if (selectionError) {
       return { success: false, effects, errors: [selectionError] }
     }
 
-    const context: VoidScriptContext = {
-      selectedTiles,
-      currentGold: this.state.gold,
-      currentHand: this.state.handTiles,
-      getAvailableDecreeSlots: () => this.state.decreeSystem.getAvailableSlots(),
-      getDecreeCount: () => this.state.decreeSystem.getOwnedDecrees().length,
-    }
+    const context = this.createVoidScriptContext(selectedTiles)
 
     // Omen protection is checked before execution but consumed only after a
     // successful Script, so a failed target selection cannot waste it.
-    const downsideProtected = this.state.omenSystem.hasVoidScriptDownsideProtection()
+    const downsideProtected =
+      this.state.omenSystem.hasVoidScriptDownsideProtection()
     const scriptToUse: VoidScript = downsideProtected
       ? {
           ...script,
@@ -1938,7 +2118,6 @@ export class GameOrchestrator {
     // Remove the script from inventory
     this.state.voidScripts.splice(scriptIndex, 1)
     this.state.consumableSystem.markVoidScriptUsed()
-    this.state.fateSealSystem.setLastUsedConsumable(script)
 
     if (downsideProtected) {
       this.state.omenSystem.triggerVoidScriptOmens()
@@ -1969,17 +2148,111 @@ export class GameOrchestrator {
     return { success: true, effects }
   }
 
-  private validateConsumableSelection(
-    requiresSelection: boolean | undefined,
-    selectionCount: number | undefined,
-    selectedCount: number
-  ): string | null {
-    if (!requiresSelection) return null
+  validateConsumableAction(
+    action: Extract<PlayerAction, { type: 'useSeal' | 'useScript' | 'useOrb' }>
+  ): ValidationResult {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') {
+      return {
+        isValid: false,
+        errors: ['Consumables can only be used during gameplay'],
+      }
+    }
+    const validation = this.actionProcessor.validate(
+      action,
+      this.createStateSnapshot()
+    )
+    if (!validation.isValid) return validation
+    if (action.type === 'useOrb') {
+      const orb = this.state.celestialOrbs.find(
+        (item) => item.instanceId === action.orbId || item.id === action.orbId
+      )!
+      const error = this.state.celestialOrbSystem.validateUse(orb)
+      return error ? { isValid: false, errors: [error] } : validation
+    }
+    const item =
+      action.type === 'useSeal'
+        ? this.state.fateSeals.find(
+            (seal) =>
+              seal.instanceId === action.sealId || seal.id === action.sealId
+          )
+        : this.state.voidScripts.find(
+            (script) =>
+              script.instanceId === action.scriptId ||
+              script.id === action.scriptId
+          )
+    if (!item)
+      return { isValid: false, errors: ['Consumable not found in inventory'] }
+    const countError = validateConsumableTargetCount(
+      item.effect,
+      action.targets?.length ?? 0
+    )
+    if (countError) return { isValid: false, errors: [countError] }
+    const selected = (action.targets ?? []).map(
+      (id) => this.state.handTiles.find((tile) => tile.id === id)!
+    )
+    const hidden = selected.some((tile) =>
+      this.state.faceDownTileIds.has(tile.id)
+    )
+    if (
+      (item.id === 'seal_of_the_void' ||
+        (item.type === 'VoidScript' &&
+          item.effect.type === 'upgrade_all_yaku')) &&
+      !this.state.celestialOrbSystem.canUpgradeAnyYaku()
+    )
+      return { isValid: false, errors: ['All Yaku are already at max level'] }
+    const error =
+      item.type === 'FateSeal'
+        ? this.state.fateSealSystem.validateUse(
+            item,
+            this.createFateSealContext(item, selected),
+            !hidden
+          )
+        : this.state.voidScriptSystem.validateUse(
+            item,
+            this.createVoidScriptContext(selected)
+          )
+    if (error) return { isValid: false, errors: [error] }
+    return hidden
+      ? {
+          ...validation,
+          warnings: ['Target outcome depends on concealed tiles'],
+        }
+      : validation
+  }
 
-    const required = selectionCount ?? 1
-    return selectedCount === required
-      ? null
-      : `Select exactly ${required} tile${required === 1 ? '' : 's'}`
+  private createFateSealContext(
+    seal: FateSeal,
+    selectedTiles: Tile[]
+  ): FateSealContext {
+    return {
+      selectedTiles,
+      currentGold: this.state.gold,
+      currentHand: this.state.handTiles,
+      currentMelds: this.state.melds,
+      getDecreeCount: () => this.state.decreeSystem.getOwnedDecrees().length,
+      totalDecreeSellValue: this.state.decreeSystem
+        .getOwnedDecrees()
+        .reduce((sum, d) => sum + (d.sellValue ?? Math.floor(d.cost / 2)), 0),
+      // Generation can reuse the slot occupied by the consumed Seal.
+      getAvailableSlots: () =>
+        seal.id === 'seal_of_judgment' || seal.id === 'seal_of_the_immortal'
+          ? this.state.decreeSystem.getAvailableSlots()
+          : Math.max(
+              0,
+              this.getConsumableCapacity() - this.getTotalConsumableCount() + 1
+            ),
+    }
+  }
+
+  private createVoidScriptContext(selectedTiles: Tile[]): VoidScriptContext {
+    return {
+      selectedTiles,
+      currentGold: this.state.gold,
+      currentHand: this.state.handTiles,
+      getAvailableDecreeSlots: () =>
+        this.state.decreeSystem.getAvailableSlots(),
+      getDecreeCount: () => this.state.decreeSystem.getOwnedDecrees().length,
+    }
   }
 
   private getTotalConsumableCount(): number {
@@ -2006,20 +2279,14 @@ export class GameOrchestrator {
         }
         break
       case 'wild_conversion':
-        this.transformTiles(tileIds, (tile) => tile.withEnhancement(EnhancementType.Wild))
+        this.transformTiles(tileIds, (tile) =>
+          tile.withEnhancement(EnhancementType.Wild)
+        )
         break
       case 'suit_conversion':
         if (typeof result.value === 'string') {
           this.transformTiles(tileIds, (tile) =>
-            tile.isSuited
-              ? new Tile(
-                  result.value as TileSuit,
-                  tile.rank,
-                  tile.id,
-                  tile.isRed,
-                  tile.modifiers
-                )
-              : tile
+            convertSuitedTile(tile, result.value as TileSuit)
           )
         }
         break
@@ -2027,15 +2294,7 @@ export class GameOrchestrator {
         if (typeof result.value === 'number') {
           const rankChange = result.value
           this.transformTiles(tileIds, (tile) =>
-            tile.isSuited
-              ? new Tile(
-                  tile.suit,
-                  tile.rank + rankChange,
-                  tile.id,
-                  tile.isRed,
-                  tile.modifiers
-                )
-              : tile
+            convertSuitedTileRank(tile, tile.rank + rankChange)
           )
         }
         break
@@ -2048,7 +2307,13 @@ export class GameOrchestrator {
         if (targetId && source) {
           this.replaceTileById(
             targetId,
-            new Tile(source.suit, source.rank, targetId, source.isRed, source.modifiers)
+            new Tile(
+              source.suit,
+              source.rank,
+              targetId,
+              source.isRed,
+              source.modifiers
+            )
           )
         }
         break
@@ -2063,7 +2328,7 @@ export class GameOrchestrator {
         break
       case 'consumable_duplicated':
         if (typeof result.value === 'string') {
-          this.duplicateConsumable(result.value, effects)
+          this.duplicateConsumable(result.value)
         }
         break
       case 'all_yaku_upgraded':
@@ -2110,7 +2375,9 @@ export class GameOrchestrator {
           }
           break
         case 'tile_duplicated': {
-          const source = this.state.handTiles.find((tile) => tile.id === tileIds[0])
+          const source = this.state.handTiles.find(
+            (tile) => tile.id === tileIds[0]
+          )
           if (source) {
             for (let i = 0; i < Number(result.value ?? 1); i++) {
               this.addCreatedTile(
@@ -2150,16 +2417,7 @@ export class GameOrchestrator {
           if (typeof result.value === 'string') {
             this.transformTiles(
               this.state.handTiles.map((tile) => tile.id),
-              (tile) =>
-                tile.isSuited
-                  ? new Tile(
-                      result.value as TileSuit,
-                      tile.rank,
-                      tile.id,
-                      tile.isRed,
-                      tile.modifiers
-                    )
-                  : tile
+              (tile) => convertSuitedTile(tile, result.value as TileSuit)
             )
           }
           break
@@ -2167,16 +2425,7 @@ export class GameOrchestrator {
           if (typeof result.value === 'number') {
             this.transformTiles(
               this.state.handTiles.map((tile) => tile.id),
-              (tile) =>
-                tile.isSuited
-                  ? new Tile(
-                      tile.suit,
-                      result.value as number,
-                      tile.id,
-                      tile.isRed,
-                      tile.modifiers
-                    )
-                  : tile
+              (tile) => convertSuitedTileRank(tile, result.value as number)
             )
           }
           break
@@ -2218,9 +2467,14 @@ export class GameOrchestrator {
     }
   }
 
-  private transformTiles(tileIds: string[], transform: (tile: Tile) => Tile): void {
+  private transformTiles(
+    tileIds: string[],
+    transform: (tile: Tile) => Tile
+  ): void {
     for (const tileId of tileIds) {
-      const tile = this.state.handTiles.find((candidate) => candidate.id === tileId)
+      const tile = this.state.handTiles.find(
+        (candidate) => candidate.id === tileId
+      )
       if (tile) this.replaceTileById(tileId, transform(tile))
     }
     this.state.handTiles.sort(Tile.compare)
@@ -2239,7 +2493,9 @@ export class GameOrchestrator {
 
   private destroyTiles(tileIds: string[], effects: Effect[]): void {
     for (const tileId of new Set(tileIds)) {
-      const tile = this.state.handTiles.find((candidate) => candidate.id === tileId)
+      const tile = this.state.handTiles.find(
+        (candidate) => candidate.id === tileId
+      )
       if (!tile) continue
 
       this.removeTileEverywhere(tileId)
@@ -2258,10 +2514,18 @@ export class GameOrchestrator {
       if (wallIndex < this.state.drawIndex) this.state.drawIndex--
     }
 
-    this.state.handTiles = this.state.handTiles.filter((tile) => tile.id !== tileId)
-    this.state.wallTemplate = this.state.wallTemplate.filter((tile) => tile.id !== tileId)
-    this.state.deadWall = this.state.deadWall.filter((tile) => tile.id !== tileId)
-    this.state.discards = this.state.discards.filter((tile) => tile.id !== tileId)
+    this.state.handTiles = this.state.handTiles.filter(
+      (tile) => tile.id !== tileId
+    )
+    this.state.wallTemplate = this.state.wallTemplate.filter(
+      (tile) => tile.id !== tileId
+    )
+    this.state.deadWall = this.state.deadWall.filter(
+      (tile) => tile.id !== tileId
+    )
+    this.state.discards = this.state.discards.filter(
+      (tile) => tile.id !== tileId
+    )
     this.state.selectedTileIds.delete(tileId)
     this.state.faceDownTileIds.delete(tileId)
   }
@@ -2374,14 +2638,19 @@ export class GameOrchestrator {
     })
   }
 
-  private createFromFateSeal(seal: FateSeal, count: number, effects: Effect[]): void {
+  private createFromFateSeal(
+    seal: FateSeal,
+    count: number,
+    effects: Effect[]
+  ): void {
     if (seal.id === 'seal_of_judgment') {
       for (let i = 0; i < count; i++) this.createRandomDecree()
       return
     }
 
     if (seal.id === 'seal_of_the_immortal') {
-      for (let i = 0; i < count; i++) this.createRandomDecree('HeavenlyOrdinance')
+      for (let i = 0; i < count; i++)
+        this.createRandomDecree('HeavenlyOrdinance')
       return
     }
 
@@ -2390,19 +2659,25 @@ export class GameOrchestrator {
     for (let i = 0; i < count; i++) this.createRandomConsumable(type, effects)
   }
 
-  private createRandomConsumable(type: ConsumableType, effects: Effect[]): boolean {
+  private createRandomConsumable(
+    type: ConsumableType,
+    effects: Effect[]
+  ): boolean {
     if (!this.canAddConsumable()) return false
 
     let consumable: BaseConsumable | null = null
     if (type === 'FateSeal') {
       const definition = FateSealSystem.getRandomFateSeal()
-      if (definition) consumable = FateSealSystem.createFateSealInstance(definition)
+      if (definition)
+        consumable = FateSealSystem.createFateSealInstance(definition)
     } else if (type === 'CelestialOrb') {
       const definition = CelestialOrbSystem.getRandomCelestialOrb()
-      if (definition) consumable = CelestialOrbSystem.createCelestialOrbInstance(definition)
+      if (definition)
+        consumable = CelestialOrbSystem.createCelestialOrbInstance(definition)
     } else {
       const definition = VoidScriptSystem.getRandomVoidScript()
-      if (definition) consumable = VoidScriptSystem.createVoidScriptInstance(definition)
+      if (definition)
+        consumable = VoidScriptSystem.createVoidScriptInstance(definition)
     }
 
     if (!consumable) return false
@@ -2422,7 +2697,7 @@ export class GameOrchestrator {
     return added
   }
 
-  private duplicateConsumable(definitionId: string, effects: Effect[]): boolean {
+  private duplicateConsumable(definitionId: string): boolean {
     const fateDefinition = Object.values(FATE_SEALS).find(
       (definition) => definition.id === definitionId
     )
@@ -2443,23 +2718,8 @@ export class GameOrchestrator {
       )
     }
 
-    const scriptDefinition = Object.values(VOID_SCRIPTS).find(
-      (definition) => definition.id === definitionId
-    )
-    const duplicated = scriptDefinition
-      ? this.addVoidScript(
-          VoidScriptSystem.createVoidScriptInstance(scriptDefinition),
-          'generated'
-        )
-      : false
-
-    if (duplicated) {
-      effects.push({
-        type: 'consumable_effect',
-        description: `Duplicated ${definitionId}`,
-      })
-    }
-    return duplicated
+    // The Fool creates only the two authored families, never a Void Script.
+    return false
   }
 
   private createRandomDecree(
@@ -2493,17 +2753,22 @@ export class GameOrchestrator {
   private applyRandomDecreeEdition(edition: DecreeEdition): boolean {
     const decrees = this.state.decreeSystem.getOwnedDecrees()
     if (decrees.length === 0) return false
-    const decree = decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
+    const decree =
+      decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
     return this.state.decreeSystem.applyEdition(decree.id, edition)
   }
 
   private copyRandomDecree(): string | null {
     const decrees = this.state.decreeSystem.getOwnedDecrees()
-    if (decrees.length === 0 || this.state.decreeSystem.getAvailableSlots() <= 0) {
+    if (
+      decrees.length === 0 ||
+      this.state.decreeSystem.getAvailableSlots() <= 0
+    ) {
       return null
     }
 
-    const decree = decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
+    const decree =
+      decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
     return this.state.decreeSystem.acquireDecree(decree) ? decree.id : null
   }
 
@@ -2540,13 +2805,7 @@ export class GameOrchestrator {
 
     return tiles.map((tile) =>
       tile.isHonor
-        ? new Tile(
-            dominantSuit,
-            tile.rank,
-            tile.id,
-            tile.isRed,
-            tile.modifiers
-          )
+        ? new Tile(dominantSuit, tile.rank, tile.id, tile.isRed, tile.modifiers)
         : tile
     )
   }
@@ -2575,7 +2834,8 @@ export class GameOrchestrator {
       decrees: this.state.decreeSystem
         .getOwnedDecrees()
         .filter(
-          (decree) => !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
+          (decree) =>
+            !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
         ),
       flowers: this.state.flowerSystem.getCollection(),
       season: this.state.seasonSystem.getState(),
@@ -2602,17 +2862,16 @@ export class GameOrchestrator {
     }
 
     // Apply season modifiers (includes corrupted effects)
-    const seasonModifiers = this.state.seasonSystem.applySeasonModifiers(systemContext)
+    const seasonModifiers =
+      this.state.seasonSystem.applySeasonModifiers(systemContext)
 
     // Calculate flower bonus with season suppression check. Eternal Garden's
     // protection outranks the Season that would otherwise silence Flowers -
     // Court authority overriding Heaven is the one exception the hierarchy
     // grants a Decree.
-    const flowersProtected = this.isDecreeRuleActive('flowers_protected')
-    const flowerBonus =
-      seasonModifiers.flowersSuppressed && !flowersProtected
-        ? 1.0
-        : this.state.flowerSystem.calculateFlowerBonus(systemContext)
+    const flowerBonus = this.areFlowerBonusesSuppressed()
+      ? 1.0
+      : this.state.flowerSystem.calculateFlowerBonus(systemContext)
 
     // Apply yaku bonus from seasons (Autumn: +20% to yaku multipliers)
     const yakuSeasonBonus = seasonModifiers.yakuBonus
@@ -2682,28 +2941,34 @@ export class GameOrchestrator {
     baseBreakdown.detectedYaku = baseBreakdown.detectedYaku.filter((yaku) =>
       allowedYakuIds.has(yaku.definition.id)
     )
-    baseBreakdown.basePoints = mandateScoring.basePoints
+    baseBreakdown.basePoints =
+      mandateScoring.basePoints * this.state.tableModifiers.baseScoreMultiplier
     // Yaku Nexus scores each yaku as if it ranked higher; Yaku Amplifier scales
     // the combined multiplier. Both are Court authority over Grammar.
     const yakuDecreeModifiers = this.state.decreeSystem.getYakuModifiers()
     baseBreakdown.yakuMultiplier = baseBreakdown.detectedYaku.reduce(
       (multiplier, yaku) => {
         const adjustedTier = mandateScoring.yakuTiers.get(yaku.definition.id)
-        if (
-          adjustedTier !== undefined &&
-          adjustedTier < yaku.definition.tier
-        ) {
+        // The table adds to each surviving Yakuman's multiplier, not to every
+        // hand and not as a second multiplier over the whole final score.
+        const yakuMultiplier =
+          yaku.definition.multiplier +
+          (yaku.definition.tier === 4 && (adjustedTier ?? 4) === 4
+            ? this.state.tableModifiers.yakumanMultiplierBonus
+            : 0)
+        if (adjustedTier !== undefined && adjustedTier < yaku.definition.tier) {
           const tierRatio = adjustedTier / yaku.definition.tier
-          return multiplier * (1 + (yaku.definition.multiplier - 1) * tierRatio)
+          return multiplier * (1 + (yakuMultiplier - 1) * tierRatio)
         }
         if (yakuDecreeModifiers.tierBonus > 0) {
           // A tier is worth its share of the yaku's own multiplier, so a tier
           // bonus lifts weak yaku by the same proportion it lifts strong ones.
-          const boostedTier = yaku.definition.tier + yakuDecreeModifiers.tierBonus
+          const boostedTier =
+            yaku.definition.tier + yakuDecreeModifiers.tierBonus
           const tierRatio = boostedTier / yaku.definition.tier
-          return multiplier * (1 + (yaku.definition.multiplier - 1) * tierRatio)
+          return multiplier * (1 + (yakuMultiplier - 1) * tierRatio)
         }
-        return multiplier * yaku.definition.multiplier
+        return multiplier * yakuMultiplier
       },
       1
     )
@@ -2724,7 +2989,8 @@ export class GameOrchestrator {
     for (const detectedYaku of baseBreakdown.detectedYaku) {
       const category = yakuToCategoryMap[detectedYaku.definition.id]
       if (category) {
-        const orbBonus = this.state.celestialOrbSystem.calculateYakuBonus(category)
+        const orbBonus =
+          this.state.celestialOrbSystem.calculateYakuBonus(category)
         celestialOrbMultBonus += orbBonus.mult
         celestialOrbChipsBonus += orbBonus.chips
 
@@ -2773,7 +3039,10 @@ export class GameOrchestrator {
 
     // Calculate final score with all multipliers
     // Formula: (Base + Additive + CelestialChips) * (Yaku + CelestialMult) * Flower * Season * Decree * Mandate - Decay
-    const subtotal = baseBreakdown.basePoints + decreeModifiedBreakdown.additiveBonus + celestialOrbChipsBonus
+    const subtotal =
+      baseBreakdown.basePoints +
+      decreeModifiedBreakdown.additiveBonus +
+      celestialOrbChipsBonus
     const finalMultiplier =
       (decreeModifiedBreakdown.yakuMultiplier + celestialOrbMultBonus) *
       flowerBonus *
@@ -2786,8 +3055,9 @@ export class GameOrchestrator {
 
     const calculatedFinalScore = Math.max(
       0,
-      Math.floor(subtotal * finalMultiplier * this.state.lossPreventionScorePenalty) -
-        decayPenalty
+      Math.floor(
+        subtotal * finalMultiplier * this.state.lossPreventionScorePenalty
+      ) - decayPenalty
     )
 
     // Return the breakdown in the format expected by the rest of the system
@@ -2853,8 +3123,8 @@ export class GameOrchestrator {
     if (savers.length === 0) return false
 
     // Prefer a permanent saver so a one-shot is not burned unnecessarily.
-    const permanent = savers.find((decree) =>
-      this.lossPreventionRule(decree)?.consumedOnUse === false
+    const permanent = savers.find(
+      (decree) => this.lossPreventionRule(decree)?.consumedOnUse === false
     )
     const saver = permanent ?? savers[0]
     const rule = this.lossPreventionRule(saver)
@@ -2899,7 +3169,10 @@ export class GameOrchestrator {
     for (const effect of effects) {
       if (effect.type !== 'rule_modification') continue
       if (effect.ruleId !== 'prevent_loss') continue
-      return effect.modification as { consumedOnUse?: boolean; scorePenalty?: number }
+      return effect.modification as {
+        consumedOnUse?: boolean
+        scorePenalty?: number
+      }
     }
 
     return null
@@ -2912,7 +3185,9 @@ export class GameOrchestrator {
 
     for (const decree of this.state.decreeSystem.getOwnedDecrees()) {
       const doomed = (
-        decree.extraEffects ? [decree.effect, ...decree.extraEffects] : [decree.effect]
+        decree.extraEffects
+          ? [decree.effect, ...decree.extraEffects]
+          : [decree.effect]
       ).some(
         (effect) =>
           effect.type === 'rule_modification' &&
@@ -2933,7 +3208,8 @@ export class GameOrchestrator {
     const available = this.state.handTiles.length
     if (available < 2) return false
 
-    const fixedHandMandate = this.state.roundManager.checkMandateEffect('fixed_hand_size')
+    const fixedHandMandate =
+      this.state.roundManager.checkMandateEffect('fixed_hand_size')
     if (
       fixedHandMandate.active &&
       typeof fixedHandMandate.value === 'number' &&
@@ -2960,7 +3236,10 @@ export class GameOrchestrator {
     if (roundState) {
       switch (roundState.roundType) {
         case 'Small':
-          goldReward = this.state.roundManager.getStakeModifiers().noSmallRoundReward ? 0 : 3
+          goldReward = this.state.roundManager.getStakeModifiers()
+            .noSmallRoundReward
+            ? 0
+            : 3
           break
         case 'Large':
           goldReward = 5
@@ -2978,11 +3257,15 @@ export class GameOrchestrator {
     const goldHeldForInterest = this.state.gold
     const interest = this.state.omenSystem.isInterestBlocked()
       ? 0
-      : this.state.roundManager.calculateInterest(goldHeldForInterest, interestCap)
+      : this.state.roundManager.calculateInterest(
+          goldHeldForInterest,
+          interestCap
+        )
     const decreeGold = this.state.decreeSystem.calculateRoundEndGold()
-    const heldGoldMarkReward = this.state.handTiles.filter(
-      (tile) => tile.modifiers.enhancement === EnhancementType.Gold
-    ).length * 3
+    const heldGoldMarkReward =
+      this.state.handTiles.filter(
+        (tile) => tile.modifiers.enhancement === EnhancementType.Gold
+      ).length * 3
     const rentalCost = this.state.decreeSystem.calculateRentalCosts()
     // Philosopher's Stone doubles what the round pays in, before the costs it
     // charges out.
@@ -3082,6 +3365,7 @@ export class GameOrchestrator {
       eventBus.emit('runEnd', {
         victory: true,
         score: this.state.runScore,
+        decreesOwned: this.state.decreeSystem.getOwnedDecrees().length,
         act: this.state.currentAct,
         round: this.state.currentRound,
       })
@@ -3177,7 +3461,10 @@ export class GameOrchestrator {
     // Update state from round manager
     this.state.currentAct = roundState.actNumber
     this.state.currentRound = roundState.roundNumber
-    this.state.omenSystem.setRoundInfo(this.state.currentAct, this.state.currentRound)
+    this.state.omenSystem.setRoundInfo(
+      this.state.currentAct,
+      this.state.currentRound
+    )
     this.state.targetScore = roundState.scoreTarget
     this.state.score = 0
 
@@ -3186,7 +3473,8 @@ export class GameOrchestrator {
     for (let i = 0; i < this.state.temporaryDecreeSlotPenalty; i++) {
       this.state.decreeSystem.addSlot()
     }
-    const nextSlotPenalty = this.state.voidScriptSystem.getDecreeSlotsLostNextRound()
+    const nextSlotPenalty =
+      this.state.voidScriptSystem.getDecreeSlotsLostNextRound()
     this.state.decreeSystem.removeSlots(nextSlotPenalty)
     this.state.temporaryDecreeSlotPenalty = nextSlotPenalty
     this.state.voidScriptSystem.onRoundEnd()
@@ -3200,14 +3488,19 @@ export class GameOrchestrator {
 
     // Notify decree system of round start
     this.state.decreeSystem.onRoundStart()
-    this.state.charterSystem.updateProgress(this.state.currentAct, this.state.currentRound)
+    this.state.charterSystem.updateProgress(
+      this.state.currentAct,
+      this.state.currentRound
+    )
     this.initializeRoundResources()
 
     // Set act number for season corruption
     this.state.seasonSystem.setAct(this.state.currentAct)
 
     // Reinitialize wall for new round
-    this.initializeWall(this.state.seed + this.state.currentAct * 100 + this.state.currentRound)
+    this.initializeWall(
+      this.state.seed + this.state.currentAct * 100 + this.state.currentRound
+    )
     this.applyMandateDebuffs()
     this.drawStartingHand()
 
@@ -3236,20 +3529,26 @@ export class GameOrchestrator {
   prepareShopVisit(): TeaHouseVisitModifiers {
     if (this.state.phase !== 'shop') return {}
 
-    const omenEffects = this.state.omenSystem.triggerShopOmens()
+    const ownedDecreeIds = this.state.decreeSystem.getOwnedDecrees().map(d => d.id)
+    const omenEffects = this.state.omenSystem.triggerShopOmens(({ effect }) => {
+      if ((effect.type === 'guaranteed_item' && effect.itemType === 'Decree') || effect.type === 'edition_apply') {
+        return DecreeSystem.getShopCandidates(ownedDecreeIds, effect.minDecreeRarity).length > 0
+      }
+      return true
+    })
     if (omenEffects.goldPenalty > 0) {
       this.changeGold(-omenEffects.goldPenalty, 'Omen trade-off', [])
     }
 
     return {
-      discountPercentage: omenEffects.discount,
+      discountPercentage:
+        100 *
+        (1 -
+          (1 - omenEffects.discount / 100) *
+            (1 - this.state.tableModifiers.shopDiscountPercent / 100)),
       freeRerolls: omenEffects.freeRerolls,
-      guaranteedItemTypes: omenEffects.guaranteedItems.map(
-        (guarantee) => guarantee.itemType
-      ),
-      decreeEdition: omenEffects.decreeEdition
-        ? (omenEffects.decreeEdition.editionType as DecreeEdition)
-        : undefined,
+      guaranteedItems: omenEffects.guaranteedItems,
+      decreeEditions: omenEffects.decreeEditions.map(({ editionType }) => editionType as DecreeEdition),
     }
   }
 
@@ -3258,12 +3557,14 @@ export class GameOrchestrator {
     if (
       this.state.phase !== 'gameOver' ||
       !this.state.hasWonRun ||
+      this.state.hasEnteredEndless ||
       this.state.currentAct !== 8 ||
       this.state.lastCompletedRoundType !== 'Boss'
     ) {
       return false
     }
 
+    this.state.hasEnteredEndless = true
     this.state.isRunActive = true
     this.state.phase = 'shop'
     eventBus.emit('shopEntered', {
@@ -3277,6 +3578,14 @@ export class GameOrchestrator {
     return true
   }
 
+  /** Destination after a Boss shop, including unspent Act-reduction Charters. */
+  getNextActNumber(): number {
+    return Math.max(
+      1,
+      this.state.currentAct + 1 - this.state.pendingActReduction
+    )
+  }
+
   /**
    * Exit shop and continue to next act
    */
@@ -3285,19 +3594,14 @@ export class GameOrchestrator {
       return
     }
 
-    eventBus.emit('shopExited', {
-      goldSpent: 0,
-      itemsPurchased: 0,
-    })
+    if (!this.shop.close()) return
+    eventBus.emit('shopExited', this.shop.visitTotals)
 
     this.state.phase = 'gameplay'
 
     if (this.state.lastCompletedRoundType === 'Boss') {
       if (this.state.pendingActReduction > 0) {
-        const nextAct = Math.max(
-          1,
-          this.state.currentAct + 1 - this.state.pendingActReduction
-        )
+        const nextAct = this.getNextActNumber()
         this.state.pendingActReduction = 0
         this.state.roundManager.startAct(nextAct)
       } else {
@@ -3317,8 +3621,17 @@ export class GameOrchestrator {
   /**
    * Purchase an item from the shop
    */
-  purchaseItem(itemId: string, cost: number, itemType: string = 'Decree'): boolean {
-    if (this.state.phase !== 'shop' || cost < 0 || this.state.gold < cost) {
+  purchaseItem(
+    itemId: string,
+    cost: number,
+    itemType: string = 'Decree'
+  ): boolean {
+    if (
+      this.state.phase !== 'shop' ||
+      !Number.isFinite(cost) ||
+      cost < 0 ||
+      this.state.gold < cost
+    ) {
       return false
     }
 
@@ -3342,7 +3655,10 @@ export class GameOrchestrator {
 
   /** Sell an owned Decree and resolve any mandate waiting on that sacrifice. */
   sellDecree(decreeId: string): ActionResult {
-    if (!this.state.isRunActive || !['gameplay', 'shop'].includes(this.state.phase)) {
+    if (
+      !this.state.isRunActive ||
+      !['gameplay', 'shop'].includes(this.state.phase)
+    ) {
       return {
         success: false,
         effects: [],
@@ -3410,6 +3726,7 @@ export class GameOrchestrator {
     decree: Decree,
     source: 'purchase' | 'pack_open' | 'generated' = 'purchase'
   ): boolean {
+    if (!this.canAddDecree(decree)) return false
     const acquired = this.state.decreeSystem.acquireDecree(decree)
     if (!acquired) return false
 
@@ -3431,7 +3748,8 @@ export class GameOrchestrator {
 
   /** Add a purchased Charter to the authoritative run and apply slot effects. */
   addImperialCharter(charter: ImperialCharter): boolean {
-    const previousDecreeSlots = this.state.charterSystem.calculateEffects().decreeSlots
+    const previousDecreeSlots =
+      this.state.charterSystem.calculateEffects().decreeSlots
     const acquired = this.state.charterSystem.purchaseCharter(charter.id)
     if (!acquired) return false
 
@@ -3441,7 +3759,8 @@ export class GameOrchestrator {
       0
     )
 
-    const nextDecreeSlots = this.state.charterSystem.calculateEffects().decreeSlots
+    const nextDecreeSlots =
+      this.state.charterSystem.calculateEffects().decreeSlots
     for (let i = previousDecreeSlots; i < nextDecreeSlots; i++) {
       this.state.decreeSystem.addSlot()
     }
@@ -3462,11 +3781,11 @@ export class GameOrchestrator {
     const currentRound = this.state.roundManager.getCurrentRound()
     return Boolean(
       this.state.isRunActive &&
-        this.state.phase === 'gameplay' &&
-        currentRound &&
-        currentRound.roundType !== 'Boss' &&
-        this.state.gold >= this.state.charterSystem.getMandateRerollCost() &&
-        this.state.charterSystem.canRerollMandate()
+      this.state.phase === 'gameplay' &&
+      currentRound &&
+      currentRound.roundType !== 'Boss' &&
+      this.state.gold >= this.state.charterSystem.getMandateRerollCost() &&
+      this.state.charterSystem.canRerollMandate()
     )
   }
 
@@ -3519,13 +3838,13 @@ export class GameOrchestrator {
   canUseDeadWallWrit(tileId?: string): boolean {
     return Boolean(
       this.state.isRunActive &&
-        this.state.phase === 'gameplay' &&
-        this.isDecreeRuleActive('dead_wall_draw') &&
-        !this.state.deadWallWritUsedThisRound &&
-        this.state.deadWall.length > 0 &&
-        tileId &&
-        this.state.handTiles.some((tile) => tile.id === tileId) &&
-        !this.state.mandateEffectSystem.isTileLocked(tileId)
+      this.state.phase === 'gameplay' &&
+      this.isDecreeRuleActive('dead_wall_draw') &&
+      !this.state.deadWallWritUsedThisRound &&
+      this.state.deadWall.length > 0 &&
+      tileId &&
+      this.state.handTiles.some((tile) => tile.id === tileId) &&
+      !this.state.mandateEffectSystem.isTileLocked(tileId)
     )
   }
 
@@ -3544,7 +3863,9 @@ export class GameOrchestrator {
       return { success: false, effects: [], errors: ['Dead Wall is empty'] }
     }
 
-    const tileIndex = this.state.handTiles.findIndex((tile) => tile.id === tileId)
+    const tileIndex = this.state.handTiles.findIndex(
+      (tile) => tile.id === tileId
+    )
     const [discarded] = this.state.handTiles.splice(tileIndex, 1)
     this.state.discards.push(discarded)
     this.state.faceDownTileIds.delete(tileId)
@@ -3595,6 +3916,7 @@ export class GameOrchestrator {
   /** Add a Tile Pack reward to the persistent wall composition. */
   addTileToWall(tile: Tile): boolean {
     if (!(tile instanceof Tile)) return false
+    if (tile.isFlower && this.state.tableModifiers.flowersDisabled) return false
     this.state.wallTemplate.push(tile)
     return true
   }
@@ -3660,9 +3982,27 @@ export class GameOrchestrator {
   // GETTERS
   // ===========================================================================
 
-  /**
-   * Get current state (for UI binding)
-   */
+  /** Shared by scoring and the read-only Flora inspector. */
+  private areFlowerBonusesSuppressed(): boolean {
+    return (
+      this.state.seasonSystem.areFlowersSuppressed() &&
+      !this.isDecreeRuleActive('flowers_protected')
+    )
+  }
+
+  getFloraState() {
+    const suppressed = this.areFlowerBonusesSuppressed()
+    return {
+      flowers: this.state.flowerSystem.getCollection(),
+      seasons: this.state.seasonSystem.getSeasonStack(),
+      flowersSuppressed: suppressed,
+      flowersProtected:
+        this.state.seasonSystem.areFlowersSuppressed() && !suppressed,
+      decayPenalty: this.state.seasonSystem.getDecayPenalty(),
+    }
+  }
+
+  /** Get current state (for UI binding). */
   getState(): Readonly<OrchestratorState> {
     return this.state
   }
@@ -3689,6 +4029,7 @@ export class GameOrchestrator {
    * Get available actions
    */
   getAvailableActions(): PlayerAction['type'][] {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') return []
     return this.actionProcessor.getAvailableActions(this.createStateSnapshot())
   }
 
@@ -3696,6 +4037,15 @@ export class GameOrchestrator {
    * Check if an action is valid
    */
   canPerformAction(action: PlayerAction): boolean {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') return false
+    if (action.type === 'play')
+      return this.validatePlaySelection(action.tileIds).isValid
+    if (
+      action.type === 'useSeal' ||
+      action.type === 'useScript' ||
+      action.type === 'useOrb'
+    )
+      return this.validateConsumableAction(action).isValid
     return this.actionProcessor.canPerform(action, this.createStateSnapshot())
   }
 
@@ -3798,7 +4148,11 @@ export class GameOrchestrator {
   /**
    * Get consumable counts
    */
-  getConsumableCounts(): { fateSeals: number; celestialOrbs: number; voidScripts: number } {
+  getConsumableCounts(): {
+    fateSeals: number
+    celestialOrbs: number
+    voidScripts: number
+  } {
     return {
       fateSeals: this.state.fateSeals.length,
       celestialOrbs: this.state.celestialOrbs.length,

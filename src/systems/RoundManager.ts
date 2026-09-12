@@ -277,7 +277,7 @@ export class RoundManager {
   private stakeModifiers: CombinedStakeModifiers
   private rngState: number
 
-  constructor(stake: number = 1, seed: number = Date.now()) {
+  constructor(stake: number = 1, seed: number = Date.now(), private readonly tableTargetMultiplier: number = 1) {
     this.stake = stake
     this.stakeModifiers = calculateCombinedModifiers(stake)
     this.rngState = seed >>> 0
@@ -356,7 +356,7 @@ export class RoundManager {
   startAct(actNumber: number): ActState {
     const baseTargets = this.getScoreTargetsForAct(actNumber)
     // Use cumulative score scaling from stake modifiers
-    const stakeMultiplier = this.stakeModifiers.scoreScaling
+    const stakeMultiplier = this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
 
     const rounds: RoundState[] = [
       this.createRound(actNumber, 1, 'Small', Math.floor(baseTargets[0] * stakeMultiplier)),
@@ -479,7 +479,7 @@ export class RoundManager {
 
     bossRound.bossMandate = replacement
     const baseTargets = this.getScoreTargetsForAct(this.currentAct.actNumber)
-    const stakeMultiplier = this.stakeModifiers.scoreScaling
+    const stakeMultiplier = this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
     bossRound.scoreTarget = Math.floor(baseTargets[2] * stakeMultiplier)
     if (replacement.effect.type === 'score_multiplier') {
       bossRound.scoreTarget = Math.floor(
@@ -756,6 +756,7 @@ export class RoundManager {
     usedTileIds: string[]
     stakeModifiers: CombinedStakeModifiers
     rngState: number
+    tableTargetMultiplier: number
   } {
     return {
       currentAct: this.currentAct,
@@ -766,6 +767,7 @@ export class RoundManager {
       usedTileIds: Array.from(this.usedTileIds),
       stakeModifiers: this.stakeModifiers,
       rngState: this.rngState,
+      tableTargetMultiplier: this.tableTargetMultiplier,
     }
   }
 
@@ -781,8 +783,9 @@ export class RoundManager {
     usedTileIds: string[]
     stakeModifiers?: CombinedStakeModifiers
     rngState?: number
+    tableTargetMultiplier?: number
   }): RoundManager {
-    const manager = new RoundManager(state.stake, state.rngState)
+    const manager = new RoundManager(state.stake, state.rngState, state.tableTargetMultiplier ?? 1)
     manager.currentAct = state.currentAct
     manager.currentRound = state.currentRound
     manager.bonusHands = state.bonusHands

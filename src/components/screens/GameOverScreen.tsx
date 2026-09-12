@@ -18,20 +18,21 @@ const AnimatedMain = animated('main')
  * GameOverScreen - End-of-run result screen
  */
 export function GameOverScreen() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const {
     runScore,
     currentAct,
     currentRound,
     hasWonRun,
+    hasEnteredEndless,
     continueEndless,
     resetGame,
   } = useGameController()
   const reduceMotion = useReducedMotion()
 
-  const isFreshVictory = hasWonRun && currentAct === 8
-  const isEndlessResult = hasWonRun && currentAct > 8
+  const isFreshVictory = hasWonRun && !hasEnteredEndless
+  const isEndlessResult = hasWonRun && hasEnteredEndless
   const resultSpring = useSpring({
     from: reduceMotion
       ? { opacity: 1, transform: 'translateY(0px) scale(1)' }
@@ -55,25 +56,16 @@ export function GameOverScreen() {
   }
 
   const title = isFreshVictory
-    ? t('results.victory', 'Victory')
+    ? t('results.victory')
     : isEndlessResult
-      ? t('results.endlessComplete', 'Endless Ascent Complete')
+      ? t('results.endlessComplete')
       : t('results.defeat')
 
   const subtitle = isFreshVictory
-    ? t(
-        'results.victorySubtitle',
-        'The Act 8 Showdown is yours. Your run is secured.'
-      )
+    ? t('results.victorySubtitle')
     : isEndlessResult
-      ? t(
-          'results.endlessSubtitle',
-          'Your victory stands—and the ascent will be remembered.'
-        )
-      : t(
-          'results.defeatSubtitle',
-          'The wall closes, but every run leaves you stronger.'
-        )
+      ? t('results.endlessSubtitle')
+      : t('results.defeatSubtitle')
 
   return (
     <div className="viewport-full relative overflow-x-hidden overflow-y-auto bg-[var(--color-dark-forest)] p-3 safe-area-top safe-area-bottom sm:p-6">
@@ -105,8 +97,8 @@ export function GameOverScreen() {
 
           <p className="mb-2 text-xs font-bold uppercase tracking-[0.32em] text-[var(--color-metallic-gold)]">
             {isFreshVictory
-              ? t('results.showdownCleared', 'Showdown cleared')
-              : t('results.runComplete', 'Run complete')}
+              ? t('results.showdownCleared')
+              : t('results.runComplete')}
           </p>
           <h1
             className={`mb-3 text-3xl font-black sm:text-5xl ${
@@ -121,7 +113,7 @@ export function GameOverScreen() {
             {subtitle}
           </p>
 
-          <div className="mb-5 grid grid-cols-3 overflow-hidden rounded-2xl border border-[var(--color-metallic-gold)]/25 bg-[var(--color-forest-green)]/55 sm:mb-7">
+          <div className="mb-5 grid grid-cols-2 overflow-hidden rounded-2xl border border-[var(--color-metallic-gold)]/25 bg-[var(--color-forest-green)]/55 sm:mb-7">
             <div className="p-3 sm:p-4">
               <p className="text-[10px] uppercase tracking-widest text-[var(--color-metallic-gold)]">
                 {t('gameplay.act')}
@@ -130,7 +122,7 @@ export function GameOverScreen() {
                 {currentAct}
               </p>
             </div>
-            <div className="border-x border-[var(--color-metallic-gold)]/20 p-3 sm:p-4">
+            <div className="border-l border-[var(--color-metallic-gold)]/20 p-3 sm:p-4">
               <p className="text-[10px] uppercase tracking-widest text-[var(--color-metallic-gold)]">
                 {t('gameplay.round', 'Round')}
               </p>
@@ -138,32 +130,35 @@ export function GameOverScreen() {
                 {currentRound}
               </p>
             </div>
-            <div className="min-w-0 p-3 sm:p-4">
+            <div className="col-span-2 min-w-0 border-t border-[var(--color-metallic-gold)]/20 p-3 sm:p-4">
               <p className="text-[10px] uppercase tracking-widest text-[var(--color-metallic-gold)]">
                 {t('results.finalScore')}
               </p>
-              <p className="mt-1 truncate text-lg font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
-                {runScore.toLocaleString()}
+              <p
+                data-result-score
+                className="mt-1 break-all text-2xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-3xl"
+              >
+                {runScore.toLocaleString(i18n.resolvedLanguage)}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {isFreshVictory && (
               <Button
                 variant="primary"
                 size="lg"
                 onClick={handleContinueEndless}
-                className="w-full sm:w-auto"
+                className="w-full min-w-0 whitespace-normal break-words sm:col-span-2"
               >
-                {t('results.continueEndless', 'Continue into Endless')}
+                {t('results.continueEndless')}
               </Button>
             )}
             <Button
               variant={isFreshVictory ? 'secondary' : 'primary'}
               size={isFreshVictory ? 'md' : 'lg'}
               onClick={handlePlayAgain}
-              className="w-full sm:w-auto"
+              className="w-full min-w-0 whitespace-normal break-words"
             >
               {t('results.tryAgain')}
             </Button>
@@ -171,7 +166,7 @@ export function GameOverScreen() {
               variant="secondary"
               size="md"
               onClick={handleReturnToMenu}
-              className="w-full sm:w-auto"
+              className="w-full min-w-0 whitespace-normal break-words"
             >
               {t('results.returnToMenu')}
             </Button>

@@ -62,6 +62,7 @@ export type GameEvent =
 
   // Shop
   | 'shopEntered'
+  | 'shopUpdated'
   | 'shopRerolled'
   | 'shopExited'
 
@@ -107,7 +108,7 @@ export interface GameEventData {
   // Game lifecycle
   gameInitialized: { timestamp: number }
   runStart: { seed: number; stake: number; wallVariant: string }
-  runEnd: { victory: boolean; score: number; act: number; round: number }
+  runEnd: { victory: boolean; score: number; act: number; round: number; decreesOwned?: number }
   gameOver: { reason: 'victory' | 'defeat' | 'quit'; finalScore: number }
 
   // Round/Act flow
@@ -158,6 +159,7 @@ export interface GameEventData {
 
   // Shop
   shopEntered: { isAfterBoss: boolean; gold: number }
+  shopUpdated: { isOpen: boolean }
   shopRerolled: { cost: number; newRerollCost: number }
   shopExited: { goldSpent: number; itemsPurchased: number }
 
@@ -291,7 +293,30 @@ export class EventBus {
   /**
    * Emit an event to all subscribers
    */
+  private batchDepth = 0
+  private pendingEmissions: Array<() => void> = []
+
+  /** Defer notifications until a synchronous state change is fully settled.
+   * This is notification batching, not rollback for a throwing operation.
+   */
+  batch<T>(operation: () => T): T {
+    this.batchDepth++
+    try {
+      return operation()
+    } finally {
+      this.batchDepth--
+      if (this.batchDepth === 0) {
+        const pending = this.pendingEmissions.splice(0)
+        for (const emit of pending) emit()
+      }
+    }
+  }
+
   emit<T extends GameEvent>(event: T, data: GameEventData[T]): void {
+    if (this.batchDepth > 0) {
+      this.pendingEmissions.push(() => this.emit(event, data))
+      return
+    }
     // Record in history if enabled
     if (this.historyEnabled) {
       this.eventHistory.push({

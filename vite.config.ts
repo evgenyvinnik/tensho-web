@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { readFileSync } from 'node:fs'
+import { publicSitePlugin } from './scripts/publicSitePlugin'
 
 const deploymentBase = process.env.VITE_BASE_PATH || '/'
 const packageVersion = JSON.parse(
@@ -16,6 +17,7 @@ export default defineConfig(({ mode }) => ({
     __APP_VERSION__: JSON.stringify(appVersion),
   },
   plugins: [
+    publicSitePlugin(deploymentBase, process.env.VITE_SITE_URL),
     react({
       // React Compiler is experimental - uncomment when using React 19+
       // babel: {
@@ -86,8 +88,10 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
+        // Public guides have their own HTML. Never replace them with the game shell.
+        navigateFallbackDenylist: [/\/(?:about|how-to-play|faq)(?:\/|$)/],
         globPatterns: [
-          '**/*.{js,css,html,ico,png,webp,svg,mp3,ttf,woff,woff2}',
+          '**/*.{js,css,html,ico,png,webp,svg,mp3,wav,ttf,woff,woff2}',
         ],
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MB for large font files
         runtimeCaching: [

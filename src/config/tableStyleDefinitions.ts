@@ -170,7 +170,7 @@ export const BAMBOO_MAT: TableStyleDefinition = {
     {
       type: 'flower_rate',
       value: 25,
-      description: 'Flowers appear 25% more often',
+      description: '+25% Flower draw weight (same four Flowers)',
       isBenefit: true,
     },
   ],

@@ -316,10 +316,7 @@ export function MenuScreen() {
   const tutorial = useTutorial()
 
   // Audio hook for background music
-  const audio = useAudio({
-    initialVolume: 0.3,
-    loop: true,
-  })
+  const audio = useAudio()
 
   // Track song changes for notification
   const [notificationTrack, setNotificationTrack] = useState<AudioTrack | null>(
@@ -584,7 +581,7 @@ export function MenuScreen() {
                          hover:border-[var(--color-metallic-gold)] hover:scale-110 active:scale-95"
                   aria-label={t('accessibility.toggleMusic')}
                 >
-                  {!audio.isPlaying ? (
+                  {audio.isMuted ? (
                     <svg
                       className="w-6 h-6"
                       fill="currentColor"
@@ -603,7 +600,7 @@ export function MenuScreen() {
                   )}
                 </button>
                 <span className="text-sm opacity-60 font-ui">
-                  {audio.isPlaying ? t('menu.musicOn') : t('menu.musicOff')}
+                  {audio.isMuted ? t('menu.musicOff') : t('menu.musicOn')}
                 </span>
               </div>
 

@@ -11,6 +11,7 @@
  */
 
 import { useTranslation } from 'react-i18next'
+import { useState, useId } from 'react'
 import { Tile } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
 
@@ -29,6 +30,8 @@ export function RackRow({
   disabled = false,
 }: RackRowProps) {
   const { t } = useTranslation()
+  const [focusedId, setFocusedId] = useState<string | null>(null)
+  const detailsPrefix = useId()
   const selected = new Set(selectedIds)
 
   return (
@@ -48,15 +51,28 @@ export function RackRow({
               data-testid={`rack-tile-${tile.id}`}
               aria-pressed={isSelected}
               aria-label={tile.displayName}
+              aria-describedby={
+                focusedId === tile.id
+                  ? `${detailsPrefix}-${tile.id}`
+                  : undefined
+              }
               disabled={disabled}
               onClick={() => onToggle(tile.id)}
-              className={`rounded transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)] disabled:opacity-50 ${
+              onFocus={() => setFocusedId(tile.id)}
+              onBlur={() => setFocusedId(null)}
+              className={`flex items-center justify-center rounded transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)] disabled:opacity-50 ${
                 isSelected
                   ? '-translate-y-1.5 ring-2 ring-[var(--color-golden-yellow)]'
                   : ''
               }`}
             >
-              <TileImage tile={tile} size="medium" />
+              <TileImage
+                tile={tile}
+                size="medium"
+                detailsVisible={focusedId === tile.id}
+                tooltipId={`${detailsPrefix}-${tile.id}`}
+                allowHover={focusedId === null || focusedId === tile.id}
+              />
             </button>
           )
         })}

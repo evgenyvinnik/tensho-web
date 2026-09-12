@@ -7,6 +7,8 @@
  * Total Collection: 352 unique items across 10 categories
  */
 
+import { TABLE_STYLE_DEFINITIONS } from './tableStyleDefinitions'
+
 // =============================================================================
 // ARCHIVE CATEGORY TYPES
 // =============================================================================
@@ -46,7 +48,10 @@ export interface ArchiveCategoryDefinition {
 /**
  * All archive category definitions
  */
-export const ARCHIVE_CATEGORIES: Record<ArchiveCategory, ArchiveCategoryDefinition> = {
+export const ARCHIVE_CATEGORIES: Record<
+  ArchiveCategory,
+  ArchiveCategoryDefinition
+> = {
   decrees: {
     id: 'decrees',
     name: 'Decrees',
@@ -59,8 +64,8 @@ export const ARCHIVE_CATEGORIES: Record<ArchiveCategory, ArchiveCategoryDefiniti
     id: 'walls',
     name: 'Walls',
     japaneseName: '山録',
-    description: 'Deck variants with unique tile compositions',
-    expectedCount: 15, // Deck variants excluding Challenge
+    description: 'Playable tables with distinct rules and atmosphere',
+    expectedCount: TABLE_STYLE_DEFINITIONS.length,
     icon: 'wall',
   },
   charters: {
@@ -133,7 +138,10 @@ export const ARCHIVE_CATEGORIES: Record<ArchiveCategory, ArchiveCategoryDefiniti
  * Calculate total expected items across all categories
  */
 export function getTotalExpectedItems(): number {
-  return Object.values(ARCHIVE_CATEGORIES).reduce((sum, cat) => sum + cat.expectedCount, 0)
+  return Object.values(ARCHIVE_CATEGORIES).reduce(
+    (sum, cat) => sum + cat.expectedCount,
+    0
+  )
 }
 
 // =============================================================================
@@ -233,7 +241,30 @@ export interface WallDefinition {
 /**
  * All wall variants
  */
-export const WALL_DEFINITIONS: WallDefinition[] = [
+export const WALL_DEFINITIONS: WallDefinition[] = TABLE_STYLE_DEFINITIONS.map(
+  (table) => ({
+    id: table.id,
+    name: table.displayName,
+    japaneseName: table.japaneseName,
+    description: table.description,
+    unlockCondition:
+      table.unlockCondition.type === 'default'
+        ? undefined
+        : table.unlockCondition.description,
+  })
+)
+
+/** Retain old records for save/history compatibility, but not active completion. */
+export function isActiveArchiveItem(
+  category: ArchiveCategory,
+  itemId: string
+): boolean {
+  return (
+    category !== 'walls' || WALL_DEFINITIONS.some((wall) => wall.id === itemId)
+  )
+}
+
+export const LEGACY_WALL_DEFINITIONS: WallDefinition[] = [
   {
     id: 'green_felt',
     name: 'Green Felt',
@@ -465,8 +496,9 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
     id: 'purple',
     name: 'Purple Seal',
     japaneseName: '紫封',
-    description: 'Creates Fate Seal on discard',
-    effect: 'Creates random Fate Seal when discarded',
+    description: 'Creates Fate Seal on discard or redraw',
+    effect:
+      'Creates a random Fate Seal when discarded or redrawn, if there is room',
     color: '#8844FF',
   },
 ]
@@ -687,7 +719,9 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
 /**
  * Get archive category by ID
  */
-export function getArchiveCategory(id: ArchiveCategory): ArchiveCategoryDefinition {
+export function getArchiveCategory(
+  id: ArchiveCategory
+): ArchiveCategoryDefinition {
   return ARCHIVE_CATEGORIES[id]
 }
 
@@ -701,14 +735,19 @@ export function getAllArchiveCategories(): ArchiveCategoryDefinition[] {
 /**
  * Create a composite key for archive entries
  */
-export function createArchiveKey(category: ArchiveCategory, itemId: string): string {
+export function createArchiveKey(
+  category: ArchiveCategory,
+  itemId: string
+): string {
   return `${category}:${itemId}`
 }
 
 /**
  * Parse a composite archive key
  */
-export function parseArchiveKey(key: string): { category: ArchiveCategory; itemId: string } | null {
+export function parseArchiveKey(
+  key: string
+): { category: ArchiveCategory; itemId: string } | null {
   const [category, itemId] = key.split(':')
   if (!category || !itemId) return null
   return { category: category as ArchiveCategory, itemId }
@@ -717,7 +756,10 @@ export function parseArchiveKey(key: string): { category: ArchiveCategory; itemI
 /**
  * Check if an item is pre-discovered
  */
-export function isPreDiscovered(category: ArchiveCategory, itemId: string): boolean {
+export function isPreDiscovered(
+  category: ArchiveCategory,
+  itemId: string
+): boolean {
   const set = PRE_DISCOVERED_ITEMS.find((s) => s.category === category)
   return set?.itemIds.includes(itemId) ?? false
 }

@@ -13,15 +13,14 @@
  */
 
 import { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSpring, animated, to } from '@react-spring/web'
 import { BlessingPack, PackType, PackSize } from '../../systems/types'
-import {
-  PACK_TYPE_DEFINITIONS,
-  PACK_SIZE_DEFINITIONS,
-} from '../../config/packDefinitions'
+import { PACK_TYPE_DEFINITIONS } from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { illustrationAssets } from '../../utils/assets'
 import { GoldIcon } from '../ui/GoldIcon'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 const AnimatedDiv = animated('div')
 
@@ -106,26 +105,32 @@ export function PackCard({
   canAfford,
   onPurchase,
 }: PackCardProps) {
+  const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const showCJK = isCJKLanguage()
   const typeInfo = PACK_TYPE_DEFINITIONS[pack.type]
-  const sizeInfo = PACK_SIZE_DEFINITIONS[pack.size]
+  const name = t(
+    `packs.items.${pack.type.toLowerCase()}_${pack.size.toLowerCase()}.name`
+  )
   const artwork = illustrationAssets.packs[pack.type]
   const sizeIndicator = getPackSizeIndicator(pack.size, showCJK)
   const gradient = getPackGradient(pack.type)
 
   // Animation spring
   const spring = useSpring({
-    scale: isPressed ? 0.95 : isHovered ? 1.05 : 1,
-    rotateY: isHovered ? 5 : 0,
+    immediate: reducedMotion,
+    scale: reducedMotion ? 1 : isPressed ? 0.95 : isHovered ? 1.05 : 1,
+    rotateY: !reducedMotion && isHovered ? 5 : 0,
     config: { tension: 400, friction: 30 },
   })
 
   // Artwork spring for size emphasis
   const artworkSpring = useSpring({
-    scale: sizeIndicator.scale * (isHovered ? 1.1 : 1),
+    immediate: reducedMotion,
+    scale: sizeIndicator.scale * (!reducedMotion && isHovered ? 1.1 : 1),
     config: { tension: 300, friction: 20 },
   })
 
@@ -137,13 +142,16 @@ export function PackCard({
 
   return (
     <AnimatedDiv
+      data-shop-pack-card={pack.id}
       className="relative min-w-0 w-full rounded-xl overflow-hidden cursor-pointer"
       style={{
-        transform: to(
-          [spring.scale, spring.rotateY],
-          (scale, rotateY) =>
-            `perspective(500px) rotateY(${rotateY}deg) scale(${scale})`
-        ),
+        transform: reducedMotion
+          ? 'none'
+          : to(
+              [spring.scale, spring.rotateY],
+              (scale, rotateY) =>
+                `perspective(500px) rotateY(${rotateY}deg) scale(${scale})`
+            ),
         background: gradient,
         border: `2px solid ${typeInfo?.iconColor || '#C8B273'}`,
         boxShadow: isHovered
@@ -177,7 +185,9 @@ export function PackCard({
         <animated.div
           className="mb-1 flex h-24 w-full items-center justify-center sm:h-28"
           style={{
-            transform: artworkSpring.scale.to((s) => `scale(${s})`),
+            transform: reducedMotion
+              ? `scale(${sizeIndicator.scale})`
+              : artworkSpring.scale.to((s) => `scale(${s})`),
           }}
         >
           <img
@@ -191,15 +201,7 @@ export function PackCard({
 
         {/* Pack size */}
         <p className="text-sm font-bold text-[var(--color-beige-white)]">
-          {sizeInfo?.name || pack.size}
-        </p>
-
-        {/* Pack type */}
-        <p
-          className="text-xs font-semibold text-center"
-          style={{ color: typeInfo?.iconColor || '#FFD54F' }}
-        >
-          {typeInfo?.name || pack.type}
+          {name}
         </p>
 
         {/* Japanese name - only show for CJK languages */}
@@ -211,13 +213,16 @@ export function PackCard({
 
         {/* Choice info */}
         <p className="text-xs text-[var(--color-beige-white)] opacity-60 text-center mt-2">
-          {pack.selectCount === 1
-            ? `Pick 1 of ${pack.choiceCount}`
-            : `Pick ${pack.selectCount} of ${pack.choiceCount}`}
+          {t('shop.packChoices', {
+            count: pack.choiceCount,
+            max: pack.selectCount,
+          })}
         </p>
 
         {/* Purchase button */}
         <button
+          data-shop-pack={pack.id}
+          aria-label={`${t('shop.buy')} ${name} (${finalCost}G)`}
           onClick={(e) => {
             e.stopPropagation()
             handleClick()
@@ -229,7 +234,7 @@ export function PackCard({
             min-h-[44px]
             ${
               canAfford
-                ? 'bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] hover:bg-[var(--color-vibrant-orange)] hover:text-[var(--color-beige-white)] active:scale-95'
+                ? `bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] hover:bg-[var(--color-vibrant-orange)] hover:text-[var(--color-beige-white)] ${reducedMotion ? '' : 'active:scale-95'}`
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
             }
           `}
@@ -242,7 +247,7 @@ export function PackCard({
       </div>
 
       {/* Decorative shimmer effect */}
-      {isHovered && (
+      {isHovered && !reducedMotion && (
         <div
           className="absolute inset-0 pointer-events-none"
           style={{

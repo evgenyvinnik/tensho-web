@@ -84,6 +84,8 @@ export interface LifetimeStats {
   emptyScrollRedeems: number
   minHandSizeAchieved: number
   corruptedSeasonsSurvived: number
+  highestActCompleted: number
+  maxDecreesInWin: number
   winsWithoutFlowers: number
   editionDecreesOwned: number
 
@@ -124,7 +126,10 @@ export interface UnlockConditionProgress {
  */
 export interface UnlockCheckResult {
   newUnlocks: UnlockDefinition[]
-  progressUpdates: { unlock: UnlockDefinition; progress: UnlockConditionProgress[] }[]
+  progressUpdates: {
+    unlock: UnlockDefinition
+    progress: UnlockConditionProgress[]
+  }[]
 }
 
 /**
@@ -183,6 +188,8 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   emptyScrollRedeems: 0,
   minHandSizeAchieved: 13,
   corruptedSeasonsSurvived: 0,
+  highestActCompleted: 0,
+  maxDecreesInWin: 0,
   winsWithoutFlowers: 0,
   editionDecreesOwned: 0,
   stakeVictories: {},
@@ -196,16 +203,15 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
 /**
  * Serializable version of lifetime stats (Sets converted to arrays)
  */
-export interface SerializableLifetimeStats
-  extends Omit<
-    LifetimeStats,
-    | 'fateSealsDiscovered'
-    | 'celestialOrbsDiscovered'
-    | 'voidScriptsDiscovered'
-    | 'decreesDiscovered'
-    | 'mandatesDiscovered'
-    | 'chartersPurchased'
-  > {
+export interface SerializableLifetimeStats extends Omit<
+  LifetimeStats,
+  | 'fateSealsDiscovered'
+  | 'celestialOrbsDiscovered'
+  | 'voidScriptsDiscovered'
+  | 'decreesDiscovered'
+  | 'mandatesDiscovered'
+  | 'chartersPurchased'
+> {
   fateSealsDiscovered: string[]
   celestialOrbsDiscovered: string[]
   voidScriptsDiscovered: string[]
@@ -246,7 +252,11 @@ export class MetaProgressionSystem {
         break
 
       case 'complete_act':
-        current = stats.highestActReached > target ? 1 : 0
+        current =
+          Math.max(stats.highestActCompleted, stats.highestActReached - 1) >=
+          target
+            ? 1
+            : 0
         target = 1
         isMet = current >= target
         break
@@ -275,7 +285,9 @@ export class MetaProgressionSystem {
       }
 
       case 'win_stake_with_wall': {
-        const [wallId, stakeName] = (condition.value ?? 'red_wall:white').split(':')
+        const [wallId, stakeName] = (condition.value ?? 'red_wall:white').split(
+          ':'
+        )
         const stakeTier = getStakeTierFromName(stakeName ?? 'white')
         const wallVictories = stats.stakeVictories[wallId ?? ''] ?? []
         current = wallVictories.includes(stakeTier) ? 1 : 0
@@ -340,7 +352,7 @@ export class MetaProgressionSystem {
 
       // Gameplay-based
       case 'decrees_owned':
-        current = stats.currentRunDecreesOwned
+        current = stats.maxDecreesInWin
         isMet = current >= target
         break
 
@@ -369,7 +381,8 @@ export class MetaProgressionSystem {
 
       case 'rounds_completed':
         // For speed runs, check if won in fewer rounds
-        current = stats.fastestWinRounds === Infinity ? 0 : stats.fastestWinRounds
+        current =
+          stats.fastestWinRounds === Infinity ? 0 : stats.fastestWinRounds
         isMet = current > 0 && current <= target
         break
 
@@ -533,7 +546,10 @@ export class MetaProgressionSystem {
    */
   checkAllUnlocks(context: UnlockContext): UnlockCheckResult {
     const newUnlocks: UnlockDefinition[] = []
-    const progressUpdates: { unlock: UnlockDefinition; progress: UnlockConditionProgress[] }[] = []
+    const progressUpdates: {
+      unlock: UnlockDefinition
+      progress: UnlockConditionProgress[]
+    }[] = []
 
     for (const unlock of ALL_UNLOCKS) {
       // Skip already unlocked
@@ -691,6 +707,7 @@ export class MetaProgressionSystem {
    */
   deserializeStats(serialized: SerializableLifetimeStats): LifetimeStats {
     return {
+      ...DEFAULT_LIFETIME_STATS,
       ...serialized,
       fateSealsDiscovered: new Set(serialized.fateSealsDiscovered),
       celestialOrbsDiscovered: new Set(serialized.celestialOrbsDiscovered),
@@ -733,6 +750,7 @@ export type ProgressionEventType =
   | 'round_completed'
   | 'round_skipped'
   | 'act_reached'
+  | 'act_completed'
   | 'hand_scored'
   | 'yaku_scored'
   | 'yakuman_scored'
@@ -768,6 +786,7 @@ export interface ProgressionEventPayload {
   wasMaxInterest?: boolean
   hadFlowers?: boolean
   roundsCompleted?: number
+  decreesOwned?: number
 }
 
 /**
@@ -787,6 +806,7 @@ export function processProgressionEvent(
       updates.currentRunFlowersCollected = 0
       updates.currentRunGold = 0
       updates.currentRunRoundsCompleted = 0
+      updates.corruptedSeasonsSurvived = 0
       break
 
     case 'run_completed':
@@ -798,6 +818,10 @@ export function processProgressionEvent(
 
     case 'run_won':
       updates.totalRunsWon = stats.totalRunsWon + 1
+      updates.maxDecreesInWin = Math.max(
+        stats.maxDecreesInWin,
+        event.decreesOwned ?? 0
+      )
       if (event.roundsCompleted !== undefined) {
         if (event.roundsCompleted < stats.fastestWinRounds) {
           updates.fastestWinRounds = event.roundsCompleted
@@ -809,7 +833,10 @@ export function processProgressionEvent(
           newVictories[event.wallId] = []
         }
         if (!newVictories[event.wallId].includes(event.stakeTier)) {
-          newVictories[event.wallId] = [...newVictories[event.wallId], event.stakeTier]
+          newVictories[event.wallId] = [
+            ...newVictories[event.wallId],
+            event.stakeTier,
+          ]
         }
         updates.stakeVictories = newVictories
       }
@@ -828,6 +855,13 @@ export function processProgressionEvent(
 
     case 'round_skipped':
       updates.totalRoundsSkipped = stats.totalRoundsSkipped + 1
+      break
+
+    case 'act_completed':
+      updates.highestActCompleted = Math.max(
+        stats.highestActCompleted,
+        event.value ?? 0
+      )
       break
 
     case 'act_reached':
@@ -861,7 +895,8 @@ export function processProgressionEvent(
       break
 
     case 'tile_discarded':
-      updates.totalTilesDiscarded = stats.totalTilesDiscarded + (event.value ?? 1)
+      updates.totalTilesDiscarded =
+        stats.totalTilesDiscarded + (event.value ?? 1)
       break
 
     case 'gold_earned':
@@ -874,7 +909,10 @@ export function processProgressionEvent(
 
     case 'gold_spent':
       updates.totalGoldSpent = stats.totalGoldSpent + (event.value ?? 0)
-      updates.currentRunGold = Math.max(0, stats.currentRunGold - (event.value ?? 0))
+      updates.currentRunGold = Math.max(
+        0,
+        stats.currentRunGold - (event.value ?? 0)
+      )
       break
 
     case 'decree_purchased':
@@ -889,7 +927,8 @@ export function processProgressionEvent(
 
     case 'charter_purchased':
       updates.totalChartersPurchased = stats.totalChartersPurchased + 1
-      updates.currentRunChartersPurchased = stats.currentRunChartersPurchased + 1
+      updates.currentRunChartersPurchased =
+        stats.currentRunChartersPurchased + 1
       if (stats.currentRunChartersPurchased + 1 > stats.maxChartersInRun) {
         updates.maxChartersInRun = stats.currentRunChartersPurchased + 1
       }
@@ -976,14 +1015,16 @@ export function processProgressionEvent(
 
     case 'interest_collected':
       if (event.wasMaxInterest) {
-        updates.maxConsecutiveInterestRounds = stats.maxConsecutiveInterestRounds + 1
+        updates.maxConsecutiveInterestRounds =
+          stats.maxConsecutiveInterestRounds + 1
       } else {
         updates.maxConsecutiveInterestRounds = 0
       }
       break
 
     case 'flower_collected':
-      updates.currentRunFlowersCollected = stats.currentRunFlowersCollected + 1
+      updates.currentRunFlowersCollected =
+        event.value ?? stats.currentRunFlowersCollected + 1
       break
 
     case 'corrupted_season_survived':

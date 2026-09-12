@@ -36,18 +36,14 @@ test.describe('Application Smoke Tests', () => {
       page.getByRole('button', { name: 'Play', exact: true })
     ).toBeVisible()
 
-    // Try to find and click a tutorial/codex button
-    const tutorialButton = page.getByRole('button', {
-      name: /tutorial|codex|help/i,
-    })
-
-    // If the button exists, click it
-    if ((await tutorialButton.count()) > 0) {
-      await tutorialButton.first().click()
-
-      // Wait for navigation away from the menu.
-      await expect(page).not.toHaveURL(/\/en$/)
-    }
+    // Missing navigation must fail, not silently skip the only action.
+    const codexButton = page.getByRole('button', { name: /Codex/ })
+    await expect(codexButton).toBeVisible()
+    await codexButton.click()
+    await expect(page).toHaveURL(/\/en\/codex$/)
+    await expect(
+      page.getByRole('heading', { name: /Codex/, level: 1 })
+    ).toBeVisible()
   })
 
   test('keeps illustrated Codex categories readable on a narrow phone', async ({
@@ -198,6 +194,82 @@ test.describe('Application Smoke Tests', () => {
     await expect(
       page.getByText(/La mesa de mahjong clásica/, { exact: false })
     ).toBeVisible()
+    const bamboo = page.locator('[data-table-style-card="bamboo_mat"]')
+    await expect(bamboo).toHaveAccessibleName(
+      /Reúne las 4 flores en una partida/
+    )
+    await expect(bamboo).toContainText('+25% al peso de robo de flores')
+    await expect(
+      page.locator('[data-table-style-card="temple_stone"]')
+    ).toContainText('+50% a la puntuación base')
+  })
+
+  test('carries a chosen table into gameplay rules, illustration, and staging colors', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'tensho-table-style-progress',
+        JSON.stringify({
+          state: {
+            currentStyleId: 'green_felt',
+            unlockedStyles: ['green_felt', 'dragons_den'],
+          },
+          version: 0,
+        })
+      )
+    })
+    await page.goto('/en')
+    await page.getByRole('button', { name: 'Choose table and stake' }).click()
+    await page.locator('[data-table-style-card="dragons_den"]').click()
+    await page.getByRole('button', { name: 'Confirm', exact: true }).click()
+    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await expect(
+      page.locator('[data-gameplay-table-identity]')
+    ).toHaveAttribute('data-table-style-id', 'dragons_den')
+    await expect(
+      page.locator('[data-gameplay-table-identity] img')
+    ).toHaveAttribute('src', /dragons_den\.webp$/)
+    await expect(page.locator('[data-play-zone="staging"]')).toHaveAttribute(
+      'data-table-theme-color',
+      '#D32F2F'
+    )
+    await expect(page.locator('[data-tutorial="score-target"]')).toHaveText(
+      '375'
+    )
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth
+      )
+    ).toBe(true)
+  })
+
+  test('direct play uses the selected Imperial table and grants its extra scroll', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'tensho-table-style-progress',
+        JSON.stringify({
+          state: {
+            currentStyleId: 'imperial_gold',
+            unlockedStyles: ['green_felt', 'imperial_gold'],
+          },
+          version: 0,
+        })
+      )
+    })
+    await page.goto('/en/play')
+    await expect(
+      page.locator('[data-gameplay-table-identity]')
+    ).toHaveAttribute('data-table-style-id', 'imperial_gold')
+    await expect(page.locator('[data-decree-scroll]')).toHaveCount(3)
+    // Ordinary starters can themselves be Regional Mandates. The table grants
+    // an additional third scroll, rather than replacing those two starters.
+    await expect(page.locator('[data-decree-scroll]').last()).toHaveAttribute(
+      'data-decree-scroll',
+      'RegionalMandate'
+    )
   })
 })
 
@@ -592,10 +664,8 @@ test.describe('Game Navigation', () => {
               })
             : []
         ),
-        overflowX:
-          document.documentElement.scrollWidth - window.innerWidth,
-        overflowY:
-          document.documentElement.scrollHeight - window.innerHeight,
+        overflowX: document.documentElement.scrollWidth - window.innerWidth,
+        overflowY: document.documentElement.scrollHeight - window.innerHeight,
       }
     })
 

@@ -28,6 +28,8 @@ export interface GameplayTopBarProps {
   stake: number
   /** Current act number */
   currentAct: number
+  /** Endless is a run mode, independent of an Act-reducing Charter. */
+  hasEnteredEndless: boolean
   /** Current round type */
   roundType: RoundType
   /** Boss mandate name (if applicable) */
@@ -89,6 +91,7 @@ export function GameplayTopBar({
   gold,
   stake,
   currentAct,
+  hasEnteredEndless,
   roundType,
   mandateName,
   upcomingMandateName,
@@ -144,7 +147,7 @@ export function GameplayTopBar({
           <span className="text-base leading-tight sm:text-lg">
             {t('gameplay.act')} {currentAct}
           </span>
-          {currentAct <= 8 ? (
+          {!hasEnteredEndless ? (
             <div
               className="mt-1 flex gap-1"
               aria-label={`Act ${currentAct} of 8`}

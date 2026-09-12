@@ -6,7 +6,11 @@ import { ActionBar } from './ActionBar'
 
 // Mirrors i18next: a missing key resolves to the supplied default string,
 // with {{placeholders}} filled from the interpolation values.
-const t = ((key: string, fallback?: unknown, vars?: Record<string, unknown>) => {
+const t = ((
+  key: string,
+  fallback?: unknown,
+  vars?: Record<string, unknown>
+) => {
   if (typeof fallback !== 'string') return key
   return fallback.replace(/\{\{(\w+)\}\}/g, (whole, name: string) =>
     vars && name in vars ? String(vars[name]) : whole
@@ -37,6 +41,42 @@ function renderActionBar(
 }
 
 describe('ActionBar play action', () => {
+  it.each([
+    { selectedTileCount: 0 },
+    { selectedTileCount: 4 },
+    { selectedTileCount: 2, wallRemaining: 1 },
+    { selectedTileCount: 1, redrawsRemaining: 0 },
+    { selectedTileCount: 1, redrawAllowed: false },
+  ])('disables unavailable redraws: %j', (overrides) => {
+    renderActionBar(overrides)
+    expect(
+      screen.getByRole('button', { name: 'Redraw selected tiles' })
+    ).toBeDisabled()
+  })
+
+  it('enables a legal redraw independently of play legality', () => {
+    renderActionBar({
+      selectedTileCount: 1,
+      redrawAllowed: true,
+      playAllowed: false,
+    })
+    expect(
+      screen.getByRole('button', { name: 'Redraw selected tiles' })
+    ).toBeEnabled()
+  })
+  it('disables an otherwise tactical play and displays its locked-tile requirement', () => {
+    renderActionBar({
+      selectedTileCount: 3,
+      playAllowed: false,
+      playRestriction: 'Locked tile: must be played',
+      projectedScore: undefined,
+    })
+    const play = screen.getByRole('button', {
+      name: 'Locked tile: must be played',
+    })
+    expect(play).toBeDisabled()
+    expect(play).toHaveTextContent('Locked tile: must be played')
+  })
   it('requires a tactical selection when the hand is incomplete', () => {
     renderActionBar()
 

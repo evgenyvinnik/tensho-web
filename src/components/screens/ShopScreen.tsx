@@ -10,7 +10,7 @@
  * - Gold Display: Current gold amount
  * - Next Round Button: Proceed to next round
  *
- * Uses the shopStore for state management and TeaHouseSystem for shop logic.
+ * Uses the run-owned ShopSession for purchases and pack settlement.
  */
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
@@ -19,17 +19,9 @@ import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game/useGameController'
 import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
-import { useShopStore } from '../../stores/shopStore'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
-import {
-  BlessingPackSystem,
-  PackOffering,
-} from '../../systems/BlessingPackSystem'
-import { Decree, ImperialCharter, BlessingPack } from '../../systems/types'
-import { FateSeal } from '../../systems/FateSealSystem'
-import { CelestialOrb } from '../../systems/CelestialOrbSystem'
-import { VoidScript } from '../../systems/VoidScriptSystem'
-import { Tile } from '../../core/Tile'
+import type { ShopResult } from '../../game/ShopSession'
+import type { BlessingPack, ImperialCharter } from '../../systems/types'
 import { Button } from '../ui/Button'
 import { ConfirmPopup } from '../ui/Popup'
 import { ShopHeader } from '../shop/ShopHeader'
@@ -38,16 +30,9 @@ import { PackCard } from '../shop/PackCard'
 import { CharterCard } from '../shop/CharterCard'
 import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
-import { eventBus } from '../../game/EventBus'
 import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
 import { backgroundAssets } from '../../utils/assets'
-
-// =============================================================================
-// BLESSING PACK SYSTEM INSTANCE
-// =============================================================================
-
-// Create a singleton instance for pack management
-const blessingPackSystem = new BlessingPackSystem()
+import { useItemText } from '../../i18n/useItemText'
 
 // =============================================================================
 // MAIN SHOP SCREEN COMPONENT
@@ -57,24 +42,21 @@ const blessingPackSystem = new BlessingPackSystem()
  * ShopScreen - Tea House between-round shop
  */
 export function ShopScreen() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const itemText = useItemText()
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
   const tutorialHints = useMemo(() => getProgressiveHints(t), [t])
   const tutorial = useProgressiveTutorial(tutorialHints)
   const hasTriggeredShopHint = useRef(false)
 
-  // Shop store
-  const shopStore = useShopStore()
+  const shop = game.shop
 
   // Local state
   const [confirmOffering, setConfirmOffering] =
     useState<TeaHouseOffering | null>(null)
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
-  const [packModalOpen, setPackModalOpen] = useState(false)
-  const [currentPackOffering, setCurrentPackOffering] =
-    useState<PackOffering | null>(null)
-  const [purchasedPackId, setPurchasedPackId] = useState<string | null>(null)
+  const currentPackOffering = shop.pendingPack
   const [shopError, setShopError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -92,49 +74,18 @@ export function ShopScreen() {
     useCallback(() => tutorial.triggerHints('decreeAcquired'), [tutorial])
   )
 
-  // Initialize shop on mount
+  // Idempotent across rerenders and route changes; the run owns this visit.
   useEffect(() => {
-    if (!shopStore.isShopOpen) {
-      const ownedDecreeIds = game.state.decreeSystem
-        .getOwnedDecrees()
-        .map((d) => d.id)
+    shop.open()
+  }, [shop, game.phase])
 
-      const isAfterBossRound = game.state.lastCompletedRoundType === 'Boss'
-
-      const omenModifiers = game.prepareShopVisit()
-      shopStore.setStake(game.state.stake)
-      shopStore.openShop(ownedDecreeIds, isAfterBossRound, omenModifiers)
-
-      const teaHousePacks = shopStore.teaHouseSystem
-        .getState()
-        .packOfferings.map((offering) => offering.item as BlessingPack)
-      const charterEffects = game.state.charterSystem.calculateEffects()
-      const favoredOrb = charterEffects.celestialFavor
-        ? game.state.celestialOrbSystem.getOrbForMostPlayedYaku()
-        : null
-      blessingPackSystem.generateOfferingsForPacks(teaHousePacks, {
-        ownedDecreeIds,
-        currentAct: game.currentAct,
-        preferredYaku: favoredOrb?.effect.targetYaku,
-        voidScriptsInArcana: charterEffects.voidInArcana,
-      })
-    }
-  }, [
-    shopStore,
-    game,
-    game.prepareShopVisit,
-    game.state.decreeSystem,
-    game.state.lastCompletedRoundType,
-    game.state.stake,
-    game.currentAct,
-  ])
-
-  // Get available offerings
-  const availableItems = shopStore.getAvailableItems()
-  const availablePacks = shopStore.getAvailablePacks()
-  const availableCharter = shopStore.getAvailableCharter()
-  const rerollCost = shopStore.currentRerollCost
-  const packOfferings = blessingPackSystem.getCurrentOfferings()
+  const shopState = shop.state
+  const availableItems = shopState.itemOfferings.filter((o) => !o.isPurchased)
+  const availablePacks = shopState.packOfferings.filter((o) => !o.isPurchased)
+  const availableCharter = shopState.charterOffering?.isPurchased
+    ? null
+    : shopState.charterOffering
+  const rerollCost = shopState.currentRerollCost
   const roundSummary = game.state.lastRoundSummary
   const interestCap =
     game.state.charterSystem.calculateEffects().interestCap +
@@ -145,230 +96,55 @@ export function ShopScreen() {
     setSelectedItemId((prev) => (prev === offering.id ? null : offering.id))
   }, [])
 
-  // Handle item purchase
+  const showResult = useCallback(
+    (result: ShopResult) => {
+      if (result.success) {
+        setShopError(null)
+      } else {
+        const key =
+          result.reason === 'notEnoughGold'
+            ? 'shop.cantAfford'
+            : result.reason === 'inventoryFull'
+              ? 'shop.inventoryFull'
+              : 'shop.purchaseFailed'
+        setShopError(t(key))
+      }
+    },
+    [t]
+  )
+
   const handleItemPurchase = useCallback(
     (offering: TeaHouseOffering) => {
-      const canReceive = (() => {
-        if (offering.itemType === 'Decree') {
-          return game.canAddDecree(offering.item as Decree)
-        }
-        if (offering.itemType === 'ImperialCharter') {
-          return game.canAddImperialCharter(offering.item as ImperialCharter)
-        }
-        if (offering.itemType === 'Tile') return true
-        return game.canAddConsumable()
-      })()
-
-      if (!canReceive) {
-        setShopError(
-          offering.itemType === 'Decree'
-            ? t('shop.decreeSlotsFull', 'No Decree slots are available.')
-            : offering.itemType === 'ImperialCharter'
-              ? t(
-                  'shop.charterUnavailable',
-                  'This Charter is not available for this run.'
-                )
-              : t(
-                  'shop.consumableSlotsFull',
-                  'No consumable slots are available.'
-                )
-        )
-        setConfirmOffering(null)
-        return
-      }
-
-      const result = shopStore.purchaseItem(
-        offering.id,
-        game.gold,
-        game.currentAct,
-        game.currentRound
-      )
-
-      if (result.success && result.offering) {
-        // Deduct gold from game
-        const charged = game.purchaseItem(
-          offering.id,
-          result.cost,
-          result.offering.itemType
-        )
-        if (!charged) {
-          setShopError(
-            t('shop.purchaseFailed', 'Purchase could not be completed.')
-          )
-          setConfirmOffering(null)
-          return
-        }
-
-        // Handle specific item types
-        if (result.offering.itemType === 'Decree') {
-          const decree = result.offering.item as Decree
-          game.addDecree(decree)
-        } else if (result.offering.itemType === 'ImperialCharter') {
-          const charter = result.offering.item as ImperialCharter
-          game.addImperialCharter(charter)
-        } else if (result.offering.itemType === 'FateSeal') {
-          const seal = result.offering.item as FateSeal
-          game.addFateSeal(seal)
-        } else if (result.offering.itemType === 'CelestialOrb') {
-          const orb = result.offering.item as CelestialOrb
-          game.addCelestialOrb(orb)
-        } else if (result.offering.itemType === 'VoidScript') {
-          const script = result.offering.item as VoidScript
-          game.addVoidScript(script)
-        } else if (result.offering.itemType === 'Tile') {
-          game.addTileToWall(result.offering.item as Tile)
-        }
-
-        setSelectedItemId(null)
-        setShopError(null)
-      } else {
-        setShopError(
-          t('shop.purchaseFailed', 'Purchase could not be completed.')
-        )
-      }
-
+      const result = shop.purchase(offering.id)
+      showResult(result)
+      if (result.success) setSelectedItemId(null)
       setConfirmOffering(null)
     },
-    [shopStore, game, t]
+    [shop, showResult]
   )
 
-  // Handle pack purchase
-  const handlePackPurchase = useCallback(
-    (offering: TeaHouseOffering) => {
-      const pack = offering.item as BlessingPack
+  const handlePackPurchase = handleItemPurchase
 
-      // Check if player can afford
-      if (game.gold < offering.finalCost) {
-        setShopError(t('shop.notEnoughGold', 'Not enough gold.'))
-        return
-      }
-
-      // Purchase the pack
-      const result = shopStore.purchaseItem(
-        offering.id,
-        game.gold,
-        game.currentAct,
-        game.currentRound
-      )
-
-      if (result.success) {
-        game.purchaseItem(offering.id, result.cost, 'BlessingPack')
-
-        // Find the corresponding pack offering in the system
-        const packOfferingFromSystem = packOfferings.find(
-          (p) => p.pack.id === pack.id
-        )
-
-        if (packOfferingFromSystem) {
-          // Open the pack
-          const opened = blessingPackSystem.openPack(pack.id)
-          if (opened) {
-            eventBus.emit('packOpened', {
-              packId: pack.id,
-              packType: pack.type,
-              packSize: pack.size,
-            })
-            setCurrentPackOffering(opened)
-            setPurchasedPackId(pack.id)
-            setPackModalOpen(true)
-          }
-        }
-        setShopError(null)
-      } else {
-        setShopError(
-          t('shop.purchaseFailed', 'Purchase could not be completed.')
-        )
-      }
-    },
-    [shopStore, game, packOfferings, t]
-  )
-
-  // Handle pack opening confirmation
   const handlePackConfirm = useCallback(
-    (selectedIndices: number[]) => {
-      if (!currentPackOffering || !purchasedPackId) return
-
-      // Update selection in the system
-      for (const index of selectedIndices) {
-        blessingPackSystem.selectContent(purchasedPackId, index)
-      }
-
-      // Get selected contents
-      const selectedContents =
-        blessingPackSystem.confirmSelection(purchasedPackId)
-
-      // Apply selected contents
-      for (const content of selectedContents) {
-        let added = false
-        if (content.type === 'Decree') {
-          const decree = content.data as Decree
-          added = game.addDecree(decree, 'pack_open')
-        } else if (content.type === 'FateSeal') {
-          added = game.addFateSeal(content.data as FateSeal, 'pack_open')
-        } else if (content.type === 'CelestialOrb') {
-          added = game.addCelestialOrb(
-            content.data as CelestialOrb,
-            'pack_open'
-          )
-        } else if (content.type === 'VoidScript') {
-          added = game.addVoidScript(content.data as VoidScript, 'pack_open')
-        } else if (content.type === 'Tile') {
-          added = game.addTileToWall(content.data as Tile)
-        }
-
-        if (!added) {
-          setShopError(
-            t(
-              'shop.inventoryFull',
-              'One or more pack rewards could not be added because inventory is full.'
-            )
-          )
-        }
-      }
-
-      setPackModalOpen(false)
-      setCurrentPackOffering(null)
-      setPurchasedPackId(null)
+    (indices: number[]) => {
+      showResult(shop.confirmPack(indices))
     },
-    [currentPackOffering, purchasedPackId, game, t]
+    [shop, showResult]
   )
 
-  // Handle pack skip
   const handlePackSkip = useCallback(() => {
-    if (purchasedPackId) {
-      blessingPackSystem.skipPack(purchasedPackId)
-    }
+    showResult(shop.skipPack())
+  }, [shop, showResult])
 
-    setPackModalOpen(false)
-    setCurrentPackOffering(null)
-    setPurchasedPackId(null)
-  }, [purchasedPackId])
-
-  // Handle reroll
   const handleReroll = useCallback(() => {
-    const ownedDecreeIds = game.state.decreeSystem
-      .getOwnedDecrees()
-      .map((d) => d.id)
-    const result = shopStore.rerollShop(ownedDecreeIds, game.gold)
+    showResult(shop.reroll())
+  }, [shop, showResult])
 
-    if (result.success) {
-      game.purchaseItem('reroll', result.cost, 'Reroll')
-      eventBus.emit('shopRerolled', {
-        cost: result.cost,
-        newRerollCost: shopStore.teaHouseSystem.getCurrentRerollCost(),
-      })
-      setShopError(null)
-    } else {
-      setShopError(t('shop.rerollFailed', 'Unable to reroll the shop.'))
-    }
-  }, [shopStore, game, t])
-
-  // Handle next round
   const handleNextRound = useCallback(() => {
-    shopStore.closeShop()
+    if (shop.pendingPack) return
     game.exitShop()
     navigateTo(ROUTES.PLAY)
-  }, [shopStore, game, navigateTo])
+  }, [shop, game, navigateTo])
 
   // Handle settings
   const handleSettings = useCallback(() => {
@@ -394,7 +170,7 @@ export function ShopScreen() {
         canAffordReroll={game.gold >= rerollCost}
         onReroll={handleReroll}
         onSettings={handleSettings}
-        rerollCount={shopStore.rerollsThisVisit}
+        rerollCount={shopState.rerollsThisVisit}
       />
 
       {/* Content area */}
@@ -405,6 +181,7 @@ export function ShopScreen() {
             <RoundCashOutBanner
               summary={roundSummary}
               currentGold={game.gold}
+              nextActNumber={game.nextActNumber}
               interestCap={interestCap}
               interestBlocked={game.state.omenSystem.isInterestBlocked()}
             />
@@ -414,7 +191,7 @@ export function ShopScreen() {
                 {t('shop.title', 'Tea House')}
               </p>
               <p className="mt-1 text-sm text-[var(--color-beige-white)]/65">
-                {t('shop.subtitle', 'Prepare for the next challenge')}
+                {t('shop.ui.subtitle')}
               </p>
             </div>
           )}
@@ -423,15 +200,17 @@ export function ShopScreen() {
             {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
             <section className="min-w-0">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-                  {t('shop.items', 'Items')}
-                  <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-                    ({availableItems.length} available)
+                <h2 className="min-w-0 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
+                  {t('shop.ui.items')}
+                  <span className="mt-1 block text-sm font-normal text-[var(--color-metallic-gold)]">
+                    {t('shop.ui.availableCount', {
+                      count: availableItems.length,
+                    })}
                   </span>
                 </h2>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
                 {availableItems.map((offering) => (
                   <ShopItemCard
                     key={offering.id}
@@ -443,9 +222,9 @@ export function ShopScreen() {
                   />
                 ))}
                 {availableItems.length === 0 && (
-                  <div className="w-full py-8 text-center">
+                  <div className="col-span-full w-full py-8 text-center">
                     <p className="text-[var(--color-beige-white)] opacity-50">
-                      {t('shop.allPurchased', 'All items purchased!')}
+                      {t('shop.ui.allPurchased')}
                     </p>
                   </div>
                 )}
@@ -454,14 +233,11 @@ export function ShopScreen() {
 
             {/* Blessing Packs Section */}
             <section className="min-w-0">
-              <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
-                {t('shop.packs', 'Blessing Packs')}
-                <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-                  祝福袋
-                </span>
+              <h2 className="mb-4 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
+                {t('shop.ui.packs')}
               </h2>
 
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-1 xl:grid-cols-2">
+              <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {availablePacks.map((offering) => {
                   const pack = offering.item as BlessingPack
                   return (
@@ -475,9 +251,9 @@ export function ShopScreen() {
                   )
                 })}
                 {availablePacks.length === 0 && (
-                  <div className="w-full py-4 text-center">
+                  <div className="col-span-full w-full py-4 text-center">
                     <p className="text-[var(--color-beige-white)] opacity-50">
-                      {t('shop.noPacks', 'No packs available')}
+                      {t('shop.ui.noPacks')}
                     </p>
                   </div>
                 )}
@@ -488,11 +264,8 @@ export function ShopScreen() {
           {/* Imperial Charter Section (after boss rounds only) */}
           {availableCharter && (
             <section className="mx-3 mt-6 mb-4 sm:mx-5">
-              <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative mb-4">
-                {t('shop.imperialCharter', 'Imperial Charter')}
-                <span className="text-sm text-[var(--color-metallic-gold)] ml-2 font-normal">
-                  \u7687\u52C5
-                </span>
+              <h2 className="mb-4 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
+                {t('shop.ui.imperialCharter')}
               </h2>
 
               <CharterCard
@@ -526,7 +299,7 @@ export function ShopScreen() {
             onClick={handleNextRound}
             className="w-full text-lg"
           >
-            {t('shop.nextRound', 'Continue to Next Round')}
+            {t('shop.ui.nextRound')}
           </Button>
         </div>
       </div>
@@ -537,20 +310,31 @@ export function ShopScreen() {
           isOpen={true}
           onClose={() => setConfirmOffering(null)}
           onConfirm={() => handleItemPurchase(confirmOffering)}
-          title={t('shop.confirmPurchase', 'Confirm Purchase')}
-          message={`${t('shop.purchaseFor', 'Purchase for')} ${confirmOffering.finalCost}G?`}
-          confirmText={t('common.buy', 'Buy')}
+          title={t('shop.ui.confirmPurchase')}
+          message={t('shop.ui.purchasePrompt', {
+            name: itemText.name(
+              'charters',
+              confirmOffering.item as ImperialCharter
+            ),
+            cost: confirmOffering.finalCost.toLocaleString(
+              i18n.resolvedLanguage
+            ),
+          })}
+          confirmText={t('shop.buy')}
           cancelText={t('common.cancel', 'Cancel')}
         />
       )}
 
       {/* Pack opening modal */}
       <PackOpeningModal
-        isOpen={packModalOpen}
+        isOpen={currentPackOffering !== null}
         packOffering={currentPackOffering}
         onConfirm={handlePackConfirm}
         onSkip={handlePackSkip}
-        onClose={() => setPackModalOpen(false)}
+        canConfirmSelection={(indices) =>
+          shop.validatePackSelection(indices).success
+        }
+        error={shopError}
       />
 
       <ProgressiveHintOverlay

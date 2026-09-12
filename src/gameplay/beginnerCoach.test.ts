@@ -13,6 +13,13 @@ const tile = (suit: TileSuit, rank: number, id: string) =>
   new Tile(suit, rank, id)
 
 describe('beginner coach', () => {
+  it('does not price or reveal a concealed required tile', () => {
+    const tiles = [1, 2, 3, 4, 5, 6].map((rank) => tile(TileSuit.Souzu, rank, `tile-${rank}`))
+    const priced: string[][] = []
+    const advice = buildCoachAdvice({ tiles, requiredTileIds: ['tile-1'], concealedIds: new Set(['tile-1']), scoreSelection: (ids) => { priced.push(ids); return 100 }, remainingToTarget: 100, handsRemaining: 4 })
+    expect(advice).toBeNull()
+    expect(priced).toEqual([])
+  })
   it('points to the strongest finished shape in the real hand', () => {
     const suggestion = findBeginnerSuggestion([
       tile(TileSuit.Pinzu, 2, 'sequence-2'),

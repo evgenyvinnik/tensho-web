@@ -20,12 +20,15 @@ import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
 import type { VoidScript } from '../systems/VoidScriptSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
+import { useTableStyleStore } from '../stores/tableStyleStore'
 
 // =============================================================================
 // HOOK RETURN TYPE
 // =============================================================================
 
 export interface GameController {
+  shop: GameOrchestrator['shop']
+  flora: ReturnType<GameOrchestrator['getFloraState']>
   // State (reactive)
   state: OrchestratorState
   handTiles: Tile[]
@@ -45,6 +48,8 @@ export interface GameController {
   score: number
   runScore: number
   hasWonRun: boolean
+  hasEnteredEndless: boolean
+  nextActNumber: number
   targetScore: number
   gold: number
 
@@ -59,7 +64,11 @@ export interface GameController {
   deadWallRemaining: number
 
   // Consumables
-  consumableCounts: { fateSeals: number; celestialOrbs: number; voidScripts: number }
+  consumableCounts: {
+    fateSeals: number
+    celestialOrbs: number
+    voidScripts: number
+  }
   fateSeals: FateSeal[]
   celestialOrbs: CelestialOrb[]
   voidScripts: VoidScript[]
@@ -121,6 +130,7 @@ export interface GameController {
   // Utilities
   getAvailableActions: () => PlayerAction['type'][]
   canPerformAction: (action: PlayerAction) => boolean
+  validateConsumableAction: GameOrchestrator['validateConsumableAction']
   isCompleteHand: (tileIds: string[]) => boolean
   previewScore: (tileIds: string[]) => ScoreBreakdown | null
   resetGame: () => void
@@ -169,6 +179,7 @@ export function useGameController(
       'celestialOrbUsed',
       'voidScriptUsed',
       'shopEntered',
+      'shopUpdated',
       'shopExited',
       'gameOver',
     ]
@@ -181,6 +192,12 @@ export function useGameController(
       })
       unsubscribers.push(unsub)
     }
+
+    // The mutable engine may advance after render but before this effect
+    // subscribes (for example while a routed shop is mounting). Re-read once
+    // after installing every listener so that update cannot leave stale UI
+    // until the player happens to cause another event.
+    setTick((t) => t + 1)
 
     return () => {
       for (const unsub of unsubscribers) {
@@ -197,7 +214,11 @@ export function useGameController(
   // Actions
   const startNewRun = useCallback(
     (seed?: number, stake?: number, wallVariant?: string) => {
-      orchestrator.startNewRun(seed, stake, wallVariant)
+      orchestrator.startNewRun(
+        seed,
+        stake,
+        wallVariant ?? useTableStyleStore.getState().currentStyleId
+      )
     },
     [orchestrator]
   )
@@ -248,7 +269,14 @@ export function useGameController(
   // Consumable actions
   const useFateSeal = useCallback(
     (sealId: string, targetTileIds?: string[]) => {
-      const targets = targetTileIds ?? orchestrator.getSelectedTileIds()
+      const seal = orchestrator
+        .getFateSeals()
+        .find((item) => item.instanceId === sealId || item.id === sealId)
+      const targets =
+        targetTileIds ??
+        (seal?.effect.requiresSelection
+          ? orchestrator.getSelectedTileIds()
+          : [])
       return orchestrator.processAction({ type: 'useSeal', sealId, targets })
     },
     [orchestrator]
@@ -256,8 +284,21 @@ export function useGameController(
 
   const useVoidScript = useCallback(
     (scriptId: string, targetTileIds?: string[]) => {
-      const targets = targetTileIds ?? orchestrator.getSelectedTileIds()
-      return orchestrator.processAction({ type: 'useScript', scriptId, targets })
+      const script = orchestrator
+        .getState()
+        .voidScripts.find(
+          (item) => item.instanceId === scriptId || item.id === scriptId
+        )
+      const targets =
+        targetTileIds ??
+        (script?.effect.requiresSelection
+          ? orchestrator.getSelectedTileIds()
+          : [])
+      return orchestrator.processAction({
+        type: 'useScript',
+        scriptId,
+        targets,
+      })
     },
     [orchestrator]
   )
@@ -331,9 +372,18 @@ export function useGameController(
       orchestrator.addDecree(decree, source),
     [orchestrator]
   )
-  const canAddDecree = useCallback((decree: Decree) => orchestrator.canAddDecree(decree), [orchestrator])
-  const addImperialCharter = useCallback((charter: ImperialCharter) => orchestrator.addImperialCharter(charter), [orchestrator])
-  const canAddImperialCharter = useCallback((charter: ImperialCharter) => orchestrator.canAddImperialCharter(charter), [orchestrator])
+  const canAddDecree = useCallback(
+    (decree: Decree) => orchestrator.canAddDecree(decree),
+    [orchestrator]
+  )
+  const addImperialCharter = useCallback(
+    (charter: ImperialCharter) => orchestrator.addImperialCharter(charter),
+    [orchestrator]
+  )
+  const canAddImperialCharter = useCallback(
+    (charter: ImperialCharter) => orchestrator.canAddImperialCharter(charter),
+    [orchestrator]
+  )
   const addFateSeal = useCallback(
     (seal: FateSeal, source?: 'purchase' | 'pack_open' | 'generated') =>
       orchestrator.addFateSeal(seal, source),
@@ -353,8 +403,14 @@ export function useGameController(
     () => orchestrator.prepareShopVisit(),
     [orchestrator]
   )
-  const addTileToWall = useCallback((tile: Tile) => orchestrator.addTileToWall(tile), [orchestrator])
-  const canAddConsumable = useCallback(() => orchestrator.canAddConsumable(), [orchestrator])
+  const addTileToWall = useCallback(
+    (tile: Tile) => orchestrator.addTileToWall(tile),
+    [orchestrator]
+  )
+  const canAddConsumable = useCallback(
+    () => orchestrator.canAddConsumable(),
+    [orchestrator]
+  )
   const canRerollBossMandate = useCallback(
     () => orchestrator.canRerollBossMandate(),
     [orchestrator]
@@ -390,6 +446,10 @@ export function useGameController(
     [orchestrator]
   )
 
+  const validateConsumableAction = useCallback<
+    GameOrchestrator['validateConsumableAction']
+  >((action) => orchestrator.validateConsumableAction(action), [orchestrator])
+
   const isCompleteHand = useCallback(
     (tileIds: string[]) => orchestrator.isCompleteHand(tileIds),
     [orchestrator]
@@ -404,6 +464,8 @@ export function useGameController(
   }, [orchestrator])
 
   return {
+    shop: orchestrator.shop,
+    flora: orchestrator.getFloraState(),
     // State
     state,
     handTiles,
@@ -423,6 +485,8 @@ export function useGameController(
     score: state.score,
     runScore: state.runScore,
     hasWonRun: state.hasWonRun,
+    hasEnteredEndless: state.hasEnteredEndless,
+    nextActNumber: orchestrator.getNextActNumber(),
     targetScore: state.targetScore,
     gold: state.gold,
 
@@ -487,6 +551,7 @@ export function useGameController(
     // Utilities
     getAvailableActions,
     canPerformAction,
+    validateConsumableAction,
     isCompleteHand,
     previewScore,
     resetGame,

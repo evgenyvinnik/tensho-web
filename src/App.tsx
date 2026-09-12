@@ -17,6 +17,7 @@ import { CodexScreen } from './components/screens/CodexScreen'
 import { CollectionScreen } from './components/screens/CollectionScreen'
 import { SettingsScreen } from './components/screens/SettingsScreen'
 import { VFXProvider } from './hooks/useVFX'
+import { useAudioLifecycle } from './hooks/useAudioLifecycle'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
@@ -44,6 +45,7 @@ function LoadingFallback() {
  * Main App Component with Router
  */
 function App() {
+  useAudioLifecycle()
   // Create the router with all screen components
   const router = useMemo(
     () =>

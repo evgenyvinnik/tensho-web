@@ -99,12 +99,16 @@ test.describe('Table Loop prototype', () => {
   }) => {
     await startRun(page)
 
-    for (const slot of await page.locator('[data-testid^="table-slot-"]').all()) {
+    for (const slot of await page
+      .locator('[data-testid^="table-slot-"]')
+      .all()) {
       await expect(slot).toBeDisabled()
     }
   })
 
-  test('commits a group for exactly the forecast it showed', async ({ page }) => {
+  test('commits a group for exactly the forecast it showed', async ({
+    page,
+  }) => {
     await startRun(page)
 
     const group = findGroup(await readRack(page))
@@ -112,11 +116,16 @@ test.describe('Table Loop prototype', () => {
 
     for (const tile of group!) await tile.button.click()
 
-    const open = page.locator('[data-testid^="table-slot-"]:not([disabled])').first()
+    const open = page
+      .locator('[data-testid^="table-slot-"]:not([disabled])')
+      .first()
     await expect(open).toBeVisible()
 
     const forecast = Number(
-      ((await open.innerText()).match(/\+([\d,]+)/)?.[1] ?? '0').replace(/,/g, '')
+      ((await open.innerText()).match(/\+([\d,]+)/)?.[1] ?? '0').replace(
+        /,/g,
+        ''
+      )
     )
     expect(forecast).toBeGreaterThan(0)
 
@@ -143,11 +152,17 @@ test.describe('Table Loop prototype', () => {
 
   test('replays the same deal for the same seed', async ({ page }) => {
     await startRun(page)
-    const first = (await readRack(page)).map((tile) => `${tile.suit}${tile.rank}`)
+    const first = (await readRack(page)).map(
+      (tile) => `${tile.suit}${tile.rank}`
+    )
 
+    // Explicitly discard this test's save to compare two fresh seeded runs.
+    await page.evaluate(() => localStorage.removeItem('tensho-table-loop-v1'))
     await page.reload()
     await page.locator('[data-testid^="table-decree-"]').first().click()
-    const second = (await readRack(page)).map((tile) => `${tile.suit}${tile.rank}`)
+    const second = (await readRack(page)).map(
+      (tile) => `${tile.suit}${tile.rank}`
+    )
 
     expect(second).toEqual(first)
   })
@@ -157,24 +172,292 @@ test.describe('Table Loop prototype', () => {
     await page.goto(`/ja/table-loop?seed=${SEED}`)
 
     // Fully translated: the opening panel carries no English fallback.
-    await expect(page.getByRole('heading', { name: '打ち方を選ぶ' })).toBeVisible()
-    await expect(page.locator('body')).not.toContainText('Choose how you will play')
+    await expect(
+      page.getByRole('heading', { name: '打ち方を選ぶ' })
+    ).toBeVisible()
+    await expect(page.locator('body')).not.toContainText(
+      'Choose how you will play'
+    )
+  })
+})
+
+test.describe('Table Loop artwork and recovery', () => {
+  for (const [id, name, rule] of [
+    [
+      'terminal_gate',
+      'Terminal Gate',
+      'A group containing a 1 or a 9 scores +40.',
+    ],
+    [
+      'gap_bridge',
+      'Gap Bridge',
+      'Once a round, a run may skip one rank: 3·4·6 counts as a sequence.',
+    ],
+  ] as const) {
+    test(`renders the generated ${name} scroll with accessible rule details`, async ({
+      page,
+    }, testInfo) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' })
+      await startRun(page)
+      await page.setViewportSize({ width: 320, height: 568 })
+      // Presentation fixture only; no acquisition or balance claim. The same
+      // TableDecreeArt component is used by shop cards and owned inventory.
+      await page.evaluate(async (id) => {
+        const path = '/src/stores/tableLoopStore.ts'
+        const { useTableLoopStore } = await import(path)
+        const { state } = useTableLoopStore.getState()
+        useTableLoopStore.setState({
+          state: {
+            ...state,
+            ownedDecrees: [...state.ownedDecrees, id],
+          },
+        })
+      }, id)
+      const scroll = page.getByTestId(`owned-scroll-${id}`)
+      await expect(scroll.locator('img')).toHaveAttribute(
+        'src',
+        new RegExp(`${id.replace(/_/g, '-')}\\.png$`)
+      )
+      await expect(scroll.locator('img')).toHaveJSProperty('naturalWidth', 1254)
+      await scroll.click()
+      const detail = page.getByRole('dialog', { name })
+      await expect(detail).toContainText(rule)
+      await expect(detail).toBeInViewport()
+      const bounds = await detail.boundingBox()
+      expect(bounds!.x).toBeGreaterThanOrEqual(0)
+      expect(bounds!.y).toBeGreaterThanOrEqual(0)
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(320)
+      expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(568)
+      await page.screenshot({
+        path: testInfo.outputPath(`${id.replace(/_/g, '-')}-owned.png`),
+      })
+    })
+  }
+
+  test('loads all starter artwork and keeps short-screen controls reachable', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 568 })
+    await page.goto('/en/table-loop?seed=7')
+    const cards = page.locator('[data-testid^="table-decree-"]')
+    await expect(cards).toHaveCount(3)
+    expect(
+      await page
+        .getByRole('heading', { level: 1 })
+        .evaluate((heading) =>
+          Number.parseFloat(getComputedStyle(heading).fontSize)
+        )
+    ).toBeLessThanOrEqual(24)
+    for (const card of await cards.all()) {
+      await expect(card.locator('img')).toHaveJSProperty('complete', true)
+      expect(
+        await card
+          .locator('img')
+          .evaluate((img: HTMLImageElement) => img.naturalWidth)
+      ).toBeGreaterThan(0)
+    }
+    await page.getByTestId('practice-start').scrollIntoViewIfNeeded()
+    await expect(page.getByTestId('practice-start')).toBeInViewport()
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth
+      )
+    ).toBe(true)
+  })
+
+  test('shows owned scroll details on focus and tap, and closes with Escape or outside tap', async ({
+    page,
+  }) => {
+    await startRun(page)
+    const scroll = page.locator('[data-testid^="owned-scroll-"]').first()
+    const name = await scroll.getAttribute('aria-label')
+    await scroll.focus()
+    const detail = page.getByRole('dialog', { name: name! })
+    await expect(detail).toBeVisible()
+    await expect(detail.locator('p')).not.toBeEmpty()
+    const bounds = await detail.boundingBox()
+    expect(bounds!.x).toBeGreaterThanOrEqual(0)
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(PHONE.width)
+    await page.keyboard.press('Escape')
+    await expect(detail).not.toBeVisible()
+    await scroll.hover()
+    await expect(detail).toBeVisible()
+    await page.mouse.move(PHONE.width - 1, PHONE.height - 1)
+    await expect(detail).not.toBeVisible()
+    await scroll.click()
+    await expect(detail).toBeVisible()
+    await page
+      .getByTestId('table-loop-finish')
+      .locator('..')
+      .click({ position: { x: 1, y: 1 } })
+    await expect(detail).not.toBeVisible()
+  })
+
+  test('keeps every table slot in bounds and resumes after a menu visit', async ({
+    page,
+  }) => {
+    await startRun(page)
+    for (const size of [
+      { width: 320, height: 568 },
+      PHONE,
+      { width: 1366, height: 768 },
+    ]) {
+      await page.setViewportSize(size)
+      for (const slot of await page
+        .locator('[data-testid^="table-slot-"]')
+        .all()) {
+        const bounds = await slot.boundingBox()
+        expect(bounds!.x).toBeGreaterThanOrEqual(0)
+        expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(size.width)
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth
+        )
+      ).toBe(true)
+    }
+    const rackBefore = (await readRack(page)).map(
+      (tile) => `${tile.suit}${tile.rank}`
+    )
+    await page.getByRole('button', { name: 'Main menu', exact: true }).click()
+    await page
+      .getByRole('button', { name: 'Table Loop (experiment)', exact: true })
+      .click()
+    await expect(page.getByTestId('table-loop-rack')).toBeVisible()
+    expect(
+      (await readRack(page)).map((tile) => `${tile.suit}${tile.rank}`)
+    ).toEqual(rackBefore)
+  })
+
+  test('reloads a committed table and continues placing real tiles', async ({
+    page,
+  }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto('/en/table-loop?practice=1')
+    await page.getByTestId('practice-inspect-run').click()
+    await page.getByTestId('table-slot-0').click()
+    const rackBefore = (await readRack(page)).map(
+      (tile) => `${tile.suit}${tile.rank}`
+    )
+    await page.reload()
+    await expect(page.getByTestId('practice-guide')).toHaveAttribute(
+      'data-practice-step',
+      'interact'
+    )
+    expect(
+      (await readRack(page)).map((tile) => `${tile.suit}${tile.rank}`)
+    ).toEqual(rackBefore)
+    const group = findGroup(await readRack(page))!
+    for (const tile of group) await tile.button.click()
+    await page.getByTestId('table-slot-1').click()
+    await expect(page.getByTestId('practice-guide')).toHaveAttribute(
+      'data-practice-step',
+      'upgrade'
+    )
+    await page.getByTestId('practice-take-decree').click()
+    await page.reload()
+    await expect(page.getByTestId('owned-scroll-echoing_bamboo')).toBeVisible()
+    await expect(page.getByTestId('practice-guide')).toHaveAttribute(
+      'data-practice-step',
+      'ready'
+    )
+    await page.getByTestId('practice-start-real').click()
+    await page.reload()
+    await expect(
+      page.getByRole('heading', { name: 'Choose how you will play' })
+    ).toBeVisible()
+    await expect(page.getByTestId('practice-guide')).toHaveCount(0)
+  })
+
+  test('keeps a pending draft choice across reload without an extra refill', async ({
+    page,
+  }) => {
+    await page.setViewportSize(PHONE)
+    await page.goto('/en/table-loop?seed=7&draft=1')
+    await page.getByTestId('table-decree-echoing_bamboo').click()
+    const group = findGroup(await readRack(page))!
+    for (const tile of group) await tile.button.click()
+    await page.locator('[data-testid^="table-slot-"]:enabled').first().click()
+    const offers = page.locator('[data-testid^="draft-tile-"]')
+    await expect(offers.first()).toBeEnabled()
+    const rackCount = await page.locator('[data-testid^="rack-tile-"]').count()
+    const before = await offers
+      .locator('img')
+      .evaluateAll((imgs) => imgs.map((img) => img.getAttribute('alt')))
+    await page.reload()
+    await expect(offers.first()).toBeEnabled()
+    expect(
+      await offers
+        .locator('img')
+        .evaluateAll((imgs) => imgs.map((img) => img.getAttribute('alt')))
+    ).toEqual(before)
+    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(
+      rackCount
+    )
+    await offers.first().click()
+    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(
+      rackCount + 1
+    )
   })
 })
 
 test.describe('Table Loop readability and keyboard', () => {
   test('names every rack tile and reports which are selected', async ({
     page,
-  }) => {
+  }, testInfo) => {
     await startRun(page)
+
+    // Keep a failing first click diagnosable without retrying or changing it.
+    await page.evaluate(() => {
+      const trace: unknown[] = []
+      Object.assign(window, { __tileInputTrace: trace })
+      for (const type of [
+        'pointerdown',
+        'pointerup',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]) {
+        document.addEventListener(
+          type,
+          (event) => {
+            const button =
+              event.target instanceof Element
+                ? event.target.closest('[data-testid^="rack-tile-"]')
+                : null
+            if (!button) return
+            trace.push({
+              type,
+              target: button.getAttribute('data-testid'),
+              selected: button.getAttribute('aria-pressed'),
+              time: performance.now(),
+            })
+          },
+          true
+        )
+      }
+    })
 
     const tiles = page.locator('[data-testid^="rack-tile-"]')
     const first = tiles.first()
     await expect(first).toHaveAttribute('aria-pressed', 'false')
     await expect(first).toHaveAttribute('aria-label', /.+/)
 
-    await first.click()
-    await expect(first).toHaveAttribute('aria-pressed', 'true')
+    try {
+      await first.click()
+      await expect(first).toHaveAttribute('aria-pressed', 'true')
+    } catch (error) {
+      const trace = await page.evaluate(
+        () =>
+          (window as unknown as { __tileInputTrace: unknown[] })
+            .__tileInputTrace
+      )
+      await testInfo.attach('first-tile-input-trace', {
+        body: JSON.stringify(trace, null, 2),
+        contentType: 'application/json',
+      })
+      throw error
+    }
   })
 
   test('shows the selection separately and says what it forms', async ({
@@ -362,7 +645,9 @@ test.describe('Table Loop practice deal (section 7)', () => {
     await page.getByTestId('table-slot-1').click()
 
     // 5. The interaction resolves visibly and is named after it happened.
-    await expect(page.getByTestId('causal-chain')).toContainText('Twin Sequence')
+    await expect(page.getByTestId('causal-chain')).toContainText(
+      'Twin Sequence'
+    )
     await expect(guide).toHaveAttribute('data-practice-step', 'upgrade')
     await expect(guide).toContainText('That was a Twin Sequence')
 
@@ -409,9 +694,11 @@ test.describe('Table Loop revision pricing', () => {
 
     await page.getByTestId('practice-inspect-run').click()
     const freshForecast = Number(
-      ((await page.getByTestId('table-slot-0').innerText()).match(
-        /\+([\d,]+)/
-      )?.[1] ?? '0').replace(/,/g, '')
+      (
+        (await page.getByTestId('table-slot-0').innerText()).match(
+          /\+([\d,]+)/
+        )?.[1] ?? '0'
+      ).replace(/,/g, '')
     )
     expect(freshForecast).toBeGreaterThan(0)
     await page.getByTestId('table-slot-0').click()
@@ -427,9 +714,11 @@ test.describe('Table Loop revision pricing', () => {
       (replaceText.match(/\+([\d,]+)/)?.[1] ?? '0').replace(/,/g, '')
     )
     const emptyForecast = Number(
-      ((await page.getByTestId('table-slot-1').innerText()).match(
-        /\+([\d,]+)/
-      )?.[1] ?? '0').replace(/,/g, '')
+      (
+        (await page.getByTestId('table-slot-1').innerText()).match(
+          /\+([\d,]+)/
+        )?.[1] ?? '0'
+      ).replace(/,/g, '')
     )
 
     // Replacing an equal group pays nothing; the empty slot pays in full.

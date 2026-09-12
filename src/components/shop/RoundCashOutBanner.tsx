@@ -10,6 +10,7 @@ const AnimatedSection = animated('section')
 export interface RoundCashOutBannerProps {
   summary: RoundCashOutSummary
   currentGold: number
+  nextActNumber: number
   interestCap: number
   interestBlocked?: boolean
 }
@@ -21,14 +22,18 @@ interface PayoutChipProps {
 }
 
 function PayoutChip({ label, value, alwaysShow = false }: PayoutChipProps) {
+  const { i18n } = useTranslation()
   if (!alwaysShow && value === 0) return null
 
   return (
-    <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-[var(--color-beige-white)]/75">
+    <span
+      className="min-w-0 max-w-full break-words rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-[var(--color-beige-white)]/75"
+      data-payout-value={value}
+    >
       {label}{' '}
       <strong className={value < 0 ? 'text-red-300' : 'text-emerald-300'}>
         {value >= 0 ? '+' : ''}
-        {value}G
+        {value.toLocaleString(i18n.resolvedLanguage)}G
       </strong>
     </span>
   )
@@ -41,10 +46,22 @@ function PayoutChip({ label, value, alwaysShow = false }: PayoutChipProps) {
 export function RoundCashOutBanner({
   summary,
   currentGold,
+  nextActNumber,
   interestCap,
   interestBlocked = false,
 }: RoundCashOutBannerProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const number = new Intl.NumberFormat(i18n.resolvedLanguage).format
+  const signed = new Intl.NumberFormat(i18n.resolvedLanguage, {
+    signDisplay: 'always',
+  }).format
+  const totalText = `${signed(summary.netGoldChange)}G`
+  const totalSize =
+    totalText.length > 18
+      ? 'text-sm sm:text-lg'
+      : totalText.length > 12
+        ? 'text-lg sm:text-2xl'
+        : 'text-3xl'
   const reduceMotion = useReducedMotion()
   const [hasEntered, setHasEntered] = useState(reduceMotion)
   const projectedInterest = interestBlocked
@@ -52,6 +69,15 @@ export function RoundCashOutBanner({
     : Math.min(Math.floor(currentGold / 5), interestCap)
   const nextInterestThreshold = (projectedInterest + 1) * 5
   const goldToNextInterest = nextInterestThreshold - currentGold
+  // The settled total already includes all multipliers. Explain the difference
+  // without recomputing or awarding money from the presentation layer.
+  const payoutBonus =
+    summary.netGoldChange +
+    summary.rentalCost -
+    summary.baseReward -
+    summary.interest -
+    summary.decreeGold -
+    summary.heldGoldMarkReward
 
   useEffect(() => {
     setHasEntered(true)
@@ -66,12 +92,14 @@ export function RoundCashOutBanner({
   })
 
   const interestCoach = interestBlocked
-    ? 'Interest is blocked for this payout cycle.'
+    ? t('shop.payout.interestBlocked')
     : projectedInterest >= interestCap
-      ? `Savings are at the +${interestCap}G interest cap.`
-      : goldToNextInterest > 0
-        ? `Save ${goldToNextInterest}G more to earn +${projectedInterest + 1}G interest after the next clear.`
-        : `Current savings earn +${projectedInterest}G interest after the next clear.`
+      ? t('shop.payout.interestCap', { interest: signed(interestCap) })
+      : t('shop.payout.interestSave', {
+          interest: signed(projectedInterest),
+          needed: number(goldToNextInterest),
+          next: signed(projectedInterest + 1),
+        })
 
   return (
     <AnimatedSection
@@ -85,63 +113,95 @@ export function RoundCashOutBanner({
         ),
       }}
     >
-      <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="grid min-w-0 gap-3 p-4 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300">
-            {t('shop.roundCleared', 'Round cleared')}
+            {t('shop.roundCleared')}
           </p>
           <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h2 className="text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
-              Act {summary.actNumber} · {summary.roundType}
+            <h2 className="min-w-0 break-words text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
+              {t('shop.payout.heading', {
+                act: number(summary.actNumber),
+                round: t(`rounds.${summary.roundType.toLowerCase()}`),
+              })}
             </h2>
-            <span className="text-sm tabular-nums text-[var(--color-beige-white)]/65">
-              {summary.score.toLocaleString()} /{' '}
-              {summary.target.toLocaleString()}
+            <span className="flex min-w-0 flex-wrap gap-x-1 break-words text-sm tabular-nums text-[var(--color-beige-white)]/65">
+              <span>{number(summary.score)}</span>
+              <span> / </span>
+              <span>{number(summary.target)}</span>
             </span>
           </div>
 
           <div
             className="mt-3 flex flex-wrap gap-1.5"
-            aria-label={t('shop.payoutBreakdown', 'Round payout breakdown')}
+            role="group"
+            aria-label={t('shop.payoutBreakdown')}
           >
-            <PayoutChip label="Clear" value={summary.baseReward} alwaysShow />
-            <PayoutChip label="Interest" value={summary.interest} alwaysShow />
-            <PayoutChip label="Decrees" value={summary.decreeGold} />
-            <PayoutChip label="Gold tiles" value={summary.heldGoldMarkReward} />
-            <PayoutChip label="Rentals" value={-summary.rentalCost} />
+            <PayoutChip
+              label={t('shop.payout.clear')}
+              value={summary.baseReward}
+              alwaysShow
+            />
+            <PayoutChip
+              label={t('shop.payout.interest')}
+              value={summary.interest}
+              alwaysShow
+            />
+            <PayoutChip
+              label={t('shop.payout.decrees')}
+              value={summary.decreeGold}
+            />
+            <PayoutChip
+              label={t('shop.payout.goldTiles')}
+              value={summary.heldGoldMarkReward}
+            />
+            <PayoutChip label={t('shop.payout.bonus')} value={payoutBonus} />
+            <PayoutChip
+              label={t('shop.payout.rentals')}
+              value={-summary.rentalCost}
+            />
           </div>
         </div>
 
-        <div className="flex flex-shrink-0 items-center justify-between gap-4 rounded-xl border border-white/10 bg-black/20 px-4 py-3 sm:min-w-44 sm:flex-col sm:items-end sm:gap-0">
+        <div className="grid min-w-0 content-center gap-1 rounded-xl border border-white/10 bg-black/20 px-4 py-3 md:text-right">
           <span className="text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50">
-            {t('shop.cashOut', 'Cash out')}
+            {t('shop.cashOut')}
           </span>
           <strong
-            className={`inline-flex items-center gap-1 text-3xl font-black tabular-nums ${
+            className={`flex min-w-0 items-center gap-1 font-black tabular-nums md:justify-end ${totalSize} ${
               summary.netGoldChange >= 0 ? 'text-emerald-300' : 'text-red-300'
             }`}
           >
             <GoldIcon className="h-7 w-7" />
-            {summary.netGoldChange >= 0 ? '+' : ''}
-            {summary.netGoldChange}G
+            <span className="min-w-0 break-all" data-payout-total>
+              {totalText}
+            </span>
           </strong>
-          <span className="text-xs tabular-nums text-[var(--color-beige-white)]/55">
-            {summary.goldBefore}G → {summary.goldAfter}G
+          <span className="flex min-w-0 flex-wrap gap-x-1 break-words text-xs tabular-nums text-[var(--color-beige-white)]/55 md:justify-end">
+            <span>{number(summary.goldBefore)}G</span>
+            <span> → </span>
+            <span>{number(summary.goldAfter)}G</span>
           </span>
         </div>
       </div>
 
-      <div className="grid border-t border-white/10 bg-black/15 text-xs sm:grid-cols-2">
-        <p className="px-4 py-2.5 text-[var(--color-beige-white)]/65">
+      <div className="grid border-t border-white/10 bg-black/15 text-xs md:grid-cols-2">
+        <p
+          className="min-w-0 break-words px-4 py-2.5 text-[var(--color-beige-white)]/65"
+          data-interest-coach
+        >
           <span className="mr-1.5" aria-hidden="true">
             ◎
           </span>
           {interestCoach}
         </p>
-        <p className="border-t border-white/10 px-4 py-2.5 text-right font-semibold text-[var(--color-metallic-gold)] sm:border-l sm:border-t-0">
+        <p className="min-w-0 break-words border-t border-white/10 px-4 py-2.5 font-semibold text-[var(--color-metallic-gold)] md:border-l md:border-t-0 md:text-right">
           {summary.nextRoundType && summary.nextTarget !== null
-            ? `Next: ${summary.nextRoundType} · ${summary.nextTarget.toLocaleString()} target`
-            : `Next: Act ${summary.actNumber + 1} ascent`}
+            ? t('shop.payout.nextRound', {
+                round: t(`rounds.${summary.nextRoundType.toLowerCase()}`),
+                target: number(summary.nextTarget),
+              })
+            : t('shop.payout.nextAct', { act: number(nextActNumber) })}
         </p>
       </div>
     </AnimatedSection>

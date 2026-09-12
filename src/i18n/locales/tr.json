@@ -1,4 +1,53 @@
 {
+  "seals": {
+    "items": {
+      "seal_of_unity": {
+        "name": "Birlik Mührü",
+        "description": "En fazla 3 sayı taşını Rüzgâr taşlarına dönüştürür. Sayılar Doğu, Güney, Batı, Kuzey sırasıyla döner."
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "purple": {
+        "name": "Mor Mühür",
+        "description": "Bu taş atıldığında veya değiştirildiğinde yer varsa rastgele bir Kader Mührü oluşturur."
+      }
+    }
+  },
+  "consumableUse": {
+    "unityMapping": "Eski sayı → Rüzgâr",
+    "errorMaxLevel": "Bu yükseltme zaten en yüksek seviyede.",
+    "errorNoRoom": "Bu eşyayı kullanmadan önce ödül için yer açın.",
+    "errorNoDecrees": "Bu etki için sahip olduğunuz bir Ferman gerekir.",
+    "errorNoPrevious": "Önce {{seals}} veya {{orbs}} kategorisinden bir eşya kullanın.",
+    "copyResult": "Oluşturur: {{name}}",
+    "errorNoGold": "Bu etki şu anda altın kazandırmaz.",
+    "hiddenOutcome": "Gizli taşların sonucu yalnızca onayladığınızda kontrol edilir.",
+    "available": "{{name}} ({{count}} kullanılabilir)",
+    "penalty_lose_tile": "Rastgele 1 taş kaybet.",
+    "penalty_lose_gold": "Tüm altını kaybet.",
+    "penalty_lose_hand_size": "El kapasitesi kalıcı olarak {{count}} azalır.",
+    "penalty_lock_tile": "Rastgele 1 taşı Ölü Havuzda kilitle.",
+    "penalty_lose_decree_slot": "Sonraki turda {{count}} Ferman yuvası kaybet.",
+    "penalty_halve_base_score": "Sonraki elin temel puanı yarıya iner.",
+    "penalty_destroy_decrees": "Diğer tüm Fermanları yok et.",
+    "penalty_none": "Ek ceza yok.",
+    "protected": "Alamet koruması ek cezayı iptal eder.",
+    "errorSuit": "Farklı bir türden sayılı taş seç.",
+    "errorRank": "Yeni sayısı 1 ile 9 arasında olacak bir taş seç.",
+    "choose": "Bir eşya seçin, ardından kullanımını onaylayın.",
+    "targets": "Hedef taşlar",
+    "count": "Hedefler: {{selected}} / {{required}}",
+    "copyOrder": "1. taş, 2. taşın kopyası olur. Önce değiştirmek istediğiniz taşı seçin.",
+    "cost": "Hiçliğin bedeli",
+    "failed": "Bu eşya kullanılamadı.",
+    "unavailable": "Hedefleri ve bu turdaki kullanım sınırını kontrol edin.",
+    "confirm": "Eşyayı kullan",
+    "fateSeals": "Kader Mühürleri",
+    "celestialOrbs": "Göksel Küreler",
+    "voidScripts": "Hiçlik Tomarları"
+  },
   "common": {
     "loading": "Yükleniyor...",
     "error": "Hata",
@@ -37,6 +86,9 @@
     "tableLoop": "Masa Döngüsü (deney)"
   },
   "settings": {
+    "resetProgressScope": "Keşifler ve devam eden veya kayıtlı turlar da silinir. Dil, ses ve erişilebilirlik ayarları korunur.",
+    "resetFailed": "Sıfırlama başarısız oldu. İlerlemeniz korundu. Tarayıcı depolamasını kontrol edip tekrar deneyin.",
+    "resetPartial": "Sıfırlama tamamlanamadı ve ilerlemenin bir kısmı değişmiş olabilir. Tarayıcı depolamasını kontrol edip tekrar deneyin.",
     "title": "Ayarlar",
     "audio": "Ses",
     "musicVolume": "Müzik Seviyesi",
@@ -204,6 +256,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "Yaygın",
+      "rarity_uncommon": "Az Bulunan",
+      "rarity_rare": "Nadir",
+      "rarity_legendary": "Efsanevi",
+      "subtitle": "Sonraki mücadeleye hazırlan",
+      "items": "Eşyalar",
+      "availableCount": "Mevcut: {{count}}",
+      "allPurchased": "Tüm eşyalar satın alındı!",
+      "packs": "Bereket Paketleri",
+      "noPacks": "Mevcut paket yok",
+      "imperialCharter": "İmparatorluk Fermanı",
+      "nextRound": "Sonraki Tura Geç",
+      "confirmPurchase": "Satın Almayı Onayla",
+      "purchasePrompt": "{{name}}, {{cost}}G karşılığında satın alınsın mı?",
+      "baseEdition": "Temel Sürüm",
+      "goldBalance": "{{amount}} altın",
+      "rerollsUsed": "Kullanılan yenileme: {{count}}"
+    },
+    "payout": {
+      "heading": "Perde {{act}} · {{round}}",
+      "clear": "Zafer",
+      "interest": "Faiz",
+      "decrees": "Fermanlar",
+      "goldTiles": "Altın taşlar",
+      "bonus": "Ödül bonusu",
+      "rentals": "Kiralar",
+      "interestBlocked": "Faiz şu anda engelleniyor.",
+      "interestCap": "{{interest}}G faiz sınırına ulaşıldı.",
+      "interestSave": "Mevcut birikimle: {{interest}}G faiz. {{next}}G için {{needed}}G daha biriktir.",
+      "nextRound": "Sıradaki: {{round}} · hedef {{target}}",
+      "nextAct": "Sıradaki: Perde {{act}}"
+    },
+    "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
+    "packInventoryFull": "Bu seçim için yeterli yer yok. Daha az veya farklı ödüller seçin ya da paketi atlayın.",
+    "inventoryFull": "Bu ödül için envanterde yeterli yer yok.",
+    "skipRewards": "Ödülleri atla",
+    "purchaseFailed": "Satın alma tamamlanamadı.",
+    "packSelected": "{{count}} / {{max}} seçildi",
+    "confirmSelection": "Seçimi Onayla",
+    "selectItems": "Eşya Seç",
     "title": "Çay Evi",
     "titleJp": "茶寮",
     "buy": "Satın Al",
@@ -266,6 +359,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "Toplanan çiçekler bu koşu boyunca sürer. Toplanmayanların bonusları ön izlemedir.",
+      "roundScope": "Çekilme sırasına göre gösterilir. Mevsimler bu turun sonunda sona erer.",
+      "collected": "Toplandı",
+      "missing": "Toplanmadı",
+      "noSeasons": "Bu turda mevsim yok.",
+      "suppressed": "Kuraklık, çiçeklerinin puan bonuslarını bastırır.",
+      "protected": "Bir ferman, çiçek bonuslarını Kuraklıktan koruyor.",
+      "decayPenalty": "Oynanan el başına Çürüme cezası: −{{points}} puan.",
+      "partial": "Bazı mevsim kuralları hâlâ geliştiriliyor. Yalnızca mevcut etkiler gösterilir.",
+      "unwired": "Henüz uygulanmadı.",
+      "summer": "Puan ×1,3.",
+      "autumn": "Yaku çarpanı +%20.",
+      "winter": "Puan ×0,75.",
+      "drought": "Korunmayan çiçeklerin puan bonuslarını bastırır.",
+      "frostbite": "Ferman çarpan bonuslarını yarıya indirir.",
+      "decay": "Bu turda atılan her taş için −10 puan; puan sıfırın altına düşmez.",
+      "droughtName": "Kuraklık",
+      "monsoonName": "Muson",
+      "frostbiteName": "Donma",
+      "decayName": "Çürüme",
+      "corruptedName": "Bozulmuş",
+      "flowerPlum": "Her seri için +%{{percent}} puan.",
+      "flowerOrchid": "Her onur taşı için +%{{percent}} puan.",
+      "flowerChrysanthemum": "Her kapalı grup için +%{{percent}} puan.",
+      "flowerBamboo": "Her terminal taş için +%{{percent}} puan.",
+      "setTwo": "2 çiçek: +1 ferman yuvası.",
+      "setThree": "3 çiçek: özel mağaza açılımı henüz uygulanmadı.",
+      "setFour": "4 çiçek: çiçek bonusları ikiye katlanır."
+    },
     "flowers": "Çiçekler",
     "seasons": "Mevsimler",
     "plum": "Erik Çiçeği",
@@ -329,6 +452,12 @@
     "quad": "Dörtlü"
   },
   "results": {
+    "endlessComplete": "Sonsuz Yükseliş Tamamlandı",
+    "victorySubtitle": "8. Perdenin son düellosunu kazandın. Zaferin kaydedildi.",
+    "endlessSubtitle": "Bu yükseliş sona erse de zaferin geçerliliğini koruyor.",
+    "defeatSubtitle": "Bir sonraki oyunda farklı bir plan dene.",
+    "showdownCleared": "Son düello kazanıldı",
+    "continueEndless": "Sonsuz Modda Devam Et",
     "victory": "Zafer!",
     "defeat": "Yenilgi",
     "roundComplete": "Tur Tamamlandı!",
@@ -680,40 +809,73 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "Klasik",
+        "unlock": "Başlangıçtan itibaren açık",
+        "modifiers": { "0": "Özel değiştirici yok" },
         "name": "Yeşil Keçe",
         "description": "Sayısız elin aşındırıp pürüzsüzleştirdiği geleneksel yeşil keçeli klasik mahjong masası. Özel değiştirici yok—yalnızca saf beceri."
       },
       "red_lacquer": {
+        "theme": "Uğurlu",
+        "unlock": "3. perdeyi tamamla",
+        "modifiers": { "0": "Başlangıç ferman yuvası +1" },
         "name": "Kırmızı Lake",
         "description": "Şans ve refahı simgeleyen parlak kızıl lake kaplı lüks bir masa. Uğurlu rengi ek Fermanları kendine çeker."
       },
       "bamboo_mat": {
+        "theme": "Doğal",
+        "unlock": "Bir koşuda 4 çiçeğin tümünü topla",
+        "modifiers": { "0": "Çiçek çekme ağırlığı +%25 (aynı 4 çiçek)" },
         "name": "Bambu Hasır",
         "description": "Bahçe köşkünde alçak bir masaya serilmiş sade bambu hasır. Doğal ortam çiçeklerin daha sık açmasını sağlar."
       },
       "imperial_gold": {
+        "theme": "Kraliyet",
+        "unlock": "En az 5 fermanla bir koşu kazan",
+        "modifiers": { "0": "Rastgele 1 bölgesel buyrukla başla" },
         "name": "İmparatorluk Altını",
         "description": "İmparatorluk sarayından, altın varak ve yeşim kakmalı görkemli bir masa. Burada oynayanlar kraliyet lütfuna erişir."
       },
       "night_market": {
+        "theme": "Sokak",
+        "unlock": "Tüm koşularda toplam 20 ferman satın al",
+        "modifiers": { "0": "Mağaza fiyatları −%20", "1": "Ferman yuvası −1" },
         "name": "Gece Pazarı",
         "description": "Kâğıt fenerlerle aydınlanan kalabalık gece pazarında kurulmuş geçici bir masa. Satıcılar indirim sunar, ancak alan dardır."
       },
       "temple_stone": {
+        "theme": "Sade",
+        "unlock": "Hiç çiçek toplamadan bir koşu kazan",
+        "modifiers": { "0": "Çiçek çıkmaz", "1": "Temel puan +%50" },
         "name": "Tapınak Taşı",
         "description": "Sade bir dağ tapınağındaki soğuk taş masa. Burada çiçek yetişmez, fakat berrak odaklanma temel puanı artırır."
       },
       "ghost_parlor": {
+        "theme": "Perili",
+        "unlock": "Bir koşuda 3 yozlaşmış mevsimi atlat",
+        "modifiers": {
+          "0": "I. perdeden itibaren yozlaşmış mevsimler çıkabilir"
+        },
         "name": "Hayalet Salonu",
         "description": "Ruhların hâlâ oynadığı terk edilmiş bir mahjong salonu. Dünyalar arasındaki perde ince olduğundan Bozulmuş Mevsimler en baştan belirebilir."
       },
       "dragons_den": {
+        "theme": "Efsanevi",
+        "unlock": "Yakuman yap",
+        "modifiers": {
+          "0": "Yakuman çarpanları +1,0×",
+          "1": "Hedef puanlar +%25"
+        },
         "name": "Ejderha İni",
         "description": "Dağ mağarasında saklı, ejderha kemiğinden oyulmuş efsanevi masa. Yakuman elleri güçlenir, ancak ejderha daha büyük haraç ister."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "Önceki kayıt geri yüklenemedi. Yerine yenisini kaydetmek için yeni bir koşu başlatın.",
+      "unavailable": "Bu cihazda ilerleme kaydedilemiyor. Devam etmek için bu sekmeyi açık tutun."
+    },
     "slot": {
       "meld": "Grup yuvası {{number}}",
       "pair": "Çift yuvası",

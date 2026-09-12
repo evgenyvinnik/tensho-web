@@ -1,4 +1,37 @@
 {
+  "consumableUse": {
+    "unityMapping": "Rang d’origine → Vent",
+    "errorMaxLevel": "Cette amélioration est déjà au niveau maximum.",
+    "errorNoRoom": "Libérez une place pour la récompense avant d’utiliser cet objet.",
+    "errorNoDecrees": "Vous devez posséder un Décret pour cet effet.",
+    "errorNoPrevious": "Utilisez d’abord un objet de {{seals}} ou {{orbs}}.",
+    "copyResult": "Crée : {{name}}",
+    "errorNoGold": "Cet effet ne rapporterait pas d’or pour le moment.",
+    "hiddenOutcome": "Le résultat pour les tuiles cachées n’est vérifié qu’à la confirmation.",
+    "available": "{{name}} ({{count}} disponibles)",
+    "penalty_lose_tile": "Perdez 1 tuile aléatoire.",
+    "penalty_lose_gold": "Perdez tout votre or.",
+    "penalty_lose_hand_size": "Perdez définitivement {{count}} emplacement de main.",
+    "penalty_lock_tile": "Bloquez 1 tuile aléatoire dans la réserve morte.",
+    "penalty_lose_decree_slot": "Perdez {{count}} emplacement de Décret au prochain tour.",
+    "penalty_halve_base_score": "Divisez les points de base de la prochaine main par deux.",
+    "penalty_destroy_decrees": "Détruisez tous les autres Décrets.",
+    "penalty_none": "Aucune pénalité supplémentaire.",
+    "protected": "La protection du Présage annule la pénalité supplémentaire.",
+    "errorSuit": "Choisissez une tuile numérotée d’une autre famille.",
+    "errorRank": "Choisissez une tuile dont le nouveau rang sera entre 1 et 9.",
+    "choose": "Choisissez un objet, puis confirmez son utilisation.",
+    "targets": "Tuiles ciblées",
+    "count": "Cibles : {{selected}} / {{required}}",
+    "copyOrder": "La tuile 1 devient une copie de la tuile 2. Choisissez d’abord celle à modifier.",
+    "cost": "Coût du Vide",
+    "failed": "Cet objet n’a pas pu être utilisé.",
+    "unavailable": "Vérifiez les cibles et la limite d’utilisation de cette manche.",
+    "confirm": "Utiliser",
+    "fateSeals": "Sceaux du Destin",
+    "celestialOrbs": "Orbes Célestes",
+    "voidScripts": "Écrits du Vide"
+  },
   "common": {
     "loading": "Chargement...",
     "error": "Erreur",
@@ -37,6 +70,9 @@
     "tableLoop": "Boucle de table (expérience)"
   },
   "settings": {
+    "resetProgressScope": "Les découvertes et les parties en cours ou sauvegardées seront aussi supprimées. La langue, le son et les réglages d’accessibilité seront conservés.",
+    "resetFailed": "La réinitialisation a échoué. Votre progression a été conservée. Vérifiez le stockage du navigateur et réessayez.",
+    "resetPartial": "La réinitialisation n’a pas pu se terminer et une partie de la progression a pu changer. Vérifiez le stockage du navigateur et réessayez.",
     "title": "Paramètres",
     "audio": "Audio",
     "musicVolume": "Volume Musique",
@@ -204,6 +240,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "Commun",
+      "rarity_uncommon": "Peu commun",
+      "rarity_rare": "Rare",
+      "rarity_legendary": "Légendaire",
+      "subtitle": "Préparez-vous au prochain défi",
+      "items": "Objets",
+      "availableCount": "Disponibles : {{count}}",
+      "allPurchased": "Tous les objets ont été achetés !",
+      "packs": "Paquets de bénédictions",
+      "noPacks": "Aucun paquet disponible",
+      "imperialCharter": "Charte impériale",
+      "nextRound": "Passer à la manche suivante",
+      "confirmPurchase": "Confirmer l’achat",
+      "purchasePrompt": "Acheter {{name}} pour {{cost}}G ?",
+      "baseEdition": "Édition de base",
+      "goldBalance": "{{amount}} pièces d’or",
+      "rerollsUsed": "Renouvellements utilisés : {{count}}"
+    },
+    "payout": {
+      "heading": "Acte {{act}} · {{round}}",
+      "clear": "Victoire",
+      "interest": "Intérêts",
+      "decrees": "Décrets",
+      "goldTiles": "Tuiles d’or",
+      "bonus": "Bonus de récompense",
+      "rentals": "Locations",
+      "interestBlocked": "Les intérêts sont actuellement bloqués.",
+      "interestCap": "Le plafond d’intérêts de {{interest}}G est atteint.",
+      "interestSave": "Avec vos économies actuelles : {{interest}}G d’intérêts. Économisez encore {{needed}}G pour obtenir {{next}}G.",
+      "nextRound": "Suite : {{round}} · objectif {{target}}",
+      "nextAct": "Suite : Acte {{act}}"
+    },
+    "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
+    "packInventoryFull": "Pas assez de place pour cette sélection. Choisissez moins de récompenses, d’autres récompenses, ou passez le paquet.",
+    "inventoryFull": "Pas assez de place dans l’inventaire pour cette récompense.",
+    "skipRewards": "Passer les récompenses",
+    "purchaseFailed": "L’achat n’a pas pu être effectué.",
+    "packSelected": "{{count}} / {{max}} sélectionnés",
+    "confirmSelection": "Confirmer la sélection",
+    "selectItems": "Choisir des objets",
     "title": "Maison de Thé",
     "titleJp": "茶寮",
     "buy": "Acheter",
@@ -894,6 +971,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "Les fleurs récoltées durent toute la partie. Les autres bonus sont des aperçus.",
+      "roundScope": "Dans l’ordre de pioche. Les saisons expirent à la fin de cette manche.",
+      "collected": "Récoltée",
+      "missing": "Non récoltée",
+      "noSeasons": "Aucune saison dans cette manche.",
+      "suppressed": "La Sécheresse neutralise les bonus de score de vos fleurs.",
+      "protected": "Un décret protège vos fleurs de la Sécheresse.",
+      "decayPenalty": "Pénalité de Déclin par main jouée : −{{points}} points.",
+      "partial": "Certaines règles saisonnières sont encore en développement. Seuls les effets actuels sont indiqués.",
+      "unwired": "Pas encore implémenté.",
+      "summer": "Score ×1,3.",
+      "autumn": "Multiplicateur de yaku +20 %.",
+      "winter": "Score ×0,75.",
+      "drought": "Neutralise les bonus de score des fleurs non protégées.",
+      "frostbite": "Divise par deux les bonus multiplicateurs des décrets.",
+      "decay": "−10 points par tuile défaussée dans cette manche, sans descendre sous zéro.",
+      "droughtName": "Sécheresse",
+      "monsoonName": "Mousson",
+      "frostbiteName": "Gelure",
+      "decayName": "Déclin",
+      "corruptedName": "Corrompue",
+      "flowerPlum": "+{{percent}} % de score par séquence.",
+      "flowerOrchid": "+{{percent}} % de score par tuile d’honneur.",
+      "flowerChrysanthemum": "+{{percent}} % de score par groupe caché.",
+      "flowerBamboo": "+{{percent}} % de score par tuile terminale.",
+      "setTwo": "2 fleurs : +1 emplacement de décret.",
+      "setThree": "3 fleurs : déblocage spécial de boutique non implémenté.",
+      "setFour": "4 fleurs : bonus des fleurs doublés."
+    },
     "flowers": "Fleurs",
     "seasons": "Saisons",
     "plum": "Prunier",
@@ -957,6 +1064,12 @@
     "quad": "Carré"
   },
   "results": {
+    "endlessComplete": "Ascension infinie terminée",
+    "victorySubtitle": "Vous avez remporté le duel de l’acte 8. Votre victoire est acquise.",
+    "endlessSubtitle": "Votre victoire reste acquise, même si cette ascension est terminée.",
+    "defeatSubtitle": "Essayez une autre stratégie lors de votre prochaine partie.",
+    "showdownCleared": "Duel remporté",
+    "continueEndless": "Continuer en mode infini",
     "victory": "Victoire !",
     "defeat": "Défaite",
     "roundComplete": "Manche Terminée !",
@@ -1751,7 +1864,7 @@
       },
       "seal_of_unity": {
         "name": "Sceau de l'Unité",
-        "description": "Convertit jusqu'à 3 tuiles en tuiles d'Honneur"
+        "description": "Convertit jusqu’à 3 tuiles numérotées en Vents. Les rangs suivent le cycle Est, Sud, Ouest, Nord."
       },
       "seal_of_the_oracle": {
         "name": "Sceau de l'Oracle",
@@ -2051,7 +2164,7 @@
       },
       "purple": {
         "name": "Sceau Violet",
-        "description": "Crée un Sceau du Destin à la défausse. Crée un Sceau du Destin au hasard quand la tuile est défaussée"
+        "description": "Crée un Sceau du Destin aléatoire lorsque cette tuile est défaussée ou échangée, s’il reste de la place."
       }
     }
   },
@@ -2146,40 +2259,76 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "Classique",
+        "unlock": "Disponible dès le départ",
+        "modifiers": { "0": "Aucun modificateur spécial" },
         "name": "Feutre Vert",
         "description": "La table de mahjong classique. Une surface traditionnelle en feutre vert, polie par d'innombrables mains. Aucun modificateur particulier : rien que l'adresse."
       },
       "red_lacquer": {
+        "theme": "Propice",
+        "unlock": "Terminez l’acte 3",
+        "modifiers": { "0": "+1 emplacement de décret au départ" },
         "name": "Laque Rouge",
         "description": "Une table luxueuse finie d'une laque vermillon éclatante, symbole de richesse et de bonne fortune."
       },
       "bamboo_mat": {
+        "theme": "Naturel",
+        "unlock": "Réunissez les 4 fleurs en une partie",
+        "modifiers": {
+          "0": "+25% au poids de tirage des fleurs (toujours 4 fleurs)"
+        },
         "name": "Natte de Bambou",
         "description": "Une simple natte de bambou tressé étalée sur une table basse dans un pavillon de jardin."
       },
       "imperial_gold": {
+        "theme": "Royal",
+        "unlock": "Gagnez avec au moins 5 décrets",
+        "modifiers": { "0": "Commencez avec 1 mandat régional aléatoire" },
         "name": "Or Impérial",
         "description": "Une table magnifique du palais impérial, incrustée de feuille d'or et de jade."
       },
       "night_market": {
+        "theme": "Urbain",
+        "unlock": "Achetez 20 décrets au total",
+        "modifiers": {
+          "0": "Prix en boutique −20%",
+          "1": "−1 emplacement de décret"
+        },
         "name": "Marché de Nuit",
         "description": "Une table de fortune dans le marché de nuit animé, éclairée par des lanternes de papier."
       },
       "temple_stone": {
+        "theme": "Austère",
+        "unlock": "Gagnez sans récolter de fleurs",
+        "modifiers": { "0": "Aucune fleur", "1": "+50% au score de base" },
         "name": "Pierre du Temple",
         "description": "Une table de pierre froide dans un temple ascétique de montagne. Aucune fleur n'y pousse."
       },
       "ghost_parlor": {
+        "theme": "Hanté",
+        "unlock": "Survivez à 3 saisons corrompues en une partie",
+        "modifiers": { "0": "Saisons corrompues possibles dès l’acte I" },
         "name": "Salon des Fantômes",
         "description": "Une salle de mahjong abandonnée où les esprits jouent encore. Le voile entre les mondes y est mince."
       },
       "dragons_den": {
+        "theme": "Mythique",
+        "unlock": "Réalisez un yakuman",
+        "modifiers": {
+          "0": "Multiplicateurs de yakuman +1,0×",
+          "1": "Objectifs de score +25%"
+        },
         "name": "Antre du Dragon",
         "description": "Une table légendaire taillée dans l'os de dragon, cachée dans une caverne de montagne."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "La sauvegarde précédente n’a pas pu être restaurée. Lancez une nouvelle partie pour la remplacer.",
+      "unavailable": "La progression ne peut pas être sauvegardée sur cet appareil. Gardez cet onglet ouvert pour continuer."
+    },
     "slot": {
       "meld": "Emplacement de combinaison {{number}}",
       "pair": "Emplacement de la paire",

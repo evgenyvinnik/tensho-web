@@ -75,6 +75,7 @@ export interface PlaySurfaceProps {
 }
 
 interface DragState {
+  pointerId: number
   tile: Tile
   startX: number
   startY: number
@@ -120,7 +121,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[tileSize]
   const stagingZoneMinHeight = Math.max(96, dimensions.height + 12)
-  const handZoneHeight = Math.max(108, dimensions.height + 24)
+  const tileTargetWidth = Math.max(44, dimensions.width)
   const beginnerPatternLabel =
     beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
       ? t(`melds.${beginnerSuggestion.kind}`, beginnerSuggestion.kind)
@@ -135,24 +136,46 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Drag state
   const [dragState, setDragState] = useState<DragState | null>(null)
   const [currentDropZone, setCurrentDropZone] = useState<DropZone>(null)
-  const [surfaceWidth, setSurfaceWidth] = useState(() =>
-    typeof window === 'undefined' ? 640 : window.innerWidth
-  )
 
   // Staged tiles (tiles moved to staging area)
   const [stagedTiles, setStagedTiles] = useState<Tile[]>([])
   const handledStageAllRequestRef = useRef(stageAllRequestId)
 
+  useEffect(() => {
+    const surface = containerRef.current!
+    // Pointerup moves the tile to another parent. A later compatibility click
+    // can then hit a different control at the old coordinates (such as Flora).
+    // Cancel that native touch default at its origin, while retaining pointer
+    // gestures, keyboard/AT activation, and panning on the blank table. React's
+    // delegated touch listeners are passive, so this listener must be native.
+    const suppressCompatibilityClick = (event: TouchEvent) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest('[data-play-tile]')
+      ) {
+        event.preventDefault()
+      }
+    }
+    surface.addEventListener('touchstart', suppressCompatibilityClick, {
+      passive: false,
+    })
+    return () =>
+      surface.removeEventListener('touchstart', suppressCompatibilityClick)
+  }, [])
+
   const toggleStagedTile = useCallback(
     (tile: Tile, originZone: 'hand' | 'staging') => {
+      if (disabled) return
       setStagedTiles((previous) =>
         originZone === 'staging'
           ? previous.filter((staged) => staged.id !== tile.id)
-          : [...previous, tile]
+          : previous.some((staged) => staged.id === tile.id)
+            ? previous
+            : [...previous, tile]
       )
       onTileSelect?.(tile)
     },
-    [onTileSelect]
+    [disabled, onTileSelect]
   )
 
   // Tiles remaining in hand (excluding staged)
@@ -162,45 +185,47 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   }, [handTiles, stagedTiles])
 
   // Determine which zone a point is in
-  const getDropZone = useCallback(
-    (x: number, y: number): DropZone => {
-      // Check discard zone first (it's a small square, need precise detection)
-      if (discardZoneRef.current) {
-        const discardRect = discardZoneRef.current.getBoundingClientRect()
-        if (
-          x >= discardRect.left &&
-          x <= discardRect.right &&
-          y >= discardRect.top &&
-          y <= discardRect.bottom
-        ) {
-          return 'discard'
-        }
+  const getDropZone = useCallback((x: number, y: number): DropZone => {
+    // Check discard zone first (it's a small square, need precise detection)
+    if (discardZoneRef.current) {
+      const discardRect = discardZoneRef.current.getBoundingClientRect()
+      if (
+        x >= discardRect.left &&
+        x <= discardRect.right &&
+        y >= discardRect.top &&
+        y <= discardRect.bottom
+      ) {
+        return 'discard'
       }
+    }
 
-      if (!containerRef.current) return null
-
-      const containerRect = containerRef.current.getBoundingClientRect()
-      const relativeY = y - containerRect.top
-
-      // Hand zone is at the bottom
-      const handZoneTop = containerRect.height - handZoneHeight
-      if (relativeY > handZoneTop) {
-        return 'hand'
+    // Both zones can wrap to several rows. Hit-test their rendered bounds,
+    // not a fixed-height strip or the space outside the table.
+    for (const [zone, ref] of [
+      ['hand', handZoneRef],
+      ['staging', stagingZoneRef],
+    ] as const) {
+      const rect = ref.current?.getBoundingClientRect()
+      if (
+        rect &&
+        x >= rect.left &&
+        x <= rect.right &&
+        y >= rect.top &&
+        y <= rect.bottom
+      ) {
+        return zone
       }
-
-      // Everything else is staging
-      return 'staging'
-    },
-    [handZoneHeight]
-  )
+    }
+    return null
+  }, [])
 
   // Handle drag start
   const handleDragStart = useCallback(
-    (tile: Tile, e: React.MouseEvent | React.TouchEvent) => {
-      if (disabled) return
+    (tile: Tile, e: React.PointerEvent) => {
+      if (disabled || e.button !== 0 || !e.isPrimary) return
 
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+      const { clientX, clientY } = e
+      e.currentTarget.setPointerCapture(e.pointerId)
 
       // Determine origin zone
       const originZone = stagedTiles.some((t) => t.id === tile.id)
@@ -208,6 +233,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         : 'hand'
 
       setDragState({
+        pointerId: e.pointerId,
         tile,
         startX: clientX,
         startY: clientY,
@@ -221,11 +247,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Handle drag move
   const handleDragMove = useCallback(
-    (e: MouseEvent | TouchEvent) => {
-      if (!dragState) return
+    (e: PointerEvent) => {
+      if (!dragState || e.pointerId !== dragState.pointerId) return
 
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+      const { clientX, clientY } = e
 
       setDragState((prev) =>
         prev
@@ -287,44 +312,31 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Global event listeners for drag
   useEffect(() => {
     if (dragState) {
-      const moveHandler = (e: MouseEvent | TouchEvent) => {
+      const moveHandler = (e: PointerEvent) => {
+        if (e.pointerId !== dragState.pointerId) return
         e.preventDefault()
         handleDragMove(e)
       }
-      const endHandler = () => handleDragEnd()
+      const endHandler = (e: PointerEvent) => {
+        if (e.pointerId === dragState.pointerId) handleDragEnd()
+      }
+      const cancelHandler = (e: PointerEvent) => {
+        if (e.pointerId !== dragState.pointerId) return
+        setDragState(null)
+        setCurrentDropZone(null)
+      }
 
-      window.addEventListener('mousemove', moveHandler)
-      window.addEventListener('mouseup', endHandler)
-      window.addEventListener('touchmove', moveHandler, { passive: false })
-      window.addEventListener('touchend', endHandler)
-      window.addEventListener('touchcancel', endHandler)
+      window.addEventListener('pointermove', moveHandler, { passive: false })
+      window.addEventListener('pointerup', endHandler)
+      window.addEventListener('pointercancel', cancelHandler)
 
       return () => {
-        window.removeEventListener('mousemove', moveHandler)
-        window.removeEventListener('mouseup', endHandler)
-        window.removeEventListener('touchmove', moveHandler)
-        window.removeEventListener('touchend', endHandler)
-        window.removeEventListener('touchcancel', endHandler)
+        window.removeEventListener('pointermove', moveHandler)
+        window.removeEventListener('pointerup', endHandler)
+        window.removeEventListener('pointercancel', cancelHandler)
       }
     }
   }, [dragState, handleDragMove, handleDragEnd])
-
-  // Keep overlapping tile rows inside the actual play surface. Width-only
-  // breakpoints cannot account for the mobile side panels and discard zone.
-  useEffect(() => {
-    const element = containerRef.current
-    if (!element) return
-
-    const updateWidth = () => setSurfaceWidth(element.clientWidth)
-    updateWidth()
-    const observer = new ResizeObserver(updateWidth)
-    observer.observe(element)
-    window.addEventListener('resize', updateWidth)
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('resize', updateWidth)
-    }
-  }, [])
 
   // Notify parent when staged tiles change
   useEffect(() => {
@@ -387,52 +399,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     immediate: reducedMotion,
   })
 
-  // Discard zone size (slightly larger than a tile)
-  const discardSize = Math.max(dimensions.width, dimensions.height) + 16
-
-  // Calculate hand tile positions, increasing overlap when space is tight.
-  const handPositions = useMemo(() => {
-    const tiles = tilesInHand
-    const preferredSpacing = dimensions.width * 0.7
-    const availableWidth = Math.max(
-      dimensions.width,
-      surfaceWidth - discardSize - 48
-    )
-    const fittedSpacing =
-      tiles.length > 1
-        ? (availableWidth - dimensions.width) / (tiles.length - 1)
-        : preferredSpacing
-    const spacing = Math.max(10, Math.min(preferredSpacing, fittedSpacing))
-    const totalWidth =
-      Math.max(0, tiles.length - 1) * spacing + dimensions.width
-    const startX = -totalWidth / 2 + dimensions.width / 2
-
-    return tiles.map((_, index) => ({
-      x: startX + index * spacing,
-      zIndex: index,
-    }))
-  }, [tilesInHand, dimensions.width, surfaceWidth, discardSize])
-
-  // Calculate staged tile positions (spread evenly in staging area)
-  const stagedPositions = useMemo(() => {
-    const tiles = stagedTiles
-    const preferredSpacing = dimensions.width * 0.8
-    const availableWidth = Math.max(dimensions.width, surfaceWidth - 32)
-    const fittedSpacing =
-      tiles.length > 1
-        ? (availableWidth - dimensions.width) / (tiles.length - 1)
-        : preferredSpacing
-    const spacing = Math.max(10, Math.min(preferredSpacing, fittedSpacing))
-    const totalWidth =
-      Math.max(0, tiles.length - 1) * spacing + dimensions.width
-    const startX = -totalWidth / 2 + dimensions.width / 2
-
-    return tiles.map((_, index) => ({
-      x: startX + index * spacing,
-      zIndex: index,
-    }))
-  }, [stagedTiles, dimensions.width, surfaceWidth])
-
   const beginnerProgress = beginnerSuggestion
     ? beginnerSuggestion.tileIds.filter((tileId) =>
         stagedTiles.some((tile) => tile.id === tileId)
@@ -447,10 +413,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative flex h-full w-full flex-col select-none"
+      className="relative flex min-h-full w-full flex-col select-none"
       style={{
-        minHeight: stagingZoneMinHeight + handZoneHeight,
-        touchAction: 'none',
+        touchAction: 'pan-y',
       }}
     >
       {/* ===== STAGING/PLAY ZONE ===== */}
@@ -458,7 +423,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ref={stagingZoneRef}
         data-play-zone="staging"
         data-table-theme-color={tableThemeColor}
-        className="relative flex-1 flex flex-col items-center justify-center mx-2 my-2 rounded-xl border-2"
+        className="relative flex-1 flex flex-col items-center justify-center mx-2 my-2 rounded-xl border-2 py-3"
         style={{
           minHeight: stagingZoneMinHeight,
           background: `linear-gradient(145deg, ${tableThemeColor}30, ${tableAccentColor}20 48%, rgba(8, 28, 21, 0.62))`,
@@ -483,15 +448,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         {stagedTiles.length > 0 ? (
           <>
             {/* Staged tiles */}
-            <div
-              className="relative flex items-center justify-center"
-              style={{
-                width: '100%',
-                height: dimensions.height + 20,
-              }}
-            >
-              {stagedTiles.map((tile, index) => {
-                const position = stagedPositions[index]
+            <div className="flex w-full flex-wrap items-center justify-center gap-2 px-2 py-2">
+              {stagedTiles.map((tile) => {
                 const isDraggingThis = dragState?.tile.id === tile.id
 
                 return (
@@ -501,20 +459,21 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                     data-beginner-highlighted={
                       highlightedIds.has(tile.id) ? 'true' : undefined
                     }
-                    className="absolute transition-transform"
+                    className="relative flex shrink-0 cursor-pointer items-center justify-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
                     style={{
-                      left: '50%',
-                      top: '50%',
-                      transform: `translate(calc(-50% + ${position.x}px), -50%)`,
-                      zIndex: isDraggingThis
-                        ? 1000
-                        : highlightedIds.has(tile.id)
-                          ? 100 + index
-                          : position.zIndex,
+                      width: tileTargetWidth,
+                      minHeight: Math.max(44, dimensions.height),
+                      touchAction: 'none',
+                      zIndex: isDraggingThis ? 1000 : undefined,
                       opacity: isDraggingThis ? 0.5 : 1,
                     }}
-                    onMouseDown={(e) => handleDragStart(tile, e)}
-                    onTouchStart={(e) => handleDragStart(tile, e)}
+                    onPointerDown={(e) => handleDragStart(tile, e)}
+                    onClick={(event) => {
+                      // Assistive technology may activate a button without a
+                      // pointer gesture. Pointer-generated clicks are already
+                      // settled on pointerup and must not stage twice.
+                      if (event.detail === 0) toggleStagedTile(tile, 'staging')
+                    }}
                     onKeyDown={(event) => {
                       if (event.key !== 'Enter' && event.key !== ' ') return
                       event.preventDefault()
@@ -522,7 +481,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                     }}
                     role="button"
                     tabIndex={disabled ? -1 : 0}
-                    aria-label={`Return ${tile.displayName} to hand`}
+                    aria-disabled={disabled}
+                    aria-label={`Return ${faceDownIds.has(tile.id) ? t('tiles.faceDown', 'Face-down tile') : tile.displayName} to hand`}
                   >
                     <AnimatedTile
                       tile={tile}
@@ -579,7 +539,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             )}
           </>
         ) : (
-          <div className="text-center px-6">
+          <div className="text-center px-3">
             <span
               data-table-stage-accent
               aria-hidden="true"
@@ -663,18 +623,14 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       <animated.div
         ref={handZoneRef}
         data-play-zone="hand"
-        className="relative flex items-center px-2 rounded-t-xl"
+        className="relative flex shrink-0 flex-col gap-3 rounded-t-xl px-3 py-3"
         style={{
-          height: handZoneHeight,
           backgroundColor: 'rgba(28, 58, 46, 0.8)',
           filter: handZoneSpring.brightness.to((b) => `brightness(${b})`),
         }}
       >
-        {/* Hand header - leave space on right for discard zone */}
-        <div
-          className="absolute top-2 left-4 flex items-center justify-between"
-          style={{ right: discardSize + 20 }}
-        >
+        {/* Secondary controls occupy a real row, never tile hit areas. */}
+        <div className="flex w-full flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-3">
             <span className="text-[var(--color-beige-white)] text-sm opacity-70">
               {t('gameplay.handCount', 'Hand ({{count}})', {
@@ -691,25 +647,39 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
           {/* Shanten/Tenpai display - always visible */}
           {shantenDisplay && (
-            <div className="px-3 py-1 rounded-full bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
+            <div className="px-2 py-1 rounded-full bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
               <span className="text-[var(--color-golden-yellow)] font-bold text-sm">
                 {shantenDisplay}
               </span>
             </div>
           )}
+          <animated.div
+            ref={discardZoneRef}
+            data-play-zone="discard"
+            className="flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1 rounded-lg border-2 border-dashed px-2"
+            style={{
+              transform: discardZoneSpring.scale.to((s) => `scale(${s})`),
+              backgroundColor: discardZoneSpring.backgroundColor,
+              borderColor: discardZoneSpring.borderColor,
+            }}
+            title={t('gameplay.discard', 'Discard')}
+          >
+            <span aria-hidden="true">🗑️</span>
+            <span
+              data-tutorial="discards-remaining"
+              className="text-xs font-bold text-white"
+            >
+              {discardsRemaining}
+            </span>
+          </animated.div>
         </div>
 
-        {/* Hand tiles container - centered with space for discard zone on right */}
+        {/* Wrap whole tiles instead of hiding identities beneath a fan. */}
         <div
-          className="relative flex items-end justify-center flex-1"
-          style={{
-            height: dimensions.height + 30,
-            marginTop: 20,
-            marginRight: discardSize + 16, // Make room for discard zone
-          }}
+          className="flex w-full flex-wrap items-center justify-center gap-2 py-2"
+          style={{ minHeight: dimensions.height + 16 }}
         >
-          {tilesInHand.map((tile, index) => {
-            const position = handPositions[index]
+          {tilesInHand.map((tile) => {
             const isDraggingThis = dragState?.tile.id === tile.id
 
             return (
@@ -719,20 +689,18 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 data-beginner-highlighted={
                   highlightedIds.has(tile.id) ? 'true' : undefined
                 }
-                className="absolute transition-transform"
+                className="relative flex shrink-0 cursor-pointer items-center justify-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
                 style={{
-                  left: '50%',
-                  bottom: 10,
-                  transform: `translateX(calc(-50% + ${position.x}px))`,
-                  zIndex: isDraggingThis
-                    ? 1000
-                    : highlightedIds.has(tile.id)
-                      ? 100 + index
-                      : position.zIndex,
+                  width: tileTargetWidth,
+                  minHeight: Math.max(44, dimensions.height),
+                  touchAction: 'none',
+                  zIndex: isDraggingThis ? 1000 : undefined,
                   opacity: isDraggingThis ? 0.5 : 1,
                 }}
-                onMouseDown={(e) => handleDragStart(tile, e)}
-                onTouchStart={(e) => handleDragStart(tile, e)}
+                onPointerDown={(e) => handleDragStart(tile, e)}
+                onClick={(event) => {
+                  if (event.detail === 0) toggleStagedTile(tile, 'hand')
+                }}
                 onKeyDown={(event) => {
                   if (event.key !== 'Enter' && event.key !== ' ') return
                   event.preventDefault()
@@ -740,7 +708,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 }}
                 role="button"
                 tabIndex={disabled ? -1 : 0}
-                aria-label={`Stage ${tile.displayName}`}
+                aria-disabled={disabled}
+                aria-label={`Stage ${faceDownIds.has(tile.id) ? t('tiles.faceDown', 'Face-down tile') : tile.displayName}`}
               >
                 <AnimatedTile
                   tile={tile}
@@ -757,38 +726,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             )
           })}
         </div>
-
-        {/* ===== DISCARD ZONE (small square on right side) ===== */}
-        <animated.div
-          ref={discardZoneRef}
-          className="absolute right-3 flex flex-col items-center justify-center rounded-xl border-2 border-dashed"
-          style={{
-            width: discardSize,
-            height: discardSize,
-            top: '50%',
-            transform: discardZoneSpring.scale.to(
-              (s) => `translateY(-50%) scale(${s})`
-            ),
-            backgroundColor: discardZoneSpring.backgroundColor,
-            borderColor: discardZoneSpring.borderColor,
-            boxShadow:
-              currentDropZone === 'discard'
-                ? '0 0 20px rgba(255, 87, 34, 0.6), inset 0 0 15px rgba(255, 87, 34, 0.3)'
-                : dragState
-                  ? '0 0 10px rgba(255, 87, 34, 0.3)'
-                  : 'none',
-          }}
-        >
-          <span className="text-2xl">🗑️</span>
-          {discardsRemaining > 0 && (
-            <span
-              data-tutorial="discards-remaining"
-              className="text-xs font-bold text-white mt-1"
-            >
-              {discardsRemaining}
-            </span>
-          )}
-        </animated.div>
       </animated.div>
 
       {/* ===== DRAGGING TILE OVERLAY ===== */}

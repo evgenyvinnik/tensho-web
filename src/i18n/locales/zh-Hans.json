@@ -1,4 +1,37 @@
 {
+  "consumableUse": {
+    "unityMapping": "原点数 → 风牌",
+    "errorMaxLevel": "此升级已达到最高等级。",
+    "errorNoRoom": "使用前请为奖励腾出空位。",
+    "errorNoDecrees": "此效果需要已拥有的法令。",
+    "errorNoPrevious": "请先使用一个「{{seals}}」或「{{orbs}}」类别的道具。",
+    "copyResult": "将创建：{{name}}",
+    "errorNoGold": "现在使用此效果不会获得金币。",
+    "hiddenOutcome": "隐藏牌的效果结果仅在确认时判定。",
+    "available": "{{name}}（可用：{{count}}）",
+    "penalty_lose_tile": "失去1张随机牌。",
+    "penalty_lose_gold": "失去所有金币。",
+    "penalty_lose_hand_size": "手牌上限永久减少{{count}}张。",
+    "penalty_lock_tile": "将1张随机牌锁入死牌池。",
+    "penalty_lose_decree_slot": "下一轮失去{{count}}个法令槽位。",
+    "penalty_halve_base_score": "下一手的基础分减半。",
+    "penalty_destroy_decrees": "摧毁所有其他法令。",
+    "penalty_none": "无额外代价。",
+    "protected": "预兆保护会抵消额外代价。",
+    "errorSuit": "请选择其他花色的数牌。",
+    "errorRank": "请选择变更后点数在1至9之间的数牌。",
+    "choose": "选择道具，然后确认使用。",
+    "targets": "目标牌",
+    "count": "目标：{{selected}} / {{required}}",
+    "copyOrder": "牌1将变成牌2的复制品。请先选择要改变的牌。",
+    "cost": "虚空代价",
+    "failed": "无法使用此道具。",
+    "unavailable": "请检查目标和本回合的使用次数限制。",
+    "confirm": "使用道具",
+    "fateSeals": "命运符印",
+    "celestialOrbs": "天体宝珠",
+    "voidScripts": "虚空卷轴"
+  },
   "common": {
     "loading": "加载中...",
     "error": "错误",
@@ -37,6 +70,9 @@
     "tableLoop": "牌桌循环（实验）"
   },
   "settings": {
+    "resetProgressScope": "发现记录以及进行中或已保存的局也会被删除。语言、音频和无障碍设置将保留。",
+    "resetFailed": "重置失败。你的进度已保留。请检查浏览器存储后重试。",
+    "resetPartial": "重置未能完成，部分进度可能已更改。请检查浏览器存储后重试。",
     "title": "设置",
     "audio": "音频",
     "musicVolume": "音乐音量",
@@ -204,6 +240,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "普通",
+      "rarity_uncommon": "优秀",
+      "rarity_rare": "稀有",
+      "rarity_legendary": "传说",
+      "subtitle": "为下一场挑战做好准备",
+      "items": "物品",
+      "availableCount": "可用数量：{{count}}",
+      "allPurchased": "所有物品均已购买！",
+      "packs": "祝福包",
+      "noPacks": "暂无可购买的包",
+      "imperialCharter": "帝国特许状",
+      "nextRound": "进入下一局",
+      "confirmPurchase": "确认购买",
+      "purchasePrompt": "花费{{cost}}G购买「{{name}}」？",
+      "baseEdition": "基础版",
+      "goldBalance": "金币：{{amount}}",
+      "rerollsUsed": "已刷新次数：{{count}}"
+    },
+    "payout": {
+      "heading": "第{{act}}幕 · {{round}}",
+      "clear": "通关奖励",
+      "interest": "利息",
+      "decrees": "法令",
+      "goldTiles": "金牌",
+      "bonus": "额外奖励",
+      "rentals": "租金",
+      "interestBlocked": "当前无法获得利息。",
+      "interestCap": "已达到利息上限{{interest}}G。",
+      "interestSave": "按当前存款可得利息{{interest}}G。再存{{needed}}G即可获得{{next}}G。",
+      "nextRound": "下一局：{{round}} · 目标{{target}}",
+      "nextAct": "下一幕：第{{act}}幕"
+    },
+    "packChoices": "从 {{count}} 个奖励中选择最多 {{max}} 个",
+    "packInventoryFull": "空间不足，无法领取所选奖励。请减少数量、更换奖励或跳过卡包。",
+    "inventoryFull": "物品栏空间不足，无法领取此奖励。",
+    "skipRewards": "跳过奖励",
+    "purchaseFailed": "无法完成购买。",
+    "packSelected": "已选择 {{count}} / {{max}}",
+    "confirmSelection": "确认选择",
+    "selectItems": "选择物品",
     "title": "茶寮",
     "titleJp": "茶寮",
     "buy": "购买",
@@ -894,6 +971,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "已收集的花牌在本次挑战中持续生效。未收集的加成为预览。",
+      "roundScope": "按摸取顺序显示。季节效果在本轮结束时清除。",
+      "collected": "已收集",
+      "missing": "未收集",
+      "noSeasons": "本轮尚无季节。",
+      "suppressed": "干旱压制了花牌的得分加成。",
+      "protected": "法令保护花牌加成不受干旱影响。",
+      "decayPenalty": "衰败每次出牌的扣分：−{{points}} 分。",
+      "partial": "部分季节规则仍在开发中，此处仅显示当前生效的效果。",
+      "unwired": "尚未实现。",
+      "summer": "得分 ×1.3。",
+      "autumn": "役倍率 +20%。",
+      "winter": "得分 ×0.75。",
+      "drought": "压制未受保护的花牌得分加成。",
+      "frostbite": "法令提供的倍率加成减半。",
+      "decay": "本轮每弃一张牌扣 10 分，最终得分最低为零。",
+      "droughtName": "干旱",
+      "monsoonName": "季风",
+      "frostbiteName": "冻伤",
+      "decayName": "衰败",
+      "corruptedName": "异变",
+      "flowerPlum": "每组顺子得分 +{{percent}}%。",
+      "flowerOrchid": "每张字牌得分 +{{percent}}%。",
+      "flowerChrysanthemum": "每组暗面子得分 +{{percent}}%。",
+      "flowerBamboo": "每张老头牌得分 +{{percent}}%。",
+      "setTwo": "2 种花牌：+1 法令槽。",
+      "setThree": "3 种花牌：特殊商店解锁尚未实现。",
+      "setFour": "4 种花牌：花牌加成翻倍。"
+    },
     "flowers": "花牌",
     "seasons": "季牌",
     "plum": "梅",
@@ -957,6 +1064,12 @@
     "quad": "杠子"
   },
   "results": {
+    "endlessComplete": "无尽攀登结束",
+    "victorySubtitle": "你已赢得第8幕的决战。胜利已被记录。",
+    "endlessSubtitle": "本次攀登虽已结束，你的胜利记录仍然保留。",
+    "defeatSubtitle": "下次挑战时，试试不同的策略。",
+    "showdownCleared": "决战告捷",
+    "continueEndless": "继续无尽模式",
     "victory": "胜利！",
     "defeat": "失败",
     "roundComplete": "局完成！",
@@ -1751,7 +1864,7 @@
       },
       "seal_of_unity": {
         "name": "统合之符",
-        "description": "最多将3张牌转为字牌"
+        "description": "最多将3张数牌转为风牌。点数按东、南、西、北的顺序循环对应。"
       },
       "seal_of_the_oracle": {
         "name": "先知之符",
@@ -2051,7 +2164,7 @@
       },
       "purple": {
         "name": "紫封",
-        "description": "弃牌时生成命运符。被弃出时生成随机命运符"
+        "description": "弃出或换掉这张牌时，若有空位，生成一个随机命运符。"
       }
     }
   },
@@ -2146,40 +2259,68 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "经典",
+        "unlock": "初始可用",
+        "modifiers": { "0": "无特殊效果" },
         "name": "绿绒台",
         "description": "经典的麻将桌。传统的绿色绒面，被无数双手磨得光滑。没有特殊修正，只凭本事。"
       },
       "red_lacquer": {
+        "theme": "吉祥",
+        "unlock": "完成第3幕",
+        "modifiers": { "0": "初始法令槽位+1" },
         "name": "朱漆台",
         "description": "以鲜艳朱漆髹饰的华贵之桌，象征财富与好运。"
       },
       "bamboo_mat": {
+        "theme": "自然",
+        "unlock": "单次挑战集齐4种花牌",
+        "modifiers": { "0": "花牌抽取权重+25%（仍为原有4张花牌）" },
         "name": "竹席台",
         "description": "园中亭下矮桌上铺开的一张素朴竹席。"
       },
       "imperial_gold": {
+        "theme": "皇家",
+        "unlock": "持有至少5个法令并获胜",
+        "modifiers": { "0": "携带1个随机地区敕令开始" },
         "name": "御金台",
         "description": "出自宫廷的华美之桌，镶嵌金箔与美玉。"
       },
       "night_market": {
+        "theme": "街市",
+        "unlock": "累计购买20个法令",
+        "modifiers": { "0": "商店价格−20%", "1": "法令槽位−1" },
         "name": "夜市台",
         "description": "喧闹夜市中临时搭起的桌子，灯笼映照其上。"
       },
       "temple_stone": {
+        "theme": "清修",
+        "unlock": "未收集花牌的情况下获胜",
+        "modifiers": { "0": "不会出现花牌", "1": "基础得分+50%" },
         "name": "寺石台",
         "description": "山中苦修寺院里的冰冷石桌。此处不生花木。"
       },
       "ghost_parlor": {
+        "theme": "幽冥",
+        "unlock": "单次挑战中挺过3个腐化季节",
+        "modifiers": { "0": "第I幕起可能出现腐化季节" },
         "name": "幽灵馆",
         "description": "荒废的麻将馆，亡魂仍在此对局。幽明之隔已然稀薄。"
       },
       "dragons_den": {
+        "theme": "神话",
+        "unlock": "达成役满",
+        "modifiers": { "0": "役满倍率+1.0×", "1": "目标分数+25%" },
         "name": "龙窟台",
         "description": "以龙骨雕成的传说之桌，藏于山中洞窟。"
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "无法恢复上次存档。开始新一局即可替换。",
+      "unavailable": "此设备无法保存进度。请保持此标签页打开以继续游戏。"
+    },
     "slot": {
       "meld": "面子格 {{number}}",
       "pair": "对子格",

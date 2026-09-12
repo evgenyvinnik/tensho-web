@@ -20,12 +20,22 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
+      commit: ${{ steps.publish.outputs.commit }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Verify release workflow
+        run: node --test scripts/deployment-versioning.test.mjs
 
       - name: Calculate deployment version
         id: version
@@ -73,9 +83,25 @@ jobs:
           NODE
 
       - name: Commit and tag deployment version
+        id: publish
+        shell: bash
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF}" != "refs/heads/main" ]]; then
+            echo "Only main may publish deployment versions." >&2
+            exit 1
+          fi
+          if ! [[ "${VERSION}" =~ ^1\.0\.[0-9]{6}-[1-9][0-9]*$ ]]; then
+            echo "Invalid deployment version." >&2
+            exit 1
+          fi
+          if [[ "$(node -p 'JSON.parse(require("node:fs").readFileSync("package.json", "utf8")).version')" != "${VERSION}" ]]; then
+            echo "Package/build version mismatch." >&2
+            exit 1
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -86,38 +112,56 @@ jobs:
             git commit -m "chore: bump version to ${VERSION}"
           fi
 
-          git tag "v${VERSION}"
-
-          # Another commit can land between the checkout and this push. Rebase
-          # onto it and retry rather than failing the deploy; the tag is only
-          # pushed once the branch is in.
+          # Publish both refs from the same final HEAD, or publish neither.
+          # A local tag created before a retry/rebase would point at old code.
+          # Never force either ref; rejected/conflicting updates fail safely.
           for attempt in 1 2 3; do
-            if git push origin "HEAD:${{ github.ref }}"; then
+            if git push --atomic origin "HEAD:${GITHUB_REF}" "HEAD:refs/tags/v${VERSION}"; then
+              echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
               break
             fi
             if [ "${attempt}" = "3" ]; then
-              echo "Could not push the version bump after ${attempt} attempts." >&2
+              echo "Could not publish the version commit and tag after ${attempt} attempts." >&2
               exit 1
             fi
-            git fetch origin "${{ github.ref }}"
-            git rebase "origin/${GITHUB_REF_NAME}"
+            git fetch origin "${GITHUB_REF}"
+            git rebase FETCH_HEAD
           done
-
-          git push origin "v${VERSION}"
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.1.38
+          bun-version-file: package.json
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Verify application tests
+        run: bun run test:run --maxWorkers=2
 
       - name: Build project site
         env:
           VITE_APP_VERSION: ${{ steps.version.outputs.version }}
           VITE_BASE_PATH: /tensho-web/
         run: bun run build
+
+      - name: Record release provenance
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { readFileSync, writeFileSync } from 'node:fs';
+
+          const version = process.env.VERSION;
+          const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
+          if (manifest.version !== version) throw new Error('Package/build version mismatch');
+          const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+          const tag = `v${version}`;
+          const remote = execFileSync('git', ['ls-remote', '--exit-code', 'origin', `refs/tags/${tag}`], { encoding: 'utf8' }).trim();
+          if (remote.split(/\s+/)[0] !== commit) throw new Error('Remote version tag does not match the built checkout');
+          writeFileSync('dist/release.json', JSON.stringify({ schemaVersion: 1, version, commit, tag }, null, 2) + '\n');
+          NODE
 
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
@@ -142,4 +186,4 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Log deployed version
-        run: echo "Deployed Tensho v${{ needs.build.outputs.version }}"
+        run: echo "Deployed Tensho v${{ needs.build.outputs.version }} (${{ needs.build.outputs.commit }})"

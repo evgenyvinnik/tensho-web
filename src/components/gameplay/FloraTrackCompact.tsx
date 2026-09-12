@@ -1,190 +1,260 @@
-/**
- * FloraTrackCompact Component for Tensho Mahjong Roguelike
- *
- * Compact display of collected flowers and active season.
- * Uses actual tile images for flower representation.
- *
- * @module components/gameplay/FloraTrackCompact
- */
-
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tile, TileSuit } from '../../core/Tile'
-import { TileImage } from '../tiles/TileImage'
-import { FlowerVariant, SeasonVariant } from '../../systems/types'
-import { SEASON_BASE_EFFECTS } from '../../systems/SeasonSystem'
+import type { GameOrchestrator } from '../../game/GameOrchestrator'
+import type { FlowerVariant, SeasonTile } from '../../systems/types'
+import { TileSuit } from '../../core/Tile'
+import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
 import { FLOWER_DATA, SEASON_DATA } from './gameplayTypes'
 import { getTileImagePath } from '../../utils/assets'
+import { Popup } from '../ui/Popup'
 
-// =============================================================================
-// TYPE DEFINITIONS
-// =============================================================================
-
-/**
- * Props for FloraTrackCompact
- */
 export interface FloraTrackCompactProps {
-  /** Array of collected flower types */
-  flowers: FlowerVariant[]
-  /** Currently active season (if any) */
-  activeSeason?: SeasonVariant | null
-  /** Whether the season is corrupted */
-  isCorrupted?: boolean
-  /** Handler for expanding to full flora view */
-  onExpand?: () => void
+  flora: ReturnType<GameOrchestrator['getFloraState']>
 }
 
-// =============================================================================
-// COMPONENT
-// =============================================================================
+const FLOWERS: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
 
-/**
- * Compact flower and season tracking panel.
- *
- * Features:
- * - Displays all four flower types with collected/uncollected states
- * - Uses actual tile images for visual consistency
- * - Shows effect text for collected flowers
- * - Displays set bonus progress (2/3/4 flowers)
- * - Shows active season with corruption indicator
- * - Tooltips on hover for uncollected flowers
- */
-export function FloraTrackCompact({
-  flowers,
-  activeSeason,
-  isCorrupted,
-  onExpand,
-}: FloraTrackCompactProps) {
-  const { t } = useTranslation()
-  const [showTooltip, setShowTooltip] = useState<FlowerVariant | null>(null)
-  const collectedSet = new Set(flowers)
-  const allFlowers: FlowerVariant[] = [
-    'Plum',
-    'Orchid',
-    'Chrysanthemum',
-    'Bamboo',
-  ]
+/** Inspect public bonus tiles without changing the hand, turn, or selection. */
+export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
+  const { t, i18n } = useTranslation()
+  const [open, setOpen] = useState(false)
+  const collected = new Set(flora.flowers.flowers.map((flower) => flower.type))
+  const title = t('flora.flowers') + ' · ' + t('flora.seasons')
+  const seasonName = (season: SeasonTile) =>
+    season.isCorrupted
+      ? t(
+          'flora.details.' +
+            (season.corruptedType?.toLowerCase() ?? 'corrupted') +
+            'Name'
+        )
+      : t('flora.' + season.type.toLowerCase())
+  // Verified gaps, not active powers. Do not advertise unused helpers.
+  const incomplete = flora.seasons.some(
+    (season) =>
+      !season.isCorrupted ||
+      season.corruptedType === 'Monsoon' ||
+      season.corruptedType === 'Frostbite'
+  )
 
   return (
-    <div
-      className="flex flex-row items-center gap-1 rounded-lg bg-[var(--color-dark-forest)] p-1 shadow-lg md:flex-col md:items-stretch md:p-2"
-      onClick={onExpand}
-    >
-      {/* Flowers using actual tile images */}
-      <div className="flex flex-row gap-1 md:flex-col">
-        {allFlowers.map((flower) => {
-          const isCollected = collectedSet.has(flower)
-          const data = FLOWER_DATA[flower]
-          const flowerTile = Tile.create(TileSuit.Flower, data.rank)
-
-          return (
-            <div
-              key={flower}
-              className="relative flex items-center gap-2"
-              onMouseEnter={() => setShowTooltip(flower)}
-              onMouseLeave={() => setShowTooltip(null)}
-            >
-              {/* Tile image */}
-              <div
-                className={`
-                  transition-all duration-300
-                  ${!isCollected ? 'opacity-30 grayscale' : ''}
-                `}
-              >
-                <TileImage
-                  tile={flowerTile}
-                  size="small"
-                  disabled={!isCollected}
-                  showTooltip={false}
-                />
-              </div>
-
-              {/* Effect text (only show for collected flowers) */}
-              {isCollected && (
-                <span className="hidden whitespace-nowrap text-xs font-medium text-[var(--color-golden-yellow)] md:inline">
-                  {data.effect}
-                </span>
-              )}
-
-              {/* Tooltip for uncollected */}
-              {showTooltip === flower && !isCollected && (
-                <div className="absolute left-full ml-2 z-50 px-2 py-1 bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)] rounded text-xs text-[var(--color-beige-white)] whitespace-nowrap">
-                  {flower}: {data.effect}
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Set bonus indicator */}
-      {flowers.length >= 2 && (
-        <div className="hidden text-center text-xs text-green-400 md:mt-1 md:block">
-          {flowers.length >= 4
-            ? 'x2 All Effects!'
-            : flowers.length >= 3
-              ? 'Special Decrees'
-              : '+1 Decree Slot'}
-        </div>
-      )}
-
-      {/* Active Season */}
-      {activeSeason && (
-        <div className="hidden flex-col gap-0.5 border-t border-[var(--color-metallic-gold)]/30 md:mt-1 md:flex md:pt-1">
-          <div className="flex items-center justify-center gap-1">
-            <span className="text-xs text-[var(--color-beige-white)] opacity-60">
-              {t('gameplay.season', 'Season:')}
-            </span>
+    <>
+      <button
+        type="button"
+        data-testid="flora-details-trigger"
+        aria-label={
+          title + ': ' + collected.size + '/4 · ' + flora.seasons.length
+        }
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+        className="flex min-h-11 w-full min-w-0 flex-col items-center gap-1 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] p-1 text-[var(--color-beige-white)] shadow-lg hover:border-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] md:max-w-36 md:p-2"
+      >
+        <span aria-hidden="true" className="flex gap-1">
+          {FLOWERS.map((flower) => (
             <img
-              src={getTileImagePath(
-                TileSuit.Season,
-                SEASON_DATA[activeSeason].rank
-              )}
+              key={flower}
+              src={getTileImagePath(TileSuit.Flower, FLOWER_DATA[flower].rank)}
               alt=""
-              aria-hidden="true"
-              className={`h-8 w-6 object-contain drop-shadow-md ${isCorrupted ? 'grayscale' : ''}`}
               draggable={false}
+              className={
+                'h-7 w-5 object-contain md:h-9 md:w-6 ' +
+                (collected.has(flower) ? '' : 'opacity-30 grayscale')
+              }
             />
-            <span
-              className={`text-xs font-bold ${isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color}`}
-            >
-              {isCorrupted ? 'Corrupted' : activeSeason}
-            </span>
-          </div>
-          <p
-            className={`text-[10px] text-center ${isCorrupted ? 'text-red-300' : 'text-[var(--color-beige-white)]'} opacity-70`}
-          >
-            {SEASON_BASE_EFFECTS[activeSeason].description}
-          </p>
-        </div>
-      )}
-
-      {activeSeason && (
-        <span
-          className={`px-1 md:hidden ${
-            isCorrupted ? 'text-red-400' : SEASON_DATA[activeSeason].color
-          }`}
-          title={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason}: ${SEASON_BASE_EFFECTS[activeSeason].description}`}
-          aria-label={`${isCorrupted ? 'Corrupted ' : ''}${activeSeason} season`}
-        >
-          <img
-            src={getTileImagePath(
-              TileSuit.Season,
-              SEASON_DATA[activeSeason].rank
-            )}
-            alt=""
-            aria-hidden="true"
-            className={`h-9 w-7 object-contain drop-shadow-md ${isCorrupted ? 'grayscale' : ''}`}
-            draggable={false}
-          />
+          ))}
         </span>
-      )}
-    </div>
+        <span className="text-[10px] leading-tight">
+          {t('flora.flowers')} {collected.size}/4
+        </span>
+        {flora.seasons.length > 0 && (
+          <span className="flex max-w-full flex-wrap items-center justify-center gap-1 border-t border-[var(--color-metallic-gold)]/30 pt-1">
+            {flora.seasons.slice(0, 2).map((season) => (
+              <span
+                key={season.id}
+                data-flora-season={season.id}
+                aria-label={seasonName(season)}
+                title={seasonName(season)}
+              >
+                <img
+                  src={getTileImagePath(
+                    TileSuit.Season,
+                    SEASON_DATA[season.type].rank
+                  )}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                  className={
+                    'h-7 w-5 object-contain ' +
+                    (season.isCorrupted ? 'grayscale' : '')
+                  }
+                />
+              </span>
+            ))}
+            <span className="text-[10px]">
+              {t('flora.seasons')} {flora.seasons.length}
+            </span>
+          </span>
+        )}
+      </button>
+
+      <Popup isOpen={open} onClose={() => setOpen(false)} title={title}>
+        <section
+          data-testid="flora-flower-details"
+          className="min-w-0 space-y-3 break-words"
+        >
+          <h3 className="font-bold text-[var(--color-golden-yellow)]">
+            {t('flora.flowers')} {collected.size}/4
+          </h3>
+          <p className="text-sm">{t('flora.details.runScope')}</p>
+          {(flora.flowersSuppressed || flora.flowersProtected) && (
+            <p
+              data-testid="flora-suppression"
+              className="rounded-lg border border-[var(--color-metallic-gold)] p-2 text-sm"
+            >
+              {t(
+                flora.flowersSuppressed
+                  ? 'flora.details.suppressed'
+                  : 'flora.details.protected'
+              )}
+            </p>
+          )}
+          <ul className="space-y-3">
+            {FLOWERS.map((flower) => (
+              <li
+                key={flower}
+                data-flora-flower={flower}
+                data-collected={collected.has(flower)}
+                className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
+              >
+                <img
+                  src={getTileImagePath(
+                    TileSuit.Flower,
+                    FLOWER_DATA[flower].rank
+                  )}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                  className={
+                    'h-14 w-10 shrink-0 object-contain ' +
+                    (collected.has(flower) ? '' : 'opacity-40 grayscale')
+                  }
+                />
+                <div className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+                  <h4 className="text-sm font-bold">
+                    {t('flora.' + flower.toLowerCase())}
+                  </h4>
+                  <p className="text-xs text-[var(--color-metallic-gold)]">
+                    {t(
+                      collected.has(flower)
+                        ? 'flora.details.collected'
+                        : 'flora.details.missing'
+                    )}
+                  </p>
+                  <p className="mt-1 text-sm">
+                    {t('flora.details.flower' + flower, {
+                      percent: (
+                        FLOWER_BASE_EFFECTS[flower].percentagePerMatch *
+                        flora.flowers.totalEffectiveness
+                      ).toLocaleString(i18n.language),
+                    })}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <ul className="space-y-2 text-sm">
+            <li>
+              {collected.size >= 2 ? '✓ ' : ''}
+              {t('flora.details.setTwo')}
+            </li>
+            <li>{t('flora.details.setThree')}</li>
+            <li>
+              {collected.size >= 4 ? '✓ ' : ''}
+              {t('flora.details.setFour')}
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-testid="flora-season-details"
+          className="mt-5 min-w-0 space-y-3 border-t border-[var(--color-metallic-gold)]/40 pt-4 [overflow-wrap:anywhere]"
+        >
+          <h3 className="font-bold text-[var(--color-golden-yellow)]">
+            {t('flora.seasons')} ({flora.seasons.length})
+          </h3>
+          <p className="text-sm">{t('flora.details.roundScope')}</p>
+          {flora.seasons.length === 0 && (
+            <p className="text-sm">{t('flora.details.noSeasons')}</p>
+          )}
+          {incomplete && (
+            <p className="rounded-lg border border-[var(--color-metallic-gold)] p-2 text-xs">
+              {t('flora.details.partial')}
+            </p>
+          )}
+          <ol className="space-y-3">
+            {flora.seasons.map((season, index) => {
+              const effect = season.isCorrupted
+                ? season.corruptedType
+                : season.type
+              return (
+                <li
+                  key={season.id}
+                  data-flora-detail-season={season.id}
+                  className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
+                >
+                  <img
+                    src={getTileImagePath(
+                      TileSuit.Season,
+                      SEASON_DATA[season.type].rank
+                    )}
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                    className={
+                      'h-14 w-10 shrink-0 object-contain ' +
+                      (season.isCorrupted ? 'grayscale' : '')
+                    }
+                  />
+                  <div className="min-w-0 flex-1">
+                    <h4
+                      className={
+                        'text-sm font-bold ' +
+                        (season.isCorrupted
+                          ? 'text-orange-300'
+                          : 'text-[var(--color-golden-yellow)]')
+                      }
+                    >
+                      {index + 1}. {seasonName(season)}
+                    </h4>
+                    {season.isCorrupted && (
+                      <p className="text-xs">
+                        {t('flora.' + season.type.toLowerCase())}
+                      </p>
+                    )}
+                    <p className="mt-1 text-sm">
+                      {t(
+                        'flora.details.' +
+                          (effect && effect !== 'Spring' && effect !== 'Monsoon'
+                            ? effect.toLowerCase()
+                            : 'unwired')
+                      )}
+                    </p>
+                  </div>
+                </li>
+              )
+            })}
+          </ol>
+          {flora.seasons.some(
+            (season) => season.isCorrupted && season.corruptedType === 'Decay'
+          ) && (
+            <p data-testid="flora-decay-penalty" className="text-sm font-bold">
+              {t('flora.details.decayPenalty', {
+                points: flora.decayPenalty.toLocaleString(i18n.language),
+              })}
+            </p>
+          )}
+        </section>
+      </Popup>
+    </>
   )
 }
-
-// =============================================================================
-// EXPORTS
-// =============================================================================
-
-export default FloraTrackCompact

@@ -27,6 +27,7 @@ import {
   calculateSellValue,
 } from './ConsumableSystem'
 import { runRandom } from '../game/RunRandom'
+import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
 
 // =============================================================================
 // VOID SCRIPT TYPES
@@ -118,7 +119,8 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of Kinship',
     japaneseName: '眷属の書',
-    description: 'Destroy 1 random tile, add 3 random Enhanced Face tiles (Winds/Dragons)',
+    description:
+      'Destroy 1 random tile, add 3 random Enhanced Face tiles (Winds/Dragons)',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
@@ -612,7 +614,10 @@ export const VOID_SCRIPTS: Record<
 /**
  * Get all Void Scripts as an array
  */
-export function getAllVoidScripts(): Omit<VoidScript, 'instanceId' | 'isUsed'>[] {
+export function getAllVoidScripts(): Omit<
+  VoidScript,
+  'instanceId' | 'isUsed'
+>[] {
   return Object.values(VOID_SCRIPTS)
 }
 
@@ -646,6 +651,8 @@ export class VoidScriptSystem {
     script: VoidScript,
     context: VoidScriptContext
   ): ConsumableUseResult {
+    const error = this.validateUse(script, context)
+    if (error) return { success: false, message: error, effects: [] }
     const effects: ConsumableEffectResult[] = []
     let message = ''
     let success = true
@@ -763,9 +770,37 @@ export class VoidScriptSystem {
     return { success, message, effects }
   }
 
-  /**
-   * Apply a penalty
-   */
+  /** Read-only preflight: never roll an edition or apply a Script penalty. */
+  validateUse(script: VoidScript, context: VoidScriptContext): string | null {
+    const countError = validateConsumableTargetCount(
+      script.effect,
+      context.selectedTiles?.length ?? 0
+    )
+    if (countError) return countError
+    const type = script.effect.type
+    if (
+      (type === 'create_rare_decree' || type === 'create_legendary') &&
+      (context.getAvailableDecreeSlots?.() ?? 0) <= 0
+    )
+      return 'No room for Decree'
+    if (
+      (type === 'add_negative_edition' ||
+        type === 'copy_decree' ||
+        (type === 'apply_edition' && this.isDecreeEdition(script))) &&
+      (context.getDecreeCount?.() ?? 0) === 0
+    )
+      return 'No Decrees to modify'
+    return null
+  }
+
+  private isDecreeEdition(script: VoidScript): boolean {
+    return (
+      script.id === 'script_of_the_hex' ||
+      script.effect.description.includes('Decree')
+    )
+  }
+
+  /** Apply a penalty. */
   private applyPenalty(
     penalty: VoidScriptPenalty,
     _context: VoidScriptContext
@@ -941,16 +976,16 @@ export class VoidScriptSystem {
     context: VoidScriptContext
   ): ConsumableUseResult {
     // If specific edition, use it; otherwise random
-    const editions: EditionType[] = [EditionType.Foil, EditionType.Holographic, EditionType.Polychrome]
+    const editions: EditionType[] = [
+      EditionType.Foil,
+      EditionType.Holographic,
+      EditionType.Polychrome,
+    ]
     const edition =
       script.effect.editionType ||
       editions[Math.floor(runRandom.next('consumables') * editions.length)]
 
-    const isDecreeTarget =
-      script.id === 'script_of_the_hex' ||
-      script.effect.description.includes('Decree')
-
-    if (isDecreeTarget) {
+    if (this.isDecreeEdition(script)) {
       return {
         success: true,
         message: `${script.name}: Applied ${edition} edition to Decree`,
@@ -1025,7 +1060,8 @@ export class VoidScriptSystem {
     _context: VoidScriptContext
   ): ConsumableUseResult {
     const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu]
-    const targetSuit = suits[Math.floor(runRandom.next('consumables') * suits.length)]
+    const targetSuit =
+      suits[Math.floor(runRandom.next('consumables') * suits.length)]
 
     return {
       success: true,
@@ -1298,7 +1334,8 @@ export class VoidScriptSystem {
     excludeIds: string[] = []
   ): Omit<VoidScript, 'instanceId' | 'isUsed'> | null {
     const available = getAllVoidScripts().filter(
-      (script) => !excludeIds.includes(script.id) && script.rarity !== 'Legendary'
+      (script) =>
+        !excludeIds.includes(script.id) && script.rarity !== 'Legendary'
     )
 
     if (available.length === 0) return null
@@ -1314,13 +1351,19 @@ export class VoidScriptSystem {
       targetRarity = 'Rare'
     }
 
-    const candidates = available.filter((script) => script.rarity === targetRarity)
+    const candidates = available.filter(
+      (script) => script.rarity === targetRarity
+    )
 
     if (candidates.length === 0) {
-      return available[Math.floor(runRandom.next('consumables') * available.length)]
+      return available[
+        Math.floor(runRandom.next('consumables') * available.length)
+      ]
     }
 
-    return candidates[Math.floor(runRandom.next('consumables') * candidates.length)]
+    return candidates[
+      Math.floor(runRandom.next('consumables') * candidates.length)
+    ]
   }
 
   /**

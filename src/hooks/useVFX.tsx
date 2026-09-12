@@ -11,7 +11,8 @@
 
 import React, { useEffect, useState, useCallback, useRef, createContext, useContext, ReactNode } from 'react';
 import { useSpring, animated, config } from '@react-spring/web';
-import { useSettingsStore } from '../stores/settingsStore';
+import { useReducedMotion } from './useReducedMotion';
+import { eventBus } from '../game/EventBus';
 import {
   vfxSystem,
   ShakeConfig,
@@ -46,7 +47,7 @@ interface VFXContextValue {
   errorFeedback: () => void;
 
   // Container components
-  ShakeContainer: React.FC<{ children: ReactNode }>;
+  shakeOffset: { x: number; y: number };
   FlashOverlay: React.FC;
   PopupContainer: React.FC;
 }
@@ -59,11 +60,23 @@ interface VFXContextValue {
  * Hook for screen shake effect
  */
 export function useScreenShake() {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
   const [shakeOffset, setShakeOffset] = useState({ x: 0, y: 0 });
   const animationFrameRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(0);
   const configRef = useRef<ShakeConfig | null>(null);
+
+  const stop = useCallback(() => {
+    if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
+    animationFrameRef.current = null;
+    configRef.current = null;
+    setShakeOffset({ x: 0, y: 0 });
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) stop();
+  }, [reducedMotion, stop]);
+  useEffect(() => eventBus.on('phaseChanged', stop), [stop]);
 
   const shake = useCallback(
     (intensity: ShakeIntensity | ShakeConfig = 'medium') => {
@@ -82,6 +95,7 @@ export function useScreenShake() {
         if (progress >= 1) {
           setShakeOffset({ x: 0, y: 0 });
           configRef.current = null;
+          animationFrameRef.current = null;
           return;
         }
 
@@ -98,7 +112,7 @@ export function useScreenShake() {
         animationFrameRef.current = requestAnimationFrame(animateShake);
       };
 
-      if (animationFrameRef.current) {
+      if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
       }
 
@@ -110,9 +124,11 @@ export function useScreenShake() {
   // Cleanup
   useEffect(() => {
     return () => {
-      if (animationFrameRef.current) {
+      if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      animationFrameRef.current = null;
+      configRef.current = null;
     };
   }, []);
 
@@ -124,26 +140,9 @@ export function useScreenShake() {
     return unsubscribe;
   }, [shake]);
 
-  // Container component
-  const ShakeContainer: React.FC<{ children: ReactNode }> = useCallback(
-    ({ children }) => (
-      <div
-        style={{
-          transform: `translate(${shakeOffset.x}px, ${shakeOffset.y}px)`,
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        {children}
-      </div>
-    ),
-    [shakeOffset]
-  );
-
   return {
     shake,
-    shakeOffset,
-    ShakeContainer,
+    shakeOffset: reducedMotion ? { x: 0, y: 0 } : shakeOffset,
   };
 }
 
@@ -155,7 +154,7 @@ export function useScreenShake() {
  * Hook for screen flash effect
  */
 export function useScreenFlash() {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
   const [flashConfig, setFlashConfig] = useState<FlashConfig | null>(null);
   const [isActive, setIsActive] = useState(false);
 
@@ -232,6 +231,10 @@ interface PopupItem extends ScorePopupConfig {
 export function useScorePopups() {
   const [popups, setPopups] = useState<PopupItem[]>([]);
 
+  // The new screen owns its summary. Do not cover it with text from the hand
+  // that just ended, or restart those animations while navigating.
+  useEffect(() => eventBus.on('phaseChanged', () => setPopups([])), []);
+
   const showPopup = useCallback((config: ScorePopupConfig) => {
     const id = `popup-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     setPopups((prev) => [...prev, { ...config, id }]);
@@ -293,7 +296,7 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
   style = 'float',
   onComplete,
 }) => {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
   type PopupAnimationValues = {
     opacity: number;
     x: number;
@@ -383,10 +386,10 @@ const ScorePopupItem: React.FC<PopupItem & { onComplete: () => void }> = ({
  * Combined hook for all VFX functionality
  */
 export function useVFX() {
-  const { shake, ShakeContainer } = useScreenShake();
+  const { shake, shakeOffset } = useScreenShake();
   const { flash, FlashOverlay } = useScreenFlash();
   const { showPopup, PopupContainer } = useScorePopups();
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
 
   // Initialize the global event bridge once for this provider lifecycle.
   useEffect(() => {
@@ -448,7 +451,7 @@ export function useVFX() {
     errorFeedback,
 
     // Container components
-    ShakeContainer,
+    shakeOffset,
     FlashOverlay,
     PopupContainer,
   };
@@ -468,11 +471,21 @@ export function VFXProvider({ children }: { children: ReactNode }) {
 
   return (
     <VFXContext.Provider value={vfx}>
-      <vfx.ShakeContainer>
-        {children}
-        <vfx.FlashOverlay />
-        <vfx.PopupContainer />
-      </vfx.ShakeContainer>
+      {/* Keep the wrapper type stable: a component created per animation frame
+          remounts every game screen and loses focus and local state. */}
+      <div className="h-full w-full overflow-clip" data-vfx-boundary>
+        {/* Clip the moving stage inside a stationary boundary so a positive
+            shake offset cannot increase the document's scrollable width. */}
+        <div data-vfx-stage style={{
+          transform: `translate(${vfx.shakeOffset.x}px, ${vfx.shakeOffset.y}px)`,
+          width: '100%',
+          height: '100%',
+        }}>
+          {children}
+          <vfx.FlashOverlay />
+          <vfx.PopupContainer />
+        </div>
+      </div>
     </VFXContext.Provider>
   );
 }
@@ -523,7 +536,7 @@ export function useButtonPressEffect() {
  */
 export function useHoverGlow(color: string = ANIMATION_COLORS.gold) {
   const [isHovered, setIsHovered] = useState(false);
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
 
   const spring = useSpring({
     glowIntensity: isHovered ? 1 : 0,
@@ -559,7 +572,7 @@ export function useCountUp(
   }
 ) {
   const { duration = DURATIONS.slow, delay = 0, onComplete } = options ?? {};
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
 
   const spring = useSpring({
     from: { value: 0 },
@@ -585,7 +598,7 @@ export function useCountUp(
 export function usePulseOnChange<T>(value: T) {
   const [isPulsing, setIsPulsing] = useState(false);
   const previousValueRef = useRef(value);
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (value !== previousValueRef.current) {

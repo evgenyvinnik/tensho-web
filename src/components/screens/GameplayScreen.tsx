@@ -19,7 +19,6 @@ import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
 import { ConfirmPopup } from '../ui/Popup'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
-import { FlowerVariant, SeasonVariant } from '../../systems/types'
 import { calculateShanten } from '../../rules/ShantenCalculator'
 import { useItemText } from '../../i18n/useItemText'
 
@@ -27,12 +26,12 @@ import { useItemText } from '../../i18n/useItemText'
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
 import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
 import { ConsumablesBar } from '../gameplay/ConsumablesBar'
-import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
+import { ConsumableDialog } from '../gameplay/ConsumableDialog'
+import { getTableStyleIllustration } from '../../utils/assets'
 import {
-  getTableStyleIllustration,
-  illustrationAssets,
-} from '../../utils/assets'
-import { useTableStyleStore } from '../../stores/tableStyleStore'
+  getDefaultTableStyle,
+  getTableStyleById,
+} from '../../config/tableStyleDefinitions'
 import { GameplayTopBar } from '../gameplay/GameplayTopBar'
 import { ScorePanel } from '../gameplay/ScorePanel'
 import { ActionBar } from '../gameplay/ActionBar'
@@ -73,9 +72,8 @@ export function GameplayScreen() {
   // Game controller
   const game = useGameController()
   const itemText = useItemText()
-  const currentTableStyle = useTableStyleStore((state) =>
-    state.getCurrentStyle()
-  )
+  const currentTableStyle =
+    getTableStyleById(game.state.tableStyleId) ?? getDefaultTableStyle()
 
   const beginnerSuggestion = useMemo(
     () => findBeginnerSuggestion(game.handTiles, new Set(game.faceDownTileIds)),
@@ -115,14 +113,12 @@ export function GameplayScreen() {
   >(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const popupIdCounterRef = useRef(0)
+  const isExitingRef = useRef(false)
 
   // Points/Mult display state
   const [currentPoints, setCurrentPoints] = useState(0)
   const [currentMult, setCurrentMult] = useState(1)
   const [isScoreAnimating, setIsScoreAnimating] = useState(false)
-
-  // Flora panel expanded state
-  const [isFloraExpanded, setIsFloraExpanded] = useState(false)
 
   // Consumables from game controller
   const consumables = game.consumableCounts
@@ -132,7 +128,7 @@ export function GameplayScreen() {
   // ==========================================================================
 
   useEffect(() => {
-    if (!game.isRunActive && game.phase === 'menu') {
+    if (!isExitingRef.current && !game.isRunActive && game.phase === 'menu') {
       game.startNewRun()
     }
   }, [game])
@@ -426,6 +422,9 @@ export function GameplayScreen() {
   }, [game, stagedTileIds])
 
   const handleExitGame = useCallback(() => {
+    // endRun publishes the reset before navigation necessarily unmounts us.
+    // Do not mistake that intermediate menu state for a fresh /play visit.
+    isExitingRef.current = true
     game.endRun()
     navigateTo(ROUTES.MENU)
   }, [game, navigateTo])
@@ -448,39 +447,6 @@ export function GameplayScreen() {
       setShowConsumablesPanel('voidScripts')
     }
   }, [game.consumableCounts.voidScripts])
-
-  const handleUseFateSeal = useCallback(
-    (sealId: string) => {
-      const result = game.useFateSeal(sealId)
-      if (result.success) {
-        setShowConsumablesPanel(null)
-      }
-    },
-    [game]
-  )
-
-  const handleUseVoidScript = useCallback(
-    (scriptId: string) => {
-      const result = game.useVoidScript(scriptId)
-      if (result.success) {
-        setShowConsumablesPanel(null)
-      }
-    },
-    [game]
-  )
-
-  const handleUseCelestialOrb = useCallback(
-    (orbId: string) => {
-      const result = game.useCelestialOrb(orbId)
-      if (result.success) {
-        setActionError(null)
-        setShowConsumablesPanel(null)
-      } else {
-        setActionError(result.errors?.[0] ?? 'Unable to use Celestial Orb')
-      }
-    },
-    [game]
-  )
 
   // ==========================================================================
   // COMPUTED VALUES
@@ -564,7 +530,9 @@ export function GameplayScreen() {
     return buildCoachAdvice({
       tiles: game.handTiles,
       concealedIds: faceDownTileIds,
-      scoreSelection: (tileIds) => game.previewScore(tileIds)?.finalScore ?? null,
+      requiredTileIds: game.lockedTileIds,
+      scoreSelection: (tileIds) =>
+        game.previewScore(tileIds)?.finalScore ?? null,
       remainingToTarget: Math.max(0, game.targetScore - game.score),
       handsRemaining: game.handsRemaining,
     })
@@ -635,15 +603,6 @@ export function GameplayScreen() {
   }, [ownedDecrees, game.decreesFaceDown, game.decreeDisplayOrderIds])
   const disabledDecreeIds = new Set(game.disabledDecreeIds)
   const maxDecreeSlots = game.state.decreeSystem.getMaxSlots()
-  const collectedFlowers: FlowerVariant[] = game.state.flowerSystem
-    .getFlowers()
-    .map((flower) => flower.type)
-
-  const currentSeasonState = game.state.seasonSystem.getState()
-  const seasonState = {
-    activeSeason: currentSeasonState.activeSeason?.type as SeasonVariant | null,
-    isCorrupted: currentSeasonState.isCorruptedRound,
-  }
 
   const roundType: RoundType = useMemo(() => {
     return game.currentRound === 1
@@ -692,12 +651,16 @@ export function GameplayScreen() {
       artworkOpacity={0.68}
       className="viewport-full"
     >
-      <div className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl">
+      <div
+        data-gameplay-scroll
+        className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] scroll-pb-24 scroll-pt-3 flex-col overflow-y-auto overscroll-contain border-x border-white/5 bg-black/5 shadow-2xl [&>*]:shrink-0"
+      >
         {/* Top bar */}
         <GameplayTopBar
           gold={game.gold}
           stake={game.state.stake}
           currentAct={game.currentAct}
+          hasEnteredEndless={game.hasEnteredEndless}
           roundType={roundType}
           mandateName={bossMandate}
           upcomingMandateName={upcomingMandate}
@@ -840,20 +803,18 @@ export function GameplayScreen() {
         />
 
         {/* Play Surface with Flora panel and Wall display */}
-        <div className="relative mx-2 mb-1 flex min-h-0 flex-1 items-end gap-2 md:items-stretch">
-          <div
-            data-tutorial="flora"
-            className="absolute left-0 top-0 z-10 md:static md:flex-shrink-0"
-          >
-            <FloraTrackCompact
-              flowers={collectedFlowers}
-              activeSeason={seasonState.activeSeason}
-              isCorrupted={seasonState.isCorrupted}
-              onExpand={() => setIsFloraExpanded(!isFloraExpanded)}
-            />
+        <div
+          data-gameplay-surface
+          className="relative mx-2 mb-1 grid flex-1 grid-cols-2 content-start items-start gap-2 md:grid-cols-[auto_minmax(0,1fr)_auto]"
+        >
+          <div data-tutorial="flora" className="order-1 min-w-0">
+            <FloraTrackCompact flora={game.flora} />
           </div>
 
-          <div data-tutorial="hand" className="h-full min-w-0 flex-1">
+          <div
+            data-tutorial="hand"
+            className="order-3 col-span-2 min-w-0 md:order-2 md:col-span-1"
+          >
             <PlaySurface
               handTiles={game.handTiles}
               tileSize={tileSize}
@@ -882,7 +843,7 @@ export function GameplayScreen() {
 
           <div
             data-tutorial="wall"
-            className="absolute right-0 top-0 z-10 md:static md:w-48 md:flex-shrink-0"
+            className="order-2 min-w-0 justify-self-end md:order-3 md:w-48"
           >
             <div className="md:hidden">
               <WallDisplay wallTiles={game.wallTiles} compact />
@@ -908,11 +869,26 @@ export function GameplayScreen() {
           handsRemaining={game.handsRemaining}
           discardsRemaining={game.discardsRemaining}
           redrawsRemaining={game.redrawsRemaining}
+          redrawAllowed={game.canPerformAction({
+            type: 'redraw',
+            tileIds: stagedTileIds.length
+              ? stagedTileIds
+              : game.selectedTileIds,
+          })}
           selectedTileCount={
             stagedTileIds.length || game.selectedTileIds.length
           }
           handTileCount={game.handTiles.length}
           isCompleteHandSelection={isCompleteHandSelection}
+          playAllowed={game.canPerformAction({
+            type: 'play',
+            tileIds: previewTileIds,
+          })}
+          playRestriction={
+            game.lockedTileIds.some((id) => !previewTileIds.includes(id))
+              ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
+              : undefined
+          }
           requiredPlaySize={requiredPlaySize}
           currentRound={game.currentRound}
           onSkip={handleSkip}
@@ -959,129 +935,20 @@ export function GameplayScreen() {
         cancelText={t('common.cancel', 'Cancel')}
       />
 
-      {/* Consumables selection panel */}
       {showConsumablesPanel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 safe-area-top safe-area-bottom">
-          <div className="max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-lg border border-[var(--color-forest-green)] bg-[var(--color-dark-forest)] p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-[var(--color-golden-accent)]">
-                {showConsumablesPanel === 'fateSeals' &&
-                  t('consumables.fateSeals', 'Fate Seals')}
-                {showConsumablesPanel === 'celestialOrbs' &&
-                  t('consumables.celestialOrbs', 'Celestial Orbs')}
-                {showConsumablesPanel === 'voidScripts' &&
-                  t('consumables.voidScripts', 'Void Scripts')}
-              </h3>
-              <button
-                onClick={() => setShowConsumablesPanel(null)}
-                className="text-[var(--color-beige-white)] hover:text-white text-xl px-2"
-                aria-label={t('common.close', 'Close')}
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-2">
-              {showConsumablesPanel === 'fateSeals' &&
-                game.fateSeals.map((seal, index) => (
-                  <button
-                    key={seal.instanceId || index}
-                    onClick={() => handleUseFateSeal(seal.instanceId)}
-                    className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-purple-500/50 transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={illustrationAssets.consumables.fateSeal}
-                        alt=""
-                        aria-hidden="true"
-                        className="game-illustration h-11 w-11 shrink-0 object-contain"
-                      />
-                      <div>
-                        <div className="font-medium text-[var(--color-beige-white)]">
-                          {itemText.name('seals', seal)}
-                        </div>
-                        <div className="text-sm text-[var(--color-beige-white)]/70">
-                          {seal.description}
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-
-              {showConsumablesPanel === 'celestialOrbs' &&
-                game.celestialOrbs.map((orb, index) => (
-                  <button
-                    key={orb.instanceId || index}
-                    onClick={() => handleUseCelestialOrb(orb.instanceId)}
-                    className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-blue-500/50 transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={illustrationAssets.consumables.celestialOrb}
-                        alt=""
-                        aria-hidden="true"
-                        className="game-illustration h-11 w-11 shrink-0 object-contain"
-                      />
-                      <div>
-                        <div className="font-medium text-[var(--color-beige-white)]">
-                          {itemText.name('orbs', orb)}
-                        </div>
-                        <div className="text-sm text-[var(--color-beige-white)]/70">
-                          {orb.description}
-                        </div>
-                        <div className="text-xs text-blue-300">
-                          Level: {orb.currentLevel || 1}
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-
-              {showConsumablesPanel === 'voidScripts' &&
-                game.voidScripts.map((script, index) => (
-                  <button
-                    key={script.instanceId || index}
-                    onClick={() => handleUseVoidScript(script.instanceId)}
-                    className="w-full text-left p-3 bg-[var(--color-forest-green)]/50 hover:bg-[var(--color-forest-green)] rounded-lg border border-gray-500/50 transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <VoidScriptArtwork
-                        script={script}
-                        name={itemText.name('scripts', script)}
-                        description={itemText.description('scripts', script)}
-                        focusable={false}
-                        className="h-14 w-14"
-                      />
-                      <div>
-                        <div className="font-medium text-[var(--color-beige-white)]">
-                          {itemText.name('scripts', script)}
-                        </div>
-                        <div className="text-sm text-[var(--color-beige-white)]/70">
-                          {itemText.description('scripts', script)}
-                        </div>
-                        {script.penalty && (
-                          <div className="text-xs text-red-400 mt-1">
-                            Void cost: {script.penalty.description}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-
-              {((showConsumablesPanel === 'fateSeals' &&
-                game.fateSeals.length === 0) ||
-                (showConsumablesPanel === 'celestialOrbs' &&
-                  game.celestialOrbs.length === 0) ||
-                (showConsumablesPanel === 'voidScripts' &&
-                  game.voidScripts.length === 0)) && (
-                <div className="text-center text-[var(--color-beige-white)]/50 py-4">
-                  {t('consumables.none', 'No consumables available')}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <ConsumableDialog
+          key={showConsumablesPanel}
+          title={t(`consumableUse.${showConsumablesPanel}`)}
+          items={game[showConsumablesPanel]}
+          tiles={game.handTiles}
+          concealedIds={faceDownTileIds}
+          lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
+          scriptDownsideProtected={game.state.omenSystem.hasVoidScriptDownsideProtection()}
+          canUse={game.canPerformAction}
+          validateUse={game.validateConsumableAction}
+          onUse={game.processAction}
+          onClose={() => setShowConsumablesPanel(null)}
+        />
       )}
     </TablePattern>
   )

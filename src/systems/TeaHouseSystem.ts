@@ -36,7 +36,7 @@ import {
   Sticker,
   StickerType,
 } from './types'
-import { ALL_DECREES } from './DecreeSystem'
+import { DecreeSystem } from './DecreeSystem'
 import {
   PricingCalculator,
   EditionType,
@@ -197,7 +197,9 @@ export interface TeaHouseVisitModifiers {
   discountPercentage?: number
   freeRerolls?: number
   guaranteedItemTypes?: string[]
+  guaranteedItems?: { itemType: string; minDecreeRarity?: DecreeRarity }[]
   decreeEdition?: EditionType
+  decreeEditions?: EditionType[]
 }
 
 /**
@@ -368,9 +370,10 @@ export class TeaHouseSystem {
       this.charterOffering = this.generateCharterOffering()
     }
 
-    this.applyGuaranteedItems(modifiers.guaranteedItemTypes ?? [], ownedDecreeIds)
-    if (modifiers.decreeEdition) {
-      this.applyGuaranteedDecreeEdition(modifiers.decreeEdition, ownedDecreeIds)
+    this.applyGuaranteedItems(modifiers.guaranteedItems ?? (modifiers.guaranteedItemTypes ?? []).map(itemType => ({ itemType })), ownedDecreeIds)
+    const editionSlots = new Set<number>()
+    for (const edition of modifiers.decreeEditions ?? (modifiers.decreeEdition ? [modifiers.decreeEdition] : [])) {
+      this.applyGuaranteedDecreeEdition(edition, ownedDecreeIds, editionSlots)
     }
     this.itemOfferings = this.itemOfferings.map((offering) =>
       this.applyVisitDiscount(offering)
@@ -429,19 +432,22 @@ export class TeaHouseSystem {
    */
   private generateDecreeOffering(
     slotIndex: number,
-    excludeIds: string[]
+    excludeIds: string[],
+    minimum?: DecreeRarity
   ): TeaHouseOffering | null {
+    const pool = DecreeSystem.getShopCandidates(excludeIds, minimum)
     // Select rarity
-    const rarity = this.selectWeightedRandom(DECREE_RARITY_WEIGHTS) as DecreeRarity
+    const weights = minimum
+      ? Object.fromEntries(Object.entries(DECREE_RARITY_WEIGHTS).filter(([rarity]) => pool.some(d => d.rarity === rarity)))
+      : DECREE_RARITY_WEIGHTS
+    const rarity = this.selectWeightedRandom(weights) as DecreeRarity
 
     // Find available decrees of this rarity
-    let candidates = ALL_DECREES.filter(
-      (d) => d.rarity === rarity && !excludeIds.includes(d.id)
-    )
+    let candidates = pool.filter(d => d.rarity === rarity)
 
     // Fallback to any available decree if none of the selected rarity
     if (candidates.length === 0) {
-      candidates = ALL_DECREES.filter((d) => !excludeIds.includes(d.id))
+      candidates = pool
     }
 
     if (candidates.length === 0) {
@@ -626,21 +632,25 @@ export class TeaHouseSystem {
     }
   }
 
-  private applyGuaranteedItems(itemTypes: string[], ownedDecreeIds: string[]): void {
+  private applyGuaranteedItems(items: { itemType: string; minDecreeRarity?: DecreeRarity }[], ownedDecreeIds: string[]): void {
     let itemSlot = 0
     let packSlot = 0
 
-    for (const itemType of itemTypes) {
+    for (const { itemType, minDecreeRarity } of items) {
       if (itemType === 'BlessingPack') {
-        const pack = this.packOfferings[packSlot++]
-        if (pack) pack.finalCost = 0
+        const index = packSlot++
+        const pack = this.packOfferings[index] ?? this.generatePackOffering(index)
+        pack.finalCost = 0
+        pack.sellValue = 0
+        this.packOfferings[index] = pack
         continue
       }
 
-      if (itemSlot >= this.itemSlotCount) break
+      // Stacked one-shot guarantees may overflow ordinary Charter slot capacity.
+      // They do not permanently increase the number of rerolled item slots.
       let offering: TeaHouseOffering | null = null
       if (itemType === 'Decree') {
-        offering = this.generateDecreeOffering(itemSlot, ownedDecreeIds)
+        offering = this.generateDecreeOffering(itemSlot, ownedDecreeIds, minDecreeRarity)
       } else if (itemType === 'FateSeal') {
         offering = this.generateFateSealOffering(itemSlot)
       } else if (itemType === 'CelestialOrb') {
@@ -671,19 +681,21 @@ export class TeaHouseSystem {
 
   private applyGuaranteedDecreeEdition(
     edition: EditionType,
-    ownedDecreeIds: string[]
+    ownedDecreeIds: string[],
+    usedSlots: Set<number>
   ): void {
     let index = this.itemOfferings.findIndex(
-      (offering) => offering.itemType === 'Decree'
+      (offering, slot) => offering.itemType === 'Decree' && !usedSlots.has(slot)
     )
     if (index === -1) {
-      index = 0
+      index = this.itemOfferings.length
       const decreeOffering = this.generateDecreeOffering(index, ownedDecreeIds)
       if (!decreeOffering) return
       this.itemOfferings[index] = decreeOffering
     }
 
     const offering = this.itemOfferings[index]
+    usedSlots.add(index)
     const decree = offering.item as Decree
     this.itemOfferings[index] = {
       ...offering,
@@ -702,9 +714,10 @@ export class TeaHouseSystem {
   private generatePackOffering(slotIndex: number): TeaHouseOffering {
     const packType = this.selectWeightedRandom(PACK_TYPE_WEIGHTS) as PackType
     const packSize = this.selectWeightedRandom(PACK_SIZE_WEIGHTS) as PackSize
+    const offeringId = this.generateOfferingId()
 
     const pack: BlessingPack = {
-      id: `pack_${packType}_${packSize}_${Date.now()}`,
+      id: `pack_${offeringId}`,
       type: packType,
       size: packSize,
       cost: this.pricingCalculator.getPackCost(packSize),
@@ -715,7 +728,7 @@ export class TeaHouseSystem {
     const { finalCost, sellValue } = this.pricingCalculator.calculatePackCost(packSize)
 
     return {
-      id: this.generateOfferingId(),
+      id: offeringId,
       slotIndex,
       itemType: 'BlessingPack',
       item: pack,

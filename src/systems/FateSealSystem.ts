@@ -25,6 +25,7 @@ import {
   calculateSellValue,
 } from './ConsumableSystem'
 import { runRandom } from '../game/RunRandom'
+import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
 
 // =============================================================================
 // FATE SEAL TYPES
@@ -66,6 +67,7 @@ export interface FateSealEffect {
   consumableCount?: number
   requiresSelection?: boolean // Whether player needs to select tiles
   selectionCount?: number // How many tiles to select
+  minimumSelectionCount?: number // Explicit lower bound for "up to" effects
 }
 
 /**
@@ -84,7 +86,10 @@ export interface FateSeal extends BaseConsumable {
 /**
  * Complete Fate Seal library from ITEM_LIBRARIES.md
  */
-export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>> = {
+export const FATE_SEALS: Record<
+  string,
+  Omit<FateSeal, 'instanceId' | 'isUsed'>
+> = {
   // ---------------------------------------------------------------------------
   // Enhancement Seals
   // ---------------------------------------------------------------------------
@@ -276,6 +281,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       targetSuit: TileSuit.Manzu,
       requiresSelection: true,
       selectionCount: 3,
+      minimumSelectionCount: 1,
     },
     mahjongTwist: 'Way of Characters',
   },
@@ -297,6 +303,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       targetSuit: TileSuit.Pinzu,
       requiresSelection: true,
       selectionCount: 3,
+      minimumSelectionCount: 1,
     },
     mahjongTwist: 'Way of Circles',
   },
@@ -318,6 +325,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       targetSuit: TileSuit.Souzu,
       requiresSelection: true,
       selectionCount: 3,
+      minimumSelectionCount: 1,
     },
     mahjongTwist: 'Way of Bamboo',
   },
@@ -327,18 +335,20 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
     type: 'FateSeal',
     name: 'Seal of Unity',
     japaneseName: '統一の印',
-    description: 'Converts up to 3 tiles to Honor tiles',
+    description:
+      'Converts up to 3 suited tiles to Winds. Ranks cycle East, South, West, North.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'convert_suit',
-      description: 'Convert up to 3 tiles to Honors',
+      description: 'Convert up to 3 suited tiles to cyclic Winds',
       tileCount: 3,
-      targetSuit: TileSuit.Wind, // Will be handled specially for honors
+      targetSuit: TileSuit.Wind,
       requiresSelection: true,
       selectionCount: 3,
+      minimumSelectionCount: 1,
     },
     mahjongTwist: 'Path of honors',
   },
@@ -396,7 +406,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
     sellValue: 2,
     effect: {
       type: 'duplicate_consumable',
-      description: 'Duplicate last used consumable',
+      description: 'Create the last Fate Seal or Celestial Orb used this run',
     },
     mahjongTwist: 'Mirrors The Fool',
   },
@@ -480,6 +490,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       rankChange: 1,
       requiresSelection: true,
       selectionCount: 2,
+      minimumSelectionCount: 1,
     },
     mahjongTwist: 'Growth through struggle',
   },
@@ -500,6 +511,7 @@ export const FATE_SEALS: Record<string, Omit<FateSeal, 'instanceId' | 'isUsed'>>
       tileCount: 2,
       requiresSelection: true,
       selectionCount: 2,
+      minimumSelectionCount: 1,
     },
     mahjongTwist: 'Let go of the past',
   },
@@ -617,10 +629,9 @@ export class FateSealSystem {
   /**
    * Use a Fate Seal
    */
-  useSeal(
-    seal: FateSeal,
-    context: FateSealContext
-  ): ConsumableUseResult {
+  useSeal(seal: FateSeal, context: FateSealContext): ConsumableUseResult {
+    const error = this.validateUse(seal, context)
+    if (error) return { success: false, message: error, effects: [] }
     const effects: ConsumableEffectResult[] = []
     let message = ''
     let success = true
@@ -740,9 +751,74 @@ export class FateSealSystem {
     return { success, message, effects }
   }
 
-  /**
-   * Apply enhancement to selected tiles
-   */
+  /** Read-only preflight. Public callers must not inspect concealed targets. */
+  validateUse(
+    seal: FateSeal,
+    context: FateSealContext,
+    inspectTargets = true
+  ): string | null {
+    const selected = context.selectedTiles ?? []
+    const countError = validateConsumableTargetCount(
+      seal.effect,
+      selected.length
+    )
+    if (countError) return countError
+    if (seal.id === 'seal_of_the_void') return null
+    const effect = seal.effect
+    if (effect.type === 'convert_suit') {
+      if (!effect.targetSuit) return 'No target suit specified'
+      if (
+        inspectTargets &&
+        !selected.some((t) => t.isSuited && t.suit !== effect.targetSuit)
+      )
+        return 'Choose a suited tile of a different suit'
+    }
+    if (effect.type === 'rank_modification' && inspectTargets) {
+      const change = effect.rankChange ?? 1
+      if (
+        !selected.some(
+          (t) => t.isSuited && t.rank + change >= 1 && t.rank + change <= 9
+        )
+      )
+        return 'Choose a suited tile whose new rank is between 1 and 9'
+    }
+    if (effect.type === 'create_consumable') {
+      if (!effect.consumableType) return 'No consumable type specified'
+      if ((context.getAvailableSlots?.(effect.consumableType) ?? 0) <= 0)
+        return seal.id === 'seal_of_judgment' ||
+          seal.id === 'seal_of_the_immortal'
+          ? 'No room for Decree'
+          : `No room for ${effect.consumableType}`
+    }
+    if (effect.type === 'duplicate_consumable') {
+      if (!this.lastUsedConsumable)
+        return 'No Fate Seal or Celestial Orb has been used this run'
+      if ((context.getAvailableSlots?.(this.lastUsedConsumable.type) ?? 0) <= 0)
+        return `No room for ${this.lastUsedConsumable.type}`
+    }
+    if (
+      effect.type === 'apply_edition' &&
+      (context.getDecreeCount?.() ?? 0) === 0
+    )
+      return 'No Decrees to modify'
+    if (effect.type === 'gold_generation') {
+      const gold =
+        effect.goldAmount === -1
+          ? (context.currentGold ?? 0)
+          : (effect.goldAmount ?? 0)
+      if (Math.min(gold, effect.goldMax ?? Infinity) <= 0)
+        return 'No gold can be generated'
+    }
+    if (
+      effect.type === 'sell_value_bonus' &&
+      Math.min(context.totalDecreeSellValue ?? 0, effect.goldMax ?? Infinity) <=
+        0
+    )
+      return 'No gold can be generated'
+    return null
+  }
+
+  /** Apply enhancement to selected tiles. */
   private applyEnhancement(
     seal: FateSeal,
     context: FateSealContext
@@ -823,8 +899,16 @@ export class FateSealSystem {
     for (let i = 0; i < Math.min(selectedTiles.length, maxTiles); i++) {
       const tile = selectedTiles[i]
       // Only convert suited tiles
-      if (tile.isSuited) {
+      if (tile.isSuited && tile.suit !== targetSuit) {
         affectedTileIds.push(tile.id)
+      }
+    }
+
+    if (affectedTileIds.length === 0) {
+      return {
+        success: false,
+        message: 'Choose a suited tile of a different suit',
+        effects: [],
       }
     }
 
@@ -924,11 +1008,13 @@ export class FateSealSystem {
   /**
    * Duplicate last used consumable
    */
-  private duplicateLastConsumable(context: FateSealContext): ConsumableUseResult {
+  private duplicateLastConsumable(
+    context: FateSealContext
+  ): ConsumableUseResult {
     if (!this.lastUsedConsumable) {
       return {
         success: false,
-        message: 'No consumable has been used this run',
+        message: 'No Fate Seal or Celestial Orb has been used this run',
         effects: [],
       }
     }
@@ -1045,6 +1131,14 @@ export class FateSealSystem {
       }
     }
 
+    if (affectedTileIds.length === 0) {
+      return {
+        success: false,
+        message: 'Choose a suited tile whose new rank is between 1 and 9',
+        effects: [],
+      }
+    }
+
     effects.push({
       type: 'rank_modified',
       description: `Modified rank of ${affectedTileIds.length} tile(s) by ${rankChange > 0 ? '+' : ''}${rankChange}`,
@@ -1148,8 +1242,13 @@ export class FateSealSystem {
     }
 
     // Choose random edition
-    const editions: EditionType[] = [EditionType.Foil, EditionType.Holographic, EditionType.Polychrome]
-    const edition = editions[Math.floor(runRandom.next('consumables') * editions.length)]
+    const editions: EditionType[] = [
+      EditionType.Foil,
+      EditionType.Holographic,
+      EditionType.Polychrome,
+    ]
+    const edition =
+      editions[Math.floor(runRandom.next('consumables') * editions.length)]
 
     return {
       success: true,
@@ -1165,16 +1264,18 @@ export class FateSealSystem {
   }
 
   /**
-   * Get the last used consumable (for Seal of the Fool)
+   * Get the last successfully used Fate Seal or Celestial Orb (for the Fool).
    */
   getLastUsedConsumable(): BaseConsumable | null {
     return this.lastUsedConsumable
   }
 
   /**
-   * Set the last used consumable
+   * Record eligible copy history. Scripts do not replace a previous Seal/Orb.
+   * The authored rule does not exclude the Fool itself; retain that behavior.
    */
   setLastUsedConsumable(consumable: BaseConsumable): void {
+    if (consumable.type === 'VoidScript') return
     this.lastUsedConsumable = consumable
   }
 
@@ -1182,7 +1283,9 @@ export class FateSealSystem {
    * Get a random Fate Seal weighted by rarity
    * Common: 70%, Uncommon: 25%, Rare: 5%
    */
-  static getRandomFateSeal(excludeIds: string[] = []): Omit<FateSeal, 'instanceId' | 'isUsed'> | null {
+  static getRandomFateSeal(
+    excludeIds: string[] = []
+  ): Omit<FateSeal, 'instanceId' | 'isUsed'> | null {
     const available = getAllFateSeals().filter(
       (seal) => !excludeIds.includes(seal.id) && seal.rarity !== 'Legendary'
     )
@@ -1204,10 +1307,14 @@ export class FateSealSystem {
 
     if (candidates.length === 0) {
       // Fallback to any available seal
-      return available[Math.floor(runRandom.next('consumables') * available.length)]
+      return available[
+        Math.floor(runRandom.next('consumables') * available.length)
+      ]
     }
 
-    return candidates[Math.floor(runRandom.next('consumables') * candidates.length)]
+    return candidates[
+      Math.floor(runRandom.next('consumables') * candidates.length)
+    ]
   }
 
   /**
@@ -1237,8 +1344,11 @@ export class FateSealSystem {
 export interface FateSealContext {
   selectedTiles?: Tile[]
   currentGold?: number
+  getDecreeCount?: () => number
   totalDecreeSellValue?: number
-  getAvailableSlots?: (type: 'FateSeal' | 'CelestialOrb' | 'VoidScript') => number
+  getAvailableSlots?: (
+    type: 'FateSeal' | 'CelestialOrb' | 'VoidScript'
+  ) => number
   currentHand?: Tile[]
   currentMelds?: unknown[]
 }

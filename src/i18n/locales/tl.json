@@ -1,4 +1,53 @@
 {
+  "seals": {
+    "items": {
+      "seal_of_unity": {
+        "name": "Selyo ng Pagkakaisa",
+        "description": "Ginagawang mga Hangin ang hanggang 3 numeradong tile. Umiikot ang mga numero sa Silangan, Timog, Kanluran, Hilaga."
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "purple": {
+        "name": "Lilang Selyo",
+        "description": "Lumilikha ng random na Selyo ng Tadhana kapag itinapon o ipinagpalit ang tile na ito, kung may puwang."
+      }
+    }
+  },
+  "consumableUse": {
+    "unityMapping": "Dating numero → Hangin",
+    "errorMaxLevel": "Nasa pinakamataas na antas na ang upgrade na ito.",
+    "errorNoRoom": "Maglaan ng puwang para sa gantimpala bago gamitin ang item.",
+    "errorNoDecrees": "Kailangan mo ng pag-aaring Dekreto para sa epektong ito.",
+    "errorNoPrevious": "Gumamit muna ng item mula sa {{seals}} o {{orbs}}.",
+    "copyResult": "Lilikha ng: {{name}}",
+    "errorNoGold": "Walang ibibigay na ginto ang epektong ito sa ngayon.",
+    "hiddenOutcome": "Susuriin lang ang resulta para sa mga nakatagong tile kapag kinumpirma mo.",
+    "available": "{{name}} ({{count}} magagamit)",
+    "penalty_lose_tile": "Mawawalan ng 1 sapalarang tile.",
+    "penalty_lose_gold": "Mawawala ang lahat ng ginto.",
+    "penalty_lose_hand_size": "Permanenteng mababawasan ng {{count}} ang laki ng kamay.",
+    "penalty_lock_tile": "Ikukulong ang 1 sapalarang tile sa Dead Pool.",
+    "penalty_lose_decree_slot": "Mawawalan ng {{count}} puwesto ng Dekreto sa susunod na round.",
+    "penalty_halve_base_score": "Mahahati ang batayang puntos sa susunod na kamay.",
+    "penalty_destroy_decrees": "Masisira ang lahat ng ibang Dekreto.",
+    "penalty_none": "Walang dagdag na kaparusahan.",
+    "protected": "Kakanselahin ng proteksiyon ng Pangitain ang dagdag na kaparusahan.",
+    "errorSuit": "Pumili ng numerong tile na may ibang uri.",
+    "errorRank": "Pumili ng tile na ang bagong numero ay mula 1 hanggang 9.",
+    "choose": "Pumili ng item, pagkatapos ay kumpirmahin ang paggamit nito.",
+    "targets": "Mga target na tile",
+    "count": "Mga target: {{selected}} / {{required}}",
+    "copyOrder": "Magiging kopya ng tile 2 ang tile 1. Piliin muna ang tile na babaguhin.",
+    "cost": "Kapalit ng Kawalan",
+    "failed": "Hindi magamit ang item na ito.",
+    "unavailable": "Suriin ang mga target at ang limitasyon ng paggamit sa round na ito.",
+    "confirm": "Gamitin ang item",
+    "fateSeals": "Mga Selyo ng Kapalaran",
+    "celestialOrbs": "Mga Orb ng Kalangitan",
+    "voidScripts": "Mga Balumbon ng Kawalan"
+  },
   "common": {
     "loading": "Naglo-load...",
     "error": "Error",
@@ -37,6 +86,9 @@
     "tableLoop": "Ikot ng Mesa (eksperimento)"
   },
   "settings": {
+    "resetProgressScope": "Mabubura rin ang mga natuklasan at aktibo o naka-save na laro. Mananatili ang mga setting ng wika, audio, at accessibility.",
+    "resetFailed": "Hindi na-reset. Napanatili ang iyong progreso. Suriin ang storage ng browser at subukang muli.",
+    "resetPartial": "Hindi natapos ang pag-reset at maaaring nabago ang ilang progreso. Suriin ang storage ng browser at subukang muli.",
     "title": "Mga Setting",
     "audio": "Audio",
     "musicVolume": "Lakas ng Musika",
@@ -204,6 +256,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "Karaniwan",
+      "rarity_uncommon": "Di-karaniwan",
+      "rarity_rare": "Bihira",
+      "rarity_legendary": "Maalamat",
+      "subtitle": "Maghanda para sa susunod na hamon",
+      "items": "Mga Item",
+      "availableCount": "Available: {{count}}",
+      "allPurchased": "Nabili na ang lahat ng item!",
+      "packs": "Mga Pakete ng Biyaya",
+      "noPacks": "Walang available na pakete",
+      "imperialCharter": "Imperyal na Kasulatan",
+      "nextRound": "Magpatuloy sa Susunod na Round",
+      "confirmPurchase": "Kumpirmahin ang Pagbili",
+      "purchasePrompt": "Bilhin ang {{name}} sa halagang {{cost}}G?",
+      "baseEdition": "Batayang Edisyon",
+      "goldBalance": "{{amount}} ginto",
+      "rerollsUsed": "Mga ginamit na pag-refresh: {{count}}"
+    },
+    "payout": {
+      "heading": "Akto {{act}} · {{round}}",
+      "clear": "Tagumpay",
+      "interest": "Interes",
+      "decrees": "Mga Dekreto",
+      "goldTiles": "Gintong tile",
+      "bonus": "Dagdag na gantimpala",
+      "rentals": "Upa",
+      "interestBlocked": "Naka-block ang interes sa ngayon.",
+      "interestCap": "Naabot na ang limitasyon ng interes na {{interest}}G.",
+      "interestSave": "Sa kasalukuyang ipon: {{interest}}G na interes. Mag-ipon pa ng {{needed}}G para sa {{next}}G.",
+      "nextRound": "Susunod: {{round}} · target na {{target}}",
+      "nextAct": "Susunod: Akto {{act}}"
+    },
+    "packChoices": "Pumili ng hanggang {{max}} sa {{count}} gantimpala",
+    "packInventoryFull": "Kulang ang puwang para sa napiling gantimpala. Bawasan o palitan ang mga napili, o laktawan ang pack.",
+    "inventoryFull": "Kulang ang puwang sa imbentaryo para sa gantimpalang ito.",
+    "skipRewards": "Laktawan ang mga gantimpala",
+    "purchaseFailed": "Hindi makumpleto ang pagbili.",
+    "packSelected": "{{count}} / {{max}} ang napili",
+    "confirmSelection": "Kumpirmahin ang Pinili",
+    "selectItems": "Pumili ng mga Item",
     "title": "Bahay ng Tsaa",
     "titleJp": "茶寮",
     "buy": "Bumili",
@@ -266,6 +359,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "Ang nakolektang mga bulaklak ay tumatagal sa buong takbong ito. Paunang tingin lang ang ibang bonus.",
+      "roundScope": "Nakaayos ayon sa pagkabunot. Natatapos ang mga season pagkatapos ng round na ito.",
+      "collected": "Nakolekta",
+      "missing": "Hindi pa nakolekta",
+      "noSeasons": "Walang season sa round na ito.",
+      "suppressed": "Pinipigil ng Tagtuyot ang mga bonus sa puntos ng bulaklak.",
+      "protected": "Pinoprotektahan ng isang kautusan ang mga bonus ng bulaklak mula sa Tagtuyot.",
+      "decayPenalty": "Bawas ng Pagkabulok sa bawat laro ng kamay: −{{points}} puntos.",
+      "partial": "Ginagawa pa ang ilang tuntunin ng season. Mga kasalukuyang epekto lang ang ipinapakita.",
+      "unwired": "Hindi pa naipapatupad.",
+      "summer": "Puntos ×1.3.",
+      "autumn": "Yaku multiplier +20%.",
+      "winter": "Puntos ×0.75.",
+      "drought": "Pinipigil ang bonus sa puntos ng mga bulaklak na walang proteksiyon.",
+      "frostbite": "Hinahati sa dalawa ang mga bonus multiplier ng kautusan.",
+      "decay": "−10 puntos sa bawat tile na itinapon sa round na ito, hanggang sero lamang.",
+      "droughtName": "Tagtuyot",
+      "monsoonName": "Habagat",
+      "frostbiteName": "Pinsala ng Yelo",
+      "decayName": "Pagkabulok",
+      "corruptedName": "Nasira",
+      "flowerPlum": "+{{percent}}% puntos sa bawat sequence.",
+      "flowerOrchid": "+{{percent}}% puntos sa bawat honor tile.",
+      "flowerChrysanthemum": "+{{percent}}% puntos sa bawat nakatagong grupo.",
+      "flowerBamboo": "+{{percent}}% puntos sa bawat terminal tile.",
+      "setTwo": "2 bulaklak: +1 puwesto ng kautusan.",
+      "setThree": "3 bulaklak: hindi pa naipapatupad ang espesyal na pagbukas sa tindahan.",
+      "setFour": "4 bulaklak: doble ang mga bonus ng bulaklak."
+    },
     "flowers": "Mga Bulaklak",
     "seasons": "Mga Panahon",
     "plum": "Plum",
@@ -329,6 +452,12 @@
     "quad": "Quad"
   },
   "results": {
+    "endlessComplete": "Natapos ang Walang-hanggang Pag-akyat",
+    "victorySubtitle": "Nanalo ka sa huling laban ng Akto 8. Naitala na ang iyong panalo.",
+    "endlessSubtitle": "Mananatili ang iyong panalo kahit tapos na ang pag-akyat na ito.",
+    "defeatSubtitle": "Sumubok ng ibang plano sa susunod na laro.",
+    "showdownCleared": "Naipanalo ang huling laban",
+    "continueEndless": "Magpatuloy sa Walang-hanggan",
     "victory": "Panalo!",
     "defeat": "Talo",
     "roundComplete": "Natapos ang Round!",
@@ -680,40 +809,78 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "Klasiko",
+        "unlock": "Magagamit mula sa simula",
+        "modifiers": { "0": "Walang espesyal na epekto" },
         "name": "Lunting Felt",
         "description": "Ang klasikong mesa ng mahjong, na may tradisyonal na lunting felt na pinakinis ng di-mabilang na laro. Walang espesyal na modifier—purong husay lamang."
       },
       "red_lacquer": {
+        "theme": "Mapalad",
+        "unlock": "Tapusin ang yugto 3",
+        "modifiers": { "0": "+1 puwesto ng kautusan sa simula" },
         "name": "Pulang Barnis",
         "description": "Isang marangyang mesa na binalutan ng matingkad na pulang barnis, sagisag ng suwerte at kasaganaan. Humihikayat ang mapalad na kulay ng dagdag na mga Decree."
       },
       "bamboo_mat": {
+        "theme": "Likas",
+        "unlock": "Kolektahin ang lahat ng 4 na bulaklak sa isang pagtakbo",
+        "modifiers": {
+          "0": "+25% timbang sa pagbunot ng bulaklak (parehong 4 na bulaklak)"
+        },
         "name": "Habas na Kawayan",
         "description": "Isang payak na hinabing banig na kawayan sa mababang mesa ng pavilion sa hardin. Mas madalas mamukadkad ang mga bulaklak sa likas na paligid."
       },
       "imperial_gold": {
+        "theme": "Maharlika",
+        "unlock": "Manalo na may 5 o higit pang kautusan",
+        "modifiers": { "0": "Magsimula sa 1 random na panrehiyong mandato" },
         "name": "Gintong Imperyal",
         "description": "Isang maringal na mesa mula sa palasyo, may palamuting gintong dahon at jade. Tumatanggap ng pabor ng hari ang mga naglalaro rito."
       },
       "night_market": {
+        "theme": "Lansangan",
+        "unlock": "Bumili ng kabuuang 20 kautusan sa lahat ng pagtakbo",
+        "modifiers": {
+          "0": "Presyo sa tindahan −20%",
+          "1": "−1 puwesto ng kautusan"
+        },
         "name": "Pamilihan sa Gabi",
         "description": "Isang pansamantalang mesa sa mataong pamilihan sa gabi na sinisindihan ng mga parolang papel. May diskuwento ang mga tindero, ngunit limitado ang espasyo."
       },
       "temple_stone": {
+        "theme": "Payak",
+        "unlock": "Manalo nang walang nakolektang bulaklak",
+        "modifiers": { "0": "Walang bulaklak", "1": "+50% batayang puntos" },
         "name": "Batong Templo",
         "description": "Isang malamig na mesang bato sa payak na templo sa bundok. Walang bulaklak dito, ngunit pinatataas ng dalisay na pokus ang batayang puntos."
       },
       "ghost_parlor": {
+        "theme": "Minumulto",
+        "unlock": "Malampasan ang 3 tiwaling panahon sa isang pagtakbo",
+        "modifiers": {
+          "0": "Maaaring lumitaw ang tiwaling panahon mula sa yugto I"
+        },
         "name": "Bulwagan ng Multo",
         "description": "Isang abandonadong bulwagan ng mahjong kung saan naglalaro pa rin ang mga espiritu. Manipis ang tabing sa pagitan ng mga mundo kaya maaaring lumitaw agad ang Corrupted Seasons."
       },
       "dragons_den": {
+        "theme": "Maalamat",
+        "unlock": "Makabuo ng yakuman",
+        "modifiers": {
+          "0": "Multiplier ng yakuman +1.0×",
+          "1": "Target na puntos +25%"
+        },
         "name": "Yungib ng Dragon",
         "description": "Isang maalamat na mesang inukit mula sa buto ng dragon at nakatago sa kuweba sa bundok. Mas malakas ang mga Yakuman, ngunit mas malaking tributo ang hinihingi ng dragon."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "Hindi maibalik ang dating save. Magsimula ng bagong laro para palitan ito.",
+      "unavailable": "Hindi mai-save ang progreso sa device na ito. Panatilihing bukas ang tab para magpatuloy."
+    },
     "slot": {
       "meld": "Puwesto ng grupo {{number}}",
       "pair": "Puwesto ng pares",

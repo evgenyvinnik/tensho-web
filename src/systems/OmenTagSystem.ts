@@ -24,7 +24,7 @@
  * - Scaling Decrees that need more rounds
  */
 
-import type { RoundType, SeasonVariant } from './types'
+import type { RoundType, SeasonVariant, DecreeRarity } from './types'
 import {
   type OmenDefinition,
   type OmenCategory,
@@ -331,11 +331,12 @@ export class OmenTagSystem {
   /**
    * Trigger omens for entering shop
    */
-  triggerShopOmens(): {
+  triggerShopOmens(canApply: (definition: OmenDefinition) => boolean = () => true): {
     discount: number
     freeRerolls: number
-    guaranteedItems: { itemType: string; omenId: string }[]
+    guaranteedItems: { itemType: string; omenId: string; minDecreeRarity?: DecreeRarity }[]
     decreeEdition: { editionType: string; omenId: string } | null
+    decreeEditions: { editionType: string; omenId: string }[]
     goldPenalty: number
     consumedOmenIds: string[]
   } {
@@ -343,14 +344,17 @@ export class OmenTagSystem {
     let discount = 0
     let freeRerolls = 0
     let decreeEdition: { editionType: string; omenId: string } | null = null
+    const decreeEditions: { editionType: string; omenId: string }[] = []
     let goldPenalty = 0
-    const guaranteedItems: { itemType: string; omenId: string }[] = []
+    const guaranteedItems: { itemType: string; omenId: string; minDecreeRarity?: DecreeRarity }[] = []
 
     // Consume the triggered omens
     const consumedOmenIds: string[] = []
     const shopOmens = store.getActiveOmensByTrigger('OnNextShop')
 
     for (const omen of shopOmens) {
+      // Preserve impossible guarantees and their tradeoffs for a later visit.
+      if (!canApply(omen.definition)) continue
       const effect = omen.definition.effect
       if (effect.type === 'discount') {
         const rawDiscount = Number(effect.value) || 0
@@ -358,9 +362,10 @@ export class OmenTagSystem {
       } else if (effect.type === 'free_reroll') {
         freeRerolls += Number(effect.value) || 0
       } else if (effect.type === 'guaranteed_item' && effect.itemType) {
-        guaranteedItems.push({ itemType: effect.itemType, omenId: omen.id })
+        guaranteedItems.push({ itemType: effect.itemType, omenId: omen.id, minDecreeRarity: effect.minDecreeRarity })
       } else if (effect.type === 'edition_apply' && effect.editionType) {
         decreeEdition = { editionType: effect.editionType, omenId: omen.id }
+        decreeEditions.push(decreeEdition)
       }
 
       if (omen.definition.tradeoff.type === 'lose_gold') {
@@ -377,6 +382,7 @@ export class OmenTagSystem {
       freeRerolls,
       guaranteedItems,
       decreeEdition,
+      decreeEditions,
       goldPenalty,
       consumedOmenIds,
     }
@@ -434,6 +440,21 @@ export class OmenTagSystem {
     multBonus: number
     consumedOmenIds: string[]
   } {
+    const result = this.peekHandScoredOmens()
+    const store = useOmenStore.getState()
+    for (const id of result.consumedOmenIds) {
+      store.triggerOmen(id)
+      store.consumeOmen(id)
+    }
+    return result
+  }
+
+  /** Read the next-hand effect without consuming it or advancing usage. */
+  peekHandScoredOmens(): {
+    scoreBonus: number
+    multBonus: number
+    consumedOmenIds: string[]
+  } {
     const store = useOmenStore.getState()
 
     let scoreBonus = 0
@@ -452,8 +473,6 @@ export class OmenTagSystem {
         multBonus += effect.value as number
       }
 
-      store.triggerOmen(omen.id)
-      store.consumeOmen(omen.id)
       consumedOmenIds.push(omen.id)
     }
 

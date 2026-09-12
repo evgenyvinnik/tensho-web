@@ -201,7 +201,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Saturn Orb',
     japaneseName: '土星',
     planetName: 'Saturn',
-    description: 'Attunes to Ittsu (Straight) yaku. +3 Mult, +30 Chips per level.',
+    description:
+      'Attunes to Ittsu (Straight) yaku. +3 Mult, +30 Chips per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -221,7 +222,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Jupiter Orb',
     japaneseName: '木星',
     planetName: 'Jupiter',
-    description: 'Attunes to Honitsu (Half-Flush) yaku. +2 Mult, +15 Chips per level.',
+    description:
+      'Attunes to Honitsu (Half-Flush) yaku. +2 Mult, +15 Chips per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -261,7 +263,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Mars Orb',
     japaneseName: '火星',
     planetName: 'Mars',
-    description: 'Attunes to Chinitsu (Full Flush) yaku. +3 Mult, +30 Chips per level.',
+    description:
+      'Attunes to Chinitsu (Full Flush) yaku. +3 Mult, +30 Chips per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -325,7 +328,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Ceres Orb',
     japaneseName: 'ケレス',
     planetName: 'Ceres',
-    description: 'Attunes to Chanta (Terminals) yaku. +4 Mult, +40 Chips per level.',
+    description:
+      'Attunes to Chanta (Terminals) yaku. +4 Mult, +40 Chips per level.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -456,6 +460,8 @@ export class CelestialOrbSystem {
    * Use a Celestial Orb to level up a yaku category
    */
   useOrb(orb: CelestialOrb): ConsumableUseResult {
+    const error = this.validateUse(orb)
+    if (error) return { success: false, message: error, effects: [] }
     const effects: ConsumableEffectResult[] = []
 
     if (orb.effect.targetYaku === 'All') {
@@ -483,14 +489,6 @@ export class CelestialOrbSystem {
     const targetYaku = orb.effect.targetYaku
     const currentLevel = this.orbLevels.get(targetYaku) || 1
 
-    if (currentLevel >= orb.maxLevel) {
-      return {
-        success: false,
-        message: `${targetYaku} is already at max level (${orb.maxLevel})`,
-        effects: [],
-      }
-    }
-
     const newLevel = currentLevel + 1
     this.orbLevels.set(targetYaku, newLevel)
 
@@ -510,9 +508,25 @@ export class CelestialOrbSystem {
     }
   }
 
-  /**
-   * Get the current level for a yaku category
-   */
+  /** Whether an all-Yaku upgrade can still change at least one level. */
+  canUpgradeAnyYaku(): boolean {
+    return [...this.orbLevels.values()].some(
+      (level) => level < DEFAULT_ORB_MAX_LEVEL
+    )
+  }
+
+  /** Read-only, shared by availability and actual use. */
+  validateUse(orb: CelestialOrb): string | null {
+    if (orb.effect.targetYaku === 'All')
+      return this.canUpgradeAnyYaku()
+        ? null
+        : `All Yaku are already at max level (${DEFAULT_ORB_MAX_LEVEL})`
+    return this.getYakuLevel(orb.effect.targetYaku) >= orb.maxLevel
+      ? `${orb.effect.targetYaku} is already at max level (${orb.maxLevel})`
+      : null
+  }
+
+  /** Get the current level for a yaku category. */
   getYakuLevel(yaku: YakuCategory): number {
     return this.orbLevels.get(yaku) || 1
   }
@@ -659,10 +673,14 @@ export class CelestialOrbSystem {
     const candidates = available.filter((orb) => orb.rarity === targetRarity)
 
     if (candidates.length === 0) {
-      return available[Math.floor(runRandom.next('consumables') * available.length)]
+      return available[
+        Math.floor(runRandom.next('consumables') * available.length)
+      ]
     }
 
-    return candidates[Math.floor(runRandom.next('consumables') * candidates.length)]
+    return candidates[
+      Math.floor(runRandom.next('consumables') * candidates.length)
+    ]
   }
 
   /**

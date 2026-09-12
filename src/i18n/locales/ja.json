@@ -1,4 +1,37 @@
 {
+  "consumableUse": {
+    "unityMapping": "元の数字 → 風牌",
+    "errorMaxLevel": "この強化はすでに最大レベルです。",
+    "errorNoRoom": "使用する前に報酬の空き枠を確保してください。",
+    "errorNoDecrees": "この効果には所持している法令が必要です。",
+    "errorNoPrevious": "先に「{{seals}}」または「{{orbs}}」のアイテムを使ってください。",
+    "copyResult": "生成するアイテム：{{name}}",
+    "errorNoGold": "今この効果を使っても金は得られません。",
+    "hiddenOutcome": "伏せ牌への効果は、確定したときにのみ判定されます。",
+    "available": "{{name}}（残り{{count}}個）",
+    "penalty_lose_tile": "ランダムな牌を1枚失う。",
+    "penalty_lose_gold": "すべての金を失う。",
+    "penalty_lose_hand_size": "手牌の上限が永続的に{{count}}枚減る。",
+    "penalty_lock_tile": "ランダムな牌1枚をデッドプールに封じる。",
+    "penalty_lose_decree_slot": "次のラウンドの勅令枠が{{count}}つ減る。",
+    "penalty_halve_base_score": "次の手の基礎点が半分になる。",
+    "penalty_destroy_decrees": "他の勅令をすべて破壊する。",
+    "penalty_none": "追加の代償なし。",
+    "protected": "前兆の加護が追加の代償を無効にする。",
+    "errorSuit": "異なる種類の数牌を選んでください。",
+    "errorRank": "変更後の数字が1〜9になる数牌を選んでください。",
+    "choose": "アイテムを選び、使用を確定してください。",
+    "targets": "対象の牌",
+    "count": "対象：{{selected}} / {{required}}",
+    "copyOrder": "牌1が牌2のコピーになります。変更する牌を先に選んでください。",
+    "cost": "虚無の代償",
+    "failed": "このアイテムは使用できませんでした。",
+    "unavailable": "対象の牌と、このラウンドの使用回数制限を確認してください。",
+    "confirm": "使用する",
+    "fateSeals": "運命の印",
+    "celestialOrbs": "天球",
+    "voidScripts": "虚無の書"
+  },
   "common": {
     "loading": "読み込み中...",
     "error": "エラー",
@@ -37,6 +70,9 @@
     "tableLoop": "卓上ループ（実験）"
   },
   "settings": {
+    "resetProgressScope": "発見記録と進行中・保存済みのランも削除されます。言語、音声、アクセシビリティの設定は保持されます。",
+    "resetFailed": "リセットできませんでした。進行状況は保持されています。ブラウザーのストレージを確認して再試行してください。",
+    "resetPartial": "リセットが完了せず、進行状況の一部が変更された可能性があります。ブラウザーのストレージを確認して再試行してください。",
     "title": "設定",
     "audio": "オーディオ",
     "musicVolume": "音楽音量",
@@ -204,6 +240,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "コモン",
+      "rarity_uncommon": "アンコモン",
+      "rarity_rare": "レア",
+      "rarity_legendary": "レジェンダリー",
+      "subtitle": "次の挑戦に備えましょう",
+      "items": "アイテム",
+      "availableCount": "残り：{{count}}",
+      "allPurchased": "すべて購入済みです！",
+      "packs": "祝福パック",
+      "noPacks": "購入できるパックはありません",
+      "imperialCharter": "勅許状",
+      "nextRound": "次の局へ進む",
+      "confirmPurchase": "購入の確認",
+      "purchasePrompt": "{{name}}を{{cost}}Gで購入しますか？",
+      "baseEdition": "基本版",
+      "goldBalance": "所持金：{{amount}}",
+      "rerollsUsed": "更新回数：{{count}}"
+    },
+    "payout": {
+      "heading": "第{{act}}幕 · {{round}}",
+      "clear": "クリア報酬",
+      "interest": "利息",
+      "decrees": "勅令",
+      "goldTiles": "金の牌",
+      "bonus": "報酬ボーナス",
+      "rentals": "レンタル料",
+      "interestBlocked": "現在、利息は無効です。",
+      "interestCap": "利息の上限{{interest}}Gに達しています。",
+      "interestSave": "現在の所持金での利息：{{interest}}G。あと{{needed}}G貯めると{{next}}Gになります。",
+      "nextRound": "次：{{round}} · 目標{{target}}",
+      "nextAct": "次：第{{act}}幕"
+    },
+    "packChoices": "{{count}} 個の報酬から最大 {{max}} 個を選択",
+    "packInventoryFull": "この選択を受け取る空きがありません。報酬を減らすか変更するか、パックをスキップしてください。",
+    "inventoryFull": "この報酬を受け取る空きがありません。",
+    "skipRewards": "報酬をスキップ",
+    "purchaseFailed": "購入を完了できませんでした。",
+    "packSelected": "{{count}} / {{max}} 個を選択中",
+    "confirmSelection": "選択を確定",
+    "selectItems": "アイテムを選択",
     "title": "茶寮",
     "titleJp": "茶寮",
     "buy": "購入",
@@ -894,6 +971,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "集めた花牌は今回の挑戦中ずっと有効です。未収集の効果は予告です。",
+      "roundScope": "引いた順に表示。季節の効果はこのラウンド終了時に消えます。",
+      "collected": "収集済み",
+      "missing": "未収集",
+      "noSeasons": "このラウンドに季節はありません。",
+      "suppressed": "干ばつにより花牌の得点ボーナスが無効です。",
+      "protected": "法令が花牌のボーナスを干ばつから守っています。",
+      "decayPenalty": "衰退による１プレイごとの減点：−{{points}}点。",
+      "partial": "一部の季節ルールは開発中です。現在有効な効果のみ表示しています。",
+      "unwired": "未実装です。",
+      "summer": "得点×1.3。",
+      "autumn": "役の倍率+20%。",
+      "winter": "得点×0.75。",
+      "drought": "保護されていない花牌の得点ボーナスを無効にします。",
+      "frostbite": "法令による倍率ボーナスを半減します。",
+      "decay": "このラウンドで捨てた牌１枚につき−10点。得点は０未満になりません。",
+      "droughtName": "干ばつ",
+      "monsoonName": "モンスーン",
+      "frostbiteName": "凍傷",
+      "decayName": "衰退",
+      "corruptedName": "異変",
+      "flowerPlum": "+{{percent}}%得点／順子。",
+      "flowerOrchid": "+{{percent}}%得点／字牌。",
+      "flowerChrysanthemum": "+{{percent}}%得点／非公開の面子。",
+      "flowerBamboo": "+{{percent}}%得点／老頭牌。",
+      "setTwo": "花牌２種：法令スロット+1。",
+      "setThree": "花牌３種：特別な店の解放は未実装です。",
+      "setFour": "花牌４種：花牌ボーナスが２倍。"
+    },
     "flowers": "花牌",
     "seasons": "季節牌",
     "plum": "梅",
@@ -957,6 +1064,12 @@
     "quad": "槓子"
   },
   "results": {
+    "endlessComplete": "無限の登頂終了",
+    "victorySubtitle": "第8幕の決戦に勝利しました。この勝利は記録されています。",
+    "endlessSubtitle": "今回の登頂は終わりましたが、勝利の記録は残ります。",
+    "defeatSubtitle": "次の挑戦では、違う作戦を試してみましょう。",
+    "showdownCleared": "決戦突破",
+    "continueEndless": "無限モードへ進む",
     "victory": "勝利！",
     "defeat": "敗北",
     "roundComplete": "局終了！",
@@ -1743,7 +1856,7 @@
       },
       "seal_of_unity": {
         "name": "統一の符",
-        "description": "最大3枚を字牌に変える"
+        "description": "数牌を最大3枚、風牌に変えます。数字は東・南・西・北の順に循環します。"
       },
       "seal_of_the_oracle": {
         "name": "神託の符",
@@ -2051,7 +2164,7 @@
       },
       "purple": {
         "name": "紫の封",
-        "description": "捨てると運命符を生む。捨てたとき無作為な運命符を生成する"
+        "description": "この牌を捨てるか引き直すと、空きがある場合にランダムな運命符を1つ生成する。"
       }
     }
   },
@@ -2146,40 +2259,68 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "伝統",
+        "unlock": "最初から利用可能",
+        "modifiers": { "0": "特殊効果なし" },
         "name": "青畳",
         "description": "古典的な麻雀卓。数え切れぬ手に磨かれた、伝統的な緑の羅紗。特別な修正はなく、腕だけがものを言う。"
       },
       "red_lacquer": {
+        "theme": "吉祥",
+        "unlock": "第3幕をクリア",
+        "modifiers": { "0": "開始時の法令スロット+1" },
         "name": "紅漆",
         "description": "鮮やかな朱の漆で仕上げられた豪奢な卓。富と幸運を象徴する。"
       },
       "bamboo_mat": {
+        "theme": "自然",
+        "unlock": "1回の挑戦で4種類すべての花牌を集める",
+        "modifiers": { "0": "花牌の抽選重み+25%（花牌は4枚のまま）" },
         "name": "竹筵",
         "description": "庭の東屋で低い卓に広げた、素朴な竹編みの筵。"
       },
       "imperial_gold": {
+        "theme": "王室",
+        "unlock": "法令を5個以上所持して勝利",
+        "modifiers": { "0": "ランダムな地域勅令1個を持って開始" },
         "name": "皇金",
         "description": "宮廷から出た壮麗な卓。金箔と玉が象嵌されている。"
       },
       "night_market": {
+        "theme": "街角",
+        "unlock": "累計20個の法令を購入",
+        "modifiers": { "0": "店の価格−20%", "1": "法令スロット−1" },
         "name": "夜市",
         "description": "賑わう夜市に据えられた仮の卓。提灯の灯りに照らされる。"
       },
       "temple_stone": {
+        "theme": "質素",
+        "unlock": "花牌を集めずに勝利",
+        "modifiers": { "0": "花牌は出現しない", "1": "基礎得点+50%" },
         "name": "寺石",
         "description": "山寺の禁欲的な空気に置かれた冷たい石の卓。ここに花は咲かない。"
       },
       "ghost_parlor": {
+        "theme": "幽玄",
+        "unlock": "1回の挑戦で3つの腐敗した季節を乗り切る",
+        "modifiers": { "0": "第1幕から腐敗した季節が出現可能" },
         "name": "幽霊荘",
         "description": "霊がなお打ち続ける廃れた雀荘。現世との境が薄れている。"
       },
       "dragons_den": {
+        "theme": "神話",
+        "unlock": "役満を成立させる",
+        "modifiers": { "0": "役満倍率+1.0×", "1": "目標得点+25%" },
         "name": "竜窟",
         "description": "龍の骨から削り出された伝説の卓。山の洞に隠されている。"
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "前回のセーブを復元できませんでした。新しいランを始めると上書きされます。",
+      "unavailable": "この端末では進行状況を保存できません。続けるにはこのタブを開いたままにしてください。"
+    },
     "slot": {
       "meld": "面子の枠{{number}}",
       "pair": "対子の枠",

@@ -1,4 +1,53 @@
 {
+  "seals": {
+    "items": {
+      "seal_of_unity": {
+        "name": "Sigillo dell’Unità",
+        "description": "Converte fino a 3 tessere numerate in Venti. I valori seguono il ciclo Est, Sud, Ovest, Nord."
+      }
+    }
+  },
+  "archiveSeals": {
+    "items": {
+      "purple": {
+        "name": "Sigillo Viola",
+        "description": "Crea un Sigillo del Destino casuale quando questa tessera viene scartata o scambiata, se c’è spazio."
+      }
+    }
+  },
+  "consumableUse": {
+    "unityMapping": "Valore originale → Vento",
+    "errorMaxLevel": "Questo potenziamento è già al livello massimo.",
+    "errorNoRoom": "Libera spazio per la ricompensa prima di usare questo oggetto.",
+    "errorNoDecrees": "Per questo effetto devi possedere un Decreto.",
+    "errorNoPrevious": "Usa prima un oggetto di {{seals}} o {{orbs}}.",
+    "copyResult": "Crea: {{name}}",
+    "errorNoGold": "Questo effetto non darebbe oro in questo momento.",
+    "hiddenOutcome": "Il risultato sulle tessere nascoste viene verificato solo alla conferma.",
+    "available": "{{name}} ({{count}} disponibili)",
+    "penalty_lose_tile": "Perdi 1 tessera casuale.",
+    "penalty_lose_gold": "Perdi tutto l’oro.",
+    "penalty_lose_hand_size": "Perdi permanentemente {{count}} spazio nella mano.",
+    "penalty_lock_tile": "Blocca 1 tessera casuale nella riserva morta.",
+    "penalty_lose_decree_slot": "Perdi {{count}} spazio Decreto nel prossimo round.",
+    "penalty_halve_base_score": "Dimezza i punti base della prossima mano.",
+    "penalty_destroy_decrees": "Distruggi tutti gli altri Decreti.",
+    "penalty_none": "Nessuna penalità aggiuntiva.",
+    "protected": "La protezione del Presagio annulla la penalità aggiuntiva.",
+    "errorSuit": "Scegli una tessera numerata di un altro seme.",
+    "errorRank": "Scegli una tessera il cui nuovo numero sia tra 1 e 9.",
+    "choose": "Scegli un oggetto, poi confermane l’uso.",
+    "targets": "Tessere bersaglio",
+    "count": "Bersagli: {{selected}} / {{required}}",
+    "copyOrder": "La tessera 1 diventa una copia della tessera 2. Scegli prima quella da modificare.",
+    "cost": "Costo del Vuoto",
+    "failed": "Impossibile usare questo oggetto.",
+    "unavailable": "Controlla i bersagli e il limite di utilizzi del round.",
+    "confirm": "Usa oggetto",
+    "fateSeals": "Sigilli del Destino",
+    "celestialOrbs": "Sfere Celesti",
+    "voidScripts": "Scritti del Vuoto"
+  },
   "common": {
     "loading": "Caricamento...",
     "error": "Errore",
@@ -37,6 +86,9 @@
     "tableLoop": "Ciclo del tavolo (esperimento)"
   },
   "settings": {
+    "resetProgressScope": "Verranno eliminate anche le scoperte e le partite attive o salvate. Lingua, audio e impostazioni di accessibilità saranno conservati.",
+    "resetFailed": "Reimpostazione non riuscita. I tuoi progressi sono stati conservati. Controlla lo spazio di archiviazione del browser e riprova.",
+    "resetPartial": "La reimpostazione non è stata completata e alcuni progressi potrebbero essere cambiati. Controlla lo spazio di archiviazione del browser e riprova.",
     "title": "Impostazioni",
     "audio": "Audio",
     "musicVolume": "Volume Musica",
@@ -204,6 +256,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "Comune",
+      "rarity_uncommon": "Non comune",
+      "rarity_rare": "Raro",
+      "rarity_legendary": "Leggendario",
+      "subtitle": "Preparati alla prossima sfida",
+      "items": "Oggetti",
+      "availableCount": "Disponibili: {{count}}",
+      "allPurchased": "Tutti gli oggetti acquistati!",
+      "packs": "Pacchetti benedizione",
+      "noPacks": "Nessun pacchetto disponibile",
+      "imperialCharter": "Carta imperiale",
+      "nextRound": "Continua al prossimo round",
+      "confirmPurchase": "Conferma acquisto",
+      "purchasePrompt": "Acquistare {{name}} per {{cost}}G?",
+      "baseEdition": "Edizione base",
+      "goldBalance": "{{amount}} oro",
+      "rerollsUsed": "Rimescolamenti usati: {{count}}"
+    },
+    "payout": {
+      "heading": "Atto {{act}} · {{round}}",
+      "clear": "Vittoria",
+      "interest": "Interessi",
+      "decrees": "Decreti",
+      "goldTiles": "Tessere d’oro",
+      "bonus": "Bonus ricompensa",
+      "rentals": "Affitti",
+      "interestBlocked": "Gli interessi sono attualmente bloccati.",
+      "interestCap": "Hai raggiunto il limite di interessi di {{interest}}G.",
+      "interestSave": "Con i risparmi attuali: {{interest}}G di interessi. Risparmia altri {{needed}}G per ottenere {{next}}G.",
+      "nextRound": "Prossimo: {{round}} · obiettivo {{target}}",
+      "nextAct": "Prossimo: Atto {{act}}"
+    },
+    "packChoices": "Scegli fino a {{max}} ricompense tra {{count}}",
+    "packInventoryFull": "Spazio insufficiente per questa selezione. Scegli meno ricompense o ricompense diverse, oppure salta il pacchetto.",
+    "inventoryFull": "Spazio insufficiente nell’inventario per questa ricompensa.",
+    "skipRewards": "Salta ricompense",
+    "purchaseFailed": "Impossibile completare l’acquisto.",
+    "packSelected": "{{count}} / {{max}} selezionati",
+    "confirmSelection": "Conferma selezione",
+    "selectItems": "Seleziona oggetti",
     "title": "Casa del Tè",
     "titleJp": "茶寮",
     "buy": "Compra",
@@ -266,6 +359,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "I fiori raccolti durano per tutta la partita. Gli altri bonus sono anteprime.",
+      "roundScope": "In ordine di pesca. Le stagioni terminano alla fine del round.",
+      "collected": "Raccolto",
+      "missing": "Non raccolto",
+      "noSeasons": "Nessuna stagione in questo round.",
+      "suppressed": "La Siccità annulla i bonus al punteggio dei tuoi fiori.",
+      "protected": "Un decreto protegge i bonus dei fiori dalla Siccità.",
+      "decayPenalty": "Penalità del Declino per giocata: −{{points}} punti.",
+      "partial": "Alcune regole stagionali sono ancora in sviluppo. Sono mostrati solo gli effetti attuali.",
+      "unwired": "Non ancora implementato.",
+      "summer": "Punteggio ×1,3.",
+      "autumn": "Moltiplicatore yaku +20%.",
+      "winter": "Punteggio ×0,75.",
+      "drought": "Annulla i bonus al punteggio dei fiori non protetti.",
+      "frostbite": "Dimezza i bonus moltiplicatori dei decreti.",
+      "decay": "−10 punti per tessera scartata in questo round, senza scendere sotto zero.",
+      "droughtName": "Siccità",
+      "monsoonName": "Monsone",
+      "frostbiteName": "Congelamento",
+      "decayName": "Declino",
+      "corruptedName": "Corrotta",
+      "flowerPlum": "+{{percent}}% al punteggio per sequenza.",
+      "flowerOrchid": "+{{percent}}% al punteggio per tessera onore.",
+      "flowerChrysanthemum": "+{{percent}}% al punteggio per gruppo nascosto.",
+      "flowerBamboo": "+{{percent}}% al punteggio per tessera terminale.",
+      "setTwo": "2 fiori: +1 spazio decreto.",
+      "setThree": "3 fiori: sblocco speciale del negozio non ancora implementato.",
+      "setFour": "4 fiori: bonus dei fiori raddoppiati."
+    },
     "flowers": "Fiori",
     "seasons": "Stagioni",
     "plum": "Prugno",
@@ -329,6 +452,12 @@
     "quad": "Poker"
   },
   "results": {
+    "endlessComplete": "Ascesa infinita conclusa",
+    "victorySubtitle": "Hai vinto il duello dell’atto 8. La tua vittoria è al sicuro.",
+    "endlessSubtitle": "La tua vittoria resta, anche se questa ascesa è terminata.",
+    "defeatSubtitle": "Prova una strategia diversa nella prossima partita.",
+    "showdownCleared": "Duello superato",
+    "continueEndless": "Continua in modalità infinita",
     "victory": "Vittoria!",
     "defeat": "Sconfitta",
     "roundComplete": "Round Completato!",
@@ -680,40 +809,76 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "Classico",
+        "unlock": "Disponibile dall’inizio",
+        "modifiers": { "0": "Nessun modificatore speciale" },
         "name": "Feltro Verde",
         "description": "Il classico tavolo da mahjong, con il tradizionale feltro verde levigato da innumerevoli mani. Nessun modificatore speciale: soltanto pura abilità."
       },
       "red_lacquer": {
+        "theme": "Propizio",
+        "unlock": "Completa l’atto 3",
+        "modifiers": { "0": "+1 spazio iniziale per decreti" },
         "name": "Lacca Rossa",
         "description": "Un tavolo lussuoso rifinito in brillante lacca vermiglia, simbolo di fortuna e prosperità. Il colore propizio attira Decreti aggiuntivi."
       },
       "bamboo_mat": {
+        "theme": "Naturale",
+        "unlock": "Raccogli tutti e 4 i fiori in una partita",
+        "modifiers": {
+          "0": "+25% al peso di pesca dei fiori (sempre gli stessi 4 fiori)"
+        },
         "name": "Stuoia di Bambù",
         "description": "Una semplice stuoia di bambù intrecciato su un tavolo basso in un padiglione da giardino. L'ambiente naturale fa sbocciare più fiori."
       },
       "imperial_gold": {
+        "theme": "Regale",
+        "unlock": "Vinci con almeno 5 decreti",
+        "modifiers": { "0": "Inizia con 1 mandato regionale casuale" },
         "name": "Oro Imperiale",
         "description": "Un magnifico tavolo del palazzo imperiale, intarsiato con foglia d'oro e giada. Chi gioca qui riceve il favore reale."
       },
       "night_market": {
+        "theme": "Urbano",
+        "unlock": "Acquista 20 decreti in totale",
+        "modifiers": {
+          "0": "Prezzi del negozio −20%",
+          "1": "−1 spazio per decreti"
+        },
         "name": "Mercato Notturno",
         "description": "Un tavolo improvvisato nel vivace mercato notturno, illuminato da lanterne di carta. I mercanti offrono sconti, ma lo spazio è limitato."
       },
       "temple_stone": {
+        "theme": "Austero",
+        "unlock": "Vinci senza raccogliere fiori",
+        "modifiers": { "0": "Nessun fiore", "1": "+50% al punteggio base" },
         "name": "Pietra del Tempio",
         "description": "Un freddo tavolo di pietra in un austero tempio di montagna. Qui non crescono fiori, ma la purezza della concentrazione aumenta il punteggio base."
       },
       "ghost_parlor": {
+        "theme": "Infestato",
+        "unlock": "Sopravvivi a 3 stagioni corrotte in una partita",
+        "modifiers": { "0": "Stagioni corrotte possibili dall’atto I" },
         "name": "Salone degli Spiriti",
         "description": "Una sala da mahjong abbandonata dove gli spiriti giocano ancora. Il velo fra i mondi è sottile e le Stagioni Corrotte possono apparire fin dall'inizio."
       },
       "dragons_den": {
+        "theme": "Mitico",
+        "unlock": "Realizza uno yakuman",
+        "modifiers": {
+          "0": "Moltiplicatori yakuman +1,0×",
+          "1": "Obiettivi di punteggio +25%"
+        },
         "name": "Tana del Drago",
         "description": "Un tavolo leggendario scolpito nell'osso di drago e nascosto in una caverna montana. Le mani Yakuman sono amplificate, ma il drago esige un tributo maggiore."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "Non è stato possibile ripristinare il salvataggio. Inizia una nuova partita per sostituirlo.",
+      "unavailable": "Non è possibile salvare i progressi su questo dispositivo. Tieni aperta questa scheda per continuare."
+    },
     "slot": {
       "meld": "Casella combinazione {{number}}",
       "pair": "Casella della coppia",

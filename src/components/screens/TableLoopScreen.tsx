@@ -28,18 +28,43 @@ import { SelectionStrip } from '../tableloop/SelectionStrip'
 import { TableSlots } from '../tableloop/TableSlots'
 import { MilestoneTrack } from '../tableloop/MilestoneTrack'
 import { CausalChain } from '../tableloop/CausalChain'
-import {
-  placeableSlots,
-  revisableSlots,
-} from '../../tableloop/TableLoopEngine'
+import { TableDecreeArt } from '../tableloop/TableDecreeArt'
+import { TableDecreeInventory } from '../tableloop/TableDecreeInventory'
+import { placeableSlots, revisableSlots } from '../../tableloop/TableLoopEngine'
 import { classifyGroup } from '../../tableloop/groupRules'
 import { practiceStep } from '../../tableloop/practice'
-import { MAX_REDRAW_TILES, TABLE_ROUNDS, getTableDecree } from '../../tableloop/content'
+import {
+  MAX_REDRAW_TILES,
+  TABLE_ROUNDS,
+  getTableDecree,
+} from '../../tableloop/content'
 import type { TableDecreeId } from '../../tableloop/types'
 
 // =============================================================================
 // SHARED PIECES
 // =============================================================================
+
+function SaveNotice() {
+  const { t } = useTranslation()
+  const status = useTableLoopStore((store) => store.saveStatus)
+  if (status === 'saved') return null
+  return (
+    <p
+      role="status"
+      className="mx-3 rounded-lg border border-amber-300/40 bg-amber-950/60 px-3 py-2 text-xs leading-relaxed text-amber-100"
+    >
+      {status === 'invalid'
+        ? t(
+            'tableLoop.save.invalid',
+            'The previous save could not be restored. Start a new run to replace it.'
+          )
+        : t(
+            'tableLoop.save.unavailable',
+            'Progress cannot be saved on this device. Keep this tab open to continue your run.'
+          )}
+    </p>
+  )
+}
 
 function DecreeCard({
   id,
@@ -62,27 +87,33 @@ function DecreeCard({
       data-testid={`table-decree-${id}`}
       disabled={disabled}
       onClick={() => onChoose(id)}
-      className={`flex w-full flex-col rounded-xl border-2 px-3 py-2.5 text-left transition-colors ${
+      className={`group flex w-full items-center gap-3 rounded-xl border-2 px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] ${
         disabled
           ? 'border-[var(--color-metallic-gold)]/15 opacity-50'
           : 'border-[var(--color-metallic-gold)]/50 hover:border-[var(--color-golden-yellow)] hover:bg-[var(--color-golden-yellow)]/10'
       }`}
     >
-      <span className="flex items-baseline justify-between gap-2">
-        <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
-          {t(`tableLoop.decrees.${id}.name`, definition.name)}
-        </span>
-        {showCost && (
-          <span className="text-xs font-bold tabular-nums text-emerald-300">
-            ¥{definition.cost}
+      <TableDecreeArt
+        id={id}
+        className="h-20 w-16 sm:h-24 sm:w-20 motion-safe:transition-transform motion-safe:group-hover:scale-105"
+      />
+      <span className="min-w-0 flex-1">
+        <span className="flex items-baseline justify-between gap-2">
+          <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
+            {t(`tableLoop.decrees.${id}.name`, definition.name)}
           </span>
-        )}
-      </span>
-      <span className="mt-1 text-xs leading-snug text-[var(--color-beige-white)]/75">
-        {t(`tableLoop.decrees.${id}.description`, definition.description)}
-      </span>
-      <span className="mt-1.5 text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/45">
-        {actionLabel}
+          {showCost && (
+            <span className="text-xs font-bold tabular-nums text-emerald-300">
+              ¥{definition.cost}
+            </span>
+          )}
+        </span>
+        <span className="mt-1 block text-sm leading-snug text-[var(--color-beige-white)]/85">
+          {t(`tableLoop.decrees.${id}.description`, definition.description)}
+        </span>
+        <span className="mt-1.5 block text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/65">
+          {actionLabel}
+        </span>
       </span>
     </button>
   )
@@ -98,7 +129,8 @@ function Panel({
   children: React.ReactNode
 }) {
   return (
-    <div className="viewport-full flex flex-col items-center justify-center gap-4 bg-[var(--color-dark-forest)] px-4 py-6">
+    <div className="flex min-h-dvh w-full flex-col items-center justify-center gap-4 overflow-y-auto bg-[var(--color-dark-forest)] px-4 py-6">
+      <SaveNotice />
       <div className="w-full max-w-md text-center">
         <h1 className="text-xl font-black text-[var(--color-golden-yellow)]">
           {title}
@@ -123,24 +155,33 @@ export function TableLoopScreen() {
   const { navigateTo } = useAppNavigation()
   const store = useTableLoopStore()
   const { state, selectedTileIds } = store
-  const [highlightedSlots, setHighlightedSlots] = useState<readonly number[]>([])
+  const [highlightedSlots, setHighlightedSlots] = useState<readonly number[]>(
+    []
+  )
 
   // `?seed=` replays an exact run and `?draft=1` selects the offers variant.
   // The playtest plan in section 8 of the experiments document depends on
   // handing someone the same deal that confused a previous player, and on
   // running the variant and the base loop against each other.
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const requestedSeed = Number(searchParams.get('seed'))
   const requestedDraft = searchParams.get('draft') === '1'
   const requestedPractice = searchParams.get('practice') === '1'
   const applied = useRef<string | null>(null)
   const { restart } = store
   useEffect(() => {
-    const hasSeed = Number.isFinite(requestedSeed) && requestedSeed !== 0
+    const hasSeed = Number.isSafeInteger(requestedSeed) && requestedSeed !== 0
     if (!hasSeed && !requestedDraft && !requestedPractice) return
     const key = `${hasSeed ? requestedSeed : 'auto'}:${requestedDraft}:${requestedPractice}`
     if (applied.current === key) return
     applied.current = key
+    const current = useTableLoopStore.getState().state
+    if (
+      (!hasSeed || current.seed === requestedSeed) &&
+      current.draftEnabled === requestedDraft &&
+      current.practice === requestedPractice
+    )
+      return
     restart(hasSeed ? requestedSeed : undefined, {
       draftEnabled: requestedDraft,
       practice: requestedPractice,
@@ -193,14 +234,17 @@ export function TableLoopScreen() {
       : { type: null, usedGap: false }
   }, [selectedTiles, state.gapBridgesRemaining])
 
-  const bestForecast = forecasts.size
-    ? Math.max(...forecasts.values())
-    : null
-  const bestSlot = bestForecast === null
-    ? null
-    : [...forecasts.entries()].find(([, total]) => total === bestForecast)?.[0]
+  const bestForecast = forecasts.size ? Math.max(...forecasts.values()) : null
+  const bestSlot =
+    bestForecast === null
+      ? null
+      : [...forecasts.entries()].find(
+          ([, total]) => total === bestForecast
+        )?.[0]
   const bestMultCost =
-    bestSlot === undefined || bestSlot === null ? 0 : (multCosts.get(bestSlot) ?? 0)
+    bestSlot === undefined || bestSlot === null
+      ? 0
+      : (multCosts.get(bestSlot) ?? 0)
 
   // The chain re-emits its highlight on every render, so this must be a no-op
   // when nothing changed; storing a fresh array each time would re-render the
@@ -241,9 +285,13 @@ export function TableLoopScreen() {
           data-testid="draft-toggle"
           role="switch"
           aria-checked={state.draftEnabled}
-          onClick={() =>
+          onClick={() => {
+            const params = new URLSearchParams(searchParams)
+            if (state.draftEnabled) params.delete('draft')
+            else params.set('draft', '1')
+            setSearchParams(params, { replace: true })
             store.restart(state.seed, { draftEnabled: !state.draftEnabled })
-          }
+          }}
           className="mt-1 flex items-center justify-between gap-3 rounded-xl border border-[var(--color-metallic-gold)]/30 px-3 py-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
         >
           <span className="min-w-0">
@@ -273,10 +321,16 @@ export function TableLoopScreen() {
         <button
           type="button"
           data-testid="practice-start"
-          onClick={() => store.restart(state.seed, { practice: true })}
+          onClick={() => {
+            setSearchParams({ practice: '1' }, { replace: true })
+            store.restart(state.seed, { practice: true, draftEnabled: false })
+          }}
           className="mt-1 rounded-xl border border-sky-400/50 px-3 py-2 text-xs font-semibold text-sky-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
         >
-          {t('tableLoop.practice.begin', 'New here? Play the practice deal first')}
+          {t(
+            'tableLoop.practice.begin',
+            'New here? Play the practice deal first'
+          )}
         </button>
 
         <button
@@ -291,7 +345,9 @@ export function TableLoopScreen() {
 
   // How the round stopped, so the panel can say which of the three endings it
   // was rather than leaving the player to infer it from the numbers.
-  const endingStage = state.lastResolution.find((stage) => stage.labelKey?.startsWith('tableLoop.roundEnd.'))
+  const endingStage = state.lastResolution.find((stage) =>
+    stage.labelKey?.startsWith('tableLoop.roundEnd.')
+  )
   const endingLabel = endingStage
     ? t(endingStage.labelKey!, endingStage.label)
     : undefined
@@ -370,7 +426,10 @@ export function TableLoopScreen() {
         })}
       >
         <button
-          onClick={() => store.restart()}
+          onClick={() => {
+            setSearchParams({}, { replace: true })
+            store.restart()
+          }}
           className="rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
         >
           {t('tableLoop.end.again', 'Another run')}
@@ -403,12 +462,20 @@ export function TableLoopScreen() {
     state.riverRecoveriesRemaining > 0 && state.river.length > 0
 
   return (
-    <div className="viewport-full relative flex flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
+    <div className="relative mx-auto flex min-h-dvh w-full max-w-5xl flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
       <ResolutionFlourish stages={state.lastResolution} />
+      <SaveNotice />
 
       {/* Header */}
       <header className="flex-shrink-0 px-3 pt-2">
-        <div className="flex items-baseline justify-between gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <button
+            type="button"
+            onClick={() => navigateTo(ROUTES.MENU)}
+            className="min-h-11 shrink-0 rounded-lg border border-[var(--color-metallic-gold)]/35 px-2 text-xs text-[var(--color-beige-white)] focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
+          >
+            {t('common.mainMenu', 'Main menu')}
+          </button>
           <div className="min-w-0">
             <p className="truncate text-sm font-bold text-[var(--color-golden-yellow)]">
               {t(`tableLoop.rounds.${state.round.index}`, state.round.name)}
@@ -439,10 +506,14 @@ export function TableLoopScreen() {
             / {state.round.target.toLocaleString()}
           </span>
           <span className="ml-auto text-[11px] text-[var(--color-beige-white)]/55">
-            {t('tableLoop.hud.resources', '{{actions}} actions · {{redraws}} exchanges', {
-              actions: state.placementActionsRemaining,
-              redraws: state.redrawsRemaining,
-            })}
+            {t(
+              'tableLoop.hud.resources',
+              '{{actions}} actions · {{redraws}} exchanges',
+              {
+                actions: state.placementActionsRemaining,
+                redraws: state.redrawsRemaining,
+              }
+            )}
             {state.gapBridgesRemaining > 0 && (
               <span className="ml-1.5 text-sky-300">
                 {t('tableLoop.hud.bridges', '· {{count}} bridge', {
@@ -472,13 +543,18 @@ export function TableLoopScreen() {
         )}
       </header>
 
+      <TableDecreeInventory ids={state.ownedDecrees} />
+
       {guideStep && (
         <PracticeGuide
           state={state}
           step={guideStep}
           onInspect={handleInspect}
           onTakeDecree={store.takePracticeDecree}
-          onStartRealRun={() => store.restart(undefined, { practice: false })}
+          onStartRealRun={() => {
+            setSearchParams({}, { replace: true })
+            store.restart(undefined, { practice: false })
+          }}
         />
       )}
 
@@ -576,16 +652,19 @@ export function TableLoopScreen() {
                 'Take an offer, or draw from the wall. Doing anything else takes the wall tile.'
               )
             : selectedTileIds.length === 0
-            ? t(
-                'tableLoop.hint.select',
-                'Tap tiles to build a run, a set or a pair, then choose a slot.'
-              )
-            : placeable.length + revisable.length > 0
-              ? t('tableLoop.hint.choose', 'Tap a highlighted slot to commit it.')
-              : t(
-                  'tableLoop.hint.noSlot',
-                  'No slot takes that group. Exchange the tiles or pick a different shape.'
-                )}
+              ? t(
+                  'tableLoop.hint.select',
+                  'Tap tiles to build a run, a set or a pair, then choose a slot.'
+                )
+              : placeable.length + revisable.length > 0
+                ? t(
+                    'tableLoop.hint.choose',
+                    'Tap a highlighted slot to commit it.'
+                  )
+                : t(
+                    'tableLoop.hint.noSlot',
+                    'No slot takes that group. Exchange the tiles or pick a different shape.'
+                  )}
         </p>
         <div className="flex gap-2">
           <button

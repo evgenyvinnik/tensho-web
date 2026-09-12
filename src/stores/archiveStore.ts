@@ -15,8 +15,10 @@ import {
   getPreDiscoveredItemIds,
   ARCHIVE_CATEGORIES,
   getAllArchiveCategories,
+  isActiveArchiveItem,
 } from '../config/archiveDefinitions'
 import {
+  ArchiveSystem,
   getArchiveSystem,
   type ArchiveEntry,
   type DiscoveryEvent,
@@ -57,7 +59,10 @@ export interface ArchiveState {
 
   // Queries
   isDiscovered: (category: ArchiveCategory, itemId: string) => boolean
-  getEntry: (category: ArchiveCategory, itemId: string) => ArchiveEntry | undefined
+  getEntry: (
+    category: ArchiveCategory,
+    itemId: string
+  ) => ArchiveEntry | undefined
   getEntriesByCategory: (category: ArchiveCategory) => ArchiveEntry[]
   getDiscoveredEntries: () => ArchiveEntry[]
   getUndiscoveredEntries: () => ArchiveEntry[]
@@ -67,7 +72,13 @@ export interface ArchiveState {
   isArchiveComplete: () => boolean
 
   // Utility
-  initializeEntries: (allItems: { category: ArchiveCategory; itemId: string; unlockCondition?: string }[]) => void
+  initializeEntries: (
+    allItems: {
+      category: ArchiveCategory
+      itemId: string
+      unlockCondition?: string
+    }[]
+  ) => void
   resetArchive: () => void
   unlockAll: () => void
 }
@@ -93,7 +104,10 @@ function createInitialEntries(): Record<string, ArchiveEntry> {
  */
 function calculateStats(entries: Record<string, ArchiveEntry>): ArchiveStats {
   const categories = getAllArchiveCategories()
-  const categoryCounts = {} as Record<ArchiveCategory, { discovered: number; total: number }>
+  const categoryCounts = {} as Record<
+    ArchiveCategory,
+    { discovered: number; total: number }
+  >
 
   let totalDiscovered = 0
   let totalItems = 0
@@ -102,8 +116,12 @@ function calculateStats(entries: Record<string, ArchiveEntry>): ArchiveStats {
   let totalRunsWon = 0
 
   for (const cat of categories) {
-    const categoryEntries = Object.values(entries).filter((e) => e.category === cat.id)
-    const discovered = categoryEntries.filter((e) => e.discoveredAt !== null).length
+    const categoryEntries = Object.values(entries).filter(
+      (e) => e.category === cat.id && isActiveArchiveItem(e.category, e.itemId)
+    )
+    const discovered = categoryEntries.filter(
+      (e) => e.discoveredAt !== null
+    ).length
 
     categoryCounts[cat.id] = {
       discovered,
@@ -118,7 +136,10 @@ function calculateStats(entries: Record<string, ArchiveEntry>): ArchiveStats {
       totalRunsWon += entry.timesWonWith
 
       if (entry.discoveredAt !== null) {
-        if (lastDiscoveryTime === null || entry.discoveredAt > lastDiscoveryTime) {
+        if (
+          lastDiscoveryTime === null ||
+          entry.discoveredAt > lastDiscoveryTime
+        ) {
           lastDiscoveryTime = entry.discoveredAt
         }
       }
@@ -128,7 +149,8 @@ function calculateStats(entries: Record<string, ArchiveEntry>): ArchiveStats {
   return {
     totalDiscovered,
     totalItems,
-    completionPercentage: totalItems > 0 ? (totalDiscovered / totalItems) * 100 : 0,
+    completionPercentage:
+      totalItems > 0 ? (totalDiscovered / totalItems) * 100 : 0,
     categoryCounts,
     lastDiscoveryTime,
     totalTimesUsed,
@@ -306,22 +328,34 @@ export const useArchiveStore = create<ArchiveState>()(
         return entry !== undefined && entry.discoveredAt !== null
       },
 
-      getEntry: (category: ArchiveCategory, itemId: string): ArchiveEntry | undefined => {
+      getEntry: (
+        category: ArchiveCategory,
+        itemId: string
+      ): ArchiveEntry | undefined => {
         const key = createArchiveKey(category, itemId)
         return get().entries[key]
       },
 
       getEntriesByCategory: (category: ArchiveCategory): ArchiveEntry[] => {
-        return Object.values(get().entries).filter((e) => e.category === category)
+        return Object.values(get().entries).filter(
+          (e) =>
+            e.category === category && isActiveArchiveItem(e.category, e.itemId)
+        )
       },
 
       getDiscoveredEntries: (): ArchiveEntry[] => {
-        return Object.values(get().entries).filter((e) => e.discoveredAt !== null)
+        return Object.values(get().entries).filter(
+          (e) =>
+            e.discoveredAt !== null && isActiveArchiveItem(e.category, e.itemId)
+        )
       },
 
       getUndiscoveredEntries: (): ArchiveEntry[] => {
         return Object.values(get().entries).filter(
-          (e) => e.discoveredAt === null && e.isUnlocked
+          (e) =>
+            e.discoveredAt === null &&
+            e.isUnlocked &&
+            isActiveArchiveItem(e.category, e.itemId)
         )
       },
 
@@ -348,7 +382,11 @@ export const useArchiveStore = create<ArchiveState>()(
       // ===========================================================================
 
       initializeEntries: (
-        allItems: { category: ArchiveCategory; itemId: string; unlockCondition?: string }[]
+        allItems: {
+          category: ArchiveCategory
+          itemId: string
+          unlockCondition?: string
+        }[]
       ): void => {
         const { entries } = get()
         const preDiscovered = getPreDiscoveredItemIds()
@@ -376,21 +414,10 @@ export const useArchiveStore = create<ArchiveState>()(
       },
 
       resetArchive: (): void => {
-        const { entries } = get()
-        const preDiscovered = getPreDiscoveredItemIds()
-        const resetEntries: Record<string, ArchiveEntry> = {}
-
-        for (const [key, entry] of Object.entries(entries)) {
-          resetEntries[key] = {
-            ...entry,
-            timesUsed: 0,
-            timesWonWith: 0,
-            discoveredAt: preDiscovered.has(key) ? 0 : null,
-          }
-        }
-
+        // Rebuild from the authored catalog, not earned/retired saved entries.
+        // Resetting counters alone used to preserve every earned unlock.
         set({
-          entries: resetEntries,
+          entries: Object.fromEntries(new ArchiveSystem().toState().entries),
           discoveryHistory: [],
           currentRunItems: [],
         })
@@ -460,9 +487,12 @@ export function useCategoryCompletions(): Record<ArchiveCategory, number> {
   return useArchiveStore((state) => {
     const stats = state.getStats()
     const completions = {} as Record<ArchiveCategory, number>
-    for (const category of Object.keys(ARCHIVE_CATEGORIES) as ArchiveCategory[]) {
+    for (const category of Object.keys(
+      ARCHIVE_CATEGORIES
+    ) as ArchiveCategory[]) {
       const counts = stats.categoryCounts[category]
-      completions[category] = counts?.total > 0 ? (counts.discovered / counts.total) * 100 : 0
+      completions[category] =
+        counts?.total > 0 ? (counts.discovered / counts.total) * 100 : 0
     }
     return completions
   })

@@ -31,7 +31,13 @@
 | **Seal of Pinzu** | 筒子の印 | Converts up to 3 tiles to Pinzu suit | Way of Circles |
 | **Seal of Souzu** | 索子の印 | Converts up to 3 tiles to Souzu suit | Way of Bamboo |
 | **Seal of Judgment** | 審判の印 | Creates a random Decree (if room) | Court decides |
-| **Seal of Unity** | 統一の印 | Converts up to 3 tiles to Honor tiles | Path of honors |
+| **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps tile modifiers, removes red-five status |
+
+Physical suit/rank transformations retain a tile's enhancement, Seal, and
+edition. Red-five (aka-dora) status is retained only while the tile remains a
+suited five; it is not the Red Seal retrigger modifier. Creating an ordinary
+five through a rank change does not make it red. This applies to Strength and
+Ouija rank changes as well as Unity's conversion to Winds.
 
 ### Secret Fate Seals (Rare)
 
@@ -476,4 +482,3 @@ Game-changing, run-defining effects.
 | Time Master | 時の支配者 | +2 extra hands per round | — |
 | Immortal Decree | 不死勅令 | Cannot lose (halves score) | — |
 | Omega | 終極 | +500 Chips, +50 Mult, ×2.0 | Complete Act 8 |
-

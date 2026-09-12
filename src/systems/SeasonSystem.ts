@@ -108,7 +108,7 @@ export class SeasonSystem {
   private currentAct: number = 1
   private discardCount: number = 0
 
-  constructor() {
+  constructor(private readonly earlyCorruption: boolean = false) {
     this.clear()
   }
 
@@ -141,20 +141,22 @@ export class SeasonSystem {
   }
 
   /**
-   * Add a season tile to the round
+   * Add a season tile to the round. An Omen lock changes this draw's type,
+   * preserving the stack, physical identity and existing discard penalties.
+   * Locked draws retain their existing guaranteed non-corrupted behavior.
    */
-  addSeason(tile: Tile): SeasonTile | null {
+  addSeason(tile: Tile, lockedSeason?: SeasonVariant): SeasonTile | null {
     if (tile.suit !== TileSuit.Season) {
       return null
     }
 
-    const seasonVariant = this.getSeasonVariantFromRank(tile.rank)
+    const seasonVariant = lockedSeason ?? this.getSeasonVariantFromRank(tile.rank)
     if (!seasonVariant) {
       return null
     }
 
     // Determine if season should be corrupted (Act II+, with probability)
-    const isCorrupted = this.shouldBeCorrupted(seasonVariant)
+    const isCorrupted = lockedSeason ? false : this.shouldBeCorrupted(seasonVariant)
     const corruptedType = isCorrupted
       ? this.getCorruptedVariant(seasonVariant)
       : undefined
@@ -203,13 +205,13 @@ export class SeasonSystem {
    */
   private shouldBeCorrupted(_seasonVariant: SeasonVariant): boolean {
     // Corrupted seasons only appear from Act II onwards
-    if (this.currentAct < 2) {
+    if (this.currentAct < 2 && !this.earlyCorruption) {
       return false
     }
 
     // Probability increases with act number
     // Act 2: 20%, Act 3: 30%, Act 4+: 40%
-    const baseProbability = Math.min(0.2 + (this.currentAct - 2) * 0.1, 0.4)
+    const baseProbability = Math.min(0.2 + Math.max(0, this.currentAct - 2) * 0.1, 0.4)
     return runRandom.next('wall') < baseProbability
   }
 
@@ -471,12 +473,14 @@ export class SeasonSystem {
     seasonStack: SeasonTile[]
     currentAct: number
     discardCount: number
+    earlyCorruption: boolean
   } {
     return {
       activeSeason: this.activeSeason,
       seasonStack: [...this.seasonStack],
       currentAct: this.currentAct,
       discardCount: this.discardCount,
+      earlyCorruption: this.earlyCorruption,
     }
   }
 
@@ -488,8 +492,9 @@ export class SeasonSystem {
     seasonStack: SeasonTile[]
     currentAct: number
     discardCount: number
+    earlyCorruption?: boolean
   }): SeasonSystem {
-    const system = new SeasonSystem()
+    const system = new SeasonSystem(state.earlyCorruption ?? false)
     system.activeSeason = state.activeSeason
     system.seasonStack = [...state.seasonStack]
     system.currentAct = state.currentAct

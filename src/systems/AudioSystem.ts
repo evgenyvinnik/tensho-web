@@ -1,19 +1,7 @@
-/**
- * Audio System for Tensho Mahjong Roguelike
- *
- * Central audio management system that handles:
- * - Sound effect playback with pooling
- * - Background music with crossfade
- * - Volume controls and muting
- * - Tab visibility handling
- * - Integration with EventBus for game events
- */
-
+/** App-lifetime audio. Presentation never consumes gameplay RNG. */
 import {
-  SoundEffectId,
-  SoundEffectConfig,
   SOUND_EFFECT_CONFIG,
-  MusicContext,
+  MUSIC_CONFIG,
   getMusicForContext,
   getPreloadSounds,
   TILE_SOUNDS,
@@ -22,894 +10,533 @@ import {
   SPECIAL_SOUNDS,
   FEEDBACK_SOUNDS,
   SHOP_SOUNDS,
-} from '../config/audioDefinitions';
-import { eventBus } from '../game/EventBus';
+  CONSUMABLE_SOUNDS,
+  type SoundEffectId,
+  type SoundEffectConfig,
+  type MusicContext,
+} from '../config/audioDefinitions'
+import { eventBus, type GameEvent } from '../game/EventBus'
 
-// =============================================================================
-// TYPES
-// =============================================================================
-
-/**
- * Pooled audio instance
- */
-interface PooledAudio {
-  element: HTMLAudioElement;
-  inUse: boolean;
-  id: string;
+interface Voice {
+  element: HTMLAudioElement
+  active: boolean
+  gain: number
+  generation: number
+  started: number
+  config: SoundEffectConfig
 }
+const clamp = (n: number) =>
+  Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : 0
 
-/**
- * Audio pool for a specific sound effect
- */
-interface AudioPool {
-  instances: PooledAudio[];
-  config: SoundEffectConfig;
-}
-
-/**
- * Audio system state
- */
-interface AudioSystemState {
-  masterVolume: number;
-  musicVolume: number;
-  sfxVolume: number;
-  musicMuted: boolean;
-  sfxMuted: boolean;
-  isTabVisible: boolean;
-  currentMusicContext: MusicContext | null;
-  isInitialized: boolean;
-}
-
-/**
- * Music playback state
- */
-interface MusicState {
-  currentTrack: string | null;
-  isPlaying: boolean;
-  isCrossfading: boolean;
-}
-
-// =============================================================================
-// AUDIO SYSTEM CLASS
-// =============================================================================
-
-/**
- * Centralized audio management system
- */
 export class AudioSystem {
-  // State
-  private state: AudioSystemState = {
+  private state = {
     masterVolume: 1,
     musicVolume: 0.7,
     sfxVolume: 0.8,
     musicMuted: false,
     sfxMuted: false,
     isTabVisible: true,
-    currentMusicContext: null,
+    currentMusicContext: null as MusicContext | null,
     isInitialized: false,
-  };
-
-  // Music state
-  private musicState: MusicState = {
-    currentTrack: null,
+    currentTrack: null as string | null,
     isPlaying: false,
     isCrossfading: false,
-  };
-
-  // Audio pools for sound effects
-  private soundPools: Map<SoundEffectId, AudioPool> = new Map();
-
-  // Music elements (two for crossfading)
-  private musicA: HTMLAudioElement | null = null;
-  private musicB: HTMLAudioElement | null = null;
-  private activeMusicElement: 'A' | 'B' = 'A';
-
-  // Music queue for playlist
-  private musicQueue: string[] = [];
-  private musicQueueIndex: number = 0;
-
-  // Animation frame for crossfade
-  private crossfadeAnimationFrame: number | null = null;
-
-  // Crossfade duration in ms
-  private readonly CROSSFADE_DURATION = 2000;
-
-  // Volume fade for tab visibility
-  private tabVisibilityFadeFrame: number | null = null;
-
-  // Event unsubscribers
-  private eventUnsubscribers: Array<() => void> = [];
-
-  // =============================================================================
-  // INITIALIZATION
-  // =============================================================================
-
-  /**
-   * Initialize the audio system
-   */
-  initialize(): void {
-    if (this.state.isInitialized) return;
-
-    // Create music elements
-    this.musicA = new Audio();
-    this.musicB = new Audio();
-    this.musicA.preload = 'auto';
-    this.musicB.preload = 'auto';
-
-    // Setup music end handlers
-    this.musicA.addEventListener('ended', this.handleMusicEnded);
-    this.musicB.addEventListener('ended', this.handleMusicEnded);
-
-    // Setup tab visibility listener
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
-
-    // Preload common sounds
-    this.preloadSounds();
-
-    // Subscribe to game events
-    this.subscribeToEvents();
-
-    this.state.isInitialized = true;
   }
+  private unlocked = false
+  private musicWanted = false
+  private music: HTMLAudioElement[] = []
+  private active = 0
+  private epoch = 0
+  private pendingMusic = false
+  private frame: number | null = null
+  private fade = 1
+  private queue: string[] = []
+  private pools = new Map<SoundEffectId, Voice[]>()
+  private lastPlayed = new Map<SoundEffectId, number>()
+  private unsubscribeEvents: (() => void)[] = []
+  private listeners = new Set<() => void>()
+  private revision = 0
 
-  /**
-   * Cleanup the audio system
-   */
-  destroy(): void {
-    // Cancel any pending animations
-    if (this.crossfadeAnimationFrame) {
-      cancelAnimationFrame(this.crossfadeAnimationFrame);
-    }
-    if (this.tabVisibilityFadeFrame) {
-      cancelAnimationFrame(this.tabVisibilityFadeFrame);
-    }
-
-    // Cleanup music elements
-    if (this.musicA) {
-      this.musicA.pause();
-      this.musicA.removeEventListener('ended', this.handleMusicEnded);
-      this.musicA = null;
-    }
-    if (this.musicB) {
-      this.musicB.pause();
-      this.musicB.removeEventListener('ended', this.handleMusicEnded);
-      this.musicB = null;
-    }
-
-    // Cleanup sound pools
-    this.soundPools.forEach((pool) => {
-      pool.instances.forEach((instance) => {
-        instance.element.pause();
-        instance.element.src = '';
-      });
-    });
-    this.soundPools.clear();
-
-    // Remove visibility listener
-    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
-
-    // Unsubscribe from events
-    this.eventUnsubscribers.forEach((unsubscribe) => unsubscribe());
-    this.eventUnsubscribers = [];
-
-    this.state.isInitialized = false;
-  }
-
-  // =============================================================================
-  // SOUND EFFECT PLAYBACK
-  // =============================================================================
-
-  /**
-   * Play a sound effect
-   */
-  play(soundId: SoundEffectId, options?: { volume?: number; pitch?: number }): void {
-    if (!this.state.isInitialized) return;
-    if (this.state.sfxMuted) return;
-
-    const config = SOUND_EFFECT_CONFIG[soundId];
-    if (!config) {
-      console.warn(`Sound effect not found: ${soundId}`);
-      return;
-    }
-
-    // Get or create pool
-    let pool = this.soundPools.get(soundId);
-    if (!pool) {
-      pool = this.createPool(soundId, config);
-    }
-
-    // Find available instance
-    let instance = pool.instances.find((inst) => !inst.inUse);
-
-    // If no available instance and at max, either skip or replace lowest priority
-    if (!instance) {
-      if (pool.instances.length >= config.maxInstances) {
-        if (!config.allowOverlap) return;
-        // Reuse oldest instance
-        instance = pool.instances[0];
-        instance.element.pause();
-        instance.element.currentTime = 0;
-      } else {
-        // Create new instance
-        instance = this.createPoolInstance(soundId, config);
-        pool.instances.push(instance);
-      }
-    }
-
-    // Calculate final volume
-    const baseVolume = options?.volume ?? config.volume;
-    const finalVolume = baseVolume * this.state.sfxVolume * this.state.masterVolume;
-
-    // Apply pitch variation if configured
-    if (config.pitchVariation || options?.pitch) {
-      const [min, max] = config.pitchVariation ?? [1, 1];
-      const pitch = options?.pitch ?? min + Math.random() * (max - min);
-      instance.element.playbackRate = pitch;
-    }
-
-    // Play the sound
-    instance.element.volume = finalVolume;
-    instance.inUse = true;
-
-    const playPromise = instance.element.play();
-    if (playPromise) {
-      playPromise.catch((error) => {
-        // Autoplay was blocked, silently ignore
-        if (error.name !== 'NotAllowedError') {
-          console.warn(`Failed to play sound ${soundId}:`, error);
-        }
-      });
+  subscribe = (listener: () => void) => {
+    this.listeners.add(listener)
+    return () => {
+      this.listeners.delete(listener)
     }
   }
-
-  /**
-   * Create an audio pool for a sound effect
-   */
-  private createPool(soundId: SoundEffectId, config: SoundEffectConfig): AudioPool {
-    const pool: AudioPool = {
-      instances: [],
-      config,
-    };
-
-    // Pre-create one instance
-    const instance = this.createPoolInstance(soundId, config);
-    pool.instances.push(instance);
-
-    this.soundPools.set(soundId, pool);
-    return pool;
+  getRevision = () => this.revision
+  private notify() {
+    this.revision++
+    this.listeners.forEach((listener) => listener())
+  }
+  getState() {
+    return { ...this.state }
+  }
+  isAudioSupported() {
+    return typeof Audio !== 'undefined'
   }
 
-  /**
-   * Create a pooled audio instance
-   */
-  private createPoolInstance(soundId: SoundEffectId, config: SoundEffectConfig): PooledAudio {
-    const element = new Audio(config.path);
-    element.preload = 'auto';
+  initialize() {
+    if (this.state.isInitialized || !this.isAudioSupported()) return
+    this.music = [new Audio(), new Audio()]
+    this.music.forEach((audio) => {
+      audio.preload = 'none'
+      audio.addEventListener('ended', this.onMusicEnded)
+    })
+    this.state.isTabVisible = document.visibilityState !== 'hidden'
+    document.addEventListener('visibilitychange', this.onVisibility)
+    this.state.isInitialized = true
+    for (const id of getPreloadSounds()) this.pool(id)
+    this.connectEvents()
+    this.notify()
+  }
 
-    const instance: PooledAudio = {
+  /** Synchronous gesture entry point. Never replay stale effects after unlocking. */
+  unlock() {
+    if (!this.state.isInitialized) return
+    this.unlocked = true
+    if (!this.state.musicMuted && !this.state.isPlaying && !this.pendingMusic)
+      this.resumeMusic()
+  }
+
+  destroy() {
+    this.stopMusic(false)
+    this.stopEffects()
+    this.music.forEach((audio) => {
+      audio.removeEventListener('ended', this.onMusicEnded)
+      audio.removeAttribute('src')
+    })
+    this.pools.forEach((voices) =>
+      voices.forEach((v) => v.element.removeAttribute('src'))
+    )
+    this.pools.clear()
+    this.lastPlayed.clear()
+    this.music = []
+    this.active = 0
+    this.unlocked = false
+    this.unsubscribeEvents.forEach((off) => off())
+    this.unsubscribeEvents = []
+    document.removeEventListener('visibilitychange', this.onVisibility)
+    this.state.isInitialized = false
+    this.notify()
+  }
+
+  private pool(id: SoundEffectId) {
+    let voices = this.pools.get(id)
+    if (!voices) {
+      voices = [this.createVoice(SOUND_EFFECT_CONFIG[id])]
+      this.pools.set(id, voices)
+    }
+    return voices
+  }
+  private createVoice(config: SoundEffectConfig): Voice {
+    const element = new Audio(config.path)
+    element.preload = config.preload ? 'auto' : 'none'
+    const voice: Voice = {
       element,
-      inUse: false,
-      id: `${soundId}-${Date.now()}-${Math.random()}`,
-    };
-
-    // Mark as available when ended
-    element.addEventListener('ended', () => {
-      instance.inUse = false;
-      element.currentTime = 0;
-    });
-
-    return instance;
+      active: false,
+      gain: config.volume,
+      generation: 0,
+      started: 0,
+      config,
+    }
+    const release = () => {
+      voice.active = false
+    }
+    element.addEventListener('ended', release)
+    element.addEventListener('error', release)
+    return voice
+  }
+  private release(voice: Voice) {
+    voice.generation++
+    voice.active = false
+    try {
+      voice.element.pause()
+      voice.element.currentTime = 0
+    } catch {
+      // Media may be unavailable during loading/teardown. Never block the game.
+    }
+  }
+  private stopEffects() {
+    this.pools.forEach((voices) => voices.forEach((v) => this.release(v)))
+  }
+  private updateEffects() {
+    this.pools.forEach((voices) =>
+      voices.forEach((v) => {
+        v.element.volume = clamp(
+          v.gain * this.state.sfxVolume * this.state.masterVolume
+        )
+      })
+    )
   }
 
-  /**
-   * Preload commonly used sounds
-   */
-  private preloadSounds(): void {
-    const preloadList = getPreloadSounds();
-
-    for (const soundId of preloadList) {
-      const config = SOUND_EFFECT_CONFIG[soundId];
-      if (config) {
-        this.createPool(soundId, config);
-      }
+  play(id: SoundEffectId, options?: { volume?: number; pitch?: number }) {
+    if (
+      !this.state.isInitialized ||
+      !this.unlocked ||
+      this.state.sfxMuted ||
+      !this.state.isTabVisible ||
+      !this.state.sfxVolume ||
+      !this.state.masterVolume
+    )
+      return
+    const config = SOUND_EFFECT_CONFIG[id]
+    if (!config) return
+    const now = performance.now()
+    // A deal's burst of draw events should not produce fourteen simultaneous clacks.
+    if (now - (this.lastPlayed.get(id) ?? -Infinity) < 45) return
+    const voices = this.pool(id)
+    if (!config.allowOverlap && voices.some((v) => v.active)) return
+    let voice = voices.find((v) => !v.active)
+    if (!voice && voices.length < config.maxInstances) {
+      voice = this.createVoice(config)
+      voices.push(voice)
+    }
+    if (!voice) {
+      voice = [...voices].sort((a, b) => a.started - b.started)[0]
+      this.release(voice)
+    }
+    const active = [...this.pools.values()].flat().filter((v) => v.active)
+    if (active.length >= 10) {
+      const oldest = active.sort(
+        (a, b) => a.config.priority - b.config.priority || a.started - b.started
+      )[0]
+      if (oldest.config.priority > config.priority) return
+      this.release(oldest)
+    }
+    this.lastPlayed.set(id, now)
+    const generation = ++voice.generation
+    const current = voice
+    const rejected = () => {
+      if (current.generation === generation) current.active = false
+    }
+    try {
+      // Setters can throw synchronously too, before play() has a promise.
+      voice.gain = clamp(options?.volume ?? config.volume)
+      voice.element.volume = clamp(
+        voice.gain * this.state.sfxVolume * this.state.masterVolume
+      )
+      const [min, max] = config.pitchVariation ?? [1, 1]
+      const pitch = options?.pitch ?? min + Math.random() * (max - min)
+      voice.element.playbackRate = Number.isFinite(pitch)
+        ? Math.max(0.5, Math.min(2, pitch))
+        : 1
+      voice.element.currentTime = 0
+      voice.started = now
+      voice.active = true
+      void voice.element.play()?.catch(rejected)
+    } catch {
+      rejected()
     }
   }
 
-  // =============================================================================
-  // MUSIC PLAYBACK
-  // =============================================================================
-
-  /**
-   * Start playing music for a context
-   */
-  playMusic(context: MusicContext): void {
-    if (!this.state.isInitialized) return;
-
-    // If same context and already playing, don't restart
-    if (context === this.state.currentMusicContext && this.musicState.isPlaying) {
-      return;
-    }
-
-    this.state.currentMusicContext = context;
-
-    // Get tracks for this context
-    const tracks = getMusicForContext(context);
-    if (tracks.length === 0) return;
-
-    // Shuffle and create queue
-    this.musicQueue = this.shuffleArray(tracks.map((t) => t.path));
-    this.musicQueueIndex = 0;
-
-    // Start playback
-    this.playNextTrack(true);
+  private canPlayMusic() {
+    return (
+      this.state.isInitialized &&
+      this.unlocked &&
+      this.musicWanted &&
+      !this.state.musicMuted &&
+      this.state.isTabVisible
+    )
   }
-
-  /**
-   * Stop music playback
-   */
-  stopMusic(fadeOut: boolean = true): void {
-    if (!this.state.isInitialized) return;
-
-    if (fadeOut) {
-      this.fadeOutMusic();
-    } else {
-      const activeElement = this.getActiveMusicElement();
-      if (activeElement) {
-        activeElement.pause();
-        activeElement.currentTime = 0;
-      }
-      this.musicState.isPlaying = false;
-      this.musicState.currentTrack = null;
+  private cancelFade() {
+    ++this.epoch
+    this.pendingMusic = false
+    if (this.frame !== null) cancelAnimationFrame(this.frame)
+    this.frame = null
+    if (this.state.isCrossfading) {
+      this.music[this.active]?.pause()
+      this.active = 1 - this.active
     }
+    this.state.isCrossfading = false
+    this.fade = 1
+    this.music[1 - this.active]?.pause()
   }
-
-  /**
-   * Pause music playback
-   */
-  pauseMusic(): void {
-    const activeElement = this.getActiveMusicElement();
-    if (activeElement) {
-      activeElement.pause();
+  private musicGain() {
+    const track = MUSIC_CONFIG.find(
+      (track) => track.path === this.state.currentTrack
+    )
+    return this.state.musicMuted || !this.state.isTabVisible
+      ? 0
+      : clamp(
+          this.state.musicVolume *
+            this.state.masterVolume *
+            (track?.volume ?? 0.7)
+        )
+  }
+  private updateMusicVolume() {
+    const gain = this.musicGain()
+    if (this.music[this.active])
+      this.music[this.active].volume =
+        gain * (this.state.isCrossfading ? 1 - this.fade : 1)
+    if (this.music[1 - this.active])
+      this.music[1 - this.active].volume =
+        gain * (this.state.isCrossfading ? this.fade : 0)
+  }
+  playMusic(context: MusicContext) {
+    if (
+      context === this.state.currentMusicContext &&
+      (this.state.isPlaying || this.state.isCrossfading)
+    )
+      return
+    this.state.currentMusicContext = context
+    this.queue = this.shuffle(
+      getMusicForContext(context).map((track) => track.path)
+    )
+    this.musicWanted = true
+    if (!this.queue.length) {
+      this.stopMusic(false)
+      return
     }
-    this.musicState.isPlaying = false;
+    if (this.canPlayMusic()) this.nextTrack()
   }
-
-  /**
-   * Resume music playback
-   */
-  resumeMusic(): void {
-    const activeElement = this.getActiveMusicElement();
-    if (activeElement && this.musicState.currentTrack) {
-      activeElement.play().catch(() => {});
-      this.musicState.isPlaying = true;
-    }
+  playTrack(path: string) {
+    if (!MUSIC_CONFIG.some((track) => track.path === path)) return
+    this.musicWanted = true
+    if (this.canPlayMusic()) this.startTrack(path)
   }
-
-  /**
-   * Skip to next track
-   */
-  nextTrack(): void {
-    this.playNextTrack(false);
+  private refillQueue() {
+    this.queue = this.shuffle(
+      getMusicForContext(this.state.currentMusicContext ?? 'menu').map(
+        (t) => t.path
+      )
+    )
+    if (this.queue.length > 1 && this.queue[0] === this.state.currentTrack)
+      this.queue.push(this.queue.shift()!)
   }
-
-  /**
-   * Play the next track in queue
-   */
-  private playNextTrack(immediate: boolean): void {
-    if (this.musicQueue.length === 0) return;
-
-    // Get next track
-    const trackPath = this.musicQueue[this.musicQueueIndex];
-    this.musicQueueIndex = (this.musicQueueIndex + 1) % this.musicQueue.length;
-
-    // Reshuffle if we've gone through all tracks
-    if (this.musicQueueIndex === 0) {
-      this.musicQueue = this.shuffleArray(this.musicQueue);
-    }
-
-    if (immediate || !this.musicState.isPlaying) {
-      this.startTrack(trackPath);
-    } else {
-      this.crossfadeToTrack(trackPath);
-    }
+  nextTrack() {
+    if (!this.canPlayMusic()) return
+    if (!this.queue.length) this.refillQueue()
+    const path = this.queue.shift()
+    if (path) this.startTrack(path)
   }
-
-  /**
-   * Start playing a track immediately
-   */
-  private startTrack(trackPath: string): void {
-    const element = this.getActiveMusicElement();
-    if (!element) return;
-
-    element.src = trackPath;
-    element.volume = this.getEffectiveMusicVolume();
-    element.currentTime = 0;
-
-    const playPromise = element.play();
-    if (playPromise) {
-      playPromise
-        .then(() => {
-          this.musicState.isPlaying = true;
-          this.musicState.currentTrack = trackPath;
-        })
-        .catch((error) => {
-          if (error.name !== 'NotAllowedError') {
-            console.warn('Failed to play music:', error);
-          }
-        });
-    }
-  }
-
-  /**
-   * Crossfade to a new track
-   */
-  private crossfadeToTrack(trackPath: string): void {
-    if (this.musicState.isCrossfading) return;
-
-    const outgoingElement = this.getActiveMusicElement();
-    const incomingElement = this.activeMusicElement === 'A' ? this.musicB : this.musicA;
-
-    if (!outgoingElement || !incomingElement) return;
-
-    this.musicState.isCrossfading = true;
-
-    // Setup incoming
-    incomingElement.src = trackPath;
-    incomingElement.volume = 0;
-    incomingElement.currentTime = 0;
-
-    const playPromise = incomingElement.play();
-    if (!playPromise) return;
-
-    playPromise
+  private startTrack(path: string) {
+    this.cancelFade()
+    const outgoing = this.music[this.active]
+    if (!outgoing) return
+    const wasPlaying = this.state.isPlaying && !outgoing.paused
+    const incomingIndex = wasPlaying ? 1 - this.active : this.active
+    const incoming = this.music[incomingIndex]
+    const epoch = this.epoch
+    this.pendingMusic = true
+    incoming.src = path
+    incoming.currentTime = 0
+    incoming.volume = wasPlaying ? 0 : this.musicGain()
+    void incoming
+      .play()
       .then(() => {
-        const startTime = performance.now();
-        const targetVolume = this.getEffectiveMusicVolume();
-        const startVolume = outgoingElement.volume;
-
-        const animateCrossfade = (currentTime: number) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / this.CROSSFADE_DURATION, 1);
-
-          // Ease in/out
-          const eased =
-            progress < 0.5
-              ? 2 * progress * progress
-              : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-          incomingElement.volume = eased * targetVolume;
-          outgoingElement.volume = (1 - eased) * startVolume;
-
-          if (progress < 1) {
-            this.crossfadeAnimationFrame = requestAnimationFrame(animateCrossfade);
-          } else {
-            // Complete crossfade
-            outgoingElement.pause();
-            outgoingElement.currentTime = 0;
-            this.activeMusicElement = this.activeMusicElement === 'A' ? 'B' : 'A';
-            this.musicState.currentTrack = trackPath;
-            this.musicState.isCrossfading = false;
+        if (epoch !== this.epoch || !this.canPlayMusic()) return
+        this.pendingMusic = false
+        this.state.isPlaying = true
+        this.state.currentTrack = path
+        if (!wasPlaying) {
+          this.updateMusicVolume()
+          this.notify()
+          return
+        }
+        this.state.isCrossfading = true
+        this.fade = 0
+        const start = performance.now()
+        const animate = (time: number) => {
+          if (epoch !== this.epoch) return
+          this.fade = Math.max(0, Math.min(1, (time - start) / 1200))
+          this.updateMusicVolume()
+          if (this.fade < 1) this.frame = requestAnimationFrame(animate)
+          else {
+            outgoing.pause()
+            this.active = incomingIndex
+            this.state.isCrossfading = false
+            this.frame = null
+            this.updateMusicVolume()
+            this.notify()
           }
-        };
-
-        this.crossfadeAnimationFrame = requestAnimationFrame(animateCrossfade);
+        }
+        this.frame = requestAnimationFrame(animate)
+        this.notify()
       })
       .catch(() => {
-        this.musicState.isCrossfading = false;
-      });
-  }
-
-  /**
-   * Fade out current music
-   */
-  private fadeOutMusic(): void {
-    const element = this.getActiveMusicElement();
-    if (!element) return;
-
-    const startTime = performance.now();
-    const startVolume = element.volume;
-
-    const animateFadeOut = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / this.CROSSFADE_DURATION, 1);
-
-      element.volume = startVolume * (1 - progress);
-
-      if (progress < 1) {
-        this.crossfadeAnimationFrame = requestAnimationFrame(animateFadeOut);
-      } else {
-        element.pause();
-        element.currentTime = 0;
-        this.musicState.isPlaying = false;
-        this.musicState.currentTrack = null;
-      }
-    };
-
-    this.crossfadeAnimationFrame = requestAnimationFrame(animateFadeOut);
-  }
-
-  /**
-   * Handle music track ended
-   */
-  private handleMusicEnded = (): void => {
-    if (!this.musicState.isCrossfading) {
-      this.playNextTrack(true);
-    }
-  };
-
-  /**
-   * Get the currently active music element
-   */
-  private getActiveMusicElement(): HTMLAudioElement | null {
-    return this.activeMusicElement === 'A' ? this.musicA : this.musicB;
-  }
-
-  /**
-   * Get effective music volume
-   */
-  private getEffectiveMusicVolume(): number {
-    if (this.state.musicMuted) return 0;
-    return this.state.musicVolume * this.state.masterVolume;
-  }
-
-  // =============================================================================
-  // VOLUME CONTROL
-  // =============================================================================
-
-  /**
-   * Set master volume
-   */
-  setMasterVolume(volume: number): void {
-    this.state.masterVolume = Math.max(0, Math.min(1, volume));
-    this.updateMusicVolume();
-  }
-
-  /**
-   * Set music volume
-   */
-  setMusicVolume(volume: number): void {
-    this.state.musicVolume = Math.max(0, Math.min(1, volume));
-    this.updateMusicVolume();
-  }
-
-  /**
-   * Set SFX volume
-   */
-  setSfxVolume(volume: number): void {
-    this.state.sfxVolume = Math.max(0, Math.min(1, volume));
-  }
-
-  /**
-   * Toggle music mute
-   */
-  toggleMusicMute(): void {
-    this.state.musicMuted = !this.state.musicMuted;
-    this.updateMusicVolume();
-  }
-
-  /**
-   * Toggle SFX mute
-   */
-  toggleSfxMute(): void {
-    this.state.sfxMuted = !this.state.sfxMuted;
-  }
-
-  /**
-   * Set music muted state
-   */
-  setMusicMuted(muted: boolean): void {
-    this.state.musicMuted = muted;
-    this.updateMusicVolume();
-  }
-
-  /**
-   * Set SFX muted state
-   */
-  setSfxMuted(muted: boolean): void {
-    this.state.sfxMuted = muted;
-  }
-
-  /**
-   * Update music element volume
-   */
-  private updateMusicVolume(): void {
-    const element = this.getActiveMusicElement();
-    if (element && this.musicState.isPlaying && !this.musicState.isCrossfading) {
-      element.volume = this.getEffectiveMusicVolume();
-    }
-  }
-
-  // =============================================================================
-  // TAB VISIBILITY
-  // =============================================================================
-
-  /**
-   * Handle tab visibility change
-   */
-  private handleVisibilityChange = (): void => {
-    const wasVisible = this.state.isTabVisible;
-    this.state.isTabVisible = document.visibilityState === 'visible';
-
-    if (wasVisible && !this.state.isTabVisible) {
-      // Tab hidden - mute audio
-      this.fadeToVisibilityVolume(0);
-    } else if (!wasVisible && this.state.isTabVisible) {
-      // Tab visible - restore audio
-      this.fadeToVisibilityVolume(1);
-    }
-  };
-
-  /**
-   * Fade volume for visibility change
-   */
-  private fadeToVisibilityVolume(targetMultiplier: number): void {
-    const element = this.getActiveMusicElement();
-    if (!element) return;
-
-    if (this.tabVisibilityFadeFrame) {
-      cancelAnimationFrame(this.tabVisibilityFadeFrame);
-    }
-
-    const startTime = performance.now();
-    const startVolume = element.volume;
-    const targetVolume = this.getEffectiveMusicVolume() * targetMultiplier;
-    const duration = 200; // Quick fade
-
-    const animateFade = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      element.volume = startVolume + (targetVolume - startVolume) * progress;
-
-      if (progress < 1) {
-        this.tabVisibilityFadeFrame = requestAnimationFrame(animateFade);
-      }
-    };
-
-    this.tabVisibilityFadeFrame = requestAnimationFrame(animateFade);
-  }
-
-  // =============================================================================
-  // EVENT INTEGRATION
-  // =============================================================================
-
-  /**
-   * Subscribe to game events for automatic sound playback
-   */
-  private subscribeToEvents(): void {
-    // Tile events
-    this.eventUnsubscribers.push(
-      eventBus.on('tileDrawn', () => {
-        this.play(TILE_SOUNDS.draw);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('tileDiscarded', () => {
-        this.play(TILE_SOUNDS.discard);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('tileSelected', () => {
-        this.play(TILE_SOUNDS.select);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('tileDeselected', () => {
-        this.play(TILE_SOUNDS.deselect);
-      })
-    );
-
-    // Game events
-    this.eventUnsubscribers.push(
-      eventBus.on('yakuScored', () => {
-        this.play(SPECIAL_SOUNDS.yakuScored);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('yakumanScored', () => {
-        this.play(SPECIAL_SOUNDS.yakumanScored);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('roundEnd', (data) => {
-        if (data.won) {
-          this.play(GAME_SOUNDS.roundComplete);
-        } else {
-          this.play(GAME_SOUNDS.roundFailed);
+        if (epoch === this.epoch) {
+          this.pendingMusic = false
+          this.state.isPlaying = wasPlaying
+          this.notify()
         }
       })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('goldChanged', (data) => {
-        if (data.delta > 0) {
-          this.play(GAME_SOUNDS.goldEarned);
-        } else if (data.delta < 0) {
-          this.play(GAME_SOUNDS.goldSpent);
+  }
+  pauseMusic() {
+    this.musicWanted = false
+    this.pausePlayback()
+  }
+  private pausePlayback() {
+    this.cancelFade()
+    this.music.forEach((audio) => audio.pause())
+    this.state.isPlaying = false
+    this.notify()
+  }
+  resumeMusic() {
+    this.musicWanted = true
+    if (!this.canPlayMusic() || this.pendingMusic || this.state.isPlaying)
+      return
+    const audio = this.music[this.active]
+    if (!audio) return
+    if (!this.state.currentTrack || !audio.getAttribute('src')) {
+      this.nextTrack()
+      return
+    }
+    const epoch = this.epoch
+    this.pendingMusic = true
+    this.updateMusicVolume()
+    void audio
+      .play()
+      .then(() => {
+        if (epoch !== this.epoch || !this.canPlayMusic()) return
+        this.pendingMusic = false
+        this.state.isPlaying = true
+        this.notify()
+      })
+      .catch(() => {
+        if (epoch === this.epoch) {
+          this.pendingMusic = false
+          this.state.isPlaying = false
+          this.notify()
         }
       })
-    );
-
-    // Shop events
-    this.eventUnsubscribers.push(
-      eventBus.on('itemPurchased', () => {
-        this.play(SHOP_SOUNDS.purchase);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('shopRerolled', () => {
-        this.play(SHOP_SOUNDS.reroll);
-      })
-    );
-
-    // Item events
-    this.eventUnsubscribers.push(
-      eventBus.on('decreeAcquired', () => {
-        this.play(SPECIAL_SOUNDS.decreeAcquired);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('decreeTriggered', () => {
-        this.play(SPECIAL_SOUNDS.decreeTriggered);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('flowerCollected', () => {
-        this.play(SPECIAL_SOUNDS.flowerCollected);
-      })
-    );
-
-    this.eventUnsubscribers.push(
-      eventBus.on('seasonActivated', () => {
-        this.play(SPECIAL_SOUNDS.seasonActivated);
-      })
-    );
-
-    // Phase changes for music
-    this.eventUnsubscribers.push(
-      eventBus.on('phaseChanged', (data) => {
-        this.handlePhaseChange(data.newPhase as MusicContext);
-      })
-    );
-
-    // Screen transitions for music
-    this.eventUnsubscribers.push(
-      eventBus.on('screenTransition', (data) => {
-        this.handleScreenTransition(data.to as MusicContext);
-      })
-    );
+  }
+  /** Stop both sides immediately so no outgoing track survives a mute/stop. */
+  stopMusic(_fadeOut = true) {
+    this.pauseMusic()
+    this.music.forEach((audio) => {
+      audio.currentTime = 0
+    })
+    this.state.currentTrack = null
+    this.queue = []
+    this.notify()
+  }
+  private onMusicEnded = () => {
+    if (this.canPlayMusic() && !this.state.isCrossfading) this.nextTrack()
+  }
+  private onVisibility = () => {
+    this.state.isTabVisible = document.visibilityState !== 'hidden'
+    if (!this.state.isTabVisible) {
+      this.stopEffects()
+      this.pausePlayback()
+    } else if (this.musicWanted) this.resumeMusic()
   }
 
-  /**
-   * Handle game phase change
-   */
-  private handlePhaseChange(phase: string): void {
-    // Map phase to music context
-    const contextMap: Record<string, MusicContext> = {
-      menu: 'menu',
-      gameplay: 'gameplay',
-      shop: 'shop',
-      gameOver: 'gameOver',
-    };
+  setMasterVolume(volume: number) {
+    this.state.masterVolume = clamp(volume)
+    this.updateEffects()
+    this.updateMusicVolume()
+    this.notify()
+  }
+  setMusicVolume(volume: number) {
+    this.state.musicVolume = clamp(volume)
+    this.updateMusicVolume()
+    this.notify()
+  }
+  setSfxVolume(volume: number) {
+    this.state.sfxVolume = clamp(volume)
+    this.updateEffects()
+    this.notify()
+  }
+  setMusicMuted(muted: boolean) {
+    if (this.state.musicMuted === muted) return
+    this.state.musicMuted = muted
+    if (muted) this.pausePlayback()
+    else if (this.musicWanted) this.resumeMusic()
+    this.notify()
+  }
+  setSfxMuted(muted: boolean) {
+    this.state.sfxMuted = muted
+    if (muted) this.stopEffects()
+    this.notify()
+  }
+  toggleMusicMute() {
+    this.setMusicMuted(!this.state.musicMuted)
+  }
+  toggleSfxMute() {
+    this.setSfxMuted(!this.state.sfxMuted)
+  }
 
-    const context = contextMap[phase];
-    if (context) {
-      this.playMusic(context);
+  private connectEvents() {
+    const cues: Partial<Record<GameEvent, SoundEffectId>> = {
+      tileDrawn: TILE_SOUNDS.draw,
+      tileDiscarded: TILE_SOUNDS.discard,
+      tileSelected: TILE_SOUNDS.select,
+      tileDeselected: TILE_SOUNDS.deselect,
+      handPlayed: GAME_SOUNDS.handPlayed,
+      yakuScored: SPECIAL_SOUNDS.yakuScored,
+      yakumanScored: SPECIAL_SOUNDS.yakumanScored,
+      actComplete: GAME_SOUNDS.actComplete,
+      itemPurchased: SHOP_SOUNDS.purchase,
+      itemSold: SHOP_SOUNDS.sell,
+      shopRerolled: SHOP_SOUNDS.reroll,
+      shopEntered: SHOP_SOUNDS.shopEnter,
+      decreeTriggered: SPECIAL_SOUNDS.decreeTriggered,
+      flowerCollected: SPECIAL_SOUNDS.flowerCollected,
+      seasonActivated: SPECIAL_SOUNDS.seasonActivated,
+      packOpened: SPECIAL_SOUNDS.packOpening,
+      charterRedeemed: SPECIAL_SOUNDS.charterRedeemed,
+      fateSealUsed: CONSUMABLE_SOUNDS.fateSealUsed,
+      celestialOrbUsed: CONSUMABLE_SOUNDS.celestialOrbUsed,
+      voidScriptUsed: CONSUMABLE_SOUNDS.voidScriptUsed,
+      error: FEEDBACK_SOUNDS.invalidAction,
     }
+    for (const [event, cue] of Object.entries(cues))
+      this.unsubscribeEvents.push(
+        eventBus.on(event as GameEvent, () => this.play(cue))
+      )
+    this.unsubscribeEvents.push(
+      eventBus.on('decreeAcquired', ({ source }) => {
+        if (source !== 'starting') this.play(SPECIAL_SOUNDS.decreeAcquired)
+      }),
+      eventBus.on('roundEnd', ({ won }) =>
+        this.play(won ? GAME_SOUNDS.roundComplete : GAME_SOUNDS.roundFailed)
+      ),
+      eventBus.on('gameOver', ({ reason }) => {
+        this.play(
+          reason === 'victory' ? GAME_SOUNDS.victory : GAME_SOUNDS.gameOver
+        )
+        this.playMusic(reason === 'victory' ? 'victory' : 'gameOver')
+      }),
+      eventBus.on('goldChanged', ({ delta }) => {
+        if (delta)
+          this.play(delta > 0 ? GAME_SOUNDS.goldEarned : GAME_SOUNDS.goldSpent)
+      }),
+      eventBus.on('phaseChanged', ({ newPhase }) => {
+        if (newPhase === 'gameplay' || newPhase === 'shop')
+          this.playMusic(newPhase)
+      })
+    )
   }
-
-  /**
-   * Handle screen transition
-   */
-  private handleScreenTransition(to: string): void {
-    // Map screen to music context
-    const contextMap: Record<string, MusicContext> = {
-      menu: 'menu',
-      game: 'gameplay',
-      shop: 'shop',
-      gameOver: 'gameOver',
-      victory: 'victory',
-    };
-
-    const context = contextMap[to];
-    if (context) {
-      this.playMusic(context);
+  private shuffle<T>(array: T[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[array[i], array[j]] = [array[j], array[i]]
     }
-  }
-
-  // =============================================================================
-  // UTILITY METHODS
-  // =============================================================================
-
-  /**
-   * Fisher-Yates shuffle
-   */
-  private shuffleArray<T>(array: T[]): T[] {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }
-
-  /**
-   * Get current state (for debugging)
-   */
-  getState(): AudioSystemState & MusicState {
-    return {
-      ...this.state,
-      ...this.musicState,
-    };
-  }
-
-  /**
-   * Check if audio is supported
-   */
-  isAudioSupported(): boolean {
-    return typeof Audio !== 'undefined';
+    return array
   }
 }
 
-// =============================================================================
-// SINGLETON INSTANCE
-// =============================================================================
-
-/**
- * Global audio system instance
- */
-export const audioSystem = new AudioSystem();
-
-// =============================================================================
-// CONVENIENCE FUNCTIONS
-// =============================================================================
-
-/**
- * Play a sound effect (convenience function)
- */
-export function playSFX(
-  soundId: SoundEffectId,
+export const audioSystem = new AudioSystem()
+export const playSFX = (
+  id: SoundEffectId,
   options?: { volume?: number; pitch?: number }
-): void {
-  audioSystem.play(soundId, options);
-}
-
-/**
- * Play tile sound shortcuts
- */
+) => audioSystem.play(id, options)
 export const TileSFX = {
   draw: () => playSFX(TILE_SOUNDS.draw),
   discard: () => playSFX(TILE_SOUNDS.discard),
   select: () => playSFX(TILE_SOUNDS.select),
   deselect: () => playSFX(TILE_SOUNDS.deselect),
   slide: () => playSFX(TILE_SOUNDS.slide),
-};
-
-/**
- * Play UI sound shortcuts
- */
+}
 export const UISFX = {
   click: () => playSFX(UI_SOUNDS.buttonClick),
   hover: () => playSFX(UI_SOUNDS.buttonHover),
   menuOpen: () => playSFX(UI_SOUNDS.menuOpen),
   menuClose: () => playSFX(UI_SOUNDS.menuClose),
-};
-
-/**
- * Play feedback sound shortcuts
- */
+}
 export const FeedbackSFX = {
   error: () => playSFX(FEEDBACK_SOUNDS.error),
   invalid: () => playSFX(FEEDBACK_SOUNDS.invalidAction),
   success: () => playSFX(FEEDBACK_SOUNDS.success),
-};
-
-export default audioSystem;
+}
+export default audioSystem

@@ -1,4 +1,45 @@
 {
+  "archiveSeals": {
+    "items": {
+      "purple": {
+        "name": "Segel Ungu",
+        "description": "Membuat Segel Takdir acak saat ubin ini dibuang atau ditukar, jika ada ruang."
+      }
+    }
+  },
+  "consumableUse": {
+    "unityMapping": "Angka asal → Angin",
+    "errorMaxLevel": "Peningkatan ini sudah mencapai level maksimum.",
+    "errorNoRoom": "Sediakan ruang untuk hadiah sebelum menggunakan item ini.",
+    "errorNoDecrees": "Efek ini memerlukan Dekret yang dimiliki.",
+    "errorNoPrevious": "Gunakan dahulu item dari {{seals}} atau {{orbs}}.",
+    "copyResult": "Membuat: {{name}}",
+    "errorNoGold": "Efek ini tidak akan memberikan emas saat ini.",
+    "hiddenOutcome": "Hasil untuk ubin tersembunyi hanya diperiksa saat dikonfirmasi.",
+    "available": "{{name}} ({{count}} tersedia)",
+    "penalty_lose_tile": "Kehilangan 1 ubin acak.",
+    "penalty_lose_gold": "Kehilangan semua emas.",
+    "penalty_lose_hand_size": "Kapasitas tangan berkurang {{count}} secara permanen.",
+    "penalty_lock_tile": "Kunci 1 ubin acak di Kolam Mati.",
+    "penalty_lose_decree_slot": "Kehilangan {{count}} slot Dekret pada ronde berikutnya.",
+    "penalty_halve_base_score": "Poin dasar tangan berikutnya menjadi setengah.",
+    "penalty_destroy_decrees": "Hancurkan semua Dekret lainnya.",
+    "penalty_none": "Tanpa penalti tambahan.",
+    "protected": "Perlindungan Pertanda membatalkan penalti tambahan.",
+    "errorSuit": "Pilih ubin angka dari jenis yang berbeda.",
+    "errorRank": "Pilih ubin yang angka barunya berada di antara 1 dan 9.",
+    "choose": "Pilih item, lalu konfirmasikan penggunaannya.",
+    "targets": "Ubin target",
+    "count": "Target: {{selected}} / {{required}}",
+    "copyOrder": "Ubin 1 menjadi salinan ubin 2. Pilih ubin yang ingin diubah terlebih dahulu.",
+    "cost": "Harga Kehampaan",
+    "failed": "Item ini tidak dapat digunakan.",
+    "unavailable": "Periksa target dan batas penggunaan pada ronde ini.",
+    "confirm": "Gunakan item",
+    "fateSeals": "Segel Takdir",
+    "celestialOrbs": "Bola Langit",
+    "voidScripts": "Gulungan Kehampaan"
+  },
   "common": {
     "loading": "Memuat...",
     "error": "Kesalahan",
@@ -37,6 +78,9 @@
     "tableLoop": "Putaran Meja (eksperimen)"
   },
   "settings": {
+    "resetProgressScope": "Penemuan serta permainan aktif atau tersimpan juga akan dihapus. Pengaturan bahasa, audio, dan aksesibilitas tetap disimpan.",
+    "resetFailed": "Pengaturan ulang gagal. Progres Anda tetap tersimpan. Periksa penyimpanan browser dan coba lagi.",
+    "resetPartial": "Pengaturan ulang tidak selesai dan sebagian progres mungkin berubah. Periksa penyimpanan browser dan coba lagi.",
     "title": "Pengaturan",
     "audio": "Audio",
     "musicVolume": "Volume Musik",
@@ -204,6 +248,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "Umum",
+      "rarity_uncommon": "Tidak Umum",
+      "rarity_rare": "Langka",
+      "rarity_legendary": "Legendaris",
+      "subtitle": "Bersiaplah untuk tantangan berikutnya",
+      "items": "Item",
+      "availableCount": "Tersedia: {{count}}",
+      "allPurchased": "Semua item sudah dibeli!",
+      "packs": "Paket Berkah",
+      "noPacks": "Tidak ada paket tersedia",
+      "imperialCharter": "Piagam Kekaisaran",
+      "nextRound": "Lanjut ke Babak Berikutnya",
+      "confirmPurchase": "Konfirmasi Pembelian",
+      "purchasePrompt": "Beli {{name}} seharga {{cost}}G?",
+      "baseEdition": "Edisi Dasar",
+      "goldBalance": "{{amount}} emas",
+      "rerollsUsed": "Pengacakan ulang digunakan: {{count}}"
+    },
+    "payout": {
+      "heading": "Babak {{act}} · {{round}}",
+      "clear": "Kemenangan",
+      "interest": "Bunga",
+      "decrees": "Dekret",
+      "goldTiles": "Ubin emas",
+      "bonus": "Bonus hadiah",
+      "rentals": "Sewa",
+      "interestBlocked": "Bunga saat ini diblokir.",
+      "interestCap": "Batas bunga {{interest}}G telah tercapai.",
+      "interestSave": "Dengan tabungan saat ini: bunga {{interest}}G. Tabung {{needed}}G lagi untuk mendapat {{next}}G.",
+      "nextRound": "Berikutnya: {{round}} · target {{target}}",
+      "nextAct": "Berikutnya: Babak {{act}}"
+    },
+    "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
+    "packInventoryFull": "Ruang tidak cukup untuk pilihan ini. Pilih lebih sedikit atau hadiah lain, atau lewati paket.",
+    "inventoryFull": "Ruang inventaris tidak cukup untuk hadiah ini.",
+    "skipRewards": "Lewati hadiah",
+    "purchaseFailed": "Pembelian tidak dapat diselesaikan.",
+    "packSelected": "{{count}} / {{max}} dipilih",
+    "confirmSelection": "Konfirmasi Pilihan",
+    "selectItems": "Pilih Item",
     "title": "Rumah Teh",
     "titleJp": "茶寮",
     "buy": "Beli",
@@ -894,6 +979,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "Bunga yang dikumpulkan bertahan sepanjang permainan ini. Bonus lainnya hanya pratinjau.",
+      "roundScope": "Sesuai urutan pengambilan. Musim berakhir setelah ronde ini.",
+      "collected": "Terkumpul",
+      "missing": "Belum terkumpul",
+      "noSeasons": "Tidak ada musim pada ronde ini.",
+      "suppressed": "Kekeringan menonaktifkan bonus skor bunga Anda.",
+      "protected": "Sebuah dekret melindungi bonus bunga dari Kekeringan.",
+      "decayPenalty": "Penalti Pelapukan per permainan tangan: −{{points}} poin.",
+      "partial": "Beberapa aturan musim masih dikembangkan. Hanya efek saat ini yang ditampilkan.",
+      "unwired": "Belum diterapkan.",
+      "summer": "Skor ×1,3.",
+      "autumn": "Pengali yaku +20%.",
+      "winter": "Skor ×0,75.",
+      "drought": "Menonaktifkan bonus skor bunga yang tidak terlindungi.",
+      "frostbite": "Mengurangi separuh bonus pengali dekret.",
+      "decay": "−10 skor per ubin yang dibuang pada ronde ini, minimal nol.",
+      "droughtName": "Kekeringan",
+      "monsoonName": "Muson",
+      "frostbiteName": "Radang Beku",
+      "decayName": "Pelapukan",
+      "corruptedName": "Terkorupsi",
+      "flowerPlum": "+{{percent}}% skor per urutan.",
+      "flowerOrchid": "+{{percent}}% skor per ubin kehormatan.",
+      "flowerChrysanthemum": "+{{percent}}% skor per kelompok tertutup.",
+      "flowerBamboo": "+{{percent}}% skor per ubin terminal.",
+      "setTwo": "2 bunga: +1 slot dekret.",
+      "setThree": "3 bunga: akses toko khusus belum diterapkan.",
+      "setFour": "4 bunga: bonus bunga digandakan."
+    },
     "flowers": "Bunga",
     "seasons": "Musim",
     "plum": "Plum",
@@ -957,6 +1072,12 @@
     "quad": "Kuartet"
   },
   "results": {
+    "endlessComplete": "Pendakian Tanpa Akhir Selesai",
+    "victorySubtitle": "Duel Babak 8 telah kamu menangkan. Kemenanganmu sudah tercatat.",
+    "endlessSubtitle": "Kemenanganmu tetap berlaku, meski pendakian ini telah berakhir.",
+    "defeatSubtitle": "Coba strategi berbeda pada permainan berikutnya.",
+    "showdownCleared": "Duel dimenangkan",
+    "continueEndless": "Lanjut ke Mode Tanpa Akhir",
     "victory": "Kemenangan!",
     "defeat": "Kekalahan",
     "roundComplete": "Ronde Selesai!",
@@ -1751,7 +1872,7 @@
       },
       "seal_of_unity": {
         "name": "Segel Persatuan",
-        "description": "Mengubah hingga 3 ubin jadi ubin Kehormatan"
+        "description": "Mengubah hingga 3 ubin bernomor menjadi Angin. Angka mengikuti siklus Timur, Selatan, Barat, Utara."
       },
       "seal_of_the_oracle": {
         "name": "Segel Sang Peramal",
@@ -1894,40 +2015,70 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "Klasik",
+        "unlock": "Tersedia sejak awal",
+        "modifiers": { "0": "Tanpa pengubah khusus" },
         "name": "Felt Hijau",
         "description": "Meja mahjong klasik dengan permukaan felt hijau tradisional yang halus karena tak terhitung banyaknya permainan. Tanpa pengubah khusus—hanya keahlian murni."
       },
       "red_lacquer": {
+        "theme": "Keberuntungan",
+        "unlock": "Selesaikan babak 3",
+        "modifiers": { "0": "+1 slot dekret awal" },
         "name": "Pernis Merah",
         "description": "Meja mewah berlapis pernis merah terang, lambang keberuntungan dan kemakmuran. Warna yang bertuah ini menarik lebih banyak Dekrit."
       },
       "bamboo_mat": {
+        "theme": "Alami",
+        "unlock": "Kumpulkan keempat jenis bunga dalam satu perjalanan",
+        "modifiers": {
+          "0": "+25% bobot pengambilan bunga (tetap 4 bunga yang sama)"
+        },
         "name": "Tikar Bambu",
         "description": "Tikar bambu anyaman sederhana yang dibentangkan di atas meja rendah dalam paviliun taman. Suasana alaminya membuat bunga lebih sering bermekaran."
       },
       "imperial_gold": {
+        "theme": "Kerajaan",
+        "unlock": "Menang dengan minimal 5 dekret",
+        "modifiers": { "0": "Mulai dengan 1 mandat regional acak" },
         "name": "Emas Kekaisaran",
         "description": "Meja megah dari istana kekaisaran, bertatahkan daun emas dan giok. Mereka yang bermain di sini menerima restu kerajaan."
       },
       "night_market": {
+        "theme": "Jalanan",
+        "unlock": "Beli total 20 dekret di semua perjalanan",
+        "modifiers": { "0": "Harga toko −20%", "1": "−1 slot dekret" },
         "name": "Pasar Malam",
         "description": "Meja darurat di tengah pasar malam yang ramai, diterangi lentera kertas. Para pedagang memberi diskon, tetapi ruangnya terbatas."
       },
       "temple_stone": {
+        "theme": "Sederhana",
+        "unlock": "Menang tanpa mengumpulkan bunga",
+        "modifiers": { "0": "Tidak ada bunga", "1": "+50% skor dasar" },
         "name": "Batu Kuil",
         "description": "Meja batu dingin di kuil gunung yang asketis. Tidak ada bunga yang tumbuh di sini, tetapi kejernihan fokus meningkatkan skor dasar."
       },
       "ghost_parlor": {
+        "theme": "Berhantu",
+        "unlock": "Bertahan melalui 3 musim tercemar dalam satu perjalanan",
+        "modifiers": { "0": "Musim tercemar bisa muncul sejak babak I" },
         "name": "Ruang Hantu",
         "description": "Balai mahjong terbengkalai tempat para arwah masih bermain. Tabir antardunia menipis, sehingga Musim Terkutuk dapat muncul sejak awal."
       },
       "dragons_den": {
+        "theme": "Mitos",
+        "unlock": "Raih yakuman",
+        "modifiers": { "0": "Pengali yakuman +1,0×", "1": "Target skor +25%" },
         "name": "Sarang Naga",
         "description": "Meja legendaris dari tulang naga yang tersembunyi di gua pegunungan. Tangan Yakuman diperkuat, tetapi sang naga menuntut persembahan lebih besar."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "Simpanan sebelumnya tidak dapat dipulihkan. Mulai permainan baru untuk menggantinya.",
+      "unavailable": "Progres tidak dapat disimpan di perangkat ini. Biarkan tab ini terbuka untuk melanjutkan."
+    },
     "slot": {
       "meld": "Slot kelompok {{number}}",
       "pair": "Slot pasangan",

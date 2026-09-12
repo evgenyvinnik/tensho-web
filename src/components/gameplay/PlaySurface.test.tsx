@@ -78,6 +78,22 @@ function createTestTiles(count: number): Tile[] {
   return tiles
 }
 
+// jsdom does not supply PointerEvent/pointer capture. Preserve the actual
+// pointer identity fields rather than testing through legacy mouse handlers.
+function pointer(target: Element | Window, type: string, pointerId = 1) {
+  const event = new MouseEvent(type, {
+    bubbles: true,
+    clientX: 20,
+    clientY: 20,
+    button: 0,
+  })
+  Object.defineProperties(event, {
+    pointerId: { value: pointerId },
+    isPrimary: { value: true },
+  })
+  fireEvent(target, event)
+}
+
 describe('PlaySurface', () => {
   const mockOnTileSelect = vi.fn()
   const mockOnTileDiscard = vi.fn()
@@ -293,6 +309,108 @@ describe('PlaySurface', () => {
   })
 
   describe('disabled state', () => {
+    it('supports semantic click activation without a pointer gesture', () => {
+      render(
+        <PlaySurface
+          handTiles={createTestTiles(3)}
+          onTileSelect={mockOnTileSelect}
+        />
+      )
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Stage 1 of Characters' }),
+        { detail: 0 }
+      )
+      expect(mockOnTileSelect).toHaveBeenCalledOnce()
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Return 1 of Characters to hand' }),
+        { detail: 0 }
+      )
+      expect(mockOnTileSelect).toHaveBeenCalledTimes(2)
+      expect(screen.getByText('Hand (3)')).toBeInTheDocument()
+    })
+
+    it('blocks keyboard staging as well as pointer staging when disabled', () => {
+      render(
+        <PlaySurface
+          handTiles={createTestTiles(3)}
+          disabled
+          onTileSelect={mockOnTileSelect}
+        />
+      )
+      const tile = screen.getByRole('button', { name: 'Stage 1 of Characters' })
+      fireEvent.keyDown(tile, { key: 'Enter' })
+      fireEvent.keyDown(tile, { key: ' ' })
+      pointer(tile, 'pointerdown')
+      pointer(window, 'pointerup')
+      expect(mockOnTileSelect).not.toHaveBeenCalled()
+      expect(screen.getByText('Hand (3)')).toBeInTheDocument()
+    })
+
+    it('cancels a touch gesture without staging or discarding its tile', () => {
+      render(
+        <PlaySurface
+          handTiles={createTestTiles(3)}
+          onTileSelect={mockOnTileSelect}
+          onTileDiscard={mockOnTileDiscard}
+        />
+      )
+      const tile = screen.getByRole('button', { name: 'Stage 1 of Characters' })
+      tile.setPointerCapture = vi.fn()
+      pointer(tile, 'pointerdown')
+      expect(tile.setPointerCapture).toHaveBeenCalledWith(1)
+      pointer(window, 'pointercancel')
+      expect(mockOnTileSelect).not.toHaveBeenCalled()
+      expect(mockOnTileDiscard).not.toHaveBeenCalled()
+      expect(screen.getByText('Hand (3)')).toBeInTheDocument()
+    })
+
+    it('stages once per pointer gesture and ignores synthesized mouse events', () => {
+      render(
+        <PlaySurface
+          handTiles={createTestTiles(3)}
+          onTileSelect={mockOnTileSelect}
+        />
+      )
+      const first = screen.getByRole('button', {
+        name: 'Stage 1 of Characters',
+      })
+      first.setPointerCapture = vi.fn()
+      pointer(first, 'pointerdown')
+      pointer(window, 'pointerup', 2)
+      expect(mockOnTileSelect).not.toHaveBeenCalled()
+      pointer(window, 'pointerup')
+      const next = screen.getByRole('button', { name: 'Stage 2 of Characters' })
+      fireEvent.mouseDown(next)
+      fireEvent.mouseUp(window)
+      fireEvent.click(next, { detail: 1 })
+      expect(mockOnTileSelect).toHaveBeenCalledOnce()
+      expect(screen.getByText('Hand (2)')).toBeInTheDocument()
+    })
+
+    it('cancels compatibility clicks at the touch origin without blocking blank-table scrolling', () => {
+      const { container, unmount } = render(
+        <PlaySurface handTiles={createTestTiles(3)} />
+      )
+      const tile = screen.getByRole('button', { name: 'Stage 1 of Characters' })
+      const touch = new Event('touchstart', { bubbles: true, cancelable: true })
+      fireEvent(tile, touch)
+      expect(touch.defaultPrevented).toBe(true)
+      const blankTouch = new Event('touchstart', {
+        bubbles: true,
+        cancelable: true,
+      })
+      fireEvent(container.querySelector('[data-play-zone="hand"]')!, blankTouch)
+      expect(blankTouch.defaultPrevented).toBe(false)
+      // The native listener belongs to this mounted surface, not the document.
+      unmount()
+      const afterUnmount = new Event('touchstart', {
+        bubbles: true,
+        cancelable: true,
+      })
+      fireEvent(tile, afterUnmount)
+      expect(afterUnmount.defaultPrevented).toBe(false)
+    })
+
     it('should not allow interactions when disabled', () => {
       const tiles = createTestTiles(5)
 
@@ -345,6 +463,16 @@ describe('PlaySurface', () => {
 
       expect(screen.getByAltText('Face-down tile')).toBeInTheDocument()
       expect(screen.queryByAltText('1 of Characters')).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: /1 of Characters/ })
+      ).not.toBeInTheDocument()
+      const hiddenTile = screen.getByRole('button', {
+        name: 'Stage Face-down tile',
+      })
+      fireEvent.keyDown(hiddenTile, { key: 'Enter' })
+      expect(
+        screen.getByRole('button', { name: 'Return Face-down tile to hand' })
+      ).toBeInTheDocument()
     })
 
     it('shows lock and debuff mandate overlays without disabling play selection', () => {

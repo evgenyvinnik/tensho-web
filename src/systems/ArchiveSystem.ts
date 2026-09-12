@@ -14,6 +14,8 @@ import {
   createArchiveKey,
   getPreDiscoveredItemIds,
   WALL_DEFINITIONS,
+  LEGACY_WALL_DEFINITIONS,
+  isActiveArchiveItem,
   TILE_MARK_DEFINITIONS,
   SEAL_DEFINITIONS_ARCHIVE,
   EDITION_DEFINITIONS_ARCHIVE,
@@ -387,7 +389,10 @@ export class ArchiveSystem {
   /**
    * Get an archive entry by key
    */
-  getEntry(category: ArchiveCategory, itemId: string): ArchiveEntry | undefined {
+  getEntry(
+    category: ArchiveCategory,
+    itemId: string
+  ): ArchiveEntry | undefined {
     const key = createArchiveKey(category, itemId)
     return this.entries.get(key)
   }
@@ -396,14 +401,20 @@ export class ArchiveSystem {
    * Get all entries for a category
    */
   getEntriesByCategory(category: ArchiveCategory): ArchiveEntry[] {
-    return Array.from(this.entries.values()).filter((e) => e.category === category)
+    return Array.from(this.entries.values()).filter(
+      (e) =>
+        e.category === category && isActiveArchiveItem(e.category, e.itemId)
+    )
   }
 
   /**
    * Get all discovered entries
    */
   getDiscoveredEntries(): ArchiveEntry[] {
-    return Array.from(this.entries.values()).filter((e) => e.discoveredAt !== null)
+    return Array.from(this.entries.values()).filter(
+      (e) =>
+        e.discoveredAt !== null && isActiveArchiveItem(e.category, e.itemId)
+    )
   }
 
   /**
@@ -411,7 +422,10 @@ export class ArchiveSystem {
    */
   getUndiscoveredEntries(): ArchiveEntry[] {
     return Array.from(this.entries.values()).filter(
-      (e) => e.discoveredAt === null && e.isUnlocked
+      (e) =>
+        e.discoveredAt === null &&
+        e.isUnlocked &&
+        isActiveArchiveItem(e.category, e.itemId)
     )
   }
 
@@ -431,7 +445,10 @@ export class ArchiveSystem {
    */
   getStats(): ArchiveStats {
     const categories = getAllArchiveCategories()
-    const categoryCounts = {} as Record<ArchiveCategory, { discovered: number; total: number }>
+    const categoryCounts = {} as Record<
+      ArchiveCategory,
+      { discovered: number; total: number }
+    >
 
     let totalDiscovered = 0
     let totalItems = 0
@@ -456,7 +473,10 @@ export class ArchiveSystem {
         totalRunsWon += entry.timesWonWith
 
         if (entry.discoveredAt !== null) {
-          if (lastDiscoveryTime === null || entry.discoveredAt > lastDiscoveryTime) {
+          if (
+            lastDiscoveryTime === null ||
+            entry.discoveredAt > lastDiscoveryTime
+          ) {
             lastDiscoveryTime = entry.discoveredAt
           }
         }
@@ -466,7 +486,8 @@ export class ArchiveSystem {
     return {
       totalDiscovered,
       totalItems,
-      completionPercentage: totalItems > 0 ? (totalDiscovered / totalItems) * 100 : 0,
+      completionPercentage:
+        totalItems > 0 ? (totalDiscovered / totalItems) * 100 : 0,
       categoryCounts,
       lastDiscoveryTime,
       totalTimesUsed,
@@ -519,7 +540,12 @@ export class ArchiveSystem {
     // Override with saved state
     for (const [key, entry] of state.entries) {
       // Only update if the entry exists (to handle new items added in updates)
-      if (system.entries.has(key)) {
+      if (
+        system.entries.has(key) ||
+        (entry.category === 'walls' &&
+          key === createArchiveKey('walls', entry.itemId) &&
+          LEGACY_WALL_DEFINITIONS.some((wall) => wall.id === entry.itemId))
+      ) {
         system.entries.set(key, entry)
       }
     }
@@ -580,7 +606,9 @@ export function getDiscoveryTriggerName(trigger: DiscoveryTrigger): string {
 /**
  * Get Japanese name for a discovery trigger
  */
-export function getDiscoveryTriggerJapaneseName(trigger: DiscoveryTrigger): string {
+export function getDiscoveryTriggerJapaneseName(
+  trigger: DiscoveryTrigger
+): string {
   const names: Record<DiscoveryTrigger, string> = {
     purchase: '購入',
     pack_open: '開封',

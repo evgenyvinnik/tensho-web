@@ -16,6 +16,7 @@ import {
 import { initializeArchive, useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
 import { useStakeStore } from '../stores/stakeStore'
+import { useTableStyleStore } from '../stores/tableStyleStore'
 import type {
   ProgressionEventPayload,
   UnlockCheckResult,
@@ -23,7 +24,9 @@ import type {
 import type { DiscoveryTrigger } from '../systems/ArchiveSystem'
 import { createEventSubscription, eventBus } from './EventBus'
 
-const UNLOCK_ARCHIVE_CATEGORIES: Partial<Record<UnlockCategory, ArchiveCategory>> = {
+const UNLOCK_ARCHIVE_CATEGORIES: Partial<
+  Record<UnlockCategory, ArchiveCategory>
+> = {
   decree: 'decrees',
   table_style: 'walls',
   charter: 'charters',
@@ -41,6 +44,8 @@ interface ActiveRunMeta {
   stake: number
   wallId: string
   hadFlowers: boolean
+  flowerTypes: Set<string>
+  pendingCorruptedSeasons: number
 }
 
 let activeRun: ActiveRunMeta | null = null
@@ -53,6 +58,9 @@ function syncProgressionUnlocks(result: UnlockCheckResult): void {
     const archiveCategory = UNLOCK_ARCHIVE_CATEGORIES[unlock.category]
     if (archiveCategory) {
       archive.unlockItem(archiveCategory, unlock.unlocksId)
+    }
+    if (unlock.category === 'table_style') {
+      useTableStyleStore.getState().unlockStyle(unlock.unlocksId)
     }
 
     if (unlock.category === 'stake') {
@@ -67,24 +75,57 @@ function syncProgressionUnlocks(result: UnlockCheckResult): void {
   }
 }
 
-function processProgressionEvent(event: ProgressionEventPayload): UnlockCheckResult {
+function processProgressionEvent(
+  event: ProgressionEventPayload
+): UnlockCheckResult {
   const result = useProgressionStore.getState().processEvent(event)
   syncProgressionUnlocks(result)
+  syncTableProgress()
   return result
 }
 
-function incrementAchievementStat(stat: keyof AchievementStats, amount = 1): void {
+/** Project lifetime counters without adding the same purchases again on reload. */
+function syncTableProgress(): void {
+  const stats = useProgressionStore.getState().stats
+  const tables = useTableStyleStore.getState()
+  tables.updateStats({
+    highestActCompleted: Math.max(
+      stats.highestActCompleted,
+      stats.highestActReached - 1
+    ),
+    maxFlowersInRun: stats.currentRunFlowersCollected,
+    maxDecreesInWin: stats.maxDecreesInWin,
+    totalDecreesPurchased: Math.max(
+      0,
+      stats.totalDecreesPurchased - tables.stats.totalDecreesPurchased
+    ),
+    hasWonWithoutFlowers: stats.winsWithoutFlowers > 0,
+    maxCorruptedSeasonsSurvived: stats.corruptedSeasonsSurvived,
+    hasScoredYakuman: stats.yakumanScored > 0,
+  })
+}
+
+function incrementAchievementStat(
+  stat: keyof AchievementStats,
+  amount = 1
+): void {
   useAchievementStore.getState().incrementStat(stat, amount)
 }
 
-function maximizeAchievementStat(stat: keyof AchievementStats, value: number): void {
+function maximizeAchievementStat(
+  stat: keyof AchievementStats,
+  value: number
+): void {
   const achievementStore = useAchievementStore.getState()
   if (value > achievementStore.stats[stat]) {
     achievementStore.setStat(stat, value)
   }
 }
 
-function minimizeAchievementStat(stat: keyof AchievementStats, value: number): void {
+function minimizeAchievementStat(
+  stat: keyof AchievementStats,
+  value: number
+): void {
   const achievementStore = useAchievementStore.getState()
   if (value < achievementStore.stats[stat]) {
     achievementStore.setStat(stat, value)
@@ -101,8 +142,11 @@ function checkAchievements(): void {
 
   useAchievementStore.getState().checkAchievements()
 
-  for (const achievement of Object.values(useAchievementStore.getState().achievements)) {
-    if (!achievement.unlocked || previouslyUnlocked.has(achievement.id)) continue
+  for (const achievement of Object.values(
+    useAchievementStore.getState().achievements
+  )) {
+    if (!achievement.unlocked || previouslyUnlocked.has(achievement.id))
+      continue
     const definition = getAchievementDefinition(achievement.id)
     eventBus.emit('achievementUnlocked', {
       achievementId: achievement.id,
@@ -124,13 +168,15 @@ function recordArchiveItem(
     archive.unlockItem(category, itemId)
   }
 
-  const discovered = useArchiveStore.getState().discoverItem(
-    category,
-    itemId,
-    trigger,
-    useProgressionStore.getState().stats.totalRunsStarted,
-    useProgressionStore.getState().stats.highestActReached
-  )
+  const discovered = useArchiveStore
+    .getState()
+    .discoverItem(
+      category,
+      itemId,
+      trigger,
+      useProgressionStore.getState().stats.totalRunsStarted,
+      useProgressionStore.getState().stats.highestActReached
+    )
 
   useArchiveStore.getState().incrementUsage(category, itemId)
   useArchiveStore.getState().addToCurrentRun(category, itemId)
@@ -143,14 +189,19 @@ function recordArchiveItem(
   return discovered
 }
 
-function synchronizePersistedMetaState(): void {
+/** Reconcile derived counters/unlocks after hydration or a coordinated reset. */
+export function synchronizePersistedMetaState(): void {
   const progression = useProgressionStore.getState()
   const archive = useArchiveStore.getState()
 
   for (const unlock of Object.values(progression.unlocks)) {
     const category = UNLOCK_ARCHIVE_CATEGORIES[unlock.category]
     if (category) archive.unlockItem(category, unlock.unlocksId)
+    if (unlock.category === 'table_style') {
+      useTableStyleStore.getState().unlockStyle(unlock.unlocksId)
+    }
   }
+  syncTableProgress()
 
   const discoveredEntries = archive.getDiscoveredEntries()
   const achievements = useAchievementStore.getState()
@@ -198,7 +249,13 @@ export function initializeMetaProgressionBridge(): () => void {
   const subscription = createEventSubscription()
 
   subscription.subscribe('runStart', ({ stake, wallVariant }) => {
-    activeRun = { stake, wallId: wallVariant, hadFlowers: false }
+    activeRun = {
+      stake,
+      wallId: wallVariant,
+      hadFlowers: false,
+      flowerTypes: new Set(),
+      pendingCorruptedSeasons: 0,
+    }
     useArchiveStore.getState().clearCurrentRun()
     processProgressionEvent({ type: 'run_started' })
     recordArchiveItem('walls', wallVariant, 'starting')
@@ -248,16 +305,19 @@ export function initializeMetaProgressionBridge(): () => void {
     }
   })
 
-  subscription.subscribe('decreeAcquired', ({ decreeId, source = 'purchase' }) => {
-    recordArchiveItem('decrees', decreeId, SOURCE_TRIGGERS[source])
-    if (source === 'purchase') {
-      processProgressionEvent({ type: 'decree_purchased', itemId: decreeId })
-      incrementAchievementStat('totalDecreesPurchased')
-    } else {
-      useProgressionStore.getState().discoverItem(decreeId, 'decree')
+  subscription.subscribe(
+    'decreeAcquired',
+    ({ decreeId, source = 'purchase' }) => {
+      recordArchiveItem('decrees', decreeId, SOURCE_TRIGGERS[source])
+      if (source === 'purchase') {
+        processProgressionEvent({ type: 'decree_purchased', itemId: decreeId })
+        incrementAchievementStat('totalDecreesPurchased')
+      } else {
+        useProgressionStore.getState().discoverItem(decreeId, 'decree')
+      }
+      checkAchievements()
     }
-    checkAchievements()
-  })
+  )
 
   subscription.subscribe('charterRedeemed', ({ charterId, actNumber }) => {
     const discovered = recordArchiveItem('charters', charterId, 'purchase')
@@ -272,7 +332,11 @@ export function initializeMetaProgressionBridge(): () => void {
   subscription.subscribe(
     'consumableAcquired',
     ({ consumableType, itemId, source = 'purchase' }) => {
-      const discovered = recordArchiveItem('consumables', itemId, SOURCE_TRIGGERS[source])
+      const discovered = recordArchiveItem(
+        'consumables',
+        itemId,
+        SOURCE_TRIGGERS[source]
+      )
       processProgressionEvent({
         type: 'consumable_acquired',
         itemId,
@@ -281,11 +345,13 @@ export function initializeMetaProgressionBridge(): () => void {
       })
 
       if (discovered) {
-        if (consumableType === 'FateSeal') incrementAchievementStat('fateSealsDiscovered')
+        if (consumableType === 'FateSeal')
+          incrementAchievementStat('fateSealsDiscovered')
         if (consumableType === 'CelestialOrb') {
           incrementAchievementStat('celestialOrbsDiscovered')
         }
-        if (consumableType === 'VoidScript') incrementAchievementStat('voidScriptsDiscovered')
+        if (consumableType === 'VoidScript')
+          incrementAchievementStat('voidScriptsDiscovered')
       }
       checkAchievements()
     }
@@ -310,13 +376,27 @@ export function initializeMetaProgressionBridge(): () => void {
 
   subscription.subscribe('roundSkipped', ({ omenTagGranted }) => {
     processProgressionEvent({ type: 'round_skipped' })
-    if (omenTagGranted) recordArchiveItem('omens', omenTagGranted, 'skip_reward')
+    if (omenTagGranted)
+      recordArchiveItem('omens', omenTagGranted, 'skip_reward')
     checkAchievements()
   })
 
   subscription.subscribe('roundEnd', ({ won, score }) => {
+    const corrupted = activeRun?.pendingCorruptedSeasons ?? 0
+    if (activeRun) activeRun.pendingCorruptedSeasons = 0
     if (!won) return
     processProgressionEvent({ type: 'round_completed', value: score })
+    for (let i = 0; i < corrupted; i++) {
+      processProgressionEvent({ type: 'corrupted_season_survived' })
+    }
+  })
+
+  subscription.subscribe('actComplete', ({ actNumber }) => {
+    processProgressionEvent({ type: 'act_completed', value: actNumber })
+  })
+
+  subscription.subscribe('seasonCorrupted', () => {
+    if (activeRun) activeRun.pendingCorruptedSeasons++
   })
 
   subscription.subscribe('mandateActivated', ({ mandateId }) => {
@@ -331,8 +411,10 @@ export function initializeMetaProgressionBridge(): () => void {
 
   subscription.subscribe('yakuScored', ({ yakuId }) => {
     processProgressionEvent({ type: 'yaku_scored', itemId: yakuId })
-    if (yakuId === 'yakuhai_wind') incrementAchievementStat('totalWindYakuScored')
-    if (yakuId === 'yakuhai_dragon') incrementAchievementStat('totalDragonYakuScored')
+    if (yakuId === 'yakuhai_wind')
+      incrementAchievementStat('totalWindYakuScored')
+    if (yakuId === 'yakuhai_dragon')
+      incrementAchievementStat('totalDragonYakuScored')
     checkAchievements()
   })
 
@@ -342,9 +424,14 @@ export function initializeMetaProgressionBridge(): () => void {
     checkAchievements()
   })
 
-  subscription.subscribe('flowerCollected', () => {
-    if (activeRun) activeRun.hadFlowers = true
-    processProgressionEvent({ type: 'flower_collected' })
+  subscription.subscribe('flowerCollected', ({ flowerType }) => {
+    if (!activeRun) return
+    activeRun.hadFlowers = true
+    activeRun.flowerTypes.add(flowerType)
+    processProgressionEvent({
+      type: 'flower_collected',
+      value: activeRun.flowerTypes.size,
+    })
   })
 
   subscription.subscribe('packOpened', ({ packType, packSize }) => {
@@ -359,10 +446,13 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe('interestEarned', ({ amount }) => {
-    processProgressionEvent({ type: 'interest_collected', wasMaxInterest: amount >= 5 })
+    processProgressionEvent({
+      type: 'interest_collected',
+      wasMaxInterest: amount >= 5,
+    })
   })
 
-  subscription.subscribe('runEnd', ({ victory, score, act }) => {
+  subscription.subscribe('runEnd', ({ victory, score, act, decreesOwned }) => {
     const progression = useProgressionStore.getState()
     const roundsCompleted = progression.stats.currentRunRoundsCompleted
     processProgressionEvent({ type: 'run_completed', value: score })
@@ -374,21 +464,26 @@ export function initializeMetaProgressionBridge(): () => void {
             wallId: activeRun?.wallId ?? 'green_felt',
             roundsCompleted,
             hadFlowers: activeRun?.hadFlowers ?? false,
+            decreesOwned,
           }
         : { type: 'run_lost' }
     )
 
     incrementAchievementStat('runsCompleted')
     if (victory) {
-      useStakeStore.getState().recordVictory(
-        score,
-        act,
-        activeRun?.wallId ?? 'green_felt',
-        activeRun?.stake ?? 1
-      )
+      useStakeStore
+        .getState()
+        .recordVictory(
+          score,
+          act,
+          activeRun?.wallId ?? 'green_felt',
+          activeRun?.stake ?? 1
+        )
       incrementAchievementStat('runsWon')
       minimizeAchievementStat('fastestWinRounds', roundsCompleted)
-      useArchiveStore.getState().incrementWins(useArchiveStore.getState().currentRunItems)
+      useArchiveStore
+        .getState()
+        .incrementWins(useArchiveStore.getState().currentRunItems)
     }
     checkAchievements()
     activeRun = null
@@ -405,4 +500,9 @@ export function initializeMetaProgressionBridge(): () => void {
 /** Remove the bridge, primarily for isolated tests and hot reload. */
 export function shutdownMetaProgressionBridge(): void {
   bridgeCleanup?.()
+}
+
+/** A deliberate data reset is not a completed/lost run. Keep subscriptions. */
+export function resetMetaProgressionRunContext(): void {
+  activeRun = null
 }

@@ -35,6 +35,7 @@ import {
 } from '../i18n'
 import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
 import { APP_BASE_URL, APP_ROUTER_BASENAME } from '../utils/basePath'
+import { audioSystem } from '../systems/AudioSystem'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -194,6 +195,13 @@ export function RouteErrorBoundary() {
  * Language layout wrapper that provides language sync
  */
 export function LanguageLayout() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const screen = pathname.replace(/\/$/, '').split('/').at(-1)
+    if (screen === 'play' || screen === 'table-loop') audioSystem.playMusic('gameplay')
+    else if (screen === 'shop') audioSystem.playMusic('shop')
+    else if (screen !== 'game-over') audioSystem.playMusic('menu')
+  }, [pathname])
   return (
     <LanguageSync>
       <Outlet />

@@ -19,7 +19,10 @@ import { MeldType } from '../core/Meld'
 import { Tile } from '../core/Tile'
 import { STRUCTURE_POINTS_BY_TYPE, getTilePoints } from '../rules/ScoringEngine'
 import { parsePartialHand } from '../rules/PartialHandParser'
-import { MAX_TACTICAL_PLAY_TILES, MIN_TACTICAL_PLAY_TILES } from '../game/playRules'
+import {
+  MAX_TACTICAL_PLAY_TILES,
+  MIN_TACTICAL_PLAY_TILES,
+} from '../game/playRules'
 
 export type BeginnerPatternKind = MeldType | 'redraw'
 
@@ -121,6 +124,8 @@ export interface CoachAdvice {
 
 export interface CoachContext {
   tiles: Tile[]
+  /** Visible forced tiles must be part of every recommendation. */
+  requiredTileIds?: readonly string[]
   /** Tiles the player cannot see; never suggested and never scored. */
   concealedIds?: ReadonlySet<string>
   /**
@@ -190,15 +195,29 @@ function enumerateGroups(tiles: Tile[]): Tile[][] {
  * with the most valuable spare tiles, and the plain "play the biggest tiles"
  * selection that the diagnosis in section 1.4 found the old coach losing to.
  */
-function candidateSelections(tiles: Tile[]): string[][] {
+function candidateSelections(
+  tiles: Tile[],
+  requiredIds: readonly string[]
+): string[][] {
+  const required = tiles.filter((tile) => requiredIds.includes(tile.id))
   const groups = enumerateGroups(tiles)
   const byPoints = [...tiles].sort(
-    (left, right) => getTilePoints(right) - getTilePoints(left)
+    (left, right) =>
+      Number(requiredIds.includes(right.id)) -
+        Number(requiredIds.includes(left.id)) ||
+      getTilePoints(right) - getTilePoints(left)
   )
   const seen = new Set<string>()
   const candidates: string[][] = []
 
   const offer = (selection: Tile[]) => {
+    // Preserve physical uniqueness; overlapping groups are not legal candidates.
+    if (new Set(selection.map((tile) => tile.id)).size !== selection.length)
+      return
+    selection = [
+      ...selection,
+      ...required.filter((tile) => !selection.includes(tile)),
+    ]
     if (
       selection.length < MIN_TACTICAL_PLAY_TILES ||
       selection.length > MAX_TACTICAL_PLAY_TILES
@@ -238,14 +257,26 @@ function candidateSelections(tiles: Tile[]): string[][] {
   }
 
   // The pure tile-value plays, which no group-first coach would ever find.
-  for (let size = MIN_TACTICAL_PLAY_TILES; size <= MAX_TACTICAL_PLAY_TILES; size += 1) {
+  for (
+    let size = MIN_TACTICAL_PLAY_TILES;
+    size <= MAX_TACTICAL_PLAY_TILES;
+    size += 1
+  ) {
     offer(byPoints.slice(0, size))
   }
+
+  // The real validator decides whether the entire visible rack is Mahjong.
+  // Never infer a complete hand by consulting concealed tile identities.
+  if (tiles.length > MAX_TACTICAL_PLAY_TILES)
+    candidates.push(tiles.map((tile) => tile.id))
 
   return candidates
 }
 
-function describeSelection(tiles: Tile[], selection: string[]): {
+function describeSelection(
+  tiles: Tile[],
+  selection: string[]
+): {
   pattern: MeldType | null
   structurePoints: number
 } {
@@ -262,8 +293,8 @@ function describeSelection(tiles: Tile[], selection: string[]): {
 /**
  * Compare what the hand can score now with what it can teach.
  *
- * Returns null when nothing legal is available, so a caller can fall back to
- * suggesting a redraw rather than inventing a move.
+ * Returns null when no visible candidate is legal. This is not proof that no
+ * legal blind play or unsearched combination exists.
  */
 export function buildCoachAdvice(context: CoachContext): CoachAdvice | null {
   const concealed = context.concealedIds ?? new Set<string>()
@@ -271,9 +302,12 @@ export function buildCoachAdvice(context: CoachContext): CoachAdvice | null {
     (tile) => !tile.isBonus && !concealed.has(tile.id)
   )
   if (visible.length < MIN_TACTICAL_PLAY_TILES) return null
+  const required = context.requiredTileIds ?? []
+  if (required.some((id) => !visible.some((tile) => tile.id === id)))
+    return null
 
   const priced: CoachOption[] = []
-  for (const selection of candidateSelections(visible)) {
+  for (const selection of candidateSelections(visible, required)) {
     const score = context.scoreSelection(selection)
     if (score === null) continue
     const described = describeSelection(visible, selection)

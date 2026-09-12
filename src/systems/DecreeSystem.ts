@@ -1238,6 +1238,13 @@ export class DecreeSystem {
     return ALL_DECREES.filter((d) => d.rarity === rarity)
   }
 
+  /** Shared public preflight and generation pool; fallback cannot weaken an Omen. */
+  static getShopCandidates(excludeIds: string[], minimum?: DecreeRarity): Decree[] {
+    const order: DecreeRarity[] = ['LocalEdict', 'RegionalMandate', 'ImperialDecree', 'HeavenlyOrdinance']
+    return ALL_DECREES.filter(d => !excludeIds.includes(d.id) &&
+      (!minimum || order.indexOf(d.rarity) >= order.indexOf(minimum)))
+  }
+
   /**
    * Get random decree weighted by rarity
    * Common: 70%, Uncommon: 25%, Rare: 5%

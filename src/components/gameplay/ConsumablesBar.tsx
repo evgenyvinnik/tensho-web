@@ -8,6 +8,7 @@
  */
 
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { OrbSVG, ScriptSVG, SealSVG } from '../ui/svg/ConsumableSVG'
 
 // =============================================================================
@@ -73,9 +74,10 @@ export function ConsumablesBar({
   onUseCelestialOrb,
   onUseVoidScript,
 }: ConsumablesBarProps) {
+  const { t } = useTranslation()
   const consumables: ConsumableItem[] = [
     {
-      name: 'Fate Seal',
+      name: t('consumableUse.fateSeals'),
       japanese: '運命',
       count: fateSeals,
       icon: <SealSVG variant="wisdom" size={32} />,
@@ -83,7 +85,7 @@ export function ConsumablesBar({
       onUse: onUseFateSeal,
     },
     {
-      name: 'Celestial Orb',
+      name: t('consumableUse.celestialOrbs'),
       japanese: '天球',
       count: celestialOrbs,
       icon: <OrbSVG variant="neptune" size={32} />,
@@ -91,7 +93,7 @@ export function ConsumablesBar({
       onUse: onUseCelestialOrb,
     },
     {
-      name: 'Void Script',
+      name: t('consumableUse.voidScripts'),
       japanese: '虚空',
       count: voidScripts,
       icon: <ScriptSVG size={32} />,
@@ -115,7 +117,10 @@ export function ConsumablesBar({
             transition-all min-w-[44px] min-h-[44px]
           `}
           title={item.name}
-          aria-label={`${item.name} (${item.count} available)`}
+          aria-label={t('consumableUse.available', {
+            name: item.name,
+            count: item.count,
+          })}
         >
           <span
             aria-hidden="true"

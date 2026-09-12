@@ -87,6 +87,8 @@ export interface OmenEffect {
   description: string
   /** For guaranteed_item: type of item guaranteed */
   itemType?: 'Decree' | 'FateSeal' | 'CelestialOrb' | 'VoidScript' | 'BlessingPack'
+  /** Minimum rarity for a guaranteed shop Decree, including fallback selection. */
+  minDecreeRarity?: DecreeRarity
   /** For edition_apply: the edition type */
   editionType?: 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
   /** For mult_per_skip: whether it scales per skip */
@@ -357,6 +359,7 @@ export const DECREE_OMEN: OmenDefinition = {
     value: 1,
     description: 'Guarantees Rare+ Decree in shop',
     itemType: 'Decree',
+    minDecreeRarity: 'ImperialDecree',
   },
   tradeoff: {
     type: 'lose_gold',

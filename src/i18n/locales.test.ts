@@ -35,7 +35,7 @@ import { getAllCelestialOrbs } from '../systems/CelestialOrbSystem'
 import { getAllVoidScripts } from '../systems/VoidScriptSystem'
 import {
   ARCHIVE_CATEGORIES,
-  WALL_DEFINITIONS,
+  LEGACY_WALL_DEFINITIONS,
   TILE_MARK_DEFINITIONS,
   SEAL_DEFINITIONS_ARCHIVE,
   EDITION_DEFINITIONS_ARCHIVE,
@@ -61,7 +61,165 @@ const LOCALES: Record<string, Locale> = {
   'zh-Hant': zhHant,
 }
 
+it('localizes the reset scope and storage failure outcomes in every language', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const settings = locale.settings as Record<string, string>
+    for (const key of ['resetProgressScope', 'resetFailed', 'resetPartial']) {
+      expect(settings[key], `${lang}: ${key}`).toBeTypeOf('string')
+      expect(settings[key].trim().length).toBeGreaterThan(0)
+    }
+  }
+})
+
+it('localizes shop settlement, capacity feedback and pack selection controls in every language', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const shop = locale.shop as Record<string, string>
+    for (const key of [
+      'inventoryFull',
+      'packInventoryFull',
+      'purchaseFailed',
+      'packSelected',
+      'packChoices',
+      'confirmSelection',
+      'selectItems',
+      'skipRewards',
+    ]) {
+      expect(shop[key], `${language}: shop.${key}`).toBeTypeOf('string')
+      expect(shop[key].length).toBeGreaterThan(0)
+    }
+    for (const key of ['packSelected', 'packChoices']) {
+      expect(shop[key]).toContain('{{count}}')
+      expect(shop[key]).toContain('{{max}}')
+    }
+  }
+})
+
+it('localizes the complete payout receipt and preserves every interpolation token', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const shop = locale.shop as typeof en.shop
+    expect(Object.keys(shop.payout).sort(), lang).toEqual(
+      Object.keys(en.shop.payout).sort()
+    )
+    for (const key of Object.keys(
+      en.shop.payout
+    ) as (keyof typeof en.shop.payout)[]) {
+      expect(shop.payout[key].trim().length, `${lang}: ${key}`).toBeGreaterThan(
+        0
+      )
+      expect(
+        shop.payout[key].match(/\{\{\w+\}\}/g)?.sort(),
+        `${lang}: ${key}`
+      ).toEqual(en.shop.payout[key].match(/\{\{\w+\}\}/g)?.sort())
+    }
+    for (const round of ['small', 'large', 'boss'])
+      expect(
+        (locale.rounds as Record<string, string>)[round].trim().length,
+        lang
+      ).toBeGreaterThan(0)
+  }
+})
+
+it('localizes every shop navigation and Charter presentation label with matching tokens', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const shop = locale.shop as typeof en.shop
+    expect(Object.keys(shop.ui).sort(), lang).toEqual(
+      Object.keys(en.shop.ui).sort()
+    )
+    for (const key of Object.keys(en.shop.ui) as (keyof typeof en.shop.ui)[]) {
+      expect(shop.ui[key].trim().length, `${lang}: ${key}`).toBeGreaterThan(0)
+      expect(
+        shop.ui[key].match(/\{\{\w+\}\}/g)?.sort(),
+        `${lang}: ${key}`
+      ).toEqual(en.shop.ui[key].match(/\{\{\w+\}\}/g)?.sort())
+    }
+    for (const key of ['upgraded', 'buy', 'reroll', 'rerollCost']) {
+      expect(
+        (shop as Record<string, unknown>)[key],
+        `${lang}: ${key}`
+      ).toBeTypeOf('string')
+    }
+  }
+})
+
+it('provides Purple Seal names and current trigger descriptions in every locale', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const archive = locale.archiveSeals as {
+      items: { purple: { name: string; description: string } }
+    }
+    expect(archive.items.purple.name.trim().length, lang).toBeGreaterThan(0)
+    expect(
+      archive.items.purple.description.trim().length,
+      lang
+    ).toBeGreaterThan(0)
+  }
+  expect(en.archiveSeals.items.purple.description).toContain(
+    'discarded or redrawn'
+  )
+})
+
+it('provides the complete consumable picker language contract in every locale', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const labels = locale.consumableUse as Record<string, string>
+    expect(Object.keys(labels).sort(), lang).toEqual(
+      Object.keys(en.consumableUse).sort()
+    )
+    for (const value of Object.values(labels))
+      expect(value.trim().length, lang).toBeGreaterThan(0)
+    expect(labels.count).toContain('{{selected}}')
+    expect(labels.count).toContain('{{required}}')
+    expect(labels.available).toContain('{{name}}')
+    expect(labels.available).toContain('{{count}}')
+    expect(labels.copyResult).toContain('{{name}}')
+    expect(labels.errorNoPrevious).toContain('{{seals}}')
+    expect(labels.errorNoPrevious).toContain('{{orbs}}')
+    for (const script of getAllVoidScripts()) {
+      expect(
+        labels[`penalty_${script.penalty.type}`],
+        `${lang}: ${script.id} penalty`
+      ).toBeTypeOf('string')
+    }
+  }
+})
+
+it('localizes Unity and every Wind in its conversion legend in all locales', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const seals = locale.seals as typeof en.seals
+    const labels = locale.consumableUse as Record<string, string>
+    const tiles = locale.tiles as Record<string, string>
+    expect(seals.items.seal_of_unity.name.trim().length, lang).toBeGreaterThan(
+      0
+    )
+    expect(
+      seals.items.seal_of_unity.description.trim().length,
+      lang
+    ).toBeGreaterThan(0)
+    expect(labels.unityMapping.trim().length, lang).toBeGreaterThan(0)
+    for (const wind of ['east', 'south', 'west', 'north'] as const)
+      expect(tiles[wind].trim().length, lang).toBeGreaterThan(0)
+  }
+})
+
 /** The item libraries that carry per-item translations, with their real ids. */
+it('localizes victory, defeat, and Endless result controls without fallback', () => {
+  for (const [lang, locale] of Object.entries(LOCALES)) {
+    const results = locale.results as Record<string, string>
+    for (const key of [
+      'endlessComplete',
+      'victorySubtitle',
+      'endlessSubtitle',
+      'defeatSubtitle',
+      'showdownCleared',
+      'continueEndless',
+    ]) {
+      expect(results[key], `${lang}: results.${key}`).toBeTypeOf('string')
+      expect(
+        results[key]?.trim().length,
+        `${lang}: results.${key}`
+      ).toBeGreaterThan(0)
+    }
+  }
+})
+
 const LIBRARIES: Record<string, string[]> = {
   decrees: ALL_DECREES.map((d) => d.id),
   charters: ALL_CHARTERS.map((c) => c.id),
@@ -71,7 +229,8 @@ const LIBRARIES: Record<string, string[]> = {
   orbs: getAllCelestialOrbs().map((o) => o.id),
   scripts: getAllVoidScripts().map((s) => s.id),
   archiveCategories: Object.values(ARCHIVE_CATEGORIES).map((c) => c.id),
-  walls: WALL_DEFINITIONS.map((w) => w.id),
+  // Historical records retain their old names; playable tables use tableStyles.
+  walls: LEGACY_WALL_DEFINITIONS.map((w) => w.id),
   tileMarks: TILE_MARK_DEFINITIONS.map((m) => m.id),
   archiveSeals: SEAL_DEFINITIONS_ARCHIVE.map((s) => s.id),
   editions: EDITION_DEFINITIONS_ARCHIVE.map((e) => e.id),
@@ -85,6 +244,23 @@ function itemsOf(locale: Locale, kind: string): Record<string, unknown> {
 }
 
 describe('locale item translations', () => {
+  it('localizes each playable table rule and unlock condition in every language', () => {
+    for (const [lang, locale] of Object.entries(LOCALES)) {
+      const tables = itemsOf(locale, 'tableStyles')
+      for (const table of TABLE_STYLE_DEFINITIONS) {
+        const entry = tables[table.id] as Record<string, unknown>
+        for (const field of ['name', 'description', 'theme', 'unlock']) {
+          expect(entry?.[field], `${lang}:${table.id}.${field}`).toBeTypeOf(
+            'string'
+          )
+        }
+        expect(
+          Object.keys(entry.modifiers as object),
+          `${lang}:${table.id}.modifiers`
+        ).toEqual(table.startingModifiers.map((_, i) => String(i)))
+      }
+    }
+  })
   it('gives en an entry for every item the game can show', () => {
     const missing: string[] = []
 
@@ -149,7 +325,9 @@ describe('tutorial <Trans> markup', () => {
     const out: Record<string, string> = {}
     for (const [step, entries] of Object.entries(group)) {
       if (typeof entries !== 'object' || entries === null) continue
-      for (const [name, value] of Object.entries(entries as Record<string, unknown>)) {
+      for (const [name, value] of Object.entries(
+        entries as Record<string, unknown>
+      )) {
         if (typeof value === 'string' && /^(p|li|note)\d+$/.test(name)) {
           out[`${step}.${name}`] = value
         }
@@ -203,7 +381,8 @@ describe('translation script purity', () => {
     const walk = (node: unknown, path: string) => {
       if (typeof node === 'string') out.push([path, node])
       else if (node && typeof node === 'object') {
-        for (const [k, v] of Object.entries(node)) walk(v, path ? `${path}.${k}` : k)
+        for (const [k, v] of Object.entries(node))
+          walk(v, path ? `${path}.${k}` : k)
       }
     }
     walk(locale, '')
@@ -246,7 +425,7 @@ describe('translation script purity', () => {
  * For a screen that was translated in full, that silence is what lets coverage
  * rot, so these namespaces are held to exact parity with English.
  */
-const FULLY_TRANSLATED_PATHS = ['tableLoop', 'gameplay.coach']
+const FULLY_TRANSLATED_PATHS = ['tableLoop', 'gameplay.coach', 'flora']
 
 function readPath(locale: Locale, path: string): unknown {
   return path
@@ -280,7 +459,8 @@ describe('fully translated namespaces', () => {
         const actual = leafKeys(readPath(locale, path) ?? {}).sort()
         const missing = expected.filter((key) => !actual.includes(key))
         const stale = actual.filter((key) => !expected.includes(key))
-        if (missing.length) problems.push(`${lang} missing ${missing.join(', ')}`)
+        if (missing.length)
+          problems.push(`${lang} missing ${missing.join(', ')}`)
         if (stale.length) problems.push(`${lang} stale ${stale.join(', ')}`)
       }
       expect(problems).toEqual([])

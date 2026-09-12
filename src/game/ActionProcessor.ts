@@ -9,6 +9,7 @@ import { Tile } from '../core/Tile'
 import { Meld } from '../core/Meld'
 import { ScoreBreakdown } from '../rules/ScoringEngine'
 import { DetectedYaku } from '../rules/YakuDetector'
+import type { RoundType } from '../systems/types'
 
 // =============================================================================
 // ACTION TYPES
@@ -209,8 +210,11 @@ export interface GameStateSnapshot {
   // Wall state
   wallRemaining: number
   deadWallRemaining: number
+  /** Playable replacements available after resolving bonus/dead-wall chains. */
+  redrawReplacementCapacity?: number
 
   // Round state
+  roundType: RoundType | null
   handsRemaining: number
   discardsRemaining: number
   redrawsRemaining: number
@@ -235,6 +239,7 @@ export interface GameStateSnapshot {
  * Restrictions from active boss mandates
  */
 export interface MandateRestrictions {
+  lockedTileIds?: readonly string[]
   noDiscards?: boolean
   fixedHandSize?: number
   singleHand?: boolean
@@ -270,7 +275,9 @@ export class ActionProcessor {
       case 'useScript':
         return this.validateUseScript(action, state)
       case 'skip':
-        return { isValid: true, errors: [] }
+        return state.roundType === 'Small' || state.roundType === 'Large'
+          ? { isValid: true, errors: [] }
+          : { isValid: false, errors: [state.roundType === 'Boss' ? 'Cannot skip boss rounds' : 'No active round'] }
       default:
         return { isValid: false, errors: ['Unknown action type'] }
     }
@@ -310,6 +317,9 @@ export class ActionProcessor {
     if (state.mandateRestrictions?.noDiscards) {
       errors.push('Discards are disabled by mandate')
     }
+    if (state.mandateRestrictions?.lockedTileIds?.includes(action.tileId)) {
+      errors.push('Locked tiles cannot be discarded')
+    }
 
     // Check if tile exists in hand
     const tileExists = state.handTiles.some((t) => t.id === action.tileId)
@@ -344,6 +354,9 @@ export class ActionProcessor {
     }
 
     // Check if all tiles exist in hand
+    if (new Set(action.tileIds).size !== action.tileIds.length) {
+      errors.push('Play tiles must be unique')
+    }
     for (const tileId of action.tileIds) {
       const tileExists = state.handTiles.some((t) => t.id === tileId)
       if (!tileExists) {
@@ -395,6 +408,17 @@ export class ActionProcessor {
       errors.push('Must select at least one tile to redraw')
     }
 
+    if (new Set(action.tileIds).size !== action.tileIds.length) {
+      errors.push('Redraw tiles must be unique')
+    }
+    if (
+      action.tileIds.some((id) =>
+        state.mandateRestrictions?.lockedTileIds?.includes(id)
+      )
+    ) {
+      errors.push('Locked tiles cannot be redrawn')
+    }
+
     // Check if all tiles exist in hand
     for (const tileId of action.tileIds) {
       const tileExists = state.handTiles.some((t) => t.id === tileId)
@@ -406,6 +430,11 @@ export class ActionProcessor {
     // Check if wall has enough tiles
     if (state.wallRemaining < action.tileIds.length) {
       errors.push('Not enough tiles in wall for redraw')
+    } else if (
+      state.redrawReplacementCapacity !== undefined &&
+      state.redrawReplacementCapacity < action.tileIds.length
+    ) {
+      errors.push('Not enough replacement tiles for redraw')
     }
 
     return {
@@ -520,7 +549,11 @@ export class ActionProcessor {
       available.push('draw')
     }
 
-    if (state.discardsRemaining > 0 && state.handTiles.length > 0) {
+    if (
+      state.handTiles.some((tile) =>
+        this.canPerform({ type: 'discard', tileId: tile.id }, state)
+      )
+    ) {
       available.push('discard')
     }
 
@@ -529,9 +562,9 @@ export class ActionProcessor {
     }
 
     if (
-      state.redrawsRemaining > 0 &&
-      state.wallRemaining > 0 &&
-      state.handTiles.length > 0
+      state.handTiles.some((tile) =>
+        this.canPerform({ type: 'redraw', tileIds: [tile.id] }, state)
+      )
     ) {
       available.push('redraw')
     }
@@ -548,7 +581,7 @@ export class ActionProcessor {
       available.push('useScript')
     }
 
-    available.push('skip')
+    if (this.canPerform({ type: 'skip' }, state)) available.push('skip')
 
     return available
   }

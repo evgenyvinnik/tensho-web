@@ -1,4 +1,37 @@
 {
+  "consumableUse": {
+    "unityMapping": "원래 숫자 → 풍패",
+    "errorMaxLevel": "이 강화는 이미 최대 레벨입니다.",
+    "errorNoRoom": "아이템을 사용하기 전에 보상을 받을 공간을 확보하세요.",
+    "errorNoDecrees": "이 효과를 사용하려면 보유한 칙령이 필요합니다.",
+    "errorNoPrevious": "먼저 {{seals}} 또는 {{orbs}} 항목의 아이템을 사용하세요.",
+    "copyResult": "생성: {{name}}",
+    "errorNoGold": "지금 이 효과를 사용해도 골드를 얻지 못합니다.",
+    "hiddenOutcome": "가려진 패에 대한 결과는 확정할 때만 확인됩니다.",
+    "available": "{{name}} ({{count}}개 사용 가능)",
+    "penalty_lose_tile": "무작위 패 1개를 잃습니다.",
+    "penalty_lose_gold": "모든 금을 잃습니다.",
+    "penalty_lose_hand_size": "손패 한도가 영구적으로 {{count}}개 줄어듭니다.",
+    "penalty_lock_tile": "무작위 패 1개를 데드 풀에 잠급니다.",
+    "penalty_lose_decree_slot": "다음 라운드에 칙령 슬롯 {{count}}개를 잃습니다.",
+    "penalty_halve_base_score": "다음 패의 기본 점수가 절반이 됩니다.",
+    "penalty_destroy_decrees": "다른 모든 칙령을 파괴합니다.",
+    "penalty_none": "추가 불이익 없음.",
+    "protected": "징조의 보호가 추가 불이익을 막습니다.",
+    "errorSuit": "다른 종류의 숫자패를 선택하세요.",
+    "errorRank": "변경 후 숫자가 1~9인 숫자패를 선택하세요.",
+    "choose": "아이템을 고른 뒤 사용을 확정하세요.",
+    "targets": "대상 패",
+    "count": "대상: {{selected}} / {{required}}",
+    "copyOrder": "패 1이 패 2의 복사본이 됩니다. 바꿀 패를 먼저 고르세요.",
+    "cost": "공허의 대가",
+    "failed": "이 아이템을 사용할 수 없습니다.",
+    "unavailable": "대상과 이번 라운드의 사용 횟수 제한을 확인하세요.",
+    "confirm": "아이템 사용",
+    "fateSeals": "운명의 인장",
+    "celestialOrbs": "천상의 구슬",
+    "voidScripts": "공허의 두루마리"
+  },
   "common": {
     "loading": "로딩 중...",
     "error": "오류",
@@ -37,6 +70,9 @@
     "tableLoop": "테이블 루프 (실험)"
   },
   "settings": {
+    "resetProgressScope": "발견 기록과 진행 중이거나 저장된 게임도 삭제됩니다. 언어, 오디오, 접근성 설정은 유지됩니다.",
+    "resetFailed": "초기화하지 못했습니다. 진행 상황은 보존되었습니다. 브라우저 저장소를 확인하고 다시 시도하세요.",
+    "resetPartial": "초기화를 완료하지 못해 진행 상황 일부가 변경되었을 수 있습니다. 브라우저 저장소를 확인하고 다시 시도하세요.",
     "title": "설정",
     "audio": "오디오",
     "musicVolume": "음악 볼륨",
@@ -204,6 +240,47 @@
     "bossJp": "親局"
   },
   "shop": {
+    "ui": {
+      "rarity_common": "일반",
+      "rarity_uncommon": "고급",
+      "rarity_rare": "희귀",
+      "rarity_legendary": "전설",
+      "subtitle": "다음 도전을 준비하세요",
+      "items": "아이템",
+      "availableCount": "남은 수량: {{count}}",
+      "allPurchased": "모든 아이템을 구매했습니다!",
+      "packs": "축복 팩",
+      "noPacks": "구매할 수 있는 팩이 없습니다",
+      "imperialCharter": "황실 칙허장",
+      "nextRound": "다음 라운드로",
+      "confirmPurchase": "구매 확인",
+      "purchasePrompt": "{{name}}을(를) {{cost}}G에 구매하시겠습니까?",
+      "baseEdition": "기본판",
+      "goldBalance": "보유 골드: {{amount}}",
+      "rerollsUsed": "새로고침 횟수: {{count}}"
+    },
+    "payout": {
+      "heading": "{{act}}막 · {{round}}",
+      "clear": "클리어 보상",
+      "interest": "이자",
+      "decrees": "칙령",
+      "goldTiles": "황금 패",
+      "bonus": "추가 보상",
+      "rentals": "대여료",
+      "interestBlocked": "현재 이자가 차단되어 있습니다.",
+      "interestCap": "이자 한도 {{interest}}G에 도달했습니다.",
+      "interestSave": "현재 저축액의 이자: {{interest}}G. {{needed}}G를 더 모으면 {{next}}G가 됩니다.",
+      "nextRound": "다음: {{round}} · 목표 {{target}}",
+      "nextAct": "다음: {{act}}막"
+    },
+    "packChoices": "보상 {{count}}개 중 최대 {{max}}개 선택",
+    "packInventoryFull": "선택한 보상을 받을 공간이 부족합니다. 보상 수를 줄이거나 다른 보상을 선택하거나 팩을 건너뛰세요.",
+    "inventoryFull": "이 보상을 받을 인벤토리 공간이 부족합니다.",
+    "skipRewards": "보상 건너뛰기",
+    "purchaseFailed": "구매를 완료할 수 없습니다.",
+    "packSelected": "{{count}} / {{max}}개 선택됨",
+    "confirmSelection": "선택 확정",
+    "selectItems": "아이템 선택",
     "title": "찻집",
     "titleJp": "茶寮",
     "buy": "구매",
@@ -894,6 +971,36 @@
     }
   },
   "flora": {
+    "details": {
+      "runScope": "수집한 꽃패는 이번 도전 내내 유지됩니다. 미수집 보너스는 미리보기입니다.",
+      "roundScope": "뽑은 순서대로 표시합니다. 계절은 이번 라운드 종료 시 사라집니다.",
+      "collected": "수집함",
+      "missing": "미수집",
+      "noSeasons": "이번 라운드에는 계절이 없습니다.",
+      "suppressed": "가뭄이 꽃패 점수 보너스를 억제합니다.",
+      "protected": "칙령이 꽃패 보너스를 가뭄으로부터 보호합니다.",
+      "decayPenalty": "플레이당 쇠퇴 감점: −{{points}}점.",
+      "partial": "일부 계절 규칙은 개발 중입니다. 현재 적용되는 효과만 표시합니다.",
+      "unwired": "아직 구현되지 않았습니다.",
+      "summer": "점수 ×1.3.",
+      "autumn": "역 배율 +20%.",
+      "winter": "점수 ×0.75.",
+      "drought": "보호받지 않는 꽃패의 점수 보너스를 억제합니다.",
+      "frostbite": "칙령의 배율 보너스를 절반으로 줄입니다.",
+      "decay": "이번 라운드에서 버린 패마다 −10점. 점수는 0 미만이 되지 않습니다.",
+      "droughtName": "가뭄",
+      "monsoonName": "몬순",
+      "frostbiteName": "동상",
+      "decayName": "쇠퇴",
+      "corruptedName": "오염됨",
+      "flowerPlum": "순자마다 점수 +{{percent}}%.",
+      "flowerOrchid": "자패마다 점수 +{{percent}}%.",
+      "flowerChrysanthemum": "공개하지 않은 몸통마다 점수 +{{percent}}%.",
+      "flowerBamboo": "노두패마다 점수 +{{percent}}%.",
+      "setTwo": "꽃패 2종: 칙령 슬롯 +1.",
+      "setThree": "꽃패 3종: 특별 상점 해금은 아직 미구현입니다.",
+      "setFour": "꽃패 4종: 꽃패 보너스 두 배."
+    },
     "flowers": "꽃패",
     "seasons": "계절패",
     "plum": "매화",
@@ -957,6 +1064,12 @@
     "quad": "깡쯔"
   },
   "results": {
+    "endlessComplete": "무한 등반 종료",
+    "victorySubtitle": "제8막 결전에서 승리했습니다. 승리는 기록되었습니다.",
+    "endlessSubtitle": "이번 등반은 끝났지만 승리 기록은 유지됩니다.",
+    "defeatSubtitle": "다음 도전에서는 다른 전략을 시도해 보세요.",
+    "showdownCleared": "결전 승리",
+    "continueEndless": "무한 모드로 계속",
     "victory": "승리!",
     "defeat": "패배",
     "roundComplete": "국 완료!",
@@ -1751,7 +1864,7 @@
       },
       "seal_of_unity": {
         "name": "통합의 부적",
-        "description": "최대 3장을 자패로 전환"
+        "description": "수패를 최대 3장까지 풍패로 바꿉니다. 숫자는 동·남·서·북 순서로 순환합니다."
       },
       "seal_of_the_oracle": {
         "name": "예언자의 부적",
@@ -2051,7 +2164,7 @@
       },
       "purple": {
         "name": "보라 봉인",
-        "description": "버릴 때 부적을 생성합니다. 버려질 때 무작위 운명 부적 생성"
+        "description": "이 패를 버리거나 교환하면 빈 공간이 있을 때 무작위 운명 부적을 하나 생성합니다."
       }
     }
   },
@@ -2146,40 +2259,68 @@
   "tableStyles": {
     "items": {
       "green_felt": {
+        "theme": "전통",
+        "unlock": "처음부터 이용 가능",
+        "modifiers": { "0": "특수 효과 없음" },
         "name": "초록 융단",
         "description": "고전적인 마작 탁자. 수많은 손길에 닳아 매끄러워진 전통 초록 융단. 특별한 보정 없이 오직 실력만이 통합니다."
       },
       "red_lacquer": {
+        "theme": "길조",
+        "unlock": "3막 완료",
+        "modifiers": { "0": "시작 법령 슬롯 +1" },
         "name": "붉은 옻칠",
         "description": "선명한 주홍 옻으로 마감한 호화로운 탁자. 부와 행운을 상징합니다."
       },
       "bamboo_mat": {
+        "theme": "자연",
+        "unlock": "한 번의 도전에서 꽃패 4종 모두 수집",
+        "modifiers": { "0": "꽃패 뽑기 가중치 +25% (꽃패 수는 4개로 동일)" },
         "name": "대나무 자리",
         "description": "정원 정자의 낮은 탁자에 펼친 소박한 대나무 자리."
       },
       "imperial_gold": {
+        "theme": "왕실",
+        "unlock": "법령을 5개 이상 보유하고 승리",
+        "modifiers": { "0": "무작위 지역 칙령 1개를 가지고 시작" },
         "name": "황실의 금",
         "description": "금박과 옥을 상감한 궁궐의 화려한 탁자."
       },
       "night_market": {
+        "theme": "거리",
+        "unlock": "전체 도전에서 법령 20개 구매",
+        "modifiers": { "0": "상점 가격 −20%", "1": "법령 슬롯 −1" },
         "name": "야시장",
         "description": "북적이는 야시장에 임시로 놓인 탁자. 종이등이 비춥니다."
       },
       "temple_stone": {
+        "theme": "절제",
+        "unlock": "꽃패를 수집하지 않고 승리",
+        "modifiers": { "0": "꽃패가 나오지 않음", "1": "기본 점수 +50%" },
         "name": "사원의 돌",
         "description": "금욕적인 산사의 차가운 돌 탁자. 이곳에는 꽃이 피지 않습니다."
       },
       "ghost_parlor": {
+        "theme": "유령",
+        "unlock": "한 번의 도전에서 타락한 계절 3개를 견디기",
+        "modifiers": { "0": "1막부터 타락한 계절이 등장할 수 있음" },
         "name": "유령 마작관",
         "description": "혼령이 여전히 대국하는 버려진 마작관. 이승과 저승의 경계가 얇습니다."
       },
       "dragons_den": {
+        "theme": "신화",
+        "unlock": "역만 달성",
+        "modifiers": { "0": "역만 배율 +1.0×", "1": "목표 점수 +25%" },
         "name": "용의 굴",
         "description": "용의 뼈로 깎아 만든 전설의 탁자. 산속 동굴에 숨겨져 있습니다."
       }
     }
   },
   "tableLoop": {
+    "save": {
+      "invalid": "이전 저장을 복원할 수 없습니다. 새 도전을 시작하면 덮어씁니다.",
+      "unavailable": "이 기기에서는 진행 상황을 저장할 수 없습니다. 계속하려면 이 탭을 열어 두세요."
+    },
     "slot": {
       "meld": "면자 칸 {{number}}",
       "pair": "또이쯔 칸",

@@ -39,6 +39,11 @@ export interface ActionBarProps {
   isCompleteHandSelection: boolean
   /** Exact play size imposed by the active Boss Mandate, if any */
   requiredPlaySize?: number
+  /** Authoritative legality, including required locked tiles. */
+  playAllowed?: boolean
+  playRestriction?: string
+  /** Authoritative redraw legality, including tile locks and replacement chains. */
+  redrawAllowed?: boolean
   /** Current round number (1-3) */
   currentRound: number
   /** Handler for skip action */
@@ -82,6 +87,9 @@ export function ActionBar({
   handTileCount,
   isCompleteHandSelection,
   requiredPlaySize,
+  playAllowed = true,
+  playRestriction,
+  redrawAllowed = true,
   currentRound,
   onSkip,
   onRedraw,
@@ -106,29 +114,46 @@ export function ActionBar({
     meetsMandate &&
     (isTacticalSelection || isCompleteSelection)
   const canPlay =
-    handsRemaining > 0 && (canStageCompleteHand || canCommitSelection)
+    playAllowed &&
+    handsRemaining > 0 &&
+    (canStageCompleteHand || canCommitSelection)
   const canRedraw =
-    redrawsRemaining > 0 && selectedTileCount > 0 && selectedTileCount <= 3
+    redrawAllowed &&
+    redrawsRemaining > 0 &&
+    selectedTileCount > 0 &&
+    selectedTileCount <= 3 &&
+    wallRemaining >= selectedTileCount
   const canSkip = currentRound !== 3 // Can't skip boss rounds
   const mandateDelta =
     requiredPlaySize === undefined ? 0 : requiredPlaySize - mandateCount
   const playLabel = isStageAction
     ? requiredPlaySize !== undefined && !meetsMandate
-      ? t('gameplay.selectExact', 'SELECT {{count}}', { count: requiredPlaySize })
+      ? t('gameplay.selectExact', 'SELECT {{count}}', {
+          count: requiredPlaySize,
+        })
       : isCompleteHandSelection
         ? t('gameplay.stageHand', 'STAGE HAND')
-        : t('gameplay.selectRange', 'SELECT {{min}}–{{max}}', { min: MIN_TACTICAL_PLAY_TILES, max: MAX_TACTICAL_PLAY_TILES })
+        : t('gameplay.selectRange', 'SELECT {{min}}–{{max}}', {
+            min: MIN_TACTICAL_PLAY_TILES,
+            max: MAX_TACTICAL_PLAY_TILES,
+          })
     : mandateDelta > 0
-      ? t('gameplay.selectMore', 'SELECT {{count}} MORE', { count: mandateDelta })
+      ? t('gameplay.selectMore', 'SELECT {{count}} MORE', {
+          count: mandateDelta,
+        })
       : mandateDelta < 0
-        ? t('gameplay.returnTiles', 'RETURN {{count}}', { count: Math.abs(mandateDelta) })
+        ? t('gameplay.returnTiles', 'RETURN {{count}}', {
+            count: Math.abs(mandateDelta),
+          })
         : selectedTileCount === 1
           ? t('gameplay.selectMore', 'SELECT {{count}} MORE', { count: 1 })
           : isCompleteSelection
             ? t('gameplay.confirmHand', 'CONFIRM HAND')
             : selectedTileCount > MAX_TACTICAL_PLAY_TILES
               ? t('gameplay.notComplete', 'NOT COMPLETE')
-              : t('gameplay.playCount', 'PLAY {{count}}', { count: selectedTileCount })
+              : t('gameplay.playCount', 'PLAY {{count}}', {
+                  count: selectedTileCount,
+                })
   const forecastDescription =
     projectedScore !== undefined
       ? ` Forecast: ${projectedScore.toLocaleString()} points${willClear ? ', enough to win the round' : ''}.`
@@ -152,10 +177,15 @@ export function ActionBar({
               : `Play ${selectedTileCount} selected tiles.${forecastDescription}`
   const compactPlayLabel = isStageAction
     ? requiredPlaySize !== undefined && !meetsMandate
-      ? t('gameplay.requiredTiles', '{{count}} TILES', { count: requiredPlaySize })
+      ? t('gameplay.requiredTiles', '{{count}} TILES', {
+          count: requiredPlaySize,
+        })
       : isCompleteHandSelection
         ? 'STAGE'
-        : t('gameplay.tilesRange', '{{min}}–{{max}} TILES', { min: MIN_TACTICAL_PLAY_TILES, max: MAX_TACTICAL_PLAY_TILES })
+        : t('gameplay.tilesRange', '{{min}}–{{max}} TILES', {
+            min: MIN_TACTICAL_PLAY_TILES,
+            max: MAX_TACTICAL_PLAY_TILES,
+          })
     : isCompleteSelection
       ? 'CONFIRM'
       : mandateDelta !== 0 || selectedTileCount > MAX_TACTICAL_PLAY_TILES
@@ -167,7 +197,7 @@ export function ActionBar({
   return (
     <div
       data-frame-corner-row="bottom"
-      className="gameplay-frame-corner-row z-20 flex flex-shrink-0 items-center justify-center gap-1.5 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4"
+      className="gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 items-center justify-center gap-1.5 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4"
     >
       {/* Resource indicators */}
       <div className="hidden items-center gap-3 text-sm md:flex">
@@ -226,11 +256,16 @@ export function ActionBar({
         onClick={onRedraw}
         disabled={!canRedraw}
         aria-label={t('gameplay.redrawSelected', 'Redraw selected tiles')}
-        title={t('gameplay.redrawHint', 'Return up to 3 selected tiles and draw replacements')}
+        title={t(
+          'gameplay.redrawHint',
+          'Return up to 3 selected tiles and draw replacements'
+        )}
         className="!min-w-[58px] !px-1 text-[10px] sm:!min-w-[80px] sm:!px-4 sm:text-sm"
       >
         <span className="sm:hidden">{t('gameplay.draw', 'DRAW')}</span>
-        <span className="hidden sm:inline">{t('gameplay.redraw', 'REDRAW')}</span>
+        <span className="hidden sm:inline">
+          {t('gameplay.redraw', 'REDRAW')}
+        </span>
       </Button>
 
       {onDeadWallDraw && (
@@ -244,7 +279,9 @@ export function ActionBar({
           className="min-w-[52px] px-2 sm:min-w-[92px] sm:px-3"
         >
           <span className="sm:hidden">WALL</span>
-          <span className="hidden sm:inline">{t('gameplay.deadDraw', 'DEAD DRAW')}</span>
+          <span className="hidden sm:inline">
+            {t('gameplay.deadDraw', 'DEAD DRAW')}
+          </span>
         </Button>
       )}
 
@@ -255,13 +292,23 @@ export function ActionBar({
         size="sm"
         onClick={onPlayHand}
         disabled={!canPlay}
-        aria-label={playDescription}
-        title={playDescription}
+        aria-label={playRestriction ?? playDescription}
+        title={playRestriction ?? playDescription}
         className={`inline-flex !min-w-0 flex-1 items-center justify-center !px-1 text-[11px] sm:!min-w-[82px] sm:max-w-[220px] sm:!px-4 sm:text-sm ${willClear && canCommitSelection ? 'shadow-[0_0_22px_rgba(74,222,128,0.45)]' : ''}`}
       >
         <span className="flex flex-col items-center leading-none">
-          <span className="whitespace-nowrap sm:hidden">{compactPlayLabel}</span>
-          <span className="hidden whitespace-nowrap sm:inline">{playLabel}</span>
+          {playRestriction ? (
+            <span className="text-center leading-snug">{playRestriction}</span>
+          ) : (
+            <>
+              <span className="whitespace-nowrap sm:hidden">
+                {compactPlayLabel}
+              </span>
+              <span className="hidden whitespace-nowrap sm:inline">
+                {playLabel}
+              </span>
+            </>
+          )}
           {willClear && canCommitSelection && (
             <span className="mt-1 whitespace-nowrap text-[9px] font-black uppercase tracking-wide text-emerald-100">
               {t('gameplay.winsRound', 'Wins round')}

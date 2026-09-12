@@ -10,7 +10,17 @@
 
 import { create } from 'zustand'
 import { TableLoopEngine } from '../tableloop/TableLoopEngine'
+import { playTableAction } from '../tableloop/audioFeedback'
+import { TileSFX } from '../systems/AudioSystem'
 import type { RunOptions } from '../tableloop/TableLoopEngine'
+import {
+  applySavedAction,
+  newSavedRun,
+  restoreSavedRun,
+  tileIndices,
+  TABLE_SAVE_KEY,
+  type SavedAction,
+} from '../tableloop/savedRun'
 import type {
   PlacementScore,
   TableDecreeId,
@@ -20,6 +30,7 @@ import type {
 interface TableLoopStore {
   engine: TableLoopEngine
   state: TableLoopState
+  saveStatus: 'saved' | 'unavailable' | 'invalid'
   /** Rack tiles the player has tapped, in tap order. */
   selectedTileIds: string[]
   /** Slot the player is aiming at, or null for "the first slot that fits". */
@@ -41,6 +52,8 @@ interface TableLoopStore {
   buyDecree: (id: TableDecreeId) => void
   nextRound: () => void
   restart: (seed?: number, options?: RunOptions) => void
+  /** Explicit reset: remove the saved run before replacing the live engine. */
+  clearSavedRun: () => void
   takePracticeDecree: () => void
 
   previewPlacement: (slotIndex: number) => PlacementScore | null
@@ -52,100 +65,187 @@ interface TableLoopStore {
  * The selection is cleared only when the action consumed the selected tiles,
  * so a refused placement leaves the player's tiles where they were.
  */
-export const useTableLoopStore = create<TableLoopStore>((set, get) => {
-  const engine = new TableLoopEngine()
+type RunStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
-  const publish = (clearSelection: boolean) => {
-    set((current) => ({
-      state: current.engine.getState(),
-      selectedTileIds: clearSelection ? [] : current.selectedTileIds,
-      targetSlot: clearSelection ? null : current.targetSlot,
-    }))
+function browserStorage(): RunStorage | null {
+  try {
+    return window.localStorage
+  } catch {
+    return null
   }
+}
 
-  return {
-    engine,
-    state: engine.getState(),
-    selectedTileIds: [],
-    targetSlot: null,
+export const createTableLoopStore = (
+  storage: RunStorage | null = browserStorage()
+) =>
+  create<TableLoopStore>((set, get) => {
+    let initialStatus: TableLoopStore['saveStatus'] = storage
+      ? 'saved'
+      : 'unavailable'
+    let restored: ReturnType<typeof restoreSavedRun> = null
+    try {
+      const raw = storage?.getItem(TABLE_SAVE_KEY)
+      if (raw) {
+        restored = restoreSavedRun(raw)
+        if (!restored) initialStatus = 'invalid'
+      }
+    } catch {
+      initialStatus = 'unavailable'
+    }
+    const engine = restored?.engine ?? new TableLoopEngine()
+    let journal = restored?.journal ?? newSavedRun(engine)
 
-    toggleTile: (tileId) =>
+    const save = () => {
+      try {
+        if (!storage) throw new Error('Storage unavailable')
+        storage.setItem(TABLE_SAVE_KEY, JSON.stringify(journal))
+        set({ saveStatus: 'saved' })
+      } catch {
+        set({ saveStatus: 'unavailable' })
+      }
+    }
+
+    const publish = (clearSelection: boolean) => {
       set((current) => ({
-        selectedTileIds: current.selectedTileIds.includes(tileId)
-          ? current.selectedTileIds.filter((id) => id !== tileId)
-          : [...current.selectedTileIds, tileId],
-      })),
+        state: current.engine.getState(),
+        selectedTileIds: clearSelection ? [] : current.selectedTileIds,
+        targetSlot: clearSelection ? null : current.targetSlot,
+      }))
+    }
 
-    clearSelection: () => set({ selectedTileIds: [], targetSlot: null }),
+    const perform = (action: SavedAction, consumesSelection = false) => {
+      const result = applySavedAction(get().engine, action)
+      if (result.success) {
+        journal = { ...journal, actions: [...journal.actions, action] }
+        save()
+      }
+      publish(result.success && consumesSelection)
+      // Some refusals return an error state without mutating the engine.
+      set({ state: result.state })
+      playTableAction(action, result.success, result.state)
+    }
 
-    setTargetSlot: (slot) => set({ targetSlot: slot }),
+    return {
+      engine,
+      state: engine.getState(),
+      saveStatus: initialStatus,
+      selectedTileIds: [],
+      targetSlot: null,
 
-    chooseStarter: (id) => {
-      get().engine.chooseStarter(id)
-      publish(true)
-    },
+      toggleTile: (tileId) => {
+        if (get().selectedTileIds.includes(tileId)) TileSFX.deselect()
+        else TileSFX.select()
+        set((current) => ({
+          selectedTileIds: current.selectedTileIds.includes(tileId)
+            ? current.selectedTileIds.filter((id) => id !== tileId)
+            : [...current.selectedTileIds, tileId],
+        }))
+      },
 
-    place: (slotIndex) => {
-      const result = get().engine.place(get().selectedTileIds, slotIndex)
-      publish(result.success)
-    },
+      clearSelection: () => set({ selectedTileIds: [], targetSlot: null }),
 
-    revise: (slotIndex) => {
-      const result = get().engine.revise(get().selectedTileIds, slotIndex)
-      publish(result.success)
-    },
+      setTargetSlot: (slot) => set({ targetSlot: slot }),
 
-    redraw: () => {
-      const result = get().engine.redraw(get().selectedTileIds)
-      publish(result.success)
-    },
+      chooseStarter: (id) => {
+        perform({ type: 'chooseStarter', decree: id }, true)
+      },
 
-    recoverFromRiver: (tileId) => {
-      get().engine.recoverFromRiver(tileId)
-      publish(false)
-    },
+      place: (slotIndex) => {
+        perform(
+          {
+            type: 'place',
+            tiles: tileIndices(get().engine, get().selectedTileIds),
+            slot: slotIndex,
+          },
+          true
+        )
+      },
 
-    claimDraft: (tileId) => {
-      get().engine.claimDraft(tileId)
-      publish(false)
-    },
+      revise: (slotIndex) => {
+        perform(
+          {
+            type: 'revise',
+            tiles: tileIndices(get().engine, get().selectedTileIds),
+            slot: slotIndex,
+          },
+          true
+        )
+      },
 
-    passDraft: () => {
-      get().engine.passDraft()
-      publish(false)
-    },
+      redraw: () => {
+        perform(
+          {
+            type: 'redraw',
+            tiles: tileIndices(get().engine, get().selectedTileIds),
+          },
+          true
+        )
+      },
 
-    finishRound: () => {
-      get().engine.finishRound()
-      publish(true)
-    },
+      recoverFromRiver: (tileId) => {
+        perform({
+          type: 'recoverFromRiver',
+          tile: tileIndices(get().engine, [tileId])[0],
+        })
+      },
 
-    openShop: () => {
-      get().engine.openShop()
-      publish(true)
-    },
+      claimDraft: (tileId) => {
+        perform({
+          type: 'claimDraft',
+          tile: tileIndices(get().engine, [tileId])[0],
+        })
+      },
 
-    buyDecree: (id) => {
-      get().engine.buyDecree(id)
-      publish(false)
-    },
+      passDraft: () => {
+        perform({ type: 'passDraft' })
+      },
 
-    nextRound: () => {
-      get().engine.nextRound()
-      publish(true)
-    },
+      finishRound: () => {
+        perform({ type: 'finishRound' }, true)
+      },
 
-    restart: (seed, options) => {
-      get().engine.restart(seed, options)
-      publish(true)
-    },
+      openShop: () => {
+        perform({ type: 'openShop' }, true)
+      },
 
-    takePracticeDecree: () => {
-      get().engine.takePracticeDecree()
-      publish(false)
-    },
+      buyDecree: (id) => {
+        perform({ type: 'buyDecree', decree: id })
+      },
 
-    previewPlacement: (slotIndex) =>
-      get().engine.previewPlacement(get().selectedTileIds, slotIndex),
-  }
-})
+      nextRound: () => {
+        perform({ type: 'nextRound' }, true)
+      },
+
+      restart: (seed, options) => {
+        get().engine.restart(seed, options)
+        journal = newSavedRun(get().engine)
+        save()
+        publish(true)
+      },
+
+      clearSavedRun: () => {
+        if (!storage) throw new Error('Storage unavailable')
+        const fresh = new TableLoopEngine()
+        // Unlike ordinary play, a reset must report a failed deletion. Preserve
+        // the current engine/journal if storage denies the operation.
+        storage.removeItem(TABLE_SAVE_KEY)
+        journal = newSavedRun(fresh)
+        set({
+          engine: fresh,
+          state: fresh.getState(),
+          selectedTileIds: [],
+          targetSlot: null,
+          saveStatus: 'saved',
+        })
+      },
+
+      takePracticeDecree: () => {
+        perform({ type: 'takePracticeDecree' })
+      },
+
+      previewPlacement: (slotIndex) =>
+        get().engine.previewPlacement(get().selectedTileIds, slotIndex),
+    }
+  })
+
+export const useTableLoopStore = createTableLoopStore()

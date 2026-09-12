@@ -111,6 +111,15 @@ Decrees, Tile Marks, and other effects have specific **activation types** that d
 - Triggers "On Redraw" effects (e.g., Purple Seal equivalent)
 - Does NOT count as a discard for yaku purposes
 
+Returned tiles are shuffled into the remaining wall **after** replacements are
+drawn, preventing immediate self-replacement while allowing later reuse. A
+redraw spends one exchange, not a Hand or discard, and does not earn River Tax
+gold. Purple Seal rewards apply to both discards and redraws when inventory has
+space. Locked/duplicate targets and requests whose bonus/dead-wall chains cannot
+supply all replacements are rejected before spending anything. See
+[the resource-cycling audit](RESOURCE_CYCLING_IMPLEMENTATION.md) for precise
+semantics, boss interactions, and verification.
+
 **Synergies:**
 - **Discards that reward:** Certain Decrees scale based on discards made
 - **River Memory:** Discarded tiles may influence future offerings
@@ -290,6 +299,24 @@ At Gold Stake (Tier 8):
 **Anti-Synergies:**
 - High Stakes runs where economy is critical
 - Scaling Decrees that need more rounds to build up
+
+### Next-shop guarantee settlement
+
+The Decree Omen guarantees a Rare-or-better offer; its five-gold shop-entry
+tradeoff is separate from the offer's purchase price. If every eligible
+Decree is already owned, retain the Omen and defer that tradeoff until an
+eligible visit. Never substitute a lower rarity. Edition guarantees also
+remain pending when no unowned Decree can be offered.
+
+Multiple next-shop guarantees all apply. They may add one-shot offers beyond
+ordinary shop capacity rather than overwrite another guaranteed reward.
+These extra offers do not permanently add Charter slots: item rerolls return
+to ordinary capacity, while packs remain for the visit. Reopening the same
+visit does not regenerate rewards or charge the tradeoff again.
+
+See [shop implementation](SHOP_IMPLEMENTATION.md#shop-omen-guarantee-follow-up)
+for the verified paths and remaining edition-description/legacy-catalog
+discrepancies. This is not a claim that every legacy Omen is acquireable.
 
 ---
 

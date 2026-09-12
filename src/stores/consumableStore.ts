@@ -181,7 +181,9 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
 
   removeCelestialOrb: (instanceId: string) => {
     const state = get()
-    const index = state.celestialOrbs.findIndex((o) => o.instanceId === instanceId)
+    const index = state.celestialOrbs.findIndex(
+      (o) => o.instanceId === instanceId
+    )
 
     if (index === -1) {
       return null
@@ -194,7 +196,9 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
 
   removeVoidScript: (instanceId: string) => {
     const state = get()
-    const index = state.voidScripts.findIndex((s) => s.instanceId === instanceId)
+    const index = state.voidScripts.findIndex(
+      (s) => s.instanceId === instanceId
+    )
 
     if (index === -1) {
       return null
@@ -240,7 +244,10 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
     switch (type) {
       case 'FateSeal':
         set({
-          fateSealSlots: Math.min(state.fateSealSlots + 1, MAX_CONSUMABLE_SLOTS),
+          fateSealSlots: Math.min(
+            state.fateSealSlots + 1,
+            MAX_CONSUMABLE_SLOTS
+          ),
         })
         break
       case 'CelestialOrb':
@@ -318,7 +325,8 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
     // Extend context with consumable slot info
     const extendedContext: FateSealContext = {
       ...context,
-      getAvailableSlots: (type: ConsumableType) => get().getAvailableSlots(type),
+      getAvailableSlots: (type: ConsumableType) =>
+        get().getAvailableSlots(type),
     }
 
     // Use the seal via the system
@@ -359,6 +367,7 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
       // Mark as used and remove from inventory
       // Note: Unlike Fate Seals, Celestial Orbs permanently upgrade yaku
       state.removeCelestialOrb(instanceId)
+      state.fateSealSystem.setLastUsedConsumable(orb)
       set({ lastUsedConsumable: orb })
     }
 
@@ -395,7 +404,6 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
       state.removeVoidScript(instanceId)
       set({
         scriptsUsedThisRound: state.scriptsUsedThisRound + 1,
-        lastUsedConsumable: script,
       })
     }
 
@@ -508,7 +516,9 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
 /**
  * Get all consumables as a flat array
  */
-export const selectAllConsumables = (state: ConsumableState): BaseConsumable[] => {
+export const selectAllConsumables = (
+  state: ConsumableState
+): BaseConsumable[] => {
   return [...state.fateSeals, ...state.celestialOrbs, ...state.voidScripts]
 }
 
@@ -516,7 +526,11 @@ export const selectAllConsumables = (state: ConsumableState): BaseConsumable[] =
  * Get total consumable count
  */
 export const selectTotalConsumableCount = (state: ConsumableState): number => {
-  return state.fateSeals.length + state.celestialOrbs.length + state.voidScripts.length
+  return (
+    state.fateSeals.length +
+    state.celestialOrbs.length +
+    state.voidScripts.length
+  )
 }
 
 /**
@@ -545,14 +559,18 @@ export const selectHandSizePenalty = (state: ConsumableState): number => {
 /**
  * Check if shanten scoring is allowed
  */
-export const selectIsShantenScoringAllowed = (state: ConsumableState): boolean => {
+export const selectIsShantenScoringAllowed = (
+  state: ConsumableState
+): boolean => {
   return state.voidScriptSystem.isShantenScoringAllowed()
 }
 
 /**
  * Check if meld validation is bypassed
  */
-export const selectIsMeldValidationBypassed = (state: ConsumableState): boolean => {
+export const selectIsMeldValidationBypassed = (
+  state: ConsumableState
+): boolean => {
   return state.voidScriptSystem.isMeldValidationBypassed()
 }
 

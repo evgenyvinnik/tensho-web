@@ -50,7 +50,10 @@ export interface EnhancementDefinition {
 /**
  * Enhancement definitions
  */
-export const ENHANCEMENT_DEFINITIONS: Record<EnhancementType, EnhancementDefinition> = {
+export const ENHANCEMENT_DEFINITIONS: Record<
+  EnhancementType,
+  EnhancementDefinition
+> = {
   [EnhancementType.None]: {
     type: EnhancementType.None,
     name: 'None',
@@ -165,7 +168,7 @@ export enum SealType {
   Gold = 'gold', // Earn ¥3 when played
   Red = 'red', // Retrigger this tile once
   Blue = 'blue', // Create Celestial Orb if in winning hand
-  Purple = 'purple', // Create Fate Seal when discarded
+  Purple = 'purple', // Create Fate Seal when discarded or redrawn
 }
 
 /**
@@ -179,7 +182,7 @@ export interface SealDefinition {
   goldOnPlay: number
   retriggers: number
   createsConsumable: 'none' | 'orb' | 'seal'
-  triggerOn: 'play' | 'discard' | 'win' | 'none'
+  triggerOn: 'play' | 'discard' | 'discardOrRedraw' | 'win' | 'none'
 }
 
 /**
@@ -230,11 +233,12 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
     type: SealType.Purple,
     name: 'Purple Seal',
     japaneseName: '紫封',
-    description: 'Creates a Fate Seal when discarded',
+    description:
+      'Creates a random Fate Seal when discarded or redrawn, if there is room',
     goldOnPlay: 0,
     retriggers: 0,
     createsConsumable: 'seal',
-    triggerOn: 'discard',
+    triggerOn: 'discardOrRedraw',
   },
 }
 
@@ -479,7 +483,7 @@ export interface ModifierScoringResult {
 /**
  * Calculate scoring effects from modifiers
  * @param modifiers The tile's modifiers
- * @param context 'played' | 'held' | 'discarded' | 'won'
+ * @param context 'played' | 'held' | 'discarded' | 'redrawn' | 'won'
  * @param options `deterministic` resolves chance-based effects (Lucky, Glass)
  *   to their guaranteed outcome. Used by score previews so the number shown
  *   before a play is the floor, never a roll the real play won't repeat.
@@ -487,7 +491,7 @@ export interface ModifierScoringResult {
  */
 export function calculateModifierEffects(
   modifiers: TileModifiers,
-  context: 'played' | 'held' | 'discarded' | 'won',
+  context: 'played' | 'held' | 'discarded' | 'redrawn' | 'won',
   options: { deterministic?: boolean } = {}
 ): ModifierScoringResult {
   const deterministic = options.deterministic ?? false
@@ -546,7 +550,11 @@ export function calculateModifierEffects(
     retriggers += seal.retriggers
   }
 
-  if (seal.triggerOn === 'discard' && context === 'discarded') {
+  if (
+    (seal.triggerOn === 'discard' && context === 'discarded') ||
+    (seal.triggerOn === 'discardOrRedraw' &&
+      (context === 'discarded' || context === 'redrawn'))
+  ) {
     createdConsumable = seal.createsConsumable
   }
 
@@ -573,7 +581,9 @@ export function calculateModifierEffects(
  * Get all enhancement types (excluding None)
  */
 export function getAllEnhancements(): EnhancementType[] {
-  return Object.values(EnhancementType).filter((e) => e !== EnhancementType.None)
+  return Object.values(EnhancementType).filter(
+    (e) => e !== EnhancementType.None
+  )
 }
 
 /**
@@ -595,7 +605,9 @@ export function getSpecialEditions(): EditionType[] {
  */
 export function getRandomEnhancement(): EnhancementType {
   const enhancements = getAllEnhancements()
-  return enhancements[Math.floor(runRandom.next('modifiers') * enhancements.length)]
+  return enhancements[
+    Math.floor(runRandom.next('modifiers') * enhancements.length)
+  ]
 }
 
 /**

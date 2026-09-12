@@ -43,6 +43,7 @@ import { ConsumableRarity } from './ConsumableSystem'
 import { Tile, TileSuit } from '../core/Tile'
 import { EditionType, EnhancementType } from '../core/TileModifier'
 import { runRandom } from '../game/RunRandom'
+import { tileModifierEntries } from '../core/tileModifierEntries'
 
 // =============================================================================
 // PACK CONTENT TYPES
@@ -67,6 +68,8 @@ export interface PackOffering {
   pack: BlessingPack
   contents: PackContent[]
   isOpened: boolean
+  /** Terminal: rewards were claimed or the pack was explicitly skipped. */
+  isResolved: boolean
   selectedIndices: number[]
   maxSelections: number
 }
@@ -129,6 +132,7 @@ export class BlessingPackSystem {
         pack,
         contents,
         isOpened: false,
+        isResolved: false,
         selectedIndices: [],
         maxSelections: pack.selectCount,
       })
@@ -146,6 +150,7 @@ export class BlessingPackSystem {
       pack,
       contents: this.generatePackContents(pack, options),
       isOpened: false,
+      isResolved: false,
       selectedIndices: [],
       maxSelections: pack.selectCount,
     }))
@@ -419,35 +424,35 @@ export class BlessingPackSystem {
     return {
       id: `tile-${selected.id}-${Date.now()}`,
       type: 'Tile',
-      name: selected.name,
-      description: selected.description,
+      name: [tile.displayName, ...tileModifierEntries(tile).map((entry) => entry.name)].join(' · '),
+      description: tileModifierEntries(tile).map((entry) => entry.description).join(' '),
       rarity,
       data: tile,
     }
   }
 
   /**
-   * Get placeholder modified tiles by rarity
+   * Choose a modifier recipe. Display rules come from the resulting Tile.
    */
   private getModifiedTilesByRarity(
     rarity: keyof ContentRarityWeights
-  ): { id: string; name: string; description: string; modifier: string }[] {
-    const tiles: Record<keyof ContentRarityWeights, { id: string; name: string; description: string; modifier: string }[]> = {
+  ): { id: string; modifier: string }[] {
+    const tiles: Record<keyof ContentRarityWeights, { id: string; modifier: string }[]> = {
       common: [
-        { id: 'bonus_tile', name: 'Bonus Tile', description: 'A random tile with +10 base points.', modifier: 'bonus' },
-        { id: 'lucky_tile', name: 'Lucky Tile', description: 'A random tile that grants +2 Gold when scored.', modifier: 'gold' },
+        { id: 'bonus_tile', modifier: 'bonus' },
+        { id: 'lucky_tile', modifier: 'gold' },
       ],
       uncommon: [
-        { id: 'mult_tile', name: 'Mult Tile', description: 'A random tile with +4 Mult when scored.', modifier: 'mult' },
-        { id: 'wild_tile', name: 'Wild Tile', description: 'A random tile that counts as every suit.', modifier: 'jade' },
+        { id: 'mult_tile', modifier: 'mult' },
+        { id: 'wild_tile', modifier: 'jade' },
       ],
       rare: [
-        { id: 'foil_tile', name: 'Foil Tile', description: 'A tile with Foil edition (+50 base points).', modifier: 'foil' },
-        { id: 'holographic_tile', name: 'Holographic Tile', description: 'A tile with Holographic edition (+10 Mult).', modifier: 'holographic' },
+        { id: 'foil_tile', modifier: 'foil' },
+        { id: 'holographic_tile', modifier: 'holographic' },
       ],
       legendary: [
-        { id: 'polychrome_tile', name: 'Polychrome Tile', description: 'A tile with Polychrome edition (x1.5 Mult).', modifier: 'polychrome' },
-        { id: 'negative_tile', name: 'Negative Tile', description: 'A tile with Negative edition (+1 Decree slot).', modifier: 'negative' },
+        { id: 'polychrome_tile', modifier: 'polychrome' },
+        { id: 'negative_tile', modifier: 'negative' },
       ],
     }
 
@@ -555,7 +560,7 @@ export class BlessingPackSystem {
    */
   openPack(packId: string): PackOffering | null {
     const offering = this.currentOfferings.find((o) => o.pack.id === packId)
-    if (!offering || offering.isOpened) {
+    if (!offering || offering.isOpened || offering.isResolved) {
       return null
     }
 
@@ -570,7 +575,7 @@ export class BlessingPackSystem {
    */
   selectContent(packId: string, contentIndex: number): boolean {
     const offering = this.currentOfferings.find((o) => o.pack.id === packId)
-    if (!offering || !offering.isOpened) {
+    if (!offering || !offering.isOpened || offering.isResolved) {
       return false
     }
 
@@ -578,7 +583,7 @@ export class BlessingPackSystem {
       return false
     }
 
-    if (contentIndex < 0 || contentIndex >= offering.contents.length) {
+    if (!Number.isInteger(contentIndex) || contentIndex < 0 || contentIndex >= offering.contents.length) {
       return false
     }
 
@@ -595,7 +600,7 @@ export class BlessingPackSystem {
    */
   deselectContent(packId: string, contentIndex: number): boolean {
     const offering = this.currentOfferings.find((o) => o.pack.id === packId)
-    if (!offering || !offering.isOpened) {
+    if (!offering || !offering.isOpened || offering.isResolved) {
       return false
     }
 
@@ -613,10 +618,15 @@ export class BlessingPackSystem {
    */
   confirmSelection(packId: string): PackContent[] {
     const offering = this.currentOfferings.find((o) => o.pack.id === packId)
-    if (!offering || !offering.isOpened) {
+    if (!offering || !offering.isOpened || offering.isResolved ||
+        offering.selectedIndices.length === 0 ||
+        offering.selectedIndices.length > offering.maxSelections ||
+        new Set(offering.selectedIndices).size !== offering.selectedIndices.length ||
+        offering.selectedIndices.some((i) => !Number.isInteger(i) || i < 0 || i >= offering.contents.length)) {
       return []
     }
 
+    offering.isResolved = true
     return offering.selectedIndices.map((i) => offering.contents[i])
   }
 
@@ -625,7 +635,8 @@ export class BlessingPackSystem {
    */
   skipPack(packId: string): void {
     const offering = this.currentOfferings.find((o) => o.pack.id === packId)
-    if (offering && offering.isOpened) {
+    if (offering && offering.isOpened && !offering.isResolved) {
+      offering.isResolved = true
       this.skipCount++
       // Clear any partial selections
       offering.selectedIndices = []
@@ -745,6 +756,8 @@ export class BlessingPackSystem {
     const system = new BlessingPackSystem()
     system.currentOfferings = state.currentOfferings.map((o) => ({
       ...o,
+      // Old opened saves cannot prove that rewards were never claimed.
+      isResolved: o.isResolved ?? o.isOpened,
       contents: [...o.contents],
       selectedIndices: [...o.selectedIndices],
     }))

@@ -57,11 +57,12 @@ export function TableSlots({
   return (
     <div
       data-testid="table-slots"
-      className="flex items-stretch gap-1.5 overflow-x-auto px-2 py-1"
+      className="grid shrink-0 grid-cols-2 items-stretch gap-1.5 px-3 py-1 sm:grid-cols-5"
     >
       {slots.map((slot) => {
         const isPair = slot.index === PAIR_SLOT_INDEX
-        const interactive = canPlace.has(slot.index) || canRevise.has(slot.index)
+        const interactive =
+          canPlace.has(slot.index) || canRevise.has(slot.index)
         const forecast = forecasts?.get(slot.index)
         const multCost = multCosts?.get(slot.index) ?? 0
 
@@ -72,7 +73,9 @@ export function TableSlots({
             data-testid={`table-slot-${slot.index}`}
             disabled={!interactive}
             onClick={() =>
-              canPlace.has(slot.index) ? onPlace(slot.index) : onRevise(slot.index)
+              canPlace.has(slot.index)
+                ? onPlace(slot.index)
+                : onRevise(slot.index)
             }
             aria-label={[
               isPair
@@ -99,11 +102,11 @@ export function TableSlots({
               .filter(Boolean)
               .join(', ')}
             className={`
-              relative flex min-h-[76px] min-w-[76px] flex-1 flex-col items-center justify-center
+              relative flex min-h-[76px] min-w-0 flex-col items-center justify-center
               rounded-lg border-2 px-1.5 py-1 transition-colors
               focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]
               focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)]
-              ${isPair ? 'border-dashed' : 'border-solid'}
+              ${isPair ? 'col-span-2 border-dashed sm:col-span-1' : 'border-solid'}
               ${
                 lit.has(slot.index)
                   ? 'border-[var(--color-golden-yellow)] bg-[var(--color-golden-yellow)]/15'

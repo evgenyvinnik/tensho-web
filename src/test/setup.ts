@@ -11,6 +11,25 @@ import '@testing-library/jest-dom'
 // raw keys. Tests assert on the English copy players actually see.
 import '../i18n'
 
+// JSDOM has no native dialog methods. These shims only expose open state;
+// real top-layer modality, focus isolation, and Escape are tested in Playwright.
+Object.defineProperties(HTMLDialogElement.prototype, {
+  showModal: {
+    configurable: true,
+    writable: true,
+    value() {
+      this.open = true
+    },
+  },
+  close: {
+    configurable: true,
+    writable: true,
+    value() {
+      this.open = false
+    },
+  },
+})
+
 // Mock window.matchMedia for responsive components
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

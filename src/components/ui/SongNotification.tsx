@@ -12,6 +12,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { AudioTrack, getTrackDisplayName } from '../../utils/assets'
+import { useSettingsStore, selectAnimationMultiplier } from '../../stores/settingsStore'
 
 export interface SongNotificationProps {
   /** The track that is now playing */
@@ -68,6 +69,7 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
   const [isVisible, setIsVisible] = useState(false)
   const [displayTrack, setDisplayTrack] = useState<AudioTrack | null>(null)
   const isMobile = useIsMobile()
+  const reducedMotion = useSettingsStore(selectAnimationMultiplier) === 0
 
   // Handle track changes
   useEffect(() => {
@@ -86,6 +88,7 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
   // Handle dismiss after animation completes
   const handleAnimationRest = useCallback(() => {
     if (!isVisible && displayTrack) {
+      setDisplayTrack(null)
       onDismiss?.()
     }
   }, [isVisible, displayTrack, onDismiss])
@@ -93,16 +96,19 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
   // Animation spring - different for mobile vs desktop
   const mobileSpring = useSpring({
     opacity: isVisible ? 1 : 0,
-    y: isVisible ? 0 : 50,
-    scale: isVisible ? 1 : 0.9,
+    y: isVisible || reducedMotion ? 0 : 16,
+    scale: isVisible || reducedMotion ? 1 : 0.98,
+    immediate: reducedMotion,
     config: { tension: 280, friction: 24 },
     onRest: handleAnimationRest,
   })
 
   const desktopSpring = useSpring({
     opacity: isVisible ? 1 : 0,
-    x: isVisible ? 0 : 100,
-    scale: isVisible ? 1 : 0.95,
+    // Move inward: a positive translation off the right edge creates page overflow.
+    x: isVisible || reducedMotion ? 0 : -16,
+    scale: isVisible || reducedMotion ? 1 : 0.98,
+    immediate: reducedMotion,
     config: { tension: 260, friction: 26 },
     onRest: handleAnimationRest,
   })
@@ -115,7 +121,7 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
   if (isMobile) {
     return (
       <animated.div
-        className="fixed bottom-24 left-1/2 z-50 pointer-events-auto"
+        className="fixed bottom-24 left-1/2 z-50 pointer-events-none max-w-[calc(100vw-32px)]"
         style={{
           opacity: mobileSpring.opacity,
           transform: mobileSpring.y.to(
@@ -136,7 +142,7 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
             <MusicNoteIcon className="w-5 h-5 text-[var(--color-golden-yellow)]" />
             {/* Pulsing ring */}
             <div
-              className="absolute inset-0 rounded-full animate-ping"
+              className={`absolute inset-0 rounded-full ${reducedMotion ? '' : 'animate-ping'}`}
               style={{
                 background: 'var(--color-golden-yellow)',
                 opacity: 0.2,
@@ -161,7 +167,7 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
   // Desktop corner layout
   return (
     <animated.div
-      className="fixed bottom-6 right-6 z-50 pointer-events-auto"
+      className="fixed bottom-6 right-6 z-50 pointer-events-none max-w-[calc(100vw-48px)]"
       style={{
         opacity: desktopSpring.opacity,
         transform: desktopSpring.x.to(
@@ -188,7 +194,7 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
                 key={i}
                 className="w-1 bg-[var(--color-golden-yellow)] rounded-sm"
                 style={{
-                  animation: `audio-bar 0.5s ease-in-out infinite alternate`,
+                  animation: reducedMotion ? 'none' : 'audio-bar 0.5s ease-in-out infinite alternate',
                   animationDelay: `${i * 0.1}s`,
                   height: '40%',
                 }}

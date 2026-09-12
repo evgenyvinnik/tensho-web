@@ -13,7 +13,7 @@
  * Uses the game's color palette and React Spring for animations.
  */
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
@@ -25,7 +25,11 @@ import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
 import { illustrationAssets } from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import type { FateSeal } from '../../systems/FateSealSystem'
+import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
+import { tileRewardText } from '../../i18n/tileRewardText'
 
 const AnimatedDiv = animated('div')
 
@@ -87,13 +91,13 @@ function getRarityBorderColor(rarity: string): string {
 function getRarityDisplayName(rarity: string): string {
   switch (rarity) {
     case 'LocalEdict':
-      return 'Common'
+      return 'common'
     case 'RegionalMandate':
-      return 'Uncommon'
+      return 'uncommon'
     case 'ImperialDecree':
-      return 'Rare'
+      return 'rare'
     case 'HeavenlyOrdinance':
-      return 'Legendary'
+      return 'legendary'
     default:
       return rarity
   }
@@ -287,10 +291,14 @@ export function ShopItemCard({
   onSelect,
   isSelected = false,
 }: ShopItemCardProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const nameId = useId()
+  const priceId = useId()
+  const descriptionId = useId()
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const itemText = useItemText()
+  const reduceMotion = useReducedMotion()
 
   const showCJK = isCJKLanguage()
 
@@ -315,16 +323,14 @@ export function ShopItemCard({
       break
     }
     case 'FateSeal':
-      name = 'Fate Seal'
-      japaneseName = showCJK ? '\u904B\u547D\u7B26' : ''
-      description = 'A mystical seal that alters the current hand'
-      rarity = 'uncommon'
+      name = itemText.name('seals', offering.item as FateSeal)
+      description = itemText.description('seals', offering.item as FateSeal)
+      rarity = (offering.item as FateSeal).rarity.toLowerCase()
       break
     case 'CelestialOrb':
-      name = 'Celestial Orb'
-      japaneseName = showCJK ? '\u5929\u7403' : ''
-      description = 'Permanently upgrades a yaku family'
-      rarity = 'uncommon'
+      name = itemText.name('orbs', offering.item as CelestialOrb)
+      description = itemText.description('orbs', offering.item as CelestialOrb)
+      rarity = (offering.item as CelestialOrb).rarity.toLowerCase()
       break
     case 'VoidScript': {
       const script = offering.item as {
@@ -341,9 +347,10 @@ export function ShopItemCard({
     }
     case 'Tile': {
       const tile = offering.item as Tile
-      name = tile.displayName
+      const localized = tileRewardText(tile, t)
+      name = localized.name
       description = tile.hasModifiers
-        ? tile.modifierDisplay
+        ? localized.description
         : 'Add this tile to the run wall'
       rarity = tile.hasModifiers ? 'uncommon' : 'common'
       break
@@ -363,23 +370,25 @@ export function ShopItemCard({
 
   // Animation spring
   const spring = useSpring({
-    scale: isPressed ? 0.95 : isHovered ? 1.03 : 1,
+    scale: reduceMotion ? 1 : isPressed ? 0.95 : isHovered ? 1.03 : 1,
     borderWidth: isSelected ? 4 : 2,
     config: { tension: 400, friction: 30 },
+    immediate: reduceMotion,
   })
 
   const handleClick = useCallback(() => {
     if (isSelected) {
-      onPurchase()
+      if (canAfford) onPurchase()
     } else if (onSelect) {
       onSelect()
-    } else {
+    } else if (canAfford) {
       onPurchase()
     }
-  }, [isSelected, onPurchase, onSelect])
+  }, [isSelected, canAfford, onPurchase, onSelect])
 
   return (
     <AnimatedDiv
+      data-shop-item={offering.id}
       className="group relative min-w-0 w-full rounded-xl overflow-hidden cursor-pointer"
       style={{
         transform: spring.scale.to((s) => `scale(${s})`),
@@ -387,6 +396,7 @@ export function ShopItemCard({
         borderStyle: 'solid',
         borderColor: isSelected ? 'var(--color-golden-yellow)' : rarityColor,
         ...editionStyle,
+        ...(reduceMotion ? { animation: 'none' } : {}),
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -442,7 +452,10 @@ export function ShopItemCard({
         </div>
 
         {/* Name */}
-        <h3 className="line-clamp-2 min-h-10 text-center text-sm font-bold leading-5 text-[var(--color-beige-white)]">
+        <h3
+          id={nameId}
+          className="min-h-10 break-words text-center text-sm font-bold leading-5 text-[var(--color-beige-white)]"
+        >
           {name}
         </h3>
         {japaneseName && (
@@ -458,7 +471,7 @@ export function ShopItemCard({
             style={{ backgroundColor: rarityColor }}
           />
           <span className="text-xs text-[var(--color-beige-white)] opacity-70">
-            {getRarityDisplayName(rarity)}
+            {t(`shop.ui.rarity_${getRarityDisplayName(rarity)}`, rarity)}
           </span>
         </div>
 
@@ -470,12 +483,17 @@ export function ShopItemCard({
         )}
 
         {/* Description */}
-        <p className="text-xs text-[var(--color-beige-white)] opacity-60 text-center mt-2 line-clamp-2 flex-1">
+        <p
+          id={descriptionId}
+          className="mt-2 flex-1 break-words text-center text-sm leading-relaxed text-[var(--color-beige-white)]/80"
+        >
           {description}
         </p>
 
         {/* Purchase button */}
         <button
+          aria-labelledby={`${nameId} ${priceId}`}
+          aria-describedby={descriptionId}
           onClick={(e) => {
             e.stopPropagation()
             onPurchase()
@@ -487,17 +505,22 @@ export function ShopItemCard({
             min-h-[44px]
             ${
               canAfford
-                ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] hover:bg-[var(--color-deep-orange)] active:scale-95'
+                ? `bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] hover:bg-[var(--color-deep-orange)] ${reduceMotion ? '' : 'active:scale-95'}`
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
             }
           `}
         >
           {hasDiscount && (
             <span className="line-through text-gray-400 mr-2 text-xs">
-              {offering.baseCost + offering.editionCost}G
+              {(offering.baseCost + offering.editionCost).toLocaleString(
+                i18n.resolvedLanguage
+              )}
+              G
             </span>
           )}
-          <span>{offering.finalCost}G</span>
+          <span id={priceId}>
+            {offering.finalCost.toLocaleString(i18n.resolvedLanguage)}G
+          </span>
         </button>
       </div>
 

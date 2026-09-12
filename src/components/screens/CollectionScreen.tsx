@@ -64,9 +64,9 @@ function buildDisplayInfoMap(
       for (const wall of WALL_DEFINITIONS) {
         map.set(wall.id, {
           id: wall.id,
-          name: itemText.name('walls', wall),
+          name: itemText.name('tableStyles', wall),
           japaneseName: wall.japaneseName,
-          description: itemText.description('walls', wall),
+          description: itemText.description('tableStyles', wall),
           category: 'walls',
         })
       }

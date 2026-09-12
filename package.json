@@ -12,6 +12,7 @@
     "sloc": "node scripts/sloc.mjs",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:release": "node --test scripts/deployment-versioning.test.mjs",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
@@ -55,7 +56,7 @@
     "vitest": "^4.0.17"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.18.0"
   },
-  "packageManager": "bun@1.1.38"
+  "packageManager": "bun@1.3.3"
 }

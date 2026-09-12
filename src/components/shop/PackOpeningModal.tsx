@@ -12,16 +12,13 @@
  * Uses React Spring for animations and the game's color palette.
  */
 
-import { useState, useCallback, useEffect } from 'react'
-import { useSpring, animated } from '@react-spring/web'
+import { useState, useCallback, useEffect, useRef, useId } from 'react'
+import { useSpring, animated, to } from '@react-spring/web'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
-import {
-  PACK_TYPE_DEFINITIONS,
-  PACK_SIZE_DEFINITIONS,
-} from '../../config/packDefinitions'
-import { getCurrentLanguage } from '../../i18n'
+import { PACK_TYPE_DEFINITIONS } from '../../config/packDefinitions'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { Tile } from '../../core/Tile'
 import {
@@ -30,17 +27,15 @@ import {
   illustrationAssets,
 } from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import {
+  useItemText,
+  type ItemKind,
+  type TranslatableItem,
+} from '../../i18n/useItemText'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
+import { tileRewardText } from '../../i18n/tileRewardText'
 
 const AnimatedDiv = animated('div')
-
-/** Check if current language uses CJK characters */
-function isCJKLanguage(): boolean {
-  const lang = getCurrentLanguage()
-  return (
-    lang === 'ja' || lang === 'ko' || lang === 'zh-Hant' || lang === 'zh-Hans'
-  )
-}
 
 // =============================================================================
 // TYPES
@@ -55,8 +50,9 @@ export interface PackOpeningModalProps {
   onConfirm: (selectedIndices: number[]) => void
   /** Callback when pack is skipped */
   onSkip: () => void
-  /** Callback to close modal */
-  onClose: () => void
+  /** Combined capacity check; selection is editable even when it cannot fit. */
+  canConfirmSelection?: (indices: number[]) => boolean
+  error?: string | null
 }
 
 // =============================================================================
@@ -138,6 +134,26 @@ function PackContentCard({
   animationDelay,
 }: PackContentCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const { t } = useTranslation()
+  const text = useItemText()
+  const reducedMotion = useReducedMotion()
+  const kinds: Partial<Record<PackContent['type'], ItemKind>> = {
+    Decree: 'decrees',
+    FateSeal: 'seals',
+    CelestialOrb: 'orbs',
+    VoidScript: 'scripts',
+  }
+  const kind = kinds[content.type]
+  const item = content.data as TranslatableItem
+  const tileText =
+    content.type === 'Tile' && content.data instanceof Tile
+      ? tileRewardText(content.data, t)
+      : null
+  const name = tileText?.name ?? (kind ? text.name(kind, item) : content.name)
+  const description =
+    tileText?.description ??
+    (kind ? text.description(kind, item) : content.description)
+  const descriptionId = useId()
 
   const rarityColor = getRarityColor(content.rarity)
   const artwork = getContentArtwork(content)
@@ -147,31 +163,54 @@ function PackContentCard({
 
   // Entry animation
   const entrySpring = useSpring({
-    from: { opacity: 0, scale: 0.5, y: 50 },
+    from: reducedMotion
+      ? { opacity: 1, scale: 1, y: 0 }
+      : { opacity: 0, scale: 0.5, y: 50 },
     to: { opacity: 1, scale: 1, y: 0 },
-    delay: animationDelay,
+    delay: reducedMotion ? 0 : animationDelay,
+    immediate: reducedMotion,
     config: { tension: 300, friction: 20 },
   })
 
   // Interaction animation
   const interactionSpring = useSpring({
-    scale: isSelected ? 1.05 : isHovered ? 1.02 : 1,
+    immediate: reducedMotion,
+    scale: reducedMotion ? 1 : isSelected ? 1.05 : isHovered ? 1.02 : 1,
     borderWidth: isSelected ? 4 : 2,
     config: { tension: 400, friction: 30 },
   })
 
   return (
     <AnimatedDiv
+      role="button"
+      tabIndex={0}
+      aria-pressed={isSelected}
+      aria-disabled={!canSelect && !isSelected}
+      aria-label={name}
+      aria-describedby={descriptionId}
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (
+          e.target === e.currentTarget &&
+          (e.key === 'Enter' || e.key === ' ')
+        ) {
+          e.preventDefault()
+          if (canSelect || isSelected) onToggle()
+        }
+      }}
       className={`
         relative w-full max-w-[140px] rounded-xl overflow-hidden
         ${canSelect || isSelected ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}
       `}
       style={{
-        opacity: entrySpring.opacity,
-        transform: entrySpring.scale.to(
-          (s) =>
-            `scale(${s * interactionSpring.scale.get()}) translateY(${entrySpring.y.get()}px)`
-        ),
+        // Static values also cover the first render before springs advance.
+        opacity: reducedMotion ? 1 : entrySpring.opacity,
+        transform: reducedMotion
+          ? 'none'
+          : to(
+              [entrySpring.scale, interactionSpring.scale, entrySpring.y],
+              (entryScale, interactionScale, y) =>
+                `scale(${entryScale * interactionScale}) translateY(${y}px)`
+            ),
         borderWidth: interactionSpring.borderWidth.to((w) => `${w}px`),
         borderStyle: 'solid',
         borderColor: isSelected ? 'var(--color-golden-yellow)' : rarityColor,
@@ -218,8 +257,8 @@ function PackContentCard({
           ) : voidScript ? (
             <VoidScriptArtwork
               script={voidScript}
-              name={content.name}
-              description={content.description}
+              name={name}
+              description={description}
               className="h-16 w-16"
             />
           ) : artwork ? (
@@ -244,18 +283,21 @@ function PackContentCard({
             style={{ backgroundColor: rarityColor }}
           />
           <span className="text-xs capitalize" style={{ color: rarityColor }}>
-            {content.rarity}
+            {t(`shop.ui.rarity_${content.rarity}`, content.rarity)}
           </span>
         </div>
 
         {/* Name */}
-        <h3 className="text-sm font-bold text-[var(--color-beige-white)] text-center line-clamp-2">
-          {content.name}
+        <h3 className="text-sm font-bold text-[var(--color-beige-white)] text-center break-words">
+          {name}
         </h3>
 
         {/* Description */}
-        <p className="text-xs text-[var(--color-beige-white)] opacity-60 text-center mt-2 line-clamp-3 flex-1">
-          {content.description}
+        <p
+          id={descriptionId}
+          className="text-xs text-[var(--color-beige-white)] opacity-80 text-center mt-2 break-words flex-1"
+        >
+          {description}
         </p>
       </div>
     </AnimatedDiv>
@@ -274,37 +316,58 @@ export function PackOpeningModal({
   packOffering,
   onConfirm,
   onSkip,
-  onClose,
+  canConfirmSelection,
+  error,
 }: PackOpeningModalProps) {
   const { t } = useTranslation()
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
   const [isRevealed, setIsRevealed] = useState(false)
+  const reducedMotion = useReducedMotion()
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const titleId = useId()
+  const selectionAllowed =
+    selectedIndices.length > 0 &&
+    (canConfirmSelection?.(selectedIndices) ?? true)
 
-  const showCJK = isCJKLanguage()
+  useEffect(() => {
+    if (!isOpen) return
+    const previous = document.activeElement as HTMLElement | null
+    dialogRef.current?.focus()
+    return () => previous?.focus()
+  }, [isOpen])
 
-  // Reset state when modal opens
+  // A new pack resets selection; changing presentation preferences must not.
+  useEffect(() => {
+    if (isOpen && packOffering) setSelectedIndices([])
+  }, [isOpen, packOffering])
+
+  // Reset reveal timing independently from the player's reward choices.
   useEffect(() => {
     if (isOpen && packOffering) {
-      setSelectedIndices([])
       setIsRevealed(false)
 
       // Reveal animation delay
-      const timer = setTimeout(() => {
-        setIsRevealed(true)
-      }, 300)
+      const timer = setTimeout(
+        () => {
+          setIsRevealed(true)
+        },
+        reducedMotion ? 0 : 300
+      )
 
       return () => clearTimeout(timer)
     }
-  }, [isOpen, packOffering])
+  }, [isOpen, packOffering, reducedMotion])
 
   // Backdrop animation
   const backdropSpring = useSpring({
+    immediate: reducedMotion,
     opacity: isOpen ? 1 : 0,
     config: { tension: 300, friction: 30 },
   })
 
   // Modal animation
   const modalSpring = useSpring({
+    immediate: reducedMotion,
     opacity: isOpen ? 1 : 0,
     scale: isOpen ? 1 : 0.9,
     config: { tension: 300, friction: 25 },
@@ -332,36 +395,66 @@ export function PackOpeningModal({
   )
 
   const handleConfirm = useCallback(() => {
-    if (selectedIndices.length > 0) {
+    if (selectionAllowed) {
       onConfirm(selectedIndices)
     }
-  }, [selectedIndices, onConfirm])
+  }, [selectedIndices, onConfirm, selectionAllowed])
 
   if (!isOpen || !packOffering) return null
 
   const pack = packOffering.pack
   const typeInfo = PACK_TYPE_DEFINITIONS[pack.type]
-  const sizeInfo = PACK_SIZE_DEFINITIONS[pack.size]
+  const packName = t(
+    `packs.items.${pack.type.toLowerCase()}_${pack.size.toLowerCase()}.name`
+  )
   const maxSelections = packOffering.maxSelections
 
   return createPortal(
     <AnimatedDiv
       className="fixed inset-0 z-50 flex items-center justify-center p-3 safe-area-top safe-area-bottom sm:p-4"
       style={{
-        opacity: backdropSpring.opacity,
+        opacity: reducedMotion ? 1 : backdropSpring.opacity,
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
-      }}
-      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) {
-          onClose()
-        }
       }}
     >
       <AnimatedDiv
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+          // Paid rewards require an explicit claim or Skip, not accidental dismissal.
+          if (e.key === 'Escape') {
+            e.preventDefault()
+            e.stopPropagation()
+          }
+          if (e.key !== 'Tab') return
+          const controls = Array.from(
+            dialogRef.current?.querySelectorAll<HTMLElement>(
+              'button:not([disabled]), [tabindex="0"]'
+            ) ?? []
+          )
+          const first = controls[0]
+          const last = controls.at(-1)
+          if (
+            e.shiftKey &&
+            (document.activeElement === first ||
+              document.activeElement === dialogRef.current)
+          ) {
+            e.preventDefault()
+            last?.focus()
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault()
+            first?.focus()
+          }
+        }}
         className="relative flex max-h-[calc(100dvh-24px)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl"
         style={{
-          opacity: modalSpring.opacity,
-          transform: modalSpring.scale.to((s) => `scale(${s})`),
+          opacity: reducedMotion ? 1 : modalSpring.opacity,
+          transform: reducedMotion
+            ? 'none'
+            : modalSpring.scale.to((s) => `scale(${s})`),
           background: 'linear-gradient(135deg, #1C3A2E 0%, #0D1F17 100%)',
           border: `3px solid ${typeInfo?.iconColor || '#C8B273'}`,
           boxShadow: `0 0 50px ${typeInfo?.iconColor}40, 0 25px 50px rgba(0, 0, 0, 0.5)`,
@@ -370,7 +463,7 @@ export function PackOpeningModal({
       >
         {/* Header */}
         <div className="flex-shrink-0 border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
-          <div className="relative flex items-center justify-center gap-3 pr-12 text-center sm:gap-4">
+          <div className="relative flex items-center justify-center gap-3 text-center sm:gap-4">
             <img
               src={illustrationAssets.packs[pack.type]}
               alt=""
@@ -379,35 +472,19 @@ export function PackOpeningModal({
               draggable={false}
             />
             <div className="min-w-0">
-              <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-                {sizeInfo?.name} {typeInfo?.name}
+              <h2
+                id={titleId}
+                className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative"
+              >
+                {packName}
               </h2>
               <p className="text-sm text-[var(--color-metallic-gold)]">
-                {showCJK && typeInfo?.japaneseName
-                  ? `${typeInfo.japaneseName} \u2022 `
-                  : ''}
-                {sizeInfo?.description}
+                {t('shop.packChoices', {
+                  count: packOffering.contents.length,
+                  max: packOffering.maxSelections,
+                })}
               </p>
             </div>
-            <button
-              onClick={onClose}
-              className="absolute right-0 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg p-2 text-[var(--color-beige-white)] hover:bg-[var(--color-forest-green)]"
-              aria-label={t('common.close', 'Close')}
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
           </div>
         </div>
 
@@ -429,51 +506,62 @@ export function PackOpeningModal({
               />
             ))}
           </div>
-
-          {/* Selection indicator */}
-          <div className="mt-4 text-center">
-            <p className="text-sm text-[var(--color-beige-white)]">
-              {selectedIndices.length} / {maxSelections} selected
-            </p>
-          </div>
         </div>
 
-        {/* Footer */}
-        <div className="grid flex-shrink-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-t border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:gap-4 sm:p-4">
-          {/* Skip button */}
-          <button
-            onClick={onSkip}
-            className="
-              px-4 py-3 rounded-lg font-bold sm:px-6
+        {/* Keep the reason for a disabled confirmation next to its action. */}
+        <div className="flex-shrink-0 border-t border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
+          <div className="mb-3 text-center">
+            <p className="text-sm text-[var(--color-beige-white)]">
+              {t('shop.packSelected', {
+                count: selectedIndices.length,
+                max: maxSelections,
+              })}
+            </p>
+            {(error || (selectedIndices.length > 0 && !selectionAllowed)) && (
+              <p
+                role="status"
+                className="mt-2 text-sm text-[var(--color-golden-yellow)]"
+              >
+                {error || t('shop.packInventoryFull')}
+              </p>
+            )}
+          </div>
+          <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-4">
+            {/* Skip button */}
+            <button
+              onClick={onSkip}
+              className="
+              min-w-0 break-words px-2 py-3 rounded-lg text-sm font-bold sm:px-6 sm:text-base
               bg-[var(--color-forest-green)] text-[var(--color-beige-white)]
               border-2 border-[var(--color-metallic-gold)]
               hover:bg-[var(--color-dark-forest)]
               transition-all duration-200
               min-h-[48px]
             "
-          >
-            {t('common.skip', 'Skip')}
-          </button>
+            >
+              {t('shop.skipRewards')}
+            </button>
 
-          {/* Confirm button */}
-          <button
-            onClick={handleConfirm}
-            disabled={selectedIndices.length === 0}
-            className={`
-              w-full px-4 py-3 rounded-lg font-bold text-sm sm:px-8 sm:text-lg
+            {/* Confirm button */}
+            <button
+              onClick={handleConfirm}
+              disabled={!selectionAllowed}
+              className={`
+              min-w-0 w-full break-words px-2 py-3 rounded-lg font-bold text-sm sm:px-8 sm:text-lg
               transition-all duration-200
               min-h-[48px]
               ${
-                selectedIndices.length > 0
-                  ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] border-2 border-[var(--color-golden-yellow)] hover:bg-[var(--color-deep-orange)] active:scale-95'
+                selectionAllowed
+                  ? `bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] border-2 border-[var(--color-golden-yellow)] hover:bg-[var(--color-deep-orange)] ${reducedMotion ? '' : 'active:scale-95'}`
                   : 'bg-gray-600 text-gray-400 cursor-not-allowed border-2 border-gray-500'
               }
             `}
-          >
-            {selectedIndices.length > 0
-              ? t('shop.confirmSelection', 'Confirm Selection')
-              : t('shop.selectItems', 'Select Items')}
-          </button>
+            >
+              {selectedIndices.length > 0
+                ? t('shop.confirmSelection', 'Confirm Selection')
+                : t('shop.selectItems', 'Select Items')}
+            </button>
+          </div>
         </div>
       </AnimatedDiv>
     </AnimatedDiv>,

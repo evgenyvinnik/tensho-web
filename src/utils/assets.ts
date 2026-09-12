@@ -93,6 +93,7 @@ export const popupAssets = {
  * to use SVG so they remain crisp at every size.
  */
 export const illustrationAssets = {
+  imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
   consumables: {
     fateSeal: `${ASSET_BASE}/illustrations/fate-seal.png`,
     celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.png`,
