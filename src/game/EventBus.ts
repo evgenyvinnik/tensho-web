@@ -11,6 +11,8 @@
  * - Event history for debugging
  */
 
+import type { ScoreEquation } from '../rules/ScoreEquation'
+
 // =============================================================================
 // EVENT TYPES
 // =============================================================================
@@ -119,7 +121,7 @@ export interface GameEventData {
   roundSkipped: { roundType: string; omenTagGranted?: string }
 
   // Scoring
-  handPlayed: { tiles: string[]; score: number; yakuIds: string[] }
+  handPlayed: { tiles: string[]; score: number; yakuIds: string[]; equation: ScoreEquation }
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
   yakumanScored: { yakuId: string; yakuName: string }

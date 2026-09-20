@@ -399,9 +399,7 @@ a {
   }
 
   .game-play-area {
-    max-height: 90px;
     min-height: 72px !important;
-    overflow: hidden;
     padding-block: 5px !important;
   }
 }

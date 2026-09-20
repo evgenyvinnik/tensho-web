@@ -254,7 +254,9 @@ export class OmenTagSystem {
    */
   applyLockedSeason(): SeasonVariant | null {
     const store = useOmenStore.getState()
-    const result = store.applyLockedSeason()
+    // Match the public preview, including a lock restored with the system.
+    const result = this.getLockedSeason()
+    store.applyLockedSeason()
     this.lockedSeasonType = null
     return result
   }

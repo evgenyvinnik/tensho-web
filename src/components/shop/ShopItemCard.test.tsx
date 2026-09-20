@@ -10,6 +10,34 @@ import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { changeLanguage } from '../../i18n'
 import es from '../../i18n/locales/es.json'
 import { useSettingsStore } from '../../stores/settingsStore'
+import { ALL_DECREES } from '../../systems/DecreeSystem'
+
+it('pairs Wealth Engine art with unambiguous localized gold and ownership rules', async () => {
+  await changeLanguage('es')
+  const item = ALL_DECREES.find((d) => d.id === 'decree-wealth-engine')!
+  const offering: TeaHouseOffering = {
+    id: 'wealth',
+    slotIndex: 0,
+    itemType: 'Decree',
+    item,
+    baseCost: item.cost,
+    editionCost: 0,
+    finalCost: item.cost,
+    sellValue: item.sellValue!,
+    isPurchased: false,
+    isLocked: false,
+  }
+  const { container } = render(
+    <ShopItemCard offering={offering} canAfford onPurchase={vi.fn()} />
+  )
+  expect(screen.getByRole('heading')).toHaveTextContent('Motor de Riqueza')
+  expect(screen.getByRole('button')).toHaveAccessibleDescription(
+    '+1G por cada Decreto que posees al final de la ronda'
+  )
+  expect(
+    container.querySelector('img[src$="wealth-engine.png"]')
+  ).not.toBeNull()
+})
 
 afterEach(async () => {
   await act(async () => {

@@ -1,228 +1,145 @@
-/**
- * Progressive Tutorial Hook
- *
- * Manages the progressive hint system that shows tutorial tips
- * contextually as the player encounters each game mechanic.
- */
-
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import {
-  ProgressiveHint,
-  TutorialTrigger,
+  type ProgressiveHint,
+  type TutorialTrigger,
   getHintsForTrigger,
   PROGRESSIVE_HINTS_STORAGE_KEY,
   HINTS_DISABLED_STORAGE_KEY,
 } from '../config/progressiveTutorialHints'
 
-/**
- * Get shown hints from localStorage
- */
-function getShownHints(): Set<string> {
-  if (typeof window === 'undefined') return new Set()
+function readPreferences() {
+  const shown = new Set<string>()
+  let disabled = false
   try {
-    const stored = localStorage.getItem(PROGRESSIVE_HINTS_STORAGE_KEY)
-    return stored ? new Set(JSON.parse(stored)) : new Set()
+    const ids: unknown = JSON.parse(
+      localStorage.getItem(PROGRESSIVE_HINTS_STORAGE_KEY) ?? '[]'
+    )
+    if (Array.isArray(ids))
+      for (const id of ids) if (typeof id === 'string') shown.add(id)
   } catch {
-    return new Set()
+    /* Invalid lesson history must not undo an independent opt-out preference. */
   }
-}
-
-/**
- * Save shown hints to localStorage
- */
-function saveShownHints(hints: Set<string>): void {
-  if (typeof window === 'undefined') return
   try {
-    localStorage.setItem(PROGRESSIVE_HINTS_STORAGE_KEY, JSON.stringify([...hints]))
+    disabled = localStorage.getItem(HINTS_DISABLED_STORAGE_KEY) === 'true'
   } catch {
-    // Ignore storage errors
+    /* Continue in memory. */
   }
+  return { shown, disabled }
 }
 
-/**
- * Check if hints are disabled
- */
-function areHintsDisabled(): boolean {
-  if (typeof window === 'undefined') return false
-  return localStorage.getItem(HINTS_DISABLED_STORAGE_KEY) === 'true'
-}
-
-/**
- * Progressive tutorial hook state
- */
-interface UseProgressiveTutorialReturn {
-  /** Currently displayed hint, or null if none */
-  currentHint: ProgressiveHint | null
-  /** Queue of pending hints for current trigger */
-  hintQueue: ProgressiveHint[]
-  /** Whether hints are globally disabled */
-  isDisabled: boolean
-  /** Trigger hints for a specific game event */
-  triggerHints: (trigger: TutorialTrigger) => void
-  /** Dismiss the current hint */
-  dismissHint: () => void
-  /** Disable all future hints */
-  disableHints: () => void
-  /** Enable hints again */
-  enableHints: () => void
-  /** Reset all shown hints (for settings) */
-  resetAllHints: () => void
-  /** Check if a specific hint has been shown */
-  hasHintBeenShown: (hintId: string) => boolean
-}
-
-/**
- * Hook for managing progressive tutorial hints
- */
-export function useProgressiveTutorial(
-  allHints: ProgressiveHint[]
-): UseProgressiveTutorialReturn {
-  const [shownHints, setShownHints] = useState<Set<string>>(() => getShownHints())
-  const [currentHint, setCurrentHint] = useState<ProgressiveHint | null>(null)
-  const [hintQueue, setHintQueue] = useState<ProgressiveHint[]>([])
-  const [isDisabled, setIsDisabled] = useState(() => areHintsDisabled())
-
-  // Auto-dismiss timer ref
-  const autoDismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Clear auto-dismiss timer on unmount
+/** Persistent, acknowledged guidance. No reading deadline or timer-driven layout shift. */
+export function useProgressiveTutorial(allHints: ProgressiveHint[]) {
+  const [state, setState] = useState(() => ({
+    ...readPreferences(),
+    queue: [] as string[],
+  }))
+  // Preferences are best-effort; storage restrictions must not break gameplay.
   useEffect(() => {
-    return () => {
-      if (autoDismissTimerRef.current) {
-        clearTimeout(autoDismissTimerRef.current)
-      }
+    try {
+      localStorage.setItem(
+        PROGRESSIVE_HINTS_STORAGE_KEY,
+        JSON.stringify([...state.shown])
+      )
+      if (state.disabled)
+        localStorage.setItem(HINTS_DISABLED_STORAGE_KEY, 'true')
+      else localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
+    } catch {
+      /* Continue in memory. */
     }
-  }, [])
+  }, [state.shown, state.disabled])
 
-  // Internal dismiss function - defined before the effect that uses it
-  const dismissHintInternal = useCallback(() => {
-    if (currentHint) {
-      // Mark as shown
-      const newShownHints = new Set(shownHints)
-      newShownHints.add(currentHint.id)
-      setShownHints(newShownHints)
-      saveShownHints(newShownHints)
-
-      // Show next hint from queue or clear
-      setHintQueue((queue) => {
-        const nextQueue = queue.slice(1)
-        if (nextQueue.length > 0) {
-          setCurrentHint(nextQueue[0])
-        } else {
-          setCurrentHint(null)
-        }
-        return nextQueue
-      })
-    }
-  }, [currentHint, shownHints])
-
-  // Set up auto-dismiss when hint changes
-  useEffect(() => {
-    if (autoDismissTimerRef.current) {
-      clearTimeout(autoDismissTimerRef.current)
-      autoDismissTimerRef.current = null
-    }
-
-    if (currentHint) {
-      const dismissTime = currentHint.autoDismissMs ?? 8000
-      autoDismissTimerRef.current = setTimeout(() => {
-        dismissHintInternal()
-      }, dismissTime)
-    }
-  }, [currentHint, dismissHintInternal])
-
-  // Trigger hints for a specific game event
   const triggerHints = useCallback(
     (trigger: TutorialTrigger) => {
-      if (isDisabled) return
-
-      // Get hints for this trigger that haven't been shown
-      const availableHints = getHintsForTrigger(allHints, trigger).filter(
-        (hint) =>
-          !shownHints.has(hint.id) &&
-          currentHint?.id !== hint.id &&
-          !hintQueue.some((queuedHint) => queuedHint.id === hint.id)
+      const candidates = getHintsForTrigger(allHints, trigger).map(
+        (hint) => hint.id
       )
-
-      if (availableHints.length === 0) return
-
-      // If there's already a hint showing, add to queue
-      if (currentHint) {
-        setHintQueue((queue) => [...queue, ...availableHints])
-      } else {
-        // Start showing hints
-        setCurrentHint(availableHints[0])
-        setHintQueue(availableHints)
-      }
+      setState((current) => {
+        if (current.disabled) return current
+        const additions = candidates.filter(
+          (id) => !current.shown.has(id) && !current.queue.includes(id)
+        )
+        return additions.length
+          ? {
+              ...current,
+              queue: [...current.queue, ...additions].sort(
+                (a, b) =>
+                  (allHints.find((hint) => hint.id === a)?.priority ?? 1) -
+                  (allHints.find((hint) => hint.id === b)?.priority ?? 1)
+              ),
+            }
+          : current
+      })
     },
-    [allHints, shownHints, isDisabled, currentHint, hintQueue]
+    [allHints]
   )
 
-  // Dismiss the current hint
   const dismissHint = useCallback(() => {
-    if (autoDismissTimerRef.current) {
-      clearTimeout(autoDismissTimerRef.current)
-      autoDismissTimerRef.current = null
-    }
-    dismissHintInternal()
-  }, [dismissHintInternal])
-
-  // Disable all future hints
-  const disableHints = useCallback(() => {
-    setIsDisabled(true)
-    setCurrentHint(null)
-    setHintQueue([])
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(HINTS_DISABLED_STORAGE_KEY, 'true')
-    }
+    setState((current) => {
+      const [id, ...queue] = current.queue
+      return id
+        ? { ...current, queue, shown: new Set([...current.shown, id]) }
+        : current
+    })
   }, [])
 
-  // Enable hints again
-  const enableHints = useCallback(() => {
-    setIsDisabled(false)
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
-    }
-  }, [])
-
-  // Reset all shown hints
-  const resetAllHints = useCallback(() => {
-    setShownHints(new Set())
-    setCurrentHint(null)
-    setHintQueue([])
-    setIsDisabled(false)
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(PROGRESSIVE_HINTS_STORAGE_KEY)
-      localStorage.removeItem(HINTS_DISABLED_STORAGE_KEY)
-    }
-  }, [])
-
-  // Check if a specific hint has been shown
-  const hasHintBeenShown = useCallback(
-    (hintId: string) => {
-      return shownHints.has(hintId)
+  // An accomplished lesson should not appear late or remain queued as a first step.
+  const completeTrigger = useCallback(
+    (trigger: TutorialTrigger) => {
+      const ids = getHintsForTrigger(allHints, trigger).map((hint) => hint.id)
+      setState((current) => ({
+        ...current,
+        shown: new Set([...current.shown, ...ids]),
+        queue: current.queue.filter((id) => !ids.includes(id)),
+      }))
     },
-    [shownHints]
+    [allHints]
+  )
+
+  const disableHints = useCallback(
+    () => setState((current) => ({ ...current, disabled: true, queue: [] })),
+    []
+  )
+  const enableHints = useCallback(
+    () => setState((current) => ({ ...current, disabled: false })),
+    []
+  )
+  const resetAllHints = useCallback(
+    () => setState({ shown: new Set(), disabled: false, queue: [] }),
+    []
+  )
+  const hasHintBeenShown = useCallback(
+    (id: string) => state.shown.has(id),
+    [state.shown]
+  )
+  // Resolve by ID so a locale switch updates visible and queued copy together.
+  const hintQueue = useMemo(
+    () =>
+      state.queue.flatMap((id) => {
+        const hint = allHints.find((candidate) => candidate.id === id)
+        return hint ? [hint] : []
+      }),
+    [state.queue, allHints]
   )
 
   return useMemo(
     () => ({
-      currentHint,
+      currentHint: hintQueue[0] ?? null,
       hintQueue,
-      isDisabled,
+      isDisabled: state.disabled,
       triggerHints,
       dismissHint,
+      completeTrigger,
       disableHints,
       enableHints,
       resetAllHints,
       hasHintBeenShown,
     }),
     [
-      currentHint,
       hintQueue,
-      isDisabled,
+      state.disabled,
       triggerHints,
       dismissHint,
+      completeTrigger,
       disableHints,
       enableHints,
       resetAllHints,

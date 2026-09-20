@@ -1,13 +1,32 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import {
   getCodexCategoryIllustration,
+  getDecreeIllustration,
   getDecreeScrollIllustration,
   getTableStyleIllustration,
   illustrationAssets,
 } from './assets'
 
+it('ships the generated guidebook with an alpha-capable PNG in the project', () => {
+  expect(illustrationAssets.beginnerGuidebook).toBe(
+    '/assets/illustrations/beginner-guidebook.png'
+  )
+  const png = readFileSync(`public${illustrationAssets.beginnerGuidebook}`)
+  expect(png.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
+  expect(png[25]).toBe(6)
+})
+
 describe('Decree scroll illustrations', () => {
+  it('ships bespoke Wealth Engine art without mistaking inherited names for images', () => {
+    const path = getDecreeIllustration('decree-wealth-engine')!
+    const png = readFileSync(`public${path}`)
+    expect(png.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
+    expect(png[25]).toBe(6)
+    expect(getDecreeIllustration('unknown')).toBeUndefined()
+    expect(getDecreeIllustration('toString')).toBeUndefined()
+  })
   it('maps Decree rarities to illustrated scrolls', () => {
     expect(getDecreeScrollIllustration('LocalEdict')).toMatch(
       /decrees\/local-edict\.png$/

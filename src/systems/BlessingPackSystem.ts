@@ -18,7 +18,7 @@
  */
 
 import { PackType, PackSize, BlessingPack, Decree, DecreeRarity } from './types'
-import { ALL_DECREES } from './DecreeSystem'
+import { DecreeSystem } from './DecreeSystem'
 import {
   PACK_TYPE_DEFINITIONS,
   PACK_SIZE_DEFINITIONS,
@@ -190,7 +190,10 @@ export class BlessingPackSystem {
   /**
    * Select pack type based on size and yaku style
    */
-  private selectPackType(size: PackSize, options: PackGenerationOptions = {}): PackType {
+  private selectPackType(
+    size: PackSize,
+    options: PackGenerationOptions = {}
+  ): PackType {
     let weights = { ...PACK_TYPE_WEIGHT_BY_SIZE[size] }
 
     // Apply yaku style bias if provided
@@ -217,10 +220,17 @@ export class BlessingPackSystem {
   ): PackContent[] {
     const contents: PackContent[] = []
     const rarityWeights =
-      pack.size === 'Mega' ? MEGA_CONTENT_RARITY_WEIGHTS : DEFAULT_CONTENT_RARITY_WEIGHTS
+      pack.size === 'Mega'
+        ? MEGA_CONTENT_RARITY_WEIGHTS
+        : DEFAULT_CONTENT_RARITY_WEIGHTS
 
     for (let i = 0; i < pack.choiceCount; i++) {
-      const content = this.generateSingleContent(pack.type, rarityWeights, options, contents)
+      const content = this.generateSingleContent(
+        pack.type,
+        rarityWeights,
+        options,
+        contents
+      )
       if (content) {
         contents.push(content)
       }
@@ -238,7 +248,9 @@ export class BlessingPackSystem {
     options: PackGenerationOptions,
     existingContents: PackContent[]
   ): PackContent | null {
-    const rarity = this.selectWeightedRandom(rarityWeights as unknown as Record<string, number>) as keyof ContentRarityWeights
+    const rarity = this.selectWeightedRandom(
+      rarityWeights as unknown as Record<string, number>
+    ) as keyof ContentRarityWeights
 
     switch (packType) {
       case 'Arcana':
@@ -255,7 +267,12 @@ export class BlessingPackSystem {
       case 'Tile':
         return this.generateTileContent(rarity, existingContents)
       case 'Decree':
-        return this.generateDecreeContent(rarity, options.ownedDecreeIds || [], existingContents)
+        return this.generateDecreeContent(
+          rarity,
+          options.ownedDecreeIds || [],
+          existingContents,
+          options.flowerCount ?? 0
+        )
       case 'Void':
         return this.generateVoidScriptContent(rarity, existingContents)
       default:
@@ -277,12 +294,16 @@ export class BlessingPackSystem {
 
     // Filter out already-present seals
     const available = fateSeals.filter((seal) => !existingIds.has(seal.id))
-    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : fateSeals[0]
+    const selected =
+      available.length > 0
+        ? available[Math.floor(runRandom.next('packs') * available.length)]
+        : fateSeals[0]
 
     if (!selected) {
       // Fallback if no seals of this rarity
       const allSeals = getFateSealsByRarity('Common')
-      const fallback = allSeals[Math.floor(runRandom.next('packs') * allSeals.length)]
+      const fallback =
+        allSeals[Math.floor(runRandom.next('packs') * allSeals.length)]
       return {
         id: `fate-seal-${fallback.id}-${Date.now()}`,
         type: 'FateSeal',
@@ -306,7 +327,9 @@ export class BlessingPackSystem {
   /**
    * Map content rarity to consumable rarity
    */
-  private mapToConsumableRarity(rarity: keyof ContentRarityWeights): ConsumableRarity {
+  private mapToConsumableRarity(
+    rarity: keyof ContentRarityWeights
+  ): ConsumableRarity {
     switch (rarity) {
       case 'common':
         return 'Common'
@@ -350,12 +373,16 @@ export class BlessingPackSystem {
     const orbs = getCelestialOrbsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = orbs.filter((orb) => !existingIds.has(orb.id))
-    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : orbs[0]
+    const selected =
+      available.length > 0
+        ? available[Math.floor(runRandom.next('packs') * available.length)]
+        : orbs[0]
 
     if (!selected) {
       // Fallback if no orbs of this rarity
       const allOrbs = getCelestialOrbsByRarity('Common')
-      const fallback = allOrbs[Math.floor(runRandom.next('packs') * allOrbs.length)]
+      const fallback =
+        allOrbs[Math.floor(runRandom.next('packs') * allOrbs.length)]
       return {
         id: `celestial-orb-${fallback.id}-${Date.now()}`,
         type: 'CelestialOrb',
@@ -386,7 +413,10 @@ export class BlessingPackSystem {
     const tiles = this.getModifiedTilesByRarity(rarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = tiles.filter((tile) => !existingIds.has(tile.id))
-    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : tiles[0]
+    const selected =
+      available.length > 0
+        ? available[Math.floor(runRandom.next('packs') * available.length)]
+        : tiles[0]
 
     const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu] as const
     let tile = Tile.createNumbered(
@@ -424,8 +454,13 @@ export class BlessingPackSystem {
     return {
       id: `tile-${selected.id}-${Date.now()}`,
       type: 'Tile',
-      name: [tile.displayName, ...tileModifierEntries(tile).map((entry) => entry.name)].join(' · '),
-      description: tileModifierEntries(tile).map((entry) => entry.description).join(' '),
+      name: [
+        tile.displayName,
+        ...tileModifierEntries(tile).map((entry) => entry.name),
+      ].join(' · '),
+      description: tileModifierEntries(tile)
+        .map((entry) => entry.description)
+        .join(' '),
       rarity,
       data: tile,
     }
@@ -437,7 +472,10 @@ export class BlessingPackSystem {
   private getModifiedTilesByRarity(
     rarity: keyof ContentRarityWeights
   ): { id: string; modifier: string }[] {
-    const tiles: Record<keyof ContentRarityWeights, { id: string; modifier: string }[]> = {
+    const tiles: Record<
+      keyof ContentRarityWeights,
+      { id: string; modifier: string }[]
+    > = {
       common: [
         { id: 'bonus_tile', modifier: 'bonus' },
         { id: 'lucky_tile', modifier: 'gold' },
@@ -465,30 +503,40 @@ export class BlessingPackSystem {
   private generateDecreeContent(
     rarity: keyof ContentRarityWeights,
     ownedDecreeIds: string[],
-    existingContents: PackContent[]
-  ): PackContent {
+    existingContents: PackContent[],
+    flowerCount: number
+  ): PackContent | null {
     // Map content rarity to decree rarity
     const decreeRarity = this.mapToDecreeRarity(rarity)
 
     // Get available decrees
-    const existingIds = new Set(existingContents.filter((c) => c.type === 'Decree').map((c) => (c.data as Decree).id))
+    const existingIds = new Set(
+      existingContents
+        .filter((c) => c.type === 'Decree')
+        .map((c) => (c.data as Decree).id)
+    )
     const excludeIds = new Set([...ownedDecreeIds, ...Array.from(existingIds)])
 
-    let candidates = ALL_DECREES.filter(
+    const eligible = DecreeSystem.getShopCandidates([], undefined, flowerCount)
+    let candidates = eligible.filter(
       (d) => d.rarity === decreeRarity && !excludeIds.has(d.id)
     )
 
     // Fallback if no candidates
     if (candidates.length === 0) {
-      candidates = ALL_DECREES.filter((d) => !excludeIds.has(d.id))
+      candidates = eligible.filter((d) => !excludeIds.has(d.id))
     }
 
     if (candidates.length === 0) {
       // All decrees owned, return a duplicate
-      candidates = ALL_DECREES.filter((d) => d.rarity === decreeRarity)
+      candidates = eligible.filter((d) => d.rarity === decreeRarity)
     }
 
-    const selected = candidates[Math.floor(runRandom.next('packs') * candidates.length)]
+    if (candidates.length === 0) candidates = eligible
+    if (candidates.length === 0) return null
+
+    const selected =
+      candidates[Math.floor(runRandom.next('packs') * candidates.length)]
 
     return {
       id: `decree-${selected.id}-${Date.now()}`,
@@ -529,12 +577,16 @@ export class BlessingPackSystem {
     const scripts = getVoidScriptsByRarity(consumableRarity)
     const existingIds = new Set(existingContents.map((c) => c.id))
     const available = scripts.filter((script) => !existingIds.has(script.id))
-    const selected = available.length > 0 ? available[Math.floor(runRandom.next('packs') * available.length)] : scripts[0]
+    const selected =
+      available.length > 0
+        ? available[Math.floor(runRandom.next('packs') * available.length)]
+        : scripts[0]
 
     if (!selected) {
       // Fallback if no scripts of this rarity
       const allScripts = getVoidScriptsByRarity('Common')
-      const fallback = allScripts[Math.floor(runRandom.next('packs') * allScripts.length)]
+      const fallback =
+        allScripts[Math.floor(runRandom.next('packs') * allScripts.length)]
       return {
         id: `void-script-${fallback.id}-${Date.now()}`,
         type: 'VoidScript',
@@ -583,7 +635,11 @@ export class BlessingPackSystem {
       return false
     }
 
-    if (!Number.isInteger(contentIndex) || contentIndex < 0 || contentIndex >= offering.contents.length) {
+    if (
+      !Number.isInteger(contentIndex) ||
+      contentIndex < 0 ||
+      contentIndex >= offering.contents.length
+    ) {
       return false
     }
 
@@ -618,11 +674,18 @@ export class BlessingPackSystem {
    */
   confirmSelection(packId: string): PackContent[] {
     const offering = this.currentOfferings.find((o) => o.pack.id === packId)
-    if (!offering || !offering.isOpened || offering.isResolved ||
-        offering.selectedIndices.length === 0 ||
-        offering.selectedIndices.length > offering.maxSelections ||
-        new Set(offering.selectedIndices).size !== offering.selectedIndices.length ||
-        offering.selectedIndices.some((i) => !Number.isInteger(i) || i < 0 || i >= offering.contents.length)) {
+    if (
+      !offering ||
+      !offering.isOpened ||
+      offering.isResolved ||
+      offering.selectedIndices.length === 0 ||
+      offering.selectedIndices.length > offering.maxSelections ||
+      new Set(offering.selectedIndices).size !==
+        offering.selectedIndices.length ||
+      offering.selectedIndices.some(
+        (i) => !Number.isInteger(i) || i < 0 || i >= offering.contents.length
+      )
+    ) {
       return []
     }
 
@@ -800,14 +863,24 @@ export function getPackSizeInfo(size: PackSize): {
 /**
  * Calculate if player can afford a pack
  */
-export function canAffordPack(pack: BlessingPack, gold: number, discount: number = 0): boolean {
-  const effectiveCost = Math.max(1, Math.floor(pack.cost * (1 - discount / 100)))
+export function canAffordPack(
+  pack: BlessingPack,
+  gold: number,
+  discount: number = 0
+): boolean {
+  const effectiveCost = Math.max(
+    1,
+    Math.floor(pack.cost * (1 - discount / 100))
+  )
   return gold >= effectiveCost
 }
 
 /**
  * Get the effective cost of a pack with discount
  */
-export function getPackEffectiveCost(pack: BlessingPack, discount: number = 0): number {
+export function getPackEffectiveCost(
+  pack: BlessingPack,
+  discount: number = 0
+): number {
   return Math.max(1, Math.floor(pack.cost * (1 - discount / 100)))
 }

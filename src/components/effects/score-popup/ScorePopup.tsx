@@ -5,12 +5,19 @@
  * Shows points earned with multipliers applied.
  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
-import { useSettingsStore } from '../../../stores/settingsStore'
-import { SPRINGS, DURATIONS, ANIMATION_COLORS, ANIMATION_Z_INDEX } from '../../../animations/constants'
+import { useReducedMotion } from '../../../hooks/useReducedMotion'
+import {
+  SPRINGS,
+  DURATIONS,
+  ANIMATION_COLORS,
+  ANIMATION_Z_INDEX,
+} from '../../../animations/constants'
 import { colors } from '../../../styles/theme'
 import type { ScorePopupProps } from './types'
+import { useTranslation } from 'react-i18next'
+import { scoreNumber } from '../../../utils/scoreNumber'
 
 export type { ScorePopupProps }
 
@@ -27,8 +34,21 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
   variant = 'default',
   className = '',
 }) => {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const reducedMotion = useReducedMotion()
+  const { i18n } = useTranslation()
   const [isVisible, setIsVisible] = useState(true)
+  const completionRef = useRef(onComplete)
+  useEffect(() => {
+    completionRef.current = onComplete
+  }, [onComplete])
+  useEffect(() => {
+    if (!reducedMotion) return
+    const timer = setTimeout(() => {
+      setIsVisible(false)
+      completionRef.current?.()
+    }, displayDuration)
+    return () => clearTimeout(timer)
+  }, [reducedMotion, displayDuration])
 
   // Get color based on variant
   const getColor = () => {
@@ -51,20 +71,23 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
     from: {
       opacity: 1,
       y: 0,
-      scale: 0.5,
+      scale: reducedMotion ? 1 : 0.5,
     },
-    to: async (next) => {
-      // Initial pop-in
-      await next({ scale: 1.2, y: -10 })
-      await next({ scale: 1, y: -20 })
-      // Wait for display duration
-      await new Promise((resolve) => setTimeout(resolve, displayDuration))
-      // Fade out
-      await next({ opacity: 0, y: -60, scale: 0.8 })
-    },
+    to: reducedMotion
+      ? { opacity: 1, y: 0, scale: 1 }
+      : async (next) => {
+          // Initial pop-in
+          await next({ scale: 1.2, y: -10 })
+          await next({ scale: 1, y: -20 })
+          // Wait for display duration
+          await new Promise((resolve) => setTimeout(resolve, displayDuration))
+          // Fade out
+          await next({ opacity: 0, y: -60, scale: 0.8 })
+        },
     config: SPRINGS.bouncy,
     immediate: reducedMotion,
     onRest: () => {
+      if (reducedMotion) return
       setIsVisible(false)
       onComplete?.()
     },
@@ -76,16 +99,24 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
 
   const displayText =
     multiplier && multiplier > 1
-      ? `+${points.toLocaleString()} x${multiplier.toFixed(1)}`
-      : `+${points.toLocaleString()}`
+      ? `+${scoreNumber(points, i18n.language).display} x${multiplier.toFixed(1)}`
+      : `+${scoreNumber(points, i18n.language).display}`
 
   return (
     <animated.div
-      className={`absolute pointer-events-none font-bold text-2xl ${className}`}
+      data-score-popup
+      aria-label={
+        multiplier && multiplier > 1
+          ? `+${scoreNumber(points, i18n.language).exact} ×${multiplier}`
+          : `+${scoreNumber(points, i18n.language).exact}`
+      }
+      className={`absolute pointer-events-none w-max max-w-[70%] text-center font-bold text-xl [overflow-wrap:anywhere] ${className}`}
       style={{
         left: `${position.x}%`,
         top: `${position.y}%`,
-        transform: spring.y.to((y) => `translate(-50%, ${y}px) scale(${spring.scale.get()})`),
+        transform: spring.y.to(
+          (y) => `translate(-50%, ${y}px) scale(${spring.scale.get()})`
+        ),
         opacity: spring.opacity,
         color: getColor(),
         textShadow: `0 0 10px ${getColor()}, 0 2px 4px rgba(0,0,0,0.5)`,

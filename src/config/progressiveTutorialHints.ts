@@ -50,7 +50,6 @@ export interface ProgressiveHint {
   content: string
   exampleTiles?: TileExample[][]
   priority: number // Lower = shown first
-  autoDismissMs?: number // Auto-dismiss after this time (default: 8000)
 }
 
 /**
@@ -70,22 +69,21 @@ export function getProgressiveHints(
     {
       id: 'guided-first-move-v2',
       trigger: 'gameStart',
-      title: t('gameplay.firstMoveTitle', 'Your first move is already here'),
+      title: t('gameplay.firstMoveTitle', 'Your first move'),
       content:
         beginnerPattern === 'redraw'
           ? t(
               'gameplay.firstMoveContentRedraw',
-              'You do not need to know Mahjong yet. The glowing tiles are isolated; select them and use Redraw to look for a Pair, Sequence, or Triplet. Open Learn patterns whenever you want the visual primer.'
+              'Select the glowing isolated tiles and Redraw to find a group. Learn the tiles opens the visual guide.'
             )
           : t(
               'gameplay.firstMoveContentPattern',
-              'You do not need to know Mahjong yet. The glowing tiles already make a {{pattern}}. Tap them, read the exact forecast, then Play. Open Learn patterns whenever you want the visual primer.',
+              'Glowing tiles: {{pattern}}. Select them, check the points, then Play. Learn the tiles opens the visual guide.',
               { pattern: patternName ?? t('gameplay.pattern', 'shape') }
             ),
-      priority: 1,
+      priority: 0,
       targetSelector: '[data-tutorial="hand"]',
       arrowDirection: 'bottom',
-      autoDismissMs: 12_000,
     },
 
     // === FIRST DISCARD HINTS ===
@@ -100,7 +98,6 @@ export function getProgressiveHints(
         'Discards replace one unwanted tile without spending a hand. Watch the shanten badge: lower is closer to a complete pattern. Redraw replaces up to three selected tiles.'
       ),
       priority: 1,
-      autoDismissMs: 6000,
     },
 
     // === FIRST HAND PLAYED HINTS ===
@@ -114,8 +111,7 @@ export function getProgressiveHints(
         'progressiveHints.yaku.content',
         'Partial structures always score, while a complete pattern unlocks Yaku multipliers. Use the forecast to decide between points now and improving the hand you keep.'
       ),
-      priority: 1,
-      autoDismissMs: 7000,
+      priority: 0,
     },
 
     // === FLOWER DRAWN HINTS ===
@@ -130,7 +126,6 @@ export function getProgressiveHints(
         'Flowers give run-wide bonuses. Seasons give round effects. Auto-triggered on draw!'
       ),
       priority: 1,
-      autoDismissMs: 6000,
     },
 
     // === SHOP ENTERED HINTS ===
@@ -145,7 +140,6 @@ export function getProgressiveHints(
         'Your cash-out explains every Gold gained. Buy a synergy now or keep savings for interest; ordinary item purchases are immediate, while Charters still ask for confirmation.'
       ),
       priority: 1,
-      autoDismissMs: 7000,
     },
 
     // === DECREE ACQUIRED HINTS ===
@@ -160,7 +154,6 @@ export function getProgressiveHints(
         'Decrees are persistent rule modifiers. They can change legal hands, scoring, economy, and tile behavior; inspect or sell them from this row.'
       ),
       priority: 1,
-      autoDismissMs: 7000,
     },
 
     // === BOSS ROUND HINTS ===
@@ -175,7 +168,6 @@ export function getProgressiveHints(
         'Boss rounds have mandates - special restrictions! Adapt your strategy.'
       ),
       priority: 1,
-      autoDismissMs: 6000,
     },
   ]
 }

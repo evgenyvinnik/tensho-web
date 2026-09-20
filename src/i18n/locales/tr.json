@@ -126,6 +126,8 @@
     "visual": "Görsel"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} şekil bonusu",
+    "beginnerBonusHelp": "Şekil bonusları taş puanlarına eklenir. Tahmin, koşunun değiştiricilerini içerir ve bu hamlenin gerçekte kaç puan kazandıracağını gösterir.",
     "act": "Perde",
     "round": "Tur",
     "score": "Puan",
@@ -162,7 +164,13 @@
     "hiddenHandDesc": "Kapalı taşlar, oynanana dek deseni ve puanı gizler.",
     "basePlayHint": "Temel oyun · Yaku açmak için bir deseni tamamlayın",
     "forecast": {
-      "looseTiles": "Tek taşlar yarım sayılır · grup yaparsan tamamı",
+      "looseTiles": "Grupsuz taşlar temel puanlarının yarısını verir · bir grup oluşturmayı dene",
+      "grouped": "Tüm taşlar gruplandı · +{{points}} temel şekil puanı",
+      "mixed": "+{{points}} temel şekil puanı · grup dışı: {{count}} (temel puanın yarısı)",
+      "complete": "Tamamlanmış el · tahmin etkin kuralları içerir",
+      "selectionCount": "Seçilen taşlar: {{count}}",
+      "stagedDeclaration": "Hazırlanan taşlar: {{count}} · ilanı onayla",
+      "completeDeclaration": "Tamamlanmış el ({{count}} taş) · ilan için hazırla",
       "clears": "Turu geçirir",
       "share": "Kalanın %{{percent}} kadarı · {{pace}}",
       "onPace": "tempoda",
@@ -177,9 +185,9 @@
     "stageHint": "Hamleni kur",
     "chooseTacticalGroup": "Taktik bir grup seç",
     "pattern": "şekil",
-    "firstMoveTitle": "İlk hamlen zaten burada",
-    "firstMoveContentPattern": "Henüz mahjong bilmen gerekmiyor. Parlayan taşlar zaten bir {{pattern}} oluşturuyor. Taşlara dokun, kesin tahmini oku ve oyna. Görsel rehber için istediğin zaman Taşları öğren bölümünü aç.",
-    "firstMoveContentRedraw": "Henüz mahjong bilmen gerekmiyor. Parlayan taşlar tek başına kalmış; onları seçip Yeniden Çek ile bir Çift, Dizi veya Üçlü ara. Görsel rehber için istediğin zaman Taşları öğren bölümünü aç.",
+    "firstMoveTitle": "İlk hamlen",
+    "firstMoveContentPattern": "Parlayan taşlar: {{pattern}}. Seç, puanı kontrol et ve oyna. Taşları öğren, görsel rehberi açar.",
+    "firstMoveContentRedraw": "Parlayan tek taşları seç ve bir grup bulmak için Yeniden Çek kullan. Taşları öğren, görsel rehberi açar.",
     "learnPatterns": "Taşları öğren",
     "beginnerGuideTitle": "Bir dakikada mahjong",
     "beginnerGuideIntro": "Henüz tam bir eli bilmene gerek yok. Tensho’da küçük bir şekil bulup puan için oynayarak başla.",
@@ -225,7 +233,7 @@
     "confirmHand": "ELİ ONAYLA",
     "notComplete": "TAMAMLANMADI",
     "playCount": "{{count}} OYNA",
-    "pointsToClear": "{{count}} kaldı",
+    "pointsToClear": "{{formattedCount}} kaldı",
     "targetCleared": "Hedefe ulaşıldı",
     "stake": "Bahis {{tier}}",
     "requiredTiles": "{{count}} TAŞ",
@@ -281,7 +289,7 @@
       "interest": "Faiz",
       "decrees": "Fermanlar",
       "goldTiles": "Altın taşlar",
-      "bonus": "Ödül bonusu",
+      "bonus": "Ödül düzeltmesi",
       "rentals": "Kiralar",
       "interestBlocked": "Faiz şu anda engelleniyor.",
       "interestCap": "{{interest}}G faiz sınırına ulaşıldı.",
@@ -370,14 +378,15 @@
       "decayPenalty": "Oynanan el başına Çürüme cezası: −{{points}} puan.",
       "partial": "Bazı mevsim kuralları hâlâ geliştiriliyor. Yalnızca mevcut etkiler gösterilir.",
       "unwired": "Henüz uygulanmadı.",
-      "summer": "Puan ×1,3.",
+      "summer": "Puan ×1,3. Bu tur için kalan canlı duvarın %20’sini ayırır (kullanılabilir taş sayısı aşağı yuvarlanır).",
       "autumn": "Yaku çarpanı +%20.",
       "winter": "Puan ×0,75.",
       "drought": "Korunmayan çiçeklerin puan bonuslarını bastırır.",
-      "frostbite": "Ferman çarpan bonuslarını yarıya indirir.",
+      "frostbite": "Fermanların sabit puan, çarpan ve altın bonuslarını yarıya indirir.",
       "decay": "Bu turda atılan her taş için −10 puan; puan sıfırın altına düşmez.",
       "droughtName": "Kuraklık",
       "monsoonName": "Muson",
+      "monsoon": "Bu turda normal taş çekişlerini ve bonus taşların yerine çekilen taşları rastgele seçer.",
       "frostbiteName": "Donma",
       "decayName": "Çürüme",
       "corruptedName": "Bozulmuş",
@@ -386,7 +395,7 @@
       "flowerChrysanthemum": "Her kapalı grup için +%{{percent}} puan.",
       "flowerBamboo": "Her terminal taş için +%{{percent}} puan.",
       "setTwo": "2 çiçek: +1 ferman yuvası.",
-      "setThree": "3 çiçek: özel mağaza açılımı henüz uygulanmadı.",
+      "setThree": "3 çiçek: mağazada ve Ferman paketlerinde çiçeklerle güçlenen Fermanları açar.",
       "setFour": "4 çiçek: çiçek bonusları ikiye katlanır."
     },
     "flowers": "Çiçekler",
@@ -771,6 +780,9 @@
     "stepsCount": "{{done}}/{{total}} adım"
   },
   "scoring": {
+    "lastPlay": "Son hamle",
+    "adjustments": "Puan sonrası etkiler",
+    "exactValues": "Kesin değerler",
     "basePoints": "Temel puan",
     "totalScore": "Toplam puan",
     "subtotal": "Ara toplam",
@@ -937,7 +949,7 @@
       },
       "river_merchant": {
         "name": "Fısıldayan Tüccar",
-        "description": "Her turda bir kez, nehirden bir taşı rafına geri al."
+        "description": "Her turda bir kez, raftan seçtiğin bir taşı nehirdeki bir taşla takas et. Aksiyon harcamaz."
       },
       "jade_ledger": {
         "name": "Yeşim Defteri",
@@ -1004,6 +1016,10 @@
       "bridges": "· {{count}} köprü"
     },
     "river": {
+      "choose": "Vereceğin bir raf taşını seç, ardından nehirden bir taş seç. Her turda bir kez ücretsiz.",
+      "ready": "{{tile}} taşını bir nehir taşıyla takas et. Aksiyon harcamaz.",
+      "used": "Tüccar takası bu tur kullanıldı.",
+      "swapLabel": "{{give}} taşını {{take}} ile takas et",
       "title": "Nehir",
       "recover": "Nehir: birini geri almak için dokun"
     },

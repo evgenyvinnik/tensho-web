@@ -61,6 +61,84 @@ const LOCALES: Record<string, Locale> = {
   'zh-Hant': zhHant,
 }
 
+it('explains guide bonuses in every language without baking in balance values', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const gameplay = locale.gameplay as Record<string, string>
+    expect(gameplay.beginnerShapeBonus, language).toContain('{{points}}')
+    expect(
+      gameplay.beginnerShapeBonus.match(/\{\{points\}\}/g),
+      language
+    ).toHaveLength(1)
+    expect(gameplay.beginnerBonusHelp?.trim().length, language).toBeGreaterThan(
+      0
+    )
+  }
+})
+
+it('supplies the shared mobile/desktop play labels in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const gameplay = locale.gameplay as Record<string, string>
+    const scoring = locale.scoring as Record<string, string>
+    for (const key of [
+      'basePoints',
+      'subtotal',
+      'totalMultiplier',
+      'exactValues',
+      'lastPlay',
+      'adjustments',
+    ]) {
+      expect(
+        scoring[key]?.trim().length,
+        `${language}: scoring.${key}`
+      ).toBeGreaterThan(0)
+    }
+    for (const key of [
+      'selectExact',
+      'stageHand',
+      'selectRange',
+      'selectMore',
+      'returnTiles',
+      'confirmHand',
+      'notComplete',
+      'playCount',
+      'deadDraw',
+      'winsRound',
+    ]) {
+      expect(
+        gameplay[key]?.trim().length,
+        `${language}: ${key}`
+      ).toBeGreaterThan(0)
+    }
+    for (const key of [
+      'selectExact',
+      'selectMore',
+      'returnTiles',
+      'playCount',
+    ]) {
+      expect(gameplay[key], `${language}: ${key}`).toContain('{{count}}')
+    }
+    expect(gameplay.selectRange).toContain('{{min}}')
+    expect(gameplay.selectRange).toContain('{{max}}')
+  }
+})
+
+it('localizes Merchant swap instructions and preserves their placeholders in every language', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const loop = locale.tableLoop as {
+      river: Record<string, string>
+      decrees: { river_merchant: { description: string } }
+    }
+    for (const key of ['choose', 'ready', 'used', 'swapLabel']) {
+      expect(loop.river[key], `${language}: ${key}`).toBeTypeOf('string')
+      expect(loop.river[key].length).toBeGreaterThan(0)
+    }
+    expect(loop.river.ready).toContain('{{tile}}')
+    expect(loop.river.swapLabel).toContain('{{give}}')
+    expect(loop.river.swapLabel).toContain('{{take}}')
+    expect(loop.decrees.river_merchant.description.length).toBeGreaterThan(0)
+  }
+})
+
 it('localizes the reset scope and storage failure outcomes in every language', () => {
   for (const [lang, locale] of Object.entries(LOCALES)) {
     const settings = locale.settings as Record<string, string>

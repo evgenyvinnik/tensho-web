@@ -26,6 +26,14 @@ import { ParsedHand } from '../core/Hand'
 import { DetectedYaku, YakuContext, detectYaku, calculateYakuMultiplier } from './YakuDetector'
 import { tileModifierSystem } from '../systems/TileModifierSystem'
 import { redFiveSystem, countRedFives } from '../systems/RedFiveSystem'
+import type { ScoreEquation } from './ScoreEquation'
+
+/** Structural classification before numeric bonuses/debuffs, shared with the forecast. */
+export interface ScoredStructure {
+  kind: 'tactical' | 'complete'
+  groupedTiles: number
+  looseTiles: number
+}
 
 /**
  * Detailed score breakdown
@@ -35,6 +43,7 @@ export interface ScoreBreakdown {
   basePoints: number
   tilePoints: number
   structurePoints: number
+  structure: ScoredStructure
 
   // Tile modifier bonuses
   modifierChips: number
@@ -64,6 +73,8 @@ export interface ScoreBreakdown {
   // Final
   subtotal: number
   finalScore: number
+  /** Present after the orchestrator applies all gameplay-system layers. */
+  equation?: ScoreEquation
 }
 
 /**
@@ -218,6 +229,12 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
         context.partialMelds!.flatMap((meld) => meld.tiles.map((tile) => tile.id))
       )
     : null
+  // Count tiles in the scored parse, not retriggers or only non-debuffed tiles:
+  // suppression changes a tile's value, not whether it belongs to a group.
+  const structureTiles = context.tiles.filter((tile) => !tile.isBonus)
+  const looseTiles = groupedTileIds
+    ? structureTiles.filter((tile) => !groupedTileIds.has(tile.id)).length
+    : 0
   const tilePointsFor = (tile: Tile): number => {
     const base = getTilePoints(tile)
     if (!groupedTileIds || groupedTileIds.has(tile.id)) return base
@@ -290,6 +307,11 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     basePoints,
     tilePoints,
     structurePoints,
+    structure: {
+      kind: isPartial ? 'tactical' : 'complete',
+      groupedTiles: structureTiles.length - looseTiles,
+      looseTiles,
+    },
     modifierChips,
     modifierMult,
     modifierMultiplier,

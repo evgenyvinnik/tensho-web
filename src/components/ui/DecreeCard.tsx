@@ -8,7 +8,7 @@
 import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { Decree, OwnedDecree, DecreeRarity } from '../../systems/types'
-import { DecreeUniqueIcon } from './svg/DecreeIcons'
+import { DecreeArtwork } from './DecreeArtwork'
 import { useItemText } from '../../i18n/useItemText'
 
 /**
@@ -122,7 +122,7 @@ export function DecreeCard({
     >
       {/* Unique decree icon */}
       <div className="absolute top-1 left-1">
-        <DecreeUniqueIcon
+        <DecreeArtwork
           decreeId={decree.id}
           size={mode === 'compact' ? 20 : 28}
           color={RARITY_ICON_COLORS[decree.rarity]}

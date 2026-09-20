@@ -126,6 +126,8 @@
     "visual": "Visivo"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} bonus di combinazione",
+    "beginnerBonusHelp": "I bonus di combinazione si sommano ai punti delle tessere. L'anteprima include i modificatori della partita e mostra il punteggio effettivo della giocata.",
     "act": "Atto",
     "round": "Round",
     "score": "Punteggio",
@@ -162,7 +164,13 @@
     "hiddenHandDesc": "Le tessere coperte nascondono schemi e punteggio finché non vengono giocate.",
     "basePlayHint": "Giocata base · completa uno schema per sbloccare gli Yaku",
     "forecast": {
-      "looseTiles": "Le tessere sciolte valgono metà · raggruppale per il pieno",
+      "looseTiles": "Le tessere isolate danno metà dei punti base · prova a formare un gruppo",
+      "grouped": "Tutte le tessere sono raggruppate · +{{points}} punti base di forma",
+      "mixed": "+{{points}} punti base di forma · tessere isolate: {{count}} (metà dei punti base)",
+      "complete": "Mano completa · la previsione include le regole attive",
+      "selectionCount": "Tessere selezionate: {{count}}",
+      "stagedDeclaration": "Tessere preparate: {{count}} · conferma la dichiarazione",
+      "completeDeclaration": "Mano completa ({{count}} tessere) · preparala per dichiarare",
       "clears": "Supera il round",
       "share": "{{percent}}% di quel che manca · {{pace}}",
       "onPace": "in ritmo",
@@ -177,9 +185,9 @@
     "stageHint": "Costruisci la tua giocata",
     "chooseTacticalGroup": "Scegli un gruppo tattico",
     "pattern": "figura",
-    "firstMoveTitle": "La tua prima mossa è già qui",
-    "firstMoveContentPattern": "Non serve ancora conoscere il mahjong. Le tessere luminose formano già una {{pattern}}. Toccatele, leggete la previsione esatta e giocate. Aprite Impara le tessere quando volete rivedere la guida visiva.",
-    "firstMoveContentRedraw": "Non serve ancora conoscere il mahjong. Le tessere luminose sono isolate: selezionatele e usate Ripesca per cercare una Coppia, una Sequenza o un Tris. Aprite Impara le tessere quando volete rivedere la guida visiva.",
+    "firstMoveTitle": "La tua prima mossa",
+    "firstMoveContentPattern": "Tessere luminose: {{pattern}}. Selezionale, controlla i punti e gioca. Impara le tessere apre la guida visiva.",
+    "firstMoveContentRedraw": "Seleziona le tessere luminose isolate e usa Ripesca per trovare un gruppo. Impara le tessere apre la guida visiva.",
     "learnPatterns": "Impara le tessere",
     "beginnerGuideTitle": "Mahjong in un minuto",
     "beginnerGuideIntro": "Non serve ancora conoscere una mano completa. In Tensho, inizia trovando una piccola figura e giocala per ottenere punti.",
@@ -225,7 +233,7 @@
     "confirmHand": "CONFERMA LA MANO",
     "notComplete": "INCOMPLETA",
     "playCount": "GIOCA {{count}}",
-    "pointsToClear": "mancano {{count}}",
+    "pointsToClear": "mancano {{formattedCount}}",
     "targetCleared": "Obiettivo raggiunto",
     "stake": "Posta {{tier}}",
     "requiredTiles": "{{count}} TESSERE",
@@ -281,7 +289,7 @@
       "interest": "Interessi",
       "decrees": "Decreti",
       "goldTiles": "Tessere d’oro",
-      "bonus": "Bonus ricompensa",
+      "bonus": "Rettifica ricompensa",
       "rentals": "Affitti",
       "interestBlocked": "Gli interessi sono attualmente bloccati.",
       "interestCap": "Hai raggiunto il limite di interessi di {{interest}}G.",
@@ -370,14 +378,15 @@
       "decayPenalty": "Penalità del Declino per giocata: −{{points}} punti.",
       "partial": "Alcune regole stagionali sono ancora in sviluppo. Sono mostrati solo gli effetti attuali.",
       "unwired": "Non ancora implementato.",
-      "summer": "Punteggio ×1,3.",
+      "summer": "Punteggio ×1,3. Mette da parte il 20% del muro vivo rimanente per questo round (tessere disponibili arrotondate per difetto).",
       "autumn": "Moltiplicatore yaku +20%.",
       "winter": "Punteggio ×0,75.",
       "drought": "Annulla i bonus al punteggio dei fiori non protetti.",
-      "frostbite": "Dimezza i bonus moltiplicatori dei decreti.",
+      "frostbite": "Dimezza i bonus di punti fissi, moltiplicatore e oro dei Decreti.",
       "decay": "−10 punti per tessera scartata in questo round, senza scendere sotto zero.",
       "droughtName": "Siccità",
       "monsoonName": "Monsone",
+      "monsoon": "Rende casuali le pescate normali e le sostituzioni delle tessere bonus in questo round.",
       "frostbiteName": "Congelamento",
       "decayName": "Declino",
       "corruptedName": "Corrotta",
@@ -386,7 +395,7 @@
       "flowerChrysanthemum": "+{{percent}}% al punteggio per gruppo nascosto.",
       "flowerBamboo": "+{{percent}}% al punteggio per tessera terminale.",
       "setTwo": "2 fiori: +1 spazio decreto.",
-      "setThree": "3 fiori: sblocco speciale del negozio non ancora implementato.",
+      "setThree": "3 fiori: sbloccano Decreti potenziati dai fiori nel negozio e nei pacchetti di Decreti.",
       "setFour": "4 fiori: bonus dei fiori raddoppiati."
     },
     "flowers": "Fiori",
@@ -771,6 +780,9 @@
     "stepsCount": "{{done}}/{{total}} passi"
   },
   "scoring": {
+    "lastPlay": "Ultima giocata",
+    "adjustments": "Effetti successivi",
+    "exactValues": "Valori esatti",
     "basePoints": "Punti base",
     "totalScore": "Punteggio totale",
     "subtotal": "Subtotale",
@@ -940,7 +952,7 @@
       },
       "river_merchant": {
         "name": "Mercante che Sussurra",
-        "description": "Una volta per round, riprendi una tessera dal fiume e rimettila sulla rastrelliera."
+        "description": "Una volta per round, scambia una tessera scelta dalla rastrelliera con una del fiume. Non costa azioni."
       },
       "jade_ledger": {
         "name": "Registro di Giada",
@@ -1007,6 +1019,10 @@
       "bridges": "· {{count}} ponte"
     },
     "river": {
+      "choose": "Scegli una tessera da cedere dalla rastrelliera, poi una del fiume. Gratis una volta per round.",
+      "ready": "Cedi {{tile}} per una tessera del fiume. Nessun costo in azioni.",
+      "used": "Scambio del Mercante già usato in questo round.",
+      "swapLabel": "Scambia {{give}} con {{take}}",
       "title": "Fiume",
       "recover": "Fiume: tocca per riprenderne una"
     },

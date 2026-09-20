@@ -25,7 +25,7 @@ import {
   useRouteError,
   isRouteErrorResponse,
 } from 'react-router-dom'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   isSupportedLanguage,
@@ -36,6 +36,7 @@ import {
 import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
 import { APP_BASE_URL, APP_ROUTER_BASENAME } from '../utils/basePath'
 import { audioSystem } from '../systems/AudioSystem'
+import { RouteLoading } from '../components/ui/RouteLoading'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -204,7 +205,10 @@ export function LanguageLayout() {
   }, [pathname])
   return (
     <LanguageSync>
-      <Outlet />
+      {/* Keep URL-language synchronization mounted while a screen downloads. */}
+      <Suspense fallback={<RouteLoading />}>
+        <Outlet />
+      </Suspense>
     </LanguageSync>
   )
 }

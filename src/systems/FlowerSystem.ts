@@ -17,6 +17,7 @@
  */
 
 import { Tile, TileSuit } from '../core/Tile'
+import { FLOWER_DECREE_UNLOCK_COUNT } from '../config/flowerRules'
 import { MeldType } from '../core/Meld'
 import {
   FlowerTile,
@@ -101,7 +102,7 @@ export const FLOWER_SET_BONUSES: FlowerSetBonus[] = [
     },
   },
   {
-    requiredCount: 3,
+    requiredCount: FLOWER_DECREE_UNLOCK_COUNT,
     effect: {
       type: 'unlock_decrees',
       description: 'Unlock Flower-triggered Decrees in shop',
@@ -194,7 +195,9 @@ export class FlowerSystem {
       id: tile.id,
       type: flowerType,
       effect: FLOWER_BASE_EFFECTS[flowerType],
-      mutation: this.unlockedMutations.has(FLOWER_MUTATIONS[flowerType].mutationId)
+      mutation: this.unlockedMutations.has(
+        FLOWER_MUTATIONS[flowerType].mutationId
+      )
         ? { ...FLOWER_MUTATIONS[flowerType], isUnlocked: true }
         : undefined,
     }
@@ -234,7 +237,8 @@ export class FlowerSystem {
 
     for (const flower of this.flowers) {
       const matchCount = this.countMatches(flower.effect.target, context)
-      const bonus = matchCount * flower.effect.percentagePerMatch * effectiveness
+      const bonus =
+        matchCount * flower.effect.percentagePerMatch * effectiveness
       totalPercentage += bonus
     }
 
@@ -345,7 +349,9 @@ export class FlowerSystem {
       return {
         hasInteraction: true,
         effect: 'Winter penalty negated',
-        bonus: 0.25, // Restores the 25% penalty
+        // Nominal penalty for one Winter, not an additive scoring adjustment.
+        // SeasonSystem omits each Winter factor in the authoritative pipeline.
+        bonus: 0.25,
       }
     }
 
@@ -447,7 +453,12 @@ export function createFlowerTile(
     return null
   }
 
-  const variants: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
+  const variants: FlowerVariant[] = [
+    'Plum',
+    'Orchid',
+    'Chrysanthemum',
+    'Bamboo',
+  ]
   const variant = variants[tile.rank - 1]
 
   if (!variant) {
@@ -461,6 +472,8 @@ export function createFlowerTile(
     id: tile.id,
     type: variant,
     effect: FLOWER_BASE_EFFECTS[variant],
-    mutation: isMutationUnlocked ? { ...mutation, isUnlocked: true } : undefined,
+    mutation: isMutationUnlocked
+      ? { ...mutation, isUnlocked: true }
+      : undefined,
   }
 }

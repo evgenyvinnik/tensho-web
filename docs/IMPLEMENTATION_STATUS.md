@@ -2,15 +2,176 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** September 10, 2026
+**Last verified:** September 19, 2026
 
-**Current completion status:** In progress. The latest full unit suite passed **748 tests in 69 files** with one worker (218.74 seconds). The full browser run finished **201/202** (20.3 minutes): all mobile checks and all Flora/dialog/touch regressions passed, but desktop Codex navigation timed out. A subsequent **24/24 focused follow-up** passed without retries, repeating strengthened Codex navigation, Flora, and rack-transfer checks twice in both configurations. This does not retroactively make the full run a pass. Strict TypeScript, the Pages-path production build, targeted formatting/lint, and whitespace checks pass. The preceding checkpoint's **13/13 isolated release-workflow tests** and repository-wide lint (**zero errors / 211 warnings**) remain historical; they were not rerun in this Flora pass. See the [verification ledger](IMPLEMENTATION_WRAP_UP.md#current-flora-dialog-and-touch-checkpoint).
+**Current beginner-guidance checkpoint:** forecasts now distinguish grouped,
+mixed, loose and complete selections using the engine's scored structure.
+Selection/declaration headings are localized in all thirteen languages and no
+longer repeat the shape bonus or let idle advice override an active selection.
+Full units passed **1022/1022 in 93 files**. The final browser set finished
+**15 passed / 1 short-phone timeout**; three unchanged isolated repetitions of
+that scenario passed **3/3**. All new guidance and secondary-scoring journeys
+passed. Strict TypeScript, targeted lint, formatting and the Pages-base production
+build (including offline-cache generation) passed.
+[Guidance evidence](BEGINNER_GUIDE_IMPLEMENTATION.md) records scope,
+reviewed screenshots and the unresolved timeout cause. Proposed mechanics rules
+remain unapproved; whole-project completion and deployment remain unproven.
+
+**Preceding score-localization checkpoint:** forecast and paid multipliers now use
+the selected language's decimal/compact notation, remaining-score hints format
+numbers in all thirteen locales, and progress announcements use localized labels.
+Full units passed **985/985 in 90 files**. The first browser set retained **12
+passes / 8 fixture-assertion failures**; the corrected layout set passed **8/8**.
+Strict TypeScript, targeted lint and the Pages-base production build passed.
+[HUD evidence](FORECAST_UI_IMPLEMENTATION.md) records the exact coverage and the
+newly observed misleading loose-tile explanation on valid tactical groups.
+Doppelganger's target-refresh timing is awaiting a user choice; its positional
+selector is not yet replaced. Whole-project completion remains unproven.
+
+**Preceding copy-rule checkpoint:** main scoring preserves physical copy targets
+when neighbors are suppressed; a leftmost Brainstorm no longer copies its right
+neighbor. Copied resource effects include both benefits and penalties. Full units
+passed **964/964 in 89 files** and **20/20 desktop/touch browser checks** passed,
+including paid acquisition, next-round resources and forecast/payment agreement.
+Strict TypeScript, targeted lint and the Pages-base production build passed.
+[Copy evidence](DECREE_COPY_IMPLEMENTATION.md) records exact coverage and remaining
+random-copy, fractional-effect and broader completion gaps. Nothing is deployed.
+
+**Preceding secondary-scoring checkpoint:** Frostbite now weakens Yaku-specific
+Decree benefits without cutting native Yaku/table bonuses. Mandate-disabled Yaku
+and retrigger powers no longer contribute, including copied amplification.
+Full units passed **945/945 in 88 files** and all **18/18 desktop/touch browser
+checks** passed. Strict TypeScript, targeted lint and the Pages-base build passed.
+[Secondary scoring evidence](SECONDARY_SCORING_IMPLEMENTATION.md)
+records fixtures, screenshot review and the fractional-trigger choice. Its main
+copy-order gap is addressed above. Whole-project completion remains unproven.
+
+**Preceding Decree-economy checkpoint:** Wealth Engine now scales with owned
+inventory; gold rewards/multipliers honor copy effects and physical copier
+positions. A new generated portrait appears in Shop, inventory and Archive,
+without leaking face-down identity. Full units passed **928/928**; the final
+Spanish wording follow-up passed **31/31 targeted checks**. Browser checks passed
+**20/20**, then **4/4** after the wording change and a fresh development-server
+module graph. [Economy/art evidence](DECREE_ECONOMY_IMPLEMENTATION.md) records
+retained fixture failures, the exact image prompt, and unverified model identity.
+Strict TypeScript, targeted lint and the Pages-base production build passed.
+Treasure Hunter timing and broader completion remain open. Nothing is deployed.
+
+**Preceding gold-settlement checkpoint:** Frostbite now weakens Decree-generated
+gold and the bonus part of its gold multiplier across shared reward paths.
+Disabled Decrees are excluded; ordinary reward bases and costs remain intact.
+Fractional receipts use localized reward-adjustment labels in all 13 locales.
+The full unit run finished **912 passed / 2 balance-command timeouts**; the
+unchanged command file subsequently passed **22/22**. All **24/24 targeted browser
+checks** passed, including Merchant purchase/swap/reload and spendable cash-out.
+Strict TypeScript, targeted lint and the Pages-base production build passed.
+[Gold evidence](FROSTBITE_GOLD_IMPLEMENTATION.md) records exact boundaries and
+remaining catalog-specific scaling/copying gaps. Nothing is committed or deployed.
+
+**Preceding Frostbite scoring checkpoint:** Decree flat-point bonuses now receive the
+penalty without cutting tile bonuses; repeated Frostbites stack and fractional
+subtotals remain visible. Inspector copy is updated in all 13 locales. The
+additive correction passed **892/892 full units**; final stacking/counter changes
+passed **121/121 targeted checks**. Browser verification finished **21 passed /
+1 timeout**, followed by **6/6 final checks** including the unchanged timed-out
+case. Strict TypeScript, targeted lint and the Pages-base build passed.
+[Frostbite evidence](FROSTBITE_IMPLEMENTATION.md) preserves the original timeout
+and the then-unimplemented gold/retrigger/Yaku/non-numeric effect scope. Nothing was
+committed, merged, pushed or deployed; whole-project completion remains unproven.
+
+**Preceding illustrated-guide checkpoint:** the Classic primer now reads shape
+bonuses from the engine instead of obsolete hard-coded values. Localized bonus
+explanations, wrapping family names, stacked phone examples and a single scroll
+area accompany a new generated guidebook asset. **885/885 full units in 83 files**,
+**26/26 targeted desktop/touch browser checks**, strict TypeScript, targeted lint
+and the Pages-base build passed. [Guide evidence](BEGINNER_GUIDE_IMPLEMENTATION.md)
+records the exact image prompt, screenshots and verification boundaries. No
+commit, merge, push or deployment occurred; broader completion remains unproven.
+
+**Preceding tutorial checkpoint:** Play/Shop hints now occupy their own layout
+space, collapse natively and have no reading countdown. First-move/scoring
+lessons precede bonus tips, a completed first lesson cannot arrive late, and
+opt-out survives stale events or malformed history. The first instructions are
+shorter in all 13 locales; other hint localization is still incomplete. A normal
+score-animation formatting issue was also fixed. **879/879 full units in 83
+files**, **26/26 targeted browser checks**, strict TypeScript, targeted lint and
+the Pages-base build passed. [Tutorial evidence](TUTORIAL_CARD_IMPLEMENTATION.md)
+records failures, the final unit-tested storage safeguard, screenshot review and
+remaining limits. No commit, merge, push or deployment occurred.
+
+**Preceding scoring-accuracy checkpoint:** Classic's last-play equation now comes
+from the engine's settled payment rather than separate hand/Yaku arithmetic.
+The reproduced 585-paid/1,521-displayed mismatch is fixed; consecutive plays,
+post-score effects, zero results and round reset are covered. **869/869 full
+units in 83 files**, **14/14 targeted browser checks**, and **6/6 final
+unobscured scoring journeys** passed. Strict TypeScript, targeted lint and the
+Pages-base build passed. [Score settlement evidence](SCORE_SETTLEMENT_IMPLEMENTATION.md)
+records the tutorial overlay discovered during screenshot review and the exact
+verification boundaries. The following tutorial checkpoint addresses that overlap. Nothing was committed,
+merged, pushed or deployed.
+
+**Preceding score-UI checkpoint:** compact forecast/score layouts, localized mobile
+action labels, locale-aware large values with native exact-value disclosure,
+and reduced-motion counters/popups are connected. **861/861 full units in 81
+files**, **24/24 targeted gameplay/browser checks**, and the final **8/8 layout
+follow-up** passed. Strict TypeScript, the Pages-base build and targeted ESLint
+passed. [Score UI verification](FORECAST_UI_IMPLEMENTATION.md) records sequence,
+retained failures and fixture limits. Its separate animated-equation accuracy
+audit is addressed by the September 19 checkpoint above.
+
+**Preceding Winter interaction checkpoint:** concealed plays with unsuppressed
+Chrysanthemum now ignore normal Winter penalties, including stacked Winters.
+Preview and committed score share effective Drought/Decree protection. The full
+unit run finished **843 passed / 1 tutorial timeout**; the unchanged tutorial and
+eleven Winter cases then passed **12/12**. Strict TypeScript and the Pages-base
+build passed. All four new English/Spanish desktop/mobile scoring flows passed;
+the final Flora run retained **13 passes / 1 existing mobile-dialog timeout**.
+The initial broader run also passed all twenty tile-interaction/Merchant checks.
+[Winter verification](WINTER_FLOWER_IMPLEMENTATION.md) records test corrections,
+retained failures and newly observed compact-forecast/localization gaps.
+
+**Preceding route-loading checkpoint:** all nine screens load on demand while
+retaining the illustrated offline bundle. Cold English page-requested JavaScript
+is 1,055,338 bytes for the menu and 870,918 for direct Table Loop, versus the old
+1,389,080-byte entry/registration pair. These are code sizes, not speed scores.
+The loader is localized and motion-safe. **833/833 units in 78 files**, **18/18
+production browser checks** and **13/13 local release checks** passed. The full
+development browser suite finished **233 passed / 1 timeout / 10 production-only
+skips**. The unchanged timed-out case subsequently passed four repeated checks;
+its original cause remains unproven. [On-demand screen verification](ROUTE_LOADING_IMPLEMENTATION.md)
+records precise coverage and retained failures. No commit, merge, push or deploy
+was performed.
+
+**Preceding release-preparation checkpoint:** all ten Table Loop Decrees have
+individual scroll artwork, including Jade Ledger. The approved Whispering
+Merchant swap works with full racks and preserves version-1 journal replay.
+Rejected actions no longer consume pending offers, and touch selection no longer
+leaves a rack tooltip covering the trade area. The three-Flower inspector marks
+its earned shop unlock. Verification passed **830/830 unit tests in 77 files**,
+**70/70 targeted gameplay browser checks**, and **8/8 production-guide checks**,
+plus strict TypeScript and the Pages-base build. This work is not merged,
+committed, pushed, or deployed. [Release preparation](TABLE_LOOP_RELEASE.md)
+records exact scope, retained failures, save compatibility and remaining risks.
+
+**Summer follow-up:** normal Summer now reduces the remaining live wall for this
+round, while preserving set-aside tile identities in the permanent collection.
+Actual draws and redraw preflight use the same helper, including nested bonus
+chains and Omen locks. [Summer implementation](SUMMER_IMPLEMENTATION.md) records
+the timing/rounding assumptions and the still-unimplemented Bamboo exception.
+
+**Monsoon follow-up:** live-wall and bonus-replacement draws now use the active Season rule. Forked-RNG redraw previews reproduce corruption/locks without changing the actual draw sequence or collecting rewards; restored-only Omen locks now agree with their preview. The inspector explains Monsoon in all 13 locales. The focused run passed 55/55; [Monsoon implementation](MONSOON_IMPLEMENTATION.md) records the final verification checkpoint and remaining requirements. The September 10 totals below are historical, not the new suite count.
+
+**Public guides/art:** the English static About/how-to-play/FAQ pages and SEO roadmap are implemented. The public guides support wrapping enlarged text and keyboard skip-to-main focus. [SEO strategy](SEO_STRATEGY.md) records verification failures/fixes, performance/localization limits and outstanding deployment checks. All ten Table Loop Decrees now have individual scroll artwork.
+
+**Completion status:** In progress. The current unit and targeted-browser checks pass; prior full-browser results and retained timeouts remain historical evidence, not a current full-suite pass. Verification is not a live deployment, a physical-device accessibility review, or proof that the game is fun. Earlier Merchant, Summer and Flower counts are historical. See the [verification ledger](IMPLEMENTATION_WRAP_UP.md).
+
+**September 10 historical checkpoint:** 748 unit tests in 69 files passed; the full browser run finished 201/202, with a desktop Codex timeout. The strengthened 24/24 focused follow-up passed but did not retroactively turn that full run into a pass. Release-workflow checks were rerun in the current route-loading checkpoint above; repository-wide lint (zero errors / 211 warnings) remains historical, with only targeted lint rerun. [Historical evidence](IMPLEMENTATION_WRAP_UP.md#current-flora-dialog-and-touch-checkpoint) remains recorded separately.
 
 The preceding pass fixes earned-Omen Season cleanup/stacking and Boss skip validation, integrates the fifth individual Table Loop scroll (Gap Bridge), and makes pack cards/rewards respect app/system reduced motion without hiding content or clearing selected rewards. Gap Bridge's fallback example now agrees with the localized catalog and actual one-gap rule. See [Omen lifecycle](OMEN_LIFECYCLE.md), [pack motion](SHOP_IMPLEMENTATION.md#pack-motion-follow-up), and [scroll artwork provenance](TABLE_LOOP_ART.md).
 
 **Flora follow-up:** the inspector is now connected, with the full ordered Season stack, actual corrupted subtype rules, Flower collection bonuses, and all 13 locales. Decay now counts real discards, and Eternal Garden's secondary protection effect actually prevents Drought suppression. Browser review also exposed and fixed tile touch gestures opening unrelated controls and long dialog text overlapping scroll ornaments. See [Flora implementation](FLORA_IMPLEMENTATION.md).
 
-**Next concrete mechanics gaps:** Spring's extra draws, Summer's wall shrink, Autumn's discard-pool growth, Winter's loosened legality, Monsoon's draw randomization, and the three-Flower shop unlock still have no authoritative gameplay consumers. Frostbite only halves Decree multiplier bonuses. The inspector labels incomplete behavior truthfully; these remain requirements to finish, not features removed from scope. Flower mutations/catalysts and the documented Flower–Season combinations need a full integration audit.
+**Next concrete mechanics gaps:** Spring's extra draws, Autumn's discard-pool growth, and Winter's loosened legality still have no authoritative gameplay consumers. The [three-Flower unlock](FLOWER_SHOP_IMPLEMENTATION.md) now gates the seven existing Flower-scaled Decrees in ordinary/guaranteed/rerolled shop offers and Decree packs. Frostbite now scales flat-point and main Decree multiplier bonuses per stacked copy; other effect types remain incomplete. The inspector labels incomplete behavior truthfully; these remain requirements to finish, not features removed from scope. Chrysanthemum/Winter is now connected; Flower mutations/catalysts and the other three Flower–Season combinations, including Bamboo's Summer exception, still need integration and explicit rules where the source documents are ambiguous.
 
 The current Omen follow-up carries the Rare+ guarantee through shop generation, defers impossible rewards without charging their shop-entry fee, and delivers stacked item, pack, and edition guarantees without overwriting one another. Ten engine cases and both 320-pixel browser configurations cover actual rewards, purchase, free-pack settlement, reroll, and same-visit recovery. Canonical edition wording still conflicts with the existing free-offer behavior; Double Omen and the named pack-skip synergy Decrees remain legacy definitions outside the acquireable catalogs. See [shop Omen implementation](SHOP_IMPLEMENTATION.md#shop-omen-guarantee-follow-up) and the [verification ledger](IMPLEMENTATION_WRAP_UP.md#current-shop-omen-checkpoint) for scope and retained failure evidence.
 
@@ -66,7 +227,7 @@ A second, self-contained core loop lives at `/:lang/table-loop`, reachable from 
 | Revise | An occupied slot may be replaced by a group of the same slot kind for one placement action. The replacement pays only the difference over the group it turns out, credited at the current multiplier, so a slot cannot be sold twice; displaced tiles go to the river and already-claimed milestones stay claimed | Working |
 | Standing multiplier | Derived from the patterns the table currently shows, not accumulated. A milestone's points are paid once and kept; its multiplier lasts only while the pattern stands, and the forecast names the cost before a placement breaks one | Working |
 | Exchange | One to three rack tiles for fresh draws, costing an exchange allowance — or, once those are gone, one placement action as a recovery play | Working |
-| River recovery | With Whispering Merchant, one tile per round returns from the river to the rack | Working |
+| River swap | With Whispering Merchant, choose one rack tile and trade it for a river tile once per round, at no action cost. Works with a full rack; rejects missing/ambiguous selections. Version-1 recovery journals remain readable. Paid acquisition, exchange, resource preservation and reload pass in English/Spanish desktop/mobile checks. See [release preparation](TABLE_LOOP_RELEASE.md). | Working |
 | Milestones | Six cross-slot patterns, each paid once per round, each raising the standing multiplier for as long as the table still shows it | Working |
 | Forecast | Slot forecasts run the committed scoring pipeline against the projected table, so the number shown is the number paid | Working |
 | Causal chain | Each resolution returns ordered stages — group, boss rule, table momentum, Decrees, milestones, completion, total — paced in the UI, skippable, and shown at once under reduced motion | Working |
@@ -113,7 +274,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 | Hand/yaku detection and scoring         |                              Complete |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Yes |
 | Tile Enhancements, Seals, and Editions  |                              Complete |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Yes, for supported scoring/economy effects |
 | Decrees                                 |                              Complete | Yes, in full. All 150 authored Decrees in `config/decreeDefinitions.ts` are translated by `config/decreeLibrary.ts` and published into the live shop pool alongside the 14 hand-written rule Decrees, for 164 total. Every authored effect family is implemented: scoring, gold, hand size, discard count, tile retriggering (by target and count, with an amplifier), Decree copying (left/right/random/all, resolved one level deep so copiers cannot loop), yaku amplification and tier promotion, tile transformation (simples scored as terminals, cross-suit sequences, all-wild completion), gold multiplication, Flower protection against Season suppression, and loss prevention (single-use and permanent). Per-Flower and per-Season Decrees scale with the run: an additive bonus pays once per Flower/Season held and a multiplicative one compounds per unit, so an empty collection pays nothing instead of a flat bonus. Conditional Decrees are gated by 40 requirements covering tile composition (single-suit, half-suit, honor and terminal counts, no-simples, wind-and-dragon), hand structure (pair/sequence/triplet presence and counts), round state (Boss round, discards untouched, first hand, double target, previous hand scored zero), and the yaku actually scored - so a conditional reward pays only when its requirement holds. Per-count Decrees scale with 20 counted quantities: played tiles (terminals, simples, the green tiles of Ryuuiisou, and 1/5/9 ranks), hand structure (sequences, triplets, yaku scored, base chips in hundreds), round and run progress (hands this round, hands this run, rounds this act, discards used, Acts completed, Acts beyond four), and gold held in ¥5/¥10 steps. Decrees that print their own ceiling are capped at it. Every authored condition in the library now has engine meaning, asserted in tests. `UNSUPPORTED_DECREE_IDS` is now empty and asserted so in tests |
-| Flowers and Seasons | Partial | Flowers persist; Seasons reset on round changes/skips; Omen locks preserve the stack. The localized full-stack inspector, real Decay discards, and Eternal Garden protection are verified. Extra draws, wall/discard-pool changes, loosened legality, Monsoon, full Frostbite semantics, and three-Flower shop unlock remain incomplete; see [Flora](FLORA_IMPLEMENTATION.md). |
+| Flowers and Seasons | Partial | Flowers persist; Seasons reset on round changes/skips; Omen locks preserve the stack. The full-stack inspector, Decay discards, Eternal Garden protection, Monsoon live/bonus draws, normal Summer wall cost, and three-Flower shop/pack unlock are connected. Extra draws, discard-pool growth, loosened legality, full Frostbite semantics, mutations/catalysts and Flower–Season interactions remain incomplete; see [Flora](FLORA_IMPLEMENTATION.md) and [Flower shop unlock](FLOWER_SHOP_IMPLEMENTATION.md). |
 | Celestial Orbs                          |                              Complete |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Yes; purchase, inventory, use, yaku level, chips, and Mult are connected |
 | Fate Seals                              |                              Complete |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Yes for authoritative ownership/use limits, exact tile targets, persistent tile mutation/destruction/copying, gold, consumable/Decree creation, duplication, Decree editions, and all-Yaku upgrades |
 | Void Scripts                            |                              Complete |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Yes for authoritative ownership/use limits, tile creation/destruction/duplication/conversion/modifiers, gold, Decrees and their editions, Yaku upgrades, hand/slot/score penalties, Omen downside protection, and 21 unique illustrated Script identities with hover/focus rule cards |

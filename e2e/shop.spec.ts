@@ -373,9 +373,9 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
 })
 
 for (const [lang, heading, bonus, next] of [
-  ['es', 'Acto 8 · Ronda Grande', 'Bonificación', 'Siguiente:'],
-  ['ru', 'Акт 8 · Большой раунд', 'Бонус к награде', 'Далее:'],
-  ['ja', '第8幕', '報酬ボーナス', '次：'],
+  ['es', 'Acto 8 · Ronda Grande', 'Ajuste de recompensa', 'Siguiente:'],
+  ['ru', 'Акт 8 · Большой раунд', 'Корректировка награды', 'Далее:'],
+  ['ja', '第8幕', '報酬調整', '次：'],
 ] as const) {
   test(`localized payout receipt fits small and large screens with large values (${lang})`, async ({
     page,

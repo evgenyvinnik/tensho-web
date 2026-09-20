@@ -11,16 +11,18 @@ import { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game/useGameController'
+import { useScorePresentation } from '../../game/useScorePresentation'
 import { useResponsiveTileSize } from '../../hooks/useResponsiveTileSize'
 import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { TablePattern } from '../ui/TablePattern'
 import { PlaySurface } from '../gameplay/PlaySurface'
-import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
+import { ProgressiveHintCard } from '../ui/ProgressiveHint'
 import { ConfirmPopup } from '../ui/Popup'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
 import { calculateShanten } from '../../rules/ShantenCalculator'
 import { useItemText } from '../../i18n/useItemText'
+import { forecastHeading } from '../../gameplay/forecastGuidance'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -116,9 +118,8 @@ export function GameplayScreen() {
   const isExitingRef = useRef(false)
 
   // Points/Mult display state
-  const [currentPoints, setCurrentPoints] = useState(0)
-  const [currentMult, setCurrentMult] = useState(1)
-  const [isScoreAnimating, setIsScoreAnimating] = useState(false)
+  const { equation: lastPlay, isAnimating: isScoreAnimating } =
+    useScorePresentation()
 
   // Consumables from game controller
   const consumables = game.consumableCounts
@@ -151,13 +152,8 @@ export function GameplayScreen() {
       beginnerSuggestion &&
       !hasTriggeredGameStart.current
     ) {
-      const timer = setTimeout(() => {
-        if (!hasTriggeredGameStart.current) {
-          hasTriggeredGameStart.current = true
-          tutorial.triggerHints('gameStart')
-        }
-      }, 800)
-      return () => clearTimeout(timer)
+      hasTriggeredGameStart.current = true
+      tutorial.triggerHints('gameStart')
     }
   }, [beginnerSuggestion, game.isRunActive, tutorial])
 
@@ -188,7 +184,7 @@ export function GameplayScreen() {
     useCallback(() => {
       if (!hasTriggeredFirstDiscard.current) {
         hasTriggeredFirstDiscard.current = true
-        setTimeout(() => tutorial.triggerHints('firstDiscard'), 500)
+        tutorial.triggerHints('firstDiscard')
       }
     }, [tutorial])
   )
@@ -198,9 +194,11 @@ export function GameplayScreen() {
     useCallback(() => {
       setHasCompletedFirstPlay(true)
       setForceBeginnerCoach(false)
+      hasTriggeredGameStart.current = true
+      tutorial.completeTrigger('gameStart')
       if (!hasTriggeredFirstHand.current) {
         hasTriggeredFirstHand.current = true
-        setTimeout(() => tutorial.triggerHints('firstHandPlayed'), 1000)
+        tutorial.triggerHints('firstHandPlayed')
       }
     }, [tutorial])
   )
@@ -252,33 +250,6 @@ export function GameplayScreen() {
           tier: tier as 1 | 2 | 3 | 4,
         },
       ])
-    }, [])
-  )
-
-  useGameEvent(
-    'handPlayed',
-    useCallback(
-      (data) => {
-        setCurrentPoints(data.score / (currentMult || 1))
-        setIsScoreAnimating(true)
-        setTimeout(() => setIsScoreAnimating(false), 1500)
-      },
-      [currentMult]
-    )
-  )
-
-  useGameEvent(
-    'yakuScored',
-    useCallback((data) => {
-      setCurrentMult((prev) => prev * data.multiplier)
-    }, [])
-  )
-
-  useGameEvent(
-    'roundStart',
-    useCallback(() => {
-      setCurrentPoints(0)
-      setCurrentMult(1)
     }, [])
   )
 
@@ -505,18 +476,8 @@ export function GameplayScreen() {
     beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
       ? t(`melds.${beginnerSuggestion.kind}`, beginnerSuggestion.kind)
       : null
-  const beginnerPreviewLabel = beginnerSelectionMatches
-    ? beginnerSuggestion?.kind === 'redraw'
-      ? t('gameplay.beginnerRedrawForecast', 'Ready to Redraw')
-      : t(
-          'gameplay.beginnerPatternForecast',
-          '{{pattern}} · +{{points}} shape points',
-          {
-            pattern: beginnerPatternLabel,
-            points: beginnerSuggestion?.structurePoints ?? 0,
-          }
-        )
-    : beginnerCoachActive && beginnerSuggestion
+  const beginnerPreviewLabel =
+    beginnerCoachActive && beginnerSuggestion
       ? beginnerSuggestion.kind === 'redraw'
         ? t('gameplay.beginnerChooseRedraw', 'Choose the glowing tiles')
         : t('gameplay.beginnerFindPattern', 'Find the glowing {{pattern}}', {
@@ -580,6 +541,8 @@ export function GameplayScreen() {
       mult,
       total: breakdown.finalScore,
       yaku: breakdown.detectedYaku.map((detected) => detected.definition),
+      structure: breakdown.structure,
+      structurePoints: breakdown.structurePoints,
     }
   }, [stagedTileIds, game, faceDownTileIds])
 
@@ -762,12 +725,18 @@ export function GameplayScreen() {
         <ScorePanel
           targetScore={game.targetScore}
           currentScore={game.score}
-          currentPoints={currentPoints}
-          currentMult={currentMult}
+          lastPlay={lastPlay}
           isScoreAnimating={isScoreAnimating}
           scorePopups={scorePopups}
           onPopupComplete={handlePopupComplete}
           t={t}
+        />
+
+        <ProgressiveHintCard
+          hint={tutorial.currentHint}
+          onDismiss={tutorial.dismissHint}
+          onDisableHints={tutorial.disableHints}
+          queueCount={tutorial.hintQueue.length}
         />
 
         {/* Play area */}
@@ -777,20 +746,16 @@ export function GameplayScreen() {
           handTileCount={game.handTiles.length}
           scorePreview={scorePreview}
           scorePreviewHidden={scorePreviewHidden}
-          previewLabel={
-            stagedTileIds.length > 5 && isCompleteHandSelection
-              ? `${previewTileIds.length} staged tiles · confirm declaration`
-              : beginnerPreviewLabel
-                ? beginnerPreviewLabel
-                : stagedTileIds.length > 0 || game.selectedTileIds.length > 0
-                  ? `${previewTileIds.length} selected tiles`
-                  : isCompleteHandSelection
-                    ? `Complete ${previewTileIds.length}-tile hand · stage to declare`
-                    : t(
-                        'gameplay.chooseTacticalGroup',
-                        'Choose a tactical group'
-                      )
-          }
+          previewLabel={forecastHeading(t, {
+            activeTileCount: activePreviewTileIds.length,
+            previewTileCount: previewTileIds.length,
+            stagedTileCount: stagedTileIds.length,
+            isCompleteHand: isCompleteHandSelection,
+            matchedPatternLabel: beginnerSelectionMatches
+              ? beginnerPatternLabel
+              : null,
+            coachPrompt: beginnerPreviewLabel,
+          })}
           remainingToTarget={Math.max(0, game.targetScore - game.score)}
           handsRemaining={game.handsRemaining}
           coachAdvice={coachAdvice}
@@ -907,14 +872,6 @@ export function GameplayScreen() {
           t={t}
         />
       </div>
-
-      {/* Tutorial overlay */}
-      <ProgressiveHintOverlay
-        hint={tutorial.currentHint}
-        onDismiss={tutorial.dismissHint}
-        onDisableHints={tutorial.disableHints}
-        queueCount={tutorial.hintQueue.length}
-      />
 
       <BeginnerGuide
         isOpen={showBeginnerGuide}

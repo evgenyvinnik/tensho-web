@@ -271,6 +271,7 @@ describe('MetaProgressionBridge', () => {
     eventBus.emit('handPlayed', {
       tiles: ['tile-1', 'tile-2', 'tile-3'],
       score: 750,
+      equation: { points: 750, multiplier: 1, adjustment: 0, total: 750 },
       yakuIds: [],
     })
     eventBus.emit('tileDiscarded', { tileId: 'tile-4', toDeadPool: false })

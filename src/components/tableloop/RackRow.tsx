@@ -11,7 +11,7 @@
  */
 
 import { useTranslation } from 'react-i18next'
-import { useState, useId } from 'react'
+import { useState, useId, useRef, useEffect } from 'react'
 import { Tile } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
 
@@ -31,6 +31,14 @@ export function RackRow({
 }: RackRowProps) {
   const { t } = useTranslation()
   const [focusedId, setFocusedId] = useState<string | null>(null)
+  const touchFocus = useRef(false)
+  useEffect(() => {
+    const keyboardInput = () => {
+      touchFocus.current = false
+    }
+    document.addEventListener('keydown', keyboardInput, true)
+    return () => document.removeEventListener('keydown', keyboardInput, true)
+  }, [])
   const detailsPrefix = useId()
   const selected = new Set(selectedIds)
 
@@ -58,7 +66,14 @@ export function RackRow({
               }
               disabled={disabled}
               onClick={() => onToggle(tile.id)}
-              onFocus={() => setFocusedId(tile.id)}
+              onPointerDown={(event) => {
+                touchFocus.current =
+                  event.pointerType === 'touch' || event.pointerType === 'pen'
+                if (touchFocus.current) setFocusedId(null)
+              }}
+              onFocus={() => {
+                if (!touchFocus.current) setFocusedId(tile.id)
+              }}
               onBlur={() => setFocusedId(null)}
               className={`flex items-center justify-center rounded transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)] disabled:opacity-50 ${
                 isSelected

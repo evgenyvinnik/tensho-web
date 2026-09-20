@@ -93,6 +93,7 @@ export const popupAssets = {
  * to use SVG so they remain crisp at every size.
  */
 export const illustrationAssets = {
+  beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.png`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
   consumables: {
     fateSeal: `${ASSET_BASE}/illustrations/fate-seal.png`,
@@ -115,6 +116,9 @@ export const illustrationAssets = {
     ImperialDecree: `${ASSET_BASE}/illustrations/decrees/imperial-decree.png`,
     HeavenlyOrdinance: `${ASSET_BASE}/illustrations/decrees/heavenly-ordinance.png`,
   } satisfies Record<DecreeRarity, string>,
+  decreePortraits: {
+    'decree-wealth-engine': `${ASSET_BASE}/illustrations/decrees/wealth-engine.png`,
+  },
   codex: {
     archive: `${ASSET_BASE}/illustrations/codex/archive.webp`,
     ascent: `${ASSET_BASE}/illustrations/codex/ascent.webp`,
@@ -133,6 +137,18 @@ export const illustrationAssets = {
     dragons_den: `${ASSET_BASE}/illustrations/tables/dragons_den.webp`,
   },
 } as const
+
+/** Return bespoke Decree art where available; generic scrolls remain the fallback. */
+export function getDecreeIllustration(decreeId: string): string | undefined {
+  return Object.prototype.hasOwnProperty.call(
+    illustrationAssets.decreePortraits,
+    decreeId
+  )
+    ? illustrationAssets.decreePortraits[
+        decreeId as keyof typeof illustrationAssets.decreePortraits
+      ]
+    : undefined
+}
 
 /** Return the illustrated scroll frame for a Decree rarity. */
 export function getDecreeScrollIllustration(rarity: DecreeRarity): string {

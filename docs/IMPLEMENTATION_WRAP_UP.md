@@ -1,12 +1,419 @@
 # Implementation wrap-up
 
-**Updated:** September 10, 2026  
+**Updated:** September 19, 2026
+
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Current beginner-guidance checkpoint
+
+September 19: forecast explanations distinguish all-grouped, mixed, all-loose and
+complete selections using metadata from the actual scored parse, including Honor
+Transmutation and suppressed tile values. Loose penalties explicitly refer to
+base tile points. Hidden selections reveal neither grouping nor forecast.
+Localized selection/declaration headings take priority over idle coach advice;
+matched-pattern headings no longer repeat the body’s shape bonus. No new popup,
+timer or artwork is needed for this live numerical explanation.
+
+Initial metadata tests failed **8/8**; the first expanded focused run passed
+**62/63**, with its accessibility-label query subsequently corrected. Before
+the heading cleanup, full units passed **1009/1009**, and browser checks passed
+**16/16**. Final full units passed **1022/1022 in 93 files**. The final browser
+set retained **15 passes / 1 short-phone timeout**; all four new guidance and
+four secondary-scoring journeys passed. Three unchanged isolated repetitions of
+the timeout scenario passed **3/3**, without retries or deadline changes. Its
+cause remains unproven. Spanish desktop/touch screenshots were reviewed.
+Strict TypeScript, targeted lint, formatting and the Pages-base production build
+passed: 340 modules, entry `index-BTk8H3sQ.js`, 266 precache entries / 62,689.90 KiB.
+Existing large-chunk and stale Browserslist warnings remain.
+[Guidance evidence](BEGINNER_GUIDE_IMPLEMENTATION.md) records exact boundaries
+and artifacts. This is not proof of newcomer comprehension or whole-project fun.
+
+The requested mechanics recommendations were presented as proposals, not approval.
+Double Omen is the next confirmed implementation gap: it is absent from the
+obtainable catalog, and an isolated `copyNextTag()` → `addTag('omen_of_rivers')`
+probe leaves one active/queued tag while spending the copy flag. Source inspection
+shows the second store update overwrites the duplicate using the old state.
+Connecting acquisition and immediate/delayed reward delivery still requires
+implementation and tests; no repair is claimed yet. Existing generated art is
+preserved; nothing is committed, merged, pushed or deployed.
+
+## Preceding score-localization checkpoint
+
+September 19: forecast and settled multipliers now share localized decimal/compact
+formatting, with exact-value inspection preserved. Remaining-point hints format
+their numbers in all thirteen languages, and score progress uses localized labels
+and valid numeric bounds. Sixteen failures were reproduced before the correction;
+the expanded full suite passed **985/985 in 90 files**. The first browser set
+retained **12 passes / 8 new fixture-assertion failures**; the corrected layout
+set passed **8/8** without retries or timeout changes. Spanish screenshots were
+reviewed. Strict TypeScript, targeted lint and the Pages-base build passed.
+[HUD evidence](FORECAST_UI_IMPLEMENTATION.md) preserves the failure
+and exact acquisition/geometry boundaries.
+
+The random-copy audit confirms that Doppelganger chooses by position, not seeded
+randomness; the docs do not specify target-refresh timing. A once-per-round versus
+acquisition-time choice was requested and is not assumed. Screenshot review also
+found that valid tactical groups can receive the misleading loose-tile penalty
+hint. That clarity issue is addressed by the guidance checkpoint above while the
+copying choice remains pending. Existing generated art is preserved; nothing is published and
+the overall objective remains active.
+
+## Preceding Decree copy-rule checkpoint
+
+September 19: main scoring preserves physical copy targets, so suppression does
+not cause Blueprint or Brainstorm to skip to another power. Brainstorm in the
+leftmost slot cannot copy its right-hand neighbor. Resource copies now include
+positive and negative rack, discard and extra-hand changes, closing the exploit
+where Ancient Scroll/Sacrifice benefits were copied without their costs.
+
+The initial integration run reproduced **16 failures / 3 passes**. The focused
+set then passed **89/89**, the full suite **964/964 in 89 files**, and all
+**20/20 desktop/touch browser checks** passed. Paid controlled-offer journeys
+verify next-round resources and settled scoring in English and Spanish. Reviewed
+screenshots preserve the existing illustrated UI; no new bitmap was needed.
+Strict TypeScript, targeted lint and the Pages-base production build passed.
+[Copy evidence](DECREE_COPY_IMPLEMENTATION.md) records boundaries and remaining
+random-copy/resource-lifecycle questions. Nothing is committed, merged, pushed
+or deployed. The full project objective remains active.
+
+## Preceding secondary Decree scoring checkpoint
+
+September 19: Frostbite now scales the extra Yaku multiplier supplied by Decrees,
+preserving native Yaku, Mandate tier reductions and table bonuses. Disabled Yaku,
+retrigger and amplifier effects are excluded from preview and payment. Secondary
+copy resolution respects physical neighbors, including copied Echo Dimension.
+
+Ten integration failures were reproduced before the fix. The final full unit
+suite passed **945/945 in 88 files**; all **18/18 desktop/touch browser checks**
+passed with no retries or deadline changes. Spanish score/disabled-inspector
+screenshots were reviewed. Strict TypeScript, targeted lint and the Pages-base
+build passed. [Secondary scoring evidence](SECONDARY_SCORING_IMPLEMENTATION.md)
+records the remaining fractional-retrigger choice and the ordinary copy-order
+audit subsequently addressed above.
+Existing generated art remains; no new bitmap was required. Nothing is committed,
+merged, pushed or deployed, and the full project objective remains active.
+
+## Preceding Decree economy and artwork checkpoint
+
+September 19: Wealth Engine now counts owned Decrees instead of paying a flat 1G.
+Gold copying and copied multipliers resolve physical neighbors without skipping
+suppressed targets; duplicate Blueprint instances use their own positions. The
+new generated Wealth Engine portrait is connected to Shop, owned inventory,
+Archive and detail views, while hidden identity still uses generic art. Spanish
+wording now uses unambiguous G currency alongside the existing localized name.
+
+The full suite passed **928/928** before the final wording/new-test follow-up,
+which passed **31/31 targeted checks**. The browser set passed **20/20**; four
+final wording journeys passed **4/4** against a clean server after a traced
+hot-reload module-identity problem. [Economy/art evidence](DECREE_ECONOMY_IMPLEMENTATION.md)
+records original fixture failures, exact prompt, reviewed screenshots and model-ID
+limitations. Treasure Hunter timing, further effect semantics, human fun testing,
+main/default promotion and deployment remain open. No Git publication occurred.
+Strict TypeScript, targeted lint and the Pages-base build passed. The new original
+PNG adds about 2.5 MiB to the offline bundle; performance remains an open concern.
+
+## Preceding Frostbite gold checkpoint
+
+September 19: shared gold settlement now weakens only Decree contributions,
+combines fractions before integer rounding, excludes disabled Decrees and applies
+the reward multiplier consistently to tile, consumable, discard and round paths.
+Prices and penalties are unchanged. Cash-out labels explain fractional adjustment
+in all thirteen locales; existing illustrated gold and Decree assets are retained.
+
+The full suite finished **912 passed / 2 balance-command timeouts**. The unchanged
+22-case command file then passed. All **24/24 desktop/touch browser checks** passed,
+including real purchases after payout, score regressions and the user-approved
+Merchant rack-for-river swap with reload. Spanish receipt screenshots were reviewed.
+Strict TypeScript, targeted lint and the Pages-base production build passed.
+[Gold settlement evidence](FROSTBITE_GOLD_IMPLEMENTATION.md) preserves the initial
+failures, artifact paths and unresolved special gold scaling/copying, retrigger,
+Yaku and binary-effect scope. No commit, merge, push or deployment occurred.
+
+## Preceding Frostbite scoring checkpoint
+
+September 19: Frostbite now halves Decree flat-point bonuses as well as its
+main multiplier contribution, without halving tile bonuses. Repeated Frostbites
+stack; fractional subtotals survive final counter presentation. The inspector
+copy is updated in all 13 locales. No new artwork was needed for the rule;
+existing illustrated tiles/Decrees and the new guidebook are preserved.
+
+Six engine failures and three stacking/counter failures were reproduced before
+their fixes. The additive correction passed **892/892 full units in 84 files**
+(309.78 seconds); the final stacking/counter changes then passed **121/121 targeted
+checks** in eight files (57.64 seconds). The broader browser subset finished
+**21 passed / 1 existing normal-animation timeout** (318.05 seconds). The unchanged
+timed-out journey and final visible-rule/payout checks subsequently passed **6/6**
+(64.40 seconds), with no retry or deadline changes. This does not erase the
+original timeout; its cause remains unproven. Spanish mobile screenshots were
+reviewed. Strict TypeScript, targeted lint/formatting and the Pages-base build passed.
+
+[Frostbite evidence](FROSTBITE_IMPLEMENTATION.md) records exact coverage and the
+still-open gold, retrigger, Yaku and non-numeric effect semantics. The original
+all-effects requirement is not reduced to these two scoring channels. The owned
+server is stopped. No commit, merge, push or deployment occurred; project
+completion, the other mechanics/UX gaps and main/default promotion remain open.
+
+## Preceding illustrated-guide checkpoint
+
+September 19: the visual primer's obsolete 10/20/30/50 bonuses now read the
+engine's 15/30/40/65 table directly. New explanations distinguish shape bonuses
+from the actual forecast in all 13 locales. Tile examples stack on phones,
+family names wrap, and the dialog has one scroll area. A new generated jade/ivory
+guidebook marks the explicit learning control and primer; the real tile examples
+remain. The original project-owned PNG and exact built-in prompt are recorded
+in [guide evidence](BEGINNER_GUIDE_IMPLEMENTATION.md), including the unavailable
+model-ID limitation.
+
+**885/885 full units in 83 files** and **26/26 targeted browser checks** passed,
+along with strict TypeScript, targeted lint/formatting and the Pages-base build.
+Browser checks include five guide layouts/languages in desktop and touch contexts,
+plus playable hints, Shop actions and paid-score regressions. No retry or timeout
+increase was used. Screenshots were reviewed. The owned server is stopped; no
+commit, merge, push or deployment occurred. Other mechanics, human fun, remaining
+localization and main/default promotion remain open.
+
+## Preceding in-flow tutorial checkpoint
+
+September 19: Classic Play and Shop hints now sit in their own layout space,
+collapse through native disclosure and remain readable without a countdown.
+First-move/scoring lessons precede bonus tips; a completed first move cannot
+produce a late introductory hint. Focus, opt-out, queue persistence and localized
+copy updates are covered. Shorter first instructions keep the visual primer
+nearby, and all existing artwork remains. The expanded regression run also
+found and fixed animated string interpolation dropping multiplier decimal zeros.
+
+**879/879 full units in 83 files** passed (36.21 seconds). **26/26 targeted browser
+checks** passed (81.39 seconds), including playing with hints open, Shop purchases
+and continuation, the existing visual primer/reset, and score regressions. The
+final malformed-history preference safeguard was added afterward and is covered
+by final units/build, not another browser run. Strict TypeScript, targeted lint,
+formatting and the Pages-base build passed. [Tutorial evidence](TUTORIAL_CARD_IMPLEMENTATION.md)
+records the failed ordering/shop/format checks, fixtures and reviewed screenshots.
+
+The owned server is stopped. No commit, merge, push or deployment occurred.
+Secondary hint localization, human newcomer testing, physical-device review,
+broader mechanics/progression and main/default promotion remain open.
+
+## Preceding settled-score checkpoint
+
+September 19: the Classic equation now displays the engine's settled last play,
+not an already-paid score multiplied again by later Yaku reveals. The reproduced
+585/1,521 mismatch is fixed. Atomic receipts preserve exact bonuses, penalties,
+zero-paid plays and independent consecutive hands. A native disclosure exposes
+the full equation; new labels are supplied in all 13 locales.
+
+**869/869 full units in 83 files** passed (32.27 seconds). **14/14 targeted
+browser checks** passed (55.6 seconds), followed by **6/6 final scoring journeys**
+with tutorial opt-out and unobscured-result checks (42.8 seconds). Screenshot
+review exposed a delayed first-move tip covering the animated mobile result;
+the final score fixture dismisses it through the real control, but the tutorial's
+general placement still needs work. Strict TypeScript, targeted ESLint, formatting
+and the Pages-base production build passed. See [settlement evidence](SCORE_SETTLEMENT_IMPLEMENTATION.md)
+for coverage, failures, artifacts and limits. Existing generated art is preserved.
+
+The owned test server is stopped. No commit, merge, push or deployment occurred.
+Broader mechanics, localization, newcomer enjoyment, physical-device review and
+main/default promotion remain open; this is not project completion.
+
+## Preceding responsive score UI checkpoint
+
+September 12: forecast and score-panel numbers no longer compete for a single
+row or get clipped by a fixed short-screen height. Large values use localized
+compact notation, with native touch/keyboard disclosure of exact figures.
+Mobile reuses translated action labels, and score counters/popups respect both
+app and system reduced motion. Existing colors and generated artwork remain.
+
+**861/861 full units in 81 files** passed (446.59 seconds). **24/24 targeted
+gameplay/browser checks** passed (187.20 seconds), followed by **8/8 final layout
+checks** after word-wrapping/font refinements and disclosure cleanup (34.30
+seconds). Both browser runs used one worker, original timeouts and no retries.
+The final Spanish mobile forecast and paid-score images were reviewed. Strict
+TypeScript, the Pages-base build and targeted ESLint passed; existing bundle-size
+and Browserslist warnings remain. Final build: 336 modules, entry
+`index-CvPgTPq9.js`, 264 precache entries / 58,599.42 KiB.
+
+[Score UI evidence](FORECAST_UI_IMPLEMENTATION.md) records the initial loading
+timeout, corrected frozen-object fixture, reproduced overflow, screenshot-led
+scope expansion, failed discard drag, static-popup completion correction and
+final verification boundaries. No earlier failed run is relabeled green.
+The full repository browser/release/production suites were not rerun here.
+
+The owned test server is stopped. No commit, merge, push or deployment occurred.
+The separate hand/Yaku equation audit was open at this historical checkpoint;
+the September 19 settlement section above records its fix and verification.
+Broader mechanics, localization, human-fun and real-device checks and
+main/default promotion remain open.
+
+## Current Chrysanthemum/Winter checkpoint
+
+Historical checkpoint, superseded by the score-UI verification above.
+
+September 12: the explicit concealed-hand Flower/Winter interaction now reaches
+authoritative preview and committed scoring. Every normal Winter factor is
+omitted when Chrysanthemum is active; effective Drought suppression and protective
+Decrees are shared with Flower scoring. Other Season effects and round cleanup
+are preserved. No new popup or generated bitmap is needed for this rule.
+
+The full units finished **843 passed / 1 timed out in 79 files** (648.14 seconds).
+The unchanged beginner-guide test and eleven Winter cases then passed **12/12**
+(19.00 seconds), with no timeout adjustment. The initial browser subset finished
+**29 passed / 5 failed**: four new exact-text expectations omitted the existing
+forecast plus sign, and one existing mobile Spanish dialog test timed out.
+All sixteen interaction and four Merchant purchase/swap/reload cases passed.
+After correcting only the new expected text, the Flora file finished **13 passed /
+1 timed out** (148.65 seconds), including all four new Winter gameplay cases.
+The repeated mobile dialog timeout occurred at screenshot capture after its
+three-viewport geometry checks; its cause remains unproven. Neither failed run
+is relabeled green. [Winter evidence](WINTER_FLOWER_IMPLEMENTATION.md) records
+fixtures, exact coverage and retained artifacts.
+
+Strict TypeScript and the Pages-base build passed (334 modules, 264 precache
+entries / 58,596.19 KiB). Existing large-chunk/Browserslist warnings remain.
+Spanish desktop/mobile screenshots were reviewed; the billion-point fixture
+exposes cramped compact-forecast text and a remaining English PLAY label.
+The owned test server is stopped. No commit, merge, push or deployment occurred.
+Remaining mechanics, main/default promotion, human playtesting, localization,
+real-device accessibility and deployed upgrades are still open.
+
+## Current on-demand screen checkpoint
+
+Historical checkpoint, superseded by the Winter verification above.
+
+September 12: all nine screens now load on demand, with a localized, motion-safe
+fallback that keeps URL-language synchronization mounted during downloads. The
+English menu requests 1,055,338 bytes of JavaScript; direct Table Loop requests
+870,918, versus the preceding 1,389,080-byte entry/registration pair. These are
+24.0% / 37.3% code-size reductions, not measured loading-time improvements.
+
+**833/833 full units in 78 files** passed (145.03 seconds). The full browser run
+finished **233 passed / 1 timed out / 10 skipped** (23.6 minutes), without retries.
+All 117 mobile cases passed. The desktop 320×568 rack interaction hit its original
+60-second timeout after successfully staging all tiles. With no source or test
+changes, a follow-up passed **4/4** repeated desktop/mobile cases (47.2 seconds),
+with traces and no retries. Its cause remains unproven; the full run is not
+retroactively green. [The evidence record](ROUTE_LOADING_IMPLEMENTATION.md)
+contains the trace findings, actual timings and retained artifacts.
+
+The ten production-only skips passed separately alongside the public guides:
+**18/18 production checks** (27.3 seconds), including actual offline loading of
+unvisited routes/scrolls/guides and recovery from a failed module download without
+losing a real saved run. Four additional browser measurements recorded requested
+script bytes. The final mobile Spanish loading screenshot was visually reviewed.
+
+Strict TypeScript and the Pages-base build passed: 334 modules, entry
+`index-BLLkton_.js` (750.79 kB / 227.30 kB gzip), **264 precache entries /
+58,596.00 KiB**. All artwork and offline content remain included. The large
+entry, approximately 57 MiB offline install and stale Browserslist warning remain.
+Targeted ESLint passed with zero errors / six existing router export warnings;
+repository-wide lint was not rerun. **13/13 local release-workflow checks** also
+passed (136.69 seconds) in temporary fixture repositories, without touching this
+repository's history or GitHub.
+
+No commit, merge, push, deployment or Search Console action occurred. Main/default
+promotion awaits the user. Remaining mechanics/rule conflicts, human-fun checks,
+translations, multi-tab saves, real-device/Safari testing and live worker upgrades
+are still open. This pass preserves the generated art rather than generating a
+new bitmap for a loading indicator better expressed in CSS.
+
+## Current Merchant and Table Loop release-preparation checkpoint
+
+Historical checkpoint, superseded by the on-demand screen verification above.
+
+September 12: **830/830 full unit tests across 77 files** passed with one thread
+worker (81.83 seconds), using the original test timeouts. **70/70 targeted browser
+checks** passed without retries (2.7 minutes): the entire Table Loop browser file,
+UI-only victory/defeat journeys, English/Spanish Merchant swaps, tile-detail
+accessibility and third-Flower collection, in desktop and mobile Chromium.
+
+The final Pages-base production build also passed **8/8 public-guide checks**
+without retries (18.1 seconds), including no-JavaScript pages, metadata/images,
+320/768/1440 layouts, enlarged root text, keyboard focus and menu-to-practice
+navigation. These are targeted browser suites, not the full repository suite.
+
+Strict TypeScript and the Pages-base build passed: 333 modules, **236 precache
+entries / 58,587.01 KiB**, JavaScript `index-DuPsMlZD.js` at 1,383.32 kB
+(393.24 kB gzip). TypeScript was rerun after adding the final component test.
+Targeted ESLint passed. Large-chunk and stale Browserslist warnings remain;
+no performance score or deployed PWA upgrade claim is made.
+
+The approved Merchant rule exchanges one selected rack tile for a river tile
+once per round without spending actions, redraws or gold. Version-1 saves retain
+their original recovery replay; successful subsequent saves use version 2.
+Rejected actions preserve pending offers. All ten Decrees now have their own
+scroll illustrations. Screenshot review also led to a touch-tooltip fix; the
+final Spanish mobile trade panel and Jade Ledger popup were visually reviewed.
+
+[Release preparation](TABLE_LOOP_RELEASE.md) records implementation details and
+earlier failures/cancelled runs without relabeling them as passes. Artifacts:
+`/tmp/tensho-merchant-KYR4lj/table-loop-final/` and
+`/tmp/tensho-merchant-KYR4lj/production-guides/`.
+
+No commit, merge, push, deployment or Search Console action was performed.
+Default-mode/main promotion awaits the user's decision. Broader Classic rule
+gaps, multi-tab saves, human playtesting, guide translations, physical-device
+accessibility, performance and deployed upgrades remain open.
+
+## Current Summer and public-guide accessibility checkpoint
+
+Historical checkpoint, superseded by the Merchant totals above.
+
+September 12: **790/790 full unit tests across 72 files** passed with one thread
+worker (55.79 seconds), followed by strict TypeScript and a Pages-base production
+build. Final build: 331 modules, **234 precache entries / 53,876.19 KiB**. Large
+JavaScript chunk and stale Browserslist warnings remain; no performance score is
+claimed.
+
+Final targeted ESLint for the changed mechanics, artwork renderer, public-site
+sources and browser specs, plus `git diff --check`, passed with no output.
+
+**24/24** targeted gameplay/art browser checks passed (31.7 seconds) and **8/8**
+production guide checks passed (19.9 seconds), both without retries. Public-guide
+coverage includes no JavaScript, direct HTTP/metadata/assets, 320/768/1440 layouts,
+200% root-text enlargement at 320px, visible keyboard skip link, actual main
+focus and the following practice link. It is not native browser zoom or physical
+device/screen-reader coverage. Final desktop About and mobile Summer inspector
+screenshots were visually reviewed.
+
+[Summer implementation](SUMMER_IMPLEMENTATION.md) closes the normal wall-cost
+path with physical reserves and matching dry runs, not its undefined Bamboo
+exception. Twin Flame is now the eighth individual Table Loop scroll; the
+[artwork record](TABLE_LOOP_ART.md#twin-flame) includes its prompt/provenance.
+[SEO strategy](SEO_STRATEGY.md) records the new accessibility fixes and all failed
+attempts. Artifacts: `/tmp/tensho-summer-seo-jgY1pJ/` (`gameplay-final` and
+`public-guides-verified` are the passing runs).
+
+Remaining scope is unchanged: undefined/incomplete Season and Flower mechanics,
+Fate/Negative rule conflicts, broader integration and human-fun validation,
+guide translations, performance work, and authorized live deployment/PWA upgrade
+verification. No commit, push, deployment or Search Console action was performed.
+
+## Current Monsoon and public-guide checkpoint
+
+Historical checkpoint, superseded by the Summer/accessibility checkpoint above.
+
+September 12: **778/778 full unit tests across 71 files**, strict TypeScript,
+Pages-base production/PWA build, targeted ESLint and whitespace checks passed.
+The one-worker thread-pool unit run took 310.45 seconds.
+
+Two separate browser runs passed without retries: **20/20** targeted gameplay/art
+checks on the dev/test server, and **8/8** public-guide checks on the current
+production preview at `/tensho-web/` with their original timeout. These are not
+a complete browser-suite run or proof of a live Pages/PWA update. The earlier
+production-navigation timeouts remain in the [SEO record](SEO_STRATEGY.md);
+their root cause is not established by the fresh passing run.
+
+[Monsoon implementation](MONSOON_IMPLEMENTATION.md) describes the real draw paths,
+non-mutating RNG previews and restored Omen-lock correction. Spring/Summer/Autumn/
+Winter rule gaps, full Frostbite behavior, the three-Flower unlock and advanced
+Flower–Season combinations remain. Changes have not been committed, pushed or
+deployed in this pass. Older checkpoint counts below remain historical.
+
 ## Completed in this pass
 
+- Connected Monsoon to real live-wall and bonus-replacement draws, with exact forked-RNG redraw preflight that preserves live streams, rewards and Omen locks. Fixed the restored-lock preview/consumption disagreement and added localized active-rule text in all 13 locales. [Monsoon implementation](MONSOON_IMPLEMENTATION.md) records the scoped mechanics, regression evidence and remaining Season/Flower requirements.
+- Completed the first English public-guide slice: static About, how-to-play and FAQ pages, menu links, generated sitemap and a documented [SEO strategy](SEO_STRATEGY.md). Integrated an About illustration plus Honor Court/Wide Rack scrolls; [prompts and provenance](PUBLIC_SITE_ART.md) are recorded. Initial production checks were **not uniformly green**: six no-JavaScript checks passed, while desktop navigation timed out in the first batch and one longer-budget repeat. A later current-build run passed 8/8 with the original timeout. The SEO record preserves all attempts and the remaining performance, accessibility and deployment checks; no gameplay completion or ranking claim follows from this slice.
 - Connected the localized full-stack Flora inspector to authoritative scoring state, wired actual discards to Decay, and fixed Eternal Garden's secondary protection rule. Reproduced and fixed tile-origin compatibility clicks opening the Flora modal, invisible first-render reduced-motion Popups, and scroll artwork overlapping long dialog content. [Flora implementation](FLORA_IMPLEMENTATION.md) records the corrected paths and the still-unimplemented Season/Flower powers.
 - Corrected round-boundary Season leakage, Omen-locked draws replacing the existing stack, and Boss skip availability disagreeing with execution. Eight seeded acquisition cases use real skips; four desktop/mobile checks exercise actual Skip, Redraw, Rare+ shop delivery, and once-only fees. [Omen lifecycle](OMEN_LIFECYCLE.md) distinguishes controlled draw/win fixtures from organic acquisition and preserves the full-suite failure history.
 - Integrated the fifth individual Table Loop scroll, Gap Bridge, into shared shop/inventory artwork. The generated 1254×1254 transparent PNG is preserved unchanged; [the art manifest](TABLE_LOOP_ART.md#gap-bridge) records the exact prompt, source, and model-version limitation. Other five Decrees still use the established generic illustration.

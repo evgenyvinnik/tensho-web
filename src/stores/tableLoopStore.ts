@@ -44,7 +44,7 @@ interface TableLoopStore {
   place: (slotIndex: number) => void
   revise: (slotIndex: number) => void
   redraw: () => void
-  recoverFromRiver: (tileId: string) => void
+  swapWithRiver: (tileId: string) => boolean
   claimDraft: (tileId: string) => void
   passDraft: () => void
   finishRound: () => void
@@ -123,6 +123,7 @@ export const createTableLoopStore = (
       // Some refusals return an error state without mutating the engine.
       set({ state: result.state })
       playTableAction(action, result.success, result.state)
+      return result.success
     }
 
     return {
@@ -182,11 +183,18 @@ export const createTableLoopStore = (
         )
       },
 
-      recoverFromRiver: (tileId) => {
-        perform({
-          type: 'recoverFromRiver',
-          tile: tileIndices(get().engine, [tileId])[0],
-        })
+      swapWithRiver: (tileId) => {
+        const selected = get().selectedTileIds
+        return perform(
+          {
+            type: 'swapWithRiver',
+            tile: tileIndices(get().engine, [tileId])[0],
+            rackTile: tileIndices(get().engine, [
+              selected.length === 1 ? selected[0] : '',
+            ])[0],
+          },
+          true
+        )
       },
 
       claimDraft: (tileId) => {

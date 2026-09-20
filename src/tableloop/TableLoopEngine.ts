@@ -480,9 +480,8 @@ export class TableLoopEngine {
     slotIndex: number,
     isRevision: boolean
   ): TableActionResult {
-    // A forgotten draft offer resolves from the wall, so the rack this
-    // placement is checked against is the rack the player can actually see.
-    this.state = TableLoopEngine.resolvePendingDraft(this.state)
+    // Validate the visible selection before declining a pending offer. A
+    // refused action must not draw a tile or diverge from the saved journal.
     const state = this.state
     if (state.phase !== 'playing') {
       return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
@@ -556,6 +555,7 @@ export class TableLoopEngine {
       )
     }
 
+    const resolved = TableLoopEngine.resolvePendingDraft(state)
     const usedIds = new Set(tileIds)
     const completed = isTableComplete(projected.slots)
     const allClaimed = [
@@ -564,8 +564,8 @@ export class TableLoopEngine {
     ]
 
     let next: TableLoopState = {
-      ...state,
-      rack: state.rack.filter((tile) => !usedIds.has(tile.id)),
+      ...resolved,
+      rack: resolved.rack.filter((tile) => !usedIds.has(tile.id)),
       slots: projected.slots,
       river: [...state.river, ...projected.displaced],
       score: state.score + projected.score.total,
@@ -619,7 +619,6 @@ export class TableLoopEngine {
    * decision.
    */
   redraw(tileIds: readonly string[]): TableActionResult {
-    this.state = TableLoopEngine.resolvePendingDraft(this.state)
     const state = this.state
     if (state.phase !== 'playing') {
       return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
@@ -635,7 +634,8 @@ export class TableLoopEngine {
         `Exchange one to ${MAX_REDRAW_TILES} tiles.`
       )
     }
-    if (state.wall.length === 0) {
+    const resolved = TableLoopEngine.resolvePendingDraft(state)
+    if (resolved.wall.length === 0) {
       return refuse(state, 'tableLoop.reject.wallEmpty', 'The wall is empty.')
     }
 
@@ -650,8 +650,8 @@ export class TableLoopEngine {
     }
 
     let next: TableLoopState = {
-      ...state,
-      rack: state.rack.filter((tile) => !unique.has(tile.id)),
+      ...resolved,
+      rack: resolved.rack.filter((tile) => !unique.has(tile.id)),
       river: [...state.river, ...removed],
       redrawsRemaining: usesAction
         ? state.redrawsRemaining
@@ -669,14 +669,46 @@ export class TableLoopEngine {
     return { success: true, state: next }
   }
 
+  /** Trade one visible rack tile for one river tile, once per round, for free. */
+  swapWithRiver(riverTileId: string, rackTileId: string): TableActionResult {
+    const state = this.state
+    if (state.phase !== 'playing') {
+      return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
+    }
+    if (!state.ownedDecrees.includes('river_merchant') || state.riverRecoveriesRemaining <= 0) {
+      return refuse(state, 'tableLoop.reject.noRecoveries', 'No river recoveries remain this round.')
+    }
+    const given = state.rack.find((tile) => tile.id === rackTileId)
+    if (!given) {
+      return refuse(state, 'tableLoop.reject.notInRack', 'Those tiles are not in your rack.')
+    }
+    const taken = state.river.find((tile) => tile.id === riverTileId)
+    if (!taken || taken.id === given.id) {
+      return refuse(state, 'tableLoop.reject.notInRiver', 'That tile is not in the river.')
+    }
+    // Accepted non-draft actions decline an unanswered offer. Refusals above
+    // must leave the deal and saved action journal unchanged.
+    const resolved = TableLoopEngine.resolvePendingDraft(state)
+    const next: TableLoopState = {
+      ...resolved,
+      rack: resolved.rack.map((tile) => tile.id === given.id ? taken : tile),
+      river: resolved.river.map((tile) => tile.id === taken.id ? given : tile),
+      riverRecoveriesRemaining: state.riverRecoveriesRemaining - 1,
+      lastError: null,
+      lastErrorKey: null,
+    }
+    this.state = TableLoopEngine.endIfResourcesSpent(next)
+    return { success: true, state: this.state }
+  }
+
   /**
-   * Take one tile back out of the river (Whispering Merchant).
+   * Legacy version-1 journal replay only. Live play uses swapWithRiver.
+   * Take one tile back out of the river (the original Whispering Merchant).
    *
    * Costs no placement action, but the recovery allowance is once per round and
    * the rack must have space, so a discard is still a real commitment.
    */
   recoverFromRiver(tileId: string): TableActionResult {
-    this.state = TableLoopEngine.resolvePendingDraft(this.state)
     const state = this.state
     if (state.phase !== 'playing') {
       return refuse(state, 'tableLoop.reject.notPlaying', 'The round is over.')
@@ -688,7 +720,8 @@ export class TableLoopEngine {
         'No river recoveries remain this round.'
       )
     }
-    if (state.rack.length >= state.rackSize) {
+    const resolved = TableLoopEngine.resolvePendingDraft(state)
+    if (resolved.rack.length >= resolved.rackSize) {
       return refuse(
         state,
         'tableLoop.reject.rackFull',
@@ -706,8 +739,8 @@ export class TableLoopEngine {
 
     const tile = state.river[index]
     const next: TableLoopState = {
-      ...state,
-      rack: [...state.rack, tile],
+      ...resolved,
+      rack: [...resolved.rack, tile],
       river: state.river.filter((_, i) => i !== index),
       riverRecoveriesRemaining: state.riverRecoveriesRemaining - 1,
       lastError: null,

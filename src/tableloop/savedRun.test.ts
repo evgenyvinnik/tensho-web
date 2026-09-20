@@ -146,7 +146,7 @@ describe('Table Loop saved runs', () => {
   it('rejects incompatible versions, invalid actions and oversized journals', () => {
     const valid = newSavedRun(new TableLoopEngine(7))
     for (const patch of [
-      { version: 2 },
+      { version: 3 },
       { seed: 1.5 },
       { practice: 'yes' },
       { actions: [{ type: 'grantForMeasurement', decree: 'wide_rack' }] },

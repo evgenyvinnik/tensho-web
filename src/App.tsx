@@ -3,19 +3,9 @@
  * Uses React Router for language-prefixed navigation with CRT aesthetics
  */
 
-import { useMemo, Suspense } from 'react'
+import { lazy, useMemo } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-// Screen imports
-import { MenuScreen } from './components/screens/MenuScreen'
-import { GameplayScreen } from './components/screens/GameplayScreen'
-import { TableLoopScreen } from './components/screens/TableLoopScreen'
-import { ShopScreen } from './components/screens/ShopScreen'
-import { GameOverScreen } from './components/screens/GameOverScreen'
-import { AchievementsScreen } from './components/screens/AchievementsScreen'
-import { CodexScreen } from './components/screens/CodexScreen'
-import { CollectionScreen } from './components/screens/CollectionScreen'
-import { SettingsScreen } from './components/screens/SettingsScreen'
 import { VFXProvider } from './hooks/useVFX'
 import { useAudioLifecycle } from './hooks/useAudioLifecycle'
 
@@ -24,22 +14,53 @@ import { createAppRouter, AppRouterProvider } from './router'
 
 const queryClient = new QueryClient()
 
-/**
- * Loading fallback for Suspense while i18n loads
- */
-function LoadingFallback() {
-  return (
-    <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
-      <div className="text-center">
-        <div className="relative w-20 h-20 mx-auto mb-6">
-          <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin" />
-          <div className="absolute inset-2 border-4 border-[var(--color-vibrant-orange)] border-b-transparent rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }} />
-        </div>
-        <p className="text-[var(--color-golden-yellow)] text-lg font-ui neon-text-subtle">Loading...</p>
-      </div>
-    </div>
-  )
-}
+// Module-scope lazy components keep their identity across renders. Each screen
+// has a separate chunk; the PWA still precaches them for offline navigation.
+const MenuScreen = lazy(() =>
+  import('./components/screens/MenuScreen').then((m) => ({
+    default: m.MenuScreen,
+  }))
+)
+const GameplayScreen = lazy(() =>
+  import('./components/screens/GameplayScreen').then((m) => ({
+    default: m.GameplayScreen,
+  }))
+)
+const TableLoopScreen = lazy(() =>
+  import('./components/screens/TableLoopScreen').then((m) => ({
+    default: m.TableLoopScreen,
+  }))
+)
+const ShopScreen = lazy(() =>
+  import('./components/screens/ShopScreen').then((m) => ({
+    default: m.ShopScreen,
+  }))
+)
+const GameOverScreen = lazy(() =>
+  import('./components/screens/GameOverScreen').then((m) => ({
+    default: m.GameOverScreen,
+  }))
+)
+const AchievementsScreen = lazy(() =>
+  import('./components/screens/AchievementsScreen').then((m) => ({
+    default: m.AchievementsScreen,
+  }))
+)
+const CodexScreen = lazy(() =>
+  import('./components/screens/CodexScreen').then((m) => ({
+    default: m.CodexScreen,
+  }))
+)
+const CollectionScreen = lazy(() =>
+  import('./components/screens/CollectionScreen').then((m) => ({
+    default: m.CollectionScreen,
+  }))
+)
+const SettingsScreen = lazy(() =>
+  import('./components/screens/SettingsScreen').then((m) => ({
+    default: m.SettingsScreen,
+  }))
+)
 
 /**
  * Main App Component with Router
@@ -66,9 +87,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <VFXProvider>
-        <Suspense fallback={<LoadingFallback />}>
-          <AppRouterProvider router={router} />
-        </Suspense>
+        <AppRouterProvider router={router} />
       </VFXProvider>
     </QueryClientProvider>
   )

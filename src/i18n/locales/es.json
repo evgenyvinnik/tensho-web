@@ -110,6 +110,8 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} por la forma",
+    "beginnerBonusHelp": "Las bonificaciones por forma se suman a los puntos de las fichas. La previsión incluye los modificadores de tu partida y muestra la puntuación real de esta jugada.",
     "act": "Acto",
     "round": "Ronda",
     "score": "Puntuación",
@@ -146,7 +148,13 @@
     "hiddenHandDesc": "Las fichas boca abajo ocultan patrones y puntos hasta jugarse.",
     "basePlayHint": "Jugada base · completa un patrón para desbloquear Yaku",
     "forecast": {
-      "looseTiles": "Las fichas sueltas puntúan la mitad · agrúpalas para el total",
+      "looseTiles": "Las fichas sin grupo dan la mitad de sus puntos base · intenta agruparlas",
+      "grouped": "Todas las fichas agrupadas · +{{points}} puntos base de figura",
+      "mixed": "+{{points}} puntos base de figura · sin grupo: {{count}} (mitad de puntos base)",
+      "complete": "Mano completa · la previsión incluye las reglas activas",
+      "selectionCount": "Fichas seleccionadas: {{count}}",
+      "stagedDeclaration": "Fichas preparadas: {{count}} · confirma la declaración",
+      "completeDeclaration": "Mano completa ({{count}} fichas) · prepárala para declarar",
       "clears": "Supera la ronda",
       "share": "{{percent}}% de lo que falta · {{pace}}",
       "onPace": "al ritmo",
@@ -161,9 +169,9 @@
     "stageHint": "Construye tu jugada",
     "chooseTacticalGroup": "Elige un grupo táctico",
     "pattern": "figura",
-    "firstMoveTitle": "Tu primer movimiento ya está aquí",
-    "firstMoveContentPattern": "Aún no necesitas conocer el mahjong. Las fichas brillantes ya forman una {{pattern}}. Tócalas, consulta la previsión exacta y juega. Abre Aprende las fichas cuando quieras ver la guía visual.",
-    "firstMoveContentRedraw": "Aún no necesitas conocer el mahjong. Las fichas brillantes están aisladas; selecciónalas y usa Recambiar para buscar una Pareja, Escalera o Trío. Abre Aprende las fichas cuando quieras ver la guía visual.",
+    "firstMoveTitle": "Tu primer movimiento",
+    "firstMoveContentPattern": "Fichas brillantes: {{pattern}}. Selecciónalas, revisa los puntos y juega. Aprende las fichas abre la guía visual.",
+    "firstMoveContentRedraw": "Selecciona las fichas brillantes aisladas y usa Recambiar para buscar un grupo. Aprende las fichas abre la guía visual.",
     "learnPatterns": "Aprende las fichas",
     "beginnerGuideTitle": "Mahjong en un minuto",
     "beginnerGuideIntro": "Todavía no necesitas conocer una mano completa. En Tensho, empieza por encontrar una figura pequeña y juégala para ganar puntos.",
@@ -209,7 +217,7 @@
     "confirmHand": "CONFIRMAR MANO",
     "notComplete": "INCOMPLETA",
     "playCount": "JUGAR {{count}}",
-    "pointsToClear": "faltan {{count}}",
+    "pointsToClear": "faltan {{formattedCount}}",
     "targetCleared": "Objetivo alcanzado",
     "stake": "Apuesta {{tier}}",
     "requiredTiles": "{{count}} FICHAS",
@@ -265,7 +273,7 @@
       "interest": "Intereses",
       "decrees": "Decretos",
       "goldTiles": "Fichas de oro",
-      "bonus": "Bonificación",
+      "bonus": "Ajuste de recompensa",
       "rentals": "Alquileres",
       "interestBlocked": "Los intereses están bloqueados actualmente.",
       "interestCap": "Has alcanzado el límite de intereses de {{interest}}G.",
@@ -642,7 +650,7 @@
       },
       "decree-wealth-engine": {
         "name": "Motor de Riqueza",
-        "description": "+1O por Decreto al final de la ronda"
+        "description": "+1G por cada Decreto que posees al final de la ronda"
       },
       "decree-perpetual-motion": {
         "name": "Movimiento Perpetuo",
@@ -982,14 +990,15 @@
       "decayPenalty": "Penalización por jugada de Decadencia: −{{points}} puntos.",
       "partial": "Algunas reglas estacionales siguen en desarrollo. Solo se muestran los efectos actuales.",
       "unwired": "Aún no implementado.",
-      "summer": "Puntuación ×1,3.",
+      "summer": "Puntuación ×1,3. Aparta el 20% del muro vivo restante durante esta ronda (las fichas disponibles se redondean hacia abajo).",
       "autumn": "Multiplicador de yaku +20%.",
       "winter": "Puntuación ×0,75.",
       "drought": "Anula las bonificaciones de puntuación de flores no protegidas.",
-      "frostbite": "Reduce a la mitad los bonos multiplicadores de los edictos.",
+      "frostbite": "Reduce a la mitad las bonificaciones de puntos fijos, multiplicador y oro de los Decretos.",
       "decay": "−10 puntos por ficha descartada en esta ronda, sin bajar de cero.",
       "droughtName": "Sequía",
       "monsoonName": "Monzón",
+      "monsoon": "Aleatoriza los robos normales y las reposiciones de fichas de bonificación durante esta ronda.",
       "frostbiteName": "Congelación",
       "decayName": "Decadencia",
       "corruptedName": "Corrupta",
@@ -998,7 +1007,7 @@
       "flowerChrysanthemum": "+{{percent}}% de puntuación por grupo oculto.",
       "flowerBamboo": "+{{percent}}% de puntuación por ficha terminal.",
       "setTwo": "2 flores: +1 espacio de edicto.",
-      "setThree": "3 flores: desbloqueo especial de tienda aún no implementado.",
+      "setThree": "3 flores: desbloquean Decretos potenciados por flores en la tienda y los sobres de Decretos.",
       "setFour": "4 flores: bonificaciones de flores dobles."
     },
     "flowers": "Flores",
@@ -1497,6 +1506,9 @@
     "stepsCount": "{{done}}/{{total}} pasos"
   },
   "scoring": {
+    "lastPlay": "Última jugada",
+    "adjustments": "Efectos posteriores",
+    "exactValues": "Valores exactos",
     "basePoints": "Puntos base",
     "totalScore": "Puntuación total",
     "subtotal": "Subtotal",
@@ -2395,7 +2407,7 @@
       },
       "river_merchant": {
         "name": "Mercader que Susurra",
-        "description": "Una vez por ronda, recupera una ficha del río y devuélvela a tu atril."
+        "description": "Una vez por ronda, cambia una ficha elegida de tu atril por una del río. No cuesta acciones."
       },
       "jade_ledger": {
         "name": "Libro de Jade",
@@ -2462,6 +2474,10 @@
       "bridges": "· {{count}} puente"
     },
     "river": {
+      "choose": "Selecciona una ficha del atril para entregar y luego una del río. Gratis una vez por ronda.",
+      "ready": "Entrega {{tile}} por una ficha del río. Sin coste de acción.",
+      "used": "Ya usaste el intercambio del Mercader en esta ronda.",
+      "swapLabel": "Cambiar {{give}} por {{take}}",
       "title": "Río",
       "recover": "Río: toca para recuperar una ficha"
     },

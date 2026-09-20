@@ -3,7 +3,8 @@ import { TABLE_DECREES } from './content'
 import type { TableActionResult, TableDecreeId } from './types'
 
 /** Bump when rules or initial collection order change: replays are rules-specific. */
-export const TABLE_SAVE_VERSION = 1
+export const TABLE_SAVE_VERSION = 2
+// Stable storage address: existing version-1 journals migrate on their next save.
 export const TABLE_SAVE_KEY = 'tensho-table-loop-v1'
 const MAX_ACTIONS = 256
 
@@ -12,6 +13,7 @@ export type SavedAction =
   | { type: 'place' | 'revise'; tiles: number[]; slot: number }
   | { type: 'redraw'; tiles: number[] }
   | { type: 'recoverFromRiver' | 'claimDraft'; tile: number }
+  | { type: 'swapWithRiver'; tile: number; rackTile: number }
   | {
       type:
         | 'passDraft'
@@ -69,6 +71,8 @@ export function applySavedAction(
       return engine.redraw(action.tiles.map(tileId))
     case 'recoverFromRiver':
       return engine.recoverFromRiver(tileId(action.tile))
+    case 'swapWithRiver':
+      return engine.swapWithRiver(tileId(action.tile), tileId(action.rackTile))
     case 'claimDraft':
       return engine.claimDraft(tileId(action.tile))
     case 'passDraft':
@@ -111,6 +115,12 @@ function isSavedAction(value: unknown): value is SavedAction {
     case 'recoverFromRiver':
     case 'claimDraft':
       return isIndex(action.tile)
+    case 'swapWithRiver':
+      return (
+        isIndex(action.tile) &&
+        isIndex(action.rackTile) &&
+        action.tile !== action.rackTile
+      )
     case 'passDraft':
     case 'finishRound':
     case 'openShop':
@@ -131,14 +141,16 @@ export function restoreSavedRun(
     const value = JSON.parse(raw) as Record<string, unknown> | null
     if (
       !value ||
-      value.version !== TABLE_SAVE_VERSION ||
+      (value.version !== 1 && value.version !== TABLE_SAVE_VERSION) ||
       typeof value.seed !== 'number' ||
       !Number.isSafeInteger(value.seed) ||
       typeof value.draftEnabled !== 'boolean' ||
       typeof value.practice !== 'boolean' ||
       !Array.isArray(value.actions) ||
       value.actions.length > MAX_ACTIONS ||
-      !value.actions.every(isSavedAction)
+      !value.actions.every(isSavedAction) ||
+      (value.version === 1 &&
+        value.actions.some((action) => action.type === 'swapWithRiver'))
     )
       return null
     const journal: SavedRun = {

@@ -20,7 +20,7 @@ import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import { Decree, Sticker } from '../../systems/types'
 import { EditionType } from '../../systems/PricingCalculator'
 import { getCurrentLanguage } from '../../i18n'
-import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
 import { illustrationAssets } from '../../utils/assets'
@@ -421,7 +421,7 @@ export function ShopItemCard({
         <div className="text-center mb-2">
           {decreeId ? (
             <div className="flex justify-center">
-              <DecreeUniqueIcon
+              <DecreeArtwork
                 decreeId={decreeId}
                 size={48}
                 color={rarityColor}

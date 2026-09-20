@@ -1,5 +1,11 @@
 # Table Loop artwork — September 9, 2026
 
+September 12 follow-up: **Honor Court** and **Wide Rack** now have individual
+scrolls, followed by **Twin Flame**, **Whispering Merchant**, and **Jade Ledger**, bringing the total to ten. Their original assets and exact built-in
+generation prompts are recorded in [Public guide and scroll artwork](PUBLIC_SITE_ART.md).
+Every Decree in the current Table Loop catalog now has individual artwork.
+The dated checkpoints below describe the earlier sets of assets.
+
 Generated with the built-in image generation tool using its available default model. The tool does not expose a model selector or return a model ID, so no specific model version is claimed. These are new assets, not replacements.
 
 Style reference: `public/assets/illustrations/decrees/regional-mandate.png` (inspected before generation). All three outputs were visually inspected for matching parchment, lacquer, gold trim, legible subject, and absence of embedded text. Original generated PNGs are preserved with their alpha channels.
@@ -20,6 +26,73 @@ group rules, requiring Gap Bridge, and checks agreement with the English catalog
 No legality, charge count, or scoring rule changed to accommodate the artwork.
 
 ## Final prompts and project assets
+
+### jade-ledger
+
+Saved asset: [jade-ledger.png](../public/assets/illustrations/table-loop/jade-ledger.png).
+Original: `/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-d1be64f3-c8c3-43f7-b857-ead2fe125beb.png`.
+
+Generated September 12 using the imagegen skill, built-in mode, with no exposed
+model selector/ID and no CLI fallback. Whispering Merchant was visually inspected
+for style; the new generation had no image inputs. The original 1254×1254 RGBA
+PNG was copied unchanged. Visual inspection shows a jade book, two gold coins,
+and three ivory pip tiles on a matching emerald/gold scroll, with transparent
+exterior and no embedded text. The actual rule remains localized HTML:
+¥2 per placed group, one fewer redraw each round. No gameplay rule changed.
+The renderer's type-checked mapping and catalog-driven PNG tests now require art
+for every Table Loop Decree; a runtime fallback remains defensive only.
+
+Final prompt:
+
+Use case: stylized-concept. Asset type: transparent game-item illustration for Tensho's Jade Ledger Decree. Generate a NEW upright ornate parchment scroll, centered completely within a square canvas with generous exterior margins. Its painted central emblem is a closed jade-green account book with antique gold corner fittings, two golden square-holed coins resting against it, and a small neat group of three ivory mahjong tiles beside the book. This represents earning gold from placed tile groups. Match the established premium hand-painted board-game style: emerald lacquer rollers, antique metallic gold trim, aged ivory parchment, green silk knots and tassels, warm tactile highlights, nearly frontal composition. All rollers and tassels fully visible. Exterior background MUST be genuinely transparent alpha for a clean cutout on green felt, not a painted checkerboard, gray or white background, room or scenery. No text, letters, numerals, calligraphy, labels, people, watermark or UI. Tile faces may show simple jade circular pips only.
+
+### whispering-merchant
+
+Later September 12 rule change, approved by the user: Merchant now trades one
+chosen rack tile for a river tile, once per round without an action cost. The
+existing art still depicts the returned tile; the updated rule is localized HTML.
+The exact historical generation prompt below is preserved, not rewritten to
+imply it was generated after this design choice.
+
+Saved asset: [river-merchant.png](../public/assets/illustrations/table-loop/river-merchant.png).
+Original: `/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-ff855cb4-9f8c-4dd1-ae47-da9681b1ff77.png`.
+
+Generated September 12 with the imagegen skill in built-in mode, without an
+exposed model selector/ID or CLI fallback. Final generation used no image inputs;
+Twin Flame was inspected as a style reference. The original 1254×1254 RGBA PNG
+was copied unchanged. Visually checked: one river tile returns toward an empty
+rack on a gold ribbon, with matching emerald/ivory scroll and complete tassels.
+Names and rules remain localized HTML outside the artwork.
+
+Rejected attempts are not shipped: the first draft mistakenly depicted selling
+tiles for gold; two edits corrected the subject but returned RGB images with a
+painted checkerboard. A fresh generation produced the correct motif and actual
+alpha. The initial workspace draft was moved to
+`/tmp/tensho-flower-unlock-3UOo43/rejected-trading-scroll.png`; all generated
+originals remain under the generator's directory. The renderer's unit check now
+verifies RGBA color type for every individual scroll, not just a PNG signature.
+
+Final prompt:
+
+Use case: stylized-concept. Generate a NEW transparent-background game-item illustration: one upright ornate parchment scroll for Tensho's Whispering Merchant Decree. On the ivory parchment, one ivory mahjong tile with a jade circular pip floats out of flowing jade river waves, carried by a curved golden ribbon toward a small empty wooden tile rack. This represents retrieving one discarded tile, NOT selling or exchanging tiles. No scales or coins. Match premium hand-painted board-game art: emerald lacquer rollers, antique metallic gold trim, aged ivory parchment, green silk knots and tassels, warm tactile highlights, nearly frontal composition. Complete scroll centered on square canvas, generous empty exterior margins. The exterior background MUST be genuinely transparent alpha, not a drawn checkerboard, not gray, not white, not a room. NO text, numerals, letters, calligraphy, labels, people, watermark, scenery or UI. Use actual transparency for a clean cutout that can sit on green felt.
+
+### twin-flame
+
+Saved asset: [twin-flame.png](../public/assets/illustrations/table-loop/twin-flame.png).
+Original: `/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-e642f5f7-cd19-455d-8897-878b80b15f68.png`.
+
+Generated September 12 with the imagegen skill and built-in tool's available
+default model. No model selector or model ID was exposed; no CLI/API fallback
+was used. This is a new image, with no referenced image inputs.
+`watch-fire.png` was inspected for style before writing the prompt. The original
+1254×1254 RGBA PNG was copied unchanged, preserving transparency. The result was
+visually inspected: complete emerald/gold scroll, paired amber flames and a
+shared gold medallion, no embedded words. Names and rules remain localized HTML
+in the existing hover/focus/tap details. This adds art, not a new gameplay rule.
+
+Final prompt:
+
+Use case: stylized-concept. Asset type: individual collectible Decree scroll illustration for Tensho Mahjong roguelike. Generate one NEW complete upright ivory parchment scroll, emerald lacquer rollers with antique gold trim, green silk knot and tassels, rich polished hand-painted fantasy board-game art. Subject: Twin Flame, an upgrade that doubles milestone point rewards. On the parchment, two equally prominent amber flames rise from two small matching jade-and-bronze lamps and curl around a single bright gold star-shaped medallion. Make the paired flames the bold central motif, unmistakably TWO at small thumbnail size, with the medallion expressing a shared achievement. Match the established Tensho palette of deep emerald, warm ivory and restrained metallic gold, tactile parchment and carefully painted light. Nearly frontal view, centered whole scroll on a square canvas, generous transparent margins around rollers and tassels. Genuinely transparent background and alpha. No letters, words, numerals, calligraphy, labels, watermarks, surrounding scenery, UI, extra scrolls or people. Localized name and rules will be rendered separately in HTML.
 
 ### gap-bridge
 

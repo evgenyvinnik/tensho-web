@@ -17,7 +17,7 @@ import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
 import type { ArchiveCategoryDefinition } from '../../config/archiveDefinitions'
 import type { ItemDisplayInfo } from './ItemCard'
-import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 
@@ -142,7 +142,7 @@ export function ItemDetailModal({
               {/* Decree icon for decree category items */}
               {displayInfo.category === 'decrees' && (
                 <div className="flex-shrink-0 p-2 rounded-lg bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
-                  <DecreeUniqueIcon
+                  <DecreeArtwork
                     decreeId={displayInfo.id}
                     size={40}
                     color={getRarityIconColor(displayInfo.rarity)}

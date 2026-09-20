@@ -167,7 +167,7 @@ export const TABLE_DECREES: readonly TableDecreeDefinition[] = [
     id: 'river_merchant',
     name: 'Whispering Merchant',
     description:
-      'Once per round, take one tile back out of the river into your rack.',
+      'Once per round, swap one chosen rack tile for a river tile. Costs no action.',
     isStarter: false,
     cost: 8,
   },

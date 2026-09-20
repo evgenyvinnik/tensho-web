@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
+import { MeldType } from '../../core/Meld'
+import { STRUCTURE_POINTS_BY_TYPE } from '../../rules/ScoringEngine'
+import { illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
 import { TileImage } from '../tiles/TileImage'
 
@@ -12,29 +15,41 @@ interface PatternExampleProps {
   label: string
   description: string
   tiles: Tile[]
-  points: number
+  type: MeldType
 }
 
 function PatternExample({
   label,
   description,
   tiles,
-  points,
+  type,
 }: PatternExampleProps) {
+  const { t } = useTranslation()
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-white/10 bg-black/20 p-3">
+    <div
+      data-guide-pattern={type}
+      className="grid min-w-0 grid-cols-1 items-center gap-3 rounded-xl border border-white/10 bg-black/20 p-3 sm:grid-cols-[minmax(0,1fr)_auto]"
+    >
       <div className="min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <h4 className="font-bold text-[var(--color-beige-white)]">{label}</h4>
-          <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] font-black text-amber-200">
-            +{points}
+          <span
+            data-guide-bonus
+            className="rounded-full bg-amber-400/15 px-2 py-0.5 text-xs font-bold text-amber-200"
+          >
+            {t('gameplay.beginnerShapeBonus', {
+              points: STRUCTURE_POINTS_BY_TYPE[type],
+            })}
           </span>
         </div>
         <p className="mt-1 text-xs leading-relaxed text-[var(--color-beige-white)]/65">
           {description}
         </p>
       </div>
-      <div className="flex items-end gap-1" aria-hidden="true">
+      <div
+        className="flex flex-wrap items-end justify-center gap-1"
+        aria-hidden="true"
+      >
         {tiles.map((tile) => (
           <TileImage
             key={tile.id}
@@ -84,10 +99,15 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
       title={t('gameplay.beginnerGuideTitle', 'Mahjong in one minute')}
       className="w-[min(94vw,620px)]"
     >
-      <div
-        data-beginner-guide
-        className="max-h-[min(68dvh,680px)] overflow-y-auto pr-1"
-      >
+      <div data-beginner-guide className="min-w-0 [overflow-wrap:anywhere]">
+        <img
+          data-guide-art
+          src={illustrationAssets.beginnerGuidebook}
+          alt=""
+          width={64}
+          height={64}
+          className="mx-auto mb-2 h-16 w-16 object-contain"
+        />
         <p className="text-center text-sm leading-relaxed text-[var(--color-beige-white)]/80 sm:text-base">
           {t(
             'gameplay.beginnerGuideIntro',
@@ -99,14 +119,14 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
           <h3 className="text-center text-xs font-black uppercase tracking-[0.18em] text-[var(--color-metallic-gold)]">
             {t('gameplay.beginnerFamiliesTitle', 'Read the tile families')}
           </h3>
-          <div className="mt-3 grid grid-cols-5 gap-1.5 sm:gap-3">
+          <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-5">
             {suitExamples.map(({ label, tile }) => (
               <div
                 key={tile.id}
                 className="flex min-w-0 flex-col items-center gap-1.5"
               >
                 <TileImage tile={tile} size="small" showTooltip={false} />
-                <span className="w-full truncate text-center text-[10px] font-semibold text-[var(--color-beige-white)]/75 sm:text-xs">
+                <span className="w-full text-center text-xs font-semibold text-[var(--color-beige-white)]/75">
                   {label}
                 </span>
               </div>
@@ -131,7 +151,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
                 'gameplay.beginnerPairHelp',
                 'Two identical tiles. The easiest shape to recognize.'
               )}
-              points={10}
+              type={MeldType.Pair}
               tiles={[
                 exampleTile(TileSuit.Pinzu, 5, 'pair-a'),
                 exampleTile(TileSuit.Pinzu, 5, 'pair-b'),
@@ -143,7 +163,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
                 'gameplay.beginnerSequenceHelp',
                 'Three consecutive numbers in the same suit.'
               )}
-              points={20}
+              type={MeldType.Sequence}
               tiles={[
                 exampleTile(TileSuit.Souzu, 2, 'sequence-a'),
                 exampleTile(TileSuit.Souzu, 3, 'sequence-b'),
@@ -156,7 +176,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
                 'gameplay.beginnerTripletHelp',
                 'Three identical tiles. Harder to find, but worth more.'
               )}
-              points={30}
+              type={MeldType.Triplet}
               tiles={[
                 exampleTile(TileSuit.Manzu, 7, 'triplet-a'),
                 exampleTile(TileSuit.Manzu, 7, 'triplet-b'),
@@ -169,7 +189,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
                 'gameplay.beginnerQuadHelp',
                 'Four identical tiles. Rare, valuable, and easy to recognize.'
               )}
-              points={50}
+              type={MeldType.Quad}
               tiles={[
                 exampleTile(TileSuit.Pinzu, 9, 'quad-a'),
                 exampleTile(TileSuit.Pinzu, 9, 'quad-b'),
@@ -178,6 +198,9 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
               ]}
             />
           </div>
+          <p className="mt-3 text-center text-xs leading-relaxed text-[var(--color-beige-white)]/75">
+            {t('gameplay.beginnerBonusHelp')}
+          </p>
         </section>
 
         <section className="mt-5 rounded-xl border border-[var(--color-metallic-gold)]/30 bg-[var(--color-forest-green)]/35 p-3">

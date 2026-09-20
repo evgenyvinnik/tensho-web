@@ -33,6 +33,7 @@ import {
   toPartialParsedHand,
 } from '../rules/PartialHandParser'
 import { eventBus } from './EventBus'
+import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ShopSession } from './ShopSession'
 import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
 import {
@@ -97,6 +98,8 @@ import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import { MAX_TACTICAL_PLAY_TILES } from './playRules'
 import { createSeededRandom, runRandom } from './RunRandom'
+import { takeWallTile, takeDeadWallTile } from './wallDraw'
+import { applySeasonWallEffect } from './seasonWall'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -180,6 +183,8 @@ export interface OrchestratorState {
   // Wall state
   wallTemplate: Tile[]
   wall: Tile[]
+  /** Tiles set aside by Summer for this round, not removed from the run. */
+  summerReserve: Tile[]
   deadWall: Tile[]
   discards: Tile[]
   drawIndex: number
@@ -319,6 +324,7 @@ export class GameOrchestrator {
       faceDownTileIds: new Set(),
       wallTemplate: [],
       wall: [],
+      summerReserve: [],
       deadWall: [],
       discards: [],
       drawIndex: 0,
@@ -603,8 +609,7 @@ export class GameOrchestrator {
           [decree.effect, ...(decree.extraEffects ?? [])].some(
             (effect) =>
               effect.type === 'rule_modification' && effect.ruleId === ruleId
-          ) &&
-          !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
+          ) && !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
       )
   }
 
@@ -687,6 +692,7 @@ export class GameOrchestrator {
     const deadWallSize = 14
     this.state.deadWall = shuffled.slice(-deadWallSize)
     this.state.wall = shuffled.slice(0, -deadWallSize)
+    this.state.summerReserve = []
     this.state.drawIndex = 0
     this.state.discards = []
   }
@@ -796,34 +802,20 @@ export class GameOrchestrator {
    * Draw a tile from the wall (internal)
    */
   private drawTileInternal(): Tile | null {
-    if (this.state.drawIndex >= this.state.wall.length) {
-      return null
-    }
-
-    const tile = this.state.wall[this.state.drawIndex]
-    this.state.drawIndex++
-    return tile
+    return takeWallTile(
+      this.state,
+      this.state.seasonSystem.areDrawsRandomized()
+    )
   }
 
   /**
    * Draw from dead wall
    */
   private drawFromDeadWall(): Tile | null {
-    if (this.state.deadWall.length === 0) {
-      return null
-    }
-
-    const tile = this.state.deadWall.shift()!
-
-    // Replenish dead wall from main wall if possible
-    const remaining = this.state.wall.length - this.state.drawIndex
-    if (remaining > 0) {
-      const replenish = this.state.wall[this.state.wall.length - 1]
-      this.state.wall = this.state.wall.slice(0, -1)
-      this.state.deadWall.push(replenish)
-    }
-
-    return tile
+    return takeDeadWallTile(
+      this.state,
+      this.state.seasonSystem.areDrawsRandomized()
+    )
   }
 
   /**
@@ -958,7 +950,11 @@ export class GameOrchestrator {
       })
     } else if (tile.isSeason) {
       const lockedSeason = this.state.omenSystem.applyLockedSeason()
-      const season = this.state.seasonSystem.addSeason(tile, lockedSeason ?? undefined)
+      const season = this.state.seasonSystem.addSeason(
+        tile,
+        lockedSeason ?? undefined
+      )
+      applySeasonWallEffect(this.state, season)
       if (season?.isCorrupted && season.corruptedType) {
         eventBus.emit('seasonCorrupted', {
           corruptedType: season.corruptedType,
@@ -1188,23 +1184,11 @@ export class GameOrchestrator {
     this.state.selectedTileIds.delete(tileId)
     this.state.faceDownTileIds.delete(tileId)
 
-    const decreeGold = this.state.decreeSystem.calculateDiscardGold(1)
-    if (decreeGold > 0) {
-      const previousGold = this.state.gold
-      this.state.gold += decreeGold
-      effects.push({
-        type: 'gold_changed',
-        description: `Earned ${decreeGold} gold from discard effects`,
-        delta: decreeGold,
-        newTotal: this.state.gold,
-      })
-      eventBus.emit('goldChanged', {
-        previousGold,
-        newGold: this.state.gold,
-        delta: decreeGold,
-        reason: 'Discard Decree effect',
-      })
-    }
+    const decreeGold = this.state.decreeSystem.calculateDiscardGold(
+      1,
+      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+    )
+    this.changeGold(decreeGold, 'Discard Decree effect', effects, 'decree')
 
     effects.push({
       type: 'tile_removed',
@@ -1518,6 +1502,7 @@ export class GameOrchestrator {
     eventBus.emit('handPlayed', {
       tiles: tileIds,
       score: scoreResult.finalScore,
+      equation: scoreResult.equation,
       yakuIds: scoreResult.detectedYaku.map((y) => y.definition.id),
     })
 
@@ -1648,6 +1633,7 @@ export class GameOrchestrator {
     eventBus.emit('handPlayed', {
       tiles: tileIds,
       score: finalScore,
+      equation: scoreResult.equation,
       yakuIds: [],
     })
 
@@ -1669,7 +1655,10 @@ export class GameOrchestrator {
     return { success: true, effects }
   }
 
-  private applyOmenScoreBonuses(score: ScoreBreakdown, preview = false): void {
+  private applyOmenScoreBonuses(
+    score: ScoreBreakdown & { equation: ScoreEquation },
+    preview = false
+  ): void {
     const omenScore = preview
       ? this.state.omenSystem.peekHandScoredOmens()
       : this.state.omenSystem.triggerHandScoredOmens()
@@ -1679,6 +1668,11 @@ export class GameOrchestrator {
       (score.finalScore + omenScore.scoreBonus) *
         (omenScore.multBonus > 0 ? omenScore.multBonus : 1) *
         (1 + passiveOmenMult)
+    )
+    score.equation = settleScoreEquation(
+      score.equation.points,
+      score.equation.multiplier,
+      score.finalScore
     )
     if (!preview) this.state.omenSystem.recordHandPlayed()
   }
@@ -1724,19 +1718,33 @@ export class GameOrchestrator {
    * Dry-run at most three replacement cycles. Bonus tiles draw from the dead
    * wall, which replenishes from the main wall's tail. Counting raw wall tiles
    * alone can promise replacements that these chains cannot actually supply.
-   * This reads no random stream and collects no bonus or consumable rewards.
+   * A fork reproduces Monsoon picks and Season corruption without advancing
+   * the live random streams, consuming Omen locks, or collecting any rewards.
    */
   private getRedrawReplacementCapacity(): number {
-    const wall = this.state.wall.slice(this.state.drawIndex)
-    const deadWall = [...this.state.deadWall]
+    if (this.state.drawIndex >= this.state.wall.length) return 0
+    const random = runRandom.fork()
+    const draw = {
+      wall: this.state.wall.slice(this.state.drawIndex),
+      deadWall: [...this.state.deadWall],
+      summerReserve: [...this.state.summerReserve],
+      drawIndex: 0,
+    }
+    const seasons = SeasonSystem.fromState(
+      this.state.seasonSystem.toState(),
+      random
+    )
+    let lockedSeason = this.state.omenSystem.getLockedSeason()
     let capacity = 0
-    while (capacity < 3 && wall.length > 0) {
-      let tile = wall.shift()
+    while (capacity < 3 && draw.drawIndex < draw.wall.length) {
+      let tile = takeWallTile(draw, seasons.areDrawsRandomized(), random)
       while (tile && (tile.isFlower || tile.isSeason)) {
-        tile = deadWall.shift()
-        if (!tile) break
-        const replenish = wall.pop()
-        if (replenish) deadWall.push(replenish)
+        if (tile.isSeason) {
+          const season = seasons.addSeason(tile, lockedSeason ?? undefined)
+          applySeasonWallEffect(draw, season)
+          lockedSeason = null
+        }
+        tile = takeDeadWallTile(draw, seasons.areDrawsRandomized(), random)
       }
       if (!tile) break
       capacity++
@@ -2487,6 +2495,7 @@ export class GameOrchestrator {
     this.state.handTiles = replace(this.state.handTiles)
     this.state.wallTemplate = replace(this.state.wallTemplate)
     this.state.wall = replace(this.state.wall)
+    this.state.summerReserve = replace(this.state.summerReserve)
     this.state.deadWall = replace(this.state.deadWall)
     this.state.discards = replace(this.state.discards)
   }
@@ -2521,6 +2530,9 @@ export class GameOrchestrator {
       (tile) => tile.id !== tileId
     )
     this.state.deadWall = this.state.deadWall.filter(
+      (tile) => tile.id !== tileId
+    )
+    this.state.summerReserve = this.state.summerReserve.filter(
       (tile) => tile.id !== tileId
     )
     this.state.discards = this.state.discards.filter(
@@ -2612,14 +2624,40 @@ export class GameOrchestrator {
     }
   }
 
-  private changeGold(delta: number, reason: string, effects: Effect[]): void {
+  /** Pure settlement shared by previews, tile/consumable rewards and cash-out.
+   * Only Decree contributions weaken. Fractions combine before whole-gold rounding.
+   */
+  private calculateGoldReward(ordinaryGold: number, rawDecreeGold = 0) {
+    const strength = this.state.seasonSystem.getDecreeEffectModifier()
+    const excluded = new Set(
+      this.state.mandateEffectSystem.getDisabledDecreeIds()
+    )
+    const rawMultiplier = this.state.decreeSystem.getGoldMultiplier(excluded)
+    const multiplier = 1 + (rawMultiplier - 1) * strength
+    const decreeGold = rawDecreeGold * strength
+    return {
+      decreeGold,
+      amount: Math.floor((ordinaryGold + decreeGold) * multiplier),
+    }
+  }
+
+  private changeGold(
+    delta: number,
+    reason: string,
+    effects: Effect[],
+    source: 'ordinary' | 'decree' = 'ordinary'
+  ): void {
     if (delta === 0) return
     // Philosopher's Stone doubles gold gained; penalties are untouched, so a
     // gold multiplier can never deepen a loss.
     const amount =
       delta > 0
-        ? Math.floor(delta * this.state.decreeSystem.getGoldMultiplier())
+        ? this.calculateGoldReward(
+            source === 'ordinary' ? delta : 0,
+            source === 'decree' ? delta : 0
+          ).amount
         : delta
+    if (amount === 0) return
     const previousGold = this.state.gold
     this.state.gold = Math.max(0, this.state.gold + amount)
     const actualDelta = this.state.gold - previousGold
@@ -2725,9 +2763,11 @@ export class GameOrchestrator {
   private createRandomDecree(
     rarity?: 'ImperialDecree' | 'HeavenlyOrdinance'
   ): boolean {
-    const pool = rarity
-      ? ALL_DECREES.filter((decree) => decree.rarity === rarity)
-      : ALL_DECREES
+    // Generated rewards must be grantable, including their Flower requirement.
+    const pool = ALL_DECREES.filter(
+      (decree) =>
+        (!rarity || decree.rarity === rarity) && this.canAddDecree(decree)
+    )
     if (pool.length === 0) return false
     const decree = pool[Math.floor(runRandom.next('decrees') * pool.length)]
     return this.addDecree(decree, 'generated')
@@ -2823,7 +2863,7 @@ export class GameOrchestrator {
     parsedHand: ParsedHand,
     partialMelds?: Meld[],
     preview: boolean = false
-  ): ScoreBreakdown {
+  ): ScoreBreakdown & { equation: ScoreEquation } {
     // Build the full ScoringContext for system integrations
     const roundState = this.state.roundManager.getCurrentRound()
 
@@ -2861,15 +2901,17 @@ export class GameOrchestrator {
       handsPlayedThisRun: this.state.handsPlayedThisRun,
     }
 
-    // Apply season modifiers (includes corrupted effects)
-    const seasonModifiers =
-      this.state.seasonSystem.applySeasonModifiers(systemContext)
-
-    // Calculate flower bonus with season suppression check. Eternal Garden's
+    // Resolve effective suppression before either base Flower bonuses or
+    // Flower–Season interactions are applied. Eternal Garden's
     // protection outranks the Season that would otherwise silence Flowers -
     // Court authority overriding Heaven is the one exception the hierarchy
     // grants a Decree.
-    const flowerBonus = this.areFlowerBonusesSuppressed()
+    const flowersSuppressed = this.areFlowerBonusesSuppressed()
+    const seasonModifiers = this.state.seasonSystem.applySeasonModifiers(
+      systemContext,
+      { flowersSuppressed }
+    )
+    const flowerBonus = flowersSuppressed
       ? 1.0
       : this.state.flowerSystem.calculateFlowerBonus(systemContext)
 
@@ -2905,6 +2947,9 @@ export class GameOrchestrator {
       : tiles
 
     // Create scoring context with system bonuses
+    const disabledDecreeIds = new Set(
+      this.state.mandateEffectSystem.getDisabledDecreeIds()
+    )
     const context = createScoringContext(scoredTiles, parsedHand, {
       isConcealed: true,
       isTsumo: true,
@@ -2914,7 +2959,10 @@ export class GameOrchestrator {
       tanyaoAllowsTerminals: this.isDecreeRuleActive('tanyao_terminals'),
       partialMelds,
       previewMode: preview,
-      extraRetriggers: this.state.decreeSystem.calculateRetriggers(scoredTiles),
+      extraRetriggers: this.state.decreeSystem.calculateRetriggers(
+        scoredTiles,
+        disabledDecreeIds
+      ),
     })
 
     // Calculate base score
@@ -2945,9 +2993,10 @@ export class GameOrchestrator {
       mandateScoring.basePoints * this.state.tableModifiers.baseScoreMultiplier
     // Yaku Nexus scores each yaku as if it ranked higher; Yaku Amplifier scales
     // the combined multiplier. Both are Court authority over Grammar.
-    const yakuDecreeModifiers = this.state.decreeSystem.getYakuModifiers()
-    baseBreakdown.yakuMultiplier = baseBreakdown.detectedYaku.reduce(
-      (multiplier, yaku) => {
+    const yakuDecreeModifiers =
+      this.state.decreeSystem.getYakuModifiers(disabledDecreeIds)
+    const yakuProduct = (tierBonus: number) =>
+      baseBreakdown.detectedYaku.reduce((multiplier, yaku) => {
         const adjustedTier = mandateScoring.yakuTiers.get(yaku.definition.id)
         // The table adds to each surviving Yakuman's multiplier, not to every
         // hand and not as a second multiplier over the whole final score.
@@ -2960,21 +3009,30 @@ export class GameOrchestrator {
           const tierRatio = adjustedTier / yaku.definition.tier
           return multiplier * (1 + (yakuMultiplier - 1) * tierRatio)
         }
-        if (yakuDecreeModifiers.tierBonus > 0) {
+        if (tierBonus > 0) {
           // A tier is worth its share of the yaku's own multiplier, so a tier
           // bonus lifts weak yaku by the same proportion it lifts strong ones.
-          const boostedTier =
-            yaku.definition.tier + yakuDecreeModifiers.tierBonus
+          const boostedTier = yaku.definition.tier + tierBonus
           const tierRatio = boostedTier / yaku.definition.tier
           return multiplier * (1 + (yakuMultiplier - 1) * tierRatio)
         }
         return multiplier * yakuMultiplier
-      },
-      1
-    )
-    if (baseBreakdown.detectedYaku.length > 0) {
-      baseBreakdown.yakuMultiplier *= yakuDecreeModifiers.multiplier
-    }
+      }, 1)
+    const ordinaryYakuMultiplier = yakuProduct(0)
+    const boostedYakuMultiplier =
+      yakuProduct(yakuDecreeModifiers.tierBonus) *
+      (baseBreakdown.detectedYaku.length > 0
+        ? yakuDecreeModifiers.multiplier
+        : 1)
+    // Frostbite scales only the combined Decree contribution. Native Yaku,
+    // table bonuses and Mandate tier reductions remain the baseline; tiers
+    // themselves stay discrete rather than creating fractional Yaku identities.
+    baseBreakdown.yakuMultiplier =
+      seasonModifiers.decreeModifier === 1
+        ? boostedYakuMultiplier
+        : ordinaryYakuMultiplier +
+          (boostedYakuMultiplier - ordinaryYakuMultiplier) *
+            seasonModifiers.decreeModifier
     if (this.state.roundManager.checkMandateEffect('halve_score').active) {
       baseBreakdown.yakuMultiplier *= 0.5
     }
@@ -3026,7 +3084,15 @@ export class GameOrchestrator {
       systemBreakdown
     )
 
-    // Apply Frostbite modifier to decree effects if active
+    // Frostbite scales the Decree contribution, not points already supplied by
+    // tile marks/editions. Keep fractional Flower-empowered bonuses until the
+    // final score is rounded, just as for the multiplier contribution below.
+    const finalAdditiveBonus =
+      systemBreakdown.additiveBonus +
+      (decreeModifiedBreakdown.additiveBonus - systemBreakdown.additiveBonus) *
+        seasonModifiers.decreeModifier
+
+    // Apply Frostbite modifier to decree multiplier effects if active
     let finalDecreeMultiplier = decreeModifiedBreakdown.decreeMultiplier
     if (seasonModifiers.decreeModifier !== 1.0) {
       // Frostbite: halve the decree bonus (not the entire multiplier)
@@ -3041,7 +3107,7 @@ export class GameOrchestrator {
     // Formula: (Base + Additive + CelestialChips) * (Yaku + CelestialMult) * Flower * Season * Decree * Mandate - Decay
     const subtotal =
       baseBreakdown.basePoints +
-      decreeModifiedBreakdown.additiveBonus +
+      finalAdditiveBonus +
       celestialOrbChipsBonus
     const finalMultiplier =
       (decreeModifiedBreakdown.yakuMultiplier + celestialOrbMultBonus) *
@@ -3064,8 +3130,14 @@ export class GameOrchestrator {
     return {
       ...baseBreakdown,
       yakuMultiplier: decreeModifiedBreakdown.yakuMultiplier,
-      additiveBonus: decreeModifiedBreakdown.additiveBonus,
+      additiveBonus: finalAdditiveBonus,
+      goldEarned: this.calculateGoldReward(baseBreakdown.goldEarned).amount,
       finalScore: calculatedFinalScore,
+      equation: settleScoreEquation(
+        subtotal,
+        finalMultiplier * this.state.lossPreventionScorePenalty,
+        calculatedFinalScore
+      ),
     }
   }
 
@@ -3261,7 +3333,9 @@ export class GameOrchestrator {
           goldHeldForInterest,
           interestCap
         )
-    const decreeGold = this.state.decreeSystem.calculateRoundEndGold()
+    const rawDecreeGold = this.state.decreeSystem.calculateRoundEndGold(
+      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+    )
     const heldGoldMarkReward =
       this.state.handTiles.filter(
         (tile) => tile.modifiers.enhancement === EnhancementType.Gold
@@ -3269,9 +3343,9 @@ export class GameOrchestrator {
     const rentalCost = this.state.decreeSystem.calculateRentalCosts()
     // Philosopher's Stone doubles what the round pays in, before the costs it
     // charges out.
-    const goldMultiplier = this.state.decreeSystem.getGoldMultiplier()
-    const grossGold = Math.floor(
-      (goldReward + interest + decreeGold + heldGoldMarkReward) * goldMultiplier
+    const { decreeGold, amount: grossGold } = this.calculateGoldReward(
+      goldReward + interest + heldGoldMarkReward,
+      rawDecreeGold
     )
     const netGoldChange = grossGold - rentalCost
 
@@ -3529,10 +3603,21 @@ export class GameOrchestrator {
   prepareShopVisit(): TeaHouseVisitModifiers {
     if (this.state.phase !== 'shop') return {}
 
-    const ownedDecreeIds = this.state.decreeSystem.getOwnedDecrees().map(d => d.id)
+    const ownedDecreeIds = this.state.decreeSystem
+      .getOwnedDecrees()
+      .map((d) => d.id)
     const omenEffects = this.state.omenSystem.triggerShopOmens(({ effect }) => {
-      if ((effect.type === 'guaranteed_item' && effect.itemType === 'Decree') || effect.type === 'edition_apply') {
-        return DecreeSystem.getShopCandidates(ownedDecreeIds, effect.minDecreeRarity).length > 0
+      if (
+        (effect.type === 'guaranteed_item' && effect.itemType === 'Decree') ||
+        effect.type === 'edition_apply'
+      ) {
+        return (
+          DecreeSystem.getShopCandidates(
+            ownedDecreeIds,
+            effect.minDecreeRarity,
+            this.state.flowerSystem.getFlowerCount()
+          ).length > 0
+        )
       }
       return true
     })
@@ -3541,6 +3626,7 @@ export class GameOrchestrator {
     }
 
     return {
+      flowerCount: this.state.flowerSystem.getFlowerCount(),
       discountPercentage:
         100 *
         (1 -
@@ -3548,7 +3634,9 @@ export class GameOrchestrator {
             (1 - this.state.tableModifiers.shopDiscountPercent / 100)),
       freeRerolls: omenEffects.freeRerolls,
       guaranteedItems: omenEffects.guaranteedItems,
-      decreeEditions: omenEffects.decreeEditions.map(({ editionType }) => editionType as DecreeEdition),
+      decreeEditions: omenEffects.decreeEditions.map(
+        ({ editionType }) => editionType as DecreeEdition
+      ),
     }
   }
 

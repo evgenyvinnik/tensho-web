@@ -173,6 +173,8 @@ export interface MultiplicativeScoreEffect extends BaseEffect {
 export interface GoldEffect extends BaseEffect {
   type: 'gold'
   amount: number
+  /** Inventory count includes the paying Decree and suppressed owned Decrees. */
+  scaleBy?: 'owned_decrees'
   perTile?: boolean // If true, amount is per tile
   condition?: string // Optional condition description
 }
@@ -406,13 +408,22 @@ export type SeasonVariant = 'Spring' | 'Summer' | 'Autumn' | 'Winter'
 /**
  * Types of corrupted seasons
  */
-export type CorruptedSeasonVariant = 'Drought' | 'Monsoon' | 'Frostbite' | 'Decay'
+export type CorruptedSeasonVariant =
+  | 'Drought'
+  | 'Monsoon'
+  | 'Frostbite'
+  | 'Decay'
 
 /**
  * Base season effect
  */
 export interface SeasonEffect {
-  type: 'draw_bonus' | 'score_modifier' | 'wall_modifier' | 'yaku_modifier' | 'legality_modifier'
+  type:
+    | 'draw_bonus'
+    | 'score_modifier'
+    | 'wall_modifier'
+    | 'yaku_modifier'
+    | 'legality_modifier'
   value: number
   description: string
 }
@@ -421,7 +432,11 @@ export interface SeasonEffect {
  * Corrupted season negative effect
  */
 export interface CorruptedSeasonEffect {
-  type: 'suppress_flowers' | 'randomize_draws' | 'halve_decrees' | 'discard_penalty'
+  type:
+    | 'suppress_flowers'
+    | 'randomize_draws'
+    | 'halve_decrees'
+    | 'discard_penalty'
   severity: number
   description: string
 }

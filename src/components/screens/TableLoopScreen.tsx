@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useTableLoopStore } from '../../stores/tableLoopStore'
-import { TileImage } from '../tiles/TileImage'
+import { RiverRow } from '../tableloop/RiverRow'
 import { DraftRow } from '../tableloop/DraftRow'
 import { PracticeGuide } from '../tableloop/PracticeGuide'
 import { ResolutionFlourish } from '../tableloop/ResolutionFlourish'
@@ -458,8 +458,6 @@ export function TableLoopScreen() {
     selectedTileIds.length > 0 &&
     selectedTileIds.length <= MAX_REDRAW_TILES &&
     state.wall.length > 0
-  const canRecover =
-    state.riverRecoveriesRemaining > 0 && state.river.length > 0
 
   return (
     <div className="relative mx-auto flex min-h-dvh w-full max-w-5xl flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
@@ -604,28 +602,13 @@ export function TableLoopScreen() {
         onPass={store.passDraft}
       />
 
-      {/* River */}
-      {state.river.length > 0 && (
-        <div className="px-3 pb-1">
-          <p className="mb-0.5 text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/40">
-            {canRecover
-              ? t('tableLoop.river.recover', 'River — tap to take one back')
-              : t('tableLoop.river.title', 'River')}
-          </p>
-          <div className="flex gap-0.5 overflow-x-auto pb-1">
-            {state.river.map((tile) => (
-              <button
-                key={tile.id}
-                disabled={!canRecover}
-                onClick={() => store.recoverFromRiver(tile.id)}
-                className={canRecover ? 'opacity-90' : 'opacity-40'}
-              >
-                <TileImage tile={tile} size="small" />
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <RiverRow
+        tiles={state.river}
+        selectedTile={selectedTiles.length === 1 ? selectedTiles[0] : null}
+        merchantOwned={state.ownedDecrees.includes('river_merchant')}
+        swapsRemaining={state.riverRecoveriesRemaining}
+        onSwap={store.swapWithRiver}
+      />
 
       {/* What you have picked, and what it forms */}
       <SelectionStrip

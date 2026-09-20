@@ -194,6 +194,7 @@ export interface TeaHouseOffering {
 }
 
 export interface TeaHouseVisitModifiers {
+  flowerCount?: number
   discountPercentage?: number
   freeRerolls?: number
   guaranteedItemTypes?: string[]
@@ -223,6 +224,7 @@ export interface TeaHouseState {
  * Manages the Tea House shop system
  */
 export class TeaHouseSystem {
+  private flowerCountForVisit = 0
   private pricingCalculator: PricingCalculator
   private readonly random: () => number
   private itemSlotCount: number = TEA_HOUSE_BASE_ITEM_SLOTS
@@ -246,7 +248,10 @@ export class TeaHouseSystem {
   private visitDiscountPercentage: number = 0
   private freeRerollsThisVisit: number = 0
 
-  constructor(stake: number = 1, random: () => number = () => runRandom.next('shop')) {
+  constructor(
+    stake: number = 1,
+    random: () => number = () => runRandom.next('shop')
+  ) {
     this.currentStake = stake
     this.random = random
     this.pricingCalculator = new PricingCalculator(0) // Will update discount via applyCharters
@@ -345,7 +350,11 @@ export class TeaHouseSystem {
   ): TeaHouseState {
     // Reset reroll count for this visit
     this.rerollsThisVisit = 0
-    this.visitDiscountPercentage = Math.max(0, modifiers.discountPercentage ?? 0)
+    this.flowerCountForVisit = Math.max(0, modifiers.flowerCount ?? 0)
+    this.visitDiscountPercentage = Math.max(
+      0,
+      modifiers.discountPercentage ?? 0
+    )
     this.freeRerollsThisVisit = Math.max(0, modifiers.freeRerolls ?? 0)
 
     // Generate item offerings
@@ -370,9 +379,14 @@ export class TeaHouseSystem {
       this.charterOffering = this.generateCharterOffering()
     }
 
-    this.applyGuaranteedItems(modifiers.guaranteedItems ?? (modifiers.guaranteedItemTypes ?? []).map(itemType => ({ itemType })), ownedDecreeIds)
+    this.applyGuaranteedItems(
+      modifiers.guaranteedItems ??
+        (modifiers.guaranteedItemTypes ?? []).map((itemType) => ({ itemType })),
+      ownedDecreeIds
+    )
     const editionSlots = new Set<number>()
-    for (const edition of modifiers.decreeEditions ?? (modifiers.decreeEdition ? [modifiers.decreeEdition] : [])) {
+    for (const edition of modifiers.decreeEditions ??
+      (modifiers.decreeEdition ? [modifiers.decreeEdition] : [])) {
       this.applyGuaranteedDecreeEdition(edition, ownedDecreeIds, editionSlots)
     }
     this.itemOfferings = this.itemOfferings.map((offering) =>
@@ -435,15 +449,23 @@ export class TeaHouseSystem {
     excludeIds: string[],
     minimum?: DecreeRarity
   ): TeaHouseOffering | null {
-    const pool = DecreeSystem.getShopCandidates(excludeIds, minimum)
+    const pool = DecreeSystem.getShopCandidates(
+      excludeIds,
+      minimum,
+      this.flowerCountForVisit
+    )
     // Select rarity
     const weights = minimum
-      ? Object.fromEntries(Object.entries(DECREE_RARITY_WEIGHTS).filter(([rarity]) => pool.some(d => d.rarity === rarity)))
+      ? Object.fromEntries(
+          Object.entries(DECREE_RARITY_WEIGHTS).filter(([rarity]) =>
+            pool.some((d) => d.rarity === rarity)
+          )
+        )
       : DECREE_RARITY_WEIGHTS
     const rarity = this.selectWeightedRandom(weights) as DecreeRarity
 
     // Find available decrees of this rarity
-    let candidates = pool.filter(d => d.rarity === rarity)
+    let candidates = pool.filter((d) => d.rarity === rarity)
 
     // Fallback to any available decree if none of the selected rarity
     if (candidates.length === 0) {
@@ -467,12 +489,11 @@ export class TeaHouseSystem {
     const baseCost =
       sticker?.type === 'Rental'
         ? 1 // Rental items cost only 1 Gold
-        : Math.floor(this.random() * (costRange.max - costRange.min + 1)) + costRange.min
+        : Math.floor(this.random() * (costRange.max - costRange.min + 1)) +
+          costRange.min
 
-    const { finalCost, editionCost, sellValue } = this.pricingCalculator.calculateDecreeCost(
-      baseCost,
-      edition
-    )
+    const { finalCost, editionCost, sellValue } =
+      this.pricingCalculator.calculateDecreeCost(baseCost, edition)
 
     const decreeWithSticker: Decree = {
       ...decree,
@@ -506,7 +527,8 @@ export class TeaHouseSystem {
 
     const seal = FateSealSystem.createFateSealInstance(sealDef)
 
-    const { finalCost, sellValue } = this.pricingCalculator.calculateFateSealCost()
+    const { finalCost, sellValue } =
+      this.pricingCalculator.calculateFateSealCost()
 
     return {
       id: this.generateOfferingId(),
@@ -525,7 +547,9 @@ export class TeaHouseSystem {
   /**
    * Generate a Celestial Orb offering
    */
-  private generateCelestialOrbOffering(slotIndex: number): TeaHouseOffering | null {
+  private generateCelestialOrbOffering(
+    slotIndex: number
+  ): TeaHouseOffering | null {
     const orbDef = CelestialOrbSystem.getRandomCelestialOrb()
     if (!orbDef) {
       return null
@@ -533,7 +557,8 @@ export class TeaHouseSystem {
 
     const orb = CelestialOrbSystem.createCelestialOrbInstance(orbDef)
 
-    const { finalCost, sellValue } = this.pricingCalculator.calculateCelestialOrbCost()
+    const { finalCost, sellValue } =
+      this.pricingCalculator.calculateCelestialOrbCost()
 
     return {
       id: this.generateOfferingId(),
@@ -549,7 +574,9 @@ export class TeaHouseSystem {
     }
   }
 
-  private generateVoidScriptOffering(slotIndex: number): TeaHouseOffering | null {
+  private generateVoidScriptOffering(
+    slotIndex: number
+  ): TeaHouseOffering | null {
     const scriptDef = VoidScriptSystem.getRandomVoidScript()
     if (!scriptDef) return null
 
@@ -632,14 +659,18 @@ export class TeaHouseSystem {
     }
   }
 
-  private applyGuaranteedItems(items: { itemType: string; minDecreeRarity?: DecreeRarity }[], ownedDecreeIds: string[]): void {
+  private applyGuaranteedItems(
+    items: { itemType: string; minDecreeRarity?: DecreeRarity }[],
+    ownedDecreeIds: string[]
+  ): void {
     let itemSlot = 0
     let packSlot = 0
 
     for (const { itemType, minDecreeRarity } of items) {
       if (itemType === 'BlessingPack') {
         const index = packSlot++
-        const pack = this.packOfferings[index] ?? this.generatePackOffering(index)
+        const pack =
+          this.packOfferings[index] ?? this.generatePackOffering(index)
         pack.finalCost = 0
         pack.sellValue = 0
         this.packOfferings[index] = pack
@@ -650,7 +681,11 @@ export class TeaHouseSystem {
       // They do not permanently increase the number of rerolled item slots.
       let offering: TeaHouseOffering | null = null
       if (itemType === 'Decree') {
-        offering = this.generateDecreeOffering(itemSlot, ownedDecreeIds, minDecreeRarity)
+        offering = this.generateDecreeOffering(
+          itemSlot,
+          ownedDecreeIds,
+          minDecreeRarity
+        )
       } else if (itemType === 'FateSeal') {
         offering = this.generateFateSealOffering(itemSlot)
       } else if (itemType === 'CelestialOrb') {
@@ -666,7 +701,8 @@ export class TeaHouseSystem {
   }
 
   private applyVisitDiscount(offering: TeaHouseOffering): TeaHouseOffering {
-    if (this.visitDiscountPercentage <= 0 || offering.finalCost === 0) return offering
+    if (this.visitDiscountPercentage <= 0 || offering.finalCost === 0)
+      return offering
 
     const finalCost = Math.max(
       0,
@@ -725,7 +761,8 @@ export class TeaHouseSystem {
       selectCount: packSize === 'Mega' ? 2 : 1,
     }
 
-    const { finalCost, sellValue } = this.pricingCalculator.calculatePackCost(packSize)
+    const { finalCost, sellValue } =
+      this.pricingCalculator.calculatePackCost(packSize)
 
     return {
       id: offeringId,
@@ -752,7 +789,8 @@ export class TeaHouseSystem {
     }
 
     const charter = available[Math.floor(this.random() * available.length)]
-    const { finalCost, sellValue } = this.pricingCalculator.calculateCharterCost()
+    const { finalCost, sellValue } =
+      this.pricingCalculator.calculateCharterCost()
 
     return {
       id: this.generateOfferingId(),
@@ -872,7 +910,9 @@ export class TeaHouseSystem {
    */
   getCurrentRerollCost(): number {
     if (this.rerollsThisVisit < this.freeRerollsThisVisit) return 0
-    const baseCost = TEA_HOUSE_BASE_REROLL_COST + this.rerollsThisVisit * TEA_HOUSE_REROLL_INCREMENT
+    const baseCost =
+      TEA_HOUSE_BASE_REROLL_COST +
+      this.rerollsThisVisit * TEA_HOUSE_REROLL_INCREMENT
     return Math.max(0, baseCost - this.rerollDiscount)
   }
 
@@ -880,7 +920,9 @@ export class TeaHouseSystem {
    * Reroll the item offerings
    * Returns the cost paid or null if reroll failed
    */
-  rerollItems(ownedDecreeIds: string[] = []): { cost: number; newState: TeaHouseState } | null {
+  rerollItems(
+    ownedDecreeIds: string[] = []
+  ): { cost: number; newState: TeaHouseState } | null {
     const cost = this.getCurrentRerollCost()
 
     // Track reroll
@@ -952,7 +994,11 @@ export class TeaHouseSystem {
       this.charterOffering.isPurchased = true
       const charter = this.charterOffering.item as ImperialCharter
       this.applyCharter(charter)
-      return { success: true, cost: this.charterOffering.finalCost, offering: this.charterOffering }
+      return {
+        success: true,
+        cost: this.charterOffering.finalCost,
+        offering: this.charterOffering,
+      }
     }
 
     return { success: false, cost: 0, offering: null }
@@ -996,7 +1042,9 @@ export class TeaHouseSystem {
       items: this.itemOfferings.filter((o) => !o.isPurchased && !o.isLocked),
       packs: this.packOfferings.filter((o) => !o.isPurchased && !o.isLocked),
       charter:
-        this.charterOffering && !this.charterOffering.isPurchased && !this.charterOffering.isLocked
+        this.charterOffering &&
+        !this.charterOffering.isPurchased &&
+        !this.charterOffering.isLocked
           ? this.charterOffering
           : null,
     }
@@ -1006,6 +1054,7 @@ export class TeaHouseSystem {
    * Clear the shop
    */
   clear(): void {
+    this.flowerCountForVisit = 0
     this.itemOfferings = []
     this.packOfferings = []
     this.charterOffering = null
@@ -1076,6 +1125,7 @@ export class TeaHouseSystem {
    * Serialize the Tea House system state
    */
   toSerializedState(): {
+    flowerCountForVisit: number
     itemSlotCount: number
     discountPercentage: number
     rerollDiscount: number
@@ -1094,6 +1144,7 @@ export class TeaHouseSystem {
     offeringCounter: number
   } {
     return {
+      flowerCountForVisit: this.flowerCountForVisit,
       itemSlotCount: this.itemSlotCount,
       discountPercentage: this.discountPercentage,
       rerollDiscount: this.rerollDiscount,
@@ -1117,6 +1168,7 @@ export class TeaHouseSystem {
    * Restore from serialized state
    */
   static fromSerializedState(state: {
+    flowerCountForVisit?: number
     itemSlotCount: number
     discountPercentage: number
     rerollDiscount: number
@@ -1135,6 +1187,7 @@ export class TeaHouseSystem {
     offeringCounter: number
   }): TeaHouseSystem {
     const system = new TeaHouseSystem(state.currentStake)
+    system.flowerCountForVisit = Math.max(0, state.flowerCountForVisit ?? 0)
     system.itemSlotCount = state.itemSlotCount
     system.discountPercentage = state.discountPercentage
     system.rerollDiscount = state.rerollDiscount

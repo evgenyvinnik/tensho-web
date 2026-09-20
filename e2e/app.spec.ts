@@ -313,21 +313,23 @@ test.describe('Game Navigation', () => {
     await expect(guide).toContainText('Read the tile families')
     await expect(guide).toContainText('The shapes to spot')
     await expect(guide).toContainText('Your turn, every time')
-    await expect(guide.locator('img')).toHaveCount(17)
+    await expect(guide.locator('img')).toHaveCount(18)
 
-    const guideLayout = await guide.evaluate((element) => {
-      const bounds = element.getBoundingClientRect()
-      return {
-        noHorizontalOverflow:
-          document.documentElement.scrollWidth <= window.innerWidth,
-        fitsViewport:
-          bounds.left >= 0 &&
-          bounds.right <= window.innerWidth &&
-          bounds.top >= 0 &&
-          bounds.bottom <= window.innerHeight,
-        scrollable: getComputedStyle(element).overflowY === 'auto',
-      }
-    })
+    const guideLayout = await page
+      .locator('dialog [data-popup-scroll]')
+      .evaluate((element) => {
+        const bounds = element.getBoundingClientRect()
+        return {
+          noHorizontalOverflow:
+            document.documentElement.scrollWidth <= window.innerWidth,
+          fitsViewport:
+            bounds.left >= 0 &&
+            bounds.right <= window.innerWidth &&
+            bounds.top >= 0 &&
+            bounds.bottom <= window.innerHeight,
+          scrollable: getComputedStyle(element).overflowY === 'auto',
+        }
+      })
     expect(guideLayout).toEqual({
       noHorizontalOverflow: true,
       fitsViewport: true,

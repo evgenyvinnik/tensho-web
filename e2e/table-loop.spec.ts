@@ -193,6 +193,23 @@ test.describe('Table Loop artwork and recovery', () => {
       'Gap Bridge',
       'Once a round, a run may skip one rank: 3·4·6 counts as a sequence.',
     ],
+    [
+      'honor_court',
+      'Honor Court',
+      'Groups of Winds or Dragons gain +0.3 Mult for each of their tiles.',
+    ],
+    ['wide_rack', 'Wide Rack', 'Hold two more tiles in your rack.'],
+    ['twin_flame', 'Twin Flame', 'Milestone rewards pay double points.'],
+    [
+      'river_merchant',
+      'Whispering Merchant',
+      'Once per round, swap one chosen rack tile for a river tile. Costs no action.',
+    ],
+    [
+      'jade_ledger',
+      'Jade Ledger',
+      'Earn ¥2 for every group you place. Start each round with one fewer redraw.',
+    ],
   ] as const) {
     test(`renders the generated ${name} scroll with accessible rule details`, async ({
       page,

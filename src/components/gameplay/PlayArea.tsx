@@ -14,6 +14,9 @@ import { YakuRevealState } from './gameplayTypes'
 import { YakuDefinition } from '../../rules/YakuDetector'
 import { CoachPanel } from './CoachPanel'
 import type { CoachAdvice } from '../../gameplay/beginnerCoach'
+import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
+import type { ScoredStructure } from '../../rules/ScoringEngine'
+import { ExactScoreDetails } from './ExactScoreDetails'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -27,6 +30,9 @@ export interface ScorePreviewData {
   mult: number
   total: number
   yaku?: YakuDefinition[]
+  /** Supplied by the scored parse; absence must not imply that tiles are loose. */
+  structure?: ScoredStructure
+  structurePoints?: number
 }
 
 /**
@@ -214,12 +220,33 @@ export function PlayArea({
   tableThemeColor = '#C8B273',
   tableAccentColor = '#2D5F4A',
 }: PlayAreaProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [selectedYakuId, setSelectedYakuId] = useState<string | null>(null)
   const activeTileCount = stagedTileCount || selectedTileCount
   const requiredPerHand = Math.ceil(
     remainingToTarget / Math.max(1, handsRemaining)
   )
+  const structure = scorePreview?.structure
+  const structureHint = !structure
+    ? t('gameplay.forecast.groupToScore')
+    : structure.kind === 'complete'
+      ? t('gameplay.forecast.complete')
+      : structure.looseTiles === 0
+        ? t('gameplay.forecast.grouped', {
+            points: scoreNumber(
+              scorePreview?.structurePoints ?? 0,
+              i18n.language
+            ).display,
+          })
+        : structure.groupedTiles === 0
+          ? t('gameplay.forecast.looseTiles')
+          : t('gameplay.forecast.mixed', {
+              points: scoreNumber(
+                scorePreview?.structurePoints ?? 0,
+                i18n.language
+              ).display,
+              count: structure.looseTiles,
+            })
 
   const handleYakuToggle = (yakuId: string) => {
     setSelectedYakuId((prev) => (prev === yakuId ? null : yakuId))
@@ -257,12 +284,15 @@ export function PlayArea({
         </div>
       ) : scorePreview ? (
         <div
-          className="flex w-full items-center justify-between gap-3"
+          className="grid w-full min-w-0 grid-cols-2 items-start gap-x-3 gap-y-2"
           onClick={(event) => event.stopPropagation()}
         >
-          <div className="min-w-0 flex-1">
+          <div className="col-span-2 min-w-0 [overflow-wrap:anywhere]">
             <div className="flex flex-wrap items-center gap-1.5">
-              <p className="mr-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]">
+              <p
+                data-testid="forecast-heading"
+                className="mr-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]"
+              >
                 {previewLabel}
               </p>
               {scorePreview.yaku && scorePreview.yaku.length > 0 ? (
@@ -275,66 +305,39 @@ export function PlayArea({
                   />
                 ))
               ) : (
-                <span className="game-forecast-explainer text-xs text-[var(--color-beige-white)]/40">
-                  {t(
-                    'gameplay.forecast.looseTiles',
-                    'Loose tiles score half · group them for full points'
-                  )}
+                <span
+                  data-testid="forecast-structure-hint"
+                  className="game-forecast-explainer text-xs text-[var(--color-beige-white)]/60"
+                >
+                  {structureHint}
                 </span>
               )}
             </div>
-
-            <div className="mt-1.5 flex items-baseline gap-2 text-sm tabular-nums">
-              <strong className="text-blue-300">
-                {scorePreview.points.toLocaleString()}
-              </strong>
-              <span className="text-[var(--color-golden-yellow)]/60">×</span>
-              <strong className="text-red-300">
-                {scorePreview.mult.toFixed(1)}
-              </strong>
-              <span className="text-[var(--color-beige-white)]/30">·</span>
-              <span
-                className={`game-forecast-pace ${
-                  scorePreview.total >= remainingToTarget &&
-                  remainingToTarget > 0
-                    ? 'font-bold text-emerald-300'
-                    : 'text-[var(--color-beige-white)]/55'
-                }`}
-              >
-                {scorePreview.total >= remainingToTarget &&
-                remainingToTarget > 0
-                  ? t('gameplay.forecast.clears', 'Clears the round')
-                  : t(
-                      'gameplay.forecast.share',
-                      '{{percent}}% of what remains · {{pace}}',
-                      {
-                        percent: Math.min(
-                          999,
-                          Math.round(
-                            (scorePreview.total /
-                              Math.max(1, remainingToTarget)) *
-                              100
-                          )
-                        ),
-                        pace:
-                          scorePreview.total >= requiredPerHand
-                            ? t('gameplay.forecast.onPace', 'on pace')
-                            : t(
-                                'gameplay.forecast.needPerHand',
-                                'need {{points}}/hand',
-                                { points: requiredPerHand.toLocaleString() }
-                              ),
-                      }
-                    )}
-              </span>
-            </div>
           </div>
 
-          <div className="flex-shrink-0 text-right">
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/45">
+          <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 text-sm tabular-nums">
+            <strong className="min-w-0 text-blue-300 [overflow-wrap:anywhere]">
+              {scoreNumber(scorePreview.points, i18n.language).display}
+            </strong>
+            <span className="text-[var(--color-golden-yellow)]/60">×</span>
+            <strong
+              data-score-preview-mult
+              title={scoreMultiplier(scorePreview.mult, i18n.language).exact}
+              aria-label={
+                scoreMultiplier(scorePreview.mult, i18n.language).exact
+              }
+              className="min-w-0 text-red-300 [overflow-wrap:anywhere]"
+            >
+              {scoreMultiplier(scorePreview.mult, i18n.language).display}
+            </strong>
+          </div>
+
+          <div className="min-w-0 text-right">
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/45 [overflow-wrap:anywhere]">
               {t('gameplay.forecast.label', 'Forecast')}
             </p>
             <GlowEffect
+              className="min-w-0 max-w-full"
               variant="gold"
               intensity={0.6}
               pulsing={Boolean(
@@ -343,12 +346,63 @@ export function PlayArea({
             >
               <p
                 data-testid="score-preview-total"
-                className="text-2xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-3xl"
+                title={scoreNumber(scorePreview.total, i18n.language).exact}
+                aria-label={
+                  scoreNumber(scorePreview.total, i18n.language).exact
+                }
+                className="text-2xl font-black tabular-nums text-[var(--color-golden-yellow)] [overflow-wrap:anywhere] sm:text-3xl"
               >
-                +{scorePreview.total.toLocaleString()}
+                +{scoreNumber(scorePreview.total, i18n.language).display}
               </p>
             </GlowEffect>
           </div>
+
+          <p
+            className={`game-forecast-pace col-span-2 min-w-0 text-xs leading-relaxed [overflow-wrap:anywhere] ${
+              scorePreview.total >= remainingToTarget && remainingToTarget > 0
+                ? 'font-bold text-emerald-300'
+                : 'text-[var(--color-beige-white)]/55'
+            }`}
+          >
+            {scorePreview.total >= remainingToTarget && remainingToTarget > 0
+              ? t('gameplay.forecast.clears', 'Clears the round')
+              : t(
+                  'gameplay.forecast.share',
+                  '{{percent}}% of what remains · {{pace}}',
+                  {
+                    percent: Math.min(
+                      999,
+                      Math.round(
+                        (scorePreview.total / Math.max(1, remainingToTarget)) *
+                          100
+                      )
+                    ),
+                    pace:
+                      scorePreview.total >= requiredPerHand
+                        ? t('gameplay.forecast.onPace', 'on pace')
+                        : t(
+                            'gameplay.forecast.needPerHand',
+                            'need {{points}}/hand',
+                            {
+                              points: scoreNumber(
+                                requiredPerHand,
+                                i18n.language
+                              ).display,
+                            }
+                          ),
+                  }
+                )}
+          </p>
+          <ExactScoreDetails
+            entries={[
+              { label: t('scoring.basePoints'), value: scorePreview.points },
+              { label: t('scoring.totalMultiplier'), value: scorePreview.mult },
+              {
+                label: t('gameplay.forecast.label'),
+                value: scorePreview.total,
+              },
+            ]}
+          />
         </div>
       ) : coachAdvice && activeTileCount === 0 && onCoachChoose ? (
         /* Nothing selected: show the two moves worth weighing. */

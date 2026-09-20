@@ -28,6 +28,7 @@ import {
   ScoringContext,
 } from './types'
 import { runRandom } from '../game/RunRandom'
+export const SUMMER_WALL_RETAINED_PERCENT = 80
 
 // =============================================================================
 // SEASON DEFINITIONS
@@ -62,7 +63,10 @@ export const SEASON_BASE_EFFECTS: Record<SeasonVariant, SeasonEffect> = {
 /**
  * Corrupted season effects
  */
-export const CORRUPTED_SEASON_EFFECTS: Record<CorruptedSeasonVariant, CorruptedSeasonEffect> = {
+export const CORRUPTED_SEASON_EFFECTS: Record<
+  CorruptedSeasonVariant,
+  CorruptedSeasonEffect
+> = {
   Drought: {
     type: 'suppress_flowers',
     severity: 1,
@@ -88,7 +92,10 @@ export const CORRUPTED_SEASON_EFFECTS: Record<CorruptedSeasonVariant, CorruptedS
 /**
  * Mapping from corrupted to base season types
  */
-export const CORRUPTED_TO_BASE_SEASON: Record<CorruptedSeasonVariant, SeasonVariant> = {
+export const CORRUPTED_TO_BASE_SEASON: Record<
+  CorruptedSeasonVariant,
+  SeasonVariant
+> = {
   Drought: 'Summer',
   Monsoon: 'Spring',
   Frostbite: 'Winter',
@@ -108,7 +115,10 @@ export class SeasonSystem {
   private currentAct: number = 1
   private discardCount: number = 0
 
-  constructor(private readonly earlyCorruption: boolean = false) {
+  constructor(
+    private readonly earlyCorruption: boolean = false,
+    private readonly random: Pick<typeof runRandom, 'next'> = runRandom
+  ) {
     this.clear()
   }
 
@@ -150,13 +160,16 @@ export class SeasonSystem {
       return null
     }
 
-    const seasonVariant = lockedSeason ?? this.getSeasonVariantFromRank(tile.rank)
+    const seasonVariant =
+      lockedSeason ?? this.getSeasonVariantFromRank(tile.rank)
     if (!seasonVariant) {
       return null
     }
 
     // Determine if season should be corrupted (Act II+, with probability)
-    const isCorrupted = lockedSeason ? false : this.shouldBeCorrupted(seasonVariant)
+    const isCorrupted = lockedSeason
+      ? false
+      : this.shouldBeCorrupted(seasonVariant)
     const corruptedType = isCorrupted
       ? this.getCorruptedVariant(seasonVariant)
       : undefined
@@ -211,14 +224,19 @@ export class SeasonSystem {
 
     // Probability increases with act number
     // Act 2: 20%, Act 3: 30%, Act 4+: 40%
-    const baseProbability = Math.min(0.2 + Math.max(0, this.currentAct - 2) * 0.1, 0.4)
-    return runRandom.next('wall') < baseProbability
+    const baseProbability = Math.min(
+      0.2 + Math.max(0, this.currentAct - 2) * 0.1,
+      0.4
+    )
+    return this.random.next('wall') < baseProbability
   }
 
   /**
    * Get the corrupted variant for a season
    */
-  private getCorruptedVariant(seasonVariant: SeasonVariant): CorruptedSeasonVariant {
+  private getCorruptedVariant(
+    seasonVariant: SeasonVariant
+  ): CorruptedSeasonVariant {
     switch (seasonVariant) {
       case 'Spring':
         return 'Monsoon'
@@ -251,7 +269,7 @@ export class SeasonSystem {
     let modifier = 1.0
     for (const season of this.seasonStack) {
       if (season.type === 'Summer' && !season.isCorrupted) {
-        modifier *= 0.8 // -20% wall size
+        modifier *= SUMMER_WALL_RETAINED_PERCENT / 100
       }
     }
     return modifier
@@ -271,9 +289,13 @@ export class SeasonSystem {
   }
 
   /**
-   * Calculate score modifier from active seasons
+   * Calculate score modifier from active seasons. Context-free callers see
+   * the base stack; effective scoring can omit Winter's penalty for a
+   * concealed play protected by Chrysanthemum.
    */
-  calculateScoreModifier(): number {
+  calculateScoreModifier({
+    ignoreWinterPenalty = false,
+  }: { ignoreWinterPenalty?: boolean } = {}): number {
     let modifier = 1.0
 
     for (const season of this.seasonStack) {
@@ -286,7 +308,7 @@ export class SeasonSystem {
           modifier *= 1.3 // +30% base score
           break
         case 'Winter':
-          modifier *= 0.75 // -25% score
+          if (!ignoreWinterPenalty) modifier *= 0.75 // -25% score
           break
       }
     }
@@ -331,10 +353,10 @@ export class SeasonSystem {
    * Get decree effect modifier (Frostbite halves effects)
    */
   getDecreeEffectModifier(): number {
-    const hasFrostbite = this.seasonStack.some(
+    const frostbites = this.seasonStack.filter(
       (s) => s.isCorrupted && s.corruptedType === 'Frostbite'
-    )
-    return hasFrostbite ? 0.5 : 1.0
+    ).length
+    return 0.5 ** frostbites
   }
 
   /**
@@ -364,25 +386,37 @@ export class SeasonSystem {
    * Check if hand legality is loosened (Winter)
    */
   isHandLegalityLoosened(): boolean {
-    return this.seasonStack.some(
-      (s) => s.type === 'Winter' && !s.isCorrupted
-    )
+    return this.seasonStack.some((s) => s.type === 'Winter' && !s.isCorrupted)
   }
 
   /**
    * Apply all season modifiers to scoring context
    */
-  applySeasonModifiers(_context: ScoringContext): {
+  applySeasonModifiers(
+    context: Pick<ScoringContext, 'flowers' | 'isConcealed'>,
+    {
+      flowersSuppressed = this.areFlowersSuppressed(),
+    }: {
+      /** The orchestrator resolves protective Decrees before applying Seasons. */
+      flowersSuppressed?: boolean
+    } = {}
+  ): {
     scoreMultiplier: number
     yakuBonus: number
     flowersSuppressed: boolean
     decreeModifier: number
     decayPenalty: number
   } {
+    // GAME_SYSTEMS.md §6c: ignore each normal Winter factor, rather than
+    // adding 0.25 to the combined multiplier (which fails for stacked Seasons).
+    const ignoreWinterPenalty =
+      !flowersSuppressed &&
+      context.isConcealed &&
+      context.flowers.flowers.some((flower) => flower.type === 'Chrysanthemum')
     return {
-      scoreMultiplier: this.calculateScoreModifier(),
+      scoreMultiplier: this.calculateScoreModifier({ ignoreWinterPenalty }),
       yakuBonus: this.calculateYakuBonus(),
-      flowersSuppressed: this.areFlowersSuppressed(),
+      flowersSuppressed,
       decreeModifier: this.getDecreeEffectModifier(),
       decayPenalty: this.getDecayPenalty(),
     }
@@ -424,7 +458,11 @@ export class SeasonSystem {
     description: string
     isPositive: boolean
   }[] {
-    const effects: { name: string; description: string; isPositive: boolean }[] = []
+    const effects: {
+      name: string
+      description: string
+      isPositive: boolean
+    }[] = []
 
     for (const season of this.seasonStack) {
       if (season.isCorrupted && season.corruptedEffect) {
@@ -448,13 +486,18 @@ export class SeasonSystem {
   /**
    * Force a specific season (for testing or mandates)
    */
-  forceSetSeason(seasonVariant: SeasonVariant, isCorrupted: boolean = false): void {
+  forceSetSeason(
+    seasonVariant: SeasonVariant,
+    isCorrupted: boolean = false
+  ): void {
     const seasonTile: SeasonTile = {
       id: `forced-${seasonVariant}-${Date.now()}`,
       type: seasonVariant,
       effect: SEASON_BASE_EFFECTS[seasonVariant],
       isCorrupted,
-      corruptedType: isCorrupted ? this.getCorruptedVariant(seasonVariant) : undefined,
+      corruptedType: isCorrupted
+        ? this.getCorruptedVariant(seasonVariant)
+        : undefined,
       corruptedEffect: isCorrupted
         ? CORRUPTED_SEASON_EFFECTS[this.getCorruptedVariant(seasonVariant)]
         : undefined,
@@ -487,14 +530,17 @@ export class SeasonSystem {
   /**
    * Restore from serialized state
    */
-  static fromState(state: {
-    activeSeason: SeasonTile | null
-    seasonStack: SeasonTile[]
-    currentAct: number
-    discardCount: number
-    earlyCorruption?: boolean
-  }): SeasonSystem {
-    const system = new SeasonSystem(state.earlyCorruption ?? false)
+  static fromState(
+    state: {
+      activeSeason: SeasonTile | null
+      seasonStack: SeasonTile[]
+      currentAct: number
+      discardCount: number
+      earlyCorruption?: boolean
+    },
+    random: Pick<typeof runRandom, 'next'> = runRandom
+  ): SeasonSystem {
+    const system = new SeasonSystem(state.earlyCorruption ?? false, random)
     system.activeSeason = state.activeSeason
     system.seasonStack = [...state.seasonStack]
     system.currentAct = state.currentAct
@@ -522,9 +568,13 @@ export function createSeasonTile(
   }
 
   // Determine corruption
-  const shouldCorrupt = currentAct >= 2 && runRandom.next('wall') < Math.min(0.2 + (currentAct - 2) * 0.1, 0.4)
+  const shouldCorrupt =
+    currentAct >= 2 &&
+    runRandom.next('wall') < Math.min(0.2 + (currentAct - 2) * 0.1, 0.4)
   const corruptedVariant = shouldCorrupt
-    ? (Object.entries(CORRUPTED_TO_BASE_SEASON).find(([, v]) => v === variant)?.[0] as CorruptedSeasonVariant)
+    ? (Object.entries(CORRUPTED_TO_BASE_SEASON).find(
+        ([, v]) => v === variant
+      )?.[0] as CorruptedSeasonVariant)
     : undefined
 
   return {
@@ -533,7 +583,9 @@ export function createSeasonTile(
     effect: SEASON_BASE_EFFECTS[variant],
     isCorrupted: shouldCorrupt,
     corruptedType: corruptedVariant,
-    corruptedEffect: corruptedVariant ? CORRUPTED_SEASON_EFFECTS[corruptedVariant] : undefined,
+    corruptedEffect: corruptedVariant
+      ? CORRUPTED_SEASON_EFFECTS[corruptedVariant]
+      : undefined,
   }
 }
 
@@ -556,7 +608,9 @@ export function getSeasonJapaneseName(variant: SeasonVariant): string {
 /**
  * Get the Japanese name for a corrupted season
  */
-export function getCorruptedSeasonJapaneseName(variant: CorruptedSeasonVariant): string {
+export function getCorruptedSeasonJapaneseName(
+  variant: CorruptedSeasonVariant
+): string {
   switch (variant) {
     case 'Drought':
       return '旱魃'

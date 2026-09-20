@@ -134,7 +134,7 @@ it('keeps zero base categories, hides absent rewards, and displays negative rent
     payout.netGoldChange
   )
   expect(
-    screen.queryByText('Reward bonus', { exact: false })
+    screen.queryByText('Reward adjustment', { exact: false })
   ).not.toBeInTheDocument()
 })
 
@@ -195,10 +195,41 @@ it('shows the missing payout bonus from an actual Philosopher round settlement',
       interestCap={5}
     />
   )
-  expect(screen.getByText('Reward bonus', { exact: false })).toHaveTextContent(
-    `+${base}G`
-  )
+  expect(
+    screen.getByText('Reward adjustment', { exact: false })
+  ).toHaveTextContent(`+${base}G`)
   expect(JSON.stringify(payout)).toBe(before)
+})
+
+it('explains fractional Decree gold rounding as an adjustment without inventing currency', () => {
+  const payout = {
+    ...summary,
+    baseReward: 3,
+    interest: 0,
+    decreeGold: 0.5,
+    heldGoldMarkReward: 0,
+    rentalCost: 0,
+    netGoldChange: 3,
+    goldBefore: 0,
+    goldAfter: 3,
+  }
+  const { container } = render(
+    <RoundCashOutBanner
+      summary={payout}
+      currentGold={3}
+      nextActNumber={1}
+      interestCap={5}
+    />
+  )
+  expect(
+    screen.getByText('Reward adjustment', { exact: false })
+  ).toHaveTextContent('-0.5G')
+  const displayedParts = Array.from(
+    container.querySelectorAll<HTMLElement>('[data-payout-value]'),
+    (node) => Number(node.dataset.payoutValue)
+  )
+  expect(displayedParts.reduce((sum, part) => sum + part, 0)).toBe(3)
+  expect(screen.getByTestId('round-cash-out')).toHaveTextContent('0G → 3G')
 })
 
 it('localizes every payout category and round heading in Spanish', async () => {

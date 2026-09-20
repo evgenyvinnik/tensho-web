@@ -175,25 +175,6 @@ export function ActionBar({
             : selectedTileCount > MAX_TACTICAL_PLAY_TILES
               ? `This selection is not a complete hand; return to ${MAX_TACTICAL_PLAY_TILES} tiles or fewer`
               : `Play ${selectedTileCount} selected tiles.${forecastDescription}`
-  const compactPlayLabel = isStageAction
-    ? requiredPlaySize !== undefined && !meetsMandate
-      ? t('gameplay.requiredTiles', '{{count}} TILES', {
-          count: requiredPlaySize,
-        })
-      : isCompleteHandSelection
-        ? 'STAGE'
-        : t('gameplay.tilesRange', '{{min}}–{{max}} TILES', {
-            min: MIN_TACTICAL_PLAY_TILES,
-            max: MAX_TACTICAL_PLAY_TILES,
-          })
-    : isCompleteSelection
-      ? 'CONFIRM'
-      : mandateDelta !== 0 || selectedTileCount > MAX_TACTICAL_PLAY_TILES
-        ? 'ADJUST'
-        : selectedTileCount === 1
-          ? '+1 TILE'
-          : `PLAY ${selectedTileCount}`
-
   return (
     <div
       data-frame-corner-row="bottom"
@@ -244,7 +225,7 @@ export function ActionBar({
         size="sm"
         onClick={onSkip}
         disabled={!canSkip}
-        className="min-w-[52px] px-2 sm:min-w-[80px] sm:px-4"
+        className="!min-w-[44px] max-w-[25%] !px-1 [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4"
       >
         {t('gameplay.skip', 'SKIP')}
       </Button>
@@ -260,7 +241,7 @@ export function ActionBar({
           'gameplay.redrawHint',
           'Return up to 3 selected tiles and draw replacements'
         )}
-        className="!min-w-[58px] !px-1 text-[10px] sm:!min-w-[80px] sm:!px-4 sm:text-sm"
+        className="!min-w-[44px] max-w-[25%] !px-1 text-[10px] [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4 sm:text-sm"
       >
         <span className="sm:hidden">{t('gameplay.draw', 'DRAW')}</span>
         <span className="hidden sm:inline">
@@ -276,10 +257,9 @@ export function ActionBar({
           onClick={onDeadWallDraw}
           disabled={!canUseDeadWallWrit}
           aria-label={t('gameplay.deadWallDraw', 'DEAD WALL DRAW')}
-          className="min-w-[52px] px-2 sm:min-w-[92px] sm:px-3"
+          className="!min-w-[44px] max-w-[25%] !px-1 [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[92px] sm:!px-3"
         >
-          <span className="sm:hidden">WALL</span>
-          <span className="hidden sm:inline">
+          <span className="min-w-0 text-center [overflow-wrap:anywhere]">
             {t('gameplay.deadDraw', 'DEAD DRAW')}
           </span>
         </Button>
@@ -296,21 +276,14 @@ export function ActionBar({
         title={playRestriction ?? playDescription}
         className={`inline-flex !min-w-0 flex-1 items-center justify-center !px-1 text-[11px] sm:!min-w-[82px] sm:max-w-[220px] sm:!px-4 sm:text-sm ${willClear && canCommitSelection ? 'shadow-[0_0_22px_rgba(74,222,128,0.45)]' : ''}`}
       >
-        <span className="flex flex-col items-center leading-none">
+        <span className="flex min-w-0 flex-col items-center text-center leading-snug [overflow-wrap:anywhere]">
           {playRestriction ? (
             <span className="text-center leading-snug">{playRestriction}</span>
           ) : (
-            <>
-              <span className="whitespace-nowrap sm:hidden">
-                {compactPlayLabel}
-              </span>
-              <span className="hidden whitespace-nowrap sm:inline">
-                {playLabel}
-              </span>
-            </>
+            <span className="max-w-full">{playLabel}</span>
           )}
           {willClear && canCommitSelection && (
-            <span className="mt-1 whitespace-nowrap text-[9px] font-black uppercase tracking-wide text-emerald-100">
+            <span className="mt-1 max-w-full text-[9px] font-black uppercase tracking-wide text-emerald-100">
               {t('gameplay.winsRound', 'Wins round')}
             </span>
           )}
@@ -318,7 +291,7 @@ export function ActionBar({
         {projectedScore !== undefined && (
           <span
             data-game-action-score
-            className="ml-1.5 hidden text-xs opacity-75 sm:inline"
+            className="ml-1.5 hidden min-w-0 text-xs opacity-75 [overflow-wrap:anywhere] sm:inline"
           >
             +{projectedScore.toLocaleString()}
           </span>

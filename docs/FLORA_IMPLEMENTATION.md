@@ -1,7 +1,31 @@
 # Flora inspector and authoritative Season effects
 
-Updated September 10, 2026. This records a bounded implementation and its
+Updated September 12, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
+
+September 12 Winter follow-up: concealed scoring with an unsuppressed
+Chrysanthemum now ignores every normal Winter penalty, including in the visible
+forecast and committed play. Effective Drought/protective-Decree rules are shared
+with Flower scoring. [Winter interaction](WINTER_FLOWER_IMPLEMENTATION.md)
+records verification; Winter's separate loosened-legality rule remains open.
+
+September 12 Flower follow-up: collecting three distinct Flowers unlocks the
+seven existing Flower-scaled Decrees in shop/pack generation, including rerolls
+and Omen eligibility. The inspector marks this actual set bonus as earned.
+[Flower shop implementation](FLOWER_SHOP_IMPLEMENTATION.md) records authoritative
+paths, the preserved Celestial Wildcard requirement, and verification boundaries.
+
+September 12 Summer follow-up: normal Summer now sets aside 20% of the remaining
+live wall for the round, including in redraw preflight, without deleting tiles
+from the permanent collection. The inspector describes the cost in all 13
+locales. [Summer implementation](SUMMER_IMPLEMENTATION.md) records rounding,
+timing assumptions and verification. The Bamboo/terminal-heavy exception remains
+unfinished; this does not make every Summer interaction complete.
+
+September 12: Monsoon now randomizes real live-wall and bonus-replacement draws,
+with forked-RNG previews that do not consume draws or Omen locks. Its active
+description is localized in all 13 languages. See [Monsoon implementation](MONSOON_IMPLEMENTATION.md)
+for the new checkpoint; the September 10 verification history below is unchanged.
 
 ## Connected behavior
 
@@ -96,13 +120,11 @@ of the requirements in `GAME_SYSTEMS.md`.
 | Documented rule | Current gap |
 | --- | --- |
 | Spring: +2 draws per hand | `getDrawBonus()` has no gameplay consumer. The meaning of extra draws versus extra rack capacity needs a concrete rule. |
-| Summer: wall size −20% | `getWallSizeModifier()` is unused. The score modifier alone is active. |
+| Bamboo + Summer exception | Normal Summer's wall cost is connected. The terminal-heavy threshold and exception timing still need an explicit rule. |
 | Autumn: discard pool grows | `getDiscardPoolModifier()` is unused. Its Yaku modifier is active. |
-| Winter: loosen hand legality | `isHandLegalityLoosened()` is unused. The score penalty alone is active. |
-| Monsoon: randomized draw order | `areDrawsRandomized()` is unused by the draw path. |
-| Frostbite: halve Decree effects | Runtime halves Decree multiplier bonuses, not every kind of Decree effect. Non-numeric rule effects need explicit semantics. |
-| Three Flowers: special shop unlock | `areSpecialDecreesUnlocked()` has no shop consumer. Individual Decree Flower requirements are not equivalent to this set reward. |
-| Advanced mutations, catalysts, and four Flower–Season interactions | Full acquisition and authoritative action/scoring integration remain to audit and implement. |
+| Winter: loosen hand legality | `isHandLegalityLoosened()` is unused. The score penalty and concealed Chrysanthemum exception are active. |
+| Frostbite: halve Decree effects | Flat-point, main multiplier, Yaku-specific benefits and shared gold reward paths scale with every Frostbite; ordinary bonuses remain intact. Wealth Engine and copied gold effects feed those paths. Treasure Hunter timing/scaling, fractional retriggers and non-numeric rules remain open. See [scoring evidence](FROSTBITE_IMPLEMENTATION.md), [gold settlement](FROSTBITE_GOLD_IMPLEMENTATION.md), [Decree economy](DECREE_ECONOMY_IMPLEMENTATION.md) and [secondary scoring](SECONDARY_SCORING_IMPLEMENTATION.md). |
+| Advanced mutations, catalysts, and three remaining Flower–Season interactions | Chrysanthemum/Winter is connected. Plum/Autumn, Orchid/Spring, Bamboo/Summer and full mutation acquisition remain to implement. |
 
 Spring/Autumn and Winter rule choices have been requested from the user. The
 separate Fate Seal lifetime and Negative-tile rules conflicts remain open too.

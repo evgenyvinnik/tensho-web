@@ -106,6 +106,8 @@
     "dangerZone": "Danger Zone"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} shape bonus",
+    "beginnerBonusHelp": "Shape bonuses add to tile points. The forecast includes your run's modifiers and shows what this play will actually score.",
     "act": "Act",
     "round": "Round",
     "score": "Score",
@@ -142,7 +144,13 @@
     "hiddenHandDesc": "Face-down tiles conceal patterns and score until played.",
     "basePlayHint": "Base play · complete a pattern to unlock Yaku",
     "forecast": {
-      "looseTiles": "Loose tiles score half · group them for full points",
+      "looseTiles": "Ungrouped tiles earn half their base points · try making a group",
+      "grouped": "All tiles grouped · +{{points}} base shape points",
+      "mixed": "+{{points}} base shape points · ungrouped: {{count}} (half base points)",
+      "complete": "Complete hand · the forecast includes active rules",
+      "selectionCount": "Selected tiles: {{count}}",
+      "stagedDeclaration": "Staged tiles: {{count}} · confirm declaration",
+      "completeDeclaration": "Complete hand ({{count}} tiles) · stage to declare",
       "clears": "Clears the round",
       "share": "{{percent}}% of what remains · {{pace}}",
       "onPace": "on pace",
@@ -157,9 +165,9 @@
     "stageHint": "Build your play",
     "chooseTacticalGroup": "Choose a tactical group",
     "pattern": "shape",
-    "firstMoveTitle": "Your first move is already here",
-    "firstMoveContentPattern": "You do not need to know Mahjong yet. The glowing tiles already make a {{pattern}}. Tap them, read the exact forecast, then Play. Open Learn patterns whenever you want the visual primer.",
-    "firstMoveContentRedraw": "You do not need to know Mahjong yet. The glowing tiles are isolated; select them and use Redraw to look for a Pair, Sequence, or Triplet. Open Learn patterns whenever you want the visual primer.",
+    "firstMoveTitle": "Your first move",
+    "firstMoveContentPattern": "Glowing tiles: {{pattern}}. Select them, check the points, then Play. Learn the tiles opens the visual guide.",
+    "firstMoveContentRedraw": "Select the glowing isolated tiles and Redraw to find a group. Learn the tiles opens the visual guide.",
     "learnPatterns": "Learn the tiles",
     "beginnerGuideTitle": "Mahjong in one minute",
     "beginnerGuideIntro": "You do not need to know a full Mahjong hand yet. In Tensho, begin by spotting one small shape and playing it for points.",
@@ -205,7 +213,7 @@
     "confirmHand": "CONFIRM HAND",
     "notComplete": "NOT COMPLETE",
     "playCount": "PLAY {{count}}",
-    "pointsToClear": "{{count}} to clear",
+    "pointsToClear": "{{formattedCount}} to clear",
     "targetCleared": "Target cleared",
     "stake": "Stake {{tier}}",
     "requiredTiles": "{{count}} TILES",
@@ -261,7 +269,7 @@
       "interest": "Interest",
       "decrees": "Decrees",
       "goldTiles": "Gold tiles",
-      "bonus": "Reward bonus",
+      "bonus": "Reward adjustment",
       "rentals": "Rentals",
       "interestBlocked": "Interest is currently blocked.",
       "interestCap": "Savings have reached the {{interest}}G interest cap.",
@@ -978,14 +986,15 @@
       "decayPenalty": "Decay penalty per play: −{{points}} points.",
       "partial": "Some Season rules are still being implemented. Only current effects are shown.",
       "unwired": "Not connected yet.",
-      "summer": "Score ×1.3.",
+      "summer": "Score ×1.3. Sets aside 20% of the remaining live wall for this round (retained tiles rounded down).",
       "autumn": "Yaku multiplier +20%.",
       "winter": "Score ×0.75.",
       "drought": "Suppresses Flower scoring bonuses unless protected.",
-      "frostbite": "Halves Decree multiplier bonuses.",
+      "frostbite": "Halves Decree flat-point, multiplier and gold bonuses.",
       "decay": "−10 score per discarded tile this round, with a minimum score of zero.",
       "droughtName": "Drought",
       "monsoonName": "Monsoon",
+      "monsoon": "Randomizes normal draws and bonus replacements this round.",
       "frostbiteName": "Frostbite",
       "decayName": "Decay",
       "corruptedName": "Corrupted",
@@ -994,7 +1003,7 @@
       "flowerChrysanthemum": "+{{percent}}% score per concealed meld.",
       "flowerBamboo": "+{{percent}}% score per terminal tile.",
       "setTwo": "2 Flowers: +1 Decree slot.",
-      "setThree": "3 Flowers: special shop unlock is not connected yet.",
+      "setThree": "3 Flowers: unlock Flower-powered Decrees in the shop and Decree packs.",
       "setFour": "4 Flowers: double Flower bonuses."
     },
     "flowers": "Flowers",
@@ -1965,6 +1974,9 @@
     }
   },
   "scoring": {
+    "lastPlay": "Last play",
+    "adjustments": "After-score effects",
+    "exactValues": "Exact values",
     "basePoints": "Base Points",
     "totalScore": "Total Score",
     "subtotal": "Subtotal",
@@ -2381,7 +2393,7 @@
       },
       "river_merchant": {
         "name": "Whispering Merchant",
-        "description": "Once per round, take one tile back out of the river into your rack."
+        "description": "Once per round, swap one chosen rack tile for a river tile. Costs no action."
       },
       "jade_ledger": {
         "name": "Jade Ledger",
@@ -2448,6 +2460,10 @@
       "bridges": "· {{count}} bridge"
     },
     "river": {
+      "choose": "Select one rack tile to give up, then choose a river tile. Free once per round.",
+      "ready": "Give {{tile}} for a river tile. No action cost.",
+      "used": "Merchant swap used this round.",
+      "swapLabel": "Swap {{give}} for {{take}}",
       "title": "River",
       "recover": "River — tap to take one back"
     },

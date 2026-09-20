@@ -2,12 +2,17 @@ import type { TableDecreeId } from '../../tableloop/types'
 import { illustrationAssets } from '../../utils/assets'
 import { withBasePath } from '../../utils/basePath'
 
-const DECREE_ART: Partial<Record<TableDecreeId, string>> = {
+const DECREE_ART: Record<TableDecreeId, string> = {
   echoing_bamboo: 'echoing-bamboo',
   patient_pair: 'patient-pair',
   watch_fire: 'watch-fire',
   terminal_gate: 'terminal-gate',
   gap_bridge: 'gap-bridge',
+  honor_court: 'honor-court',
+  wide_rack: 'wide-rack',
+  twin_flame: 'twin-flame',
+  river_merchant: 'river-merchant',
+  jade_ledger: 'jade-ledger',
 }
 
 /** Decorative art: the containing control supplies the localized identity. */

@@ -110,6 +110,8 @@
     "visual": "Visuel"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} de bonus de figure",
+    "beginnerBonusHelp": "Les bonus de figure s'ajoutent aux points des tuiles. La prévision inclut les modificateurs de votre partie et indique le score réel de ce coup.",
     "act": "Acte",
     "round": "Manche",
     "score": "Score",
@@ -146,7 +148,13 @@
     "hiddenHandDesc": "Les tuiles face cachée dissimulent motifs et score jusqu'à leur jeu.",
     "basePlayHint": "Jeu de base · complétez un motif pour débloquer un Yaku",
     "forecast": {
-      "looseTiles": "Les tuiles isolées comptent moitié · groupez-les pour le plein tarif",
+      "looseTiles": "Les tuiles isolées donnent la moitié de leurs points de base · essayez de les grouper",
+      "grouped": "Toutes les tuiles sont groupées · +{{points}} points de forme de base",
+      "mixed": "+{{points}} points de forme de base · tuiles isolées : {{count}} (moitié des points de base)",
+      "complete": "Main complète · la prévision inclut les règles actives",
+      "selectionCount": "Tuiles sélectionnées : {{count}}",
+      "stagedDeclaration": "Tuiles préparées : {{count}} · confirmez la déclaration",
+      "completeDeclaration": "Main complète ({{count}} tuiles) · préparez-la pour déclarer",
       "clears": "Franchit la manche",
       "share": "{{percent}}% de ce qui reste · {{pace}}",
       "onPace": "dans le rythme",
@@ -161,9 +169,9 @@
     "stageHint": "Composez votre jeu",
     "chooseTacticalGroup": "Choisissez un groupe tactique",
     "pattern": "figure",
-    "firstMoveTitle": "Votre premier coup est déjà là",
-    "firstMoveContentPattern": "Vous n’avez pas encore besoin de connaître le mah-jong. Les tuiles lumineuses forment déjà une {{pattern}}. Touchez-les, consultez la prévision exacte, puis jouez. Ouvrez Apprendre les tuiles pour revoir le guide visuel.",
-    "firstMoveContentRedraw": "Vous n’avez pas encore besoin de connaître le mah-jong. Les tuiles lumineuses sont isolées : sélectionnez-les et utilisez Repiocher pour chercher une Paire, une Suite ou un Brelan. Ouvrez Apprendre les tuiles pour revoir le guide visuel.",
+    "firstMoveTitle": "Votre premier coup",
+    "firstMoveContentPattern": "Tuiles lumineuses : {{pattern}}. Sélectionnez-les, vérifiez les points, puis jouez. Apprendre les tuiles ouvre le guide visuel.",
+    "firstMoveContentRedraw": "Sélectionnez les tuiles lumineuses isolées et utilisez Repiocher pour trouver un groupe. Apprendre les tuiles ouvre le guide visuel.",
     "learnPatterns": "Apprendre les tuiles",
     "beginnerGuideTitle": "Le mah-jong en une minute",
     "beginnerGuideIntro": "Vous n’avez pas encore besoin de connaître une main complète. Dans Tensho, commencez par repérer une petite figure et jouez-la pour marquer.",
@@ -209,7 +217,7 @@
     "confirmHand": "CONFIRMER LA MAIN",
     "notComplete": "INCOMPLÈTE",
     "playCount": "JOUER {{count}}",
-    "pointsToClear": "{{count}} restants",
+    "pointsToClear": "{{formattedCount}} restants",
     "targetCleared": "Objectif atteint",
     "stake": "Mise {{tier}}",
     "requiredTiles": "{{count}} TUILES",
@@ -265,7 +273,7 @@
       "interest": "Intérêts",
       "decrees": "Décrets",
       "goldTiles": "Tuiles d’or",
-      "bonus": "Bonus de récompense",
+      "bonus": "Ajustement de récompense",
       "rentals": "Locations",
       "interestBlocked": "Les intérêts sont actuellement bloqués.",
       "interestCap": "Le plafond d’intérêts de {{interest}}G est atteint.",
@@ -982,14 +990,15 @@
       "decayPenalty": "Pénalité de Déclin par main jouée : −{{points}} points.",
       "partial": "Certaines règles saisonnières sont encore en développement. Seuls les effets actuels sont indiqués.",
       "unwired": "Pas encore implémenté.",
-      "summer": "Score ×1,3.",
+      "summer": "Score ×1,3. Met de côté 20% du mur vivant restant pour cette manche (nombre de tuiles conservées arrondi à l’entier inférieur).",
       "autumn": "Multiplicateur de yaku +20 %.",
       "winter": "Score ×0,75.",
       "drought": "Neutralise les bonus de score des fleurs non protégées.",
-      "frostbite": "Divise par deux les bonus multiplicateurs des décrets.",
+      "frostbite": "Divise par deux les bonus de points fixes, de multiplicateur et d'or des Décrets.",
       "decay": "−10 points par tuile défaussée dans cette manche, sans descendre sous zéro.",
       "droughtName": "Sécheresse",
       "monsoonName": "Mousson",
+      "monsoon": "Rend aléatoires les pioches normales et les remplacements de tuiles bonus pendant cette manche.",
       "frostbiteName": "Gelure",
       "decayName": "Déclin",
       "corruptedName": "Corrompue",
@@ -998,7 +1007,7 @@
       "flowerChrysanthemum": "+{{percent}} % de score par groupe caché.",
       "flowerBamboo": "+{{percent}} % de score par tuile terminale.",
       "setTwo": "2 fleurs : +1 emplacement de décret.",
-      "setThree": "3 fleurs : déblocage spécial de boutique non implémenté.",
+      "setThree": "3 fleurs : débloquent les Décrets renforcés par les fleurs en boutique et dans les paquets de Décrets.",
       "setFour": "4 fleurs : bonus des fleurs doublés."
     },
     "flowers": "Fleurs",
@@ -1497,6 +1506,9 @@
     "stepsCount": "{{done}}/{{total}} étapes"
   },
   "scoring": {
+    "lastPlay": "Dernier coup",
+    "adjustments": "Effets après calcul",
+    "exactValues": "Valeurs exactes",
     "basePoints": "Points de base",
     "totalScore": "Score total",
     "subtotal": "Sous-total",
@@ -2390,7 +2402,7 @@
       },
       "river_merchant": {
         "name": "Marchand qui Chuchote",
-        "description": "Une fois par manche, reprenez une tuile de la rivière dans votre chevalet."
+        "description": "Une fois par manche, échangez une tuile choisie de votre chevalet contre une de la rivière. Sans coût en action."
       },
       "jade_ledger": {
         "name": "Registre de Jade",
@@ -2457,6 +2469,10 @@
       "bridges": "· {{count}} passerelle"
     },
     "river": {
+      "choose": "Sélectionnez une tuile du chevalet à céder, puis une de la rivière. Gratuit une fois par manche.",
+      "ready": "Cédez {{tile}} contre une tuile de la rivière. Sans coût en action.",
+      "used": "Échange du Marchand utilisé pour cette manche.",
+      "swapLabel": "Échanger {{give}} contre {{take}}",
       "title": "Rivière",
       "recover": "Rivière : touchez pour en reprendre une"
     },

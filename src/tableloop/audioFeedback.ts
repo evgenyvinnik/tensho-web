@@ -37,7 +37,9 @@ export function playTableAction(
     playSFX(SPECIAL_SOUNDS.decreeAcquired)
   else if (action.type === 'redraw') playSFX(TILE_SOUNDS.discard)
   else if (
-    ['claimDraft', 'passDraft', 'recoverFromRiver'].includes(action.type)
+    ['claimDraft', 'passDraft', 'recoverFromRiver', 'swapWithRiver'].includes(
+      action.type
+    )
   )
     playSFX(TILE_SOUNDS.draw)
   else if (action.type === 'finishRound')

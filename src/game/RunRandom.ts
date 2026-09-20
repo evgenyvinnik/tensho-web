@@ -21,15 +21,26 @@
  * Not cryptographic, and it does not need to be: the seed is shown to the
  * player and reproducing a run is the point.
  */
-export function createSeededRandom(seed: number): () => number {
-  let state = seed >>> 0 || 1
-  return () => {
+interface SeededRandom {
+  (): number
+  clone(): SeededRandom
+}
+
+function generatorFromState(initialState: number): SeededRandom {
+  let state = initialState
+  const draw = () => {
     state = (state + 0x6d2b79f5) >>> 0
     let t = state
     t = Math.imul(t ^ (t >>> 15), t | 1)
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
+  draw.clone = () => generatorFromState(state)
+  return draw
+}
+
+export function createSeededRandom(seed: number): SeededRandom {
+  return generatorFromState(seed >>> 0 || 1)
 }
 
 /**
@@ -63,7 +74,7 @@ function streamOffset(stream: RandomStream): number {
 
 class RunRandom {
   private seed: number | null = null
-  private streams = new Map<RandomStream, () => number>()
+  private streams = new Map<RandomStream, SeededRandom>()
 
   /** Begin a run. Every stream restarts from this seed. */
   start(seed: number): void {
@@ -74,6 +85,16 @@ class RunRandom {
   /** True once a run has seeded the generator. */
   get isSeeded(): boolean {
     return this.seed !== null
+  }
+
+  /** Exact independent cursor for previews; never advances the live streams. */
+  fork(): RunRandom {
+    if (this.seed === null) throw new Error('Cannot preview an unseeded run')
+    const fork = new RunRandom()
+    fork.seed = this.seed
+    for (const [name, draw] of this.streams)
+      fork.streams.set(name, draw.clone())
+    return fork
   }
 
   /**

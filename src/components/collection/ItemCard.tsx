@@ -11,7 +11,7 @@ import { useSpring, animated, to } from '@react-spring/web'
 import { useSettingsStore } from '../../stores/settingsStore'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import type { ArchiveCategory } from '../../config/archiveDefinitions'
-import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 
@@ -154,7 +154,7 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
           {/* Decree icon for decree category items */}
           {displayInfo.category === 'decrees' && (
             <div className="absolute top-2 right-2">
-              <DecreeUniqueIcon
+              <DecreeArtwork
                 decreeId={displayInfo.id}
                 size={24}
                 color={getRarityIconColor(displayInfo.rarity)}

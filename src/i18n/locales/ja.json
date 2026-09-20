@@ -110,6 +110,8 @@
     "visual": "表示"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} 形ボーナス",
+    "beginnerBonusHelp": "形ボーナスは牌の点数に加算されます。予測には現在のランの補正が含まれ、このプレイで実際に得られる点数が表示されます。",
     "act": "幕",
     "round": "局",
     "score": "スコア",
@@ -146,7 +148,13 @@
     "hiddenHandDesc": "裏向きの牌は、打つまで役と点数を隠します。",
     "basePlayHint": "基本の手 · 役を成立させると倍率が付きます",
     "forecast": {
-      "looseTiles": "浮き牌は半分の点 · 面子にすれば満額",
+      "looseTiles": "組にならない牌の基本点は半分 · 組を作ってみましょう",
+      "grouped": "すべての牌が組に含まれています · 形の基本点 +{{points}}",
+      "mixed": "形の基本点 +{{points}} · 組に含まれない牌：{{count}}（基本点は半分）",
+      "complete": "完成した手牌 · 予測には有効なルールが反映されています",
+      "selectionCount": "選択した牌：{{count}}枚",
+      "stagedDeclaration": "場に置いた牌：{{count}}枚 · 宣言を確定",
+      "completeDeclaration": "完成した手牌（{{count}}枚）· 場に置いて宣言",
       "clears": "この局を越えます",
       "share": "残りの{{percent}}% · {{pace}}",
       "onPace": "ペース通り",
@@ -161,9 +169,9 @@
     "stageHint": "牌を組み立てよう",
     "chooseTacticalGroup": "戦術的な組み合わせを選ぶ",
     "pattern": "形",
-    "firstMoveTitle": "最初の一手はもう見つかっています",
-    "firstMoveContentPattern": "まだ麻雀を知らなくても大丈夫です。光る牌はすでに{{pattern}}を作っています。牌を選び、正確な予測を確認してから打ちましょう。「牌を学ぶ」でいつでも図解を見られます。",
-    "firstMoveContentRedraw": "まだ麻雀を知らなくても大丈夫です。光る牌は孤立しています。選んで引き直し、対子・順子・刻子を探しましょう。「牌を学ぶ」でいつでも図解を見られます。",
+    "firstMoveTitle": "最初の一手",
+    "firstMoveContentPattern": "光る牌は{{pattern}}です。選んで得点を確認し、打ちましょう。「牌を学ぶ」で図解を見られます。",
+    "firstMoveContentRedraw": "孤立した光る牌を選んで引き直し、組を探しましょう。「牌を学ぶ」で図解を見られます。",
     "learnPatterns": "牌を学ぶ",
     "beginnerGuideTitle": "1分でわかる麻雀",
     "beginnerGuideIntro": "まだ完成形を覚える必要はありません。天翔では、まず小さな形を見つけて打ち、点を獲得します。",
@@ -209,7 +217,7 @@
     "confirmHand": "手を確定",
     "notComplete": "未完成",
     "playCount": "{{count}}枚打つ",
-    "pointsToClear": "あと{{count}}点",
+    "pointsToClear": "あと{{formattedCount}}点",
     "targetCleared": "目標達成",
     "stake": "ステーク {{tier}}",
     "requiredTiles": "{{count}}枚",
@@ -265,7 +273,7 @@
       "interest": "利息",
       "decrees": "勅令",
       "goldTiles": "金の牌",
-      "bonus": "報酬ボーナス",
+      "bonus": "報酬調整",
       "rentals": "レンタル料",
       "interestBlocked": "現在、利息は無効です。",
       "interestCap": "利息の上限{{interest}}Gに達しています。",
@@ -982,14 +990,15 @@
       "decayPenalty": "衰退による１プレイごとの減点：−{{points}}点。",
       "partial": "一部の季節ルールは開発中です。現在有効な効果のみ表示しています。",
       "unwired": "未実装です。",
-      "summer": "得点×1.3。",
+      "summer": "得点×1.3。このラウンド中、残りの通常牌山の20%を取り置きます（利用可能な牌数は切り捨て）。",
       "autumn": "役の倍率+20%。",
       "winter": "得点×0.75。",
       "drought": "保護されていない花牌の得点ボーナスを無効にします。",
-      "frostbite": "法令による倍率ボーナスを半減します。",
+      "frostbite": "勅令の固定点数・倍率・ゴールドのボーナスを半減させます。",
       "decay": "このラウンドで捨てた牌１枚につき−10点。得点は０未満になりません。",
       "droughtName": "干ばつ",
       "monsoonName": "モンスーン",
+      "monsoon": "このラウンドは通常のツモとボーナス牌の補充をランダムに行います。",
       "frostbiteName": "凍傷",
       "decayName": "衰退",
       "corruptedName": "異変",
@@ -998,7 +1007,7 @@
       "flowerChrysanthemum": "+{{percent}}%得点／非公開の面子。",
       "flowerBamboo": "+{{percent}}%得点／老頭牌。",
       "setTwo": "花牌２種：法令スロット+1。",
-      "setThree": "花牌３種：特別な店の解放は未実装です。",
+      "setThree": "花牌３種：花牌で強化される勅令が店と勅令パックで出現するようになります。",
       "setFour": "花牌４種：花牌ボーナスが２倍。"
     },
     "flowers": "花牌",
@@ -1497,6 +1506,9 @@
     "stepsCount": "{{done}}/{{total}} ステップ"
   },
   "scoring": {
+    "lastPlay": "前回のプレイ",
+    "adjustments": "得点計算後の効果",
+    "exactValues": "正確な数値",
     "basePoints": "基本点",
     "totalScore": "合計スコア",
     "subtotal": "小計",
@@ -2382,7 +2394,7 @@
       },
       "river_merchant": {
         "name": "囁きの商人",
-        "description": "各局に一度、河から牌を一枚だけ手元に戻せます。"
+        "description": "各局に一度、選んだ手元の牌一枚を河の牌一枚と交換できます。行動は消費しません。"
       },
       "jade_ledger": {
         "name": "翡翠の帳簿",
@@ -2449,6 +2461,10 @@
       "bridges": "· 橋渡し{{count}}"
     },
     "river": {
+      "choose": "渡す手元の牌を一枚選び、次に河の牌を選びます。各局に一度、行動消費なし。",
+      "ready": "{{tile}}を河の牌と交換します。行動は消費しません。",
+      "used": "この局の商人の交換は使用済みです。",
+      "swapLabel": "{{give}}を{{take}}と交換",
       "title": "河",
       "recover": "河 — 触れて一枚だけ戻す"
     },

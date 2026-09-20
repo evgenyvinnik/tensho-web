@@ -22,6 +22,31 @@ const decree: OwnedDecree = {
 }
 
 describe('DecreeCardCompact mandate states', () => {
+  it('shows bespoke art and readable details but never leaks a face-down portrait', () => {
+    const wealth = {
+      ...decree,
+      id: 'decree-wealth-engine',
+      name: 'Wealth Engine',
+      description: '+1G per Decree owned at end of round',
+    }
+    const { container, rerender } = render(
+      <DecreeCardCompact decree={wealth} />
+    )
+    const button = screen.getByRole('button', { name: 'Wealth Engine' })
+    expect(button.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringMatching(/wealth-engine\.png$/)
+    )
+    fireEvent.focus(button)
+    expect(screen.getByRole('dialog')).toHaveTextContent('per Decree owned')
+    rerender(<DecreeCardCompact decree={wealth} faceDown />)
+    expect(container.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringMatching(/local-edict\.png$/)
+    )
+    expect(document.querySelector('img[src$="wealth-engine.png"]')).toBeNull()
+    expect(screen.queryByText('Wealth Engine')).not.toBeInTheDocument()
+  })
   it('conceals identity and sells the chosen hidden Decree', () => {
     const onSell = vi.fn()
     render(<DecreeCardCompact decree={decree} faceDown onSell={onSell} />)

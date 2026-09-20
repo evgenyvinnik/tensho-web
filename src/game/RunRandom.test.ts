@@ -4,6 +4,19 @@ import { createSeededRandom, runRandom } from './RunRandom'
 afterEach(() => runRandom.reset())
 
 describe('createSeededRandom', () => {
+  it('preserves the published generator sequence when adding clone support', () => {
+    const draw = createSeededRandom(42)
+    expect([draw(), draw(), draw()]).toEqual([
+      0.6011037519201636, 0.44829055899754167, 0.8524657934904099,
+    ])
+  })
+
+  it('clones the exact internal state, including zero at the wraparound boundary', () => {
+    const draw = createSeededRandom(0x92d4860b)
+    draw() // This increment wraps the internal state to zero.
+    const copy = draw.clone()
+    expect([copy(), copy(), copy()]).toEqual([draw(), draw(), draw()])
+  })
   it('repeats exactly for the same seed and differs for another', () => {
     const take = (seed: number) => {
       const draw = createSeededRandom(seed)
@@ -24,6 +37,28 @@ describe('createSeededRandom', () => {
 })
 
 describe('runRandom', () => {
+  it('forks initialized and unused streams without moving the source cursor', () => {
+    runRandom.start(73)
+    runRandom.next('wall')
+    runRandom.next('shop')
+    const fork = runRandom.fork()
+    const secondFork = runRandom.fork()
+    const sample = (random: typeof fork) => [
+      random.next('wall'),
+      random.next('wall'),
+      random.next('shop'),
+      random.next('omens'),
+    ]
+    const expected = sample(fork)
+    expect(sample(secondFork)).toEqual(expected)
+    expect(sample(runRandom)).toEqual(expected)
+    fork.start(999)
+    expect(runRandom.next('wall')).toBe(secondFork.next('wall'))
+  })
+
+  it('refuses to claim an exact preview before a run has been seeded', () => {
+    expect(() => runRandom.fork()).toThrow('unseeded run')
+  })
   it('is unseeded until a run starts', () => {
     expect(runRandom.isSeeded).toBe(false)
     runRandom.start(1)

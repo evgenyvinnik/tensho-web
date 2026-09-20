@@ -6,19 +6,21 @@
  * module translates the former into the latter so authored Decrees actually
  * reach the shop and the score.
  *
- * A definition is only published when every one of its effects maps to
- * behaviour the engine implements, so a Decree that reaches the shop always
- * does what its text says. Every authored Decree currently qualifies and
- * `UNSUPPORTED_DECREE_IDS` is empty; it stays here as the guard rail for new
- * content, which lands unpublished until its mechanic exists.
+ * The conversion guard rejects unknown effect vocabulary. Successful conversion
+ * alone does not prove every authored condition or interaction is implemented:
+ * docs/DECREE_ECONOMY_IMPLEMENTATION.md records remaining semantic gaps.
  */
 
 import type { DecreeDefinition } from './decreeDefinitions'
+import { FLOWER_DECREE_UNLOCK_COUNT } from './flowerRules'
 import {
   ALL_DECREES as ALL_DECREE_DEFINITIONS,
   DECREE_BASE_COSTS,
 } from './decreeDefinitions'
-import type { DecreeEffect as LibraryEffect, DecreeRarity as LibraryRarity } from '../stores/decreeStore'
+import type {
+  DecreeEffect as LibraryEffect,
+  DecreeRarity as LibraryRarity,
+} from '../stores/decreeStore'
 import type {
   Decree,
   DecreeCategory,
@@ -360,6 +362,8 @@ function convertEffect(
         trigger: 'OnRoundEnd',
         description,
         amount: effect.value,
+        scaleBy:
+          effect.condition === 'per Decree owned' ? 'owned_decrees' : undefined,
       }
 
     // Hand size and discard counts are round resources, carried as rule
@@ -383,7 +387,9 @@ function convertEffect(
       }
 
     case 'retrigger': {
-      const target = effect.condition ? RETRIGGER_TARGETS[effect.condition] : undefined
+      const target = effect.condition
+        ? RETRIGGER_TARGETS[effect.condition]
+        : undefined
       if (!target) return null
       return {
         type: 'retrigger',
@@ -406,7 +412,9 @@ function convertEffect(
       }
 
     case 'special': {
-      const build = effect.condition ? SPECIAL_EFFECTS[effect.condition] : undefined
+      const build = effect.condition
+        ? SPECIAL_EFFECTS[effect.condition]
+        : undefined
       return build ? build(effect.value, description) : null
     }
 
@@ -428,7 +436,11 @@ function deriveCategory(definition: DecreeDefinition): DecreeCategory {
 
 function convertDefinition(definition: DecreeDefinition): Decree | null {
   if (definition.effects.length === 0) return null
-  if (definition.effects.some((effect) => !SUPPORTED_EFFECT_TYPES.has(effect.type))) {
+  if (
+    definition.effects.some(
+      (effect) => !SUPPORTED_EFFECT_TYPES.has(effect.type)
+    )
+  ) {
     return null
   }
 
@@ -451,6 +463,11 @@ function convertDefinition(definition: DecreeDefinition): Decree | null {
     sellValue: definition.baseSellValue,
     effect: primary,
     extraEffects: extras.length > 0 ? extras : undefined,
+    flowerRequirement: converted.some(
+      (effect) => 'scaleBy' in effect && effect.scaleBy === 'flower_count'
+    )
+      ? FLOWER_DECREE_UNLOCK_COUNT
+      : undefined,
   }
 }
 

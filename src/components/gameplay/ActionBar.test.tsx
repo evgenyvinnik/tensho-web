@@ -3,6 +3,8 @@ import type { TFunction } from 'i18next'
 import type React from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { ActionBar } from './ActionBar'
+import { createInstance } from 'i18next'
+import es from '../../i18n/locales/es.json'
 
 // Mirrors i18next: a missing key resolves to the supplied default string,
 // with {{placeholders}} filled from the interpolation values.
@@ -41,6 +43,35 @@ function renderActionBar(
 }
 
 describe('ActionBar play action', () => {
+  it.each([
+    { selectedTileCount: 0, expected: 'ELIGE 2–5' },
+    {
+      selectedTileCount: 0,
+      isCompleteHandSelection: true,
+      expected: 'PREPARAR MANO',
+    },
+    { selectedTileCount: 1, expected: 'ELIGE 1 MÁS' },
+    { selectedTileCount: 3, expected: 'JUGAR 3' },
+    {
+      selectedTileCount: 14,
+      isCompleteHandSelection: true,
+      expected: 'CONFIRMAR MANO',
+    },
+    { selectedTileCount: 6, expected: 'INCOMPLETA' },
+    { selectedTileCount: 4, requiredPlaySize: 5, expected: 'ELIGE 1 MÁS' },
+    { selectedTileCount: 5, requiredPlaySize: 3, expected: 'DEVUELVE 2' },
+  ])(
+    'uses one translated label at every breakpoint: $expected',
+    async ({ expected, ...props }) => {
+      const instance = createInstance()
+      await instance.init({ lng: 'es', resources: { es: { translation: es } } })
+      const { container } = renderActionBar({ ...props, t: instance.t })
+      const play = container.querySelector('[data-game-action="play"]')!
+      expect(play.textContent).toBe(`${expected}+181`)
+      expect(play.querySelector('.sm\\:hidden')).toBeNull()
+    }
+  )
+
   it.each([
     { selectedTileCount: 0 },
     { selectedTileCount: 4 },

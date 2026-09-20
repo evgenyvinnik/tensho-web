@@ -17,6 +17,7 @@ import { AnimatedTile } from '../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../styles/theme'
 import { useSettingsStore } from '../../stores/settingsStore'
 import type { BeginnerSuggestion } from '../../gameplay/beginnerCoach'
+import { illustrationAssets } from '../../utils/assets'
 
 // =============================================================================
 // TYPES
@@ -610,9 +611,16 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 type="button"
                 data-open-beginner-guide
                 onClick={onOpenBeginnerGuide}
-                className="mt-2 min-h-9 rounded-full border border-[var(--color-metallic-gold)]/45 bg-black/20 px-3 py-1 text-xs font-semibold text-[var(--color-metallic-gold)] transition-colors hover:border-[var(--color-golden-yellow)] hover:text-[var(--color-golden-yellow)]"
+                className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-metallic-gold)]/45 bg-black/20 px-3 py-1 text-xs font-semibold text-[var(--color-metallic-gold)] transition-colors hover:border-[var(--color-golden-yellow)] hover:text-[var(--color-golden-yellow)]"
               >
-                ? {t('gameplay.learnPatterns', 'Learn the tiles')}
+                <img
+                  src={illustrationAssets.beginnerGuidebook}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 shrink-0 object-contain"
+                />
+                {t('gameplay.learnPatterns', 'Learn the tiles')}
               </button>
             )}
           </div>

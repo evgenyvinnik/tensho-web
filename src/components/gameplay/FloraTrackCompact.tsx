@@ -30,10 +30,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
       : t('flora.' + season.type.toLowerCase())
   // Verified gaps, not active powers. Do not advertise unused helpers.
   const incomplete = flora.seasons.some(
-    (season) =>
-      !season.isCorrupted ||
-      season.corruptedType === 'Monsoon' ||
-      season.corruptedType === 'Frostbite'
+    (season) => !season.isCorrupted || season.corruptedType === 'Frostbite'
   )
 
   return (
@@ -167,7 +164,14 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
               {collected.size >= 2 ? '✓ ' : ''}
               {t('flora.details.setTwo')}
             </li>
-            <li>{t('flora.details.setThree')}</li>
+            <li data-testid="flora-flower-unlock">
+              {flora.flowers.activeBonuses.some(
+                (bonus) => bonus.effect.type === 'unlock_decrees'
+              )
+                ? '✓ '
+                : ''}
+              {t('flora.details.setThree')}
+            </li>
             <li>
               {collected.size >= 4 ? '✓ ' : ''}
               {t('flora.details.setFour')}
@@ -234,7 +238,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                     <p className="mt-1 text-sm">
                       {t(
                         'flora.details.' +
-                          (effect && effect !== 'Spring' && effect !== 'Monsoon'
+                          (effect && effect !== 'Spring'
                             ? effect.toLowerCase()
                             : 'unwired')
                       )}

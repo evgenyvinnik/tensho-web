@@ -120,9 +120,26 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Documentation
 
+- [Monsoon draw implementation](docs/MONSOON_IMPLEMENTATION.md) — Seeded live/bonus draws, non-mutating redraw previews, and remaining Season requirements
+- [Summer wall tradeoff](docs/SUMMER_IMPLEMENTATION.md) — Round-only wall reduction, physical tile restoration, and the unfinished Bamboo exception
+- [Three-Flower shop unlock](docs/FLOWER_SHOP_IMPLEMENTATION.md) — Eligible offers, packs, Omen guarantees and generated rewards
+- [SEO strategy and public guides](docs/SEO_STRATEGY.md) — Search intent, static About/how-to-play/FAQ pages, localization roadmap, and release checks
+- [New public-page and scroll illustrations](docs/PUBLIC_SITE_ART.md) — Saved assets, exact generation prompts, and provenance
 - [Flora inspector and Season effects](docs/FLORA_IMPLEMENTATION.md) — Localized full-stack details, real Decay discards, Flower protection, safe touch activation, and explicit remaining mechanics gaps
 - [Earned Omens and Season lifecycle](docs/OMEN_LIFECYCLE.md) — Real skip acquisition, once-only shop fees, round cleanup, and locked-draw stacking
-- [Table Loop scroll artwork](docs/TABLE_LOOP_ART.md) — Five individual generated scrolls, prompts, provenance, and readable rule popups
+- [Table Loop scroll artwork](docs/TABLE_LOOP_ART.md) — All ten individual generated scrolls, prompts, provenance, and readable rule popups
+- [Table Loop release preparation](docs/TABLE_LOOP_RELEASE.md) — Merchant swaps, save compatibility, real-run verification, and remaining release work
+- [On-demand screens and offline verification](docs/ROUTE_LOADING_IMPLEMENTATION.md) — Measured first-screen code reductions, accessible loading, failed-download recovery, and retained regression evidence
+- [Chrysanthemum/Winter scoring](docs/WINTER_FLOWER_IMPLEMENTATION.md) — Authoritative concealed-play protection, stacked Seasons, and suppression rules
+- [Responsive score UI](docs/FORECAST_UI_IMPLEMENTATION.md) — Localized large scores, touch/keyboard exact-value disclosure, mobile actions, and motion-safe counters
+- [Settled score display](docs/SCORE_SETTLEMENT_IMPLEMENTATION.md) — Atomic last-play equations, exact penalties/bonuses, independent consecutive plays, and verified zero-score presentation
+- [In-flow tutorial guidance](docs/TUTORIAL_CARD_IMPLEMENTATION.md) — Collapsible, untimed lessons, first-move priority, persistent opt-out, and playable open-hint layouts
+- [Illustrated beginner guide](docs/BEGINNER_GUIDE_IMPLEMENTATION.md) — Engine-backed shape bonuses, localized explanations, responsive tile examples, and generated guidebook artwork
+- [Frostbite scoring](docs/FROSTBITE_IMPLEMENTATION.md) — Decree-only flat-point penalties, stacking, fractional subtotals, and remaining effect semantics
+- [Frostbite gold settlement](docs/FROSTBITE_GOLD_IMPLEMENTATION.md) — shared reward calculation, disabled effects, fractional receipts, and remaining economy gaps
+- [Decree economy and artwork](docs/DECREE_ECONOMY_IMPLEMENTATION.md) — Wealth Engine scaling, copied gold effects, physical copier positions and the generated portrait
+- [Secondary Decree scoring](docs/SECONDARY_SCORING_IMPLEMENTATION.md) — Frostbite's Yaku contribution, disabled powers, copied retrigger amplification and remaining rule choices
+- [Decree copying](docs/DECREE_COPY_IMPLEMENTATION.md) — physical copy targets, copied resource benefits/costs and paid shop-to-play verification
 - [Imperial Charter artwork](docs/CHARTER_ART.md) — Generated scroll asset, exact prompt, provenance, and responsive card integration
 - [Consumable-aware progression comparison](docs/CLASSIC_CONSUMABLE_BALANCE.md) — Real item use, conservative target/cost decisions, 400 matched-seed rows, and the remaining full-hand/Yaku gap
 - [Classic balance comparison](docs/CLASSIC_BALANCE_AUDIT.md) — Resource-aware and one-away policies, 600 stored simulation rows, reproducible commands, and interpretation limits

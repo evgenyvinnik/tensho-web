@@ -35,6 +35,56 @@ afterEach(async () => {
 })
 
 describe('FloraTrackCompact artwork', () => {
+  it.each([2, 3, 4])(
+    'marks the shop unlock from the actual %i-Flower bonus',
+    (count) => {
+      useSettingsStore.setState({ reducedMotion: true })
+      const flowers = new FlowerSystem()
+      for (let rank = 1; rank <= count; rank++) {
+        flowers.addFlower(new Tile(TileSuit.Flower, rank, `flower-${rank}`))
+      }
+      const flora = { ...fixture(), flowers: flowers.getCollection() }
+      const before = JSON.stringify(flora)
+      render(<FloraTrackCompact flora={flora} />)
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      expect(screen.getByTestId('flora-flower-unlock')).toHaveTextContent(
+        `${count >= 3 ? '✓ ' : ''}${en.flora.details.setThree}`
+      )
+      expect(
+        screen.getByTestId('flora-flower-unlock').textContent?.startsWith('✓')
+      ).toBe(count >= 3)
+      expect(JSON.stringify(flora)).toBe(before)
+    }
+  )
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
+    'describes active Monsoon draws without an unfinished-effect warning (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const seasons = new SeasonSystem()
+      seasons.forceSetSeason('Spring', true)
+      render(
+        <FloraTrackCompact
+          flora={{
+            ...fixture(),
+            seasons: seasons.getSeasonStack(),
+            flowersSuppressed: false,
+          }}
+        />
+      )
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      expect(screen.getByText(copy.flora.details.monsoon)).toBeVisible()
+      expect(
+        screen.queryByText(copy.flora.details.unwired)
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(copy.flora.details.partial)
+      ).not.toBeInTheDocument()
+    }
+  )
   it('uses the native Mahjong season tile instead of duplicate illustration art', () => {
     const { container } = render(<FloraTrackCompact flora={fixture()} />)
 

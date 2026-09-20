@@ -110,6 +110,8 @@
     "visual": "顯示"
   },
   "gameplay": {
+    "beginnerShapeBonus": "+{{points}} 牌組獎勵",
+    "beginnerBonusHelp": "牌組獎勵會加到牌的點數上。預測分數包含本局的修正效果，顯示這次出牌實際可獲得的分數。",
     "act": "幕",
     "round": "局",
     "score": "分數",
@@ -146,7 +148,13 @@
     "hiddenHandDesc": "背面牌在打出前會隱藏牌型與分數。",
     "basePlayHint": "基礎出牌 · 完成牌型可解鎖役",
     "forecast": {
-      "looseTiles": "散牌只算一半 · 組成面子才算滿",
+      "looseTiles": "未成組的牌只得一半基礎分 · 試著組成牌組",
+      "grouped": "所有牌均已成組 · 牌型基礎分 +{{points}}",
+      "mixed": "牌型基礎分 +{{points}} · 未成組：{{count}} 張（基礎分減半）",
+      "complete": "完整手牌 · 預測已計入目前規則",
+      "selectionCount": "已選牌：{{count}} 張",
+      "stagedDeclaration": "已擺牌：{{count}} 張 · 確認宣告",
+      "completeDeclaration": "完整手牌（{{count}} 張）· 擺牌後宣告",
       "clears": "能過這一局",
       "share": "剩餘分數的 {{percent}}% · {{pace}}",
       "onPace": "跟得上",
@@ -161,9 +169,9 @@
     "stageHint": "構築你的牌型",
     "chooseTacticalGroup": "選擇一個戰術組合",
     "pattern": "牌組",
-    "firstMoveTitle": "你的第一步已經找到了",
-    "firstMoveContentPattern": "你還不需要懂麻將。發光的牌已經組成了{{pattern}}。點選它們，查看準確預測，然後出牌。隨時開啟「認識牌面」查看圖解。",
-    "firstMoveContentRedraw": "你還不需要懂麻將。發光的牌目前較孤立；選取它們並重抽，尋找對子、順子或刻子。隨時開啟「認識牌面」查看圖解。",
+    "firstMoveTitle": "你的第一步",
+    "firstMoveContentPattern": "發光的牌組成了{{pattern}}。選取它們，查看得分，然後出牌。開啟「認識牌面」查看圖解。",
+    "firstMoveContentRedraw": "選取孤立的發光牌並重抽，尋找組合。開啟「認識牌面」查看圖解。",
     "learnPatterns": "認識牌面",
     "beginnerGuideTitle": "一分鐘認識麻將",
     "beginnerGuideIntro": "你還不需要記住完整手牌。在天翔中，先找出一個小牌組，打出它來獲得分數。",
@@ -209,7 +217,7 @@
     "confirmHand": "確認手牌",
     "notComplete": "未完成",
     "playCount": "打出{{count}}張",
-    "pointsToClear": "還差{{count}}",
+    "pointsToClear": "還差{{formattedCount}}",
     "targetCleared": "已達成目標",
     "stake": "賭注 {{tier}}",
     "requiredTiles": "{{count}}張",
@@ -265,7 +273,7 @@
       "interest": "利息",
       "decrees": "法令",
       "goldTiles": "金牌",
-      "bonus": "額外獎勵",
+      "bonus": "獎勵調整",
       "rentals": "租金",
       "interestBlocked": "目前無法獲得利息。",
       "interestCap": "已達到利息上限{{interest}}G。",
@@ -982,14 +990,15 @@
       "decayPenalty": "衰敗每次出牌的扣分：−{{points}} 分。",
       "partial": "部分季節規則仍在開發中，此處僅顯示目前生效的效果。",
       "unwired": "尚未實作。",
-      "summer": "得分 ×1.3。",
+      "summer": "得分 ×1.3。本輪暫時移出剩餘活牌牆的20%（可用牌數向下取整）。",
       "autumn": "役倍率 +20%。",
       "winter": "得分 ×0.75。",
       "drought": "壓制未受保護的花牌得分加成。",
-      "frostbite": "法令提供的倍率加成減半。",
+      "frostbite": "使敕令的固定點數、倍率和金幣加成減半。",
       "decay": "本輪每棄一張牌扣 10 分，最終得分最低為零。",
       "droughtName": "乾旱",
       "monsoonName": "季風",
+      "monsoon": "本輪一般摸牌和獎勵牌補牌均按隨機順序進行。",
       "frostbiteName": "凍傷",
       "decayName": "衰敗",
       "corruptedName": "異變",
@@ -998,7 +1007,7 @@
       "flowerChrysanthemum": "每組暗面子得分 +{{percent}}%。",
       "flowerBamboo": "每張老頭牌得分 +{{percent}}%。",
       "setTwo": "2 種花牌：+1 法令槽。",
-      "setThree": "3 種花牌：特殊商店解鎖尚未實作。",
+      "setThree": "3 種花牌：在商店和敕令包中解鎖由花牌強化的敕令。",
       "setFour": "4 種花牌：花牌加成加倍。"
     },
     "flowers": "花牌",
@@ -1497,6 +1506,9 @@
     "stepsCount": "{{done}}/{{total}} 步"
   },
   "scoring": {
+    "lastPlay": "上次出牌",
+    "adjustments": "計分後效果",
+    "exactValues": "精確數值",
     "basePoints": "基礎點數",
     "totalScore": "總分",
     "subtotal": "小計",
@@ -2382,7 +2394,7 @@
       },
       "river_merchant": {
         "name": "低語的商人",
-        "description": "每局一次，從牌河裡取回一張牌到手上。"
+        "description": "每局一次，將選定的一張手牌與牌河中的一張牌交換。不消耗行動。"
       },
       "jade_ledger": {
         "name": "翡翠帳簿",
@@ -2449,6 +2461,10 @@
       "bridges": "· 搭橋 {{count}}"
     },
     "river": {
+      "choose": "先選擇要交出的一張手牌，再選擇一張河牌。每局免費一次。",
+      "ready": "用{{tile}}換取一張河牌。不消耗行動。",
+      "used": "本局已使用商人交換。",
+      "swapLabel": "用{{give}}交換{{take}}",
       "title": "牌河",
       "recover": "牌河 — 點一下取回一張"
     },

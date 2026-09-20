@@ -31,7 +31,10 @@ import { OwnedDecree } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'
 import { useItemText } from '../../i18n/useItemText'
-import { getDecreeScrollIllustration } from '../../utils/assets'
+import {
+  getDecreeIllustration,
+  getDecreeScrollIllustration,
+} from '../../utils/assets'
 
 // =============================================================================
 // DECREE CARD COMPACT
@@ -94,6 +97,8 @@ export function DecreeCardCompact({
   const [showPopover, setShowPopover] = useState(false)
   const [position, setPosition] = useState<PopoverPosition | null>(null)
   const itemText = useItemText()
+  // Hidden Decrees must never reveal their identity through custom artwork.
+  const illustration = faceDown ? undefined : getDecreeIllustration(decree.id)
   const decreeName = itemText.name('decrees', decree)
   const decreeDescription = itemText.description('decrees', decree)
   const isSuppressed = decree.isDebuffed || disabledByMandate
@@ -252,7 +257,7 @@ export function DecreeCardCompact({
         aria-controls={showPopover ? popoverId : undefined}
       >
         <img
-          src={getDecreeScrollIllustration(decree.rarity)}
+          src={illustration ?? getDecreeScrollIllustration(decree.rarity)}
           alt=""
           aria-hidden="true"
           className="game-illustration absolute inset-0 h-full w-full scale-[1.18] object-contain drop-shadow-[0_4px_5px_rgba(0,0,0,0.55)] transition-transform duration-200 group-hover:scale-[1.23]"
@@ -264,13 +269,13 @@ export function DecreeCardCompact({
             <span className="font-decorative text-2xl font-black text-amber-950">
               ?
             </span>
-          ) : (
+          ) : !illustration ? (
             <DecreeUniqueIcon
               decreeId={decree.id}
               size={32}
               color={DECREE_ICON_COLORS[decree.rarity]}
             />
-          )}
+          ) : null}
         </span>
 
         {decree.sticker && !faceDown && (
@@ -336,7 +341,9 @@ export function DecreeCardCompact({
               <div className="flex items-start gap-3">
                 <span className="relative flex h-[76px] w-[60px] shrink-0 items-center justify-center">
                   <img
-                    src={getDecreeScrollIllustration(decree.rarity)}
+                    src={
+                      illustration ?? getDecreeScrollIllustration(decree.rarity)
+                    }
                     alt=""
                     aria-hidden="true"
                     className="game-illustration absolute inset-0 h-full w-full object-contain drop-shadow-md"
@@ -346,13 +353,13 @@ export function DecreeCardCompact({
                       <span className="font-decorative text-2xl font-black text-amber-950">
                         ?
                       </span>
-                    ) : (
+                    ) : !illustration ? (
                       <DecreeUniqueIcon
                         decreeId={decree.id}
                         size={30}
                         color={DECREE_ICON_COLORS[decree.rarity]}
                       />
-                    )}
+                    ) : null}
                   </span>
                 </span>
                 <div className="min-w-0 flex-1 pt-1">

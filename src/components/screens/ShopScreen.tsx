@@ -13,7 +13,7 @@
  * Uses the run-owned ShopSession for purchases and pack settlement.
  */
 
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game/useGameController'
@@ -30,7 +30,7 @@ import { PackCard } from '../shop/PackCard'
 import { CharterCard } from '../shop/CharterCard'
 import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
-import { ProgressiveHintOverlay } from '../ui/ProgressiveHint'
+import { ProgressiveHintCard } from '../ui/ProgressiveHint'
 import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 
@@ -48,7 +48,7 @@ export function ShopScreen() {
   const game = useGameController()
   const tutorialHints = useMemo(() => getProgressiveHints(t), [t])
   const tutorial = useProgressiveTutorial(tutorialHints)
-  const hasTriggeredShopHint = useRef(false)
+  const { triggerHints } = tutorial
 
   const shop = game.shop
 
@@ -60,14 +60,8 @@ export function ShopScreen() {
   const [shopError, setShopError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (hasTriggeredShopHint.current) return
-    hasTriggeredShopHint.current = true
-    const timer = window.setTimeout(
-      () => tutorial.triggerHints('shopEntered'),
-      700
-    )
-    return () => window.clearTimeout(timer)
-  }, [tutorial])
+    triggerHints('shopEntered')
+  }, [triggerHints])
 
   useGameEvent(
     'decreeAcquired',
@@ -195,6 +189,13 @@ export function ShopScreen() {
               </p>
             </div>
           )}
+
+          <ProgressiveHintCard
+            hint={tutorial.currentHint}
+            onDismiss={tutorial.dismissHint}
+            onDisableHints={tutorial.disableHints}
+            queueCount={tutorial.hintQueue.length}
+          />
 
           <div className="grid items-start gap-5 px-3 pt-5 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6 lg:pt-6">
             {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
@@ -335,13 +336,6 @@ export function ShopScreen() {
           shop.validatePackSelection(indices).success
         }
         error={shopError}
-      />
-
-      <ProgressiveHintOverlay
-        hint={tutorial.currentHint}
-        onDismiss={tutorial.dismissHint}
-        onDisableHints={tutorial.disableHints}
-        queueCount={tutorial.hintQueue.length}
       />
     </div>
   )
