@@ -19,10 +19,15 @@ Table Loop victory/defeat and Merchant swap/reload flows on desktop and mobile.
 Strict TypeScript, targeted lint, selected formatting and all thirteen release
 workflow checks passed. Spanish desktop/touch panels were visually reviewed.
 [Omen effects evidence](OMEN_EFFECTS_IMPLEMENTATION.md) records exact coverage.
-The local production build was interrupted under extreme host load after the
-standalone TypeScript check had passed. The user's authorized merge/deployment
-will use the clean runner's mandatory tests/build/provenance gates; none
-of the separate mechanics proposals is treated as approved by this publication.
+The local production build was interrupted under extreme host load after
+TypeScript completed. Clean-runner tests, the production/PWA build and provenance
+checks then passed, and the authorized merge deployed **v1.0.260922-1**.
+The public manifest matches the remote tag and built commit. Hosted desktop and
+320px touch checks passed actual Table Loop placement, retained actions after
+reload, displayed version and Spanish Classic loading without page errors.
+The feature branch is retained and fully contained in main. None of the separate
+mechanics proposals is treated as approved by this publication; the overall
+implementation goal remains in progress. [Release ledger](RELEASE_IMPLEMENTATION.md).
 
 ## Preceding Double Omen checkpoint
 

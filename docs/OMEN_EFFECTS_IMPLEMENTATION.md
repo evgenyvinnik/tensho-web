@@ -69,11 +69,15 @@ The local Pages-base production build was interrupted under extreme host load
 (load average above 200); its final output shows TypeScript completed and Vite
 began transforming, but the build did not finish and is not reported as passing.
 The standalone TypeScript check also passed earlier.
-The authorized main publication uses the clean GitHub runner's application-test,
-production-build and provenance gates before Pages deployment. Existing broad verification
+The clean GitHub runner subsequently passed all 1,067 application tests, the
+Pages-base production/PWA build (342 modules; 268 precache entries / 63,927.40 KiB),
+and provenance verification, then successfully deployed **v1.0.260922-1**.
+Hosted desktop and 320px touch checks verified the displayed version, actual
+Table Loop placement, reload preserving spent actions, and the Spanish Classic
+route without JavaScript page errors. Existing broad verification
 limits—Classic persistence, real devices, native speakers, newcomer playtesting,
 unapproved mechanics choices and installed-PWA upgrades—remain open.
 
-The user authorized merging this verified checkpoint into main for deployment.
-Publication evidence will be recorded in the release ledger; a local test run
-or version tag alone is not proof of hosted delivery.
+The checkpoint was merged into main without rewriting history, preserving the
+feature branch. [Release evidence](RELEASE_IMPLEMENTATION.md#september-22-publication-checkpoint)
+records the successful workflow and matching public manifest/tag/commit.

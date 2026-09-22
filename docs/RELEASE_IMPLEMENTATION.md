@@ -1,6 +1,6 @@
 # Release versioning and provenance
 
-**Verified locally:** September 9, 2026. **Public deployment of these changes:** not performed.
+**Latest verified public deployment:** September 22, 2026, **v1.0.260922-1**.
 
 ## September 22 publication checkpoint
 
@@ -18,10 +18,28 @@ Loop runs through victory and defeat. See [Omen effects](OMEN_EFFECTS_IMPLEMENTA
 
 The local production build was interrupted under extreme host load after
 TypeScript completed and Vite began transforming, not reported as a pass.
-Clean-runner CI must pass application
-tests, the Pages-base production build and provenance verification before it
-can deploy. The publication outcome and live release manifest still require
-verification; the older historical section below describes the September 9 checks.
+The clean GitHub runner then passed all 1,067 tests and the production/PWA build:
+342 modules, main entry `index-VuvrMu5E.js`, 268 precache entries / 63,927.40 KiB.
+Existing large-chunk/Browserslist and action-runtime deprecation warnings remain.
+
+Publication succeeded in [Actions run 35799475785](https://github.com/evgenyvinnik/tensho-web/actions/runs/35799475785):
+
+- Checkpoint commit: `6efc421`; merge: `ff92125ba324496e585288882adbe2b3f59e91d2`.
+- Deployed version/tag: **1.0.260922-1** / `v1.0.260922-1`.
+- Built/tagged commit: `cc50324adb1a07c2887e71e219634bb671f6eb45`.
+- The public [release manifest](https://evgenyvinnik.github.io/tensho-web/release.json)
+  returns that exact version, tag and commit; the remote tag matches.
+- Fresh hosted browser contexts at 1280×800 and 320×740 verified the displayed
+  version, a real seeded Table Loop pair placement, rack refill, reload retaining
+  the spent action, and direct Spanish Classic loading. Neither reported a
+  JavaScript page error. Local screenshots are in `/tmp/tensho-omen-effects-WKiQIX/`.
+- Main contains the feature branch's complete history. Both branches were pushed
+  normally; the feature branch was retained and no ref was force-pushed.
+
+This proves fresh-client delivery, not an existing installed PWA's upgrade or
+physical-device behavior. The documentation-only evidence commit uses `[skip ci]`
+to avoid publishing an identical application again. The following sections record
+the original September 9 release implementation and its then-open checks.
 
 ## Correctness changes
 

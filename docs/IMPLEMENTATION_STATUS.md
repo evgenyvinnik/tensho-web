@@ -13,8 +13,11 @@ including full Table Loop victory/defeat runs and Merchant purchase/swap/reload.
 Strict TypeScript, targeted lint and all thirteen release-workflow tests passed.
 See [Omen effects evidence](OMEN_EFFECTS_IMPLEMENTATION.md) for exact scope and
 remaining limits. The local production build was interrupted under extreme host
-load; authorized main publication will use the gated clean-runner build, whose
-outcome must be checked before claiming deployment.
+load; the clean GitHub runner then passed tests, production/PWA build and
+provenance checks and deployed **v1.0.260922-1**. The public manifest matches its
+tag/commit, and hosted desktop/touch checks passed real Table Loop placement,
+reload and Spanish Classic loading. The feature branch is merged and retained.
+[Publication evidence](RELEASE_IMPLEMENTATION.md#september-22-publication-checkpoint).
 
 **Preceding Double Omen checkpoint:** the documented reward is obtainable from
 skips, retains visible pending copies and delivers original/copied rewards without
