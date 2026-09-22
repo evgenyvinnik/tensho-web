@@ -114,7 +114,7 @@ it('awards immediate Fortune gold exactly once through skipping, without a round
 })
 
 it('earns a Rare+ Omen by skipping and charges it only after winning the Boss and opening its shop', () => {
-  const { game, state } = start(16)
+  const { game, state } = start(73)
   expect(game.processAction({ type: 'skip' }).success).toBe(true)
   // Keep the fixture focused on reward settlement, not random boss restrictions.
   state.roundManager.getCurrentAct()!.rounds[2].bossMandate = undefined
@@ -175,14 +175,14 @@ it.each([
     amount: 1,
   },
   {
-    seed: 12,
+    seed: 16,
     skips: 1,
     id: 'abundance_omen',
     field: 'omenRedrawBonus',
     amount: 2,
   },
   {
-    seed: 5,
+    seed: 24,
     skips: 2,
     id: 'precision_omen',
     field: 'omenHandSizeBonus',

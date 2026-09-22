@@ -20,6 +20,7 @@ import type { ItemDisplayInfo } from './ItemCard'
 import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
+import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -149,6 +150,8 @@ export function ItemDetailModal({
                   />
                 </div>
               )}
+
+              {displayInfo.category === 'omens' && displayInfo.id === 'double_omen' && <DoubleOmenArtwork className="h-16 w-16 shrink-0" />}
 
               {voidScript && (
                 <VoidScriptArtwork

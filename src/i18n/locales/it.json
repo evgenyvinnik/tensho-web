@@ -1,4 +1,19 @@
 {
+  "omens": {
+    "pending": "Effetti dei presagi",
+    "effects": {
+      "shopFee": "Costo: {{amount}} oro quando questa offerta appare nel negozio. Nessun addebito se viene rinviata.",
+      "seasonLock": "Prossima Stagione pescata: {{season}}. Il vincolo termina con quella pesca.",
+      "noInterest": "Interessi bloccati · round rimanenti: {{rounds}}",
+      "interestBoost": "Limite interessi +{{amount}} oro · round rimanenti: {{rounds}}"
+    },
+    "items": {
+      "double_omen": {
+        "name": "Presagio doppio",
+        "description": "Copia il prossimo presagio non doppio ottenuto saltando un round. Ogni Presagio doppio consecutivo aggiunge una copia."
+      }
+    }
+  },
   "seals": {
     "items": {
       "seal_of_unity": {

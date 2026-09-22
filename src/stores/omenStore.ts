@@ -282,56 +282,55 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
       isConsumed: false,
     }
 
-    // Check for Double Omen duplication
-    if (state.hasDoubleOmenActive && definition.id !== 'double_omen') {
-      const duplicateTag: ActiveOmenTag = {
-        ...tag,
-        id: generateTagId(`${definitionId}-dup`),
-      }
-
-      // Route the duplicate tag
-      const duplicateShopTags =
-        definition.trigger === 'OnNextShop'
-          ? [...state.pendingShopTags, duplicateTag]
-          : state.pendingShopTags
-      const duplicateBossTags =
-        definition.trigger === 'OnNextRound'
-          ? [...state.pendingBossTags, duplicateTag]
-          : state.pendingBossTags
-
-      set({
-        activeTags: [...state.activeTags, duplicateTag],
-        pendingShopTags: duplicateShopTags,
-        pendingBossTags: duplicateBossTags,
-        hasDoubleOmenActive: false,
-      })
-    }
-
-    // Handle Double Omen specially - activates immediately and sets flag
+    // Keep armed copies as actual visible instances. Double never copies itself.
     if (definition.id === 'double_omen') {
-      const historyEntry = createHistoryEntry(tag, state.currentAct, state.currentRound)
       set({
         hasDoubleOmenActive: true,
-        consumedTags: [...state.consumedTags, { ...tag, isConsumed: true }],
-        omenHistory: [...state.omenHistory, historyEntry],
+        activeTags: [...state.activeTags, tag],
       })
       return tag
     }
 
+    const armed = state.activeTags.filter(
+      (t) => t.definitionId === 'double_omen' && !t.isConsumed
+    )
+    // Honor a legacy flag-only state as one charge, without inventing history.
+    const copyCount = armed.length || (state.hasDoubleOmenActive ? 1 : 0)
+    const added = [
+      tag,
+      ...Array.from({ length: copyCount }, (_, index) => ({
+        ...tag,
+        id: generateTagId(`${definitionId}-copy-${index}`),
+      })),
+    ]
+    const armedIds = new Set(armed.map((t) => t.id))
+
     // Route to appropriate queue based on trigger condition
     const newPendingShopTags =
       definition.trigger === 'OnNextShop'
-        ? [...state.pendingShopTags, tag]
+        ? [...state.pendingShopTags, ...added]
         : state.pendingShopTags
     const newPendingBossTags =
       definition.trigger === 'OnNextRound'
-        ? [...state.pendingBossTags, tag]
+        ? [...state.pendingBossTags, ...added]
         : state.pendingBossTags
 
     set({
-      activeTags: [...state.activeTags, tag],
+      activeTags: [
+        ...state.activeTags.filter((t) => !armedIds.has(t.id)),
+        ...added,
+      ],
       pendingShopTags: newPendingShopTags,
       pendingBossTags: newPendingBossTags,
+      hasDoubleOmenActive: false,
+      consumedTags: [
+        ...state.consumedTags,
+        ...armed.map((t) => ({ ...t, isConsumed: true })),
+      ],
+      omenHistory: [
+        ...state.omenHistory,
+        ...armed.map((t) => createHistoryEntry(t, state.currentAct, state.currentRound)),
+      ],
     })
 
     return tag
@@ -362,6 +361,13 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
 
     set({
       activeTags: state.activeTags.filter((t) => t.id !== tagId),
+      ...(tag.definitionId === 'double_omen'
+        ? {
+            hasDoubleOmenActive: state.activeTags.some(
+              (t) => t.id !== tagId && t.definitionId === 'double_omen' && !t.isConsumed
+            ),
+          }
+        : {}),
       consumedTags: [...state.consumedTags, consumedTag],
       pendingShopTags: state.pendingShopTags.filter((t) => t.id !== tagId),
       pendingBossTags: state.pendingBossTags.filter((t) => t.id !== tagId),
@@ -412,7 +418,7 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
   },
 
   copyNextTag: () => {
-    set({ hasDoubleOmenActive: true })
+    get().addTag('double_omen')
   },
 
   // ==========================================================================
@@ -469,17 +475,8 @@ export const useOmenStore = create<OmenState>()((set, get) => ({
 
     const seasonType = state.lockedSeason.seasonType
 
-    set({
-      lockedSeason: {
-        ...state.lockedSeason,
-        isApplied: true,
-      },
-    })
-
-    // Clear after applied
-    setTimeout(() => {
-      set({ lockedSeason: null })
-    }, 0)
+    // Consume synchronously: a deferred cleanup can erase a newly earned lock.
+    set({ lockedSeason: null })
 
     return seasonType
   },

@@ -1733,7 +1733,18 @@
     }
   },
   "omens": {
+    "pending": "징조 효과",
+    "effects": {
+      "shopFee": "이 상점 상품이 제공될 때 금 {{amount}} 지불. 제공이 미뤄지는 동안에는 지불하지 않습니다.",
+      "seasonLock": "다음에 뽑을 계절: {{season}}. 해당 계절을 뽑으면 고정이 해제됩니다.",
+      "noInterest": "이자 차단 · 남은 라운드: {{rounds}}",
+      "interestBoost": "이자 한도 +{{amount}} 금 · 남은 라운드: {{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "쌍둥이 징조",
+        "description": "라운드를 건너뛰어 얻는 다음 쌍둥이 징조가 아닌 징조를 복제합니다. 연속으로 얻은 쌍둥이 징조마다 복제본이 하나 추가됩니다."
+      },
       "omen_of_crescents": {
         "name": "초승달의 징조",
         "description": "다음 상점의 물품 칸에 천구가 반드시 등장합니다."

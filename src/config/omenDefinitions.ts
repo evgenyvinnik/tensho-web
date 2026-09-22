@@ -51,6 +51,7 @@ export type OmenTrigger =
  * Omen effect types
  */
 export type OmenEffectType =
+  | 'copy_next_omen' // Bank one copy of the next non-Double skip reward
   | 'guaranteed_item' // Guarantees specific item type in shop
   | 'gold_bonus' // Flat gold bonus
   | 'gold_per_skip' // Gold per round skipped this run
@@ -683,6 +684,24 @@ export const HOLOGRAPHIC_OMEN: OmenDefinition = {
 // OMEN COLLECTIONS
 // =============================================================================
 
+export const DOUBLE_OMEN: OmenDefinition = {
+  id: 'double_omen',
+  name: 'Double Omen',
+  japaneseName: '双子の兆',
+  description:
+    'Copies the next non-Double Omen earned by skipping. Consecutive Double Omens each add one copy.',
+  category: 'Scaling',
+  rarity: 'Rare',
+  trigger: 'Passive',
+  effect: {
+    type: 'copy_next_omen',
+    value: 1,
+    description: 'One additional copy of the next non-Double Omen',
+  },
+  tradeoff: { type: 'none', description: 'No trade-off' },
+  awardedFromSkip: ['Small', 'Large'],
+}
+
 /**
  * All omen definitions
  */
@@ -710,6 +729,7 @@ export const ALL_OMENS: OmenDefinition[] = [
   NEGATIVE_OMEN,
   AUSTERITY_OMEN,
   HOLOGRAPHIC_OMEN,
+  DOUBLE_OMEN,
 ]
 
 /**

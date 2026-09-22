@@ -1733,7 +1733,18 @@
     }
   },
   "omens": {
+    "pending": "Effets des présages",
+    "effects": {
+      "shopFee": "Coût : {{amount}} pièces d’or à la livraison de cette offre en boutique. Aucun prélèvement si elle est reportée.",
+      "seasonLock": "Prochaine Saison piochée : {{season}}. Le verrou prend fin à cette pioche.",
+      "noInterest": "Intérêts bloqués · manches restantes : {{rounds}}",
+      "interestBoost": "Plafond d’intérêts +{{amount}} pièces d’or · manches restantes : {{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "Présage double",
+        "description": "Copie le prochain présage non double obtenu en passant une manche. Chaque Présage double consécutif ajoute une copie."
+      },
       "omen_of_crescents": {
         "name": "Présage des Croissants",
         "description": "La prochaine boutique garantit un Orbe céleste parmi les objets."

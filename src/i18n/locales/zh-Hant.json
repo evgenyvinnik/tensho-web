@@ -1677,7 +1677,18 @@
     }
   },
   "omens": {
+    "pending": "徵兆效果",
+    "effects": {
+      "shopFee": "此商店商品提供時支付 {{amount}} 金幣。延期提供期間不收費。",
+      "seasonLock": "下一張抽到的季節：{{season}}。抽到後解除鎖定。",
+      "noInterest": "利息暫停 · 剩餘回合：{{rounds}}",
+      "interestBoost": "利息上限 +{{amount}} 金幣 · 剩餘回合：{{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "雙生徵兆",
+        "description": "複製下一次跳過回合獲得的非雙生徵兆。每個連續獲得的雙生徵兆額外增加一個副本。"
+      },
       "omen_of_crescents": {
         "name": "新月之兆",
         "description": "下次商店的商品欄必定出現天球。"

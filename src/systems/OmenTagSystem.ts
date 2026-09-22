@@ -166,7 +166,12 @@ export class OmenTagSystem {
     }
 
     // Add the omen to the store
+    const previousIds = new Set(store.activeTags.map((omen) => omen.id))
     const activeOmen = store.addOmen(selectedOmen)
+    const acquiredOmens = useOmenStore.getState().activeTags.filter(
+      (omen) => !previousIds.has(omen.id) && omen.definitionId === selectedOmen.id
+    )
+    const copies = acquiredOmens.length
 
     // Calculate immediate gold from omen
     let immediateGold = 0
@@ -176,23 +181,23 @@ export class OmenTagSystem {
       selectedOmen.trigger === 'OnAcquire' &&
       selectedOmen.effect.type === 'gold_bonus'
     ) {
-      immediateGold = selectedOmen.effect.value as number
+      immediateGold = (selectedOmen.effect.value as number) * copies
     } else if (
       selectedOmen.trigger === 'OnAcquire' &&
       selectedOmen.effect.type === 'gold_per_skip'
     ) {
       immediateGold =
-        (selectedOmen.effect.value as number) * this.totalSkippedRounds
+        (selectedOmen.effect.value as number) * this.totalSkippedRounds * copies
     } else if (
       selectedOmen.trigger === 'OnAcquire' &&
       selectedOmen.effect.type === 'decree_slot'
     ) {
-      decreeSlotBonus = Number(selectedOmen.effect.value) || 0
+      decreeSlotBonus = (Number(selectedOmen.effect.value) || 0) * copies
     } else if (
       selectedOmen.trigger === 'OnAcquire' &&
       selectedOmen.effect.type === 'interest_boost'
     ) {
-      this.interestCapBonus = Number(selectedOmen.effect.value) || 0
+      this.interestCapBonus = (Number(selectedOmen.effect.value) || 0) * copies
       this.interestBoostRoundsRemaining = 3
     } else if (
       selectedOmen.trigger === 'OnAcquire' &&
@@ -220,13 +225,15 @@ export class OmenTagSystem {
       }))
     }
 
-    if (selectedOmen.trigger === 'OnAcquire' && activeOmen) {
-      store.triggerOmen(activeOmen.id)
-      store.consumeOmen(activeOmen.id)
+    if (selectedOmen.trigger === 'OnAcquire') {
+      for (const omen of acquiredOmens) {
+        store.triggerOmen(omen.id)
+        store.consumeOmen(omen.id)
+      }
     }
 
     // Add to pending omens for display
-    this.pendingOmens.push(selectedOmen)
+    this.pendingOmens.push(...acquiredOmens.map(() => selectedOmen))
 
     return {
       omen: selectedOmen,
@@ -549,6 +556,21 @@ export class OmenTagSystem {
 
   getInterestCapBonus(): number {
     return this.interestBoostRoundsRemaining > 0 ? this.interestCapBonus : 0
+  }
+
+  /** Live durations for the HUD; consumed acquisition tags are not a timer. */
+  getOngoingEffects(): {
+    lockedSeason: SeasonVariant | null
+    noInterestRounds: number
+    interestCapBonus: number
+    interestBoostRounds: number
+  } {
+    return {
+      lockedSeason: this.getLockedSeason(),
+      noInterestRounds: useOmenStore.getState().noInterestRounds,
+      interestCapBonus: this.getInterestCapBonus(),
+      interestBoostRounds: this.interestBoostRoundsRemaining,
+    }
   }
 
   /** Advance duration-based economy effects after the round payout. */

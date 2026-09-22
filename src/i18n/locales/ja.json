@@ -1725,7 +1725,18 @@
     }
   },
   "omens": {
+    "pending": "兆の効果",
+    "effects": {
+      "shopFee": "この店の商品が用意された時に金{{amount}}を支払う。延期中は支払いなし。",
+      "seasonLock": "次に引く季節：{{season}}。その季節を引くと固定は解除される。",
+      "noInterest": "利息なし・残りラウンド数：{{rounds}}",
+      "interestBoost": "利息上限＋金{{amount}}・残りラウンド数：{{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "双子の兆",
+        "description": "ラウンドをスキップして次に得る「双子の兆」以外の兆を複製する。「双子の兆」が続くと、その数だけ複製が増える。"
+      },
       "omen_of_crescents": {
         "name": "三日月の兆し",
         "description": "次の店の商品枠に天球が必ず並ぶ。"

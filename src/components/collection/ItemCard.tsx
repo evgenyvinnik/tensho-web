@@ -14,6 +14,7 @@ import type { ArchiveCategory } from '../../config/archiveDefinitions'
 import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
+import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -171,6 +172,8 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
               className="absolute right-1 top-1 h-16 w-16 sm:right-2 sm:top-2"
             />
           )}
+
+          {displayInfo.category === 'omens' && displayInfo.id === 'double_omen' && <DoubleOmenArtwork className="mb-2 h-16 w-16" />}
 
           {/* Item Name */}
           <h3

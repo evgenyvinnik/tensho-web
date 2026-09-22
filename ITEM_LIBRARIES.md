@@ -203,7 +203,7 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | **Garbage Omen** | 不用の兆 | Gain ¥1 per unused discard this run | Economy scaling |
 | **Ethereal Omen** | 幽玄の兆 | Open free Spectral Pack immediately | Note: Not Mega |
 | **Coupon Omen** | 割引の兆 | Next shop: all initial items free | One-time |
-| **Double Omen** | 双子の兆 | Copies the next Tag selected | Powerful combo |
+| **Double Omen** | 双子の兆 | Copies the next non-Double Omen earned by skipping | Consecutive Doubles bank one copy each; no recursive copying |
 | **Juggle Omen** | 手捌の兆 | +3 Hand Size for next round only | Temporary |
 | **D6 Omen** | 骰子の兆 | Next shop: Rerolls start at ¥0 | Still increases |
 | **Top-up Omen** | 補充の兆 | Create up to 2 Common Decrees (if room) | Instant |

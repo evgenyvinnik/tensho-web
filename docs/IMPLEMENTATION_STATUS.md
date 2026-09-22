@@ -2,9 +2,33 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** September 19, 2026
+**Last verified:** September 22, 2026
 
-**Current beginner-guidance checkpoint:** forecasts now distinguish grouped,
+**Current release checkpoint:** Omen costs and live durations are visible in the
+optional localized disclosure. Skipped rounds spend existing interest durations
+without prematurely aging their newly acquired reward; Season-lock cleanup no
+longer erases a subsequent lock. Full units passed **1,067/1,067 in 96 files**
+after an initial six-timeout run. All **28/28 desktop/touch browser checks** passed,
+including full Table Loop victory/defeat runs and Merchant purchase/swap/reload.
+Strict TypeScript, targeted lint and all thirteen release-workflow tests passed.
+See [Omen effects evidence](OMEN_EFFECTS_IMPLEMENTATION.md) for exact scope and
+remaining limits. The local production build was interrupted under extreme host
+load; authorized main publication will use the gated clean-runner build, whose
+outcome must be checked before claiming deployment.
+
+**Preceding Double Omen checkpoint:** the documented reward is obtainable from
+skips, retains visible pending copies and delivers original/copied rewards without
+overwriting them or losing immediate payouts. A new generated jade-tag illustration
+appears in the optional pending-rewards disclosure and discovered Archive entry.
+Full units passed **1049/1049 in 95 files**. Both browser sets retained **12 passes /
+2 failures**; the corrected shop-readiness fixture and six unchanged isolated
+repetitions verify the affected flows without erasing earlier failures. Strict
+TypeScript, targeted lint and the Pages-base production/PWA build passed.
+[Double Omen evidence](DOUBLE_OMEN_IMPLEMENTATION.md) records rules, exact
+fixtures, timing limits, translations and image provenance. Other proposed
+mechanics changes remain unapproved; whole-project completion remains unproven.
+
+**Preceding beginner-guidance checkpoint:** forecasts now distinguish grouped,
 mixed, loose and complete selections using the engine's scored structure.
 Selection/declaration headings are localized in all thirteen languages and no
 longer repeat the shape bonus or let idle advice override an active selection.
@@ -173,7 +197,7 @@ The preceding pass fixes earned-Omen Season cleanup/stacking and Boss skip valid
 
 **Next concrete mechanics gaps:** Spring's extra draws, Autumn's discard-pool growth, and Winter's loosened legality still have no authoritative gameplay consumers. The [three-Flower unlock](FLOWER_SHOP_IMPLEMENTATION.md) now gates the seven existing Flower-scaled Decrees in ordinary/guaranteed/rerolled shop offers and Decree packs. Frostbite now scales flat-point and main Decree multiplier bonuses per stacked copy; other effect types remain incomplete. The inspector labels incomplete behavior truthfully; these remain requirements to finish, not features removed from scope. Chrysanthemum/Winter is now connected; Flower mutations/catalysts and the other three Flower–Season combinations, including Bamboo's Summer exception, still need integration and explicit rules where the source documents are ambiguous.
 
-The current Omen follow-up carries the Rare+ guarantee through shop generation, defers impossible rewards without charging their shop-entry fee, and delivers stacked item, pack, and edition guarantees without overwriting one another. Ten engine cases and both 320-pixel browser configurations cover actual rewards, purchase, free-pack settlement, reroll, and same-visit recovery. Canonical edition wording still conflicts with the existing free-offer behavior; Double Omen and the named pack-skip synergy Decrees remain legacy definitions outside the acquireable catalogs. See [shop Omen implementation](SHOP_IMPLEMENTATION.md#shop-omen-guarantee-follow-up) and the [verification ledger](IMPLEMENTATION_WRAP_UP.md#current-shop-omen-checkpoint) for scope and retained failure evidence.
+The earlier Omen follow-up carries the Rare+ guarantee through shop generation, defers impossible rewards without charging their shop-entry fee, and delivers stacked item, pack, and edition guarantees without overwriting one another. Ten engine cases and both 320-pixel browser configurations cover actual rewards, purchase, free-pack settlement, reroll, and same-visit recovery. Canonical edition wording still conflicts with the existing free-offer behavior; the named pack-skip synergy Decrees remain outside the acquireable catalogs. Double Omen is now connected by the September 22 checkpoint above. See [shop Omen implementation](SHOP_IMPLEMENTATION.md#shop-omen-guarantee-follow-up) and the [verification ledger](IMPLEMENTATION_WRAP_UP.md#current-shop-omen-checkpoint) for scope and retained failure evidence.
 
 The latest Tile Pack follow-up replaces stale independent reward descriptions with canonical tile modifier definitions and existing localized catalog text. Bonus now advertises its actual +30 rather than +10; Gold Mark describes 3 gold when held at round end, not +2 when scored. Reward names expose rank/suit and stacked modifiers, rules wrap in full, and rarity labels no longer call tiles “Local Edicts.” Both Spanish 320-pixel browser configurations verify real claim/payment/wall identity. The first 66/68 run failed only because the new test guessed “Bambú” instead of the catalog's “Bambúes”; corrected exact expectations pass without retries. See [shop implementation](SHOP_IMPLEMENTATION.md#tile-pack-rule-and-identity-follow-up).
 

@@ -1,4 +1,19 @@
 {
+  "omens": {
+    "pending": "Mga epekto ng Pangitain",
+    "effects": {
+      "shopFee": "Halaga: {{amount}} ginto kapag naibigay ang alok na ito sa tindahan. Walang singil habang ipinagpapaliban.",
+      "seasonLock": "Susunod na Season na mabubunot: {{season}}. Matatapos ang pagkakakandado sa pagbunot na iyon.",
+      "noInterest": "Walang interes · natitirang round: {{rounds}}",
+      "interestBoost": "Limitasyon ng interes +{{amount}} ginto · natitirang round: {{rounds}}"
+    },
+    "items": {
+      "double_omen": {
+        "name": "Dobleng Pangitain",
+        "description": "Kinokopya ang susunod na hindi Dobleng Pangitain na makukuha sa paglaktaw ng round. Bawat sunod na Dobleng Pangitain ay nagdaragdag ng isang kopya."
+      }
+    }
+  },
   "seals": {
     "items": {
       "seal_of_unity": {

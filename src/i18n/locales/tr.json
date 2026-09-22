@@ -1,4 +1,19 @@
 {
+  "omens": {
+    "pending": "Alamet etkileri",
+    "effects": {
+      "shopFee": "Maliyet: Bu mağaza teklifi sunulduğunda {{amount}} altın. Ertelendiği sürece ücret alınmaz.",
+      "seasonLock": "Çekilecek sonraki Mevsim: {{season}}. Kilit o çekilişte sona erer.",
+      "noInterest": "Faiz engellendi · kalan tur: {{rounds}}",
+      "interestBoost": "Faiz sınırı +{{amount}} altın · kalan tur: {{rounds}}"
+    },
+    "items": {
+      "double_omen": {
+        "name": "Çifte Alamet",
+        "description": "Bir tur atlayarak kazanılan sonraki Çifte olmayan Alameti kopyalar. Art arda kazanılan her Çifte Alamet bir kopya ekler."
+      }
+    }
+  },
   "seals": {
     "items": {
       "seal_of_unity": {

@@ -1741,7 +1741,18 @@
     }
   },
   "omens": {
+    "pending": "Efek Pertanda",
+    "effects": {
+      "shopFee": "Biaya: {{amount}} emas saat penawaran ini tersedia di toko. Tidak ditagih selama ditunda.",
+      "seasonLock": "Musim berikutnya yang ditarik: {{season}}. Kuncian berakhir setelah penarikan itu.",
+      "noInterest": "Bunga diblokir · sisa ronde: {{rounds}}",
+      "interestBoost": "Batas bunga +{{amount}} emas · sisa ronde: {{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "Pertanda Ganda",
+        "description": "Menyalin Pertanda non-Ganda berikutnya yang didapat dengan melewati ronde. Setiap Pertanda Ganda berturut-turut menambahkan satu salinan."
+      },
       "omen_of_crescents": {
         "name": "Pertanda Bulan Sabit",
         "description": "Toko berikutnya dijamin menyediakan Orb Langit di slot barang."

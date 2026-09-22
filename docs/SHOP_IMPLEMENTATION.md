@@ -102,6 +102,7 @@ Remaining catalog discrepancies are explicit:
   existing free-offer behavior; those promises still need reconciliation.
 - Double Omen is in the legacy item library but absent from the acquireable
   `ALL_OMENS` catalog. Its legacy store branch is not evidence of a live feature.
+  This historical gap is addressed by the September 22 [Double Omen follow-up](DOUBLE_OMEN_IMPLEMENTATION.md), including copied shop guarantees and fees.
 - The named pack-skip synergy Decrees in `SKIP_SYNERGY_DECREES` are absent from
   `ALL_DECREES`, and `getSkipBonuses` has no runtime consumer. Their conflicting
   legacy effect descriptions are not implemented acquisition paths.

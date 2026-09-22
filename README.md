@@ -103,7 +103,7 @@ Run `bun run sloc` to calculate source lines of code.
 | Celestial Orbs | 13 |
 | Void Scripts | 20 |
 | Imperial Charters | 32 |
-| Omen Tags | 23 |
+| Omen Tags | 24 |
 | Boss Mandates | 27 |
 | Table Stakes | 8 tiers |
 | Decrees | 164 (150 from the authored library + 14 rule-bending) |
@@ -127,6 +127,8 @@ Run `bun run sloc` to calculate source lines of code.
 - [New public-page and scroll illustrations](docs/PUBLIC_SITE_ART.md) — Saved assets, exact generation prompts, and provenance
 - [Flora inspector and Season effects](docs/FLORA_IMPLEMENTATION.md) — Localized full-stack details, real Decay discards, Flower protection, safe touch activation, and explicit remaining mechanics gaps
 - [Earned Omens and Season lifecycle](docs/OMEN_LIFECYCLE.md) — Real skip acquisition, once-only shop fees, round cleanup, and locked-draw stacking
+- [Double Omen and pending rewards](docs/DOUBLE_OMEN_IMPLEMENTATION.md) — Earned copies, immediate/delayed settlement, optional localized disclosure, and new artwork
+- [Omen costs and live durations](docs/OMEN_EFFECTS_IMPLEMENTATION.md) — Visible shop fees, effect expiry through skips, Season-lock safety, and release verification
 - [Table Loop scroll artwork](docs/TABLE_LOOP_ART.md) — All ten individual generated scrolls, prompts, provenance, and readable rule popups
 - [Table Loop release preparation](docs/TABLE_LOOP_RELEASE.md) — Merchant swaps, save compatibility, real-run verification, and remaining release work
 - [On-demand screens and offline verification](docs/ROUTE_LOADING_IMPLEMENTATION.md) — Measured first-screen code reductions, accessible loading, failed-download recovery, and retained regression evidence

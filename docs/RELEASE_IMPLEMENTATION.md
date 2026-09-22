@@ -2,6 +2,26 @@
 
 **Verified locally:** September 9, 2026. **Public deployment of these changes:** not performed.
 
+## September 22 publication checkpoint
+
+The user authorized merging `table-loop-prototype` into main for deployment.
+GitHub authentication is now valid and main was confirmed unprotected. Remote
+main is one version-bump commit ahead of the feature branch; preserve that commit
+with a normal merge, not a history replacement. The feature branch is retained.
+
+Prepublication checks: all **13 release regressions**, **1,067 application tests
+in 96 files**, strict TypeScript, targeted lint, selected formatting and **28
+desktop/mobile browser checks** passed. The first full unit attempt had six
+five-second timeouts; the unchanged full rerun passed. Browser coverage includes
+Omen reward delivery/expiry, paid Merchant swapping and reload, and full Table
+Loop runs through victory and defeat. See [Omen effects](OMEN_EFFECTS_IMPLEMENTATION.md).
+
+The local production build was interrupted during TypeScript compilation under
+extreme host load, not reported as a pass. Clean-runner CI must pass application
+tests, the Pages-base production build and provenance verification before it
+can deploy. The publication outcome and live release manifest still require
+verification; the older historical section below describes the September 9 checks.
+
 ## Correctness changes
 
 The previous workflow created its tag before retrying a rejected branch push. A

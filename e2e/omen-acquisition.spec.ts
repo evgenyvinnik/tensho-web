@@ -11,7 +11,7 @@ test('real skips earn a Rare+ Omen and defer its fee until the Boss reward shop'
   await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
     const { gameOrchestrator: game } = await import(path)
-    game.startNewRun(16)
+    game.startNewRun(73)
     const state = game.getState()
     state.wallTemplate = state.wallTemplate.filter(
       (tile: { isSeason: boolean }) => !tile.isSeason
@@ -143,6 +143,12 @@ test('skip clears old Seasons and an earned lock preserves the next draw stack t
     page.locator('[data-flora-season][aria-label="Decay"]')
   ).toHaveCount(0)
   await page.locator('[data-game-action="skip"]').click()
+  const effects = page.getByTestId('pending-omens')
+  await effects.locator('summary').click()
+  await expect(
+    effects.locator('[data-omen-effect="season-lock"]')
+  ).toContainText('Winter')
+  await effects.locator('summary').click()
   const fixture = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const tilePath = '/src/core/Tile.ts'
@@ -186,6 +192,10 @@ test('skip clears old Seasons and an earned lock preserves the next draw stack t
     else await tile.click()
   }
   await page.locator('[data-game-action="redraw"]').click()
+  await expect(effects.locator('[data-omen-effect="season-lock"]')).toHaveCount(
+    0
+  )
+  await expect(effects.locator('[data-omen-id="omen_of_ash"]')).toHaveCount(1)
   await expect(page.locator('[data-game-action="redraw"]')).toBeDisabled()
   expect(
     await page.evaluate(async () => {

@@ -1,12 +1,58 @@
 # Implementation wrap-up
 
-**Updated:** September 19, 2026
+**Updated:** September 22, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current beginner-guidance checkpoint
+## Current Omen effects and release checkpoint
+
+September 22: live interest durations and Season locks remain inspectable after
+their acquisition tags are consumed. Each deferred Rare+ offer shows its own
+five-gold fee. Skips age prior round effects before earning new rewards, and
+Season locks clear synchronously. All thirteen locales have the new messages.
+Three engine regressions were reproduced before the fix. Focused tests passed
+66/66; the final unchanged full suite passed **1,067/1,067 in 96 files** after an
+initial six-timeout run. All **28/28 browser checks** passed, including real
+Table Loop victory/defeat and Merchant swap/reload flows on desktop and mobile.
+Strict TypeScript, targeted lint, selected formatting and all thirteen release
+workflow checks passed. Spanish desktop/touch panels were visually reviewed.
+[Omen effects evidence](OMEN_EFFECTS_IMPLEMENTATION.md) records exact coverage.
+The local production build was interrupted under extreme host load after the
+standalone TypeScript check had passed. The user's authorized merge/deployment
+will use the clean runner's mandatory tests/build/provenance gates; none
+of the separate mechanics proposals is treated as approved by this publication.
+
+## Preceding Double Omen checkpoint
+
+September 22: Double Omen is in both skip pools and banks visible copy instances.
+Atomic acquisition preserves original/copied rewards and consumes each armed
+Double once; instant payouts scale by actual acquisition count. Existing delayed
+consumers deliver both rewards and retain their costs. The optional pending-Omen
+disclosure and new item text cover all thirteen locales. A new built-in generated
+jade-tag illustration is integrated into gameplay and discovered Archive views.
+The image-generation skill guided style, transparency and non-destructive asset
+integration; the tool's specific model identity is unavailable.
+
+Initial tests reproduced **8 failures / 1 pass**. Full units now pass **1049/1049
+in 95 files**. First browsers: **12/14**, with startup readiness and premature shop
+inspection failures. Second browsers after waiting for shop-open and adding both
+purchases: **12/14**, with two late test timeouts. Both timed-out scenarios passed
+three unchanged isolated repetitions each (**6/6**); their timing causes remain
+unproven. Spanish desktop/touch screenshots were reviewed. Strict TypeScript and
+targeted lint passed. [Double Omen evidence](DOUBLE_OMEN_IMPLEMENTATION.md)
+records exact scope, failures, seeded catalog shifts and artwork prompt/hash.
+
+The Pages-base production/PWA build passed: 342 modules, entry
+`index-Bmd6daKf.js`, 268 precache entries / 63,921.39 KiB. The image adds about
+1.2 MiB to the offline bundle; existing large-chunk/Browserslist warnings remain.
+
+The workspace was clean at the start on `table-loop-prototype`, commit `bae2f71`.
+No Git publication was performed in this checkpoint. The overall goal remains
+active; the separate mechanics proposals have not been treated as approval.
+
+## Preceding beginner-guidance checkpoint
 
 September 19: forecast explanations distinguish all-grouped, mixed, all-loose and
 complete selections using metadata from the actual scored parse, including Honor
@@ -31,12 +77,12 @@ Existing large-chunk and stale Browserslist warnings remain.
 and artifacts. This is not proof of newcomer comprehension or whole-project fun.
 
 The requested mechanics recommendations were presented as proposals, not approval.
-Double Omen is the next confirmed implementation gap: it is absent from the
+At this checkpoint Double Omen was the next confirmed gap: it was absent from the
 obtainable catalog, and an isolated `copyNextTag()` → `addTag('omen_of_rivers')`
 probe leaves one active/queued tag while spending the copy flag. Source inspection
 shows the second store update overwrites the duplicate using the old state.
 Connecting acquisition and immediate/delayed reward delivery still requires
-implementation and tests; no repair is claimed yet. Existing generated art is
+implementation and tests; the subsequent checkpoint above supplies that repair. Existing generated art is
 preserved; nothing is committed, merged, pushed or deployed.
 
 ## Preceding score-localization checkpoint

@@ -1901,6 +1901,10 @@ export class GameOrchestrator {
       }
     }
 
+    // A skipped round still spends prior duration effects. Age them before
+    // acquisition so this skip's new rewards retain their full duration.
+    this.state.omenSystem.onRoundEnd()
+
     // Skip the round and award the documented Omen reward.
     const skipResult = this.state.omenSystem.handleRoundSkip(
       roundState.roundType

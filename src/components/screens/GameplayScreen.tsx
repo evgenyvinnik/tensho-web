@@ -23,6 +23,7 @@ import { Tile } from '../../core/Tile'
 import { calculateShanten } from '../../rules/ShantenCalculator'
 import { useItemText } from '../../i18n/useItemText'
 import { forecastHeading } from '../../gameplay/forecastGuidance'
+import { PendingOmens } from '../gameplay/PendingOmens'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -720,6 +721,8 @@ export function GameplayScreen() {
             it.
           </div>
         )}
+
+        <PendingOmens system={game.state.omenSystem} />
 
         {/* Score panel */}
         <ScorePanel

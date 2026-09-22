@@ -1634,7 +1634,18 @@
     }
   },
   "omens": {
+    "pending": "Omen effects",
+    "effects": {
+      "shopFee": "Cost: {{amount}} gold when this shop offer is delivered. No charge while delivery is deferred.",
+      "seasonLock": "Next Season drawn: {{season}}. This lock ends on that draw.",
+      "noInterest": "Interest blocked · rounds remaining: {{rounds}}",
+      "interestBoost": "Interest cap +{{amount}} gold · rounds remaining: {{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "Double Omen",
+        "description": "Copies the next non-Double Omen earned by skipping. Consecutive Double Omens each add one copy."
+      },
       "omen_of_crescents": {
         "name": "Omen of Crescents",
         "description": "Next shop guarantees a Celestial Orb in item slots."

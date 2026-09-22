@@ -1733,7 +1733,18 @@
     }
   },
   "omens": {
+    "pending": "Efectos de presagios",
+    "effects": {
+      "shopFee": "Coste: {{amount}} de oro al recibir esta oferta en la tienda. Sin cargo mientras se aplace.",
+      "seasonLock": "Próxima Estación robada: {{season}}. El bloqueo termina al robarla.",
+      "noInterest": "Sin intereses · rondas restantes: {{rounds}}",
+      "interestBoost": "Límite de intereses +{{amount}} de oro · rondas restantes: {{rounds}}"
+    },
     "items": {
+      "double_omen": {
+        "name": "Presagio Doble",
+        "description": "Copia el próximo presagio que no sea Doble obtenido al saltar una ronda. Cada Presagio Doble consecutivo añade una copia."
+      },
       "omen_of_crescents": {
         "name": "Presagio de Crecientes",
         "description": "La próxima tienda garantiza un Orbe Celeste entre los objetos."
