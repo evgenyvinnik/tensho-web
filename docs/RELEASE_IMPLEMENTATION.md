@@ -16,8 +16,9 @@ five-second timeouts; the unchanged full rerun passed. Browser coverage includes
 Omen reward delivery/expiry, paid Merchant swapping and reload, and full Table
 Loop runs through victory and defeat. See [Omen effects](OMEN_EFFECTS_IMPLEMENTATION.md).
 
-The local production build was interrupted during TypeScript compilation under
-extreme host load, not reported as a pass. Clean-runner CI must pass application
+The local production build was interrupted under extreme host load after
+TypeScript completed and Vite began transforming, not reported as a pass.
+Clean-runner CI must pass application
 tests, the Pages-base production build and provenance verification before it
 can deploy. The publication outcome and live release manifest still require
 verification; the older historical section below describes the September 9 checks.

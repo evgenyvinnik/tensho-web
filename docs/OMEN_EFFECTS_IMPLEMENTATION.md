@@ -65,9 +65,10 @@ reviewed in Spanish screenshots at desktop and 320px widths. Browser artifacts
 and the unit JSON report are under `/tmp/tensho-omen-effects-WKiQIX/` (local,
 temporary evidence, not repository assets).
 
-The local Pages-base production build was interrupted during TypeScript
-compilation under extreme host load (load average above 200); it did not finish
-and is not reported as passing. The standalone TypeScript check passed earlier.
+The local Pages-base production build was interrupted under extreme host load
+(load average above 200); its final output shows TypeScript completed and Vite
+began transforming, but the build did not finish and is not reported as passing.
+The standalone TypeScript check also passed earlier.
 The authorized main publication uses the clean GitHub runner's application-test,
 production-build and provenance gates before Pages deployment. Existing broad verification
 limits—Classic persistence, real devices, native speakers, newcomer playtesting,
