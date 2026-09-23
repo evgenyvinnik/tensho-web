@@ -1,7 +1,32 @@
 # Release versioning and provenance
 
 **Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
-**v1.0.260923-1**.
+**v1.0.260923-2**.
+
+## Pack provenance publication checkpoint
+
+Checkpoint `ee14de585550a851bcf0b3e63ec8a4d88adbe85f` corrects the two pack-use
+Charter prerequisites without changing general-use statistics, old unlocks or
+Observatory scoring. [Actions run 35804055120](https://github.com/evgenyvinnik/tensho-web/actions/runs/35804055120)
+passed release checks, **1,097 tests in 100 files**, production/PWA build and
+Pages deployment. Local checks additionally passed eight English/Spanish
+desktop/touch purchase/claim/use/unlock/reload journeys with no retries.
+
+- Version/tag: **1.0.260923-2** / `v1.0.260923-2`.
+- Built/tagged commit: `2806b49f452aa943ad022ecbbdd453816a0498e0`.
+- Public release manifest and remote tag match; the unchanged Money Tree PNG
+  still matches its recorded hash.
+- Fresh 1280×800 and 320×740 touch contexts passed displayed version, real
+  seeded Table Loop pair placement/refill, reload retaining spent actions,
+  and Spanish Classic loading without JavaScript page errors.
+- Build: 343 modules, 269 precache entries / 65,774.81 KiB. Existing bundle,
+  Browserslist and Actions-runtime warnings remain.
+- Artifacts and hosted verification script: `/tmp/tensho-pack-provenance-JHtp69/`.
+
+Main was fast-forwarded to the workflow version commit; the evidence-only
+follow-up uses `[skip ci]`. Broader Charter eligibility and the separately asked
+Observatory rule choice remain open. No whole-project, physical-device or
+installed-PWA upgrade completion is claimed.
 
 ## Charter progression publication checkpoint
 

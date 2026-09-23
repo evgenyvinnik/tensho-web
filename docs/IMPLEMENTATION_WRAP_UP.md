@@ -8,12 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Charter-progression checkpoint
 
-Local follow-up: pack-use provenance now follows the acquired Seal/Orb instance
+Published follow-up: pack-use provenance now follows the acquired Seal/Orb instance
 through successful consumption. Omen Lens/Observatory no longer count ordinary
 purchases or generated copies toward their pack-specific prerequisites. Existing
 unlocks are preserved. Eight desktop/touch English/Spanish browser flows passed;
 all **1,097/1,097 units in 100 files**, strict TypeScript, targeted lint and the
-production/PWA build passed. This follow-up is not yet deployed.
+production/PWA build passed. Deployed as **v1.0.260923-2** with matching public
+manifest/tag and fresh desktop/touch gameplay checks.
 An optional user question asks whether Observatory should multiply only its held
 Orbs' matching Yaku or all hands; current scoring is unchanged pending a choice.
 
@@ -616,6 +617,6 @@ deployed in this pass. Older checkpoint counts below remain historical.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The September 22 main merge is deployed as v1.0.260922-1. Clean-runner tests/build/provenance, the matching hosted manifest/tag, and fresh desktop/touch gameplay checks passed; see [Release implementation](RELEASE_IMPLEMENTATION.md). Existing installed-PWA upgrades and physical-device checks remain open. |
+| Release readiness | The latest main checkpoint is deployed as v1.0.260923-2. Clean-runner tests/build/provenance, the matching hosted manifest/tag, and fresh desktop/touch gameplay checks passed; see [Release implementation](RELEASE_IMPLEMENTATION.md). Existing installed-PWA upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

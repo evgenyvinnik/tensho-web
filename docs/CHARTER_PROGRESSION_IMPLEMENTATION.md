@@ -108,7 +108,7 @@ publication subsequently succeeded as **v1.0.260923-1**. GitHub independently
 passed all units and build; the public manifest, remote tag, hosted artwork hash
 and desktop/touch gameplay were verified. [Release ledger](RELEASE_IMPLEMENTATION.md#charter-progression-publication-checkpoint).
 
-## Pack-use provenance follow-up (local, not deployed)
+## Pack-use provenance follow-up
 
 Omen Lens and Observatory require 25 uses of their respective consumables **from
 packs** in both `ITEM_LIBRARIES.md` and `docs/GAME_MECHANICS.md`. Their old unlock
@@ -150,6 +150,10 @@ new-test formatting and diff checks passed. Pages-base production/PWA build
 passed: 343 modules, main entry `index-DZH0YSR4.js`, 269 precache entries /
 65,774.81 KiB. Existing bundle/Browserslist warnings remain. Existing generated artwork is unchanged; this
 accounting repair does not require another bitmap.
+
+Published as **v1.0.260923-2**. GitHub independently passed all 1,097 units and
+the build; the public manifest/tag and hosted desktop/touch smoke checks match.
+See [publication evidence](RELEASE_IMPLEMENTATION.md#pack-provenance-publication-checkpoint).
 
 ## Remaining Charter audit
 
