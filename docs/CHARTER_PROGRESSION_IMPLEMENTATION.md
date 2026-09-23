@@ -104,7 +104,9 @@ Artifacts: `/tmp/tensho-charter-release-bQltze/`.
 Pages-base production/PWA build passed: 343 modules, main entry
 `index-C_tkVuph.js`, 269 precache entries / 65,774.40 KiB. Existing large-chunk
 and stale Browserslist warnings remain. This is the verified release candidate;
-publication status is recorded separately in the release ledger.
+publication subsequently succeeded as **v1.0.260923-1**. GitHub independently
+passed all units and build; the public manifest, remote tag, hosted artwork hash
+and desktop/touch gameplay were verified. [Release ledger](RELEASE_IMPLEMENTATION.md#charter-progression-publication-checkpoint).
 
 ## Remaining Charter audit
 

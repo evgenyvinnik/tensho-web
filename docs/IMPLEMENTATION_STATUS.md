@@ -4,7 +4,7 @@
 
 **Last verified:** September 22, 2026
 
-**Current local progression checkpoint:** Money Tree's ten-round prerequisite
+**Current published progression checkpoint:** Money Tree's ten-round prerequisite
 now counts actual maximum-interest settlements, including Charter/Omen caps.
 Current streak and lifetime best are separate; zero payouts, skips, defeats and
 new runs cannot extend a streak. Radiant Edge and Full Palette now observe
@@ -16,7 +16,9 @@ startup-timeout scenario. The Pages-base production/PWA build passed. Exact
 failures and fixtures are retained in the linked ledger.
 [Charter progression evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md) records
 legacy compatibility and the broader unresolved Charter eligibility/counter gaps.
-This follow-up is not deployed; published version remains `1.0.260922-1`.
+Deployed as **v1.0.260923-1**. GitHub's independent tests/build passed; the public
+manifest/tag, artwork hash and hosted desktop/touch gameplay checks match.
+[Publication evidence](RELEASE_IMPLEMENTATION.md#charter-progression-publication-checkpoint).
 
 **Published release checkpoint:** Omen costs and live durations are visible in the
 optional localized disclosure. Skipped rounds spend existing interest durations

@@ -18,9 +18,10 @@ Combined full units passed **1,089/1,089 in 99 files**. Strict TypeScript, targe
 lint and thirteen release-workflow checks passed. Browser rerun: **9/10**, then
 **3/3** unchanged repetitions of the startup-timeout scenario. The Pages-base
 production/PWA build passed. Earlier interest-only evidence remains
-in the linked ledger. This is
-local follow-up work, not a claim of another deployment or complete Charter
-progression. [Evidence and remaining audit](CHARTER_PROGRESSION_IMPLEMENTATION.md)
+in the linked ledger. The checkpoint is deployed as **v1.0.260923-1**, with a
+matching public manifest/tag and hosted desktop/touch gameplay checks. This is
+not a claim of complete Charter progression.
+[Evidence and remaining audit](CHARTER_PROGRESSION_IMPLEMENTATION.md)
 identify ungated upgrade offers, pack provenance,
 and the Observatory rule conflict. An optional question asks whether Table Loop
 should become the primary Play mode; no answer has been assumed.

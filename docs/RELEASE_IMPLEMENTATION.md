@@ -1,6 +1,37 @@
 # Release versioning and provenance
 
-**Latest verified public deployment:** September 22, 2026, **v1.0.260922-1**.
+**Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
+**v1.0.260923-1**.
+
+## Charter progression publication checkpoint
+
+The user's standing authorization to publish a tested checkpoint was applied to
+the follow-up work already on main. No additional branch merge, history rewrite
+or branch deletion was needed. Checkpoint commit: `c5b4dce5fe0b99b51440c247b6608bf30dc1c4a1`.
+
+[Actions run 35803076125](https://github.com/evgenyvinnik/tensho-web/actions/runs/35803076125)
+passed all thirteen release checks, **1,089 application tests in 99 files**, the
+production/PWA build and Pages deployment. Build output: 343 modules, 269 precache
+entries / 65,774.40 KiB. Existing bundle/Browserslist and Actions-runtime warnings
+remain. The version uses the UTC date, not the local September 22 calendar date.
+
+- Version/tag: **1.0.260923-1** / `v1.0.260923-1`.
+- Built/tagged commit: `59f5d66aecacd57195409e6cadcb3bc719aa4fa1`.
+- The public release manifest and remote tag both match this commit/version.
+- The hosted Money Tree PNG matches the checked-in SHA-256 in [art provenance](CHARTER_ART.md#money-tree-portrait).
+- Fresh 1280×800 desktop and 320×740 touch contexts passed displayed version,
+  real seeded Table Loop pair placement/refill, reload retaining spent actions,
+  and direct Spanish Classic loading, with no JavaScript page errors.
+- Local verification includes all 1,089 units, strict TypeScript, targeted lint,
+  formatting and production build. Browser results retain one startup timeout
+  followed by three unchanged successful repetitions; details and earlier fixture
+  failures are preserved in [Charter progression evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md).
+- Hosted screenshots and verification script: `/tmp/tensho-charter-release-bQltze/`.
+
+Main was fast-forwarded to the workflow version commit. This documentation-only
+follow-up uses `[skip ci]` to avoid another identical runtime deployment. Fresh
+client checks do not prove an existing installed PWA upgrades or physical-device
+behavior. Unconfirmed mechanics and the choice of primary Play mode are unchanged.
 
 ## September 22 publication checkpoint
 
