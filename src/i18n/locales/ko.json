@@ -1225,6 +1225,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "적용 중인 규칙",
+    "cumulative": "상위 단계에는 이전 단계의 규칙도 적용됩니다.",
+    "locked": "잠김: 이 테이블에서 이전 단계를 승리하세요.",
+    "progression": "진행 상황은 테이블마다 따로 저장됩니다. 여기서 {{current}}단계를 이기면 {{next}}단계가 열립니다.",
+    "finalTier": "이 테이블의 마지막 난도 단계입니다.",
+    "rules": {
+      "base": "기본 난도: 추가 불이익이 없습니다.",
+      "noSmallRoundReward": "소형 라운드에서 보상 골드를 받지 못합니다.",
+      "scoreScaling": "목표 점수는 백색 단계의 {{multiplier}}배입니다. 테이블 보정도 적용됩니다.",
+      "redrawPenalty": "라운드마다 패 교체 횟수: −{{amount}}.",
+      "eternalChance": "상점 칙령에 {{chance}} 확률로 영구 스티커가 붙습니다(판매 및 파괴 불가).",
+      "perishableChance": "영구 스티커가 없는 상점 칙령에 {{chance}} 확률로 부패 스티커가 붙습니다({{rounds}}라운드 후 약화).",
+      "rentalChance": "상점 칙령에 {{chance}} 확률로 임대 스티커가 붙습니다(구매 시 {{price}}골드, 이후 매 라운드 {{fee}}골드)."
+    },
     "title": "테이블 스테이크",
     "white": "흰색 스테이크",
     "red": "빨간색 스테이크",
@@ -1544,6 +1558,10 @@
     "componentStack": "컴포넌트 스택:"
   },
   "tableStyle": {
+    "unlock": "해제 조건: {{requirement}}",
+    "optionLabel": "{{name}}, {{theme}} 테이블",
+    "lockedOptionLabel": "{{name}}, 잠김: {{requirement}}",
+    "unlockProgress": "{{name}} 해제 진행도",
     "title": "탁자 선택",
     "titleJp": "卓風",
     "subtitle": "이번 판에 쓸 탁자를 고르세요",

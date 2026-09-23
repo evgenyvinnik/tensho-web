@@ -4,7 +4,17 @@
 
 **Last verified:** September 22, 2026
 
-**Current published checkpoint:** Full Unlock now has an explicit Settings confirmation,
+**Current local checkpoint:** Table setup has localized cumulative difficulty rules,
+native modal/keyboard behavior, a shared content scroll area and short-phone CJK
+layout corrections. Confirmed table/stake choices survive reload and produce the
+right next-run rules; invalid/locked saved choices fall back safely. Existing
+illustrations and colors are preserved. All **1,165/1,165 tests in 106 files**,
+**26 browser checks**, the final **6/6 selector follow-up**, strict TypeScript,
+targeted lint and production/PWA build passed. [Evidence](TABLE_SETUP_IMPLEMENTATION.md)
+retains prior failures. Publication is pending; this is saved setup, not Classic
+run persistence or whole-project completion.
+
+**Preceding published checkpoint:** Full Unlock now has an explicit Settings confirmation,
 persistent profile mode and achievement suppression, without free purchases or
 invented victories. Reset All Progress returns to earned mode. Achievement reloads
 also preserve an unset fastest-win record instead of treating it as zero rounds.

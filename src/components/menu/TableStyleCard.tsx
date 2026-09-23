@@ -9,6 +9,7 @@ import type { TableStyleDefinition } from '../../config/tableStyleDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { getTableStyleIllustration } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 const AnimatedButton = animated('button')
 
@@ -38,6 +39,7 @@ export function TableStyleCard({
 }: TableStyleCardProps) {
   const itemText = useItemText()
   const { t } = useTranslation()
+  const reduceMotion = useReducedMotion()
   const [isHovered, setIsHovered] = React.useState(false)
   const artwork = getTableStyleIllustration(style.id)
   const localizedName = itemText.name('tableStyles', {
@@ -67,11 +69,12 @@ export function TableStyleCard({
     to: {
       opacity: 1,
       transform:
-        isHovered && isUnlocked
+        isHovered && isUnlocked && !reduceMotion
           ? 'translateY(-3px) scale(1.015)'
           : 'translateY(0px) scale(1)',
     },
-    delay,
+    delay: reduceMotion ? 0 : delay,
+    immediate: reduceMotion,
     config: { tension: 300, friction: 22 },
   })
 
@@ -123,7 +126,9 @@ export function TableStyleCard({
           loading="lazy"
           decoding="async"
           className={`h-full w-full object-cover transition duration-500 ${
-            isHovered && isUnlocked ? 'scale-[1.045]' : 'scale-100'
+            isHovered && isUnlocked && !reduceMotion
+              ? 'scale-[1.045]'
+              : 'scale-100'
           } ${isUnlocked ? 'brightness-90' : 'brightness-[.42] grayscale'}`}
         />
         <div
@@ -158,7 +163,7 @@ export function TableStyleCard({
             {localizedName}
           </h3>
           {isCJKLanguage() && (
-            <span className="shrink-0 font-decorative text-lg text-[var(--color-golden-yellow)] drop-shadow-lg">
+            <span className="hidden shrink-0 whitespace-nowrap font-decorative text-lg text-[var(--color-golden-yellow)] drop-shadow-lg sm:block">
               {style.japaneseName}
             </span>
           )}

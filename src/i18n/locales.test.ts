@@ -42,6 +42,25 @@ import {
   PACK_VARIANT_DEFINITIONS,
 } from '../config/archiveDefinitions'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
+import { STAKE_NAME_KEYS } from './stakeRules'
+
+it('supplies table accessibility and cumulative stake rules in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const stakes = locale.stakes as typeof en.stakes
+    for (const key of [...STAKE_NAME_KEYS, 'rulesTitle', 'cumulative', 'locked', 'progression', 'finalTier'] as const)
+      expect(stakes[key], `${language}: stakes.${key}`).toBeTruthy()
+    for (const [key, english] of Object.entries(en.stakes.rules)) {
+      const translated = stakes.rules[key as keyof typeof stakes.rules]
+      expect(translated, `${language}: stakes.rules.${key}`).toBeTruthy()
+      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(english.match(/{{\w+}}/g)?.sort() ?? [])
+    }
+    for (const key of ['optionLabel', 'lockedOptionLabel', 'unlockProgress', 'unlock'] as const) {
+      const translated = (locale.tableStyle as typeof en.tableStyle)[key]
+      expect(translated, `${language}: tableStyle.${key}`).toBeTruthy()
+      expect(translated.match(/{{\w+}}/g)?.sort()).toEqual(en.tableStyle[key].match(/{{\w+}}/g)?.sort())
+    }
+  }
+})
 
 type Locale = Record<string, unknown>
 

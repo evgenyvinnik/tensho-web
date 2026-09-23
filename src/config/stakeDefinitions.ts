@@ -114,7 +114,7 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Green Stake',
     japaneseName: '緑場',
     color: '#43A047',
-    description: 'Required score scales 30% faster per Act',
+    description: 'Score targets are 30% higher than White Stake',
     modifier: { scoreScaling: 1.3 },
     unlocksWall: 'jade_wall',
   },
@@ -141,7 +141,7 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Purple Stake',
     japaneseName: '紫場',
     color: '#8E24AA',
-    description: 'Required score scales even faster per Act',
+    description: 'Score targets are a further 50% higher (stacks with Green)',
     modifier: { scoreScaling: 1.5 },
     unlocksWall: undefined,
   },
@@ -150,7 +150,7 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Orange Stake',
     japaneseName: '橙場',
     color: '#FB8C00',
-    description: '30% chance for shop Decrees to have Perishable sticker',
+    description: '30% chance for non-Eternal shop Decrees to have Perishable sticker',
     modifier: { perishableChance: 0.3 },
     unlocksWall: 'sunset_wall',
   },
@@ -295,9 +295,10 @@ export function calculateCombinedModifiers(stakeTier: number): CombinedStakeModi
  * Roll for stickers on a shop decree based on current stake
  *
  * At Gold Stake (Tier 8), combined probabilities:
- * - 28% no stickers
- * - 21.6% each for Eternal, Perishable, Rental
- * - 7.2% multiple stickers
+ * - 34.3% no stickers
+ * - 21% Eternal only
+ * - 14.7% each for Perishable only and Rental only
+ * - 15.3% two stickers (9% Eternal + Rental, 6.3% Perishable + Rental)
  *
  * Rules:
  * - Eternal and Perishable cannot both apply (Eternal wins)

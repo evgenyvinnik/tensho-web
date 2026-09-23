@@ -1225,6 +1225,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "当前规则",
+    "cumulative": "更高等级也包含之前等级的规则。",
+    "locked": "尚未解锁：请先在此牌桌赢得上一级。",
+    "progression": "每张牌桌单独记录进度。在此赢得第{{current}}级，即可解锁第{{next}}级。",
+    "finalTier": "这是此牌桌的最高难度。",
+    "rules": {
+      "base": "基础难度：没有额外惩罚。",
+      "noSmallRoundReward": "小局不再提供奖励金币。",
+      "scoreScaling": "目标分数为白场的{{multiplier}}倍，牌桌修正仍然生效。",
+      "redrawPenalty": "每局换牌次数：−{{amount}}。",
+      "eternalChance": "商店敕令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
+      "perishableChance": "没有永恒贴纸的商店敕令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后削弱）。",
+      "rentalChance": "商店敕令有{{chance}}的概率带有租赁贴纸（购买花费{{price}}金币，之后每局支付{{fee}}金币）。"
+    },
     "title": "难度等级",
     "white": "白级",
     "red": "红级",
@@ -1544,6 +1558,10 @@
     "componentStack": "组件堆栈："
   },
   "tableStyle": {
+    "unlock": "解锁条件：{{requirement}}",
+    "optionLabel": "{{name}}，{{theme}}牌桌",
+    "lockedOptionLabel": "{{name}}，未解锁：{{requirement}}",
+    "unlockProgress": "{{name}}的解锁进度",
     "title": "选择牌桌",
     "titleJp": "卓風",
     "subtitle": "为本次旅程选择牌桌样式",

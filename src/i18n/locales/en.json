@@ -1221,6 +1221,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "Active rules",
+    "cumulative": "Higher tiers include the earlier tiers’ rules.",
+    "locked": "Locked: win the previous tier on this table.",
+    "progression": "Progress is tracked separately for each table. Win tier {{current}} to unlock tier {{next}} here.",
+    "finalTier": "This is the final difficulty tier for this table.",
+    "rules": {
+      "base": "Base difficulty: no added penalties.",
+      "noSmallRoundReward": "No reward gold from Small Rounds.",
+      "scoreScaling": "Stake score targets: ×{{multiplier}} compared with White. Table modifiers still apply.",
+      "redrawPenalty": "Redraws each round: −{{amount}}.",
+      "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
+      "perishableChance": "Non-Eternal shop Decrees: {{chance}} chance of Perishable (weakened after {{rounds}} rounds).",
+      "rentalChance": "Shop Decrees: {{chance}} chance of Rental ({{price}} gold to buy, then {{fee}} gold each round)."
+    },
     "title": "Table Stakes",
     "white": "White Stake",
     "red": "Red Stake",
@@ -2023,6 +2037,10 @@
     "componentStack": "Component stack:"
   },
   "tableStyle": {
+    "unlock": "Unlock: {{requirement}}",
+    "optionLabel": "{{name}}, {{theme}} table",
+    "lockedOptionLabel": "{{name}}, locked: {{requirement}}",
+    "unlockProgress": "Progress toward {{name}}",
     "title": "Choose Table",
     "titleJp": "卓風",
     "subtitle": "Select a table style for your run",

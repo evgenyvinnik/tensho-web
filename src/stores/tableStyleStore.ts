@@ -348,12 +348,39 @@ export const useTableStyleStore = create<TableStyleState>()(
     }),
     {
       name: 'tensho-table-style-progress',
-      // Persist progression data, stats, and unlock history
+      // Confirmed run setup is a preference, not a running game's snapshot.
       partialize: (state) => ({
+        currentStyleId: state.currentStyleId,
         unlockedStyles: state.unlockedStyles,
         unlockHistory: state.unlockHistory,
         stats: state.stats,
       }),
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<TableStyleState> | undefined
+        const unlockedStyles = Array.isArray(saved?.unlockedStyles)
+          ? [
+              ...new Set([
+                DEFAULT_STYLE_ID,
+                ...saved.unlockedStyles.filter((id) => typeof id === 'string'),
+              ]),
+            ]
+          : current.unlockedStyles
+        const currentStyleId =
+          saved?.currentStyleId &&
+          getTableStyleById(saved.currentStyleId) &&
+          unlockedStyles.includes(saved.currentStyleId)
+            ? saved.currentStyleId
+            : DEFAULT_STYLE_ID
+        return {
+          ...current,
+          unlockedStyles,
+          unlockHistory: saved?.unlockHistory ?? current.unlockHistory,
+          stats: { ...current.stats, ...saved?.stats },
+          currentStyleId,
+          // Never trust persisted derived bonuses or stale catalog values.
+          activeModifiers: calculateActiveModifiers(currentStyleId),
+        }
+      },
     }
   )
 )
@@ -382,7 +409,9 @@ export const selectCurrentStyleName = (state: TableStyleState): string => {
 /**
  * Select current style Japanese name
  */
-export const selectCurrentStyleJapaneseName = (state: TableStyleState): string => {
+export const selectCurrentStyleJapaneseName = (
+  state: TableStyleState
+): string => {
   const style = selectCurrentStyle(state)
   return style.japaneseName
 }
@@ -390,7 +419,9 @@ export const selectCurrentStyleJapaneseName = (state: TableStyleState): string =
 /**
  * Select current style theme color
  */
-export const selectCurrentStyleThemeColor = (state: TableStyleState): string => {
+export const selectCurrentStyleThemeColor = (
+  state: TableStyleState
+): string => {
   const style = selectCurrentStyle(state)
   return style.themeColor
 }
@@ -398,7 +429,9 @@ export const selectCurrentStyleThemeColor = (state: TableStyleState): string => 
 /**
  * Select current style accent color
  */
-export const selectCurrentStyleAccentColor = (state: TableStyleState): string => {
+export const selectCurrentStyleAccentColor = (
+  state: TableStyleState
+): string => {
   const style = selectCurrentStyle(state)
   return style.accentColor
 }
@@ -434,7 +467,9 @@ export const selectBaseScoreMultiplier = (state: TableStyleState): number => {
 /**
  * Select yakuman multiplier bonus from current style
  */
-export const selectYakumanMultiplierBonus = (state: TableStyleState): number => {
+export const selectYakumanMultiplierBonus = (
+  state: TableStyleState
+): number => {
   return state.activeModifiers.yakumanMultiplierBonus
 }
 
@@ -455,7 +490,9 @@ export const selectFlowersDisabled = (state: TableStyleState): boolean => {
 /**
  * Select whether corrupted seasons appear early
  */
-export const selectEarlyCorruptedSeasons = (state: TableStyleState): boolean => {
+export const selectEarlyCorruptedSeasons = (
+  state: TableStyleState
+): boolean => {
   return state.activeModifiers.earlyCorruptedSeasons
 }
 
@@ -476,7 +513,7 @@ export const selectUnlockedStyleCount = (state: TableStyleState): number => {
 /**
  * Select total style count
  */
- 
+
 export const selectTotalStyleCount = (_state: TableStyleState): number => {
   return TABLE_STYLE_DEFINITIONS.length
 }
@@ -484,7 +521,9 @@ export const selectTotalStyleCount = (_state: TableStyleState): number => {
 /**
  * Select unlock completion percentage
  */
-export const selectUnlockCompletionPercent = (state: TableStyleState): number => {
+export const selectUnlockCompletionPercent = (
+  state: TableStyleState
+): number => {
   return (state.unlockedStyles.length / TABLE_STYLE_DEFINITIONS.length) * 100
 }
 

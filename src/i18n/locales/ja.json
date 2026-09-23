@@ -1225,6 +1225,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "適用中のルール",
+    "cumulative": "上位の場には、それ以前の場のルールも適用されます。",
+    "locked": "未解放：この卓で一つ前の場をクリアしてください。",
+    "progression": "進行状況は卓ごとに保存されます。この卓で第{{current}}段階をクリアすると、第{{next}}段階が解放されます。",
+    "finalTier": "この卓の最高難度です。",
+    "rules": {
+      "base": "基本難度：追加のペナルティはありません。",
+      "noSmallRoundReward": "小ラウンドでは報酬の金を獲得できません。",
+      "scoreScaling": "目標点は白場の{{multiplier}}倍。卓の補正も適用されます。",
+      "redrawPenalty": "各ラウンドの手牌交換回数：−{{amount}}。",
+      "eternalChance": "店の勅令は{{chance}}の確率で永劫付きになります（売却・破壊不可）。",
+      "perishableChance": "永劫が付いていない店の勅令は{{chance}}の確率で腐朽付きになります（{{rounds}}ラウンド後に弱体化）。",
+      "rentalChance": "店の勅令は{{chance}}の確率で租借付きになります（購入時に金{{price}}、以降は毎ラウンド金{{fee}}）。"
+    },
     "title": "場代",
     "white": "白場",
     "red": "赤場",
@@ -2027,6 +2041,10 @@
     }
   },
   "tableStyle": {
+    "unlock": "解放条件：{{requirement}}",
+    "optionLabel": "{{name}}、{{theme}}の卓",
+    "lockedOptionLabel": "{{name}}、未解放：{{requirement}}",
+    "unlockProgress": "{{name}}の解放進行度",
     "title": "卓を選ぶ",
     "titleJp": "卓風",
     "subtitle": "この挑戦で使う卓を選びましょう",

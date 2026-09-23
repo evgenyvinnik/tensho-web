@@ -514,6 +514,20 @@
     "theArm": "Kol"
   },
   "stakes": {
+    "rulesTitle": "Etkin kurallar",
+    "cumulative": "Üst kademeler önceki kademelerin kurallarını da içerir.",
+    "locked": "Kilitli: bu masada önceki kademeyi kazanın.",
+    "progression": "İlerleme her masa için ayrı kaydedilir. Burada {{next}}. kademeyi açmak için {{current}}. kademeyi kazanın.",
+    "finalTier": "Bu masanın son zorluk kademesidir.",
+    "rules": {
+      "base": "Temel zorluk: ek ceza yok.",
+      "noSmallRoundReward": "Küçük turlar ödül altını vermez.",
+      "scoreScaling": "Puan hedefleri Beyaz kademenin {{multiplier}} katıdır. Masa değiştiricileri de uygulanır.",
+      "redrawPenalty": "Tur başına el yenileme hakkı: −{{amount}}.",
+      "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
+      "perishableChance": "Ebedî olmayan mağaza Fermanları: {{chance}} olasılıkla Geçici ({{rounds}} tur sonra zayıflar).",
+      "rentalChance": "Mağaza Fermanları: {{chance}} olasılıkla Kiralık (satın almak {{price}} altın, ardından her tur {{fee}} altın)."
+    },
     "title": "Masa Seviyeleri",
     "white": "Beyaz Seviye",
     "red": "Kırmızı Seviye",
@@ -833,6 +847,10 @@
     "componentStack": "Bileşen yığını:"
   },
   "tableStyle": {
+    "unlock": "Açılma koşulu: {{requirement}}",
+    "optionLabel": "{{name}}, {{theme}} masa",
+    "lockedOptionLabel": "{{name}}, kilitli: {{requirement}}",
+    "unlockProgress": "{{name}} açılma ilerlemesi",
     "title": "Masa seç",
     "titleJp": "卓風",
     "subtitle": "Oyunun için bir masa stili seç",

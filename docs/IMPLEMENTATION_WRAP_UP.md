@@ -6,7 +6,23 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current Full Unlock checkpoint
+## Current table-setup checkpoint
+
+Table selection now has localized names/rules/lock hints/accessibility labels,
+an optional cumulative-rules disclosure, native dialog focus isolation and roving
+keyboard controls. Rules and illustrated cards share a scroll area; short CJK
+phone layouts keep action labels intact. Confirmed table/difficulty choices now
+survive reload with validated selectors and recomputed modifiers. Cancel remains
+non-mutating and changes do not affect an existing run's captured rules.
+The actual saved Dragon's Den/Gold selection starts a 731-point Classic round.
+All **1,165/1,165 units in 106 files**, **26/26 browser checks**, and **6/6 final
+wording follow-up checks** passed, with strict TypeScript, targeted lint and the
+production/PWA build. [Table setup evidence](TABLE_SETUP_IMPLEMENTATION.md)
+retains initial defects and fixture/timeouts. Publication remains pending.
+Existing generated table artwork is preserved. This does not add Classic run
+persistence or settle the outstanding mechanics choices.
+
+## Preceding Full Unlock checkpoint
 
 The documented Full Unlock profile option now has a player-facing confirmation,
 persistent access to all catalog unlocks/tables/stakes, and achievement-tracking

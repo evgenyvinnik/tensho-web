@@ -1225,6 +1225,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "Reglas activas",
+    "cumulative": "Los niveles superiores incluyen las reglas de los anteriores.",
+    "locked": "Bloqueado: gana el nivel anterior en esta mesa.",
+    "progression": "La progresión se guarda por separado para cada mesa. Gana el nivel {{current}} para desbloquear el nivel {{next}} aquí.",
+    "finalTier": "Este es el último nivel de dificultad de esta mesa.",
+    "rules": {
+      "base": "Dificultad básica: sin penalizaciones añadidas.",
+      "noSmallRoundReward": "Las rondas pequeñas no dan oro de recompensa.",
+      "scoreScaling": "Objetivos de puntuación del nivel: ×{{multiplier}} respecto al Blanco. Los modificadores de la mesa también se aplican.",
+      "redrawPenalty": "Cambios de mano por ronda: −{{amount}}.",
+      "eternalChance": "Decretos de la tienda: {{chance}} de probabilidad de Eterno (no se puede vender ni destruir).",
+      "perishableChance": "Decretos no Eternos de la tienda: {{chance}} de probabilidad de Perecedero (se debilita tras {{rounds}} rondas).",
+      "rentalChance": "Decretos de la tienda: {{chance}} de probabilidad de Alquiler ({{price}} de oro al comprar y {{fee}} de oro por ronda)."
+    },
     "title": "Niveles de Mesa",
     "white": "Nivel Blanco",
     "red": "Nivel Rojo",
@@ -1544,6 +1558,10 @@
     "componentStack": "Pila de componentes:"
   },
   "tableStyle": {
+    "unlock": "Para desbloquear: {{requirement}}",
+    "optionLabel": "{{name}}, mesa {{theme}}",
+    "lockedOptionLabel": "{{name}}, bloqueada: {{requirement}}",
+    "unlockProgress": "Progreso hacia {{name}}",
     "title": "Elegir mesa",
     "titleJp": "卓風",
     "subtitle": "Elige un estilo de mesa para tu partida",

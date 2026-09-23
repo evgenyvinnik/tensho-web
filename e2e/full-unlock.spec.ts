@@ -106,7 +106,9 @@ for (const [language, copy] of [
     for (const card of await page.locator('[data-table-style-card]').all())
       await expect(card).toBeEnabled()
     await page.locator('[data-table-style-card="dragons_den"]').click()
-    await page.getByRole('radio', { name: /^Gold Stake:/ }).click()
+    await page
+      .getByRole('radio', { name: new RegExp(`^${copy.stakes.gold}:`) })
+      .click()
     await page.screenshot({
       path: testInfo.outputPath('full-unlock-tables.png'),
     })

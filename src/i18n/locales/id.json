@@ -1233,6 +1233,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "Aturan aktif",
+    "cumulative": "Tingkat lebih tinggi juga mencakup aturan tingkat sebelumnya.",
+    "locked": "Terkunci: menangkan tingkat sebelumnya di meja ini.",
+    "progression": "Kemajuan disimpan terpisah untuk tiap meja. Menangkan tingkat {{current}} untuk membuka tingkat {{next}} di sini.",
+    "finalTier": "Ini tingkat kesulitan terakhir untuk meja ini.",
+    "rules": {
+      "base": "Kesulitan dasar: tanpa penalti tambahan.",
+      "noSmallRoundReward": "Ronde Kecil tidak memberi hadiah emas.",
+      "scoreScaling": "Target skor tingkat ini: ×{{multiplier}} dibanding Putih. Pengubah meja tetap berlaku.",
+      "redrawPenalty": "Penggantian tangan per ronde: −{{amount}}.",
+      "eternalChance": "Dekret toko: peluang {{chance}} mendapat Abadi (tidak dapat dijual atau dihancurkan).",
+      "perishableChance": "Dekret toko yang tidak Abadi: peluang {{chance}} mendapat Sementara (melemah setelah {{rounds}} ronde).",
+      "rentalChance": "Dekret toko: peluang {{chance}} mendapat Sewa ({{price}} emas saat membeli, lalu {{fee}} emas tiap ronde)."
+    },
     "title": "Tingkat Meja",
     "white": "Tingkat Putih",
     "red": "Tingkat Merah",
@@ -1552,6 +1566,10 @@
     "componentStack": "Tumpukan komponen:"
   },
   "tableStyle": {
+    "unlock": "Syarat membuka: {{requirement}}",
+    "optionLabel": "{{name}}, meja {{theme}}",
+    "lockedOptionLabel": "{{name}}, terkunci: {{requirement}}",
+    "unlockProgress": "Kemajuan menuju {{name}}",
     "title": "Pilih meja",
     "titleJp": "卓風",
     "subtitle": "Pilih gaya meja untuk permainanmu",

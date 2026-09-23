@@ -514,6 +514,20 @@
     "theArm": "Ang Braso"
   },
   "stakes": {
+    "rulesTitle": "Mga aktibong tuntunin",
+    "cumulative": "Kasama sa mas mataas na antas ang mga tuntunin ng mga nauna.",
+    "locked": "Naka-lock: manalo sa naunang antas sa mesang ito.",
+    "progression": "Hiwalay ang progreso ng bawat mesa. Manalo sa antas {{current}} upang buksan ang antas {{next}} dito.",
+    "finalTier": "Ito ang huling antas ng hirap para sa mesang ito.",
+    "rules": {
+      "base": "Batayang hirap: walang dagdag na parusa.",
+      "noSmallRoundReward": "Walang gantimpalang ginto mula sa Maliliit na Round.",
+      "scoreScaling": "Target na puntos: ×{{multiplier}} kumpara sa Puti. Nalalapat pa rin ang mga modifier ng mesa.",
+      "redrawPenalty": "Pagpapalit ng kamay bawat round: −{{amount}}.",
+      "eternalChance": "Mga Dekreto sa tindahan: {{chance}} tsansang maging Walang Hanggan (hindi maibebenta o masisira).",
+      "perishableChance": "Mga Dekreto sa tindahang hindi Walang Hanggan: {{chance}} tsansang maging Pansamantala (hihina pagkatapos ng {{rounds}} round).",
+      "rentalChance": "Mga Dekreto sa tindahan: {{chance}} tsansang maging Upa ({{price}} ginto sa pagbili, saka {{fee}} ginto bawat round)."
+    },
     "title": "Mga Antas ng Mesa",
     "white": "Puting Antas",
     "red": "Pulang Antas",
@@ -833,6 +847,10 @@
     "componentStack": "Component stack:"
   },
   "tableStyle": {
+    "unlock": "Upang buksan: {{requirement}}",
+    "optionLabel": "{{name}}, mesang {{theme}}",
+    "lockedOptionLabel": "{{name}}, naka-lock: {{requirement}}",
+    "unlockProgress": "Progreso patungo sa {{name}}",
     "title": "Pumili ng mesa",
     "titleJp": "卓風",
     "subtitle": "Pumili ng estilo ng mesa para sa takbo mo",

@@ -1,5 +1,10 @@
 # Playable table rules
 
+September 22 follow-up: [Table setup](TABLE_SETUP_IMPLEMENTATION.md) now provides
+localized cumulative difficulty rules, native dialog/keyboard behavior and
+validated persistence of the confirmed table/stake preference. These changes do
+not alter the captured rules of an active run or save Classic run progress.
+
 Verified September 9, 2026. These rules apply to **Classic** runs. Table Loop is a separate experimental mode and does not inherit them.
 
 The selected table is resolved once when a run starts. Both gameplay and its illustration/colors read that captured identity; changing a menu preference cannot change an active run's rules. An unknown legacy ID resolves to Green Felt rather than claiming an unapplied modifier.

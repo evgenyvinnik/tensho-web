@@ -1225,6 +1225,20 @@
     }
   },
   "stakes": {
+    "rulesTitle": "Règles actives",
+    "cumulative": "Les paliers supérieurs incluent les règles des précédents.",
+    "locked": "Verrouillé : gagnez le palier précédent sur cette table.",
+    "progression": "La progression est propre à chaque table. Gagnez le palier {{current}} pour débloquer le palier {{next}} ici.",
+    "finalTier": "Voici le dernier palier de difficulté de cette table.",
+    "rules": {
+      "base": "Difficulté de base : aucune pénalité supplémentaire.",
+      "noSmallRoundReward": "Les petites manches ne donnent pas d’or en récompense.",
+      "scoreScaling": "Objectifs de score du palier : ×{{multiplier}} par rapport au Blanc. Les modificateurs de table s’appliquent aussi.",
+      "redrawPenalty": "Renouvellements de main par manche : −{{amount}}.",
+      "eternalChance": "Décrets en boutique : {{chance}} de chance d’être Éternels (impossibles à vendre ou détruire).",
+      "perishableChance": "Décrets non Éternels en boutique : {{chance}} de chance d’être Périssables (affaiblis après {{rounds}} manches).",
+      "rentalChance": "Décrets en boutique : {{chance}} de chance d’être en Location ({{price}} or à l’achat, puis {{fee}} or par manche)."
+    },
     "title": "Niveaux de Table",
     "white": "Niveau Blanc",
     "red": "Niveau Rouge",
@@ -1544,6 +1558,10 @@
     "componentStack": "Pile de composants :"
   },
   "tableStyle": {
+    "unlock": "Déblocage : {{requirement}}",
+    "optionLabel": "{{name}}, table {{theme}}",
+    "lockedOptionLabel": "{{name}}, verrouillée : {{requirement}}",
+    "unlockProgress": "Progression vers {{name}}",
     "title": "Choisir la table",
     "titleJp": "卓風",
     "subtitle": "Choisissez un style de table pour votre partie",

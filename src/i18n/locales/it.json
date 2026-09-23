@@ -514,6 +514,20 @@
     "theArm": "Il Braccio"
   },
   "stakes": {
+    "rulesTitle": "Regole attive",
+    "cumulative": "I livelli superiori includono le regole dei precedenti.",
+    "locked": "Bloccato: vinci il livello precedente su questo tavolo.",
+    "progression": "Ogni tavolo ha una progressione separata. Vinci il livello {{current}} per sbloccare qui il livello {{next}}.",
+    "finalTier": "Questo è l’ultimo livello di difficoltà del tavolo.",
+    "rules": {
+      "base": "Difficoltà base: nessuna penalità aggiuntiva.",
+      "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
+      "scoreScaling": "Obiettivi di punteggio del livello: ×{{multiplier}} rispetto al Bianco. Si applicano anche i modificatori del tavolo.",
+      "redrawPenalty": "Cambi di mano per round: −{{amount}}.",
+      "eternalChance": "Decreti nel negozio: {{chance}} di probabilità di Eterno (non può essere venduto o distrutto).",
+      "perishableChance": "Decreti non Eterni nel negozio: {{chance}} di probabilità di Deperibile (indebolito dopo {{rounds}} round).",
+      "rentalChance": "Decreti nel negozio: {{chance}} di probabilità di Noleggio ({{price}} oro all’acquisto, poi {{fee}} oro per round)."
+    },
     "title": "Livelli Tavolo",
     "white": "Livello Bianco",
     "red": "Livello Rosso",
@@ -833,6 +847,10 @@
     "componentStack": "Stack dei componenti:"
   },
   "tableStyle": {
+    "unlock": "Per sbloccare: {{requirement}}",
+    "optionLabel": "{{name}}, tavolo {{theme}}",
+    "lockedOptionLabel": "{{name}}, bloccato: {{requirement}}",
+    "unlockProgress": "Progresso verso {{name}}",
     "title": "Scegli il tavolo",
     "titleJp": "卓風",
     "subtitle": "Scegli uno stile di tavolo per la partita",

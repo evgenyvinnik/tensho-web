@@ -305,11 +305,49 @@ export const useStakeStore = create<StakeState>()(
     }),
     {
       name: 'tensho-stake-progress',
-      // Only persist progression data, not current run state
+      // Persist the confirmed setup preference, not a running game's snapshot.
       partialize: (state) => ({
+        currentWallId: state.currentWallId,
+        currentStakeTier: state.currentStakeTier,
         wallProgress: state.wallProgress,
         globalHighestCompleted: state.globalHighestCompleted,
       }),
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<StakeState> | undefined
+        const wallProgress = saved?.wallProgress ?? current.wallProgress
+        const id = saved?.currentWallId
+        const knownWall =
+          id &&
+          (getTableStyleById(id) ||
+            id === 'red_wall' ||
+            Object.prototype.hasOwnProperty.call(STAKE_WALL_UNLOCKS, id))
+        const currentWallId = knownWall ? id : DEFAULT_WALL_ID
+        const completed = wallProgress[currentWallId]?.highestCompleted ?? 0
+        const highest = useProgressionStore.getState().fullUnlockEnabled
+          ? 8
+          : Math.min(
+              8,
+              Math.max(1, Number.isInteger(completed) ? completed + 1 : 1)
+            )
+        const tier = saved?.currentStakeTier
+        const currentStakeTier =
+          knownWall &&
+          typeof tier === 'number' &&
+          Number.isInteger(tier) &&
+          tier >= 1 &&
+          tier <= highest
+            ? tier
+            : DEFAULT_STAKE_TIER
+        return {
+          ...current,
+          wallProgress,
+          globalHighestCompleted:
+            saved?.globalHighestCompleted ?? current.globalHighestCompleted,
+          currentWallId,
+          currentStakeTier,
+          activeModifiers: calculateCombinedModifiers(currentStakeTier),
+        }
+      },
     }
   )
 )
