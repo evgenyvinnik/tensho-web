@@ -276,8 +276,11 @@ Final full regression passed **1,129/1,129 in 102 files**. Strict TypeScript,
 targeted lint, selected formatting and diff checks passed. The Pages-base
 production/PWA build passed: 343 modules, main entry `index-8VDkd7TU.js`, 270
 precache entries / 67,759.03 KiB. The unchanged generated PNG adds 2,031,043 bytes
-to the offline payload. Existing bundle/Browserslist warnings remain. Not yet
-deployed.
+to the offline payload. Existing bundle/Browserslist warnings remain.
+Published as **v1.0.260923-4**; independent CI passed all 1,129 units and the build.
+The public manifest/tag and new portrait hash match. Hosted desktop/touch checks
+passed real Table Loop placement/refill/reload and Spanish Classic loading.
+[Publication evidence](RELEASE_IMPLEMENTATION.md#spending-and-plentiful-stock-publication-checkpoint).
 
 ## Remaining Charter audit
 

@@ -8,7 +8,7 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Charter-progression checkpoint
 
-Local follow-up: Plentiful Stock no longer unlocks from gold penalties. Typed
+Published follow-up: Plentiful Stock no longer unlocks from gold penalties. Typed
 payment categories distinguish purchases/rerolls from losses while retaining
 historic totals and unlocks. Its new generated scroll portrait appears in shop
 and discovered Archive views; the imagegen skill guided transparent, text-free,
@@ -16,7 +16,9 @@ non-destructive integration. The specific image model identity is unavailable.
 All **1,129/1,129 units in 102 files**, **16/16 desktop/touch browser checks**,
 strict TypeScript, targeted lint and production/PWA build passed. Rental fees
 remain a separate user question; explicit purchases/rerolls are currently counted.
-This follow-up is not yet deployed.
+Deployed as **v1.0.260923-4** after independent CI passed all units and the build.
+The public manifest/tag, new portrait hash and hosted desktop/touch gameplay
+checks match. Full Unlock profile controls and broader implementation remain open.
 
 Published follow-up: canonical offer/purchase eligibility now checks the persistent
 unlock, current-run base and non-ownership for every upgraded Charter. The

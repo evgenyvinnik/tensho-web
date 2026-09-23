@@ -1,7 +1,36 @@
 # Release versioning and provenance
 
 **Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
-**v1.0.260923-3**.
+**v1.0.260923-4**.
+
+## Spending and Plentiful Stock publication checkpoint
+
+Checkpoint `e4ca535c600b8c02b4f9bdb0265bf006e337da5b` distinguishes explicit
+purchases/rerolls from penalties in lifetime spending and integrates a new
+Plentiful Stock portrait. Historic totals and unlocks are preserved.
+[Actions run 35807304027](https://github.com/evgenyvinnik/tensho-web/actions/runs/35807304027)
+passed release checks, **1,129 tests in 102 files**, production/PWA build and
+Pages deployment. Local browser coverage passed all **16** English/Spanish
+desktop/touch journeys with no retries; fixtures and initial red regressions
+remain in [Charter evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md#spending-classification-and-plentiful-stock).
+
+- Version/tag: **1.0.260923-4** / `v1.0.260923-4`.
+- Built/tagged commit: `8aaaab98dd2d5e6a41aef28f76a9f20a58006f97`.
+- Public release manifest and remote tag match this commit. The new Plentiful
+  Stock PNG matches SHA-256 `37fb595b4fdd827440c8cae0b1a1db19bd099a5509458b5c4aa949f71ac8e2b6`.
+- Fresh 1280×800 and 320×740 touch contexts passed displayed version, seeded
+  Table Loop pair placement/refill, reload retaining spent actions and Spanish
+  Classic loading, without JavaScript page errors.
+- Build: 343 modules, 270 precache entries / 67,759.03 KiB. Existing bundle,
+  Browserslist and Actions-runtime warnings remain. Original transparent PNG
+  adds 2,031,043 bytes to the offline bundle.
+- Artifacts, browser report and hosted script: `/tmp/tensho-spending-1wnOpM/`.
+
+Main was fast-forwarded to the workflow version commit. This evidence-only
+follow-up uses `[skip ci]`. Rental-fee progression remains an optional rule
+question; current spending counts explicit purchases/rerolls only. Full Unlock
+profile behavior, other mechanics choices and installed-PWA upgrade testing
+remain open. No whole-project completion is claimed.
 
 ## Charter eligibility publication checkpoint
 
