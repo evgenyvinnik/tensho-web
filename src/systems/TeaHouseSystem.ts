@@ -45,7 +45,13 @@ import {
 import { FateSeal, FateSealSystem } from './FateSealSystem'
 import { CelestialOrb, CelestialOrbSystem } from './CelestialOrbSystem'
 import { VoidScript, VoidScriptSystem } from './VoidScriptSystem'
-import { Tile, TileSuit, DragonType, WindType } from '../core/Tile'
+import {
+  Tile,
+  TileSuit,
+  DragonType,
+  WindType,
+  type TileData,
+} from '../core/Tile'
 import {
   EditionType as TileEditionType,
   EnhancementType,
@@ -203,6 +209,23 @@ export interface TeaHouseVisitModifiers {
   guaranteedItems?: { itemType: string; minDecreeRarity?: DecreeRarity }[]
   decreeEdition?: EditionType
   decreeEditions?: EditionType[]
+}
+
+/** JSON removes Tile's prototype; make that boundary explicit in the type. */
+export type SerializedTeaHouseOffering = Omit<TeaHouseOffering, 'item'> & {
+  item: Exclude<TeaHouseOffering['item'], Tile> | TileData
+}
+
+function restoreOffering(saved: SerializedTeaHouseOffering): TeaHouseOffering {
+  const copy = structuredClone(saved)
+  if (copy.itemType === 'Tile') {
+    const tile = copy.item as TileData
+    return {
+      ...copy,
+      item: new Tile(tile.suit, tile.rank, tile.id, tile.isRed, tile.modifiers),
+    }
+  }
+  return copy as TeaHouseOffering
 }
 
 /**
@@ -1138,12 +1161,14 @@ export class TeaHouseSystem {
     tilesHaveEditions: boolean
     purchasedCharterIds: string[]
     currentStake: number
-    itemOfferings: TeaHouseOffering[]
-    packOfferings: TeaHouseOffering[]
-    charterOffering: TeaHouseOffering | null
+    itemOfferings: SerializedTeaHouseOffering[]
+    packOfferings: SerializedTeaHouseOffering[]
+    charterOffering: SerializedTeaHouseOffering | null
     rerollsThisVisit: number
     totalRerollsRun: number
     offeringCounter: number
+    visitDiscountPercentage: number
+    freeRerollsThisVisit: number
   } {
     return {
       flowerCountForVisit: this.flowerCountForVisit,
@@ -1157,38 +1182,50 @@ export class TeaHouseSystem {
       tilesHaveEditions: this.tilesHaveEditions,
       purchasedCharterIds: Array.from(this.purchasedCharterIds),
       currentStake: this.currentStake,
-      itemOfferings: this.itemOfferings,
-      packOfferings: this.packOfferings,
-      charterOffering: this.charterOffering,
+      itemOfferings: structuredClone(this.itemOfferings),
+      packOfferings: structuredClone(this.packOfferings),
+      charterOffering: structuredClone(this.charterOffering),
       rerollsThisVisit: this.rerollsThisVisit,
       totalRerollsRun: this.totalRerollsRun,
       offeringCounter: this.offeringCounter,
+      visitDiscountPercentage: this.visitDiscountPercentage,
+      freeRerollsThisVisit: this.freeRerollsThisVisit,
     }
   }
 
   /**
    * Restore from serialized state
    */
-  static fromSerializedState(state: {
-    flowerCountForVisit?: number
-    itemSlotCount: number
-    discountPercentage: number
-    rerollDiscount: number
-    sealWeightMultiplier: number
-    orbWeightMultiplier: number
-    editionFrequencyMultiplier?: number
-    canBuyTiles?: boolean
-    tilesHaveEditions?: boolean
-    purchasedCharterIds: string[]
-    currentStake: number
-    itemOfferings: TeaHouseOffering[]
-    packOfferings: TeaHouseOffering[]
-    charterOffering: TeaHouseOffering | null
-    rerollsThisVisit: number
-    totalRerollsRun: number
-    offeringCounter: number
-  }): TeaHouseSystem {
-    const system = new TeaHouseSystem(state.currentStake)
+  static fromSerializedState(
+    state: {
+      flowerCountForVisit?: number
+      itemSlotCount: number
+      discountPercentage: number
+      rerollDiscount: number
+      sealWeightMultiplier: number
+      orbWeightMultiplier: number
+      editionFrequencyMultiplier?: number
+      canBuyTiles?: boolean
+      tilesHaveEditions?: boolean
+      purchasedCharterIds: string[]
+      currentStake: number
+      itemOfferings: SerializedTeaHouseOffering[]
+      packOfferings: SerializedTeaHouseOffering[]
+      charterOffering: SerializedTeaHouseOffering | null
+      rerollsThisVisit: number
+      totalRerollsRun: number
+      offeringCounter: number
+      visitDiscountPercentage?: number
+      freeRerollsThisVisit?: number
+    },
+    options: {
+      random?: () => number
+      isCharterUnlocked?: CharterUnlockResolver
+    } = {}
+  ): TeaHouseSystem {
+    const system = new TeaHouseSystem(state.currentStake, options.random)
+    if (options.isCharterUnlocked)
+      system.setCharterUnlockResolver(options.isCharterUnlocked)
     system.flowerCountForVisit = Math.max(0, state.flowerCountForVisit ?? 0)
     system.itemSlotCount = state.itemSlotCount
     system.discountPercentage = state.discountPercentage
@@ -1199,12 +1236,16 @@ export class TeaHouseSystem {
     system.canBuyTiles = state.canBuyTiles ?? false
     system.tilesHaveEditions = state.tilesHaveEditions ?? false
     system.purchasedCharterIds = new Set(state.purchasedCharterIds)
-    system.itemOfferings = state.itemOfferings
-    system.packOfferings = state.packOfferings
+    system.itemOfferings = state.itemOfferings.map(restoreOffering)
+    system.packOfferings = state.packOfferings.map(restoreOffering)
     system.charterOffering = state.charterOffering
+      ? restoreOffering(state.charterOffering)
+      : null
     system.rerollsThisVisit = state.rerollsThisVisit
     system.totalRerollsRun = state.totalRerollsRun
     system.offeringCounter = state.offeringCounter
+    system.visitDiscountPercentage = state.visitDiscountPercentage ?? 0
+    system.freeRerollsThisVisit = state.freeRerollsThisVisit ?? 0
     system.pricingCalculator = new PricingCalculator(state.discountPercentage)
     return system
   }

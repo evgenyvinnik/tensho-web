@@ -40,7 +40,7 @@ import {
 } from './CelestialOrbSystem'
 import { VoidScriptSystem, getVoidScriptsByRarity } from './VoidScriptSystem'
 import { ConsumableRarity } from './ConsumableSystem'
-import { Tile, TileSuit } from '../core/Tile'
+import { Tile, TileSuit, type TileData } from '../core/Tile'
 import { EditionType, EnhancementType } from '../core/TileModifier'
 import { runRandom } from '../game/RunRandom'
 import { tileModifierEntries } from '../core/tileModifierEntries'
@@ -796,11 +796,7 @@ export class BlessingPackSystem {
     packsPerVisit: number
   } {
     return {
-      currentOfferings: this.currentOfferings.map((o) => ({
-        ...o,
-        contents: [...o.contents],
-        selectedIndices: [...o.selectedIndices],
-      })),
+      currentOfferings: structuredClone(this.currentOfferings),
       skipCount: this.skipCount,
       totalPacksOpened: this.totalPacksOpened,
       packsPerVisit: this.packsPerVisit,
@@ -817,13 +813,28 @@ export class BlessingPackSystem {
     packsPerVisit: number
   }): BlessingPackSystem {
     const system = new BlessingPackSystem()
-    system.currentOfferings = state.currentOfferings.map((o) => ({
-      ...o,
-      // Old opened saves cannot prove that rewards were never claimed.
-      isResolved: o.isResolved ?? o.isOpened,
-      contents: [...o.contents],
-      selectedIndices: [...o.selectedIndices],
-    }))
+    system.currentOfferings = structuredClone(state.currentOfferings).map(
+      (o) => ({
+        ...o,
+        // Old opened saves cannot prove that rewards were never claimed.
+        isResolved: o.isResolved ?? o.isOpened,
+        contents: o.contents.map((content) => {
+          if (content.type !== 'Tile') return content
+          const tile = content.data as TileData
+          return {
+            ...content,
+            data: new Tile(
+              tile.suit,
+              tile.rank,
+              tile.id,
+              tile.isRed,
+              tile.modifiers
+            ),
+          }
+        }),
+        selectedIndices: [...o.selectedIndices],
+      })
+    )
     system.skipCount = state.skipCount
     system.totalPacksOpened = state.totalPacksOpened
     system.packsPerVisit = state.packsPerVisit

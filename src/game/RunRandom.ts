@@ -21,9 +21,11 @@
  * Not cryptographic, and it does not need to be: the seed is shown to the
  * player and reproducing a run is the point.
  */
-interface SeededRandom {
+export interface SeededRandom {
   (): number
   clone(): SeededRandom
+  /** Exact uint32 cursor, not the original seed. Zero is a valid cursor. */
+  toState(): number
 }
 
 function generatorFromState(initialState: number): SeededRandom {
@@ -36,11 +38,24 @@ function generatorFromState(initialState: number): SeededRandom {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
   draw.clone = () => generatorFromState(state)
+  draw.toState = () => state
   return draw
 }
 
 export function createSeededRandom(seed: number): SeededRandom {
   return generatorFromState(seed >>> 0 || 1)
+}
+
+/** Restore a cursor without applying new-seed normalization or drawing a value. */
+export function restoreSeededRandom(state: unknown): SeededRandom {
+  if (
+    typeof state !== 'number' ||
+    !Number.isInteger(state) ||
+    state < 0 ||
+    state > 0xffffffff
+  )
+    throw new Error('Invalid random cursor')
+  return generatorFromState(state)
 }
 
 /**
@@ -62,6 +77,25 @@ export type RandomStream =
   | 'omens'
   | 'charters'
 
+const RANDOM_STREAMS: readonly RandomStream[] = [
+  'wall',
+  'shop',
+  'packs',
+  'consumables',
+  'decrees',
+  'modifiers',
+  'mandates',
+  'omens',
+  'charters',
+]
+
+export interface RunRandomState {
+  version: 1
+  seed: number | null
+  /** Unused streams stay absent, so they still start at their derived seed. */
+  streams: Partial<Record<RandomStream, number>>
+}
+
 /** Turn a stream name into an offset, so each gets its own sequence. */
 function streamOffset(stream: RandomStream): number {
   let hash = 0x811c9dc5
@@ -72,7 +106,7 @@ function streamOffset(stream: RandomStream): number {
   return hash
 }
 
-class RunRandom {
+export class RunRandom {
   private seed: number | null = null
   private streams = new Map<RandomStream, SeededRandom>()
 
@@ -95,6 +129,51 @@ class RunRandom {
     for (const [name, draw] of this.streams)
       fork.streams.set(name, draw.clone())
     return fork
+  }
+
+  toState(): RunRandomState {
+    return {
+      version: 1,
+      seed: this.seed,
+      streams: Object.fromEntries(
+        [...this.streams].map(([name, draw]) => [name, draw.toState()])
+      ),
+    }
+  }
+
+  /** Build independently; a malformed save must not disturb a live run. */
+  static fromState(value: unknown): RunRandom {
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      throw new Error('Invalid run random state')
+    const state = value as Record<string, unknown>
+    if (
+      state.version !== 1 ||
+      (state.seed !== null &&
+        (typeof state.seed !== 'number' ||
+          !Number.isSafeInteger(state.seed))) ||
+      !state.streams ||
+      typeof state.streams !== 'object' ||
+      Array.isArray(state.streams)
+    )
+      throw new Error('Invalid run random state')
+    const random = new RunRandom()
+    random.seed = state.seed as number | null
+    for (const [name, cursor] of Object.entries(state.streams)) {
+      if (
+        random.seed === null ||
+        !RANDOM_STREAMS.includes(name as RandomStream)
+      )
+        throw new Error('Invalid run random stream')
+      random.streams.set(name as RandomStream, restoreSeededRandom(cursor))
+    }
+    return random
+  }
+
+  /** Replace only after every stream has passed validation. */
+  restore(state: unknown): void {
+    const restored = RunRandom.fromState(state)
+    this.seed = restored.seed
+    this.streams = restored.streams
   }
 
   /**

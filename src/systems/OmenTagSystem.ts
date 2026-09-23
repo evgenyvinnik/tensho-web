@@ -34,14 +34,22 @@ import {
   SMALL_ROUND_OMENS,
   LARGE_ROUND_OMENS,
 } from '../config/omenDefinitions'
+import { useOmenStore, type ActiveOmenTag } from '../stores/omenStore'
 import {
-  useOmenStore,
-  type ActiveOmenTag,
-} from '../stores/omenStore'
-import { createSeededRandom } from '../game/RunRandom'
+  createSeededRandom,
+  restoreSeededRandom,
+  type SeededRandom,
+} from '../game/RunRandom'
 
 // Re-export types that may be needed
-export type OmenTrigger = 'OnNextShop' | 'OnNextRound' | 'OnNextHand' | 'OnNextVoidScript' | 'OnAcquire' | 'Passive' | 'OnRoundSkip'
+export type OmenTrigger =
+  | 'OnNextShop'
+  | 'OnNextRound'
+  | 'OnNextHand'
+  | 'OnNextVoidScript'
+  | 'OnAcquire'
+  | 'Passive'
+  | 'OnRoundSkip'
 
 // Type alias for backward compatibility
 export type ActiveOmen = ActiveOmenTag & { definition: OmenDefinition }
@@ -75,10 +83,11 @@ export class OmenTagSystem {
   private pendingOmens: OmenDefinition[] = []
   private interestCapBonus: number = 0
   private interestBoostRoundsRemaining: number = 0
-  private seededRandom: (() => number) | null = null
+  private seededRandom: SeededRandom | null = null
 
-  constructor() {
-    this.reset()
+  constructor({ preserveStore = false }: { preserveStore?: boolean } = {}) {
+    // A staged restore must not erase the currently playing run's global tags.
+    if (!preserveStore) this.reset()
   }
 
   /**
@@ -93,6 +102,7 @@ export class OmenTagSystem {
     this.pendingOmens = []
     this.interestCapBonus = 0
     this.interestBoostRoundsRemaining = 0
+    this.seededRandom = null
     useOmenStore.getState().clearForNewRun()
   }
 
@@ -168,9 +178,12 @@ export class OmenTagSystem {
     // Add the omen to the store
     const previousIds = new Set(store.activeTags.map((omen) => omen.id))
     const activeOmen = store.addOmen(selectedOmen)
-    const acquiredOmens = useOmenStore.getState().activeTags.filter(
-      (omen) => !previousIds.has(omen.id) && omen.definitionId === selectedOmen.id
-    )
+    const acquiredOmens = useOmenStore
+      .getState()
+      .activeTags.filter(
+        (omen) =>
+          !previousIds.has(omen.id) && omen.definitionId === selectedOmen.id
+      )
     const copies = acquiredOmens.length
 
     // Calculate immediate gold from omen
@@ -284,7 +297,10 @@ export class OmenTagSystem {
     rarityChances: Record<OmenRarity, number>
   } {
     if (roundType === 'Boss') {
-      return { possibleOmens: [], rarityChances: {} as Record<OmenRarity, number> }
+      return {
+        possibleOmens: [],
+        rarityChances: {} as Record<OmenRarity, number>,
+      }
     }
 
     const availableOmens =
@@ -340,10 +356,16 @@ export class OmenTagSystem {
   /**
    * Trigger omens for entering shop
    */
-  triggerShopOmens(canApply: (definition: OmenDefinition) => boolean = () => true): {
+  triggerShopOmens(
+    canApply: (definition: OmenDefinition) => boolean = () => true
+  ): {
     discount: number
     freeRerolls: number
-    guaranteedItems: { itemType: string; omenId: string; minDecreeRarity?: DecreeRarity }[]
+    guaranteedItems: {
+      itemType: string
+      omenId: string
+      minDecreeRarity?: DecreeRarity
+    }[]
     decreeEdition: { editionType: string; omenId: string } | null
     decreeEditions: { editionType: string; omenId: string }[]
     goldPenalty: number
@@ -355,7 +377,11 @@ export class OmenTagSystem {
     let decreeEdition: { editionType: string; omenId: string } | null = null
     const decreeEditions: { editionType: string; omenId: string }[] = []
     let goldPenalty = 0
-    const guaranteedItems: { itemType: string; omenId: string; minDecreeRarity?: DecreeRarity }[] = []
+    const guaranteedItems: {
+      itemType: string
+      omenId: string
+      minDecreeRarity?: DecreeRarity
+    }[] = []
 
     // Consume the triggered omens
     const consumedOmenIds: string[] = []
@@ -371,7 +397,11 @@ export class OmenTagSystem {
       } else if (effect.type === 'free_reroll') {
         freeRerolls += Number(effect.value) || 0
       } else if (effect.type === 'guaranteed_item' && effect.itemType) {
-        guaranteedItems.push({ itemType: effect.itemType, omenId: omen.id, minDecreeRarity: effect.minDecreeRarity })
+        guaranteedItems.push({
+          itemType: effect.itemType,
+          omenId: omen.id,
+          minDecreeRarity: effect.minDecreeRarity,
+        })
       } else if (effect.type === 'edition_apply' && effect.editionType) {
         decreeEdition = { editionType: effect.editionType, omenId: omen.id }
         decreeEditions.push(decreeEdition)
@@ -600,7 +630,8 @@ export class OmenTagSystem {
    */
   getActiveOmens(): ActiveOmen[] {
     const store = useOmenStore.getState()
-    return store.getActiveTags()
+    return store
+      .getActiveTags()
       .map((tag) => ({
         ...tag,
         definition: store.getTagDefinition(tag.definitionId),
@@ -689,6 +720,9 @@ export class OmenTagSystem {
     totalSkippedRounds: number
     lockedSeasonType: SeasonVariant | null
     pendingOmens: OmenDefinition[]
+    interestCapBonus: number
+    interestBoostRoundsRemaining: number
+    randomCursor: number | null
   } {
     return {
       currentAct: this.currentAct,
@@ -697,6 +731,9 @@ export class OmenTagSystem {
       totalSkippedRounds: this.totalSkippedRounds,
       lockedSeasonType: this.lockedSeasonType,
       pendingOmens: [...this.pendingOmens],
+      interestCapBonus: this.interestCapBonus,
+      interestBoostRoundsRemaining: this.interestBoostRoundsRemaining,
+      randomCursor: this.seededRandom?.toState() ?? null,
     }
   }
 
@@ -710,14 +747,24 @@ export class OmenTagSystem {
     totalSkippedRounds: number
     lockedSeasonType: SeasonVariant | null
     pendingOmens: OmenDefinition[]
+    interestCapBonus?: number
+    interestBoostRoundsRemaining?: number
+    randomCursor?: number | null
   }): OmenTagSystem {
-    const system = new OmenTagSystem()
+    const system = new OmenTagSystem({ preserveStore: true })
     system.currentAct = state.currentAct
     system.currentRound = state.currentRound
     system.skippedRoundsThisAct = state.skippedRoundsThisAct
     system.totalSkippedRounds = state.totalSkippedRounds
     system.lockedSeasonType = state.lockedSeasonType
     system.pendingOmens = [...state.pendingOmens]
+    system.interestCapBonus = state.interestCapBonus ?? 0
+    system.interestBoostRoundsRemaining =
+      state.interestBoostRoundsRemaining ?? 0
+    system.seededRandom =
+      state.randomCursor == null
+        ? null
+        : restoreSeededRandom(state.randomCursor)
     return system
   }
 }
@@ -777,7 +824,9 @@ export function calculateSkipValue(
     const scalingPenalty = context.scalingDecreeCount * 10
     skipValue -= scalingPenalty
     playValue += scalingPenalty
-    reasons.push(`Scaling decrees want more rounds: -${scalingPenalty} skip value`)
+    reasons.push(
+      `Scaling decrees want more rounds: -${scalingPenalty} skip value`
+    )
   }
 
   // High stakes need economy

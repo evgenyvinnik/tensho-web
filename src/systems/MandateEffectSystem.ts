@@ -19,7 +19,11 @@ import {
   MandateDefinition,
   selectRandomMandate,
 } from '../config/mandateDefinitions'
-import { createSeededRandom } from '../game/RunRandom'
+import {
+  createSeededRandom,
+  restoreSeededRandom,
+  type SeededRandom,
+} from '../game/RunRandom'
 
 // =============================================================================
 // MANDATE STATE TYPES
@@ -93,7 +97,7 @@ export interface MandateScoringContext {
 export class MandateEffectSystem {
   private state: MandateState
   private debuffSystem: DebuffSystem | null = null
-  private seededRandom: (() => number) | null = null
+  private seededRandom: SeededRandom | null = null
 
   constructor() {
     this.state = this.createInitialState()
@@ -271,10 +275,8 @@ export class MandateEffectSystem {
         this.state.shuffledDecreeIds = decrees.map((decree) => decree.id)
         for (let i = this.state.shuffledDecreeIds.length - 1; i > 0; i--) {
           const j = Math.floor(this.getRandom() * (i + 1))
-          ;[this.state.shuffledDecreeIds[i], this.state.shuffledDecreeIds[j]] = [
-            this.state.shuffledDecreeIds[j],
-            this.state.shuffledDecreeIds[i],
-          ]
+          ;[this.state.shuffledDecreeIds[i], this.state.shuffledDecreeIds[j]] =
+            [this.state.shuffledDecreeIds[j], this.state.shuffledDecreeIds[i]]
         }
         result.message += ' - All decrees shuffled and face-down'
         break
@@ -550,7 +552,9 @@ export class MandateEffectSystem {
       )
 
       if (unlockableTiles.length > 0) {
-        const randomIndex = Math.floor(this.getRandom() * unlockableTiles.length)
+        const randomIndex = Math.floor(
+          this.getRandom() * unlockableTiles.length
+        )
         const tile = unlockableTiles[randomIndex]
         this.state.lockedTileIds.add(tile.id)
         result.lockedTileId = tile.id
@@ -849,7 +853,9 @@ export class MandateEffectSystem {
    */
   shouldZeroGoldForMostPlayedYaku(): boolean {
     if (!this.state.activeMandate) return false
-    return this.state.activeMandate.effect.type === 'most_played_yaku_zeroes_gold'
+    return (
+      this.state.activeMandate.effect.type === 'most_played_yaku_zeroes_gold'
+    )
   }
 
   /**
@@ -913,7 +919,8 @@ export class MandateEffectSystem {
     if (!this.state.activeMandate) return false
 
     if (context.isStartingHand && this.isFirstHandFaceDown()) return true
-    if (context.afterHandPlay && this.shouldTilesBeFaceDownAfterPlay()) return true
+    if (context.afterHandPlay && this.shouldTilesBeFaceDownAfterPlay())
+      return true
     if (this.areHonorTilesFaceDown() && tile.isHonor) return true
 
     const ratio = this.getFaceDownTileRatio()
@@ -935,6 +942,7 @@ export class MandateEffectSystem {
    * Serialize mandate system state
    */
   toJSON(): {
+    randomCursor: number | null
     activeMandate: MandateDefinition | null
     isDefeated: boolean
     scoredYakuIds: string[]
@@ -951,6 +959,7 @@ export class MandateEffectSystem {
     usedTileIds: string[]
   } {
     return {
+      randomCursor: this.seededRandom?.toState() ?? null,
       activeMandate: this.state.activeMandate,
       isDefeated: this.state.isDefeated,
       scoredYakuIds: Array.from(this.state.scoredYakuIds),
@@ -972,6 +981,7 @@ export class MandateEffectSystem {
    * Restore from serialized state
    */
   static fromJSON(data: {
+    randomCursor?: number | null
     activeMandate: MandateDefinition | null
     isDefeated: boolean
     scoredYakuIds: string[]
@@ -988,6 +998,8 @@ export class MandateEffectSystem {
     usedTileIds: string[]
   }): MandateEffectSystem {
     const system = new MandateEffectSystem()
+    system.seededRandom =
+      data.randomCursor == null ? null : restoreSeededRandom(data.randomCursor)
     system.state = {
       activeMandate: data.activeMandate,
       isDefeated: data.isDefeated,

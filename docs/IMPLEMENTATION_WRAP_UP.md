@@ -6,7 +6,22 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current table-setup checkpoint
+## Current Classic-save prerequisites
+
+Internal restoration now keeps exact random cursors, remaining Omen interest
+effects, visit discounts/free rerolls and usable shop/pack Tile instances.
+Staged Omen construction no longer clears live tags. Detached shop/pack
+snapshots retain purchases and one-time reward claims. Full units passed
+**1,207/1,207 in 107 files**, with **18/18 browser regressions**, strict
+TypeScript, targeted lint and a Pages-base production/PWA build. Nine defects
+were reproduced before repair; the [save implementation ledger](CLASSIC_RUN_PERSISTENCE.md)
+records those failures and a corrected multi-stream comparison fixture.
+This is prerequisite code, **not a working Classic autosave/resume feature**.
+The complete engine/shop/meta snapshot, durable storage and recovery controls
+remain the next implementation work. No new art is warranted for these internal
+codecs; existing generated artwork is unchanged.
+
+## Preceding table-setup checkpoint
 
 Table selection now has localized names/rules/lock hints/accessibility labels,
 an optional cumulative-rules disclosure, native dialog focus isolation and roving

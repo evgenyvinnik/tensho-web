@@ -1,9 +1,36 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { createSeededRandom, runRandom } from './RunRandom'
+import {
+  createSeededRandom,
+  restoreSeededRandom,
+  RunRandom,
+  runRandom,
+  type RandomStream,
+} from './RunRandom'
 
 afterEach(() => runRandom.reset())
 
 describe('createSeededRandom', () => {
+  it('restores an exact zero cursor instead of treating it as a fresh seed', () => {
+    const draw = createSeededRandom(0x92d4860b)
+    draw()
+    expect(draw.toState()).toBe(0)
+    const restored = restoreSeededRandom(
+      JSON.parse(JSON.stringify(draw.toState()))
+    )
+    expect([restored(), restored(), restored()]).toEqual([
+      draw(),
+      draw(),
+      draw(),
+    ])
+    expect(restoreSeededRandom(0)()).not.toBe(createSeededRandom(0)())
+  })
+
+  it.each([-1, 0x100000000, 0.5, NaN, Infinity, '1', null, undefined])(
+    'rejects an invalid cursor %s without normalizing it',
+    (cursor) => {
+      expect(() => restoreSeededRandom(cursor)).toThrow('Invalid random cursor')
+    }
+  )
   it('preserves the published generator sequence when adding clone support', () => {
     const draw = createSeededRandom(42)
     expect([draw(), draw(), draw()]).toEqual([
@@ -37,6 +64,86 @@ describe('createSeededRandom', () => {
 })
 
 describe('runRandom', () => {
+  it.each([0, 73, 1790137101263, -17])(
+    'restores all nine streams and unused streams for seed %s',
+    (seed) => {
+      const names: RandomStream[] = [
+        'wall',
+        'shop',
+        'packs',
+        'consumables',
+        'decrees',
+        'modifiers',
+        'mandates',
+        'omens',
+        'charters',
+      ]
+      runRandom.start(seed)
+      // Uneven use plus streams that have never been initialized.
+      for (let i = 0; i < 7; i++)
+        for (let j = 0; j <= i; j++) runRandom.next(names[i])
+      const state = JSON.parse(JSON.stringify(runRandom.toState()))
+      const restored = RunRandom.fromState(state)
+      expect(restored.toState()).toEqual(state)
+      const sample = (random: RunRandom) =>
+        Array.from({ length: 30 }, () => names.map((name) => random.next(name)))
+      expect(sample(restored)).toEqual(sample(runRandom))
+      // The snapshot is detached from subsequent cursor advancement.
+      expect(RunRandom.fromState(state).toState()).toEqual(state)
+    }
+  )
+
+  it('replaces the live singleton only after validating every stream', () => {
+    runRandom.start(12)
+    runRandom.next('shop')
+    const before = runRandom.toState()
+    const invalid = { version: 1, seed: 99, streams: { wall: 12, shop: -1 } }
+    expect(() => runRandom.restore(invalid)).toThrow()
+    expect(runRandom.toState()).toEqual(before)
+    const restored = RunRandom.fromState(before)
+    expect(runRandom.next('shop')).toBe(restored.next('shop'))
+    runRandom.restore(before)
+    expect(runRandom.toState()).toEqual(before)
+  })
+
+  it('supports the unseeded state but never invents cursors for it', () => {
+    const state = runRandom.toState()
+    expect(state).toEqual({ version: 1, seed: null, streams: {} })
+    const restored = RunRandom.fromState(state)
+    expect(restored.isSeeded).toBe(false)
+    expect(() =>
+      RunRandom.fromState({ ...state, streams: { wall: 0 } })
+    ).toThrow()
+    runRandom.start(88)
+    runRandom.restore(state)
+    expect(runRandom.isSeeded).toBe(false)
+  })
+
+  it('keeps a saved zero cursor and isolates restored and exported state', () => {
+    const state = { version: 1, seed: 7, streams: { shop: 0 } }
+    const restored = RunRandom.fromState(state)
+    state.streams.shop = 99
+    const saved = restored.toState()
+    saved.streams.shop = 42
+    expect(restored.next('shop')).toBe(restoreSeededRandom(0)())
+  })
+
+  it.each([
+    null,
+    [],
+    {},
+    { version: 2, seed: 7, streams: {} },
+    { version: 1, seed: '7', streams: {} },
+    { version: 1, seed: 0.5, streams: {} },
+    { version: 1, seed: Infinity, streams: {} },
+    { version: 1, seed: Number.MAX_SAFE_INTEGER + 1, streams: {} },
+    { version: 1, seed: 7, streams: [] },
+    { version: 1, seed: 7, streams: null },
+    { version: 1, seed: 7, streams: { unknown: 0 } },
+    { version: 1, seed: 7, streams: { shop: null } },
+  ])('rejects malformed or unsupported snapshots %#', (state) => {
+    expect(() => RunRandom.fromState(state)).toThrow()
+  })
   it('forks initialized and unused streams without moving the source cursor', () => {
     runRandom.start(73)
     runRandom.next('wall')
