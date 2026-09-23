@@ -155,7 +155,7 @@ Published as **v1.0.260923-2**. GitHub independently passed all 1,097 units and
 the build; the public manifest/tag and hosted desktop/touch smoke checks match.
 See [publication evidence](RELEASE_IMPLEMENTATION.md#pack-provenance-publication-checkpoint).
 
-## Achievement-gated offers and purchases (local follow-up)
+## Achievement-gated offers and purchases
 
 The canonical availability rule now requires all three conditions for an upgrade:
 its persistent unlock is earned, its base is owned in the current run, and the
@@ -224,6 +224,12 @@ The final Pages-base production/PWA build passed: 343 modules, main entry
 Browserslist warnings remain. Browser artifacts are under
 `/tmp/tensho-charter-eligibility-HIINkp/browser-migration`.
 The existing generated artwork is preserved; this rules wiring adds no bitmap.
+
+Published as **v1.0.260923-3** after all thirteen local release-workflow checks
+also passed. Independent CI passed all 1,120 units and the production/PWA build.
+The public manifest and remote tag match; fresh desktop/touch smoke checks passed
+Table Loop placement/refill/reload and Spanish Classic loading without page errors.
+See [publication evidence](RELEASE_IMPLEMENTATION.md#charter-eligibility-publication-checkpoint).
 
 ## Remaining Charter audit
 

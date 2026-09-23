@@ -4,17 +4,18 @@
 
 **Last verified:** September 22, 2026
 
-**Current local follow-up:** All sixteen upgraded Charters now require an earned
+**Current published follow-up:** All sixteen upgraded Charters now require an earned
 unlock and a base owned in this run, both when generating offers and confirming
 payment. New runs, stale offers and duplicate purchases cannot bypass the rule.
 Liquidation now retains a qualifying past run's ten-Charter count. Final full
 regression passed **1,120/1,120 in 101 files**, with **44/44 browser checks** and
 **10/10 final purchase/reload/legacy-hydration checks**. Recorded past upgrade
 purchases retain access without treating Archive discovery as an unlock. Strict
-TypeScript, targeted lint and the production/PWA build passed. Not yet deployed.
-[Eligibility evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md#achievement-gated-offers-and-purchases-local-follow-up).
+TypeScript, targeted lint and the production/PWA build passed. Deployed as
+**v1.0.260923-3**, with independent CI and hosted desktop/touch verification.
+[Eligibility evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md#achievement-gated-offers-and-purchases).
 
-**Current published follow-up:** Omen Lens/Observatory now count successfully used
+**Preceding published follow-up:** Omen Lens/Observatory now count successfully used
 pack-sourced instances, not all Seal/Orb uses. Generated copies and unknown legacy
 items do not gain pack credit; existing unlocks/general-use totals are retained.
 All eight English/Spanish desktop/touch purchase-to-use-to-reload browser checks

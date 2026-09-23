@@ -8,7 +8,7 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Charter-progression checkpoint
 
-Local follow-up: canonical offer/purchase eligibility now checks the persistent
+Published follow-up: canonical offer/purchase eligibility now checks the persistent
 unlock, current-run base and non-ownership for every upgraded Charter. The
 application supplies live progress without coupling pure engines to stores.
 Liquidation retains a qualifying past run rather than demanding ten again after
@@ -16,9 +16,12 @@ acquiring its base. Returning players retain recorded past upgrade purchases,
 without granting eligibility from Archive-only discovery. Final full regression
 passed **1,120/1,120 in 101 files**, all **44/44 browser checks** passed, and
 **10/10 final purchase/reload/legacy-hydration cases** passed. Strict TypeScript,
-targeted lint and the production/PWA build passed. This is not yet deployed.
+targeted lint and the production/PWA build passed. Deployed as **v1.0.260923-3**;
+independent CI passed all 1,120 units and the build. The public manifest/tag and
+fresh desktop/touch gameplay checks match. This checkpoint does not resolve the
+separate mechanics choices or establish whole-project completion.
 
-Published follow-up: pack-use provenance now follows the acquired Seal/Orb instance
+Preceding published follow-up: pack-use provenance now follows the acquired Seal/Orb instance
 through successful consumption. Omen Lens/Observatory no longer count ordinary
 purchases or generated copies toward their pack-specific prerequisites. Existing
 unlocks are preserved. Eight desktop/touch English/Spanish browser flows passed;

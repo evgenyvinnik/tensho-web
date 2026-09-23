@@ -1,7 +1,36 @@
 # Release versioning and provenance
 
 **Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
-**v1.0.260923-2**.
+**v1.0.260923-3**.
+
+## Charter eligibility publication checkpoint
+
+Checkpoint `001099189ef4e108b58491807f97a498a34fed7d` enforces persistent upgrade
+eligibility plus current-run base ownership for offers and purchases, retains
+Liquidation's qualifying historical run and quietly preserves actual legacy
+upgrade purchases. Archive-only discovery does not grant eligibility.
+[Actions run 35806468045](https://github.com/evgenyvinnik/tensho-web/actions/runs/35806468045)
+passed release checks, **1,120 tests in 101 files**, the production/PWA build and
+Pages deployment. Local evidence includes 44 earlier browser checks and ten final
+purchase/reload/legacy-hydration cases; fixtures and initial failures are retained
+in [Charter evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md#achievement-gated-offers-and-purchases).
+
+- Version/tag: **1.0.260923-3** / `v1.0.260923-3`.
+- Built/tagged commit: `c3924b464c7e17fea5e414dd5852ba1586e92b07`.
+- Public release manifest and remote tag match. The unchanged Money Tree PNG
+  matches its recorded SHA-256.
+- Fresh 1280×800 and 320×740 touch contexts passed displayed version, seeded
+  Table Loop pair placement/refill, reload retaining spent actions and Spanish
+  Classic loading, without JavaScript page errors.
+- Build: 343 modules, 269 precache entries / 65,775.37 KiB. Existing bundle,
+  Browserslist and Actions-runtime warnings remain.
+- Hosted script/screenshots: `/tmp/tensho-charter-eligibility-HIINkp/`.
+
+Work was already on main; no additional branch merge or history rewrite was
+necessary. Main was fast-forwarded to the workflow version commit; this
+evidence-only follow-up uses `[skip ci]`. Separate mechanics choices, spending
+classification and Full Unlock profile behavior remain open. Fresh browser
+checks do not prove physical-device behavior or installed-PWA upgrade handling.
 
 ## Pack provenance publication checkpoint
 
