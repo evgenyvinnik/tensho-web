@@ -62,6 +62,20 @@ constructors without an enclosing schema and cross-state validation.
 - Two additional pending-pack tests reproduced lost Tile prototypes and shared
   mutable contents (**12 passed, 2 failed**); both are repaired.
 - Final full suite: **1,207/1,207 tests in 107 files**, 44.42 seconds.
+- First CI publication attempt, [run 35818485748](https://github.com/evgenyvinnik/tensho-web/actions/runs/35818485748),
+  passed **1,206/1,207** but caught an existing localization-test race. The test
+  waited for a multiplier formatted as `2.60`, which can appear while the
+  independently formatted total still floors to `584`. It then asserted `585`
+  immediately after changing language. The assertion now waits for **both**
+  counters within the same existing deadline before checking language changes;
+  no production scoring/animation code, deadline or retry count changed.
+  The failed attempt published tag `v1.0.260923-7`, but did **not** build or deploy
+  a Pages artifact. A tag alone is not deployment evidence.
+- After the test correction, the full local suite with CI's two-worker setting
+  passed **1,207/1,207 in 107 files**, 166.34 seconds. The score-formatting check
+  passed in both normal and reduced-motion modes. A targeted formatting check
+  flagged the new assertion's line wrapping; it was formatted before publication.
+- All **13/13** release-workflow regression checks passed locally.
 - Strict TypeScript, targeted ESLint and `git diff --check` passed.
 - Pages-base production/PWA build passed: 344 modules and 270 precached entries
   (67,794.28 KiB). Existing large-chunk and outdated Browserslist warnings remain.

@@ -73,10 +73,16 @@ it.each([true, false])(
       </>
     )
     await waitFor(
-      () =>
+      () => {
         expect(container.querySelector('[data-score-mult]')).toHaveTextContent(
           /^2,60$/
-        ),
+        )
+        // Rounding can show 2.60 while the total is still 584.x. Wait for
+        // both counters before testing that a language change preserves them.
+        expect(
+          container.querySelector('[data-score-result]')
+        ).toHaveTextContent(/^585$/)
+      },
       { timeout: 3000 }
     )
     expect(
