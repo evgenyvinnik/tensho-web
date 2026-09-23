@@ -4,15 +4,17 @@
 
 **Last verified:** September 22, 2026
 
-**Current local checkpoint:** Table setup has localized cumulative difficulty rules,
+**Current published checkpoint:** Table setup has localized cumulative difficulty rules,
 native modal/keyboard behavior, a shared content scroll area and short-phone CJK
 layout corrections. Confirmed table/stake choices survive reload and produce the
 right next-run rules; invalid/locked saved choices fall back safely. Existing
 illustrations and colors are preserved. All **1,165/1,165 tests in 106 files**,
 **26 browser checks**, the final **6/6 selector follow-up**, strict TypeScript,
 targeted lint and production/PWA build passed. [Evidence](TABLE_SETUP_IMPLEMENTATION.md)
-retains prior failures. Publication is pending; this is saved setup, not Classic
-run persistence or whole-project completion.
+retains prior failures. Deployed as **v1.0.260923-6** after independent CI passed
+all tests/build. The public manifest/tag and hosted desktop/touch saved-setup,
+localized-rule and gameplay checks match. This is saved setup, not Classic run
+persistence or whole-project completion.
 
 **Preceding published checkpoint:** Full Unlock now has an explicit Settings confirmation,
 persistent profile mode and achievement suppression, without free purchases or

@@ -87,5 +87,20 @@ coordination, all malformed-save recovery and cloud profiles are not claimed.
 Artifacts and isolated browser configuration: `/tmp/tensho-table-selector-Kjbuft/`.
 Translations have completeness/interpolation checks, not native-speaker approval.
 Physical-device/Safari/assistive-technology review and installed-PWA upgrade testing
-remain open. This checkpoint is not yet published and does not prove project
-completion or that the game is fun for newcomers.
+remain open. This checkpoint does not prove project completion or that the game
+is fun for newcomers.
+
+## Publication
+
+Published as **v1.0.260923-6**, code checkpoint
+`0e587d61a399bb63fa496c598f15f5fbe34c9b37`, built/tagged commit
+`bbc87dfe512f95aa6071f4c533fb85312310f78f`.
+[Actions run 35817112836](https://github.com/evgenyvinnik/tensho-web/actions/runs/35817112836)
+independently passed all 1,165 tests in 106 files, release checks, production/PWA
+build, provenance and Pages deployment. The public manifest and remote tag match.
+Fresh hosted 1280×800 and 320×568 touch contexts passed native modality, Full
+Unlock activation, cumulative rules, confirmed selection/reload, actual Classic
+Dragon's Den/Gold start at 731 points, Spanish rules with decimal-comma formatting,
+and real Table Loop placement/refill/reload. No JavaScript page errors occurred.
+These isolated profiles did not change the user's saved game. The evidence-only
+follow-up uses `[skip ci]`; main includes the workflow's version commit.

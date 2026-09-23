@@ -1,7 +1,36 @@
 # Release versioning and provenance
 
 **Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
-**v1.0.260923-5**.
+**v1.0.260923-6**.
+
+## Table setup publication checkpoint
+
+Checkpoint `0e587d61a399bb63fa496c598f15f5fbe34c9b37` adds localized cumulative
+difficulty rules, a native accessible modal, a shared scroll area, CJK phone-layout
+corrections and validated persistence of confirmed table/stake preferences.
+Existing generated artwork and gameplay modifiers are preserved.
+[Actions run 35817112836](https://github.com/evgenyvinnik/tensho-web/actions/runs/35817112836)
+passed **1,165 tests in 106 files**, release checks, production/PWA build,
+provenance and Pages deployment. Local validation passed **26/26 browser checks**,
+then **6/6 selector checks** after a conditional-sticker wording correction.
+Strict TypeScript, targeted lint and the local production/PWA build also passed.
+[Implementation evidence](TABLE_SETUP_IMPLEMENTATION.md) retains earlier failures.
+
+- Version/tag: **1.0.260923-6** / `v1.0.260923-6`.
+- Built/tagged commit: `bbc87dfe512f95aa6071f4c533fb85312310f78f`.
+- Public manifest and remote tag match this commit.
+- Fresh 1280×800 and 320×568 touch contexts passed native modality, saved setup
+  after reload, cumulative English/Spanish rules, actual Dragon's Den/Gold Classic
+  start at 731 points, and Table Loop placement/refill/reload, with no JavaScript
+  page errors. These checks did not modify the user's browser profile.
+- Build: 344 modules, 270 precache entries / 67,792.23 KiB. Existing bundle,
+  Browserslist and Actions-runtime warnings remain; no new raster asset was added.
+- Local/hosted artifacts and script: `/tmp/tensho-table-selector-Kjbuft/`.
+
+Main was fast-forwarded to the workflow version commit; this evidence-only
+follow-up uses `[skip ci]`. Confirmed setup persistence is not Classic run
+persistence. Separate mechanics choices, native-speaker/physical-device review,
+installed-PWA upgrades and broader project completion remain open.
 
 ## Full Unlock publication checkpoint
 

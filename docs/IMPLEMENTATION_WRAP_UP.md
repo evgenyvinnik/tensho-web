@@ -18,7 +18,9 @@ The actual saved Dragon's Den/Gold selection starts a 731-point Classic round.
 All **1,165/1,165 units in 106 files**, **26/26 browser checks**, and **6/6 final
 wording follow-up checks** passed, with strict TypeScript, targeted lint and the
 production/PWA build. [Table setup evidence](TABLE_SETUP_IMPLEMENTATION.md)
-retains initial defects and fixture/timeouts. Publication remains pending.
+retains initial defects and fixture/timeouts. Deployed as **v1.0.260923-6** after
+independent CI passed all tests/build. The public manifest/tag and fresh hosted
+desktop/touch saved-setup, localized rules and gameplay checks match.
 Existing generated table artwork is preserved. This does not add Classic run
 persistence or settle the outstanding mechanics choices.
 
@@ -36,8 +38,9 @@ retains prior failures and exact scope. Strict TypeScript, targeted lint and the
 production/PWA build passed. Deployed as **v1.0.260923-5** after independent CI
 passed all tests/build; public manifest/tag and fresh desktop/touch profile and
 gameplay checks match. Main includes the workflow's version commit.
-All thirteen locales have the new consent/status/error copy, but existing English
-stake descriptions, native-speaker review and wider implementation remain open.
+All thirteen locales have the new consent/status/error copy. English-only stake
+descriptions are addressed above; native-speaker review and wider implementation
+remain open.
 
 ## Preceding Charter-progression checkpoint
 
