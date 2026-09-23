@@ -4,16 +4,20 @@
 
 **Last verified:** September 22, 2026
 
-**Current local follow-up:** Classic save prerequisites now retain exact RNG
+**Current published follow-up:** Classic save prerequisites now retain exact RNG
 cursors, Omen interest durations, shop discounts/free rerolls and usable Tile
 rewards across subsystem JSON restoration. Restoration no longer erases live
 Omen tags; detached shop/pack snapshots preserve purchase/claim state. All
 **1,207/1,207 units in 107 files**, **18/18 browser regressions**, strict
 TypeScript, targeted lint and the production/PWA build passed. This does
 **not** enable Classic autosave/resume; authoritative whole-run snapshots,
-storage, recovery UI and reload tests remain. [Evidence and remaining work](CLASSIC_RUN_PERSISTENCE.md).
+storage, recovery UI and reload tests remain. Deployed as **v1.0.260923-8** after
+independent CI passed all tests/build. Public manifest/tag and hosted desktop/touch
+gameplay checks match. An initial CI failure exposed a localization-test race;
+the corrected full two-worker suite also passed without increasing deadlines.
+[Evidence and remaining work](CLASSIC_RUN_PERSISTENCE.md).
 
-**Current published checkpoint:** Table setup has localized cumulative difficulty rules,
+**Preceding published checkpoint:** Table setup has localized cumulative difficulty rules,
 native modal/keyboard behavior, a shared content scroll area and short-phone CJK
 layout corrections. Confirmed table/stake choices survive reload and produce the
 right next-run rules; invalid/locked saved choices fall back safely. Existing

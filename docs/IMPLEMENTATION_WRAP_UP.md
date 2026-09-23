@@ -19,7 +19,11 @@ records those failures and a corrected multi-stream comparison fixture.
 This is prerequisite code, **not a working Classic autosave/resume feature**.
 The complete engine/shop/meta snapshot, durable storage and recovery controls
 remain the next implementation work. No new art is warranted for these internal
-codecs; existing generated artwork is unchanged.
+codecs; existing generated artwork is unchanged. Deployed as **v1.0.260923-8**
+after independent CI and hosted desktop/touch gameplay checks passed, with a
+matching public manifest/tag. The failed v7 attempt and its localization-test
+race are retained in the ledger; the corrected full two-worker run passed all
+1,207 tests without widening deadlines or modifying animation/scoring behavior.
 
 ## Preceding table-setup checkpoint
 

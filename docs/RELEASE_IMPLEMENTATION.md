@@ -1,7 +1,41 @@
 # Release versioning and provenance
 
 **Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
-**v1.0.260923-6**.
+**v1.0.260923-8**.
+
+## Classic restoration prerequisite checkpoint
+
+Checkpoint `dc1f0049281e4b3bfd1d1c9b27dc264000ab706e` repairs internal subsystem
+serialization: exact RNG cursors, Omen durations, non-destructive Omen
+construction, shop benefits and usable Tile rewards. It does **not** enable
+Classic autosave/resume. [Implementation evidence](CLASSIC_RUN_PERSISTENCE.md)
+records reproduced defects, remaining work and the failed first CI attempt.
+
+Run `35818485748` published tag `v1.0.260923-7` but failed an existing score
+localization test (**1,206 passed / 1 failed**) before building/deploying Pages.
+The test waited for a rounded multiplier before checking an unfinished total.
+Correction `3a7be2dd8033babeedd82f227ef4362cd6b1bc8d` waits for both counters
+within the original deadline, without changing production animation or scoring.
+The full local two-worker rerun passed **1,207/1,207 in 107 files**.
+
+[Actions run 35818907763](https://github.com/evgenyvinnik/tensho-web/actions/runs/35818907763)
+then independently passed all tests, release checks, production/PWA build,
+provenance and deployment. Local checks also passed **18/18 desktop/touch
+browser regressions**, strict TypeScript, targeted lint and the production build.
+
+- Version/tag: **1.0.260923-8** / `v1.0.260923-8`.
+- Built/tagged commit: `58ccc039d67490b02d99d45aab1dc63e7af49777`.
+- Public manifest and remote tag match this commit.
+- Fresh 1280×800 and 320×568 touch contexts passed the displayed version, actual
+  Classic staging/payment, Table Loop placement/refill/reload and no JavaScript
+  page errors. The user's browser profile was not used.
+- Build: 344 modules, 270 precache entries / 67,794.28 KiB. Existing bundle,
+  Browserslist and Actions-runtime warnings remain. No raster asset changed.
+- Browser artifacts and hosted script: `/tmp/tensho-classic-save-3TxjgM/`.
+
+Main includes the workflow version commit. This evidence-only follow-up uses
+`[skip ci]`. Classic save/reload, physical-device and installed-worker upgrade
+behavior, outstanding mechanics decisions and broader completion remain open.
 
 ## Table setup publication checkpoint
 

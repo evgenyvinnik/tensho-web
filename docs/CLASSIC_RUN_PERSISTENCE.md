@@ -90,6 +90,28 @@ No UI, translations, art, gameplay balance or deployment workflow is changed by
 this prerequisite checkpoint. Existing generated artwork is retained. A new
 illustration is not needed for internal serialization code.
 
+## Published prerequisite checkpoint
+
+Deployed **v1.0.260923-8** after
+[Actions run 35818907763](https://github.com/evgenyvinnik/tensho-web/actions/runs/35818907763)
+independently passed all **1,207 tests in 107 files**, release checks, the
+production/PWA build, provenance validation and Pages deployment.
+
+- Implementation commit: `dc1f0049281e4b3bfd1d1c9b27dc264000ab706e`.
+- Localization-test correction: `3a7be2dd8033babeedd82f227ef4362cd6b1bc8d`.
+- Built/tagged commit: `58ccc039d67490b02d99d45aab1dc63e7af49777`.
+- Public `release.json` and remote `v1.0.260923-8` tag match that exact commit.
+- Fresh 1280×800 desktop and 320×568 touch contexts passed displayed version,
+  real Classic staging/payment, and Table Loop pair placement/refill/reload,
+  without JavaScript page errors. They did not modify the user's browser profile.
+- Hosted script/screenshots: `/tmp/tensho-classic-save-3TxjgM/`.
+- Main was fast-forwarded to the workflow version commit. This evidence-only
+  follow-up uses `[skip ci]` and does not create another deployment version.
+
+The unsuccessful `v1.0.260923-7` attempt above is retained in the evidence.
+Neither this successful release nor the hosted Table Loop reload check proves
+Classic resume, installed-PWA upgrade safety or whole-project completion.
+
 ## Remaining implementation before claiming Classic resume
 
 1. Versioned authoritative `GameOrchestrator` snapshot, not the legacy
