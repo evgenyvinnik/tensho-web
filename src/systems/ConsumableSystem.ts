@@ -26,6 +26,8 @@
  */
 export type ConsumableType = 'FateSeal' | 'CelestialOrb' | 'VoidScript'
 
+export type ConsumableSource = 'purchase' | 'pack_open' | 'generated'
+
 /**
  * Rarity tiers for consumables
  */
@@ -51,6 +53,8 @@ export interface BaseConsumable {
   cost: number
   sellValue: number
   isUsed: boolean
+  /** Authoritative acquisition of this instance; absent for legacy/unknown items. */
+  source?: ConsumableSource
 }
 
 /**

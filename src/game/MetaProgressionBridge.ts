@@ -369,14 +369,14 @@ export function initializeMetaProgressionBridge(): () => void {
     }
   )
 
-  subscription.subscribe('fateSealUsed', ({ sealId }) => {
-    processProgressionEvent({ type: 'fate_seal_used', itemId: sealId })
+  subscription.subscribe('fateSealUsed', ({ sealId, source }) => {
+    processProgressionEvent({ type: 'fate_seal_used', itemId: sealId, source })
     incrementAchievementStat('totalFateSealsUsed')
     checkAchievements()
   })
 
-  subscription.subscribe('celestialOrbUsed', ({ orbId }) => {
-    processProgressionEvent({ type: 'celestial_orb_used', itemId: orbId })
+  subscription.subscribe('celestialOrbUsed', ({ orbId, source }) => {
+    processProgressionEvent({ type: 'celestial_orb_used', itemId: orbId, source })
     incrementAchievementStat('totalCelestialOrbsUsed')
     checkAchievements()
   })

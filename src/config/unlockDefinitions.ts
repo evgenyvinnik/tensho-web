@@ -58,6 +58,8 @@ export type UnlockConditionType =
   | 'total_rerolls' // Reroll shop X times lifetime
   | 'total_fate_seals_used' // Use X fate seals lifetime
   | 'total_celestial_orbs_used' // Use X celestial orbs lifetime
+  | 'pack_fate_seals_used' // Use X Fate Seals acquired from packs
+  | 'pack_celestial_orbs_used' // Use X Celestial Orbs acquired from packs
   | 'total_packs_opened' // Open X packs lifetime
   | 'total_runs' // Start X runs lifetime
   | 'total_wins' // Win X runs lifetime
@@ -504,7 +506,7 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Use 25 Fate Seals from packs',
     category: 'charter',
     conditions: [
-      { type: 'total_fate_seals_used', target: 25, description: 'Use 25 Fate Seals from packs' },
+      { type: 'pack_fate_seals_used', target: 25, description: 'Use 25 Fate Seals from packs' },
       { type: 'charter_purchased', value: 'crystal_lens', description: 'Purchase Crystal Lens' },
     ],
     unlocksId: 'omen_lens',
@@ -517,7 +519,7 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Use 25 Celestial Orbs from packs',
     category: 'charter',
     conditions: [
-      { type: 'total_celestial_orbs_used', target: 25, description: 'Use 25 Celestial Orbs from packs' },
+      { type: 'pack_celestial_orbs_used', target: 25, description: 'Use 25 Celestial Orbs from packs' },
       { type: 'charter_purchased', value: 'star_chart', description: 'Purchase Star Chart' },
     ],
     unlocksId: 'observatory',

@@ -108,6 +108,49 @@ publication subsequently succeeded as **v1.0.260923-1**. GitHub independently
 passed all units and build; the public manifest, remote tag, hosted artwork hash
 and desktop/touch gameplay were verified. [Release ledger](RELEASE_IMPLEMENTATION.md#charter-progression-publication-checkpoint).
 
+## Pack-use provenance follow-up (local, not deployed)
+
+Omen Lens and Observatory require 25 uses of their respective consumables **from
+packs** in both `ITEM_LIBRARIES.md` and `docs/GAME_MECHANICS.md`. Their old unlock
+conditions instead read all lifetime uses. Acquisition already distinguished
+purchase, pack and generated rewards, but successful-use events lost that source.
+
+Authoritative grants now stamp the acquired instance's source after capacity
+validation, preserving object identity. Successful Seal/Orb use carries that
+source through the event bridge. Separate persistent `packFateSealsUsed` and
+`packCelestialOrbsUsed` counters drive these two unlocks. Ordinary lifetime-use
+statistics and achievements still include all successful uses. Preview, failed
+use, acquisition alone and rejected grants do not earn a pack-use increment.
+The Fool and other generators create `generated` items, even if their template
+or previous consumed item came from a pack. Unknown legacy items do not count
+as pack-sourced, and acquisition overrides stale template provenance.
+
+Legacy saves initialize the new counters to zero, keeping their general-use
+totals and existing unlock records. We cannot infer old pack usage from those
+totals; previously earned unlocks are not revoked. New counters persist across
+runs and reloads. This does not introduce Classic run persistence.
+
+Eight engine tests cover instance-specific mixed sources, the 24-to-25 boundary,
+paid pack purchase/claim/use for both families, general totals, Fool copies,
+failed actions/capacity, serialization and unknown/stale provenance. The first
+seven tests reproduced seven failures. After implementation, two fixtures needed
+their completed-round type populated before exiting the shop, and the existing
+shop identity regression required preserving the granted object (not replacing
+it with a clone). The focused set then passed 46/46 before the final legacy case
+was added. Strict TypeScript and targeted lint passed.
+
+All **eight browser journeys** passed in 20.0 seconds with one worker, no retries
+and unchanged deadlines: English/Spanish, Seal/Orb, desktop/320px touch. They use
+explicit base/stat/offer fixtures, then real payment, reward selection, shop
+exit, item inspection/confirmation, unlock/Archive updates and page reload. They
+prove the boundary, not organic progression balance or achievement-gated offers.
+Artifacts: `/tmp/tensho-pack-provenance-JHtp69/`. Full regression passed
+**1,097/1,097 in 100 files** (40.10 seconds). Strict TypeScript, targeted lint,
+new-test formatting and diff checks passed. Pages-base production/PWA build
+passed: 343 modules, main entry `index-DZH0YSR4.js`, 269 precache entries /
+65,774.81 KiB. Existing bundle/Browserslist warnings remain. Existing generated artwork is unchanged; this
+accounting repair does not require another bitmap.
+
 ## Remaining Charter audit
 
 Source inspection establishes these next requirements, not completion:
@@ -116,13 +159,12 @@ Source inspection establishes these next requirements, not completion:
   but do not consult the persistent achievement unlock. Enforcing that gate must
   accompany reachable/correct prerequisite counters, not permanently hide powers
   behind disconnected statistics.
-- Omen Lens and Observatory describe use **from packs**, but their unlocks read
-  all Seal/Orb uses without acquisition provenance.
 - Liquidation's condition reads current-run Charter count; verify its intended
   relationship to the already tracked best-in-one-run count and base acquisition.
 - Observatory's item-library rule says held Orbs multiply **their Yaku**;
   the current canonical definition/scoring applies every held Orb. Reconcile
-  this rules conflict before changing the multiplier.
+  this rules conflict before changing the multiplier. An optional user question
+  now asks which rule to use; no answer has been assumed.
 - Every upgrade still needs paid shop acquisition, repeat-purchase rejection,
   next-run base prerequisite, persistence and its actual effect checked. A data
   row or a direct `purchaseCharter` fixture alone is insufficient evidence.

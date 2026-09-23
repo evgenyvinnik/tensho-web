@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Charter-progression checkpoint
 
+Local follow-up: pack-use provenance now follows the acquired Seal/Orb instance
+through successful consumption. Omen Lens/Observatory no longer count ordinary
+purchases or generated copies toward their pack-specific prerequisites. Existing
+unlocks are preserved. Eight desktop/touch English/Spanish browser flows passed;
+all **1,097/1,097 units in 100 files**, strict TypeScript, targeted lint and the
+production/PWA build passed. This follow-up is not yet deployed.
+An optional user question asks whether Observatory should multiply only its held
+Orbs' matching Yaku or all hands; current scoring is unchanged pending a choice.
+
 September 22: actual maximum-interest payouts now drive Money Tree's prerequisite,
 including raised Charter/Omen caps and zero/blocked settlements. A separate
 current streak resets on shortfalls, skips, defeats and new runs; lifetime best
@@ -22,7 +31,7 @@ in the linked ledger. The checkpoint is deployed as **v1.0.260923-1**, with a
 matching public manifest/tag and hosted desktop/touch gameplay checks. This is
 not a claim of complete Charter progression.
 [Evidence and remaining audit](CHARTER_PROGRESSION_IMPLEMENTATION.md)
-identify ungated upgrade offers, pack provenance,
+identify ungated upgrade offers, the now-repaired pack provenance,
 and the Observatory rule conflict. An optional question asks whether Table Loop
 should become the primary Play mode; no answer has been assumed.
 

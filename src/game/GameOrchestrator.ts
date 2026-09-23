@@ -2033,6 +2033,7 @@ export class GameOrchestrator {
     eventBus.emit('fateSealUsed', {
       sealId: seal.id,
       effect: seal.effect.description,
+      source: seal.source,
     })
 
     // Inspecting a tile through a consumable reveals it for the rest of the
@@ -2078,6 +2079,7 @@ export class GameOrchestrator {
 
     eventBus.emit('celestialOrbUsed', {
       orbId: orb.id,
+      source: orb.source,
       yakuCategory: orb.effect.targetYaku,
       newLevel:
         orb.effect.targetYaku === 'All'
@@ -4186,6 +4188,7 @@ export class GameOrchestrator {
     if (!this.canAddConsumable()) {
       return false
     }
+    seal.source = source
     this.state.fateSeals.push(seal)
     eventBus.emit('consumableAcquired', {
       consumableType: 'FateSeal',
@@ -4207,6 +4210,7 @@ export class GameOrchestrator {
     if (!this.canAddConsumable()) {
       return false
     }
+    script.source = source
     this.state.voidScripts.push(script)
     eventBus.emit('consumableAcquired', {
       consumableType: 'VoidScript',
@@ -4228,6 +4232,7 @@ export class GameOrchestrator {
     if (!this.canAddConsumable()) {
       return false
     }
+    orb.source = source
     this.state.celestialOrbs.push(orb)
     eventBus.emit('consumableAcquired', {
       consumableType: 'CelestialOrb',

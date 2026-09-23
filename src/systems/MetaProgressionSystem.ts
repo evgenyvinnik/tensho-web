@@ -64,6 +64,8 @@ export interface LifetimeStats {
   // Consumable statistics
   totalFateSealsUsed: number
   totalCelestialOrbsUsed: number
+  packFateSealsUsed: number
+  packCelestialOrbsUsed: number
   totalVoidScriptsUsed: number
 
   // Collection/discovery statistics
@@ -175,6 +177,8 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   maxChartersInRun: 0,
   totalFateSealsUsed: 0,
   totalCelestialOrbsUsed: 0,
+  packFateSealsUsed: 0,
+  packCelestialOrbsUsed: 0,
   totalVoidScriptsUsed: 0,
   fateSealsDiscovered: new Set(),
   celestialOrbsDiscovered: new Set(),
@@ -427,6 +431,16 @@ export class MetaProgressionSystem {
 
       case 'total_celestial_orbs_used':
         current = stats.totalCelestialOrbsUsed
+        isMet = current >= target
+        break
+
+      case 'pack_fate_seals_used':
+        current = stats.packFateSealsUsed
+        isMet = current >= target
+        break
+
+      case 'pack_celestial_orbs_used':
+        current = stats.packCelestialOrbsUsed
         isMet = current >= target
         break
 
@@ -980,6 +994,9 @@ export function processProgressionEvent(
 
     case 'fate_seal_used':
       updates.totalFateSealsUsed = stats.totalFateSealsUsed + 1
+      if (event.source === 'pack_open') {
+        updates.packFateSealsUsed = stats.packFateSealsUsed + 1
+      }
       if (event.itemId) {
         const newDiscovered = new Set(stats.fateSealsDiscovered)
         newDiscovered.add(event.itemId)
@@ -989,6 +1006,9 @@ export function processProgressionEvent(
 
     case 'celestial_orb_used':
       updates.totalCelestialOrbsUsed = stats.totalCelestialOrbsUsed + 1
+      if (event.source === 'pack_open') {
+        updates.packCelestialOrbsUsed = stats.packCelestialOrbsUsed + 1
+      }
       if (event.itemId) {
         const newDiscovered = new Set(stats.celestialOrbsDiscovered)
         newDiscovered.add(event.itemId)

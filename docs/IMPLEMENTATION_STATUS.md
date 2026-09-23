@@ -4,6 +4,14 @@
 
 **Last verified:** September 22, 2026
 
+**Current local follow-up:** Omen Lens/Observatory now count successfully used
+pack-sourced instances, not all Seal/Orb uses. Generated copies and unknown legacy
+items do not gain pack credit; existing unlocks/general-use totals are retained.
+All eight English/Spanish desktop/touch purchase-to-use-to-reload browser checks
+passed. All **1,097/1,097 units in 100 files**, strict TypeScript, targeted lint
+and the production/PWA build passed. This follow-up is not yet
+deployed; [scope and evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md#pack-use-provenance-follow-up-local-not-deployed).
+
 **Current published progression checkpoint:** Money Tree's ten-round prerequisite
 now counts actual maximum-interest settlements, including Charter/Omen caps.
 Current streak and lifetime best are separate; zero payouts, skips, defeats and

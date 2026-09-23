@@ -12,6 +12,7 @@
  */
 
 import type { ScoreEquation } from '../rules/ScoreEquation'
+import type { ConsumableSource } from '../systems/ConsumableSystem'
 
 // =============================================================================
 // EVENT TYPES
@@ -161,8 +162,13 @@ export interface GameEventData {
     name: string
     source?: 'purchase' | 'pack_open' | 'generated'
   }
-  fateSealUsed: { sealId: string; effect: string }
-  celestialOrbUsed: { orbId: string; yakuCategory: string; newLevel: number }
+  fateSealUsed: { sealId: string; effect: string; source?: ConsumableSource }
+  celestialOrbUsed: {
+    orbId: string
+    yakuCategory: string
+    newLevel: number
+    source?: ConsumableSource
+  }
   voidScriptUsed: { scriptId: string; effect: string; downside: string }
 
   // Shop
