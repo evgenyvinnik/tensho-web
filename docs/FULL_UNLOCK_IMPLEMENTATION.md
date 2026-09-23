@@ -94,5 +94,18 @@ are not public player controls.
 Consent, consequences, active-mode notice and save-error text are supplied in all
 13 locales. Automated text completeness is not native-speaker review.
 No new bitmap is necessary for this Settings control; previously generated game
-portraits remain intact. This feature is not yet deployed and does not establish
-whole-project completion.
+portraits remain intact. This checkpoint does not establish whole-project completion.
+
+## Publication
+
+Published as **v1.0.260923-5**, code checkpoint
+`beb2ce406ba4bbb90ce76c15201e3d658c8b3a3d`, built/tagged commit
+`6c08959667d567c4b3abd7e5f7ba3c3ccb2f9f38`.
+[Actions run 35814823613](https://github.com/evgenyvinnik/tensho-web/actions/runs/35814823613)
+independently passed all 1,141 tests in 103 files, the production/PWA build,
+provenance checks and Pages deployment. The public release manifest and remote
+tag match. Fresh hosted 1280×800 and 320×740 touch contexts passed consent/cancel,
+activation/reload, Table Loop pair placement/refill/reload and Spanish Classic
+loading, with no JavaScript page errors. These used isolated profiles, not the
+user's saved game. Artifacts and script: `/tmp/tensho-full-unlock-zHZSbP/`.
+Installed-PWA upgrades and physical-device behavior remain unverified.

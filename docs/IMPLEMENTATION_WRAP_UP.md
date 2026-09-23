@@ -17,7 +17,9 @@ An existing JSON hydration bug for unset fastest-win records is also fixed.
 Final full regression passed **1,141/1,141 in 103 files**, **12/12 browser checks**
 and **13/13 release-workflow checks**. The [feature ledger](FULL_UNLOCK_IMPLEMENTATION.md)
 retains prior failures and exact scope. Strict TypeScript, targeted lint and the
-production/PWA build passed; independent publication checks are pending.
+production/PWA build passed. Deployed as **v1.0.260923-5** after independent CI
+passed all tests/build; public manifest/tag and fresh desktop/touch profile and
+gameplay checks match. Main includes the workflow's version commit.
 All thirteen locales have the new consent/status/error copy, but existing English
 stake descriptions, native-speaker review and wider implementation remain open.
 

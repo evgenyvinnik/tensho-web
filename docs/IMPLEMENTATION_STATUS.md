@@ -4,15 +4,16 @@
 
 **Last verified:** September 22, 2026
 
-**Current local checkpoint:** Full Unlock now has an explicit Settings confirmation,
+**Current published checkpoint:** Full Unlock now has an explicit Settings confirmation,
 persistent profile mode and achievement suppression, without free purchases or
 invented victories. Reset All Progress returns to earned mode. Achievement reloads
 also preserve an unset fastest-win record instead of treating it as zero rounds.
 Final full regression passed **1,141/1,141 in 103 files**, **12/12 desktop/touch
 browser checks** and **13/13 release checks**. Earlier timeout and fixture failures
 remain in the [verification ledger](FULL_UNLOCK_IMPLEMENTATION.md). Strict
-TypeScript, targeted lint and the production/PWA build passed. Publication
-is pending independent deployment checks.
+TypeScript, targeted lint and the production/PWA build passed. Deployed as
+**v1.0.260923-5** after independent CI passed all tests/build. The public manifest
+and tag match; hosted desktop/touch Full Unlock and gameplay smoke checks passed.
 
 **Preceding published follow-up:** Spending progress now counts explicit purchases and
 rerolls, not penalties or unclassified net losses. Plentiful Stock has a new

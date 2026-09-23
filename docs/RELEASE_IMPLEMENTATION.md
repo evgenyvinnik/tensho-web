@@ -1,7 +1,35 @@
 # Release versioning and provenance
 
 **Latest verified public deployment:** September 23 UTC (September 22 local), 2026,
-**v1.0.260923-4**.
+**v1.0.260923-5**.
+
+## Full Unlock publication checkpoint
+
+Checkpoint `beb2ce406ba4bbb90ce76c15201e3d658c8b3a3d` adds the documented Full
+Unlock profile option with consent, achievement suppression, rollback and reset
+semantics. It also fixes unset fastest-win statistics turning into zero-like
+values after JSON hydration. [Feature evidence](FULL_UNLOCK_IMPLEMENTATION.md)
+retains local failures and the final passing checks.
+[Actions run 35814823613](https://github.com/evgenyvinnik/tensho-web/actions/runs/35814823613)
+independently passed **1,141 tests in 103 files**, release checks, production/PWA
+build, provenance and Pages deployment. Local verification also passed all
+**12 desktop/touch browser checks**, strict TypeScript and targeted lint.
+
+- Version/tag: **1.0.260923-5** / `v1.0.260923-5`.
+- Built/tagged commit: `6c08959667d567c4b3abd7e5f7ba3c3ccb2f9f38`.
+- Public manifest and remote tag match this commit.
+- Fresh 1280×800 and 320×740 touch contexts passed displayed version, Full Unlock
+  consent/cancel/activation/reload, real seeded Table Loop placement/refill/reload
+  and Spanish Classic loading, with no JavaScript page errors. Tests used fresh
+  isolated profiles and did not change the user's profile.
+- Build: 343 modules, 270 precache entries / 67,771.60 KiB. Existing large-bundle,
+  Browserslist and Actions-runtime warnings remain.
+- Local/hosted artifacts and script: `/tmp/tensho-full-unlock-zHZSbP/`.
+
+Already on main; no branch rewrite or deletion was needed. Local main was
+fast-forwarded to the workflow version commit. This evidence-only follow-up uses
+`[skip ci]`. Separate mechanics choices, remaining localization, physical-device
+checks, installed-PWA upgrades and broader project completion remain open.
 
 ## Spending and Plentiful Stock publication checkpoint
 
