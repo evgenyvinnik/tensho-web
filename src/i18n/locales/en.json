@@ -70,6 +70,13 @@
     "tableLoop": "Table Loop (experiment)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "Full Unlock",
+      "description": "Unlock all items, tables and stakes. Achievement tracking will be disabled for this profile.",
+      "confirm": "Unlock all content? Existing achievements stay, but no more achievement progress will be recorded. Prices and run prerequisites still apply. Returning to earned progression requires Reset All Progress, which erases saved progress.",
+      "active": "Full Unlock is active. Achievement tracking is disabled. Reset All Progress to start a new earned profile.",
+      "error": "Could not save this change completely. Reload and check the profile mode before continuing."
+    },
     "resetProgressScope": "This also deletes discoveries and active or saved runs. Language, audio, and accessibility settings are kept.",
     "resetFailed": "Reset failed. Your progress has been kept. Check browser storage and try again.",
     "resetPartial": "Reset could not finish, and some progress may have changed. Check browser storage and try again.",

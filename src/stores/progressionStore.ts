@@ -26,6 +26,7 @@ import {
   getUnlockById,
   getUnlocksByCategory,
   getDefaultUnlocks,
+  ALL_UNLOCKS,
 } from '../config/unlockDefinitions'
 
 // =============================================================================
@@ -46,6 +47,9 @@ export interface UnlockRecord {
  * Progression store state
  */
 export interface ProgressionState {
+  fullUnlockEnabled: boolean
+  /** One-way for this profile; only a full progress reset restores earned mode. */
+  enableFullUnlock: () => void
   // Lifetime statistics
   stats: LifetimeStats
 
@@ -168,6 +172,19 @@ export const useProgressionStore = create<ProgressionState>()(
       stats: { ...DEFAULT_LIFETIME_STATS },
       unlocks: createInitialUnlocks(),
       recentUnlocks: [],
+      fullUnlockEnabled: false,
+      enableFullUnlock: () => {
+        const unlocks = { ...get().unlocks }
+        for (const definition of ALL_UNLOCKS) {
+          unlocks[definition.id] ??= {
+            id: definition.id,
+            unlockedAt: Date.now(),
+            unlocksId: definition.unlocksId,
+            category: definition.category,
+          }
+        }
+        set({ fullUnlockEnabled: true, unlocks, recentUnlocks: [] })
+      },
 
       // =====================================================================
       // STAT UPDATES
@@ -430,6 +447,7 @@ export const useProgressionStore = create<ProgressionState>()(
 
       resetProgression: () => {
         set({
+          fullUnlockEnabled: false,
           stats: { ...DEFAULT_LIFETIME_STATS },
           unlocks: createInitialUnlocks(),
           recentUnlocks: [],
@@ -440,17 +458,20 @@ export const useProgressionStore = create<ProgressionState>()(
       name: 'tensho-progression',
       version: 1,
       partialize: (state) => ({
+        fullUnlockEnabled: state.fullUnlockEnabled,
         stats: serializeStatsForStorage(state.stats),
         unlocks: state.unlocks,
       }),
       merge: (persisted, current) => {
         const persistedState = persisted as {
+          fullUnlockEnabled?: boolean
           stats: SerializableLifetimeStats
           unlocks: Record<string, UnlockRecord>
         }
 
         return {
           ...current,
+          fullUnlockEnabled: persistedState?.fullUnlockEnabled === true,
           stats: persistedState?.stats
             ? deserializeStatsFromStorage(persistedState.stats)
             : current.stats,

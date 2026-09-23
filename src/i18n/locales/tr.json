@@ -101,6 +101,13 @@
     "tableLoop": "Masa Döngüsü (deney)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "Her şeyin kilidini aç",
+      "description": "Tüm eşyaların, masaların ve zorlukların kilidini açın. Bu profilin başarım takibi devre dışı kalır.",
+      "confirm": "Her şey açılsın mı? Mevcut başarımlar korunur ancak yeni başarım ilerlemesi kaydedilmez. Fiyatlar ve her koşunun ön koşulları geçerliliğini korur. Normal ilerlemeye dönmek, tüm kayıtlı ilerlemeyi sıfırlamayı gerektirir.",
+      "active": "Her şeyin kilidi açık. Başarım takibi devre dışı. Normal ilerlemeli yeni bir profil için tüm ilerlemeyi sıfırlayın.",
+      "error": "Bu değişiklik tamamen kaydedilemedi. Devam etmeden önce sayfayı yeniden yükleyip profil modunu kontrol edin."
+    },
     "resetProgressScope": "Keşifler ve devam eden veya kayıtlı turlar da silinir. Dil, ses ve erişilebilirlik ayarları korunur.",
     "resetFailed": "Sıfırlama başarısız oldu. İlerlemeniz korundu. Tarayıcı depolamasını kontrol edip tekrar deneyin.",
     "resetPartial": "Sıfırlama tamamlanamadı ve ilerlemenin bir kısmı değişmiş olabilir. Tarayıcı depolamasını kontrol edip tekrar deneyin.",

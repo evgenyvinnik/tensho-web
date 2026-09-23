@@ -70,6 +70,13 @@
     "tableLoop": "Boucle de table (expérience)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "Tout débloquer",
+      "description": "Débloquez tous les objets, tables et niveaux de difficulté. Le suivi des succès sera désactivé pour ce profil.",
+      "confirm": "Tout débloquer ? Les succès existants sont conservés, mais leur progression ne sera plus enregistrée. Les prix et prérequis de chaque partie restent applicables. Revenir à la progression normale nécessite de réinitialiser toute la progression sauvegardée.",
+      "active": "Tout est débloqué. Le suivi des succès est désactivé. Réinitialisez toute la progression pour créer un nouveau profil à progression normale.",
+      "error": "Impossible d’enregistrer entièrement ce changement. Rechargez et vérifiez le mode du profil avant de continuer."
+    },
     "resetProgressScope": "Les découvertes et les parties en cours ou sauvegardées seront aussi supprimées. La langue, le son et les réglages d’accessibilité seront conservés.",
     "resetFailed": "La réinitialisation a échoué. Votre progression a été conservée. Vérifiez le stockage du navigateur et réessayez.",
     "resetPartial": "La réinitialisation n’a pas pu se terminer et une partie de la progression a pu changer. Vérifiez le stockage du navigateur et réessayez.",

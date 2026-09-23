@@ -7,6 +7,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { useProgressionStore } from './progressionStore'
 
 /**
  * Achievement categories based on ARCHITECTURE.MD
@@ -500,6 +501,7 @@ export const useAchievementStore = create<AchievementState>()(
       stats: DEFAULT_STATS,
 
       unlockAchievement: (id: string) => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return
         const { achievements } = get()
         if (achievements[id] && !achievements[id].unlocked) {
           set({
@@ -532,6 +534,7 @@ export const useAchievementStore = create<AchievementState>()(
       },
 
       updateProgress: (id: string, progress: number) => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return
         const { achievements } = get()
         if (achievements[id]) {
           set({
@@ -547,6 +550,7 @@ export const useAchievementStore = create<AchievementState>()(
       },
 
       incrementStat: (stat: keyof AchievementStats, amount = 1) => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return
         const { stats } = get()
         set({
           stats: {
@@ -557,6 +561,7 @@ export const useAchievementStore = create<AchievementState>()(
       },
 
       setStat: (stat: keyof AchievementStats, value: number) => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return
         const { stats } = get()
         set({
           stats: {
@@ -567,6 +572,7 @@ export const useAchievementStore = create<AchievementState>()(
       },
 
       checkAchievements: () => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return
         const { stats, achievements, unlockAchievement } = get()
 
         for (const def of ACHIEVEMENT_DEFINITIONS) {
@@ -650,6 +656,7 @@ export const useAchievementStore = create<AchievementState>()(
       },
 
       getUnseenUnlocks: () => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return []
         const { achievements } = get()
         return Object.values(achievements)
           .filter((a) => a.unlocked && !a.seen)
@@ -683,6 +690,9 @@ export const useAchievementStore = create<AchievementState>()(
           stats: {
             ...DEFAULT_STATS,
             ...saved.stats,
+            // JSON serializes the unset Infinity sentinel as null. It must not
+            // become a zero-round win when achievement conditions compare it.
+            fastestWinRounds: saved.stats?.fastestWinRounds ?? Infinity,
           },
         }
       },

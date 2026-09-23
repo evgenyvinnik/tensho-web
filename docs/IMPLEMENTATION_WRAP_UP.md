@@ -6,7 +6,22 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current Charter-progression checkpoint
+## Current Full Unlock checkpoint
+
+The documented Full Unlock profile option now has a player-facing confirmation,
+persistent access to all catalog unlocks/tables/stakes, and achievement-tracking
+suppression. Existing awards stay; actual purchases still cost gold and Charter
+upgrades still need a current-run base. Full reset returns to earned progression;
+partial resets do not. Activation and reset failures roll back and report errors.
+An existing JSON hydration bug for unset fastest-win records is also fixed.
+Final full regression passed **1,141/1,141 in 103 files**, **12/12 browser checks**
+and **13/13 release-workflow checks**. The [feature ledger](FULL_UNLOCK_IMPLEMENTATION.md)
+retains prior failures and exact scope. Strict TypeScript, targeted lint and the
+production/PWA build passed; independent publication checks are pending.
+All thirteen locales have the new consent/status/error copy, but existing English
+stake descriptions, native-speaker review and wider implementation remain open.
+
+## Preceding Charter-progression checkpoint
 
 Published follow-up: Plentiful Stock no longer unlocks from gold penalties. Typed
 payment categories distinguish purchases/rerolls from losses while retaining
@@ -18,7 +33,8 @@ strict TypeScript, targeted lint and production/PWA build passed. Rental fees
 remain a separate user question; explicit purchases/rerolls are currently counted.
 Deployed as **v1.0.260923-4** after independent CI passed all units and the build.
 The public manifest/tag, new portrait hash and hosted desktop/touch gameplay
-checks match. Full Unlock profile controls and broader implementation remain open.
+checks match. Full Unlock profile controls are addressed above; broader
+implementation remains open.
 
 Published follow-up: canonical offer/purchase eligibility now checks the persistent
 unlock, current-run base and non-ownership for every upgraded Charter. The
@@ -57,7 +73,7 @@ in the linked ledger. The checkpoint is deployed as **v1.0.260923-1**, with a
 matching public manifest/tag and hosted desktop/touch gameplay checks. This is
 not a claim of complete Charter progression.
 [Evidence and remaining audit](CHARTER_PROGRESSION_IMPLEMENTATION.md)
-record the repaired upgrade gates and pack provenance, remaining spending/profile gaps,
+record the repaired upgrade gates and pack provenance, remaining Rental-fee choice,
 and the Observatory rule conflict. An optional question asks whether Table Loop
 should become the primary Play mode; no answer has been assumed.
 

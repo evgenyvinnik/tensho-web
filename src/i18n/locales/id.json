@@ -78,6 +78,13 @@
     "tableLoop": "Putaran Meja (eksperimen)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "Buka semuanya",
+      "description": "Buka semua item, meja, dan tingkat kesulitan. Pelacakan pencapaian untuk profil ini akan dinonaktifkan.",
+      "confirm": "Buka semua konten? Pencapaian yang ada tetap tersimpan, tetapi progres pencapaian baru tidak akan dicatat. Harga dan prasyarat tiap permainan tetap berlaku. Untuk kembali ke progres normal, semua progres tersimpan harus direset.",
+      "active": "Semua konten terbuka. Pelacakan pencapaian dinonaktifkan. Reset semua progres untuk memulai profil baru dengan progres normal.",
+      "error": "Perubahan ini tidak dapat disimpan sepenuhnya. Muat ulang dan periksa mode profil sebelum melanjutkan."
+    },
     "resetProgressScope": "Penemuan serta permainan aktif atau tersimpan juga akan dihapus. Pengaturan bahasa, audio, dan aksesibilitas tetap disimpan.",
     "resetFailed": "Pengaturan ulang gagal. Progres Anda tetap tersimpan. Periksa penyimpanan browser dan coba lagi.",
     "resetPartial": "Pengaturan ulang tidak selesai dan sebagian progres mungkin berubah. Periksa penyimpanan browser dan coba lagi.",

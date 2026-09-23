@@ -15,6 +15,7 @@ import { TABLE_STYLE_DEFINITIONS } from '../../config/tableStyleDefinitions'
 import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
 import { getCurrentLanguage } from '../../i18n'
 import { useStakeStore } from '../../stores/stakeStore'
+import { useProgressionStore } from '../../stores/progressionStore'
 import { getTableStyleIllustration } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 
@@ -48,6 +49,9 @@ export function TableStyleModal({
   const itemText = useItemText()
   const { t } = useTranslation()
   const showCJK = isCJKLanguage()
+  const fullUnlockEnabled = useProgressionStore(
+    (state) => state.fullUnlockEnabled
+  )
   const {
     currentStyleId,
     selectStyle,
@@ -316,9 +320,11 @@ export function TableStyleModal({
             })}
           </div>
           <p className="mt-2 text-[10px] text-[var(--color-beige-white)]/50">
-            {tempStakeTier < 8
-              ? `Progress is tracked separately for each table. Win Stake ${tempStakeTier} to unlock Stake ${tempStakeTier + 1} here.`
-              : 'Gold Stake is the final challenge for this table.'}
+            {fullUnlockEnabled
+              ? t('settings.fullUnlock.active')
+              : tempStakeTier < 8
+                ? `Progress is tracked separately for each table. Win Stake ${tempStakeTier} to unlock Stake ${tempStakeTier + 1} here.`
+                : 'Gold Stake is the final challenge for this table.'}
           </p>
         </section>
 

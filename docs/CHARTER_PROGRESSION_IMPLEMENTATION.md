@@ -288,10 +288,10 @@ Source inspection establishes these next requirements, not completion:
 
 - Whether recurring Rental fees also qualify as spending awaits a user choice;
   penalties no longer grant purchase/reroll progress.
-- The documented Full Unlock profile option is not wired to a player control or
-  achievement suppression. Archive `unlockAll` only changes archive entries;
-  it is not evidence of a working profile-wide opt-out. Do not use discovery
-  alone to bypass the progression registry.
+- The documented Full Unlock profile option now has an explicit player control,
+  persistent mode and achievement suppression. [Implementation and verification](FULL_UNLOCK_IMPLEMENTATION.md)
+  distinguish that operation from Archive-only discovery and retain current-run
+  prerequisites and payment. Its publication status is recorded separately.
 - Observatory's item-library rule says held Orbs multiply **their Yaku**;
   the current canonical definition/scoring applies every held Orb. Reconcile
   this rules conflict before changing the multiplier. An optional user question

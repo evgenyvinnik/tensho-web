@@ -571,7 +571,8 @@ export class ArchiveSystem {
   }
 
   /**
-   * Unlock all items (disables achievement tracking per ARCHITECTURE.MD)
+   * Reveal Archive entries only. The profile-level Full Unlock operation owns
+   * achievement suppression and playable-content eligibility.
    */
   unlockAll(): void {
     for (const entry of this.entries.values()) {

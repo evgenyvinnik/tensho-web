@@ -149,6 +149,16 @@ it('localizes the reset scope and storage failure outcomes in every language', (
   }
 })
 
+it('localizes Full Unlock consent, consequences and failure feedback in every language', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = (locale.settings as { fullUnlock: Record<string, string> }).fullUnlock
+    for (const key of ['title', 'description', 'confirm', 'active', 'error'] as const) {
+      expect(copy[key], `${language}: ${key}`).toBeTypeOf('string')
+      expect(copy[key].trim().length).toBeGreaterThan(0)
+    }
+  }
+})
+
 it('localizes shop settlement, capacity feedback and pack selection controls in every language', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const shop = locale.shop as Record<string, string>

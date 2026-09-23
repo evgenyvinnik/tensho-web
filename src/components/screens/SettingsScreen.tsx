@@ -13,7 +13,9 @@ import { useSettingsStore } from '../../stores/settingsStore'
 import {
   resetAllProgress,
   resetTutorialProgress,
+  activateFullUnlock,
 } from '../../game/resetProgress'
+import { useProgressionStore } from '../../stores/progressionStore'
 import { Button } from '../ui/Button'
 import { BackButton } from '../ui/BackButton'
 import { Slider } from '../ui/Slider'
@@ -27,6 +29,11 @@ import { ConfirmPopup, AlertPopup } from '../ui/Popup'
 export function SettingsScreen() {
   const { t } = useTranslation()
   const { goBack } = useAppNavigation()
+  const fullUnlockEnabled = useProgressionStore(
+    (state) => state.fullUnlockEnabled
+  )
+  const [showFullUnlockConfirm, setShowFullUnlockConfirm] = useState(false)
+  const [fullUnlockError, setFullUnlockError] = useState(false)
 
   // Confirmation dialog states
   const [showResetTutorialConfirm, setShowResetTutorialConfirm] =
@@ -191,6 +198,31 @@ export function SettingsScreen() {
               {t('settings.data')}
             </h2>
 
+            <div className="space-y-3 rounded-lg border border-[var(--color-metallic-gold)] p-3">
+              <h3 className="font-semibold text-[var(--color-golden-yellow)]">
+                {t('settings.fullUnlock.title')}
+              </h3>
+              <p
+                className="text-sm leading-relaxed text-[var(--color-beige-white)]"
+                role={fullUnlockEnabled ? 'status' : undefined}
+              >
+                {t(
+                  fullUnlockEnabled
+                    ? 'settings.fullUnlock.active'
+                    : 'settings.fullUnlock.description'
+                )}
+              </p>
+              {!fullUnlockEnabled && (
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={() => setShowFullUnlockConfirm(true)}
+                >
+                  {t('settings.fullUnlock.title')}
+                </Button>
+              )}
+            </div>
+
             {/* Reset Tutorial */}
             <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
@@ -260,6 +292,26 @@ export function SettingsScreen() {
       </div>
 
       {/* Confirmation Dialogs */}
+      <ConfirmPopup
+        isOpen={showFullUnlockConfirm}
+        onClose={() => setShowFullUnlockConfirm(false)}
+        onConfirm={() => {
+          const result = activateFullUnlock()
+          setShowFullUnlockConfirm(false)
+          setFullUnlockError(!result.success)
+        }}
+        title={t('settings.fullUnlock.title')}
+        message={t('settings.fullUnlock.confirm')}
+        confirmText={t('common.confirm')}
+        cancelText={t('common.cancel')}
+      />
+      <AlertPopup
+        isOpen={fullUnlockError}
+        onClose={() => setFullUnlockError(false)}
+        title={t('common.error')}
+        message={t('settings.fullUnlock.error')}
+        confirmText={t('common.ok')}
+      />
       <ConfirmPopup
         isOpen={showResetTutorialConfirm}
         onClose={() => setShowResetTutorialConfirm(false)}

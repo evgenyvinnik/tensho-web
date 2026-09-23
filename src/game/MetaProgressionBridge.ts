@@ -194,6 +194,14 @@ export function synchronizePersistedMetaState(): void {
   const progression = useProgressionStore.getState()
   const archive = useArchiveStore.getState()
 
+  if (progression.fullUnlockEnabled) {
+    // Reconcile catalog additions after reload without inventing wins or awards.
+    progression.enableFullUnlock()
+    archive.unlockAll()
+    const tables = useTableStyleStore.getState()
+    for (const table of tables.getAllStyles()) tables.unlockStyle(table.id)
+  }
+
   // Older releases allowed upgrades before achievement gating. Preserve an
   // actual recorded acquisition, not Archive-only discovery/unlock flags.
   for (const definition of CHARTER_UNLOCKS) {

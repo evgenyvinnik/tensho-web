@@ -70,6 +70,13 @@
     "tableLoop": "Bucle de mesa (experimento)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "Desbloquear todo",
+      "description": "Desbloquea todos los objetos, mesas y niveles de dificultad. Se desactivará el seguimiento de logros de este perfil.",
+      "confirm": "¿Desbloquear todo? Los logros existentes se conservan, pero no se registrará más progreso de logros. Se mantienen los precios y requisitos de cada partida. Para volver a la progresión normal debes restablecer todo el progreso guardado.",
+      "active": "Todo está desbloqueado. El seguimiento de logros está desactivado. Restablece todo el progreso para iniciar un perfil con progresión normal.",
+      "error": "No se pudo guardar el cambio por completo. Recarga y comprueba el modo del perfil antes de continuar."
+    },
     "resetProgressScope": "También se borrarán los descubrimientos y las partidas activas o guardadas. Se conservarán el idioma, el audio y los ajustes de accesibilidad.",
     "resetFailed": "No se pudo restablecer. Se ha conservado tu progreso. Revisa el almacenamiento del navegador e inténtalo de nuevo.",
     "resetPartial": "No se pudo completar el restablecimiento y parte del progreso puede haber cambiado. Revisa el almacenamiento del navegador e inténtalo de nuevo.",

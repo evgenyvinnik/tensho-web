@@ -9,6 +9,8 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { useProgressionStore } from './progressionStore'
+import { getTableStyleById } from '../config/tableStyleDefinitions'
 
 import {
   STAKE_DEFINITIONS,
@@ -16,6 +18,7 @@ import {
   rollForStickers,
   getStakeByTier,
   isWallUnlocked,
+  STAKE_WALL_UNLOCKS,
   type StakeDefinition,
   type CombinedStakeModifiers,
   type StickerRollResult,
@@ -143,7 +146,7 @@ export const useStakeStore = create<StakeState>()(
         const state = get()
 
         // Validate stake tier
-        if (stakeTier < 1 || stakeTier > 8) {
+        if (!Number.isInteger(stakeTier) || stakeTier < 1 || stakeTier > 8) {
           return false
         }
 
@@ -170,7 +173,12 @@ export const useStakeStore = create<StakeState>()(
       },
 
       recordVictory: (finalScore, actsCompleted, wallId, stakeTier) => {
-        const { currentStakeTier, currentWallId, wallProgress, globalHighestCompleted } = get()
+        const {
+          currentStakeTier,
+          currentWallId,
+          wallProgress,
+          globalHighestCompleted,
+        } = get()
         const completedWallId = wallId ?? currentWallId
         const completedStakeTier = stakeTier ?? currentStakeTier
 
@@ -184,13 +192,20 @@ export const useStakeStore = create<StakeState>()(
 
         // Get or create wall progress
         const progress =
-          wallProgress[completedWallId] ?? createDefaultWallProgress(completedWallId)
+          wallProgress[completedWallId] ??
+          createDefaultWallProgress(completedWallId)
 
         // Update highest completed for this wall
-        const newHighestCompleted = Math.max(progress.highestCompleted, completedStakeTier)
+        const newHighestCompleted = Math.max(
+          progress.highestCompleted,
+          completedStakeTier
+        )
 
         // Update global highest
-        const newGlobalHighest = Math.max(globalHighestCompleted, completedStakeTier)
+        const newGlobalHighest = Math.max(
+          globalHighestCompleted,
+          completedStakeTier
+        )
 
         set({
           wallProgress: {
@@ -206,6 +221,9 @@ export const useStakeStore = create<StakeState>()(
       },
 
       isStakeUnlocked: (wallId: string, stakeTier: number) => {
+        if (!Number.isInteger(stakeTier) || stakeTier < 1 || stakeTier > 8)
+          return false
+        if (useProgressionStore.getState().fullUnlockEnabled) return true
         if (stakeTier === 1) return true // White stake always unlocked
 
         const { wallProgress } = get()
@@ -221,11 +239,19 @@ export const useStakeStore = create<StakeState>()(
       },
 
       isWallUnlocked: (wallId: string) => {
+        if (useProgressionStore.getState().fullUnlockEnabled) {
+          return Boolean(
+            getTableStyleById(wallId) ||
+            wallId === 'red_wall' ||
+            Object.prototype.hasOwnProperty.call(STAKE_WALL_UNLOCKS, wallId)
+          )
+        }
         const { globalHighestCompleted } = get()
         return isWallUnlocked(wallId, globalHighestCompleted)
       },
 
       getHighestAvailableStake: (wallId: string) => {
+        if (useProgressionStore.getState().fullUnlockEnabled) return 8
         const { wallProgress } = get()
         const progress = wallProgress[wallId]
 
@@ -295,7 +321,9 @@ export const useStakeStore = create<StakeState>()(
 /**
  * Select the current stake definition
  */
-export const selectCurrentStake = (state: StakeState): StakeDefinition | undefined => {
+export const selectCurrentStake = (
+  state: StakeState
+): StakeDefinition | undefined => {
   return getStakeByTier(state.currentStakeTier)
 }
 
@@ -358,7 +386,10 @@ export const selectTotalVictories = (state: StakeState): number => {
 /**
  * Select victories at a specific stake tier
  */
-export const selectVictoriesAtStake = (state: StakeState, stakeTier: number): StakeVictory[] => {
+export const selectVictoriesAtStake = (
+  state: StakeState,
+  stakeTier: number
+): StakeVictory[] => {
   const victories: StakeVictory[] = []
   for (const progress of Object.values(state.wallProgress)) {
     for (const victory of progress.victories) {
@@ -373,7 +404,10 @@ export const selectVictoriesAtStake = (state: StakeState, stakeTier: number): St
 /**
  * Select walls that have completed a specific stake
  */
-export const selectWallsWithStake = (state: StakeState, stakeTier: number): string[] => {
+export const selectWallsWithStake = (
+  state: StakeState,
+  stakeTier: number
+): string[] => {
   const walls: string[] = []
   for (const [wallId, progress] of Object.entries(state.wallProgress)) {
     if (progress.highestCompleted >= stakeTier) {

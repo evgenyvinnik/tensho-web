@@ -101,6 +101,13 @@
     "tableLoop": "Ikot ng Mesa (eksperimento)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "I-unlock lahat",
+      "description": "I-unlock ang lahat ng item, mesa, at antas ng hirap. Ihihinto ang pagsubaybay sa mga tagumpay para sa profile na ito.",
+      "confirm": "I-unlock ang lahat? Mananatili ang mga nakamit na tagumpay, pero hindi na itatala ang bagong progreso sa mga ito. Mananatili ang mga presyo at kinakailangan sa bawat laro. Para bumalik sa normal na progreso, kailangang i-reset ang lahat ng naka-save na progreso.",
+      "active": "Naka-unlock na ang lahat. Hindi na sinusubaybayan ang mga tagumpay. I-reset ang lahat ng progreso upang magsimula ng bagong profile na may normal na progreso.",
+      "error": "Hindi ganap na na-save ang pagbabago. I-reload at suriin ang mode ng profile bago magpatuloy."
+    },
     "resetProgressScope": "Mabubura rin ang mga natuklasan at aktibo o naka-save na laro. Mananatili ang mga setting ng wika, audio, at accessibility.",
     "resetFailed": "Hindi na-reset. Napanatili ang iyong progreso. Suriin ang storage ng browser at subukang muli.",
     "resetPartial": "Hindi natapos ang pag-reset at maaaring nabago ang ilang progreso. Suriin ang storage ng browser at subukang muli.",

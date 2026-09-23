@@ -101,6 +101,13 @@
     "tableLoop": "Ciclo del tavolo (esperimento)"
   },
   "settings": {
+    "fullUnlock": {
+      "title": "Sblocca tutto",
+      "description": "Sblocca tutti gli oggetti, tavoli e livelli di difficoltà. Il monitoraggio degli obiettivi verrà disattivato per questo profilo.",
+      "confirm": "Sbloccare tutto? Gli obiettivi esistenti restano, ma non verranno registrati altri progressi. Prezzi e requisiti delle partite restano validi. Per tornare alla progressione normale devi azzerare tutti i progressi salvati.",
+      "active": "Tutto è sbloccato. Il monitoraggio degli obiettivi è disattivato. Azzera tutti i progressi per iniziare un nuovo profilo con progressione normale.",
+      "error": "Impossibile salvare completamente la modifica. Ricarica e verifica la modalità del profilo prima di continuare."
+    },
     "resetProgressScope": "Verranno eliminate anche le scoperte e le partite attive o salvate. Lingua, audio e impostazioni di accessibilità saranno conservati.",
     "resetFailed": "Reimpostazione non riuscita. I tuoi progressi sono stati conservati. Controlla lo spazio di archiviazione del browser e riprova.",
     "resetPartial": "La reimpostazione non è stata completata e alcuni progressi potrebbero essere cambiati. Controlla lo spazio di archiviazione del browser e riprova.",

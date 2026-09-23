@@ -19,6 +19,7 @@ import {
   type AchievementDefinition,
 } from '../../stores/achievementStore'
 import { useSettingsStore } from '../../stores/settingsStore'
+import { useProgressionStore } from '../../stores/progressionStore'
 
 const AnimatedDiv = animated('div')
 
@@ -205,6 +206,9 @@ export function AchievementsScreen() {
     useState<AchievementCategory>('progression')
 
   const achievements = useAchievementStore((state) => state.achievements)
+  const fullUnlockEnabled = useProgressionStore(
+    (state) => state.fullUnlockEnabled
+  )
   const stats = useAchievementStore((state) => state.stats)
 
   // Calculate total progress
@@ -349,6 +353,14 @@ export function AchievementsScreen() {
 
       {/* Achievement list */}
       <div className="min-h-0 flex-1 overflow-y-auto">
+        {fullUnlockEnabled && (
+          <p
+            role="status"
+            className="screen-canvas px-3 pt-3 text-sm leading-relaxed text-[var(--color-golden-yellow)] sm:px-5"
+          >
+            {t('settings.fullUnlock.active')}
+          </p>
+        )}
         <div className="screen-canvas grid gap-3 px-3 py-3 sm:grid-cols-2 sm:px-5 sm:py-5 lg:grid-cols-3">
           {categoryAchievements.map((def) => (
             <AchievementCard

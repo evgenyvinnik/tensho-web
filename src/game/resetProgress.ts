@@ -97,6 +97,51 @@ export function resetTutorialProgress(): ResetProgressResult {
   }
 }
 
+/** Only call after confirmation: unlock content and opt out of achievements. */
+export function activateFullUnlock(): ResetProgressResult {
+  const touched = [
+    useProgressionStore,
+    useArchiveStore,
+    useTableStyleStore,
+  ] as const
+  let saved: ReturnType<typeof captureStorage>
+  try {
+    saved = captureStorage(
+      touched.map((store) => {
+        const name = store.persist.getOptions().name
+        if (!name) throw new Error('Progress store requires a persistence key')
+        return name
+      })
+    )
+  } catch {
+    return { success: false, restored: true }
+  }
+  const snapshots = [
+    captureStore(useProgressionStore),
+    captureStore(useArchiveStore),
+    captureStore(useTableStyleStore),
+  ]
+  try {
+    // This flag is set first so reconciliation cannot award collection accolades.
+    useProgressionStore.getState().enableFullUnlock()
+    synchronizePersistedMetaState()
+    return { success: true }
+  } catch {
+    for (const snapshot of snapshots) {
+      try {
+        snapshot.restore()
+      } catch {
+        /* Verify persisted rollback below. */
+      }
+    }
+    const persisted = saved.rollback()
+    return {
+      success: false,
+      restored: persisted && snapshots.every((snapshot) => snapshot.restored()),
+    }
+  }
+}
+
 /** Only call after explicit confirmation. Never clear unrelated origin data. */
 export function resetAllProgress(): ResetProgressResult {
   let saved: ReturnType<typeof captureStorage>

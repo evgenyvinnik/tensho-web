@@ -80,6 +80,7 @@ export interface ArchiveState {
     }[]
   ) => void
   resetArchive: () => void
+  /** Archive-only reveal; player-facing Full Unlock must use activateFullUnlock. */
   unlockAll: () => void
 }
 
