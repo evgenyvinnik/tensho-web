@@ -3770,6 +3770,7 @@ export class GameOrchestrator {
       newGold: this.state.gold,
       delta: -cost,
       reason: 'Purchase',
+      spendingCategory: itemType === 'Reroll' ? 'reroll' : 'purchase',
     })
 
     eventBus.emit('itemPurchased', {
@@ -3948,6 +3949,7 @@ export class GameOrchestrator {
       newGold: this.state.gold,
       delta: -cost,
       reason: `Boss Mandate rerolled to ${replacement.name}`,
+      spendingCategory: 'reroll',
     })
 
     return {

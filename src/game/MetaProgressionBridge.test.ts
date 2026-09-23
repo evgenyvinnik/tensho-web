@@ -291,6 +291,7 @@ describe('MetaProgressionBridge', () => {
       newGold: 11,
       delta: -3,
       reason: 'Test purchase',
+      spendingCategory: 'purchase',
     })
     eventBus.emit('roundEnd', { won: true, score: 750, target: 500 })
     eventBus.emit('runEnd', {

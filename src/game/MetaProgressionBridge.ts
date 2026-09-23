@@ -290,11 +290,11 @@ export function initializeMetaProgressionBridge(): () => void {
     checkAchievements()
   })
 
-  subscription.subscribe('goldChanged', ({ delta, newGold }) => {
+  subscription.subscribe('goldChanged', ({ delta, newGold, spendingCategory }) => {
     if (delta > 0) {
       processProgressionEvent({ type: 'gold_earned', value: delta })
       incrementAchievementStat('totalGoldEarned', delta)
-    } else if (delta < 0) {
+    } else if (delta < 0 && spendingCategory) {
       processProgressionEvent({ type: 'gold_spent', value: Math.abs(delta) })
     }
 

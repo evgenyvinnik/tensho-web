@@ -4,6 +4,14 @@
 
 **Last verified:** September 22, 2026
 
+**Current local follow-up:** Spending progress now counts explicit purchases and
+rerolls, not penalties or unclassified net losses. Plentiful Stock has a new
+generated portrait in the shop and discovered Archive entries. All **1,129 units
+in 102 files**, **16 browser checks**, strict TypeScript, targeted lint and the
+production/PWA build passed. Rental-fee qualification remains a separate optional
+user choice; no historic totals/unlocks are revoked. Not yet deployed.
+[Evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md#spending-classification-and-plentiful-stock).
+
 **Current published follow-up:** All sixteen upgraded Charters now require an earned
 unlock and a base owned in this run, both when generating offers and confirming
 payment. New runs, stale offers and duplicate purchases cannot bypass the rule.

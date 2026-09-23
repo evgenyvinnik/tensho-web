@@ -130,7 +130,14 @@ export interface GameEventData {
   yakumanScored: { yakuId: string; yakuName: string }
 
   // Economy
-  goldChanged: { previousGold: number; newGold: number; delta: number; reason: string }
+  goldChanged: {
+    previousGold: number
+    newGold: number
+    delta: number
+    reason: string
+    /** Explicit payment intent; penalties and net settlements are not purchases. */
+    spendingCategory?: 'purchase' | 'reroll'
+  }
   interestEarned: { amount: number; goldHeld: number }
   /** Every winning-round settlement, including blocked or zero interest. */
   interestSettled: { amount: number; cap: number; goldHeld: number }

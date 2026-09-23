@@ -231,12 +231,60 @@ The public manifest and remote tag match; fresh desktop/touch smoke checks passe
 Table Loop placement/refill/reload and Spanish Classic loading without page errors.
 See [publication evidence](RELEASE_IMPLEMENTATION.md#charter-eligibility-publication-checkpoint).
 
+## Spending classification and Plentiful Stock
+
+The spending bridge previously treated every negative gold delta as expenditure.
+At 2,499 lifetime spending, a one-gold Tooth penalty falsely unlocked Plentiful
+Stock. Real plays with one and 100 gold reproduced this, as did an unclassified
+event with a purchase-like display label (three failures / four passes).
+
+Authoritative shop payments and paid Boss Mandate rerolls now carry a typed
+spending category. The bridge counts their actual debit exactly once, not the
+item's undiscounted price or a display string. Free/rejected/repeated transactions
+cannot add expenditure; penalties and unclassified net settlements do not count.
+Balance tracking, earned-gold behavior and actual fees are unchanged. Historic
+spending totals and earned unlocks are retained: prior data cannot reliably
+separate penalties from purchases, so no invented retroactive correction is made.
+
+Recurring Rental fees are not classified as purchases/rerolls. An optional user
+question asks whether these should additionally count toward the 2,500 threshold;
+the current implementation uses explicit purchases/rerolls only, not a net-loss
+proxy. This does not change the Rental debit itself or claim a confirmed design
+decision about including that fee in progression.
+
+Seven integration tests cover real Tooth plays with zero/one/100 gold, the exact
+payment threshold, duplicate rejection, paid/free/failed shop rerolls, paid Boss
+rerolls and new-run retention. Focused tests passed 41/41. The first full suite
+passed 1,127/1,127 in 102 files before two more portrait-discovery cases were
+added; that artwork suite then passed 5/5.
+
+All **16 browser checks** passed (33.8 seconds, one worker, no retries or longer
+deadlines): English/Spanish desktop/touch spending journeys plus existing Money
+Tree payment, legacy hydration and portrait journeys. New journeys use explicit
+hand/prerequisite/shop fixtures but real UI plays and payments, verify a penalty
+does not unlock, pay across the threshold, buy Plentiful Stock, verify the next
+shop has four items, and reload the persisted spending/unlock. They are not
+evidence of organic 2,500-gold balance or Classic run persistence. Spanish desktop
+and 320px touch screenshots were visually inspected. Artifacts:
+`/tmp/tensho-spending-1wnOpM/`.
+
+Plentiful Stock now has its own generated scroll portrait, shared by the shop and
+discovered Archive card/details. Both new and Money Tree portrait discovery gates
+are covered. [Art provenance and exact prompt](CHARTER_ART.md#plentiful-stock-portrait)
+record the unchanged PNG, verified alpha/hash and unverified model identity.
+Final full regression passed **1,129/1,129 in 102 files**. Strict TypeScript,
+targeted lint, selected formatting and diff checks passed. The Pages-base
+production/PWA build passed: 343 modules, main entry `index-8VDkd7TU.js`, 270
+precache entries / 67,759.03 KiB. The unchanged generated PNG adds 2,031,043 bytes
+to the offline payload. Existing bundle/Browserslist warnings remain. Not yet
+deployed.
+
 ## Remaining Charter audit
 
 Source inspection establishes these next requirements, not completion:
 
-- Spending progression still treats every negative gold delta as spending,
-  including penalties; audit transaction categories for Plentiful Stock.
+- Whether recurring Rental fees also qualify as spending awaits a user choice;
+  penalties no longer grant purchase/reroll progress.
 - The documented Full Unlock profile option is not wired to a player control or
   achievement suppression. Archive `unlockAll` only changes archive entries;
   it is not evidence of a working profile-wide opt-out. Do not use discovery
