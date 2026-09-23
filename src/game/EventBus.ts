@@ -43,11 +43,13 @@ export type GameEvent =
   // Economy
   | 'goldChanged'
   | 'interestEarned'
+  | 'interestSettled'
   | 'itemPurchased'
   | 'itemSold'
 
   // Items
   | 'decreeAcquired'
+  | 'buildProgressChanged'
   | 'decreeTriggered'
   | 'decreeDebuffed'
   | 'flowerCollected'
@@ -129,10 +131,14 @@ export interface GameEventData {
   // Economy
   goldChanged: { previousGold: number; newGold: number; delta: number; reason: string }
   interestEarned: { amount: number; goldHeld: number }
+  /** Every winning-round settlement, including blocked or zero interest. */
+  interestSettled: { amount: number; cap: number; goldHeld: number }
   itemPurchased: { itemType: string; itemId: string; cost: number }
   itemSold: { itemType: string; itemId: string; value: number }
 
   // Items
+  /** Settled authoritative inventory/capacity, never an in-flight effect. */
+  buildProgressChanged: { decreeCount: number; editionDecreeCount: number; handSizeLimit: number }
   decreeAcquired: {
     decreeId: string
     decreeName: string

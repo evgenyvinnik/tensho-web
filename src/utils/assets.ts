@@ -95,6 +95,7 @@ export const popupAssets = {
 export const illustrationAssets = {
   beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.png`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
+  moneyTreeCharter: `${ASSET_BASE}/illustrations/charters/money-tree.png`,
   consumables: {
     fateSeal: `${ASSET_BASE}/illustrations/fate-seal.png`,
     celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.png`,

@@ -21,6 +21,7 @@ import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
+import { CharterArtwork } from '../ui/CharterArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -141,6 +142,9 @@ export function ItemDetailModal({
           <div className="flex items-start justify-between">
             <div className="flex-1 flex items-start gap-3">
               {/* Decree icon for decree category items */}
+              {isDiscovered && displayInfo.category === 'charters' && (
+                <CharterArtwork charterId={displayInfo.id} className="h-16 w-16 shrink-0" />
+              )}
               {displayInfo.category === 'decrees' && (
                 <div className="flex-shrink-0 p-2 rounded-lg bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
                   <DecreeArtwork

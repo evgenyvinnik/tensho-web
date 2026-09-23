@@ -278,6 +278,7 @@ export class GameOrchestrator {
   private actionProcessor: ActionProcessor
   private config: RoundConfig
   private runtimeItemCounter = 0
+  private actionDepth = 0
 
   constructor(config: Partial<RoundConfig> = {}) {
     this.config = { ...DEFAULT_ROUND_CONFIG, ...config }
@@ -600,6 +601,17 @@ export class GameOrchestrator {
     return 3 + this.state.charterSystem.calculateEffects().consumableSlots
   }
 
+  private publishBuildProgress(): void {
+    if (this.actionDepth > 0 || !this.state.isRunActive) return
+    const decrees = this.state.decreeSystem.getOwnedDecrees()
+    eventBus.emit('buildProgressChanged', {
+      decreeCount: decrees.length,
+      editionDecreeCount: decrees.filter((decree) => Boolean(decree.edition))
+        .length,
+      handSizeLimit: this.getHandSizeLimit(),
+    })
+  }
+
   /** Resolve a Decree rule while respecting per-hand mandate suppression. */
   private isDecreeRuleActive(ruleId: string): boolean {
     return this.state.decreeSystem
@@ -796,6 +808,7 @@ export class GameOrchestrator {
     this.applyMandateDrawState(this.state.handTiles, [], {
       isStartingHand: true,
     })
+    this.publishBuildProgress()
   }
 
   /**
@@ -1021,8 +1034,17 @@ export class GameOrchestrator {
       }
     }
 
-    // Execute action
-    return this.executeAction(action)
+    // Publish after every effect has settled. Nested generated acquisitions
+    // must not award unlocks from a temporary intermediate inventory.
+    this.actionDepth++
+    let result: ActionResult
+    try {
+      result = this.executeAction(action)
+    } finally {
+      this.actionDepth--
+    }
+    if (result.success) this.publishBuildProgress()
+    return result
   }
 
   /**
@@ -3393,6 +3415,11 @@ export class GameOrchestrator {
       reason: 'Round payout, interest, and Decree effects',
     })
 
+    eventBus.emit('interestSettled', {
+      amount: interest,
+      cap: interestCap,
+      goldHeld: goldHeldForInterest,
+    })
     if (interest > 0) {
       eventBus.emit('interestEarned', {
         amount: interest,
@@ -3810,6 +3837,8 @@ export class GameOrchestrator {
         : 'Decree sold',
     })
 
+    this.publishBuildProgress()
+
     return { success: true, effects }
   }
 
@@ -3828,6 +3857,7 @@ export class GameOrchestrator {
       rarity: acquired.rarity,
       source,
     })
+    this.publishBuildProgress()
     return true
   }
 
@@ -3862,6 +3892,7 @@ export class GameOrchestrator {
       charterName: acquired.name,
       actNumber: this.state.currentAct,
     })
+    this.publishBuildProgress()
     return true
   }
 

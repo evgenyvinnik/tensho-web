@@ -15,6 +15,7 @@ import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
+import { CharterArtwork } from '../ui/CharterArtwork'
 
 const AnimatedDiv = animated('div')
 
@@ -176,6 +177,9 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
           {displayInfo.category === 'omens' && displayInfo.id === 'double_omen' && <DoubleOmenArtwork className="mb-2 h-16 w-16" />}
 
           {/* Item Name */}
+          {displayInfo.category === 'charters' && (
+            <CharterArtwork charterId={displayInfo.id} className="mb-2 h-16 w-16" />
+          )}
           <h3
             className={`mb-1 line-clamp-2 text-sm font-bold text-[var(--color-beige-white)] ${voidScript ? 'pr-14 sm:pr-16' : ''}`}
           >

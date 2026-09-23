@@ -330,6 +330,18 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe(
+    'buildProgressChanged',
+    ({ decreeCount, editionDecreeCount, handSizeLimit }) => {
+      processProgressionEvent({
+        type: 'build_changed',
+        decreesOwned: decreeCount,
+        editionDecreeCount,
+        handSizeLimit,
+      })
+    }
+  )
+
+  subscription.subscribe(
     'consumableAcquired',
     ({ consumableType, itemId, source = 'purchase' }) => {
       const discovered = recordArchiveItem(
@@ -384,7 +396,13 @@ export function initializeMetaProgressionBridge(): () => void {
   subscription.subscribe('roundEnd', ({ won, score }) => {
     const corrupted = activeRun?.pendingCorruptedSeasons ?? 0
     if (activeRun) activeRun.pendingCorruptedSeasons = 0
-    if (!won) return
+    if (!won) {
+      processProgressionEvent({
+        type: 'interest_collected',
+        wasMaxInterest: false,
+      })
+      return
+    }
     processProgressionEvent({ type: 'round_completed', value: score })
     for (let i = 0; i < corrupted; i++) {
       processProgressionEvent({ type: 'corrupted_season_survived' })
@@ -445,10 +463,10 @@ export function initializeMetaProgressionBridge(): () => void {
     processProgressionEvent({ type: 'shop_rerolled' })
   })
 
-  subscription.subscribe('interestEarned', ({ amount }) => {
+  subscription.subscribe('interestSettled', ({ amount, cap }) => {
     processProgressionEvent({
       type: 'interest_collected',
-      wasMaxInterest: amount >= 5,
+      wasMaxInterest: cap > 0 && amount >= cap,
     })
   })
 

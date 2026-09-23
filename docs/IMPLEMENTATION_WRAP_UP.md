@@ -6,7 +6,26 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current Omen effects and release checkpoint
+## Current Charter-progression checkpoint
+
+September 22: actual maximum-interest payouts now drive Money Tree's prerequisite,
+including raised Charter/Omen caps and zero/blocked settlements. A separate
+current streak resets on shortfalls, skips, defeats and new runs; lifetime best
+and existing unlocks persist. Legacy saves do not invent a current streak.
+Radiant Edge and Full Palette now observe settled build ownership/capacity, not
+temporary intermediate effects. Money Tree has new generated shop/Archive art.
+Combined full units passed **1,089/1,089 in 99 files**. Strict TypeScript, targeted
+lint and thirteen release-workflow checks passed. Browser rerun: **9/10**, then
+**3/3** unchanged repetitions of the startup-timeout scenario. The Pages-base
+production/PWA build passed. Earlier interest-only evidence remains
+in the linked ledger. This is
+local follow-up work, not a claim of another deployment or complete Charter
+progression. [Evidence and remaining audit](CHARTER_PROGRESSION_IMPLEMENTATION.md)
+identify ungated upgrade offers, pack provenance,
+and the Observatory rule conflict. An optional question asks whether Table Loop
+should become the primary Play mode; no answer has been assumed.
+
+## Published Omen effects and release checkpoint
 
 September 22: live interest durations and Season locks remain inspectable after
 their acquisition tags are consumed. Each deferred Rare+ offer shows its own
@@ -587,6 +606,6 @@ deployed in this pass. Older checkpoint counts below remain historical.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Tag/artifact identity under concurrent pushes and tag rejection is fixed and covered by 13 local workflow checks; see [Release implementation](RELEASE_IMPLEMENTATION.md). Hosted execution, permissions, actual artifact delivery, and existing PWA upgrades still require live evidence. Public Pages returned HTTP 200, but these changes have not been committed, pushed, or deployed. |
+| Release readiness | The September 22 main merge is deployed as v1.0.260922-1. Clean-runner tests/build/provenance, the matching hosted manifest/tag, and fresh desktop/touch gameplay checks passed; see [Release implementation](RELEASE_IMPLEMENTATION.md). Existing installed-PWA upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

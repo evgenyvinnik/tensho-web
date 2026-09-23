@@ -129,6 +129,7 @@ Run `bun run sloc` to calculate source lines of code.
 - [Earned Omens and Season lifecycle](docs/OMEN_LIFECYCLE.md) — Real skip acquisition, once-only shop fees, round cleanup, and locked-draw stacking
 - [Double Omen and pending rewards](docs/DOUBLE_OMEN_IMPLEMENTATION.md) — Earned copies, immediate/delayed settlement, optional localized disclosure, and new artwork
 - [Omen costs and live durations](docs/OMEN_EFFECTS_IMPLEMENTATION.md) — Visible shop fees, effect expiry through skips, Season-lock safety, and release verification
+- [Charter progression](docs/CHARTER_PROGRESSION_IMPLEMENTATION.md) — Actual maximum-interest streaks, durable unlocks, and remaining upgrade eligibility requirements
 - [Table Loop scroll artwork](docs/TABLE_LOOP_ART.md) — All ten individual generated scrolls, prompts, provenance, and readable rule popups
 - [Table Loop release preparation](docs/TABLE_LOOP_RELEASE.md) — Merchant swaps, save compatibility, real-run verification, and remaining release work
 - [On-demand screens and offline verification](docs/ROUTE_LOADING_IMPLEMENTATION.md) — Measured first-screen code reductions, accessible loading, failed-download recovery, and retained regression evidence

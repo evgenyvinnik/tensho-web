@@ -4,7 +4,21 @@
 
 **Last verified:** September 22, 2026
 
-**Current release checkpoint:** Omen costs and live durations are visible in the
+**Current local progression checkpoint:** Money Tree's ten-round prerequisite
+now counts actual maximum-interest settlements, including Charter/Omen caps.
+Current streak and lifetime best are separate; zero payouts, skips, defeats and
+new runs cannot extend a streak. Radiant Edge and Full Palette now observe
+settled editioned-Decree ownership and actual rack capacity. Money Tree has a
+unique generated shop/Archive portrait. Full units passed **1,089/1,089 in 99
+files**, strict TypeScript, targeted lint and thirteen release-workflow checks
+passed. Browser rerun: **9/10**, then **3/3** unchanged repetitions of the one
+startup-timeout scenario. The Pages-base production/PWA build passed. Exact
+failures and fixtures are retained in the linked ledger.
+[Charter progression evidence](CHARTER_PROGRESSION_IMPLEMENTATION.md) records
+legacy compatibility and the broader unresolved Charter eligibility/counter gaps.
+This follow-up is not deployed; published version remains `1.0.260922-1`.
+
+**Published release checkpoint:** Omen costs and live durations are visible in the
 optional localized disclosure. Skipped rounds spend existing interest durations
 without prematurely aging their newly acquired reward; Season-lock cleanup no
 longer erases a subsequent lock. Full units passed **1,067/1,067 in 96 files**

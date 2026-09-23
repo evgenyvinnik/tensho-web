@@ -81,6 +81,7 @@ export interface LifetimeStats {
 
   // Special conditions
   maxConsecutiveInterestRounds: number
+  currentMaxInterestRounds: number
   emptyScrollRedeems: number
   minHandSizeAchieved: number
   corruptedSeasonsSurvived: number
@@ -185,6 +186,7 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   yakumanScored: 0,
   totalYakuScored: 0,
   maxConsecutiveInterestRounds: 0,
+  currentMaxInterestRounds: 0,
   emptyScrollRedeems: 0,
   minHandSizeAchieved: 13,
   corruptedSeasonsSurvived: 0,
@@ -771,6 +773,7 @@ export type ProgressionEventType =
   | 'interest_collected'
   | 'flower_collected'
   | 'corrupted_season_survived'
+  | 'build_changed'
 
 /**
  * Payload for progression events
@@ -787,6 +790,8 @@ export interface ProgressionEventPayload {
   hadFlowers?: boolean
   roundsCompleted?: number
   decreesOwned?: number
+  editionDecreeCount?: number
+  handSizeLimit?: number
 }
 
 /**
@@ -800,9 +805,11 @@ export function processProgressionEvent(
 
   switch (event.type) {
     case 'run_started':
+      updates.currentMaxInterestRounds = 0
       updates.totalRunsStarted = stats.totalRunsStarted + 1
       updates.currentRunChartersPurchased = 0
       updates.currentRunDecreesOwned = 0
+      updates.editionDecreesOwned = 0
       updates.currentRunFlowersCollected = 0
       updates.currentRunGold = 0
       updates.currentRunRoundsCompleted = 0
@@ -854,6 +861,7 @@ export function processProgressionEvent(
       break
 
     case 'round_skipped':
+      updates.currentMaxInterestRounds = 0
       updates.totalRoundsSkipped = stats.totalRoundsSkipped + 1
       break
 
@@ -1014,12 +1022,24 @@ export function processProgressionEvent(
       break
 
     case 'interest_collected':
-      if (event.wasMaxInterest) {
-        updates.maxConsecutiveInterestRounds =
-          stats.maxConsecutiveInterestRounds + 1
-      } else {
-        updates.maxConsecutiveInterestRounds = 0
-      }
+      updates.currentMaxInterestRounds = event.wasMaxInterest
+        ? stats.currentMaxInterestRounds + 1
+        : 0
+      updates.maxConsecutiveInterestRounds = Math.max(
+        stats.maxConsecutiveInterestRounds,
+        updates.currentMaxInterestRounds
+      )
+      break
+
+    case 'build_changed':
+      updates.currentRunDecreesOwned =
+        event.decreesOwned ?? stats.currentRunDecreesOwned
+      updates.editionDecreesOwned =
+        event.editionDecreeCount ?? stats.editionDecreesOwned
+      updates.minHandSizeAchieved = Math.min(
+        stats.minHandSizeAchieved,
+        event.handSizeLimit ?? stats.minHandSizeAchieved
+      )
       break
 
     case 'flower_collected':

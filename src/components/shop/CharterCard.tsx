@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import type { ImperialCharter } from '../../systems/types'
 import { useItemText } from '../../i18n/useItemText'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { illustrationAssets } from '../../utils/assets'
+import { CharterArtwork } from '../ui/CharterArtwork'
 import { GoldIcon } from '../ui/GoldIcon'
 
 const AnimatedArticle = animated('article')
@@ -58,11 +58,10 @@ export function CharterCard({
       onClick={handleClick}
     >
       <div className="grid min-w-0 grid-cols-[5rem_minmax(0,1fr)] items-start gap-3 p-4 sm:grid-cols-[6rem_minmax(0,1fr)_auto] sm:gap-4">
-        <img
-          src={illustrationAssets.imperialCharter}
+        <CharterArtwork
+          charterId={charter.id}
           alt={t('shop.ui.imperialCharter')}
-          className="game-illustration h-24 w-20 object-contain sm:h-28 sm:w-24"
-          draggable={false}
+          className="h-24 w-20 sm:h-28 sm:w-24"
         />
         <div className="min-w-0">
           <h3
