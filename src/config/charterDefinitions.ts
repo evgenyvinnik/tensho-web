@@ -933,13 +933,16 @@ export function getUpgradedCharter(baseId: string): CharterDefinition | undefine
   return UPGRADED_CHARTERS.find((c) => c.id === base.upgradeId)
 }
 
+export type CharterUnlockResolver = (charterId: string) => boolean
+
 /**
  * Check if a charter is available for purchase
- * (base charter not yet purchased, or base purchased and looking at upgrade)
+ * Requires a current-run base and a persistent unlock for upgraded Charters.
  */
 export function isCharterAvailable(
   charterId: string,
-  purchasedIds: Set<string>
+  purchasedIds: Set<string>,
+  isUpgradeUnlocked: CharterUnlockResolver = () => false
 ): boolean {
   const charter = getCharterById(charterId)
   if (!charter) return false
@@ -948,8 +951,11 @@ export function isCharterAvailable(
   if (purchasedIds.has(charterId)) return false
 
   if (charter.isUpgraded) {
-    // Upgraded charter requires base to be purchased
-    return charter.baseId ? purchasedIds.has(charter.baseId) : false
+    return Boolean(
+      charter.baseId &&
+      purchasedIds.has(charter.baseId) &&
+      isUpgradeUnlocked(charter.id)
+    )
   } else {
     // Base charter is available if not purchased
     return true
@@ -959,6 +965,11 @@ export function isCharterAvailable(
 /**
  * Get all available charters for purchase
  */
-export function getAvailableCharters(purchasedIds: Set<string>): CharterDefinition[] {
-  return ALL_CHARTERS.filter((c) => isCharterAvailable(c.id, purchasedIds))
+export function getAvailableCharters(
+  purchasedIds: Set<string>,
+  isUpgradeUnlocked: CharterUnlockResolver = () => false
+): CharterDefinition[] {
+  return ALL_CHARTERS.filter((c) =>
+    isCharterAvailable(c.id, purchasedIds, isUpgradeUnlocked)
+  )
 }

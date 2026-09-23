@@ -92,6 +92,7 @@ import {
 } from '../systems/VoidScriptSystem'
 import { OmenTagSystem } from '../systems/OmenTagSystem'
 import { CharterSystem } from '../systems/CharterSystem'
+import type { CharterUnlockResolver } from '../config/charterDefinitions'
 import { DebuffSystem } from './DebuffSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -279,11 +280,17 @@ export class GameOrchestrator {
   private config: RoundConfig
   private runtimeItemCounter = 0
   private actionDepth = 0
+  private charterUnlockResolver: CharterUnlockResolver = () => false
 
   constructor(config: Partial<RoundConfig> = {}) {
     this.config = { ...DEFAULT_ROUND_CONFIG, ...config }
     this.actionProcessor = createActionProcessor()
     this.state = this.createInitialState()
+  }
+
+  /** Application wiring supplies persisted progress; pure engine instances default locked. */
+  setCharterUnlockResolver(resolver: CharterUnlockResolver): void {
+    this.charterUnlockResolver = resolver
   }
 
   // ===========================================================================
@@ -338,7 +345,7 @@ export class GameOrchestrator {
       fateSealSystem: new FateSealSystem(),
       voidScriptSystem: new VoidScriptSystem(),
       omenSystem: new OmenTagSystem(),
-      charterSystem: new CharterSystem(),
+      charterSystem: new CharterSystem((id) => this.charterUnlockResolver(id)),
       debuffSystem,
       mandateEffectSystem,
       fateSeals: [],

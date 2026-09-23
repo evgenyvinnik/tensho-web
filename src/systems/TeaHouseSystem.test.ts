@@ -22,8 +22,9 @@ describe('TeaHouseSystem visit modifiers', () => {
     expect(TEA_HOUSE_UPGRADED_CHARTERS.map(({ id }) => id)).toContain('observatory')
   })
 
-  it('offers the matching upgrade after its base Charter is redeemed', () => {
+  it('offers the matching earned upgrade after its base Charter is redeemed', () => {
     const teaHouse = new TeaHouseSystem(1, () => 0)
+    teaHouse.setCharterUnlockResolver(id => id === 'plentiful_stock')
     teaHouse.applyCharter(charter('abundant_stock'))
 
     const shop = teaHouse.generateShop([], true)

@@ -11,10 +11,14 @@ test('Money Tree portrait survives a localized mobile purchase and raises the in
     const gamePath = '/src/game/GameOrchestrator.ts'
     const shopPath = '/src/systems/TeaHouseSystem.ts'
     const eventPath = '/src/game/EventBus.ts'
+    const progressionPath = '/src/stores/progressionStore.ts'
     const { gameOrchestrator: game } = await import(gamePath)
     const { TEA_HOUSE_BASE_CHARTERS, TEA_HOUSE_UPGRADED_CHARTERS } =
       await import(shopPath)
     const { eventBus } = await import(eventPath)
+    const { useProgressionStore } = await import(progressionPath)
+    // Presentation fixture: earned eligibility is tested in the progression journeys.
+    useProgressionStore.getState().unlockItem('unlock_money_tree')
     game.startNewRun(7)
     game.addImperialCharter(
       TEA_HOUSE_BASE_CHARTERS.find(

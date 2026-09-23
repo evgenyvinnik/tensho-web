@@ -8,6 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Charter-progression checkpoint
 
+Local follow-up: canonical offer/purchase eligibility now checks the persistent
+unlock, current-run base and non-ownership for every upgraded Charter. The
+application supplies live progress without coupling pure engines to stores.
+Liquidation retains a qualifying past run rather than demanding ten again after
+acquiring its base. Returning players retain recorded past upgrade purchases,
+without granting eligibility from Archive-only discovery. Final full regression
+passed **1,120/1,120 in 101 files**, all **44/44 browser checks** passed, and
+**10/10 final purchase/reload/legacy-hydration cases** passed. Strict TypeScript,
+targeted lint and the production/PWA build passed. This is not yet deployed.
+
 Published follow-up: pack-use provenance now follows the acquired Seal/Orb instance
 through successful consumption. Omen Lens/Observatory no longer count ordinary
 purchases or generated copies toward their pack-specific prerequisites. Existing
@@ -32,7 +42,7 @@ in the linked ledger. The checkpoint is deployed as **v1.0.260923-1**, with a
 matching public manifest/tag and hosted desktop/touch gameplay checks. This is
 not a claim of complete Charter progression.
 [Evidence and remaining audit](CHARTER_PROGRESSION_IMPLEMENTATION.md)
-identify ungated upgrade offers, the now-repaired pack provenance,
+record the repaired upgrade gates and pack provenance, remaining spending/profile gaps,
 and the Observatory rule conflict. An optional question asks whether Table Loop
 should become the primary Play mode; no answer has been assumed.
 

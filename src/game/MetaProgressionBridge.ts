@@ -7,7 +7,7 @@
  */
 
 import type { ArchiveCategory } from '../config/archiveDefinitions'
-import type { UnlockCategory } from '../config/unlockDefinitions'
+import { CHARTER_UNLOCKS, type UnlockCategory } from '../config/unlockDefinitions'
 import {
   getAchievementDefinition,
   type AchievementStats,
@@ -194,7 +194,15 @@ export function synchronizePersistedMetaState(): void {
   const progression = useProgressionStore.getState()
   const archive = useArchiveStore.getState()
 
-  for (const unlock of Object.values(progression.unlocks)) {
+  // Older releases allowed upgrades before achievement gating. Preserve an
+  // actual recorded acquisition, not Archive-only discovery/unlock flags.
+  for (const definition of CHARTER_UNLOCKS) {
+    if (progression.stats.chartersPurchased.has(definition.unlocksId)) {
+      progression.unlockItem(definition.id, false)
+    }
+  }
+
+  for (const unlock of Object.values(useProgressionStore.getState().unlocks)) {
     const category = UNLOCK_ARCHIVE_CATEGORIES[unlock.category]
     if (category) archive.unlockItem(category, unlock.unlocksId)
     if (unlock.category === 'table_style') {

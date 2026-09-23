@@ -21,6 +21,13 @@ import type { CelestialOrb } from '../systems/CelestialOrbSystem'
 import type { VoidScript } from '../systems/VoidScriptSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { useTableStyleStore } from '../stores/tableStyleStore'
+import { useProgressionStore } from '../stores/progressionStore'
+
+// Wire only the application singleton. Standalone engines remain deterministic
+// and receive their own explicit progression policy, without store dependencies.
+gameOrchestrator.setCharterUnlockResolver((id) =>
+  useProgressionStore.getState().isItemUnlocked(id)
+)
 
 // =============================================================================
 // HOOK RETURN TYPE

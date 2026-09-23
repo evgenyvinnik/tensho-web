@@ -155,23 +155,94 @@ Published as **v1.0.260923-2**. GitHub independently passed all 1,097 units and
 the build; the public manifest/tag and hosted desktop/touch smoke checks match.
 See [publication evidence](RELEASE_IMPLEMENTATION.md#pack-provenance-publication-checkpoint).
 
+## Achievement-gated offers and purchases (local follow-up)
+
+The canonical availability rule now requires all three conditions for an upgrade:
+its persistent unlock is earned, its base is owned in the current run, and the
+upgrade is not already owned. Base Charters remain initially available. Both
+Tea House offer generation and CharterSystem purchase validation use this rule;
+a stale/forced locked offer cannot charge gold or grant an item. A depleted
+eligible pool produces no Charter offer, not a locked fallback.
+
+The UI controller supplies a live resolver from the persisted progression store
+to the application singleton. A newly earned unlock or reset is visible without
+restarting the run. Pure engine instances default to locked upgrades and accept
+an explicit resolver for simulations/tests. Neither the engine nor its rules
+import the progression store. The legacy Charter store uses the same canonical
+rule. Restoring owned Charters preserves their effects; it does not award unlocks
+or bypass prerequisites for later purchases. A new run still requires its base.
+The existing lazy loading boundary is preserved by wiring in the controller,
+not eagerly importing the game engine in the application entry point.
+
+Twenty initial cases cover every one of the sixteen upgrades' generated offers,
+paid transactions, stale eligibility, repeat rejection and next-run base checks,
+plus canonical defaults, live unlock/reset lookup, state restoration and the
+legacy store. Catalog grants/unlock sets isolate availability; they are not
+organic balance or complete power-effect coverage. The initial nineteen-case
+run failed: seventeen cases exercised the not-yet-existing resolver API, while
+two demonstrated permissive availability/restoration. Existing Tea House and
+Observatory scoring fixtures now explicitly supply earned eligibility.
+
+Liquidation's prerequisite now reads the already-maintained lifetime best for
+Charters redeemed **in one run**, not the new run's current count. A qualifying
+past run remains valid when Discount Sale is acquired later. Two further
+integration cases use authoritative grants, separate runs and the progression
+bridge: nine in one run plus one later remains insufficient; ten in a prior run
+qualifies after the later base acquisition. The ten-Charter boundary case failed before
+this evaluator correction. No threshold was changed.
+
+The first full suite passed **1,117/1,117 in 101 files** (46.97 seconds), before
+the two historical-count cases. All **44 browser checks** passed (3.1 minutes):
+English/Spanish earned/unearned Money Tree purchase attempts, real payment and
+cap effects, reload preserving unlocks but not bypassing the new base requirement,
+pack provenance, illustrated Charters, localized receipts, reduced motion,
+pending-pack route recovery, capacity and keyboard/short-phone flows. Browser
+offers and achievement boundaries are deliberate fixtures. No retries or longer
+deadlines were used. Artifacts: `/tmp/tensho-charter-eligibility-HIINkp/`.
+After the historical-count correction, final full regression passed
+**1,119/1,119 in 101 files** (187.01 seconds), and the eight earned/unearned
+purchase-and-reload browser journeys passed again (1.1 minutes). Strict
+TypeScript, targeted lint, new-test formatting and diff checks passed.
+That candidate production/PWA build passed (343 modules, 269 precache entries /
+65,775.25 KiB). A subsequent returning-player audit found a compatibility case
+that must also pass before publication: earlier permissive releases could record
+an upgraded-Charter purchase without its achievement unlock record.
+
+Startup reconciliation now quietly preserves known upgraded Charters recorded in
+lifetime purchase history as persistent unlocks. It does not infer eligibility
+from Archive discovery/unlock flags, unknown IDs, or a standalone run snapshot.
+The migration is idempotent, emits no new-unlock notices for old purchases, and
+does not resurrect history after a progression reset. Current-run base ownership
+and duplicate protection still apply. A dedicated regression failed before the
+migration; an added browser case verifies hydration through an actual page reload.
+Final verification includes this compatibility change: **1,120/1,120 units in
+101 files** (71.77 seconds) and **10/10 purchase/reload/legacy-hydration browser
+checks** (32.5 seconds), with one worker, no retries and unchanged deadlines.
+Strict TypeScript, targeted lint, selected formatting and diff checks passed.
+The final Pages-base production/PWA build passed: 343 modules, main entry
+`index-DRYVI_m3.js`, 269 precache entries / 65,775.37 KiB. Existing bundle and
+Browserslist warnings remain. Browser artifacts are under
+`/tmp/tensho-charter-eligibility-HIINkp/browser-migration`.
+The existing generated artwork is preserved; this rules wiring adds no bitmap.
+
 ## Remaining Charter audit
 
 Source inspection establishes these next requirements, not completion:
 
-- Tea House and CharterSystem eligibility currently require the base purchase
-  but do not consult the persistent achievement unlock. Enforcing that gate must
-  accompany reachable/correct prerequisite counters, not permanently hide powers
-  behind disconnected statistics.
-- Liquidation's condition reads current-run Charter count; verify its intended
-  relationship to the already tracked best-in-one-run count and base acquisition.
+- Spending progression still treats every negative gold delta as spending,
+  including penalties; audit transaction categories for Plentiful Stock.
+- The documented Full Unlock profile option is not wired to a player control or
+  achievement suppression. Archive `unlockAll` only changes archive entries;
+  it is not evidence of a working profile-wide opt-out. Do not use discovery
+  alone to bypass the progression registry.
 - Observatory's item-library rule says held Orbs multiply **their Yaku**;
   the current canonical definition/scoring applies every held Orb. Reconcile
   this rules conflict before changing the multiplier. An optional user question
   now asks which rule to use; no answer has been assumed.
-- Every upgrade still needs paid shop acquisition, repeat-purchase rejection,
-  next-run base prerequisite, persistence and its actual effect checked. A data
-  row or a direct `purchaseCharter` fixture alone is insufficient evidence.
+- Every upgrade now has controlled offer/paid-acquisition/repeat/new-run checks.
+  Complete natural prerequisite reachability, persistence and actual power-effect
+  coverage across all sixteen still require auditing. Unused legacy shop
+  generators are not claimed to match the active ShopSession/TeaHouse path.
 
 Other outstanding mechanics choices, Classic run persistence, newcomer testing,
 native-speaker review and installed-PWA upgrade checks remain open.

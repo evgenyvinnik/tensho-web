@@ -69,7 +69,7 @@ export interface ProgressionState {
 
   // Actions - Unlock management
   checkUnlocks: () => UnlockCheckResult
-  unlockItem: (unlockId: string) => void
+  unlockItem: (unlockId: string, notify?: boolean) => void
   clearRecentUnlocks: () => void
 
   // Queries
@@ -276,7 +276,7 @@ export const useProgressionStore = create<ProgressionState>()(
         return result
       },
 
-      unlockItem: (unlockId) => {
+      unlockItem: (unlockId, notify = true) => {
         const unlock = getUnlockById(unlockId)
         if (!unlock) return
 
@@ -293,7 +293,9 @@ export const useProgressionStore = create<ProgressionState>()(
               category: unlock.category,
             },
           },
-          recentUnlocks: [...get().recentUnlocks, unlockId],
+          recentUnlocks: notify
+            ? [...get().recentUnlocks, unlockId]
+            : get().recentUnlocks,
         })
       },
 

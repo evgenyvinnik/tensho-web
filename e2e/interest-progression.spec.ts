@@ -2,6 +2,60 @@ import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
+test('historical upgraded purchases survive hydration without granting every discovered Charter', async ({
+  page,
+}) => {
+  await page.goto('/en/play')
+  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  await page.evaluate(async () => {
+    const progressionPath = '/src/stores/progressionStore.ts'
+    const archivePath = '/src/stores/archiveStore.ts'
+    const { useProgressionStore } = await import(progressionPath)
+    const { useArchiveStore } = await import(archivePath)
+    useProgressionStore.getState().resetProgression()
+    useArchiveStore.getState().resetArchive()
+    useArchiveStore.getState().unlockItem('charters', 'radiant_edge')
+    useProgressionStore.getState().updateStats({
+      chartersPurchased: new Set(['seed_pouch', 'money_tree']),
+    })
+  })
+  await page.reload()
+  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  expect(
+    await page.evaluate(async () => {
+      const progressionPath = '/src/stores/progressionStore.ts'
+      const gamePath = '/src/game/GameOrchestrator.ts'
+      const charterPath = '/src/systems/TeaHouseSystem.ts'
+      const { useProgressionStore } = await import(progressionPath)
+      const { gameOrchestrator: game } = await import(gamePath)
+      const { TEA_HOUSE_BASE_CHARTERS } = await import(charterPath)
+      const withoutBase = game
+        .getState()
+        .charterSystem.canPurchaseCharter('money_tree')
+      game.addImperialCharter(
+        TEA_HOUSE_BASE_CHARTERS.find(
+          (charter: { id: string }) => charter.id === 'seed_pouch'
+        )
+      )
+      return {
+        moneyTree: useProgressionStore.getState().isItemUnlocked('money_tree'),
+        radiantEdge: useProgressionStore
+          .getState()
+          .isItemUnlocked('radiant_edge'),
+        withoutBase,
+        withBase: game
+          .getState()
+          .charterSystem.canPurchaseCharter('money_tree'),
+      }
+    })
+  ).toEqual({
+    moneyTree: true,
+    radiantEdge: false,
+    withoutBase: false,
+    withBase: true,
+  })
+})
+
 for (const [language, copy] of [
   ['en', en],
   ['es', es],
@@ -124,6 +178,55 @@ for (const [language, copy] of [
           .click()
         await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
       }
+      // Force only the offer, not eligibility: the runtime must consult the
+      // achievement just earned (or still missing) when confirming payment.
+      await page.evaluate(async () => {
+        const gamePath = '/src/game/GameOrchestrator.ts'
+        const charterPath = '/src/systems/TeaHouseSystem.ts'
+        const eventPath = '/src/game/EventBus.ts'
+        const { gameOrchestrator: game } = await import(gamePath)
+        const { TEA_HOUSE_UPGRADED_CHARTERS } = await import(charterPath)
+        const { eventBus } = await import(eventPath)
+        Object.assign(game.getState(), {
+          phase: 'shop',
+          lastCompletedRoundType: 'Boss',
+          gold: 100,
+        })
+        game.shop.open()
+        game.shop.state.charterOffering.item = TEA_HOUSE_UPGRADED_CHARTERS.find(
+          (charter: { id: string }) => charter.id === 'money_tree'
+        )
+        game.shop.state.charterOffering.finalCost = 10
+        eventBus.emit('shopUpdated', { isOpen: true })
+      })
+      await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+      await page.getByTestId('charter-card').getByRole('button').click()
+      await page
+        .getByRole('dialog', {
+          name: copy.shop.ui.confirmPurchase,
+          exact: true,
+        })
+        .getByRole('button', { name: copy.shop.buy, exact: true })
+        .click()
+      expect(
+        await page.evaluate(async () => {
+          const path = '/src/game/GameOrchestrator.ts'
+          const { gameOrchestrator: game } = await import(path)
+          return {
+            owned: game.getState().charterSystem.hasCharter('money_tree'),
+            gold: game.getState().gold,
+            cap: game.getState().charterSystem.calculateEffects().interestCap,
+          }
+        })
+      ).toEqual({
+        owned: unlock,
+        gold: unlock ? 90 : 100,
+        cap: unlock ? 20 : 10,
+      })
+      await page
+        .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
+        .click()
+      await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
       // Classic starts a new run on reload today. Lifetime progress and earned
       // unlocks must survive, but its old run's current streak must not.
       await page.reload()
@@ -132,10 +235,15 @@ for (const [language, copy] of [
         await page.evaluate(async () => {
           const progressionPath = '/src/stores/progressionStore.ts'
           const archivePath = '/src/stores/archiveStore.ts'
+          const gamePath = '/src/game/GameOrchestrator.ts'
+          const { gameOrchestrator: game } = await import(gamePath)
           const { useProgressionStore } = await import(progressionPath)
           const { useArchiveStore } = await import(archivePath)
           const progression = useProgressionStore.getState()
           return {
+            canRepurchaseWithoutBase: game
+              .getState()
+              .charterSystem.canPurchaseCharter('money_tree'),
             current: progression.stats.currentMaxInterestRounds,
             best: progression.stats.maxConsecutiveInterestRounds,
             unlocked: progression.isItemUnlocked('money_tree'),
@@ -145,6 +253,7 @@ for (const [language, copy] of [
           }
         })
       ).toEqual({
+        canRepurchaseWithoutBase: false,
         current: 0,
         best: unlock ? 10 : 9,
         unlocked: unlock,

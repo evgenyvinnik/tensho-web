@@ -9,13 +9,14 @@
  * - Charters cannot be rerolled
  * - Base cost: 10 Gold
  * - Each charter is unique and non-repeatable in a run
- * - Upgraded versions only appear after the base is purchased
+ * - Upgrades require their earned unlock and a base purchased in this run
  */
 
 import {
   type CharterDefinition,
   type CharterEffect,
   type CharterEffectType,
+  type CharterUnlockResolver,
   getCharterById,
   getUpgradedCharter,
   isCharterAvailable,
@@ -104,7 +105,9 @@ export class CharterSystem {
   private currentRound: number = 1
   private mandateRerollsUsedThisAct: number = 0
 
-  constructor() {
+  constructor(
+    private readonly isUpgradeUnlocked: CharterUnlockResolver = () => false
+  ) {
     this.reset()
   }
 
@@ -155,7 +158,11 @@ export class CharterSystem {
    * Check if a charter can be purchased
    */
   canPurchaseCharter(charterId: string): boolean {
-    return isCharterAvailable(charterId, this.purchasedIds)
+    return isCharterAvailable(
+      charterId,
+      this.purchasedIds,
+      this.isUpgradeUnlocked
+    )
   }
 
   /**
@@ -187,7 +194,10 @@ export class CharterSystem {
    * Get a random available charter for the shop
    */
   getRandomAvailableCharter(): CharterDefinition | null {
-    const available = getAvailableCharters(this.purchasedIds)
+    const available = getAvailableCharters(
+      this.purchasedIds,
+      this.isUpgradeUnlocked
+    )
 
     if (available.length === 0) {
       return null
@@ -396,7 +406,7 @@ export class CharterSystem {
       return false
     }
 
-    return !this.hasCharter(upgraded.id)
+    return this.canPurchaseCharter(upgraded.id)
   }
 
   /**
@@ -421,14 +431,17 @@ export class CharterSystem {
   /**
    * Restore from serialized state
    */
-  static fromState(state: {
-    ownedCharters: OwnedCharter[]
-    purchasedIds: string[]
-    currentAct: number
-    currentRound: number
-    mandateRerollsUsedThisAct: number
-  }): CharterSystem {
-    const system = new CharterSystem()
+  static fromState(
+    state: {
+      ownedCharters: OwnedCharter[]
+      purchasedIds: string[]
+      currentAct: number
+      currentRound: number
+      mandateRerollsUsedThisAct: number
+    },
+    isUpgradeUnlocked: CharterUnlockResolver = () => false
+  ): CharterSystem {
+    const system = new CharterSystem(isUpgradeUnlocked)
     system.ownedCharters = [...state.ownedCharters]
     system.purchasedIds = new Set(state.purchasedIds)
     system.currentAct = state.currentAct

@@ -552,6 +552,8 @@ describe('GameOrchestrator', () => {
       const scoreHand = (targetGame: GameOrchestrator, withObservatory: boolean) => {
         clearDecrees(targetGame)
         if (withObservatory) {
+          // Isolate scoring from the separately tested achievement prerequisite.
+          targetGame.setCharterUnlockResolver(id => id === 'observatory')
           expect(targetGame.getState().charterSystem.purchaseCharter('star_chart')).not.toBeNull()
           expect(targetGame.getState().charterSystem.purchaseCharter('observatory')).not.toBeNull()
           expect(

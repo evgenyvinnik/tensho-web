@@ -516,7 +516,8 @@ export class MetaProgressionSystem {
       }
 
       case 'charters_in_run':
-        current = stats.currentRunChartersPurchased
+        // A qualifying single run remains valid if its base is acquired later.
+        current = stats.maxChartersInRun
         isMet = current >= target
         break
 

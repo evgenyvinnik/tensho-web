@@ -54,6 +54,8 @@ import {
   BASE_CHARTERS as CANONICAL_BASE_CHARTERS,
   UPGRADED_CHARTERS as CANONICAL_UPGRADED_CHARTERS,
   getCharterById,
+  isCharterAvailable,
+  type CharterUnlockResolver,
   type CharterDefinition,
   type CharterEffect,
 } from '../config/charterDefinitions'
@@ -236,6 +238,7 @@ export class TeaHouseSystem {
   private canBuyTiles: boolean = false
   private tilesHaveEditions: boolean = false
   private purchasedCharterIds: Set<string> = new Set()
+  private charterUnlockResolver: CharterUnlockResolver = () => false
   private currentStake: number = 1
   private offeringCounter: number = 0
 
@@ -266,6 +269,10 @@ export class TeaHouseSystem {
    */
   setStake(stake: number): void {
     this.currentStake = stake
+  }
+
+  setCharterUnlockResolver(resolver: CharterUnlockResolver): void {
+    this.charterUnlockResolver = resolver
   }
 
   /**
@@ -810,24 +817,19 @@ export class TeaHouseSystem {
    * Get charters available for purchase
    */
   private getAvailableCharters(): ImperialCharter[] {
-    const available: ImperialCharter[] = []
-
-    for (const charter of TEA_HOUSE_BASE_CHARTERS) {
-      if (!this.purchasedCharterIds.has(charter.id)) {
-        // Base charter not purchased, add it
-        available.push(charter)
-      } else if (charter.upgradeId) {
-        // Base is purchased, check if upgrade is available
-        const upgrade = TEA_HOUSE_UPGRADED_CHARTERS.find(
-          (c) => c.id === charter.upgradeId
-        )
-        if (upgrade && !this.purchasedCharterIds.has(upgrade.id)) {
-          available.push(upgrade)
-        }
-      }
-    }
-
-    return available
+    // Preserve base/upgrade catalog ordering to avoid unnecessary seeded changes.
+    return TEA_HOUSE_BASE_CHARTERS.flatMap((base) => [
+      base,
+      ...TEA_HOUSE_UPGRADED_CHARTERS.filter(
+        (upgrade) => upgrade.id === base.upgradeId
+      ),
+    ]).filter((charter) =>
+      isCharterAvailable(
+        charter.id,
+        this.purchasedCharterIds,
+        this.charterUnlockResolver
+      )
+    )
   }
 
   // ===========================================================================

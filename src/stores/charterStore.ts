@@ -22,6 +22,10 @@ import {
   isCharterAvailable,
 } from '../config/charterDefinitions'
 import { runRandom } from '../game/RunRandom'
+import { useProgressionStore } from './progressionStore'
+
+const isUpgradeUnlocked = (id: string) =>
+  useProgressionStore.getState().isItemUnlocked(id)
 
 // =============================================================================
 // TYPES
@@ -239,7 +243,7 @@ export const useCharterStore = create<CharterState>()((set, get) => ({
   purchaseCharter: (charterId: string) => {
     const state = get()
 
-    if (!isCharterAvailable(charterId, state.purchasedIds)) {
+    if (!isCharterAvailable(charterId, state.purchasedIds, isUpgradeUnlocked)) {
       return null
     }
 
@@ -264,7 +268,7 @@ export const useCharterStore = create<CharterState>()((set, get) => ({
 
   canPurchaseCharter: (charterId: string) => {
     const { purchasedIds } = get()
-    return isCharterAvailable(charterId, purchasedIds)
+    return isCharterAvailable(charterId, purchasedIds, isUpgradeUnlocked)
   },
 
   hasCharter: (charterId: string) => {
@@ -279,12 +283,12 @@ export const useCharterStore = create<CharterState>()((set, get) => ({
 
   getAvailableCharters: () => {
     const { purchasedIds } = get()
-    return getAvailableCharters(purchasedIds)
+    return getAvailableCharters(purchasedIds, isUpgradeUnlocked)
   },
 
   getRandomAvailableCharter: () => {
     const { purchasedIds } = get()
-    const available = getAvailableCharters(purchasedIds)
+    const available = getAvailableCharters(purchasedIds, isUpgradeUnlocked)
 
     if (available.length === 0) {
       return null
@@ -401,7 +405,7 @@ export const useCharterStore = create<CharterState>()((set, get) => ({
       return false
     }
 
-    return !purchasedIds.has(upgraded.id)
+    return isCharterAvailable(upgraded.id, purchasedIds, isUpgradeUnlocked)
   },
 
   clearCharters: () => {

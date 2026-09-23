@@ -99,6 +99,9 @@ export class ShopSession {
       return eventBus.batch(() => {
         const state = this.game.getState()
         this.teaHouse.setStake(state.stake)
+        this.teaHouse.setCharterUnlockResolver((id) =>
+          this.game.getState().charterSystem.canPurchaseCharter(id)
+        )
         const ownedCharters = state.charterSystem.getPurchasedIds()
         for (const charter of [
           ...TEA_HOUSE_BASE_CHARTERS,
