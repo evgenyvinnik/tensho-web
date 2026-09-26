@@ -27,4 +27,8 @@ The first native test failed because its fixture restarted the engine directly a
 
 An additional **8/8 existing pack-provenance browser checks** passed, covering paid pack selection, use, unlock accounting and reload. All native checks used original deadlines and no retries. Artifacts: `/tmp/tensho-pack-identity-browser` (failed fixture), `/tmp/tensho-pack-identity-corrected` and `/tmp/tensho-pack-identity-provenance`.
 
-Full regression passed **1,370/1,370 tests in 115 files** (85.74 seconds), report `/tmp/tensho-pack-identity-units.json`. Strict TypeScript, targeted lint, diff checks and the Pages-base production/PWA build passed. Existing large-chunk and stale Browserslist warnings remain. Publication is pending. No completion claim for outstanding mechanic choices or the whole project.
+Full regression passed **1,370/1,370 tests in 115 files** (85.74 seconds), report `/tmp/tensho-pack-identity-units.json`. Strict TypeScript, targeted lint, diff checks and the Pages-base production/PWA build passed. Existing large-chunk and stale Browserslist warnings remain. No completion claim for outstanding mechanic choices or the whole project.
+
+## Publication
+
+Published **v1.0.260926-5**, source commit `a406c00580115610935cd514baa4877b2cbaf6c0`, built/tag commit `0298f19ff921c83bf3410befe2472c2a6052292c`. [CI run 36271467106](https://github.com/evgenyvinnik/tensho-web/actions/runs/36271467106) independently passed all 1,370 tests, 13 release checks, build/provenance and Pages deployment. The public release manifest matches the tag. Fresh hosted desktop/touch Classic play, exact save/reload, menu Resume, and Table Loop placement/refill/reload passed without page errors. Public smoke artifacts: `/tmp/tensho-pack-identity-release-VZGzEB`. The deliberate pack fixtures described above ran against the local app, not the production origin.

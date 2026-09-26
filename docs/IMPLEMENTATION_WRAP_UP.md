@@ -6,6 +6,21 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Latest pack-choice checkpoint
+
+Published **v1.0.260926-5** repairs catalog-versus-choice identity in pack
+generation and rendering. Consumable alternatives are now used before the
+existing rarity-exhaustion fallback; stable choice keys and index-based rendering
+preserve distinct selection even for legacy colliding IDs. Existing generated
+Decree art now appears in the live reward dialog. **1,370/1,370 units** and
+**16/16 desktop/touch browser checks**, TypeScript, lint and production build
+passed. Independent CI passed all tests and release checks, then deployed
+`0298f19ff921c83bf3410befe2472c2a6052292c`; the public manifest/tag and hosted
+desktop/touch gameplay/resume checks match. [Pack-choice evidence](PACK_IDENTITY_IMPLEMENTATION.md)
+records six reproduced failures, corrected test assumptions, and compatibility
+boundaries. No new bitmap was needed; existing artwork is reused. Whole-project
+completion and pending design choices remain open.
+
 ## Latest illustrated Archive checkpoint
 
 Published **v1.0.260926-4** adds five generated starter Decree portraits and
@@ -761,6 +776,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The readiness correction is published as v1.0.260926-3 with independent CI, matching manifest/tag and hosted desktop/touch play/reload/Resume checks; see [hand readiness](HAND_READINESS_IMPLEMENTATION.md). The preceding tile-detail and Classic autosave checkpoints remain in their evidence ledgers. Existing installed-PWA upgrades and physical-device checks remain open. |
+| Release readiness | The latest pack-choice correction is published as v1.0.260926-5 with independent CI, matching manifest/tag and hosted desktop/touch play/reload/Resume checks; see [pack identity](PACK_IDENTITY_IMPLEMENTATION.md). The preceding illustrated Archive, readiness, tile-detail and Classic autosave checkpoints remain in their evidence ledgers. Existing installed-PWA upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

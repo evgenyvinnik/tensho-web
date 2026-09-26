@@ -4,6 +4,16 @@
 
 **Last verified:** September 26, 2026
 
+**Published follow-up — v1.0.260926-5:** pack generation now excludes already
+offered consumable catalog items while alternatives remain in the rolled rarity
+pool. Choice keys no longer collide within a millisecond; legacy paid contents
+remain unchanged and separately selectable. The live Decree reward dialog uses
+the existing generated portraits. **1,370/1,370 units**, **16/16 desktop/touch
+browser checks**, strict TypeScript, targeted lint and production build passed.
+Independent CI passed all tests, 13 release checks and deployment; public
+manifest/tag match `0298f19ff921c83bf3410befe2472c2a6052292c`. Hosted Classic
+and Table Loop continuation passed on desktop/touch. [Evidence and retained failures](PACK_IDENTITY_IMPLEMENTATION.md).
+
 **Published follow-up — v1.0.260926-4:** five generated starter Decree portraits
 now share shop/inventory/Archive mappings, with clarified extra-play descriptions
 in all thirteen locales. Archive details gain native modality, keyboard dismissal
