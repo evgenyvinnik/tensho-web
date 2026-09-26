@@ -6,18 +6,21 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current Classic-save prerequisites
+## Published Classic autosave/resume checkpoint
 
-The application checkpoint is ready for publication: final full regression passed
+The application checkpoint is deployed as **v1.0.260926-1**: final full regression passed
 **1,323/1,323 tests in 112 files**, with **30/30 desktop/touch browser checks**
 and **2/2 short-phone ornamental-frame checks**, no retries. Strict TypeScript
 and the Pages-base production/PWA build passed. Normal cross-tab profile handoff
 and forecast mutation defects were reproduced and repaired. The PWA update
-registration now respects the save-before-reload prompt. Publication remains
-pending; installed-PWA and cross-store crash recovery are not certified. The
-earlier failures below are historical evidence, not the final test status.
+registration now respects the save-before-reload prompt. Independent CI passed all
+1,323 tests, release checks, build and Pages deployment. Public manifest/tag match
+`aa5563779a3988c841f9554d26fdaf0848434117`; hosted desktop/touch Classic
+play/reload/menu Resume and Table Loop continuation passed without page errors.
+Installed-PWA and cross-store crash recovery are not certified. The earlier
+failures below are historical evidence, not the final test status.
 
-Unpublished continuation: the complete engine/shop/meta snapshot, strict public
+Historical pre-publication evidence: the complete engine/shop/meta snapshot, strict public
 save parser, revision/lease-protected storage and settled-event persistence
 coordinator now exist locally. Full regression finished **1,302 passed / 1 existing
 balance-command timeout**; the unchanged command file then passed **22/22**.
@@ -27,11 +30,11 @@ also passed; no native-lock/reload/browser proof is claimed from these unit chec
 Startup, localized Resume/error controls, reload routing and reset integration
 are now implemented locally. Browser checks reached **29/30** after fixing a
 reproduced fastest-win hydration defect; the remaining desktop case lost its
-execution context during navigation. Final regression and deployment are pending. The
-[working ledger](CLASSIC_RUN_PERSISTENCE.md#unpublished-whole-run-and-storage-implementation)
+execution context during navigation. The final checks and publication above
+supersede that intermediate status. The
+[working ledger](CLASSIC_RUN_PERSISTENCE.md#whole-run-and-storage-implementation)
 retains the initial fixture/edition/flower-identifier failures and the separate
-profile/checkpoint crash-atomicity limitation. Nothing from this continuation is
-deployed yet.
+profile/checkpoint crash-atomicity limitation.
 
 Internal restoration now keeps exact random cursors, remaining Omen interest
 effects, visit discounts/free rerolls and usable shop/pack Tile instances.

@@ -4,17 +4,19 @@
 
 **Last verified:** September 26, 2026
 
-**Ready-to-publish Classic checkpoint:** final full suite **1,323/1,323 in 112
+**Published Classic checkpoint — v1.0.260926-1:** final full suite **1,323/1,323 in 112
 files**, **30/30 desktop/touch browser checks**, and **2/2 320px ornamental-frame
 checks** passed without retries. Strict TypeScript and the Pages-base
 production/PWA build passed. Resume, paid pending packs, result/Endless recovery,
 quota failures and cross-tab profile handoff are covered. Forecasts no longer
 mutate saved scaling state; PWA registration now honors save-before-update.
-Deployment is pending. Earlier failures below are retained as history, not the
-current local verification result. Cross-store crash recovery and installed-PWA
-upgrade testing remain open.
+Independent CI passed all 1,323 tests, release checks, build and Pages deployment.
+The public manifest/tag match `aa5563779a3988c841f9554d26fdaf0848434117`.
+Hosted desktop/touch Classic play/reload/menu Resume and Table Loop continuation
+passed without page errors. Cross-store crash recovery and installed-PWA upgrade
+testing remain open. [Release evidence](CLASSIC_RUN_PERSISTENCE.md#published-application-checkpoint).
 
-**Current unpublished work:** whole Classic run/shop/meta capture and staged
+**Historical pre-publication evidence:** whole Classic run/shop/meta capture and staged
 restoration, strict save validation, revision/lease-protected storage and a settled
 event persistence coordinator are implemented locally. Full regression finished
 **1,302 passed / 1 existing balance-command timeout**; the unchanged command file
@@ -23,17 +25,18 @@ boss, Charter, terminal result and transient-read recovery, passed, along with t
 Pages-base production/PWA build. Application startup, localized Resume/error controls, reload routing
 and reset integration are now connected locally. The expanded browser check reached
 **29/30** after repairing fastest-win profile hydration; a desktop execution-context
-loss remains to verify. **Classic autosave is not deployed yet.**
-[Working evidence and retained failures](CLASSIC_RUN_PERSISTENCE.md#application-integration-unpublished).
+loss still needed verification at that stage. These earlier results are superseded
+by the published checkpoint above, with failures retained in the
+[evidence ledger](CLASSIC_RUN_PERSISTENCE.md#application-integration).
 
-**Current published follow-up:** Classic save prerequisites now retain exact RNG
+**Preceding published follow-up:** Classic save prerequisites retain exact RNG
 cursors, Omen interest durations, shop discounts/free rerolls and usable Tile
 rewards across subsystem JSON restoration. Restoration no longer erases live
 Omen tags; detached shop/pack snapshots preserve purchase/claim state. All
 **1,207/1,207 units in 107 files**, **18/18 browser regressions**, strict
 TypeScript, targeted lint and the production/PWA build passed. This does
-**not** enable Classic autosave/resume; authoritative whole-run snapshots,
-storage, recovery UI and reload tests remain. Deployed as **v1.0.260923-8** after
+**not** itself enable Classic autosave/resume; those missing pieces are delivered
+in v1.0.260926-1 above. Prerequisites deployed as **v1.0.260923-8** after
 independent CI passed all tests/build. Public manifest/tag and hosted desktop/touch
 gameplay checks match. An initial CI failure exposed a localization-test race;
 the corrected full two-worker suite also passed without increasing deadlines.

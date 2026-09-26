@@ -2,11 +2,30 @@
 
 Updated: September 26, 2026.
 
-**Status: Classic autosave/resume is implemented locally; not deployed yet.**
+**Status: Classic autosave/resume is deployed as v1.0.260926-1.**
 The existing saved table/difficulty preference and Table Loop action journal remain
 separate features. Classic now has its own validated checkpoint and recovery UI.
 
-## Application integration (unpublished)
+## Published application checkpoint
+
+[Actions run 36263529989](https://github.com/evgenyvinnik/tensho-web/actions/runs/36263529989)
+independently passed **1,323/1,323 tests in 112 files**, **13/13 release checks**,
+the production/PWA build, provenance validation and Pages deployment.
+
+- Implementation commit: `a4fc685567da60b7cb1a1869d172708a7a978ce4`.
+- Built/tagged commit: `aa5563779a3988c841f9554d26fdaf0848434117`.
+- Public `release.json` and remote `v1.0.260926-1` tag match that commit.
+- Fresh 1280×800 desktop and 320×568 touch contexts passed a real Classic play,
+  exact authoritative snapshot comparison after reload, Save and leave, menu
+  reload and Resume. Table Loop pair placement/refill/reload also passed, with
+  no JavaScript page errors. Public FAQ save/recovery copy was verified.
+- Hosted script/screenshots: `/tmp/tensho-classic-release-jNF9iN/`.
+- Main includes the workflow version commit. This evidence-only follow-up uses
+  `[skip ci]`; it does not trigger another deployment version.
+- CI reported deprecation notices for Node-20-based Pages actions (forced onto
+  Node 24) and the upcoming Ubuntu runner image migration; neither failed the run.
+
+## Application integration
 
 - One application-lifetime coordinator saves settled actions, handles storage and
   visibility events, and warns before closing with unsaved progress. The PWA update
@@ -82,7 +101,7 @@ Application verification so far:
   layout, and victory reload. One desktop Endless fixture lost its browser execution
   context during navigation; touch passed. No deadline/retry count was increased.
 - Artifacts are retained in `/tmp/tensho-classic-resume-browser-1` and
-  `/tmp/tensho-classic-resume-browser-2`. Final regression/publication pending.
+  `/tmp/tensho-classic-resume-browser-2`. Final verification is recorded above.
 - The expanded full two-worker suite finished **1,309 passed / 9 failed in 112
   files**, 617.96 seconds. All nine failures were unchanged 5-second timeouts:
   three balance-command cases, five exhaustive save-validator cases and one
@@ -99,9 +118,9 @@ mobile process kill. The separate profile/checkpoint crash-atomicity limitation
 below remains unresolved. Unsupported catalog/rule versions preserve the raw
 checkpoint and offer backup/discard, not an unsafe automatic migration.
 
-## Unpublished whole-run and storage implementation
+## Whole-run and storage implementation
 
-The working tree contains the following enclosing implementation. Its initial
+The published checkpoint contains the following enclosing implementation. Its initial
 backend evidence below predates the application integration above:
 
 - `ClassicRunState` captures the authoritative tile zones, melds, resources,
@@ -299,17 +318,14 @@ Classic resume, installed-PWA upgrade safety or whole-project completion.
 
 ## Remaining verification and recovery hardening
 
-1. Complete full regression of the now-implemented whole-run/shop/meta codec,
-   public validation boundary and event-to-storage coordinator above.
-2. Finish desktop/touch verification and publication of the implemented startup,
-   localized Resume/error controls, phase routing and reset integration above.
-3. Review translations with native speakers and test installed-PWA upgrades,
+1. Review translations with native speakers and test installed-PWA upgrades,
    interrupted writes and unsupported-rule-version recovery on actual devices.
-4. Specify and test profile/checkpoint crash recovery; single-key save atomicity
-   alone is not cross-store exactly-once persistence.
-5. End-to-end continuation tests for gameplay, bosses, consumables, pending packs,
-   shop prices/rerolls, once-only meta rewards, victory/endless and reset failures,
-   followed by actual desktop/touch reload tests and deployment verification.
+2. Specify and test profile/checkpoint crash recovery; single-key save atomicity
+   alone is not cross-store exactly-once persistence. General concurrent profile
+   writes and a foreign-tab reset during a pending save remain broader audit work.
+3. Extend native-browser coverage across the full boss/consumable/shop rule
+   matrix currently covered at the engine boundary. The passing hosted smoke
+   checks are not exhaustive balance, newcomer comprehension or physical-device proof.
 
 Outstanding mechanics decisions in the other ledgers remain unapproved. Saving
 the current rules must not silently choose a new rule for those questions.
