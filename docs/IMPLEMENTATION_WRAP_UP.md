@@ -717,12 +717,14 @@ deployed in this pass. Older checkpoint counts below remain historical.
 
 ## Completion audit still open
 
-September 26 unpublished follow-up: the ordinary hand-readiness hint now checks
+September 26 published follow-up (**v1.0.260926-3**): the ordinary hand-readiness hint now checks
 alternative tile groupings and separates special-hand completion. Full units
 passed **1,340/1,340**, strict TypeScript, lint, release checks and production
 build passed. The final corrected native browser batch passed **12/12** on
 desktop/touch without retries; earlier timeout and locator failures are retained.
-Publication is pending. See [readiness evidence](HAND_READINESS_IMPLEMENTATION.md).
+Independent CI and deployment passed; the public manifest/tag match the built
+checkout. Hosted desktop/touch Classic play/reload/Resume and Table Loop
+continuation passed without page errors. See [readiness evidence](HAND_READINESS_IMPLEMENTATION.md).
 
 September 26 published follow-up (**v1.0.260926-2**): tile identities and teaching popups now share
 localized text across play, rack and reward surfaces. Incorrect Season promises
@@ -744,6 +746,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The tile-detail follow-up is published as v1.0.260926-2 with independent CI and matching manifest/tag; see [tile details](TILE_DETAILS_IMPLEMENTATION.md). Classic autosave/resume was published in v1.0.260926-1 with hosted desktop/touch play/reload/Resume checks; see [Classic persistence](CLASSIC_RUN_PERSISTENCE.md). Existing installed-PWA upgrades and physical-device checks remain open. |
+| Release readiness | The readiness correction is published as v1.0.260926-3 with independent CI, matching manifest/tag and hosted desktop/touch play/reload/Resume checks; see [hand readiness](HAND_READINESS_IMPLEMENTATION.md). The preceding tile-detail and Classic autosave checkpoints remain in their evidence ledgers. Existing installed-PWA upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

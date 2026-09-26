@@ -84,8 +84,22 @@ four-copy restriction or deck rule is introduced by this change.
 
 ## Publication
 
-Local verification is complete for this checkpoint. Main publication, independent
-CI, and hosted verification are pending; the live release remains v1.0.260926-2.
+Published as **v1.0.260926-3** from built/tag commit
+`60fa6be0dfe6e9e56a5a61c0a2473a0f06f21827`. Implementation commit is
+`ed6b7c1d0e802b859d4420e156901644a1581268` on main.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/36268660487)
+passed all **1,340 tests in 114 files**, release checks, production/PWA build,
+provenance, and Pages deployment. The public `release.json` matches the tag and
+built checkout; a tag alone was not treated as deployment evidence.
+
+Fresh hosted desktop and 320px touch contexts passed actual Classic play,
+save/reload with exact snapshot equality, Save and leave, menu reload/Resume,
+and a real Table Loop placement/refill/reload. Both contexts reported no
+JavaScript page errors. The phone screenshots were visually reviewed; Classic
+still scrolls its rack below the HUD on short screens, while Table Loop retains
+its compact board/rack. These are not physical-device or installed-PWA upgrade
+checks. Hosted script and screenshots are retained locally at
+`/tmp/tensho-readiness-release-yGE8SN`.
 
 These checks do not prove that the game is fun, that higher-distance advice is
 optimal under every altered rule, or that the broader implementation audit is

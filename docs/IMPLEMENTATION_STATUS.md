@@ -4,6 +4,19 @@
 
 **Last verified:** September 26, 2026
 
+**Published follow-up — v1.0.260926-3:** ordinary hand-readiness hints now consider
+competing groupings rather than greedily extracting sequences, distinguish
+special-form completion, and avoid false complete/ready labels for surplus or
+underfilled racks. **1,340/1,340 units**, **12/12 desktop/touch browser checks**,
+strict TypeScript, targeted lint, all 13 release checks and the Pages-base build
+passed. Independent CI passed all tests/build and deployed built/tag commit
+`60fa6be0dfe6e9e56a5a61c0a2473a0f06f21827`; the public manifest matches.
+Hosted desktop/touch Classic play/reload/Resume and Table Loop continuation
+passed without page errors. This changes hints, not scoring or balance; special
+Decree grammar and wall availability are not readiness forecasts. Earlier
+timeouts and a corrected test-locator failure remain recorded in
+[the readiness evidence](HAND_READINESS_IMPLEMENTATION.md).
+
 **Published follow-up — v1.0.260926-2:** tile names, rules and action labels are localized
 across Classic, Table Loop and public rewards. Corrected false Season promises,
 shared authoritative base-point values and supplied six missing modifier
