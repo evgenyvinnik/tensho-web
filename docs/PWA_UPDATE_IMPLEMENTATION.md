@@ -1,6 +1,13 @@
 # Save-aware application updates
 
-Status: local implementation verified; publication and hosted verification pending.
+Status: published and hosted-verified as **v1.0.260926-6**.
+
+Final verification: **1,407/1,407 units in 121 files**, **10/10 native desktop/touch
+upgrade scenarios**, **13/13 release checks**, strict TypeScript, targeted lint
+and production/PWA builds passed. Independent CI passed all units and deployed
+the matching release. Fresh hosted desktop/touch Classic play/reload/menu Resume
+and Table Loop continuation passed. Earlier failures and remaining boundaries
+are retained below; this is not a claim that the entire project is finished.
 
 ## Contract
 
@@ -280,6 +287,25 @@ TypeScript, targeted lint and two successful production/PWA builds above, the
 local publication gate is satisfied. No temporary CI branch is needed. The
 earlier failures and limits remain recorded; remote CI, deployed provenance and
 hosted gameplay verification must still complete before claiming publication.
+
+## Publication
+
+Implementation commit `1c336a6b9c0d2fd74b2037b4d84c692fd792d13b` was pushed
+directly to main after the complete local gate passed. No temporary CI branch
+or additional workflow was needed. [GitHub run 36280456856](https://github.com/evgenyvinnik/tensho-web/actions/runs/36280456856)
+independently passed **1,407/1,407 tests in 121 files**, the release checks,
+production build and Pages deployment. The version automation published
+**v1.0.260926-6** at `89fdd2c222bed60429f5498c8e30353df539699d`.
+The public `release.json`, Git tag and local fast-forwarded checkout matched.
+
+The hosted verifier in the evidence root, `verify-hosted.mjs`, passed fresh
+desktop and 320×568 touch profiles. Each performed a real Classic play, exact
+snapshot reload, Save and leave, menu reload/Resume, and a real Table Loop pair
+placement followed by reload/continuation. Both reported zero JavaScript page
+errors. The public worker update hook also matched the committed source exactly;
+public FAQ guidance remained available. Captures are retained under `hosted/`.
+These checks verify the published checkpoint, not migration from every historical
+installed client, Safari/physical-device behavior, or human enjoyment.
 
 The unchanged earlier failure files were rechecked together: **86/89 passed**
 (138.40 seconds). All 22 balance-command and 17 score-localization checks passed.

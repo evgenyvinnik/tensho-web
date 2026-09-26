@@ -8,7 +8,7 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Latest save-aware update checkpoint
 
-Unpublished follow-up: save-aware PWA update consent now passes **10/10 real
+Published **v1.0.260926-6**: save-aware PWA update consent passes **10/10 real
 two-build desktop/touch upgrade scenarios**, including initially denied storage,
 failed-save recovery, other-window refusal and exact offline continuation. Menu
 navigation no longer waits for the entire tile-art preload, and denied tutorial
@@ -16,9 +16,11 @@ preference storage no longer crashes that menu. Static checks and both productio
 builds and **13/13 release-workflow checks** passed. After a measured drop in
 host load, the fresh complete regression passed **1,407/1,407 tests in 121 files**
 with unchanged source, worker count, assertions and deadlines. The first run's
-ten timeout failures remain recorded. Local verification is complete; remote CI,
-deployment and hosted verification are pending. No temporary CI branch is needed.
-No new deployment is claimed. See
+ten timeout failures remain recorded. Independent CI passed all tests and deployed
+`89fdd2c222bed60429f5498c8e30353df539699d`; public manifest/tag and the worker hook
+match. Hosted desktop/touch Classic play/reload/menu Resume and Table Loop
+continuation passed without JavaScript errors. No temporary CI branch was needed.
+Broader project completion and mechanics choices remain open. See
 [the update ledger](PWA_UPDATE_IMPLEMENTATION.md) for retained failures and limits.
 
 ## Published pack-choice checkpoint
@@ -791,6 +793,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest pack-choice correction is published as v1.0.260926-5 with independent CI, matching manifest/tag and hosted desktop/touch play/reload/Resume checks; see [pack identity](PACK_IDENTITY_IMPLEMENTATION.md). The preceding illustrated Archive, readiness, tile-detail and Classic autosave checkpoints remain in their evidence ledgers. Existing installed-PWA upgrades and physical-device checks remain open. |
+| Release readiness | The save-aware update checkpoint is published as v1.0.260926-6 with independent CI, matching manifest/tag/worker hook, 10 native upgrade scenarios and hosted desktop/touch play/reload/Resume checks; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). The preceding pack-choice, illustrated Archive, readiness, tile-detail and Classic autosave checkpoints remain in their evidence ledgers. Migration from every historical installed client and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.
