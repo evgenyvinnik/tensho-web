@@ -4,6 +4,17 @@
 
 **Last verified:** September 26, 2026
 
+**Published follow-up — v1.0.260926-4:** five generated starter Decree portraits
+now share shop/inventory/Archive mappings, with clarified extra-play descriptions
+in all thirteen locales. Archive details gain native modality, keyboard dismissal
+and focus restoration; Enter activation no longer immediately closes them.
+**1,356/1,356 units**, **18/18 desktop/touch browser checks**, 13 release checks,
+strict TypeScript, targeted lint and Pages-base build passed. Independent CI and
+Pages deployment succeeded; public manifest/tag match
+`6b3b6d66c0a706ad97bb12ab05908d239349328a`. Hosted art hashes, four localized
+Archive contexts, and desktop/touch Classic and Table Loop continuation passed.
+No balance or default-play-mode change. [Art prompts, paths and evidence](STARTER_DECREE_ART.md).
+
 **Published follow-up — v1.0.260926-3:** ordinary hand-readiness hints now consider
 competing groupings rather than greedily extracting sequences, distinguish
 special-form completion, and avoid false complete/ready labels for surplus or

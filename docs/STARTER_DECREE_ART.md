@@ -51,4 +51,12 @@ Use case: stylized-concept. Asset type: individual illustrated starter Decree sc
 - The next batch passed shop inspection but exposed a real keyboard activation issue: Enter opened the Archive dialog then activated its newly focused Close button. Preventing the card activation's default key action repaired this and also prevents Space from scrolling the page.
 - Final native checks: **18/18 desktop/touch cases**, original deadlines and no retries. All five purchases, decoded 512px portraits, English/Italian descriptions, 320px layouts, Archive native modality/Tab/Escape/focus restoration, and existing shared-dialog flows passed. Desktop and phone screenshots reviewed. Evidence: `/tmp/tensho-starter-art-keyboard`.
 - Final full regression: **1,356/1,356 tests in 115 files**, 191.21 seconds, report `/tmp/tensho-starter-art-final-units.json`. All **13/13 release-workflow checks** also passed. Full lint has no errors and 211 existing warnings.
-- Strict TypeScript, targeted lint, and the Pages-base production/PWA build passed. Build retains existing chunk-size and stale Browserslist warnings. Deployment remains pending; no publication claim until CI and the public release manifest are verified.
+- Strict TypeScript, targeted lint, and the Pages-base production/PWA build passed. Build retains existing chunk-size and stale Browserslist warnings.
+
+## Published checkpoint
+
+Published as **v1.0.260926-4**, source commit `a55629f5e5d42ddfa7e21bb8c239660425518346`, built/tag commit `6b3b6d66c0a706ad97bb12ab05908d239349328a`. [CI run 36270684342](https://github.com/evgenyvinnik/tensho-web/actions/runs/36270684342) independently passed all application tests, 13 release checks, build/provenance and Pages deployment. The public release manifest matches the version tag.
+
+Public verification checked exact SHA-256 equality of all five deployed assets, decoded 512px portraits, English/Italian Archive inspection via keyboard/touch and Escape/focus restoration in fresh desktop/mobile contexts. Hosted Classic play, exact save/reload, Save and leave/Resume, and Table Loop placement/refill/reload also passed without page errors. Scripts/screenshots: `/tmp/tensho-starter-art-release-dB9vWI`.
+
+The prototype branch was already an ancestor of main; no force push, branch replacement, or default-mode change was needed. This is a verified incremental release, not certification of the whole game or a resolution of outstanding mechanics choices.

@@ -6,6 +6,21 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Latest illustrated Archive checkpoint
+
+Published **v1.0.260926-4** adds five generated starter Decree portraits and
+accurate localized extra-play copy, plus native Archive dialog behavior and a
+reproduced Enter-activation fix. **1,356/1,356 units**, **18/18 desktop/touch
+browser checks**, 13 release checks, strict TypeScript, lint and production build
+passed. Independent CI deployed built/tag commit
+`6b3b6d66c0a706ad97bb12ab05908d239349328a`; public manifest and image hashes
+match. Hosted localized Archive inspection and both gameplay loops passed on
+desktop/touch without page errors. The imagegen skill guided transparent scroll
+art and lightweight WebP integration; model identity is not exposed. Exact prompts,
+original/output paths, failures and remaining localization scope are recorded in
+[the art ledger](STARTER_DECREE_ART.md). Broader completion and mechanics choices
+remain open; no default-mode switch was made.
+
 ## Published Classic autosave/resume checkpoint
 
 The application checkpoint is deployed as **v1.0.260926-1**: final full regression passed
