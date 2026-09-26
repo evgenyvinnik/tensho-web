@@ -10,9 +10,9 @@
  * - Rarity indicator
  */
 
-import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
-import { createPortal } from 'react-dom'
+import { Popup } from '../ui/Popup'
+import { useItemText } from '../../i18n/useItemText'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
 import type { ArchiveCategoryDefinition } from '../../config/archiveDefinitions'
@@ -22,8 +22,6 @@ import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
 import { CharterArtwork } from '../ui/CharterArtwork'
-
-const AnimatedDiv = animated('div')
 
 export interface ItemDetailModalProps {
   isOpen: boolean
@@ -107,11 +105,7 @@ export function ItemDetailModal({
   categoryInfo,
 }: ItemDetailModalProps) {
   const { t } = useTranslation()
-  const spring = useSpring({
-    opacity: isOpen ? 1 : 0,
-    scale: isOpen ? 1 : 0.9,
-    config: { tension: 300, friction: 20 },
-  })
+  const itemText = useItemText()
 
   if (!isOpen || !entry || !displayInfo) return null
 
@@ -119,43 +113,36 @@ export function ItemDetailModal({
   const rarityInfo = getRarityInfo(displayInfo.rarity)
   const voidScript = VOID_SCRIPTS[displayInfo.id]
 
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 safe-area-top safe-area-bottom"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
-      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <AnimatedDiv
-        className="relative max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-xl border-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] shadow-2xl"
-        style={{
-          opacity: spring.opacity,
-          transform: spring.scale.to((s) => `scale(${s})`),
-        }}
-        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-      >
+  return (
+    <Popup isOpen={isOpen} onClose={onClose} title={displayInfo.name}>
+      <div className="min-w-0 [overflow-wrap:anywhere]">
         {/* Header with rarity gradient */}
         <div
           className={`p-4 ${rarityInfo.bgColor} border-b border-[var(--color-saddle-brown)]`}
         >
-          <div className="flex items-start justify-between">
-            <div className="flex-1 flex items-start gap-3">
+          <div className="flex justify-center">
+            <div className="flex min-w-0 flex-col items-center gap-3 text-center">
               {/* Decree icon for decree category items */}
               {isDiscovered && displayInfo.category === 'charters' && (
-                <CharterArtwork charterId={displayInfo.id} className="h-16 w-16 shrink-0" />
+                <CharterArtwork
+                  charterId={displayInfo.id}
+                  className="h-16 w-16 shrink-0"
+                />
               )}
               {displayInfo.category === 'decrees' && (
                 <div className="flex-shrink-0 p-2 rounded-lg bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
                   <DecreeArtwork
                     decreeId={displayInfo.id}
-                    size={40}
+                    size={80}
                     color={getRarityIconColor(displayInfo.rarity)}
                   />
                 </div>
               )}
 
-              {displayInfo.category === 'omens' && displayInfo.id === 'double_omen' && <DoubleOmenArtwork className="h-16 w-16 shrink-0" />}
+              {displayInfo.category === 'omens' &&
+                displayInfo.id === 'double_omen' && (
+                  <DoubleOmenArtwork className="h-16 w-16 shrink-0" />
+                )}
 
               {voidScript && (
                 <VoidScriptArtwork
@@ -172,14 +159,9 @@ export function ItemDetailModal({
                 {/* Category badge */}
                 {categoryInfo && (
                   <span className="inline-block px-2 py-0.5 text-xs rounded bg-[var(--color-forest-green)] text-[var(--color-metallic-gold)] mb-2">
-                    {categoryInfo.name}
+                    {itemText.name('archiveCategories', categoryInfo)}
                   </span>
                 )}
-
-                {/* Name */}
-                <h2 className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-                  {displayInfo.name}
-                </h2>
 
                 {/* Japanese name */}
                 {displayInfo.japaneseName && (
@@ -196,31 +178,6 @@ export function ItemDetailModal({
                 </span>
               </div>
             </div>
-
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)]
-                         border-2 border-[var(--color-metallic-gold)] hover:border-[var(--color-golden-yellow)]
-                         text-[var(--color-beige-white)] hover:text-white
-                         transition-all hover:scale-110 active:scale-95
-                         min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label={t('common.close', 'Close')}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
           </div>
         </div>
 
@@ -305,18 +262,18 @@ export function ItemDetailModal({
                   />
                 </svg>
                 <p className="text-sm text-gray-400">
-                  <span className="font-bold">{t('collection.unlock', 'Unlock:')} </span>
+                  <span className="font-bold">
+                    {t('collection.unlock', 'Unlock:')}{' '}
+                  </span>
                   {entry.unlockCondition}
                 </p>
               </div>
             </div>
           )}
         </div>
-      </AnimatedDiv>
-    </div>
+      </div>
+    </Popup>
   )
-
-  return createPortal(modalContent, document.body)
 }
 
 export default ItemDetailModal

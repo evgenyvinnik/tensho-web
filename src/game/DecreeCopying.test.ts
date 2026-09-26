@@ -152,6 +152,7 @@ it('Clone Army grants each copied resource once, without recursion', () => {
 })
 
 it.each([
+  ['extended_hand_grant', 14, 3, 10],
   ['decree-wide-grip', 16, 3, 4],
   ['decree-second-chance', 14, 5, 4],
   ['decree-time-lord', 14, 3, 6],
@@ -171,3 +172,23 @@ it.each([
     expect(state.handsRemaining).toBe(hands)
   }
 )
+
+it('Extended Hand Grant adds three plays, not rack tiles or redraw actions', () => {
+  const { game, state } = fixture('extended_hand_grant')
+  state.phase = 'shop'
+  state.lastCompletedRoundType = 'Small'
+  expect(game.shop.open()).toBe(true)
+  game.exitShop()
+  expect(state.handsRemaining).toBe(7)
+  expect(state.handTiles).toHaveLength(14)
+  expect(state.redrawsRemaining).toBe(3)
+  expect(
+    game.processAction({
+      type: 'play',
+      tileIds: state.handTiles.slice(0, 2).map((t) => t.id),
+    }).success
+  ).toBe(true)
+  expect(state.handsRemaining).toBe(6)
+  expect(state.handTiles).toHaveLength(14)
+  expect(state.redrawsRemaining).toBe(3)
+})

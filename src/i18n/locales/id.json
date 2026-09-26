@@ -1034,7 +1034,7 @@
       },
       "extended_hand_grant": {
         "name": "Anugerah Tangan Panjang",
-        "description": "+3 pengambilan tambahan sebelum ronde gagal."
+        "description": "+3 kesempatan bermain per ronde. Tidak menambah ubin atau penukaran."
       },
       "tanyao_dispensation": {
         "name": "Dispensasi Tanyao",

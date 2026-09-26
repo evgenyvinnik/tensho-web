@@ -954,7 +954,7 @@
       },
       "extended_hand_grant": {
         "name": "Concesión de Mano Extendida",
-        "description": "+3 robos adicionales antes de fallar la ronda."
+        "description": "+3 jugadas por ronda. No añade fichas ni recambios."
       },
       "tanyao_dispensation": {
         "name": "Dispensa de Tanyao",

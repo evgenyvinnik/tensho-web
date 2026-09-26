@@ -451,6 +451,26 @@
       "mythic": "Makalangit na Ordinansa"
     },
     "items": {
+      "river_tax": {
+        "name": "Buwis sa Ilog",
+        "description": "Makakuha ng 1 Ginto sa bawat tile na itinapon sa round na ito."
+      },
+      "extended_hand_grant": {
+        "name": "Dagdag na Paglalaro",
+        "description": "+3 paglalaro bawat round. Hindi nagdadagdag ng tile o pagpapalit."
+      },
+      "tanyao_dispensation": {
+        "name": "Pahintulot sa Tanyao",
+        "description": "Pinapayagan ang terminal na mga tile (1 at 9) sa mga kamay na Tanyao."
+      },
+      "moonlit_seal": {
+        "name": "Selyo ng Buwan",
+        "description": "Bawat honor tile sa nilarong kamay ay nagdaragdag ng +0.1x sa multiplier."
+      },
+      "pure_suit_asceticism": {
+        "name": "Debosyon sa Iisang Suit",
+        "description": "Bawat tile ng pinakamaraming suit ay nagdaragdag ng 10% sa puntos. Minumultiply ang magkakapatong na bonus."
+      },
       "decree-half-suited": {
         "name": "Kalahating Suit",
         "description": "+20 Chips"

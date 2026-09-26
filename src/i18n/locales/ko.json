@@ -954,7 +954,7 @@
       },
       "extended_hand_grant": {
         "name": "연장된 손의 칙허",
-        "description": "라운드 실패 전까지 +3회 추가 뽑기."
+        "description": "라운드당 플레이 횟수 +3. 패나 교환 횟수는 늘어나지 않습니다."
       },
       "tanyao_dispensation": {
         "name": "탄야오 면제",

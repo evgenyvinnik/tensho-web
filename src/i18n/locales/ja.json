@@ -954,7 +954,7 @@
       },
       "extended_hand_grant": {
         "name": "延手の勅許",
-        "description": "局の失敗までに+3回のツモ。"
+        "description": "各ラウンドのプレイ回数+3。牌や引き直し回数は増えません。"
       },
       "tanyao_dispensation": {
         "name": "断么の特免",

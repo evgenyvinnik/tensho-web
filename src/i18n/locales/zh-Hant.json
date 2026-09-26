@@ -954,7 +954,7 @@
       },
       "extended_hand_grant": {
         "name": "延手敕許",
-        "description": "回合失敗前額外+3次摸牌。"
+        "description": "每回合可額外出牌3次。不增加手牌或換牌次數。"
       },
       "tanyao_dispensation": {
         "name": "斷么特許",

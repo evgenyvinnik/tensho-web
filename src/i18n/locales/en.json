@@ -950,7 +950,7 @@
       },
       "extended_hand_grant": {
         "name": "Extended Hand Grant",
-        "description": "+3 additional draws before round failure."
+        "description": "+3 plays per round. Does not add tiles or redraws."
       },
       "tanyao_dispensation": {
         "name": "Tanyao Dispensation",

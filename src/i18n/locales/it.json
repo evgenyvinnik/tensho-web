@@ -451,6 +451,26 @@
       "mythic": "Ordinanza Celeste"
     },
     "items": {
+      "river_tax": {
+        "name": "Tassa fluviale",
+        "description": "Ottieni 1 Oro per ogni tessera scartata in questo round."
+      },
+      "extended_hand_grant": {
+        "name": "Concessione della mano estesa",
+        "description": "+3 giocate per round. Non aggiunge tessere né cambi."
+      },
+      "tanyao_dispensation": {
+        "name": "Deroga Tanyao",
+        "description": "Le tessere terminali (1 e 9) sono ammesse nelle mani Tanyao."
+      },
+      "moonlit_seal": {
+        "name": "Sigillo lunare",
+        "description": "Ogni tessera onore nella mano giocata aggiunge +0,1x al moltiplicatore."
+      },
+      "pure_suit_asceticism": {
+        "name": "Ascetismo di un solo seme",
+        "description": "Le tessere del seme dominante aumentano il punteggio del 10% ciascuna. I bonus si moltiplicano."
+      },
       "decree-half-suited": {
         "name": "Mezzo Colore",
         "description": "+20 Fiches"

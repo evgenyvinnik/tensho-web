@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { DecreeCardCompact } from './DecreeBar'
 import type { OwnedDecree } from '../../systems/types'
+import { STARTER_DECREES } from '../../systems/DecreeSystem'
+import { getDecreeIllustration } from '../../utils/assets'
 
 const decree: OwnedDecree = {
   id: 'river_tax',
@@ -22,6 +24,27 @@ const decree: OwnedDecree = {
 }
 
 describe('DecreeCardCompact mandate states', () => {
+  it.each(STARTER_DECREES)(
+    'conceals the new $id portrait when face-down',
+    (definition) => {
+      const owned = { ...definition, acquiredRound: 1, roundsActive: 0 }
+      const path = getDecreeIllustration(definition.id)!
+      const { container, rerender } = render(
+        <DecreeCardCompact decree={owned} />
+      )
+      expect(container.querySelector(`img[src="${path}"]`)).not.toBeNull()
+      fireEvent.focus(
+        screen.getByRole('button', { name: definition.name })
+      )
+      expect(screen.getByRole('dialog')).toHaveTextContent(definition.name)
+      rerender(<DecreeCardCompact decree={owned} faceDown />)
+      expect(document.querySelector(`img[src="${path}"]`)).toBeNull()
+      expect(screen.queryByText(definition.name)).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Face-down Decree' })
+      ).toBeInTheDocument()
+    }
+  )
   it('shows bespoke art and readable details but never leaks a face-down portrait', () => {
     const wealth = {
       ...decree,
@@ -59,13 +82,13 @@ describe('DecreeCardCompact mandate states', () => {
     expect(onSell).toHaveBeenCalledOnce()
   })
 
-  it('uses rarity scroll artwork and keeps Sell inside the details popover', () => {
+  it('uses its starter portrait and keeps Sell inside the details popover', () => {
     render(<DecreeCardCompact decree={decree} onSell={vi.fn()} />)
 
     const decreeButton = screen.getByRole('button', { name: 'River Tax' })
     expect(decreeButton.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringMatching(/decrees\/local-edict\.png$/)
+      expect.stringMatching(/decrees\/river-tax\.webp$/)
     )
     expect(
       screen.queryByRole('button', { name: 'Sell River Tax' })

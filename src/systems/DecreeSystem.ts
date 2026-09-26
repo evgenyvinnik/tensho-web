@@ -288,19 +288,19 @@ export const RIVER_TAX: Decree = {
 }
 
 /**
- * Extended Hand Grant (Common) - +3 draws before failure
+ * Extended Hand Grant (Common) - +3 plays per round
  */
 export const EXTENDED_HAND_GRANT: Decree = {
   id: 'extended_hand_grant',
   name: 'Extended Hand Grant',
-  description: '+3 additional draws before round failure.',
+  description: '+3 plays per round. Does not add tiles or redraws.',
   category: 'Entropy',
   rarity: 'LocalEdict',
   cost: 5,
   effect: {
     type: 'draw',
     trigger: 'Passive',
-    description: '+3 draws per round',
+    description: '+3 plays per round',
     additionalDraws: 3,
   },
 }
@@ -1230,7 +1230,8 @@ export class DecreeSystem {
   }
 
   /**
-   * Get additional draws granted by decrees
+   * Extra plays per round. The legacy draw field/API name is kept for saves;
+   * GameOrchestrator applies it to handsRemaining, never tile draws/redraws.
    */
   getAdditionalDraws(): number {
     let draws = 0

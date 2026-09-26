@@ -451,6 +451,26 @@
       "mythic": "Cennetin Emri"
     },
     "items": {
+      "river_tax": {
+        "name": "Nehir Vergisi",
+        "description": "Bu tur atılan her taş için 1 Altın kazan."
+      },
+      "extended_hand_grant": {
+        "name": "Ek Oynama Hakkı",
+        "description": "Tur başına +3 oynama hakkı. Taş veya yeniden çekme hakkı eklemez."
+      },
+      "tanyao_dispensation": {
+        "name": "Tanyao İstisnası",
+        "description": "Uç taşlar (1 ve 9) Tanyao ellerinde kullanılabilir."
+      },
+      "moonlit_seal": {
+        "name": "Ay Işığı Mührü",
+        "description": "Oynanan eldeki her onur taşı çarpana +0,1x ekler."
+      },
+      "pure_suit_asceticism": {
+        "name": "Tek Tür Disiplini",
+        "description": "Baskın türdeki her taş puanı %10 artırır. Bonuslar çarpılarak birikir."
+      },
       "decree-half-suited": {
         "name": "Yarım Renk",
         "description": "+20 Çip"

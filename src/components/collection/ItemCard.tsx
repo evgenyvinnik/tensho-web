@@ -125,6 +125,7 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
       tabIndex={0}
       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
         if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+          e.preventDefault()
           onClick()
         }
       }}

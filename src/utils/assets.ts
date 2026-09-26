@@ -120,6 +120,11 @@ export const illustrationAssets = {
   } satisfies Record<DecreeRarity, string>,
   decreePortraits: {
     'decree-wealth-engine': `${ASSET_BASE}/illustrations/decrees/wealth-engine.png`,
+    river_tax: `${ASSET_BASE}/illustrations/decrees/river-tax.webp`,
+    extended_hand_grant: `${ASSET_BASE}/illustrations/decrees/extended-hand-grant.webp`,
+    tanyao_dispensation: `${ASSET_BASE}/illustrations/decrees/tanyao-dispensation.webp`,
+    moonlit_seal: `${ASSET_BASE}/illustrations/decrees/moonlit-seal.webp`,
+    pure_suit_asceticism: `${ASSET_BASE}/illustrations/decrees/pure-suit-asceticism.webp`,
   },
   codex: {
     archive: `${ASSET_BASE}/illustrations/codex/archive.webp`,

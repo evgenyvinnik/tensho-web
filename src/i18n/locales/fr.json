@@ -954,7 +954,7 @@
       },
       "extended_hand_grant": {
         "name": "Octroi de Main Étendue",
-        "description": "+3 pioches supplémentaires avant l'échec de la manche."
+        "description": "+3 coups par manche. N'ajoute ni tuiles ni échanges."
       },
       "tanyao_dispensation": {
         "name": "Dispense de Tanyao",

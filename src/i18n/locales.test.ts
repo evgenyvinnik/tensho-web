@@ -26,7 +26,7 @@ import tr from './locales/tr.json'
 import zhHans from './locales/zh-Hans.json'
 import zhHant from './locales/zh-Hant.json'
 
-import { ALL_DECREES } from '../systems/DecreeSystem'
+import { ALL_DECREES, STARTER_DECREES } from '../systems/DecreeSystem'
 import { ALL_CHARTERS } from '../config/charterDefinitions'
 import { ALL_OMENS } from '../config/omenDefinitions'
 import { ALL_MANDATES } from '../config/mandateDefinitions'
@@ -43,6 +43,31 @@ import {
 } from '../config/archiveDefinitions'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
+
+it('provides names and rules for every illustrated starter in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const items = (locale.decrees as typeof en.decrees).items as Record<
+      string,
+      { name: string; description: string }
+    >
+    for (const { id } of STARTER_DECREES) {
+      expect(items[id]?.name, `${language}: ${id}.name`).toBeTruthy()
+      expect(
+        items[id]?.description,
+        `${language}: ${id}.description`
+      ).toBeTruthy()
+      if (language !== 'en') {
+        expect(items[id].description).not.toBe(
+          en.decrees.items[id as keyof typeof en.decrees.items].description
+        )
+      }
+    }
+    expect(items.extended_hand_grant.description).toContain('3')
+  }
+  expect(en.decrees.items.extended_hand_grant.description).toBe(
+    '+3 plays per round. Does not add tiles or redraws.'
+  )
+})
 
 it('supplies table accessibility and cumulative stake rules in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
