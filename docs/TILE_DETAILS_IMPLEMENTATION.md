@@ -1,6 +1,27 @@
 # Localized tile identities and teaching details
 
-Updated September 26, 2026. Local implementation; publication pending.
+Updated September 26, 2026. Published as **v1.0.260926-2**.
+
+## Release
+
+[Actions run 36265177379](https://github.com/evgenyvinnik/tensho-web/actions/runs/36265177379)
+independently passed all **1,333 tests in 114 files**, **13 release checks**,
+the production/PWA build, provenance validation and Pages deployment.
+
+- Implementation commit: `f488200422fb4b9fa4f2d0e5e1a235fc83e2ddb8`.
+- Built/tagged commit: `9f75457f586ba5babebd5baedbf01255c3f22cd0`.
+- Public manifest and remote `v1.0.260926-2` tag match the built commit.
+- Hosted Spanish, French, Japanese, Russian and Thai checks passed in fresh
+  desktop and 320px touch contexts: localized tooltip identity/rules, Escape,
+  selection and Classic stage/return labels, with no JavaScript page errors.
+- Hosted English Classic play, exact snapshot restoration after reload, Save
+  and leave, menu reload/Resume, plus Table Loop placement/refill/reload passed
+  on desktop and touch. The public FAQ also retained the correct save guidance.
+- Hosted script and this release's screenshots: `/tmp/tensho-tile-release-PUTrtU/`.
+- Main includes the workflow version commit. The release-evidence follow-up
+  uses `[skip ci]` rather than creating another deployment version.
+- Existing Pages action-runtime and upcoming Ubuntu-image notices remain;
+  neither failed CI. Installed-PWA upgrade verification remains separate.
 
 ## Corrected behavior
 
@@ -64,7 +85,7 @@ not merely untranslated source comments.
 - Reviewed Russian and Thai stacked-modifier screenshots. Browser artifacts:
   `/tmp/tensho-tile-details-browser-2`, `/tmp/tensho-tile-details-browser-final`,
   `/tmp/tensho-tile-details-packs`. Owned servers were shut down before edits.
-  Publication remains pending.
+  Publication is recorded above.
 
 This does not certify all catalog translations or native-speaker quality. It does
 not implement the unresolved Negative-tile, Spring/Autumn/Winter, mutation or
