@@ -43,8 +43,80 @@
       }
     }
   },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Marchio Bonus",
+        "description": "+30 Punti quando la tessera segna punti."
+      },
+      "mult": {
+        "name": "Marchio Moltiplicatore",
+        "description": "+4 Moltiplicatore quando la tessera segna punti."
+      },
+      "wild": {
+        "name": "Marchio Jolly",
+        "description": "Conta come qualsiasi seme per gli yaku."
+      },
+      "glass": {
+        "name": "Marchio Vetro",
+        "description": "×2 Moltiplicatore quando segna punti; probabilità del 25% di rompersi dopo."
+      },
+      "steel": {
+        "name": "Marchio Acciaio",
+        "description": "×1,5 Moltiplicatore mentre resta in mano, senza essere giocata."
+      },
+      "stone": {
+        "name": "Marchio Pietra",
+        "description": "+50 Punti; contribuisce sempre, anche fuori dalla mano vincente."
+      },
+      "gold": {
+        "name": "Marchio Oro",
+        "description": "+3 Oro se resta in mano alla fine del round."
+      },
+      "lucky": {
+        "name": "Marchio Fortuna",
+        "description": "Probabilità di 1 su 5 di ottenere +20 Moltiplicatore quando segna punti."
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Base",
+        "description": "Aspetto standard, nessun effetto aggiuntivo."
+      },
+      "foil": {
+        "name": "Laminata",
+        "description": "+50 Punti quando segna punti."
+      },
+      "holographic": {
+        "name": "Olografica",
+        "description": "+10 Moltiplicatore quando segna punti."
+      },
+      "polychrome": {
+        "name": "Policroma",
+        "description": "×1,5 Moltiplicatore quando segna punti."
+      },
+      "negative": {
+        "name": "Negativa",
+        "description": "+1 spazio Decreto se applicata a un Decreto."
+      }
+    }
+  },
   "archiveSeals": {
     "items": {
+      "gold": {
+        "name": "Sigillo d’Oro",
+        "description": "+3 Oro quando la tessera segna punti."
+      },
+      "red": {
+        "name": "Sigillo Rosso",
+        "description": "Riattiva la tessera una volta quando segna punti."
+      },
+      "blue": {
+        "name": "Sigillo Blu",
+        "description": "Crea una Sfera Celeste per lo yaku della mano vincente finale."
+      },
       "purple": {
         "name": "Sigillo Viola",
         "description": "Crea un Sigillo del Destino casuale quando questa tessera viene scartata o scambiata, se c’è spazio."
@@ -475,6 +547,21 @@
     "daisangen": "Tre Grandi Draghi",
     "chinroutou": "Tutti Terminali",
     "chuurenPoutou": "Nove Porte"
+  },
+  "tileDetails": {
+    "faceDown": "Tessera coperta",
+    "suitedName": "{{rank}} di {{suit}}",
+    "redName": "{{name}} rossa",
+    "windName": "Vento {{name}}",
+    "flowerName": "Fiore {{name}}",
+    "seasonName": "Stagione {{name}}",
+    "numberedRule": "Abbina tessere identiche per formare una coppia o un tris. Tre numeri consecutivi dello stesso seme formano una sequenza.",
+    "honorRule": "Gli onori formano coppie o tris identici, non sequenze numeriche.",
+    "basePoints": "{{points}} punti base prima di bonus dei gruppi, riduzioni e altri effetti.",
+    "bonusTile": "Tessera bonus raccolta automaticamente",
+    "flowerScope": "Effetto base del fiore, valido per la partita. Bonus della collezione e soppressione possono modificarlo. Consulta Fiori / Stagioni per gli effetti attivi.",
+    "stage": "Prepara {{tile}}",
+    "return": "Riporta {{tile}} in mano"
   },
   "tiles": {
     "manzu": "Caratteri",

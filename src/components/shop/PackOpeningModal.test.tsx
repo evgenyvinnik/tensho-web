@@ -63,7 +63,7 @@ it.each([EnhancementType.Bonus, EnhancementType.Gold] as const)(
     )
     const text = es.tileMarks.items[enhancement]
     const choice = screen.getByRole('button', {
-      name: `4 ${es.tiles.souzu} · ${text.name}`,
+      name: `4 de ${es.tiles.souzu} · ${text.name}`,
     })
     // Reduced motion must render the reward immediately, without an animation frame.
     expect(choice).toBeVisible()
@@ -92,15 +92,15 @@ it('retains every stacked modifier and handles plain and Honor reward tiles', ()
     .withSeal(SealType.Gold)
     .withEdition(EditionType.Foil)
   const text = tileRewardText(tile, i18n.t.bind(i18n))
-  expect(text.name).toBe('4 Bamboo · Bonus Mark · Gold Seal · Foil')
+  expect(text.name).toBe('4 of Bamboo · Bonus Mark · Gold Seal · Foil')
   for (const rule of ['+30', '+3', '+50'])
     expect(text.description).toContain(rule)
   expect(
     tileRewardText(Tile.createNumbered(TileSuit.Souzu, 4), i18n.t.bind(i18n))
-  ).toEqual({ name: '4 Bamboo', description: '' })
+  ).toEqual({ name: '4 of Bamboo', description: '' })
   expect(
     tileRewardText(new Tile(TileSuit.Wind, 4, 'north'), i18n.t.bind(i18n)).name
-  ).toBe('North')
+  ).toBe('North Wind')
   expect(
     tileRewardText(new Tile(TileSuit.Dragon, 2, 'green'), i18n.t.bind(i18n))
       .name

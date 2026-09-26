@@ -1069,6 +1069,21 @@
     "chinroutou": "All Terminals",
     "chuurenPoutou": "Nine Gates"
   },
+  "tileDetails": {
+    "faceDown": "Face-down tile",
+    "suitedName": "{{rank}} of {{suit}}",
+    "redName": "Red {{name}}",
+    "windName": "{{name}} Wind",
+    "flowerName": "{{name}} Flower",
+    "seasonName": "{{name}} Season",
+    "numberedRule": "Match identical tiles for a pair or triplet. Three consecutive numbers in one suit form a sequence.",
+    "honorRule": "Honors form matching pairs or triplets, not numbered sequences.",
+    "basePoints": "{{points}} base points before group bonuses, discounts and other effects.",
+    "bonusTile": "Automatically collected bonus tile",
+    "flowerScope": "Base Flower effect; lasts for the run. Collection bonuses and suppression can change it. See Flowers / Seasons for active effects.",
+    "stage": "Stage {{tile}}",
+    "return": "Return {{tile}} to hand"
+  },
   "tiles": {
     "manzu": "Characters",
     "pinzu": "Circles",

@@ -41,8 +41,18 @@ it.each([
     expect(button).toBeEnabled()
     expect(button).toHaveAccessibleName(
       copy.tableLoop.river.swapLabel
-        .replace('{{give}}', `7 ${copy.tiles.pinzu}`)
-        .replace('{{take}}', `3 ${copy.tiles.souzu}`)
+        .replace(
+          '{{give}}',
+          copy.tileDetails.suitedName
+            .replace('{{rank}}', '7')
+            .replace('{{suit}}', copy.tiles.pinzu)
+        )
+        .replace(
+          '{{take}}',
+          copy.tileDetails.suitedName
+            .replace('{{rank}}', '3')
+            .replace('{{suit}}', copy.tiles.souzu)
+        )
     )
     fireEvent.click(button)
     expect(onSwap).toHaveBeenCalledExactlyOnceWith('take')

@@ -20,8 +20,80 @@
     "leaveBody": "Simpan permainan dan kembali ke menu. Anda dapat melanjutkannya nanti.",
     "saveLeave": "Simpan dan keluar"
   },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Tanda Bonus",
+        "description": "+30 Poin saat ubin ini mencetak skor."
+      },
+      "mult": {
+        "name": "Tanda Pengali",
+        "description": "+4 Pengali saat ubin ini mencetak skor."
+      },
+      "wild": {
+        "name": "Tanda Liar",
+        "description": "Dihitung sebagai semua jenis ubin untuk yaku."
+      },
+      "glass": {
+        "name": "Tanda Kaca",
+        "description": "×2 Pengali saat mencetak skor; peluang 25% pecah setelahnya."
+      },
+      "steel": {
+        "name": "Tanda Baja",
+        "description": "×1,5 Pengali saat disimpan di tangan, bukan dimainkan."
+      },
+      "stone": {
+        "name": "Tanda Batu",
+        "description": "+50 Poin; selalu menyumbang skor meski tidak termasuk tangan pemenang."
+      },
+      "gold": {
+        "name": "Tanda Emas",
+        "description": "+3 Emas jika disimpan di tangan pada akhir ronde."
+      },
+      "lucky": {
+        "name": "Tanda Keberuntungan",
+        "description": "Peluang 1 dari 5 untuk +20 Pengali saat mencetak skor."
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Dasar",
+        "description": "Tampilan standar; tanpa efek tambahan."
+      },
+      "foil": {
+        "name": "Foil",
+        "description": "+50 Poin saat mencetak skor."
+      },
+      "holographic": {
+        "name": "Holografik",
+        "description": "+10 Pengali saat mencetak skor."
+      },
+      "polychrome": {
+        "name": "Polikrom",
+        "description": "×1,5 Pengali saat mencetak skor."
+      },
+      "negative": {
+        "name": "Negatif",
+        "description": "+1 slot Dekret jika diterapkan pada Dekret."
+      }
+    }
+  },
   "archiveSeals": {
     "items": {
+      "gold": {
+        "name": "Segel Emas",
+        "description": "+3 Emas saat ubin ini mencetak skor."
+      },
+      "red": {
+        "name": "Segel Merah",
+        "description": "Memicu ubin sekali lagi saat mencetak skor."
+      },
+      "blue": {
+        "name": "Segel Biru",
+        "description": "Menciptakan Orb Surgawi untuk yaku tangan pemenang terakhir."
+      },
       "purple": {
         "name": "Segel Ungu",
         "description": "Membuat Segel Takdir acak saat ubin ini dibuang atau ditukar, jika ada ruang."
@@ -1080,6 +1152,21 @@
     "daisangen": "Tiga Naga Besar",
     "chinroutou": "Semua Terminal",
     "chuurenPoutou": "Sembilan Gerbang"
+  },
+  "tileDetails": {
+    "faceDown": "Ubin tertutup",
+    "suitedName": "{{rank}} {{suit}}",
+    "redName": "{{name}} merah",
+    "windName": "Angin {{name}}",
+    "flowerName": "Bunga {{name}}",
+    "seasonName": "Musim {{name}}",
+    "numberedRule": "Cocokkan ubin identik untuk membuat pasangan atau triplet. Tiga angka berurutan dari jenis yang sama membentuk urutan.",
+    "honorRule": "Ubin kehormatan membentuk pasangan atau triplet identik, bukan urutan angka.",
+    "basePoints": "{{points}} poin dasar sebelum bonus kelompok, pengurangan, dan efek lain.",
+    "bonusTile": "Ubin bonus yang dikumpulkan otomatis",
+    "flowerScope": "Efek dasar bunga berlangsung sepanjang permainan. Bonus koleksi dan penekanan dapat mengubahnya. Lihat Bunga / Musim untuk efek aktif.",
+    "stage": "Siapkan {{tile}}",
+    "return": "Kembalikan {{tile}} ke tangan"
   },
   "tiles": {
     "manzu": "Karakter",

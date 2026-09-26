@@ -43,8 +43,80 @@
       }
     }
   },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Bonus İşareti",
+        "description": "Taş puan kazandırdığında +30 Puan."
+      },
+      "mult": {
+        "name": "Çarpan İşareti",
+        "description": "Taş puan kazandırdığında +4 Çarpan."
+      },
+      "wild": {
+        "name": "Joker İşareti",
+        "description": "Yaku için her türden sayılır."
+      },
+      "glass": {
+        "name": "Cam İşareti",
+        "description": "Puan kazandırdığında ×2 Çarpan; ardından %25 kırılma olasılığı."
+      },
+      "steel": {
+        "name": "Çelik İşareti",
+        "description": "Oynanmadan elde tutulurken ×1,5 Çarpan."
+      },
+      "stone": {
+        "name": "Taş İşareti",
+        "description": "+50 Puan; kazanan ele dahil olmasa bile puan kazandırır."
+      },
+      "gold": {
+        "name": "Altın İşareti",
+        "description": "Tur sonunda elde tutuluyorsa +3 Altın."
+      },
+      "lucky": {
+        "name": "Şans İşareti",
+        "description": "Puan kazandırdığında 5’te 1 olasılıkla +20 Çarpan."
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Temel",
+        "description": "Standart görünüm; ek etki yok."
+      },
+      "foil": {
+        "name": "Folyo",
+        "description": "Puan kazandırdığında +50 Puan."
+      },
+      "holographic": {
+        "name": "Holografik",
+        "description": "Puan kazandırdığında +10 Çarpan."
+      },
+      "polychrome": {
+        "name": "Polikrom",
+        "description": "Puan kazandırdığında ×1,5 Çarpan."
+      },
+      "negative": {
+        "name": "Negatif",
+        "description": "Fermana uygulandığında +1 Ferman yuvası."
+      }
+    }
+  },
   "archiveSeals": {
     "items": {
+      "gold": {
+        "name": "Altın Mühür",
+        "description": "Taş puan kazandırdığında +3 Altın."
+      },
+      "red": {
+        "name": "Kırmızı Mühür",
+        "description": "Puan kazandırdığında taşı bir kez daha tetikler."
+      },
+      "blue": {
+        "name": "Mavi Mühür",
+        "description": "Son kazanan elin yakusu için bir Göksel Küre oluşturur."
+      },
       "purple": {
         "name": "Mor Mühür",
         "description": "Bu taş atıldığında veya değiştirildiğinde yer varsa rastgele bir Kader Mührü oluşturur."
@@ -475,6 +547,21 @@
     "daisangen": "Büyük Üç Ejderha",
     "chinroutou": "Tüm Uçlar",
     "chuurenPoutou": "Dokuz Kapı"
+  },
+  "tileDetails": {
+    "faceDown": "Kapalı taş",
+    "suitedName": "{{suit}} {{rank}}",
+    "redName": "Kırmızı {{name}}",
+    "windName": "{{name}} Rüzgârı",
+    "flowerName": "{{name}} Çiçeği",
+    "seasonName": "{{name}} Mevsimi",
+    "numberedRule": "Aynı taşlarla çift veya üçlü oluştur. Aynı türden ardışık üç sayı bir seri oluşturur.",
+    "honorRule": "Onur taşları aynı taşlardan çift veya üçlü oluşturur, sayısal seri oluşturmaz.",
+    "basePoints": "Grup bonusları, azaltmalar ve diğer etkilerden önce {{points}} temel puan.",
+    "bonusTile": "Otomatik toplanan bonus taşı",
+    "flowerScope": "Çiçeğin temel etkisi koşu boyunca sürer. Koleksiyon bonusları ve baskılama bunu değiştirebilir. Etkin etkiler için Çiçekler / Mevsimler bölümüne bak.",
+    "stage": "Hazırla: {{tile}}",
+    "return": "Ele geri al: {{tile}}"
   },
   "tiles": {
     "manzu": "Karakterler",

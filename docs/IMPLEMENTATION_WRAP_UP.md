@@ -717,6 +717,13 @@ deployed in this pass. Older checkpoint counts below remain historical.
 
 ## Completion audit still open
 
+September 26 verified local follow-up: tile identities and teaching popups now share
+localized text across play, rack and reward surfaces. Incorrect Season promises
+are removed, and six missing modifier catalogs are supplied. Full units passed
+**1,333/1,333**, with **42/42 desktop/touch browser checks**, strict TypeScript,
+targeted lint and production/PWA build. Publication is pending; see
+[tile-detail evidence](TILE_DETAILS_IMPLEMENTATION.md).
+
 | Requirement / concern | Evidence still required |
 | --- | --- |
 | Complete playable core loop | Full acquisition/use/settlement coverage of the documented systems, not just the opening move or data definitions. Preserve existing Classic coverage while checking later-round and end-state paths. |
@@ -727,6 +734,6 @@ deployed in this pass. Older checkpoint counts below remain historical.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest published main checkpoint is v1.0.260923-8. Clean-runner tests/build/provenance, the matching hosted manifest/tag, and fresh desktop/touch gameplay checks passed; see [Release implementation](RELEASE_IMPLEMENTATION.md). The current whole-run persistence continuation is local and unpublished. Existing installed-PWA upgrades and physical-device checks remain open. |
+| Release readiness | Classic autosave/resume is published as v1.0.260926-1, with independent CI, matching manifest/tag and hosted desktop/touch play/reload/Resume checks; see [Classic persistence](CLASSIC_RUN_PERSISTENCE.md). The tile-detail follow-up above is local. Existing installed-PWA upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

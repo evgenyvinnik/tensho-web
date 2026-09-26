@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useState, useId, useRef, useEffect } from 'react'
 import { Tile } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
+import { tileName } from '../../i18n/tileText'
 
 export interface RackRowProps {
   tiles: readonly Tile[]
@@ -58,7 +59,7 @@ export function RackRow({
               type="button"
               data-testid={`rack-tile-${tile.id}`}
               aria-pressed={isSelected}
-              aria-label={tile.displayName}
+              aria-label={tileName(tile, t)}
               aria-describedby={
                 focusedId === tile.id
                   ? `${detailsPrefix}-${tile.id}`

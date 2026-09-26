@@ -13,13 +13,8 @@ import React, {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import {
-  Tile,
-  TileSuit,
-  EnhancementType,
-  SealType,
-  EditionType,
-} from '../../core/Tile'
+import { Tile } from '../../core/Tile'
+import { tileDetails } from '../../i18n/tileText'
 import { getTileImagePath, getTileBackPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
@@ -64,215 +59,6 @@ function getTileSrc(tile: Tile | null | undefined, faceDown: boolean): string {
 }
 
 /**
- * Get the alt text for a tile
- */
-function getTileAlt(tile: Tile | null | undefined, faceDown: boolean): string {
-  if (faceDown || !tile) {
-    return 'Face-down tile'
-  }
-
-  const suitNames: Record<TileSuit, string> = {
-    [TileSuit.Manzu]: 'Characters',
-    [TileSuit.Pinzu]: 'Circles',
-    [TileSuit.Souzu]: 'Bamboo',
-    [TileSuit.Wind]: 'Wind',
-    [TileSuit.Dragon]: 'Dragon',
-    [TileSuit.Flower]: 'Flower',
-    [TileSuit.Season]: 'Season',
-  }
-
-  const suitName = suitNames[tile.suit]
-
-  // For suited tiles, show rank
-  if (tile.isSuited) {
-    const redPrefix = tile.isRed ? 'Red ' : ''
-    return `${redPrefix}${tile.rank} of ${suitName}`
-  }
-
-  // For honor tiles, show specific name
-  if (tile.suit === TileSuit.Wind) {
-    const windNames = ['', 'East', 'South', 'West', 'North']
-    return `${windNames[tile.rank]} Wind`
-  }
-
-  if (tile.suit === TileSuit.Dragon) {
-    const dragonNames = ['', 'White', 'Green', 'Red']
-    return `${dragonNames[tile.rank]} Dragon`
-  }
-
-  if (tile.suit === TileSuit.Flower) {
-    const flowerNames = ['', 'Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
-    return `${flowerNames[tile.rank]} Flower`
-  }
-
-  if (tile.suit === TileSuit.Season) {
-    const seasonNames = ['', 'Spring', 'Summer', 'Autumn', 'Winter']
-    return `${seasonNames[tile.rank]} Season`
-  }
-
-  return tile.toString()
-}
-
-/**
- * Get detailed description for a tile (for tooltips)
- */
-function getTileDescription(
-  tile: Tile | null | undefined,
-  faceDown: boolean
-): { name: string; description: string; points: string } {
-  if (faceDown || !tile) {
-    return {
-      name: 'Face-down Tile',
-      description: 'An unrevealed tile',
-      points: '',
-    }
-  }
-
-  // Suited tiles
-  if (tile.isSuited) {
-    const suitDescriptions: Record<string, { name: string; desc: string }> = {
-      [TileSuit.Manzu]: {
-        name: 'Characters',
-        desc: 'One of the three numbered suits, showing Chinese characters.',
-      },
-      [TileSuit.Pinzu]: {
-        name: 'Circles',
-        desc: 'One of the three numbered suits, showing circular coins.',
-      },
-      [TileSuit.Souzu]: {
-        name: 'Bamboo',
-        desc: 'One of the three numbered suits, showing bamboo sticks.',
-      },
-    }
-
-    const suit = suitDescriptions[tile.suit] || { name: 'Suited', desc: '' }
-    const isTerminal = tile.rank === 1 || tile.rank === 9
-    const terminalNote = isTerminal
-      ? ' This is a terminal tile (1 or 9), worth more points.'
-      : ''
-    const redNote = tile.isRed
-      ? ' This is a red dora tile, providing bonus scoring.'
-      : ''
-
-    return {
-      name: `${tile.rank} of ${suit.name}`,
-      description: `${suit.desc}${terminalNote}${redNote}`,
-      points: isTerminal ? '10 base points' : '5 base points',
-    }
-  }
-
-  // Wind tiles
-  if (tile.suit === TileSuit.Wind) {
-    const winds: Record<number, { name: string; desc: string }> = {
-      1: {
-        name: 'East Wind',
-        desc: 'The dealer wind. Valued in many yaku combinations.',
-      },
-      2: {
-        name: 'South Wind',
-        desc: 'Second wind in rotation. Part of wind-based yaku.',
-      },
-      3: {
-        name: 'West Wind',
-        desc: 'Third wind in rotation. Part of wind-based yaku.',
-      },
-      4: {
-        name: 'North Wind',
-        desc: 'Fourth wind in rotation. Part of wind-based yaku.',
-      },
-    }
-    const wind = winds[tile.rank] || { name: 'Wind', desc: '' }
-    return {
-      name: wind.name,
-      description: `${wind.desc} Matching your seat or round wind gives bonus multipliers.`,
-      points: '15 base points',
-    }
-  }
-
-  // Dragon tiles
-  if (tile.suit === TileSuit.Dragon) {
-    const dragons: Record<number, { name: string; desc: string }> = {
-      1: {
-        name: 'White Dragon (Haku)',
-        desc: 'The blank white dragon, representing purity.',
-      },
-      2: {
-        name: 'Green Dragon (Hatsu)',
-        desc: 'The green dragon, representing fortune and prosperity.',
-      },
-      3: {
-        name: 'Red Dragon (Chun)',
-        desc: 'The red dragon, representing success and power.',
-      },
-    }
-    const dragon = dragons[tile.rank] || { name: 'Dragon', desc: '' }
-    return {
-      name: dragon.name,
-      description: `${dragon.desc} A triplet of any dragon scores the Yakuhai yaku.`,
-      points: '15 base points',
-    }
-  }
-
-  // Flower tiles
-  if (tile.suit === TileSuit.Flower) {
-    const flowers: Record<number, { name: string; desc: string }> = {
-      1: {
-        name: 'Plum Blossom',
-        desc: 'Symbol of perseverance and hope. Blooms in late winter.',
-      },
-      2: {
-        name: 'Orchid',
-        desc: 'Symbol of refinement and nobility. A scholarly flower.',
-      },
-      3: {
-        name: 'Chrysanthemum',
-        desc: "Symbol of vitality and longevity. Autumn's flower.",
-      },
-      4: {
-        name: 'Bamboo',
-        desc: 'Symbol of integrity and strength. Evergreen and resilient.',
-      },
-    }
-    const flower = flowers[tile.rank] || { name: 'Flower', desc: '' }
-    return {
-      name: flower.name,
-      description: `${flower.desc} Bonus tiles are auto-collected and provide run-wide scaling bonuses.`,
-      points: 'Bonus tile (scales with collection)',
-    }
-  }
-
-  // Season tiles
-  if (tile.suit === TileSuit.Season) {
-    const seasons: Record<number, { name: string; desc: string }> = {
-      1: {
-        name: 'Spring',
-        desc: 'Season of new beginnings. Grants extra draws per round.',
-      },
-      2: {
-        name: 'Summer',
-        desc: 'Season of growth. Increases gold earned from rounds.',
-      },
-      3: {
-        name: 'Autumn',
-        desc: 'Season of harvest. Boosts score multipliers.',
-      },
-      4: {
-        name: 'Winter',
-        desc: 'Season of rest. Provides defensive bonuses.',
-      },
-    }
-    const season = seasons[tile.rank] || { name: 'Season', desc: '' }
-    return {
-      name: season.name,
-      description: `${season.desc} Season effects last for the current round only.`,
-      points: 'Bonus tile (round effect)',
-    }
-  }
-
-  return { name: tile.toString(), description: '', points: '' }
-}
-
-/**
  * TileImage component displays a single mahjong tile
  */
 export const TileImage: React.FC<TileImageProps> = ({
@@ -289,7 +75,7 @@ export const TileImage: React.FC<TileImageProps> = ({
   allowHover = true,
   className = '',
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [isHovering, setIsHovering] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const [dismissed, setDismissed] = useState(false)
@@ -305,8 +91,7 @@ export const TileImage: React.FC<TileImageProps> = ({
     ((isHovering && allowHover) || isFocused || detailsVisible)
   const dimensions = tileSizes[size]
   const src = getTileSrc(tile, faceDown)
-  const alt = getTileAlt(tile, faceDown)
-  const tileInfo = getTileDescription(tile, faceDown)
+  const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
 
   const handleClick = () => {
     if (!disabled && tile && onClick) {
@@ -443,7 +228,7 @@ export const TileImage: React.FC<TileImageProps> = ({
     >
       <img
         src={src}
-        alt={alt}
+        alt={tileInfo.name}
         className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
         draggable={false}
         loading="lazy"
@@ -469,7 +254,7 @@ export const TileImage: React.FC<TileImageProps> = ({
             id={tooltipId}
             role="tooltip"
             data-tile-tooltip
-            className="fixed z-50 pointer-events-none overflow-y-auto text-left"
+            className="fixed z-50 pointer-events-none overflow-y-auto text-left [overflow-wrap:anywhere]"
           >
             <div
               className="bg-dark-forest border border-golden-yellow rounded-lg p-3 shadow-xl"
@@ -499,48 +284,15 @@ export const TileImage: React.FC<TileImageProps> = ({
                   <div className="text-golden-yellow text-xs font-medium mb-1">
                     {t('tiles.modifiers', 'Modifiers:')}
                   </div>
-                  {tile.enhancement !== EnhancementType.None && (
-                    <div className="text-blue-400 text-xs">
-                      {tile.enhancementDef.name}:{' '}
-                      {tile.enhancementDef.description}
+                  {tileInfo.modifiers.map((entry) => (
+                    <div
+                      key={entry.kind}
+                      className="text-beige-white text-xs mt-1"
+                    >
+                      <span className="font-semibold">{entry.name}:</span>{' '}
+                      {entry.description}
                     </div>
-                  )}
-                  {tile.seal !== SealType.None && (
-                    <div className="text-red-400 text-xs">
-                      {t(
-                        `archiveSeals.items.${tile.seal}.name`,
-                        tile.sealDef.name
-                      )}
-                      :{' '}
-                      {t(
-                        `archiveSeals.items.${tile.seal}.description`,
-                        tile.sealDef.description
-                      )}
-                    </div>
-                  )}
-                  {tile.edition !== EditionType.Base && (
-                    <div className="text-purple-400 text-xs">
-                      {tile.editionDef.name}: {tile.editionDef.description}
-                    </div>
-                  )}
-                  {/* Stats summary */}
-                  <div className="mt-1 text-xs text-gray-300">
-                    {tile.modifierChips > 0 && (
-                      <span className="text-blue-300">
-                        +{tile.modifierChips} Chips{' '}
-                      </span>
-                    )}
-                    {tile.modifierMult > 0 && (
-                      <span className="text-red-300">
-                        +{tile.modifierMult} Mult{' '}
-                      </span>
-                    )}
-                    {tile.modifierMultiplier !== 1 && (
-                      <span className="text-purple-300">
-                        ×{tile.modifierMultiplier.toFixed(1)}{' '}
-                      </span>
-                    )}
-                  </div>
+                  ))}
                 </div>
               )}
             </div>

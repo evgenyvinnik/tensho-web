@@ -1073,6 +1073,21 @@
     "chinroutou": "Todos Terminales",
     "chuurenPoutou": "Nueve Puertas"
   },
+  "tileDetails": {
+    "faceDown": "Ficha boca abajo",
+    "suitedName": "{{rank}} de {{suit}}",
+    "redName": "{{name}} roja",
+    "windName": "Viento {{name}}",
+    "flowerName": "Flor {{name}}",
+    "seasonName": "Estación {{name}}",
+    "numberedRule": "Combina fichas idénticas para formar una pareja o un trío. Tres números consecutivos del mismo palo forman una secuencia.",
+    "honorRule": "Los honores forman parejas o tríos iguales, no secuencias numéricas.",
+    "basePoints": "{{points}} puntos base antes de las bonificaciones de grupo, reducciones y otros efectos.",
+    "bonusTile": "Ficha de bonificación que se recoge automáticamente",
+    "flowerScope": "Efecto base de la flor; dura toda la partida. Las bonificaciones de colección y la supresión pueden cambiarlo. Consulta Flores / Estaciones para ver los efectos activos.",
+    "stage": "Preparar {{tile}}",
+    "return": "Devolver {{tile}} a la mano"
+  },
   "tiles": {
     "manzu": "Caracteres",
     "pinzu": "Círculos",

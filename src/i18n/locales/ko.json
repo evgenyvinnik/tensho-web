@@ -1073,6 +1073,21 @@
     "chinroutou": "청로두",
     "chuurenPoutou": "구련보등"
   },
+  "tileDetails": {
+    "faceDown": "뒷면 패",
+    "suitedName": "{{suit}} {{rank}}",
+    "redName": "붉은 {{name}}",
+    "windName": "{{name}} 바람패",
+    "flowerName": "{{name}} 꽃패",
+    "seasonName": "{{name}} 계절패",
+    "numberedRule": "같은 패로 쌍이나 트리플을 만드세요. 같은 종류의 연속된 숫자 세 개로 시퀀스를 만들 수 있습니다.",
+    "honorRule": "자패는 같은 패로 쌍이나 트리플을 만들지만 숫자 시퀀스는 만들 수 없습니다.",
+    "basePoints": "그룹 보너스, 감점 및 기타 효과 적용 전 기본 점수: {{points}}.",
+    "bonusTile": "자동으로 수집되는 보너스 패",
+    "flowerScope": "꽃의 기본 효과는 런 동안 유지됩니다. 수집 보너스와 억제로 달라질 수 있습니다. 활성 효과는 꽃 / 계절에서 확인하세요.",
+    "stage": "{{tile}} 준비",
+    "return": "{{tile}}을 손패로 돌려놓기"
+  },
   "tiles": {
     "manzu": "만수",
     "pinzu": "통수",

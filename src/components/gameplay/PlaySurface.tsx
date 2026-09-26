@@ -18,6 +18,7 @@ import { TileSize, tileSizes } from '../../styles/theme'
 import { useSettingsStore } from '../../stores/settingsStore'
 import type { BeginnerSuggestion } from '../../gameplay/beginnerCoach'
 import { illustrationAssets } from '../../utils/assets'
+import { tileName } from '../../i18n/tileText'
 
 // =============================================================================
 // TYPES
@@ -483,7 +484,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                     role="button"
                     tabIndex={disabled ? -1 : 0}
                     aria-disabled={disabled}
-                    aria-label={`Return ${faceDownIds.has(tile.id) ? t('tiles.faceDown', 'Face-down tile') : tile.displayName} to hand`}
+                    aria-label={t('tileDetails.return', {
+                      tile: tileName(tile, t, faceDownIds.has(tile.id)),
+                    })}
                   >
                     <AnimatedTile
                       tile={tile}
@@ -717,7 +720,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 role="button"
                 tabIndex={disabled ? -1 : 0}
                 aria-disabled={disabled}
-                aria-label={`Stage ${faceDownIds.has(tile.id) ? t('tiles.faceDown', 'Face-down tile') : tile.displayName}`}
+                aria-label={t('tileDetails.stage', {
+                  tile: tileName(tile, t, faceDownIds.has(tile.id)),
+                })}
               >
                 <AnimatedTile
                   tile={tile}

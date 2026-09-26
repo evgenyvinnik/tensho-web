@@ -104,6 +104,7 @@ export function ModifierBadge({
   showLabel = false,
   className = '',
 }: ModifierBadgeProps) {
+  const { t } = useTranslation()
   const sizeClasses = {
     small: 'w-4 h-4 text-[8px]',
     medium: 'w-6 h-6 text-xs',
@@ -114,16 +115,31 @@ export function ModifierBadge({
   if (enhancement && enhancement !== EnhancementType.None) {
     const colors = ENHANCEMENT_COLORS[enhancement]
     const def = ENHANCEMENT_DEFINITIONS[enhancement]
+    const name = t(`tileMarks.items.${enhancement}.name`, def.name)
+    const description = t(
+      `tileMarks.items.${enhancement}.description`,
+      def.description
+    )
     const IconComponent = getEnhancementIcon(enhancement)
 
     return (
       <div
         className={`${sizeClasses[size]} rounded-full flex items-center justify-center font-bold ${className}`}
-        style={{ backgroundColor: colors.bg, borderColor: colors.border, color: colors.text, borderWidth: 1 }}
-        title={`${def.name}: ${def.description}`}
+        style={{
+          backgroundColor: colors.bg,
+          borderColor: colors.border,
+          color: colors.text,
+          borderWidth: 1,
+        }}
+        title={`${name}: ${description}`}
       >
-        {IconComponent && <IconComponent className={iconSizeClasses[size]} color={colors.text} />}
-        {showLabel && <span className="ml-1">{def.name}</span>}
+        {IconComponent && (
+          <IconComponent
+            className={iconSizeClasses[size]}
+            color={colors.text}
+          />
+        )}
+        {showLabel && <span className="ml-1">{name}</span>}
       </div>
     )
   }
@@ -132,16 +148,27 @@ export function ModifierBadge({
   if (seal && seal !== SealType.None) {
     const colors = SEAL_COLORS[seal]
     const def = SEAL_DEFINITIONS[seal]
+    const name = t(`archiveSeals.items.${seal}.name`, def.name)
+    const description = t(
+      `archiveSeals.items.${seal}.description`,
+      def.description
+    )
     const IconComponent = getSealIcon(seal)
 
     return (
       <div
         className={`${sizeClasses[size]} rounded-full flex items-center justify-center ${className}`}
-        style={{ backgroundColor: colors.bg, borderColor: colors.border, borderWidth: 2 }}
-        title={`${def.name}: ${def.description}`}
+        style={{
+          backgroundColor: colors.bg,
+          borderColor: colors.border,
+          borderWidth: 2,
+        }}
+        title={`${name}: ${description}`}
       >
-        {IconComponent && <IconComponent className={iconSizeClasses[size]} color="#FFF" />}
-        {showLabel && <span className="ml-1 text-white">{def.name}</span>}
+        {IconComponent && (
+          <IconComponent className={iconSizeClasses[size]} color="#FFF" />
+        )}
+        {showLabel && <span className="ml-1 text-white">{name}</span>}
       </div>
     )
   }
@@ -149,16 +176,21 @@ export function ModifierBadge({
   // Edition badge
   if (edition && edition !== EditionType.Base) {
     const def = EDITION_DEFINITIONS[edition]
+    const name = t(`editions.items.${edition}.name`, def.name)
+    const description = t(
+      `editions.items.${edition}.description`,
+      def.description
+    )
     const effects = EDITION_EFFECTS[edition]
     const IconComponent = getEditionIcon(edition)
 
     return (
       <div
         className={`${sizeClasses[size]} rounded flex items-center justify-center ${effects.overlay} ${className}`}
-        title={`${def.name}: ${def.description}`}
+        title={`${name}: ${description}`}
       >
         {IconComponent && <IconComponent className={iconSizeClasses[size]} />}
-        {showLabel && <span className="ml-1">{def.name}</span>}
+        {showLabel && <span className="ml-1">{name}</span>}
       </div>
     )
   }
@@ -169,7 +201,10 @@ export function ModifierBadge({
 /**
  * Overlay effects applied to modified tiles
  */
-export function ModifierOverlay({ tile, className = '' }: ModifierOverlayProps) {
+export function ModifierOverlay({
+  tile,
+  className = '',
+}: ModifierOverlayProps) {
   const effects = EDITION_EFFECTS[tile.edition]
   const sealColors = SEAL_COLORS[tile.seal]
 
@@ -213,13 +248,22 @@ export function ModifierOverlay({ tile, className = '' }: ModifierOverlayProps) 
 /**
  * Helper component for modifier tooltip rows
  */
-export function ModifierRow({ name, japaneseName, description, colors }: ModifierRowProps) {
+export function ModifierRow({
+  name,
+  japaneseName,
+  description,
+  colors,
+}: ModifierRowProps) {
   return (
     <div className="mb-2">
       <div className="flex items-center gap-2">
         <div
           className="w-3 h-3 rounded-full"
-          style={{ backgroundColor: colors.bg, borderColor: colors.border, borderWidth: 1 }}
+          style={{
+            backgroundColor: colors.bg,
+            borderColor: colors.border,
+            borderWidth: 1,
+          }}
         />
         <span className="text-beige-white font-medium text-xs">
           {name} <span className="text-gray-400">({japaneseName})</span>
@@ -233,7 +277,10 @@ export function ModifierRow({ name, japaneseName, description, colors }: Modifie
 /**
  * Detailed tooltip showing all modifiers
  */
-export function ModifierTooltip({ tile, className = '' }: ModifierTooltipProps) {
+export function ModifierTooltip({
+  tile,
+  className = '',
+}: ModifierTooltipProps) {
   const { t } = useTranslation()
   if (!tile.hasModifiers) {
     return null
@@ -244,7 +291,9 @@ export function ModifierTooltip({ tile, className = '' }: ModifierTooltipProps) 
       className={`bg-dark-forest border border-golden-yellow rounded-lg p-3 shadow-xl min-w-[200px] ${className}`}
       style={{ backgroundColor: 'rgba(28, 58, 46, 0.95)' }}
     >
-      <div className="text-golden-yellow font-bold text-sm mb-2">{t('tiles.tileModifiers', 'Tile Modifiers')}</div>
+      <div className="text-golden-yellow font-bold text-sm mb-2">
+        {t('tiles.tileModifiers', 'Tile Modifiers')}
+      </div>
 
       {/* Enhancement */}
       {tile.enhancement !== EnhancementType.None && (
@@ -288,7 +337,9 @@ export function ModifierTooltip({ tile, className = '' }: ModifierTooltipProps) 
           <div className="text-red-400">+{tile.modifierMult} Mult</div>
         )}
         {tile.modifierMultiplier !== 1 && (
-          <div className="text-purple-400">×{tile.modifierMultiplier.toFixed(1)} Mult</div>
+          <div className="text-purple-400">
+            ×{tile.modifierMultiplier.toFixed(1)} Mult
+          </div>
         )}
         {tile.retriggers > 0 && (
           <div className="text-yellow-400">Retriggers: {tile.retriggers}</div>
@@ -320,7 +371,9 @@ export function ModifierSelector({
       {/* Enhancement selector */}
       {onEnhancementChange && (
         <div>
-          <div className="text-sm font-medium text-beige-white mb-2">{t('tiles.enhancement', 'Enhancement')}</div>
+          <div className="text-sm font-medium text-beige-white mb-2">
+            {t('tiles.enhancement', 'Enhancement')}
+          </div>
           <div className="flex flex-wrap gap-2">
             {enhancements.map((enhancement) => {
               const def = ENHANCEMENT_DEFINITIONS[enhancement]
@@ -332,7 +385,9 @@ export function ModifierSelector({
                   key={enhancement}
                   onClick={() => onEnhancementChange(enhancement)}
                   className={`px-2 py-1 rounded text-xs transition-all ${
-                    isSelected ? 'ring-2 ring-golden-yellow' : 'opacity-60 hover:opacity-100'
+                    isSelected
+                      ? 'ring-2 ring-golden-yellow'
+                      : 'opacity-60 hover:opacity-100'
                   }`}
                   style={{
                     backgroundColor: colors.bg,
@@ -365,7 +420,9 @@ export function ModifierSelector({
                   key={seal}
                   onClick={() => onSealChange(seal)}
                   className={`px-2 py-1 rounded text-xs transition-all text-white ${
-                    isSelected ? 'ring-2 ring-golden-yellow' : 'opacity-60 hover:opacity-100'
+                    isSelected
+                      ? 'ring-2 ring-golden-yellow'
+                      : 'opacity-60 hover:opacity-100'
                   }`}
                   style={{
                     backgroundColor: colors.bg || '#374151',
@@ -385,7 +442,9 @@ export function ModifierSelector({
       {/* Edition selector */}
       {onEditionChange && (
         <div>
-          <div className="text-sm font-medium text-beige-white mb-2">{t('tiles.edition', 'Edition')}</div>
+          <div className="text-sm font-medium text-beige-white mb-2">
+            {t('tiles.edition', 'Edition')}
+          </div>
           <div className="flex flex-wrap gap-2">
             {editions.map((edition) => {
               const def = EDITION_DEFINITIONS[edition]
@@ -397,7 +456,9 @@ export function ModifierSelector({
                   key={edition}
                   onClick={() => onEditionChange(edition)}
                   className={`px-2 py-1 rounded text-xs transition-all ${effects.overlay} ${
-                    isSelected ? 'ring-2 ring-golden-yellow' : 'opacity-60 hover:opacity-100'
+                    isSelected
+                      ? 'ring-2 ring-golden-yellow'
+                      : 'opacity-60 hover:opacity-100'
                   }`}
                   title={def.description}
                 >

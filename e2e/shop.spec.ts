@@ -315,9 +315,11 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
   await expect(choices).toHaveCount(2)
   await expect(choices.nth(0)).toContainText('Común')
   await expect(choices.nth(0)).toHaveAccessibleName(
-    '4 Bambúes · Marca de Bonificación'
+    '4 de Bambúes · Marca de Bonificación'
   )
-  await expect(choices.nth(1)).toHaveAccessibleName('5 Bambúes · Marca de Oro')
+  await expect(choices.nth(1)).toHaveAccessibleName(
+    '5 de Bambúes · Marca de Oro'
+  )
   await expect(choices.nth(0)).toHaveAccessibleDescription(
     'La ficha puntúa de más. +30 Fichas al puntuar'
   )

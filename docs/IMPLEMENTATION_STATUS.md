@@ -4,6 +4,13 @@
 
 **Last verified:** September 26, 2026
 
+**Verified local follow-up:** tile names, rules and action labels are localized
+across Classic, Table Loop and public rewards. Corrected false Season promises,
+shared authoritative base-point values and supplied six missing modifier
+catalogs. **1,333/1,333 units** and **42/42 desktop/touch browser checks** passed,
+with strict TypeScript, targeted lint and Pages-base build. Publication pending;
+[evidence and retained failures](TILE_DETAILS_IMPLEMENTATION.md).
+
 **Published Classic checkpoint — v1.0.260926-1:** final full suite **1,323/1,323 in 112
 files**, **30/30 desktop/touch browser checks**, and **2/2 320px ornamental-frame
 checks** passed without retries. Strict TypeScript and the Pages-base

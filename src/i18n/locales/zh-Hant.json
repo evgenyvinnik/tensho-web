@@ -1073,6 +1073,21 @@
     "chinroutou": "清老頭",
     "chuurenPoutou": "九蓮寶燈"
   },
+  "tileDetails": {
+    "faceDown": "背面牌",
+    "suitedName": "{{suit}}{{rank}}",
+    "redName": "赤{{name}}",
+    "windName": "{{name}}風",
+    "flowerName": "{{name}}花牌",
+    "seasonName": "{{name}}季節牌",
+    "numberedRule": "相同的牌可組成對子或刻子。同一花色連續的三個數字可組成順子。",
+    "honorRule": "字牌可組成相同的對子或刻子，不能組成數字順子。",
+    "basePoints": "套用牌組加成、減分和其他效果之前的基礎分：{{points}}。",
+    "bonusTile": "自動收集的獎勵牌",
+    "flowerScope": "花牌基礎效果持續整局。收集加成和壓制可能改變效果。請在「花牌／季節」中查看生效的效果。",
+    "stage": "準備{{tile}}",
+    "return": "將{{tile}}放回手牌"
+  },
   "tiles": {
     "manzu": "萬子",
     "pinzu": "筒子",

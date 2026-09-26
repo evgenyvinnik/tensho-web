@@ -111,6 +111,40 @@ it('provides every Classic save/recovery message and its placeholders in all loc
   }
 })
 
+it('provides tile identity, teaching and action copy in all locales without losing placeholders', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = locale.tileDetails as Record<string, string>
+    expect(Object.keys(copy).sort(), language).toEqual(
+      Object.keys(en.tileDetails).sort()
+    )
+    for (const [key, english] of Object.entries(en.tileDetails)) {
+      expect(copy[key]?.trim(), `${language}: ${key}`).toBeTruthy()
+      expect(copy[key].match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+    }
+    for (const namespace of [
+      'tileMarks',
+      'archiveSeals',
+      'editions',
+    ] as const) {
+      const catalog = locale[namespace] as {
+        items: Record<string, { name: string; description: string }>
+      }
+      for (const id of Object.keys(en[namespace].items)) {
+        expect(
+          catalog.items[id]?.name?.trim(),
+          `${language}: ${namespace}.${id}.name`
+        ).toBeTruthy()
+        expect(
+          catalog.items[id]?.description?.trim(),
+          `${language}: ${namespace}.${id}.description`
+        ).toBeTruthy()
+      }
+    }
+  }
+})
+
 it('explains guide bonuses in every language without baking in balance values', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const gameplay = locale.gameplay as Record<string, string>

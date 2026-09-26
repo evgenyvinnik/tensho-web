@@ -43,8 +43,80 @@
       }
     }
   },
+  "tileMarks": {
+    "items": {
+      "bonus": {
+        "name": "Markang Bonus",
+        "description": "+30 Puntos kapag nagbigay ng puntos ang tile."
+      },
+      "mult": {
+        "name": "Markang Multiplier",
+        "description": "+4 Multiplier kapag nagbigay ng puntos ang tile."
+      },
+      "wild": {
+        "name": "Markang Wild",
+        "description": "Itinuturing na anumang suit para sa yaku."
+      },
+      "glass": {
+        "name": "Markang Salamin",
+        "description": "×2 Multiplier kapag nagbigay ng puntos; 25% tsansang mabasag pagkatapos."
+      },
+      "steel": {
+        "name": "Markang Bakal",
+        "description": "×1.5 Multiplier habang hawak sa kamay at hindi nilalaro."
+      },
+      "stone": {
+        "name": "Markang Bato",
+        "description": "+50 Puntos; laging nagbibigay ng puntos kahit wala sa panalong kamay."
+      },
+      "gold": {
+        "name": "Markang Ginto",
+        "description": "+3 Ginto kung hawak pa sa kamay sa katapusan ng round."
+      },
+      "lucky": {
+        "name": "Markang Suwerte",
+        "description": "1 sa 5 tsansang makakuha ng +20 Multiplier kapag nagbigay ng puntos."
+      }
+    }
+  },
+  "editions": {
+    "items": {
+      "base": {
+        "name": "Batayan",
+        "description": "Karaniwang hitsura; walang dagdag na epekto."
+      },
+      "foil": {
+        "name": "Foil",
+        "description": "+50 Puntos kapag nagbigay ng puntos."
+      },
+      "holographic": {
+        "name": "Holographic",
+        "description": "+10 Multiplier kapag nagbigay ng puntos."
+      },
+      "polychrome": {
+        "name": "Polychrome",
+        "description": "×1.5 Multiplier kapag nagbigay ng puntos."
+      },
+      "negative": {
+        "name": "Negative",
+        "description": "+1 puwesto ng Dekreto kapag inilapat sa Dekreto."
+      }
+    }
+  },
   "archiveSeals": {
     "items": {
+      "gold": {
+        "name": "Gintong Selyo",
+        "description": "+3 Ginto kapag nagbigay ng puntos ang tile."
+      },
+      "red": {
+        "name": "Pulang Selyo",
+        "description": "Ina-activate muli ang tile nang isang beses kapag nagbigay ng puntos."
+      },
+      "blue": {
+        "name": "Asul na Selyo",
+        "description": "Lumilikha ng Celestial Orb para sa yaku ng huling panalong kamay."
+      },
       "purple": {
         "name": "Lilang Selyo",
         "description": "Lumilikha ng random na Selyo ng Tadhana kapag itinapon o ipinagpalit ang tile na ito, kung may puwang."
@@ -475,6 +547,21 @@
     "daisangen": "Tatlong Malalaking Dragon",
     "chinroutou": "Lahat Terminal",
     "chuurenPoutou": "Siyam na Pintuan"
+  },
+  "tileDetails": {
+    "faceDown": "Nakatagong tile",
+    "suitedName": "{{rank}} ng {{suit}}",
+    "redName": "Pulang {{name}}",
+    "windName": "Hangin: {{name}}",
+    "flowerName": "Bulaklak: {{name}}",
+    "seasonName": "Panahon: {{name}}",
+    "numberedRule": "Pagtambalin ang magkaparehong tile para bumuo ng pares o tatluhan. Tatlong magkakasunod na numero sa parehong suit ang bumubuo ng sunod-sunod.",
+    "honorRule": "Ang mga Honor ay bumubuo ng magkaparehong pares o tatluhan, hindi sunod-sunod na numero.",
+    "basePoints": "{{points}} batayang puntos bago ang bonus ng grupo, pagbabawas at iba pang epekto.",
+    "bonusTile": "Bonus tile na awtomatikong kinokolekta",
+    "flowerScope": "Batayang epekto ng bulaklak; tumatagal sa buong run. Maaaring baguhin ito ng bonus ng koleksyon at pagsupil. Tingnan ang Bulaklak / Panahon para sa aktibong epekto.",
+    "stage": "Ihanda ang {{tile}}",
+    "return": "Ibalik ang {{tile}} sa kamay"
   },
   "tiles": {
     "manzu": "Mga Karakter",

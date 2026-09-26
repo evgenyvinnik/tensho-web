@@ -1073,6 +1073,21 @@
     "chinroutou": "Tout Terminaux",
     "chuurenPoutou": "Neuf Portes"
   },
+  "tileDetails": {
+    "faceDown": "Tuile face cachée",
+    "suitedName": "{{rank}} de {{suit}}",
+    "redName": "{{name}} rouge",
+    "windName": "Vent {{name}}",
+    "flowerName": "Fleur {{name}}",
+    "seasonName": "Saison {{name}}",
+    "numberedRule": "Associez des tuiles identiques pour former une paire ou un brelan. Trois nombres consécutifs de la même famille forment une suite.",
+    "honorRule": "Les honneurs forment des paires ou des brelans identiques, pas des suites numériques.",
+    "basePoints": "{{points}} points de base avant les bonus de groupe, réductions et autres effets.",
+    "bonusTile": "Tuile bonus collectée automatiquement",
+    "flowerScope": "Effet de base de la fleur, valable pour la partie. Les bonus de collection et la suppression peuvent le modifier. Consultez Fleurs / Saisons pour les effets actifs.",
+    "stage": "Préparer {{tile}}",
+    "return": "Remettre {{tile}} en main"
+  },
   "tiles": {
     "manzu": "Caractères",
     "pinzu": "Cercles",

@@ -1073,6 +1073,21 @@
     "chinroutou": "清老頭",
     "chuurenPoutou": "九蓮宝燈"
   },
+  "tileDetails": {
+    "faceDown": "伏せ牌",
+    "suitedName": "{{suit}}の{{rank}}",
+    "redName": "赤{{name}}",
+    "windName": "{{name}}風",
+    "flowerName": "{{name}}の花牌",
+    "seasonName": "{{name}}の季節牌",
+    "numberedRule": "同じ牌で対子や刻子を作れます。同じ種類の連続する3つの数字で順子を作れます。",
+    "honorRule": "字牌は同じ牌で対子や刻子を作れますが、数字の順子にはなりません。",
+    "basePoints": "グループボーナス、減点、その他の効果を適用する前の基本点：{{points}}。",
+    "bonusTile": "自動的に収集されるボーナス牌",
+    "flowerScope": "花の基本効果はラン中続きます。収集ボーナスや抑制で変化する場合があります。有効な効果は「花／季節」で確認できます。",
+    "stage": "{{tile}}を場に準備",
+    "return": "{{tile}}を手牌に戻す"
+  },
   "tiles": {
     "manzu": "萬子",
     "pinzu": "筒子",
