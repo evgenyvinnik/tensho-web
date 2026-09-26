@@ -89,11 +89,36 @@ export function Tutorial({ isOpen, onClose, onComplete }: TutorialProps) {
 
 export function useTutorial() {
   const [isOpen, setIsOpen] = useState(false)
-  const [hasCompleted, setHasCompleted] = useState(() => { if (typeof window !== 'undefined') { return localStorage.getItem('tensho_tutorial_completed') === 'true' } return false })
+  const [hasCompleted, setHasCompleted] = useState(() => {
+    try {
+      return typeof window !== 'undefined' &&
+        localStorage.getItem('tensho_tutorial_completed') === 'true'
+    } catch {
+      // An optional tutorial preference must not crash the menu or hide
+      // unsaved-run recovery/update controls when browser storage is denied.
+      return false
+    }
+  })
   const open = useCallback(() => { setIsOpen(true) }, [])
   const close = useCallback(() => { setIsOpen(false) }, [])
-  const complete = useCallback(() => { setHasCompleted(true); if (typeof window !== 'undefined') { localStorage.setItem('tensho_tutorial_completed', 'true') } }, [])
-  const reset = useCallback(() => { setHasCompleted(false); if (typeof window !== 'undefined') { localStorage.removeItem('tensho_tutorial_completed') } }, [])
+  const complete = useCallback(() => {
+    setHasCompleted(true)
+    try {
+      if (typeof window !== 'undefined')
+        localStorage.setItem('tensho_tutorial_completed', 'true')
+    } catch {
+      // Keep this session usable; a later explicit completion retries the write.
+    }
+  }, [])
+  const reset = useCallback(() => {
+    setHasCompleted(false)
+    try {
+      if (typeof window !== 'undefined')
+        localStorage.removeItem('tensho_tutorial_completed')
+    } catch {
+      // The in-memory preference still applies for this mounted session.
+    }
+  }, [])
   return { isOpen, hasCompleted, open, close, complete, reset }
 }
 

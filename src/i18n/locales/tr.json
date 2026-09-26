@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "Güncelleme hazır",
+    "description": "Yeni sürüm hazır. Sayfayı yeniden yüklemeden önce ilerlemeni kaydedeceğiz.",
+    "later": "Daha sonra",
+    "updating": "Güncelleniyor…",
+    "accept": "Kaydet ve güncelle",
+    "save": "Son ilerlemen kaydedilemedi. Bu sekmeyi açık tut ve tekrar dene.",
+    "update": "Güncelleme uygulanamadı. Oyunun hâlâ burada; tekrar dene.",
+    "tabs": "Diğer oyunları kesintiye uğratmamak için diğer Tensho sekmelerini veya pencerelerini kapatıp tekrar dene."
+  },
   "classicSave": {
     "savedTitle": "Klasik oyununuz",
     "resume": "Oyuna devam et",

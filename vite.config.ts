@@ -27,7 +27,8 @@ export default defineConfig(({ mode }) => ({
       // },
     }),
     VitePWA({
-      // main.tsx flushes the active run before accepting an update. autoUpdate
+      injectRegister: false,
+      // main.tsx checks every loaded mode before accepting an update. autoUpdate
       // would bypass that consent callback and reload while a save is pending.
       registerType: 'prompt',
       includeAssets: [
@@ -90,6 +91,7 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
+        importScripts: ['sw-update.js'],
         // Public guides have their own HTML. Never replace them with the game shell.
         navigateFallbackDenylist: [/\/(?:about|how-to-play|faq)(?:\/|$)/],
         globPatterns: [
@@ -136,8 +138,8 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       devOptions: {
-        // Service-worker regeneration triggers full-page reloads. Keep it out
-        // of deterministic browser tests while retaining local PWA testing.
+        // Registration runs only in production. Keep generated dev workers out
+        // of deterministic tests; verify real upgrades with two built releases.
         enabled: mode !== 'test',
       },
     }),

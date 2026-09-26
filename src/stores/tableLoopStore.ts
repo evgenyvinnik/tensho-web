@@ -9,6 +9,7 @@
  */
 
 import { create } from 'zustand'
+import { registerReloadGuard } from '../pwa/reloadGuards'
 import { TableLoopEngine } from '../tableloop/TableLoopEngine'
 import { playTableAction } from '../tableloop/audioFeedback'
 import { TileSFX } from '../systems/AudioSystem'
@@ -31,6 +32,9 @@ interface TableLoopStore {
   engine: TableLoopEngine
   state: TableLoopState
   saveStatus: 'saved' | 'unavailable' | 'invalid'
+  /** Committed journal changes that have not reached storage yet. */
+  unsaved: boolean
+  retrySave: () => boolean
   /** Rack tiles the player has tapped, in tap order. */
   selectedTileIds: string[]
   /** Slot the player is aiming at, or null for "the first slot that fits". */
@@ -76,15 +80,19 @@ function browserStorage(): RunStorage | null {
 }
 
 export const createTableLoopStore = (
-  storage: RunStorage | null = browserStorage()
+  storage: RunStorage | null | (() => RunStorage | null) = browserStorage
 ) =>
   create<TableLoopStore>((set, get) => {
-    let initialStatus: TableLoopStore['saveStatus'] = storage
-      ? 'saved'
-      : 'unavailable'
+    // Resolve access again for writes: an initially denied localStorage getter
+    // must not permanently strand a live journal after permission is restored.
+    const resolveStorage =
+      typeof storage === 'function' ? storage : () => storage
+    let initialStatus: TableLoopStore['saveStatus'] = 'saved'
     let restored: ReturnType<typeof restoreSavedRun> = null
     try {
-      const raw = storage?.getItem(TABLE_SAVE_KEY)
+      const currentStorage = resolveStorage()
+      if (!currentStorage) initialStatus = 'unavailable'
+      const raw = currentStorage?.getItem(TABLE_SAVE_KEY)
       if (raw) {
         restored = restoreSavedRun(raw)
         if (!restored) initialStatus = 'invalid'
@@ -97,11 +105,14 @@ export const createTableLoopStore = (
 
     const save = () => {
       try {
-        if (!storage) throw new Error('Storage unavailable')
-        storage.setItem(TABLE_SAVE_KEY, JSON.stringify(journal))
-        set({ saveStatus: 'saved' })
+        const currentStorage = resolveStorage()
+        if (!currentStorage) throw new Error('Storage unavailable')
+        currentStorage.setItem(TABLE_SAVE_KEY, JSON.stringify(journal))
+        set({ saveStatus: 'saved', unsaved: false })
+        return true
       } catch {
-        set({ saveStatus: 'unavailable' })
+        set({ saveStatus: 'unavailable', unsaved: true })
+        return false
       }
     }
 
@@ -130,6 +141,10 @@ export const createTableLoopStore = (
       engine,
       state: engine.getState(),
       saveStatus: initialStatus,
+      unsaved: false,
+      // Only a committed action can make this journal dirty. An update must
+      // not overwrite an invalid original save with a fresh, untouched run.
+      retrySave: () => !get().unsaved || save(),
       selectedTileIds: [],
       targetSlot: null,
 
@@ -232,11 +247,12 @@ export const createTableLoopStore = (
       },
 
       clearSavedRun: () => {
-        if (!storage) throw new Error('Storage unavailable')
+        const currentStorage = resolveStorage()
+        if (!currentStorage) throw new Error('Storage unavailable')
         const fresh = new TableLoopEngine()
         // Unlike ordinary play, a reset must report a failed deletion. Preserve
         // the current engine/journal if storage denies the operation.
-        storage.removeItem(TABLE_SAVE_KEY)
+        currentStorage.removeItem(TABLE_SAVE_KEY)
         journal = newSavedRun(fresh)
         set({
           engine: fresh,
@@ -244,6 +260,7 @@ export const createTableLoopStore = (
           selectedTileIds: [],
           targetSlot: null,
           saveStatus: 'saved',
+          unsaved: false,
         })
       },
 
@@ -257,3 +274,18 @@ export const createTableLoopStore = (
   })
 
 export const useTableLoopStore = createTableLoopStore()
+
+const unregisterReloadGuard = registerReloadGuard('table-loop', () =>
+  useTableLoopStore.getState().retrySave()
+)
+const beforeUnload = (event: BeforeUnloadEvent) => {
+  if (!useTableLoopStore.getState().unsaved) return
+  event.preventDefault()
+  event.returnValue = ''
+}
+window.addEventListener('beforeunload', beforeUnload)
+if (import.meta.hot)
+  import.meta.hot.dispose(() => {
+    unregisterReloadGuard()
+    window.removeEventListener('beforeunload', beforeUnload)
+  })

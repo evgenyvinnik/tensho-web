@@ -27,6 +27,7 @@ import {
 import { ClassicResumeCard } from '../menu/ClassicResumeCard'
 import { ConfirmPopup } from '../ui/Popup'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
+import { UpdateNotice } from '../ui/UpdateNotice'
 import { withBasePath } from '../../utils/basePath'
 import { TileSuit } from '../../core/Tile'
 import { useAppNavigation, ROUTES } from '../../router'
@@ -313,7 +314,6 @@ function NeonButton({
 export function MenuScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
-  const [isLoading, setIsLoading] = useState(true)
   const [showContent, setShowContent] = useState(false)
   const [floatingTiles] = useState(() => generateFloatingTiles(12))
   const { service, disk } = useClassicPersistence()
@@ -347,18 +347,13 @@ export function MenuScreen() {
     }
   }, [audio.currentTrack, audio.isPlaying])
 
-  // Preload assets including tiles
+  // Artwork warms in the background; a slow image must never hide navigation,
+  // saved-run recovery, or update controls. Keep the existing entrance animation.
   useEffect(() => {
-    Promise.all([preloadMenuAssets(), preloadTileImages()])
-      .then(() => {
-        setIsLoading(false)
-        setTimeout(() => setShowContent(true), 100)
-      })
-      .catch((err) => {
-        console.error('Failed to load assets:', err)
-        setIsLoading(false)
-        setShowContent(true)
-      })
+    setShowContent(true)
+    void Promise.all([preloadMenuAssets(), preloadTileImages()]).catch((err) => {
+      console.error('Failed to load assets:', err)
+    })
   }, [])
 
   // Title animation
@@ -431,29 +426,6 @@ export function MenuScreen() {
 
   const handleCollection = () => {
     navigateTo(ROUTES.COLLECTION)
-  }
-
-  // Loading screen with Balatro-style spinner
-  if (isLoading) {
-    return (
-      <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)]">
-        <div className="text-center">
-          <div className="relative w-20 h-20 mx-auto mb-6">
-            <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] border-t-transparent rounded-full animate-spin" />
-            <div
-              className="absolute inset-2 border-4 border-[var(--color-vibrant-orange)] border-b-transparent rounded-full animate-spin"
-              style={{
-                animationDirection: 'reverse',
-                animationDuration: '0.8s',
-              }}
-            />
-          </div>
-          <p className="text-[var(--color-golden-yellow)] text-lg font-ui neon-text-subtle">
-            {t('common.loading')}
-          </p>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -649,6 +621,7 @@ export function MenuScreen() {
               <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
                 {FORMATTED_APP_VERSION}
               </span>
+              <UpdateNotice />
             </section>
           </div>
         </div>

@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "May bagong bersyon",
+    "description": "Handa na ang bagong bersyon. Ise-save muna namin ang progreso mo bago muling i-load.",
+    "later": "Mamaya na",
+    "updating": "Ina-update…",
+    "accept": "I-save at i-update",
+    "save": "Hindi na-save ang pinakabagong progreso mo. Panatilihing bukas ang tab na ito at subukan muli.",
+    "update": "Hindi nailapat ang update. Nandito pa rin ang laro mo; subukan muli.",
+    "tabs": "Isara ang iba pang tab o window ng Tensho, saka subukan muli para hindi maantala ang mga laro roon."
+  },
   "classicSave": {
     "savedTitle": "Iyong Classic na laro",
     "resume": "Ipagpatuloy ang laro",

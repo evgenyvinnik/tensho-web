@@ -8,6 +8,7 @@
 import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
+import { UpdateNotice } from '../ui/UpdateNotice'
 import { useAppNavigation } from '../../router'
 import { useSettingsStore } from '../../stores/settingsStore'
 import {
@@ -288,6 +289,7 @@ export function SettingsScreen() {
           <p className="text-center text-sm text-[var(--color-beige-white)] opacity-50 lg:col-span-2">
             Tensho {FORMATTED_APP_VERSION}
           </p>
+          <UpdateNotice />
         </div>
       </div>
 

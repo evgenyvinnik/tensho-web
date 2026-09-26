@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "Pembaruan tersedia",
+    "description": "Versi baru sudah siap. Kami akan menyimpan progresmu sebelum memuat ulang.",
+    "later": "Nanti",
+    "updating": "Memperbarui…",
+    "accept": "Simpan dan perbarui",
+    "save": "Progres terbarumu tidak dapat disimpan. Biarkan tab ini terbuka dan coba lagi.",
+    "update": "Pembaruan tidak dapat diterapkan. Permainanmu masih ada di sini; coba lagi.",
+    "tabs": "Tutup tab atau jendela Tensho lainnya, lalu coba lagi agar permainan di sana tidak terganggu."
+  },
   "classicSave": {
     "savedTitle": "Permainan Klasik Anda",
     "resume": "Lanjutkan permainan",

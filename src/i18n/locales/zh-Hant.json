@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "有可用更新",
+    "description": "新版本已就緒。我們會先儲存進度，再重新載入。",
+    "later": "稍後",
+    "updating": "正在更新…",
+    "accept": "儲存並更新",
+    "save": "無法儲存最新進度。請保持此分頁開啟，然後重試。",
+    "update": "無法套用更新。你的遊戲仍在此處，請重試。",
+    "tabs": "請關閉其他 Tensho 分頁或視窗後重試，以免中斷其中的遊戲。"
+  },
   "classicSave": {
     "savedTitle": "你的經典對局",
     "resume": "繼續對局",

@@ -6,7 +6,22 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Latest pack-choice checkpoint
+## Latest save-aware update checkpoint
+
+Unpublished follow-up: save-aware PWA update consent now passes **10/10 real
+two-build desktop/touch upgrade scenarios**, including initially denied storage,
+failed-save recovery, other-window refusal and exact offline continuation. Menu
+navigation no longer waits for the entire tile-art preload, and denied tutorial
+preference storage no longer crashes that menu. Static checks and both production
+builds and **13/13 release-workflow checks** passed. After a measured drop in
+host load, the fresh complete regression passed **1,407/1,407 tests in 121 files**
+with unchanged source, worker count, assertions and deadlines. The first run's
+ten timeout failures remain recorded. Local verification is complete; remote CI,
+deployment and hosted verification are pending. No temporary CI branch is needed.
+No new deployment is claimed. See
+[the update ledger](PWA_UPDATE_IMPLEMENTATION.md) for retained failures and limits.
+
+## Published pack-choice checkpoint
 
 Published **v1.0.260926-5** repairs catalog-versus-choice identity in pack
 generation and rendering. Consumable alternatives are now used before the

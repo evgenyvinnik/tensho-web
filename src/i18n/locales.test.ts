@@ -105,6 +105,17 @@ it('supplies table accessibility and cumulative stake rules in every locale', ()
 
 type Locale = Record<string, unknown>
 
+it('localizes every update decision and recoverable error in all locales', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = locale.appUpdate as Record<string, string>
+    expect(Object.keys(copy).sort()).toEqual(Object.keys(en.appUpdate).sort())
+    for (const [key, english] of Object.entries(en.appUpdate)) {
+      expect(copy[key], `${language}: appUpdate.${key}`).toBeTruthy()
+      if (language !== 'en') expect(copy[key]).not.toBe(english)
+    }
+  }
+})
+
 const LOCALES: Record<string, Locale> = {
   en,
   es,

@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "Mise à jour disponible",
+    "description": "Une nouvelle version est prête. Nous sauvegarderons votre progression avant de recharger.",
+    "later": "Plus tard",
+    "updating": "Mise à jour…",
+    "accept": "Sauvegarder et actualiser",
+    "save": "Votre progression récente n’a pas pu être sauvegardée. Gardez cet onglet ouvert et réessayez.",
+    "update": "La mise à jour a échoué. Votre partie est toujours ici ; réessayez.",
+    "tabs": "Fermez les autres onglets ou fenêtres de Tensho, puis réessayez pour ne pas interrompre leurs parties."
+  },
   "classicSave": {
     "savedTitle": "Votre partie classique",
     "resume": "Reprendre la partie",

@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "Aggiornamento disponibile",
+    "description": "Una nuova versione è pronta. Salveremo i tuoi progressi prima di ricaricare.",
+    "later": "Più tardi",
+    "updating": "Aggiornamento…",
+    "accept": "Salva e aggiorna",
+    "save": "Non è stato possibile salvare gli ultimi progressi. Tieni aperta questa scheda e riprova.",
+    "update": "Non è stato possibile applicare l’aggiornamento. La tua partita è ancora qui; riprova.",
+    "tabs": "Chiudi le altre schede o finestre di Tensho, poi riprova per non interrompere le loro partite."
+  },
   "classicSave": {
     "savedTitle": "La tua partita classica",
     "resume": "Riprendi la partita",

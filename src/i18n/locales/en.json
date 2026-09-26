@@ -1,4 +1,14 @@
 {
+  "appUpdate": {
+    "available": "Update available",
+    "description": "A new version is ready. We will save your progress before reloading.",
+    "later": "Later",
+    "updating": "Updating…",
+    "accept": "Save and update",
+    "save": "Your latest progress could not be saved. Keep this tab open and try again.",
+    "update": "The update could not be applied. Your game is still here; try again.",
+    "tabs": "Close other Tensho tabs or windows, then try again. This keeps their games from being interrupted."
+  },
   "classicSave": {
     "savedTitle": "Your Classic run",
     "resume": "Resume run",
