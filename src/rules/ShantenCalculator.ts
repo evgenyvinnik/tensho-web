@@ -15,7 +15,7 @@
 
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld } from '../core/Meld'
-import { isCompleteHand, KOKUSHI_TILES } from './HandValidator'
+import { parseStandardForm, KOKUSHI_TILES } from './HandValidator'
 
 /**
  * Result of shanten calculation
@@ -135,7 +135,7 @@ export function calculateStandardShanten(
   const regularTiles = tiles.filter((t) => !t.isBonus)
 
   // Check if already complete
-  if (isCompleteHand(regularTiles, declaredMelds)) {
+  if (parseStandardForm(regularTiles, declaredMelds).length > 0) {
     return -1
   }
 
@@ -167,7 +167,12 @@ export function calculateStandardShanten(
   const noPairResult = calculateShantenWithoutPair(counts, neededMelds)
   minShanten = Math.min(minShanten, noPairResult)
 
-  return minShanten
+  // A larger rack may contain a winning subset plus unrelated tiles. Only the
+  // validator above can call the entire rack complete.
+  // Bonus replacement failures and rack-size effects can leave fewer than 13
+  // regular tiles. Four melds with no head tile still need two draws, not one.
+  const missingTilesBeforeReady = neededMelds * 3 + 1 - regularTiles.length
+  return Math.max(0, minShanten, missingTilesBeforeReady)
 }
 
 /**
@@ -177,31 +182,7 @@ function calculateShantenWithPair(
   counts: TileCounts,
   neededMelds: number
 ): number {
-  let melds = 0
-  let taatsu = 0 // Partial melds (2 tiles that can become a meld)
-
-  // Copy counts for modification
-  const c = counts.map((arr) => [...arr])
-
-  // Extract melds and taatsu from each suit
-  for (let suit = 0; suit < 3; suit++) {
-    const result = extractMeldsFromSuit(c[suit])
-    melds += result.melds
-    taatsu += result.taatsu
-  }
-
-  // Extract sets from honors (only triplets possible)
-  const honorResult = extractHonorMelds(c[3])
-  melds += honorResult.melds
-  taatsu += honorResult.taatsu
-
-  // Standard shanten weights a complete meld as two steps and a partial meld
-  // as one. The former formula counted both equally, which mislabeled many
-  // ordinary hands as tenpai.
-  const maxUsefulTaatsu = Math.max(0, neededMelds - melds)
-  const usefulTaatsu = Math.min(taatsu, maxUsefulTaatsu)
-
-  return neededMelds * 2 - melds * 2 - usefulTaatsu - 1
+  return calculateGroupShanten(counts, neededMelds) - 1
 }
 
 /**
@@ -211,119 +192,71 @@ function calculateShantenWithoutPair(
   counts: TileCounts,
   neededMelds: number
 ): number {
-  let melds = 0
-  let taatsu = 0
-
-  // Copy counts for modification
-  const c = counts.map((arr) => [...arr])
-
-  // Extract melds and taatsu from each suit
-  for (let suit = 0; suit < 3; suit++) {
-    const result = extractMeldsFromSuit(c[suit])
-    melds += result.melds
-    taatsu += result.taatsu
-  }
-
-  // Extract sets from honors
-  const honorResult = extractHonorMelds(c[3])
-  melds += honorResult.melds
-  taatsu += honorResult.taatsu
-
-  // Without a head pair, one additional step remains.
-  const maxUsefulTaatsu = Math.max(0, neededMelds - melds)
-  const usefulTaatsu = Math.min(taatsu, maxUsefulTaatsu)
-
-  return neededMelds * 2 - melds * 2 - usefulTaatsu
+  return calculateGroupShanten(counts, neededMelds)
 }
 
 /**
- * Extract melds and taatsu from a single suited array
+ * Keep every useful meld/partial-meld count, rather than choosing a greedy
+ * decomposition. A sequence can consume tiles needed by a better triplet or
+ * two partial groups. The memo is local: no tile identities or run state leak.
  */
-function extractMeldsFromSuit(
-  suitCounts: number[]
-): { melds: number; taatsu: number } {
-  let melds = 0
-  let taatsu = 0
-
-  // Make a copy
-  const c = [...suitCounts]
-
-  // Greedy extraction - try sequences first as they're more flexible
-  // Then triplets, then partial melds
-
-  // Extract complete melds
-  for (let i = 1; i <= 7; i++) {
-    // Sequences
-    while (c[i] > 0 && c[i + 1] > 0 && c[i + 2] > 0) {
-      c[i]--
-      c[i + 1]--
-      c[i + 2]--
-      melds++
+function calculateGroupShanten(
+  counts: TileCounts,
+  neededMelds: number
+): number {
+  type Groups = [melds: number, partials: number]
+  const memo = new Map<string, Groups[]>()
+  function decompose(c: number[], suited: boolean): Groups[] {
+    const key = `${suited}:${c.join(',')}`
+    const cached = memo.get(key)
+    if (cached) return cached
+    const rank = c.findIndex((count) => count > 0)
+    if (rank < 0) return [[0, 0]]
+    const outcomes = new Map<string, Groups>()
+    function take(ranks: number[], meld: number, partial: number): void {
+      for (const r of ranks) c[r]--
+      for (const [m, t] of decompose(c, suited)) {
+        const groups: Groups = [m + meld, t + partial]
+        if (groups[0] <= neededMelds && groups[1] <= neededMelds) {
+          outcomes.set(groups.join(','), groups)
+        }
+      }
+      for (const r of ranks) c[r]++
     }
+    // This tile can remain unused, or participate in any available group.
+    take([rank], 0, 0)
+    if (c[rank] >= 3) take([rank, rank, rank], 1, 0)
+    if (c[rank] >= 2) take([rank, rank], 0, 1)
+    if (suited) {
+      if (rank <= 7 && c[rank + 1] && c[rank + 2]) {
+        take([rank, rank + 1, rank + 2], 1, 0)
+      }
+      if (rank <= 8 && c[rank + 1]) take([rank, rank + 1], 0, 1)
+      if (rank <= 7 && c[rank + 2]) take([rank, rank + 2], 0, 1)
+    }
+    const result = [...outcomes.values()]
+    memo.set(key, result)
+    return result
   }
 
-  for (let i = 1; i <= 9; i++) {
-    // Triplets
-    while (c[i] >= 3) {
-      c[i] -= 3
-      melds++
+  let combinations: Groups[] = [[0, 0]]
+  for (let suit = 0; suit < counts.length; suit++) {
+    const next = new Map<string, Groups>()
+    for (const [m, t] of combinations) {
+      for (const [sm, st] of decompose([...counts[suit]], suit < 3)) {
+        if (m + sm > neededMelds) continue
+        const groups: Groups = [m + sm, Math.min(neededMelds, t + st)]
+        next.set(groups.join(','), groups)
+      }
     }
+    combinations = [...next.values()]
   }
 
-  // Extract taatsu (partial melds)
-  for (let i = 1; i <= 9; i++) {
-    // Pairs
-    if (c[i] >= 2) {
-      c[i] -= 2
-      taatsu++
-    }
-  }
-
-  for (let i = 1; i <= 8; i++) {
-    // Ryanmen (consecutive)
-    if (c[i] > 0 && c[i + 1] > 0) {
-      c[i]--
-      c[i + 1]--
-      taatsu++
-    }
-  }
-
-  for (let i = 1; i <= 7; i++) {
-    // Kanchan (gap)
-    if (c[i] > 0 && c[i + 2] > 0) {
-      c[i]--
-      c[i + 2]--
-      taatsu++
-    }
-  }
-
-  return { melds, taatsu }
-}
-
-/**
- * Extract melds and taatsu from honors
- */
-function extractHonorMelds(
-  honorCounts: number[]
-): { melds: number; taatsu: number } {
-  let melds = 0
-  let taatsu = 0
-
-  const c = [...honorCounts]
-
-  // Only triplets possible for honors
-  for (let i = 1; i <= 7; i++) {
-    while (c[i] >= 3) {
-      c[i] -= 3
-      melds++
-    }
-    if (c[i] === 2) {
-      c[i] = 0
-      taatsu++
-    }
-  }
-
-  return { melds, taatsu }
+  return Math.min(
+    ...combinations.map(
+      ([m, t]) => neededMelds * 2 - m * 2 - Math.min(t, neededMelds - m)
+    )
+  )
 }
 
 /**
@@ -353,9 +286,15 @@ export function calculateShanten(
   )
 
   let bestForm: 'standard' | 'sevenPairs' | 'kokushi' = 'standard'
-  if (minShanten === sevenPairsShanten && sevenPairsShanten <= standardShanten) {
+  if (
+    minShanten === sevenPairsShanten &&
+    sevenPairsShanten <= standardShanten
+  ) {
     bestForm = 'sevenPairs'
-  } else if (minShanten === kokushiShanten && kokushiShanten < standardShanten) {
+  } else if (
+    minShanten === kokushiShanten &&
+    kokushiShanten < standardShanten
+  ) {
     bestForm = 'kokushi'
   }
 
@@ -409,14 +348,20 @@ export function getEffectiveTiles(
   // Check honors
   for (let rank = 1; rank <= 4; rank++) {
     const windTile = new Tile(TileSuit.Wind, rank, `test-wind-${rank}`)
-    if (calculateShanten([...tiles, windTile], declaredMelds).shanten < currentShanten) {
+    if (
+      calculateShanten([...tiles, windTile], declaredMelds).shanten <
+      currentShanten
+    ) {
       effectiveTiles.push(windTile)
     }
   }
 
   for (let rank = 1; rank <= 3; rank++) {
     const dragonTile = new Tile(TileSuit.Dragon, rank, `test-dragon-${rank}`)
-    if (calculateShanten([...tiles, dragonTile], declaredMelds).shanten < currentShanten) {
+    if (
+      calculateShanten([...tiles, dragonTile], declaredMelds).shanten <
+      currentShanten
+    ) {
       effectiveTiles.push(dragonTile)
     }
   }

@@ -717,6 +717,13 @@ deployed in this pass. Older checkpoint counts below remain historical.
 
 ## Completion audit still open
 
+September 26 unpublished follow-up: the ordinary hand-readiness hint now checks
+alternative tile groupings and separates special-hand completion. Full units
+passed **1,340/1,340**, strict TypeScript, lint, release checks and production
+build passed. The final corrected native browser batch passed **12/12** on
+desktop/touch without retries; earlier timeout and locator failures are retained.
+Publication is pending. See [readiness evidence](HAND_READINESS_IMPLEMENTATION.md).
+
 September 26 published follow-up (**v1.0.260926-2**): tile identities and teaching popups now share
 localized text across play, rack and reward surfaces. Incorrect Season promises
 are removed, and six missing modifier catalogs are supplied. Full units passed

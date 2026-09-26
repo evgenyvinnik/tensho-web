@@ -1,8 +1,10 @@
 # Table Loop release preparation
 
-September 12, 2026. Implementation and verification notes, not a completion or
-deployment claim. The redesign remains on `table-loop-prototype`; no branch
-history has been overwritten and Classic remains available.
+Original verification: September 12, 2026. The redesign was subsequently merged
+into main and published; see the September 22 and later checkpoints in
+[Implementation status](IMPLEMENTATION_STATUS.md). Classic remains the default,
+and Table Loop remains independently playable. Choosing the default experience
+is still a pending product decision, not an unmerged-branch requirement.
 
 ## Rejected actions must not change the deal
 
@@ -91,7 +93,7 @@ model-ID limitation. Catalog-driven tests require each current Decree's own PNG.
 The three-Flower inspector now marks its earned shop unlock using the active
 set bonus rather than duplicating the collection threshold.
 
-Still open: main-branch/default-mode promotion; multi-tab stale writes; broader
+Still open: default-mode choice; multi-tab stale writes; broader
 build and variant coverage; newcomer observation and fun validation; performance
 and deployed PWA upgrades. The approved swap closes Merchant's free-slot dead end;
 its balance and human strategic value still need playtesting. Other unfinished Classic
