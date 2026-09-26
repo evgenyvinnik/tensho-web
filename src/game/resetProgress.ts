@@ -5,6 +5,8 @@ import { useStakeStore } from '../stores/stakeStore'
 import { useTableStyleStore } from '../stores/tableStyleStore'
 import { useTableLoopStore } from '../stores/tableLoopStore'
 import { TABLE_SAVE_KEY } from '../tableloop/savedRun'
+import { CLASSIC_SAVE_KEY } from './classicSavedRun'
+import { getClassicPersistence } from './classicPersistenceApp'
 import {
   PROGRESSIVE_HINTS_STORAGE_KEY,
   HINTS_DISABLED_STORAGE_KEY,
@@ -37,6 +39,7 @@ export const PROGRESS_STORAGE_KEYS = [
     return name
   }),
   TABLE_SAVE_KEY,
+  CLASSIC_SAVE_KEY,
   ...TUTORIAL_PROGRESS_KEYS,
 ]
 
@@ -166,6 +169,7 @@ export function resetAllProgress(): ResetProgressResult {
     useArchiveStore.getState().resetArchive()
     synchronizePersistedMetaState()
     for (const key of TUTORIAL_PROGRESS_KEYS) saved.storage.removeItem(key)
+    saved.storage.removeItem(CLASSIC_SAVE_KEY)
     // Last fallible storage operation: this preserves its live engine on error.
     useTableLoopStore.getState().clearSavedRun()
   } catch {
@@ -183,6 +187,7 @@ export function resetAllProgress(): ResetProgressResult {
     }
   }
   resetMetaProgressionRunContext()
+  getClassicPersistence()?.forgetAfterReset()
   // No runEnd event: deleting progress must not award a loss, win, or unlock.
   gameOrchestrator.resetGame()
   return { success: true }

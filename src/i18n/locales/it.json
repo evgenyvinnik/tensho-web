@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "La tua partita classica",
+    "resume": "Riprendi la partita",
+    "position": "Atto {{act}} · Round {{round}}",
+    "saving": "Salvataggio in corso…",
+    "saved": "Partita salvata",
+    "unavailable": "Salvataggio o caricamento non disponibile. Tieni aperta questa scheda e riprova.",
+    "invalid": "Impossibile salvare o caricare questa partita. Il salvataggio esistente non è stato modificato.",
+    "conflict": "I progressi salvati sono cambiati in un’altra scheda. Questo tavolo è in pausa.",
+    "retry": "Riprova a salvare",
+    "refresh": "Controlla di nuovo",
+    "backup": "Scarica una copia",
+    "discard": "Abbandona la partita",
+    "replaceTitle": "Iniziare una nuova partita?",
+    "replaceBody": "Questo sostituisce la partita classica attuale o salvata. Table Loop e i contenuti sbloccati vengono mantenuti.",
+    "discardTitle": "Abbandonare questa partita?",
+    "discardBody": "Eliminare la partita classica salvata e quella attuale in questa scheda? Table Loop e i contenuti sbloccati vengono mantenuti.",
+    "leaveTitle": "Lasciare il tavolo?",
+    "leaveBody": "Salva la partita e torna al menu. Potrai riprenderla più tardi.",
+    "saveLeave": "Salva ed esci"
+  },
   "omens": {
     "pending": "Effetti dei presagi",
     "effects": {

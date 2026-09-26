@@ -11,6 +11,7 @@ import {
 } from '../stores/tableLoopStore'
 import { ArchiveSystem } from '../systems/ArchiveSystem'
 import { TABLE_SAVE_KEY } from '../tableloop/savedRun'
+import { CLASSIC_SAVE_KEY } from './classicSavedRun'
 import { gameOrchestrator as game } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import {
@@ -58,6 +59,7 @@ describe('explicit progress reset', () => {
     })
     localStorage.setItem('tensho-language', 'es')
     localStorage.setItem('unrelated-project', 'keep me')
+    localStorage.setItem(CLASSIC_SAVE_KEY, 'classic checkpoint fixture')
   })
   afterEach(() => {
     shutdownMetaProgressionBridge()
@@ -98,6 +100,7 @@ describe('explicit progress reset', () => {
       state: { phase: 'choosingStart', draftEnabled: false, ownedDecrees: [] },
     })
     expect(localStorage.getItem(TABLE_SAVE_KEY)).toBeNull()
+    expect(localStorage.getItem(CLASSIC_SAVE_KEY)).toBeNull()
     for (const key of TUTORIAL_PROGRESS_KEYS)
       expect(localStorage.getItem(key)).toBeNull()
     expect(useSettingsStore.getState()).toBe(settings)
@@ -157,6 +160,20 @@ describe('explicit progress reset', () => {
     const run = game.getState()
     expect(resetAllProgress()).toEqual({ success: false, restored: false })
     expect(game.getState()).toBe(run)
+  })
+
+  it('preserves both live engines and rolls back the profile when Classic deletion fails', () => {
+    const before = new Map(data)
+    const classic = game.getState()
+    const table = useTableLoopStore.getState()
+    vi.mocked(localStorage.removeItem).mockImplementation((key) => {
+      if (key === CLASSIC_SAVE_KEY) throw new Error('Denied')
+      data.delete(key)
+    })
+    expect(resetAllProgress()).toEqual({ success: false, restored: true })
+    expect(data).toEqual(before)
+    expect(game.getState()).toBe(classic)
+    expect(useTableLoopStore.getState()).toBe(table)
   })
 
   it('does not change anything if the backup cannot be read', () => {

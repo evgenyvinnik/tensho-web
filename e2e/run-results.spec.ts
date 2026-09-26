@@ -1,4 +1,14 @@
 import { expect, test, type Page } from '@playwright/test'
+import type {
+  GameOrchestrator,
+  OrchestratorState,
+} from '../src/game/GameOrchestrator'
+
+declare global {
+  interface Window {
+    __resultFixtureGame: GameOrchestrator
+  }
+}
 
 // Establish an explicit late-run fixture, then finish through the rendered play
 // action. This tests settlement/navigation, not organic reach or game balance.
@@ -7,7 +17,12 @@ async function prepareFinalPlay(page: Page, victory: boolean, lang = 'en') {
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
   await page.evaluate(async (victory) => {
     const path = '/src/game/GameOrchestrator.ts'
+    const appPath = '/src/game/classicPersistenceApp.ts'
     const { gameOrchestrator: game } = await import(path)
+    window.__resultFixtureGame = game
+    const { initializeClassicPersistence } = await import(appPath)
+    const persistence = initializeClassicPersistence()
+    const expectedRaw = persistence.getSnapshot().disk.raw
     game.startNewRun(7)
     const state = game.getState()
     state.roundManager.startAct(8)
@@ -23,6 +38,8 @@ async function prepareFinalPlay(page: Page, victory: boolean, lang = 'en') {
     round.scoreTarget = state.targetScore
     state.handsRemaining = 1
     state.runScore = 123456789012
+    if (!(await persistence.saveNewRun(expectedRaw)))
+      throw new Error('Result fixture save failed')
     state.handTiles
       .slice(0, 2)
       .forEach((tile: { id: string }) => game.selectTile(tile.id))
@@ -40,6 +57,7 @@ async function snapshot(page: Page) {
     const progressionPath = '/src/stores/progressionStore.ts'
     const stakePath = '/src/stores/stakeStore.ts'
     const { gameOrchestrator: game } = await import(path)
+    window.__resultFixtureGame = game
     const { useProgressionStore } = await import(progressionPath)
     const { useStakeStore } = await import(stakePath)
     const state = game.getState()
@@ -75,6 +93,10 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
     completed: 1,
     nextStake: true,
   })
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('heading', { name: 'Victory!' })).toBeVisible()
+  expect(await snapshot(page)).toEqual(secured)
   await page
     .getByRole('button', { name: 'Continue into Endless', exact: true })
     .click()
@@ -101,10 +123,11 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
     won: true,
   })
 
-  await page.evaluate(async () => {
-    const path = '/src/game/GameOrchestrator.ts'
-    const { gameOrchestrator: game } = await import(path)
-    const state = game.getState()
+  await page.evaluate(() => {
+    // This fixture changes real engine state synchronously. Chromium can collect
+    // an unreferenced import() promise during GC and misreport a navigation.
+    const game = window.__resultFixtureGame
+    const state = game.getState() as OrchestratorState
     state.targetScore = 1e12
     state.roundManager.getCurrentRound().scoreTarget = 1e12
     state.handsRemaining = 1
@@ -131,13 +154,15 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
     .getByRole('button', { name: 'Return to Menu', exact: true })
     .click()
   expect(await snapshot(page)).toMatchObject({
-    phase: 'menu',
-    won: false,
-    score: 0,
+    phase: 'gameOver',
+    won: true,
     wins: 1,
     completed: 1,
     nextStake: true,
   })
+  await expect(
+    page.getByRole('button', { name: 'Resume run', exact: true })
+  ).toBeVisible()
 })
 
 test('Act 8 defeat offers a fresh run, not Endless or a Stake victory', async ({
@@ -222,10 +247,9 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
       .getByText('Endless', { exact: true })
   ).toBeVisible()
   await expect(page.getByLabel('Act 8 of 8', { exact: true })).toHaveCount(0)
-  await page.evaluate(async () => {
-    const path = '/src/game/GameOrchestrator.ts'
-    const { gameOrchestrator: game } = await import(path)
-    const state = game.getState()
+  await page.evaluate(() => {
+    const game = window.__resultFixtureGame
+    const state = game.getState() as OrchestratorState
     state.targetScore = 1e12
     state.roundManager.getCurrentRound().scoreTarget = 1e12
     state.handsRemaining = 1

@@ -164,6 +164,7 @@ export function useGameController(
   useEffect(() => {
     const rerenderEvents: GameEvent[] = [
       'runStart',
+      'gameLoaded',
       'runEnd',
       'roundStart',
       'roundEnd',

@@ -626,6 +626,8 @@ export interface ScoreRequirements {
  * Full context for score calculation
  */
 export interface ScoringContext {
+  /** Forecasts calculate effects without updating owned run state. */
+  previewMode?: boolean
   hand: ParsedHand
   tiles: Tile[]
   melds: Meld[]

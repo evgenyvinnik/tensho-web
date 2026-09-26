@@ -6,16 +6,20 @@ import { i18nReady } from './i18n' // Initialize i18next
 import App from './App.tsx'
 import { AppErrorBoundary } from './components/ui/ErrorBoundary'
 import { initializeMetaProgressionBridge } from './game/MetaProgressionBridge'
+import { initializeClassicPersistence } from './game/classicPersistenceApp'
 
 // Install persisted Archive, lifetime progression, and achievement tracking
 // before any run can emit gameplay events.
 initializeMetaProgressionBridge()
+initializeClassicPersistence()
 
 // Register service worker for PWA
 const updateSW = registerSW({
-  onNeedRefresh() {
+  async onNeedRefresh() {
     if (confirm('New content available. Reload?')) {
-      updateSW(true)
+      const persistence = initializeClassicPersistence()
+      if (persistence.hasLocalRun && !(await persistence.retrySave())) return
+      await updateSW(true)
     }
   },
   onOfflineReady() {

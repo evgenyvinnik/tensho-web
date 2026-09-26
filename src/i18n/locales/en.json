@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "Your Classic run",
+    "resume": "Resume run",
+    "position": "Act {{act}} · Round {{round}}",
+    "saving": "Saving run…",
+    "saved": "Run saved",
+    "unavailable": "Saving or loading is unavailable. Keep this tab open and try again.",
+    "invalid": "This run could not be saved or loaded. The stored checkpoint has not been changed.",
+    "conflict": "Saved progress changed in another tab. This table is paused.",
+    "retry": "Retry saving",
+    "refresh": "Check again",
+    "backup": "Download backup",
+    "discard": "Discard run",
+    "replaceTitle": "Start a new run?",
+    "replaceBody": "This replaces your current or saved Classic run. Table Loop and earned unlocks are kept.",
+    "discardTitle": "Discard this run?",
+    "discardBody": "Delete the saved Classic run and the current Classic run in this tab? Table Loop and earned unlocks are kept.",
+    "leaveTitle": "Leave the table?",
+    "leaveBody": "Save your run and return to the menu. You can resume it later.",
+    "saveLeave": "Save and leave"
+  },
   "consumableUse": {
     "unityMapping": "Original rank → Wind",
     "errorMaxLevel": "This upgrade is already at its maximum level.",

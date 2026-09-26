@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "クラシックの対局",
+    "resume": "対局を再開",
+    "position": "第{{act}}幕 · 第{{round}}局",
+    "saving": "対局を保存中…",
+    "saved": "対局を保存しました",
+    "unavailable": "保存または読み込みができません。このタブを開いたまま、もう一度お試しください。",
+    "invalid": "対局を保存または読み込みできませんでした。保存済みのデータは変更されていません。",
+    "conflict": "別のタブで保存データが変更されました。この卓は一時停止中です。",
+    "retry": "保存を再試行",
+    "refresh": "再確認",
+    "backup": "バックアップを保存",
+    "discard": "対局を破棄",
+    "replaceTitle": "新しい対局を始めますか？",
+    "replaceBody": "進行中または保存済みのクラシック対局を置き換えます。Table Loopと獲得済みの解放内容は残ります。",
+    "discardTitle": "この対局を破棄しますか？",
+    "discardBody": "保存済みのクラシック対局と、このタブの進行中の対局を削除しますか？Table Loopと獲得済みの解放内容は残ります。",
+    "leaveTitle": "卓を離れますか？",
+    "leaveBody": "対局を保存してメニューに戻ります。後で再開できます。",
+    "saveLeave": "保存して戻る"
+  },
   "consumableUse": {
     "unityMapping": "元の数字 → 風牌",
     "errorMaxLevel": "この強化はすでに最大レベルです。",

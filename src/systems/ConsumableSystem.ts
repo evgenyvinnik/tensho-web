@@ -36,7 +36,12 @@ export type ConsumableRarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary'
 /**
  * Edition types for consumables (visual and effect modifications)
  */
-export type ConsumableEdition = 'Base' | 'Foil' | 'Holographic' | 'Polychrome' | 'Negative'
+export type ConsumableEdition =
+  | 'Base'
+  | 'Foil'
+  | 'Holographic'
+  | 'Polychrome'
+  | 'Negative'
 
 /**
  * Base interface for all consumables
@@ -168,9 +173,13 @@ export class ConsumableSystem {
       case 'FateSeal':
         return this.inventory.fateSealSlots - this.inventory.fateSeals.length
       case 'CelestialOrb':
-        return this.inventory.celestialOrbSlots - this.inventory.celestialOrbs.length
+        return (
+          this.inventory.celestialOrbSlots - this.inventory.celestialOrbs.length
+        )
       case 'VoidScript':
-        return this.inventory.voidScriptSlots - this.inventory.voidScripts.length
+        return (
+          this.inventory.voidScriptSlots - this.inventory.voidScripts.length
+        )
     }
   }
 
@@ -228,13 +237,22 @@ export class ConsumableSystem {
 
     switch (type) {
       case 'FateSeal':
-        this.inventory.fateSealSlots = Math.max(0, this.inventory.fateSealSlots - 1)
+        this.inventory.fateSealSlots = Math.max(
+          0,
+          this.inventory.fateSealSlots - 1
+        )
         break
       case 'CelestialOrb':
-        this.inventory.celestialOrbSlots = Math.max(0, this.inventory.celestialOrbSlots - 1)
+        this.inventory.celestialOrbSlots = Math.max(
+          0,
+          this.inventory.celestialOrbSlots - 1
+        )
         break
       case 'VoidScript':
-        this.inventory.voidScriptSlots = Math.max(0, this.inventory.voidScriptSlots - 1)
+        this.inventory.voidScriptSlots = Math.max(
+          0,
+          this.inventory.voidScriptSlots - 1
+        )
         break
     }
 
@@ -400,7 +418,9 @@ export class ConsumableSystem {
   onRoundEnd(): void {
     // Mark any used consumables for removal
     this.inventory.fateSeals = this.inventory.fateSeals.filter((c) => !c.isUsed)
-    this.inventory.voidScripts = this.inventory.voidScripts.filter((c) => !c.isUsed)
+    this.inventory.voidScripts = this.inventory.voidScripts.filter(
+      (c) => !c.isUsed
+    )
     // Note: Celestial Orbs are not removed after use - they are permanent upgrades
   }
 
@@ -465,6 +485,16 @@ export class ConsumableSystem {
  * Generate a unique consumable instance ID
  */
 let consumableInstanceCounter = 0
+export function getConsumableInstanceCounter(): number {
+  return consumableInstanceCounter
+}
+
+/** Retain higher live counters when returning from another mode. */
+export function restoreConsumableInstanceCounter(counter: number): void {
+  if (!Number.isSafeInteger(counter) || counter < 0)
+    throw new Error('Invalid consumable instance counter')
+  consumableInstanceCounter = Math.max(consumableInstanceCounter, counter)
+}
 export function generateConsumableInstanceId(): string {
   return `consumable-${++consumableInstanceCounter}-${Date.now()}`
 }
@@ -480,7 +510,10 @@ export function resetConsumableInstanceCounter(): void {
  * Calculate sell value for a consumable
  * Default: half of cost, rounded down
  */
-export function calculateSellValue(cost: number, edition: ConsumableEdition): number {
+export function calculateSellValue(
+  cost: number,
+  edition: ConsumableEdition
+): number {
   const editionMultiplier =
     edition === 'Foil'
       ? 1.2

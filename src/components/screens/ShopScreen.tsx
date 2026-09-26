@@ -33,6 +33,7 @@ import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { ProgressiveHintCard } from '../ui/ProgressiveHint'
 import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
+import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 
 // =============================================================================
 // MAIN SHOP SCREEN COMPONENT
@@ -170,6 +171,7 @@ export function ShopScreen() {
       {/* Content area */}
       <div className="relative z-10 min-h-0 flex-1 overflow-y-auto">
         <div className="screen-canvas pb-4">
+          <ClassicSaveNotice />
           {/* Round payoff and next challenge — informative, never modal. */}
           {roundSummary ? (
             <RoundCashOutBanner

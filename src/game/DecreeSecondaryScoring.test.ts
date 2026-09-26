@@ -78,6 +78,27 @@ function fixture(complete = true, table = 'green_felt') {
   return { game, state, ids, add, suppress, frost, pay }
 }
 
+it.each([false, true])(
+  'previews leave the saved Decree scaling state untouched (complete=%s)',
+  (complete) => {
+    const f = fixture(complete)
+    const decree = f.add('moonlit_seal')
+    decree.scalingValue = 0.7 // The value from an earlier paid play.
+    f.state.handTiles = f.state.handTiles.map((tile, index) =>
+      index >= f.state.handTiles.length - 2
+        ? new Tile(TileSuit.Wind, WindType.East, tile.id)
+        : tile
+    )
+    const before = f.game.captureRun()
+    const preview = f.game.previewScore(f.ids)
+    expect(preview).not.toBeNull()
+    expect(f.game.previewScore(f.ids)).toEqual(preview)
+    expect(f.game.captureRun()).toEqual(before)
+    f.pay()
+    expect(decree.scalingValue).toBe(0.2)
+  }
+)
+
 for (const count of [1, 2]) {
   it.each([
     ['decree-yaku-amplifier'],

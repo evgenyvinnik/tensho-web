@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "Permainan Klasik Anda",
+    "resume": "Lanjutkan permainan",
+    "position": "Babak {{act}} · Ronde {{round}}",
+    "saving": "Menyimpan permainan…",
+    "saved": "Permainan tersimpan",
+    "unavailable": "Penyimpanan atau pemuatan tidak tersedia. Biarkan tab ini terbuka dan coba lagi.",
+    "invalid": "Permainan ini tidak dapat disimpan atau dimuat. Simpanan sebelumnya tidak diubah.",
+    "conflict": "Progres tersimpan berubah di tab lain. Meja ini dijeda.",
+    "retry": "Coba simpan lagi",
+    "refresh": "Periksa lagi",
+    "backup": "Unduh cadangan",
+    "discard": "Hapus permainan",
+    "replaceTitle": "Mulai permainan baru?",
+    "replaceBody": "Ini menggantikan permainan Klasik yang sedang berjalan atau tersimpan. Table Loop dan konten yang telah dibuka tetap disimpan.",
+    "discardTitle": "Hapus permainan ini?",
+    "discardBody": "Hapus permainan Klasik yang tersimpan dan yang sedang berjalan di tab ini? Table Loop dan konten yang telah dibuka tetap disimpan.",
+    "leaveTitle": "Tinggalkan meja?",
+    "leaveBody": "Simpan permainan dan kembali ke menu. Anda dapat melanjutkannya nanti.",
+    "saveLeave": "Simpan dan keluar"
+  },
   "archiveSeals": {
     "items": {
       "purple": {

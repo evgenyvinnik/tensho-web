@@ -163,7 +163,8 @@ export const PUBLIC_PAGES = {
         id: 'saves',
         title: 'What happens when I leave or reload?',
         paragraphs: [
-          'Table Loop records its run locally in the browser and can resume a saved run. Preferences and earned progression also use local browser storage. Do not assume that an active Classic hand has the same reload recovery as Table Loop. Classic’s Exit confirmation warns that current run progress will be lost.',
+          'Classic checkpoints completed actions in local browser storage. Choose Save and leave to return to the menu, then Resume run to continue at your table, shop or result screen. An unfinished paid pack is included. Starting a new Classic run asks before replacing your existing run. Table Loop keeps its own separate saved run.',
+          'Wait for Run saved before closing the tab. If saving fails, keep the tab open and use Retry saving. Unconfirmed staged tiles and animations are not restored, and a sudden browser or device shutdown can lose the newest actions. This is local recovery, not a cloud account or a guarantee against every interrupted write.',
           'Local storage is specific to the browser and device. Clearing site data, using another browser, or a browser refusing storage can affect recovery. The Settings reset action is deliberate and separate from merely opening a help page.',
         ],
       },

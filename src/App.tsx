@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { VFXProvider } from './hooks/useVFX'
 import { useAudioLifecycle } from './hooks/useAudioLifecycle'
+import { ClassicRunBoundary } from './components/gameplay/ClassicRunBoundary'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
@@ -62,6 +63,22 @@ const SettingsScreen = lazy(() =>
   }))
 )
 
+const ResumableGameplay = () => (
+  <ClassicRunBoundary requested="play">
+    <GameplayScreen />
+  </ClassicRunBoundary>
+)
+const ResumableShop = () => (
+  <ClassicRunBoundary requested="shop">
+    <ShopScreen />
+  </ClassicRunBoundary>
+)
+const ResumableResult = () => (
+  <ClassicRunBoundary requested="game-over">
+    <GameOverScreen />
+  </ClassicRunBoundary>
+)
+
 /**
  * Main App Component with Router
  */
@@ -72,10 +89,10 @@ function App() {
     () =>
       createAppRouter({
         MenuScreen,
-        GameplayScreen,
+        GameplayScreen: ResumableGameplay,
         TableLoopScreen,
-        ShopScreen,
-        GameOverScreen,
+        ShopScreen: ResumableShop,
+        GameOverScreen: ResumableResult,
         AchievementsScreen,
         CodexScreen,
         CollectionScreen,

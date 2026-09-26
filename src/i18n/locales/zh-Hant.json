@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "你的經典對局",
+    "resume": "繼續對局",
+    "position": "第{{act}}幕 · 第{{round}}局",
+    "saving": "正在儲存對局…",
+    "saved": "對局已儲存",
+    "unavailable": "無法儲存或讀取。請保持此分頁開啟，然後重試。",
+    "invalid": "無法儲存或讀取此對局。原有存檔未被更改。",
+    "conflict": "其他分頁更改了存檔進度。此牌桌已暫停。",
+    "retry": "重試儲存",
+    "refresh": "重新檢查",
+    "backup": "下載備份",
+    "discard": "刪除對局",
+    "replaceTitle": "開始新對局？",
+    "replaceBody": "這將取代目前或已儲存的經典對局。Table Loop和已解鎖內容會保留。",
+    "discardTitle": "刪除此對局？",
+    "discardBody": "刪除已儲存的經典對局及此分頁中的目前對局？Table Loop和已解鎖內容會保留。",
+    "leaveTitle": "離開牌桌？",
+    "leaveBody": "儲存對局並返回選單。之後可以繼續。",
+    "saveLeave": "儲存並離開"
+  },
   "consumableUse": {
     "unityMapping": "原點數 → 風牌",
     "errorMaxLevel": "此升級已達到最高等級。",

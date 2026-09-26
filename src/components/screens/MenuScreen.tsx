@@ -19,9 +19,13 @@ import {
   preloadTileImages,
 } from '../../utils/assets'
 import { useAudio } from '../../hooks/useAudio'
-import { useGameController } from '../../game/useGameController'
-import { useStakeStore } from '../../stores/stakeStore'
-import { useTableStyleStore } from '../../stores/tableStyleStore'
+import { useClassicPersistence } from '../../game/useClassicPersistence'
+import {
+  startConfiguredClassicRun,
+  classicDestination,
+} from '../../game/classicPersistenceApp'
+import { ClassicResumeCard } from '../menu/ClassicResumeCard'
+import { ConfirmPopup } from '../ui/Popup'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
 import { withBasePath } from '../../utils/basePath'
 import { TileSuit } from '../../core/Tile'
@@ -221,6 +225,7 @@ interface NeonButtonProps {
   compact?: boolean
   delay?: number
   show?: boolean
+  disabled?: boolean
 }
 
 /**
@@ -233,6 +238,7 @@ function NeonButton({
   compact = false,
   delay = 0,
   show = true,
+  disabled = false,
 }: NeonButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
@@ -258,6 +264,7 @@ function NeonButton({
 
   return (
     <AnimatedButton
+      disabled={disabled}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -269,7 +276,7 @@ function NeonButton({
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
       className={`
-        relative w-full rounded-lg font-ui font-bold
+        relative w-full rounded-lg font-ui font-bold disabled:cursor-wait disabled:opacity-50
         ${compact ? 'px-4 py-2.5 text-sm sm:text-base' : 'px-10 py-3.5 text-xl md:text-2xl'}
         text-[var(--color-beige-white)] uppercase tracking-wider
         border-2 transition-colors duration-200
@@ -309,12 +316,15 @@ export function MenuScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [showContent, setShowContent] = useState(false)
   const [floatingTiles] = useState(() => generateFloatingTiles(12))
-  const { startNewRun } = useGameController()
-  const currentStyleId = useTableStyleStore((state) => state.currentStyleId)
-  const currentStakeTier = useStakeStore((state) => state.currentStakeTier)
-  const currentStakeWallId = useStakeStore((state) => state.currentWallId)
-  const selectStake = useStakeStore((state) => state.selectStake)
+  const { service, disk } = useClassicPersistence()
+  const [starting, setStarting] = useState(false)
+  const [replacement, setReplacement] = useState<{ raw: string | null } | null>(
+    null
+  )
   const tutorial = useTutorial()
+  useEffect(() => {
+    service.refresh()
+  }, [service])
 
   // Audio hook for background music
   const audio = useAudio()
@@ -374,26 +384,30 @@ export function MenuScreen() {
     delay: 300,
   })
 
-  const startConfiguredRun = () => {
-    const stakeTier =
-      currentStakeWallId === currentStyleId ? currentStakeTier : 1
-    selectStake(currentStyleId, stakeTier)
-    startNewRun(undefined, stakeTier, currentStyleId)
+  const startConfiguredRun = async (expectedRaw: string | null) => {
+    if (starting) return
+    setStarting(true)
+    audio.play()
+    try {
+      if (await startConfiguredClassicRun(expectedRaw))
+        navigateTo(classicDestination())
+    } finally {
+      setStarting(false)
+    }
   }
 
   const handlePlay = () => {
-    // Go directly to game - progressive tutorial will show hints during gameplay
-    audio.play()
-    startConfiguredRun()
-    navigateTo(ROUTES.PLAY)
+    if (starting) return
+    const raw =
+      disk.kind === 'ready' || disk.kind === 'invalid' ? disk.raw : null
+    if (disk.kind !== 'empty' || service.hasLocalRun) setReplacement({ raw })
+    else void startConfiguredRun(null)
   }
 
   // Called when tutorial is completed - start the game
   const handleTutorialComplete = () => {
     tutorial.complete()
-    audio.play()
-    startConfiguredRun()
-    navigateTo(ROUTES.PLAY)
+    handlePlay()
   }
 
   // The persistent-table prototype from docs/GAMEPLAY_EXPERIMENTS.md. It runs
@@ -512,14 +526,20 @@ export function MenuScreen() {
             <section className="mx-auto flex w-full max-w-md flex-col items-center gap-3 rounded-2xl border border-[var(--color-metallic-gold)]/25 bg-[var(--color-dark-forest)]/55 p-3 shadow-2xl backdrop-blur-sm sm:p-4 lg:bg-[var(--color-dark-forest)]/75 lg:p-5">
               {/* Table Style Selection Button */}
               <TableStyleButton delay={550} show={showContent} />
+              <ClassicResumeCard />
 
               <NeonButton
                 onClick={handlePlay}
+                disabled={starting}
                 variant="primary"
                 delay={650}
                 show={showContent}
               >
-                {t('menu.play')}
+                {t(
+                  service.hasLocalRun || disk.kind !== 'empty'
+                    ? 'menu.newRun'
+                    : 'menu.play'
+                )}
               </NeonButton>
 
               <NeonButton
@@ -635,6 +655,16 @@ export function MenuScreen() {
       </main>
 
       {/* Tutorial popup */}
+      <ConfirmPopup
+        isOpen={replacement !== null}
+        onClose={() => setReplacement(null)}
+        title={t('classicSave.replaceTitle')}
+        message={t('classicSave.replaceBody')}
+        confirmText={t('menu.newRun')}
+        onConfirm={() => {
+          if (replacement) void startConfiguredRun(replacement.raw)
+        }}
+      />
       <Tutorial
         isOpen={tutorial.isOpen}
         onClose={tutorial.close}

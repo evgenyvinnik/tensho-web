@@ -11,6 +11,10 @@ import { useGameController } from '../../game/useGameController'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { Button } from '../ui/Button'
 import { TablePattern } from '../ui/TablePattern'
+import { useState } from 'react'
+import { useClassicPersistence } from '../../game/useClassicPersistence'
+import { startConfiguredClassicRun } from '../../game/classicPersistenceApp'
+import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 
 const AnimatedMain = animated('main')
 
@@ -27,9 +31,10 @@ export function GameOverScreen() {
     hasWonRun,
     hasEnteredEndless,
     continueEndless,
-    resetGame,
   } = useGameController()
   const reduceMotion = useReducedMotion()
+  const { service, disk } = useClassicPersistence()
+  const [starting, setStarting] = useState(false)
 
   const isFreshVictory = hasWonRun && !hasEnteredEndless
   const isEndlessResult = hasWonRun && hasEnteredEndless
@@ -41,13 +46,24 @@ export function GameOverScreen() {
     config: { tension: 210, friction: 22 },
   })
 
-  const handlePlayAgain = () => {
-    resetGame()
-    navigateTo(ROUTES.PLAY)
+  const handlePlayAgain = async () => {
+    if (starting) return
+    setStarting(true)
+    try {
+      await service.flush()
+      const latest = service.getSnapshot().disk
+      // Flush may advance this tab's own revision; a foreign claim is blocked
+      // by the boundary rather than permission to replace that other run.
+      if (service.getSnapshot().ownershipLost) return
+      const raw =
+        latest.kind === 'ready' || latest.kind === 'invalid' ? latest.raw : null
+      if (await startConfiguredClassicRun(raw)) navigateTo(ROUTES.PLAY)
+    } finally {
+      setStarting(false)
+    }
   }
 
   const handleReturnToMenu = () => {
-    resetGame()
     navigateTo(ROUTES.MENU)
   }
 
@@ -69,6 +85,7 @@ export function GameOverScreen() {
 
   return (
     <div className="viewport-full relative overflow-x-hidden overflow-y-auto bg-[var(--color-dark-forest)] p-3 safe-area-top safe-area-bottom sm:p-6">
+      <ClassicSaveNotice />
       <div className="pointer-events-none absolute inset-0 opacity-40">
         <TablePattern animated={!reduceMotion} showOrnaments={isFreshVictory} />
       </div>
@@ -158,6 +175,7 @@ export function GameOverScreen() {
               variant={isFreshVictory ? 'secondary' : 'primary'}
               size={isFreshVictory ? 'md' : 'lg'}
               onClick={handlePlayAgain}
+              disabled={starting || disk.kind === 'unavailable'}
               className="w-full min-w-0 whitespace-normal break-words"
             >
               {t('results.tryAgain')}

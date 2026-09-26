@@ -47,17 +47,33 @@ import { STAKE_NAME_KEYS } from './stakeRules'
 it('supplies table accessibility and cumulative stake rules in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const stakes = locale.stakes as typeof en.stakes
-    for (const key of [...STAKE_NAME_KEYS, 'rulesTitle', 'cumulative', 'locked', 'progression', 'finalTier'] as const)
+    for (const key of [
+      ...STAKE_NAME_KEYS,
+      'rulesTitle',
+      'cumulative',
+      'locked',
+      'progression',
+      'finalTier',
+    ] as const)
       expect(stakes[key], `${language}: stakes.${key}`).toBeTruthy()
     for (const [key, english] of Object.entries(en.stakes.rules)) {
       const translated = stakes.rules[key as keyof typeof stakes.rules]
       expect(translated, `${language}: stakes.rules.${key}`).toBeTruthy()
-      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(english.match(/{{\w+}}/g)?.sort() ?? [])
+      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
     }
-    for (const key of ['optionLabel', 'lockedOptionLabel', 'unlockProgress', 'unlock'] as const) {
+    for (const key of [
+      'optionLabel',
+      'lockedOptionLabel',
+      'unlockProgress',
+      'unlock',
+    ] as const) {
       const translated = (locale.tableStyle as typeof en.tableStyle)[key]
       expect(translated, `${language}: tableStyle.${key}`).toBeTruthy()
-      expect(translated.match(/{{\w+}}/g)?.sort()).toEqual(en.tableStyle[key].match(/{{\w+}}/g)?.sort())
+      expect(translated.match(/{{\w+}}/g)?.sort()).toEqual(
+        en.tableStyle[key].match(/{{\w+}}/g)?.sort()
+      )
     }
   }
 })
@@ -79,6 +95,21 @@ const LOCALES: Record<string, Locale> = {
   'zh-Hans': zhHans,
   'zh-Hant': zhHant,
 }
+
+it('provides every Classic save/recovery message and its placeholders in all locales', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = locale.classicSave as Record<string, string>
+    expect(Object.keys(copy).sort(), language).toEqual(
+      Object.keys(en.classicSave).sort()
+    )
+    for (const [key, english] of Object.entries(en.classicSave)) {
+      expect(copy[key]?.trim(), `${language}: ${key}`).toBeTruthy()
+      expect(copy[key].match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+    }
+  }
+})
 
 it('explains guide bonuses in every language without baking in balance values', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
@@ -170,8 +201,15 @@ it('localizes the reset scope and storage failure outcomes in every language', (
 
 it('localizes Full Unlock consent, consequences and failure feedback in every language', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
-    const copy = (locale.settings as { fullUnlock: Record<string, string> }).fullUnlock
-    for (const key of ['title', 'description', 'confirm', 'active', 'error'] as const) {
+    const copy = (locale.settings as { fullUnlock: Record<string, string> })
+      .fullUnlock
+    for (const key of [
+      'title',
+      'description',
+      'confirm',
+      'active',
+      'error',
+    ] as const) {
       expect(copy[key], `${language}: ${key}`).toBeTypeOf('string')
       expect(copy[key].trim().length).toBeGreaterThan(0)
     }

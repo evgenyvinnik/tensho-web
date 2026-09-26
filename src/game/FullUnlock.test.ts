@@ -240,6 +240,9 @@ it.each([Infinity, 12])(
   async (rounds) => {
     const achievements = useAchievementStore.getState()
     achievements.setStat('fastestWinRounds', rounds)
+    useProgressionStore.getState().setStat('fastestWinRounds', rounds)
+    await useProgressionStore.persist.rehydrate()
+    expect(useProgressionStore.getState().stats.fastestWinRounds).toBe(rounds)
     await useAchievementStore.persist.rehydrate()
     expect(useAchievementStore.getState().stats.fastestWinRounds).toBe(rounds)
     useAchievementStore.getState().checkAchievements()

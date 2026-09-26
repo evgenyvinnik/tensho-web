@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "Tu partida clásica",
+    "resume": "Continuar partida",
+    "position": "Acto {{act}} · Ronda {{round}}",
+    "saving": "Guardando partida…",
+    "saved": "Partida guardada",
+    "unavailable": "No se puede guardar o cargar. Mantén esta pestaña abierta e inténtalo de nuevo.",
+    "invalid": "No se pudo guardar o cargar esta partida. El punto de guardado no se ha modificado.",
+    "conflict": "El progreso guardado cambió en otra pestaña. Esta mesa está en pausa.",
+    "retry": "Reintentar guardado",
+    "refresh": "Comprobar de nuevo",
+    "backup": "Descargar copia",
+    "discard": "Descartar partida",
+    "replaceTitle": "¿Empezar otra partida?",
+    "replaceBody": "Esto reemplaza tu partida clásica actual o guardada. Table Loop y los desbloqueos obtenidos se conservan.",
+    "discardTitle": "¿Descartar esta partida?",
+    "discardBody": "¿Eliminar la partida clásica guardada y la actual de esta pestaña? Table Loop y los desbloqueos obtenidos se conservan.",
+    "leaveTitle": "¿Dejar la mesa?",
+    "leaveBody": "Guarda tu partida y vuelve al menú. Podrás continuarla más tarde.",
+    "saveLeave": "Guardar y salir"
+  },
   "consumableUse": {
     "unityMapping": "Número original → Viento",
     "errorMaxLevel": "Esta mejora ya está en su nivel máximo.",

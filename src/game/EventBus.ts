@@ -113,18 +113,34 @@ export interface GameEventData {
   // Game lifecycle
   gameInitialized: { timestamp: number }
   runStart: { seed: number; stake: number; wallVariant: string }
-  runEnd: { victory: boolean; score: number; act: number; round: number; decreesOwned?: number }
+  runEnd: {
+    victory: boolean
+    score: number
+    act: number
+    round: number
+    decreesOwned?: number
+  }
   gameOver: { reason: 'victory' | 'defeat' | 'quit'; finalScore: number }
 
   // Round/Act flow
   actStart: { actNumber: number; baseTarget: number }
   actComplete: { actNumber: number; totalScore: number }
-  roundStart: { actNumber: number; roundNumber: number; roundType: string; target: number }
+  roundStart: {
+    actNumber: number
+    roundNumber: number
+    roundType: string
+    target: number
+  }
   roundEnd: { won: boolean; score: number; target: number }
   roundSkipped: { roundType: string; omenTagGranted?: string }
 
   // Scoring
-  handPlayed: { tiles: string[]; score: number; yakuIds: string[]; equation: ScoreEquation }
+  handPlayed: {
+    tiles: string[]
+    score: number
+    yakuIds: string[]
+    equation: ScoreEquation
+  }
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
   yakumanScored: { yakuId: string; yakuName: string }
@@ -146,7 +162,11 @@ export interface GameEventData {
 
   // Items
   /** Settled authoritative inventory/capacity, never an in-flight effect. */
-  buildProgressChanged: { decreeCount: number; editionDecreeCount: number; handSizeLimit: number }
+  buildProgressChanged: {
+    decreeCount: number
+    editionDecreeCount: number
+    handSizeLimit: number
+  }
   decreeAcquired: {
     decreeId: string
     decreeName: string
@@ -203,16 +223,28 @@ export interface GameEventData {
   tileDiscarded: { tileId: string; toDeadPool: boolean }
   tileSelected: { tileId: string; selectedCount: number }
   tileDeselected: { tileId: string; selectedCount: number }
-  bonusTileDrawn: { tileId: string; tileType: 'flower' | 'season'; replacementDrawn: boolean }
+  bonusTileDrawn: {
+    tileId: string
+    tileType: 'flower' | 'season'
+    replacementDrawn: boolean
+  }
 
   // Mandate Events
   mandateActivated: { mandateId: string; mandateName: string; effect: string }
   mandateDefeated: { mandateId: string }
 
   // Tile Modifier Events
-  tileModified: { tileId: string; modifierType: 'enhancement' | 'seal' | 'edition' | 'cleared'; value: string | null }
+  tileModified: {
+    tileId: string
+    modifierType: 'enhancement' | 'seal' | 'edition' | 'cleared'
+    value: string | null
+  }
   tileShattered: { tileId: string; tileName: string }
-  markDecayed: { tileId: string; markType: 'enhancement' | 'seal' | 'edition'; trigger: 'discard' | 'reshuffle' }
+  markDecayed: {
+    tileId: string
+    markType: 'enhancement' | 'seal' | 'edition'
+    trigger: 'discard' | 'reshuffle'
+  }
   consumableCreated: { type: 'orb' | 'seal'; source: string; tileId: string }
 
   // Error/Debug
@@ -227,7 +259,9 @@ export interface GameEventData {
 /**
  * Type-safe event callback
  */
-export type EventCallback<T extends GameEvent> = (data: GameEventData[T]) => void
+export type EventCallback<T extends GameEvent> = (
+  data: GameEventData[T]
+) => void
 
 /**
  * Generic event callback for internal use
@@ -253,7 +287,11 @@ interface ListenerEntry {
 export class EventBus {
   private listeners: Map<string, ListenerEntry[]> = new Map()
   private listenerId: number = 0
-  private eventHistory: Array<{ event: GameEvent; data: unknown; timestamp: number }> = []
+  private eventHistory: Array<{
+    event: GameEvent
+    data: unknown
+    timestamp: number
+  }> = []
   private historyEnabled: boolean = false
   private historyMaxSize: number = 100
 
@@ -316,6 +354,12 @@ export class EventBus {
    */
   private batchDepth = 0
   private pendingEmissions: Array<() => void> = []
+  private dispatchDepth = 0
+
+  /** Checkpoints belong after synchronous domain notifications have settled. */
+  get isBusy(): boolean {
+    return this.batchDepth > 0 || this.dispatchDepth > 0
+  }
 
   /** Defer notifications until a synchronous state change is fully settled.
    * This is notification batching, not rollback for a throwing operation.
@@ -367,12 +411,17 @@ export class EventBus {
     }
 
     // Call all callbacks
-    for (const entry of toCall) {
-      try {
-        entry.callback(data)
-      } catch (error) {
-        console.error(`Error in event handler for "${event}":`, error)
+    this.dispatchDepth++
+    try {
+      for (const entry of toCall) {
+        try {
+          entry.callback(data)
+        } catch (error) {
+          console.error(`Error in event handler for "${event}":`, error)
+        }
       }
+    } finally {
+      this.dispatchDepth--
     }
   }
 
@@ -451,7 +500,9 @@ export class EventBus {
   /**
    * Get events of a specific type from history
    */
-  getHistoryByEvent(event: GameEvent): Array<{ data: unknown; timestamp: number }> {
+  getHistoryByEvent(
+    event: GameEvent
+  ): Array<{ data: unknown; timestamp: number }> {
     return this.eventHistory
       .filter((entry) => entry.event === event)
       .map(({ data, timestamp }) => ({ data, timestamp }))

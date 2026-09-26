@@ -24,6 +24,8 @@ import { calculateShanten } from '../../rules/ShantenCalculator'
 import { useItemText } from '../../i18n/useItemText'
 import { forecastHeading } from '../../gameplay/forecastGuidance'
 import { PendingOmens } from '../gameplay/PendingOmens'
+import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
+import { useClassicPersistence } from '../../game/useClassicPersistence'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -74,6 +76,7 @@ export function GameplayScreen() {
 
   // Game controller
   const game = useGameController()
+  const { service: persistence } = useClassicPersistence()
   const itemText = useItemText()
   const currentTableStyle =
     getTableStyleById(game.state.tableStyleId) ?? getDefaultTableStyle()
@@ -116,7 +119,6 @@ export function GameplayScreen() {
   >(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const popupIdCounterRef = useRef(0)
-  const isExitingRef = useRef(false)
 
   // Points/Mult display state
   const { equation: lastPlay, isAnimating: isScoreAnimating } =
@@ -128,12 +130,6 @@ export function GameplayScreen() {
   // ==========================================================================
   // EFFECTS - Game lifecycle
   // ==========================================================================
-
-  useEffect(() => {
-    if (!isExitingRef.current && !game.isRunActive && game.phase === 'menu') {
-      game.startNewRun()
-    }
-  }, [game])
 
   useEffect(() => {
     if (game.phase === 'shop') {
@@ -393,13 +389,9 @@ export function GameplayScreen() {
     }
   }, [game, stagedTileIds])
 
-  const handleExitGame = useCallback(() => {
-    // endRun publishes the reset before navigation necessarily unmounts us.
-    // Do not mistake that intermediate menu state for a fresh /play visit.
-    isExitingRef.current = true
-    game.endRun()
-    navigateTo(ROUTES.MENU)
-  }, [game, navigateTo])
+  const handleExitGame = useCallback(async () => {
+    if (await persistence.retrySave()) navigateTo(ROUTES.MENU)
+  }, [persistence, navigateTo])
 
   // Consumable handlers
   const handleShowFateSeals = useCallback(() => {
@@ -635,6 +627,7 @@ export function GameplayScreen() {
           onSettings={handleSettings}
         />
 
+        <ClassicSaveNotice />
         <div className="gameplay-inventory-row flex flex-shrink-0 items-center gap-2 px-3 py-1.5">
           <div
             data-gameplay-table-identity
@@ -886,12 +879,9 @@ export function GameplayScreen() {
         isOpen={showExitConfirm}
         onClose={() => setShowExitConfirm(false)}
         onConfirm={handleExitGame}
-        title={t('gameplay.exitGame', 'Exit Game')}
-        message={t(
-          'gameplay.exitConfirm',
-          'Are you sure you want to exit? Your current run progress will be lost.'
-        )}
-        confirmText={t('common.exit', 'Exit')}
+        title={t('classicSave.leaveTitle')}
+        message={t('classicSave.leaveBody')}
+        confirmText={t('classicSave.saveLeave')}
         cancelText={t('common.cancel', 'Cancel')}
       />
 

@@ -1100,7 +1100,7 @@ export class DecreeSystem {
 
       case 'scaling': {
         const scalingValue = this.calculateScalingValue(effect, context)
-        decree.scalingValue = scalingValue
+        if (!context.previewMode) decree.scalingValue = scalingValue
         result.decreeMultiplier *= 1 + scalingValue * flowerBonus
         break
       }

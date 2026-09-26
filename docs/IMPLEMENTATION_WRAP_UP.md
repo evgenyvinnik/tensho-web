@@ -1,12 +1,37 @@
 # Implementation wrap-up
 
-**Updated:** September 22, 2026
+**Updated:** September 26, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
 ## Current Classic-save prerequisites
+
+The application checkpoint is ready for publication: final full regression passed
+**1,323/1,323 tests in 112 files**, with **30/30 desktop/touch browser checks**
+and **2/2 short-phone ornamental-frame checks**, no retries. Strict TypeScript
+and the Pages-base production/PWA build passed. Normal cross-tab profile handoff
+and forecast mutation defects were reproduced and repaired. The PWA update
+registration now respects the save-before-reload prompt. Publication remains
+pending; installed-PWA and cross-store crash recovery are not certified. The
+earlier failures below are historical evidence, not the final test status.
+
+Unpublished continuation: the complete engine/shop/meta snapshot, strict public
+save parser, revision/lease-protected storage and settled-event persistence
+coordinator now exist locally. Full regression finished **1,302 passed / 1 existing
+balance-command timeout**; the unchanged command file then passed **22/22**.
+The final **98/98 new persistence tests**, including every boss, Charter, terminal
+result and transient-read recovery, passed. The Pages-base production/PWA build
+also passed; no native-lock/reload/browser proof is claimed from these unit checks.
+Startup, localized Resume/error controls, reload routing and reset integration
+are now implemented locally. Browser checks reached **29/30** after fixing a
+reproduced fastest-win hydration defect; the remaining desktop case lost its
+execution context during navigation. Final regression and deployment are pending. The
+[working ledger](CLASSIC_RUN_PERSISTENCE.md#unpublished-whole-run-and-storage-implementation)
+retains the initial fixture/edition/flower-identifier failures and the separate
+profile/checkpoint crash-atomicity limitation. Nothing from this continuation is
+deployed yet.
 
 Internal restoration now keeps exact random cursors, remaining Omen interest
 effects, visit discounts/free rerolls and usable shop/pack Tile instances.
@@ -17,8 +42,9 @@ TypeScript, targeted lint and a Pages-base production/PWA build. Nine defects
 were reproduced before repair; the [save implementation ledger](CLASSIC_RUN_PERSISTENCE.md)
 records those failures and a corrected multi-stream comparison fixture.
 This is prerequisite code, **not a working Classic autosave/resume feature**.
-The complete engine/shop/meta snapshot, durable storage and recovery controls
-remain the next implementation work. No new art is warranted for these internal
+At that published prerequisite checkpoint, the enclosing engine/shop/meta
+snapshot, durable storage and recovery controls were still missing. Local
+implementation is recorded above. No new art is warranted for these internal
 codecs; existing generated artwork is unchanged. Deployed as **v1.0.260923-8**
 after independent CI and hosted desktop/touch gameplay checks passed, with a
 matching public manifest/tag. The failed v7 attempt and its localization-test
@@ -698,6 +724,6 @@ deployed in this pass. Older checkpoint counts below remain historical.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest main checkpoint is deployed as v1.0.260923-2. Clean-runner tests/build/provenance, the matching hosted manifest/tag, and fresh desktop/touch gameplay checks passed; see [Release implementation](RELEASE_IMPLEMENTATION.md). Existing installed-PWA upgrades and physical-device checks remain open. |
+| Release readiness | The latest published main checkpoint is v1.0.260923-8. Clean-runner tests/build/provenance, the matching hosted manifest/tag, and fresh desktop/touch gameplay checks passed; see [Release implementation](RELEASE_IMPLEMENTATION.md). The current whole-run persistence continuation is local and unpublished. Existing installed-PWA upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

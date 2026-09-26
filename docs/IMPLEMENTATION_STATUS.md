@@ -2,7 +2,29 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** September 22, 2026
+**Last verified:** September 26, 2026
+
+**Ready-to-publish Classic checkpoint:** final full suite **1,323/1,323 in 112
+files**, **30/30 desktop/touch browser checks**, and **2/2 320px ornamental-frame
+checks** passed without retries. Strict TypeScript and the Pages-base
+production/PWA build passed. Resume, paid pending packs, result/Endless recovery,
+quota failures and cross-tab profile handoff are covered. Forecasts no longer
+mutate saved scaling state; PWA registration now honors save-before-update.
+Deployment is pending. Earlier failures below are retained as history, not the
+current local verification result. Cross-store crash recovery and installed-PWA
+upgrade testing remain open.
+
+**Current unpublished work:** whole Classic run/shop/meta capture and staged
+restoration, strict save validation, revision/lease-protected storage and a settled
+event persistence coordinator are implemented locally. Full regression finished
+**1,302 passed / 1 existing balance-command timeout**; the unchanged command file
+then passed **22/22**. The final **98/98 new persistence tests**, including every
+boss, Charter, terminal result and transient-read recovery, passed, along with the
+Pages-base production/PWA build. Application startup, localized Resume/error controls, reload routing
+and reset integration are now connected locally. The expanded browser check reached
+**29/30** after repairing fastest-win profile hydration; a desktop execution-context
+loss remains to verify. **Classic autosave is not deployed yet.**
+[Working evidence and retained failures](CLASSIC_RUN_PERSISTENCE.md#application-integration-unpublished).
 
 **Current published follow-up:** Classic save prerequisites now retain exact RNG
 cursors, Omen interest durations, shop discounts/free rerolls and usable Tile

@@ -13,6 +13,15 @@ describe('static public guides', () => {
       )
       expect(doc.documentElement.lang).toBe('en')
       expect(doc.querySelectorAll('h1')).toHaveLength(1)
+      if (id === 'faq') {
+        const saves = doc.getElementById('saves')!
+        expect(saves.textContent).toContain('Save and leave')
+        expect(saves.textContent).toContain('Resume run')
+        expect(saves.textContent).toContain('Unconfirmed staged tiles')
+        expect(saves.textContent).not.toContain(
+          'current run progress will be lost'
+        )
+      }
       expect(doc.body.textContent).toContain(
         'Practice can replace your saved Table Loop run.'
       )

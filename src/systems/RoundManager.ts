@@ -9,12 +9,7 @@
  * - Integrates with Table Stakes for difficulty scaling
  */
 
-import {
-  RoundState,
-  ActState,
-  RoundType,
-  BossMandate,
-} from './types'
+import { RoundState, ActState, RoundType, BossMandate } from './types'
 
 import {
   calculateCombinedModifiers,
@@ -277,7 +272,11 @@ export class RoundManager {
   private stakeModifiers: CombinedStakeModifiers
   private rngState: number
 
-  constructor(stake: number = 1, seed: number = Date.now(), private readonly tableTargetMultiplier: number = 1) {
+  constructor(
+    stake: number = 1,
+    seed: number = Date.now(),
+    private readonly tableTargetMultiplier: number = 1
+  ) {
     this.stake = stake
     this.stakeModifiers = calculateCombinedModifiers(stake)
     this.rngState = seed >>> 0
@@ -356,12 +355,28 @@ export class RoundManager {
   startAct(actNumber: number): ActState {
     const baseTargets = this.getScoreTargetsForAct(actNumber)
     // Use cumulative score scaling from stake modifiers
-    const stakeMultiplier = this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
+    const stakeMultiplier =
+      this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
 
     const rounds: RoundState[] = [
-      this.createRound(actNumber, 1, 'Small', Math.floor(baseTargets[0] * stakeMultiplier)),
-      this.createRound(actNumber, 2, 'Large', Math.floor(baseTargets[1] * stakeMultiplier)),
-      this.createRound(actNumber, 3, 'Boss', Math.floor(baseTargets[2] * stakeMultiplier)),
+      this.createRound(
+        actNumber,
+        1,
+        'Small',
+        Math.floor(baseTargets[0] * stakeMultiplier)
+      ),
+      this.createRound(
+        actNumber,
+        2,
+        'Large',
+        Math.floor(baseTargets[1] * stakeMultiplier)
+      ),
+      this.createRound(
+        actNumber,
+        3,
+        'Boss',
+        Math.floor(baseTargets[2] * stakeMultiplier)
+      ),
     ]
 
     // Add boss mandate to the boss round
@@ -433,7 +448,10 @@ export class RoundManager {
     // Endless mode scaling for acts beyond 8
     const baseAct8 = BASE_SCORE_TARGETS[8]
     const actDiff = actNumber - 8
-    const scalingFactor = Math.pow(1.6 + 0.75 * actDiff, actDiff * (1 + 0.2 * actDiff))
+    const scalingFactor = Math.pow(
+      1.6 + 0.75 * actDiff,
+      actDiff * (1 + 0.2 * actDiff)
+    )
     const baseTarget = Math.floor(baseAct8 * scalingFactor)
 
     return ROUND_SCORE_MULTIPLIERS.map((multiplier) =>
@@ -458,7 +476,9 @@ export class RoundManager {
       availableMandates = BOSS_MANDATES.filter((m) => m.minAct === 1)
     }
 
-    return availableMandates[Math.floor(this.random() * availableMandates.length)]
+    return availableMandates[
+      Math.floor(this.random() * availableMandates.length)
+    ]
   }
 
   /** Replace the upcoming Boss Mandate and recalculate its score target. */
@@ -472,20 +492,23 @@ export class RoundManager {
 
     const previousId = bossRound.bossMandate.id
     let replacement = bossRound.bossMandate
-    for (let attempt = 0; attempt < 12 && replacement.id === previousId; attempt++) {
+    for (
+      let attempt = 0;
+      attempt < 12 && replacement.id === previousId;
+      attempt++
+    ) {
       replacement = this.selectBossMandate(this.currentAct.actNumber)
     }
     if (replacement.id === previousId) return null
 
     bossRound.bossMandate = replacement
     const baseTargets = this.getScoreTargetsForAct(this.currentAct.actNumber)
-    const stakeMultiplier = this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
+    const stakeMultiplier =
+      this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
     bossRound.scoreTarget = Math.floor(baseTargets[2] * stakeMultiplier)
     if (replacement.effect.type === 'score_multiplier') {
       bossRound.scoreTarget = Math.floor(
-        baseTargets[0] *
-          (replacement.effect.value as number) *
-          stakeMultiplier
+        baseTargets[0] * (replacement.effect.value as number) * stakeMultiplier
       )
     }
 
@@ -509,7 +532,11 @@ export class RoundManager {
   /**
    * Submit a score for the current round
    */
-  submitScore(score: number): { success: boolean; isRoundWon: boolean; isActComplete: boolean } {
+  submitScore(score: number): {
+    success: boolean
+    isRoundWon: boolean
+    isActComplete: boolean
+  } {
     if (!this.currentRound) {
       return { success: false, isRoundWon: false, isActComplete: false }
     }
@@ -533,7 +560,11 @@ export class RoundManager {
   /**
    * Complete the current round
    */
-  private completeRound(isWon: boolean): { success: boolean; isRoundWon: boolean; isActComplete: boolean } {
+  private completeRound(isWon: boolean): {
+    success: boolean
+    isRoundWon: boolean
+    isActComplete: boolean
+  } {
     if (!this.currentRound || !this.currentAct) {
       return { success: false, isRoundWon: false, isActComplete: false }
     }
@@ -656,7 +687,10 @@ export class RoundManager {
 
     const mandate = this.currentRound.bossMandate
     if (mandate.effect.type === effectType) {
-      return { active: true, value: mandate.effect.value ?? mandate.effect.target }
+      return {
+        active: true,
+        value: mandate.effect.value ?? mandate.effect.target,
+      }
     }
 
     return { active: false }
@@ -785,9 +819,25 @@ export class RoundManager {
     rngState?: number
     tableTargetMultiplier?: number
   }): RoundManager {
-    const manager = new RoundManager(state.stake, state.rngState, state.tableTargetMultiplier ?? 1)
+    state = structuredClone(state)
+    const manager = new RoundManager(
+      state.stake,
+      state.rngState,
+      state.tableTargetMultiplier ?? 1
+    )
     manager.currentAct = state.currentAct
     manager.currentRound = state.currentRound
+    // JSON represents this shared object twice. Keep live scoring and the Act
+    // ledger on the same restored round, as they are in an uninterrupted run.
+    if (manager.currentRound && manager.currentAct) {
+      const index = manager.currentAct.rounds.findIndex(
+        (round) =>
+          round.actNumber === manager.currentRound!.actNumber &&
+          round.roundNumber === manager.currentRound!.roundNumber
+      )
+      if (index < 0) throw new Error('Current round is missing from its Act')
+      manager.currentAct.rounds[index] = manager.currentRound
+    }
     manager.bonusHands = state.bonusHands
     manager.bonusDiscards = state.bonusDiscards
     manager.usedTileIds = new Set(state.usedTileIds)
@@ -819,7 +869,10 @@ export function formatScoreTarget(score: number): string {
 /**
  * Get round type display name
  */
-export function getRoundTypeDisplayName(roundType: RoundType): { english: string; japanese: string } {
+export function getRoundTypeDisplayName(roundType: RoundType): {
+  english: string
+  japanese: string
+} {
   switch (roundType) {
     case 'Small':
       return { english: 'Small Round', japanese: '小局' }

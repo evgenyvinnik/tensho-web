@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "Iyong Classic na laro",
+    "resume": "Ipagpatuloy ang laro",
+    "position": "Yugto {{act}} · Round {{round}}",
+    "saving": "Sine-save ang laro…",
+    "saved": "Na-save na ang laro",
+    "unavailable": "Hindi makapag-save o makapag-load. Panatilihing bukas ang tab na ito at subukang muli.",
+    "invalid": "Hindi na-save o na-load ang larong ito. Hindi binago ang naka-save na checkpoint.",
+    "conflict": "Nagbago ang naka-save na progreso sa ibang tab. Naka-pause ang mesang ito.",
+    "retry": "Subukang mag-save muli",
+    "refresh": "Suriing muli",
+    "backup": "I-download ang backup",
+    "discard": "Burahin ang laro",
+    "replaceTitle": "Magsimula ng bagong laro?",
+    "replaceBody": "Papalitan nito ang kasalukuyan o naka-save na Classic na laro. Mananatili ang Table Loop at mga na-unlock mo.",
+    "discardTitle": "Burahin ang larong ito?",
+    "discardBody": "Burahin ang naka-save na Classic na laro at ang kasalukuyang laro sa tab na ito? Mananatili ang Table Loop at mga na-unlock mo.",
+    "leaveTitle": "Umalis sa mesa?",
+    "leaveBody": "I-save ang laro at bumalik sa menu. Maaari mo itong ipagpatuloy mamaya.",
+    "saveLeave": "I-save at umalis"
+  },
   "omens": {
     "pending": "Mga epekto ng Pangitain",
     "effects": {

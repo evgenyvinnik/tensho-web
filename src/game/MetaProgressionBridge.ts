@@ -7,7 +7,10 @@
  */
 
 import type { ArchiveCategory } from '../config/archiveDefinitions'
-import { CHARTER_UNLOCKS, type UnlockCategory } from '../config/unlockDefinitions'
+import {
+  CHARTER_UNLOCKS,
+  type UnlockCategory,
+} from '../config/unlockDefinitions'
 import {
   getAchievementDefinition,
   type AchievementStats,
@@ -23,6 +26,7 @@ import type {
 } from '../systems/MetaProgressionSystem'
 import type { DiscoveryTrigger } from '../systems/ArchiveSystem'
 import { createEventSubscription, eventBus } from './EventBus'
+import { runMetaContext } from './RunMetaContext'
 
 const UNLOCK_ARCHIVE_CATEGORIES: Partial<
   Record<UnlockCategory, ArchiveCategory>
@@ -40,15 +44,6 @@ const SOURCE_TRIGGERS = {
   generated: 'unlock',
 } as const satisfies Record<string, DiscoveryTrigger>
 
-interface ActiveRunMeta {
-  stake: number
-  wallId: string
-  hadFlowers: boolean
-  flowerTypes: Set<string>
-  pendingCorruptedSeasons: number
-}
-
-let activeRun: ActiveRunMeta | null = null
 let bridgeCleanup: (() => void) | null = null
 
 function syncProgressionUnlocks(result: UnlockCheckResult): void {
@@ -265,7 +260,7 @@ export function initializeMetaProgressionBridge(): () => void {
   const subscription = createEventSubscription()
 
   subscription.subscribe('runStart', ({ stake, wallVariant }) => {
-    activeRun = {
+    runMetaContext.current = {
       stake,
       wallId: wallVariant,
       hadFlowers: false,
@@ -298,22 +293,25 @@ export function initializeMetaProgressionBridge(): () => void {
     checkAchievements()
   })
 
-  subscription.subscribe('goldChanged', ({ delta, newGold, spendingCategory }) => {
-    if (delta > 0) {
-      processProgressionEvent({ type: 'gold_earned', value: delta })
-      incrementAchievementStat('totalGoldEarned', delta)
-    } else if (delta < 0 && spendingCategory) {
-      processProgressionEvent({ type: 'gold_spent', value: Math.abs(delta) })
-    }
+  subscription.subscribe(
+    'goldChanged',
+    ({ delta, newGold, spendingCategory }) => {
+      if (delta > 0) {
+        processProgressionEvent({ type: 'gold_earned', value: delta })
+        incrementAchievementStat('totalGoldEarned', delta)
+      } else if (delta < 0 && spendingCategory) {
+        processProgressionEvent({ type: 'gold_spent', value: Math.abs(delta) })
+      }
 
-    const progression = useProgressionStore.getState()
-    progression.updateStats({
-      currentRunGold: newGold,
-      maxGoldInRun: Math.max(progression.stats.maxGoldInRun, newGold),
-    })
-    maximizeAchievementStat('maxGoldInRun', newGold)
-    checkAchievements()
-  })
+      const progression = useProgressionStore.getState()
+      progression.updateStats({
+        currentRunGold: newGold,
+        maxGoldInRun: Math.max(progression.stats.maxGoldInRun, newGold),
+      })
+      maximizeAchievementStat('maxGoldInRun', newGold)
+      checkAchievements()
+    }
+  )
 
   subscription.subscribe('itemPurchased', ({ itemType }) => {
     if (itemType === 'Tile') {
@@ -392,7 +390,11 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe('celestialOrbUsed', ({ orbId, source }) => {
-    processProgressionEvent({ type: 'celestial_orb_used', itemId: orbId, source })
+    processProgressionEvent({
+      type: 'celestial_orb_used',
+      itemId: orbId,
+      source,
+    })
     incrementAchievementStat('totalCelestialOrbsUsed')
     checkAchievements()
   })
@@ -410,8 +412,9 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe('roundEnd', ({ won, score }) => {
-    const corrupted = activeRun?.pendingCorruptedSeasons ?? 0
-    if (activeRun) activeRun.pendingCorruptedSeasons = 0
+    const corrupted = runMetaContext.current?.pendingCorruptedSeasons ?? 0
+    if (runMetaContext.current)
+      runMetaContext.current.pendingCorruptedSeasons = 0
     if (!won) {
       processProgressionEvent({
         type: 'interest_collected',
@@ -430,7 +433,7 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe('seasonCorrupted', () => {
-    if (activeRun) activeRun.pendingCorruptedSeasons++
+    if (runMetaContext.current) runMetaContext.current.pendingCorruptedSeasons++
   })
 
   subscription.subscribe('mandateActivated', ({ mandateId }) => {
@@ -459,6 +462,7 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe('flowerCollected', ({ flowerType }) => {
+    const activeRun = runMetaContext.current
     if (!activeRun) return
     activeRun.hadFlowers = true
     activeRun.flowerTypes.add(flowerType)
@@ -494,10 +498,10 @@ export function initializeMetaProgressionBridge(): () => void {
       victory
         ? {
             type: 'run_won',
-            stakeTier: activeRun?.stake ?? 1,
-            wallId: activeRun?.wallId ?? 'green_felt',
+            stakeTier: runMetaContext.current?.stake ?? 1,
+            wallId: runMetaContext.current?.wallId ?? 'green_felt',
             roundsCompleted,
-            hadFlowers: activeRun?.hadFlowers ?? false,
+            hadFlowers: runMetaContext.current?.hadFlowers ?? false,
             decreesOwned,
           }
         : { type: 'run_lost' }
@@ -510,8 +514,8 @@ export function initializeMetaProgressionBridge(): () => void {
         .recordVictory(
           score,
           act,
-          activeRun?.wallId ?? 'green_felt',
-          activeRun?.stake ?? 1
+          runMetaContext.current?.wallId ?? 'green_felt',
+          runMetaContext.current?.stake ?? 1
         )
       incrementAchievementStat('runsWon')
       minimizeAchievementStat('fastestWinRounds', roundsCompleted)
@@ -520,12 +524,12 @@ export function initializeMetaProgressionBridge(): () => void {
         .incrementWins(useArchiveStore.getState().currentRunItems)
     }
     checkAchievements()
-    activeRun = null
+    runMetaContext.current = null
   })
 
   bridgeCleanup = () => {
     subscription.unsubscribeAll()
-    activeRun = null
+    runMetaContext.current = null
     bridgeCleanup = null
   }
   return bridgeCleanup
@@ -538,5 +542,5 @@ export function shutdownMetaProgressionBridge(): void {
 
 /** A deliberate data reset is not a completed/lost run. Keep subscriptions. */
 export function resetMetaProgressionRunContext(): void {
-  activeRun = null
+  runMetaContext.current = null
 }

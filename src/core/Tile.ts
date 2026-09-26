@@ -184,7 +184,13 @@ export class Tile implements TileData {
       return seasonNames[this.rank] || 'Season'
     }
     if (this.suit === TileSuit.Wind) {
-      const windNames = ['', 'East Wind', 'South Wind', 'West Wind', 'North Wind']
+      const windNames = [
+        '',
+        'East Wind',
+        'South Wind',
+        'West Wind',
+        'North Wind',
+      ]
       return windNames[this.rank] || 'Wind'
     }
     if (this.suit === TileSuit.Dragon) {
@@ -382,7 +388,9 @@ export class Tile implements TileData {
    * Create a new tile with modifiers cleared
    */
   withoutModifiers(): Tile {
-    return new Tile(this.suit, this.rank, this.id, this.isRed, { ...DEFAULT_MODIFIERS })
+    return new Tile(this.suit, this.rank, this.id, this.isRed, {
+      ...DEFAULT_MODIFIERS,
+    })
   }
 
   // ===========================================================================
@@ -489,7 +497,9 @@ export class Tile implements TileData {
    * Create a copy of this tile with a new ID
    */
   clone(newId: string): Tile {
-    return new Tile(this.suit, this.rank, newId, this.isRed, { ...this.modifiers })
+    return new Tile(this.suit, this.rank, newId, this.isRed, {
+      ...this.modifiers,
+    })
   }
 
   // ===========================================================================
@@ -549,7 +559,12 @@ export class Tile implements TileData {
    * @param id - Optional tile ID (auto-generated if not provided)
    * @param isRed - Whether this is a red tile (for 5s)
    */
-  static createNumbered(suit: TileSuit.Manzu | TileSuit.Pinzu | TileSuit.Souzu, rank: number, id?: string, isRed?: boolean): Tile {
+  static createNumbered(
+    suit: TileSuit.Manzu | TileSuit.Pinzu | TileSuit.Souzu,
+    rank: number,
+    id?: string,
+    isRed?: boolean
+  ): Tile {
     return new Tile(suit, rank, id ?? generateTileId(), isRed)
   }
 }
@@ -558,6 +573,17 @@ export class Tile implements TileData {
  * Generate a unique tile ID
  */
 let tileIdCounter = 0
+export function getTileIdCounter(): number {
+  return tileIdCounter
+}
+
+/** Never reuse an ID allocated by another live mode or a preview. */
+export function restoreTileIdCounter(counter: number): void {
+  if (!Number.isSafeInteger(counter) || counter < 0)
+    throw new Error('Invalid tile instance counter')
+  tileIdCounter = Math.max(tileIdCounter, counter)
+}
+
 export function generateTileId(): string {
   return `tile-${++tileIdCounter}-${Date.now()}`
 }

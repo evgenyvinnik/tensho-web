@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "Votre partie classique",
+    "resume": "Reprendre la partie",
+    "position": "Acte {{act}} · Manche {{round}}",
+    "saving": "Sauvegarde en cours…",
+    "saved": "Partie sauvegardée",
+    "unavailable": "La sauvegarde ou le chargement est indisponible. Gardez cet onglet ouvert et réessayez.",
+    "invalid": "Cette partie n’a pas pu être sauvegardée ou chargée. La sauvegarde existante n’a pas été modifiée.",
+    "conflict": "La progression sauvegardée a changé dans un autre onglet. Cette table est en pause.",
+    "retry": "Réessayer la sauvegarde",
+    "refresh": "Vérifier à nouveau",
+    "backup": "Télécharger la sauvegarde",
+    "discard": "Abandonner la partie",
+    "replaceTitle": "Commencer une nouvelle partie ?",
+    "replaceBody": "Cela remplace votre partie classique actuelle ou sauvegardée. Table Loop et les éléments débloqués sont conservés.",
+    "discardTitle": "Abandonner cette partie ?",
+    "discardBody": "Supprimer la partie classique sauvegardée et celle de cet onglet ? Table Loop et les éléments débloqués sont conservés.",
+    "leaveTitle": "Quitter la table ?",
+    "leaveBody": "Sauvegardez votre partie et revenez au menu. Vous pourrez la reprendre plus tard.",
+    "saveLeave": "Sauvegarder et quitter"
+  },
   "consumableUse": {
     "unityMapping": "Rang d’origine → Vent",
     "errorMaxLevel": "Cette amélioration est déjà au niveau maximum.",

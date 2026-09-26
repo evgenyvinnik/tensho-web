@@ -1,4 +1,25 @@
 {
+  "classicSave": {
+    "savedTitle": "Klasik oyununuz",
+    "resume": "Oyuna devam et",
+    "position": "Perde {{act}} · Tur {{round}}",
+    "saving": "Oyun kaydediliyor…",
+    "saved": "Oyun kaydedildi",
+    "unavailable": "Kaydetme veya yükleme kullanılamıyor. Bu sekmeyi açık tutup tekrar deneyin.",
+    "invalid": "Bu oyun kaydedilemedi veya yüklenemedi. Mevcut kayıt değiştirilmedi.",
+    "conflict": "Kayıtlı ilerleme başka bir sekmede değişti. Bu masa duraklatıldı.",
+    "retry": "Kaydetmeyi tekrar dene",
+    "refresh": "Tekrar kontrol et",
+    "backup": "Yedek indir",
+    "discard": "Oyunu sil",
+    "replaceTitle": "Yeni oyun başlatılsın mı?",
+    "replaceBody": "Bu işlem mevcut veya kayıtlı Klasik oyununuzu değiştirir. Table Loop ve açtığınız içerikler korunur.",
+    "discardTitle": "Bu oyun silinsin mi?",
+    "discardBody": "Kayıtlı Klasik oyun ve bu sekmedeki mevcut oyun silinsin mi? Table Loop ve açtığınız içerikler korunur.",
+    "leaveTitle": "Masadan ayrılsın mı?",
+    "leaveBody": "Oyunu kaydedip menüye dönün. Daha sonra devam edebilirsiniz.",
+    "saveLeave": "Kaydet ve çık"
+  },
   "omens": {
     "pending": "Alamet etkileri",
     "effects": {

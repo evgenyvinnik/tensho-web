@@ -27,7 +27,9 @@ export default defineConfig(({ mode }) => ({
       // },
     }),
     VitePWA({
-      registerType: 'autoUpdate',
+      // main.tsx flushes the active run before accepting an update. autoUpdate
+      // would bypass that consent callback and reload while a save is pending.
+      registerType: 'prompt',
       includeAssets: [
         'favicon.ico',
         'apple-touch-icon.png',

@@ -18,6 +18,8 @@ import {
   SeasonType,
   WindType,
   DragonType,
+  getTileIdCounter,
+  restoreTileIdCounter,
 } from '../core/Tile'
 import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
 import { Hand, ParsedHand, WaitType } from '../core/Hand'
@@ -68,6 +70,8 @@ import {
   ConsumableEffectResult,
   ConsumableSystem,
   ConsumableType,
+  getConsumableInstanceCounter,
+  restoreConsumableInstanceCounter,
 } from '../systems/ConsumableSystem'
 import {
   CELESTIAL_ORBS,
@@ -98,7 +102,17 @@ import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import { MAX_TACTICAL_PLAY_TILES } from './playRules'
-import { createSeededRandom, runRandom } from './RunRandom'
+import { createSeededRandom, runRandom, RunRandom } from './RunRandom'
+import { captureClassicState, restoreClassicState } from './ClassicRunState'
+import {
+  captureOmenRunState,
+  type ClassicRunSnapshot,
+} from './ClassicRunSnapshot'
+import {
+  captureMetaProgressionRunContext,
+  restoreMetaProgressionRunContext,
+} from './RunMetaContext'
+import { useOmenStore } from '../stores/omenStore'
 import { takeWallTile, takeDeadWallTile } from './wallDraw'
 import { applySeasonWallEffect } from './seasonWall'
 
@@ -274,7 +288,10 @@ function promoteSimpleToTerminal(tile: Tile): Tile {
  * Central game loop controller
  */
 export class GameOrchestrator {
-  readonly shop = new ShopSession(this)
+  private shopSession = new ShopSession(this)
+  get shop(): ShopSession {
+    return this.shopSession
+  }
   private state: OrchestratorState
   private actionProcessor: ActionProcessor
   private config: RoundConfig
@@ -291,6 +308,71 @@ export class GameOrchestrator {
   /** Application wiring supplies persisted progress; pure engine instances default locked. */
   setCharterUnlockResolver(resolver: CharterUnlockResolver): void {
     this.charterUnlockResolver = resolver
+  }
+
+  private assertCheckpointBoundary(): void {
+    if (this.actionDepth || this.shop.isBusy || eventBus.isBusy)
+      throw new Error('Cannot checkpoint during a game operation')
+  }
+
+  /** Capture authoritative state, never a UI projection or a replay of rewards. */
+  captureRun(): ClassicRunSnapshot {
+    this.assertCheckpointBoundary()
+    if (this.state.phase === 'menu')
+      throw new Error('There is no Classic run to save')
+    return {
+      version: 1,
+      state: captureClassicState(this.state),
+      config: { ...this.config },
+      shop: this.shop.toState(),
+      random: runRandom.toState(),
+      omens: captureOmenRunState(),
+      meta: captureMetaProgressionRunContext(),
+      runtimeItemCounter: this.runtimeItemCounter,
+      tileIdCounter: getTileIdCounter(),
+      consumableInstanceCounter: getConsumableInstanceCounter(),
+    }
+  }
+
+  /** Internal typed restore. Stage every subsystem before touching the live run. */
+  restoreRun(saved: ClassicRunSnapshot): void {
+    this.assertCheckpointBoundary()
+    if (saved.version !== 1) throw new Error('Unsupported Classic run snapshot')
+    for (const counter of [
+      saved.runtimeItemCounter,
+      saved.tileIdCounter,
+      saved.consumableInstanceCounter,
+    ])
+      if (!Number.isSafeInteger(counter) || counter < 0)
+        throw new Error('Invalid run instance counter')
+    const config = { ...saved.config }
+    for (const value of Object.values(config))
+      if (!Number.isSafeInteger(value) || value < 0)
+        throw new Error('Invalid round configuration')
+    const random = RunRandom.fromState(saved.random)
+    const state = restoreClassicState(saved.state, (id) =>
+      this.charterUnlockResolver(id)
+    )
+    const shop = ShopSession.fromState(this, saved.shop)
+    if (shop.isOpen && state.phase !== 'shop')
+      throw new Error('Open shop outside shop phase')
+    if (saved.random.seed !== state.seed)
+      throw new Error('Run seed and random state disagree')
+    const omens = structuredClone(saved.omens)
+    const meta = structuredClone(saved.meta)
+
+    // Everything fallible above is staged independently. Domain events are not
+    // replayed. Publish the Omen store only after all engine references are live.
+    this.state = state
+    this.shopSession = shop
+    this.config = config
+    this.runtimeItemCounter = saved.runtimeItemCounter
+    runRandom.restore(random.toState())
+    restoreTileIdCounter(saved.tileIdCounter)
+    restoreConsumableInstanceCounter(saved.consumableInstanceCounter)
+    restoreMetaProgressionRunContext(meta)
+    useOmenStore.setState(omens)
+    eventBus.emit('gameLoaded', { timestamp: Date.now() })
   }
 
   // ===========================================================================
@@ -2903,6 +2985,7 @@ export class GameOrchestrator {
     const roundState = this.state.roundManager.getCurrentRound()
 
     const systemContext: SystemScoringContext = {
+      previewMode: preview,
       hand: parsedHand,
       tiles,
       melds: parsedHand.melds,
@@ -3141,9 +3224,7 @@ export class GameOrchestrator {
     // Calculate final score with all multipliers
     // Formula: (Base + Additive + CelestialChips) * (Yaku + CelestialMult) * Flower * Season * Decree * Mandate - Decay
     const subtotal =
-      baseBreakdown.basePoints +
-      finalAdditiveBonus +
-      celestialOrbChipsBonus
+      baseBreakdown.basePoints + finalAdditiveBonus + celestialOrbChipsBonus
     const finalMultiplier =
       (decreeModifiedBreakdown.yakuMultiplier + celestialOrbMultBonus) *
       flowerBonus *

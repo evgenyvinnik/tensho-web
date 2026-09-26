@@ -25,13 +25,19 @@ test('exit confirmation contains focus, blocks background focus, and restores it
   const opener = page.getByRole('button', { name: 'Exit', exact: true })
   await opener.focus()
   await page.keyboard.press('Enter')
-  const dialog = page.getByRole('dialog', { name: 'Exit Game', exact: true })
+  const dialog = page.getByRole('dialog', {
+    name: 'Leave the table?',
+    exact: true,
+  })
   await expect(dialog).toBeVisible()
   await expect(dialog).toHaveAccessibleDescription(
-    'Are you sure you want to exit? Your current run progress will be lost.'
+    'Save your run and return to the menu. You can resume it later.'
   )
   const cancel = dialog.getByRole('button', { name: 'Cancel', exact: true })
-  const confirm = dialog.getByRole('button', { name: 'Exit', exact: true })
+  const confirm = dialog.getByRole('button', {
+    name: 'Save and leave',
+    exact: true,
+  })
   await expect(cancel).toBeFocused()
   await expect(dialog.locator(':scope > div')).toHaveCSS('opacity', '1')
   await page.screenshot({ path: testInfo.outputPath('exit-dialog.png') })
@@ -50,33 +56,35 @@ test('exit confirmation contains focus, blocks background focus, and restores it
   expect(await gameSnapshot(page)).toEqual(before)
 })
 
-test('Enter defaults to cancellation; only explicitly confirming Exit ends the run', async ({
+test('Enter defaults to cancellation; explicitly leaving preserves a resumable run', async ({
   page,
 }) => {
   await page.goto('/en/play')
   const opener = page.getByRole('button', { name: 'Exit', exact: true })
   await opener.click()
-  const dialog = page.getByRole('dialog', { name: 'Exit Game', exact: true })
+  const dialog = page.getByRole('dialog', {
+    name: 'Leave the table?',
+    exact: true,
+  })
   await expect(
     dialog.getByRole('button', { name: 'Cancel', exact: true })
   ).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(dialog).toHaveCount(0)
   expect((await gameSnapshot(page)).phase).toBe('gameplay')
+  const before = await gameSnapshot(page)
   await opener.click()
   await expect(dialog).toBeVisible()
   await page.keyboard.press('Tab')
   await expect(
-    dialog.getByRole('button', { name: 'Exit', exact: true })
+    dialog.getByRole('button', { name: 'Save and leave', exact: true })
   ).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/\/en\/?$/)
-  expect(await gameSnapshot(page)).toMatchObject({
-    phase: 'menu',
-    active: false,
-    hand: [],
-    selected: [],
-  })
+  expect(await gameSnapshot(page)).toEqual(before)
+  await expect(
+    page.getByRole('button', { name: 'Resume run', exact: true })
+  ).toBeVisible()
 })
 
 test('tutorial reset hands focus to its success alert and returns to the original button', async ({

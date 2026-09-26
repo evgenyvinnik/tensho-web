@@ -30,6 +30,15 @@ type Reward = { type: PackContent['type']; data: unknown }
 const OK: ShopResult = { success: true }
 const fail = (reason: ShopFailure): ShopResult => ({ success: false, reason })
 
+export interface ShopSessionState {
+  teaHouse: ReturnType<TeaHouseSystem['toSerializedState']>
+  packs: ReturnType<BlessingPackSystem['toState']>
+  opened: boolean
+  pendingPackId: string | null
+  spent: number
+  purchases: number
+}
+
 /** One run's marketplace. UI and simulations must use this acquisition path.
  * Preflight a whole operation before payment; publish events after settlement.
  * A bought pack stays pending until claimed or explicitly skipped, even if its
@@ -48,6 +57,56 @@ export class ShopSession {
 
   get isOpen(): boolean {
     return this.opened
+  }
+  get isBusy(): boolean {
+    return this.busy
+  }
+
+  toState(): ShopSessionState {
+    if (this.busy)
+      throw new Error('Cannot snapshot an unsettled shop operation')
+    return {
+      teaHouse: this.teaHouse.toSerializedState(),
+      packs: this.packs.toState(),
+      opened: this.opened,
+      pendingPackId: this.pending?.pack.id ?? null,
+      spent: this.spent,
+      purchases: this.purchases,
+    }
+  }
+
+  /** Rehydrate without opening the shop, charging gold or consuming Omens. */
+  static fromState(
+    game: GameOrchestrator,
+    saved: ShopSessionState
+  ): ShopSession {
+    const shop = new ShopSession(game)
+    shop.teaHouse = TeaHouseSystem.fromSerializedState(saved.teaHouse, {
+      isCharterUnlocked: (id) =>
+        game.getState().charterSystem.canPurchaseCharter(id),
+    })
+    shop.packs = BlessingPackSystem.fromState(saved.packs)
+    const unfinished = shop.packOfferings.filter(
+      (p) => p.isOpened && !p.isResolved
+    )
+    if (
+      unfinished.length !== (saved.pendingPackId === null ? 0 : 1) ||
+      (unfinished[0] &&
+        (!saved.opened || unfinished[0].pack.id !== saved.pendingPackId))
+    )
+      throw new Error('Invalid pending pack state')
+    shop.pending = unfinished[0] ?? null
+    if (
+      shop.pending &&
+      !shop.state.packOfferings.some(
+        (o) => o.item.id === saved.pendingPackId && o.isPurchased
+      )
+    )
+      throw new Error('Pending pack has not been purchased')
+    shop.opened = saved.opened
+    shop.spent = saved.spent
+    shop.purchases = saved.purchases
+    return shop
   }
   get pendingPack(): PackOffering | null {
     return this.pending

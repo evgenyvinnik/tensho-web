@@ -726,6 +726,9 @@ export class MetaProgressionSystem {
     return {
       ...DEFAULT_LIFETIME_STATS,
       ...serialized,
+      // JSON encodes the unset Infinity sentinel as null. Restore it so a
+      // first real win can establish a record instead of comparing against 0.
+      fastestWinRounds: serialized.fastestWinRounds ?? Infinity,
       fateSealsDiscovered: new Set(serialized.fateSealsDiscovered),
       celestialOrbsDiscovered: new Set(serialized.celestialOrbsDiscovered),
       voidScriptsDiscovered: new Set(serialized.voidScriptsDiscovered),
