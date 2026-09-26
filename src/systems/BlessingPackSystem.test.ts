@@ -4,6 +4,9 @@ import { runRandom } from '../game/RunRandom'
 import { calculateModifierEffects } from '../core/TileModifier'
 import type { BlessingPack, PackType } from './types'
 import { BlessingPackSystem } from './BlessingPackSystem'
+import { getFateSealsByRarity } from './FateSealSystem'
+import { getCelestialOrbsByRarity } from './CelestialOrbSystem'
+import { getVoidScriptsByRarity } from './VoidScriptSystem'
 
 function makePack(type: PackType): BlessingPack {
   return {
@@ -19,6 +22,111 @@ function makePack(type: PackType): BlessingPack {
 afterEach(() => runRandom.reset())
 
 describe('BlessingPackSystem shop integration', () => {
+  it.each(['Arcana', 'Celestial', 'Void', 'Decree', 'Tile'] as const)(
+    'keeps %s choice keys distinct across two packs and reloads',
+    (type) => {
+      vi.spyOn(Date, 'now').mockReturnValue(1000)
+      for (let seed = 1; seed <= 50; seed++) {
+        runRandom.start(seed)
+        const system = new BlessingPackSystem()
+        const packs = [0, 1].map((index) => ({
+          ...makePack(type),
+          id: `fixed-${index}`,
+          size: 'Mega' as const,
+          choiceCount: 5,
+          selectCount: 2,
+        }))
+        const offers = system.generateOfferingsForPacks(packs)
+        const ids = offers.flatMap((offer) => offer.contents.map((c) => c.id))
+        expect(new Set(ids).size).toBe(10)
+        system.openPack(packs[0].id)
+        system.selectContent(packs[0].id, 1)
+        system.selectContent(packs[0].id, 4)
+        const restored = BlessingPackSystem.fromState(
+          JSON.parse(JSON.stringify(system.toState()))
+        )
+        expect(restored.getCurrentOfferings()[0].selectedIndices).toEqual([
+          1, 4,
+        ])
+        expect(restored.confirmSelection(packs[0].id).map((c) => c.id)).toEqual(
+          [ids[1], ids[4]]
+        )
+        expect(restored.confirmSelection(packs[0].id)).toEqual([])
+      }
+    }
+  )
+
+  it.each(['Arcana', 'Celestial', 'Void'] as const)(
+    'labels actual fallback rarity for %s',
+    (type) => {
+      vi.spyOn(runRandom, 'next').mockReturnValue(0.999)
+      const [offer] = new BlessingPackSystem().generateOfferingsForPacks([
+        makePack(type),
+      ])
+      for (const content of offer.contents)
+        expect(content.rarity).toBe(
+          (content.data as { rarity: string }).rarity.toLowerCase()
+        )
+    }
+  )
+  it.each(['Arcana', 'Celestial', 'Void'] as const)(
+    'offers different %s catalog items when the rarity pool has alternatives',
+    (type) => {
+      vi.spyOn(runRandom, 'next').mockReturnValue(0)
+      vi.spyOn(Date, 'now').mockReturnValue(1000)
+      const [offer] = new BlessingPackSystem().generateOfferingsForPacks([
+        { ...makePack(type), size: 'Mega', choiceCount: 5, selectCount: 2 },
+      ])
+      const pool =
+        type === 'Arcana'
+          ? getFateSealsByRarity('Common')
+          : type === 'Celestial'
+            ? getCelestialOrbsByRarity('Common')
+            : getVoidScriptsByRarity('Common')
+      const catalogIds = offer.contents.map(
+        (c) => (c.data as { id: string }).id
+      )
+      expect(catalogIds.slice(0, Math.min(pool.length, 5))).toEqual(
+        pool.slice(0, 5).map((item) => item.id)
+      )
+      expect(new Set(catalogIds).size).toBe(Math.min(pool.length, 5))
+      expect(new Set(offer.contents.map((c) => c.id)).size).toBe(5)
+    }
+  )
+
+  it('keeps choice identities distinct even when repeated tile recipes are valid', () => {
+    vi.spyOn(runRandom, 'next').mockReturnValue(0)
+    vi.spyOn(Date, 'now').mockReturnValue(1000)
+    const [offer] = new BlessingPackSystem().generateOfferingsForPacks([
+      { ...makePack('Tile'), size: 'Mega', choiceCount: 5, selectCount: 2 },
+    ])
+    expect(new Set(offer.contents.map((c) => c.id)).size).toBe(5)
+  })
+
+  it('keeps Star Chart preference based on catalog identity, not the choice key', () => {
+    vi.spyOn(runRandom, 'next').mockReturnValue(0)
+    const [offer] = new BlessingPackSystem().generateOfferingsForPacks(
+      [
+        {
+          ...makePack('Celestial'),
+          size: 'Mega',
+          choiceCount: 5,
+          selectCount: 2,
+        },
+      ],
+      { preferredYaku: 'Tanyao' }
+    )
+    expect(
+      offer.contents.filter(
+        (c) =>
+          (c.data as { effect: { targetYaku: string } }).effect.targetYaku ===
+          'Tanyao'
+      )
+    ).toHaveLength(1)
+    expect(
+      new Set(offer.contents.map((c) => (c.data as { id: string }).id)).size
+    ).toBe(getCelestialOrbsByRarity('Common').length)
+  })
   it.each([EnhancementType.Bonus, EnhancementType.Gold])(
     'describes the actual %s enhancement instead of an independent pack rule',
     (enhancement) => {

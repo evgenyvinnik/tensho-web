@@ -13,12 +13,50 @@ import es from '../../i18n/locales/es.json'
 import { tileRewardText } from '../../i18n/tileRewardText'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { PackOpeningModal } from './PackOpeningModal'
+import { RIVER_TAX } from '../../systems/DecreeSystem'
 
 afterEach(async () => {
   await act(async () => {
     useSettingsStore.setState({ reducedMotion: false })
     await changeLanguage('en')
   })
+})
+
+it('uses a Decree catalog identity for illustrated rewards, not the pack choice key', () => {
+  useSettingsStore.setState({ reducedMotion: true })
+  render(
+    <PackOpeningModal
+      isOpen
+      onConfirm={vi.fn()}
+      onSkip={vi.fn()}
+      packOffering={{
+        pack: {
+          id: 'pack-1',
+          type: 'Decree',
+          size: 'Normal',
+          cost: 4,
+          choiceCount: 3,
+          selectCount: 1,
+        },
+        contents: [
+          {
+            id: 'pack-1:choice:0',
+            type: 'Decree',
+            name: RIVER_TAX.name,
+            description: RIVER_TAX.description,
+            rarity: 'common',
+            data: RIVER_TAX,
+          },
+        ],
+        isOpened: true,
+        isResolved: false,
+        selectedIndices: [],
+        maxSelections: 1,
+      }}
+    />
+  )
+  expect(document.querySelector('img[src$="river-tax.webp"]')).not.toBeNull()
+  expect(screen.getByRole('button', { name: 'River Tax' })).toBeVisible()
 })
 
 it.each([EnhancementType.Bonus, EnhancementType.Gold] as const)(

@@ -232,6 +232,9 @@ export class BlessingPackSystem {
         contents
       )
       if (content) {
+        // Choice identity is independent of catalog identity and wall-clock
+        // resolution. Repeated rewards still need separate selectable keys.
+        content.id = `${pack.id}:choice:${i}`
         contents.push(content)
       }
     }
@@ -289,39 +292,44 @@ export class BlessingPackSystem {
   ): PackContent {
     // Map content rarity to consumable rarity
     const consumableRarity = this.mapToConsumableRarity(rarity)
-    const fateSeals = getFateSealsByRarity(consumableRarity)
-    const existingIds = new Set(existingContents.map((c) => c.id))
-
-    // Filter out already-present seals
-    const available = fateSeals.filter((seal) => !existingIds.has(seal.id))
-    const selected =
-      available.length > 0
-        ? available[Math.floor(runRandom.next('packs') * available.length)]
-        : fateSeals[0]
-
-    if (!selected) {
-      // Fallback if no seals of this rarity
-      const allSeals = getFateSealsByRarity('Common')
-      const fallback =
-        allSeals[Math.floor(runRandom.next('packs') * allSeals.length)]
-      return {
-        id: `fate-seal-${fallback.id}-${Date.now()}`,
-        type: 'FateSeal',
-        name: fallback.name,
-        description: fallback.description,
-        rarity,
-        data: FateSealSystem.createFateSealInstance(fallback),
-      }
-    }
+    const selected = this.selectConsumable(
+      getFateSealsByRarity(consumableRarity),
+      getFateSealsByRarity('Common'),
+      existingContents,
+      'FateSeal'
+    )
 
     return {
-      id: `fate-seal-${selected.id}-${Date.now()}`,
+      id: selected.id,
       type: 'FateSeal',
       name: selected.name,
       description: selected.description,
-      rarity,
+      rarity: selected.rarity.toLowerCase() as PackContent['rarity'],
       data: FateSealSystem.createFateSealInstance(selected),
     }
+  }
+
+  /** Exclude catalog items, not the generated choice keys. Exhausted rarity
+   * pools may repeat; do not silently promote the rolled rarity. */
+  private selectConsumable<T extends { id: string; rarity: ConsumableRarity }>(
+    rolledPool: T[],
+    fallbackPool: T[],
+    contents: PackContent[],
+    type: PackContent['type']
+  ): T {
+    const existing = new Set(
+      contents
+        .filter((c) => c.type === type)
+        .map((c) => (c.data as { id: string }).id)
+    )
+    const pool = rolledPool.length ? rolledPool : fallbackPool
+    const available = pool.filter((item) => !existing.has(item.id))
+    if (!pool.length)
+      throw new Error(`No catalog rewards available for ${type}`)
+    // Preserve the existing first-item fallback when a rarity pool is exhausted.
+    return available.length
+      ? available[Math.floor(runRandom.next('packs') * available.length)]
+      : pool[0]
   }
 
   /**
@@ -356,11 +364,15 @@ export class BlessingPackSystem {
       ? getCelestialOrbByYaku(preferredYaku)
       : undefined
     const alreadyHasPreferred = preferredOrb
-      ? existingContents.some((content) => content.id.includes(preferredOrb.id))
+      ? existingContents.some(
+          (content) =>
+            content.type === 'CelestialOrb' &&
+            (content.data as { id: string }).id === preferredOrb.id
+        )
       : false
     if (preferredOrb && !alreadyHasPreferred) {
       return {
-        id: `celestial-orb-${preferredOrb.id}-${Date.now()}`,
+        id: preferredOrb.id,
         type: 'CelestialOrb',
         name: preferredOrb.name,
         description: preferredOrb.description,
@@ -370,35 +382,19 @@ export class BlessingPackSystem {
     }
 
     const consumableRarity = this.mapToConsumableRarity(rarity)
-    const orbs = getCelestialOrbsByRarity(consumableRarity)
-    const existingIds = new Set(existingContents.map((c) => c.id))
-    const available = orbs.filter((orb) => !existingIds.has(orb.id))
-    const selected =
-      available.length > 0
-        ? available[Math.floor(runRandom.next('packs') * available.length)]
-        : orbs[0]
-
-    if (!selected) {
-      // Fallback if no orbs of this rarity
-      const allOrbs = getCelestialOrbsByRarity('Common')
-      const fallback =
-        allOrbs[Math.floor(runRandom.next('packs') * allOrbs.length)]
-      return {
-        id: `celestial-orb-${fallback.id}-${Date.now()}`,
-        type: 'CelestialOrb',
-        name: fallback.name,
-        description: fallback.description,
-        rarity,
-        data: CelestialOrbSystem.createCelestialOrbInstance(fallback),
-      }
-    }
+    const selected = this.selectConsumable(
+      getCelestialOrbsByRarity(consumableRarity),
+      getCelestialOrbsByRarity('Common'),
+      existingContents,
+      'CelestialOrb'
+    )
 
     return {
-      id: `celestial-orb-${selected.id}-${Date.now()}`,
+      id: selected.id,
       type: 'CelestialOrb',
       name: selected.name,
       description: selected.description,
-      rarity,
+      rarity: selected.rarity.toLowerCase() as PackContent['rarity'],
       data: CelestialOrbSystem.createCelestialOrbInstance(selected),
     }
   }
@@ -452,7 +448,7 @@ export class BlessingPackSystem {
     }
 
     return {
-      id: `tile-${selected.id}-${Date.now()}`,
+      id: selected.id,
       type: 'Tile',
       name: [
         tile.displayName,
@@ -539,7 +535,7 @@ export class BlessingPackSystem {
       candidates[Math.floor(runRandom.next('packs') * candidates.length)]
 
     return {
-      id: `decree-${selected.id}-${Date.now()}`,
+      id: selected.id,
       type: 'Decree',
       name: selected.name,
       description: selected.description,
@@ -574,35 +570,19 @@ export class BlessingPackSystem {
     existingContents: PackContent[]
   ): PackContent {
     const consumableRarity = this.mapToConsumableRarity(rarity)
-    const scripts = getVoidScriptsByRarity(consumableRarity)
-    const existingIds = new Set(existingContents.map((c) => c.id))
-    const available = scripts.filter((script) => !existingIds.has(script.id))
-    const selected =
-      available.length > 0
-        ? available[Math.floor(runRandom.next('packs') * available.length)]
-        : scripts[0]
-
-    if (!selected) {
-      // Fallback if no scripts of this rarity
-      const allScripts = getVoidScriptsByRarity('Common')
-      const fallback =
-        allScripts[Math.floor(runRandom.next('packs') * allScripts.length)]
-      return {
-        id: `void-script-${fallback.id}-${Date.now()}`,
-        type: 'VoidScript',
-        name: fallback.name,
-        description: fallback.description,
-        rarity,
-        data: VoidScriptSystem.createVoidScriptInstance(fallback),
-      }
-    }
+    const selected = this.selectConsumable(
+      getVoidScriptsByRarity(consumableRarity),
+      getVoidScriptsByRarity('Common'),
+      existingContents,
+      'VoidScript'
+    )
 
     return {
-      id: `void-script-${selected.id}-${Date.now()}`,
+      id: selected.id,
       type: 'VoidScript',
       name: selected.name,
       description: selected.description,
-      rarity,
+      rarity: selected.rarity.toLowerCase() as PackContent['rarity'],
       data: VoidScriptSystem.createVoidScriptInstance(selected),
     }
   }

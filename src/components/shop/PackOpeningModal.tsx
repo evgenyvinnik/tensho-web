@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
 import { PACK_TYPE_DEFINITIONS } from '../../config/packDefinitions'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
+import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { Tile } from '../../core/Tile'
 import {
   getTileImagePath,
@@ -84,7 +84,7 @@ function getContentArtwork(content: PackContent): string | null {
     case 'CelestialOrb':
       return illustrationAssets.consumables.celestialOrb
     case 'VoidScript':
-      return getVoidScriptIllustration(content.id)
+      return getVoidScriptIllustration((content.data as VoidScript).id)
     case 'Tile': {
       const tile = content.data as Tile
       return tile?.suit && tile?.rank
@@ -249,11 +249,7 @@ function PackContentCard({
           className={`mb-2 flex items-center justify-center ${voidScript ? 'h-16 w-16' : 'h-12 w-12'}`}
         >
           {content.type === 'Decree' ? (
-            <DecreeUniqueIcon
-              decreeId={content.id}
-              size={48}
-              color={rarityColor}
-            />
+            <DecreeArtwork decreeId={item.id} size={48} color={rarityColor} />
           ) : voidScript ? (
             <VoidScriptArtwork
               script={voidScript}
@@ -493,7 +489,7 @@ export function PackOpeningModal({
           <div className="grid grid-cols-2 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
             {packOffering.contents.map((content, index) => (
               <PackContentCard
-                key={content.id}
+                key={`${packOffering.pack.id}:choice:${index}`}
                 content={content}
                 index={index}
                 isSelected={selectedIndices.includes(index)}
