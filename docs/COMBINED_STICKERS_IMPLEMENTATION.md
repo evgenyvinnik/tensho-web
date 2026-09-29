@@ -1,6 +1,6 @@
 # Combined Decree stickers
 
-September 29, 2026. Implementation checkpoint; publication pending.
+September 29, 2026. Published checkpoint: **v1.0.260929-3**.
 
 ## Confirmed defect and rule
 
@@ -73,12 +73,28 @@ inline explanation have been corrected.
 - Production-bundle desktop and touch checks then passed: real play, exact
   combined-sticker save/reload, expired Rental details, Eternal sale disabled,
   and once-only sale/reload of the other physical copy. No JavaScript page
-  errors were observed. Publication and independent CI are still pending.
+  errors were observed.
 - Local artifacts: `/tmp/tensho-combined-stickers-2PNdJs/`.
 
 The tests initially miscounted shop RNG draws and omitted fixture tile IDs; these
 test-construction errors were corrected by tracing the actual generation and
 action paths. They are not reported as product bugs.
+
+## Publication
+
+- Implementation: `7de0706a74154ace18e8bcdc44491eb6c7454130` on `main`.
+- Versioned build/tag: `e18c9f46ca05860c3932855dbfcdae2130662143`,
+  `v1.0.260929-3`.
+- [Independent CI and deployment](https://github.com/evgenyvinnik/tensho-web/actions/runs/36630390975)
+  passed **1,459/1,459 tests in 125 files**, 13 release-workflow tests, build and
+  Pages publication. This includes the final first-paint regression.
+- Public `release.json`, remote tag and visible menu version match the built
+  checkout. Fresh hosted desktop/touch checks passed real play, combined save
+  restore, both modifier descriptions, protected Eternal sale and exact sale /
+  reload of the expired Rental copy, without JavaScript page errors.
+- Original failed local results remain recorded above; independent CI does not
+  retroactively make those runs green. This release is not proof that the full
+  project or all sticker semantics are complete.
 
 ## Still open, not silently changed
 

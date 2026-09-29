@@ -6,15 +6,21 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Published Decree expiry and modifier details
+## Published combined Decree stickers
 
-The next [combined-sticker checkpoint](COMBINED_STICKERS_IMPLEMENTATION.md)
+The [combined-sticker checkpoint](COMBINED_STICKERS_IMPLEMENTATION.md), published
+as **v1.0.260929-3**,
 retains Rental alongside Eternal/Perishable through the live shop, owned-copy
 effects, actual round payouts, save/restore and localized details. A native
 mobile first-paint overflow was also repaired. Final desktop/touch browser
-regression passed **60/60**; publication verification is pending. The earlier
+regression passed **60/60**. Independent CI passed **1,459/1,459 tests** and
+deployed `e18c9f46ca05860c3932855dbfcdae2130662143`. Public manifest/tag and
+visible version match; hosted desktop/touch play, combined reload, protected
+sale and expired-copy sale/reload passed without JavaScript errors. The earlier
 full local unit run had nine five-second timeouts, and all eight affected files
 passed **78/78 unchanged** afterward; both results are retained in the ledger.
+
+## Published Decree expiry and modifier details
 
 Perishable counters now stop at zero; negative legacy counters were already
 accepted by the save parser (the earlier save-failure claim was incorrect). Owned
@@ -845,6 +851,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest Decree-detail checkpoint is published as v1.0.260929-2 with independent CI, matching manifest/tag, 48 desktop/touch browser checks and hosted modifier/expiry/sale/reload and Table Loop checks; see [Decree details](DECREE_DETAILS_IMPLEMENTATION.md). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
+| Release readiness | The latest combined-sticker checkpoint is published as v1.0.260929-3 with independent CI (1,459 tests), matching manifest/tag, 60 desktop/touch browser checks and hosted combined-modifier/play/sale/reload checks; see [Combined stickers](COMBINED_STICKERS_IMPLEMENTATION.md). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.
