@@ -1,6 +1,25 @@
 # Physical Decree copies and destructive Script targets
 
-Updated September 29, 2026. Verified local checkpoint awaiting publication, not whole-project completion.
+Updated September 29, 2026. Published v1.0.260929-1; not whole-project completion.
+
+## Published release
+
+- Implementation: `4290516e1e5aa8dea113b82282d99fe36368641d` on `main`.
+- Auto-versioned build/tag: `c750f72c01c96576cd2e01d35f0626d3112b31c9`,
+  `v1.0.260929-1`.
+- [GitHub workflow 36620781474](https://github.com/evgenyvinnik/tensho-web/actions/runs/36620781474)
+  passed all **1,435 tests / 122 files**, 13 release checks, production build,
+  provenance and Pages deployment. No force push or default-mode change.
+- Public `release.json` and remote tag match the built commit. The hosted
+  Half Suited image matches the exact SHA-256 below.
+- Public desktop and 320×568 touch smoke checks passed real Classic play/reload,
+  deterministic legacy duplicate migration, exact-copy sale/payment/capacity,
+  Save and leave/Resume, and Table Loop continuation, with no JavaScript errors.
+  Settled portrait popups fit the viewport. Hosted screenshots are under
+  `/tmp/tensho-decree-identity-xV21C1/hosted/`.
+
+Existing large-chunk/Browserslist warnings remain; GitHub also reports upstream
+action-runtime/runner migration notices. These did not fail this release.
 
 ## Gameplay defects
 
@@ -142,7 +161,7 @@ The production checks were also repeated with popup opacity settled and explicit
 viewport bounds; both desktop and touch passed. The settled 320px portrait and
 sale popup were visually inspected and fit without clipping.
 
-Commit, independent CI and public deployment verification are pending.
+Independent CI and public deployment verification are complete as recorded above.
 Browser fixtures establish duplicate ownership and Script availability, then
 exercise actual sell/use/confirm controls and durable reload. They do not prove
 organic duplicate acquisition frequency, balance or newcomer comprehension.

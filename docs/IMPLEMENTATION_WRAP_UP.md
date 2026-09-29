@@ -6,7 +6,7 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Physical Decree identity checkpoint — verified locally, publication pending
+## Published physical Decree identity checkpoint
 
 Duplicate scrolls now have durable physical identities for exact-copy sales,
 edition changes, removal, Crimson Heart suppression and Amber Acorn ordering.
@@ -23,8 +23,12 @@ Pages-base build. Production desktop/320px touch checks passed real play, legacy
 migration, exact-copy sale and resume, and Table Loop continuation without page
 errors. The ledger retains earlier failures, including a genuine durable-migration
 defect repaired with three failing-first tests and a documentation-triggered Vite
-reload during verification. Commit and public deployment are pending. This does
-not resolve other mechanics choices or establish whole-project completion.
+reload during verification. Published **v1.0.260929-1** from implementation
+`4290516`; independent CI passed all 1,435 tests and deployed built/tag commit
+`c750f72c01c96576cd2e01d35f0626d3112b31c9`. Public manifest/tag and portrait
+hash match. Hosted desktop and touch checks passed migration, sale, play and
+continuation without JavaScript errors. This does not resolve other mechanics
+choices or establish whole-project completion.
 
 ## Latest save-aware update checkpoint
 
