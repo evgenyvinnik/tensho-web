@@ -24,6 +24,7 @@
 @font-face {
   font-family: 'Go3v2';
   src: url('/assets/go3v2.ttf') format('truetype');
+  unicode-range: U+0020-007E;
   font-weight: 400;
   font-style: normal;
   font-display: swap;

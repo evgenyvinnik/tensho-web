@@ -44,6 +44,22 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies Decree sticker explanations and matching placeholders in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    for (const [key, english] of Object.entries(en.decreeModifiers)) {
+      const translated = (locale.decreeModifiers as typeof en.decreeModifiers)[
+        key as keyof typeof en.decreeModifiers
+      ]
+      expect(translated, `${language}: decreeModifiers.${key}`).toBeTruthy()
+      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+      if (language !== 'en' && key.endsWith('Description'))
+        expect(translated).not.toBe(english)
+    }
+  }
+})
+
 it('provides names and rules for every illustrated starter in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const items = (locale.decrees as typeof en.decrees).items as Record<

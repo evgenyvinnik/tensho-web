@@ -46,6 +46,37 @@ afterEach(async () => {
   })
 })
 
+it('includes localized edition and zero-cost Rental rules in purchase details', async () => {
+  await changeLanguage('es')
+  const item = {
+    ...ALL_DECREES[0],
+    edition: 'Negative' as const,
+    sticker: { type: 'Rental' as const, goldPerRound: 0 },
+  }
+  const offering: TeaHouseOffering = {
+    id: 'rental-fixture',
+    slotIndex: 0,
+    itemType: 'Decree',
+    item,
+    baseCost: 1,
+    editionCost: 5,
+    finalCost: 6,
+    sellValue: 3,
+    isPurchased: false,
+    isLocked: false,
+    edition: 'Negative',
+  }
+  render(<ShopItemCard offering={offering} canAfford onPurchase={vi.fn()} />)
+  expect(screen.getByRole('button')).toHaveAccessibleDescription(
+    expect.stringContaining('Cuesta 0 de oro al final de cada ronda.')
+  )
+  expect(screen.getByRole('button')).toHaveAccessibleDescription(
+    expect.stringContaining(es.editions.items.negative.description)
+  )
+  expect(screen.getByText(es.decreeModifiers.rentalName)).toBeVisible()
+  expect(screen.queryByText(/-3G\/R|Neg$/)).not.toBeInTheDocument()
+})
+
 it.each(['seal', 'orb'] as const)(
   'shows the actual %s for sale, including its localized rule and rarity',
   async (kind) => {

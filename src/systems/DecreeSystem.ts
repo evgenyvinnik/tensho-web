@@ -744,7 +744,12 @@ export class DecreeSystem {
       // Handle Perishable sticker
       if (decree.sticker?.type === 'Perishable') {
         if (decree.sticker.roundsRemaining !== undefined) {
-          decree.sticker.roundsRemaining--
+          // Expiry is terminal. Negative timers make otherwise valid later
+          // checkpoints fail the save parser's nonnegative counter contract.
+          decree.sticker.roundsRemaining = Math.max(
+            0,
+            decree.sticker.roundsRemaining - 1
+          )
           if (decree.sticker.roundsRemaining <= 0) {
             decree.isDebuffed = true
           }

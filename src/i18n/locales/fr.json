@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "Éternel",
+    "eternalDescription": "Ne peut être ni vendu ni détruit.",
+    "perishableName": "Périssable",
+    "perishableDescription": "Perd ses effets actifs à la fin du compte à rebours.",
+    "remaining": "Il reste {{remaining}} débuts de manche.",
+    "expired": "Expiré : ses effets actifs sont désactivés.",
+    "rentalName": "Location",
+    "rentalDescription": "Coûte {{amount}} pièces d’or à la fin de chaque manche."
+  },
   "appUpdate": {
     "available": "Mise à jour disponible",
     "description": "Une nouvelle version est prête. Nous sauvegarderons votre progression avant de recharger.",

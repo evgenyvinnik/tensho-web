@@ -30,6 +30,11 @@ import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 import { tileRewardText } from '../../i18n/tileRewardText'
+import {
+  decreeModifierText,
+  type DecreeModifierSource,
+} from '../../i18n/decreeModifiers'
+import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 
 const AnimatedDiv = animated('div')
 
@@ -195,29 +200,6 @@ function getEditionStyle(edition?: EditionType): React.CSSProperties {
   }
 }
 
-/**
- * Get edition label
- */
-function getEditionLabel(
-  edition?: EditionType,
-  showCJK: boolean = false
-): string | null {
-  if (!edition) return null
-
-  switch (edition) {
-    case 'Foil':
-      return showCJK ? '\u7B94\u62BC' : 'Foil'
-    case 'Holographic':
-      return showCJK ? '\u8679\u5F69' : 'Holo'
-    case 'Polychrome':
-      return showCJK ? '\u6975\u5F69' : 'Poly'
-    case 'Negative':
-      return showCJK ? '\u9670' : 'Neg'
-    default:
-      return null
-  }
-}
-
 // =============================================================================
 // STICKER INDICATOR COMPONENT
 // =============================================================================
@@ -227,40 +209,32 @@ interface StickerIndicatorProps {
 }
 
 function StickerIndicator({ sticker }: StickerIndicatorProps) {
+  const { t, i18n } = useTranslation()
+  const details = decreeModifierText({ sticker }, t, i18n.language)[0]
   const getStyle = (): {
     bg: string
     text: string
-    label: string
-    japaneseLabel: string
   } => {
     switch (sticker.type) {
       case 'Eternal':
         return {
           bg: 'bg-blue-600',
           text: 'text-blue-100',
-          label: 'Eternal',
-          japaneseLabel: '\u6C38\u52AB',
         }
       case 'Perishable':
         return {
           bg: 'bg-orange-600',
           text: 'text-orange-100',
-          label: `${sticker.roundsRemaining || 5}R`,
-          japaneseLabel: '\u8150\u673D',
         }
       case 'Rental':
         return {
           bg: 'bg-yellow-600',
           text: 'text-yellow-100',
-          label: `-${sticker.goldPerRound || 3}G/R`,
-          japaneseLabel: '\u79DF\u501F',
         }
       default:
         return {
           bg: 'bg-gray-600',
           text: 'text-gray-100',
-          label: '?',
-          japaneseLabel: '',
         }
     }
   }
@@ -269,10 +243,11 @@ function StickerIndicator({ sticker }: StickerIndicatorProps) {
 
   return (
     <div
-      className={`absolute top-1 right-1 px-1.5 py-0.5 rounded text-xs font-bold ${style.bg} ${style.text}`}
-      title={`${sticker.type}: ${style.japaneseLabel}`}
+      className={`absolute z-10 top-1 right-1 px-1.5 py-0.5 rounded text-xs font-bold ${style.bg} ${style.text}`}
+      title={`${details.name}: ${details.description}`}
+      aria-hidden="true"
     >
-      {style.label}
+      {details.badge}
     </div>
   )
 }
@@ -295,6 +270,7 @@ export function ShopItemCard({
   const nameId = useId()
   const priceId = useId()
   const descriptionId = useId()
+  const modifiersId = useId()
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const itemText = useItemText()
@@ -310,6 +286,7 @@ export function ShopItemCard({
   let sticker: Sticker | undefined
   let decreeId: string | undefined
   let voidScript: VoidScript | undefined
+  let decreeModifiers: DecreeModifierSource | undefined
 
   switch (offering.itemType) {
     case 'Decree': {
@@ -319,6 +296,10 @@ export function ShopItemCard({
       description = itemText.description('decrees', decree)
       rarity = decree.rarity
       sticker = decree.sticker
+      decreeModifiers = {
+        ...decree,
+        edition: decree.edition ?? offering.edition,
+      }
       decreeId = decree.id
       break
     }
@@ -366,7 +347,12 @@ export function ShopItemCard({
   const hasDiscount =
     offering.baseCost + offering.editionCost > offering.finalCost
   const editionStyle = getEditionStyle(offering.edition)
-  const editionLabel = getEditionLabel(offering.edition, showCJK)
+  const editionLabel = offering.edition
+    ? t(`editions.items.${offering.edition.toLowerCase()}.name`)
+    : null
+  const hasDecreeModifiers = Boolean(
+    decreeModifiers?.edition || decreeModifiers?.sticker
+  )
 
   // Animation spring
   const spring = useSpring({
@@ -476,7 +462,7 @@ export function ShopItemCard({
         </div>
 
         {/* Edition label */}
-        {editionLabel && (
+        {editionLabel && !hasDecreeModifiers && (
           <p className="text-xs text-blue-300 text-center mt-1 font-semibold">
             {editionLabel}
           </p>
@@ -490,10 +476,14 @@ export function ShopItemCard({
           {description}
         </p>
 
+        {decreeModifiers && (
+          <DecreeModifierDetails decree={decreeModifiers} id={modifiersId} />
+        )}
+
         {/* Purchase button */}
         <button
           aria-labelledby={`${nameId} ${priceId}`}
-          aria-describedby={descriptionId}
+          aria-describedby={`${descriptionId}${hasDecreeModifiers ? ` ${modifiersId}` : ''}`}
           onClick={(e) => {
             e.stopPropagation()
             onPurchase()

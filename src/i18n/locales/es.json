@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "Eterno",
+    "eternalDescription": "No se puede vender ni destruir.",
+    "perishableName": "Perecedero",
+    "perishableDescription": "Pierde sus efectos activos cuando termina la cuenta atrás.",
+    "remaining": "Quedan {{remaining}} inicios de ronda.",
+    "expired": "Caducado: sus efectos activos están deshabilitados.",
+    "rentalName": "Alquiler",
+    "rentalDescription": "Cuesta {{amount}} de oro al final de cada ronda."
+  },
   "appUpdate": {
     "available": "Actualización disponible",
     "description": "Hay una nueva versión. Guardaremos tu progreso antes de recargar.",

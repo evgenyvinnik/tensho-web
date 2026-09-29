@@ -6,6 +6,21 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Decree expiry and modifier details — local, final verification pending
+
+Perishable counters now stop at zero so later rounds can still be saved. Owned
+and shop scrolls share localized edition, Rental and expiry descriptions, and
+face-down Eternal sale labels no longer reveal the item name. Popup reflow and
+motion preferences are covered on short screens. Five failing-first regressions
+were repaired. Screenshot review found that Go3v2 painted Russian titles blank;
+Latin-only coverage and UI-font fallback now pass actual pixel-ink checks and
+visual inspection. Final browser regression passed **48/48**, as did strict
+TypeScript, lint, 13 release checks, Pages build and production desktop/touch
+play/expiry/sale/reload checks. A **1,442-test full pass** preceded the font fix;
+the post-font full run had **1,439 passes / 3 timeouts**, with the same files
+then passing **6/6** unchanged. Original failures are retained. Independent CI
+and publication are pending. See [details evidence](DECREE_DETAILS_IMPLEMENTATION.md).
+
 ## Published physical Decree identity checkpoint
 
 Duplicate scrolls now have durable physical identities for exact-copy sales,

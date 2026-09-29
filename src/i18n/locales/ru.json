@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "Вечный",
+    "eternalDescription": "Нельзя продать или уничтожить.",
+    "perishableName": "Скоропортящийся",
+    "perishableDescription": "Теряет активные эффекты по окончании отсчёта.",
+    "remaining": "До истечения срока: {{remaining}} начал раунда.",
+    "expired": "Срок истёк — активные эффекты отключены.",
+    "rentalName": "Аренда",
+    "rentalDescription": "В конце каждого раунда стоит {{amount}} золота."
+  },
   "appUpdate": {
     "available": "Доступно обновление",
     "description": "Новая версия готова. Перед перезагрузкой мы сохраним ваш прогресс.",

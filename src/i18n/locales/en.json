@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "Eternal",
+    "eternalDescription": "Cannot be sold or destroyed.",
+    "perishableName": "Perishable",
+    "perishableDescription": "Loses its active effects when its countdown expires.",
+    "remaining": "{{remaining}} round starts remaining.",
+    "expired": "Expired — its active effects are disabled.",
+    "rentalName": "Rental",
+    "rentalDescription": "Costs {{amount}} gold at the end of each round."
+  },
   "appUpdate": {
     "available": "Update available",
     "description": "A new version is ready. We will save your progress before reloading.",

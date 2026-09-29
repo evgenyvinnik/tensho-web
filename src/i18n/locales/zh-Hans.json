@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "永恒",
+    "eternalDescription": "无法出售或摧毁。",
+    "perishableName": "易逝",
+    "perishableDescription": "倒计时结束后失去生效中的效果。",
+    "remaining": "还剩{{remaining}}次回合开始。",
+    "expired": "已到期：生效中的效果已停用。",
+    "rentalName": "租赁",
+    "rentalDescription": "每回合结束时支付{{amount}}金币。"
+  },
   "appUpdate": {
     "available": "有可用更新",
     "description": "新版本已就绪。我们会先保存进度，再重新加载。",

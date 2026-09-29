@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "Ebedi",
+    "eternalDescription": "Satılamaz veya yok edilemez.",
+    "perishableName": "Süreli",
+    "perishableDescription": "Geri sayım bittiğinde etkin etkilerini kaybeder.",
+    "remaining": "{{remaining}} tur başlangıcı kaldı.",
+    "expired": "Süresi doldu — etkin etkileri devre dışı.",
+    "rentalName": "Kiralık",
+    "rentalDescription": "Her turun sonunda {{amount}} altın tutar."
+  },
   "appUpdate": {
     "available": "Güncelleme hazır",
     "description": "Yeni sürüm hazır. Sayfayı yeniden yüklemeden önce ilerlemeni kaydedeceğiz.",

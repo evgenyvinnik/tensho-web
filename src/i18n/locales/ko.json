@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "영구",
+    "eternalDescription": "판매하거나 파괴할 수 없습니다.",
+    "perishableName": "소모성",
+    "perishableDescription": "남은 횟수가 소진되면 활성 효과를 잃습니다.",
+    "remaining": "라운드 시작 {{remaining}}회 남음.",
+    "expired": "만료 — 활성 효과가 비활성화되었습니다.",
+    "rentalName": "임대",
+    "rentalDescription": "매 라운드 종료 시 골드 {{amount}}을 지불합니다."
+  },
   "appUpdate": {
     "available": "업데이트 가능",
     "description": "새 버전이 준비되었습니다. 진행 상황을 저장한 뒤 새로고침합니다.",

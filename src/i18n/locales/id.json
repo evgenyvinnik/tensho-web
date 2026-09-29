@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "Abadi",
+    "eternalDescription": "Tidak dapat dijual atau dihancurkan.",
+    "perishableName": "Mudah Kedaluwarsa",
+    "perishableDescription": "Efek aktifnya hilang saat hitung mundur berakhir.",
+    "remaining": "Tersisa {{remaining}} awal ronde.",
+    "expired": "Kedaluwarsa — efek aktifnya dinonaktifkan.",
+    "rentalName": "Sewa",
+    "rentalDescription": "Membayar {{amount}} emas pada akhir setiap ronde."
+  },
   "appUpdate": {
     "available": "Pembaruan tersedia",
     "description": "Versi baru sudah siap. Kami akan menyimpan progresmu sebelum memuat ulang.",

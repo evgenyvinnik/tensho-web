@@ -31,6 +31,9 @@ import { OwnedDecree } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'
 import { useItemText } from '../../i18n/useItemText'
+import { decreeModifierText } from '../../i18n/decreeModifiers'
+import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   getDecreeIllustration,
   getDecreeScrollIllustration,
@@ -88,7 +91,8 @@ export function DecreeCardCompact({
   disabledByMandate = false,
   onSell,
 }: DecreeCardCompactProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const reduceMotion = useReducedMotion()
   const anchorRef = useRef<HTMLButtonElement>(null)
   const popoverRef = useRef<HTMLDivElement>(null)
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -97,6 +101,9 @@ export function DecreeCardCompact({
   const [showPopover, setShowPopover] = useState(false)
   const [position, setPosition] = useState<PopoverPosition | null>(null)
   const itemText = useItemText()
+  const stickerText = decreeModifierText(decree, t, i18n.language).find(
+    (entry) => entry.kind === 'sticker'
+  )
   // Hidden Decrees must never reveal their identity through custom artwork.
   const illustration = faceDown ? undefined : getDecreeIllustration(decree.id)
   const decreeName = itemText.name('decrees', decree)
@@ -164,12 +171,20 @@ export function DecreeCardCompact({
   useLayoutEffect(() => {
     if (!showPopover) return
     updatePosition()
+    // Measure layout height, not the temporarily scaled entrance animation.
+    // Reflow from translations, modifier changes or fonts must stay in bounds.
+    const measure = () => {
+      if (popoverRef.current) updatePosition(popoverRef.current.offsetHeight)
+    }
+    const observer = new ResizeObserver(measure)
     const frame = window.requestAnimationFrame(() => {
-      if (popoverRef.current) {
-        updatePosition(popoverRef.current.getBoundingClientRect().height)
-      }
+      measure()
+      if (popoverRef.current) observer.observe(popoverRef.current)
     })
-    return () => window.cancelAnimationFrame(frame)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
   }, [showPopover, updatePosition])
 
   useEffect(() => {
@@ -177,8 +192,7 @@ export function DecreeCardCompact({
 
     const handleViewportChange = () =>
       updatePosition(
-        popoverRef.current?.getBoundingClientRect().height ??
-          ESTIMATED_POPOVER_HEIGHT
+        popoverRef.current?.offsetHeight ?? ESTIMATED_POPOVER_HEIGHT
       )
     const handlePointerDown = (event: PointerEvent) => {
       const target = event.target as Node
@@ -224,6 +238,7 @@ export function DecreeCardCompact({
     opacity: showPopover ? 1 : 0,
     y: showPopover ? 0 : 7,
     scale: showPopover ? 1 : 0.98,
+    immediate: reduceMotion,
     config: { tension: 360, friction: 28 },
   })
 
@@ -238,8 +253,7 @@ export function DecreeCardCompact({
           game-decree-card group relative h-20 w-16 min-h-[44px] min-w-[44px] flex-shrink-0
           overflow-visible rounded-lg border-2 bg-black/20 ${DECREE_RARITY_COLORS[decree.rarity]}
           ${isSuppressed ? 'opacity-60 grayscale' : ''}
-          cursor-pointer transition-[transform,filter,box-shadow] duration-200
-          hover:-translate-y-1 hover:scale-105 hover:drop-shadow-lg
+          cursor-pointer ${reduceMotion ? '' : 'transition-[transform,filter,box-shadow] duration-200 hover:-translate-y-1 hover:scale-105 hover:drop-shadow-lg'}
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]
         `}
         onPointerDown={handlePointerDown}
@@ -261,8 +275,11 @@ export function DecreeCardCompact({
           src={illustration ?? getDecreeScrollIllustration(decree.rarity)}
           alt=""
           aria-hidden="true"
-          className="game-illustration absolute inset-0 h-full w-full scale-[1.18] object-contain drop-shadow-[0_4px_5px_rgba(0,0,0,0.55)] transition-transform duration-200 group-hover:scale-[1.23]"
+          className={`game-illustration absolute inset-0 h-full w-full scale-[1.18] object-contain drop-shadow-[0_4px_5px_rgba(0,0,0,0.55)] ${reduceMotion ? '' : 'transition-transform duration-200 group-hover:scale-[1.23]'}`}
           draggable={false}
+          style={
+            reduceMotion ? { transform: 'none', transition: 'none' } : undefined
+          }
         />
 
         <span className="absolute left-1/2 top-[47%] flex -translate-x-1/2 -translate-y-1/2 items-center justify-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.85)]">
@@ -282,12 +299,10 @@ export function DecreeCardCompact({
         {decree.sticker && !faceDown && (
           <span
             aria-hidden="true"
-            title={decree.sticker.type}
+            title={`${stickerText?.name}: ${stickerText?.description}`}
             className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-full border border-amber-200/80 bg-[#14251d] px-1 text-[9px] font-black text-amber-100 shadow"
           >
-            {decree.sticker.type === 'Eternal' && '∞'}
-            {decree.sticker.type === 'Perishable' && 'P'}
-            {decree.sticker.type === 'Rental' && '¥'}
+            {stickerText?.badge}
           </span>
         )}
 
@@ -328,10 +343,13 @@ export function DecreeCardCompact({
               top: position.top,
               width: position.width,
               maxHeight: `calc(100dvh - ${POPOVER_MARGIN * 2}px)`,
-              opacity: popoverSpring.opacity,
-              transform: popoverSpring.y.to(
-                (y) => `translateY(${y}px) scale(${popoverSpring.scale.get()})`
-              ),
+              opacity: reduceMotion ? 1 : popoverSpring.opacity,
+              transform: reduceMotion
+                ? 'none'
+                : popoverSpring.y.to(
+                    (y) =>
+                      `translateY(${y}px) scale(${popoverSpring.scale.get()})`
+                  ),
             }}
           >
             <div
@@ -388,6 +406,8 @@ export function DecreeCardCompact({
                   : decreeDescription}
               </p>
 
+              {!faceDown && <DecreeModifierDetails decree={decree} />}
+
               {disabledByMandate && !faceDown && (
                 <p className="mt-3 rounded-lg border border-red-400/35 bg-red-950/45 px-2.5 py-2 text-xs font-semibold text-red-200">
                   {t(
@@ -413,14 +433,14 @@ export function DecreeCardCompact({
                         : t(
                             'gameplay.eternalCannotSellNamed',
                             '{{name}} is Eternal and cannot be sold',
-                            { name: decreeName }
+                            { name: displayName }
                           )
                     }
                     onClick={() => {
                       onSell()
                       closePopover()
                     }}
-                    className="min-h-9 rounded-md border border-amber-300/60 bg-amber-900/65 px-3 py-1.5 text-xs font-bold text-amber-50 shadow-sm transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-45"
+                    className={`min-h-9 rounded-md border border-amber-300/60 bg-amber-900/65 px-3 py-1.5 text-xs font-bold text-amber-50 shadow-sm hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-45 ${reduceMotion ? '' : 'transition-[background-color,transform] hover:-translate-y-0.5'}`}
                   >
                     {canSell
                       ? faceDown

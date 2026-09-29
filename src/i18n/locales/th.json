@@ -1,4 +1,14 @@
 {
+  "decreeModifiers": {
+    "eternalName": "ถาวร",
+    "eternalDescription": "ขายหรือทำลายไม่ได้",
+    "perishableName": "เสื่อมสภาพ",
+    "perishableDescription": "สูญเสียเอฟเฟกต์ที่ทำงานอยู่เมื่อการนับถอยหลังสิ้นสุด",
+    "remaining": "เหลือการเริ่มรอบอีก {{remaining}} ครั้ง",
+    "expired": "หมดอายุ — เอฟเฟกต์ที่ทำงานอยู่ถูกปิดใช้งาน",
+    "rentalName": "เช่า",
+    "rentalDescription": "จ่าย {{amount}} ทองเมื่อจบแต่ละรอบ"
+  },
   "appUpdate": {
     "available": "มีอัปเดตใหม่",
     "description": "เวอร์ชันใหม่พร้อมแล้ว เราจะบันทึกความคืบหน้าก่อนโหลดใหม่",
