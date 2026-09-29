@@ -15,6 +15,7 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { DebuffSystem, DebuffSource } from '../game/DebuffSystem'
 import { OwnedDecree } from './types'
+import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 import {
   MandateDefinition,
   selectRandomMandate,
@@ -272,7 +273,7 @@ export class MandateEffectSystem {
 
       case 'shuffle_decrees':
         this.state.decreesShuffled = true
-        this.state.shuffledDecreeIds = decrees.map((decree) => decree.id)
+        this.state.shuffledDecreeIds = decrees.map(decreeKey)
         for (let i = this.state.shuffledDecreeIds.length - 1; i > 0; i--) {
           const j = Math.floor(this.getRandom() * (i + 1))
           ;[this.state.shuffledDecreeIds[i], this.state.shuffledDecreeIds[j]] =
@@ -498,7 +499,7 @@ export class MandateEffectSystem {
    */
   private applyDisableRandomDecree(decrees: OwnedDecree[]): string[] {
     const eligibleDecrees = decrees.filter(
-      (d) => !d.isDebuffed && !this.state.disabledDecreeIds.has(d.id)
+      (d) => !d.isDebuffed && !isDecreeExcluded(d, this.state.disabledDecreeIds)
     )
 
     if (eligibleDecrees.length === 0) return []
@@ -506,9 +507,9 @@ export class MandateEffectSystem {
     const randomIndex = Math.floor(this.getRandom() * eligibleDecrees.length)
     const decree = eligibleDecrees[randomIndex]
 
-    this.state.disabledDecreeIds.add(decree.id)
+    this.state.disabledDecreeIds.add(decreeKey(decree))
 
-    return [decree.id]
+    return [decreeKey(decree)]
   }
 
   // ===========================================================================
@@ -930,8 +931,10 @@ export class MandateEffectSystem {
   /**
    * Check if decree is disabled by mandate
    */
-  isDecreeDisabled(decreeId: string): boolean {
-    return this.state.disabledDecreeIds.has(decreeId)
+  isDecreeDisabled(decree: string | OwnedDecree): boolean {
+    return typeof decree === 'string'
+      ? this.state.disabledDecreeIds.has(decree)
+      : isDecreeExcluded(decree, this.state.disabledDecreeIds)
   }
 
   // ===========================================================================

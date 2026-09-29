@@ -29,6 +29,7 @@ import { useClassicPersistence } from '../../game/useClassicPersistence'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
+import { decreeKey, isDecreeExcluded } from '../../systems/decreeIdentity'
 import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
 import { ConsumablesBar } from '../gameplay/ConsumablesBar'
 import { ConsumableDialog } from '../gameplay/ConsumableDialog'
@@ -552,7 +553,9 @@ export function GameplayScreen() {
 
     const remaining = [...ownedDecrees]
     const ordered = game.decreeDisplayOrderIds.flatMap((decreeId) => {
-      const index = remaining.findIndex((decree) => decree.id === decreeId)
+      const index = remaining.findIndex(
+        (decree) => decreeKey(decree) === decreeId || decree.id === decreeId
+      )
       return index === -1 ? [] : remaining.splice(index, 1)
     })
     return [...ordered, ...remaining]
@@ -590,7 +593,7 @@ export function GameplayScreen() {
     (decree) =>
       decree.effect.type === 'rule_modification' &&
       decree.effect.ruleId === 'dead_wall_draw' &&
-      !disabledDecreeIds.has(decree.id)
+      !isDecreeExcluded(decree, disabledDecreeIds)
   )
   const deadWallTileId = stagedTileIds[0] ?? game.selectedTileIds[0]
 
@@ -681,11 +684,11 @@ export function GameplayScreen() {
           >
             {displayedDecrees.map((decree, index) => (
               <DecreeCardCompact
-                key={`${decree.id}-${index}`}
+                key={decree.instanceId ?? `${decree.id}-${index}`}
                 decree={decree}
                 faceDown={game.decreesFaceDown}
-                disabledByMandate={disabledDecreeIds.has(decree.id)}
-                onSell={() => handleSellDecree(decree.id)}
+                disabledByMandate={isDecreeExcluded(decree, disabledDecreeIds)}
+                onSell={() => handleSellDecree(decreeKey(decree))}
               />
             ))}
             {Array.from({

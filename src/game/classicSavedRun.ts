@@ -1,4 +1,5 @@
 import type { ClassicRunSnapshot } from './ClassicRunSnapshot'
+import { DecreeSystem } from '../systems/DecreeSystem'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import { choice, count, id, object, positive } from './snapshotValidation'
 
@@ -180,6 +181,15 @@ export class ClassicSaveRepository {
         return { ok: false, reason: 'unavailable' }
       if (current.raw !== expectedRaw) return { ok: false, reason: 'conflict' }
       if (current.kind !== 'ready') return { ok: false, reason: 'invalid' }
+      // Persist deterministic legacy identities in the same atomic write as the
+      // lease claim. A read stays non-mutating, and a failed write retains the
+      // exact old record rather than reporting an in-memory migration as saved.
+      const state = current.saved.snapshot.state
+      if (state.decreeSystem.nextInstanceId === undefined) {
+        state.decreeSystem = DecreeSystem.fromState(
+          state.decreeSystem
+        ).toState()
+      }
       return this.write({
         ...current.saved,
         owner: this.token(),

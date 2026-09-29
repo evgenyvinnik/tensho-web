@@ -1019,7 +1019,7 @@ describe('GameOrchestrator', () => {
       expect(game.getState().mandateEffectSystem.areDecreesShuffled()).toBe(true)
       expect(order).toEqual(secondGame.getState().mandateEffectSystem.getShuffledDecreeIds())
       expect(new Set(order)).toEqual(
-        new Set(game.getState().decreeSystem.getOwnedDecrees().map((decree) => decree.id))
+        new Set(game.getState().decreeSystem.getOwnedDecrees().map((decree) => decree.instanceId))
       )
     })
   })

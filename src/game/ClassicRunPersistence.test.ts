@@ -86,6 +86,31 @@ it('does not start, claim, overwrite or load anything just by visiting the menu'
   expect(storage.setItem).not.toHaveBeenCalled()
 })
 
+it('reports legacy migration saved only when durable IDs match the restored engine', async () => {
+  const f = fixture()
+  f.game.startNewRun(7)
+  const legacy = f.game.captureRun()
+  for (const decree of legacy.state.decreeSystem.ownedDecrees)
+    delete decree.instanceId
+  delete legacy.state.decreeSystem.nextInstanceId
+  expect((await f.repo.replace(null, legacy)).ok).toBe(true)
+  const before = disk(f.repo)
+  const played = vi.fn()
+  eventBus.on('handPlayed', played)
+  expect(await f.persistence.resume(before.raw)).toBe(true)
+  expect(f.persistence.getSnapshot()).toMatchObject({
+    status: 'saved',
+    unsaved: false,
+  })
+  expect(disk(f.repo).saved.snapshot.state.decreeSystem).toEqual(
+    f.game.captureRun().state.decreeSystem
+  )
+  expect(disk(f.repo).saved.snapshot.random).toEqual(
+    before.saved.snapshot.random
+  )
+  expect(played).not.toHaveBeenCalled()
+})
+
 it('saves only after explicit new-run intent and never captures an intermediate hand', async () => {
   const f = fixture()
   f.game.startNewRun(7)

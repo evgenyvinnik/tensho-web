@@ -109,8 +109,9 @@ it.each([7, 19, 413, 991, 2026])(
 it('accepts every catalog item with runtime editions, copies, expired stickers and consumable provenance', () => {
   const game = start()
   const saved = json(game.captureRun())
-  saved.state.decreeSystem.ownedDecrees = ALL_DECREES.map((d) => ({
+  saved.state.decreeSystem.ownedDecrees = ALL_DECREES.map((d, index) => ({
     ...d,
+    instanceId: `owned-decree-${index + 1}`,
     acquiredRound: 1,
     roundsActive: 10,
     edition: 'Polychrome',
@@ -121,7 +122,9 @@ it('accepts every catalog item with runtime editions, copies, expired stickers a
   }))
   saved.state.decreeSystem.ownedDecrees.push({
     ...saved.state.decreeSystem.ownedDecrees[0],
+    instanceId: `owned-decree-${ALL_DECREES.length + 1}`,
   })
+  saved.state.decreeSystem.nextInstanceId = ALL_DECREES.length + 2
   saved.state.fateSeals = Object.values(FATE_SEALS).map((def) => ({
     ...FateSealSystem.createFateSealInstance(def, 'Negative'),
     source: 'pack_open',

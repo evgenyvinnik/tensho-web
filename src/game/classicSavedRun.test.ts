@@ -17,6 +17,15 @@ function snapshot() {
   game.startNewRun(7)
   return game.captureRun()
 }
+function legacySnapshot() {
+  const saved = snapshot()
+  const first = saved.state.decreeSystem.ownedDecrees[0]
+  saved.state.decreeSystem.ownedDecrees = [{ ...first }, { ...first }]
+  for (const decree of saved.state.decreeSystem.ownedDecrees)
+    delete decree.instanceId
+  delete saved.state.decreeSystem.nextInstanceId
+  return saved
+}
 function successful(result: ClassicSaveResult) {
   if (!result.ok) throw new Error(`Save failed: ${result.reason}`)
   return result
@@ -82,6 +91,53 @@ it('stores and parses the complete authoritative checkpoint in one key', async (
     saved: JSON.parse(result.raw),
   })
   expect(f.data.get('unrelated-project-data')).toBe('untouched')
+})
+
+it('commits legacy identity migration atomically with the explicit ownership claim', async () => {
+  const f = fixture()
+  const first = successful(await f.repository.replace(null, legacySnapshot()))
+  f.storage.setItem.mockClear()
+  expect(f.repository.read().kind).toBe('ready')
+  expect(f.storage.setItem).not.toHaveBeenCalled() // Reading is not consent to migrate.
+  const random = runRandom.toState()
+  const claimed = successful(await f.make().claim(first.raw))
+  const decrees = claimed.saved.snapshot.state.decreeSystem
+  expect(decrees.ownedDecrees.map((d) => d.instanceId)).toEqual([
+    'owned-decree-1',
+    'owned-decree-2',
+  ])
+  expect(decrees.nextInstanceId).toBe(3)
+  expect(f.storage.setItem).toHaveBeenCalledTimes(1)
+  expect(parseClassicSavedRun(f.data.get(CLASSIC_SAVE_KEY)!).snapshot).toEqual(
+    claimed.saved.snapshot
+  )
+  expect(runRandom.toState()).toEqual(random)
+  expect(claimed.saved.snapshot.random).toEqual(first.saved.snapshot.random)
+  expect(claimed.saved.revision).toBe(first.saved.revision + 1)
+  expect(await f.repository.claim(first.raw)).toEqual({
+    ok: false,
+    reason: 'conflict',
+  })
+  expect(f.data.get(CLASSIC_SAVE_KEY)).toBe(claimed.raw)
+})
+
+it('preserves the exact legacy record if the migration write fails, then retries without changing identities', async () => {
+  const f = fixture()
+  const first = successful(await f.repository.replace(null, legacySnapshot()))
+  f.storage.setItem.mockImplementationOnce(() => {
+    throw new DOMException('Full', 'QuotaExceededError')
+  })
+  expect(await f.repository.claim(first.raw)).toEqual({
+    ok: false,
+    reason: 'unavailable',
+  })
+  expect(f.data.get(CLASSIC_SAVE_KEY)).toBe(first.raw)
+  const retried = successful(await f.repository.claim(first.raw))
+  expect(
+    retried.saved.snapshot.state.decreeSystem.ownedDecrees.map(
+      (d) => d.instanceId
+    )
+  ).toEqual(['owned-decree-1', 'owned-decree-2'])
 })
 
 it.each([

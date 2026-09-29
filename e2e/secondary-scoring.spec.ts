@@ -86,6 +86,9 @@ for (const [language, copy] of [
           forecast: game.previewScore(ids),
           before: state.score,
           disabled: state.mandateEffectSystem.getDisabledDecreeIds(),
+          amplifierInstanceId: state.decreeSystem.getOwnedDecree(
+            'decree-yaku-amplifier'
+          ).instanceId,
         }
       }, mode)
       if (mode === 'frostbite') {
@@ -94,7 +97,7 @@ for (const [language, copy] of [
         )
         expect(result.forecast.finalScore).toBe(967)
       } else {
-        expect(result.disabled).toEqual(['decree-yaku-amplifier'])
+        expect(result.disabled).toEqual([result.amplifierInstanceId])
         expect(result.forecast.finalScore).toBe(585)
         const decree = page.getByRole('button', {
           name: copy.decrees.items['decree-yaku-amplifier'].name,

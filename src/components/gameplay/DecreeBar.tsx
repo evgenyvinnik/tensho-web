@@ -233,6 +233,7 @@ export function DecreeCardCompact({
         ref={anchorRef}
         type="button"
         data-decree-scroll={decree.rarity}
+        data-decree-instance={decree.instanceId}
         className={`
           game-decree-card group relative h-20 w-16 min-h-[44px] min-w-[44px] flex-shrink-0
           overflow-visible rounded-lg border-2 bg-black/20 ${DECREE_RARITY_COLORS[decree.rarity]}
@@ -515,9 +516,9 @@ export function DecreeBar({ decrees, maxSlots, onDecreeTap }: DecreeBarProps) {
       className="flex gap-2 px-4 py-2 overflow-x-auto"
     >
       {/* Render owned decrees */}
-      {decrees.map((decree) => (
+      {decrees.map((decree, index) => (
         <DecreeCardCompact
-          key={decree.id}
+          key={decree.instanceId ?? `${decree.id}-${index}`}
           decree={decree}
           onTap={() => onDecreeTap?.(decree)}
         />

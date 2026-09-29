@@ -56,6 +56,7 @@ import {
   STARTER_DECREES,
 } from '../systems/DecreeSystem'
 import { FlowerSystem } from '../systems/FlowerSystem'
+import { decreeKey } from '../systems/decreeIdentity'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import {
   ScoringContext as SystemScoringContext,
@@ -710,7 +711,7 @@ export class GameOrchestrator {
           [decree.effect, ...(decree.extraEffects ?? [])].some(
             (effect) =>
               effect.type === 'rule_modification' && effect.ruleId === ruleId
-          ) && !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
+          ) && !this.state.mandateEffectSystem.isDecreeDisabled(decree)
       )
   }
 
@@ -2477,7 +2478,7 @@ export class GameOrchestrator {
     results: ConsumableEffectResult[],
     effects: Effect[]
   ): void {
-    let copiedDecreeId: string | null = null
+    let retainedDecreeIds: string[] = []
 
     for (const result of results) {
       const tileIds = result.affectedTiles ?? []
@@ -2535,7 +2536,10 @@ export class GameOrchestrator {
         case 'edition_applied_decree':
           if (typeof result.value === 'string') {
             const edition = this.normalizeDecreeEdition(result.value)
-            if (edition) this.applyRandomDecreeEdition(edition)
+            const target = edition
+              ? this.applyRandomDecreeEdition(edition)
+              : null
+            if (target) retainedDecreeIds = [target]
           }
           break
         case 'suit_conversion':
@@ -2572,10 +2576,10 @@ export class GameOrchestrator {
           this.applyRandomDecreeEdition('Negative')
           break
         case 'decree_copied':
-          copiedDecreeId = this.copyRandomDecree()
+          retainedDecreeIds = this.copyRandomDecree()
           break
         case 'decrees_destroyed':
-          this.destroyOtherDecrees(copiedDecreeId)
+          this.destroyOtherDecrees(retainedDecreeIds)
           break
         case 'all_yaku_upgraded':
           this.upgradeAllYaku()
@@ -2907,32 +2911,36 @@ export class GameOrchestrator {
     }
   }
 
-  private applyRandomDecreeEdition(edition: DecreeEdition): boolean {
+  private applyRandomDecreeEdition(edition: DecreeEdition): string | null {
     const decrees = this.state.decreeSystem.getOwnedDecrees()
-    if (decrees.length === 0) return false
+    if (decrees.length === 0) return null
     const decree =
       decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
-    return this.state.decreeSystem.applyEdition(decree.id, edition)
+    const key = decreeKey(decree)
+    return this.state.decreeSystem.applyEdition(key, edition) ? key : null
   }
 
-  private copyRandomDecree(): string | null {
+  private copyRandomDecree(): string[] {
     const decrees = this.state.decreeSystem.getOwnedDecrees()
     if (
       decrees.length === 0 ||
       this.state.decreeSystem.getAvailableSlots() <= 0
     ) {
-      return null
+      return []
     }
 
     const decree =
       decrees[Math.floor(runRandom.next('decrees') * decrees.length)]
-    return this.state.decreeSystem.acquireDecree(decree) ? decree.id : null
+    const copy = this.state.decreeSystem.acquireDecree(decree)
+    // Keep the chosen original and its new copy, not its whole catalog family.
+    return copy ? [decreeKey(decree), decreeKey(copy)] : []
   }
 
-  private destroyOtherDecrees(keepId: string | null): void {
-    if (!keepId) return
+  private destroyOtherDecrees(keepIds: string[]): void {
+    if (keepIds.length === 0) return
     for (const decree of this.state.decreeSystem.getOwnedDecrees()) {
-      if (decree.id !== keepId) this.state.decreeSystem.removeDecree(decree.id)
+      const key = decreeKey(decree)
+      if (!keepIds.includes(key)) this.state.decreeSystem.removeDecree(key)
     }
   }
 
@@ -2992,8 +3000,7 @@ export class GameOrchestrator {
       decrees: this.state.decreeSystem
         .getOwnedDecrees()
         .filter(
-          (decree) =>
-            !this.state.mandateEffectSystem.isDecreeDisabled(decree.id)
+          (decree) => !this.state.mandateEffectSystem.isDecreeDisabled(decree)
         ),
       flowers: this.state.flowerSystem.getCollection(),
       season: this.state.seasonSystem.getState(),
@@ -3323,7 +3330,7 @@ export class GameOrchestrator {
     }
 
     if (rule.consumedOnUse) {
-      this.state.decreeSystem.removeDecree(saver.id)
+      this.state.decreeSystem.removeDecree(decreeKey(saver))
       effects.push({
         type: 'decree_triggered',
         description: `${saver.name} prevented the loss and was consumed`,
@@ -3383,7 +3390,7 @@ export class GameOrchestrator {
       )
       if (!doomed) continue
 
-      this.state.decreeSystem.removeDecree(decree.id)
+      this.state.decreeSystem.removeDecree(decreeKey(decree))
       effects.push({
         type: 'decree_triggered',
         description: `${decree.name} shattered with the lost Boss round`,
@@ -3876,9 +3883,7 @@ export class GameOrchestrator {
       }
     }
 
-    const decree = this.state.decreeSystem
-      .getOwnedDecrees()
-      .find((candidate) => candidate.id === decreeId)
+    const decree = this.state.decreeSystem.getOwnedDecree(decreeId)
     if (!decree) {
       return { success: false, effects: [], errors: ['Decree not found'] }
     }

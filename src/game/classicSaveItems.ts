@@ -96,8 +96,20 @@ const decreeRuntime = {
   sellValue: optional(nonnegative),
 }
 export const decree = catalog(ALL_DECREES, decreeRuntime)
+export const decreeInstanceCounter: Check = (v, p) => {
+  positive(v, p)
+  // Leave room for all items permitted by the snapshot's bounded arrays.
+  if ((v as number) > Number.MAX_SAFE_INTEGER - 20_001) invalid(p)
+}
+const decreeInstanceId: Check = (v, p) => {
+  id(v, p)
+  const match = /^owned-decree-([1-9]\d*)$/.exec(v as string)
+  if (!match) invalid(p)
+  decreeInstanceCounter(Number(match[1]), p)
+}
 export const ownedDecree = catalog(ALL_DECREES, {
   ...decreeRuntime,
+  instanceId: optional(decreeInstanceId),
   acquiredRound: count,
   roundsActive: count,
   scalingValue: optional(nonnegative),

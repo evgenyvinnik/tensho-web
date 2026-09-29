@@ -44,6 +44,7 @@ import {
   charter,
   charterId,
   consumable,
+  decreeInstanceCounter,
   flower,
   mandate,
   offering,
@@ -149,6 +150,37 @@ const meld: Check = (v, p) => {
   // Decrees can change legality; don't re-evaluate the meld under default rules.
 }
 
+const decreeSystem: Check = (v, p) => {
+  schema<ClassicRunState['decreeSystem']>({
+    ownedDecrees: array(ownedDecree),
+    maxSlots: count,
+    currentRound: count,
+    nextInstanceId: optional(decreeInstanceCounter),
+  })(v, p)
+  const data = v as ClassicRunState['decreeSystem']
+  const seen = new Set<string>()
+  for (const decree of data.ownedDecrees) {
+    // Only the all-legacy shape may omit identities. Partially stripped new
+    // checkpoints must not silently reset allocation or remap physical targets.
+    if (
+      (decree.instanceId !== undefined) !==
+      (data.nextInstanceId !== undefined)
+    ) {
+      invalid(`${p}.ownedDecrees.instanceId`)
+    }
+    if (!decree.instanceId) continue // Legacy saves acquire IDs on restoration.
+    if (seen.has(decree.instanceId)) invalid(`${p}.ownedDecrees.instanceId`)
+    seen.add(decree.instanceId)
+    if (
+      data.nextInstanceId !== undefined &&
+      Number(decree.instanceId.slice('owned-decree-'.length)) >=
+        data.nextInstanceId
+    ) {
+      invalid(`${p}.nextInstanceId`)
+    }
+  }
+}
+
 const stateFields = {
   isRunActive: bool,
   seed: integer,
@@ -191,11 +223,7 @@ const stateFields = {
   deadWall: tiles,
   discards: tiles,
   drawIndex: count,
-  decreeSystem: schema<ClassicRunState['decreeSystem']>({
-    ownedDecrees: array(ownedDecree),
-    maxSlots: count,
-    currentRound: count,
-  }),
+  decreeSystem,
   flowerSystem: schema<ClassicRunState['flowerSystem']>({
     flowers: keyed(flower, 'type'),
     unlockedMutations: array(

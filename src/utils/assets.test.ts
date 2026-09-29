@@ -21,7 +21,7 @@ it('ships the generated guidebook with an alpha-capable PNG in the project', () 
 })
 
 describe('Decree scroll illustrations', () => {
-  it.each(STARTER_DECREES)(
+  it.each([...STARTER_DECREES, { id: 'decree-half-suited' }])(
     'ships a compact transparent portrait for $id',
     ({ id }) => {
       const path = getDecreeIllustration(id)!

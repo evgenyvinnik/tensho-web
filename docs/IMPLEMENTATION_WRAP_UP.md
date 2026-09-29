@@ -1,10 +1,30 @@
 # Implementation wrap-up
 
-**Updated:** September 26, 2026
+**Updated:** September 29, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
+
+## Physical Decree identity checkpoint — verified locally, publication pending
+
+Duplicate scrolls now have durable physical identities for exact-copy sales,
+edition changes, removal, Crimson Heart suppression and Amber Acorn ordering.
+Copied Perishable timers are independent. Hex now destroys other Decrees as
+advertised; Ankh preserves its chosen original and copy, not every same-name
+sibling. Eternal/Ash protection and Negative capacity remain accounted for.
+Legacy saves migrate without consuming RNG, and incomplete new identity data is
+rejected. A new generated Half Suited portrait is integrated through the existing
+catalog-based art lookup. The [identity ledger](DECREE_IDENTITY_IMPLEMENTATION.md)
+records the exact prompt, asset, baseline failures and verification limits.
+Final verification passed **1,435/1,435 tests in 122 files**, **38/38 desktop/touch
+browser cases**, strict TypeScript, targeted lint, 13 release checks and the
+Pages-base build. Production desktop/320px touch checks passed real play, legacy
+migration, exact-copy sale and resume, and Table Loop continuation without page
+errors. The ledger retains earlier failures, including a genuine durable-migration
+defect repaired with three failing-first tests and a documentation-triggered Vite
+reload during verification. Commit and public deployment are pending. This does
+not resolve other mechanics choices or establish whole-project completion.
 
 ## Latest save-aware update checkpoint
 

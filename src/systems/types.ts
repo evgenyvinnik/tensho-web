@@ -332,6 +332,8 @@ export interface Decree {
  * Runtime state for an owned decree
  */
 export interface OwnedDecree extends Decree {
+  /** Physical inventory identity. Absent only in legacy snapshots/fixtures. */
+  instanceId?: string
   acquiredRound: number
   roundsActive: number
   scalingValue?: number // Current value for scaling effects

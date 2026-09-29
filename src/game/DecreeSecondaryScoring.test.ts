@@ -178,7 +178,7 @@ it('honors an actual Crimson Heart activation, then restores the Decree on deact
     ).success
   ).toBe(true)
   expect(state.mandateEffectSystem.getDisabledDecreeIds()).toEqual([
-    'decree-yaku-amplifier',
+    state.decreeSystem.getOwnedDecree('decree-yaku-amplifier')!.instanceId,
   ])
   expect(game.previewScore(ids)!.finalScore).toBe(base.finalScore)
   state.mandateEffectSystem.deactivateMandate()

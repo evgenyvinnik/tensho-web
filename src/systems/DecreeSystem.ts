@@ -24,6 +24,7 @@ import { DragonType, Tile, TileSuit } from '../core/Tile'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 import { runRandom } from '../game/RunRandom'
+import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 
 /**
  * Every effect a Decree carries: its primary effect plus any extras from
@@ -581,6 +582,7 @@ export class DecreeSystem {
   private ownedDecrees: OwnedDecree[] = []
   private maxSlots: number = 5
   private currentRound: number = 0
+  private nextInstanceId: number = 1
 
   constructor(initialSlots: number = 5) {
     this.maxSlots = initialSlots
@@ -591,6 +593,22 @@ export class DecreeSystem {
    */
   getOwnedDecrees(): OwnedDecree[] {
     return [...this.ownedDecrees]
+  }
+
+  /** Prefer an exact physical ID; retain catalog lookup for legacy callers. */
+  getOwnedDecree(id: string): OwnedDecree | undefined {
+    return (
+      this.ownedDecrees.find((d) => d.instanceId === id) ??
+      this.ownedDecrees.find((d) => d.id === id)
+    )
+  }
+
+  private allocateInstanceId(): string {
+    let id: string
+    do {
+      id = `owned-decree-${this.nextInstanceId++}`
+    } while (this.ownedDecrees.some((d) => d.instanceId === id))
+    return id
   }
 
   /**
@@ -645,9 +663,13 @@ export class DecreeSystem {
 
     const ownedDecree: OwnedDecree = {
       ...decree,
+      instanceId: this.allocateInstanceId(),
       acquiredRound: this.currentRound,
       roundsActive: 0,
-      sticker: sticker ?? decree.sticker,
+      sticker:
+        (sticker ?? decree.sticker)
+          ? { ...(sticker ?? decree.sticker)! }
+          : undefined,
       scalingValue: decree.effect.type === 'scaling' ? 0 : undefined,
     }
 
@@ -659,7 +681,7 @@ export class DecreeSystem {
    * Sell a decree for gold
    */
   sellDecree(decreeId: string): number {
-    const index = this.ownedDecrees.findIndex((d) => d.id === decreeId)
+    const index = this.ownedDecrees.indexOf(this.getOwnedDecree(decreeId)!)
     if (index === -1) {
       return 0
     }
@@ -681,7 +703,7 @@ export class DecreeSystem {
    * Remove a decree without selling
    */
   removeDecree(decreeId: string): boolean {
-    const index = this.ownedDecrees.findIndex((d) => d.id === decreeId)
+    const index = this.ownedDecrees.indexOf(this.getOwnedDecree(decreeId)!)
     if (index === -1) {
       return false
     }
@@ -698,9 +720,7 @@ export class DecreeSystem {
 
   /** Apply or replace a Decree edition while keeping Negative capacity balanced. */
   applyEdition(decreeId: string, edition: Decree['edition']): boolean {
-    const decree = this.ownedDecrees.find(
-      (candidate) => candidate.id === decreeId
-    )
+    const decree = this.getOwnedDecree(decreeId)
     if (!decree || !edition) return false
 
     if (decree.edition === 'Negative' && edition !== 'Negative') {
@@ -786,7 +806,7 @@ export class DecreeSystem {
    */
   getActiveDecrees(excludedIds?: ReadonlySet<string>): OwnedDecree[] {
     return this.ownedDecrees.filter(
-      (d) => !d.isDebuffed && !excludedIds?.has(d.id)
+      (d) => !d.isDebuffed && !isDecreeExcluded(d, excludedIds)
     )
   }
 
@@ -826,7 +846,7 @@ export class DecreeSystem {
       )) {
         // Preserve physical neighbors: a disabled target must not make a copier
         // jump to another Decree. Callers supply the complete owned order.
-        if (target.isDebuffed || excludedIds?.has(target.id)) continue
+        if (target.isDebuffed || isDecreeExcluded(target, excludedIds)) continue
         resolved.push(
           ...allEffectsOf(target).filter(
             (inner) => inner.type !== 'copy_decree'
@@ -999,11 +1019,11 @@ export class DecreeSystem {
   ): ScoreBreakdown {
     let breakdown = { ...currentBreakdown }
 
-    const contextDecreeIds = new Set(context.decrees.map((decree) => decree.id))
+    const contextDecreeIds = new Set(context.decrees.map(decreeKey))
     const excludedIds = new Set(
       this.ownedDecrees
-        .filter((decree) => !contextDecreeIds.has(decree.id))
-        .map((decree) => decree.id)
+        .filter((decree) => !contextDecreeIds.has(decreeKey(decree)))
+        .map(decreeKey)
     )
     const activeDecrees = this.getActiveDecrees(excludedIds)
 
@@ -1371,11 +1391,13 @@ export class DecreeSystem {
     ownedDecrees: OwnedDecree[]
     maxSlots: number
     currentRound: number
+    nextInstanceId?: number
   } {
     return {
-      ownedDecrees: [...this.ownedDecrees],
+      ownedDecrees: structuredClone(this.ownedDecrees),
       maxSlots: this.maxSlots,
       currentRound: this.currentRound,
+      nextInstanceId: this.nextInstanceId,
     }
   }
 
@@ -1386,9 +1408,24 @@ export class DecreeSystem {
     ownedDecrees: OwnedDecree[]
     maxSlots: number
     currentRound: number
+    nextInstanceId?: number
   }): DecreeSystem {
     const system = new DecreeSystem(state.maxSlots)
-    system.ownedDecrees = [...state.ownedDecrees]
+    system.ownedDecrees = structuredClone(state.ownedDecrees)
+    // Old saves have no physical IDs. Assign them deterministically, without
+    // consuming the gameplay RNG or collapsing duplicate catalog entries.
+    system.nextInstanceId = state.nextInstanceId ?? 1
+    for (const decree of system.ownedDecrees) {
+      const number = /^owned-decree-(\d+)$/.exec(decree.instanceId ?? '')
+      if (number)
+        system.nextInstanceId = Math.max(
+          system.nextInstanceId,
+          Number(number[1]) + 1
+        )
+    }
+    for (const decree of system.ownedDecrees) {
+      decree.instanceId ??= system.allocateInstanceId()
+    }
     system.currentRound = state.currentRound
     return system
   }
