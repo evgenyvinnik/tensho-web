@@ -1,6 +1,6 @@
 # Perishable lifetime and Phoenix portrait
 
-September 29, 2026. Verified checkpoint; publication pending.
+September 29, 2026. Published as **v1.0.260929-4**.
 
 ## Rule and reproduced defect
 
@@ -56,7 +56,19 @@ approval. Existing save counters are retained, not replenished on upgrade.
   used abbreviated catalog definitions and was correctly rejected by the save
   validator; its fixture was corrected to the actual catalog definitions, with
   no application or validation relaxation.
-- Publication and independent CI verification are pending.
+- Final targeted lint passed. Local release checks passed 11/13; two subprocess
+  deadline failures occurred (fixture Git startup and publication subprocess).
+  These are retained as failures, not a clean local release-suite result.
+- Independent [CI run 36637383093](https://github.com/evgenyvinnik/tensho-web/actions/runs/36637383093)
+  passed **13/13 release checks** and **1,466/1,466 application tests in 126
+  files**, built successfully and deployed. Implementation commit:
+  `92323c26e56f1e332b1fbe98a64db4c1f072643c`; built/tag commit:
+  `d96e84c84ff6e9243e9f7588c73e390c118b016a`.
+- The public `release.json`, remote tag and visible menu version agree on
+  **1.0.260929-4**. Hosted desktop/320px touch checks passed skip preservation,
+  loaded Phoenix artwork, last-round rescue and payout, and exact shop reload,
+  without JavaScript errors. CI and hosted logs are retained alongside the
+  earlier results in the artifact directory above.
 
 ## New artwork
 
