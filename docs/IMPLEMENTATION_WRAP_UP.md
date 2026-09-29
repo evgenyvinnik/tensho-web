@@ -8,7 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Published Decree expiry and modifier details
 
-Perishable counters now stop at zero so later rounds can still be saved. Owned
+The next [combined-sticker checkpoint](COMBINED_STICKERS_IMPLEMENTATION.md)
+retains Rental alongside Eternal/Perishable through the live shop, owned-copy
+effects, actual round payouts, save/restore and localized details. A native
+mobile first-paint overflow was also repaired. Final desktop/touch browser
+regression passed **60/60**; publication verification is pending. The earlier
+full local unit run had nine five-second timeouts, and all eight affected files
+passed **78/78 unchanged** afterward; both results are retained in the ledger.
+
+Perishable counters now stop at zero; negative legacy counters were already
+accepted by the save parser (the earlier save-failure claim was incorrect). Owned
 and shop scrolls share localized edition, Rental and expiry descriptions, and
 face-down Eternal sale labels no longer reveal the item name. Popup reflow and
 motion preferences are covered on short screens. Five failing-first regressions

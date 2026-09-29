@@ -35,6 +35,7 @@ import {
   type DecreeModifierSource,
 } from '../../i18n/decreeModifiers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
+import { getDecreeStickers } from '../../systems/decreeStickers'
 
 const AnimatedDiv = animated('div')
 
@@ -243,7 +244,7 @@ function StickerIndicator({ sticker }: StickerIndicatorProps) {
 
   return (
     <div
-      className={`absolute z-10 top-1 right-1 px-1.5 py-0.5 rounded text-xs font-bold ${style.bg} ${style.text}`}
+      className={`px-1.5 py-0.5 rounded text-xs font-bold ${style.bg} ${style.text}`}
       title={`${details.name}: ${details.description}`}
       aria-hidden="true"
     >
@@ -283,7 +284,7 @@ export function ShopItemCard({
   let japaneseName = ''
   let description = ''
   let rarity = 'common'
-  let sticker: Sticker | undefined
+  let stickers: readonly Sticker[] = []
   let decreeId: string | undefined
   let voidScript: VoidScript | undefined
   let decreeModifiers: DecreeModifierSource | undefined
@@ -295,7 +296,7 @@ export function ShopItemCard({
       japaneseName = '' // Would come from localization
       description = itemText.description('decrees', decree)
       rarity = decree.rarity
-      sticker = decree.sticker
+      stickers = getDecreeStickers(decree)
       decreeModifiers = {
         ...decree,
         edition: decree.edition ?? offering.edition,
@@ -351,7 +352,7 @@ export function ShopItemCard({
     ? t(`editions.items.${offering.edition.toLowerCase()}.name`)
     : null
   const hasDecreeModifiers = Boolean(
-    decreeModifiers?.edition || decreeModifiers?.sticker
+    decreeModifiers?.edition || stickers.length
   )
 
   // Animation spring
@@ -399,7 +400,11 @@ export function ShopItemCard({
       <div className="absolute inset-0 bg-[var(--color-dark-forest)]" />
 
       {/* Sticker indicator */}
-      {sticker && <StickerIndicator sticker={sticker} />}
+      <div className="absolute z-10 top-1 right-1 flex gap-1">
+        {stickers.map((sticker) => (
+          <StickerIndicator key={sticker.type} sticker={sticker} />
+        ))}
+      </div>
 
       {/* Content */}
       <div className="relative flex h-full min-h-[194px] flex-col p-3 sm:min-h-[210px]">

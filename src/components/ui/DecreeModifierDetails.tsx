@@ -21,7 +21,7 @@ export function DecreeModifierDetails({
       className="mt-3 space-y-2 rounded-lg border border-amber-200/20 bg-black/20 p-2.5 text-left text-xs leading-relaxed break-words"
     >
       {entries.map((entry) => (
-        <div key={entry.kind}>
+        <div key={entry.id}>
           <dt className="font-bold text-[var(--color-golden-yellow)]">
             {entry.name}
           </dt>

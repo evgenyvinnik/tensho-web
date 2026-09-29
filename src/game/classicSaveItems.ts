@@ -20,7 +20,12 @@ import {
   TEA_HOUSE_UPGRADED_CHARTERS,
   type SerializedTeaHouseOffering,
 } from '../systems/TeaHouseSystem'
-import type { BlessingPack, FlowerTile, SeasonTile } from '../systems/types'
+import type {
+  BlessingPack,
+  Decree,
+  FlowerTile,
+  SeasonTile,
+} from '../systems/types'
 import type { PackContent, PackOffering } from '../systems/BlessingPackSystem'
 import {
   type Check,
@@ -83,19 +88,34 @@ export const tile: Check = (v, p) => {
   // runtime flag; do not impose the starting-wall red-five constraint here.
 }
 export const tiles = keyed(tile, 'id')
+const sticker = object({
+  type: choice(['Eternal', 'Perishable', 'Rental']),
+  roundsRemaining: optional(integer),
+  goldPerRound: optional(nonnegative),
+})
 const decreeRuntime = {
   edition: optional(tableStakeEdition),
-  sticker: optional(
-    object({
-      type: choice(['Eternal', 'Perishable', 'Rental']),
-      roundsRemaining: optional(integer),
-      goldPerRound: optional(nonnegative),
-    })
-  ),
+  sticker: optional(sticker),
+  stickers: optional(array(sticker)),
   isDebuffed: optional(bool),
   sellValue: optional(nonnegative),
 }
-export const decree = catalog(ALL_DECREES, decreeRuntime)
+function withValidStickers(check: Check): Check {
+  return (v, p) => {
+    check(v, p)
+    const data = v as Decree
+    if (!data.stickers) return // Preserve legacy single-sticker snapshots exactly.
+    const types = data.stickers.map((entry) => entry.type)
+    if (
+      data.sticker ||
+      types.length > 2 ||
+      new Set(types).size !== types.length ||
+      (types.includes('Eternal') && types.includes('Perishable'))
+    )
+      invalid(`${p}.stickers`)
+  }
+}
+export const decree = withValidStickers(catalog(ALL_DECREES, decreeRuntime))
 export const decreeInstanceCounter: Check = (v, p) => {
   positive(v, p)
   // Leave room for all items permitted by the snapshot's bounded arrays.
@@ -107,13 +127,15 @@ const decreeInstanceId: Check = (v, p) => {
   if (!match) invalid(p)
   decreeInstanceCounter(Number(match[1]), p)
 }
-export const ownedDecree = catalog(ALL_DECREES, {
-  ...decreeRuntime,
-  instanceId: optional(decreeInstanceId),
-  acquiredRound: count,
-  roundsActive: count,
-  scalingValue: optional(nonnegative),
-})
+export const ownedDecree = withValidStickers(
+  catalog(ALL_DECREES, {
+    ...decreeRuntime,
+    instanceId: optional(decreeInstanceId),
+    acquiredRound: count,
+    roundsActive: count,
+    scalingValue: optional(nonnegative),
+  })
+)
 const consumableRuntime = {
   instanceId: id,
   isUsed: bool,

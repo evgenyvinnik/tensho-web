@@ -32,6 +32,7 @@ import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'
 import { useItemText } from '../../i18n/useItemText'
 import { decreeModifierText } from '../../i18n/decreeModifiers'
+import { hasDecreeSticker } from '../../systems/decreeStickers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
@@ -101,7 +102,7 @@ export function DecreeCardCompact({
   const [showPopover, setShowPopover] = useState(false)
   const [position, setPosition] = useState<PopoverPosition | null>(null)
   const itemText = useItemText()
-  const stickerText = decreeModifierText(decree, t, i18n.language).find(
+  const stickerText = decreeModifierText(decree, t, i18n.language).filter(
     (entry) => entry.kind === 'sticker'
   )
   // Hidden Decrees must never reveal their identity through custom artwork.
@@ -109,7 +110,7 @@ export function DecreeCardCompact({
   const decreeName = itemText.name('decrees', decree)
   const decreeDescription = itemText.description('decrees', decree)
   const isSuppressed = decree.isDebuffed || disabledByMandate
-  const canSell = decree.sticker?.type !== 'Eternal'
+  const canSell = !hasDecreeSticker(decree, 'Eternal')
   const sellValue = decree.sellValue ?? Math.floor(decree.cost / 2)
   const displayName = faceDown
     ? t('gameplay.hiddenDecreeTitle', 'Hidden Decree')
@@ -170,22 +171,17 @@ export function DecreeCardCompact({
 
   useLayoutEffect(() => {
     if (!showPopover) return
-    updatePosition()
-    // Measure layout height, not the temporarily scaled entrance animation.
-    // Reflow from translations, modifier changes or fonts must stay in bounds.
-    const measure = () => {
-      if (popoverRef.current) updatePosition(popoverRef.current.offsetHeight)
-    }
+    const popup = popoverRef.current
+    // The first pass gives the portal its width. Once mounted, measure in the
+    // layout phase before paint, not a later animation frame: long translated
+    // modifier lists otherwise flash below the phone viewport before moving.
+    updatePosition(popup?.offsetHeight)
+    if (!popup) return
+    const measure = () => updatePosition(popup.offsetHeight)
     const observer = new ResizeObserver(measure)
-    const frame = window.requestAnimationFrame(() => {
-      measure()
-      if (popoverRef.current) observer.observe(popoverRef.current)
-    })
-    return () => {
-      window.cancelAnimationFrame(frame)
-      observer.disconnect()
-    }
-  }, [showPopover, updatePosition])
+    observer.observe(popup)
+    return () => observer.disconnect()
+  }, [showPopover, position?.width, updatePosition])
 
   useEffect(() => {
     if (!showPopover) return
@@ -296,13 +292,20 @@ export function DecreeCardCompact({
           ) : null}
         </span>
 
-        {decree.sticker && !faceDown && (
+        {!!stickerText.length && !faceDown && (
           <span
+            className="absolute right-0 top-0 flex gap-0.5"
             aria-hidden="true"
-            title={`${stickerText?.name}: ${stickerText?.description}`}
-            className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-full border border-amber-200/80 bg-[#14251d] px-1 text-[9px] font-black text-amber-100 shadow"
           >
-            {stickerText?.badge}
+            {stickerText.map((entry) => (
+              <span
+                key={entry.id}
+                title={`${entry.name}: ${entry.description}`}
+                className="flex h-4 min-w-4 items-center justify-center rounded-full border border-amber-200/80 bg-[#14251d] px-1 text-[9px] font-black text-amber-100 shadow"
+              >
+                {entry.badge}
+              </span>
+            ))}
           </span>
         )}
 

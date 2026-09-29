@@ -1,9 +1,10 @@
 import type { TFunction } from 'i18next'
 import type { Decree } from '../systems/types'
+import { getDecreeStickers } from '../systems/decreeStickers'
 
 export type DecreeModifierSource = Pick<
   Decree,
-  'edition' | 'sticker' | 'isDebuffed'
+  'edition' | 'sticker' | 'stickers' | 'isDebuffed'
 >
 
 /** Text describes the actual offered/owned copy, never a guessed default timer. */
@@ -14,6 +15,7 @@ export function decreeModifierText(
 ) {
   const entries: {
     kind: 'edition' | 'sticker'
+    id: string
     name: string
     description: string
     badge?: string
@@ -23,12 +25,12 @@ export function decreeModifierText(
     const key = decree.edition.toLowerCase()
     entries.push({
       kind: 'edition',
+      id: decree.edition,
       name: t(`editions.items.${key}.name`),
       description: t(`editions.items.${key}.description`),
     })
   }
-  const sticker = decree.sticker
-  if (sticker) {
+  for (const sticker of getDecreeStickers(decree)) {
     const key = sticker.type.toLowerCase()
     let description = t(`decreeModifiers.${key}Description`)
     let badge = '∞'
@@ -48,6 +50,7 @@ export function decreeModifierText(
     }
     entries.push({
       kind: 'sticker',
+      id: sticker.type,
       name: t(`decreeModifiers.${key}Name`),
       description,
       badge,

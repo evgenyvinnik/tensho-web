@@ -30,8 +30,10 @@ The existing images are retained; this change does not need another bitmap.
 
 Five failing-first regressions reproduced:
 
-1. Perishable timers became negative on rounds after expiry. The public save
-   parser permits only nonnegative counters, so later checkpoints could fail.
+1. Perishable timers became negative on rounds after expiry. They now stop at
+   zero. Correction: this was a countdown defect, not a demonstrated save
+   failure. The parser already accepted negative legacy expiry counters, and
+   that compatibility remains covered by the all-catalog save test.
 2. A concealed Eternal Decree's disabled Sell button exposed its real name in
    the accessible label.
 3. Owned details omitted edition effects and the actual Rental fee.

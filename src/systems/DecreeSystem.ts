@@ -25,6 +25,7 @@ import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 import { runRandom } from '../game/RunRandom'
 import { decreeKey, isDecreeExcluded } from './decreeIdentity'
+import { getDecreeStickers, hasDecreeSticker } from './decreeStickers'
 
 /**
  * Every effect a Decree carries: its primary effect plus any extras from
@@ -670,6 +671,9 @@ export class DecreeSystem {
         (sticker ?? decree.sticker)
           ? { ...(sticker ?? decree.sticker)! }
           : undefined,
+      stickers: sticker
+        ? undefined
+        : decree.stickers?.map((entry) => ({ ...entry })),
       scalingValue: decree.effect.type === 'scaling' ? 0 : undefined,
     }
 
@@ -689,7 +693,7 @@ export class DecreeSystem {
     const decree = this.ownedDecrees[index]
 
     // Eternal decrees cannot be sold
-    if (decree.sticker?.type === 'Eternal') {
+    if (hasDecreeSticker(decree, 'Eternal')) {
       return 0
     }
 
@@ -709,7 +713,7 @@ export class DecreeSystem {
     }
 
     const decree = this.ownedDecrees[index]
-    if (decree.sticker?.type === 'Eternal') {
+    if (hasDecreeSticker(decree, 'Eternal')) {
       return false
     }
 
@@ -742,15 +746,18 @@ export class DecreeSystem {
       decree.roundsActive++
 
       // Handle Perishable sticker
-      if (decree.sticker?.type === 'Perishable') {
-        if (decree.sticker.roundsRemaining !== undefined) {
-          // Expiry is terminal. Negative timers make otherwise valid later
-          // checkpoints fail the save parser's nonnegative counter contract.
-          decree.sticker.roundsRemaining = Math.max(
+      const perishable = getDecreeStickers(decree).find(
+        (entry) => entry.type === 'Perishable'
+      )
+      if (perishable) {
+        if (perishable.roundsRemaining !== undefined) {
+          // Expiry is terminal. Legacy saves may contain negative timers;
+          // normalize them on the next round, without rejecting those saves.
+          perishable.roundsRemaining = Math.max(
             0,
-            decree.sticker.roundsRemaining - 1
+            perishable.roundsRemaining - 1
           )
-          if (decree.sticker.roundsRemaining <= 0) {
+          if (perishable.roundsRemaining <= 0) {
             decree.isDebuffed = true
           }
         }
@@ -764,8 +771,11 @@ export class DecreeSystem {
   calculateRentalCosts(): number {
     let totalCost = 0
     for (const decree of this.ownedDecrees) {
-      if (decree.sticker?.type === 'Rental') {
-        totalCost += decree.sticker.goldPerRound ?? 3
+      const rental = getDecreeStickers(decree).find(
+        (entry) => entry.type === 'Rental'
+      )
+      if (rental) {
+        totalCost += rental.goldPerRound ?? 3
       }
     }
     return totalCost

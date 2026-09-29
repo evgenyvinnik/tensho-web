@@ -24,6 +24,52 @@ const decree: OwnedDecree = {
 }
 
 describe('DecreeCardCompact mandate states', () => {
+  it('measures a tall popup before its first paint instead of waiting for an animation frame', () => {
+    const height = vi
+      .spyOn(HTMLElement.prototype, 'offsetHeight', 'get')
+      .mockReturnValue(700)
+    try {
+      render(<DecreeCardCompact decree={decree} />)
+      const button = screen.getByRole('button', { name: 'River Tax' })
+      vi.spyOn(button, 'getBoundingClientRect').mockReturnValue(
+        new DOMRect(0, 200, 64, 80)
+      )
+      fireEvent.click(button)
+      const dialog = screen.getByRole('dialog')
+      expect(height).toHaveBeenCalled()
+      expect(dialog.style.top).toBe(
+        `${Math.max(12, window.innerHeight - 700 - 12)}px`
+      )
+    } finally {
+      height.mockRestore()
+    }
+  })
+  it('explains both stickers, disables Eternal sale, and conceals both while face-down', () => {
+    const onSell = vi.fn()
+    const owned: OwnedDecree = {
+      ...decree,
+      stickers: [{ type: 'Eternal' }, { type: 'Rental', goldPerRound: 3 }],
+    }
+    const { rerender } = render(
+      <DecreeCardCompact decree={owned} onSell={onSell} />
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'River Tax' }))
+    expect(
+      screen.getByRole('dialog').querySelectorAll('[data-decree-modifiers] dt')
+    ).toHaveLength(2)
+    expect(screen.getByRole('dialog')).toHaveTextContent('Rental')
+    expect(
+      screen.getByRole('button', {
+        name: 'River Tax is Eternal and cannot be sold',
+      })
+    ).toBeDisabled()
+    rerender(<DecreeCardCompact decree={owned} onSell={onSell} faceDown />)
+    expect(
+      screen.getByRole('dialog').querySelector('[data-decree-modifiers]')
+    ).toBeNull()
+    expect(screen.queryByTitle(/Rental/)).not.toBeInTheDocument()
+    expect(onSell).not.toHaveBeenCalled()
+  })
   it.each([
     ...STARTER_DECREES,
     ALL_DECREES.find((d) => d.id === 'decree-half-suited')!,

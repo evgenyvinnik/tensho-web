@@ -323,7 +323,9 @@ export interface Decree {
   flowerRequirement?: number // Number of flowers needed to activate
   cost: number // Base purchase cost in gold
   sellValue?: number // Value when sold (default: cost / 2)
+  /** Legacy single-sticker saves. New offers use stickers; never set both. */
   sticker?: Sticker
+  stickers?: Sticker[]
   edition?: DecreeEdition
   isDebuffed?: boolean // If true, effect is disabled
 }

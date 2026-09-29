@@ -57,6 +57,7 @@ import {
 } from '../systems/DecreeSystem'
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { decreeKey } from '../systems/decreeIdentity'
+import { hasDecreeSticker } from '../systems/decreeStickers'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import {
   ScoringContext as SystemScoringContext,
@@ -3887,7 +3888,7 @@ export class GameOrchestrator {
     if (!decree) {
       return { success: false, effects: [], errors: ['Decree not found'] }
     }
-    if (decree.sticker?.type === 'Eternal') {
+    if (hasDecreeSticker(decree, 'Eternal')) {
       return {
         success: false,
         effects: [],

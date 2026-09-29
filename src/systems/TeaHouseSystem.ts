@@ -512,22 +512,27 @@ export class TeaHouseSystem {
     const edition = this.generateRandomEdition()
 
     // Determine sticker based on stake
-    const sticker = this.generateSticker()
+    const stickers = this.generateStickers()
 
     // Calculate costs
     const costRange = DECREE_BASE_COST_RANGES[decree.rarity]
-    const baseCost =
-      sticker?.type === 'Rental'
+    // Keep the legacy cost draw when the first sticker is not Rental, so
+    // retaining a second sticker does not shift subsequent seeded shop rolls.
+    const rolledCost =
+      stickers[0]?.type === 'Rental'
         ? 1 // Rental items cost only 1 Gold
         : Math.floor(this.random() * (costRange.max - costRange.min + 1)) +
           costRange.min
+    const baseCost = stickers.some((entry) => entry.type === 'Rental')
+      ? 1
+      : rolledCost
 
     const { finalCost, editionCost, sellValue } =
       this.pricingCalculator.calculateDecreeCost(baseCost, edition)
 
     const decreeWithSticker: Decree = {
       ...decree,
-      sticker,
+      stickers,
       edition,
     }
 
@@ -883,9 +888,9 @@ export class TeaHouseSystem {
   /**
    * Generate a sticker based on current stake
    */
-  private generateSticker(): Sticker | undefined {
+  private generateStickers(): Sticker[] {
     // Stickers only appear at higher stakes
-    if (this.currentStake < 4) return undefined
+    if (this.currentStake < 4) return []
 
     const stickerChance = 0.3
     const stickers: StickerType[] = []
@@ -905,25 +910,16 @@ export class TeaHouseSystem {
       stickers.push('Rental')
     }
 
-    if (stickers.length === 0) return undefined
-
     // Cannot have both Eternal and Perishable
     if (stickers.includes('Eternal') && stickers.includes('Perishable')) {
       stickers.splice(stickers.indexOf('Perishable'), 1)
     }
 
-    const primarySticker = stickers[0]
-
-    switch (primarySticker) {
-      case 'Eternal':
-        return { type: 'Eternal' }
-      case 'Perishable':
-        return { type: 'Perishable', roundsRemaining: 5 }
-      case 'Rental':
-        return { type: 'Rental', goldPerRound: 3 }
-      default:
-        return undefined
-    }
+    return stickers.map((type) => {
+      if (type === 'Perishable') return { type, roundsRemaining: 5 }
+      if (type === 'Rental') return { type, goldPerRound: 3 }
+      return { type }
+    })
   }
 
   // ===========================================================================

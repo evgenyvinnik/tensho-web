@@ -44,10 +44,11 @@ async function fixture(
       (d: { id: string }) => d.id === 'decree-half-suited'
     )
     if (kind === 'hidden') {
-      state.decreeSystem.acquireDecree(
-        { ...definition, edition: 'Foil' },
-        { type: 'Eternal' }
-      )
+      state.decreeSystem.acquireDecree({
+        ...definition,
+        edition: 'Foil',
+        stickers: [{ type: 'Eternal' }, { type: 'Rental', goldPerRound: 3 }],
+      })
       state.mandateEffectSystem.activateMandate(
         AMBER_ACORN,
         state.handTiles,
@@ -55,10 +56,15 @@ async function fixture(
       )
     } else {
       if (kind === 'expired')
-        state.decreeSystem.acquireDecree(
-          { ...definition, edition: 'Polychrome', isDebuffed: true },
-          { type: 'Perishable', roundsRemaining: 0 }
-        )
+        state.decreeSystem.acquireDecree({
+          ...definition,
+          edition: 'Polychrome',
+          isDebuffed: true,
+          stickers: [
+            { type: 'Perishable', roundsRemaining: 0 },
+            { type: 'Rental', goldPerRound: 3 },
+          ],
+        })
       Object.assign(state, {
         phase: 'shop',
         gold: 40,
@@ -69,7 +75,10 @@ async function fixture(
         const item = {
           ...definition,
           edition: 'Negative',
-          sticker: { type: 'Rental', goldPerRound: 0 },
+          stickers: [
+            { type: 'Perishable', roundsRemaining: 5 },
+            { type: 'Rental', goldPerRound: 0 },
+          ],
         }
         const offer = game.shop.state.itemOfferings[0]
         Object.assign(offer, {
@@ -163,6 +172,10 @@ for (const [language, copy] of [
     await expect(card.locator('[data-decree-modifiers]')).toContainText(
       copy.editions.items.negative.description
     )
+    await expect(card.locator('[data-decree-modifiers]')).toContainText(
+      copy.decreeModifiers.perishableName
+    )
+    await expect(card.locator('[data-decree-modifiers] dt')).toHaveCount(3)
     await card.scrollIntoViewIfNeeded()
     await page.screenshot({ path: testInfo.outputPath('shop-modifiers.png') })
     await activate(card.getByRole('button'), isMobile)
@@ -174,14 +187,18 @@ for (const [language, copy] of [
     )
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
     const before = await saved(page)
-    expect(before.state.decreeSystem.ownedDecrees[0].sticker.goldPerRound).toBe(
-      0
-    )
+    expect(before.state.decreeSystem.ownedDecrees[0].stickers).toEqual([
+      { type: 'Perishable', roundsRemaining: 4 },
+      { type: 'Rental', goldPerRound: 0 },
+    ])
     await activate(page.locator('[data-decree-instance]').first(), isMobile)
     const dialog = page.getByRole('dialog')
     await fits(page, dialog)
     await visibleTitleInk(dialog)
     await expect(dialog).toContainText(rental)
+    await expect(dialog).toContainText(
+      copy.decreeModifiers.remaining.replace('{{remaining}}', '4')
+    )
     await expect(dialog).toContainText(copy.editions.items.negative.description)
     await page.screenshot({ path: testInfo.outputPath('owned-modifiers.png') })
     expect(await saved(page)).toEqual(before)
@@ -206,7 +223,7 @@ for (const [language, copy] of [
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
     const before = await saved(page)
     expect(
-      before.state.decreeSystem.ownedDecrees[0].sticker.roundsRemaining
+      before.state.decreeSystem.ownedDecrees[0].stickers[0].roundsRemaining
     ).toBe(0)
     expect(before.state.decreeSystem.ownedDecrees[0].isDebuffed).toBe(true)
     await activate(page.locator('[data-decree-instance]').first(), isMobile)
@@ -214,6 +231,9 @@ for (const [language, copy] of [
     await fits(page, dialog)
     await visibleTitleInk(dialog)
     await expect(dialog).toContainText(copy.decreeModifiers.expired)
+    await expect(dialog).toContainText(
+      copy.decreeModifiers.rentalDescription.replace('{{amount}}', '3')
+    )
     await expect(dialog).toContainText(copy.editions.items.polychrome.name)
     await page.screenshot({
       path: testInfo.outputPath('expired-modifiers.png'),
