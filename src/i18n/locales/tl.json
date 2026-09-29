@@ -3,8 +3,8 @@
     "eternalName": "Walang Hanggan",
     "eternalDescription": "Hindi maaaring ibenta o sirain.",
     "perishableName": "Nauubos",
-    "perishableDescription": "Nawawala ang mga aktibong epekto kapag natapos ang countdown.",
-    "remaining": "May {{remaining}} pang pagsisimula ng round.",
+    "perishableDescription": "Nawawala ang mga aktibong epekto kapag natapos ang countdown. Hindi kasama ang mga nilaktawang round.",
+    "remaining": "Mag-e-expire matapos makumpleto ang {{remaining}} pang round.",
     "expired": "Ubos na — hindi na aktibo ang mga epekto nito.",
     "rentalName": "Upa",
     "rentalDescription": "Nagkakahalaga ng {{amount}} ginto sa dulo ng bawat round."

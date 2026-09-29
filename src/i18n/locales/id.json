@@ -3,8 +3,8 @@
     "eternalName": "Abadi",
     "eternalDescription": "Tidak dapat dijual atau dihancurkan.",
     "perishableName": "Mudah Kedaluwarsa",
-    "perishableDescription": "Efek aktifnya hilang saat hitung mundur berakhir.",
-    "remaining": "Tersisa {{remaining}} awal ronde.",
+    "perishableDescription": "Efek aktifnya hilang saat hitung mundur berakhir. Ronde yang dilewati tidak dihitung.",
+    "remaining": "Berakhir setelah {{remaining}} ronde lagi diselesaikan.",
     "expired": "Kedaluwarsa — efek aktifnya dinonaktifkan.",
     "rentalName": "Sewa",
     "rentalDescription": "Membayar {{amount}} emas pada akhir setiap ronde."

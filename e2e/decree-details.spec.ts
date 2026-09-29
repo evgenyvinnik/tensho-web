@@ -188,7 +188,7 @@ for (const [language, copy] of [
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
     const before = await saved(page)
     expect(before.state.decreeSystem.ownedDecrees[0].stickers).toEqual([
-      { type: 'Perishable', roundsRemaining: 4 },
+      { type: 'Perishable', roundsRemaining: 5 },
       { type: 'Rental', goldPerRound: 0 },
     ])
     await activate(page.locator('[data-decree-instance]').first(), isMobile)
@@ -197,7 +197,7 @@ for (const [language, copy] of [
     await visibleTitleInk(dialog)
     await expect(dialog).toContainText(rental)
     await expect(dialog).toContainText(
-      copy.decreeModifiers.remaining.replace('{{remaining}}', '4')
+      copy.decreeModifiers.remaining.replace('{{remaining}}', '5')
     )
     await expect(dialog).toContainText(copy.editions.items.negative.description)
     await page.screenshot({ path: testInfo.outputPath('owned-modifiers.png') })

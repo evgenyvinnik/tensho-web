@@ -3,8 +3,8 @@
     "eternalName": "永恒",
     "eternalDescription": "无法出售或摧毁。",
     "perishableName": "易逝",
-    "perishableDescription": "倒计时结束后失去生效中的效果。",
-    "remaining": "还剩{{remaining}}次回合开始。",
+    "perishableDescription": "倒计时结束后失去生效中的效果。跳过的回合不计入倒计时。",
+    "remaining": "再完成{{remaining}}个回合后到期。",
     "expired": "已到期：生效中的效果已停用。",
     "rentalName": "租赁",
     "rentalDescription": "每回合结束时支付{{amount}}金币。"

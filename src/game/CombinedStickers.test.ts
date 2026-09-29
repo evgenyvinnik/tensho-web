@@ -71,6 +71,7 @@ it('keeps copied timers independent, charges expired Rental, and protects Eterna
   expect(first.stickers).not.toBe(stickers)
   expect(copy.stickers?.[0]).not.toBe(first.stickers?.[0])
   system.onRoundStart()
+  system.onRoundEnd()
   expect(first.stickers?.[0].roundsRemaining).toBe(0)
   expect(copy.stickers?.[0].roundsRemaining).toBe(0)
   expect(first.isDebuffed).toBe(true)

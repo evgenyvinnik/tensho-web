@@ -3,8 +3,8 @@
     "eternalName": "Ebedi",
     "eternalDescription": "Satılamaz veya yok edilemez.",
     "perishableName": "Süreli",
-    "perishableDescription": "Geri sayım bittiğinde etkin etkilerini kaybeder.",
-    "remaining": "{{remaining}} tur başlangıcı kaldı.",
+    "perishableDescription": "Geri sayım bittiğinde etkin etkilerini kaybeder. Atlanan turlar sayılmaz.",
+    "remaining": "{{remaining}} tur daha tamamlanınca süresi dolar.",
     "expired": "Süresi doldu — etkin etkileri devre dışı.",
     "rentalName": "Kiralık",
     "rentalDescription": "Her turun sonunda {{amount}} altın tutar."

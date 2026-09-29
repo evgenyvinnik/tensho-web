@@ -5,6 +5,7 @@ import { DecreeArtwork } from './DecreeArtwork'
 it.each([
   ['decree-wealth-engine', /wealth-engine\.png$/],
   ['decree-half-suited', /half-suited\.webp$/],
+  ['decree-phoenix', /phoenix\.webp$/],
 ] as const)(
   'uses a decorative contained portrait for %s with the existing icon fallback',
   (id, path) => {

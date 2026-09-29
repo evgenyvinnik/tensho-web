@@ -75,6 +75,7 @@ it('gives each copied Perishable sticker its own clock without mutating the offe
   const first = system.acquireDecree(definition, sticker)!
   const second = system.acquireDecree(first)!
   system.onRoundStart()
+  system.onRoundEnd()
   expect(sticker.roundsRemaining).toBe(3)
   expect(first.sticker?.roundsRemaining).toBe(2)
   expect(second.sticker?.roundsRemaining).toBe(2)
@@ -250,6 +251,7 @@ it('isolates snapshot and restored Perishable clocks from live state', () => {
   const saved = system.toState()
   const restored = DecreeSystem.fromState(saved)
   restored.onRoundStart()
+  restored.onRoundEnd()
   expect(saved.ownedDecrees[0].sticker?.roundsRemaining).toBe(3)
   expect(system.getOwnedDecrees()[0].sticker?.roundsRemaining).toBe(3)
   expect(restored.getOwnedDecrees()[0].sticker?.roundsRemaining).toBe(2)

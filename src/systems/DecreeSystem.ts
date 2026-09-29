@@ -744,8 +744,19 @@ export class DecreeSystem {
 
     for (const decree of this.ownedDecrees) {
       decree.roundsActive++
+    }
+    // Normalize already-expired legacy clocks, but do not spend a playable
+    // round on entering a shop purchase or advancing past a skipped round.
+    this.updatePerishableClocks(0)
+  }
 
-      // Handle Perishable sticker
+  /** Complete one played round, after its scoring and economy have settled. */
+  onRoundEnd(): void {
+    this.updatePerishableClocks(1)
+  }
+
+  private updatePerishableClocks(completedRounds: 0 | 1): void {
+    for (const decree of this.ownedDecrees) {
       const perishable = getDecreeStickers(decree).find(
         (entry) => entry.type === 'Perishable'
       )
@@ -755,7 +766,7 @@ export class DecreeSystem {
           // normalize them on the next round, without rejecting those saves.
           perishable.roundsRemaining = Math.max(
             0,
-            perishable.roundsRemaining - 1
+            perishable.roundsRemaining - completedRounds
           )
           if (perishable.roundsRemaining <= 0) {
             decree.isDebuffed = true

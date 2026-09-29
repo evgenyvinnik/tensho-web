@@ -3,8 +3,8 @@
     "eternalName": "영구",
     "eternalDescription": "판매하거나 파괴할 수 없습니다.",
     "perishableName": "소모성",
-    "perishableDescription": "남은 횟수가 소진되면 활성 효과를 잃습니다.",
-    "remaining": "라운드 시작 {{remaining}}회 남음.",
+    "perishableDescription": "남은 횟수가 소진되면 활성 효과를 잃습니다. 건너뛴 라운드는 포함하지 않습니다.",
+    "remaining": "라운드를 {{remaining}}회 더 완료하면 만료됩니다.",
     "expired": "만료 — 활성 효과가 비활성화되었습니다.",
     "rentalName": "임대",
     "rentalDescription": "매 라운드 종료 시 골드 {{amount}}을 지불합니다."

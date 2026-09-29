@@ -21,6 +21,7 @@ it('keeps expired Perishable copies saveable across subsequent rounds and reload
   })!
   for (let round = 0; round < 4; round++) {
     system.onRoundStart()
+    system.onRoundEnd()
     expect(owned.isDebuffed).toBe(true)
     expect(owned.sticker?.roundsRemaining).toBe(0)
     const snapshot = JSON.parse(JSON.stringify(game.captureRun()))

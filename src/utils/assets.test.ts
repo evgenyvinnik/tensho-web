@@ -21,21 +21,22 @@ it('ships the generated guidebook with an alpha-capable PNG in the project', () 
 })
 
 describe('Decree scroll illustrations', () => {
-  it.each([...STARTER_DECREES, { id: 'decree-half-suited' }])(
-    'ships a compact transparent portrait for $id',
-    ({ id }) => {
-      const path = getDecreeIllustration(id)!
-      expect(path).toMatch(/\/decrees\/.+\.webp$/)
-      const webp = readFileSync(`public${path}`)
-      expect(webp.subarray(0, 4).toString()).toBe('RIFF')
-      expect(webp.subarray(8, 12).toString()).toBe('WEBP')
-      expect(webp.subarray(12, 16).toString()).toBe('VP8X')
-      expect(webp[20] & 0x10).toBe(0x10) // Extended WebP alpha flag.
-      expect(webp.readUIntLE(24, 3) + 1).toBe(512)
-      expect(webp.readUIntLE(27, 3) + 1).toBe(512)
-      expect(webp.length).toBeLessThan(120_000)
-    }
-  )
+  it.each([
+    ...STARTER_DECREES,
+    { id: 'decree-half-suited' },
+    { id: 'decree-phoenix' },
+  ])('ships a compact transparent portrait for $id', ({ id }) => {
+    const path = getDecreeIllustration(id)!
+    expect(path).toMatch(/\/decrees\/.+\.webp$/)
+    const webp = readFileSync(`public${path}`)
+    expect(webp.subarray(0, 4).toString()).toBe('RIFF')
+    expect(webp.subarray(8, 12).toString()).toBe('WEBP')
+    expect(webp.subarray(12, 16).toString()).toBe('VP8X')
+    expect(webp[20] & 0x10).toBe(0x10) // Extended WebP alpha flag.
+    expect(webp.readUIntLE(24, 3) + 1).toBe(512)
+    expect(webp.readUIntLE(27, 3) + 1).toBe(512)
+    expect(webp.length).toBeLessThan(120_000)
+  })
   it('gives all five starters distinct generated artwork', () => {
     const hashes = STARTER_DECREES.map(({ id }) =>
       createHash('sha256')

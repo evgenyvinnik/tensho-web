@@ -3475,6 +3475,9 @@ export class GameOrchestrator {
 
     const goldBefore = this.state.gold
     this.state.gold += netGoldChange
+    // The last remaining round still earns this Decree's score and payout.
+    // Skips bypass settlement and therefore preserve Perishable lifetime.
+    this.state.decreeSystem.onRoundEnd()
     this.state.omenSystem.onRoundEnd()
 
     const upcomingRound = this.state.roundManager.getCurrentRound()
@@ -3609,6 +3612,7 @@ export class GameOrchestrator {
     }
 
     this.destroyBossLossDecrees(effects)
+    this.state.decreeSystem.onRoundEnd()
 
     eventBus.emit('roundEnd', {
       won: false,

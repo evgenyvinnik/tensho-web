@@ -61,7 +61,7 @@ it('shows the live Perishable countdown and distinguishes expiry from temporary 
   )
   fireEvent.click(screen.getByRole('button', { name: 'Half Suited' }))
   expect(screen.getByRole('dialog')).toHaveTextContent(
-    '2 round starts remaining'
+    'Rounds remaining: 2'
   )
   expect(screen.getByRole('dialog')).toHaveTextContent(
     'Disabled by Crimson Heart this hand'

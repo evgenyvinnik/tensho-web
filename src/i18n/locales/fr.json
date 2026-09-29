@@ -3,8 +3,8 @@
     "eternalName": "Éternel",
     "eternalDescription": "Ne peut être ni vendu ni détruit.",
     "perishableName": "Périssable",
-    "perishableDescription": "Perd ses effets actifs à la fin du compte à rebours.",
-    "remaining": "Il reste {{remaining}} débuts de manche.",
+    "perishableDescription": "Perd ses effets actifs à la fin du compte à rebours. Les manches sautées ne comptent pas.",
+    "remaining": "Expire après {{remaining}} manches terminées supplémentaires.",
     "expired": "Expiré : ses effets actifs sont désactivés.",
     "rentalName": "Location",
     "rentalDescription": "Coûte {{amount}} pièces d’or à la fin de chaque manche."

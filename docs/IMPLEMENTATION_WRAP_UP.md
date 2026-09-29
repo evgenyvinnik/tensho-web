@@ -6,6 +6,18 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Perishable lifetime and Phoenix checkpoint
+
+The [lifetime checkpoint](PERISHABLE_LIFETIME_IMPLEMENTATION.md) now preserves
+five complete played rounds after purchase, pays the last round before expiry,
+and does not spend lifetime on skips. Phoenix has a new generated transparent
+portrait. Focused units passed 108 checks across the final run and an unchanged
+worker-start-failure recheck. Final browser regression passed **16/16**, and
+TypeScript, the Pages-base build, and production desktop/320px touch checks
+passed. Earlier timeouts and a test checkpoint race remain in the ledger.
+Publication is pending; eligibility/balance choices and broader implementation
+work remain open.
+
 ## Published combined Decree stickers
 
 The [combined-sticker checkpoint](COMBINED_STICKERS_IMPLEMENTATION.md), published

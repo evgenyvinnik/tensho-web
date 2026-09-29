@@ -3,8 +3,8 @@
     "eternalName": "永久",
     "eternalDescription": "売却も破壊もできません。",
     "perishableName": "消耗",
-    "perishableDescription": "カウントが尽きると有効な効果を失います。",
-    "remaining": "あと{{remaining}}回のラウンド開始で期限切れ。",
+    "perishableDescription": "カウントが尽きると有効な効果を失います。スキップしたラウンドは数えません。",
+    "remaining": "あと{{remaining}}ラウンドを終えると期限切れ。",
     "expired": "期限切れ：有効な効果は無効です。",
     "rentalName": "賃貸",
     "rentalDescription": "各ラウンド終了時に{{amount}}ゴールドを支払います。"
