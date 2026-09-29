@@ -1,6 +1,25 @@
 # Decree expiry and readable modifiers
 
-Updated September 29, 2026. Local implementation in verification; not project completion.
+Updated September 29, 2026. Published **v1.0.260929-2**; not project completion.
+
+## Published release
+
+- Implementation on `main`: `8a2bfc275a6bcd279d485d256e01ad1846b60295`.
+- Auto-versioned build/tag: `f83120095f653d7b0e57b6d68989939f90e03593`,
+  `v1.0.260929-2`.
+- [GitHub workflow 36625706080](https://github.com/evgenyvinnik/tensho-web/actions/runs/36625706080)
+  independently passed **1,442/1,442 tests in 124 files**, 13 release checks,
+  production build, provenance validation and Pages deployment.
+- Public `release.json` and remote tag match the built checkout. Hosted desktop
+  and 320×568 touch checks passed real Classic play, expired-copy reload,
+  localized modifier inspection, visible Russian title (1,693 ink pixels),
+  exact-copy sale/capacity and reload, without JavaScript errors. Separate
+  hosted Table Loop seed-7 placement/refill/reload checks passed on both surfaces.
+- The local failed runs below remain retained; successful CI does not establish
+  why they timed out. Existing Pages action-runtime/runner migration notices
+  did not fail the release. No force push, new branch or default-mode change.
+- Hosted screenshots and verification helper:
+  `/tmp/tensho-decree-details-HnQj3u/hosted/`, `verify-hosted.mjs` in its parent.
 
 ## Requirements and reproduced defects
 
@@ -74,7 +93,7 @@ Five failing-first regressions reproduced:
 - Built-production desktop and touch checks passed real play, expired-copy
   reload, localized edition/zero-rent explanations, readable title (1,693 ink
   pixels), exact-copy sale/capacity and reload, without JavaScript errors.
-- Independent CI and public deployment verification remain pending. Artifacts:
+- Independent CI and public deployment verification are recorded above. Artifacts:
   `/tmp/tensho-decree-details-HnQj3u/`.
 
 ## Remaining requirements
