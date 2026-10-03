@@ -49,4 +49,8 @@ Next: add a separately selectable build-aware shopping/hand-planning policy, com
 - 23 new matrix checks passed, including the real four-cell command and exact equality with the original single-cell command.
 - Strict TypeScript and targeted lint passed, including the `.mts` script through the TypeScript stdin profile.
 - The measured 64-cell command completed with source unchanged and zero diagnostic stops. The raw artifact retains the complete source fingerprint and rows.
-- The combined harness, resource, consumable and matrix regression passed **85/85** at unchanged deadlines. Prior browser verification belongs to the unchanged deployed application; no new physical-device or player-experience claim is made here. CI evidence will be recorded after publication.
+- The combined harness, resource, consumable and matrix regression passed **85/85** at unchanged deadlines. Prior browser verification belongs to the unchanged deployed application; no new physical-device or player-experience claim is made here.
+
+## Published checkpoint
+
+Committed on main as `fe5ffa4c17e2e48aec0cd81ae5d6ac8e8e497b77`. [CI run 37119814553](https://github.com/evgenyvinnik/tensho-web/actions/runs/37119814553) passed **1,513/1,513 application tests**, **13/13 release checks**, production build and Pages deployment. Auto-version **v1.0.261003-3** is built/tagged at `cfd66f1a512dc98824e352e3167c267df1da20e4`; the public release manifest matches. This checkpoint changes no non-test application source or artwork. The raw measurement retains its original pre-commit source fingerprint rather than being relabelled as a deployed run.
