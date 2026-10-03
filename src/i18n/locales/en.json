@@ -295,6 +295,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "Your build",
+      "slots": "{{used}} / {{max}} Decree slots",
+      "help": "Compare offers with your owned Decrees. Open a scroll to read its rules or sell it.",
+      "empty": "No Decrees yet. Purchased scrolls appear here.",
+      "sellPrompt": "Sell {{name}} for {{gold}} gold? This removes it from your build.",
+      "sold": "Sold {{name}}.",
+      "saleFailed": "The Decree could not be sold. Your build is unchanged."
+    },
     "ui": {
       "rarity_common": "Common",
       "rarity_uncommon": "Uncommon",

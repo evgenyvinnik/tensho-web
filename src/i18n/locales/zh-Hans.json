@@ -299,6 +299,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "持有敕令",
+      "slots": "敕令槽位 {{used}} / {{max}}",
+      "help": "比较商品与持有的敕令。打开卷轴可查看规则或出售。",
+      "empty": "尚无敕令。购买的卷轴会显示在这里。",
+      "sellPrompt": "以{{gold}}金币出售{{name}}？它将从持有的敕令中移除。",
+      "sold": "已出售{{name}}。",
+      "saleFailed": "无法出售敕令。持有的敕令未改变。"
+    },
     "ui": {
       "rarity_common": "普通",
       "rarity_uncommon": "优秀",

@@ -34,6 +34,7 @@ import { ProgressiveHintCard } from '../ui/ProgressiveHint'
 import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
+import { ShopBuildPanel } from '../shop/ShopBuildPanel'
 
 // =============================================================================
 // MAIN SHOP SCREEN COMPONENT
@@ -199,6 +200,16 @@ export function ShopScreen() {
             queueCount={tutorial.hintQueue.length}
           />
 
+          <ShopBuildPanel
+            decrees={game.state.decreeSystem.getOwnedDecrees()}
+            maxSlots={game.state.decreeSystem.getMaxSlots()}
+            onSell={(id) => {
+              const result = game.sellDecree(id)
+              if (result.success) setShopError(null)
+              return result
+            }}
+          />
+
           <div className="grid items-start gap-5 px-3 pt-5 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6 lg:pt-6">
             {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
             <section className="min-w-0">
@@ -289,13 +300,13 @@ export function ShopScreen() {
       {shopError && (
         <div
           role="alert"
-          className="screen-canvas mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
+          className="screen-canvas relative z-10 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
         >
           {shopError}
         </div>
       )}
 
-      <div className="flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
+      <div className="relative z-10 flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
         <div className="screen-canvas px-3 py-3 sm:px-5 sm:py-4">
           <Button
             variant="primary"

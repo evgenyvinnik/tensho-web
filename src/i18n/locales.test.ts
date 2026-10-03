@@ -140,6 +140,33 @@ it('supplies table accessibility and cumulative stake rules in every locale', ()
 
 type Locale = Record<string, unknown>
 
+it('localizes owned-build actions and keeps Polished Stone aligned with its chip rule', () => {
+  const definition = ALL_DECREES.find((d) => d.id === 'decree-polished-stone')!
+  expect(definition.effect).toMatchObject({
+    type: 'additive_score',
+    basePoints: 60,
+  })
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const shop = locale.shop as typeof en.shop
+    expect(Object.keys(shop.build).sort()).toEqual(
+      Object.keys(en.shop.build).sort()
+    )
+    for (const [key, english] of Object.entries(en.shop.build)) {
+      const value = shop.build[key as keyof typeof en.shop.build]
+      expect(value, `${language}: ${key}`).toBeTruthy()
+      expect(value.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+      if (language !== 'en') expect(value).not.toBe(english)
+    }
+    const text = (locale.decrees as typeof en.decrees).items[
+      'decree-polished-stone'
+    ].description
+    expect(text).toContain('+60')
+    expect(text).not.toContain('0.3')
+  }
+})
+
 it('localizes every update decision and recoverable error in all locales', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const copy = locale.appUpdate as Record<string, string>

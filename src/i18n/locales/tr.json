@@ -402,6 +402,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "Fermanların",
+      "slots": "{{used}} / {{max}} Ferman yuvası",
+      "help": "Teklifleri sahip olduğun Fermanlarla karşılaştır. Kurallarını okumak veya satmak için parşömeni aç.",
+      "empty": "Henüz Ferman yok. Satın aldığın parşömenler burada görünür.",
+      "sellPrompt": "{{name}}, {{gold}} altına satılsın mı? Fermanlarından çıkarılacak.",
+      "sold": "{{name}} satıldı.",
+      "saleFailed": "Ferman satılamadı. Fermanların değişmedi."
+    },
     "ui": {
       "rarity_common": "Yaygın",
       "rarity_uncommon": "Az Bulunan",
@@ -504,7 +513,7 @@
       },
       "decree-polished-stone": {
         "name": "Cilalı Taş",
-        "description": "+0.3 Çarp eldeki her onur taşı için"
+        "description": "+60 Fiş"
       },
       "decree-ancient-scroll": {
         "name": "Antik Parşömen",

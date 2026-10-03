@@ -6,6 +6,7 @@ it.each([
   ['decree-wealth-engine', /wealth-engine\.png$/],
   ['decree-half-suited', /half-suited\.webp$/],
   ['decree-phoenix', /phoenix\.webp$/],
+  ['decree-polished-stone', /polished-stone\.webp$/],
 ] as const)(
   'uses a decorative contained portrait for %s with the existing icon fallback',
   (id, path) => {

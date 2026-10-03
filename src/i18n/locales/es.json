@@ -299,6 +299,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "Tu combinación",
+      "slots": "{{used}} / {{max}} espacios de Decreto",
+      "help": "Compara las ofertas con tus Decretos. Abre un pergamino para leer sus reglas o venderlo.",
+      "empty": "Aún no tienes Decretos. Los pergaminos comprados aparecen aquí.",
+      "sellPrompt": "¿Vender {{name}} por {{gold}} de oro? Se eliminará de tu combinación.",
+      "sold": "Has vendido {{name}}.",
+      "saleFailed": "No se pudo vender el Decreto. Tu combinación no ha cambiado."
+    },
     "ui": {
       "rarity_common": "Común",
       "rarity_uncommon": "Poco común",

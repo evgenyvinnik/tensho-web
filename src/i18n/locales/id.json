@@ -379,6 +379,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "Dekret milikmu",
+      "slots": "{{used}} / {{max}} slot Dekret",
+      "help": "Bandingkan penawaran dengan Dekret milikmu. Buka gulungan untuk membaca aturan atau menjualnya.",
+      "empty": "Belum ada Dekret. Gulungan yang dibeli muncul di sini.",
+      "sellPrompt": "Jual {{name}} seharga {{gold}} emas? Dekret ini akan dihapus dari koleksimu dalam permainan ini.",
+      "sold": "{{name}} terjual.",
+      "saleFailed": "Dekret tidak dapat dijual. Dekret milikmu tidak berubah."
+    },
     "ui": {
       "rarity_common": "Umum",
       "rarity_uncommon": "Tidak Umum",

@@ -4,6 +4,13 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Tea House build management:** [the illustrated owned-build panel](SHOP_BUILD_IMPLEMENTATION.md)
+now supports inspecting and selling exact Decree copies alongside offers, with
+confirmation, real slot/gold updates and 320px wrapping. New Polished Stone art
+and five corrected descriptions are shared across surfaces. Final native browser
+regression passes 26/26; production desktop/touch sale/reload/continuation passes.
+The evidence document distinguishes local test snapshots and remaining review.
+
 **Published measurement — v1.0.261003-4:** [build-aware shopping](CLASSIC_BUILD_SHOP_BALANCE.md)
 now has a separate opt-in analysis policy and 2,560 matched table/Stake runs.
 It records 25 rescue-free victories versus zero for cheapest-first, with no

@@ -299,6 +299,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "Vos Décrets",
+      "slots": "{{used}} / {{max}} emplacements de Décret",
+      "help": "Comparez les offres avec vos Décrets. Ouvrez un parchemin pour lire ses règles ou le vendre.",
+      "empty": "Aucun Décret pour le moment. Les parchemins achetés apparaissent ici.",
+      "sellPrompt": "Vendre {{name}} pour {{gold}} pièces d’or ? Il sera retiré de vos Décrets.",
+      "sold": "{{name}} a été vendu.",
+      "saleFailed": "Le Décret n’a pas pu être vendu. Vos Décrets restent inchangés."
+    },
     "ui": {
       "rarity_common": "Commun",
       "rarity_uncommon": "Peu commun",

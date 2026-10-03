@@ -402,6 +402,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "Mga Dekreto mo",
+      "slots": "{{used}} / {{max}} puwesto ng Dekreto",
+      "help": "Ihambing ang mga alok sa mga Dekreto mo. Buksan ang balumbon para basahin ang mga tuntunin o ibenta ito.",
+      "empty": "Wala pang Dekreto. Dito lalabas ang mga biniling balumbon.",
+      "sellPrompt": "Ibenta ang {{name}} sa halagang {{gold}} ginto? Aalisin ito sa mga Dekreto mo.",
+      "sold": "Naibenta ang {{name}}.",
+      "saleFailed": "Hindi maibenta ang Dekreto. Walang nagbago sa mga Dekreto mo."
+    },
     "ui": {
       "rarity_common": "Karaniwan",
       "rarity_uncommon": "Di-karaniwan",
@@ -504,7 +513,7 @@
       },
       "decree-polished-stone": {
         "name": "Pinakintab na Bato",
-        "description": "+0.3 Mult bawat honor tile sa kamay"
+        "description": "+60 Chips"
       },
       "decree-ancient-scroll": {
         "name": "Sinaunang Scroll",

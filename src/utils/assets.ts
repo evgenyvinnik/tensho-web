@@ -120,6 +120,7 @@ export const illustrationAssets = {
     HeavenlyOrdinance: `${ASSET_BASE}/illustrations/decrees/heavenly-ordinance.png`,
   } satisfies Record<DecreeRarity, string>,
   decreePortraits: {
+    'decree-polished-stone': `${ASSET_BASE}/illustrations/decrees/polished-stone.webp`,
     'decree-phoenix': `${ASSET_BASE}/illustrations/decrees/phoenix.webp`,
     'decree-half-suited': `${ASSET_BASE}/illustrations/decrees/half-suited.webp`,
     'decree-wealth-engine': `${ASSET_BASE}/illustrations/decrees/wealth-engine.png`,

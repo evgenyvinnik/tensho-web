@@ -35,6 +35,7 @@ describe('Decree scroll illustrations', () => {
     ...STARTER_DECREES,
     { id: 'decree-half-suited' },
     { id: 'decree-phoenix' },
+    { id: 'decree-polished-stone' },
   ])('ships a compact transparent portrait for $id', ({ id }) => {
     const path = getDecreeIllustration(id)!
     expect(path).toMatch(/\/decrees\/.+\.webp$/)

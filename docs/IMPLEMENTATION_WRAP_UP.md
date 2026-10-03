@@ -6,6 +6,18 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Current illustrated Tea House build management
+
+The [owned-build panel](SHOP_BUILD_IMPLEMENTATION.md) exposes the existing sale
+workflow where purchases happen: illustrated scrolls, shared hover/focus/tap
+rules, physical-copy confirmation, actual capacity and live gold. Six-scroll
+phone layouts, protected/Negative copies, cancellation, purchases and exact
+save/reload pass through the real browser flow. A new Polished Stone portrait
+is shared by shop/inventory/Archive, and five incorrect descriptions are repaired.
+The error banner's hidden background layer is also fixed. Final native browser
+regression passes 26/26; production desktop/touch sale/reload/continuation passes.
+This does not change gameplay balance or establish human enjoyment.
+
 ## Current build-aware progression measurement
 
 The opt-in [observed-build shopping comparison](CLASSIC_BUILD_SHOP_BALANCE.md)
@@ -915,7 +927,7 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | --- | --- |
 | Complete playable core loop | Full acquisition/use/settlement coverage of the documented systems, not just the opening move or data definitions. Preserve existing Classic coverage while checking later-round and end-state paths. |
 | Table styles | Classic integration and legacy catalog reconciliation are verified in [Table rules](TABLE_STYLE_RULES.md). The [64-cell table/Stake comparison](CLASSIC_TABLE_STAKE_BALANCE.md) now measures a fixed limited policy; stronger strategies and human balance remain open. Table Loop is a separate mode, not a migration of Classic table mechanics. |
-| Progression and build balance | Shared play validation and the blind fallback resolve the measured legality/no-advice stops. [Resource-aware and one-away policies](CLASSIC_BALANCE_AUDIT.md) now execute real discards/redraws and reproduce 600 runs across matched seeds. [Conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) now has 400 matched-seed rows. Cost-aware destructive/Script strategies, synergy-aware shopping, broader Yaku planning, and table/Stake comparisons remain open before tuning Act 6–8. Human enjoyment cannot be inferred from simulation clear rates. |
+| Progression and build balance | Shared play validation and the blind fallback resolve the measured legality/no-advice stops. [Observed-build shopping](CLASSIC_BUILD_SHOP_BALANCE.md) now compares 2,560 runs across every table/Stake and produces 25 rescue-free wins versus zero for the control. The [Tea House build panel](SHOP_BUILD_IMPLEMENTATION.md) makes real comparison/sale/replacement accessible to players. Cost-aware destructive/Script strategies and broader Yaku planning remain open; none of those simulated victories used complete hands. Human enjoyment cannot be inferred from simulation clear rates. |
 | End-to-end system integration | Consumable targeting, purchase-to-use, penalty/protection, and cancellation paths have browser coverage. Act 8 win/loss, the default-table Stake unlock, ordinary Act 9 continuation/loss, Ancient Script purchase/rewind/defeat, and once-only completion pass through the live UI using explicit fixtures. Unity now creates valid Winds with an illustrated public mapping. The subsequent physical rank-conversion fix covers Strength and Ouija red-five identity, modifier preservation, and existing costs. Broader table/Stake/effect combinations, Omen-modified shops, bosses, and upgraded-Charter acquisition remain open; see [Run results](RUN_RESULTS_IMPLEMENTATION.md). Resolve the hand-only versus persistent Fate Seal conflict; a user design choice has been requested. |
 | Remaining UI and persistence limits | Shared dialogs/Exit and the current-session reset workflow are verified in [Dialog implementation](DIALOG_IMPLEMENTATION.md) and [Progress reset](PROGRESS_RESET_IMPLEMENTATION.md). Multi-tab stale writes and crash-atomic multi-key reset are not guaranteed. Cash-out and shop headings/counts/continuation/confirmation now have all-locale copy; escaped Charter decorations are removed. Tile rewards use canonical/localized modifier text with full wrapping. PackCard motion and the full-stack Flora inspector are verified. Missing tile/catalog translations and edition/sticker labels remain. The Flora inspector now reveals several incomplete underlying powers; see [Flora implementation](FLORA_IMPLEMENTATION.md). Physical-device/assistive-technology review and the unexplained historical interaction timeouts remain open. |
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |

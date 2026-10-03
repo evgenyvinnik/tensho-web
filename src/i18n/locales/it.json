@@ -402,6 +402,15 @@
     "bossJp": "親局"
   },
   "shop": {
+    "build": {
+      "title": "I tuoi Decreti",
+      "slots": "{{used}} / {{max}} spazi Decreto",
+      "help": "Confronta le offerte con i tuoi Decreti. Apri una pergamena per leggerne le regole o venderla.",
+      "empty": "Non hai ancora Decreti. Le pergamene acquistate appaiono qui.",
+      "sellPrompt": "Vendere {{name}} per {{gold}} oro? Verrà rimosso dai tuoi Decreti.",
+      "sold": "{{name}} venduto.",
+      "saleFailed": "Impossibile vendere il Decreto. I tuoi Decreti non sono cambiati."
+    },
     "ui": {
       "rarity_common": "Comune",
       "rarity_uncommon": "Non comune",
@@ -504,7 +513,7 @@
       },
       "decree-polished-stone": {
         "name": "Pietra Levigata",
-        "description": "+0.3 Molt per ogni tessera onore nella mano"
+        "description": "+60 Fiches"
       },
       "decree-ancient-scroll": {
         "name": "Pergamena Antica",
