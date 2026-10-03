@@ -6,15 +6,28 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current all-table progression measurement
+## Current build-aware progression measurement
+
+The opt-in [observed-build shopping comparison](CLASSIC_BUILD_SHOP_BALANCE.md)
+now compares 1,280 runs per strategy across all tables/Stakes. The control exactly
+reproduces the prior rows. Build-aware purchases/replacements produce 25
+rescue-free victories and 49 Act 8 reaches, versus zero for the control, with no
+diagnostic stops. Round clears improve on 488 paired runs and worsen on 71.
+None of the victories uses a complete hand. This demonstrates some late-run
+viability, not human balance or enjoyment; deliberate hand planning and newcomer
+observation remain open. All 1,530 local tests and 13 release checks pass.
+Player-facing rules and artwork are unchanged.
+
+## Previous all-table progression measurement
 
 The [table/Stake matrix](CLASSIC_TABLE_STAKE_BALANCE.md) now records all 64
 combinations on 20 matched seeds: 1,280 real engine runs, 5,271 purchases and
 2,748 consumable uses, with no invalid-action or other diagnostic stops. No run
 reached Act 8; only seven complete hands occurred in 19,490 plays. These limited
-heuristics do not prove human difficulty or enjoyment. Build-aware shopping,
-broader hand planning and observed newcomer sessions remain required before
-tuning. The comparison is analysis-only; gameplay rules and artwork are unchanged.
+heuristics do not prove human difficulty or enjoyment. The shopping follow-up
+above addresses one limitation; broader hand planning and observed newcomer
+sessions remain required before tuning. The comparison is analysis-only;
+gameplay rules and artwork are unchanged.
 
 ## Published defeat-settlement checkpoint
 

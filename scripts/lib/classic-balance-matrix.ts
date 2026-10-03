@@ -4,7 +4,7 @@ import { STAKE_DEFINITIONS } from '../../src/config/stakeDefinitions'
 export function matrixOptions(args: string[]) {
   const options = new Map<string, string>()
   for (const arg of args) {
-    const match = /^--(runs|seed|tables|stakes|output)=(.+)$/.exec(arg)
+    const match = /^--(runs|seed|tables|stakes|shopping|output)=(.+)$/.exec(arg)
     if (!match || options.has(match[1]))
       throw new Error(`Unknown, incomplete or duplicate option: ${arg}`)
     options.set(match[1], match[2])
@@ -29,11 +29,14 @@ export function matrixOptions(args: string[]) {
   }
   const tables = subset('tables', tableIds)
   const stakes = subset('stakes', stakeIds).map(Number)
+  const shopping = options.get('shopping') ?? 'cheapest-first'
+  if (!['cheapest-first', 'observed-build'].includes(shopping))
+    throw new Error(`Invalid shopping policy: ${shopping}`)
   if (runs * tables.length * stakes.length > 10000)
     throw new Error(
       'Matrix exceeds 10000 total runs; select fewer cells or seeds'
     )
-  return { runs, seed, tables, stakes, output: options.get('output') }
+  return { runs, seed, tables, stakes, shopping, output: options.get('output') }
 }
 
 export interface MatrixRun {
@@ -52,6 +55,7 @@ export interface MatrixCell {
   schema: number
   policy: string
   shopping: boolean
+  shoppingPolicy?: string
   consumables: boolean
   table: string
   stake: number
@@ -65,7 +69,13 @@ export interface MatrixCell {
 /** Refuse missing/duplicated seeds or a silently different child experiment. */
 export function validateMatrixCell(
   value: unknown,
-  expected: { table: string; stake: number; runs: number; seed: number }
+  expected: {
+    table: string
+    stake: number
+    runs: number
+    seed: number
+    shopping?: string
+  }
 ): MatrixCell {
   if (!value || typeof value !== 'object')
     throw new Error('Invalid matrix cell')
@@ -74,6 +84,8 @@ export function validateMatrixCell(
     cell.schema !== 2 ||
     cell.policy !== 'resources+consumables' ||
     cell.shopping !== true ||
+    (cell.shoppingPolicy ?? 'cheapest-first') !==
+      (expected.shopping ?? 'cheapest-first') ||
     cell.consumables !== true ||
     cell.table !== expected.table ||
     cell.stake !== expected.stake ||

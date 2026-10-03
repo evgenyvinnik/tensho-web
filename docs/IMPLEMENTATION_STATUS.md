@@ -2,7 +2,13 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** September 26, 2026
+**Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
+
+**Observed-build measurement:** [build-aware shopping](CLASSIC_BUILD_SHOP_BALANCE.md)
+now has a separate opt-in analysis policy and 2,560 matched table/Stake runs.
+It records 25 rescue-free victories versus zero for cheapest-first, with no
+diagnostic stops. All 1,530 local tests and 13 release checks pass. This does not
+change the live coach, gameplay balance or visuals, and does not certify human fun.
 
 **Published follow-up — v1.0.260926-5:** pack generation now excludes already
 offered consumable catalog items while alternatives remain in the rolled rarity
@@ -481,8 +487,8 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 ## Remaining Work, in Priority Order
 
-1. Extend the [current 64-cell table/Stake comparison](CLASSIC_TABLE_STAKE_BALANCE.md) beyond its fixed heuristic. The 1,280-run resource/consumable sample has no diagnostic stops, but no Act 8 reach and only seven complete hands; it does not establish human balance. [Table rules](TABLE_STYLE_RULES.md) records the implemented effects, unlock paths, legacy compatibility, and regression evidence.
-2. Extend [`scripts/classic-balance.mts`](../scripts/classic-balance.mts) with cost-aware destructive/Script strategies, synergy-aware purchases, and broader Yaku planning before tuning ordinary-run Act 6–8 power growth. [Resource and one-away policies](CLASSIC_BALANCE_AUDIT.md) now use real discards/redraws and shared `ShopSession` transactions, with structured reports and matched-seed evidence. The 200-seed resource policy reaches median Act 2 versus the baseline's Act 1, but no tested policy reaches Act 8. These limited strategies still do not establish ordinary-player balance. [Conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) now has an opt-in policy and 400 matched-seed rows; the 1,090 uses still produce no full hands or Yaku in that comparison.
+1. Extend the [current observed-build comparison](CLASSIC_BUILD_SHOP_BALANCE.md) beyond its tactical shopping heuristic. The 1,280-run new-policy sample reaches Act 8 on 49 runs and wins 25, without rescues, but none of its wins uses a complete hand. These are not human balance or enjoyment results. [Table rules](TABLE_STYLE_RULES.md) records implemented effects, unlock paths, compatibility and regression evidence.
+2. Extend [`scripts/classic-balance.mts`](../scripts/classic-balance.mts) with cost-aware destructive/Script strategies and broader Yaku planning before tuning ordinary-run Act 6–8 power growth. Opt-in synergy-aware Decree buying/replacement is now measured, but full-hand planning and other item/pack optimization remain limited. [Resource and one-away policies](CLASSIC_BALANCE_AUDIT.md) and [conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) retain their original snapshots and raw rows; their historical lack of Act 8 reach is not a claim about the new shopping policy.
 3. Extend the verified consumable targeting and pack-settlement coverage to complete effect combinations, Stake selection/unlocks, Omen-modified shops, Boss mandates, Act 8 victory, and Endless continuation. Reconcile hand-only versus persistent Fate Seal modifications; the current runtime is preserved pending the requested design choice.
 4. Review the new sound mix on representative speakers/headphones and iOS/Safari. The 55 generated assets, app-lifetime music/SFX, settings, and native Chromium/mobile playback are implemented and tested; see [Audio implementation](AUDIO_IMPLEMENTATION.md).
 5. Observe people playing the Table Loop prototype against the classic loop, following section 8 of the experiments document. The simulation says the targets are not arbitrary; it says nothing about whether the loop is enjoyable.

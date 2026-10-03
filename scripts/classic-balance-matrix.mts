@@ -65,6 +65,7 @@ for (const table of options.tables)
       'scripts/classic-balance.mts',
       String(options.runs),
       '--shop',
+      ...(options.shopping === 'observed-build' ? ['--build-shop'] : []),
       '--resources',
       '--consumables',
       `--seed=${options.seed}`,
@@ -91,6 +92,7 @@ for (const table of options.tables)
         stake,
         runs: options.runs,
         seed: options.seed,
+        shopping: options.shopping,
       })
     )
     commands.push(`bun ${args.join(' ')}`)
@@ -107,7 +109,7 @@ const report = {
   runtime: execFileSync('bun', ['--version'], { encoding: 'utf8' }).trim(),
   source,
   policy: 'resources+consumables',
-  shopping: 'cheapest-first',
+  shopping: options.shopping,
   seeds: { first: options.seed, last: options.seed + options.runs - 1 },
   tables: options.tables,
   stakes: options.stakes,

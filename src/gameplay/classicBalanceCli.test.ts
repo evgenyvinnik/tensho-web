@@ -14,6 +14,7 @@ interface Report {
   schema: number
   policy: string
   shopping: boolean
+  shoppingPolicy: string
   consumables: boolean
   table: string
   stake: number
@@ -29,6 +30,10 @@ interface Report {
     oneAwayAttempts: number
     outcome: string
     purchases: number
+    buildShopPurchases: number
+    decreesSold: number
+    rescuedRoundsByDecree: Record<string, number>
+    finalDecreeIds: string[]
     unusedConsumables: number
     consumablesUsed: number
     consumableUsesById: Record<string, number>
@@ -51,6 +56,7 @@ describe('Classic balance command contract', () => {
     '--unknown',
     '--resources=true',
     '--consumables=true',
+    '--build-shop=true',
     '--table=missing',
     '--stake=0',
     '--stake=2.5',
@@ -71,6 +77,12 @@ describe('Classic balance command contract', () => {
     expect(result.schema).toBe(2)
     expect(result.policy).toBe('best-immediate')
     expect(result.shopping).toBe(true)
+    expect(result.shoppingPolicy).toBe('cheapest-first')
+    expect(
+      result.results.every(
+        (run) => run.buildShopPurchases === 0 && run.decreesSold === 0
+      )
+    ).toBe(true)
     expect(result.consumables).toBe(false)
     expect(result.results.every((run) => run.consumablesUsed === 0)).toBe(true)
     expect(result.results.map((run) => run.seed)).toEqual([7, 8, 9])
@@ -84,6 +96,34 @@ describe('Classic balance command contract', () => {
       'No consumable use. Unused inventory is reported, not treated as an implemented policy.'
     )
   })
+
+  it('executes and reproduces observed-build purchases and replacements without changing the default', () => {
+    const args = ['5', '--build-shop', '--resources', '--consumables']
+    const result = report(args)
+    expect(result.shopping).toBe(true)
+    expect(result.shoppingPolicy).toBe('observed-build')
+    expect(result.results.some((run) => run.buildShopPurchases > 0)).toBe(true)
+    expect(
+      result.results.every(
+        (run) =>
+          Array.isArray(run.finalDecreeIds) &&
+          Object.values(run.rescuedRoundsByDecree).every(
+            (count) => Number.isInteger(count) && count > 0
+          )
+      )
+    ).toBe(true)
+    expect(
+      result.results.every((run) => ['win', 'loss'].includes(run.outcome))
+    ).toBe(true)
+    expect(
+      result.results.every(
+        (run) =>
+          run.decreesSold <= run.buildShopPurchases &&
+          run.buildShopPurchases <= run.purchases
+      )
+    ).toBe(true)
+    expect(report(args)).toEqual(result)
+  }, 45000)
 
   it('uses real resources and keeps totals coherent in the paired policy', () => {
     const result = report(['5', '--shop', '--resources'])

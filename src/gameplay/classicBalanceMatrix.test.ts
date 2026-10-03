@@ -55,6 +55,7 @@ it.each([
   '--runs=1000',
   '--unknown',
   '--shop',
+  '--shopping=unknown',
 ])('rejects invalid or excessive experiments: %s', (arg) => {
   expect(() => matrixOptions([arg])).toThrow()
 })
@@ -89,6 +90,20 @@ it('keeps diagnostic stops visible instead of counting them as losses', () => {
     consumablesUsed: 2,
     purchases: 4,
   })
+})
+
+it('does not silently label one shopping strategy as another', () => {
+  const value = { ...cell(), shoppingPolicy: 'observed-build' }
+  expect(matrixOptions(['--shopping=observed-build']).shopping).toBe(
+    'observed-build'
+  )
+  expect(() => validateMatrixCell(value, expected)).toThrow()
+  expect(
+    validateMatrixCell(value, { ...expected, shopping: 'observed-build' })
+  ).toEqual(value)
+  expect(() =>
+    validateMatrixCell(cell(), { ...expected, shopping: 'observed-build' })
+  ).toThrow()
 })
 
 it.each([

@@ -2,6 +2,11 @@
 
 Measured October 3, 2026. This is a strategy measurement, **not a claim that the game is balanced or enjoyable**. It fills the missing current comparison across all eight playable table styles and all eight cumulative Stakes.
 
+Follow-up: the opt-in [observed-build shopping comparison](CLASSIC_BUILD_SHOP_BALANCE.md)
+adds 2,560 matched runs, including an exact reproduction of this control. It
+records 25 rescue-free victories without changing gameplay balance. The original
+cheapest-first findings below remain valid for that limited policy.
+
 ## Reproduce
 
 ```sh
@@ -42,7 +47,7 @@ The all-table comparison is now reproducible instead of an unmeasured checklist 
 
 It does **not** establish that targets are impossible or that S4 is easier than S3. The sample is small, shopping is naive, the policy does not sell/replace Decrees, price destructive Scripts, seek build synergies or deliberately plan Yaku, and it has no future-wall knowledge. Non-monotonic cell averages are not causal estimates of sticker difficulty. There is no confidence or optimal-play claim.
 
-Next: add a separately selectable build-aware shopping/hand-planning policy, compare it on matched seeds, then use those results alongside newcomer observation to propose tuning. Keep the baseline and raw failures. No target, reward, drop-rate, live coach, default-mode or gameplay rule changed in this checkpoint. Existing generated artwork is unchanged; this is analysis tooling, not a new visual asset.
+The separately selectable shopping policy is now measured in the follow-up; broader hand planning and newcomer observation remain next steps before proposing tuning. Keep the baseline and raw failures. No target, reward, drop-rate, live coach, default-mode or gameplay rule changed in this checkpoint. Existing generated artwork is unchanged; this is analysis tooling, not a new visual asset.
 
 ## Verification
 

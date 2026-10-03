@@ -11,14 +11,15 @@
  * The baseline plays the highest-scoring selection found by the coach. Optional
  * resource and one-away policies use only visible information and real actions.
  * An opt-in consumable policy adds visible-target and public-reward use.
- * None optimizes shop synergies yet. These are controlled
+ * Optional --build-shop ranks Decrees using past visible tactical plays. These are controlled
  * policy comparisons, not human difficulty, optimal play, or enjoyment measures.
  *
  *   bun scripts/classic-balance.mts [runs] [--shop] [--resources] [--chase-hands]
- *     [--consumables] [--table=green_felt] [--stake=1] [--seed=1] [--json]
+ *     [--consumables] [--build-shop] [--table=green_felt] [--stake=1] [--seed=1] [--json]
  */
 
 import { GameOrchestrator } from '../src/game/GameOrchestrator.ts'
+import { eventBus } from '../src/game/EventBus.ts'
 import { buildCoachAdvice } from '../src/gameplay/beginnerCoach.ts'
 import { chooseBlindSelection } from '../src/gameplay/blindSelection.ts'
 import { chooseClassicResourceAction } from './lib/classic-resource-policy.ts'
@@ -26,9 +27,20 @@ import { chooseClassicConsumableAction } from './lib/classic-consumable-policy.t
 import { getTableStyleById } from '../src/config/tableStyleDefinitions.ts'
 import { STAKE_DEFINITIONS } from '../src/config/stakeDefinitions.ts'
 import type { ScoreBreakdown } from '../src/rules/ScoringEngine.ts'
+import {
+  buyObservedDecrees,
+  observeShopPlay,
+  type ObservedPlay,
+} from './lib/classic-shop-policy.ts'
 
 const ARGS = process.argv.slice(2)
-const BUYS = ARGS.includes('--shop')
+const BUILD_SHOP = ARGS.includes('--build-shop')
+const BUYS = BUILD_SHOP || ARGS.includes('--shop')
+const SHOP_POLICY = BUILD_SHOP
+  ? 'observed-build'
+  : BUYS
+    ? 'cheapest-first'
+    : 'off'
 const CHASES = ARGS.includes('--chase-hands')
 const RESOURCES = CHASES || ARGS.includes('--resources')
 const CONSUMABLES = ARGS.includes('--consumables')
@@ -51,6 +63,7 @@ for (const arg of ARGS.filter((arg) => arg.startsWith('--'))) {
   if (
     ![
       '--shop',
+      '--build-shop',
       '--resources',
       '--chase-hands',
       '--consumables',
@@ -101,6 +114,10 @@ interface RunResult {
   goldSpent: number
   packsClaimed: number
   packsSkipped: number
+  buildShopPurchases: number
+  decreesSold: number
+  rescuedRoundsByDecree: Record<string, number>
+  finalDecreeIds: string[]
   outcome: string
   stopDetail?: {
     seed: number
@@ -132,10 +149,22 @@ function playRun(seed: number): RunResult {
   let packsClaimed = 0
   let packsSkipped = 0
   let outcome = 'guardLimit'
+  let buildShopPurchases = 0
+  let decreesSold = 0
+  const shopSamples: ObservedPlay[] = []
   let consumablesUsed = 0
   const consumableUsesById: Record<string, number> = {}
   const consumableUsesByReason: Record<string, number> = {}
   const lastHoldReason = new Map<string, string>()
+  const rescuedRoundsByDecree: Record<string, number> = {}
+  const stopRescueTracking = eventBus.on(
+    'decreeTriggered',
+    ({ decreeId, effect }) => {
+      if (effect === 'loss prevented')
+        rescuedRoundsByDecree[decreeId] =
+          (rescuedRoundsByDecree[decreeId] ?? 0) + 1
+    }
+  )
 
   for (
     let guard = 0;
@@ -159,9 +188,11 @@ function playRun(seed: number): RunResult {
         break
       }
       if (BUYS) {
-        const settled = buyWhatWeCan(orchestrator)
+        const settled = buyWhatWeCan(orchestrator, shopSamples)
         packsClaimed += settled.claimed
         packsSkipped += settled.skipped
+        buildShopPurchases += settled.buildPurchases
+        decreesSold += settled.sold
       }
       purchases += orchestrator.shop.visitTotals.itemsPurchased
       goldSpent += orchestrator.shop.visitTotals.goldSpent
@@ -270,6 +301,21 @@ function playRun(seed: number): RunResult {
       break
     }
 
+    const observed = BUILD_SHOP
+      ? observeShopPlay(
+          state.handTiles,
+          state.faceDownTileIds,
+          selection,
+          {
+            ...state.roundManager.getCurrentRound()!,
+            handsPlayed: state.handsAllowance - state.handsRemaining,
+            currentScore: state.score,
+            discardsRemaining: state.discardsRemaining,
+          },
+          state.handsPlayedThisRun,
+          state.lastHandScore
+        )
+      : null
     const result = orchestrator.processAction({
       type: 'play',
       tileIds: selection,
@@ -279,6 +325,10 @@ function playRun(seed: number): RunResult {
       break
     }
     hands += 1
+    if (observed) {
+      shopSamples.push(observed)
+      if (shopSamples.length > 6) shopSamples.shift()
+    }
     if (!advice) blindHands += 1
     if (selection.length > 5) completeHands++
     for (const effect of result.effects) {
@@ -290,6 +340,7 @@ function playRun(seed: number): RunResult {
     }
   }
 
+  stopRescueTracking()
   const final = orchestrator.getState()
   const unusedConsumablesById: Record<string, number> = {}
   const unusedConsumablesByReason: Record<string, number> = {}
@@ -331,6 +382,12 @@ function playRun(seed: number): RunResult {
     goldSpent,
     packsClaimed,
     packsSkipped,
+    buildShopPurchases,
+    decreesSold,
+    rescuedRoundsByDecree,
+    finalDecreeIds: final.decreeSystem
+      .getOwnedDecrees()
+      .map((decree) => decree.id),
     outcome,
     stopDetail:
       outcome !== 'win' && outcome !== 'loss'
@@ -350,9 +407,14 @@ function playRun(seed: number): RunResult {
 }
 
 /** Spend gold on the cheapest offers, so the "with shopping" variant differs. */
-function buyWhatWeCan(orchestrator: GameOrchestrator): {
+function buyWhatWeCan(
+  orchestrator: GameOrchestrator,
+  samples: ObservedPlay[]
+): {
   claimed: number
   skipped: number
+  buildPurchases: number
+  sold: number
 } {
   const shop = orchestrator.shop
   const state = shop.state
@@ -363,7 +425,15 @@ function buyWhatWeCan(orchestrator: GameOrchestrator): {
   ].sort((a, b) => a.finalCost - b.finalCost)
   let claimed = 0
   let skipped = 0
+  let buildPurchases = 0
+  let sold = 0
+  if (BUILD_SHOP) {
+    const bought = buyObservedDecrees(orchestrator, samples, offers)
+    buildPurchases += bought.purchases
+    sold += bought.sold
+  }
   for (const offer of offers) {
+    if (BUILD_SHOP && offer.itemType === 'Decree') continue
     if (!shop.purchase(offer.id).success) continue
     const pack = shop.pendingPack
     if (!pack) continue
@@ -390,7 +460,7 @@ function buyWhatWeCan(orchestrator: GameOrchestrator): {
       skipped++
     }
   }
-  return { claimed, skipped }
+  return { claimed, skipped, buildPurchases, sold }
 }
 
 function quantile(values: number[], q: number): number {
@@ -425,7 +495,9 @@ const limitations = [
     ? 'One-away search uses ordinary 14-tile structures only; it does not price future Yaku or know whether a completion tile remains.'
     : 'No deliberate complete-hand pursuit.',
   'Concealed racks without visible advice use an unscored position-only fallback.',
-  'Shopping buys cheapest-first and takes the first valid pack selection; no synergy optimization.',
+  BUILD_SHOP
+    ? 'Observed-build shopping compares modelled Decree inventories on the last six visible tactical plays over a two-round horizon; it can sell eligible copies. Rack/discard/economy weights are heuristic; unpriced rule powers are neither bought nor sold. Other items remain cheapest-first and pack choices first-valid. No future wall, broader Yaku planning, complete-hand modelling or optimality claim.'
+    : 'Shopping buys cheapest-first and takes the first valid pack selection; no synergy optimization.',
   CONSUMABLES
     ? 'Conservative consumable policy: permanent upgrades, public rewards and visible-target heuristics. Unpriced Script penalties/global sacrifices are held, not assumed harmless; no hypothetical effect execution or build synergy optimization.'
     : 'No consumable use. Unused inventory is reported, not treated as an implemented policy.',
@@ -438,6 +510,7 @@ if (JSON_OUTPUT) {
         schema: 2,
         policy: POLICY,
         shopping: BUYS,
+        shoppingPolicy: SHOP_POLICY,
         consumables: CONSUMABLES,
         table: TABLE,
         stake: STAKE,
@@ -453,7 +526,7 @@ if (JSON_OUTPUT) {
   )
 } else {
   console.log(
-    `Classic loop — ${RUNS} runs from seed ${FIRST_SEED}, ${POLICY}, shopping ${BUYS ? 'cheapest-first' : 'off'}, ${TABLE}, Stake ${STAKE}\n`
+    `Classic loop — ${RUNS} runs from seed ${FIRST_SEED}, ${POLICY}, shopping ${SHOP_POLICY}, ${TABLE}, Stake ${STAKE}\n`
   )
   console.log(
     `  Act reached    median ${quantile(acts, 0.5)}   p90 ${quantile(acts, 0.9)}   max ${Math.max(...acts)}`
