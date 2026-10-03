@@ -1,10 +1,29 @@
 # Implementation wrap-up
 
-**Updated:** October 2, 2026
+**Updated:** October 3, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
+
+## Current all-table progression measurement
+
+The [table/Stake matrix](CLASSIC_TABLE_STAKE_BALANCE.md) now records all 64
+combinations on 20 matched seeds: 1,280 real engine runs, 5,271 purchases and
+2,748 consumable uses, with no invalid-action or other diagnostic stops. No run
+reached Act 8; only seven complete hands occurred in 19,490 plays. These limited
+heuristics do not prove human difficulty or enjoyment. Build-aware shopping,
+broader hand planning and observed newcomer sessions remain required before
+tuning. The comparison is analysis-only; gameplay rules and artwork are unchanged.
+
+## Published defeat-settlement checkpoint
+
+[Final defeat settlement](DEFEAT_SETTLEMENT_IMPLEMENTATION.md) implements the
+confirmed Rental-on-defeat/income-win-only rule and adds illustrated localized
+result details. Published **v1.0.261003-2**, with 1,490 CI tests, 13 release
+checks, desktop/touch result regression and exact hosted debt/save/reload checks
+passing. Local timeout failures are retained in its ledger. This does not settle
+the other open mechanics choices.
 
 ## Published loss-prevention follow-up
 
@@ -879,7 +898,7 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Requirement / concern | Evidence still required |
 | --- | --- |
 | Complete playable core loop | Full acquisition/use/settlement coverage of the documented systems, not just the opening move or data definitions. Preserve existing Classic coverage while checking later-round and end-state paths. |
-| Table styles | Classic integration and legacy catalog reconciliation are verified in [Table rules](TABLE_STYLE_RULES.md). Balance across table/stake combinations remains part of the progression audit. Table Loop is a separate mode, not a migration of Classic table mechanics. |
+| Table styles | Classic integration and legacy catalog reconciliation are verified in [Table rules](TABLE_STYLE_RULES.md). The [64-cell table/Stake comparison](CLASSIC_TABLE_STAKE_BALANCE.md) now measures a fixed limited policy; stronger strategies and human balance remain open. Table Loop is a separate mode, not a migration of Classic table mechanics. |
 | Progression and build balance | Shared play validation and the blind fallback resolve the measured legality/no-advice stops. [Resource-aware and one-away policies](CLASSIC_BALANCE_AUDIT.md) now execute real discards/redraws and reproduce 600 runs across matched seeds. [Conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) now has 400 matched-seed rows. Cost-aware destructive/Script strategies, synergy-aware shopping, broader Yaku planning, and table/Stake comparisons remain open before tuning Act 6–8. Human enjoyment cannot be inferred from simulation clear rates. |
 | End-to-end system integration | Consumable targeting, purchase-to-use, penalty/protection, and cancellation paths have browser coverage. Act 8 win/loss, the default-table Stake unlock, ordinary Act 9 continuation/loss, Ancient Script purchase/rewind/defeat, and once-only completion pass through the live UI using explicit fixtures. Unity now creates valid Winds with an illustrated public mapping. The subsequent physical rank-conversion fix covers Strength and Ouija red-five identity, modifier preservation, and existing costs. Broader table/Stake/effect combinations, Omen-modified shops, bosses, and upgraded-Charter acquisition remain open; see [Run results](RUN_RESULTS_IMPLEMENTATION.md). Resolve the hand-only versus persistent Fate Seal conflict; a user design choice has been requested. |
 | Remaining UI and persistence limits | Shared dialogs/Exit and the current-session reset workflow are verified in [Dialog implementation](DIALOG_IMPLEMENTATION.md) and [Progress reset](PROGRESS_RESET_IMPLEMENTATION.md). Multi-tab stale writes and crash-atomic multi-key reset are not guaranteed. Cash-out and shop headings/counts/continuation/confirmation now have all-locale copy; escaped Charter decorations are removed. Tile rewards use canonical/localized modifier text with full wrapping. PackCard motion and the full-stack Flora inspector are verified. Missing tile/catalog translations and edition/sticker labels remain. The Flora inspector now reveals several incomplete underlying powers; see [Flora implementation](FLORA_IMPLEMENTATION.md). Physical-device/assistive-technology review and the unexplained historical interaction timeouts remain open. |

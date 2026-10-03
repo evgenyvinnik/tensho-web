@@ -1,5 +1,10 @@
 # Classic resource-aware progression measurement
 
+October 3 follow-up: the [all-table/Stake matrix](CLASSIC_TABLE_STAKE_BALANCE.md)
+adds 1,280 current-engine runs across all 64 combinations with resources,
+consumables and real purchases. It preserves the heuristic and human-fun limits
+below; it is not a balance certification.
+
 **Historical resource checkpoint:** the later [consumable-policy comparison](CLASSIC_CONSUMABLE_BALANCE.md)
 adds explicit item use and 400 matched-seed rows. The results and verification
 counts below are retained for their original source snapshot.
