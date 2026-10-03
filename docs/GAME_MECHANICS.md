@@ -262,6 +262,8 @@ Stickers appear on Decrees at higher Table Stakes (difficulty tiers), adding add
 - Decree costs only 1 Gold to purchase
 - Deducts 3 Gold at the END of every round
 - Can put player into debt
+- Final defeat still charges held Rentals, before loss destruction and Perishable expiry. Clear rewards, interest, round-end Decree income and held Gold tile income are win-only (user-confirmed October 2, 2026).
+- A prevented defeat uses the winning settlement once; a consumed Phoenix is no longer held at settlement. Skipped rounds do not settle Rental or income.
 - **Appears at:** Table Stake Tier 8 (Gold Stake)
 - **Probability:** 30% of shop Decrees
 

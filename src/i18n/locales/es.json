@@ -1139,6 +1139,13 @@
     "quad": "Cuarteto"
   },
   "results": {
+    "roundDetails": "Última ronda",
+    "roundScore": "Puntos de la ronda",
+    "roundTarget": "Objetivo",
+    "shortfall": "Puntos que faltaron",
+    "remainingGold": "Oro restante",
+    "rentalPaid": "Alquiler cobrado",
+    "defeatIncome": "En una derrota se cobra el alquiler, pero no se pagan recompensas de ronda, intereses, ingresos de Decretos ni de fichas de Oro conservadas.",
     "endlessComplete": "Ascenso infinito completado",
     "victorySubtitle": "Has superado el duelo del acto 8. Tu victoria está asegurada.",
     "endlessSubtitle": "Tu victoria se mantiene, aunque este ascenso haya terminado.",

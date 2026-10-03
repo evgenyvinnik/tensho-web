@@ -3620,6 +3620,44 @@ export class GameOrchestrator {
       return
     }
 
+    // Final defeat pays no round-end income, but held Rentals still charge.
+    // Settle before loss destruction/expiry so those effects cannot waive rent.
+    const round = this.state.roundManager.getCurrentRound()!
+    const rentalCost = this.state.decreeSystem.calculateRentalCosts()
+    const goldBefore = this.state.gold
+    this.state.gold -= rentalCost
+    this.state.lastRoundSummary = {
+      actNumber: this.state.currentAct,
+      roundNumber: this.state.currentRound,
+      roundType: round.roundType,
+      score: this.state.score,
+      target: this.state.targetScore,
+      baseReward: 0,
+      interest: 0,
+      decreeGold: 0,
+      heldGoldMarkReward: 0,
+      rentalCost,
+      netGoldChange: rentalCost > 0 ? -rentalCost : 0,
+      goldBefore,
+      goldAfter: this.state.gold,
+      nextRoundType: null,
+      nextTarget: null,
+    }
+    if (rentalCost > 0) {
+      eventBus.emit('goldChanged', {
+        previousGold: goldBefore,
+        newGold: this.state.gold,
+        delta: -rentalCost,
+        reason: 'Final round Rental costs',
+      })
+      effects.push({
+        type: 'gold_changed',
+        description: `Final round Rental costs ${rentalCost} gold`,
+        delta: -rentalCost,
+        newTotal: this.state.gold,
+      })
+    }
+
     this.destroyBossLossDecrees(effects)
     this.state.decreeSystem.onRoundEnd()
 

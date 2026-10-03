@@ -634,6 +634,13 @@
     "quad": "Dörtlü"
   },
   "results": {
+    "roundDetails": "Son tur",
+    "roundScore": "Tur puanı",
+    "roundTarget": "Hedef",
+    "shortfall": "Eksik puan",
+    "remainingGold": "Kalan altın",
+    "rentalPaid": "Kesilen kira",
+    "defeatIncome": "Yenilgide kira ödenir; tur ödülü, faiz, Ferman geliri ve elde tutulan Altın taşların geliri verilmez.",
     "endlessComplete": "Sonsuz Yükseliş Tamamlandı",
     "victorySubtitle": "8. Perdenin son düellosunu kazandın. Zaferin kaydedildi.",
     "endlessSubtitle": "Bu yükseliş sona erse de zaferin geçerliliğini koruyor.",

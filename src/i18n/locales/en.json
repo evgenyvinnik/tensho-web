@@ -1135,6 +1135,13 @@
     "quad": "Quad"
   },
   "results": {
+    "roundDetails": "Last round",
+    "roundScore": "Round score",
+    "roundTarget": "Target",
+    "shortfall": "Points short",
+    "remainingGold": "Gold remaining",
+    "rentalPaid": "Rental charged",
+    "defeatIncome": "On defeat, Rental is charged; round rewards, interest, Decree income and held Gold tile income are not paid.",
     "endlessComplete": "Endless Ascent Complete",
     "victorySubtitle": "The Act 8 Showdown is yours. Your run is secured.",
     "endlessSubtitle": "Your victory stands—even though this ascent has ended.",

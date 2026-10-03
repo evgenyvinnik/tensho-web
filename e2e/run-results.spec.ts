@@ -12,38 +12,60 @@ declare global {
 
 // Establish an explicit late-run fixture, then finish through the rendered play
 // action. This tests settlement/navigation, not organic reach or game balance.
-async function prepareFinalPlay(page: Page, victory: boolean, lang = 'en') {
+async function prepareFinalPlay(
+  page: Page,
+  victory: boolean,
+  lang = 'en',
+  rental = false
+) {
   await page.goto(`/${lang}/play`)
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-  await page.evaluate(async (victory) => {
-    const path = '/src/game/GameOrchestrator.ts'
-    const appPath = '/src/game/classicPersistenceApp.ts'
-    const { gameOrchestrator: game } = await import(path)
-    window.__resultFixtureGame = game
-    const { initializeClassicPersistence } = await import(appPath)
-    const persistence = initializeClassicPersistence()
-    const expectedRaw = persistence.getSnapshot().disk.raw
-    game.startNewRun(7)
-    const state = game.getState()
-    state.roundManager.startAct(8)
-    state.roundManager.skipRound()
-    state.roundManager.skipRound()
-    state.currentAct = 8
-    state.currentRound = 3
-    const round = state.roundManager.getCurrentRound()
-    // Isolate settlement from specific randomized boss restrictions.
-    round.bossMandate = undefined
-    state.mandateEffectSystem.deactivateMandate()
-    state.targetScore = victory ? 1 : 1e12
-    round.scoreTarget = state.targetScore
-    state.handsRemaining = 1
-    state.runScore = 123456789012
-    if (!(await persistence.saveNewRun(expectedRaw)))
-      throw new Error('Result fixture save failed')
-    state.handTiles
-      .slice(0, 2)
-      .forEach((tile: { id: string }) => game.selectTile(tile.id))
-  }, victory)
+  await page.evaluate(
+    async ({ victory, rental }) => {
+      const path = '/src/game/GameOrchestrator.ts'
+      const appPath = '/src/game/classicPersistenceApp.ts'
+      const { gameOrchestrator: game } = await import(path)
+      window.__resultFixtureGame = game
+      const { initializeClassicPersistence } = await import(appPath)
+      const persistence = initializeClassicPersistence()
+      const expectedRaw = persistence.getSnapshot().disk.raw
+      game.startNewRun(7)
+      const state = game.getState()
+      state.roundManager.startAct(8)
+      state.roundManager.skipRound()
+      state.roundManager.skipRound()
+      state.currentAct = 8
+      state.currentRound = 3
+      const round = state.roundManager.getCurrentRound()
+      // Isolate settlement from specific randomized boss restrictions.
+      round.bossMandate = undefined
+      state.mandateEffectSystem.deactivateMandate()
+      state.targetScore = victory ? 1 : 1e12
+      round.scoreTarget = state.targetScore
+      state.handsRemaining = 1
+      state.runScore = 123456789012
+      if (rental) {
+        const decreePath = '/src/systems/DecreeSystem.ts'
+        const { ALL_DECREES, DecreeSystem } = await import(decreePath)
+        state.decreeSystem = new DecreeSystem()
+        state.decreeSystem.acquireDecree({
+          ...ALL_DECREES.find(
+            (d: { id: string }) => d.id === 'decree-tax-collector'
+          ),
+          stickers: [{ type: 'Rental', goldPerRound: 3 }],
+        })
+        state.gold = 1
+        state.flowerSystem.clear()
+        state.seasonSystem.clear()
+      }
+      if (!(await persistence.saveNewRun(expectedRaw)))
+        throw new Error('Result fixture save failed')
+      state.handTiles
+        .slice(0, 2)
+        .forEach((tile: { id: string }) => game.selectTile(tile.id))
+    },
+    { victory, rental }
+  )
   await page.locator('[data-game-action="play"]').click()
   await expect(page).toHaveURL(/\/game-over$/)
   await expect(page.getByText('Round Complete!', { exact: true })).toHaveCount(
@@ -190,6 +212,77 @@ test('Act 8 defeat offers a fresh run, not Endless or a Stake victory', async ({
     score: 0,
     active: true,
   })
+})
+
+test('defeat explains the failed round and Rental debt, with art and reachable phone controls', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  await prepareFinalPlay(page, false, 'en', true)
+  const detail = (key: string) => page.locator(`[data-result-detail="${key}"]`)
+  const receipt = await page.evaluate(
+    () => window.__resultFixtureGame.getState().lastRoundSummary
+  )
+  expect(receipt).toMatchObject({
+    rentalCost: 3,
+    goldBefore: 1,
+    goldAfter: -2,
+    interest: 0,
+    decreeGold: 0,
+  })
+  await expect(detail('roundScore')).toHaveText(
+    receipt!.score.toLocaleString('en')
+  )
+  await expect(detail('roundTarget')).toHaveText(
+    receipt!.target.toLocaleString('en')
+  )
+  await expect(detail('shortfall')).toHaveText(
+    (receipt!.target - receipt!.score).toLocaleString('en')
+  )
+  await expect(detail('remainingGold')).toHaveText('-2')
+  await expect(detail('rentalPaid')).toHaveText('-3')
+  await expect(page.locator('[data-result-score]')).toHaveText(
+    (await snapshot(page)).score.toLocaleString('en')
+  )
+  await expect(page.locator('[data-result-art]')).toBeVisible()
+  expect(
+    await page
+      .locator('[data-result-art]')
+      .evaluate(async (img: HTMLImageElement) => {
+        await img.decode()
+        return [img.naturalWidth, img.naturalHeight]
+      })
+  ).toEqual([1200, 400])
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  const settled = await snapshot(page)
+  await page.reload()
+  await expect(detail('remainingGold')).toHaveText('-2')
+  await expect(detail('rentalPaid')).toHaveText('-3')
+  expect(await snapshot(page)).toEqual(settled)
+  for (const width of [320, 1280]) {
+    await page.setViewportSize({ width, height: 568 })
+    expect(
+      await page.locator('main').evaluate((main) =>
+        [main, ...main.querySelectorAll('dt, dd, button, img')].every(
+          (node) => {
+            const rect = node.getBoundingClientRect()
+            return (
+              rect.left >= 0 &&
+              rect.right <= window.innerWidth &&
+              node.scrollWidth <= node.clientWidth + 1
+            )
+          }
+        )
+      )
+    ).toBe(true)
+    const retry = page.getByRole('button', { name: 'Try Again', exact: true })
+    await retry.scrollIntoViewIfNeeded()
+    await expect(retry).toBeInViewport()
+    await page.screenshot({
+      path: testInfo.outputPath(`defeat-${width}.png`),
+      fullPage: true,
+    })
+  }
 })
 
 test('an Ancient Script purchased after victory rewinds the Act without offering a second victory', async ({

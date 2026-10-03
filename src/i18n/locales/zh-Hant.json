@@ -1139,6 +1139,13 @@
     "quad": "槓子"
   },
   "results": {
+    "roundDetails": "最後一輪",
+    "roundScore": "本輪得分",
+    "roundTarget": "目標",
+    "shortfall": "差額分數",
+    "remainingGold": "剩餘金幣",
+    "rentalPaid": "扣除租金",
+    "defeatIncome": "失敗時仍會扣除租金，但不會發放輪次獎勵、利息、敕令收益或手中金牌的收益。",
     "endlessComplete": "無盡攀登結束",
     "victorySubtitle": "你已贏得第8幕的決戰。勝利已被記錄。",
     "endlessSubtitle": "本次攀登雖已結束，你的勝利紀錄仍然保留。",

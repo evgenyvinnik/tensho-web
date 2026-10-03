@@ -15,6 +15,8 @@ import { useState } from 'react'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
 import { startConfiguredClassicRun } from '../../game/classicPersistenceApp'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
+import { illustrationAssets } from '../../utils/assets'
+import { ResultRoundDetails } from './ResultRoundDetails'
 
 const AnimatedMain = animated('main')
 
@@ -25,6 +27,7 @@ export function GameOverScreen() {
   const { t, i18n } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const {
+    state,
     runScore,
     currentAct,
     currentRound,
@@ -101,16 +104,14 @@ export function GameOverScreen() {
           className="w-full max-w-xl rounded-3xl border border-[var(--color-metallic-gold)]/50 bg-[var(--color-dark-forest)]/90 p-4 text-center shadow-2xl backdrop-blur-md sm:p-9"
           style={resultSpring}
         >
-          <div
-            className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 text-3xl shadow-lg sm:mb-5 sm:h-20 sm:w-20 sm:text-4xl ${
-              isFreshVictory
-                ? 'border-[var(--color-golden-yellow)] bg-amber-400/15 shadow-amber-400/20'
-                : 'border-[var(--color-vibrant-orange)] bg-orange-950/40 shadow-orange-500/10'
-            }`}
-            aria-hidden="true"
-          >
-            {isFreshVictory ? '昇' : isEndlessResult ? '∞' : '牌'}
-          </div>
+          <img
+            src={illustrationAssets.journeyResult}
+            alt=""
+            width={1200}
+            height={400}
+            className="mb-4 aspect-[3/1] w-full rounded-xl object-cover sm:mb-5"
+            data-result-art
+          />
 
           <p className="mb-2 text-xs font-bold uppercase tracking-[0.32em] text-[var(--color-metallic-gold)]">
             {isFreshVictory
@@ -159,6 +160,8 @@ export function GameOverScreen() {
               </p>
             </div>
           </div>
+
+          <ResultRoundDetails state={state} defeated={!isFreshVictory} />
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {isFreshVictory && (

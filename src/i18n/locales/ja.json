@@ -1139,6 +1139,13 @@
     "quad": "槓子"
   },
   "results": {
+    "roundDetails": "最後のラウンド",
+    "roundScore": "ラウンド得点",
+    "roundTarget": "目標",
+    "shortfall": "不足点",
+    "remainingGold": "残りの金",
+    "rentalPaid": "レンタル料",
+    "defeatIncome": "敗北時もレンタル料は発生しますが、ラウンド報酬、利息、勅令や手元の金の牌による収入は得られません。",
     "endlessComplete": "無限の登頂終了",
     "victorySubtitle": "第8幕の決戦に勝利しました。この勝利は記録されています。",
     "endlessSubtitle": "今回の登頂は終わりましたが、勝利の記録は残ります。",

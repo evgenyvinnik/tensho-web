@@ -1139,6 +1139,13 @@
     "quad": "깡쯔"
   },
   "results": {
+    "roundDetails": "마지막 라운드",
+    "roundScore": "라운드 점수",
+    "roundTarget": "목표",
+    "shortfall": "부족한 점수",
+    "remainingGold": "남은 골드",
+    "rentalPaid": "부과된 임대료",
+    "defeatIncome": "패배해도 임대료는 부과되지만, 라운드 보상, 이자, 칙령 수입 및 보유한 골드 패의 수입은 지급되지 않습니다.",
     "endlessComplete": "무한 등반 종료",
     "victorySubtitle": "제8막 결전에서 승리했습니다. 승리는 기록되었습니다.",
     "endlessSubtitle": "이번 등반은 끝났지만 승리 기록은 유지됩니다.",

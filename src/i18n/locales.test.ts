@@ -44,6 +44,25 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('localizes final-round scores and defeat settlement in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const results = locale.results as typeof en.results
+    for (const key of [
+      'roundDetails',
+      'roundScore',
+      'roundTarget',
+      'shortfall',
+      'remainingGold',
+      'rentalPaid',
+      'defeatIncome',
+    ] as const) {
+      expect(results[key], `${language}: results.${key}`).toBeTruthy()
+      if (language !== 'en' && key === 'defeatIncome')
+        expect(results[key]).not.toBe(en.results[key])
+    }
+  }
+})
+
 it('supplies Decree sticker explanations and matching placeholders in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     for (const [key, english] of Object.entries(en.decreeModifiers)) {

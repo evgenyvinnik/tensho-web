@@ -1219,6 +1219,13 @@
     "quad": "Kuartet"
   },
   "results": {
+    "roundDetails": "Ronde terakhir",
+    "roundScore": "Skor ronde",
+    "roundTarget": "Target",
+    "shortfall": "Kekurangan poin",
+    "remainingGold": "Emas tersisa",
+    "rentalPaid": "Sewa dikenakan",
+    "defeatIncome": "Saat kalah, Sewa tetap dibayar; hadiah ronde, bunga, pendapatan Dekret, dan pendapatan ubin Emas yang disimpan tidak diberikan.",
     "endlessComplete": "Pendakian Tanpa Akhir Selesai",
     "victorySubtitle": "Duel Babak 8 telah kamu menangkan. Kemenanganmu sudah tercatat.",
     "endlessSubtitle": "Kemenanganmu tetap berlaku, meski pendakian ini telah berakhir.",

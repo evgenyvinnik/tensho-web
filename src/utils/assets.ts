@@ -93,6 +93,7 @@ export const popupAssets = {
  * to use SVG so they remain crisp at every size.
  */
 export const illustrationAssets = {
+  journeyResult: `${ASSET_BASE}/illustrations/journey-result.webp`,
   beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.png`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
   moneyTreeCharter: `${ASSET_BASE}/illustrations/charters/money-tree.png`,

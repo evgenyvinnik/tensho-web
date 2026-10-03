@@ -634,6 +634,13 @@
     "quad": "Quad"
   },
   "results": {
+    "roundDetails": "Huling round",
+    "roundScore": "Iskor sa round",
+    "roundTarget": "Target",
+    "shortfall": "Kulang na puntos",
+    "remainingGold": "Natitirang ginto",
+    "rentalPaid": "Sinisingil na upa",
+    "defeatIncome": "Kapag natalo, sinisingil pa rin ang upa, pero walang gantimpala sa round, interes, kita mula sa mga Dekreto o mga hawak na gintong tile.",
     "endlessComplete": "Natapos ang Walang-hanggang Pag-akyat",
     "victorySubtitle": "Nanalo ka sa huling laban ng Akto 8. Naitala na ang iyong panalo.",
     "endlessSubtitle": "Mananatili ang iyong panalo kahit tapos na ang pag-akyat na ito.",

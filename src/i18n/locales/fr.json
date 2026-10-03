@@ -1139,6 +1139,13 @@
     "quad": "Carré"
   },
   "results": {
+    "roundDetails": "Dernière manche",
+    "roundScore": "Score de la manche",
+    "roundTarget": "Objectif",
+    "shortfall": "Points manquants",
+    "remainingGold": "Or restant",
+    "rentalPaid": "Location prélevée",
+    "defeatIncome": "En cas de défaite, la location est prélevée, mais aucune récompense de manche, aucun intérêt ni revenu des Décrets ou des tuiles Or conservées n’est versé.",
     "endlessComplete": "Ascension infinie terminée",
     "victorySubtitle": "Vous avez remporté le duel de l’acte 8. Votre victoire est acquise.",
     "endlessSubtitle": "Votre victoire reste acquise, même si cette ascension est terminée.",

@@ -634,6 +634,13 @@
     "quad": "Poker"
   },
   "results": {
+    "roundDetails": "Ultimo round",
+    "roundScore": "Punteggio del round",
+    "roundTarget": "Obiettivo",
+    "shortfall": "Punti mancanti",
+    "remainingGold": "Oro rimanente",
+    "rentalPaid": "Affitto addebitato",
+    "defeatIncome": "In caso di sconfitta si paga l’affitto, ma non si ricevono premi di round, interessi, entrate dei Decreti o delle tessere Oro conservate.",
     "endlessComplete": "Ascesa infinita conclusa",
     "victorySubtitle": "Hai vinto il duello dell’atto 8. La tua vittoria è al sicuro.",
     "endlessSubtitle": "La tua vittoria resta, anche se questa ascesa è terminata.",
