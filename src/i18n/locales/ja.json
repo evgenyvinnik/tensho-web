@@ -299,6 +299,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "勅令枠がありません。所持勅令を確認して空きを作りましょう。",
+      "consumableSpace": "消耗品枠が満杯です。対局中にアイテムを使ってから追加購入しましょう。",
+      "flowerCount": "花牌が{{required}}枚必要です。現在{{current}}枚。",
+      "flowers": "この勅令には、さらに花牌が必要です。",
+      "unavailable": "購入不可"
+    },
     "build": {
       "title": "所持勅令",
       "slots": "勅令枠 {{used}} / {{max}}",

@@ -299,6 +299,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "敕令槽位已满。查看持有的敕令以腾出空间。",
+      "consumableSpace": "消耗品槽位已满。请在游戏中使用物品后再购买。",
+      "flowerCount": "需要{{required}}张花牌；当前持有{{current}}张。",
+      "flowers": "此敕令需要更多花牌。",
+      "unavailable": "暂不可购买"
+    },
     "build": {
       "title": "持有敕令",
       "slots": "敕令槽位 {{used}} / {{max}}",

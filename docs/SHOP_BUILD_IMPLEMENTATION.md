@@ -7,6 +7,11 @@ owned inventory or its existing sale action.
 
 ## Implemented behavior
 
+Follow-up: [purchase availability](SHOP_PURCHASE_AVAILABILITY.md) now prevents
+ordinary full-slot purchases before clicking, with inline localized reasons.
+Commit-time rejection and foreground error coverage remain for stale UI. The
+original release evidence below describes the earlier click-to-reject behavior.
+
 - An illustrated owned-build section sits above the offers, in authoritative
   inventory order. It shows actual ownership/capacity, including Negative slots,
   and wraps rather than requiring horizontal scrolling on narrow screens.

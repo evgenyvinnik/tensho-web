@@ -379,6 +379,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "Slot Dekret penuh. Tinjau Dekret milikmu untuk menyediakan ruang.",
+      "consumableSpace": "Slot item sekali pakai penuh. Gunakan item saat bermain sebelum membeli lagi.",
+      "flowerCount": "Memerlukan {{required}} Bunga; kamu punya {{current}}.",
+      "flowers": "Dekret ini memerlukan lebih banyak Bunga.",
+      "unavailable": "Tidak tersedia"
+    },
     "build": {
       "title": "Dekret milikmu",
       "slots": "{{used}} / {{max}} slot Dekret",

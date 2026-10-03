@@ -21,7 +21,7 @@ import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { ShopResult } from '../../game/ShopSession'
-import type { BlessingPack, ImperialCharter } from '../../systems/types'
+import type { BlessingPack, Decree, ImperialCharter } from '../../systems/types'
 import { Button } from '../ui/Button'
 import { ConfirmPopup } from '../ui/Popup'
 import { ShopHeader } from '../shop/ShopHeader'
@@ -100,9 +100,11 @@ export function ShopScreen() {
         const key =
           result.reason === 'notEnoughGold'
             ? 'shop.cantAfford'
-            : result.reason === 'inventoryFull'
-              ? 'shop.inventoryFull'
-              : 'shop.purchaseFailed'
+            : result.reason === 'flowerRequirement'
+              ? 'shop.availability.flowers'
+              : result.reason === 'inventoryFull'
+                ? 'shop.inventoryFull'
+                : 'shop.purchaseFailed'
         setShopError(t(key))
       }
     },
@@ -225,16 +227,40 @@ export function ShopScreen() {
               </div>
 
               <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
-                {availableItems.map((offering) => (
-                  <ShopItemCard
-                    key={offering.id}
-                    offering={offering}
-                    canAfford={game.gold >= offering.finalCost}
-                    onPurchase={() => handleItemPurchase(offering)}
-                    onSelect={() => handleItemSelect(offering)}
-                    isSelected={selectedItemId === offering.id}
-                  />
-                ))}
+                {availableItems.map((offering) => {
+                  const check = shop.validatePurchase(offering.id)
+                  const unavailableReason = check.success
+                    ? undefined
+                    : check.reason === 'notEnoughGold'
+                      ? t('shop.cantAfford')
+                      : check.reason === 'flowerRequirement'
+                        ? t('shop.availability.flowerCount', {
+                            required: (
+                              (offering.item as Decree).flowerRequirement ?? 0
+                            ).toLocaleString(i18n.resolvedLanguage),
+                            current: game.state.flowerSystem
+                              .getFlowerCount()
+                              .toLocaleString(i18n.resolvedLanguage),
+                          })
+                        : check.reason === 'inventoryFull'
+                          ? t(
+                              offering.itemType === 'Decree'
+                                ? 'shop.availability.decreeSpace'
+                                : 'shop.availability.consumableSpace'
+                            )
+                          : t('shop.availability.unavailable')
+                  return (
+                    <ShopItemCard
+                      key={offering.id}
+                      offering={offering}
+                      canAfford={game.gold >= offering.finalCost}
+                      unavailableReason={unavailableReason}
+                      onPurchase={() => handleItemPurchase(offering)}
+                      onSelect={() => handleItemSelect(offering)}
+                      isSelected={selectedItemId === offering.id}
+                    />
+                  )
+                })}
                 {availableItems.length === 0 && (
                   <div className="col-span-full w-full py-8 text-center">
                     <p className="text-[var(--color-beige-white)] opacity-50">

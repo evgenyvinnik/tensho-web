@@ -299,6 +299,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "No hay espacio para un Decreto. Revisa tu combinación para hacer sitio.",
+      "consumableSpace": "Los espacios de consumibles están llenos. Usa un objeto durante el juego antes de comprar más.",
+      "flowerCount": "Requiere {{required}} Flores; tienes {{current}}.",
+      "flowers": "Este Decreto requiere más Flores.",
+      "unavailable": "No disponible"
+    },
     "build": {
       "title": "Tu combinación",
       "slots": "{{used}} / {{max}} espacios de Decreto",

@@ -299,6 +299,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "칙령 슬롯이 가득 찼습니다. 보유 칙령을 확인해 공간을 마련하세요.",
+      "consumableSpace": "소모품 슬롯이 가득 찼습니다. 플레이 중 아이템을 사용한 뒤 추가로 구매하세요.",
+      "flowerCount": "꽃이 {{required}}개 필요합니다. 현재 {{current}}개를 보유 중입니다.",
+      "flowers": "이 칙령에는 꽃이 더 필요합니다.",
+      "unavailable": "구매 불가"
+    },
     "build": {
       "title": "보유 칙령",
       "slots": "칙령 슬롯 {{used}} / {{max}}",

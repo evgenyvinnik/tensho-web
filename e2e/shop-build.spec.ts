@@ -109,19 +109,16 @@ for (const negative of [false, true]) {
     await expect(panel.locator('[data-build-slots]')).toContainText('6 / 6')
     const before = await saved(page)
     const purchase = page.locator(`[data-shop-item="${info.offer}"] button`)
-    await activate(purchase, isMobile)
-    await expect(page.getByRole('alert')).toBeVisible()
-    expect(
-      await page.getByRole('alert').evaluate((node) => {
-        const rect = node.getBoundingClientRect()
-        return (
-          document.elementFromPoint(
-            rect.left + rect.width / 2,
-            rect.top + rect.height / 2
-          ) === node
-        )
-      })
-    ).toBe(true)
+    await expect(purchase).toBeDisabled()
+    const blocked = page.locator(
+      `[data-shop-item="${info.offer}"] [data-purchase-blocked]`
+    )
+    await expect(blocked).toBeVisible()
+    await expect(purchase).toHaveAccessibleDescription(
+      new RegExp(
+        (await blocked.innerText()).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      )
+    )
     expect(await saved(page)).toEqual(before)
     const protectedCard = panel.locator(
       `[data-decree-instance="${info.eternal}"]`
@@ -174,11 +171,45 @@ for (const negative of [false, true]) {
         (d: { instanceId: string }) => d.instanceId
       )
     ).toContain(info.eternal)
-    await activate(purchase, isMobile)
     if (negative) {
-      await expect(page.getByRole('alert')).toBeVisible()
+      await expect(purchase).toBeDisabled()
+      await expect(blocked).toBeVisible()
       expect(await saved(page)).toEqual(afterSale)
     } else {
+      await expect(purchase).toBeEnabled()
+      await expect(blocked).toHaveCount(0)
+      // Deliberately stale UI: mutate gold without notifying React. The engine
+      // must still reject the commit, and its error must paint above the art.
+      await page.evaluate(async () => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const { gameOrchestrator: game } = await import(path)
+        game.getState().gold = 0
+      })
+      await activate(purchase, isMobile)
+      await expect(page.getByRole('alert')).toBeVisible()
+      expect(
+        await page.getByRole('alert').evaluate((node) => {
+          const rect = node.getBoundingClientRect()
+          return (
+            document.elementFromPoint(
+              rect.left + rect.width / 2,
+              rect.top + rect.height / 2
+            ) === node
+          )
+        })
+      ).toBe(true)
+      const rejected = await saved(page)
+      expect(rejected.state.decreeSystem).toEqual(afterSale.state.decreeSystem)
+      await page.evaluate(async () => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const busPath = '/src/game/EventBus.ts'
+        const { gameOrchestrator: game } = await import(path)
+        const { eventBus } = await import(busPath)
+        game.getState().gold = 13
+        eventBus.emit('shopUpdated', { isOpen: true })
+      })
+      await expect(purchase).toBeEnabled()
+      await activate(purchase, isMobile)
       await expect(purchase).toHaveCount(0)
       await expect(panel.locator('[data-build-slots]')).toContainText('6 / 6')
       const afterPurchase = await saved(page)

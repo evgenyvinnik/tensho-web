@@ -46,6 +46,51 @@ afterEach(async () => {
   })
 })
 
+it('keeps blocked details readable and blocks both card and button purchase paths', () => {
+  const item = ALL_DECREES[0]
+  const offering: TeaHouseOffering = {
+    id: 'blocked',
+    slotIndex: 0,
+    itemType: 'Decree',
+    item,
+    baseCost: 4,
+    finalCost: 4,
+    editionCost: 0,
+    sellValue: 2,
+    isPurchased: false,
+    isLocked: false,
+  }
+  const buy = vi.fn()
+  const select = vi.fn()
+  const props = { offering, canAfford: true, onPurchase: buy, onSelect: select }
+  const view = render(
+    <ShopItemCard {...props} unavailableReason="Make room in your build." />
+  )
+  const card = view.container.querySelector('[data-shop-item]')!
+  fireEvent.click(card)
+  expect(select).toHaveBeenCalledOnce()
+  view.rerender(
+    <ShopItemCard
+      {...props}
+      isSelected
+      unavailableReason="Make room in your build."
+    />
+  )
+  const button = screen.getByRole('button')
+  expect(button).toBeDisabled()
+  expect(button).toHaveAccessibleDescription(
+    expect.stringContaining('Make room in your build.')
+  )
+  expect(screen.queryByText('Tap to Buy')).not.toBeInTheDocument()
+  fireEvent.click(card)
+  fireEvent.click(button)
+  expect(buy).not.toHaveBeenCalled()
+  view.rerender(<ShopItemCard {...props} isSelected />)
+  expect(screen.getByRole('button')).toBeEnabled()
+  fireEvent.click(screen.getByRole('button'))
+  expect(buy).toHaveBeenCalledOnce()
+})
+
 it('includes localized edition and zero-cost Rental rules in purchase details', async () => {
   await changeLanguage('es')
   const item = {

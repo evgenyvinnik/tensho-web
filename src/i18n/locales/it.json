@@ -402,6 +402,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "Nessuno spazio Decreto libero. Controlla i tuoi Decreti per fare posto.",
+      "consumableSpace": "Gli spazi consumabili sono pieni. Usa un oggetto durante il gioco prima di acquistarne altri.",
+      "flowerCount": "Richiede {{required}} Fiori; ne hai {{current}}.",
+      "flowers": "Questo Decreto richiede più Fiori.",
+      "unavailable": "Non disponibile"
+    },
     "build": {
       "title": "I tuoi Decreti",
       "slots": "{{used}} / {{max}} spazi Decreto",

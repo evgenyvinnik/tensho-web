@@ -8,6 +8,12 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+Follow-up [purchase availability](SHOP_PURCHASE_AVAILABILITY.md) explains disabled
+ordinary offers using actual gold, slots and Flower counts, preserving readable
+details and commitment-time guards. 32 browser checks and production desktop/touch
+sale/purchase/reload pass. Local suite has 1,542 passes and one worker-start failure;
+the missing 11 tests pass separately. Publication/independent CI are pending.
+
 The [owned-build panel](SHOP_BUILD_IMPLEMENTATION.md) exposes the existing sale
 workflow where purchases happen: illustrated scrolls, shared hover/focus/tap
 rules, physical-copy confirmation, actual capacity and live gold. Six-scroll

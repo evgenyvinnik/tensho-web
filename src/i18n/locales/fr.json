@@ -299,6 +299,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "Aucun emplacement de Décret libre. Vérifiez vos Décrets pour faire de la place.",
+      "consumableSpace": "Les emplacements de consommables sont pleins. Utilisez un objet en jeu avant d’en acheter d’autres.",
+      "flowerCount": "Nécessite {{required}} Fleurs ; vous en avez {{current}}.",
+      "flowers": "Ce Décret nécessite davantage de Fleurs.",
+      "unavailable": "Indisponible"
+    },
     "build": {
       "title": "Vos Décrets",
       "slots": "{{used}} / {{max}} emplacements de Décret",

@@ -402,6 +402,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "Boş Ferman yuvası yok. Yer açmak için Fermanlarını gözden geçir.",
+      "consumableSpace": "Tüketilebilir eşya yuvaları dolu. Daha fazla almadan önce oyun sırasında bir eşya kullan.",
+      "flowerCount": "{{required}} Çiçek gerekli; sende {{current}} var.",
+      "flowers": "Bu Ferman için daha fazla Çiçek gerekiyor.",
+      "unavailable": "Kullanılamıyor"
+    },
     "build": {
       "title": "Fermanların",
       "slots": "{{used}} / {{max}} Ferman yuvası",

@@ -22,13 +22,24 @@ export type ShopFailure =
   | 'unavailable'
   | 'notEnoughGold'
   | 'inventoryFull'
+  | 'flowerRequirement'
   | 'invalidSelection'
 export type ShopResult =
   | { success: true }
   | { success: false; reason: ShopFailure }
 type Reward = { type: PackContent['type']; data: unknown }
+type PurchasePlan =
+  | {
+      success: true
+      offering: TeaHouseOffering
+      pack?: PackOffering
+      reward?: Reward
+    }
+  | Extract<ShopResult, { success: false }>
 const OK: ShopResult = { success: true }
-const fail = (reason: ShopFailure): ShopResult => ({ success: false, reason })
+const fail = (
+  reason: ShopFailure
+): Extract<ShopResult, { success: false }> => ({ success: false, reason })
 
 export interface ShopSessionState {
   teaHouse: ReturnType<TeaHouseSystem['toSerializedState']>
@@ -278,33 +289,48 @@ export class ShopSession {
     ].find((o) => o.id === id)
   }
 
+  /** Read-only UI preflight. Purchase rechecks this same plan at commitment. */
+  validatePurchase(id: string): ShopResult {
+    if (this.busy || !this.opened || !this.available())
+      return fail('unavailable')
+    const plan = this.preparePurchase(id)
+    return plan.success ? OK : plan
+  }
+
+  private preparePurchase(id: string): PurchasePlan {
+    const offering = this.findOffering(id)
+    if (this.pending || !offering || offering.isPurchased || offering.isLocked)
+      return fail('unavailable')
+    const priceFailure = this.priceFailure(offering.finalCost)
+    if (priceFailure) return fail(priceFailure)
+    let pack: PackOffering | undefined
+    let reward: Reward | undefined
+    if (offering.itemType === 'BlessingPack') {
+      pack = this.packOfferings.find(
+        (p) => p.pack.id === (offering.item as BlessingPack).id
+      )
+      if (!pack || pack.isOpened || pack.isResolved) return fail('unavailable')
+    } else if (offering.itemType === 'ImperialCharter') {
+      if (!this.game.canAddImperialCharter(offering.item as ImperialCharter))
+        return fail('unavailable')
+    } else {
+      reward = { type: offering.itemType, data: offering.item }
+      if (
+        offering.itemType === 'Decree' &&
+        ((offering.item as Decree).flowerRequirement ?? 0) >
+          this.game.getState().flowerSystem.getFlowerCount()
+      )
+        return { success: false, reason: 'flowerRequirement' }
+      if (!this.canReceive([reward])) return fail('inventoryFull')
+    }
+    return { success: true, offering, pack, reward }
+  }
+
   purchase(id: string): ShopResult {
     return this.operate(() => {
-      const offering = this.findOffering(id)
-      if (
-        this.pending ||
-        !offering ||
-        offering.isPurchased ||
-        offering.isLocked
-      )
-        return fail('unavailable')
-      const priceFailure = this.priceFailure(offering.finalCost)
-      if (priceFailure) return fail(priceFailure)
-      let pack: PackOffering | undefined
-      let reward: Reward | undefined
-      if (offering.itemType === 'BlessingPack') {
-        pack = this.packOfferings.find(
-          (p) => p.pack.id === (offering.item as BlessingPack).id
-        )
-        if (!pack || pack.isOpened || pack.isResolved)
-          return fail('unavailable')
-      } else if (offering.itemType === 'ImperialCharter') {
-        if (!this.game.canAddImperialCharter(offering.item as ImperialCharter))
-          return fail('unavailable')
-      } else {
-        reward = { type: offering.itemType, data: offering.item }
-        if (!this.canReceive([reward])) return fail('inventoryFull')
-      }
+      const plan = this.preparePurchase(id)
+      if (!plan.success) return plan
+      const { offering, pack, reward } = plan
 
       // All failure-prone checks precede mutation. Event callbacks cannot run
       // between payment, granting inventory, and marking this offer purchased.

@@ -140,6 +140,23 @@ it('supplies table accessibility and cumulative stake rules in every locale', ()
 
 type Locale = Record<string, unknown>
 
+it('localizes purchase blockers and preserves the Flower counts in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = (locale.shop as typeof en.shop).availability
+    expect(Object.keys(copy).sort()).toEqual(
+      Object.keys(en.shop.availability).sort()
+    )
+    for (const [key, english] of Object.entries(en.shop.availability)) {
+      const value = copy[key as keyof typeof copy]
+      expect(value, `${language}: ${key}`).toBeTruthy()
+      expect(value.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+      if (language !== 'en') expect(value).not.toBe(english)
+    }
+  }
+})
+
 it('localizes owned-build actions and keeps Polished Stone aligned with its chip rule', () => {
   const definition = ALL_DECREES.find((d) => d.id === 'decree-polished-stone')!
   expect(definition.effect).toMatchObject({

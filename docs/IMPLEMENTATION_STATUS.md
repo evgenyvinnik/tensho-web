@@ -4,6 +4,13 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Verified locally, publication pending:** [purchase availability](SHOP_PURCHASE_AVAILABILITY.md)
+now explains and disables blocked ordinary offers before clicking, using shared
+read-only engine checks. Sales immediately update capacity. All 32 browser checks,
+13 release checks, TypeScript, targeted lint and production build pass. Local
+suite: 1,542 pass plus one worker-start failure; its 11 tests pass separately.
+Production desktop/touch purchase/sale/reload passes; seeded replay is unchanged.
+
 **Published — v1.0.261003-5:** [the illustrated owned-build panel](SHOP_BUILD_IMPLEMENTATION.md)
 now supports inspecting and selling exact Decree copies alongside offers, with
 confirmation, real slot/gold updates and 320px wrapping. New Polished Stone art

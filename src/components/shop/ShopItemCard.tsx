@@ -56,6 +56,8 @@ export interface ShopItemCardProps {
   offering: TeaHouseOffering
   /** Whether the player can afford this item */
   canAfford: boolean
+  /** Localized engine preflight failure; details remain readable while blocked. */
+  unavailableReason?: string
   /** Callback when item is purchased */
   onPurchase: () => void
   /** Callback when item is selected for details */
@@ -263,6 +265,7 @@ function StickerIndicator({ sticker }: StickerIndicatorProps) {
 export function ShopItemCard({
   offering,
   canAfford,
+  unavailableReason,
   onPurchase,
   onSelect,
   isSelected = false,
@@ -272,6 +275,12 @@ export function ShopItemCard({
   const priceId = useId()
   const descriptionId = useId()
   const modifiersId = useId()
+  const unavailableId = useId()
+  const canBuy =
+    canAfford &&
+    !unavailableReason &&
+    !offering.isLocked &&
+    !offering.isPurchased
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const itemText = useItemText()
@@ -365,13 +374,13 @@ export function ShopItemCard({
 
   const handleClick = useCallback(() => {
     if (isSelected) {
-      if (canAfford) onPurchase()
+      if (canBuy) onPurchase()
     } else if (onSelect) {
       onSelect()
-    } else if (canAfford) {
+    } else if (canBuy) {
       onPurchase()
     }
-  }, [isSelected, canAfford, onPurchase, onSelect])
+  }, [isSelected, canBuy, onPurchase, onSelect])
 
   return (
     <AnimatedDiv
@@ -488,18 +497,18 @@ export function ShopItemCard({
         {/* Purchase button */}
         <button
           aria-labelledby={`${nameId} ${priceId}`}
-          aria-describedby={`${descriptionId}${hasDecreeModifiers ? ` ${modifiersId}` : ''}`}
+          aria-describedby={`${descriptionId}${hasDecreeModifiers ? ` ${modifiersId}` : ''}${unavailableReason ? ` ${unavailableId}` : ''}`}
           onClick={(e) => {
             e.stopPropagation()
-            onPurchase()
+            if (canBuy) onPurchase()
           }}
-          disabled={!canAfford}
+          disabled={!canBuy}
           className={`
             mt-3 py-2 px-3 rounded-lg text-sm font-bold
             transition-all duration-200 w-full
             min-h-[44px]
             ${
-              canAfford
+              canBuy
                 ? `bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] hover:bg-[var(--color-deep-orange)] ${reduceMotion ? '' : 'active:scale-95'}`
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
             }
@@ -517,13 +526,24 @@ export function ShopItemCard({
             {offering.finalCost.toLocaleString(i18n.resolvedLanguage)}G
           </span>
         </button>
+        {unavailableReason && (
+          <p
+            id={unavailableId}
+            data-purchase-blocked
+            className="mt-2 text-sm leading-relaxed text-amber-100"
+          >
+            {unavailableReason}
+          </p>
+        )}
       </div>
 
       {/* Selected indicator */}
       {isSelected && (
         <div className="absolute inset-0 border-4 border-[var(--color-golden-yellow)] rounded-xl pointer-events-none">
           <div className="absolute top-0 left-0 right-0 bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] text-xs font-bold text-center py-0.5">
-            {t('shop.tapToBuy', 'Tap to Buy')}
+            {canBuy
+              ? t('shop.tapToBuy', 'Tap to Buy')
+              : t('shop.availability.unavailable')}
           </div>
         </div>
       )}

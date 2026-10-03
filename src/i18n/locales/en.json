@@ -295,6 +295,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "No Decree slot. Review your build to make room.",
+      "consumableSpace": "Consumable slots are full. Use an item during play before buying more.",
+      "flowerCount": "Requires {{required}} Flowers; you have {{current}}.",
+      "flowers": "More Flowers are required for this Decree.",
+      "unavailable": "Unavailable"
+    },
     "build": {
       "title": "Your build",
       "slots": "{{used}} / {{max}} Decree slots",

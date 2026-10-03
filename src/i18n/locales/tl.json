@@ -402,6 +402,13 @@
     "bossJp": "親局"
   },
   "shop": {
+    "availability": {
+      "decreeSpace": "Puno ang mga puwesto ng Dekreto. Suriin ang mga Dekreto mo para maglaan ng puwesto.",
+      "consumableSpace": "Puno ang mga puwesto ng consumable. Gumamit ng item habang naglalaro bago bumili pa.",
+      "flowerCount": "Kailangan ng {{required}} Bulaklak; mayroon kang {{current}}.",
+      "flowers": "Kailangan ng higit pang Bulaklak para sa Dekretong ito.",
+      "unavailable": "Hindi available"
+    },
     "build": {
       "title": "Mga Dekreto mo",
       "slots": "{{used}} / {{max}} puwesto ng Dekreto",
