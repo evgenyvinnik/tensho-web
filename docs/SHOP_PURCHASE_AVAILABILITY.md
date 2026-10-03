@@ -63,5 +63,21 @@ production verification script. Its input is the isolated fixture from
 `/tmp/tensho-shop-build-aM6Bjs/release-browser.json`, never a player's save.
 The local worker-start failure above is retained rather than hidden by retries.
 
-Publication is pending. Broader mechanics decisions, deliberate Yaku planning,
-newcomer playtesting and physical-device/native-language review remain open.
+## Published checkpoint
+
+Source `4a6fe22c155daf5a95b026c42abef296947f7cd9` is on main. Published
+**v1.0.261003-6**, built/tagged at `4bc6fc5800a1999932d823b34d49fddd9e3ffb8f`.
+[CI run 37141601614](https://github.com/evgenyvinnik/tensho-web/actions/runs/37141601614)
+passed all **1,553/1,553 application tests** across 133 files, **13/13 release
+checks**, build, provenance and Pages deployment. Public manifest and remote
+version tag match the built commit exactly.
+
+Hosted desktop/touch checks passed: disabled capacity reason, cancellation without
+mutation, confirmed sale enabling a purchase, exact sale/purchase reload and
+next-round continuation, with zero page errors. Screenshots and CI log remain in
+the evidence directory above. Owned development/preview servers were stopped.
+CI notes existing Pages actions' forced Node 24 migration and the forthcoming
+ubuntu-latest image migration; neither failed this build.
+
+Broader mechanics decisions, deliberate Yaku planning, newcomer playtesting and
+physical-device/native-language review remain open. This is not project completion.

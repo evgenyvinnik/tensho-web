@@ -12,7 +12,10 @@ Follow-up [purchase availability](SHOP_PURCHASE_AVAILABILITY.md) explains disabl
 ordinary offers using actual gold, slots and Flower counts, preserving readable
 details and commitment-time guards. 32 browser checks and production desktop/touch
 sale/purchase/reload pass. Local suite has 1,542 passes and one worker-start failure;
-the missing 11 tests pass separately. Publication/independent CI are pending.
+the missing 11 tests pass separately. Published **v1.0.261003-6** with all 1,553 CI
+tests, 13 release checks and deployment passing. Public manifest/tag match
+`4bc6fc5800a1999932d823b34d49fddd9e3ffb8f`; hosted desktop/touch blocked offers,
+sale-enabled purchases, reload and continuation pass without page errors.
 
 The [owned-build panel](SHOP_BUILD_IMPLEMENTATION.md) exposes the existing sale
 workflow where purchases happen: illustrated scrolls, shared hover/focus/tap
