@@ -29,4 +29,11 @@ The initial engine run reproduced five failures: missing rent for ordinary/expir
 - All 13 release-workflow tests passed. Pages-base production/PWA build and strict TypeScript passed; existing large-chunk and stale Browserslist warnings remain.
 - Native desktop/touch browser checks: 16/16 passed for results and loss prevention. Visual review caught an awkward 13-digit target wrap at 320px; long values now use smaller text. The final result suite passed 10/10 after that adjustment, with screenshot review.
 - Production preview initially used the wrong base path and failed the asset hash check (SPA HTML instead of image). Correcting the preview environment to `/tensho-web/` resolved it. Desktop/touch production checks then passed: exact artwork SHA-256, 1200×400 decode, real play into defeat, debt/receipt display, exact save/reload and fresh-run action; no page errors.
-- CI and public deployment evidence will be recorded separately after publishing the checkpoint.
+
+## Published checkpoint
+
+Published as **v1.0.261003-2**, source commit `71b95b3dc4f0bc21fec39b16db6dec67264f7054`, built/tag commit `447efa00b6cc5b5e103d058b4c757b5b5cc8f87f`. [CI run 37103041672](https://github.com/evgenyvinnik/tensho-web/actions/runs/37103041672) passed the full 129-file application suite, all 13 release checks, production build, provenance verification and Pages deployment.
+
+Public desktop and touch checks passed: release manifest and visible menu version match, generated artwork matches the local SHA-256 exactly, Rental debt is shown after a real play, save/reload preserves the complete snapshot without charging again, and Try Again starts a fresh run. No page errors. Hosted screenshots and the verification script are retained in `/tmp/tensho-defeat-settlement-XS5dfN/`.
+
+This is an incremental verified release. Native-language review, physical-device checks, human enjoyment and the other unconfirmed mechanics choices remain outstanding.
