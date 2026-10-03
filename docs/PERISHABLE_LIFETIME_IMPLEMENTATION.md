@@ -42,7 +42,17 @@ Seven failing-first regressions reproduced these defects.
   passed both preserved-legacy defeat and eligible-copy rescue, warning layout,
   Negative capacity accounting, and exact reload, without page errors.
 
-Publication verification is pending. Perishable
+- Published as **v1.0.261003-1** (UTC release date). Independent
+  [CI run 37085735898](https://github.com/evgenyvinnik/tensho-web/actions/runs/37085735898)
+  passed all **1,477 application tests** and **13 release checks**, then built
+  and deployed successfully. Implementation commit:
+  `9e71dc6a4342a95a84cd657407f0efb406ae9b56`; built/tag commit:
+  `55a39eb003d6c69375f81a3ec6c478f805c24b47`. Public manifest, remote tag and
+  visible menu version match. All four hosted desktop/touch legacy-defeat and
+  eligible-copy rescue checks passed, including warning, exact reload and no
+  page errors. Logs are in the artifact directory above.
+
+Perishable
 grower eligibility, final-defeat rental accounting, and the broader mechanics
 choices remain open; this follow-up does not infer answers to them.
 

@@ -6,7 +6,7 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Loss-prevention follow-up
+## Published loss-prevention follow-up
 
 The [Phoenix follow-up](PERISHABLE_LIFETIME_IMPLEMENTATION.md#october-2-loss-prevention-follow-up)
 closes an unlimited-rescue bug: self-consuming rescuers no longer receive
@@ -18,7 +18,11 @@ the final mechanics browser batch passed 22/22, and localized-caption checks
 passed 6/6. Final post-caption units also passed 1,477/1,477, with TypeScript,
 lint, the Pages-base build and 13 release checks green. Production desktop/touch
 defeat/rescue, exact-copy consumption, warning layout and reload checks passed
-without page errors. Publication is pending. Other mechanics choices and the
+without page errors. Published **v1.0.261003-1**: independent CI passed all
+1,477 tests and 13 release checks, then deployed
+`55a39eb003d6c69375f81a3ec6c478f805c24b47`. Public manifest/tag/menu match;
+all four hosted desktop/touch legacy-defeat and eligible-copy rescue checks
+passed, with exact reload and no page errors. Other mechanics choices and the
 broader completion audit remain open.
 
 ## Published Perishable lifetime and Phoenix checkpoint
@@ -882,6 +886,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest combined-sticker checkpoint is published as v1.0.260929-3 with independent CI (1,459 tests), matching manifest/tag, 60 desktop/touch browser checks and hosted combined-modifier/play/sale/reload checks; see [Combined stickers](COMBINED_STICKERS_IMPLEMENTATION.md). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
+| Release readiness | The latest loss-prevention checkpoint is published as v1.0.261003-1 with independent CI (1,477 tests), matching manifest/tag/menu, desktop/touch browser regression and hosted defeat/rescue/reload checks; see [Phoenix follow-up](PERISHABLE_LIFETIME_IMPLEMENTATION.md#october-2-loss-prevention-follow-up). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.
