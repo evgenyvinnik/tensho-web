@@ -92,3 +92,20 @@ image remains separate from temporary browser artifacts. No player save is used.
 
 The broader implementation, unconfirmed mechanics, deliberate Yaku planning,
 human newcomer sessions and physical-device/native-language reviews remain open.
+
+## Published checkpoint
+
+Source commit `14a1e880632f362b7d6b440e5c8ef25890a71b9a` is on main.
+[CI run 37139457730](https://github.com/evgenyvinnik/tensho-web/actions/runs/37139457730)
+passed the final **1,538/1,538 application tests**, **13/13 release checks**,
+production build, provenance verification and Pages deployment. Published
+**v1.0.261003-5**, built/tagged at `f5ed840926555df4c2a4ce721773ce4578f8d611`.
+The public manifest and remote version tag match that commit.
+
+Hosted desktop/touch verification passed using the same browser-generated shop
+save: exact artwork SHA-256 and dimensions, cancellation without mutation,
+confirmed sale, exact reload, responsive layout and next-round navigation, with
+zero page errors. The hosted screenshots and script remain in the evidence
+directory above. Owned development/preview servers were stopped; the pre-existing
+server on port 4173 was left untouched. This is an incremental published feature,
+not whole-project completion or a human-fun result.

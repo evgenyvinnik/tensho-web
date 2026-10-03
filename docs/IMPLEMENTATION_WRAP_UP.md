@@ -16,6 +16,10 @@ save/reload pass through the real browser flow. A new Polished Stone portrait
 is shared by shop/inventory/Archive, and five incorrect descriptions are repaired.
 The error banner's hidden background layer is also fixed. Final native browser
 regression passes 26/26; production desktop/touch sale/reload/continuation passes.
+Published **v1.0.261003-5**, with 1,538 CI tests, 13 release checks, build and
+deployment passing. Public manifest/tag match
+`f5ed840926555df4c2a4ce721773ce4578f8d611`; hosted desktop/touch sale, cancellation,
+reload, exact art hash and continuation pass without page errors.
 This does not change gameplay balance or establish human enjoyment.
 
 ## Current build-aware progression measurement
