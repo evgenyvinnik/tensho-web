@@ -140,4 +140,16 @@ to the goal of making mahjong combinations rewarding and understandable.
 - Both final matrices completed with unchanged source and zero diagnostic stops;
   all original control fields and the separate winning replay match exactly.
 - No new browser or physical-device claim: non-test application code and visual
-  assets are unchanged. Publication evidence is recorded after deployment.
+  assets are unchanged.
+
+## Published checkpoint
+
+Committed on main as `6d8b97fe9f47338b88e292541502593b4f257cb6`.
+[CI run 37136614506](https://github.com/evgenyvinnik/tensho-web/actions/runs/37136614506)
+independently passed **1,530/1,530 application tests**, **13/13 release checks**,
+production build, provenance verification and Pages deployment. Published
+**v1.0.261003-4**, built/tagged at `57bf59d7133a0c10b68467e15114e3639832e164`;
+the public release manifest matches the version and commit. This is an analysis
+checkpoint, not a claim that the broader implementation or fun/balance audit is
+complete. Workflow annotations also flag upstream Pages actions using deprecated
+Node 20 targets and an upcoming runner-image migration; neither failed this run.

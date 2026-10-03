@@ -16,6 +16,9 @@ diagnostic stops. Round clears improve on 488 paired runs and worsen on 71.
 None of the victories uses a complete hand. This demonstrates some late-run
 viability, not human balance or enjoyment; deliberate hand planning and newcomer
 observation remain open. All 1,530 local tests and 13 release checks pass.
+Published **v1.0.261003-4**: independent CI passes the same gates, production
+build and deployment; public manifest/tag match
+`57bf59d7133a0c10b68467e15114e3639832e164`.
 Player-facing rules and artwork are unchanged.
 
 ## Previous all-table progression measurement

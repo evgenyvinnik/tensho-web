@@ -4,10 +4,11 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
-**Observed-build measurement:** [build-aware shopping](CLASSIC_BUILD_SHOP_BALANCE.md)
+**Published measurement — v1.0.261003-4:** [build-aware shopping](CLASSIC_BUILD_SHOP_BALANCE.md)
 now has a separate opt-in analysis policy and 2,560 matched table/Stake runs.
 It records 25 rescue-free victories versus zero for cheapest-first, with no
-diagnostic stops. All 1,530 local tests and 13 release checks pass. This does not
+diagnostic stops. All 1,530 local/CI tests and 13 release checks pass; build,
+deployment and public manifest/tag verification passed. This does not
 change the live coach, gameplay balance or visuals, and does not certify human fun.
 
 **Published follow-up — v1.0.260926-5:** pack generation now excludes already
