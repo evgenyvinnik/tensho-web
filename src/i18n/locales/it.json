@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "Eterno · Non vendibile",
+    "eternalCannotSellNamed": "{{name}} è eterno e non può essere venduto",
+    "eternalConflictDescription": "Non può impedire una sconfitta: Eterno impedisce a questo Decreto di consumarsi.",
     "eternalName": "Eterno",
     "eternalDescription": "Non può essere venduto né distrutto.",
     "perishableName": "Deperibile",

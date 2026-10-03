@@ -1,11 +1,12 @@
 import type { TFunction } from 'i18next'
 import type { Decree } from '../systems/types'
-import { getDecreeStickers } from '../systems/decreeStickers'
+import { canReceiveEternal, getDecreeStickers } from '../systems/decreeStickers'
 
 export type DecreeModifierSource = Pick<
   Decree,
   'edition' | 'sticker' | 'stickers' | 'isDebuffed'
->
+> &
+  Partial<Pick<Decree, 'effect' | 'extraEffects'>>
 
 /** Text describes the actual offered/owned copy, never a guessed default timer. */
 export function decreeModifierText(
@@ -34,7 +35,16 @@ export function decreeModifierText(
     const key = sticker.type.toLowerCase()
     let description = t(`decreeModifiers.${key}Description`)
     let badge = '∞'
-    if (sticker.type === 'Rental') {
+    if (
+      sticker.type === 'Eternal' &&
+      decree.effect &&
+      !canReceiveEternal({
+        effect: decree.effect,
+        extraEffects: decree.extraEffects,
+      })
+    ) {
+      description += ` ${t('decreeModifiers.eternalConflictDescription')}`
+    } else if (sticker.type === 'Rental') {
       description = t('decreeModifiers.rentalDescription', {
         amount: number.format(sticker.goldPerRound ?? 3),
       })

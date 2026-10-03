@@ -433,11 +433,9 @@ export function DecreeCardCompact({
                           : t('gameplay.sellNamed', 'Sell {{name}}', {
                               name: decreeName,
                             })
-                        : t(
-                            'gameplay.eternalCannotSellNamed',
-                            '{{name}} is Eternal and cannot be sold',
-                            { name: displayName }
-                          )
+                        : t('decreeModifiers.eternalCannotSellNamed', {
+                            name: displayName,
+                          })
                     }
                     onClick={() => {
                       onSell()
@@ -451,10 +449,7 @@ export function DecreeCardCompact({
                         : t('gameplay.sellFor', 'Sell for ¥{{value}}', {
                             value: sellValue,
                           })
-                      : t(
-                          'gameplay.eternalCannotSell',
-                          'Eternal · Cannot sell'
-                        )}
+                      : t('decreeModifiers.eternalCannotSell')}
                   </button>
                 </div>
               )}

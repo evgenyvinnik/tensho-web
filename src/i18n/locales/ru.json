@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "Вечный · Нельзя продать",
+    "eternalCannotSellNamed": "{{name}} — вечный Указ, его нельзя продать",
+    "eternalConflictDescription": "Не может предотвратить поражение: «Вечный» не позволяет этому Указу израсходовать себя.",
     "eternalName": "Вечный",
     "eternalDescription": "Нельзя продать или уничтожить.",
     "perishableName": "Скоропортящийся",

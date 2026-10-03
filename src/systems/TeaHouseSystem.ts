@@ -66,6 +66,7 @@ import {
   type CharterEffect,
 } from '../config/charterDefinitions'
 import { runRandom } from '../game/RunRandom'
+import { canReceiveEternal } from './decreeStickers'
 
 // =============================================================================
 // TEA HOUSE CONSTANTS
@@ -511,15 +512,24 @@ export class TeaHouseSystem {
     // Determine edition (random chance for special editions)
     const edition = this.generateRandomEdition()
 
-    // Determine sticker based on stake
-    const stickers = this.generateStickers()
+    // Roll every enabled sticker before eligibility filtering, preserving the
+    // seeded stream. An ineligible Eternal must not suppress Perishable.
+    const rolledStickers = this.generateStickers()
+    const eligible = rolledStickers.filter(
+      (entry) => entry.type !== 'Eternal' || canReceiveEternal(decree)
+    )
+    const stickers = eligible.filter(
+      (entry) =>
+        entry.type !== 'Perishable' ||
+        !eligible.some((other) => other.type === 'Eternal')
+    )
 
     // Calculate costs
     const costRange = DECREE_BASE_COST_RANGES[decree.rarity]
     // Keep the legacy cost draw when the first sticker is not Rental, so
     // retaining a second sticker does not shift subsequent seeded shop rolls.
     const rolledCost =
-      stickers[0]?.type === 'Rental'
+      rolledStickers[0]?.type === 'Rental'
         ? 1 // Rental items cost only 1 Gold
         : Math.floor(this.random() * (costRange.max - costRange.min + 1)) +
           costRange.min
@@ -908,11 +918,6 @@ export class TeaHouseSystem {
     // Rental at stake 8+ (Gold Stake)
     if (this.currentStake >= 8 && this.random() < stickerChance) {
       stickers.push('Rental')
-    }
-
-    // Cannot have both Eternal and Perishable
-    if (stickers.includes('Eternal') && stickers.includes('Perishable')) {
-      stickers.splice(stickers.indexOf('Perishable'), 1)
     }
 
     return stickers.map((type) => {

@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "영구 · 판매 불가",
+    "eternalCannotSellNamed": "{{name}}은(는) 영구 칙령이므로 판매할 수 없습니다",
+    "eternalConflictDescription": "패배를 막을 수 없습니다. 영구 스티커 때문에 이 칙령은 자신을 소모할 수 없습니다.",
     "eternalName": "영구",
     "eternalDescription": "판매하거나 파괴할 수 없습니다.",
     "perishableName": "소모성",

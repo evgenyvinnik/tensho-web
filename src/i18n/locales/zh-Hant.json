@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "永恆 · 無法出售",
+    "eternalCannotSellNamed": "{{name}}具有永恆貼紙，無法出售",
+    "eternalConflictDescription": "無法阻止失敗：永恆貼紙使此敕令無法消耗自身。",
     "eternalName": "永恆",
     "eternalDescription": "無法出售或摧毀。",
     "perishableName": "易逝",

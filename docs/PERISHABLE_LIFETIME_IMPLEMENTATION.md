@@ -2,6 +2,50 @@
 
 September 29, 2026. Published as **v1.0.260929-4**.
 
+## October 2 loss-prevention follow-up
+
+The Eternal exclusions in section 6a prohibit self-selling Decrees. Shop rolls
+ignored that rule, and Phoenix granted a rescue even when Eternal blocked its
+removal. Crimson Heart suppression was also omitted from loss-prevention lookup.
+Seven failing-first regressions reproduced these defects.
+
+- Fresh shop offers exclude Eternal from consuming loss-prevention powers.
+  Eligible Perishable/Rental rolls survive; the cost draw and later seeded rolls
+  are not shifted. Eternal remains available for permanent rescuers and
+  destruction-risk powers such as Glass Cannon, preserving the documented
+  risk-free synergy. There is no implemented natural-decay Decree effect to
+  classify; this is not a promise about future catalog additions.
+- A one-shot rescue must actually consume its physical copy. A protected copy
+  is skipped in favor of another eligible copy, and Negative capacity is removed
+  only for the spent copy. Permanent rescuers retain priority and their penalty.
+- Boss-disabled rescuers do not activate. Existing Eternal Phoenix saves remain
+  loadable and keep their protected item, but cannot turn failed consumption into
+  unlimited rescues. A translated warning explains the conflict. Concealed items
+  reveal neither the warning nor their identity.
+- The warning, disabled-sale caption and accessible label have all thirteen
+  locale entries. Native-speaker review remains separate from key/placeholder
+  tests. Existing Phoenix artwork is reused; no new raster was needed here.
+- Focused engine checks passed; the full pre-caption regression passed
+  **1,477/1,477 tests in 127 files**. Browser regression passed **22/22** with
+  normal deadlines and no retries, then **6/6** after caption localization.
+  The 320px warning popup was visually inspected. The first browser batch had
+  19 passes, one development-module load failure and two invalid test fixtures;
+  a diagnostic confirmed the latter used the richer effect definition where
+  saves require the runtime boss catalog entry. Only the fixture was corrected;
+  save validation was not relaxed. Root cause of the one module-load failure
+  was not established. Evidence is retained in
+  `/tmp/tensho-loss-prevention-pNM6iw/`.
+
+- Final post-caption regression passed **1,477/1,477 tests in 127 files**.
+  TypeScript, targeted lint, the Pages-base production/PWA build and all
+  **13 release checks** passed. Production desktop and 320px touch checks
+  passed both preserved-legacy defeat and eligible-copy rescue, warning layout,
+  Negative capacity accounting, and exact reload, without page errors.
+
+Publication verification is pending. Perishable
+grower eligibility, final-defeat rental accounting, and the broader mechanics
+choices remain open; this follow-up does not infer answers to them.
+
 ## Rule and reproduced defect
 
 [Game mechanics](GAME_MECHANICS.md), sections 6b and 7, says that Perishable

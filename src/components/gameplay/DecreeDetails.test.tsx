@@ -11,6 +11,24 @@ const owned = {
   roundsActive: 0,
 }
 
+it('explains an old Eternal Phoenix conflict without leaking it when concealed', () => {
+  const decree = {
+    ...ALL_DECREES.find((d) => d.id === 'decree-phoenix')!,
+    acquiredRound: 1,
+    roundsActive: 0,
+    sticker: { type: 'Eternal' as const },
+  }
+  const { rerender } = render(<DecreeCardCompact decree={decree} />)
+  fireEvent.click(screen.getByRole('button', { name: 'Phoenix' }))
+  expect(screen.getByRole('dialog')).toHaveTextContent(
+    'Cannot prevent a loss: Eternal blocks this Decree from consuming itself.'
+  )
+  rerender(<DecreeCardCompact decree={decree} faceDown />)
+  expect(screen.getByRole('dialog')).not.toHaveTextContent(
+    'Cannot prevent a loss'
+  )
+})
+
 afterEach(async () => {
   await act(async () => {
     useSettingsStore.setState({ reducedMotion: false })
@@ -60,9 +78,7 @@ it('shows the live Perishable countdown and distinguishes expiry from temporary 
     />
   )
   fireEvent.click(screen.getByRole('button', { name: 'Half Suited' }))
-  expect(screen.getByRole('dialog')).toHaveTextContent(
-    'Rounds remaining: 2'
-  )
+  expect(screen.getByRole('dialog')).toHaveTextContent('Rounds remaining: 2')
   expect(screen.getByRole('dialog')).toHaveTextContent(
     'Disabled by Crimson Heart this hand'
   )

@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "Abadi · Tidak bisa dijual",
+    "eternalCannotSellNamed": "{{name}} bersifat Abadi dan tidak bisa dijual",
+    "eternalConflictDescription": "Tidak dapat mencegah kekalahan: Abadi mencegah Dekret ini menghabiskan dirinya sendiri.",
     "eternalName": "Abadi",
     "eternalDescription": "Tidak dapat dijual atau dihancurkan.",
     "perishableName": "Mudah Kedaluwarsa",

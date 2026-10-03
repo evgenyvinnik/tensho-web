@@ -1026,8 +1026,8 @@ export class DecreeSystem {
    * Phoenix-style Decrees are consumed when they save a run; Immortal-style
    * ones persist but exact a permanent score penalty.
    */
-  getLossPreventionDecrees(): OwnedDecree[] {
-    return this.getActiveDecrees().filter((decree) =>
+  getLossPreventionDecrees(excludedIds?: ReadonlySet<string>): OwnedDecree[] {
+    return this.getActiveDecrees(excludedIds).filter((decree) =>
       allEffectsOf(decree).some(
         (effect) =>
           effect.type === 'rule_modification' &&

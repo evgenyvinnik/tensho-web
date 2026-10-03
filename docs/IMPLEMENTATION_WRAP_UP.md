@@ -1,10 +1,25 @@
 # Implementation wrap-up
 
-**Updated:** September 29, 2026
+**Updated:** October 2, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
+
+## Loss-prevention follow-up
+
+The [Phoenix follow-up](PERISHABLE_LIFETIME_IMPLEMENTATION.md#october-2-loss-prevention-follow-up)
+closes an unlimited-rescue bug: self-consuming rescuers no longer receive
+Eternal in new shop rolls, and a rescue must actually spend an eligible copy.
+Crimson Heart suppression now applies to these powers. Legacy protected copies
+remain loadable, with localized conflict and sale-lock explanations. Seven
+failing-first cases were repaired; full pre-caption units passed 1,477/1,477,
+the final mechanics browser batch passed 22/22, and localized-caption checks
+passed 6/6. Final post-caption units also passed 1,477/1,477, with TypeScript,
+lint, the Pages-base build and 13 release checks green. Production desktop/touch
+defeat/rescue, exact-copy consumption, warning layout and reload checks passed
+without page errors. Publication is pending. Other mechanics choices and the
+broader completion audit remain open.
 
 ## Published Perishable lifetime and Phoenix checkpoint
 

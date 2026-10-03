@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "永劫 · 売却不可",
+    "eternalCannotSellNamed": "{{name}}は永劫のため売却できません",
+    "eternalConflictDescription": "敗北を防げません。「永劫」により、この勅令は自身を消費できません。",
     "eternalName": "永久",
     "eternalDescription": "売却も破壊もできません。",
     "perishableName": "消耗",

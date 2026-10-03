@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "Eternal · Cannot sell",
+    "eternalCannotSellNamed": "{{name}} is Eternal and cannot be sold",
+    "eternalConflictDescription": "Cannot prevent a loss: Eternal blocks this Decree from consuming itself.",
     "eternalName": "Eternal",
     "eternalDescription": "Cannot be sold or destroyed.",
     "perishableName": "Perishable",

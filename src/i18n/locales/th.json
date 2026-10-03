@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "นิรันดร์ · ขายไม่ได้",
+    "eternalCannotSellNamed": "{{name}} เป็นนิรันดร์และไม่สามารถขายได้",
+    "eternalConflictDescription": "ไม่สามารถป้องกันความพ่ายแพ้ได้: นิรันดร์ทำให้กฤษฎีกานี้ไม่สามารถใช้ตัวเองจนหมดได้",
     "eternalName": "ถาวร",
     "eternalDescription": "ขายหรือทำลายไม่ได้",
     "perishableName": "เสื่อมสภาพ",

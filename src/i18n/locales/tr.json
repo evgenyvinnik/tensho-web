@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "Ebedî · Satılamaz",
+    "eternalCannotSellNamed": "{{name}} Ebedî olduğu için satılamaz",
+    "eternalConflictDescription": "Yenilgiyi önleyemez: Ebedî, bu Fermanın kendisini tüketmesini engeller.",
     "eternalName": "Ebedi",
     "eternalDescription": "Satılamaz veya yok edilemez.",
     "perishableName": "Süreli",

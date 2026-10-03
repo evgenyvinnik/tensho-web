@@ -1,5 +1,8 @@
 {
   "decreeModifiers": {
+    "eternalCannotSell": "Walang Hanggan · Hindi maibebenta",
+    "eternalCannotSellNamed": "Walang Hanggan ang {{name}} at hindi ito maibebenta",
+    "eternalConflictDescription": "Hindi makakaiwas sa pagkatalo: hinahadlangan ng Walang Hanggan ang pagkonsumo sa Dekretong ito.",
     "eternalName": "Walang Hanggan",
     "eternalDescription": "Hindi maaaring ibenta o sirain.",
     "perishableName": "Nauubos",

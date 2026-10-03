@@ -3315,43 +3315,52 @@ export class GameOrchestrator {
    * Returns true when the loss was prevented.
    */
   private tryPreventLoss(effects: Effect[]): boolean {
-    const savers = this.state.decreeSystem.getLossPreventionDecrees()
+    const savers = this.state.decreeSystem.getLossPreventionDecrees(
+      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+    )
     if (savers.length === 0) return false
 
     // Prefer a permanent saver so a one-shot is not burned unnecessarily.
     const permanent = savers.find(
       (decree) => this.lossPreventionRule(decree)?.consumedOnUse === false
     )
-    const saver = permanent ?? savers[0]
-    const rule = this.lossPreventionRule(saver)
-    if (!rule) return false
+    const ordered = permanent
+      ? [permanent, ...savers.filter((decree) => decree !== permanent)]
+      : savers
+    for (const saver of ordered) {
+      const rule = this.lossPreventionRule(saver)
+      if (!rule) continue
 
-    if (typeof rule.scorePenalty === 'number') {
-      this.state.lossPreventionScorePenalty = rule.scorePenalty
-    }
+      // Older saves may contain an ineligible Eternal Phoenix. Keep the item
+      // protected, but do not grant a one-shot rescue unless it was spent.
+      if (
+        rule.consumedOnUse &&
+        !this.state.decreeSystem.removeDecree(decreeKey(saver))
+      )
+        continue
 
-    if (rule.consumedOnUse) {
-      this.state.decreeSystem.removeDecree(decreeKey(saver))
+      if (typeof rule.scorePenalty === 'number') {
+        this.state.lossPreventionScorePenalty = rule.scorePenalty
+      }
+
       effects.push({
         type: 'decree_triggered',
-        description: `${saver.name} prevented the loss and was consumed`,
+        description: rule.consumedOnUse
+          ? `${saver.name} prevented the loss and was consumed`
+          : `${saver.name} prevented the loss`,
       })
-    } else {
-      effects.push({
-        type: 'decree_triggered',
-        description: `${saver.name} prevented the loss`,
+
+      eventBus.emit('decreeTriggered', {
+        decreeId: saver.id,
+        effect: 'loss prevented',
       })
+
+      // Treat the round as cleared so the run continues through the Tea House.
+      this.state.score = Math.max(this.state.score, this.state.targetScore)
+      this.handleRoundWin(effects)
+      return true
     }
-
-    eventBus.emit('decreeTriggered', {
-      decreeId: saver.id,
-      effect: 'loss prevented',
-    })
-
-    // Treat the round as cleared so the run continues through the Tea House.
-    this.state.score = Math.max(this.state.score, this.state.targetScore)
-    this.handleRoundWin(effects)
-    return true
+    return false
   }
 
   /** The prevent_loss rule carried by a Decree, if it has one. */
