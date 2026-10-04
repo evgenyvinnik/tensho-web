@@ -20,6 +20,8 @@ export interface ValidationResult {
   isKokushi: boolean
   isStandardForm: boolean
   parsedHands: ParsedHand[] // Multiple ways to parse the same hand
+  /** Temporary Wildcard identities, with physical IDs/modifiers preserved. */
+  effectiveTiles?: Tile[]
   errors: string[]
 }
 
@@ -38,6 +40,7 @@ export interface HandValidationOptions {
 export interface OneAwayCompletion {
   completionTile: Tile
   parsedHand: ParsedHand
+  effectiveTiles?: Tile[]
 }
 
 /**
@@ -292,7 +295,9 @@ function findMelds(
 
     // Harmonizer lets a sequence span suits, so only the ranks must line up.
     const sameSuit = (tile: Tile): boolean =>
-      options.suitsMatchForSequences ? tile.isSuited : tile.suit === firstTile.suit
+      options.suitsMatchForSequences
+        ? tile.isSuited
+        : tile.suit === firstTile.suit
 
     for (const [secondOffset, thirdOffset] of rankPatterns) {
       if (firstTile.rank + thirdOffset > 9) continue
@@ -399,19 +404,25 @@ export function validateHand(
   const checkKokushi = declaredMelds.length === 0 && isKokushi(regularTiles)
 
   // Try to parse as standard form, including any Court-authorized exceptions.
-  let standardParsedHands = parseStandardForm(
+  const standardParsedHands = parseStandardForm(
     regularTiles,
     declaredMelds,
     winningTile,
     options
   )
-  if (standardParsedHands.length === 0 && (options.wildcardCount ?? 0) > 0) {
-    standardParsedHands = findWildcardParsings(
+  if (
+    standardParsedHands.length === 0 &&
+    !checkSevenPairs &&
+    !checkKokushi &&
+    (options.wildcardCount ?? 0) > 0
+  ) {
+    const wildcard = findWildcardValidation(
       regularTiles,
       declaredMelds,
       winningTile,
       options
     )
+    if (wildcard) return { ...wildcard, errors }
   }
   const parsedHands = [...standardParsedHands]
 
@@ -435,8 +446,7 @@ export function validateHand(
     }
   }
 
-  const isComplete =
-    checkSevenPairs || checkKokushi || parsedHands.length > 0
+  const isComplete = checkSevenPairs || checkKokushi || parsedHands.length > 0
 
   return {
     isComplete,
@@ -449,12 +459,12 @@ export function validateHand(
 }
 
 /** Deterministically try each held tile as the single Celestial Wildcard. */
-function findWildcardParsings(
+function findWildcardValidation(
   tiles: Tile[],
   declaredMelds: Meld[],
   winningTile: Tile | undefined,
   options: HandValidationOptions
-): ParsedHand[] {
+): ValidationResult | null {
   const candidateTypes: Array<{ suit: TileSuit; maxRank: number }> = [
     { suit: TileSuit.Manzu, maxRank: 9 },
     { suit: TileSuit.Pinzu, maxRank: 9 },
@@ -470,21 +480,29 @@ function findWildcardParsings(
       for (let rank = 1; rank <= maxRank; rank++) {
         if (original.suit === suit && original.rank === rank) continue
         const transformed = [...tiles]
-        transformed[wildcardIndex] = new Tile(suit, rank, original.id)
-        const parsed = parseStandardForm(
-          transformed,
-          declaredMelds,
+        // This is an interpretation, not a physical mutation. Paid marks,
+        // editions, seals and red-tile bonuses still belong to the same tile.
+        transformed[wildcardIndex] = new Tile(
+          suit,
+          rank,
+          original.id,
+          original.isRed,
+          original.modifiers
+        )
+        const validation = validateHand(
+          new Hand(transformed, declaredMelds),
           winningTile?.id === original.id
             ? transformed[wildcardIndex]
             : winningTile,
           optionsWithoutWildcard
         )
-        if (parsed.length > 0) return parsed
+        if (validation.isComplete)
+          return { ...validation, effectiveTiles: transformed }
       }
     }
   }
 
-  return []
+  return null
 }
 
 /**
@@ -550,6 +568,7 @@ export function findOneAwayCompletion(
         return {
           completionTile,
           parsedHand: validation.parsedHands[0],
+          effectiveTiles: validation.effectiveTiles,
         }
       }
     }

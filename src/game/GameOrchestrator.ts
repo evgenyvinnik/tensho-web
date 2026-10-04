@@ -79,7 +79,7 @@ import {
   CELESTIAL_ORBS,
   CelestialOrbSystem,
   CelestialOrb,
-  YakuCategory,
+  mapYakuIdToCategory,
 } from '../systems/CelestialOrbSystem'
 import {
   FATE_SEALS,
@@ -1458,14 +1458,24 @@ export class GameOrchestrator {
     }
 
     const validation = validateHand(hand, undefined, validationOptions)
+    const allWild = this.parseAsAllWild(tilesToScore)
     const parsedHand =
-      this.parseAsAllWild(tilesToScore) ??
+      allWild ??
       (validation.parsedHands.length > 0 ? validation.parsedHands[0] : null)
 
     if (parsedHand) {
+      const effectiveById = new Map(
+        allWild
+          ? undefined
+          : validation.effectiveTiles?.map((tile) => [tile.id, tile])
+      )
       return {
         parsedHand,
-        tilesToScore,
+        // Preserve physical play order while scoring the same interpretation
+        // used by the meld/Yaku parser. Never rewrite the rack or saved wall.
+        tilesToScore: tilesToScore.map(
+          (tile) => effectiveById.get(tile.id) ?? tile
+        ),
         usedShantenClemency: false,
       }
     }
@@ -1478,9 +1488,14 @@ export class GameOrchestrator {
     )
     if (!completion) return null
 
+    const effectiveById = new Map(
+      completion.effectiveTiles?.map((tile) => [tile.id, tile])
+    )
     return {
       parsedHand: completion.parsedHand,
-      tilesToScore: [...tilesToScore, completion.completionTile],
+      tilesToScore: [...tilesToScore, completion.completionTile].map(
+        (tile) => effectiveById.get(tile.id) ?? tile
+      ),
       usedShantenClemency: true,
     }
   }
@@ -3048,24 +3063,6 @@ export class GameOrchestrator {
     let celestialOrbMultBonus = 0
     let celestialOrbChipsBonus = 0
 
-    // Map yaku IDs to categories for Celestial Orb system
-    const yakuToCategoryMap: Record<string, YakuCategory> = {
-      riichi: 'Riichi',
-      tanyao: 'Tanyao',
-      yakuhai: 'Yakuhai',
-      pinfu: 'Pinfu',
-      ikkitsuukan: 'Ittsu',
-      honitsu: 'Honitsu',
-      toitoi: 'Toitoi',
-      chinitsu: 'Chinitsu',
-      sanshoku_doujun: 'Sanshoku',
-      sanshoku_doukou: 'Sanshoku',
-      chiitoitsu: 'SevenPairs',
-      junchan: 'Chanta',
-      chanta: 'Chanta',
-      kokushi_musou: 'Kokushi',
-    }
-
     // Transmuter rewrites simples into terminals before anything is counted,
     // so every downstream layer sees the promoted tiles.
     const scoredTiles = this.isDecreeRuleActive('simples_as_terminals')
@@ -3171,7 +3168,7 @@ export class GameOrchestrator {
 
     // Apply celestial orb bonuses for each detected yaku
     for (const detectedYaku of baseBreakdown.detectedYaku) {
-      const category = yakuToCategoryMap[detectedYaku.definition.id]
+      const category = mapYakuIdToCategory(detectedYaku.definition.id)
       if (category) {
         const orbBonus =
           this.state.celestialOrbSystem.calculateYakuBonus(category)

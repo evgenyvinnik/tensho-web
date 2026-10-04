@@ -4,6 +4,16 @@
 
 **Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
 
+**CI pending — Wildcard and special-hand Orbs:** one temporary interpretation
+now connects validation, preview and payout, including Seven Pairs and Thirteen
+Orphans. Shared Orb mapping fixes missed bonuses and Star Chart tracking for
+those hands and Ittsu. Twelve native and twelve built-production journeys pass,
+as do TypeScript, lint (211 warnings), build and 13 release checks. The complete
+local suite has 1,674 passes and three timeouts; isolated rechecks retain CLI
+timing failures. CI must pass before deployment. Physical tile identities and
+modifiers survive play and saves.
+[Scope and evidence](CELESTIAL_WILDCARD_IMPLEMENTATION.md).
+
 **Published — v1.0.261004-9, same-visit pack Charters:** Star Chart and Omen Lens now
 affect eligible unopened packs already on the shelf when purchased. Opened
 choices and owned rewards remain unchanged; reload never rerolls their effects.
