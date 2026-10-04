@@ -625,7 +625,7 @@ export class TeaHouseSystem {
 
     const orb = CelestialOrbSystem.createCelestialOrbInstance(orbDef)
 
-    const { finalCost, sellValue } =
+    const { baseCost, finalCost, sellValue } =
       this.pricingCalculator.calculateCelestialOrbCost()
 
     return {
@@ -633,7 +633,7 @@ export class TeaHouseSystem {
       slotIndex,
       itemType: 'CelestialOrb',
       item: orb,
-      baseCost: orb.cost,
+      baseCost,
       editionCost: 0,
       finalCost,
       sellValue,
@@ -1006,7 +1006,7 @@ export class TeaHouseSystem {
   /**
    * Purchase an offering from the shop
    */
-  purchaseOffering(offeringId: string): {
+  purchaseOffering(offeringId: string, ownedDecreeIds: string[] = []): {
     success: boolean
     cost: number
     offering: TeaHouseOffering | null
@@ -1038,7 +1038,21 @@ export class TeaHouseSystem {
       }
       this.charterOffering.isPurchased = true
       const charter = this.charterOffering.item as ImperialCharter
+      const previousSlots = this.itemSlotCount
       this.applyCharter(charter)
+      // A bought stock upgrade supplies its extra offer immediately, without
+      // rerolling current stock or replacing one-shot Omen overflow/receipts.
+      const firstNewIndex = Math.max(
+        previousSlots,
+        ...this.itemOfferings.map((item) => item.slotIndex + 1)
+      )
+      for (let extra = 0; extra < this.itemSlotCount - previousSlots; extra++) {
+        const item = this.generateItemOffering(
+          firstNewIndex + extra,
+          ownedDecreeIds
+        )
+        if (item) this.itemOfferings.push(this.applyVisitDiscount(item))
+      }
       return {
         success: true,
         cost: this.charterOffering.finalCost,

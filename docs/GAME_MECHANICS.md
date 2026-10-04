@@ -572,6 +572,10 @@ Players can pay to refresh the item slots:
 | Reroll Surplus | Rerolls cost 2 Gold less |
 | Reroll Abundance | Rerolls cost additional 2 Gold less |
 
+Purchasing Abundant Stock or Plentiful Stock adds its new ordinary offer in the
+current shop, without replacing existing stock or Omen extras. The normal
+eligibility and pricing rules apply. See [stock-Charter verification](SHOP_SLOT_IMPLEMENTATION.md).
+
 ### Pricing Formula
 
 ```

@@ -349,7 +349,10 @@ export class ShopSession {
       // between payment, granting inventory, and marking this offer purchased.
       if (!this.game.purchaseItem(id, offering.finalCost, offering.itemType))
         return fail('unavailable')
-      const bought = this.teaHouse.purchaseOffering(id)
+      const bought = this.teaHouse.purchaseOffering(
+        id,
+        this.game.getState().decreeSystem.getOwnedDecrees().map(d => d.id)
+      )
       if (!bought.success)
         throw new Error('Validated shop offering could not be purchased')
       if (pack) {

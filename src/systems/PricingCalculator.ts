@@ -420,11 +420,11 @@ export function repriceDiscountedOffer<
 >(offering: T, discount: number, visitDiscount = 0): T {
   if (discount <= 0 || offering.isPurchased || offering.finalCost === 0)
     return offering
-  // Legacy Seal offers stored the catalog item's cost rather than the shop's
+  // Legacy Seal/Orb offers stored the catalog item's cost rather than the shop's
   // fixed price. Reuse the actual shop pricing rule, not that stale metadata.
   const baseCost =
-    offering.itemType === 'FateSeal'
-      ? CONSUMABLE_COSTS.FateSeal
+    offering.itemType === 'FateSeal' || offering.itemType === 'CelestialOrb'
+      ? CONSUMABLE_COSTS[offering.itemType]
       : offering.baseCost
   const discounted = new PricingCalculator(discount).applyDiscount(
     baseCost + offering.editionCost

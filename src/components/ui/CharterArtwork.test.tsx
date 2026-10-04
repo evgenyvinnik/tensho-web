@@ -21,19 +21,31 @@ it('uses the Money Tree portrait while preserving category artwork for other Cha
     'src',
     expect.stringMatching(/charters\/plentiful-stock\.png$/)
   )
+  rerender(<CharterArtwork charterId="abundant_stock" />)
+  expect(container.querySelector('img')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/charters\/abundant-stock\.webp$/)
+  )
   rerender(<CharterArtwork charterId="seed_pouch" alt="Imperial Charter" />)
   expect(container.querySelector('img')).toHaveAttribute(
     'src',
     expect.stringMatching(/imperial-charter\.png$/)
   )
   expect(container.querySelector('img')).not.toHaveAttribute('aria-hidden')
+  rerender(<CharterArtwork charterId="constructor" />)
+  expect(container.querySelector('img')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/imperial-charter\.png$/)
+  )
 })
 
 it.each([
-  ['money_tree', 'money-tree', false],
-  ['money_tree', 'money-tree', true],
-  ['plentiful_stock', 'plentiful-stock', false],
-  ['plentiful_stock', 'plentiful-stock', true],
+  ['money_tree', 'money-tree.png', false],
+  ['money_tree', 'money-tree.png', true],
+  ['plentiful_stock', 'plentiful-stock.png', false],
+  ['plentiful_stock', 'plentiful-stock.png', true],
+  ['abundant_stock', 'abundant-stock.webp', false],
+  ['abundant_stock', 'abundant-stock.webp', true],
 ] as const)(
   'only reveals %s portrait (%s) after discovery (discovered=%s)',
   (id, filename, discovered) => {
@@ -51,7 +63,7 @@ it.each([
     }
     const view = render(<ItemCard entry={entry} displayInfo={info} />)
     expect(
-      view.container.querySelectorAll(`img[src$="${filename}.png"]`)
+      view.container.querySelectorAll(`img[src$="${filename}"]`)
     ).toHaveLength(discovered ? 1 : 0)
     view.unmount()
     render(
@@ -63,8 +75,8 @@ it.each([
         categoryInfo={ARCHIVE_CATEGORIES.charters}
       />
     )
-    expect(
-      document.querySelectorAll(`img[src$="${filename}.png"]`)
-    ).toHaveLength(discovered ? 1 : 0)
+    expect(document.querySelectorAll(`img[src$="${filename}"]`)).toHaveLength(
+      discovered ? 1 : 0
+    )
   }
 )

@@ -4,6 +4,29 @@ Generated September 10, 2026 using the imagegen skill's built-in tool mode.
 The tool exposes neither a model selector nor a returned model ID; no particular
 model version is claimed. No API/CLI fallback was used.
 
+## Abundant Stock portrait
+
+Generated October 3, 2026 local time, using the imagegen skill's built-in tool.
+The tool does not expose a selectable or returned model identifier; the request
+for the latest model therefore cannot be independently certified. No CLI/API
+fallback was used. Plentiful Stock was visually inspected for style, not supplied
+as an edit target. The original and final derivative were both inspected.
+
+- Original: `/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-080f9abf-a8a9-4808-963d-c2c520fb17d3.png`.
+- Project deliverable: `public/assets/illustrations/charters/abundant-stock.webp`.
+- Mechanical export: `cwebp -q 85 -resize 512 512`, preserving transparency.
+  Final: **512×512 alpha WebP, 61,080 bytes**. The original PNG is untouched.
+- SHA-256: `7b1e5dc7f6b48bc0e98860c7f15ec7badd455fdb844ca0ff47aeab008e1c6e80`.
+- Complete blue/gold scroll, three separated stocked compartments, ivory paper,
+  red seal and blue tassel; no written rules. The final 96px-scale portrait remains
+  recognizable in the Spanish desktop and narrow-phone shop captures.
+- Shared shop and discovered Archive mapping; discovery gating has component
+  coverage. [Mechanics and verification](SHOP_SLOT_IMPLEMENTATION.md).
+
+### Exact final prompt
+
+Use case: stylized-concept. Asset type: small illustrated Abundant Stock Imperial Charter for Tensho, a Mahjong roguelike. Generate one new premium painted game-item illustration, not a UI mockup. Subject: a partially unrolled ivory parchment charter with rich cobalt-blue lacquer rollers, metallic gold caps, delicate gold corner filigree, a small red wax seal and short blue silk tassel. The dominant painted emblem on the parchment is a miniature elegant merchant display with exactly three clearly separated open compartments in a single horizontal row: jade-green Mahjong tiles, a rolled blue scroll, and an ivory celestial orb. Keep a clear three-compartment silhouette readable at 96px, distinct from a four-compartment upgraded cabinet. Style: tactile hand-painted East Asian fantasy board-game object, warm cream paper, polished gold, rich blue and jade accents, soft warm highlights, restrained painterly texture. Composition: nearly frontal three-quarter view, centered complete scroll on square canvas, generous transparent margins, entire rollers, seal and tassel visible. Genuine transparent alpha background. No words, letters, numbers, calligraphy, UI labels, scene, floor, humans, extra props or watermark. All game rules remain separate localized HTML.
+
 ## Asset and use
 
 - Saved project asset: [imperial-charter.png](../public/assets/illustrations/charters/imperial-charter.png).

@@ -29,6 +29,28 @@ afterEach(() => {
   useOmenStore.getState().clearForNewRun()
 })
 
+it('uses the fixed Orb shop base for new and stale discounted quotes', () => {
+  runRandom.start(8)
+  const shop = new TeaHouseSystem()
+  shop.applyCharter(charter('discount_sale'))
+  shop.applyCharter(charter('liquidation_sale'))
+  shop.generateShop([], true, { guaranteedItemTypes: ['CelestialOrb'] })
+  const legacy = json(shop.toSerializedState())
+  const orb = legacy.itemOfferings.find((o) => o.itemType === 'CelestialOrb')!
+  expect(orb.baseCost).toBe(3)
+  Object.assign(orb, { baseCost: 4, finalCost: 2, sellValue: 1 })
+  const random = runRandom.toState()
+  const restored =
+    TeaHouseSystem.fromSerializedState(legacy).toSerializedState()
+  expect(restored.itemOfferings.find((o) => o.id === orb.id)).toEqual({
+    ...orb,
+    baseCost: 3,
+    finalCost: 1,
+    sellValue: 0,
+  })
+  expect(runRandom.toState()).toEqual(random)
+})
+
 it('records paid consumable prices and a zero-price Omen Decree without changing catalog rewards', () => {
   const game = new GameOrchestrator()
   game.startNewRun(7)

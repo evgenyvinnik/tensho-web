@@ -2,7 +2,16 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
+**Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
+
+**Local follow-up — stock upgrades:** Abundant Stock and Plentiful Stock now
+supply their extra offer immediately. Existing stock, Omen overflow and packs
+remain intact. Orb base-price metadata and stale discounted Orb quotes are also
+corrected. New generated Abundant Stock art is shared by shop/Archive. Final full
+suite passes all 1,641 tests; build, 13 release checks and 24 native browser cases
+pass. All 12 built-production purchase/save-repair/reload/play journeys pass.
+Earlier timeout/worker failures are retained; publication is pending.
+[Evidence and artwork provenance](SHOP_SLOT_IMPLEMENTATION.md).
 
 **Published — v1.0.261004-6, sold-out shops:** rerolls now replenish purchased ordinary
 slots instead of preserving empty slots. Fourteen native browser checks, build

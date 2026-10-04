@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [immediate stock-upgrade correction](SHOP_SLOT_IMPLEMENTATION.md) supplies
+the third/fourth item on Charter purchase, preserving prior stock and Omen extras.
+It also repairs reproduced Orb base-price metadata and adds a generated Abundant
+Stock portrait to the shop and discovered Archive. Final full suite passes
+1,641 tests, alongside 24 native browser checks, build and 13 release checks.
+All 12 built-production purchase/save-repair/reload/play journeys pass. Earlier
+timeout/worker failures remain in the ledger; publication is pending.
+
 The [sold-slot reroll correction](SHOP_REROLL_IMPLEMENTATION.md) replenishes all
 ordinary slots while preserving owned rewards, packs and the Charter. It closes
 a core shopping-loop defect: paying to reroll after buying both items left no

@@ -1,6 +1,7 @@
 import { illustrationAssets } from '../../utils/assets'
 
 const portraits: Record<string, string> = {
+  abundant_stock: illustrationAssets.abundantStockCharter,
   money_tree: illustrationAssets.moneyTreeCharter,
   plentiful_stock: illustrationAssets.plentifulStockCharter,
 }
@@ -17,7 +18,11 @@ export function CharterArtwork({
 }) {
   return (
     <img
-      src={portraits[charterId] ?? illustrationAssets.imperialCharter}
+      src={
+        Object.prototype.hasOwnProperty.call(portraits, charterId)
+          ? portraits[charterId]
+          : illustrationAssets.imperialCharter
+      }
       alt={alt}
       aria-hidden={alt ? undefined : true}
       className={`game-illustration object-contain ${className}`}

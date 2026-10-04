@@ -104,6 +104,7 @@ export const illustrationAssets = {
   journeyResult: `${ASSET_BASE}/illustrations/journey-result.webp`,
   beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.png`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
+  abundantStockCharter: `${ASSET_BASE}/illustrations/charters/abundant-stock.webp`,
   moneyTreeCharter: `${ASSET_BASE}/illustrations/charters/money-tree.png`,
   plentifulStockCharter: `${ASSET_BASE}/illustrations/charters/plentiful-stock.png`,
   consumables: {
