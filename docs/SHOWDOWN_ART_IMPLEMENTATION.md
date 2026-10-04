@@ -134,4 +134,17 @@ language/boss inspection/play/reload journeys pass again, plus **four** addition
 Russian touch journeys with font requests blocked. Every blocked-font paragraph
 has matching 196px client/scroll width. Screenshots show long content uses the
 existing vertical scroll area; the close button remains available.
-The correction's publication is pending.
+
+The correction is published as **v1.0.261004-4**, implementation commit
+`7623b628f7bd2f805155d4cecc34717dfbabe1dc`, built/tagged commit
+`fd89d3ca467e71c001cf69eb783fc32fd54bd4a6`.
+[Corrective CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37174828580)
+passes all **1,613 tests**, **13 release checks**, build and deployment.
+Public release metadata and the Git tag match the exact built commit.
+
+All **28 hosted journeys pass**: 24 normal language/boss cases and four blocked-font
+Russian touch continuations, with exact art hashes, saved snapshots and zero page
+errors. Evidence is `hosted-wrap-final.log`, `hosted-wrap-fallback-final.log`, their
+screenshots, `ci-wrap.log` and `public-manifest-wrap.json`. An initial corrective
+navigation failed with `net::ERR_NETWORK_CHANGED` before any game assertions;
+`hosted-wrap-fallback.log` retains it. The fresh full runs passed unchanged.
