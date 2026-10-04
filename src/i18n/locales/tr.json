@@ -677,6 +677,22 @@
   },
   "mandates": {
     "items": {
+      "amber_acorn": {
+        "name": "Kehribar Palamut",
+        "description": "Tüm Kararnameler karıştırılır ve yüzleri aşağı çevrilir"
+      },
+      "verdant_leaf": {
+        "name": "Yeşil Yaprak",
+        "description": "1 Kararname satılana kadar tüm taşlar zayıflatılır"
+      },
+      "violet_vessel": {
+        "name": "Mor Vazo",
+        "description": "Olağanüstü yüksek hedef (2× yerine 6×)"
+      },
+      "crimson_heart": {
+        "name": "Kızıl Kalp",
+        "description": "Her el döngüsünde rastgele bir Kararname devre dışı bırakılır"
+      },
       "cerulean_bell": {
         "name": "Gök Mavisi Çan",
         "description": "Her çekiş döngüsünden sonra rastgele bir taş oynanmalıdır; önceki kilit kaldırılır."

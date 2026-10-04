@@ -677,6 +677,22 @@
   },
   "mandates": {
     "items": {
+      "amber_acorn": {
+        "name": "Ghianda d’ambra",
+        "description": "Tutti i Decreti vengono mescolati e girati a faccia in giù"
+      },
+      "verdant_leaf": {
+        "name": "Foglia verdeggiante",
+        "description": "Tutte le tessere sono indebolite finché non vendi 1 Decreto"
+      },
+      "violet_vessel": {
+        "name": "Vaso violetto",
+        "description": "Obiettivo estremamente alto (6× invece di 2×)"
+      },
+      "crimson_heart": {
+        "name": "Cuore cremisi",
+        "description": "Un Decreto casuale viene disattivato a ogni ciclo di mano"
+      },
       "cerulean_bell": {
         "name": "Campana Cerulea",
         "description": "Dopo ogni ciclo di pesca, una tessera casuale deve essere giocata; il blocco precedente viene rimosso."

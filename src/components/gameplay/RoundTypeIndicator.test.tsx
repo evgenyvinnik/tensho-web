@@ -1,8 +1,40 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
 import { RoundTypeIndicator } from './RoundTypeIndicator'
+import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../../config/mandateDefinitions'
+import { getMandateIllustration } from '../../utils/assets'
 
 afterEach(cleanup)
+it.each(SHOWDOWN_MANDATES)(
+  'shows $name in both badge and read-only rule dialog',
+  (mandate) => {
+    render(
+      <RoundTypeIndicator
+        roundType="Boss"
+        mandateId={mandate.id}
+        mandateName={mandate.name}
+        mandateDescription={mandate.description}
+      />
+    )
+    const opener = screen.getByRole('button', {
+      name: mandate.name,
+    })
+    expect(opener.querySelector('img')).toHaveAttribute(
+      'src',
+      getMandateIllustration(mandate.id)
+    )
+    fireEvent.click(opener)
+    const dialog = screen.getByRole('dialog', {
+      name: mandate.name,
+    })
+    expect(dialog).toHaveAccessibleDescription(mandate.description)
+    expect(dialog.querySelector('img')).toHaveAttribute(
+      'src',
+      getMandateIllustration(mandate.id)
+    )
+    expect(dialog.querySelector('img')).toHaveAttribute('alt', '')
+  }
+)
 it('opens the illustrated boss rule without making artwork the accessible name', () => {
   render(
     <RoundTypeIndicator

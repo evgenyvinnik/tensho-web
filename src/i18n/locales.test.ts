@@ -59,6 +59,26 @@ it('supplies the confirmed Cerulean Bell rule without English fallback in every 
   )
 })
 
+it('localizes all five Showdown identities and rules in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const items = (locale.mandates as typeof en.mandates).items
+    for (const id of [
+      'amber_acorn',
+      'verdant_leaf',
+      'violet_vessel',
+      'crimson_heart',
+      'cerulean_bell',
+    ] as const) {
+      expect(items[id]?.name, `${language}: ${id} name`).toBeTruthy()
+      expect(items[id]?.description, `${language}: ${id} rule`).toBeTruthy()
+      if (language !== 'en')
+        expect(items[id].description).not.toBe(
+          en.mandates.items[id].description
+        )
+    }
+  }
+})
+
 it('localizes final-round scores and defeat settlement in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const results = locale.results as typeof en.results

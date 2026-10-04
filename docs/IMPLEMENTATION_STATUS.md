@@ -4,6 +4,13 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Verified locally — Showdown art:** four new generated portraits complete the
+five-boss illustrated badge/rules set, and twenty missing localized boss entries
+cover Italian/Russian/Thai/Filipino/Turkish. All 1,613 units, 13 release checks,
+build, 22 native browser checks and 24 production localized play/reload journeys
+pass. Gameplay rules are unchanged. [Evidence and prompts](SHOWDOWN_ART_IMPLEMENTATION.md).
+Publication verification is pending.
+
 **Published — v1.0.261004-2, route delivery and completed hand comparison:** real static
 entry documents fix the reproduced Pages 404s on known game/menu routes, with
 raw HTML `noindex` on state screens and synchronized client navigation. All 1,601

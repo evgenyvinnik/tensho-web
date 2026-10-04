@@ -94,6 +94,13 @@ export const popupAssets = {
  */
 export const illustrationAssets = {
   ceruleanBell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
+  mandates: {
+    amber_acorn: `${ASSET_BASE}/illustrations/amber-acorn.webp`,
+    verdant_leaf: `${ASSET_BASE}/illustrations/verdant-leaf.webp`,
+    violet_vessel: `${ASSET_BASE}/illustrations/violet-vessel.webp`,
+    crimson_heart: `${ASSET_BASE}/illustrations/crimson-heart.webp`,
+    cerulean_bell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
+  },
   journeyResult: `${ASSET_BASE}/illustrations/journey-result.webp`,
   beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.png`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
@@ -165,6 +172,16 @@ export function getDecreeIllustration(decreeId: string): string | undefined {
 /** Return the illustrated scroll frame for a Decree rarity. */
 export function getDecreeScrollIllustration(rarity: DecreeRarity): string {
   return illustrationAssets.decreeScrolls[rarity]
+}
+
+/** No fallback portrait: an unrelated boss must not inherit another's identity. */
+export function getMandateIllustration(id?: string): string | undefined {
+  return id &&
+    Object.prototype.hasOwnProperty.call(illustrationAssets.mandates, id)
+    ? illustrationAssets.mandates[
+        id as keyof typeof illustrationAssets.mandates
+      ]
+    : undefined
 }
 
 export type IllustratedTableStyleId = keyof typeof illustrationAssets.tables

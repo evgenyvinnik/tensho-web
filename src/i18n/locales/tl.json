@@ -677,6 +677,22 @@
   },
   "mandates": {
     "items": {
+      "amber_acorn": {
+        "name": "Bungang Akorn na Ambar",
+        "description": "Binabalasa at itinataob ang lahat ng Decree"
+      },
+      "verdant_leaf": {
+        "name": "Dahong Luntian",
+        "description": "Mahina ang lahat ng tile hanggang makapagbenta ng 1 Decree"
+      },
+      "violet_vessel": {
+        "name": "Sisidlang Lila",
+        "description": "Napakataas ng target (6× sa halip na 2×)"
+      },
+      "crimson_heart": {
+        "name": "Pusong Pula",
+        "description": "Isang random na Decree ang hindi gumagana sa bawat siklo ng paglalaro"
+      },
       "cerulean_bell": {
         "name": "Asul na Kampana",
         "description": "Pagkatapos ng bawat siklo ng pagbunot, kailangang ilaro ang isang random na tile; inaalis ang dating lock."

@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [Showdown art follow-up](SHOWDOWN_ART_IMPLEMENTATION.md) completes the five-boss
+portrait set and supplies twenty missing translated identities/rules. Local
+verification passes 1,613 units, 13 release checks, build, 22 native browser tests
+and 24 production desktop/touch localized inspection/play/reload journeys.
+It preserves boss mechanics and full saved snapshots; temporary board staging
+remains distinct from persisted engine selection. Publication is pending.
+
 Published [static-route checkpoint](STATIC_ROUTE_IMPLEMENTATION.md) fixes real
 Pages 404 responses for known menu/game routes and supplies initial noindex
 directives for state screens. All 1,601 local tests, 13 release checks, build,

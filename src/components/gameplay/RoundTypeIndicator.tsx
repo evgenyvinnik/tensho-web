@@ -11,7 +11,7 @@ import { RoundType, ROUND_TYPE_CONFIG, isCJKLanguage } from './gameplayTypes'
 import { useTranslation } from 'react-i18next'
 import { useId, useState } from 'react'
 import { Popup } from '../ui/Popup'
-import { illustrationAssets } from '../../utils/assets'
+import { getMandateIllustration } from '../../utils/assets'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -52,8 +52,7 @@ export function RoundTypeIndicator({
   const { t } = useTranslation()
   const [detailsOpen, setDetailsOpen] = useState(false)
   const descriptionId = useId()
-  const art =
-    mandateId === 'cerulean_bell' ? illustrationAssets.ceruleanBell : undefined
+  const art = getMandateIllustration(mandateId)
   const config = ROUND_TYPE_CONFIG[roundType]
   const showCJK = isCJKLanguage()
   const localizedRoundType = t(`rounds.${roundType.toLowerCase()}`, roundType)

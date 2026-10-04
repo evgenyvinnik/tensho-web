@@ -8,8 +8,46 @@ import {
   getDecreeIllustration,
   getDecreeScrollIllustration,
   getTableStyleIllustration,
+  getMandateIllustration,
   illustrationAssets,
 } from './assets'
+import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../config/mandateDefinitions'
+
+it.each(SHOWDOWN_MANDATES)(
+  'ships a distinct compact transparent portrait for $id',
+  ({ id }) => {
+    const path = getMandateIllustration(id)!
+    expect(path).toMatch(/\/illustrations\/.+\.webp$/)
+    const webp = readFileSync(`public${path}`)
+    expect(webp.subarray(0, 4).toString()).toBe('RIFF')
+    expect(webp.subarray(12, 16).toString()).toBe('VP8X')
+    expect(webp[20] & 0x10).toBe(0x10)
+    expect(webp.readUIntLE(24, 3) + 1).toBe(512)
+    expect(webp.readUIntLE(27, 3) + 1).toBe(512)
+    expect(webp.length).toBeLessThan(100_000)
+  }
+)
+
+it('uses unique Showdown assets and never substitutes an unrelated or inherited-key portrait', () => {
+  expect(
+    new Set(
+      SHOWDOWN_MANDATES.map(({ id }) =>
+        createHash('sha256')
+          .update(readFileSync(`public${getMandateIllustration(id)}`))
+          .digest('hex')
+      )
+    ).size
+  ).toBe(5)
+  for (const id of [
+    undefined,
+    '',
+    'the_hook',
+    'missing',
+    'toString',
+    '__proto__',
+  ])
+    expect(getMandateIllustration(id)).toBeUndefined()
+})
 
 it('ships a compact transparent Cerulean Bell illustration', () => {
   const webp = readFileSync(`public${illustrationAssets.ceruleanBell}`)
