@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [same-visit pack Charter correction](PACK_CHARTER_IMPLEMENTATION.md) connects
+Star Chart/Omen Lens purchases to already-generated but unopened shelf packs.
+It preserves revealed rewards and persisted choices, and adds a distinct generated
+Star Chart portrait. All 1,667 units and eight built-production journeys pass;
+the evidence ledger retains the 23/24 initial native run and passing three-repeat
+startup recheck. The final native rerun passes 24/24 without retries.
+This does not close the remaining mechanics/design choices.
+
 The [contextual guidance localization](PROGRESSIVE_HINT_LOCALIZATION.md) closes
 the missing hint namespace in all thirteen languages, including localized
 acknowledgment and opt-out controls. Rules are unchanged. Local verification

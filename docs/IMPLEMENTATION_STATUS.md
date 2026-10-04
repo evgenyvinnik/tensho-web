@@ -4,6 +4,15 @@
 
 **Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
 
+**Verified locally — same-visit pack Charters:** Star Chart and Omen Lens now
+affect eligible unopened packs already on the shelf when purchased. Opened
+choices and owned rewards remain unchanged; reload never rerolls their effects.
+Star Chart has an individual generated portrait in shop/discovered Archive.
+All 1,667 unit tests, build and 13 release checks pass; eight built-app journeys
+pass. The first native set is 23/24 with one retained startup timeout; three
+unchanged isolated repetitions pass. Final native rerun passes all 24 cases,
+without retries. [Evidence](PACK_CHARTER_IMPLEMENTATION.md).
+
 **Published — v1.0.261004-8, contextual guidance:** six progressive lessons and their
 acknowledgment/opt-out controls now have entries in all thirteen locales, closing
 the English fallback seen in the Spanish shop. Stable lesson IDs, collapsed

@@ -158,6 +158,57 @@ export class BlessingPackSystem {
     return [...this.currentOfferings]
   }
 
+  /** Apply a newly purchased pack Charter to unrevealed choices on this shelf.
+   * Called once after successful acquisition, never from render/preflight/restore.
+   * Keep pack identities, prices, choice keys and unaffected rewards intact.
+   */
+  applyPurchasedCharter(
+    charterId: 'star_chart' | 'omen_lens',
+    preferredYaku?: YakuCategory
+  ): void {
+    for (const offering of this.currentOfferings) {
+      if (offering.isOpened || offering.isResolved) continue
+      const { pack, contents } = offering
+      if (charterId === 'star_chart' && pack.type === 'Celestial') {
+        const preferred = preferredYaku
+          ? getCelestialOrbByYaku(preferredYaku)
+          : undefined
+        if (
+          !preferred ||
+          !contents.length ||
+          contents.some(
+            (content) =>
+              content.type === 'CelestialOrb' &&
+              (content.data as { id: string }).id === preferred.id
+          )
+        )
+          continue
+        // The normal generator guarantees the favored Orb in the first slot.
+        // No random reroll of the remaining choices is necessary.
+        const replacement = this.generateCelestialOrbContent(
+          'common',
+          [],
+          preferredYaku
+        )
+        contents[0] = { ...replacement, id: contents[0].id }
+      } else if (charterId === 'omen_lens' && pack.type === 'Arcana') {
+        const weights =
+          pack.size === 'Mega'
+            ? MEGA_CONTENT_RARITY_WEIGHTS
+            : DEFAULT_CONTENT_RARITY_WEIGHTS
+        for (let i = 0; i < contents.length; i++) {
+          if (contents[i].type !== 'FateSeal' || runRandom.next('packs') >= 0.2)
+            continue
+          const rarity = this.selectWeightedRandom(
+            weights as unknown as Record<string, number>
+          ) as keyof ContentRarityWeights
+          const replacement = this.generateVoidScriptContent(rarity, contents)
+          contents[i] = { ...replacement, id: contents[i].id }
+        }
+      }
+    }
+  }
+
   /**
    * Generate a single blessing pack
    */

@@ -351,7 +351,10 @@ export class ShopSession {
         return fail('unavailable')
       const bought = this.teaHouse.purchaseOffering(
         id,
-        this.game.getState().decreeSystem.getOwnedDecrees().map(d => d.id)
+        this.game
+          .getState()
+          .decreeSystem.getOwnedDecrees()
+          .map((d) => d.id)
       )
       if (!bought.success)
         throw new Error('Validated shop offering could not be purchased')
@@ -368,6 +371,17 @@ export class ShopSession {
           : this.game.addImperialCharter(offering.item as ImperialCharter)
         if (!added)
           throw new Error('Validated shop reward could not be granted')
+        if (
+          !reward &&
+          (offering.item.id === 'star_chart' ||
+            offering.item.id === 'omen_lens')
+        ) {
+          this.packs.applyPurchasedCharter(
+            offering.item.id,
+            this.game.getState().celestialOrbSystem.getOrbForMostPlayedYaku()
+              ?.effect.targetYaku
+          )
+        }
       }
       this.spent += offering.finalCost
       this.purchases++

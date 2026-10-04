@@ -1,6 +1,7 @@
 import { illustrationAssets } from '../../utils/assets'
 
 const portraits: Record<string, string> = {
+  star_chart: illustrationAssets.starChartCharter,
   abundant_stock: illustrationAssets.abundantStockCharter,
   money_tree: illustrationAssets.moneyTreeCharter,
   plentiful_stock: illustrationAssets.plentifulStockCharter,

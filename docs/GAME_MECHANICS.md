@@ -654,6 +654,10 @@ Imperial Charters are offered in the Tea House:
 
 ### Charter Pairs
 
+Star Chart and Omen Lens also affect eligible **unopened packs currently on the
+shelf** when bought. Previously revealed or resolved packs are unchanged; reload
+does not reroll these changes. [Purchase behavior and verification](PACK_CHARTER_IMPLEMENTATION.md).
+
 Each Charter has a base version and an upgraded version. The upgraded version can only appear after purchasing the base.
 
 | Base Charter | Effect | Upgraded Charter | Effect | Unlock Condition |

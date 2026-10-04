@@ -40,6 +40,8 @@ it('uses the Money Tree portrait while preserving category artwork for other Cha
 })
 
 it.each([
+  ['star_chart', 'star-chart.webp', false],
+  ['star_chart', 'star-chart.webp', true],
   ['money_tree', 'money-tree.png', false],
   ['money_tree', 'money-tree.png', true],
   ['plentiful_stock', 'plentiful-stock.png', false],

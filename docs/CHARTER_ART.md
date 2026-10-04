@@ -90,3 +90,24 @@ Money Tree was visually inspected for style, not supplied as an edit target.
 ### Final prompt
 
 Use case: stylized-concept. Asset type: small illustrated Plentiful Stock Imperial Charter for Tensho, a Mahjong roguelike. Generate one new premium painted game-item illustration, not a UI mockup. Subject: a partially unrolled ivory parchment charter with rich cobalt-blue lacquer rollers and metallic gold caps, delicate gold corner filigree, small red wax seal and short blue silk tassel. The dominant painted emblem on the parchment is a beautiful miniature merchant cabinet with four open stocked compartments, containing neatly arranged jade-green Mahjong tiles, a rolled blue scroll, a small golden coin pouch and an ivory celestial orb. Communicate a generously stocked shop with a single clear cabinet silhouette, readable at 96px. Match tactile fantasy-item art direction: warm cream paper, polished gold, rich blue and jade accents, soft warm highlights, restrained painterly texture. Nearly frontal three-quarter view, centered complete scroll on square canvas, ample empty margins, entire rollers, seal and tassel visible. Genuinely transparent background and alpha, no backdrop, no checkerboard. No words, letters, calligraphy, numbers, UI, scenery or watermark. All rules remain separate localized HTML.
+## Star Chart portrait
+
+Generated October 4, 2026 using the built-in image-generation tool (imagegen
+skill), with transparency enabled. The tool does not expose a model selector
+or a verifiable model identifier; no named/latest-model claim is made. This is
+a new asset, not an overwrite or edit of another Charter portrait.
+
+- Original: `/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-fd161005-cbe7-43ae-a700-569c6e9db01b.png` (preserved).
+- Shipped: `public/assets/illustrations/charters/star-chart.webp`, 512×512,
+  81,866 bytes, alpha retained with lossless alpha compression.
+- Conversion: `cwebp -q 85 -resize 512 512 <original> -o public/assets/illustrations/charters/star-chart.webp`.
+- SHA-256: `13c9cd0bf15cb3a8037d0a0deea71579d9b1b0ab2ab096905ba978b5036a3475`.
+- Consumers: shared `CharterArtwork` in the Tea House and discovered Archive
+  cards/details. Localized labels and rules remain HTML, not embedded text.
+- Visual inspection: original, final 512px asset and Spanish 320px shop screenshot;
+  silhouette and orb remain clear, no background square or lettering. Existing
+  Abundant Stock art was inspected for style; no reference image was sent.
+
+Final prompt:
+
+> Use case: stylized-concept. Asset type: square transparent game UI collectible portrait for Tensho's Star Chart Imperial Charter. Primary request: a beautifully hand-painted imperial parchment scroll with midnight-blue silk rollers and warm ornate gold caps. In the center of the parchment is a bold, simple circular navy celestial chart: one large glowing ivory-and-gold orb aligned with a small constellation of gold stars and a delicate compass ring. It should communicate celestial guidance and a favored orb, not money or a telescope. Style: richly textured painted fantasy board-game asset, carved gold, luminous ivory, restrained jade accents, deep cobalt/navy; compatible with luxurious mahjong tile and scroll illustrations on a dark forest-green game UI. Composition: one centered isolated scroll, slightly open horizontal parchment, full silhouette visible with generous clear margins, large central orb readable at 80px. Genuine transparent background, preserve clean alpha edges and internal cutouts. No letters, words, numbers, labels, watermark, surrounding scene, card border, or cast shadow beyond the object. Do not put a colored square or checkerboard behind it.
