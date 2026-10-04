@@ -53,3 +53,18 @@ Native-speaker review, human novice playtests, physical-device accessibility,
 and broader tutorial/control localization remain separate work. The complete
 offline precache remains large (413 entries, 69,621.56 KiB); this is not a
 performance optimization.
+
+## Published verification
+
+Implementation commit `e302ee0c81e72efba6cedc131d8e53bf5b40cb6e` is on main.
+[Workflow 37199182377](https://github.com/evgenyvinnik/tensho-web/actions/runs/37199182377)
+passes all **1,655 tests**, thirteen release checks, build, and deployment.
+Release **v1.0.261004-8** has matching public manifest/tag/build commit
+`cf2abe22aaad1f8205d79a386283e8cf1b32c26e`.
+
+All **8/8 hosted desktop/touch journeys** pass (`hosted.log`), verifying the
+localized lesson and controls, collapse/expand, acknowledgment or opt-out,
+unchanged saved snapshots, durable preferences on reload, and zero page errors.
+These checks use fresh contexts and do not constitute a service-worker upgrade
+or physical-device test. Owned local servers are stopped. Earlier failed
+assertions/build diagnostics remain recorded above rather than counted as passes.

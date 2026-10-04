@@ -14,6 +14,9 @@ acknowledgment and opt-out controls. Rules are unchanged. Local verification
 passes 1,655 units, 18 native browser cases, build and 13 release checks.
 Language switching preserves queued lessons and deliberately collapsed state;
 native-speaker and human newcomer review remain outstanding.
+Published **v1.0.261004-8** after independent CI passed all tests and deployment.
+Eight built-production and eight hosted desktop/touch journeys pass; public
+manifest/tag match `cf2abe22aaad1f8205d79a386283e8cf1b32c26e`.
 
 The [immediate stock-upgrade correction](SHOP_SLOT_IMPLEMENTATION.md) supplies
 the third/fourth item on Charter purchase, preserving prior stock and Omen extras.

@@ -4,11 +4,14 @@
 
 **Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
 
-**Verified locally — contextual guidance:** six progressive lessons and their
+**Published — v1.0.261004-8, contextual guidance:** six progressive lessons and their
 acknowledgment/opt-out controls now have entries in all thirteen locales, closing
 the English fallback seen in the Spanish shop. Stable lesson IDs, collapsed
 state on language changes, and existing preferences are preserved. All 1,655
-unit tests, 18 browser checks, build and 13 release checks pass.
+unit tests, 18 browser checks, build and 13 release checks pass. Eight built-app
+and eight hosted desktop/touch journeys pass with exact saved-state preservation.
+Independent CI passes all tests and deployment; public manifest/tag match
+`cf2abe22aaad1f8205d79a386283e8cf1b32c26e`.
 [Evidence and remaining review](PROGRESSIVE_HINT_LOCALIZATION.md).
 
 **Published — v1.0.261004-7, stock upgrades:** Abundant Stock and Plentiful Stock now
