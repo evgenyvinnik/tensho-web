@@ -8,13 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
-The [Wildcard scoring correction](CELESTIAL_WILDCARD_IMPLEMENTATION.md) is in
-verification: consistent temporary identities now support special hands, and
+The [Wildcard scoring correction](CELESTIAL_WILDCARD_IMPLEMENTATION.md) is published
+as **v1.0.261004-10**: consistent temporary identities now support special hands, and
 the shared Orb mapping connects their upgrades and Star Chart play counts.
 All ten new engine regressions, 12 native and 12 built-production journeys pass.
 The lower-concurrency full run has 1,674 passes and three timeouts; unchanged
 isolated rechecks retain CLI timing failures. Earlier failures remain in the
-evidence ledger. CI must pass before this checkpoint can deploy.
+evidence ledger. Independent CI passes all 1,677 tests, build and deployment.
+Public manifest/tag match `042fdf51f4332679fe3416fea53266c18724db15`.
+All 12 hosted journeys pass; power-aware readiness/adopted-identity UI remains
+a documented follow-up rather than a claim of complete presentation polish.
 
 The [same-visit pack Charter correction](PACK_CHARTER_IMPLEMENTATION.md) connects
 Star Chart/Omen Lens purchases to already-generated but unopened shelf packs.

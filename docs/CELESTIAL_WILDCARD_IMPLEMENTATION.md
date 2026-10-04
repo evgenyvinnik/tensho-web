@@ -79,3 +79,20 @@ follow-ups: the natural-shape badge can still say Tenpai while the Decree enable
 declaration. The narrow Spanish Skip control also wraps awkwardly. Neither is
 evidence that scoring is broken, but these checks do not claim polished newcomer
 explanation or perfect small-screen layout.
+
+## Published release
+
+- Implementation: `c98d3fc45d8e149dc9f55ed848cf1784b23feaf0`.
+- Published version: **v1.0.261004-10**.
+- Built commit/tag/public manifest: `042fdf51f4332679fe3416fea53266c18724db15`.
+- [Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37217050324)
+  passes all **1,677 tests in 144 files**, all 13 release checks, build and Pages
+  deployment. `ci.log` retains the complete result. The local timing failures
+  above are not erased by this successful independent run.
+- Existing workflow annotations warn about Node-20-based Pages actions being
+  forced onto Node 24 and the upcoming Ubuntu runner migration. They are not
+  deployment failures, and this checkpoint does not update those dependencies.
+- All **12 hosted journeys pass** against the public Pages site, repeating the
+  built-production assertions with isolated saved runs. `hosted.log` and hosted
+  screenshots retain the evidence. Owned local preview servers were stopped;
+  the pre-existing server on port 4173 was left untouched.
