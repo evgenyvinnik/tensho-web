@@ -4,7 +4,8 @@ import { STAKE_DEFINITIONS } from '../../src/config/stakeDefinitions'
 export function matrixOptions(args: string[]) {
   const options = new Map<string, string>()
   for (const arg of args) {
-    const match = /^--(runs|seed|tables|stakes|shopping|output)=(.+)$/.exec(arg)
+    const match =
+      /^--(runs|seed|tables|stakes|shopping|planning|output)=(.+)$/.exec(arg)
     if (!match || options.has(match[1]))
       throw new Error(`Unknown, incomplete or duplicate option: ${arg}`)
     options.set(match[1], match[2])
@@ -32,11 +33,22 @@ export function matrixOptions(args: string[]) {
   const shopping = options.get('shopping') ?? 'cheapest-first'
   if (!['cheapest-first', 'observed-build'].includes(shopping))
     throw new Error(`Invalid shopping policy: ${shopping}`)
+  const planning = options.get('planning') ?? 'off'
+  if (!['off', 'structural'].includes(planning))
+    throw new Error(`Invalid planning policy: ${planning}`)
   if (runs * tables.length * stakes.length > 10000)
     throw new Error(
       'Matrix exceeds 10000 total runs; select fewer cells or seeds'
     )
-  return { runs, seed, tables, stakes, shopping, output: options.get('output') }
+  return {
+    runs,
+    seed,
+    tables,
+    stakes,
+    shopping,
+    planning,
+    output: options.get('output'),
+  }
 }
 
 export interface MatrixRun {
@@ -75,6 +87,7 @@ export function validateMatrixCell(
     runs: number
     seed: number
     shopping?: string
+    planning?: string
   }
 ): MatrixCell {
   if (!value || typeof value !== 'object')
@@ -82,7 +95,10 @@ export function validateMatrixCell(
   const cell = value as MatrixCell
   if (
     cell.schema !== 2 ||
-    cell.policy !== 'resources+consumables' ||
+    cell.policy !==
+      (expected.planning === 'structural'
+        ? 'resources-and-hand-plan+consumables'
+        : 'resources+consumables') ||
     cell.shopping !== true ||
     (cell.shoppingPolicy ?? 'cheapest-first') !==
       (expected.shopping ?? 'cheapest-first') ||

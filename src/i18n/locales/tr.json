@@ -676,6 +676,12 @@
     "tryAgain": "Tekrar Dene"
   },
   "mandates": {
+    "items": {
+      "cerulean_bell": {
+        "name": "Gök Mavisi Çan",
+        "description": "Her çekiş döngüsünden sonra rastgele bir taş oynanmalıdır; önceki kilit kaldırılır."
+      }
+    },
     "title": "Patron Emri",
     "theHook": "Kanca",
     "theWall": "Duvar",

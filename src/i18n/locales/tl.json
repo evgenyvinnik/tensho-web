@@ -676,6 +676,12 @@
     "tryAgain": "Subukan Muli"
   },
   "mandates": {
+    "items": {
+      "cerulean_bell": {
+        "name": "Asul na Kampana",
+        "description": "Pagkatapos ng bawat siklo ng pagbunot, kailangang ilaro ang isang random na tile; inaalis ang dating lock."
+      }
+    },
     "title": "Mandato ng Boss",
     "theHook": "Ang Kawit",
     "theWall": "Ang Pader",

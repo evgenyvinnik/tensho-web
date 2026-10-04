@@ -67,6 +67,7 @@ for (const table of options.tables)
       '--shop',
       ...(options.shopping === 'observed-build' ? ['--build-shop'] : []),
       '--resources',
+      ...(options.planning === 'structural' ? ['--plan-hands'] : []),
       '--consumables',
       `--seed=${options.seed}`,
       `--table=${table}`,
@@ -93,6 +94,7 @@ for (const table of options.tables)
         runs: options.runs,
         seed: options.seed,
         shopping: options.shopping,
+        planning: options.planning,
       })
     )
     commands.push(`bun ${args.join(' ')}`)
@@ -108,7 +110,11 @@ const report = {
   measuredAt: new Date().toISOString(),
   runtime: execFileSync('bun', ['--version'], { encoding: 'utf8' }).trim(),
   source,
-  policy: 'resources+consumables',
+  policy:
+    options.planning === 'structural'
+      ? 'resources-and-hand-plan+consumables'
+      : 'resources+consumables',
+  planning: options.planning,
   shopping: options.shopping,
   seeds: { first: options.seed, last: options.seed + options.runs - 1 },
   tables: options.tables,

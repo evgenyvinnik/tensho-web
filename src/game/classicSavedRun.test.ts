@@ -3,6 +3,7 @@ import { GameOrchestrator } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { CERULEAN_BELL } from '../config/mandateDefinitions'
 import {
   CLASSIC_SAVE_KEY,
   MAX_CLASSIC_SAVE_LENGTH,
@@ -91,6 +92,34 @@ it('stores and parses the complete authoritative checkpoint in one key', async (
     saved: JSON.parse(result.raw),
   })
   expect(f.data.get('unrelated-project-data')).toBe('untouched')
+})
+
+it('claims legacy Bell locks atomically and preserves the exact record if writing fails', async () => {
+  const f = fixture(),
+    saved = snapshot()
+  const ids = saved.state.handTiles.slice(0, 6).map((t) => t.id)
+  saved.state.mandateEffectSystem.activeMandate = CERULEAN_BELL
+  saved.state.mandateEffectSystem.lockedTileIds = ids
+  const first = successful(await f.repository.replace(null, saved))
+  f.storage.setItem.mockClear()
+  expect(f.repository.read().kind).toBe('ready')
+  expect(f.storage.setItem).not.toHaveBeenCalled()
+  f.storage.setItem.mockImplementationOnce(() => {
+    throw new DOMException('Full', 'QuotaExceededError')
+  })
+  expect(await f.repository.claim(first.raw)).toEqual({
+    ok: false,
+    reason: 'unavailable',
+  })
+  expect(f.data.get(CLASSIC_SAVE_KEY)).toBe(first.raw)
+  const claimed = successful(await f.repository.claim(first.raw))
+  expect(
+    claimed.saved.snapshot.state.mandateEffectSystem.lockedTileIds
+  ).toEqual(ids.slice(-1))
+  expect(claimed.saved.snapshot.random).toEqual(saved.random)
+  expect(parseClassicSavedRun(f.data.get(CLASSIC_SAVE_KEY)!).snapshot).toEqual(
+    claimed.saved.snapshot
+  )
 })
 
 it('commits legacy identity migration atomically with the explicit ownership claim', async () => {

@@ -573,7 +573,7 @@ export function GameplayScreen() {
 
   const bossMandate =
     roundType === 'Boss'
-      ? game.state.roundManager.getCurrentRound()?.bossMandate?.name
+      ? game.state.roundManager.getCurrentRound()?.bossMandate
       : undefined
   const fixedHandMandate =
     game.state.roundManager.checkMandateEffect('fixed_hand_size')
@@ -621,7 +621,15 @@ export function GameplayScreen() {
           currentAct={game.currentAct}
           hasEnteredEndless={game.hasEnteredEndless}
           roundType={roundType}
-          mandateName={bossMandate}
+          mandateName={
+            bossMandate ? itemText.name('mandates', bossMandate) : undefined
+          }
+          mandateId={bossMandate?.id}
+          mandateDescription={
+            bossMandate
+              ? itemText.description('mandates', bossMandate)
+              : undefined
+          }
           upcomingMandateName={upcomingMandate}
           canRerollMandate={game.canRerollBossMandate()}
           onRerollMandate={handleRerollBossMandate}

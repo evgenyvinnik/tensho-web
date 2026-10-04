@@ -190,6 +190,13 @@ export class ClassicSaveRepository {
           state.decreeSystem
         ).toState()
       }
+      if (
+        state.mandateEffectSystem.activeMandate?.effect.type ===
+        'lock_random_tile'
+      ) {
+        state.mandateEffectSystem.lockedTileIds =
+          state.mandateEffectSystem.lockedTileIds.slice(-1)
+      }
       return this.write({
         ...current.saved,
         owner: this.token(),

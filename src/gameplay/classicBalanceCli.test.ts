@@ -28,6 +28,8 @@ interface Report {
     discards: number
     completeHands: number
     oneAwayAttempts: number
+    handPlanAttempts: number
+    handPlanDistances: Record<string, number>
     outcome: string
     purchases: number
     buildShopPurchases: number
@@ -52,11 +54,29 @@ function report(args: string[]): Report {
 }
 
 describe('Classic balance command contract', () => {
+  it('rejects conflicting hand policies and reports reproducible structural exchanges', () => {
+    expect(run(['1', '--plan-hands', '--chase-hands']).status).not.toBe(0)
+    const args = ['1', '--plan-hands', '--build-shop', '--consumables']
+    const value = report(args)
+    expect(value.policy).toBe('resources-and-hand-plan+consumables')
+    expect(value.results[0].handPlanAttempts).toBeGreaterThan(0)
+    expect(
+      Object.values(value.results[0].handPlanDistances).reduce(
+        (a, b) => a + b,
+        0
+      )
+    ).toBe(value.results[0].handPlanAttempts)
+    expect(value.results[0].handPlanAttempts).toBeLessThanOrEqual(
+      value.results[0].redraws + value.results[0].discards
+    )
+    expect(report(args)).toEqual(value)
+  })
   it.each([
     '--unknown',
     '--resources=true',
     '--consumables=true',
     '--build-shop=true',
+    '--plan-hands=true',
     '--table=missing',
     '--stake=0',
     '--stake=2.5',

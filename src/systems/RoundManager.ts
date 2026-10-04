@@ -249,7 +249,8 @@ export const SHOWDOWN_MANDATES: BossMandate[] = [
     id: 'cerulean_bell',
     name: 'Cerulean Bell',
     japaneseName: '青藍の鈴',
-    description: 'One tile is force-locked every draw',
+    description:
+      'After each draw cycle, one random tile must be played; the previous lock is released',
     effect: { type: 'lock_random_tile' },
     minAct: 8,
   },

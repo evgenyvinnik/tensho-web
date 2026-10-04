@@ -546,11 +546,10 @@ export class MandateEffectSystem {
       }
     }
 
-    // Cerulean Bell: Lock a random tile
+    // Cerulean Bell: one current forced tile, never an accumulating rack lock.
     if (mandate.effect.type === 'lock_random_tile') {
-      const unlockableTiles = handTiles.filter(
-        (t) => !this.state.lockedTileIds.has(t.id)
-      )
+      this.state.lockedTileIds.clear()
+      const unlockableTiles = handTiles
 
       if (unlockableTiles.length > 0) {
         const randomIndex = Math.floor(
@@ -1009,7 +1008,13 @@ export class MandateEffectSystem {
       scoredYakuIds: new Set(data.scoredYakuIds),
       firstYakuType: data.firstYakuType,
       handsPlayed: data.handsPlayed,
-      lockedTileIds: new Set(data.lockedTileIds),
+      // Legacy Bell saves stored locks in insertion order. Keep the latest
+      // without drawing randomness or changing other mandate state.
+      lockedTileIds: new Set(
+        data.activeMandate?.effect.type === 'lock_random_tile'
+          ? data.lockedTileIds.slice(-1)
+          : data.lockedTileIds
+      ),
       disabledDecreeIds: new Set(data.disabledDecreeIds),
       decreesShuffled: data.decreesShuffled,
       shuffledDecreeIds: [...(data.shuffledDecreeIds ?? [])],

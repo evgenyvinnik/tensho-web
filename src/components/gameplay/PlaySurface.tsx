@@ -272,44 +272,50 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   )
 
   // Handle drag end
-  const handleDragEnd = useCallback(() => {
-    if (!dragState) return
+  const handleDragEnd = useCallback(
+    (event: PointerEvent) => {
+      if (!dragState) return
 
-    const { tile, originZone, startX, startY, currentX, currentY } = dragState
+      const { tile, originZone, startX, startY } = dragState
+      // React may not have painted the final move yet. The release event is
+      // authoritative for both the click threshold and the drop target.
+      const { clientX: currentX, clientY: currentY } = event
 
-    // Calculate movement distance
-    const dx = Math.abs(currentX - startX)
-    const dy = Math.abs(currentY - startY)
-    const movedDistance = Math.sqrt(dx * dx + dy * dy)
+      // Calculate movement distance
+      const dx = Math.abs(currentX - startX)
+      const dy = Math.abs(currentY - startY)
+      const movedDistance = Math.sqrt(dx * dx + dy * dy)
 
-    // If minimal movement (< 10px), treat as a click - toggle staging
-    const CLICK_THRESHOLD = 10
-    if (movedDistance < CLICK_THRESHOLD) {
-      toggleStagedTile(tile, originZone)
+      // If minimal movement (< 10px), treat as a click - toggle staging
+      const CLICK_THRESHOLD = 10
+      if (movedDistance < CLICK_THRESHOLD) {
+        toggleStagedTile(tile, originZone)
+        setDragState(null)
+        setCurrentDropZone(null)
+        return
+      }
+
+      // Otherwise, handle as a drag
+      const dropZone = getDropZone(currentX, currentY)
+      if (dropZone === 'discard') {
+        // Discard the tile
+        onTileDiscard?.(tile)
+        // Remove from staged if it was there
+        setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
+      } else if (dropZone === 'staging' && originZone === 'hand') {
+        // Move from hand to staging
+        setStagedTiles((prev) => [...prev, tile])
+      } else if (dropZone === 'hand' && originZone === 'staging') {
+        // Move from staging back to hand
+        setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
+      }
+      // If dropped in same zone, just reset
+
       setDragState(null)
       setCurrentDropZone(null)
-      return
-    }
-
-    // Otherwise, handle as a drag
-    const dropZone = getDropZone(currentX, currentY)
-    if (dropZone === 'discard') {
-      // Discard the tile
-      onTileDiscard?.(tile)
-      // Remove from staged if it was there
-      setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
-    } else if (dropZone === 'staging' && originZone === 'hand') {
-      // Move from hand to staging
-      setStagedTiles((prev) => [...prev, tile])
-    } else if (dropZone === 'hand' && originZone === 'staging') {
-      // Move from staging back to hand
-      setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
-    }
-    // If dropped in same zone, just reset
-
-    setDragState(null)
-    setCurrentDropZone(null)
-  }, [dragState, getDropZone, onTileDiscard, toggleStagedTile])
+    },
+    [dragState, getDropZone, onTileDiscard, toggleStagedTile]
+  )
 
   // Global event listeners for drag
   useEffect(() => {
@@ -320,7 +326,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         handleDragMove(e)
       }
       const endHandler = (e: PointerEvent) => {
-        if (e.pointerId === dragState.pointerId) handleDragEnd()
+        if (e.pointerId === dragState.pointerId) handleDragEnd(e)
       }
       const cancelHandler = (e: PointerEvent) => {
         if (e.pointerId !== dragState.pointerId) return

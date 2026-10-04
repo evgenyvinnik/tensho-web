@@ -676,6 +676,12 @@
     "tryAgain": "Riprova"
   },
   "mandates": {
+    "items": {
+      "cerulean_bell": {
+        "name": "Campana Cerulea",
+        "description": "Dopo ogni ciclo di pesca, una tessera casuale deve essere giocata; il blocco precedente viene rimosso."
+      }
+    },
     "title": "Mandato del Boss",
     "theHook": "L'Uncino",
     "theWall": "Il Muro",

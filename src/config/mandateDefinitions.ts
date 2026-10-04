@@ -470,7 +470,8 @@ export const CERULEAN_BELL: MandateDefinition = {
   id: 'cerulean_bell',
   name: 'Cerulean Bell',
   japaneseName: '青藍の鈴',
-  description: 'One tile is force-locked every draw',
+  description:
+    'After each draw cycle, one random tile must be played; the previous lock is released',
   category: 'Showdown',
   difficulty: 'Hard',
   effect: { type: 'lock_random_tile' },
@@ -552,7 +553,10 @@ export interface RoundTypeDefinition {
 /**
  * Round type configurations
  */
-export const ROUND_TYPE_DEFINITIONS: Record<RoundTypeConfig, RoundTypeDefinition> = {
+export const ROUND_TYPE_DEFINITIONS: Record<
+  RoundTypeConfig,
+  RoundTypeDefinition
+> = {
   Small: {
     type: 'Small',
     japaneseName: '小局',
@@ -615,15 +619,17 @@ export function selectRandomMandate(
   if (available.length === 0) {
     // Fallback to early game mandates
     const fallback = STANDARD_MANDATES.filter((m) => m.minAct === 1)
-    const index = seed !== undefined
-      ? Math.floor(createSeededRandom(seed)() * fallback.length)
-      : Math.floor(runRandom.next('mandates') * fallback.length)
+    const index =
+      seed !== undefined
+        ? Math.floor(createSeededRandom(seed)() * fallback.length)
+        : Math.floor(runRandom.next('mandates') * fallback.length)
     return fallback[index]
   }
 
-  const index = seed !== undefined
-    ? Math.floor(createSeededRandom(seed)() * available.length)
-    : Math.floor(runRandom.next('mandates') * available.length)
+  const index =
+    seed !== undefined
+      ? Math.floor(createSeededRandom(seed)() * available.length)
+      : Math.floor(runRandom.next('mandates') * available.length)
 
   return available[index]
 }
@@ -688,9 +694,7 @@ export function isResourceMandate(mandate: MandateDefinition): boolean {
  * Check if a mandate affects decrees
  */
 export function isDecreeMandate(mandate: MandateDefinition): boolean {
-  return [
-    'shuffle_decrees',
-    'disable_random_decree',
-  ].includes(mandate.effect.type)
+  return ['shuffle_decrees', 'disable_random_decree'].includes(
+    mandate.effect.type
+  )
 }
-

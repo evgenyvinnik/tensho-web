@@ -1302,7 +1302,7 @@
       },
       "cerulean_bell": {
         "name": "Campana Cerúlea",
-        "description": "Una ficha queda bloqueada a la fuerza en cada robo"
+        "description": "Tras cada ciclo de robo, debes jugar una ficha aleatoria; el bloqueo anterior se libera."
       }
     }
   },

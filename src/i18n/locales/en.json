@@ -1298,7 +1298,7 @@
       },
       "cerulean_bell": {
         "name": "Cerulean Bell",
-        "description": "One tile is force-locked every draw"
+        "description": "After each draw cycle, one random tile must be played; the previous lock is released."
       }
     }
   },

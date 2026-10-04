@@ -34,6 +34,8 @@ export interface GameplayTopBarProps {
   roundType: RoundType
   /** Boss mandate name (if applicable) */
   mandateName?: string
+  mandateId?: string
+  mandateDescription?: string
   /** Upcoming Boss mandate exposed by a reroll Charter */
   upcomingMandateName?: string
   /** Whether the paid reroll can currently be used */
@@ -94,6 +96,8 @@ export function GameplayTopBar({
   hasEnteredEndless,
   roundType,
   mandateName,
+  mandateId,
+  mandateDescription,
   upcomingMandateName,
   canRerollMandate = false,
   onRerollMandate,
@@ -170,7 +174,12 @@ export function GameplayTopBar({
             </span>
           )}
         </div>
-        <RoundTypeIndicator roundType={roundType} mandateName={mandateName} />
+        <RoundTypeIndicator
+          roundType={roundType}
+          mandateName={mandateName}
+          mandateId={mandateId}
+          mandateDescription={mandateDescription}
+        />
         {upcomingMandateName && onRerollMandate && (
           <button
             type="button"

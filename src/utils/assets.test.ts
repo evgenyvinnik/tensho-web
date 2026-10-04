@@ -11,6 +11,16 @@ import {
   illustrationAssets,
 } from './assets'
 
+it('ships a compact transparent Cerulean Bell illustration', () => {
+  const webp = readFileSync(`public${illustrationAssets.ceruleanBell}`)
+  expect(webp.subarray(0, 4).toString()).toBe('RIFF')
+  expect(webp.subarray(12, 16).toString()).toBe('VP8X')
+  expect(webp[20] & 0x10).toBe(0x10)
+  expect(webp.readUIntLE(24, 3) + 1).toBe(512)
+  expect(webp.readUIntLE(27, 3) + 1).toBe(512)
+  expect(webp.length).toBeLessThan(100_000)
+})
+
 it('ships a compact wide result illustration', () => {
   const webp = readFileSync(`public${illustrationAssets.journeyResult}`)
   expect(webp.subarray(0, 4).toString()).toBe('RIFF')

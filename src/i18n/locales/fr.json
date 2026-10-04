@@ -1302,7 +1302,7 @@
       },
       "cerulean_bell": {
         "name": "Cloche Céruléenne",
-        "description": "Une tuile est verrouillée de force à chaque pioche"
+        "description": "Après chaque cycle de pioche, une tuile aléatoire doit être jouée ; le verrouillage précédent est levé."
       }
     }
   },

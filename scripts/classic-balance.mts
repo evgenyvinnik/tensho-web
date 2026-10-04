@@ -26,6 +26,7 @@ import { chooseClassicResourceAction } from './lib/classic-resource-policy.ts'
 import { chooseClassicConsumableAction } from './lib/classic-consumable-policy.ts'
 import { getTableStyleById } from '../src/config/tableStyleDefinitions.ts'
 import { STAKE_DEFINITIONS } from '../src/config/stakeDefinitions.ts'
+import { chooseClassicHandAction } from './lib/classic-hand-policy.ts'
 import type { ScoreBreakdown } from '../src/rules/ScoringEngine.ts'
 import {
   buyObservedDecrees,
@@ -42,14 +43,19 @@ const SHOP_POLICY = BUILD_SHOP
     ? 'cheapest-first'
     : 'off'
 const CHASES = ARGS.includes('--chase-hands')
-const RESOURCES = CHASES || ARGS.includes('--resources')
+const PLANS = ARGS.includes('--plan-hands')
+if (PLANS && CHASES)
+  throw new Error('Choose one hand policy: --plan-hands or --chase-hands')
+const RESOURCES = PLANS || CHASES || ARGS.includes('--resources')
 const CONSUMABLES = ARGS.includes('--consumables')
 const JSON_OUTPUT = ARGS.includes('--json')
-const BASE_POLICY = CHASES
-  ? 'resources-and-one-away'
-  : RESOURCES
-    ? 'resources'
-    : 'best-immediate'
+const BASE_POLICY = PLANS
+  ? 'resources-and-hand-plan'
+  : CHASES
+    ? 'resources-and-one-away'
+    : RESOURCES
+      ? 'resources'
+      : 'best-immediate'
 const POLICY = `${BASE_POLICY}${CONSUMABLES ? '+consumables' : ''}`
 const value = (name: string, fallback: string) =>
   ARGS.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3) ??
@@ -66,6 +72,7 @@ for (const arg of ARGS.filter((arg) => arg.startsWith('--'))) {
       '--build-shop',
       '--resources',
       '--chase-hands',
+      '--plan-hands',
       '--consumables',
       '--json',
     ].includes(arg) &&
@@ -103,6 +110,8 @@ interface RunResult {
   redrawnTiles: number
   discards: number
   oneAwayAttempts: number
+  handPlanAttempts: number
+  handPlanDistances: Record<string, number>
   unusedConsumables: number
   consumablesUsed: number
   consumableUsesById: Record<string, number>
@@ -143,6 +152,8 @@ function playRun(seed: number): RunResult {
   let redrawnTiles = 0
   let discards = 0
   let oneAwayAttempts = 0
+  let handPlanAttempts = 0
+  const handPlanDistances: Record<string, number> = {}
   let highestAct = 1
   let purchases = 0
   let goldSpent = 0
@@ -257,19 +268,23 @@ function playRun(seed: number): RunResult {
         continue
       }
     }
+    const resourceContext = {
+      visibleTiles: state.handTiles.filter(
+        (tile) => !state.faceDownTileIds.has(tile.id)
+      ),
+      handTileCount: state.handTiles.length,
+      lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
+      requiredPlaySize: state.mandateEffectSystem.getRequiredHandSize(),
+      advice,
+      remainingToTarget: Math.max(0, state.targetScore - state.score),
+      chaseCompleteHands: CHASES,
+      canPerform: (
+        action: Parameters<typeof orchestrator.canPerformAction>[0]
+      ) => orchestrator.canPerformAction(action),
+    }
     const cycle = RESOURCES
-      ? chooseClassicResourceAction({
-          visibleTiles: state.handTiles.filter(
-            (tile) => !state.faceDownTileIds.has(tile.id)
-          ),
-          handTileCount: state.handTiles.length,
-          lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
-          requiredPlaySize: state.mandateEffectSystem.getRequiredHandSize(),
-          advice,
-          remainingToTarget: Math.max(0, state.targetScore - state.score),
-          chaseCompleteHands: CHASES,
-          canPerform: (action) => orchestrator.canPerformAction(action),
-        })
+      ? ((PLANS ? chooseClassicHandAction(resourceContext) : null) ??
+        chooseClassicResourceAction(resourceContext))
       : null
     if (cycle) {
       const result = orchestrator.processAction(cycle.action)
@@ -282,6 +297,11 @@ function playRun(seed: number): RunResult {
         redrawnTiles += cycle.action.tileIds.length
       } else discards++
       if (cycle.reason === 'one-away') oneAwayAttempts++
+      if (cycle.reason === 'hand-plan') {
+        handPlanAttempts++
+        handPlanDistances[cycle.shanten] =
+          (handPlanDistances[cycle.shanten] ?? 0) + 1
+      }
       continue
     }
     // The House and Fish can conceal every tile. A player can still commit
@@ -369,6 +389,8 @@ function playRun(seed: number): RunResult {
     redrawnTiles,
     discards,
     oneAwayAttempts,
+    handPlanAttempts,
+    handPlanDistances,
     consumablesUsed,
     consumableUsesById,
     consumableUsesByReason,
@@ -491,9 +513,11 @@ const limitations = [
   RESOURCES
     ? 'Cycles low-connectivity spare tiles when behind the required score pace.'
     : 'No discards or redraws.',
-  CHASES
-    ? 'One-away search uses ordinary 14-tile structures only; it does not price future Yaku or know whether a completion tile remains.'
-    : 'No deliberate complete-hand pursuit.',
+  PLANS
+    ? 'Ordinary 14-tile hand planning minimizes retained shanten, then maximizes distinct improving types. Single exchanges replan after real draws; type breadth is not draw probability. No wall counts, altered Decree grammar, future Yaku value or enlarged-rack subset planning.'
+    : CHASES
+      ? 'One-away search uses ordinary 14-tile structures only; it does not price future Yaku or know whether a completion tile remains.'
+      : 'No deliberate complete-hand pursuit.',
   'Concealed racks without visible advice use an unscored position-only fallback.',
   BUILD_SHOP
     ? 'Observed-build shopping compares modelled Decree inventories on the last six visible tactical plays over a two-round horizon; it can sell eligible copies. Rack/discard/economy weights are heuristic; unpriced rule powers are neither bought nor sold. Other items remain cheapest-first and pack choices first-valid. No future wall, broader Yaku planning, complete-hand modelling or optimality claim.'

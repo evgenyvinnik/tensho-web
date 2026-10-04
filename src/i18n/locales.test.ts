@@ -44,6 +44,21 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies the confirmed Cerulean Bell rule without English fallback in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const bell = (locale.mandates as typeof en.mandates).items.cerulean_bell
+    expect(bell.name).toBeTruthy()
+    expect(bell.description).toBeTruthy()
+    if (language !== 'en')
+      expect(bell.description).not.toBe(
+        en.mandates.items.cerulean_bell.description
+      )
+  }
+  expect(en.mandates.items.cerulean_bell.description).toContain(
+    'previous lock is released'
+  )
+})
+
 it('localizes final-round scores and defeat settlement in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const results = locale.results as typeof en.results

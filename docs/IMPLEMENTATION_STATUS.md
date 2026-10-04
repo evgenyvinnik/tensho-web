@@ -4,6 +4,16 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Local checkpoint — Cerulean Bell:** the confirmed one-current-lock rule now
+repairs accumulated legacy locks on resume. Illustrated, localized boss details
+and a reproduced drag-release correction pass 18 native browser checks and four
+production desktop/touch current/legacy save journeys. See [Bell evidence](CERULEAN_BELL_IMPLEMENTATION.md).
+The opt-in [structural planning experiment](CLASSIC_HAND_PLANNING.md) found the
+original deadlock; its raw unhealthy report and a later matrix timeout are retained.
+Local full suite: 1,575 pass plus one five-test worker-start timeout; isolated
+recheck: four pass, one test deadline exceeded. Independent CI/deployment
+verification is pending. No assertion failures were reported.
+
 **Published — v1.0.261003-6:** [purchase availability](SHOP_PURCHASE_AVAILABILITY.md)
 now explains and disables blocked ordinary offers before clicking, using shared
 read-only engine checks. Sales immediately update capacity. All 32 browser checks,

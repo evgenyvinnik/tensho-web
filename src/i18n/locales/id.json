@@ -1382,7 +1382,7 @@
       },
       "cerulean_bell": {
         "name": "Lonceng Biru",
-        "description": "Satu ubin dikunci paksa tiap pengambilan"
+        "description": "Setelah setiap siklus pengambilan, satu ubin acak wajib dimainkan; kunci sebelumnya dilepas."
       }
     }
   },

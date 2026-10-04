@@ -80,11 +80,17 @@ function createTestTiles(count: number): Tile[] {
 
 // jsdom does not supply PointerEvent/pointer capture. Preserve the actual
 // pointer identity fields rather than testing through legacy mouse handlers.
-function pointer(target: Element | Window, type: string, pointerId = 1) {
+function pointer(
+  target: Element | Window,
+  type: string,
+  pointerId = 1,
+  clientX = 20,
+  clientY = 20
+) {
   const event = new MouseEvent(type, {
     bubbles: true,
-    clientX: 20,
-    clientY: 20,
+    clientX,
+    clientY,
     button: 0,
   })
   Object.defineProperties(event, {
@@ -309,6 +315,34 @@ describe('PlaySurface', () => {
   })
 
   describe('disabled state', () => {
+    it('uses the release coordinates when the final move was not rendered', () => {
+      const { container } = render(
+        <PlaySurface
+          handTiles={createTestTiles(3)}
+          onTileDiscard={mockOnTileDiscard}
+        />
+      )
+      const tile = screen.getByRole('button', { name: 'Stage 1 of Characters' })
+      tile.setPointerCapture = vi.fn()
+      const zone = container.querySelector('[data-play-zone="discard"]')!
+      vi.spyOn(zone, 'getBoundingClientRect').mockReturnValue({
+        x: 100,
+        y: 100,
+        left: 100,
+        top: 100,
+        right: 150,
+        bottom: 150,
+        width: 50,
+        height: 50,
+        toJSON: () => ({}),
+      })
+      pointer(tile, 'pointerdown')
+      pointer(window, 'pointermove', 1, 80, 80)
+      pointer(window, 'pointerup', 1, 125, 125)
+      expect(mockOnTileDiscard).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ id: 'tile-0' })
+      )
+    })
     it('supports semantic click activation without a pointer gesture', () => {
       render(
         <PlaySurface

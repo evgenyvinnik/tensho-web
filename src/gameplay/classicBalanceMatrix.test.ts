@@ -56,6 +56,7 @@ it.each([
   '--unknown',
   '--shop',
   '--shopping=unknown',
+  '--planning=unknown',
 ])('rejects invalid or excessive experiments: %s', (arg) => {
   expect(() => matrixOptions([arg])).toThrow()
 })
@@ -103,6 +104,19 @@ it('does not silently label one shopping strategy as another', () => {
   ).toEqual(value)
   expect(() =>
     validateMatrixCell(cell(), { ...expected, shopping: 'observed-build' })
+  ).toThrow()
+})
+
+it('refuses to label structural planning as the unchanged control policy', () => {
+  expect(matrixOptions([]).planning).toBe('off')
+  expect(matrixOptions(['--planning=structural']).planning).toBe('structural')
+  const value = { ...cell(), policy: 'resources-and-hand-plan+consumables' }
+  expect(() => validateMatrixCell(value, expected)).toThrow()
+  expect(
+    validateMatrixCell(value, { ...expected, planning: 'structural' })
+  ).toEqual(value)
+  expect(() =>
+    validateMatrixCell(cell(), { ...expected, planning: 'structural' })
   ).toThrow()
 })
 

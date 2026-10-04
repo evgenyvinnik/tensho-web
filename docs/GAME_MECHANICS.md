@@ -356,7 +356,7 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 | **Verdant Leaf** | All tiles debuffed until 1 Decree is sold |
 | **Violet Vessel** | Extra-extra large target (6× instead of 2×) |
 | **Crimson Heart** | One random Decree disabled every hand cycle |
-| **Cerulean Bell** | One tile is force-locked every draw |
+| **Cerulean Bell** | After each draw cycle, one random tile must be played; the previous lock is released. Only the latest forced tile is retained (user-confirmed October 3, 2026). |
 
 **Defeating Boss Mandates:**
 - Some Decrees can disable Boss Mandate effects
