@@ -13,7 +13,8 @@ test('menu guides lead to static pages and back to practice', async ({
     'About Tensho: a Mahjong roguelike'
   )
   await page.getByRole('link', { name: 'Try the practice table' }).click()
-  await expect(page).toHaveURL(/\/en\/table-loop\?practice=1$/)
+  // Static hosts may canonicalize a directory entry with a trailing slash.
+  await expect(page).toHaveURL(/\/en\/table-loop\/?\?practice=1$/)
   await expect(page.getByTestId('practice-start')).toHaveCount(0)
   await expect(page.locator('body')).toContainText('Practice deal')
 })

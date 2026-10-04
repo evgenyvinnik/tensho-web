@@ -2,6 +2,11 @@
 
 Updated: September 12, 2026. This is a delivery plan and implementation record, not a claim that Google has indexed or ranked the new pages.
 
+October 3 follow-up: [real static route entries](STATIC_ROUTE_IMPLEMENTATION.md)
+address a reproduced live 404 on the guides' game-menu destination and add raw
+HTML plus client-navigation indexing boundaries. Earlier verification below is
+historical; the follow-up ledger records current tests and deployment status.
+
 ## Objective
 
 Help the right players discover Tensho, understand what makes it different, and reach a first useful decision in the game. An extensive About page is worthwhile when it answers real questions; length and repeated keywords are not the objective. Prioritize original explanations, honest examples and clear internal links. This direction follows [Google's SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide).
@@ -52,7 +57,7 @@ For a later translation release, agree terminology with the in-game locale, have
 
 - Keep GitHub Pages. The production public-guide canonical origin defaults to `https://evgenyvinnik.github.io/tensho-web/`; `VITE_BASE_PATH=/tensho-web/` controls local links. `VITE_SITE_URL` overrides guide/sitemap canonical origin for a future domain change. It does **not** automatically migrate hard-coded game-shell/social/robots URLs: audit those together before changing domains.
 - The generated sitemap lists the root and three guides, not seeded games, shop state, settings, achievements or collection state. It deliberately has no invented `lastmod` dates. Sitemap omission does not itself prevent indexing.
-- Remaining SPA work: the game shell currently shares root metadata/canonical across routes. Decide which locale landing pages deserve their own indexable HTML, and add a route-aware `noindex` policy for transient game-state pages. Do not describe that work as completed by these guides.
+- The static-route follow-up emits real entry files for all known language/screen routes and adds `noindex, follow` to state/reference screens, including during client navigation. Menu aliases retain the root canonical; this is not localized editorial prerendering. Deciding which languages warrant real translated landing pages remains open.
 - Important hosting limitation: crawlers look for robots rules at the **host root**. This project serves `robots.txt` under `/tensho-web/`; it cannot control `https://evgenyvinnik.github.io/robots.txt`. Do not modify another repository or the account site without authority. Use an owner-verified Search Console property to submit this project's sitemap. See [Google's robots.txt location rules](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt).
 - Public guide navigation is excluded from the service worker's game-shell fallback. Test both a first visit and an existing service-worker installation after deployment. Local build output alone does not prove an installed client updates correctly.
 - Do not invent ratings, review counts, awards, authors or social accounts. Unsupported aggregate rating and social-author claims were removed from the shell before this follow-up. Keep structured data representative of visible facts; even valid markup does not guarantee enhanced results. See [Google's structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies).

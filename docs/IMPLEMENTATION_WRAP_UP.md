@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+New local [static-route checkpoint](STATIC_ROUTE_IMPLEMENTATION.md) fixes real
+Pages 404 responses for known menu/game routes and supplies initial noindex
+directives for state screens. All 1,601 local tests, 13 release checks, build,
+12 static-browser checks and four production saved-game journeys pass; publication
+pending. The [Bell hand-planning follow-up](CLASSIC_HAND_PLANNING.md) also completes
+320 matched runs without diagnostic stops. Its 8 versus 5 wins accompany fewer
+cleared rounds; no player-facing balance change follows from this mixed result.
+
 Latest published follow-up: [Cerulean Bell](CERULEAN_BELL_IMPLEMENTATION.md) implements
 the user's single-current-lock choice, repairs legacy saves, adds generated boss
 art/localized rules, and fixes a reproduced drag-release coordinate bug. Eighteen

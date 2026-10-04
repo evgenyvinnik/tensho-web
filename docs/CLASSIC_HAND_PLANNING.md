@@ -71,3 +71,47 @@ the broad remeasurement is deferred rather than adding more heavy work or
 extending the deadline. Direct engine, saved-run, native browser and production
 checks independently verify the confirmed Bell rule, but are not a replacement
 for the unfinished strategy comparison.
+
+## Completed confirmed-rule comparison — October 3 local / October 4 UTC
+
+After host load subsided, the unchanged 120-second-per-cell matrix completed.
+A new control was measured before any subsequent implementation edits. Both
+160-run artifacts have fingerprint
+`33d233012a18fd1d1f4e4b2a9dcdf6fa931f4506bbc6e95d1408bf816c85613f`:
+
+- `balance/2026-10-04-bell-hand-control.json`
+- `balance/2026-10-04-bell-hand-structural.json`
+
+Both report healthy, with zero diagnostic stops and zero rescues. The control's
+entire cell data exactly reproduces the preceding Bell control. The initial
+unhealthy report and timed-out attempt above remain historical evidence.
+
+| Policy | Cleared rounds | Victories | Complete hands | Plays | Planning exchanges |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Control | 1,823 | 5 | 0 | 5,667 | 0 |
+| Structural | 1,625 | 8 | 6 | 4,836 | 6,623 |
+
+| Table, Stake 1 | Control wins / 20 | Structural wins / 20 | Structural complete hands |
+| --- | ---: | ---: | ---: |
+| Green Felt | 1 | 0 | 0 |
+| Red Lacquer | 1 | 3 | 1 |
+| Bamboo Mat | 2 | 1 | 1 |
+| Imperial Gold | 1 | 2 | 1 |
+| Night Market | 0 | 0 | 1 |
+| Temple Stone | 0 | 0 | 0 |
+| Ghost Parlor | 0 | 2 | 1 |
+| Dragon's Den | 0 | 0 | 1 |
+
+On paired seeds, structural clears more rounds in 56 runs, fewer in 60 and the
+same number in 44. Only two of its eight victories contain a complete hand
+(Red Lacquer seed 7 and Imperial Gold seed 6). The formerly deadlocked Imperial
+Gold seed 6 now clears all 24 rounds, scoring 1,048,219 in 54 plays with one
+complete hand. Its 94 planning exchanges are legal and no rescue is used.
+
+Conclusion: this verifies the exact Bell diagnostic is resolved and establishes
+some full-hand-play viability. It is mixed progression evidence: a few more
+victories accompany fewer total cleared rounds and only six complete hands in
+4,836 plays. It does not justify turning this narrow heuristic into the live
+coach, changing targets, or claiming that complete-hand planning is satisfying.
+Higher Stakes, broader grammar, cost-aware resource conservation and human
+playtesting remain open.

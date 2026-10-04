@@ -7,6 +7,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../router/routeManifest'
 
 // English ships in the main bundle because it is the fallback: every missing
 // key resolves through it, so it has to be present before anything renders.
@@ -17,23 +18,8 @@ import en from './locales/en.json'
 /**
  * Supported language codes
  */
-export const SUPPORTED_LANGUAGES = [
-  'en',
-  'ru',
-  'tr',
-  'id',
-  'es',
-  'ja',
-  'ko',
-  'zh-Hant',
-  'zh-Hans',
-  'fr',
-  'it',
-  'tl',
-  'th',
-] as const
-
-export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number]
+export { SUPPORTED_LANGUAGES }
+export type { SupportedLanguage }
 
 /**
  * Language display names (in their native script)

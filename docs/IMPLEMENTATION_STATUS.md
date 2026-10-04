@@ -4,6 +4,15 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Local follow-up — route delivery and completed hand comparison:** real static
+entry documents fix the reproduced Pages 404s on known game/menu routes, with
+raw HTML `noindex` on state screens and synchronized client navigation. All 1,601
+local tests, 13 release checks, build, 12 static-browser checks and four saved-game
+continuations pass; publication pending. [Route evidence](STATIC_ROUTE_IMPLEMENTATION.md).
+The [matched hand-planning comparison](CLASSIC_HAND_PLANNING.md) now completes
+320 runs with zero diagnostic stops: 8 versus 5 wins, but fewer total rounds
+cleared. The former Bell deadlock seed wins; this does not establish human fun.
+
 **Published — v1.0.261004-1, Cerulean Bell:** the confirmed one-current-lock rule now
 repairs accumulated legacy locks on resume. Illustrated, localized boss details
 and a reproduced drag-release correction pass 18 native browser checks and four
@@ -517,7 +526,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 ## Remaining Work, in Priority Order
 
-1. Extend the [current observed-build comparison](CLASSIC_BUILD_SHOP_BALANCE.md) beyond its tactical shopping heuristic. The 1,280-run new-policy sample reaches Act 8 on 49 runs and wins 25, without rescues, but none of its wins uses a complete hand. These are not human balance or enjoyment results. [Table rules](TABLE_STYLE_RULES.md) records implemented effects, unlock paths, compatibility and regression evidence.
+1. Extend the [current observed-build comparison](CLASSIC_BUILD_SHOP_BALANCE.md) beyond its tactical shopping heuristic. The 1,280-run new-policy sample reaches Act 8 on 49 runs and wins 25, without rescues, but none of its wins uses a complete hand. The subsequent [structural hand-planning comparison](CLASSIC_HAND_PLANNING.md) completes 320 matched Stake-1 runs: 8 versus 5 wins, six complete hands, but fewer cleared rounds overall. Higher Stakes, cost-aware planning and human observation remain open. [Table rules](TABLE_STYLE_RULES.md) records implemented effects, unlock paths, compatibility and regression evidence.
 2. Extend [`scripts/classic-balance.mts`](../scripts/classic-balance.mts) with cost-aware destructive/Script strategies and broader Yaku planning before tuning ordinary-run Act 6–8 power growth. Opt-in synergy-aware Decree buying/replacement is now measured, but full-hand planning and other item/pack optimization remain limited. [Resource and one-away policies](CLASSIC_BALANCE_AUDIT.md) and [conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) retain their original snapshots and raw rows; their historical lack of Act 8 reach is not a claim about the new shopping policy.
 3. Extend the verified consumable targeting and pack-settlement coverage to complete effect combinations, Stake selection/unlocks, Omen-modified shops, Boss mandates, Act 8 victory, and Endless continuation. Reconcile hand-only versus persistent Fate Seal modifications; the current runtime is preserved pending the requested design choice.
 4. Review the new sound mix on representative speakers/headphones and iOS/Safari. The 55 generated assets, app-lifetime music/SFX, settings, and native Chromium/mobile playback are implemented and tested; see [Audio implementation](AUDIO_IMPLEMENTATION.md).

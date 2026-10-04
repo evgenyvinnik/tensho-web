@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import { PUBLIC_PAGES, type PublicPageId } from '../src/publicSite/content'
+import { gameShellEntries } from '../src/publicSite/gameRoutes'
 import {
   normalizeSiteUrl,
   renderPublicPage,
@@ -69,9 +70,24 @@ export function publicSitePlugin(base: string, siteUrl?: string): Plugin {
         res.end(content)
       })
     },
-    generateBundle() {
-      for (const [fileName, source] of files())
-        this.emitFile({ type: 'asset', fileName, source })
+    generateBundle: {
+      // Vite's HTML hook must finish first: copying source index.html would
+      // publish /src/main.tsx rather than the actual hashed production entry.
+      order: 'post',
+      handler(_options, bundle) {
+        const shell = bundle['index.html']
+        if (
+          !shell ||
+          shell.type !== 'asset' ||
+          typeof shell.source !== 'string'
+        )
+          throw new Error('Missing built game shell for static route entries')
+        for (const [fileName, source] of [
+          ...files(),
+          ...gameShellEntries(shell.source),
+        ])
+          this.emitFile({ type: 'asset', fileName, source })
+      },
     },
   }
 }

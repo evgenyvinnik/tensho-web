@@ -37,6 +37,8 @@ import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
 import { APP_BASE_URL, APP_ROUTER_BASENAME } from '../utils/basePath'
 import { audioSystem } from '../systems/AudioSystem'
 import { RouteLoading } from '../components/ui/RouteLoading'
+import { ROUTES, type RoutePath } from './routeManifest'
+import { useGameRouteIndexing } from './useGameRouteIndexing'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -44,20 +46,8 @@ export { useNavigate, useLocation, useParams }
 /**
  * Route paths (without language prefix)
  */
-export const ROUTES = {
-  MENU: '',
-  PLAY: 'play',
-  TABLE_LOOP: 'table-loop',
-  SHOP: 'shop',
-  GAME_OVER: 'game-over',
-  CODEX: 'codex',
-  TUTORIAL: 'tutorial', // Legacy alias for CODEX
-  COLLECTION: 'collection',
-  SETTINGS: 'settings',
-  ACHIEVEMENTS: 'achievements',
-} as const
-
-export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES]
+export { ROUTES }
+export type { RoutePath }
 
 /**
  * Build a full path with language prefix
@@ -197,6 +187,7 @@ export function RouteErrorBoundary() {
  */
 export function LanguageLayout() {
   const { pathname } = useLocation()
+  useGameRouteIndexing(pathname)
   useEffect(() => {
     const screen = pathname.replace(/\/$/, '').split('/').at(-1)
     if (screen === 'play' || screen === 'table-loop') audioSystem.playMusic('gameplay')
