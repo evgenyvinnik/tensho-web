@@ -4,13 +4,15 @@
 
 **Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
 
-**Local follow-up — stock upgrades:** Abundant Stock and Plentiful Stock now
+**Published — v1.0.261004-7, stock upgrades:** Abundant Stock and Plentiful Stock now
 supply their extra offer immediately. Existing stock, Omen overflow and packs
 remain intact. Orb base-price metadata and stale discounted Orb quotes are also
 corrected. New generated Abundant Stock art is shared by shop/Archive. Final full
 suite passes all 1,641 tests; build, 13 release checks and 24 native browser cases
 pass. All 12 built-production purchase/save-repair/reload/play journeys pass.
-Earlier timeout/worker failures are retained; publication is pending.
+Independent CI passes all tests, release checks, build and deployment. Public
+manifest/tag match `a42ab1483355eb890362725a00a3862f2702d311`; all 12 hosted journeys
+pass. Earlier failures and the corrected image-readiness assertion are retained.
 [Evidence and artwork provenance](SHOP_SLOT_IMPLEMENTATION.md).
 
 **Published — v1.0.261004-6, sold-out shops:** rerolls now replenish purchased ordinary

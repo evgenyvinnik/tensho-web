@@ -13,8 +13,10 @@ the third/fourth item on Charter purchase, preserving prior stock and Omen extra
 It also repairs reproduced Orb base-price metadata and adds a generated Abundant
 Stock portrait to the shop and discovered Archive. Final full suite passes
 1,641 tests, alongside 24 native browser checks, build and 13 release checks.
-All 12 built-production purchase/save-repair/reload/play journeys pass. Earlier
-timeout/worker failures remain in the ledger; publication is pending.
+All 12 built-production purchase/save-repair/reload/play journeys pass. Published
+**v1.0.261004-7** with all 1,641 CI tests, 13 release checks, build and deployment
+passing. Public manifest/tag match `a42ab1483355eb890362725a00a3862f2702d311`;
+all 12 hosted journeys pass. Earlier failures remain in the ledger.
 
 The [sold-slot reroll correction](SHOP_REROLL_IMPLEMENTATION.md) replenishes all
 ordinary slots while preserving owned rewards, packs and the Charter. It closes

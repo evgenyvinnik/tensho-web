@@ -96,4 +96,27 @@ and checks exact saved snapshots across reload. Portrait responses decode at
 Actual upgraded purchase is covered in the native batch; built-production uses
 an already-owned upgrade rather than bypassing a hosted profile prerequisite.
 
-Final targeted lint and whitespace checks also pass. Publication is pending.
+Final targeted lint and whitespace checks also pass.
+
+## Published checkpoint
+
+Published **v1.0.261004-7**, implementation commit
+`76a9da365217f607459cfa2ead41509c65039c6a`, built/tagged commit
+`a42ab1483355eb890362725a00a3862f2702d311`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37189345075)
+passes all **1,641 tests across 140 files**, **13 release checks**, build and Pages
+deployment. The public manifest and fetched tag match that exact built commit.
+
+The initial hosted batch passed six journeys, then checked image readiness before
+the Spanish portrait finished loading. The retained trace shows a successful
+61,080-byte HTTP 200 response in about 325 ms. Both verifier and native test now
+wait for readiness within the existing default assertion deadline rather than
+sampling immediately. This changes no application code or asset. The eight native
+stock-Charter journeys pass again, 40.5 seconds, without retries.
+
+All **12 final hosted journeys pass**, with exact portrait hashes, saved-state
+restoration, legacy Orb repair, actual extra-item purchases, rerolls and next-round
+play on English/Spanish desktop and touch. Zero page errors. Evidence includes
+`hosted.log` and its failed trace, `hosted-final.log`, `hosted-final-*.png`,
+`browser-art-wait.log`, `ci.log` and `public-manifest.json`.
+The wider implementation, balance and human-fun audit remains open.

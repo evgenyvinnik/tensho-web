@@ -113,11 +113,13 @@ for (const lang of ['en', 'es'])
         'src',
         new RegExp(upgraded ? 'plentiful-stock.png$' : 'abundant-stock.webp$')
       )
-      expect(
-        await art.evaluate(
-          (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+      await expect
+        .poll(() =>
+          art.evaluate(
+            (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+          )
         )
-      ).toBe(true)
+        .toBe(true)
       await card.scrollIntoViewIfNeeded()
       await page.screenshot({ path: testInfo.outputPath('stock-charter.png') })
       await activate(card.getByRole('button'))
