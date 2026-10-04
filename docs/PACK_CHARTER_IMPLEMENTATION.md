@@ -76,3 +76,20 @@ deadlines (`browser-final.log`). The earlier 23/24 run remains a failed run.
 Publication evidence is recorded below when complete.
 The large complete-offline precache remains (414 entries / 69,702.40 KiB); the
 new portrait does not resolve the broader performance and physical-device gaps.
+
+## Published verification
+
+Implementation `84295cfef43eb58684e0633acb238f47cbd1d1aa` is on main.
+[Workflow 37209595677](https://github.com/evgenyvinnik/tensho-web/actions/runs/37209595677)
+passes all **1,667 tests**, thirteen release checks, build and deployment.
+Published **v1.0.261004-9** has matching public manifest/tag/build commit
+`835798017843aae57f0ed4267d7589cd85396237`.
+
+All **8/8 hosted desktop/touch journeys** pass (`hosted.log`): both Charters in
+English and Spanish, cancellation, payment, expected generated rewards, claim,
+exact settled-save reload and next-round continuation, with zero page errors.
+The hosted Star Chart asset SHA-256 matches the committed portrait. These use
+isolated fresh contexts and explicit earned-unlock/seeded-chance fixtures; they
+do not prove organic balance, human fun, old service-worker upgrades or physical
+device accessibility. Local owned servers are stopped; no prior failure is
+reclassified as a passing run.

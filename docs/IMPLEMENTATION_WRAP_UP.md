@@ -14,6 +14,9 @@ It preserves revealed rewards and persisted choices, and adds a distinct generat
 Star Chart portrait. All 1,667 units and eight built-production journeys pass;
 the evidence ledger retains the 23/24 initial native run and passing three-repeat
 startup recheck. The final native rerun passes 24/24 without retries.
+Published **v1.0.261004-9** with all independent CI gates and eight hosted
+purchase/claim/reload journeys passing. Public manifest/tag match
+`835798017843aae57f0ed4267d7589cd85396237`; live artwork hash matches.
 This does not close the remaining mechanics/design choices.
 
 The [contextual guidance localization](PROGRESSIVE_HINT_LOCALIZATION.md) closes
