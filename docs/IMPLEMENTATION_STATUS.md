@@ -4,6 +4,13 @@
 
 **Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
 
+**Verified locally — contextual guidance:** six progressive lessons and their
+acknowledgment/opt-out controls now have entries in all thirteen locales, closing
+the English fallback seen in the Spanish shop. Stable lesson IDs, collapsed
+state on language changes, and existing preferences are preserved. All 1,655
+unit tests, 18 browser checks, build and 13 release checks pass.
+[Evidence and remaining review](PROGRESSIVE_HINT_LOCALIZATION.md).
+
 **Published — v1.0.261004-7, stock upgrades:** Abundant Stock and Plentiful Stock now
 supply their extra offer immediately. Existing stock, Omen overflow and packs
 remain intact. Orb base-price metadata and stale discounted Orb quotes are also

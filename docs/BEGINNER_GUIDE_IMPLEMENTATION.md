@@ -1,5 +1,10 @@
 # Illustrated beginner guide
 
+October 4 follow-up: [contextual hints now have translations in all thirteen
+languages](PROGRESSIVE_HINT_LOCALIZATION.md), including dismissal and opt-out
+controls. This closes that specific English-fallback gap, not every remaining
+tutorial/control localization or native-speaker review task.
+
 September 19, 2026. Implementation evidence, not a whole-project completion or deployment claim.
 
 ## Live forecast guidance follow-up

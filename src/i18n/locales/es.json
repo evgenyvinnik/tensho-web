@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Mejora tu mano",
+      "content": "Descartar cambia una ficha y gasta un descarte, no una jugada. Recambiar cambia hasta tres fichas seleccionadas por un recambio. Cuanto menor sea el número shanten, más cerca estarás de una mano completa."
+    },
+    "yaku": {
+      "title": "Patrones y multiplicadores",
+      "content": "Puedes puntuar con un grupo pequeño; una mano completa puede activar multiplicadores Yaku. Consulta la previsión de puntos antes de decidir qué jugar y qué conservar."
+    },
+    "flora": {
+      "title": "Flores y Estaciones",
+      "content": "Estas fichas se activan al robarlas. Las Flores duran toda la partida; las Estaciones afectan a la ronda actual. Consulta tus efectos activos en el panel Flores / Estaciones."
+    },
+    "shop": {
+      "title": "La Casa de Té",
+      "content": "El resumen de ganancias muestra de dónde viene tu Oro. Compra objetos que se complementen o ahorra para obtener intereses. Las compras normales son inmediatas; las Cartas requieren confirmación."
+    },
+    "decrees": {
+      "title": "Decretos",
+      "content": "Los Decretos te acompañan y pueden cambiar la puntuación, el dinero, las fichas o las manos permitidas. Lee sus descripciones antes de basar tu estrategia en ellos o venderlos."
+    },
+    "boss": {
+      "title": "Ronda de jefe",
+      "content": "El jefe añade una regla especial llamada mandato. Léela antes de elegir tus fichas: quizá debas cambiar tu plan habitual."
+    },
+    "gotIt": "Entendido",
+    "dontShow": "No mostrar consejos"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Eterno · No se puede vender",
     "eternalCannotSellNamed": "{{name}} es eterno y no se puede vender",

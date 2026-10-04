@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Improve your hand",
+      "content": "Discard replaces one tile and spends a discard, not a play. Redraw swaps up to three selected tiles for one redraw. A lower shanten number means you are closer to a complete hand."
+    },
+    "yaku": {
+      "title": "Patterns and multipliers",
+      "content": "You can score with a small group; a complete hand can unlock Yaku multipliers. Check the score preview before deciding what to play and what to keep."
+    },
+    "flora": {
+      "title": "Flowers & Seasons",
+      "content": "These tiles activate when drawn. Flowers last for the run; Seasons affect the current round. Inspect the Flowers / Seasons panel to see your active effects."
+    },
+    "shop": {
+      "title": "The Tea House",
+      "content": "The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Ordinary purchases are immediate; Charters ask for confirmation."
+    },
+    "decrees": {
+      "title": "Decrees",
+      "content": "Decrees stay with you and can change scoring, money, tiles, or which hands are allowed. Inspect their descriptions before building around them or selling them."
+    },
+    "boss": {
+      "title": "Boss round",
+      "content": "A boss adds a special rule called a mandate. Read it before choosing your tiles; your usual plan may need to change."
+    },
+    "gotIt": "Got it",
+    "dontShow": "Don't show tips"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Eternal · Cannot sell",
     "eternalCannotSellNamed": "{{name}} is Eternal and cannot be sold",

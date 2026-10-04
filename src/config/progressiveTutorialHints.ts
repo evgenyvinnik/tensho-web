@@ -92,10 +92,10 @@ export function getProgressiveHints(
       trigger: 'firstDiscard',
       targetSelector: '[data-tutorial="hand"]',
       arrowDirection: 'bottom', // Changed from 'top' - tooltip above PlaySurface
-      title: t('progressiveHints.discard.title', 'Hand Improved'),
+      title: t('progressiveHints.discard.title', 'Improve your hand'),
       content: t(
         'progressiveHints.discard.content',
-        'Discards replace one unwanted tile without spending a hand. Watch the shanten badge: lower is closer to a complete pattern. Redraw replaces up to three selected tiles.'
+        'Discard replaces one tile and spends a discard, not a play. Redraw swaps up to three selected tiles for one redraw. A lower shanten number means you are closer to a complete hand.'
       ),
       priority: 1,
     },
@@ -106,10 +106,10 @@ export function getProgressiveHints(
       trigger: 'firstHandPlayed',
       targetSelector: '[data-tutorial="yaku-display"]',
       arrowDirection: 'bottom', // Changed from 'top' - yaku display is in middle of screen
-      title: t('progressiveHints.yaku.title', 'Yaku = Multipliers'),
+      title: t('progressiveHints.yaku.title', 'Patterns and multipliers'),
       content: t(
         'progressiveHints.yaku.content',
-        'Partial structures always score, while a complete pattern unlocks Yaku multipliers. Use the forecast to decide between points now and improving the hand you keep.'
+        'You can score with a small group; a complete hand can unlock Yaku multipliers. Check the score preview before deciding what to play and what to keep.'
       ),
       priority: 0,
     },
@@ -123,7 +123,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.flora.title', 'Flowers & Seasons'),
       content: t(
         'progressiveHints.flora.content',
-        'Flowers give run-wide bonuses. Seasons give round effects. Auto-triggered on draw!'
+        'These tiles activate when drawn. Flowers last for the run; Seasons affect the current round. Inspect the Flowers / Seasons panel to see your active effects.'
       ),
       priority: 1,
     },
@@ -137,7 +137,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.shop.title', 'The Tea House'),
       content: t(
         'progressiveHints.shop.content',
-        'Your cash-out explains every Gold gained. Buy a synergy now or keep savings for interest; ordinary item purchases are immediate, while Charters still ask for confirmation.'
+        'The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Ordinary purchases are immediate; Charters ask for confirmation.'
       ),
       priority: 1,
     },
@@ -151,7 +151,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.decrees.title', 'Decrees'),
       content: t(
         'progressiveHints.decrees.content',
-        'Decrees are persistent rule modifiers. They can change legal hands, scoring, economy, and tile behavior; inspect or sell them from this row.'
+        'Decrees stay with you and can change scoring, money, tiles, or which hands are allowed. Inspect their descriptions before building around them or selling them.'
       ),
       priority: 1,
     },
@@ -162,10 +162,10 @@ export function getProgressiveHints(
       trigger: 'bossRound',
       targetSelector: '[data-tutorial="act-round"]',
       arrowDirection: 'bottom',
-      title: t('progressiveHints.boss.title', 'Boss Round!'),
+      title: t('progressiveHints.boss.title', 'Boss round'),
       content: t(
         'progressiveHints.boss.content',
-        'Boss rounds have mandates - special restrictions! Adapt your strategy.'
+        'A boss adds a special rule called a mandate. Read it before choosing your tiles; your usual plan may need to change.'
       ),
       priority: 1,
     },

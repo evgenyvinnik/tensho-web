@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Migliora la tua mano",
+      "content": "Scartare sostituisce una tessera e consuma uno scarto, non una giocata. Ripesca scambia fino a tre tessere selezionate usando una ripesca. Un numero shanten più basso indica che sei più vicino a una mano completa."
+    },
+    "yaku": {
+      "title": "Combinazioni e moltiplicatori",
+      "content": "Puoi fare punti con un piccolo gruppo; una mano completa può attivare moltiplicatori Yaku. Controlla l’anteprima del punteggio per decidere cosa giocare e cosa tenere."
+    },
+    "flora": {
+      "title": "Fiori e Stagioni",
+      "content": "Queste tessere si attivano quando vengono pescate. I Fiori durano tutta la partita; le Stagioni influenzano il round attuale. Consulta gli effetti attivi nel pannello Fiori / Stagioni."
+    },
+    "shop": {
+      "title": "La Casa del Tè",
+      "content": "Il riepilogo dei guadagni mostra da dove proviene il tuo Oro. Compra oggetti che si completano o risparmia per gli interessi. Gli acquisti normali sono immediati; le Carte richiedono conferma."
+    },
+    "decrees": {
+      "title": "Decreti",
+      "content": "I Decreti restano con te e possono cambiare punteggio, denaro, tessere o mani consentite. Leggi le descrizioni prima di basarci la tua strategia o venderli."
+    },
+    "boss": {
+      "title": "Round del boss",
+      "content": "Il boss aggiunge una regola speciale chiamata mandato. Leggila prima di scegliere le tessere: potresti dover cambiare il tuo piano abituale."
+    },
+    "gotIt": "Capito",
+    "dontShow": "Nascondi i consigli"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Eterno · Non vendibile",
     "eternalCannotSellNamed": "{{name}} è eterno e non può essere venduto",

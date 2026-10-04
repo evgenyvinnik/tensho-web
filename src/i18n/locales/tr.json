@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Elini geliştir",
+      "content": "At, bir taşı değiştirir ve oynama hakkı yerine bir atma hakkı harcar. Yeniden Çek, bir hak karşılığında seçili en fazla üç taşı değiştirir. Şanten sayısı küçüldükçe tamamlanmış bir ele yaklaşırsın."
+    },
+    "yaku": {
+      "title": "Desenler ve çarpanlar",
+      "content": "Küçük bir grupla puan kazanabilirsin; tamamlanmış bir el Yaku çarpanlarını açabilir. Neyi oynayıp neyi tutacağına karar vermeden önce puan önizlemesine bak."
+    },
+    "flora": {
+      "title": "Çiçekler ve Mevsimler",
+      "content": "Bu taşlar çekildiğinde etkinleşir. Çiçekler koşu boyunca, Mevsimler mevcut turda etkilidir. Etkin etkileri Çiçekler / Mevsimler panelinden incele."
+    },
+    "shop": {
+      "title": "Çay Evi",
+      "content": "Kazanç dökümü Altının nereden geldiğini gösterir. Birlikte iyi çalışan eşyalar al veya faiz için biriktir. Normal alışverişler anında gerçekleşir; Fermanlar onay ister."
+    },
+    "decrees": {
+      "title": "Kararnameler",
+      "content": "Kararnameler seninle kalır; puanları, parayı, taşları veya izin verilen elleri değiştirebilir. Stratejini onlara göre kurmadan veya onları satmadan önce açıklamalarını incele."
+    },
+    "boss": {
+      "title": "Boss turu",
+      "content": "Boss, buyruk adı verilen özel bir kural ekler. Taşlarını seçmeden önce oku; alıştığın planı değiştirmen gerekebilir."
+    },
+    "gotIt": "Anladım",
+    "dontShow": "İpuçlarını gösterme"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Ebedî · Satılamaz",
     "eternalCannotSellNamed": "{{name}} Ebedî olduğu için satılamaz",

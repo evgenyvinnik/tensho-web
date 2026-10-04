@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Améliorez votre main",
+      "content": "Défausser remplace une tuile et dépense une défausse, pas une main jouée. Repiocher échange jusqu’à trois tuiles sélectionnées contre une repioche. Plus le nombre shanten est bas, plus vous êtes proche d’une main complète."
+    },
+    "yaku": {
+      "title": "Combinaisons et multiplicateurs",
+      "content": "Un petit groupe peut rapporter des points ; une main complète peut activer des multiplicateurs Yaku. Consultez l’aperçu du score pour choisir quoi jouer et quoi garder."
+    },
+    "flora": {
+      "title": "Fleurs et Saisons",
+      "content": "Ces tuiles s’activent à la pioche. Les Fleurs durent toute la partie ; les Saisons affectent la manche en cours. Consultez vos effets actifs dans le panneau Fleurs / Saisons."
+    },
+    "shop": {
+      "title": "La Maison de Thé",
+      "content": "Le bilan des gains indique d’où vient votre Or. Achetez des objets complémentaires ou économisez pour toucher des intérêts. Les achats ordinaires sont immédiats ; les Chartes demandent confirmation."
+    },
+    "decrees": {
+      "title": "Décrets",
+      "content": "Les Décrets vous accompagnent et peuvent modifier le score, l’argent, les tuiles ou les mains autorisées. Lisez leur description avant de bâtir votre stratégie autour d’eux ou de les vendre."
+    },
+    "boss": {
+      "title": "Manche de boss",
+      "content": "Le boss ajoute une règle spéciale appelée mandat. Lisez-la avant de choisir vos tuiles : votre plan habituel devra peut-être changer."
+    },
+    "gotIt": "Compris",
+    "dontShow": "Masquer les conseils"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Éternel · Vente impossible",
     "eternalCannotSellNamed": "{{name}} est éternel et ne peut pas être vendu",

@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Pagandahin ang iyong kamay",
+      "content": "Ang Itapon ay nagpapalit ng isang tile at gumagamit ng isang pagtapon, hindi isang laro ng kamay. Ang Mag-redraw ay nagpapalit ng hanggang tatlong napiling tile sa isang redraw. Mas mababang shanten ang ibig sabihin ay mas malapit ka sa kumpletong kamay."
+    },
+    "yaku": {
+      "title": "Mga pattern at multiplier",
+      "content": "Maaaring makakuha ng puntos ang maliit na grupo; maaaring magbukas ng Yaku multiplier ang kumpletong kamay. Tingnan ang inaasahang puntos bago pumili ng ilalaro at ititira."
+    },
+    "flora": {
+      "title": "Mga Bulaklak at Panahon",
+      "content": "Kusang gumagana ang mga tile na ito kapag nabunot. Ang Bulaklak ay para sa buong run; ang Panahon ay para sa kasalukuyang round. Tingnan ang aktibong epekto sa panel ng Bulaklak / Panahon."
+    },
+    "shop": {
+      "title": "Bahay ng Tsaa",
+      "content": "Ipinapakita ng tala ng kita kung saan nanggaling ang iyong Ginto. Bumili ng mga item na nagtutulungan o mag-ipon para sa interes. Agad ang karaniwang pagbili; nangangailangan ng kumpirmasyon ang mga Imperyal na Kasulatan."
+    },
+    "decrees": {
+      "title": "Mga Decree",
+      "content": "Nananatili sa iyo ang mga Decree at maaaring magbago ng puntos, pera, mga tile, o mga kamay na pinapayagan. Basahin ang paglalarawan bago ibatay ang diskarte sa mga ito o ibenta ang mga ito."
+    },
+    "boss": {
+      "title": "Round ng boss",
+      "content": "Nagdaragdag ang boss ng espesyal na tuntuning tinatawag na mandato. Basahin ito bago pumili ng mga tile; maaaring kailangang baguhin ang nakasanayang plano."
+    },
+    "gotIt": "Naintindihan",
+    "dontShow": "Huwag magpakita ng mga tip"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Walang Hanggan · Hindi maibebenta",
     "eternalCannotSellNamed": "Walang Hanggan ang {{name}} at hindi ito maibebenta",

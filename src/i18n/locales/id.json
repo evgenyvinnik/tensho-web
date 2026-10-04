@@ -1,4 +1,32 @@
 {
+  "progressiveHints": {
+    "discard": {
+      "title": "Perbaiki tanganmu",
+      "content": "Buang mengganti satu ubin dan memakai satu jatah buang, bukan satu giliran main. Tarik Ulang menukar hingga tiga ubin terpilih dengan satu jatah tarik ulang. Angka shanten yang lebih kecil berarti semakin dekat ke tangan lengkap."
+    },
+    "yaku": {
+      "title": "Pola dan pengali",
+      "content": "Kelompok kecil bisa menghasilkan poin; tangan lengkap bisa mengaktifkan pengali Yaku. Periksa perkiraan skor sebelum memilih ubin yang dimainkan atau disimpan."
+    },
+    "flora": {
+      "title": "Bunga & Musim",
+      "content": "Ubin ini aktif saat ditarik. Bunga bertahan sepanjang permainan; Musim memengaruhi ronde saat ini. Periksa panel Bunga / Musim untuk melihat efek aktif."
+    },
+    "shop": {
+      "title": "Rumah Teh",
+      "content": "Rincian pendapatan menunjukkan asal Emasmu. Beli item yang saling mendukung atau simpan uang untuk bunga. Pembelian biasa langsung berlaku; Piagam meminta konfirmasi."
+    },
+    "decrees": {
+      "title": "Dekrit",
+      "content": "Dekrit tetap bersamamu dan dapat mengubah skor, uang, ubin, atau tangan yang diizinkan. Baca deskripsinya sebelum menjadikannya dasar strategi atau menjualnya."
+    },
+    "boss": {
+      "title": "Ronde bos",
+      "content": "Bos menambahkan aturan khusus yang disebut mandat. Baca sebelum memilih ubin; rencana biasanya mungkin perlu diubah."
+    },
+    "gotIt": "Mengerti",
+    "dontShow": "Jangan tampilkan tips"
+  },
   "decreeModifiers": {
     "eternalCannotSell": "Abadi · Tidak bisa dijual",
     "eternalCannotSellNamed": "{{name}} bersifat Abadi dan tidak bisa dijual",

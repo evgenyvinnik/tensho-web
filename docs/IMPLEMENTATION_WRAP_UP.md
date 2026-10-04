@@ -1,12 +1,19 @@
 # Implementation wrap-up
 
-**Updated:** October 3, 2026
+**Updated:** October 4, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
 ## Current illustrated Tea House build management
+
+The [contextual guidance localization](PROGRESSIVE_HINT_LOCALIZATION.md) closes
+the missing hint namespace in all thirteen languages, including localized
+acknowledgment and opt-out controls. Rules are unchanged. Local verification
+passes 1,655 units, 18 native browser cases, build and 13 release checks.
+Language switching preserves queued lessons and deliberately collapsed state;
+native-speaker and human newcomer review remain outstanding.
 
 The [immediate stock-upgrade correction](SHOP_SLOT_IMPLEMENTATION.md) supplies
 the third/fourth item on Charter purchase, preserving prior stock and Omen extras.
