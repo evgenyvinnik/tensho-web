@@ -14,7 +14,9 @@ a core shopping-loop defect: paying to reroll after buying both items left no
 visible stock. Fourteen native browser checks, build and release checks pass;
 the evidence ledger distinguishes the initial full-unit failures from the clean
 affected-test recheck. All eight built-production purchase/reroll/reload/play
-journeys pass; publication is pending.
+journeys pass. Published **v1.0.261004-6** with all 1,631 independent CI tests,
+13 release checks, build and deployment passing. Public manifest/tag match
+`5546cff319a94bd01afe820730f044f9e64c7c4a`; all eight hosted journeys pass.
 
 The [Charter pricing correction](CHARTER_PRICING_IMPLEMENTATION.md) fixes stale
 current-shop quotes after a discount purchase and catalog-based resale values.

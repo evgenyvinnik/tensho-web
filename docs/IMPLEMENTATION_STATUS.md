@@ -4,12 +4,14 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
-**Local follow-up — sold-out shops:** rerolls now replenish purchased ordinary
+**Published — v1.0.261004-6, sold-out shops:** rerolls now replenish purchased ordinary
 slots instead of preserving empty slots. Fourteen native browser checks, build
 and 13 release checks pass. The initial full unit run has 1,626 passes, one
 obsolete behavior assertion and four timeouts; the affected six-file recheck
-passes 49/49. All eight built-production purchase/reroll/reload/play journeys pass;
-publication is pending.
+passes 49/49. All eight built-production purchase/reroll/reload/play journeys pass.
+Independent CI passes all 1,631 tests, 13 release checks, build and deployment.
+Public manifest/tag match `5546cff319a94bd01afe820730f044f9e64c7c4a`;
+all eight hosted desktop/touch journeys pass.
 [Evidence and retained failures](SHOP_REROLL_IMPLEMENTATION.md).
 
 **Published — v1.0.261004-5, Charter pricing:** earned discounts now immediately update

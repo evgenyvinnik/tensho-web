@@ -72,4 +72,17 @@ phone screenshot shows the replenished illustrated offer, complete rules and
 purchase control within the available scroll area. Evidence is
 `production-final.log` and `production-final-*.png`.
 
-Publication is pending.
+Published **v1.0.261004-6**, implementation commit
+`88a390e0503e369df1febbe08c2bf2c50f723ec5`, built/tagged commit
+`5546cff319a94bd01afe820730f044f9e64c7c4a`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37182519851)
+passes all **1,631 tests across 139 files**, **13 release checks**, build and
+Pages deployment. The public manifest and fetched version tag match the exact
+built commit. This independent pass does not erase the retained local failures.
+
+All **eight hosted journeys pass**, without retries or page errors, with the same
+partial/full sell-out, successive rerolls, actual replacement purchase, exact
+saved-state reload and next-round play assertions on desktop and 320px touch in
+English/Spanish. Evidence: `hosted.log`, `hosted-*.png`, `ci.log`, `ci-watch.log`
+and `public-manifest.json`. The broader implementation and human-fun audit remain
+open; this fixes a verified shopping-loop defect, not every balance concern.
