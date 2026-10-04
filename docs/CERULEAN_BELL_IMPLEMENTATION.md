@@ -65,7 +65,22 @@ tests but the first pair-example test exceeded its original 5-second deadline
 (20.346 seconds); that run also exited 1. Read-only host inspection showed load averages of
 651.45 / 574.65 / 412.93. This supports contention as a concern, not proof of the
 exact cause of every earlier timeout. No unrelated processes were interrupted
-and no deadlines were increased. Independent CI/deployment remains pending.
+and no deadlines were increased.
+
+## Published checkpoint
+
+Published **v1.0.261004-1** (UTC release date October 4; local work date October 3).
+Implementation commit `bbae805e5392f42af963524af3d60e0fd71c36d4`; built/tagged
+commit `3f48a2272f41463924eb5290359f5f3e964de55c`.
+[Independent CI run](https://github.com/evgenyvinnik/tensho-web/actions/runs/37169208735)
+passed **1,580/1,580 tests across 136 files**, all **13 release checks**, production
+build and Pages deployment. The public `release.json` matches the exact tag.
+Four hosted desktop/touch × current/legacy save checks pass: normalized claim,
+exact asset hash, 512px decode, focus return, legal play, exact reload and zero
+page errors. These use isolated browser profiles; no user save was modified.
+Logs are `ci-release.log` and `hosted.log` in the evidence root. Local failures
+above remain recorded rather than being relabeled successful.
+
 The related analysis and its retained diagnostic are in
 [Classic hand planning](CLASSIC_HAND_PLANNING.md).
 

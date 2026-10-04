@@ -8,13 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
-Latest local follow-up: [Cerulean Bell](CERULEAN_BELL_IMPLEMENTATION.md) implements
+Latest published follow-up: [Cerulean Bell](CERULEAN_BELL_IMPLEMENTATION.md) implements
 the user's single-current-lock choice, repairs legacy saves, adds generated boss
 art/localized rules, and fixes a reproduced drag-release coordinate bug. Eighteen
 native browser checks and four production current/legacy desktop/touch journeys
 pass. Local suite has 1,575 passes and one five-test worker-start timeout;
 its isolated recheck passed four tests and exceeded one test deadline.
-Independent CI/publication checks are pending. The associated
+Independent CI passes all 1,580 tests, 13 release checks, build and deployment.
+Published **v1.0.261004-1**; public manifest/tag match
+`3f48a2272f41463924eb5290359f5f3e964de55c`. Four hosted desktop/touch current/legacy
+save-repair/play/reload checks pass with zero page errors. The associated
 [hand-planning experiment](CLASSIC_HAND_PLANNING.md) is analysis-only and retains
 its original deadlock report and subsequent matrix timeout; it is not proof of fun.
 
