@@ -404,3 +404,40 @@ export function getEditionsByCost(): EditionType[] {
     (a, b) => EDITION_ADDITIONAL_COSTS[a] - EDITION_ADDITIONAL_COSTS[b]
   )
 }
+
+/** Pure quote repair shared by live Charter purchases and atomic saved-run claims.
+ * Preserve receipts, free rewards and any existing lower quote; never draw RNG.
+ */
+export function repriceDiscountedOffer<
+  T extends {
+    itemType: string
+    baseCost: number
+    editionCost: number
+    finalCost: number
+    sellValue: number
+    isPurchased: boolean
+  },
+>(offering: T, discount: number, visitDiscount = 0): T {
+  if (discount <= 0 || offering.isPurchased || offering.finalCost === 0)
+    return offering
+  // Legacy Seal offers stored the catalog item's cost rather than the shop's
+  // fixed price. Reuse the actual shop pricing rule, not that stale metadata.
+  const baseCost =
+    offering.itemType === 'FateSeal'
+      ? CONSUMABLE_COSTS.FateSeal
+      : offering.baseCost
+  const discounted = new PricingCalculator(discount).applyDiscount(
+    baseCost + offering.editionCost
+  )
+  const finalCost = Math.max(
+    0,
+    Math.floor(discounted * (1 - visitDiscount / 100))
+  )
+  if (finalCost > offering.finalCost) return offering
+  return {
+    ...offering,
+    baseCost,
+    finalCost,
+    sellValue: PricingCalculator.calculateBaseSellValue(finalCost),
+  }
+}

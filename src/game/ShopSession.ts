@@ -314,7 +314,20 @@ export class ShopSession {
       if (!this.game.canAddImperialCharter(offering.item as ImperialCharter))
         return fail('unavailable')
     } else {
-      reward = { type: offering.itemType, data: offering.item }
+      reward = {
+        type: offering.itemType,
+        // Sale value follows the actual quote, not the immutable catalog cost
+        // (editions, discounts and free Omens differ). Keep catalog definitions
+        // intact so strict saved-run validation remains authoritative.
+        // Tiles retain their class; pack rewards keep their separate grant path.
+        data:
+          offering.itemType === 'Tile'
+            ? offering.item
+            : {
+                ...offering.item,
+                sellValue: Math.floor(offering.finalCost / 2),
+              },
+      }
       if (
         offering.itemType === 'Decree' &&
         ((offering.item as Decree).flowerRequirement ?? 0) >

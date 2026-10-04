@@ -2,6 +2,7 @@ import type { ClassicRunSnapshot } from './ClassicRunSnapshot'
 import { DecreeSystem } from '../systems/DecreeSystem'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import { choice, count, id, object, positive } from './snapshotValidation'
+import { repriceDiscountedOffer } from '../systems/PricingCalculator'
 
 export const CLASSIC_SAVE_KEY = 'tensho-classic-run-v1'
 export const CLASSIC_SAVE_LOCK = 'tensho-classic-run-write'
@@ -197,6 +198,19 @@ export class ClassicSaveRepository {
         state.mandateEffectSystem.lockedTileIds =
           state.mandateEffectSystem.lockedTileIds.slice(-1)
       }
+      const shop = current.saved.snapshot.shop.teaHouse
+      const reprice = <T extends (typeof shop.itemOfferings)[number]>(
+        offer: T
+      ) =>
+        repriceDiscountedOffer(
+          offer,
+          shop.discountPercentage,
+          shop.visitDiscountPercentage
+        )
+      shop.itemOfferings = shop.itemOfferings.map(reprice)
+      shop.packOfferings = shop.packOfferings.map(reprice)
+      if (shop.charterOffering)
+        shop.charterOffering = reprice(shop.charterOffering)
       return this.write({
         ...current.saved,
         owner: this.token(),

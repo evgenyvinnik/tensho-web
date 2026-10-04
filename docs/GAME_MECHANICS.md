@@ -571,9 +571,17 @@ Players can pay to refresh the item slots:
 ### Pricing Formula
 
 ```
-buy_cost = (base_cost + edition_cost) × discount_percent
+charter_price = max(1, floor((base_cost + edition_cost) × (1 - charter_discount / 100)))
+buy_cost = max(0, floor(charter_price × (1 - visit_discount / 100)))
 sell_value = floor(buy_cost / 2)
 ```
+
+Discount Charters immediately update unpurchased stock as well as future offers.
+Free offers stay free; purchased receipts and existing cheaper quotes are not
+increased. Ordinary purchased items use their actual paid quote for resale while
+keeping their catalog definition unchanged. Pack rewards use their separate
+reward valuation, not the full pack price for each item. See the
+[pricing implementation evidence](CHARTER_PRICING_IMPLEMENTATION.md).
 
 | Edition | Additional Cost |
 |---------|-----------------|

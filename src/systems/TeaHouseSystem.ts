@@ -41,6 +41,7 @@ import {
   PricingCalculator,
   EditionType,
   DECREE_BASE_COST_RANGES,
+  repriceDiscountedOffer,
 } from './PricingCalculator'
 import { FateSeal, FateSealSystem } from './FateSealSystem'
 import { CelestialOrb, CelestialOrbSystem } from './CelestialOrbSystem'
@@ -337,6 +338,7 @@ export class TeaHouseSystem {
       case 'discount':
         this.discountPercentage += effect.value as number
         this.pricingCalculator = new PricingCalculator(this.discountPercentage)
+        this.repriceAvailableOfferings()
         break
       case 'edition_frequency':
         this.editionFrequencyMultiplier *= effect.value as number
@@ -356,6 +358,27 @@ export class TeaHouseSystem {
       case 'tile_editions':
         this.tilesHaveEditions = Boolean(effect.value)
         break
+    }
+  }
+
+  /** Apply an earned discount without regenerating stock or repricing receipts.
+   * A cheaper saved quote (including free Omen rewards) must never increase.
+   */
+  private repriceAvailableOfferings(): void {
+    const offerings = [
+      ...this.itemOfferings,
+      ...this.packOfferings,
+      ...(this.charterOffering ? [this.charterOffering] : []),
+    ]
+    for (const offering of offerings) {
+      Object.assign(
+        offering,
+        repriceDiscountedOffer(
+          offering,
+          this.discountPercentage,
+          this.visitDiscountPercentage
+        )
+      )
     }
   }
 
@@ -572,7 +595,7 @@ export class TeaHouseSystem {
 
     const seal = FateSealSystem.createFateSealInstance(sealDef)
 
-    const { finalCost, sellValue } =
+    const { baseCost, finalCost, sellValue } =
       this.pricingCalculator.calculateFateSealCost()
 
     return {
@@ -580,7 +603,7 @@ export class TeaHouseSystem {
       slotIndex,
       itemType: 'FateSeal',
       item: seal,
-      baseCost: seal.cost,
+      baseCost,
       editionCost: 0,
       finalCost,
       sellValue,
@@ -1248,6 +1271,9 @@ export class TeaHouseSystem {
     system.visitDiscountPercentage = state.visitDiscountPercentage ?? 0
     system.freeRerollsThisVisit = state.freeRerollsThisVisit ?? 0
     system.pricingCalculator = new PricingCalculator(state.discountPercentage)
+    // Repair unpurchased legacy quotes left stale after buying a discount.
+    // Purchased/pending-pack receipts, free offers, stock and RNG stay intact.
+    if (system.discountPercentage > 0) system.repriceAvailableOfferings()
     return system
   }
 }

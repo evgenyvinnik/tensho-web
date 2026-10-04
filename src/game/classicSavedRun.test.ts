@@ -4,6 +4,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { CERULEAN_BELL } from '../config/mandateDefinitions'
+import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
 import {
   CLASSIC_SAVE_KEY,
   MAX_CLASSIC_SAVE_LENGTH,
@@ -76,6 +77,64 @@ afterEach(() => {
   useOmenStore.getState().clearForNewRun()
   vi.restoreAllMocks()
 })
+
+it.each([false, true])(
+  'atomically repairs legacy shop discounts on claim (failed write: %s)',
+  async (failedWrite) => {
+    const game = new GameOrchestrator()
+    game.startNewRun(7)
+    expect(
+      game.addImperialCharter(
+        TEA_HOUSE_BASE_CHARTERS.find((c) => c.id === 'discount_sale')!
+      )
+    ).toBe(true)
+    const state = game.getState()
+    Object.assign(state, { targetScore: 1 })
+    state.roundManager.getCurrentRound()!.scoreTarget = 1
+    expect(
+      game.processAction({
+        type: 'play',
+        tileIds: state.handTiles.slice(0, 2).map((t) => t.id),
+      }).success
+    ).toBe(true)
+    expect(game.shop.open()).toBe(true)
+    const legacy = JSON.parse(JSON.stringify(game.captureRun()))
+    const pack = legacy.shop.teaHouse.packOfferings[0]
+    pack.finalCost = pack.baseCost
+    pack.sellValue = Math.floor(pack.finalCost / 2)
+    const expected = JSON.parse(JSON.stringify(legacy))
+    expected.shop.teaHouse.packOfferings[0].finalCost = Math.floor(
+      pack.baseCost * 0.75
+    )
+    expected.shop.teaHouse.packOfferings[0].sellValue = Math.floor(
+      expected.shop.teaHouse.packOfferings[0].finalCost / 2
+    )
+    const f = fixture()
+    const initial = successful(await f.repository.replace(null, legacy))
+    const random = runRandom.toState()
+    f.repository.read()
+    expect(f.storage.getItem(CLASSIC_SAVE_KEY)).toBe(initial.raw)
+    if (failedWrite)
+      f.storage.setItem.mockImplementationOnce(() => {
+        throw new Error('quota')
+      })
+    const result = await f.make().claim(initial.raw)
+    if (failedWrite) {
+      expect(result).toEqual({ ok: false, reason: 'unavailable' })
+      expect(f.storage.getItem(CLASSIC_SAVE_KEY)).toBe(initial.raw)
+    } else {
+      const claimed = successful(result)
+      expect(claimed.saved.snapshot).toEqual(expected)
+      expect(
+        parseClassicSavedRun(f.storage.getItem(CLASSIC_SAVE_KEY)!).snapshot
+      ).toEqual(expected)
+      expect(claimed.saved.revision).toBe(initial.saved.revision + 1)
+      game.restoreRun(claimed.saved.snapshot)
+      expect(game.captureRun()).toEqual(expected)
+    }
+    expect(runRandom.toState()).toEqual(random)
+  }
+)
 
 it('stores and parses the complete authoritative checkpoint in one key', async () => {
   const f = fixture()

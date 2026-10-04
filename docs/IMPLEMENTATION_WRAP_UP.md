@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [Charter pricing correction](CHARTER_PRICING_IMPLEMENTATION.md) fixes stale
+current-shop quotes after a discount purchase and catalog-based resale values.
+Legacy saves repair atomically; purchased receipts and generated pack contents
+stay unchanged. Local verification passes 1,626 units, 13 release checks, build,
+16 native browser tests and 28 built-production desktop/touch journeys.
+Publication is pending; this does not complete the broader Charter audit.
+
 The [Showdown art follow-up](SHOWDOWN_ART_IMPLEMENTATION.md) completes the five-boss
 portrait set and supplies twenty missing translated identities/rules. Local
 verification passes 1,613 units, 13 release checks, build, 30 native browser tests

@@ -4,6 +4,13 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Locally verified — Charter pricing:** earned discounts now immediately update
+unpurchased stock, and ordinary purchased items retain paid-price resale values.
+Legacy stale quotes repair atomically without changing receipts, pack contents
+or RNG. All 1,626 units, 13 release checks, build, 16 native browser tests and
+28 built-production desktop/touch journeys pass. Publication is pending.
+[Evidence and boundaries](CHARTER_PRICING_IMPLEMENTATION.md).
+
 **Published — v1.0.261004-4, Showdown art:** four new generated portraits complete the
 five-boss illustrated badge/rules set, and twenty missing localized boss entries
 cover Italian/Russian/Thai/Filipino/Turkish. All 1,613 units, 13 release checks,
