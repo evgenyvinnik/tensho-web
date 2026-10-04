@@ -4,6 +4,14 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
+**Local follow-up — sold-out shops:** rerolls now replenish purchased ordinary
+slots instead of preserving empty slots. Fourteen native browser checks, build
+and 13 release checks pass. The initial full unit run has 1,626 passes, one
+obsolete behavior assertion and four timeouts; the affected six-file recheck
+passes 49/49. All eight built-production purchase/reroll/reload/play journeys pass;
+publication is pending.
+[Evidence and retained failures](SHOP_REROLL_IMPLEMENTATION.md).
+
 **Published — v1.0.261004-5, Charter pricing:** earned discounts now immediately update
 unpurchased stock, and ordinary purchased items retain paid-price resale values.
 Legacy stale quotes repair atomically without changing receipts, pack contents

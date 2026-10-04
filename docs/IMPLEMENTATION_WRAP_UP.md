@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [sold-slot reroll correction](SHOP_REROLL_IMPLEMENTATION.md) replenishes all
+ordinary slots while preserving owned rewards, packs and the Charter. It closes
+a core shopping-loop defect: paying to reroll after buying both items left no
+visible stock. Fourteen native browser checks, build and release checks pass;
+the evidence ledger distinguishes the initial full-unit failures from the clean
+affected-test recheck. All eight built-production purchase/reroll/reload/play
+journeys pass; publication is pending.
+
 The [Charter pricing correction](CHARTER_PRICING_IMPLEMENTATION.md) fixes stale
 current-shop quotes after a discount purchase and catalog-based resale values.
 Legacy saves repair atomically; purchased receipts and generated pack contents

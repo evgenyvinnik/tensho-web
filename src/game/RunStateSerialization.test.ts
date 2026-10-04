@@ -220,7 +220,8 @@ describe('Classic subsystem snapshots', () => {
     runRandom.restore(before)
     expect(sample(restored)).toEqual(expected)
     expect(snapshot.rerollsThisVisit).toBe(1)
-    expect(snapshot.itemOfferings[0].isPurchased).toBe(true)
+    expect(snapshot.itemOfferings.every(o => !o.isPurchased)).toBe(true)
+    expect(snapshot.itemOfferings.some(o => o.id === bought.id)).toBe(false)
   })
 
   it('does not share mutable shop offers with snapshots or other restorations', () => {

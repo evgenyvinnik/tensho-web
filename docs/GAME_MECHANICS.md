@@ -557,6 +557,10 @@ Players can pay to refresh the item slots:
 - **Increment:** +1 Gold per reroll
 - **Reset:** Cost resets to 5 Gold when entering new shop
 - Only item slots reroll (Blessing Packs and Charter remain)
+- Purchased item slots refill too; owned rewards are retained, and old offer IDs
+  cannot be purchased again. One-shot Omen overflow returns to ordinary capacity.
+
+[Reroll implementation and verification](SHOP_REROLL_IMPLEMENTATION.md).
 
 **Charter Upgrades:**
 | Charter | Effect |

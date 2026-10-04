@@ -978,19 +978,15 @@ export class TeaHouseSystem {
     this.rerollsThisVisit++
     this.totalRerollsRun++
 
-    // Keep purchased items, regenerate unpurchased ones
-    const purchasedItems = this.itemOfferings.filter((o) => o.isPurchased)
+    // Refresh every ordinary item slot, including sold-out slots. Purchased
+    // rewards already belong to the run; retaining their offer here would make
+    // a paid reroll leave the shop empty. Packs and the Charter stay untouched.
     const newItems: TeaHouseOffering[] = []
 
     for (let i = 0; i < this.itemSlotCount; i++) {
-      const purchased = purchasedItems.find((o) => o.slotIndex === i)
-      if (purchased) {
-        newItems.push(purchased)
-      } else {
-        const offering = this.generateItemOffering(i, ownedDecreeIds)
-        if (offering) {
-          newItems.push(this.applyVisitDiscount(offering))
-        }
+      const offering = this.generateItemOffering(i, ownedDecreeIds)
+      if (offering) {
+        newItems.push(this.applyVisitDiscount(offering))
       }
     }
 

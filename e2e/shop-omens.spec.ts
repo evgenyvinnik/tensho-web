@@ -137,9 +137,9 @@ test('stacked shop Omens deliver Rare+, editions and free packs on a small scree
     consumed: 10,
   })
   await page.getByRole('button', { name: 'Reroll', exact: true }).click()
-  await expect(page.locator('[data-shop-item]')).toHaveCount(1)
-  // Revisit through the client router: a document reload intentionally starts
-  // a new Classic session and is not a same-visit persistence guarantee.
+  // The purchased ordinary slot refills too; one-shot Omen overflow does not.
+  await expect(page.locator('[data-shop-item]')).toHaveCount(2)
+  // Revisit through the client router without regenerating the current shop.
   await page.evaluate(() => {
     history.pushState({}, '', '/en/settings')
     dispatchEvent(new PopStateEvent('popstate'))
