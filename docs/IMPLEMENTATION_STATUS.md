@@ -4,12 +4,17 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
-**Verified locally — Showdown art:** four new generated portraits complete the
+**Published — v1.0.261004-3, Showdown art:** four new generated portraits complete the
 five-boss illustrated badge/rules set, and twenty missing localized boss entries
 cover Italian/Russian/Thai/Filipino/Turkish. All 1,613 units, 13 release checks,
 build, 22 native browser checks and 24 production localized play/reload journeys
-pass. Gameplay rules are unchanged. [Evidence and prompts](SHOWDOWN_ART_IMPLEMENTATION.md).
-Publication verification is pending.
+pass. Independent CI passes the same unit/release/build gates and deployment;
+public manifest/tag match `52cced8eed6f7372251da43e09ea3f0fedeb7c88`.
+Gameplay rules are unchanged. [Evidence and prompts](SHOWDOWN_ART_IMPLEMENTATION.md).
+Hosted verification found a Russian rule overflow with unavailable fonts. The
+follow-up now wraps long words and passes all 1,613 units, 30 native browser
+checks and 28 production continuation journeys, including blocked fonts.
+The corrective deployment is pending; the initial hosted failure is retained.
 
 **Published — v1.0.261004-2, route delivery and completed hand comparison:** real static
 entry documents fix the reproduced Pages 404s on known game/menu routes, with

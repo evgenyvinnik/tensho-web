@@ -7,14 +7,19 @@ const bosses = [
   ['crimson_heart', 'crimson-heart'],
 ] as const
 
-for (const lang of ['en', 'ru'])
+for (const [lang, fallbackFonts] of [
+  ['en', false],
+  ['ru', false],
+  ['ru', true],
+] as const)
   for (const [id, file] of bosses)
-    test(`${id} has illustrated read-only localized rules (${lang})`, async ({
+    test(`${id} has illustrated read-only localized rules (${lang}${fallbackFonts ? ', fallback fonts' : ''})`, async ({
       page,
       isMobile,
     }, testInfo) => {
       const errors: string[] = []
       page.on('pageerror', (error) => errors.push(error.message))
+      if (fallbackFonts) await page.route('**/*.ttf', (route) => route.abort())
       await page.setViewportSize(
         isMobile ? { width: 320, height: 568 } : { width: 1280, height: 800 }
       )

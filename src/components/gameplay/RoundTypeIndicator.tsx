@@ -113,7 +113,10 @@ export function RoundTypeIndicator({
               className="mx-auto mb-4 h-32 w-32 object-contain"
             />
           )}
-          <p id={descriptionId} className="text-center leading-relaxed">
+          <p
+            id={descriptionId}
+            className="text-center leading-relaxed [overflow-wrap:anywhere]"
+          >
             {mandateDescription}
           </p>
         </Popup>

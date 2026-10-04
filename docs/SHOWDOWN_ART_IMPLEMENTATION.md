@@ -98,5 +98,40 @@ Evidence root: `/tmp/tensho-showdown-jK2iyR`.
   real two-tile play, one spent play and exact post-play reload. Zero page errors.
   The production Thai Leaf popup was also visually inspected.
 
-Publication results will be recorded after completion.
 No whole-project completion or human-fun claim follows from this artwork slice.
+
+## Published checkpoint
+
+Published **v1.0.261004-3** from implementation commit
+`cfbc4560fb8d696f23777ad1c5fda80bc5a975ab`, built/tagged commit
+`52cced8eed6f7372251da43e09ea3f0fedeb7c88`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37173615760)
+passes all **1,613 tests across 137 files**, **13 release checks**, build and
+deployment. The public `release.json`, fetched Git tag and local version commit
+match exactly. The first hosted batch passed all eight English/Italian journeys,
+then failed the Russian Amber Acorn paragraph's width assertion. It is retained
+as `hosted.log`, not reported as a clean hosted pass.
+
+## Font-fallback correction
+
+An isolated hosted retry with fonts available passed, but deliberately blocked
+`.ttf` requests reliably reproduced the defect: a **196px** paragraph had
+**256px** scroll width in the system fallback face. Screenshot
+`hosted-fallback-ru-amber_acorn.png` shows clipped long Russian words. A new
+native mobile font-blocked regression also failed before the fix
+(`fallback-before.log`, screenshot and trace).
+
+The boss-rule paragraph now uses `overflow-wrap: anywhere`, allowing a long word
+to wrap only when necessary rather than increasing the dialog's width. This
+preserves localized wording and the original font choices. Eight additional
+Russian desktop/touch cases block font loading across all four new bosses.
+Their saved-state and focus assertions are unchanged.
+
+The corrected build passes all **1,613 tests in 137 files** (213.84 seconds),
+TypeScript, targeted lint, build and **13 release checks**. Expanded native browser
+coverage passes **30/30**, 2.3 minutes, with no retries. All **24** production
+language/boss inspection/play/reload journeys pass again, plus **four** additional
+Russian touch journeys with font requests blocked. Every blocked-font paragraph
+has matching 196px client/scroll width. Screenshots show long content uses the
+existing vertical scroll area; the close button remains available.
+The correction's publication is pending.

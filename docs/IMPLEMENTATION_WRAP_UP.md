@@ -13,7 +13,13 @@ portrait set and supplies twenty missing translated identities/rules. Local
 verification passes 1,613 units, 13 release checks, build, 22 native browser tests
 and 24 production desktop/touch localized inspection/play/reload journeys.
 It preserves boss mechanics and full saved snapshots; temporary board staging
-remains distinct from persisted engine selection. Publication is pending.
+remains distinct from persisted engine selection. Published **v1.0.261004-3**;
+independent CI passes all 1,613 tests, release checks, build and deployment.
+Public manifest/tag match `52cced8eed6f7372251da43e09ea3f0fedeb7c88`.
+The hosted font-fallback check exposed Russian text clipping. Its wrapping fix
+passes all 1,613 units, 30 native browser cases and 28 production journeys,
+including four blocked-font phone continuations. Corrective publication is pending;
+the first hosted failure and failing-before-fix reproduction are retained.
 
 Published [static-route checkpoint](STATIC_ROUTE_IMPLEMENTATION.md) fixes real
 Pages 404 responses for known menu/game routes and supplies initial noindex
