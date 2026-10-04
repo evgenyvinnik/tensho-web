@@ -76,7 +76,8 @@ Current limitation: the new hero is a 1536×1024 PNG of approximately 2.3 MB; th
 - [x] Check 320px, tablet and desktop layouts and reading with JavaScript disabled.
 - [x] Check 200% root-text enlargement at 320px and keyboard skip-to-main/next-link focus.
 - [ ] Review native browser zoom, screen-reader behavior and physical devices; text-enlargement automation does not replace these checks.
-- [ ] Verify live Pages responses and service-worker upgrade behavior after an authorized deployment.
+- [x] Verify live Pages responses, direct known game routes, raw indexing directives and all three guides: v1.0.261004-2 passes 12 hosted browser checks; see [route evidence](STATIC_ROUTE_IMPLEMENTATION.md).
+- [ ] Verify guide-specific service-worker upgrade behavior across historical installed clients; fresh browser response checks do not establish this.
 - [ ] Owner verifies Search Console access, submits `sitemap.xml`, and inspects all three guide URLs. No account changes or submission have been performed by this implementation.
 
 Automated coverage lives in `src/publicSite/render.test.ts` and `e2e/public-guides.spec.ts`. Record actual commands and outcomes below; unchecked launch items are not implied complete by code existing.

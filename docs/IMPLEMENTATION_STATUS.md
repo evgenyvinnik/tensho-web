@@ -4,11 +4,12 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
-**Local follow-up — route delivery and completed hand comparison:** real static
+**Published — v1.0.261004-2, route delivery and completed hand comparison:** real static
 entry documents fix the reproduced Pages 404s on known game/menu routes, with
 raw HTML `noindex` on state screens and synchronized client navigation. All 1,601
-local tests, 13 release checks, build, 12 static-browser checks and four saved-game
-continuations pass; publication pending. [Route evidence](STATIC_ROUTE_IMPLEMENTATION.md).
+local/CI tests, 13 release checks, build and deployment pass. Public manifest/tag
+match; 12 hosted route/guide checks and four hosted saved-game continuations pass.
+[Route evidence](STATIC_ROUTE_IMPLEMENTATION.md).
 The [matched hand-planning comparison](CLASSIC_HAND_PLANNING.md) now completes
 320 runs with zero diagnostic stops: 8 versus 5 wins, but fewer total rounds
 cleared. The former Bell deadlock seed wins; this does not establish human fun.

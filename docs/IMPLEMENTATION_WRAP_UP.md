@@ -8,11 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
-New local [static-route checkpoint](STATIC_ROUTE_IMPLEMENTATION.md) fixes real
+Published [static-route checkpoint](STATIC_ROUTE_IMPLEMENTATION.md) fixes real
 Pages 404 responses for known menu/game routes and supplies initial noindex
 directives for state screens. All 1,601 local tests, 13 release checks, build,
-12 static-browser checks and four production saved-game journeys pass; publication
-pending. The [Bell hand-planning follow-up](CLASSIC_HAND_PLANNING.md) also completes
+12 static-browser checks and four production saved-game journeys pass. Independent
+CI passes all 1,601 tests, release checks, build and deployment as **v1.0.261004-2**.
+Public manifest/tag match `3c38ec4c183162b39b56ffef0c49d5069a1ee667`; 12 hosted
+route/guide checks and four hosted saved-game journeys pass. The
+[Bell hand-planning follow-up](CLASSIC_HAND_PLANNING.md) also completes
 320 matched runs without diagnostic stops. Its 8 versus 5 wins accompany fewer
 cleared rounds; no player-facing balance change follows from this mixed result.
 
@@ -967,6 +970,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest loss-prevention checkpoint is published as v1.0.261003-1 with independent CI (1,477 tests), matching manifest/tag/menu, desktop/touch browser regression and hosted defeat/rescue/reload checks; see [Phoenix follow-up](PERISHABLE_LIFETIME_IMPLEMENTATION.md#october-2-loss-prevention-follow-up). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
+| Release readiness | The latest static-route checkpoint is published as v1.0.261004-2 with independent CI (1,601 tests), matching manifest/tag, 12 hosted route/guide checks and four hosted save/play/reload journeys; see [static route evidence](STATIC_ROUTE_IMPLEMENTATION.md). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

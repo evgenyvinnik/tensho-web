@@ -71,7 +71,27 @@ Evidence root: `/tmp/tensho-completion-QdcC22`.
   pass normalized claim, loaded art hash, legal play and exact reload with zero
   page errors. This is a routing/save regression check, not a new balance claim.
 - Full local suite: **1,601/1,601 tests across 137 files**, 154.54 seconds. All
-  **13 release checks** pass. Deployment remains pending for this checkpoint.
+  **13 release checks** pass. Router lint reports six Fast Refresh warnings and
+  zero errors; the new files' targeted lint is clean.
+
+## Published checkpoint
+
+Published **v1.0.261004-2**, implementation commit
+`43394a2f8ad504c68c20fb8a9c4e373ce61b29c4`, built/tagged commit
+`3c38ec4c183162b39b56ffef0c49d5069a1ee667`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37171516561)
+passes all **1,601 tests in 137 files**, **13 release checks**, build and deployment.
+Public `release.json` matches the exact Git tag.
+
+All **12 hosted browser checks pass**, 2.1 minutes, with no retries or deadline
+changes (`hosted-fixed.log`/JSON/traces). Each browser profile requests all 130
+known route entries and confirms real 200 responses plus initial metadata;
+unknown paths remain 404. No-JavaScript guides, keyboard/large-text checks,
+menu → article → practice, native touch navigation, and query/reload behavior
+pass against GitHub Pages itself. Four additional hosted current/legacy save
+journeys pass with exact state restoration, art hashes and zero page errors
+(`hosted-game-continuation.log`). Isolated profiles do not modify the user's save.
+The initial six live failures remain preserved, not relabeled as passing.
 
 Owner Search Console verification/submission, physical-device accessibility,
 native-speaker editorial review and migration from every historical installed
