@@ -68,4 +68,19 @@ device review and the remaining ambiguous mechanics still need separate work.
 
 ## Publication
 
-Local verification complete; deployment and hosted verification are pending.
+Published **v1.0.261004-5**, implementation commit
+`ba5a47e4a0938717b5d912b2d9039e4d31f65249`, built/tagged commit
+`50f61cdfda9833738adaf471f006d91150437680`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37181296093)
+passes **1,626 tests across 138 files**, **13 release checks**, build and Pages
+deployment. The public release manifest, fetched tag and version commit match.
+
+All **28 hosted browser journeys pass**, without retries or page errors, using
+the same production verification matrix: English/Spanish, desktop/320px touch,
+both discounts, current/legacy checkpoints, paid pack recovery, ordinary Decree
+purchase/sale and real next-round play followed by exact saved-state reload.
+Evidence: `hosted.log`, `hosted-*.png`, `ci.log`, `ci-watch.log` and
+`public-manifest.json` under the evidence root above.
+
+CI reports non-blocking upstream action-runtime and upcoming Ubuntu-image
+migration notices; this checkpoint does not change the release workflow.

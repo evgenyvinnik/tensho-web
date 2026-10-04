@@ -4,11 +4,13 @@
 
 **Last verified:** October 3, 2026 (analysis and unit follow-up; browser evidence retains its own dates)
 
-**Locally verified — Charter pricing:** earned discounts now immediately update
+**Published — v1.0.261004-5, Charter pricing:** earned discounts now immediately update
 unpurchased stock, and ordinary purchased items retain paid-price resale values.
 Legacy stale quotes repair atomically without changing receipts, pack contents
 or RNG. All 1,626 units, 13 release checks, build, 16 native browser tests and
-28 built-production desktop/touch journeys pass. Publication is pending.
+28 built-production desktop/touch journeys pass. Independent CI passes all tests,
+release checks, build and deployment. Public manifest/tag match
+`50f61cdfda9833738adaf471f006d91150437680`; all 28 hosted journeys pass.
 [Evidence and boundaries](CHARTER_PRICING_IMPLEMENTATION.md).
 
 **Published — v1.0.261004-4, Showdown art:** four new generated portraits complete the

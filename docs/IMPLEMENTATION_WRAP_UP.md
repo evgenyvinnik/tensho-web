@@ -13,7 +13,10 @@ current-shop quotes after a discount purchase and catalog-based resale values.
 Legacy saves repair atomically; purchased receipts and generated pack contents
 stay unchanged. Local verification passes 1,626 units, 13 release checks, build,
 16 native browser tests and 28 built-production desktop/touch journeys.
-Publication is pending; this does not complete the broader Charter audit.
+Published **v1.0.261004-5**; independent CI passes all tests, release checks,
+build and deployment. Public manifest/tag match
+`50f61cdfda9833738adaf471f006d91150437680`, and all 28 hosted journeys pass.
+This does not complete the broader Charter audit.
 
 The [Showdown art follow-up](SHOWDOWN_ART_IMPLEMENTATION.md) completes the five-boss
 portrait set and supplies twenty missing translated identities/rules. Local
