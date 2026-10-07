@@ -3,10 +3,11 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
-October 7 local follow-up: [Spring](SPRING_IMPLEMENTATION.md) now supplies bounded
+October 7 published follow-up, **v1.0.261007-5**: [Spring](SPRING_IMPLEMENTATION.md) now supplies bounded
 round-scoped rack expansion through real draw/refill paths. [Drought](DROUGHT_EMPOWERMENT.md)
 also suppresses Flower empowerment of Decrees while retaining ownership-based
-Decree conditions. These candidates are not yet a publication claim. The user
+Decree conditions. Independent CI passes 1,772 tests; native, built-production
+and hosted journeys pass 16/16 each. The user
 has delegated remaining rule resolution; see [decisions](RULE_RESOLUTION.md).
 
 September 12 Winter follow-up: concealed scoring with an unsuppressed

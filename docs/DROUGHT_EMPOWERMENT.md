@@ -1,6 +1,6 @@
 # Drought and Flower empowerment
 
-October 7, 2026. Implementation and verification in progress.
+October 7, 2026. Published in **v1.0.261007-5**.
 
 ## Reproduced defect
 
@@ -53,8 +53,11 @@ Evidence directory: `/tmp/tensho-drought-S5F1Fz`.
   eight Spring) without retries, including all previously failed Drought cases.
   `browser-final.json` and screenshots retain the evidence. Built-production
   replay also passes **16/16**, including every protected/suppressed case;
-  TypeScript/build, lint and 13 release checks pass. Independent release CI and
-  hosted deployment verification remain to be recorded.
+  TypeScript/build, lint and 13 release checks pass. Independent release CI
+  passes all **1,772 tests**; **16/16 hosted journeys** also pass. Manifest/tag
+  identify `6979460ac1ccbaecfba9a942134b11f9070dbde3`. The shared
+  [Spring release evidence](SPRING_IMPLEMENTATION.md#published-verification)
+  records the exact run, build and asset verification.
 
 Explicit deals and granted Decrees isolate the rule; they do not demonstrate
 organic acquisition, difficulty balance or human enjoyment.

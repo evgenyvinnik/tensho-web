@@ -18,11 +18,12 @@ text are integrated into the inspector and all thirteen languages.
 Decrees. Orb upgrades remain immediate on use by explicit design resolution;
 the contradictory XP draft and unused thresholds are removed.
 
-Native checks pass 16/16, and full units complete with 1,770 passes and two
-test-only field-name mistakes; the corrected files pass 85/85. Build, TypeScript,
-lint and 13 release checks pass. Browser failures, corrected fixtures and an
-interrupted run remain recorded; production/release verification and publication
-are pending. The [384-run matched sweep](CURRENT_RUN_SWEEP.md) found no diagnostic
+Published **v1.0.261007-5** after independent CI passed all 1,772 tests, 13 release
+checks, build and deployment. Native, built-production and hosted journeys pass
+16/16 each. Public manifest/tag match `6979460ac1ccbaecfba9a942134b11f9070dbde3`,
+and hosted artwork matches its saved hash. Earlier local failures, corrected
+fixtures/test-only assertions and an interrupted run remain recorded. The
+[384-run matched sweep](CURRENT_RUN_SWEEP.md) found no diagnostic
 stops, but its structural planner underperformed the control. It predates the
 Season changes and is not a current tuning claim. Remaining Flower/Season and
 item-rule work is still required, not removed by this checkpoint.

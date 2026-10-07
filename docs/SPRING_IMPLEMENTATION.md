@@ -1,6 +1,6 @@
 # Spring rack expansion
 
-October 7, 2026. Implemented locally; final verification/publication pending.
+October 7, 2026. Published in **v1.0.261007-5**.
 
 ## Chosen rule
 
@@ -80,7 +80,27 @@ native fixtures through normal persistence without source imports. The initial
 preview launch omitted the Pages base path and failed its first save-indicator
 check; setting the preview's matching `/tensho-web/` base corrected that harness
 error. No application change or timeout extension was needed. Independent
-release CI and hosted verification remain pending.
+release CI and hosted verification are recorded below.
+
+## Published verification
+
+- Implementation commit: `b47ce8d62161d3548e6e1cf9ed78ee94fcf1d95d`.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37654858118)
+  passed **1,772/1,772 tests in 152 files**, **13/13 release checks**, production
+  build and Pages deployment. This independently checks the final corrected
+  source; earlier local failures remain above.
+- Public `release.json` and remote tag `v1.0.261007-5` both identify built commit
+  `6979460ac1ccbaecfba9a942134b11f9070dbde3`.
+- All **16/16 hosted journeys** pass: English/Spanish, desktop/320px touch,
+  single/stacked Spring and suppressed/protected Drought. Exact replay snapshots,
+  confirmed score payments, localized inspectors and decoded art are checked.
+- Hosted Spring artwork SHA-256 matches the asset documented below. No source
+  imports or application test hooks are used by production/hosted replay.
+
+`production-final.log`, `hosted.log`, `ci-build.log`, screenshots, native fixture
+attachments and the replay script remain in the evidence directory. This does
+not verify organic acquisition frequency, all historical browser scenarios,
+assistive technology, native-speaker quality or human enjoyment.
 
 ## Generated artwork
 
