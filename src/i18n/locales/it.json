@@ -606,6 +606,7 @@
       "unwired": "Non ancora implementato.",
       "spring": "+2 spazi in mano per questo round, riempiti dal muro vivo. Cumulabile; il Serpente continua a sostituire solo 3 tessere.",
       "summer": "Punteggio ×1,3. Mette da parte il 20% del muro vivo rimanente per questo round (tessere disponibili arrotondate per difetto).",
+      "summerSheltered": "Punteggio ×1,3. Protezione del Bambù ottenuta: Estate non può più ridurre il muro in questo round.",
       "autumn": "Moltiplicatore yaku +20%. Ogni Autunno normale pescato aggiunge 1 scarto per questo round.",
       "winter": "Le sequenze dello stesso seme possono saltare un numero (1–2–4 o 1–3–4). Punteggio ×0,75.",
       "drought": "Annulla i bonus al punteggio dei fiori non protetti.",

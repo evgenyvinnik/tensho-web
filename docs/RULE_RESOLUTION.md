@@ -70,7 +70,7 @@ resolve or replace Plum's separate river recursion.
 Winter resolution is now published and verified; see below. Remaining
 gaps are not removed by choosing the rule.
 
-- Finish the remaining Flower–Season interactions including Orchid/Spring.
+- Finish the remaining Flower–Season interactions including Orchid/Spring and Plum/Autumn. Bamboo/Summer is now connected locally and in verification.
 - Specify the four advanced Flower mutations, acquisition/unlock path and
   catalyst payments. An unused helper or catalog description is not completion.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
@@ -104,3 +104,24 @@ every actual rank; matching gapped triples can qualify. Ittsu still needs actual
 interpreting an exotic gapped wait as an ordinary two-sided no-points hand.
 This is a chosen roguelike rule, not a claim about standard Mahjong.
 [Implementation and verification](WINTER_LEGALITY_IMPLEMENTATION.md).
+
+### Bamboo + Summer: earn round-long wall protection
+
+Playing at least four physical terminal tiles (suited 1s/9s) while Bamboo is
+unsuppressed and a normal Summer is active earns wall protection for the round.
+The threshold follows the existing helper; this decision supplies its missing
+timing and persistence. Full and tactical plays qualify; virtual completions,
+temporary scoring transmutations and repeated triggers do not supply extra
+physical terminals. Previewing/staging does not earn it or consume anything.
+
+After scoring, before refill, all Summer-reserved physical tiles return to the
+live wall's tail in their stored reservation order. No tile is invented and no
+RNG stream is advanced by restoration. Subsequent Summers retain their score
+benefit but cannot shrink the wall again that round. The reward expires on round
+cleanup; old saves do not retroactively earn it. A later Drought does not revoke
+an already-earned reward or rewind draws. Effective Drought blocks earning it;
+an enabled Eternal Garden overrides suppression as in other Flower effects.
+
+The UI identifies earned protection without adding a new control or an upfront
+combo recipe, preserving the design's emergent-discovery requirement.
+[Implementation and evidence](BAMBOO_SUMMER_IMPLEMENTATION.md).

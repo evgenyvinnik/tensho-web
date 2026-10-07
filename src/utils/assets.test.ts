@@ -20,6 +20,7 @@ it.each([
   'springBlossom',
   'autumnMaple',
   'winterPine',
+  'summerFan',
 ] as const)('ships a compact transparent %s portrait', (key) => {
   const webp = readFileSync(`public${illustrationAssets[key]}`)
   expect(webp.subarray(0, 4).toString()).toBe('RIFF')

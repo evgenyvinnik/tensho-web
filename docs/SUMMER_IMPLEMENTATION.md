@@ -1,5 +1,9 @@
 # Summer's live-wall tradeoff
 
+October 7 follow-up: [Bamboo/Summer](BAMBOO_SUMMER_IMPLEMENTATION.md) now connects
+the exception under delegated rule authority. The ledger below describes the
+earlier base-Summer checkpoint and its then-open requirement.
+
 September 12, 2026. A bounded Classic implementation, not completion of every
 Season or Flower interaction. Table Loop rules are unchanged.
 

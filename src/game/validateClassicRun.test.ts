@@ -248,7 +248,7 @@ const mutations: [string, (s: ClassicRunSnapshot) => void][] = [
   [
     'unsupported version',
     (s) => {
-      Object.assign(s, { version: 2 })
+      Object.assign(s, { version: 3 })
     },
   ],
   [

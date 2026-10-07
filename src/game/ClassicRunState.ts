@@ -110,6 +110,7 @@ export function restoreClassicState(
     fateSealSystem.setLastUsedConsumable(copy.fateSealSystem.lastUsedConsumable)
   return {
     ...copy,
+    bambooSummerProtection: copy.bambooSummerProtection ?? false,
     tableModifiers: Object.freeze(copy.tableModifiers),
     lastHandScore: copy.lastHandScore ?? undefined,
     handTiles: tiles(copy.handTiles),

@@ -503,6 +503,14 @@ Certain combinations produce emergent effects (not listed explicitly in UI):
 | Plum + Autumn | Sequences generate discard-pool recursion |
 | Orchid + Spring | Honor draws grant additional replacement draw |
 
+Bamboo/Summer resolution (October 7, 2026): a committed play with at least four
+physical suited 1s/9s earns round-long wall protection when Bamboo is effective
+and normal Summer is active. Scoring happens first; reserved tiles then return
+to the live tail in stored reservation order, and later Summers cannot shrink
+it again that round. Drought blocks earning, not an already-earned reward.
+The inspector reports earned protection without an upfront recipe.
+[Full semantics and verification](BAMBOO_SUMMER_IMPLEMENTATION.md).
+
 This rewards system literacy rather than rote optimization.
 
 ---

@@ -1111,6 +1111,7 @@
       "unwired": "Pas encore implémenté.",
       "spring": "+2 places en main pour cette manche, remplies depuis le mur vivant. Effet cumulable ; le Serpent ne remplace toujours que 3 tuiles.",
       "summer": "Score ×1,3. Met de côté 20% du mur vivant restant pour cette manche (nombre de tuiles conservées arrondi à l’entier inférieur).",
+      "summerSheltered": "Score ×1,3. Protection du Bambou acquise : Été ne peut plus réduire le mur pendant cette manche.",
       "autumn": "Multiplicateur de yaku +20 %. Chaque Automne normal pioché ajoute 1 défausse pour cette manche.",
       "winter": "Les suites de la même famille peuvent sauter un rang (1–2–4 ou 1–3–4). Score ×0,75.",
       "drought": "Neutralise les bonus de score des fleurs non protégées.",

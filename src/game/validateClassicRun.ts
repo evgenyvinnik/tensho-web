@@ -220,6 +220,7 @@ const stateFields = {
   wallTemplate: tiles,
   wall: tiles,
   summerReserve: tiles,
+  bambooSummerProtection: optional(bool),
   deadWall: tiles,
   discards: tiles,
   drawIndex: count,
@@ -411,7 +412,7 @@ const random: Check = (v, p) => {
   RunRandom.fromState(v) // validates stream names without touching the global generator
 }
 const snapshot = schema<ClassicRunSnapshot>({
-  version: choice([1]),
+  version: choice([1, 2]),
   state: object(stateFields),
   shop,
   random,
@@ -443,6 +444,10 @@ export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
   snapshot(value, 'run')
   const saved = value as ClassicRunSnapshot
   const state = saved.state
+  // Only v1 saves may omit a field that did not exist yet. Current saves must
+  // never silently lose earned protection through an absent field.
+  if (saved.version === 2)
+    bool(state.bambooSummerProtection, 'run.state.bambooSummerProtection')
   const table = resolveTableRules(state.tableStyleId)
   if (table.id !== state.tableStyleId) invalid('run.state.tableStyleId')
   ruleDefinition(
@@ -463,6 +468,8 @@ export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
   )
     invalid('run.phase')
   if (state.drawIndex > state.wall.length) invalid('run.state.drawIndex')
+  if (state.bambooSummerProtection && state.summerReserve.length > 0)
+    invalid('run.state.bambooSummerProtection')
   const handIds = new Set(state.handTiles.map((tile) => tile.id))
   if (
     [...state.selectedTileIds, ...state.faceDownTileIds].some(

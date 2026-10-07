@@ -4,6 +4,16 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Local verification — Bamboo/Summer:** paid plays with four physical terminals
+can restore the withheld wall and earn round-scoped protection against further
+Summer shrinkage. Versioned snapshots preserve the reward without breaking old
+saves; localized inspector copy and generated Summer art are connected.
+Full units pass 1,839/1,839 and final native journeys pass 8/8. Built-production
+replays hit overall test deadlines under heavy host load; verification and
+publication remain open. Broader persistence checks pass 11/12 with one deadline
+failure retained. Earlier corrected test-fixture failures are also recorded.
+[Rules, verification ledger and artwork](BAMBOO_SUMMER_IMPLEMENTATION.md).
+
 **Published — v1.0.261007-7, Winter legality:** normal Winter now permits exactly one
 missing rank per same-suit sequence in tactical and complete hands. Scoring,
 coach suggestions and optional localized explanations share the rule; repeated

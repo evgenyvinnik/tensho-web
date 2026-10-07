@@ -31,7 +31,9 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
   // Verified gaps, not active powers. Do not advertise unused helpers.
   const incomplete = flora.seasons.some(
     (season) =>
-      (!season.isCorrupted && season.type !== 'Winter') ||
+      (!season.isCorrupted &&
+        season.type !== 'Winter' &&
+        season.type !== 'Summer') ||
       season.corruptedType === 'Frostbite'
   )
 
@@ -212,14 +214,16 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                     src={
                       effect === 'Spring'
                         ? illustrationAssets.springBlossom
-                        : effect === 'Autumn'
-                          ? illustrationAssets.autumnMaple
-                          : effect === 'Winter'
-                            ? illustrationAssets.winterPine
-                            : getTileImagePath(
-                                TileSuit.Season,
-                                SEASON_DATA[season.type].rank
-                              )
+                        : effect === 'Summer'
+                          ? illustrationAssets.summerFan
+                          : effect === 'Autumn'
+                            ? illustrationAssets.autumnMaple
+                            : effect === 'Winter'
+                              ? illustrationAssets.winterPine
+                              : getTileImagePath(
+                                  TileSuit.Season,
+                                  SEASON_DATA[season.type].rank
+                                )
                     }
                     alt=""
                     aria-hidden="true"
@@ -245,10 +249,21 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                         {t('flora.' + season.type.toLowerCase())}
                       </p>
                     )}
-                    <p className="mt-1 text-sm">
+                    <p
+                      className="mt-1 text-sm"
+                      data-summer-sheltered={
+                        effect === 'Summer' && flora.bambooSummerProtection
+                          ? ''
+                          : undefined
+                      }
+                    >
                       {t(
                         'flora.details.' +
-                          (effect ? effect.toLowerCase() : 'unwired')
+                          (effect === 'Summer' && flora.bambooSummerProtection
+                            ? 'summerSheltered'
+                            : effect
+                              ? effect.toLowerCase()
+                              : 'unwired')
                       )}
                     </p>
                   </div>

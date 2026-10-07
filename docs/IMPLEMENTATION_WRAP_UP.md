@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Bamboo/Summer protection](BAMBOO_SUMMER_IMPLEMENTATION.md) is implemented locally
+and in verification. It connects physical-terminal paid plays to restoration and
+round-scoped protection, with strict versioned saves, translated earned-state
+copy and generated Summer artwork. Other Flower interactions remain open.
+Final units pass 1,839/1,839 and native feature journeys pass 8/8. Production
+replay encounters overall deadline failures under heavy host load; release
+verification remains open, not waived. Broader persistence checks pass 11/12
+with one deadline failure. The ledger retains intermediate fixture corrections.
+
 [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is published in v1.0.261007-7:
 exactly one skipped rank per same-suit sequence, including tactical scoring and
 coach suggestions, with optional localized tile-group explanations and pine art.

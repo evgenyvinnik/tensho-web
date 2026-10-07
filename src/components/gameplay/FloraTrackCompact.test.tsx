@@ -24,6 +24,7 @@ function fixture() {
     flowersSuppressed: true,
     flowersProtected: false,
     decayPenalty: 20,
+    bambooSummerProtection: false,
   }
 }
 
@@ -35,6 +36,41 @@ afterEach(async () => {
 })
 
 describe('FloraTrackCompact artwork', () => {
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
+    'shows Summer artwork and the earned wall protection without exposing an unearned recipe (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const system = new SeasonSystem()
+      system.forceSetSeason('Summer')
+      const normal = { ...system.getActiveSeason()!, id: 'normal-summer' }
+      system.forceSetSeason('Summer', true)
+      const flora = {
+        ...fixture(),
+        seasons: [normal, ...system.getSeasonStack()],
+      }
+      const { rerender } = render(<FloraTrackCompact flora={flora} />)
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      const dialog = screen.getByRole('dialog')
+      expect(
+        dialog.querySelectorAll('img[src*="summer-fan.webp"]')
+      ).toHaveLength(1)
+      expect(within(dialog).getByText(copy.flora.details.summer)).toBeVisible()
+      expect(dialog.querySelector('[data-summer-sheltered]')).toBeNull()
+      expect(within(dialog).queryByText(copy.flora.details.partial)).toBeNull()
+      rerender(
+        <FloraTrackCompact flora={{ ...flora, bambooSummerProtection: true }} />
+      )
+      expect(dialog.querySelector('[data-summer-sheltered]')).toHaveTextContent(
+        copy.flora.details.summerSheltered
+      )
+      expect(within(dialog).queryByText(copy.flora.details.summer)).toBeNull()
+      expect(within(dialog).getByText(copy.flora.details.drought)).toBeVisible()
+    }
+  )
   it('does not label normal Winter unfinished now that its power and Flower interaction are connected', () => {
     useSettingsStore.setState({ reducedMotion: true })
     const seasons = new SeasonSystem()

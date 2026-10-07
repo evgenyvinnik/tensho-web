@@ -120,7 +120,7 @@ import {
 } from './RunMetaContext'
 import { useOmenStore } from '../stores/omenStore'
 import { takeWallTile, takeDeadWallTile } from './wallDraw'
-import { applySeasonWallEffect } from './seasonWall'
+import { applySeasonWallEffect, protectSummerWall } from './seasonWall'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -215,6 +215,8 @@ export interface OrchestratorState {
   wall: Tile[]
   /** Tiles set aside by Summer for this round, not removed from the run. */
   summerReserve: Tile[]
+  /** Earned by a Bamboo/Summer terminal-heavy play; cleared at round setup. */
+  bambooSummerProtection: boolean
   deadWall: Tile[]
   discards: Tile[]
   drawIndex: number
@@ -336,7 +338,7 @@ export class GameOrchestrator {
     if (this.state.phase === 'menu')
       throw new Error('There is no Classic run to save')
     return {
-      version: 1,
+      version: 2,
       state: captureClassicState(this.state),
       config: { ...this.config },
       shop: this.shop.toState(),
@@ -352,7 +354,8 @@ export class GameOrchestrator {
   /** Internal typed restore. Stage every subsystem before touching the live run. */
   restoreRun(saved: ClassicRunSnapshot): void {
     this.assertCheckpointBoundary()
-    if (saved.version !== 1) throw new Error('Unsupported Classic run snapshot')
+    if (saved.version !== 1 && saved.version !== 2)
+      throw new Error('Unsupported Classic run snapshot')
     for (const counter of [
       saved.runtimeItemCounter,
       saved.tileIdCounter,
@@ -430,6 +433,7 @@ export class GameOrchestrator {
       wallTemplate: [],
       wall: [],
       summerReserve: [],
+      bambooSummerProtection: false,
       deadWall: [],
       discards: [],
       drawIndex: 0,
@@ -825,6 +829,7 @@ export class GameOrchestrator {
     this.state.deadWall = shuffled.slice(-deadWallSize)
     this.state.wall = shuffled.slice(0, -deadWallSize)
     this.state.summerReserve = []
+    this.state.bambooSummerProtection = false
     this.state.drawIndex = 0
     this.state.discards = []
   }
@@ -1765,6 +1770,10 @@ export class GameOrchestrator {
     }
     this.applyOmenScoreBonuses(scoreResult)
 
+    // Earn the wall reward after scoring, before refill; forecasts use the same
+    // pre-play wall as payment. Count physical faces, not virtual identities.
+    this.applyBambooSummerReward(selectedTiles, effects)
+
     // Apply score
     const previousScore = this.state.score
     this.state.score += scoreResult.finalScore
@@ -1907,6 +1916,7 @@ export class GameOrchestrator {
     this.applyOmenScoreBonuses(scoreResult)
 
     const finalScore = scoreResult.finalScore
+    this.applyBambooSummerReward(selectedTiles, effects)
     const previousScore = this.state.score
     this.state.score += finalScore
     this.state.runScore += finalScore
@@ -2063,6 +2073,7 @@ export class GameOrchestrator {
       wall: this.state.wall.slice(this.state.drawIndex),
       deadWall: [...this.state.deadWall],
       summerReserve: [...this.state.summerReserve],
+      bambooSummerProtection: this.state.bambooSummerProtection,
       drawIndex: 0,
     }
     const seasons = SeasonSystem.fromState(
@@ -2253,6 +2264,7 @@ export class GameOrchestrator {
     // Seasons and their discard penalties belong to the skipped round, not
     // the incoming deal. Pending Omen season locks live in a separate system.
     this.state.seasonSystem.clear()
+    this.state.bambooSummerProtection = false
     this.state.previousRoundYakuIds = new Set()
     this.state.currentRoundYakuIds.clear()
 
@@ -3762,6 +3774,7 @@ export class GameOrchestrator {
 
     // Seasons and mandate debuffs are round-scoped.
     this.state.seasonSystem.clear()
+    this.state.bambooSummerProtection = false
     this.state.debuffSystem.clearRoundScopedDebuffs()
 
     // Every completed round leads to the Tea House. Boss completion additionally
@@ -3872,6 +3885,7 @@ export class GameOrchestrator {
 
     this.destroyBossLossDecrees(effects)
     this.state.decreeSystem.onRoundEnd()
+    this.state.bambooSummerProtection = false
 
     eventBus.emit('roundEnd', {
       won: false,
@@ -4474,6 +4488,24 @@ export class GameOrchestrator {
     )
   }
 
+  private applyBambooSummerReward(tiles: Tile[], effects: Effect[]): void {
+    if (
+      this.state.bambooSummerProtection ||
+      this.areFlowerBonusesSuppressed() ||
+      !this.state.flowerSystem.hasFlowerType('Bamboo') ||
+      !this.state.seasonSystem
+        .getSeasonStack()
+        .some((s) => s.type === 'Summer' && !s.isCorrupted) ||
+      tiles.filter((tile) => tile.isTerminal).length < 4
+    )
+      return
+    const restored = protectSummerWall(this.state)
+    effects.push({
+      type: 'bonus_activated',
+      description: `Bamboo sheltered the wall from Summer: ${restored} tiles returned`,
+    })
+  }
+
   getFloraState() {
     const suppressed = this.areFlowerBonusesSuppressed()
     return {
@@ -4483,6 +4515,7 @@ export class GameOrchestrator {
       flowersProtected:
         this.state.seasonSystem.areFlowersSuppressed() && !suppressed,
       decayPenalty: this.state.seasonSystem.getDecayPenalty(),
+      bambooSummerProtection: this.state.bambooSummerProtection,
     }
   }
 
