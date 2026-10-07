@@ -67,7 +67,7 @@ resolve or replace Plum's separate river recursion.
 
 ## Work still required, not removed from scope
 
-Winter resolution is now being implemented and verified; see below. Remaining
+Winter resolution is now published and verified; see below. Remaining
 gaps are not removed by choosing the rule.
 
 - Finish the remaining Flower–Season interactions including Orchid/Spring.

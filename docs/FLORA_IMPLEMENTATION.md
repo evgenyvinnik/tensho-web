@@ -3,10 +3,11 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
-October 7 local follow-up: [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md)
+October 7 published follow-up, **v1.0.261007-7**: [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md)
 now connects the chosen one-rank-gap rule to both play sizes, coach and optional
 explanations, with new pine art. Normal Winter no longer receives the unfinished
-power warning; other remaining gaps, including Frostbite, still do.
+power warning; other remaining gaps, including Frostbite, still do. Release CI
+passes 1,820 tests; native, production and hosted journey batches each pass 8/8.
 
 October 7 published follow-up, **v1.0.261007-6**: [Autumn](AUTUMN_IMPLEMENTATION.md) grants one actual
 discard action per normal draw, with localized rules and a generated maple

@@ -4,12 +4,13 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**In verification — Winter legality:** normal Winter now permits exactly one
+**Published — v1.0.261007-7, Winter legality:** normal Winter now permits exactly one
 missing rank per same-suit sequence in tactical and complete hands. Scoring,
 coach suggestions and optional localized explanations share the rule; repeated
 Winters retain their score penalties, not wider gaps. New pine art is integrated.
 Final full units pass 1,820/1,820; native and built-production journeys each pass
 8/8 after correcting the development test's duplicate-singleton fixture setup.
+Release CI passes all 1,820 tests and all eight hosted journeys pass.
 [Decision and evidence](WINTER_LEGALITY_IMPLEMENTATION.md).
 
 **Published — v1.0.261007-6, Autumn discard budget:** each normal Autumn draw now grants
@@ -545,7 +546,7 @@ The preceding pass fixes earned-Omen Season cleanup/stacking and Boss skip valid
 
 **Flora follow-up:** the inspector is now connected, with the full ordered Season stack, actual corrupted subtype rules, Flower collection bonuses, and all 13 locales. Decay now counts real discards, and Eternal Garden's secondary protection effect actually prevents Drought suppression. Browser review also exposed and fixed tile touch gestures opening unrelated controls and long dialog text overlapping scroll ornaments. See [Flora implementation](FLORA_IMPLEMENTATION.md).
 
-**Next concrete mechanics gaps (updated October 7):** full Frostbite semantics, mutations/catalysts and three Flower–Season interactions remain unfinished. [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is connected and in verification. [Spring](SPRING_IMPLEMENTATION.md) and [Autumn](AUTUMN_IMPLEMENTATION.md) are connected and published. The [three-Flower unlock](FLOWER_SHOP_IMPLEMENTATION.md), Chrysanthemum/Winter and Drought empowerment suppression are connected. The inspector still discloses incomplete behavior where relevant. Remaining rules can proceed under the user's [delegated authority](RULE_RESOLUTION.md), preserving confirmed choices.
+**Next concrete mechanics gaps (updated October 7):** full Frostbite semantics, mutations/catalysts and three Flower–Season interactions remain unfinished. [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md), [Spring](SPRING_IMPLEMENTATION.md) and [Autumn](AUTUMN_IMPLEMENTATION.md) are connected and published. The [three-Flower unlock](FLOWER_SHOP_IMPLEMENTATION.md), Chrysanthemum/Winter and Drought empowerment suppression are connected. The inspector still discloses incomplete behavior where relevant. Remaining rules can proceed under the user's [delegated authority](RULE_RESOLUTION.md), preserving confirmed choices.
 
 The earlier Omen follow-up carries the Rare+ guarantee through shop generation, defers impossible rewards without charging their shop-entry fee, and delivers stacked item, pack, and edition guarantees without overwriting one another. Ten engine cases and both 320-pixel browser configurations cover actual rewards, purchase, free-pack settlement, reroll, and same-visit recovery. Canonical edition wording still conflicts with the existing free-offer behavior; the named pack-skip synergy Decrees remain outside the acquireable catalogs. Double Omen is now connected by the September 22 checkpoint above. See [shop Omen implementation](SHOP_IMPLEMENTATION.md#shop-omen-guarantee-follow-up) and the [verification ledger](IMPLEMENTATION_WRAP_UP.md#current-shop-omen-checkpoint) for scope and retained failure evidence.
 

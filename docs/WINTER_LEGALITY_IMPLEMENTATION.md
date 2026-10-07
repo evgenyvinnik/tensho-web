@@ -1,6 +1,6 @@
 # Winter: one-rank sequence gaps
 
-October 7, 2026. Locally verified; publication in progress.
+October 7, 2026. Published and verified as **v1.0.261007-7**.
 
 ## Rule and integration
 
@@ -21,8 +21,8 @@ bypassed. Neither preview nor explanation rewrites physical tiles.
 
 Identical sequences and three-suit identical sequences now compare every rank,
 not just the starting rank. Identical gapped patterns may qualify. Ittsu still
-requires actual 1–2–3 / 4–5–6 / 7–8–9; Pinfu requires ordinary consecutive
-sequences with consecutive ranks, without revoking a separate suit-matching
+requires actual 1–2–3 / 4–5–6 / 7–8–9; Pinfu requires consecutive ranks,
+without revoking a separate suit-matching
 Decree. These are documented roguelike decisions, not standard Mahjong claims.
 
 ## Player-facing explanation
@@ -79,8 +79,21 @@ Evidence directory: `/tmp/tensho-winter-legality-gD7c9Z`.
 - Strict TypeScript, Pages build, all **13 release checks** and lint pass
   (zero errors, 211 existing warnings). Existing chunk-size and old Browserslist
   warnings remain. Full historical browser suite not rerun for this checkpoint.
-- Publication and hosted replay: pending. Logs and retained failed traces are
-  in the evidence directory above; later passes do not erase earlier failures.
+- Logs and retained failed traces are in the evidence directory above; later
+  passes do not erase earlier failures.
+
+## Publication verification
+
+Implementation commit `a551e6853cf59099de5da92382d574e635bb1ae9` deployed through
+[Pages run 37685530198](https://github.com/evgenyvinnik/tensho-web/actions/runs/37685530198).
+Release CI passed **1,820/1,820 tests in 155 files**, all 13 release checks and
+the production build. The hosted manifest reports **v1.0.261007-7**, build/tag
+commit `c85d4ea843480eea61a7d67dbf06dff284818892`. Hosted pine artwork matches the
+SHA below. All **8/8 hosted journeys pass**, using the same captured fixture,
+real desktop/touch controls, exact save reloads and actual score/resource checks.
+Evidence: `ci.log`, `deployment.log`, `hosted.log`, `hosted.json` and `hosted/`.
+GitHub reports existing Node-action deprecation/upcoming Ubuntu-image warnings;
+they did not fail this deployment and were not changed in this mechanics pass.
 
 ## Generated artwork
 
@@ -114,3 +127,6 @@ Three other Flower–Season interactions, advanced mutations/catalysts, full
 fractional/binary Frostbite coverage and remaining item/resource semantics are
 still required. Organic-run and newcomer evaluation must follow these mechanics
 changes; controlled fixtures do not establish fun, balance or encounter rates.
+Numeric shanten still measures standard-Mahjong distance; full-hand readiness
+uses active rules. Clearer guidance for rule-assisted near-completions remains
+part of newcomer UX evaluation, not a completed claim here.

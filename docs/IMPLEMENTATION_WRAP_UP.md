@@ -8,12 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is now connected locally:
+[Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is published in v1.0.261007-7:
 exactly one skipped rank per same-suit sequence, including tactical scoring and
 coach suggestions, with optional localized tile-group explanations and pine art.
 Final full tests pass 1,820/1,820 and native/built-production browser journeys
 each pass 8/8. The retained intermediate native fixture failure is explained in
-its ledger. TypeScript, Pages build and release checks pass; publication is pending.
+its ledger. TypeScript, Pages build and release checks pass. Release CI passes all
+1,820 tests and all eight hosted replay journeys pass; manifest and artwork hash
+match the published version.
 
 The published [Autumn checkpoint](AUTUMN_IMPLEMENTATION.md) resolves its ambiguous
 discard-pool draft as +1 discard action per normal draw. Granting it preserves
