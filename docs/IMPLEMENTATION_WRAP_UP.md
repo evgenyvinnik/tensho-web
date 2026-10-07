@@ -8,13 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Orchid/Spring](ORCHID_SPRING_IMPLEMENTATION.md) now grants non-chaining physical
+[Orchid/Spring](ORCHID_SPRING_IMPLEMENTATION.md), published in v1.0.261007-11, grants non-chaining physical
 dead-wall draws for normally drawn Honors, before one boss reaction. The actual
 draw capacity and Dead Wall Writ's Spring fill are also connected. New generated
-Orchid art and thirteen-locale post-bloom feedback are integrated. Local units
-pass 1,868/1,868 before one final additional complete-hand test; all 24 Orchid
-tests then pass. Native/production journeys pass 8/8 each, broader redraw checks
-6/6, and build/release checks pass. Publication remains pending. Plum/Autumn,
+Orchid art and thirteen-locale post-bloom feedback are integrated. Release CI
+passes 1,869/1,869 tests, 13 release checks, build and deployment. Native,
+production and hosted journeys pass 8/8 each, broader redraw checks 6/6. Public
+manifest/tag and hosted artwork checksum match. Earlier corrections are retained.
+Plum/Autumn,
 mutations/catalysts and remaining item mechanics are still required.
 
 The [touch-input follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) is published and verified

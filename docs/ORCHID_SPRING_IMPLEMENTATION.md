@@ -1,6 +1,6 @@
 # Orchid draws during Spring
 
-October 7, 2026 — local implementation, verification in progress.
+October 7, 2026 — published and verified in **v1.0.261007-11**.
 
 Under the user's delegated rule authority, each normally drawn Honor earns one
 extra physical dead-wall draw while Orchid and normal Spring are effective.
@@ -54,9 +54,29 @@ Evidence directory: `/tmp/tensho-orchid-2kLmDV`.
 - Pages-base build, TypeScript, all **13** release checks and lint pass (zero
   errors, 211 existing warnings). Built-production replay passes **8/8** using
   the captured native save envelopes, with no runtime source imports.
-- Independent release CI, public version/artwork provenance and hosted replay
-  remain pending. Controlled scenarios do not demonstrate organic acquisition
+- At the implementation commit, independent release CI and hosted replay were
+  pending; final evidence follows below. Controlled scenarios do not demonstrate organic acquisition
   frequency, native-speaker translation quality or player enjoyment.
+
+## Published verification
+
+- Implementation commit: `92744437f123fdf115d439464d899103c84c182a`.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37698241743)
+  passes **1,869/1,869 tests in 157 files**, **13 release checks**, build and
+  deployment. This includes the final complete-hand payout test.
+- Public manifest and remote `v1.0.261007-11` tag both identify
+  `6b2ba20b3c04c3a85a397c7e70d7a0c241391fac`. Hosted Orchid artwork has the exact
+  SHA-256 recorded below.
+- **8/8 hosted journeys pass**, with no retries or deadline increases, covering
+  English/Spanish, desktop/320px touch, paid play/redraw, extra tile identities,
+  resource costs, forecast/payout, translated illustrated inspection, exact
+  reload, ordinary capacity recovery and round expiry.
+- Logs: `ci-build.log`, `deploy-watch.log`, `hosted.log` in the evidence directory.
+  Both owned servers were stopped; the pre-existing port 4173 server was untouched.
+
+This completes the Orchid/Spring checkpoint, not the whole project. Plum/Autumn,
+mutation/catalyst acquisition, remaining item rules, strategy balance and human
+newcomer/fun validation remain separate requirements.
 
 ## Artwork provenance
 

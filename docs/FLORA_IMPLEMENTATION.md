@@ -3,19 +3,20 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
-October 7 local follow-up: [Orchid/Spring](ORCHID_SPRING_IMPLEMENTATION.md) connects
+October 7 published follow-up, **v1.0.261007-11**: [Orchid/Spring](ORCHID_SPRING_IMPLEMENTATION.md) connects
 Honor-triggered dead-wall draws across all draw paths, with non-chaining bonuses,
 one boss reaction and exact saved physical tiles. New Orchid art and localized
-post-bloom feedback are integrated. Native/production journeys pass 8/8 each;
-full units pass 1,868 before one final extra test, with all 24 Orchid checks then
-passing. Publication is pending. Plum/Autumn and mutations/catalysts remain open.
+post-bloom feedback are integrated. Native/production/hosted journeys pass 8/8
+each; release CI passes all 1,869 tests, 13 release checks, build and deployment.
+Public version/tag and artwork checksum match. Plum/Autumn and mutations/catalysts
+remain open; earlier test corrections are preserved in the linked ledger.
 
 October 7 published follow-up, **v1.0.261007-8**: [Bamboo/Summer](BAMBOO_SUMMER_IMPLEMENTATION.md) now
 earns round-long wall protection from a terminal-heavy committed play, restores
 reserved tiles and persists the earned reward. Normal Summer receives new fan
 art and no longer receives an unfinished-power warning. All 1,839 CI tests and
-deployment pass. Hosted touch misses are investigated in the linked ledger and
-touch follow-up; the full hosted batch is not yet clean.
+deployment pass. Its original hosted touch misses are diagnosed and closed by
+the [verified v10 input/layout follow-up](TOUCH_GESTURE_IMPLEMENTATION.md).
 
 October 7 published follow-up, **v1.0.261007-7**: [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md)
 now connects the chosen one-rank-gap rule to both play sizes, coach and optional

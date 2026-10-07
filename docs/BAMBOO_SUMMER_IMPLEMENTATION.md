@@ -131,6 +131,7 @@ Constraints: no text, letters, numerals, calligraphy, labels, mahjong tile faces
 
 ## Still open
 
-Orchid/Spring, Plum/Autumn, advanced Flower mutations/catalysts, Frostbite's
+Orchid/Spring is now connected in its [verified follow-up](ORCHID_SPRING_IMPLEMENTATION.md).
+Plum/Autumn, advanced Flower mutations/catalysts, Frostbite's
 fractional-payout draft, remaining item-rule requirements, organic strategy
 balance and human newcomer/fun validation remain separate work.
