@@ -12,12 +12,11 @@ The requested outcome is to finish the project implementation after the other ag
 and in verification. It connects physical-terminal paid plays to restoration and
 round-scoped protection, with strict versioned saves, translated earned-state
 copy and generated Summer artwork. Other Flower interactions remain open.
-Final units pass 1,839/1,839 and native feature journeys pass 8/8. Production
-replay encounters overall deadline failures under heavy host load; release
-verification remains open, not waived. Broader persistence checks pass 11/12
-with one deadline failure. The ledger retains intermediate fixture corrections.
-The unchanged single-worker production recheck also times out. Implementation
-commit `3bdc04f` is local on `main`; publication is held pending verification.
+Final units pass 1,839/1,839; native and built-production journeys pass 8/8 each.
+The unchanged short-phone persistence recheck closes the earlier 11/12 batch's
+deadline failure. The ledger retains intermediate fixture corrections and
+earlier production deadline failures. Implementation is `3bdc04f`; independent
+release and hosted verification are pending.
 
 [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is published in v1.0.261007-7:
 exactly one skipped rank per same-suit sequence, including tactical scoring and

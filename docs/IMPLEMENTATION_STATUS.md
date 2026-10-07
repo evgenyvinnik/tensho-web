@@ -4,16 +4,15 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Local verification — Bamboo/Summer:** paid plays with four physical terminals
+**Verified locally — Bamboo/Summer:** paid plays with four physical terminals
 can restore the withheld wall and earn round-scoped protection against further
 Summer shrinkage. Versioned snapshots preserve the reward without breaking old
 saves; localized inspector copy and generated Summer art are connected.
-Full units pass 1,839/1,839 and final native journeys pass 8/8. Built-production
-replays hit overall test deadlines under heavy host load; verification and
-publication remain open. Broader persistence checks pass 11/12 with one deadline
-failure retained. Earlier corrected test-fixture failures are also recorded.
-Single-worker production recheck also reaches its overall deadline. Changes are
-committed locally on `main` (`3bdc04f`), not yet pushed/deployed.
+Full units pass 1,839/1,839 and final native journeys pass 8/8. After retained
+deadline failures, unchanged built-production replay passes 8/8. Broader
+persistence checks initially pass 11/12; the unchanged isolated failing case now
+passes too. Earlier corrected test-fixture failures remain recorded. Independent
+release/hosted verification is pending; implementation is `3bdc04f` on `main`.
 [Rules, verification ledger and artwork](BAMBOO_SUMMER_IMPLEMENTATION.md).
 
 **Published — v1.0.261007-7, Winter legality:** normal Winter now permits exactly one
@@ -558,7 +557,7 @@ The preceding pass fixes earned-Omen Season cleanup/stacking and Boss skip valid
 
 **Flora follow-up:** the inspector is now connected, with the full ordered Season stack, actual corrupted subtype rules, Flower collection bonuses, and all 13 locales. Decay now counts real discards, and Eternal Garden's secondary protection effect actually prevents Drought suppression. Browser review also exposed and fixed tile touch gestures opening unrelated controls and long dialog text overlapping scroll ornaments. See [Flora implementation](FLORA_IMPLEMENTATION.md).
 
-**Next concrete mechanics gaps (updated October 7):** full Frostbite semantics, mutations/catalysts and three Flower–Season interactions remain unfinished. [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md), [Spring](SPRING_IMPLEMENTATION.md) and [Autumn](AUTUMN_IMPLEMENTATION.md) are connected and published. The [three-Flower unlock](FLOWER_SHOP_IMPLEMENTATION.md), Chrysanthemum/Winter and Drought empowerment suppression are connected. The inspector still discloses incomplete behavior where relevant. Remaining rules can proceed under the user's [delegated authority](RULE_RESOLUTION.md), preserving confirmed choices.
+**Next concrete mechanics gaps (updated October 7):** full Frostbite semantics, mutations/catalysts and two Flower–Season interactions remain unfinished. [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md), [Spring](SPRING_IMPLEMENTATION.md) and [Autumn](AUTUMN_IMPLEMENTATION.md) are connected and published. [Bamboo/Summer](BAMBOO_SUMMER_IMPLEMENTATION.md) is verified locally. The [three-Flower unlock](FLOWER_SHOP_IMPLEMENTATION.md), Chrysanthemum/Winter and Drought empowerment suppression are connected. The inspector still discloses incomplete behavior where relevant. Remaining rules can proceed under the user's [delegated authority](RULE_RESOLUTION.md), preserving confirmed choices.
 
 The earlier Omen follow-up carries the Rare+ guarantee through shop generation, defers impossible rewards without charging their shop-entry fee, and delivers stacked item, pack, and edition guarantees without overwriting one another. Ten engine cases and both 320-pixel browser configurations cover actual rewards, purchase, free-pack settlement, reroll, and same-visit recovery. Canonical edition wording still conflicts with the existing free-offer behavior; the named pack-skip synergy Decrees remain outside the acquireable catalogs. Double Omen is now connected by the September 22 checkpoint above. See [shop Omen implementation](SHOP_IMPLEMENTATION.md#shop-omen-guarantee-follow-up) and the [verification ledger](IMPLEMENTATION_WRAP_UP.md#current-shop-omen-checkpoint) for scope and retained failure evidence.
 

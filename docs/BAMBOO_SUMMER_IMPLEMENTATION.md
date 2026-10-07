@@ -1,6 +1,6 @@
 # Bamboo shelters Summer
 
-**October 7, 2026 — implementation checkpoint; production verification open.**
+**October 7, 2026 — local verification complete; release verification pending.**
 
 The user delegated coherent resolution of the remaining ambiguous rules. This
 connects the existing four-terminal Bamboo/Summer interaction to actual paid
@@ -73,11 +73,17 @@ Evidence directory: `/tmp/tensho-bamboo-summer-R85V9c`.
   this time while scrolling the earned-protection inspector after payment,
   reload and the second Summer assertions had passed. It is still a failed
   journey, not an accepted release check (`production-isolated.log`).
-- Implementation is committed locally on `main` as `3bdc04f`, not pushed or
-  deployed. A successful complete production batch and the unchanged persistence
-  recheck remain open before publication. Do not mark this release or the
-  overall project verified. Owned dev/preview servers are stopped after checks;
-  the pre-existing server on port 4173 is untouched.
+- The first turn ended with implementation `3bdc04f` committed locally, not
+  pushed, while production and persistence rechecks remained open. Its owned
+  servers were stopped; the pre-existing port 4173 server was untouched.
+- Subsequent unchanged single-worker production batch passes **8/8**
+  (`production-recheck.log`), with desktop and 320px touch, English and Spanish,
+  quad and complete-hand journeys. The Spanish production screenshot was
+  reviewed. No runtime/test/assertion/deadline changes were needed.
+- The unchanged isolated short-phone save/leave test also passes
+  (`resume-isolated.log`, 16.4 seconds), closing that earlier persistence failure.
+- Main publication and independent release/hosted verification are pending.
+  Other mechanics remain incomplete; these checks do not certify project completion.
 
 The browser journey starts from an actual legacy envelope, draws Summer and
 Bamboo through normal replacement, stages and pays a terminal quad or full hand,
