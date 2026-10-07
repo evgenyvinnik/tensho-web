@@ -14,7 +14,11 @@ keeps spares held. Required/hidden tiles and active rules remain authoritative.
 The coach shares the candidate and all thirteen locales supply the readiness
 label. Final native checks pass 38/38, focused rechecks 153/153, build, lint and
 13 release checks pass. Earlier local timing failures remain in the evidence
-ledger. All twenty built-production journeys pass; publication is pending.
+ledger. All twenty built-production journeys pass. Published **v1.0.261007-3**
+after independent CI passes all 1,728 tests and deployment; all twenty hosted
+journeys pass and public manifest/tag match
+`a45497ee25e01739b981b79e772eb6b7764766fb`. This closes the enlarged-rack
+declaration defect, not the broader mechanics and human-experience audit.
 
 The [resource Charter checkpoint](CHARTER_RESOURCE_VERIFICATION.md) adds two
 generated portraits and 14 end-to-end engine regressions covering real resource

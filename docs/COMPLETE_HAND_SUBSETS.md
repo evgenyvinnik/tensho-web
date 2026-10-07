@@ -92,8 +92,24 @@ All **20 built-production journeys** pass from strict persisted fixtures without
 development imports: five hand shapes × English/Spanish × desktop/320px touch.
 They verify exact stage IDs, two-step resource spending, forecast/payment,
 retained spares, sixteen-tile refill, exact reload, visible/unobscured spare tiles,
-no horizontal overflow and no page errors. Publication is pending. The prior balance
+no horizontal overflow and no page errors. The prior balance
 matrices remain historical measurements; the new coach candidate can change
 decisions, so their results are not asserted to describe this source revision.
 Season/Flower requirements, broader strategy, human onboarding/fun and device
 review remain open in the main implementation ledger.
+
+## Published checkpoint
+
+Published **v1.0.261007-3** from implementation commit
+`36625bc2246e94778212db5c4e65b1950c9c4938`; built/tagged commit
+`a45497ee25e01739b981b79e772eb6b7764766fb`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37578359724)
+passes **1,728/1,728 tests across 147 files**, all thirteen release checks, build
+and Pages deployment. The public `release.json` and remote version tag match the
+exact built commit. All **20 hosted journeys** pass with the same five-shape,
+two-language, desktop/phone coverage and unchanged saved-run assertions. Logs
+are `ci-release.log`, `ci-job.log` and `hosted.log` in the evidence directory.
+The earlier local failures remain recorded above. These are isolated browser
+profiles, not edits to the user's save, physical-device certification or proof
+of human enjoyment. No scoring/balance change or new artwork was needed for
+this correction; it uses the existing illustrated tiles and table surfaces.
