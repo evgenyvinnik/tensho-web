@@ -42,11 +42,16 @@ function measure(seed: number): Row {
   const state = orchestrator.getState()
 
   const concealed = new Set(state.faceDownTileIds)
-  const suggestion = findBeginnerSuggestion(state.handTiles, concealed)
+  const suggestion = findBeginnerSuggestion(
+    state.handTiles,
+    concealed,
+    orchestrator.getPartialHandRules()
+  )
   const scoreSelection = (tileIds: string[]) =>
     orchestrator.previewScore(tileIds)?.finalScore ?? null
 
   const advice = buildCoachAdvice({
+    partialRules: orchestrator.getPartialHandRules(),
     tiles: state.handTiles,
     concealedIds: concealed,
     scoreSelection,
@@ -101,14 +106,29 @@ const uplift = scoringShapes.map(
 const pad = (label: string) => label.padEnd(52, ' ')
 console.log(`Opening-move diagnostic — seeds 1..${SEEDS}\n`)
 console.log(pad('Opening seeds examined'), rows.length)
-console.log(pad('Teaching suggestion points at a scoring shape'), scoringShapes.length)
-console.log(pad('Teaching suggestion is a redraw'), rows.filter((r) => r.suggestsRedraw).length)
+console.log(
+  pad('Teaching suggestion points at a scoring shape'),
+  scoringShapes.length
+)
+console.log(
+  pad('Teaching suggestion is a redraw'),
+  rows.filter((r) => r.suggestsRedraw).length
+)
 console.log(pad('Median score of the taught shape'), median(shapeScores))
-console.log(pad('Taught shape below target / remaining plays'), `${shapeBehindPace} of ${scoringShapes.length}`)
+console.log(
+  pad('Taught shape below target / remaining plays'),
+  `${shapeBehindPace} of ${scoringShapes.length}`
+)
 console.log()
 console.log(pad('Median score the score-aware coach finds'), median(bestScores))
-console.log(pad('Coach best below target / remaining plays'), `${bestBehindPace} of ${bestScores.length}`)
-console.log(pad('Coach finds more than the taught shape'), `${bestBeatsShape} of ${scoringShapes.length}`)
+console.log(
+  pad('Coach best below target / remaining plays'),
+  `${bestBehindPace} of ${bestScores.length}`
+)
+console.log(
+  pad('Coach finds more than the taught shape'),
+  `${bestBeatsShape} of ${scoringShapes.length}`
+)
 console.log(pad('Median points the coach adds over the shape'), median(uplift))
 console.log()
 console.log(

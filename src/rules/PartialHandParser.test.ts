@@ -16,6 +16,67 @@ function suited(suit: TileSuit, rank: number, index = 0): Tile {
 }
 
 describe('parsePartialHand', () => {
+  it.each([
+    [1, 2, 4],
+    [1, 3, 4],
+    [6, 7, 9],
+    [6, 8, 9],
+  ])(
+    'permits exactly one skipped rank in %j only under an active rule',
+    (...ranks) => {
+      const tiles = ranks.map((rank) => suited(TileSuit.Manzu, rank))
+      const before = JSON.stringify(tiles)
+      expect(parsePartialHand(tiles).structurePoints).toBe(0)
+      const parsed = parsePartialHand(tiles, { allowSequenceSkip: true })
+      expect(parsed.structurePoints).toBe(30)
+      expect(parsed.leftovers).toEqual([])
+      expect(parsed.groups[0].tiles).toEqual(tiles)
+      expect(parsed.groups[0].tiles[0]).toBe(tiles[0])
+      expect(JSON.stringify(tiles)).toBe(before)
+    }
+  )
+
+  it.each([
+    [1, 3, 5],
+    [1, 2, 5],
+    [1, 8, 9],
+  ])('never widens or wraps skipped sequences %j', (...ranks) => {
+    expect(
+      parsePartialHand(
+        ranks.map((rank) => suited(TileSuit.Manzu, rank)),
+        { allowSequenceSkip: true }
+      ).structurePoints
+    ).toBe(0)
+  })
+
+  it('still rejects cross-suit and honor sequences with the rule active', () => {
+    for (const tiles of [
+      [
+        suited(TileSuit.Manzu, 1),
+        suited(TileSuit.Pinzu, 2),
+        suited(TileSuit.Souzu, 4),
+      ],
+      [1, 2, 4].map((rank) => suited(TileSuit.Wind, rank)),
+    ])
+      expect(
+        parsePartialHand(tiles, { allowSequenceSkip: true }).structurePoints
+      ).toBe(0)
+  })
+
+  it('optimizes overlapping gapped groups without reusing physical tiles', () => {
+    const tiles = [1, 1, 2, 2, 4, 4].map((rank, i) =>
+      suited(TileSuit.Manzu, rank, i)
+    )
+    const parsed = parsePartialHand(tiles, { allowSequenceSkip: true })
+    expect(parsed.structurePoints).toBe(60)
+    const used = parsed.groups.flatMap((group) =>
+      group.tiles.map((tile) => tile.id)
+    )
+    expect(used).toHaveLength(6)
+    expect(new Set(used).size).toBe(6)
+    expect(parsed.leftovers).toHaveLength(0)
+  })
+
   it('finds a triplet and scores its structure', () => {
     const tiles = [
       suited(TileSuit.Manzu, 5, 0),
@@ -118,7 +179,9 @@ describe('parsePartialHand', () => {
     const parse = parsePartialHand(tiles)
 
     expect(parse.structurePoints).toBe(60)
-    expect(parse.groups.every((group) => group.type === MeldType.Sequence)).toBe(true)
+    expect(
+      parse.groups.every((group) => group.type === MeldType.Sequence)
+    ).toBe(true)
   })
 
   it('scores a quad above a triplet plus a loose tile', () => {
@@ -165,7 +228,9 @@ describe('parsePartialHand', () => {
     ]
 
     const parse = parsePartialHand(tiles)
-    const usedIds = parse.groups.flatMap((group) => group.tiles.map((tile) => tile.id))
+    const usedIds = parse.groups.flatMap((group) =>
+      group.tiles.map((tile) => tile.id)
+    )
 
     expect(new Set(usedIds).size).toBe(usedIds.length)
     expect(usedIds.length + parse.leftovers.length).toBe(tiles.length)
@@ -194,7 +259,9 @@ describe('toPartialParsedHand', () => {
     const parsedHand = toPartialParsedHand(parse, tiles)
 
     expect(parsedHand.pair.type).toBe(MeldType.Pair)
-    expect(parsedHand.melds.every((meld) => meld.type !== MeldType.Pair)).toBe(true)
+    expect(parsedHand.melds.every((meld) => meld.type !== MeldType.Pair)).toBe(
+      true
+    )
   })
 
   it('supplies an empty placeholder pair when the selection has none', () => {

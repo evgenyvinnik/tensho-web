@@ -658,10 +658,18 @@ export class GameOrchestrator {
     )
   }
 
-  /** Structural exceptions the active Decrees grant to hand validation. */
+  /** Shared tactical/complete sequence permission from Seasons and active Decrees. */
+  getPartialHandRules() {
+    return {
+      allowSequenceSkip:
+        this.state.seasonSystem.isHandLegalityLoosened() ||
+        this.isDecreeRuleActive('sequence_skip'),
+    }
+  }
+
   private getValidationOptions() {
     return {
-      allowSequenceSkip: this.isDecreeRuleActive('sequence_skip'),
+      ...this.getPartialHandRules(),
       meldMayServeAsPair: this.isDecreeRuleActive('meld_as_pair'),
       wildcardCount: this.isDecreeRuleActive('wildcard_tile') ? 1 : 0,
       suitsMatchForSequences: this.isDecreeRuleActive('suits_match'),
@@ -1631,7 +1639,7 @@ export class GameOrchestrator {
 
     if (selectedTiles.length > MAX_TACTICAL_PLAY_TILES) return null
 
-    const parse = parsePartialHand(tilesToScore)
+    const parse = parsePartialHand(tilesToScore, this.getPartialHandRules())
     const partial = this.calculateHandScore(
       tilesToScore,
       toPartialParsedHand(parse, tilesToScore),
@@ -1885,7 +1893,7 @@ export class GameOrchestrator {
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
 
-    const parse = parsePartialHand(tilesToScore)
+    const parse = parsePartialHand(tilesToScore, this.getPartialHandRules())
     const parsedHand = toPartialParsedHand(parse, tilesToScore)
 
     const scoreResult = this.calculateHandScore(

@@ -323,9 +323,7 @@ export function checkTanyao(
   tiles: Tile[],
   allowTerminals: boolean = false
 ): boolean {
-  return tiles.every((tile) =>
-    allowTerminals ? tile.isSuited : tile.isSimple
-  )
+  return tiles.every((tile) => (allowTerminals ? tile.isSuited : tile.isSimple))
 }
 
 /**
@@ -337,10 +335,18 @@ export function checkPinfu(context: YakuContext): boolean {
 
   const { melds, pair, waitType } = context.parsedHand
 
-  // All melds must be sequences
-  const allMeldsSequences = melds.every(
-    (m) => m.type === MeldType.Sequence
-  )
+  // Pinfu keeps its ordinary consecutive-rank requirement. A rule-assisted
+  // gap is legal, but is not evidence of a standard two-sided, no-points hand.
+  const allMeldsSequences = melds.every((m) => {
+    const ranks = m.tiles.map((tile) => tile.rank).sort((a, b) => a - b)
+    // Do not revoke a separate Decree's permission to match suits.
+    return (
+      m.type === MeldType.Sequence &&
+      ranks.length === 3 &&
+      ranks[1] === ranks[0] + 1 &&
+      ranks[2] === ranks[1] + 1
+    )
+  })
   if (!allMeldsSequences) return false
 
   // Must have ryanmen wait
@@ -449,10 +455,10 @@ export function checkSanshokuDoujun(context: YakuContext): boolean {
   const allMelds = [...context.parsedHand.melds, ...context.declaredMelds]
   const sequences = allMelds.filter((m) => m.type === MeldType.Sequence)
 
-  // Group sequences by starting rank
-  const byRank = new Map<number, Set<TileSuit>>()
+  // A skipped rank does not make different sequences identical.
+  const byRank = new Map<string, Set<TileSuit>>()
   for (const seq of sequences) {
-    const rank = seq.lowestRank
+    const rank = seq.tiles.map((tile) => tile.rank).join('-')
     const suits = byRank.get(rank) ?? new Set()
     suits.add(seq.suit)
     byRank.set(rank, suits)
@@ -484,6 +490,8 @@ export function checkIttsu(context: YakuContext): boolean {
   // Group by suit
   const bySuit = new Map<TileSuit, Set<number>>()
   for (const seq of sequences) {
+    // Ittsu still requires all nine actual ranks, not merely starts at 1/4/7.
+    if (!Meld.canFormSequence(seq.tiles)) continue
     const startRanks = bySuit.get(seq.suit) ?? new Set()
     startRanks.add(seq.lowestRank)
     bySuit.set(seq.suit, startRanks)

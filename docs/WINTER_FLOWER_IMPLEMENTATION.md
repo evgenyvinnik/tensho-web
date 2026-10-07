@@ -1,5 +1,9 @@
 # Chrysanthemum and Winter
 
+October 7 follow-up: [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) now
+connects the separate one-rank-gap power while preserving this interaction.
+The dated ledger below describes the earlier scoring-only checkpoint.
+
 September 12, 2026. Implements the explicit interaction in
 [Game systems §6c](GAME_SYSTEMS.md#6c-flowerseason-interactions): concealed hands
 with Chrysanthemum ignore normal Winter's score penalty. This does not implement

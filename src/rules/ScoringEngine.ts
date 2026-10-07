@@ -23,7 +23,12 @@
 import { Tile, WindType } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
-import { DetectedYaku, YakuContext, detectYaku, calculateYakuMultiplier } from './YakuDetector'
+import {
+  DetectedYaku,
+  YakuContext,
+  detectYaku,
+  calculateYakuMultiplier,
+} from './YakuDetector'
 import { tileModifierSystem } from '../systems/TileModifierSystem'
 import { redFiveSystem, countRedFives } from '../systems/RedFiveSystem'
 import type { ScoreEquation } from './ScoreEquation'
@@ -44,6 +49,8 @@ export interface ScoreBreakdown {
   tilePoints: number
   structurePoints: number
   structure: ScoredStructure
+  /** Actual gapped groups in this scored interpretation, for optional explanations. */
+  skippedSequences?: Tile[][]
 
   // Tile modifier bonuses
   modifierChips: number
@@ -226,7 +233,9 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   // complete hand, where every tile is grouped anyway.
   const groupedTileIds = isPartial
     ? new Set(
-        context.partialMelds!.flatMap((meld) => meld.tiles.map((tile) => tile.id))
+        context.partialMelds!.flatMap((meld) =>
+          meld.tiles.map((tile) => tile.id)
+        )
       )
     : null
   // Count tiles in the scored parse, not retriggers or only non-debuffed tiles:
@@ -246,7 +255,10 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     0
   )
   const structurePoints = isPartial
-    ? context.partialMelds!.reduce((sum, meld) => sum + getMeldStructurePoints(meld), 0)
+    ? context.partialMelds!.reduce(
+        (sum, meld) => sum + getMeldStructurePoints(meld),
+        0
+      )
     : calculateStructurePoints(context.parsedHand)
   const basePoints = tilePoints + structurePoints
 
@@ -295,8 +307,10 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const yakuMultiplier = calculateYakuMultiplier(detectedYaku)
 
   // 6. Apply additional bonuses from game systems (including red fives)
-  const additiveBonus = (context.additiveBonus ?? 0) + modifierChips + modifierMult + redFiveChips
-  const multiplicativeBonus = (context.multiplicativeBonus ?? 1) * modifierMultiplier
+  const additiveBonus =
+    (context.additiveBonus ?? 0) + modifierChips + modifierMult + redFiveChips
+  const multiplicativeBonus =
+    (context.multiplicativeBonus ?? 1) * modifierMultiplier
 
   // 7. Calculate final score
   // Formula: Final Score = (Base Points + Additive Bonuses) x Multiplicative Multipliers
@@ -307,6 +321,13 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     basePoints,
     tilePoints,
     structurePoints,
+    skippedSequences: (context.partialMelds ?? context.parsedHand?.melds ?? [])
+      .filter(
+        (meld) =>
+          meld.type === MeldType.Sequence &&
+          meld.highestRank - meld.lowestRank === 3
+      )
+      .map((meld) => meld.tiles),
     structure: {
       kind: isPartial ? 'tactical' : 'complete',
       groupedTiles: structureTiles.length - looseTiles,
@@ -393,7 +414,11 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
   lines.push('')
 
   // Modifier bonuses
-  if (breakdown.modifierChips > 0 || breakdown.modifierMult > 0 || breakdown.modifierMultiplier !== 1) {
+  if (
+    breakdown.modifierChips > 0 ||
+    breakdown.modifierMult > 0 ||
+    breakdown.modifierMultiplier !== 1
+  ) {
     lines.push('Tile Modifiers:')
     if (breakdown.modifierChips > 0) {
       lines.push(`  Bonus Chips: +${breakdown.modifierChips}`)
@@ -402,21 +427,27 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
       lines.push(`  Bonus Mult: +${breakdown.modifierMult}`)
     }
     if (breakdown.modifierMultiplier !== 1) {
-      lines.push(`  Mult Multiplier: x${breakdown.modifierMultiplier.toFixed(2)}`)
+      lines.push(
+        `  Mult Multiplier: x${breakdown.modifierMultiplier.toFixed(2)}`
+      )
     }
     lines.push('')
   }
 
   // Red fives (aka-dora)
   if (breakdown.redFiveCount > 0 && breakdown.redFiveChips > 0) {
-    lines.push(`Red Fives: ${breakdown.redFiveCount} (+${breakdown.redFiveChips} chips)`)
+    lines.push(
+      `Red Fives: ${breakdown.redFiveCount} (+${breakdown.redFiveChips} chips)`
+    )
     lines.push('')
   }
 
   if (breakdown.detectedYaku.length > 0) {
     lines.push('Yaku:')
     for (const yaku of breakdown.detectedYaku) {
-      lines.push(`  ${yaku.definition.name}: x${yaku.definition.multiplier.toFixed(2)}`)
+      lines.push(
+        `  ${yaku.definition.name}: x${yaku.definition.multiplier.toFixed(2)}`
+      )
     }
     lines.push(`Total Yaku Multiplier: x${breakdown.yakuMultiplier.toFixed(2)}`)
     lines.push('')
@@ -442,7 +473,11 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
     lines.push(`Gold Earned: ¥${breakdown.goldEarned}`)
   }
 
-  if (breakdown.retriggeredTiles.length > 0 || breakdown.shatteredTiles.length > 0 || breakdown.goldEarned > 0) {
+  if (
+    breakdown.retriggeredTiles.length > 0 ||
+    breakdown.shatteredTiles.length > 0 ||
+    breakdown.goldEarned > 0
+  ) {
     lines.push('')
   }
 

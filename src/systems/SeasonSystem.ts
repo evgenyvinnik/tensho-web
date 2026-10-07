@@ -8,7 +8,7 @@
  * - Spring: +2 rack spaces this round, filled on activation and normal refills
  * - Summer: Base score +30%, wall size -20%
  * - Autumn: Yaku multipliers +20%, +1 discard action on activation
- * - Winter: Hand legality loosened, score -25%
+ * - Winter: Same-suit sequences may skip one rank, score -25%
  *
  * Corrupted Seasons (Act II+):
  * - Drought: Flowers are suppressed
@@ -58,7 +58,7 @@ export const SEASON_BASE_EFFECTS: Record<SeasonVariant, SeasonEffect> = {
   Winter: {
     type: 'legality_modifier',
     value: -0.25, // -25% score
-    description: 'Hand legality loosened, score -25%',
+    description: 'Same-suit sequences may skip one rank, score -25%',
   },
 }
 

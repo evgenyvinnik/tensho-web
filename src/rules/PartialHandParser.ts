@@ -13,7 +13,15 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand, WaitType } from '../core/Hand'
-import { STRUCTURE_POINTS_BY_TYPE, getMeldStructurePoints } from './ScoringEngine'
+import {
+  STRUCTURE_POINTS_BY_TYPE,
+  getMeldStructurePoints,
+} from './ScoringEngine'
+
+export interface PartialHandRules {
+  /** Winter or an active Broken Stair Edict permits exactly one missing rank. */
+  allowSequenceSkip?: boolean
+}
 
 /**
  * A decomposition of a tile selection into scoring groups.
@@ -47,7 +55,10 @@ const MAX_RANK = 9
  * are concatenated. Within a suit an exhaustive memoized search is cheap: a
  * selection is at most 14 tiles.
  */
-export function parsePartialHand(tiles: Tile[]): PartialParse {
+export function parsePartialHand(
+  tiles: Tile[],
+  rules: PartialHandRules = {}
+): PartialParse {
   const scoringTiles = tiles.filter((tile) => !tile.isBonus)
 
   // Pool real tiles by suit and rank so chosen groups can reference them.
@@ -67,7 +78,7 @@ export function parsePartialHand(tiles: Tile[]): PartialParse {
     for (const tile of scoringTiles) {
       if (tile.suit === suit) counts[tile.rank] += 1
     }
-    plans.push(...solveSuit(counts, suit, new Map()).plan)
+    plans.push(...solveSuit(counts, suit, new Map(), rules).plan)
   }
 
   // Materialise the plans into melds backed by the actual tile instances.
@@ -92,7 +103,8 @@ export function parsePartialHand(tiles: Tile[]): PartialParse {
   // Designate the highest-value pair so the parse matches ParsedHand semantics.
   const pairIndex = groups.findIndex((group) => group.type === MeldType.Pair)
   const pair = pairIndex === -1 ? null : groups[pairIndex]
-  const melds = pairIndex === -1 ? [...groups] : groups.filter((_, i) => i !== pairIndex)
+  const melds =
+    pairIndex === -1 ? [...groups] : groups.filter((_, i) => i !== pairIndex)
 
   const structurePoints = groups.reduce(
     (sum, group) => sum + getMeldStructurePoints(group),
@@ -109,7 +121,10 @@ export function parsePartialHand(tiles: Tile[]): PartialParse {
  * used when a selection contains no pair is never read for points. It exists so
  * Decrees can inspect a uniformly shaped hand.
  */
-export function toPartialParsedHand(parse: PartialParse, tiles: Tile[]): ParsedHand {
+export function toPartialParsedHand(
+  parse: PartialParse,
+  tiles: Tile[]
+): ParsedHand {
   const fallbackTile = tiles[tiles.length - 1]
   return {
     melds: parse.melds,
@@ -125,7 +140,11 @@ function poolKey(suit: TileSuit, rank: number): string {
 }
 
 function isSuitedSuit(suit: TileSuit): boolean {
-  return suit === TileSuit.Manzu || suit === TileSuit.Pinzu || suit === TileSuit.Souzu
+  return (
+    suit === TileSuit.Manzu ||
+    suit === TileSuit.Pinzu ||
+    suit === TileSuit.Souzu
+  )
 }
 
 interface SuitSolution {
@@ -143,7 +162,8 @@ interface SuitSolution {
 function solveSuit(
   counts: number[],
   suit: TileSuit,
-  memo: Map<string, SuitSolution>
+  memo: Map<string, SuitSolution>,
+  rules: PartialHandRules
 ): SuitSolution {
   const key = counts.join(',')
   const cached = memo.get(key)
@@ -161,7 +181,7 @@ function solveSuit(
 
   const consider = (type: MeldType, ranks: number[]) => {
     for (const r of ranks) counts[r] -= 1
-    const rest = solveSuit(counts, suit, memo)
+    const rest = solveSuit(counts, suit, memo, rules)
     for (const r of ranks) counts[r] += 1
 
     const total = STRUCTURE_POINTS_BY_TYPE[type] + rest.points
@@ -181,10 +201,16 @@ function solveSuit(
   ) {
     consider(MeldType.Sequence, [rank, rank + 1, rank + 2])
   }
+  if (rules.allowSequenceSkip && isSuitedSuit(suit) && rank + 3 <= MAX_RANK) {
+    for (const middle of [rank + 1, rank + 2]) {
+      if (counts[middle] > 0 && counts[rank + 3] > 0)
+        consider(MeldType.Sequence, [rank, middle, rank + 3])
+    }
+  }
 
   // Leave this tile ungrouped.
   counts[rank] -= 1
-  const skipped = solveSuit(counts, suit, memo)
+  const skipped = solveSuit(counts, suit, memo, rules)
   counts[rank] += 1
   if (skipped.points > best.points) {
     best = { points: skipped.points, plan: [...skipped.plan] }

@@ -2,24 +2,32 @@ import { useTranslation } from 'react-i18next'
 import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
 import { getTileImagePath } from '../../utils/assets'
 import { tileName } from '../../i18n/tileText'
+import type { Tile } from '../../core/Tile'
 
 /** Optional native disclosure: works with touch and keyboard, without a tutorial overlay. */
 export function HandInterpretationDetails({
   interpretation,
+  skippedSequences = [],
 }: {
   interpretation?: CompleteHandInterpretation | null
+  skippedSequences?: Tile[][]
 }) {
   const { t } = useTranslation()
   if (
-    !interpretation ||
-    (interpretation.naturalComplete &&
-      !interpretation.substitutions.length &&
-      !interpretation.usedShantenClemency &&
-      !interpretation.allWild)
+    skippedSequences.length === 0 &&
+    (!interpretation ||
+      (interpretation.naturalComplete &&
+        !interpretation.substitutions.length &&
+        !interpretation.usedShantenClemency &&
+        !interpretation.allWild))
   )
     return null
-  const { substitutions, completionTile, usedShantenClemency, allWild } =
-    interpretation
+  const {
+    substitutions = [],
+    completionTile,
+    usedShantenClemency,
+    allWild,
+  } = interpretation ?? {}
   return (
     <details
       data-hand-interpretation
@@ -29,7 +37,31 @@ export function HandInterpretationDetails({
         {t('handInterpretation.why')}
       </summary>
       <div className="space-y-3 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-black/20 p-3">
-        <p>{t('handInterpretation.assisted')}</p>
+        {interpretation && <p>{t('handInterpretation.assisted')}</p>}
+        {skippedSequences.length > 0 && (
+          <div data-skipped-sequences className="space-y-2">
+            <p>{t('handInterpretation.sequenceSkip')}</p>
+            {skippedSequences.map((tiles) => (
+              <div key={tiles.map((tile) => tile.id).join('|')}>
+                <div aria-hidden="true" className="flex gap-1">
+                  {tiles.map((tile) => (
+                    <img
+                      key={tile.id}
+                      src={getTileImagePath(tile.suit, tile.rank)}
+                      alt=""
+                      width={36}
+                      height={48}
+                      className="h-12 w-9 object-contain"
+                    />
+                  ))}
+                </div>
+                <p className="mt-1">
+                  {tiles.map((tile) => tileName(tile, t)).join(' · ')}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
         {allWild && <p>{t('handInterpretation.allWild')}</p>}
         {substitutions.map(({ physical, effective }) => (
           <div key={physical.id} data-interpreted-tile={physical.id}>

@@ -446,9 +446,16 @@ Seasons affect only the current round, acting like global modifiers.
 | **Spring** | 春 | +2 rack spaces this round; draw into new spaces from the live wall |
 | **Summer** | 夏 | Base score +30%, wall size −20% |
 | **Autumn** | 秋 | Yaku multipliers +20%; gain 1 discard action on each normal Autumn draw, for this round |
-| **Winter** | 冬 | Hand legality loosened, but score −25% |
+| **Winter** | 冬 | Same-suit sequences may skip one rank (1–2–4 or 1–3–4); score −25% |
 
 *These introduce tempo-risk tradeoffs, not raw power.*
+
+Winter resolution (October 7, 2026): the permission applies to tactical and
+complete hands. Normal Winters do not stack larger gaps; their score penalties
+still stack unless the existing Chrysanthemum exception applies. Honors,
+cross-suit sequences, two gaps and wraparound are excluded. Corrupted Winter
+does not grant the permission. Exact rank patterns still govern Yaku; Pinfu
+requires ordinary consecutive sequences. [Details](WINTER_LEGALITY_IMPLEMENTATION.md).
 
 Spring resolution (October 7, 2026): normal Springs stack their capacity bonus;
 ordinary refills maintain it without growing the rack every play. Activation

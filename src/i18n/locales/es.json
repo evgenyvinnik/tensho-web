@@ -12,9 +12,10 @@
     "note": "Solo muestra las bonificaciones base de los orbes. Otras reglas pueden cambiar la puntuación final; consulta la previsión de la jugada."
   },
   "handInterpretation": {
-    "ready": "Mano asistida por decretos",
+    "ready": "Mano asistida por reglas",
     "why": "Por qué funciona esta mano",
-    "assisted": "Tus decretos activos permiten esta mano.",
+    "assisted": "Las reglas activas permiten esta mano.",
+    "sequenceSkip": "Invierno o Escalera Rota permite saltar un número en una secuencia del mismo palo. Estos son los grupos usados en esta previsión.",
     "substitution": "{{from}} cuenta como {{to}} en esta jugada.",
     "virtual": "Ficha virtual para completar: {{tile}}.",
     "penalty": "Esta ficha virtual reduce a la mitad la puntuación de la mano. La previsión ya incluye la penalización.",
@@ -1111,7 +1112,7 @@
       "spring": "+2 espacios en la mano esta ronda. Los nuevos espacios se llenan desde el muro vivo. Se acumula; Serpiente sigue reponiendo solo 3 fichas.",
       "summer": "Puntuación ×1,3. Aparta el 20% del muro vivo restante durante esta ronda (las fichas disponibles se redondean hacia abajo).",
       "autumn": "Multiplicador de yaku +20%. Cada Otoño normal robado añade 1 descarte para esta ronda.",
-      "winter": "Puntuación ×0,75.",
+      "winter": "Las secuencias del mismo palo pueden saltar un número (1–2–4 o 1–3–4). Puntuación ×0,75.",
       "drought": "Anula las bonificaciones de puntuación de flores no protegidas.",
       "frostbite": "Reduce a la mitad las bonificaciones de puntos fijos, multiplicador y oro de los Decretos.",
       "decay": "−10 puntos por ficha descartada en esta ronda, sin bajar de cero.",

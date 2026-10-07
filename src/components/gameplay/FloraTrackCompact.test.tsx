@@ -35,6 +35,53 @@ afterEach(async () => {
 })
 
 describe('FloraTrackCompact artwork', () => {
+  it('does not label normal Winter unfinished now that its power and Flower interaction are connected', () => {
+    useSettingsStore.setState({ reducedMotion: true })
+    const seasons = new SeasonSystem()
+    seasons.forceSetSeason('Winter')
+    render(
+      <FloraTrackCompact
+        flora={{ ...fixture(), seasons: seasons.getSeasonStack() }}
+      />
+    )
+    fireEvent.click(screen.getByTestId('flora-details-trigger'))
+    expect(
+      within(screen.getByRole('dialog')).queryByText(en.flora.details.partial)
+    ).toBeNull()
+  })
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
+    'illustrates normal Winter without misrepresenting Frostbite (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const seasons = new SeasonSystem()
+      seasons.forceSetSeason('Winter')
+      const normal = { ...seasons.getSeasonStack()[0], id: 'normal-winter' }
+      seasons.forceSetSeason('Winter', true)
+      render(
+        <FloraTrackCompact
+          flora={{
+            ...fixture(),
+            seasons: [normal, ...seasons.getSeasonStack()],
+          }}
+        />
+      )
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      const dialog = screen.getByRole('dialog')
+      expect(
+        dialog.querySelector('[data-flora-detail-season="normal-winter"]')
+      ).toHaveTextContent(copy.flora.details.winter)
+      expect(
+        dialog.querySelectorAll('img[src*="winter-pine.webp"]')
+      ).toHaveLength(1)
+      expect(
+        within(dialog).getByText(copy.flora.details.frostbite)
+      ).toBeVisible()
+    }
+  )
   it.each([
     ['en', en],
     ['es', es],

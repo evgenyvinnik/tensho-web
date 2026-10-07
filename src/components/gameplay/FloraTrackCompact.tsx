@@ -30,7 +30,9 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
       : t('flora.' + season.type.toLowerCase())
   // Verified gaps, not active powers. Do not advertise unused helpers.
   const incomplete = flora.seasons.some(
-    (season) => !season.isCorrupted || season.corruptedType === 'Frostbite'
+    (season) =>
+      (!season.isCorrupted && season.type !== 'Winter') ||
+      season.corruptedType === 'Frostbite'
   )
 
   return (
@@ -212,10 +214,12 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                         ? illustrationAssets.springBlossom
                         : effect === 'Autumn'
                           ? illustrationAssets.autumnMaple
-                          : getTileImagePath(
-                              TileSuit.Season,
-                              SEASON_DATA[season.type].rank
-                            )
+                          : effect === 'Winter'
+                            ? illustrationAssets.winterPine
+                            : getTileImagePath(
+                                TileSuit.Season,
+                                SEASON_DATA[season.type].rank
+                              )
                     }
                     alt=""
                     aria-hidden="true"

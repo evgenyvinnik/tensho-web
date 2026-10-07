@@ -8,13 +8,21 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-The next [Autumn checkpoint](AUTUMN_IMPLEMENTATION.md) resolves its ambiguous
+[Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is now connected locally:
+exactly one skipped rank per same-suit sequence, including tactical scoring and
+coach suggestions, with optional localized tile-group explanations and pine art.
+Final full tests pass 1,820/1,820 and native/built-production browser journeys
+each pass 8/8. The retained intermediate native fixture failure is explained in
+its ledger. TypeScript, Pages build and release checks pass; publication is pending.
+
+The published [Autumn checkpoint](AUTUMN_IMPLEMENTATION.md) resolves its ambiguous
 discard-pool draft as +1 discard action per normal draw. Granting it preserves
 prior discard expenditures for scoring, stacks, expires and restores exactly.
 It includes generated art and all-locale copy. Full units pass 1,789/1,789;
 initial native journeys pass 8/8. After the text refinement, seven native cases
 pass and a retained overall-deadline failure repeats in isolation; final
-built-production journeys pass 8/8. Pages build passes; publication is pending.
+built-production journeys pass 8/8. Release v1.0.261007-6 is verified: CI passes
+all 1,789 tests and hosted saved-fixture journeys pass 8/8.
 Plum recursion is still an independent unimplemented requirement.
 
 The user has explicitly delegated resolution and implementation of open rules;

@@ -84,8 +84,13 @@ export function GameplayScreen() {
     getTableStyleById(game.state.tableStyleId) ?? getDefaultTableStyle()
 
   const beginnerSuggestion = useMemo(
-    () => findBeginnerSuggestion(game.handTiles, new Set(game.faceDownTileIds)),
-    [game.handTiles, game.faceDownTileIds]
+    () =>
+      findBeginnerSuggestion(
+        game.handTiles,
+        new Set(game.faceDownTileIds),
+        game.partialHandRules
+      ),
+    [game.handTiles, game.faceDownTileIds, game.partialHandRules]
   )
 
   // Responsive tile size
@@ -499,6 +504,7 @@ export function GameplayScreen() {
     if (!beginnerCoachActive || coachDismissed) return null
     return buildCoachAdvice({
       tiles: game.handTiles,
+      partialRules: game.partialHandRules,
       concealedIds: faceDownTileIds,
       requiredTileIds: game.lockedTileIds,
       completeHandTileIds: completeHandSelection,
@@ -559,6 +565,7 @@ export function GameplayScreen() {
       yaku: breakdown.detectedYaku.map((detected) => detected.definition),
       structure: breakdown.structure,
       structurePoints: breakdown.structurePoints,
+      skippedSequences: breakdown.skippedSequences,
       interpretation: game.inspectCompleteHand(previewIds),
     }
   }, [stagedTileIds, game, completeHandSelection, faceDownTileIds])

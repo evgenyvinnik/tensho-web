@@ -222,6 +222,7 @@ function playRun(seed: number): RunResult {
     }
 
     const advice = buildCoachAdvice({
+      partialRules: orchestrator.getPartialHandRules(),
       tiles: [...state.handTiles],
       concealedIds: state.faceDownTileIds,
       requiredTileIds: state.mandateEffectSystem.getLockedTileIds(),

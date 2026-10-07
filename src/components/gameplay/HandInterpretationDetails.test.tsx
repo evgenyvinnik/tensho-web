@@ -95,7 +95,17 @@ it('suppresses even a supplied interpretation when the forecast is concealed', (
       selectedTileCount={14}
       stagedTileCount={0}
       handTileCount={14}
-      scorePreview={{ points: 1, mult: 1, total: 1, interpretation }}
+      scorePreview={{
+        points: 1,
+        mult: 1,
+        total: 1,
+        interpretation,
+        skippedSequences: [
+          [1, 2, 4].map(
+            (rank) => new Tile(TileSuit.Manzu, rank, `hidden-${rank}`)
+          ),
+        ],
+      }}
       scorePreviewHidden
       yakuReveals={[]}
       onYakuComplete={() => {}}
@@ -104,3 +114,25 @@ it('suppresses even a supplied interpretation when the forecast is concealed', (
   expect(container.querySelector('[data-hand-interpretation]')).toBeNull()
   expect(container.textContent).not.toContain('5 of Characters')
 })
+
+it.each(['en', 'es'] as const)(
+  'shows actual skipped-rank groups without a full hand (%s)',
+  async (language) => {
+    await loadLanguage(language)
+    await i18n.changeLanguage(language)
+    const skippedSequences = [
+      [1, 2, 4].map((rank) => new Tile(TileSuit.Manzu, rank, `gap-${rank}`)),
+    ]
+    const { container } = render(
+      <HandInterpretationDetails skippedSequences={skippedSequences} />
+    )
+    expect(container.querySelector('details')).not.toHaveAttribute('open')
+    expect(
+      container.querySelector('[data-skipped-sequences]')
+    ).toHaveTextContent(i18n.t('handInterpretation.sequenceSkip'))
+    expect(container.querySelectorAll('img')).toHaveLength(3)
+    expect(container.textContent).not.toContain(
+      i18n.t('handInterpretation.assisted')
+    )
+  }
+)

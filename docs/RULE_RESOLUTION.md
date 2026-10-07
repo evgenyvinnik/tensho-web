@@ -67,8 +67,10 @@ resolve or replace Plum's separate river recursion.
 
 ## Work still required, not removed from scope
 
-- Resolve and connect Winter loosened legality,
-  and finish the remaining Flower–Season interactions including Orchid/Spring.
+Winter resolution is now being implemented and verified; see below. Remaining
+gaps are not removed by choosing the rule.
+
+- Finish the remaining Flower–Season interactions including Orchid/Spring.
 - Specify the four advanced Flower mutations, acquisition/unlock path and
   catalyst payments. An unused helper or catalog description is not completion.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
@@ -80,3 +82,25 @@ resolve or replace Plum's separate river recursion.
 These items can now proceed with documented decisions instead of waiting for
 answers to each old question. This document is not a completion declaration or
 an approval to alter the three confirmed choices above.
+
+### Winter: one missing rank per same-suit sequence
+
+A normal Winter permits 1–2–4 or 1–3–4 and their shifted equivalents, in both
+tactical selections and complete hands. It never permits two missing ranks,
+wrapping 9 to 1, Honor sequences or mixing suits. Repeated Winters do not widen
+the gap; each still contributes its existing ×0.75 score factor. Corrupted
+Winter grants no normal legality. Chrysanthemum's existing concealed-hand
+exception and effective Drought suppression stay unchanged. Legality expires
+with the Season stack and derives from saved Seasons without a new save field.
+
+Broken Stair Edict has the same authored permission. Its tactical parser and
+coach now receive the same active rule as its full-hand validator, including
+Mandate disabling. The normal hand-size/resource/forced-tile restrictions still
+apply. Suggestions never read concealed faces and previews do not mutate tiles.
+
+Scoring shapes are not fabricated identities: identical-sequence Yaku compare
+every actual rank; matching gapped triples can qualify. Ittsu still needs actual
+1–2–3 / 4–5–6 / 7–8–9. Pinfu retains ordinary consecutive sequences, rather than
+interpreting an exotic gapped wait as an ordinary two-sided no-points hand.
+This is a chosen roguelike rule, not a claim about standard Mahjong.
+[Implementation and verification](WINTER_LEGALITY_IMPLEMENTATION.md).

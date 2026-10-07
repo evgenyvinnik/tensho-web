@@ -3,11 +3,16 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
-October 7 local follow-up: [Autumn](AUTUMN_IMPLEMENTATION.md) grants one actual
+October 7 local follow-up: [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md)
+now connects the chosen one-rank-gap rule to both play sizes, coach and optional
+explanations, with new pine art. Normal Winter no longer receives the unfinished
+power warning; other remaining gaps, including Frostbite, still do.
+
+October 7 published follow-up, **v1.0.261007-6**: [Autumn](AUTUMN_IMPLEMENTATION.md) grants one actual
 discard action per normal draw, with localized rules and a generated maple
 portrait. Full units pass 1,789/1,789 and initial native journeys pass 8/8;
 final built-production journeys also pass 8/8. Later native timing failures are
-retained in its ledger; publication is pending. Plum recursion remains open.
+retained in its ledger. Release CI and all eight hosted journeys pass. Plum recursion remains open.
 
 October 7 published follow-up, **v1.0.261007-5**: [Spring](SPRING_IMPLEMENTATION.md) now supplies bounded
 round-scoped rack expansion through real draw/refill paths. [Drought](DROUGHT_EMPOWERMENT.md)
@@ -20,7 +25,8 @@ September 12 Winter follow-up: concealed scoring with an unsuppressed
 Chrysanthemum now ignores every normal Winter penalty, including in the visible
 forecast and committed play. Effective Drought/protective-Decree rules are shared
 with Flower scoring. [Winter interaction](WINTER_FLOWER_IMPLEMENTATION.md)
-records verification; Winter's separate loosened-legality rule remains open.
+records verification for that checkpoint. The October 7 follow-up above connects
+Winter's separate loosened-legality rule.
 
 September 12 Flower follow-up: collecting three distinct Flowers unlocks the
 seven existing Flower-scaled Decrees in shop/pack generation, including rerolls
@@ -135,11 +141,11 @@ of the requirements in `GAME_SYSTEMS.md`.
 | Spring: extra draws | Connected as +2 round-scoped rack spaces per normal Spring; see the October 7 follow-up above. Orchid/Spring remains unfinished. |
 | Bamboo + Summer exception | Normal Summer's wall cost is connected. The terminal-heavy threshold and exception timing still need an explicit rule. |
 | Autumn: discard pool grows | Resolved and connected as +1 discard action on each normal Autumn draw; its Yaku modifier remains active. Plum recursion remains unfinished. |
-| Winter: loosen hand legality | `isHandLegalityLoosened()` is unused. The score penalty and concealed Chrysanthemum exception are active. |
+| Winter: loosen hand legality | Connected to tactical/full scoring and coach as one skipped rank per same-suit sequence. Score penalties and Chrysanthemum exception remain active. See [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md). |
 | Frostbite: halve Decree effects | Flat-point, main multiplier, Yaku-specific benefits and shared gold reward paths scale with every Frostbite; ordinary bonuses remain intact. Wealth Engine and copied gold effects feed those paths. Treasure Hunter timing/scaling, fractional retriggers and non-numeric rules remain open. See [scoring evidence](FROSTBITE_IMPLEMENTATION.md), [gold settlement](FROSTBITE_GOLD_IMPLEMENTATION.md), [Decree economy](DECREE_ECONOMY_IMPLEMENTATION.md) and [secondary scoring](SECONDARY_SCORING_IMPLEMENTATION.md). |
 | Advanced mutations, catalysts, and three remaining Flower–Season interactions | Chrysanthemum/Winter is connected. Plum/Autumn, Orchid/Spring, Bamboo/Summer and full mutation acquisition remain to implement. |
 
 The user explicitly delegated resolution of open rules on October 7.
-Winter, Fate Seal lifetime and Negative-tile conflicts still require concrete
+Fate Seal lifetime and Negative-tile conflicts still require concrete
 decisions and implementation, but no longer require awaiting each old question.
 Previously confirmed Bell, Merchant and defeat-settlement choices remain fixed.

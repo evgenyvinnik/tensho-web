@@ -19,6 +19,7 @@ import type { ScoredStructure } from '../../rules/ScoringEngine'
 import { ExactScoreDetails } from './ExactScoreDetails'
 import { HandInterpretationDetails } from './HandInterpretationDetails'
 import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
+import type { Tile } from '../../core/Tile'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -36,6 +37,7 @@ export interface ScorePreviewData {
   structure?: ScoredStructure
   structurePoints?: number
   interpretation?: CompleteHandInterpretation | null
+  skippedSequences?: Tile[][]
 }
 
 /**
@@ -396,7 +398,10 @@ export function PlayArea({
                   }
                 )}
           </p>
-          <HandInterpretationDetails interpretation={scorePreview.interpretation} />
+          <HandInterpretationDetails
+            interpretation={scorePreview.interpretation}
+            skippedSequences={scorePreview.skippedSequences}
+          />
           <ExactScoreDetails
             entries={[
               { label: t('scoring.basePoints'), value: scorePreview.points },

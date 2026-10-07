@@ -18,7 +18,10 @@
 import { MeldType } from '../core/Meld'
 import { Tile } from '../core/Tile'
 import { STRUCTURE_POINTS_BY_TYPE, getTilePoints } from '../rules/ScoringEngine'
-import { parsePartialHand } from '../rules/PartialHandParser'
+import {
+  parsePartialHand,
+  type PartialHandRules,
+} from '../rules/PartialHandParser'
 import { findCompleteHandSubset } from '../rules/CompleteHandSubset'
 import {
   MAX_TACTICAL_PLAY_TILES,
@@ -50,14 +53,15 @@ const TEACHING_PRIORITY: Record<MeldType, number> = {
  */
 export function findBeginnerSuggestion(
   tiles: Tile[],
-  concealedIds: ReadonlySet<string> = new Set()
+  concealedIds: ReadonlySet<string> = new Set(),
+  rules: PartialHandRules = {}
 ): BeginnerSuggestion | null {
   const visibleTiles = tiles.filter(
     (tile) => !tile.isBonus && !concealedIds.has(tile.id)
   )
   if (visibleTiles.length < 2) return null
 
-  const parsed = parsePartialHand(visibleTiles)
+  const parsed = parsePartialHand(visibleTiles, rules)
   const group = [...parsed.groups].sort((left, right) => {
     const pointDifference =
       STRUCTURE_POINTS_BY_TYPE[right.type] - STRUCTURE_POINTS_BY_TYPE[left.type]
@@ -125,6 +129,7 @@ export interface CoachAdvice {
 
 export interface CoachContext {
   tiles: Tile[]
+  partialRules?: PartialHandRules
   /** Rule-aware engine suggestion, when supplied; null means none found. */
   completeHandTileIds?: readonly string[] | null
   /** Visible forced tiles must be part of every recommendation. */
@@ -148,7 +153,7 @@ export interface CoachContext {
  * Deduplicated by group identity so four copies of one tile do not produce
  * four indistinguishable triplets.
  */
-function enumerateGroups(tiles: Tile[]): Tile[][] {
+function enumerateGroups(tiles: Tile[], rules: PartialHandRules): Tile[][] {
   const byIdentity = new Map<string, Tile[]>()
   const remember = (group: Tile[]) => {
     const key = group
@@ -172,18 +177,25 @@ function enumerateGroups(tiles: Tile[]): Tile[][] {
 
   const suited = tiles.filter((tile) => tile.isSuited)
   for (const anchor of suited) {
-    const run: Tile[] = [anchor]
-    for (let offset = 1; offset <= 2; offset += 1) {
-      const next = suited.find(
-        (tile) =>
-          tile.suit === anchor.suit &&
-          tile.rank === anchor.rank + offset &&
-          !run.includes(tile)
-      )
-      if (!next) break
-      run.push(next)
+    const patterns = rules.allowSequenceSkip
+      ? [
+          [1, 2],
+          [1, 3],
+          [2, 3],
+        ]
+      : [[1, 2]]
+    for (const pattern of patterns) {
+      const run: Tile[] = [anchor]
+      for (const offset of pattern) {
+        const next = suited.find(
+          (tile) =>
+            tile.suit === anchor.suit && tile.rank === anchor.rank + offset
+        )
+        if (!next) break
+        run.push(next)
+      }
+      if (run.length === 3) remember(run)
     }
-    if (run.length === 3) remember(run)
   }
 
   return [...byIdentity.values()]
@@ -200,10 +212,11 @@ function enumerateGroups(tiles: Tile[]): Tile[][] {
  */
 function candidateSelections(
   tiles: Tile[],
-  requiredIds: readonly string[]
+  requiredIds: readonly string[],
+  rules: PartialHandRules
 ): string[][] {
   const required = tiles.filter((tile) => requiredIds.includes(tile.id))
-  const groups = enumerateGroups(tiles)
+  const groups = enumerateGroups(tiles, rules)
   const byPoints = [...tiles].sort(
     (left, right) =>
       Number(requiredIds.includes(right.id)) -
@@ -278,13 +291,14 @@ function candidateSelections(
 
 function describeSelection(
   tiles: Tile[],
-  selection: string[]
+  selection: string[],
+  rules: PartialHandRules
 ): {
   pattern: MeldType | null
   structurePoints: number
 } {
   const chosen = tiles.filter((tile) => selection.includes(tile.id))
-  const parse = parsePartialHand(chosen)
+  const parse = parsePartialHand(chosen, rules)
   const isSingleGroup =
     parse.groups.length === 1 && parse.groups[0].tiles.length === chosen.length
   return {
@@ -310,13 +324,15 @@ export function buildCoachAdvice(context: CoachContext): CoachAdvice | null {
     return null
 
   const priced: CoachOption[] = []
-  const candidates = candidateSelections(visible, required)
+  const rules = context.partialRules ?? {}
+  const candidates = candidateSelections(visible, required, rules)
   const complete =
     context.completeHandTileIds === undefined && visible.length > 14
       ? findCompleteHandSubset(
           visible,
           (ids) => context.scoreSelection(ids) !== null,
-          required
+          required,
+          rules
         )
       : context.completeHandTileIds
   if (
@@ -333,7 +349,7 @@ export function buildCoachAdvice(context: CoachContext): CoachAdvice | null {
   for (const selection of candidates) {
     const score = context.scoreSelection(selection)
     if (score === null) continue
-    const described = describeSelection(visible, selection)
+    const described = describeSelection(visible, selection, rules)
     priced.push({
       tileIds: selection,
       score,

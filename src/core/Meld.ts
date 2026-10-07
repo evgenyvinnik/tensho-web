@@ -113,7 +113,7 @@ export class Meld implements MeldData {
    */
   get typeKey(): string {
     if (this.type === MeldType.Sequence) {
-      return `seq-${this.suit}-${this.lowestRank}`
+      return `seq-${this.suit}-${this.tiles.map((tile) => tile.rank).join('-')}`
     }
     return `${this.type}-${this.tiles[0].typeKey}`
   }

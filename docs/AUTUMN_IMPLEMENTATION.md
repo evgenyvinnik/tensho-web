@@ -1,6 +1,6 @@
 # Autumn: additional discard actions
 
-October 7, 2026. Implemented locally; publication verification pending.
+October 7, 2026. Published and verified as **v1.0.261007-6**.
 
 ## Resolved rule
 
@@ -71,13 +71,23 @@ Evidence directory: `/tmp/tensho-autumn-wziwOp`.
   Both traces are retained; this is not a green final native batch. No timeout
   was increased. The final Pages-base build passes, and all **8/8 built-production
   journeys pass** with the shortened copy, genuine desktop/touch gestures and
-  exact saved-fixture replay (no source imports). Publication verification remains
-  pending.
+  exact saved-fixture replay (no source imports).
 - TypeScript, normal and Pages-base builds, lint (zero errors, 211 existing
   warnings) and all 13 release checks pass before that text-only refinement.
 
 Broader Winter legality, Flower interactions/mutations, catalysts, full item
 semantics, organic balance and newcomer evaluation remain required work.
+
+## Publication verification
+
+Implementation `948ef7b` deployed through [Pages run 37664977678](https://github.com/evgenyvinnik/tensho-web/actions/runs/37664977678).
+CI passed all 1,789 tests in 153 files, 13 release checks and the production build.
+The public release manifest reports **v1.0.261007-6**, build
+`62e585277168211cb460c885c6a224a99ad805c6`. Hosted artwork matches the SHA below.
+All **8/8 hosted saved-fixture journeys** pass with real desktop/touch input:
+grant, spending, exhaustion, score payment, exact reloads, expiry and image decode.
+Logs: `ci.log` and `hosted.log` in the evidence directory above. These later passes
+do not erase the retained native timing failures or establish organic balance.
 
 ## Generated artwork
 
