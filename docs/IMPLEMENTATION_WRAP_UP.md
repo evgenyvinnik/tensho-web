@@ -13,9 +13,11 @@ generated portraits and 14 end-to-end engine regressions covering real resource
 use, exhaustion, boss overrides, Act-reduction lifetime and Final Cut payments.
 All eight native rechecks and eight built-production journeys pass. The full
 local run's timing failures are retained; all 86 affected/recheck tests pass.
-Build, lint and 13 release checks pass. Publication is pending. No resource
-runtime defect was found in these paths; natural reachability and other mechanics
-requirements remain open.
+Build, lint and 13 release checks pass. Published **v1.0.261007-2** after all
+1,710 independent CI tests and deployment passed. All eight hosted journeys,
+public manifest/tag and both artwork hashes match. No resource runtime defect
+was found in these paths; natural reachability and other mechanics requirements
+remain open.
 
 The [hand interpretation follow-up](HAND_INTERPRETATION_UI.md) supplies optional
 localized explanations, rule-aware readiness and two generated portraits.

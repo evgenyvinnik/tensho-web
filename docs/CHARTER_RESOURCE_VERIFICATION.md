@@ -95,7 +95,25 @@ Evidence directory: `/tmp/tensho-resource-charters-NdnKvU`.
   reload work in both languages and viewport modes. Reviewed phone shop and
   expanded-rack screenshots; artwork is legible and the page stays within width.
 
-Publication and independent CI are pending.
+## Publication
+
+Published **v1.0.261007-2** from implementation commit
+`4a61e916f3cdc97dc3bca802ded2977b65f91eab`; the versioned build/tag is
+`45e459e637fb2c0507045e0835fa6b304c55b614`.
+[Independent workflow 37574869914](https://github.com/evgenyvinnik/tensho-web/actions/runs/37574869914)
+passes all **1,710 tests in 146 files**, 13 release checks, build and deployment.
+This independent full pass does not erase the recorded local timing failures.
+
+The public `release.json` and remote release tag match that exact build commit.
+Both hosted portrait SHA-256 values match the table above. All **8/8 hosted
+desktop/touch English/Spanish journeys pass**, including strict fixture loading,
+image decoding, cancelled and paid purchases, upgraded round resources,
+staging without spending, real play/refill and exact save/reload. Evidence is in
+`ci-complete.log`, `hosted.log` and hosted screenshots in the directory above.
+The workflow retains action-runtime Node 20 deprecation/forced Node 24 and upcoming
+Ubuntu runner migration warnings; those are not changed in this checkpoint.
+Owned temporary servers on ports 4196/4197 were stopped; pre-existing 4173 was not touched.
+
 No runtime resource fix was needed for the verified paths. Remaining Flower/
 Season rules, unresolved mechanics choices and broader Charter reachability
 remain tracked in the wrap-up and progression ledgers.
