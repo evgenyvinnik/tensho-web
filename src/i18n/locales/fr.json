@@ -1099,6 +1099,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "Tuiles récupérées dans la rivière par le Prunier : {{count}}. Ce ne sont pas des copies.",
       "runScope": "Les fleurs récoltées durent toute la partie. Les autres bonus sont des aperçus.",
       "roundScope": "Dans l’ordre de pioche. Les saisons expirent à la fin de cette manche.",
       "collected": "Récoltée",

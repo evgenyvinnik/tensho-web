@@ -70,7 +70,7 @@ resolve or replace Plum's separate river recursion.
 Winter resolution is now published and verified; see below. Remaining
 gaps are not removed by choosing the rule.
 
-- Finish the remaining Flower–Season interaction: Plum/Autumn. Orchid/Spring is published and verified in v1.0.261007-11. Bamboo/Summer is published in v1.0.261007-8; the separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing.
+- Verify and publish the Plum/Autumn resolution below. Orchid/Spring is published and verified in v1.0.261007-11. Bamboo/Summer is published in v1.0.261007-8; the separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing.
 - Specify the four advanced Flower mutations, acquisition/unlock path and
   catalyst payments. An unused helper or catalog description is not completion.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
@@ -154,3 +154,34 @@ bloom, not an upfront combo recipe. That transient explanation clears on load
 and the next round; the drawn tiles themselves are saved. This is a documented
 design resolution, not proof that the interaction is balanced or engaging.
 [Implementation and evidence](ORCHID_SPRING_IMPLEMENTATION.md).
+
+### Plum + Autumn: recover one existing river tile per paid sequence
+
+Each sequence in the paid parse reserves the most recently discarded tile whose
+physical suit and rank match one of its members. Only the river as it existed
+before payment is eligible; this play cannot immediately return its own tiles.
+Resolve groups in parser order, without reusing a reserved identity. A sequence
+with no matching river tile earns nothing. No copies, random choices or future
+credits are created. Modifiers stay on the exact recovered tile.
+
+The sequence must consist of real selected tiles with the same faces as the
+scored group. Virtual completions or temporary Honor/Wild face substitutions do
+not qualify that group. Legal physical Winter/Broken Stair gapped sequences do.
+Count the actual paid decomposition, not overlapping possible sequences. One
+normal Autumn and an unsuppressed Plum suffice; duplicates do not multiply the
+reward. Effective Drought blocks earning unless active Eternal Garden protects
+Flowers. Acquisition or suppression during later draws is not retroactive.
+
+Pay the score first. If the round continues, perform normal refill and Orchid
+extras, then move the reserved tiles from river to rack before the draw cycle's
+single Mandate reaction. They add temporary selection options above normal rack
+capacity, not permanent spaces. Recovery is public movement, not a draw: no
+Orchid credit, hidden-draw flag or additional Mandate reaction. Hook/Bell may
+still act on recovered tiles as members of the resulting rack. No ordinary draw
+means no draw reaction. Serpent retains its three ordinary replacement draws.
+
+Round-ending wins, losses and rescues do not refill or recover; recovery cannot
+increase held-Gold settlement. Save/load preserves the actual moved identities
+without replaying any reward. An optional localized inspector explains the last
+experienced recovery, not an upfront recipe. This bounded advantage is a design
+decision, not a claim that the interaction's balance or enjoyment is proven.

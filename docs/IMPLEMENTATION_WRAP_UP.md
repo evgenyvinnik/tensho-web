@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Plum/Autumn](PLUM_AUTUMN_IMPLEMENTATION.md) is locally verified, publication
+pending: one physical matching river recovery per paid sequence, after
+refill on continuing plays only. It preserves preview/payment, modifiers and
+saved identities. Generated Plum art and thirteen-locale earned feedback are
+connected. Full release-style tests pass 1,897/1,897; native and production
+journeys pass 4/4 each. This supersedes older notes below calling Plum
+unimplemented; it is not yet a published-completion claim.
+
 [Orchid/Spring](ORCHID_SPRING_IMPLEMENTATION.md), published in v1.0.261007-11, grants non-chaining physical
 dead-wall draws for normally drawn Honors, before one boss reaction. The actual
 draw capacity and Dead Wall Writ's Spring fill are also connected. New generated

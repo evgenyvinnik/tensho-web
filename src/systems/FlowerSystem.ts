@@ -381,7 +381,8 @@ export class FlowerSystem {
     if (seasonType === 'Autumn' && this.hasFlowerType('Plum')) {
       return {
         hasInteraction: true,
-        effect: 'Sequences can recur from discards',
+        effect:
+          'Each paid physical sequence recovers one matching river tile if the round continues',
         bonus: 0,
       }
     }

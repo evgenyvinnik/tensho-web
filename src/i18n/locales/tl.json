@@ -594,6 +594,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "Mga tile na ibinalik ng Plum mula sa ilog: {{count}}. Mga orihinal na tile ito, hindi mga kopya.",
       "runScope": "Ang nakolektang mga bulaklak ay tumatagal sa buong takbong ito. Paunang tingin lang ang ibang bonus.",
       "roundScope": "Nakaayos ayon sa pagkabunot. Natatapos ang mga season pagkatapos ng round na ito.",
       "collected": "Nakolekta",

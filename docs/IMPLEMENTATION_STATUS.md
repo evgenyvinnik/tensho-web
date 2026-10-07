@@ -4,6 +4,13 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Plum/Autumn checkpoint — verified locally, publication pending:** paid physical
+sequences recover matching pre-play river tiles after refill, without copies or
+preview mutation. New Plum art and thirteen-locale earned feedback are connected.
+Full release-style checks pass 1,897/1,897 tests in 158 files; native and
+production journeys each pass 4/4. Build, 13 release checks and lint pass.
+[Decision, limits and evidence](PLUM_AUTUMN_IMPLEMENTATION.md).
+
 **Published Orchid/Spring — v1.0.261007-11:** each normally drawn Honor earns one extra
 physical dead-wall draw while the combination is effective; bonus draws do not
 chain or permanently increase rack capacity. All draw paths, boss reactions,

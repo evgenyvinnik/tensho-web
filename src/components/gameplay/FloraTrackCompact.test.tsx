@@ -41,6 +41,33 @@ describe('FloraTrackCompact artwork', () => {
     ['en', en],
     ['es', es],
   ] as const)(
+    'illustrates Plum and explains only experienced recovery (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const seasons = new SeasonSystem()
+      seasons.forceSetSeason('Autumn')
+      const flora = { ...fixture(), seasons: seasons.getSeasonStack() }
+      const before = JSON.stringify(flora)
+      render(<FloraTrackCompact flora={flora} />)
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      const dialog = screen.getByRole('dialog')
+      expect(dialog.querySelector('img[src*="plum-bloom.webp"]')).not.toBeNull()
+      expect(dialog.querySelector('[data-plum-recovery]')).toBeNull()
+      expect(within(dialog).queryByText(copy.flora.details.partial)).toBeNull()
+      act(() => eventBus.emit('plumRecovery', { count: 2 }))
+      expect(dialog.querySelector('[data-plum-recovery]')).toHaveTextContent(
+        copy.flora.details.plumRecovery.replace('{{count}}', '2')
+      )
+      expect(JSON.stringify(flora)).toBe(before)
+      act(() => eventBus.emit('gameLoaded', { timestamp: 1 }))
+      expect(dialog.querySelector('[data-plum-recovery]')).toBeNull()
+    }
+  )
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
     'illustrates Orchid and explains an experienced draw without an upfront recipe (%s)',
     async (language, copy) => {
       await changeLanguage(language)

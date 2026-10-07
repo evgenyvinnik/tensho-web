@@ -594,6 +594,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "Tessere recuperate dal fiume dal Pruno: {{count}}. Sono tessere recuperate, non copie.",
       "runScope": "I fiori raccolti durano per tutta la partita. Gli altri bonus sono anteprime.",
       "roundScope": "In ordine di pesca. Le stagioni terminano alla fine del round.",
       "collected": "Raccolto",

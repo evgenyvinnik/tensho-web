@@ -1095,6 +1095,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "Plum returned tiles from the river: {{count}}. These are recovered tiles, not copies.",
       "runScope": "Collected Flowers last for this run. Uncollected bonuses are previews.",
       "roundScope": "Shown in draw order. Seasons expire after this round.",
       "collected": "Collected",

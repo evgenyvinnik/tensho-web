@@ -121,6 +121,7 @@ import {
 import { useOmenStore } from '../stores/omenStore'
 import { takeWallTile, takeDeadWallTile } from './wallDraw'
 import { applySeasonWallEffect, protectSummerWall } from './seasonWall'
+import { planPlumRecursion } from './plumRecursion'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -1033,10 +1034,15 @@ export class GameOrchestrator {
   }
 
   /** Refill to the current rack capacity, including Spring drawn mid-cycle. */
-  private refillHand(effects: Effect[], afterHandPlay: boolean = false): void {
+  private refillHand(
+    effects: Effect[],
+    afterHandPlay: boolean = false,
+    plumRecovery: string[] = []
+  ): void {
     const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
     this.drawToHandSize(() => this.getHandSizeLimit(), effects, cycle)
     this.resolveOrchidDraws(cycle, effects)
+    this.recoverPlumTiles(plumRecovery, effects)
     this.state.handTiles.sort(Tile.compare)
     this.applyMandateDrawState(cycle.drawnTiles, effects, { afterHandPlay })
   }
@@ -1044,11 +1050,12 @@ export class GameOrchestrator {
   /** Resolve the documented post-play/discard draw rule for the active mandate. */
   private refillAfterCycle(
     effects: Effect[],
-    afterHandPlay: boolean = false
+    afterHandPlay: boolean = false,
+    plumRecovery: string[] = []
   ): void {
     const fixedDrawCount = this.state.mandateEffectSystem.getFixedDrawCount()
     if (fixedDrawCount === null) {
-      this.refillHand(effects, afterHandPlay)
+      this.refillHand(effects, afterHandPlay, plumRecovery)
       return
     }
 
@@ -1083,6 +1090,7 @@ export class GameOrchestrator {
 
     this.fillNewSeasonSlots(beforeLimit, effects, cycle)
     this.resolveOrchidDraws(cycle, effects)
+    this.recoverPlumTiles(plumRecovery, effects)
     this.state.handTiles.sort(Tile.compare)
     this.applyMandateDrawState(cycle.drawnTiles, effects, { afterHandPlay })
   }
@@ -1817,6 +1825,11 @@ export class GameOrchestrator {
       return this.executePartialPlay(selectedTiles, effects)
     }
 
+    const plumRecovery = this.planPlumRecovery(
+      completeHand.parsedHand.melds,
+      selectedTiles
+    )
+
     // Calculate score for complete hand
     const scoreResult = this.calculateHandScore(
       completeHand.tilesToScore,
@@ -1944,7 +1957,7 @@ export class GameOrchestrator {
 
     // Auto-draw to refill hand if not round completed
     if (this.state.phase === 'gameplay') {
-      this.refillAfterCycle(effects, true)
+      this.refillAfterCycle(effects, true, plumRecovery)
       this.enforcePlayability(effects)
     }
 
@@ -1969,6 +1982,8 @@ export class GameOrchestrator {
 
     const parse = parsePartialHand(tilesToScore, this.getPartialHandRules())
     const parsedHand = toPartialParsedHand(parse, tilesToScore)
+
+    const plumRecovery = this.planPlumRecovery(parse.groups, selectedTiles)
 
     const scoreResult = this.calculateHandScore(
       tilesToScore,
@@ -2058,7 +2073,7 @@ export class GameOrchestrator {
     this.checkRoundCompletion(effects)
 
     if (this.state.phase === 'gameplay') {
-      this.refillAfterCycle(effects, true)
+      this.refillAfterCycle(effects, true, plumRecovery)
       this.enforcePlayability(effects)
     }
 
@@ -4551,6 +4566,40 @@ export class GameOrchestrator {
       this.state.seasonSystem.areFlowersSuppressed() &&
       !this.isDecreeRuleActive('flowers_protected')
     )
+  }
+
+  private planPlumRecovery(groups: Meld[], played: Tile[]): string[] {
+    if (
+      this.areFlowerBonusesSuppressed() ||
+      !this.state.flowerSystem.hasFlowerType('Plum') ||
+      !this.state.seasonSystem
+        .getSeasonStack()
+        .some((season) => season.type === 'Autumn' && !season.isCorrupted)
+    )
+      return []
+    return planPlumRecursion(groups, played, this.state.discards)
+  }
+
+  /** Paid, continuing plays only. Resolve after draws, before their one boss
+   * reaction. Recovery is public river movement, not a fresh draw/Orchid trigger.
+   */
+  private recoverPlumTiles(ids: string[], effects: Effect[]): void {
+    let count = 0
+    for (const id of ids) {
+      const index = this.state.discards.findIndex((tile) => tile.id === id)
+      if (index < 0 || this.state.handTiles.some((tile) => tile.id === id))
+        continue
+      const [tile] = this.state.discards.splice(index, 1)
+      this.state.handTiles.push(tile)
+      this.state.faceDownTileIds.delete(id)
+      effects.push({
+        type: 'tile_added',
+        description: `Plum returned ${tile.displayName} from the river`,
+        tile,
+      })
+      count++
+    }
+    if (count > 0) eventBus.emit('plumRecovery', { count })
   }
 
   private applyBambooSummerReward(tiles: Tile[], effects: Effect[]): void {

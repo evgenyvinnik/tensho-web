@@ -594,6 +594,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "Erik çiçeğinin atılan taşlardan geri getirdiği: {{count}}. Bunlar kopya değil, asıl taşlardır.",
       "runScope": "Toplanan çiçekler bu koşu boyunca sürer. Toplanmayanların bonusları ön izlemedir.",
       "roundScope": "Çekilme sırasına göre gösterilir. Mevsimler bu turun sonunda sona erer.",
       "collected": "Toplandı",

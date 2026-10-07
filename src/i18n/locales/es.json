@@ -1099,6 +1099,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "El ciruelo recuperó fichas del río: {{count}}. Son fichas recuperadas, no copias.",
       "runScope": "Las flores recogidas duran toda la partida. Las demás bonificaciones son una vista previa.",
       "roundScope": "En orden de robo. Las estaciones terminan al acabar esta ronda.",
       "collected": "Recogida",

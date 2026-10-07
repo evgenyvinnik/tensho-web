@@ -503,6 +503,13 @@ Certain combinations produce emergent effects (not listed explicitly in UI):
 | Plum + Autumn | Sequences generate discard-pool recursion |
 | Orchid + Spring | Honor draws grant additional replacement draw |
 
+Plum/Autumn resolution (October 7, 2026): each paid physical sequence reserves
+one matching pre-play river tile, newest first. Continuing plays recover it
+after refill, before the one draw-cycle Mandate reaction. No copies, virtual
+members, immediate recycling of this play, or terminal-round income are added.
+See [rules](RULE_RESOLUTION.md) and
+[implementation evidence](PLUM_AUTUMN_IMPLEMENTATION.md).
+
 Bamboo/Summer resolution (October 7, 2026): a committed play with at least four
 physical suited 1s/9s earns round-long wall protection when Bamboo is effective
 and normal Summer is active. Scoring happens first; reserved tiles then return

@@ -1179,6 +1179,7 @@
   },
   "flora": {
     "details": {
+      "plumRecovery": "Ubin yang dikembalikan Plum dari sungai: {{count}}. Ini ubin asli, bukan salinan.",
       "runScope": "Bunga yang dikumpulkan bertahan sepanjang permainan ini. Bonus lainnya hanya pratinjau.",
       "roundScope": "Sesuai urutan pengambilan. Musim berakhir setelah ronde ini.",
       "collected": "Terkumpul",
