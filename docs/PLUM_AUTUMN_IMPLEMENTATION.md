@@ -1,6 +1,6 @@
 # Plum recovers river tiles during Autumn
 
-October 7, 2026 — implemented locally; release verification pending.
+October 7, 2026 — published and verified in **v1.0.261007-12**.
 
 The user's delegated authority resolves discard-pool recursion as one existing
 matching river tile per paid physical sequence, newest first. Recovery happens
@@ -56,7 +56,22 @@ Evidence directory: `/tmp/tensho-plum-Z8UIU4`.
   No deadline or assertion was relaxed. The full release-style two-worker
   recheck passes **1,897/1,897 in 158 files**.
 - TypeScript, Pages build and all **13** release checks pass. Lint has zero
-  errors and 211 existing warnings. Independent CI and hosted checks pending.
+  errors and 211 existing warnings. Published evidence follows below.
+
+## Published verification
+
+- Implementation: `4224c5f83c2290bf6d8c08e86e482697b0af74f3`.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37700091664)
+  passes **1,897/1,897 tests in 158 files**, all **13 release checks**, build and
+  deployment. Build job: `113061205255`; deployment job: `113061992186`.
+- The public manifest and remote `v1.0.261007-12` tag both identify
+  `387436b25277f7e2890c5b04df824b1f683e45f1`. Hosted artwork matches the SHA below.
+- **4/4 hosted journeys pass**, without retries or deadline changes: English
+  and Spanish on desktop and 320px touch; real paid forecast, exact physical
+  recovery/action costs, illustrated localized inspection, reload, return to
+  ordinary capacity and round cleanup.
+- Logs: `ci-build.log`, `deploy-watch.log`, `hosted.log`. Both owned local test
+  servers were stopped. The pre-existing port 4173 server was not touched.
 
 Remaining project requirements include Flower mutation/catalyst acquisition,
 full Frostbite semantics, item-rule reconciliation, and human newcomer/fun

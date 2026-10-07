@@ -70,7 +70,7 @@ resolve or replace Plum's separate river recursion.
 Winter resolution is now published and verified; see below. Remaining
 gaps are not removed by choosing the rule.
 
-- Verify and publish the Plum/Autumn resolution below. Orchid/Spring is published and verified in v1.0.261007-11. Bamboo/Summer is published in v1.0.261007-8; the separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing.
+- The base Flower–Season interactions are now connected: Plum/Autumn is published and verified in v1.0.261007-12, Orchid/Spring in v1.0.261007-11, and Bamboo/Summer in v1.0.261007-8. The separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing. Advanced mutations remain separate work below.
 - Specify the four advanced Flower mutations, acquisition/unlock path and
   catalyst payments. An unused helper or catalog description is not completion.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
@@ -185,3 +185,4 @@ increase held-Gold settlement. Save/load preserves the actual moved identities
 without replaying any reward. An optional localized inspector explains the last
 experienced recovery, not an upfront recipe. This bounded advantage is a design
 decision, not a claim that the interaction's balance or enjoyment is proven.
+[Published implementation and verification](PLUM_AUTUMN_IMPLEMENTATION.md).
