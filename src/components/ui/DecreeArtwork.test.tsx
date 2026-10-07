@@ -3,6 +3,8 @@ import { expect, it } from 'vitest'
 import { DecreeArtwork } from './DecreeArtwork'
 
 it.each([
+  ['celestial_wildcard', /celestial-wildcard\.webp$/],
+  ['shanten_clemency', /shanten-clemency\.webp$/],
   ['decree-wealth-engine', /wealth-engine\.png$/],
   ['decree-half-suited', /half-suited\.webp$/],
   ['decree-phoenix', /phoenix\.webp$/],

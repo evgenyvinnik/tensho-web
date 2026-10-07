@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Main aidée par les décrets",
+    "why": "Pourquoi cette main fonctionne",
+    "assisted": "Vos décrets actifs permettent cette main.",
+    "substitution": "{{from}} compte comme {{to}} pour ce coup.",
+    "virtual": "Tuile virtuelle de complément : {{tile}}.",
+    "penalty": "Ce complément virtuel divise le score de la main par deux. La prévision inclut cette pénalité.",
+    "unchanged": "Ces identités sont temporaires et servent au calcul du score. Vos tuiles physiques restent inchangées ; aucune tuile n’est créée.",
+    "allWild": "Chaque tuile peut représenter n’importe quelle famille et valeur pour ce coup."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Améliorez votre main",

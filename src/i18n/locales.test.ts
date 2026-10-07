@@ -44,6 +44,21 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies every hand explanation and its placeholders without English fallback', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    for (const [key, english] of Object.entries(en.handInterpretation)) {
+      const translated = (
+        locale.handInterpretation as typeof en.handInterpretation
+      )[key as keyof typeof en.handInterpretation]
+      expect(translated, `${language}: ${key}`).toBeTruthy()
+      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+      if (language !== 'en') expect(translated).not.toBe(english)
+    }
+  }
+})
+
 it('supplies the confirmed Cerulean Bell rule without English fallback in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const bell = (locale.mandates as typeof en.mandates).items.cerulean_bell

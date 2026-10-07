@@ -1,12 +1,18 @@
 # Implementation wrap-up
 
-**Updated:** October 4, 2026
+**Updated:** October 6, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
 ## Current illustrated Tea House build management
+
+The [hand interpretation follow-up](HAND_INTERPRETATION_UI.md) supplies optional
+localized explanations, rule-aware readiness and two generated portraits.
+Both native browser batches pass 18/18; all 16 built-production journeys pass.
+The full-unit CLI timeout, passing unchanged recheck and corrected stable-source
+lint result are retained in the ledger. Independent CI is the deployment gate.
 
 The [Wildcard scoring correction](CELESTIAL_WILDCARD_IMPLEMENTATION.md) is published
 as **v1.0.261004-10**: consistent temporary identities now support special hands, and

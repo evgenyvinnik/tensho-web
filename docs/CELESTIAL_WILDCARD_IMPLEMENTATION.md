@@ -73,6 +73,11 @@ CI must pass the entire suite before the workflow can deploy this checkpoint.
 
 ## Remaining presentation work
 
+October 6 follow-up: [hand interpretation UI](HAND_INTERPRETATION_UI.md) now
+implements the adopted-identity disclosure and power-aware readiness described
+below. The narrow Spanish Skip control remains a separate layout follow-up.
+The following paragraph records the original October 4 finding.
+
 The displayed physical tile face is intentionally not rewritten. A dedicated
 adopted-identity annotation and power-aware readiness badge remain useful UI
 follow-ups: the natural-shape badge can still say Tenpai while the Decree enables

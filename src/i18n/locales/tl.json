@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Kamay na tinulungan ng Dekreto",
+    "why": "Bakit puwede ang kamay na ito",
+    "assisted": "Pinapayagan ng mga aktibong Dekreto ang kamay na ito.",
+    "substitution": "Bibilangin ang {{from}} bilang {{to}} sa larong ito.",
+    "virtual": "Virtual na pantapos: {{tile}}.",
+    "penalty": "Hinahati ng virtual na pantapos ang puntos ng kamay. Kasama na ang bawas sa pagtataya.",
+    "unchanged": "Pansamantala lamang ang mga pagkakakilanlang ito para sa pagbilang ng puntos. Hindi nagbabago ang mga tunay mong tile at walang nalilikhang bago.",
+    "allWild": "Maaaring maging anumang uri at numero ang bawat tile sa larong ito."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Pagandahin ang iyong kamay",

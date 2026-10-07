@@ -142,8 +142,17 @@ export interface RoundCashOutSummary {
 }
 
 /**
- * Complete game state managed by the orchestrator
+ * Visible, temporary tile interpretation used by declaration scoring.
  */
+export interface CompleteHandInterpretation {
+  naturalComplete: boolean
+  substitutions: { physical: Tile; effective: Tile }[]
+  completionTile?: Tile
+  usedShantenClemency: boolean
+  allWild: boolean
+}
+
+/** Complete game state managed by the orchestrator. */
 export interface OrchestratorState {
   // Session
   isRunActive: boolean
@@ -1341,6 +1350,37 @@ export class GameOrchestrator {
       : [...selectedTiles]
 
     return this.resolveCompleteHand(tilesToScore) !== null
+  }
+
+  /** Read-only explanation of the exact declaration, never of concealed faces. */
+  inspectCompleteHand(tileIds: string[]): CompleteHandInterpretation | null {
+    const ids = new Set(tileIds)
+    const physical = this.state.handTiles.filter((tile) => ids.has(tile.id))
+    if (
+      ids.size !== tileIds.length ||
+      physical.length !== ids.size ||
+      physical.some((tile) => this.state.faceDownTileIds.has(tile.id))
+    )
+      return null
+    const scoringTiles = this.isDecreeRuleActive('honor_as_suited')
+      ? this.transmuteHonorsToDominantSuit(physical)
+      : physical
+    const complete = this.resolveCompleteHand(scoringTiles)
+    if (!complete) return null
+    return {
+      naturalComplete: validateHand(new Hand(physical)).isComplete,
+      substitutions: physical.flatMap((tile) => {
+        const effective = complete.tilesToScore.find(
+          (other) => other.id === tile.id
+        )
+        return effective && effective.typeKey !== tile.typeKey
+          ? [{ physical: tile, effective }]
+          : []
+      }),
+      completionTile: complete.tilesToScore.find((tile) => !ids.has(tile.id)),
+      usedShantenClemency: complete.usedShantenClemency,
+      allWild: this.parseAsAllWild(scoringTiles) !== null,
+    }
   }
 
   /**

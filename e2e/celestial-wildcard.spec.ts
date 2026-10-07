@@ -2,7 +2,7 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 
 for (const language of ['en', 'es'])
-  for (const shape of ['ordinary', 'pairs', 'orphans'])
+  for (const shape of ['ordinary', 'pairs', 'orphans', 'clemency'])
     test(`wildcard ${shape} stages then pays consistently (${language})`, async ({
       page,
       isMobile,
@@ -41,7 +41,9 @@ for (const language of ['en', 'es'])
           savePath = '/src/game/classicPersistenceApp.ts'
         const { gameOrchestrator: game } = await import(gamePath)
         const { Tile, TileSuit, FlowerType } = await import(tilePath)
-        const { CELESTIAL_WILDCARD } = await import(decreePath)
+        const { CELESTIAL_WILDCARD, SHANTEN_CLEMENCY } = await import(
+          decreePath
+        )
         const { CelestialOrbSystem, getCelestialOrbByYaku } = await import(
           orbPath
         )
@@ -67,7 +69,7 @@ for (const language of ['en', 'es'])
                 ['Manzu', [5]],
                 ['Pinzu', [2, 3, 4, 3, 4, 5, 6, 7, 8, 6, 6, 6, 5]],
               ]
-            : shape === 'pairs'
+            : shape === 'pairs' || shape === 'clemency'
               ? [
                   ['Manzu', [1, 1, 4, 4, 7, 7]],
                   ['Pinzu', [2, 2, 5, 5]],
@@ -85,6 +87,16 @@ for (const language of ['en', 'es'])
         state.handTiles = groups.flatMap(([suit, ranks]) =>
           ranks.map((rank, i) => new Tile(TileSuit[suit], rank, `${suit}-${i}`))
         )
+        if (shape === 'clemency') {
+          state.handTiles.pop()
+          state.handTiles[0] = new Tile(
+            TileSuit.Manzu,
+            3,
+            state.handTiles[0].id
+          )
+          if (!game.addDecree(SHANTEN_CLEMENCY))
+            throw new Error('Clemency acquisition failed')
+        }
         state.wall = Array.from(
           { length: 60 },
           (_, i) => new Tile(TileSuit.Souzu, (i % 9) + 1, `wall-${i}`)
@@ -98,7 +110,7 @@ for (const language of ['en', 'es'])
         const category =
           shape === 'ordinary'
             ? 'Chinitsu'
-            : shape === 'pairs'
+            : shape === 'pairs' || shape === 'clemency'
               ? 'SevenPairs'
               : 'Kokushi'
         const base = game.previewScore(ids).finalScore
@@ -129,12 +141,39 @@ for (const language of ['en', 'es'])
         contentType: 'application/json',
       })
       const play = page.locator('[data-game-action="play"]')
+      await expect(page.locator('[data-play-zone="hand"]')).toContainText(
+        copy.handInterpretation.ready
+      )
+      const art = page
+        .locator('img[src$="/decrees/celestial-wildcard.webp"]')
+        .first()
+      await expect(art).toBeVisible()
+      await expect
+        .poll(() =>
+          art.evaluate(
+            (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+          )
+        )
+        .toBe(true)
+      if (shape === 'clemency') {
+        const clemencyArt = page
+          .locator('img[src$="/decrees/shanten-clemency.webp"]')
+          .first()
+        await expect(clemencyArt).toBeVisible()
+        await expect
+          .poll(() =>
+            clemencyArt.evaluate(
+              (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+            )
+          )
+          .toBe(true)
+      }
       await expect(play).toContainText(copy.gameplay.stageHand)
       await activate(play)
       await expect(play).toContainText(copy.gameplay.confirmHand)
       await expect(
         page.locator('[data-play-zone="staging"] [data-play-tile]')
-      ).toHaveCount(14)
+      ).toHaveCount(before.state.handTiles.length)
       const staged = await saved()
       expect(staged.state.score).toBe(before.state.score)
       expect(staged.state.handsRemaining).toBe(before.state.handsRemaining)
@@ -144,6 +183,33 @@ for (const language of ['en', 'es'])
           expected.score
         )
       )
+      const explanation = page.locator('[data-hand-interpretation]')
+      await expect(explanation).not.toHaveAttribute('open', '')
+      await expect(explanation.locator('summary')).toHaveText(
+        copy.handInterpretation.why
+      )
+      if (isMobile) await explanation.locator('summary').tap()
+      else {
+        await explanation.locator('summary').focus()
+        await page.keyboard.press('Enter')
+      }
+      await expect(explanation).toHaveAttribute('open', '')
+      await expect(explanation.locator('[data-interpreted-tile]')).toHaveCount(
+        1
+      )
+      await expect(explanation).toContainText(copy.handInterpretation.unchanged)
+      if (shape === 'clemency')
+        await expect(explanation).toContainText(copy.handInterpretation.penalty)
+      expect(
+        await explanation.evaluate(
+          (node) => node.scrollWidth <= node.clientWidth + 1
+        )
+      ).toBe(true)
+      expect(await saved()).toEqual(staged)
+      await explanation.screenshot({
+        path: testInfo.outputPath('interpretation.png'),
+      })
+      await activate(explanation.locator('summary'))
       await page.screenshot({ path: testInfo.outputPath('staged.png') })
       await activate(play)
       await expect

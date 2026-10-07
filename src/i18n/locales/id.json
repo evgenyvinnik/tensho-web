@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Tangan dibantu Dekret",
+    "why": "Mengapa tangan ini sah",
+    "assisted": "Dekret aktifmu mengizinkan tangan ini.",
+    "substitution": "{{from}} dihitung sebagai {{to}} untuk permainan ini.",
+    "virtual": "Pelengkap virtual: {{tile}}.",
+    "penalty": "Pelengkap virtual ini membagi dua skor tangan. Perkiraan sudah mencakup penalti ini.",
+    "unchanged": "Identitas ini sementara untuk penghitungan skor. Ubin fisikmu tidak berubah dan tidak ada ubin yang dibuat.",
+    "allWild": "Setiap ubin dapat menjadi jenis dan angka apa pun untuk permainan ini."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Perbaiki tanganmu",

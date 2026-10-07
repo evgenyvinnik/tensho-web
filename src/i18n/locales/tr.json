@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Ferman destekli el",
+    "why": "Bu el neden geçerli?",
+    "assisted": "Etkin Fermanların bu ele izin veriyor.",
+    "substitution": "Bu oyunda {{from}}, {{to}} olarak sayılır.",
+    "virtual": "Sanal tamamlayıcı taş: {{tile}}.",
+    "penalty": "Bu sanal tamamlama el puanını yarıya indirir. Tahmin bu cezayı zaten içerir.",
+    "unchanged": "Bunlar puanlama için geçici kimliklerdir. Fiziksel taşların değişmez ve yeni taş oluşturulmaz.",
+    "allWild": "Bu oyunda her taş herhangi bir tür ve sayı yerine geçebilir."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Elini geliştir",

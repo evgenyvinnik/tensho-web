@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Mano aiutata dai decreti",
+    "why": "Perché questa mano funziona",
+    "assisted": "I tuoi decreti attivi consentono questa mano.",
+    "substitution": "{{from}} conta come {{to}} per questa giocata.",
+    "virtual": "Tessera virtuale di completamento: {{tile}}.",
+    "penalty": "Questo completamento virtuale dimezza il punteggio della mano. La previsione include la penalità.",
+    "unchanged": "Queste identità sono temporanee per il punteggio. Le tessere fisiche restano invariate; non viene creata alcuna tessera.",
+    "allWild": "Ogni tessera può rappresentare qualsiasi seme e valore per questa giocata."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Migliora la tua mano",

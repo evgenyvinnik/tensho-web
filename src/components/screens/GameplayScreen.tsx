@@ -433,13 +433,20 @@ export function GameplayScreen() {
   const shantenDisplay = useMemo(() => {
     if (game.handTiles.some((tile) => faceDownTileIds.has(tile.id)))
       return '???'
+    const interpretation = game.inspectCompleteHand(
+      game.handTiles.map((tile) => tile.id)
+    )
+    if (interpretation)
+      return interpretation.naturalComplete
+        ? t('gameplay.completeHand', 'Complete hand')
+        : t('handInterpretation.ready')
     const result = calculateShanten(game.handTiles, game.state.melds)
     if (result.shanten < 0) {
       return t('gameplay.completeHand', 'Complete hand')
     }
     if (result.shanten === 0) return t('gameplay.tenpai', 'Tenpai')
     return t('gameplay.shanten', { count: result.shanten })
-  }, [game.handTiles, game.state.melds, faceDownTileIds, t])
+  }, [game, faceDownTileIds, t])
 
   const previewTileIds =
     stagedTileIds.length > 0
@@ -537,6 +544,7 @@ export function GameplayScreen() {
       yaku: breakdown.detectedYaku.map((detected) => detected.definition),
       structure: breakdown.structure,
       structurePoints: breakdown.structurePoints,
+      interpretation: game.inspectCompleteHand(previewIds),
     }
   }, [stagedTileIds, game, faceDownTileIds])
 

@@ -81,6 +81,8 @@ it('ships the generated guidebook with an alpha-capable PNG in the project', () 
 describe('Decree scroll illustrations', () => {
   it.each([
     ...STARTER_DECREES,
+    { id: 'celestial_wildcard' },
+    { id: 'shanten_clemency' },
     { id: 'decree-half-suited' },
     { id: 'decree-phoenix' },
     { id: 'decree-polished-stone' },

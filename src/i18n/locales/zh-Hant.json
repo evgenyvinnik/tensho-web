@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "敕令輔助成手",
+    "why": "這手牌為何成立",
+    "assisted": "生效中的敕令允許這手牌成立。",
+    "substitution": "本次出牌中，{{from}}視為{{to}}。",
+    "virtual": "虛擬補全牌：{{tile}}。",
+    "penalty": "透過虛擬牌補全會使本手得分減半。預測已包含此懲罰。",
+    "unchanged": "這些僅為計分時使用的臨時身分。實際牌保持不變，也不會產生新牌。",
+    "allWild": "本次出牌中，每張牌均可視為任意花色與點數。"
+  },
   "progressiveHints": {
     "discard": {
       "title": "改善手牌",

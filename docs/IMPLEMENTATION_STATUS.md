@@ -2,7 +2,15 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** October 4, 2026 (browser and release evidence retains its own dates)
+**Last verified:** October 6, 2026 (browser and release evidence retains its own dates)
+
+**CI pending — illustrated hand explanations:** the optional localized disclosure
+shows actual temporary tile identities and virtual-completion penalties. Readiness
+uses active rules; hidden tiles remain concealed. New Wildcard and Clemency
+portraits share the shop/owned/Archive registry. Both native batches pass 18/18;
+16 built-production journeys, build and 13 release checks pass. The unit run has
+1,685 passes and one CLI subprocess timeout; unchanged recheck passes 42/42 and
+final focused checks pass 101/101. [Evidence and prompts](HAND_INTERPRETATION_UI.md).
 
 **Published — v1.0.261004-10, Wildcard and special-hand Orbs:** one temporary interpretation
 now connects validation, preview and payout, including Seven Pairs and Thirteen

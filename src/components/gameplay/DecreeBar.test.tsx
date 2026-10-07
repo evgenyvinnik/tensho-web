@@ -75,6 +75,8 @@ describe('DecreeCardCompact mandate states', () => {
     ALL_DECREES.find((d) => d.id === 'decree-half-suited')!,
     ALL_DECREES.find((d) => d.id === 'decree-phoenix')!,
     ALL_DECREES.find((d) => d.id === 'decree-polished-stone')!,
+    ALL_DECREES.find((d) => d.id === 'celestial_wildcard')!,
+    ALL_DECREES.find((d) => d.id === 'shanten_clemency')!,
   ])('conceals the new $id portrait when face-down', (definition) => {
     const owned = { ...definition, acquiredRound: 1, roundsActive: 0 }
     const path = getDecreeIllustration(definition.id)!

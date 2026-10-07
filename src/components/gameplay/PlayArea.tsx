@@ -17,6 +17,8 @@ import type { CoachAdvice } from '../../gameplay/beginnerCoach'
 import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
 import type { ScoredStructure } from '../../rules/ScoringEngine'
 import { ExactScoreDetails } from './ExactScoreDetails'
+import { HandInterpretationDetails } from './HandInterpretationDetails'
+import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -33,6 +35,7 @@ export interface ScorePreviewData {
   /** Supplied by the scored parse; absence must not imply that tiles are loose. */
   structure?: ScoredStructure
   structurePoints?: number
+  interpretation?: CompleteHandInterpretation | null
 }
 
 /**
@@ -393,6 +396,7 @@ export function PlayArea({
                   }
                 )}
           </p>
+          <HandInterpretationDetails interpretation={scorePreview.interpretation} />
           <ExactScoreDetails
             entries={[
               { label: t('scoring.basePoints'), value: scorePreview.points },

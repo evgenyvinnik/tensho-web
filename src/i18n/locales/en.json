@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Decree-assisted hand",
+    "why": "Why this hand works",
+    "assisted": "Your active Decrees allow this hand.",
+    "substitution": "{{from}} counts as {{to}} for this play.",
+    "virtual": "Virtual completion: {{tile}}.",
+    "penalty": "This virtual completion halves the hand score. The forecast includes this penalty.",
+    "unchanged": "These are temporary scoring identities. Your physical tiles stay unchanged; no tile is created.",
+    "allWild": "Every tile can act as any suit and rank for this play."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Improve your hand",

@@ -1,4 +1,14 @@
 {
+  "handInterpretation": {
+    "ready": "Mano asistida por decretos",
+    "why": "Por qué funciona esta mano",
+    "assisted": "Tus decretos activos permiten esta mano.",
+    "substitution": "{{from}} cuenta como {{to}} en esta jugada.",
+    "virtual": "Ficha virtual para completar: {{tile}}.",
+    "penalty": "Esta ficha virtual reduce a la mitad la puntuación de la mano. La previsión ya incluye la penalización.",
+    "unchanged": "Son identidades temporales para puntuar. Tus fichas físicas no cambian y no se crea ninguna ficha.",
+    "allWild": "Cada ficha puede representar cualquier palo y valor en esta jugada."
+  },
   "progressiveHints": {
     "discard": {
       "title": "Mejora tu mano",

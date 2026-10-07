@@ -113,6 +113,12 @@ it.each([
     const { game, state, ids } = fixture(tiles)
     const before = json(game.captureRun())
     const preview = game.previewScore(ids)!
+    const interpretation = game.inspectCompleteHand(ids)!
+    expect(interpretation.naturalComplete).toBe(false)
+    expect(interpretation.substitutions).toHaveLength(1)
+    expect(interpretation.substitutions[0].effective).toEqual(changed[0])
+    expect(interpretation.completionTile).toBeUndefined()
+    expect(interpretation.usedShantenClemency).toBe(false)
     expect(preview.detectedYaku.map((y) => y.definition.id)).toContain(yaku)
     expect(game.captureRun()).toEqual(before)
     // Compare against the same physically complete deal to catch split tile/meld contexts.
@@ -146,6 +152,11 @@ it('keeps a naturally complete special hand unchanged even when Wildcard is owne
   })
   expect(enhanced).toEqual(natural)
   expect(enhanced.isSevenPairs).toBe(true)
+  const { game, ids } = fixture(tiles)
+  expect(game.inspectCompleteHand(ids)).toMatchObject({
+    naturalComplete: true,
+    substitutions: [],
+  })
 })
 
 it('removes the declaration when the Decree is inactive and does not invent two wildcards', () => {
@@ -155,6 +166,7 @@ it('removes the declaration when the Decree is inactive and does not invent two 
   const before = json(game.captureRun())
   expect(game.validatePlaySelection(ids).isValid).toBe(false)
   expect(game.previewScore(ids)).toBeNull()
+  expect(game.inspectCompleteHand(ids)).toBeNull()
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(false)
   expect(game.captureRun()).toEqual(before)
   const twoMissing = orphans()
@@ -173,6 +185,12 @@ it('carries the same identities through Wildcard plus Shanten Clemency completio
   expect(completion!.effectiveTiles).toHaveLength(14)
   const { game, ids } = fixture(tiles)
   expect(game.addDecree(SHANTEN_CLEMENCY)).toBe(true)
+  const beforeInspection = json(game.captureRun())
+  const interpretation = game.inspectCompleteHand(ids)!
+  expect(interpretation.usedShantenClemency).toBe(true)
+  expect(interpretation.completionTile).toBeDefined()
+  expect(interpretation.substitutions).toHaveLength(1)
+  expect(game.captureRun()).toEqual(beforeInspection)
   const preview = game.previewScore(ids)!
   expect(preview.detectedYaku.map((y) => y.definition.id)).toContain(
     'seven_pairs'
@@ -188,8 +206,24 @@ it('preserves Reality Warp precedence when both wild rules are owned', () => {
     game.addDecree(ALL_DECREES.find((d) => d.id === 'decree-reality-warp')!)
   ).toBe(true)
   const together = game.previewScore(ids)
+  expect(game.inspectCompleteHand(ids)).toMatchObject({
+    allWild: true,
+    substitutions: [],
+  })
   state.decreeSystem.removeDecree(CELESTIAL_WILDCARD.id)
   expect(game.previewScore(ids)).toEqual(together)
+})
+
+it('never discloses hidden tile interpretations, unknown tiles or duplicate selections', () => {
+  const { game, state, ids } = fixture(ordinary())
+  state.faceDownTileIds.add(ids[0])
+  const before = json(game.captureRun())
+  expect(game.inspectCompleteHand(ids)).toBeNull()
+  expect(game.inspectCompleteHand([...ids, 'missing'])).toBeNull()
+  expect(game.inspectCompleteHand([...ids, ids[0]])).toBeNull()
+  expect(game.captureRun()).toEqual(before)
+  state.faceDownTileIds.clear()
+  expect(game.inspectCompleteHand(ids)).not.toBeNull()
 })
 
 it.each([
