@@ -44,6 +44,17 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies the implemented Autumn rule in all thirteen languages', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const details = (locale.flora as typeof en.flora).details
+    expect(Object.prototype.hasOwnProperty.call(details, 'autumn')).toBe(true)
+    expect(details.autumn, language).toContain('1')
+    expect(details.autumn).toContain('20')
+    if (language !== 'en')
+      expect(details.autumn).not.toBe(en.flora.details.autumn)
+  }
+})
+
 it('supplies the implemented Spring rule in all thirteen languages', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const details = (locale.flora as typeof en.flora).details

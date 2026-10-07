@@ -168,7 +168,12 @@ it.each([
     game.exitShop()
     expect(state.phase).toBe('gameplay')
     expect(state.handTiles).toHaveLength(tiles)
-    expect(state.discardsRemaining).toBe(discards)
+    const autumns = state.seasonSystem
+      .getSeasonStack()
+      .filter(
+        (season) => season.type === 'Autumn' && !season.isCorrupted
+      ).length
+    expect(state.discardsRemaining).toBe(discards + autumns)
     expect(state.handsRemaining).toBe(hands)
   }
 )

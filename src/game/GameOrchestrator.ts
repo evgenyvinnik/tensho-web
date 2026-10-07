@@ -620,12 +620,7 @@ export class GameOrchestrator {
         charterEffects.handsPenalty +
         this.state.decreeSystem.getAdditionalDraws()
     )
-    this.state.discardsRemaining = Math.max(
-      0,
-      this.config.discardsPerRound +
-        this.state.omenDiscardBonus +
-        this.state.decreeSystem.getAdditionalDiscards()
-    )
+    this.state.discardsRemaining = this.getRoundDiscardAllowance()
     this.state.redrawsRemaining = Math.max(
       0,
       this.config.redrawsPerRound +
@@ -649,6 +644,18 @@ export class GameOrchestrator {
 
     this.state.handsAllowance = this.state.handsRemaining
     this.state.lastHandScore = undefined
+  }
+
+  /** Granted discard budget, distinct from unspent actions. */
+  private getRoundDiscardAllowance(): number {
+    return (
+      Math.max(
+        0,
+        this.config.discardsPerRound +
+          this.state.omenDiscardBonus +
+          this.state.decreeSystem.getAdditionalDiscards()
+      ) + this.state.seasonSystem.getAdditionalDiscards()
+    )
   }
 
   /** Structural exceptions the active Decrees grant to hand validation. */
@@ -1095,12 +1102,16 @@ export class GameOrchestrator {
         totalFlowers: this.state.flowerSystem.getFlowerCount(),
       })
     } else if (tile.isSeason) {
+      const previousAutumnDiscards =
+        this.state.seasonSystem.getAdditionalDiscards()
       const lockedSeason = this.state.omenSystem.applyLockedSeason()
       const season = this.state.seasonSystem.addSeason(
         tile,
         lockedSeason ?? undefined
       )
       applySeasonWallEffect(this.state, season)
+      this.state.discardsRemaining +=
+        this.state.seasonSystem.getAdditionalDiscards() - previousAutumnDiscards
       if (season?.isCorrupted && season.corruptedType) {
         eventBus.emit('seasonCorrupted', {
           corruptedType: season.corruptedType,
@@ -3226,7 +3237,7 @@ export class GameOrchestrator {
         handsPlayed: this.state.handsAllowance - this.state.handsRemaining,
         maxHands: this.state.handsAllowance,
         discardsRemaining: this.state.discardsRemaining,
-        maxDiscards: this.config.discardsPerRound,
+        maxDiscards: this.getRoundDiscardAllowance(),
         bossMandate: roundState?.bossMandate,
         isCompleted: false,
         isWon: false,

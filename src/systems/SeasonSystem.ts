@@ -7,7 +7,7 @@
  * Base Seasons:
  * - Spring: +2 rack spaces this round, filled on activation and normal refills
  * - Summer: Base score +30%, wall size -20%
- * - Autumn: Yaku multipliers +20%, larger discard pool
+ * - Autumn: Yaku multipliers +20%, +1 discard action on activation
  * - Winter: Hand legality loosened, score -25%
  *
  * Corrupted Seasons (Act II+):
@@ -41,7 +41,8 @@ export const SEASON_BASE_EFFECTS: Record<SeasonVariant, SeasonEffect> = {
   Spring: {
     type: 'draw_bonus',
     value: 2,
-    description: '+2 rack spaces this round; fill new spaces from the live wall',
+    description:
+      '+2 rack spaces this round; fill new spaces from the live wall',
   },
   Summer: {
     type: 'score_modifier',
@@ -51,7 +52,8 @@ export const SEASON_BASE_EFFECTS: Record<SeasonVariant, SeasonEffect> = {
   Autumn: {
     type: 'yaku_modifier',
     value: 0.2, // +20% to yaku multipliers
-    description: 'Yaku multipliers +20%, larger discard pool',
+    description:
+      'Yaku multipliers +20%, +1 discard action this round on activation',
   },
   Winter: {
     type: 'legality_modifier',
@@ -276,16 +278,13 @@ export class SeasonSystem {
   }
 
   /**
-   * Get discard pool modifier from active seasons
+   * Total discard actions granted by normal Autumn draws this round.
+   * The orchestrator grants only the increase on activation, never on restore.
    */
-  getDiscardPoolModifier(): number {
-    let modifier = 1.0
-    for (const season of this.seasonStack) {
-      if (season.type === 'Autumn' && !season.isCorrupted) {
-        modifier *= 1.2 // +20% discard pool
-      }
-    }
-    return modifier
+  getAdditionalDiscards(): number {
+    return this.seasonStack.filter(
+      (season) => season.type === 'Autumn' && !season.isCorrupted
+    ).length
   }
 
   /**

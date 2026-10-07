@@ -445,7 +445,7 @@ Seasons affect only the current round, acting like global modifiers.
 |--------|----------|--------|
 | **Spring** | 春 | +2 rack spaces this round; draw into new spaces from the live wall |
 | **Summer** | 夏 | Base score +30%, wall size −20% |
-| **Autumn** | 秋 | Yaku multipliers +20%, discard pool grows |
+| **Autumn** | 秋 | Yaku multipliers +20%; gain 1 discard action on each normal Autumn draw, for this round |
 | **Winter** | 冬 | Hand legality loosened, but score −25% |
 
 *These introduce tempo-risk tradeoffs, not raw power.*
@@ -455,6 +455,13 @@ ordinary refills maintain it without growing the rack every play. Activation
 fills only newly created spaces when tiles are available. Serpent's subsequent
 replacement count remains three. Monsoon does not grant normal Spring spaces.
 See [Spring implementation](SPRING_IMPLEMENTATION.md).
+
+Autumn resolution (October 7, 2026): “discard pool grows” means one additional
+discard action on activation, not a larger physical river or an unused 20%
+capacity multiplier. Stacks grant one each; Decay grants none. Spent discards
+remain spent for Decree conditions, and loading does not grant actions.
+Plum/Autumn recursion remains a separate requirement.
+See [Autumn implementation](AUTUMN_IMPLEMENTATION.md).
 
 **Seasonal Stack Behavior:**
 - Seasons stack if multiple are drawn

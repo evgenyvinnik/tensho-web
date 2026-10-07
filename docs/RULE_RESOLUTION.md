@@ -55,9 +55,19 @@ Serpent keeps its fixed replacement count, and corrupted Spring has no normal
 bonus. This makes “extra draws” a usable selection advantage, rather than extra
 scoring actions or an unbounded rack. [Implementation](SPRING_IMPLEMENTATION.md).
 
+### Autumn: grant additional discard actions
+
+Each normal Autumn drawn grants one discard action for the current round,
+alongside its existing Yaku modifier. Repeated draws stack; corrupted Autumn
+does not grant the bonus. Loading does not grant actions, and spending them is
+still reflected in discard-dependent Decrees. This resolves “discard pool grows”
+as a larger action budget, replacing the unused percentage helper. It does not
+resolve or replace Plum's separate river recursion.
+[Implementation and evidence](AUTUMN_IMPLEMENTATION.md).
+
 ## Work still required, not removed from scope
 
-- Resolve and connect Autumn discard-pool growth and Winter loosened legality,
+- Resolve and connect Winter loosened legality,
   and finish the remaining Flower–Season interactions including Orchid/Spring.
 - Specify the four advanced Flower mutations, acquisition/unlock path and
   catalyst payments. An unused helper or catalog description is not completion.

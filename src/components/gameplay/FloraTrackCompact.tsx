@@ -210,10 +210,12 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                     src={
                       effect === 'Spring'
                         ? illustrationAssets.springBlossom
-                        : getTileImagePath(
-                            TileSuit.Season,
-                            SEASON_DATA[season.type].rank
-                          )
+                        : effect === 'Autumn'
+                          ? illustrationAssets.autumnMaple
+                          : getTileImagePath(
+                              TileSuit.Season,
+                              SEASON_DATA[season.type].rank
+                            )
                     }
                     alt=""
                     aria-hidden="true"

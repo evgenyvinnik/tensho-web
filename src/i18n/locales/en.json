@@ -1106,7 +1106,7 @@
       "unwired": "Not connected yet.",
       "spring": "+2 rack spaces this round. New spaces draw from the live wall. Stacks; Serpent still replaces only 3 tiles.",
       "summer": "Score ×1.3. Sets aside 20% of the remaining live wall for this round (retained tiles rounded down).",
-      "autumn": "Yaku multiplier +20%.",
+      "autumn": "Yaku multiplier +20%. Each normal Autumn drawn adds 1 discard for this round.",
       "winter": "Score ×0.75.",
       "drought": "Suppresses Flower scoring bonuses unless protected.",
       "frostbite": "Halves Decree flat-point, multiplier and gold bonuses.",

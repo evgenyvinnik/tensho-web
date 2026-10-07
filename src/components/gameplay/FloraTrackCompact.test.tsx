@@ -35,6 +35,38 @@ afterEach(async () => {
 })
 
 describe('FloraTrackCompact artwork', () => {
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
+    'shows normal Autumn resource rules and artwork, without giving them to Decay (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const seasons = new SeasonSystem()
+      seasons.forceSetSeason('Autumn')
+      const normal = { ...seasons.getSeasonStack()[0], id: 'normal-autumn' }
+      seasons.forceSetSeason('Autumn', true)
+      render(
+        <FloraTrackCompact
+          flora={{
+            ...fixture(),
+            seasons: [normal, ...seasons.getSeasonStack()],
+          }}
+        />
+      )
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      const dialog = screen.getByRole('dialog')
+      const normalRow = dialog.querySelector(
+        '[data-flora-detail-season="normal-autumn"]'
+      )!
+      expect(normalRow).toHaveTextContent(copy.flora.details.autumn)
+      expect(
+        dialog.querySelectorAll('img[src*="autumn-maple.webp"]')
+      ).toHaveLength(1)
+      expect(within(dialog).getByText(copy.flora.details.decay)).toBeVisible()
+    }
+  )
   it.each([2, 3, 4])(
     'marks the shop unlock from the actual %i-Flower bonus',
     (count) => {

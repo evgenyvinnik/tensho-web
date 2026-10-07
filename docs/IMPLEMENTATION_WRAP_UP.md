@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+The next [Autumn checkpoint](AUTUMN_IMPLEMENTATION.md) resolves its ambiguous
+discard-pool draft as +1 discard action per normal draw. Granting it preserves
+prior discard expenditures for scoring, stacks, expires and restores exactly.
+It includes generated art and all-locale copy. Full units pass 1,789/1,789;
+initial native journeys pass 8/8. After the text refinement, seven native cases
+pass and a retained overall-deadline failure repeats in isolation; final
+built-production journeys pass 8/8. Pages build passes; publication is pending.
+Plum recursion is still an independent unimplemented requirement.
+
 The user has explicitly delegated resolution and implementation of open rules;
 [the decision record](RULE_RESOLUTION.md) preserves the prior confirmed choices.
 [Spring](SPRING_IMPLEMENTATION.md) now expands the rack by two spaces per normal
