@@ -15,8 +15,11 @@ staging/resources and puts the first upgrade above the fold on a 320px phone.
 Full regression passes 1,747 tests before the layout follow-up; affected checks
 pass 84/84 afterward. Final native and built-production journeys pass 12/12 each,
 with earlier deadline failures retained. Build, lint and thirteen release checks
-pass; publication is pending. Orb-leveling semantics remain an unresolved user
-choice, not silently changed by this inspector.
+pass. Published **v1.0.261007-4** after independent CI passed all 1,747 tests
+against the final source and deployed successfully. All twelve hosted journeys
+pass; public manifest/tag match `6682a8250f2696ebdd79b4ee46aeb9ad696ffde6`, and
+the hosted artwork hash matches. Orb-leveling semantics remain an unresolved
+user choice, not silently changed by this inspector.
 
 The [expanded-rack hand correction](COMPLETE_HAND_SUBSETS.md) finds a legal
 complete declaration inside larger racks, stages only those physical tiles and

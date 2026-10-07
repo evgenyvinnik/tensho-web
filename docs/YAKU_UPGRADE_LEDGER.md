@@ -78,8 +78,25 @@ Evidence: `/tmp/tensho-yaku-ledger-OEz1Hu`.
   Final English and Russian phone screenshots were visually inspected.
 
 Controlled Orb grants, deals and targets establish these boundaries, not organic
-acquisition, balance, native-speaker certification or human enjoyment. Publication
-verification is pending.
+acquisition, balance, native-speaker certification or human enjoyment.
+
+## Publication
+
+Published **v1.0.261007-4** from implementation commit
+`a38a8968eeb83b738092d4b39c7f6cbd9c2c1f36`; the versioned build/tag commit is
+`6682a8250f2696ebdd79b4ee46aeb9ad696ffde6`.
+[GitHub Actions run 37582850660](https://github.com/evgenyvinnik/tensho-web/actions/runs/37582850660)
+passes all **1,747 tests in 149 files**, all **13 release checks**, build and
+Pages deployment against the final source, including the compact layout.
+
+The public release manifest and remote tag match that version and build commit.
+The hosted illustration's SHA-256 matches the workspace asset recorded below.
+All **12 hosted journeys** pass (English/Spanish/Russian, single/Black Hole Orb,
+desktop/320px touch), checking actual Orb use, read-only staged inspection,
+forecast/payment/counts, shop, exact reload and next-round retention. The
+production verifier and terminal output are retained as `verify.cjs` and
+`hosted.log` in the evidence directory. Owned local test servers were stopped;
+the pre-existing server on port 4173 was left untouched.
 
 ## Generated artwork
 

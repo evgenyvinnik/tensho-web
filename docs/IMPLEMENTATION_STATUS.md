@@ -4,13 +4,16 @@
 
 **Last verified:** October 6, 2026 (browser and release evidence retains its own dates)
 
-**In verification — illustrated Yaku upgrade ledger:** gameplay and the shop
+**Published — v1.0.261007-4, illustrated Yaku upgrade ledger:** gameplay and the shop
 now expose actual upgraded families, levels, base bonuses and scored counts.
 The optional read-only dialog has generated artwork, localized copy and a compact
 phone layout; opening it preserves staging and the saved run. Full units pass
 1,747/1,747 before the layout refinement, affected checks pass 84/84 afterward,
 and final native/production journeys pass 12/12 each. Earlier timing failures are
-retained. Build, lint and thirteen release checks pass; publication is pending.
+retained. Build, lint and thirteen release checks pass. Independent release CI
+passes all 1,747 tests against the final source; all twelve hosted journeys pass.
+Public manifest/tag match `6682a8250f2696ebdd79b4ee46aeb9ad696ffde6`, and the
+hosted artwork hash matches the generated workspace asset.
 Orb-leveling design and broader completion remain open.
 [Evidence, artwork and prompt](YAKU_UPGRADE_LEDGER.md).
 
