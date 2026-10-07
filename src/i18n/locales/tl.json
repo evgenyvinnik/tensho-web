@@ -404,6 +404,7 @@
     "stakeLabel": "STAKE {{tier}}",
     "selectExact": "PUMILI NG {{count}}",
     "stageHand": "IHANDA ANG KAMAY",
+    "completeHand": "Kumpletong kamay",
     "selectMore": "PUMILI PA NG {{count}}",
     "returnTiles": "IBALIK ANG {{count}}",
     "confirmHand": "KUMPIRMAHIN ANG KAMAY",

@@ -31,6 +31,10 @@ import {
 } from '../rules/ScoringEngine'
 import { findOneAwayCompletion, validateHand } from '../rules/HandValidator'
 import {
+  findCompleteHandSubset,
+  REGULAR_TILE_TYPES,
+} from '../rules/CompleteHandSubset'
+import {
   parsePartialHand,
   toPartialParsedHand,
 } from '../rules/PartialHandParser'
@@ -1350,6 +1354,118 @@ export class GameOrchestrator {
       : [...selectedTiles]
 
     return this.resolveCompleteHand(tilesToScore) !== null
+  }
+
+  /** A visible, legal declaration to stage; never spends resources or selects tiles.
+   * Enlarged racks retain their spare tiles. The first accepted shape is stable,
+   * not a promise of the maximum-scoring interpretation or physical copies.
+   */
+  findCompleteHandSelection(): string[] | null {
+    if (
+      !this.state.isRunActive ||
+      this.state.phase !== 'gameplay' ||
+      this.state.handsRemaining < 1
+    )
+      return null
+    const visible = this.state.handTiles.filter(
+      (tile) => !tile.isBonus && !this.state.faceDownTileIds.has(tile.id)
+    )
+    const required = this.state.mandateEffectSystem.getLockedTileIds()
+    if (required.some((id) => !visible.some((t) => t.id === id))) return null
+    const fixed = this.state.roundManager.checkMandateEffect('fixed_hand_size')
+    if ((fixed.active && Number(fixed.value) < 11) || required.length > 14)
+      return null
+    const accept = (ids: string[]) =>
+      this.isCompleteHand(ids) && this.validatePlaySelection(ids).isValid
+    const all = visible.map((tile) => tile.id)
+    if (all.length <= 14 && accept(all)) return all
+    const options = this.getValidationOptions()
+    const minimum = options.meldMayServeAsPair ? 12 : 14
+    const clemency = this.isDecreeRuleActive('shanten_clemency')
+    if (visible.length < minimum - Number(clemency)) return null
+    if (this.isDecreeRuleActive('all_wild') && visible.length >= 14) {
+      const chosen = [...visible]
+        .sort(
+          (a, b) =>
+            Number(required.includes(b.id)) - Number(required.includes(a.id))
+        )
+        .slice(0, 14)
+      const ids = visible.filter((t) => chosen.includes(t)).map((t) => t.id)
+      if (accept(ids)) return ids
+    }
+    const physical = new Set(all)
+    const seen = new Set<string>()
+    const search = (pool: Tile[], extraRequired: string[] = []) =>
+      findCompleteHandSubset(
+        pool,
+        (ids) => {
+          const played = ids.filter((id) => physical.has(id))
+          const key = JSON.stringify(played)
+          if (seen.has(key)) return false
+          seen.add(key)
+          return accept(played)
+        },
+        [...required, ...extraRequired],
+        options
+      )?.filter((id) => physical.has(id)) ?? null
+    const variants = this.isDecreeRuleActive('honor_as_suited')
+      ? [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu].map((suit) =>
+          visible.map((tile) =>
+            tile.isHonor
+              ? new Tile(suit, tile.rank, tile.id, tile.isRed, tile.modifiers)
+              : tile
+          )
+        )
+      : [visible]
+    const withWildcard = (
+      pool: Tile[],
+      extraRequired: string[] = []
+    ): string[] | null => {
+      const natural = search(pool, extraRequired)
+      if (natural || !options.wildcardCount) return natural
+      // Equal physical faces are structurally interchangeable. Preserve a
+      // required copy when choosing which one may impersonate another face.
+      const replacedTypes = new Set<string>()
+      const ordered = [...pool].sort(
+        (a, b) =>
+          Number(required.includes(b.id)) - Number(required.includes(a.id))
+      )
+      for (const tile of ordered) {
+        if (!physical.has(tile.id) || replacedTypes.has(tile.typeKey)) continue
+        replacedTypes.add(tile.typeKey)
+        for (const [suit, maximum] of REGULAR_TILE_TYPES)
+          for (let rank = 1; rank <= maximum; rank++) {
+            if (tile.suit === suit && tile.rank === rank) continue
+            const found = search(
+              pool.map((other) =>
+                other.id === tile.id
+                  ? new Tile(suit, rank, tile.id, tile.isRed, tile.modifiers)
+                  : other
+              ),
+              [...extraRequired, tile.id]
+            )
+            if (found) return found
+          }
+      }
+      return null
+    }
+    for (const variant of variants) {
+      const found = withWildcard(variant)
+      if (found) return found
+    }
+    if (clemency)
+      for (const variant of variants)
+        for (const [suit, maximum] of REGULAR_TILE_TYPES)
+          for (let rank = 1; rank <= maximum; rank++) {
+            let id = `subset-completion-${suit}-${rank}`
+            while (physical.has(id)) id += '-virtual'
+            const found = withWildcard(
+              [...variant, new Tile(suit, rank, id)],
+              [id]
+            )
+            if (found) return found
+          }
+    return null
   }
 
   /** Read-only explanation of the exact declaration, never of concealed faces. */

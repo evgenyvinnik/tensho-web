@@ -44,6 +44,15 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('localizes complete-hand readiness without a fallback in every language', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const gameplay = locale.gameplay as typeof en.gameplay
+    expect(gameplay.completeHand, language).toBeTruthy()
+    if (language !== 'en')
+      expect(gameplay.completeHand).not.toBe(en.gameplay.completeHand)
+  }
+})
+
 it('supplies every hand explanation and its placeholders without English fallback', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     for (const [key, english] of Object.entries(en.handInterpretation)) {

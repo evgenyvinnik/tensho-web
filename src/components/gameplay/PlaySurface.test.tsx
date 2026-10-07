@@ -110,6 +110,55 @@ describe('PlaySurface', () => {
   })
 
   describe('rendering', () => {
+    it('stages only the requested complete subset, leaving enlarged-rack spares untouched', async () => {
+      const tiles = createTestTiles(16)
+      const ids = tiles.slice(1, 15).map((tile) => tile.id)
+      const { container, rerender } = render(
+        <PlaySurface
+          handTiles={tiles}
+          stageAllRequestId={0}
+          stageRequestTileIds={ids}
+        />
+      )
+      rerender(
+        <PlaySurface
+          handTiles={tiles}
+          stageAllRequestId={1}
+          stageRequestTileIds={ids}
+        />
+      )
+      await waitFor(() =>
+        expect(
+          container.querySelectorAll(
+            '[data-play-zone="staging"] [data-play-tile]'
+          )
+        ).toHaveLength(14)
+      )
+      expect(
+        [
+          ...container.querySelectorAll(
+            '[data-play-zone="hand"] [data-play-tile]'
+          ),
+        ].map((node) => node.getAttribute('data-play-tile'))
+      ).toEqual([tiles[0].id, tiles[15].id])
+      // Parent rerenders are not a new declaration request.
+      fireEvent.click(
+        container.querySelector('[data-play-zone="staging"] [data-play-tile]')!
+      )
+      rerender(
+        <PlaySurface
+          handTiles={[...tiles]}
+          stageAllRequestId={1}
+          stageRequestTileIds={[...ids]}
+        />
+      )
+      expect(
+        container.querySelectorAll(
+          '[data-play-zone="staging"] [data-play-tile]'
+        )
+      ).toHaveLength(13)
+    })
+
     it('should render hand tiles', () => {
       const tiles = createTestTiles(5)
 

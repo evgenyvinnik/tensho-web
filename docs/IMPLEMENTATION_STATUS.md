@@ -4,6 +4,16 @@
 
 **Last verified:** October 6, 2026 (browser and release evidence retains its own dates)
 
+**In verification — expanded-rack complete hands:** larger racks now offer a
+legal complete subset instead of requiring every held tile to form one hand.
+Stage/confirm remains two-step, unused tiles stay held, and boss locks/hidden
+faces are respected. All thirteen locales have complete-hand readiness copy.
+Final native desktop/320px checks pass 38/38, including scroll access to spares;
+153 focused rechecks, build, lint and 13 release checks pass. Initial full-suite
+timing failures are retained. All twenty built-production journeys pass;
+publication verification is pending.
+[Scope and evidence](COMPLETE_HAND_SUBSETS.md).
+
 **Published — v1.0.261007-1, illustrated hand explanations:** the optional localized disclosure
 shows actual temporary tile identities and virtual-completion penalties. Readiness
 uses active rules; hidden tiles remain concealed. New Wildcard and Clemency

@@ -297,6 +297,7 @@
     "stakeLabel": "STAKE {{tier}}",
     "selectExact": "SELECT {{count}}",
     "stageHand": "STAGE HAND",
+    "completeHand": "Complete hand",
     "selectMore": "SELECT {{count}} MORE",
     "returnTiles": "RETURN {{count}}",
     "confirmHand": "CONFIRM HAND",

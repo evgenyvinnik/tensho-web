@@ -301,6 +301,7 @@
     "stakeLabel": "APUESTA {{tier}}",
     "selectExact": "ELIGE {{count}}",
     "stageHand": "PREPARAR MANO",
+    "completeHand": "Mano completa",
     "selectMore": "ELIGE {{count}} MÁS",
     "returnTiles": "DEVUELVE {{count}}",
     "confirmHand": "CONFIRMAR MANO",

@@ -381,6 +381,7 @@
     "stakeLabel": "TARUHAN {{tier}}",
     "selectExact": "PILIH {{count}}",
     "stageHand": "SIAPKAN TANGAN",
+    "completeHand": "Tangan lengkap",
     "selectMore": "PILIH {{count}} LAGI",
     "returnTiles": "KEMBALIKAN {{count}}",
     "confirmHand": "KONFIRMASI TANGAN",

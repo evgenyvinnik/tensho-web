@@ -404,6 +404,7 @@
     "stakeLabel": "СТАВКА {{tier}}",
     "selectExact": "ВЫБЕРИТЕ {{count}}",
     "stageHand": "ГОТОВИТЬ РУКУ",
+    "completeHand": "Готовая рука",
     "selectMore": "ВЫБЕРИТЕ ЕЩЁ {{count}}",
     "returnTiles": "ВЕРНУТЬ {{count}}",
     "confirmHand": "ПОДТВЕРДИТЬ РУКУ",

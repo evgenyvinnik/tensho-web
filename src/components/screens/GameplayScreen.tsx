@@ -108,6 +108,7 @@ export function GameplayScreen() {
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
   const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
   const [stageAllRequestId, setStageAllRequestId] = useState(0)
+  const [stageRequestTileIds, setStageRequestTileIds] = useState<string[]>([])
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showBeginnerGuide, setShowBeginnerGuide] = useState(false)
   const [hasCompletedFirstPlay, setHasCompletedFirstPlay] = useState(false)
@@ -327,8 +328,12 @@ export function GameplayScreen() {
     setShowBeginnerGuide(true)
   }, [])
 
+  const completeHandSelection = useMemo(
+    () => game.findCompleteHandSelection(),
+    [game]
+  )
+
   const handlePlayHand = useCallback(() => {
-    const currentHandTiles = game.handTiles
     const currentSelectedIds = game.selectedTileIds
 
     let tileIds: string[] = []
@@ -337,8 +342,8 @@ export function GameplayScreen() {
     } else if (currentSelectedIds.length > 0) {
       tileIds = [...currentSelectedIds]
     } else {
-      tileIds = currentHandTiles.map((tile) => tile.id)
-      if (!game.isCompleteHand(tileIds)) {
+      tileIds = completeHandSelection ?? []
+      if (tileIds.length === 0) {
         setActionError(
           t(
             'gameplay.completeOrSelectTactical',
@@ -353,7 +358,9 @@ export function GameplayScreen() {
       }
 
       setActionError(null)
-      game.selectAllTiles()
+      game.clearSelection()
+      for (const id of tileIds) game.selectTile(id)
+      setStageRequestTileIds(tileIds)
       setStageAllRequestId((requestId) => requestId + 1)
       return
     }
@@ -374,7 +381,7 @@ export function GameplayScreen() {
     } else if (result?.errors) {
       setActionError(result.errors[0])
     }
-  }, [game, stagedTileIds, t])
+  }, [game, stagedTileIds, completeHandSelection, t])
 
   const handleRedraw = useCallback(() => {
     const tileIds =
@@ -434,7 +441,7 @@ export function GameplayScreen() {
     if (game.handTiles.some((tile) => faceDownTileIds.has(tile.id)))
       return '???'
     const interpretation = game.inspectCompleteHand(
-      game.handTiles.map((tile) => tile.id)
+      completeHandSelection ?? game.handTiles.map((tile) => tile.id)
     )
     if (interpretation)
       return interpretation.naturalComplete
@@ -446,14 +453,14 @@ export function GameplayScreen() {
     }
     if (result.shanten === 0) return t('gameplay.tenpai', 'Tenpai')
     return t('gameplay.shanten', { count: result.shanten })
-  }, [game, faceDownTileIds, t])
+  }, [game, completeHandSelection, faceDownTileIds, t])
 
   const previewTileIds =
     stagedTileIds.length > 0
       ? stagedTileIds
       : game.selectedTileIds.length > 0
         ? game.selectedTileIds
-        : game.handTiles.map((tile) => tile.id)
+        : (completeHandSelection ?? game.handTiles.map((tile) => tile.id))
   const activePreviewTileIds =
     stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
   const beginnerCoachActive = Boolean(
@@ -493,12 +500,19 @@ export function GameplayScreen() {
       tiles: game.handTiles,
       concealedIds: faceDownTileIds,
       requiredTileIds: game.lockedTileIds,
+      completeHandTileIds: completeHandSelection,
       scoreSelection: (tileIds) =>
         game.previewScore(tileIds)?.finalScore ?? null,
       remainingToTarget: Math.max(0, game.targetScore - game.score),
       handsRemaining: game.handsRemaining,
     })
-  }, [beginnerCoachActive, coachDismissed, game, faceDownTileIds])
+  }, [
+    beginnerCoachActive,
+    coachDismissed,
+    game,
+    completeHandSelection,
+    faceDownTileIds,
+  ])
 
   const handleCoachChoose = useCallback(
     (tileIds: string[]) => {
@@ -518,7 +532,7 @@ export function GameplayScreen() {
         ? stagedTileIds
         : game.selectedTileIds.length > 0
           ? game.selectedTileIds
-          : game.handTiles.map((tile) => tile.id)
+          : (completeHandSelection ?? game.handTiles.map((tile) => tile.id))
     const previewTiles = game.handTiles.filter((tile) =>
       previewIds.includes(tile.id)
     )
@@ -546,7 +560,7 @@ export function GameplayScreen() {
       structurePoints: breakdown.structurePoints,
       interpretation: game.inspectCompleteHand(previewIds),
     }
-  }, [stagedTileIds, game, faceDownTileIds])
+  }, [stagedTileIds, game, completeHandSelection, faceDownTileIds])
 
   const isCompleteHandSelection =
     previewTileIds.length > 5 &&
@@ -807,6 +821,7 @@ export function GameplayScreen() {
               onTileDiscard={handleTileDiscard}
               onTilesStaged={handleTilesStaged}
               stageAllRequestId={stageAllRequestId}
+              stageRequestTileIds={stageRequestTileIds}
               disabled={false}
               shantenDisplay={shantenDisplay}
               handsRemaining={game.handsRemaining}
@@ -858,7 +873,7 @@ export function GameplayScreen() {
           selectedTileCount={
             stagedTileIds.length || game.selectedTileIds.length
           }
-          handTileCount={game.handTiles.length}
+          handTileCount={previewTileIds.length}
           isCompleteHandSelection={isCompleteHandSelection}
           playAllowed={game.canPerformAction({
             type: 'play',

@@ -225,6 +225,7 @@ function playRun(seed: number): RunResult {
       tiles: [...state.handTiles],
       concealedIds: state.faceDownTileIds,
       requiredTileIds: state.mandateEffectSystem.getLockedTileIds(),
+      completeHandTileIds: orchestrator.findCompleteHandSelection(),
       scoreSelection: (tileIds) =>
         orchestrator.previewScore(tileIds)?.finalScore ?? null,
       remainingToTarget: Math.max(0, state.targetScore - state.score),

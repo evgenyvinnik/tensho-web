@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [expanded-rack hand correction](COMPLETE_HAND_SUBSETS.md) finds a legal
+complete declaration inside larger racks, stages only those physical tiles and
+keeps spares held. Required/hidden tiles and active rules remain authoritative.
+The coach shares the candidate and all thirteen locales supply the readiness
+label. Final native checks pass 38/38, focused rechecks 153/153, build, lint and
+13 release checks pass. Earlier local timing failures remain in the evidence
+ledger. All twenty built-production journeys pass; publication is pending.
+
 The [resource Charter checkpoint](CHARTER_RESOURCE_VERIFICATION.md) adds two
 generated portraits and 14 end-to-end engine regressions covering real resource
 use, exhaustion, boss overrides, Act-reduction lifetime and Final Cut payments.

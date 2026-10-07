@@ -404,6 +404,7 @@
     "stakeLabel": "BAHİS {{tier}}",
     "selectExact": "{{count}} SEÇ",
     "stageHand": "ELİ HAZIRLA",
+    "completeHand": "Tamamlanmış el",
     "selectMore": "{{count}} DAHA SEÇ",
     "returnTiles": "{{count}} GERİ VER",
     "confirmHand": "ELİ ONAYLA",

@@ -301,6 +301,7 @@
     "stakeLabel": "MISE {{tier}}",
     "selectExact": "CHOISIR {{count}}",
     "stageHand": "PRÉPARER LA MAIN",
+    "completeHand": "Main complète",
     "selectMore": "CHOISIR {{count}} DE PLUS",
     "returnTiles": "RENDRE {{count}}",
     "confirmHand": "CONFIRMER LA MAIN",

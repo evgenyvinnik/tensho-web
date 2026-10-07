@@ -49,6 +49,8 @@ export interface PlaySurfaceProps {
   onTilesStaged?: (tiles: Tile[]) => void
   /** Increment to move the complete hand into the staging zone */
   stageAllRequestId?: number
+  /** Exact declaration to stage; omitted for legacy whole-rack requests. */
+  stageRequestTileIds?: readonly string[]
   /** Whether interactions are disabled */
   disabled?: boolean
   /** Shanten display text */
@@ -109,6 +111,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   onTileDiscard,
   onTilesStaged,
   stageAllRequestId = 0,
+  stageRequestTileIds,
   disabled = false,
   shantenDisplay = '',
   handsRemaining = 0,
@@ -352,12 +355,16 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   }, [stagedTiles, onTilesStaged])
 
   // A complete-hand declaration is deliberately two-step: the action bar
-  // moves every tile here first, then the player confirms the staged hand.
+  // moves only the declared subset here, then the player confirms it.
   useEffect(() => {
     if (stageAllRequestId <= handledStageAllRequestRef.current) return
     handledStageAllRequestRef.current = stageAllRequestId
-    setStagedTiles([...handTiles])
-  }, [stageAllRequestId, handTiles])
+    setStagedTiles(
+      stageRequestTileIds
+        ? handTiles.filter((tile) => stageRequestTileIds.includes(tile.id))
+        : [...handTiles]
+    )
+  }, [stageAllRequestId, stageRequestTileIds, handTiles])
 
   // Clear staged tiles when hand changes significantly
   useEffect(() => {

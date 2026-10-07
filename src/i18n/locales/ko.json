@@ -301,6 +301,7 @@
     "stakeLabel": "스테이크 {{tier}}",
     "selectExact": "{{count}}장 선택",
     "stageHand": "손패 준비",
+    "completeHand": "완성된 손패",
     "selectMore": "{{count}}장 더 선택",
     "returnTiles": "{{count}}장 반환",
     "confirmHand": "손패 확정",

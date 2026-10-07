@@ -404,6 +404,7 @@
     "stakeLabel": "เดิมพัน {{tier}}",
     "selectExact": "เลือก {{count}} ใบ",
     "stageHand": "เตรียมมือ",
+    "completeHand": "มือสมบูรณ์",
     "selectMore": "เลือกอีก {{count}} ใบ",
     "returnTiles": "คืน {{count}} ใบ",
     "confirmHand": "ยืนยันมือ",

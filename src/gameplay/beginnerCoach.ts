@@ -19,6 +19,7 @@ import { MeldType } from '../core/Meld'
 import { Tile } from '../core/Tile'
 import { STRUCTURE_POINTS_BY_TYPE, getTilePoints } from '../rules/ScoringEngine'
 import { parsePartialHand } from '../rules/PartialHandParser'
+import { findCompleteHandSubset } from '../rules/CompleteHandSubset'
 import {
   MAX_TACTICAL_PLAY_TILES,
   MIN_TACTICAL_PLAY_TILES,
@@ -124,6 +125,8 @@ export interface CoachAdvice {
 
 export interface CoachContext {
   tiles: Tile[]
+  /** Rule-aware engine suggestion, when supplied; null means none found. */
+  completeHandTileIds?: readonly string[] | null
   /** Visible forced tiles must be part of every recommendation. */
   requiredTileIds?: readonly string[]
   /** Tiles the player cannot see; never suggested and never scored. */
@@ -307,7 +310,27 @@ export function buildCoachAdvice(context: CoachContext): CoachAdvice | null {
     return null
 
   const priced: CoachOption[] = []
-  for (const selection of candidateSelections(visible, required)) {
+  const candidates = candidateSelections(visible, required)
+  const complete =
+    context.completeHandTileIds === undefined && visible.length > 14
+      ? findCompleteHandSubset(
+          visible,
+          (ids) => context.scoreSelection(ids) !== null,
+          required
+        )
+      : context.completeHandTileIds
+  if (
+    complete &&
+    !candidates.some(
+      (ids) =>
+        ids.length === complete.length &&
+        ids.every((id) => complete.includes(id))
+    ) &&
+    required.every((id) => complete.includes(id)) &&
+    complete.every((id) => visible.some((tile) => tile.id === id))
+  )
+    candidates.push([...complete])
+  for (const selection of candidates) {
     const score = context.scoreSelection(selection)
     if (score === null) continue
     const described = describeSelection(visible, selection)

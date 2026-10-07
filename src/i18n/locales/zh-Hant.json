@@ -301,6 +301,7 @@
     "stakeLabel": "賭注 {{tier}}",
     "selectExact": "選擇{{count}}張",
     "stageHand": "預備手牌",
+    "completeHand": "完整和牌",
     "selectMore": "再選{{count}}張",
     "returnTiles": "退回{{count}}張",
     "confirmHand": "確認手牌",

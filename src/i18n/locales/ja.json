@@ -301,6 +301,7 @@
     "stakeLabel": "ステーク {{tier}}",
     "selectExact": "{{count}}枚選択",
     "stageHand": "手を構える",
+    "completeHand": "和了形",
     "selectMore": "あと{{count}}枚選択",
     "returnTiles": "{{count}}枚戻す",
     "confirmHand": "手を確定",

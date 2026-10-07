@@ -404,6 +404,7 @@
     "stakeLabel": "POSTA {{tier}}",
     "selectExact": "SCEGLI {{count}}",
     "stageHand": "PREPARA LA MANO",
+    "completeHand": "Mano completa",
     "selectMore": "SCEGLI {{count}} IN PIÙ",
     "returnTiles": "RESTITUISCI {{count}}",
     "confirmHand": "CONFERMA LA MANO",
