@@ -17,7 +17,8 @@
   src: url('/assets/NotoSansJP-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  /* Match index.css: don't reflow interactive controls for a late font. */
+  font-display: optional;
 }
 
 /* Go3v2 - Alternative decorative font */
@@ -27,5 +28,5 @@
   unicode-range: U+0020-007E;
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }

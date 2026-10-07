@@ -4,12 +4,13 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Local input correction:** a complete pointer gesture before the first drag
-render no longer disappears. Synchronous ownership also guards cancellation,
-duplicate release and disabled-during-drag. Full regression passes 1,843/1,843;
-27 component checks, all 14 native cases across initial/recheck batches, and
-the final 8/8 production batch pass. Earlier timing failures and an unexplained
-intermittent browser miss remain recorded. [Evidence](TOUCH_GESTURE_IMPLEMENTATION.md).
+**Published input correction — v1.0.261007-9:** synchronous pointer ownership fixes
+the reproduced first-frame race; release CI passes 1,843/1,843. Hosted checks
+pass only 5/8 and establish a separate moving discard target. A local follow-up
+reserves a right-hand action column and prevents late UI font reflow. All 20
+native and 20 production journeys, 27 component tests, build and release checks
+pass. Final organic-resource assertion recheck passes 12/12; publication
+verification remains pending. [Evidence](TOUCH_GESTURE_IMPLEMENTATION.md).
 
 **Published — v1.0.261007-8, Bamboo/Summer:** paid plays with four physical terminals
 can restore the withheld wall and earn round-scoped protection against further

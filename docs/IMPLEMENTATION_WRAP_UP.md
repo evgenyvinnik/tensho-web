@@ -8,12 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-The [touch-input follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) fixes a reproduced
-first-frame gesture race discovered while verifying the Summer release.
-Full regression passes 1,843/1,843; final production journeys pass 8/8. Native
-coverage passes across 11 initial cases and three unchanged rechecks. Earlier
-intermittent browser misses remain explicitly qualified, not all attributed to
-this race. Independent CI/publication and hosted verification are pending.
+The [touch-input follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) published the reproduced
+first-frame fix in v1.0.261007-9; release CI passes 1,843/1,843. Hosted checks pass
+only 5/8, with traces proving a separate moving discard target. The local grid
+and font-loading correction now passes 20/20 native and 20/20 production journeys,
+27 component tests, build and release checks. Final organic-resource assertion
+recheck passes 12/12; publication verification remains pending;
+earlier failures are retained rather than attributed to the listener race.
 
 [Bamboo/Summer protection](BAMBOO_SUMMER_IMPLEMENTATION.md) is published in
 v1.0.261007-8. It connects physical-terminal paid plays to restoration and

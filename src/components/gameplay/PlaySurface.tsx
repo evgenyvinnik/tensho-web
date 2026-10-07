@@ -653,34 +653,36 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           filter: handZoneSpring.brightness.to((b) => `brightness(${b})`),
         }}
       >
-        {/* Secondary controls occupy a real row, never tile hit areas. */}
-        <div className="flex w-full flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <span className="text-[var(--color-beige-white)] text-sm opacity-70">
-              {t('gameplay.handCount', 'Hand ({{count}})', {
-                count: tilesInHand.length,
-              })}
-            </span>
-            <span
-              data-tutorial="hands-remaining"
-              className="text-blue-400 text-sm"
-            >
-              🖐 {handsRemaining}
-            </span>
-          </div>
-
-          {/* Shanten/Tenpai display - always visible */}
-          {shantenDisplay && (
-            <div className="px-2 py-1 rounded-full bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]">
-              <span className="text-[var(--color-golden-yellow)] font-bold text-sm">
-                {shantenDisplay}
+        {/* Reserve the action column: text/font reflow must not move a drop
+            target across the rack while the player is already dragging. */}
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-start gap-3">
+          <div className="flex min-w-0 flex-col items-start gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="break-words text-[var(--color-beige-white)] text-sm leading-5 opacity-70">
+                {t('gameplay.handCount', 'Hand ({{count}})', {
+                  count: tilesInHand.length,
+                })}
+              </span>
+              <span
+                data-tutorial="hands-remaining"
+                className="shrink-0 text-blue-400 text-sm leading-5"
+              >
+                🖐 {handsRemaining}
               </span>
             </div>
-          )}
+
+            {shantenDisplay && (
+              <div className="max-w-full rounded-full border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] px-2 py-1">
+                <span className="block break-words text-sm font-bold leading-5 text-[var(--color-golden-yellow)]">
+                  {shantenDisplay}
+                </span>
+              </div>
+            )}
+          </div>
           <animated.div
             ref={discardZoneRef}
             data-play-zone="discard"
-            className="flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1 rounded-lg border-2 border-dashed px-2"
+            className="flex h-11 w-14 items-center justify-center gap-1 self-start rounded-lg border-2 border-dashed px-2"
             style={{
               transform: discardZoneSpring.scale.to((s) => `scale(${s})`),
               backgroundColor: discardZoneSpring.backgroundColor,
