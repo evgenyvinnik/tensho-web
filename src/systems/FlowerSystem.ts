@@ -19,6 +19,7 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { FLOWER_DECREE_UNLOCK_COUNT } from '../config/flowerRules'
 import { MeldType } from '../core/Meld'
+import { countScoringHonors } from './flowerMutationScoring'
 import {
   FlowerTile,
   FlowerVariant,
@@ -128,9 +129,11 @@ export const FLOWER_SET_BONUSES: FlowerSetBonus[] = [
 export class FlowerSystem {
   private flowers: FlowerTile[] = []
   private unlockedMutations: Set<string> = new Set()
+  private rebloomUnlocked: boolean
 
-  constructor() {
+  constructor(rebloomUnlocked = false) {
     this.flowers = []
+    this.rebloomUnlocked = rebloomUnlocked
   }
 
   /**
@@ -188,7 +191,11 @@ export class FlowerSystem {
 
     // Check if already collected this flower type
     if (this.hasFlowerType(flowerType)) {
-      return null // Cannot collect duplicate flower types
+      if (this.canRebloom()) {
+        this.rebloomUnlocked = true
+        this.unlockMutation(FLOWER_MUTATIONS[flowerType].mutationId)
+      }
+      return null // Awakening does not add a second Flower or collection slot.
     }
 
     const flowerTile: FlowerTile = {
@@ -203,7 +210,12 @@ export class FlowerSystem {
     }
 
     this.flowers.push(flowerTile)
+    if (this.flowers.length === 4) this.rebloomUnlocked = true
     return flowerTile
+  }
+
+  canRebloom(): boolean {
+    return this.rebloomUnlocked || this.flowers.length === 4
   }
 
   /**
@@ -228,14 +240,27 @@ export class FlowerSystem {
    * Calculate total flower bonus for scoring
    */
   calculateFlowerBonus(context: ScoringContext): number {
-    if (this.flowers.length === 0) {
+    if (this.flowers.length === 0 || context.flowersSuppressed) {
       return 1.0 // No bonus (multiply by 1)
     }
 
     const effectiveness = this.getEffectivenessMultiplier()
     let totalPercentage = 0
+    let mutationMultiplier = 1
 
     for (const flower of this.flowers) {
+      if (
+        flower.type === 'Chrysanthemum' &&
+        this.hasMutation('chrysanthemum_exponential') &&
+        context.isConcealed
+      ) {
+        const melds = context.melds.filter(
+          (meld) => meld.isConcealed && meld.type !== MeldType.Pair
+        ).length
+        // Replace this Flower's ordinary linear bonus, not other Flowers.
+        mutationMultiplier *= (1 + 0.2 * effectiveness) ** melds
+        continue
+      }
       const matchCount = this.countMatches(flower.effect.target, context)
       const bonus =
         matchCount * flower.effect.percentagePerMatch * effectiveness
@@ -243,7 +268,7 @@ export class FlowerSystem {
     }
 
     // Convert percentage to multiplier (e.g., 25% becomes 1.25)
-    return 1 + totalPercentage / 100
+    return (1 + totalPercentage / 100) * mutationMultiplier
   }
 
   /**
@@ -258,7 +283,7 @@ export class FlowerSystem {
         return context.melds.filter((m) => m.type === MeldType.Sequence).length
 
       case 'honor':
-        return context.tiles.filter((t) => t.isHonor).length
+        return countScoringHonors({ ...context, flowers: this.getCollection() })
 
       case 'concealed_meld':
         return context.melds.filter((m) => m.isConcealed).length
@@ -298,6 +323,7 @@ export class FlowerSystem {
       flowers: [...this.flowers],
       activeBonuses: this.getActiveBonuses(),
       totalEffectiveness: this.getEffectivenessMultiplier(),
+      mutationsUnlocked: this.canRebloom(),
     }
   }
 
@@ -423,10 +449,12 @@ export class FlowerSystem {
   toState(): {
     flowers: FlowerTile[]
     unlockedMutations: string[]
+    rebloomUnlocked?: boolean
   } {
     return {
       flowers: [...this.flowers],
       unlockedMutations: Array.from(this.unlockedMutations),
+      ...(this.rebloomUnlocked ? { rebloomUnlocked: true } : {}),
     }
   }
 
@@ -436,8 +464,9 @@ export class FlowerSystem {
   static fromState(state: {
     flowers: FlowerTile[]
     unlockedMutations: string[]
+    rebloomUnlocked?: boolean
   }): FlowerSystem {
-    const system = new FlowerSystem()
+    const system = new FlowerSystem(state.rebloomUnlocked ?? false)
     system.flowers = [...state.flowers]
     system.unlockedMutations = new Set(state.unlockedMutations)
     return system

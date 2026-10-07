@@ -226,6 +226,7 @@ const stateFields = {
   drawIndex: count,
   decreeSystem,
   flowerSystem: schema<ClassicRunState['flowerSystem']>({
+    rebloomUnlocked: optional(bool),
     flowers: keyed(flower, 'type'),
     unlockedMutations: array(
       choice(Object.values(FLOWER_MUTATIONS).map((m) => m.mutationId))

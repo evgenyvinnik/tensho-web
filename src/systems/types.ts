@@ -395,6 +395,8 @@ export interface FlowerSetBonus {
  * Runtime flower collection state
  */
 export interface FlowerCollection {
+  /** Run-captured meta eligibility or this run's completed four-Flower set. */
+  mutationsUnlocked?: boolean
   flowers: FlowerTile[]
   activeBonuses: FlowerSetBonus[]
   totalEffectiveness: number // Multiplier for flower effects (1.0 = normal, 2.0 = doubled)

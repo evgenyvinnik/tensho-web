@@ -24,6 +24,10 @@ import {
 } from '../rules/PartialHandParser'
 import { findCompleteHandSubset } from '../rules/CompleteHandSubset'
 import {
+  sequenceOffsets,
+  overlappingSequencePairs,
+} from '../rules/sequenceShapes'
+import {
   MAX_TACTICAL_PLAY_TILES,
   MIN_TACTICAL_PLAY_TILES,
 } from '../game/playRules'
@@ -177,13 +181,7 @@ function enumerateGroups(tiles: Tile[], rules: PartialHandRules): Tile[][] {
 
   const suited = tiles.filter((tile) => tile.isSuited)
   for (const anchor of suited) {
-    const patterns = rules.allowSequenceSkip
-      ? [
-          [1, 2],
-          [1, 3],
-          [2, 3],
-        ]
-      : [[1, 2]]
+    const patterns = sequenceOffsets(anchor.rank, rules)
     for (const pattern of patterns) {
       const run: Tile[] = [anchor]
       for (const offset of pattern) {
@@ -227,7 +225,7 @@ function candidateSelections(
   const candidates: string[][] = []
 
   const offer = (selection: Tile[]) => {
-    // Preserve physical uniqueness; overlapping groups are not legal candidates.
+    // Every offered play contains each physical tile only once.
     if (new Set(selection.map((tile) => tile.id)).size !== selection.length)
       return
     selection = [
@@ -270,6 +268,22 @@ function candidateSelections(
       if (combined.length > MAX_TACTICAL_PLAY_TILES) continue
       offer(combined)
     }
+  }
+
+  if (rules.allowSequenceOverlap) {
+    // Prefer required physical copies while assigning interchangeable faces.
+    const ordered = [...tiles].sort(
+      (a, b) =>
+        Number(requiredIds.includes(b.id)) - Number(requiredIds.includes(a.id))
+    )
+    for (const pair of overlappingSequencePairs(ordered, rules))
+      offer([
+        ...new Map(
+          pair.flatMap((group) =>
+            group.tiles.map((tile) => [tile.id, tile] as const)
+          )
+        ).values(),
+      ])
   }
 
   // The pure tile-value plays, which no group-first coach would ever find.

@@ -4,6 +4,17 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Local mutation work — not deployed:** all four Flower mutations are connected
+to engine paths, with real duplicate-draw awakening after the existing four-type
+achievement, saved eligibility, and thirteen-locale inspector explanations.
+Exact played-hand explanations, rule-aware coaching, optimized overlap search
+and new Chrysanthemum/Bamboo portraits are connected. Native and production
+journeys each pass 4/4 (English/Spanish desktop and 320px touch), plus build,
+TypeScript, lint and 13 release checks. Latest full regression: 1,934/1,935;
+one existing five-second balance-CLI timeout passes unchanged in an isolated
+26/26 recheck. Independent full-suite CI and hosted verification remain.
+[Current work and evidence](FLOWER_MUTATIONS_IMPLEMENTATION.md).
+
 **Published Plum/Autumn — v1.0.261007-12:** paid physical
 sequences recover matching pre-play river tiles after refill, without copies or
 preview mutation. New Plum art and thirteen-locale earned feedback are connected.

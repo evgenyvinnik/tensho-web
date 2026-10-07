@@ -8,13 +8,17 @@ import type { Tile } from '../../core/Tile'
 export function HandInterpretationDetails({
   interpretation,
   skippedSequences = [],
+  flowerSequences,
 }: {
   interpretation?: CompleteHandInterpretation | null
   skippedSequences?: Tile[][]
+  flowerSequences?: { overlapping: Tile[][]; anchored: Tile[][] }
 }) {
   const { t } = useTranslation()
   if (
     skippedSequences.length === 0 &&
+    !flowerSequences?.overlapping.length &&
+    !flowerSequences?.anchored.length &&
     (!interpretation ||
       (interpretation.naturalComplete &&
         !interpretation.substitutions.length &&
@@ -38,30 +42,63 @@ export function HandInterpretationDetails({
       </summary>
       <div className="space-y-3 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-black/20 p-3">
         {interpretation && <p>{t('handInterpretation.assisted')}</p>}
-        {skippedSequences.length > 0 && (
-          <div data-skipped-sequences className="space-y-2">
-            <p>{t('handInterpretation.sequenceSkip')}</p>
-            {skippedSequences.map((tiles) => (
-              <div key={tiles.map((tile) => tile.id).join('|')}>
-                <div aria-hidden="true" className="flex gap-1">
-                  {tiles.map((tile) => (
-                    <img
-                      key={tile.id}
-                      src={getTileImagePath(tile.suit, tile.rank)}
-                      alt=""
-                      width={36}
-                      height={48}
-                      className="h-12 w-9 object-contain"
-                    />
-                  ))}
+        {[
+          {
+            kind: 'skipped',
+            groups: skippedSequences,
+            label: 'handInterpretation.sequenceSkip',
+          },
+          {
+            kind: 'overlapping',
+            groups: flowerSequences?.overlapping ?? [],
+            label: 'flora.mutations.plum',
+          },
+          {
+            kind: 'anchored',
+            groups: flowerSequences?.anchored ?? [],
+            label: 'flora.mutations.bamboo',
+          },
+        ]
+          .filter(({ groups }) => groups.length > 0)
+          .map(({ kind, groups, label }) => (
+            <div
+              key={kind}
+              data-skipped-sequences={kind === 'skipped' || undefined}
+              data-overlapping-sequences={kind === 'overlapping' || undefined}
+              data-anchored-sequences={kind === 'anchored' || undefined}
+              className="space-y-2"
+            >
+              <p>{t(label)}</p>
+              {groups.map((tiles) => (
+                <div key={tiles.map((tile) => tile.id).join('|')}>
+                  <div aria-hidden="true" className="flex gap-1">
+                    {tiles.map((tile) => (
+                      <img
+                        key={tile.id}
+                        src={getTileImagePath(tile.suit, tile.rank)}
+                        alt=""
+                        width={36}
+                        height={48}
+                        data-shared-tile={
+                          (kind === 'overlapping' &&
+                            groups.filter((group) =>
+                              group.some(
+                                (candidate) => candidate.id === tile.id
+                              )
+                            ).length > 1) ||
+                          undefined
+                        }
+                        className="h-12 w-9 rounded object-contain data-[shared-tile=true]:outline data-[shared-tile=true]:outline-2 data-[shared-tile=true]:outline-[var(--color-golden-yellow)]"
+                      />
+                    ))}
+                  </div>
+                  <p className="mt-1">
+                    {tiles.map((tile) => tileName(tile, t)).join(' · ')}
+                  </p>
                 </div>
-                <p className="mt-1">
-                  {tiles.map((tile) => tileName(tile, t)).join(' · ')}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          ))}
         {allWild && <p>{t('handInterpretation.allWild')}</p>}
         {substitutions.map(({ physical, effective }) => (
           <div key={physical.id} data-interpreted-tile={physical.id}>

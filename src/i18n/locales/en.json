@@ -1094,6 +1094,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Collect all four Flower types in one run to unlock rebloom. Then draw an owned Flower again to awaken it.",
+      "ready": "Rebloom unlocked. Drawing an owned Flower again awakens it for this run.",
+      "awakened": "Awakened",
+      "plum": "Once per play, two sequences may share one tile. A complete hand can use 13 tiles.",
+      "orchid": "Dragons count as two Honors for Flower and Decree scoring. Tiles and Yaku groups are not duplicated.",
+      "chrysanthemum": "Concealed plays gain ×{{factor}} per meld instead of the ordinary Chrysanthemum bonus. Pairs do not count.",
+      "bamboo": "A 1 or 9 can anchor two adjacent ranks in a sequence. Tile faces and points stay unchanged."
+    },
     "details": {
       "plumRecovery": "Plum returned tiles from the river: {{count}}. These are recovered tiles, not copies.",
       "runScope": "Collected Flowers last for this run. Uncollected bonuses are previews.",

@@ -593,6 +593,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Kolektahin ang apat na uri ng Bulaklak sa isang takbo para buksan ang muling pamumulaklak. Pagkatapos, bumunot muli ng Bulaklak na hawak mo para gisingin ito.",
+      "ready": "Bukas na ang muling pamumulaklak. Ang muling pagbunot ng hawak na Bulaklak ay gumigising dito para sa takbong ito.",
+      "awakened": "Nagising",
+      "plum": "Isang beses bawat laro ng kamay, maaaring magbahagi ng isang tile ang dalawang sunod-sunod na grupo. Maaaring gumamit ng 13 tile ang kumpletong kamay.",
+      "orchid": "Bilang na dalawang Honor ang mga Dragon sa pag-iskor ng Bulaklak at Dekreto. Hindi dinodoble ang mga tile o grupo ng Yaku.",
+      "chrysanthemum": "Ang saradong laro ay may ×{{factor}} bawat grupo sa halip na karaniwang bonus ng Krisantemo. Hindi binibilang ang mga pares.",
+      "bamboo": "Maaaring iangkla ng 1 o 9 ang dalawang magkasunod na ranggo. Hindi nagbabago ang mukha at puntos ng tile."
+    },
     "details": {
       "plumRecovery": "Mga tile na ibinalik ng Plum mula sa ilog: {{count}}. Mga orihinal na tile ito, hindi mga kopya.",
       "runScope": "Ang nakolektang mga bulaklak ay tumatagal sa buong takbong ito. Paunang tingin lang ang ibang bonus.",

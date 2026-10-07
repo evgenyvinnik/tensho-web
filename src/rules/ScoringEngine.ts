@@ -51,6 +51,7 @@ export interface ScoreBreakdown {
   structure: ScoredStructure
   /** Actual gapped groups in this scored interpretation, for optional explanations. */
   skippedSequences?: Tile[][]
+  flowerSequences?: { overlapping: Tile[][]; anchored: Tile[][] }
 
   // Tile modifier bonuses
   modifierChips: number

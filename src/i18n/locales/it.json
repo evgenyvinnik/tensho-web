@@ -593,6 +593,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Raccogli tutti e quattro i tipi di Fiori in una partita per sbloccare la rifioritura. Poi pesca di nuovo un Fiore posseduto per risvegliarlo.",
+      "ready": "Rifioritura sbloccata. Pescare un Fiore posseduto lo risveglia per questa partita.",
+      "awakened": "Risvegliato",
+      "plum": "Una volta per giocata, due sequenze possono condividere una tessera. Una mano completa può usare 13 tessere.",
+      "orchid": "I Draghi contano come due Onori per il punteggio di Fiori e Decreti. Tessere e gruppi Yaku non vengono duplicati.",
+      "chrysanthemum": "Le giocate coperte ottengono ×{{factor}} per gruppo al posto del normale bonus del Crisantemo. Le coppie non contano.",
+      "bamboo": "Un 1 o un 9 può ancorare due valori consecutivi in una sequenza. Facce e punti delle tessere restano invariati."
+    },
     "details": {
       "plumRecovery": "Tessere recuperate dal fiume dal Pruno: {{count}}. Sono tessere recuperate, non copie.",
       "runScope": "I fiori raccolti durano per tutta la partita. Gli altri bonus sono anteprime.",

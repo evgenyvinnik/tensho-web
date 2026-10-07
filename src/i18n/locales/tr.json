@@ -593,6 +593,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Yeniden çiçeklenmeyi açmak için bir koşuda dört Çiçek türünü topla. Ardından sahip olduğun bir Çiçeği tekrar çekerek uyandır.",
+      "ready": "Yeniden çiçeklenme açık. Sahip olduğun bir Çiçeği tekrar çekmek onu bu koşu boyunca uyandırır.",
+      "awakened": "Uyanmış",
+      "plum": "Her oyunda bir kez, iki seri bir taşı paylaşabilir. Tam bir el 13 taş kullanabilir.",
+      "orchid": "Ejderhalar, Çiçek ve Ferman puanlamasında iki Onur taşı sayılır. Taşlar ve Yaku grupları çoğaltılmaz.",
+      "chrysanthemum": "Kapalı oyunlar normal Krizantem bonusu yerine her grup için ×{{factor}} kazanır. Çiftler sayılmaz.",
+      "bamboo": "Bir 1 veya 9, ardışık iki sayıyı bir seriye bağlayabilir. Taş yüzleri ve puanları değişmez."
+    },
     "details": {
       "plumRecovery": "Erik çiçeğinin atılan taşlardan geri getirdiği: {{count}}. Bunlar kopya değil, asıl taşlardır.",
       "runScope": "Toplanan çiçekler bu koşu boyunca sürer. Toplanmayanların bonusları ön izlemedir.",

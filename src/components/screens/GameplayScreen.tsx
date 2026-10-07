@@ -566,6 +566,7 @@ export function GameplayScreen() {
       structure: breakdown.structure,
       structurePoints: breakdown.structurePoints,
       skippedSequences: breakdown.skippedSequences,
+      flowerSequences: breakdown.flowerSequences,
       interpretation: game.inspectCompleteHand(previewIds),
     }
   }, [stagedTileIds, game, completeHandSelection, faceDownTileIds])

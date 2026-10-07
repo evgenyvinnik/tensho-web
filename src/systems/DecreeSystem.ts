@@ -21,6 +21,7 @@ import {
   Sticker,
 } from './types'
 import { DragonType, Tile, TileSuit } from '../core/Tile'
+import { countScoringHonors } from './flowerMutationScoring'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 import { runRandom } from '../game/RunRandom'
@@ -199,7 +200,7 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
     case 'all_honors':
       return tiles.length > 0 && tiles.every((tile) => tile.isHonor)
     case 'three_plus_honors':
-      return tiles.filter((tile) => tile.isHonor).length >= 3
+      return countScoringHonors(context) >= 3
     case 'four_plus_terminals':
       return tiles.filter((tile) => tile.isTerminal).length >= 4
     case 'no_simples':
@@ -1179,7 +1180,7 @@ export class DecreeSystem {
 
     switch (effect.scalingCondition) {
       case 'honor_tile_count':
-        count = context.tiles.filter((t) => t.isHonor).length
+        count = countScoringHonors(context)
         break
 
       case 'terminal_count':

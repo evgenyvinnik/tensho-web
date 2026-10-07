@@ -1178,6 +1178,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Kumpulkan keempat jenis Bunga dalam satu petualangan untuk membuka mekar kembali. Lalu tarik lagi Bunga yang sudah dimiliki untuk membangkitkannya.",
+      "ready": "Mekar kembali terbuka. Menarik Bunga yang sudah dimiliki membangkitkannya selama petualangan ini.",
+      "awakened": "Bangkit",
+      "plum": "Sekali per permainan tangan, dua urutan boleh berbagi satu ubin. Tangan lengkap dapat memakai 13 ubin.",
+      "orchid": "Naga dihitung sebagai dua Honor untuk skor Bunga dan Dekret. Ubin dan kelompok Yaku tidak digandakan.",
+      "chrysanthemum": "Permainan tertutup mendapat ×{{factor}} per kelompok sebagai pengganti bonus Krisan biasa. Pasangan tidak dihitung.",
+      "bamboo": "Ubin 1 atau 9 dapat menjadi jangkar bagi dua angka berurutan. Wajah dan poin ubin tidak berubah."
+    },
     "details": {
       "plumRecovery": "Ubin yang dikembalikan Plum dari sungai: {{count}}. Ini ubin asli, bukan salinan.",
       "runScope": "Bunga yang dikumpulkan bertahan sepanjang permainan ini. Bonus lainnya hanya pratinjau.",

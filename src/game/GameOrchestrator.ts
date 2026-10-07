@@ -119,9 +119,11 @@ import {
   restoreMetaProgressionRunContext,
 } from './RunMetaContext'
 import { useOmenStore } from '../stores/omenStore'
+import { useProgressionStore } from '../stores/progressionStore'
 import { takeWallTile, takeDeadWallTile } from './wallDraw'
 import { applySeasonWallEffect, protectSummerWall } from './seasonWall'
 import { planPlumRecursion } from './plumRecursion'
+import { describeFlowerSequences } from '../rules/sequenceShapes'
 
 // =============================================================================
 // GAME ORCHESTRATOR STATE
@@ -530,6 +532,11 @@ export class GameOrchestrator {
 
     // Reset state
     this.state = this.createInitialState()
+    // Bamboo Mat is the existing persisted "collect all four Flowers" unlock.
+    // Capture its eligibility at run start; loading an old run never rereads it.
+    this.state.flowerSystem = new FlowerSystem(
+      useProgressionStore.getState().isItemUnlocked('bamboo_mat')
+    )
     this.shop.reset()
     this.state.seed = actualSeed
     this.runtimeItemCounter = 0
@@ -676,6 +683,12 @@ export class GameOrchestrator {
       allowSequenceSkip:
         this.state.seasonSystem.isHandLegalityLoosened() ||
         this.isDecreeRuleActive('sequence_skip'),
+      allowTerminalAnchor:
+        !this.areFlowerBonusesSuppressed() &&
+        this.state.flowerSystem.hasMutation('bamboo_wild_anchor'),
+      allowSequenceOverlap:
+        !this.areFlowerBonusesSuppressed() &&
+        this.state.flowerSystem.hasMutation('plum_overlap'),
     }
   }
 
@@ -1509,7 +1522,9 @@ export class GameOrchestrator {
     const all = visible.map((tile) => tile.id)
     if (all.length <= 14 && accept(all)) return all
     const options = this.getValidationOptions()
-    const minimum = options.meldMayServeAsPair ? 12 : 14
+    const minimum =
+      (options.meldMayServeAsPair ? 12 : 14) -
+      Number(options.allowSequenceOverlap)
     const clemency = this.isDecreeRuleActive('shanten_clemency')
     if (visible.length < minimum - Number(clemency)) return null
     if (this.isDecreeRuleActive('all_wild') && visible.length >= 14) {
@@ -3396,6 +3411,14 @@ export class GameOrchestrator {
 
     // Calculate base score
     const baseBreakdown = calculateScore(context)
+    // An awakened Bamboo can also form a span-three sequence, but that does
+    // not mean Winter/Broken Stair granted it. Do not misattribute its legality.
+    if (!this.getPartialHandRules().allowSequenceSkip)
+      baseBreakdown.skippedSequences = []
+    const flowerSequences = describeFlowerSequences(
+      partialMelds ?? parsedHand.melds,
+      this.getPartialHandRules()
+    )
     systemContext.yakuMultipliers = new Map(
       baseBreakdown.detectedYaku.map((yaku) => [
         yaku.definition.id,
@@ -3556,6 +3579,7 @@ export class GameOrchestrator {
     // Return the breakdown in the format expected by the rest of the system
     return {
       ...baseBreakdown,
+      ...(flowerSequences ? { flowerSequences } : {}),
       yakuMultiplier: decreeModifiedBreakdown.yakuMultiplier,
       additiveBonus: finalAdditiveBonus,
       goldEarned: this.calculateGoldReward(baseBreakdown.goldEarned).amount,

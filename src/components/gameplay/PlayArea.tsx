@@ -38,6 +38,7 @@ export interface ScorePreviewData {
   structurePoints?: number
   interpretation?: CompleteHandInterpretation | null
   skippedSequences?: Tile[][]
+  flowerSequences?: { overlapping: Tile[][]; anchored: Tile[][] }
 }
 
 /**
@@ -401,6 +402,7 @@ export function PlayArea({
           <HandInterpretationDetails
             interpretation={scorePreview.interpretation}
             skippedSequences={scorePreview.skippedSequences}
+            flowerSequences={scorePreview.flowerSequences}
           />
           <ExactScoreDetails
             entries={[

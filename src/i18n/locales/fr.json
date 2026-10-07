@@ -1098,6 +1098,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Réunissez les quatre types de Fleurs en une partie pour débloquer la refloraison. Puis piochez à nouveau une Fleur possédée pour l’éveiller.",
+      "ready": "Refloraison débloquée. Piocher une Fleur possédée l’éveille pour cette partie.",
+      "awakened": "Éveillée",
+      "plum": "Une fois par coup, deux suites peuvent partager une tuile. Une main complète peut utiliser 13 tuiles.",
+      "orchid": "Les Dragons comptent comme deux Honneurs pour les Fleurs et les Décrets. Ni les tuiles ni les groupes de Yaku ne sont dupliqués.",
+      "chrysanthemum": "Les coups fermés gagnent ×{{factor}} par groupe à la place du bonus ordinaire du Chrysanthème. Les paires ne comptent pas.",
+      "bamboo": "Un 1 ou un 9 peut ancrer deux rangs consécutifs dans une suite. Les faces et les points des tuiles restent inchangés."
+    },
     "details": {
       "plumRecovery": "Tuiles récupérées dans la rivière par le Prunier : {{count}}. Ce ne sont pas des copies.",
       "runScope": "Les fleurs récoltées durent toute la partie. Les autres bonus sont des aperçus.",

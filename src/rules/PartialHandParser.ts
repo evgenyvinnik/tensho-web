@@ -14,14 +14,16 @@ import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand, WaitType } from '../core/Hand'
 import {
+  sequenceOffsets,
+  overlappingSequencePairs,
+  type SequenceRules,
+} from './sequenceShapes'
+import {
   STRUCTURE_POINTS_BY_TYPE,
   getMeldStructurePoints,
 } from './ScoringEngine'
 
-export interface PartialHandRules {
-  /** Winter or an active Broken Stair Edict permits exactly one missing rank. */
-  allowSequenceSkip?: boolean
-}
+export type PartialHandRules = Omit<SequenceRules, 'suitsMatchForSequences'>
 
 /**
  * A decomposition of a tile selection into scoring groups.
@@ -52,14 +54,50 @@ const MAX_RANK = 9
  * Find the decomposition of `tiles` that maximises structure points.
  *
  * Melds never span suits, so each suit is solved independently and the results
- * are concatenated. Within a suit an exhaustive memoized search is cheap: a
- * selection is at most 14 tiles.
+ * are concatenated. A face-count memo is shared across overlap candidates so
+ * enlarged racks do not repeat the same suit search for interchangeable copies.
  */
 export function parsePartialHand(
   tiles: Tile[],
   rules: PartialHandRules = {}
 ): PartialParse {
+  return parseWithMemo(tiles, rules, new Map())
+}
+
+function parseWithMemo(
+  tiles: Tile[],
+  rules: PartialHandRules,
+  memoBySuit: Map<TileSuit, Map<string, SuitSolution>>
+): PartialParse {
   const scoringTiles = tiles.filter((tile) => !tile.isBonus)
+
+  if (rules.allowSequenceOverlap) {
+    const ordinary = { ...rules, allowSequenceOverlap: false }
+    let best = parseWithMemo(tiles, ordinary, memoBySuit)
+    const seen = new Set<string>()
+    for (const pair of overlappingSequencePairs(scoringTiles, rules)) {
+      const sharedIds = new Set(
+        pair.flatMap((group) => group.tiles.map((tile) => tile.id))
+      )
+      // Structure points depend on consumed face counts, not which equivalent
+      // physical copy bridged the two groups. Preserve the first canonical plan.
+      const key = scoringTiles
+        .filter((tile) => sharedIds.has(tile.id))
+        .map((tile) => tile.typeKey)
+        .sort()
+        .join('|')
+      if (seen.has(key)) continue
+      seen.add(key)
+      const rest = parseWithMemo(
+        scoringTiles.filter((tile) => !sharedIds.has(tile.id)),
+        ordinary,
+        memoBySuit
+      )
+      const candidate = partialResult([...pair, ...rest.groups], scoringTiles)
+      if (candidate.structurePoints > best.structurePoints) best = candidate
+    }
+    return best
+  }
 
   // Pool real tiles by suit and rank so chosen groups can reference them.
   const pools = new Map<string, Tile[]>()
@@ -78,7 +116,9 @@ export function parsePartialHand(
     for (const tile of scoringTiles) {
       if (tile.suit === suit) counts[tile.rank] += 1
     }
-    plans.push(...solveSuit(counts, suit, new Map(), rules).plan)
+    const memo = memoBySuit.get(suit) ?? new Map<string, SuitSolution>()
+    memoBySuit.set(suit, memo)
+    plans.push(...solveSuit(counts, suit, memo, rules).plan)
   }
 
   // Materialise the plans into melds backed by the actual tile instances.
@@ -98,7 +138,14 @@ export function parsePartialHand(
     }
   }
 
-  const leftovers = scoringTiles.filter((tile) => !used.has(tile.id))
+  return partialResult(groups, scoringTiles)
+}
+
+function partialResult(groups: Meld[], tiles: Tile[]): PartialParse {
+  const used = new Set(
+    groups.flatMap((group) => group.tiles.map((tile) => tile.id))
+  )
+  const leftovers = tiles.filter((tile) => !used.has(tile.id))
 
   // Designate the highest-value pair so the parse matches ParsedHand semantics.
   const pairIndex = groups.findIndex((group) => group.type === MeldType.Pair)
@@ -193,20 +240,10 @@ function solveSuit(
   if (counts[rank] >= 4) consider(MeldType.Quad, [rank, rank, rank, rank])
   if (counts[rank] >= 3) consider(MeldType.Triplet, [rank, rank, rank])
   if (counts[rank] >= 2) consider(MeldType.Pair, [rank, rank])
-  if (
-    isSuitedSuit(suit) &&
-    rank + 2 <= MAX_RANK &&
-    counts[rank + 1] > 0 &&
-    counts[rank + 2] > 0
-  ) {
-    consider(MeldType.Sequence, [rank, rank + 1, rank + 2])
-  }
-  if (rules.allowSequenceSkip && isSuitedSuit(suit) && rank + 3 <= MAX_RANK) {
-    for (const middle of [rank + 1, rank + 2]) {
-      if (counts[middle] > 0 && counts[rank + 3] > 0)
-        consider(MeldType.Sequence, [rank, middle, rank + 3])
-    }
-  }
+  if (isSuitedSuit(suit))
+    for (const [a, b] of sequenceOffsets(rank, rules))
+      if (counts[rank + a] > 0 && counts[rank + b] > 0)
+        consider(MeldType.Sequence, [rank, rank + a, rank + b])
 
   // Leave this tile ungrouped.
   counts[rank] -= 1

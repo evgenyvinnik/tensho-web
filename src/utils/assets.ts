@@ -97,6 +97,8 @@ export const illustrationAssets = {
   springBlossom: `${ASSET_BASE}/illustrations/spring-blossom.webp`,
   orchidBloom: `${ASSET_BASE}/illustrations/orchid-bloom.webp`,
   plumBloom: `${ASSET_BASE}/illustrations/plum-bloom.webp`,
+  chrysanthemumBloom: `${ASSET_BASE}/illustrations/chrysanthemum-bloom.webp`,
+  bambooBloom: `${ASSET_BASE}/illustrations/bamboo-bloom.webp`,
   autumnMaple: `${ASSET_BASE}/illustrations/autumn-maple.webp`,
   winterPine: `${ASSET_BASE}/illustrations/winter-pine.webp`,
   summerFan: `${ASSET_BASE}/illustrations/summer-fan.webp`,

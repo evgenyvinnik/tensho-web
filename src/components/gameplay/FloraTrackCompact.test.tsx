@@ -41,6 +41,64 @@ describe('FloraTrackCompact artwork', () => {
     ['en', en],
     ['es', es],
   ] as const)(
+    'explains rebloom eligibility and all four awakened rules without stale Chrysanthemum copy (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const flowers = new FlowerSystem()
+      const flora = { ...fixture(), flowers: flowers.getCollection() }
+      const { rerender } = render(<FloraTrackCompact flora={flora} />)
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      expect(screen.getByTestId('flora-rebloom-guide')).toHaveTextContent(
+        copy.flora.mutations.locked
+      )
+      for (let rank = 1; rank <= 4; rank++)
+        flowers.addFlower(new Tile(TileSuit.Flower, rank, `flower-${rank}`))
+      rerender(
+        <FloraTrackCompact
+          flora={{ ...flora, flowers: flowers.getCollection() }}
+        />
+      )
+      expect(screen.getByTestId('flora-rebloom-guide')).toHaveTextContent(
+        copy.flora.mutations.ready
+      )
+      expect(
+        screen.getByRole('dialog').querySelectorAll('[data-flora-awakened]')
+      ).toHaveLength(0)
+      for (let rank = 1; rank <= 4; rank++)
+        flowers.addFlower(new Tile(TileSuit.Flower, rank, `duplicate-${rank}`))
+      const before = JSON.stringify(flowers.toState())
+      rerender(
+        <FloraTrackCompact
+          flora={{ ...flora, flowers: flowers.getCollection() }}
+        />
+      )
+      const dialog = screen.getByRole('dialog')
+      expect(dialog.querySelectorAll('[data-flora-awakened]')).toHaveLength(4)
+      for (const type of [
+        'plum',
+        'orchid',
+        'chrysanthemum',
+        'bamboo',
+      ] as const) {
+        const text = copy.flora.mutations[type].replace(
+          '{{factor}}',
+          (1.4).toLocaleString(language)
+        )
+        expect(within(dialog).getByText(text)).toBeVisible()
+      }
+      expect(
+        dialog.querySelector('[data-flora-flower="Chrysanthemum"]')
+      ).not.toHaveTextContent(
+        copy.flora.details.flowerChrysanthemum.replace('{{percent}}', '10')
+      )
+      expect(JSON.stringify(flowers.toState())).toBe(before)
+    }
+  )
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
     'illustrates Plum and explains only experienced recovery (%s)',
     async (language, copy) => {
       await changeLanguage(language)

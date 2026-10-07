@@ -10,6 +10,11 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { Hand, ParsedHand, WaitType } from '../core/Hand'
+import {
+  sequenceOffsets,
+  overlappingSequencePairs,
+  type SequenceRules,
+} from './sequenceShapes'
 
 /**
  * Result of hand validation
@@ -26,7 +31,7 @@ export interface ValidationResult {
 }
 
 /** Structural exceptions granted by active Decrees. */
-export interface HandValidationOptions {
+export interface HandValidationOptions extends SequenceRules {
   /** Broken Stair Edict: one rank may be skipped inside a sequence. */
   allowSequenceSkip?: boolean
   /** False Eye Mandate: one meld may also satisfy the pair role. */
@@ -152,6 +157,30 @@ export function parseStandardForm(
 
   // Find all valid decompositions
   const decompositions = findDecompositions(tiles, neededMelds, options)
+
+  if (
+    options.allowSequenceOverlap &&
+    neededMelds >= 2 &&
+    (tiles.length === neededMelds * 3 + 1 ||
+      (options.meldMayServeAsPair && tiles.length === neededMelds * 3 - 1))
+  ) {
+    for (const overlap of overlappingSequencePairs(tiles, options)) {
+      const used = new Set(
+        overlap.flatMap((group) => group.tiles.map((tile) => tile.id))
+      )
+      const rest = findDecompositions(
+        tiles.filter((tile) => !used.has(tile.id)),
+        neededMelds - 2,
+        options
+      )
+      decompositions.push(
+        ...rest.map(({ melds, pair }) => ({
+          melds: [...overlap, ...melds],
+          pair,
+        }))
+      )
+    }
+  }
 
   for (const decomposition of decompositions) {
     const { melds, pair } = decomposition
@@ -290,8 +319,7 @@ function findMelds(
 
   // Try normal sequences and, when authorized, either one-rank broken stair.
   if (firstTile.isSuited) {
-    const rankPatterns = [[1, 2]]
-    if (options.allowSequenceSkip) rankPatterns.push([1, 3], [2, 3])
+    const rankPatterns = sequenceOffsets(firstTile.rank, options)
 
     // Harmonizer lets a sequence span suits, so only the ranks must line up.
     const sameSuit = (tile: Tile): boolean =>
@@ -386,8 +414,16 @@ export function validateHand(
   const totalTiles =
     tiles.length + declaredMelds.reduce((sum, m) => sum + m.tiles.length, 0)
 
-  if (totalTiles !== 14) {
-    errors.push(`Invalid tile count: ${totalTiles} (expected 14)`)
+  const permittedCounts = [14]
+  if (options.meldMayServeAsPair) permittedCounts.push(12)
+  if (options.allowSequenceOverlap) {
+    permittedCounts.push(13)
+    if (options.meldMayServeAsPair) permittedCounts.push(11)
+  }
+  if (!permittedCounts.includes(totalTiles)) {
+    errors.push(
+      `Invalid tile count: ${totalTiles} (expected ${permittedCounts.join(' or ')})`
+    )
   }
 
   // Check for bonus tiles in hand (they should be separated)

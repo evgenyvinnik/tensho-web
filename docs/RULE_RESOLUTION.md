@@ -186,3 +186,47 @@ without replaying any reward. An optional localized inspector explains the last
 experienced recovery, not an upfront recipe. This bounded advantage is a design
 decision, not a claim that the interaction's balance or enjoyment is proven.
 [Published implementation and verification](PLUM_AUTUMN_IMPLEMENTATION.md).
+
+### Flower mutations: four-type unlock, then rebloom within each run
+
+Collecting all four distinct Flower types unlocks rebloom. The existing Bamboo
+Mat achievement already persists exactly this condition, so it also supplies
+eligibility for new runs without a duplicate progression currency or grind.
+Eligibility is captured at run start and saved; later profile changes cannot
+rewrite a resumed run. An old save with all four Flowers can rebloom on its next
+actual duplicate, but loading never awakens anything by itself.
+
+Once eligible, drawing an already owned Flower awakens that type for the run.
+The first copy is ordinary; the fourth distinct Flower unlocks eligibility but
+is not itself a duplicate. Further duplicates do not stack awakenings or slots.
+Bonus replacement still happens normally. Ownership/awakening is not suppressed
+by Drought, but every mutation's gameplay benefit is, unless active Eternal
+Garden protects it. Starting another run retains eligibility, not awakenings.
+
+- **Plum:** once per play, two sequences may share exactly one physical tile.
+  No sharing with a pair/triplet, no two shared tiles, and no third sequence
+  using the same tile. Tactical 1–2–3–4–5 can score two sequences. A complete
+  four-meld-plus-pair hand may use 13 unique tiles; False Eye can reduce that to
+  11 under its existing pair-role rule. Score physical tiles once, remove each
+  once, and count both genuine sequence structures. Compatible Winter/Bamboo
+  sequence shapes can overlap under the same single-bridge limit.
+- **Orchid:** Dragons count as two Honors for the Orchid percentage, Honor-count
+  Decree scaling, and numerical Honor gates. Winds remain one. This does not
+  double tile points, retrigger counts, gold, physical identities, draw events,
+  or the number of tiles required for a Yaku/Dragon triplet.
+- **Chrysanthemum:** a concealed play replaces this Flower's linear bonus with
+  ×1.2 per concealed non-pair meld. With all four Flowers, effectiveness raises
+  the step to ×1.4. Other Flower bonuses still apply separately. Pairs and loose
+  tiles do not add exponent steps; an open play retains only the ordinary
+  concealed-meld bonus. This is per-play structure, not a persistent streak.
+- **Bamboo:** a suited 1 or 9 may anchor two adjacent ranks in a sequence, such
+  as 1–5–6 or 4–5–9. Neither two arbitrary ranks nor wrapping is allowed. Winter
+  and anchoring are alternative permissions, not cumulative gap widening.
+  Harmonizer can still override suit restrictions. Faces, tile points and
+  ordinary rank-specific Yaku remain physical; no arbitrary rank substitution
+  or free retrigger is created.
+
+These are delegated design choices, not balance conclusions. The implementation
+is local and still being verified; do not advertise it as deployed.
+[Progress and remaining checks](FLOWER_MUTATIONS_IMPLEMENTATION.md).
+Flower-paid Decree catalysts remain a separate required implementation.

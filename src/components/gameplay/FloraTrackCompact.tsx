@@ -14,6 +14,12 @@ export interface FloraTrackCompactProps {
 }
 
 const FLOWERS: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
+const FLOWER_ART: Record<FlowerVariant, string> = {
+  Plum: illustrationAssets.plumBloom,
+  Orchid: illustrationAssets.orchidBloom,
+  Chrysanthemum: illustrationAssets.chrysanthemumBloom,
+  Bamboo: illustrationAssets.bambooBloom,
+}
 
 /** Inspect public bonus tiles without changing the hand, turn, or selection. */
 export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
@@ -117,6 +123,13 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
             {t('flora.flowers')} {collected.size}/4
           </h3>
           <p className="text-sm">{t('flora.details.runScope')}</p>
+          <p data-testid="flora-rebloom-guide" className="text-sm">
+            {t(
+              flora.flowers.mutationsUnlocked
+                ? 'flora.mutations.ready'
+                : 'flora.mutations.locked'
+            )}
+          </p>
           {(flora.flowersSuppressed || flora.flowersProtected) && (
             <p
               data-testid="flora-suppression"
@@ -130,72 +143,90 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
             </p>
           )}
           <ul className="space-y-3">
-            {FLOWERS.map((flower) => (
-              <li
-                key={flower}
-                data-flora-flower={flower}
-                data-collected={collected.has(flower)}
-                className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
-              >
-                <img
-                  src={
-                    flower === 'Plum'
-                      ? illustrationAssets.plumBloom
-                      : flower === 'Orchid'
-                        ? illustrationAssets.orchidBloom
-                        : getTileImagePath(
-                            TileSuit.Flower,
-                            FLOWER_DATA[flower].rank
-                          )
-                  }
-                  alt=""
-                  aria-hidden="true"
-                  draggable={false}
-                  className={
-                    'h-14 w-10 shrink-0 object-contain ' +
-                    (collected.has(flower) ? '' : 'opacity-40 grayscale')
-                  }
-                />
-                <div className="min-w-0 flex-1 [overflow-wrap:anywhere]">
-                  <h4 className="text-sm font-bold">
-                    {t('flora.' + flower.toLowerCase())}
-                  </h4>
-                  <p className="text-xs text-[var(--color-metallic-gold)]">
-                    {t(
-                      collected.has(flower)
-                        ? 'flora.details.collected'
-                        : 'flora.details.missing'
+            {FLOWERS.map((flower) => {
+              const awakened = flora.flowers.flowers.some(
+                (owned) => owned.type === flower && owned.mutation?.isUnlocked
+              )
+              return (
+                <li
+                  key={flower}
+                  data-flora-flower={flower}
+                  data-collected={collected.has(flower)}
+                  className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
+                >
+                  <img
+                    src={FLOWER_ART[flower]}
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                    className={
+                      'h-14 w-10 shrink-0 object-contain ' +
+                      (collected.has(flower) ? '' : 'opacity-40 grayscale')
+                    }
+                  />
+                  <div className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+                    <h4 className="text-sm font-bold">
+                      {t('flora.' + flower.toLowerCase())}
+                    </h4>
+                    {awakened && (
+                      <p
+                        data-flora-awakened
+                        className="text-xs font-bold text-[var(--color-golden-yellow)]"
+                      >
+                        {t('flora.mutations.awakened')}
+                      </p>
                     )}
-                  </p>
-                  <p className="mt-1 text-sm">
-                    {t('flora.details.flower' + flower, {
-                      percent: (
-                        FLOWER_BASE_EFFECTS[flower].percentagePerMatch *
-                        flora.flowers.totalEffectiveness
-                      ).toLocaleString(i18n.language),
-                    })}
-                  </p>
-                  {flower === 'Orchid' && orchidBloom > 0 && (
-                    <p
-                      data-orchid-bloom
-                      role="status"
-                      className="mt-2 text-sm text-[var(--color-golden-yellow)]"
-                    >
-                      {t('flora.details.orchidBloom', { count: orchidBloom })}
+                    <p className="text-xs text-[var(--color-metallic-gold)]">
+                      {t(
+                        collected.has(flower)
+                          ? 'flora.details.collected'
+                          : 'flora.details.missing'
+                      )}
                     </p>
-                  )}
-                  {flower === 'Plum' && plumRecovery > 0 && (
-                    <p
-                      data-plum-recovery
-                      role="status"
-                      className="mt-2 text-sm text-[var(--color-golden-yellow)]"
-                    >
-                      {t('flora.details.plumRecovery', { count: plumRecovery })}
-                    </p>
-                  )}
-                </div>
-              </li>
-            ))}
+                    {!(awakened && flower === 'Chrysanthemum') && (
+                      <p className="mt-1 text-sm">
+                        {t('flora.details.flower' + flower, {
+                          percent: (
+                            FLOWER_BASE_EFFECTS[flower].percentagePerMatch *
+                            flora.flowers.totalEffectiveness
+                          ).toLocaleString(i18n.language),
+                        })}
+                      </p>
+                    )}
+                    {awakened && (
+                      <p data-flora-mutation={flower} className="mt-2 text-sm">
+                        {t('flora.mutations.' + flower.toLowerCase(), {
+                          factor: (
+                            1 +
+                            0.2 * flora.flowers.totalEffectiveness
+                          ).toLocaleString(i18n.language),
+                        })}
+                      </p>
+                    )}
+                    {flower === 'Orchid' && orchidBloom > 0 && (
+                      <p
+                        data-orchid-bloom
+                        role="status"
+                        className="mt-2 text-sm text-[var(--color-golden-yellow)]"
+                      >
+                        {t('flora.details.orchidBloom', { count: orchidBloom })}
+                      </p>
+                    )}
+                    {flower === 'Plum' && plumRecovery > 0 && (
+                      <p
+                        data-plum-recovery
+                        role="status"
+                        className="mt-2 text-sm text-[var(--color-golden-yellow)]"
+                      >
+                        {t('flora.details.plumRecovery', {
+                          count: plumRecovery,
+                        })}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              )
+            })}
           </ul>
           <ul className="space-y-2 text-sm">
             <li>

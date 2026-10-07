@@ -1098,6 +1098,15 @@
     }
   },
   "flora": {
+    "mutations": {
+      "locked": "Reúne los cuatro tipos de flores en una partida para desbloquear la refloración. Después, roba otra vez una flor que ya tengas para despertarla.",
+      "ready": "Refloración desbloqueada. Robar una flor que ya tengas la despierta durante esta partida.",
+      "awakened": "Despertada",
+      "plum": "Una vez por jugada, dos secuencias pueden compartir una ficha. Una mano completa puede usar 13 fichas.",
+      "orchid": "Los dragones cuentan como dos honores para puntuar flores y decretos. No se duplican fichas ni grupos de yaku.",
+      "chrysanthemum": "Las jugadas ocultas ganan ×{{factor}} por grupo en lugar de la bonificación normal del crisantemo. Las parejas no cuentan.",
+      "bamboo": "Un 1 o un 9 puede unir dos valores consecutivos en una secuencia. Las caras y los puntos de las fichas no cambian."
+    },
     "details": {
       "plumRecovery": "El ciruelo recuperó fichas del río: {{count}}. Son fichas recuperadas, no copias.",
       "runScope": "Las flores recogidas duran toda la partida. Las demás bonificaciones son una vista previa.",

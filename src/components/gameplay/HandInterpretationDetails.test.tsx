@@ -100,6 +100,21 @@ it('suppresses even a supplied interpretation when the forecast is concealed', (
         mult: 1,
         total: 1,
         interpretation,
+        flowerSequences: {
+          overlapping: [
+            [1, 2, 3],
+            [3, 4, 5],
+          ].map((ranks) =>
+            ranks.map(
+              (rank) => new Tile(TileSuit.Manzu, rank, `shared-${rank}`)
+            )
+          ),
+          anchored: [
+            [1, 5, 6].map(
+              (rank) => new Tile(TileSuit.Pinzu, rank, `anchor-${rank}`)
+            ),
+          ],
+        },
         skippedSequences: [
           [1, 2, 4].map(
             (rank) => new Tile(TileSuit.Manzu, rank, `hidden-${rank}`)
@@ -113,7 +128,46 @@ it('suppresses even a supplied interpretation when the forecast is concealed', (
   )
   expect(container.querySelector('[data-hand-interpretation]')).toBeNull()
   expect(container.textContent).not.toContain('5 of Characters')
+  expect(container.querySelector('[data-overlapping-sequences]')).toBeNull()
+  expect(container.querySelector('[data-anchored-sequences]')).toBeNull()
 })
+
+it.each(['en', 'es'] as const)(
+  'explains shared and anchored physical groups in an optional disclosure (%s)',
+  async (language) => {
+    await loadLanguage(language)
+    await i18n.changeLanguage(language)
+    const overlapping = [
+      [1, 2, 3],
+      [3, 4, 5],
+    ].map((ranks) =>
+      ranks.map((rank) => new Tile(TileSuit.Manzu, rank, `shared-${rank}`))
+    )
+    const anchored = [
+      [1, 5, 6].map((rank) => new Tile(TileSuit.Pinzu, rank, `anchor-${rank}`)),
+    ]
+    const { container } = render(
+      <HandInterpretationDetails flowerSequences={{ overlapping, anchored }} />
+    )
+    expect(container.querySelector('details')).not.toHaveAttribute('open')
+    expect(
+      container.querySelector('[data-overlapping-sequences]')
+    ).toHaveTextContent(i18n.t('flora.mutations.plum'))
+    expect(
+      container.querySelector('[data-anchored-sequences]')
+    ).toHaveTextContent(i18n.t('flora.mutations.bamboo'))
+    expect(container.querySelector('[data-skipped-sequences]')).toBeNull()
+    expect(container.querySelectorAll('img')).toHaveLength(9)
+    expect(
+      container.querySelectorAll('[data-shared-tile="true"]')
+    ).toHaveLength(2)
+    expect(container.textContent).not.toContain(
+      i18n.t('handInterpretation.assisted')
+    )
+    if (language === 'es')
+      expect(container.textContent).not.toContain('Characters')
+  }
+)
 
 it.each(['en', 'es'] as const)(
   'shows actual skipped-rank groups without a full hand (%s)',

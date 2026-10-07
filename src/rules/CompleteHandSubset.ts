@@ -1,5 +1,6 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { KOKUSHI_TILES, type HandValidationOptions } from './HandValidator'
+import { sequenceOffsets, overlappingSequencePairs } from './sequenceShapes'
 
 /** Find a physical hand by assembling shapes, not by enumerating rack subsets.
  * The caller remains authoritative for legality and rule interpretation.
@@ -59,13 +60,7 @@ export function findCompleteHandSubset(
     if (g.length >= 3) melds.push([i, i, i])
     const first = g[0]
     if (!first.isSuited) return
-    for (const [a, b] of options.allowSequenceSkip
-      ? [
-          [1, 2],
-          [1, 3],
-          [2, 3],
-        ]
-      : [[1, 2]]) {
+    for (const [a, b] of sequenceOffsets(first.rank, options)) {
       const matches = (offset: number) =>
         groups.flatMap((other, j) =>
           other[0].isSuited &&
@@ -103,6 +98,36 @@ export function findCompleteHandSubset(
   if (options.meldMayServeAsPair) {
     const found = searchMelds(4, 0)
     if (found) return found
+  }
+
+  if (options.allowSequenceOverlap) {
+    const overlapsSeen = new Set<string>()
+    for (const pair of overlappingSequencePairs(tiles, options)) {
+      const union = new Map(
+        pair.flatMap((group) =>
+          group.tiles.map((tile) => [tile.id, tile] as const)
+        )
+      )
+      const indices = [...union.values()].map((tile) =>
+        groups.findIndex((group) => group[0].typeKey === tile.typeKey)
+      )
+      const key = [...indices].sort((a, b) => a - b).join(',')
+      if (overlapsSeen.has(key)) continue
+      overlapsSeen.add(key)
+      adjustCounts(indices, 1)
+      for (let i = 0; i < counts.length; i++) {
+        if (used[i] + 2 > counts[i]) continue
+        used[i] += 2
+        const found = searchMelds(2, 0)
+        used[i] -= 2
+        if (found) return found
+      }
+      if (options.meldMayServeAsPair) {
+        const found = searchMelds(2, 0)
+        if (found) return found
+      }
+      adjustCounts(indices, -1)
+    }
   }
 
   const pairs = counts.flatMap((n, i) => (n >= 2 ? [i] : []))
