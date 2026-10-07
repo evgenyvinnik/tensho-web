@@ -4,13 +4,14 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Published input correction — v1.0.261007-9:** synchronous pointer ownership fixes
-the reproduced first-frame race; release CI passes 1,843/1,843. Hosted checks
-pass only 5/8 and establish a separate moving discard target. A local follow-up
-reserves a right-hand action column and prevents late UI font reflow. All 20
-native and 20 production journeys, 27 component tests, build and release checks
-pass. Final organic-resource assertion recheck passes 12/12; publication
-verification remains pending. [Evidence](TOUCH_GESTURE_IMPLEMENTATION.md).
+**Published input/layout correction — v1.0.261007-10:** the discard target has a
+dedicated right-hand column and late UI fonts no longer reflow live controls.
+All 20 native, 20 production and 20 hosted journeys pass, including delayed-font
+and text-spacing checks on desktop/320px touch in English, Spanish and Russian.
+The final organic-resource assertion recheck passes 12/12, component tests 27/27,
+and release CI 1,843/1,843 plus 13 release checks and deployment. Public version,
+tag and loaded JS/CSS match. This follows v9's first-frame race fix and 5/8 hosted
+batch that exposed the separate target movement. [Evidence](TOUCH_GESTURE_IMPLEMENTATION.md).
 
 **Published — v1.0.261007-8, Bamboo/Summer:** paid plays with four physical terminals
 can restore the withheld wall and earn round-scoped protection against further

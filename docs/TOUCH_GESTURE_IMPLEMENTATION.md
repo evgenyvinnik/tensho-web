@@ -1,7 +1,7 @@
 # First-frame tile gestures
 
 October 7, 2026 — first-frame fix published in v1.0.261007-9;
-separate moving-target correction in verification.
+moving-target correction published and verified in v1.0.261007-10.
 
 ## Reproduced defect
 
@@ -106,6 +106,32 @@ Evidence in the same directory:
   not a runtime rule change. The final assertion recheck passes **12/12**
   (`layout-final-assertions.log`). Independent release CI and hosted verification
   remain pending for the layout correction.
+
+### Published layout verification
+
+- Implementation: `83fd2d271b04a617e090e61628ee4631295ea117`.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37695867674)
+  passes **1,843/1,843 tests in 156 files**, **13 release checks**, build and
+  deployment. Final log: `layout-ci-build.log`; the first log request was too
+  early for GitHub to return it, not a build failure.
+- Public manifest and remote `v1.0.261007-10` tag both identify
+  `372932d0481d9bd08bd891b39eadfd3543417d4f`. The actual `/en/play/` HTML references
+  `index-BIi70At4.js`, which contains `1.0.261007-10`, and `index-CCwI43Zv.css`,
+  which contains the fixed-column layout and both optional UI font faces.
+- **20/20 hosted journeys pass** (`layout-hosted.log`), without retries or
+  increased deadlines: eight Bamboo quad/complete-hand scoring, persistence and
+  round-cleanup journeys, plus twelve English/Spanish/Russian desktop/touch
+  layout journeys with changed text spacing or fonts delayed until pointer-down.
+  The latter use organic saved runs and verify exact physical discard identity,
+  one discard expenditure (allowing newly drawn Autumn income), unchanged plays,
+  stable target centers and no document-wide horizontal overflow.
+- Both owned local servers were stopped. The pre-existing 4173 server was not
+  touched. Documentation-only release evidence can be committed with `[skip ci]`
+  because the runtime checkpoint above has already deployed successfully.
+
+This closes the two reproduced input defects and the failing hosted checkpoint;
+it does not erase earlier failures, prove every possible input path or certify
+the whole game complete.
 
 The Russian 320px screenshot also shows the existing narrow footer's Skip label
 wrapping excessively. It is separate follow-up work, not fixed by this header.

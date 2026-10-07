@@ -1,6 +1,10 @@
 # Bamboo shelters Summer
 
-**October 7, 2026 — published in v1.0.261007-8; touch follow-up in progress.**
+**October 7, 2026 — published in v1.0.261007-8; input/layout follow-up verified in v1.0.261007-10.**
+
+The [follow-up ledger](TOUCH_GESTURE_IMPLEMENTATION.md) records the two reproduced
+input defects and their fixes. Its final 20/20 hosted journeys include all eight
+Bamboo cases below. The original failing hosted batches remain in this history.
 
 The user delegated coherent resolution of the remaining ambiguous rules. This
 connects the existing four-terminal Bamboo/Summer interaction to actual paid

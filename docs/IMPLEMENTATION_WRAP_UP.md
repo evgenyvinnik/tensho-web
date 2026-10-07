@@ -8,13 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-The [touch-input follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) published the reproduced
-first-frame fix in v1.0.261007-9; release CI passes 1,843/1,843. Hosted checks pass
-only 5/8, with traces proving a separate moving discard target. The local grid
-and font-loading correction now passes 20/20 native and 20/20 production journeys,
-27 component tests, build and release checks. Final organic-resource assertion
-recheck passes 12/12; publication verification remains pending;
-earlier failures are retained rather than attributed to the listener race.
+The [touch-input follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) is published and verified
+in v1.0.261007-10. After v9's first-frame fix, a 5/8 hosted batch proved a separate
+moving discard target. The grid and font-loading correction now passes 20/20
+native, 20/20 production and 20/20 hosted journeys, including delayed-font and
+text-spacing stress in three languages. Final resource-assertion recheck passes
+12/12; release CI passes all 1,843 tests, 13 release checks, build and deployment.
+Public manifest/tag and loaded JS/CSS match. Earlier failures are retained rather
+than all attributed to the listener race. Narrow Russian footer wrapping remains
+a separate known UI follow-up; Flower/item mechanics still require implementation.
 
 [Bamboo/Summer protection](BAMBOO_SUMMER_IMPLEMENTATION.md) is published in
 v1.0.261007-8. It connects physical-terminal paid plays to restoration and
