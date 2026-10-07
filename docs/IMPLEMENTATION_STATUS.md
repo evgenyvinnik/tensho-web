@@ -4,7 +4,14 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Verified locally — Bamboo/Summer:** paid plays with four physical terminals
+**Local input correction:** a complete pointer gesture before the first drag
+render no longer disappears. Synchronous ownership also guards cancellation,
+duplicate release and disabled-during-drag. Full regression passes 1,843/1,843;
+27 component checks, all 14 native cases across initial/recheck batches, and
+the final 8/8 production batch pass. Earlier timing failures and an unexplained
+intermittent browser miss remain recorded. [Evidence](TOUCH_GESTURE_IMPLEMENTATION.md).
+
+**Published — v1.0.261007-8, Bamboo/Summer:** paid plays with four physical terminals
 can restore the withheld wall and earn round-scoped protection against further
 Summer shrinkage. Versioned snapshots preserve the reward without breaking old
 saves; localized inspector copy and generated Summer art are connected.
@@ -12,7 +19,10 @@ Full units pass 1,839/1,839 and final native journeys pass 8/8. After retained
 deadline failures, unchanged built-production replay passes 8/8. Broader
 persistence checks initially pass 11/12; the unchanged isolated failing case now
 passes too. Earlier corrected test-fixture failures remain recorded. Independent
-release/hosted verification is pending; implementation is `3bdc04f` on `main`.
+CI passes all 1,839 tests and deployment; public manifest/tag/artwork match.
+Hosted batches have intermittent missed initial touch discards and timeouts,
+not a clean full pass. A reproducible first-frame gesture race is being fixed
+in the [touch follow-up](TOUCH_GESTURE_IMPLEMENTATION.md).
 [Rules, verification ledger and artwork](BAMBOO_SUMMER_IMPLEMENTATION.md).
 
 **Published — v1.0.261007-7, Winter legality:** normal Winter now permits exactly one

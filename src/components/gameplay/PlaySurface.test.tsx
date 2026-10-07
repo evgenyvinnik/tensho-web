@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PlaySurface } from './PlaySurface'
 import { Tile, TileSuit } from '../../core/Tile'
 import { MeldType } from '../../core/Meld'
@@ -364,6 +364,53 @@ describe('PlaySurface', () => {
   })
 
   describe('disabled state', () => {
+    it.each(['stage', 'discard'] as const)(
+      'handles a complete %s gesture before the first drag render',
+      (action) => {
+        const { container } = render(
+          <PlaySurface
+            handTiles={createTestTiles(3)}
+            onTileSelect={mockOnTileSelect}
+            onTileDiscard={mockOnTileDiscard}
+          />
+        )
+        const tile = screen.getByRole('button', {
+          name: 'Stage 1 of Characters',
+        })
+        tile.setPointerCapture = vi.fn()
+        const zone = container.querySelector('[data-play-zone="discard"]')!
+        vi.spyOn(zone, 'getBoundingClientRect').mockReturnValue({
+          x: 100,
+          y: 100,
+          left: 100,
+          top: 100,
+          right: 150,
+          bottom: 150,
+          width: 50,
+          height: 50,
+          toJSON: () => ({}),
+        })
+        act(() => {
+          pointer(tile, 'pointerdown')
+          if (action === 'discard') pointer(window, 'pointermove', 1, 80, 80)
+          pointer(
+            window,
+            'pointerup',
+            1,
+            action === 'discard' ? 125 : 20,
+            action === 'discard' ? 125 : 20
+          )
+        })
+        expect(
+          action === 'discard' ? mockOnTileDiscard : mockOnTileSelect
+        ).toHaveBeenCalledExactlyOnceWith(
+          expect.objectContaining({ id: 'tile-0' })
+        )
+        expect(
+          action === 'discard' ? mockOnTileSelect : mockOnTileDiscard
+        ).not.toHaveBeenCalled()
+      }
+    )
     it('uses the release coordinates when the final move was not rendered', () => {
       const { container } = render(
         <PlaySurface
@@ -391,6 +438,58 @@ describe('PlaySurface', () => {
       expect(mockOnTileDiscard).toHaveBeenCalledExactlyOnceWith(
         expect.objectContaining({ id: 'tile-0' })
       )
+    })
+    it('consumes fast cancellation and ignores duplicate releases', () => {
+      render(
+        <PlaySurface
+          handTiles={createTestTiles(3)}
+          onTileSelect={mockOnTileSelect}
+        />
+      )
+      const tile = screen.getByRole('button', { name: 'Stage 1 of Characters' })
+      tile.setPointerCapture = vi.fn()
+      act(() => {
+        pointer(tile, 'pointerdown')
+        pointer(window, 'pointerup', 2)
+        pointer(window, 'pointercancel')
+        pointer(window, 'pointerup')
+      })
+      expect(mockOnTileSelect).not.toHaveBeenCalled()
+      act(() => {
+        pointer(tile, 'pointerdown')
+        pointer(window, 'pointerup')
+        pointer(window, 'pointerup')
+      })
+      expect(mockOnTileSelect).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ id: 'tile-0' })
+      )
+    })
+    it('does not discard if the surface becomes disabled during a gesture', () => {
+      const props = {
+        handTiles: createTestTiles(3),
+        onTileDiscard: mockOnTileDiscard,
+      }
+      const { container, rerender } = render(<PlaySurface {...props} />)
+      const tile = screen.getByRole('button', { name: 'Stage 1 of Characters' })
+      tile.setPointerCapture = vi.fn()
+      vi.spyOn(
+        container.querySelector('[data-play-zone="discard"]')!,
+        'getBoundingClientRect'
+      ).mockReturnValue({
+        x: 100,
+        y: 100,
+        left: 100,
+        top: 100,
+        right: 150,
+        bottom: 150,
+        width: 50,
+        height: 50,
+        toJSON: () => ({}),
+      })
+      pointer(tile, 'pointerdown')
+      rerender(<PlaySurface {...props} disabled />)
+      pointer(window, 'pointerup', 1, 125, 125)
+      expect(mockOnTileDiscard).not.toHaveBeenCalled()
     })
     it('supports semantic click activation without a pointer gesture', () => {
       render(

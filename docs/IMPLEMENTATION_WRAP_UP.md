@@ -8,15 +8,25 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Bamboo/Summer protection](BAMBOO_SUMMER_IMPLEMENTATION.md) is implemented locally
-and in verification. It connects physical-terminal paid plays to restoration and
+The [touch-input follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) fixes a reproduced
+first-frame gesture race discovered while verifying the Summer release.
+Full regression passes 1,843/1,843; final production journeys pass 8/8. Native
+coverage passes across 11 initial cases and three unchanged rechecks. Earlier
+intermittent browser misses remain explicitly qualified, not all attributed to
+this race. Independent CI/publication and hosted verification are pending.
+
+[Bamboo/Summer protection](BAMBOO_SUMMER_IMPLEMENTATION.md) is published in
+v1.0.261007-8. It connects physical-terminal paid plays to restoration and
 round-scoped protection, with strict versioned saves, translated earned-state
 copy and generated Summer artwork. Other Flower interactions remain open.
 Final units pass 1,839/1,839; native and built-production journeys pass 8/8 each.
 The unchanged short-phone persistence recheck closes the earlier 11/12 batch's
 deadline failure. The ledger retains intermediate fixture corrections and
 earlier production deadline failures. Implementation is `3bdc04f`; independent
-release and hosted verification are pending.
+CI passes all 1,839 tests, build and deployment. Public manifest/tag/artwork match.
+Hosted runs retain touch misses and timing failures; they are not a clean full
+pass. A reproduced first-frame input race has a [local fix and regression tests](TOUCH_GESTURE_IMPLEMENTATION.md)
+in verification, without claiming it explains every intermittent hosted miss.
 
 [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is published in v1.0.261007-7:
 exactly one skipped rank per same-suit sequence, including tactical scoring and

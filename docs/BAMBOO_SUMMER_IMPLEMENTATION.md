@@ -1,6 +1,6 @@
 # Bamboo shelters Summer
 
-**October 7, 2026 — local verification complete; release verification pending.**
+**October 7, 2026 — published in v1.0.261007-8; touch follow-up in progress.**
 
 The user delegated coherent resolution of the remaining ambiguous rules. This
 connects the existing four-terminal Bamboo/Summer interaction to actual paid
@@ -82,7 +82,19 @@ Evidence directory: `/tmp/tensho-bamboo-summer-R85V9c`.
   reviewed. No runtime/test/assertion/deadline changes were needed.
 - The unchanged isolated short-phone save/leave test also passes
   (`resume-isolated.log`, 16.4 seconds), closing that earlier persistence failure.
-- Main publication and independent release/hosted verification are pending.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37690876017)
+  passes 1,839/1,839 tests in 156 files, 13 release checks, build and deployment.
+  Public manifest and remote tag identify `edcb2dcd46623ef11e07dcf3a8830655876ef195`,
+  version **1.0.261007-8**. Hosted artwork matches the SHA-256 below.
+- Initial hosted batch: 7/8 pass; Spanish touch/full-hand case misses the initial
+  discard (reserve remains zero). Its unchanged isolated replay passes. A further
+  full replay passes 5/8, with two overall deadline failures and another missed
+  initial touch discard. Do not describe either full batch as passing or attribute
+  all these failures to host load. Artifacts are `hosted`, `hosted-isolated` and
+  `hosted-recheck` in the evidence directory.
+- Investigation reproduced a first-frame input race in a component regression;
+  [the touch follow-up](TOUCH_GESTURE_IMPLEMENTATION.md) records its implementation
+  and verification separately. This is not proof that it caused every hosted miss.
   Other mechanics remain incomplete; these checks do not certify project completion.
 
 The browser journey starts from an actual legacy envelope, draws Summer and

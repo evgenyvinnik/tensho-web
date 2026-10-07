@@ -23,6 +23,29 @@ for (const language of ['en', 'es'])
       )
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.addInitScript((fixture) => {
+        const events: unknown[] = []
+        ;(window as unknown as { initialGesture: unknown[] }).initialGesture =
+          events
+        for (const type of ['pointerdown', 'pointerup', 'pointercancel'])
+          document.addEventListener(
+            type,
+            (raw) => {
+              const event = raw as PointerEvent
+              events.push({
+                type,
+                x: event.clientX,
+                y: event.clientY,
+                tile: (event.target as Element)
+                  ?.closest?.('[data-play-tile]')
+                  ?.getAttribute('data-play-tile'),
+                hit: document
+                  .elementFromPoint(event.clientX, event.clientY)
+                  ?.closest('[data-play-tile], [data-play-zone]')
+                  ?.outerHTML.slice(0, 300),
+              })
+            },
+            { capture: true }
+          )
         localStorage.setItem('tensho_tutorial_completed', 'true')
         localStorage.setItem('tensho_hints_disabled', 'true')
         if (fixture && !localStorage.getItem('tensho-classic-run-v1'))
@@ -170,6 +193,26 @@ for (const language of ['en', 'es'])
           touchPoints: [],
         })
         await touch.detach()
+        await testInfo.attach('initial-touch-gesture', {
+          body: JSON.stringify({
+            from,
+            to,
+            state: await page.evaluate(() => ({
+              events: (window as unknown as { initialGesture: unknown[] })
+                .initialGesture,
+              discard: document
+                .querySelector('[data-play-zone="discard"]')
+                ?.getBoundingClientRect()
+                .toJSON(),
+              tile: document
+                .querySelector('[data-play-tile="hand-9"]')
+                ?.getBoundingClientRect()
+                .toJSON(),
+              fonts: document.fonts.status,
+            })),
+          }),
+          contentType: 'application/json',
+        })
       } else await tile.dragTo(zone)
       await expect
         .poll(async () => (await saved()).state.summerReserve.length)

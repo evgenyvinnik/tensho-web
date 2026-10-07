@@ -3,10 +3,12 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
-October 7 local follow-up: [Bamboo/Summer](BAMBOO_SUMMER_IMPLEMENTATION.md) now
+October 7 published follow-up, **v1.0.261007-8**: [Bamboo/Summer](BAMBOO_SUMMER_IMPLEMENTATION.md) now
 earns round-long wall protection from a terminal-heavy committed play, restores
 reserved tiles and persists the earned reward. Normal Summer receives new fan
-art and no longer receives an unfinished-power warning. Verification is ongoing.
+art and no longer receives an unfinished-power warning. All 1,839 CI tests and
+deployment pass. Hosted touch misses are investigated in the linked ledger and
+touch follow-up; the full hosted batch is not yet clean.
 
 October 7 published follow-up, **v1.0.261007-7**: [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md)
 now connects the chosen one-rank-gap rule to both play sizes, coach and optional

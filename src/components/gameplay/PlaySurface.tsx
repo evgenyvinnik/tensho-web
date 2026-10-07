@@ -140,6 +140,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
   // Drag state
   const [dragState, setDragState] = useState<DragState | null>(null)
+  // Input can finish before React paints the first drag frame. Keep gesture
+  // ownership synchronous; state is only its visual projection.
+  const dragRef = useRef<DragState | null>(null)
   const [currentDropZone, setCurrentDropZone] = useState<DropZone>(null)
 
   // Staged tiles (tiles moved to staging area)
@@ -227,7 +230,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Handle drag start
   const handleDragStart = useCallback(
     (tile: Tile, e: React.PointerEvent) => {
-      if (disabled || e.button !== 0 || !e.isPrimary) return
+      if (disabled || e.button !== 0 || !e.isPrimary || dragRef.current) return
 
       const { clientX, clientY } = e
       e.currentTarget.setPointerCapture(e.pointerId)
@@ -237,7 +240,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         ? 'staging'
         : 'hand'
 
-      setDragState({
+      const gesture: DragState = {
         pointerId: e.pointerId,
         tile,
         startX: clientX,
@@ -245,7 +248,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         currentX: clientX,
         currentY: clientY,
         originZone,
-      })
+      }
+      dragRef.current = gesture
+      setDragState(gesture)
     },
     [disabled, stagedTiles]
   )
@@ -253,33 +258,34 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   // Handle drag move
   const handleDragMove = useCallback(
     (e: PointerEvent) => {
-      if (!dragState || e.pointerId !== dragState.pointerId) return
+      const gesture = dragRef.current
+      if (!gesture || e.pointerId !== gesture.pointerId) return
 
       const { clientX, clientY } = e
 
-      setDragState((prev) =>
-        prev
-          ? {
-              ...prev,
-              currentX: clientX,
-              currentY: clientY,
-            }
-          : null
-      )
+      const moved = { ...gesture, currentX: clientX, currentY: clientY }
+      dragRef.current = moved
+      setDragState(moved)
 
       // Update current drop zone for visual feedback
       const zone = getDropZone(clientX, clientY)
       setCurrentDropZone(zone)
     },
-    [dragState, getDropZone]
+    [getDropZone]
   )
 
   // Handle drag end
   const handleDragEnd = useCallback(
     (event: PointerEvent) => {
-      if (!dragState) return
+      const gesture = dragRef.current
+      if (!gesture || event.pointerId !== gesture.pointerId) return
+      // Consume once, before callbacks can synchronously dispatch more input.
+      dragRef.current = null
+      setDragState(null)
+      setCurrentDropZone(null)
+      if (disabled) return
 
-      const { tile, originZone, startX, startY } = dragState
+      const { tile, originZone, startX, startY } = gesture
       // React may not have painted the final move yet. The release event is
       // authoritative for both the click threshold and the drop target.
       const { clientX: currentX, clientY: currentY } = event
@@ -293,8 +299,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       const CLICK_THRESHOLD = 10
       if (movedDistance < CLICK_THRESHOLD) {
         toggleStagedTile(tile, originZone)
-        setDragState(null)
-        setCurrentDropZone(null)
         return
       }
 
@@ -313,41 +317,37 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         setStagedTiles((prev) => prev.filter((t) => t.id !== tile.id))
       }
       // If dropped in same zone, just reset
-
-      setDragState(null)
-      setCurrentDropZone(null)
     },
-    [dragState, getDropZone, onTileDiscard, toggleStagedTile]
+    [disabled, getDropZone, onTileDiscard, toggleStagedTile]
   )
 
   // Global event listeners for drag
   useEffect(() => {
-    if (dragState) {
-      const moveHandler = (e: PointerEvent) => {
-        if (e.pointerId !== dragState.pointerId) return
-        e.preventDefault()
-        handleDragMove(e)
-      }
-      const endHandler = (e: PointerEvent) => {
-        if (e.pointerId === dragState.pointerId) handleDragEnd(e)
-      }
-      const cancelHandler = (e: PointerEvent) => {
-        if (e.pointerId !== dragState.pointerId) return
-        setDragState(null)
-        setCurrentDropZone(null)
-      }
-
-      window.addEventListener('pointermove', moveHandler, { passive: false })
-      window.addEventListener('pointerup', endHandler)
-      window.addEventListener('pointercancel', cancelHandler)
-
-      return () => {
-        window.removeEventListener('pointermove', moveHandler)
-        window.removeEventListener('pointerup', endHandler)
-        window.removeEventListener('pointercancel', cancelHandler)
-      }
+    const moveHandler = (e: PointerEvent) => {
+      if (e.pointerId !== dragRef.current?.pointerId) return
+      e.preventDefault()
+      handleDragMove(e)
     }
-  }, [dragState, handleDragMove, handleDragEnd])
+    const endHandler = (e: PointerEvent) => {
+      handleDragEnd(e)
+    }
+    const cancelHandler = (e: PointerEvent) => {
+      if (e.pointerId !== dragRef.current?.pointerId) return
+      dragRef.current = null
+      setDragState(null)
+      setCurrentDropZone(null)
+    }
+
+    window.addEventListener('pointermove', moveHandler, { passive: false })
+    window.addEventListener('pointerup', endHandler)
+    window.addEventListener('pointercancel', cancelHandler)
+
+    return () => {
+      window.removeEventListener('pointermove', moveHandler)
+      window.removeEventListener('pointerup', endHandler)
+      window.removeEventListener('pointercancel', cancelHandler)
+    }
+  }, [handleDragMove, handleDragEnd])
 
   // Notify parent when staged tiles change
   useEffect(() => {
