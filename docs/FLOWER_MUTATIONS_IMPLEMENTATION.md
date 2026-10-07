@@ -1,12 +1,12 @@
 # Flower mutations and rebloom
 
-October 7, 2026 — **local work in progress, not published**.
+October 7, 2026 — published and verified in **v1.0.261007-13**.
 
 The delegated rules are recorded in [the decision log](RULE_RESOLUTION.md).
 This checkpoint covers all four mutations and actual duplicate-draw acquisition;
 it does not declare the remaining catalyst/item requirements complete.
 
-## Connected locally
+## Connected paths
 
 - Plum single-tile overlap is in tactical parsing, complete validation,
   enlarged-rack subset selection and the authoritative paid/forecast pipeline.
@@ -104,12 +104,39 @@ it does not declare the remaining catalyst/item requirements complete.
   verification claim. Both owned local servers (4200/4201) were stopped; the
   pre-existing 4173 server was untouched.
 
-## Still required before publication
+## Published verification
 
-- Full regression, production build, release checks, main deployment and hosted
-  replay. No release claim until these gates are actually observed.
+- Implementation: `376774ec0beb834f1cc3964d120f4bf638a645b8`.
+- The final unchanged full two-worker local recheck passes **1,935/1,935 in
+  161 files** (135 seconds). The earlier timeout remains recorded above.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37704076358)
+  independently passes **1,935/1,935**, all **13 release checks** and build.
+  Initial build job: `113074158449`; `ci-build.log` retains its complete output.
+- The first deployment job `113074657189` received a GitHub Pages HTTP 500
+  while creating the deployment. Retry only failed jobs, keeping the tested
+  build/version unchanged; attempt 2 succeeds with deploy job `113074907156`.
+  Keep `deploy-first-failure.log`, `deploy-watch.log` and
+  `deploy-retry-watch.log` rather than hiding the failed attempt.
+- Public `release.json`, the remote `v1.0.261007-13` tag and runtime version agree
+  on `504c26e26f24f59f4bd7eb5bac0abcbc8c5278ad`. Loaded entry point is
+  `/tensho-web/assets/index-CxHNBn7o.js`. Both hosted portraits match their
+  SHA-256 checksums below; see `hosted-provenance.log`.
+- **4/4 hosted journeys pass**, English/Spanish desktop and 320×568 touch,
+  with no retries/deadline changes. The captured v2 envelope exercises actual
+  duplicate acquisition, illustrated read-only rules, full/tactical forecast
+  payment, exact reload and next-round persistence. Spanish phone inspector
+  screenshot reviewed; the longer copy wraps within its scrollable content.
+  Native and production batches also pass **4/4 each**.
+- Reports, captured replay and screenshots are in `/tmp/tensho-mutations-zHMyAD`.
+  No local test server remains from this checkpoint.
+
+## Remaining project work
+
 - Catalyst payments remain required after this mutation work. Organic balance
   and human newcomer/fun evaluation also remain; engine legality alone is not fun.
+- Full Frostbite behavior, Fate Seal/Negative lifetime, remaining copied resource
+  effects and catalog/item wording reconciliation retain their existing scope.
+  This checkpoint does not complete the entire implementation goal.
 
 ## Artwork provenance
 

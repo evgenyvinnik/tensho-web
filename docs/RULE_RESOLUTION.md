@@ -227,6 +227,7 @@ Garden protects it. Starting another run retains eligibility, not awakenings.
   or free retrigger is created.
 
 These are delegated design choices, not balance conclusions. The implementation
-is local and still being verified; do not advertise it as deployed.
-[Progress and remaining checks](FLOWER_MUTATIONS_IMPLEMENTATION.md).
+is published and verified in v1.0.261007-13, including saved acquisition,
+illustrated previews, coaching and real desktop/touch journeys.
+[Evidence and remaining project work](FLOWER_MUTATIONS_IMPLEMENTATION.md).
 Flower-paid Decree catalysts remain a separate required implementation.

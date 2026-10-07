@@ -8,15 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Flower mutations](FLOWER_MUTATIONS_IMPLEMENTATION.md) are being implemented
-locally and are not published. All four engine effects, real rebloom acquisition,
+[Flower mutations](FLOWER_MUTATIONS_IMPLEMENTATION.md) are published and verified
+in **v1.0.261007-13**. All four engine effects, real rebloom acquisition,
 saved eligibility, localized inspector/hand explanations, coaching, optimized
-larger-rack search and new Chrysanthemum/Bamboo portraits are connected. Native
-and production journeys each pass 4/4. Build, TypeScript, lint and 13 release
-checks pass. Full regression is 1,934/1,935 with one existing five-second CLI
-timeout; its unchanged isolated file passes 26/26. Independent full-suite CI and
-hosted verification remain. Catalyst payments and other previously listed
-requirements are not removed from scope.
+larger-rack search and new Chrysanthemum/Bamboo portraits are connected. Native,
+production and hosted journeys each pass 4/4. Build, TypeScript, lint and 13
+release checks pass. Final full local regression and independent CI both pass
+1,935/1,935 in 161 files. Deployment succeeds after a failed-job-only retry of
+a Pages HTTP 500; public manifest/tag/runtime and artwork checksums match.
+Earlier failures remain documented. Catalyst payments and other previously
+listed requirements are not removed from scope.
 
 [Plum/Autumn](PLUM_AUTUMN_IMPLEMENTATION.md) is published and verified in
 v1.0.261007-12: one physical matching river recovery per paid sequence, after
