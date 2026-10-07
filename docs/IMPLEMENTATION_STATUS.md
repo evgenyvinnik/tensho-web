@@ -4,13 +4,16 @@
 
 **Last verified:** October 6, 2026 (browser and release evidence retains its own dates)
 
-**CI pending — illustrated hand explanations:** the optional localized disclosure
+**Published — v1.0.261007-1, illustrated hand explanations:** the optional localized disclosure
 shows actual temporary tile identities and virtual-completion penalties. Readiness
 uses active rules; hidden tiles remain concealed. New Wildcard and Clemency
 portraits share the shop/owned/Archive registry. Both native batches pass 18/18;
 16 built-production journeys, build and 13 release checks pass. The unit run has
 1,685 passes and one CLI subprocess timeout; unchanged recheck passes 42/42 and
-final focused checks pass 101/101. [Evidence and prompts](HAND_INTERPRETATION_UI.md).
+final focused checks pass 101/101. Independent CI passes all 1,690 tests and
+deployment; all 16 hosted journeys pass. Manifest/tag match
+`f18778be1aba4cc34596485f4922445be599cd6f`; both hosted art hashes match.
+[Evidence and prompts](HAND_INTERPRETATION_UI.md).
 
 **Published — v1.0.261004-10, Wildcard and special-hand Orbs:** one temporary interpretation
 now connects validation, preview and payout, including Seven Pairs and Thirteen
@@ -21,7 +24,8 @@ local suite has 1,674 passes and three timeouts; isolated rechecks retain CLI
 timing failures. Independent CI passes all 1,677 tests, build and deployment.
 Public manifest/tag match `042fdf51f4332679fe3416fea53266c18724db15`.
 All 12 hosted desktop/touch journeys pass. Physical tile identities and modifiers
-survive play and saves. Adopted-identity explanation/readiness polish remains open.
+survive play and saves. The illustrated explanation/readiness follow-up above
+addresses the originally recorded presentation gap; broader review remains open.
 [Scope and evidence](CELESTIAL_WILDCARD_IMPLEMENTATION.md).
 
 **Published — v1.0.261004-9, same-visit pack Charters:** Star Chart and Omen Lens now

@@ -12,7 +12,11 @@ The [hand interpretation follow-up](HAND_INTERPRETATION_UI.md) supplies optional
 localized explanations, rule-aware readiness and two generated portraits.
 Both native browser batches pass 18/18; all 16 built-production journeys pass.
 The full-unit CLI timeout, passing unchanged recheck and corrected stable-source
-lint result are retained in the ledger. Independent CI is the deployment gate.
+lint result are retained in the ledger. Published **v1.0.261007-1** after all 1,690
+independent CI tests, build and deployment pass. All 16 hosted journeys pass;
+manifest/tag match `f18778be1aba4cc34596485f4922445be599cd6f`, and both hosted
+art hashes match. Human onboarding/fun, translation review and remaining mechanics
+requirements are not established by these fixture-driven checks.
 
 The [Wildcard scoring correction](CELESTIAL_WILDCARD_IMPLEMENTATION.md) is published
 as **v1.0.261004-10**: consistent temporary identities now support special hands, and
@@ -22,8 +26,8 @@ The lower-concurrency full run has 1,674 passes and three timeouts; unchanged
 isolated rechecks retain CLI timing failures. Earlier failures remain in the
 evidence ledger. Independent CI passes all 1,677 tests, build and deployment.
 Public manifest/tag match `042fdf51f4332679fe3416fea53266c18724db15`.
-All 12 hosted journeys pass; power-aware readiness/adopted-identity UI remains
-a documented follow-up rather than a claim of complete presentation polish.
+All 12 hosted journeys pass; the power-aware readiness/adopted-identity follow-up
+is now implemented above, without claiming complete presentation polish.
 
 The [same-visit pack Charter correction](PACK_CHARTER_IMPLEMENTATION.md) connects
 Star Chart/Omen Lens purchases to already-generated but unopened shelf packs.

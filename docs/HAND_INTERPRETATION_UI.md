@@ -118,3 +118,20 @@ independent CI test gate must pass before automatic deployment.
 The browser deals and Flower eligibility are controlled fixtures, not evidence
 of organic acquisition or human fun. Broader Season/Flower/design and human
 review gaps in the implementation ledger remain open.
+
+## Published verification
+
+- Implementation commit: `8b06109f28d666a8ae3048248ca611cf89a5fb7a`.
+- Release: **v1.0.261007-1** (UTC release date; October 6 locally).
+- Built commit, public `release.json` and remote tag agree on
+  `f18778be1aba4cc34596485f4922445be599cd6f`.
+- [Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/37571196279)
+  passes **1,690 tests in 145 files**, all 13 release checks, build and deployment.
+  The earlier local timeout and lint log are retained, not relabeled as passes.
+- All **16 hosted desktop/touch journeys pass**, repeating the production
+  disclosure, artwork, staging, payment and exact reload assertions. Both hosted
+  image SHA-256 hashes match the assets recorded above. `ci.log`, `hosted.log`
+  and hosted screenshots retain the results in the evidence directory.
+- Owned ports 4196/4197 were stopped after local verification. The pre-existing
+  port 4173 server was not modified. Existing workflow/runner migration warnings
+  are unchanged and did not prevent deployment.
