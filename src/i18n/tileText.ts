@@ -68,7 +68,7 @@ export function tileDetails(
   } else if (tile.suit === TileSuit.Season) {
     const season = SEASONS[tile.rank - 1]
     description =
-      t(`flora.details.${season === 'spring' ? 'unwired' : season}`) +
+      t(`flora.details.${season}`) +
       ' ' +
       t('flora.details.roundScope')
     points = t('tileDetails.bonusTile')

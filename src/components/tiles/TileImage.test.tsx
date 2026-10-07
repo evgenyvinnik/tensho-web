@@ -42,12 +42,12 @@ it('describes the implemented Summer effect instead of an invented gold reward',
   expect(screen.getByRole('tooltip')).not.toHaveTextContent('Increases gold')
 })
 
-it('does not advertise the unconnected Spring draw power', () => {
+it('describes the implemented Spring rack expansion', () => {
   render(
     <TileImage tile={new Tile(TileSuit.Season, 1, 'spring')} detailsVisible />
   )
   expect(screen.getByRole('tooltip')).toHaveTextContent(
-    i18n.t('flora.details.unwired')
+    i18n.t('flora.details.spring')
   )
 })
 

@@ -1188,6 +1188,7 @@
       "decayPenalty": "Penalti Pelapukan per permainan tangan: −{{points}} poin.",
       "partial": "Beberapa aturan musim masih dikembangkan. Hanya efek saat ini yang ditampilkan.",
       "unwired": "Belum diterapkan.",
+      "spring": "+2 ruang tangan pada ronde ini, diisi dari tembok hidup. Dapat ditumpuk; Ular tetap hanya mengganti 3 ubin.",
       "summer": "Skor ×1,3. Menyisihkan 20% sisa dinding hidup untuk ronde ini (jumlah ubin yang tersedia dibulatkan ke bawah).",
       "autumn": "Pengali yaku +20%.",
       "winter": "Skor ×0,75.",

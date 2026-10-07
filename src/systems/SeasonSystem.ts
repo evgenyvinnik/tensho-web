@@ -5,7 +5,7 @@
  * They are the highest authority in the system hierarchy and can override other effects.
  *
  * Base Seasons:
- * - Spring: +2 draws per hand
+ * - Spring: +2 rack spaces this round, filled on activation and normal refills
  * - Summer: Base score +30%, wall size -20%
  * - Autumn: Yaku multipliers +20%, larger discard pool
  * - Winter: Hand legality loosened, score -25%
@@ -41,7 +41,7 @@ export const SEASON_BASE_EFFECTS: Record<SeasonVariant, SeasonEffect> = {
   Spring: {
     type: 'draw_bonus',
     value: 2,
-    description: '+2 draws per hand',
+    description: '+2 rack spaces this round; fill new spaces from the live wall',
   },
   Summer: {
     type: 'score_modifier',
@@ -250,7 +250,7 @@ export class SeasonSystem {
   }
 
   /**
-   * Get draw bonus from active seasons
+   * Additional rack spaces from normal Springs; replacements fill these spaces.
    */
   getDrawBonus(): number {
     let bonus = 0

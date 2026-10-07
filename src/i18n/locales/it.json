@@ -603,6 +603,7 @@
       "decayPenalty": "Penalità del Declino per giocata: −{{points}} punti.",
       "partial": "Alcune regole stagionali sono ancora in sviluppo. Sono mostrati solo gli effetti attuali.",
       "unwired": "Non ancora implementato.",
+      "spring": "+2 spazi in mano per questo round, riempiti dal muro vivo. Cumulabile; il Serpente continua a sostituire solo 3 tessere.",
       "summer": "Punteggio ×1,3. Mette da parte il 20% del muro vivo rimanente per questo round (tessere disponibili arrotondate per difetto).",
       "autumn": "Moltiplicatore yaku +20%.",
       "winter": "Punteggio ×0,75.",

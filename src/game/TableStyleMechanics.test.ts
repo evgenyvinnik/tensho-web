@@ -40,7 +40,10 @@ describe('authoritative table styles', () => {
       expect(state.tableStyleId).toBe(id)
       expect(state.tableModifiers).toEqual(resolveTableRules(id).modifiers)
       expect(Object.isFrozen(state.tableModifiers)).toBe(true)
-      expect(state.handTiles).toHaveLength(14)
+      const springs = state.seasonSystem
+        .getSeasonStack()
+        .filter((season) => season.type === 'Spring' && !season.isCorrupted)
+      expect(state.handTiles).toHaveLength(14 + springs.length * 2)
     }
   )
 

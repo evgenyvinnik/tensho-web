@@ -13,18 +13,20 @@ import {
 } from './assets'
 import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../config/mandateDefinitions'
 
-it.each(['swiftHandCharter', 'fullPaletteCharter', 'yakuLedger'] as const)(
-  'ships a compact transparent %s portrait',
-  (key) => {
-    const webp = readFileSync(`public${illustrationAssets[key]}`)
-    expect(webp.subarray(0, 4).toString()).toBe('RIFF')
-    expect(webp.subarray(12, 16).toString()).toBe('VP8X')
-    expect(webp[20] & 0x10).toBe(0x10)
-    expect(webp.readUIntLE(24, 3) + 1).toBe(512)
-    expect(webp.readUIntLE(27, 3) + 1).toBe(512)
-    expect(webp.length).toBeLessThan(100_000)
-  }
-)
+it.each([
+  'swiftHandCharter',
+  'fullPaletteCharter',
+  'yakuLedger',
+  'springBlossom',
+] as const)('ships a compact transparent %s portrait', (key) => {
+  const webp = readFileSync(`public${illustrationAssets[key]}`)
+  expect(webp.subarray(0, 4).toString()).toBe('RIFF')
+  expect(webp.subarray(12, 16).toString()).toBe('VP8X')
+  expect(webp[20] & 0x10).toBe(0x10)
+  expect(webp.readUIntLE(24, 3) + 1).toBe(512)
+  expect(webp.readUIntLE(27, 3) + 1).toBe(512)
+  expect(webp.length).toBeLessThan(100_000)
+})
 
 it.each(SHOWDOWN_MANDATES)(
   'ships a distinct compact transparent portrait for $id',

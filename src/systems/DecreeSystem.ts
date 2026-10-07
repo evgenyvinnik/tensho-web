@@ -1092,8 +1092,11 @@ export class DecreeSystem {
   ): ScoreBreakdown {
     const result = { ...breakdown }
 
-    // Apply flower empowerment bonus (+10% per flower)
-    const flowerBonus = 1 + context.flowers.flowers.length * 0.1
+    // Drought silences the Flower's extra empowerment, not the Decree itself
+    // or the inventory count used by its authored collection conditions.
+    const flowerBonus = context.flowersSuppressed
+      ? 1
+      : 1 + context.flowers.flowers.length * 0.1
 
     switch (effect.type) {
       case 'additive_score': {

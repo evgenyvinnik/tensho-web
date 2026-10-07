@@ -5,7 +5,7 @@ import type { FlowerVariant, SeasonTile } from '../../systems/types'
 import { TileSuit } from '../../core/Tile'
 import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
 import { FLOWER_DATA, SEASON_DATA } from './gameplayTypes'
-import { getTileImagePath } from '../../utils/assets'
+import { getTileImagePath, illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
 
 export interface FloraTrackCompactProps {
@@ -207,10 +207,14 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                   className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
                 >
                   <img
-                    src={getTileImagePath(
-                      TileSuit.Season,
-                      SEASON_DATA[season.type].rank
-                    )}
+                    src={
+                      effect === 'Spring'
+                        ? illustrationAssets.springBlossom
+                        : getTileImagePath(
+                            TileSuit.Season,
+                            SEASON_DATA[season.type].rank
+                          )
+                    }
                     alt=""
                     aria-hidden="true"
                     draggable={false}
@@ -238,9 +242,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                     <p className="mt-1 text-sm">
                       {t(
                         'flora.details.' +
-                          (effect && effect !== 'Spring'
-                            ? effect.toLowerCase()
-                            : 'unwired')
+                          (effect ? effect.toLowerCase() : 'unwired')
                       )}
                     </p>
                   </div>

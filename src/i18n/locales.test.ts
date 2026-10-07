@@ -44,6 +44,18 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies the implemented Spring rule in all thirteen languages', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const details = (locale.flora as typeof en.flora).details
+    expect(Object.prototype.hasOwnProperty.call(details, 'spring')).toBe(true)
+    expect(details.spring, language).toBeTruthy()
+    expect(details.spring).toContain('2')
+    expect(details.spring).toContain('3')
+    if (language !== 'en')
+      expect(details.spring).not.toBe(en.flora.details.spring)
+  }
+})
+
 it('supplies the Yaku upgrade ledger and its placeholders in every locale', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const ledger = locale.yakuUpgrades as typeof en.yakuUpgrades

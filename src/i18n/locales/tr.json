@@ -603,6 +603,7 @@
       "decayPenalty": "Oynanan el başına Çürüme cezası: −{{points}} puan.",
       "partial": "Bazı mevsim kuralları hâlâ geliştiriliyor. Yalnızca mevcut etkiler gösterilir.",
       "unwired": "Henüz uygulanmadı.",
+      "spring": "Bu tur elde +2 yer açılır ve canlı duvardan doldurulur. Etkiler birikir; Yılan hâlâ yalnızca 3 taş yeniler.",
       "summer": "Puan ×1,3. Bu tur için kalan canlı duvarın %20’sini ayırır (kullanılabilir taş sayısı aşağı yuvarlanır).",
       "autumn": "Yaku çarpanı +%20.",
       "winter": "Puan ×0,75.",

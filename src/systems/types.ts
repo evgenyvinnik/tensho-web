@@ -637,6 +637,10 @@ export interface ScoringContext {
   melds: Meld[]
   decrees: OwnedDecree[]
   flowers: FlowerCollection
+  /** Effective Drought suppression after active, mandate-safe protection.
+   * Suppresses Flower empowerment, not ownership-based Decree conditions.
+   */
+  flowersSuppressed?: boolean
   season: SeasonState
   round: RoundState
   yakuMultipliers: Map<string, number>

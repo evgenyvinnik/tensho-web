@@ -697,7 +697,8 @@ export class GameOrchestrator {
         this.state.voidScriptSystem.getHandSizePenalty() +
         this.state.omenHandSizeBonus -
         this.state.mandateEffectSystem.getHandSizeReduction() +
-        this.state.decreeSystem.getHandSizeBonus()
+        this.state.decreeSystem.getHandSizeBonus() +
+        this.state.seasonSystem.getDrawBonus()
     )
   }
 
@@ -935,14 +936,13 @@ export class GameOrchestrator {
     )
   }
 
-  /**
-   * Refill hand to standard size (13 tiles) by drawing from wall
-   */
-  private refillHand(effects: Effect[], afterHandPlay: boolean = false): void {
-    const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
-    const handSizeLimit = this.getHandSizeLimit()
-
-    while (this.state.handTiles.length < handSizeLimit) {
+  /** Draw without settling a second Mandate cycle. Targets can grow mid-chain. */
+  private drawToHandSize(
+    target: () => number,
+    effects: Effect[],
+    announceTiles: boolean = true
+  ): void {
+    while (this.state.handTiles.length < target()) {
       const tile = this.drawTileInternal()
 
       if (!tile) {
@@ -953,30 +953,57 @@ export class GameOrchestrator {
       // Check for bonus tile
       if (tile.isFlower || tile.isSeason) {
         this.handleBonusTile(tile)
-        effects.push({
-          type: 'bonus_tile_drawn',
-          description: `Drew bonus tile: ${tile.displayName}`,
-          tile,
-          isFlower: tile.isFlower,
-        })
+        if (announceTiles)
+          effects.push({
+            type: 'bonus_tile_drawn',
+            description: `Drew bonus tile: ${tile.displayName}`,
+            tile,
+            isFlower: tile.isFlower,
+          })
         // Bonus tiles don't count toward hand size, continue drawing
       } else {
         this.state.handTiles.push(tile)
 
-        effects.push({
-          type: 'tile_added',
-          description: `Drew tile: ${tile.displayName}`,
-          tile,
-        })
+        if (announceTiles)
+          effects.push({
+            type: 'tile_added',
+            description: `Drew tile: ${tile.displayName}`,
+            tile,
+          })
 
-        eventBus.emit('tileDrawn', {
-          tileId: tile.id,
-          tilesRemaining: this.state.wall.length - this.state.drawIndex,
-        })
+        if (announceTiles)
+          eventBus.emit('tileDrawn', {
+            tileId: tile.id,
+            tilesRemaining: this.state.wall.length - this.state.drawIndex,
+          })
       }
     }
+  }
 
-    // Sort hand after all draws
+  /** A newly drawn Spring fills only its new spaces, not other missing tiles.
+   * Redraw calls this before shuffling returned tiles back into the live wall.
+   */
+  private fillNewSeasonSlots(
+    beforeLimit: number,
+    effects: Effect[],
+    announceTiles = true
+  ): void {
+    const countBeforeBonus = this.state.handTiles.length
+    this.drawToHandSize(
+      () =>
+        Math.min(
+          this.getHandSizeLimit(),
+          countBeforeBonus + Math.max(0, this.getHandSizeLimit() - beforeLimit)
+        ),
+      effects,
+      announceTiles
+    )
+  }
+
+  /** Refill to the current rack capacity, including Spring drawn mid-cycle. */
+  private refillHand(effects: Effect[], afterHandPlay: boolean = false): void {
+    const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
+    this.drawToHandSize(() => this.getHandSizeLimit(), effects)
     this.state.handTiles.sort(Tile.compare)
     this.applyMandateDrawState(
       this.state.handTiles.filter((tile) => !previousTileIds.has(tile.id)),
@@ -997,6 +1024,7 @@ export class GameOrchestrator {
     }
 
     const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
+    const beforeLimit = this.getHandSizeLimit()
 
     for (let i = 0; i < fixedDrawCount; i++) {
       const tile = this.drawTileInternal()
@@ -1024,6 +1052,7 @@ export class GameOrchestrator {
       }
     }
 
+    this.fillNewSeasonSlots(beforeLimit, effects)
     this.state.handTiles.sort(Tile.compare)
     this.applyMandateDrawState(
       this.state.handTiles.filter((tile) => !previousTileIds.has(tile.id)),
@@ -1231,6 +1260,7 @@ export class GameOrchestrator {
    * Execute draw action
    */
   private executeDraw(effects: Effect[]): ActionResult {
+    const beforeLimit = this.getHandSizeLimit()
     const previousTileIds = new Set(
       this.state.handTiles.map((handTile) => handTile.id)
     )
@@ -1271,6 +1301,8 @@ export class GameOrchestrator {
       tilesRemaining: this.state.wall.length - this.state.drawIndex,
     })
 
+    this.fillNewSeasonSlots(beforeLimit, effects)
+    this.state.handTiles.sort(Tile.compare)
     this.applyMandateDrawState(
       this.state.handTiles.filter(
         (handTile) => !previousTileIds.has(handTile.id)
@@ -2040,6 +2072,7 @@ export class GameOrchestrator {
    * Execute redraw action
    */
   private executeRedraw(tileIds: string[], effects: Effect[]): ActionResult {
+    const beforeLimit = this.getHandSizeLimit()
     if (
       tileIds.some((tileId) =>
         this.state.mandateEffectSystem.isTileLocked(tileId)
@@ -2081,6 +2114,10 @@ export class GameOrchestrator {
         }
       }
     }
+
+    // Spring's new spaces are drawn before returned tiles re-enter circulation.
+    // The redraw below announces every newly held physical tile exactly once.
+    this.fillNewSeasonSlots(beforeLimit, effects, false)
 
     // Return tiles only after replacing them, so they cannot be their own
     // immediate replacement. Drop the consumed prefix: it is draw history,
@@ -3163,6 +3200,9 @@ export class GameOrchestrator {
   ): ScoreBreakdown & { equation: ScoreEquation } {
     // Build the full ScoringContext for system integrations
     const roundState = this.state.roundManager.getCurrentRound()
+    // One effective decision governs direct bonuses, Decree empowerment and
+    // Flower–Season interactions. Protection must itself survive Mandates.
+    const flowersSuppressed = this.areFlowerBonusesSuppressed()
 
     const systemContext: SystemScoringContext = {
       previewMode: preview,
@@ -3175,6 +3215,7 @@ export class GameOrchestrator {
           (decree) => !this.state.mandateEffectSystem.isDecreeDisabled(decree)
         ),
       flowers: this.state.flowerSystem.getCollection(),
+      flowersSuppressed,
       season: this.state.seasonSystem.getState(),
       round: {
         actNumber: this.state.currentAct,
@@ -3203,7 +3244,6 @@ export class GameOrchestrator {
     // protection outranks the Season that would otherwise silence Flowers -
     // Court authority overriding Heaven is the one exception the hierarchy
     // grants a Decree.
-    const flowersSuppressed = this.areFlowerBonusesSuppressed()
     const seasonModifiers = this.state.seasonSystem.applySeasonModifiers(
       systemContext,
       { flowersSuppressed }
@@ -3331,7 +3371,7 @@ export class GameOrchestrator {
         celestialOrbMultBonus += orbBonus.mult
         celestialOrbChipsBonus += orbBonus.chips
 
-        // Trigger yaku for leveling (a preview must not advance progression)
+        // Record the scored occurrence (previews never advance counters).
         if (!preview) {
           this.state.celestialOrbSystem.triggerYaku(category)
         }
@@ -4429,10 +4469,14 @@ export class GameOrchestrator {
 
   /** Public, detached run progress; never previews or scores a hidden hand. */
   getYakuUpgradeState() {
-    return this.state.celestialOrbSystem.getYakuBonusSummary().map((upgrade) => ({
-      ...upgrade,
-      timesScored: this.state.celestialOrbSystem.getYakuTriggerCount(upgrade.yaku),
-    }))
+    return this.state.celestialOrbSystem
+      .getYakuBonusSummary()
+      .map((upgrade) => ({
+        ...upgrade,
+        timesScored: this.state.celestialOrbSystem.getYakuTriggerCount(
+          upgrade.yaku
+        ),
+      }))
   }
 
   /** Get current state (for UI binding). */

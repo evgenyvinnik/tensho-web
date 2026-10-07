@@ -94,6 +94,7 @@ export const popupAssets = {
  */
 export const illustrationAssets = {
   yakuLedger: `${ASSET_BASE}/illustrations/yaku-ledger.webp`,
+  springBlossom: `${ASSET_BASE}/illustrations/spring-blossom.webp`,
   ceruleanBell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
   mandates: {
     amber_acorn: `${ASSET_BASE}/illustrations/amber-acorn.webp`,

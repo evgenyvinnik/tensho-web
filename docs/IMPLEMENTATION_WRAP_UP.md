@@ -1,12 +1,33 @@
 # Implementation wrap-up
 
-**Updated:** October 6, 2026
+**Updated:** October 7, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current illustrated Tea House build management
+## Current Season implementation
+
+The user has explicitly delegated resolution and implementation of open rules;
+[the decision record](RULE_RESOLUTION.md) preserves the prior confirmed choices.
+[Spring](SPRING_IMPLEMENTATION.md) now expands the rack by two spaces per normal
+Spring for the round, fills new spaces through the actual draw paths, respects
+exhaustion and settles one Mandate cycle. Its generated illustration and rule
+text are integrated into the inspector and all thirteen languages.
+[Drought](DROUGHT_EMPOWERMENT.md) now also suppresses Flower empowerment of
+Decrees. Orb upgrades remain immediate on use by explicit design resolution;
+the contradictory XP draft and unused thresholds are removed.
+
+Native checks pass 16/16, and full units complete with 1,770 passes and two
+test-only field-name mistakes; the corrected files pass 85/85. Build, TypeScript,
+lint and 13 release checks pass. Browser failures, corrected fixtures and an
+interrupted run remain recorded; production/release verification and publication
+are pending. The [384-run matched sweep](CURRENT_RUN_SWEEP.md) found no diagnostic
+stops, but its structural planner underperformed the control. It predates the
+Season changes and is not a current tuning claim. Remaining Flower/Season and
+item-rule work is still required, not removed by this checkpoint.
+
+## Illustrated Tea House build management
 
 The [illustrated Yaku upgrade ledger](YAKU_UPGRADE_LEDGER.md) exposes actual
 run-wide Orb upgrades and scored counts in gameplay and the shop, with a new
@@ -18,8 +39,8 @@ with earlier deadline failures retained. Build, lint and thirteen release checks
 pass. Published **v1.0.261007-4** after independent CI passed all 1,747 tests
 against the final source and deployed successfully. All twelve hosted journeys
 pass; public manifest/tag match `6682a8250f2696ebdd79b4ee46aeb9ad696ffde6`, and
-the hosted artwork hash matches. Orb-leveling semantics remain an unresolved
-user choice, not silently changed by this inspector.
+the hosted artwork hash matches. Orb-leveling semantics were unchanged by this
+inspector and subsequently resolved in the October 7 decision record above.
 
 The [expanded-rack hand correction](COMPLETE_HAND_SUBSETS.md) finds a legal
 complete declaration inside larger racks, stages only those physical tiles and

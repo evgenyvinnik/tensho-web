@@ -133,7 +133,13 @@ describe('FloraTrackCompact artwork', () => {
       expect(screen.getByTestId('flora-suppression')).toHaveTextContent(
         copy.flora.details.suppressed
       )
-      expect(screen.getAllByText(copy.flora.details.unwired)).toHaveLength(2)
+      expect(screen.getAllByText(copy.flora.details.spring)).toHaveLength(2)
+      expect(
+        screen.queryByText(copy.flora.details.unwired)
+      ).not.toBeInTheDocument()
+      expect(
+        dialog.querySelectorAll('img[src*="spring-blossom.webp"]')
+      ).toHaveLength(2)
       fireEvent.click(screen.getByRole('button', { name: copy.common.close }))
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
       expect(screen.getByTestId('flora-details-trigger')).toHaveAttribute(

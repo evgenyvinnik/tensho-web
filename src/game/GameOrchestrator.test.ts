@@ -7,7 +7,10 @@
 
 import { describe, it, expect, beforeEach } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
-import { CelestialOrbSystem, CELESTIAL_ORBS } from '../systems/CelestialOrbSystem'
+import {
+  CelestialOrbSystem,
+  CELESTIAL_ORBS,
+} from '../systems/CelestialOrbSystem'
 import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
 import { VoidScriptSystem, VOID_SCRIPTS } from '../systems/VoidScriptSystem'
 import { EnhancementType, SealType } from '../core/TileModifier'
@@ -46,9 +49,7 @@ import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
 
 let decreeFixtureCounter = 0
 
-function createDecreeFixtureHand(
-  groups: Array<[TileSuit, number[]]>
-): Tile[] {
+function createDecreeFixtureHand(groups: Array<[TileSuit, number[]]>): Tile[] {
   return groups.flatMap(([suit, ranks]) =>
     ranks.map(
       (rank) => new Tile(suit, rank, `decree-fixture-${decreeFixtureCounter++}`)
@@ -410,7 +411,9 @@ describe('GameOrchestrator', () => {
       game.processAction({ type: 'discard', tileId: handTiles[0].id })
 
       expect(game.getHandTiles()).toHaveLength(14)
-      expect(game.getHandTiles().some((tile) => tile.id === handTiles[0].id)).toBe(false)
+      expect(
+        game.getHandTiles().some((tile) => tile.id === handTiles[0].id)
+      ).toBe(false)
     })
 
     it('should fail when discarding a non-existent tile', () => {
@@ -527,35 +530,51 @@ describe('GameOrchestrator', () => {
     })
 
     it('starts yaku without free Celestial Orb bonuses', () => {
-      expect(game.getState().celestialOrbSystem.calculateYakuBonus('Tanyao')).toEqual({
+      expect(
+        game.getState().celestialOrbSystem.calculateYakuBonus('Tanyao')
+      ).toEqual({
         mult: 0,
         chips: 0,
       })
     })
 
     it('can hold and use a Celestial Orb from the authoritative inventory', () => {
-      const orb = CelestialOrbSystem.createCelestialOrbInstance(CELESTIAL_ORBS.mercury_orb)
+      const orb = CelestialOrbSystem.createCelestialOrbInstance(
+        CELESTIAL_ORBS.mercury_orb
+      )
 
       expect(game.addCelestialOrb(orb)).toBe(true)
-      const result = game.processAction({ type: 'useOrb', orbId: orb.instanceId })
+      const result = game.processAction({
+        type: 'useOrb',
+        orbId: orb.instanceId,
+      })
 
       expect(result.success).toBe(true)
       expect(game.getState().celestialOrbSystem.getYakuLevel('Tanyao')).toBe(2)
       expect(game.getCelestialOrbs()).toHaveLength(0)
-      expect(game.getState().celestialOrbSystem.calculateYakuBonus('Tanyao')).toEqual({
+      expect(
+        game.getState().celestialOrbSystem.calculateYakuBonus('Tanyao')
+      ).toEqual({
         mult: 1,
         chips: 15,
       })
     })
 
     it('applies Observatory x1.5 Mult for each held Celestial Orb', () => {
-      const scoreHand = (targetGame: GameOrchestrator, withObservatory: boolean) => {
+      const scoreHand = (
+        targetGame: GameOrchestrator,
+        withObservatory: boolean
+      ) => {
         clearDecrees(targetGame)
         if (withObservatory) {
           // Isolate scoring from the separately tested achievement prerequisite.
-          targetGame.setCharterUnlockResolver(id => id === 'observatory')
-          expect(targetGame.getState().charterSystem.purchaseCharter('star_chart')).not.toBeNull()
-          expect(targetGame.getState().charterSystem.purchaseCharter('observatory')).not.toBeNull()
+          targetGame.setCharterUnlockResolver((id) => id === 'observatory')
+          expect(
+            targetGame.getState().charterSystem.purchaseCharter('star_chart')
+          ).not.toBeNull()
+          expect(
+            targetGame.getState().charterSystem.purchaseCharter('observatory')
+          ).not.toBeNull()
           expect(
             targetGame.addCelestialOrb(
               CelestialOrbSystem.createCelestialOrbInstance(
@@ -585,10 +604,12 @@ describe('GameOrchestrator', () => {
       expect(observatoryScore).toBe(Math.floor(baselineScore * 1.5))
     })
 
-    it('spends Director\'s Take to reroll the upcoming Boss Mandate once', () => {
+    it("spends Director's Take to reroll the upcoming Boss Mandate once", () => {
       const state = game.getState() as OrchestratorState
       state.gold = 20
-      expect(state.charterSystem.purchaseCharter('directors_take')).not.toBeNull()
+      expect(
+        state.charterSystem.purchaseCharter('directors_take')
+      ).not.toBeNull()
       const bossRound = state.roundManager
         .getCurrentAct()!
         .rounds.find((round) => round.roundType === 'Boss')!
@@ -613,7 +634,10 @@ describe('GameOrchestrator', () => {
       expect(
         game.processAction({
           type: 'play',
-          tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+          tileIds: game
+            .getHandTiles()
+            .slice(0, 2)
+            .map((tile) => tile.id),
         }).success
       ).toBe(true)
       expect(state.phase).toBe('shop')
@@ -640,7 +664,10 @@ describe('GameOrchestrator', () => {
       mutableState.targetScore = 1
       game.processAction({
         type: 'play',
-        tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+        tileIds: game
+          .getHandTiles()
+          .slice(0, 2)
+          .map((tile) => tile.id),
       })
 
       const result = game.processAction({ type: 'skip' })
@@ -680,7 +707,10 @@ describe('GameOrchestrator', () => {
         FATE_SEALS.seal_of_the_alchemist
       )
       game.addFateSeal(seal)
-      const targetIds = game.getHandTiles().slice(0, 2).map((tile) => tile.id)
+      const targetIds = game
+        .getHandTiles()
+        .slice(0, 2)
+        .map((tile) => tile.id)
 
       const result = game.processAction({
         type: 'useSeal',
@@ -695,8 +725,8 @@ describe('GameOrchestrator', () => {
             .enhancement
         ).toBe(EnhancementType.Lucky)
         expect(
-          game.getState().wallTemplate.find((tile) => tile.id === targetId)?.modifiers
-            .enhancement
+          game.getState().wallTemplate.find((tile) => tile.id === targetId)
+            ?.modifiers.enhancement
         ).toBe(EnhancementType.Lucky)
       }
     })
@@ -711,9 +741,10 @@ describe('GameOrchestrator', () => {
       game.addFateSeal(first)
       game.addFateSeal(second)
 
-      expect(game.processAction({ type: 'useSeal', sealId: first.instanceId }).success).toBe(
-        true
-      )
+      expect(
+        game.processAction({ type: 'useSeal', sealId: first.instanceId })
+          .success
+      ).toBe(true)
       expect(game.getState().gold).toBe(8)
 
       const secondUse = game.processAction({
@@ -730,12 +761,16 @@ describe('GameOrchestrator', () => {
       mutableState.targetScore = 1
       game.processAction({
         type: 'play',
-        tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+        tileIds: game
+          .getHandTiles()
+          .slice(0, 2)
+          .map((tile) => tile.id),
       })
       game.exitShop()
 
       expect(
-        game.processAction({ type: 'useSeal', sealId: second.instanceId }).success
+        game.processAction({ type: 'useSeal', sealId: second.instanceId })
+          .success
       ).toBe(true)
     })
 
@@ -759,7 +794,9 @@ describe('GameOrchestrator', () => {
 
       const penaltyGame = new GameOrchestrator()
       penaltyGame.startNewRun(12345)
-      const decreesBefore = penaltyGame.getState().decreeSystem.getOwnedDecrees().length
+      const decreesBefore = penaltyGame
+        .getState()
+        .decreeSystem.getOwnedDecrees().length
       const wraith = VoidScriptSystem.createVoidScriptInstance(
         VOID_SCRIPTS.script_of_the_wraith
       )
@@ -772,9 +809,9 @@ describe('GameOrchestrator', () => {
         }).success
       ).toBe(true)
       expect(penaltyGame.getState().gold).toBe(0)
-      expect(penaltyGame.getState().decreeSystem.getOwnedDecrees()).toHaveLength(
-        decreesBefore + 1
-      )
+      expect(
+        penaltyGame.getState().decreeSystem.getOwnedDecrees()
+      ).toHaveLength(decreesBefore + 1)
     })
 
     it('destroys tiles and grants gold for Script of Immolation', () => {
@@ -808,7 +845,9 @@ describe('GameOrchestrator', () => {
       })
 
       expect(result.success).toBe(true)
-      expect(game.getState().decreeSystem.getMaxSlots()).toBe(maxSlotsBefore + 1)
+      expect(game.getState().decreeSystem.getMaxSlots()).toBe(
+        maxSlotsBefore + 1
+      )
       expect(
         game
           .getState()
@@ -832,9 +871,9 @@ describe('GameOrchestrator', () => {
 
       expect(result.success).toBe(true)
       expect(game.getState().gold).toBe(4)
-      expect(
-        game.getState().omenSystem.hasVoidScriptDownsideProtection()
-      ).toBe(false)
+      expect(game.getState().omenSystem.hasVoidScriptDownsideProtection()).toBe(
+        false
+      )
     })
   })
 
@@ -848,7 +887,10 @@ describe('GameOrchestrator', () => {
 
       game.processAction({
         type: 'play',
-        tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+        tileIds: game
+          .getHandTiles()
+          .slice(0, 2)
+          .map((tile) => tile.id),
       })
 
       expect(game.getState().score).toBeGreaterThanOrEqual(100)
@@ -867,7 +909,10 @@ describe('GameOrchestrator', () => {
 
       game.processAction({
         type: 'play',
-        tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+        tileIds: game
+          .getHandTiles()
+          .slice(0, 2)
+          .map((tile) => tile.id),
       })
       game.exitShop()
 
@@ -890,10 +935,14 @@ describe('GameOrchestrator', () => {
       game.processAction({ type: 'skip' })
 
       expect(game.getState().currentRound).toBe(3)
-      expect(game.getHandTiles()).toHaveLength(13)
-      expect(game.getState().roundManager.getCurrentRound()?.bossMandate?.id).toBe(
-        THE_MANACLE.id
-      )
+      const springs = game
+        .getState()
+        .seasonSystem.getSeasonStack()
+        .filter((season) => season.type === 'Spring' && !season.isCorrupted)
+      expect(game.getHandTiles()).toHaveLength(13 + springs.length * 2)
+      expect(
+        game.getState().roundManager.getCurrentRound()?.bossMandate?.id
+      ).toBe(THE_MANACLE.id)
     })
 
     it('tracks The House first hand as face-down authoritative state', () => {
@@ -911,12 +960,16 @@ describe('GameOrchestrator', () => {
       const handBefore = new Set(game.getHandTiles().map((tile) => tile.id))
       const mutableState = game.getState() as OrchestratorState
       mutableState.targetScore = Number.MAX_SAFE_INTEGER
-      mutableState.roundManager.getCurrentRound()!.scoreTarget = Number.MAX_SAFE_INTEGER
+      mutableState.roundManager.getCurrentRound()!.scoreTarget =
+        Number.MAX_SAFE_INTEGER
 
       expect(
         game.processAction({
           type: 'play',
-          tileIds: game.getHandTiles().slice(0, 2).map((tile) => tile.id),
+          tileIds: game
+            .getHandTiles()
+            .slice(0, 2)
+            .map((tile) => tile.id),
         }).success
       ).toBe(true)
 
@@ -925,7 +978,9 @@ describe('GameOrchestrator', () => {
         .filter((tile) => !handBefore.has(tile.id))
         .map((tile) => tile.id)
       expect(replacementIds.length).toBeGreaterThan(0)
-      expect(new Set(game.getFaceDownTileIds())).toEqual(new Set(replacementIds))
+      expect(new Set(game.getFaceDownTileIds())).toEqual(
+        new Set(replacementIds)
+      )
     })
 
     it('uses the seeded mandate RNG for The Wheel hidden tiles', () => {
@@ -937,7 +992,9 @@ describe('GameOrchestrator', () => {
 
       expect(game.getFaceDownTileIds()).toEqual(secondGame.getFaceDownTileIds())
       expect(game.getFaceDownTileIds().length).toBeGreaterThan(0)
-      expect(game.getFaceDownTileIds().length).toBeLessThan(game.getHandTiles().length)
+      expect(game.getFaceDownTileIds().length).toBeLessThan(
+        game.getHandTiles().length
+      )
     })
 
     it('hides exactly the Honor tiles drawn under The Mark', () => {
@@ -956,10 +1013,12 @@ describe('GameOrchestrator', () => {
 
       const [lockedId] = game.getState().mandateEffectSystem.getLockedTileIds()
       expect(lockedId).toBeDefined()
-      expect(game.getHandTiles().some((tile) => tile.id === lockedId)).toBe(true)
-      expect(game.processAction({ type: 'discard', tileId: lockedId }).errors?.[0]).toContain(
-        'Locked'
+      expect(game.getHandTiles().some((tile) => tile.id === lockedId)).toBe(
+        true
       )
+      expect(
+        game.processAction({ type: 'discard', tileId: lockedId }).errors?.[0]
+      ).toContain('Locked')
       expect(
         game.processAction({ type: 'redraw', tileIds: [lockedId] }).errors?.[0]
       ).toContain('Locked')
@@ -982,16 +1041,22 @@ describe('GameOrchestrator', () => {
       const sellValue = decree.sellValue ?? Math.floor(decree.cost / 2)
       const goldBefore = state.gold
       expect(
-        game.getHandTiles().every((tile) => state.debuffSystem.isTileDebuffed(tile.id))
+        game
+          .getHandTiles()
+          .every((tile) => state.debuffSystem.isTileDebuffed(tile.id))
       ).toBe(true)
 
       const result = game.sellDecree(decree.id)
 
       expect(result.success).toBe(true)
       expect(game.getState().gold).toBe(goldBefore + sellValue)
-      expect(game.getState().mandateEffectSystem.areAllTilesDebuffed()).toBe(false)
+      expect(game.getState().mandateEffectSystem.areAllTilesDebuffed()).toBe(
+        false
+      )
       expect(
-        game.getHandTiles().some((tile) => game.getState().debuffSystem.isTileDebuffed(tile.id))
+        game
+          .getHandTiles()
+          .some((tile) => game.getState().debuffSystem.isTileDebuffed(tile.id))
       ).toBe(false)
     })
 
@@ -1016,10 +1081,19 @@ describe('GameOrchestrator', () => {
       enterBossWithMandate(secondGame, AMBER_ACORN)
 
       const order = game.getState().mandateEffectSystem.getShuffledDecreeIds()
-      expect(game.getState().mandateEffectSystem.areDecreesShuffled()).toBe(true)
-      expect(order).toEqual(secondGame.getState().mandateEffectSystem.getShuffledDecreeIds())
+      expect(game.getState().mandateEffectSystem.areDecreesShuffled()).toBe(
+        true
+      )
+      expect(order).toEqual(
+        secondGame.getState().mandateEffectSystem.getShuffledDecreeIds()
+      )
       expect(new Set(order)).toEqual(
-        new Set(game.getState().decreeSystem.getOwnedDecrees().map((decree) => decree.instanceId))
+        new Set(
+          game
+            .getState()
+            .decreeSystem.getOwnedDecrees()
+            .map((decree) => decree.instanceId)
+        )
       )
     })
   })
@@ -1082,7 +1156,9 @@ describe('GameOrchestrator', () => {
       })
 
       expect(
-        getScoreEffect(result).breakdown.detectedYaku.map((yaku) => yaku.definition.id)
+        getScoreEffect(result).breakdown.detectedYaku.map(
+          (yaku) => yaku.definition.id
+        )
       ).toContain('tanyao')
     })
 
@@ -1133,7 +1209,9 @@ describe('GameOrchestrator', () => {
       expect(result.success).toBe(true)
       expect(getScoreEffect(result).description).not.toContain('partial hand')
       expect(
-        result.effects.some((effect) => effect.description.includes('50% score penalty'))
+        result.effects.some((effect) =>
+          effect.description.includes('50% score penalty')
+        )
       ).toBe(true)
     })
 
@@ -1194,10 +1272,16 @@ describe('GameOrchestrator', () => {
       const result = game.useDeadWallWrit(discarded.id)
 
       expect(result.success).toBe(true)
-      expect(game.getHandTiles().some((tile) => tile.id === discarded.id)).toBe(false)
-      expect(game.getHandTiles().some((tile) => tile.id === replacement.id)).toBe(true)
+      expect(game.getHandTiles().some((tile) => tile.id === discarded.id)).toBe(
+        false
+      )
+      expect(
+        game.getHandTiles().some((tile) => tile.id === replacement.id)
+      ).toBe(true)
       expect(state.discards.some((tile) => tile.id === discarded.id)).toBe(true)
-      expect(game.useDeadWallWrit(game.getHandTiles()[0].id).success).toBe(false)
+      expect(game.useDeadWallWrit(game.getHandTiles()[0].id).success).toBe(
+        false
+      )
     })
 
     it('compounds Yaku repeated from the previous round', () => {
@@ -1282,7 +1366,9 @@ describe('GameOrchestrator', () => {
 
         game.processAction({
           type: 'play',
-          tileIds: currentHand.slice(0, Math.min(3, currentHand.length)).map((t) => t.id),
+          tileIds: currentHand
+            .slice(0, Math.min(3, currentHand.length))
+            .map((t) => t.id),
         })
       }
 

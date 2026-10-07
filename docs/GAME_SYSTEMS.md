@@ -443,12 +443,18 @@ Seasons affect only the current round, acting like global modifiers.
 
 | Season | Japanese | Effect |
 |--------|----------|--------|
-| **Spring** | 春 | +2 draws per hand |
+| **Spring** | 春 | +2 rack spaces this round; draw into new spaces from the live wall |
 | **Summer** | 夏 | Base score +30%, wall size −20% |
 | **Autumn** | 秋 | Yaku multipliers +20%, discard pool grows |
 | **Winter** | 冬 | Hand legality loosened, but score −25% |
 
 *These introduce tempo-risk tradeoffs, not raw power.*
+
+Spring resolution (October 7, 2026): normal Springs stack their capacity bonus;
+ordinary refills maintain it without growing the rack every play. Activation
+fills only newly created spaces when tiles are available. Serpent's subsequent
+replacement count remains three. Monsoon does not grant normal Spring spaces.
+See [Spring implementation](SPRING_IMPLEMENTATION.md).
 
 **Seasonal Stack Behavior:**
 - Seasons stack if multiple are drawn
@@ -513,9 +519,22 @@ This section defines original, mahjong-themed analogs to several Balatro mechani
 
 **Core Rules:**
 - Orbs apply run-wide, stacking with Flowers/Decrees.
-- Orbs "attune" to a yaku category and grow with repeated triggers.
+- Using an Orb immediately raises its named Yaku family by one level, up to 10.
+- Level 1 is the baseline with no Orb bonus. Each earned level adds the listed
+  Chips and Mult when that family scores. Another Orb is needed for another
+  ordinary upgrade; merely holding one grants nothing.
+- Black Hole raises every uncapped family by one level. Scoring records
+  occurrences for the ledger and Star Chart, but does not grant experience or
+  automatic levels.
 
-**Mahjong Twist:** Orbs level up only when their attuned yaku is scored.
+**Mahjong Twist:** Upgrade a family now, then build hands that actually score it
+to receive the bonus. Explicit level-changing Seals, Scripts, Omens and Mandates
+retain their own rules.
+
+*October 7, 2026 resolution under the user's delegated rules authority: this
+replaces the conflicting trigger-to-level draft and agrees with the item library
+and existing saves. Immediate upgrades make the purchase/use payoff legible;
+matching hands earn the reward rather than being a prerequisite XP grind.*
 
 **Example Effects (Original):**
 - **Dragon Star:** +X% multiplier to dragon-based yaku.

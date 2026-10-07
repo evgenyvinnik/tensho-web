@@ -29,10 +29,12 @@ from the same `CelestialOrbSystem` bonus calculations used by scoring.
 - These are base Orb additions, not a promise of a final score. The explanation
   directs players to the real forecast for the total after other rules.
 
-The panel reports current runtime semantics without changing them. The item
-library describes permanent per-level upgrades, while `GAME_SYSTEMS.md` says
-attuned Yaku should grow through scoring. The user has been asked which rule
-should be authoritative; no unanswered selection is treated as consent.
+The panel originally shipped without changing Orb semantics while the design
+documents conflicted. On October 7 the user explicitly delegated resolution of
+open rules. The chosen rule is immediate upgrades on use, with matching scores
+earning the bonus but no automatic XP levels. `GAME_SYSTEMS.md` now states that
+rule; the old unused XP thresholds are removed and repeated-trigger coverage
+guards against accidental passive leveling. Existing saved levels are preserved.
 
 ## Verification
 

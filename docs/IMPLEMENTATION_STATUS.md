@@ -2,7 +2,19 @@
 
 > Runtime status for the React/TypeScript version of Tensho. This file records what is actually connected to the playable loop, not only what has a class or data definition.
 
-**Last verified:** October 6, 2026 (browser and release evidence retains its own dates)
+**Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
+
+**In verification — Spring, Drought and resolved Orb progression:** the user
+delegated remaining rule decisions. [Spring](SPRING_IMPLEMENTATION.md) now adds
+bounded round-scoped rack spaces through real draw/refill paths, with generated
+art and all-locale descriptions. [Drought](DROUGHT_EMPOWERMENT.md) now suppresses
+Flower empowerment of Decrees as well as direct bonuses. [Orb rules](RULE_RESOLUTION.md)
+are resolved to immediate upgrades on use, without passive XP. Native checks pass
+16/16; full units have 1,770 passes and two test-only field-name mistakes whose
+corrected files pass 85/85. TypeScript, build, lint and 13 release checks pass.
+Earlier failures are retained; production/release verification and publication
+are pending. The [matched 384-run sweep](CURRENT_RUN_SWEEP.md)
+predates these rule changes and is not a post-change balance claim.
 
 **Published — v1.0.261007-4, illustrated Yaku upgrade ledger:** gameplay and the shop
 now expose actual upgraded families, levels, base bonuses and scored counts.
@@ -14,7 +26,7 @@ retained. Build, lint and thirteen release checks pass. Independent release CI
 passes all 1,747 tests against the final source; all twelve hosted journeys pass.
 Public manifest/tag match `6682a8250f2696ebdd79b4ee46aeb9ad696ffde6`, and the
 hosted artwork hash matches the generated workspace asset.
-Orb-leveling design and broader completion remain open.
+Orb-leveling was subsequently resolved above; broader completion remains open.
 [Evidence, artwork and prompt](YAKU_UPGRADE_LEDGER.md).
 
 **Published — v1.0.261007-3, expanded-rack complete hands:** larger racks now offer a

@@ -6,12 +6,12 @@
  *
  * Core Rules:
  * - Orbs apply run-wide, stacking with Flowers/Decrees
- * - Orbs "attune" to a yaku category and grow with repeated triggers
- * - Orbs level up only when their attuned yaku is scored
+ * - Using an Orb immediately upgrades its Yaku family by one level (cap 10)
+ * - Matching Yaku receive the earned bonus; scoring does not grant levels
  *
  * Each orb provides:
  * - Base bonus per level (Mult and Chips)
- * - Level increases when the associated yaku is scored
+ * - Scored-occurrence tracking for the ledger and Star Chart rewards
  *
  * See ITEM_LIBRARIES.md for the complete Celestial Orb library.
  */
@@ -88,22 +88,6 @@ export interface OrbAttunement {
  * Default max level for orbs
  */
 export const DEFAULT_ORB_MAX_LEVEL = 10
-
-/**
- * Chips and Mult required to level up
- */
-export const LEVEL_UP_THRESHOLDS = [
-  0, // Level 1 (starting)
-  1, // Level 2
-  2, // Level 3
-  3, // Level 4
-  5, // Level 5
-  7, // Level 6
-  10, // Level 7
-  13, // Level 8
-  17, // Level 9
-  21, // Level 10
-]
 
 /**
  * Complete Celestial Orb library from ITEM_LIBRARIES.md
@@ -579,8 +563,8 @@ export class CelestialOrbSystem {
   }
 
   /**
-   * Called when a yaku is scored - increments trigger count
-   * Used for potential auto-leveling mechanics
+   * Records a scored occurrence for the ledger and Star Chart targeting.
+   * This is not experience: levels change only through explicit upgrade effects.
    */
   onYakuScored(yaku: YakuCategory): void {
     const currentCount = this.yakuTriggerCounts.get(yaku) || 0

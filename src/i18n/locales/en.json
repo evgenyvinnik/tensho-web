@@ -1104,6 +1104,7 @@
       "decayPenalty": "Decay penalty per play: −{{points}} points.",
       "partial": "Some Season rules are still being implemented. Only current effects are shown.",
       "unwired": "Not connected yet.",
+      "spring": "+2 rack spaces this round. New spaces draw from the live wall. Stacks; Serpent still replaces only 3 tiles.",
       "summer": "Score ×1.3. Sets aside 20% of the remaining live wall for this round (retained tiles rounded down).",
       "autumn": "Yaku multiplier +20%.",
       "winter": "Score ×0.75.",
