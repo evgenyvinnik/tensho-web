@@ -101,6 +101,13 @@ The [matched hand-planning comparison](CLASSIC_HAND_PLANNING.md) now completes
 320 runs with zero diagnostic stops: 8 versus 5 wins, but fewer total rounds
 cleared. The former Bell deadlock seed wins; this does not establish human fun.
 
+**Resource Charter follow-up, publication pending:** two generated upgrade
+portraits and 14 engine regressions verify actual resource use and persistence.
+Eight native rechecks and eight production journeys pass; the local full-suite
+timing failures and clean 86-test recheck remain distinguished in the
+[evidence ledger](CHARTER_RESOURCE_VERIFICATION.md). Other Charter powers and
+organic reachability are not claimed complete.
+
 **Published — v1.0.261004-1, Cerulean Bell:** the confirmed one-current-lock rule now
 repairs accumulated legacy locks on resume. Illustrated, localized boss details
 and a reproduced drag-release correction pass 18 native browser checks and four

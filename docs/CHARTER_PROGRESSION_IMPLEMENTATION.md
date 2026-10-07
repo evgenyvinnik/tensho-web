@@ -297,6 +297,10 @@ Source inspection establishes these next requirements, not completion:
   this rules conflict before changing the multiplier. An optional user question
   now asks which rule to use; no answer has been assumed.
 - Every upgrade now has controlled offer/paid-acquisition/repeat/new-run checks.
+  The [resource-power follow-up](CHARTER_RESOURCE_VERIFICATION.md) adds paid
+  next-round, exhaustion, boss-precedence and exact-resume coverage for the
+  play/redraw/rack upgrades, Act-reduction penalties and Final Cut. It does not
+  establish natural prerequisite reachability or the remaining power consumers.
   Complete natural prerequisite reachability, persistence and actual power-effect
   coverage across all sixteen still require auditing. Unused legacy shop
   generators are not claimed to match the active ShopSession/TeaHouse path.

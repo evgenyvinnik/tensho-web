@@ -40,6 +40,10 @@ it('uses the Money Tree portrait while preserving category artwork for other Cha
 })
 
 it.each([
+  ['swift_hand', 'swift-hand.webp', false],
+  ['swift_hand', 'swift-hand.webp', true],
+  ['full_palette', 'full-palette.webp', false],
+  ['full_palette', 'full-palette.webp', true],
   ['star_chart', 'star-chart.webp', false],
   ['star_chart', 'star-chart.webp', true],
   ['money_tree', 'money-tree.png', false],
