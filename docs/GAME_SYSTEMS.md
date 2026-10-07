@@ -511,6 +511,14 @@ it again that round. Drought blocks earning, not an already-earned reward.
 The inspector reports earned protection without an upfront recipe.
 [Full semantics and verification](BAMBOO_SUMMER_IMPLEMENTATION.md).
 
+Orchid/Spring resolution (October 7, 2026): every ordinary Wind/Dragon drawn while
+the combination is effective earns one extra physical dead-wall draw. Resolve
+after ordinary draws, before one boss reaction and before redraw returns tiles.
+Extra draws do not chain or permanently expand rack capacity. Effective Drought
+blocks earning; already-earned draws are not revoked by later suppression in the
+same batch. The optional inspector explains an experienced bloom, not an upfront
+recipe. [Full semantics and verification](ORCHID_SPRING_IMPLEMENTATION.md).
+
 This rewards system literacy rather than rote optimization.
 
 ---

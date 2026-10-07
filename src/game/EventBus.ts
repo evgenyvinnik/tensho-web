@@ -54,6 +54,7 @@ export type GameEvent =
   | 'decreeTriggered'
   | 'decreeDebuffed'
   | 'flowerCollected'
+  | 'orchidBloom'
   | 'seasonActivated'
   | 'seasonCorrupted'
   | 'charterRedeemed'
@@ -176,6 +177,7 @@ export interface GameEventData {
   decreeTriggered: { decreeId: string; effect: string }
   decreeDebuffed: { decreeId: string; reason: string }
   flowerCollected: { flowerType: string; totalFlowers: number }
+  orchidBloom: { count: number }
   seasonActivated: { seasonType: string; effect: string }
   seasonCorrupted: { corruptedType: string; effect: string }
   charterRedeemed: { charterId: string; charterName: string; actNumber: number }

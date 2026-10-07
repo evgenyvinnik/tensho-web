@@ -9,6 +9,7 @@ import es from '../../i18n/locales/es.json'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { getTileImagePath } from '../../utils/assets'
 import { FloraTrackCompact } from './FloraTrackCompact'
+import { eventBus } from '../../game/EventBus'
 
 function fixture() {
   const system = new SeasonSystem()
@@ -36,6 +37,35 @@ afterEach(async () => {
 })
 
 describe('FloraTrackCompact artwork', () => {
+  it.each([
+    ['en', en],
+    ['es', es],
+  ] as const)(
+    'illustrates Orchid and explains an experienced draw without an upfront recipe (%s)',
+    async (language, copy) => {
+      await changeLanguage(language)
+      useSettingsStore.setState({ reducedMotion: true })
+      const seasons = new SeasonSystem()
+      seasons.forceSetSeason('Spring')
+      const flora = { ...fixture(), seasons: seasons.getSeasonStack() }
+      const before = JSON.stringify(flora)
+      render(<FloraTrackCompact flora={flora} />)
+      fireEvent.click(screen.getByTestId('flora-details-trigger'))
+      const dialog = screen.getByRole('dialog')
+      expect(
+        dialog.querySelector('img[src*="orchid-bloom.webp"]')
+      ).not.toBeNull()
+      expect(dialog.querySelector('[data-orchid-bloom]')).toBeNull()
+      expect(within(dialog).queryByText(copy.flora.details.partial)).toBeNull()
+      act(() => eventBus.emit('orchidBloom', { count: 2 }))
+      expect(dialog.querySelector('[data-orchid-bloom]')).toHaveTextContent(
+        copy.flora.details.orchidBloom.replace('{{count}}', '2')
+      )
+      expect(JSON.stringify(flora)).toBe(before)
+      act(() => eventBus.emit('gameLoaded', { timestamp: 1 }))
+      expect(dialog.querySelector('[data-orchid-bloom]')).toBeNull()
+    }
+  )
   it.each([
     ['en', en],
     ['es', es],

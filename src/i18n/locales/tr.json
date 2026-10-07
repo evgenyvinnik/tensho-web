@@ -620,6 +620,7 @@
       "corruptedName": "Bozulmuş",
       "flowerPlum": "Her seri için +%{{percent}} puan.",
       "flowerOrchid": "Her onur taşı için +%{{percent}} puan.",
+      "orchidBloom": "Orkidenin çektiği ek taş: {{count}}. Ek çekişler zincirleme tetiklenmez.",
       "flowerChrysanthemum": "Her kapalı grup için +%{{percent}} puan.",
       "flowerBamboo": "Her terminal taş için +%{{percent}} puan.",
       "setTwo": "2 çiçek: +1 ferman yuvası.",

@@ -156,6 +156,13 @@ export interface CompleteHandInterpretation {
   allWild: boolean
 }
 
+/** Transient draw accounting; an action settles completely before saving. */
+interface DrawCycle {
+  orchidReplacements: number
+  drawnTiles: Tile[]
+  resolvingOrchid?: boolean
+}
+
 /** Complete game state managed by the orchestrator. */
 export interface OrchestratorState {
   // Session
@@ -913,6 +920,7 @@ export class GameOrchestrator {
    * Draw starting hand
    */
   private drawStartingHand(): void {
+    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
     this.state.handTiles = []
     this.state.faceDownTileIds.clear()
 
@@ -921,16 +929,17 @@ export class GameOrchestrator {
       if (tile) {
         // Handle bonus tiles
         if (tile.isFlower || tile.isSeason) {
-          this.handleBonusTile(tile)
+          this.handleBonusTile(tile, cycle)
         } else {
-          this.state.handTiles.push(tile)
+          this.collectDrawnTile(tile, cycle)
         }
       }
     }
 
+    this.resolveOrchidDraws(cycle, [], false)
     // Sort hand
     this.state.handTiles.sort(Tile.compare)
-    this.applyMandateDrawState(this.state.handTiles, [], {
+    this.applyMandateDrawState(cycle.drawnTiles, [], {
       isStartingHand: true,
     })
     this.publishBuildProgress()
@@ -960,6 +969,7 @@ export class GameOrchestrator {
   private drawToHandSize(
     target: () => number,
     effects: Effect[],
+    cycle: DrawCycle,
     announceTiles: boolean = true
   ): void {
     while (this.state.handTiles.length < target()) {
@@ -972,7 +982,7 @@ export class GameOrchestrator {
 
       // Check for bonus tile
       if (tile.isFlower || tile.isSeason) {
-        this.handleBonusTile(tile)
+        this.handleBonusTile(tile, cycle)
         if (announceTiles)
           effects.push({
             type: 'bonus_tile_drawn',
@@ -982,7 +992,7 @@ export class GameOrchestrator {
           })
         // Bonus tiles don't count toward hand size, continue drawing
       } else {
-        this.state.handTiles.push(tile)
+        this.collectDrawnTile(tile, cycle)
 
         if (announceTiles)
           effects.push({
@@ -1006,6 +1016,7 @@ export class GameOrchestrator {
   private fillNewSeasonSlots(
     beforeLimit: number,
     effects: Effect[],
+    cycle: DrawCycle,
     announceTiles = true
   ): void {
     const countBeforeBonus = this.state.handTiles.length
@@ -1016,20 +1027,18 @@ export class GameOrchestrator {
           countBeforeBonus + Math.max(0, this.getHandSizeLimit() - beforeLimit)
         ),
       effects,
+      cycle,
       announceTiles
     )
   }
 
   /** Refill to the current rack capacity, including Spring drawn mid-cycle. */
   private refillHand(effects: Effect[], afterHandPlay: boolean = false): void {
-    const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
-    this.drawToHandSize(() => this.getHandSizeLimit(), effects)
+    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
+    this.drawToHandSize(() => this.getHandSizeLimit(), effects, cycle)
+    this.resolveOrchidDraws(cycle, effects)
     this.state.handTiles.sort(Tile.compare)
-    this.applyMandateDrawState(
-      this.state.handTiles.filter((tile) => !previousTileIds.has(tile.id)),
-      effects,
-      { afterHandPlay }
-    )
+    this.applyMandateDrawState(cycle.drawnTiles, effects, { afterHandPlay })
   }
 
   /** Resolve the documented post-play/discard draw rule for the active mandate. */
@@ -1043,15 +1052,15 @@ export class GameOrchestrator {
       return
     }
 
-    const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
     const beforeLimit = this.getHandSizeLimit()
+    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
 
     for (let i = 0; i < fixedDrawCount; i++) {
       const tile = this.drawTileInternal()
       if (!tile) break
 
       if (tile.isFlower || tile.isSeason) {
-        this.handleBonusTile(tile)
+        this.handleBonusTile(tile, cycle)
         effects.push({
           type: 'bonus_tile_drawn',
           description: `Drew bonus tile: ${tile.displayName}`,
@@ -1059,7 +1068,7 @@ export class GameOrchestrator {
           isFlower: tile.isFlower,
         })
       } else {
-        this.state.handTiles.push(tile)
+        this.collectDrawnTile(tile, cycle)
         effects.push({
           type: 'tile_added',
           description: `Drew tile: ${tile.displayName}`,
@@ -1072,13 +1081,10 @@ export class GameOrchestrator {
       }
     }
 
-    this.fillNewSeasonSlots(beforeLimit, effects)
+    this.fillNewSeasonSlots(beforeLimit, effects, cycle)
+    this.resolveOrchidDraws(cycle, effects)
     this.state.handTiles.sort(Tile.compare)
-    this.applyMandateDrawState(
-      this.state.handTiles.filter((tile) => !previousTileIds.has(tile.id)),
-      effects,
-      { afterHandPlay }
-    )
+    this.applyMandateDrawState(cycle.drawnTiles, effects, { afterHandPlay })
   }
 
   /** Apply hidden-information and post-draw mandate effects to a draw cycle. */
@@ -1101,7 +1107,7 @@ export class GameOrchestrator {
   /**
    * Handle bonus tile (flower or season)
    */
-  private handleBonusTile(tile: Tile): void {
+  private handleBonusTile(tile: Tile, cycle: DrawCycle): void {
     if (tile.isFlower) {
       const previousBonusSlots = this.state.flowerSystem.getBonusDecreeSlots()
       // FlowerSystem.addFlower expects a Tile object
@@ -1147,11 +1153,75 @@ export class GameOrchestrator {
     const replacement = this.drawFromDeadWall()
     if (replacement) {
       if (replacement.isFlower || replacement.isSeason) {
-        this.handleBonusTile(replacement)
+        this.handleBonusTile(replacement, cycle)
       } else {
-        this.state.handTiles.push(replacement)
+        this.collectDrawnTile(replacement, cycle)
         this.state.handTiles.sort(Tile.compare)
       }
+    }
+  }
+
+  /** Credits are earned at the actual draw, never retroactively by a later
+   * Flower/Season in the batch. Bonus draws cannot recursively earn credits. */
+  private collectDrawnTile(tile: Tile, cycle: DrawCycle): void {
+    this.state.handTiles.push(tile)
+    cycle.drawnTiles.push(tile)
+    if (
+      !cycle.resolvingOrchid &&
+      tile.isHonor &&
+      this.state.flowerSystem.hasFlowerType('Orchid') &&
+      !this.areFlowerBonusesSuppressed() &&
+      this.state.seasonSystem
+        .getSeasonStack()
+        .some((season) => season.type === 'Spring' && !season.isCorrupted)
+    )
+      cycle.orchidReplacements++
+  }
+
+  /** Finish ordinary draws first so the extra tiles are a real selection
+   * advantage, not replacements for slots the normal refill would fill anyway.
+   * Earned credits survive later suppression in this same batch. */
+  private resolveOrchidDraws(
+    cycle: DrawCycle,
+    effects: Effect[],
+    announceTiles = true
+  ): void {
+    const credits = cycle.orchidReplacements
+    if (!credits) return
+    cycle.orchidReplacements = 0
+    cycle.resolvingOrchid = true
+    const beforeLimit = this.getHandSizeLimit()
+    const previousIds = new Set(this.state.handTiles.map((tile) => tile.id))
+    for (let i = 0; i < credits; i++) {
+      const tile = this.drawFromDeadWall()
+      if (!tile) break
+      if (tile.isBonus) this.handleBonusTile(tile, cycle)
+      else this.collectDrawnTile(tile, cycle)
+    }
+    // A Spring reached through Orchid still grants its ordinary new spaces;
+    // those downstream draws are part of the non-chaining Orchid resolution.
+    this.fillNewSeasonSlots(beforeLimit, effects, cycle, false)
+    const drawn = this.state.handTiles.filter(
+      (tile) => !previousIds.has(tile.id)
+    )
+    if (drawn.length) {
+      effects.push({
+        type: 'bonus_activated',
+        description: `Orchid drew ${drawn.length} extra tiles during Spring`,
+      })
+      if (announceTiles)
+        for (const tile of drawn) {
+          effects.push({
+            type: 'tile_added',
+            description: `Orchid drew ${tile.displayName}`,
+            tile,
+          })
+          eventBus.emit('tileDrawn', {
+            tileId: tile.id,
+            tilesRemaining: this.state.wall.length - this.state.drawIndex,
+          })
+        }
+      eventBus.emit('orchidBloom', { count: drawn.length })
     }
   }
 
@@ -1211,6 +1281,7 @@ export class GameOrchestrator {
     return {
       roundType: this.state.roundManager.getCurrentRound()?.roundType ?? null,
       handTiles: this.state.handTiles,
+      handSizeLimit: this.getHandSizeLimit(),
       melds: this.state.melds,
       selectedTileIds: Array.from(this.state.selectedTileIds),
       wallRemaining: this.state.wall.length - this.state.drawIndex,
@@ -1284,10 +1355,8 @@ export class GameOrchestrator {
    * Execute draw action
    */
   private executeDraw(effects: Effect[]): ActionResult {
+    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
     const beforeLimit = this.getHandSizeLimit()
-    const previousTileIds = new Set(
-      this.state.handTiles.map((handTile) => handTile.id)
-    )
     const tile = this.drawTileInternal()
 
     if (!tile) {
@@ -1300,7 +1369,7 @@ export class GameOrchestrator {
 
     // Check for bonus tile
     if (tile.isFlower || tile.isSeason) {
-      this.handleBonusTile(tile)
+      this.handleBonusTile(tile, cycle)
       effects.push({
         type: 'bonus_tile_drawn',
         description: `Drew bonus tile: ${tile.displayName}`,
@@ -1310,7 +1379,7 @@ export class GameOrchestrator {
 
       // After handling bonus tile, the hand already has a replacement
     } else {
-      this.state.handTiles.push(tile)
+      this.collectDrawnTile(tile, cycle)
       this.state.handTiles.sort(Tile.compare)
 
       effects.push({
@@ -1325,14 +1394,10 @@ export class GameOrchestrator {
       tilesRemaining: this.state.wall.length - this.state.drawIndex,
     })
 
-    this.fillNewSeasonSlots(beforeLimit, effects)
+    this.fillNewSeasonSlots(beforeLimit, effects, cycle)
+    this.resolveOrchidDraws(cycle, effects)
     this.state.handTiles.sort(Tile.compare)
-    this.applyMandateDrawState(
-      this.state.handTiles.filter(
-        (handTile) => !previousTileIds.has(handTile.id)
-      ),
-      effects
-    )
+    this.applyMandateDrawState(cycle.drawnTiles, effects)
 
     return { success: true, effects }
   }
@@ -2102,6 +2167,7 @@ export class GameOrchestrator {
    * Execute redraw action
    */
   private executeRedraw(tileIds: string[], effects: Effect[]): ActionResult {
+    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
     const beforeLimit = this.getHandSizeLimit()
     if (
       tileIds.some((tileId) =>
@@ -2117,7 +2183,6 @@ export class GameOrchestrator {
 
     // Remove selected tiles
     const removedTiles: Tile[] = []
-    const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
     for (const tileId of tileIds) {
       const idx = this.state.handTiles.findIndex((t) => t.id === tileId)
       if (idx !== -1) {
@@ -2138,16 +2203,17 @@ export class GameOrchestrator {
       const tile = this.drawTileInternal()
       if (tile) {
         if (tile.isFlower || tile.isSeason) {
-          this.handleBonusTile(tile)
+          this.handleBonusTile(tile, cycle)
         } else {
-          this.state.handTiles.push(tile)
+          this.collectDrawnTile(tile, cycle)
         }
       }
     }
 
     // Spring's new spaces are drawn before returned tiles re-enter circulation.
     // The redraw below announces every newly held physical tile exactly once.
-    this.fillNewSeasonSlots(beforeLimit, effects, false)
+    this.fillNewSeasonSlots(beforeLimit, effects, cycle, false)
+    this.resolveOrchidDraws(cycle, effects, false)
 
     // Return tiles only after replacing them, so they cannot be their own
     // immediate replacement. Drop the consumed prefix: it is draw history,
@@ -2169,9 +2235,7 @@ export class GameOrchestrator {
       redrawsRemaining: this.state.redrawsRemaining,
     })
 
-    const drawnTiles = this.state.handTiles.filter(
-      (tile) => !previousTileIds.has(tile.id)
-    )
+    const drawnTiles = cycle.drawnTiles
     for (const tile of drawnTiles) {
       effects.push({
         type: 'tile_added',
@@ -4356,6 +4420,8 @@ export class GameOrchestrator {
       }
     }
 
+    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
+    const beforeLimit = this.getHandSizeLimit()
     const replacement = this.drawFromDeadWall()
     if (!replacement) {
       return { success: false, effects: [], errors: ['Dead Wall is empty'] }
@@ -4377,9 +4443,8 @@ export class GameOrchestrator {
         tileId,
       },
     ]
-    const previousTileIds = new Set(this.state.handTiles.map((tile) => tile.id))
     if (replacement.isFlower || replacement.isSeason) {
-      this.handleBonusTile(replacement)
+      this.handleBonusTile(replacement, cycle)
       effects.push({
         type: 'bonus_tile_drawn',
         description: `Drew bonus tile from Dead Wall: ${replacement.displayName}`,
@@ -4387,18 +4452,18 @@ export class GameOrchestrator {
         isFlower: replacement.isFlower,
       })
     } else {
-      this.state.handTiles.push(replacement)
+      this.collectDrawnTile(replacement, cycle)
       effects.push({
         type: 'tile_added',
         description: `Dead Wall Writ drew ${replacement.displayName}`,
         tile: replacement,
       })
     }
+    this.fillNewSeasonSlots(beforeLimit, effects, cycle, false)
+    this.resolveOrchidDraws(cycle, effects, false)
     this.state.handTiles.sort(Tile.compare)
 
-    const drawnTiles = this.state.handTiles.filter(
-      (tile) => !previousTileIds.has(tile.id)
-    )
+    const drawnTiles = cycle.drawnTiles
     this.applyMandateDrawState(drawnTiles, effects)
     eventBus.emit('tileDiscarded', { tileId, toDeadPool: true })
     for (const tile of drawnTiles) {

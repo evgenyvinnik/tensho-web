@@ -1125,6 +1125,7 @@
       "corruptedName": "오염됨",
       "flowerPlum": "순자마다 점수 +{{percent}}%.",
       "flowerOrchid": "자패마다 점수 +{{percent}}%.",
+      "orchidBloom": "난초가 추가로 뽑은 패: {{count}}개. 추가 뽑기는 연쇄되지 않습니다.",
       "flowerChrysanthemum": "공개하지 않은 몸통마다 점수 +{{percent}}%.",
       "flowerBamboo": "노두패마다 점수 +{{percent}}%.",
       "setTwo": "꽃패 2종: 칙령 슬롯 +1.",

@@ -41,8 +41,9 @@ The inspector and shared tile descriptions now state the connected rule in all
 13 languages. Normal Spring details use a compact generated blossom; compact
 track tiles and corrupted Spring keep the established Mahjong artwork. Rules
 remain real localized text outside the image. Native-speaker review is separate.
-Orchid/Spring's extra Honor-draw interaction remains to implement; this does not
-declare every Flower/Season rule complete.
+The subsequent [Orchid/Spring follow-up](ORCHID_SPRING_IMPLEMENTATION.md) connects
+the separate Honor-draw interaction; this does not declare every Flower/Season
+rule complete.
 
 ## Verification so far
 

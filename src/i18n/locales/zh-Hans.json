@@ -1125,6 +1125,7 @@
       "corruptedName": "异变",
       "flowerPlum": "每组顺子得分 +{{percent}}%。",
       "flowerOrchid": "每张字牌得分 +{{percent}}%。",
+      "orchidBloom": "兰花额外摸牌：{{count}}张。额外摸牌不会连锁触发。",
       "flowerChrysanthemum": "每组暗面子得分 +{{percent}}%。",
       "flowerBamboo": "每张老头牌得分 +{{percent}}%。",
       "setTwo": "2 种花牌：+1 法令槽。",

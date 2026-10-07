@@ -70,7 +70,7 @@ resolve or replace Plum's separate river recursion.
 Winter resolution is now published and verified; see below. Remaining
 gaps are not removed by choosing the rule.
 
-- Finish the remaining Flower–Season interactions including Orchid/Spring and Plum/Autumn. Bamboo/Summer is published in v1.0.261007-8; the separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing.
+- Finish the remaining Flower–Season interactions. Orchid/Spring is now in local implementation and verification; Plum/Autumn remains open. Bamboo/Summer is published in v1.0.261007-8; the separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing.
 - Specify the four advanced Flower mutations, acquisition/unlock path and
   catalyst payments. An unused helper or catalog description is not completion.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
@@ -125,3 +125,32 @@ an enabled Eternal Garden overrides suppression as in other Flower effects.
 The UI identifies earned protection without adding a new control or an upfront
 combo recipe, preserving the design's emergent-discovery requirement.
 [Implementation and evidence](BAMBOO_SUMMER_IMPLEMENTATION.md).
+
+### Orchid + Spring: extra physical dead-wall draws, without recursion
+
+Each ordinary Wind or Dragon draw earns one extra dead-wall draw while an
+unsuppressed Orchid and at least one normal Spring are already active. This
+includes ordinary bonus-tile replacements and the filling of new Spring slots.
+Honors drawn earlier in a batch are not retroactively credited by a later
+Orchid/Spring. Duplicate Flowers/Seasons do not multiply this interaction.
+
+Resolve earned draws after the ordinary deal/refill, before the single Mandate
+reaction and before redraw returns tiles to circulation. The original Honor
+stays held. Extra tiles may exceed ordinary rack capacity, but do not permanently
+increase it; later ordinary refills still use that capacity. Extra Honors do not
+earn more draws. Extra Flowers/Seasons collect and replace normally, including
+filling new Spring spaces, but that entire bonus cascade is non-chaining.
+
+No dead-wall tiles means no invented replacement and no credit carried into the
+next action. Normal replenishment, Monsoon sampling and tile modifiers remain
+authoritative. Drought blocks earning unless active Eternal Garden protects the
+Flower; a later Drought does not undo credits already earned in the same batch.
+Starting deals, explicit draws, play/discard refills, redraw and Dead Wall Writ
+use the same accounting. Merchant river swaps are not draws. Saves restore
+actual physical tiles without replaying rewards or needing a new schema field.
+
+The optional Flora inspector illustrates Orchid and explains the last experienced
+bloom, not an upfront combo recipe. That transient explanation clears on load
+and the next round; the drawn tiles themselves are saved. This is a documented
+design resolution, not proof that the interaction is balanced or engaging.
+[Implementation and evidence](ORCHID_SPRING_IMPLEMENTATION.md).

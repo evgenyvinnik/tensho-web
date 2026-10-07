@@ -371,7 +371,8 @@ export class FlowerSystem {
     if (seasonType === 'Spring' && this.hasFlowerType('Orchid')) {
       return {
         hasInteraction: true,
-        effect: '+1 draw when drawing honors',
+        effect:
+          '+1 dead-wall draw per normally drawn Honor; extra draws do not chain',
         bonus: 0,
       }
     }

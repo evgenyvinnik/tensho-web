@@ -620,6 +620,7 @@
       "corruptedName": "Nasira",
       "flowerPlum": "+{{percent}}% puntos sa bawat sequence.",
       "flowerOrchid": "+{{percent}}% puntos sa bawat honor tile.",
+      "orchidBloom": "Dagdag na tile na nabunot ng Orkidyas: {{count}}. Hindi nagkakadena ang dagdag na bunot.",
       "flowerChrysanthemum": "+{{percent}}% puntos sa bawat nakatagong grupo.",
       "flowerBamboo": "+{{percent}}% puntos sa bawat terminal tile.",
       "setTwo": "2 bulaklak: +1 puwesto ng kautusan.",

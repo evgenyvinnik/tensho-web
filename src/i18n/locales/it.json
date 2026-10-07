@@ -620,6 +620,7 @@
       "corruptedName": "Corrotta",
       "flowerPlum": "+{{percent}}% al punteggio per sequenza.",
       "flowerOrchid": "+{{percent}}% al punteggio per tessera onore.",
+      "orchidBloom": "Tessere extra pescate dall’Orchidea: {{count}}. Le pescate extra non si concatenano.",
       "flowerChrysanthemum": "+{{percent}}% al punteggio per gruppo nascosto.",
       "flowerBamboo": "+{{percent}}% al punteggio per tessera terminale.",
       "setTwo": "2 fiori: +1 spazio decreto.",

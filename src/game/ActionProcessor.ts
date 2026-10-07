@@ -204,6 +204,8 @@ export interface ActionResult {
 export interface GameStateSnapshot {
   // Hand state
   handTiles: Tile[]
+  /** Current ordinary rack capacity, including active Season/Charter rules. */
+  handSizeLimit?: number
   melds: Meld[]
   selectedTileIds: string[]
 
@@ -277,7 +279,14 @@ export class ActionProcessor {
       case 'skip':
         return state.roundType === 'Small' || state.roundType === 'Large'
           ? { isValid: true, errors: [] }
-          : { isValid: false, errors: [state.roundType === 'Boss' ? 'Cannot skip boss rounds' : 'No active round'] }
+          : {
+              isValid: false,
+              errors: [
+                state.roundType === 'Boss'
+                  ? 'Cannot skip boss rounds'
+                  : 'No active round',
+              ],
+            }
       default:
         return { isValid: false, errors: ['Unknown action type'] }
     }
@@ -293,8 +302,7 @@ export class ActionProcessor {
       errors.push('No tiles remaining in wall')
     }
 
-    // Check if hand is already at maximum size (14 tiles)
-    if (state.handTiles.length >= 14) {
+    if (state.handTiles.length >= (state.handSizeLimit ?? 14)) {
       errors.push('Hand is at maximum size')
     }
 

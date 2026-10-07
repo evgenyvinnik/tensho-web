@@ -1125,6 +1125,7 @@
       "corruptedName": "異変",
       "flowerPlum": "+{{percent}}%得点／順子。",
       "flowerOrchid": "+{{percent}}%得点／字牌。",
+      "orchidBloom": "蘭が追加で引いた牌：{{count}}枚。追加のツモは連鎖しません。",
       "flowerChrysanthemum": "+{{percent}}%得点／非公開の面子。",
       "flowerBamboo": "+{{percent}}%得点／老頭牌。",
       "setTwo": "花牌２種：法令スロット+1。",

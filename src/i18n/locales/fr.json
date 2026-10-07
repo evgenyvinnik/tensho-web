@@ -1125,6 +1125,7 @@
       "corruptedName": "Corrompue",
       "flowerPlum": "+{{percent}} % de score par séquence.",
       "flowerOrchid": "+{{percent}} % de score par tuile d’honneur.",
+      "orchidBloom": "Tuiles supplémentaires piochées par l’Orchidée : {{count}}. Ces pioches ne s’enchaînent pas.",
       "flowerChrysanthemum": "+{{percent}} % de score par groupe caché.",
       "flowerBamboo": "+{{percent}} % de score par tuile terminale.",
       "setTwo": "2 fleurs : +1 emplacement de décret.",

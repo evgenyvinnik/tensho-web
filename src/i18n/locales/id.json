@@ -1205,6 +1205,7 @@
       "corruptedName": "Terkorupsi",
       "flowerPlum": "+{{percent}}% skor per urutan.",
       "flowerOrchid": "+{{percent}}% skor per ubin kehormatan.",
+      "orchidBloom": "Ubin tambahan yang ditarik Anggrek: {{count}}. Tarikan tambahan tidak berantai.",
       "flowerChrysanthemum": "+{{percent}}% skor per kelompok tertutup.",
       "flowerBamboo": "+{{percent}}% skor per ubin terminal.",
       "setTwo": "2 bunga: +1 slot dekret.",

@@ -1125,6 +1125,7 @@
       "corruptedName": "Corrupta",
       "flowerPlum": "+{{percent}}% de puntuación por secuencia.",
       "flowerOrchid": "+{{percent}}% de puntuación por ficha de honor.",
+      "orchidBloom": "La orquídea robó fichas adicionales: {{count}}. Los robos adicionales no se encadenan.",
       "flowerChrysanthemum": "+{{percent}}% de puntuación por grupo oculto.",
       "flowerBamboo": "+{{percent}}% de puntuación por ficha terminal.",
       "setTwo": "2 flores: +1 espacio de edicto.",

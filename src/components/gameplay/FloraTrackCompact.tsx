@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
 import type { FlowerVariant, SeasonTile } from '../../systems/types'
@@ -7,6 +7,7 @@ import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
 import { FLOWER_DATA, SEASON_DATA } from './gameplayTypes'
 import { getTileImagePath, illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
+import { eventBus } from '../../game/EventBus'
 
 export interface FloraTrackCompactProps {
   flora: ReturnType<GameOrchestrator['getFloraState']>
@@ -18,6 +19,15 @@ const FLOWERS: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
 export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
   const { t, i18n } = useTranslation()
   const [open, setOpen] = useState(false)
+  const [orchidBloom, setOrchidBloom] = useState(0)
+  useEffect(() => {
+    const subscriptions = [
+      eventBus.on('orchidBloom', ({ count }) => setOrchidBloom(count)),
+      eventBus.on('roundStart', () => setOrchidBloom(0)),
+      eventBus.on('gameLoaded', () => setOrchidBloom(0)),
+    ]
+    return () => subscriptions.forEach((unsubscribe) => unsubscribe())
+  }, [])
   const collected = new Set(flora.flowers.flowers.map((flower) => flower.type))
   const title = t('flora.flowers') + ' · ' + t('flora.seasons')
   const seasonName = (season: SeasonTile) =>
@@ -31,9 +41,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
   // Verified gaps, not active powers. Do not advertise unused helpers.
   const incomplete = flora.seasons.some(
     (season) =>
-      (!season.isCorrupted &&
-        season.type !== 'Winter' &&
-        season.type !== 'Summer') ||
+      (!season.isCorrupted && season.type === 'Autumn') ||
       season.corruptedType === 'Frostbite'
   )
 
@@ -128,10 +136,14 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                 className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
               >
                 <img
-                  src={getTileImagePath(
-                    TileSuit.Flower,
-                    FLOWER_DATA[flower].rank
-                  )}
+                  src={
+                    flower === 'Orchid'
+                      ? illustrationAssets.orchidBloom
+                      : getTileImagePath(
+                          TileSuit.Flower,
+                          FLOWER_DATA[flower].rank
+                        )
+                  }
                   alt=""
                   aria-hidden="true"
                   draggable={false}
@@ -159,6 +171,15 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                       ).toLocaleString(i18n.language),
                     })}
                   </p>
+                  {flower === 'Orchid' && orchidBloom > 0 && (
+                    <p
+                      data-orchid-bloom
+                      role="status"
+                      className="mt-2 text-sm text-[var(--color-golden-yellow)]"
+                    >
+                      {t('flora.details.orchidBloom', { count: orchidBloom })}
+                    </p>
+                  )}
                 </div>
               </li>
             ))}

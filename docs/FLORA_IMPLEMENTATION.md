@@ -3,6 +3,13 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
+October 7 local follow-up: [Orchid/Spring](ORCHID_SPRING_IMPLEMENTATION.md) connects
+Honor-triggered dead-wall draws across all draw paths, with non-chaining bonuses,
+one boss reaction and exact saved physical tiles. New Orchid art and localized
+post-bloom feedback are integrated. Native/production journeys pass 8/8 each;
+full units pass 1,868 before one final extra test, with all 24 Orchid checks then
+passing. Publication is pending. Plum/Autumn and mutations/catalysts remain open.
+
 October 7 published follow-up, **v1.0.261007-8**: [Bamboo/Summer](BAMBOO_SUMMER_IMPLEMENTATION.md) now
 earns round-long wall protection from a terminal-heavy committed play, restores
 reserved tiles and persists the earned reward. Normal Summer receives new fan
@@ -146,12 +153,12 @@ of the requirements in `GAME_SYSTEMS.md`.
 
 | Documented rule | Current gap |
 | --- | --- |
-| Spring: extra draws | Connected as +2 round-scoped rack spaces per normal Spring; see the October 7 follow-up above. Orchid/Spring remains unfinished. |
+| Spring: extra draws | Connected as +2 round-scoped rack spaces per normal Spring. Orchid/Spring adds non-chaining Honor-triggered dead-wall draws; see its current verification above. |
 | Bamboo + Summer exception | Connected: four physical terminals in a committed play earn round-long protection and restore reserved tiles after scoring. See the October 7 follow-up above. |
 | Autumn: discard pool grows | Resolved and connected as +1 discard action on each normal Autumn draw; its Yaku modifier remains active. Plum recursion remains unfinished. |
 | Winter: loosen hand legality | Connected to tactical/full scoring and coach as one skipped rank per same-suit sequence. Score penalties and Chrysanthemum exception remain active. See [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md). |
 | Frostbite: halve Decree effects | Flat-point, main multiplier, Yaku-specific benefits and shared gold reward paths scale with every Frostbite; ordinary bonuses remain intact. Wealth Engine and copied gold effects feed those paths. Treasure Hunter timing/scaling, fractional retriggers and non-numeric rules remain open. See [scoring evidence](FROSTBITE_IMPLEMENTATION.md), [gold settlement](FROSTBITE_GOLD_IMPLEMENTATION.md), [Decree economy](DECREE_ECONOMY_IMPLEMENTATION.md) and [secondary scoring](SECONDARY_SCORING_IMPLEMENTATION.md). |
-| Advanced mutations, catalysts, and two remaining Flower–Season interactions | Chrysanthemum/Winter and Bamboo/Summer are connected. Plum/Autumn, Orchid/Spring and full mutation acquisition remain to implement. |
+| Advanced mutations, catalysts, and remaining Flower–Season interaction | Chrysanthemum/Winter, Bamboo/Summer and Orchid/Spring are connected. Plum/Autumn and full mutation acquisition remain to implement. |
 
 The user explicitly delegated resolution of open rules on October 7.
 Fate Seal lifetime and Negative-tile conflicts still require concrete

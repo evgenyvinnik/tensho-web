@@ -1121,6 +1121,7 @@
       "corruptedName": "Corrupted",
       "flowerPlum": "+{{percent}}% score per sequence.",
       "flowerOrchid": "+{{percent}}% score per Honor tile.",
+      "orchidBloom": "Orchid drew extra tiles: {{count}}. Extra draws do not chain.",
       "flowerChrysanthemum": "+{{percent}}% score per concealed meld.",
       "flowerBamboo": "+{{percent}}% score per terminal tile.",
       "setTwo": "2 Flowers: +1 Decree slot.",

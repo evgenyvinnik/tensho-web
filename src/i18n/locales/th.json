@@ -620,6 +620,7 @@
       "corruptedName": "แปรปรวน",
       "flowerPlum": "คะแนน +{{percent}}% ต่อชุดเรียง",
       "flowerOrchid": "คะแนน +{{percent}}% ต่อไพ่อักษร",
+      "orchidBloom": "กล้วยไม้จั่วไพ่เพิ่ม: {{count}} ใบ การจั่วเพิ่มจะไม่ต่อเนื่องเป็นลูกโซ่",
       "flowerChrysanthemum": "คะแนน +{{percent}}% ต่อชุดที่ยังไม่เปิด",
       "flowerBamboo": "คะแนน +{{percent}}% ต่อไพ่เลข 1 หรือ 9",
       "setTwo": "ดอกไม้ 2 ชนิด: ช่องราชโองการ +1",

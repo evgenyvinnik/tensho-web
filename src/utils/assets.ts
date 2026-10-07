@@ -95,6 +95,7 @@ export const popupAssets = {
 export const illustrationAssets = {
   yakuLedger: `${ASSET_BASE}/illustrations/yaku-ledger.webp`,
   springBlossom: `${ASSET_BASE}/illustrations/spring-blossom.webp`,
+  orchidBloom: `${ASSET_BASE}/illustrations/orchid-bloom.webp`,
   autumnMaple: `${ASSET_BASE}/illustrations/autumn-maple.webp`,
   winterPine: `${ASSET_BASE}/illustrations/winter-pine.webp`,
   summerFan: `${ASSET_BASE}/illustrations/summer-fan.webp`,
