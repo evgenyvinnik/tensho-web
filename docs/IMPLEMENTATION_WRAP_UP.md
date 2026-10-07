@@ -16,6 +16,8 @@ Final units pass 1,839/1,839 and native feature journeys pass 8/8. Production
 replay encounters overall deadline failures under heavy host load; release
 verification remains open, not waived. Broader persistence checks pass 11/12
 with one deadline failure. The ledger retains intermediate fixture corrections.
+The unchanged single-worker production recheck also times out. Implementation
+commit `3bdc04f` is local on `main`; publication is held pending verification.
 
 [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md) is published in v1.0.261007-7:
 exactly one skipped rank per same-suit sequence, including tactical scoring and

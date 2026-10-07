@@ -12,6 +12,8 @@ Full units pass 1,839/1,839 and final native journeys pass 8/8. Built-production
 replays hit overall test deadlines under heavy host load; verification and
 publication remain open. Broader persistence checks pass 11/12 with one deadline
 failure retained. Earlier corrected test-fixture failures are also recorded.
+Single-worker production recheck also reaches its overall deadline. Changes are
+committed locally on `main` (`3bdc04f`), not yet pushed/deployed.
 [Rules, verification ledger and artwork](BAMBOO_SUMMER_IMPLEMENTATION.md).
 
 **Published — v1.0.261007-7, Winter legality:** normal Winter now permits exactly one

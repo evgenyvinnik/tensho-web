@@ -69,8 +69,15 @@ Evidence directory: `/tmp/tensho-bamboo-summer-R85V9c`.
   inspector). No failing scoring/persistence assertion was reached. This is not
   a passing production result. Host one-minute load was observed above 460;
   that is diagnostic context, not a substitute for a successful replay.
-- Unchanged isolated production replay, persistence recheck and publication
-  remain open. Do not mark this release or the overall project verified.
+- An unchanged single-worker production replay also hits the overall deadline,
+  this time while scrolling the earned-protection inspector after payment,
+  reload and the second Summer assertions had passed. It is still a failed
+  journey, not an accepted release check (`production-isolated.log`).
+- Implementation is committed locally on `main` as `3bdc04f`, not pushed or
+  deployed. A successful complete production batch and the unchanged persistence
+  recheck remain open before publication. Do not mark this release or the
+  overall project verified. Owned dev/preview servers are stopped after checks;
+  the pre-existing server on port 4173 is untouched.
 
 The browser journey starts from an actual legacy envelope, draws Summer and
 Bamboo through normal replacement, stages and pays a terminal quad or full hand,
