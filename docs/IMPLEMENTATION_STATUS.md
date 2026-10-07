@@ -4,6 +4,16 @@
 
 **Last verified:** October 6, 2026 (browser and release evidence retains its own dates)
 
+**In verification — illustrated Yaku upgrade ledger:** gameplay and the shop
+now expose actual upgraded families, levels, base bonuses and scored counts.
+The optional read-only dialog has generated artwork, localized copy and a compact
+phone layout; opening it preserves staging and the saved run. Full units pass
+1,747/1,747 before the layout refinement, affected checks pass 84/84 afterward,
+and final native/production journeys pass 12/12 each. Earlier timing failures are
+retained. Build, lint and thirteen release checks pass; publication is pending.
+Orb-leveling design and broader completion remain open.
+[Evidence, artwork and prompt](YAKU_UPGRADE_LEDGER.md).
+
 **Published — v1.0.261007-3, expanded-rack complete hands:** larger racks now offer a
 legal complete subset instead of requiring every held tile to form one hand.
 Stage/confirm remains two-step, unused tiles stay held, and boss locks/hidden

@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "关于这些加成",
+    "title": "役种升级",
+    "summary": "已升级：{{total}}",
+    "intro": "这些加成持续到本次挑战结束，并在完整和牌中计入对应役种时生效。",
+    "baseline": "1级为初始状态，没有天球加成。",
+    "empty": "尚未升级任何役种。使用天球来强化对应的得分牌型。",
+    "level": "等级 {{level}} / {{max}}",
+    "bonus": "基础分 +{{chips}} · 倍率 +{{mult}}",
+    "triggers": "计分次数：{{total}}",
+    "note": "仅显示天球的基础加成。其他规则可能改变最终得分，请查看出牌预测中的总分。"
+  },
   "handInterpretation": {
     "ready": "敕令辅助成手",
     "why": "这手牌为何成立",

@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "Tentang bonus ini",
+    "title": "Peningkatan yaku",
+    "summary": "Ditingkatkan: {{total}}",
+    "intro": "Bonus ini berlaku sepanjang permainan dan diterapkan saat yaku yang sesuai mencetak poin dalam tangan lengkap.",
+    "baseline": "Level 1 adalah level awal: tanpa bonus Orb.",
+    "empty": "Belum ada peningkatan yaku. Gunakan Orb Langit untuk memperkuat pola poin yang sesuai.",
+    "level": "Level {{level}} / {{max}}",
+    "bonus": "+{{chips}} poin dasar · +{{mult}} Mult",
+    "triggers": "Jumlah pemicu skor: {{total}}",
+    "note": "Hanya bonus dasar Orb yang ditampilkan. Aturan lain dapat mengubah skor akhir; lihat perkiraan permainan untuk totalnya."
+  },
   "handInterpretation": {
     "ready": "Tangan dibantu Dekret",
     "why": "Mengapa tangan ini sah",

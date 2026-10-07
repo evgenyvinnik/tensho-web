@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "À propos de ces bonus",
+    "title": "Améliorations des yaku",
+    "summary": "Améliorés : {{total}}",
+    "intro": "Ces bonus durent toute la partie et s’appliquent lorsque le yaku correspondant marque dans une main complète.",
+    "baseline": "Le niveau 1 est le niveau initial, sans bonus d’orbe.",
+    "empty": "Aucun yaku amélioré. Utilisez un Orbe céleste pour renforcer son motif de score.",
+    "level": "Niveau {{level}} / {{max}}",
+    "bonus": "+{{chips}} points de base · +{{mult}} Mult",
+    "triggers": "Occurrences marquées : {{total}}",
+    "note": "Seuls les ajouts de base des orbes sont indiqués. Les autres règles peuvent modifier le score final ; consultez la prévision de la main."
+  },
   "handInterpretation": {
     "ready": "Main aidée par les décrets",
     "why": "Pourquoi cette main fonctionne",

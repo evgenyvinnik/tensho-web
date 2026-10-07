@@ -36,6 +36,7 @@ gameOrchestrator.setCharterUnlockResolver((id) =>
 export interface GameController {
   shop: GameOrchestrator['shop']
   flora: ReturnType<GameOrchestrator['getFloraState']>
+  yakuUpgrades: ReturnType<GameOrchestrator['getYakuUpgradeState']>
   // State (reactive)
   state: OrchestratorState
   handTiles: Tile[]
@@ -485,6 +486,7 @@ export function useGameController(
   return {
     shop: orchestrator.shop,
     flora: orchestrator.getFloraState(),
+    yakuUpgrades: orchestrator.getYakuUpgradeState(),
     // State
     state,
     handTiles,

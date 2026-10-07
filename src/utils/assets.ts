@@ -93,6 +93,7 @@ export const popupAssets = {
  * to use SVG so they remain crisp at every size.
  */
 export const illustrationAssets = {
+  yakuLedger: `${ASSET_BASE}/illustrations/yaku-ledger.webp`,
   ceruleanBell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
   mandates: {
     amber_acorn: `${ASSET_BASE}/illustrations/amber-acorn.webp`,

@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "Tungkol sa mga bonus na ito",
+    "title": "Mga pag-upgrade ng yaku",
+    "summary": "Na-upgrade: {{total}}",
+    "intro": "Mananatili ang mga bonus sa takbong ito at ilalapat kapag nakapuntos ang katugmang yaku sa kumpletong kamay.",
+    "baseline": "Panimulang antas ang 1: wala pang bonus mula sa orb.",
+    "empty": "Wala pang na-upgrade na yaku. Gumamit ng Celestial Orb para palakasin ang katugmang padron ng pagmamarka.",
+    "level": "Antas {{level}} / {{max}}",
+    "bonus": "+{{chips}} batayang puntos · +{{mult}} Mult",
+    "triggers": "Bilang ng pag-iskor: {{total}}",
+    "note": "Batayang dagdag ng orb lamang ang ipinapakita. Maaaring baguhin ng ibang tuntunin ang huling puntos; tingnan ang tantiya ng laro para sa kabuuan."
+  },
   "handInterpretation": {
     "ready": "Kamay na tinulungan ng Dekreto",
     "why": "Bakit puwede ang kamay na ito",

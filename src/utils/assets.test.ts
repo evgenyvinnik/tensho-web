@@ -13,7 +13,7 @@ import {
 } from './assets'
 import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../config/mandateDefinitions'
 
-it.each(['swiftHandCharter', 'fullPaletteCharter'] as const)(
+it.each(['swiftHandCharter', 'fullPaletteCharter', 'yakuLedger'] as const)(
   'ships a compact transparent %s portrait',
   (key) => {
     const webp = readFileSync(`public${illustrationAssets[key]}`)

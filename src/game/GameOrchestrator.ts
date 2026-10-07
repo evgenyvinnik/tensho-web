@@ -4427,6 +4427,14 @@ export class GameOrchestrator {
     }
   }
 
+  /** Public, detached run progress; never previews or scores a hidden hand. */
+  getYakuUpgradeState() {
+    return this.state.celestialOrbSystem.getYakuBonusSummary().map((upgrade) => ({
+      ...upgrade,
+      timesScored: this.state.celestialOrbSystem.getYakuTriggerCount(upgrade.yaku),
+    }))
+  }
+
   /** Get current state (for UI binding). */
   getState(): Readonly<OrchestratorState> {
     return this.state

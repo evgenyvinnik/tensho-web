@@ -8,6 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current illustrated Tea House build management
 
+The [illustrated Yaku upgrade ledger](YAKU_UPGRADE_LEDGER.md) exposes actual
+run-wide Orb upgrades and scored counts in gameplay and the shop, with a new
+generated constellation folio and all-locale copy. The optional dialog preserves
+staging/resources and puts the first upgrade above the fold on a 320px phone.
+Full regression passes 1,747 tests before the layout follow-up; affected checks
+pass 84/84 afterward. Final native and built-production journeys pass 12/12 each,
+with earlier deadline failures retained. Build, lint and thirteen release checks
+pass; publication is pending. Orb-leveling semantics remain an unresolved user
+choice, not silently changed by this inspector.
+
 The [expanded-rack hand correction](COMPLETE_HAND_SUBSETS.md) finds a legal
 complete declaration inside larger racks, stages only those physical tiles and
 keeps spares held. Required/hidden tiles and active rules remain authoritative.

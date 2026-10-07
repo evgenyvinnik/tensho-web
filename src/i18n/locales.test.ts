@@ -44,6 +44,27 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies the Yaku upgrade ledger and its placeholders in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const ledger = locale.yakuUpgrades as typeof en.yakuUpgrades
+    for (const [key, english] of Object.entries(en.yakuUpgrades)) {
+      expect(Object.prototype.hasOwnProperty.call(ledger, key)).toBe(true)
+      const translated = ledger[key as keyof typeof ledger]
+      expect(translated, `${language}: ${key}`).toBeTruthy()
+      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+      // "Level" is also the natural Indonesian term; literal identity is not
+      // evidence of fallback. Require distinct prose, with own keys for all.
+      if (
+        language !== 'en' &&
+        ['title', 'intro', 'empty', 'note'].includes(key)
+      )
+        expect(translated).not.toBe(english)
+    }
+  }
+})
+
 it('localizes complete-hand readiness without a fallback in every language', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const gameplay = locale.gameplay as typeof en.gameplay

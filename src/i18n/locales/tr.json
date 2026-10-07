@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "Bu bonuslar hakkında",
+    "title": "Yaku geliştirmeleri",
+    "summary": "Geliştirilen: {{total}}",
+    "intro": "Bu bonuslar koşu boyunca sürer ve eşleşen yaku tamamlanmış bir elde puan kazandırdığında uygulanır.",
+    "baseline": "1. seviye başlangıçtır: Küre bonusu yoktur.",
+    "empty": "Henüz yaku geliştirmesi yok. İlgili puan düzenini güçlendirmek için bir Göksel Küre kullanın.",
+    "level": "Seviye {{level}} / {{max}}",
+    "bonus": "+{{chips}} temel puan · +{{mult}} Çarpan",
+    "triggers": "Puan kazandırma sayısı: {{total}}",
+    "note": "Yalnızca Kürelerin temel eklemeleri gösterilir. Diğer kurallar son puanı değiştirebilir; toplam için oyun tahminine bakın."
+  },
   "handInterpretation": {
     "ready": "Ferman destekli el",
     "why": "Bu el neden geçerli?",

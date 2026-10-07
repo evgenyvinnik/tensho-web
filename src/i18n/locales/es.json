@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "Acerca de estas bonificaciones",
+    "title": "Mejoras de yaku",
+    "summary": "Mejorados: {{total}}",
+    "intro": "Estas bonificaciones duran toda la partida y se aplican cuando el yaku correspondiente puntúa en una mano completa.",
+    "baseline": "El nivel 1 es el inicial: no otorga bonificación de orbe.",
+    "empty": "Aún no hay mejoras de yaku. Usa un Orbe Celestial para potenciar su patrón de puntuación.",
+    "level": "Nivel {{level}} / {{max}}",
+    "bonus": "+{{chips}} puntos base · +{{mult}} Mult",
+    "triggers": "Veces puntuado: {{total}}",
+    "note": "Solo muestra las bonificaciones base de los orbes. Otras reglas pueden cambiar la puntuación final; consulta la previsión de la jugada."
+  },
   "handInterpretation": {
     "ready": "Mano asistida por decretos",
     "why": "Por qué funciona esta mano",

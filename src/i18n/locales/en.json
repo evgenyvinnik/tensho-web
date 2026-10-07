@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "About these bonuses",
+    "title": "Yaku upgrades",
+    "summary": "Upgraded: {{total}}",
+    "intro": "These bonuses last for this run and apply when the matching Yaku scores in a complete hand.",
+    "baseline": "Level 1 is the baseline: no Orb bonus.",
+    "empty": "No Yaku upgrades yet. Use a Celestial Orb to strengthen its matching scoring pattern.",
+    "level": "Level {{level}} / {{max}}",
+    "bonus": "+{{chips}} base points · +{{mult}} Mult",
+    "triggers": "Times scored: {{total}}",
+    "note": "Base Orb additions only. Other rules can change the final score; use the play forecast for the total."
+  },
   "handInterpretation": {
     "ready": "Decree-assisted hand",
     "why": "Why this hand works",

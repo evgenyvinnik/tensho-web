@@ -25,6 +25,7 @@ import { useItemText } from '../../i18n/useItemText'
 import { forecastHeading } from '../../gameplay/forecastGuidance'
 import { PendingOmens } from '../gameplay/PendingOmens'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
+import { YakuUpgradeLedger } from '../gameplay/YakuUpgradeLedger'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
 
 // Extracted gameplay components
@@ -749,6 +750,9 @@ export function GameplayScreen() {
         )}
 
         <PendingOmens system={game.state.omenSystem} />
+        <div className="flex justify-end px-3 py-1">
+          <YakuUpgradeLedger upgrades={game.yakuUpgrades} />
+        </div>
 
         {/* Score panel */}
         <ScorePanel

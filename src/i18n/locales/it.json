@@ -1,4 +1,16 @@
 {
+  "yakuUpgrades": {
+    "help": "Informazioni sui bonus",
+    "title": "Potenziamenti yaku",
+    "summary": "Potenziati: {{total}}",
+    "intro": "Questi bonus durano per tutta la partita e si applicano quando lo yaku corrispondente segna punti in una mano completa.",
+    "baseline": "Il livello 1 è quello iniziale: nessun bonus da sfera.",
+    "empty": "Nessuno yaku potenziato. Usa una Sfera Celeste per rafforzare il suo schema di punteggio.",
+    "level": "Livello {{level}} / {{max}}",
+    "bonus": "+{{chips}} punti base · +{{mult}} Mult",
+    "triggers": "Volte a segno: {{total}}",
+    "note": "Sono mostrati solo i bonus base delle sfere. Altre regole possono cambiare il punteggio finale: consulta la previsione della giocata."
+  },
   "handInterpretation": {
     "ready": "Mano aiutata dai decreti",
     "why": "Perché questa mano funziona",

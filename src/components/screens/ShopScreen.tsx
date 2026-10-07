@@ -31,6 +31,7 @@ import { CharterCard } from '../shop/CharterCard'
 import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { ProgressiveHintCard } from '../ui/ProgressiveHint'
+import { YakuUpgradeLedger } from '../gameplay/YakuUpgradeLedger'
 import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
@@ -211,6 +212,10 @@ export function ShopScreen() {
               return result
             }}
           />
+
+          <div className="mx-3 mt-3 flex justify-end sm:mx-5">
+            <YakuUpgradeLedger upgrades={game.yakuUpgrades} />
+          </div>
 
           <div className="grid items-start gap-5 px-3 pt-5 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6 lg:pt-6">
             {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
