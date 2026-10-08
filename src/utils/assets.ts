@@ -142,6 +142,7 @@ export const illustrationAssets = {
   } satisfies Record<DecreeRarity, string>,
   decreePortraits: {
     'decree-doppelganger': `${ASSET_BASE}/illustrations/decrees/doppelganger.webp`,
+    'decree-supernova': `${ASSET_BASE}/illustrations/decrees/supernova.webp`,
     'decree-echo-stone': `${ASSET_BASE}/illustrations/decrees/echo-stone.webp`,
     celestial_wildcard: `${ASSET_BASE}/illustrations/decrees/celestial-wildcard.webp`,
     shanten_clemency: `${ASSET_BASE}/illustrations/decrees/shanten-clemency.webp`,

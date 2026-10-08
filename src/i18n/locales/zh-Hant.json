@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "不計超新星和完美主義者加成，若本次出牌使回合總分達到目標的至少兩倍，則倍率×2.5。",
+    "perfectionist": "不計超新星和完美主義者加成，若第一次出牌即可過關，則倍率×3。"
+  },
   "copyCosts": {
     "title": "複製能力與代價",
     "rescue": "複製的鳳凰會先消耗複製者，再消耗原版。永恆複製者無法支付此代價。不朽救場保留法令，但將本局得分倍率設為×0.5。",
@@ -802,11 +806,11 @@
       },
       "decree-supernova": {
         "name": "超新星",
-        "description": "超過目標2倍時x2.5倍率"
+        "description": "不計超新星和完美主義者加成，若本次出牌使回合總分達到目標的至少兩倍，則倍率×2.5。"
       },
       "decree-perfectionist": {
         "name": "完美主義者",
-        "description": "首手獲勝時x3.0倍率"
+        "description": "不計超新星和完美主義者加成，若第一次出牌即可過關，則倍率×3。"
       },
       "decree-compound-interest": {
         "name": "複利",

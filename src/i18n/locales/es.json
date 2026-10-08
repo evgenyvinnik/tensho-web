@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "×2,5 Mult si esta jugada eleva la puntuación de la ronda al menos al doble del objetivo, antes de las bonificaciones de Supernova y Perfeccionista.",
+    "perfectionist": "×3 Mult si la primera jugada supera la ronda, antes de las bonificaciones de Supernova y Perfeccionista."
+  },
   "copyCosts": {
     "title": "Poderes copiados y costes",
     "rescue": "Un Fénix copiado consume al copiador antes que al original. Los copiadores Eternos no pueden pagar ese coste. El rescate Inmortal conserva el Decreto, pero fija el multiplicador de puntuación de la partida en ×0,5.",
@@ -802,11 +806,11 @@
       },
       "decree-supernova": {
         "name": "Supernova",
-        "description": "x2.5 Mult si superas el objetivo x2"
+        "description": "×2,5 Mult si esta jugada eleva la puntuación de la ronda al menos al doble del objetivo, antes de las bonificaciones de Supernova y Perfeccionista."
       },
       "decree-perfectionist": {
         "name": "Perfeccionista",
-        "description": "x3.0 Mult si la primera mano gana"
+        "description": "×3 Mult si la primera jugada supera la ronda, antes de las bonificaciones de Supernova y Perfeccionista."
       },
       "decree-compound-interest": {
         "name": "Interés Compuesto",

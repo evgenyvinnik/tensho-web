@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "不计超新星和完美主义者加成，若本次出牌使回合总分达到目标的至少两倍，则倍率×2.5。",
+    "perfectionist": "不计超新星和完美主义者加成，若第一次出牌即可过关，则倍率×3。"
+  },
   "copyCosts": {
     "title": "复制能力与代价",
     "rescue": "复制的凤凰会先消耗复制者，再消耗原版。永恒复制者无法支付此代价。不朽救场保留法令，但将本局得分倍率设为×0.5。",
@@ -802,11 +806,11 @@
       },
       "decree-supernova": {
         "name": "超新星",
-        "description": "超过目标2倍时x2.5倍率"
+        "description": "不计超新星和完美主义者加成，若本次出牌使回合总分达到目标的至少两倍，则倍率×2.5。"
       },
       "decree-perfectionist": {
         "name": "完美主义者",
-        "description": "首手获胜时x3.0倍率"
+        "description": "不计超新星和完美主义者加成，若第一次出牌即可过关，则倍率×3。"
       },
       "decree-compound-interest": {
         "name": "复利",

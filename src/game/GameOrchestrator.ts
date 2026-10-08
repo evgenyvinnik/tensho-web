@@ -3555,52 +3555,61 @@ export class GameOrchestrator {
       bonusGold: baseBreakdown.goldEarned ?? 0,
     }
 
-    // Apply decree effects (with Frostbite halving if active)
+    // Neutral qualification and actual payment share all final modifiers and
+    // rounding. The neutral pass never rerolls tiles or records scaling growth.
+    const orbMultiplier = Math.pow(
+      this.state.charterSystem.calculateEffects().orbMultiplier,
+      this.state.celestialOrbs.length
+    )
+    const settle = (decree: SystemScoreBreakdown) => {
+      const finalAdditiveBonus =
+        systemBreakdown.additiveBonus +
+        (decree.additiveBonus - systemBreakdown.additiveBonus) *
+          seasonModifiers.decreeModifier
+      const finalDecreeMultiplier =
+        seasonModifiers.decreeModifier === 1
+          ? decree.decreeMultiplier
+          : 1 + (decree.decreeMultiplier - 1) * seasonModifiers.decreeModifier
+      const subtotal =
+        baseBreakdown.basePoints + finalAdditiveBonus + celestialOrbChipsBonus
+      const finalMultiplier =
+        baseBreakdown.modifierMultiplier *
+        (decree.yakuMultiplier + celestialOrbMultBonus) *
+        flowerBonus *
+        seasonModifiers.scoreMultiplier *
+        finalDecreeMultiplier *
+        orbMultiplier
+      const calculatedFinalScore = Math.max(
+        0,
+        Math.floor(
+          subtotal * finalMultiplier * this.state.lossPreventionScorePenalty
+        ) - seasonModifiers.decayPenalty
+      )
+      return {
+        finalAdditiveBonus,
+        subtotal,
+        finalMultiplier,
+        calculatedFinalScore,
+      }
+    }
+    if (this.state.decreeSystem.hasScoreThresholdEffects(disabledDecreeIds)) {
+      const neutral = this.state.decreeSystem.applyDecreeEffects(
+        { ...systemContext, previewMode: true },
+        systemBreakdown
+      )
+      systemContext.scoreBeforeThresholdBonuses =
+        settle(neutral).calculatedFinalScore
+    }
     const decreeModifiedBreakdown = this.state.decreeSystem.applyDecreeEffects(
       systemContext,
       systemBreakdown
     )
-
-    // Frostbite scales the Decree contribution, not points already supplied by
-    // tile marks/editions. Keep fractional Flower-empowered bonuses until the
-    // final score is rounded, just as for the multiplier contribution below.
-    const finalAdditiveBonus =
-      systemBreakdown.additiveBonus +
-      (decreeModifiedBreakdown.additiveBonus - systemBreakdown.additiveBonus) *
-        seasonModifiers.decreeModifier
-
-    // Apply Frostbite modifier to decree multiplier effects if active
-    let finalDecreeMultiplier = decreeModifiedBreakdown.decreeMultiplier
-    if (seasonModifiers.decreeModifier !== 1.0) {
-      // Frostbite: halve the decree bonus (not the entire multiplier)
-      const decreeBonus = finalDecreeMultiplier - 1.0
-      finalDecreeMultiplier = 1.0 + decreeBonus * seasonModifiers.decreeModifier
-    }
-
-    // Apply Decay penalty
-    const decayPenalty = seasonModifiers.decayPenalty
-
-    // Calculate final score with all multipliers
-    // Formula: (Base + Additive + CelestialChips) * (Yaku + CelestialMult) * Flower * Season * Decree * Mandate - Decay
-    const subtotal =
-      baseBreakdown.basePoints + finalAdditiveBonus + celestialOrbChipsBonus
-    const finalMultiplier =
-      baseBreakdown.modifierMultiplier *
-      (decreeModifiedBreakdown.yakuMultiplier + celestialOrbMultBonus) *
-      flowerBonus *
-      seasonModifiers.scoreMultiplier *
-      finalDecreeMultiplier *
-      Math.pow(
-        this.state.charterSystem.calculateEffects().orbMultiplier,
-        this.state.celestialOrbs.length
-      )
-
-    const calculatedFinalScore = Math.max(
-      0,
-      Math.floor(
-        subtotal * finalMultiplier * this.state.lossPreventionScorePenalty
-      ) - decayPenalty
-    )
+    const {
+      finalAdditiveBonus,
+      subtotal,
+      finalMultiplier,
+      calculatedFinalScore,
+    } = settle(decreeModifiedBreakdown)
 
     // Return the breakdown in the format expected by the rest of the system
     return {

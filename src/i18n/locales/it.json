@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "×2,5 Mult se questa giocata porta il punteggio del round ad almeno il doppio dell’obiettivo, prima dei bonus di Supernova e Perfezionista.",
+    "perfectionist": "×3 Mult se la prima giocata supera il round, prima dei bonus di Supernova e Perfezionista."
+  },
   "copyCosts": {
     "title": "Poteri copiati e costi",
     "rescue": "Una Fenice copiata consuma il copiatore prima dell’originale. I copiatori Eterni non possono pagare questo costo. Il salvataggio Immortale conserva il Decreto ma imposta il moltiplicatore del punteggio della partita a ×0,5.",

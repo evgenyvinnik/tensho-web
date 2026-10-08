@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Score-threshold Decrees](SCORE_THRESHOLD_IMPLEMENTATION.md) now qualify against the
+current play's paid score before their conditional bonuses. This fixes unreachable
+Supernova and unconditional opening-hand Perfectionist behavior. Generated Supernova
+art and thirteen-locale rules are connected. Full regression passes 2,196/2,196 in
+177 files; TypeScript, build, lint and thirteen release checks pass. Corrected
+native and built-production EN/ES desktop/touch journeys each pass 4/4; hosted verification is pending.
+The analysis-only shop model cannot price these final-score gates and preserves
+them as unpriced powers; historical balance sweeps are not current measurements.
+
 [Copied ability lifecycles](COPIED_LIFECYCLES_IMPLEMENTATION.md), published and
 hosted-verified in **v1.0.261008-8**, connect physical
 consumption, destruction and shared action limits to the actual loss/round loop,

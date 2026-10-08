@@ -5,7 +5,11 @@
  * Organized by rarity tier with mahjong-themed effects.
  */
 
-import type { DecreeRarity, DecreeEffect, DecreeEffectType } from '../stores/decreeStore'
+import type {
+  DecreeRarity,
+  DecreeEffect,
+  DecreeEffectType,
+} from '../stores/decreeStore'
 import { runRandom } from '../game/RunRandom'
 
 /**
@@ -315,7 +319,10 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     japaneseName: '均衡道',
     description: '+15 Chips and +2 Mult',
     rarity: 'common',
-    effects: [createEffect('additive_chips', 15), createEffect('additive_mult', 2)],
+    effects: [
+      createEffect('additive_chips', 15),
+      createEffect('additive_mult', 2),
+    ],
     baseSellValue: 2,
   },
   {
@@ -572,7 +579,8 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     id: 'decree-treasure-hunter',
     name: 'Treasure Hunter',
     japaneseName: '宝探し',
-    description: '+¥1 per distinct suit left in your rack when you win a round. Winds and Dragons count separately.',
+    description:
+      '+¥1 per distinct suit left in your rack when you win a round. Winds and Dragons count separately.',
     rarity: 'uncommon',
     effects: [createEffect('gold_gain', 1, 'per unique suit')],
     baseSellValue: 4,
@@ -699,7 +707,9 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     japaneseName: '清一色王者',
     description: '×2.0 Mult when scoring Chinitsu',
     rarity: 'uncommon',
-    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Chinitsu')],
+    effects: [
+      createEffect('multiplicative_mult', 2.0, 'when scoring Chinitsu'),
+    ],
     baseSellValue: 6,
   },
 
@@ -822,7 +832,8 @@ export const RARE_DECREES: DecreeDefinition[] = [
     id: 'decree-supernova',
     name: 'Supernova',
     japaneseName: '超新星',
-    description: '×2.5 Mult if score exceeds target by 2x',
+    description:
+      '×2.5 Mult if this play brings the round score to at least twice the target, before Supernova and Perfectionist bonuses.',
     rarity: 'rare',
     effects: [createEffect('multiplicative_mult', 2.5, 'if 2x over target')],
     baseSellValue: 7,
@@ -831,7 +842,8 @@ export const RARE_DECREES: DecreeDefinition[] = [
     id: 'decree-perfectionist',
     name: 'Perfectionist',
     japaneseName: '完璧主義',
-    description: '×3.0 Mult if first hand of round wins',
+    description:
+      '×3.0 Mult if the first play clears the round, before Supernova and Perfectionist bonuses.',
     rarity: 'rare',
     effects: [createEffect('multiplicative_mult', 3.0, 'if first hand wins')],
     baseSellValue: 8,
@@ -972,7 +984,9 @@ export const RARE_DECREES: DecreeDefinition[] = [
     japaneseName: '三色賢者',
     description: '×2.0 Mult when scoring Sanshoku',
     rarity: 'rare',
-    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Sanshoku')],
+    effects: [
+      createEffect('multiplicative_mult', 2.0, 'when scoring Sanshoku'),
+    ],
     baseSellValue: 7,
   },
   {
@@ -1025,7 +1039,10 @@ export const RARE_DECREES: DecreeDefinition[] = [
     japaneseName: '皇帝祝福',
     description: '+100 Chips and +10 Mult',
     rarity: 'rare',
-    effects: [createEffect('additive_chips', 100), createEffect('additive_mult', 10)],
+    effects: [
+      createEffect('additive_chips', 100),
+      createEffect('additive_mult', 10),
+    ],
     baseSellValue: 6,
   },
   {
@@ -1064,7 +1081,10 @@ export const RARE_DECREES: DecreeDefinition[] = [
     japaneseName: '古代巻物',
     description: '+150 Chips, −2 Hand Size',
     rarity: 'rare',
-    effects: [createEffect('additive_chips', 150), createEffect('hand_size', -2)],
+    effects: [
+      createEffect('additive_chips', 150),
+      createEffect('hand_size', -2),
+    ],
     baseSellValue: 5,
   },
   {
@@ -1073,7 +1093,10 @@ export const RARE_DECREES: DecreeDefinition[] = [
     japaneseName: '犠牲',
     description: '×3.0 Mult, −1 Discard per round',
     rarity: 'rare',
-    effects: [createEffect('multiplicative_mult', 3.0), createEffect('discard_count', -1)],
+    effects: [
+      createEffect('multiplicative_mult', 3.0),
+      createEffect('discard_count', -1),
+    ],
     baseSellValue: 6,
   },
 
@@ -1229,7 +1252,10 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     japaneseName: '永遠庭園',
     description: '+10 Mult per Flower, Flowers cannot be lost',
     rarity: 'legendary',
-    effects: [createEffect('additive_mult', 10, 'per Flower'), createEffect('special', 0, 'Flowers protected')],
+    effects: [
+      createEffect('additive_mult', 10, 'per Flower'),
+      createEffect('special', 0, 'Flowers protected'),
+    ],
     baseSellValue: 12,
   },
 
@@ -1268,7 +1294,8 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     id: 'decree-doppelganger',
     name: 'Doppelganger',
     japaneseName: '分身',
-    description: 'Copies one random non-copy Decree, chosen on acquisition and each round. The target stays fixed for the round.',
+    description:
+      'Copies one random non-copy Decree, chosen on acquisition and each round. The target stays fixed for the round.',
     rarity: 'legendary',
     effects: [createEffect('special', 0, 'copies random Decree')],
     baseSellValue: 12,
@@ -1310,7 +1337,10 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     japaneseName: '硝子砲',
     description: '×6.0 Mult, destroyed if boss round lost',
     rarity: 'legendary',
-    effects: [createEffect('multiplicative_mult', 6.0), createEffect('special', 0, 'destroyed on boss loss')],
+    effects: [
+      createEffect('multiplicative_mult', 6.0),
+      createEffect('special', 0, 'destroyed on boss loss'),
+    ],
     baseSellValue: 8,
   },
   {
@@ -1504,7 +1534,9 @@ export const MYTHIC_DECREES: DecreeDefinition[] = [
     japaneseName: '役満祝福',
     description: '×10.0 Mult when scoring Yakuman',
     rarity: 'mythic',
-    effects: [createEffect('multiplicative_mult', 10.0, 'when scoring Yakuman')],
+    effects: [
+      createEffect('multiplicative_mult', 10.0, 'when scoring Yakuman'),
+    ],
     baseSellValue: 25,
     unlockCondition: 'Score 3 Yakuman in one run',
   },
@@ -1572,7 +1604,9 @@ export const ALL_DECREES: DecreeDefinition[] = [
 /**
  * Get decree by ID
  */
-export function getDecreeDefinitionById(id: string): DecreeDefinition | undefined {
+export function getDecreeDefinitionById(
+  id: string
+): DecreeDefinition | undefined {
   return ALL_DECREES.find((d) => d.id === id)
 }
 
@@ -1601,7 +1635,9 @@ export function getRandomDecreeByRarity(
   rarity: DecreeRarity,
   excludeIds: Set<string> = new Set()
 ): DecreeDefinition | undefined {
-  const available = getDecreesByRarity(rarity).filter((d) => !excludeIds.has(d.id))
+  const available = getDecreesByRarity(rarity).filter(
+    (d) => !excludeIds.has(d.id)
+  )
   if (available.length === 0) return undefined
   return available[Math.floor(runRandom.next('decrees') * available.length)]
 }
@@ -1611,7 +1647,7 @@ export function getRandomDecreeByRarity(
  */
 export const DECREE_SHOP_WEIGHTS: Record<DecreeRarity, number> = {
   common: 0.45,
-  uncommon: 0.30,
+  uncommon: 0.3,
   rare: 0.18,
   legendary: 0.06,
   mythic: 0.01,

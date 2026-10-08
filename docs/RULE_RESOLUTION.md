@@ -16,6 +16,15 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Score thresholds use this play's neutral paid score
+
+Supernova checks whether this play brings the round total to at least twice the
+target; Perfectionist checks whether the first play clears it. Both qualify before
+all Supernova/Perfectionist bonuses, including copies, so neither can bootstrap
+itself or the other. Ordinary modifiers, penalties and rounding remain part of
+the neutral score. Actual random tile effects resolve once; previews retain their
+existing deterministic policy. [Contract, illustration and evidence](SCORE_THRESHOLD_IMPLEMENTATION.md).
+
 ### Copied powers pay physical costs; limited actions share their budget
 
 An active copy carries the source's costs, paid by the copier. Permanent rescue

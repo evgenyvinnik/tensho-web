@@ -4,6 +4,15 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Score-threshold Decrees — local checkpoint:** Supernova can activate on the play
+that actually doubles the target; Perfectionist requires an opening clear. Both
+qualify before either conditional bonus, preventing self-qualifying chains. New
+Supernova art and thirteen-locale descriptions are connected. Full regression
+passes 2,196/2,196 in 177 files, plus TypeScript, build, lint and thirteen release
+checks. Corrected native and built-production EN/ES desktop/320px journeys each
+pass 4/4; hosted publication verification is pending.
+[Rules, retained failures and art provenance](SCORE_THRESHOLD_IMPLEMENTATION.md).
+
 **Published copied ability lifecycles — v1.0.261008-8:** Phoenix copies pay their own
 physical consumption before originals; Eternal cannot turn that cost into free
 rescue. Immortal retains its nonstacking penalty, active Glass Cannon copies inherit

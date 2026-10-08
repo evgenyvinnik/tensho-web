@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "×2,5 Mult jika permainan ini membawa skor ronde setidaknya dua kali target, sebelum bonus Supernova dan Perfeksionis.",
+    "perfectionist": "×3 Mult jika permainan pertama menuntaskan ronde, sebelum bonus Supernova dan Perfeksionis."
+  },
   "copyCosts": {
     "title": "Kekuatan salinan dan biaya",
     "rescue": "Salinan Phoenix menghabiskan penyalin sebelum yang asli. Penyalin Eternal tidak bisa membayar biaya itu. Penyelamatan Immortal mempertahankan Dekret, tetapi menetapkan pengali skor perjalanan menjadi ×0,5.",
@@ -882,11 +886,11 @@
       },
       "decree-supernova": {
         "name": "Supernova",
-        "description": "x2.5 Mult jika skor 2x target"
+        "description": "×2,5 Mult jika permainan ini membawa skor ronde setidaknya dua kali target, sebelum bonus Supernova dan Perfeksionis."
       },
       "decree-perfectionist": {
         "name": "Perfeksionis",
-        "description": "x3.0 Mult jika tangan pertama menang"
+        "description": "×3 Mult jika permainan pertama menuntaskan ronde, sebelum bonus Supernova dan Perfeksionis."
       },
       "decree-compound-interest": {
         "name": "Bunga Majemuk",

@@ -55,7 +55,11 @@ export function useItemText(): ItemText {
         t(
           kind === 'decrees' && item.id === 'decree-doppelganger'
             ? 'randomCopy.description'
-            : `${kind}.items.${item.id}.description`,
+            : kind === 'decrees' && item.id === 'decree-supernova'
+              ? 'scoreThresholds.supernova'
+              : kind === 'decrees' && item.id === 'decree-perfectionist'
+                ? 'scoreThresholds.perfectionist'
+                : `${kind}.items.${item.id}.description`,
           item.description ?? ''
         ),
     }),

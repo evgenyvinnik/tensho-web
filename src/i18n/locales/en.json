@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "×2.5 Mult if this play brings the round score to at least twice the target, before Supernova and Perfectionist bonuses.",
+    "perfectionist": "×3 Mult if the first play clears the round, before Supernova and Perfectionist bonuses."
+  },
   "copyCosts": {
     "title": "Copied powers and costs",
     "rescue": "A copied Phoenix spends the copier before the original. Eternal copiers cannot pay that cost. Immortal rescue keeps the Decree but sets your run’s score multiplier to ×0.5.",
@@ -798,11 +802,11 @@
       },
       "decree-supernova": {
         "name": "Supernova",
-        "description": "x2.5 Mult if score exceeds target by 2x"
+        "description": "×2.5 Mult if this play brings the round score to at least twice the target, before Supernova and Perfectionist bonuses."
       },
       "decree-perfectionist": {
         "name": "Perfectionist",
-        "description": "x3.0 Mult if first hand of round wins"
+        "description": "×3 Mult if the first play clears the round, before Supernova and Perfectionist bonuses."
       },
       "decree-compound-interest": {
         "name": "Compound Interest",

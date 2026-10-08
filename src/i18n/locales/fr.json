@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "×2,5 Mult si ce coup porte le score de la manche à au moins deux fois l’objectif, avant les bonus de Supernova et Perfectionniste.",
+    "perfectionist": "×3 Mult si le premier coup réussit la manche, avant les bonus de Supernova et Perfectionniste."
+  },
   "copyCosts": {
     "title": "Pouvoirs copiés et coûts",
     "rescue": "Un Phénix copié consume le copieur avant l’original. Un copieur Éternel ne peut pas payer ce coût. Le sauvetage Immortel conserve le Décret mais fixe le multiplicateur de score de la partie à ×0,5.",
@@ -802,11 +806,11 @@
       },
       "decree-supernova": {
         "name": "Supernova",
-        "description": "x2.5 Mult si score dépasse objectif x2"
+        "description": "×2,5 Mult si ce coup porte le score de la manche à au moins deux fois l’objectif, avant les bonus de Supernova et Perfectionniste."
       },
       "decree-perfectionist": {
         "name": "Perfectionniste",
-        "description": "x3.0 Mult si première main gagne"
+        "description": "×3 Mult si le premier coup réussit la manche, avant les bonus de Supernova et Perfectionniste."
       },
       "decree-compound-interest": {
         "name": "Intérêts Composés",

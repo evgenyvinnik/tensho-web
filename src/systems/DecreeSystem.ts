@@ -245,11 +245,20 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
     case 'no_discards_used':
       return context.round.discardsRemaining >= context.round.maxDiscards
     case 'first_hand':
-      return context.round.handsPlayed === 0
+      return (
+        context.round.handsPlayed === 0 &&
+        context.scoreBeforeThresholdBonuses !== undefined &&
+        context.round.currentScore + context.scoreBeforeThresholdBonuses >=
+          context.round.scoreTarget
+      )
     case 'last_hand_scored_zero':
       return context.lastHandScore === 0
     case 'double_target':
-      return context.round.currentScore >= context.round.scoreTarget * 2
+      return (
+        context.scoreBeforeThresholdBonuses !== undefined &&
+        context.round.currentScore + context.scoreBeforeThresholdBonuses >=
+          context.round.scoreTarget * 2
+      )
 
     default:
       return false
@@ -1198,6 +1207,24 @@ export class DecreeSystem {
     }
 
     return breakdown
+  }
+
+  /** Skip the neutral scoring pass entirely when no active rule needs it. */
+  hasScoreThresholdEffects(excludedIds?: ReadonlySet<string>): boolean {
+    const needsBaseline = (effect: DecreeEffect): boolean => {
+      if (effect.type === 'conditional') return needsBaseline(effect.effect)
+      return (
+        (effect.type === 'additive_score' ||
+          effect.type === 'multiplicative_score') &&
+        (effect.requires === 'first_hand' ||
+          effect.requires === 'double_target')
+      )
+    }
+    return this.getActiveDecrees(excludedIds).some((decree) =>
+      this.resolveEffects(decree, this.ownedDecrees, excludedIds).some(
+        needsBaseline
+      )
+    )
   }
 
   /**

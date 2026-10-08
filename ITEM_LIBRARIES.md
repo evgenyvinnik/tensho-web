@@ -402,8 +402,8 @@ Powerful effects with significant impact.
 | Decree | Japanese | Effect |
 |--------|----------|--------|
 | Inferno | 業火 | ×2.0 Mult |
-| Supernova | 超新星 | ×2.5 Mult if 2x over target |
-| Perfectionist | 完璧主義 | ×3.0 Mult if first hand wins |
+| Supernova | 超新星 | ×2.5 Mult if this play brings the round score to at least twice the target, before Supernova/Perfectionist bonuses |
+| Perfectionist | 完璧主義 | ×3.0 Mult if the first play clears the round, before Supernova/Perfectionist bonuses |
 | Compound Interest | 複利 | +2 Mult per ¥10 |
 | Wealth Engine | 富の機関 | +¥1 per Decree owned |
 | Perpetual Motion | 永久機関 | +5 Mult per hand this run (max +50) |

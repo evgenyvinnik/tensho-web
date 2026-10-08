@@ -158,6 +158,15 @@ export interface BuildShopChoice {
 
 function modeledEffect(effect: DecreeEffect): boolean {
   if (effect.type === 'conditional') return modeledEffect(effect.effect)
+  // This simplified future-round model omits Season/penalty settlement. It
+  // cannot price a final-paid-score threshold safely; retain owned powers and
+  // exclude incoming ones instead of treating an absent baseline as zero value.
+  if (
+    (effect.type === 'additive_score' ||
+      effect.type === 'multiplicative_score') &&
+    (effect.requires === 'first_hand' || effect.requires === 'double_target')
+  )
+    return false
   if (effect.type === 'gold') return effect.trigger === 'OnRoundEnd'
   if (effect.type === 'rule_modification')
     return [

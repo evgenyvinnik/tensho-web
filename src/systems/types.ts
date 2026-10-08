@@ -663,6 +663,10 @@ export interface ScoringContext {
   gold?: number
   /** Hands played so far across the whole run. */
   handsPlayedThisRun?: number
+  /** Paid score for this play without score-threshold Decrees; not prior round score.
+   * Absent during the neutral pass so these bonuses cannot qualify themselves.
+   */
+  scoreBeforeThresholdBonuses?: number
 }
 
 /**

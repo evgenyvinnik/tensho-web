@@ -1,4 +1,8 @@
 {
+  "scoreThresholds": {
+    "supernova": "Bu hamle, Süpernova ve Mükemmeliyetçi bonusları olmadan tur puanını hedefin en az iki katına çıkarırsa ×2,5 Mult.",
+    "perfectionist": "İlk hamle, Süpernova ve Mükemmeliyetçi bonusları olmadan turu geçerse ×3 Mult."
+  },
   "copyCosts": {
     "title": "Kopyalanan güçler ve bedeller",
     "rescue": "Kopyalanan Anka, asıl Fermandan önce kopyalayanı tüketir. Ebedî kopyalayıcılar bu bedeli ödeyemez. Ölümsüz kurtarış Fermanı korur ama koşunun puan çarpanını ×0,5 olarak ayarlar.",

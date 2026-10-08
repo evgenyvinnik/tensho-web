@@ -323,3 +323,21 @@ it('does not assign future scoring value to an already-expired offer', () => {
     chooseBuildShopPurchase({ ...context(), offers: [offer(expired)] })
   ).toBeNull()
 })
+
+it.each(['decree-supernova', 'decree-perfectionist'])(
+  'does not misprice final-score threshold %s with the simplified model',
+  (id) => {
+    const threshold = ALL_DECREES.find((d) => d.id === id)!
+    expect(
+      chooseBuildShopPurchase({ ...context(), offers: [offer(threshold)] })
+    ).toBeNull()
+    const system = new DecreeSystem(1)
+    system.acquireDecree(threshold)
+    expect(
+      chooseBuildShopPurchase({
+        ...context(system),
+        offers: [offer(mult('upgrade', 100))],
+      })
+    ).toBeNull()
+  }
+)
