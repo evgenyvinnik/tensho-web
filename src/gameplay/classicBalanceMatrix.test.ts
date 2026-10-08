@@ -120,6 +120,45 @@ it('refuses to label structural planning as the unchanged control policy', () =>
   ).toThrow()
 })
 
+it('keeps batch planning distinct from single exchanges and the control', () => {
+  expect(matrixOptions(['--planning=structural-batch']).planning).toBe(
+    'structural-batch'
+  )
+  const value = {
+    ...cell(),
+    policy: 'resources-and-batch-hand-plan+consumables',
+  }
+  expect(
+    validateMatrixCell(value, { ...expected, planning: 'structural-batch' })
+  ).toEqual(value)
+  expect(() => validateMatrixCell(value, expected)).toThrow()
+  expect(() =>
+    validateMatrixCell(value, { ...expected, planning: 'structural' })
+  ).toThrow()
+  expect(() =>
+    validateMatrixCell(cell(), { ...expected, planning: 'structural-batch' })
+  ).toThrow()
+})
+
+it('distinguishes missing historical mastery counts from zero and rejects impossible counts', () => {
+  expect(summarizeMatrixCell(cell()).completeConcealedHands).toBeNull()
+  const measured = {
+    ...cell(),
+    results: cell().results.map((r) => ({ ...r, completeConcealedHands: 0 })),
+  }
+  expect(
+    summarizeMatrixCell(validateMatrixCell(measured, expected))
+      .completeConcealedHands
+  ).toBe(0)
+  for (const n of [-1, 0.5, 1, Number.NaN]) {
+    const bad = structuredClone(measured)
+    bad.results[0].completeConcealedHands = n
+    expect(() => validateMatrixCell(bad, expected)).toThrow(
+      /completeConcealedHands/
+    )
+  }
+})
+
 it.each([
   (value: ReturnType<typeof cell>) => {
     value.table = 'temple_stone'

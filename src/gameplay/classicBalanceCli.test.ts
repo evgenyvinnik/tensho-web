@@ -27,6 +27,7 @@ interface Report {
     redrawnTiles: number
     discards: number
     completeHands: number
+    completeConcealedHands: number
     oneAwayAttempts: number
     handPlanAttempts: number
     handPlanDistances: Record<string, number>
@@ -54,6 +55,22 @@ function report(args: string[]): Report {
 }
 
 describe('Classic balance command contract', () => {
+  it('keeps batch planning opt-in, reproducible, and mutually exclusive', () => {
+    expect(run(['1', '--plan-batches', '--plan-hands']).status).not.toBe(0)
+    expect(run(['1', '--plan-batches', '--chase-hands']).status).not.toBe(0)
+    const args = ['1', '--plan-batches', '--build-shop', '--consumables']
+    const value = report(args)
+    expect(value.policy).toBe('resources-and-batch-hand-plan+consumables')
+    expect(Number.isSafeInteger(value.results[0].completeConcealedHands)).toBe(
+      true
+    )
+    expect(value.results[0].completeConcealedHands).toBeGreaterThanOrEqual(0)
+    expect(value.results[0].completeConcealedHands).toBeLessThanOrEqual(
+      value.results[0].completeHands
+    )
+    expect(value.results[0].handPlanAttempts).toBeGreaterThan(0)
+    expect(report(args)).toEqual(value)
+  })
   it('rejects conflicting hand policies and reports reproducible structural exchanges', () => {
     expect(run(['1', '--plan-hands', '--chase-hands']).status).not.toBe(0)
     const args = ['1', '--plan-hands', '--build-shop', '--consumables']
@@ -77,6 +94,7 @@ describe('Classic balance command contract', () => {
     '--consumables=true',
     '--build-shop=true',
     '--plan-hands=true',
+    '--plan-batches=true',
     '--table=missing',
     '--stake=0',
     '--stake=2.5',

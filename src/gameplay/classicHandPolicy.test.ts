@@ -58,6 +58,73 @@ it('keeps a two-sided finish instead of a disconnected Honor', () => {
     ],
   })
 })
+
+it('uses one redraw charge for two unnecessary tiles without worsening retained distance', () => {
+  const c = fixture()
+  c.visibleTiles = [
+    ...tiles(TileSuit.Manzu, [1, 2, 3]),
+    ...tiles(TileSuit.Souzu, [4, 5, 6]),
+    ...tiles(TileSuit.Pinzu, [2, 3, 5, 6]),
+    ...tiles(TileSuit.Wind, [1, 1]),
+    ...tiles(TileSuit.Dragon, [1, 3]),
+  ]
+  c.canPerform = (a) => a.type === 'redraw'
+  const before = JSON.stringify(c.visibleTiles)
+  const single = chooseClassicHandAction(c)!,
+    batch = chooseClassicHandAction(c, { batchRedraws: true })!
+  expect(single.action.type === 'redraw' && single.action.tileIds.length).toBe(
+    1
+  )
+  expect(batch.action).toEqual({
+    type: 'redraw',
+    tileIds: ['dragon-0', 'dragon-1'],
+  })
+  expect(batch.shanten).toBe(single.shanten)
+  expect(JSON.stringify(c.visibleTiles)).toBe(before)
+  expect(chooseClassicHandAction(c, { batchRedraws: true })).toEqual(batch)
+})
+
+it('can cycle three tiles but keeps a one-away hand intact and respects actual group legality', () => {
+  const c = fixture()
+  c.canPerform = (a) => a.type === 'redraw'
+  expect(chooseClassicHandAction(c, { batchRedraws: true })!.action).toEqual({
+    type: 'redraw',
+    tileIds: ['spare'],
+  })
+  c.visibleTiles = [
+    ...tiles(TileSuit.Manzu, [1, 2, 3]),
+    ...tiles(TileSuit.Souzu, [4, 5, 6]),
+    ...tiles(TileSuit.Pinzu, [2, 3]),
+    ...tiles(TileSuit.Wind, [1, 1, 4]),
+    ...tiles(TileSuit.Dragon, [1, 2, 3]),
+  ]
+  const single = chooseClassicHandAction(c)!,
+    batch = chooseClassicHandAction(c, { batchRedraws: true })!
+  expect(batch.action.type === 'redraw' && batch.action.tileIds.length).toBe(3)
+  expect(batch.shanten).toBe(single.shanten)
+  c.canPerform = (a) => a.type === 'redraw' && a.tileIds.length === 1
+  expect(chooseClassicHandAction(c, { batchRedraws: true })).toEqual(single)
+  c.canPerform = () => false
+  expect(chooseClassicHandAction(c, { batchRedraws: true })).toBeNull()
+})
+
+it('never includes locked physical tiles in batch exchanges', () => {
+  const c = fixture()
+  c.visibleTiles = [
+    ...tiles(TileSuit.Manzu, [1, 2, 3]),
+    ...tiles(TileSuit.Souzu, [4, 5, 6]),
+    ...tiles(TileSuit.Pinzu, [2, 3]),
+    ...tiles(TileSuit.Wind, [1, 1, 4]),
+    ...tiles(TileSuit.Dragon, [1, 2, 3]),
+  ]
+  c.lockedTileIds = ['dragon-0', 'wind-2']
+  c.canPerform = (a) => a.type === 'redraw'
+  const decision = chooseClassicHandAction(c, { batchRedraws: true })!
+  if (decision.action.type !== 'redraw') throw Error('Expected redraw')
+  expect(
+    decision.action.tileIds.some((id) => c.lockedTileIds.includes(id))
+  ).toBe(false)
+})
 it('replans across two observed draws without seeing future tiles', () => {
   const c = fixture()
   c.visibleTiles = [
@@ -162,45 +229,48 @@ it('respects physical locks, legal redraw fallback and exhausted resources', () 
   c.canPerform = () => false
   expect(chooseClassicHandAction(c)).toBeNull()
 })
-it('is deterministic, read-only and terminates with actual engine allowances', () => {
-  const game = new GameOrchestrator()
-  game.startNewRun(7)
-  let decisions = 0
-  for (let step = 0; step < 10; step++) {
-    const state = game.getState(),
-      c = fixture()
-    Object.assign(c, {
-      visibleTiles: state.handTiles.filter(
-        (t) => !state.faceDownTileIds.has(t.id)
-      ),
-      handTileCount: state.handTiles.length,
-      advice: buildCoachAdvice({
-        tiles: state.handTiles,
-        concealedIds: state.faceDownTileIds,
-        handsRemaining: state.handsRemaining,
-        remainingToTarget: 1e9,
-        scoreSelection: (ids) => game.previewScore(ids)?.finalScore ?? null,
-      }),
-      canPerform: (a: Parameters<typeof game.canPerformAction>[0]) =>
-        game.canPerformAction(a),
-    })
-    const before = game.captureRun(),
-      random = vi.spyOn(runRandom, 'next')
-    eventBus.enableHistory()
-    const history = eventBus.getHistory(),
-      result = chooseClassicHandAction(c)
-    expect(chooseClassicHandAction(c)).toEqual(result)
-    expect(game.captureRun()).toEqual(before)
-    expect(eventBus.getHistory()).toEqual(history)
-    expect(random).not.toHaveBeenCalled()
-    random.mockRestore()
-    if (!result) {
-      expect(decisions).toBeGreaterThan(0)
-      expect(decisions).toBeLessThanOrEqual(6)
-      return
+it.each([false, true])(
+  'is deterministic, read-only and terminates with actual engine allowances (batch=%s)',
+  (batchRedraws) => {
+    const game = new GameOrchestrator()
+    game.startNewRun(7)
+    let decisions = 0
+    for (let step = 0; step < 10; step++) {
+      const state = game.getState(),
+        c = fixture()
+      Object.assign(c, {
+        visibleTiles: state.handTiles.filter(
+          (t) => !state.faceDownTileIds.has(t.id)
+        ),
+        handTileCount: state.handTiles.length,
+        advice: buildCoachAdvice({
+          tiles: state.handTiles,
+          concealedIds: state.faceDownTileIds,
+          handsRemaining: state.handsRemaining,
+          remainingToTarget: 1e9,
+          scoreSelection: (ids) => game.previewScore(ids)?.finalScore ?? null,
+        }),
+        canPerform: (a: Parameters<typeof game.canPerformAction>[0]) =>
+          game.canPerformAction(a),
+      })
+      const before = game.captureRun(),
+        random = vi.spyOn(runRandom, 'next')
+      eventBus.enableHistory()
+      const history = eventBus.getHistory(),
+        result = chooseClassicHandAction(c, { batchRedraws })
+      expect(chooseClassicHandAction(c, { batchRedraws })).toEqual(result)
+      expect(game.captureRun()).toEqual(before)
+      expect(eventBus.getHistory()).toEqual(history)
+      expect(random).not.toHaveBeenCalled()
+      random.mockRestore()
+      if (!result) {
+        expect(decisions).toBeGreaterThan(0)
+        expect(decisions).toBeLessThanOrEqual(6)
+        return
+      }
+      expect(game.processAction(result.action).success).toBe(true)
+      decisions++
     }
-    expect(game.processAction(result.action).success).toBe(true)
-    decisions++
+    throw new Error('Planner exceeded finite resource bound')
   }
-  throw new Error('Planner exceeded finite resource bound')
-})
+)

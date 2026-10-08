@@ -12,7 +12,7 @@ import type {
 
 export interface HandPlanDecision extends Omit<ResourceDecision, 'reason'> {
   reason: 'hand-plan'
-  /** Distance of the retained thirteen tiles; zero means one draw can finish. */
+  /** Distance of retained tiles; zero means one draw can finish. */
   shanten: number
   /** Distinct improving types, NOT remaining copies, odds or predicted draws. */
   improvingTypes: string[]
@@ -26,7 +26,8 @@ export interface HandPlanDecision extends Omit<ResourceDecision, 'reason'> {
  * real action validator. One discard is preferred to a one-tile redraw.
  */
 export function chooseClassicHandAction(
-  context: ResourcePolicyContext
+  context: ResourcePolicyContext,
+  options: { batchRedraws?: boolean } = {}
 ): HandPlanDecision | null {
   const { advice, visibleTiles, canPerform } = context
   if (
@@ -89,5 +90,58 @@ export function chooseClassicHandAction(
     )
       best = { decision, tile }
   }
-  return best?.decision ?? null
+  if (!best || !options.batchRedraws || best.decision.action.type !== 'redraw')
+    return best?.decision ?? null
+
+  // A redraw spends one charge for up to three tiles. Preserve the best
+  // single-exchange distance while replacing more unneeded tiles. This is a
+  // structural heuristic, not an expected-value calculation or wall forecast.
+  const targetDistance = best.decision.shanten
+  const unlocked = visibleTiles.filter(
+    (t) => !context.lockedTileIds.includes(t.id)
+  )
+  for (let size = Math.min(3, targetDistance + 1); size >= 2; size--) {
+    let batch: { decision: HandPlanDecision; points: number } | null = null
+    const visit = (chosen: Tile[], start: number): void => {
+      if (chosen.length < size) {
+        for (let i = start; i <= unlocked.length - (size - chosen.length); i++)
+          visit([...chosen, unlocked[i]], i + 1)
+        return
+      }
+      const action = {
+        type: 'redraw' as const,
+        tileIds: chosen.map((t) => t.id),
+      }
+      if (!canPerform(action)) return
+      const ids = new Set(action.tileIds)
+      const retained = visibleTiles.filter((t) => !ids.has(t.id))
+      const key = retained
+        .map((t) => t.typeKey)
+        .sort()
+        .join('|')
+      let shape = shapes.get(key)
+      if (!shape) {
+        shape = {
+          shanten: calculateShanten(retained).shanten,
+          improvingTypes: [],
+        }
+        shapes.set(key, shape)
+      }
+      if (shape.shanten !== targetDistance) return
+      if (!shape.improvingTypes.length)
+        shape.improvingTypes = getEffectiveTiles(retained).map((t) => t.typeKey)
+      if (!shape.improvingTypes.length) return
+      const points = chosen.reduce((sum, t) => sum + getTilePoints(t), 0)
+      if (
+        !batch ||
+        shape.improvingTypes.length > batch.decision.improvingTypes.length ||
+        (shape.improvingTypes.length === batch.decision.improvingTypes.length &&
+          points < batch.points)
+      )
+        batch = { decision: { action, reason: 'hand-plan', ...shape }, points }
+    }
+    visit([], 0)
+    if (batch) return (batch as { decision: HandPlanDecision }).decision
+  }
+  return best.decision
 }

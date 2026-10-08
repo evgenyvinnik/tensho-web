@@ -4,6 +4,16 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
+**Batch hand-planning investigation:** a new opt-in analysis policy uses up to
+three tiles per redraw without worsening the retained standard-hand distance.
+Across 160 matched runs per strategy (eight tables, Stake 1, seeds 1–20), genuine
+concealed completions rise 62→115 and wins 12→22, with zero diagnostic stops or
+rescues. It worsens 31 paired runs, so this is not universal or human-fun evidence.
+Corrected telemetry distinguishes assisted large plays and accurately describes
+profile defaults. All 2,628 tests pass. Player rules and live advice are unchanged;
+optional group-retention/resource guidance is the next implementation candidate.
+[Raw reports, limitations and evidence](CLASSIC_BATCH_HAND_PLANNING.md).
+
 **Published Closed-Hand Austerity — v1.0.261008-14:** complete
 concealed hands now build run-wide mastery instead of paying a flat tactical
 bonus. Committed completions, legacy saves, copies and Clemency exclusions have

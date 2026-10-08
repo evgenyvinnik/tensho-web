@@ -68,6 +68,7 @@ for (const table of options.tables)
       ...(options.shopping === 'observed-build' ? ['--build-shop'] : []),
       '--resources',
       ...(options.planning === 'structural' ? ['--plan-hands'] : []),
+      ...(options.planning === 'structural-batch' ? ['--plan-batches'] : []),
       '--consumables',
       `--seed=${options.seed}`,
       `--table=${table}`,
@@ -111,9 +112,11 @@ const report = {
   runtime: execFileSync('bun', ['--version'], { encoding: 'utf8' }).trim(),
   source,
   policy:
-    options.planning === 'structural'
-      ? 'resources-and-hand-plan+consumables'
-      : 'resources+consumables',
+    options.planning === 'structural-batch'
+      ? 'resources-and-batch-hand-plan+consumables'
+      : options.planning === 'structural'
+        ? 'resources-and-hand-plan+consumables'
+        : 'resources+consumables',
   planning: options.planning,
   shopping: options.shopping,
   seeds: { first: options.seed, last: options.seed + options.runs - 1 },
@@ -124,7 +127,7 @@ const report = {
   limitations: [
     'Matched initial seeds, not independent human participants. Different table rules and actions can change later random trajectories.',
     'No difficulty tuning, optimal-strategy or human-enjoyment claim. Policy limitations from every child run are retained.',
-    'Profile unlocks are bypassed explicitly for measurement; player save data is not read or written.',
+    'Table and Stake entry are selected directly. No persistent player profile is loaded; Decree, Charter and consumable unlock resolvers remain at engine defaults. Player save data is not read or written.',
   ],
   commands,
   summaries,

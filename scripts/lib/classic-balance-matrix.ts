@@ -34,7 +34,7 @@ export function matrixOptions(args: string[]) {
   if (!['cheapest-first', 'observed-build'].includes(shopping))
     throw new Error(`Invalid shopping policy: ${shopping}`)
   const planning = options.get('planning') ?? 'off'
-  if (!['off', 'structural'].includes(planning))
+  if (!['off', 'structural', 'structural-batch'].includes(planning))
     throw new Error(`Invalid planning policy: ${planning}`)
   if (runs * tables.length * stakes.length > 10000)
     throw new Error(
@@ -58,6 +58,8 @@ export interface MatrixRun {
   runScore: number
   hands: number
   completeHands: number
+  /** Absent in historical reports; do not interpret absence as zero. */
+  completeConcealedHands?: number
   consumablesUsed: number
   purchases: number
   outcome: string
@@ -96,9 +98,11 @@ export function validateMatrixCell(
   if (
     cell.schema !== 2 ||
     cell.policy !==
-      (expected.planning === 'structural'
-        ? 'resources-and-hand-plan+consumables'
-        : 'resources+consumables') ||
+      (expected.planning === 'structural-batch'
+        ? 'resources-and-batch-hand-plan+consumables'
+        : expected.planning === 'structural'
+          ? 'resources-and-hand-plan+consumables'
+          : 'resources+consumables') ||
     cell.shopping !== true ||
     (cell.shoppingPolicy ?? 'cheapest-first') !==
       (expected.shopping ?? 'cheapest-first') ||
@@ -135,6 +139,14 @@ export function validateMatrixCell(
         throw new Error(`Invalid matrix measure: ${key}`)
     }
     outcomes[run.outcome] = (outcomes[run.outcome] ?? 0) + 1
+    if (
+      run.completeConcealedHands !== undefined &&
+      (!Number.isSafeInteger(run.completeConcealedHands) ||
+        run.completeConcealedHands < 0 ||
+        run.completeConcealedHands > run.completeHands ||
+        run.completeConcealedHands > run.hands)
+    )
+      throw new Error('Invalid matrix measure: completeConcealedHands')
   })
   if (
     !cell.outcomes ||
@@ -167,6 +179,11 @@ export function summarizeMatrixCell(cell: MatrixCell) {
     meanRounds: sum('rounds') / cell.runs,
     hands: sum('hands'),
     completeHands: sum('completeHands'),
+    completeConcealedHands: cell.results.every(
+      (run) => run.completeConcealedHands !== undefined
+    )
+      ? cell.results.reduce((sum, run) => sum + run.completeConcealedHands!, 0)
+      : null,
     consumablesUsed: sum('consumablesUsed'),
     purchases: sum('purchases'),
   }

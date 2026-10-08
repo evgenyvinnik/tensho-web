@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Batch hand-planning investigation](CLASSIC_BATCH_HAND_PLANNING.md) separates
+resource-policy weakness from full-hand impossibility. The new opt-in experiment
+uses the existing three-tile redraw allowance. Across 320 total matched runs,
+genuine completions improve 62→115 and wins 12→22; no diagnostic stops or rescue
+events occur, but 31 paired runs worsen. Corrected counters and profile metadata
+retain the original attempt, and 2,628 regression tests pass. No live policy or
+balance change is implied. Optional, cost-aware player guidance remains to be
+implemented and assessed; whole-project completion and fun remain unproven.
+
 [Closed-Hand Austerity](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md) is published and
 hosted-verified in **v1.0.261008-14**: actual completed-hand mastery, legacy item/save
 compatibility, generated portrait and optional localized progress. Full regression

@@ -43,19 +43,27 @@ const SHOP_POLICY = BUILD_SHOP
     ? 'cheapest-first'
     : 'off'
 const CHASES = ARGS.includes('--chase-hands')
-const PLANS = ARGS.includes('--plan-hands')
-if (PLANS && CHASES)
-  throw new Error('Choose one hand policy: --plan-hands or --chase-hands')
+const BATCH_PLANS = ARGS.includes('--plan-batches')
+const PLANS = ARGS.includes('--plan-hands') || BATCH_PLANS
+if (
+  [ARGS.includes('--plan-hands'), BATCH_PLANS, CHASES].filter(Boolean).length >
+  1
+)
+  throw new Error(
+    'Choose one hand policy: --plan-hands, --plan-batches or --chase-hands'
+  )
 const RESOURCES = PLANS || CHASES || ARGS.includes('--resources')
 const CONSUMABLES = ARGS.includes('--consumables')
 const JSON_OUTPUT = ARGS.includes('--json')
-const BASE_POLICY = PLANS
-  ? 'resources-and-hand-plan'
-  : CHASES
-    ? 'resources-and-one-away'
-    : RESOURCES
-      ? 'resources'
-      : 'best-immediate'
+const BASE_POLICY = BATCH_PLANS
+  ? 'resources-and-batch-hand-plan'
+  : PLANS
+    ? 'resources-and-hand-plan'
+    : CHASES
+      ? 'resources-and-one-away'
+      : RESOURCES
+        ? 'resources'
+        : 'best-immediate'
 const POLICY = `${BASE_POLICY}${CONSUMABLES ? '+consumables' : ''}`
 const value = (name: string, fallback: string) =>
   ARGS.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3) ??
@@ -73,6 +81,7 @@ for (const arg of ARGS.filter((arg) => arg.startsWith('--'))) {
       '--resources',
       '--chase-hands',
       '--plan-hands',
+      '--plan-batches',
       '--consumables',
       '--json',
     ].includes(arg) &&
@@ -105,6 +114,8 @@ interface RunResult {
   hands: number
   blindHands: number
   completeHands: number
+  /** Actual complete concealed plays, excluding Clemency's virtual completion. */
+  completeConcealedHands: number
   yakuTriggers: Record<string, number>
   redraws: number
   redrawnTiles: number
@@ -285,8 +296,11 @@ function playRun(seed: number): RunResult {
       ) => orchestrator.canPerformAction(action),
     }
     const cycle = RESOURCES
-      ? ((PLANS ? chooseClassicHandAction(resourceContext) : null) ??
-        chooseClassicResourceAction(resourceContext))
+      ? ((PLANS
+          ? chooseClassicHandAction(resourceContext, {
+              batchRedraws: BATCH_PLANS,
+            })
+          : null) ?? chooseClassicResourceAction(resourceContext))
       : null
     if (cycle) {
       const result = orchestrator.processAction(cycle.action)
@@ -386,6 +400,7 @@ function playRun(seed: number): RunResult {
     hands,
     blindHands,
     completeHands,
+    completeConcealedHands: final.completeConcealedHandsPlayed ?? 0,
     yakuTriggers,
     redraws,
     redrawnTiles,
@@ -512,14 +527,18 @@ const outcomes = results.reduce<Record<string, number>>((counts, run) => {
 }, {})
 const limitations = [
   'Heuristic candidate search, not exhaustive or optimal play.',
+  'completeHands is the historical count of plays larger than five tiles, including assisted completions. completeConcealedHands records actual complete concealed hands without Shanten Clemency.',
+  'Table and Stake entry are selected directly. No persistent player profile is loaded; Decree, Charter and consumable unlock resolvers remain at engine defaults.',
   RESOURCES
     ? 'Cycles low-connectivity spare tiles when behind the required score pace.'
     : 'No discards or redraws.',
-  PLANS
-    ? 'Ordinary 14-tile hand planning minimizes retained shanten, then maximizes distinct improving types. Single exchanges replan after real draws; type breadth is not draw probability. No wall counts, altered Decree grammar, future Yaku value or enlarged-rack subset planning.'
-    : CHASES
-      ? 'One-away search uses ordinary 14-tile structures only; it does not price future Yaku or know whether a completion tile remains.'
-      : 'No deliberate complete-hand pursuit.',
+  BATCH_PLANS
+    ? 'Ordinary 14-tile batch planning retains the best single-exchange shanten while replacing up to three tiles per redraw. It prefers larger equally distant retained shapes, then distinct improving types, then lower removed base points. Replans after real draws; no wall counts, draw probabilities, altered grammar or enlarged-rack planning.'
+    : PLANS
+      ? 'Ordinary 14-tile hand planning minimizes retained shanten, then maximizes distinct improving types. Single exchanges replan after real draws; type breadth is not draw probability. No wall counts, altered Decree grammar, future Yaku value or enlarged-rack subset planning.'
+      : CHASES
+        ? 'One-away search uses ordinary 14-tile structures only; it does not price future Yaku or know whether a completion tile remains.'
+        : 'No deliberate complete-hand pursuit.',
   'Concealed racks without visible advice use an unscored position-only fallback.',
   BUILD_SHOP
     ? 'Observed-build shopping compares modelled Decree inventories on the last six visible tactical plays over a two-round horizon; it can sell eligible copies. Rack/discard/economy weights are heuristic; unpriced rule powers are neither bought nor sold. Other items remain cheapest-first and pack choices first-valid. No future wall, broader Yaku planning, complete-hand modelling or optimality claim.'
