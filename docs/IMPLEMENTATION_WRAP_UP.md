@@ -8,11 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Illustrated hand workshop](HAND_BUILDER_IMPLEMENTATION.md) now connects optional
+[Illustrated hand workshop](HAND_BUILDER_IMPLEMENTATION.md), published and hosted-verified
+in **v1.0.261008-17**, connects optional
 player guidance to actual staging, separate redraw confirmation, real resource
 costs and thirteen locales. Hidden or unsupported hands receive safe explanations.
-Full regression passes 2,664 tests; six native workshop, six resource, two live
-privacy and six production checks pass. Publication verification remains pending. This closes the
+Visual review also corrected the shared White/Red Dragon artwork mapping without
+changing saved identities. Full regression passes 2,671 tests locally and in CI;
+six native workshop, six resource, two live privacy, six production and six hosted
+checks pass with matching manifest/tag/runtime. This closes the
 first player-facing guidance gap, not full-hand balance, native-speaker review,
 physical-device performance, newcomer enjoyment or whole-project completion.
 

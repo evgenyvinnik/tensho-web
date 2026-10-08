@@ -117,3 +117,26 @@ including **2,664/2,664 CI tests**. Version **1.0.261008-16** has tag/built comm
 `c96dd64700c93c91af5ab7172a4dc31b729d91a5`, matching the hosted manifest.
 This initial version still contains the Dragon artwork swap; the corrective
 follow-up and its hosted verification are recorded separately.
+
+## Corrective publication and hosted verification
+
+Correction source `eb5c31cedc233186c32edca2c45b62c27786c64a` is published as
+**v1.0.261008-17**, built/tagged at
+`1f82417db1faeed9a9c23127b9a47d7a8e2eca6c`.
+[Workflow 37754345581](https://github.com/evgenyvinnik/tensho-web/actions/runs/37754345581)
+independently passes all **2,671 tests in 192 files**, build and deployment.
+The hosted manifest agrees with the tag/commit/version; runtime entry
+`assets/index-Cv6cLkTN.js` contains that version. The hosted White Dragon asset
+matches reviewed SHA-256 `73bffaba5777ee4fc77352626fe99c340c30f6fcfd1022eafdfecb443c6ab06a`.
+
+All **six hosted workshop journeys pass**: English/Spanish/Russian, desktop and
+320px touch, with explicit image/name identity, free staging, actual redraw cost
+and exact saved reload. Evidence is `hosted.log` and `hosted/`. The final thirteen
+release-workflow checks pass too. This does not establish historical installed
+PWA migration, physical-phone performance, native-language quality or human fun.
+
+Read-only follow-up identified stale public About/FAQ copy in
+`src/publicSite/content.ts` still calling Season/Flower powers incomplete, plus
+no workshop explanation in the how-to guide. Reconcile those specific statements
+with the shipped mechanics in the next content pass. Broader gameplay and
+completion requirements remain open.

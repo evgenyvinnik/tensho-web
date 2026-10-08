@@ -4,11 +4,13 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
-**Optional hand-building workshop:** real tile images show a keep/exchange route,
+**Published hand-building workshop — v1.0.261008-17:** real tile images show a keep/exchange route,
 shape distance and improving types, with explicit redraw cost and separate
 selection/confirmation. Thirteen locales, hidden/altered-rule guards and engine
-legality are connected. 2,664 tests, six native workshop, six resource, two live
-privacy and six production journeys pass; publication is not yet verified. This is redraw-only guidance, not the
+legality are connected. Visual review also fixed reversed White/Red Dragon art
+without changing saved tile identities. All 2,671 tests pass locally and in CI;
+six native workshop, six resource, two live privacy, six production and six hosted
+journeys pass, with matching manifest/tag/runtime. This is redraw-only guidance, not the
 discard-first experimental policy or a proven fun/balance improvement.
 [Scope and evidence](HAND_BUILDER_IMPLEMENTATION.md).
 
@@ -21,7 +23,7 @@ Corrected telemetry distinguishes assisted large plays and accurately describes
 profile defaults. All 2,628 tests pass locally and in CI; deployment, matching
 manifest/tag/runtime and two hosted English desktop/mobile replays pass.
 Player rules and live advice are unchanged;
-optional group-retention/resource guidance is the next implementation candidate.
+the optional workshop above is its player-facing follow-up, not the same policy.
 [Raw reports, limitations and evidence](CLASSIC_BATCH_HAND_PLANNING.md).
 
 **Published Closed-Hand Austerity — v1.0.261008-14:** complete
