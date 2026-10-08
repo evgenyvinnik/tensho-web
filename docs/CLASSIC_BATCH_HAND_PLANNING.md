@@ -135,4 +135,20 @@ with this analysis policy, claiming human enjoyment, or marking the full project
 complete. Higher Stakes, independent seed ranges and newcomer observation remain
 outside this measurement. Full regression passes **2,628/2,628 in 190 files**;
 lint reports zero errors and the existing 211 warnings. Typecheck/build and all
-thirteen release checks pass. Publication verification remains a separate gate.
+thirteen release checks pass.
+
+## Publication verification
+
+Published on main as **v1.0.261008-15**. Source commit
+`f4abb8ed3569b9e78e2c214c794faef324737119`; version commit and tag target
+`d7084584a3e68e54dce013bb8ea73d75b34bba95`.
+[Workflow 37748382596](https://github.com/evgenyvinnik/tensho-web/actions/runs/37748382596)
+passes independently, including all 2,628 tests in 190 files and Pages deployment.
+The hosted `release.json` agrees with the version/tag/commit, and runtime entry
+`assets/index-CTf5l-d2.js` contains the same version.
+
+Two hosted English Austerity replay journeys pass, desktop Chromium and mobile
+Chrome: portrait/details, staging and committing a genuine hand, scoring/mastery,
+and saved reload. Evidence is in `hosted.log` and `hosted/` under the directory
+above. This is a narrow unchanged-gameplay regression check, not a new broad
+device/localization audit or evidence that the analysis policy is player-facing.

@@ -13,7 +13,9 @@ resource-policy weakness from full-hand impossibility. The new opt-in experiment
 uses the existing three-tile redraw allowance. Across 320 total matched runs,
 genuine completions improve 62→115 and wins 12→22; no diagnostic stops or rescue
 events occur, but 31 paired runs worsen. Corrected counters and profile metadata
-retain the original attempt, and 2,628 regression tests pass. No live policy or
+retain the original attempt, and 2,628 regression tests pass locally and in CI.
+Published as **v1.0.261008-15**, with successful deployment, matching
+manifest/tag/runtime and two hosted English desktop/mobile replays. No live policy or
 balance change is implied. Optional, cost-aware player guidance remains to be
 implemented and assessed; whole-project completion and fun remain unproven.
 
