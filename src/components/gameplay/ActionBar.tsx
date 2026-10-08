@@ -243,10 +243,7 @@ export function ActionBar({
         )}
         className="!min-w-[44px] max-w-[25%] !px-1 text-[10px] [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4 sm:text-sm"
       >
-        <span className="sm:hidden">{t('gameplay.draw', 'DRAW')}</span>
-        <span className="hidden sm:inline">
-          {t('gameplay.redraw', 'REDRAW')}
-        </span>
+        <span>{t('gameplay.redraw', 'REDRAW')}</span>
       </Button>
 
       {onDeadWallDraw && (

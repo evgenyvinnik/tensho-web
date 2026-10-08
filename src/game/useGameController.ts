@@ -148,6 +148,7 @@ export interface GameController {
   validateConsumableAction: GameOrchestrator['validateConsumableAction']
   isCompleteHand: (tileIds: string[]) => boolean
   inspectCompleteHand: GameOrchestrator['inspectCompleteHand']
+  getHandBuildingAdvice: GameOrchestrator['getHandBuildingAdvice']
   findCompleteHandSelection: GameOrchestrator['findCompleteHandSelection']
   previewScore: (tileIds: string[]) => ScoreBreakdown | null
   resetGame: () => void
@@ -477,6 +478,11 @@ export function useGameController(
     GameOrchestrator['inspectCompleteHand']
   >((tileIds) => orchestrator.inspectCompleteHand(tileIds), [orchestrator])
 
+  const getHandBuildingAdvice = useCallback(
+    () => orchestrator.getHandBuildingAdvice(),
+    [orchestrator]
+  )
+
   const findCompleteHandSelection = useCallback(
     () => orchestrator.findCompleteHandSelection(),
     [orchestrator]
@@ -583,6 +589,7 @@ export function useGameController(
     validateConsumableAction,
     isCompleteHand,
     inspectCompleteHand,
+    getHandBuildingAdvice,
     findCompleteHandSelection,
     previewScore,
     resetGame,

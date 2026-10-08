@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "Susun tangan",
+    "intro": "Pertahankan kelompok yang berguna dan tukar ubin berlebih. Ini satu kemungkinan, bukan jaminan langkah terbaik.",
+    "standard": "Empat kelompok + satu pasang.",
+    "sevenPairs": "Tujuh pasang berbeda.",
+    "kokushi": "Semua 13 jenis terminal dan Honor + satu duplikat.",
+    "distance": "Bentuk yang dipertahankan butuh sedikitnya {{needed}} ubin yang membantu untuk lengkap.",
+    "keep": "Pertahankan ubin ini",
+    "exchange": "Pertimbangkan menukar ini",
+    "cost": "Mengganti {{tiles}} ubin memakai 1 dari {{remaining}} kesempatan ambil ulang. Ubin yang dikembalikan masuk ke dinding setelah penggantinya diambil.",
+    "improving": "Jenis ubin yang bisa membantu ({{types}})",
+    "possibilities": "Contoh ini memperbaiki bentuk yang dipertahankan satu langkah. Ini bukan prediksi pengambilan, jumlah di dinding, atau jaminan lengkap.",
+    "caution": "Rencana ini hanya menilai bentuk biasa, bukan skor mendatang atau efek saat mengambil. Mengejar tangan lengkap bisa membuat kalah ronde; bandingkan opsi skor lebih dulu.",
+    "stage": "Pilih pertukaran ini",
+    "confirm": "Memilih tidak memakai sumber daya. Periksa ubin di papan, lalu tekan {{action}} untuk memakai satu kesempatan.",
+    "hidden": "Ada ubin tersembunyi. Rencana tidak ditampilkan selama mukanya tertutup.",
+    "unsupported": "Fitur ini mendukung tangan biasa berisi 14 ubin tanpa kelompok terbuka. Tangan atau aturan aktifmu memerlukan pendekatan lain; gunakan pratinjau skor dan panduan ubin.",
+    "complete": "Tanganmu sudah lengkap. Periksa skornya, letakkan di papan, dan konfirmasi permainan alih-alih menukar.",
+    "clear": "Ada langkah yang bisa menyelesaikan ronde ini. Periksa opsi skor sebelum memakai ambil ulang.",
+    "unavailable": "Tidak ada rencana ambil ulang legal yang didukung saat ini. Periksa sisa ambil ulang, ubin terkunci, dan dinding."
+  },
   "closedHandAusterity": {
     "name": "Disiplin Tangan Tertutup",
     "description": "Tangan lengkap dan tertutup mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap dan tertutup sebelumnya dalam run ini, hingga ×4 sebelum penguatan Bunga. Permainan taktis dan Pengampunan Shanten tidak dihitung.",

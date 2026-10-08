@@ -4,6 +4,14 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
+**Optional hand-building workshop:** real tile images show a keep/exchange route,
+shape distance and improving types, with explicit redraw cost and separate
+selection/confirmation. Thirteen locales, hidden/altered-rule guards and engine
+legality are connected. 2,664 tests, six native workshop, six resource, two live
+privacy and six production journeys pass; publication is not yet verified. This is redraw-only guidance, not the
+discard-first experimental policy or a proven fun/balance improvement.
+[Scope and evidence](HAND_BUILDER_IMPLEMENTATION.md).
+
 **Published batch hand-planning investigation — v1.0.261008-15:** a new opt-in analysis policy uses up to
 three tiles per redraw without worsening the retained standard-hand distance.
 Across 160 matched runs per strategy (eight tables, Stake 1, seeds 1–20), genuine

@@ -47,6 +47,10 @@ import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ascendYaku } from '../rules/yakuAscension'
 import { ShopSession } from './ShopSession'
 import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
+import { buildCoachAdvice } from '../gameplay/beginnerCoach'
+import { chooseHandShapeAction } from '../gameplay/handShapePlan'
+import type { HandBuildingAdvice } from '../gameplay/handBuildingAdvice'
+import { calculateShanten, getEffectiveTiles } from '../rules/ShantenCalculator'
 import {
   ActionProcessor,
   PlayerAction,
@@ -725,6 +729,71 @@ export class GameOrchestrator {
       allowSequenceOverlap:
         !this.areFlowerBonusesSuppressed() &&
         this.state.flowerSystem.hasMutation('plum_overlap'),
+    }
+  }
+
+  /** Explicitly requested workshop, never an automatic action or hidden-wall solver. */
+  getHandBuildingAdvice(): HandBuildingAdvice {
+    const state = this.state
+    const tiles = state.handTiles
+    if (tiles.some((tile) => state.faceDownTileIds.has(tile.id)))
+      return { kind: 'hidden' }
+    if (
+      !state.isRunActive ||
+      state.phase !== 'gameplay' ||
+      state.handsRemaining <= 0
+    )
+      return { kind: 'unavailable' }
+    const fixed = state.roundManager.checkMandateEffect('fixed_hand_size')
+    const requiredPlaySize = fixed.active ? Number(fixed.value) : null
+    if (
+      tiles.length !== 14 ||
+      state.melds.length ||
+      tiles.some((tile) => tile.isBonus) ||
+      Object.values(this.getValidationOptions()).some(Boolean) ||
+      ['all_wild', 'honor_as_suited', 'shanten_clemency'].some((id) =>
+        this.isDecreeRuleActive(id)
+      ) ||
+      (requiredPlaySize !== null && requiredPlaySize !== 14)
+    )
+      return { kind: 'unsupported' }
+    if (this.findCompleteHandSelection()) return { kind: 'complete' }
+    const advice = buildCoachAdvice({
+      tiles,
+      partialRules: this.getPartialHandRules(),
+      concealedIds: state.faceDownTileIds,
+      requiredTileIds: state.mandateEffectSystem.getLockedTileIds(),
+      scoreSelection: (ids) => this.previewScore(ids)?.finalScore ?? null,
+      remainingToTarget: Math.max(0, state.targetScore - state.score),
+      handsRemaining: state.handsRemaining,
+    })
+    if (advice && advice.best.score >= state.targetScore - state.score)
+      return { kind: 'clear' }
+    const plan = chooseHandShapeAction(
+      {
+        visibleTiles: tiles,
+        handTileCount: tiles.length,
+        lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
+        requiredPlaySize,
+        advice,
+        remainingToTarget: Math.max(0, state.targetScore - state.score),
+        // This workshop explains redraws only. Never spends the discard resource.
+        canPerform: (action) =>
+          action.type === 'redraw' && this.canPerformAction(action),
+      },
+      { batchRedraws: true }
+    )
+    if (!plan || plan.action.type !== 'redraw') return { kind: 'unavailable' }
+    const ids = new Set(plan.action.tileIds)
+    const keep = tiles.filter((tile) => !ids.has(tile.id))
+    return {
+      kind: 'redraw',
+      keep,
+      exchange: tiles.filter((tile) => ids.has(tile.id)),
+      improving: getEffectiveTiles(keep),
+      needed: plan.shanten + 1,
+      form: calculateShanten(keep).bestForm,
+      redrawsRemaining: state.redrawsRemaining,
     }
   }
 

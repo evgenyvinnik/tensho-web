@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "El oluştur",
+    "intro": "Yararlı grupları koruyup fazlalık taşları değiştir. Bu olası bir yol; en iyi hamle garantisi değil.",
+    "standard": "Dört grup + bir çift.",
+    "sevenPairs": "Yedi farklı çift.",
+    "kokushi": "13 uç ve Onur türünün tümü + bir tekrar.",
+    "distance": "Korunan yapının tamamlanması için en az {{needed}} yararlı taş gerekiyor.",
+    "keep": "Bu taşları koru",
+    "exchange": "Değiştirmeyi düşünebilirsin",
+    "cost": "{{tiles}} taşı değiştirmek, kalan {{remaining}} yeniden çekme hakkından 1'ini kullanır. İade edilen taşlar yenileri çekildikten sonra duvara döner.",
+    "improving": "Yardımcı olabilecek taş türleri ({{types}})",
+    "possibilities": "Bu örnekler korunan yapıyı bir adım iyileştirir. Çekilecek taşları, duvardaki sayıları veya tamamlanmayı garanti etmez.",
+    "caution": "Plan normal yapıları ele alır; gelecekteki puanları veya çekmeyle tetiklenen etkileri hesaplamaz. Tam el peşinde koşmak raundu kaybettirebilir; önce puan seçeneklerini karşılaştır.",
+    "stage": "Bu değişimi seç",
+    "confirm": "Seçim ücretsizdir. Tahtadaki taşları incele, ardından bir hak harcamak için {{action}} bas.",
+    "hidden": "Bazı taşlar gizli. Yüzleri kapalıyken el oluşturma planı gösterilmez.",
+    "unsupported": "Bu araç şu an yalnızca normal kurallı, açılmamış 14 taşlık elleri destekler. Elin veya etkin kurallar başka bir yaklaşım gerektiriyor; puan önizlemesini ve taş rehberini kullan.",
+    "complete": "Zaten tam bir elin var. Değiştirmek yerine puanını incele, tahtaya yerleştir ve oynamayı onayla.",
+    "clear": "Bilinen bir hamle bu raundu geçebilir. Yeniden çekme hakkı harcamadan önce puan seçeneklerini incele.",
+    "unavailable": "Şu an desteklenen yasal bir değişim planı yok. Kalan yeniden çekme haklarını, kilitli taşları ve duvarı kontrol et."
+  },
   "closedHandAusterity": {
     "name": "Kapalı El Disiplini",
     "description": "Tamamlanmış kapalı eller ×1,5 kazanır. Bu koşuda daha önce tamamlanan her kapalı el için ×1,2 büyür; Çiçek güçlendirmesinden önce en fazla ×4 olur. Taktik hamleler ve Shanten Merhameti sayılmaz.",

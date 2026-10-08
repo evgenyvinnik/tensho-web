@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Illustrated hand workshop](HAND_BUILDER_IMPLEMENTATION.md) now connects optional
+player guidance to actual staging, separate redraw confirmation, real resource
+costs and thirteen locales. Hidden or unsupported hands receive safe explanations.
+Full regression passes 2,664 tests; six native workshop, six resource, two live
+privacy and six production checks pass. Publication verification remains pending. This closes the
+first player-facing guidance gap, not full-hand balance, native-speaker review,
+physical-device performance, newcomer enjoyment or whole-project completion.
+
 [Batch hand-planning investigation](CLASSIC_BATCH_HAND_PLANNING.md) separates
 resource-policy weakness from full-hand impossibility. The new opt-in experiment
 uses the existing three-tile redraw allowance. Across 320 total matched runs,

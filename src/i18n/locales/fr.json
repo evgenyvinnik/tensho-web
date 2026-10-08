@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "Construire une main",
+    "intro": "Gardez les groupes utiles et échangez les tuiles superflues. C'est une piste possible, pas un meilleur coup garanti.",
+    "standard": "Quatre groupes + une paire.",
+    "sevenPairs": "Sept paires différentes.",
+    "kokushi": "Les 13 types de terminales et d'Honneurs + un doublon.",
+    "distance": "La structure conservée nécessite au moins {{needed}} tuiles utiles pour être complète.",
+    "keep": "Tuiles à conserver",
+    "exchange": "Échange à envisager",
+    "cost": "Remplacer {{tiles}} tuiles coûte 1 de vos {{remaining}} repioches. Les tuiles rendues rejoignent le mur après la pioche des remplaçantes.",
+    "improving": "Types de tuiles pouvant aider ({{types}})",
+    "possibilities": "Ces exemples améliorent d'un cran la structure conservée. Ce ne sont ni des tirages prédits, ni un décompte du mur, ni une garantie de complétion.",
+    "caution": "Ce plan considère les formes ordinaires, pas les scores futurs ni les effets de pioche. Viser une main complète peut coûter la manche ; comparez d'abord vos options de score.",
+    "stage": "Sélectionner cet échange",
+    "confirm": "La sélection est gratuite. Vérifiez les tuiles sur le plateau, puis appuyez sur {{action}} pour utiliser une charge.",
+    "hidden": "Certaines tuiles sont cachées. Aucun plan n'est affiché tant que leurs faces restent masquées.",
+    "unsupported": "Cet atelier prend en charge les mains ordinaires de 14 tuiles, sans groupes déclarés. Votre main ou les règles actives exigent une autre approche ; consultez l'aperçu du score et le guide.",
+    "complete": "Votre main est déjà complète. Vérifiez son score, posez-la sur le plateau et confirmez le coup au lieu d'échanger.",
+    "clear": "Un coup connu peut gagner cette manche. Vérifiez vos options de score avant de dépenser une repioche.",
+    "unavailable": "Aucun échange légal pris en charge n'est disponible. Vérifiez les repioches restantes, les tuiles verrouillées et le mur."
+  },
   "closedHandAusterity": {
     "name": "Ascèse de la main fermée",
     "description": "Les mains complètes et fermées gagnent ×1,5, puis ×1,2 par main complète et fermée jouée auparavant dans cette partie, jusqu’à ×4 avant le renforcement des Fleurs. Les coups tactiques et la Clémence Shanten ne comptent pas.",

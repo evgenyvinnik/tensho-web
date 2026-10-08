@@ -67,6 +67,7 @@ export interface PlaySurfaceProps {
   beginnerSuggestion?: BeginnerSuggestion | null
   /** Opens the concise visual tile and pattern guide */
   onOpenBeginnerGuide?: () => void
+  onOpenHandBuilder?: () => void
   /** Translation function */
   t?: (key: string) => string
   /** Optional legacy preview contract used by embedded play-surface consumers. */
@@ -120,6 +121,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   tableAccentColor = '#2D5F4A',
   beginnerSuggestion = null,
   onOpenBeginnerGuide,
+  onOpenHandBuilder,
   t: _t = (key) => key,
 }) => {
   const { t } = useTranslation()
@@ -677,6 +679,16 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   {shantenDisplay}
                 </span>
               </div>
+            )}
+            {onOpenHandBuilder && (
+              <button
+                type="button"
+                data-open-hand-builder
+                onClick={onOpenHandBuilder}
+                className="min-h-11 max-w-full rounded-lg border border-amber-200/35 px-2 py-1 text-left text-sm text-amber-200 [overflow-wrap:anywhere]"
+              >
+                {t('handBuilder.title')}
+              </button>
             )}
           </div>
           <animated.div

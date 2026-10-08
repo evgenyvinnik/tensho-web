@@ -3,6 +3,10 @@
 October 8, 2026. Analysis-only experiment; player rules, live advice, artwork,
 prices, round targets and resource allowances are unchanged.
 
+Subsequent work: the [optional hand workshop](HAND_BUILDER_IMPLEMENTATION.md)
+shares the structural search with stricter live guards and redraw-only guidance.
+It is not the exact discard-first policy measured in this checkpoint.
+
 ## Why investigate this
 
 The [Austerity smoke test](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md) found zero

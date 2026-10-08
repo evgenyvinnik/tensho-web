@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "Costruisci una mano",
+    "intro": "Conserva i gruppi utili e scambia le tessere in eccesso. È una strada possibile, non la mossa migliore garantita.",
+    "standard": "Quattro gruppi + una coppia.",
+    "sevenPairs": "Sette coppie diverse.",
+    "kokushi": "Tutti i 13 tipi di terminali e Onori + un duplicato.",
+    "distance": "Alla struttura conservata servono almeno {{needed}} tessere utili per completarsi.",
+    "keep": "Conserva queste tessere",
+    "exchange": "Possibile scambio",
+    "cost": "Sostituire {{tiles}} tessere costa 1 delle tue {{remaining}} ripescate. Le tessere restituite tornano nel muro dopo aver pescato le sostitute.",
+    "improving": "Tipi di tessera che potrebbero aiutare ({{types}})",
+    "possibilities": "Questi esempi migliorano di un passo la struttura conservata. Non prevedono le pescate, le quantità nel muro o il completamento.",
+    "caution": "Il piano considera le forme normali, non i punteggi futuri o gli effetti di pesca. Cercare una mano completa può costarti il round; confronta prima le opzioni di punteggio.",
+    "stage": "Seleziona questo scambio",
+    "confirm": "Selezionare è gratis. Controlla le tessere sul tavolo, poi premi {{action}} per spendere una carica.",
+    "hidden": "Alcune tessere sono nascoste. Il piano non viene mostrato finché le loro facce restano coperte.",
+    "unsupported": "Questo strumento supporta mani normali e chiuse di 14 tessere. La tua mano o le regole attive richiedono un altro approccio; usa l'anteprima dei punti e la guida.",
+    "complete": "Hai già una mano completa. Controlla i punti, posala sul tavolo e conferma la giocata invece di scambiare.",
+    "clear": "Una giocata nota può superare il round. Controlla le opzioni di punteggio prima di spendere una ripescata.",
+    "unavailable": "Al momento non c'è un piano di scambio legale supportato. Controlla ripescate residue, tessere bloccate e muro."
+  },
   "closedHandAusterity": {
     "name": "Austerità della mano chiusa",
     "description": "Le mani complete e chiuse ottengono ×1,5, con crescita ×1,2 per ogni precedente mano completa e chiusa nella partita, fino a ×4 prima del potenziamento dei Fiori. Le giocate tattiche e la Clemenza Shanten non contano.",

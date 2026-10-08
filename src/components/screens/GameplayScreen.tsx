@@ -46,6 +46,7 @@ import { ActionBar } from '../gameplay/ActionBar'
 import { PlayArea } from '../gameplay/PlayArea'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
+import { HandBuilder } from '../gameplay/HandBuilder'
 import {
   buildCoachAdvice,
   findBeginnerSuggestion,
@@ -118,6 +119,7 @@ export function GameplayScreen() {
   const [stageRequestTileIds, setStageRequestTileIds] = useState<string[]>([])
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showBeginnerGuide, setShowBeginnerGuide] = useState(false)
+  const [showHandBuilder, setShowHandBuilder] = useState(false)
   const [hasCompletedFirstPlay, setHasCompletedFirstPlay] = useState(false)
   const [forceBeginnerCoach, setForceBeginnerCoach] = useState(false)
   // Hides the two-option coach for the rest of the session once the player
@@ -458,6 +460,26 @@ export function GameplayScreen() {
     () => new Set(game.debuffedTileIds),
     [game.debuffedTileIds]
   )
+
+  // The bounded search only runs while explicitly open. Recompute from current
+  // engine state on renders, so hidden faces and changed resources cannot leak
+  // through a cached proposal. Staging revalidates once more at the action edge.
+  const handBuildingAdvice = showHandBuilder
+    ? game.getHandBuildingAdvice()
+    : null
+  const handleStageHandPlan = (ids: string[]) => {
+    const current = game.getHandBuildingAdvice()
+    if (
+      current.kind !== 'redraw' ||
+      current.exchange.length !== ids.length ||
+      !current.exchange.every((tile) => ids.includes(tile.id))
+    )
+      return
+    game.clearSelection()
+    setStageRequestTileIds(ids)
+    setStageAllRequestId((id) => id + 1)
+    setShowHandBuilder(false)
+  }
 
   const shantenDisplay = useMemo(() => {
     if (game.handTiles.some((tile) => faceDownTileIds.has(tile.id)))
@@ -871,6 +893,7 @@ export function GameplayScreen() {
                 beginnerCoachActive ? beginnerSuggestion : null
               }
               onOpenBeginnerGuide={handleOpenBeginnerGuide}
+              onOpenHandBuilder={() => setShowHandBuilder(true)}
               t={t}
             />
           </div>
@@ -945,6 +968,11 @@ export function GameplayScreen() {
       <BeginnerGuide
         isOpen={showBeginnerGuide}
         onClose={() => setShowBeginnerGuide(false)}
+      />
+      <HandBuilder
+        advice={handBuildingAdvice}
+        onClose={() => setShowHandBuilder(false)}
+        onStage={handleStageHandPlan}
       />
 
       {/* Exit confirmation */}

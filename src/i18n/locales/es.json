@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "Construye una mano",
+    "intro": "Conserva los grupos útiles y cambia las fichas sobrantes. Esta es una ruta posible, no la mejor jugada garantizada.",
+    "standard": "Cuatro grupos + una pareja.",
+    "sevenPairs": "Siete parejas distintas.",
+    "kokushi": "Los 13 tipos de terminales y Honores + un duplicado.",
+    "distance": "La estructura conservada necesita al menos {{needed}} fichas útiles para completarse.",
+    "keep": "Conserva estas fichas",
+    "exchange": "Considera cambiar estas fichas",
+    "cost": "Cuesta 1 de tus {{remaining}} cambios para reemplazar {{tiles}} fichas. Las devueltas vuelven al muro después de robar los reemplazos.",
+    "improving": "Tipos de ficha que podrían ayudar ({{types}})",
+    "possibilities": "Estos ejemplos mejoran un paso la estructura conservada. No predicen robos, existencias en el muro ni una mano completa.",
+    "caution": "El plan considera estructuras normales, no puntuaciones futuras ni efectos al robar. Buscar una mano completa puede costarte la ronda; compara primero tus opciones de puntuación.",
+    "stage": "Seleccionar este cambio",
+    "confirm": "Seleccionar es gratis. Revisa las fichas del tablero y pulsa {{action}} para gastar una carga.",
+    "hidden": "Hay fichas ocultas. No se muestra un plan mientras sus caras estén ocultas.",
+    "unsupported": "Este taller admite manos normales de 14 fichas, sin grupos declarados. Tu mano o las reglas activas requieren otro enfoque; consulta la previsión de puntos y la guía de fichas.",
+    "complete": "Ya tienes una mano completa. Revisa sus puntos, colócala en el tablero y confirma la jugada en lugar de cambiar fichas.",
+    "clear": "Una jugada conocida puede superar esta ronda. Revisa tus opciones antes de gastar un cambio.",
+    "unavailable": "No hay un plan de cambio legal compatible ahora. Revisa los cambios restantes, las fichas bloqueadas y el muro."
+  },
   "closedHandAusterity": {
     "name": "Austeridad de mano cerrada",
     "description": "Las manos completas y cerradas ganan ×1,5, creciendo ×1,2 por cada mano completa y cerrada anterior de esta partida, hasta ×4 antes del refuerzo de las Flores. Las jugadas tácticas y la Clemencia Shanten no cuentan.",

@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "Build a hand",
+    "intro": "Keep useful groups together and exchange spare tiles. This is one possible route, not a guaranteed best move.",
+    "standard": "Four groups + one pair.",
+    "sevenPairs": "Seven different pairs.",
+    "kokushi": "All 13 terminal and Honor types + one duplicate.",
+    "distance": "The retained shape needs at least {{needed}} helpful tiles to complete.",
+    "keep": "Keep these tiles",
+    "exchange": "Consider redrawing these",
+    "cost": "Costs 1 of your {{remaining}} redraws to replace {{tiles}} tiles. Returned tiles rejoin the wall after replacements are drawn.",
+    "improving": "Tile types that could help ({{types}})",
+    "possibilities": "These examples improve the retained shape by one step. They are not predicted draws, wall counts, or a promise of completion.",
+    "caution": "This plan considers ordinary shapes, not future scores or draw-triggered effects. Chasing a complete hand can lose the round; compare your scoring options first.",
+    "stage": "Select this exchange",
+    "confirm": "Selection is free. Review the tiles on the board, then press {{action}} to spend a charge.",
+    "hidden": "Some tiles are hidden. No hand-building plan is shown while their faces are concealed.",
+    "unsupported": "This workshop currently supports ordinary, fully concealed 14-tile hands. Your rack or active rules need a different approach; use the live score preview and tile guide.",
+    "complete": "You already have a complete hand. Review its score, stage it, and confirm the play instead of exchanging tiles.",
+    "clear": "A known play can clear this round. Check your scoring options before spending a redraw.",
+    "unavailable": "No supported legal redraw plan is available right now. Check your remaining redraws, locked tiles, and the wall."
+  },
   "closedHandAusterity": {
     "name": "Closed-Hand Austerity",
     "description": "Complete concealed hands gain ×1.5, growing ×1.2 per earlier complete concealed hand this run, up to ×4 before Flower empowerment. Tactical plays and Shanten Clemency do not qualify.",

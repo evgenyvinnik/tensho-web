@@ -1,4 +1,25 @@
 {
+  "handBuilder": {
+    "title": "Bumuo ng kamay",
+    "intro": "Panatilihin ang kapaki-pakinabang na grupo at palitan ang sobrang tile. Isa itong posibleng paraan, hindi garantisadong pinakamahusay na galaw.",
+    "standard": "Apat na grupo + isang pares.",
+    "sevenPairs": "Pitong magkakaibang pares.",
+    "kokushi": "Lahat ng 13 uri ng terminal at Honor + isang kapareho.",
+    "distance": "Kailangan pa ng hindi bababa sa {{needed}} nakatutulong na tile upang makumpleto ang natitirang hugis.",
+    "keep": "Panatilihin ang mga ito",
+    "exchange": "Maaaring ipalit ang mga ito",
+    "cost": "Gagamit ng 1 sa natitirang {{remaining}} redraw para palitan ang {{tiles}} tile. Babalik sa pader ang isinauling tile pagkatapos makuha ang kapalit.",
+    "improving": "Mga uri ng tile na maaaring makatulong ({{types}})",
+    "possibilities": "Pinauusad ng mga halimbawang ito ang natitirang hugis ng isang hakbang. Hindi ito hula sa bunot, bilang sa pader, o garantiya ng pagkumpleto.",
+    "caution": "Karaniwang hugis lang ang isinasaalang-alang, hindi ang susunod na puntos o mga epekto ng pagbunot. Maaaring matalo sa round sa paghabol sa buong kamay; ihambing muna ang mga opsyon sa puntos.",
+    "stage": "Piliin ang pagpapalit",
+    "confirm": "Libre ang pagpili. Suriin ang tile sa mesa, saka pindutin ang {{action}} upang gumamit ng isang pagkakataon.",
+    "hidden": "May mga nakatagong tile. Walang ipinapakitang plano habang nakatakip ang kanilang mukha.",
+    "unsupported": "Sinusuportahan nito ang karaniwang saradong kamay na may 14 tile. Ibang paraan ang kailangan ng kamay o aktibong tuntunin mo; gamitin ang preview ng puntos at gabay sa tile.",
+    "complete": "Kumpleto na ang kamay mo. Suriin ang puntos, ilagay sa mesa, at kumpirmahin ang laro sa halip na magpalit.",
+    "clear": "May galaw na kayang manalo sa round na ito. Suriin ang mga opsyon sa puntos bago gumamit ng redraw.",
+    "unavailable": "Walang suportadong legal na plano sa redraw ngayon. Tingnan ang natitirang redraw, naka-lock na tile, at pader."
+  },
   "closedHandAusterity": {
     "name": "Disiplina ng Saradong Kamay",
     "description": "Ang kumpletong saradong kamay ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang kumpletong saradong kamay sa run na ito, hanggang ×4 bago ang pagpapalakas ng mga Bulaklak. Hindi kasama ang taktikal na laro at Shanten Clemency.",
