@@ -1,7 +1,9 @@
 # Doppelganger: a visible, seeded round target
 
-October 7, 2026 local / October 8 UTC. Local implementation checkpoint; final
-verification and publication are recorded below when complete.
+October 7, 2026 local / October 8 UTC. **Published and hosted-verified as
+v1.0.261008-7.** Full local and independent CI regression pass 2,133/2,133;
+native, production and hosted EN/ES desktop/touch journeys each pass 4/4.
+This is a mechanics checkpoint, not whole-project completion.
 
 ## Decision and loop
 
@@ -80,10 +82,30 @@ Legacy snapshots are not evidence that the former selector was actually random.
   it passes **4/4**, 18.8 seconds. EN/ES desktop and 320×568 touch are covered.
   All browser runs use original deadlines and zero retries. The short-phone
   Spanish popover and optimized artwork were visually inspected.
-- Production replay passes **4/4**, using the stronger native v2 fixture and
+- Production replay passes **4/4**, 15.8 seconds, using the stronger native v2 fixture and
   only public UI/save behavior. Final hosted publication evidence follows below.
 
 Evidence root: `/tmp/tensho-doppelganger-39BYzN`.
+
+## Published release — v1.0.261008-7
+
+- Implementation: `7ea136fb399b5edc79d2ee5661213e6b3a3e224c`, pushed to main.
+- Version bot/tag/build checkout: `324f65f201d64cdd4c0f9db0852f4d088f39df2b`.
+- [Workflow 37721536452](https://github.com/evgenyvinnik/tensho-web/actions/runs/37721536452)
+  independently passes **2,133/2,133 in 173 files**, thirteen release checks,
+  production build and Pages deployment without a job retry. Build job
+  113130067482; deploy job 113130788960. Local main fast-forwarded to the bot commit.
+- Public release manifest, Git tag and runtime version agree; entry
+  `/tensho-web/assets/index-BOp7N6h7.js`. Hosted portrait is exactly 64,878 bytes
+  with the checksum below. Evidence: `provenance.json`, `ci.log`.
+- Hosted journeys pass **4/4**, 16.4 seconds, no retries/skips/flakes: EN/ES
+  desktop and 320×568 touch. They verify real portrait decoding, localized
+  target details, +345 forecast/payment, exact shop reload, next-round Ancient
+  Scroll → Wide Grip targeting and 11 → 14 rack size, then exact reload again.
+  No page errors or horizontal overflow. Evidence: `hosted.json` and
+  `hosted-artifacts`; native and production evidence remains alongside it.
+- Both temporary verification servers are stopped. The pre-existing port 4173
+  server was left untouched. Earlier fixture-test failures remain recorded above.
 
 ## Artwork provenance
 

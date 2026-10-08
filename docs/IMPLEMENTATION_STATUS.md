@@ -4,15 +4,17 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Doppelganger — locally verified:** seeded physical targeting on acquisition and
+**Published Doppelganger — v1.0.261008-7:** seeded physical targeting on acquisition and
 round entry replaces the positional selector. Targets survive previews/reloads,
 suppression does not reroll, and copied resource costs initialize before the next
 round. Generated portrait and thirteen-locale target details are connected.
-Full regression passes 2,133/2,133 in 173 files, plus TypeScript, build, lint and
-thirteen release checks. Native and production desktop/320px EN/ES journeys each
+Full local regression and independent CI pass 2,133/2,133 in 173 files, plus
+TypeScript, build, lint and thirteen release checks. Native, production and hosted
+desktop/320px EN/ES journeys each
 pass 4/4, including a visible target change and actual rack-size transition.
-[Decision, artwork and evidence](DOPPELGANGER_IMPLEMENTATION.md). Publication is
-pending; older target-timing questions below are superseded by this decision.
+Deployment succeeds; manifest/tag/runtime and portrait checksum match.
+[Decision, artwork and evidence](DOPPELGANGER_IMPLEMENTATION.md). Older target-timing
+questions below are superseded by this decision; the overall project remains open.
 
 **Published screen-download recovery — v1.0.261008-6:** all nine screen
 loaders now have a bounded, save-guarded reload and thirteen-locale recovery UI.

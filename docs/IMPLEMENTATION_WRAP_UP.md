@@ -8,12 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Doppelganger](DOPPELGANGER_IMPLEMENTATION.md) is locally verified with seeded
+[Doppelganger](DOPPELGANGER_IMPLEMENTATION.md) is published and hosted-verified in
+**v1.0.261008-7**, with seeded
 round-stable physical targets, save migration, copied resource timing, generated
-scroll art and thirteen-locale inventory explanations. Full regression passes
+scroll art and thirteen-locale inventory explanations. Full regression and independent CI pass
 2,133/2,133 in 173 files; TypeScript, build, lint and thirteen release checks pass.
-Native and production EN/ES desktop/320px journeys each pass 4/4, including an
-actual target and rack-size change on round entry. Publication is pending. This
+Native, production and hosted EN/ES desktop/320px journeys each pass 4/4, including an
+actual target and rack-size change on round entry. Deployment succeeds and
+manifest/tag/runtime/artwork provenance match. This
 resolves the historical random-target timing question under delegated authority;
 other copy-resource lifecycles and whole-project completion remain open.
 
