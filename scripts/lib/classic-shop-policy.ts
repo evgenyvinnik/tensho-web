@@ -2,6 +2,7 @@
 import { Tile } from '../../src/core/Tile'
 import type { GameOrchestrator } from '../../src/game/GameOrchestrator'
 import { DecreeSystem } from '../../src/systems/DecreeSystem'
+import { RunRandom } from '../../src/game/RunRandom'
 import { decreeKey } from '../../src/systems/decreeIdentity'
 import { hasDecreeSticker } from '../../src/systems/decreeStickers'
 import type {
@@ -64,7 +65,7 @@ export interface ShopPolicyContext {
   basePlays: number
 }
 
-/** Two repeated observed-play rounds; no new tiles, wall, random draws or effect execution. */
+/** Two repeated observed-play rounds; detached copy draws, never live RNG or future tiles. */
 function buildValue(c: ShopPolicyContext, system: DecreeSystem, gold: number) {
   let score = 0
   let savings = gold
@@ -197,7 +198,14 @@ export function chooseBuildShopPurchase(
   c: ShopPolicyContext
 ): BuildShopChoice | null {
   if (!c.samples.length) return null
-  const baseline = buildValue(c, DecreeSystem.fromState(c.decrees), c.gold)
+  // A public fixed scenario, not the live seed/cursor or a prediction of its
+  // next draw. Restart for every alternative so enumeration order is irrelevant.
+  const projectedInventory = () => {
+    const random = new RunRandom()
+    random.start(0)
+    return DecreeSystem.fromState(c.decrees, random)
+  }
+  const baseline = buildValue(c, projectedInventory(), c.gold)
   if (!(baseline > 0) || !Number.isFinite(baseline)) return null
   let best: BuildShopChoice | null = null
   const knownCopyTargets = c.decrees.ownedDecrees.every(
@@ -234,7 +242,7 @@ export function chooseBuildShopPurchase(
         .map(decreeKey),
     ]
     for (const sellInstanceId of candidates) {
-      const system = DecreeSystem.fromState(c.decrees)
+      const system = projectedInventory()
       const sellGold = sellInstanceId ? system.sellDecree(sellInstanceId) : 0
       if (
         c.gold + sellGold < offer.finalCost ||

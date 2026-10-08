@@ -4,6 +4,14 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Shop copy preflight — local checkpoint:** purchase/pack eligibility simulation
+no longer spends the live Doppelganger target cursor. Actual acquisition draws
+exactly once; analysis alternatives use detached public scenarios. Full regression
+recheck passes 2,203/2,203 in 178 files; TypeScript, build, lint and thirteen release
+checks pass. Native and production desktop/touch EN/ES rechecks each pass 4/4.
+Publication verification is pending. Initial deadline failures remain recorded in
+[the evidence ledger](SHOP_COPY_PREFLIGHT.md).
+
 **Published score-threshold Decrees — v1.0.261008-9:** Supernova can activate on the play
 that actually doubles the target; Perfectionist requires an opening clear. Both
 qualify before either conditional bonus, preventing self-qualifying chains. New

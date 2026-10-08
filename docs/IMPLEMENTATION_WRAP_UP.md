@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Shop copy preflight](SHOP_COPY_PREFLIGHT.md) isolates validation and hypothetical
+inventory randomness from the live run. Repeated offer checks, failed pack
+selections and observed-build ranking cannot shift a later target. Full regression
+recheck passes 2,203/2,203 in 178 files; TypeScript, build, lint and thirteen release
+checks pass. Native and production EN/ES desktop/touch rechecks each pass 4/4;
+hosted checks are pending. Original startup and regression deadlines remain recorded.
+
 [Score-threshold Decrees](SCORE_THRESHOLD_IMPLEMENTATION.md), published and hosted-verified
 in **v1.0.261008-9**, qualify against the
 current play's paid score before their conditional bonuses. This fixes unreachable

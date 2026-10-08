@@ -296,6 +296,27 @@ it('does not mutate ownership, sample tiles, counters or RNG while ranking', () 
   expect(getTileIdCounter()).toBe(tileCounter)
 })
 
+it.each([false, true])(
+  'random-copy ranking is repeatable and cannot consume the live RNG (incoming=%s)',
+  (incoming) => {
+    runRandom.start(42)
+    const system = new DecreeSystem()
+    system.acquireDecree(chips('existing', 100))
+    const copy = ALL_DECREES.find((d) => d.id === 'decree-doppelganger')!
+    if (!incoming) system.acquireDecree(copy)
+    const c = {
+      ...context(system),
+      offers: [offer(incoming ? copy : mult('candidate', 10))],
+    }
+    const before = JSON.stringify(c),
+      random = runRandom.toState()
+    const first = chooseBuildShopPurchase(c)
+    expect(chooseBuildShopPurchase(c)).toEqual(first)
+    expect(JSON.stringify(c)).toBe(before)
+    expect(runRandom.toState()).toEqual(random)
+  }
+)
+
 it('does not sell an unpriced survival copier or buy another copy of unknown powers', () => {
   const system = new DecreeSystem(2)
   system.acquireDecree(ALL_DECREES.find((d) => d.id === 'decree-phoenix')!)

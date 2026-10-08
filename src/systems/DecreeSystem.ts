@@ -26,7 +26,7 @@ import { EditionType } from '../core/TileModifier'
 import { countScoringHonors } from './flowerMutationScoring'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
-import { runRandom } from '../game/RunRandom'
+import { RunRandom, runRandom } from '../game/RunRandom'
 import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 import { getDecreeStickers, hasDecreeSticker } from './decreeStickers'
 import { ALL_YAKU } from '../rules/YakuDetector'
@@ -626,7 +626,10 @@ export class DecreeSystem {
   private currentRound: number = 0
   private nextInstanceId: number = 1
 
-  constructor(initialSlots: number = 5) {
+  constructor(
+    initialSlots: number = 5,
+    private readonly random: RunRandom = runRandom
+  ) {
     this.maxSlots = initialSlots
   }
 
@@ -762,7 +765,7 @@ export class DecreeSystem {
           !allEffectsOf(candidate).some((e) => e.type === 'copy_decree')
       )
       copier.randomCopyTargetId =
-        runRandom.pick('decreeCopies', candidates)?.instanceId ?? null
+        this.random.pick('decreeCopies', candidates)?.instanceId ?? null
     }
   }
 
@@ -1570,13 +1573,16 @@ export class DecreeSystem {
   /**
    * Restore from serialized state
    */
-  static fromState(state: {
-    ownedDecrees: OwnedDecree[]
-    maxSlots: number
-    currentRound: number
-    nextInstanceId?: number
-  }): DecreeSystem {
-    const system = new DecreeSystem(state.maxSlots)
+  static fromState(
+    state: {
+      ownedDecrees: OwnedDecree[]
+      maxSlots: number
+      currentRound: number
+      nextInstanceId?: number
+    },
+    random: RunRandom = runRandom
+  ): DecreeSystem {
+    const system = new DecreeSystem(state.maxSlots, random)
     system.ownedDecrees = structuredClone(state.ownedDecrees)
     // Old saves have no physical IDs. Assign them deterministically, without
     // consuming the gameplay RNG or collapsing duplicate catalog entries.

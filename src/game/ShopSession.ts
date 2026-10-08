@@ -12,6 +12,7 @@ import {
   type PackOffering,
 } from '../systems/BlessingPackSystem'
 import { DecreeSystem } from '../systems/DecreeSystem'
+import { runRandom } from './RunRandom'
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { acceptsFlowerCatalyst } from '../systems/flowerCatalysts'
 import type { BlessingPack, Decree, ImperialCharter } from '../systems/types'
@@ -235,7 +236,12 @@ export class ShopSession {
   /** Validate the combined reward, including Negative Decree slot expansion. */
   private canReceive(rewards: Reward[], flowerId?: string): boolean {
     const state = this.game.getState()
-    const decrees = DecreeSystem.fromState(state.decreeSystem.toState())
+    // Capacity simulation must not spend the live copy-selection cursor. The
+    // real acquisition below remains the sole owner of that random event.
+    const decrees = DecreeSystem.fromState(
+      state.decreeSystem.toState(),
+      runRandom.fork()
+    )
     const wallTemplate = [...state.wallTemplate]
     decrees.syncWallSlots(wallTemplate)
     const flowers = FlowerSystem.fromState(state.flowerSystem.toState())
