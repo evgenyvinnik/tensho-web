@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "赢得一局挑战。",
+    "decree-brainstorm": "持有至少五道敕令并赢得挑战。",
+    "decree-heavenly-ordinance": "以役满得分。",
+    "decree-clone-army": "在黄金底注下赢得挑战。",
+    "decree-yakuman-blessing": "在同一次挑战中以三个役满牌型得分。",
+    "decree-omega": "完成第8幕。"
+  },
   "scoreThresholds": {
     "supernova": "不计超新星和完美主义者加成，若本次出牌使回合总分达到目标的至少两倍，则倍率×2.5。",
     "perfectionist": "不计超新星和完美主义者加成，若第一次出牌即可过关，则倍率×3。"

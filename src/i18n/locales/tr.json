@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "Bir koşuyu kazan.",
+    "decree-brainstorm": "En az beş Fermanın varken bir koşuyu kazan.",
+    "decree-heavenly-ordinance": "Bir Yakuman ile puan kazan.",
+    "decree-clone-army": "Altın bahiste bir koşuyu kazan.",
+    "decree-yakuman-blessing": "Tek koşuda üç Yakuman örüntüsüyle puan kazan.",
+    "decree-omega": "8. Perdeyi tamamla."
+  },
   "scoreThresholds": {
     "supernova": "Bu hamle, Süpernova ve Mükemmeliyetçi bonusları olmadan tur puanını hedefin en az iki katına çıkarırsa ×2,5 Mult.",
     "perfectionist": "İlk hamle, Süpernova ve Mükemmeliyetçi bonusları olmadan turu geçerse ×3 Mult."

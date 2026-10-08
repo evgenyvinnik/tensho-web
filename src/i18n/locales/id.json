@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "Menangkan satu putaran permainan.",
+    "decree-brainstorm": "Menangkan permainan dengan memiliki setidaknya lima Dekret.",
+    "decree-heavenly-ordinance": "Raih skor dengan Yakuman.",
+    "decree-clone-army": "Menangkan permainan pada Taruhan Emas.",
+    "decree-yakuman-blessing": "Raih skor dari tiga pola Yakuman dalam satu permainan.",
+    "decree-omega": "Selesaikan Babak 8."
+  },
   "scoreThresholds": {
     "supernova": "×2,5 Mult jika permainan ini membawa skor ronde setidaknya dua kali target, sebelum bonus Supernova dan Perfeksionis.",
     "perfectionist": "×3 Mult jika permainan pertama menuntaskan ronde, sebelum bonus Supernova dan Perfeksionis."

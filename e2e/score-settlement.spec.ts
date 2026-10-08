@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test'
+import en from '../src/i18n/locales/en.json' with { type: 'json' }
+import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
 for (const { language, motion } of [
   { language: 'en', motion: 'reduce' },
@@ -20,7 +22,10 @@ for (const { language, motion } of [
     // Exercise the real opt-out before deliberate scoring fixtures. A delayed
     // first-move tip can otherwise cover the result without affecting DOM math.
     await page
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: { en, es }[language].progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
     if (motion === 'no-preference') {
       expect(

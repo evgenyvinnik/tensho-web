@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "Manalo sa isang run.",
+    "decree-brainstorm": "Manalo sa isang run na may hawak na hindi bababa sa limang Dekreto.",
+    "decree-heavenly-ordinance": "Umiskor gamit ang Yakuman.",
+    "decree-clone-army": "Manalo sa isang run sa Gintong Pusta.",
+    "decree-yakuman-blessing": "Umiskor gamit ang tatlong Yakuman pattern sa iisang run.",
+    "decree-omega": "Tapusin ang Yugto 8."
+  },
   "scoreThresholds": {
     "supernova": "×2.5 Mult kung aabot sa hindi bababa sa doble ng target ang puntos ng round sa larong ito, bago ang bonus ng Supernova at Perfectionist.",
     "perfectionist": "×3 Mult kung malalampasan ng unang laro ang round, bago ang bonus ng Supernova at Perfectionist."

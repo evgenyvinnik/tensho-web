@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "Win a run.",
+    "decree-brainstorm": "Win a run with at least five Decrees owned.",
+    "decree-heavenly-ordinance": "Score a Yakuman.",
+    "decree-clone-army": "Win a run on Gold Stake.",
+    "decree-yakuman-blessing": "Score three Yakuman patterns in one run.",
+    "decree-omega": "Complete Act 8."
+  },
   "scoreThresholds": {
     "supernova": "×2.5 Mult if this play brings the round score to at least twice the target, before Supernova and Perfectionist bonuses.",
     "perfectionist": "×3 Mult if the first play clears the round, before Supernova and Perfectionist bonuses."

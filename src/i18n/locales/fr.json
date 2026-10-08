@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "Remportez une partie.",
+    "decree-brainstorm": "Remportez une partie avec au moins cinq Décrets.",
+    "decree-heavenly-ordinance": "Marquez un Yakuman.",
+    "decree-clone-army": "Remportez une partie à la mise Or.",
+    "decree-yakuman-blessing": "Marquez trois figures Yakuman au cours d’une même partie.",
+    "decree-omega": "Terminez l’acte 8."
+  },
   "scoreThresholds": {
     "supernova": "×2,5 Mult si ce coup porte le score de la manche à au moins deux fois l’objectif, avant les bonus de Supernova et Perfectionniste.",
     "perfectionist": "×3 Mult si le premier coup réussit la manche, avant les bonus de Supernova et Perfectionniste."

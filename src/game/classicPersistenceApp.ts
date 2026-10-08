@@ -52,6 +52,9 @@ let cleanup: (() => void) | null = null
 /** Startup is idempotent, outside React StrictMode and route lifetimes. */
 export function initializeClassicPersistence(): ClassicRunPersistence {
   if (persistence) return persistence
+  gameOrchestrator.setDecreeUnlockResolver((id) =>
+    useProgressionStore.getState().isItemUnlocked(id)
+  )
   gameOrchestrator.setCharterUnlockResolver((id) =>
     useProgressionStore.getState().isItemUnlocked(id)
   )

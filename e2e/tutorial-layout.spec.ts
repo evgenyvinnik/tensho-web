@@ -1,5 +1,7 @@
 import { test, expect, type Locator } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
+import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import ru from '../src/i18n/locales/ru.json' with { type: 'json' }
 
 async function noOverflow(card: Locator) {
   expect(
@@ -97,7 +99,9 @@ for (const fixture of [
     }
     await expect(details).not.toHaveAttribute('open')
     await expect(
-      card.getByRole('button', { name: "Don't show tips" })
+      card.getByRole('button', {
+        name: { en, es, ru }[fixture.language].progressiveHints.dontShow,
+      })
     ).toBeHidden()
     if (isMobile) await summary.tap()
     else await page.keyboard.press('Enter')
@@ -144,7 +148,10 @@ for (const fixture of [
 
     // Opt-out persists across a real route reload; no test-written preferences.
     await scoringHint
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: { en, es, ru }[fixture.language].progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
     await expect(page.locator('[data-progressive-hint]')).toHaveCount(0)
     await page.reload()

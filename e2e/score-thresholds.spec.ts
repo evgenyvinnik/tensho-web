@@ -104,24 +104,22 @@ for (const language of ['en', 'es'])
     const before = await saved()
     for (const id of ['supernova', 'perfectionist']) {
       await activate(
-        page
-          .locator('[data-tutorial="decrees"]')
-          .getByRole('button', {
-            name: text.decrees.items[`decree-${id}`].name,
-            exact: true,
-          })
+        page.locator('[data-tutorial="decrees"]').getByRole('button', {
+          name: text.decrees.items[`decree-${id}`].name,
+          exact: true,
+        })
       )
       const dialog = page.getByRole('dialog')
       await expect(dialog).toContainText(text.scoreThresholds[id])
-      if (id === 'supernova') {
-        const img = dialog.locator('img[src$="supernova.webp"]')
+      {
+        const img = dialog.locator(`img[src$="${id}.webp"]`)
         expect(
           await img.evaluate(async (img: HTMLImageElement) => {
             await img.decode()
             return img.naturalWidth
           })
         ).toBe(512)
-        await dialog.screenshot({ path: info.outputPath('supernova.png') })
+        await dialog.screenshot({ path: info.outputPath(`${id}.png`) })
       }
       expect(
         await dialog.evaluate(

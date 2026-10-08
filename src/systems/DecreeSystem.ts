@@ -30,6 +30,10 @@ import { RunRandom, runRandom } from '../game/RunRandom'
 import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 import { getDecreeStickers, hasDecreeSticker } from './decreeStickers'
 import { ALL_YAKU } from '../rules/YakuDetector'
+import {
+  isDecreeAvailable,
+  type DecreeUnlockResolver,
+} from '../config/decreeUnlocks'
 
 /**
  * Every effect a Decree carries: its primary effect plus any extras from
@@ -1508,7 +1512,8 @@ export class DecreeSystem {
   static getShopCandidates(
     excludeIds: string[],
     minimum?: DecreeRarity,
-    flowerCount = 0
+    flowerCount = 0,
+    isUnlocked?: DecreeUnlockResolver
   ): Decree[] {
     const order: DecreeRarity[] = [
       'LocalEdict',
@@ -1519,6 +1524,7 @@ export class DecreeSystem {
     return ALL_DECREES.filter(
       (d) =>
         !excludeIds.includes(d.id) &&
+        isDecreeAvailable(d.id, isUnlocked) &&
         flowerCount >= (d.flowerRequirement ?? 0) &&
         (!minimum || order.indexOf(d.rarity) >= order.indexOf(minimum))
     )
@@ -1528,8 +1534,13 @@ export class DecreeSystem {
    * Get random decree weighted by rarity
    * Common: 70%, Uncommon: 25%, Rare: 5%
    */
-  static getRandomDecree(excludeIds: string[] = []): Decree | null {
-    const available = ALL_DECREES.filter((d) => !excludeIds.includes(d.id))
+  static getRandomDecree(
+    excludeIds: string[] = [],
+    isUnlocked?: DecreeUnlockResolver
+  ): Decree | null {
+    const available = ALL_DECREES.filter(
+      (d) => !excludeIds.includes(d.id) && isDecreeAvailable(d.id, isUnlocked)
+    )
     if (available.length === 0) return null
 
     const roll = runRandom.next('decrees')

@@ -19,7 +19,10 @@ for (const [language, copy] of [
       const skip = page.locator('[data-game-action="skip"]')
       await expect(skip).toBeVisible()
       await page
-        .getByRole('button', { name: "Don't show tips", exact: true })
+        .getByRole('button', {
+          name: copy.progressiveHints.dontShow,
+          exact: true,
+        })
         .click()
       await page.evaluate(
         async (seed) => {

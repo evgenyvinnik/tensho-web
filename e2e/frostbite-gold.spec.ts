@@ -17,7 +17,10 @@ for (const [language, copy] of [
     await page.goto(`/${language}/play`)
     await expect(page.locator('[data-game-action="play"]')).toBeVisible()
     await page
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: copy.progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
     const previewGold = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts',

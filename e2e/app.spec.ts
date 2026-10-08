@@ -365,8 +365,16 @@ test.describe('Game Navigation', () => {
     await expect(firstDecree).toBeVisible()
     await expect(firstDecree.locator('img')).toHaveAttribute(
       'src',
-      /\/illustrations\/decrees\/.+\.png$/
+      /\/illustrations\/decrees\/.+\.(png|webp)$/
     )
+    expect(
+      await firstDecree
+        .locator('img')
+        .evaluate(async (img: HTMLImageElement) => {
+          await img.decode()
+          return img.naturalWidth > 0
+        })
+    ).toBe(true)
     await expect(page.getByRole('button', { name: /^Sell / })).toHaveCount(0)
 
     await firstDecree.click()
@@ -397,7 +405,27 @@ test.describe('Game Navigation', () => {
 
     await expect(page).toHaveURL(/\/en\/play$/)
     await expect(page.getByText('300', { exact: true })).toBeVisible()
-    await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
+    // Ordinary rack capacity includes actually drawn Spring powers.
+    const expectRefilledRack = async () => {
+      await expect(
+        page.locator('[data-classic-save-status="saved"]')
+      ).toBeVisible()
+      const size = await page.evaluate(() => {
+        const saved = JSON.parse(localStorage.getItem('tensho-classic-run-v1')!)
+        const springs = saved.snapshot.state.seasonSystem.seasonStack.filter(
+          (season: { type: string; isCorrupted: boolean }) =>
+            season.type === 'Spring' && !season.isCorrupted
+        ).length
+        return 14 + 2 * springs
+      })
+      await expect(
+        page.getByText(`Hand (${size})`, { exact: true })
+      ).toBeVisible()
+      await expect(
+        page.locator('[data-play-zone="hand"] [data-play-tile]')
+      ).toHaveCount(size)
+    }
+    await expectRefilledRack()
     const activeTable = page.locator('[data-gameplay-table-identity]')
     await expect(activeTable).toHaveAttribute(
       'data-table-style-id',
@@ -550,9 +578,9 @@ test.describe('Game Navigation', () => {
       Math.max(...handBounds.map((bounds) => bounds.right))
     ).toBeLessThanOrEqual(viewport!.width)
     const initialHands = Number(
-      (await page.getByTitle('Hands remaining').textContent())?.match(
-        /\d+/
-      )?.[0]
+      (
+        await page.locator('[data-tutorial="hands-remaining"]').textContent()
+      )?.match(/\d+/)?.[0]
     )
     expect(initialHands).toBeGreaterThan(0)
 
@@ -576,16 +604,14 @@ test.describe('Game Navigation', () => {
     await expect(async () => {
       const path = new URL(page.url()).pathname
       if (path.endsWith('/shop')) {
-        await expect(
-          page.getByText('Round Complete!', { exact: true })
-        ).toBeVisible()
+        await expect(page.getByTestId('round-cash-out')).toBeVisible()
         return
       }
 
-      await expect(page.getByText('Hand (14)', { exact: true })).toBeVisible()
-      await expect(page.getByTitle('Hands remaining')).toContainText(
-        String(initialHands - 1)
-      )
+      await expectRefilledRack()
+      await expect(
+        page.locator('[data-tutorial="hands-remaining"]')
+      ).toContainText(String(initialHands - 1))
       const nextTileLabels = await page
         .locator(
           'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
@@ -776,7 +802,7 @@ test.describe('Game Navigation', () => {
     const tip = page.getByRole('status')
     await expect(tip).toBeVisible({ timeout: 5_000 })
     await expect(page.locator('[data-game-action="skip"]')).toBeEnabled()
-    await page.getByRole('button', { name: /Close/ }).click()
+    await page.getByRole('button', { name: 'Got it', exact: true }).click()
     await expect(tip).toBeHidden()
   })
 

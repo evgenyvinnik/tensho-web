@@ -9,8 +9,11 @@
 import type { ArchiveCategory } from '../config/archiveDefinitions'
 import {
   CHARTER_UNLOCKS,
+  ALL_UNLOCKS,
+  getUnlockById,
   type UnlockCategory,
 } from '../config/unlockDefinitions'
+import { getDecreeUnlockCondition } from '../config/decreeUnlocks'
 import {
   getAchievementDefinition,
   type AchievementStats,
@@ -24,6 +27,7 @@ import type {
   ProgressionEventPayload,
   UnlockCheckResult,
 } from '../systems/MetaProgressionSystem'
+import { metaProgressionSystem } from '../systems/MetaProgressionSystem'
 import type { DiscoveryTrigger } from '../systems/ArchiveSystem'
 import { createEventSubscription, eventBus } from './EventBus'
 import { runMetaContext } from './RunMetaContext'
@@ -205,9 +209,50 @@ export function synchronizePersistedMetaState(): void {
     }
   }
 
+  // Preserve actual historical acquisitions, not old Archive-only unlocked
+  // flags. Blueprint's original unlock record ID remains valid.
+  const gatedDecrees = ALL_UNLOCKS.filter(
+    (definition) =>
+      definition.category === 'decree' &&
+      getDecreeUnlockCondition(definition.unlocksId)
+  )
+  for (const definition of gatedDecrees) {
+    if (progression.stats.decreesDiscovered.has(definition.unlocksId))
+      progression.unlockItem(definition.id, false)
+  }
+  // Existing proven lifetime conditions may now unlock newly connected items.
+  // No historic per-run Yakuman maximum is invented from a lifetime total.
+  for (const definition of gatedDecrees) {
+    const current = useProgressionStore.getState()
+    if (
+      metaProgressionSystem.checkUnlockConditions(definition, {
+        stats: current.stats,
+        unlockedIds: new Set(Object.keys(current.unlocks)),
+      }).allMet
+    )
+      current.unlockItem(definition.id, false)
+  }
+  useArchiveStore.setState((state) => {
+    const entries = { ...state.entries }
+    for (const definition of gatedDecrees) {
+      const key = `decrees:${definition.unlocksId}`
+      const entry = entries[key]
+      if (entry)
+        entries[key] = {
+          ...entry,
+          isUnlocked: useProgressionStore
+            .getState()
+            .isItemUnlocked(definition.unlocksId),
+          unlockCondition: getDecreeUnlockCondition(definition.unlocksId),
+        }
+    }
+    return { entries }
+  })
+
   for (const unlock of Object.values(useProgressionStore.getState().unlocks)) {
-    const category = UNLOCK_ARCHIVE_CATEGORIES[unlock.category]
-    if (category) archive.unlockItem(category, unlock.unlocksId)
+    const canonical = getUnlockById(unlock.id) ?? unlock
+    const category = UNLOCK_ARCHIVE_CATEGORIES[canonical.category]
+    if (category) archive.unlockItem(category, canonical.unlocksId)
     if (unlock.category === 'table_style') {
       useTableStyleStore.getState().unlockStyle(unlock.unlocksId)
     }
@@ -322,6 +367,12 @@ export function initializeMetaProgressionBridge(): () => void {
   subscription.subscribe(
     'decreeAcquired',
     ({ decreeId, source = 'purchase' }) => {
+      // A paid pack from an older release may legitimately contain a newly
+      // gated item. Grandfather its real acquisition immediately, as on reload.
+      if (getDecreeUnlockCondition(decreeId)) {
+        const unlock = ALL_UNLOCKS.find((item) => item.unlocksId === decreeId)
+        if (unlock) useProgressionStore.getState().unlockItem(unlock.id, false)
+      }
       recordArchiveItem('decrees', decreeId, SOURCE_TRIGGERS[source])
       if (source === 'purchase') {
         processProgressionEvent({ type: 'decree_purchased', itemId: decreeId })

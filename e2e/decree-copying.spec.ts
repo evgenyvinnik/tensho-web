@@ -23,7 +23,10 @@ for (const [language, copy] of [
       const play = page.locator('[data-game-action="play"]')
       await expect(play).toBeVisible()
       await page
-        .getByRole('button', { name: "Don't show tips", exact: true })
+        .getByRole('button', {
+          name: copy.progressiveHints.dontShow,
+          exact: true,
+        })
         .click()
       const offerInfo = await page.evaluate(async (id) => {
         const gamePath = '/src/game/GameOrchestrator.ts',
@@ -42,6 +45,11 @@ for (const [language, copy] of [
         )
         state.flowerSystem.clear()
         state.seasonSystem.clear()
+        // Isolate copied round resources: newly drawn Autumn/Spring are tested
+        // separately and must not alter this fixture's expected base allowances.
+        state.wallTemplate = state.wallTemplate.filter(
+          (tile: { isBonus: boolean }) => !tile.isBonus
+        )
         Object.assign(state, {
           phase: 'shop',
           gold: 40,

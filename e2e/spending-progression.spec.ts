@@ -17,7 +17,10 @@ for (const [language, copy] of [
     await page.goto(`/${language}/play`)
     await expect(page.locator('[data-game-action="play"]')).toBeVisible()
     await page
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: copy.progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
     // Controlled prerequisite, hand and Boss-shop fixtures; payment, penalty,
     // unlock, acquisition and persisted reload use the real application.

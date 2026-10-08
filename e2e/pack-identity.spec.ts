@@ -26,7 +26,10 @@ for (const [language, copy] of [
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
       await page
-        .getByRole('button', { name: "Don't show tips", exact: true })
+        .getByRole('button', {
+          name: copy.progressiveHints.dontShow,
+          exact: true,
+        })
         .click()
       const fixture = await page.evaluate(async (kind) => {
         const gamePath = '/src/game/GameOrchestrator.ts'

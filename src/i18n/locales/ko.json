@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "런을 승리하세요.",
+    "decree-brainstorm": "칙령을 5개 이상 보유한 채 런을 승리하세요.",
+    "decree-heavenly-ordinance": "역만으로 점수를 얻으세요.",
+    "decree-clone-army": "골드 스테이크에서 런을 승리하세요.",
+    "decree-yakuman-blessing": "한 런에서 역만 패턴 3개로 점수를 얻으세요.",
+    "decree-omega": "8막을 완료하세요."
+  },
   "scoreThresholds": {
     "supernova": "초신성과 완벽주의자 보너스를 제외하고, 이번 플레이로 라운드 점수가 목표의 2배 이상이 되면 배율 ×2.5.",
     "perfectionist": "초신성과 완벽주의자 보너스를 제외하고, 첫 플레이로 라운드를 클리어하면 배율 ×3."

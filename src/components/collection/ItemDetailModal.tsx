@@ -265,7 +265,9 @@ export function ItemDetailModal({
                   <span className="font-bold">
                     {t('collection.unlock', 'Unlock:')}{' '}
                   </span>
-                  {entry.unlockCondition}
+                  {entry.category === 'decrees'
+                    ? t(`decreeUnlocks.${entry.itemId}`, entry.unlockCondition)
+                    : entry.unlockCondition}
                 </p>
               </div>
             </div>

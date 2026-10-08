@@ -69,7 +69,7 @@ async function setup(page: Page, lang: string, stacked: boolean) {
     })
   }, stacked)
   const disableTips = page.getByRole('button', {
-    name: "Don't show tips",
+    name: (lang === 'es' ? es : en).progressiveHints.dontShow,
     exact: true,
   })
   // Tips remain optional; tests need unobstructed screenshots, not a tutorial bypass.

@@ -28,6 +28,9 @@ import { useProgressionStore } from '../stores/progressionStore'
 gameOrchestrator.setCharterUnlockResolver((id) =>
   useProgressionStore.getState().isItemUnlocked(id)
 )
+gameOrchestrator.setDecreeUnlockResolver((id) =>
+  useProgressionStore.getState().isItemUnlocked(id)
+)
 
 // =============================================================================
 // HOOK RETURN TYPE

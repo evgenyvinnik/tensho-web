@@ -22,6 +22,7 @@ import {
   PACK_VARIANT_DEFINITIONS,
 } from '../config/archiveDefinitions'
 import { ALL_DECREES } from './DecreeSystem'
+import { getDecreeUnlockCondition } from '../config/decreeUnlocks'
 import { ALL_CHARTERS } from '../config/charterDefinitions'
 import { ALL_OMENS } from '../config/omenDefinitions'
 import { ALL_MANDATES } from '../config/mandateDefinitions'
@@ -123,7 +124,8 @@ export class ArchiveSystem {
         discoveredAt: preDiscovered.has(key) ? 0 : null,
         timesUsed: 0,
         timesWonWith: 0,
-        isUnlocked: true, // All decrees start unlocked
+        isUnlocked: getDecreeUnlockCondition(decree.id) === undefined,
+        unlockCondition: getDecreeUnlockCondition(decree.id),
       })
     }
 

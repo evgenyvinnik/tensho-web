@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "ランをクリアする。",
+    "decree-brainstorm": "勅令を5枚以上所持してランをクリアする。",
+    "decree-heavenly-ordinance": "役満で得点する。",
+    "decree-clone-army": "ゴールドステークでランをクリアする。",
+    "decree-yakuman-blessing": "1回のランで役満を3つ得点する。",
+    "decree-omega": "第8幕をクリアする。"
+  },
   "scoreThresholds": {
     "supernova": "超新星と完璧主義のボーナスを除き、このプレイでラウンドの得点が目標の2倍以上に達すると倍率×2.5。",
     "perfectionist": "超新星と完璧主義のボーナスを除き、最初のプレイでラウンドをクリアすると倍率×3。"

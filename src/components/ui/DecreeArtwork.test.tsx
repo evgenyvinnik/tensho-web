@@ -5,6 +5,7 @@ import { DecreeArtwork } from './DecreeArtwork'
 it.each([
   ['decree-doppelganger', /doppelganger\.webp$/],
   ['decree-supernova', /supernova\.webp$/],
+  ['decree-perfectionist', /perfectionist\.webp$/],
   ['decree-echo-stone', /echo-stone\.webp$/],
   ['celestial_wildcard', /celestial-wildcard\.webp$/],
   ['yakuman_succession', /yakuman-succession\.webp$/],

@@ -44,6 +44,7 @@ import { Tile, TileSuit, type TileData } from '../core/Tile'
 import { EditionType, EnhancementType } from '../core/TileModifier'
 import { runRandom } from '../game/RunRandom'
 import { tileModifierEntries } from '../core/tileModifierEntries'
+import type { DecreeUnlockResolver } from '../config/decreeUnlocks'
 
 // =============================================================================
 // PACK CONTENT TYPES
@@ -100,7 +101,9 @@ export class BlessingPackSystem {
   private totalPacksOpened: number = 0
   private packsPerVisit: number = 2
 
-  constructor() {
+  constructor(
+    private readonly isDecreeUnlocked: DecreeUnlockResolver = () => false
+  ) {
     this.clear()
   }
 
@@ -564,7 +567,12 @@ export class BlessingPackSystem {
     )
     const excludeIds = new Set([...ownedDecreeIds, ...Array.from(existingIds)])
 
-    const eligible = DecreeSystem.getShopCandidates([], undefined, flowerCount)
+    const eligible = DecreeSystem.getShopCandidates(
+      [],
+      undefined,
+      flowerCount,
+      this.isDecreeUnlocked
+    )
     let candidates = eligible.filter(
       (d) => d.rarity === decreeRarity && !excludeIds.has(d.id)
     )
@@ -837,13 +845,16 @@ export class BlessingPackSystem {
   /**
    * Restore from serialized state
    */
-  static fromState(state: {
-    currentOfferings: PackOffering[]
-    skipCount: number
-    totalPacksOpened: number
-    packsPerVisit: number
-  }): BlessingPackSystem {
-    const system = new BlessingPackSystem()
+  static fromState(
+    state: {
+      currentOfferings: PackOffering[]
+      skipCount: number
+      totalPacksOpened: number
+      packsPerVisit: number
+    },
+    isDecreeUnlocked?: DecreeUnlockResolver
+  ): BlessingPackSystem {
+    const system = new BlessingPackSystem(isDecreeUnlocked)
     system.currentOfferings = structuredClone(state.currentOfferings).map(
       (o) => ({
         ...o,

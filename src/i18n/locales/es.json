@@ -1,4 +1,12 @@
 {
+  "decreeUnlocks": {
+    "decree-blueprint": "Gana una partida.",
+    "decree-brainstorm": "Gana una partida con al menos cinco Decretos.",
+    "decree-heavenly-ordinance": "Puntúa un Yakuman.",
+    "decree-clone-army": "Gana una partida en la apuesta de Oro.",
+    "decree-yakuman-blessing": "Puntúa tres patrones Yakuman en una misma partida.",
+    "decree-omega": "Completa el acto 8."
+  },
   "scoreThresholds": {
     "supernova": "×2,5 Mult si esta jugada eleva la puntuación de la ronda al menos al doble del objetivo, antes de las bonificaciones de Supernova y Perfeccionista.",
     "perfectionist": "×3 Mult si la primera jugada supera la ronda, antes de las bonificaciones de Supernova y Perfeccionista."

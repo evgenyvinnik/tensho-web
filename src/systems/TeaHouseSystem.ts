@@ -67,6 +67,7 @@ import {
   type CharterEffect,
 } from '../config/charterDefinitions'
 import { runRandom } from '../game/RunRandom'
+import type { DecreeUnlockResolver } from '../config/decreeUnlocks'
 import { canReceiveEternal } from './decreeStickers'
 
 // =============================================================================
@@ -264,6 +265,11 @@ export class TeaHouseSystem {
   private tilesHaveEditions: boolean = false
   private purchasedCharterIds: Set<string> = new Set()
   private charterUnlockResolver: CharterUnlockResolver = () => false
+  private decreeUnlockResolver: DecreeUnlockResolver = () => false
+
+  setDecreeUnlockResolver(resolver: DecreeUnlockResolver): void {
+    this.decreeUnlockResolver = resolver
+  }
   private currentStake: number = 1
   private offeringCounter: number = 0
 
@@ -506,7 +512,8 @@ export class TeaHouseSystem {
     const pool = DecreeSystem.getShopCandidates(
       excludeIds,
       minimum,
-      this.flowerCountForVisit
+      this.flowerCountForVisit,
+      this.decreeUnlockResolver
     )
     // Select rarity
     const weights = minimum
@@ -1263,9 +1270,12 @@ export class TeaHouseSystem {
     options: {
       random?: () => number
       isCharterUnlocked?: CharterUnlockResolver
+      isDecreeUnlocked?: DecreeUnlockResolver
     } = {}
   ): TeaHouseSystem {
     const system = new TeaHouseSystem(state.currentStake, options.random)
+    if (options.isDecreeUnlocked)
+      system.setDecreeUnlockResolver(options.isDecreeUnlocked)
     if (options.isCharterUnlocked)
       system.setCharterUnlockResolver(options.isCharterUnlocked)
     system.flowerCountForVisit = Math.max(0, state.flowerCountForVisit ?? 0)

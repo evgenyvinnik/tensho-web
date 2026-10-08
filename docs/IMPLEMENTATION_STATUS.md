@@ -4,6 +4,17 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Broad integration audit — local work:** 78 corrected desktop/touch browser
+checks pass after stale tutorial-label, artwork-format and Season-resource fixture
+assumptions were repaired. Perfectionist has a new generated portrait. The full
+browser recheck is pending. The six authored Decree unlocks are now locally wired
+through acquisition, persistent earning, legacy saves and localized Archive rules.
+Production build and clean full units (2,233/2,233) pass, as do eight built-production
+unlock/art journeys. Corrected native unlock checks pass 4/4 and repeated interest
+checks pass 30/30. The full 706-case browser audit remains open after retained
+failures and fixture corrections. This checkpoint is not deployed.
+[Audit, retained failures and artwork provenance](BROAD_INTEGRATION_AUDIT.md).
+
 **Published shop copy preflight — v1.0.261008-10:** purchase/pack eligibility simulation
 no longer spends the live Doppelganger target cursor. Actual acquisition draws
 exactly once; analysis alternatives use detached public scenarios. Full regression

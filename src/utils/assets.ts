@@ -143,6 +143,7 @@ export const illustrationAssets = {
   decreePortraits: {
     'decree-doppelganger': `${ASSET_BASE}/illustrations/decrees/doppelganger.webp`,
     'decree-supernova': `${ASSET_BASE}/illustrations/decrees/supernova.webp`,
+    'decree-perfectionist': `${ASSET_BASE}/illustrations/decrees/perfectionist.webp`,
     'decree-echo-stone': `${ASSET_BASE}/illustrations/decrees/echo-stone.webp`,
     celestial_wildcard: `${ASSET_BASE}/illustrations/decrees/celestial-wildcard.webp`,
     shanten_clemency: `${ASSET_BASE}/illustrations/decrees/shanten-clemency.webp`,

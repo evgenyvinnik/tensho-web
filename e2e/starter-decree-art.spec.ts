@@ -25,7 +25,10 @@ for (const [language, copy] of [
     await page.goto(`/${language}/play`)
     await expect(page.locator('[data-game-action="play"]')).toBeVisible()
     await page
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: copy.progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
     const totalCost = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts'
@@ -91,8 +94,11 @@ for (const [language, copy] of [
       await expect(card.getByRole('heading')).toHaveText(
         copy.decrees.items[id].name
       )
-      if (isMobile) await card.getByRole('button').tap()
-      else await card.getByRole('button').click()
+      const buy = card.getByRole('button', {
+        name: new RegExp(copy.decrees.items[id].name),
+      })
+      if (isMobile) await buy.tap()
+      else await buy.click()
     }
     expect(
       await page.evaluate(async () => {

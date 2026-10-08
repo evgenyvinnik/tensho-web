@@ -72,7 +72,10 @@ export class ShopSession {
   private spent = 0
   private purchases = 0
 
-  constructor(private readonly game: GameOrchestrator) {}
+  constructor(private readonly game: GameOrchestrator) {
+    this.teaHouse.setDecreeUnlockResolver((id) => game.isDecreeUnlocked(id))
+    this.packs = new BlessingPackSystem((id) => game.isDecreeUnlocked(id))
+  }
 
   get isOpen(): boolean {
     return this.opened
@@ -101,10 +104,13 @@ export class ShopSession {
   ): ShopSession {
     const shop = new ShopSession(game)
     shop.teaHouse = TeaHouseSystem.fromSerializedState(saved.teaHouse, {
+      isDecreeUnlocked: (id) => game.isDecreeUnlocked(id),
       isCharterUnlocked: (id) =>
         game.getState().charterSystem.canPurchaseCharter(id),
     })
-    shop.packs = BlessingPackSystem.fromState(saved.packs)
+    shop.packs = BlessingPackSystem.fromState(saved.packs, (id) =>
+      game.isDecreeUnlocked(id)
+    )
     const unfinished = shop.packOfferings.filter(
       (p) => p.isOpened && !p.isResolved
     )
@@ -142,7 +148,10 @@ export class ShopSession {
 
   reset(): void {
     this.teaHouse = new TeaHouseSystem()
-    this.packs = new BlessingPackSystem()
+    this.teaHouse.setDecreeUnlockResolver((id) =>
+      this.game.isDecreeUnlocked(id)
+    )
+    this.packs = new BlessingPackSystem((id) => this.game.isDecreeUnlocked(id))
     this.opened = false
     this.pending = null
     this.spent = 0
@@ -324,6 +333,11 @@ export class ShopSession {
     const offering = this.findOffering(id)
     if (this.pending || !offering || offering.isPurchased || offering.isLocked)
       return fail('unavailable')
+    if (
+      offering.itemType === 'Decree' &&
+      !this.game.isDecreeUnlocked(offering.item.id)
+    )
+      return fail('unavailable')
     if (!Number.isFinite(offering.finalCost) || offering.finalCost < 0)
       return fail('unavailable')
     if (payment?.type !== 'gold' && payment?.type !== 'flower')
@@ -352,6 +366,16 @@ export class ShopSession {
         (p) => p.pack.id === (offering.item as BlessingPack).id
       )
       if (!pack || pack.isOpened || pack.isResolved) return fail('unavailable')
+      // Unpaid legacy stock is not a promised reward. Do not charge for a pack
+      // containing profile-locked choices; paid pending packs remain claimable.
+      if (
+        pack.contents.some(
+          (content) =>
+            content.type === 'Decree' &&
+            !this.game.isDecreeUnlocked((content.data as Decree).id)
+        )
+      )
+        return fail('unavailable')
       // Do not sell an already-generated Decree pack whose entire selection
       // became Flower-ineligible after a catalyst was spent this visit.
       if (

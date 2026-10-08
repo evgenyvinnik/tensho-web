@@ -18,7 +18,10 @@ for (const [language, copy] of [
     const play = page.locator('[data-game-action="play"]')
     await expect(play).toBeVisible()
     await page
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: copy.progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
     for (const [kind, ranks, score] of [
       ['grouped', [4, 5, 6], 45],

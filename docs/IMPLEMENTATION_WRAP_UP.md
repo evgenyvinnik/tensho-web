@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Broad integration audit](BROAD_INTEGRATION_AUDIT.md): 78 corrected desktop/touch
+checks pass and Perfectionist has a new generated portrait. Full verification is
+pending. Six explicit Decree unlock conditions are now implemented locally across
+earning, shop/packs/generation, saved continuation and thirteen-locale Archive
+requirements. The build and clean full units (2,233/2,233) pass; eight built-production
+unlock/art journeys pass. Native unlock checks pass 4/4 and repeated interest checks
+pass 30/30 after a test-only CDP promise fix. The full 706-case browser audit remains
+open before publication.
+
 [Shop copy preflight](SHOP_COPY_PREFLIGHT.md), published and hosted-verified in
 **v1.0.261008-10**, isolates validation and hypothetical
 inventory randomness from the live run. Repeated offer checks, failed pack

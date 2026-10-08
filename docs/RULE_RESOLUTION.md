@@ -16,6 +16,22 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Authored Decree unlocks and legacy rewards
+
+Connect the six explicit library conditions to canonical runtime IDs: Blueprint
+after a victory, Brainstorm after a victory with at least five Decrees, Heavenly
+Ordinance after a paid Yakuman, Clone Army after a Gold Stake victory, Yakuman
+Blessing after three paid Yakuman patterns within one run, and Omega after Act 8.
+Multiple qualifying patterns in a single hand count individually; previews do
+not. Persist the run counter, reset it only on a new run, and never derive a
+historical per-run record from a lifetime total.
+
+Preserve actual past acquisitions, existing inventory and already-paid pack
+promises. Reject newly generated locked rewards and unpaid legacy locked stock
+before charging; Archive-only flags do not bypass progression. Full Unlock remains
+an explicit exception without manufactured achievements. These rules are locally
+implemented, not yet a deployment claim. [Evidence](BROAD_INTEGRATION_AUDIT.md).
+
 ### Score thresholds use this play's neutral paid score
 
 Supernova checks whether this play brings the round total to at least twice the
@@ -132,6 +148,8 @@ gaps are not removed by choosing the rule.
   other copied-resource lifecycles. Fate Seal lifetime/Negative tiles now have
   ownership rules above; release verification is tracked separately.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
+  The six authored Decree unlocks found by the [broad integration audit](BROAD_INTEGRATION_AUDIT.md)
+  are now implemented locally; broader verification and publication remain separate.
 - Continue organic-run strategy and newcomer evaluation. A legal engine run or
   a green browser test alone does not demonstrate engaging play.
 

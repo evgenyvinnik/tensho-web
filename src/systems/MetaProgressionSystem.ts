@@ -79,6 +79,8 @@ export interface LifetimeStats {
   // Yaku statistics
   yakuScored: Record<string, number>
   yakumanScored: number
+  currentRunYakumanScored: number
+  maxYakumanInRun: number
   totalYakuScored: number
 
   // Special conditions
@@ -188,6 +190,8 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   chartersPurchased: new Set(),
   yakuScored: {},
   yakumanScored: 0,
+  currentRunYakumanScored: 0,
+  maxYakumanInRun: 0,
   totalYakuScored: 0,
   maxConsecutiveInterestRounds: 0,
   currentMaxInterestRounds: 0,
@@ -372,6 +376,11 @@ export class MetaProgressionSystem {
       case 'yakuman_scored':
         current = stats.yakumanScored
         target = 1
+        isMet = current >= target
+        break
+
+      case 'yakuman_in_run':
+        current = stats.maxYakumanInRun
         isMet = current >= target
         break
 
@@ -823,6 +832,7 @@ export function processProgressionEvent(
 
   switch (event.type) {
     case 'run_started':
+      updates.currentRunYakumanScored = 0
       updates.currentMaxInterestRounds = 0
       updates.totalRunsStarted = stats.totalRunsStarted + 1
       updates.currentRunChartersPurchased = 0
@@ -914,6 +924,11 @@ export function processProgressionEvent(
 
     case 'yakuman_scored':
       updates.yakumanScored = stats.yakumanScored + 1
+      updates.currentRunYakumanScored = stats.currentRunYakumanScored + 1
+      updates.maxYakumanInRun = Math.max(
+        stats.maxYakumanInRun,
+        updates.currentRunYakumanScored
+      )
       break
 
     case 'tile_played':

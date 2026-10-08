@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { evaluateFixture } from './helpers/evaluateFixture'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -7,7 +8,7 @@ test('historical upgraded purchases survive hydration without granting every dis
 }) => {
   await page.goto('/en/play')
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-  await page.evaluate(async () => {
+  await evaluateFixture(page, async () => {
     const progressionPath = '/src/stores/progressionStore.ts'
     const archivePath = '/src/stores/archiveStore.ts'
     const { useProgressionStore } = await import(progressionPath)
@@ -22,7 +23,7 @@ test('historical upgraded purchases survive hydration without granting every dis
   await page.reload()
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
   expect(
-    await page.evaluate(async () => {
+    await evaluateFixture(page, async () => {
       const progressionPath = '/src/stores/progressionStore.ts'
       const gamePath = '/src/game/GameOrchestrator.ts'
       const charterPath = '/src/systems/TeaHouseSystem.ts'
@@ -71,12 +72,18 @@ for (const [language, copy] of [
       )
       await page.goto(`/${language}/play`)
       await expect(page.locator('[data-game-action="skip"]')).toBeVisible()
+      await expect(
+        page.locator('[data-classic-save-status="saved"]')
+      ).toBeVisible()
       await page
-        .getByRole('button', { name: "Don't show tips", exact: true })
+        .getByRole('button', {
+          name: copy.progressiveHints.dontShow,
+          exact: true,
+        })
         .click()
       // Isolate the achievement boundary and grant the base Charter. Round
       // payouts, transitions and progression notifications remain real UI work.
-      await page.evaluate(async () => {
+      await evaluateFixture(page, async () => {
         const gamePath = '/src/game/GameOrchestrator.ts'
         const charterPath = '/src/systems/TeaHouseSystem.ts'
         const progressionPath = '/src/stores/progressionStore.ts'
@@ -85,6 +92,10 @@ for (const [language, copy] of [
         const { TEA_HOUSE_BASE_CHARTERS } = await import(charterPath)
         const { useProgressionStore } = await import(progressionPath)
         const { useArchiveStore } = await import(archivePath)
+        const persistencePath = '/src/game/classicPersistenceApp.ts'
+        const { initializeClassicPersistence } = await import(persistencePath)
+        const persistence = initializeClassicPersistence()
+        const previousRaw = persistence.getSnapshot().disk.raw
         useProgressionStore.getState().resetProgression()
         useArchiveStore.getState().resetArchive()
         game.startNewRun(7)
@@ -106,7 +117,14 @@ for (const [language, copy] of [
           currentMaxInterestRounds: 9,
           maxConsecutiveInterestRounds: 9,
         })
+        if (!(await persistence.saveNewRun(previousRaw)))
+          throw Error(
+            'Could not register the interest fixture as the active saved run'
+          )
       })
+      await expect(
+        page.locator('[data-classic-save-status="saved"]')
+      ).toBeVisible()
 
       const payouts = unlock
         ? [[100, 10, 10]]
@@ -116,28 +134,32 @@ for (const [language, copy] of [
             [0, 0, 0],
           ]
       for (const [gold, interest, streak] of payouts) {
-        await page.evaluate(async (balance) => {
-          const gamePath = '/src/game/GameOrchestrator.ts'
-          const tilePath = '/src/core/Tile.ts'
-          const eventPath = '/src/game/EventBus.ts'
-          const { gameOrchestrator: game } = await import(gamePath)
-          const { Tile, TileSuit } = await import(tilePath)
-          const { eventBus } = await import(eventPath)
-          const state = game.getState()
-          state.gold = balance
-          state.targetScore = 1
-          state.roundManager.getCurrentRound().scoreTarget = 1
-          state.handTiles = [
-            new Tile(TileSuit.Pinzu, 2, 'interest-a'),
-            new Tile(TileSuit.Pinzu, 2, 'interest-b'),
-          ]
-          state.selectedTileIds.clear()
-          state.faceDownTileIds.clear()
-          eventBus.emit('tileDrawn', {
-            tileId: 'interest-a',
-            tilesRemaining: state.wall.length - state.drawIndex,
-          })
-        }, gold)
+        await evaluateFixture(
+          page,
+          async (balance) => {
+            const gamePath = '/src/game/GameOrchestrator.ts'
+            const tilePath = '/src/core/Tile.ts'
+            const eventPath = '/src/game/EventBus.ts'
+            const { gameOrchestrator: game } = await import(gamePath)
+            const { Tile, TileSuit } = await import(tilePath)
+            const { eventBus } = await import(eventPath)
+            const state = game.getState()
+            state.gold = balance
+            state.targetScore = 1
+            state.roundManager.getCurrentRound().scoreTarget = 1
+            state.handTiles = [
+              new Tile(TileSuit.Pinzu, 2, 'interest-a'),
+              new Tile(TileSuit.Pinzu, 2, 'interest-b'),
+            ]
+            state.selectedTileIds.clear()
+            state.faceDownTileIds.clear()
+            eventBus.emit('tileDrawn', {
+              tileId: 'interest-a',
+              tilesRemaining: state.wall.length - state.drawIndex,
+            })
+          },
+          gold
+        )
         for (const id of ['interest-a', 'interest-b']) {
           const tile = page.locator(
             `[data-play-zone="hand"] [data-play-tile="${id}"]`
@@ -148,7 +170,7 @@ for (const [language, copy] of [
         await page.locator('[data-game-action="play"]').click()
         await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
         expect(
-          await page.evaluate(async () => {
+          await evaluateFixture(page, async () => {
             const gamePath = '/src/game/GameOrchestrator.ts'
             const progressionPath = '/src/stores/progressionStore.ts'
             const archivePath = '/src/stores/archiveStore.ts'
@@ -180,7 +202,7 @@ for (const [language, copy] of [
       }
       // Force only the offer, not eligibility: the runtime must consult the
       // achievement just earned (or still missing) when confirming payment.
-      await page.evaluate(async () => {
+      await evaluateFixture(page, async () => {
         const gamePath = '/src/game/GameOrchestrator.ts'
         const charterPath = '/src/systems/TeaHouseSystem.ts'
         const eventPath = '/src/game/EventBus.ts'
@@ -209,7 +231,7 @@ for (const [language, copy] of [
         .getByRole('button', { name: copy.shop.buy, exact: true })
         .click()
       expect(
-        await page.evaluate(async () => {
+        await evaluateFixture(page, async () => {
           const path = '/src/game/GameOrchestrator.ts'
           const { gameOrchestrator: game } = await import(path)
           return {
@@ -227,12 +249,15 @@ for (const [language, copy] of [
         .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
         .click()
       await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
-      // Classic starts a new run on reload today. Lifetime progress and earned
-      // unlocks must survive, but its old run's current streak must not.
+      // Classic resumes the same saved run. Keep its current streak as well as
+      // lifetime progress; only starting a genuinely new run resets the streak.
+      await expect(
+        page.locator('[data-classic-save-status="saved"]')
+      ).toBeVisible()
       await page.reload()
       await expect(page.locator('[data-game-action="skip"]')).toBeVisible()
       expect(
-        await page.evaluate(async () => {
+        await evaluateFixture(page, async () => {
           const progressionPath = '/src/stores/progressionStore.ts'
           const archivePath = '/src/stores/archiveStore.ts'
           const gamePath = '/src/game/GameOrchestrator.ts'
@@ -254,7 +279,7 @@ for (const [language, copy] of [
         })
       ).toEqual({
         canRepurchaseWithoutBase: false,
-        current: 0,
+        current: unlock ? 10 : 0,
         best: unlock ? 10 : 9,
         unlocked: unlock,
         archiveUnlocked: unlock,

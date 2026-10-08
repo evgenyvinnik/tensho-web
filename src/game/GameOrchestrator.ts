@@ -104,6 +104,10 @@ import {
 import { OmenTagSystem } from '../systems/OmenTagSystem'
 import { CharterSystem } from '../systems/CharterSystem'
 import type { CharterUnlockResolver } from '../config/charterDefinitions'
+import {
+  isDecreeAvailable,
+  type DecreeUnlockResolver,
+} from '../config/decreeUnlocks'
 import { DebuffSystem } from './DebuffSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -326,6 +330,15 @@ export class GameOrchestrator {
   private runtimeItemCounter = 0
   private actionDepth = 0
   private charterUnlockResolver: CharterUnlockResolver = () => false
+  private decreeUnlockResolver: DecreeUnlockResolver = () => false
+
+  setDecreeUnlockResolver(resolver: DecreeUnlockResolver): void {
+    this.decreeUnlockResolver = resolver
+  }
+
+  isDecreeUnlocked(id: string): boolean {
+    return isDecreeAvailable(id, this.decreeUnlockResolver)
+  }
 
   constructor(config: Partial<RoundConfig> = {}) {
     this.config = { ...DEFAULT_ROUND_CONFIG, ...config }
@@ -4154,7 +4167,8 @@ export class GameOrchestrator {
           DecreeSystem.getShopCandidates(
             ownedDecreeIds,
             effect.minDecreeRarity,
-            this.state.flowerSystem.getFlowerCount()
+            this.state.flowerSystem.getFlowerCount(),
+            this.decreeUnlockResolver
           ).length > 0
         )
       }
@@ -4354,7 +4368,18 @@ export class GameOrchestrator {
     decree: Decree,
     source: 'purchase' | 'pack_open' | 'generated' = 'purchase'
   ): boolean {
-    if (!this.canAddDecree(decree)) return false
+    // A paid pack is an existing reward promise, including on legacy saves.
+    // New pack contents are profile-filtered when generated. Do not confiscate
+    // a persisted paid choice when eligibility changes; capacity still applies.
+    if (
+      source === 'pack_open'
+        ? !this.state.decreeSystem.canAcquireDecree(
+            decree,
+            this.state.flowerSystem.getFlowerCount()
+          )
+        : !this.canAddDecree(decree)
+    )
+      return false
     const acquired = this.state.decreeSystem.acquireDecree(decree)
     if (!acquired) return false
 
@@ -4369,9 +4394,12 @@ export class GameOrchestrator {
   }
 
   canAddDecree(decree: Decree): boolean {
-    return this.state.decreeSystem.canAcquireDecree(
-      decree,
-      this.state.flowerSystem.getFlowerCount()
+    return (
+      this.isDecreeUnlocked(decree.id) &&
+      this.state.decreeSystem.canAcquireDecree(
+        decree,
+        this.state.flowerSystem.getFlowerCount()
+      )
     )
   }
 

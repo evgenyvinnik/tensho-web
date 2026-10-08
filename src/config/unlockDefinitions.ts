@@ -45,6 +45,7 @@ export type UnlockConditionType =
   | 'decrees_owned' // Win with X+ decrees active
   | 'yaku_scored' // Score a specific yaku type
   | 'yakuman_scored' // Score any yakuman
+  | 'yakuman_in_run' // Score X Yakuman patterns within one run
   | 'survive_corrupted_seasons' // Survive X corrupted seasons in one run
   | 'skip_rounds' // Skip X rounds total
   | 'rounds_completed' // Complete X rounds in one run
@@ -153,7 +154,7 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     conditions: [
       { type: 'win_run', description: 'Win a run' },
     ],
-    unlocksId: 'blueprint',
+    unlocksId: 'decree-blueprint',
     icon: '📐',
   },
 
@@ -756,11 +757,73 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
 // ALL UNLOCKS COLLECTION
 // =============================================================================
 
+/** Remaining authored catalog gates; Blueprint retains its existing unlock ID. */
+export const AUTHORED_DECREE_UNLOCKS: UnlockDefinition[] = [
+  {
+    id: 'unlock_brainstorm',
+    name: 'Brainstorm',
+    japaneseName: '脳嵐',
+    description: 'Win with 5 Decrees',
+    category: 'decree',
+    conditions: [
+      { type: 'decrees_owned', target: 5, description: 'Win with 5 Decrees' },
+    ],
+    unlocksId: 'decree-brainstorm',
+  },
+  {
+    id: 'unlock_heavenly_ordinance',
+    name: 'Heavenly Ordinance',
+    japaneseName: '天命',
+    description: 'Score a Yakuman',
+    category: 'decree',
+    conditions: [{ type: 'yakuman_scored', description: 'Score a Yakuman' }],
+    unlocksId: 'decree-heavenly-ordinance',
+  },
+  {
+    id: 'unlock_clone_army',
+    name: 'Clone Army',
+    japaneseName: '複製軍',
+    description: 'Win on Gold Stake',
+    category: 'decree',
+    conditions: [
+      { type: 'win_stake', value: 'gold', description: 'Win on Gold Stake' },
+    ],
+    unlocksId: 'decree-clone-army',
+  },
+  {
+    id: 'unlock_yakuman_blessing',
+    name: 'Yakuman Blessing',
+    japaneseName: '役満祝福',
+    description: 'Score 3 Yakuman in one run',
+    category: 'decree',
+    conditions: [
+      {
+        type: 'yakuman_in_run',
+        target: 3,
+        description: 'Score 3 Yakuman in one run',
+      },
+    ],
+    unlocksId: 'decree-yakuman-blessing',
+  },
+  {
+    id: 'unlock_omega',
+    name: 'Omega',
+    japaneseName: '終極',
+    description: 'Complete Act 8',
+    category: 'decree',
+    conditions: [
+      { type: 'complete_act', target: 8, description: 'Complete Act 8' },
+    ],
+    unlocksId: 'decree-omega',
+  },
+]
+
 /**
  * All unlock definitions combined
  */
 export const ALL_UNLOCKS: UnlockDefinition[] = [
   ...DECREE_UNLOCKS,
+  ...AUTHORED_DECREE_UNLOCKS,
   ...TABLE_STYLE_UNLOCKS,
   ...CHARTER_UNLOCKS,
   ...STAKE_UNLOCKS,

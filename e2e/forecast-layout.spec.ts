@@ -83,7 +83,10 @@ for (const fixture of [
     )
     // Dismiss the optional hint through its actual control, not CSS or storage.
     await page
-      .getByRole('button', { name: "Don't show tips", exact: true })
+      .getByRole('button', {
+        name: fixture.text.progressiveHints.dontShow,
+        exact: true,
+      })
       .click()
 
     for (const rank of [4, 5, 6]) {
