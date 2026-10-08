@@ -436,7 +436,7 @@ Editions are rare modifications that can appear on individual tiles, providing p
 | **Foil** | 箔押 | +50 Base Points when scored | Shimmering silver |
 | **Holographic** | 虹彩 | +10 Mult when scored | Rainbow effect |
 | **Polychrome** | 極彩 | ×1.5 Mult when scored | Shifting colors |
-| **Negative** | 陰 | +1 Decree slot (doesn't take space) | Dark aura |
+| **Negative** | 陰 | +1 Decree slot while the physical tile remains in the run wall | Dark aura |
 
 **Acquiring Editions:**
 - Some Tile Marks convert tiles to editions
@@ -447,7 +447,17 @@ Editions are rare modifications that can appear on individual tiles, providing p
 **Edition Interactions:**
 - Only one edition per tile
 - Editions persist until tile is destroyed
-- Debuffing a tile suppresses (but doesn't remove) the edition
+- Debuffing a tile suppresses scoring rewards, but not ownership capacity.
+  Negative tiles grant one slot each by unique physical ID, regardless of drawing,
+  holding, discarding or scoring suppression. Bonus Flower/Season tiles do not
+  gain Negative capacity. Destroying the tile or replacing its edition removes
+  the slot; copying it to another physical tile adds one.
+- Losing capacity retains existing Decrees and their normal rules, but blocks
+  acquisition until the resulting inventory fits. No forced deletion or sale.
+- Negative Decrees provide their own separate slot while owned.
+
+See [run ownership rules](RUN_OWNERSHIP_IMPLEMENTATION.md) for the resolved
+item-library conflict, saved-run behavior and evidence.
 
 ---
 

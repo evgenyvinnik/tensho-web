@@ -265,6 +265,13 @@ const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([
   'script_of_silence',
 ])
 
+/** Return a seal-specific illustration, with the generic ritual seal as fallback. */
+export function getFateSealIllustration(sealId?: string): string {
+  return sealId === 'seal_of_transmutation'
+    ? `${ASSET_BASE}/illustrations/seal-transmutation.webp`
+    : illustrationAssets.consumables.fateSeal
+}
+
 /** Return a script-specific illustration, with the generic scroll as fallback. */
 export function getVoidScriptIllustration(scriptId?: string): string {
   if (!scriptId || !VOID_SCRIPT_ILLUSTRATION_IDS.has(scriptId)) {

@@ -4,6 +4,7 @@ import type { OwnedDecree } from '../../systems/types'
 import { decreeKey } from '../../systems/decreeIdentity'
 import { useItemText } from '../../i18n/useItemText'
 import { DecreeCardCompact } from '../gameplay/DecreeBar'
+import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
 import { ConfirmPopup } from '../ui/Popup'
 
 interface Props {
@@ -51,6 +52,7 @@ export function ShopBuildPanel({ decrees, maxSlots, onSell }: Props) {
           })}
         </span>
       </div>
+      <DecreeCapacityNotice owned={decrees.length} slots={maxSlots} />
       <p className="mt-1 text-sm leading-relaxed text-[var(--color-beige-white)]/75">
         {t('shop.build.help')}
       </p>

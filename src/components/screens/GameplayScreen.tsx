@@ -25,6 +25,7 @@ import { useItemText } from '../../i18n/useItemText'
 import { forecastHeading } from '../../gameplay/forecastGuidance'
 import { PendingOmens } from '../gameplay/PendingOmens'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
+import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
 import { YakuUpgradeLedger } from '../gameplay/YakuUpgradeLedger'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
 
@@ -764,6 +765,11 @@ export function GameplayScreen() {
             />
           </div>
         </div>
+
+        <DecreeCapacityNotice
+          owned={ownedDecrees.length}
+          slots={maxDecreeSlots}
+        />
 
         {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
           <div className="mx-4 mb-2 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">

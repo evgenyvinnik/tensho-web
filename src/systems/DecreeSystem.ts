@@ -21,6 +21,7 @@ import {
   Sticker,
 } from './types'
 import { DragonType, Tile, TileSuit } from '../core/Tile'
+import { EditionType } from '../core/TileModifier'
 import { countScoringHonors } from './flowerMutationScoring'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
@@ -610,6 +611,8 @@ export const ALL_DECREES: Decree[] = [
 export class DecreeSystem {
   private ownedDecrees: OwnedDecree[] = []
   private maxSlots: number = 5
+  // Derived from persistent tile ownership, never serialized into base capacity.
+  private wallSlotBonus: number = 0
   private currentRound: number = 0
   private nextInstanceId: number = 1
 
@@ -644,11 +647,20 @@ export class DecreeSystem {
    * Get the number of available decree slots
    */
   getAvailableSlots(): number {
-    return this.maxSlots - this.ownedDecrees.length
+    return Math.max(0, this.getMaxSlots() - this.ownedDecrees.length)
   }
 
   getMaxSlots(): number {
-    return this.maxSlots
+    return this.maxSlots + this.wallSlotBonus
+  }
+
+  /** Drawing/discarding/debuffing does not change ownership or this capacity. */
+  syncWallSlots(wallTemplate: readonly Tile[]): void {
+    this.wallSlotBonus = new Set(
+      wallTemplate
+        .filter((tile) => !tile.isBonus && tile.edition === EditionType.Negative)
+        .map((tile) => tile.id)
+    ).size
   }
 
   /**
@@ -668,7 +680,7 @@ export class DecreeSystem {
    */
   canAcquireDecree(decree: Decree, flowerCount: number = 0): boolean {
     const effectiveSlots =
-      this.maxSlots + (decree.edition === 'Negative' ? 1 : 0)
+      this.getMaxSlots() + (decree.edition === 'Negative' ? 1 : 0)
     if (this.ownedDecrees.length >= effectiveSlots) {
       return false
     }
@@ -683,7 +695,7 @@ export class DecreeSystem {
    */
   acquireDecree(decree: Decree, sticker?: Sticker): OwnedDecree | null {
     const effectiveSlots =
-      this.maxSlots + (decree.edition === 'Negative' ? 1 : 0)
+      this.getMaxSlots() + (decree.edition === 'Negative' ? 1 : 0)
     if (this.ownedDecrees.length >= effectiveSlots) {
       return null
     }

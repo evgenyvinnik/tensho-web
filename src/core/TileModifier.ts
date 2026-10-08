@@ -325,7 +325,8 @@ export const EDITION_DEFINITIONS: Record<EditionType, EditionDefinition> = {
     type: EditionType.Negative,
     name: 'Negative',
     japaneseName: '陰影',
-    description: '+1 Decree slot',
+    description:
+      '+1 Decree slot while this physical Negative tile remains in your wall. Drawing or discarding keeps the slot; destruction or replacing its edition removes it.',
     chipBonus: 0,
     multBonus: 0,
     multMultiplier: 1,

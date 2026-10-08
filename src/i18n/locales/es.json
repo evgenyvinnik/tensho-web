@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Los cambios en las fichas duran toda esta partida, incluidas las rondas futuras. Una nueva partida empieza de cero.",
+    "negativeTile": "+1 espacio de Decreto mientras esta ficha Negativa permanezca en tu muro. Robarla o descartarla conserva el espacio; destruirla o cambiar su edición lo elimina.",
+    "overCapacity": "Capacidad reducida: conservas tus Decretos. Libera espacio antes de conseguir más."
+  },
   "yakuUpgrades": {
     "help": "Acerca de estas bonificaciones",
     "title": "Mejoras de yaku",
@@ -2403,7 +2408,7 @@
       },
       "negative": {
         "name": "Negativa",
-        "description": "Colores invertidos, trascendente. +1 ranura de Decreto al aplicarla a un Decreto"
+        "description": "+1 espacio de Decreto por cada Decreto Negativo que poseas o ficha Negativa física en el muro de esta partida."
       }
     }
   },

@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Les changements des tuiles durent toute cette partie, y compris les manches suivantes. Une nouvelle partie repart de zéro.",
+    "negativeTile": "+1 emplacement de Décret tant que cette tuile Négative reste dans votre mur. La piocher ou la défausser conserve cet emplacement ; la détruire ou remplacer son édition le retire.",
+    "overCapacity": "Capacité réduite : vous conservez vos Décrets. Libérez de la place avant d’en acquérir d’autres."
+  },
   "yakuUpgrades": {
     "help": "À propos de ces bonus",
     "title": "Améliorations des yaku",
@@ -2403,7 +2408,7 @@
       },
       "negative": {
         "name": "Négative",
-        "description": "Couleurs inversées, transcendante. +1 emplacement de Décret si appliquée à un Décret"
+        "description": "+1 emplacement de Décret par Décret Négatif possédé ou tuile Négative physique dans le mur de cette partie."
       }
     }
   },

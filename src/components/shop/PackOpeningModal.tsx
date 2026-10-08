@@ -23,10 +23,12 @@ import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { Tile } from '../../core/Tile'
 import {
   getTileImagePath,
+  getFateSealIllustration,
   getVoidScriptIllustration,
   illustrationAssets,
 } from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import type { FateSeal } from '../../systems/FateSealSystem'
 import {
   useItemText,
   type ItemKind,
@@ -81,7 +83,7 @@ function getRarityColor(rarity: string): string {
 function getContentArtwork(content: PackContent): string | null {
   switch (content.type) {
     case 'FateSeal':
-      return illustrationAssets.consumables.fateSeal
+      return getFateSealIllustration((content.data as FateSeal).id)
     case 'CelestialOrb':
       return illustrationAssets.consumables.celestialOrb
     case 'VoidScript':

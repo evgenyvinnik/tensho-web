@@ -108,13 +108,16 @@ export function restoreClassicState(
   const fateSealSystem = new FateSealSystem()
   if (copy.fateSealSystem.lastUsedConsumable)
     fateSealSystem.setLastUsedConsumable(copy.fateSealSystem.lastUsedConsumable)
+  const wallTemplate = tiles(copy.wallTemplate)
+  const decreeSystem = DecreeSystem.fromState(copy.decreeSystem)
+  decreeSystem.syncWallSlots(wallTemplate)
   return {
     ...copy,
     bambooSummerProtection: copy.bambooSummerProtection ?? false,
     tableModifiers: Object.freeze(copy.tableModifiers),
     lastHandScore: copy.lastHandScore ?? undefined,
     handTiles: tiles(copy.handTiles),
-    wallTemplate: tiles(copy.wallTemplate),
+    wallTemplate,
     wall: tiles(copy.wall),
     summerReserve: tiles(copy.summerReserve),
     deadWall: tiles(copy.deadWall),
@@ -127,7 +130,7 @@ export function restoreClassicState(
     yakuPlayCounts: new Map(copy.yakuPlayCounts),
     currentRoundYakuIds: new Set(copy.currentRoundYakuIds),
     previousRoundYakuIds: new Set(copy.previousRoundYakuIds),
-    decreeSystem: DecreeSystem.fromState(copy.decreeSystem),
+    decreeSystem,
     flowerSystem: FlowerSystem.fromState(copy.flowerSystem),
     seasonSystem: SeasonSystem.fromState(copy.seasonSystem),
     roundManager: RoundManager.fromState(copy.roundManager),

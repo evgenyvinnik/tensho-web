@@ -236,6 +236,8 @@ export class ShopSession {
   private canReceive(rewards: Reward[], flowerId?: string): boolean {
     const state = this.game.getState()
     const decrees = DecreeSystem.fromState(state.decreeSystem.toState())
+    const wallTemplate = [...state.wallTemplate]
+    decrees.syncWallSlots(wallTemplate)
     const flowers = FlowerSystem.fromState(state.flowerSystem.toState())
     if (flowerId) {
       const slots = flowers.getBonusDecreeSlots()
@@ -264,6 +266,8 @@ export class ShopSession {
             (reward.data.isFlower && state.tableModifiers.flowersDisabled)
           )
             return false
+          wallTemplate.push(reward.data)
+          decrees.syncWallSlots(wallTemplate)
           break
         case 'FateSeal':
         case 'CelestialOrb':

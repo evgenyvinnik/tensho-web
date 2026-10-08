@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Tile changes last for this run, including future rounds. A new run starts fresh.",
+    "negativeTile": "+1 Decree slot while this physical Negative tile remains in your wall. Drawing or discarding it keeps the slot; destruction or replacing its edition removes it.",
+    "overCapacity": "Capacity reduced: you keep your owned Decrees. Make room before acquiring more."
+  },
   "yakuUpgrades": {
     "help": "About these bonuses",
     "title": "Yaku upgrades",
@@ -2399,7 +2404,7 @@
       },
       "negative": {
         "name": "Negative",
-        "description": "Inverted colors, transcendent. +1 Decree slot when applied to Decree"
+        "description": "+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall."
       }
     }
   },

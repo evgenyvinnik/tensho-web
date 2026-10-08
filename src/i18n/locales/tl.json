@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Ang mga pagbabago sa tile ay mananatili sa buong run, pati sa mga susunod na round. Nagsisimula sa simula ang bagong run.",
+    "negativeTile": "+1 puwang ng Dekreto habang nasa iyong pader pa ang Negatibong tile na ito. Nananatili ang puwang kapag binunot o itinapon ito; nawawala kapag sinira o pinalitan ang edisyon nito.",
+    "overCapacity": "Nabawasan ang kapasidad: mapapanatili mo ang mga hawak na Dekreto. Magbakante bago kumuha ng dagdag."
+  },
   "yakuUpgrades": {
     "help": "Tungkol sa mga bonus na ito",
     "title": "Mga pag-upgrade ng yaku",
@@ -173,7 +178,7 @@
       },
       "negative": {
         "name": "Negative",
-        "description": "+1 puwesto ng Dekreto kapag inilapat sa Dekreto."
+        "description": "+1 puwang ng Dekreto bawat hawak na Negatibong Dekreto o pisikal na Negatibong tile sa pader ng run na ito."
       }
     }
   },

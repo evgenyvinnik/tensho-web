@@ -189,7 +189,11 @@ Earlier targeting checkpoint (retained history):
 
 ## Still open
 
-The systems document says Fate Seals affect only the current hand and never change wall composition, while existing runtime behavior and regression tests persist tile changes into `wallTemplate`. This pass preserves that behavior rather than silently retuning the game. Reconcile the intended lifetime of changes across the rules, item descriptions, and implementation before closing the broader mechanics audit.
+The former hand-only versus persistent Fate Seal conflict is resolved under the
+user's delegated authority: selected physical tile changes last for the current
+run. The systems document and target picker say so explicitly. Negative tile
+ownership capacity is connected rather than removed from the catalog. See
+[current implementation and evidence](RUN_OWNERSHIP_IMPLEMENTATION.md).
 
 This pass does not establish balance, exercise every generated-item combination, or replace later-round, Act 8, Endless, and resource-aware simulation coverage. See [implementation wrap-up](IMPLEMENTATION_WRAP_UP.md).
 

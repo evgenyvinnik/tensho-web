@@ -560,7 +560,7 @@ export const EDITION_DEFINITIONS_ARCHIVE: EditionDefinition[] = [
     name: 'Negative',
     japaneseName: '陰影',
     description: 'Inverted colors, transcendent',
-    effect: '+1 Decree slot when applied to Decree',
+    effect: '+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall',
     visualStyle: 'inverted',
   },
 ]

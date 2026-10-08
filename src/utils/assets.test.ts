@@ -6,12 +6,29 @@ import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import {
   getCodexCategoryIllustration,
   getDecreeIllustration,
+  getFateSealIllustration,
   getDecreeScrollIllustration,
   getTableStyleIllustration,
   getMandateIllustration,
   illustrationAssets,
 } from './assets'
 import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../config/mandateDefinitions'
+
+it('ships a compact transparent Transmutation seal with safe generic fallbacks', () => {
+  const webp = readFileSync(
+    `public${getFateSealIllustration('seal_of_transmutation')}`
+  )
+  expect(webp.subarray(0, 4).toString()).toBe('RIFF')
+  expect(webp.subarray(12, 16).toString()).toBe('VP8X')
+  expect(webp[20] & 0x10).toBe(0x10)
+  expect(webp.readUIntLE(24, 3) + 1).toBe(512)
+  expect(webp.readUIntLE(27, 3) + 1).toBe(512)
+  expect(webp.length).toBeLessThan(100_000)
+  for (const id of [undefined, 'missing', '__proto__', 'seal_of_unity'])
+    expect(getFateSealIllustration(id)).toBe(
+      illustrationAssets.consumables.fateSeal
+    )
+})
 
 it.each([
   'swiftHandCharter',

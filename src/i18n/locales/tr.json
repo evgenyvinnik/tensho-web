@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Taş değişiklikleri sonraki turlar dahil bu koşu boyunca sürer. Yeni koşuda sıfırlanır.",
+    "negativeTile": "Bu Negatif taş duvarınızda kaldığı sürece +1 Ferman yuvası. Taşı çekmek veya atmak yuvayı korur; yok etmek veya sürümünü değiştirmek yuvayı kaldırır.",
+    "overCapacity": "Kapasite azaldı: sahip olduğunuz Fermanları korursunuz. Yenisini almadan önce yer açın."
+  },
   "yakuUpgrades": {
     "help": "Bu bonuslar hakkında",
     "title": "Yaku geliştirmeleri",
@@ -173,7 +178,7 @@
       },
       "negative": {
         "name": "Negatif",
-        "description": "Fermana uygulandığında +1 Ferman yuvası."
+        "description": "Sahip olduğunuz her Negatif Ferman veya bu koşunun duvarındaki her fiziksel Negatif taş için +1 Ferman yuvası."
       }
     }
   },

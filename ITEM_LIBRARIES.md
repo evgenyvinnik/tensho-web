@@ -158,7 +158,12 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | **Foil** | 箔押し | +50 Chips | +50 Chips |
 | **Holographic** | 光沢 | +10 Mult | +10 Mult |
 | **Prismatic** | 虹彩 | ×1.5 Mult | ×1.5 Mult |
-| **Negative** | 負極 | N/A | +1 Decree slot |
+| **Negative** | 負極 | +1 Decree slot while this physical tile remains in the run wall | +1 Decree slot while owned |
+
+Fate Seal tile changes persist for the current run, including future rounds and
+save/reload. New runs start fresh. Negative tile capacity follows ownership, not
+draws or scoring; destruction or edition replacement removes its slot without
+deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEMENTATION.md).
 
 ### Stickers (Decrees only, from higher Stakes)
 

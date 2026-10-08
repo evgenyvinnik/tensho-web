@@ -90,7 +90,11 @@ it('provides localized text for every catalog modifier without unconditional pay
         for (const entry of details.modifiers) {
           expect(entry.name).toBe(t(`${entry.kind}.items.${entry.id}.name`))
           expect(entry.description).toBe(
-            t(`${entry.kind}.items.${entry.id}.description`)
+            t(
+              entry.kind === 'editions' && entry.id === 'negative'
+                ? 'runOwnership.negativeTile'
+                : `${entry.kind}.items.${entry.id}.description`
+            )
           )
         }
         expect(tileDetails(tile, t, 'es', true)).toEqual({

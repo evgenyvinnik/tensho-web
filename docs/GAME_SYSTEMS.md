@@ -540,19 +540,27 @@ This section defines original, mahjong-themed analogs to several Balatro mechani
 
 ### 7a. Fate Seals (Tarot analog)
 
-**Theme:** Ritual seals that alter a single hand or a single decision.
+**Theme:** Ritual seals that shape the current hand and the deck being built.
 
 **Core Rules:**
 - One seal can be used per round by default.
-- Seals are "Heaven" authority: they override most table rules.
-- Using a seal never changes the wall composition, only the current hand state.
+- Seals must pass their targeting and use restrictions; they do not bypass
+  Heaven or Mandate rules indiscriminately.
+- Selected physical tile changes also change the persistent wall for this run.
+  They survive draws, discards, round reshuffles and save/reload. A new run starts
+  fresh. Destruction permanently removes the physical tile.
 
-**Mahjong Twist:** Seals are keyed to hand structure (melds, waits, pairs).
+**Mahjong Twist:** Choose rack tiles to improve future melds, waits and pairs.
 
 **Example Effects (Original):**
-- **Seal of Harmony:** Convert one isolated tile into a sequence fit by shifting its rank by ±1.
-- **Seal of Balance:** Swap ranks of two suited tiles in hand.
-- **Seal of Stillness:** One chosen tile cannot be discarded this round.
+- **Seal of Harmony:** Make one selected tile Wild.
+- **Seal of Strength:** Increase the rank of up to two eligible suited tiles by one.
+- **Seal of Transmutation:** First selected tile copies the second, including
+  modifiers, while retaining its own physical ID.
+- **Seal of Release:** Permanently destroy up to two selected tiles.
+
+This replaces the old hand-only draft under the user's delegated rule authority.
+See [run ownership rules and verification](RUN_OWNERSHIP_IMPLEMENTATION.md).
 
 ### 7b. Celestial Orbs (Planet analog)
 

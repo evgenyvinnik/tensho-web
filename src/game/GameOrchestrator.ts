@@ -2955,6 +2955,7 @@ export class GameOrchestrator {
     this.state.summerReserve = replace(this.state.summerReserve)
     this.state.deadWall = replace(this.state.deadWall)
     this.state.discards = replace(this.state.discards)
+    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
   }
 
   private destroyTiles(tileIds: string[], effects: Effect[]): void {
@@ -2986,6 +2987,7 @@ export class GameOrchestrator {
     this.state.wallTemplate = this.state.wallTemplate.filter(
       (tile) => tile.id !== tileId
     )
+    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     this.state.deadWall = this.state.deadWall.filter(
       (tile) => tile.id !== tileId
     )
@@ -3055,6 +3057,7 @@ export class GameOrchestrator {
   private addCreatedTile(tile: Tile): void {
     this.state.handTiles.push(tile)
     this.state.wallTemplate.push(tile)
+    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     this.state.handTiles.sort(Tile.compare)
   }
 
@@ -4547,6 +4550,7 @@ export class GameOrchestrator {
     if (!(tile instanceof Tile)) return false
     if (tile.isFlower && this.state.tableModifiers.flowersDisabled) return false
     this.state.wallTemplate.push(tile)
+    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     return true
   }
 

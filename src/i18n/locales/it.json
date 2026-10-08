@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Le modifiche alle tessere durano per tutta la partita, inclusi i round successivi. Una nuova partita riparte da zero.",
+    "negativeTile": "+1 spazio Decreto finché questa tessera Negativa rimane nel tuo muro. Pescarla o scartarla conserva lo spazio; distruggerla o cambiarne l’edizione lo rimuove.",
+    "overCapacity": "Capacità ridotta: conservi i Decreti posseduti. Libera spazio prima di acquisirne altri."
+  },
   "yakuUpgrades": {
     "help": "Informazioni sui bonus",
     "title": "Potenziamenti yaku",
@@ -173,7 +178,7 @@
       },
       "negative": {
         "name": "Negativa",
-        "description": "+1 spazio Decreto se applicata a un Decreto."
+        "description": "+1 spazio Decreto per ogni Decreto Negativo posseduto o tessera Negativa fisica nel muro di questa partita."
       }
     }
   },

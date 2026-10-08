@@ -4,6 +4,16 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Current local ownership checkpoint:** Fate Seal changes are explicitly
+run-persistent; Negative tiles now grant their promised ownership slots across
+acquisition, copying, destruction and reload. Eighteen engine, fourteen localized
+UI and asset checks pass. Native and built-production desktop/320px EN/ES browser
+journeys each pass 8/8 without retries. Full regression passes 2,060/2,060 in 169
+files; TypeScript, build, lint and thirteen release checks pass. New Transmutation
+artwork is integrated. Deployment is pending; this is not yet a hosted claim.
+[Decision and evidence](RUN_OWNERSHIP_IMPLEMENTATION.md) supersedes older
+hand-only/Negative conflict notes below. The whole project remains in progress.
+
 **Published Frostbite/retrigger follow-up — v1.0.261008-3:** fractional Decree repeat rewards,
 actual Glass/Polychrome payment, complete Red Seal rewards and win-only
 remaining-rack Treasure Hunter are connected. Discrete rule/resource behavior
@@ -765,7 +775,7 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 1. Extend the [current observed-build comparison](CLASSIC_BUILD_SHOP_BALANCE.md) beyond its tactical shopping heuristic. The 1,280-run new-policy sample reaches Act 8 on 49 runs and wins 25, without rescues, but none of its wins uses a complete hand. The subsequent [structural hand-planning comparison](CLASSIC_HAND_PLANNING.md) completes 320 matched Stake-1 runs: 8 versus 5 wins, six complete hands, but fewer cleared rounds overall. Higher Stakes, cost-aware planning and human observation remain open. [Table rules](TABLE_STYLE_RULES.md) records implemented effects, unlock paths, compatibility and regression evidence.
 2. Extend [`scripts/classic-balance.mts`](../scripts/classic-balance.mts) with cost-aware destructive/Script strategies and broader Yaku planning before tuning ordinary-run Act 6–8 power growth. Opt-in synergy-aware Decree buying/replacement is now measured, but full-hand planning and other item/pack optimization remain limited. [Resource and one-away policies](CLASSIC_BALANCE_AUDIT.md) and [conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) retain their original snapshots and raw rows; their historical lack of Act 8 reach is not a claim about the new shopping policy.
-3. Extend the verified consumable targeting and pack-settlement coverage to complete effect combinations, Stake selection/unlocks, Omen-modified shops, Boss mandates, Act 8 victory, and Endless continuation. Reconcile hand-only versus persistent Fate Seal modifications; the current runtime is preserved pending the requested design choice.
+3. Extend the verified consumable targeting and pack-settlement coverage to complete effect combinations, Stake selection/unlocks, Omen-modified shops, Boss mandates, Act 8 victory, and Endless continuation. Fate Seal lifetime and Negative tile ownership are now resolved and implemented; see [current evidence](RUN_OWNERSHIP_IMPLEMENTATION.md). Other effect/lifecycle combinations remain open.
 4. Review the new sound mix on representative speakers/headphones and iOS/Safari. The 55 generated assets, app-lifetime music/SFX, settings, and native Chromium/mobile playback are implemented and tested; see [Audio implementation](AUDIO_IMPLEMENTATION.md).
 5. Observe people playing the Table Loop prototype against the classic loop, following section 8 of the experiments document. The simulation says the targets are not arbitrary; it says nothing about whether the loop is enjoyable.
 

@@ -81,7 +81,9 @@ export function tileDetails(
       ...entry,
       name: t(`${entry.kind}.items.${entry.id}.name`, entry.name),
       description: t(
-        `${entry.kind}.items.${entry.id}.description`,
+        entry.kind === 'editions' && entry.id === 'negative'
+          ? 'runOwnership.negativeTile'
+          : `${entry.kind}.items.${entry.id}.description`,
         entry.description
       ),
     })),

@@ -23,7 +23,7 @@ import { getCurrentLanguage } from '../../i18n'
 import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
-import { illustrationAssets } from '../../utils/assets'
+import { getFateSealIllustration, illustrationAssets } from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import type { FateSeal } from '../../systems/FateSealSystem'
 import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
@@ -134,10 +134,13 @@ function getItemTypeIcon(itemType: string): string {
 }
 
 /** Get generated artwork for the consumable item types that have it. */
-function getItemTypeIllustration(itemType: string): string | null {
+function getItemTypeIllustration(
+  itemType: string,
+  itemId?: string
+): string | null {
   switch (itemType) {
     case 'FateSeal':
-      return illustrationAssets.consumables.fateSeal
+      return getFateSealIllustration(itemId)
     case 'CelestialOrb':
       return illustrationAssets.consumables.celestialOrb
     case 'VoidScript':
@@ -355,7 +358,10 @@ export function ShopItemCard({
   }
 
   const icon = getItemTypeIcon(offering.itemType)
-  const illustration = getItemTypeIllustration(offering.itemType)
+  const illustration = getItemTypeIllustration(
+    offering.itemType,
+    offering.item.id
+  )
   const rarityColor = getRarityBorderColor(rarity)
   const hasDiscount =
     offering.baseCost + offering.editionCost > offering.finalCost

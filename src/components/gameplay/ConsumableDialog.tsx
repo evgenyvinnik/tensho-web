@@ -15,6 +15,7 @@ import type {
 import { consumableTargetRange } from '../../gameplay/consumableTargeting'
 import { useItemText } from '../../i18n/useItemText'
 import {
+  getFateSealIllustration,
   getVoidScriptIllustration,
   illustrationAssets,
 } from '../../utils/assets'
@@ -184,7 +185,7 @@ export function ConsumableDialog({
                 candidate.type === 'VoidScript'
                   ? getVoidScriptIllustration(candidate.id)
                   : candidate.type === 'FateSeal'
-                    ? illustrationAssets.consumables.fateSeal
+                    ? getFateSealIllustration(candidate.id)
                     : illustrationAssets.consumables.celestialOrb
               return (
                 <button
@@ -216,6 +217,14 @@ export function ConsumableDialog({
               )
             })}
           </div>
+          {item?.type === 'FateSeal' && range.max > 0 && (
+            <p
+              data-seal-lifetime
+              className="mt-3 text-sm leading-relaxed text-amber-100/85"
+            >
+              {t('runOwnership.fateSeal')}
+            </p>
+          )}
           {item?.id === 'seal_of_unity' && (
             <section
               className="mt-4"

@@ -1,4 +1,9 @@
 {
+  "runOwnership": {
+    "fateSeal": "Perubahan ubin bertahan sepanjang permainan ini, termasuk ronde berikutnya. Permainan baru dimulai dari awal.",
+    "negativeTile": "+1 slot Dekret selama ubin Negatif ini tetap dimiliki di dindingmu. Mengambil atau membuangnya tidak menghapus slot; menghancurkan atau mengganti edisinya menghapus slot.",
+    "overCapacity": "Kapasitas berkurang: Dekret yang dimiliki tetap disimpan. Kosongkan tempat sebelum mendapat yang baru."
+  },
   "yakuUpgrades": {
     "help": "Tentang bonus ini",
     "title": "Peningkatan yaku",
@@ -150,7 +155,7 @@
       },
       "negative": {
         "name": "Negatif",
-        "description": "+1 slot Dekret jika diterapkan pada Dekret."
+        "description": "+1 slot Dekret per Dekret Negatif yang dimiliki atau ubin Negatif fisik di dinding permainan ini."
       }
     }
   },

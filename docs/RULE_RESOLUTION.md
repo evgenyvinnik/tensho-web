@@ -16,6 +16,25 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Fate Seal lifetime and Negative tile ownership
+
+Fate Seals permanently change selected physical tiles for this run, including
+future rounds and save/reload. New runs start fresh. Destruction removes the tile;
+Transmutation copies its face/modifiers but retains the target's ID. This selects
+deck-building investment over the hand-only draft; targeting/use limits remain.
+
+Every owned non-bonus Negative tile grants one Decree slot, counted once by physical
+ID in the persistent wall. Drawing, discarding, debuffing and Frostbite do not toggle
+capacity. Destruction or edition replacement removes the bonus; copying to another
+physical tile adds another. Negative Decrees and other slot sources remain separate.
+Losing capacity keeps existing Decrees and their normal rules; new acquisitions
+must fit the resulting capacity.
+
+This chooses the gameplay document's promised tile effect over the item table's
+old N/A entry. Capacity is derived on restore rather than serialized into base
+slots, so old saves receive the effect without reload multiplication.
+[Implementation, artwork and verification](RUN_OWNERSHIP_IMPLEMENTATION.md).
+
 ### Orb progression: upgrade on use
 
 Using an Orb immediately raises its family one level, capped at 10. Level 1 has
@@ -76,7 +95,8 @@ gaps are not removed by choosing the rule.
   published in v1.0.261008-2 with independent CI and hosted verification.
 - Fractional/binary Frostbite rules and Treasure Hunter timing are published
   and verified in v1.0.261008-3. Finish
-  other copied-resource lifecycles and reconcile Fate Seal lifetime/Negative tiles.
+  other copied-resource lifecycles. Fate Seal lifetime/Negative tiles now have
+  ownership rules above; release verification is tracked separately.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
 - Continue organic-run strategy and newcomer evaluation. A legal engine run or
   a green browser test alone does not demonstrate engaging play.

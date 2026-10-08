@@ -194,6 +194,6 @@ verified; the requirements in `GAME_SYSTEMS.md` were not silently discarded.
 | Advanced mutations, catalysts, and Flower–Season interactions | All four Flower–Season combinations, all four advanced mutations, saved rebloom acquisition and Flower-paid Decree catalysts are published and verified. Distinct two-Flower Yakuman Succession is published in [v1.0.261008-2](YAKUMAN_SUCCESSION_IMPLEMENTATION.md). |
 
 The user explicitly delegated resolution of open rules on October 7.
-Fate Seal lifetime and Negative-tile conflicts still require concrete
-decisions and implementation, but no longer require awaiting each old question.
+Fate Seal lifetime and Negative-tile conflicts now have concrete current-run
+ownership rules and implementation; see [verification](RUN_OWNERSHIP_IMPLEMENTATION.md).
 Previously confirmed Bell, Merchant and defeat-settlement choices remain fixed.
