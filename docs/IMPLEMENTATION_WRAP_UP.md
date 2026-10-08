@@ -9,14 +9,15 @@ The requested outcome is to finish the project implementation after the other ag
 ## Current Season implementation
 
 [Frostbite repeat rewards and Treasure Hunter](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md)
-are the current local follow-up, not yet published. The actual paid score now
+are published and verified in **v1.0.261008-3**. The actual paid score now
 includes native Glass/Polychrome, complete Red Seal rewards, and fractional
 Decree repeat rewards. Remaining-rack suit income is win-only; stable binary
 rules/resources and prior defeat choices are preserved. New Echo Stone artwork
-and thirteen-locale rules are connected; native and production EN/ES
-desktop/touch journeys each pass 4/4. Full regression passes 2,027/2,027 in
-167 files, with build, TypeScript, lint and thirteen release checks passing.
-Independent release and hosted verification remain.
+and thirteen-locale rules are connected; native, production and hosted EN/ES
+desktop/touch journeys each pass 4/4. Full regression and independent CI pass
+2,027/2,027 in 167 files, with build, TypeScript, lint and thirteen release
+checks passing. Deployment succeeds without retry; release/artwork provenance
+matches. Other mechanics and human balance/fun requirements remain open.
 
 [Yakuman Succession](YAKUMAN_SUCCESSION_IMPLEMENTATION.md) is published in **v1.0.261008-2**
 as a distinct two-held-Flower ascension permission, with a generated portrait and

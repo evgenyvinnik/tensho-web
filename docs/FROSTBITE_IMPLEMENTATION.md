@@ -1,5 +1,9 @@
 # Frostbite scoring implementation
 
+Historical checkpoint. The later [v1.0.261008-3 implementation](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md)
+resolves fractional repeats, binary/resource boundaries and Treasure Hunter;
+the original failures and then-open questions below remain as historical evidence.
+
 September 19, 2026. In progress; not a full Frostbite or project completion claim.
 
 ## Confirmed defect and scoring boundary

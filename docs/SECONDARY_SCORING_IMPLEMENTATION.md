@@ -1,5 +1,9 @@
 # Secondary Decree scoring: Yaku and retriggers
 
+Historical checkpoint. Fractional repeats and binary/resource Frostbite rules
+are subsequently resolved and published in [v1.0.261008-3](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md).
+Other copied-effect lifecycle gaps are not closed by that follow-up.
+
 September 19, 2026. Local implementation checkpoint; broader completion remains open.
 
 ## Confirmed defects

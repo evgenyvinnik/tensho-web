@@ -1,5 +1,9 @@
 # Decree economy and Wealth Engine artwork
 
+Historical checkpoint. Treasure Hunter's remaining-rack, win-only timing and
+fractional Frostbite repeats are subsequently resolved and verified in
+[v1.0.261008-3](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md); the original evidence below is retained.
+
 September 19, 2026. Local implementation checkpoint, not project completion.
 
 ## Confirmed rule gaps

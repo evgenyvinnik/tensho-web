@@ -74,8 +74,8 @@ gaps are not removed by choosing the rule.
 - The four advanced Flower mutations, acquisition/unlock path and catalyst
   payments are published and verified below. Yakuman Succession is also
   published in v1.0.261008-2 with independent CI and hosted verification.
-- Fractional/binary Frostbite rules and Treasure Hunter timing are implemented
-  in the current local checkpoint below; release verification remains. Finish
+- Fractional/binary Frostbite rules and Treasure Hunter timing are published
+  and verified in v1.0.261008-3. Finish
   other copied-resource lifecycles and reconcile Fate Seal lifetime/Negative tiles.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
 - Continue organic-run strategy and newcomer evaluation. A legal engine run or
@@ -123,8 +123,10 @@ rescues and final defeats do not earn this round-win income. Rental remains
 charged on final defeat. Legacy stored Treasure Hunter effects missing the suit
 condition are interpreted on read (including copies), not rewritten on load.
 
-These are delegated design decisions. Verification and balance conclusions are
-recorded separately in the implementation evidence, not inferred from the rules.
+These are delegated design decisions, published in **v1.0.261008-3**. Local and
+independent CI pass 2,027 tests; native/production/hosted EN/ES desktop/touch
+journeys each pass 4/4. [Evidence and limits](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md)
+do not infer balance or enjoyment from automated verification.
 
 ### Winter: one missing rank per same-suit sequence
 

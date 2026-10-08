@@ -1,6 +1,7 @@
 # Frostbite repeat rewards and Treasure Hunter
 
-October 7, 2026 — local work, not yet published. Live baseline: v1.0.261008-2.
+October 7, 2026 local / October 8 UTC — published and verified in **v1.0.261008-3**.
+This closes these specific mechanics gaps, not whole-project or balance work.
 
 ## Chosen rules and actual integration
 
@@ -85,8 +86,31 @@ Composition/framing: centered square, entire upright scroll and tassels visible 
 Constraints: genuinely transparent background; isolated object; no scene, floor, cast shadow, letters, numbers, text, watermark or UI frame.
 ```
 
-## Remaining verification / project work
+## Published verification
 
-Finish independent release CI and hosted verification before publication. Other item reconciliation,
-copied-effect lifecycles, Fate Seal/Negative lifetime, layout, organic balance
-and newcomer fun evaluation remain project requirements.
+- Implementation: `241a1108b5cc10765b07ea0f5a14addd4cc3ff6a` on `main`.
+- Version commit / fetched tag / public manifest:
+  `40730549723de06c9770cbfa9cae5220f1f5242b`, `v1.0.261008-3`.
+- [Release workflow 37712009351](https://github.com/evgenyvinnik/tensho-web/actions/runs/37712009351)
+  succeeds without retry: build `113099820528`, deploy `113100608873`.
+  Independent CI passes **2,027/2,027 tests in 167 files**, thirteen release
+  checks and the production build. Existing action/runner migration annotations
+  remain warnings, not failed deployment steps.
+- Hosted EN/ES desktop and 320px touch journeys pass **4/4** without retries or
+  longer deadlines, matching the native and built-production batches. Real
+  controls verify illustrated/translated inspectors, forecast/payment, tile gold,
+  win settlement and exact saved shop-state reload. These are controlled fixtures,
+  not proof of organic acquisition, physical-device behavior or player enjoyment.
+- Hosted entry `/tensho-web/assets/index-BDpXwoeh.js` contains the matching
+  runtime version; public manifest/tag agree. The hosted Echo Stone checksum
+  matches the workspace SHA-256 above.
+- Reports, screenshots, initial failed tests, CI output and provenance are in
+  `/tmp/tensho-echo-evidence-4bzDfi`. Both owned fixture servers are stopped;
+  the pre-existing 4173 server was not touched.
+
+## Remaining project work
+
+Other item reconciliation, copied-effect lifecycles, Fate Seal/Negative lifetime,
+layout, organic balance and newcomer fun evaluation remain project requirements.
+The small-screen Season inspector remains verbose and scrollable; automated
+no-overflow checks are not a claim of perfect layout or native-language review.

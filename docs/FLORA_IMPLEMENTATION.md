@@ -3,6 +3,15 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
+October 7 published follow-ups, **v1.0.261008-2 / -3**:
+[Yakuman Succession](YAKUMAN_SUCCESSION_IMPLEMENTATION.md) supplies its distinct
+two-Flower ascension rule, and [Frostbite repeat rewards](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md)
+completes fractional scoring and Treasure Hunter's win-only suit income while
+explicitly preserving discrete rules/resources. Latest independent CI passes
+2,027 tests; native, built-production and hosted desktop/touch journeys pass
+4/4 each. The former Frostbite unfinished warning is removed in favor of its
+actual thirteen-locale rule. Broader game requirements and human evaluation remain.
+
 October 7 published follow-up, **v1.0.261008-1**: [Flower-paid Decree catalysts](FLOWER_CATALYSTS_IMPLEMENTATION.md)
 now have an explicit illustrated shop confirmation, current-count bonus/capacity
 checks and persistent awakening/history. Native, built-production and hosted
@@ -169,20 +178,20 @@ focused run's mixed-viewport geometry read was corrected to measure the whole
 layout atomically, preserving its bounds. Fixture-based tests do not prove
 organic Flower/Season frequency, late-Act balance, or player enjoyment.
 
-## Requirements still missing from the runtime
+## Current requirements coverage
 
-The inspector explicitly marks unfinished behavior rather than advertising
-unused helpers as working powers. This is temporary disclosure, not a removal
-of the requirements in `GAME_SYSTEMS.md`.
+The inspector describes connected powers. The former incomplete Season warning
+was removed only after the corresponding rules were resolved, implemented and
+verified; the requirements in `GAME_SYSTEMS.md` were not silently discarded.
 
-| Documented rule | Current gap |
+| Documented rule | Current implementation |
 | --- | --- |
 | Spring: extra draws | Connected as +2 round-scoped rack spaces per normal Spring. Orchid/Spring adds non-chaining Honor-triggered dead-wall draws; see its current verification above. |
 | Bamboo + Summer exception | Connected: four physical terminals in a committed play earn round-long protection and restore reserved tiles after scoring. See the October 7 follow-up above. |
 | Autumn: discard pool grows | Resolved and connected as +1 discard action on each normal Autumn draw; its Yaku modifier remains active. Plum recovery is published and verified above. |
 | Winter: loosen hand legality | Connected to tactical/full scoring and coach as one skipped rank per same-suit sequence. Score penalties and Chrysanthemum exception remain active. See [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md). |
-| Frostbite: halve Decree effects | Flat-point, main multiplier, Yaku-specific benefits and shared gold reward paths scale with every Frostbite; ordinary bonuses remain intact. Wealth Engine and copied gold effects feed those paths. Treasure Hunter timing/scaling, fractional retriggers and non-numeric rules remain open. See [scoring evidence](FROSTBITE_IMPLEMENTATION.md), [gold settlement](FROSTBITE_GOLD_IMPLEMENTATION.md), [Decree economy](DECREE_ECONOMY_IMPLEMENTATION.md) and [secondary scoring](SECONDARY_SCORING_IMPLEMENTATION.md). |
-| Advanced mutations, catalysts, and Flower–Season interactions | All four Flower–Season combinations, all four advanced mutations, saved rebloom acquisition and Flower-paid Decree catalysts are published and verified. The separately authored Yakuman Succession activation is still open. See the follow-ups above. |
+| Frostbite: halve Decree rewards | Point, multiplier, Yaku, gold and repeat rewards retain half per stack; native tile rewards and discrete permissions/resources/costs remain intact by explicit rule resolution. Treasure Hunter pays remaining-rack suits only on ordinary wins. Published and verified in [v1.0.261008-3](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md). |
+| Advanced mutations, catalysts, and Flower–Season interactions | All four Flower–Season combinations, all four advanced mutations, saved rebloom acquisition and Flower-paid Decree catalysts are published and verified. Distinct two-Flower Yakuman Succession is published in [v1.0.261008-2](YAKUMAN_SUCCESSION_IMPLEMENTATION.md). |
 
 The user explicitly delegated resolution of open rules on October 7.
 Fate Seal lifetime and Negative-tile conflicts still require concrete
