@@ -29,8 +29,8 @@ historical per-run record from a lifetime total.
 Preserve actual past acquisitions, existing inventory and already-paid pack
 promises. Reject newly generated locked rewards and unpaid legacy locked stock
 before charging; Archive-only flags do not bypass progression. Full Unlock remains
-an explicit exception without manufactured achievements. These rules are locally
-implemented, not yet a deployment claim. [Evidence](BROAD_INTEGRATION_AUDIT.md).
+an explicit exception without manufactured achievements. These rules are published
+and hosted-verified in v1.0.261008-11. [Evidence](BROAD_INTEGRATION_AUDIT.md).
 
 ### Score thresholds use this play's neutral paid score
 
@@ -144,8 +144,8 @@ gaps are not removed by choosing the rule.
   payments are published and verified below. Yakuman Succession is also
   published in v1.0.261008-2 with independent CI and hosted verification.
 - Fractional/binary Frostbite rules and Treasure Hunter timing are published
-  and verified in v1.0.261008-3. Finish
-  other copied-resource lifecycles. Fate Seal lifetime/Negative tiles now have
+  and verified in v1.0.261008-3; copied-resource lifecycles are published and
+  verified in v1.0.261008-8. Fate Seal lifetime/Negative tiles now have
   ownership rules above; release verification is tracked separately.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
   The six authored Decree unlocks found by the [broad integration audit](BROAD_INTEGRATION_AUDIT.md)

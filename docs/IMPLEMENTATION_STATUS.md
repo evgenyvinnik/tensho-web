@@ -4,14 +4,16 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
-**Yaku Repetition checkpoint — locally verified, publication pending:** actual
+**Published Yaku Repetition — v1.0.261008-13:** actual
 consecutive-round pattern history now compounds, with a ×4 cap per Decree and
 no growth from repeated plays inside one round. Boss-blocked patterns cannot
 contribute. Legacy saves retain proven history, with strict new-history validation.
 Generated scroll art and optional thirteen-locale streak details are connected.
 Full regression rerun passes 2,599/2,599 in 188 files; build/typecheck, lint
 (warnings only), thirteen release checks, six native and six production
-desktop/touch EN/ES/RU journeys pass. Earlier failures remain recorded in the
+desktop/touch EN/ES/RU journeys pass. Independent CI passes 2,599/2,599 tests
+and deployment; all six hosted journeys pass. Manifest/tag/runtime and portrait
+checksum agree. Earlier failures remain recorded in the
 [implementation ledger](YAKU_REPETITION_IMPLEMENTATION.md).
 
 **Published secret consumable progression — v1.0.261008-12:** six

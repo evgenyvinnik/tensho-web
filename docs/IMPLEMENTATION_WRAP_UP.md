@@ -8,12 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Yaku Repetition](YAKU_REPETITION_IMPLEMENTATION.md) is locally verified, awaiting
-publication: consecutive-round compound growth, boss-filtered scoring, compatible
+[Yaku Repetition](YAKU_REPETITION_IMPLEMENTATION.md) is published and hosted-verified
+in **v1.0.261008-13**: consecutive-round compound growth, boss-filtered scoring, compatible
 saved streaks, generated scroll artwork and optional localized planning details.
 The full regression rerun passes 2,599/2,599 in 188 files; build/typecheck, lint
 (warnings only), thirteen release checks, six native and six production
-desktop/touch journeys pass. Initial test-matcher mistakes and the first full-run
+desktop/touch journeys pass. Independent CI passes all 2,599 tests and deployment;
+six hosted journeys pass, with matching manifest/tag/runtime and portrait checksum.
+Initial test-matcher mistakes and the first full-run
 CLI timeout remain recorded. This is not a whole-project completion or fun claim.
 
 [Secret consumable progression](SECRET_CONSUMABLE_PROGRESSION.md) is published

@@ -1,6 +1,6 @@
 # Yaku Repetition Charter: consecutive-round growth
 
-Status: locally verified, October 8, 2026. Publication pending.
+Status: published and hosted-verified in v1.0.261008-13, October 8, 2026.
 
 ## Requirement and resolved rule
 
@@ -93,4 +93,18 @@ Evidence directory: `/tmp/tensho-yaku-repetition-v4kXbH`.
 - Full regression rerun passes **2,599/2,599 in 188 files** in 106.43 seconds,
   including the unchanged balance CLI test. Earlier failed runs remain recorded.
 
-Publication and hosted verification remain separate gates.
+## Publication
+
+- Source checkpoint: `49e6073cbc084c87217f79985ad2b37bb774d780`.
+- [Independent CI and Pages deployment](https://github.com/evgenyvinnik/tensho-web/actions/runs/37743441856)
+  succeed: 2,599/2,599 tests in 188 files, release checks and production build.
+- Version/tag: `1.0.261008-13` / `v1.0.261008-13`.
+- Built commit: `8de4a1f34b33ef14a166240fc9e0d7d5b89c9d8c`.
+- Public `release.json`, remote tag and runtime entry
+  `/tensho-web/assets/index-D8nlF-mP.js` agree. The hosted portrait SHA-256
+  matches the installed asset above.
+- Hosted EN/ES/RU desktop/touch replay journeys pass **6/6** without retries,
+  including real scoring, stage/confirm, saved continuation and loaded artwork.
+
+This closes this mechanic's implementation checkpoint, not overall completion,
+organic balance, native-speaker review or physical-device/newcomer assessment.
