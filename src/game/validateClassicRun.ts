@@ -339,6 +339,12 @@ const stateFields = {
   yakuPlayCounts: entries(id, count),
   currentRoundYakuIds: uniqueIds,
   previousRoundYakuIds: uniqueIds,
+  previousRoundYakuStreaks: optional((v, p) => {
+    for (const [key, value] of Object.entries(record(v, p))) {
+      id(key, `${p}.${key}`)
+      positive(value, `${p}.${key}`)
+    }
+  }),
   deadWallWritUsedThisRound: bool,
   pendingActReduction: count,
   phase: choice(['gameplay', 'shop', 'gameOver']),
@@ -462,6 +468,19 @@ export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
   snapshot(value, 'run')
   const saved = value as ClassicRunSnapshot
   const state = saved.state
+  if (
+    state.previousRoundYakuStreaks &&
+    (Object.keys(state.previousRoundYakuStreaks).length !==
+      state.previousRoundYakuIds.length ||
+      state.previousRoundYakuIds.some(
+        (id) =>
+          !Object.prototype.hasOwnProperty.call(
+            state.previousRoundYakuStreaks,
+            id
+          )
+      ))
+  )
+    invalid('run.state.previousRoundYakuStreaks')
   const flowerHistory = state.flowerSystem.collectedTypes
   if (
     flowerHistory &&

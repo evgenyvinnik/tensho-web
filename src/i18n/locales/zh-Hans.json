@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "连役敕令",
+    "description": "连续回合得分的每种役，按此前连续得分的回合数逐次叠乘×1.2（总计最高×4）。某回合未以该役得分或跳过回合，就会中断该役的连续记录。",
+    "title": "可重复的役",
+    "streak": "{{name}} · 此前连续{{rounds}}回合",
+    "empty": "暂无连续记录。在本回合以役得分即可开始。"
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "以役满得分。",
     "seal_of_the_void": "在一次挑战中以全部21种役得分。",

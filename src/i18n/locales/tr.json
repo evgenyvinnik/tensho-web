@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "Yaku Tekrarı Fermanı",
+    "description": "Ardışık turlarda puan kazandıran her Yaku, serisindeki önceki her tur için ×1,2 ile bileşik çarpılır (toplam en fazla ×4). O Yaku olmadan biten veya atlanan bir tur seriyi bozar.",
+    "title": "Tekrarlanacak desenler",
+    "streak": "{{name}} · önceki {{rounds}} ardışık tur",
+    "empty": "Önceki seri yok. Başlamak için bu tur bir Yaku ile puan kazan."
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Bir Yakuman ile puan kazan.",
     "seal_of_the_void": "Tek bir koşuda 21 Yaku türünün tümüyle puan kazan.",

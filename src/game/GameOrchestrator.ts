@@ -276,6 +276,8 @@ export interface OrchestratorState {
   /** Yaku scored in the active round and in the immediately previous round. */
   currentRoundYakuIds: Set<string>
   previousRoundYakuIds: Set<string>
+  /** Completed consecutive rounds per family. Missing in legacy saves. */
+  previousRoundYakuStreaks?: Record<string, number>
   /** Once-per-round interaction granted by Dead Wall Writ. */
   deadWallWritUsedThisRound: boolean
   /** One-shot Act reduction queued by Ancient/Stone Script acquisition. */
@@ -2390,6 +2392,7 @@ export class GameOrchestrator {
     this.state.seasonSystem.clear()
     this.state.bambooSummerProtection = false
     this.state.previousRoundYakuIds = new Set()
+    this.state.previousRoundYakuStreaks = {}
     this.state.currentRoundYakuIds.clear()
 
     for (let i = 0; i < skipResult.decreeSlotBonus; i++) {
@@ -3460,13 +3463,6 @@ export class GameOrchestrator {
       partialMelds ?? parsedHand.melds,
       this.getPartialHandRules()
     )
-    systemContext.yakuMultipliers = new Map(
-      baseBreakdown.detectedYaku.map((yaku) => [
-        yaku.definition.id,
-        this.state.previousRoundYakuIds.has(yaku.definition.id) ? 1 : 0,
-      ])
-    )
-
     const mandateScoring = this.state.mandateEffectSystem.applyToScoring({
       basePoints: baseBreakdown.basePoints,
       multiplier: baseBreakdown.yakuMultiplier,
@@ -3481,6 +3477,16 @@ export class GameOrchestrator {
     const allowedYakuIds = new Set(mandateScoring.yakuIds)
     baseBreakdown.detectedYaku = baseBreakdown.detectedYaku.filter((yaku) =>
       allowedYakuIds.has(yaku.definition.id)
+    )
+    // A blocked pattern cannot earn a repetition bonus. Legacy saves prove
+    // only the immediately preceding round, never a longer inferred streak.
+    systemContext.yakuMultipliers = new Map(
+      baseBreakdown.detectedYaku.map(({ definition: { id } }) => [
+        id,
+        this.state.previousRoundYakuIds.has(id)
+          ? (this.state.previousRoundYakuStreaks?.[id] ?? 1)
+          : 0,
+      ])
     )
     baseBreakdown.basePoints =
       mandateScoring.basePoints * this.state.tableModifiers.baseScoreMultiplier
@@ -3940,6 +3946,14 @@ export class GameOrchestrator {
     })
 
     this.state.lastCompletedRoundType = roundState.roundType
+    this.state.previousRoundYakuStreaks = Object.fromEntries(
+      [...this.state.currentRoundYakuIds].map((id) => [
+        id,
+        this.state.previousRoundYakuIds.has(id)
+          ? (this.state.previousRoundYakuStreaks?.[id] ?? 1) + 1
+          : 1,
+      ])
+    )
     this.state.previousRoundYakuIds = new Set(this.state.currentRoundYakuIds)
     this.state.currentRoundYakuIds.clear()
 

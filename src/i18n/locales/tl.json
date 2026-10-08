@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "Utos ng Pag-uulit ng Yaku",
+    "description": "Bawat Yaku na umiskor sa magkakasunod na round ay may pinagsasamang ×1.2 sa bawat naunang round ng serye nito (hanggang ×4 sa kabuuan). Napuputol ang serye kapag walang ganoong Yaku o nilaktawan ang round.",
+    "title": "Mga pattern na uulitin",
+    "streak": "{{name}} · {{rounds}} naunang magkakasunod na round",
+    "empty": "Wala pang serye. Umiskor gamit ang Yaku sa round na ito para magsimula."
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Umiskor gamit ang Yakuman.",
     "seal_of_the_void": "Umiskor gamit ang lahat ng 21 uri ng Yaku sa iisang run.",

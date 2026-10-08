@@ -50,16 +50,24 @@ export function useItemText(): ItemText {
 
   return useMemo(
     () => ({
-      name: (kind, item) => t(`${kind}.items.${item.id}.name`, item.name),
+      name: (kind, item) =>
+        t(
+          kind === 'decrees' && item.id === 'yaku_repetition_charter'
+            ? 'yakuRepetition.name'
+            : `${kind}.items.${item.id}.name`,
+          item.name
+        ),
       description: (kind, item) =>
         t(
-          kind === 'decrees' && item.id === 'decree-doppelganger'
-            ? 'randomCopy.description'
-            : kind === 'decrees' && item.id === 'decree-supernova'
-              ? 'scoreThresholds.supernova'
-              : kind === 'decrees' && item.id === 'decree-perfectionist'
-                ? 'scoreThresholds.perfectionist'
-                : `${kind}.items.${item.id}.description`,
+          kind === 'decrees' && item.id === 'yaku_repetition_charter'
+            ? 'yakuRepetition.description'
+            : kind === 'decrees' && item.id === 'decree-doppelganger'
+              ? 'randomCopy.description'
+              : kind === 'decrees' && item.id === 'decree-supernova'
+                ? 'scoreThresholds.supernova'
+                : kind === 'decrees' && item.id === 'decree-perfectionist'
+                  ? 'scoreThresholds.perfectionist'
+                  : `${kind}.items.${item.id}.description`,
           item.description ?? ''
         ),
     }),

@@ -36,6 +36,10 @@ import { hasDecreeSticker } from '../../systems/decreeStickers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 import { RandomCopyDetails } from '../ui/RandomCopyDetails'
 import { CopyCostDetails } from '../ui/CopyCostDetails'
+import {
+  YakuRepetitionDetails,
+  type YakuRepetitionHistory,
+} from '../ui/YakuRepetitionDetails'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   getDecreeIllustration,
@@ -68,6 +72,7 @@ const RARITY_TRANSLATION_KEYS = {
  * Props for DecreeCardCompact
  */
 export interface DecreeCardCompactProps {
+  yakuHistory?: YakuRepetitionHistory
   ownedDecrees?: readonly OwnedDecree[]
   disabledDecreeIds?: ReadonlySet<string>
   /** The decree to display */
@@ -97,6 +102,7 @@ export function DecreeCardCompact({
   onSell,
   ownedDecrees = [],
   disabledDecreeIds,
+  yakuHistory,
 }: DecreeCardCompactProps) {
   const { t, i18n } = useTranslation()
   const reduceMotion = useReducedMotion()
@@ -417,6 +423,9 @@ export function DecreeCardCompact({
 
               {!faceDown && <DecreeModifierDetails decree={decree} />}
               {!faceDown && <CopyCostDetails decree={decree} />}
+              {!faceDown &&
+                decree.id === 'yaku_repetition_charter' &&
+                yakuHistory && <YakuRepetitionDetails history={yakuHistory} />}
               {!faceDown && (
                 <RandomCopyDetails
                   decree={decree}

@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "Editto della Ripetizione degli Yaku",
+    "description": "Ogni Yaku realizzato in round consecutivi moltiplica per ×1,2 per ogni round precedente della sua serie (massimo ×4 totale). Un round senza quel Yaku o saltato interrompe la serie.",
+    "title": "Combinazioni da ripetere",
+    "streak": "{{name}} · {{rounds}} round precedenti consecutivi",
+    "empty": "Nessuna serie precedente. Realizza uno Yaku in questo round per iniziarne una."
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Realizza uno Yakuman.",
     "seal_of_the_void": "Realizza tutti i 21 tipi di Yaku in una sola partita.",

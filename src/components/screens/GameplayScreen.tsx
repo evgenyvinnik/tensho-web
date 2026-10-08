@@ -742,6 +742,7 @@ export function GameplayScreen() {
                 key={decree.instanceId ?? `${decree.id}-${index}`}
                 decree={decree}
                 ownedDecrees={ownedDecrees}
+                yakuHistory={game.state}
                 disabledDecreeIds={disabledDecreeIds}
                 faceDown={game.decreesFaceDown}
                 disabledByMandate={isDecreeExcluded(decree, disabledDecreeIds)}

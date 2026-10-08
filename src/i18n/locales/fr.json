@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "Décret de Répétition des Yaku",
+    "description": "Chaque Yaku marqué lors de manches consécutives multiplie par ×1,2 pour chaque manche précédente de sa série (maximum ×4 au total). Une manche sans ce Yaku ou passée rompt sa série.",
+    "title": "Figures à répéter",
+    "streak": "{{name}} · {{rounds}} manches précédentes consécutives",
+    "empty": "Aucune série précédente. Marquez un Yaku cette manche pour en commencer une."
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Marquez un Yakuman.",
     "seal_of_the_void": "Marquez les 21 types de Yaku en une seule partie.",

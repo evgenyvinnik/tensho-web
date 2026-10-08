@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "Yaku Repetition Charter",
+    "description": "Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing or skipping a round breaks that Yaku’s streak.",
+    "title": "Patterns to repeat",
+    "streak": "{{name}} · {{rounds}} consecutive prior rounds",
+    "empty": "No prior streaks. Score a Yaku this round to start one."
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Score a Yakuman.",
     "seal_of_the_void": "Score all 21 Yaku types in a single run.",

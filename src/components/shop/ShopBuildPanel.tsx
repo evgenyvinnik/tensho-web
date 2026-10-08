@@ -6,15 +6,22 @@ import { useItemText } from '../../i18n/useItemText'
 import { DecreeCardCompact } from '../gameplay/DecreeBar'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
 import { ConfirmPopup } from '../ui/Popup'
+import type { YakuRepetitionHistory } from '../ui/YakuRepetitionDetails'
 
 interface Props {
+  yakuHistory?: YakuRepetitionHistory
   decrees: OwnedDecree[]
   maxSlots: number
   onSell: (instanceId: string) => { success: boolean }
 }
 
 /** The player's actual ordered build, not a predicted shopping recommendation. */
-export function ShopBuildPanel({ decrees, maxSlots, onSell }: Props) {
+export function ShopBuildPanel({
+  decrees,
+  maxSlots,
+  onSell,
+  yakuHistory,
+}: Props) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
   const titleId = useId()
@@ -63,6 +70,7 @@ export function ShopBuildPanel({ decrees, maxSlots, onSell }: Props) {
               key={decreeKey(decree)}
               decree={decree}
               ownedDecrees={decrees}
+              yakuHistory={yakuHistory}
               onSell={() => {
                 // A stable focus return target survives removal of the sold card
                 // and the transient detail popover that launched confirmation.

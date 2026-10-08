@@ -3,6 +3,7 @@ import { expect, it } from 'vitest'
 import { DecreeArtwork } from './DecreeArtwork'
 
 it.each([
+  ['yaku_repetition_charter', /yaku-repetition\.webp$/],
   ['decree-blueprint', /blueprint\.webp$/],
   ['decree-doppelganger', /doppelganger\.webp$/],
   ['decree-supernova', /supernova\.webp$/],

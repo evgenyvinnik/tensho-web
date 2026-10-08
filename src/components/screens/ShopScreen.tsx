@@ -217,6 +217,7 @@ export function ShopScreen() {
           />
 
           <ShopBuildPanel
+            yakuHistory={game.state}
             decrees={game.state.decreeSystem.getOwnedDecrees()}
             maxSlots={game.state.decreeSystem.getMaxSlots()}
             onSell={(id) => {

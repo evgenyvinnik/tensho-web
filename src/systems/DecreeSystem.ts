@@ -570,7 +570,7 @@ export const YAKU_REPETITION_CHARTER: Decree = {
   id: 'yaku_repetition_charter',
   name: 'Yaku Repetition Charter',
   description:
-    'Scoring the same yaku type in consecutive rounds compounds multipliers.',
+    'Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing or skipping a round breaks that Yaku’s streak.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 9,
@@ -1343,11 +1343,19 @@ export class DecreeSystem {
         count = context.tiles.filter((t) => t.isTerminal).length
         break
 
-      case 'repeated_yaku':
-        count = [...context.yakuMultipliers.values()].filter(
-          (repeatCount) => repeatCount > 0
-        ).length
-        break
+      case 'repeated_yaku': {
+        // Each current matching family contributes its completed-round streak.
+        // Multiple plays in one round do not grow it; round settlement does.
+        count = [...context.yakuMultipliers.values()].reduce(
+          (total, streak) => total + Math.max(0, streak),
+          0
+        )
+        const growth =
+          effect.baseValue + (1 + effect.scalingFactor) ** count - 1
+        return effect.maxValue === undefined
+          ? growth
+          : Math.min(growth, effect.maxValue)
+      }
 
       default:
         count = 0

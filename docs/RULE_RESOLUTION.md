@@ -158,6 +158,18 @@ These items can now proceed with documented decisions instead of waiting for
 answers to each old question. This document is not a completion declaration or
 an approval to alter the three confirmed choices above.
 
+### Yaku Repetition Charter: genuine consecutive-round compounding
+
+Each current surviving Yaku contributes its consecutive prior completed rounds.
+The Decree multiplies by ×1.2 for each such round across the matching families,
+capped at ×4 per Decree. Multiple plays within a round do not grow the streak;
+round settlement does. A missed family or skipped round breaks its chain.
+Boss-blocked patterns do not qualify. Legacy saves retain one proven previous
+round rather than fabricated history. Copies, suppression and Frostbite follow
+the existing scoring pipeline. The optional inspector shows what can be repeated.
+These delegated design choices and their exact verification scope are recorded
+in [Yaku Repetition implementation](YAKU_REPETITION_IMPLEMENTATION.md).
+
 ### Secret consumables: earned families and run-scoped mastery
 
 The six secret consumables in `ITEM_LIBRARIES.md` require actual paid scoring or

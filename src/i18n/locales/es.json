@@ -1,4 +1,11 @@
 {
+  "yakuRepetition": {
+    "name": "Edicto de Repetición de Yaku",
+    "description": "Cada Yaku puntuado en rondas consecutivas multiplica por ×1,2 por cada ronda anterior de su racha (máximo ×4 en total). Una ronda sin ese Yaku o saltada rompe su racha.",
+    "title": "Patrones para repetir",
+    "streak": "{{name}} · {{rounds}} rondas anteriores consecutivas",
+    "empty": "No hay rachas previas. Puntúa un Yaku esta ronda para iniciar una."
+  },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Puntúa un Yakuman.",
     "seal_of_the_void": "Puntúa los 21 tipos de Yaku en una sola partida.",
