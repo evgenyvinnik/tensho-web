@@ -1,6 +1,13 @@
 # Tensho SEO strategy
 
-Updated: September 12, 2026. This is a delivery plan and implementation record, not a claim that Google has indexed or ranked the new pages.
+Updated: October 8, 2026. This is a delivery plan and implementation record, not a claim that Google has indexed or ranked the new pages.
+
+October 8 follow-up: the [illustrated hand-building guide](ILLUSTRATED_HAND_GUIDE.md)
+adds an engine-tested keep/exchange/complete example, direct Classic destination
+and workshop limits. About/FAQ describe the shipped Flower/Season systems
+without implying whole-project completion. All articles remain English; their
+visible editorial date and structured data reflect this content review, not
+automatic deployment dates. Verification and publication status are in that ledger.
 
 October 3 follow-up: [real static route entries](STATIC_ROUTE_IMPLEMENTATION.md)
 address a reproduced live 404 on the guides' game-menu destination and add raw
@@ -11,7 +18,7 @@ historical; the follow-up ledger records current tests and deployment status.
 
 Help the right players discover Tensho, understand what makes it different, and reach a first useful decision in the game. An extensive About page is worthwhile when it answers real questions; length and repeated keywords are not the objective. Prioritize original explanations, honest examples and clear internal links. This direction follows [Google's SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide).
 
-Tensho should describe itself as a **single-player Mahjong roguelike playable in the browser**, not traditional competitive Riichi or tile-matching solitaire. Classic and the Table Loop experiment need separate explanations. Do not promise that unfinished Flower/Season powers, every proposed experiment, or universal mobile compatibility are already delivered.
+Tensho should describe itself as a **single-player Mahjong roguelike playable in the browser**, not traditional competitive Riichi or tile-matching solitaire. Classic and the Table Loop experiment need separate explanations. Explain shipped Flower/Season powers from their current rules; do not promise that every proposed experiment or universal mobile compatibility is already delivered.
 
 ## Initial public pages
 

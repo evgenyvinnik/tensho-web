@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Illustrated public hand guide](ILLUSTRATED_HAND_GUIDE.md) adds an engine-tested
+keep/exchange/complete example, actual tile art and the workshop's real cost and
+limits. About/FAQ now describe shipped Flower/Season powers accurately. Local
+verification passes 2,675 tests, build, thirteen release checks, eight production
+guide journeys and six gameplay workshop replays. Publication is pending. These
+English articles do not close newcomer playtesting or guide localization.
+
 [Illustrated hand workshop](HAND_BUILDER_IMPLEMENTATION.md), published and hosted-verified
 in **v1.0.261008-17**, connects optional
 player guidance to actual staging, separate redraw confirmation, real resource
@@ -27,8 +34,9 @@ events occur, but 31 paired runs worsen. Corrected counters and profile metadata
 retain the original attempt, and 2,628 regression tests pass locally and in CI.
 Published as **v1.0.261008-15**, with successful deployment, matching
 manifest/tag/runtime and two hosted English desktop/mobile replays. No live policy or
-balance change is implied. Optional, cost-aware player guidance remains to be
-implemented and assessed; whole-project completion and fun remain unproven.
+balance change is implied. Optional, cost-aware player guidance is now implemented
+in the hand workshop above; its effect on player decisions remains to be assessed.
+Whole-project completion and fun remain unproven.
 
 [Closed-Hand Austerity](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md) is published and
 hosted-verified in **v1.0.261008-14**: actual completed-hand mastery, legacy item/save

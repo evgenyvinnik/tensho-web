@@ -179,20 +179,40 @@ article section:first-child h2 {
   margin-top: 0;
 }
 .tile-example {
-  padding: 1.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
   border: 1px solid #dec48155;
   background: var(--green);
   border-radius: 10px;
 }
-.tile-example > div {
+.tile-groups {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-end;
+}
+.tile-example h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+.tile-group {
+  max-width: 100%;
+  min-width: 0;
+}
+.tile-group p {
+  margin: 0 0 0.4rem;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+.tile-faces {
+  display: flex;
+  gap: 4px;
 }
 .tile-example img {
-  width: 70px;
+  width: 40px;
   min-width: 0;
-  height: 96px;
+  height: 54px;
   object-fit: contain;
 }
 .next-step {

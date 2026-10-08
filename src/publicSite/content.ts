@@ -1,9 +1,16 @@
+import { TileSuit } from '../core/Tile'
+import { HAND_BUILDING_PANELS, type GuideTileExample } from './handExample'
+
 export interface GuideSection {
   id: string
   title: string
   paragraphs: string[]
-  tiles?: { suit: 'Bamboo' | 'Dots' | 'Symbol'; rank: number }[]
+  examples?: GuideTileExample[]
+  action?: { label: string; path: string }
 }
+
+// Editorial review date, not automatically advanced by deployments.
+export const PUBLIC_GUIDE_REVIEW_DATE = '2026-10-08'
 
 export const PUBLIC_PAGES = {
   about: {
@@ -40,6 +47,15 @@ export const PUBLIC_PAGES = {
         ],
       },
       {
+        id: 'living-table',
+        title: 'Flowers last; Seasons change the round',
+        paragraphs: [
+          'In Classic, collected Flowers remain with the run until an effect consumes them. They reward different patterns: Plum favors sequences, Orchid favors Honors, Chrysanthemum favors concealed melds, and Bamboo favors terminals. Eligible duplicate Flowers can awaken mutations, such as Plum letting two sequences share one physical tile. Inspect the Flowers you actually hold rather than assuming every mutation starts unlocked.',
+          'Seasons affect the current round. Normal Spring adds rack spaces; Summer raises base score while setting aside part of the live wall; Autumn strengthens Yaku multipliers and grants an extra discard; Winter allows one-rank gaps in same-suit sequences but lowers score. A corrupted Season has a different rule, not all the benefits of its normal version. The Flora inspector shows the active stack and its interactions.',
+          'Some Tea House Decrees offer a Flower as an alternative payment. Spending a Flower can remove its power and reduce set bonuses, so the confirmation explains the consequences. These are working run systems, not promises that every proposed mechanic in the design notes has shipped.',
+        ],
+      },
+      {
         id: 'art',
         title: 'A table with its own atmosphere',
         paragraphs: [
@@ -51,7 +67,7 @@ export const PUBLIC_PAGES = {
         id: 'development',
         title: 'A game still being developed',
         paragraphs: [
-          'Tensho is in active development. The current build includes playable runs, an optional teaching experience, shops, illustrated upgrades and a game reference called the Codex. Some documented Classic Flower and Season powers are still being connected; the inspector identifies unfinished effects rather than presenting them as working rewards.',
+          'Tensho is in active development. The current build includes playable runs, optional tile and hand-building guides, shops, illustrated upgrades, a Codex, and connected Classic Flower and Season powers. There is still work to do on balance, newcomer understanding, broader device coverage and the remaining design ideas; a working feature is not proof that every combination is enjoyable or fully verified.',
           'Table Loop is explicitly an experiment in making plans and combinations easier to see. Automated checks help catch broken rules and controls, but they do not tell us whether a run is enjoyable. Reports about a confusing decision, an unhelpful upgrade or an unsatisfying loss are valuable feedback, not just bug reports.',
         ],
       },
@@ -72,10 +88,14 @@ export const PUBLIC_PAGES = {
           'A pair is two matching tiles of the same type. A sequence is three consecutive numbered tiles in the same suit. Bamboo 3, Bamboo 4 and Bamboo 5 make a sequence. Bamboo 3, Circle 4 and Character 5 do not form an ordinary sequence, even though their ranks are consecutive.',
           'The numbered suits are Bamboo, Circles and Characters. Winds and Dragons are Honor tiles: matching copies can form sets, but they do not make ordinary numbered runs. Use the visual tile guide in the game if the symbols are unfamiliar.',
         ],
-        tiles: [
-          { suit: 'Bamboo', rank: 3 },
-          { suit: 'Bamboo', rank: 4 },
-          { suit: 'Bamboo', rank: 5 },
+        examples: [
+          {
+            title: 'An ordinary sequence',
+            groups: [
+              { label: 'Bamboo 3–4–5', suit: TileSuit.Souzu, ranks: [3, 4, 5] },
+            ],
+            caption: 'Three consecutive ranks in one suit.',
+          },
         ],
       },
       {
@@ -97,8 +117,20 @@ export const PUBLIC_PAGES = {
         ],
       },
       {
+        id: 'build-a-hand',
+        title: '4. Plan a complete hand without spending yet',
+        paragraphs: [
+          'A standard complete hand has four groups and one pair. Instead of spending each small group as soon as it appears, you can keep useful groups and exchange spare tiles. Complete hands can unlock Yaku multipliers, but chasing one can cost the round. Compare the score available now with the resources left to improve your rack.',
+          'Open Build a hand beside the Classic rack. Its optional workshop shows tiles to keep, a possible exchange, and tile types that could improve the retained shape. Select this exchange only moves the suggested tiles to the board. Review them there; pressing Redraw is the separate step that spends one charge. You can also return tiles or clear the selection without spending anything.',
+          'The workshop uses ordinary fourteen-tile shapes, not hidden-wall predictions or a forecast of every future effect. Hidden faces and unsupported altered rules receive an explanation instead of a proposal. Already-complete hands and known round-clearing plays take priority. Larger racks and special rule combinations still use the live score preview and hand explanation.',
+          'Here is a controlled example. Keep the twelve tiles below and consider exchanging the two unmatched Dragons. Two useful replacements can finish this shape, but random draws may not help. If a complete hand becomes available, use Stage Hand, inspect its forecast, and confirm the play; forming the shape does not score automatically.',
+        ],
+        examples: HAND_BUILDING_PANELS,
+        action: { label: 'Open Classic to try Build a hand', path: 'en/play' },
+      },
+      {
         id: 'table-loop',
-        title: '4. Try building across turns in Table Loop',
+        title: '5. Try building across turns in Table Loop',
         paragraphs: [
           'Choose a starter Decree, then place recognized groups into the table’s meld and pair slots. A pair fits the pair slot; sequences and matching sets fit meld slots. Unlike Classic, placed groups stay visible and can combine with later placements to create milestones.',
           'Inspect a placement’s forecast before committing. An empty slot and a revision of an occupied slot are not equivalent: revising can surrender value or break a standing pattern. You are building a table, not repeatedly scoring the same slot for free.',
@@ -107,7 +139,7 @@ export const PUBLIC_PAGES = {
       },
       {
         id: 'upgrades',
-        title: '5. Buy an upgrade with a job to do',
+        title: '6. Buy an upgrade with a job to do',
         paragraphs: [
           'When you enter a shop, read the actual item and price. Ask, “What would I keep or play differently if I owned this?” A cheaper upgrade that supports a plan you can execute may be more useful than an impressive description you cannot activate.',
           'Classic consumables have their own use and targeting rules. Inspect the item, choose valid targets when required, and confirm only when the effect and any penalty make sense. Opening details or cancelling a dialog is not the same as buying or consuming the item.',
@@ -116,7 +148,7 @@ export const PUBLIC_PAGES = {
       },
       {
         id: 'next-run',
-        title: '6. Use a loss to find the next question',
+        title: '7. Use a loss to find the next question',
         paragraphs: [
           'After a round, look for one decision you would change: an exchange used too early, a tile kept without a purpose, or an upgrade whose effect you never used. You do not need to solve every system at once. Start the next run with one thing to try.',
           'If you cannot tell why a move was rejected or what produced the final score, that is useful feedback for this developing game. Include the mode, seed if available, language, screen size and the move you attempted when reporting it. Avoid sharing personal information from other browser tabs.',
@@ -143,6 +175,13 @@ export const PUBLIC_PAGES = {
         title: 'Do I need to know Mahjong?',
         paragraphs: [
           'No prior Mahjong knowledge is required to try the teaching experience. Begin with matching pairs and consecutive ranks in one suit. Tensho has its own scoring and upgrade rules; familiarity with Riichi Mahjong can help you recognize tiles, but it is not a substitute for reading this game’s effects.',
+        ],
+      },
+      {
+        id: 'hand-workshop',
+        title: 'Does Build a hand play or redraw for me?',
+        paragraphs: [
+          'No. Opening the Classic workshop is read-only. Select this exchange stages a proposal; you must press Redraw to spend a charge. Selecting, closing or cancelling does not buy anything or consume a resource. The workshop explains ordinary fourteen-tile shapes, not guaranteed draws or the best strategy under every rule. Its tile examples are possibilities, not a peek at the wall.',
         ],
       },
       {
@@ -186,7 +225,7 @@ export const PUBLIC_PAGES = {
         id: 'finished',
         title: 'Is every documented mechanic finished?',
         paragraphs: [
-          'No. The project is in active development. Some Classic Flower and Season powers are still incomplete, and Table Loop remains an experimental alternative rather than a replacement for every Classic system. The implementation notes in the repository distinguish working behavior from proposals and verification gaps.',
+          'Not every design proposal is a shipped feature. Classic now connects its normal and corrupted Season powers, Flower interactions, awakenings and eligible Flower-paid Decrees. Table Loop remains a separate experiment, not a replacement for every Classic system. Balance, newcomer experience and broader device testing remain ongoing. The repository implementation notes separate published behavior, earlier checkpoints, proposals and verification gaps.',
         ],
       },
       {

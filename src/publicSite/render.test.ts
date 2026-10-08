@@ -1,6 +1,11 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { PUBLIC_PAGES, type PublicPageId } from './content'
+import {
+  PUBLIC_PAGES,
+  PUBLIC_GUIDE_REVIEW_DATE,
+  type PublicPageId,
+} from './content'
+import { getTileIdCounter } from '../core/Tile'
 import { normalizeSiteUrl, renderPublicPage, renderSitemap } from './render'
 
 describe('static public guides', () => {
@@ -40,6 +45,13 @@ describe('static public guides', () => {
       ).toHaveLength(0)
       const schema = JSON.parse(doc.querySelector('script')!.textContent!)
       expect(schema.name).toBe(PUBLIC_PAGES[id].title)
+      expect(schema.dateModified).toBe(PUBLIC_GUIDE_REVIEW_DATE)
+      expect(doc.querySelector('time')?.getAttribute('datetime')).toBe(
+        PUBLIC_GUIDE_REVIEW_DATE
+      )
+      expect(doc.querySelector('time')?.textContent).toBe(
+        PUBLIC_GUIDE_REVIEW_DATE
+      )
       expect(schema).not.toHaveProperty('aggregateRating')
       for (const link of doc.querySelectorAll('a[href^="#"]')) {
         expect(
@@ -61,6 +73,54 @@ describe('static public guides', () => {
       }
     }
   )
+
+  it('teaches an illustrated exchange with engine-identical Dragon art and an explicit Classic link', () => {
+    const counter = getTileIdCounter()
+    const doc = new DOMParser().parseFromString(
+      renderPublicPage('how-to-play', '/tensho-web/'),
+      'text/html'
+    )
+    expect(getTileIdCounter()).toBe(counter)
+    const section = doc.getElementById('build-a-hand')!
+    const panels = [...section.querySelectorAll('figure')]
+    expect(panels.map((panel) => panel.querySelectorAll('img').length)).toEqual(
+      [12, 2, 14]
+    )
+    const dragons = [...panels[1].querySelectorAll('img')]
+    expect(dragons.map((img) => img.alt)).toEqual([
+      'White Dragon',
+      'Red Dragon',
+    ])
+    expect(dragons.map((img) => decodeURI(img.getAttribute('src')!))).toEqual([
+      '/tensho-web/assets/Mahjong/file/png/tiles/Dragons (3).png',
+      '/tensho-web/assets/Mahjong/file/png/tiles/Dragons (1).png',
+    ])
+    expect(section.querySelector('a')?.getAttribute('href')).toBe(
+      '/tensho-web/en/play'
+    )
+    expect(section.textContent).toContain(
+      'not a promised draw or guaranteed round win'
+    )
+    expect(section.textContent).toContain(
+      'Exchanging both costs one redraw, not two'
+    )
+  })
+
+  it('describes shipped Flora without presenting the whole project as finished', () => {
+    const doc = new DOMParser().parseFromString(
+      renderPublicPage('about'),
+      'text/html'
+    )
+    expect(doc.getElementById('living-table')?.textContent).toContain(
+      'Winter allows one-rank gaps'
+    )
+    expect(doc.getElementById('living-table')?.textContent).toContain(
+      'Spending a Flower can remove its power'
+    )
+    expect(doc.getElementById('development')?.textContent).toContain(
+      'There is still work to do'
+    )
+  })
 
   it('emits only the root and three canonical guides in its sitemap', () => {
     const doc = new DOMParser().parseFromString(

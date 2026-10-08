@@ -3,7 +3,8 @@
  * Provides utilities for accessing game assets (images, audio, fonts)
  */
 
-import { DragonType, TileSuit } from '../core/Tile'
+import { TileSuit } from '../core/Tile'
+import { tileFaceAsset } from './tileFaceAsset'
 import type { DecreeRarity, PackType, FlowerVariant } from '../systems/types'
 import { withBasePath } from './basePath'
 
@@ -16,39 +17,13 @@ const MAHJONG_PNG_BASE = `${ASSET_BASE}/Mahjong/file/png`
 // ============================================================================
 
 /**
- * Mapping from TileSuit to asset file prefix
- */
-const SUIT_TO_FILE_PREFIX: Record<TileSuit, string> = {
-  [TileSuit.Manzu]: 'Symbol', // Characters use Symbol files
-  [TileSuit.Pinzu]: 'Dots',
-  [TileSuit.Souzu]: 'Bamboo',
-  [TileSuit.Wind]: 'Winds',
-  [TileSuit.Dragon]: 'Dragons',
-  [TileSuit.Flower]: 'Flower',
-  [TileSuit.Season]: 'Seasons',
-}
-
-/**
  * Get the image path for a specific tile
  * @param suit - The tile suit
  * @param rank - The tile rank (1-9 for suited, 1-4 for winds, 1-3 for dragons, 1-4 for flowers/seasons)
  * @returns The path to the tile image
  */
 export function getTileImagePath(suit: TileSuit, rank: number): string {
-  const prefix = SUIT_TO_FILE_PREFIX[suit]
-  // The supplied art is ordered Red / Green / White, whereas engine ranks
-  // are White / Green / Red. Keep saved tile identities and rules unchanged.
-  const assetRank =
-    suit === TileSuit.Dragon
-      ? ((
-          {
-            [DragonType.White]: 3,
-            [DragonType.Green]: 2,
-            [DragonType.Red]: 1,
-          } as Record<number, number>
-        )[rank] ?? rank)
-      : rank
-  return `${MAHJONG_PNG_BASE}/tiles/${prefix} (${assetRank}).png`
+  return `${ASSET_BASE}/${tileFaceAsset(suit, rank)}`
 }
 
 /**

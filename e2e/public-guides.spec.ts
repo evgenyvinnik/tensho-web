@@ -39,6 +39,29 @@ test.describe('public guides without JavaScript', () => {
         'href',
         `https://evgenyvinnik.github.io/tensho-web/${path}/`
       )
+      await expect(page.locator('time')).toHaveAttribute(
+        'datetime',
+        '2026-10-08'
+      )
+      if (path === 'how-to-play') {
+        const workshop = page.locator('#build-a-hand')
+        const panels = workshop.locator('figure')
+        await expect(panels).toHaveCount(3)
+        for (const [i, count] of [12, 2, 14].entries())
+          await expect(panels.nth(i).locator('img')).toHaveCount(count)
+        await expect(
+          workshop.getByRole('img', { name: 'White Dragon', exact: true })
+        ).toHaveAttribute('src', /Dragons%20\(3\)\.png$/)
+        await expect(
+          workshop.getByRole('img', { name: 'Red Dragon', exact: true })
+        ).toHaveAttribute('src', /Dragons%20\(1\)\.png$/)
+        const classic = workshop.getByRole('link', {
+          name: 'Open Classic to try Build a hand',
+        })
+        expect(
+          (await request.get((await classic.getAttribute('href'))!)).status()
+        ).toBe(200)
+      }
       for (const width of [320, 768, 1440]) {
         await page.setViewportSize({ width, height: 900 })
         expect(
@@ -103,6 +126,11 @@ test.describe('public guides without JavaScript', () => {
         path: testInfo.outputPath(`${path}.png`),
         fullPage: true,
       })
+      if (path === 'how-to-play') {
+        await page
+          .locator('#build-a-hand')
+          .screenshot({ path: testInfo.outputPath('hand-example.png') })
+      }
     })
   }
 })
