@@ -65,7 +65,7 @@ for (const [language, copy] of [
     })
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
     const card = page.locator(`[data-shop-item="${offerInfo.id}"]`)
-    const art = card.locator('img[src$="wealth-engine.png"]')
+    const art = card.locator('img[src$="wealth-engine.webp"]')
     expect(
       await art.evaluate(async (img: HTMLImageElement) => {
         await img.decode()
@@ -134,7 +134,7 @@ for (const [language, copy] of [
     await expect(dialog).toContainText(
       copy.decrees.items['decree-wealth-engine'].description
     )
-    await expect(dialog.locator('img[src$="wealth-engine.png"]')).toBeVisible()
+    await expect(dialog.locator('img[src$="wealth-engine.webp"]')).toBeVisible()
     expect(
       await dialog.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
     ).toBe(true)

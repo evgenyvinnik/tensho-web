@@ -136,14 +136,14 @@ for (const [language, copy] of [
       eventBus.emit('shopUpdated', { isOpen: true })
     })
     const card = page.getByTestId('charter-card')
-    const art = card.locator('img[src$="plentiful-stock.png"]')
+    const art = card.locator('img[src$="plentiful-stock.webp"]')
     await expect(art).toBeVisible()
     expect(
       await art.evaluate(async (node: HTMLImageElement) => {
         await node.decode()
         return node.naturalWidth
       })
-    ).toBe(1254)
+    ).toBe(512)
     await card.scrollIntoViewIfNeeded()
     expect(
       await page.evaluate(

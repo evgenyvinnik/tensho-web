@@ -104,16 +104,16 @@ describe('DecreeCardCompact mandate states', () => {
     const button = screen.getByRole('button', { name: 'Wealth Engine' })
     expect(button.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringMatching(/wealth-engine\.png$/)
+      expect.stringMatching(/wealth-engine\.webp$/)
     )
     fireEvent.focus(button)
     expect(screen.getByRole('dialog')).toHaveTextContent('per Decree owned')
     rerender(<DecreeCardCompact decree={wealth} faceDown />)
     expect(container.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringMatching(/local-edict\.png$/)
+      expect.stringMatching(/local-edict\.webp$/)
     )
-    expect(document.querySelector('img[src$="wealth-engine.png"]')).toBeNull()
+    expect(document.querySelector('img[src$="wealth-engine.webp"]')).toBeNull()
     expect(screen.queryByText('Wealth Engine')).not.toBeInTheDocument()
   })
   it('conceals identity and sells the chosen hidden Decree', () => {

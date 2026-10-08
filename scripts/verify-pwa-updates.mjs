@@ -9,6 +9,7 @@ import { createServer } from 'node:http'
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { chromium, expect } from '@playwright/test'
+import { illustrationCopies } from './lib/illustration-delivery.mjs'
 
 const [before, after, artifacts] = process.argv
   .slice(2)
@@ -396,6 +397,20 @@ try {
           )
           // Previously unvisited lazy screens must still work completely offline.
           await context.setOffline(true)
+          // Decode every replacement, including artwork never visited before
+          // upgrading. HTTP 200 alone could be an incorrect HTML fallback.
+          const offlineImages = await page.evaluate(async (paths) => {
+            return Promise.all(paths.map(async (path) => {
+              const response = await fetch(path)
+              if (!response.ok) throw new Error(`Offline asset: ${path}`)
+              const bitmap = await createImageBitmap(await response.blob())
+              const size = [bitmap.width, bitmap.height]
+              bitmap.close()
+              return size
+            }))
+          }, illustrationCopies.flatMap(({ copies }) => copies.map(({ path }) => root + path)))
+          assert.equal(offlineImages.length, 52)
+          assert.ok(offlineImages.every(([w, h]) => w > 0 && h > 0))
           await page.goto(root + 'en/codex')
           await expect(
             page.getByRole('heading', { name: /Codex/, level: 1 })
@@ -428,6 +443,7 @@ try {
               savedAcrossUpgrade: true,
               otherTabsBlocked: true,
               offlineResume: true,
+              offlineIllustrations: offlineImages.length,
             })
           )
         } catch (error) {

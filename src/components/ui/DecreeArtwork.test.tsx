@@ -14,7 +14,7 @@ it.each([
   ['celestial_wildcard', /celestial-wildcard\.webp$/],
   ['yakuman_succession', /yakuman-succession\.webp$/],
   ['shanten_clemency', /shanten-clemency\.webp$/],
-  ['decree-wealth-engine', /wealth-engine\.png$/],
+  ['decree-wealth-engine', /wealth-engine\.webp$/],
   ['decree-half-suited', /half-suited\.webp$/],
   ['decree-phoenix', /phoenix\.webp$/],
   ['decree-polished-stone', /polished-stone\.webp$/],

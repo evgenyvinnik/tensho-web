@@ -8,6 +8,18 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Illustrated asset delivery](ASSET_DELIVERY_IMPLEMENTATION.md) is locally
+verified: 50 transparent UI copies and a responsive two-size guide hero
+reduce the measured offline payload from about 70 to 36 MiB. Originals remain
+published, all current assets remain offline-ready, and the build enforces
+coverage/size budgets. Fourteen production guide checks and ten real
+old-to-new worker upgrades pass, including decoding all replacement images
+offline. The final full regression passes 2,809 tests in 199 files; 80 native
+cases pass across the recorded initial/follow-up runs. Build, lint (warnings
+only), thirteen release checks and byte-for-byte production asset checks pass.
+Publication is pending; the ledger retains initial failures and remaining
+performance limits. Whole-project completion and enjoyment are not implied.
+
 [Riichi pledge](RIICHI_IMPLEMENTATION.md) is published and hosted-verified in
 **v1.0.261008-20**: an explicit
 once-per-round, 1-Gold commitment enables Riichi, Pluto and Riichi Devotee through

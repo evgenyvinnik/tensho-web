@@ -28,7 +28,7 @@ export function TableDecreeArt({
     <img
       src={
         artwork
-          ? withBasePath(`assets/illustrations/table-loop/${artwork}.png`)
+          ? withBasePath(`assets/illustrations/table-loop/${artwork}.webp`)
           : illustrationAssets.decreeScrolls.RegionalMandate
       }
       alt=""

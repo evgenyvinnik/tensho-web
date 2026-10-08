@@ -233,9 +233,9 @@ test.describe('Table Loop artwork and recovery', () => {
       const scroll = page.getByTestId(`owned-scroll-${id}`)
       await expect(scroll.locator('img')).toHaveAttribute(
         'src',
-        new RegExp(`${id.replace(/_/g, '-')}\\.png$`)
+        new RegExp(`${id.replace(/_/g, '-')}\\.webp$`)
       )
-      await expect(scroll.locator('img')).toHaveJSProperty('naturalWidth', 1254)
+      await expect(scroll.locator('img')).toHaveJSProperty('naturalWidth', 512)
       await scroll.click()
       const detail = page.getByRole('dialog', { name })
       await expect(detail).toContainText(rule)

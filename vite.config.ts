@@ -97,6 +97,16 @@ export default defineConfig(({ mode }) => ({
         globPatterns: [
           '**/*.{js,css,html,ico,png,webp,svg,mp3,wav,ttf,woff,woff2}',
         ],
+        // Keep originals deployed for older clients, but cache the delivery copies.
+        // This explicit inventory does not exclude future PNGs from offline play.
+        globIgnores: (
+          JSON.parse(
+            readFileSync(
+              new URL('./scripts/illustration-sources.json', import.meta.url),
+              'utf8'
+            )
+          ) as string[]
+        ).map((path) => `assets/illustrations/${path}`),
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MB for large font files
         runtimeCaching: [
           {

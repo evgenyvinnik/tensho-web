@@ -41,13 +41,13 @@ test('Money Tree portrait survives a localized mobile purchase and raises the in
   await expect(page).toHaveURL(/\/es\/shop$/)
   const card = page.getByTestId('charter-card')
   const art = card.getByRole('img', { name: 'Carta imperial' })
-  await expect(art).toHaveAttribute('src', /charters\/money-tree\.png$/)
+  await expect(art).toHaveAttribute('src', /charters\/money-tree\.webp$/)
   expect(
     await art.evaluate(async (node: HTMLImageElement) => {
       await node.decode()
       return node.naturalWidth
     })
-  ).toBe(1254)
+  ).toBe(512)
   await card.scrollIntoViewIfNeeded()
   await expect(card.getByRole('button')).toBeInViewport()
   expect(

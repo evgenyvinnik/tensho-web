@@ -35,7 +35,7 @@ it('pairs Wealth Engine art with unambiguous localized gold and ownership rules'
     '+1G por cada Decreto que posees al final de la ronda'
   )
   expect(
-    container.querySelector('img[src$="wealth-engine.png"]')
+    container.querySelector('img[src$="wealth-engine.webp"]')
   ).not.toBeNull()
 })
 

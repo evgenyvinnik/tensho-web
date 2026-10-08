@@ -24,7 +24,7 @@ it.each(SUPPORTED_LANGUAGES)(
     expect(details).not.toHaveAttribute('open')
     expect(details.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringContaining('/assets/illustrations/omens/double-omen.png')
+      expect.stringContaining('/assets/illustrations/omens/double-omen.webp')
     )
     fireEvent.click(details.querySelector('summary')!)
     expect(

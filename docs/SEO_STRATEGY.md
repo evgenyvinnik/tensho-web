@@ -73,7 +73,14 @@ For a later translation release, agree terminology with the in-game locale, have
 
 Continue the emerald, ivory and gold illustration style. Store names/rules as accessible text, not words baked into art. Decorative scrolls use empty alt text when their containing control supplies the name. Teaching images have meaningful alt text. Preserve dimensions to reserve layout space; lazy-load below-the-fold examples, not the hero.
 
-Current limitation: the new hero is a 1536×1024 PNG of approximately 2.3 MB; the existing game's precache is already large. A later performance pass should create optimized responsive derivatives, measure mobile loading and avoid forcing every future illustration into the initial precache. Do not add a gallery's worth of high-resolution art above the instructions. No performance score is claimed here.
+The [asset-delivery checkpoint](ASSET_DELIVERY_IMPLEMENTATION.md) replaces the
+2.3 MB hero's current delivery with responsive 768/1536-wide WebP copies (about
+76/199 KB), preserving the original URL for older clients. The illustrated UI
+also uses bounded transparent copies; the measured offline payload drops from
+about 70 to 36 MiB. A build gate checks cache coverage and a 40 MiB budget.
+Fresh-context browser tests check candidate selection, not a physical-phone
+or throttled-network loading-time score. Fonts/JavaScript delivery remain open.
+Do not add a gallery's worth of high-resolution art above the instructions.
 
 ## Verification and launch checklist
 

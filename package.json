@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node ./node_modules/.bin/vite",
-    "build": "tsc -b && node ./node_modules/.bin/vite build",
+    "build": "tsc -b && node ./node_modules/.bin/vite build && node scripts/verify-asset-delivery.mjs",
     "lint": "eslint .",
     "preview": "node ./node_modules/.bin/vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",

@@ -12,14 +12,14 @@ it('uses the Money Tree portrait while preserving category artwork for other Cha
   )
   expect(container.querySelector('img')).toHaveAttribute(
     'src',
-    expect.stringMatching(/charters\/money-tree\.png$/)
+    expect.stringMatching(/charters\/money-tree\.webp$/)
   )
   expect(container.querySelector('img')).toHaveAttribute('aria-hidden', 'true')
   expect(container.querySelector('img')).toHaveAttribute('alt', '')
   rerender(<CharterArtwork charterId="plentiful_stock" />)
   expect(container.querySelector('img')).toHaveAttribute(
     'src',
-    expect.stringMatching(/charters\/plentiful-stock\.png$/)
+    expect.stringMatching(/charters\/plentiful-stock\.webp$/)
   )
   rerender(<CharterArtwork charterId="abundant_stock" />)
   expect(container.querySelector('img')).toHaveAttribute(
@@ -29,13 +29,13 @@ it('uses the Money Tree portrait while preserving category artwork for other Cha
   rerender(<CharterArtwork charterId="seed_pouch" alt="Imperial Charter" />)
   expect(container.querySelector('img')).toHaveAttribute(
     'src',
-    expect.stringMatching(/imperial-charter\.png$/)
+    expect.stringMatching(/imperial-charter\.webp$/)
   )
   expect(container.querySelector('img')).not.toHaveAttribute('aria-hidden')
   rerender(<CharterArtwork charterId="constructor" />)
   expect(container.querySelector('img')).toHaveAttribute(
     'src',
-    expect.stringMatching(/imperial-charter\.png$/)
+    expect.stringMatching(/imperial-charter\.webp$/)
   )
 })
 
@@ -48,10 +48,10 @@ it.each([
   ['full_palette', 'full-palette.webp', true],
   ['star_chart', 'star-chart.webp', false],
   ['star_chart', 'star-chart.webp', true],
-  ['money_tree', 'money-tree.png', false],
-  ['money_tree', 'money-tree.png', true],
-  ['plentiful_stock', 'plentiful-stock.png', false],
-  ['plentiful_stock', 'plentiful-stock.png', true],
+  ['money_tree', 'money-tree.webp', false],
+  ['money_tree', 'money-tree.webp', true],
+  ['plentiful_stock', 'plentiful-stock.webp', false],
+  ['plentiful_stock', 'plentiful-stock.webp', true],
   ['abundant_stock', 'abundant-stock.webp', false],
   ['abundant_stock', 'abundant-stock.webp', true],
 ] as const)(

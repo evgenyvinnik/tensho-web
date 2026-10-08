@@ -111,7 +111,7 @@ for (const lang of ['en', 'es'])
       const art = card.getByRole('img')
       await expect(art).toHaveAttribute(
         'src',
-        new RegExp(upgraded ? 'plentiful-stock.png$' : 'abundant-stock.webp$')
+        new RegExp(upgraded ? 'plentiful-stock\\.webp$' : 'abundant-stock\\.webp$')
       )
       await expect
         .poll(() =>

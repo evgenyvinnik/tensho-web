@@ -98,35 +98,35 @@ export const illustrationAssets = {
     cerulean_bell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
   },
   journeyResult: `${ASSET_BASE}/illustrations/journey-result.webp`,
-  beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.png`,
-  imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
+  beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.webp`,
+  imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.webp`,
   abundantStockCharter: `${ASSET_BASE}/illustrations/charters/abundant-stock.webp`,
   starChartCharter: `${ASSET_BASE}/illustrations/charters/star-chart.webp`,
   observatoryCharter: `${ASSET_BASE}/illustrations/charters/observatory.webp`,
   swiftHandCharter: `${ASSET_BASE}/illustrations/charters/swift-hand.webp`,
   fullPaletteCharter: `${ASSET_BASE}/illustrations/charters/full-palette.webp`,
-  moneyTreeCharter: `${ASSET_BASE}/illustrations/charters/money-tree.png`,
-  plentifulStockCharter: `${ASSET_BASE}/illustrations/charters/plentiful-stock.png`,
+  moneyTreeCharter: `${ASSET_BASE}/illustrations/charters/money-tree.webp`,
+  plentifulStockCharter: `${ASSET_BASE}/illustrations/charters/plentiful-stock.webp`,
   consumables: {
-    fateSeal: `${ASSET_BASE}/illustrations/fate-seal.png`,
-    celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.png`,
-    voidScript: `${ASSET_BASE}/illustrations/void-script.png`,
+    fateSeal: `${ASSET_BASE}/illustrations/fate-seal.webp`,
+    celestialOrb: `${ASSET_BASE}/illustrations/celestial-orb.webp`,
+    voidScript: `${ASSET_BASE}/illustrations/void-script.webp`,
   },
   packs: {
-    Arcana: `${ASSET_BASE}/illustrations/packs/arcana-pack.png`,
-    Celestial: `${ASSET_BASE}/illustrations/packs/celestial-pack.png`,
-    Tile: `${ASSET_BASE}/illustrations/packs/tile-pack.png`,
-    Decree: `${ASSET_BASE}/illustrations/packs/decree-pack.png`,
-    Void: `${ASSET_BASE}/illustrations/packs/void-pack.png`,
+    Arcana: `${ASSET_BASE}/illustrations/packs/arcana-pack.webp`,
+    Celestial: `${ASSET_BASE}/illustrations/packs/celestial-pack.webp`,
+    Tile: `${ASSET_BASE}/illustrations/packs/tile-pack.webp`,
+    Decree: `${ASSET_BASE}/illustrations/packs/decree-pack.webp`,
+    Void: `${ASSET_BASE}/illustrations/packs/void-pack.webp`,
   } satisfies Record<PackType, string>,
   currency: {
-    gold: `${ASSET_BASE}/illustrations/currency/tensho-gold.png`,
+    gold: `${ASSET_BASE}/illustrations/currency/tensho-gold.webp`,
   },
   decreeScrolls: {
-    LocalEdict: `${ASSET_BASE}/illustrations/decrees/local-edict.png`,
-    RegionalMandate: `${ASSET_BASE}/illustrations/decrees/regional-mandate.png`,
-    ImperialDecree: `${ASSET_BASE}/illustrations/decrees/imperial-decree.png`,
-    HeavenlyOrdinance: `${ASSET_BASE}/illustrations/decrees/heavenly-ordinance.png`,
+    LocalEdict: `${ASSET_BASE}/illustrations/decrees/local-edict.webp`,
+    RegionalMandate: `${ASSET_BASE}/illustrations/decrees/regional-mandate.webp`,
+    ImperialDecree: `${ASSET_BASE}/illustrations/decrees/imperial-decree.webp`,
+    HeavenlyOrdinance: `${ASSET_BASE}/illustrations/decrees/heavenly-ordinance.webp`,
   } satisfies Record<DecreeRarity, string>,
   decreePortraits: {
     'decree-riichi-devotee': `${ASSET_BASE}/illustrations/decrees/riichi-devotee.webp`,
@@ -142,7 +142,7 @@ export const illustrationAssets = {
     'decree-polished-stone': `${ASSET_BASE}/illustrations/decrees/polished-stone.webp`,
     'decree-phoenix': `${ASSET_BASE}/illustrations/decrees/phoenix.webp`,
     'decree-half-suited': `${ASSET_BASE}/illustrations/decrees/half-suited.webp`,
-    'decree-wealth-engine': `${ASSET_BASE}/illustrations/decrees/wealth-engine.png`,
+    'decree-wealth-engine': `${ASSET_BASE}/illustrations/decrees/wealth-engine.webp`,
     river_tax: `${ASSET_BASE}/illustrations/decrees/river-tax.webp`,
     extended_hand_grant: `${ASSET_BASE}/illustrations/decrees/extended-hand-grant.webp`,
     tanyao_dispensation: `${ASSET_BASE}/illustrations/decrees/tanyao-dispensation.webp`,
@@ -273,7 +273,7 @@ export function getVoidScriptIllustration(scriptId?: string): string {
     return illustrationAssets.consumables.voidScript
   }
 
-  return `${ASSET_BASE}/illustrations/scripts/${scriptId}.png`
+  return `${ASSET_BASE}/illustrations/scripts/${scriptId}.webp`
 }
 
 /** Low-contrast generated environments designed to sit behind live UI. */

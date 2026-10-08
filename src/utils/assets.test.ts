@@ -146,13 +146,13 @@ it('ships a compact wide result illustration', () => {
   expect(webp.length).toBeLessThan(150_000)
 })
 
-it('ships the generated guidebook with an alpha-capable PNG in the project', () => {
+it('ships the generated guidebook with transparent WebP delivery', () => {
   expect(illustrationAssets.beginnerGuidebook).toBe(
-    '/assets/illustrations/beginner-guidebook.png'
+    '/assets/illustrations/beginner-guidebook.webp'
   )
-  const png = readFileSync(`public${illustrationAssets.beginnerGuidebook}`)
-  expect(png.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
-  expect(png[25]).toBe(6)
+  const webp = readFileSync(`public${illustrationAssets.beginnerGuidebook}`)
+  expect(webp.subarray(8, 12).toString()).toBe('WEBP')
+  expect(webp[20] & 0x10).toBe(0x10)
 })
 
 describe('Decree scroll illustrations', () => {
@@ -186,18 +186,18 @@ describe('Decree scroll illustrations', () => {
   })
   it('ships bespoke Wealth Engine art without mistaking inherited names for images', () => {
     const path = getDecreeIllustration('decree-wealth-engine')!
-    const png = readFileSync(`public${path}`)
-    expect(png.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
-    expect(png[25]).toBe(6)
+    const webp = readFileSync(`public${path}`)
+    expect(webp.subarray(8, 12).toString()).toBe('WEBP')
+    expect(webp[20] & 0x10).toBe(0x10)
     expect(getDecreeIllustration('unknown')).toBeUndefined()
     expect(getDecreeIllustration('toString')).toBeUndefined()
   })
   it('maps Decree rarities to illustrated scrolls', () => {
     expect(getDecreeScrollIllustration('LocalEdict')).toMatch(
-      /decrees\/local-edict\.png$/
+      /decrees\/local-edict\.webp$/
     )
     expect(getDecreeScrollIllustration('HeavenlyOrdinance')).toMatch(
-      /decrees\/heavenly-ordinance\.png$/
+      /decrees\/heavenly-ordinance\.webp$/
     )
   })
 })

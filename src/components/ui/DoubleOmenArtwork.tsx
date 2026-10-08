@@ -8,7 +8,7 @@ export function DoubleOmenArtwork({
 }) {
   return (
     <img
-      src={withBasePath('assets/illustrations/omens/double-omen.png')}
+      src={withBasePath('assets/illustrations/omens/double-omen.webp')}
       alt=""
       aria-hidden="true"
       draggable={false}

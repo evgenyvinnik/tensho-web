@@ -66,9 +66,20 @@ describe('static public guides', () => {
           'public/' +
           decodeURI(img.getAttribute('src')!.replace('/tensho-web/', ''))
         expect(existsSync(path), path).toBe(true)
-        expect(readFileSync(path).subarray(0, 8).toString('hex')).toBe(
-          '89504e470d0a1a0a'
-        )
+        if (path.endsWith('.webp')) {
+          expect(readFileSync(path).subarray(8, 12).toString()).toBe('WEBP')
+          expect(img.getAttribute('srcset')).toContain('-768.webp 768w')
+          expect(img.getAttribute('srcset')).toContain('-1536.webp 1536w')
+          expect(img.getAttribute('sizes')).toContain('760px')
+          expect(img.getAttribute('width')).toBe('1536')
+          expect(img.getAttribute('height')).toBe('1024')
+          expect(img.getAttribute('fetchpriority')).toBe('high')
+          expect(img.getAttribute('loading')).not.toBe('lazy')
+        } else {
+          expect(readFileSync(path).subarray(0, 8).toString('hex')).toBe(
+            '89504e470d0a1a0a'
+          )
+        }
         expect(img.getAttribute('alt')).toBeTruthy()
       }
     }

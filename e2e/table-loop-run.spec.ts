@@ -95,7 +95,7 @@ for (const [seed, outcome] of [
           const card = page.getByTestId(`table-decree-${offer.id}`)
           await expect(card.locator('img')).toHaveJSProperty(
             'naturalWidth',
-            1254
+            512
           )
           await card.click()
           const after = await inspectRun(page)

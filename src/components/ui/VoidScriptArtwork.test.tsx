@@ -15,7 +15,7 @@ describe('VoidScriptArtwork', () => {
     const image = artwork.querySelector('img')
 
     expect(image?.getAttribute('src')).toContain(
-      '/illustrations/scripts/script_of_eclipse.png'
+      '/illustrations/scripts/script_of_eclipse.webp'
     )
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
