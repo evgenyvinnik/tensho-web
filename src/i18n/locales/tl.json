@@ -454,6 +454,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "Nabili ang {{name}} gamit ang {{flower}}.",
+      "offer": "Mag-alay ng Bulaklak",
+      "prompt": "Ipagpalit ang isang Bulaklak sa {{name}} sa halip na {{cost}}G.",
+      "choose": "Piliin ang Bulaklak na gagamitin.",
+      "empty": "Kumuha muna ng Bulaklak bago makipagpalitan.",
+      "warning": "Mauubos ang Bulaklak; babalik ang kapangyarihan nito kapag nakuha muli. Mananatili ang paggising nito sa run na ito. Maibebenta ang Kautusang ito sa 0G.",
+      "givenUp": "Mga kapangyarihang isusuko",
+      "slots": "Mga puwesto ng Kautusan pagkatapos: {{used}} / {{max}}.",
+      "loss2": "Mas kaunti sa dalawang Bulaklak: mawawala ang dagdag na puwesto ng Kautusan.",
+      "loss3": "Mas kaunti sa tatlong Bulaklak: muling malala-lock ang mga pagpipiliang gumagamit ng Bulaklak sa tindahan at mga pack.",
+      "loss4": "Mas kaunti sa apat na Bulaklak: babalik sa normal ang bisa ng mga Bulaklak.",
+      "noSpace": "Maglaan ng puwesto para sa Kautusang ito matapos mawala ang puwesto mula sa Bulaklak.",
+      "confirm": "Gamitin ang {{flower}} at bumili"
+    },
     "availability": {
       "decreeSpace": "Puno ang mga puwesto ng Dekreto. Suriin ang mga Dekreto mo para maglaan ng puwesto.",
       "consumableSpace": "Puno ang mga puwesto ng consumable. Gumamit ng item habang naglalaro bago bumili pa.",

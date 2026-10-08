@@ -231,3 +231,40 @@ is published and verified in v1.0.261007-13, including saved acquisition,
 illustrated previews, coaching and real desktop/touch journeys.
 [Evidence and remaining project work](FLOWER_MUTATIONS_IMPLEMENTATION.md).
 Flower-paid Decree catalysts remain a separate required implementation.
+
+### Flower-paid Yaku Decree catalysts
+
+Under the user's delegated rules authority, catalyst payment is an optional
+alternative to gold for a direct shop offer that changes Yaku rules or their
+multipliers/tiers. The present catalog contains Tanyao Dispensation, Yaku
+Amplifier and Yaku Nexus. Determine eligibility from actual effects, not the
+presentational YakuDoctrine label, which also includes ordinary chip bonuses.
+This does not silently rename Yaku Nexus to the separately authored Yakuman
+Succession or claim that named rule's two-Flower activation is implemented.
+
+The player explicitly chooses one owned Flower and confirms its consumption.
+Any type may pay; no random sacrifice or automatic fallback from a gold purchase.
+Gold payment remains unchanged. A Flower purchase costs zero gold, counts as one
+purchase, adds no gold-spending progression, and grants a zero-resale Decree.
+Editions, stickers and actual effects are retained; Rental still has its normal
+future costs. Drought suppresses powers, not the ability to offer an owned Flower.
+
+After payment, the Flower's powers and its contribution to held-Flower set
+bonuses stop. Four-to-three loses doubled effectiveness, three-to-two relocks
+Flower-powered acquisition, and two-to-one loses the bonus Decree slot.
+Preflight the resulting inventory including the acquired Negative edition; if
+it does not fit, refuse the entire transaction and ask the player to make room.
+Never delete an owned Decree to force the purchase through. Existing stock stays
+fixed, but current Flower requirements are checked again at settlement. Future
+stock uses the reduced count, and an already-generated pack with no eligible
+Flower-gated choice cannot be sold. Mixed pack choices show their actual failure.
+
+Run-earned awakenings and rebloom eligibility are retained, not consumed.
+Recollecting a sacrificed awakened type restores its powers. Historical distinct
+types count toward the four-type achievement even if not held simultaneously;
+optional saved history preserves that fact after consumption while legacy saves
+without it round-trip unchanged. A new run still begins without awakenings.
+Previously earned physical draws or Bamboo/Summer protection are not revoked.
+
+Implementation is local work in progress; browser and release verification have
+not yet been completed for this catalyst checkpoint.

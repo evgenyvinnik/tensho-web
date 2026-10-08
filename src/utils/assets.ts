@@ -4,7 +4,7 @@
  */
 
 import { TileSuit } from '../core/Tile'
-import type { DecreeRarity, PackType } from '../systems/types'
+import type { DecreeRarity, PackType, FlowerVariant } from '../systems/types'
 import { withBasePath } from './basePath'
 
 // Base paths for assets
@@ -171,6 +171,13 @@ export const illustrationAssets = {
     dragons_den: `${ASSET_BASE}/illustrations/tables/dragons_den.webp`,
   },
 } as const
+
+export const flowerIllustrations: Record<FlowerVariant, string> = {
+  Plum: illustrationAssets.plumBloom,
+  Orchid: illustrationAssets.orchidBloom,
+  Chrysanthemum: illustrationAssets.chrysanthemumBloom,
+  Bamboo: illustrationAssets.bambooBloom,
+}
 
 /** Return bespoke Decree art where available; generic scrolls remain the fallback. */
 export function getDecreeIllustration(decreeId: string): string | undefined {

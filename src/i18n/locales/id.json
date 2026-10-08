@@ -431,6 +431,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "Membeli {{name}} dengan {{flower}}.",
+      "offer": "Persembahkan Bunga",
+      "prompt": "Tukar satu Bunga dengan {{name}} sebagai pengganti {{cost}}G.",
+      "choose": "Pilih Bunga yang akan dikonsumsi.",
+      "empty": "Kumpulkan Bunga sebelum melakukan pertukaran ini.",
+      "warning": "Bunga dikonsumsi; kekuatannya kembali saat dikumpulkan lagi. Kebangkitan yang diperoleh tetap ada selama run ini. Titah ini dijual seharga 0G.",
+      "givenUp": "Kekuatan yang dilepas",
+      "slots": "Slot Titah setelah pertukaran: {{used}} / {{max}}.",
+      "loss2": "Kurang dari dua Bunga: kehilangan slot Titah tambahan.",
+      "loss3": "Kurang dari tiga Bunga: pilihan berbasis Bunga di toko dan paket terkunci lagi.",
+      "loss4": "Kurang dari empat Bunga: efektivitas Bunga kembali normal.",
+      "noSpace": "Sediakan ruang untuk Titah ini setelah slot Bunga hilang.",
+      "confirm": "Konsumsi {{flower}} dan beli"
+    },
     "availability": {
       "decreeSpace": "Slot Dekret penuh. Tinjau Dekret milikmu untuk menyediakan ruang.",
       "consumableSpace": "Slot item sekali pakai penuh. Gunakan item saat bermain sebelum membeli lagi.",

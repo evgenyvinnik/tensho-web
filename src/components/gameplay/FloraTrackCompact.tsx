@@ -5,7 +5,11 @@ import type { FlowerVariant, SeasonTile } from '../../systems/types'
 import { TileSuit } from '../../core/Tile'
 import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
 import { FLOWER_DATA, SEASON_DATA } from './gameplayTypes'
-import { getTileImagePath, illustrationAssets } from '../../utils/assets'
+import {
+  getTileImagePath,
+  illustrationAssets,
+  flowerIllustrations,
+} from '../../utils/assets'
 import { Popup } from '../ui/Popup'
 import { eventBus } from '../../game/EventBus'
 
@@ -14,12 +18,6 @@ export interface FloraTrackCompactProps {
 }
 
 const FLOWERS: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
-const FLOWER_ART: Record<FlowerVariant, string> = {
-  Plum: illustrationAssets.plumBloom,
-  Orchid: illustrationAssets.orchidBloom,
-  Chrysanthemum: illustrationAssets.chrysanthemumBloom,
-  Bamboo: illustrationAssets.bambooBloom,
-}
 
 /** Inspect public bonus tiles without changing the hand, turn, or selection. */
 export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
@@ -155,7 +153,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                   className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
                 >
                   <img
-                    src={FLOWER_ART[flower]}
+                    src={flowerIllustrations[flower]}
                     alt=""
                     aria-hidden="true"
                     draggable={false}

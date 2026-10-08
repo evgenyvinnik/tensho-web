@@ -59,6 +59,48 @@ it('uses a Decree catalog identity for illustrated rewards, not the pack choice 
   expect(screen.getByRole('button', { name: 'River Tax' })).toBeVisible()
 })
 
+it('explains an actual Flower requirement instead of incorrectly blaming inventory capacity', () => {
+  useSettingsStore.setState({ reducedMotion: true })
+  render(
+    <PackOpeningModal
+      isOpen
+      onConfirm={vi.fn()}
+      onSkip={vi.fn()}
+      canConfirmSelection={() => false}
+      selectionError={() => 'More Flowers are required for this Decree.'}
+      packOffering={{
+        pack: {
+          id: 'gated-pack',
+          type: 'Decree',
+          size: 'Normal',
+          cost: 4,
+          choiceCount: 3,
+          selectCount: 1,
+        },
+        contents: [
+          {
+            id: 'gated',
+            type: 'Decree',
+            name: RIVER_TAX.name,
+            description: RIVER_TAX.description,
+            rarity: 'common',
+            data: RIVER_TAX,
+          },
+        ],
+        isOpened: true,
+        isResolved: false,
+        selectedIndices: [],
+        maxSelections: 1,
+      }}
+    />
+  )
+  fireEvent.click(screen.getByRole('button', { name: 'River Tax' }))
+  expect(screen.getByRole('status')).toHaveTextContent(
+    'More Flowers are required for this Decree.'
+  )
+  expect(screen.queryByText(i18n.t('shop.packInventoryFull'))).toBeNull()
+})
+
 it.each([EnhancementType.Bonus, EnhancementType.Gold] as const)(
   'shows the localized %s tile rule instead of stale pack prose and selects its real index',
   async (enhancement) => {

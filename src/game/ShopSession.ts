@@ -12,6 +12,8 @@ import {
   type PackOffering,
 } from '../systems/BlessingPackSystem'
 import { DecreeSystem } from '../systems/DecreeSystem'
+import { FlowerSystem } from '../systems/FlowerSystem'
+import { acceptsFlowerCatalyst } from '../systems/flowerCatalysts'
 import type { BlessingPack, Decree, ImperialCharter } from '../systems/types'
 import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
@@ -28,10 +30,15 @@ export type ShopResult =
   | { success: true }
   | { success: false; reason: ShopFailure }
 type Reward = { type: PackContent['type']; data: unknown }
+export type ShopPayment =
+  | { type: 'gold' }
+  | { type: 'flower'; flowerId: string }
 type PurchasePlan =
   | {
       success: true
       offering: TeaHouseOffering
+      cost: number
+      flowerId?: string
       pack?: PackOffering
       reward?: Reward
     }
@@ -226,9 +233,15 @@ export class ShopSession {
   }
 
   /** Validate the combined reward, including Negative Decree slot expansion. */
-  private canReceive(rewards: Reward[]): boolean {
+  private canReceive(rewards: Reward[], flowerId?: string): boolean {
     const state = this.game.getState()
     const decrees = DecreeSystem.fromState(state.decreeSystem.toState())
+    const flowers = FlowerSystem.fromState(state.flowerSystem.toState())
+    if (flowerId) {
+      const slots = flowers.getBonusDecreeSlots()
+      if (!flowers.consumeFlower(flowerId)) return false
+      decrees.removeSlots(slots - flowers.getBonusDecreeSlots())
+    }
     let consumables =
       state.fateSeals.length +
       state.celestialOrbs.length +
@@ -239,10 +252,7 @@ export class ShopSession {
         case 'Decree': {
           const decree = reward.data as Decree
           if (
-            !decrees.canAcquireDecree(
-              decree,
-              state.flowerSystem.getFlowerCount()
-            ) ||
+            !decrees.canAcquireDecree(decree, flowers.getFlowerCount()) ||
             !decrees.acquireDecree(decree)
           )
             return false
@@ -290,18 +300,40 @@ export class ShopSession {
   }
 
   /** Read-only UI preflight. Purchase rechecks this same plan at commitment. */
-  validatePurchase(id: string): ShopResult {
+  validatePurchase(
+    id: string,
+    payment: ShopPayment = { type: 'gold' }
+  ): ShopResult {
     if (this.busy || !this.opened || !this.available())
       return fail('unavailable')
-    const plan = this.preparePurchase(id)
+    const plan = this.preparePurchase(id, payment)
     return plan.success ? OK : plan
   }
 
-  private preparePurchase(id: string): PurchasePlan {
+  private preparePurchase(id: string, payment: ShopPayment): PurchasePlan {
     const offering = this.findOffering(id)
     if (this.pending || !offering || offering.isPurchased || offering.isLocked)
       return fail('unavailable')
-    const priceFailure = this.priceFailure(offering.finalCost)
+    if (!Number.isFinite(offering.finalCost) || offering.finalCost < 0)
+      return fail('unavailable')
+    if (payment?.type !== 'gold' && payment?.type !== 'flower')
+      return fail('invalidSelection')
+    const flowerId = payment.type === 'flower' ? payment.flowerId : undefined
+    if (
+      payment.type === 'flower' &&
+      (offering.itemType !== 'Decree' ||
+        !acceptsFlowerCatalyst(offering.item as Decree) ||
+        !this.game
+          .getState()
+          .flowerSystem.getFlowers()
+          .some((flower) => flower.id === flowerId))
+    )
+      return fail('invalidSelection')
+    const cost = payment.type === 'flower' ? 0 : offering.finalCost
+    const flowerCount =
+      this.game.getState().flowerSystem.getFlowerCount() -
+      Number(payment.type === 'flower')
+    const priceFailure = this.priceFailure(cost)
     if (priceFailure) return fail(priceFailure)
     let pack: PackOffering | undefined
     let reward: Reward | undefined
@@ -310,6 +342,17 @@ export class ShopSession {
         (p) => p.pack.id === (offering.item as BlessingPack).id
       )
       if (!pack || pack.isOpened || pack.isResolved) return fail('unavailable')
+      // Do not sell an already-generated Decree pack whose entire selection
+      // became Flower-ineligible after a catalyst was spent this visit.
+      if (
+        pack.contents.length > 0 &&
+        pack.contents.every(
+          (content) =>
+            content.type === 'Decree' &&
+            ((content.data as Decree).flowerRequirement ?? 0) > flowerCount
+        )
+      )
+        return fail('flowerRequirement')
     } else if (offering.itemType === 'ImperialCharter') {
       if (!this.game.canAddImperialCharter(offering.item as ImperialCharter))
         return fail('unavailable')
@@ -325,30 +368,39 @@ export class ShopSession {
             ? offering.item
             : {
                 ...offering.item,
-                sellValue: Math.floor(offering.finalCost / 2),
+                sellValue: Math.floor(cost / 2),
               },
       }
       if (
         offering.itemType === 'Decree' &&
-        ((offering.item as Decree).flowerRequirement ?? 0) >
-          this.game.getState().flowerSystem.getFlowerCount()
+        ((offering.item as Decree).flowerRequirement ?? 0) > flowerCount
       )
         return { success: false, reason: 'flowerRequirement' }
-      if (!this.canReceive([reward])) return fail('inventoryFull')
+      if (!this.canReceive([reward], flowerId)) return fail('inventoryFull')
     }
-    return { success: true, offering, pack, reward }
+    return { success: true, offering, pack, reward, cost, flowerId }
   }
 
-  purchase(id: string): ShopResult {
+  purchase(id: string, payment: ShopPayment = { type: 'gold' }): ShopResult {
     return this.operate(() => {
-      const plan = this.preparePurchase(id)
+      const plan = this.preparePurchase(id, payment)
       if (!plan.success) return plan
-      const { offering, pack, reward } = plan
+      const { offering, pack, reward, cost, flowerId } = plan
 
       // All failure-prone checks precede mutation. Event callbacks cannot run
       // between payment, granting inventory, and marking this offer purchased.
-      if (!this.game.purchaseItem(id, offering.finalCost, offering.itemType))
-        return fail('unavailable')
+      if (flowerId) {
+        const state = this.game.getState()
+        const slots = state.flowerSystem.getBonusDecreeSlots()
+        if (!state.flowerSystem.consumeFlower(flowerId))
+          throw new Error('Validated Flower catalyst vanished')
+        state.decreeSystem.removeSlots(
+          slots - state.flowerSystem.getBonusDecreeSlots()
+        )
+        this.teaHouse.setFlowerCount(state.flowerSystem.getFlowerCount())
+      }
+      if (!this.game.purchaseItem(id, cost, offering.itemType))
+        throw new Error('Validated shop payment failed')
       const bought = this.teaHouse.purchaseOffering(
         id,
         this.game
@@ -383,7 +435,7 @@ export class ShopSession {
           )
         }
       }
-      this.spent += offering.finalCost
+      this.spent += cost
       this.purchases++
       this.notify()
       return OK
@@ -403,6 +455,15 @@ export class ShopSession {
       )
     )
       return fail('invalidSelection')
+    if (
+      indices.some(
+        (i) =>
+          pack.contents[i].type === 'Decree' &&
+          ((pack.contents[i].data as Decree).flowerRequirement ?? 0) >
+            this.game.getState().flowerSystem.getFlowerCount()
+      )
+    )
+      return fail('flowerRequirement')
     return this.canReceive(indices.map((i) => pack.contents[i]))
       ? OK
       : fail('inventoryFull')
@@ -447,6 +508,9 @@ export class ShopSession {
       if (priceFailure) return fail(priceFailure)
       if (!this.game.purchaseItem('reroll', cost, 'Reroll'))
         return fail('unavailable')
+      this.teaHouse.setFlowerCount(
+        this.game.getState().flowerSystem.getFlowerCount()
+      )
       this.teaHouse.rerollItems(
         this.game
           .getState()

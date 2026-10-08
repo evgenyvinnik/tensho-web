@@ -351,6 +351,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "Compraste {{name}} con {{flower}}.",
+      "offer": "Ofrecer una flor",
+      "prompt": "Entrega una flor por {{name}} en vez de {{cost}}G.",
+      "choose": "Elige la flor que se consumirá.",
+      "empty": "Consigue una flor antes de hacer este intercambio.",
+      "warning": "La flor se consume; sus poderes vuelven al recogerla de nuevo. Su despertar se conserva durante esta partida. Este Decreto se vende por 0G.",
+      "givenUp": "Poderes cedidos",
+      "slots": "Espacios de Decreto tras el intercambio: {{used}} / {{max}}.",
+      "loss2": "Con menos de dos flores pierdes el espacio adicional de Decreto.",
+      "loss3": "Con menos de tres flores se bloquean de nuevo las opciones potenciadas por flores en tienda y sobres.",
+      "loss4": "Con menos de cuatro flores su eficacia vuelve al nivel normal.",
+      "noSpace": "Haz espacio para este Decreto tras perder el espacio de la flor.",
+      "confirm": "Consumir {{flower}} y comprar"
+    },
     "availability": {
       "decreeSpace": "No hay espacio para un Decreto. Revisa tu combinación para hacer sitio.",
       "consumableSpace": "Los espacios de consumibles están llenos. Usa un objeto durante el juego antes de comprar más.",

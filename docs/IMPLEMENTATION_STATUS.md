@@ -4,6 +4,15 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Local Flower catalysts:** optional, explicit Flower payment for the three actual
+Yaku-changing Decrees is implemented with post-trade capacity/eligibility checks,
+zero-gold settlement, retained awakening/history, illustrated thirteen-locale
+confirmation and exact persistence. Native and built-production EN/ES
+desktop/320px journeys each pass 4/4;
+full units pass 1,955/1,955, plus two later focused engine cases. Build, TypeScript,
+lint and 13 release checks pass. Not published yet.
+[Rules, limits and evidence](FLOWER_CATALYSTS_IMPLEMENTATION.md).
+
 **Published Flower mutations — v1.0.261007-13:** all four Flower mutations are connected
 to engine paths, with real duplicate-draw awakening after the existing four-type
 achievement, saved eligibility, and thirteen-locale inspector explanations.

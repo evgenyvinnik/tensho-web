@@ -351,6 +351,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "{{name}} acheté avec {{flower}}.",
+      "offer": "Offrir une fleur",
+      "prompt": "Échangez une fleur contre {{name}} au lieu de {{cost}}G.",
+      "choose": "Choisissez la fleur à consommer.",
+      "empty": "Obtenez une fleur avant cet échange.",
+      "warning": "La fleur est consommée ; ses pouvoirs reviennent lorsque vous la récupérez à nouveau. Son éveil reste acquis pour cette partie. Ce Décret se revend 0G.",
+      "givenUp": "Pouvoirs abandonnés",
+      "slots": "Emplacements de Décret après échange : {{used}} / {{max}}.",
+      "loss2": "Moins de deux fleurs : perte de l’emplacement de Décret bonus.",
+      "loss3": "Moins de trois fleurs : les choix liés aux fleurs en boutique et dans les paquets se verrouillent à nouveau.",
+      "loss4": "Moins de quatre fleurs : leur efficacité redevient normale.",
+      "noSpace": "Libérez de la place pour ce Décret après la perte de l’emplacement de fleur.",
+      "confirm": "Consommer {{flower}} et acheter"
+    },
     "availability": {
       "decreeSpace": "Aucun emplacement de Décret libre. Vérifiez vos Décrets pour faire de la place.",
       "consumableSpace": "Les emplacements de consommables sont pleins. Utilisez un objet en jeu avant d’en acheter d’autres.",

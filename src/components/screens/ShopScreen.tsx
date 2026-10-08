@@ -21,7 +21,12 @@ import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { ShopResult } from '../../game/ShopSession'
-import type { BlessingPack, Decree, ImperialCharter } from '../../systems/types'
+import type {
+  BlessingPack,
+  Decree,
+  ImperialCharter,
+  FlowerVariant,
+} from '../../systems/types'
 import { Button } from '../ui/Button'
 import { ConfirmPopup } from '../ui/Popup'
 import { ShopHeader } from '../shop/ShopHeader'
@@ -36,6 +41,8 @@ import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { ShopBuildPanel } from '../shop/ShopBuildPanel'
+import { FlowerCatalystDialog } from '../shop/FlowerCatalystDialog'
+import { acceptsFlowerCatalyst } from '../../systems/flowerCatalysts'
 
 // =============================================================================
 // MAIN SHOP SCREEN COMPONENT
@@ -59,6 +66,12 @@ export function ShopScreen() {
   const [confirmOffering, setConfirmOffering] =
     useState<TeaHouseOffering | null>(null)
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
+  const [catalystReceipt, setCatalystReceipt] = useState<{
+    decree: Decree
+    flower: FlowerVariant
+  } | null>(null)
+  const [catalystOffering, setCatalystOffering] =
+    useState<TeaHouseOffering | null>(null)
   const currentPackOffering = shop.pendingPack
   const [shopError, setShopError] = useState<string | null>(null)
 
@@ -261,6 +274,15 @@ export function ShopScreen() {
                       canAfford={game.gold >= offering.finalCost}
                       unavailableReason={unavailableReason}
                       onPurchase={() => handleItemPurchase(offering)}
+                      onOfferFlower={
+                        offering.itemType === 'Decree' &&
+                        acceptsFlowerCatalyst(offering.item as Decree)
+                          ? () => {
+                              setShopError(null)
+                              setCatalystOffering(offering)
+                            }
+                          : undefined
+                      }
                       onSelect={() => handleItemSelect(offering)}
                       isSelected={selectedItemId === offering.id}
                     />
@@ -328,13 +350,26 @@ export function ShopScreen() {
       </div>
 
       {/* Bottom action bar */}
-      {shopError && (
+      {shopError && !catalystOffering && (
         <div
           role="alert"
           className="screen-canvas relative z-10 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
         >
           {shopError}
         </div>
+      )}
+
+      {catalystReceipt && !shopError && (
+        <p
+          role="status"
+          data-catalyst-receipt
+          className="screen-canvas relative z-10 mb-2 rounded-lg border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] px-3 py-2 text-center text-sm text-[var(--color-beige-white)]"
+        >
+          {t('shop.catalyst.paid', {
+            name: itemText.name('decrees', catalystReceipt.decree),
+            flower: t('flora.' + catalystReceipt.flower.toLowerCase()),
+          })}
+        </p>
       )}
 
       <div className="relative z-10 flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
@@ -371,6 +406,45 @@ export function ShopScreen() {
       )}
 
       {/* Pack opening modal */}
+      {catalystOffering && (
+        <FlowerCatalystDialog
+          key={catalystOffering.id}
+          offering={catalystOffering}
+          flowers={game.state.flowerSystem.getCollection()}
+          slots={game.state.decreeSystem.getMaxSlots()}
+          ownedDecrees={game.state.decreeSystem.getOwnedDecrees().length}
+          validate={(flowerId) =>
+            shop.validatePurchase(catalystOffering.id, {
+              type: 'flower',
+              flowerId,
+            })
+          }
+          onClose={() => {
+            setCatalystOffering(null)
+            setShopError(null)
+          }}
+          onConfirm={(flowerId) => {
+            const flower = game.state.flowerSystem
+              .getFlowers()
+              .find((flower) => flower.id === flowerId)
+            const result = shop.purchase(catalystOffering.id, {
+              type: 'flower',
+              flowerId,
+            })
+            showResult(result)
+            if (result.success) {
+              if (flower)
+                setCatalystReceipt({
+                  decree: catalystOffering.item as Decree,
+                  flower: flower.type,
+                })
+              setCatalystOffering(null)
+              setSelectedItemId(null)
+            }
+          }}
+          error={shopError}
+        />
+      )}
       <PackOpeningModal
         isOpen={currentPackOffering !== null}
         packOffering={currentPackOffering}
@@ -379,6 +453,12 @@ export function ShopScreen() {
         canConfirmSelection={(indices) =>
           shop.validatePackSelection(indices).success
         }
+        selectionError={(indices) => {
+          const result = shop.validatePackSelection(indices)
+          return !result.success && result.reason === 'flowerRequirement'
+            ? t('shop.availability.flowers')
+            : null
+        }}
         error={shopError}
       />
     </div>

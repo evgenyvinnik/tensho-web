@@ -46,6 +46,40 @@ afterEach(async () => {
   })
 })
 
+it('opens Flower payment separately when gold is unaffordable, without purchasing or selecting the card', () => {
+  const item = ALL_DECREES.find((d) => d.id === 'tanyao_dispensation')!
+  const offering: TeaHouseOffering = {
+    id: 'catalyst',
+    slotIndex: 0,
+    itemType: 'Decree',
+    item,
+    baseCost: 6,
+    editionCost: 0,
+    finalCost: 6,
+    sellValue: 3,
+    isPurchased: false,
+    isLocked: false,
+  }
+  const onPurchase = vi.fn(),
+    onSelect = vi.fn(),
+    onOfferFlower = vi.fn()
+  render(
+    <ShopItemCard
+      offering={offering}
+      canAfford={false}
+      unavailableReason="Not enough gold"
+      onPurchase={onPurchase}
+      onSelect={onSelect}
+      onOfferFlower={onOfferFlower}
+    />
+  )
+  expect(screen.getByRole('button', { name: /6G/ })).toBeDisabled()
+  fireEvent.click(screen.getByRole('button', { name: 'Offer a Flower' }))
+  expect(onOfferFlower).toHaveBeenCalledOnce()
+  expect(onPurchase).not.toHaveBeenCalled()
+  expect(onSelect).not.toHaveBeenCalled()
+})
+
 it('keeps blocked details readable and blocks both card and button purchase paths', () => {
   const item = ALL_DECREES[0]
   const offering: TeaHouseOffering = {

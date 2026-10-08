@@ -3,6 +3,12 @@
 Updated October 7, 2026. This records a bounded implementation and its
 remaining mechanics gaps; it does not declare Flowers and Seasons complete.
 
+October 7 local follow-up: [Flower-paid Decree catalysts](FLOWER_CATALYSTS_IMPLEMENTATION.md)
+now have an explicit illustrated shop confirmation, current-count bonus/capacity
+checks and persistent awakening/history. Native and built-production journeys
+pass 4/4 each. Release CI/public verification remain; the authored two-Flower
+Yakuman Succession activation is not being treated as this generic payment path.
+
 October 7 published follow-up, **v1.0.261007-13**: [all four Flower mutations and
 rebloom acquisition](FLOWER_MUTATIONS_IMPLEMENTATION.md) are connected, with saved
 eligibility, optional illustrated rule/hand explanations and rule-aware coaching.
@@ -175,7 +181,7 @@ of the requirements in `GAME_SYSTEMS.md`.
 | Autumn: discard pool grows | Resolved and connected as +1 discard action on each normal Autumn draw; its Yaku modifier remains active. Plum recovery is published and verified above. |
 | Winter: loosen hand legality | Connected to tactical/full scoring and coach as one skipped rank per same-suit sequence. Score penalties and Chrysanthemum exception remain active. See [Winter legality](WINTER_LEGALITY_IMPLEMENTATION.md). |
 | Frostbite: halve Decree effects | Flat-point, main multiplier, Yaku-specific benefits and shared gold reward paths scale with every Frostbite; ordinary bonuses remain intact. Wealth Engine and copied gold effects feed those paths. Treasure Hunter timing/scaling, fractional retriggers and non-numeric rules remain open. See [scoring evidence](FROSTBITE_IMPLEMENTATION.md), [gold settlement](FROSTBITE_GOLD_IMPLEMENTATION.md), [Decree economy](DECREE_ECONOMY_IMPLEMENTATION.md) and [secondary scoring](SECONDARY_SCORING_IMPLEMENTATION.md). |
-| Advanced mutations, catalysts, and Flower–Season interactions | All four Flower–Season combinations, all four advanced mutations and saved rebloom acquisition are connected and verified. Flower-paid Decree catalysts remain to implement; see the v13 follow-up above. |
+| Advanced mutations, catalysts, and Flower–Season interactions | All four Flower–Season combinations, all four advanced mutations and saved rebloom acquisition are connected and verified. Flower-paid Decree catalysts are implemented locally with native/production proof; release verification remains. See the follow-ups above. |
 
 The user explicitly delegated resolution of open rules on October 7.
 Fate Seal lifetime and Negative-tile conflicts still require concrete

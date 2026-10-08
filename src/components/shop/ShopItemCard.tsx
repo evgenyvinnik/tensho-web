@@ -60,6 +60,8 @@ export interface ShopItemCardProps {
   unavailableReason?: string
   /** Callback when item is purchased */
   onPurchase: () => void
+  /** Optional explicit Flower-payment picker; never substitutes for gold silently. */
+  onOfferFlower?: () => void
   /** Callback when item is selected for details */
   onSelect?: () => void
   /** Whether this item is currently selected */
@@ -267,6 +269,7 @@ export function ShopItemCard({
   canAfford,
   unavailableReason,
   onPurchase,
+  onOfferFlower,
   onSelect,
   isSelected = false,
 }: ShopItemCardProps) {
@@ -526,6 +529,20 @@ export function ShopItemCard({
             {offering.finalCost.toLocaleString(i18n.resolvedLanguage)}G
           </span>
         </button>
+        {onOfferFlower && (
+          <button
+            type="button"
+            data-offer-flower
+            onClick={(event) => {
+              event.stopPropagation()
+              onOfferFlower()
+            }}
+            disabled={offering.isPurchased || offering.isLocked}
+            className="mt-2 min-h-11 w-full rounded-lg border border-[var(--color-metallic-gold)] px-3 py-2 text-sm text-[var(--color-beige-white)] disabled:opacity-40"
+          >
+            {t('shop.catalyst.offer')}
+          </button>
+        )}
         {unavailableReason && (
           <p
             id={unavailableId}
@@ -543,7 +560,9 @@ export function ShopItemCard({
           <div className="absolute top-0 left-0 right-0 bg-[var(--color-golden-yellow)] text-[var(--color-dark-forest)] text-xs font-bold text-center py-0.5">
             {canBuy
               ? t('shop.tapToBuy', 'Tap to Buy')
-              : t('shop.availability.unavailable')}
+              : onOfferFlower
+                ? t('shop.catalyst.offer')
+                : t('shop.availability.unavailable')}
           </div>
         </div>
       )}

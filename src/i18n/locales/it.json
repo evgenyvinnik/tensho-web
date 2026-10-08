@@ -454,6 +454,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "{{name}} acquistato con {{flower}}.",
+      "offer": "Offri un fiore",
+      "prompt": "Scambia un fiore per {{name}} invece di {{cost}}G.",
+      "choose": "Scegli il fiore da consumare.",
+      "empty": "Raccogli un fiore prima di questo scambio.",
+      "warning": "Il fiore viene consumato; i suoi poteri tornano quando lo raccogli di nuovo. Il risveglio resta acquisito per questa partita. Questo Decreto si vende per 0G.",
+      "givenUp": "Poteri ceduti",
+      "slots": "Spazi Decreto dopo lo scambio: {{used}} / {{max}}.",
+      "loss2": "Con meno di due fiori perdi lo spazio Decreto aggiuntivo.",
+      "loss3": "Con meno di tre fiori le opzioni legate ai fiori nel negozio e nei pacchetti si bloccano di nuovo.",
+      "loss4": "Con meno di quattro fiori la loro efficacia torna normale.",
+      "noSpace": "Libera spazio per questo Decreto dopo la perdita dello spazio del fiore.",
+      "confirm": "Consuma {{flower}} e acquista"
+    },
     "availability": {
       "decreeSpace": "Nessuno spazio Decreto libero. Controlla i tuoi Decreti per fare posto.",
       "consumableSpace": "Gli spazi consumabili sono pieni. Usa un oggetto durante il gioco prima di acquistarne altri.",

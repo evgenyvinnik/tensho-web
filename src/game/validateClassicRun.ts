@@ -227,6 +227,7 @@ const stateFields = {
   decreeSystem,
   flowerSystem: schema<ClassicRunState['flowerSystem']>({
     rebloomUnlocked: optional(bool),
+    collectedTypes: optional(array(choice(Object.keys(FLOWER_MUTATIONS)))),
     flowers: keyed(flower, 'type'),
     unlockedMutations: array(
       choice(Object.values(FLOWER_MUTATIONS).map((m) => m.mutationId))
@@ -445,6 +446,15 @@ export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
   snapshot(value, 'run')
   const saved = value as ClassicRunSnapshot
   const state = saved.state
+  const flowerHistory = state.flowerSystem.collectedTypes
+  if (
+    flowerHistory &&
+    (new Set(flowerHistory).size !== flowerHistory.length ||
+      state.flowerSystem.flowers.some(
+        (flower) => !flowerHistory.includes(flower.type)
+      ))
+  )
+    invalid('run.state.flowerSystem.collectedTypes')
   // Only v1 saves may omit a field that did not exist yet. Current saves must
   // never silently lose earned protection through an absent field.
   if (saved.version === 2)

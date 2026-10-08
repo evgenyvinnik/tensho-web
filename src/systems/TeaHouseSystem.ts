@@ -965,6 +965,11 @@ export class TeaHouseSystem {
     return Math.max(0, baseCost - this.rerollDiscount)
   }
 
+  /** Spending a catalyst changes eligibility for future stock, not existing offers. */
+  setFlowerCount(count: number): void {
+    this.flowerCountForVisit = Math.max(0, count)
+  }
+
   /**
    * Reroll the item offerings
    * Returns the cost paid or null if reroll failed
@@ -1006,7 +1011,10 @@ export class TeaHouseSystem {
   /**
    * Purchase an offering from the shop
    */
-  purchaseOffering(offeringId: string, ownedDecreeIds: string[] = []): {
+  purchaseOffering(
+    offeringId: string,
+    ownedDecreeIds: string[] = []
+  ): {
     success: boolean
     cost: number
     offering: TeaHouseOffering | null

@@ -347,6 +347,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "Purchased {{name}} with {{flower}}.",
+      "offer": "Offer a Flower",
+      "prompt": "Trade one Flower for {{name}} instead of {{cost}}G.",
+      "choose": "Choose the Flower to consume.",
+      "empty": "Collect a Flower before making this trade.",
+      "warning": "The Flower is consumed; its powers return when collected again. Earned awakening is kept for this run. This Decree sells for 0G.",
+      "givenUp": "Powers given up",
+      "slots": "Decree slots after trade: {{used}} / {{max}}.",
+      "loss2": "Fewer than two Flowers: lose the bonus Decree slot.",
+      "loss3": "Fewer than three Flowers: Flower-powered shop and pack choices lock again.",
+      "loss4": "Fewer than four Flowers: Flower effectiveness returns to normal.",
+      "noSpace": "Make room for this Decree after the Flower slot is lost.",
+      "confirm": "Consume {{flower}} and buy"
+    },
     "availability": {
       "decreeSpace": "No Decree slot. Review your build to make room.",
       "consumableSpace": "Consumable slots are full. Use an item during play before buying more.",

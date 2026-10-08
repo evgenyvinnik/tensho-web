@@ -454,6 +454,21 @@
     "bossJp": "親局"
   },
   "shop": {
+    "catalyst": {
+      "paid": "{{flower}} karşılığında {{name}} satın alındı.",
+      "offer": "Çiçek sun",
+      "prompt": "{{cost}}G yerine bir Çiçek vererek {{name}} al.",
+      "choose": "Tüketilecek Çiçeği seç.",
+      "empty": "Bu takası yapmak için önce bir Çiçek topla.",
+      "warning": "Çiçek tüketilir; yeniden toplandığında güçleri geri gelir. Kazanılan uyanış bu koşu boyunca korunur. Bu Fermanın satış değeri 0G olur.",
+      "givenUp": "Vazgeçilen güçler",
+      "slots": "Takas sonrası Ferman yuvaları: {{used}} / {{max}}.",
+      "loss2": "İkiden az Çiçek: ek Ferman yuvası kaybolur.",
+      "loss3": "Üçten az Çiçek: dükkân ve paketlerdeki Çiçek destekli seçenekler yeniden kilitlenir.",
+      "loss4": "Dörtten az Çiçek: Çiçek etkinliği normale döner.",
+      "noSpace": "Çiçek yuvası kaybolduktan sonra bu Fermana yer aç.",
+      "confirm": "{{flower}} tüket ve satın al"
+    },
     "availability": {
       "decreeSpace": "Boş Ferman yuvası yok. Yer açmak için Fermanlarını gözden geçir.",
       "consumableSpace": "Tüketilebilir eşya yuvaları dolu. Daha fazla almadan önce oyun sırasında bir eşya kullan.",

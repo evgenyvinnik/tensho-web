@@ -52,6 +52,7 @@ export interface PackOpeningModalProps {
   onSkip: () => void
   /** Combined capacity check; selection is editable even when it cannot fit. */
   canConfirmSelection?: (indices: number[]) => boolean
+  selectionError?: (indices: number[]) => string | null
   error?: string | null
 }
 
@@ -313,6 +314,7 @@ export function PackOpeningModal({
   onConfirm,
   onSkip,
   canConfirmSelection,
+  selectionError,
   error,
 }: PackOpeningModalProps) {
   const { t } = useTranslation()
@@ -518,7 +520,9 @@ export function PackOpeningModal({
                 role="status"
                 className="mt-2 text-sm text-[var(--color-golden-yellow)]"
               >
-                {error || t('shop.packInventoryFull')}
+                {error ||
+                  selectionError?.(selectedIndices) ||
+                  t('shop.packInventoryFull')}
               </p>
             )}
           </div>

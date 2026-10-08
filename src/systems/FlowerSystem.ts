@@ -130,6 +130,7 @@ export class FlowerSystem {
   private flowers: FlowerTile[] = []
   private unlockedMutations: Set<string> = new Set()
   private rebloomUnlocked: boolean
+  private collectedTypes = new Set<FlowerVariant>()
 
   constructor(rebloomUnlocked = false) {
     this.flowers = []
@@ -188,6 +189,8 @@ export class FlowerSystem {
     if (!flowerType) {
       return null
     }
+    this.collectedTypes.add(flowerType)
+    if (this.collectedTypes.size === 4) this.rebloomUnlocked = true
 
     // Check if already collected this flower type
     if (this.hasFlowerType(flowerType)) {
@@ -215,7 +218,16 @@ export class FlowerSystem {
   }
 
   canRebloom(): boolean {
-    return this.rebloomUnlocked || this.flowers.length === 4
+    return this.rebloomUnlocked || this.collectedTypes.size === 4
+  }
+
+  /** Spend an exact owned Flower. Run-earned eligibility and awakening survive;
+   * its powers and collection bonuses require owning that type again.
+   */
+  consumeFlower(id: string): FlowerTile | null {
+    const index = this.flowers.findIndex((flower) => flower.id === id)
+    if (index < 0) return null
+    return this.flowers.splice(index, 1)[0]
   }
 
   /**
@@ -421,6 +433,8 @@ export class FlowerSystem {
    */
   clear(): void {
     this.flowers = []
+    this.collectedTypes.clear()
+    this.unlockedMutations.clear()
   }
 
   /**
@@ -450,11 +464,15 @@ export class FlowerSystem {
     flowers: FlowerTile[]
     unlockedMutations: string[]
     rebloomUnlocked?: boolean
+    collectedTypes?: FlowerVariant[]
   } {
     return {
       flowers: [...this.flowers],
       unlockedMutations: Array.from(this.unlockedMutations),
       ...(this.rebloomUnlocked ? { rebloomUnlocked: true } : {}),
+      ...(this.collectedTypes.size > this.flowers.length
+        ? { collectedTypes: [...this.collectedTypes] }
+        : {}),
     }
   }
 
@@ -465,9 +483,13 @@ export class FlowerSystem {
     flowers: FlowerTile[]
     unlockedMutations: string[]
     rebloomUnlocked?: boolean
+    collectedTypes?: FlowerVariant[]
   }): FlowerSystem {
     const system = new FlowerSystem(state.rebloomUnlocked ?? false)
     system.flowers = [...state.flowers]
+    system.collectedTypes = new Set(
+      state.collectedTypes ?? state.flowers.map((flower) => flower.type)
+    )
     system.unlockedMutations = new Set(state.unlockedMutations)
     return system
   }
