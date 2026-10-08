@@ -315,6 +315,7 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "yakumanAscended": "Umakyat sa Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus sa hugis",
     "beginnerBonusHelp": "Idinaragdag ang bonus sa hugis sa puntos ng mga tile. Kasama sa pagtataya ang mga modifier ng iyong run at ipinapakita nito ang aktuwal na puntos ng galaw na ito.",
     "act": "Akto",
@@ -557,6 +558,10 @@
       "mythic": "Makalangit na Ordinansa"
     },
     "items": {
+      "yakuman_succession": {
+        "name": "Pagmamana ng Yakuman",
+        "description": "Habang may hindi bababa sa 2 Bulaklak, nagiging Yakuman ang Honitsu, Chinitsu, Ryanpeikou, Junchan at Pitong Pares (×4 bawat isa). Hindi aangat ang mga padron na ibinaba ng Mandato. Hindi nagsasalansan ang mga kopya."
+      },
       "river_tax": {
         "name": "Buwis sa Ilog",
         "description": "Makakuha ng 1 Ginto sa bawat tile na itinapon sa round na ito."

@@ -132,6 +132,7 @@ interface YakuBadgeProps {
 }
 
 function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
+  const { t } = useTranslation()
   return (
     <div className="relative">
       <button
@@ -151,6 +152,14 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
         <span className="ml-1.5 text-[10px] text-white/70">
           ×{yaku.multiplier}
         </span>
+        {yaku.ascended && (
+          <span
+            data-yaku-ascended={yaku.id}
+            className="block text-[10px] text-amber-100"
+          >
+            {t('gameplay.yakumanAscended')}
+          </span>
+        )}
       </button>
 
       {/* Tooltip popup */}

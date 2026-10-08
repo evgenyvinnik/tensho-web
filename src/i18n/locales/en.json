@@ -208,6 +208,7 @@
     "dangerZone": "Danger Zone"
   },
   "gameplay": {
+    "yakumanAscended": "Ascended to Yakuman",
     "beginnerShapeBonus": "+{{points}} shape bonus",
     "beginnerBonusHelp": "Shape bonuses add to tile points. The forecast includes your run's modifiers and shows what this play will actually score.",
     "act": "Act",
@@ -1081,6 +1082,10 @@
       "honor_transmutation": {
         "name": "Honor Transmutation",
         "description": "Honor tiles may count as suited tiles of your most common suit."
+      },
+      "yakuman_succession": {
+        "name": "Yakuman Succession",
+        "description": "While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack."
       },
       "celestial_wildcard": {
         "name": "Celestial Wildcard",

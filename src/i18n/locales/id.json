@@ -292,6 +292,7 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "yakumanAscended": "Naik menjadi Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus pola",
     "beginnerBonusHelp": "Bonus pola ditambahkan ke poin ubin. Prakiraan mencakup pengubah dalam permainanmu dan menunjukkan skor yang akan diperoleh dari langkah ini.",
     "act": "Babak",
@@ -1133,6 +1134,10 @@
       "decree-omega": {
         "name": "Omega",
         "description": "+500 Chip, +50 Mult, x2.0 Mult"
+      },
+      "yakuman_succession": {
+        "name": "Suksesi Yakuman",
+        "description": "Saat memiliki sedikitnya 2 Bunga, Honitsu, Chinitsu, Ryanpeikou, Junchan, dan Tujuh Pasang naik menjadi Yakuman (masing-masing ×4). Pola yang diturunkan Mandat tidak dapat naik. Salinan tidak bertumpuk."
       },
       "river_tax": {
         "name": "Pajak Sungai",

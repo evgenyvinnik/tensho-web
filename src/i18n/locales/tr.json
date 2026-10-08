@@ -315,6 +315,7 @@
     "visual": "Görsel"
   },
   "gameplay": {
+    "yakumanAscended": "Yakuman'a yükseldi",
     "beginnerShapeBonus": "+{{points}} şekil bonusu",
     "beginnerBonusHelp": "Şekil bonusları taş puanlarına eklenir. Tahmin, koşunun değiştiricilerini içerir ve bu hamlenin gerçekte kaç puan kazandıracağını gösterir.",
     "act": "Perde",
@@ -557,6 +558,10 @@
       "mythic": "Cennetin Emri"
     },
     "items": {
+      "yakuman_succession": {
+        "name": "Yakuman Veraseti",
+        "description": "En az 2 Çiçek taşırken Honitsu, Chinitsu, Ryanpeikou, Junchan ve Yedi Çift, Yakuman olur (her biri ×4). Ferman ile seviyesi düşürülen desenler yükselemez. Kopyalar birikmez."
+      },
       "river_tax": {
         "name": "Nehir Vergisi",
         "description": "Bu tur atılan her taş için 1 Altın kazan."

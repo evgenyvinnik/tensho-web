@@ -27,6 +27,7 @@ import { LIBRARY_DECREES } from '../config/decreeLibrary'
 import { runRandom } from '../game/RunRandom'
 import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 import { getDecreeStickers, hasDecreeSticker } from './decreeStickers'
+import { ALL_YAKU } from '../rules/YakuDetector'
 
 /**
  * Every effect a Decree carries: its primary effect plus any extras from
@@ -135,13 +136,9 @@ const YAKU_GATE_IDS: Partial<Record<GateCondition, readonly string[]>> = {
   yaku_chinitsu: ['chinitsu'],
   yaku_chanta: ['chanta', 'junchan'],
   // Every hand worth a yakuman, by id.
-  yaku_yakuman: [
-    'kokushi',
-    'suu_ankou',
-    'dai_sangen',
-    'chinroutou',
-    'chuuren_poutou',
-  ],
+  yaku_yakuman: ALL_YAKU.filter((yaku) => yaku.tier === 4).map(
+    (yaku) => yaku.id
+  ),
 }
 
 /**
@@ -165,6 +162,8 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
     context.melds.filter((meld) => meld.type === type).length
 
   const yakuIds = context.detectedYakuIds
+  if (gate === 'yaku_yakuman' && context.detectedYakumanIds)
+    return context.detectedYakumanIds.size > 0
   const yakuGate = YAKU_GATE_IDS[gate]
   if (yakuGate) {
     return yakuGate.some((id) => yakuIds?.has(id) ?? false)
@@ -449,6 +448,23 @@ export const CELESTIAL_WILDCARD: Decree = {
   },
 }
 
+export const YAKUMAN_SUCCESSION: Decree = {
+  id: 'yakuman_succession',
+  name: 'Yakuman Succession',
+  description:
+    'While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.',
+  category: 'YakuDoctrine',
+  rarity: 'HeavenlyOrdinance',
+  cost: 12,
+  flowerRequirement: 2,
+  effect: {
+    type: 'yaku_modifier',
+    trigger: 'Independent',
+    description: 'With 2 Flowers, advanced Yaku ascend to Yakuman',
+    ascendAdvanced: true,
+  },
+}
+
 export const DEAD_WALL_WRIT: Decree = {
   id: 'dead_wall_writ',
   name: 'Dead Wall Writ',
@@ -554,6 +570,7 @@ export const RULE_DECREES: Decree[] = [
   FALSE_EYE_MANDATE,
   HONOR_TRANSMUTATION,
   CELESTIAL_WILDCARD,
+  YAKUMAN_SUCCESSION,
   DEAD_WALL_WRIT,
   SHANTEN_CLEMENCY,
   CLOSED_HAND_AUSTERITY,
@@ -973,12 +990,17 @@ export class DecreeSystem {
    * Yaku amplification from Decrees: a multiplier applied to the combined yaku
    * multiplier, and a tier bonus that scores each yaku as if it ranked higher.
    */
-  getYakuModifiers(excludedIds?: ReadonlySet<string>): {
+  getYakuModifiers(
+    excludedIds?: ReadonlySet<string>,
+    flowerCount = 0
+  ): {
     multiplier: number
     tierBonus: number
+    ascendAdvanced: boolean
   } {
     let multiplier = 1
     let tierBonus = 0
+    let ascendAdvanced = false
 
     const active = this.getActiveDecrees(excludedIds)
     for (const decree of active) {
@@ -990,10 +1012,11 @@ export class DecreeSystem {
         if (effect.type !== 'yaku_modifier') continue
         if (effect.multiplier) multiplier *= effect.multiplier
         if (effect.tierBonus) tierBonus += effect.tierBonus
+        if (effect.ascendAdvanced && flowerCount >= 2) ascendAdvanced = true
       }
     }
 
-    return { multiplier, tierBonus }
+    return { multiplier, tierBonus, ascendAdvanced }
   }
 
   /** Whether any active Decree turns on the named rule. */

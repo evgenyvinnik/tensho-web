@@ -212,6 +212,7 @@
     "visual": "Visuel"
   },
   "gameplay": {
+    "yakumanAscended": "Élevé au rang de Yakuman",
     "beginnerShapeBonus": "+{{points}} de bonus de figure",
     "beginnerBonusHelp": "Les bonus de figure s'ajoutent aux points des tuiles. La prévision inclut les modificateurs de votre partie et indique le score réel de ce coup.",
     "act": "Acte",
@@ -1085,6 +1086,10 @@
       "honor_transmutation": {
         "name": "Transmutation des Honneurs",
         "description": "Les tuiles d'Honneur peuvent compter comme des tuiles de votre famille la plus fréquente."
+      },
+      "yakuman_succession": {
+        "name": "Succession Yakuman",
+        "description": "Avec au moins 2 fleurs, Honitsu, Chinitsu, Ryanpeikou, Junchan et Sept Paires deviennent des Yakuman (×4 chacun). Les motifs rétrogradés par un Mandat ne peuvent pas s’élever. Les copies ne se cumulent pas."
       },
       "celestial_wildcard": {
         "name": "Joker Céleste",

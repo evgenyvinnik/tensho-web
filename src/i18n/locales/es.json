@@ -212,6 +212,7 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "yakumanAscended": "Ascendido a Yakuman",
     "beginnerShapeBonus": "+{{points}} por la forma",
     "beginnerBonusHelp": "Las bonificaciones por forma se suman a los puntos de las fichas. La previsión incluye los modificadores de tu partida y muestra la puntuación real de esta jugada.",
     "act": "Acto",
@@ -1085,6 +1086,10 @@
       "honor_transmutation": {
         "name": "Transmutación de Honores",
         "description": "Las fichas de Honor pueden contar como fichas de tu palo más común."
+      },
+      "yakuman_succession": {
+        "name": "Sucesión de Yakuman",
+        "description": "Con al menos 2 flores, Honitsu, Chinitsu, Ryanpeikou, Junchan y Siete Pares ascienden a Yakuman (×4 cada uno). Los patrones rebajados por un Mandato no ascienden. Las copias no se acumulan."
       },
       "celestial_wildcard": {
         "name": "Comodín Celestial",

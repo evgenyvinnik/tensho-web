@@ -71,6 +71,7 @@ it('offers catalysts only for real Yaku changes, not ordinary bonuses labeled Ya
     'decree-yaku-amplifier',
     'decree-yaku-nexus',
     'tanyao_dispensation',
+    'yakuman_succession',
   ])
   expect(acceptsFlowerCatalyst(catalog('decree-yakuman-seeker'))).toBe(false)
 })

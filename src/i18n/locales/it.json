@@ -315,6 +315,7 @@
     "visual": "Visivo"
   },
   "gameplay": {
+    "yakumanAscended": "Asceso a Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus di combinazione",
     "beginnerBonusHelp": "I bonus di combinazione si sommano ai punti delle tessere. L'anteprima include i modificatori della partita e mostra il punteggio effettivo della giocata.",
     "act": "Atto",
@@ -557,6 +558,10 @@
       "mythic": "Ordinanza Celeste"
     },
     "items": {
+      "yakuman_succession": {
+        "name": "Successione Yakuman",
+        "description": "Con almeno 2 fiori, Honitsu, Chinitsu, Ryanpeikou, Junchan e Sette Coppie diventano Yakuman (×4 ciascuno). Le combinazioni declassate da un Mandato non ascendono. Le copie non si sommano."
+      },
       "river_tax": {
         "name": "Tassa fluviale",
         "description": "Ottieni 1 Oro per ogni tessera scartata in questo round."

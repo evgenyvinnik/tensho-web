@@ -212,6 +212,7 @@
     "visual": "显示"
   },
   "gameplay": {
+    "yakumanAscended": "晋升为役满",
     "beginnerShapeBonus": "+{{points}} 牌组奖励",
     "beginnerBonusHelp": "牌组奖励会加到牌的点数上。预测分数包含本局的修正效果，显示这次出牌实际可获得的分数。",
     "act": "幕",
@@ -1053,6 +1054,10 @@
       "decree-omega": {
         "name": "终极",
         "description": "+500筹码，+50倍率，x2.0倍率"
+      },
+      "yakuman_succession": {
+        "name": "役满承继",
+        "description": "持有至少2种花牌时，混一色、清一色、二杯口、纯全带幺九和七对子升为役满（各×4）。被敕令降级的役不能晋升。复制品不叠加。"
       },
       "river_tax": {
         "name": "河川税",

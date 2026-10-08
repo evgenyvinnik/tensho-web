@@ -145,7 +145,7 @@ export interface GameEventData {
   }
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
-  yakumanScored: { yakuId: string; yakuName: string }
+  yakumanScored: { yakuId: string; yakuName: string; multiplier?: number }
 
   // Economy
   goldChanged: {

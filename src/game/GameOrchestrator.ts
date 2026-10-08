@@ -40,6 +40,7 @@ import {
 } from '../rules/PartialHandParser'
 import { eventBus } from './EventBus'
 import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
+import { ascendYaku } from '../rules/yakuAscension'
 import { ShopSession } from './ShopSession'
 import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
 import {
@@ -1955,6 +1956,7 @@ export class GameOrchestrator {
         eventBus.emit('yakumanScored', {
           yakuId: yaku.definition.id,
           yakuName: yaku.definition.name,
+          multiplier: yaku.definition.multiplier,
         })
       } else {
         eventBus.emit('yakuScored', {
@@ -3445,11 +3447,23 @@ export class GameOrchestrator {
       mandateScoring.basePoints * this.state.tableModifiers.baseScoreMultiplier
     // Yaku Nexus scores each yaku as if it ranked higher; Yaku Amplifier scales
     // the combined multiplier. Both are Court authority over Grammar.
-    const yakuDecreeModifiers =
-      this.state.decreeSystem.getYakuModifiers(disabledDecreeIds)
-    const yakuProduct = (tierBonus: number) =>
-      baseBreakdown.detectedYaku.reduce((multiplier, yaku) => {
-        const adjustedTier = mandateScoring.yakuTiers.get(yaku.definition.id)
+    const yakuDecreeModifiers = this.state.decreeSystem.getYakuModifiers(
+      disabledDecreeIds,
+      this.state.flowerSystem.getFlowerCount()
+    )
+    const ordinaryYaku = baseBreakdown.detectedYaku
+    const ascendedYaku = ordinaryYaku.map((yaku) =>
+      ascendYaku(
+        yaku,
+        yakuDecreeModifiers.ascendAdvanced,
+        mandateScoring.yakuTiers.get(yaku.definition.id) ?? yaku.definition.tier
+      )
+    )
+    const yakuProduct = (tierBonus: number, yakuList = ordinaryYaku) =>
+      yakuList.reduce((multiplier, yaku) => {
+        const adjustedTier = yaku.definition.ascended
+          ? 4
+          : mandateScoring.yakuTiers.get(yaku.definition.id)
         // The table adds to each surviving Yakuman's multiplier, not to every
         // hand and not as a second multiplier over the whole final score.
         const yakuMultiplier =
@@ -3472,7 +3486,7 @@ export class GameOrchestrator {
       }, 1)
     const ordinaryYakuMultiplier = yakuProduct(0)
     const boostedYakuMultiplier =
-      yakuProduct(yakuDecreeModifiers.tierBonus) *
+      yakuProduct(yakuDecreeModifiers.tierBonus, ascendedYaku) *
       (baseBreakdown.detectedYaku.length > 0
         ? yakuDecreeModifiers.multiplier
         : 1)
@@ -3488,6 +3502,16 @@ export class GameOrchestrator {
     if (this.state.roundManager.checkMandateEffect('halve_score').active) {
       baseBreakdown.yakuMultiplier *= 0.5
     }
+
+    // Ascension changes classification as well as score, without fabricating a
+    // second pattern or moving its Orb family. Frostbite weakens numeric gain,
+    // not the discrete identity. A Mandate-lowered tier never ascends.
+    baseBreakdown.detectedYaku = ascendedYaku
+    systemContext.detectedYakumanIds = new Set(
+      ascendedYaku
+        .filter((yaku) => yaku.definition.tier === 4)
+        .map((yaku) => yaku.definition.id)
+    )
 
     // Gates that ask "did this hand score X?" must see the final yaku list,
     // after Mandates have removed any they suppress.

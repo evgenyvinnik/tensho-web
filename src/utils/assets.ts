@@ -150,6 +150,7 @@ export const illustrationAssets = {
     river_tax: `${ASSET_BASE}/illustrations/decrees/river-tax.webp`,
     extended_hand_grant: `${ASSET_BASE}/illustrations/decrees/extended-hand-grant.webp`,
     tanyao_dispensation: `${ASSET_BASE}/illustrations/decrees/tanyao-dispensation.webp`,
+    yakuman_succession: `${ASSET_BASE}/illustrations/decrees/yakuman-succession.webp`,
     moonlit_seal: `${ASSET_BASE}/illustrations/decrees/moonlit-seal.webp`,
     pure_suit_asceticism: `${ASSET_BASE}/illustrations/decrees/pure-suit-asceticism.webp`,
   },

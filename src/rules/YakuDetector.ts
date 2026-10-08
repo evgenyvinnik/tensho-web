@@ -27,6 +27,8 @@ export interface YakuDefinition {
   multiplier: number // For Tensho scoring
   requiresConcealed: boolean
   description: string
+  /** Run-local promotion; never written back into the canonical catalog. */
+  ascended?: boolean
 }
 
 /**

@@ -4,6 +4,16 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Local Yakuman Succession:** the distinct two-Flower mythic Decree is connected
+to real scoring, classification, copied effects, shop eligibility, localized
+forecasts and generated artwork. Twenty engine and thirteen locale cases pass.
+Native and built-production EN/ES desktop/320px journeys each pass 4/4;
+TypeScript, build, lint (warnings only) and thirteen release checks pass.
+Fresh full regression passes **1,991/1,991 in 165 files**. Earlier deadline
+failures and their unchanged isolated recheck remain recorded. Release CI and
+hosted verification remain; this work is not published.
+[Current evidence and corrections](YAKUMAN_SUCCESSION_IMPLEMENTATION.md).
+
 **Published Flower catalysts — v1.0.261008-1:** optional, explicit Flower payment for the three actual
 Yaku-changing Decrees is implemented with post-trade capacity/eligibility checks,
 zero-gold settlement, retained awakening/history, illustrated thirteen-locale

@@ -212,6 +212,7 @@
     "visual": "화면"
   },
   "gameplay": {
+    "yakumanAscended": "역만으로 승격",
     "beginnerShapeBonus": "+{{points}} 모양 보너스",
     "beginnerBonusHelp": "모양 보너스는 패 점수에 더해집니다. 예상 점수에는 현재 런의 보정 효과가 포함되며, 이번 플레이로 실제 얻을 점수를 보여 줍니다.",
     "act": "막",
@@ -1053,6 +1054,10 @@
       "decree-omega": {
         "name": "오메가",
         "description": "+500 칩, +50 배율, x2.0 배율"
+      },
+      "yakuman_succession": {
+        "name": "역만 계승",
+        "description": "꽃패를 2종류 이상 보유하면 혼일색, 청일색, 이배구, 준찬타, 칠대자가 역만으로 승격됩니다(각 ×4). 칙령으로 강등된 역은 승격되지 않습니다. 복사본은 중첩되지 않습니다."
       },
       "river_tax": {
         "name": "강의 세금",

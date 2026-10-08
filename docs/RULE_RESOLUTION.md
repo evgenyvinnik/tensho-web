@@ -71,8 +71,9 @@ Winter resolution is now published and verified; see below. Remaining
 gaps are not removed by choosing the rule.
 
 - The base Flower–Season interactions are now connected: Plum/Autumn is published and verified in v1.0.261007-12, Orchid/Spring in v1.0.261007-11, and Bamboo/Summer in v1.0.261007-8. The separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing. Advanced mutations remain separate work below.
-- Specify the four advanced Flower mutations, acquisition/unlock path and
-  catalyst payments. An unused helper or catalog description is not completion.
+- The four advanced Flower mutations, acquisition/unlock path and catalyst
+  payments are published and verified below. Yakuman Succession is the current
+  local follow-up; its release verification remains separate.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
   copied resource effects, and reconcile Fate Seal lifetime/Negative tiles.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
@@ -236,11 +237,12 @@ Flower-paid Decree catalysts are the separate follow-up below.
 
 Under the user's delegated rules authority, catalyst payment is an optional
 alternative to gold for a direct shop offer that changes Yaku rules or their
-multipliers/tiers. The present catalog contains Tanyao Dispensation, Yaku
-Amplifier and Yaku Nexus. Determine eligibility from actual effects, not the
+multipliers/tiers. The original catalyst release contains Tanyao Dispensation,
+Yaku Amplifier and Yaku Nexus; the Succession checkpoint below adds a fourth.
+Determine eligibility from actual effects, not the
 presentational YakuDoctrine label, which also includes ordinary chip bonuses.
-This does not silently rename Yaku Nexus to the separately authored Yakuman
-Succession or claim that named rule's two-Flower activation is implemented.
+Yaku Nexus is not renamed to the distinct Yakuman Succession, whose two-Flower
+activation is implemented in the separate checkpoint below.
 
 The player explicitly chooses one owned Flower and confirms its consumption.
 Any type may pay; no random sacrifice or automatic fallback from a gold purchase.
@@ -271,3 +273,30 @@ built-production and hosted EN/ES desktop/touch journeys pass 4/4 each;
 independent CI passes all 1,957 tests, build and deployment. These remain
 delegated design choices, not conclusions from organic balance or fun testing.
 [Rules, verification and remaining scope](FLOWER_CATALYSTS_IMPLEMENTATION.md).
+
+### Yakuman Succession: advanced patterns ascend while two Flowers are held
+
+This distinct mythic Decree costs 12G and requires two held Flowers both for
+acquisition and activation. The five native advanced-tier patterns—Honitsu,
+Chinitsu, Ryanpeikou, Junchan and Seven Pairs—become tier-four Yakuman with a
+base ×4 multiplier each. Existing Yaku exclusions still apply; ascension never
+invents a pattern. Physical pattern IDs and matching Orb families stay unchanged.
+
+Mandate filtering and tier reductions apply first. A removed or lowered pattern
+cannot ascend, and Yaku Nexus cannot make a lower-tier pattern eligible. Multiple
+Succession copies, including copied effects, grant the same permission without
+stacking. Disabled/debuffed sources do not grant it. Natural Yakuman remain
+unchanged; table Yakuman bonuses apply to newly ascended patterns too.
+
+Frostbite scales the numeric Decree-created multiplier gain above the ordinary
+Yaku baseline, while the discrete ascended identity remains Yakuman. It can
+qualify for Yakuman-gated Decrees and paid-play achievements. Preview grants no
+progress. Drought follows the existing ownership rule: it suppresses Flower
+empowerment, not the two-owned-Flower condition. Dropping below two Flowers
+suspends ascension until collection recovers; it does not delete the Decree.
+
+The existing catalyst payment path is allowed only if at least two Flowers remain
+after payment, so buying it for a Flower needs three held beforehand. This is
+not a second sacrifice on activation. The new portrait and all-locale description
+make it distinct from Yaku Nexus. These are delegated design decisions; balance
+is not yet established. Implementation and verification are in progress.

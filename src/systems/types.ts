@@ -235,6 +235,8 @@ export interface YakuModifierEffect extends BaseEffect {
   type: 'yaku_modifier'
   multiplier?: number
   tierBonus?: number
+  /** Ascend surviving advanced Yaku while at least two Flowers are held. */
+  ascendAdvanced?: boolean
 }
 
 /**
@@ -650,6 +652,8 @@ export interface ScoringContext {
   winningTile: Tile
   /** Yaku this hand actually scored, after Mandate filtering. */
   detectedYakuIds?: ReadonlySet<string>
+  /** Effective Yakuman identities, including Decree ascensions. */
+  detectedYakumanIds?: ReadonlySet<string>
   /** Points the previous hand of this round scored, if any was played. */
   lastHandScore?: number
   /** Gold held as the hand is scored, for economy-scaled Decrees. */

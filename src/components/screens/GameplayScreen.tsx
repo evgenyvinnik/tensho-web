@@ -258,6 +258,21 @@ export function GameplayScreen() {
     }, [])
   )
 
+  useGameEvent(
+    'yakumanScored',
+    useCallback((data) => {
+      setYakuReveals((reveals) => [
+        ...reveals,
+        {
+          id: data.yakuId,
+          japaneseName: data.yakuName,
+          multiplier: data.multiplier ?? 4,
+          tier: 4,
+        },
+      ])
+    }, [])
+  )
+
   // ==========================================================================
   // CALLBACKS - UI interaction handlers
   // ==========================================================================
