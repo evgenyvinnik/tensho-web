@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Copies a random non-copy Decree on acquisition and at each round start.",
+    "target": "Copying {{name}} · slot {{slot}}",
+    "waiting": "Waiting for another Decree.",
+    "missing": "Target removed; choose again next round.",
+    "inactive": "The copier or its target is inactive.",
+    "rules": "The target stays fixed this round. Copies effects and costs, not editions or copy chains. Removing or disabling the target does not reroll it."
+  },
   "screenDownload": {
     "title": "This screen couldn’t download",
     "description": "A connection problem or a new release may have interrupted loading. Check your connection, then save and reload to try again.",
@@ -960,7 +968,7 @@
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
-        "description": "Adds extra copy of random owned Decree"
+        "description": "Copies a random non-copy Decree on acquisition and at each round start."
       },
       "decree-manzu-god": {
         "name": "Manzu God",

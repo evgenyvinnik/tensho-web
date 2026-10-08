@@ -72,6 +72,7 @@ export type RandomStream =
   | 'packs'
   | 'consumables'
   | 'decrees'
+  | 'decreeCopies'
   | 'modifiers'
   | 'mandates'
   | 'omens'
@@ -83,6 +84,7 @@ const RANDOM_STREAMS: readonly RandomStream[] = [
   'packs',
   'consumables',
   'decrees',
+  'decreeCopies',
   'modifiers',
   'mandates',
   'omens',

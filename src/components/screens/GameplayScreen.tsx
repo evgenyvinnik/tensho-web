@@ -741,6 +741,8 @@ export function GameplayScreen() {
               <DecreeCardCompact
                 key={decree.instanceId ?? `${decree.id}-${index}`}
                 decree={decree}
+                ownedDecrees={ownedDecrees}
+                disabledDecreeIds={disabledDecreeIds}
                 faceDown={game.decreesFaceDown}
                 disabledByMandate={isDecreeExcluded(decree, disabledDecreeIds)}
                 onSell={() => handleSellDecree(decreeKey(decree))}

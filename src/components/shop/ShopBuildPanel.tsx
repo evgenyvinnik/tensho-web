@@ -62,6 +62,7 @@ export function ShopBuildPanel({ decrees, maxSlots, onSell }: Props) {
             <DecreeCardCompact
               key={decreeKey(decree)}
               decree={decree}
+              ownedDecrees={decrees}
               onSell={() => {
                 // A stable focus return target survives removal of the sold card
                 // and the transient detail popover that launched confirmation.

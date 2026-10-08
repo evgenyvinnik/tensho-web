@@ -1,5 +1,10 @@
 # Decree copying: physical targets and resource trade-offs
 
+October follow-up: [Doppelganger target rules](DOPPELGANGER_IMPLEMENTATION.md)
+supersede the positional-random/awaiting-choice note below. The separate Frostbite,
+Treasure Hunter and Season follow-ups are linked from the implementation status;
+this historical checkpoint does not override those later decisions.
+
 September 19, 2026. Local implementation checkpoint, not whole-project completion.
 
 ## Requirements and reproduced failures

@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Copia un Decreto sin efecto de copia al obtenerlo y al iniciar cada ronda.",
+    "target": "Copiando {{name}} · posición {{slot}}",
+    "waiting": "Esperando otro Decreto.",
+    "missing": "Objetivo eliminado; nueva elección en la próxima ronda.",
+    "inactive": "La copia o su objetivo está inactivo.",
+    "rules": "El objetivo no cambia durante la ronda. Copia efectos y costes, no ediciones ni cadenas de copia. Eliminarlo o desactivarlo no elige otro."
+  },
   "screenDownload": {
     "title": "No se pudo descargar esta pantalla",
     "description": "Un problema de conexión o una nueva versión puede haber interrumpido la carga. Comprueba la conexión y guarda y recarga para volver a intentarlo.",
@@ -964,7 +972,7 @@
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
-        "description": "Añade copia de Decreto aleatorio"
+        "description": "Copia un Decreto sin efecto de copia al obtenerlo y al iniciar cada ronda."
       },
       "decree-manzu-god": {
         "name": "Dios Manzu",

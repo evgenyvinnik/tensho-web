@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "獲得時及每輪開始時，隨機複製一個不帶複製效果的法令。",
+    "target": "複製目標：{{name}} · 第{{slot}}格",
+    "waiting": "等待其他法令。",
+    "missing": "目標已移除；下一輪重新選擇。",
+    "inactive": "複製法令或其目標已失效。",
+    "rules": "本輪目標固定。複製效果和代價，不複製版本或連鎖複製。移除或停用目標不會重新抽選。"
+  },
   "screenDownload": {
     "title": "無法下載此畫面",
     "description": "連線問題或新版本可能中斷了載入。請檢查連線，然後儲存並重新載入。",
@@ -964,7 +972,7 @@
       },
       "decree-doppelganger": {
         "name": "分身",
-        "description": "添加隨機法令的副本"
+        "description": "獲得時及每輪開始時，隨機複製一個不帶複製效果的法令。"
       },
       "decree-manzu-god": {
         "name": "萬子神",

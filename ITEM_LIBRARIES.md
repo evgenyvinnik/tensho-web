@@ -453,7 +453,7 @@ Very powerful, often unique effects.
 | Midas Touch | 黄金の手 | +¥20 at end of round |
 | Infinite Wealth | 無限財宝 | +1 Mult per ¥5 |
 | Brainstorm | 脳嵐 | Copies leftmost Decree |
-| Doppelganger | 分身 | Copies random Decree |
+| Doppelganger | 分身 | Copies a seeded random non-copy Decree on acquisition and each round start; target stays fixed for the round. See [target rules](docs/DOPPELGANGER_IMPLEMENTATION.md). |
 | Manzu God | 萬子神 | ×3.0 Mult if all Manzu |
 | Pinzu God | 筒子神 | ×3.0 Mult if all Pinzu |
 | Souzu God | 索子神 | ×3.0 Mult if all Souzu |

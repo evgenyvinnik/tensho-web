@@ -16,6 +16,18 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Doppelganger target timing
+
+Choose a seeded physical non-copy target on acquisition and each round start,
+before resource initialization. Exclude already-debuffed candidates; suppression,
+sale, reordering, preview and reload never secretly reroll a chosen target. Empty
+candidate lists wait for the first eligible acquisition. Each physical copier
+selects independently, using a dedicated saved RNG stream. Existing one-level
+effects/costs apply, not source editions or recursive copies. Legacy saves preserve
+their old target for the current round, then adopt the new rule. The target and
+inactive states are explained in the illustrated hover/tap details.
+[Rules, implementation and evidence](DOPPELGANGER_IMPLEMENTATION.md).
+
 ### Fate Seal lifetime and Negative tile ownership
 
 Fate Seals permanently change selected physical tiles for this run, including

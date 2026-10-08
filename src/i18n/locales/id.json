@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Menyalin Dekrit acak tanpa efek salin saat diperoleh dan pada awal setiap ronde.",
+    "target": "Menyalin {{name}} · slot {{slot}}",
+    "waiting": "Menunggu Dekrit lain.",
+    "missing": "Target dihapus; pilih lagi ronde berikutnya.",
+    "inactive": "Penyalin atau targetnya tidak aktif.",
+    "rules": "Target tetap selama ronde ini. Menyalin efek dan biaya, bukan edisi atau rantai salinan. Menghapus atau menonaktifkan target tidak mengundi ulang."
+  },
   "screenDownload": {
     "title": "Layar ini tidak dapat diunduh",
     "description": "Masalah koneksi atau versi baru mungkin mengganggu pemuatan. Periksa koneksi, lalu simpan dan muat ulang.",
@@ -1044,7 +1052,7 @@
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
-        "description": "Tambah salinan Dekrit acak"
+        "description": "Menyalin Dekrit acak tanpa efek salin saat diperoleh dan pada awal setiap ronde."
       },
       "decree-manzu-god": {
         "name": "Dewa Manzu",

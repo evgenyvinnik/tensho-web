@@ -1268,7 +1268,7 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     id: 'decree-doppelganger',
     name: 'Doppelganger',
     japaneseName: '分身',
-    description: 'Adds extra copy of random owned Decree',
+    description: 'Copies one random non-copy Decree, chosen on acquisition and each round. The target stays fixed for the round.',
     rarity: 'legendary',
     effects: [createEffect('special', 0, 'copies random Decree')],
     baseSellValue: 12,

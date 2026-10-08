@@ -160,6 +160,22 @@ const decreeSystem: Check = (v, p) => {
   const data = v as ClassicRunState['decreeSystem']
   const seen = new Set<string>()
   for (const decree of data.ownedDecrees) {
+    if (decree.randomCopyTargetId !== undefined) {
+      const effects = [decree.effect, ...(decree.extraEffects ?? [])]
+      if (
+        !decree.instanceId ||
+        !effects.some(
+          (e) => e.type === 'copy_decree' && e.source === 'random'
+        ) ||
+        decree.randomCopyTargetId === decree.instanceId ||
+        (decree.randomCopyTargetId !== null &&
+          data.nextInstanceId !== undefined &&
+          Number(decree.randomCopyTargetId.slice('owned-decree-'.length)) >=
+            data.nextInstanceId)
+      ) {
+        invalid(`${p}.ownedDecrees.randomCopyTargetId`)
+      }
+    }
     // Only the all-legacy shape may omit identities. Partially stripped new
     // checkpoints must not silently reset allocation or remap physical targets.
     if (

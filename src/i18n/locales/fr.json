@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Copie un Décret sans effet de copie à l’acquisition et au début de chaque manche.",
+    "target": "Copie de {{name}} · place {{slot}}",
+    "waiting": "En attente d’un autre Décret.",
+    "missing": "Cible retirée ; nouveau choix à la prochaine manche.",
+    "inactive": "Le copieur ou sa cible est inactif.",
+    "rules": "La cible reste fixe pendant la manche. Copie les effets et les coûts, pas les éditions ni les chaînes de copie. Retirer ou désactiver la cible ne la remplace pas."
+  },
   "screenDownload": {
     "title": "Impossible de télécharger cet écran",
     "description": "Un problème de connexion ou une nouvelle version a peut-être interrompu le chargement. Vérifiez la connexion, puis sauvegardez et rechargez.",
@@ -964,7 +972,7 @@
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
-        "description": "Ajoute copie d'un Décret aléatoire"
+        "description": "Copie un Décret sans effet de copie à l’acquisition et au début de chaque manche."
       },
       "decree-manzu-god": {
         "name": "Dieu Manzu",

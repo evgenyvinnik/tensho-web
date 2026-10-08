@@ -4,6 +4,16 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Doppelganger — locally verified:** seeded physical targeting on acquisition and
+round entry replaces the positional selector. Targets survive previews/reloads,
+suppression does not reroll, and copied resource costs initialize before the next
+round. Generated portrait and thirteen-locale target details are connected.
+Full regression passes 2,133/2,133 in 173 files, plus TypeScript, build, lint and
+thirteen release checks. Native and production desktop/320px EN/ES journeys each
+pass 4/4, including a visible target change and actual rack-size transition.
+[Decision, artwork and evidence](DOPPELGANGER_IMPLEMENTATION.md). Publication is
+pending; older target-timing questions below are superseded by this decision.
+
 **Published screen-download recovery — v1.0.261008-6:** all nine screen
 loaders now have a bounded, save-guarded reload and thirteen-locale recovery UI.
 The expanded local browser run passes 26/26, including forced Pages-style redirects

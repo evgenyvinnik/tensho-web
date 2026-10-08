@@ -658,7 +658,9 @@ export class DecreeSystem {
   syncWallSlots(wallTemplate: readonly Tile[]): void {
     this.wallSlotBonus = new Set(
       wallTemplate
-        .filter((tile) => !tile.isBonus && tile.edition === EditionType.Negative)
+        .filter(
+          (tile) => !tile.isBonus && tile.edition === EditionType.Negative
+        )
         .map((tile) => tile.id)
     ).size
   }
@@ -717,8 +719,41 @@ export class DecreeSystem {
       scalingValue: decree.effect.type === 'scaling' ? 0 : undefined,
     }
 
+    if (
+      allEffectsOf(ownedDecree).some(
+        (e) => e.type === 'copy_decree' && e.source === 'random'
+      )
+    ) {
+      // Acquiring a physical duplicate is a new selection, not a clone of the
+      // source item's saved target. Existing siblings keep their own choices.
+      ownedDecree.randomCopyTargetId = null
+    }
     this.ownedDecrees.push(ownedDecree)
+    this.selectRandomCopyTargets(false)
     return ownedDecree
+  }
+
+  /** Selection is a committed inventory/round event, never a scoring query. */
+  private selectRandomCopyTargets(refresh: boolean): void {
+    for (const copier of this.ownedDecrees) {
+      if (
+        !allEffectsOf(copier).some(
+          (e) => e.type === 'copy_decree' && e.source === 'random'
+        )
+      )
+        continue
+      // A removed target retains its identity until next round; buying or selling
+      // another item must not let the player reroll a previously selected target.
+      if (!refresh && copier.randomCopyTargetId != null) continue
+      const candidates = this.ownedDecrees.filter(
+        (candidate) =>
+          candidate !== copier &&
+          !candidate.isDebuffed &&
+          !allEffectsOf(candidate).some((e) => e.type === 'copy_decree')
+      )
+      copier.randomCopyTargetId =
+        runRandom.pick('decreeCopies', candidates)?.instanceId ?? null
+    }
   }
 
   /**
@@ -788,6 +823,8 @@ export class DecreeSystem {
     // Normalize already-expired legacy clocks, but do not spend a playable
     // round on entering a shop purchase or advancing past a skipped round.
     this.updatePerishableClocks(0)
+    // Pick before GameOrchestrator initializes the round's hands/discards/rack.
+    this.selectRandomCopyTargets(true)
   }
 
   /** Complete one played round, after its scoring and economy have settled. */
@@ -954,10 +991,10 @@ export class DecreeSystem {
         return neighbour ? [neighbour] : []
       }
       case 'random': {
-        // Seeded by the copier's position so a hand scores the same twice -
-        // the preview must not disagree with the play it is previewing.
-        const index = Math.max(0, ownedInOrder.indexOf(decree))
-        return [others[index % others.length]]
+        const target = others.find(
+          (candidate) => candidate.instanceId === decree.randomCopyTargetId
+        )
+        return target ? [target] : []
       }
       default:
         return []
@@ -1510,6 +1547,25 @@ export class DecreeSystem {
     }
     for (const decree of system.ownedDecrees) {
       decree.instanceId ??= system.allocateInstanceId()
+    }
+    // Loading old snapshots must not roll RNG or change their current hand's
+    // effective resources/forecast. Preserve the old physical positional target
+    // once; the next round uses the new seeded rule. Null/new IDs remain exact.
+    for (const decree of system.ownedDecrees) {
+      if (
+        decree.randomCopyTargetId !== undefined ||
+        !allEffectsOf(decree).some(
+          (e) => e.type === 'copy_decree' && e.source === 'random'
+        )
+      )
+        continue
+      const others = system.ownedDecrees.filter(
+        (candidate) => candidate !== decree
+      )
+      decree.randomCopyTargetId = others.length
+        ? others[system.ownedDecrees.indexOf(decree) % others.length]
+            .instanceId!
+        : null
     }
     system.currentRound = state.currentRound
     return system

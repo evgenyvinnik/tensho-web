@@ -341,6 +341,9 @@ export interface OwnedDecree extends Decree {
   acquiredRound: number
   roundsActive: number
   scalingValue?: number // Current value for scaling effects
+  /** Stable physical random-copy target. Null waits for the first eligible item;
+   * an absent field is migrated from the legacy positional rule on load. */
+  randomCopyTargetId?: string | null
 }
 
 // =============================================================================

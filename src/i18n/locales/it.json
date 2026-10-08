@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Copia un Decreto senza effetto di copia all’acquisizione e all’inizio di ogni round.",
+    "target": "Copia di {{name}} · posizione {{slot}}",
+    "waiting": "In attesa di un altro Decreto.",
+    "missing": "Bersaglio rimosso; nuova scelta al prossimo round.",
+    "inactive": "Il copiatore o il bersaglio è inattivo.",
+    "rules": "Il bersaglio resta fisso nel round. Copia effetti e costi, non edizioni né catene di copie. Rimuoverlo o disattivarlo non seleziona un altro bersaglio."
+  },
   "screenDownload": {
     "title": "Impossibile scaricare questa schermata",
     "description": "Un problema di connessione o una nuova versione potrebbe aver interrotto il caricamento. Controlla la connessione, poi salva e ricarica.",

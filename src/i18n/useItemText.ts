@@ -52,7 +52,12 @@ export function useItemText(): ItemText {
     () => ({
       name: (kind, item) => t(`${kind}.items.${item.id}.name`, item.name),
       description: (kind, item) =>
-        t(`${kind}.items.${item.id}.description`, item.description ?? ''),
+        t(
+          kind === 'decrees' && item.id === 'decree-doppelganger'
+            ? 'randomCopy.description'
+            : `${kind}.items.${item.id}.description`,
+          item.description ?? ''
+        ),
     }),
     [t]
   )

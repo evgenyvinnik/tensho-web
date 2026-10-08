@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Kumokopya ng random na Dekretong walang epekto ng pagkopya kapag nakuha at sa simula ng bawat round.",
+    "target": "Kinokopya: {{name}} · puwesto {{slot}}",
+    "waiting": "Naghihintay ng ibang Dekreto.",
+    "missing": "Inalis ang target; pipili muli sa susunod na round.",
+    "inactive": "Hindi aktibo ang kumokopya o ang target nito.",
+    "rules": "Hindi nagbabago ang target sa round. Kinokopya ang epekto at gastos, hindi ang edisyon o sunod-sunod na kopya. Hindi nagpapalit ng target ang pag-alis o pag-disable nito."
+  },
   "screenDownload": {
     "title": "Hindi ma-download ang screen na ito",
     "description": "Maaaring naantala ng koneksyon o bagong bersyon ang pag-load. Suriin ang koneksyon, saka mag-save at mag-reload.",

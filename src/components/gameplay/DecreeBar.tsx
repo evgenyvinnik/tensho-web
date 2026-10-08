@@ -34,6 +34,7 @@ import { useItemText } from '../../i18n/useItemText'
 import { decreeModifierText } from '../../i18n/decreeModifiers'
 import { hasDecreeSticker } from '../../systems/decreeStickers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
+import { RandomCopyDetails } from '../ui/RandomCopyDetails'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   getDecreeIllustration,
@@ -66,6 +67,8 @@ const RARITY_TRANSLATION_KEYS = {
  * Props for DecreeCardCompact
  */
 export interface DecreeCardCompactProps {
+  ownedDecrees?: readonly OwnedDecree[]
+  disabledDecreeIds?: ReadonlySet<string>
   /** The decree to display */
   decree: OwnedDecree
   /** Optional tap handler for mobile interaction */
@@ -91,6 +94,8 @@ export function DecreeCardCompact({
   faceDown = false,
   disabledByMandate = false,
   onSell,
+  ownedDecrees = [],
+  disabledDecreeIds,
 }: DecreeCardCompactProps) {
   const { t, i18n } = useTranslation()
   const reduceMotion = useReducedMotion()
@@ -410,6 +415,13 @@ export function DecreeCardCompact({
               </p>
 
               {!faceDown && <DecreeModifierDetails decree={decree} />}
+              {!faceDown && (
+                <RandomCopyDetails
+                  decree={decree}
+                  owned={ownedDecrees}
+                  disabledIds={disabledDecreeIds}
+                />
+              )}
 
               {disabledByMandate && !faceDown && (
                 <p className="mt-3 rounded-lg border border-red-400/35 bg-red-950/45 px-2.5 py-2 text-xs font-semibold text-red-200">
@@ -538,6 +550,7 @@ export function DecreeBar({ decrees, maxSlots, onDecreeTap }: DecreeBarProps) {
         <DecreeCardCompact
           key={decree.instanceId ?? `${decree.id}-${index}`}
           decree={decree}
+          ownedDecrees={decrees}
           onTap={() => onDecreeTap?.(decree)}
         />
       ))}

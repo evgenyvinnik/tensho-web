@@ -1,4 +1,12 @@
 {
+  "randomCopy": {
+    "description": "Alındığında ve her tur başında kopyalama etkisi olmayan rastgele bir Fermanı kopyalar.",
+    "target": "Kopyalanan: {{name}} · yuva {{slot}}",
+    "waiting": "Başka bir Ferman bekleniyor.",
+    "missing": "Hedef kaldırıldı; sonraki turda yeniden seçilir.",
+    "inactive": "Kopyalayan Ferman veya hedefi etkin değil.",
+    "rules": "Hedef tur boyunca sabittir. Etkiler ve bedeller kopyalanır; sürümler ve kopya zincirleri kopyalanmaz. Hedefi kaldırmak veya devre dışı bırakmak seçimi yenilemez."
+  },
   "screenDownload": {
     "title": "Bu ekran indirilemedi",
     "description": "Bir bağlantı sorunu veya yeni sürüm yüklemeyi kesmiş olabilir. Bağlantıyı kontrol edin, ardından kaydedip yeniden yükleyin.",

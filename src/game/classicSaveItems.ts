@@ -39,6 +39,7 @@ import {
   invalid,
   keyed,
   nonnegative,
+  nullable,
   object,
   optional,
   positive,
@@ -131,6 +132,7 @@ export const ownedDecree = withValidStickers(
   catalog(ALL_DECREES, {
     ...decreeRuntime,
     instanceId: optional(decreeInstanceId),
+    randomCopyTargetId: optional(nullable(decreeInstanceId)),
     acquiredRound: count,
     roundsActive: count,
     scalingValue: optional(nonnegative),
