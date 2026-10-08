@@ -3,6 +3,11 @@
 October 7, 2026 local / October 8 UTC. Implementation checkpoint; not whole-project
 completion or proof of the cause of the earlier hosted startup failure.
 
+**Current status: published and hosted-verified as v1.0.261008-6.** Local and
+independent CI regression pass 2,099/2,099 tests; expanded local browser checks
+pass 26/26 and final hosted checks pass 24/24. Earlier v5 failures and their
+corrections remain below; the corrective release supersedes v5.
+
 ## Evidence and decision
 
 The v1.0.261008-4 ownership verification recorded a real failed download of
@@ -68,7 +73,7 @@ The complete offline promise remains: **430 precache entries / approximately
 69.2 MiB** in this build. Installation cost remains separate optimization work;
 it is not established as the cause of the hosted fetch failure.
 
-## Verification
+## Initial candidate verification
 
 Evidence directory: `/tmp/tensho-screen-recovery-Z3zZ03`.
 
@@ -93,8 +98,8 @@ Evidence directory: `/tmp/tensho-screen-recovery-Z3zZ03`.
   retain evidence separately from the first failed batch.
 - Strict TypeScript and Pages-base production/PWA build pass. ESLint has zero
   errors and 211 existing warnings. All **13/13 release-workflow checks** pass.
-- Publication and hosted verification must still complete before claiming this
-  checkpoint is live.
+- This was the initial candidate gate, before the hosted redirect defect below
+  was discovered. The final corrective release evidence is at the end.
 
 Remaining work includes copy/resource lifecycles, unresolved item wording,
 strategy/balance and observed newcomer play, physical-device/accessibility and
@@ -150,3 +155,32 @@ plus the ten route/offline checks. Query-preserving slash canonicalization now
 keeps persistent failures to exactly two chunk attempts and one automatic reload.
 `redirect-browser.json` and `redirect-browser-artifacts` retain the complete run.
 Corrective publication and hosted results follow below.
+
+## Corrective release — v1.0.261008-6
+
+- Implementation: `07fd6172d62087db6e52865c0af2be1368962e5b`, pushed to main.
+- Version bot, tag and build checkout: `9a072d2f7fac587a7a3a715cfd33de8ae8627f46`.
+- [Workflow 37719704505](https://github.com/evgenyvinnik/tensho-web/actions/runs/37719704505)
+  independently passes **2,099/2,099 tests in 171 files**, thirteen release
+  checks, Pages-base build and deployment, without a job retry. Build job
+  113124298068; deploy job 113124955619. Local main fast-forwarded to the bot commit.
+- Public release manifest, tag and runtime version agree. Entry:
+  `/tensho-web/assets/index-CBRkiNlQ.js`, 1,017,459 bytes. This is not a
+  first-load performance improvement claim. Evidence: `redirect-provenance.json`
+  and `redirect-ci.log`.
+- Final hosted browser run passes **24/24**, 79.2 seconds, zero retries, skips
+  or flakes: sixteen EN/ES desktop/320px recovery scenarios (including forced
+  redirects and unsaved-exchange retention) and eight Classic ownership replays.
+  The latter use actual v2 saved envelopes from the preceding checkpoint and
+  verify tile copying/destruction, exact reload, scoring, shop capacity and
+  retained inventory. No production test API is injected.
+- Full hosted evidence: `hosted-v6.json` and `hosted-v6-artifacts`. Earlier
+  failing batches remain separately retained. All temporary preview servers
+  started for this checkpoint are stopped; the pre-existing port 4173 server
+  was not touched.
+
+This closes the bounded-recovery implementation, not every possible startup
+failure. Original v4 network-failure causation, full offline-installation cost,
+copied-resource mechanics, balance/fun and physical-device/native-language review
+remain open. No new artwork was needed for this recovery-only checkpoint;
+previously generated illustrations remain installed and cached offline.

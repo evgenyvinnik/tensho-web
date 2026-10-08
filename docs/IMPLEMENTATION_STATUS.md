@@ -4,13 +4,15 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Screen-download recovery follow-up — corrective release ready:** all nine screen
+**Published screen-download recovery — v1.0.261008-6:** all nine screen
 loaders now have a bounded, save-guarded reload and thirteen-locale recovery UI.
 The expanded local browser run passes 26/26, including forced Pages-style redirects
-and offline play. Full regression passes 2,099/2,099 in 171 files; build, TypeScript,
-lint and thirteen release checks pass. Initial v5 deployment exposed both a harness
-redirect-count error and a real extra-reload allowance after slash canonicalization.
-Both are fixed locally and retained in the evidence. Corrective publication is pending.
+and offline play. Full local regression and independent CI pass 2,099/2,099 in 171
+files; build, TypeScript, lint and thirteen release checks pass. Final hosted
+recovery and Classic gameplay replays pass 24/24. Initial v5 deployment exposed
+both a harness redirect-count error and a real extra-reload allowance after slash
+canonicalization. Both are corrected in v6; earlier failures remain recorded.
+Deployment succeeds, and public manifest/tag/runtime version agree.
 [Contract and retained failures](SCREEN_DOWNLOAD_RECOVERY.md).
 
 **Published ownership checkpoint — v1.0.261008-4:** Fate Seal changes are explicitly

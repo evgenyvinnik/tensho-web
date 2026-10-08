@@ -8,15 +8,17 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Save-aware screen recovery](SCREEN_DOWNLOAD_RECOVERY.md) is the current local
-startup-reliability follow-up. It preserves loaded-mode save guards and worker
+[Save-aware screen recovery](SCREEN_DOWNLOAD_RECOVERY.md) is published and
+hosted-verified in **v1.0.261008-6**. It preserves loaded-mode save guards and worker
 update consent, bounds automatic reloads, and provides thirteen-locale explicit
 recovery actions. Expanded production browser checks pass 26/26; full regression
-passes 2,099/2,099 in 171 files; build, TypeScript, lint and thirteen release checks
-pass. Initial v5 hosted checks exposed a redirect-count harness defect and an actual
-second reload allowance across a trailing-slash redirect. Both are corrected;
-the corrective publication is pending. The earlier ownership release's original
-download failure cause remains unproven.
+and independent CI pass 2,099/2,099 in 171 files; build, TypeScript, lint and thirteen
+release checks pass. Final hosted recovery and Classic gameplay replays pass 24/24;
+deployment and public manifest/tag/runtime provenance agree. Initial v5 hosted
+checks exposed a redirect-count harness defect and an actual second reload
+allowance across a trailing-slash redirect. Both are corrected in v6 and earlier
+failures remain recorded. The earlier ownership release's original download failure
+cause remains unproven. Other mechanics and balance/fun work are still open.
 
 The [run-ownership follow-up](RUN_OWNERSHIP_IMPLEMENTATION.md) is published and
 verified in **v1.0.261008-4**: permanent current-run Fate Seal changes, Negative physical-tile
