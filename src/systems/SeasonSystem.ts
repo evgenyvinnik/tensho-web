@@ -13,7 +13,7 @@
  * Corrupted Seasons (Act II+):
  * - Drought: Flowers are suppressed
  * - Monsoon: Draw order is randomized
- * - Frostbite: Decree effects are halved
+ * - Frostbite: Decree scoring/gold rewards are halved; discrete rules remain
  * - Decay: Each discard reduces score floor
  */
 
@@ -82,7 +82,7 @@ export const CORRUPTED_SEASON_EFFECTS: Record<
   Frostbite: {
     type: 'halve_decrees',
     severity: 0.5,
-    description: 'Decree effects are halved',
+    description: 'Halves Decree scoring, gold and retrigger rewards; permissions, capacities, actions and costs stay unchanged',
   },
   Decay: {
     type: 'discard_penalty',
@@ -349,7 +349,7 @@ export class SeasonSystem {
   }
 
   /**
-   * Get decree effect modifier (Frostbite halves effects)
+   * Get numeric Decree reward strength (Frostbite does not disable rules).
    */
   getDecreeEffectModifier(): number {
     const frostbites = this.seasonStack.filter(

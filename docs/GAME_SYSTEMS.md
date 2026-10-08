@@ -309,7 +309,7 @@ Heaven (Seasons) > Court (Decrees) > Nature (Flowers) > Table (Tiles)
 | Flowers empower Decrees | +10% Decree effect per Flower collected |
 | Seasons temporarily override Decrees | Season effects take precedence |
 | Certain Decrees require Flowers | e.g., Yakuman Succession needs 2+ Flowers |
-| Corrupted Seasons suspend Decrees | Frostbite halves all Decree effects |
+| Corrupted Seasons suspend Decrees | Frostbite halves Decree scoring/gold rewards, including repeat rewards; discrete rules/resources remain unchanged |
 
 **Player Mental Model:**
 
@@ -485,10 +485,14 @@ From Act II onward, Corrupted Seasons may appear as environmental threats:
 |------------------|--------|
 | **Drought** | Flowers are suppressed this round |
 | **Monsoon** | Draw order is randomized |
-| **Frostbite** | Decree effects are halved |
+| **Frostbite** | Each stack halves Decree scoring/gold rewards again, including fractional retrigger rewards; permissions, capacities, action budgets and costs stay unchanged |
 | **Decay** | Each discard reduces score floor |
 
 These replace multiplayer threat with environmental hostility.
+
+The implemented Frostbite/retrigger boundary and Treasure Hunter's remaining-rack,
+win-only timing are specified in [Rule resolutions](RULE_RESOLUTION.md). Repeats
+reuse one physical tile's resolved reward; native tile effects are not halved.
 
 ---
 

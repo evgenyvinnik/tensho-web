@@ -669,7 +669,7 @@
       },
       "decree-treasure-hunter": {
         "name": "Treasure Hunter",
-        "description": "+1G per unique suit in hand"
+        "description": "+1G per distinct suit left in your rack when you win a round. Winds and Dragons count separately."
       },
       "decree-tax-collector": {
         "name": "Tax Collector",
@@ -1141,7 +1141,7 @@
       "autumn": "Yaku multiplier +20%. Each normal Autumn drawn adds 1 discard for this round.",
       "winter": "Same-suit sequences may skip one rank (1–2–4 or 1–3–4). Score ×0.75.",
       "drought": "Suppresses Flower scoring bonuses unless protected.",
-      "frostbite": "Halves Decree flat-point, multiplier and gold bonuses.",
+      "frostbite": "Each Frostbite halves Decree point, multiplier, gold and retrigger rewards again. Native tile rewards, rule permissions, capacities, action budgets and costs stay unchanged.",
       "decay": "−10 score per discarded tile this round, with a minimum score of zero.",
       "droughtName": "Drought",
       "monsoonName": "Monsoon",

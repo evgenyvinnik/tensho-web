@@ -115,6 +115,8 @@ export interface ScoringContext {
    * one extra trigger contributes its points and modifier bonuses twice.
    */
   extraRetriggers?: ReadonlyMap<string, number>
+  /** Share of Decree repeat rewards retained; never scales native tile effects. */
+  retriggerStrength?: number
 }
 
 /**
@@ -223,10 +225,15 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const isPartial = context.partialMelds !== undefined
   // A retriggered tile scores its whole contribution again, so expand the
   // scoring list rather than only repeating modifier bonuses.
+  const strength = context.retriggerStrength ?? 1
   const triggerCountFor = (tile: Tile): number =>
-    1 + Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0)
+    (1 + tile.retriggers) *
+    (1 + Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0))
   const triggeredTiles = scoringTiles.flatMap((tile) =>
     new Array<Tile>(triggerCountFor(tile)).fill(tile)
+  )
+  const nativeTriggeredTiles = scoringTiles.flatMap((tile) =>
+    new Array<Tile>(1 + tile.retriggers).fill(tile)
   )
 
   // A tactical selection pays full price only for the tiles it actually
@@ -251,8 +258,13 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     return Math.floor(base * UNGROUPED_TILE_SHARE)
   }
 
-  const tilePoints = triggeredTiles.reduce(
-    (sum, tile) => sum + tilePointsFor(tile),
+  const tilePoints = scoringTiles.reduce(
+    (sum, tile) =>
+      sum +
+      tilePointsFor(tile) *
+        (1 + tile.retriggers) *
+        (1 +
+          Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) * strength),
     0
   )
   const structurePoints = isPartial
@@ -265,9 +277,13 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 2. Calculate modifier bonuses from played tiles
   const modifierResult = tileModifierSystem.scoreTilesWithModifiers(
-    triggeredTiles,
+    scoringTiles,
     'played',
-    { preview: context.previewMode }
+    {
+      preview: context.previewMode,
+      extraRetriggers: context.extraRetriggers,
+      retriggerStrength: strength,
+    }
   )
   const modifierChips = modifierResult.totalChips
   const modifierMult = modifierResult.totalMult
@@ -277,7 +293,11 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 3. Calculate red five bonus chips
   const redFiveCount = countRedFives(triggeredTiles)
-  const redFiveChips = redFiveSystem.calculateBonus(triggeredTiles)
+  const nativeRedFiveChips = redFiveSystem.calculateBonus(nativeTriggeredTiles)
+  const redFiveChips =
+    nativeRedFiveChips +
+    (redFiveSystem.calculateBonus(triggeredTiles) - nativeRedFiveChips) *
+      strength
 
   // Track retriggered tiles (Red Seal and Decree retriggers)
   const retriggeredTiles: string[] = []
@@ -371,6 +391,7 @@ export function createScoringContext(
     partialMelds?: Meld[]
     previewMode?: boolean
     extraRetriggers?: ReadonlyMap<string, number>
+    retriggerStrength?: number
   } = {}
 ): ScoringContext {
   return {
@@ -390,6 +411,7 @@ export function createScoringContext(
     partialMelds: options.partialMelds,
     previewMode: options.previewMode,
     extraRetriggers: options.extraRetriggers,
+    retriggerStrength: options.retriggerStrength,
   }
 }
 

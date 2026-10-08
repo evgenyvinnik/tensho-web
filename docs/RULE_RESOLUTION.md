@@ -74,8 +74,9 @@ gaps are not removed by choosing the rule.
 - The four advanced Flower mutations, acquisition/unlock path and catalyst
   payments are published and verified below. Yakuman Succession is also
   published in v1.0.261008-2 with independent CI and hosted verification.
-- Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
-  copied resource effects, and reconcile Fate Seal lifetime/Negative tiles.
+- Fractional/binary Frostbite rules and Treasure Hunter timing are implemented
+  in the current local checkpoint below; release verification remains. Finish
+  other copied-resource lifecycles and reconcile Fate Seal lifetime/Negative tiles.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
 - Continue organic-run strategy and newcomer evaluation. A legal engine run or
   a green browser test alone does not demonstrate engaging play.
@@ -83,6 +84,47 @@ gaps are not removed by choosing the rule.
 These items can now proceed with documented decisions instead of waiting for
 answers to each old question. This document is not a completion declaration or
 an approval to alter the three confirmed choices above.
+
+### Frostbite: fractional repeat rewards, not fractional rules
+
+Each Frostbite retains half of the remaining Decree-created scoring and gold
+contribution. Retrigger counts remain whole instructions: resolve a physical
+tile once, repeat its reward, then retain `0.5 ** frostbiteCount` of the added
+reward. Do not round an extra repeat down to zero. Tile points, additive modifier
+bonuses, red-five chips, gold and the extra tile-multiplier product follow this
+rule; final score/gold settlement supplies rounding. Structure and Yaku identities
+are not retriggered. Copies and Echo Dimension combine before attenuation.
+
+Native Red Seal repeats the tile's face/red-five and modifier rewards, and is not
+a Decree penalty target. Native Glass/Polychrome multiplier products must reach
+the real paid score. Lucky and Glass resolve once per physical played tile;
+repeats reuse the resolved reward rather than rolling again. Glass is removed
+after its score, so shattering cannot make payment lower than its forecast.
+Preview uses guaranteed Lucky outcomes and never rolls or shatters.
+
+Frostbite does not alter rule permissions, acquisition gates, slots/capacities,
+hand/discard budgets, rescue charges or costs. These are stable discrete run
+rules, not fractional scoring rewards. Avoid random disabling or removing a rack
+slot mid-action. Mandate suppression and original costs still apply. This resolves
+the old “all effects” wording explicitly rather than calling untouched binary
+powers half-effective. Other copied-effect lifecycle gaps remain separate work.
+
+### Treasure Hunter: win-only suits left in the rack
+
+At ordinary round-win settlement, award one raw Decree gold per distinct physical
+suit remaining in the rack, before refills or next-round draws. Manzu, Pinzu,
+Souzu, Winds and Dragons are five possible families; bonuses are not suits.
+Repeated faces or debuffed tiles do not change that physical counting rule.
+Played, virtual or temporarily transmuted tiles do not count as held tiles.
+
+Copies sum normally, disabled sources contribute nothing, and Frostbite/gold
+amplification use the existing shared settlement. Preview, discards, skips,
+rescues and final defeats do not earn this round-win income. Rental remains
+charged on final defeat. Legacy stored Treasure Hunter effects missing the suit
+condition are interpreted on read (including copies), not rewritten on load.
+
+These are delegated design decisions. Verification and balance conclusions are
+recorded separately in the implementation evidence, not inferred from the rules.
 
 ### Winter: one missing rank per same-suit sequence
 

@@ -572,7 +572,7 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     id: 'decree-treasure-hunter',
     name: 'Treasure Hunter',
     japaneseName: '宝探し',
-    description: '+¥1 per unique suit in hand',
+    description: '+¥1 per distinct suit left in your rack when you win a round. Winds and Dragons count separately.',
     rarity: 'uncommon',
     effects: [createEffect('gold_gain', 1, 'per unique suit')],
     baseSellValue: 4,

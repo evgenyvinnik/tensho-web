@@ -673,7 +673,7 @@
       },
       "decree-treasure-hunter": {
         "name": "Chasseur de Trésors",
-        "description": "+1O par couleur unique"
+        "description": "+1O par famille distincte restant en main à la victoire d’une manche. Vents et Dragons comptent séparément."
       },
       "decree-tax-collector": {
         "name": "Percepteur",
@@ -1145,7 +1145,7 @@
       "autumn": "Multiplicateur de yaku +20 %. Chaque Automne normal pioché ajoute 1 défausse pour cette manche.",
       "winter": "Les suites de la même famille peuvent sauter un rang (1–2–4 ou 1–3–4). Score ×0,75.",
       "drought": "Neutralise les bonus de score des fleurs non protégées.",
-      "frostbite": "Divise par deux les bonus de points fixes, de multiplicateur et d'or des Décrets.",
+      "frostbite": "Chaque Gel divise à nouveau par deux les gains de points, de multiplicateur, d’or et de répétition des Décrets. Les effets propres des tuiles, permissions, capacités, actions et coûts restent inchangés.",
       "decay": "−10 points par tuile défaussée dans cette manche, sans descendre sous zéro.",
       "droughtName": "Sécheresse",
       "monsoonName": "Mousson",

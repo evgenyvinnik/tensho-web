@@ -3405,6 +3405,7 @@ export class GameOrchestrator {
       tanyaoAllowsTerminals: this.isDecreeRuleActive('tanyao_terminals'),
       partialMelds,
       previewMode: preview,
+      retriggerStrength: seasonModifiers.decreeModifier,
       extraRetriggers: this.state.decreeSystem.calculateRetriggers(
         scoredTiles,
         disabledDecreeIds
@@ -3584,6 +3585,7 @@ export class GameOrchestrator {
     const subtotal =
       baseBreakdown.basePoints + finalAdditiveBonus + celestialOrbChipsBonus
     const finalMultiplier =
+      baseBreakdown.modifierMultiplier *
       (decreeModifiedBreakdown.yakuMultiplier + celestialOrbMultBonus) *
       flowerBonus *
       seasonModifiers.scoreMultiplier *
@@ -3818,7 +3820,8 @@ export class GameOrchestrator {
           interestCap
         )
     const rawDecreeGold = this.state.decreeSystem.calculateRoundEndGold(
-      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds()),
+      this.state.handTiles
     )
     const heldGoldMarkReward =
       this.state.handTiles.filter(

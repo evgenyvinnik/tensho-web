@@ -673,7 +673,7 @@
       },
       "decree-treasure-hunter": {
         "name": "Cazador de Tesoros",
-        "description": "+1O por palo único en mano"
+        "description": "+1O por cada palo distinto que quede en tu mano al ganar una ronda. Vientos y Dragones cuentan por separado."
       },
       "decree-tax-collector": {
         "name": "Recaudador",
@@ -1145,7 +1145,7 @@
       "autumn": "Multiplicador de yaku +20%. Cada Otoño normal robado añade 1 descarte para esta ronda.",
       "winter": "Las secuencias del mismo palo pueden saltar un número (1–2–4 o 1–3–4). Puntuación ×0,75.",
       "drought": "Anula las bonificaciones de puntuación de flores no protegidas.",
-      "frostbite": "Reduce a la mitad las bonificaciones de puntos fijos, multiplicador y oro de los Decretos.",
+      "frostbite": "Cada Congelación vuelve a reducir a la mitad las recompensas de puntos, multiplicador, oro y repeticiones de los Decretos. No cambia los efectos propios de las fichas, permisos, capacidades, acciones ni costes.",
       "decay": "−10 puntos por ficha descartada en esta ronda, sin bajar de cero.",
       "droughtName": "Sequía",
       "monsoonName": "Monzón",

@@ -564,7 +564,11 @@ export class TileModifierSystem {
   scoreTilesWithModifiers(
     tiles: Tile[],
     context: 'played' | 'held',
-    options: { preview?: boolean } = {}
+    options: {
+      preview?: boolean
+      extraRetriggers?: ReadonlyMap<string, number>
+      retriggerStrength?: number
+    } = {}
   ): {
     totalChips: number
     totalMult: number
@@ -580,13 +584,19 @@ export class TileModifierSystem {
     let totalGold = 0
     const shatteredTileIds: string[] = []
     const consumables: Array<{ type: 'orb' | 'seal'; tileId: string }> = []
+    let nativeChips = 0,
+      nativeMult = 0,
+      nativeMultiplier = 1,
+      nativeGold = 0
 
     for (const tile of tiles) {
       // Skip shattered tiles
       if (this.isShattered(tile.id)) continue
 
       const result = preview
-        ? calculateModifierEffects(tile.modifiers, context, { deterministic: true })
+        ? calculateModifierEffects(tile.modifiers, context, {
+            deterministic: true,
+          })
         : context === 'played'
           ? this.onTilePlayed(tile)
           : this.onTileHeld(tile)
@@ -594,8 +604,16 @@ export class TileModifierSystem {
       // Handle retriggers (Red Seal)
       const retriggers = this.getRetriggerCount(tile)
       const triggerCount = 1 + retriggers
+      const repeats =
+        1 + Math.max(0, options.extraRetriggers?.get(tile.id) ?? 0)
+      // Resolve chance/lifecycle once per physical tile. Repeats reuse that
+      // reward; Glass cannot disappear halfway through its own paid score.
+      nativeChips += result.chipBonus * triggerCount
+      nativeMult += result.multBonus * triggerCount
+      nativeGold += result.goldBonus * triggerCount
+      nativeMultiplier *= result.multMultiplier ** triggerCount
 
-      for (let i = 0; i < triggerCount; i++) {
+      for (let i = 0; i < triggerCount * repeats; i++) {
         totalChips += result.chipBonus
         totalMult += result.multBonus
         totalMultiplier *= result.multMultiplier
@@ -614,11 +632,14 @@ export class TileModifierSystem {
       }
     }
 
+    const strength = options.retriggerStrength ?? 1
+    const retain = (native: number, full: number) =>
+      strength === 1 ? full : native + (full - native) * strength
     return {
-      totalChips,
-      totalMult,
-      totalMultiplier,
-      totalGold,
+      totalChips: retain(nativeChips, totalChips),
+      totalMult: retain(nativeMult, totalMult),
+      totalMultiplier: retain(nativeMultiplier, totalMultiplier),
+      totalGold: retain(nativeGold, totalGold),
       shatteredTileIds,
       consumables,
     }

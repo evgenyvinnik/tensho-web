@@ -558,6 +558,10 @@
       "mythic": "Makalangit na Ordinansa"
     },
     "items": {
+      "decree-treasure-hunter": {
+        "name": "Mangangaso ng Kayamanan",
+        "description": "+1 ginto bawat natatanging uri ng tile na natitira sa rack kapag nanalo sa round. Magkahiwalay na binibilang ang Hangin at Dragon."
+      },
       "yakuman_succession": {
         "name": "Pagmamana ng Yakuman",
         "description": "Habang may hindi bababa sa 2 Bulaklak, nagiging Yakuman ang Honitsu, Chinitsu, Ryanpeikou, Junchan at Pitong Pares (×4 bawat isa). Hindi aangat ang mga padron na ibinaba ng Mandato. Hindi nagsasalansan ang mga kopya."
@@ -640,7 +644,7 @@
       "autumn": "Yaku multiplier +20%. Bawat normal na Taglagas na mabunot ay nagdaragdag ng 1 pagtatapon para sa round na ito.",
       "winter": "Maaaring lumaktaw ng isang numero ang sunod-sunod na tile ng iisang uri (1–2–4 o 1–3–4). Puntos ×0.75.",
       "drought": "Pinipigil ang bonus sa puntos ng mga bulaklak na walang proteksiyon.",
-      "frostbite": "Hinahati ang mga bonus na nakapirming puntos, multiplier, at ginto ng mga Dekreto.",
+      "frostbite": "Bawat Frostbite ay muling naghahati sa mga gantimpalang puntos, multiplier, ginto, at pag-ulit ng Dekreto. Hindi nagbabago ang sariling epekto ng tile, pahintulot sa tuntunin, kapasidad, bilang ng aksyon, at gastos.",
       "decay": "−10 puntos sa bawat tile na itinapon sa round na ito, hanggang sero lamang.",
       "droughtName": "Tagtuyot",
       "monsoonName": "Habagat",

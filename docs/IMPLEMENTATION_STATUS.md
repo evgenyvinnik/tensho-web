@@ -4,6 +4,15 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Local Frostbite/retrigger follow-up:** fractional Decree repeat rewards,
+actual Glass/Polychrome payment, complete Red Seal rewards and win-only
+remaining-rack Treasure Hunter are connected. Discrete rule/resource behavior
+is explicitly preserved. Added Echo Stone art and thirteen-locale rule text.
+Native and production EN/ES desktop/320px journeys each pass 4/4. Full regression
+passes 2,027/2,027 in 167 files; build, TypeScript, lint and thirteen release
+checks pass. Release/hosted verification is in progress, not published.
+[Rules, corrections and evidence](FROSTBITE_RETRIGGERS_IMPLEMENTATION.md).
+
 **Published Yakuman Succession — v1.0.261008-2:** the distinct two-Flower mythic Decree is connected
 to real scoring, classification, copied effects, shop eligibility, localized
 forecasts and generated artwork. Twenty engine and thirteen locale cases pass.

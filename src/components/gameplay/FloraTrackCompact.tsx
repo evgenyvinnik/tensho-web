@@ -46,10 +46,6 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
             'Name'
         )
       : t('flora.' + season.type.toLowerCase())
-  // Verified gaps, not active powers. Do not advertise unused helpers.
-  const incomplete = flora.seasons.some(
-    (season) => season.corruptedType === 'Frostbite'
-  )
 
   return (
     <>
@@ -256,11 +252,6 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
           <p className="text-sm">{t('flora.details.roundScope')}</p>
           {flora.seasons.length === 0 && (
             <p className="text-sm">{t('flora.details.noSeasons')}</p>
-          )}
-          {incomplete && (
-            <p className="rounded-lg border border-[var(--color-metallic-gold)] p-2 text-xs">
-              {t('flora.details.partial')}
-            </p>
           )}
           <ol className="space-y-3">
             {flora.seasons.map((season, index) => {

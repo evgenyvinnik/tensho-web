@@ -363,7 +363,11 @@ function convertEffect(
         description,
         amount: effect.value,
         scaleBy:
-          effect.condition === 'per Decree owned' ? 'owned_decrees' : undefined,
+          effect.condition === 'per Decree owned'
+            ? 'owned_decrees'
+            : effect.condition === 'per unique suit'
+              ? 'held_suits'
+              : undefined,
       }
 
     // Hand size and discard counts are round resources, carried as rule

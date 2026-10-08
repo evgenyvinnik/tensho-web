@@ -753,7 +753,7 @@
       },
       "decree-treasure-hunter": {
         "name": "Pemburu Harta",
-        "description": "+1E per warna unik"
+        "description": "+1 emas per jenis ubin berbeda yang tersisa di rak saat memenangkan ronde. Angin dan Naga dihitung terpisah."
       },
       "decree-tax-collector": {
         "name": "Pemungut Pajak",
@@ -1225,7 +1225,7 @@
       "autumn": "Pengali yaku +20%. Setiap Musim Gugur normal yang ditarik menambah 1 aksi buang untuk ronde ini.",
       "winter": "Urutan sejenis boleh melewati satu angka (1–2–4 atau 1–3–4). Skor ×0,75.",
       "drought": "Menonaktifkan bonus skor bunga yang tidak terlindungi.",
-      "frostbite": "Mengurangi bonus poin tetap, pengali, dan emas Dekret menjadi separuh.",
+      "frostbite": "Setiap Frostbite kembali membagi dua hadiah poin, pengali, emas, dan pemicu ulang Dekret. Efek bawaan ubin, izin aturan, kapasitas, jatah aksi, dan biaya tetap sama.",
       "decay": "−10 skor per ubin yang dibuang pada ronde ini, minimal nol.",
       "droughtName": "Kekeringan",
       "monsoonName": "Muson",

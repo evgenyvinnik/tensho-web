@@ -558,6 +558,10 @@
       "mythic": "Cennetin Emri"
     },
     "items": {
+      "decree-treasure-hunter": {
+        "name": "Hazine Avcısı",
+        "description": "Tur kazanıldığında elde kalan her farklı taş türü için +1 altın. Rüzgârlar ve Ejderhalar ayrı sayılır."
+      },
       "yakuman_succession": {
         "name": "Yakuman Veraseti",
         "description": "En az 2 Çiçek taşırken Honitsu, Chinitsu, Ryanpeikou, Junchan ve Yedi Çift, Yakuman olur (her biri ×4). Ferman ile seviyesi düşürülen desenler yükselemez. Kopyalar birikmez."
@@ -640,7 +644,7 @@
       "autumn": "Yaku çarpanı +%20. Çekilen her normal Sonbahar bu tur için 1 taş atma hakkı ekler.",
       "winter": "Aynı türdeki seriler bir sayı atlayabilir (1–2–4 veya 1–3–4). Puan ×0,75.",
       "drought": "Korunmayan çiçeklerin puan bonuslarını bastırır.",
-      "frostbite": "Fermanların sabit puan, çarpan ve altın bonuslarını yarıya indirir.",
+      "frostbite": "Her Donma, Fermanların puan, çarpan, altın ve yeniden tetikleme ödüllerini tekrar yarıya indirir. Taşların kendi etkileri, kural izinleri, kapasiteler, eylem hakları ve maliyetler değişmez.",
       "decay": "Bu turda atılan her taş için −10 puan; puan sıfırın altına düşmez.",
       "droughtName": "Kuraklık",
       "monsoonName": "Muson",

@@ -174,7 +174,7 @@ export interface GoldEffect extends BaseEffect {
   type: 'gold'
   amount: number
   /** Inventory count includes the paying Decree and suppressed owned Decrees. */
-  scaleBy?: 'owned_decrees'
+  scaleBy?: 'owned_decrees' | 'held_suits'
   perTile?: boolean // If true, amount is per tile
   condition?: string // Optional condition description
 }
