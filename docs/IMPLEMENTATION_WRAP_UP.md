@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Closed-Hand Austerity](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md) is locally
+verified, awaiting publication: actual completed-hand mastery, legacy item/save
+compatibility, generated portrait and optional localized progress. Full regression
+passes 2,620/2,620 in 190 files; build/typecheck, lint (warnings only), thirteen
+release tests, corrected native checks and twelve production desktop/touch
+journeys pass. The original red cases, test-construction errors and decimal
+formatting issue remain recorded. Overall balance and completion remain open.
+
 [Yaku Repetition](YAKU_REPETITION_IMPLEMENTATION.md) is published and hosted-verified
 in **v1.0.261008-13**: consecutive-round compound growth, boss-filtered scoring, compatible
 saved streaks, generated scroll artwork and optional localized planning details.

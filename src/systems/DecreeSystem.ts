@@ -30,6 +30,7 @@ import { RunRandom, runRandom } from '../game/RunRandom'
 import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 import { getDecreeStickers, hasDecreeSticker } from './decreeStickers'
 import { ALL_YAKU } from '../rules/YakuDetector'
+import { AUSTERITY_EFFECT, austerityMultiplier } from './austerity'
 import {
   isDecreeAvailable,
   type DecreeUnlockResolver,
@@ -44,15 +45,17 @@ function allEffectsOf(decree: Decree): DecreeEffect[] {
   const effects = decree.extraEffects
     ? [decree.effect, ...decree.extraEffects]
     : [decree.effect]
-  // Interpret the one known legacy adapter omission without rewriting saved
+  // Interpret known historical rule definitions without rewriting saved
   // inventory. Copies must receive the same rule as the physical source.
   return effects.map((effect) =>
-    decree.id === 'decree-treasure-hunter' &&
-    effect.type === 'gold' &&
-    effect.trigger === 'OnRoundEnd' &&
-    !effect.scaleBy
-      ? { ...effect, scaleBy: 'held_suits' as const }
-      : effect
+    decree.id === 'closed_hand_austerity' && effect.type === 'conditional'
+      ? AUSTERITY_EFFECT
+      : decree.id === 'decree-treasure-hunter' &&
+          effect.type === 'gold' &&
+          effect.trigger === 'OnRoundEnd' &&
+          !effect.scaleBy
+        ? { ...effect, scaleBy: 'held_suits' as const }
+        : effect
   )
 }
 
@@ -526,27 +529,12 @@ export const SHANTEN_CLEMENCY: Decree = {
 export const CLOSED_HAND_AUSTERITY: Decree = {
   id: 'closed_hand_austerity',
   name: 'Closed-Hand Austerity',
-  description: 'Fully concealed hands gain x1.5 score multiplier.',
+  description:
+    'Complete concealed hands gain ×1.5, growing ×1.2 per earlier complete concealed hand this run, up to ×4 before Flower empowerment. Tactical plays and Shanten Clemency do not qualify.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 8,
-  effect: {
-    type: 'conditional',
-    trigger: 'Independent',
-    description: 'x1.5 for concealed hands',
-    condition: {
-      type: 'hand_state',
-      target: 'isConcealed',
-      operator: 'eq',
-      value: true,
-    },
-    effect: {
-      type: 'multiplicative_score',
-      trigger: 'Independent',
-      description: 'x1.5 Mult for concealed',
-      multiplier: 1.5,
-    },
-  },
+  effect: AUSTERITY_EFFECT,
 }
 
 export const TERMINAL_DEVOTION: Decree = {
@@ -570,7 +558,7 @@ export const YAKU_REPETITION_CHARTER: Decree = {
   id: 'yaku_repetition_charter',
   name: 'Yaku Repetition Charter',
   description:
-    'Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing or skipping a round breaks that Yaku’s streak.',
+    'Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 before Flower empowerment). Missing or skipping a round breaks that Yaku’s streak.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 9,
@@ -1335,6 +1323,10 @@ export class DecreeSystem {
     let count = 0
 
     switch (effect.scalingCondition) {
+      case 'complete_concealed_hands':
+        return context.completeConcealedHand
+          ? austerityMultiplier(context.completeConcealedHandsPlayed ?? 0) - 1
+          : 0
       case 'honor_tile_count':
         count = countScoringHonors(context)
         break

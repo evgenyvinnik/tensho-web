@@ -226,6 +226,7 @@ const stateFields = {
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),
   handsPlayedThisRun: count,
+  completeConcealedHandsPlayed: optional(count),
   discardsRemaining: count,
   redrawsRemaining: count,
   targetScore: nonnegative,
@@ -468,6 +469,8 @@ export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
   snapshot(value, 'run')
   const saved = value as ClassicRunSnapshot
   const state = saved.state
+  if ((state.completeConcealedHandsPlayed ?? 0) > state.handsPlayedThisRun)
+    invalid('run.state.completeConcealedHandsPlayed')
   if (
     state.previousRoundYakuStreaks &&
     (Object.keys(state.previousRoundYakuStreaks).length !==

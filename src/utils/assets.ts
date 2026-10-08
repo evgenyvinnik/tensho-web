@@ -142,6 +142,7 @@ export const illustrationAssets = {
   } satisfies Record<DecreeRarity, string>,
   decreePortraits: {
     yaku_repetition_charter: `${ASSET_BASE}/illustrations/decrees/yaku-repetition.webp`,
+    closed_hand_austerity: `${ASSET_BASE}/illustrations/decrees/closed-hand-austerity.webp`,
     'decree-blueprint': `${ASSET_BASE}/illustrations/decrees/blueprint.webp`,
     'decree-doppelganger': `${ASSET_BASE}/illustrations/decrees/doppelganger.webp`,
     'decree-supernova': `${ASSET_BASE}/illustrations/decrees/supernova.webp`,

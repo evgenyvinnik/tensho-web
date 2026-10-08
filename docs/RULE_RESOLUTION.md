@@ -162,13 +162,25 @@ an approval to alter the three confirmed choices above.
 
 Each current surviving Yaku contributes its consecutive prior completed rounds.
 The Decree multiplies by ×1.2 for each such round across the matching families,
-capped at ×4 per Decree. Multiple plays within a round do not grow the streak;
+capped at ×4 per Decree before Flower empowerment. Multiple plays within a round do not grow the streak;
 round settlement does. A missed family or skipped round breaks its chain.
 Boss-blocked patterns do not qualify. Legacy saves retain one proven previous
 round rather than fabricated history. Copies, suppression and Frostbite follow
 the existing scoring pipeline. The optional inspector shows what can be repeated.
 These delegated design choices and their exact verification scope are recorded
 in [Yaku Repetition implementation](YAKU_REPETITION_IMPLEMENTATION.md).
+
+### Closed-Hand Austerity: completed-hand mastery
+
+Completed concealed hands earn a base ×1.5, compounded by ×1.2 per earlier
+completed concealed hand this run, up to ×4 before Flower empowerment.
+Only an actual committed completion grows mastery, once per play. Tactical
+plays and Shanten Clemency's virtual completion do not qualify. Other genuinely
+complete rule-enabled shapes do. Mastery persists across rounds/skips and late
+acquisition, but resets with a new run. Old saves prove zero history unless the
+specific count is present; their original item definitions remain compatible.
+This resolves the old exponential-growth promise rather than preserving a flat
+tactical bonus. [Implementation and evidence](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md).
 
 ### Secret consumables: earned families and run-scoped mastery
 

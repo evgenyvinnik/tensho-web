@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Ascèse de la main fermée",
+    "description": "Les mains complètes et fermées gagnent ×1,5, puis ×1,2 par main complète et fermée jouée auparavant dans cette partie, jusqu’à ×4 avant le renforcement des Fleurs. Les coups tactiques et la Clémence Shanten ne comptent pas.",
+    "progress": "Mains complètes et fermées : {{count}}. Prochaine main admissible : ×{{factor}} avant les Fleurs."
+  },
   "yakuRepetition": {
     "name": "Décret de Répétition des Yaku",
-    "description": "Chaque Yaku marqué lors de manches consécutives multiplie par ×1,2 pour chaque manche précédente de sa série (maximum ×4 au total). Une manche sans ce Yaku ou passée rompt sa série.",
+    "description": "Chaque Yaku marqué lors de manches consécutives multiplie par ×1,2 pour chaque manche précédente de sa série (maximum ×4 au total). Une manche sans ce Yaku ou passée rompt sa série. Le plafond s’applique avant le renforcement des Fleurs.",
     "title": "Figures à répéter",
     "streak": "{{name}} · {{rounds}} manches précédentes consécutives",
     "empty": "Aucune série précédente. Marquez un Yaku cette manche pour en commencer une."

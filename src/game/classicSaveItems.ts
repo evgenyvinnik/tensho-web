@@ -2,6 +2,7 @@
 import { TileSuit, type TileData } from '../core/Tile'
 import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
 import { ALL_DECREES } from '../systems/DecreeSystem'
+import { LEGACY_AUSTERITY_EFFECT } from '../systems/austerity'
 import { FATE_SEALS } from '../systems/FateSealSystem'
 import { CELESTIAL_ORBS } from '../systems/CelestialOrbSystem'
 import { VOID_SCRIPTS } from '../systems/VoidScriptSystem'
@@ -116,7 +117,27 @@ function withValidStickers(check: Check): Check {
       invalid(`${p}.stickers`)
   }
 }
-export const decree = withValidStickers(catalog(ALL_DECREES, decreeRuntime))
+function decreeCatalog(runtime: Record<string, Check>): Check {
+  const current = catalog(ALL_DECREES, runtime)
+  const legacy = catalog(
+    ALL_DECREES.map((d) =>
+      d.id === 'closed_hand_austerity'
+        ? { ...d, effect: LEGACY_AUSTERITY_EFFECT }
+        : d
+    ),
+    runtime
+  )
+  return (v, p) => {
+    const data = record(v, p)
+    if (
+      data.id === 'closed_hand_austerity' &&
+      record(data.effect, `${p}.effect`).type === 'conditional'
+    )
+      legacy(v, p)
+    else current(v, p)
+  }
+}
+export const decree = withValidStickers(decreeCatalog(decreeRuntime))
 export const decreeInstanceCounter: Check = (v, p) => {
   positive(v, p)
   // Leave room for all items permitted by the snapshot's bounded arrays.
@@ -129,7 +150,7 @@ const decreeInstanceId: Check = (v, p) => {
   decreeInstanceCounter(Number(match[1]), p)
 }
 export const ownedDecree = withValidStickers(
-  catalog(ALL_DECREES, {
+  decreeCatalog({
     ...decreeRuntime,
     instanceId: optional(decreeInstanceId),
     randomCopyTargetId: optional(nullable(decreeInstanceId)),

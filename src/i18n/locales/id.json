@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Disiplin Tangan Tertutup",
+    "description": "Tangan lengkap dan tertutup mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap dan tertutup sebelumnya dalam run ini, hingga ×4 sebelum penguatan Bunga. Permainan taktis dan Pengampunan Shanten tidak dihitung.",
+    "progress": "Tangan lengkap dan tertutup: {{count}}. Tangan berikut yang memenuhi syarat: ×{{factor}} sebelum Bunga."
+  },
   "yakuRepetition": {
     "name": "Dekret Pengulangan Yaku",
-    "description": "Setiap Yaku yang menghasilkan skor pada ronde beruntun dikalikan ×1,2 untuk setiap ronde sebelumnya dalam rentetannya (maksimal ×4 total). Ronde tanpa Yaku itu atau ronde yang dilewati memutus rentetan.",
+    "description": "Setiap Yaku yang menghasilkan skor pada ronde beruntun dikalikan ×1,2 untuk setiap ronde sebelumnya dalam rentetannya (maksimal ×4 total). Ronde tanpa Yaku itu atau ronde yang dilewati memutus rentetan. Batas berlaku sebelum penguatan Bunga.",
     "title": "Pola untuk diulang",
     "streak": "{{name}} · {{rounds}} ronde sebelumnya berturut-turut",
     "empty": "Belum ada rentetan. Raih skor dengan Yaku pada ronde ini untuk memulainya."

@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Austerità della mano chiusa",
+    "description": "Le mani complete e chiuse ottengono ×1,5, con crescita ×1,2 per ogni precedente mano completa e chiusa nella partita, fino a ×4 prima del potenziamento dei Fiori. Le giocate tattiche e la Clemenza Shanten non contano.",
+    "progress": "Mani complete e chiuse: {{count}}. Prossima mano valida: ×{{factor}} prima dei Fiori."
+  },
   "yakuRepetition": {
     "name": "Editto della Ripetizione degli Yaku",
-    "description": "Ogni Yaku realizzato in round consecutivi moltiplica per ×1,2 per ogni round precedente della sua serie (massimo ×4 totale). Un round senza quel Yaku o saltato interrompe la serie.",
+    "description": "Ogni Yaku realizzato in round consecutivi moltiplica per ×1,2 per ogni round precedente della sua serie (massimo ×4 totale). Un round senza quel Yaku o saltato interrompe la serie. Il limite si applica prima del potenziamento dei Fiori.",
     "title": "Combinazioni da ripetere",
     "streak": "{{name}} · {{rounds}} round precedenti consecutivi",
     "empty": "Nessuna serie precedente. Realizza uno Yaku in questo round per iniziarne una."

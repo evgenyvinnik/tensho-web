@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Austeridad de mano cerrada",
+    "description": "Las manos completas y cerradas ganan ×1,5, creciendo ×1,2 por cada mano completa y cerrada anterior de esta partida, hasta ×4 antes del refuerzo de las Flores. Las jugadas tácticas y la Clemencia Shanten no cuentan.",
+    "progress": "Manos completas y cerradas: {{count}}. Próxima mano válida: ×{{factor}} antes de las Flores."
+  },
   "yakuRepetition": {
     "name": "Edicto de Repetición de Yaku",
-    "description": "Cada Yaku puntuado en rondas consecutivas multiplica por ×1,2 por cada ronda anterior de su racha (máximo ×4 en total). Una ronda sin ese Yaku o saltada rompe su racha.",
+    "description": "Cada Yaku puntuado en rondas consecutivas multiplica por ×1,2 por cada ronda anterior de su racha (máximo ×4 en total). Una ronda sin ese Yaku o saltada rompe su racha. El límite se aplica antes del refuerzo de las Flores.",
     "title": "Patrones para repetir",
     "streak": "{{name}} · {{rounds}} rondas anteriores consecutivas",
     "empty": "No hay rachas previas. Puntúa un Yaku esta ronda para iniciar una."

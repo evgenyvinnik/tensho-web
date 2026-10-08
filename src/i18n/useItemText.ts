@@ -52,22 +52,26 @@ export function useItemText(): ItemText {
     () => ({
       name: (kind, item) =>
         t(
-          kind === 'decrees' && item.id === 'yaku_repetition_charter'
-            ? 'yakuRepetition.name'
-            : `${kind}.items.${item.id}.name`,
+          kind === 'decrees' && item.id === 'closed_hand_austerity'
+            ? 'closedHandAusterity.name'
+            : kind === 'decrees' && item.id === 'yaku_repetition_charter'
+              ? 'yakuRepetition.name'
+              : `${kind}.items.${item.id}.name`,
           item.name
         ),
       description: (kind, item) =>
         t(
-          kind === 'decrees' && item.id === 'yaku_repetition_charter'
-            ? 'yakuRepetition.description'
-            : kind === 'decrees' && item.id === 'decree-doppelganger'
-              ? 'randomCopy.description'
-              : kind === 'decrees' && item.id === 'decree-supernova'
-                ? 'scoreThresholds.supernova'
-                : kind === 'decrees' && item.id === 'decree-perfectionist'
-                  ? 'scoreThresholds.perfectionist'
-                  : `${kind}.items.${item.id}.description`,
+          kind === 'decrees' && item.id === 'closed_hand_austerity'
+            ? 'closedHandAusterity.description'
+            : kind === 'decrees' && item.id === 'yaku_repetition_charter'
+              ? 'yakuRepetition.description'
+              : kind === 'decrees' && item.id === 'decree-doppelganger'
+                ? 'randomCopy.description'
+                : kind === 'decrees' && item.id === 'decree-supernova'
+                  ? 'scoreThresholds.supernova'
+                  : kind === 'decrees' && item.id === 'decree-perfectionist'
+                    ? 'scoreThresholds.perfectionist'
+                    : `${kind}.items.${item.id}.description`,
           item.description ?? ''
         ),
     }),

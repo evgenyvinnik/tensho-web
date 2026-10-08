@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Disiplina ng Saradong Kamay",
+    "description": "Ang kumpletong saradong kamay ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang kumpletong saradong kamay sa run na ito, hanggang ×4 bago ang pagpapalakas ng mga Bulaklak. Hindi kasama ang taktikal na laro at Shanten Clemency.",
+    "progress": "Nakumpletong saradong kamay: {{count}}. Susunod na kuwalipikadong kamay: ×{{factor}} bago ang mga Bulaklak."
+  },
   "yakuRepetition": {
     "name": "Utos ng Pag-uulit ng Yaku",
-    "description": "Bawat Yaku na umiskor sa magkakasunod na round ay may pinagsasamang ×1.2 sa bawat naunang round ng serye nito (hanggang ×4 sa kabuuan). Napuputol ang serye kapag walang ganoong Yaku o nilaktawan ang round.",
+    "description": "Bawat Yaku na umiskor sa magkakasunod na round ay may pinagsasamang ×1.2 sa bawat naunang round ng serye nito (hanggang ×4 sa kabuuan). Napuputol ang serye kapag walang ganoong Yaku o nilaktawan ang round. Ang limitasyon ay bago ang pagpapalakas ng mga Bulaklak.",
     "title": "Mga pattern na uulitin",
     "streak": "{{name}} · {{rounds}} naunang magkakasunod na round",
     "empty": "Wala pang serye. Umiskor gamit ang Yaku sa round na ito para magsimula."

@@ -15,7 +15,9 @@ Using the user's delegated rules authority:
 - A completed round records each actually paid, surviving Yaku family once.
 - For each family scored in the current play, count its consecutive immediately
   prior completed rounds. Sum these counts and apply `min(4, 1.2 ** count)`.
-  The authored factor 0.2 and maximum bonus 3 become ×1.2 growth and ×4 cap.
+  The authored factor 0.2 and maximum bonus 3 become ×1.2 growth and ×4 cap,
+  before the existing Flower empowerment of the bonus. The Austerity checkpoint
+  makes this cap ordering explicit in all thirteen localized descriptions.
 - Repeated plays inside one round can use the bonus, but cannot grow the streak.
   Any earlier paid occurrence in that round counts even if a tactical play ends it.
 - A completed round missing a family breaks that family's streak. An accepted

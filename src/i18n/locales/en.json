@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Closed-Hand Austerity",
+    "description": "Complete concealed hands gain ×1.5, growing ×1.2 per earlier complete concealed hand this run, up to ×4 before Flower empowerment. Tactical plays and Shanten Clemency do not qualify.",
+    "progress": "Completed concealed hands: {{count}}. Next qualifying hand: ×{{factor}} before Flowers."
+  },
   "yakuRepetition": {
     "name": "Yaku Repetition Charter",
-    "description": "Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing or skipping a round breaks that Yaku’s streak.",
+    "description": "Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing or skipping a round breaks that Yaku’s streak. The cap is before Flower empowerment.",
     "title": "Patterns to repeat",
     "streak": "{{name}} · {{rounds}} consecutive prior rounds",
     "empty": "No prior streaks. Score a Yaku this round to start one."

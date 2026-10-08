@@ -36,6 +36,7 @@ import { hasDecreeSticker } from '../../systems/decreeStickers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 import { RandomCopyDetails } from '../ui/RandomCopyDetails'
 import { CopyCostDetails } from '../ui/CopyCostDetails'
+import { AusterityDetails } from '../ui/AusterityDetails'
 import {
   YakuRepetitionDetails,
   type YakuRepetitionHistory,
@@ -73,6 +74,7 @@ const RARITY_TRANSLATION_KEYS = {
  */
 export interface DecreeCardCompactProps {
   yakuHistory?: YakuRepetitionHistory
+  completeConcealedHandsPlayed?: number
   ownedDecrees?: readonly OwnedDecree[]
   disabledDecreeIds?: ReadonlySet<string>
   /** The decree to display */
@@ -103,6 +105,7 @@ export function DecreeCardCompact({
   ownedDecrees = [],
   disabledDecreeIds,
   yakuHistory,
+  completeConcealedHandsPlayed = 0,
 }: DecreeCardCompactProps) {
   const { t, i18n } = useTranslation()
   const reduceMotion = useReducedMotion()
@@ -423,6 +426,9 @@ export function DecreeCardCompact({
 
               {!faceDown && <DecreeModifierDetails decree={decree} />}
               {!faceDown && <CopyCostDetails decree={decree} />}
+              {!faceDown && decree.id === 'closed_hand_austerity' && (
+                <AusterityDetails count={completeConcealedHandsPlayed} />
+              )}
               {!faceDown &&
                 decree.id === 'yaku_repetition_charter' &&
                 yakuHistory && <YakuRepetitionDetails history={yakuHistory} />}

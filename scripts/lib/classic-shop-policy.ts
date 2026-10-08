@@ -186,6 +186,8 @@ function modeledEffect(effect: DecreeEffect): boolean {
   ].includes(effect.type)
 }
 const modeledDecree = (decree: Decree) =>
+  // Tactical samples cannot price complete-hand mastery (including legacy effects).
+  decree.id !== 'closed_hand_austerity' &&
   [decree.effect, ...(decree.extraEffects ?? [])].every(modeledEffect)
 const copiesEffect = (effect: DecreeEffect): boolean =>
   effect.type === 'copy_decree' ||

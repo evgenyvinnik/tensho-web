@@ -10,6 +10,7 @@ import type { YakuRepetitionHistory } from '../ui/YakuRepetitionDetails'
 
 interface Props {
   yakuHistory?: YakuRepetitionHistory
+  completeConcealedHandsPlayed?: number
   decrees: OwnedDecree[]
   maxSlots: number
   onSell: (instanceId: string) => { success: boolean }
@@ -21,6 +22,7 @@ export function ShopBuildPanel({
   maxSlots,
   onSell,
   yakuHistory,
+  completeConcealedHandsPlayed,
 }: Props) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
@@ -71,6 +73,7 @@ export function ShopBuildPanel({
               decree={decree}
               ownedDecrees={decrees}
               yakuHistory={yakuHistory}
+              completeConcealedHandsPlayed={completeConcealedHandsPlayed}
               onSell={() => {
                 // A stable focus return target survives removal of the sold card
                 // and the transient detail popover that launched confirmation.

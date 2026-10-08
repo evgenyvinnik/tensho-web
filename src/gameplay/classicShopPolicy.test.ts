@@ -345,7 +345,7 @@ it('does not assign future scoring value to an already-expired offer', () => {
   ).toBeNull()
 })
 
-it.each(['decree-supernova', 'decree-perfectionist'])(
+it.each(['decree-supernova', 'decree-perfectionist', 'closed_hand_austerity'])(
   'does not misprice final-score threshold %s with the simplified model',
   (id) => {
     const threshold = ALL_DECREES.find((d) => d.id === id)!

@@ -218,6 +218,8 @@ export interface OrchestratorState {
   lastHandScore: number | undefined
   /** Hands played across the whole run, for Decrees that scale with tempo. */
   handsPlayedThisRun: number
+  /** Proven complete concealed plays. Absent legacy history means zero. */
+  completeConcealedHandsPlayed?: number
   discardsRemaining: number
   redrawsRemaining: number
   targetScore: number
@@ -1749,7 +1751,8 @@ export class GameOrchestrator {
         completeHand.tilesToScore,
         completeHand.parsedHand,
         undefined,
-        true
+        true,
+        !completeHand.usedShantenClemency && completeHand.parsedHand.isConcealed
       )
       if (completeHand.usedShantenClemency) {
         complete.finalScore = Math.floor(complete.finalScore * 0.5)
@@ -1879,7 +1882,10 @@ export class GameOrchestrator {
     // Calculate score for complete hand
     const scoreResult = this.calculateHandScore(
       completeHand.tilesToScore,
-      completeHand.parsedHand
+      completeHand.parsedHand,
+      undefined,
+      false,
+      !completeHand.usedShantenClemency && completeHand.parsedHand.isConcealed
     )
     if (completeHand.usedShantenClemency) {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore * 0.5)
@@ -1904,6 +1910,12 @@ export class GameOrchestrator {
     this.state.runScore += scoreResult.finalScore
     this.state.lastHandScore = scoreResult.finalScore
     this.state.handsPlayedThisRun++
+    if (
+      !completeHand.usedShantenClemency &&
+      completeHand.parsedHand.isConcealed
+    )
+      this.state.completeConcealedHandsPlayed =
+        (this.state.completeConcealedHandsPlayed ?? 0) + 1
     this.state.handsRemaining--
 
     if (scoreResult.goldEarned > 0) {
@@ -3364,7 +3376,8 @@ export class GameOrchestrator {
     tiles: Tile[],
     parsedHand: ParsedHand,
     partialMelds?: Meld[],
-    preview: boolean = false
+    preview: boolean = false,
+    completeConcealedHand: boolean = false
   ): ScoreBreakdown & { equation: ScoreEquation } {
     // Build the full ScoringContext for system integrations
     const roundState = this.state.roundManager.getCurrentRound()
@@ -3405,6 +3418,9 @@ export class GameOrchestrator {
       lastHandScore: this.state.lastHandScore,
       gold: this.state.gold,
       handsPlayedThisRun: this.state.handsPlayedThisRun,
+      completeConcealedHand,
+      completeConcealedHandsPlayed:
+        this.state.completeConcealedHandsPlayed ?? 0,
     }
 
     // Resolve effective suppression before either base Flower bonuses or

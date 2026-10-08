@@ -1,7 +1,12 @@
 {
+  "closedHandAusterity": {
+    "name": "Kapalı El Disiplini",
+    "description": "Tamamlanmış kapalı eller ×1,5 kazanır. Bu koşuda daha önce tamamlanan her kapalı el için ×1,2 büyür; Çiçek güçlendirmesinden önce en fazla ×4 olur. Taktik hamleler ve Shanten Merhameti sayılmaz.",
+    "progress": "Tamamlanan kapalı eller: {{count}}. Sonraki uygun el: Çiçeklerden önce ×{{factor}}."
+  },
   "yakuRepetition": {
     "name": "Yaku Tekrarı Fermanı",
-    "description": "Ardışık turlarda puan kazandıran her Yaku, serisindeki önceki her tur için ×1,2 ile bileşik çarpılır (toplam en fazla ×4). O Yaku olmadan biten veya atlanan bir tur seriyi bozar.",
+    "description": "Ardışık turlarda puan kazandıran her Yaku, serisindeki önceki her tur için ×1,2 ile bileşik çarpılır (toplam en fazla ×4). O Yaku olmadan biten veya atlanan bir tur seriyi bozar. Sınır, Çiçek güçlendirmesinden öncedir.",
     "title": "Tekrarlanacak desenler",
     "streak": "{{name}} · önceki {{rounds}} ardışık tur",
     "empty": "Önceki seri yok. Başlamak için bu tur bir Yaku ile puan kazan."
