@@ -66,12 +66,16 @@ function getRarityColor(rarity?: string): string {
   switch (rarity) {
     case 'HeavenlyOrdinance':
     case 'Legendary':
+    case 'legendary':
+    case 'mythic':
       return 'border-purple-500 bg-purple-500/10'
     case 'ImperialDecree':
     case 'Rare':
+    case 'rare':
       return 'border-blue-500 bg-blue-500/10'
     case 'RegionalMandate':
     case 'Uncommon':
+    case 'uncommon':
       return 'border-green-500 bg-green-500/10'
     default:
       return 'border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)]'
@@ -82,7 +86,7 @@ function getRarityColor(rarity?: string): string {
  * ItemCard - Single item display in collection grid
  */
 export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
 
@@ -130,28 +134,6 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
         }
       }}
     >
-      {/* Locked overlay */}
-      {isLocked && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg z-10">
-          <div className="text-center">
-            <svg
-              className="w-8 h-8 text-gray-400 mx-auto mb-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
-            <span className="text-xs text-gray-400">{t('collection.locked', 'Locked')}</span>
-          </div>
-        </div>
-      )}
-
       {isDiscovered && displayInfo ? (
         <>
           {/* Decree icon for decree category items */}
@@ -175,14 +157,20 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
             />
           )}
 
-          {displayInfo.category === 'omens' && displayInfo.id === 'double_omen' && <DoubleOmenArtwork className="mb-2 h-16 w-16" />}
+          {displayInfo.category === 'omens' &&
+            displayInfo.id === 'double_omen' && (
+              <DoubleOmenArtwork className="mb-2 h-16 w-16" />
+            )}
 
           {/* Item Name */}
           {displayInfo.category === 'charters' && (
-            <CharterArtwork charterId={displayInfo.id} className="mb-2 h-16 w-16" />
+            <CharterArtwork
+              charterId={displayInfo.id}
+              className="mb-2 h-16 w-16"
+            />
           )}
           <h3
-            className={`mb-1 line-clamp-2 text-sm font-bold text-[var(--color-beige-white)] ${voidScript ? 'pr-14 sm:pr-16' : ''}`}
+            className={`mb-1 line-clamp-2 text-sm font-bold text-[var(--color-beige-white)] ${voidScript ? 'pr-14 sm:pr-16' : displayInfo.category === 'decrees' ? 'pr-8' : ''}`}
           >
             {displayInfo.name}
           </h3>
@@ -203,15 +191,20 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
 
           {/* Stats indicator */}
           {(entry.timesUsed > 0 || entry.timesWonWith > 0) && (
-            <div className="mt-2 flex gap-2 text-xs">
+            <div
+              data-archive-card-stats
+              className="mt-2 grid gap-1 text-xs [overflow-wrap:anywhere]"
+            >
               {entry.timesUsed > 0 && (
                 <span className="text-[var(--color-golden-yellow)]">
-                  Used: {entry.timesUsed}
+                  {t('collection.timesUsed')}:{' '}
+                  {entry.timesUsed.toLocaleString(i18n.language)}
                 </span>
               )}
               {entry.timesWonWith > 0 && (
                 <span className="text-green-400">
-                  Wins: {entry.timesWonWith}
+                  {t('collection.runsWon')}:{' '}
+                  {entry.timesWonWith.toLocaleString(i18n.language)}
                 </span>
               )}
             </div>
@@ -228,6 +221,29 @@ export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
               ? t('collection.locked', 'Locked')
               : t('collection.undiscovered', 'Undiscovered')}
           </span>
+        </div>
+      )}
+      {/* Known locked rewards remain inspectable; never obscure their copy. */}
+      {isDiscovered && isLocked && (
+        <div
+          data-archive-card-lock
+          className="mt-2 flex items-start gap-1 border-t border-gray-500/40 pt-2 text-xs text-gray-300 [overflow-wrap:anywhere]"
+        >
+          <svg
+            aria-hidden="true"
+            className="h-4 w-4 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
+          </svg>
+          <span>{t('collection.locked', 'Locked')}</span>
         </div>
       )}
     </AnimatedDiv>

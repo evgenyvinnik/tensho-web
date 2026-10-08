@@ -1746,6 +1746,8 @@
     "finalScore": "最終スコア"
   },
   "collection": {
+    "discovered": "発見日",
+    "starterItem": "初期アイテム",
     "locked": "未解放",
     "empty": "このカテゴリーに項目はありません",
     "effect": "効果",

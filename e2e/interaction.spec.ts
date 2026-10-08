@@ -86,13 +86,19 @@ for (const viewport of [
     await page.setViewportSize(viewport)
     await page.goto('/en/play')
     await expect(
+      page.locator('[data-classic-save-status="saved"]')
+    ).toBeVisible()
+    // Starting bonus draws can expand the rack. Check every authoritative
+    // physical tile, including Spring/Orchid extras, rather than only fourteen.
+    const ids: string[] = await page.evaluate(() => {
+      const saved = JSON.parse(localStorage.getItem('tensho-classic-run-v1')!)
+      return saved.snapshot.state.handTiles.map((tile: { id: string }) => tile.id)
+    })
+    expect(ids.length).toBeGreaterThanOrEqual(14)
+    expect(new Set(ids).size).toBe(ids.length)
+    await expect(
       page.locator('[data-play-zone="hand"] [data-play-tile]')
-    ).toHaveCount(14)
-    const ids = await page
-      .locator('[data-play-zone="hand"] [data-play-tile]')
-      .evaluateAll((tiles) =>
-        tiles.map((tile) => tile.getAttribute('data-play-tile')!)
-      )
+    ).toHaveCount(ids.length)
     const assertSeparated = async (zone: string) => {
       const rectangles = await page
         .locator(`[data-play-zone="${zone}"] [data-play-tile]`)

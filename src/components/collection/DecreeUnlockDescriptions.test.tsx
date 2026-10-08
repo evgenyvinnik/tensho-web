@@ -16,6 +16,13 @@ it.each(SUPPORTED_LANGUAGES)(
     await i18n.changeLanguage(language)
     const archive = new ArchiveSystem()
     for (const decree of ALL_DECREES.filter((d) => d.unlockCondition)) {
+      const localItem = i18n.getResource(
+        language,
+        'translation',
+        `decrees.items.${decree.id}`
+      )
+      expect(localItem?.name).toBeTruthy()
+      expect(localItem?.description).toBeTruthy()
       const entry = archive.getEntry('decrees', decree.id)!
       expect(entry.isUnlocked).toBe(false)
       const key = `decreeUnlocks.${decree.id}`
@@ -31,13 +38,17 @@ it.each(SUPPORTED_LANGUAGES)(
           categoryInfo={null}
           displayInfo={{
             id: decree.id,
-            name: decree.name,
-            description: decree.description,
+            name: localItem.name,
+            description: localItem.description,
             category: 'decrees',
           }}
         />
       )
       expect(screen.getByRole('dialog')).toHaveTextContent(localRule)
+      expect(screen.getByRole('dialog')).toHaveAccessibleName(localItem.name)
+      expect(screen.getByRole('dialog')).toHaveTextContent(
+        localItem.description
+      )
       cleanup()
     }
   }

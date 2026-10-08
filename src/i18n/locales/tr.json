@@ -599,6 +599,30 @@
       "mythic": "Cennetin Emri"
     },
     "items": {
+      "decree-blueprint": {
+        "name": "Taslak",
+        "description": "Sağındaki Fermanın etkisini kopyalar."
+      },
+      "decree-brainstorm": {
+        "name": "Beyin Fırtınası",
+        "description": "En soldaki Fermanın etkisini kopyalar."
+      },
+      "decree-heavenly-ordinance": {
+        "name": "Cennetin Emri",
+        "description": "Çarpan ×5."
+      },
+      "decree-clone-army": {
+        "name": "Klon Ordusu",
+        "description": "Diğer tüm Fermanların etkilerini kopyalar."
+      },
+      "decree-yakuman-blessing": {
+        "name": "Yakuman Lütfu",
+        "description": "Yakuman puanlandığında çarpan ×10."
+      },
+      "decree-omega": {
+        "name": "Omega",
+        "description": "+500 temel puan, çarpana +50, ardından çarpan ×2."
+      },
       "decree-treasure-hunter": {
         "name": "Hazine Avcısı",
         "description": "Tur kazanıldığında elde kalan her farklı taş türü için +1 altın. Rüzgârlar ve Ejderhalar ayrı sayılır."
@@ -1152,7 +1176,69 @@
     "totalMultiplier": "Toplam çarpan",
     "finalScore": "Nihai puan"
   },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Fermanlar",
+        "description": "Kuralları değiştiren ve turlar arasında kalan etkiler."
+      },
+      "walls": {
+        "name": "Masalar",
+        "description": "Farklı başlangıç kurallarına sahip masa türleri."
+      },
+      "charters": {
+        "name": "İmparatorluk Beratları",
+        "description": "Koşu boyunca süren geliştirmeler."
+      },
+      "consumables": {
+        "name": "Tüketilebilirler",
+        "description": "Tek kullanımlık Kader Mühürleri, Göksel Küreler ve Hiçlik Yazıtları."
+      },
+      "tileMarks": {
+        "name": "Taş İşaretleri",
+        "description": "Taşların özelliklerini değiştiren geliştirmeler."
+      },
+      "seals": {
+        "name": "Mühürler",
+        "description": "Taşlara ek etkiler veren özel mühürler."
+      },
+      "editions": {
+        "name": "Sürümler",
+        "description": "Eşyaların özel görünümlü ve etkili çeşitleri."
+      },
+      "packs": {
+        "name": "Lütuf Paketleri",
+        "description": "Çeşitli geliştirmeler içeren paketler."
+      },
+      "omens": {
+        "name": "Alametler",
+        "description": "Tur atlayarak kazanılan tek kullanımlık ödüller."
+      },
+      "mandates": {
+        "name": "Hükümler",
+        "description": "Bölüm sonu turlarının kısıtlamaları ve sınamaları."
+      }
+    }
+  },
+  "charters": {
+    "items": {
+      "plentiful_stock": {
+        "name": "Bol Stok",
+        "description": "Mağazaya +1 eşya yuvası (toplam 4)."
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_ectoplasm": {
+        "name": "Ektoplazma Yazıtı",
+        "description": "Rastgele bir Fermana Negatif sürüm ekler (+1 Ferman yuvası)."
+      }
+    }
+  },
   "collection": {
+    "discovered": "Keşfedildi",
+    "starterItem": "Başlangıç eşyası",
     "locked": "Kilitli",
     "empty": "Bu kategoride öğe yok",
     "effect": "Etki",

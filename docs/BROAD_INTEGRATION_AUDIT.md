@@ -176,7 +176,33 @@ Exact prompt:
 
 ## Pending verification
 
-Evidence root: `/tmp/tensho-integration-audit-Z1dTfZ`. Full browser recheck and
-publication/hosted verification remain pending. Full units, build, lint, release
-checks and the targeted native/production journeys are verified above. Do not
-describe this local checkpoint as deployed or the entire project as complete.
+Evidence root: `/tmp/tensho-integration-audit-Z1dTfZ`.
+
+The full native run has now finished on frozen `e9fa37e`: **661 passed, thirty
+production/static-only skips and fifteen failures**, 42.4 minutes, two workers,
+no retries (`final-full.log`). Two failures were obsolete fourteen-tile assumptions
+on actual sixteen-tile Spring racks. Twelve exceeded the existing thirty-second
+journey deadline; one mobile delayed-font test missed initial saved-state
+readiness before any drag. This full run is not green, and its evidence is retained.
+
+The twelve deadline journeys and six related checks pass **18/18** in a separate
+clean-server, one-worker run (`serial-native.log`, 2.3 minutes, no retries or
+deadline changes). This does not establish the cause of the original deadlines.
+Static/production-only cases are being checked in their appropriate environment.
+
+The [Archive presentation follow-up](ARCHIVE_PRESENTATION_IMPLEMENTATION.md) is
+now integrated locally: translated categories, rarity/cost/date/statistics,
+missing names for the six gated rewards, generated Blueprint artwork, correct
+document language, and readable Russian/small-screen layouts. Its ledger records
+focused tests, production screenshot review and a separately reproduced compact
+card overflow. Final regression, remaining input rechecks and publication/hosted
+verification are pending; the entire project is still in progress.
+
+Subsequent input recheck passes **28/28**, including all three remaining failed
+audit cases. Final combined production replays pass **12/12** and real-static
+route tests pass **4/4**. The full local unit run retained one five-second CLI
+deadline (2,547 passes); its isolated 339-case follow-up passes, as do the final
+299 Archive checks and four post-lock-layout browser journeys. TypeScript/build,
+lint (zero errors / 211 warnings), and thirteen release checks pass. See the
+Archive ledger for exact intermediate source boundaries and failures. CI,
+publication and hosted verification remain pending.

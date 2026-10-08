@@ -1746,6 +1746,8 @@
     "finalScore": "Puntuación final"
   },
   "collection": {
+    "discovered": "Descubierto",
+    "starterItem": "Objeto inicial",
     "locked": "Bloqueado",
     "empty": "No hay objetos en esta categoría",
     "effect": "Efecto",

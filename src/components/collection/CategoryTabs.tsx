@@ -207,6 +207,7 @@ export function CategoryTabs({
             <button
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
+              aria-pressed={isActive}
               className={`
                 flex-shrink-0 px-3 py-2 rounded-lg font-bold text-sm
                 border-2 transition-all duration-200
@@ -226,13 +227,9 @@ export function CategoryTabs({
                 {getCategoryIconElement(category.icon)}
               </span>
 
-              {/* Name (hidden on mobile for space) */}
-              <span className="hidden sm:inline">
-                {itemText.name('archiveCategories', category)}
-              </span>
-
-              {/* Japanese name on mobile */}
-              <span className="sm:hidden">{category.japaneseName}</span>
+              {/* Keep categories understandable in the selected language at
+                  every width; the horizontal rail handles longer labels. */}
+              <span>{itemText.name('archiveCategories', category)}</span>
 
               {/* Count badge */}
               <span

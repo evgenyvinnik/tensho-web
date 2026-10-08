@@ -4,16 +4,18 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Broad integration audit — local work:** 78 corrected desktop/touch browser
-checks pass after stale tutorial-label, artwork-format and Season-resource fixture
-assumptions were repaired. Perfectionist has a new generated portrait. The full
-browser recheck is pending. The six authored Decree unlocks are now locally wired
-through acquisition, persistent earning, legacy saves and localized Archive rules.
-Production build and clean full units (2,233/2,233) pass, as do eight built-production
-unlock/art journeys. Corrected native unlock checks pass 4/4 and repeated interest
-checks pass 30/30. The full 706-case browser audit remains open after retained
-failures and fixture corrections. This checkpoint is not deployed.
-[Audit, retained failures and artwork provenance](BROAD_INTEGRATION_AUDIT.md).
+**Decree progression and Archive — release candidate:** six authored unlocks are
+connected through earning, acquisition and compatible saved continuation. Added
+Perfectionist/Blueprint portraits and localized Archive rules, costs, rarity,
+categories and statistics, with responsive cards/dialogs and readable Cyrillic.
+The 706-case native audit finished with 661 passes, thirty environment-specific
+skips and fifteen failures. Separate 18- and 28-case serial rechecks cover all
+fifteen failures and pass without retries or changed deadlines. Production replays
+pass 12/12; static-route checks pass 4/4. Full local units had 2,547 passes and one
+CLI deadline; the 339-case isolated follow-up passes. Build, lint (warnings only)
+and thirteen release checks pass. Publication and independent CI remain pending.
+[Full audit](BROAD_INTEGRATION_AUDIT.md) and
+[Archive changes, retained failures and art provenance](ARCHIVE_PRESENTATION_IMPLEMENTATION.md).
 
 **Published shop copy preflight — v1.0.261008-10:** purchase/pack eligibility simulation
 no longer spends the live Doppelganger target cursor. Actual acquisition draws

@@ -627,14 +627,17 @@ export function getDiscoveryTriggerJapaneseName(
 /**
  * Format discovery date
  */
-export function formatDiscoveryDate(timestamp: number | null): string {
+export function formatDiscoveryDate(
+  timestamp: number | null,
+  locale?: string
+): string {
   if (timestamp === null) {
     return 'Not discovered'
   }
   if (timestamp === 0) {
     return 'Starter item'
   }
-  return new Date(timestamp).toLocaleDateString()
+  return new Date(timestamp).toLocaleDateString(locale)
 }
 
 /**

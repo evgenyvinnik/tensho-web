@@ -599,6 +599,30 @@
       "mythic": "Makalangit na Ordinansa"
     },
     "items": {
+      "decree-blueprint": {
+        "name": "Balangkas",
+        "description": "Kinokopya ang epekto ng Dekreto sa kanan."
+      },
+      "decree-brainstorm": {
+        "name": "Bugso ng Isip",
+        "description": "Kinokopya ang epekto ng pinakakaliwang Dekreto."
+      },
+      "decree-heavenly-ordinance": {
+        "name": "Makalangit na Ordinansa",
+        "description": "Multiplikador ×5."
+      },
+      "decree-clone-army": {
+        "name": "Hukbo ng mga Kopya",
+        "description": "Kinokopya ang mga epekto ng lahat ng iba pang Dekreto."
+      },
+      "decree-yakuman-blessing": {
+        "name": "Basbas ng Yakuman",
+        "description": "Multiplikador ×10 kapag umiskor ng Yakuman."
+      },
+      "decree-omega": {
+        "name": "Omega",
+        "description": "+500 batayang puntos, +50 sa multiplikador, saka multiplikador ×2."
+      },
       "decree-treasure-hunter": {
         "name": "Mangangaso ng Kayamanan",
         "description": "+1 ginto bawat natatanging uri ng tile na natitira sa rack kapag nanalo sa round. Magkahiwalay na binibilang ang Hangin at Dragon."
@@ -1152,7 +1176,69 @@
     "totalMultiplier": "Kabuuang multiplier",
     "finalScore": "Panghuling puntos"
   },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Mga Dekreto",
+        "description": "Mga pagbabagong-batas na nananatili sa pagitan ng mga round."
+      },
+      "walls": {
+        "name": "Mga Mesa",
+        "description": "Mga uri ng mesa na may magkakaibang panimulang tuntunin."
+      },
+      "charters": {
+        "name": "Mga Imperyal na Karta",
+        "description": "Mga pagpapahusay na tumatagal sa buong run."
+      },
+      "consumables": {
+        "name": "Mga Nauubos na Gamit",
+        "description": "Mga minsanang Tatak ng Kapalaran, Makalangit na Globo at Kasulatan ng Kawalan."
+      },
+      "tileMarks": {
+        "name": "Mga Marka ng Tile",
+        "description": "Mga pagpapahusay na nagbabago sa katangian ng mga tile."
+      },
+      "seals": {
+        "name": "Mga Tatak",
+        "description": "Mga espesyal na tatak na nagdaragdag ng epekto sa mga tile."
+      },
+      "editions": {
+        "name": "Mga Edisyon",
+        "description": "Mga bersiyon ng gamit na may natatanging anyo at epekto."
+      },
+      "packs": {
+        "name": "Mga Pakete ng Basbas",
+        "description": "Mga paketeng may sari-saring pagpapahusay."
+      },
+      "omens": {
+        "name": "Mga Palatandaan",
+        "description": "Mga minsanang gantimpala mula sa paglaktaw ng round."
+      },
+      "mandates": {
+        "name": "Mga Mandato",
+        "description": "Mga paghihigpit at hamon sa mga boss round."
+      }
+    }
+  },
+  "charters": {
+    "items": {
+      "plentiful_stock": {
+        "name": "Masaganang Paninda",
+        "description": "+1 puwesto ng paninda sa tindahan (hanggang 4)."
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_ectoplasm": {
+        "name": "Kasulatan ng Ektoplasma",
+        "description": "Nagdaragdag ng Negatibong edisyon sa isang sapalarang Dekreto (+1 puwesto ng Dekreto)."
+      }
+    }
+  },
   "collection": {
+    "discovered": "Natuklasan",
+    "starterItem": "Panimulang item",
     "locked": "Naka-lock",
     "empty": "Walang item sa kategoryang ito",
     "effect": "Epekto",

@@ -1825,7 +1825,53 @@
     "totalMultiplier": "Total pengali",
     "finalScore": "Skor akhir"
   },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Dekrit",
+        "description": "Pengubah aturan yang bertahan antar ronde."
+      },
+      "walls": {
+        "name": "Meja",
+        "description": "Varian meja dengan aturan awal yang berbeda."
+      },
+      "charters": {
+        "name": "Piagam Kekaisaran",
+        "description": "Peningkatan yang bertahan sepanjang perjalanan."
+      },
+      "consumables": {
+        "name": "Barang Sekali Pakai",
+        "description": "Segel Takdir, Bola Langit, dan Naskah Kehampaan sekali pakai."
+      },
+      "tileMarks": {
+        "name": "Tanda Ubin",
+        "description": "Peningkatan yang mengubah sifat ubin."
+      },
+      "seals": {
+        "name": "Segel",
+        "description": "Segel khusus yang menambahkan efek pada ubin."
+      },
+      "editions": {
+        "name": "Edisi",
+        "description": "Varian barang dengan tampilan dan efek khusus."
+      },
+      "packs": {
+        "name": "Paket Berkah",
+        "description": "Paket berisi beragam peningkatan."
+      },
+      "omens": {
+        "name": "Pertanda",
+        "description": "Hadiah sekali pakai dari melewati ronde."
+      },
+      "mandates": {
+        "name": "Mandat",
+        "description": "Batasan dan tantangan pada ronde bos."
+      }
+    }
+  },
   "collection": {
+    "discovered": "Ditemukan",
+    "starterItem": "Item awal",
     "locked": "Terkunci",
     "empty": "Tidak ada item di kategori ini",
     "effect": "Efek",

@@ -1746,6 +1746,8 @@
     "finalScore": "최종 점수"
   },
   "collection": {
+    "discovered": "발견일",
+    "starterItem": "시작 아이템",
     "locked": "잠김",
     "empty": "이 분류에 항목이 없습니다",
     "effect": "효과",

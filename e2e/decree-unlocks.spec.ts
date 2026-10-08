@@ -5,6 +5,7 @@ for (const language of ['en', 'es']) {
   test(`paid Yakuman unlocks survive reload without preview awards (${language})`, async ({
     page,
     isMobile,
+    baseURL,
   }, info) => {
     const replay = process.env.DECREE_UNLOCK_REPLAY_FILE
       ? JSON.parse(readFileSync(process.env.DECREE_UNLOCK_REPLAY_FILE, 'utf8'))
@@ -21,7 +22,7 @@ for (const language of ['en', 'es']) {
           localStorage.setItem(key, value as string)
       }
     }, replay)
-    await page.goto(`/${language}/play`)
+    await page.goto(`${baseURL!.replace(/\/$/, '')}/${language}/play`)
     const saved = () =>
       expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
     const profile = () =>

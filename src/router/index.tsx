@@ -39,6 +39,7 @@ import { audioSystem } from '../systems/AudioSystem'
 import { RouteLoading } from '../components/ui/RouteLoading'
 import { ROUTES, type RoutePath } from './routeManifest'
 import { useGameRouteIndexing } from './useGameRouteIndexing'
+import { useDocumentLanguage } from './useDocumentLanguage'
 import { ScreenDownloadError } from './screenDownloadRecovery'
 import { ScreenDownloadFallback } from '../components/ui/ScreenDownloadFallback'
 
@@ -107,6 +108,7 @@ export function LanguageSync({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
+  useDocumentLanguage(i18n.language)
 
   useEffect(() => {
     if (!lang) return

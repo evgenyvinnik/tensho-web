@@ -35,38 +35,47 @@ export interface ItemDetailModalProps {
  * Get rarity display info
  */
 function getRarityInfo(rarity?: string): {
-  label: string
+  label: string | null
   color: string
   bgColor: string
 } {
   switch (rarity) {
     case 'HeavenlyOrdinance':
+    case 'Legendary':
+    case 'legendary':
+    case 'mythic':
       return {
-        label: 'Legendary',
+        label: 'legendary',
         color: 'text-purple-300',
         bgColor: 'bg-purple-500/20',
       }
     case 'ImperialDecree':
+    case 'Rare':
+    case 'rare':
       return {
-        label: 'Rare',
+        label: 'rare',
         color: 'text-blue-300',
         bgColor: 'bg-blue-500/20',
       }
     case 'RegionalMandate':
+    case 'Uncommon':
+    case 'uncommon':
       return {
-        label: 'Uncommon',
+        label: 'uncommon',
         color: 'text-green-300',
         bgColor: 'bg-green-500/20',
       }
     case 'LocalEdict':
+    case 'Common':
+    case 'common':
       return {
-        label: 'Common',
+        label: 'common',
         color: 'text-gray-300',
         bgColor: 'bg-gray-500/20',
       }
     default:
       return {
-        label: 'Standard',
+        label: null,
         color: 'text-[var(--color-beige-white)]',
         bgColor: 'bg-[var(--color-dark-forest)]',
       }
@@ -104,7 +113,7 @@ export function ItemDetailModal({
   displayInfo,
   categoryInfo,
 }: ItemDetailModalProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const itemText = useItemText()
 
   if (!isOpen || !entry || !displayInfo) return null
@@ -171,11 +180,14 @@ export function ItemDetailModal({
                 )}
 
                 {/* Rarity */}
-                <span
-                  className={`inline-block mt-2 px-2 py-0.5 text-xs font-bold rounded ${rarityInfo.color} ${rarityInfo.bgColor}`}
-                >
-                  {rarityInfo.label}
-                </span>
+                {rarityInfo.label && (
+                  <span
+                    data-archive-rarity={rarityInfo.label}
+                    className={`inline-block mt-2 px-2 py-0.5 text-xs font-bold rounded ${rarityInfo.color} ${rarityInfo.bgColor}`}
+                  >
+                    {t(`shop.ui.rarity_${rarityInfo.label}`)}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -198,8 +210,10 @@ export function ItemDetailModal({
               <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-red-300">
                 {t('collection.voidCost', 'Void cost')}
               </h3>
-              <p className="mt-1 text-sm text-red-100">
-                {voidScript.penalty.description}
+              <p data-archive-script-cost className="mt-1 text-sm text-red-100">
+                {t(`consumableUse.penalty_${voidScript.penalty.type}`, {
+                  count: voidScript.penalty.value || 1,
+                })}
               </p>
               <p className="mt-2 text-xs italic text-[var(--color-metallic-gold)]">
                 {voidScript.mahjongTwist}
@@ -209,14 +223,20 @@ export function ItemDetailModal({
 
           {/* Stats section */}
           {isDiscovered && (
-            <div className="grid grid-cols-2 gap-3">
+            <div
+              data-archive-stats
+              className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+            >
               {/* Times Used */}
               <div className="p-3 rounded-lg bg-[var(--color-forest-green)] border border-[var(--color-metallic-gold)]">
                 <p className="text-xs text-[var(--color-metallic-gold)]">
                   {t('collection.timesUsed', 'Times Used')}
                 </p>
-                <p className="text-xl font-bold text-[var(--color-golden-yellow)]">
-                  {entry.timesUsed.toLocaleString()}
+                <p
+                  data-archive-stat-value
+                  className="text-xl font-bold tabular-nums text-[var(--color-golden-yellow)]"
+                >
+                  {entry.timesUsed.toLocaleString(i18n.language)}
                 </p>
               </div>
 
@@ -225,8 +245,11 @@ export function ItemDetailModal({
                 <p className="text-xs text-[var(--color-metallic-gold)]">
                   {t('collection.runsWon', 'Runs Won')}
                 </p>
-                <p className="text-xl font-bold text-green-400">
-                  {entry.timesWonWith.toLocaleString()}
+                <p
+                  data-archive-stat-value
+                  className="text-xl font-bold tabular-nums text-green-400"
+                >
+                  {entry.timesWonWith.toLocaleString(i18n.language)}
                 </p>
               </div>
             </div>
@@ -236,9 +259,14 @@ export function ItemDetailModal({
           {isDiscovered && (
             <div className="pt-3 border-t border-[var(--color-forest-green)]">
               <p className="text-xs text-[var(--color-metallic-gold)]">
-                Discovered:{' '}
-                <span className="text-[var(--color-beige-white)]">
-                  {formatDiscoveryDate(entry.discoveredAt)}
+                {t('collection.discovered')}:{' '}
+                <span
+                  data-archive-discovery-date
+                  className="text-[var(--color-beige-white)]"
+                >
+                  {entry.discoveredAt === 0
+                    ? t('collection.starterItem')
+                    : formatDiscoveryDate(entry.discoveredAt, i18n.language)}
                 </span>
               </p>
             </div>

@@ -2225,6 +2225,8 @@
     "finalScore": "Final Score"
   },
   "collection": {
+    "discovered": "Discovered",
+    "starterItem": "Starter item",
     "locked": "Locked",
     "empty": "No items in this category",
     "effect": "Effect",

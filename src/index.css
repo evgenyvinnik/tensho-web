@@ -87,6 +87,13 @@
    Reset and Base Elements
    ============================================================================ */
 
+/* The Japanese system fallback can give Cyrillic full-width advances. Keep
+   Russian prose readable on a cold load as well as with cached webfonts,
+   without introducing a late font swap during a tile gesture. */
+:root:lang(ru) {
+  --font-ui: system-ui, sans-serif;
+}
+
 *,
 *::before,
 *::after {

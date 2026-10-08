@@ -1746,6 +1746,8 @@
     "finalScore": "最終得分"
   },
   "collection": {
+    "discovered": "發現日期",
+    "starterItem": "初始物品",
     "locked": "未解鎖",
     "empty": "此分類暫無內容",
     "effect": "效果",

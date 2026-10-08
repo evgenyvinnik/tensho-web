@@ -70,13 +70,16 @@ for (const [language, copy] of [
   }) => {
     await page.goto(`/${language}/play`)
     const hand = page.locator('[data-play-zone="hand"] [data-play-tile]')
-    await expect(hand).toHaveCount(14)
     await expect(
       page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()
     const before = await page.evaluate(
       () => JSON.parse(localStorage.getItem('tensho-classic-run-v1')!).snapshot
     )
+    // Spring and Orchid can add genuine tiles to the opening rack.
+    const rackSize = before.state.handTiles.length
+    expect(rackSize).toBeGreaterThanOrEqual(14)
+    await expect(hand).toHaveCount(rackSize)
     const first = hand.first()
     const id = await first.getAttribute('data-play-tile')
     const name = await first.locator('img').getAttribute('alt')
@@ -93,7 +96,7 @@ for (const [language, copy] of [
     )
     if (isMobile) await staged.tap()
     else await staged.click()
-    await expect(hand).toHaveCount(14)
+    await expect(hand).toHaveCount(rackSize)
     await expect(page.getByRole('dialog')).toHaveCount(0)
     expect(
       await page.evaluate(

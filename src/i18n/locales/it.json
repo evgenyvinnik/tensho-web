@@ -599,6 +599,30 @@
       "mythic": "Ordinanza Celeste"
     },
     "items": {
+      "decree-blueprint": {
+        "name": "Progetto",
+        "description": "Copia l’effetto del Decreto a destra."
+      },
+      "decree-brainstorm": {
+        "name": "Tempesta di idee",
+        "description": "Copia l’effetto del Decreto più a sinistra."
+      },
+      "decree-heavenly-ordinance": {
+        "name": "Ordinanza celeste",
+        "description": "Moltiplicatore ×5."
+      },
+      "decree-clone-army": {
+        "name": "Armata di cloni",
+        "description": "Copia gli effetti di tutti gli altri Decreti."
+      },
+      "decree-yakuman-blessing": {
+        "name": "Benedizione Yakuman",
+        "description": "Moltiplicatore ×10 quando segni uno Yakuman."
+      },
+      "decree-omega": {
+        "name": "Omega",
+        "description": "+500 punti base, +50 al moltiplicatore, poi moltiplicatore ×2."
+      },
       "decree-treasure-hunter": {
         "name": "Cacciatore di tesori",
         "description": "+1 oro per ogni seme distinto rimasto in mano quando vinci un round. Venti e Draghi contano separatamente."
@@ -1152,7 +1176,69 @@
     "totalMultiplier": "Moltiplicatore totale",
     "finalScore": "Punteggio finale"
   },
+  "archiveCategories": {
+    "items": {
+      "decrees": {
+        "name": "Decreti",
+        "description": "Modificatori delle regole che persistono tra i round."
+      },
+      "walls": {
+        "name": "Tavoli",
+        "description": "Varianti del tavolo con regole iniziali diverse."
+      },
+      "charters": {
+        "name": "Carte imperiali",
+        "description": "Potenziamenti che durano per tutta la partita."
+      },
+      "consumables": {
+        "name": "Consumabili",
+        "description": "Oggetti monouso: Sigilli del Fato, Sfere Celesti e Scritti del Vuoto."
+      },
+      "tileMarks": {
+        "name": "Marchi delle tessere",
+        "description": "Potenziamenti che modificano le proprietà delle tessere."
+      },
+      "seals": {
+        "name": "Sigilli",
+        "description": "Sigilli speciali che aggiungono effetti alle tessere."
+      },
+      "editions": {
+        "name": "Edizioni",
+        "description": "Varianti degli oggetti con aspetto ed effetti speciali."
+      },
+      "packs": {
+        "name": "Pacchetti benedizione",
+        "description": "Pacchetti contenenti potenziamenti assortiti."
+      },
+      "omens": {
+        "name": "Presagi",
+        "description": "Ricompense monouso ottenute saltando i round."
+      },
+      "mandates": {
+        "name": "Mandati",
+        "description": "Restrizioni e sfide dei round contro i boss."
+      }
+    }
+  },
+  "charters": {
+    "items": {
+      "plentiful_stock": {
+        "name": "Scorte abbondanti",
+        "description": "+1 spazio per articoli nel negozio (fino a 4)."
+      }
+    }
+  },
+  "scripts": {
+    "items": {
+      "script_of_ectoplasm": {
+        "name": "Scritto dell’ectoplasma",
+        "description": "Aggiunge l’edizione Negativa a un Decreto casuale (+1 spazio Decreto)."
+      }
+    }
+  },
   "collection": {
+    "discovered": "Scoperto",
+    "starterItem": "Oggetto iniziale",
     "locked": "Bloccato",
     "empty": "Nessun oggetto in questa categoria",
     "effect": "Effetto",
