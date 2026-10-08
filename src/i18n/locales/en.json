@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Score a Yakuman.",
+    "seal_of_the_void": "Score all 21 Yaku types in a single run.",
+    "planet_x_orb": "Score Seven Pairs.",
+    "ceres_orb": "Score Chanta.",
+    "eris_orb": "Score Kokushi.",
+    "black_hole_orb": "Discover all 12 other Celestial Orbs."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Win a run.",
     "decree-brainstorm": "Win a run with at least five Decrees owned.",

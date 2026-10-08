@@ -16,6 +16,7 @@ afterEach(() => {
 
 it('includes every actual Black Hole upgrade without treating it as an extra scoring family', () => {
   const game = new GameOrchestrator()
+  game.setConsumableUnlockResolver(() => true) // These cases exercise already-earned Orbs.
   game.startNewRun(7)
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
     getCelestialOrbByYaku('All')!
@@ -40,6 +41,7 @@ it('includes every actual Black Hole upgrade without treating it as an extra sco
 
 it('reports only actual upgrades, never held Orbs or free baseline bonuses', () => {
   const game = new GameOrchestrator()
+  game.setConsumableUnlockResolver(() => true)
   game.startNewRun(7)
   expect(game.getYakuUpgradeState()).toEqual([])
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
@@ -63,6 +65,7 @@ it('reports only actual upgrades, never held Orbs or free baseline bonuses', () 
 
 it('tracks real matching scores, preserves forecasts/saves, and resets with the run', () => {
   const game = new GameOrchestrator()
+  game.setConsumableUnlockResolver(() => true)
   game.startNewRun(7)
   const state = game.getState() as OrchestratorState
   state.decreeSystem

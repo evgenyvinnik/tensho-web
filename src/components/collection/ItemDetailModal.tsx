@@ -295,7 +295,12 @@ export function ItemDetailModal({
                   </span>
                   {entry.category === 'decrees'
                     ? t(`decreeUnlocks.${entry.itemId}`, entry.unlockCondition)
-                    : entry.unlockCondition}
+                    : entry.category === 'consumables'
+                      ? t(
+                          `consumableUnlocks.${entry.itemId}`,
+                          entry.unlockCondition
+                        )
+                      : entry.unlockCondition}
                 </p>
               </div>
             </div>

@@ -149,13 +149,37 @@ gaps are not removed by choosing the rule.
   ownership rules above; release verification is tracked separately.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
   The six authored Decree unlocks found by the [broad integration audit](BROAD_INTEGRATION_AUDIT.md)
-  are now implemented locally; broader verification and publication remain separate.
+  are published and hosted-verified in v1.0.261008-11. Secret consumable gates
+  are the next implementation checkpoint, documented below.
 - Continue organic-run strategy and newcomer evaluation. A legal engine run or
   a green browser test alone does not demonstrate engaging play.
 
 These items can now proceed with documented decisions instead of waiting for
 answers to each old question. This document is not a completion declaration or
 an approval to alter the three confirmed choices above.
+
+### Secret consumables: earned families and run-scoped mastery
+
+The six secret consumables in `ITEM_LIBRARIES.md` require actual paid scoring or
+actual Orb acquisition, not a preview, an Archive-only flag, or using an Orb to
+raise a family level. Immortal requires a Yakuman; Planet X requires Seven Pairs;
+Ceres requires Chanta; Eris requires Kokushi. An ascended family retains its own
+identity: ascended Seven Pairs earns Planet X and Immortal, not Eris.
+
+Seal of the Void requires all **21 live detector families within one run**.
+Duplicate patterns do not increase progress. Current-run families persist through
+profile hydration and reset on a new run; the best recorded run and earned unlock
+remain. Old lifetime totals cannot prove single-run mastery. Black Hole requires
+discovery of the **twelve other canonical Orbs**; it does not require itself,
+unknown catalog IDs, or using all twelve. These clarify the authored conditions;
+their long-run difficulty has not been established by organic playtesting.
+
+New stock, random rewards, Star Chart preferences and purchases use live profile
+eligibility. Already-owned legacy items, real acquisition history, legitimate
+Fool copy history and already-paid pack promises are preserved. Unpaid legacy
+stock cannot bypass the gate or charge for unavailable choices. Full Unlock
+remains explicit and does not fabricate achievements. See
+[implementation and verification](SECRET_CONSUMABLE_PROGRESSION.md).
 
 ### Frostbite: fractional repeat rewards, not fractional rules
 

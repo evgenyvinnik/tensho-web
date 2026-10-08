@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Bir Yakuman ile puan kazan.",
+    "seal_of_the_void": "Tek bir koşuda 21 Yaku türünün tümüyle puan kazan.",
+    "planet_x_orb": "Yedi Çift ile puan kazan.",
+    "ceres_orb": "Chanta ile puan kazan.",
+    "eris_orb": "Kokushi ile puan kazan.",
+    "black_hole_orb": "Diğer 12 Göksel Kürenin tümünü keşfet."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Bir koşuyu kazan.",
     "decree-brainstorm": "En az beş Fermanın varken bir koşuyu kazan.",

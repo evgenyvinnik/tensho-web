@@ -16,6 +16,10 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { EnhancementType, SealType, EditionType } from '../core/TileModifier'
 import {
+  isConsumableAvailable,
+  type ConsumableUnlockResolver,
+} from '../config/consumableUnlocks'
+import {
   BaseConsumable,
   ConsumableRarity,
   ConsumableEdition,
@@ -1284,10 +1288,14 @@ export class FateSealSystem {
    * Common: 70%, Uncommon: 25%, Rare: 5%
    */
   static getRandomFateSeal(
-    excludeIds: string[] = []
+    excludeIds: string[] = [],
+    isUnlocked?: ConsumableUnlockResolver
   ): Omit<FateSeal, 'instanceId' | 'isUsed'> | null {
     const available = getAllFateSeals().filter(
-      (seal) => !excludeIds.includes(seal.id) && seal.rarity !== 'Legendary'
+      (seal) =>
+        !excludeIds.includes(seal.id) &&
+        seal.rarity !== 'Legendary' &&
+        isConsumableAvailable(seal.id, isUnlocked)
     )
 
     if (available.length === 0) return null

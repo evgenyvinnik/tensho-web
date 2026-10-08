@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Marquez un Yakuman.",
+    "seal_of_the_void": "Marquez les 21 types de Yaku en une seule partie.",
+    "planet_x_orb": "Marquez Sept Paires.",
+    "ceres_orb": "Marquez Chanta.",
+    "eris_orb": "Marquez Kokushi.",
+    "black_hole_orb": "Découvrez les 12 autres Orbes Célestes."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Remportez une partie.",
     "decree-brainstorm": "Remportez une partie avec au moins cinq Décrets.",

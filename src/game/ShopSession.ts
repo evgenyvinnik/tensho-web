@@ -74,7 +74,13 @@ export class ShopSession {
 
   constructor(private readonly game: GameOrchestrator) {
     this.teaHouse.setDecreeUnlockResolver((id) => game.isDecreeUnlocked(id))
-    this.packs = new BlessingPackSystem((id) => game.isDecreeUnlocked(id))
+    this.teaHouse.setConsumableUnlockResolver((id) =>
+      game.isConsumableUnlocked(id)
+    )
+    this.packs = new BlessingPackSystem(
+      (id) => game.isDecreeUnlocked(id),
+      (id) => game.isConsumableUnlocked(id)
+    )
   }
 
   get isOpen(): boolean {
@@ -105,11 +111,14 @@ export class ShopSession {
     const shop = new ShopSession(game)
     shop.teaHouse = TeaHouseSystem.fromSerializedState(saved.teaHouse, {
       isDecreeUnlocked: (id) => game.isDecreeUnlocked(id),
+      isConsumableUnlocked: (id) => game.isConsumableUnlocked(id),
       isCharterUnlocked: (id) =>
         game.getState().charterSystem.canPurchaseCharter(id),
     })
-    shop.packs = BlessingPackSystem.fromState(saved.packs, (id) =>
-      game.isDecreeUnlocked(id)
+    shop.packs = BlessingPackSystem.fromState(
+      saved.packs,
+      (id) => game.isDecreeUnlocked(id),
+      (id) => game.isConsumableUnlocked(id)
     )
     const unfinished = shop.packOfferings.filter(
       (p) => p.isOpened && !p.isResolved
@@ -151,7 +160,13 @@ export class ShopSession {
     this.teaHouse.setDecreeUnlockResolver((id) =>
       this.game.isDecreeUnlocked(id)
     )
-    this.packs = new BlessingPackSystem((id) => this.game.isDecreeUnlocked(id))
+    this.teaHouse.setConsumableUnlockResolver((id) =>
+      this.game.isConsumableUnlocked(id)
+    )
+    this.packs = new BlessingPackSystem(
+      (id) => this.game.isDecreeUnlocked(id),
+      (id) => this.game.isConsumableUnlocked(id)
+    )
     this.opened = false
     this.pending = null
     this.spent = 0
@@ -340,6 +355,12 @@ export class ShopSession {
       return fail('unavailable')
     if (!Number.isFinite(offering.finalCost) || offering.finalCost < 0)
       return fail('unavailable')
+    if (
+      (offering.itemType === 'FateSeal' ||
+        offering.itemType === 'CelestialOrb') &&
+      !this.game.isConsumableUnlocked(offering.item.id)
+    )
+      return fail('unavailable')
     if (payment?.type !== 'gold' && payment?.type !== 'flower')
       return fail('invalidSelection')
     const flowerId = payment.type === 'flower' ? payment.flowerId : undefined
@@ -371,8 +392,12 @@ export class ShopSession {
       if (
         pack.contents.some(
           (content) =>
-            content.type === 'Decree' &&
-            !this.game.isDecreeUnlocked((content.data as Decree).id)
+            (content.type === 'Decree' &&
+              !this.game.isDecreeUnlocked((content.data as Decree).id)) ||
+            ((content.type === 'FateSeal' || content.type === 'CelestialOrb') &&
+              !this.game.isConsumableUnlocked(
+                (content.data as FateSeal | CelestialOrb).id
+              ))
         )
       )
         return fail('unavailable')

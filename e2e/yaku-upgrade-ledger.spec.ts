@@ -73,6 +73,8 @@ for (const language of ['en', 'es', 'ru'])
         const orb = CelestialOrbSystem.createCelestialOrbInstance(
           getCelestialOrbByYaku(kind === 'all' ? 'All' : 'SevenPairs')
         )
+        // Controlled already-earned item fixture; earning is tested separately.
+        game.setConsumableUnlockResolver(() => true)
         if (!game.addCelestialOrb(orb)) throw new Error('Orb grant failed')
         if (!(await service.saveNewRun(raw)))
           throw new Error('Fixture save failed')

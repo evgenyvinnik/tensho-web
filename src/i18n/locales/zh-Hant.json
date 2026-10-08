@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "以役滿得分。",
+    "seal_of_the_void": "在一次挑戰中以全部21種役得分。",
+    "planet_x_orb": "以七對子得分。",
+    "ceres_orb": "以混全帶么九得分。",
+    "eris_orb": "以國士無雙得分。",
+    "black_hole_orb": "發現其餘全部12種天體寶珠。"
+  },
   "decreeUnlocks": {
     "decree-blueprint": "贏得一局挑戰。",
     "decree-brainstorm": "持有至少五道敕令並贏得挑戰。",

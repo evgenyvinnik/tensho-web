@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Umiskor gamit ang Yakuman.",
+    "seal_of_the_void": "Umiskor gamit ang lahat ng 21 uri ng Yaku sa iisang run.",
+    "planet_x_orb": "Umiskor gamit ang Pitong Pares.",
+    "ceres_orb": "Umiskor gamit ang Chanta.",
+    "eris_orb": "Umiskor gamit ang Kokushi.",
+    "black_hole_orb": "Tuklasin ang lahat ng 12 iba pang Celestial Orb."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Manalo sa isang run.",
     "decree-brainstorm": "Manalo sa isang run na may hawak na hindi bababa sa limang Dekreto.",

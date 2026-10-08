@@ -5,6 +5,8 @@
  * Based on ARCHITECTURE.MD - Table Styles, Decree Unlocks, Charter Upgrades, Stakes.
  */
 
+import { CONSUMABLE_UNLOCK_CONDITIONS } from './consumableUnlocks'
+
 // =============================================================================
 // UNLOCK TYPES
 // =============================================================================
@@ -46,6 +48,8 @@ export type UnlockConditionType =
   | 'yaku_scored' // Score a specific yaku type
   | 'yakuman_scored' // Score any yakuman
   | 'yakuman_in_run' // Score X Yakuman patterns within one run
+  | 'all_yaku_in_run' // Score every canonical family in one run
+  | 'other_orbs_discovered' // Discover the twelve non-Black-Hole Orbs
   | 'survive_corrupted_seasons' // Survive X corrupted seasons in one run
   | 'skip_rounds' // Skip X rounds total
   | 'rounds_completed' // Complete X rounds in one run
@@ -821,7 +825,40 @@ export const AUTHORED_DECREE_UNLOCKS: UnlockDefinition[] = [
 /**
  * All unlock definitions combined
  */
+export const CONSUMABLE_UNLOCKS: UnlockDefinition[] = [
+  {
+    id: 'seal_of_the_immortal',
+    name: 'Seal of the Immortal',
+    type: 'yakuman_scored',
+  },
+  { id: 'seal_of_the_void', name: 'Seal of the Void', type: 'all_yaku_in_run' },
+  {
+    id: 'planet_x_orb',
+    name: 'Planet X',
+    type: 'yaku_scored',
+    value: 'seven_pairs',
+  },
+  { id: 'ceres_orb', name: 'Ceres', type: 'yaku_scored', value: 'chanta' },
+  { id: 'eris_orb', name: 'Eris', type: 'yaku_scored', value: 'kokushi' },
+  { id: 'black_hole_orb', name: 'Black Hole', type: 'other_orbs_discovered' },
+].map(({ id, name, type, ...condition }) => ({
+  id: `unlock_${id}`,
+  name,
+  japaneseName: '',
+  description: CONSUMABLE_UNLOCK_CONDITIONS[id],
+  category: 'consumable',
+  unlocksId: id,
+  conditions: [
+    {
+      ...condition,
+      type: type as UnlockConditionType,
+      description: CONSUMABLE_UNLOCK_CONDITIONS[id],
+    },
+  ],
+}))
+
 export const ALL_UNLOCKS: UnlockDefinition[] = [
+  ...CONSUMABLE_UNLOCKS,
   ...DECREE_UNLOCKS,
   ...AUTHORED_DECREE_UNLOCKS,
   ...TABLE_STYLE_UNLOCKS,

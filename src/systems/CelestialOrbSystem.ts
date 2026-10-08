@@ -17,6 +17,10 @@
  */
 
 import {
+  isConsumableAvailable,
+  type ConsumableUnlockResolver,
+} from '../config/consumableUnlocks'
+import {
   BaseConsumable,
   ConsumableRarity,
   ConsumableEdition,
@@ -635,10 +639,14 @@ export class CelestialOrbSystem {
    * Common: 60%, Uncommon: 30%, Rare: 10%
    */
   static getRandomCelestialOrb(
-    excludeIds: string[] = []
+    excludeIds: string[] = [],
+    isUnlocked?: ConsumableUnlockResolver
   ): Omit<CelestialOrb, 'instanceId' | 'isUsed' | 'currentLevel'> | null {
     const available = getAllCelestialOrbs().filter(
-      (orb) => !excludeIds.includes(orb.id) && orb.rarity !== 'Legendary'
+      (orb) =>
+        !excludeIds.includes(orb.id) &&
+        orb.rarity !== 'Legendary' &&
+        isConsumableAvailable(orb.id, isUnlocked)
     )
 
     if (available.length === 0) return null

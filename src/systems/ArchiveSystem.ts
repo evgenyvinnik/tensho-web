@@ -23,6 +23,7 @@ import {
 } from '../config/archiveDefinitions'
 import { ALL_DECREES } from './DecreeSystem'
 import { getDecreeUnlockCondition } from '../config/decreeUnlocks'
+import { getConsumableUnlockCondition } from '../config/consumableUnlocks'
 import { ALL_CHARTERS } from '../config/charterDefinitions'
 import { ALL_OMENS } from '../config/omenDefinitions'
 import { ALL_MANDATES } from '../config/mandateDefinitions'
@@ -169,7 +170,8 @@ export class ArchiveSystem {
         discoveredAt: null,
         timesUsed: 0,
         timesWonWith: 0,
-        isUnlocked: true,
+        isUnlocked: !getConsumableUnlockCondition(seal.id),
+        unlockCondition: getConsumableUnlockCondition(seal.id),
       })
     }
 
@@ -182,7 +184,8 @@ export class ArchiveSystem {
         discoveredAt: null,
         timesUsed: 0,
         timesWonWith: 0,
-        isUnlocked: true,
+        isUnlocked: !getConsumableUnlockCondition(orb.id),
+        unlockCondition: getConsumableUnlockCondition(orb.id),
       })
     }
 

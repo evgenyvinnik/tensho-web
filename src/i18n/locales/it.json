@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Realizza uno Yakuman.",
+    "seal_of_the_void": "Realizza tutti i 21 tipi di Yaku in una sola partita.",
+    "planet_x_orb": "Realizza Sette Coppie.",
+    "ceres_orb": "Realizza Chanta.",
+    "eris_orb": "Realizza Kokushi.",
+    "black_hole_orb": "Scopri tutte le altre 12 Sfere Celesti."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Vinci una partita.",
     "decree-brainstorm": "Vinci una partita possedendo almeno cinque Decreti.",

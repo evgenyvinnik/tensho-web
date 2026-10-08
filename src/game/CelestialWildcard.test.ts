@@ -241,6 +241,7 @@ it.each([
   'applies a used %s Orb and records the actual special hand for Star Chart',
   (category, makeTiles) => {
     const { game, state, ids } = fixture(makeTiles())
+    game.setConsumableUnlockResolver(() => true) // Already-earned Orb effect.
     const base = game.previewScore(ids)!
     const orb = CelestialOrbSystem.createCelestialOrbInstance(
       getCelestialOrbByYaku(category)!

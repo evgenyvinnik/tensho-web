@@ -117,6 +117,8 @@ for (const language of ['en', 'es'])
         const orb = CelestialOrbSystem.createCelestialOrbInstance(
           getCelestialOrbByYaku(category)
         )
+        // This journey tests the effect of an already-earned Orb, not its gate.
+        game.setConsumableUnlockResolver(() => true)
         if (
           !game.addCelestialOrb(orb) ||
           !game.processAction({ type: 'useOrb', orbId: orb.instanceId }).success

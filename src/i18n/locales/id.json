@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Raih skor dengan Yakuman.",
+    "seal_of_the_void": "Raih skor dengan semua 21 jenis Yaku dalam satu permainan.",
+    "planet_x_orb": "Raih skor dengan Tujuh Pasang.",
+    "ceres_orb": "Raih skor dengan Chanta.",
+    "eris_orb": "Raih skor dengan Kokushi.",
+    "black_hole_orb": "Temukan semua 12 Bola Langit lainnya."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Menangkan satu putaran permainan.",
     "decree-brainstorm": "Menangkan permainan dengan memiliki setidaknya lima Dekret.",

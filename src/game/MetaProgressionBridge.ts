@@ -14,6 +14,7 @@ import {
   type UnlockCategory,
 } from '../config/unlockDefinitions'
 import { getDecreeUnlockCondition } from '../config/decreeUnlocks'
+import { getConsumableUnlockCondition } from '../config/consumableUnlocks'
 import {
   getAchievementDefinition,
   type AchievementStats,
@@ -211,18 +212,24 @@ export function synchronizePersistedMetaState(): void {
 
   // Preserve actual historical acquisitions, not old Archive-only unlocked
   // flags. Blueprint's original unlock record ID remains valid.
-  const gatedDecrees = ALL_UNLOCKS.filter(
+  const gatedItems = ALL_UNLOCKS.filter(
     (definition) =>
-      definition.category === 'decree' &&
-      getDecreeUnlockCondition(definition.unlocksId)
+      (definition.category === 'decree' &&
+        getDecreeUnlockCondition(definition.unlocksId)) ||
+      (definition.category === 'consumable' &&
+        getConsumableUnlockCondition(definition.unlocksId))
   )
-  for (const definition of gatedDecrees) {
-    if (progression.stats.decreesDiscovered.has(definition.unlocksId))
+  for (const definition of gatedItems) {
+    if (
+      progression.stats.decreesDiscovered.has(definition.unlocksId) ||
+      progression.stats.fateSealsDiscovered.has(definition.unlocksId) ||
+      progression.stats.celestialOrbsDiscovered.has(definition.unlocksId)
+    )
       progression.unlockItem(definition.id, false)
   }
   // Existing proven lifetime conditions may now unlock newly connected items.
   // No historic per-run Yakuman maximum is invented from a lifetime total.
-  for (const definition of gatedDecrees) {
+  for (const definition of gatedItems) {
     const current = useProgressionStore.getState()
     if (
       metaProgressionSystem.checkUnlockConditions(definition, {
@@ -234,8 +241,8 @@ export function synchronizePersistedMetaState(): void {
   }
   useArchiveStore.setState((state) => {
     const entries = { ...state.entries }
-    for (const definition of gatedDecrees) {
-      const key = `decrees:${definition.unlocksId}`
+    for (const definition of gatedItems) {
+      const key = `${definition.category === 'consumable' ? 'consumables' : 'decrees'}:${definition.unlocksId}`
       const entry = entries[key]
       if (entry)
         entries[key] = {
@@ -243,7 +250,9 @@ export function synchronizePersistedMetaState(): void {
           isUnlocked: useProgressionStore
             .getState()
             .isItemUnlocked(definition.unlocksId),
-          unlockCondition: getDecreeUnlockCondition(definition.unlocksId),
+          unlockCondition:
+            getDecreeUnlockCondition(definition.unlocksId) ??
+            getConsumableUnlockCondition(definition.unlocksId),
         }
     }
     return { entries }
@@ -409,6 +418,11 @@ export function initializeMetaProgressionBridge(): () => void {
   subscription.subscribe(
     'consumableAcquired',
     ({ consumableType, itemId, source = 'purchase' }) => {
+      // Honor real acquisitions from already-paid legacy packs, as on reload.
+      if (getConsumableUnlockCondition(itemId)) {
+        const unlock = ALL_UNLOCKS.find((item) => item.unlocksId === itemId)
+        if (unlock) useProgressionStore.getState().unlockItem(unlock.id, false)
+      }
       const discovered = recordArchiveItem(
         'consumables',
         itemId,
@@ -506,7 +520,10 @@ export function initializeMetaProgressionBridge(): () => void {
     checkAchievements()
   })
 
-  subscription.subscribe('yakumanScored', () => {
+  subscription.subscribe('yakumanScored', ({ yakuId }) => {
+    // Paid tier-4 hands emit this event instead of yakuScored. Record their
+    // family once too, including ordinary families ascended to Yakuman tier.
+    processProgressionEvent({ type: 'yaku_scored', itemId: yakuId })
     processProgressionEvent({ type: 'yakuman_scored' })
     incrementAchievementStat('totalYakumanScored')
     checkAchievements()

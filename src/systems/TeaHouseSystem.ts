@@ -68,6 +68,7 @@ import {
 } from '../config/charterDefinitions'
 import { runRandom } from '../game/RunRandom'
 import type { DecreeUnlockResolver } from '../config/decreeUnlocks'
+import type { ConsumableUnlockResolver } from '../config/consumableUnlocks'
 import { canReceiveEternal } from './decreeStickers'
 
 // =============================================================================
@@ -266,6 +267,11 @@ export class TeaHouseSystem {
   private purchasedCharterIds: Set<string> = new Set()
   private charterUnlockResolver: CharterUnlockResolver = () => false
   private decreeUnlockResolver: DecreeUnlockResolver = () => false
+  private consumableUnlockResolver: ConsumableUnlockResolver = () => false
+
+  setConsumableUnlockResolver(resolver: ConsumableUnlockResolver): void {
+    this.consumableUnlockResolver = resolver
+  }
 
   setDecreeUnlockResolver(resolver: DecreeUnlockResolver): void {
     this.decreeUnlockResolver = resolver
@@ -595,7 +601,10 @@ export class TeaHouseSystem {
    * Generate a Fate Seal offering
    */
   private generateFateSealOffering(slotIndex: number): TeaHouseOffering | null {
-    const sealDef = FateSealSystem.getRandomFateSeal()
+    const sealDef = FateSealSystem.getRandomFateSeal(
+      [],
+      this.consumableUnlockResolver
+    )
     if (!sealDef) {
       return null
     }
@@ -625,7 +634,10 @@ export class TeaHouseSystem {
   private generateCelestialOrbOffering(
     slotIndex: number
   ): TeaHouseOffering | null {
-    const orbDef = CelestialOrbSystem.getRandomCelestialOrb()
+    const orbDef = CelestialOrbSystem.getRandomCelestialOrb(
+      [],
+      this.consumableUnlockResolver
+    )
     if (!orbDef) {
       return null
     }
@@ -1271,11 +1283,14 @@ export class TeaHouseSystem {
       random?: () => number
       isCharterUnlocked?: CharterUnlockResolver
       isDecreeUnlocked?: DecreeUnlockResolver
+      isConsumableUnlocked?: ConsumableUnlockResolver
     } = {}
   ): TeaHouseSystem {
     const system = new TeaHouseSystem(state.currentStake, options.random)
     if (options.isDecreeUnlocked)
       system.setDecreeUnlockResolver(options.isDecreeUnlocked)
+    if (options.isConsumableUnlocked)
+      system.setConsumableUnlockResolver(options.isConsumableUnlocked)
     if (options.isCharterUnlocked)
       system.setCharterUnlockResolver(options.isCharterUnlocked)
     system.flowerCountForVisit = Math.max(0, state.flowerCountForVisit ?? 0)

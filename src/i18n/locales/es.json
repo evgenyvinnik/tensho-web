@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "Puntúa un Yakuman.",
+    "seal_of_the_void": "Puntúa los 21 tipos de Yaku en una sola partida.",
+    "planet_x_orb": "Puntúa Siete Pares.",
+    "ceres_orb": "Puntúa Chanta.",
+    "eris_orb": "Puntúa Kokushi.",
+    "black_hole_orb": "Descubre los otros 12 Orbes Celestiales."
+  },
   "decreeUnlocks": {
     "decree-blueprint": "Gana una partida.",
     "decree-brainstorm": "Gana una partida con al menos cinco Decretos.",

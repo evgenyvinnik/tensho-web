@@ -45,6 +45,10 @@ import { EditionType, EnhancementType } from '../core/TileModifier'
 import { runRandom } from '../game/RunRandom'
 import { tileModifierEntries } from '../core/tileModifierEntries'
 import type { DecreeUnlockResolver } from '../config/decreeUnlocks'
+import {
+  isConsumableAvailable,
+  type ConsumableUnlockResolver,
+} from '../config/consumableUnlocks'
 
 // =============================================================================
 // PACK CONTENT TYPES
@@ -102,7 +106,9 @@ export class BlessingPackSystem {
   private packsPerVisit: number = 2
 
   constructor(
-    private readonly isDecreeUnlocked: DecreeUnlockResolver = () => false
+    private readonly isDecreeUnlocked: DecreeUnlockResolver = () => false,
+    private readonly isConsumableUnlocked: ConsumableUnlockResolver = () =>
+      false
   ) {
     this.clear()
   }
@@ -178,6 +184,7 @@ export class BlessingPackSystem {
           : undefined
         if (
           !preferred ||
+          !isConsumableAvailable(preferred.id, this.isConsumableUnlocked) ||
           !contents.length ||
           contents.some(
             (content) =>
@@ -371,6 +378,14 @@ export class BlessingPackSystem {
     contents: PackContent[],
     type: PackContent['type']
   ): T {
+    if (type === 'FateSeal' || type === 'CelestialOrb') {
+      rolledPool = rolledPool.filter((item) =>
+        isConsumableAvailable(item.id, this.isConsumableUnlocked)
+      )
+      fallbackPool = fallbackPool.filter((item) =>
+        isConsumableAvailable(item.id, this.isConsumableUnlocked)
+      )
+    }
     const existing = new Set(
       contents
         .filter((c) => c.type === type)
@@ -424,7 +439,11 @@ export class BlessingPackSystem {
             (content.data as { id: string }).id === preferredOrb.id
         )
       : false
-    if (preferredOrb && !alreadyHasPreferred) {
+    if (
+      preferredOrb &&
+      !alreadyHasPreferred &&
+      isConsumableAvailable(preferredOrb.id, this.isConsumableUnlocked)
+    ) {
       return {
         id: preferredOrb.id,
         type: 'CelestialOrb',
@@ -852,9 +871,13 @@ export class BlessingPackSystem {
       totalPacksOpened: number
       packsPerVisit: number
     },
-    isDecreeUnlocked?: DecreeUnlockResolver
+    isDecreeUnlocked?: DecreeUnlockResolver,
+    isConsumableUnlocked?: ConsumableUnlockResolver
   ): BlessingPackSystem {
-    const system = new BlessingPackSystem(isDecreeUnlocked)
+    const system = new BlessingPackSystem(
+      isDecreeUnlocked,
+      isConsumableUnlocked
+    )
     system.currentOfferings = structuredClone(state.currentOfferings).map(
       (o) => ({
         ...o,

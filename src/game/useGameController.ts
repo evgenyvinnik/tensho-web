@@ -31,6 +31,9 @@ gameOrchestrator.setCharterUnlockResolver((id) =>
 gameOrchestrator.setDecreeUnlockResolver((id) =>
   useProgressionStore.getState().isItemUnlocked(id)
 )
+gameOrchestrator.setConsumableUnlockResolver((id) =>
+  useProgressionStore.getState().isItemUnlocked(id)
+)
 
 // =============================================================================
 // HOOK RETURN TYPE

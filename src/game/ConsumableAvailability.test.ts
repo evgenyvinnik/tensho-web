@@ -21,6 +21,8 @@ type Action = Extract<
 
 function fixture() {
   const game = new GameOrchestrator()
+  // These tests inspect use-time restrictions for already-earned consumables.
+  game.setConsumableUnlockResolver(() => true)
   game.startNewRun(7)
   return { game, state: game.getState() as OrchestratorState }
 }

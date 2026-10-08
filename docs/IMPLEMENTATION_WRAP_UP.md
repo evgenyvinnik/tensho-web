@@ -1,12 +1,21 @@
 # Implementation wrap-up
 
-**Updated:** October 7, 2026
+**Updated:** October 8, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
 ## Current Season implementation
+
+[Secret consumable progression](SECRET_CONSUMABLE_PROGRESSION.md) is locally
+verified, awaiting publication checks: all six authored gates now affect live
+earning and acquisition, including paid Yakuman families and same-run mastery.
+Legacy paid/owned rewards and Fool copies remain valid. Final units pass
+2,579/2,579 in 186 files; build/typecheck, lint (warnings only), thirteen release
+tests, eight native and eight production unlock/Archive journeys, and 28 native
+Orb-effect journeys pass. Prior failures and fixes remain recorded. This is a
+mechanics checkpoint, not a whole-project completion or fun claim.
 
 [Broad integration audit](BROAD_INTEGRATION_AUDIT.md) and
 [Archive follow-up](ARCHIVE_PRESENTATION_IMPLEMENTATION.md) are published and

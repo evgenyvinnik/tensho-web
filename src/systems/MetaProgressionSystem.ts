@@ -6,6 +6,10 @@
  */
 
 import {
+  RUN_YAKU_IDS,
+  BLACK_HOLE_PREREQUISITES,
+} from '../config/consumableUnlocks'
+import {
   type UnlockDefinition,
   type UnlockCondition,
   type UnlockConditionType,
@@ -80,6 +84,8 @@ export interface LifetimeStats {
   yakuScored: Record<string, number>
   yakumanScored: number
   currentRunYakumanScored: number
+  currentRunYakuIds: string[]
+  maxYakuTypesInRun: number
   maxYakumanInRun: number
   totalYakuScored: number
 
@@ -191,6 +197,8 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   yakuScored: {},
   yakumanScored: 0,
   currentRunYakumanScored: 0,
+  currentRunYakuIds: [],
+  maxYakuTypesInRun: 0,
   maxYakumanInRun: 0,
   totalYakuScored: 0,
   maxConsecutiveInterestRounds: 0,
@@ -381,6 +389,20 @@ export class MetaProgressionSystem {
 
       case 'yakuman_in_run':
         current = stats.maxYakumanInRun
+        isMet = current >= target
+        break
+
+      case 'all_yaku_in_run':
+        current = stats.maxYakuTypesInRun
+        target = RUN_YAKU_IDS.length
+        isMet = current >= target
+        break
+
+      case 'other_orbs_discovered':
+        current = BLACK_HOLE_PREREQUISITES.filter((id) =>
+          stats.celestialOrbsDiscovered.has(id)
+        ).length
+        target = BLACK_HOLE_PREREQUISITES.length
         isMet = current >= target
         break
 
@@ -832,6 +854,7 @@ export function processProgressionEvent(
 
   switch (event.type) {
     case 'run_started':
+      updates.currentRunYakuIds = []
       updates.currentRunYakumanScored = 0
       updates.currentMaxInterestRounds = 0
       updates.totalRunsStarted = stats.totalRunsStarted + 1
@@ -919,6 +942,15 @@ export function processProgressionEvent(
         newYakuScored[event.itemId] = (newYakuScored[event.itemId] ?? 0) + 1
         updates.yakuScored = newYakuScored
         updates.totalYakuScored = stats.totalYakuScored + 1
+        if ((RUN_YAKU_IDS as readonly string[]).includes(event.itemId)) {
+          updates.currentRunYakuIds = [
+            ...new Set([...stats.currentRunYakuIds, event.itemId]),
+          ]
+          updates.maxYakuTypesInRun = Math.max(
+            stats.maxYakuTypesInRun,
+            updates.currentRunYakuIds.length
+          )
+        }
       }
       break
 

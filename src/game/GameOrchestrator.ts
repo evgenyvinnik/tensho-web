@@ -12,6 +12,10 @@
  */
 
 import {
+  isConsumableAvailable,
+  type ConsumableUnlockResolver,
+} from '../config/consumableUnlocks'
+import {
   Tile,
   TileSuit,
   FlowerType,
@@ -331,6 +335,20 @@ export class GameOrchestrator {
   private actionDepth = 0
   private charterUnlockResolver: CharterUnlockResolver = () => false
   private decreeUnlockResolver: DecreeUnlockResolver = () => false
+  private consumableUnlockResolver: ConsumableUnlockResolver = () => false
+
+  setConsumableUnlockResolver(resolver: ConsumableUnlockResolver): void {
+    this.consumableUnlockResolver = resolver
+  }
+
+  isConsumableUnlocked(id: string): boolean {
+    return (
+      isConsumableAvailable(id, this.consumableUnlockResolver) ||
+      this.state.fateSeals.some((item) => item.id === id) ||
+      this.state.celestialOrbs.some((item) => item.id === id) ||
+      this.state.fateSealSystem.getLastUsedConsumable()?.id === id
+    )
+  }
 
   setDecreeUnlockResolver(resolver: DecreeUnlockResolver): void {
     this.decreeUnlockResolver = resolver
@@ -3175,11 +3193,15 @@ export class GameOrchestrator {
 
     let consumable: BaseConsumable | null = null
     if (type === 'FateSeal') {
-      const definition = FateSealSystem.getRandomFateSeal()
+      const definition = FateSealSystem.getRandomFateSeal([], (id) =>
+        this.isConsumableUnlocked(id)
+      )
       if (definition)
         consumable = FateSealSystem.createFateSealInstance(definition)
     } else if (type === 'CelestialOrb') {
-      const definition = CelestialOrbSystem.getRandomCelestialOrb()
+      const definition = CelestialOrbSystem.getRandomCelestialOrb([], (id) =>
+        this.isConsumableUnlocked(id)
+      )
       if (definition)
         consumable = CelestialOrbSystem.createCelestialOrbInstance(definition)
     } else {
@@ -3206,11 +3228,14 @@ export class GameOrchestrator {
   }
 
   private duplicateConsumable(definitionId: string): boolean {
+    // This private path is reached only from a validated Fool use. The Seal
+    // system has already advanced copy history to the Fool itself, so preserve
+    // the prior owned item's rights when granting the promised copy.
     const fateDefinition = Object.values(FATE_SEALS).find(
       (definition) => definition.id === definitionId
     )
     if (fateDefinition) {
-      return this.addFateSeal(
+      return this.grantConsumable(
         FateSealSystem.createFateSealInstance(fateDefinition),
         'generated'
       )
@@ -3220,7 +3245,7 @@ export class GameOrchestrator {
       (definition) => definition.id === definitionId
     )
     if (orbDefinition) {
-      return this.addCelestialOrb(
+      return this.grantConsumable(
         CelestialOrbSystem.createCelestialOrbInstance(orbDefinition),
         'generated'
       )
@@ -4786,19 +4811,10 @@ export class GameOrchestrator {
     seal: FateSeal,
     source: 'purchase' | 'pack_open' | 'generated' = 'purchase'
   ): boolean {
-    if (!this.canAddConsumable()) {
+    if (source !== 'pack_open' && !this.isConsumableUnlocked(seal.id)) {
       return false
     }
-    seal.source = source
-    this.state.fateSeals.push(seal)
-    eventBus.emit('consumableAcquired', {
-      consumableType: 'FateSeal',
-      itemId: seal.id,
-      instanceId: seal.instanceId,
-      name: seal.name,
-      source,
-    })
-    return true
+    return this.grantConsumable(seal, source)
   }
 
   /**
@@ -4830,16 +4846,26 @@ export class GameOrchestrator {
     orb: CelestialOrb,
     source: 'purchase' | 'pack_open' | 'generated' = 'purchase'
   ): boolean {
-    if (!this.canAddConsumable()) {
+    if (source !== 'pack_open' && !this.isConsumableUnlocked(orb.id)) {
       return false
     }
-    orb.source = source
-    this.state.celestialOrbs.push(orb)
+    return this.grantConsumable(orb, source)
+  }
+
+  /** Grant an eligible acquisition or a previously paid/owned reward. */
+  private grantConsumable(
+    item: FateSeal | CelestialOrb,
+    source: 'purchase' | 'pack_open' | 'generated'
+  ): boolean {
+    if (!this.canAddConsumable()) return false
+    item.source = source
+    if (item.type === 'FateSeal') this.state.fateSeals.push(item)
+    else this.state.celestialOrbs.push(item)
     eventBus.emit('consumableAcquired', {
-      consumableType: 'CelestialOrb',
-      itemId: orb.id,
-      instanceId: orb.instanceId,
-      name: orb.name,
+      consumableType: item.type,
+      itemId: item.id,
+      instanceId: item.instanceId,
+      name: item.name,
       source,
     })
     return true

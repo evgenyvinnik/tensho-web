@@ -1,4 +1,12 @@
 {
+  "consumableUnlocks": {
+    "seal_of_the_immortal": "役満で得点する。",
+    "seal_of_the_void": "1回の挑戦で全21種類の役で得点する。",
+    "planet_x_orb": "七対子で得点する。",
+    "ceres_orb": "混全帯么九で得点する。",
+    "eris_orb": "国士無双で得点する。",
+    "black_hole_orb": "ほかの12種類の天体の珠をすべて発見する。"
+  },
   "decreeUnlocks": {
     "decree-blueprint": "ランをクリアする。",
     "decree-brainstorm": "勅令を5枚以上所持してランをクリアする。",
