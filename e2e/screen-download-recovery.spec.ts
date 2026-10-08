@@ -7,7 +7,7 @@ const chunk = /\/CodexScreen-[^/]+\.js(?:\?|$)/
 const saveKey = 'tensho-table-loop-v1'
 
 for (const language of ['en', 'es']) {
-  for (const failure of ['once', 'persistent', 'save-blocked']) {
+  for (const failure of ['once', 'persistent', 'redirected', 'save-blocked']) {
     test(`${language} ${failure}: recover downloads without losing the run`, async ({
       page,
       isMobile,
@@ -25,9 +25,16 @@ for (const language of ['en', 'es']) {
         isMobile ? locator.tap() : locator.click()
       let documents = 0,
         attempts = 0
+      const documentRequests: { url: string; redirectedFrom: string | null }[] =
+        []
       const failedRequests: string[] = []
       page.on('request', (request) => {
-        if (request.resourceType() === 'document') documents++
+        if (request.resourceType() !== 'document') return
+        const redirectedFrom = request.redirectedFrom()?.url() ?? null
+        documentRequests.push({ url: request.url(), redirectedFrom })
+        // Pages canonicalizes extensionless paths with a trailing-slash 301.
+        // A server redirect is part of one navigation, not another app reload.
+        if (!redirectedFrom) documents++
       })
       page.on('requestfailed', (request) =>
         failedRequests.push(`${request.url()}: ${request.failure()?.errorText}`)
@@ -70,6 +77,17 @@ for (const language of ['en', 'es']) {
       await expect(
         page.getByRole('heading', { name: 'TENSHO', exact: true })
       ).toBeVisible()
+      if (failure === 'redirected') {
+        // Reproduce Pages' canonical redirect even on the local preview server.
+        await page.route(`${root}/codex`, async (route) => {
+          if (!route.request().isNavigationRequest()) return route.continue()
+          await route.fulfill({
+            status: 301,
+            headers: { location: `${root}/codex/` },
+            body: '',
+          })
+        })
+      }
       await page.route(chunk, async (route) => {
         attempts++
         if (failure === 'once' && attempts > 1) await route.continue()
@@ -88,8 +106,8 @@ for (const language of ['en', 'es']) {
         await expect(fallback.getByRole('heading')).toHaveText(
           copy.screenDownload.title
         )
-        expect(attempts).toBe(failure === 'persistent' ? 2 : 1)
-        expect(documents).toBe(failure === 'persistent' ? 2 : 1)
+        expect(attempts).toBe(failure === 'save-blocked' ? 1 : 2)
+        expect(documents).toBe(failure === 'save-blocked' ? 1 : 2)
         expect(
           await page.evaluate((key) => localStorage.getItem(key), saveKey)
         ).toBe(before)
@@ -150,6 +168,7 @@ for (const language of ['en', 'es']) {
         body: JSON.stringify({
           attempts,
           documents,
+          documentRequests,
           failedRequests,
           actions: JSON.parse(after!).actions.length,
         }),

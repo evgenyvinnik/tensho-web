@@ -45,7 +45,7 @@ export class ScreenDownloadError extends Error {
   }
 }
 
-/** At most one automatic recovery per version/URL/tab, including across reloads. */
+/** At most one automatic recovery per version/canonical URL/tab across reloads. */
 export async function recoverScreenDownload(
   requestedUrl: string,
   environment: RecoveryEnvironment = browser
@@ -53,7 +53,12 @@ export async function recoverScreenDownload(
   if (environment.url() !== requestedUrl) return 'navigated'
   try {
     const storage = environment.session()
-    const key = `tensho-screen-recovery:${environment.version}:${requestedUrl}`
+    // Our routes accept both forms; Pages redirects extensionless paths to a
+    // trailing slash. That redirect must not grant a second recovery allowance.
+    // Keep the raw URL checks above/below so actual user navigation still wins.
+    const canonical = new URL(requestedUrl)
+    canonical.pathname = canonical.pathname.replace(/\/+$/, '') || '/'
+    const key = `tensho-screen-recovery:${environment.version}:${canonical.href}`
     if (storage.getItem(key)) return 'already'
     // Reserve synchronously before awaiting saves; concurrent failures cannot
     // schedule two reloads. Storage denial disables automatic recovery safely.

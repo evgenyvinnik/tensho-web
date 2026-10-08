@@ -25,6 +25,18 @@ function fixture() {
 }
 
 describe('bounded screen recovery', () => {
+  it('shares one recovery allowance across a trailing-slash server redirect', async () => {
+    const { environment } = fixture()
+    environment.url = () => 'https://game.test/en/codex?seed=7'
+    expect(await recoverScreenDownload(environment.url(), environment)).toBe(
+      'reloading'
+    )
+    environment.url = () => 'https://game.test/en/codex/?seed=7'
+    expect(await recoverScreenDownload(environment.url(), environment)).toBe(
+      'already'
+    )
+    expect(environment.reload).toHaveBeenCalledOnce()
+  })
   it('contains a failed reload without allowing another automatic attempt', async () => {
     const { environment } = fixture()
     environment.reload = vi.fn(() => {

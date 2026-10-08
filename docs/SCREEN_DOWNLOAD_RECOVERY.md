@@ -26,8 +26,9 @@ as another possible cause, not a diagnosis of our earlier incident.
   loading and component identity are unchanged. Only recognized browser/Vite
   module/CSS download errors qualify; arbitrary application errors retain the
   existing error boundary.
-- One automatic document reload is allowed per **build version, full URL and
-  tab session**. The session marker is reserved before asynchronous saves, so
+- One automatic document reload is allowed per **build version, canonical URL and
+  tab session**. Canonicalization removes a trailing path slash but preserves
+  query and fragment. The session marker is reserved before asynchronous saves, so
   concurrent errors and subsequent documents cannot form a reload loop.
 - Every loaded mode must pass its existing reload/save guard first. Failed or
   throwing saves retain the live tab. Session-storage access/read/write denial
@@ -99,3 +100,53 @@ Remaining work includes copy/resource lifecycles, unresolved item wording,
 strategy/balance and observed newcomer play, physical-device/accessibility and
 native-language review, plus offline-installation size. Existing confirmed
 Merchant, Rental and Cerulean Bell decisions are unchanged.
+
+## Publication and hosted verification
+
+Implementation `ea17d9998f7d81ae3bdb3f637baa73c580b10feb` is deployed as
+**v1.0.261008-5**, bot/tag/build commit
+`ffcfe032af08c23f77a90e9a103fbf6e4fb9630a`.
+[Workflow 37718536136](https://github.com/evgenyvinnik/tensho-web/actions/runs/37718536136)
+passes independent **2,098/2,098 tests in 171 files**, release checks, build and
+deployment without a job retry. The public manifest, Git tag and runtime version
+in `/tensho-web/assets/index-D8cguXIM.js` agree (`provenance.json`, `ci.log`).
+
+The first hosted fault-injection batch fails **0/12 passing**, 49.6 seconds.
+Eight cases stop at the document-count assertion: the test counted HTTP 301
+redirect hops as distinct reloads. Four persistent-failure cases stop at the
+chunk-attempt count instead, exposing the additional runtime edge below.
+Retained network traces show Pages redirecting
+`/en/table-loop?seed=7` to `/en/table-loop/?seed=7` and `/en/codex` to `/en/codex/`.
+The counter now counts the first request of each navigation chain, using
+Playwright `redirectedFrom()`, while retaining every hop in diagnostics. The
+required reload counts, chunk-attempt counts, original deadlines, full save
+comparisons and zero test retries remain unchanged. No deployed runtime code is
+changed by this harness correction. Earlier evidence is retained in `hosted.json`
+and `hosted-first-artifacts`.
+
+With only the counter corrected, the local suite again passes **22/22**, but
+the hosted batch passes **8/12**, 40.0 seconds (`hosted-final.json`,
+`hosted-counter-artifacts`). All four persistent failures still make three chunk
+attempts rather than two: the raw URL session key gives the redirected slash
+form a second automatic reload allowance. This is a real runtime defect in v5,
+not a counter problem, an unbounded loop or a reason to loosen the assertion.
+The initial broad interpretation of all twelve failures as test counting was
+incomplete; this second run separates both causes.
+
+A new controller regression reproduces that exact defect: **18 pass / 1 fails**
+before correction (`redirect-baseline.json`). The marker key now normalizes the
+trailing path slash; raw before/after URL comparisons still prevent recovery
+from interrupting user navigation. The browser suite additionally injects a real
+HTTP 301 on local preview, so deployment canonicalization is covered before
+publication. Fresh full regression, expanded browser checks and a corrective
+release must pass before the recovery checkpoint is considered hosted-verified.
+
+After correction, fresh full regression passes **2,099/2,099 in 171 files**
+(213.5 seconds, two workers, unchanged deadlines). Strict TypeScript, Pages-base
+build, full lint (zero errors / 211 existing warnings) and **13/13 release checks**
+pass again. Expanded production browser verification passes **26/26**, 147.9
+seconds, zero skips/flakes/retries: sixteen recovery cases including forced 301s,
+plus the ten route/offline checks. Query-preserving slash canonicalization now
+keeps persistent failures to exactly two chunk attempts and one automatic reload.
+`redirect-browser.json` and `redirect-browser-artifacts` retain the complete run.
+Corrective publication and hosted results follow below.

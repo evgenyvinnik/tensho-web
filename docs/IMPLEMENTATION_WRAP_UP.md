@@ -11,9 +11,12 @@ The requested outcome is to finish the project implementation after the other ag
 [Save-aware screen recovery](SCREEN_DOWNLOAD_RECOVERY.md) is the current local
 startup-reliability follow-up. It preserves loaded-mode save guards and worker
 update consent, bounds automatic reloads, and provides thirteen-locale explicit
-recovery actions. Production browser checks pass 22/22; full regression passes
-2,098/2,098 in 171 files; build, TypeScript, lint and thirteen release checks pass.
-Publication remains pending; the original hosted failure's cause remains unproven.
+recovery actions. Expanded production browser checks pass 26/26; full regression
+passes 2,099/2,099 in 171 files; build, TypeScript, lint and thirteen release checks
+pass. Initial v5 hosted checks exposed a redirect-count harness defect and an actual
+second reload allowance across a trailing-slash redirect. Both are corrected;
+the corrective publication is pending. The earlier ownership release's original
+download failure cause remains unproven.
 
 The [run-ownership follow-up](RUN_OWNERSHIP_IMPLEMENTATION.md) is published and
 verified in **v1.0.261008-4**: permanent current-run Fate Seal changes, Negative physical-tile
