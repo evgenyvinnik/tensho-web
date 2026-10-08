@@ -4,13 +4,13 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Score-threshold Decrees — local checkpoint:** Supernova can activate on the play
+**Published score-threshold Decrees — v1.0.261008-9:** Supernova can activate on the play
 that actually doubles the target; Perfectionist requires an opening clear. Both
 qualify before either conditional bonus, preventing self-qualifying chains. New
-Supernova art and thirteen-locale descriptions are connected. Full regression
+Supernova art and thirteen-locale descriptions are connected. Full regression and independent CI
 passes 2,196/2,196 in 177 files, plus TypeScript, build, lint and thirteen release
-checks. Corrected native and built-production EN/ES desktop/320px journeys each
-pass 4/4; hosted publication verification is pending.
+checks. Corrected native, built-production and hosted EN/ES desktop/320px journeys
+each pass 4/4. Deployment succeeds; manifest/tag/runtime and portrait checksum agree.
 [Rules, retained failures and art provenance](SCORE_THRESHOLD_IMPLEMENTATION.md).
 
 **Published copied ability lifecycles — v1.0.261008-8:** Phoenix copies pay their own

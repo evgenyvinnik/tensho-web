@@ -1,7 +1,7 @@
 # Supernova and Perfectionist: qualify the play that actually scores
 
-October 7, 2026 local / October 8 UTC. Local implementation checkpoint;
-production/publication checks are pending. Whole-project completion remains open.
+October 7, 2026 local / October 8 UTC. **Published and hosted-verified as
+v1.0.261008-9.** Whole-project completion remains open.
 
 ## Failure and delegated decision
 
@@ -84,7 +84,28 @@ Evidence root: `/tmp/tensho-score-threshold-2CmVEF`.
 - Built-production replay passes **4/4**, 7.9 seconds, no retries. It uses the
   exported native valid save without importing production internals. Local
   native/preview servers are stopped; the unrelated port 4173 server is untouched.
-  Hosted publication verification remains pending.
+  Hosted publication verification follows below.
+
+## Published release
+
+- Implementation `eef74328b6f13a2f6f26224f0916ccdb29f306f3` is on main.
+  Version bot/tag/build checkout: `e00e813c7a559c41ca0fbf8258c2857a6a0d10a6`.
+- [Workflow 37724258349](https://github.com/evgenyvinnik/tensho-web/actions/runs/37724258349)
+  independently passes **2,196/2,196 tests in 177 files**, thirteen release checks,
+  production build and Pages deployment without retry. Build job 113138700293;
+  deploy job 113139413131. Local main fast-forwarded to the bot commit.
+- Public release manifest, tag and runtime agree on **v1.0.261008-9**, entry
+  `/tensho-web/assets/index-CHLThwlW.js`. Hosted Supernova art is 77,790 bytes and
+  exactly matches the checksum below. Evidence: `ci.log`, `ci-watch.log` and
+  `provenance.json` in the evidence root.
+- Hosted EN/ES desktop and 320×568 touch journeys pass **4/4**, 37.6 seconds,
+  zero retries, unchanged deadlines. Both descriptions, decoded portrait,
+  unqualified +4 → qualified +337 forecast, exact 337 payment, RNG purity and
+  exact shop restoration pass without page errors or horizontal overflow.
+  Evidence: `hosted.log` and `hosted-artifacts`.
+- Earlier fixture/expectation failures remain recorded above. Broader balance,
+  human enjoyment, native-speaker/physical-device review and full offline-cache
+  cost remain open; this release does not claim completion of those requirements.
 
 ## Artwork provenance
 

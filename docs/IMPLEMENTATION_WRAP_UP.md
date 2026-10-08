@@ -8,12 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Score-threshold Decrees](SCORE_THRESHOLD_IMPLEMENTATION.md) now qualify against the
+[Score-threshold Decrees](SCORE_THRESHOLD_IMPLEMENTATION.md), published and hosted-verified
+in **v1.0.261008-9**, qualify against the
 current play's paid score before their conditional bonuses. This fixes unreachable
 Supernova and unconditional opening-hand Perfectionist behavior. Generated Supernova
-art and thirteen-locale rules are connected. Full regression passes 2,196/2,196 in
+art and thirteen-locale rules are connected. Full regression and independent CI pass 2,196/2,196 in
 177 files; TypeScript, build, lint and thirteen release checks pass. Corrected
-native and built-production EN/ES desktop/touch journeys each pass 4/4; hosted verification is pending.
+native, built-production and hosted EN/ES desktop/touch journeys each pass 4/4.
+Deployment succeeds; manifest/tag/runtime and artwork checksum match.
 The analysis-only shop model cannot price these final-score gates and preserves
 them as unpriced powers; historical balance sweeps are not current measurements.
 
@@ -1269,6 +1271,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Latest release v1.0.261008-8 has independent CI (2,164 tests), matching manifest/tag/runtime and 4/4 hosted copied-lifecycle journeys; see [release evidence](COPIED_LIFECYCLES_IMPLEMENTATION.md). Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-9 has independent CI (2,196 tests), matching manifest/tag/runtime/artwork and 4/4 hosted score-threshold journeys; see [release evidence](SCORE_THRESHOLD_IMPLEMENTATION.md). Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.
