@@ -114,6 +114,10 @@ Startup reliability remains a concrete follow-up. The production cache currently
 contains 430 entries / 70,804.21 KiB; its cost deserves separate cold-load/mobile
 review, but it is not established as the cause of the observed fetch failure.
 
+The subsequent [screen-download recovery checkpoint](SCREEN_DOWNLOAD_RECOVERY.md)
+adds bounded save-aware recovery and fault-injected browser coverage. It does not
+retroactively establish the cause of this original failure.
+
 ## Artwork provenance
 
 - Built-in image generation, new generation (not CLI). No exact model selector/ID

@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "Impossible de télécharger cet écran",
+    "description": "Un problème de connexion ou une nouvelle version a peut-être interrompu le chargement. Vérifiez la connexion, puis sauvegardez et rechargez.",
+    "retry": "Sauvegarder et recharger",
+    "menu": "Sauvegarder et ouvrir le menu",
+    "saving": "Sauvegarde avant de quitter…",
+    "saveFailed": "Sauvegarde impossible. Cet onglet n’a pas été rechargé. Vérifiez l’accès au stockage et réessayez.",
+    "reloadFailed": "Le rechargement n’a pas pu démarrer. Cet onglet reste ouvert ; réessayez.",
+    "details": "Détails techniques"
+  },
   "runOwnership": {
     "fateSeal": "Les changements des tuiles durent toute cette partie, y compris les manches suivantes. Une nouvelle partie repart de zéro.",
     "negativeTile": "+1 emplacement de Décret tant que cette tuile Négative reste dans votre mur. La piocher ou la défausser conserve cet emplacement ; la détruire ou remplacer son édition le retire.",

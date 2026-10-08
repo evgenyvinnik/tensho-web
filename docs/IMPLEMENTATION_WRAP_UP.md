@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Save-aware screen recovery](SCREEN_DOWNLOAD_RECOVERY.md) is the current local
+startup-reliability follow-up. It preserves loaded-mode save guards and worker
+update consent, bounds automatic reloads, and provides thirteen-locale explicit
+recovery actions. Production browser checks pass 22/22; full regression passes
+2,098/2,098 in 171 files; build, TypeScript, lint and thirteen release checks pass.
+Publication remains pending; the original hosted failure's cause remains unproven.
+
 The [run-ownership follow-up](RUN_OWNERSHIP_IMPLEMENTATION.md) is published and
 verified in **v1.0.261008-4**: permanent current-run Fate Seal changes, Negative physical-tile
 capacity, saved-run reconciliation and localized explanations, with distinct

@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "This screen couldn’t download",
+    "description": "A connection problem or a new release may have interrupted loading. Check your connection, then save and reload to try again.",
+    "retry": "Save and reload",
+    "menu": "Save and go to menu",
+    "saving": "Saving before leaving…",
+    "saveFailed": "Couldn’t save safely. This tab has not reloaded. Check storage access and try again.",
+    "reloadFailed": "Couldn’t start reloading. This tab is still open; try again.",
+    "details": "Technical details"
+  },
   "runOwnership": {
     "fateSeal": "Tile changes last for this run, including future rounds. A new run starts fresh.",
     "negativeTile": "+1 Decree slot while this physical Negative tile remains in your wall. Drawing or discarding it keeps the slot; destruction or replacing its edition removes it.",

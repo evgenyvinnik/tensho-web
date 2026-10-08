@@ -39,6 +39,8 @@ import { audioSystem } from '../systems/AudioSystem'
 import { RouteLoading } from '../components/ui/RouteLoading'
 import { ROUTES, type RoutePath } from './routeManifest'
 import { useGameRouteIndexing } from './useGameRouteIndexing'
+import { ScreenDownloadError } from './screenDownloadRecovery'
+import { ScreenDownloadFallback } from '../components/ui/ScreenDownloadFallback'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -140,6 +142,10 @@ export function RootRedirect() {
  */
 export function RouteErrorBoundary() {
   const error = useRouteError()
+
+  if (error instanceof ScreenDownloadError) {
+    return <ScreenDownloadFallback error={error} />
+  }
 
   // Handle route errors (404, etc.)
   if (isRouteErrorResponse(error)) {

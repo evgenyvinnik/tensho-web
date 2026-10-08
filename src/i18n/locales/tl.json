@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "Hindi ma-download ang screen na ito",
+    "description": "Maaaring naantala ng koneksyon o bagong bersyon ang pag-load. Suriin ang koneksyon, saka mag-save at mag-reload.",
+    "retry": "I-save at i-reload",
+    "menu": "I-save at pumunta sa menu",
+    "saving": "Nagse-save bago umalis…",
+    "saveFailed": "Hindi ligtas na na-save. Hindi na-reload ang tab. Suriin ang access sa storage at subukan muli.",
+    "reloadFailed": "Hindi masimulan ang reload. Bukas pa ang tab; subukan muli.",
+    "details": "Teknikal na detalye"
+  },
   "runOwnership": {
     "fateSeal": "Ang mga pagbabago sa tile ay mananatili sa buong run, pati sa mga susunod na round. Nagsisimula sa simula ang bagong run.",
     "negativeTile": "+1 puwang ng Dekreto habang nasa iyong pader pa ang Negatibong tile na ito. Nananatili ang puwang kapag binunot o itinapon ito; nawawala kapag sinira o pinalitan ang edisyon nito.",

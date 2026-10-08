@@ -1,5 +1,9 @@
 # On-demand screens and offline navigation
 
+October 2026 follow-up: [save-aware screen-download recovery](SCREEN_DOWNLOAD_RECOVERY.md)
+supersedes the generic-error/reload paragraph below and corrects the older offline
+test's first-document control assumption. Historical measurements remain historical.
+
 September 12, 2026. Local implementation/verification; not a deployed performance
 score, a service-worker upgrade audit, or completion of the whole game.
 

@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "No se pudo descargar esta pantalla",
+    "description": "Un problema de conexión o una nueva versión puede haber interrumpido la carga. Comprueba la conexión y guarda y recarga para volver a intentarlo.",
+    "retry": "Guardar y recargar",
+    "menu": "Guardar e ir al menú",
+    "saving": "Guardando antes de salir…",
+    "saveFailed": "No se pudo guardar de forma segura. Esta pestaña no se ha recargado. Comprueba el acceso al almacenamiento e inténtalo de nuevo.",
+    "reloadFailed": "No se pudo iniciar la recarga. La pestaña sigue abierta; inténtalo de nuevo.",
+    "details": "Detalles técnicos"
+  },
   "runOwnership": {
     "fateSeal": "Los cambios en las fichas duran toda esta partida, incluidas las rondas futuras. Una nueva partida empieza de cero.",
     "negativeTile": "+1 espacio de Decreto mientras esta ficha Negativa permanezca en tu muro. Robarla o descartarla conserva el espacio; destruirla o cambiar su edición lo elimina.",

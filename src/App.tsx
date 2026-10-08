@@ -3,7 +3,8 @@
  * Uses React Router for language-prefixed navigation with CRT aesthetics
  */
 
-import { lazy, useMemo } from 'react'
+import { useMemo } from 'react'
+import { lazyScreen as lazy } from './router/screenDownloadRecovery'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { VFXProvider } from './hooks/useVFX'

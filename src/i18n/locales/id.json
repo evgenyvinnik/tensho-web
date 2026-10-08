@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "Layar ini tidak dapat diunduh",
+    "description": "Masalah koneksi atau versi baru mungkin mengganggu pemuatan. Periksa koneksi, lalu simpan dan muat ulang.",
+    "retry": "Simpan dan muat ulang",
+    "menu": "Simpan dan buka menu",
+    "saving": "Menyimpan sebelum keluar…",
+    "saveFailed": "Tidak dapat menyimpan dengan aman. Tab ini belum dimuat ulang. Periksa akses penyimpanan dan coba lagi.",
+    "reloadFailed": "Tidak dapat memulai pemuatan ulang. Tab masih terbuka; coba lagi.",
+    "details": "Detail teknis"
+  },
   "runOwnership": {
     "fateSeal": "Perubahan ubin bertahan sepanjang permainan ini, termasuk ronde berikutnya. Permainan baru dimulai dari awal.",
     "negativeTile": "+1 slot Dekret selama ubin Negatif ini tetap dimiliki di dindingmu. Mengambil atau membuangnya tidak menghapus slot; menghancurkan atau mengganti edisinya menghapus slot.",

@@ -159,13 +159,15 @@ test.describe('on-demand route code', () => {
     await page.route(chunk('CodexScreen'), (route) => route.abort('failed'))
     await page.goto('en/codex')
     await expect(
-      page.getByRole('heading', { name: 'Oops! Something went wrong' })
+      page.getByRole('heading', { name: en.screenDownload.title })
     ).toBeVisible()
     expect(
       await page.evaluate((key) => localStorage.getItem(key), saveKey)
     ).toBe(saved)
     await page.unroute(chunk('CodexScreen'))
-    await page.getByRole('button', { name: 'Try Again', exact: true }).click()
+    await page
+      .getByRole('button', { name: en.screenDownload.retry, exact: true })
+      .click()
     await expect(
       page.getByRole('heading', { name: /Codex/, level: 1 })
     ).toBeVisible()
@@ -192,10 +194,21 @@ test('loads previously unvisited screens, scroll art and guides offline after in
     page.getByRole('heading', { name: 'TENSHO', exact: true })
   ).toBeVisible()
   await expect
-    .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller), {
-      timeout: 60_000,
-    })
-    .toBe(true)
+    .poll(
+      () =>
+        page.evaluate(
+          async () =>
+            (await navigator.serviceWorker.getRegistration())?.active?.state
+        ),
+      { timeout: 60_000 }
+    )
+    .toBe('activated')
+  // Prompt-mode installation does not claim an already-open document. Match
+  // the real update harness: the next navigation acquires the installed worker.
+  await page.reload()
+  expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(
+    true
+  )
   await context.setOffline(true)
   const workerAssets: string[] = []
   page.on('response', (response) => {

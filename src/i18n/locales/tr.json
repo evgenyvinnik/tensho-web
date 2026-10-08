@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "Bu ekran indirilemedi",
+    "description": "Bir bağlantı sorunu veya yeni sürüm yüklemeyi kesmiş olabilir. Bağlantıyı kontrol edin, ardından kaydedip yeniden yükleyin.",
+    "retry": "Kaydet ve yeniden yükle",
+    "menu": "Kaydet ve menüye git",
+    "saving": "Çıkmadan önce kaydediliyor…",
+    "saveFailed": "Güvenle kaydedilemedi. Bu sekme yeniden yüklenmedi. Depolama erişimini kontrol edip tekrar deneyin.",
+    "reloadFailed": "Yeniden yükleme başlatılamadı. Sekme hâlâ açık; tekrar deneyin.",
+    "details": "Teknik ayrıntılar"
+  },
   "runOwnership": {
     "fateSeal": "Taş değişiklikleri sonraki turlar dahil bu koşu boyunca sürer. Yeni koşuda sıfırlanır.",
     "negativeTile": "Bu Negatif taş duvarınızda kaldığı sürece +1 Ferman yuvası. Taşı çekmek veya atmak yuvayı korur; yok etmek veya sürümünü değiştirmek yuvayı kaldırır.",

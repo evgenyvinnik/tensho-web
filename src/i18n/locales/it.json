@@ -1,4 +1,14 @@
 {
+  "screenDownload": {
+    "title": "Impossibile scaricare questa schermata",
+    "description": "Un problema di connessione o una nuova versione potrebbe aver interrotto il caricamento. Controlla la connessione, poi salva e ricarica.",
+    "retry": "Salva e ricarica",
+    "menu": "Salva e vai al menu",
+    "saving": "Salvataggio prima di uscire…",
+    "saveFailed": "Impossibile salvare in sicurezza. La scheda non è stata ricaricata. Controlla l’accesso all’archiviazione e riprova.",
+    "reloadFailed": "Impossibile avviare il ricaricamento. La scheda è ancora aperta; riprova.",
+    "details": "Dettagli tecnici"
+  },
   "runOwnership": {
     "fateSeal": "Le modifiche alle tessere durano per tutta la partita, inclusi i round successivi. Una nuova partita riparte da zero.",
     "negativeTile": "+1 spazio Decreto finché questa tessera Negativa rimane nel tuo muro. Pescarla o scartarla conserva lo spazio; distruggerla o cambiarne l’edizione lo rimuove.",
