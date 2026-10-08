@@ -1,7 +1,7 @@
 # Copied abilities: physical costs and shared limits
 
-October 7, 2026 local / October 8 UTC. Implementation checkpoint; publication
-verification is pending. This does not declare the whole project complete.
+October 7, 2026 local / October 8 UTC. **Published and hosted-verified as
+v1.0.261008-8.** This does not declare the whole project complete.
 
 ## Decision under delegated authority
 
@@ -86,3 +86,23 @@ Evidence root: `/tmp/tensho-copy-lifecycle-dnqutz`.
 
 Broader balance/fun validation, remaining item wording, native-language review,
 physical-device accessibility and the large full offline cache remain open.
+
+## Publication
+
+- Implementation commit `c38a942eb19a19af98495655d51fa977dc42141d` is on main.
+  Automated version/tag/build commit is `b95c8a9d7ed915cef58bd514d70ac7e189e67d8b`.
+- [Workflow 37723078279](https://github.com/evgenyvinnik/tensho-web/actions/runs/37723078279)
+  passes independent **2,164/2,164 tests in 175 files**, thirteen release checks,
+  production build and Pages deployment without retry. Build job 113134959842;
+  deploy job 113135415879. Local main fast-forwarded to the version commit.
+- Public release manifest, Git tag and runtime version agree on **v1.0.261008-8**.
+  Runtime entry is `/tensho-web/assets/index-CNOFDcNK.js`. Evidence: `ci.log`,
+  `ci-watch.log`, `provenance.json` under the evidence root above.
+- Hosted English/Spanish desktop and 320×568 touch journeys pass **4/4**, 16.8
+  seconds, zero retries. They inspect the localized optional costs, consume the
+  copier, reload exactly, exhaust the next round, consume the original Phoenix,
+  and reload exactly again. No JavaScript page errors or horizontal overflow.
+  Evidence: `hosted.log` and `hosted-artifacts`.
+- Temporary native and production servers are stopped; the unrelated pre-existing
+  port 4173 server was untouched. Earlier failed verification attempts remain
+  documented rather than replaced with the final success.
