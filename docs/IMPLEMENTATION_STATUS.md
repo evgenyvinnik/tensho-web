@@ -4,13 +4,17 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
-**Closed-Hand Austerity — locally verified, publication pending:** complete
+**Published Closed-Hand Austerity — v1.0.261008-14:** complete
 concealed hands now build run-wide mastery instead of paying a flat tactical
 bonus. Committed completions, legacy saves, copies and Clemency exclusions have
 coverage; a generated scroll and optional thirteen-locale progress details are
 connected. Full regression passes 2,620/2,620 in 190 files, with build/typecheck,
 lint (warnings only), thirteen release checks, corrected native journeys and
-12/12 production desktop/touch replays. Earlier failures and exact scope remain
+12/12 production desktop/touch replays. Independent CI passes all 2,620 tests and
+deployment; 12/12 hosted journeys pass, with matching manifest/tag/runtime and
+artwork checksum. A five-run unforced smoke test has no diagnostic stops but
+zero complete hands in 118 plays; this does not establish fun or solve full-hand
+construction. Earlier failures and exact scope remain
 in the [implementation ledger](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md).
 
 **Published Yaku Repetition — v1.0.261008-13:** actual

@@ -1,6 +1,6 @@
 # Closed-Hand Austerity: complete-hand mastery
 
-Status: locally verified, October 8, 2026. Publication pending.
+Status: published and hosted-verified in v1.0.261008-14, October 8, 2026.
 
 ## Requirement and chosen rule
 
@@ -88,5 +88,35 @@ Evidence directory: `/tmp/tensho-austerity-biiL6P`.
   EN/ES/RU on desktop and 320px touch, actual staged/confirmed scores, unchanged
   preview history, earned counters, loaded artwork and saved continuation.
 
-Publication and hosted verification remain separate gates. This checkpoint does
-not establish organic full-hand frequency, strategy balance or newcomer enjoyment.
+## Publication
+
+- Source: `95b1265da7f3c728cebf71095787fcb21e601f4a`.
+- [Independent CI and Pages deployment](https://github.com/evgenyvinnik/tensho-web/actions/runs/37745755499)
+  succeed with **2,620/2,620 tests in 190 files**, release checks and production build.
+- Version/tag: `1.0.261008-14` / `v1.0.261008-14`.
+- Built commit: `10805b78cc83241b1a716f7faf53511eb13f2128`.
+- Public manifest, remote tag and runtime entry
+  `/tensho-web/assets/index-Cw8Tt1xt.js` agree. Hosted artwork matches the SHA above.
+- All **12/12 hosted** EN/ES/RU desktop/touch journeys pass without retries,
+  covering both progression mechanics and their saved continuation.
+
+This checkpoint does not establish organic full-hand frequency, strategy balance
+or newcomer enjoyment. The overall implementation goal remains open.
+
+## Unforced run smoke check
+
+After source commit `95b1265da7f3c728cebf71095787fcb21e601f4a`, with a clean
+worktree, ran:
+
+```sh
+bun scripts/classic-balance.mts 5 --seed=1 --plan-hands --build-shop --consumables --json
+```
+
+[Raw results](balance/2026-10-08-austerity-smoke.json) retain all five Green Felt,
+Stake 1 runs. All terminate normally in defeat, with no diagnostic stop or rescue;
+they clear 1, 20, 3, 14 and 2 rounds respectively. None of the **118 committed
+plays** is a complete hand. The tactical shopping model explicitly cannot value
+Austerity; this is neither an acquisition test nor an estimate of optimal play.
+This small sample supports continued investigation of complete-hand construction
+and resource policy, not a claim that adding growth alone makes full hands
+reachable or fun. It is not a paired balance comparison or a broad table/Stake audit.

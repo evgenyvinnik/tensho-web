@@ -8,13 +8,17 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Closed-Hand Austerity](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md) is locally
-verified, awaiting publication: actual completed-hand mastery, legacy item/save
+[Closed-Hand Austerity](CLOSED_HAND_AUSTERITY_IMPLEMENTATION.md) is published and
+hosted-verified in **v1.0.261008-14**: actual completed-hand mastery, legacy item/save
 compatibility, generated portrait and optional localized progress. Full regression
 passes 2,620/2,620 in 190 files; build/typecheck, lint (warnings only), thirteen
 release tests, corrected native checks and twelve production desktop/touch
-journeys pass. The original red cases, test-construction errors and decimal
-formatting issue remain recorded. Overall balance and completion remain open.
+journeys pass. Independent CI passes 2,620/2,620 tests and deployment; twelve
+hosted journeys pass with matching manifest/tag/runtime and artwork checksum.
+The original red cases, test-construction errors and decimal formatting issue
+remain recorded. A five-run unforced smoke test produces no diagnostic stops,
+but zero complete hands in 118 plays. Full-hand construction, overall balance
+and project completion remain open.
 
 [Yaku Repetition](YAKU_REPETITION_IMPLEMENTATION.md) is published and hosted-verified
 in **v1.0.261008-13**: consecutive-round compound growth, boss-filtered scoring, compatible

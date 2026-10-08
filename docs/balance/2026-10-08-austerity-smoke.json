@@ -1,0 +1,295 @@
+{
+  "schema": 2,
+  "policy": "resources-and-hand-plan+consumables",
+  "shopping": true,
+  "shoppingPolicy": "observed-build",
+  "consumables": true,
+  "table": "green_felt",
+  "stake": 1,
+  "firstSeed": 1,
+  "runs": 5,
+  "outcomes": {
+    "loss": 5
+  },
+  "results": [
+    {
+      "seed": 1,
+      "act": 1,
+      "rounds": 1,
+      "runScore": 799,
+      "hands": 7,
+      "blindHands": 0,
+      "completeHands": 0,
+      "yakuTriggers": {},
+      "redraws": 6,
+      "redrawnTiles": 6,
+      "discards": 7,
+      "oneAwayAttempts": 0,
+      "handPlanAttempts": 13,
+      "handPlanDistances": {
+        "1": 3,
+        "2": 8,
+        "3": 2
+      },
+      "consumablesUsed": 1,
+      "consumableUsesById": {
+        "earth_orb": 1
+      },
+      "consumableUsesByReason": {
+        "permanent-upgrade": 1
+      },
+      "unusedConsumablesById": {},
+      "unusedConsumablesByReason": {},
+      "unusedConsumables": 0,
+      "purchases": 1,
+      "goldSpent": 3,
+      "packsClaimed": 0,
+      "packsSkipped": 0,
+      "buildShopPurchases": 0,
+      "decreesSold": 0,
+      "rescuedRoundsByDecree": {},
+      "finalDecreeIds": [
+        "pure_suit_asceticism",
+        "tanyao_dispensation"
+      ],
+      "outcome": "loss"
+    },
+    {
+      "seed": 2,
+      "act": 7,
+      "rounds": 20,
+      "runScore": 332537,
+      "hands": 50,
+      "blindHands": 0,
+      "completeHands": 0,
+      "yakuTriggers": {},
+      "redraws": 33,
+      "redrawnTiles": 35,
+      "discards": 44,
+      "oneAwayAttempts": 0,
+      "handPlanAttempts": 76,
+      "handPlanDistances": {
+        "1": 14,
+        "2": 28,
+        "3": 23,
+        "4": 10,
+        "5": 1
+      },
+      "consumablesUsed": 16,
+      "consumableUsesById": {
+        "neptune_orb": 1,
+        "seal_of_strength": 1,
+        "seal_of_the_sage": 2,
+        "seal_of_fortune": 1,
+        "uranus_orb": 2,
+        "mars_orb": 1,
+        "seal_of_wealth": 1,
+        "jupiter_orb": 2,
+        "pluto_orb": 1,
+        "seal_of_the_hermit": 1,
+        "seal_of_the_alchemist": 2,
+        "venus_orb": 1
+      },
+      "consumableUsesByReason": {
+        "permanent-upgrade": 8,
+        "visible-connections": 1,
+        "add-mark": 5,
+        "public-reward": 2
+      },
+      "unusedConsumablesById": {
+        "script_of_incantation": 1
+      },
+      "unusedConsumablesByReason": {
+        "script-penalty-not-priced": 1
+      },
+      "unusedConsumables": 1,
+      "purchases": 35,
+      "goldSpent": 163,
+      "packsClaimed": 21,
+      "packsSkipped": 2,
+      "buildShopPurchases": 8,
+      "decreesSold": 4,
+      "rescuedRoundsByDecree": {},
+      "finalDecreeIds": [
+        "extended_hand_grant",
+        "decree-crimson-banner",
+        "decree-coin-collector",
+        "decree-balanced-path",
+        "decree-bamboo-scroll",
+        "decree-blossom-storm"
+      ],
+      "outcome": "loss"
+    },
+    {
+      "seed": 3,
+      "act": 2,
+      "rounds": 3,
+      "runScore": 2291,
+      "hands": 15,
+      "blindHands": 0,
+      "completeHands": 0,
+      "yakuTriggers": {},
+      "redraws": 9,
+      "redrawnTiles": 9,
+      "discards": 9,
+      "oneAwayAttempts": 0,
+      "handPlanAttempts": 18,
+      "handPlanDistances": {
+        "1": 1,
+        "2": 9,
+        "3": 8
+      },
+      "consumablesUsed": 3,
+      "consumableUsesById": {
+        "seal_of_fortitude": 1,
+        "seal_of_the_sage": 1,
+        "uranus_orb": 1
+      },
+      "consumableUsesByReason": {
+        "add-mark": 2,
+        "permanent-upgrade": 1
+      },
+      "unusedConsumablesById": {},
+      "unusedConsumablesByReason": {},
+      "unusedConsumables": 0,
+      "purchases": 5,
+      "goldSpent": 21,
+      "packsClaimed": 2,
+      "packsSkipped": 0,
+      "buildShopPurchases": 2,
+      "decreesSold": 0,
+      "rescuedRoundsByDecree": {},
+      "finalDecreeIds": [
+        "pure_suit_asceticism",
+        "moonlit_seal",
+        "decree-half-suited",
+        "decree-golden-age"
+      ],
+      "outcome": "loss"
+    },
+    {
+      "seed": 4,
+      "act": 5,
+      "rounds": 14,
+      "runScore": 97328,
+      "hands": 35,
+      "blindHands": 0,
+      "completeHands": 0,
+      "yakuTriggers": {},
+      "redraws": 27,
+      "redrawnTiles": 27,
+      "discards": 30,
+      "oneAwayAttempts": 0,
+      "handPlanAttempts": 57,
+      "handPlanDistances": {
+        "0": 3,
+        "1": 14,
+        "2": 27,
+        "3": 11,
+        "4": 2
+      },
+      "consumablesUsed": 16,
+      "consumableUsesById": {
+        "mars_orb": 1,
+        "seal_of_strength": 1,
+        "uranus_orb": 2,
+        "neptune_orb": 3,
+        "seal_of_souzu": 3,
+        "pluto_orb": 1,
+        "seal_of_the_hermit": 1,
+        "seal_of_fortune": 1,
+        "venus_orb": 1,
+        "seal_of_pinzu": 1,
+        "seal_of_harmony": 1
+      },
+      "consumableUsesByReason": {
+        "permanent-upgrade": 8,
+        "visible-connections": 5,
+        "public-reward": 2,
+        "add-mark": 1
+      },
+      "unusedConsumablesById": {
+        "script_of_the_cryptid": 1
+      },
+      "unusedConsumablesByReason": {
+        "script-penalty-not-priced": 1
+      },
+      "unusedConsumables": 1,
+      "purchases": 28,
+      "goldSpent": 118,
+      "packsClaimed": 11,
+      "packsSkipped": 1,
+      "buildShopPurchases": 6,
+      "decreesSold": 2,
+      "rescuedRoundsByDecree": {},
+      "finalDecreeIds": [
+        "extended_hand_grant",
+        "river_tax",
+        "decree-rising-sun",
+        "decree-seasonal-blessing",
+        "decree-polished-stone",
+        "decree-spark"
+      ],
+      "outcome": "loss"
+    },
+    {
+      "seed": 5,
+      "act": 1,
+      "rounds": 2,
+      "runScore": 1226,
+      "hands": 11,
+      "blindHands": 0,
+      "completeHands": 0,
+      "yakuTriggers": {},
+      "redraws": 9,
+      "redrawnTiles": 9,
+      "discards": 10,
+      "oneAwayAttempts": 0,
+      "handPlanAttempts": 19,
+      "handPlanDistances": {
+        "1": 3,
+        "2": 6,
+        "3": 7,
+        "4": 3
+      },
+      "consumablesUsed": 2,
+      "consumableUsesById": {
+        "seal_of_strength": 1,
+        "seal_of_balance": 1
+      },
+      "consumableUsesByReason": {
+        "visible-connections": 1,
+        "public-reward": 1
+      },
+      "unusedConsumablesById": {
+        "seal_of_the_empress": 1,
+        "seal_of_pinzu": 1
+      },
+      "unusedConsumablesByReason": {
+        "currently-illegal": 2
+      },
+      "unusedConsumables": 2,
+      "purchases": 5,
+      "goldSpent": 18,
+      "packsClaimed": 2,
+      "packsSkipped": 1,
+      "buildShopPurchases": 0,
+      "decreesSold": 0,
+      "rescuedRoundsByDecree": {},
+      "finalDecreeIds": [
+        "river_tax",
+        "pure_suit_asceticism"
+      ],
+      "outcome": "loss"
+    }
+  ],
+  "limitations": [
+    "Heuristic candidate search, not exhaustive or optimal play.",
+    "Cycles low-connectivity spare tiles when behind the required score pace.",
+    "Ordinary 14-tile hand planning minimizes retained shanten, then maximizes distinct improving types. Single exchanges replan after real draws; type breadth is not draw probability. No wall counts, altered Decree grammar, future Yaku value or enlarged-rack subset planning.",
+    "Concealed racks without visible advice use an unscored position-only fallback.",
+    "Observed-build shopping compares modelled Decree inventories on the last six visible tactical plays over a two-round horizon; it can sell eligible copies. Rack/discard/economy weights are heuristic; unpriced rule powers are neither bought nor sold. Other items remain cheapest-first and pack choices first-valid. No future wall, broader Yaku planning, complete-hand modelling or optimality claim.",
+    "Conservative consumable policy: permanent upgrades, public rewards and visible-target heuristics. Unpriced Script penalties/global sacrifices are held, not assumed harmless; no hypothetical effect execution or build synergy optimization.",
+    "These results describe this policy, not human difficulty or enjoyment."
+  ]
+}
