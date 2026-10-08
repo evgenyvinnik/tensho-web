@@ -11,10 +11,14 @@ The requested outcome is to finish the project implementation after the other ag
 [Observatory](OBSERVATORY_IMPLEMENTATION.md) resolves the remaining Charter
 conflict in favor of matching scored Yaku, once per held Orb per play, with
 explicit Black Hole and consumption rules. It adds a generated transparent
-portrait and all-locale hold/use guidance beside confirmation. Both full
-regressions pass 2,714 tests; eight final native and eight production journeys
-pass. Publication checks are pending. This closes a specific
-power-consumer mismatch, not organic progression balance or human enjoyment.
+portrait and all-locale hold/use guidance beside confirmation. Published and
+hosted-verified in **v1.0.261008-19**: both local full regressions and independent
+CI pass 2,714 tests; eight final native, eight production and eight hosted
+journeys pass, with matching manifest/tag/runtime and portrait hash. This closes
+a specific power-consumer mismatch, not organic progression balance or enjoyment.
+The follow-up found a concrete next core-loop gap: Classic never passes a Riichi
+declaration to scoring, leaving Pluto Orb and Riichi Devotee without a live
+qualifying path. That remains implementation work, not a completed family test.
 
 [Illustrated public hand guide](ILLUSTRATED_HAND_GUIDE.md) adds an engine-tested
 keep/exchange/complete example, actual tile art and the workshop's real cost and
@@ -1368,6 +1372,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Latest release v1.0.261008-18 has independent CI (2,675 tests), matching manifest/tag/runtime and 14/14 hosted guide/workshop journeys; see [release evidence](ILLUSTRATED_HAND_GUIDE.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-19 has independent CI (2,714 tests), matching manifest/tag/runtime and 8/8 hosted Observatory hold/use journeys; see [release evidence](OBSERVATORY_IMPLEMENTATION.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

@@ -84,3 +84,30 @@ hand. They do not claim natural unlock reachability or paid purchase coverage;
 the existing sixteen-Charter acquisition suite covers that boundary separately.
 Human strategy/enjoyment, native-language quality, physical devices and historical
 installed-PWA migration are not established by these checks.
+
+## Publication
+
+Source `c5a05554c66ada8a594814d80d0f20b895e00d6a` is published as
+**v1.0.261008-19**, built/tagged at
+`27d26942cf89e9eb5de53abe6c67e83d4a17cd2e`.
+[Workflow 37759201514](https://github.com/evgenyvinnik/tensho-web/actions/runs/37759201514)
+independently passes **2,714/2,714 tests in 196 files**, build and deployment.
+Hosted manifest/tag/runtime agree; entry `assets/index-DSaoecpo.js` contains
+the published version. Hosted portrait bytes match the reviewed SHA-256 above.
+
+All **eight hosted browser journeys pass**, English/Spanish, hold/use, desktop
+and 320px touch, without retries or changed deadlines. The live portrait loads,
+the consumption warning stays in view, inspection/cancellation are free,
+committed scoring matches forecast and paid state reloads exactly. These are
+fresh-context replays, not historical installed-client migration evidence.
+
+## Follow-up uncovered by the family audit
+
+`GameOrchestrator.calculateHandScore` never passes `isRiichi` to
+`createScoringContext`; that factory defaults it to false, and the Riichi detector
+requires it. No Classic player action sets a Riichi declaration. Consequently,
+the item library's Pluto Orb and Riichi Devotee have no live Riichi scoring path.
+The matching helper's Riichi unit case verifies classification, not reachability.
+This is a concrete remaining core-loop task, not solved by awarding Riichi to
+every complete hand or by hiding its dependent items. Implement a coherent
+declaration/use/scoring/persistence/UI path under the delegated rules authority.
