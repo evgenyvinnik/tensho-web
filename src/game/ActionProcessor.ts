@@ -81,6 +81,7 @@ export interface SkipAction {
  * Union type for all player actions
  */
 export type PlayerAction =
+  | { type: 'declareRiichi' | 'abandonRiichi' }
   | DrawAction
   | DiscardAction
   | PlayAction

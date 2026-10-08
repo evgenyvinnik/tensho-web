@@ -68,6 +68,7 @@ export interface PlaySurfaceProps {
   /** Opens the concise visual tile and pattern guide */
   onOpenBeginnerGuide?: () => void
   onOpenHandBuilder?: () => void
+  riichiControl?: React.ReactNode
   /** Translation function */
   t?: (key: string) => string
   /** Optional legacy preview contract used by embedded play-surface consumers. */
@@ -122,6 +123,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   beginnerSuggestion = null,
   onOpenBeginnerGuide,
   onOpenHandBuilder,
+  riichiControl,
   t: _t = (key) => key,
 }) => {
   const { t } = useTranslation()
@@ -680,16 +682,19 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 </span>
               </div>
             )}
-            {onOpenHandBuilder && (
-              <button
-                type="button"
-                data-open-hand-builder
-                onClick={onOpenHandBuilder}
-                className="min-h-11 max-w-full rounded-lg border border-amber-200/35 px-2 py-1 text-left text-sm text-amber-200 [overflow-wrap:anywhere]"
-              >
-                {t('handBuilder.title')}
-              </button>
-            )}
+            <div className="flex max-w-full flex-wrap gap-2">
+              {onOpenHandBuilder && (
+                <button
+                  type="button"
+                  data-open-hand-builder
+                  onClick={onOpenHandBuilder}
+                  className="min-h-11 max-w-full rounded-lg border border-amber-200/35 px-2 py-1 text-left text-sm text-amber-200 [overflow-wrap:anywhere]"
+                >
+                  {t('handBuilder.title')}
+                </button>
+              )}
+              {riichiControl}
+            </div>
           </div>
           <animated.div
             ref={discardZoneRef}

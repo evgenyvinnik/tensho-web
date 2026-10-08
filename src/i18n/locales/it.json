@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Impegno Riichi",
+    "active": "Riichi dichiarato",
+    "spent": "Riichi usato nel round",
+    "intro": "Paga 1 Oro prima di completare la mano. Una volta per round.",
+    "risk": "Durante l’impegno, solo una vera mano completa coperta può segnare punti. Puoi ancora cambiare e scartare tessere e usare oggetti.",
+    "reward": "La prossima mano completa coperta segna Riichi (Yaku ×1,2), secondo le regole del boss e degli Yakuman. Plutone e Devoto del Riichi si applicano solo se Riichi segna.",
+    "declare": "Impegnati · 1 Oro",
+    "abandon": "Abbandona l’impegno",
+    "abandonNote": "Abbandonare ripristina il gioco tattico. Nessun rimborso né secondo impegno in questo round.",
+    "gold": "Serve almeno 1 Oro.",
+    "hidden": "Rivela tutte le tessere della mano prima di impegnarti.",
+    "open": "Riichi richiede una mano coperta, senza gruppi scoperti.",
+    "boss": "Questo boss impone una dimensione fissa della giocata; Riichi non è disponibile.",
+    "complete": "La mano è già completa. Giocala; impegnati prima di completare una mano futura.",
+    "inactive": "Puoi impegnarti solo durante un round attivo con mani rimanenti.",
+    "failed": "Il tavolo è cambiato. Controlla i requisiti e riprova.",
+    "restriction": "Completa una mano coperta o abbandona l’impegno."
+  },
   "observatory": {
     "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. Buco Nero corrisponde a qualsiasi Yaku segnato.",
     "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."

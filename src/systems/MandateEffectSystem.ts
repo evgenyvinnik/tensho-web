@@ -624,7 +624,10 @@ export class MandateEffectSystem {
   /**
    * Apply mandate effects to scoring
    */
-  applyToScoring(context: MandateScoringContext): MandateScoringContext {
+  applyToScoring(
+    context: MandateScoringContext,
+    previewMode = false
+  ): MandateScoringContext {
     if (!this.state.activeMandate) return context
 
     const mandate = this.state.activeMandate
@@ -652,21 +655,20 @@ export class MandateEffectSystem {
           if (this.state.scoredYakuIds.has(id)) {
             return false
           }
-          this.state.scoredYakuIds.add(id)
+          if (!previewMode) this.state.scoredYakuIds.add(id)
           return true
         })
         break
 
       case 'single_yaku_type':
         if (result.yakuIds.length > 0) {
-          if (!this.state.firstYakuType) {
+          const firstYakuType = this.state.firstYakuType ?? result.yakuIds[0]
+          if (!previewMode && !this.state.firstYakuType) {
             // First yaku scored - set the type
-            this.state.firstYakuType = result.yakuIds[0]
+            this.state.firstYakuType = firstYakuType
           }
           // Filter to only matching yaku type
-          result.yakuIds = result.yakuIds.filter(
-            (id) => id === this.state.firstYakuType
-          )
+          result.yakuIds = result.yakuIds.filter((id) => id === firstYakuType)
         }
         break
     }

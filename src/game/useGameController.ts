@@ -149,6 +149,7 @@ export interface GameController {
   isCompleteHand: (tileIds: string[]) => boolean
   inspectCompleteHand: GameOrchestrator['inspectCompleteHand']
   getHandBuildingAdvice: GameOrchestrator['getHandBuildingAdvice']
+  getRiichiState: GameOrchestrator['getRiichiState']
   findCompleteHandSelection: GameOrchestrator['findCompleteHandSelection']
   previewScore: (tileIds: string[]) => ScoreBreakdown | null
   resetGame: () => void
@@ -180,6 +181,7 @@ export function useGameController(
       'roundStart',
       'roundEnd',
       'handPlayed',
+      'riichiChanged',
       'scoreUpdate',
       'goldChanged',
       'tileDrawn',
@@ -488,6 +490,11 @@ export function useGameController(
     [orchestrator]
   )
 
+  const getRiichiState = useCallback(
+    () => orchestrator.getRiichiState(),
+    [orchestrator]
+  )
+
   const resetGame = useCallback(() => {
     orchestrator.resetGame()
   }, [orchestrator])
@@ -590,6 +597,7 @@ export function useGameController(
     isCompleteHand,
     inspectCompleteHand,
     getHandBuildingAdvice,
+    getRiichiState,
     findCompleteHandSelection,
     previewScore,
     resetGame,

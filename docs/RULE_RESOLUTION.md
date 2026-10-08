@@ -16,6 +16,28 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Optional Riichi pledge (Tensho adaptation)
+
+Before a genuine complete concealed hand is available, pay **1 Gold** to pledge
+once per round. This is not traditional locked-rack/tenpai Riichi: discards,
+redraws and items remain legal, but scoring is restricted to a genuine complete
+concealed hand until the player completes or explicitly abandons the pledge.
+Abandoning restores tactical play without a refund or a second pledge that round.
+
+The next qualifying play supplies Riichi to normal Yaku detection (base ×1.2),
+enabling Pluto's earned upgrades and Riichi Devotee only when Riichi survives
+Boss filtering. Natural Yakuman retain their lower-Yaku exclusions. Genuine
+rule-assisted completions qualify; Shanten Clemency's virtual completion does
+not. Any successful pledged play consumes the pledge even if its Riichi bonus
+is excluded. Skipping or losing never refunds the fee; the next round resets it.
+
+Declaration requires an active round, an unspent Hand, at least 1 Gold, visible
+rack faces, no open melds, and no fixed-play-size Boss. Existing saved runs without
+pledge history have not declared. Opening explanations, staging and forecasting
+are free and never declare or consume the pledge. These are delegated design
+choices, not proven balance improvements. [Implementation and evidence](RIICHI_IMPLEMENTATION.md).
+
+
 ### Observatory: attune held bonuses to scored Yaku
 
 Use the item library's family-specific rule instead of the broad multiplier in

@@ -50,6 +50,8 @@ export interface PopupProps {
   descriptionId?: string
   /** Popup content */
   children: React.ReactNode
+  /** Optional actions kept beside their costs while long explanations scroll. */
+  footer?: React.ReactNode
   /** Whether to show close button */
   showCloseButton?: boolean
   /** Whether clicking backdrop closes popup */
@@ -67,6 +69,7 @@ export function Popup({
   title,
   descriptionId,
   children,
+  footer,
   showCloseButton = true,
   closeOnBackdrop = true,
   className = '',
@@ -167,6 +170,14 @@ export function Popup({
           {/* Content */}
           <div className="text-[var(--color-beige-white)]">{children}</div>
         </div>
+        {footer && (
+          <div
+            data-popup-footer
+            className="mt-3 max-h-[40dvh] shrink-0 overflow-auto border-t border-white/15 pt-3 text-[var(--color-beige-white)]"
+          >
+            {footer}
+          </div>
+        )}
       </div>
     </AnimatedDiv>
   )

@@ -23,6 +23,7 @@ const CHECKPOINT_EVENTS: GameEvent[] = [
   'roundEnd',
   'roundSkipped',
   'handPlayed',
+  'riichiChanged',
   'scoreUpdate',
   'goldChanged',
   'itemPurchased',

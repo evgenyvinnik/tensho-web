@@ -448,7 +448,7 @@ describe('untrusted save boundary', () => {
     }
   )
 
-  it('requires every top-level and engine field instead of defaulting away progress', () => {
+  it('requires mandatory fields while accepting the explicitly optional legacy Riichi field', () => {
     const saved = json(start().captureRun())
     for (const key of Object.keys(saved)) {
       const damaged = { ...saved } as Record<string, unknown>
@@ -461,6 +461,12 @@ describe('untrusted save boundary', () => {
         state: { ...saved.state } as Record<string, unknown>,
       }
       delete damaged.state[key]
+      if (key === 'riichiStatus') {
+        expect(
+          parseClassicRunSnapshot(damaged).state.riichiStatus
+        ).toBeUndefined()
+        continue
+      }
       expect(() => parseClassicRunSnapshot(damaged), key).toThrow()
     }
   })

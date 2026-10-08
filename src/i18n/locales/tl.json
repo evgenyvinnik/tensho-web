@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Panata ng Riichi",
+    "active": "Aktibo ang panata",
+    "spent": "Nagamit na ang Riichi",
+    "intro": "Magbayad ng 1 Ginto bago mabuo ang kamay. Isang beses bawat round.",
+    "risk": "Habang may panata, tunay na kumpletong saradong kamay lamang ang makakapuntos. Maaari pa ring magpalit at magtapon ng tile at gumamit ng item.",
+    "reward": "Ang susunod na kumpletong saradong kamay ay may Riichi (Yaku ×1.2), ayon sa tuntunin ng boss at Yakuman. Gagana lang ang Pluto at Riichi Devotee kung may puntos ang Riichi.",
+    "declare": "Manata · 1 Ginto",
+    "abandon": "Bawiin ang panata",
+    "abandonNote": "Ang pagbawi ay magbabalik ng taktikal na paglalaro. Walang refund o ikalawang panata sa round na ito.",
+    "gold": "Kailangan ng hindi bababa sa 1 Ginto.",
+    "hidden": "Ilantad ang lahat ng tile sa kamay bago manata.",
+    "open": "Kailangan ng Riichi ang saradong kamay, walang bukas na grupo.",
+    "boss": "May takdang bilang ng tile ang boss na ito; hindi magagamit ang Riichi.",
+    "complete": "Kumpleto na ang kamay. Laruin ito; manata bago mabuo ang susunod na kamay.",
+    "inactive": "Maaari lang manata sa aktibong round na may natitirang kamay.",
+    "failed": "Nagbago ang mesa. Suriin ang mga kundisyon at subukan muli.",
+    "restriction": "Bumuo ng saradong kamay o bawiin ang panata."
+  },
   "observatory": {
     "description": "Bawat hawak na Orb ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Orb sa bawat laro ng kamay. Tugma ang Black Hole sa anumang Yaku na nakapuntos.",
     "holdingNote": "Ginagantimpalaan ng Observatory ang paghawak sa Orb na ito. Ang paggamit nito ay nagbibigay ng permanenteng pag-upgrade ngunit inaalis ang bonus sa paghawak."

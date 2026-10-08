@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Ikrar Riichi",
+    "active": "Ikrar Riichi aktif",
+    "spent": "Riichi terpakai ronde ini",
+    "intro": "Bayar 1 Emas sebelum tangan lengkap. Sekali per ronde.",
+    "risk": "Selama berikrar, hanya tangan tertutup lengkap yang sungguh terbentuk bisa mencetak skor. Mengganti, membuang ubin, dan item tetap bisa dipakai.",
+    "reward": "Tangan tertutup lengkap berikutnya mencetak Riichi (Yaku ×1,2), mengikuti aturan bos dan Yakuman. Pluto dan Pengabdi Riichi hanya berlaku jika Riichi mencetak skor.",
+    "declare": "Berikrar · 1 Emas",
+    "abandon": "Batalkan ikrar",
+    "abandonNote": "Membatalkan membuka kembali permainan taktis. Tanpa pengembalian biaya atau ikrar kedua pada ronde ini.",
+    "gold": "Perlu setidaknya 1 Emas.",
+    "hidden": "Buka semua ubin tangan sebelum berikrar.",
+    "open": "Riichi memerlukan tangan tertutup tanpa kelompok terbuka.",
+    "boss": "Bos ini mewajibkan jumlah ubin tertentu; Riichi tidak tersedia.",
+    "complete": "Tangan sudah lengkap. Mainkan; berikrarlah sebelum menyelesaikan tangan berikutnya.",
+    "inactive": "Ikrar hanya tersedia selama ronde aktif dengan jatah tangan tersisa.",
+    "failed": "Meja telah berubah. Periksa syarat ikrar dan coba lagi.",
+    "restriction": "Lengkapi tangan tertutup atau batalkan ikrar."
+  },
   "observatory": {
     "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb per permainan tangan. Lubang Hitam cocok dengan Yaku mana pun yang mencetak poin.",
     "holdingNote": "Observatorium memberi bonus karena menyimpan Orb ini. Memakainya memberi peningkatan permanen, tetapi menghapus bonus penyimpanan ini."

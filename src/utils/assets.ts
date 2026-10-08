@@ -129,6 +129,7 @@ export const illustrationAssets = {
     HeavenlyOrdinance: `${ASSET_BASE}/illustrations/decrees/heavenly-ordinance.png`,
   } satisfies Record<DecreeRarity, string>,
   decreePortraits: {
+    'decree-riichi-devotee': `${ASSET_BASE}/illustrations/decrees/riichi-devotee.webp`,
     yaku_repetition_charter: `${ASSET_BASE}/illustrations/decrees/yaku-repetition.webp`,
     closed_hand_austerity: `${ASSET_BASE}/illustrations/decrees/closed-hand-austerity.webp`,
     'decree-blueprint': `${ASSET_BASE}/illustrations/decrees/blueprint.webp`,

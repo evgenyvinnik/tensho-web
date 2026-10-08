@@ -225,6 +225,8 @@ export interface OrchestratorState {
   handsPlayedThisRun: number
   /** Proven complete concealed plays. Absent legacy history means zero. */
   completeConcealedHandsPlayed?: number
+  /** Round-scoped pledge. Missing legacy state means no declaration was made. */
+  riichiStatus?: 'available' | 'active' | 'spent'
   discardsRemaining: number
   redrawsRemaining: number
   targetScore: number
@@ -672,6 +674,7 @@ export class GameOrchestrator {
     const stakePenalty =
       this.state.roundManager.getStakeModifiers().redrawPenalty
     this.state.deadWallWritUsedThisRound = false
+    this.state.riichiStatus = 'available'
 
     this.state.handsRemaining = Math.max(
       1,
@@ -782,7 +785,7 @@ export class GameOrchestrator {
         canPerform: (action) =>
           action.type === 'redraw' && this.canPerformAction(action),
       },
-      { batchRedraws: true }
+      { batchRedraws: true, fullHandPledge: state.riichiStatus === 'active' }
     )
     if (!plan || plan.action.type !== 'redraw') return { kind: 'unavailable' }
     const ids = new Set(plan.action.tileIds)
@@ -1370,13 +1373,15 @@ export class GameOrchestrator {
 
     // Validate action
     const validation =
-      action.type === 'play'
-        ? this.validatePlaySelection(action.tileIds)
-        : action.type === 'useSeal' ||
-            action.type === 'useScript' ||
-            action.type === 'useOrb'
-          ? this.validateConsumableAction(action)
-          : this.actionProcessor.validate(action, snapshot)
+      action.type === 'declareRiichi' || action.type === 'abandonRiichi'
+        ? this.validateRiichiAction(action.type)
+        : action.type === 'play'
+          ? this.validatePlaySelection(action.tileIds)
+          : action.type === 'useSeal' ||
+              action.type === 'useScript' ||
+              action.type === 'useOrb'
+            ? this.validateConsumableAction(action)
+            : this.actionProcessor.validate(action, snapshot)
     if (!validation.isValid) {
       return {
         success: false,
@@ -1439,6 +1444,63 @@ export class GameOrchestrator {
     }
   }
 
+  /** This is a Tensho full-hand pledge, not traditional locked-rack Riichi. */
+  getRiichiState() {
+    const status = this.state.riichiStatus ?? 'available'
+    const reason =
+      !this.state.isRunActive ||
+      this.state.phase !== 'gameplay' ||
+      this.state.handsRemaining < 1
+        ? 'inactive'
+        : status === 'active'
+          ? null
+          : status === 'spent'
+            ? 'spent'
+            : this.state.gold < 1
+              ? 'gold'
+              : this.state.faceDownTileIds.size > 0
+                ? 'hidden'
+                : this.state.melds.some((meld) => !meld.isConcealed)
+                  ? 'open'
+                  : this.state.roundManager.checkMandateEffect(
+                        'fixed_hand_size'
+                      ).active
+                    ? 'boss'
+                    : this.findCompleteHandSelection(true)
+                      ? 'complete'
+                      : null
+    return { status, reason, cost: 1 } as const
+  }
+
+  private validateRiichiAction(
+    type: 'declareRiichi' | 'abandonRiichi'
+  ): ValidationResult {
+    const { status, reason } = this.getRiichiState()
+    const valid =
+      reason !== 'inactive' &&
+      (type === 'abandonRiichi'
+        ? status === 'active'
+        : status === 'available' && reason === null)
+    return {
+      isValid: valid,
+      errors: valid ? [] : ['Riichi pledge is unavailable'],
+    }
+  }
+
+  private executeRiichiAction(
+    type: 'declareRiichi' | 'abandonRiichi',
+    effects: Effect[]
+  ): ActionResult {
+    this.state.riichiStatus = type === 'declareRiichi' ? 'active' : 'spent'
+    if (type === 'declareRiichi') this.changeGold(-1, 'Riichi pledge', effects)
+    effects.push({
+      type: 'riichi_changed',
+      description: `Riichi pledge ${this.state.riichiStatus}`,
+    })
+    eventBus.emit('riichiChanged', { status: this.state.riichiStatus })
+    return { success: true, effects }
+  }
+
   /**
    * Execute a validated action
    */
@@ -1446,6 +1508,9 @@ export class GameOrchestrator {
     const effects: Effect[] = []
 
     switch (action.type) {
+      case 'declareRiichi':
+      case 'abandonRiichi':
+        return this.executeRiichiAction(action.type, effects)
       case 'draw':
         return this.executeDraw(effects)
 
@@ -1605,7 +1670,7 @@ export class GameOrchestrator {
    * Enlarged racks retain their spare tiles. The first accepted shape is stable,
    * not a promise of the maximum-scoring interpretation or physical copies.
    */
-  findCompleteHandSelection(): string[] | null {
+  findCompleteHandSelection(genuineOnly = false): string[] | null {
     if (
       !this.state.isRunActive ||
       this.state.phase !== 'gameplay' ||
@@ -1621,14 +1686,19 @@ export class GameOrchestrator {
     if ((fixed.active && Number(fixed.value) < 11) || required.length > 14)
       return null
     const accept = (ids: string[]) =>
-      this.isCompleteHand(ids) && this.validatePlaySelection(ids).isValid
+      this.isCompleteHand(ids) &&
+      (!genuineOnly || this.isGenuineConcealedSelection(ids)) &&
+      this.validatePlaySelection(ids).isValid
     const all = visible.map((tile) => tile.id)
     if (all.length <= 14 && accept(all)) return all
     const options = this.getValidationOptions()
     const minimum =
       (options.meldMayServeAsPair ? 12 : 14) -
       Number(options.allowSequenceOverlap)
-    const clemency = this.isDecreeRuleActive('shanten_clemency')
+    const clemency =
+      !genuineOnly &&
+      this.state.riichiStatus !== 'active' &&
+      this.isDecreeRuleActive('shanten_clemency')
     if (visible.length < minimum - Number(clemency)) return null
     if (this.isDecreeRuleActive('all_wild') && visible.length >= 14) {
       const chosen = [...visible]
@@ -1765,6 +1835,14 @@ export class GameOrchestrator {
     if (!basic.isValid) return basic
 
     const errors: string[] = []
+    if (
+      this.state.riichiStatus === 'active' &&
+      !this.isGenuineConcealedSelection(tileIds)
+    ) {
+      errors.push(
+        'Riichi requires a complete concealed hand; abandon the pledge to play tactically'
+      )
+    }
     const fixed = this.state.roundManager.checkMandateEffect('fixed_hand_size')
     if (fixed.active && tileIds.length !== fixed.value) {
       errors.push(`Boss Mandate: Must play exactly ${fixed.value} tiles`)
@@ -1788,6 +1866,23 @@ export class GameOrchestrator {
       )
     }
     return { isValid: errors.length === 0, errors }
+  }
+
+  private isGenuineConcealedSelection(tileIds: string[]): boolean {
+    const tiles = this.state.handTiles.filter((tile) =>
+      tileIds.includes(tile.id)
+    )
+    const complete = this.resolveCompleteHand(
+      this.isDecreeRuleActive('honor_as_suited')
+        ? this.transmuteHonorsToDominantSuit(tiles)
+        : tiles
+    )
+    return Boolean(
+      complete &&
+      !complete.usedShantenClemency &&
+      complete.parsedHand.isConcealed &&
+      this.state.melds.every((meld) => meld.isConcealed)
+    )
   }
 
   /**
@@ -1980,6 +2075,7 @@ export class GameOrchestrator {
     this.state.runScore += scoreResult.finalScore
     this.state.lastHandScore = scoreResult.finalScore
     this.state.handsPlayedThisRun++
+    if (this.state.riichiStatus === 'active') this.state.riichiStatus = 'spent'
     if (
       !completeHand.usedShantenClemency &&
       completeHand.parsedHand.isConcealed
@@ -3524,6 +3620,7 @@ export class GameOrchestrator {
       this.state.mandateEffectSystem.getDisabledDecreeIds()
     )
     const context = createScoringContext(scoredTiles, parsedHand, {
+      isRiichi: this.state.riichiStatus === 'active' && completeConcealedHand,
       isConcealed: true,
       isTsumo: true,
       additiveBonus: 0,
@@ -3549,17 +3646,20 @@ export class GameOrchestrator {
       partialMelds ?? parsedHand.melds,
       this.getPartialHandRules()
     )
-    const mandateScoring = this.state.mandateEffectSystem.applyToScoring({
-      basePoints: baseBreakdown.basePoints,
-      multiplier: baseBreakdown.yakuMultiplier,
-      yakuIds: baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id),
-      yakuTiers: new Map(
-        baseBreakdown.detectedYaku.map((yaku) => [
-          yaku.definition.id,
-          yaku.definition.tier,
-        ])
-      ),
-    })
+    const mandateScoring = this.state.mandateEffectSystem.applyToScoring(
+      {
+        basePoints: baseBreakdown.basePoints,
+        multiplier: baseBreakdown.yakuMultiplier,
+        yakuIds: baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id),
+        yakuTiers: new Map(
+          baseBreakdown.detectedYaku.map((yaku) => [
+            yaku.definition.id,
+            yaku.definition.tier,
+          ])
+        ),
+      },
+      preview
+    )
     const allowedYakuIds = new Set(mandateScoring.yakuIds)
     baseBreakdown.detectedYaku = baseBreakdown.detectedYaku.filter((yaku) =>
       allowedYakuIds.has(yaku.definition.id)
@@ -4158,6 +4258,7 @@ export class GameOrchestrator {
     this.destroyBossLossDecrees(effects)
     this.state.decreeSystem.onRoundEnd()
     this.state.bambooSummerProtection = false
+    if (this.state.riichiStatus === 'active') this.state.riichiStatus = 'spent'
 
     eventBus.emit('roundEnd', {
       won: false,
@@ -4882,7 +4983,12 @@ export class GameOrchestrator {
    */
   getAvailableActions(): PlayerAction['type'][] {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return []
-    return this.actionProcessor.getAvailableActions(this.createStateSnapshot())
+    const actions = this.actionProcessor.getAvailableActions(
+      this.createStateSnapshot()
+    )
+    for (const type of ['declareRiichi', 'abandonRiichi'] as const)
+      if (this.canPerformAction({ type })) actions.push(type)
+    return actions
   }
 
   /**
@@ -4890,6 +4996,8 @@ export class GameOrchestrator {
    */
   canPerformAction(action: PlayerAction): boolean {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return false
+    if (action.type === 'declareRiichi' || action.type === 'abandonRiichi')
+      return this.validateRiichiAction(action.type).isValid
     if (action.type === 'play')
       return this.validatePlaySelection(action.tileIds).isValid
     if (

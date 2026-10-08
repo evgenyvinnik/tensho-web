@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Riichi pledge",
+    "active": "Riichi pledged",
+    "spent": "Riichi used this round",
+    "intro": "Pay 1 Gold before your hand is complete. Once per round.",
+    "risk": "While pledged, only a genuine concealed full hand can score. Redraws, discards, and items still work.",
+    "reward": "Your next complete concealed hand scores Riichi (×1.2 Yaku), subject to Boss and Yakuman rules. Pluto and Riichi Devotee apply only if Riichi scores.",
+    "declare": "Pledge · 1 Gold",
+    "abandon": "Abandon pledge",
+    "abandonNote": "Abandoning restores tactical play. No refund or second pledge this round.",
+    "gold": "You need at least 1 Gold.",
+    "hidden": "Reveal all rack tiles before pledging.",
+    "open": "Riichi requires a concealed hand, without open melds.",
+    "boss": "This Boss requires a fixed play size; Riichi is unavailable.",
+    "complete": "Your hand is already complete. Play it; pledge before completing a future hand.",
+    "inactive": "Pledges are only available during an active round with hands remaining.",
+    "failed": "The table changed. Check the pledge requirements and try again.",
+    "restriction": "Complete a concealed hand or abandon the pledge."
+  },
   "observatory": {
     "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. Black Hole matches any scored Yaku.",
     "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."

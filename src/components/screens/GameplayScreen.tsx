@@ -47,6 +47,7 @@ import { PlayArea } from '../gameplay/PlayArea'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
 import { HandBuilder } from '../gameplay/HandBuilder'
+import { RiichiControl } from '../gameplay/RiichiControl'
 import {
   buildCoachAdvice,
   findBeginnerSuggestion,
@@ -508,6 +509,7 @@ export function GameplayScreen() {
   const activePreviewTileIds =
     stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
   const beginnerCoachActive = Boolean(
+    game.state.riichiStatus !== 'active' &&
     beginnerSuggestion &&
     (forceBeginnerCoach || (!hasCompletedFirstPlay && !tutorial.isDisabled))
   )
@@ -894,6 +896,13 @@ export function GameplayScreen() {
               }
               onOpenBeginnerGuide={handleOpenBeginnerGuide}
               onOpenHandBuilder={() => setShowHandBuilder(true)}
+              riichiControl={
+                <RiichiControl
+                  status={game.state.riichiStatus}
+                  inspect={game.getRiichiState}
+                  onAction={(type) => game.processAction({ type })}
+                />
+              }
               t={t}
             />
           </div>
@@ -942,9 +951,12 @@ export function GameplayScreen() {
             tileIds: previewTileIds,
           })}
           playRestriction={
-            game.lockedTileIds.some((id) => !previewTileIds.includes(id))
-              ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
-              : undefined
+            game.state.riichiStatus === 'active' &&
+            !game.canPerformAction({ type: 'play', tileIds: previewTileIds })
+              ? t('riichiPledge.restriction')
+              : game.lockedTileIds.some((id) => !previewTileIds.includes(id))
+                ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
+                : undefined
           }
           requiredPlaySize={requiredPlaySize}
           currentRound={game.currentRound}

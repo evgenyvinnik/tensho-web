@@ -33,13 +33,14 @@ export interface HandPlanDecision {
  */
 export function chooseHandShapeAction(
   context: HandShapeContext,
-  options: { batchRedraws?: boolean } = {}
+  options: { batchRedraws?: boolean; fullHandPledge?: boolean } = {}
 ): HandPlanDecision | null {
   const { advice, visibleTiles, canPerform } = context
   if (
-    !advice ||
-    advice.best.score >= context.remainingToTarget ||
-    advice.best.tileIds.length > 5
+    (!advice && !options.fullHandPledge) ||
+    (advice &&
+      (advice.best.score >= context.remainingToTarget ||
+        advice.best.tileIds.length > 5))
   )
     return null
   if (

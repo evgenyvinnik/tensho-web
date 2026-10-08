@@ -103,6 +103,10 @@ fresh-context replays, not historical installed-client migration evidence.
 
 ## Follow-up uncovered by the family audit
 
+Historical finding at this checkpoint; subsequently implemented in the
+[Riichi pledge checkpoint](RIICHI_IMPLEMENTATION.md), with an explicit live
+action, saved state and scoring/browser coverage.
+
 `GameOrchestrator.calculateHandScore` never passes `isRiichi` to
 `createScoringContext`; that factory defaults it to false, and the Riichi detector
 requires it. No Classic player action sets a Riichi declaration. Consequently,

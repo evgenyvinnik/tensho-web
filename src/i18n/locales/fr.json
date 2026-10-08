@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Engagement Riichi",
+    "active": "Riichi engagé",
+    "spent": "Riichi utilisé ce tour",
+    "intro": "Payez 1 Or avant de compléter votre main. Une fois par manche.",
+    "risk": "Pendant l’engagement, seule une véritable main complète cachée peut marquer. Échanges, défausses et objets restent disponibles.",
+    "reward": "Votre prochaine main complète cachée marque Riichi (Yaku ×1,2), selon les règles du boss et des Yakuman. Pluton et Dévot de Riichi ne s’appliquent que si Riichi marque.",
+    "declare": "S’engager · 1 Or",
+    "abandon": "Abandonner l’engagement",
+    "abandonNote": "Abandonner rétablit le jeu tactique. Aucun remboursement ni second engagement cette manche.",
+    "gold": "Il vous faut au moins 1 Or.",
+    "hidden": "Révélez toutes les tuiles de votre main avant de vous engager.",
+    "open": "Riichi exige une main cachée, sans groupes ouverts.",
+    "boss": "Ce boss impose une taille de jeu fixe ; Riichi est indisponible.",
+    "complete": "Votre main est déjà complète. Jouez-la ; engagez-vous avant de compléter une prochaine main.",
+    "inactive": "Les engagements nécessitent une manche active avec des mains restantes.",
+    "failed": "La table a changé. Vérifiez les conditions et réessayez.",
+    "restriction": "Complétez une main cachée ou abandonnez l’engagement."
+  },
   "observatory": {
     "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. Trou noir correspond à tout Yaku qui marque.",
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."

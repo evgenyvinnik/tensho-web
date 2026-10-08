@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Compromiso de Riichi",
+    "active": "Riichi comprometido",
+    "spent": "Riichi usado esta ronda",
+    "intro": "Paga 1 de Oro antes de completar la mano. Una vez por ronda.",
+    "risk": "Mientras mantengas el compromiso, solo puntúa una mano completa oculta real. Puedes seguir cambiando y descartando fichas y usando objetos.",
+    "reward": "Tu próxima mano completa oculta puntúa Riichi (Yaku ×1,2), según las reglas del jefe y de Yakuman. Plutón y Devoto de Riichi solo se aplican si puntúa Riichi.",
+    "declare": "Comprometer · 1 de Oro",
+    "abandon": "Abandonar compromiso",
+    "abandonNote": "Abandonar permite volver al juego táctico. Sin reembolso ni segundo compromiso esta ronda.",
+    "gold": "Necesitas al menos 1 de Oro.",
+    "hidden": "Revela todas las fichas de tu mano antes de comprometerte.",
+    "open": "Riichi requiere una mano oculta, sin grupos abiertos.",
+    "boss": "Este jefe exige un tamaño fijo de jugada; Riichi no está disponible.",
+    "complete": "Tu mano ya está completa. Juégala; comprométete antes de completar otra mano.",
+    "inactive": "Solo puedes comprometerte durante una ronda activa con jugadas restantes.",
+    "failed": "La mesa ha cambiado. Revisa los requisitos e inténtalo de nuevo.",
+    "restriction": "Completa una mano oculta o abandona el compromiso."
+  },
   "observatory": {
     "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. Agujero Negro coincide con cualquier Yaku puntuado.",
     "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."

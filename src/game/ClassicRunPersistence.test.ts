@@ -86,6 +86,30 @@ it('does not start, claim, overwrite or load anything just by visiting the menu'
   expect(storage.setItem).not.toHaveBeenCalled()
 })
 
+it('checkpoints Riichi payment and abandonment without refunding or repeating the pledge on resume', async () => {
+  const f = fixture()
+  f.game.startNewRun(7)
+  const gold = f.game.getState().gold
+  expect(await f.persistence.saveNewRun(null)).toBe(true)
+  expect(f.game.processAction({ type: 'declareRiichi' }).success).toBe(true)
+  await f.persistence.flush()
+  expect(disk(f.repo).saved.snapshot.state).toMatchObject({
+    riichiStatus: 'active',
+    gold: gold - 1,
+  })
+  expect(await f.persistence.resume(disk(f.repo).raw)).toBe(true)
+  expect(f.game.getState().gold).toBe(gold - 1)
+  expect(f.game.processAction({ type: 'declareRiichi' }).success).toBe(false)
+  expect(f.game.processAction({ type: 'abandonRiichi' }).success).toBe(true)
+  await f.persistence.flush()
+  expect(disk(f.repo).saved.snapshot.state).toMatchObject({
+    riichiStatus: 'spent',
+    gold: gold - 1,
+  })
+  expect(await f.persistence.resume(disk(f.repo).raw)).toBe(true)
+  expect(f.game.processAction({ type: 'declareRiichi' }).success).toBe(false)
+})
+
 it('reports legacy migration saved only when durable IDs match the restored engine', async () => {
   const f = fixture()
   f.game.startNewRun(7)

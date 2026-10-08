@@ -227,6 +227,7 @@ const stateFields = {
   lastHandScore: nullable(nonnegative),
   handsPlayedThisRun: count,
   completeConcealedHandsPlayed: optional(count),
+  riichiStatus: optional(choice(['available', 'active', 'spent'])),
   discardsRemaining: count,
   redrawsRemaining: count,
   targetScore: nonnegative,

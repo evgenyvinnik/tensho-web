@@ -7,6 +7,25 @@ import { eventBus } from './EventBus'
 
 afterEach(() => eventBus.clear())
 
+it('renders pledge abandonment without depending on a gold or tile event', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  function PledgeView() {
+    const controller = useGameController(game)
+    return <output>{controller.state.riichiStatus}</output>
+  }
+  const view = render(<PledgeView />)
+  act(() => {
+    expect(game.processAction({ type: 'declareRiichi' }).success).toBe(true)
+  })
+  expect(screen.getByRole('status')).toHaveTextContent('active')
+  act(() => {
+    expect(game.processAction({ type: 'abandonRiichi' }).success).toBe(true)
+  })
+  expect(screen.getByRole('status')).toHaveTextContent('spent')
+  view.unmount()
+})
+
 it('catches an update between the first render and subscribing to the game', () => {
   const game = new GameOrchestrator()
   game.startNewRun(7)

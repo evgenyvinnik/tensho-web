@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Riichi pledge](RIICHI_IMPLEMENTATION.md) is implemented locally: an explicit
+once-per-round, 1-Gold commitment enables Riichi, Pluto and Riichi Devotee through
+real play, with genuine completion or nonrefundable abandonment, persisted state,
+all-locale confirmation and a generated portrait. Its tests also found and fixed
+The Eye/The Mouth consuming Yaku eligibility during forecasts. Full regression
+passes 2,757 tests; eight final native and eight production desktop/touch journeys,
+build, lint (warnings only) and thirteen release checks pass. Publication and
+hosted verification remain separate. This is not a balance or completion claim.
+
 [Observatory](OBSERVATORY_IMPLEMENTATION.md) resolves the remaining Charter
 conflict in favor of matching scored Yaku, once per held Orb per play, with
 explicit Black Hole and consumption rules. It adds a generated transparent
@@ -16,9 +25,9 @@ hosted-verified in **v1.0.261008-19**: both local full regressions and independe
 CI pass 2,714 tests; eight final native, eight production and eight hosted
 journeys pass, with matching manifest/tag/runtime and portrait hash. This closes
 a specific power-consumer mismatch, not organic progression balance or enjoyment.
-The follow-up found a concrete next core-loop gap: Classic never passes a Riichi
-declaration to scoring, leaving Pluto Orb and Riichi Devotee without a live
-qualifying path. That remains implementation work, not a completed family test.
+The follow-up found Classic's missing Riichi declaration path; the subsequent
+pledge checkpoint above addresses it explicitly, rather than claiming helper-only
+family tests demonstrated a reachable reward.
 
 [Illustrated public hand guide](ILLUSTRATED_HAND_GUIDE.md) adds an engine-tested
 keep/exchange/complete example, actual tile art and the workshop's real cost and

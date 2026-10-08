@@ -40,6 +40,7 @@ export type GameEvent =
   | 'scoreUpdate'
   | 'yakuScored'
   | 'yakumanScored'
+  | 'riichiChanged'
 
   // Economy
   | 'goldChanged'
@@ -146,6 +147,7 @@ export interface GameEventData {
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
   yakumanScored: { yakuId: string; yakuName: string; multiplier?: number }
+  riichiChanged: { status: 'active' | 'spent' }
 
   // Economy
   goldChanged: {

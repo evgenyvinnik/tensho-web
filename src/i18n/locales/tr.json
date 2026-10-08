@@ -1,4 +1,23 @@
 {
+  "riichiPledge": {
+    "title": "Riichi taahhüdü",
+    "active": "Riichi taahhüdü etkin",
+    "spent": "Bu tur Riichi kullanıldı",
+    "intro": "Elinizi tamamlamadan önce 1 Altın ödeyin. Tur başına bir kez.",
+    "risk": "Taahhüt sürerken yalnızca gerçek, tamamlanmış kapalı bir el puan kazanabilir. Taş yenileme, atma ve eşyalar kullanılabilir.",
+    "reward": "Sonraki tamamlanmış kapalı eliniz Riichi puanı kazanır (Yaku ×1,2); boss ve Yakuman kuralları geçerlidir. Plüton ve Riichi Adanmışı yalnızca Riichi puanlandığında uygulanır.",
+    "declare": "Taahhüt et · 1 Altın",
+    "abandon": "Taahhütten vazgeç",
+    "abandonNote": "Vazgeçmek taktik oyunu geri açar. Bu tur iade veya ikinci taahhüt yoktur.",
+    "gold": "En az 1 Altın gerekir.",
+    "hidden": "Taahhüt vermeden önce elinizdeki tüm taşları açın.",
+    "open": "Riichi, açık grupları olmayan kapalı bir el gerektirir.",
+    "boss": "Bu boss sabit oynama boyutu ister; Riichi kullanılamaz.",
+    "complete": "Eliniz zaten tamamlanmış. Oynayın; sonraki el tamamlanmadan taahhüt verin.",
+    "inactive": "Taahhüt yalnızca aktif turda, oynanacak el kaldığında verilebilir.",
+    "failed": "Masa değişti. Koşulları kontrol edip yeniden deneyin.",
+    "restriction": "Kapalı bir eli tamamlayın veya taahhütten vazgeçin."
+  },
   "observatory": {
     "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik, puan kazanan her Yaku ile eşleşir.",
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
