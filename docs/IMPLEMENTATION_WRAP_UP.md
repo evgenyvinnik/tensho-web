@@ -8,13 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Flower catalysts](FLOWER_CATALYSTS_IMPLEMENTATION.md) are implemented locally:
+[Flower catalysts](FLOWER_CATALYSTS_IMPLEMENTATION.md) are published and verified
+in **v1.0.261008-1**:
 an optional illustrated, cancellable payment path for actual Yaku-changing
 Decrees, with post-payment bonuses/capacity, stock eligibility and saved history
-handled by the authoritative shop transaction. Native journeys pass 4/4, full
-units 1,955/1,955, plus two later focused cases; build, TypeScript, lint and 13
-release checks pass. Built-production replay also passes 4/4; release CI,
-hosted verification and publication remain.
+handled by the authoritative shop transaction. Native, built-production and
+hosted journeys each pass 4/4. Independent release CI passes 1,957/1,957 tests,
+13 release checks, build and deployment; local TypeScript and lint pass. Public
+manifest/tag/runtime match. Earlier local totals and probe corrections are kept.
 This does not substitute for the separately authored Yakuman Succession item.
 
 [Flower mutations](FLOWER_MUTATIONS_IMPLEMENTATION.md) are published and verified

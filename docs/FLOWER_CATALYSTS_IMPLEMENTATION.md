@@ -1,6 +1,6 @@
 # Flower-paid Decree catalysts
 
-October 7, 2026 — local implementation, not yet published.
+October 7, 2026 (October 8 UTC) — published and verified in **v1.0.261008-1**.
 
 The delegated choices are in [the decision log](RULE_RESOLUTION.md). This is
 the optional one-Flower payment described by the Yaku Mutation Decree draft,
@@ -61,9 +61,32 @@ not the separately authored two-Flower Yakuman Succession activation.
   `...-lint.log`, `...-release.log`. Captured v2 replay envelope:
   `/tmp/tensho-catalysts-replay.json`.
 
-## Remaining verification and scope
+## Published verification
 
-Independent release CI, public provenance and hosted journeys remain before a
-published claim. Full Frostbite behavior, the separate
+- Implementation commit: `ca3c08d64e5b3a86a37b2021a23e95f46bfb97b1`.
+- [Release workflow](https://github.com/evgenyvinnik/tensho-web/actions/runs/37706584220)
+  passes independently: **1,957/1,957 tests in 163 files**, all **13 release
+  checks**, build and deployment. Build job `113082278390`; deployment job
+  `113082978504`. No failed-job retry was needed.
+- **4/4 hosted journeys pass**, English/Spanish desktop and 320×568 touch,
+  without retries/deadline changes. They use the captured save, public built
+  assets and actual UI transactions, not development imports. Spanish phone
+  confirmation screenshot inspected; long copy/buttons wrap inside the frame.
+- Public `release.json`, runtime version and remote `v1.0.261008-1` tag agree
+  on `c1ef96ed50272254816a87d940191ae1146ab529`. Entry point:
+  `/tensho-web/assets/index-DuSynnzS.js`; lazy shop chunk:
+  `/tensho-web/assets/ShopScreen-dvQN4Ea_.js`.
+- The initial provenance probe incorrectly expected the shop's UI marker in
+  the entry chunk. Corrected it to follow the actual lazy ShopScreen chunk;
+  no runtime correction was necessary. Keep this distinction from a stale or
+  failed deployment in the record.
+- Reports, screenshots, captured envelope, complete CI output, deployment watch
+  and provenance log: `/tmp/tensho-catalysts-evidence-cQpNRW`.
+  Both owned local test servers (4200/4201) were stopped; the pre-existing 4173
+  server was untouched.
+
+## Remaining scope
+
+Full Frostbite behavior, the separate
 Yakuman Succession item, Fate Seal/Negative lifetime, other catalog reconciliation
 and organic balance/newcomer fun assessment retain their previous scope.

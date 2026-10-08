@@ -230,7 +230,7 @@ These are delegated design choices, not balance conclusions. The implementation
 is published and verified in v1.0.261007-13, including saved acquisition,
 illustrated previews, coaching and real desktop/touch journeys.
 [Evidence and remaining project work](FLOWER_MUTATIONS_IMPLEMENTATION.md).
-Flower-paid Decree catalysts remain a separate required implementation.
+Flower-paid Decree catalysts are the separate follow-up below.
 
 ### Flower-paid Yaku Decree catalysts
 
@@ -266,5 +266,8 @@ optional saved history preserves that fact after consumption while legacy saves
 without it round-trip unchanged. A new run still begins without awakenings.
 Previously earned physical draws or Bamboo/Summer protection are not revoked.
 
-Implementation is local work in progress; browser and release verification have
-not yet been completed for this catalyst checkpoint.
+Implementation is published and verified in **v1.0.261008-1**. Native,
+built-production and hosted EN/ES desktop/touch journeys pass 4/4 each;
+independent CI passes all 1,957 tests, build and deployment. These remain
+delegated design choices, not conclusions from organic balance or fun testing.
+[Rules, verification and remaining scope](FLOWER_CATALYSTS_IMPLEMENTATION.md).
