@@ -8,14 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
-[Riichi pledge](RIICHI_IMPLEMENTATION.md) is implemented locally: an explicit
+[Riichi pledge](RIICHI_IMPLEMENTATION.md) is published and hosted-verified in
+**v1.0.261008-20**: an explicit
 once-per-round, 1-Gold commitment enables Riichi, Pluto and Riichi Devotee through
 real play, with genuine completion or nonrefundable abandonment, persisted state,
 all-locale confirmation and a generated portrait. Its tests also found and fixed
 The Eye/The Mouth consuming Yaku eligibility during forecasts. Full regression
-passes 2,757 tests; eight final native and eight production desktop/touch journeys,
-build, lint (warnings only) and thirteen release checks pass. Publication and
-hosted verification remain separate. This is not a balance or completion claim.
+passes 2,757 tests locally and in independent CI; eight final native, eight
+production and eight hosted desktop/touch journeys, build, lint (warnings only)
+and thirteen release checks pass. Manifest/tag/runtime and portrait hash match.
+This is not a balance or whole-project completion claim.
 
 [Observatory](OBSERVATORY_IMPLEMENTATION.md) resolves the remaining Charter
 conflict in favor of matching scored Yaku, once per held Orb per play, with
@@ -1381,6 +1383,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Latest release v1.0.261008-19 has independent CI (2,714 tests), matching manifest/tag/runtime and 8/8 hosted Observatory hold/use journeys; see [release evidence](OBSERVATORY_IMPLEMENTATION.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-20 has independent CI (2,757 tests), matching manifest/tag/runtime and 8/8 hosted Riichi completion/abandonment journeys; see [release evidence](RIICHI_IMPLEMENTATION.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

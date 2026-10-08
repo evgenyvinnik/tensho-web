@@ -1,7 +1,7 @@
 # Riichi pledge implementation
 
-Updated: October 8, 2026. Status: local implementation and verification complete;
-publication and hosted recheck pending. Not a whole-project completion claim.
+Updated: October 8, 2026. Published and hosted-verified in **v1.0.261008-20**.
+Not a whole-project completion claim.
 
 ## Why this checkpoint exists
 
@@ -110,6 +110,25 @@ Local artifacts: `/tmp/tensho-riichi-46vk5B`.
   evidence of natural shop acquisition or human strategy. Actual declaration,
   redraw/staging/play or abandonment, payment, layout and reload are exercised
   through the UI. No retries or deadline changes.
+
+## Publication
+
+Source `385d5d6a3a537738a2d202b1abee1e7bd996168f` is published as
+**v1.0.261008-20**, built and tagged at
+`ddded601efd5ece660b90b4c83182bd0c382cb03`.
+[Workflow 37765528097](https://github.com/evgenyvinnik/tensho-web/actions/runs/37765528097)
+independently passes **2,757/2,757 tests in 198 files**, build and deployment.
+Build job: `113272134255`; deploy job: `113272872260`.
+
+Hosted release manifest, remote tag and runtime version agree. The entry is
+`assets/index-BQ9Y0vuj.js`; the live portrait matches the SHA-256 above.
+All **eight hosted EN/ES complete/abandon journeys pass** on desktop and 320px
+touch, without retries or deadline changes. They verify loaded artwork, visible
+warning/confirmation, read-only inspection, focus restoration, real declarations,
+redraws and scoring, abandonment without refund/redeclaration, and exact reloads.
+These are fresh-context replays, not historical installed-PWA migration tests.
+Both owned local verification servers were stopped; the pre-existing server on
+port 4173 was left untouched. Main was fast-forwarded to the auto-version commit.
 
 ## Remaining scope
 
