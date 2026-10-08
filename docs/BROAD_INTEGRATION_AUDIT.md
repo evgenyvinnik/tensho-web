@@ -1,7 +1,8 @@
 # Broad integration audit and Perfectionist portrait
 
-October 7, 2026 local / October 8 UTC. Local work in progress, not a deployment
-or whole-project completion claim. Baseline: main `18f7384`, following v1.0.261008-10.
+October 7, 2026 local / October 8 UTC. Published and hosted-verified in
+**v1.0.261008-11**, not a whole-project completion claim. Baseline: main `18f7384`,
+following v1.0.261008-10. The chronological local attempts below are retained.
 
 ## Why this audit
 
@@ -206,3 +207,13 @@ deadline (2,547 passes); its isolated 339-case follow-up passes, as do the final
 lint (zero errors / 211 warnings), and thirteen release checks pass. See the
 Archive ledger for exact intermediate source boundaries and failures. CI,
 publication and hosted verification remain pending.
+
+Final publication: [workflow 37737870191](https://github.com/evgenyvinnik/tensho-web/actions/runs/37737870191)
+passes independent CI **2,548/2,548 in 183 files**, thirteen release checks,
+TypeScript/build and deployment without retries. All **12/12 hosted** Archive,
+earned-unlock and illustrated score-threshold journeys pass on desktop/touch.
+Manifest, `v1.0.261008-11` tag and runtime menu version agree at
+`187227124ddd738c343f62276648a343b4959468`; both new portrait hashes match.
+The [Archive ledger](ARCHIVE_PRESENTATION_IMPLEMENTATION.md#published-verification)
+records the runtime entry and remaining limitations. This supersedes the pending
+publication notes, not the retained failures or broader open implementation scope.

@@ -9,7 +9,8 @@ The requested outcome is to finish the project implementation after the other ag
 ## Current Season implementation
 
 [Broad integration audit](BROAD_INTEGRATION_AUDIT.md) and
-[Archive follow-up](ARCHIVE_PRESENTATION_IMPLEMENTATION.md) are release candidates:
+[Archive follow-up](ARCHIVE_PRESENTATION_IMPLEMENTATION.md) are published and
+hosted-verified in **v1.0.261008-11**:
 six authored Decree gates, compatible earned rewards, Perfectionist/Blueprint art,
 localized collection details and mobile/Cyrillic layout corrections. The full native
 audit finished with 661 passes, thirty environment-specific skips and fifteen
@@ -17,8 +18,10 @@ failures. The subsequent 18- and 28-case serial batches pass all previously fail
 journeys without retries or changed deadlines. Twelve production replays and four
 real-static-host route cases pass. Full local units had 2,547 passes and one CLI
 deadline; the isolated 339-case follow-up passes. Build, lint (warnings only) and
-thirteen release checks pass. CI, deployment and hosted verification are pending;
-earlier failed attempts remain in the evidence ledgers.
+thirteen release checks pass. Independent CI passes **2,548/2,548 in 183 files**,
+deployment succeeds, and the twelve hosted desktop/touch journeys pass. Public
+manifest/tag/runtime version and both portrait hashes agree. Earlier failed
+attempts remain in the evidence ledgers; the overall implementation goal is open.
 
 [Shop copy preflight](SHOP_COPY_PREFLIGHT.md), published and hosted-verified in
 **v1.0.261008-10**, isolates validation and hypothetical
@@ -1292,6 +1295,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Latest release v1.0.261008-10 has independent CI (2,203 tests), matching manifest/tag/runtime and 4/4 hosted shop-copy journeys; see [release evidence](SHOP_COPY_PREFLIGHT.md). Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-11 has independent CI (2,548 tests), matching manifest/tag/runtime and 12/12 hosted progression/Archive/portrait journeys; see [release evidence](ARCHIVE_PRESENTATION_IMPLEMENTATION.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Current real-static-route checks pass 4/4; earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

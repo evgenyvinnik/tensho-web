@@ -1,7 +1,7 @@
 # Archive presentation follow-up
 
-Integrated into the main checkout after its 706-case native audit finished.
-Release verification is in progress; this document does not yet claim deployment.
+Published and hosted-verified in **v1.0.261008-11**, after the 706-case native
+audit and recorded targeted corrections. This is not whole-project completion.
 
 ## Reproduced gaps and changes
 
@@ -170,7 +170,7 @@ This covers the remaining three original full-audit failures.
 512.51 seconds. The one failure is the unchanged five-second structural-policy
 CLI reproducibility test, not an assertion mismatch. The final compact-card CSS
 adjustment followed the Archive file's execution; both that file and the CLI are
-being rechecked separately. Do not call this a green full unit run.
+rechecked separately below. Do not call this a green full unit run.
 
 `archive-final-browser.log`: **seven passed / one failed**, 3.6 minutes. All four
 real-static-host route checks pass, including 200 responses for supported routes,
@@ -198,3 +198,27 @@ additionally requires the lock notice to sit below, not over, the statistics.
 `archive-lock-browser.log` passes **4/4**, 33.1 seconds, no retries; the corrected
 Russian mobile card screenshot is visually verified. Final targeted lint passes
 without diagnostics. Independent release CI and hosted verification follow.
+
+## Published verification
+
+- Implementation commits: `e9fa37e` (authored progression) and
+  `1986dab92dc45aa181162691828ef6684d6feb9f` (Archive/art/layout).
+- [Release workflow 37737870191](https://github.com/evgenyvinnik/tensho-web/actions/runs/37737870191)
+  succeeds without a retry. Independent CI passes **2,548/2,548 tests in 183 files**,
+  all thirteen release checks, TypeScript and the Pages-path production build.
+  Pages deployment succeeds. Existing action-runtime/runner migration warnings
+  remain informational; no workflow dependencies were changed in this checkpoint.
+- Public `release.json`, tag `v1.0.261008-11`, and the rendered menu version agree:
+  `187227124ddd738c343f62276648a343b4959468`, version `1.0.261008-11`.
+  The actual runtime entry is `/tensho-web/assets/index-Dn65oC94.js`.
+- Both hosted portrait byte hashes match the retained assets: Blueprint's hash
+  above and Perfectionist's hash in the broad integration ledger.
+- `hosted.log`: **12/12**, 1.2 minutes, one worker, no retries or changed
+  deadlines. Actual Pages desktop/touch journeys cover Spanish/Russian Archive
+  presentation, cold-font fallback and non-overlapping locked statistics, plus
+  EN/ES paid unlock/save/restore and illustrated threshold payment.
+
+The original failed full native and local unit runs remain recorded above.
+Current targeted and independent-CI passes do not erase those attempts or prove
+human enjoyment, native-speaker quality, physical-device behavior, complete
+catalog localization, or every historical installed-client migration.

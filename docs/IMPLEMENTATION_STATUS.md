@@ -4,7 +4,7 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Decree progression and Archive — release candidate:** six authored unlocks are
+**Published Decree progression and Archive — v1.0.261008-11:** six authored unlocks are
 connected through earning, acquisition and compatible saved continuation. Added
 Perfectionist/Blueprint portraits and localized Archive rules, costs, rarity,
 categories and statistics, with responsive cards/dialogs and readable Cyrillic.
@@ -13,7 +13,10 @@ skips and fifteen failures. Separate 18- and 28-case serial rechecks cover all
 fifteen failures and pass without retries or changed deadlines. Production replays
 pass 12/12; static-route checks pass 4/4. Full local units had 2,547 passes and one
 CLI deadline; the 339-case isolated follow-up passes. Build, lint (warnings only)
-and thirteen release checks pass. Publication and independent CI remain pending.
+and thirteen release checks pass. Independent CI passes **2,548/2,548 in 183 files**;
+deployment succeeds and all twelve hosted desktop/touch journeys pass. Public
+manifest/tag/runtime version and both portrait hashes agree. Earlier failures
+remain recorded; whole-project completion and human fun are not established.
 [Full audit](BROAD_INTEGRATION_AUDIT.md) and
 [Archive changes, retained failures and art provenance](ARCHIVE_PRESENTATION_IMPLEMENTATION.md).
 
