@@ -72,8 +72,8 @@ gaps are not removed by choosing the rule.
 
 - The base Flower–Season interactions are now connected: Plum/Autumn is published and verified in v1.0.261007-12, Orchid/Spring in v1.0.261007-11, and Bamboo/Summer in v1.0.261007-8. The separate input/layout follow-up is verified in v1.0.261007-10 with all 20 hosted journeys passing. Advanced mutations remain separate work below.
 - The four advanced Flower mutations, acquisition/unlock path and catalyst
-  payments are published and verified below. Yakuman Succession is the current
-  local follow-up; its release verification remains separate.
+  payments are published and verified below. Yakuman Succession is also
+  published in v1.0.261008-2 with independent CI and hosted verification.
 - Finish fractional/binary Frostbite effects, Treasure Hunter timing, remaining
   copied resource effects, and reconcile Fate Seal lifetime/Negative tiles.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
@@ -299,4 +299,6 @@ The existing catalyst payment path is allowed only if at least two Flowers remai
 after payment, so buying it for a Flower needs three held beforehand. This is
 not a second sacrifice on activation. The new portrait and all-locale description
 make it distinct from Yaku Nexus. These are delegated design decisions; balance
-is not yet established. Implementation and verification are in progress.
+is not yet established. Published in **v1.0.261008-2** with 1,991 passing local
+and independent CI tests and native/production/hosted EN/ES desktop/touch
+journeys passing 4/4 each. [Evidence and limitations](YAKUMAN_SUCCESSION_IMPLEMENTATION.md).

@@ -8,14 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Yakuman Succession](YAKUMAN_SUCCESSION_IMPLEMENTATION.md) is implemented locally
+[Yakuman Succession](YAKUMAN_SUCCESSION_IMPLEMENTATION.md) is published in **v1.0.261008-2**
 as a distinct two-held-Flower ascension permission, with a generated portrait and
 thirteen-locale descriptions. Twenty engine and thirteen locale cases pass;
-TypeScript, build, lint and thirteen release checks pass. Native and production
-desktop/320px EN/ES journeys each pass 4/4. Fresh full regression passes
-**1,991/1,991 in 165 files**. Earlier deadlines and isolated rechecks remain
-recorded; independent release/hosted verification remains. No publication is
-claimed yet.
+TypeScript, build, lint and thirteen release checks pass. Native, production and
+hosted desktop/320px EN/ES journeys each pass 4/4. Fresh full regression and
+independent CI pass **1,991/1,991 in 165 files**. Deployment succeeds without
+retry; manifest/tag/runtime/artwork provenance matches. Earlier deadlines and
+isolated rechecks remain recorded. This is not whole-project completion.
 
 [Flower catalysts](FLOWER_CATALYSTS_IMPLEMENTATION.md) are published and verified
 in **v1.0.261008-1**:

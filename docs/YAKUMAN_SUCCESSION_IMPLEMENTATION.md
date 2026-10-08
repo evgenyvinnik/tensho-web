@@ -1,7 +1,7 @@
 # Yakuman Succession
 
-October 7, 2026 — local implementation, not published. The live site remains
-at the preceding Flower catalyst release, v1.0.261008-1.
+October 7, 2026 local / October 8 UTC — published and verified in **v1.0.261008-2**.
+This is a mechanics checkpoint, not whole-project or balance completion.
 
 ## Rule and integration
 
@@ -110,8 +110,31 @@ Composition/framing: centered square canvas, complete object visible with 8 perc
 Constraints: genuinely transparent background, isolated artifact, no scene, no frame, no lettering, no numbers, no watermark, no glow cloud, no background cast shadow.
 ```
 
+## Published verification
+
+- Implementation: `a32c36013e05ef62168eee4b6b87a727d8f6ddf1` on `main`.
+- Version commit / tag / public release manifest:
+  `b7e344a3cbcafab3ddfea8ad44a1c6fc4b63fcd2`, `v1.0.261008-2`.
+- [Release workflow 37710090151](https://github.com/evgenyvinnik/tensho-web/actions/runs/37710090151)
+  succeeds without retry: build `113093725445`, deployment `113094420883`.
+  Independent CI passes **1,991/1,991 tests in 165 files**, thirteen release
+  checks and the production build. Existing Node-action/runner migration
+  annotations are warnings, not deployment failures.
+- Hosted English/Spanish desktop and 320px touch journeys pass **4/4**, no
+  retries or deadline changes, matching the native and production results.
+  They verify the rule portrait, localized ascension, exact payment and saved
+  state through reload and the next round. Controlled fixtures do not prove
+  organic acquisition, balance, installed-PWA upgrades or human comprehension.
+- Hosted entry `/tensho-web/assets/index-0L6bNjQG.js` contains the matching
+  runtime version. The public manifest agrees with the fetched tag, and the
+  hosted portrait's SHA-256 equals the workspace hash recorded above.
+- Final reports, screenshots, original failures, CI log and provenance are
+  retained in `/tmp/tensho-succession-evidence-PDnPNK`. Owned 4200/4201 servers
+  were stopped; the pre-existing 4173 server was not touched.
+
 ## Still required
 
-Independent release CI and hosted
-verification remain before publication. Full Frostbite semantics, other item reconciliation and organic
-balance/newcomer evaluation retain their scope; this is not project completion.
+Full Frostbite semantics, other item reconciliation and organic balance/newcomer
+evaluation retain their scope. The 320px Spanish action footer still wraps
+“Saltar” awkwardly; passing no-overflow assertions is not a claim of perfect
+layout. Physical-device and native-speaker review remain separate work.
