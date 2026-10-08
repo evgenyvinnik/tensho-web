@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Pouvoirs copiés et coûts",
+    "rescue": "Un Phénix copié consume le copieur avant l’original. Un copieur Éternel ne peut pas payer ce coût. Le sauvetage Immortel conserve le Décret mais fixe le multiplicateur de score de la partie à ×0,5.",
+    "risk": "Une copie active de Canon de verre se brise aussi après une défaite contre un Boss. La protection Éternelle empêche sa destruction.",
+    "limits": "Les actions limitées à une fois par manche partagent cette limite ; les copies n’ajoutent pas d’utilisations."
+  },
   "randomCopy": {
     "description": "Copie un Décret sans effet de copie à l’acquisition et au début de chaque manche.",
     "target": "Copie de {{name}} · place {{slot}}",

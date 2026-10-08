@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
+[Copied ability lifecycles](COPIED_LIFECYCLES_IMPLEMENTATION.md) now connect physical
+consumption, destruction and shared action limits to the actual loss/round loop,
+with optional thirteen-locale explanations. Full regression passes 2,164/2,164 in
+175 files; build, TypeScript, lint and thirteen release checks pass. Corrected
+native and production desktop/touch EN/ES journeys each pass 4/4; hosted verification
+is pending. Earlier failed reproduction and verification-setup attempts are recorded.
+This closes the copied rescue/cost decision, not whole-project implementation.
+
 [Doppelganger](DOPPELGANGER_IMPLEMENTATION.md) is published and hosted-verified in
 **v1.0.261008-7**, with seeded
 round-stable physical targets, save migration, copied resource timing, generated

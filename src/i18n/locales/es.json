@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Poderes copiados y costes",
+    "rescue": "Un Fénix copiado consume al copiador antes que al original. Los copiadores Eternos no pueden pagar ese coste. El rescate Inmortal conserva el Decreto, pero fija el multiplicador de puntuación de la partida en ×0,5.",
+    "risk": "Una copia activa de Cañón de cristal también se rompe al perder una ronda de Jefe. La protección Eterna impide su destrucción.",
+    "limits": "Las acciones de una vez por ronda comparten un único límite; las copias no añaden usos."
+  },
   "randomCopy": {
     "description": "Copia un Decreto sin efecto de copia al obtenerlo y al iniciar cada ronda.",
     "target": "Copiando {{name}} · posición {{slot}}",

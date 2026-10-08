@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Poteri copiati e costi",
+    "rescue": "Una Fenice copiata consuma il copiatore prima dell’originale. I copiatori Eterni non possono pagare questo costo. Il salvataggio Immortale conserva il Decreto ma imposta il moltiplicatore del punteggio della partita a ×0,5.",
+    "risk": "Anche una copia attiva di Cannone di vetro si frantuma perdendo un round Boss. La protezione Eterna impedisce la distruzione.",
+    "limits": "Le azioni utilizzabili una volta per round condividono lo stesso limite; le copie non aggiungono utilizzi."
+  },
   "randomCopy": {
     "description": "Copia un Decreto senza effetto di copia all’acquisizione e all’inizio di ogni round.",
     "target": "Copia di {{name}} · posizione {{slot}}",

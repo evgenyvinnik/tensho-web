@@ -4,6 +4,16 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
+**Copied ability lifecycles — local checkpoint:** Phoenix copies pay their own
+physical consumption before originals; Eternal cannot turn that cost into free
+rescue. Immortal retains its nonstacking penalty, active Glass Cannon copies inherit
+destruction, and round-limited permissions keep one shared budget. Optional
+thirteen-locale inspector details explain the costs. Full regression passes
+2,164/2,164 in 175 files; TypeScript, build, lint and thirteen release checks pass.
+Corrected native and production EN/ES desktop/320px journeys each pass 4/4.
+Publication verification remains pending; initial failures are retained in
+[the implementation ledger](COPIED_LIFECYCLES_IMPLEMENTATION.md).
+
 **Published Doppelganger — v1.0.261008-7:** seeded physical targeting on acquisition and
 round entry replaces the positional selector. Targets survive previews/reloads,
 suppression does not reroll, and copied resource costs initialize before the next

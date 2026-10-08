@@ -1,5 +1,9 @@
 # Decree copying: physical targets and resource trade-offs
 
+[Copied lifecycle follow-up](COPIED_LIFECYCLES_IMPLEMENTATION.md) supersedes this
+checkpoint's open consumed-power question: copies pay their physical costs,
+permanent rescue has priority, and once-per-round actions share their limit.
+
 October follow-up: [Doppelganger target rules](DOPPELGANGER_IMPLEMENTATION.md)
 supersede the positional-random/awaiting-choice note below. The separate Frostbite,
 Treasure Hunter and Season follow-ups are linked from the implementation status;

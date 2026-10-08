@@ -35,6 +35,7 @@ import { decreeModifierText } from '../../i18n/decreeModifiers'
 import { hasDecreeSticker } from '../../systems/decreeStickers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 import { RandomCopyDetails } from '../ui/RandomCopyDetails'
+import { CopyCostDetails } from '../ui/CopyCostDetails'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   getDecreeIllustration,
@@ -415,6 +416,7 @@ export function DecreeCardCompact({
               </p>
 
               {!faceDown && <DecreeModifierDetails decree={decree} />}
+              {!faceDown && <CopyCostDetails decree={decree} />}
               {!faceDown && (
                 <RandomCopyDetails
                   decree={decree}

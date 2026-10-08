@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Kekuatan salinan dan biaya",
+    "rescue": "Salinan Phoenix menghabiskan penyalin sebelum yang asli. Penyalin Eternal tidak bisa membayar biaya itu. Penyelamatan Immortal mempertahankan Dekret, tetapi menetapkan pengali skor perjalanan menjadi ×0,5.",
+    "risk": "Salinan Glass Cannon yang aktif juga pecah saat kalah di ronde Bos. Perlindungan Eternal mencegah kehancuran.",
+    "limits": "Aksi sekali per ronde berbagi satu batas; salinan tidak menambah penggunaan."
+  },
   "randomCopy": {
     "description": "Menyalin Dekrit acak tanpa efek salin saat diperoleh dan pada awal setiap ronde.",
     "target": "Menyalin {{name}} · slot {{slot}}",

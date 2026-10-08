@@ -15,6 +15,7 @@ import {
   GateCondition,
   OwnedDecree,
   RetriggerTarget,
+  RuleModificationEffect,
   ScalingSource,
   ScoringContext,
   ScoreBreakdown,
@@ -944,11 +945,21 @@ export class DecreeSystem {
     ownedInOrder: OwnedDecree[],
     excludedIds?: ReadonlySet<string>
   ): DecreeEffect[] {
-    const resolved: DecreeEffect[] = []
+    return this.resolveEffectSources(decree, ownedInOrder, excludedIds).map(
+      ({ effect }) => effect
+    )
+  }
+
+  private resolveEffectSources(
+    decree: OwnedDecree,
+    ownedInOrder: OwnedDecree[],
+    excludedIds?: ReadonlySet<string>
+  ): { effect: DecreeEffect; source: OwnedDecree }[] {
+    const resolved: { effect: DecreeEffect; source: OwnedDecree }[] = []
 
     for (const effect of allEffectsOf(decree)) {
       if (effect.type !== 'copy_decree') {
-        resolved.push(effect)
+        resolved.push({ effect, source: decree })
         continue
       }
 
@@ -961,14 +972,33 @@ export class DecreeSystem {
         // jump to another Decree. Callers supply the complete owned order.
         if (target.isDebuffed || isDecreeExcluded(target, excludedIds)) continue
         resolved.push(
-          ...allEffectsOf(target).filter(
-            (inner) => inner.type !== 'copy_decree'
-          )
+          ...allEffectsOf(target)
+            .filter((inner) => inner.type !== 'copy_decree')
+            .map((inner) => ({ effect: inner, source: target }))
         )
       }
     }
 
     return resolved
+  }
+
+  /** Preserve the physical payer separately from the source of a copied rule. */
+  getRuleContributions(
+    ruleId: string,
+    excludedIds?: ReadonlySet<string>
+  ): {
+    owner: OwnedDecree
+    source: OwnedDecree
+    effect: RuleModificationEffect
+  }[] {
+    return this.getActiveDecrees(excludedIds).flatMap((owner) =>
+      this.resolveEffectSources(owner, this.ownedDecrees, excludedIds).flatMap(
+        ({ source, effect }) =>
+          effect.type === 'rule_modification' && effect.ruleId === ruleId
+            ? [{ owner, source, effect }]
+            : []
+      )
+    )
   }
 
   /** The Decrees a copy effect draws from, in owned order. */
@@ -1120,13 +1150,13 @@ export class DecreeSystem {
    * ones persist but exact a permanent score penalty.
    */
   getLossPreventionDecrees(excludedIds?: ReadonlySet<string>): OwnedDecree[] {
-    return this.getActiveDecrees(excludedIds).filter((decree) =>
-      allEffectsOf(decree).some(
-        (effect) =>
-          effect.type === 'rule_modification' &&
-          effect.ruleId === 'prevent_loss'
-      )
-    )
+    return [
+      ...new Set(
+        this.getRuleContributions('prevent_loss', excludedIds).map(
+          ({ owner }) => owner
+        )
+      ),
+    ]
   }
 
   /**
@@ -1419,27 +1449,14 @@ export class DecreeSystem {
    * Check if a rule modification is active
    */
   hasRuleModification(ruleId: string): boolean {
-    return this.getActiveDecrees().some((d) =>
-      allEffectsOf(d).some(
-        (effect) =>
-          effect.type === 'rule_modification' && effect.ruleId === ruleId
-      )
-    )
+    return this.getRuleContributions(ruleId).length > 0
   }
 
   /**
    * Get a specific rule modification
    */
   getRuleModification(ruleId: string): Record<string, unknown> | null {
-    const decree = this.getActiveDecrees().find(
-      (d) => d.effect.type === 'rule_modification' && d.effect.ruleId === ruleId
-    )
-
-    if (decree && decree.effect.type === 'rule_modification') {
-      return decree.effect.modification
-    }
-
-    return null
+    return this.getRuleContributions(ruleId)[0]?.effect.modification ?? null
   }
 
   /**

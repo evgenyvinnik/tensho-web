@@ -16,6 +16,19 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Copied powers pay physical costs; limited actions share their budget
+
+An active copy carries the source's costs, paid by the copier. Permanent rescue
+takes priority; a consuming Phoenix copy is spent before the original, in physical
+inventory order. Eternal owners cannot provide a consuming rescue for free.
+Immortal retains the existing nonstacking ×0.5 run penalty. Active Glass Cannon
+copies shatter on final Boss defeat unless protected by Eternal; native liability
+retains its prior suppression-independent behavior. Destruction is snapshotted
+before removals so neighbors cannot shift midway through settlement. Binary
+permissions share the resolver, but once-per-round actions keep one shared budget,
+not an additional charge per copy. No recursive copying or new RNG is introduced.
+[Contract and verification](COPIED_LIFECYCLES_IMPLEMENTATION.md).
+
 ### Doppelganger target timing
 
 Choose a seeded physical non-copy target on acquisition and each round start,

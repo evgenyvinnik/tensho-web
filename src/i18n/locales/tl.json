@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Kinopyang lakas at kapalit",
+    "rescue": "Ang kinopyang Phoenix ay uubos muna sa tagakopya bago sa orihinal. Hindi mababayaran ng Eternal na tagakopya ang kapalit na iyon. Pinananatili ng Immortal na pagsagip ang Dekreto ngunit itinatakda ang score multiplier ng takbo sa ×0.5.",
+    "risk": "Mababasag din ang aktibong kopya ng Glass Cannon kapag natalo sa Boss round. Pinipigilan ng Eternal ang pagkawasak.",
+    "limits": "Iisa ang limitasyon ng mga aksyong minsan bawat round; hindi nagdaragdag ng gamit ang mga kopya."
+  },
   "randomCopy": {
     "description": "Kumokopya ng random na Dekretong walang epekto ng pagkopya kapag nakuha at sa simula ng bawat round.",
     "target": "Kinokopya: {{name}} · puwesto {{slot}}",

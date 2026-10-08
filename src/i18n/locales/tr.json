@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Kopyalanan güçler ve bedeller",
+    "rescue": "Kopyalanan Anka, asıl Fermandan önce kopyalayanı tüketir. Ebedî kopyalayıcılar bu bedeli ödeyemez. Ölümsüz kurtarış Fermanı korur ama koşunun puan çarpanını ×0,5 olarak ayarlar.",
+    "risk": "Etkin bir Cam Top kopyası da kaybedilen Boss turunda parçalanır. Ebedî koruma yok olmayı önler.",
+    "limits": "Tur başına bir kez kullanılan eylemler tek bir sınırı paylaşır; kopyalar kullanım eklemez."
+  },
   "randomCopy": {
     "description": "Alındığında ve her tur başında kopyalama etkisi olmayan rastgele bir Fermanı kopyalar.",
     "target": "Kopyalanan: {{name}} · yuva {{slot}}",

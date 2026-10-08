@@ -760,15 +760,12 @@ export class GameOrchestrator {
 
   /** Resolve a Decree rule while respecting per-hand mandate suppression. */
   private isDecreeRuleActive(ruleId: string): boolean {
-    return this.state.decreeSystem
-      .getActiveDecrees()
-      .some(
-        (decree) =>
-          [decree.effect, ...(decree.extraEffects ?? [])].some(
-            (effect) =>
-              effect.type === 'rule_modification' && effect.ruleId === ruleId
-          ) && !this.state.mandateEffectSystem.isDecreeDisabled(decree)
-      )
+    return (
+      this.state.decreeSystem.getRuleContributions(
+        ruleId,
+        new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+      ).length > 0
+    )
   }
 
   /** Apply the current Boss Mandate to this round's tile instances. */
@@ -3671,21 +3668,23 @@ export class GameOrchestrator {
    * Returns true when the loss was prevented.
    */
   private tryPreventLoss(effects: Effect[]): boolean {
-    const savers = this.state.decreeSystem.getLossPreventionDecrees(
+    const savers = this.state.decreeSystem.getRuleContributions(
+      'prevent_loss',
       new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
     )
     if (savers.length === 0) return false
 
-    // Prefer a permanent saver so a one-shot is not burned unnecessarily.
-    const permanent = savers.find(
-      (decree) => this.lossPreventionRule(decree)?.consumedOnUse === false
-    )
-    const ordered = permanent
-      ? [permanent, ...savers.filter((decree) => decree !== permanent)]
-      : savers
-    for (const saver of ordered) {
-      const rule = this.lossPreventionRule(saver)
-      if (!rule) continue
+    // Permanent rescue first; spend a copy before destroying its source.
+    // Stable sorting preserves inventory order within each priority.
+    const priority = (saver: (typeof savers)[number]) =>
+      saver.effect.modification.consumedOnUse === false
+        ? 0
+        : saver.owner !== saver.source
+          ? 1
+          : 2
+    const ordered = savers.sort((a, b) => priority(a) - priority(b))
+    for (const { owner: saver, effect } of ordered) {
+      const rule = effect.modification
 
       // Older saves may contain an ineligible Eternal Phoenix. Keep the item
       // protected, but do not grant a one-shot rescue unless it was spent.
@@ -3719,31 +3718,22 @@ export class GameOrchestrator {
     return false
   }
 
-  /** The prevent_loss rule carried by a Decree, if it has one. */
-  private lossPreventionRule(
-    decree: Decree
-  ): { consumedOnUse?: boolean; scorePenalty?: number } | null {
-    const effects = decree.extraEffects
-      ? [decree.effect, ...decree.extraEffects]
-      : [decree.effect]
-
-    for (const effect of effects) {
-      if (effect.type !== 'rule_modification') continue
-      if (effect.ruleId !== 'prevent_loss') continue
-      return effect.modification as {
-        consumedOnUse?: boolean
-        scorePenalty?: number
-      }
-    }
-
-    return null
-  }
-
   /** Destroy Decrees that do not survive a lost Boss round (Glass Cannon). */
   private destroyBossLossDecrees(effects: Effect[]): void {
     const roundState = this.state.roundManager.getCurrentRound()
     if (roundState?.roundType !== 'Boss') return
 
+    // Snapshot copy liabilities before removing anything: physical neighbors
+    // must not shift midway through settlement. Native liabilities retain
+    // their existing behavior even when their owner is suppressed.
+    const doomedOwners = new Set(
+      this.state.decreeSystem
+        .getRuleContributions(
+          'destroy_on_boss_loss',
+          new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+        )
+        .map(({ owner }) => owner)
+    )
     for (const decree of this.state.decreeSystem.getOwnedDecrees()) {
       const doomed = (
         decree.extraEffects
@@ -3754,9 +3744,10 @@ export class GameOrchestrator {
           effect.type === 'rule_modification' &&
           effect.ruleId === 'destroy_on_boss_loss'
       )
-      if (!doomed) continue
-
-      this.state.decreeSystem.removeDecree(decreeKey(decree))
+      if (doomed) doomedOwners.add(decree)
+    }
+    for (const decree of doomedOwners) {
+      if (!this.state.decreeSystem.removeDecree(decreeKey(decree))) continue
       effects.push({
         type: 'decree_triggered',
         description: `${decree.name} shattered with the lost Boss round`,

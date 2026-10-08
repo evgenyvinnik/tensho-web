@@ -1,4 +1,10 @@
 {
+  "copyCosts": {
+    "title": "Copied powers and costs",
+    "rescue": "A copied Phoenix spends the copier before the original. Eternal copiers cannot pay that cost. Immortal rescue keeps the Decree but sets your run’s score multiplier to ×0.5.",
+    "risk": "An active Glass Cannon copy shatters with a lost Boss round too. Eternal protection prevents destruction.",
+    "limits": "Once-per-round actions share one round limit; copies do not add uses."
+  },
   "randomCopy": {
     "description": "Copies a random non-copy Decree on acquisition and at each round start.",
     "target": "Copying {{name}} · slot {{slot}}",
