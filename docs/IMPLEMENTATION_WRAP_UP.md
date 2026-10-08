@@ -8,8 +8,8 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
-[Illustrated asset delivery](ASSET_DELIVERY_IMPLEMENTATION.md) is locally
-verified: 50 transparent UI copies and a responsive two-size guide hero
+[Illustrated asset delivery](ASSET_DELIVERY_IMPLEMENTATION.md) is published and
+hosted-verified in **v1.0.261008-21**: 50 transparent UI copies and a responsive two-size guide hero
 reduce the measured offline payload from about 70 to 36 MiB. Originals remain
 published, all current assets remain offline-ready, and the build enforces
 coverage/size budgets. Fourteen production guide checks and ten real
@@ -17,8 +17,10 @@ old-to-new worker upgrades pass, including decoding all replacement images
 offline. The final full regression passes 2,809 tests in 199 files; 80 native
 cases pass across the recorded initial/follow-up runs. Build, lint (warnings
 only), thirteen release checks and byte-for-byte production asset checks pass.
-Publication is pending; the ledger retains initial failures and remaining
-performance limits. Whole-project completion and enjoyment are not implied.
+Independent CI passes all 2,809 tests and deployment; sixteen hosted checks
+pass with matching manifest/tag/runtime, all 52 image hashes and all 51 legacy
+URLs. The ledger retains initial failures and remaining performance limits.
+Whole-project completion and enjoyment are not implied.
 
 [Riichi pledge](RIICHI_IMPLEMENTATION.md) is published and hosted-verified in
 **v1.0.261008-20**: an explicit
@@ -1395,6 +1397,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Latest release v1.0.261008-20 has independent CI (2,757 tests), matching manifest/tag/runtime and 8/8 hosted Riichi completion/abandonment journeys; see [release evidence](RIICHI_IMPLEMENTATION.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-21 has independent CI (2,809 tests), matching manifest/tag/runtime and 16/16 hosted guide/asset checks; see [release evidence](ASSET_DELIVERY_IMPLEMENTATION.md). Its ten real old→new worker upgrades preserve saves and decode all replacement artwork offline, and the offline payload drops from about 70 to 36 MiB. The full native audit and targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Further font/JavaScript delivery, measured cold-load latency, other installed-client versions and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.
