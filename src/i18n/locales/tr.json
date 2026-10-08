@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik, puan kazanan her Yaku ile eşleşir.",
+    "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
+  },
   "handBuilder": {
     "title": "El oluştur",
     "intro": "Yararlı grupları koruyup fazlalık taşları değiştir. Bu olası bir yol; en iyi hamle garantisi değil.",

@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Bawat hawak na Orb ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Orb sa bawat laro ng kamay. Tugma ang Black Hole sa anumang Yaku na nakapuntos.",
+    "holdingNote": "Ginagantimpalaan ng Observatory ang paghawak sa Orb na ito. Ang paggamit nito ay nagbibigay ng permanenteng pag-upgrade ngunit inaalis ang bonus sa paghawak."
+  },
   "handBuilder": {
     "title": "Bumuo ng kamay",
     "intro": "Panatilihin ang kapaki-pakinabang na grupo at palitan ang sobrang tile. Isa itong posibleng paraan, hindi garantisadong pinakamahusay na galaw.",

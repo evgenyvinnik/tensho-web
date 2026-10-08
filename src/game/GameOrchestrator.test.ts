@@ -560,7 +560,7 @@ describe('GameOrchestrator', () => {
       })
     })
 
-    it('applies Observatory x1.5 Mult for each held Celestial Orb', () => {
+    it('applies Observatory x1.5 Mult for a matching held Celestial Orb', () => {
       const scoreHand = (
         targetGame: GameOrchestrator,
         withObservatory: boolean
@@ -578,7 +578,7 @@ describe('GameOrchestrator', () => {
           expect(
             targetGame.addCelestialOrb(
               CelestialOrbSystem.createCelestialOrbInstance(
-                CELESTIAL_ORBS.mercury_orb
+                CELESTIAL_ORBS.mars_orb
               )
             )
           ).toBe(true)

@@ -16,6 +16,24 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
+### Observatory: attune held bonuses to scored Yaku
+
+Use the item library's family-specific rule instead of the broad multiplier in
+the old gameplay table. Each held, unused physical Orb grants ×1.5 when at least
+one of its Yaku family's patterns survives Boss filtering. Count that Orb once
+per play, not once per matching pattern; distinct held copies stack. Black Hole
+qualifies once if any actual Yaku scores, including Yakuman outside other Orb
+families. A play with no surviving Yaku receives no held-Orb bonus.
+
+Keep the existing final multiplicative layer and rounding; only its qualification
+changes. Ascended Yaku retain their original Orb families. Charters are not
+Decrees, so Frostbite does not halve this bonus. Consuming an Orb still upgrades
+its family for the run and removes that physical Orb's held bonus. Prices,
+unlock requirements, slot limits and already-earned levels remain unchanged.
+Existing runs use the corrected matching rule on their next forecast/play; no
+past score is recalculated and no inventory or level migration is fabricated.
+[Implementation and verification](OBSERVATORY_IMPLEMENTATION.md).
+
 ### Authored Decree unlocks and legacy rewards
 
 Connect the six explicit library conditions to canonical runtime IDs: Blueprint

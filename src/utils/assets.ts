@@ -102,6 +102,7 @@ export const illustrationAssets = {
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.png`,
   abundantStockCharter: `${ASSET_BASE}/illustrations/charters/abundant-stock.webp`,
   starChartCharter: `${ASSET_BASE}/illustrations/charters/star-chart.webp`,
+  observatoryCharter: `${ASSET_BASE}/illustrations/charters/observatory.webp`,
   swiftHandCharter: `${ASSET_BASE}/illustrations/charters/swift-hand.webp`,
   fullPaletteCharter: `${ASSET_BASE}/illustrations/charters/full-palette.webp`,
   moneyTreeCharter: `${ASSET_BASE}/illustrations/charters/money-tree.png`,

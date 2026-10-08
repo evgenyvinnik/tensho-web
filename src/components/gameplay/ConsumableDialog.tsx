@@ -20,6 +20,7 @@ import {
   illustrationAssets,
 } from '../../utils/assets'
 import { TileImage } from '../tiles/TileImage'
+import { CharterArtwork } from '../ui/CharterArtwork'
 
 type Item = FateSeal | CelestialOrb | VoidScript
 type ConsumableAction = Extract<
@@ -34,6 +35,7 @@ export interface ConsumableDialogProps {
   concealedIds: ReadonlySet<string>
   lastCopyableConsumable?: BaseConsumable | null
   scriptDownsideProtected?: boolean
+  observatoryActive?: boolean
   canUse: (action: ConsumableAction) => boolean
   validateUse?: (action: ConsumableAction) => ValidationResult
   onUse: (action: ConsumableAction) => ActionResult
@@ -48,6 +50,7 @@ export function ConsumableDialog({
   concealedIds,
   lastCopyableConsumable,
   scriptDownsideProtected = false,
+  observatoryActive = false,
   canUse,
   validateUse,
   onUse,
@@ -217,6 +220,20 @@ export function ConsumableDialog({
               )
             })}
           </div>
+          {observatoryActive && item?.type === 'CelestialOrb' && (
+            <aside
+              data-observatory-holding
+              className="mt-4 flex items-start gap-3 rounded-lg border border-amber-200/30 bg-black/20 p-3 text-sm leading-relaxed [overflow-wrap:anywhere]"
+            >
+              <CharterArtwork
+                charterId="observatory"
+                className="h-14 w-14 shrink-0"
+              />
+              <div className="min-w-0 space-y-2">
+                <p>{t('observatory.description')}</p>
+              </div>
+            </aside>
+          )}
           {item?.type === 'FateSeal' && range.max > 0 && (
             <p
               data-seal-lifetime
@@ -347,6 +364,14 @@ export function ConsumableDialog({
           )}
         </div>
         <footer className="shrink-0 border-t border-white/10 bg-[var(--color-dark-forest)] px-3 py-3 sm:px-5">
+          {observatoryActive && item?.type === 'CelestialOrb' && (
+            <p
+              data-observatory-cost
+              className="mb-3 text-xs leading-relaxed text-amber-100/85"
+            >
+              {t('observatory.holdingNote')}
+            </p>
+          )}
           {error && (
             <p role="alert" className="mb-2 text-sm text-red-200">
               {error}

@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Observatory](OBSERVATORY_IMPLEMENTATION.md) resolves the remaining Charter
+conflict in favor of matching scored Yaku, once per held Orb per play, with
+explicit Black Hole and consumption rules. It adds a generated transparent
+portrait and all-locale hold/use guidance beside confirmation. Both full
+regressions pass 2,714 tests; eight final native and eight production journeys
+pass. Publication checks are pending. This closes a specific
+power-consumer mismatch, not organic progression balance or human enjoyment.
+
 [Illustrated public hand guide](ILLUSTRATED_HAND_GUIDE.md) adds an engine-tested
 keep/exchange/complete example, actual tile art and the workshop's real cost and
 limits. About/FAQ now describe shipped Flower/Season powers accurately. Published

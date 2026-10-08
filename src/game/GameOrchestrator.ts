@@ -45,6 +45,7 @@ import {
 import { eventBus } from './EventBus'
 import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ascendYaku } from '../rules/yakuAscension'
+import { observatoryMultiplier } from '../systems/observatory'
 import { ShopSession } from './ShopSession'
 import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
 import { buildCoachAdvice } from '../gameplay/beginnerCoach'
@@ -3686,9 +3687,10 @@ export class GameOrchestrator {
 
     // Neutral qualification and actual payment share all final modifiers and
     // rounding. The neutral pass never rerolls tiles or records scaling growth.
-    const orbMultiplier = Math.pow(
-      this.state.charterSystem.calculateEffects().orbMultiplier,
-      this.state.celestialOrbs.length
+    const orbMultiplier = observatoryMultiplier(
+      this.state.celestialOrbs,
+      baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id),
+      this.state.charterSystem.calculateEffects().orbMultiplier
     )
     const settle = (decree: SystemScoreBreakdown) => {
       const finalAdditiveBonus =

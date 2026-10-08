@@ -4,6 +4,7 @@ const portraits: Record<string, string> = {
   swift_hand: illustrationAssets.swiftHandCharter,
   full_palette: illustrationAssets.fullPaletteCharter,
   star_chart: illustrationAssets.starChartCharter,
+  observatory: illustrationAssets.observatoryCharter,
   abundant_stock: illustrationAssets.abundantStockCharter,
   money_tree: illustrationAssets.moneyTreeCharter,
   plentiful_stock: illustrationAssets.plentifulStockCharter,

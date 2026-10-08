@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. Trou noir correspond à tout Yaku qui marque.",
+    "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
+  },
   "handBuilder": {
     "title": "Construire une main",
     "intro": "Gardez les groupes utiles et échangez les tuiles superflues. C'est une piste possible, pas un meilleur coup garanti.",

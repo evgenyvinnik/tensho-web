@@ -550,19 +550,19 @@ export const OMEN_LENS: CharterDefinition = {
 }
 
 /**
- * Observatory - Held Celestial Orbs give x1.5 Mult
+ * Observatory - Matching held Celestial Orbs give x1.5 Mult once per play
  */
 export const OBSERVATORY: CharterDefinition = {
   id: 'observatory',
   name: 'Observatory',
   japaneseName: '天文台',
-  description: 'Held Celestial Orbs give x1.5 Mult',
+  description: 'Each held Orb gives x1.5 Mult when its Yaku family scores, once per Orb per play. Black Hole matches any scored Yaku.',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'orb_mult',
       value: 1.5,
-      description: 'Each held Celestial Orb provides x1.5 Mult',
+      description: 'Each matching held Orb provides x1.5 Mult once per play; Black Hole matches any scored Yaku',
     },
   ],
   baseId: 'star_chart',

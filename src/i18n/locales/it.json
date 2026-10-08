@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. Buco Nero corrisponde a qualsiasi Yaku segnato.",
+    "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."
+  },
   "handBuilder": {
     "title": "Costruisci una mano",
     "intro": "Conserva i gruppi utili e scambia le tessere in eccesso. È una strada possibile, non la mossa migliore garantita.",

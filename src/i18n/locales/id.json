@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb per permainan tangan. Lubang Hitam cocok dengan Yaku mana pun yang mencetak poin.",
+    "holdingNote": "Observatorium memberi bonus karena menyimpan Orb ini. Memakainya memberi peningkatan permanen, tetapi menghapus bonus penyimpanan ini."
+  },
   "handBuilder": {
     "title": "Susun tangan",
     "intro": "Pertahankan kelompok yang berguna dan tukar ubin berlebih. Ini satu kemungkinan, bukan jaminan langkah terbaik.",

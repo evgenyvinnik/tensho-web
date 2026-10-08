@@ -292,10 +292,11 @@ Source inspection establishes these next requirements, not completion:
   persistent mode and achievement suppression. [Implementation and verification](FULL_UNLOCK_IMPLEMENTATION.md)
   distinguish that operation from Archive-only discovery and retain current-run
   prerequisites and payment. Its publication status is recorded separately.
-- Observatory's item-library rule says held Orbs multiply **their Yaku**;
-  the current canonical definition/scoring applies every held Orb. Reconcile
-  this rules conflict before changing the multiplier. An optional user question
-  now asks which rule to use; no answer has been assumed.
+- Observatory's old open question is resolved under the user's later delegated
+  rules authority: matching-family held bonuses, once per Orb per play, with
+  explicit Black Hole behavior. [Current implementation and release evidence](OBSERVATORY_IMPLEMENTATION.md)
+  replace the broad unconditional multiplier; the old question is not treated
+  as an individually answered confirmation.
 - Every upgrade now has controlled offer/paid-acquisition/repeat/new-run checks.
   The [resource-power follow-up](CHARTER_RESOURCE_VERIFICATION.md) adds paid
   next-round, exhaustion, boss-precedence and exact-resume coverage for the

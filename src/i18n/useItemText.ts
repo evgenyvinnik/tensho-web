@@ -71,7 +71,9 @@ export function useItemText(): ItemText {
                   ? 'scoreThresholds.supernova'
                   : kind === 'decrees' && item.id === 'decree-perfectionist'
                     ? 'scoreThresholds.perfectionist'
-                    : `${kind}.items.${item.id}.description`,
+                    : kind === 'charters' && item.id === 'observatory'
+                      ? 'observatory.description'
+                      : `${kind}.items.${item.id}.description`,
           item.description ?? ''
         ),
     }),

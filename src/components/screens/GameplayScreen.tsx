@@ -995,6 +995,7 @@ export function GameplayScreen() {
           concealedIds={faceDownTileIds}
           lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
           scriptDownsideProtected={game.state.omenSystem.hasVoidScriptDownsideProtection()}
+          observatoryActive={game.state.charterSystem.hasCharter('observatory')}
           canUse={game.canPerformAction}
           validateUse={game.validateConsumableAction}
           onUse={game.processAction}

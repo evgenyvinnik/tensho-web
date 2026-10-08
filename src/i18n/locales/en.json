@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. Black Hole matches any scored Yaku.",
+    "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."
+  },
   "handBuilder": {
     "title": "Build a hand",
     "intro": "Keep useful groups together and exchange spare tiles. This is one possible route, not a guaranteed best move.",

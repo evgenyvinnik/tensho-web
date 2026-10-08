@@ -1,4 +1,8 @@
 {
+  "observatory": {
+    "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. Agujero Negro coincide con cualquier Yaku puntuado.",
+    "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."
+  },
   "handBuilder": {
     "title": "Construye una mano",
     "intro": "Conserva los grupos útiles y cambia las fichas sobrantes. Esta es una ruta posible, no la mejor jugada garantizada.",
