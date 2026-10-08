@@ -110,6 +110,17 @@ for (const language of ['en', 'es', 'ru']) {
     })
     await expect(dialog.locator('[data-plan-keep] img')).toHaveCount(12)
     await expect(dialog.locator('[data-plan-exchange] img')).toHaveCount(2)
+    // Assert semantic image identity, not only that some PNG loaded.
+    await expect(
+      dialog
+        .locator('[data-plan-exchange]')
+        .getByRole('img', { name: copy.tiles.white, exact: true })
+    ).toHaveAttribute('src', /Dragons \(3\)\.png$/)
+    await expect(
+      dialog
+        .locator('[data-plan-exchange]')
+        .getByRole('img', { name: copy.tiles.red, exact: true })
+    ).toHaveAttribute('src', /Dragons \(1\)\.png$/)
     await expect(dialog.locator('[data-plan-cost]')).toHaveText(
       copy.handBuilder.cost
         .replace('{{remaining}}', '2')

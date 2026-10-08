@@ -86,3 +86,34 @@ Evidence: `/tmp/tensho-hand-builder-Rob6DP`.
 
 Publication checks remain a separate gate. Whole-project
 completion, broader balance and newcomer enjoyment remain unproven.
+
+## Visual identity correction discovered during review
+
+The first workshop screenshots exposed a pre-existing shared asset defect: engine
+Dragon ranks are White/Green/Red, but the supplied files are Red/Green/White.
+`getTileImagePath` now explicitly maps those ranks to files 3/2/1. No images,
+tile identities, saved ranks, scoring or rules are rewritten. All callers of the
+shared helper, including tiles, teaching examples and reward art, receive the fix.
+
+All three Dragon sources and all four Wind sources were visually inspected.
+Winds already match East/South/West/North and retain their ordering. Flower and
+Season sources were also inspected and are unchanged. Three SHA-256 assertions
+pin the reviewed Dragon pixels to their engine identities; four Wind mapping
+assertions guard against applying the Dragon remap to other families. The focused
+asset/TileImage set passes **47/47**. The workshop browser test now asserts the
+localized White Dragon uses file 3 and Red Dragon file 1, not merely that a PNG
+loads. All **six native and six production** journeys pass again, and the updated
+desktop screenshot was visually checked. This closes the observed swap, not a
+claim that every source image has received a complete semantic audit.
+The final full regression passes **2,671/2,671 in 192 files**. Strict build and
+targeted lint pass. These follow-up artifacts have the `dragon-` prefix in the
+same evidence directory; no prior failure or screenshot was overwritten.
+
+## Initial publication
+
+Workshop source `2dc190b1ca4288cbf696fe3156efc324059800da` was independently built
+and deployed by [workflow 37751444890](https://github.com/evgenyvinnik/tensho-web/actions/runs/37751444890),
+including **2,664/2,664 CI tests**. Version **1.0.261008-16** has tag/built commit
+`c96dd64700c93c91af5ab7172a4dc31b729d91a5`, matching the hosted manifest.
+This initial version still contains the Dragon artwork swap; the corrective
+follow-up and its hosted verification are recorded separately.

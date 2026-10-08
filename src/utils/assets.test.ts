@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { STARTER_DECREES } from '../systems/DecreeSystem'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
+import { DragonType, TileSuit, WindType } from '../core/Tile'
 import {
   getCodexCategoryIllustration,
   getDecreeIllustration,
@@ -11,8 +12,49 @@ import {
   getTableStyleIllustration,
   getMandateIllustration,
   illustrationAssets,
+  getTileImagePath,
 } from './assets'
 import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../config/mandateDefinitions'
+
+// These PNGs were visually inspected: asset 1 is red 中, 2 is green 發,
+// and 3 is the blank blue-framed White Dragon. Engine ranks are not file order.
+it.each([
+  [
+    DragonType.White,
+    3,
+    '73bffaba5777ee4fc77352626fe99c340c30f6fcfd1022eafdfecb443c6ab06a',
+  ],
+  [
+    DragonType.Green,
+    2,
+    'a876cb4468278e3c59a6e4860332d4dc826c5038a686397dbec8ae18b52cbedb',
+  ],
+  [
+    DragonType.Red,
+    1,
+    'e3d3aeee8bea2875dca8c48540f631daea6a63e9b5f996f3feff7e196fc54200',
+  ],
+] as const)(
+  'maps Dragon rank %s to the reviewed face %s',
+  (rank, file, hash) => {
+    const path = getTileImagePath(TileSuit.Dragon, rank)
+    expect(path).toMatch(new RegExp(`Dragons \\(${file}\\)\\.png$`))
+    expect(
+      createHash('sha256')
+        .update(readFileSync(`public${path}`))
+        .digest('hex')
+    ).toBe(hash)
+  }
+)
+
+it.each([WindType.East, WindType.South, WindType.West, WindType.North])(
+  'preserves reviewed Wind order for rank %s',
+  (rank) => {
+    expect(getTileImagePath(TileSuit.Wind, rank)).toContain(
+      `Winds (${rank}).png`
+    )
+  }
+)
 
 it('ships a compact transparent Transmutation seal with safe generic fallbacks', () => {
   const webp = readFileSync(

@@ -3,7 +3,7 @@
  * Provides utilities for accessing game assets (images, audio, fonts)
  */
 
-import { TileSuit } from '../core/Tile'
+import { DragonType, TileSuit } from '../core/Tile'
 import type { DecreeRarity, PackType, FlowerVariant } from '../systems/types'
 import { withBasePath } from './basePath'
 
@@ -36,7 +36,19 @@ const SUIT_TO_FILE_PREFIX: Record<TileSuit, string> = {
  */
 export function getTileImagePath(suit: TileSuit, rank: number): string {
   const prefix = SUIT_TO_FILE_PREFIX[suit]
-  return `${MAHJONG_PNG_BASE}/tiles/${prefix} (${rank}).png`
+  // The supplied art is ordered Red / Green / White, whereas engine ranks
+  // are White / Green / Red. Keep saved tile identities and rules unchanged.
+  const assetRank =
+    suit === TileSuit.Dragon
+      ? ((
+          {
+            [DragonType.White]: 3,
+            [DragonType.Green]: 2,
+            [DragonType.Red]: 1,
+          } as Record<number, number>
+        )[rank] ?? rank)
+      : rank
+  return `${MAHJONG_PNG_BASE}/tiles/${prefix} (${assetRank}).png`
 }
 
 /**
