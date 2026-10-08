@@ -1,7 +1,7 @@
 # Shop inspection must not spend a random draw
 
-October 7, 2026 local / October 8 UTC. Local implementation checkpoint; broader
-verification and publication remain pending. Whole-project completion remains open.
+October 7, 2026 local / October 8 UTC. Published and hosted-verified in
+**v1.0.261008-10**. Whole-project completion remains open.
 
 ## Reproduced defect
 
@@ -56,7 +56,7 @@ Root: `/tmp/tensho-copy-preflight-1YBLzz`.
   purchase/next-round journey. The host was under substantial concurrent load,
   but that observation alone does not prove a cause for either timeout. Existing
   broader regression tests also exceeded their deadlines. No deadline was raised.
-  Sequential rechecks and final regression results follow when completed.
+  Sequential rechecks and final regression results follow below.
 - Initial full regression: **2,195/2,203**, 257.81 seconds in 178 files. Eight
   failures were deadlines: four existing save-validation cases, two CLI test
   deadlines and two spawned CLI command timeouts. Original logs are retained;
@@ -77,6 +77,23 @@ Root: `/tmp/tensho-copy-preflight-1YBLzz`.
   Production replay passes **4/4**, 14.5 seconds, one worker and no retries, using
   the native exported save and public UI/save behavior only. No production module
   imports are used. The temporary production server is stopped after verification.
+
+## Published release
+
+- Implementation `b2747e07b6d9670aa8f4bc572b41dbeb11bcac6f` is on main.
+  Version bot/tag/build checkout: `274cce0efd9c4815076436e2453a263e32968396`.
+- [Workflow 37725810984](https://github.com/evgenyvinnik/tensho-web/actions/runs/37725810984)
+  independently passes **2,203/2,203 tests in 178 files**, thirteen release checks,
+  production build and Pages deployment. Build job 113143579722; deploy job
+  113144237251. Local main fast-forwarded to the version bot commit.
+- Public manifest, tag and runtime agree on **v1.0.261008-10**, entry
+  `/tensho-web/assets/index-BtjMO-jo.js`. Evidence: `ci.log`, `ci-watch.log` and
+  `provenance.json` in the evidence root.
+- Hosted EN/ES desktop and 320×568 touch replays pass **4/4**, 16.5 seconds,
+  one worker, zero retries and unchanged deadlines. Repeated inspection/reload,
+  purchase with exactly one committed draw, next-round targeting and exact saved
+  restoration pass without page errors. Evidence: `hosted.log` and
+  `hosted-artifacts`. Earlier failed attempts remain recorded above.
 
 This is a seeded-transaction consistency fix, not proof of overall balance,
 human enjoyment, every device's startup performance or whole-project completion.
