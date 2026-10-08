@@ -77,12 +77,42 @@ flakes, using the native run's actual version-2 save envelopes without injected
 production APIs. Same EN/ES desktop/touch flow, no page errors or horizontal
 overflow. Mobile Spanish picker and over-capacity Tea House screenshots inspected.
 Evidence: production.json and production-screens in the same evidence directory.
-Hosted deployment verification is pending.
+Hosted deployment verification is recorded below.
 
-Full regression, production and deployment evidence follows below. This ledger
-is not yet a published-release claim. Broader copied-resource lifecycles, remaining
+Broader copied-resource lifecycles, remaining
 Charter/item wording, organic strategy/balance, newcomer observation and physical
 device review remain open.
+
+## Published release — v1.0.261008-4
+
+- Implementation: 2449853aa7d05ab890adb4d4a734fc1b15621dce, pushed to main.
+- Version bot/tag/build checkout: 2530163c9d7efdee4366582e0757f204676159d5.
+- [Workflow 37716353248](https://github.com/evgenyvinnik/tensho-web/actions/runs/37716353248)
+  succeeds without a job retry. Independent CI: **2,060/2,060 in 169 files**, all
+  thirteen release checks and Pages-base build/deploy. Build job 113113576907;
+  deploy job 113114176595. Local main fast-forwarded to the bot commit.
+- Public release.json version/tag/commit agree with the runtime entry
+  /tensho-web/assets/index-Dn_gddh4.js and the tag. Hosted illustration is 63,402
+  bytes with the exact checksum below. Evidence: provenance.json and ci-build.log.
+- First hosted batch: **7/8**, 26.6 seconds. The first English desktop load reached
+  the error boundary: failed dynamic import of GameplayScreen-DKfjhnYC.js, before
+  the saved-state readiness assertion. This is a real startup failure, not a
+  mechanics assertion or merely a deadline. Original network trace was not enabled,
+  so its cause is unproven; do not attribute it conclusively to CDN propagation.
+- Direct read-only probe of that exact URL subsequently returns HTTP 200,
+  application/javascript, 109,680 bytes. Seven other original journeys passed.
+  A fresh unchanged full hosted batch with tracing passes **8/8**, 33.6 seconds,
+  original deadlines, no automatic retries, no page errors or horizontal overflow.
+  It verifies EN/ES desktop/320px copy/destruction, save/reload, scoring transition,
+  capacity and retained inventory. Earlier failure is not erased by this recheck.
+- Evidence: hosted.json, hosted-first-screens, chunk-probe.json,
+  hosted-recheck.json and hosted-recheck-screens (including traces) under
+  /tmp/tensho-ownership-evidence-yzDkyJ. Both temporary verification servers are
+  stopped; the pre-existing port 4173 server was left untouched.
+
+Startup reliability remains a concrete follow-up. The production cache currently
+contains 430 entries / 70,804.21 KiB; its cost deserves separate cold-load/mobile
+review, but it is not established as the cause of the observed fetch failure.
 
 ## Artwork provenance
 

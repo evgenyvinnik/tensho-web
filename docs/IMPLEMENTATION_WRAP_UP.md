@@ -8,13 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-The [run-ownership follow-up](RUN_OWNERSHIP_IMPLEMENTATION.md) is locally
-implemented: permanent current-run Fate Seal changes, Negative physical-tile
+The [run-ownership follow-up](RUN_OWNERSHIP_IMPLEMENTATION.md) is published and
+verified in **v1.0.261008-4**: permanent current-run Fate Seal changes, Negative physical-tile
 capacity, saved-run reconciliation and localized explanations, with distinct
 Transmutation art. Native and built-production desktop/320px EN/ES journeys each
 pass 8/8 without retries. Eighteen engine and fourteen localized UI tests plus the
-asset check pass. Full regression passes 2,060/2,060 in 169 files; TypeScript,
-build, lint and thirteen release checks pass. Deployment is pending. This supersedes
+asset check pass. Full regression and independent CI pass 2,060/2,060 in 169 files;
+TypeScript, build, lint and thirteen release checks pass. Deployment and release/
+artwork provenance match. Hosted first batch was 7/8 due to a gameplay-module fetch
+failure; the unchanged traced full recheck passes 8/8. The original failure cause
+is unproven, retained for startup-reliability follow-up. This supersedes
 older notes requesting a separate lifetime/Negative choice; it does not close
 the other gameplay, item, accessibility or balance requirements.
 
@@ -1225,6 +1228,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | The latest static-route checkpoint is published as v1.0.261004-2 with independent CI (1,601 tests), matching manifest/tag, 12 hosted route/guide checks and four hosted save/play/reload journeys; see [static route evidence](STATIC_ROUTE_IMPLEMENTATION.md). The earlier save-aware update checkpoint has 10 native upgrade scenarios; see [application updates](PWA_UPDATE_IMPLEMENTATION.md). Migration from every historical installed client and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-4 has independent CI (2,060 tests), matching manifest/tag/runtime/artwork, and a final 8/8 hosted ownership recheck. The initial 7/8 dynamic-module fetch failure remains unexplained; see [ownership release evidence](RUN_OWNERSHIP_IMPLEMENTATION.md). Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

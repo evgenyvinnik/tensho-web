@@ -4,13 +4,15 @@
 
 **Last verified:** October 7, 2026 (browser and release evidence retains its own dates)
 
-**Current local ownership checkpoint:** Fate Seal changes are explicitly
+**Published ownership checkpoint — v1.0.261008-4:** Fate Seal changes are explicitly
 run-persistent; Negative tiles now grant their promised ownership slots across
 acquisition, copying, destruction and reload. Eighteen engine, fourteen localized
-UI and asset checks pass. Native and built-production desktop/320px EN/ES browser
-journeys each pass 8/8 without retries. Full regression passes 2,060/2,060 in 169
-files; TypeScript, build, lint and thirteen release checks pass. New Transmutation
-artwork is integrated. Deployment is pending; this is not yet a hosted claim.
+UI and asset checks pass. Native and built-production desktop/320px EN/ES journeys
+each pass 8/8. Hosted first batch was 7/8 after a dynamic gameplay-module fetch
+failure; the unchanged traced full recheck passes 8/8. Its original cause remains
+unproven and recorded. Full regression and independent CI pass 2,060/2,060 in 169
+files; TypeScript, build, lint and thirteen release checks pass. Deployment succeeds;
+manifest/tag/runtime and new Transmutation artwork checksum match.
 [Decision and evidence](RUN_OWNERSHIP_IMPLEMENTATION.md) supersedes older
 hand-only/Negative conflict notes below. The whole project remains in progress.
 
