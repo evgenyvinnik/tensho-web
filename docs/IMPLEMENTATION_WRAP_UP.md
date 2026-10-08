@@ -6,14 +6,16 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Current Season implementation
+## Current implementation
 
 [Illustrated public hand guide](ILLUSTRATED_HAND_GUIDE.md) adds an engine-tested
 keep/exchange/complete example, actual tile art and the workshop's real cost and
-limits. About/FAQ now describe shipped Flower/Season powers accurately. Local
-verification passes 2,675 tests, build, thirteen release checks, eight production
-guide journeys and six gameplay workshop replays. Publication is pending. These
-English articles do not close newcomer playtesting or guide localization.
+limits. About/FAQ now describe shipped Flower/Season powers accurately. Published
+and hosted-verified in **v1.0.261008-18**: 2,675 tests pass locally and in CI;
+build, thirteen release checks, eight production guide journeys and six gameplay
+workshop replays pass. All fourteen hosted rechecks pass with matching manifest,
+tag and runtime. These English articles do not close newcomer playtesting or
+guide localization.
 
 [Illustrated hand workshop](HAND_BUILDER_IMPLEMENTATION.md), published and hosted-verified
 in **v1.0.261008-17**, connects optional
@@ -1358,6 +1360,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
-| Release readiness | Latest release v1.0.261008-11 has independent CI (2,548 tests), matching manifest/tag/runtime and 12/12 hosted progression/Archive/portrait journeys; see [release evidence](ARCHIVE_PRESENTATION_IMPLEMENTATION.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Current real-static-route checks pass 4/4; earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
+| Release readiness | Latest release v1.0.261008-18 has independent CI (2,675 tests), matching manifest/tag/runtime and 14/14 hosted guide/workshop journeys; see [release evidence](ILLUSTRATED_HAND_GUIDE.md). The full native audit and its targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and ten [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Cold-load/cache cost, installed-client upgrades and physical-device checks remain open. |
 
 Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.

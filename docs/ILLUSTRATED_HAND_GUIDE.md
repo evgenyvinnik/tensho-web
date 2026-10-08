@@ -57,6 +57,21 @@ Evidence directory: `/tmp/tensho-guide-refresh-Sv86pn`.
 
 - Full regression: **2,675/2,675 in 193 files**. No retries or changed deadlines.
 
-Publication is a separate remaining gate at this checkpoint.
 This does not verify translated articles, physical devices, screen readers,
 search indexing/ranking or newcomer enjoyment.
+
+## Publication
+
+Source `3628a944075b2fa8845b2b54409bab97e9acd034` is published as
+**v1.0.261008-18**, built/tagged at
+`9889347f4fdc0cb3aa8662be942ccfe4e18ed903`.
+[Workflow 37756765862](https://github.com/evgenyvinnik/tensho-web/actions/runs/37756765862)
+independently passes **2,675/2,675 tests in 193 files**, build and deployment.
+The hosted release manifest agrees with the tag/commit/version; runtime entry
+`assets/index-D697frMt.js` contains that version.
+
+All **14 hosted browser journeys pass**, without retries: eight public-guide
+checks plus six actual workshop exchanges/reloads, including English/Spanish/
+Russian gameplay on desktop and 320px touch. Hosted artifacts are in `hosted/`
+and `hosted.log`. These are current fresh browser contexts, not a historical
+installed-PWA migration or physical-phone performance claim.

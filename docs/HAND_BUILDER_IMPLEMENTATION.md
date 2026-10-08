@@ -135,8 +135,8 @@ and exact saved reload. Evidence is `hosted.log` and `hosted/`. The final thirte
 release-workflow checks pass too. This does not establish historical installed
 PWA migration, physical-phone performance, native-language quality or human fun.
 
-Read-only follow-up identified stale public About/FAQ copy in
-`src/publicSite/content.ts` still calling Season/Flower powers incomplete, plus
-no workshop explanation in the how-to guide. Reconcile those specific statements
-with the shipped mechanics in the next content pass. Broader gameplay and
+Read-only follow-up identified stale public About/FAQ copy calling Season/Flower
+powers incomplete, plus no workshop explanation in the how-to guide. The
+[illustrated public guide](ILLUSTRATED_HAND_GUIDE.md) reconciles those statements
+and adds an engine-tested worked example in v1.0.261008-18. Broader gameplay and
 completion requirements remain open.
