@@ -4,14 +4,16 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
-**Secret consumable progression — locally verified, publication pending:** six
+**Published secret consumable progression — v1.0.261008-12:** six
 authored gates now connect actual paid patterns and canonical Orb discovery to
 shops, packs, generated rewards and Archive eligibility. Yakuman records its
 original family once; run mastery cannot combine lifetime totals. Legacy owned
 items, Fool copies and paid packs remain usable. Thirteen-locale requirements,
 2,579 passing unit/component tests, build/typecheck, lint (warnings only), thirteen
 release checks, eight native and eight production unlock/Archive journeys, plus
-28 native Orb-effect journeys pass. Earlier fixture and real Fool regression
+28 native Orb-effect journeys pass. Independent CI passes 2,579/2,579 tests and
+deployment; all eight hosted desktop/touch journeys pass. Manifest/tag/runtime
+agree. Earlier fixture and real Fool regression
 failures remain in the [evidence ledger](SECRET_CONSUMABLE_PROGRESSION.md).
 The overall implementation and organic fun assessment remain open.
 

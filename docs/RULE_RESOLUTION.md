@@ -149,8 +149,8 @@ gaps are not removed by choosing the rule.
   ownership rules above; release verification is tracked separately.
 - Reconcile remaining Charter/item wording against actual acquisition/use.
   The six authored Decree unlocks found by the [broad integration audit](BROAD_INTEGRATION_AUDIT.md)
-  are published and hosted-verified in v1.0.261008-11. Secret consumable gates
-  are the next implementation checkpoint, documented below.
+  are published and hosted-verified in v1.0.261008-11. The six secret consumable
+  gates are published and hosted-verified in v1.0.261008-12, documented below.
 - Continue organic-run strategy and newcomer evaluation. A legal engine run or
   a green browser test alone does not demonstrate engaging play.
 

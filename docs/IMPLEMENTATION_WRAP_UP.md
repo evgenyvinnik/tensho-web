@@ -8,13 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current Season implementation
 
-[Secret consumable progression](SECRET_CONSUMABLE_PROGRESSION.md) is locally
-verified, awaiting publication checks: all six authored gates now affect live
+[Secret consumable progression](SECRET_CONSUMABLE_PROGRESSION.md) is published
+and hosted-verified in **v1.0.261008-12**: all six authored gates now affect live
 earning and acquisition, including paid Yakuman families and same-run mastery.
 Legacy paid/owned rewards and Fool copies remain valid. Final units pass
 2,579/2,579 in 186 files; build/typecheck, lint (warnings only), thirteen release
 tests, eight native and eight production unlock/Archive journeys, and 28 native
-Orb-effect journeys pass. Prior failures and fixes remain recorded. This is a
+Orb-effect journeys pass. Independent CI passes 2,579/2,579 tests and deployment;
+eight hosted desktop/touch journeys pass and manifest/tag/runtime agree.
+Prior failures and fixes remain recorded. This is a
 mechanics checkpoint, not a whole-project completion or fun claim.
 
 [Broad integration audit](BROAD_INTEGRATION_AUDIT.md) and

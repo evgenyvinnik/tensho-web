@@ -1,6 +1,6 @@
 # Secret consumable progression
 
-Status: locally verified October 8, 2026; publication verification pending.
+Status: published and hosted-verified October 8, 2026 in **v1.0.261008-12**.
 
 ## Evidence and decision
 
@@ -62,6 +62,20 @@ Final local verification:
 
 Evidence directory: `/tmp/tensho-secret-consumables-6kSpr4` (local logs/replays).
 The passing full regression follows the Fool fix; both earlier failures remain
-above. Publication/independent CI/hosted checks are separate from local success.
+above.
+
+## Publication
+
+- Implementation: `1765d957809f129a8d7fc99699f0069929354017` on `main`.
+- Version commit/tag: `d986afd926b34658d8c911debc323e3e24508ea9`,
+  `v1.0.261008-12`.
+- [Independent CI and Pages deployment](https://github.com/evgenyvinnik/tensho-web/actions/runs/37740909615)
+  succeed: **2,579/2,579** tests in 186 files, thirteen release checks, build and
+  deployment. Pages precaches 434 entries / 71,120.79 KiB.
+- Hosted EN/ES paid-unlock/reload and ES/RU Archive desktop/touch journeys pass
+  **8/8**, with no retries or changed deadlines.
+- Public `release.json`, remote tag and runtime version agree. Served entry:
+  `/tensho-web/assets/index-CtP8uqX6.js`.
+
 No real-player claim about fun, mastery difficulty, translation quality or
 whole-project completion follows from these checks.
