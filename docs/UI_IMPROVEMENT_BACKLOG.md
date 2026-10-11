@@ -116,17 +116,11 @@ is still in progress; arbitrary enlarged racks and real devices remain open.
 
 ## P3 — polish
 
-- **Smallest phones open on the rack.** At 320×568 (2016 iPhone SE / 5s) a
-  14–16 tile hand needs four 44px rows (~322px) but only ~310px remains for
-  board and rack, so the rack cannot be pinned and the board opens at its
-  top (inventory and tip), with the hand below the fold. When
-  `rackPinned` is false on mount, scroll the board to its end once so the
-  whole hand, the staging line ("Pair ready") and the actions show first;
-  the tip and inventory stay one swipe up. File: `PlaySurface.tsx` (the
-  rack-measure effect). Update the phone branch of
-  `e2e/tutorial-layout.spec.ts` to scroll the tip into view before
-  measuring it. Done when the device matrix in `LAYOUT_SIMPLIFICATION.md`
-  shows the whole rack on screen at 320×568 on arrival.
+- **16-tile hands at 320×568.** Opening the board on the hand (done) shows
+  the whole rack for 14-tile hands; 16-tile hands need four rows there.
+  Fitting six tiles per row would need ~14px more rack width (narrower frame
+  and padding below 360px, tighter group spacing) without going below 44px
+  targets. Files: `src/index.css`, `PlaySurface.tsx`.
 
 16. **Menu hierarchy.** "TABLE LOOP (EXPERIMENT)" is as large as "NEW RUN".
     Move experiments into a smaller secondary button or a submenu.

@@ -72,6 +72,8 @@ for (const fixture of [
     // From tablet width the tip floats over the board; phones keep it at the
     // top of the board's scroll so it cannot cover staged tiles. Either way
     // it sits below the score bar and never over the rack or the actions.
+    // Short phones open the board on the hand, so the tip is a swipe away.
+    if (fixture.width < 640) await card.scrollIntoViewIfNeeded()
     const layout = await card.evaluate((node) => {
       const rect = node.getBoundingClientRect()
       return {

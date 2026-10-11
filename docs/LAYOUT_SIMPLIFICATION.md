@@ -205,10 +205,17 @@ The matrix found two more defects, both fixed:
   to fit the staging zone plus 24px.
 
 After publication (v1.0.261011-3) the same matrix was run against the live
-site with the same results. The 320×568 phone cannot show the whole rack at
-44px targets: its 270px rack holds five tiles per row, so a 14–16 tile hand
-needs four rows (~322px), while only ~310px remains for board and rack after
-the score bar and actions. That size is the 2016 iPhone SE / 5s generation.
+site with the same results.
+
+**Smallest phone (320×568, the 2016 iPhone SE / 5s).** The rack cannot be
+pinned there: its 270px width holds five 44px tiles per row and only ~310px
+remains for board and rack. The board therefore opens scrolled to its end
+(the hand, the staging line and the actions), holding that position while
+the tip and notices arrive until the player first touches or scrolls the
+board; the tip and inventory are one swipe up. Over ten random hands the
+whole rack was on screen on arrival in 7/10 and Play in 10/10; the other
+three were 16-tile hands, which need four rows and cannot fit at 44px. The
+iPhone SE 2nd/3rd gen (375×667) stayed at 10/10.
 
 **Real Mobile Safari (iOS 26.2 simulator).** The live site was opened in
 Safari on temporary iPhone 17 and iPad mini (A17 Pro) simulators (real

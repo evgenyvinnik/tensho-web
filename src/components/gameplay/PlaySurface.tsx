@@ -213,18 +213,34 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     const board = boardRef.current
     const hand = handZoneRef.current
     if (!board || !hand) return
+    // On a screen too short to pin the rack (320×568), open on the hand:
+    // keep the board at its end while content settles (the tip arrives
+    // after mount), until the player first touches or scrolls the board.
+    let playerMoved = false
+    const markMoved = () => {
+      playerMoved = true
+    }
     const measure = () => {
-      setRackHeight(hand.offsetHeight)
-      setRackPinned(
+      const pinned =
         board.clientHeight - hand.offsetHeight >= minBoardWindowRef.current
-      )
+      setRackHeight(hand.offsetHeight)
+      setRackPinned(pinned)
+      if (!pinned && !playerMoved) board.scrollTop = board.scrollHeight
     }
     measure()
     const observer =
       typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
     observer?.observe(board)
     observer?.observe(hand)
-    return () => observer?.disconnect()
+    // Content growth inside the board (tip, notices) resizes its children.
+    for (const child of Array.from(board.children)) observer?.observe(child)
+    const moves = ['pointerdown', 'wheel', 'touchstart', 'keydown'] as const
+    for (const type of moves)
+      board.addEventListener(type, markMoved, { passive: true })
+    return () => {
+      observer?.disconnect()
+      for (const type of moves) board.removeEventListener(type, markMoved)
+    }
   }, [])
 
   // Drag state
