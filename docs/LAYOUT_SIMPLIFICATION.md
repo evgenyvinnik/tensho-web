@@ -204,8 +204,21 @@ The matrix found two more defects, both fixed:
   (390×664) unpinned with the first-move tip open. The window now only has
   to fit the staging zone plus 24px.
 
-This is emulation, not hardware: real Safari/WebKit, physical touch, notches
-and dynamic toolbars, and newcomer comprehension remain unverified.
+After publication (v1.0.261011-3) the same matrix was run against the live
+site with the same results. The 320×568 phone cannot show the whole rack at
+44px targets: its 270px rack holds five tiles per row, so a 14–16 tile hand
+needs four rows (~322px), while only ~310px remains for board and rack after
+the score bar and actions. That size is the 2016 iPhone SE / 5s generation.
+
+**Real Mobile Safari (iOS 26.2 simulator).** The live site was opened in
+Safari on temporary iPhone 17 and iPad mini (A17 Pro) simulators (real
+WebKit, Safari's toolbar and safe areas). On the iPhone the round chip, score
+bar with coach options, inventory, first-move tip, full 14-tile labelled rack
+and action bar all sit above Safari's toolbar without page scroll; the tip's
+last lines continue under the pinned rack and are reached by scrolling the
+board. On the iPad mini everything fits with large tiles and the tip floating
+below the inventory. Not verified: physical hardware, and whether people new
+to mahjong find the hands obvious (no playtest was possible here).
 
 ### Browser test notes
 
