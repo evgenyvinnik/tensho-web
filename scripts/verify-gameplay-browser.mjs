@@ -3,6 +3,7 @@ import { createWriteStream, existsSync, mkdirSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { resolve } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
+import { stripVTControlCharacters } from 'node:util'
 
 const port = Number(process.env.GAMEPLAY_BROWSER_PORT ?? 4179)
 if (!Number.isInteger(port) || port < 1 || port > 65535)
@@ -72,7 +73,7 @@ try {
       const response = await fetch(base, { signal: AbortSignal.timeout(1000) })
       // Refuse to test an unrelated server that already occupies this port.
       ready =
-        startupOutput.includes(base) &&
+        stripVTControlCharacters(startupOutput).includes(base) &&
         response.ok &&
         (await response.text()) === html
     } catch {

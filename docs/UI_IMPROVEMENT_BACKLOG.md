@@ -112,7 +112,8 @@ racks and real devices remain open.
    The integrated sub-360px CSS introduced a 2px/4px gap mismatch and removed
    compact spacing while staging. The [interaction recovery](TILE_INTERACTION_IMPLEMENTATION.md)
    shares one responsive gap value and uses a persistent layout marker; all 38
-   final tap/keyboard-discard and drag-geometry checks pass. Publication pending.
+   final tap/keyboard-discard and drag-geometry checks pass. Published in
+   v1.0.261011-12; the broader production-browser gate remains in verification.
 
 10. **Felt colours stop at the play screen.** Apply `feltPalette` to the Tea
     House, Game Over and the menu's Run Setup preview (a swatch of the cloth

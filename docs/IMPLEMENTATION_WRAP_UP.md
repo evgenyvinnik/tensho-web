@@ -12,8 +12,11 @@ The requested outcome is to finish the project implementation after the other ag
 Plum rack tiles, desktop lessons intercepting mat clicks, and a short-phone
 discard target scrolling away. It also fixes compact group widths/spacing
 changing during staging. All 172 final-source native browser checks and all
-2,957 unit/component tests in 209 files pass. Production/release verification
-is in progress; these local changes are not yet a published checkpoint.
+2,957 unit/component tests in 209 files pass. Concurrent main published the
+Classic fixes in **v1.0.261011-12**, with successful CI/deployment and a matching
+public manifest. The additional Table Loop scroll padding and shared
+production-browser deployment gate remain in verification; hosted recovery
+checks are not yet a completed checkpoint.
 
 [Compact Tea House](SHOP_DENSITY_IMPLEMENTATION.md) brings merchandise into
 the opening phone viewport with an illustrated cash-out summary, optional

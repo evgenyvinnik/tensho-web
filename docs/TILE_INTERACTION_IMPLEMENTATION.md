@@ -1,6 +1,7 @@
 # Tile interaction recovery
 
-Updated October 11, 2026. Verification in progress; not yet published.
+Updated October 11, 2026. Classic recovery is published in v1.0.261011-12;
+the additional Table Loop adjustment and production-browser gate are in verification.
 
 ## Reproduced defects and changes
 
@@ -132,7 +133,23 @@ verification branch, without publishing Pages. The shared browser gate also
 runs before the main workflow uploads a deployment artifact. It uses one worker,
 zero retries, the normal production save reader and checked-in synthetic replay
 fixtures; failed traces/screenshots are retained as CI artifacts. Publication
-and hosted verification remain pending until that independent gate succeeds.
+and hosted verification of these additional changes remain pending until that
+independent gate succeeds.
+
+Concurrent main published the Classic recovery in `d7ef45d`, versioned as
+`db6ec64` / v1.0.261011-12. Deployment run `38169705419` succeeded and the public
+`release.json` matches that commit/tag. This release did not include the new
+browser gate or Table Loop scroll padding. Both histories were merged normally;
+the corrected Table Loop regression compares layout boxes, preserving the
+intentional selected-tile lift rather than treating it as rack reflow.
+
+The first isolated CI run (`38171941851`) passes application tests, release
+safeguards and the production build, but starts no browser cases: CI's ANSI
+emphasis splits Vite's printed URL around the port, so the readiness check
+rejects its own preview. The captured preview log establishes this runner bug.
+The runner now strips terminal formatting before recognizing its own URL while
+still requiring an exact built-index response. Success and failure-exit tests
+cover both plain and colored startup output. No game assertion was relaxed.
 
 Desktop and Japanese short-phone screenshots were inspected. On short phones
 the board deliberately scrolls; this does not promise simultaneous visibility of

@@ -26,8 +26,11 @@ async function unusedPort() {
   return port
 }
 
-for (const browserExit of [0, 7]) {
-  test(`browser gate propagates exit ${browserExit} and stops only its preview`, async (t) => {
+for (const [browserExit, color] of [0, 7].flatMap((code) => [
+  [code, false],
+  [code, true],
+])) {
+  test(`browser gate propagates exit ${browserExit} and stops only its preview (color=${color})`, async (t) => {
     const root = realpathSync(
       mkdtempSync(join(tmpdir(), 'tensho-browser-gate-'))
     )
@@ -52,7 +55,10 @@ for (const browserExit of [0, 7]) {
       const port = Number(process.argv[process.argv.indexOf('--port') + 1]);
       fs.writeFileSync('preview-pid', String(process.pid));
       const server = http.createServer((req,res) => res.end(fs.readFileSync('dist/index.html')));
-      server.listen(port, '127.0.0.1', () => console.log('Local: http://127.0.0.1:' + port + '/tensho-web/'));
+      // Vite inserts ANSI emphasis around the port on CI, even when piped.
+      const bold = ${color} ? String.fromCharCode(27) + '[1m' : '';
+      const reset = ${color} ? String.fromCharCode(27) + '[22m' : '';
+      server.listen(port, '127.0.0.1', () => console.log('Local: http://127.0.0.1:' + bold + port + reset + '/tensho-web/'));
     `
     )
     writeFileSync(
