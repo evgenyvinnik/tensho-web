@@ -78,10 +78,13 @@ racks and real devices remain open.
    "Riichi pledge" sit in a sideways-scrolling header row. Move them behind a
    single "⋯ More" button (menu or sheet) below 640px; keep them inline above.
    File: `src/components/gameplay/PlaySurface.tsx` (rack header).
-   **Implemented, release verification in progress:** one localized 44px More
+   **Published in v1.0.261011-7:** one localized 44px More
    disclosure replaces sideways scrolling below 640px; the book remains visible.
    Existing dialogs retain confirmation and focus return, including after resize.
    New planning-tray art accompanies the mobile tools. [Evidence](RACK_TOOLS_IMPLEMENTATION.md).
+   The first hosted batch has one unexplained Space-to-close failure; sixteen
+   focused repeats and a final 26-case all-locale traced recheck pass unchanged.
+   Retain that diagnostic limit; do not call it a proven keyboard root-cause fix.
 
 7. **Coach chips truncate on phones** ("Build towar… +59"). Shorter copy for
    the chip title ("Build a Sequence"), keeping the long sentence as the

@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 
+// Preserve the first failure even when retries are disabled; a later passing
+// run cannot explain a missed native keyboard activation without its trace.
+test.use({ trace: 'retain-on-failure' })
+
 for (const language of [
   'en',
   'es',

@@ -45,8 +45,8 @@ uses an isolated source snapshot excluding the unrelated pending `src/index.css`
 changes; the full unit suite runs in the working repository.
 Focused component tests pass 70/70 (RackTools, PlaySurface, RiichiControl).
 The full unit suite passes **2,911/2,911 in 207 files**, targeted lint is clean,
-and all thirteen deployment-versioning tests pass. Publication checks remain
-pending at this point.
+and all thirteen deployment-versioning tests pass. The published checkpoint is
+recorded below, including an unresolved first hosted keyboard failure.
 
 The initial browser batch retained 24 passes and 30 failures in `native.log`:
 26 new cases incorrectly compared save ownership/revision/timestamp across
@@ -80,3 +80,46 @@ All 23 changed runtime/test/asset files match the verified snapshot byte-for-byt
 The final code also passes all **16 native paid-tool journeys** (`paid-tools.log`):
 hand-builder hidden-face guards, real staging/exchanges, Riichi payment,
 completion/abandonment, and exact resource-state reload on desktop and touch.
+
+## Publication
+
+Published **v1.0.261011-7** from implementation commit
+`36fbe716a6cb36142aa1108e86f6471a13bf92ca`; built/tagged commit
+`b6ae1cc4d145fc7d1d892bcc168b2179386baba7`.
+[Independent CI](https://github.com/evgenyvinnik/tensho-web/actions/runs/38159408507)
+passes all **2,911 tests in 207 files**, all thirteen release checks, build and
+deployment. Its offline manifest has the same 437 entries / 37,885,471 bytes.
+
+The public `release.json`, remote Git tag and runtime
+`/tensho-web/assets/index-Be9jTSzz.js` match version 7 and the built commit.
+The publicly served planning-tray image matches the checked-in bytes and SHA-256
+above. Evidence: `deployment.log` and `deployment-watch.log`.
+
+Only this checkpoint's files were staged. The unrelated CSS edit was excluded
+from the browser/build snapshot; it was later found clean in the shared worktree.
+This task did not modify that file. The later `.claude/launch.json`
+change remains untouched (Git blob `5b7047bfa132edebd117aa3647bb224aecd79dea`).
+Local main fast-forwards to the release version commit without rewriting history.
+
+### Hosted keyboard finding
+
+The first hosted batch passes **63/64**, not a clean 64. The Italian phone case
+fails when Space should collapse More (`rack-tools.spec.ts:119`); its screenshot
+shows More focused and the panel still expanded. The original failure and page
+context remain in `hosted.log` / `hosted/`. No application change or assertion
+relaxation was made to turn it green.
+
+Eight isolated Italian repetitions pass (`hosted-keyboard.log`, full traces),
+then eight concurrent repetitions with event capture also pass
+(`keyboard-diagnostic.log`). The extra instrumentation lives only in the
+isolated evidence snapshot's `e2e/rack-tools-diagnostic.spec.ts`; it is not shipped.
+These sixteen passes do **not** explain or erase the initial keyboard failure.
+The final all-locale traced tools recheck passes **26/26** with unchanged
+assertions (`hosted-tools-final.log`). Event capture and traces are retained in
+`hosted-tools-final/`. Keep the unexplained interaction in the open verification
+limits rather than claiming a root-cause fix. The checked-in tools spec now uses
+`trace: 'retain-on-failure'`, so future first failures retain a trace even with
+retries disabled. This changes diagnostics only, not application behavior or
+success criteria.
+The checked-in trace-retention configuration also passes a fresh Italian-phone
+journey (`trace-retention.log`); targeted lint remains clean.
