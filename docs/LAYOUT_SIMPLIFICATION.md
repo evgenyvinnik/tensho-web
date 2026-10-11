@@ -107,6 +107,18 @@ Hints** setting was stored but never used by gameplay.
   a quad never spills out. The round-end, tea house and run-end panels are
   cards on the same felt.
 
+Checked in the browser at 1440×800, 768×1024, 390×844 and 320×568 (Table Loop:
+no horizontal overflow, rack pinned, board 189px tall at 320×568; slots never
+clip their tiles). Reduced motion exposed a real focus bug: a global tiny
+transition kept the popover's `visibility` mid-change when focus moved in, so
+the panel is now measured with opacity instead. Automated: unit suite 2934/2935
+(the balance CLI test passes alone; it is timing-sensitive under load); Table
+Loop, flora, route-loading, classic-resume, orchid, play-structure,
+forecast-layout, audio, interaction and the menu/route specs pass in both
+Playwright projects. The remaining failures in the specs that touch the flower
+track also fail on unmodified `main`; they are listed under test debt in the
+[backlog](UI_IMPROVEMENT_BACKLOG.md#test-and-tooling-debt-do-alongside-the-above).
+
 ## Felt colours
 
 Each table style now has a `feltColor` (green, lacquer red, olive bamboo,

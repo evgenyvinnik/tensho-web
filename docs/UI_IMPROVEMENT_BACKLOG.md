@@ -183,6 +183,14 @@ racks and real devices remain open.
 
 ## Test and tooling debt (do alongside the above)
 
+- **Failing on `main` (18225c2) before the Table Loop polish**, reproduced on a
+  clean checkout with installed Chrome against a test-mode dev server:
+  `flower-mutations` (both projects; two rack elements share one
+  `data-play-tile` id), `tile-details` stage/return for es/fr/ja (the floating
+  first-move tip intercepts the click on a staged tile), `bamboo-summer` on
+  mobile (discard zone out of view), `frostbite-retriggers` (both projects) and
+  the table selector's `imagesLoaded` check in `app.spec.ts`.
+
 - **Module-URL helper for e2e.** After a source edit, the dev server serves
   `GameOrchestrator.ts?t=…`; specs importing the plain path drive a second
   engine instance. Add a shared helper in `e2e/helpers/` that resolves the
