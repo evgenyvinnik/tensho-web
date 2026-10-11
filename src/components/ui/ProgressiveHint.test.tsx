@@ -20,6 +20,31 @@ const hint: ProgressiveHint = {
 }
 
 describe('ProgressiveHintCard', () => {
+  it('supports optional collapsed lessons without acknowledging them or resetting manual expansion', async () => {
+    const dismiss = vi.fn(),
+      disable = vi.fn()
+    const ui = (activeHint: ProgressiveHint) => (
+      <ProgressiveHintCard
+        hint={activeHint}
+        initiallyCollapsed
+        queueCount={1}
+        onDismiss={dismiss}
+        onDisableHints={disable}
+      />
+    )
+    const { container, rerender } = render(ui(hint))
+    const details = container.querySelector('details')!
+    expect(details).not.toHaveAttribute('open')
+    fireEvent.click(container.querySelector('summary')!)
+    await waitFor(() => expect(details).toHaveAttribute('open'))
+    rerender(ui({ ...hint, content: 'Updated explanation' }))
+    expect(details).toHaveAttribute('open')
+    expect(dismiss).not.toHaveBeenCalled()
+    expect(disable).not.toHaveBeenCalled()
+    rerender(ui({ ...hint, id: 'next-lesson' }))
+    expect(container.querySelector('details')).not.toHaveAttribute('open')
+  })
+
   it('enters visibly without disabling the surrounding game UI', async () => {
     const { container } = render(
       <>

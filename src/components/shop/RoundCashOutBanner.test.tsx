@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
 import { RoundCashOutBanner } from './RoundCashOutBanner'
 import {
@@ -7,7 +7,7 @@ import {
   type RoundCashOutSummary,
 } from '../../game/GameOrchestrator'
 import { ALL_DECREES } from '../../systems/DecreeSystem'
-import { changeLanguage } from '../../i18n'
+import i18n, { changeLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { eventBus } from '../../game/EventBus'
 
 const summary: RoundCashOutSummary = {
@@ -34,6 +34,72 @@ afterEach(async () => {
     await changeLanguage('en')
   })
 })
+
+it('starts compact and preserves the chosen receipt state while savings change', async () => {
+  const before = JSON.stringify(summary)
+  const ui = (gold: number) => (
+    <RoundCashOutBanner
+      summary={summary}
+      currentGold={gold}
+      nextActNumber={9}
+      interestCap={5}
+    />
+  )
+  const { container, rerender } = render(ui(17))
+  const toggle = screen.getByRole('button', { name: 'Round payout breakdown' })
+  const details = container.querySelector('[data-payout-details]')!
+  expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  expect(toggle).toHaveAccessibleDescription('+10G')
+  expect(details).not.toBeVisible()
+  expect(toggle.querySelector('img')).toHaveAttribute(
+    'src',
+    expect.stringContaining('settlement-ledger.webp')
+  )
+  toggle.focus()
+  fireEvent.click(toggle)
+  expect(toggle).toHaveAttribute('aria-controls', details.id)
+  await waitFor(() => expect(details).toBeVisible())
+  rerender(ui(14))
+  expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  expect(screen.getByText(/With current savings/)).toHaveTextContent('+2G')
+  expect(toggle).toHaveFocus()
+  fireEvent.click(toggle)
+  expect(details).not.toBeVisible()
+  expect(JSON.stringify(summary)).toBe(before)
+})
+
+it.each(SUPPORTED_LANGUAGES)(
+  'localizes the compact receipt and retains exact settlement in %s',
+  async (language) => {
+    await act(async () => {
+      await changeLanguage(language)
+    })
+    const { container } = render(
+      <RoundCashOutBanner
+        summary={summary}
+        currentGold={20}
+        nextActNumber={9}
+        interestCap={5}
+      />
+    )
+    const toggle = screen.getByRole('button', {
+      name: i18n.t('shop.payoutBreakdown'),
+    })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(toggle).toHaveTextContent(i18n.t('shop.cashOut'))
+    expect(toggle).toHaveAccessibleDescription(
+      new Intl.NumberFormat(language, { signDisplay: 'always' }).format(10) +
+        'G'
+    )
+    fireEvent.click(toggle)
+    await waitFor(() =>
+      expect(container.querySelector('[data-payout-details]')).toBeVisible()
+    )
+    expect(
+      screen.getByRole('group', { name: i18n.t('shop.payoutBreakdown') })
+    ).toBeVisible()
+  }
+)
 
 it('updates savings guidance after spending without changing the settled receipt', () => {
   const { rerender } = render(

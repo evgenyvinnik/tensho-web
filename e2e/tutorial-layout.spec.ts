@@ -178,7 +178,7 @@ for (const fixture of [
   })
 }
 
-test('the shop hint occupies its own row and does not obstruct purchase or continue', async ({
+test('the shop hint opens on demand without obstructing purchase or continue', async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 568 })
@@ -203,6 +203,9 @@ test('the shop hint occupies its own row and does not obstruct purchase or conti
   await expect(page).toHaveURL(/\/en\/shop$/)
   const card = page.locator('[data-progressive-hint="shop-intro"]')
   await expect(card).toBeVisible()
+  await expect(card.locator('details')).not.toHaveAttribute('open')
+  await card.locator('summary').click()
+  await expect(card.locator('details')).toHaveAttribute('open')
   await noOverflow(card)
   expect(await card.evaluate((node) => getComputedStyle(node).position)).toBe(
     'static'

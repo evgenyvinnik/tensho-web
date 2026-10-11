@@ -11,6 +11,43 @@ afterEach(async () => {
   })
 })
 
+it('offers a read-only phone disclosure and keeps capacity information outside it', () => {
+  const system = new DecreeSystem()
+  system.acquireDecree(stone)
+  const sell = vi.fn()
+  const { container, rerender } = render(
+    <ShopBuildPanel
+      compact
+      decrees={system.getOwnedDecrees()}
+      maxSlots={0}
+      onSell={sell}
+    />
+  )
+  const toggle = screen.getByRole('button', { name: 'Your build' })
+  const content = container.querySelector('[data-shop-build-content]')!
+  expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  expect(toggle).toHaveAttribute('aria-controls', content.id)
+  expect(content).toHaveClass('hidden', 'sm:block')
+  expect(content.querySelector('[data-decree-capacity-notice]')).toBeNull()
+  expect(
+    container.querySelector('[data-decree-capacity-notice]')
+  ).toBeInTheDocument()
+  fireEvent.click(toggle)
+  expect(content).not.toHaveClass('hidden')
+  rerender(
+    <ShopBuildPanel
+      compact
+      decrees={system.getOwnedDecrees()}
+      maxSlots={5}
+      onSell={sell}
+    />
+  )
+  expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  expect(sell).not.toHaveBeenCalled()
+  fireEvent.click(toggle)
+  expect(content).toHaveClass('hidden', 'sm:block')
+})
+
 it('shows an empty build without fabricated cards or recommendations', () => {
   render(<ShopBuildPanel decrees={[]} maxSlots={5} onSell={vi.fn()} />)
   expect(screen.getByText('0 / 5 Decree slots')).toBeVisible()

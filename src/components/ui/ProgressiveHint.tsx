@@ -1,4 +1,10 @@
-import { useEffect, useRef, type KeyboardEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react'
 import { animated, useSpring } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import type { ProgressiveHint } from '../../config/progressiveTutorialHints'
@@ -15,6 +21,7 @@ export function ProgressiveHintCard({
   onDisableHints,
   queueCount,
   floating = false,
+  initiallyCollapsed = false,
 }: {
   hint: ProgressiveHint | null
   onDismiss: () => void
@@ -27,6 +34,8 @@ export function ProgressiveHintCard({
    * in flow: a popup there would cover the tiles the player has just staged.
    */
   floating?: boolean
+  /** Shop guidance starts as an optional 44px disclosure, not a tall banner. */
+  initiallyCollapsed?: boolean
 }) {
   const { t } = useTranslation()
   const reducedMotion = useReducedMotion()
@@ -89,7 +98,7 @@ export function ProgressiveHintCard({
             }
           }}
         >
-          <details key={hint.id} open>
+          <HintDisclosure key={hint.id} initiallyCollapsed={initiallyCollapsed}>
             <summary className="flex min-h-11 cursor-pointer items-center py-1 text-sm font-semibold text-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-amber-300">
               <span
                 aria-hidden="true"
@@ -127,9 +136,28 @@ export function ProgressiveHintCard({
                 </button>
               </div>
             </div>
-          </details>
+          </HintDisclosure>
         </animated.div>
       )}
     </div>
+  )
+}
+
+/** Each new lesson has its own initial state; rerenders preserve manual choice. */
+function HintDisclosure({
+  initiallyCollapsed,
+  children,
+}: {
+  initiallyCollapsed: boolean
+  children: ReactNode
+}) {
+  const [expanded, setExpanded] = useState(!initiallyCollapsed)
+  return (
+    <details
+      open={expanded}
+      onToggle={(event) => setExpanded(event.currentTarget.open)}
+    >
+      {children}
+    </details>
   )
 }

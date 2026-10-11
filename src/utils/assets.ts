@@ -80,6 +80,7 @@ export const popupAssets = {
  * to use SVG so they remain crisp at every size.
  */
 export const illustrationAssets = {
+  settlementLedger: `${ASSET_BASE}/illustrations/settlement-ledger.webp`,
   yakuLedger: `${ASSET_BASE}/illustrations/yaku-ledger.webp`,
   springBlossom: `${ASSET_BASE}/illustrations/spring-blossom.webp`,
   orchidBloom: `${ASSET_BASE}/illustrations/orchid-bloom.webp`,

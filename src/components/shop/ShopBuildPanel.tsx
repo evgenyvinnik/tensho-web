@@ -16,6 +16,8 @@ interface Props {
   onSell: (instanceId: string) => { success: boolean }
   /** Compact run trackers shown at the end of the heading row. */
   aside?: ReactNode
+  /** Keep the build one compact disclosure on phones; desktop stays expanded. */
+  compact?: boolean
 }
 
 /** The player's actual ordered build, not a predicted shopping recommendation. */
@@ -26,10 +28,13 @@ export function ShopBuildPanel({
   yakuHistory,
   completeConcealedHandsPlayed,
   aside,
+  compact = false,
 }: Props) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
   const titleId = useId()
+  const detailsId = useId()
+  const [expanded, setExpanded] = useState(false)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const [pendingId, setPendingId] = useState<string | null>(null)
   const [feedback, setFeedback] = useState<{
@@ -45,54 +50,93 @@ export function ShopBuildPanel({
       aria-labelledby={titleId}
       className="mx-3 mt-2 min-w-0 rounded-xl border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)]/85 p-3 sm:mx-5"
     >
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <h2
-          id={titleId}
-          ref={titleRef}
-          tabIndex={-1}
-          className="text-lg font-bold text-[var(--color-golden-yellow)] focus-visible:outline focus-visible:outline-2"
-        >
-          {t('shop.build.title')}
-        </h2>
-        <span
-          data-build-slots
-          className="text-sm text-[var(--color-beige-white)]/75"
-        >
-          {t('shop.build.slots', {
-            used: number(decrees.length),
-            max: number(maxSlots),
-          })}
-        </span>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="min-w-0 flex-1 sm:flex sm:flex-wrap sm:items-center sm:gap-x-3">
+          <h2
+            id={titleId}
+            ref={titleRef}
+            tabIndex={-1}
+            className="break-words text-base font-bold text-[var(--color-golden-yellow)] focus-visible:outline focus-visible:outline-2 sm:text-lg"
+          >
+            {t('shop.build.title')}
+          </h2>
+          <span
+            data-build-slots
+            className="block text-xs text-[var(--color-beige-white)]/75 sm:text-sm"
+          >
+            {t('shop.build.slots', {
+              used: number(decrees.length),
+              max: number(maxSlots),
+            })}
+          </span>
+        </div>
         {aside && <div className="ml-auto shrink-0">{aside}</div>}
+        {compact && (
+          <button
+            type="button"
+            data-build-toggle
+            aria-label={t('shop.build.title')}
+            aria-controls={detailsId}
+            aria-expanded={expanded}
+            onClick={() => setExpanded((value) => !value)}
+            className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[var(--color-metallic-gold)]/40 text-[var(--color-metallic-gold)] sm:hidden"
+          >
+            <svg
+              aria-hidden="true"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className={expanded ? 'rotate-180' : ''}
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        )}
       </div>
       <DecreeCapacityNotice owned={decrees.length} slots={maxSlots} />
-      <p className="mt-1 text-sm leading-relaxed text-[var(--color-beige-white)]/75">
-        {t('shop.build.help')}
-      </p>
-      {decrees.length ? (
-        <div data-tutorial="decrees" className="mt-2 flex flex-wrap gap-3 p-1">
-          {decrees.map((decree) => (
-            <DecreeCardCompact
-              key={decreeKey(decree)}
-              decree={decree}
-              ownedDecrees={decrees}
-              yakuHistory={yakuHistory}
-              completeConcealedHandsPlayed={completeConcealedHandsPlayed}
-              onSell={() => {
-                // A stable focus return target survives removal of the sold card
-                // and the transient detail popover that launched confirmation.
-                titleRef.current?.focus({ preventScroll: true })
-                setFeedback(null)
-                setPendingId(decreeKey(decree))
-              }}
-            />
-          ))}
-        </div>
-      ) : (
-        <p className="mt-2 text-sm text-[var(--color-beige-white)]/60">
-          {t('shop.build.empty')}
+      <div
+        id={detailsId}
+        data-shop-build-content
+        // A desktop card/popover remains reachable if the viewport narrows
+        // while it owns focus. Opening it never selects or sells a Decree.
+        onFocusCapture={() => setExpanded(true)}
+        onClickCapture={() => setExpanded(true)}
+        className={compact && !expanded ? 'hidden sm:block' : ''}
+      >
+        <p className="mt-1 text-sm leading-relaxed text-[var(--color-beige-white)]/75">
+          {t('shop.build.help')}
         </p>
-      )}
+        {decrees.length ? (
+          <div
+            data-tutorial="decrees"
+            className="mt-2 flex flex-wrap gap-3 p-1"
+          >
+            {decrees.map((decree) => (
+              <DecreeCardCompact
+                key={decreeKey(decree)}
+                decree={decree}
+                ownedDecrees={decrees}
+                yakuHistory={yakuHistory}
+                completeConcealedHandsPlayed={completeConcealedHandsPlayed}
+                onSell={() => {
+                  // A stable focus return target survives removal of the sold card
+                  // and the transient detail popover that launched confirmation.
+                  titleRef.current?.focus({ preventScroll: true })
+                  setFeedback(null)
+                  setPendingId(decreeKey(decree))
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-2 text-sm text-[var(--color-beige-white)]/60">
+            {t('shop.build.empty')}
+          </p>
+        )}
+      </div>
       <p
         role="status"
         aria-live="polite"

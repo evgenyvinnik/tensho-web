@@ -83,6 +83,7 @@ for (const [language, copy] of [
     await page.locator('[data-game-action="play"]').click()
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
     const receipt = page.getByTestId('round-cash-out')
+    await receipt.locator('[data-payout-toggle]').click()
     await expect(receipt.locator('[data-payout-total]')).toHaveText('+9G')
     await expect(receipt).toContainText(copy.shop.payout.bonus)
     const snapshot = await page.evaluate(async () => {

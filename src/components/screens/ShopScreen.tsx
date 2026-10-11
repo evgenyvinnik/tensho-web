@@ -187,7 +187,10 @@ export function ShopScreen() {
       />
 
       {/* Content area */}
-      <div className="relative z-10 min-h-0 flex-1 overflow-y-auto">
+      <div
+        data-shop-scroll
+        className="relative z-10 min-h-0 flex-1 overflow-y-auto"
+      >
         <div className="screen-canvas pb-4">
           <ClassicSaveNotice errorsOnly />
           {/* Round payoff and next challenge — informative, never modal. */}
@@ -211,6 +214,7 @@ export function ShopScreen() {
           )}
 
           <ProgressiveHintCard
+            initiallyCollapsed
             hint={tutorial.currentHint}
             onDismiss={tutorial.dismissHint}
             onDisableHints={tutorial.disableHints}
@@ -218,6 +222,7 @@ export function ShopScreen() {
           />
 
           <ShopBuildPanel
+            compact
             yakuHistory={game.state}
             completeConcealedHandsPlayed={
               game.state.completeConcealedHandsPlayed
@@ -234,7 +239,7 @@ export function ShopScreen() {
 
           <div className="grid items-start gap-5 px-3 pt-4 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6">
             {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
-            <section className="min-w-0">
+            <section data-shop-items className="min-w-0">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="min-w-0 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
                   {t('shop.ui.items')}
@@ -377,6 +382,7 @@ export function ShopScreen() {
       <div className="relative z-10 flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
         <div className="screen-canvas px-3 py-3 sm:px-5 sm:py-4">
           <Button
+            data-shop-continue
             variant="primary"
             onClick={handleNextRound}
             className="w-full text-lg"

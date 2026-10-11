@@ -119,11 +119,20 @@ racks and real devices remain open.
     still pushes items down. Float it over the cash-out banner (not the
     items) from 640px up. Files: `ShopScreen.tsx`, `ProgressiveHint.tsx`.
     Update `e2e/tutorial-layout.spec.ts` ("shop hint occupies its own row").
+    **Implemented with a revised interaction:** a collapsed, in-flow disclosure
+    on both sizes keeps guidance optional without covering merchandise. No timer
+    closes reading material. The full lesson expands only on request. See the
+    [compact Tea House checkpoint](SHOP_DENSITY_IMPLEMENTATION.md).
 
 12. **Shop density.** On a phone the cash-out banner, tip and build panel
     still precede the first item. Collapse the cash-out to one line after its
     entrance animation (details in a disclosure), and keep "Continue" sticky.
     Files: `RoundCashOutBanner.tsx`, `ShopBuildPanel.tsx`.
+    **Implemented; release verification in progress:** illustrated exact-total
+    receipt and phone build disclosures replace tall initial panels. Continue
+    remains pinned. Details open immediately on request rather than collapsing
+    during reading. All 68 final native browser checks pass; see the checkpoint
+    for production/release status and retained diagnostic failures.
 
 13. **Dragons have no index.** Suited tiles show 1–9 and winds carry letters,
     but White/Green/Red Dragons have no hint for newcomers. Add a small

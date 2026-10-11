@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Compact Tea House](SHOP_DENSITY_IMPLEMENTATION.md) brings merchandise into
+the opening phone viewport with an illustrated cash-out summary, optional
+guidance and a compact build disclosure. No timer interrupts reading and no
+economy/save rules change. All 68 final native and 26 production-browser checks,
+2,947 tests in 208 files and the build/release gates pass. Publication verification
+is still in progress; this is not a deployed checkpoint yet.
+
 [Illustrated coach comparison](COACH_COMPARISON_IMPLEMENTATION.md) replaces
 truncated chips with short localized labels and an optional exact-score/tile
 comparison. It corrects the false suggestion that a selected group is kept for

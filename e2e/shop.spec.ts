@@ -413,6 +413,7 @@ for (const [lang, heading, bonus, next] of [
       eventBus.emit('shopUpdated', { isOpen: true })
     })
     const receipt = page.getByTestId('round-cash-out')
+    await receipt.locator('[data-payout-toggle]').click()
     await expect(receipt).toContainText(heading)
     await expect(receipt).toContainText(bonus)
     await expect(receipt).toContainText(next)

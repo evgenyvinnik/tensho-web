@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { animated, useSpring, to } from '@react-spring/web'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { GoldIcon } from '../ui/GoldIcon'
+import { illustrationAssets } from '../../utils/assets'
 
 const AnimatedSection = animated('section')
 
@@ -51,6 +51,9 @@ export function RoundCashOutBanner({
   interestBlocked = false,
 }: RoundCashOutBannerProps) {
   const { t, i18n } = useTranslation()
+  const [expanded, setExpanded] = useState(false)
+  const detailsId = useId()
+  const totalId = useId()
   const number = new Intl.NumberFormat(i18n.resolvedLanguage).format
   const signed = new Intl.NumberFormat(i18n.resolvedLanguage, {
     signDisplay: 'always',
@@ -58,10 +61,10 @@ export function RoundCashOutBanner({
   const totalText = `${signed(summary.netGoldChange)}G`
   const totalSize =
     totalText.length > 18
-      ? 'text-sm sm:text-lg'
+      ? 'text-xs sm:text-lg'
       : totalText.length > 12
-        ? 'text-lg sm:text-2xl'
-        : 'text-3xl'
+        ? 'text-sm sm:text-xl'
+        : 'text-xl sm:text-2xl'
   const reduceMotion = useReducedMotion()
   const [hasEntered, setHasEntered] = useState(reduceMotion)
   const projectedInterest = interestBlocked
@@ -113,97 +116,133 @@ export function RoundCashOutBanner({
         ),
       }}
     >
-      <div className="grid min-w-0 gap-3 px-4 py-3 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">
-        <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300">
-            {t('shop.roundCleared')}
-          </p>
-          <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h2 className="min-w-0 break-words text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
-              {t('shop.payout.heading', {
-                act: number(summary.actNumber),
-                round: t(`rounds.${summary.roundType.toLowerCase()}`),
-              })}
-            </h2>
-            <span className="flex min-w-0 flex-wrap gap-x-1 break-words text-sm tabular-nums text-[var(--color-beige-white)]/65">
-              <span>{number(summary.score)}</span>
-              <span> / </span>
-              <span>{number(summary.target)}</span>
-            </span>
-          </div>
-
-          <div
-            className="mt-2 flex flex-wrap gap-1.5"
-            role="group"
-            aria-label={t('shop.payoutBreakdown')}
-          >
-            <PayoutChip
-              label={t('shop.payout.clear')}
-              value={summary.baseReward}
-              alwaysShow
-            />
-            <PayoutChip
-              label={t('shop.payout.interest')}
-              value={summary.interest}
-              alwaysShow
-            />
-            <PayoutChip
-              label={t('shop.payout.decrees')}
-              value={summary.decreeGold}
-            />
-            <PayoutChip
-              label={t('shop.payout.goldTiles')}
-              value={summary.heldGoldMarkReward}
-            />
-            <PayoutChip label={t('shop.payout.bonus')} value={payoutBonus} />
-            <PayoutChip
-              label={t('shop.payout.rentals')}
-              value={-summary.rentalCost}
-            />
-          </div>
-        </div>
-
-        {/* One line on phones; a separate column from tablet width. */}
-        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-black/20 px-4 py-2 md:grid md:content-center md:gap-1 md:text-right">
-          <span className="text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50">
+      <button
+        type="button"
+        data-payout-toggle
+        aria-expanded={expanded}
+        aria-controls={detailsId}
+        aria-label={t('shop.payoutBreakdown')}
+        aria-describedby={totalId}
+        onClick={() => setExpanded((value) => !value)}
+        className="flex min-h-14 w-full min-w-0 items-center gap-2 px-3 py-1.5 text-left focus-visible:outline-2 focus-visible:outline-amber-200"
+      >
+        <img
+          src={illustrationAssets.settlementLedger}
+          alt=""
+          width={44}
+          height={44}
+          className="h-11 w-11 shrink-0 object-contain"
+        />
+        <span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-0.5">
+          <span className="min-w-0 text-xs font-semibold text-[var(--color-beige-white)] [overflow-wrap:anywhere]">
             {t('shop.cashOut')}
           </span>
           <strong
-            className={`flex min-w-0 items-center gap-1 font-black tabular-nums md:justify-end ${totalSize} ${
+            id={totalId}
+            data-payout-total
+            className={`min-w-0 font-black tabular-nums [overflow-wrap:anywhere] ${totalSize} ${
               summary.netGoldChange >= 0 ? 'text-emerald-300' : 'text-red-300'
             }`}
           >
-            <GoldIcon className="h-7 w-7" />
-            <span className="min-w-0 break-all" data-payout-total>
-              {totalText}
-            </span>
+            {totalText}
           </strong>
-          <span className="ml-auto flex min-w-0 flex-wrap gap-x-1 break-words text-xs tabular-nums text-[var(--color-beige-white)]/55 md:ml-0 md:justify-end">
-            <span>{number(summary.goldBefore)}G</span>
-            <span> → </span>
-            <span>{number(summary.goldAfter)}G</span>
-          </span>
-        </div>
-      </div>
-
-      <div className="grid border-t border-white/10 bg-black/15 text-xs md:grid-cols-2">
-        <p
-          className="min-w-0 break-words px-4 py-2 text-[var(--color-beige-white)]/65"
-          data-interest-coach
+        </span>
+        <svg
+          aria-hidden="true"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          className={`shrink-0 text-[var(--color-metallic-gold)] ${expanded ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
         >
-          <span className="mr-1.5" aria-hidden="true">
-            ◎
-          </span>
-          {interestCoach}
-        </p>
-        <p className="min-w-0 break-words border-t border-white/10 px-4 py-2 font-semibold text-[var(--color-metallic-gold)] md:border-l md:border-t-0 md:text-right">
-          {summary.nextRoundType && summary.nextTarget !== null
-            ? t('shop.payout.nextRound', {
-                round: t(`rounds.${summary.nextRoundType.toLowerCase()}`),
-                target: number(summary.nextTarget),
-              })
-            : t('shop.payout.nextAct', { act: number(nextActNumber) })}
-        </p>
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      <div id={detailsId} data-payout-details hidden={!expanded}>
+        <div className="grid min-w-0 gap-3 px-4 py-3 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300">
+              {t('shop.roundCleared')}
+            </p>
+            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h2 className="min-w-0 break-words text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
+                {t('shop.payout.heading', {
+                  act: number(summary.actNumber),
+                  round: t(`rounds.${summary.roundType.toLowerCase()}`),
+                })}
+              </h2>
+              <span className="flex min-w-0 flex-wrap gap-x-1 break-words text-sm tabular-nums text-[var(--color-beige-white)]/65">
+                <span>{number(summary.score)}</span>
+                <span> / </span>
+                <span>{number(summary.target)}</span>
+              </span>
+            </div>
+
+            <div
+              className="mt-2 flex flex-wrap gap-1.5"
+              role="group"
+              aria-label={t('shop.payoutBreakdown')}
+            >
+              <PayoutChip
+                label={t('shop.payout.clear')}
+                value={summary.baseReward}
+                alwaysShow
+              />
+              <PayoutChip
+                label={t('shop.payout.interest')}
+                value={summary.interest}
+                alwaysShow
+              />
+              <PayoutChip
+                label={t('shop.payout.decrees')}
+                value={summary.decreeGold}
+              />
+              <PayoutChip
+                label={t('shop.payout.goldTiles')}
+                value={summary.heldGoldMarkReward}
+              />
+              <PayoutChip label={t('shop.payout.bonus')} value={payoutBonus} />
+              <PayoutChip
+                label={t('shop.payout.rentals')}
+                value={-summary.rentalCost}
+              />
+            </div>
+          </div>
+
+          {/* Settled balance, distinct from the live savings guidance below. */}
+          <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-black/20 px-4 py-2 md:grid md:content-center md:gap-1 md:text-right">
+            <span className="text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50">
+              {t('shop.cashOut')}
+            </span>
+            <span className="ml-auto flex min-w-0 flex-wrap gap-x-1 break-words text-xs tabular-nums text-[var(--color-beige-white)]/55 md:ml-0 md:justify-end">
+              <span>{number(summary.goldBefore)}G</span>
+              <span> → </span>
+              <span>{number(summary.goldAfter)}G</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="grid border-t border-white/10 bg-black/15 text-xs md:grid-cols-2">
+          <p
+            className="min-w-0 break-words px-4 py-2 text-[var(--color-beige-white)]/65"
+            data-interest-coach
+          >
+            <span className="mr-1.5" aria-hidden="true">
+              ◎
+            </span>
+            {interestCoach}
+          </p>
+          <p className="min-w-0 break-words border-t border-white/10 px-4 py-2 font-semibold text-[var(--color-metallic-gold)] md:border-l md:border-t-0 md:text-right">
+            {summary.nextRoundType && summary.nextTarget !== null
+              ? t('shop.payout.nextRound', {
+                  round: t(`rounds.${summary.nextRoundType.toLowerCase()}`),
+                  target: number(summary.nextTarget),
+                })
+              : t('shop.payout.nextAct', { act: number(nextActNumber) })}
+          </p>
+        </div>
       </div>
     </AnimatedSection>
   )
