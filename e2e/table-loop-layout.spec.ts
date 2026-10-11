@@ -54,11 +54,21 @@ for (const language of ['en', 'es']) {
           // Selection intentionally lifts the chosen tile. Compare layout
           // boxes, not transformed paint bounds, to detect rack reflow.
           const tile = node as HTMLElement
+          const rect = tile.getBoundingClientRect()
           return {
-            x: tile.offsetLeft,
-            y: tile.offsetTop,
-            width: tile.offsetWidth,
-            height: tile.offsetHeight,
+            layout: {
+              x: tile.offsetLeft,
+              y: tile.offsetTop,
+              width: tile.offsetWidth,
+              height: tile.offsetHeight,
+            },
+            pressed: node.getAttribute('aria-pressed') === 'true',
+            box: {
+              x: rect.x,
+              y: rect.y,
+              width: rect.width,
+              height: rect.height,
+            },
           }
         })
       )
@@ -69,7 +79,12 @@ for (const language of ['en', 'es']) {
         'aria-pressed',
         'true'
       )
-      expect(await positions()).toEqual(initial)
+      // A selected tile lifts on purpose; every other tile must not move.
+      const now = await positions()
+      for (const [index, entry] of now.entries()) {
+        expect(entry.layout).toEqual(initial[index].layout)
+        if (!entry.pressed) expect(entry.box).toEqual(initial[index].box)
+      }
       expect(await actions()).toEqual(initialActions)
     }
     const slot = page.getByTestId('table-slot-4')

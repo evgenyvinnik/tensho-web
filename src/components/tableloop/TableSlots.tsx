@@ -168,7 +168,7 @@ export function TableSlots({
               .filter(Boolean)
               .join(', ')}
             className={`
-              relative flex min-h-[76px] min-w-0 flex-col items-center justify-center gap-0.5
+              relative flex min-h-[76px] min-w-0 scroll-my-2 flex-col items-center justify-center gap-0.5
               rounded-xl border-2 px-1.5 py-1.5 transition-colors
               focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]
               focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)]

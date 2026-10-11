@@ -31,7 +31,7 @@ export function DraftRow({ tiles, claimable, onClaim, onPass }: DraftRowProps) {
   return (
     <div
       data-testid="draft-row"
-      className={`mx-3 mb-1 rounded-lg border px-2 py-1.5 transition-colors ${
+      className={`mx-3 mb-1 scroll-my-2 rounded-lg border px-2 py-1.5 transition-colors ${
         claimable
           ? 'border-emerald-400/70 bg-emerald-500/10'
           : 'border-[var(--color-metallic-gold)]/20 bg-black/20'
