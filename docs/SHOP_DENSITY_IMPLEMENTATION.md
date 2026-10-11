@@ -1,7 +1,7 @@
 # Compact Tea House
 
-October 11, 2026. Implementation checkpoint; verification and deployment are
-in progress. This is not whole-project completion.
+October 11, 2026. Published and hosted-verified in **v1.0.261011-9**.
+This is not whole-project completion.
 
 ## Player-facing behavior
 
@@ -94,5 +94,24 @@ serves browser checks; unrelated `.claude/launch.json` edits are excluded.
   target, 50 gold and a four-gold offer isolate the real settlement/transaction
   paths; this fixture does not prove a naturally earned win or game balance.
 
-Remaining verification: independent CI and hosted confirmation.
-Physical-device testing and newcomer enjoyment remain open.
+## Published checkpoint
+
+- Implementation commit: `74cc7a6f3f5f8585f87e8e57cccc757813e15103`.
+- Version/tag commit: `c4567918cbbba76fe21e8d88b5a20008f9145494`.
+- [GitHub Actions run 38164756738](https://github.com/evgenyvinnik/tensho-web/actions/runs/38164756738)
+  passes all **2,947 tests in 208 files**, thirteen release checks, the build
+  and Pages deployment. Build job `114544893923`; deploy job `114545317061`.
+- Public `release.json`, the remote `v1.0.261011-9` tag and served runtime
+  `/tensho-web/assets/index-DYrCDazI.js` agree on the release. The public ledger
+  image has the exact SHA-256 recorded above.
+- All **26 hosted desktop/phone journeys** pass without retries in thirteen
+  locales (`hosted.log`), covering actual payments, disclosure state, reloads,
+  next-round progression and responsive focus. These use fresh browser contexts;
+  a specific existing-client v8→v9 service-worker upgrade is not claimed.
+- Local main was fast-forwarded to the bot's version commit. Only the two
+  owned verification servers were stopped; evidence was retained and the
+  unrelated `.claude/launch.json` changes were preserved.
+
+Physical-device testing, newcomer enjoyment and other UI backlog work remain
+open. The new ledger does not replace every item icon: Jade Tablet and Seasonal
+Blessing still use existing vector artwork in the inspected shop fixture.
