@@ -462,24 +462,22 @@ test('a Spanish Flora inspector keeps the full ordered stack readable and never 
     // Mobile viewport changes settle asynchronously. Read all geometry in one
     // browser turn so a portrait frame cannot be compared with landscape text.
     await expect(async () => {
-      const geometry = await dialog.evaluate((node) => {
-        const rect = (selector: string) =>
-          node.querySelector(selector)!.getBoundingClientRect().toJSON()
-        return {
-          viewport: { width: innerWidth, height: innerHeight },
-          frame: rect('[data-popup-frame]'),
-          scroll: rect('[data-popup-scroll]'),
-          close: rect('button'),
-        }
-      })
-      const { frame, scroll, close } = geometry
+      const geometry = await dialog.evaluate((node) => ({
+        viewport: { width: innerWidth, height: innerHeight },
+        frame: node.getBoundingClientRect().toJSON(),
+        close: node.querySelector('button')!.getBoundingClientRect().toJSON(),
+      }))
+      const { frame, close } = geometry
       expect(geometry.viewport).toEqual(size)
-      // Text remains inside the paper even while scrolled, not underneath
-      // either 64px decorative roller or the fixed close control.
-      expect(scroll.y).toBeGreaterThanOrEqual(frame.y + 80)
-      expect(scroll.bottom).toBeLessThanOrEqual(frame.bottom - 72)
-      expect(scroll.y).toBeGreaterThanOrEqual(close.bottom)
-      expect(scroll.height).toBeGreaterThanOrEqual(44)
+      // The popover stays fully on screen beside the track and scrolls its
+      // own rows; its close control sits at its top edge.
+      expect(frame.x).toBeGreaterThanOrEqual(12)
+      expect(frame.right).toBeLessThanOrEqual(size.width - 12)
+      expect(frame.y).toBeGreaterThanOrEqual(12)
+      expect(frame.bottom).toBeLessThanOrEqual(size.height - 12)
+      expect(frame.height).toBeGreaterThanOrEqual(120)
+      expect(close.y).toBeGreaterThanOrEqual(frame.y)
+      expect(close.bottom).toBeLessThanOrEqual(frame.y + 72)
     }).toPass({ timeout: 5000 })
     for (const row of await dialog
       .locator('[data-flora-flower], [data-flora-detail-season]')
@@ -502,10 +500,15 @@ test('a Spanish Flora inspector keeps the full ordered stack readable and never 
       path: testInfo.outputPath('flora-stack-es-' + size.width + '.png'),
     })
   }
+  // Focus survives the resizes, and Tab order runs trigger → popover.
+  const close = dialog.getByRole('button', { name: es.common.close })
+  await close.scrollIntoViewIfNeeded()
+  await expect(close).toBeFocused()
+  await page.keyboard.press('Shift+Tab')
+  await expect(trigger).toBeFocused()
+  await expect(dialog).toBeVisible()
   await page.keyboard.press('Tab')
-  await expect(
-    dialog.getByRole('button', { name: es.common.close })
-  ).toBeFocused()
+  await expect(close).toBeFocused()
   await page.keyboard.press('Escape')
   await expect(dialog).not.toBeVisible()
   await expect(trigger).toBeFocused()

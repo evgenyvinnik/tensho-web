@@ -75,6 +75,38 @@ Hints** setting was stored but never used by gameplay.
   the next tile never moves under the player's finger (the browser check
   caught exactly that: a centred rack re-flowed after each tap).
 
+## Third pass: modes, flowers and Table Loop (user review)
+
+- **Menu.** The classic start is a large illustrated hero button, **New Classic
+  Run** (or **Play** before the first run), and the second mode is **Table Loop
+  Mode** rather than an experiment. Neither carries a subtitle. All thirteen
+  locales are updated.
+- **Flowers and Seasons open beside the track.** Hovering the track with a
+  mouse, tapping it, or pressing Enter opens an anchored, non-modal popover
+  (`src/components/ui/AnchoredPopover.tsx`) listing what each Flower and
+  Season modifies, such as *Plum +5% per sequence*. It replaces the separate
+  window. It stays fully on screen even when the track has scrolled away, keeps
+  its close control in a sticky header, closes on Escape or an outside press,
+  and keeps Tab order: Tab on the track enters it, Shift+Tab returns, and Tab
+  past its end continues after the track.
+- **Selections name themselves.** When the selected tiles form exactly one
+  group, the forecast heading names it (Pair, Sequence, Triplet, Quad), so a
+  newcomer sees what the scorer will pay for.
+- **Narrowest phones.** Below 360px the rack spacing tightens so a full hand
+  fits at the 44px touch target.
+- **Table Loop Mode matches Classic.** It sits on the same felt, table artwork
+  and corner frame (`TableFelt`, coloured by the last chosen table style), with
+  the classic top bar (way out, round with progress pips, gold), score panel
+  (score / target, progress bar, actions and exchanges) and orange / green
+  buttons. The board (inventory, practice guide, table, patterns, scoring
+  chain, offers, river) scrolls inside a frame styled like the staging zone,
+  while the rack and actions stay pinned. The rack is fitted with
+  `useHandTileSize`; below 360px its spacing tightens so twelve tiles make two
+  rows of six. Empty slots show dashed tile outlines for the tiles they take,
+  and each slot shrinks its tiles to its measured width (`fitSlotTileSize`), so
+  a quad never spills out. The round-end, tea house and run-end panels are
+  cards on the same felt.
+
 ## Felt colours
 
 Each table style now has a `feltColor` (green, lacquer red, olive bamboo,

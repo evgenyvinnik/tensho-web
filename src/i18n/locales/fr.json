@@ -2797,7 +2797,11 @@
     "hud": {
       "round": "Manche {{current}} sur {{total}}",
       "resources": "{{actions}} actions · {{redraws}} échanges",
-      "bridges": "· {{count}} passerelle"
+      "bridges": "· {{count}} passerelle",
+      "gold": "{{gold}} pièces d'or"
+    },
+    "table": {
+      "label": "Table"
     },
     "river": {
       "choose": "Sélectionnez une tuile du chevalet à céder, puis une de la rivière. Gratuit une fois par manche.",

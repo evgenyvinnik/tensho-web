@@ -1550,7 +1550,11 @@
     "hud": {
       "round": "{{total}} turdan {{current}}. tur",
       "resources": "{{actions}} hamle · {{redraws}} değişim",
-      "bridges": "· {{count}} köprü"
+      "bridges": "· {{count}} köprü",
+      "gold": "{{gold}} altın"
+    },
+    "table": {
+      "label": "Masa"
     },
     "river": {
       "choose": "Vereceğin bir raf taşını seç, ardından nehirden bir taş seç. Her turda bir kez ücretsiz.",

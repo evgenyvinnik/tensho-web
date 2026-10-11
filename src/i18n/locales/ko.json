@@ -2789,7 +2789,11 @@
     "hud": {
       "round": "{{total}}국 중 {{current}}국",
       "resources": "배치 {{actions}} · 교환 {{redraws}}",
-      "bridges": "· 가교 {{count}}"
+      "bridges": "· 가교 {{count}}",
+      "gold": "골드 {{gold}}"
+    },
+    "table": {
+      "label": "테이블"
     },
     "river": {
       "choose": "내줄 손패 한 장을 고른 뒤 강의 패를 고르세요. 한 국에 한 번 무료입니다.",

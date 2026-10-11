@@ -2802,7 +2802,11 @@
     "hud": {
       "round": "Ronda {{current}} de {{total}}",
       "resources": "{{actions}} acciones · {{redraws}} cambios",
-      "bridges": "· {{count}} puente"
+      "bridges": "· {{count}} puente",
+      "gold": "{{gold}} de oro"
+    },
+    "table": {
+      "label": "Mesa"
     },
     "river": {
       "choose": "Selecciona una ficha del atril para entregar y luego una del río. Gratis una vez por ronda.",

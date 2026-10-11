@@ -1547,7 +1547,11 @@
     "hud": {
       "round": "รอบที่ {{current}} จาก {{total}}",
       "resources": "วาง {{actions}} · แลก {{redraws}}",
-      "bridges": "· สะพาน {{count}}"
+      "bridges": "· สะพาน {{count}}",
+      "gold": "ทอง {{gold}}"
+    },
+    "table": {
+      "label": "โต๊ะ"
     },
     "river": {
       "choose": "เลือกไพ่บนรางหนึ่งใบที่จะส่งออก แล้วเลือกไพ่จากแม่น้ำ ฟรีรอบละหนึ่งครั้ง",

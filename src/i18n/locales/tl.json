@@ -1555,7 +1555,11 @@
     "hud": {
       "round": "Round {{current}} ng {{total}}",
       "resources": "{{actions}} aksyon · {{redraws}} palit",
-      "bridges": "· {{count}} tulay"
+      "bridges": "· {{count}} tulay",
+      "gold": "{{gold}} ginto"
+    },
+    "table": {
+      "label": "Mesa"
     },
     "river": {
       "choose": "Pumili ng isang tile sa rack na ibibigay, saka pumili sa ilog. Libre minsan bawat round.",

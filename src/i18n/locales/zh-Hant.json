@@ -2789,7 +2789,11 @@
     "hud": {
       "round": "第 {{current}} 局，共 {{total}} 局",
       "resources": "放置 {{actions}} · 換牌 {{redraws}}",
-      "bridges": "· 搭橋 {{count}}"
+      "bridges": "· 搭橋 {{count}}",
+      "gold": "{{gold}} 金幣"
+    },
+    "table": {
+      "label": "牌桌"
     },
     "river": {
       "choose": "先選擇要交出的一張手牌，再選擇一張河牌。每局免費一次。",

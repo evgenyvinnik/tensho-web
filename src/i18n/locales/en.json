@@ -2788,7 +2788,11 @@
     "hud": {
       "round": "Round {{current}} of {{total}}",
       "resources": "{{actions}} actions · {{redraws}} exchanges",
-      "bridges": "· {{count}} bridge"
+      "bridges": "· {{count}} bridge",
+      "gold": "{{gold}} gold"
+    },
+    "table": {
+      "label": "Table"
     },
     "river": {
       "choose": "Select one rack tile to give up, then choose a river tile. Free once per round.",

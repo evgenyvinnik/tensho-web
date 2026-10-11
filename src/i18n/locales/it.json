@@ -1553,7 +1553,11 @@
     "hud": {
       "round": "Round {{current}} di {{total}}",
       "resources": "{{actions}} azioni · {{redraws}} scambi",
-      "bridges": "· {{count}} ponte"
+      "bridges": "· {{count}} ponte",
+      "gold": "{{gold}} oro"
+    },
+    "table": {
+      "label": "Tavolo"
     },
     "river": {
       "choose": "Scegli una tessera da cedere dalla rastrelliera, poi una del fiume. Gratis una volta per round.",

@@ -2789,7 +2789,11 @@
     "hud": {
       "round": "第{{current}}局／全{{total}}局",
       "resources": "配置{{actions}}・交換{{redraws}}",
-      "bridges": "· 橋渡し{{count}}"
+      "bridges": "· 橋渡し{{count}}",
+      "gold": "所持金 {{gold}}"
+    },
+    "table": {
+      "label": "卓"
     },
     "river": {
       "choose": "渡す手元の牌を一枚選び、次に河の牌を選びます。各局に一度、行動消費なし。",

@@ -32,16 +32,20 @@ export function MilestoneTrack({
   )
 
   return (
-    <div className="px-2 py-1">
+    <div className="px-3 py-1">
       <div className="mb-1 flex items-baseline justify-between">
         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]">
           {t('tableLoop.milestones.title', 'Patterns')}
         </p>
         {tableMult > 0 && (
           <p className="text-[10px] text-[var(--color-golden-yellow)]">
-            {t('tableLoop.milestones.momentum', 'Table momentum +{{mult}} Mult', {
-              mult: tableMult.toFixed(1),
-            })}
+            {t(
+              'tableLoop.milestones.momentum',
+              'Table momentum +{{mult}} Mult',
+              {
+                mult: tableMult.toFixed(1),
+              }
+            )}
           </p>
         )}
       </div>
@@ -64,10 +68,10 @@ export function MilestoneTrack({
               key={milestone.id}
               title={description}
               data-testid={`milestone-${milestone.id}`}
-              className={`rounded-md border px-1.5 py-0.5 text-[10px] leading-tight ${
+              className={`rounded-md border px-1.5 py-0.5 text-[10px] leading-tight sm:px-2 sm:text-[11px] ${
                 isClaimed
                   ? 'border-[var(--color-golden-yellow)] bg-[var(--color-golden-yellow)]/15 text-[var(--color-golden-yellow)]'
-                  : 'border-[var(--color-metallic-gold)]/25 text-[var(--color-beige-white)]/55'
+                  : 'border-[var(--color-metallic-gold)]/35 bg-black/30 text-[var(--color-beige-white)]/75'
               }`}
             >
               {name}

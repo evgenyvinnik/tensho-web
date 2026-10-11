@@ -2663,7 +2663,11 @@
     "hud": {
       "round": "Ronde {{current}} dari {{total}}",
       "resources": "{{actions}} aksi · {{redraws}} penukaran",
-      "bridges": "· {{count}} jembatan"
+      "bridges": "· {{count}} jembatan",
+      "gold": "{{gold}} emas"
+    },
+    "table": {
+      "label": "Meja"
     },
     "river": {
       "choose": "Pilih satu ubin di rak untuk dilepas, lalu pilih ubin sungai. Gratis sekali per ronde.",
