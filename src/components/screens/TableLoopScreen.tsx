@@ -351,6 +351,29 @@ export function TableLoopScreen() {
         ? 'compact'
         : 'small'
 
+  // On a phone the board is a short scroll box. When the next step is inside
+  // it (the first slot the selection fits, or an offer to take), bring that
+  // into view, so "tap a highlighted slot" never points off-screen.
+  const boardRef = useRef<HTMLDivElement>(null)
+  const nextTarget = state.pendingDraftPick
+    ? 'draft-row'
+    : placeable.length + revisable.length > 0
+      ? `table-slot-${Math.min(...placeable, ...revisable)}`
+      : null
+  useEffect(() => {
+    if (!nextTarget) return
+    const target = boardRef.current?.querySelector<HTMLElement>(
+      `[data-testid="${nextTarget}"]`
+    )
+    const reduceMotion = window.matchMedia?.(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+    target?.scrollIntoView?.({
+      block: 'nearest',
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    })
+  }, [nextTarget])
+
   // ---------------------------------------------------------------------------
   // PHASES OUTSIDE PLAY
   // ---------------------------------------------------------------------------
@@ -687,6 +710,7 @@ export function TableLoopScreen() {
 
       {/* The board scrolls on a short screen; the rack and actions stay put. */}
       <div
+        ref={boardRef}
         data-table-loop-board
         className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain [&>*]:shrink-0"
       >
@@ -794,14 +818,12 @@ export function TableLoopScreen() {
           onClear={store.clearSelection}
         />
 
-        <RackRow
-          tiles={state.rack}
-          selectedIds={selectedTileIds}
-          onToggle={store.toggleTile}
-          tileSize={rackTileSize}
-        />
-
-        <p className="px-3 pb-1 text-center text-[11px] leading-snug text-[var(--color-beige-white)]/65">
+        {/* Above the rack, so a longer hint grows into the board instead of
+            moving the tiles under the player's finger. */}
+        <p
+          data-table-loop-hint
+          className="px-3 pb-1 text-center text-[11px] leading-snug text-[var(--color-beige-white)]/65"
+        >
           {state.pendingDraftPick
             ? t(
                 'tableLoop.hint.draft',
@@ -822,6 +844,13 @@ export function TableLoopScreen() {
                     'No slot takes that group. Exchange the tiles or pick a different shape.'
                   )}
         </p>
+
+        <RackRow
+          tiles={state.rack}
+          selectedIds={selectedTileIds}
+          onToggle={store.toggleTile}
+          tileSize={rackTileSize}
+        />
 
         <footer
           data-frame-corner-row="bottom"

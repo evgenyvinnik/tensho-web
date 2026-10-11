@@ -107,6 +107,18 @@ Hints** setting was stored but never used by gameplay.
   a quad never spills out. The round-end, tea house and run-end panels are
   cards on the same felt.
 
+**iOS Safari pass (iPhone 16e simulator, iOS 26.2, live build):** the menu,
+the Table Loop start choice and a full select → place → score loop work in
+WebKit. It found two phone problems, both fixed: the hint under the rack grew
+from one line to two as the selection changed, moving every tile about 15pt
+between taps; and on a phone the slot a selection fits (or the offers row
+waiting for a pick) could sit below the visible board, so "tap a highlighted
+slot" pointed off-screen. The hint now sits above the rack, where a longer hint
+grows into the board instead, and the board scrolls the first highlighted slot
+(or the offers row) into view. Note for anyone testing in the simulator: its
+screenshots can lag one frame behind a tap, so take a second screenshot before
+judging a result.
+
 Checked in the browser at 1440×800, 768×1024, 390×844 and 320×568 (Table Loop:
 no horizontal overflow, rack pinned, board 189px tall at 320×568; slots never
 clip their tiles). Reduced motion exposed a real focus bug: a global tiny
