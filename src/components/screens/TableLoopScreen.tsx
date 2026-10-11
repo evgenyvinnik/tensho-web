@@ -633,8 +633,7 @@ export function TableLoopScreen() {
                 <strong className="text-[var(--color-golden-yellow)]">
                   {state.score.toLocaleString()}
                 </strong>
-                <span className="text-sm font-semibold text-[var(--color-beige-white)]/45">
-                  {' '}
+                <span className="ml-1 text-sm font-semibold text-[var(--color-beige-white)]/45">
                   / {state.round.target.toLocaleString()}
                 </span>
               </p>

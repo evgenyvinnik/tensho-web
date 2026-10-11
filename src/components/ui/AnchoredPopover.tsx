@@ -128,8 +128,8 @@ export function AnchoredPopover({
     else setPlacement(null)
   }, [open, reposition])
 
-  // Focus can only land once the panel is placed: until then it is hidden,
-  // and a hidden button ignores focus.
+  // Move focus in once the panel is placed and shown, not while it is still
+  // being measured.
   const placed = placement !== null
   const focusedThisOpen = useRef(false)
   useEffect(() => {
@@ -234,7 +234,11 @@ export function AnchoredPopover({
               width: placement.width,
               maxHeight: placement.maxHeight,
             }
-          : { visibility: 'hidden', left: 0, top: 0 }
+          : // Measured before it is shown. Opacity, not visibility: a
+            // visibility change can still be mid-transition (reduced motion
+            // gives everything a tiny one) when focus moves in, and a hidden
+            // button ignores focus.
+            { opacity: 0, pointerEvents: 'none', left: 0, top: 0 }
       }
     >
       <div className="sticky -top-3 z-10 -mx-3 -mt-3 mb-2 flex items-start justify-between gap-2 rounded-t-xl bg-[#0b1b15] px-3 pt-3">
