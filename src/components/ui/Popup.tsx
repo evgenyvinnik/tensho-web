@@ -160,7 +160,7 @@ export function Popup({
             <div className="mb-4 flex items-center justify-center">
               <h2
                 id={titleId}
-                className="w-full text-center text-xl font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-2xl"
+                className="min-w-0 w-full [overflow-wrap:anywhere] text-center text-xl font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-2xl"
               >
                 {title}
               </h2>

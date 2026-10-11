@@ -190,6 +190,23 @@ and Indonesian phone scrolls wrap their rules within the frame, with reachable
 close controls. The same twelve cases and unchanged deadlines now run on the
 clean static-server CI; final-source regression remains required before main.
 
+Candidate `6a2d4a1`, CI `38182066761`, passes the full unit/build steps and
+24 native dialog/tutorial/audio cases, but the static batch is **31/32**.
+All desktop catalogs, including the earlier Indonesian timeout, pass. Russian
+phone fails a real horizontal-overflow assertion on **Interest Omen**: the
+single word “Предзнаменование” exceeds the title width and is visibly clipped
+in the retained production screenshot. The PWA step is consequently skipped,
+not passed. Diagnostics are downloaded to
+`/tmp/tensho-interaction-IE5a7E/catalog-ci-surfaces`.
+
+The follow-up adds `min-width: 0` and `overflow-wrap: anywhere` to the shared
+popup title, retaining the full accessible name, centered alignment, close
+control and scroll behavior. The browser assertion now waits for font readiness
+and reports offending text/widths with the same one-pixel tolerance; it also
+captures Interest Omen. Focused popup/Archive tests pass **10/10**, TypeScript
+and targeted lint pass. The final full-project lint before this fix had zero
+errors and 211 existing warnings. Production re-verification remains required.
+
 ## Current implementation
 
 [Tile interaction recovery](TILE_INTERACTION_IMPLEMENTATION.md) fixes duplicate

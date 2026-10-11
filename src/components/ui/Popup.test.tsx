@@ -37,6 +37,21 @@ describe('ConfirmPopup', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toHaveFocus()
   })
 
+  it('allows long localized title words to wrap without truncating the dialog name', () => {
+    const name = 'Предзнаменование процентов'
+    render(
+      <Popup isOpen onClose={vi.fn()} title={name}>
+        <p>Лимит процентов увеличивается на 2 на 3 раунда.</p>
+      </Popup>
+    )
+    expect(screen.getByRole('dialog', { name })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name })).toHaveClass(
+      'min-w-0',
+      'w-full',
+      '[overflow-wrap:anywhere]'
+    )
+  })
+
   it('does not reset focus when callbacks change and restores the opener when closed', () => {
     const opener = document.createElement('button')
     document.body.append(opener)

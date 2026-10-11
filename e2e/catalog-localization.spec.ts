@@ -79,19 +79,28 @@ for (const language of ['id', 'it', 'ru', 'th', 'tl', 'tr']) {
       const dialog = page.getByRole('dialog', { name: item.name, exact: true })
       await expect(dialog).toBeVisible()
       await expect(dialog).toContainText(item.description)
+      await page.evaluate(() => document.fonts.ready)
       expect(
         await dialog.evaluate((node) =>
-          [node, ...node.querySelectorAll('h2, p')].every(
-            (element) => element.scrollWidth <= element.clientWidth + 1
-          )
+          [node, ...node.querySelectorAll('h2, p')]
+            .filter((element) => element.scrollWidth > element.clientWidth + 1)
+            .map((element) => ({
+              text: element.textContent,
+              width: element.clientWidth,
+              scrollWidth: element.scrollWidth,
+            }))
         )
-      ).toBe(true)
+      ).toEqual([])
       const close = dialog.getByRole('button', {
         name: copy.common.close,
         exact: true,
       })
       await expect(close).toBeInViewport()
-      if (id === 'decree-celestial-throne' || id === 'final_cut') {
+      if (
+        id === 'decree-celestial-throne' ||
+        id === 'final_cut' ||
+        id === 'interest_omen'
+      ) {
         await dialog.screenshot({ path: info.outputPath(`${id}.png`) })
       }
       await activate(close)
