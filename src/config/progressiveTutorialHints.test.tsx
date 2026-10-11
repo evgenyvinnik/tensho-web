@@ -25,6 +25,8 @@ const keys = [
   ),
   'progressiveHints.gotIt',
   'progressiveHints.dontShow',
+  'gameplay.firstMoveContentPattern',
+  'gameplay.firstMoveContentRedraw',
 ]
 
 describe('localized progressive guidance', () => {

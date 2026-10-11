@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
@@ -40,6 +40,8 @@ export interface ConsumableDialogProps {
   validateUse?: (action: ConsumableAction) => ValidationResult
   onUse: (action: ConsumableAction) => ActionResult
   onClose: () => void
+  /** A persistent inventory control when the last item removes its trigger. */
+  fallbackFocusRef?: RefObject<HTMLElement | null>
 }
 
 /** A private target selection: inspecting/cancelling never changes staged play. */
@@ -55,6 +57,7 @@ export function ConsumableDialog({
   validateUse,
   onUse,
   onClose,
+  fallbackFocusRef,
 }: ConsumableDialogProps) {
   const { t } = useTranslation()
   const itemText = useItemText()
@@ -107,11 +110,13 @@ export function ConsumableDialog({
     const dialog = dialogRef.current!
     const previous = document.activeElement as HTMLElement | null
     dialog.showModal()
+    dialog.querySelector<HTMLButtonElement>('[data-consumable-close]')?.focus()
     return () => {
       dialog.close()
       if (previous?.isConnected) previous.focus()
+      else fallbackFocusRef?.current?.focus()
     }
-  }, [])
+  }, [fallbackFocusRef])
 
   const confirm = () => {
     if (!action || !allowed || busy.current) return
@@ -165,7 +170,7 @@ export function ConsumableDialog({
             {title}
           </h2>
           <button
-            autoFocus
+            data-consumable-close
             type="button"
             onClick={onClose}
             aria-label={t('common.close')}

@@ -19,10 +19,9 @@ import { OrbSVG, ScriptSVG, SealSVG } from '../ui/svg/ConsumableSVG'
  * Individual consumable item configuration
  */
 interface ConsumableItem {
+  id: 'seal' | 'orb' | 'script'
   /** Display name */
   name: string
-  /** Japanese name */
-  japanese: string
   /** Current count */
   count: number
   /** Native compact icon */
@@ -63,7 +62,7 @@ export interface ConsumablesBarProps {
  * - Celestial Orbs (天球) - Blue border, native orb SVG
  * - Void Scripts (虚空) - Gray border, native script SVG
  *
- * Each button is disabled when count is 0.
+ * Empty categories occupy no space; owned items retain their illustrated controls.
  * Meets 44px minimum touch target requirement.
  */
 export function ConsumablesBar({
@@ -77,43 +76,46 @@ export function ConsumablesBar({
   const { t } = useTranslation()
   const consumables: ConsumableItem[] = [
     {
+      id: 'seal',
       name: t('consumableUse.fateSeals'),
-      japanese: '運命',
       count: fateSeals,
       icon: <SealSVG variant="wisdom" size={32} />,
       color: 'border-purple-500',
       onUse: onUseFateSeal,
     },
     {
+      id: 'orb',
       name: t('consumableUse.celestialOrbs'),
-      japanese: '天球',
       count: celestialOrbs,
       icon: <OrbSVG variant="neptune" size={32} />,
       color: 'border-blue-500',
       onUse: onUseCelestialOrb,
     },
     {
+      id: 'script',
       name: t('consumableUse.voidScripts'),
-      japanese: '虚空',
       count: voidScripts,
       icon: <ScriptSVG size={32} />,
       color: 'border-gray-500',
       onUse: onUseVoidScript,
     },
   ]
+  const owned = consumables.filter((item) => item.count > 0)
+  if (owned.length === 0) return null
 
   return (
-    <div className="flex gap-1 min-[360px]:gap-2">
-      {consumables.map((item) => (
+    <div data-consumables-bar className="flex gap-1 min-[360px]:gap-2">
+      {owned.map((item) => (
         <button
-          key={item.name}
+          type="button"
+          key={item.id}
+          data-consumable-family={item.id}
           onClick={item.onUse}
-          disabled={item.count === 0}
           className={`
             game-consumable group flex items-center justify-center gap-0 px-1 py-1 min-[360px]:gap-1 min-[360px]:px-2
             bg-[var(--color-dark-forest)] rounded-lg
             border ${item.color}
-            ${item.count > 0 ? 'opacity-100 hover:bg-[var(--color-forest-green)]' : 'opacity-40'}
+            hover:bg-[var(--color-forest-green)]
             transition-all min-w-[44px] min-h-[44px]
           `}
           title={item.name}

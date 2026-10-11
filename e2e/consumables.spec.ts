@@ -145,7 +145,9 @@ test('a purchased Seal is staged, targeted and consumed once through the live UI
     })
   await expect(
     page.getByRole('button', { name: 'Fate Seals (0 available)', exact: true })
-  ).toBeDisabled()
+  ).toHaveCount(0)
+  await expect(page.locator('[data-wall-chip]')).toBeFocused()
+  await expect(page.locator('[data-wall-chip]')).toBeInViewport()
 })
 
 test('inspection and Escape preserve staged tiles, hidden identities and focus', async ({

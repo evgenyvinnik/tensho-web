@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type Ref } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
 import { tileName } from '../../i18n/tileText'
@@ -8,6 +8,7 @@ import { Popup } from '../ui/Popup'
 export interface WallDisplayProps {
   /** Physical tiles still in the live wall, excluding the dead wall. */
   wallTiles: Tile[]
+  triggerRef?: Ref<HTMLButtonElement>
 }
 
 const SUITS = [
@@ -21,7 +22,7 @@ const SUITS = [
 ] as const
 
 /** A compact inventory control with readable, localized wall contents. */
-export function WallDisplay({ wallTiles }: WallDisplayProps) {
+export function WallDisplay({ wallTiles, triggerRef }: WallDisplayProps) {
   const { t, i18n } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
   const groups = useMemo(() => {
@@ -53,6 +54,7 @@ export function WallDisplay({ wallTiles }: WallDisplayProps) {
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         data-wall-chip
         onClick={() => setIsExpanded(true)}

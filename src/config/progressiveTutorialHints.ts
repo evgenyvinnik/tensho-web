@@ -74,11 +74,11 @@ export function getProgressiveHints(
         beginnerPattern === 'redraw'
           ? t(
               'gameplay.firstMoveContentRedraw',
-              'Select the glowing isolated tiles and Redraw to find a group. Learn the tiles opens the visual guide.'
+              'Select the glowing isolated tiles and Redraw to find a group. Open the book icon for the illustrated tile guide.'
             )
           : t(
               'gameplay.firstMoveContentPattern',
-              'Glowing tiles: {{pattern}}. Select them, check the points, then Play. Learn the tiles opens the visual guide.',
+              'Glowing tiles: {{pattern}}. Select them, check the points, then Play. Open the book icon for the illustrated tile guide.',
               { pattern: patternName ?? t('gameplay.pattern', 'shape') }
             ),
       priority: 0,

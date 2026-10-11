@@ -152,6 +152,7 @@ export function GameplayScreen() {
 
   // Consumables from game controller
   const consumables = game.consumableCounts
+  const wallTriggerRef = useRef<HTMLButtonElement>(null)
 
   // ==========================================================================
   // EFFECTS - Game lifecycle
@@ -935,7 +936,10 @@ export function GameplayScreen() {
                       <FloraTrackCompact flora={game.flora} />
                     </div>
                     <div data-tutorial="wall" className="shrink-0">
-                      <WallDisplay wallTiles={game.wallTiles} />
+                      <WallDisplay
+                        wallTiles={game.wallTiles}
+                        triggerRef={wallTriggerRef}
+                      />
                     </div>
                     <div className="shrink-0">
                       <YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />
@@ -1082,6 +1086,7 @@ export function GameplayScreen() {
           validateUse={game.validateConsumableAction}
           onUse={game.processAction}
           onClose={() => setShowConsumablesPanel(null)}
+          fallbackFocusRef={wallTriggerRef}
         />
       )}
     </TablePattern>

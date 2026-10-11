@@ -1,6 +1,6 @@
-import { act, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
-import { changeLanguage } from '../../i18n'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import i18n, { changeLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { ConsumablesBar } from './ConsumablesBar'
 
 afterEach(async () => {
@@ -26,12 +26,13 @@ describe('ConsumablesBar illustrations', () => {
     }
   })
 
-  it('keeps empty consumables disabled', () => {
-    render(<ConsumablesBar fateSeals={0} celestialOrbs={0} voidScripts={0} />)
+  it('reserves no inventory space for empty categories', () => {
+    const { container } = render(
+      <ConsumablesBar fateSeals={0} celestialOrbs={0} voidScripts={0} />
+    )
 
-    const buttons = screen.getAllByRole('button')
-    expect(buttons).toHaveLength(3)
-    buttons.forEach((button) => expect(button).toBeDisabled())
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('localizes the family names and accessible inventory counts', async () => {
@@ -46,7 +47,38 @@ describe('ConsumablesBar illustrations', () => {
       screen.getByRole('button', { name: 'Orbes Celestiales (1 disponibles)' })
     ).toBeEnabled()
     expect(
-      screen.getByRole('button', { name: 'Escritos del Vacío (0 disponibles)' })
-    ).toBeDisabled()
+      screen.queryByRole('button', {
+        name: 'Escritos del Vacío (0 disponibles)',
+      })
+    ).not.toBeInTheDocument()
   })
+
+  it.each(SUPPORTED_LANGUAGES)(
+    'keeps owned controls localized, stable and actionable in %s',
+    async (language) => {
+      const useOrb = vi.fn()
+      const props = {
+        fateSeals: 0,
+        celestialOrbs: 1,
+        voidScripts: 0,
+        onUseCelestialOrb: useOrb,
+      }
+      const { rerender } = render(<ConsumablesBar {...props} />)
+      const original = screen.getByRole('button')
+      original.focus()
+      await act(() => changeLanguage(language))
+      const expected = i18n.t('consumableUse.available', {
+        name: i18n.t('consumableUse.celestialOrbs'),
+        count: 1,
+      })
+      expect(screen.getByRole('button', { name: expected })).toBe(original)
+      expect(original).toHaveFocus()
+      fireEvent.click(original)
+      expect(useOrb).toHaveBeenCalledOnce()
+      rerender(<ConsumablesBar {...props} celestialOrbs={0} />)
+      expect(screen.queryByRole('button')).not.toBeInTheDocument()
+      rerender(<ConsumablesBar {...props} fateSeals={2} />)
+      expect(screen.getAllByRole('button')).toHaveLength(2)
+    }
+  )
 })
