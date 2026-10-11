@@ -4,6 +4,11 @@
 
 **Last verified:** October 8, 2026 (browser and release evidence retains its own dates)
 
+**Completion direction, October 11:** the active, finite release checklist and
+latest deployment evidence are in the [completion contract](IMPLEMENTATION_WRAP_UP.md#completion-contract--october-11).
+This file retains historical implementation evidence; its older test counts and
+research suggestions are not the current release status or additional blockers.
+
 **Published hand-building workshop — v1.0.261008-17:** real tile images show a keep/exchange route,
 shape distance and improving types, with explicit redraw cost and separate
 selection/confirmation. Thirteen locales, hidden/altered-rule guards and engine
@@ -902,11 +907,19 @@ Legacy Zustand stores still exist for isolated screens and older system APIs. Th
 
 ## Remaining Work, in Priority Order
 
-1. Extend the [current observed-build comparison](CLASSIC_BUILD_SHOP_BALANCE.md) beyond its tactical shopping heuristic. The 1,280-run new-policy sample reaches Act 8 on 49 runs and wins 25, without rescues, but none of its wins uses a complete hand. The subsequent [structural hand-planning comparison](CLASSIC_HAND_PLANNING.md) completes 320 matched Stake-1 runs: 8 versus 5 wins, six complete hands, but fewer cleared rounds overall. Higher Stakes, cost-aware planning and human observation remain open. [Table rules](TABLE_STYLE_RULES.md) records implemented effects, unlock paths, compatibility and regression evidence.
-2. Extend [`scripts/classic-balance.mts`](../scripts/classic-balance.mts) with cost-aware destructive/Script strategies and broader Yaku planning before tuning ordinary-run Act 6–8 power growth. Opt-in synergy-aware Decree buying/replacement is now measured, but full-hand planning and other item/pack optimization remain limited. [Resource and one-away policies](CLASSIC_BALANCE_AUDIT.md) and [conservative consumable use](CLASSIC_CONSUMABLE_BALANCE.md) retain their original snapshots and raw rows; their historical lack of Act 8 reach is not a claim about the new shopping policy.
-3. Extend the verified consumable targeting and pack-settlement coverage to complete effect combinations, Stake selection/unlocks, Omen-modified shops, Boss mandates, Act 8 victory, and Endless continuation. Fate Seal lifetime and Negative tile ownership are now resolved and implemented; see [current evidence](RUN_OWNERSHIP_IMPLEMENTATION.md). Other effect/lifecycle combinations remain open.
-4. Review the new sound mix on representative speakers/headphones and iOS/Safari. The 55 generated assets, app-lifetime music/SFX, settings, and native Chromium/mobile playback are implemented and tested; see [Audio implementation](AUDIO_IMPLEMENTATION.md).
-5. Observe people playing the Table Loop prototype against the classic loop, following section 8 of the experiments document. The simulation says the targets are not arbitrary; it says nothing about whether the loop is enjoyable.
+1. Close the in-flight candidate, then execute C1–C5 in the completion contract:
+   complete runs, rules/progression, saves, usable localized screens and public assets.
+2. Fix concrete current blockers, run the final acceptance checks and deploy C6.
+   Preserve confirmed rules and supported saves; do not substitute an ever-larger
+   simulation project for finishing the playable release.
+3. Record newcomer feedback and physical-device/listening/native-language review
+   honestly. Automated integration and simulation do not establish enjoyment.
+
+Further cost-aware Script policies, exhaustive build combinations and deeper
+balance experiments remain useful follow-ups, not prerequisites to completing
+the current implementation. Existing [observed-build](CLASSIC_BUILD_SHOP_BALANCE.md),
+[hand-planning](CLASSIC_HAND_PLANNING.md) and [consumable](CLASSIC_CONSUMABLE_BALANCE.md)
+comparisons retain their evidence and limitations; no new balance result is claimed.
 
 ## Status Rule
 

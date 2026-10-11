@@ -120,6 +120,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Documentation
 
+- [Completion checklist and current release](docs/IMPLEMENTATION_WRAP_UP.md#completion-contract--october-11) — Six finite acceptance gates, release scope, remaining blockers and the stopping rule
 - [Monsoon draw implementation](docs/MONSOON_IMPLEMENTATION.md) — Seeded live/bonus draws, non-mutating redraw previews, and remaining Season requirements
 - [Summer wall tradeoff](docs/SUMMER_IMPLEMENTATION.md) — Round-only wall reduction, physical tile restoration, and the unfinished Bamboo exception
 - [Three-Flower shop unlock](docs/FLOWER_SHOP_IMPLEMENTATION.md) — Eligible offers, packs, Omen guarantees and generated rewards

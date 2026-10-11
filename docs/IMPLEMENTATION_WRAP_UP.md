@@ -6,6 +6,67 @@
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
+## Completion contract — October 11
+
+The user has explicitly prioritized **project completion**. This is the active
+work queue; the long chronological ledger below is evidence, not an ever-growing
+release checklist. Finish one release candidate before starting another polish
+checkpoint. A historical failure remains recorded, but only a reproducible
+current defect or an unmet acceptance criterion blocks this candidate.
+
+**Release scope:** the existing Classic game, the existing three-round Table Loop
+mode, their documented content/progression, saves, optional teaching, responsive
+localized interface, illustrated assets, audio, and public About/how-to-play/FAQ
+pages. Preserve the current default mode and all confirmed mechanic decisions.
+Do not introduce another mode, scoring redesign or default-mode migration as
+part of closing this release. The Dragon-hint work already underway is the last
+standalone polish checkpoint; subsequent changes must close a gate below.
+
+| Gate | Finite acceptance criterion | Current status / next action |
+| --- | --- | --- |
+| C1 — Complete runs | Classic: start, stage/confirm, score/refill, discard/redraw, buy/use/reward, next round/boss, defeat, Act 8 victory, unlock and explicit Endless continuation. Table Loop: paid shop transitions and both terminal outcomes. Rejected actions and repeated settlement must not spend/grant twice. | Implemented with existing engine/browser evidence. Re-run the named core journeys on the candidate, not just opening-tile interaction tests. Late-Act fixtures verify transitions, not organic wins. |
+| C2 — Rules and progression | Each shipped content family has acquisition, authoritative use/trigger, visible explanation and persistence coverage. Reconcile any remaining advertised rule/unlock mismatch with `RULE_RESOLUTION.md`; retain the approved Merchant swap, defeat Rental and latest-only Bell rules. | Existing system coverage and resolved rules are the starting evidence. Audit current catalog/copy discrepancies once; turn only concrete discrepancies into fixes. Full unit suite must pass on the final candidate. |
+| C3 — Save/recovery safety | Reload/resume play and paid pending rewards without loss/replay; protect against stale-window writes; preserve preferences through confirmed reset; verify the supported current-to-candidate PWA update and offline artwork. | Existing coverage; run the named persistence journeys and existing update harness against the candidate. Do not claim support for every historical client or crash-atomic multi-key reset. Any reproduced loss of a supported save is a blocker. |
+| C4 — Usable, teachable interface | At 320px, tablet and desktop: reachable primary actions and close controls, no page-wide overflow or clipped essential rules; hover information also available to touch/keyboard; optional guidance explains selection, commitment and payoff. All 13 game locales have required rules/control text and no raw keys. | Finish verification of the pending Dragon guide, then one bounded screen/locale pass. Fix blocked actions, unreadable rules and incorrect translations; aesthetic variations alone do not reopen this gate. |
+| C5 — Assets and public site | Existing required illustrations decode and have accessible text; audio/motion preferences work. About/how-to-play/FAQ return real HTML with valid links/metadata, and production asset/cache budgets pass. | Reuse the already generated art. Run public-guide/static-route/asset checks. English-only editorial pages remain explicitly labeled; search indexing and future translated articles are not implementation claims. |
+| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Dragon candidate `73ee4c1` is in independent CI; do not deploy it until that gate passes. Then complete the broader acceptance pass, fix blockers and publish the final verified candidate. |
+
+### Execution order and stopping rule
+
+1. Close the already-running Dragon verification and publish only if it passes.
+2. Run C1–C5 once against a fixed candidate. Consolidate failures into one
+   prioritized defect list; fix P0/P1 defects before optional visual adjustments.
+   Do not start another feature or a new large simulation policy during this pass.
+3. Re-run affected cases plus the final full unit/build/release checks. Deploy
+   through the existing protected Pages workflow and verify C6 on the public site.
+4. Mark implementation complete when C1–C6 have explicit results and no known
+   supported-path blocker remains. Hand off the release and limitations; do not
+   keep the implementation goal open solely to pursue every future improvement.
+
+Core browser acceptance uses the existing `app`, `play-structure`, `shop`,
+`consumables`, `run-results`, `classic-resume`, `table-loop-run`,
+`table-save-conflicts` and `progress-reset` specs. Several intentionally require
+native Vite fixtures; run them there and label that evidence accurately. The
+production interaction gate, `public-guides`, `static-routes`, `asset-delivery`
+and the existing PWA update harness exercise the built release separately.
+An unexpected skip or interrupted run does not satisfy a gate. Preserve original
+failures and test budgets; investigate failures rather than retrying to erase them.
+
+**Product acceptance is separate and explicit:** a newcomer should be able to
+choose a scoring shape, explain its score, make a shop choice and start another
+round without coaching from the developer. The user has agreed to try a fresh
+run but has not yet supplied observations. Do not label the game fun or this
+playtest passed based on automation. Fix concrete confusion they report within
+the release scope; do not invent a playtest result or leave all technical work
+waiting for feedback. Physical iOS/Safari, assistive-technology and native-speaker
+reviews must be listed honestly as unverified if unavailable at handoff.
+
+**After this release:** the 118 experiments, more illustration variants,
+additional balance/search policies, new SEO articles/languages, external error
+reporting, and exhaustive combinations of every item/Stake/old client are future
+work. Existing promised mechanics, save correctness and essential localized
+controls are not being deferred under that label.
+
 ## Current implementation
 
 [Tile interaction recovery](TILE_INTERACTION_IMPLEMENTATION.md) fixes duplicate
@@ -1499,6 +1560,11 @@ deployed in this pass. Older checkpoint counts below remain historical.
 
 ## Completion audit still open
 
+Historical audit inventory. The finite [completion contract](#completion-contract--october-11)
+above now governs release blocking and work order. Preserve the evidence and
+limitations below; do not interpret every research opportunity as a new required
+implementation task.
+
 September 26 published follow-up (**v1.0.260926-3**): the ordinary hand-readiness hint now checks
 alternative tile groupings and separates special-hand completion. Full units
 passed **1,340/1,340**, strict TypeScript, lint, release checks and production
@@ -1530,4 +1596,6 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
 | Release readiness | The latest publication evidence is recorded in Current implementation above. The earlier asset-delivery release v1.0.261008-21 has independent CI (2,809 tests), matching manifest/tag/runtime and 16/16 hosted guide/asset checks; see [release evidence](ASSET_DELIVERY_IMPLEMENTATION.md). Its ten real old→new worker upgrades preserve saves and decode all replacement artwork offline, and the offline payload drops from about 70 to 36 MiB. The full native audit and targeted rechecks retain their original failures. Save-aware screen recovery shipped in v6, but the ownership checkpoint's original module-fetch failure remains unexplained. Earlier [static route checks](STATIC_ROUTE_IMPLEMENTATION.md) and [save-aware update scenarios](PWA_UPDATE_IMPLEMENTATION.md) remain regression evidence, not proof of every historical-client migration. Further font/JavaScript delivery, measured cold-load latency, other installed-client versions and physical-device checks remain open. |
 
-Keep these requirements open until current-state evidence proves them. Passing the current suite is a regression signal, not permission to mark unaudited systems, fun, or deployment as complete.
+Evaluate these concerns against the completion contract above. Passing the current
+suite is not proof of human enjoyment, every combination, or an unverified deployment;
+those limits must be stated without making the release scope unbounded.
