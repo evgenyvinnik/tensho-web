@@ -416,7 +416,7 @@
       "normal": "ปกติ",
       "slow": "ช้า"
     },
-    "tileHintsDesc": "แสดงตัวเลขบนไพ่และจัดไพ่ในมือเป็นคู่ ลำดับ และสามใบ",
+    "tileHintsDesc": "แสดงตัวเลขและป้ายชื่อไพ่มังกร พร้อมจัดไพ่ในมือเป็นคู่ ลำดับ และสามใบ",
     "visual": "ภาพ"
   },
   "gameplay": {
@@ -842,6 +842,9 @@
     "chuurenPoutou": "เก้าประตู"
   },
   "tileDetails": {
+    "whiteIndex": "ขาว",
+    "greenIndex": "เขียว",
+    "redIndex": "แดง",
     "faceDown": "ไพ่คว่ำ",
     "suitedName": "{{suit}} {{rank}}",
     "redName": "{{name}}สีแดง",

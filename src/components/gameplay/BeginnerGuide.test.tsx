@@ -59,6 +59,12 @@ describe('BeginnerGuide', () => {
     expect(screen.getAllByAltText(/Characters/).length).toBeGreaterThan(0)
     expect(screen.getAllByAltText(/Circles/).length).toBeGreaterThan(0)
     expect(screen.getAllByAltText(/Bamboo/).length).toBeGreaterThan(0)
+    const dragons = screen.getByRole('group', { name: 'Dragons' })
+    expect(dragons.querySelectorAll('img')).toHaveLength(3)
+    for (const name of ['White Dragon', 'Green Dragon', 'Red Dragon']) {
+      expect(dragons).toHaveTextContent(name)
+      expect(dragons.querySelector(`img[alt="${name}"]`)).not.toBeNull()
+    }
 
     fireEvent.click(screen.getByRole('button', { name: 'Show me a move' }))
     expect(onClose).toHaveBeenCalledOnce()

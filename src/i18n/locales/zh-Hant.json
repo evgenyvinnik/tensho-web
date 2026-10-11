@@ -313,7 +313,7 @@
       "normal": "正常",
       "slow": "慢"
     },
-    "tileHintsDesc": "顯示牌面數字，並把手牌分組為對子、順子和刻子",
+    "tileHintsDesc": "顯示牌面數字和三元牌標記，並把手牌分組為對子、順子和刻子",
     "visual": "顯示"
   },
   "gameplay": {
@@ -1319,6 +1319,9 @@
     "chuurenPoutou": "九蓮寶燈"
   },
   "tileDetails": {
+    "whiteIndex": "白",
+    "greenIndex": "發",
+    "redIndex": "中",
     "faceDown": "背面牌",
     "suitedName": "{{suit}}{{rank}}",
     "redName": "赤{{name}}",

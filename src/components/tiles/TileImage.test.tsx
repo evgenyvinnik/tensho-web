@@ -9,9 +9,11 @@ import {
   EditionType,
 } from '../../core/Tile'
 import { TileImage } from './TileImage'
+import { useSettingsStore } from '../../stores/settingsStore'
 
 afterEach(async () => {
   await act(async () => {
+    useSettingsStore.getState().setShowTileHints(true)
     await i18n.changeLanguage('en')
   })
 })
@@ -60,9 +62,62 @@ it('conceals all identity and modifiers and never opens hidden details', () => {
   render(<TileImage tile={tile} faceDown detailsVisible onClick={() => {}} />)
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
   expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+  expect(document.querySelector('[data-tile-index]')).toBeNull()
   expect(screen.getByRole('button')).not.toHaveAccessibleName(
     /Dragon|Glass|Polychrome/
   )
+})
+
+it.each([
+  [1, 'white', 'W', 'White Dragon'],
+  [2, 'green', 'G', 'Green Dragon'],
+  [3, 'red', 'R', 'Red Dragon'],
+] as const)(
+  'adds a distinct, non-interactive hint for Dragon rank %s',
+  (rank, tone, label, name) => {
+    const { container } = render(
+      <TileImage tile={new Tile(TileSuit.Dragon, rank, `dragon-${rank}`)} />
+    )
+    const badge = container.querySelector('[data-tile-index]')
+    expect(badge).toHaveAttribute('data-tile-index', label)
+    expect(badge).toHaveAttribute('data-tile-index-tone', tone)
+    expect(badge).toHaveAttribute('aria-hidden', 'true')
+    expect(badge).not.toHaveAttribute('tabindex')
+    expect(screen.getByRole('img')).toHaveAccessibleName(name)
+    expect(container.querySelector('.ring-golden-yellow')).toBeNull()
+  }
+)
+
+it('responds to the tile-hints setting and never reveals a hidden Dragon', () => {
+  const tile = new Tile(TileSuit.Dragon, 2, 'green')
+  const { container, rerender } = render(<TileImage tile={tile} />)
+  expect(container.querySelector('[data-tile-index]')).not.toBeNull()
+  act(() => useSettingsStore.getState().setShowTileHints(false))
+  expect(container.querySelector('[data-tile-index]')).toBeNull()
+  act(() => useSettingsStore.getState().setShowTileHints(true))
+  expect(container.querySelector('[data-tile-index]')).not.toBeNull()
+  rerender(<TileImage tile={tile} faceDown />)
+  expect(container.querySelector('[data-tile-index]')).toBeNull()
+  expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
+})
+
+it('updates Dragon hints with the locale without changing their full accessible names', async () => {
+  const { container } = render(
+    <TileImage tile={new Tile(TileSuit.Dragon, 1, 'white')} />
+  )
+  expect(container.querySelector('[data-tile-index]')).toHaveAttribute(
+    'data-tile-index',
+    'W'
+  )
+  await act(async () => {
+    await loadLanguage('es')
+    await i18n.changeLanguage('es')
+  })
+  expect(container.querySelector('[data-tile-index]')).toHaveAttribute(
+    'data-tile-index',
+    'B'
+  )
+  expect(screen.getByRole('img')).toHaveAccessibleName(i18n.t('tiles.white'))
 })
 
 it('keeps keyboard details and selection independent, including after a locale change', async () => {

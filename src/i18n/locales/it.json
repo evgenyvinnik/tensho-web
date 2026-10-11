@@ -416,7 +416,7 @@
       "normal": "Normale",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Mostra il numero delle tessere e raggruppa la mano in Coppie, Sequenze e Tris",
+    "tileHintsDesc": "Mostra i numeri e le etichette dei Draghi; raggruppa la mano in Coppie, Sequenze e Tris",
     "visual": "Visivo"
   },
   "gameplay": {
@@ -842,6 +842,9 @@
     "chuurenPoutou": "Nove Porte"
   },
   "tileDetails": {
+    "whiteIndex": "B",
+    "greenIndex": "V",
+    "redIndex": "R",
     "faceDown": "Tessera coperta",
     "suitedName": "{{rank}} di {{suit}}",
     "redName": "{{name}} rossa",

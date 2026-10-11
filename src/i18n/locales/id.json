@@ -393,7 +393,7 @@
       "normal": "Normal",
       "slow": "Lambat"
     },
-    "tileHintsDesc": "Tampilkan angka ubin dan kelompokkan tanganmu menjadi Pasangan, Urutan, dan Triplet",
+    "tileHintsDesc": "Tampilkan angka ubin dan penanda Naga; kelompokkan tanganmu menjadi Pasangan, Urutan, dan Triplet",
     "visual": "Visual"
   },
   "gameplay": {
@@ -1399,6 +1399,9 @@
     "chuurenPoutou": "Sembilan Gerbang"
   },
   "tileDetails": {
+    "whiteIndex": "P",
+    "greenIndex": "H",
+    "redIndex": "M",
     "faceDown": "Ubin tertutup",
     "suitedName": "{{rank}} {{suit}}",
     "redName": "{{name}} merah",

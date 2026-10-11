@@ -432,8 +432,8 @@ a {
 }
 
 /*
- * Tile hints: an Arabic numeral on suited tiles for players who cannot read
- * the Chinese numerals or count pips at a glance. Drawn as generated content so
+ * Tile hints: Arabic numerals and localized Dragon identities for players who
+ * cannot read the artwork at a glance. Drawn as generated content so
  * it never becomes part of a tile's text or accessible name.
  */
 .tile-index {
@@ -441,6 +441,7 @@ a {
   left: 4%;
   bottom: 3%;
   min-width: 1.35em;
+  max-width: 96%;
   padding: 0.05em 0.25em;
   border-radius: 0.35em;
   background: rgba(20, 30, 25, 0.78);
@@ -448,11 +449,20 @@ a {
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
+  white-space: nowrap;
   pointer-events: none;
 }
 
 .tile-index::before {
   content: attr(data-tile-index);
+}
+
+.tile-index[data-tile-index-tone='green'] {
+  color: #86efac;
+}
+
+.tile-index[data-tile-index-tone='red'] {
+  color: #fca5a5;
 }
 
 /* Ultra-compact phones need the full game loop, not a cropped desktop HUD. */

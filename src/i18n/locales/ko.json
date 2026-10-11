@@ -313,7 +313,7 @@
       "normal": "보통",
       "slow": "느림"
     },
-    "tileHintsDesc": "패의 숫자를 표시하고 손패를 또이쯔·순자·커쯔로 묶어 보여줍니다",
+    "tileHintsDesc": "패의 숫자와 삼원패 표식을 표시하고 손패를 또이쯔·순자·커쯔로 묶어 보여줍니다",
     "visual": "화면"
   },
   "gameplay": {
@@ -1319,6 +1319,9 @@
     "chuurenPoutou": "구련보등"
   },
   "tileDetails": {
+    "whiteIndex": "백",
+    "greenIndex": "발",
+    "redIndex": "중",
     "faceDown": "뒷면 패",
     "suitedName": "{{suit}} {{rank}}",
     "redName": "붉은 {{name}}",

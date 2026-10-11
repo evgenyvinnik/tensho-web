@@ -93,6 +93,7 @@ try {
       'node_modules/@playwright/test/cli.js',
       'test',
       'e2e/table-loop-layout.spec.ts',
+      'e2e/dragon-hints.spec.ts',
       'e2e/tile-return-guidance.spec.ts',
       'e2e/flower-mutations.spec.ts',
       'e2e/bamboo-summer.spec.ts',

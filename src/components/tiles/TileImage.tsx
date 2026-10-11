@@ -14,7 +14,7 @@ import React, {
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
-import { tileDetails } from '../../i18n/tileText'
+import { tileDetails, tileIndexHint } from '../../i18n/tileText'
 import { getTileImagePath, getTileBackPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
@@ -99,7 +99,7 @@ export const TileImage: React.FC<TileImageProps> = ({
     ((isHovering && allowHover) || isFocused || detailsVisible)
   const dimensions = tileSizes[size]
   const showTileHints = useSettingsStore((state) => state.showTileHints)
-  const showIndex = Boolean(showTileHints && tile?.isSuited && !faceDown)
+  const indexHint = showTileHints ? tileIndexHint(tile, t, faceDown) : null
   const src = getTileSrc(tile, faceDown)
   const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
 
@@ -243,13 +243,17 @@ export const TileImage: React.FC<TileImageProps> = ({
         draggable={false}
         loading={loading}
       />
-      {showIndex && (
+      {indexHint && (
         <span
           aria-hidden="true"
-          data-tile-index={tile!.rank}
+          data-tile-index={indexHint.label}
+          data-tile-index-tone={indexHint.tone}
           className="tile-index"
           style={{
             fontSize: Math.max(9, Math.round(dimensions.width * 0.2)),
+            // Keep meaningful short words (e.g. Tagalog "Berde") readable
+            // on 35px guide tiles without reducing their font size.
+            paddingInline: indexHint.label.length > 2 ? 0 : undefined,
           }}
         />
       )}

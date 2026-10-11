@@ -147,6 +147,24 @@ racks and real devices remain open.
     but White/Green/Red Dragons have no hint for newcomers. Add a small
     coloured initial (W/G/R, localized) through the same `.tile-index`
     generated-content badge. File: `src/components/tiles/TileImage.tsx`.
+    **Local follow-up, not published:** all thirteen locales now supply distinct
+    Dragon hints, controlled by the existing setting and suppressed on hidden
+    faces. The optional illustrated guide pairs all three existing tile images
+    with full localized names. Short Thai/Tagalog words avoid ambiguous initials.
+    The 56 focused tile/locale tests and five guide tests pass; TypeScript and
+    targeted lint pass. The first eight browser journeys pass five: English
+    desktop times out waiting for initial save readiness, while both Tagalog
+    cases expose a real badge-width defect (31.5px text in 25.86px content).
+    Reduced padding and a wider tile-contained badge correct that fit without
+    shrinking the font. All 26 desktop/phone journeys then pass without retries,
+    but screenshot review reveals a Tagalog caption splitting "Berdeng" mid-word.
+    A new word-boundary assertion reproduces that exact defect. The guide now
+    uses image-and-name rows on phones and three columns on desktop; its final
+    all-locale recheck is pending. A subsequent focused unit run passes 58/61,
+    with three existing cases timing out at 5 seconds; these are not clearance.
+    Original evidence remains in `/tmp/tensho-interaction-IE5a7E/dragon-native`,
+    `dragon-final` and `dragon-word-wrap`; no assertion or timeout was relaxed.
+    Native-speaker review is not claimed.
 
 14. **Table Loop wastes desktop space.** Its rack uses small fixed tiles on a
     mostly empty 1440×800 screen. Reuse `fitHandTileSize` for `RackRow`.

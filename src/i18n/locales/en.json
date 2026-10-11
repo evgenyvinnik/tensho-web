@@ -289,7 +289,7 @@
     "gameplay": "Gameplay",
     "language": "Language",
     "tileHints": "Tile Hints",
-    "tileHintsDesc": "Show tile numbers and group your hand into Pairs, Sequences and Triplets",
+    "tileHintsDesc": "Show tile numbers and Dragon labels; group your hand into Pairs, Sequences and Triplets",
     "animationSpeed": "Animation Speed",
     "reducedMotion": "Reduced Motion",
     "reducedMotionDesc": "Minimize animations for accessibility",
@@ -1315,6 +1315,9 @@
     "chuurenPoutou": "Nine Gates"
   },
   "tileDetails": {
+    "whiteIndex": "W",
+    "greenIndex": "G",
+    "redIndex": "R",
     "faceDown": "Face-down tile",
     "suitedName": "{{rank}} of {{suit}}",
     "redName": "Red {{name}}",

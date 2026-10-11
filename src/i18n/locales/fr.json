@@ -313,7 +313,7 @@
       "normal": "Normale",
       "slow": "Lente"
     },
-    "tileHintsDesc": "Affiche le numéro des tuiles et regroupe votre main en Paires, Séquences et Brelans",
+    "tileHintsDesc": "Affiche les numéros et les repères des Dragons, et regroupe votre main en Paires, Séquences et Brelans",
     "visual": "Visuel"
   },
   "gameplay": {
@@ -1319,6 +1319,9 @@
     "chuurenPoutou": "Neuf Portes"
   },
   "tileDetails": {
+    "whiteIndex": "B",
+    "greenIndex": "V",
+    "redIndex": "R",
     "faceDown": "Tuile face cachée",
     "suitedName": "{{rank}} de {{suit}}",
     "redName": "{{name}} rouge",

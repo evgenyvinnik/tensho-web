@@ -165,8 +165,11 @@ are preserved in ordinary merge `3a4e380`: the regression now checks every tile'
 untransformed layout position **and** every unselected tile's painted position.
 Independent combined run `38173552028` also passes the full application suite,
 release/runner checks, build and all 84 production-browser journeys without
-retries. This is the candidate for main publication; the separate Dragon-hint
-follow-up in the working tree is not part of that verified release.
+retries. Published in **v1.0.261011-14** (`d484538`): deployment run
+`38174591930` passes 2,957 application tests, 17 release/runner checks, the build
+and all 84 browser journeys (7.9 minutes, zero retries). The public manifest,
+remote tag and served entry-bundle version agree. Hosted interaction checks
+remain pending; the separate Dragon-hint follow-up is not part of this release.
 
 Desktop and Japanese short-phone screenshots were inspected. On short phones
 the board deliberately scrolls; this does not promise simultaneous visibility of

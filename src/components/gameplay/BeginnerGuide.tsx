@@ -138,6 +138,29 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
               'Characters, Circles, and Bamboo run from 1 to 9. Winds and Dragons are Honors: match them, but never place them in a sequence.'
             )}
           </p>
+          <div
+            data-guide-dragons
+            role="group"
+            aria-label={t('tiles.dragons')}
+            className="mt-3 grid gap-2 rounded-lg bg-black/15 p-3 sm:grid-cols-3 sm:gap-3"
+          >
+            {(['white', 'green', 'red'] as const).map((dragon, index) => (
+              <div
+                key={dragon}
+                className="flex min-w-0 items-center gap-3 sm:flex-col sm:gap-1.5"
+              >
+                <TileImage
+                  tile={exampleTile(TileSuit.Dragon, index + 1, dragon)}
+                  size="small"
+                  showTooltip={false}
+                  className="shrink-0"
+                />
+                <span className="min-w-0 flex-1 text-left text-xs text-[var(--color-beige-white)]/80 sm:w-full sm:text-center">
+                  {t(`tiles.${dragon}`)}
+                </span>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="mt-5">

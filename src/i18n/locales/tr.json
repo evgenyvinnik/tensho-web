@@ -416,7 +416,7 @@
       "normal": "Normal",
       "slow": "Yavaş"
     },
-    "tileHintsDesc": "Taş numaralarını göster ve elini Çift, Seri ve Üçlü olarak grupla",
+    "tileHintsDesc": "Taş numaralarını ve Ejderha etiketlerini göster; elini Çift, Seri ve Üçlü olarak grupla",
     "visual": "Görsel"
   },
   "gameplay": {
@@ -842,6 +842,9 @@
     "chuurenPoutou": "Dokuz Kapı"
   },
   "tileDetails": {
+    "whiteIndex": "B",
+    "greenIndex": "Y",
+    "redIndex": "K",
     "faceDown": "Kapalı taş",
     "suitedName": "{{suit}} {{rank}}",
     "redName": "Kırmızı {{name}}",

@@ -313,7 +313,7 @@
       "normal": "Normal",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Muestra el número de cada ficha y agrupa tu mano en Pares, Secuencias y Tripletes",
+    "tileHintsDesc": "Muestra números y etiquetas de Dragones; agrupa tu mano en Pares, Secuencias y Tripletes",
     "visual": "Visual"
   },
   "gameplay": {
@@ -1319,6 +1319,9 @@
     "chuurenPoutou": "Nueve Puertas"
   },
   "tileDetails": {
+    "whiteIndex": "B",
+    "greenIndex": "V",
+    "redIndex": "R",
     "faceDown": "Ficha boca abajo",
     "suitedName": "{{rank}} de {{suit}}",
     "redName": "{{name}} roja",

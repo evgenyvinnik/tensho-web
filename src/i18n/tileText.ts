@@ -9,6 +9,19 @@ const DRAGONS = ['white', 'green', 'red'] as const
 const FLOWERS = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo'] as const
 const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const
 
+/** Small optional reading aid; concealed faces must not leak a badge. */
+export function tileIndexHint(
+  tile: Tile | null | undefined,
+  t: TFunction,
+  faceDown = false
+): { label: string; tone?: (typeof DRAGONS)[number] } | null {
+  if (!tile || faceDown) return null
+  if (tile.isSuited) return { label: String(tile.rank) }
+  if (tile.suit !== TileSuit.Dragon) return null
+  const tone = DRAGONS[tile.rank - 1]
+  return tone ? { label: t(`tileDetails.${tone}Index`), tone } : null
+}
+
 /** Hidden faces must never expose identity through an accessible name. */
 export function tileName(
   tile: Tile | null | undefined,
@@ -68,9 +81,7 @@ export function tileDetails(
   } else if (tile.suit === TileSuit.Season) {
     const season = SEASONS[tile.rank - 1]
     description =
-      t(`flora.details.${season}`) +
-      ' ' +
-      t('flora.details.roundScope')
+      t(`flora.details.${season}`) + ' ' + t('flora.details.roundScope')
     points = t('tileDetails.bonusTile')
   }
   return {

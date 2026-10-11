@@ -113,6 +113,7 @@ for (const [browserExit, color] of [0, 7].flatMap((code) => [
       'flower-mutations',
       'frostbite-retriggers',
       'table-loop-layout',
+      'dragon-hints',
       'tile-return-guidance',
       'tap-discard',
       'discard-layout',

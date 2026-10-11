@@ -313,7 +313,7 @@
       "normal": "標準",
       "slow": "遅い"
     },
-    "tileHintsDesc": "牌の数字を表示し、手牌を対子・順子・刻子ごとにまとめます",
+    "tileHintsDesc": "牌の数字と三元牌の目印を表示し、手牌を対子・順子・刻子ごとにまとめます",
     "visual": "表示"
   },
   "gameplay": {
@@ -1319,6 +1319,9 @@
     "chuurenPoutou": "九蓮宝燈"
   },
   "tileDetails": {
+    "whiteIndex": "白",
+    "greenIndex": "發",
+    "redIndex": "中",
     "faceDown": "伏せ牌",
     "suitedName": "{{suit}}の{{rank}}",
     "redName": "赤{{name}}",

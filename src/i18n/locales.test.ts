@@ -44,6 +44,19 @@ import {
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { STAKE_NAME_KEYS } from './stakeRules'
 
+it('supplies distinct compact Dragon hints in every locale', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = locale.tileDetails as typeof en.tileDetails
+    const hints = [copy.whiteIndex, copy.greenIndex, copy.redIndex]
+    expect(new Set(hints).size, language).toBe(3)
+    for (const label of hints) {
+      expect(label.trim(), language).toBe(label)
+      expect(label.length, language).toBeGreaterThan(0)
+      expect(label.length, language).toBeLessThanOrEqual(5)
+    }
+  }
+})
+
 it('supplies the implemented Autumn rule in all thirteen languages', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const details = (locale.flora as typeof en.flora).details

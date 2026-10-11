@@ -10,7 +10,7 @@ import {
   EditionType,
 } from '../core/Tile'
 import { getTilePoints } from '../rules/ScoringEngine'
-import { tileName, tileDetails } from './tileText'
+import { tileName, tileDetails, tileIndexHint } from './tileText'
 import { tileRewardText } from './tileRewardText'
 import { FLOWER_BASE_EFFECTS } from '../systems/FlowerSystem'
 
@@ -23,6 +23,36 @@ async function translator(lng = 'en') {
   })
   return i18n.t.bind(i18n)
 }
+
+it('keeps numeral hints, distinguishes Dragon faces and hides every concealed identity', async () => {
+  const t = await translator('es')
+  for (const suit of Object.values(TileSuit)) {
+    const max = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu].includes(suit)
+      ? 9
+      : suit === TileSuit.Dragon
+        ? 3
+        : 4
+    for (let rank = 1; rank <= max; rank++) {
+      const tile = new Tile(suit, rank, `hint-${suit}-${rank}`)
+      const before = JSON.stringify(tile)
+      const hint = tileIndexHint(tile, t)
+      if (tile.isSuited) expect(hint).toEqual({ label: String(rank) })
+      else if (suit === TileSuit.Dragon)
+        expect(hint).toEqual({
+          label: ['B', 'V', 'R'][rank - 1],
+          tone: ['white', 'green', 'red'][rank - 1],
+        })
+      else expect(hint).toBeNull()
+      expect(tileIndexHint(tile, t, true)).toBeNull()
+      expect(JSON.stringify(tile)).toBe(before)
+    }
+  }
+  expect(tileIndexHint(null, t)).toBeNull()
+  expect(tileIndexHint(undefined, t)).toBeNull()
+  expect(tileIndexHint(new Tile(TileSuit.Manzu, 5, 'red', true), t)).toEqual({
+    label: '5',
+  })
+})
 
 it('covers every valid tile face with a localized name and authoritative base points', async () => {
   const t = await translator('es')

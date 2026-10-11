@@ -416,7 +416,7 @@
       "normal": "Normal",
       "slow": "Mabagal"
     },
-    "tileHintsDesc": "Ipakita ang numero ng tile at ipangkat ang iyong kamay sa Pares, Sequence at Triplet",
+    "tileHintsDesc": "Ipakita ang mga numero at label ng mga Dragon, at ipangkat ang kamay sa Pares, Sequence at Triplet",
     "visual": "Visual"
   },
   "gameplay": {
@@ -842,6 +842,9 @@
     "chuurenPoutou": "Siyam na Pintuan"
   },
   "tileDetails": {
+    "whiteIndex": "Puti",
+    "greenIndex": "Berde",
+    "redIndex": "Pula",
     "faceDown": "Nakatagong tile",
     "suitedName": "{{rank}} ng {{suit}}",
     "redName": "Pulang {{name}}",
