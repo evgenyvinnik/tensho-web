@@ -705,6 +705,60 @@ describe('PlaySurface', () => {
   })
 
   describe('selected tiles display', () => {
+    it.each(['keyboard', 'tap', 'suggestion'] as const)(
+      'removes the selection frame on the mat after %s staging',
+      (method) => {
+        const tiles = createTestTiles(3)
+        const props = {
+          handTiles: tiles,
+          selectedIds: new Set([tiles[0].id]),
+          onTilesStaged: mockOnTilesStaged,
+        }
+        const { container, rerender } = render(
+          <PlaySurface {...props} stageAllRequestId={0} />
+        )
+        const tile = screen.getByRole('button', {
+          name: 'Stage 1 of Characters',
+        })
+        expect(tile.querySelector('.ring-golden-yellow')).not.toBeNull()
+
+        if (method === 'keyboard') fireEvent.keyDown(tile, { key: 'Enter' })
+        else if (method === 'tap') {
+          tile.setPointerCapture = vi.fn()
+          pointer(tile, 'pointerdown')
+          pointer(window, 'pointerup')
+        } else {
+          rerender(
+            <PlaySurface
+              {...props}
+              stageAllRequestId={1}
+              stageRequestTileIds={[tiles[0].id]}
+            />
+          )
+        }
+
+        const staged = screen.getByRole('button', {
+          name: 'Return 1 of Characters to hand',
+        })
+        expect(staged.querySelector('.ring-golden-yellow')).toBeNull()
+        expect(staged.querySelector('.bg-golden-yellow')).toBeNull()
+        expect(staged).toHaveClass('focus-visible:outline-2')
+        expect(
+          container.querySelectorAll(
+            '[data-play-zone="staging"] [data-play-tile]'
+          )
+        ).toHaveLength(1)
+        expect(mockOnTilesStaged).toHaveBeenLastCalledWith([tiles[0]])
+
+        fireEvent.keyDown(staged, { key: 'Enter' })
+        expect(
+          screen
+            .getByRole('button', { name: 'Stage 1 of Characters' })
+            .querySelector('.ring-golden-yellow')
+        ).not.toBeNull()
+      }
+    )
+
     it('should mark tiles as selected when in selectedIds', () => {
       const tiles = createTestTiles(5)
       const selectedIds = new Set([tiles[0].id, tiles[1].id])

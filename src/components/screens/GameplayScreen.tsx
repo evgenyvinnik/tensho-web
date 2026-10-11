@@ -935,7 +935,7 @@ export function GameplayScreen() {
                       <FloraTrackCompact flora={game.flora} />
                     </div>
                     <div data-tutorial="wall" className="shrink-0">
-                      <WallDisplay wallTiles={game.wallTiles} compact />
+                      <WallDisplay wallTiles={game.wallTiles} />
                     </div>
                     <div className="shrink-0">
                       <YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />

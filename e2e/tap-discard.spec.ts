@@ -94,6 +94,9 @@ for (const language of [
     expect((await discard.boundingBox())!.width).toBeGreaterThanOrEqual(44)
     expect((await discard.boundingBox())!.height).toBeGreaterThanOrEqual(44)
     expect(await positions()).toEqual(originalPositions)
+    await expect(
+      page.locator('[data-play-zone="staging"] .ring-golden-yellow')
+    ).toHaveCount(0)
     const staged = await saved()
     // Selection itself is saved, but cannot spend resources or change the wall.
     expect({

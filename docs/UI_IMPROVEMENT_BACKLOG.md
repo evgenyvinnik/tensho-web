@@ -49,6 +49,9 @@ is still in progress; arbitrary enlarged racks and real devices remain open.
    `getSuitName` and its tile titles say "remaining" in English. Localize them
    and delete the now-unused non-compact `WallDisplay` branch (hard-coded
    "Wall" / "tiles remaining"). File: `src/components/gameplay/WallDisplay.tsx`.
+   **Implemented, verification underway:** full localized suit headings and
+   tile-name/count captions, readable existing artwork and separate red-five
+   counts replace the two old branches. See [wall readability](WALL_READABILITY_IMPLEMENTATION.md).
 
 4. **Tip copy no longer matches the screen.** The first-move tip says "Learn
    the tiles opens the visual guide", but phones show that button as a book

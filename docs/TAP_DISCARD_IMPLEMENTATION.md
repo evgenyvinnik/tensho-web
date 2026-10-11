@@ -81,7 +81,25 @@ Final snapshot tree: `56bafc0fba9231ac91fae4c6907f78b7da871ac6`;
 temporary verification commit: `ffcd335b07089c77d2176d4a2a0405e4c8158005`.
 Logs: `native-final.log`, `production.log`, `guidance.log`, `full-tests.log`,
 `unit-recheck.log`, `build-final.log`, `lint-final.log`, `release-final.log`.
-Publication and hosted verification remain pending.
+Published in **v1.0.261011-2**: implementation `42a48a8`, version/tag commit
+`78fb4f911d29c2b4567a811c4e48bf1cb522ae62`. Workflow `38152388294` passed
+all **2,864 tests in 204 files**, built and deployed successfully. Public
+`release.json`, tag and runtime `/tensho-web/assets/index-cqRGHPB8.js` agree.
+Hosted verification passed 37/38 cases; English mobile hit the 30-second test
+timeout during a heavily loaded parallel run. Its serial recheck passes;
+the exact former Russian failure passes on the hosted release.
+
+### Follow-up: no selection frame on the mat
+
+At the user's request, the local follow-up suppresses the yellow selection ring
+and tint on staged tiles (including dragging from the mat). Selection and staged
+tile IDs are unchanged; keyboard focus, hints and tile-effect indicators remain.
+All 33 PlaySurface component tests pass, including keyboard, pointer and suggested
+staging. A broad native browser run was interrupted after loading timeouts while
+the machine was busy; both desktop-keyboard and mobile-touch serial browser
+checks pass, asserting that the staged selection ring is absent and discard
+payment/save/reload still work. TypeScript and targeted lint also pass. This
+follow-up is **not included in v1.0.261011-2**.
 
 ## Remaining scope
 

@@ -599,7 +599,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         <AnimatedTile
           tile={tile}
           size={tileSize}
-          selected={selectedIds.has(tile.id)}
+          selected={zone === 'hand' && selectedIds.has(tile.id)}
           highlighted={highlightedIds.has(tile.id)}
           glowing={glowingIds.has(tile.id)}
           faceDown={faceDownIds.has(tile.id)}
@@ -973,7 +973,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           <AnimatedTile
             tile={dragState.tile}
             size={tileSize}
-            selected={selectedIds.has(dragState.tile.id)}
+            selected={
+              dragState.originZone === 'hand' &&
+              selectedIds.has(dragState.tile.id)
+            }
             glowing={glowingIds.has(dragState.tile.id)}
             faceDown={faceDownIds.has(dragState.tile.id)}
             locked={lockedIds.has(dragState.tile.id)}

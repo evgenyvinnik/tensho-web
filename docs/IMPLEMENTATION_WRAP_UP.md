@@ -8,6 +8,12 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Wall readability](WALL_READABILITY_IMPLEMENTATION.md) replaces English-only
+hover text and suit initials with localized headings and illustrated tile/count
+captions, including separate red fives. All 47 focused tests and the production
+build pass. Broader verification and publication are underway alongside the
+user-requested removal of yellow selection frames from staged tiles.
+
 [Tap-to-discard and grouped rack recovery](TAP_DISCARD_IMPLEMENTATION.md)
 reproduce and fix the Russian short-screen defect from the last release. Labels
 are bounded by their tiles, staging retains group geometry, and a stable
@@ -16,7 +22,12 @@ native and 38 production geometry/all-locale keyboard/touch journeys pass, as do
 14 native tutorial/hand-builder checks, build, lint and thirteen release checks.
 The local full suite passed 2,863/2,864 tests; the remaining archive Git-metadata
 failure passes in a 93-test recheck after correcting the verification environment.
-An independent full CI run and publication remain in progress.
+Independent CI passes all 2,864 tests in 204 files; this checkpoint is published
+as **v1.0.261011-2**. Hosted checks pass 37/38, with the one English mobile timeout
+passing a serial recheck; the former Russian failure passes. A subsequent local
+user-requested change removes the yellow selection frame from staged tiles and
+passes all 33 PlaySurface tests and both keyboard/touch browser checks; it is not
+yet deployed.
 Separate concurrent image-loading and rack-pinning changes are preserved outside
 this checkpoint's verification snapshot.
 
