@@ -29,10 +29,28 @@ matcher confused Winds with Circles; explicit localized suit/count accessible
 names now disambiguate the actual headings, with exact-prefix assertions.
 
 Production build/TypeScript, targeted lint and thirteen release tests pass.
-Precache size is 37,839,285 bytes. Full regression, browser verification and
-publication are still underway. Test snapshots exclude concurrent unsaved CSS
-and opening-scroll edits; any integration with newer main commits requires a
-separate verification pass before publication.
+The initial isolated snapshot passes all **2,881 tests in 205 files** and all
+**52 native browser checks** (thirteen locales × desktop/touch × Wall/staging).
+Precache size is 37,839,285 bytes.
+
+Integrated onto published main `5a7b7c5` as `437e9c8`, including the latest
+opening-scroll behavior, without modifying unsaved workspace edits. The combined
+production build passes **64/64 browser checks**, adding the twelve deterministic
+drag-layout cases. Its 47 focused tests, TypeScript, targeted lint and offline
+budget also pass (37,839,571 precache bytes). No browser retries were used.
+Screenshots include the Russian 320×568 dialog with readable names/counts.
+Published as **v1.0.261011-5**, tag/version commit
+`bc0264eb1e2f447c828b67c227df8fccee64e1c1`. Workflow `38156080541` passes
+all **2,881 tests in 205 files**, builds and deploys successfully. Public
+`release.json` and runtime `/tensho-web/assets/index-B-q3gd3V.js` agree with
+the tag. All **64/64 hosted browser checks pass without retries**, covering
+desktop/phone, thirteen locales, real discard payment/reload, the missing mat
+selection frame, Wall images/names/counts, unchanged save state, focus restoration
+and the original Russian drag-layout regression. Unsaved workspace CSS is excluded.
+
+The publish checkout incorporates the already-published opening-scroll changes
+without rewriting the active workspace's divergent local history or its parallel
+edits. Local implementation commit `bd59bdc` corresponds to published `437e9c8`.
 
 This is not a claim that all layouts or onboarding are finished. Native-speaker
 review, broader assistive-technology/device testing and human playtesting remain

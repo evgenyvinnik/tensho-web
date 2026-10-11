@@ -10,9 +10,11 @@ The requested outcome is to finish the project implementation after the other ag
 
 [Wall readability](WALL_READABILITY_IMPLEMENTATION.md) replaces English-only
 hover text and suit initials with localized headings and illustrated tile/count
-captions, including separate red fives. All 47 focused tests and the production
-build pass. Broader verification and publication are underway alongside the
-user-requested removal of yellow selection frames from staged tiles.
+captions, including separate red fives. All 2,881 tests and 52 native browser
+checks pass. Integration with newer main also passes 64 production-browser
+checks and the build. Published in **v1.0.261011-5**, including the user-requested
+removal of yellow selection frames from staged tiles. Independent CI passes all
+2,881 tests and all 64 hosted browser checks pass without retries.
 
 [Tap-to-discard and grouped rack recovery](TAP_DISCARD_IMPLEMENTATION.md)
 reproduce and fix the Russian short-screen defect from the last release. Labels
@@ -26,8 +28,8 @@ Independent CI passes all 2,864 tests in 204 files; this checkpoint is published
 as **v1.0.261011-2**. Hosted checks pass 37/38, with the one English mobile timeout
 passing a serial recheck; the former Russian failure passes. A subsequent local
 user-requested change removes the yellow selection frame from staged tiles and
-passes all 33 PlaySurface tests and both keyboard/touch browser checks; it is not
-yet deployed.
+passes all 33 PlaySurface tests and both keyboard/touch browser checks; it is
+now deployed and hosted-verified in **v1.0.261011-5**.
 Separate concurrent image-loading and rack-pinning changes are preserved outside
 this checkpoint's verification snapshot.
 

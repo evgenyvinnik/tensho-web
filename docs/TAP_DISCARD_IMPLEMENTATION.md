@@ -99,7 +99,10 @@ staging. A broad native browser run was interrupted after loading timeouts while
 the machine was busy; both desktop-keyboard and mobile-touch serial browser
 checks pass, asserting that the staged selection ring is absent and discard
 payment/save/reload still work. TypeScript and targeted lint also pass. This
-follow-up is **not included in v1.0.261011-2**.
+follow-up is **not included in v1.0.261011-2**. It is subsequently published and
+hosted-verified in **v1.0.261011-5** alongside
+[Wall readability](WALL_READABILITY_IMPLEMENTATION.md): all 64 production and
+64 hosted checks pass, including all thirteen locales' mat-frame assertions.
 
 ## Remaining scope
 
