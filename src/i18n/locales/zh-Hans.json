@@ -251,7 +251,7 @@
     "subtitle": "麻将肉鸽",
     "play": "开始游戏",
     "continue": "继续游戏",
-    "newRun": "新游戏",
+    "newRun": "新的经典对局",
     "tutorial": "教程",
     "options": "选项",
     "settings": "设置",
@@ -267,7 +267,7 @@
     "tableStake": "牌桌赌注",
     "noSpecialModifiers": "无特殊修正",
     "promise": "誓约",
-    "tableLoop": "牌桌循环（实验）"
+    "tableLoop": "牌桌循环模式"
   },
   "settings": {
     "fullUnlock": {

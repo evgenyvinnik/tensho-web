@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
 import type { FlowerVariant, SeasonTile } from '../../systems/types'
@@ -10,7 +10,7 @@ import {
   illustrationAssets,
   flowerIllustrations,
 } from '../../utils/assets'
-import { Popup } from '../ui/Popup'
+import { AnchoredPopover } from '../ui/AnchoredPopover'
 import { eventBus } from '../../game/EventBus'
 
 export interface FloraTrackCompactProps {
@@ -19,10 +19,35 @@ export interface FloraTrackCompactProps {
 
 const FLOWERS: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
 
-/** Inspect public bonus tiles without changing the hand, turn, or selection. */
+/**
+ * Inspect public bonus tiles without changing the hand, turn, or selection.
+ * What each Flower and Season modifies opens beside the chip: on hover with a
+ * mouse, pinned by a tap, or from the keyboard. No separate window.
+ */
 export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
   const { t, i18n } = useTranslation()
   const [open, setOpen] = useState(false)
+  const [keyboardOpened, setKeyboardOpened] = useState(false)
+  const pinned = useRef(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const anchorRef = useRef<HTMLButtonElement>(null)
+  const popoverId = useId()
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = null
+  }, [])
+  const close = useCallback(() => {
+    cancelClose()
+    pinned.current = false
+    setKeyboardOpened(false)
+    setOpen(false)
+  }, [cancelClose])
+  const scheduleClose = useCallback(() => {
+    if (pinned.current) return
+    cancelClose()
+    closeTimer.current = setTimeout(close, 150)
+  }, [cancelClose, close])
+  useEffect(() => cancelClose, [cancelClose])
   const [orchidBloom, setOrchidBloom] = useState(0)
   const [plumRecovery, setPlumRecovery] = useState(0)
   useEffect(() => {
@@ -55,9 +80,40 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
         aria-label={
           title + ': ' + collected.size + '/4 · ' + flora.seasons.length
         }
+        ref={anchorRef}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => setOpen(true)}
+        aria-controls={open ? popoverId : undefined}
+        onPointerEnter={(event) => {
+          if (
+            event.pointerType !== 'mouse' ||
+            !window.matchMedia('(any-hover: hover)').matches
+          )
+            return
+          cancelClose()
+          setOpen(true)
+        }}
+        onPointerLeave={scheduleClose}
+        onClick={(event) => {
+          cancelClose()
+          // Keyboard or assistive activation: open and move into the panel.
+          if (event.detail === 0) {
+            pinned.current = true
+            setKeyboardOpened(true)
+            setOpen(true)
+            return
+          }
+          // A click on a hover-opened panel pins it; otherwise toggle.
+          if (open && !pinned.current) {
+            pinned.current = true
+            return
+          }
+          if (open) close()
+          else {
+            pinned.current = true
+            setOpen(true)
+          }
+        }}
         className="flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] px-2 py-1 text-[var(--color-beige-white)] shadow-lg hover:border-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)]"
       >
         <span aria-hidden="true" className="flex gap-0.5">
@@ -110,7 +166,16 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
         )}
       </button>
 
-      <Popup isOpen={open} onClose={() => setOpen(false)} title={title}>
+      <AnchoredPopover
+        open={open}
+        anchorRef={anchorRef}
+        id={popoverId}
+        title={title}
+        onClose={close}
+        focusOnOpen={keyboardOpened}
+        onPointerEnter={cancelClose}
+        onPointerLeave={scheduleClose}
+      >
         <section
           data-testid="flora-flower-details"
           className="min-w-0 space-y-3 break-words"
@@ -337,7 +402,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
             </p>
           )}
         </section>
-      </Popup>
+      </AnchoredPopover>
     </>
   )
 }

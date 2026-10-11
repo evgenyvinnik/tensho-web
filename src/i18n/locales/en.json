@@ -251,7 +251,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Play",
     "continue": "Continue",
-    "newRun": "New Run",
+    "newRun": "New Classic Run",
     "codex": "Codex",
     "tutorial": "Tutorial",
     "options": "Options",
@@ -267,7 +267,7 @@
     "tableStake": "Table stake",
     "noSpecialModifiers": "No special modifiers",
     "promise": "Promise",
-    "tableLoop": "Table Loop (experiment)"
+    "tableLoop": "Table Loop Mode"
   },
   "settings": {
     "fullUnlock": {

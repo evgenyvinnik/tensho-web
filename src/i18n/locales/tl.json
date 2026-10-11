@@ -354,7 +354,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Maglaro",
     "continue": "Magpatuloy",
-    "newRun": "Bagong Laro",
+    "newRun": "Bagong Klasikong Laro",
     "tutorial": "Tutorial",
     "options": "Mga Opsyon",
     "settings": "Mga Setting",
@@ -370,7 +370,7 @@
     "tableStake": "Table stake",
     "noSpecialModifiers": "Walang espesyal na modifier",
     "promise": "Pangako",
-    "tableLoop": "Ikot ng Mesa (eksperimento)"
+    "tableLoop": "Mode na Ikot ng Mesa"
   },
   "settings": {
     "fullUnlock": {

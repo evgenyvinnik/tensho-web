@@ -251,7 +251,7 @@
     "subtitle": "麻將肉鴿",
     "play": "開始遊戲",
     "continue": "繼續遊戲",
-    "newRun": "新遊戲",
+    "newRun": "新的經典對局",
     "tutorial": "教學",
     "options": "選項",
     "settings": "設定",
@@ -267,7 +267,7 @@
     "tableStake": "牌桌賭注",
     "noSpecialModifiers": "無特殊修正",
     "promise": "誓約",
-    "tableLoop": "牌桌循環（實驗）"
+    "tableLoop": "牌桌循環模式"
   },
   "settings": {
     "fullUnlock": {

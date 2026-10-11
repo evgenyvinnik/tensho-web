@@ -354,7 +354,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Gioca",
     "continue": "Continua",
-    "newRun": "Nuova Partita",
+    "newRun": "Nuova partita classica",
     "tutorial": "Tutorial",
     "options": "Opzioni",
     "settings": "Impostazioni",
@@ -370,7 +370,7 @@
     "tableStake": "Posta del tavolo",
     "noSpecialModifiers": "Nessun modificatore speciale",
     "promise": "Promessa",
-    "tableLoop": "Ciclo del tavolo (esperimento)"
+    "tableLoop": "Modalità Ciclo del tavolo"
   },
   "settings": {
     "fullUnlock": {
