@@ -8,6 +8,15 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Illustrated coach comparison](COACH_COMPARISON_IMPLEMENTATION.md) replaces
+truncated chips with short localized labels and an optional exact-score/tile
+comparison. It corrects the false suggestion that a selected group is kept for
+later and preserves the preview-before-payment contract. A reproduced phone
+focus/scroll defect is fixed. All 100 final development-browser and 90 production
+checks pass. The local full suite passes 2,928/2,931 tests; the three CLI timeout
+cases pass in an unchanged 28-test serial recheck. Build, lint and thirteen
+release checks pass. Publication is pending; this is not whole-project completion.
+
 [Reachable rack tools](RACK_TOOLS_IMPLEMENTATION.md) replace the phone's
 sideways-scrolling secondary actions with a localized More disclosure, retain
 the visible guidebook and desktop inline controls, and add generated planning-tray

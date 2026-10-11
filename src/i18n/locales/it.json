@@ -545,6 +545,17 @@
     "sellNamed": "Vendi {{name}}",
     "hiddenDecree": "Decreto nascosto",
     "coach": {
+      "pointsShort": "Punti subito",
+      "shapeShort": "Un gruppo",
+      "explain": "Perché queste tessere?",
+      "hideAdvice": "Nascondi consigli",
+      "previewChoice": "Anteprima tessere",
+      "patternShort": {
+        "pair": "Coppia",
+        "sequence": "Sequenza",
+        "triplet": "Tris",
+        "quad": "Poker"
+      },
       "title": "Due modi di giocare questa mano",
       "dismiss": "Nascondi",
       "pointsNow": "Punti subito",
@@ -552,8 +563,8 @@
       "behindPace": "Resta sotto i {{required}} che questa mano chiede.",
       "buildToward": "Costruire verso una {{pattern}}",
       "buildTowardPlain": "Costruire verso una figura",
-      "shapeCost": "Rende {{difference}} in meno adesso, e lascia in mano una figura che sai nominare.",
-      "tradeoff": "Il numero più grande non è per forza la mossa migliore: una figura che conservi può valere di più dopo."
+      "shapeCost": "Segna {{difference}} punti in meno ora con un gruppo completo. Non prevede le prossime pescate.",
+      "tradeoff": "Confronta tessere e punti. Un suggerimento seleziona solo le tessere, senza consumare una giocata."
     }
   },
   "rounds": {

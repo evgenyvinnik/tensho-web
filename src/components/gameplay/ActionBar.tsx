@@ -8,6 +8,7 @@
  */
 
 import { TFunction } from 'i18next'
+import type { Ref } from 'react'
 import { Button } from '../ui/Button'
 import {
   MAX_TACTICAL_PLAY_TILES,
@@ -23,6 +24,7 @@ import {
  * Props for ActionBar
  */
 export interface ActionBarProps {
+  playButtonRef?: Ref<HTMLButtonElement>
   /** Number of tiles remaining in wall */
   wallRemaining: number
   /** Number of hands remaining this round */
@@ -82,6 +84,7 @@ export interface ActionBarProps {
  * - 44px minimum touch targets for accessibility
  */
 export function ActionBar({
+  playButtonRef,
   wallRemaining,
   handsRemaining,
   discardsRemaining,
@@ -313,6 +316,7 @@ export function ActionBar({
       {/* Contextual play button */}
       <Button
         data-game-action="play"
+        ref={playButtonRef}
         variant="primary"
         size="sm"
         onClick={onPlayHand}

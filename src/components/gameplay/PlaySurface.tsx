@@ -215,7 +215,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     if (!board || !hand) return
     // On a screen too short to pin the rack (320×568), open on the hand:
     // keep the board at its end while content settles (the tip arrives
-    // after mount), until the player first touches or scrolls the board.
+    // after mount), until the player interacts with the board or focus returns
+    // to one of its controls. Resizing must not scroll a focused control away.
     let playerMoved = false
     const markMoved = () => {
       playerMoved = true
@@ -234,7 +235,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     observer?.observe(hand)
     // Content growth inside the board (tip, notices) resizes its children.
     for (const child of Array.from(board.children)) observer?.observe(child)
-    const moves = ['pointerdown', 'wheel', 'touchstart', 'keydown'] as const
+    const moves = [
+      'pointerdown',
+      'wheel',
+      'touchstart',
+      'keydown',
+      'focusin',
+    ] as const
     for (const type of moves)
       board.addEventListener(type, markMoved, { passive: true })
     return () => {

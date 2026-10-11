@@ -545,6 +545,17 @@
     "sellNamed": "{{name}} sat",
     "hiddenDecree": "gizli Kararname",
     "coach": {
+      "pointsShort": "Şimdi puan",
+      "shapeShort": "Tek grup",
+      "explain": "Neden bu taşlar?",
+      "hideAdvice": "Önerileri gizle",
+      "previewChoice": "Bu taşları önizle",
+      "patternShort": {
+        "pair": "Çift",
+        "sequence": "Seri",
+        "triplet": "Üçlü",
+        "quad": "Dörtlü"
+      },
       "title": "Bu eli oynamanın iki yolu",
       "dismiss": "Gizle",
       "pointsNow": "Şimdiki puan",
@@ -552,8 +563,8 @@
       "behindPace": "Bu elin istediği {{required}} puanın altında kalıyor.",
       "buildToward": "{{pattern}} hedefine doğru kur",
       "buildTowardPlain": "Bir şekle doğru kur",
-      "shapeCost": "Şimdi {{difference}} daha az kazandırır ama adını koyabileceğin bir şekli elinde bırakır.",
-      "tradeoff": "Büyük sayı her zaman daha iyi hamle değildir; elde tuttuğun şekil sonradan daha çok değebilir."
+      "shapeCost": "Tam bir grupla şimdi {{difference}} puan daha az kazandırır. Sonraki çekilişleri tahmin etmez.",
+      "tradeoff": "Taşları ve puanları karşılaştır. Bir öneri yalnızca taşları seçer; oynama hakkı harcamaz."
     }
   },
   "rounds": {

@@ -442,6 +442,17 @@
     "sellNamed": "出售{{name}}",
     "hiddenDecree": "隐藏法令",
     "coach": {
+      "pointsShort": "当前得分",
+      "shapeShort": "一组牌",
+      "explain": "为什么选这些牌？",
+      "hideAdvice": "隐藏建议",
+      "previewChoice": "预览这些牌",
+      "patternShort": {
+        "pair": "对子",
+        "sequence": "顺子",
+        "triplet": "刻子",
+        "quad": "杠子"
+      },
       "title": "这手牌的两种打法",
       "dismiss": "隐藏",
       "pointsNow": "当下的分数",
@@ -449,8 +460,8 @@
       "behindPace": "距离这一手所需的 {{required}} 分还差一截。",
       "buildToward": "朝着{{pattern}}去做",
       "buildTowardPlain": "朝着一个牌型去做",
-      "shapeCost": "现在少得 {{difference}} 分，但留下了一个叫得出名字的牌型。",
-      "tradeoff": "更大的数字未必是更好的一手，留下的牌型往往之后更值钱。"
+      "shapeCost": "用一个完整组合，现在少得 {{difference}} 分。这并不预测接下来摸到的牌。",
+      "tradeoff": "比较牌和分数。点击建议只会选中牌，不会消耗出牌次数。"
     }
   },
   "rounds": {

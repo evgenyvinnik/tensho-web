@@ -52,6 +52,8 @@ export type ButtonSize = 'sm' | 'md' | 'lg'
  * Props for the Button component
  */
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** React 19 ref prop, forwarded to the native animated button. */
+  ref?: React.Ref<HTMLButtonElement>
   /** Visual style variant */
   variant?: ButtonVariant
   /** Size preset */

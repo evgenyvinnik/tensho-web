@@ -442,6 +442,17 @@
     "sellNamed": "{{name}} 판매",
     "hiddenDecree": "숨겨진 법령",
     "coach": {
+      "pointsShort": "현재 점수",
+      "shapeShort": "한 묶음",
+      "explain": "왜 이 패인가요?",
+      "hideAdvice": "조언 숨기기",
+      "previewChoice": "이 패 미리 보기",
+      "patternShort": {
+        "pair": "또이쯔",
+        "sequence": "순자",
+        "triplet": "커쯔",
+        "quad": "깡쯔"
+      },
       "title": "이 패를 다루는 두 가지 길",
       "dismiss": "숨기기",
       "pointsNow": "지금 얻는 점수",
@@ -449,8 +460,8 @@
       "behindPace": "이번 손에 필요한 {{required}}점에 미치지 못합니다.",
       "buildToward": "{{pattern}}을 향해 쌓기",
       "buildTowardPlain": "모양을 향해 쌓기",
-      "shapeCost": "지금은 {{difference}}점 적지만, 이름을 붙일 수 있는 모양이 남습니다.",
-      "tradeoff": "큰 숫자가 언제나 더 좋은 수는 아닙니다. 남겨 둔 모양이 나중에 더 값질 수 있습니다."
+      "shapeCost": "완성된 한 묶음으로 지금 {{difference}}점 적게 얻습니다. 다음에 뽑을 패를 예측하지는 않습니다.",
+      "tradeoff": "패와 점수를 비교하세요. 추천을 누르면 패만 선택되며 플레이 횟수는 소모되지 않습니다."
     }
   },
   "rounds": {

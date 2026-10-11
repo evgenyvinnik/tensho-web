@@ -522,6 +522,17 @@
     "sellNamed": "Jual {{name}}",
     "hiddenDecree": "Dekrit tersembunyi",
     "coach": {
+      "pointsShort": "Poin kini",
+      "shapeShort": "Satu grup",
+      "explain": "Mengapa ubin ini?",
+      "hideAdvice": "Sembunyikan saran",
+      "previewChoice": "Pratinjau ubin",
+      "patternShort": {
+        "pair": "Pasangan",
+        "sequence": "Urutan",
+        "triplet": "Triplet",
+        "quad": "Kuartet"
+      },
       "title": "Dua cara memainkan ini",
       "dismiss": "Sembunyikan",
       "pointsNow": "Poin sekarang",
@@ -529,8 +540,8 @@
       "behindPace": "Masih kurang dari {{required}} yang dibutuhkan tangan ini.",
       "buildToward": "Bangun menuju {{pattern}}",
       "buildTowardPlain": "Bangun menuju sebuah bentuk",
-      "shapeCost": "Menghasilkan {{difference}} lebih sedikit sekarang, tetapi menyisakan bentuk yang bisa kamu sebut namanya.",
-      "tradeoff": "Angka yang lebih besar belum tentu langkah yang lebih baik: bentuk yang kamu simpan bisa lebih berharga nanti."
+      "shapeCost": "Menghasilkan {{difference}} poin lebih sedikit sekarang dengan satu grup lengkap. Tidak meramalkan ubin berikutnya.",
+      "tradeoff": "Bandingkan ubin dan poin. Saran hanya memilih ubin, tanpa menghabiskan kesempatan bermain."
     }
   },
   "rounds": {

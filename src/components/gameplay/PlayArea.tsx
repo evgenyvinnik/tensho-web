@@ -65,6 +65,8 @@ export interface PlayAreaProps {
    * here costs no vertical space on a screen that has none to spare.
    */
   coachAdvice?: CoachAdvice | null
+  /** Visible tile identities used to illustrate the coach's exact choices. */
+  coachVisibleTiles?: Tile[]
   /** Apply a coach option's selection to the hand. */
   onCoachChoose?: (tileIds: string[]) => void
   /** Hide the coach for the rest of the session. */
@@ -219,6 +221,7 @@ export function PlayArea({
   remainingToTarget = 0,
   handsRemaining = 1,
   coachAdvice = null,
+  coachVisibleTiles,
   onCoachChoose,
   onCoachDismiss,
   tableThemeColor = '#C8B273',
@@ -428,6 +431,7 @@ export function PlayArea({
         >
           <CoachPanel
             advice={coachAdvice}
+            visibleTiles={coachVisibleTiles}
             onChoose={onCoachChoose}
             onDismiss={onCoachDismiss}
           />

@@ -442,6 +442,17 @@
     "sellNamed": "Vender {{name}}",
     "hiddenDecree": "Decreto oculto",
     "coach": {
+      "pointsShort": "Puntos ahora",
+      "shapeShort": "Un grupo",
+      "explain": "¿Por qué estas fichas?",
+      "hideAdvice": "Ocultar consejos",
+      "previewChoice": "Ver estas fichas",
+      "patternShort": {
+        "pair": "Par",
+        "sequence": "Secuencia",
+        "triplet": "Triplete",
+        "quad": "Cuarteto"
+      },
       "title": "Dos formas de jugar esto",
       "dismiss": "Ocultar",
       "pointsNow": "Puntos ahora",
@@ -449,8 +460,8 @@
       "behindPace": "Se queda corto de los {{required}} que pide esta mano.",
       "buildToward": "Construir hacia {{pattern}}",
       "buildTowardPlain": "Construir hacia una figura",
-      "shapeCost": "Puntúa {{difference}} menos ahora y conserva una figura que sabes nombrar.",
-      "tradeoff": "El número mayor no es automáticamente la mejor jugada: una figura que conservas puede valer más después."
+      "shapeCost": "Da {{difference}} puntos menos ahora con un grupo completo. No predice los próximos robos.",
+      "tradeoff": "Compara las fichas y los puntos. Una sugerencia solo selecciona fichas; no gasta una jugada."
     }
   },
   "rounds": {

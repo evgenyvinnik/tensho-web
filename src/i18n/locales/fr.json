@@ -442,6 +442,17 @@
     "sellNamed": "Vendre {{name}}",
     "hiddenDecree": "Décret caché",
     "coach": {
+      "pointsShort": "Points",
+      "shapeShort": "Un groupe",
+      "explain": "Pourquoi ces tuiles ?",
+      "hideAdvice": "Masquer les conseils",
+      "previewChoice": "Prévisualiser ces tuiles",
+      "patternShort": {
+        "pair": "Paire",
+        "sequence": "Séquence",
+        "triplet": "Brelan",
+        "quad": "Carré"
+      },
       "title": "Deux façons de jouer ce coup",
       "dismiss": "Masquer",
       "pointsNow": "Des points tout de suite",
@@ -449,8 +460,8 @@
       "behindPace": "En dessous des {{required}} que demande cette main.",
       "buildToward": "Construire vers une {{pattern}}",
       "buildTowardPlain": "Construire vers une figure",
-      "shapeCost": "Rapporte {{difference}} de moins maintenant, et garde une figure que vous savez nommer.",
-      "tradeoff": "Le plus gros chiffre n’est pas forcément le meilleur coup : une figure conservée peut valoir davantage plus tard."
+      "shapeCost": "Rapporte {{difference}} points de moins avec un groupe complet. Ne prédit pas les prochaines pioches.",
+      "tradeoff": "Comparez les tuiles et les scores. Une suggestion sélectionne seulement des tuiles, sans dépenser de coup."
     }
   },
   "rounds": {

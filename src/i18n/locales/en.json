@@ -438,6 +438,17 @@
     "sellNamed": "Sell {{name}}",
     "hiddenDecree": "hidden Decree",
     "coach": {
+      "pointsShort": "Score now",
+      "shapeShort": "One group",
+      "explain": "Why these tiles?",
+      "hideAdvice": "Hide advice",
+      "previewChoice": "Preview these tiles",
+      "patternShort": {
+        "pair": "Pair",
+        "sequence": "Sequence",
+        "triplet": "Triplet",
+        "quad": "Quad"
+      },
       "title": "Two ways to play this",
       "dismiss": "Hide",
       "pointsNow": "Points now",
@@ -445,8 +456,8 @@
       "behindPace": "Short of the {{required}} this hand needs.",
       "buildToward": "Build toward a {{pattern}}",
       "buildTowardPlain": "Build toward a shape",
-      "shapeCost": "Scores {{difference}} less now, and keeps a pattern you can name.",
-      "tradeoff": "The bigger number is not automatically the better move — a shape you keep can be worth more later."
+      "shapeCost": "Scores {{difference}} fewer points now with one complete group. It does not predict future draws.",
+      "tradeoff": "Compare the tiles and scores. A suggestion only selects tiles; it does not spend a play."
     }
   },
   "rounds": {

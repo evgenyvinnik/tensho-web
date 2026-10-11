@@ -153,6 +153,23 @@ export function GameplayScreen() {
   // Consumables from game controller
   const consumables = game.consumableCounts
   const wallTriggerRef = useRef<HTMLButtonElement>(null)
+  const playButtonRef = useRef<HTMLButtonElement>(null)
+  const coachFocusTarget = useRef<'play' | 'wall' | null>(null)
+  const [coachFocusRequest, setCoachFocusRequest] = useState(0)
+
+  // A coach choice replaces the advice with a forecast. Restore focus only
+  // after that commit and the comparison dialog's cleanup, not to a removed chip.
+  useEffect(() => {
+    const target = coachFocusTarget.current
+    coachFocusTarget.current = null
+    if (!target) return
+    const play = playButtonRef.current
+    const next =
+      target === 'play' && play && !play.disabled
+        ? play
+        : wallTriggerRef.current
+    next?.focus()
+  }, [coachFocusRequest])
 
   // ==========================================================================
   // EFFECTS - Game lifecycle
@@ -595,6 +612,8 @@ export function GameplayScreen() {
       setStagedTileIds([])
       game.clearSelection()
       for (const tileId of tileIds) game.selectTile(tileId)
+      coachFocusTarget.current = 'play'
+      setCoachFocusRequest((request) => request + 1)
     },
     [game]
   )
@@ -787,8 +806,15 @@ export function GameplayScreen() {
               remainingToTarget={Math.max(0, game.targetScore - game.score)}
               handsRemaining={game.handsRemaining}
               coachAdvice={coachAdvice}
+              coachVisibleTiles={game.handTiles.filter(
+                (tile) => !faceDownTileIds.has(tile.id)
+              )}
               onCoachChoose={handleCoachChoose}
-              onCoachDismiss={() => setCoachDismissed(true)}
+              onCoachDismiss={() => {
+                coachFocusTarget.current = 'wall'
+                setCoachDismissed(true)
+                setCoachFocusRequest((request) => request + 1)
+              }}
               tableThemeColor={currentTableStyle.themeColor}
               tableAccentColor={currentTableStyle.accentColor}
             />
@@ -991,6 +1017,7 @@ export function GameplayScreen() {
 
         {/* Action bar */}
         <ActionBar
+          playButtonRef={playButtonRef}
           wallRemaining={game.wallRemaining}
           handsRemaining={game.handsRemaining}
           discardsRemaining={game.discardsRemaining}

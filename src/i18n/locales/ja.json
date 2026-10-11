@@ -442,6 +442,17 @@
     "sellNamed": "{{name}}を売却",
     "hiddenDecree": "伏せた法令",
     "coach": {
+      "pointsShort": "今の得点",
+      "shapeShort": "一組",
+      "explain": "なぜこの牌？",
+      "hideAdvice": "助言を隠す",
+      "previewChoice": "この牌を選ぶ",
+      "patternShort": {
+        "pair": "対子",
+        "sequence": "順子",
+        "triplet": "刻子",
+        "quad": "槓子"
+      },
       "title": "この手の二つの選び方",
       "dismiss": "隠す",
       "pointsNow": "今すぐの点数",
@@ -449,8 +460,8 @@
       "behindPace": "この手に必要な{{required}}点には届きません。",
       "buildToward": "{{pattern}}を目指して組む",
       "buildTowardPlain": "形を目指して組む",
-      "shapeCost": "今は{{difference}}点少ないですが、名前のある形が手元に残ります。",
-      "tradeoff": "大きい数字が必ずしも良い手とは限りません。残した形が後で効くこともあります。"
+      "shapeCost": "完成した一組で、今の得点は{{difference}}点少なくなります。次のツモを予測するものではありません。",
+      "tradeoff": "牌と得点を比べましょう。候補を選んでも牌が選択されるだけで、プレイ回数は消費しません。"
     }
   },
   "rounds": {

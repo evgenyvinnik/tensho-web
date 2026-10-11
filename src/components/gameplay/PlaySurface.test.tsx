@@ -110,6 +110,43 @@ describe('PlaySurface', () => {
   })
 
   describe('rendering', () => {
+    it('stops opening on the rack when focus returns to a board control', () => {
+      let resize = () => {}
+      const observer = vi
+        .spyOn(globalThis, 'ResizeObserver')
+        .mockImplementation(
+          class {
+            constructor(callback: ResizeObserverCallback) {
+              resize = () => callback([], this)
+            }
+            observe = () => {}
+            unobserve = () => {}
+            disconnect = () => {}
+          }
+        )
+      try {
+        const { container } = render(
+          <PlaySurface
+            handTiles={createTestTiles(3)}
+            boardHeader={<button>Inspect wall</button>}
+          />
+        )
+        const board = container.querySelector<HTMLElement>(
+          '[data-gameplay-scroll]'
+        )!
+        Object.defineProperty(board, 'scrollHeight', { value: 1000 })
+        act(resize)
+        expect(board.scrollTop).toBe(1000)
+
+        act(() => screen.getByRole('button', { name: 'Inspect wall' }).focus())
+        board.scrollTop = 25
+        act(resize)
+        expect(board.scrollTop).toBe(25)
+      } finally {
+        observer.mockRestore()
+      }
+    })
+
     it('stages only the requested complete subset, leaving enlarged-rack spares untouched', async () => {
       const tiles = createTestTiles(16)
       const ids = tiles.slice(1, 15).map((tile) => tile.id)

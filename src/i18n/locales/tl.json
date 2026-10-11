@@ -545,6 +545,17 @@
     "sellNamed": "Ibenta ang {{name}}",
     "hiddenDecree": "nakatagong Decree",
     "coach": {
+      "pointsShort": "Puntos ngayon",
+      "shapeShort": "Isang grupo",
+      "explain": "Bakit ang mga tile na ito?",
+      "hideAdvice": "Itago ang payo",
+      "previewChoice": "Tingnan ang mga tile",
+      "patternShort": {
+        "pair": "Pares",
+        "sequence": "Sequence",
+        "triplet": "Triplet",
+        "quad": "Quad"
+      },
       "title": "Dalawang paraan para laruin ito",
       "dismiss": "Itago",
       "pointsNow": "Puntos ngayon",
@@ -552,8 +563,8 @@
       "behindPace": "Kulang sa {{required}} na kailangan ng kamay na ito.",
       "buildToward": "Bumuo patungo sa {{pattern}}",
       "buildTowardPlain": "Bumuo patungo sa isang hugis",
-      "shapeCost": "Mas mababa ng {{difference}} ngayon, pero nananatili ang hugis na kaya mong pangalanan.",
-      "tradeoff": "Hindi laging mas magandang galaw ang mas malaking bilang: ang hugis na itinabi mo ay maaaring mas malaki ang halaga mamaya."
+      "shapeCost": "Mas mababa ng {{difference}} puntos ngayon gamit ang isang buong grupo. Hindi nito hinuhulaan ang susunod na bunot.",
+      "tradeoff": "Ihambing ang mga tile at puntos. Pumipili lang ng tile ang mungkahi; hindi nito binabawasan ang natitirang galaw."
     }
   },
   "rounds": {

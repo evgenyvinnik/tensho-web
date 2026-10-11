@@ -482,9 +482,13 @@ enjoyable, which still needs the observation described in section 8.
 statements instead of conflating them. `findBeginnerSuggestion` still teaches
 one recognizable shape and drives the first-play highlighting.
 `buildCoachAdvice` prices candidate selections with the orchestrator's own
-`previewScore`, then offers "points now" beside "build toward this" and states
-the round's pressure — the points this hand needs, and what the shape costs to
-keep. It never prices a concealed tile.
+`previewScore`, then offers "Score now" beside a named complete group and states
+the round's pressure — the points this hand needs and the immediate score
+difference. Both choices select tiles to **play**, not tiles held in reserve.
+It never prices a concealed tile or predicts future draws. The October 11
+comparison adds actual tile artwork and exact localized scores in a tap- and
+keyboard-accessible dialog; inspecting it is free, and selecting a suggestion
+does not spend a play. Only the normal Play action commits it.
 
 The two options render inside the play area's idle state and give way to the
 forecast once the player selects something, so the coach occupies no vertical
@@ -492,7 +496,7 @@ space of its own. That is not cosmetic: the gameplay screen has no slack at
 720px tall, and a 54px strip of its own was enough to push the hand zone under
 the action bar.
 
-**The diagnostic, repeated.** Section 8 asks for the opening-score measurement
+**The initial diagnostic, retained as history.** Section 8 asks for the opening-score measurement
 to be run again after any change to the coach.
 [`scripts/coach-diagnostic.mts`](../scripts/coach-diagnostic.mts) does that over
 the same seeds 1-100, and reproduces the original figures exactly before
@@ -515,6 +519,14 @@ is now also shown a move that keeps pace, and told which is which.
 Finding more points is not the same as being right, and the panel does not
 claim otherwise — it shows both options and names the tradeoff. This remains an
 opening-move measurement, not a win rate.
+
+**October 11 comparison recheck:** `bun scripts/coach-diagnostic.mts 100`
+on the current scoring rules finds 99 recognizable opening shapes and one
+redraw suggestion. Median taught-shape score is 47, with 73/99 below the
+required pace. Median score-aware choice is 93, with 13/100 below pace; it
+finds more points than the taught shape in 99/99 cases, a median gain of 45.
+The comparison changes presentation, not this search or scoring. These are
+opening-seed measurements, not proof of a win rate or of human enjoyment.
 
 ## 1. What the current game is missing
 

@@ -120,7 +120,8 @@ export interface CoachAdvice {
   best: CoachOption
   /**
    * A recognizable shape worth learning, present only when it is a different
-   * selection from `best`. This is the "build toward this" half of the advice.
+   * selection from `best`. These are tiles to play, not a group held in reserve
+   * or a prediction of future draws.
    */
   shape: CoachOption | null
   /** Points the round still needs, divided by the hands left to find them. */

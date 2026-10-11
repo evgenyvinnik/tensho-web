@@ -1,116 +1,198 @@
-/**
- * CoachPanel
- *
- * Shows the two moves a beginner should be weighing: the play that scores most
- * right now, and the recognizable shape worth building toward. Both are priced
- * with the game's own preview, and the panel states the round pressure so the
- * larger number is never presented as automatically correct.
- *
- * Section 1.4 of `docs/GAMEPLAY_EXPERIMENTS.md` describes the habit this
- * replaces: a coach that ranked one group's structure points and called it the
- * best move.
- *
- * It renders as one line inside the score bar, where the forecast appears once
- * tiles are chosen. The gameplay screen has no spare vertical budget, and the
- * score bar is exactly where a player compares numbers.
- *
- * @module components/gameplay/CoachPanel
- */
-
+import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { CoachAdvice, CoachOption } from '../../gameplay/beginnerCoach'
-import { MeldType } from '../../core/Meld'
+import type { Tile } from '../../core/Tile'
+import { Popup } from '../ui/Popup'
+import { TileImage } from '../tiles/TileImage'
+import { scoreNumber } from '../../utils/scoreNumber'
 
 export interface CoachPanelProps {
   advice: CoachAdvice
-  /** Apply an option's selection to the hand. */
+  /** Visible physical tiles only; never supply concealed identities. */
+  visibleTiles?: Tile[]
+  /** Select for a forecast, never commit a paid play. */
   onChoose: (tileIds: string[]) => void
-  /** Hide the coach for the rest of the session. */
   onDismiss?: () => void
 }
 
-export function CoachPanel({ advice, onChoose, onDismiss }: CoachPanelProps) {
-  const { t } = useTranslation()
-
-  const patternLabel = (pattern: MeldType | null) =>
-    pattern ? t(`melds.${pattern}`, pattern) : null
-
+/** Priced choices, not a promise about future draws or optimal strategy. */
+export function CoachPanel({
+  advice,
+  visibleTiles = [],
+  onChoose,
+  onDismiss,
+}: CoachPanelProps) {
+  const { t, i18n } = useTranslation()
+  const [explaining, setExplaining] = useState(false)
+  const detailId = useId()
   const options: {
     key: string
     title: string
+    shortTitle: string
     detail: string
     option: CoachOption
   }[] = [
     {
       key: 'now',
-      title: t('gameplay.coach.pointsNow', 'Points now'),
-      detail: advice.keepsPace
-        ? t(
-            'gameplay.coach.keepsPace',
-            'Keeps pace: this hand needs {{required}}.',
-            { required: advice.requiredPerHand }
-          )
-        : t(
-            'gameplay.coach.behindPace',
-            'Short of the {{required}} this hand needs.',
-            { required: advice.requiredPerHand }
-          ),
+      title: t('gameplay.coach.pointsNow'),
+      shortTitle: t('gameplay.coach.pointsShort'),
+      detail: t(
+        advice.keepsPace
+          ? 'gameplay.coach.keepsPace'
+          : 'gameplay.coach.behindPace',
+        {
+          required: scoreNumber(advice.requiredPerHand, i18n.language).exact,
+        }
+      ),
       option: advice.best,
     },
   ]
-
   if (advice.shape) {
-    const name = patternLabel(advice.shape.pattern)
     options.push({
-      key: 'build',
-      title: name
-        ? t('gameplay.coach.buildToward', 'Build toward a {{pattern}}', {
-            pattern: name,
-          })
-        : t('gameplay.coach.buildTowardPlain', 'Build toward a shape'),
-      detail: t(
-        'gameplay.coach.shapeCost',
-        'Scores {{difference}} less now, and keeps a pattern you can name.',
-        { difference: Math.max(0, advice.best.score - advice.shape.score) }
-      ),
+      key: 'shape',
+      title: advice.shape.pattern
+        ? t(`melds.${advice.shape.pattern}`)
+        : t('gameplay.coach.shapeShort'),
+      shortTitle: advice.shape.pattern
+        ? t(`gameplay.coach.patternShort.${advice.shape.pattern}`)
+        : t('gameplay.coach.shapeShort'),
+      detail: t('gameplay.coach.shapeCost', {
+        difference: scoreNumber(
+          Math.max(0, advice.best.score - advice.shape.score),
+          i18n.language
+        ).exact,
+      }),
       option: advice.shape,
     })
   }
-
+  const choose = (option: CoachOption) => {
+    setExplaining(false)
+    onChoose(option.tileIds)
+  }
   return (
-    <div data-testid="coach-panel" className="flex w-full items-center gap-2">
-      <div className="flex min-w-0 flex-1 gap-1.5">
-        {options.map(({ key, title, detail, option }) => {
-          return (
-            <button
-              key={key}
-              title={detail}
-              onClick={() => onChoose(option.tileIds)}
-              className="min-h-9 min-w-0 flex-1 basis-0 rounded-md border border-[var(--color-metallic-gold)]/25 px-2 py-0.5 text-left transition-colors hover:border-[var(--color-metallic-gold)]/60"
-            >
-              {/* One line in the score bar; the reasoning is the tooltip. */}
-              <span className="flex items-baseline justify-between gap-1.5">
-                <span className="truncate text-xs font-semibold text-[var(--color-beige-white)]">
-                  {title}
-                </span>
-                <span className="flex-shrink-0 text-sm font-black tabular-nums text-[var(--color-golden-yellow)]">
-                  +{option.score.toLocaleString()}
-                </span>
-              </span>
-              <span className="sr-only">{detail}</span>
-            </button>
-          )
-        })}
-      </div>
-
-      <button
-        onClick={onDismiss}
-        aria-label={t('gameplay.coach.title', 'Two ways to play this')}
-        className="flex-shrink-0 self-stretch px-1 text-[10px] uppercase tracking-wider text-[var(--color-beige-white)]/45 hover:text-[var(--color-beige-white)]"
+    <>
+      <div
+        data-testid="coach-panel"
+        className="flex w-full min-w-0 items-center gap-1.5"
       >
-        {t('gameplay.coach.dismiss', 'Hide')}
-      </button>
-    </div>
+        <div className="flex min-w-0 flex-1 gap-1.5">
+          {options.map(({ key, title, shortTitle, detail, option }) => {
+            const number = scoreNumber(option.score, i18n.language)
+            return (
+              <button
+                key={key}
+                type="button"
+                data-coach-choice={key}
+                data-coach-score={option.score}
+                aria-label={`${title}: +${number.exact}`}
+                aria-describedby={`${detailId}-${key}`}
+                title={`${title}: +${number.exact}. ${detail}`}
+                onClick={() => choose(option)}
+                className="flex min-h-11 min-w-0 flex-1 basis-0 flex-col justify-center rounded-md border border-[var(--color-metallic-gold)]/25 px-1.5 py-1 text-left transition-colors hover:border-[var(--color-metallic-gold)]/60"
+              >
+                <span
+                  data-coach-label
+                  className="max-w-full text-xs font-semibold leading-tight text-[var(--color-beige-white)] [overflow-wrap:anywhere]"
+                >
+                  {shortTitle}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="max-w-full text-sm font-black leading-tight tabular-nums text-[var(--color-golden-yellow)] [overflow-wrap:anywhere]"
+                >
+                  +{number.display}
+                </span>
+                <span id={`${detailId}-${key}`} className="sr-only">
+                  {detail}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+        <button
+          type="button"
+          data-coach-explain
+          onClick={() => setExplaining(true)}
+          aria-haspopup="dialog"
+          aria-label={t('gameplay.coach.explain')}
+          title={t('gameplay.coach.explain')}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--color-metallic-gold)] hover:bg-white/10"
+        >
+          <svg
+            aria-hidden="true"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4" />
+            <path d="M12 16v1" />
+          </svg>
+        </button>
+      </div>
+      <Popup
+        isOpen={explaining}
+        onClose={() => setExplaining(false)}
+        title={t('gameplay.coach.explain')}
+      >
+        <div
+          data-coach-comparison
+          className="space-y-3 text-sm leading-relaxed [overflow-wrap:anywhere]"
+        >
+          <p>{t('gameplay.coach.tradeoff')}</p>
+          {options.map(({ key, title, detail, option }) => (
+            <section
+              key={key}
+              data-coach-option={key}
+              data-coach-score={option.score}
+              className="space-y-2 rounded-lg border border-[var(--color-metallic-gold)]/30 p-2"
+            >
+              <h3 className="text-sm font-semibold leading-relaxed text-[var(--color-golden-yellow)]">
+                {title}
+              </h3>
+              <div className="flex flex-wrap gap-1">
+                {option.tileIds.map((id) => {
+                  const tile = visibleTiles.find((entry) => entry.id === id)
+                  return tile ? (
+                    <div key={id} data-coach-tile={id}>
+                      <TileImage tile={tile} size="small" showTooltip={false} />
+                    </div>
+                  ) : null
+                })}
+              </div>
+              <p data-coach-exact className="font-bold tabular-nums">
+                +{scoreNumber(option.score, i18n.language).exact}
+              </p>
+              <p>{detail}</p>
+              <button
+                type="button"
+                data-coach-select={key}
+                onClick={() => choose(option)}
+                className="min-h-11 w-full rounded-lg border border-amber-200/40 bg-emerald-950/50 px-2 py-1 font-semibold text-amber-100"
+              >
+                {t('gameplay.coach.previewChoice')}
+              </button>
+            </section>
+          ))}
+          {onDismiss && (
+            <button
+              type="button"
+              data-coach-dismiss
+              onClick={() => {
+                setExplaining(false)
+                onDismiss()
+              }}
+              className="min-h-11 w-full rounded-lg border border-white/20 px-2 py-1 text-sm [overflow-wrap:anywhere]"
+            >
+              {t('gameplay.coach.hideAdvice')}
+            </button>
+          )}
+        </div>
+      </Popup>
+    </>
   )
 }
 
