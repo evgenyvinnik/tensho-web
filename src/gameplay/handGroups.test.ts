@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { MeldType } from '../core/Meld'
 import { Tile, TileSuit } from '../core/Tile'
 import { groupHand } from './handGroups'
+import { parsePartialHand } from '../rules/PartialHandParser'
 
 const tile = (suit: TileSuit, rank: number, id: string) =>
   new Tile(suit, rank, id)
@@ -43,6 +44,44 @@ describe('groupHand', () => {
 
     expect(placed.sort()).toEqual(ids(rack).sort())
   })
+
+  it('shows Plum overlapping sequences as one physical cluster, not a duplicate tile', () => {
+    const rack = [1, 2, 3, 4, 5].map((rank) =>
+      tile(TileSuit.Manzu, rank, `m${rank}`)
+    )
+    const clusters = groupHand(rack, new Set(), { allowSequenceOverlap: true })
+    expect(clusters).toHaveLength(1)
+    expect(clusters[0]).toMatchObject({
+      kind: MeldType.Sequence,
+      structurePoints: 60,
+      groupCount: 2,
+    })
+    expect(ids(clusters[0].tiles)).toEqual(ids(rack))
+  })
+
+  it.each(
+    [false, true].flatMap((allowSequenceSkip) =>
+      [false, true].map((allowTerminalAnchor) => ({
+        allowSequenceSkip,
+        allowTerminalAnchor,
+        allowSequenceOverlap: true,
+      }))
+    )
+  )(
+    'keeps physical copies unique while preserving authoritative structure points under %j',
+    (rules) => {
+      const rack = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 2, 2].map((rank, index) =>
+        tile(TileSuit.Manzu, rank, `m${rank}-${index}`)
+      )
+      const clusters = groupHand(rack, new Set(), rules)
+      expect(clusters.flatMap((cluster) => ids(cluster.tiles)).sort()).toEqual(
+        ids(rack).sort()
+      )
+      expect(
+        clusters.reduce((total, cluster) => total + cluster.structurePoints, 0)
+      ).toBe(parsePartialHand(rack, rules).structurePoints)
+    }
+  )
 
   it('never groups a concealed or bonus tile', () => {
     const rack = [

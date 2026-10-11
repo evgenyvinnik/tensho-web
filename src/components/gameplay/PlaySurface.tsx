@@ -634,9 +634,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
       renderTile(tile, 'hand')
     )
 
-  const groupLabel = (kind: HandClusterKind, points: number) =>
+  const groupLabel = (kind: HandClusterKind, points: number, count: number) =>
     t('gameplay.groups.label', '{{group}} +{{points}}', {
-      group: t(`melds.${kind}`, kind),
+      group: `${t(`melds.${kind}`, kind)}${count > 1 ? ` ×${count}` : ''}`,
       points,
     })
 
@@ -819,7 +819,10 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
         >
           {/* Reserve the action column: text/font reflow must not move a drop
             target across the rack while the player is already dragging. */}
-          <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-center gap-2">
+          <div
+            data-rack-tools-row
+            className="sticky top-0 z-20 grid w-full grid-cols-[minmax(0,1fr)_56px] items-center gap-2 bg-[var(--color-dark-forest)]"
+          >
             <RackTools
               onOpenBeginnerGuide={onOpenBeginnerGuide}
               onOpenHandBuilder={onOpenHandBuilder}
@@ -900,14 +903,18 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                           : cluster.kind
                       }
                       data-rack-group
+                      data-hand-group-count={cluster.groupCount}
                       className="mx-1 flex shrink-0 flex-col items-center"
                       style={{
                         width:
-                          cluster.tiles.length * tileTargetWidth +
-                          (cluster.tiles.length - 1) * 4,
+                          `calc(${cluster.tiles.length * tileTargetWidth}px + ` +
+                          `${cluster.tiles.length - 1} * var(--rack-group-gap, 4px))`,
                       }}
                     >
-                      <div className="flex gap-1">
+                      <div
+                        className="flex"
+                        style={{ gap: 'var(--rack-group-gap, 4px)' }}
+                      >
                         {cluster.tiles.map(rackSlot)}
                       </div>
                       <span
@@ -923,7 +930,11 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                           color: GROUP_COLORS[cluster.kind],
                         }}
                       >
-                        {groupLabel(cluster.kind, cluster.structurePoints)}
+                        {groupLabel(
+                          cluster.kind,
+                          cluster.structurePoints,
+                          cluster.groupCount
+                        )}
                       </span>
                     </div>
                   )

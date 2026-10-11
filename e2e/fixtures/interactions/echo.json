@@ -1,0 +1,3022 @@
+{
+  "format": 1,
+  "runId": "55bb8914-d788-4ca0-bcf1-179ddf875346",
+  "owner": "cdf29ac6-be90-4a63-9795-43a908202c93",
+  "revision": 1,
+  "createdAt": 1791744705058,
+  "updatedAt": 1791744705058,
+  "snapshot": {
+    "version": 2,
+    "state": {
+      "isRunActive": true,
+      "seed": 7,
+      "stake": 1,
+      "currentAct": 1,
+      "currentRound": 1,
+      "tableStyleId": "green_felt",
+      "tableModifiers": {
+        "decreeSlotModifier": 0,
+        "flowerRateMultiplier": 1,
+        "shopDiscountPercent": 0,
+        "baseScoreMultiplier": 1,
+        "yakumanMultiplierBonus": 0,
+        "scoreTargetMultiplier": 1,
+        "flowersDisabled": false,
+        "earlyCorruptedSeasons": false,
+        "grantRegionalMandate": false
+      },
+      "runScore": 0,
+      "hasWonRun": false,
+      "hasEnteredEndless": false,
+      "score": 0,
+      "gold": 4,
+      "handsRemaining": 7,
+      "handsAllowance": 7,
+      "lossPreventionScorePenalty": 1,
+      "lastHandScore": null,
+      "handsPlayedThisRun": 0,
+      "discardsRemaining": 3,
+      "redrawsRemaining": 3,
+      "targetScore": 173,
+      "handTiles": [
+        {
+          "suit": "souzu",
+          "rank": 4,
+          "id": "echo-4",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "bonus",
+            "seal": "gold",
+            "edition": "polychrome"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 5,
+          "id": "echo-5",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 6,
+          "id": "echo-6",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 1,
+          "id": "held-0",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "held-1",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "held-2",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 1,
+          "id": "held-3",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 1,
+          "id": "held-4",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        }
+      ],
+      "melds": [],
+      "selectedTileIds": [],
+      "faceDownTileIds": [],
+      "wallTemplate": [
+        {
+          "suit": "manzu",
+          "rank": 1,
+          "id": "tile_0",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 1,
+          "id": "tile_1",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 1,
+          "id": "tile_2",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 1,
+          "id": "tile_3",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 2,
+          "id": "tile_4",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 2,
+          "id": "tile_5",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 2,
+          "id": "tile_6",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 2,
+          "id": "tile_7",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 3,
+          "id": "tile_8",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 3,
+          "id": "tile_9",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 3,
+          "id": "tile_10",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 3,
+          "id": "tile_11",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 4,
+          "id": "tile_12",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 4,
+          "id": "tile_13",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 4,
+          "id": "tile_14",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 4,
+          "id": "tile_15",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 5,
+          "id": "tile_16",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 5,
+          "id": "tile_17",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 5,
+          "id": "tile_18",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 5,
+          "id": "tile_19",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 6,
+          "id": "tile_20",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 6,
+          "id": "tile_21",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 6,
+          "id": "tile_22",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 6,
+          "id": "tile_23",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 7,
+          "id": "tile_24",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 7,
+          "id": "tile_25",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 7,
+          "id": "tile_26",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 7,
+          "id": "tile_27",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 8,
+          "id": "tile_28",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 8,
+          "id": "tile_29",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 8,
+          "id": "tile_30",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 8,
+          "id": "tile_31",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 9,
+          "id": "tile_32",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 9,
+          "id": "tile_33",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 9,
+          "id": "tile_34",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 9,
+          "id": "tile_35",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tile_36",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tile_37",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tile_38",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tile_39",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tile_40",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tile_41",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tile_42",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tile_43",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tile_44",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tile_45",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tile_46",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tile_47",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tile_48",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tile_49",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tile_50",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tile_51",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tile_52",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tile_53",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tile_54",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tile_55",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tile_56",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tile_57",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tile_58",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tile_59",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tile_60",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tile_61",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tile_62",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tile_63",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tile_64",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tile_65",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tile_66",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tile_67",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tile_68",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tile_69",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tile_70",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tile_71",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "tile_72",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "tile_73",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "tile_74",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "tile_75",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 2,
+          "id": "tile_76",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 2,
+          "id": "tile_77",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 2,
+          "id": "tile_78",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 2,
+          "id": "tile_79",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 3,
+          "id": "tile_80",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 3,
+          "id": "tile_81",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 3,
+          "id": "tile_82",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 3,
+          "id": "tile_83",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 4,
+          "id": "tile_84",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 4,
+          "id": "tile_85",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 4,
+          "id": "tile_86",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 4,
+          "id": "tile_87",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 5,
+          "id": "tile_88",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 5,
+          "id": "tile_89",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 5,
+          "id": "tile_90",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 5,
+          "id": "tile_91",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 6,
+          "id": "tile_92",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 6,
+          "id": "tile_93",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 6,
+          "id": "tile_94",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 6,
+          "id": "tile_95",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 7,
+          "id": "tile_96",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 7,
+          "id": "tile_97",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 7,
+          "id": "tile_98",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 7,
+          "id": "tile_99",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 8,
+          "id": "tile_100",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 8,
+          "id": "tile_101",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 8,
+          "id": "tile_102",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 8,
+          "id": "tile_103",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 9,
+          "id": "tile_104",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 9,
+          "id": "tile_105",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 9,
+          "id": "tile_106",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 9,
+          "id": "tile_107",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 1,
+          "id": "tile_108",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 1,
+          "id": "tile_109",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 1,
+          "id": "tile_110",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 1,
+          "id": "tile_111",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 2,
+          "id": "tile_112",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 2,
+          "id": "tile_113",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 2,
+          "id": "tile_114",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 2,
+          "id": "tile_115",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 3,
+          "id": "tile_116",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 3,
+          "id": "tile_117",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 3,
+          "id": "tile_118",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 3,
+          "id": "tile_119",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 4,
+          "id": "tile_120",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 4,
+          "id": "tile_121",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 4,
+          "id": "tile_122",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "wind",
+          "rank": 4,
+          "id": "tile_123",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 1,
+          "id": "tile_124",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 1,
+          "id": "tile_125",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 1,
+          "id": "tile_126",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 1,
+          "id": "tile_127",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 2,
+          "id": "tile_128",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 2,
+          "id": "tile_129",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 2,
+          "id": "tile_130",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 2,
+          "id": "tile_131",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 3,
+          "id": "tile_132",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 3,
+          "id": "tile_133",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 3,
+          "id": "tile_134",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 3,
+          "id": "tile_135",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        }
+      ],
+      "wall": [
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-0",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-1",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-2",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-3",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-4",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-5",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-6",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-7",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-8",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-9",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-10",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-11",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-12",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-13",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-14",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-15",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-16",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-17",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-18",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-19",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-20",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-21",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-22",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-23",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-24",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-25",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-26",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-27",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-28",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-29",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-30",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-31",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-32",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-33",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-34",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-35",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-36",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-37",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-38",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-39",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-40",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-41",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-42",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-43",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-44",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-45",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-46",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-47",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-48",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-49",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-50",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-51",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-52",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-53",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-54",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-55",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-56",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-57",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-58",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-59",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-60",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tail-61",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 9,
+          "id": "tail-62",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 1,
+          "id": "tail-63",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 2,
+          "id": "tail-64",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tail-65",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 4,
+          "id": "tail-66",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 5,
+          "id": "tail-67",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tail-68",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 7,
+          "id": "tail-69",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        }
+      ],
+      "summerReserve": [],
+      "bambooSummerProtection": false,
+      "deadWall": [
+        {
+          "suit": "manzu",
+          "rank": 6,
+          "id": "tile_20",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 9,
+          "id": "tile_34",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "season",
+          "rank": 1,
+          "id": "tile_140",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "tile_75",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 9,
+          "id": "tile_32",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 8,
+          "id": "tile_64",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 6,
+          "id": "tile_56",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 1,
+          "id": "tile_73",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "souzu",
+          "rank": 7,
+          "id": "tile_98",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "flower",
+          "rank": 3,
+          "id": "tile_138",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 3,
+          "id": "tile_8",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "manzu",
+          "rank": 1,
+          "id": "tile_1",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "dragon",
+          "rank": 1,
+          "id": "tile_125",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        },
+        {
+          "suit": "pinzu",
+          "rank": 3,
+          "id": "tile_44",
+          "isRed": false,
+          "modifiers": {
+            "enhancement": "none",
+            "seal": "none",
+            "edition": "base"
+          }
+        }
+      ],
+      "discards": [],
+      "drawIndex": 0,
+      "decreeSystem": {
+        "ownedDecrees": [
+          {
+            "id": "decree-echo-stone",
+            "name": "Echo Stone",
+            "description": "Retrigger first scoring tile",
+            "category": "YakuDoctrine",
+            "rarity": "RegionalMandate",
+            "cost": 6,
+            "sellValue": 5,
+            "effect": {
+              "type": "retrigger",
+              "trigger": "OnScored",
+              "description": "Retrigger first scoring tile",
+              "target": "first",
+              "times": 1
+            },
+            "instanceId": "owned-decree-1",
+            "acquiredRound": 0,
+            "roundsActive": 0
+          },
+          {
+            "id": "decree-treasure-hunter",
+            "name": "Treasure Hunter",
+            "description": "+¥1 per distinct suit left in your rack when you win a round. Winds and Dragons count separately.",
+            "category": "Entropy",
+            "rarity": "RegionalMandate",
+            "cost": 6,
+            "sellValue": 4,
+            "effect": {
+              "type": "gold",
+              "trigger": "OnRoundEnd",
+              "description": "+¥1 per distinct suit left in your rack when you win a round. Winds and Dragons count separately.",
+              "amount": 1,
+              "scaleBy": "held_suits"
+            },
+            "instanceId": "owned-decree-2",
+            "acquiredRound": 0,
+            "roundsActive": 0
+          }
+        ],
+        "maxSlots": 5,
+        "currentRound": 0,
+        "nextInstanceId": 3
+      },
+      "flowerSystem": {
+        "flowers": [],
+        "unlockedMutations": []
+      },
+      "seasonSystem": {
+        "activeSeason": {
+          "id": "forced-Winter-1791744704966",
+          "type": "Winter",
+          "effect": {
+            "type": "legality_modifier",
+            "value": -0.25,
+            "description": "Same-suit sequences may skip one rank, score -25%"
+          },
+          "isCorrupted": true,
+          "corruptedType": "Frostbite",
+          "corruptedEffect": {
+            "type": "halve_decrees",
+            "severity": 0.5,
+            "description": "Halves Decree scoring, gold and retrigger rewards; permissions, capacities, actions and costs stay unchanged"
+          }
+        },
+        "seasonStack": [
+          {
+            "id": "forced-Winter-1791744704966",
+            "type": "Winter",
+            "effect": {
+              "type": "legality_modifier",
+              "value": -0.25,
+              "description": "Same-suit sequences may skip one rank, score -25%"
+            },
+            "isCorrupted": true,
+            "corruptedType": "Frostbite",
+            "corruptedEffect": {
+              "type": "halve_decrees",
+              "severity": 0.5,
+              "description": "Halves Decree scoring, gold and retrigger rewards; permissions, capacities, actions and costs stay unchanged"
+            }
+          }
+        ],
+        "currentAct": 1,
+        "discardCount": 0,
+        "earlyCorruption": false
+      },
+      "roundManager": {
+        "currentAct": {
+          "actNumber": 1,
+          "rounds": [
+            {
+              "actNumber": 1,
+              "roundNumber": 1,
+              "roundType": "Small",
+              "scoreTarget": 173,
+              "currentScore": 0,
+              "handsPlayed": 0,
+              "maxHands": 4,
+              "discardsRemaining": 3,
+              "maxDiscards": 3,
+              "isCompleted": false,
+              "isWon": false
+            },
+            {
+              "actNumber": 1,
+              "roundNumber": 2,
+              "roundType": "Large",
+              "scoreTarget": 450,
+              "currentScore": 0,
+              "handsPlayed": 0,
+              "maxHands": 4,
+              "discardsRemaining": 3,
+              "maxDiscards": 3,
+              "isCompleted": false,
+              "isWon": false
+            },
+            {
+              "actNumber": 1,
+              "roundNumber": 3,
+              "roundType": "Boss",
+              "scoreTarget": 600,
+              "currentScore": 0,
+              "handsPlayed": 0,
+              "maxHands": 4,
+              "discardsRemaining": 3,
+              "maxDiscards": 3,
+              "isCompleted": false,
+              "isWon": false,
+              "bossMandate": {
+                "id": "the_hook",
+                "name": "The Hook",
+                "japaneseName": "鉤",
+                "description": "2 random tiles discarded from hand after each draw",
+                "effect": {
+                  "type": "discard_after_draw",
+                  "value": 2
+                },
+                "minAct": 1
+              }
+            }
+          ],
+          "currentRoundIndex": 0,
+          "isCompleted": false,
+          "baseScoreTarget": 300
+        },
+        "currentRound": {
+          "actNumber": 1,
+          "roundNumber": 1,
+          "roundType": "Small",
+          "scoreTarget": 173,
+          "currentScore": 0,
+          "handsPlayed": 0,
+          "maxHands": 4,
+          "discardsRemaining": 3,
+          "maxDiscards": 3,
+          "isCompleted": false,
+          "isWon": false
+        },
+        "stake": 1,
+        "bonusHands": 0,
+        "bonusDiscards": 0,
+        "usedTileIds": [],
+        "stakeModifiers": {
+          "noSmallRoundReward": false,
+          "scoreScaling": 1,
+          "eternalChance": 0,
+          "redrawPenalty": 0,
+          "perishableChance": 0,
+          "rentalChance": 0
+        },
+        "rngState": 1831565820,
+        "tableTargetMultiplier": 1
+      },
+      "consumableSystem": {
+        "inventory": {
+          "fateSealSlots": 2,
+          "celestialOrbSlots": 2,
+          "voidScriptSlots": 2,
+          "fateSeals": [],
+          "celestialOrbs": [],
+          "voidScripts": []
+        },
+        "currentRound": 1,
+        "sealsUsedThisRound": 0,
+        "scriptsUsedThisRound": 0,
+        "maxSealsPerRound": 1,
+        "maxScriptsPerRound": 1
+      },
+      "celestialOrbSystem": {
+        "orbLevels": [
+          [
+            "Riichi",
+            1
+          ],
+          [
+            "Tanyao",
+            1
+          ],
+          [
+            "Yakuhai",
+            1
+          ],
+          [
+            "Pinfu",
+            1
+          ],
+          [
+            "Ittsu",
+            1
+          ],
+          [
+            "Honitsu",
+            1
+          ],
+          [
+            "Toitoi",
+            1
+          ],
+          [
+            "Chinitsu",
+            1
+          ],
+          [
+            "Sanshoku",
+            1
+          ],
+          [
+            "SevenPairs",
+            1
+          ],
+          [
+            "Chanta",
+            1
+          ],
+          [
+            "Kokushi",
+            1
+          ]
+        ],
+        "yakuTriggerCounts": [
+          [
+            "Riichi",
+            0
+          ],
+          [
+            "Tanyao",
+            0
+          ],
+          [
+            "Yakuhai",
+            0
+          ],
+          [
+            "Pinfu",
+            0
+          ],
+          [
+            "Ittsu",
+            0
+          ],
+          [
+            "Honitsu",
+            0
+          ],
+          [
+            "Toitoi",
+            0
+          ],
+          [
+            "Chinitsu",
+            0
+          ],
+          [
+            "Sanshoku",
+            0
+          ],
+          [
+            "SevenPairs",
+            0
+          ],
+          [
+            "Chanta",
+            0
+          ],
+          [
+            "Kokushi",
+            0
+          ]
+        ],
+        "activeOrbs": []
+      },
+      "fateSealSystem": {
+        "lastUsedConsumable": null
+      },
+      "voidScriptSystem": {
+        "handSizePenalty": 0,
+        "decreeSlotsLostNextRound": 0,
+        "allowShantenScoring": false,
+        "bypassMeldValidation": false,
+        "baseScoreHalved": false
+      },
+      "omenSystem": {
+        "currentAct": 1,
+        "currentRound": 1,
+        "skippedRoundsThisAct": 0,
+        "totalSkippedRounds": 0,
+        "lockedSeasonType": null,
+        "pendingOmens": [],
+        "interestCapBonus": 0,
+        "interestBoostRoundsRemaining": 0,
+        "randomCursor": 659925
+      },
+      "charterSystem": {
+        "ownedCharters": [],
+        "purchasedIds": [],
+        "currentAct": 1,
+        "currentRound": 1,
+        "mandateRerollsUsedThisAct": 0
+      },
+      "debuffSystem": {
+        "debuffedTileIds": [],
+        "debuffedDecreeIds": [],
+        "debuffSources": []
+      },
+      "mandateEffectSystem": {
+        "randomCursor": 7,
+        "activeMandate": null,
+        "isDefeated": false,
+        "scoredYakuIds": [],
+        "firstYakuType": null,
+        "handsPlayed": 0,
+        "lockedTileIds": [],
+        "disabledDecreeIds": [],
+        "decreesShuffled": false,
+        "shuffledDecreeIds": [],
+        "allTilesDebuffed": false,
+        "modifiedRedraws": null,
+        "modifiedMaxHands": null,
+        "requiredHandSize": null,
+        "usedTileIds": []
+      },
+      "fateSeals": [],
+      "celestialOrbs": [],
+      "voidScripts": [],
+      "lastCompletedRoundType": null,
+      "lastRoundSummary": null,
+      "temporaryDecreeSlotPenalty": 0,
+      "omenHandSizeBonus": 0,
+      "omenDiscardBonus": 0,
+      "omenRedrawBonus": 0,
+      "yakuPlayCounts": [],
+      "currentRoundYakuIds": [],
+      "previousRoundYakuIds": [],
+      "deadWallWritUsedThisRound": false,
+      "pendingActReduction": 0,
+      "phase": "gameplay",
+      "riichiStatus": "available"
+    },
+    "config": {
+      "handsPerRound": 4,
+      "discardsPerRound": 3,
+      "redrawsPerRound": 3,
+      "startingHandSize": 14
+    },
+    "shop": {
+      "teaHouse": {
+        "flowerCountForVisit": 0,
+        "itemSlotCount": 2,
+        "discountPercentage": 0,
+        "rerollDiscount": 0,
+        "sealWeightMultiplier": 1,
+        "orbWeightMultiplier": 1,
+        "editionFrequencyMultiplier": 1,
+        "canBuyTiles": false,
+        "tilesHaveEditions": false,
+        "purchasedCharterIds": [],
+        "currentStake": 1,
+        "itemOfferings": [],
+        "packOfferings": [],
+        "charterOffering": null,
+        "rerollsThisVisit": 0,
+        "totalRerollsRun": 0,
+        "offeringCounter": 0,
+        "visitDiscountPercentage": 0,
+        "freeRerollsThisVisit": 0
+      },
+      "packs": {
+        "currentOfferings": [],
+        "skipCount": 0,
+        "totalPacksOpened": 0,
+        "packsPerVisit": 2
+      },
+      "opened": false,
+      "pendingPackId": null,
+      "spent": 0,
+      "purchases": 0
+    },
+    "random": {
+      "version": 1,
+      "seed": 7,
+      "streams": {}
+    },
+    "omens": {
+      "activeTags": [],
+      "consumedTags": [],
+      "pendingShopTags": [],
+      "pendingBossTags": [],
+      "roundsSkippedThisRun": 0,
+      "handsPlayedThisRun": 0,
+      "unusedDiscardsThisRun": 0,
+      "hasDoubleOmenActive": false,
+      "lockedSeason": null,
+      "noInterestRounds": 0,
+      "unlockedTagIds": [
+        "omen_of_crescents",
+        "omen_of_ash",
+        "omen_of_rivers",
+        "speed_omen",
+        "throwback_omen",
+        "fortune_omen",
+        "oracles_omen",
+        "merchants_omen",
+        "seal_omen",
+        "decree_omen",
+        "void_omen",
+        "expansion_omen",
+        "precision_omen",
+        "abundance_omen",
+        "polychrome_omen",
+        "foil_omen",
+        "interest_omen",
+        "score_surge_omen",
+        "multiplication_omen",
+        "blessing_pack_omen",
+        "negative_omen",
+        "austerity_omen",
+        "holographic_omen",
+        "double_omen"
+      ],
+      "currentAct": 1,
+      "currentRound": 1,
+      "omenHistory": []
+    },
+    "meta": {
+      "stake": 1,
+      "wallId": "green_felt",
+      "hadFlowers": true,
+      "flowerTypes": [
+        "1"
+      ],
+      "pendingCorruptedSeasons": 0
+    },
+    "runtimeItemCounter": 0,
+    "tileIdCounter": 0,
+    "consumableInstanceCounter": 0
+  }
+}

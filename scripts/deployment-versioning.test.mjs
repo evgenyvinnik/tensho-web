@@ -301,6 +301,15 @@ test('workflow gates the built artifact and preserves Pages base and SPA fallbac
     workflow.indexOf('      - name: Commit and tag deployment version') < build
   )
   assert.ok(workflow.indexOf('      - name: Record release provenance') > build)
+  const browser = workflow.indexOf(
+    '      - name: Verify built gameplay interactions'
+  )
+  assert.ok(
+    browser > build,
+    'browser gate must inspect the compiled application'
+  )
+  assert.ok(browser < workflow.indexOf('      - name: Upload Pages artifact'))
+  assert.match(workflow, /uses: \.\/\.github\/actions\/verify-browser/)
   assert.ok(
     workflow.indexOf('      - name: Record release provenance') <
       workflow.indexOf('      - name: Upload Pages artifact')
