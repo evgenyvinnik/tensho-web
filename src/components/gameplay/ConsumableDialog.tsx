@@ -109,12 +109,13 @@ export function ConsumableDialog({
   useEffect(() => {
     const dialog = dialogRef.current!
     const previous = document.activeElement as HTMLElement | null
+    const fallback = fallbackFocusRef?.current
     dialog.showModal()
     dialog.querySelector<HTMLButtonElement>('[data-consumable-close]')?.focus()
     return () => {
       dialog.close()
       if (previous?.isConnected) previous.focus()
-      else fallbackFocusRef?.current?.focus()
+      else if (fallback?.isConnected) fallback.focus()
     }
   }, [fallbackFocusRef])
 
