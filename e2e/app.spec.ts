@@ -313,7 +313,14 @@ test.describe('Game Navigation', () => {
     await expect(guide).toContainText('Read the tile families')
     await expect(guide).toContainText('The shapes to spot')
     await expect(guide).toContainText('Your turn, every time')
-    await expect(guide.locator('img')).toHaveCount(18)
+    await expect(guide.locator('img')).toHaveCount(21)
+    const dragons = guide.locator('[data-guide-dragons]')
+    await expect(dragons.locator('img')).toHaveCount(3)
+    for (const name of ['White Dragon', 'Green Dragon', 'Red Dragon']) {
+      await expect(dragons.getByRole('img', { name, exact: true })).toHaveCount(
+        1
+      )
+    }
 
     const guideLayout = await page
       .locator('dialog [data-popup-scroll]')
@@ -711,7 +718,7 @@ test.describe('Game Navigation', () => {
     expect(layout.bottom!.right).toBeLessThanOrEqual(
       layout.bottomRight!.left + 0.5
     )
-    expect(layout.rowsFit).toBe(true)
+    expect(layout.rowsFit, JSON.stringify(layout, null, 2)).toBe(true)
     expect(
       layout.buttonsFit,
       JSON.stringify(layout.buttonMetrics, null, 2)

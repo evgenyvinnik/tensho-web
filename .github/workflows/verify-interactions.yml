@@ -15,6 +15,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  core-acceptance:
+    name: Complete runs and save recovery
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Install pinned Chromium and system dependencies
+        run: bunx playwright install --with-deps chromium
+      # These tests include explicit late-run fixtures that require native Vite.
+      # The separate verify job checks the compiled Pages-path application.
+      - name: Verify complete gameplay and persistence journeys
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: ${{ runner.temp }}/tensho-core/report
+        run: bun run test:acceptance --workers=2 --retries=0 --trace=retain-on-failure --output=${{ runner.temp }}/tensho-core/results
+      - name: Preserve core acceptance diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-acceptance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/tensho-core
+          if-no-files-found: warn
+          retention-days: 7
+
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 25

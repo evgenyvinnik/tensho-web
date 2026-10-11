@@ -29,7 +29,7 @@ standalone polish checkpoint; subsequent changes must close a gate below.
 | C3 — Save/recovery safety | Reload/resume play and paid pending rewards without loss/replay; protect against stale-window writes; preserve preferences through confirmed reset; verify the supported current-to-candidate PWA update and offline artwork. | Existing coverage; run the named persistence journeys and existing update harness against the candidate. Do not claim support for every historical client or crash-atomic multi-key reset. Any reproduced loss of a supported save is a blocker. |
 | C4 — Usable, teachable interface | At 320px, tablet and desktop: reachable primary actions and close controls, no page-wide overflow or clipped essential rules; hover information also available to touch/keyboard; optional guidance explains selection, commitment and payoff. All 13 game locales have required rules/control text and no raw keys. | Finish verification of the pending Dragon guide, then one bounded screen/locale pass. Fix blocked actions, unreadable rules and incorrect translations; aesthetic variations alone do not reopen this gate. |
 | C5 — Assets and public site | Existing required illustrations decode and have accessible text; audio/motion preferences work. About/how-to-play/FAQ return real HTML with valid links/metadata, and production asset/cache budgets pass. | Reuse the already generated art. Run public-guide/static-route/asset checks. English-only editorial pages remain explicitly labeled; search indexing and future translated articles are not implementation claims. |
-| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Dragon candidate `73ee4c1` is in independent CI; do not deploy it until that gate passes. Then complete the broader acceptance pass, fix blockers and publish the final verified candidate. |
+| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Dragon candidate `73ee4c1` passes independent CI `38175717641`, but the broader acceptance pass exposes the corner defect below. Fix and verify it before publication; the interaction-only gate is not whole-release clearance. |
 
 ### Execution order and stopping rule
 
@@ -66,6 +66,38 @@ additional balance/search policies, new SEO articles/languages, external error
 reporting, and exhaustive combinations of every item/Stake/old client are future
 work. Existing promised mechanics, save correctness and essential localized
 controls are not being deferred under that label.
+
+### Active acceptance pass
+
+The nine named core specs were started against an isolated, unchanged checkout
+of `73ee4c1`: **144 desktop/phone cases**, one worker, no retries. Evidence is
+retained at `/tmp/tensho-interaction-IE5a7E/completion-core`. This is a native
+Vite integration pass, not a production or all-browser claim. After repeated
+startup/teardown deadlines, the owned local runner was interrupted (exit 130):
+**22 passed, 9 failed, 113 not run**, 28.8 minutes. This is not a green acceptance
+result. Its errors and traces are retained. A separate dry listing of the new
+package command ended with SIGTERM (143), so it is not counted as verification.
+`bun run test:acceptance --workers=1 --retries=0` now names the same fixed suite.
+The verification workflow adds a separate clean-runner core job (two workers,
+zero retries, retained diagnostics), alongside the production interaction job.
+
+Current defects to close before publication:
+
+- **C4, reproduced:** at 320px the top-row Settings button ends at x=285.02,
+  beyond its x=283 safe boundary and inside the corner reserved at x=284.
+  The center round chip's minimum width displaces the fixed-size controls.
+  A local fix allows the middle region/round label to wrap and reserves the
+  controls' width. It is not yet browser-verified; the running baseline is untouched.
+- **Test correction:** the first-move guide check expects 18 images; the new
+  three-Dragon legend correctly renders 21. The updated check requires 21 plus
+  each of the three named Dragon images, retaining the rest of the real journey.
+- **Unresolved diagnostic:** the first home-page case exceeds its 30-second
+  total deadline waiting for the title. Later navigation cases pass; this does
+  not establish the original cause or close the failing case.
+
+The interaction-only CI is not whole-release clearance. Consolidate the
+remaining core results, verify fixes and update this list rather than publishing
+a candidate with a known current blocker.
 
 ## Current implementation
 

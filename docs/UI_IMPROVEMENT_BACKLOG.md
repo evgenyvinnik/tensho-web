@@ -170,8 +170,11 @@ racks and real devices remain open.
     `dragon-final`, `dragon-word-wrap`, `dragon-rows` and `dragon-rows-focused`;
     no assertion or timeout was relaxed. TypeScript, targeted lint and all four
     browser-runner subprocess checks pass. Candidate `73ee4c1` is on the
-    verification branch; independent CI `38175717641` is pending, including
-    all 110 production-browser checks. Native-speaker review is not claimed.
+    verification branch; independent CI `38175717641` succeeds, including its
+    production-browser step. Detailed log download subsequently returns HTTP
+    403, so no newly extracted per-test total is claimed here. The broader core
+    acceptance pass exposes a separate top-row corner overflow; publication is
+    held for that fix. Native-speaker review is not claimed.
 
 14. **Table Loop wastes desktop space.** Its rack uses small fixed tiles on a
     mostly empty 1440×800 screen. Reuse `fitHandTileSize` for `RackRow`.

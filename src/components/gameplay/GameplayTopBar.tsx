@@ -149,7 +149,7 @@ export function GameplayTopBar({
       {/* Act/Round with Round Type indicator */}
       <div
         data-tutorial="act-round"
-        className="flex items-center gap-1 sm:gap-2"
+        className="flex min-w-0 flex-1 flex-wrap items-center justify-center gap-1 sm:gap-2"
       >
         {/* One chip: which Act, how far through the run, and this round. */}
         <RoundTypeIndicator
@@ -216,7 +216,7 @@ export function GameplayTopBar({
         )}
       </div>
 
-      <div className="relative flex items-center gap-0 sm:gap-2">
+      <div className="relative flex shrink-0 items-center gap-0 sm:gap-2">
         {/* Phones show the status as a badge on the corner, using no width. */}
         {status && (
           <div className="pointer-events-none max-sm:absolute max-sm:-top-0.5 max-sm:right-0 max-sm:z-10">

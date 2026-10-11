@@ -46,6 +46,9 @@ bun run test:release
 # E2E tests with Playwright
 bun run test:e2e       # Headless
 bun run test:e2e:headed # With browser UI
+
+# Fixed completion gate: full runs, shops, results and save/recovery paths
+bun run test:acceptance --workers=1 --retries=0
 ```
 
 ### Linting & Formatting

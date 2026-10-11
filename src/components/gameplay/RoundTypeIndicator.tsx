@@ -67,7 +67,7 @@ export function RoundTypeIndicator({
     <>
       <div
         className={`
-        relative inline-flex items-center gap-2 px-2 py-1 sm:px-3
+        relative inline-flex min-w-0 max-w-full flex-wrap items-center justify-center gap-2 px-2 py-1 sm:px-3
         ${progress ? 'pb-1.5' : ''}
         ${config.bgColor} ${config.borderColor}
         border rounded-full
@@ -83,7 +83,7 @@ export function RoundTypeIndicator({
         )}
 
         {/* Localized round type */}
-        <span className="whitespace-nowrap text-xs text-[var(--color-beige-white)] sm:text-sm">
+        <span className="min-w-0 text-center text-xs text-[var(--color-beige-white)] [overflow-wrap:anywhere] sm:text-sm">
           {localizedRoundType}
         </span>
 
@@ -103,7 +103,7 @@ export function RoundTypeIndicator({
                 className="h-8 w-8 shrink-0 object-contain"
               />
             )}
-            <span className="break-words">{mandateName}</span>
+            <span className="min-w-0 [overflow-wrap:anywhere]">{mandateName}</span>
           </button>
         )}
         {progress && (
