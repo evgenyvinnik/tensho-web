@@ -168,8 +168,13 @@ release/runner checks, build and all 84 production-browser journeys without
 retries. Published in **v1.0.261011-14** (`d484538`): deployment run
 `38174591930` passes 2,957 application tests, 17 release/runner checks, the build
 and all 84 browser journeys (7.9 minutes, zero retries). The public manifest,
-remote tag and served entry-bundle version agree. Hosted interaction checks
-remain pending; the separate Dragon-hint follow-up is not part of this release.
+remote tag and served entry-bundle version agree. The English/Japanese
+desktop/phone journeys also pass against the public site (**4/4**, zero retries,
+1.4 minutes), exercising every physical rack tile with the first lesson open,
+no staged selection ring and an unchanged saved snapshot. Evidence is retained
+in `/tmp/tensho-interaction-IE5a7E/hosted-v14`. This is a focused hosted check,
+not an all-locale/effect rerun. The separate Dragon-hint follow-up is not part
+of this release.
 
 Desktop and Japanese short-phone screenshots were inspected. On short phones
 the board deliberately scrolls; this does not promise simultaneous visibility of

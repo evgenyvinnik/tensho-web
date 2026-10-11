@@ -19,8 +19,11 @@ production-browser deployment gate now pass independent CI, including the
 combined v13 main changes: 2,957 application tests, 17 release/runner checks,
 the build and all 84 production-browser journeys with no retries. Published in
 **v1.0.261011-14**: deployment run `38174591930` repeats those checks successfully;
-the public manifest, Git tag and served entry-bundle version agree. Hosted
-interaction checks remain pending; the separate Dragon-hint follow-up is not
+the public manifest, Git tag and served entry-bundle version agree. All four
+hosted English/Japanese desktop/phone rack journeys pass without retries:
+every physical tile stages and returns with the first lesson open, no yellow
+selection frame on the mat, and no save/resource changes. This is not a full
+hosted all-locale/effect rerun. The separate Dragon-hint follow-up is not
 included in this release.
 
 [Compact Tea House](SHOP_DENSITY_IMPLEMENTATION.md) brings merchandise into

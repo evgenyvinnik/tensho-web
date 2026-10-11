@@ -159,12 +159,19 @@ racks and real devices remain open.
     shrinking the font. All 26 desktop/phone journeys then pass without retries,
     but screenshot review reveals a Tagalog caption splitting "Berdeng" mid-word.
     A new word-boundary assertion reproduces that exact defect. The guide now
-    uses image-and-name rows on phones and three columns on desktop; its final
-    all-locale recheck is pending. A subsequent focused unit run passes 58/61,
+    uses image-and-name rows on phones and three columns on desktop. The final
+    local batch reports 16 passes and one initial-save-readiness timeout before
+    ending with signal exit 143; it is incomplete, not a green 26-case run.
+    Both Thai/Tagalog phone rechecks pass unchanged (2/2), and their screenshots
+    confirm readable badges, whole-word captions and a visible close control.
+    A subsequent focused unit run passes 58/61,
     with three existing cases timing out at 5 seconds; these are not clearance.
     Original evidence remains in `/tmp/tensho-interaction-IE5a7E/dragon-native`,
-    `dragon-final` and `dragon-word-wrap`; no assertion or timeout was relaxed.
-    Native-speaker review is not claimed.
+    `dragon-final`, `dragon-word-wrap`, `dragon-rows` and `dragon-rows-focused`;
+    no assertion or timeout was relaxed. TypeScript, targeted lint and all four
+    browser-runner subprocess checks pass. Candidate `73ee4c1` is on the
+    verification branch; independent CI `38175717641` is pending, including
+    all 110 production-browser checks. Native-speaker review is not claimed.
 
 14. **Table Loop wastes desktop space.** Its rack uses small fixed tiles on a
     mostly empty 1440×800 screen. Reuse `fitHandTileSize` for `RackRow`.
