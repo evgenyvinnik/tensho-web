@@ -420,6 +420,7 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "moreTools": "Iba pang gamit sa mesa",
     "yakumanAscended": "Umakyat sa Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus sa hugis",
     "beginnerBonusHelp": "Idinaragdag ang bonus sa hugis sa puntos ng mga tile. Kasama sa pagtataya ang mga modifier ng iyong run at ipinapakita nito ang aktuwal na puntos ng galaw na ito.",

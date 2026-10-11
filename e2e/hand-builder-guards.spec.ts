@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { revealRackTools } from './helpers/rack-tools'
 
 test('open workshop removes candidates when a face becomes hidden', async ({
   page,
@@ -10,6 +11,8 @@ test('open workshop removes candidates when a face becomes hidden', async ({
     localStorage.setItem('tensho_hints_disabled', 'true')
   })
   await page.goto('/en/play')
+  await expect(page.locator('[data-rack-header]')).toBeVisible()
+  await revealRackTools(page)
   await expect(page.locator('[data-open-hand-builder]')).toBeVisible()
   const mutate = async (hidden: boolean) =>
     page.evaluate(async (hidden) => {

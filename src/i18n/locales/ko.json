@@ -317,6 +317,7 @@
     "visual": "화면"
   },
   "gameplay": {
+    "moreTools": "테이블 도구 더 보기",
     "yakumanAscended": "역만으로 승격",
     "beginnerShapeBonus": "+{{points}} 모양 보너스",
     "beginnerBonusHelp": "모양 보너스는 패 점수에 더해집니다. 예상 점수에는 현재 런의 보정 효과가 포함되며, 이번 플레이로 실제 얻을 점수를 보여 줍니다.",

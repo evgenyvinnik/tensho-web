@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { revealRackTools } from './helpers/rack-tools'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es', 'ru']) {
@@ -97,6 +98,7 @@ for (const language of ['en', 'es', 'ru']) {
       await page.reload()
     }
     const before = await snapshot()
+    await revealRackTools(page)
     const open = page.locator('[data-open-hand-builder]')
     await expect(open).toHaveAccessibleName(copy.handBuilder.title)
     const start = Date.now()

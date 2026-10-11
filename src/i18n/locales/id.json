@@ -397,6 +397,7 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "moreTools": "Alat meja lainnya",
     "yakumanAscended": "Naik menjadi Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus pola",
     "beginnerBonusHelp": "Bonus pola ditambahkan ke poin ubin. Prakiraan mencakup pengubah dalam permainanmu dan menunjukkan skor yang akan diperoleh dari langkah ini.",

@@ -317,6 +317,7 @@
     "visual": "表示"
   },
   "gameplay": {
+    "moreTools": "卓のツールを開く",
     "yakumanAscended": "役満に昇格",
     "beginnerShapeBonus": "+{{points}} 形ボーナス",
     "beginnerBonusHelp": "形ボーナスは牌の点数に加算されます。予測には現在のランの補正が含まれ、このプレイで実際に得られる点数が表示されます。",

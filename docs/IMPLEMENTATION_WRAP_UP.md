@@ -8,6 +8,14 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Reachable rack tools](RACK_TOOLS_IMPLEMENTATION.md) replace the phone's
+sideways-scrolling secondary actions with a localized More disclosure, retain
+the visible guidebook and desktop inline controls, and add generated planning-tray
+art. The final layout preserves discard geometry under font/text-spacing stress
+and dialog focus across viewport changes. All 2,911 unit tests, 64 native browser
+checks, 26 final rotation/keyboard journeys and 64 production checks pass.
+Publication verification is in progress; this is not whole-project completion.
+
 [Quieter inventory and guide discovery](QUIET_INVENTORY_IMPLEMENTATION.md)
 hide empty consumable families, retain owned-item controls, restore last-use
 focus safely and align first-move copy with the illustrated book icon in all

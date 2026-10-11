@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { revealRackTools } from './helpers/rack-tools'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es'])
@@ -157,6 +158,7 @@ for (const language of ['en', 'es'])
         trigger = page.locator('[data-open-riichi]'),
         dialog = page.getByRole('dialog')
       await expect(trigger).toHaveAttribute('data-riichi-status', 'available')
+      await revealRackTools(page)
       await activate(trigger)
       await expect(
         dialog.getByRole('heading', { name: copy.riichiPledge.title })
@@ -197,6 +199,7 @@ for (const language of ['en', 'es'])
       await expect(trigger).toHaveText(copy.riichiPledge.active)
       const play = page.locator('[data-game-action="play"]')
       if (mode === 'abandon') {
+        await revealRackTools(page)
         await activate(trigger)
         await expect(dialog.locator('[data-riichi-confirm]')).toHaveText(
           copy.riichiPledge.abandon
@@ -207,6 +210,7 @@ for (const language of ['en', 'es'])
         expect(abandoned.state.gold).toBe(pledged.state.gold)
         await page.reload()
         expect(await saved()).toEqual(abandoned)
+        await revealRackTools(page)
         await activate(trigger)
         await expect(dialog.locator('[data-riichi-reason="spent"]')).toHaveText(
           copy.riichiPledge.spent

@@ -420,6 +420,7 @@
     "visual": "Görsel"
   },
   "gameplay": {
+    "moreTools": "Diğer masa araçları",
     "yakumanAscended": "Yakuman'a yükseldi",
     "beginnerShapeBonus": "+{{points}} şekil bonusu",
     "beginnerBonusHelp": "Şekil bonusları taş puanlarına eklenir. Tahmin, koşunun değiştiricilerini içerir ve bu hamlenin gerçekte kaç puan kazandıracağını gösterir.",

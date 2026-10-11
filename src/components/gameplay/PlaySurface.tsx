@@ -24,11 +24,11 @@ import { AnimatedTile } from '../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../styles/theme'
 import { useSettingsStore } from '../../stores/settingsStore'
 import type { BeginnerSuggestion } from '../../gameplay/beginnerCoach'
-import { illustrationAssets } from '../../utils/assets'
 import { tileName } from '../../i18n/tileText'
 import type { PartialHandRules } from '../../rules/PartialHandParser'
 import { groupHand, type HandClusterKind } from '../../gameplay/handGroups'
 import { useHandTileSize } from '../../hooks/useHandTileSize'
+import { RackTools } from './RackTools'
 
 // =============================================================================
 // TYPES
@@ -813,11 +813,13 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
           {/* Reserve the action column: text/font reflow must not move a drop
             target across the rack while the player is already dragging. */}
           <div className="grid w-full grid-cols-[minmax(0,1fr)_56px] items-center gap-2">
-            {/* One row everywhere: phones scroll it sideways instead of
-              spending a second row of rack height on secondary buttons. */}
-            <div className="scroll-rail flex min-w-0 items-center gap-x-2 overflow-x-auto pl-3 sm:flex-wrap sm:pl-0 sm:gap-x-3 sm:gap-y-1 sm:overflow-visible [&>*]:shrink-0">
-              <div className="flex min-w-0 items-center gap-2">
-                <span className="whitespace-nowrap text-sm leading-5 text-[var(--color-beige-white)] opacity-70">
+            <RackTools
+              onOpenBeginnerGuide={onOpenBeginnerGuide}
+              onOpenHandBuilder={onOpenHandBuilder}
+              riichiControl={riichiControl}
+            >
+              <div className="flex min-h-11 min-w-0 flex-wrap content-center items-center gap-x-2 sm:min-h-0">
+                <span className="text-sm leading-5 text-[var(--color-beige-white)] opacity-70 [overflow-wrap:anywhere]">
                   {t('gameplay.handCount', 'Hand ({{count}})', {
                     count: tilesInHand.length,
                   })}
@@ -835,9 +837,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                 <div
                   data-shanten-display
                   title={shantenHelp}
-                  className="max-w-full rounded-full border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] px-2 py-0.5"
+                  className="col-span-2 row-start-2 max-w-full justify-self-start rounded-full border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] px-2 py-0.5"
                 >
-                  <span className="block whitespace-nowrap text-sm font-bold leading-5 text-[var(--color-golden-yellow)]">
+                  <span className="block text-sm font-bold leading-5 text-[var(--color-golden-yellow)] [overflow-wrap:anywhere]">
                     {shantenDisplay}
                   </span>
                   {shantenHelp && (
@@ -845,41 +847,7 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   )}
                 </div>
               )}
-              <div className="flex gap-1.5 sm:max-w-full sm:flex-wrap">
-                {onOpenBeginnerGuide && (
-                  <button
-                    type="button"
-                    data-open-beginner-guide
-                    onClick={onOpenBeginnerGuide}
-                    aria-label={t('gameplay.learnPatterns', 'Learn the tiles')}
-                    title={t('gameplay.learnPatterns', 'Learn the tiles')}
-                    className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-metallic-gold)]/45 bg-black/20 px-2 text-xs font-semibold text-[var(--color-metallic-gold)] transition-colors hover:border-[var(--color-golden-yellow)] hover:text-[var(--color-golden-yellow)]"
-                  >
-                    <img
-                      src={illustrationAssets.beginnerGuidebook}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="h-7 w-7 shrink-0 object-contain"
-                    />
-                    <span aria-hidden="true" className="hidden md:inline">
-                      {t('gameplay.learnPatterns', 'Learn the tiles')}
-                    </span>
-                  </button>
-                )}
-                {onOpenHandBuilder && (
-                  <button
-                    type="button"
-                    data-open-hand-builder
-                    onClick={onOpenHandBuilder}
-                    className="min-h-11 shrink-0 whitespace-nowrap rounded-lg border border-amber-200/35 px-2 py-1 text-left text-sm text-amber-200 sm:max-w-full sm:whitespace-normal sm:[overflow-wrap:anywhere]"
-                  >
-                    {t('handBuilder.title')}
-                  </button>
-                )}
-                {riichiControl}
-              </div>
-            </div>
+            </RackTools>
             <animated.div
               ref={discardZoneRef}
               data-play-zone="discard"

@@ -317,6 +317,7 @@
     "visual": "Visuel"
   },
   "gameplay": {
+    "moreTools": "Autres outils de table",
     "yakumanAscended": "Élevé au rang de Yakuman",
     "beginnerShapeBonus": "+{{points}} de bonus de figure",
     "beginnerBonusHelp": "Les bonus de figure s'ajoutent aux points des tuiles. La prévision inclut les modificateurs de votre partie et indique le score réel de ce coup.",

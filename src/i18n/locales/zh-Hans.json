@@ -317,6 +317,7 @@
     "visual": "显示"
   },
   "gameplay": {
+    "moreTools": "更多牌桌工具",
     "yakumanAscended": "晋升为役满",
     "beginnerShapeBonus": "+{{points}} 牌组奖励",
     "beginnerBonusHelp": "牌组奖励会加到牌的点数上。预测分数包含本局的修正效果，显示这次出牌实际可获得的分数。",

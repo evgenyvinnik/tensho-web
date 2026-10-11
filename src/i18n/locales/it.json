@@ -420,6 +420,7 @@
     "visual": "Visivo"
   },
   "gameplay": {
+    "moreTools": "Altri strumenti del tavolo",
     "yakumanAscended": "Asceso a Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus di combinazione",
     "beginnerBonusHelp": "I bonus di combinazione si sommano ai punti delle tessere. L'anteprima include i modificatori della partita e mostra il punteggio effettivo della giocata.",

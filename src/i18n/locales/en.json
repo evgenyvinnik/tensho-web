@@ -313,6 +313,7 @@
     "dangerZone": "Danger Zone"
   },
   "gameplay": {
+    "moreTools": "More table tools",
     "yakumanAscended": "Ascended to Yakuman",
     "beginnerShapeBonus": "+{{points}} shape bonus",
     "beginnerBonusHelp": "Shape bonuses add to tile points. The forecast includes your run's modifiers and shows what this play will actually score.",

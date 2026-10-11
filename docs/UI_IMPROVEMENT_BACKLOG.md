@@ -78,6 +78,10 @@ racks and real devices remain open.
    "Riichi pledge" sit in a sideways-scrolling header row. Move them behind a
    single "⋯ More" button (menu or sheet) below 640px; keep them inline above.
    File: `src/components/gameplay/PlaySurface.tsx` (rack header).
+   **Implemented, release verification in progress:** one localized 44px More
+   disclosure replaces sideways scrolling below 640px; the book remains visible.
+   Existing dialogs retain confirmation and focus return, including after resize.
+   New planning-tray art accompanies the mobile tools. [Evidence](RACK_TOOLS_IMPLEMENTATION.md).
 
 7. **Coach chips truncate on phones** ("Build towar… +59"). Shorter copy for
    the chip title ("Build a Sequence"), keeping the long sentence as the
