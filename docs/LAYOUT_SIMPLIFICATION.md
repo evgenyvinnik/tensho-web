@@ -22,8 +22,9 @@ Hints** setting was stored but never used by gameplay.
   the rack and the action bar are always visible.
 - Only the **board** scrolls: inventory, guidance and staging. The rack lives
   at the end of the board and is pinned (`sticky`) to its bottom while the
-  board keeps at least a 150px window above it; on very short screens
-  (320×568) it scrolls with the board instead of hiding it. When a tile is
+  board can still show the whole staging zone above it (its minimum height
+  plus 24px); on the smallest phone (320×568) it scrolls with the board
+  instead of hiding it. When a tile is
   staged, the board scrolls the staging zone into view, using the pinned
   rack's height as scroll padding.
 - Inventory is one rail: Decrees, consumables, a Flowers/Seasons chip, a Wall
@@ -155,10 +156,56 @@ freshly started server: 48/48 (flora, hand builder, tutorial layout, Yaku
 ledger, forecast layout) and 158/160 (consumables, interaction, play
 structure, discard layout, secondary scoring, score settlement, progressive
 hints, app, table selector, shop build, hand-builder guards, Riichi, Decree
-details, beginner guide). The two failures are the lazy-image readiness
-checks described below, in screens this work did not change. Unit tests:
+details, beginner guide). The two failures were the lazy-image readiness
+checks, fixed afterwards; the affected specs (tutorial layout, interaction,
+forecast layout, beginner guide, app, play structure) then passed 84/84. Unit tests:
 2,858/2,858 in 204 files (two workers). Lint: 0 errors, 211 existing
 warnings. TypeScript: clean.
+
+### Device matrix (production build)
+
+A script drives the production bundle (`vite preview`) under Playwright
+device emulation (viewport, pixel ratio, touch, mobile user agent) with
+installed Chrome, as a brand-new player: first-move tip open. It checks page
+scroll, sideways overflow, that the score bar, Play and every rack tile are
+on screen, tile size, labelled groups, numeral badges (one per numbered
+tile), and then plays the guided first move to a score.
+
+| Device (viewport) | Page scroll | Rack on screen | Tile | Groups / badges | First move scores |
+| --- | --- | --- | --- | --- | --- |
+| iPhone SE 1st gen (320×568) | none | scrolls with board | 44×59 | yes / all | yes |
+| iPhone SE 2nd/3rd gen (375×667) | none | all 14 | 44×59 | yes / all | yes |
+| iPhone 13 in Safari (390×664) | none | all 14 | 44×59 | yes / all | yes |
+| iPhone 13 standalone (390×844) | none | all 14 | 44×59 | yes / all | yes |
+| iPhone 14 Pro Max (430×932) | none | all 14 | 44×59 | yes / all | yes |
+| Pixel 7 (412×915) | none | all | 44×59 | yes / all | yes |
+| Galaxy S8 (360×740) | none | all | 44×59 | yes / all | yes |
+| iPad Mini portrait (768×1024) | none | all 14 | 70×98 | yes / all | yes |
+| iPad Pro 11 portrait (834×1194) | none | all 14 | 90×126 | yes / all | yes |
+| iPad Pro 11 landscape (1194×834) | none | all 14 | 70×98 | yes / all | yes |
+| iPad Mini landscape (1024×768) | none | all 14 | 50–60 wide | yes / all | yes |
+| MacBook Air 13 in Safari (1440×790) | none | all 14 | 70×98 | yes / all | yes |
+| MacBook 13 small window (1280×720) | none | all 14 | 70×98 | yes / all | yes |
+
+Hands are random, so the iPhone SE (375×667) was also checked over ten
+hands: the rack was pinned and fully on screen in 10/10. The 320×568 phone
+never pins (rack, tip, score and actions cannot all fit at 44px targets);
+score and actions stay put and the board scrolls.
+
+The matrix found two more defects, both fixed:
+
+- **Blank rack tiles on short phones.** Tile images were `loading="lazy"`;
+  browsers never fetch a lazy image that a scroll box is clipping, so rack
+  rows below the board's fold (and guide/table-picker images in dialogs)
+  stayed blank until scrolled. `TileImage` now loads eagerly by default
+  (tiles are small and precached for offline play); table-picker cards load
+  eagerly too. This also fixed the two image-readiness e2e checks.
+- **Rack pinning threshold.** A fixed 150px window left iPhones in Safari
+  (390×664) unpinned with the first-move tip open. The window now only has
+  to fit the staging zone plus 24px.
+
+This is emulation, not hardware: real Safari/WebKit, physical touch, notches
+and dynamic toolbars, and newcomer comprehension remain unverified.
 
 ### Browser test notes
 
@@ -171,6 +218,6 @@ warnings. TypeScript: clean.
   (`GameOrchestrator.ts?t=…`); specs that `import('/src/game/GameOrchestrator.ts')`
   then drive a second engine instance and fail. Restart the server after
   edits, or resolve the loaded URL from `performance` resource entries.
-- With installed Chrome, two image-readiness checks fail because lazy images
-  outside the viewport never load (Japanese beginner guide at 320×568 with a
-  20px font; mobile table selector). Neither touches changed code.
+- With installed Chrome, two image-readiness checks failed because lazy
+  images clipped by a scroll box never load. Fixed by eager tile and
+  table-card images (see the device matrix); both checks now pass.

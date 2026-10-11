@@ -121,8 +121,13 @@ type DropZone = 'hand' | 'staging' | 'discard' | null
 // CONSTANTS
 // =============================================================================
 
-/** Board height (px) that must stay visible above a pinned rack. */
-const MIN_BOARD_WINDOW = 150
+/**
+ * Space (px) beyond the staging zone that a pinned rack must leave above it.
+ * The board then can always show the whole staging zone, where tapped tiles
+ * land; on phones in Safari (390×664, 375×667) the full rack stays on screen
+ * with the first-move tip open. Below that, the rack scrolls with the board.
+ */
+const PINNED_BOARD_MARGIN = 24
 
 /** Label and underline colour per group; loose tiles are never labelled. */
 const GROUP_COLORS: Record<HandClusterKind, string> = {
@@ -188,6 +193,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     requestedTileSize === 'fit' ? fittedTileSize : requestedTileSize
   const dimensions = tileSizes[tileSize]
   const stagingZoneMinHeight = Math.max(64, dimensions.height + 12)
+  const minBoardWindowRef = useRef(0)
+  minBoardWindowRef.current = stagingZoneMinHeight + PINNED_BOARD_MARGIN
   const tileTargetWidth = Math.max(44, dimensions.width)
   const beginnerPatternLabel =
     beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
@@ -208,7 +215,9 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     if (!board || !hand) return
     const measure = () => {
       setRackHeight(hand.offsetHeight)
-      setRackPinned(board.clientHeight - hand.offsetHeight >= MIN_BOARD_WINDOW)
+      setRackPinned(
+        board.clientHeight - hand.offsetHeight >= minBoardWindowRef.current
+      )
     }
     measure()
     const observer =

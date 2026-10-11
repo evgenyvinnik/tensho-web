@@ -47,6 +47,12 @@ export interface TileImageProps {
   allowHover?: boolean
   /** Additional CSS classes */
   className?: string
+  /**
+   * Eager by default. Tiles are small, precached for offline play, and often
+   * sit inside scroll boxes (the rack on short phones, dialogs), where a lazy
+   * image the box is clipping is never fetched and shows as a blank tile.
+   */
+  loading?: 'lazy' | 'eager'
 }
 
 /**
@@ -75,6 +81,7 @@ export const TileImage: React.FC<TileImageProps> = ({
   tooltipId: suppliedTooltipId,
   allowHover = true,
   className = '',
+  loading = 'eager',
 }) => {
   const { t, i18n } = useTranslation()
   const [isHovering, setIsHovering] = useState(false)
@@ -234,7 +241,7 @@ export const TileImage: React.FC<TileImageProps> = ({
         alt={tileInfo.name}
         className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
         draggable={false}
-        loading="lazy"
+        loading={loading}
       />
       {showIndex && (
         <span

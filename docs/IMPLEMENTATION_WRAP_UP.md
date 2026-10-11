@@ -38,6 +38,17 @@ carry Arabic numerals. Remaining ideas are handed off in the
 but exposes a Russian short-screen discard-target visibility failure, now recorded
 in the UI backlog. Real-device, complete layout and newcomer verification are not claimed.
 
+[Device matrix and eager tiles](LAYOUT_SIMPLIFICATION.md#device-matrix-production-build)
+checks the production build under emulation on 13 phone, iPad and MacBook
+viewports as a first-time player with the tip open, on top of the tap-discard
+fix. Every device shows no page scroll and keeps score, Play and the whole rack
+on screen, except the 320×568 phone, where the board scrolls by design. Labelled
+groups and numeral badges render everywhere, and the guided first move scores.
+It found and fixed blank lazy-loaded tiles inside scroll boxes (short phones,
+guide, table picker) and a rack-pinning threshold that unpinned iPhones in
+Safari. Affected browser specs pass 84/84 and unit tests pass; emulation is not
+hardware, and newcomer comprehension is not claimed.
+
 [Table Loop save ownership](TABLE_SAVE_OWNERSHIP_IMPLEMENTATION.md) now pauses
 stale windows instead of overwriting newer runs, offers explicit localized
 recovery, and coordinates both run writers with confirmed progress reset.

@@ -123,7 +123,9 @@ export function TableStyleCard({
           src={artwork}
           alt=""
           aria-hidden="true"
-          loading="lazy"
+          // Eager: the picker's list is a scroll box, and browsers never
+          // fetch a lazy image that box is clipping, leaving blank cards.
+          loading="eager"
           decoding="async"
           className={`h-full w-full object-cover transition duration-500 ${
             isHovered && isUnlocked && !reduceMotion

@@ -136,11 +136,10 @@ is still in progress; arbitrary enlarged racks and real devices remain open.
   `GameOrchestrator.ts?t=…`; specs importing the plain path drive a second
   engine instance. Add a shared helper in `e2e/helpers/` that resolves the
   loaded URL from `performance` resource entries, and use it everywhere.
-- **Lazy-image checks.** `e2e/beginner-guide.spec.ts` (ja, 320×568 @20px) and
-  the mobile table-selector check in `e2e/app.spec.ts` wait for every image to
-  be `complete`; with installed Chrome, lazy images outside the viewport never
-  load. Scroll each image into view before asserting, or load dialog images
-  eagerly.
+- **Real-device pass.** Layout was verified under device emulation (see the
+  device matrix in `LAYOUT_SIMPLIFICATION.md`). Check on a physical iPhone in
+  Safari (dynamic toolbar, notch, WebKit) and an iPad, and with one or two
+  people new to mahjong.
 - **Browser install.** Playwright 1.57 expects Chromium build 1200; run
   `npx playwright install chromium` (or pin a channel in config) and free or
   avoid port 4173, which another local project's preview server holds.
