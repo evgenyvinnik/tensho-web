@@ -2654,7 +2654,12 @@
   "tableLoop": {
     "save": {
       "invalid": "No se pudo restaurar la partida guardada. Inicia una nueva para reemplazarla.",
-      "unavailable": "No se puede guardar el progreso en este dispositivo. Mantén esta pestaña abierta para continuar."
+      "unavailable": "No se puede guardar el progreso en este dispositivo. Mantén esta pestaña abierta para continuar.",
+      "conflictTitle": "La mesa cambió en otra ventana",
+      "conflict": "Esta mesa está en pausa porque la partida guardada cambió en otra ventana. No se ha sobrescrito la partida más reciente.",
+      "loadLatest": "Cargar la última partida",
+      "loadConfirm": "¿Reemplazar esta mesa por la última partida guardada? Se perderán las jugadas sin guardar de esta ventana. Si se eliminó la partida, se abrirá una mesa nueva.",
+      "loadFailed": "No se pudo cargar la última partida. No se ha reemplazado nada. Mantén esta ventana abierta e inténtalo de nuevo."
     },
     "slot": {
       "meld": "Casilla de grupo {{number}}",

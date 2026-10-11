@@ -24,7 +24,7 @@ import { GameOrchestrator } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
 
-beforeEach(() => {
+beforeEach(async () => {
   const data = new Map<string, string>()
   vi.spyOn(localStorage, 'getItem').mockImplementation(
     (key) => data.get(key) ?? null
@@ -36,16 +36,16 @@ beforeEach(() => {
     data.delete(key)
   })
   shutdownMetaProgressionBridge()
-  expect(resetAllProgress().success).toBe(true)
+  expect((await resetAllProgress()).success).toBe(true)
   initializeMetaProgressionBridge()
 })
-afterEach(() => {
+afterEach(async () => {
   vi.restoreAllMocks()
   shutdownMetaProgressionBridge()
-  resetAllProgress()
+  await resetAllProgress()
 })
 
-it('unlocks every catalog item, table and valid stake without manufacturing wins or achievements', () => {
+it('unlocks every catalog item, table and valid stake without manufacturing wins or achievements', async () => {
   const achievements = useAchievementStore.getState()
   const stats = useProgressionStore.getState().stats
   expect(activateFullUnlock()).toEqual({ success: true })
@@ -74,7 +74,7 @@ it('unlocks every catalog item, table and valid stake without manufacturing wins
   expect(useAchievementStore.getState()).toBe(achievements)
 })
 
-it('stops all achievement mutations and notifications but preserves earned achievements', () => {
+it('stops all achievement mutations and notifications but preserves earned achievements', async () => {
   const first = ACHIEVEMENT_DEFINITIONS[0].id
   const second = ACHIEVEMENT_DEFINITIONS[1].id
   useAchievementStore.getState().unlockAchievement(first)
@@ -106,7 +106,7 @@ it('stops all achievement mutations and notifications but preserves earned achie
   off()
 })
 
-it('still requires current-run bases and real payment eligibility for all Charter upgrades', () => {
+it('still requires current-run bases and real payment eligibility for all Charter upgrades', async () => {
   activateFullUnlock()
   const game = new GameOrchestrator()
   game.setCharterUnlockResolver((id) =>
@@ -161,13 +161,13 @@ it('keeps legacy profiles earned and does not infer Full Unlock from Archive fla
   )
 })
 
-it('requires a full progress reset, not preferences/tutorial/achievement reset, to return to earned mode', () => {
+it('requires a full progress reset, not preferences/tutorial/achievement reset, to return to earned mode', async () => {
   activateFullUnlock()
   useAchievementStore.getState().resetAchievements()
   resetTutorialProgress()
   useSettingsStore.getState().resetSettings()
   expect(useProgressionStore.getState().fullUnlockEnabled).toBe(true)
-  expect(resetAllProgress()).toEqual({ success: true })
+  expect(await resetAllProgress()).toEqual({ success: true })
   expect(useProgressionStore.getState().fullUnlockEnabled).toBe(false)
   expect(useProgressionStore.getState().isItemUnlocked('money_tree')).toBe(
     false
@@ -182,7 +182,7 @@ it('requires a full progress reset, not preferences/tutorial/achievement reset, 
   expect(useAchievementStore.getState().getUnlockedCount()).toBe(1)
 })
 
-it('rolls back live and persisted state when enabling cannot be saved', () => {
+it('rolls back live and persisted state when enabling cannot be saved', async () => {
   const progression = useProgressionStore.getState()
   const archive = useArchiveStore.getState()
   const tables = useTableStyleStore.getState()
@@ -199,7 +199,7 @@ it('rolls back live and persisted state when enabling cannot be saved', () => {
   expect(localStorage.getItem('tensho-progression')).toBe(before)
 })
 
-it('does not mutate if persistence cannot be read, and reports an incomplete rollback', () => {
+it('does not mutate if persistence cannot be read, and reports an incomplete rollback', async () => {
   const initial = useProgressionStore.getState()
   const read = vi.mocked(localStorage.getItem).getMockImplementation()!
   const reader = vi.spyOn(localStorage, 'getItem').mockImplementation(() => {
@@ -218,7 +218,7 @@ it('does not mutate if persistence cannot be read, and reports an incomplete rol
   expect(useProgressionStore.getState()).toBe(initial)
 })
 
-it('keeps Full Unlock and suppressed achievements after a failed full reset', () => {
+it('keeps Full Unlock and suppressed achievements after a failed full reset', async () => {
   activateFullUnlock()
   const before = localStorage.getItem('tensho-progression')
   const original = vi.mocked(localStorage.setItem).getMockImplementation()!
@@ -226,7 +226,7 @@ it('keeps Full Unlock and suppressed achievements after a failed full reset', ()
     if (key === 'tensho-archive') throw new Error('denied')
     original(key, value)
   })
-  expect(resetAllProgress()).toEqual({ success: false, restored: true })
+  expect(await resetAllProgress()).toEqual({ success: false, restored: true })
   expect(useProgressionStore.getState().fullUnlockEnabled).toBe(true)
   expect(localStorage.getItem('tensho-progression')).toBe(before)
   useAchievementStore

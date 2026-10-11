@@ -1407,7 +1407,12 @@
   "tableLoop": {
     "save": {
       "invalid": "Hindi maibalik ang dating save. Magsimula ng bagong laro para palitan ito.",
-      "unavailable": "Hindi mai-save ang progreso sa device na ito. Panatilihing bukas ang tab para magpatuloy."
+      "unavailable": "Hindi mai-save ang progreso sa device na ito. Panatilihing bukas ang tab para magpatuloy.",
+      "conflictTitle": "Nagbago ang mesa sa ibang window",
+      "conflict": "Naka-pause ang mesang ito dahil nagbago ang naka-save na laro sa ibang window. Hindi napalitan ang mas bagong save.",
+      "loadLatest": "I-load ang pinakabagong save",
+      "loadConfirm": "Palitan ang mesang ito ng pinakabagong naka-save na laro? Mawawala ang mga hindi pa naka-save na galaw sa window na ito. Kung nabura ang save, bubukas ang bagong mesa.",
+      "loadFailed": "Hindi ma-load ang pinakabagong save. Walang napalitan. Panatilihing bukas ang window na ito at subukang muli."
     },
     "slot": {
       "meld": "Puwesto ng grupo {{number}}",

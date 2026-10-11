@@ -5,6 +5,7 @@ import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { CERULEAN_BELL } from '../config/mandateDefinitions'
 import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
+import { RUN_SAVE_EPOCH_KEY } from './runSaveEpoch'
 import {
   CLASSIC_SAVE_KEY,
   MAX_CLASSIC_SAVE_LENGTH,
@@ -403,6 +404,23 @@ it('cancels queued writes before reset/disposal so they cannot resurrect removed
   f.repository.cancelPending()
   release()
   expect(await pending).toEqual({ ok: false, reason: 'cancelled' })
+  expect(f.storage.setItem).not.toHaveBeenCalled()
+  expect(f.repository.read()).toEqual({ kind: 'empty', raw: null })
+})
+
+it('fences a queued first-ever replacement across a foreign empty-to-empty reset', async () => {
+  let release!: () => void
+  const barrier = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  const f = fixture(null, async (operation) => {
+    await barrier
+    return operation()
+  })
+  const pending = f.repository.replace(null, snapshot())
+  f.data.set(RUN_SAVE_EPOCH_KEY, 'foreign-reset')
+  release()
+  expect(await pending).toEqual({ ok: false, reason: 'conflict' })
   expect(f.storage.setItem).not.toHaveBeenCalled()
   expect(f.repository.read()).toEqual({ kind: 'empty', raw: null })
 })

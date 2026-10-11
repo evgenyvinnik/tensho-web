@@ -33,15 +33,18 @@ beforeEach(() => {
   vi.spyOn(localStorage, 'removeItem').mockImplementation((key) => {
     data.delete(key)
   })
-  let tail = Promise.resolve()
+  const tails = new Map<string, Promise<unknown>>()
   Object.defineProperty(navigator, 'locks', {
     configurable: true,
     value: {
-      request: (_name: string, _options: unknown, callback: () => unknown) => {
-        const next = tail.then(callback)
-        tail = next.then(
-          () => undefined,
-          () => undefined
+      request: (name: string, _options: unknown, callback: () => unknown) => {
+        const next = (tails.get(name) ?? Promise.resolve()).then(callback)
+        tails.set(
+          name,
+          next.then(
+            () => undefined,
+            () => undefined
+          )
         )
         return next
       },
@@ -155,7 +158,7 @@ it('full reset removes the Classic record and cancels a queued application save'
   const service = initializeClassicPersistence()
   game.selectTile(game.getHandTiles()[0].id)
   const pending = service.flush()
-  expect(resetAllProgress()).toEqual({ success: true })
+  expect(await resetAllProgress()).toEqual({ success: true })
   await pending
   expect(data.has(CLASSIC_SAVE_KEY)).toBe(false)
   expect(game.getState().phase).toBe('menu')
@@ -228,7 +231,7 @@ it('a failed full reset rolls back the checkpoint and retains the live save leas
     if (key === CLASSIC_SAVE_KEY) throw new Error('Denied')
     remove(key)
   })
-  expect(resetAllProgress().success).toBe(false)
+  expect((await resetAllProgress()).success).toBe(false)
   expect(data.get(CLASSIC_SAVE_KEY)).toBe(before)
   expect(game.getState()).toBe(state)
   game.selectTile(game.getHandTiles()[0].id)

@@ -25,7 +25,7 @@ describe('Table Loop live sound feedback', () => {
     }
   )
 
-  it('never replays cues while restoring a run or inspecting a forecast', () => {
+  it('never replays cues while restoring a run or inspecting a forecast', async () => {
     const play = vi.spyOn(audioSystem, 'play')
     let saved: string | null = null
     const storage = {
@@ -50,6 +50,7 @@ describe('Table Loop live sound feedback', () => {
     expect(store.getState().previewPlacement(0)).not.toBeNull()
     expect(play).not.toHaveBeenCalled()
     store.getState().place(0)
+    await store.getState().retrySave()
     expect(play).toHaveBeenCalledWith('game_hand_played', undefined)
     play.mockClear()
     const restored = createTableLoopStore(storage)

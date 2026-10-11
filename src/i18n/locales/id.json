@@ -2515,7 +2515,12 @@
   "tableLoop": {
     "save": {
       "invalid": "Simpanan sebelumnya tidak dapat dipulihkan. Mulai permainan baru untuk menggantinya.",
-      "unavailable": "Progres tidak dapat disimpan di perangkat ini. Biarkan tab ini terbuka untuk melanjutkan."
+      "unavailable": "Progres tidak dapat disimpan di perangkat ini. Biarkan tab ini terbuka untuk melanjutkan.",
+      "conflictTitle": "Meja berubah di jendela lain",
+      "conflict": "Meja ini dijeda karena permainan tersimpan berubah di jendela lain. Simpanan yang lebih baru tidak ditimpa.",
+      "loadLatest": "Muat simpanan terbaru",
+      "loadConfirm": "Ganti meja ini dengan permainan tersimpan terbaru? Langkah yang belum disimpan di jendela ini akan hilang. Jika simpanan dihapus, meja baru akan dibuka.",
+      "loadFailed": "Simpanan terbaru tidak dapat dimuat. Tidak ada yang diganti. Biarkan jendela ini terbuka dan coba lagi."
     },
     "slot": {
       "meld": "Slot kelompok {{number}}",

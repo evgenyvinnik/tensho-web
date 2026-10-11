@@ -1,6 +1,13 @@
 import { expect, test, type Page } from '@playwright/test'
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => performance.setResourceTimingBufferSize(5000))
+})
+
 async function snapshot(page: Page) {
+  await expect(
+    page.getByRole('button', { name: 'Reset All Progress', exact: true })
+  ).toBeVisible()
   return page.evaluate(async () => {
     const paths = [
       '/src/stores/achievementStore.ts',
@@ -13,7 +20,15 @@ async function snapshot(page: Page) {
       '/src/game/resetProgress.ts',
     ]
     const [a, p, t, s, c, l, g, reset] = await Promise.all(
-      paths.map((path) => import(path))
+      paths.map((path) => {
+        const url = performance
+          .getEntriesByType('resource')
+          .map((entry) => entry.name)
+          .reverse()
+          .find((url) => new URL(url).pathname === path)
+        if (!url) throw new Error(`App did not load ${path}`)
+        return import(url)
+      })
     )
     const achievements = a.useAchievementStore.getState()
     const progression = p.useProgressionStore.getState()
@@ -78,6 +93,9 @@ async function snapshot(page: Page) {
 
 /** Author earned history and a pending purchase; reset itself always goes through Settings. */
 async function seedProgress(page: Page) {
+  await expect(
+    page.getByRole('button', { name: 'Reset All Progress', exact: true })
+  ).toBeVisible()
   await page.evaluate(async () => {
     const paths = [
       '/src/game/GameOrchestrator.ts',
@@ -90,7 +108,15 @@ async function seedProgress(page: Page) {
       '/src/game/resetProgress.ts',
     ]
     const [g, e, t, s, c, l, settings, reset] = await Promise.all(
-      paths.map((path) => import(path))
+      paths.map((path) => {
+        const url = performance
+          .getEntriesByType('resource')
+          .map((entry) => entry.name)
+          .reverse()
+          .find((url) => new URL(url).pathname === path)
+        if (!url) throw new Error(`App did not load ${path}`)
+        return import(url)
+      })
     )
     const game = g.gameOrchestrator
     game.startNewRun(7)
@@ -100,6 +126,8 @@ async function seedProgress(page: Page) {
     c.useArchiveStore.getState().unlockAll()
     l.useTableLoopStore.getState().restart(7, { draftEnabled: true })
     l.useTableLoopStore.getState().chooseStarter('echoing_bamboo')
+    if (!(await l.useTableLoopStore.getState().retrySave()))
+      throw new Error('Expected a durable Table Loop setup checkpoint')
     for (const key of reset.TUTORIAL_PROGRESS_KEYS)
       localStorage.setItem(key, 'true')
     settings.useSettingsStore.setState({

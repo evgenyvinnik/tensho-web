@@ -74,7 +74,7 @@ describe('rejected Table Loop actions are transactional', () => {
     expect(engine.claimDraft(offer.id).success).toBe(false)
   })
 
-  it('keeps the live store and saved pending choice aligned after rejection', () => {
+  it('keeps the live store and saved pending choice aligned after rejection', async () => {
     const data = new Map<string, string>()
     const storage = {
       getItem: (key: string) => data.get(key) ?? null,
@@ -97,6 +97,7 @@ describe('rejected Table Loop actions are transactional', () => {
     )!
     for (const tile of group) store.getState().toggleTile(tile.id)
     store.getState().place(0)
+    await store.getState().retrySave()
     const before = store.getState().state
     const saved = storage.getItem(TABLE_SAVE_KEY)
     store.getState().redraw()

@@ -148,7 +148,7 @@ describe('Whispering Merchant rack-for-river swap', () => {
     expect(between.getState().collection).toEqual(before.collection)
   })
 
-  it('migrates a real version-1 run, journals a paid Merchant swap, and restores its once-only result', () => {
+  it('migrates a real version-1 run, journals a paid Merchant swap, and restores its once-only result', async () => {
     const engine = new TableLoopEngine(12)
     const journal = newSavedRun(engine)
     for (let step = 0; step < 100; step++) {
@@ -233,6 +233,7 @@ describe('Whispering Merchant rack-for-river swap', () => {
     expect(physical(store.getState().engine)).toEqual(before) // No selection.
     store.getState().toggleTile(given.id)
     expect(store.getState().swapWithRiver(offered.id)).toBe(true)
+    await store.getState().retrySave()
     expect(store.getState().selectedTileIds).toEqual([])
     expect(JSON.parse(raw!).version).toBe(2)
     expect(JSON.parse(raw!).actions.at(-1).type).toBe('swapWithRiver')

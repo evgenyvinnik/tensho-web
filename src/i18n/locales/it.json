@@ -1405,7 +1405,12 @@
   "tableLoop": {
     "save": {
       "invalid": "Non è stato possibile ripristinare il salvataggio. Inizia una nuova partita per sostituirlo.",
-      "unavailable": "Non è possibile salvare i progressi su questo dispositivo. Tieni aperta questa scheda per continuare."
+      "unavailable": "Non è possibile salvare i progressi su questo dispositivo. Tieni aperta questa scheda per continuare.",
+      "conflictTitle": "Tavolo modificato in un’altra finestra",
+      "conflict": "Questo tavolo è in pausa perché la partita salvata è cambiata altrove. Il salvataggio più recente non è stato sovrascritto.",
+      "loadLatest": "Carica l’ultimo salvataggio",
+      "loadConfirm": "Sostituire questo tavolo con l’ultima partita salvata? Le mosse non salvate qui andranno perse. Se il salvataggio è stato eliminato, si aprirà un nuovo tavolo.",
+      "loadFailed": "Impossibile caricare l’ultimo salvataggio. Nulla è stato sostituito. Tieni aperta questa finestra e riprova."
     },
     "slot": {
       "meld": "Casella combinazione {{number}}",

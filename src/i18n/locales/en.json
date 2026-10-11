@@ -2640,7 +2640,12 @@
   "tableLoop": {
     "save": {
       "invalid": "The previous save could not be restored. Start a new run to replace it.",
-      "unavailable": "Progress cannot be saved on this device. Keep this tab open to continue your run."
+      "unavailable": "Progress cannot be saved on this device. Keep this tab open to continue your run.",
+      "conflictTitle": "Table changed in another window",
+      "conflict": "This window’s table is paused because its saved run changed elsewhere. Your newer save has not been overwritten.",
+      "loadLatest": "Load latest save",
+      "loadConfirm": "Replace this window’s table with the latest saved run? Unsaved moves here will be lost. If the save was removed, a fresh table will open.",
+      "loadFailed": "The latest save could not be loaded. Nothing was replaced. Keep this window open and try again."
     },
     "slot": {
       "meld": "Meld slot {{number}}",

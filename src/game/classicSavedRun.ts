@@ -3,6 +3,7 @@ import { DecreeSystem } from '../systems/DecreeSystem'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import { choice, count, id, object, positive } from './snapshotValidation'
 import { repriceDiscountedOffer } from '../systems/PricingCalculator'
+import { RUN_SAVE_EPOCH_KEY } from './runSaveEpoch'
 
 export const CLASSIC_SAVE_KEY = 'tensho-classic-run-v1'
 export const CLASSIC_SAVE_LOCK = 'tensho-classic-run-write'
@@ -118,14 +119,19 @@ export class ClassicSaveRepository {
 
   private async locked<T>(
     operation: () => T
-  ): Promise<T | { ok: false; reason: 'cancelled' | 'unavailable' }> {
+  ): Promise<
+    T | { ok: false; reason: 'cancelled' | 'unavailable' | 'conflict' }
+  > {
     const generation = this.generation
     try {
-      return await this.exclusive(() =>
-        generation === this.generation
-          ? operation()
-          : { ok: false as const, reason: 'cancelled' as const }
-      )
+      const stamp = this.storage().getItem(RUN_SAVE_EPOCH_KEY)
+      return await this.exclusive(() => {
+        if (generation !== this.generation)
+          return { ok: false as const, reason: 'cancelled' as const }
+        if (this.storage().getItem(RUN_SAVE_EPOCH_KEY) !== stamp)
+          return { ok: false as const, reason: 'conflict' as const }
+        return operation()
+      })
     } catch {
       return { ok: false, reason: 'unavailable' }
     }

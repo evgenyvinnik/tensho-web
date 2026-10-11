@@ -56,6 +56,25 @@ const localStorageMock = {
 }
 Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
+// JSDOM has no Web Locks. Serialize callbacks by name, including nested locks
+// with different names; real multi-window exclusion is verified in Playwright.
+const saveLockTails = new Map<string, Promise<unknown>>()
+Object.defineProperty(navigator, 'locks', {
+  configurable: true,
+  value: {
+    request(name: string, _options: unknown, operation: () => unknown) {
+      const next = (saveLockTails.get(name) ?? Promise.resolve()).then(
+        operation
+      )
+      saveLockTails.set(
+        name,
+        next.catch(() => undefined)
+      )
+      return next
+    },
+  },
+})
+
 // Mock ResizeObserver
 class ResizeObserverMock {
   observe() {}

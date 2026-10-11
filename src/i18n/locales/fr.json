@@ -2649,7 +2649,12 @@
   "tableLoop": {
     "save": {
       "invalid": "La sauvegarde précédente n’a pas pu être restaurée. Lancez une nouvelle partie pour la remplacer.",
-      "unavailable": "La progression ne peut pas être sauvegardée sur cet appareil. Gardez cet onglet ouvert pour continuer."
+      "unavailable": "La progression ne peut pas être sauvegardée sur cet appareil. Gardez cet onglet ouvert pour continuer.",
+      "conflictTitle": "Table modifiée dans une autre fenêtre",
+      "conflict": "Cette table est en pause car la sauvegarde a changé dans une autre fenêtre. La sauvegarde la plus récente n’a pas été écrasée.",
+      "loadLatest": "Charger la dernière sauvegarde",
+      "loadConfirm": "Remplacer cette table par la dernière sauvegarde ? Les coups non sauvegardés ici seront perdus. Si la sauvegarde a été supprimée, une nouvelle table s’ouvrira.",
+      "loadFailed": "Impossible de charger la dernière sauvegarde. Rien n’a été remplacé. Gardez cette fenêtre ouverte et réessayez."
     },
     "slot": {
       "meld": "Emplacement de combinaison {{number}}",

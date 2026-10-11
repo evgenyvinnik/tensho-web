@@ -1402,7 +1402,12 @@
   "tableLoop": {
     "save": {
       "invalid": "Önceki kayıt geri yüklenemedi. Yerine yenisini kaydetmek için yeni bir koşu başlatın.",
-      "unavailable": "Bu cihazda ilerleme kaydedilemiyor. Devam etmek için bu sekmeyi açık tutun."
+      "unavailable": "Bu cihazda ilerleme kaydedilemiyor. Devam etmek için bu sekmeyi açık tutun.",
+      "conflictTitle": "Masa başka bir pencerede değişti",
+      "conflict": "Kayıtlı oyun başka bir pencerede değiştiği için bu masa duraklatıldı. Daha yeni kaydın üzerine yazılmadı.",
+      "loadLatest": "Son kaydı yükle",
+      "loadConfirm": "Bu masa son kayıtlı oyunla değiştirilsin mi? Bu penceredeki kaydedilmemiş hamleler kaybolacak. Kayıt silindiyse yeni bir masa açılacak.",
+      "loadFailed": "Son kayıt yüklenemedi. Hiçbir şey değiştirilmedi. Bu pencereyi açık tutup tekrar deneyin."
     },
     "slot": {
       "meld": "Grup yuvası {{number}}",

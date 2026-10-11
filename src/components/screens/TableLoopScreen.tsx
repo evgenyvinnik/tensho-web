@@ -30,6 +30,7 @@ import { MilestoneTrack } from '../tableloop/MilestoneTrack'
 import { CausalChain } from '../tableloop/CausalChain'
 import { TableDecreeArt } from '../tableloop/TableDecreeArt'
 import { TableDecreeInventory } from '../tableloop/TableDecreeInventory'
+import { TableSaveConflict } from '../tableloop/TableSaveConflict'
 import { placeableSlots, revisableSlots } from '../../tableloop/TableLoopEngine'
 import { classifyGroup } from '../../tableloop/groupRules'
 import { practiceStep } from '../../tableloop/practice'
@@ -47,9 +48,9 @@ import type { TableDecreeId } from '../../tableloop/types'
 function SaveNotice() {
   const { t } = useTranslation()
   const status = useTableLoopStore((store) => store.saveStatus)
-  if (status === 'saved') return null
+  if (status === 'saved' || status === 'saving') return null
   return (
-    <p
+    <div
       role="status"
       className="mx-3 rounded-lg border border-amber-300/40 bg-amber-950/60 px-3 py-2 text-xs leading-relaxed text-amber-100"
     >
@@ -62,7 +63,16 @@ function SaveNotice() {
             'tableLoop.save.unavailable',
             'Progress cannot be saved on this device. Keep this tab open to continue your run.'
           )}
-    </p>
+      {status === 'unavailable' && (
+        <button
+          type="button"
+          className="ml-2 min-h-11 rounded border border-amber-300/50 px-3"
+          onClick={() => void useTableLoopStore.getState().retrySave()}
+        >
+          {t('classicSave.retry')}
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -261,6 +271,15 @@ export function TableLoopScreen() {
   // ---------------------------------------------------------------------------
   // PHASES OUTSIDE PLAY
   // ---------------------------------------------------------------------------
+
+  if (store.saveStatus === 'conflict') {
+    return (
+      <TableSaveConflict
+        onLoaded={() => setSearchParams({}, { replace: true })}
+        onMenu={() => navigateTo(ROUTES.MENU)}
+      />
+    )
+  }
 
   if (state.phase === 'choosingStart') {
     return (

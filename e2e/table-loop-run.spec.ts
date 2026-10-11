@@ -1,16 +1,33 @@
 import { expect, test, type Page } from '@playwright/test'
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => performance.setResourceTimingBufferSize(5000))
+})
+
 /** Read public run state and choose from the same forecasts exposed by slots.
  * Never inspect future draws, grant items, or mutate the engine from this probe.
  */
 async function inspectRun(page: Page) {
   return page.evaluate(async () => {
+    const loaded = (path: string) => {
+      const url = performance
+        .getEntriesByType('resource')
+        .map((entry) => entry.name)
+        .reverse()
+        .find((url) => new URL(url).pathname === path)
+      if (!url) throw new Error(`App did not load ${path}`)
+      return url
+    }
     const storePath = '/src/stores/tableLoopStore.ts'
     const rulesPath = '/src/tableloop/groupRules.ts'
     const contentPath = '/src/tableloop/content.ts'
-    const { useTableLoopStore } = await import(storePath)
-    const { enumerateRackGroups } = await import(rulesPath)
-    const { getTableDecree } = await import(contentPath)
+    const { useTableLoopStore } = await import(loaded(storePath))
+    const { enumerateRackGroups } = await import(loaded(rulesPath))
+    const { getTableDecree } = await import(loaded(contentPath))
+    if (!(await useTableLoopStore.getState().retrySave()))
+      throw new Error(
+        'Expected a durable run checkpoint before reading/reloading'
+      )
     const { engine, state } = useTableLoopStore.getState()
     const groups: import('../src/core/Tile').Tile[][] =
       state.phase === 'playing'

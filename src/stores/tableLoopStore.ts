@@ -13,6 +13,8 @@ import { registerReloadGuard } from '../pwa/reloadGuards'
 import { TableLoopEngine } from '../tableloop/TableLoopEngine'
 import { playTableAction } from '../tableloop/audioFeedback'
 import { TileSFX } from '../systems/AudioSystem'
+import { withTableSaveLock } from '../tableloop/saveLock'
+import { RUN_SAVE_EPOCH_KEY } from '../game/runSaveEpoch'
 import type { RunOptions } from '../tableloop/TableLoopEngine'
 import {
   applySavedAction,
@@ -31,10 +33,15 @@ import type {
 interface TableLoopStore {
   engine: TableLoopEngine
   state: TableLoopState
-  saveStatus: 'saved' | 'unavailable' | 'invalid'
+  saveStatus: 'saved' | 'saving' | 'unavailable' | 'invalid' | 'conflict'
   /** Committed journal changes that have not reached storage yet. */
   unsaved: boolean
-  retrySave: () => boolean
+  retrySave: () => Promise<boolean>
+  refreshSave: () => void
+  /** Explicit consent to discard this window's branch and load the latest record. */
+  loadSavedRun: () => Promise<boolean>
+  /** Reset coordinator calls this only after durable deletion under the write lock. */
+  forgetAfterReset: (stamp?: string | null) => void
   /** Rack tiles the player has tapped, in tap order. */
   selectedTileIds: string[]
   /** Slot the player is aiming at, or null for "the first slot that fits". */
@@ -57,7 +64,7 @@ interface TableLoopStore {
   nextRound: () => void
   restart: (seed?: number, options?: RunOptions) => void
   /** Explicit reset: remove the saved run before replacing the live engine. */
-  clearSavedRun: () => void
+  clearSavedRun: () => Promise<void>
   takePracticeDecree: () => void
 
   previewPlacement: (slotIndex: number) => PlacementScore | null
@@ -80,7 +87,8 @@ function browserStorage(): RunStorage | null {
 }
 
 export const createTableLoopStore = (
-  storage: RunStorage | null | (() => RunStorage | null) = browserStorage
+  storage: RunStorage | null | (() => RunStorage | null) = browserStorage,
+  exclusive: typeof withTableSaveLock = withTableSaveLock
 ) =>
   create<TableLoopStore>((set, get) => {
     // Resolve access again for writes: an initially denied localStorage getter
@@ -89,31 +97,118 @@ export const createTableLoopStore = (
       typeof storage === 'function' ? storage : () => storage
     let initialStatus: TableLoopStore['saveStatus'] = 'saved'
     let restored: ReturnType<typeof restoreSavedRun> = null
+    // Undefined means the initial read failed: permission returning is not
+    // permission to overwrite a record we never observed.
+    let baseline: string | null | undefined
+    let baselineEpoch: string | null | undefined
     try {
       const currentStorage = resolveStorage()
       if (!currentStorage) initialStatus = 'unavailable'
       const raw = currentStorage?.getItem(TABLE_SAVE_KEY)
+      baseline = currentStorage ? (raw ?? null) : undefined
+      baselineEpoch = currentStorage?.getItem(RUN_SAVE_EPOCH_KEY)
       if (raw) {
         restored = restoreSavedRun(raw)
         if (!restored) initialStatus = 'invalid'
       }
     } catch {
       initialStatus = 'unavailable'
+      baseline = undefined
+      baselineEpoch = undefined
     }
     const engine = restored?.engine ?? new TableLoopEngine()
     let journal = restored?.journal ?? newSavedRun(engine)
-
-    const save = () => {
+    let epoch = 0
+    let pending: Promise<boolean> | null = null
+    const conflict = () => {
+      epoch++
+      // An untouched/still-durable branch has nothing local to lose on reload.
+      // A simultaneous rejected checkpoint, however, retains its unsaved flag.
+      set({ saveStatus: 'conflict' })
+      return false
+    }
+    const matches = (currentStorage: RunStorage) => {
+      const raw = currentStorage.getItem(TABLE_SAVE_KEY)
+      const stamp = currentStorage.getItem(RUN_SAVE_EPOCH_KEY)
+      return (
+        (baseline === undefined ? raw === null : raw === baseline) &&
+        (baselineEpoch === undefined ? stamp === null : stamp === baselineEpoch)
+      )
+    }
+    const canAct = () => {
+      if (get().saveStatus === 'conflict') return false
       try {
         const currentStorage = resolveStorage()
-        if (!currentStorage) throw new Error('Storage unavailable')
-        currentStorage.setItem(TABLE_SAVE_KEY, JSON.stringify(journal))
-        set({ saveStatus: 'saved', unsaved: false })
+        if (currentStorage && !matches(currentStorage)) return conflict()
         return true
       } catch {
-        set({ saveStatus: 'unavailable', unsaved: true })
-        return false
+        // Allow an explicitly unsaved in-memory game; the locked writer still
+        // must compare the exact old record if access returns later.
+        return true
       }
+    }
+    const save = (): Promise<boolean> => {
+      if (get().saveStatus === 'conflict') return Promise.resolve(false)
+      if (pending) return pending
+      if (!get().unsaved) return Promise.resolve(true)
+      const generation = epoch
+      const operation = exclusive(() => {
+        if (generation !== epoch) return false
+        const currentStorage = resolveStorage()
+        if (!currentStorage) throw new Error('Storage unavailable')
+        if (!matches(currentStorage)) return conflict()
+        // Transport identity, not gameplay RNG. Replaying the same seed and
+        // actions must not recreate an obsolete checkpoint's exact bytes.
+        const raw = JSON.stringify({
+          ...journal,
+          checkpointId: crypto.randomUUID(),
+        })
+        currentStorage.setItem(TABLE_SAVE_KEY, raw)
+        baseline = raw
+        baselineEpoch ??= null
+        set({ saveStatus: 'saved', unsaved: false })
+        return true
+      })
+        .catch(() => {
+          if (generation === epoch && get().saveStatus !== 'conflict')
+            set({ saveStatus: 'unavailable', unsaved: true })
+          return false
+        })
+        .finally(() => {
+          if (pending === operation) {
+            pending = null
+            if (get().unsaved && get().saveStatus === 'saving') void save()
+          }
+        })
+      pending = operation
+      return operation
+    }
+    const changed = () => {
+      set({ saveStatus: 'saving', unsaved: true })
+      void save()
+    }
+    const replaceLocal = (
+      next: TableLoopEngine,
+      raw: string | null,
+      stamp: string | null
+    ) => {
+      epoch++
+      pending = null
+      baseline = raw
+      baselineEpoch = stamp
+      set({
+        engine: next,
+        state: next.getState(),
+        selectedTileIds: [],
+        targetSlot: null,
+        saveStatus: 'saved',
+        unsaved: false,
+      })
+    }
+    const forgetAfterReset = (stamp: string | null = null) => {
+      const fresh = new TableLoopEngine()
+      journal = newSavedRun(fresh)
+      replaceLocal(fresh, null, stamp)
     }
 
     const publish = (clearSelection: boolean) => {
@@ -125,10 +220,11 @@ export const createTableLoopStore = (
     }
 
     const perform = (action: SavedAction, consumesSelection = false) => {
+      if (!canAct()) return false
       const result = applySavedAction(get().engine, action)
       if (result.success) {
         journal = { ...journal, actions: [...journal.actions, action] }
-        save()
+        changed()
       }
       publish(result.success && consumesSelection)
       // Some refusals return an error state without mutating the engine.
@@ -144,7 +240,30 @@ export const createTableLoopStore = (
       unsaved: false,
       // Only a committed action can make this journal dirty. An update must
       // not overwrite an invalid original save with a fresh, untouched run.
-      retrySave: () => !get().unsaved || save(),
+      retrySave: save,
+      refreshSave: () => {
+        canAct()
+      },
+      forgetAfterReset,
+      loadSavedRun: async () => {
+        try {
+          return await exclusive(() => {
+            const currentStorage = resolveStorage()
+            if (!currentStorage) return false
+            const raw = currentStorage.getItem(TABLE_SAVE_KEY)
+            const latest = raw === null ? null : restoreSavedRun(raw)
+            if (raw !== null && !latest) return false
+            // Finish all fallible reads before replacing even the private journal.
+            const stamp = currentStorage.getItem(RUN_SAVE_EPOCH_KEY)
+            const next = latest?.engine ?? new TableLoopEngine()
+            journal = latest?.journal ?? newSavedRun(next)
+            replaceLocal(next, raw, stamp)
+            return true
+          })
+        } catch {
+          return false
+        }
+      },
       selectedTileIds: [],
       targetSlot: null,
 
@@ -240,29 +359,31 @@ export const createTableLoopStore = (
       },
 
       restart: (seed, options) => {
+        if (!canAct()) return
+        epoch++
+        pending = null
         get().engine.restart(seed, options)
         journal = newSavedRun(get().engine)
-        save()
+        changed()
         publish(true)
       },
 
-      clearSavedRun: () => {
-        const currentStorage = resolveStorage()
-        if (!currentStorage) throw new Error('Storage unavailable')
-        const fresh = new TableLoopEngine()
-        // Unlike ordinary play, a reset must report a failed deletion. Preserve
-        // the current engine/journal if storage denies the operation.
-        currentStorage.removeItem(TABLE_SAVE_KEY)
-        journal = newSavedRun(fresh)
-        set({
-          engine: fresh,
-          state: fresh.getState(),
-          selectedTileIds: [],
-          targetSlot: null,
-          saveStatus: 'saved',
-          unsaved: false,
-        })
-      },
+      clearSavedRun: () =>
+        exclusive(() => {
+          const currentStorage = resolveStorage()
+          if (!currentStorage) throw new Error('Storage unavailable')
+          const prior = currentStorage.getItem(RUN_SAVE_EPOCH_KEY)
+          const stamp = crypto.randomUUID()
+          currentStorage.setItem(RUN_SAVE_EPOCH_KEY, stamp)
+          try {
+            currentStorage.removeItem(TABLE_SAVE_KEY)
+          } catch (error) {
+            if (prior === null) currentStorage.removeItem(RUN_SAVE_EPOCH_KEY)
+            else currentStorage.setItem(RUN_SAVE_EPOCH_KEY, prior)
+            throw error
+          }
+          forgetAfterReset(stamp)
+        }),
 
       takePracticeDecree: () => {
         perform({ type: 'takePracticeDecree' })
@@ -275,8 +396,11 @@ export const createTableLoopStore = (
 
 export const useTableLoopStore = createTableLoopStore()
 
-const unregisterReloadGuard = registerReloadGuard('table-loop', () =>
-  useTableLoopStore.getState().retrySave()
+const unregisterReloadGuard = registerReloadGuard(
+  'table-loop',
+  () =>
+    !useTableLoopStore.getState().unsaved ||
+    useTableLoopStore.getState().retrySave()
 )
 const beforeUnload = (event: BeforeUnloadEvent) => {
   if (!useTableLoopStore.getState().unsaved) return
@@ -284,8 +408,23 @@ const beforeUnload = (event: BeforeUnloadEvent) => {
   event.returnValue = ''
 }
 window.addEventListener('beforeunload', beforeUnload)
+const storageChanged = (event: StorageEvent) => {
+  if (
+    event.key === TABLE_SAVE_KEY ||
+    event.key === RUN_SAVE_EPOCH_KEY ||
+    event.key === null
+  )
+    useTableLoopStore.getState().refreshSave()
+}
+const visibilityChanged = () => {
+  useTableLoopStore.getState().refreshSave()
+}
+window.addEventListener('storage', storageChanged)
+document.addEventListener('visibilitychange', visibilityChanged)
 if (import.meta.hot)
   import.meta.hot.dispose(() => {
     unregisterReloadGuard()
     window.removeEventListener('beforeunload', beforeUnload)
+    window.removeEventListener('storage', storageChanged)
+    document.removeEventListener('visibilitychange', visibilityChanged)
   })

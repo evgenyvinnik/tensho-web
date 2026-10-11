@@ -8,6 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Table Loop save ownership](TABLE_SAVE_OWNERSHIP_IMPLEMENTATION.md) now pauses
+stale windows instead of overwriting newer runs, offers explicit localized
+recovery, and coordinates both run writers with confirmed progress reset.
+Unique checkpoint IDs and a reset marker cover repeated identical journals and
+queued first-ever saves. The final 26 native desktop/touch checks and ten real
+previous-release PWA upgrades pass, as do all 2,836 unit/component tests in 201
+files, strict TypeScript, lint (warnings only) and thirteen release checks.
+Publication verification is still in progress; crash-atomic profile reset,
+older uncoordinated clients and whole-project completion are not claimed.
+
 [Illustrated asset delivery](ASSET_DELIVERY_IMPLEMENTATION.md) is published and
 hosted-verified in **v1.0.261008-21**: 50 transparent UI copies and a responsive two-size guide hero
 reduce the measured offline payload from about 70 to 36 MiB. Originals remain

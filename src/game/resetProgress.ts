@@ -5,7 +5,9 @@ import { useStakeStore } from '../stores/stakeStore'
 import { useTableStyleStore } from '../stores/tableStyleStore'
 import { useTableLoopStore } from '../stores/tableLoopStore'
 import { TABLE_SAVE_KEY } from '../tableloop/savedRun'
-import { CLASSIC_SAVE_KEY } from './classicSavedRun'
+import { CLASSIC_SAVE_KEY, CLASSIC_SAVE_LOCK } from './classicSavedRun'
+import { withTableSaveLock } from '../tableloop/saveLock'
+import { RUN_SAVE_EPOCH_KEY } from './runSaveEpoch'
 import { getClassicPersistence } from './classicPersistenceApp'
 import {
   PROGRESSIVE_HINTS_STORAGE_KEY,
@@ -40,6 +42,7 @@ export const PROGRESS_STORAGE_KEYS = [
   }),
   TABLE_SAVE_KEY,
   CLASSIC_SAVE_KEY,
+  RUN_SAVE_EPOCH_KEY,
   ...TUTORIAL_PROGRESS_KEYS,
 ]
 
@@ -146,7 +149,24 @@ export function activateFullUnlock(): ResetProgressResult {
 }
 
 /** Only call after explicit confirmation. Never clear unrelated origin data. */
-export function resetAllProgress(): ResetProgressResult {
+export async function resetAllProgress(): Promise<ResetProgressResult> {
+  try {
+    if (!globalThis.navigator?.locks)
+      throw new Error('Save locking unavailable')
+    // Stable lock order; neither mode ever takes the other's lock. Capture and
+    // rollback both journals inside the locks, not against a pre-wait snapshot.
+    return await navigator.locks.request(
+      CLASSIC_SAVE_LOCK,
+      { mode: 'exclusive' },
+      () => withTableSaveLock(resetAllProgressLocked)
+    )
+  } catch {
+    return { success: false, restored: true }
+  }
+}
+
+function resetAllProgressLocked(): ResetProgressResult {
+  const stamp = crypto.randomUUID()
   let saved: ReturnType<typeof captureStorage>
   try {
     saved = captureStorage(PROGRESS_STORAGE_KEYS)
@@ -162,6 +182,7 @@ export function resetAllProgress(): ResetProgressResult {
     captureStore(useArchiveStore),
   ]
   try {
+    saved.storage.setItem(RUN_SAVE_EPOCH_KEY, stamp)
     useAchievementStore.getState().resetAchievements()
     useProgressionStore.getState().resetProgression()
     useTableStyleStore.getState().resetAllProgress()
@@ -170,8 +191,8 @@ export function resetAllProgress(): ResetProgressResult {
     synchronizePersistedMetaState()
     for (const key of TUTORIAL_PROGRESS_KEYS) saved.storage.removeItem(key)
     saved.storage.removeItem(CLASSIC_SAVE_KEY)
-    // Last fallible storage operation: this preserves its live engine on error.
-    useTableLoopStore.getState().clearSavedRun()
+    // Last fallible storage operation, while both run writers are excluded.
+    saved.storage.removeItem(TABLE_SAVE_KEY)
   } catch {
     for (const snapshot of snapshots) {
       try {
@@ -187,6 +208,7 @@ export function resetAllProgress(): ResetProgressResult {
     }
   }
   resetMetaProgressionRunContext()
+  useTableLoopStore.getState().forgetAfterReset(stamp)
   getClassicPersistence()?.forgetAfterReset()
   // No runEnd event: deleting progress must not award a loss, win, or unlock.
   gameOrchestrator.resetGame()

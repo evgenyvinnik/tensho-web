@@ -34,6 +34,7 @@ export function SettingsScreen() {
     (state) => state.fullUnlockEnabled
   )
   const [showFullUnlockConfirm, setShowFullUnlockConfirm] = useState(false)
+  const [resetting, setResetting] = useState(false)
   const [fullUnlockError, setFullUnlockError] = useState(false)
 
   // Confirmation dialog states
@@ -78,12 +79,15 @@ export function SettingsScreen() {
   }, [])
 
   // Reset all progress handler
-  const handleResetProgress = useCallback(() => {
-    const result = resetAllProgress()
+  const handleResetProgress = useCallback(async () => {
+    if (resetting) return
+    setResetting(true)
+    const result = await resetAllProgress()
+    setResetting(false)
     setShowResetProgressConfirm(false)
     if (result.success) setShowProgressResetSuccess(true)
     else setResetError(result.restored ? 'resetFailed' : 'resetPartial')
-  }, [])
+  }, [resetting])
 
   return (
     <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
@@ -263,13 +267,16 @@ export function SettingsScreen() {
                 </p>
               </div>
               <button
-                onClick={() => setShowResetProgressConfirm(true)}
+                aria-disabled={resetting}
+                onClick={() => {
+                  if (!resetting) setShowResetProgressConfirm(true)
+                }}
                 className="w-full flex-shrink-0 px-4 py-2 bg-red-700 hover:bg-red-600 sm:w-auto
                          text-white font-bold rounded-lg text-sm
                          border-2 border-red-400
                          transition-all hover:scale-105 active:scale-95"
               >
-                {t('settings.resetProgress')}
+                {resetting ? t('common.loading') : t('settings.resetProgress')}
               </button>
             </div>
           </section>
