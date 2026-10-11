@@ -119,6 +119,15 @@ grows into the board instead, and the board scrolls the first highlighted slot
 screenshots can lag one frame behind a tap, so take a second screenshot before
 judging a result.
 
+**WebKit device sweep of the deployed build (a6675ea)** with Playwright's
+WebKit and its iPad Mini (portrait and landscape), iPhone SE (320×568) and
+iPhone 13 profiles: on every device the Classic rack and Play action and the
+Table Loop rack and Finish action are fully on screen with no horizontal
+overflow, and after selecting a pair the enabled Pair slot has been scrolled
+into view. On the two phones Classic opens the board on the hand, so the flower
+chip starts one swipe above it, by design. The iPad simulator itself needs the
+owner's permission in the simulator panel and was not used.
+
 Checked in the browser at 1440×800, 768×1024, 390×844 and 320×568 (Table Loop:
 no horizontal overflow, rack pinned, board 189px tall at 320×568; slots never
 clip their tiles). Reduced motion exposed a real focus bug: a global tiny
