@@ -16,14 +16,15 @@ reduced motion respected, no hover-only information.
 passed 27/28 checks, but Russian at 320×568 with fonts held failed before dragging:
 after scrolling to the last rack tile, the discard target had viewport ratio 0.
 The retained trace shows group labels widening the grouped rack and its header
-scrolling out of view. This is an open layout defect, not a passed drag test or
+scrolling out of view. This was a layout defect, not a passed drag test or
 merely a lazy-image check. Evidence:
 `/tmp/tensho-table-save-iQpNr5/integrated-production/discard-layout-discard-sta-8cb50-red-during-font-loading-ru--mobile-chrome/trace.zip`.
 The [tap-discard checkpoint](TAP_DISCARD_IMPLEMENTATION.md) reproduces its exact
 seed and fixes group-label width and selection reflow. All 38 final native
 geometry/resource and all-locale tap/keyboard checks pass, as do the same 38
-production-browser checks and 14 native tutorial/hand-builder checks. Publication verification
-is still in progress; arbitrary enlarged racks and real devices remain open.
+production-browser checks and 14 native tutorial/hand-builder checks. The fix is
+published and reverified in v1.0.261011-5's 64 hosted checks; arbitrary enlarged
+racks and real devices remain open.
 
 1. **Action buttons break words on phones.** At 320–360px, "Saltar" and
    "RECAMBIAR" wrap mid-word ("Salt/ar", "RECA/MBIA/R"). Use an icon plus a
@@ -58,11 +59,18 @@ is still in progress; arbitrary enlarged racks and real devices remain open.
    icon only. Show the label next to the icon in the rack header when the tip
    is open, or change the copy to refer to the book icon (thirteen locales).
    Files: `src/config/progressiveTutorialHints.ts`, `PlaySurface.tsx`.
+   **Published and verified in v1.0.261011-6:** both first-move lessons refer
+   to the visible book icon in all thirteen locales, without resetting dismissed
+   lessons. [Evidence](QUIET_INVENTORY_IMPLEMENTATION.md).
 
 5. **Empty consumables take a third of the inventory rail.** Three "×0"
    chips sit there for the whole first Act. Hide a consumable type while its
    count is 0 (or fold all three into one "Items 0" chip that opens a dialog).
    File: `src/components/gameplay/ConsumablesBar.tsx`.
+   **Published and verified in v1.0.261011-6:** zero-count families occupy no
+   space; owned families keep their illustrated controls and accessible counts.
+   Last-item use returns focus to the Wall control if its original trigger is
+   gone. [Evidence](QUIET_INVENTORY_IMPLEMENTATION.md).
 
 ## P2 — friction
 

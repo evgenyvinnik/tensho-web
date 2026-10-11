@@ -8,6 +8,16 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Quieter inventory and guide discovery](QUIET_INVENTORY_IMPLEMENTATION.md)
+hide empty consumable families, retain owned-item controls, restore last-use
+focus safely and align first-move copy with the illustrated book icon in all
+thirteen locales. All 62 native browser journeys pass. The three CLI timeouts
+from the full local run pass in a 74-test serial recheck. Final focus journeys,
+build and 26 production newcomer checks pass. Published in **v1.0.261011-6**:
+independent CI passes all 2,896 tests in 206 files and all 26 hosted newcomer
+checks pass without retries. No inventory or tutorial reset is added. Local main
+is synchronized with the published history; the parallel CSS edit remains intact.
+
 [Wall readability](WALL_READABILITY_IMPLEMENTATION.md) replaces English-only
 hover text and suit initials with localized headings and illustrated tile/count
 captions, including separate red fives. All 2,881 tests and 52 native browser
