@@ -27,6 +27,8 @@ export interface HandCluster {
   tiles: Tile[]
   /** Structure points the group earns when played together; 0 when loose. */
   structurePoints: number
+  /** Scoring groups represented by this physical cluster (Plum can share a tile). */
+  groupCount: number
 }
 
 /**
@@ -48,19 +50,41 @@ export function groupHand(
   const byRackOrder = (left: Tile, right: Tile) =>
     position.get(left.id)! - position.get(right.id)!
 
-  const groups: HandCluster[] = parsed.groups
-    .map((group) => ({
+  let groups: HandCluster[] = []
+  for (const group of parsed.groups) {
+    const groupIds = new Set(group.tiles.map((tile) => tile.id))
+    const overlapping = groups.filter((cluster) =>
+      cluster.tiles.some((tile) => groupIds.has(tile.id))
+    )
+    // The authoritative parse may pay two sequences sharing one physical tile.
+    // Keep both payments, but merge their rack positions so that the shared
+    // tile has one button, one drag target and one empty slot when staged.
+    const physicalTiles = new Map(
+      [...overlapping.flatMap((cluster) => cluster.tiles), ...group.tiles].map(
+        (tile) => [tile.id, tile]
+      )
+    )
+    groups = groups.filter((cluster) => !overlapping.includes(cluster))
+    groups.push({
       kind: group.type,
-      tiles: [...group.tiles].sort(byRackOrder),
-      structurePoints: STRUCTURE_POINTS_BY_TYPE[group.type],
-    }))
-    .sort((left, right) => byRackOrder(left.tiles[0], right.tiles[0]))
+      tiles: [...physicalTiles.values()].sort(byRackOrder),
+      structurePoints:
+        STRUCTURE_POINTS_BY_TYPE[group.type] +
+        overlapping.reduce((sum, cluster) => sum + cluster.structurePoints, 0),
+      groupCount:
+        1 + overlapping.reduce((sum, cluster) => sum + cluster.groupCount, 0),
+    })
+  }
+  groups.sort((left, right) => byRackOrder(left.tiles[0], right.tiles[0]))
 
   const grouped = new Set(
     groups.flatMap((group) => group.tiles.map((tile) => tile.id))
   )
   const loose = tiles.filter((tile) => !grouped.has(tile.id))
   return loose.length > 0
-    ? [...groups, { kind: 'loose', tiles: loose, structurePoints: 0 }]
+    ? [
+        ...groups,
+        { kind: 'loose', tiles: loose, structurePoints: 0, groupCount: 0 },
+      ]
     : groups
 }

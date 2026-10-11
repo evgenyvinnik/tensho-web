@@ -72,6 +72,10 @@ for (const language of ['en', 'es', 'ru', 'th']) {
       copy.progressiveHints.shop.content
     )
     const summary = hint.locator('summary')
+    // Shop guidance now starts compact; opening it never acknowledges it.
+    await expect(hint.locator('p')).toBeHidden()
+    await summary.click()
+    await expect(hint.locator('p')).toBeVisible()
     await summary.click()
     await expect(hint.locator('p')).toBeHidden()
     await summary.click()

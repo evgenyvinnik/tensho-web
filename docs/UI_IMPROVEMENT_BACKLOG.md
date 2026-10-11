@@ -109,6 +109,10 @@ racks and real devices remain open.
    **Implemented:** physical tile widths bound each group; two label lines are
    reserved and partial staging keeps the same group box and blank tile slots.
    Thirteen-locale native checks verify label bounds and unchanged positions.
+   The integrated sub-360px CSS introduced a 2px/4px gap mismatch and removed
+   compact spacing while staging. The [interaction recovery](TILE_INTERACTION_IMPLEMENTATION.md)
+   shares one responsive gap value and uses a persistent layout marker; all 38
+   final tap/keyboard-discard and drag-geometry checks pass. Publication pending.
 
 10. **Felt colours stop at the play screen.** Apply `feltPalette` to the Tea
     House, Game Over and the menu's Run Setup preview (a swatch of the cloth
@@ -194,6 +198,14 @@ racks and real devices remain open.
   first-move tip intercepts the click on a staged tile), `bamboo-summer` on
   mobile (discard zone out of view), `frostbite-retriggers` (both projects) and
   the table selector's `imagesLoaded` check in `app.spec.ts`.
+  **Recovery in progress:** current `6c8e408` reproduction confirms duplicate
+  Plum tiles, floating guidance interception and complete-hand phone discard
+  reachability. Local presentation fixes, including the newly exposed compact
+  gap regression, pass all 172 final-source native browser checks.
+  Frostbite's dismissal target and shop guidance expectations were stale tests;
+  the table image failure has not reproduced in the desktop/mobile recheck.
+  See [tile interaction evidence](TILE_INTERACTION_IMPLEMENTATION.md) for
+  retained failures, pending broader checks and publication status.
 
 - **Module-URL helper for e2e.** After a source edit, the dev server serves
   `GameOrchestrator.ts?t=…`; specs importing the plain path drive a second

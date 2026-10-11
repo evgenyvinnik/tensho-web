@@ -358,14 +358,13 @@ a {
 
   [data-hand-rack] {
     column-gap: 2px;
+    --rack-group-gap: 2px;
   }
 
-  [data-hand-group] {
+  /* This marker survives staging, so choosing a tile cannot change the gap
+     or margins and shuffle the rest of the rack. */
+  [data-rack-group] {
     margin-inline: 1px;
-  }
-
-  [data-hand-group] > div {
-    gap: 2px;
   }
 }
 
