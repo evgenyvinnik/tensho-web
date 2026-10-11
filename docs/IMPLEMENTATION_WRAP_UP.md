@@ -14,8 +14,11 @@ comparison. It corrects the false suggestion that a selected group is kept for
 later and preserves the preview-before-payment contract. A reproduced phone
 focus/scroll defect is fixed. All 100 final development-browser and 90 production
 checks pass. The local full suite passes 2,928/2,931 tests; the three CLI timeout
-cases pass in an unchanged 28-test serial recheck. Build, lint and thirteen
-release checks pass. Publication is pending; this is not whole-project completion.
+cases pass in an unchanged 28-test serial recheck. Published in
+**v1.0.261011-8**: independent CI passes all 2,931 tests in 208 files, the release
+checks, build and deployment. Public manifest/tag/runtime agree, and all 52
+hosted coach/rack-tool journeys pass without retries in thirteen locales.
+This does not establish human enjoyment or whole-project completion.
 
 [Reachable rack tools](RACK_TOOLS_IMPLEMENTATION.md) replace the phone's
 sideways-scrolling secondary actions with a localized More disclosure, retain

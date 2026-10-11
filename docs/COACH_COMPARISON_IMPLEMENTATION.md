@@ -77,7 +77,26 @@ The coach checks alternate Enter and Space on desktop and use taps on phones.
 Final French 320×568 comparison screenshots were inspected after the typography
 and scrolling changes; both choices and their actions remain readable/reachable.
 
-Publication and hosted verification are pending.
+## Published release
+
+Published as **v1.0.261011-8**. Implementation commit
+`f39b65d953616208997914e37fc8226a355235cd`; built/version-tagged commit
+`18225c25aa8bd8caa263bf6bfcd5d06af70642cd`.
+[Release workflow 38162514647](https://github.com/evgenyvinnik/tensho-web/actions/runs/38162514647)
+passes all **2,931 tests in 208 files**, thirteen release-workflow checks, build,
+asset delivery and Pages deployment. CI's precache measurement matches the
+local build. `ci-build.log` retains the independent results.
+
+The public `release.json`, remote tag and runtime
+`/tensho-web/assets/index-BDatJUxA.js` agree on that version and commit
+(`public-release.json`). All **52 hosted desktop/touch journeys** pass without
+retries (`hosted.log`): the coach and rack-tools suites in all thirteen locales,
+including the previously troublesome Italian Space-to-close path. This is new
+regression evidence, not a retrospective root-cause explanation for its old
+failure. Only owned checkpoint changes were committed; unrelated launch
+configuration remains intact.
+
+## Remaining limits
 
 Physical-device
 and newcomer observation remain open; translations have automated coverage,

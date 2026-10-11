@@ -89,11 +89,12 @@ racks and real devices remain open.
 7. **Coach chips truncate on phones** ("Build towar… +59"). Shorter copy for
    the chip title ("Build a Sequence"), keeping the long sentence as the
    tooltip/description. Files: `CoachPanel.tsx`, locale `gameplay.coach.*`.
-   **Implemented and locally verified; publication pending:** short localized labels and a
+   **Published and verified in v1.0.261011-8:** short localized labels and a
    tap/keyboard comparison show the actual tile artwork and exact scores.
    Corrected the misleading “keep/build toward” promise; both suggestions are
    selections to play, not predictions. All 100 final development-browser and 90
-   production checks pass. [Evidence](COACH_COMPARISON_IMPLEMENTATION.md).
+   production checks pass, along with 52 hosted coach/rack-tool journeys and all
+   2,931 tests in independent CI. [Evidence](COACH_COMPARISON_IMPLEMENTATION.md).
 
 8. **Score bar is two rows on phones.** Fold "N to clear" into the progress
    bar's label and drop the separate SCORE / TARGET captions below 400px so
