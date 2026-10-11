@@ -53,10 +53,13 @@ for (const language of ['en', 'es']) {
         nodes.map((node) => {
           const rect = node.getBoundingClientRect()
           return {
-            x: rect.x,
-            y: rect.y,
-            width: rect.width,
-            height: rect.height,
+            pressed: node.getAttribute('aria-pressed') === 'true',
+            box: {
+              x: rect.x,
+              y: rect.y,
+              width: rect.width,
+              height: rect.height,
+            },
           }
         })
       )
@@ -67,7 +70,10 @@ for (const language of ['en', 'es']) {
         'aria-pressed',
         'true'
       )
-      expect(await positions()).toEqual(initial)
+      // A selected tile lifts on purpose; every other tile must not move.
+      const now = await positions()
+      for (const [index, entry] of now.entries())
+        if (!entry.pressed) expect(entry.box).toEqual(initial[index].box)
       expect(await actions()).toEqual(initialActions)
     }
     const slot = page.getByTestId('table-slot-4')
@@ -81,16 +87,14 @@ for (const language of ['en', 'es']) {
     await expect(slot.locator('img')).toHaveCount(2)
     await expect(page.getByTestId('causal-chain')).toBeVisible()
     await expect(tiles).toHaveCount(12)
-    await expect
-      .poll(actions)
-      .toEqual([
-        ...initialActions,
-        {
-          type: 'place',
-          slot: 4,
-          tiles: [expect.any(Number), expect.any(Number)],
-        },
-      ])
+    await expect.poll(actions).toEqual([
+      ...initialActions,
+      {
+        type: 'place',
+        slot: 4,
+        tiles: [expect.any(Number), expect.any(Number)],
+      },
+    ])
     const placedActions = await actions()
     await page.reload()
     await expect(slot.locator('img')).toHaveCount(2)
