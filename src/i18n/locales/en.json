@@ -233,6 +233,7 @@
     "voidScripts": "Void Scripts"
   },
   "common": {
+    "exit": "Exit",
     "loading": "Loading...",
     "error": "Error",
     "retry": "Retry",
@@ -313,6 +314,8 @@
     "dangerZone": "Danger Zone"
   },
   "gameplay": {
+    "actProgress": "Act {{current}} of {{total}}",
+    "rerollMandate": "Reroll upcoming Boss Mandate {{name}} for {{cost}} gold",
     "moreTools": "More table tools",
     "yakumanAscended": "Ascended to Yakuman",
     "beginnerShapeBonus": "+{{points}} shape bonus",

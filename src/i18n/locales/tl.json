@@ -336,6 +336,7 @@
     "voidScripts": "Mga Balumbon ng Kawalan"
   },
   "common": {
+    "exit": "Lumabas",
     "loading": "Naglo-load...",
     "error": "Error",
     "retry": "Subukan Muli",
@@ -420,6 +421,8 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "actProgress": "Yugto {{current}} sa {{total}}",
+    "rerollMandate": "Palitan ang susunod na Mandate ng Boss na {{name}} sa halagang {{cost}} ginto",
     "moreTools": "Iba pang gamit sa mesa",
     "yakumanAscended": "Umakyat sa Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus sa hugis",

@@ -336,6 +336,7 @@
     "voidScripts": "Hiçlik Tomarları"
   },
   "common": {
+    "exit": "Çık",
     "loading": "Yükleniyor...",
     "error": "Hata",
     "retry": "Tekrar Dene",
@@ -420,6 +421,8 @@
     "visual": "Görsel"
   },
   "gameplay": {
+    "actProgress": "Perde {{current}} / {{total}}",
+    "rerollMandate": "{{cost}} altın karşılığında sıradaki patronun {{name}} fermanını yeniden çek",
     "moreTools": "Diğer masa araçları",
     "yakumanAscended": "Yakuman'a yükseldi",
     "beginnerShapeBonus": "+{{points}} şekil bonusu",

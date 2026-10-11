@@ -29,11 +29,12 @@ standalone polish checkpoint; subsequent changes must close a gate below.
 | C3 — Save/recovery safety | Reload/resume play and paid pending rewards without loss/replay; protect against stale-window writes; preserve preferences through confirmed reset; verify the supported current-to-candidate PWA update and offline artwork. | Existing coverage; run the named persistence journeys and existing update harness against the candidate. Do not claim support for every historical client or crash-atomic multi-key reset. Any reproduced loss of a supported save is a blocker. |
 | C4 — Usable, teachable interface | At 320px, tablet and desktop: reachable primary actions and close controls, no page-wide overflow or clipped essential rules; hover information also available to touch/keyboard; optional guidance explains selection, commitment and payoff. All 13 game locales have required rules/control text and no raw keys. | Finish verification of the pending Dragon guide, then one bounded screen/locale pass. Fix blocked actions, unreadable rules and incorrect translations; aesthetic variations alone do not reopen this gate. |
 | C5 — Assets and public site | Existing required illustrations decode and have accessible text; audio/motion preferences work. About/how-to-play/FAQ return real HTML with valid links/metadata, and production asset/cache budgets pass. | Reuse the already generated art. Run public-guide/static-route/asset checks. English-only editorial pages remain explicitly labeled; search indexing and future translated articles are not implementation claims. |
-| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Dragon candidate `73ee4c1` passes independent CI `38175717641`, but the broader acceptance pass exposes the corner defect below. Fix and verify it before publication; the interaction-only gate is not whole-release clearance. |
+| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Candidate `ad02c80` passes full units/build and 110 production interactions; its core job passes 140/144, including the corner fix. Verify the late-game follow-up and new release-surface job before publication. |
 
 ### Execution order and stopping rule
 
-1. Close the already-running Dragon verification and publish only if it passes.
+1. Close the Dragon verification and consolidate it into the completion candidate;
+   do not publish it separately while a completion blocker remains.
 2. Run C1–C5 once against a fixed candidate. Consolidate failures into one
    prioritized defect list; fix P0/P1 defects before optional visual adjustments.
    Do not start another feature or a new large simulation policy during this pass.
@@ -81,19 +82,68 @@ package command ended with SIGTERM (143), so it is not counted as verification.
 The verification workflow adds a separate clean-runner core job (two workers,
 zero retries, retained diagnostics), alongside the production interaction job.
 
-Current defects to close before publication:
+Candidate `ad02c80` completed clean-runner CI `38178639394`: **2,964 tests in
+209 files**, **17 release/runner checks**, build and **110 production browser
+cases** pass. Its independent native core job passed **140/144** with no retries.
+The earlier Dragon candidate `73ee4c1` also passed those 2,964/17/110 checks in
+`38175717641`; exact totals were subsequently recovered through the GitHub
+connector after the CLI log endpoint refused access.
+
+Current defects and verification follow-up before publication:
 
 - **C4, reproduced:** at 320px the top-row Settings button ends at x=285.02,
   beyond its x=283 safe boundary and inside the corner reserved at x=284.
   The center round chip's minimum width displaces the fixed-size controls.
   A local fix allows the middle region/round label to wrap and reserves the
-  controls' width. It is not yet browser-verified; the running baseline is untouched.
+  controls' width. Both desktop and phone corner cases now pass in the clean
+  core job, including its exact 320px safe-boundary assertion.
 - **Test correction:** the first-move guide check expects 18 images; the new
   three-Dragon legend correctly renders 21. The updated check requires 21 plus
   each of the three named Dragon images, retaining the rest of the real journey.
-- **Unresolved diagnostic:** the first home-page case exceeds its 30-second
-  total deadline waiting for the title. Later navigation cases pass; this does
-  not establish the original cause or close the failing case.
+  Both variants now pass in the clean core job.
+- **Historical local deadlines:** the first home-page and six consumable cases
+  now pass in clean CI. Their earlier timeout causes remain unproven; the
+  original diagnostic artifacts are retained, not erased by this result.
+- **C1 remaining checks:** two late-game scenarios fail on both desktop and
+  phone: the Endless-defeat fixture selects engine tiles without staging on the
+  mat; the Ancient Script case expects details inside a collapsed payout panel.
+  The follow-up uses actual rack clicks/taps and explicitly opens that panel,
+  keeping the target/deadline fixture and all settlement/payment assertions.
+  The installed-browser follow-up passes both phone scenarios and desktop
+  Ancient Script (3/4); desktop Endless fails at the initial five-second Play
+  visibility check, before its late-run fixture. It is not a full passing
+  follow-up or proof of an engine defect. The original deadlines remain.
+- **C4 localization:** the header's exit control, Gold balance, finite Act
+  progress, Boss reroll label and cumulative Stake explanations now use locale
+  resources. All 13 locales have the new keys. The focused header tests pass
+  14/14; an earlier combined 62-test run had one existing RoundTypeIndicator
+  timeout, so it is not recorded as a full green run. Native-speaker review is
+  still unverified.
+
+The first local four-case Endless follow-up did not launch a browser: the pinned
+Playwright v1200 headless executable was missing (only v1234 was installed).
+Its four failures are retained under
+`/tmp/tensho-interaction-IE5a7E/endless-followup`; installing the required binary
+does not by itself establish gameplay success.
+
+The final header test correction passes TypeScript and targeted ESLint, and its
+14 tests pass again. The completion workflow now also runs the existing dialog,
+tutorial and native-audio cases, real static-route/public-guide/artwork checks,
+and the complete save-aware update harness. Its baseline is the actual deployed
+`v1.0.261011-14` source, built with the harness's `pwa-before` label; the candidate
+uses `pwa-after`. This does not certify every historical installed client. The
+new job is pending, not completed release evidence.
+
+Final local result-screen verification passes **10/10 desktop/phone cases**,
+1.3 minutes, no retries, against unchanged files. This includes victory/reload,
+explicit Endless entry and defeat, Ancient Script payment/rewind without a
+second victory, Rental defeat, and localized result layouts. Evidence:
+`/tmp/tensho-interaction-IE5a7E/results-frozen`. The preceding full attempt was
+9/10: a documentation edit triggered Vite's page reload during desktop Endless
+fixture setup (visible in both the server log and browser trace). That
+interrupted result remains in `results-final`; no timeout or assertion changed.
+Do not edit watched files during a local browser run. The clean 144-case CI
+recheck and separate release-surface job are still required before main.
 
 The interaction-only CI is not whole-release clearance. Consolidate the
 remaining core results, verify fixes and update this list rather than publishing

@@ -336,6 +336,7 @@
     "voidScripts": "คัมภีร์ความว่างเปล่า"
   },
   "common": {
+    "exit": "ออก",
     "loading": "กำลังโหลด...",
     "error": "ข้อผิดพลาด",
     "retry": "ลองอีกครั้ง",
@@ -420,6 +421,8 @@
     "visual": "ภาพ"
   },
   "gameplay": {
+    "actProgress": "องก์ {{current}} จาก {{total}}",
+    "rerollMandate": "สุ่มกฎบอสถัดไป {{name}} ใหม่ด้วยทอง {{cost}}",
     "moreTools": "เครื่องมือโต๊ะเพิ่มเติม",
     "yakumanAscended": "เลื่อนเป็นยาคุมัน",
     "beginnerShapeBonus": "+{{points}} โบนัสชุดไพ่",

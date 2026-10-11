@@ -336,6 +336,7 @@
     "voidScripts": "Свитки Пустоты"
   },
   "common": {
+    "exit": "Выйти",
     "loading": "Загрузка...",
     "error": "Ошибка",
     "retry": "Повторить",
@@ -420,6 +421,8 @@
     "visual": "Визуал"
   },
   "gameplay": {
+    "actProgress": "Акт {{current}} из {{total}}",
+    "rerollMandate": "Сменить указ следующего босса «{{name}}» за {{cost}} золота",
     "moreTools": "Другие инструменты стола",
     "yakumanAscended": "Возвышено до якумана",
     "beginnerShapeBonus": "+{{points}} за комбинацию",

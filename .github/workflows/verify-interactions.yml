@@ -15,6 +15,78 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  release-surfaces:
+    name: Public site, accessibility and save-aware update
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      # The currently deployed release, not a second build of the candidate.
+      - uses: actions/checkout@v6
+        with:
+          ref: v1.0.261011-14
+          path: .verification-baseline
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies and pinned browser
+        run: |
+          bun install --frozen-lockfile
+          bunx playwright install --with-deps chromium
+      - name: Verify native dialog, tutorial and audio controls
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: ${{ runner.temp }}/tensho-surfaces/native-report
+        run: bunx playwright test e2e/dialogs.spec.ts e2e/tutorial-layout.spec.ts e2e/audio.spec.ts --workers=2 --retries=0 --trace=retain-on-failure --output=${{ runner.temp }}/tensho-surfaces/native-results
+      - name: Build deployed baseline
+        working-directory: .verification-baseline
+        env:
+          VITE_BASE_PATH: /tensho-web/
+          VITE_APP_VERSION: pwa-before
+        run: |
+          bun install --frozen-lockfile
+          bunx vite build --outDir "$RUNNER_TEMP/tensho-pwa-before"
+      - name: Build candidate
+        env:
+          VITE_BASE_PATH: /tensho-web/
+          VITE_APP_VERSION: pwa-after
+        run: bun run build
+      - name: Verify real static routes, public guides and artwork
+        env:
+          SKIP_WEB_SERVER: '1'
+          VERIFY_STATIC_ROUTES: '1'
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4187/tensho-web/
+          PLAYWRIGHT_HTML_OUTPUT_DIR: ${{ runner.temp }}/tensho-surfaces/static-report
+        run: |
+          mkdir -p "$RUNNER_TEMP/tensho-static"
+          ln -s "$GITHUB_WORKSPACE/dist" "$RUNNER_TEMP/tensho-static/tensho-web"
+          python3 -m http.server 4187 --bind 127.0.0.1 --directory "$RUNNER_TEMP/tensho-static" > "$RUNNER_TEMP/tensho-surfaces/static-server.log" 2>&1 &
+          static_pid=$!
+          trap 'kill "$static_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent "$PLAYWRIGHT_BASE_URL" -o "$RUNNER_TEMP/tensho-static-index.html"; then break; fi
+            sleep 1
+          done
+          kill -0 "$static_pid"
+          cmp "$RUNNER_TEMP/tensho-static-index.html" dist/index.html
+          bunx playwright test e2e/public-guides.spec.ts e2e/static-routes.spec.ts e2e/asset-delivery.spec.ts --workers=2 --retries=0 --trace=retain-on-failure --output="$RUNNER_TEMP/tensho-surfaces/static-results"
+      - name: Verify current-to-candidate update and offline recovery
+        run: node scripts/verify-pwa-updates.mjs "$RUNNER_TEMP/tensho-pwa-before" "$GITHUB_WORKSPACE/dist" "$RUNNER_TEMP/tensho-surfaces/pwa"
+      - name: Preserve release-surface diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-surfaces-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/tensho-surfaces
+          if-no-files-found: warn
+          retention-days: 7
+
   core-acceptance:
     name: Complete runs and save recovery
     runs-on: ubuntu-latest

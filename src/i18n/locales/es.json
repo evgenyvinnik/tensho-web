@@ -233,6 +233,7 @@
     "voidScripts": "Escritos del Vacío"
   },
   "common": {
+    "exit": "Salir",
     "loading": "Cargando...",
     "error": "Error",
     "retry": "Reintentar",
@@ -317,6 +318,8 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "actProgress": "Acto {{current}} de {{total}}",
+    "rerollMandate": "Cambiar el Mandato del próximo jefe {{name}} por {{cost}} de oro",
     "moreTools": "Más herramientas de mesa",
     "yakumanAscended": "Ascendido a Yakuman",
     "beginnerShapeBonus": "+{{points}} por la forma",

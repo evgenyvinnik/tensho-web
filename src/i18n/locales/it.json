@@ -336,6 +336,7 @@
     "voidScripts": "Scritti del Vuoto"
   },
   "common": {
+    "exit": "Esci",
     "loading": "Caricamento...",
     "error": "Errore",
     "retry": "Riprova",
@@ -420,6 +421,8 @@
     "visual": "Visivo"
   },
   "gameplay": {
+    "actProgress": "Atto {{current}} di {{total}}",
+    "rerollMandate": "Cambia il Mandato del prossimo boss {{name}} per {{cost}} oro",
     "moreTools": "Altri strumenti del tavolo",
     "yakumanAscended": "Asceso a Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus di combinazione",

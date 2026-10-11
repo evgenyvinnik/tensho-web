@@ -233,6 +233,7 @@
     "voidScripts": "공허의 두루마리"
   },
   "common": {
+    "exit": "나가기",
     "loading": "로딩 중...",
     "error": "오류",
     "retry": "다시 시도",
@@ -317,6 +318,8 @@
     "visual": "화면"
   },
   "gameplay": {
+    "actProgress": "전체 {{total}}막 중 {{current}}막",
+    "rerollMandate": "{{cost}} 골드로 다음 보스 칙령 {{name}} 다시 뽑기",
     "moreTools": "테이블 도구 더 보기",
     "yakumanAscended": "역만으로 승격",
     "beginnerShapeBonus": "+{{points}} 모양 보너스",

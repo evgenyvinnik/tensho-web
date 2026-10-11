@@ -313,6 +313,7 @@
     "voidScripts": "Gulungan Kehampaan"
   },
   "common": {
+    "exit": "Keluar",
     "loading": "Memuat...",
     "error": "Kesalahan",
     "retry": "Coba Lagi",
@@ -397,6 +398,8 @@
     "visual": "Visual"
   },
   "gameplay": {
+    "actProgress": "Babak {{current}} dari {{total}}",
+    "rerollMandate": "Acak ulang Mandat Bos berikutnya {{name}} dengan {{cost}} emas",
     "moreTools": "Alat meja lainnya",
     "yakumanAscended": "Naik menjadi Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus pola",

@@ -101,8 +101,31 @@ async function snapshot(page: Page) {
   })
 }
 
+async function stageFinalEndlessPlay(page: Page, isMobile: boolean) {
+  // Only author the deadline/target. Selection must travel through the mat's
+  // real staging interaction, not a separate engine-only selection fixture.
+  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  const ids = await page.evaluate(() => {
+    const state = window.__resultFixtureGame.getState() as OrchestratorState
+    state.targetScore = 1e12
+    state.roundManager.getCurrentRound().scoreTarget = 1e12
+    state.handsRemaining = 1
+    return state.handTiles.slice(0, 2).map((tile) => tile.id)
+  })
+  for (const id of ids) {
+    const tile = page.locator(
+      `[data-play-zone="hand"] [data-play-tile="${id}"]`
+    )
+    if (isMobile) await tile.tap()
+    else await tile.click()
+  }
+  await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
+  await page.locator('[data-game-action="play"]').click()
+}
+
 test('Act 8 win settles once, unlocks the next Stake, and survives an Endless defeat', async ({
   page,
+  isMobile,
 }) => {
   await prepareFinalPlay(page, true)
   await expect(page.getByRole('heading', { name: 'Victory!' })).toBeVisible()
@@ -145,19 +168,7 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
     won: true,
   })
 
-  await page.evaluate(() => {
-    // This fixture changes real engine state synchronously. Chromium can collect
-    // an unreferenced import() promise during GC and misreport a navigation.
-    const game = window.__resultFixtureGame
-    const state = game.getState() as OrchestratorState
-    state.targetScore = 1e12
-    state.roundManager.getCurrentRound().scoreTarget = 1e12
-    state.handsRemaining = 1
-    state.handTiles
-      .slice(0, 2)
-      .forEach((tile: { id: string }) => game.selectTile(tile.id))
-  })
-  await page.locator('[data-game-action="play"]').click()
+  await stageFinalEndlessPlay(page, isMobile)
   await expect(
     page.getByRole('heading', { name: 'Endless Ascent Complete' })
   ).toBeVisible()
@@ -287,6 +298,7 @@ test('defeat explains the failed round and Rental debt, with art and reachable p
 
 test('an Ancient Script purchased after victory rewinds the Act without offering a second victory', async ({
   page,
+  isMobile,
 }) => {
   await prepareFinalPlay(page, true)
   await page
@@ -294,6 +306,11 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
     .click()
   await expect(page).toHaveURL(/\/shop$/)
   const before = await snapshot(page)
+  await page.locator('[data-payout-toggle]').click()
+  await expect(page.locator('[data-payout-toggle]')).toHaveAttribute(
+    'aria-expanded',
+    'true'
+  )
   await expect(
     page.getByText('Next: Act 9 ascent', { exact: true })
   ).toBeVisible()
@@ -340,17 +357,7 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
       .getByText('Endless', { exact: true })
   ).toBeVisible()
   await expect(page.getByLabel('Act 8 of 8', { exact: true })).toHaveCount(0)
-  await page.evaluate(() => {
-    const game = window.__resultFixtureGame
-    const state = game.getState() as OrchestratorState
-    state.targetScore = 1e12
-    state.roundManager.getCurrentRound().scoreTarget = 1e12
-    state.handsRemaining = 1
-    state.handTiles
-      .slice(0, 2)
-      .forEach((tile: { id: string }) => game.selectTile(tile.id))
-  })
-  await page.locator('[data-game-action="play"]').click()
+  await stageFinalEndlessPlay(page, isMobile)
   await expect(
     page.getByRole('heading', { name: 'Endless Ascent Complete', exact: true })
   ).toBeVisible()

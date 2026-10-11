@@ -9,11 +9,13 @@
 
 import type { ReactNode } from 'react'
 import { TFunction } from 'i18next'
+import { useTranslation } from 'react-i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { RoundTypeIndicator } from './RoundTypeIndicator'
 import { RoundType } from './gameplayTypes'
 import { getStakeByTier } from '../../config/stakeDefinitions'
 import { GoldIcon } from '../ui/GoldIcon'
+import { getStakeRules } from '../../i18n/stakeRules'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -109,7 +111,19 @@ export function GameplayTopBar({
   onSettings,
   status,
 }: GameplayTopBarProps) {
+  const { i18n } = useTranslation()
   const stakeDefinition = getStakeByTier(stake)
+  const language = i18n.resolvedLanguage ?? i18n.language
+  const number = new Intl.NumberFormat(language, { maximumFractionDigits: 20 })
+  const stakeRules = getStakeRules(t, language, stake).join('\n')
+  const actProgress = t('gameplay.actProgress', {
+    current: number.format(currentAct),
+    total: number.format(8),
+  })
+  const rerollLabel = t('gameplay.rerollMandate', {
+    name: upcomingMandateName ?? '',
+    cost: number.format(10),
+  })
 
   return (
     <div
@@ -122,7 +136,9 @@ export function GameplayTopBar({
           <span
             data-tutorial="gold"
             className="inline-flex items-center gap-1 text-lg font-bold text-[var(--color-golden-yellow)]"
-            aria-label={`${gold} gold`}
+            aria-label={t('shop.ui.goldBalance', {
+              amount: number.format(gold),
+            })}
           >
             <GoldIcon className="h-6 w-6" />
             {gold}
@@ -132,7 +148,7 @@ export function GameplayTopBar({
           data-gameplay-top-bar-stake
           className="whitespace-nowrap text-[9px] font-black uppercase tracking-wider"
           style={{ color: stakeDefinition?.color }}
-          title={stakeDefinition?.description}
+          title={stakeRules}
         >
           {t('gameplay.stake', 'Stake {{tier}}', { tier: stake })}
         </span>
@@ -140,7 +156,7 @@ export function GameplayTopBar({
           data-gameplay-top-bar-compact-progress
           className="hidden whitespace-nowrap text-[9px] font-black uppercase tracking-wider"
           style={{ color: stakeDefinition?.color }}
-          title={stakeDefinition?.description}
+          title={stakeRules}
         >
           {t('gameplay.act')} {currentAct} · S{stake}
         </span>
@@ -180,8 +196,8 @@ export function GameplayTopBar({
               <span
                 className="flex gap-0.5"
                 role="img"
-                aria-label={`Act ${currentAct} of 8`}
-                title={`Act ${currentAct} of 8`}
+                aria-label={actProgress}
+                title={actProgress}
               >
                 {Array.from({ length: 8 }, (_, index) => (
                   <span
@@ -203,8 +219,8 @@ export function GameplayTopBar({
             onClick={onRerollMandate}
             disabled={!canRerollMandate}
             className="min-h-[44px] max-w-40 rounded border border-[var(--color-metallic-gold)] px-2 py-1 text-xs text-[var(--color-golden-yellow)] disabled:cursor-not-allowed disabled:opacity-45"
-            title={`Reroll upcoming Boss Mandate for 10 Gold: ${upcomingMandateName}`}
-            aria-label={`Reroll ${upcomingMandateName} for 10 Gold`}
+            title={rerollLabel}
+            aria-label={rerollLabel}
           >
             <span data-gameplay-top-bar-reroll-label>
               ↻ {upcomingMandateName} · 10G
@@ -227,7 +243,7 @@ export function GameplayTopBar({
         <button
           onClick={onExit}
           className="p-2 rounded hover:bg-[var(--color-forest-green)] min-w-[44px] min-h-[44px] flex items-center justify-center text-red-400 hover:text-red-300"
-          aria-label={t('common.exit', 'Exit')}
+          aria-label={t('common.exit')}
         >
           <ExitIcon />
         </button>

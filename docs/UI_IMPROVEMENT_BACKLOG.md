@@ -171,10 +171,13 @@ racks and real devices remain open.
     no assertion or timeout was relaxed. TypeScript, targeted lint and all four
     browser-runner subprocess checks pass. Candidate `73ee4c1` is on the
     verification branch; independent CI `38175717641` succeeds, including its
-    production-browser step. Detailed log download subsequently returns HTTP
-    403, so no newly extracted per-test total is claimed here. The broader core
-    acceptance pass exposes a separate top-row corner overflow; publication is
-    held for that fix. Native-speaker review is not claimed.
+    production-browser step. The CLI log endpoint returned HTTP 403, but the
+    GitHub connector later recovered exact totals: 2,964 application tests,
+    17 release/runner checks and 110 production browser cases pass. The broader
+    core acceptance pass exposed a separate top-row corner overflow; its fix
+    passes in `ad02c80` CI `38178639394`. Publication remains held for the four
+    late-game acceptance failures recorded in `IMPLEMENTATION_WRAP_UP.md`.
+    Native-speaker review is not claimed.
 
 14. **Table Loop wastes desktop space.** Its rack uses small fixed tiles on a
     mostly empty 1440×800 screen. Reuse `fitHandTileSize` for `RackRow`.

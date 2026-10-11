@@ -233,6 +233,7 @@
     "voidScripts": "Écrits du Vide"
   },
   "common": {
+    "exit": "Quitter",
     "loading": "Chargement...",
     "error": "Erreur",
     "retry": "Réessayer",
@@ -317,6 +318,8 @@
     "visual": "Visuel"
   },
   "gameplay": {
+    "actProgress": "Acte {{current}} sur {{total}}",
+    "rerollMandate": "Relancer le mandat du prochain boss {{name}} pour {{cost}} pièces d’or",
     "moreTools": "Autres outils de table",
     "yakumanAscended": "Élevé au rang de Yakuman",
     "beginnerShapeBonus": "+{{points}} de bonus de figure",

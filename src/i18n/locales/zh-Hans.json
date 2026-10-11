@@ -233,6 +233,7 @@
     "voidScripts": "虚空卷轴"
   },
   "common": {
+    "exit": "离开",
     "loading": "加载中...",
     "error": "错误",
     "retry": "重试",
@@ -317,6 +318,8 @@
     "visual": "显示"
   },
   "gameplay": {
+    "actProgress": "第{{current}}幕，共{{total}}幕",
+    "rerollMandate": "花费{{cost}}金币重抽下一个首领敕令「{{name}}」",
     "moreTools": "更多牌桌工具",
     "yakumanAscended": "晋升为役满",
     "beginnerShapeBonus": "+{{points}} 牌组奖励",
