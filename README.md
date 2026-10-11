@@ -102,14 +102,14 @@ Run `bun run sloc` to calculate source lines of code.
 
 | System | Items |
 |--------|-------|
-| Fate Seals | 22 |
+| Fate Seals | 24 |
 | Celestial Orbs | 13 |
-| Void Scripts | 20 |
+| Void Scripts | 21 |
 | Imperial Charters | 32 |
 | Omen Tags | 24 |
-| Boss Mandates | 27 |
+| Boss Mandates | 28 (23 standard + 5 showdowns) |
 | Table Stakes | 8 tiers |
-| Decrees | 164 (150 from the authored library + 14 rule-bending) |
+| Decrees | 165 (150 from the authored library + 15 rule-bending) |
 
 ## Features
 
@@ -124,12 +124,13 @@ Run `bun run sloc` to calculate source lines of code.
 ## Documentation
 
 - [Completion checklist and current release](docs/IMPLEMENTATION_WRAP_UP.md#completion-contract--october-11) — Six finite acceptance gates, release scope, remaining blockers and the stopping rule
-- [Monsoon draw implementation](docs/MONSOON_IMPLEMENTATION.md) — Seeded live/bonus draws, non-mutating redraw previews, and remaining Season requirements
-- [Summer wall tradeoff](docs/SUMMER_IMPLEMENTATION.md) — Round-only wall reduction, physical tile restoration, and the unfinished Bamboo exception
+- [Resolved gameplay rules](docs/RULE_RESOLUTION.md) — Current implementation authority for conflicting drafts, preserving confirmed player choices
+- [Monsoon draw implementation](docs/MONSOON_IMPLEMENTATION.md) — Seeded live/bonus draws and non-mutating redraw previews
+- [Summer wall tradeoff](docs/SUMMER_IMPLEMENTATION.md) — Round-only wall reduction and physical tile restoration; [earned Bamboo protection](docs/BAMBOO_SUMMER_IMPLEMENTATION.md) closes the original exception
 - [Three-Flower shop unlock](docs/FLOWER_SHOP_IMPLEMENTATION.md) — Eligible offers, packs, Omen guarantees and generated rewards
 - [SEO strategy and public guides](docs/SEO_STRATEGY.md) — Search intent, static About/how-to-play/FAQ pages, localization roadmap, and release checks
 - [New public-page and scroll illustrations](docs/PUBLIC_SITE_ART.md) — Saved assets, exact generation prompts, and provenance
-- [Flora inspector and Season effects](docs/FLORA_IMPLEMENTATION.md) — Localized full-stack details, real Decay discards, Flower protection, safe touch activation, and explicit remaining mechanics gaps
+- [Flora inspector and Season effects](docs/FLORA_IMPLEMENTATION.md) — Localized full-stack details, real Decay discards, Flower protection, safe touch activation, and the original audit history; later decisions are consolidated in the resolved gameplay rules
 - [Earned Omens and Season lifecycle](docs/OMEN_LIFECYCLE.md) — Real skip acquisition, once-only shop fees, round cleanup, and locked-draw stacking
 - [Double Omen and pending rewards](docs/DOUBLE_OMEN_IMPLEMENTATION.md) — Earned copies, immediate/delayed settlement, optional localized disclosure, and new artwork
 - [Omen costs and live durations](docs/OMEN_EFFECTS_IMPLEMENTATION.md) — Visible shop fees, effect expiry through skips, Season-lock safety, and release verification

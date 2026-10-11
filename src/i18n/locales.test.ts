@@ -653,6 +653,35 @@ function itemsOf(locale: Locale, kind: string): Record<string, unknown> {
   return group?.items ?? {}
 }
 
+it('supplies every interface string and interpolation token in every locale', () => {
+  const entries: [string[], string][] = []
+  const visit = (value: Record<string, unknown>, path: string[] = []) => {
+    for (const [key, child] of Object.entries(value)) {
+      // Catalog identity/completeness is checked against the runtime libraries
+      // below. Item prose need not literally duplicate English sentence shapes.
+      if (key === 'items') continue
+      const next = [...path, key]
+      if (typeof child === 'string') entries.push([next, child])
+      else if (child && typeof child === 'object')
+        visit(child as Record<string, unknown>, next)
+    }
+  }
+  visit(en)
+  const tokens = (text: string) =>
+    [...new Set(text.match(/\{\{[^}]+\}\}/g) ?? [])].sort()
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    for (const [path, english] of entries) {
+      const translated = path.reduce<unknown>(
+        (value, key) => (value as Record<string, unknown> | undefined)?.[key],
+        locale
+      )
+      const label = `${language}:${path.join('.')}`
+      expect(translated, label).toBeTypeOf('string')
+      expect(tokens(translated as string), label).toEqual(tokens(english))
+    }
+  }
+})
+
 describe('locale item translations', () => {
   it('localizes each playable table rule and unlock condition in every language', () => {
     for (const [lang, locale] of Object.entries(LOCALES)) {
@@ -671,13 +700,15 @@ describe('locale item translations', () => {
       }
     }
   })
-  it('gives en an entry for every item the game can show', () => {
+  it('gives every locale its own entry for every item the game can show', () => {
     const missing: string[] = []
 
-    for (const [kind, realIds] of Object.entries(LIBRARIES)) {
-      const translated = new Set(Object.keys(itemsOf(en, kind)))
-      for (const itemId of realIds) {
-        if (!translated.has(itemId)) missing.push(`${kind}.${itemId}`)
+    for (const [lang, locale] of Object.entries(LOCALES)) {
+      for (const [kind, realIds] of Object.entries(LIBRARIES)) {
+        const translated = new Set(Object.keys(itemsOf(locale, kind)))
+        for (const itemId of realIds) {
+          if (!translated.has(itemId)) missing.push(`${lang}:${kind}.${itemId}`)
+        }
       }
     }
 
@@ -708,7 +739,9 @@ describe('locale item translations', () => {
           const entry = value as { name?: unknown; description?: unknown }
           if (
             typeof entry?.name !== 'string' ||
-            typeof entry?.description !== 'string'
+            typeof entry?.description !== 'string' ||
+            !entry.name.trim() ||
+            !entry.description.trim()
           ) {
             incomplete.push(`${lang}:${kind}.${itemId}`)
           }

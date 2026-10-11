@@ -211,6 +211,98 @@
       "double_omen": {
         "name": "Dobleng Pangitain",
         "description": "Kinokopya ang susunod na hindi Dobleng Pangitain na makukuha sa paglaktaw ng round. Bawat sunod na Dobleng Pangitain ay nagdaragdag ng isang kopya."
+      },
+      "omen_of_crescents": {
+        "name": "Pangitain ng mga Gasuklay",
+        "description": "Tiyak na may Makalangit na Globo sa mga puwesto ng gamit sa susunod na tindahan."
+      },
+      "omen_of_ash": {
+        "name": "Pangitain ng Abo",
+        "description": "Walang masamang epekto ang susunod na Kasulatan ng Kawalan na gagamitin."
+      },
+      "omen_of_rivers": {
+        "name": "Pangitain ng mga Ilog",
+        "description": "Magsisimula ang susunod na round na may +1 dagdag na pagtapon."
+      },
+      "speed_omen": {
+        "name": "Pangitain ng Bilis",
+        "description": "Nagbibigay ng 5 Ginto bawat round na nilaktawan sa run na ito."
+      },
+      "throwback_omen": {
+        "name": "Pangitain ng Pagbabalik-tanaw",
+        "description": "Nadadagdagan ng x0.25 ang multiplikador bawat nilaktawang round hanggang matapos ang run."
+      },
+      "fortune_omen": {
+        "name": "Pangitain ng Kayamanan",
+        "description": "Agad makakuha ng 10 Ginto."
+      },
+      "oracles_omen": {
+        "name": "Pangitain ng Orakulo",
+        "description": "May 2 libreng pagpapalit ng paninda sa susunod na tindahan."
+      },
+      "merchants_omen": {
+        "name": "Pangitain ng Mangangalakal",
+        "description": "May 25% diskuwento sa lahat ng paninda sa susunod na tindahan."
+      },
+      "seal_omen": {
+        "name": "Pangitain ng Selyo",
+        "description": "Tiyak na may Selyo ng Tadhana sa mga puwesto ng gamit sa susunod na tindahan."
+      },
+      "decree_omen": {
+        "name": "Pangitain ng Dekreto",
+        "description": "Tiyak na may Dekretong Bihira o mas mataas ang antas sa susunod na tindahan."
+      },
+      "void_omen": {
+        "name": "Pangitain ng Kawalan",
+        "description": "May Kasulatan ng Kawalan sa mga puwesto ng gamit sa susunod na tindahan."
+      },
+      "expansion_omen": {
+        "name": "Pangitain ng Paglawak",
+        "description": "Permanenteng makakuha ng +1 puwesto ng Dekreto."
+      },
+      "precision_omen": {
+        "name": "Pangitain ng Katumpakan",
+        "description": "Sa susunod na round: +2 sa kapasidad ng kamay."
+      },
+      "abundance_omen": {
+        "name": "Pangitain ng Kasaganaan",
+        "description": "Magsisimula ang susunod na round na may +2 dagdag na pagkakataong mag-redraw."
+      },
+      "polychrome_omen": {
+        "name": "Pangitain ng Makukulay na Anyo",
+        "description": "Naglalagay ng edisyong Polychrome sa isang sapalarang hawak na Dekreto."
+      },
+      "foil_omen": {
+        "name": "Pangitain ng Metalikong Balot",
+        "description": "Magkakaroon ng edisyong Foil ang susunod na bibilhing Dekreto."
+      },
+      "interest_omen": {
+        "name": "Pangitain ng Interes",
+        "description": "Tataas ng 2 ang limitasyon ng interes sa loob ng 3 round."
+      },
+      "score_surge_omen": {
+        "name": "Pangitain ng Bugso ng Puntos",
+        "description": "Makakakuha ng +100 batayang puntos ang susunod na kamay na umiskor."
+      },
+      "multiplication_omen": {
+        "name": "Pangitain ng Pagpaparami",
+        "description": "Makakakuha ng x1.5 sa multiplikador ang susunod na kamay na umiskor."
+      },
+      "blessing_pack_omen": {
+        "name": "Pangitain ng Pakete ng Basbas",
+        "description": "May libreng Pakete ng Basbas sa susunod na tindahan."
+      },
+      "negative_omen": {
+        "name": "Pangitain ng Negatibong Anyo",
+        "description": "Magkakaroon ng Negatibong edisyon (+1 puwesto) ang susunod na bibilhing Dekreto."
+      },
+      "austerity_omen": {
+        "name": "Pangitain ng Pagtitipid",
+        "description": "Agad makakuha ng 15 Ginto, ngunit walang interes sa susunod na round."
+      },
+      "holographic_omen": {
+        "name": "Pangitain ng Aninong-Liwanag",
+        "description": "Magkakaroon ng edisyong Holographic ang susunod na bibilhing Dekreto."
       }
     }
   },
@@ -219,6 +311,98 @@
       "seal_of_unity": {
         "name": "Selyo ng Pagkakaisa",
         "description": "Ginagawang mga Hangin ang hanggang 3 numeradong tile. Umiikot ang mga numero sa Silangan, Timog, Kanluran, Hilaga."
+      },
+      "seal_of_the_alchemist": {
+        "name": "Selyo ng Alkimista",
+        "description": "Nilalagyan ng Markang Suwerte ang 2 napiling tile."
+      },
+      "seal_of_the_empress": {
+        "name": "Selyo ng Emperatris",
+        "description": "Nilalagyan ng Markang Bonus sa Puntos ang 2 napiling tile."
+      },
+      "seal_of_the_sage": {
+        "name": "Selyo ng Pantas",
+        "description": "Nilalagyan ng Markang Bonus sa Batayang Puntos ang 2 napiling tile."
+      },
+      "seal_of_harmony": {
+        "name": "Selyo ng Pagkakasundo",
+        "description": "Ginagawang Wild ang 1 tile (maaaring ituring na anumang suit)."
+      },
+      "seal_of_fortitude": {
+        "name": "Selyo ng Katatagan",
+        "description": "Nilalagyan ng Markang Bakal ang 1 tile (x1.5 sa multiplikador habang hawak)."
+      },
+      "seal_of_glass": {
+        "name": "Selyo ng Salamin",
+        "description": "Nilalagyan ng Markang Salamin ang 1 tile (x2 sa multiplikador, maaaring mabasag)."
+      },
+      "seal_of_wealth": {
+        "name": "Selyo ng Kayamanan",
+        "description": "Nilalagyan ng Markang Ginto ang 1 tile (+3 Ginto kung hawak sa katapusan ng round)."
+      },
+      "seal_of_stone": {
+        "name": "Selyo ng Bato",
+        "description": "Nilalagyan ng Markang Bato ang 1 tile (+50 batayang puntos, laging nagbibigay ng puntos)."
+      },
+      "seal_of_manzu": {
+        "name": "Selyo ng Manzu",
+        "description": "Ginagawang Manzu ang suit ng hanggang 3 tile."
+      },
+      "seal_of_pinzu": {
+        "name": "Selyo ng Pinzu",
+        "description": "Ginagawang Pinzu ang suit ng hanggang 3 tile."
+      },
+      "seal_of_souzu": {
+        "name": "Selyo ng Souzu",
+        "description": "Ginagawang Souzu ang suit ng hanggang 3 tile."
+      },
+      "seal_of_the_oracle": {
+        "name": "Selyo ng Orakulo",
+        "description": "Lumilikha ng hanggang 2 sapalarang Makalangit na Globo (kung may puwang)."
+      },
+      "seal_of_the_emperor": {
+        "name": "Selyo ng Emperador",
+        "description": "Lumilikha ng hanggang 2 sapalarang Selyo ng Tadhana (kung may puwang)."
+      },
+      "seal_of_the_fool": {
+        "name": "Selyo ng Hangal",
+        "description": "Lumilikha ng kopya ng huling Selyo ng Tadhana o Makalangit na Globo na ginamit sa run na ito."
+      },
+      "seal_of_judgment": {
+        "name": "Selyo ng Paghuhukom",
+        "description": "Lumilikha ng sapalarang Dekreto (kung may puwang)."
+      },
+      "seal_of_the_hermit": {
+        "name": "Selyo ng Ermitanyo",
+        "description": "Dinodoble ang Ginto (hanggang +20 Ginto)."
+      },
+      "seal_of_balance": {
+        "name": "Selyo ng Balanse",
+        "description": "Nagbibigay ng Gintong katumbas ng kabuuang halaga ng pagbebenta ng lahat ng Dekreto (hanggang 50 Ginto)."
+      },
+      "seal_of_strength": {
+        "name": "Selyo ng Lakas",
+        "description": "Itinataas ng 1 ang numero ng hanggang 2 tile (hanggang 9)."
+      },
+      "seal_of_release": {
+        "name": "Selyo ng Pagpapalaya",
+        "description": "Permanenteng sinisira ang hanggang 2 napiling tile."
+      },
+      "seal_of_transmutation": {
+        "name": "Selyo ng Pagbabagong-anyo",
+        "description": "Pumili ng 2 tile; nagiging kopya ng kanan ang nasa kaliwa."
+      },
+      "seal_of_fortune": {
+        "name": "Selyo ng Suwerte",
+        "description": "May 1 sa 4 na tsansang lagyan ng Foil/Holo/Prismatic ang isang sapalarang Dekreto."
+      },
+      "seal_of_the_immortal": {
+        "name": "Selyo ng Walang Kamatayan",
+        "description": "Lumilikha ng Dekretong Makalangit na Ordinansa (kung may puwang)."
+      },
+      "seal_of_the_void": {
+        "name": "Selyo ng Kawalan",
+        "description": "Itinataas ng 1 antas ang bawat Yaku."
       }
     }
   },
@@ -761,6 +945,586 @@
       "decree-infinite-loop": {
         "name": "Walang Hanggang Loop",
         "description": "Sa dulo ng bawat Akto, nire-regenerate ang lahat ng decree charge"
+      },
+      "decree-misty-jade": {
+        "name": "Jade sa Hamog",
+        "description": "+30 batayang puntos."
+      },
+      "decree-bamboo-scroll": {
+        "name": "Balumbong Kawayan",
+        "description": "+40 batayang puntos."
+      },
+      "decree-jade-tablet": {
+        "name": "Lapida ng Jade",
+        "description": "+50 batayang puntos."
+      },
+      "decree-gentle-breeze": {
+        "name": "Banayad na Simoy",
+        "description": "+2 sa multiplikador."
+      },
+      "decree-rising-sun": {
+        "name": "Sumisikat na Araw",
+        "description": "+3 sa multiplikador."
+      },
+      "decree-lunar-glow": {
+        "name": "Sinag ng Buwan",
+        "description": "+4 sa multiplikador."
+      },
+      "decree-crimson-banner": {
+        "name": "Bandilang Pula",
+        "description": "+5 sa multiplikador."
+      },
+      "decree-golden-seal": {
+        "name": "Gintong Selyo",
+        "description": "+6 sa multiplikador."
+      },
+      "decree-manzu-master": {
+        "name": "Dalubhasa sa Manzu",
+        "description": "+3 sa multiplikador kung may Manzu sa kamay."
+      },
+      "decree-pinzu-perfectionist": {
+        "name": "Maselan sa Pinzu",
+        "description": "+3 sa multiplikador kung may Pinzu sa kamay."
+      },
+      "decree-souzu-scholar": {
+        "name": "Pantas ng Souzu",
+        "description": "+3 sa multiplikador kung may Souzu sa kamay."
+      },
+      "decree-wind-walker": {
+        "name": "Manlalakad sa Hangin",
+        "description": "+4 sa multiplikador kung may tile na Hangin sa kamay."
+      },
+      "decree-dragon-disciple": {
+        "name": "Alagad ng Dragon",
+        "description": "+4 sa multiplikador kung may tile na Dragon sa kamay."
+      },
+      "decree-edge-runner": {
+        "name": "Mananakbo sa Gilid",
+        "description": "+20 batayang puntos bawat terminal na tile sa kamay."
+      },
+      "decree-middle-way": {
+        "name": "Gitnang Landas",
+        "description": "+10 batayang puntos bawat simpleng tile sa kamay."
+      },
+      "decree-green-fortune": {
+        "name": "Luntiang Suwerte",
+        "description": "+15 batayang puntos bawat luntiang tile (2,3,4,6,8 ng Souzu)."
+      },
+      "decree-coin-collector": {
+        "name": "Tagapagtipon ng Barya",
+        "description": "+1 Ginto sa katapusan ng round."
+      },
+      "decree-merchants-favor": {
+        "name": "Pabor ng Mangangalakal",
+        "description": "+2 Ginto sa katapusan ng round."
+      },
+      "decree-lucky-coin": {
+        "name": "Mapalad na Barya",
+        "description": "+3 Ginto sa katapusan ng round."
+      },
+      "decree-pair-lover": {
+        "name": "Mahilig sa Pares",
+        "description": "+30 batayang puntos kung may pares sa kamay."
+      },
+      "decree-sequence-seeker": {
+        "name": "Tagahanap ng Sunod-sunod",
+        "description": "+30 batayang puntos kung may sunod-sunod na pangkat sa kamay."
+      },
+      "decree-triplet-tracker": {
+        "name": "Tagasubaybay ng Tatluhan",
+        "description": "+40 batayang puntos kung may tatluhan sa kamay."
+      },
+      "decree-flower-friend": {
+        "name": "Kaibigan ng mga Bulaklak",
+        "description": "+10 batayang puntos bawat nakolektang Bulaklak."
+      },
+      "decree-seasonal-blessing": {
+        "name": "Basbas ng Panahon",
+        "description": "+2 sa multiplikador bawat aktibong Panahon."
+      },
+      "decree-wide-grip": {
+        "name": "Maluwang na Hawak",
+        "description": "+1 sa kapasidad ng kamay."
+      },
+      "decree-second-chance": {
+        "name": "Ikalawang Pagkakataon",
+        "description": "+1 pagtapon bawat round."
+      },
+      "decree-balanced-path": {
+        "name": "Balanseng Landas",
+        "description": "+15 batayang puntos at +2 sa multiplikador."
+      },
+      "decree-modest-fortune": {
+        "name": "Munting Kayamanan",
+        "description": "+20 batayang puntos at +1 Ginto bawat round."
+      },
+      "decree-humble-power": {
+        "name": "Mapagkumbabang Lakas",
+        "description": "+2 sa multiplikador at +1 Ginto bawat round."
+      },
+      "decree-one-mastery": {
+        "name": "Kahusayan sa Uno",
+        "description": "+25 batayang puntos bawat tile na 1 sa kamay."
+      },
+      "decree-nine-mastery": {
+        "name": "Kahusayan sa Nuwebe",
+        "description": "+25 batayang puntos bawat tile na 9 sa kamay."
+      },
+      "decree-five-blessing": {
+        "name": "Basbas ng Singko",
+        "description": "+35 batayang puntos bawat tile na 5 sa kamay."
+      },
+      "decree-spark": {
+        "name": "Tilamsik",
+        "description": "Multiplikador x1.2."
+      },
+      "decree-ember": {
+        "name": "Baga",
+        "description": "Multiplikador x1.3."
+      },
+      "decree-riichi-devotee": {
+        "name": "Deboto ng Riichi",
+        "description": "+3 sa multiplikador kapag umiskor ng Riichi."
+      },
+      "decree-tanyao-tactician": {
+        "name": "Estratehista ng Tanyao",
+        "description": "+3 sa multiplikador kapag umiskor ng Tanyao."
+      },
+      "decree-pinfu-purist": {
+        "name": "Tagapagtaguyod ng Dalisay na Pinfu",
+        "description": "+3 sa multiplikador kapag umiskor ng Pinfu."
+      },
+      "decree-manzu-emperor": {
+        "name": "Emperador ng Manzu",
+        "description": "+8 sa multiplikador kung Manzu ang kalahati o higit pa ng kamay."
+      },
+      "decree-pinzu-princess": {
+        "name": "Prinsesa ng Pinzu",
+        "description": "+8 sa multiplikador kung Pinzu ang kalahati o higit pa ng kamay."
+      },
+      "decree-souzu-sage": {
+        "name": "Pantas na Souzu",
+        "description": "+8 sa multiplikador kung Souzu ang kalahati o higit pa ng kamay."
+      },
+      "decree-flush-fever": {
+        "name": "Pagkahumaling sa Iisang Suit",
+        "description": "Multiplikador x1.5 kung iisa ang suit ng kamay."
+      },
+      "decree-honor-guard": {
+        "name": "Bantay ng mga Honor",
+        "description": "Multiplikador x1.5 kung may 3+ Honor na tile sa kamay."
+      },
+      "decree-terminal-tide": {
+        "name": "Alon ng mga Terminal",
+        "description": "Multiplikador x1.5 kung may 4+ terminal na tile sa kamay."
+      },
+      "decree-straight-arrow": {
+        "name": "Tuwid na Palaso",
+        "description": "+80 batayang puntos kung may 3 sunod-sunod na pangkat sa kamay."
+      },
+      "decree-run-master": {
+        "name": "Dalubhasa sa Sunod-sunod",
+        "description": "+6 sa multiplikador bawat sunod-sunod na pangkat sa kamay."
+      },
+      "decree-triplet-thunder": {
+        "name": "Kulog ng Tatluhan",
+        "description": "+8 sa multiplikador bawat tatluhan sa kamay."
+      },
+      "decree-echo-stone": {
+        "name": "Batong Umaalingawngaw",
+        "description": "Pinapagana muli ang unang tile na nagbibigay ng puntos."
+      },
+      "decree-mirror-shard": {
+        "name": "Bubog ng Salamin",
+        "description": "Pinapagana muli ang huling tile na nagbibigay ng puntos."
+      },
+      "decree-dragon-echo": {
+        "name": "Alingawngaw ng Dragon",
+        "description": "Pinapagana muli ang lahat ng tile na Dragon."
+      },
+      "decree-wind-echo": {
+        "name": "Alingawngaw ng Hangin",
+        "description": "Pinapagana muli ang lahat ng tile na Hangin."
+      },
+      "decree-golden-ratio": {
+        "name": "Gintong Proporsiyon",
+        "description": "+1 sa multiplikador bawat 5 Gintong hawak mo (hanggang +10)."
+      },
+      "decree-tax-collector": {
+        "name": "Maniningil ng Buwis",
+        "description": "+4 Ginto sa katapusan ng round."
+      },
+      "decree-garden-keeper": {
+        "name": "Tagapangalaga ng Hardin",
+        "description": "+4 sa multiplikador bawat nakolektang Bulaklak."
+      },
+      "decree-blossom-storm": {
+        "name": "Unos ng mga Bulaklak",
+        "description": "Multiplikador x1.2 bawat nakolektang Bulaklak."
+      },
+      "decree-seasonal-wind": {
+        "name": "Hangin ng Panahon",
+        "description": "+50 batayang puntos bawat aktibong Panahon."
+      },
+      "decree-slow-burn": {
+        "name": "Mabagal na Pagliyab",
+        "description": "+2 sa multiplikador bawat round na nilaro sa Aktong ito."
+      },
+      "decree-momentum": {
+        "name": "Buwelo",
+        "description": "+15 batayang puntos bawat kamay na nilaro sa round na ito."
+      },
+      "decree-crescendo": {
+        "name": "Papalakas na Himig",
+        "description": "Multiplikador x1.1 bawat kamay na nilaro sa round na ito."
+      },
+      "decree-waste-not": {
+        "name": "Walang Sinasayang",
+        "description": "+5 sa multiplikador kung walang ginamit na pagtapon sa round na ito."
+      },
+      "decree-recycler": {
+        "name": "Tagagamit Muli",
+        "description": "+20 batayang puntos bawat nagamit na pagtapon sa round na ito."
+      },
+      "decree-yakuhai-zealot": {
+        "name": "Masugid na Alagad ng Yakuhai",
+        "description": "Multiplikador x1.5 kapag umiskor ng Yakuhai."
+      },
+      "decree-toitoi-titan": {
+        "name": "Higante ng Toitoi",
+        "description": "Multiplikador x1.5 kapag umiskor ng Toitoi."
+      },
+      "decree-ittsu-initiate": {
+        "name": "Baguhang Alagad ng Ittsu",
+        "description": "Multiplikador x1.5 kapag umiskor ng Ittsu."
+      },
+      "decree-chinitsu-champion": {
+        "name": "Kampeon ng Chinitsu",
+        "description": "Multiplikador x2.0 kapag umiskor ng Chinitsu."
+      },
+      "decree-veteran": {
+        "name": "Beterano",
+        "description": "+10 batayang puntos bawat natapos na Akto."
+      },
+      "decree-experience": {
+        "name": "Karanasan",
+        "description": "+2 sa multiplikador bawat natapos na Akto."
+      },
+      "decree-greater-jade": {
+        "name": "Dakilang Jade",
+        "description": "+80 batayang puntos."
+      },
+      "decree-blazing-banner": {
+        "name": "Nagliliyab na Bandila",
+        "description": "+10 sa multiplikador."
+      },
+      "decree-flame": {
+        "name": "Ningas",
+        "description": "Multiplikador x1.5."
+      },
+      "decree-wind-dragon": {
+        "name": "Hangin at Dragon",
+        "description": "+5 sa multiplikador kung parehong may Hangin at Dragon sa kamay."
+      },
+      "decree-all-suits": {
+        "name": "Lahat ng Suit",
+        "description": "+8 sa multiplikador kung nasa kamay ang lahat ng 3 suit."
+      },
+      "decree-bookends": {
+        "name": "Magkabilang Dulo",
+        "description": "+60 batayang puntos kung parehong may 1 at 9 sa kamay."
+      },
+      "decree-expansive-grip": {
+        "name": "Mas Maluwang na Hawak",
+        "description": "+2 sa kapasidad ng kamay."
+      },
+      "decree-careful-player": {
+        "name": "Maingat na Manlalaro",
+        "description": "+2 pagtapon bawat round."
+      },
+      "decree-inferno": {
+        "name": "Naglalagablab na Apoy",
+        "description": "Multiplikador x2.0."
+      },
+      "decree-supernova": {
+        "name": "Pagsabog ng Bituin",
+        "description": "×2.5 sa multiplikador kung aabot sa hindi bababa sa doble ng target ang puntos ng round sa larong ito, bago ang mga bonus ng Pagsabog ng Bituin at Maselan."
+      },
+      "decree-perfectionist": {
+        "name": "Maselan",
+        "description": "×3 sa multiplikador kung malalampasan ng unang laro ang round, bago ang mga bonus ng Pagsabog ng Bituin at Maselan."
+      },
+      "decree-compound-interest": {
+        "name": "Patong-patong na Interes",
+        "description": "+2 sa multiplikador bawat 10 Gintong hawak mo."
+      },
+      "decree-wealth-engine": {
+        "name": "Makina ng Kayamanan",
+        "description": "+1 Ginto bawat hawak na Dekreto sa katapusan ng round."
+      },
+      "decree-perpetual-motion": {
+        "name": "Walang Tigilang Galaw",
+        "description": "+5 sa multiplikador bawat kamay na nilaro sa run na ito (hanggang +50)."
+      },
+      "decree-triple-echo": {
+        "name": "Tripleng Alingawngaw",
+        "description": "Pinapagana muli nang isang beses ang lahat ng tile na nagbibigay ng puntos."
+      },
+      "decree-terminal-resonance": {
+        "name": "Dagundong ng mga Terminal",
+        "description": "Pinapagana muli nang dalawang beses ang mga terminal na tile."
+      },
+      "decree-honor-resonance": {
+        "name": "Dagundong ng mga Honor",
+        "description": "Pinapagana muli nang dalawang beses ang mga Honor na tile."
+      },
+      "decree-manzu-monarch": {
+        "name": "Monarka ng Manzu",
+        "description": "Multiplikador x2.0 kung Manzu ang buong kamay."
+      },
+      "decree-pinzu-potentate": {
+        "name": "Makapangyarihang Pinuno ng Pinzu",
+        "description": "Multiplikador x2.0 kung Pinzu ang buong kamay."
+      },
+      "decree-souzu-sovereign": {
+        "name": "Soberano ng Souzu",
+        "description": "Multiplikador x2.0 kung Souzu ang buong kamay."
+      },
+      "decree-flower-emperor": {
+        "name": "Emperador ng mga Bulaklak",
+        "description": "Multiplikador x1.5 bawat nakolektang Bulaklak."
+      },
+      "decree-season-lord": {
+        "name": "Panginoon ng Panahon",
+        "description": "+10 sa multiplikador bawat aktibong Panahon."
+      },
+      "decree-nature-bond": {
+        "name": "Ugnay sa Kalikasan",
+        "description": "+3 sa multiplikador bawat Bulaklak, +30 batayang puntos bawat Panahon."
+      },
+      "decree-honitsu-herald": {
+        "name": "Tagapagbalita ng Honitsu",
+        "description": "Multiplikador x2.0 kapag umiskor ng Honitsu."
+      },
+      "decree-sanshoku-sage": {
+        "name": "Pantas ng Sanshoku",
+        "description": "Multiplikador x2.0 kapag umiskor ng Sanshoku."
+      },
+      "decree-chanta-champion": {
+        "name": "Kampeon ng Chanta",
+        "description": "Multiplikador x2.0 kapag umiskor ng Chanta."
+      },
+      "decree-mandate-breaker": {
+        "name": "Tagasira ng Mandato",
+        "description": "+15 sa multiplikador sa mga round ng Boss."
+      },
+      "decree-boss-slayer": {
+        "name": "Tagagapi ng Boss",
+        "description": "Multiplikador x2.0 sa mga round ng Boss."
+      },
+      "decree-fortune-and-glory": {
+        "name": "Kayamanan at Kaluwalhatian",
+        "description": "+60 batayang puntos, +8 sa multiplikador, +3 Ginto bawat round."
+      },
+      "decree-emperors-blessing": {
+        "name": "Basbas ng Emperador",
+        "description": "+100 batayang puntos at +10 sa multiplikador."
+      },
+      "decree-golden-age": {
+        "name": "Gintong Panahon",
+        "description": "+8 Ginto sa katapusan ng round."
+      },
+      "decree-sacrifice": {
+        "name": "Sakripisyo",
+        "description": "Multiplikador x3.0, -1 pagtapon bawat round."
+      },
+      "decree-transmuter": {
+        "name": "Tagapagbagong-anyo",
+        "description": "Nagiging mga terminal ang lahat ng simpleng tile sa pagbilang ng puntos."
+      },
+      "decree-harmonizer": {
+        "name": "Tagapag-ugnay",
+        "description": "Itinuturing na magkakatugma ang lahat ng suit sa pagbuo ng sunod-sunod na pangkat."
+      },
+      "decree-final-act": {
+        "name": "Huling Akto",
+        "description": "Multiplikador x1.5 bawat Akto lampas sa 4."
+      },
+      "decree-endless-journey": {
+        "name": "Walang Hanggang Paglalakbay",
+        "description": "+20 batayang puntos bawat natapos na Akto."
+      },
+      "decree-master-grip": {
+        "name": "Bihasang Hawak",
+        "description": "+3 sa kapasidad ng kamay."
+      },
+      "decree-infinite-patience": {
+        "name": "Walang Hanggang Pagtitiis",
+        "description": "+3 pagtapon bawat round."
+      },
+      "decree-divine-flame": {
+        "name": "Banal na Ningas",
+        "description": "Multiplikador x3.0."
+      },
+      "decree-heavens-wrath": {
+        "name": "Poot ng Langit",
+        "description": "Multiplikador x4.0 kung walang simpleng tile sa kamay."
+      },
+      "decree-void-blessing": {
+        "name": "Basbas ng Kawalan",
+        "description": "Multiplikador x5.0 kung puro Honor ang kamay."
+      },
+      "decree-eternal-echo": {
+        "name": "Walang Hanggang Alingawngaw",
+        "description": "Pinapagana muli nang dalawang beses ang lahat ng tile na nagbibigay ng puntos."
+      },
+      "decree-dragon-king": {
+        "name": "Hari ng mga Dragon",
+        "description": "Pinapagana muli nang 3 beses ang mga tile na Dragon."
+      },
+      "decree-yaku-amplifier": {
+        "name": "Tagapagpalakas ng Yaku",
+        "description": "Pinatataas nang x1.5 ang lahat ng multiplikador ng Yaku."
+      },
+      "decree-yakuman-seeker": {
+        "name": "Tagahanap ng Yakuman",
+        "description": "+50 sa multiplikador kapag umiskor ng Yakuman."
+      },
+      "decree-four-seasons-master": {
+        "name": "Dalubhasa sa Apat na Panahon",
+        "description": "Multiplikador x2.0 bawat aktibong Panahon."
+      },
+      "decree-eternal-garden": {
+        "name": "Walang Hanggang Hardin",
+        "description": "+10 sa multiplikador bawat Bulaklak; hindi maaaring mawala ang mga Bulaklak."
+      },
+      "decree-midas-touch": {
+        "name": "Haplos ni Midas",
+        "description": "+20 Ginto sa katapusan ng round."
+      },
+      "decree-infinite-wealth": {
+        "name": "Walang Hanggang Kayamanan",
+        "description": "+1 sa multiplikador bawat 5 Gintong hawak mo."
+      },
+      "decree-doppelganger": {
+        "name": "Kalukalike",
+        "description": "Kinokopya ang isang sapalarang Dekretong walang epekto ng pagkopya kapag nakuha at sa simula ng bawat round."
+      },
+      "decree-manzu-god": {
+        "name": "Diyos ng Manzu",
+        "description": "Multiplikador x3.0 kung Manzu ang lahat ng tile."
+      },
+      "decree-pinzu-god": {
+        "name": "Diyos ng Pinzu",
+        "description": "Multiplikador x3.0 kung Pinzu ang lahat ng tile."
+      },
+      "decree-souzu-god": {
+        "name": "Diyos ng Souzu",
+        "description": "Multiplikador x3.0 kung Souzu ang lahat ng tile."
+      },
+      "decree-glass-cannon": {
+        "name": "Kanyong Salamin",
+        "description": "Multiplikador x6.0; nasisira kung matalo sa round ng Boss."
+      },
+      "decree-phoenix": {
+        "name": "Ibong Muling Nabubuhay",
+        "description": "Pinipigilan ang isang pagkatalo bawat run, pagkatapos ay ibinebenta ang sarili."
+      },
+      "decree-time-lord": {
+        "name": "Panginoon ng Oras",
+        "description": "+1 dagdag na paglalaro ng kamay bawat round."
+      },
+      "decree-exponential": {
+        "name": "Pabilis na Paglago",
+        "description": "Multiplikador x1.3 bawat 100 batayang puntos na naiskor."
+      },
+      "decree-chain-reaction": {
+        "name": "Sunod-sunod na Reaksiyon",
+        "description": "+5 sa multiplikador bawat Yaku na umiskor sa kamay na ito."
+      },
+      "decree-cosmic-jade": {
+        "name": "Jade ng Kalawakan",
+        "description": "+200 batayang puntos."
+      },
+      "decree-solar-banner": {
+        "name": "Bandila ng Araw",
+        "description": "+25 sa multiplikador."
+      },
+      "decree-universal-grip": {
+        "name": "Hawak na Walang Hangganan",
+        "description": "+4 sa kapasidad ng kamay."
+      },
+      "decree-celestial-throne": {
+        "name": "Makalangit na Trono",
+        "description": "Multiplikador x10.0, -2 sa kapasidad ng kamay, -1 pagtapon."
+      },
+      "decree-void-emperor": {
+        "name": "Emperador ng Kawalan",
+        "description": "Multiplikador x8.0 kung 0 ang puntos sa huling kamay."
+      },
+      "decree-echo-dimension": {
+        "name": "Daigdig ng Alingawngaw",
+        "description": "Dalawang beses gumagana ang lahat ng epekto ng muling pagpapagana."
+      },
+      "decree-world-tree": {
+        "name": "Puno ng Daigdig",
+        "description": "Multiplikador x2.0 bawat Bulaklak, x1.5 bawat Panahon."
+      },
+      "decree-dragon-hoard": {
+        "name": "Kayamanan ng Dragon",
+        "description": "+2 sa multiplikador bawat 10 Gintong hawak mo."
+      },
+      "decree-yaku-nexus": {
+        "name": "Tagpuan ng Yaku",
+        "description": "Umiskor ang lahat ng Yaku nang may +1 baitang."
+      },
+      "decree-reality-warp": {
+        "name": "Pagbaluktot ng Realidad",
+        "description": "Itinuturing ang bawat tile na kabilang sa lahat ng suit at may lahat ng numero."
+      },
+      "decree-time-master": {
+        "name": "Dalubhasa sa Oras",
+        "description": "+2 dagdag na paglalaro ng kamay bawat round."
+      },
+      "decree-immortal-decree": {
+        "name": "Dekretong Walang Kamatayan",
+        "description": "Pinipigilan ang lahat ng pagkatalo (ngunit hinahati ang puntos)."
+      },
+      "broken_stair_edict": {
+        "name": "Edikto ng Sirang Hagdan",
+        "description": "Maaaring lumaktaw ng isang numero ang sunod-sunod na pangkat (hal., pinapayagan ang 1-3-4)."
+      },
+      "false_eye_mandate": {
+        "name": "Mandato ng Huwad na Mata",
+        "description": "Maaaring magsilbing pares ang isang pangkat sa pagsusuri kung kumpleto ang kamay."
+      },
+      "honor_transmutation": {
+        "name": "Pagbabagong-anyo ng Honor",
+        "description": "Maaaring ituring ang mga Honor na tile na kabilang sa pinakamaraming suit sa iyong kamay."
+      },
+      "celestial_wildcard": {
+        "name": "Makalangit na Pamalit",
+        "description": "Maaaring gumaya sa anumang ibang tile ang isang tile bawat kamay."
+      },
+      "dead_wall_writ": {
+        "name": "Utos ng Patay na Pader",
+        "description": "Isang beses bawat round, bumunot mula sa mga itinapong tile sa halip na sa pader."
+      },
+      "shanten_clemency": {
+        "name": "Awa sa Shanten",
+        "description": "Maaaring umiskor ang kamay sa 1-shanten na may 50% bawas sa puntos."
+      },
+      "closed_hand_austerity": {
+        "name": "Disiplina ng Saradong Kamay",
+        "description": "Ang kumpletong saradong kamay ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang kumpletong saradong kamay sa run na ito, hanggang ×4 bago ang pagpapalakas ng mga Bulaklak. Hindi kasama ang taktikal na laro at Shanten Clemency."
+      },
+      "terminal_devotion": {
+        "name": "Debosyon sa mga Terminal",
+        "description": "Bawat terminal na tile sa iyong kamay ay nagdaragdag ng +5% sa huling puntos."
+      },
+      "yaku_repetition_charter": {
+        "name": "Utos ng Pag-uulit ng Yaku",
+        "description": "Bawat Yaku na umiskor sa magkakasunod na round ay may pinagsasamang ×1.2 sa bawat naunang round ng serye nito (hanggang ×4 sa kabuuan). Napuputol ang serye kapag walang ganoong Yaku o nilaktawan ang round. Ang limitasyon ay bago ang pagpapalakas ng mga Bulaklak."
       }
     }
   },
@@ -936,6 +1700,98 @@
       "cerulean_bell": {
         "name": "Asul na Kampana",
         "description": "Pagkatapos ng bawat siklo ng pagbunot, kailangang ilaro ang isang random na tile; inaalis ang dating lock."
+      },
+      "the_hook": {
+        "name": "Ang Kawit",
+        "description": "Itinatapon ang 2 sapalarang tile mula sa kamay pagkatapos ng bawat pagbunot."
+      },
+      "the_wall": {
+        "name": "Ang Pader",
+        "description": "Napakataas ng kailangang puntos (4x sa halip na 2x)."
+      },
+      "the_eye": {
+        "name": "Ang Mata",
+        "description": "Bawal ulitin ang Yaku sa round na ito (isang beses lang makakapuntos ang bawat Yaku)."
+      },
+      "the_mouth": {
+        "name": "Ang Bibig",
+        "description": "Isang uri lang ng Yaku ang maaaring makapuntos sa round na ito."
+      },
+      "the_flint": {
+        "name": "Ang Batong Apoy",
+        "description": "Hinahati ang batayang puntos at multiplikador sa buong round."
+      },
+      "the_needle": {
+        "name": "Ang Karayom",
+        "description": "Kailangang matapos sa eksaktong 1 paglalaro ng kamay (walang muling pagsubok)."
+      },
+      "the_pillar": {
+        "name": "Ang Haligi",
+        "description": "Pinahihina ang mga tile na nagamit sa mga naunang round ng Aktong ito."
+      },
+      "the_water": {
+        "name": "Ang Tubig",
+        "description": "Magsisimula sa 0 pagpapalit ng tile sa round na ito."
+      },
+      "the_arm": {
+        "name": "Ang Braso",
+        "description": "Ibinababa ng 1 baitang ang Yaku sa pagbilang ng puntos."
+      },
+      "the_psychic": {
+        "name": "Ang Manghuhula",
+        "description": "Kailangang maglaro ng eksaktong 5 tile bawat kamay."
+      },
+      "the_club": {
+        "name": "Ang Pamalo",
+        "description": "Pinahihina ang lahat ng tile na Souzu."
+      },
+      "the_goad": {
+        "name": "Ang Pantulak",
+        "description": "Pinahihina ang lahat ng tile na Pinzu."
+      },
+      "the_window": {
+        "name": "Ang Bintana",
+        "description": "Pinahihina ang lahat ng tile na Manzu."
+      },
+      "the_head": {
+        "name": "Ang Ulo",
+        "description": "Pinahihina ang lahat ng tile na Dragon."
+      },
+      "the_plant": {
+        "name": "Ang Halaman",
+        "description": "Pinahihina ang lahat ng Honor na tile."
+      },
+      "the_ox": {
+        "name": "Ang Baka",
+        "description": "Ginagawang 0 ang iyong Ginto kapag nilaro ang pinakamadalas mong laruin na Yaku."
+      },
+      "the_house": {
+        "name": "Ang Bahay",
+        "description": "Nakataob ang mga tile ng unang kamay na binunot."
+      },
+      "the_wheel": {
+        "name": "Ang Gulong",
+        "description": "Nakataob ang 1 sa bawat 7 tile na binubunot."
+      },
+      "the_fish": {
+        "name": "Ang Isda",
+        "description": "Nakataob ang mga tile na binubunot pagkatapos ng bawat paglalaro ng kamay."
+      },
+      "the_serpent": {
+        "name": "Ang Ahas",
+        "description": "Laging bumubunot ng 3 tile pagkatapos maglaro o magtapon."
+      },
+      "the_tooth": {
+        "name": "Ang Ngipin",
+        "description": "Nawawalan ng 1 Ginto bawat tile na nilaro."
+      },
+      "the_mark": {
+        "name": "Ang Marka",
+        "description": "Nakataob ang lahat ng Honor na tile kapag binunot."
+      },
+      "the_manacle": {
+        "name": "Ang Posas",
+        "description": "-1 sa kapasidad ng kamay."
       }
     },
     "title": "Mandato ng Boss",
@@ -1311,6 +2167,130 @@
       "plentiful_stock": {
         "name": "Masaganang Paninda",
         "description": "+1 puwesto ng paninda sa tindahan (hanggang 4)."
+      },
+      "abundant_stock": {
+        "name": "Saganang Paninda",
+        "description": "+1 puwesto ng paninda sa tindahan (hanggang 3)."
+      },
+      "discount_sale": {
+        "name": "Bentahang may Diskuwento",
+        "description": "25% diskuwento sa lahat ng paninda sa tindahan."
+      },
+      "sharp_edge": {
+        "name": "Matalas na Gilid",
+        "description": "2x na mas madalas lumitaw ang mga Edisyon."
+      },
+      "reroll_surplus": {
+        "name": "Sobrang Pagpipilian",
+        "description": "Mas mura ng 2 Ginto ang pagpapalit ng paninda."
+      },
+      "crystal_lens": {
+        "name": "Lenteng Kristal",
+        "description": "+1 puwesto para sa nauubos na gamit."
+      },
+      "star_chart": {
+        "name": "Mapa ng mga Bituin",
+        "description": "May globo para sa pinakamadalas gamitin na Yaku sa mga Makalangit na Pakete."
+      },
+      "steady_hand": {
+        "name": "Matatag na Kamay",
+        "description": "+1 paglalaro ng kamay bawat round."
+      },
+      "frugal_discard": {
+        "name": "Matipid na Pagtapon",
+        "description": "+1 pagpapalit ng tile bawat round."
+      },
+      "seal_merchant": {
+        "name": "Mangangalakal ng Selyo",
+        "description": "2x na mas madalas lumitaw ang mga Selyo ng Tadhana."
+      },
+      "orb_merchant": {
+        "name": "Mangangalakal ng Globo",
+        "description": "2x na mas madalas lumitaw ang mga Makalangit na Globo."
+      },
+      "seed_pouch": {
+        "name": "Supot ng mga Binhi",
+        "description": "Itinataas sa 10 Ginto ang limitasyon ng interes."
+      },
+      "empty_scroll": {
+        "name": "Blangkong Balumbon",
+        "description": "Walang epekto."
+      },
+      "tile_trading": {
+        "name": "Kalakalan ng Tile",
+        "description": "Maaaring bumili ng mga tile sa tindahan."
+      },
+      "ancient_script": {
+        "name": "Sinaunang Kasulatan",
+        "description": "-1 Akto, -1 paglalaro ng kamay bawat round."
+      },
+      "directors_take": {
+        "name": "Kuha ng Direktor",
+        "description": "Maaaring palitan ang Mandato ng Boss nang 1x bawat Akto (10 Ginto)."
+      },
+      "brush_stroke": {
+        "name": "Hagod ng Pinsel",
+        "description": "+1 sa kapasidad ng kamay."
+      },
+      "liquidation_sale": {
+        "name": "Bentahang Paubos",
+        "description": "50% diskuwento sa lahat ng paninda sa tindahan."
+      },
+      "radiant_edge": {
+        "name": "Nagniningning na Gilid",
+        "description": "4x na mas madalas lumitaw ang mga Edisyon."
+      },
+      "reroll_abundance": {
+        "name": "Masaganang Pagpipilian",
+        "description": "Mas mura ng 4 Ginto ang pagpapalit ng paninda."
+      },
+      "omen_lens": {
+        "name": "Lente ng Pangitain",
+        "description": "Maaaring lumitaw ang mga Kasulatan ng Kawalan sa mga Pakete ng Hiwaga."
+      },
+      "observatory": {
+        "name": "Bantayan ng mga Bituin",
+        "description": "Bawat hawak na Makalangit na Globo ay nagbibigay ng x1.5 sa multiplikador kapag umiskor ang pamilya ng Yaku nito, isang beses bawat globo sa bawat paglalaro. Tugma ang Globo ng Itim na Butas sa anumang Yaku na umiskor."
+      },
+      "swift_hand": {
+        "name": "Mabilis na Kamay",
+        "description": "+1 pang paglalaro ng kamay bawat round."
+      },
+      "wasteful_plenty": {
+        "name": "Masaganang Pagsasayang",
+        "description": "+1 pang pagpapalit ng tile bawat round."
+      },
+      "seal_tycoon": {
+        "name": "Mayamang Mangangalakal ng Selyo",
+        "description": "4x na mas madalas lumitaw ang mga Selyo ng Tadhana."
+      },
+      "orb_tycoon": {
+        "name": "Mayamang Mangangalakal ng Globo",
+        "description": "4x na mas madalas lumitaw ang mga Makalangit na Globo."
+      },
+      "money_tree": {
+        "name": "Puno ng Salapi",
+        "description": "Itinataas sa 20 Ginto ang limitasyon ng interes."
+      },
+      "void_matter": {
+        "name": "Sangkap ng Kawalan",
+        "description": "+1 puwesto ng Dekreto."
+      },
+      "illusion_tiles": {
+        "name": "Mga Tile ng Ilusyon",
+        "description": "Maaaring may mga Edisyon ang mga tile sa tindahan."
+      },
+      "stone_script": {
+        "name": "Kasulatang Bato",
+        "description": "Muling -1 Akto, -1 pagpapalit ng tile bawat round."
+      },
+      "final_cut": {
+        "name": "Huling Bersiyon",
+        "description": "Walang limitasyon ang pagpapalit ng Mandato ng Boss (10 Ginto bawat isa)."
+      },
+      "full_palette": {
+        "name": "Kumpletong Paleta",
+        "description": "Muling +1 sa kapasidad ng kamay."
       }
     }
   },
@@ -1319,6 +2299,86 @@
       "script_of_ectoplasm": {
         "name": "Kasulatan ng Ektoplasma",
         "description": "Nagdaragdag ng Negatibong edisyon sa isang sapalarang Dekreto (+1 puwesto ng Dekreto)."
+      },
+      "script_of_kinship": {
+        "name": "Kasulatan ng Pagkakamag-anak",
+        "description": "Sinisira ang 1 sapalarang tile at nagdaragdag ng 3 sapalarang pinahusay na tile na Hangin o Dragon."
+      },
+      "script_of_the_grave": {
+        "name": "Kasulatan ng Libingan",
+        "description": "Sinisira ang 1 sapalarang tile at nagdaragdag ng 2 sapalarang pinahusay na terminal na tile."
+      },
+      "script_of_incantation": {
+        "name": "Kasulatan ng Orasyon",
+        "description": "Sinisira ang 1 sapalarang tile at nagdaragdag ng 4 sapalarang pinahusay na numeradong tile."
+      },
+      "script_of_immolation": {
+        "name": "Kasulatan ng Pagsasakripisyo sa Apoy",
+        "description": "Sinisira ang 5 sapalarang tile mula sa kamay. Makakuha ng 20 Ginto."
+      },
+      "script_of_the_cryptid": {
+        "name": "Kasulatan ng Nilalang na Misteryoso",
+        "description": "Lumilikha ng 2 kopya ng 1 napiling tile sa kamay."
+      },
+      "script_of_the_gold_seal": {
+        "name": "Kasulatan ng Gintong Selyo",
+        "description": "Nilalagyan ng Gintong Selyo ang 1 napiling tile."
+      },
+      "script_of_deja_vu": {
+        "name": "Kasulatan ng Parang Naulit",
+        "description": "Nilalagyan ng Pulang Selyo ang 1 napiling tile (muling pagpapagana)."
+      },
+      "script_of_the_trance": {
+        "name": "Kasulatan ng Pagkawala sa Ulirat",
+        "description": "Nilalagyan ng Asul na Selyo ang 1 tile (lumilikha ng globo para sa huling kamay)."
+      },
+      "script_of_the_medium": {
+        "name": "Kasulatan ng Tagapamagitan",
+        "description": "Nilalagyan ng Lilang Selyo ang 1 tile (lumilikha ng Selyo ng Tadhana kapag itinapon)."
+      },
+      "script_of_aura": {
+        "name": "Kasulatan ng Aura",
+        "description": "Nilalagyan ng Foil/Holo/Prismatic ang 1 napiling tile."
+      },
+      "script_of_the_wraith": {
+        "name": "Kasulatan ng Multo",
+        "description": "Lumilikha ng sapalarang Bihirang Dekreto."
+      },
+      "script_of_the_ankh": {
+        "name": "Kasulatan ng Ankh",
+        "description": "Kinokopya ang isang sapalarang Dekreto at sinisira ang lahat ng iba pang Dekreto."
+      },
+      "script_of_the_hex": {
+        "name": "Kasulatan ng Sumpa",
+        "description": "Nilalagyan ng Prismatic ang isang sapalarang Dekreto at sinisira ang lahat ng iba pa."
+      },
+      "script_of_the_sigil": {
+        "name": "Kasulatan ng Sagisag",
+        "description": "Ginagawang iisang sapalarang suit ang LAHAT ng tile sa kamay."
+      },
+      "script_of_the_ouija": {
+        "name": "Kasulatan ng Ouija",
+        "description": "Ginagawang iisang sapalarang numero ang LAHAT ng tile sa kamay."
+      },
+      "script_of_the_soul": {
+        "name": "Kasulatan ng Kaluluwa",
+        "description": "Lumilikha ng Lehendaryong Dekreto (Makalangit na Ordinansa)."
+      },
+      "script_of_the_singularity": {
+        "name": "Kasulatan ng Kaisahan",
+        "description": "Itinataas ng 1 antas ang bawat Yaku."
+      },
+      "script_of_eclipse": {
+        "name": "Kasulatan ng Eklipse",
+        "description": "Maaaring umiskor sa 1-shanten sa round na ito."
+      },
+      "script_of_mirrors": {
+        "name": "Kasulatan ng mga Salamin",
+        "description": "Gumagawa ng kopya ng isang tile sa kamay."
+      },
+      "script_of_silence": {
+        "name": "Kasulatan ng Katahimikan",
+        "description": "Binabalewala ang isang di-wastong pangkat sa kamay na ito."
       }
     }
   },
@@ -1686,6 +2746,190 @@
     },
     "flourish": {
       "completion": "Kumpleto ang mesa"
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "Globo ng Pluto",
+        "description": "Nakatugma sa Yaku na Riichi. +1 sa multiplikador, +10 batayang puntos bawat antas."
+      },
+      "mercury_orb": {
+        "name": "Globo ng Merkuryo",
+        "description": "Nakatugma sa Yaku na Tanyao. +1 sa multiplikador, +15 batayang puntos bawat antas."
+      },
+      "uranus_orb": {
+        "name": "Globo ng Uranus",
+        "description": "Nakatugma sa Yaku na Yakuhai. +1 sa multiplikador, +20 batayang puntos bawat antas."
+      },
+      "venus_orb": {
+        "name": "Globo ng Venus",
+        "description": "Nakatugma sa Yaku na Pinfu. +2 sa multiplikador, +20 batayang puntos bawat antas."
+      },
+      "saturn_orb": {
+        "name": "Globo ng Saturno",
+        "description": "Nakatugma sa Yaku na Ittsu (Buong Sunod-sunod). +3 sa multiplikador, +30 batayang puntos bawat antas."
+      },
+      "jupiter_orb": {
+        "name": "Globo ng Hupiter",
+        "description": "Nakatugma sa Yaku na Honitsu (Iisang Suit na may Honor). +2 sa multiplikador, +15 batayang puntos bawat antas."
+      },
+      "earth_orb": {
+        "name": "Globo ng Daigdig",
+        "description": "Nakatugma sa Yaku na Toitoi. +2 sa multiplikador, +25 batayang puntos bawat antas."
+      },
+      "mars_orb": {
+        "name": "Globo ng Marte",
+        "description": "Nakatugma sa Yaku na Chinitsu (Purong Iisang Suit). +3 sa multiplikador, +30 batayang puntos bawat antas."
+      },
+      "neptune_orb": {
+        "name": "Globo ng Neptuno",
+        "description": "Nakatugma sa Yaku na Sanshoku (Magkatulad na Pangkat sa Tatlong Suit). +4 sa multiplikador, +40 batayang puntos bawat antas."
+      },
+      "planet_x_orb": {
+        "name": "Globo ng Planetang X",
+        "description": "Nakatugma sa Yaku na Pitong Pares. +3 sa multiplikador, +35 batayang puntos bawat antas."
+      },
+      "ceres_orb": {
+        "name": "Globo ng Ceres",
+        "description": "Nakatugma sa Yaku na Chanta (Mga Terminal). +4 sa multiplikador, +40 batayang puntos bawat antas."
+      },
+      "eris_orb": {
+        "name": "Globo ng Eris",
+        "description": "Nakatugma sa Yaku na Kokushi Musou. +3 sa multiplikador, +50 batayang puntos bawat antas."
+      },
+      "black_hole_orb": {
+        "name": "Globo ng Itim na Butas",
+        "description": "Itinataas ng 1 antas ang LAHAT ng Yaku kapag ginamit."
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Lunting Felt",
+        "description": "Karaniwang panimulang pader na may 136 tile."
+      },
+      "red_wall": {
+        "name": "Pulang Pader",
+        "description": "Pader na may mga pinahusay na pulang dora na tile."
+      },
+      "blue_wall": {
+        "name": "Asul na Pader",
+        "description": "Pader na nakatuon sa mga tile na Pinzu."
+      },
+      "black_wall": {
+        "name": "Itim na Pader",
+        "description": "Pader na may mga pinahusay na Honor na tile."
+      },
+      "gold_wall": {
+        "name": "Gintong Pader",
+        "description": "Pader na may mga tile na pinahusay ng Ginto."
+      },
+      "crimson_wall": {
+        "name": "Pader na Pula ng Dugo",
+        "description": "Pader na may mga makapangyarihang tile na Dragon."
+      },
+      "obsidian_wall": {
+        "name": "Pader na Obsidian",
+        "description": "Pader na may mga tile na pinahusay ng Hangin."
+      },
+      "jade_wall": {
+        "name": "Pader na Jade",
+        "description": "Pader na nakatuon sa mga tile ng suit na Kawayan."
+      },
+      "ivory_wall": {
+        "name": "Pader na Garing",
+        "description": "Pader na ang komposisyon ay nakatuon sa mga terminal na tile."
+      },
+      "bamboo_wall": {
+        "name": "Pader na Kawayan",
+        "description": "Pader na mas marami ang mga tile na Souzu."
+      },
+      "cherry_wall": {
+        "name": "Pader ng Seresa",
+        "description": "Pader na may mga tile na pinahusay ng Bulaklak."
+      },
+      "moon_wall": {
+        "name": "Pader ng Buwan",
+        "description": "Pader na may mga tile na pinahusay ng Panahon."
+      },
+      "star_wall": {
+        "name": "Pader ng Bituin",
+        "description": "Pader na may mga makalangit na bonus."
+      },
+      "void_wall": {
+        "name": "Pader ng Kawalan",
+        "description": "Pader na may mga tile na hinaplos ng Kawalan."
+      },
+      "imperial_wall": {
+        "name": "Imperyal na Pader",
+        "description": "Pader na may maharlikang komposisyon."
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Pakete ng Hiwaga",
+        "description": "Pumili ng 1 sa 3 Selyo ng Tadhana."
+      },
+      "arcana_jumbo": {
+        "name": "Malaking Pakete ng Hiwaga",
+        "description": "Pumili ng 1 sa 5 Selyo ng Tadhana."
+      },
+      "arcana_mega": {
+        "name": "Napakalaking Pakete ng Hiwaga",
+        "description": "Pumili ng 2 sa 5 Selyo ng Tadhana."
+      },
+      "celestial_normal": {
+        "name": "Makalangit na Pakete",
+        "description": "Pumili ng 1 sa 3 Makalangit na Globo."
+      },
+      "celestial_jumbo": {
+        "name": "Malaking Makalangit na Pakete",
+        "description": "Pumili ng 1 sa 5 Makalangit na Globo."
+      },
+      "celestial_mega": {
+        "name": "Napakalaking Makalangit na Pakete",
+        "description": "Pumili ng 2 sa 5 Makalangit na Globo."
+      },
+      "tile_normal": {
+        "name": "Pakete ng mga Tile",
+        "description": "Pumili ng 1 sa 3 binagong tile."
+      },
+      "tile_jumbo": {
+        "name": "Malaking Pakete ng mga Tile",
+        "description": "Pumili ng 1 sa 5 binagong tile."
+      },
+      "tile_mega": {
+        "name": "Napakalaking Pakete ng mga Tile",
+        "description": "Pumili ng 2 sa 5 binagong tile."
+      },
+      "decree_normal": {
+        "name": "Pakete ng mga Dekreto",
+        "description": "Pumili ng 1 sa 3 Dekreto."
+      },
+      "decree_jumbo": {
+        "name": "Malaking Pakete ng mga Dekreto",
+        "description": "Pumili ng 1 sa 5 Dekreto."
+      },
+      "decree_mega": {
+        "name": "Napakalaking Pakete ng mga Dekreto",
+        "description": "Pumili ng 2 sa 5 Dekreto."
+      },
+      "void_normal": {
+        "name": "Pakete ng Kawalan",
+        "description": "Pumili ng 1 sa 3 Kasulatan ng Kawalan."
+      },
+      "void_jumbo": {
+        "name": "Malaking Pakete ng Kawalan",
+        "description": "Pumili ng 1 sa 5 Kasulatan ng Kawalan."
+      },
+      "void_mega": {
+        "name": "Napakalaking Pakete ng Kawalan",
+        "description": "Pumili ng 2 sa 5 Kasulatan ng Kawalan."
+      }
     }
   }
 }

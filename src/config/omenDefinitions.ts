@@ -443,20 +443,20 @@ export const PRECISION_OMEN: OmenDefinition = {
 }
 
 /**
- * Abundance Omen - Next round starts with +2 draws
+ * Abundance Omen - Next round starts with +2 redraw actions
  */
 export const ABUNDANCE_OMEN: OmenDefinition = {
   id: 'abundance_omen',
   name: 'Abundance Omen',
   japaneseName: '豊穣の兆',
-  description: 'Next round starts with +2 additional draws.',
+  description: 'Next round starts with +2 additional redraws.',
   category: 'Hand',
   rarity: 'Common',
   trigger: 'OnNextRound',
   effect: {
     type: 'draw_bonus',
     value: 2,
-    description: '+2 draws in next round',
+    description: '+2 redraws in next round',
   },
   tradeoff: {
     type: 'none',

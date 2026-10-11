@@ -75,7 +75,7 @@ jobs:
           done
           kill -0 "$static_pid"
           cmp "$RUNNER_TEMP/tensho-static-index.html" dist/index.html
-          bunx playwright test e2e/public-guides.spec.ts e2e/static-routes.spec.ts e2e/asset-delivery.spec.ts --workers=2 --retries=0 --trace=retain-on-failure --output="$RUNNER_TEMP/tensho-surfaces/static-results"
+          bunx playwright test e2e/public-guides.spec.ts e2e/static-routes.spec.ts e2e/asset-delivery.spec.ts e2e/catalog-localization.spec.ts --workers=2 --retries=0 --trace=retain-on-failure --output="$RUNNER_TEMP/tensho-surfaces/static-results"
       - name: Verify current-to-candidate update and offline recovery
         run: node scripts/verify-pwa-updates.mjs "$RUNNER_TEMP/tensho-pwa-before" "$GITHUB_WORKSPACE/dist" "$RUNNER_TEMP/tensho-surfaces/pwa"
       - name: Preserve release-surface diagnostics

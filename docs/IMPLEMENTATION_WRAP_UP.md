@@ -29,7 +29,7 @@ standalone polish checkpoint; subsequent changes must close a gate below.
 | C3 — Save/recovery safety | Reload/resume play and paid pending rewards without loss/replay; protect against stale-window writes; preserve preferences through confirmed reset; verify the supported current-to-candidate PWA update and offline artwork. | Existing coverage; run the named persistence journeys and existing update harness against the candidate. Do not claim support for every historical client or crash-atomic multi-key reset. Any reproduced loss of a supported save is a blocker. |
 | C4 — Usable, teachable interface | At 320px, tablet and desktop: reachable primary actions and close controls, no page-wide overflow or clipped essential rules; hover information also available to touch/keyboard; optional guidance explains selection, commitment and payoff. All 13 game locales have required rules/control text and no raw keys. | Finish verification of the pending Dragon guide, then one bounded screen/locale pass. Fix blocked actions, unreadable rules and incorrect translations; aesthetic variations alone do not reopen this gate. |
 | C5 — Assets and public site | Existing required illustrations decode and have accessible text; audio/motion preferences work. About/how-to-play/FAQ return real HTML with valid links/metadata, and production asset/cache budgets pass. | Reuse the already generated art. Run public-guide/static-route/asset checks. English-only editorial pages remain explicitly labeled; search indexing and future translated articles are not implementation claims. |
-| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Candidate `ad02c80` passes full units/build and 110 production interactions; its core job passes 140/144, including the corner fix. Verify the late-game follow-up and new release-surface job before publication. |
+| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Candidate `ceb70ed` passes all three verification jobs, including 144 core journeys and all 10 PWA updates. The catalog-completeness follow-up below still needs final-source CI before publication. |
 
 ### Execution order and stopping rule
 
@@ -148,6 +148,47 @@ recheck and separate release-surface job are still required before main.
 The interaction-only CI is not whole-release clearance. Consolidate the
 remaining core results, verify fixes and update this list rather than publishing
 a candidate with a known current blocker.
+
+### Consolidated candidate and catalog audit
+
+Candidate `ceb70ed` passes **all three jobs** in CI `38180312598`: 2,978 tests
+in 210 files, 17 release/runner checks, build, 110 production interactions,
+144 core journeys, 24 native dialog/tutorial/audio cases, 20 static
+guide/route/artwork cases, and all 10 actual-v14-to-candidate PWA scenarios.
+The latter preserve durable state, reject activation over another game window,
+recover failed saves and decode all 52 delivery illustrations offline. No
+retries were used. This candidate has not been deployed.
+
+The C2/C4 source audit then found **1,570 missing item entries**: 308 each in
+Italian, Russian, Thai, Tagalog and Turkish, plus 30 Indonesian archive entries.
+English fallback hid the omission; the old test required complete coverage only
+in English. The follow-up now requires every runtime catalog ID in every locale,
+nonempty names/descriptions, and every interface string/interpolation token.
+All missing entries have been translated, preserving existing translations.
+Four language files were completed by user-authorized parallel agents; the main
+agent completed Russian/Indonesian and reviewed integration. Structural checks
+prove no duplicate keys or lost existing entries, not native-speaker approval.
+The first combined locale/header check passes 56/56.
+
+The same audit corrects README counts to 24 Seals, 13 Orbs, 21 Scripts, 32
+Charters, 24 Omens, 28 Mandates, 8 Stakes and 165 Decrees. Abundance Omen's
+`draw_bonus` is assigned to `omenRedrawBonus` in the actual loop; its description
+now says two redraw actions in all thirteen locales, not two additional tiles.
+No resource/economy rules changed. Twelve new desktop/phone catalog cases check
+eight representative actual item dialogs in each of the six affected locales;
+they are included in the real static-server CI step.
+
+Final focused checks pass **64/64** (locale, header and real Omen acquisition),
+TypeScript, targeted ESLint and all **17 release/runner safeguards**. The first
+native catalog browser batch is **11/12**, 4.9 minutes, no retries: all six phone
+cases and five desktop cases pass. Desktop Indonesian misses its initial
+five-second Archive-heading visibility deadline; the later failure snapshot
+contains the expected localized heading. This does not establish its timeout
+cause or a full green browser result. Evidence is retained at
+`/tmp/tensho-interaction-IE5a7E/catalog-browser`. Inspected Russian desktop/phone
+and Indonesian phone scrolls wrap their rules within the frame, with reachable
+close controls. The same twelve cases and unchanged deadlines now run on the
+clean static-server CI; final-source regression remains required before main.
 
 ## Current implementation
 

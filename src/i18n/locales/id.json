@@ -1,4 +1,132 @@
 {
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Kain Hijau",
+        "description": "Dinding awal standar berisi 136 ubin"
+      },
+      "red_wall": {
+        "name": "Dinding Merah",
+        "description": "Dinding dengan ubin dora merah yang diperkuat"
+      },
+      "blue_wall": {
+        "name": "Dinding Biru",
+        "description": "Dinding yang berfokus pada ubin Pinzu"
+      },
+      "black_wall": {
+        "name": "Dinding Hitam",
+        "description": "Dinding dengan ubin kehormatan yang diperkuat"
+      },
+      "gold_wall": {
+        "name": "Dinding Emas",
+        "description": "Dinding dengan ubin yang diperkuat emas"
+      },
+      "crimson_wall": {
+        "name": "Dinding Merah Tua",
+        "description": "Dinding dengan ubin naga yang kuat"
+      },
+      "obsidian_wall": {
+        "name": "Dinding Obsidian",
+        "description": "Dinding dengan ubin angin yang diperkuat"
+      },
+      "jade_wall": {
+        "name": "Dinding Giok",
+        "description": "Dinding yang berfokus pada ubin bambu"
+      },
+      "ivory_wall": {
+        "name": "Dinding Gading",
+        "description": "Dinding yang berfokus pada ubin terminal"
+      },
+      "bamboo_wall": {
+        "name": "Dinding Bambu",
+        "description": "Dinding yang didominasi ubin Souzu"
+      },
+      "cherry_wall": {
+        "name": "Dinding Sakura",
+        "description": "Dinding dengan ubin yang diperkuat bunga"
+      },
+      "moon_wall": {
+        "name": "Dinding Bulan",
+        "description": "Dinding dengan ubin yang diperkuat musim"
+      },
+      "star_wall": {
+        "name": "Dinding Bintang",
+        "description": "Dinding dengan bonus langit"
+      },
+      "void_wall": {
+        "name": "Dinding Kehampaan",
+        "description": "Dinding dengan ubin yang tersentuh kehampaan"
+      },
+      "imperial_wall": {
+        "name": "Dinding Kekaisaran",
+        "description": "Dinding dengan susunan kerajaan"
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Paket Arkana",
+        "description": "Pilih 1 dari 3 Segel Takdir"
+      },
+      "arcana_jumbo": {
+        "name": "Paket Arkana Jumbo",
+        "description": "Pilih 1 dari 5 Segel Takdir"
+      },
+      "arcana_mega": {
+        "name": "Paket Arkana Mega",
+        "description": "Pilih 2 dari 5 Segel Takdir"
+      },
+      "celestial_normal": {
+        "name": "Paket Langit",
+        "description": "Pilih 1 dari 3 Bola Langit"
+      },
+      "celestial_jumbo": {
+        "name": "Paket Langit Jumbo",
+        "description": "Pilih 1 dari 5 Bola Langit"
+      },
+      "celestial_mega": {
+        "name": "Paket Langit Mega",
+        "description": "Pilih 2 dari 5 Bola Langit"
+      },
+      "tile_normal": {
+        "name": "Paket Ubin",
+        "description": "Pilih 1 dari 3 ubin yang dimodifikasi"
+      },
+      "tile_jumbo": {
+        "name": "Paket Ubin Jumbo",
+        "description": "Pilih 1 dari 5 ubin yang dimodifikasi"
+      },
+      "tile_mega": {
+        "name": "Paket Ubin Mega",
+        "description": "Pilih 2 dari 5 ubin yang dimodifikasi"
+      },
+      "decree_normal": {
+        "name": "Paket Dekrit",
+        "description": "Pilih 1 dari 3 Dekrit"
+      },
+      "decree_jumbo": {
+        "name": "Paket Dekrit Jumbo",
+        "description": "Pilih 1 dari 5 Dekrit"
+      },
+      "decree_mega": {
+        "name": "Paket Dekrit Mega",
+        "description": "Pilih 2 dari 5 Dekrit"
+      },
+      "void_normal": {
+        "name": "Paket Kehampaan",
+        "description": "Pilih 1 dari 3 Naskah Kehampaan"
+      },
+      "void_jumbo": {
+        "name": "Paket Kehampaan Jumbo",
+        "description": "Pilih 1 dari 5 Naskah Kehampaan"
+      },
+      "void_mega": {
+        "name": "Paket Kehampaan Mega",
+        "description": "Pilih 2 dari 5 Naskah Kehampaan"
+      }
+    }
+  },
   "riichiPledge": {
     "title": "Ikrar Riichi",
     "active": "Ikrar Riichi aktif",
@@ -2244,7 +2372,7 @@
       },
       "abundance_omen": {
         "name": "Pertanda Kelimpahan",
-        "description": "Ronde berikutnya dimulai dengan +2 pengambilan tambahan."
+        "description": "Ronde berikutnya dimulai dengan +2 kesempatan tarik ulang tambahan."
       },
       "polychrome_omen": {
         "name": "Pertanda Polikrom",

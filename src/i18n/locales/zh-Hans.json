@@ -2120,7 +2120,7 @@
       },
       "abundance_omen": {
         "name": "丰饶之兆",
-        "description": "下回合起始摸牌+2。"
+        "description": "下回合开始时增加2次重抽机会。"
       },
       "polychrome_omen": {
         "name": "多彩之兆",

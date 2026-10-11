@@ -211,6 +211,98 @@
       "double_omen": {
         "name": "Çifte Alamet",
         "description": "Bir tur atlayarak kazanılan sonraki Çifte olmayan Alameti kopyalar. Art arda kazanılan her Çifte Alamet bir kopya ekler."
+      },
+      "omen_of_crescents": {
+        "name": "Hilal Alameti",
+        "description": "Sonraki mağazanın eşya yuvalarında mutlaka bir Göksel Küre bulunur."
+      },
+      "omen_of_ash": {
+        "name": "Kül Alameti",
+        "description": "Kullanılan sonraki Hiçlik Yazıtının olumsuz etkisi uygulanmaz."
+      },
+      "omen_of_rivers": {
+        "name": "Nehir Alameti",
+        "description": "Sonraki tura +1 ek taş atma hakkıyla başlanır."
+      },
+      "speed_omen": {
+        "name": "Hız Alameti",
+        "description": "Bu koşuda atlanan her tur için 5 Altın verir."
+      },
+      "throwback_omen": {
+        "name": "Geçmişin Alameti",
+        "description": "Koşunun geri kalanında, atlanan her tur için Çarpana 0,25× eklenir."
+      },
+      "fortune_omen": {
+        "name": "Servet Alameti",
+        "description": "Hemen 10 Altın kazanılır."
+      },
+      "oracles_omen": {
+        "name": "Kâhinin Alameti",
+        "description": "Sonraki mağazada 2 ücretsiz yenileme hakkı verir."
+      },
+      "merchants_omen": {
+        "name": "Tüccarın Alameti",
+        "description": "Sonraki mağazada tüm eşyalarda %25 indirim sağlar."
+      },
+      "seal_omen": {
+        "name": "Mühür Alameti",
+        "description": "Sonraki mağazanın eşya yuvalarında mutlaka bir Kader Mührü bulunur."
+      },
+      "decree_omen": {
+        "name": "Ferman Alameti",
+        "description": "Sonraki mağazada mutlaka Nadir veya daha yüksek nadirlikte bir Ferman bulunur."
+      },
+      "void_omen": {
+        "name": "Hiçlik Alameti",
+        "description": "Sonraki mağazanın eşya yuvalarında bir Hiçlik Yazıtı sunulur."
+      },
+      "expansion_omen": {
+        "name": "Genişleme Alameti",
+        "description": "Kalıcı olarak +1 Ferman yuvası kazanılır."
+      },
+      "precision_omen": {
+        "name": "İsabet Alameti",
+        "description": "Sonraki tur el kapasitesi +2."
+      },
+      "abundance_omen": {
+        "name": "Bolluk Alameti",
+        "description": "Sonraki tura +2 ek yeniden çekme hakkıyla başlanır."
+      },
+      "polychrome_omen": {
+        "name": "Polikrom Alameti",
+        "description": "Sahip olduğunuz rastgele bir Fermana Polikrom sürüm uygulanır."
+      },
+      "foil_omen": {
+        "name": "Folyo Alameti",
+        "description": "Satın alınan sonraki Ferman Folyo sürüm kazanır."
+      },
+      "interest_omen": {
+        "name": "Faiz Alameti",
+        "description": "Faiz sınırı 3 tur boyunca 2 artar."
+      },
+      "score_surge_omen": {
+        "name": "Puan Sıçraması Alameti",
+        "description": "Puan kazandıran sonraki el +100 temel puan kazanır."
+      },
+      "multiplication_omen": {
+        "name": "Çarpan Alameti",
+        "description": "Puan kazandıran sonraki elin Çarpanı ×1,5 olur."
+      },
+      "blessing_pack_omen": {
+        "name": "Lütuf Paketi Alameti",
+        "description": "Sonraki mağazada ücretsiz bir Lütuf Paketi bulunur."
+      },
+      "negative_omen": {
+        "name": "Negatif Alamet",
+        "description": "Satın alınan sonraki Ferman Negatif sürüm kazanır (+1 yuva)."
+      },
+      "austerity_omen": {
+        "name": "Tasarruf Alameti",
+        "description": "Hemen 15 Altın kazanılır, ancak sonraki tur faiz alınmaz."
+      },
+      "holographic_omen": {
+        "name": "Holografik Alamet",
+        "description": "Satın alınan sonraki Ferman Holografik sürüm kazanır."
       }
     }
   },
@@ -219,6 +311,98 @@
       "seal_of_unity": {
         "name": "Birlik Mührü",
         "description": "En fazla 3 sayı taşını Rüzgâr taşlarına dönüştürür. Sayılar Doğu, Güney, Batı, Kuzey sırasıyla döner."
+      },
+      "seal_of_the_alchemist": {
+        "name": "Simyacı Mührü",
+        "description": "Seçilen 2 taşa Şans İşareti ekler."
+      },
+      "seal_of_the_empress": {
+        "name": "İmparatoriçe Mührü",
+        "description": "Seçilen 2 taşa Bonus İşareti ekler."
+      },
+      "seal_of_the_sage": {
+        "name": "Bilge Mührü",
+        "description": "Seçilen 2 taşa Bonus İşareti ekler."
+      },
+      "seal_of_harmony": {
+        "name": "Uyum Mührü",
+        "description": "1 taşı Joker taşına dönüştürür (her türden sayılır)."
+      },
+      "seal_of_fortitude": {
+        "name": "Metanet Mührü",
+        "description": "1 taşa Çelik İşareti ekler (elde tutulurken Çarpan ×1,5)."
+      },
+      "seal_of_glass": {
+        "name": "Cam Mührü",
+        "description": "1 taşa Cam İşareti ekler (Çarpan ×2; kırılabilir)."
+      },
+      "seal_of_wealth": {
+        "name": "Servet Mührü",
+        "description": "1 taşa Altın İşareti ekler (tur sonunda elde tutuluyorsa +3 Altın)."
+      },
+      "seal_of_stone": {
+        "name": "Taş Mührü",
+        "description": "1 taşa Taş İşareti ekler (+50 Puan; her zaman puan kazandırır)."
+      },
+      "seal_of_manzu": {
+        "name": "Manzu Mührü",
+        "description": "En fazla 3 taşı Manzu türüne dönüştürür."
+      },
+      "seal_of_pinzu": {
+        "name": "Pinzu Mührü",
+        "description": "En fazla 3 taşı Pinzu türüne dönüştürür."
+      },
+      "seal_of_souzu": {
+        "name": "Souzu Mührü",
+        "description": "En fazla 3 taşı Souzu türüne dönüştürür."
+      },
+      "seal_of_the_oracle": {
+        "name": "Kâhin Mührü",
+        "description": "Yer varsa en fazla 2 rastgele Göksel Küre oluşturur."
+      },
+      "seal_of_the_emperor": {
+        "name": "İmparator Mührü",
+        "description": "Yer varsa en fazla 2 rastgele Kader Mührü oluşturur."
+      },
+      "seal_of_the_fool": {
+        "name": "Deli Mührü",
+        "description": "Bu koşuda en son kullanılan Kader Mührünü veya Göksel Küreyi oluşturur."
+      },
+      "seal_of_judgment": {
+        "name": "Yargı Mührü",
+        "description": "Yer varsa rastgele bir Ferman oluşturur."
+      },
+      "seal_of_the_hermit": {
+        "name": "Ermiş Mührü",
+        "description": "Altını ikiye katlar (en fazla +20 Altın)."
+      },
+      "seal_of_balance": {
+        "name": "Denge Mührü",
+        "description": "Tüm Fermanların toplam satış değeri kadar Altın verir (en fazla 50 Altın)."
+      },
+      "seal_of_strength": {
+        "name": "Güç Mührü",
+        "description": "En fazla 2 taşın sayısını 1 artırır (en fazla 9)."
+      },
+      "seal_of_release": {
+        "name": "Serbest Bırakma Mührü",
+        "description": "Seçilen en fazla 2 taşı kalıcı olarak yok eder."
+      },
+      "seal_of_transmutation": {
+        "name": "Dönüşüm Mührü",
+        "description": "2 taş seçin; soldaki, sağdakinin kopyasına dönüşür."
+      },
+      "seal_of_fortune": {
+        "name": "Talih Mührü",
+        "description": "4'te 1 olasılıkla rastgele bir Fermana Folyo, Holografik veya Polikrom sürüm ekler."
+      },
+      "seal_of_the_immortal": {
+        "name": "Ölümsüzün Mührü",
+        "description": "Yer varsa Mitik bir Ferman oluşturur."
+      },
+      "seal_of_the_void": {
+        "name": "Hiçlik Mührü",
+        "description": "Her Yakuyu 1 seviye yükseltir."
       }
     }
   },
@@ -761,6 +945,586 @@
       "decree-infinite-loop": {
         "name": "Sonsuz Döngü",
         "description": "Her Perdenin sonunda, tüm kararname şarjlarını yeniler"
+      },
+      "decree-misty-jade": {
+        "name": "Sisli Yeşim",
+        "description": "+30 Puan."
+      },
+      "decree-bamboo-scroll": {
+        "name": "Bambu Parşömeni",
+        "description": "+40 Puan."
+      },
+      "decree-jade-tablet": {
+        "name": "Yeşim Levha",
+        "description": "+50 Puan."
+      },
+      "decree-gentle-breeze": {
+        "name": "Hafif Esinti",
+        "description": "+2 Çarpan."
+      },
+      "decree-rising-sun": {
+        "name": "Doğan Güneş",
+        "description": "+3 Çarpan."
+      },
+      "decree-lunar-glow": {
+        "name": "Ay Parıltısı",
+        "description": "+4 Çarpan."
+      },
+      "decree-crimson-banner": {
+        "name": "Kızıl Sancak",
+        "description": "+5 Çarpan."
+      },
+      "decree-golden-seal": {
+        "name": "Altın Mühür",
+        "description": "+6 Çarpan."
+      },
+      "decree-manzu-master": {
+        "name": "Manzu Ustası",
+        "description": "Elde Manzu varsa +3 Çarpan."
+      },
+      "decree-pinzu-perfectionist": {
+        "name": "Pinzu Mükemmeliyetçisi",
+        "description": "Elde Pinzu varsa +3 Çarpan."
+      },
+      "decree-souzu-scholar": {
+        "name": "Souzu Âlimi",
+        "description": "Elde Souzu varsa +3 Çarpan."
+      },
+      "decree-wind-walker": {
+        "name": "Rüzgâr Gezgini",
+        "description": "Elde Rüzgâr taşı varsa +4 Çarpan."
+      },
+      "decree-dragon-disciple": {
+        "name": "Ejderha Çırağı",
+        "description": "Elde Ejderha taşı varsa +4 Çarpan."
+      },
+      "decree-edge-runner": {
+        "name": "Uçların Gezgini",
+        "description": "Eldeki her uç taş için +20 Puan."
+      },
+      "decree-middle-way": {
+        "name": "Orta Yol",
+        "description": "Eldeki her basit taş için +10 Puan."
+      },
+      "decree-green-fortune": {
+        "name": "Yeşil Talih",
+        "description": "Her yeşil taş için +15 Puan (Souzu 2, 3, 4, 6, 8)."
+      },
+      "decree-coin-collector": {
+        "name": "Sikke Koleksiyoncusu",
+        "description": "Tur sonunda +1 Altın."
+      },
+      "decree-merchants-favor": {
+        "name": "Tüccarın Lütfu",
+        "description": "Tur sonunda +2 Altın."
+      },
+      "decree-lucky-coin": {
+        "name": "Uğurlu Sikke",
+        "description": "Tur sonunda +3 Altın."
+      },
+      "decree-pair-lover": {
+        "name": "Çift Tutkunu",
+        "description": "Elde bir çift varsa +30 Puan."
+      },
+      "decree-sequence-seeker": {
+        "name": "Seri Arayıcısı",
+        "description": "Elde bir seri varsa +30 Puan."
+      },
+      "decree-triplet-tracker": {
+        "name": "Üçlü İz Sürücüsü",
+        "description": "Elde bir üçlü varsa +40 Puan."
+      },
+      "decree-flower-friend": {
+        "name": "Çiçek Dostu",
+        "description": "Toplanan her Çiçek için +10 Puan."
+      },
+      "decree-seasonal-blessing": {
+        "name": "Mevsim Lütfu",
+        "description": "Etkin her Mevsim için +2 Çarpan."
+      },
+      "decree-wide-grip": {
+        "name": "Geniş Kavrayış",
+        "description": "El kapasitesi +1."
+      },
+      "decree-second-chance": {
+        "name": "İkinci Şans",
+        "description": "Tur başına +1 taş atma hakkı."
+      },
+      "decree-balanced-path": {
+        "name": "Dengeli Yol",
+        "description": "+15 Puan ve +2 Çarpan."
+      },
+      "decree-modest-fortune": {
+        "name": "Mütevazı Servet",
+        "description": "+20 Puan ve tur başına +1 Altın."
+      },
+      "decree-humble-power": {
+        "name": "Mütevazı Güç",
+        "description": "+2 Çarpan ve tur başına +1 Altın."
+      },
+      "decree-one-mastery": {
+        "name": "Birlerin Ustası",
+        "description": "Eldeki her 1 numaralı taş için +25 Puan."
+      },
+      "decree-nine-mastery": {
+        "name": "Dokuzların Ustası",
+        "description": "Eldeki her 9 numaralı taş için +25 Puan."
+      },
+      "decree-five-blessing": {
+        "name": "Beşlerin Lütfu",
+        "description": "Eldeki her 5 numaralı taş için +35 Puan."
+      },
+      "decree-spark": {
+        "name": "Kıvılcım",
+        "description": "Çarpan ×1,2."
+      },
+      "decree-ember": {
+        "name": "Kor",
+        "description": "Çarpan ×1,3."
+      },
+      "decree-riichi-devotee": {
+        "name": "Riichi Adanmışı",
+        "description": "Riichi puan kazandırdığında +3 Çarpan."
+      },
+      "decree-tanyao-tactician": {
+        "name": "Tanyao Taktikçisi",
+        "description": "Tanyao puan kazandırdığında +3 Çarpan."
+      },
+      "decree-pinfu-purist": {
+        "name": "Saf Pinfu Ustası",
+        "description": "Pinfu puan kazandırdığında +3 Çarpan."
+      },
+      "decree-manzu-emperor": {
+        "name": "Manzu İmparatoru",
+        "description": "Elin en az yarısı Manzu ise +8 Çarpan."
+      },
+      "decree-pinzu-princess": {
+        "name": "Pinzu Prensesi",
+        "description": "Elin en az yarısı Pinzu ise +8 Çarpan."
+      },
+      "decree-souzu-sage": {
+        "name": "Souzu Bilgesi",
+        "description": "Elin en az yarısı Souzu ise +8 Çarpan."
+      },
+      "decree-flush-fever": {
+        "name": "Tek Tür Tutkusu",
+        "description": "El tek türden oluşuyorsa Çarpan ×1,5."
+      },
+      "decree-honor-guard": {
+        "name": "Onur Muhafızı",
+        "description": "Elde en az 3 Onur taşı varsa Çarpan ×1,5."
+      },
+      "decree-terminal-tide": {
+        "name": "Uç Taş Dalgası",
+        "description": "Elde en az 4 uç taş varsa Çarpan ×1,5."
+      },
+      "decree-straight-arrow": {
+        "name": "Dosdoğru Ok",
+        "description": "Elde 3 seri varsa +80 Puan."
+      },
+      "decree-run-master": {
+        "name": "Seri Ustası",
+        "description": "Eldeki her seri için +6 Çarpan."
+      },
+      "decree-triplet-thunder": {
+        "name": "Üçlü Gök Gürültüsü",
+        "description": "Eldeki her üçlü için +8 Çarpan."
+      },
+      "decree-echo-stone": {
+        "name": "Yankı Taşı",
+        "description": "Puan kazandıran ilk taşı yeniden tetikler."
+      },
+      "decree-mirror-shard": {
+        "name": "Ayna Kırığı",
+        "description": "Puan kazandıran son taşı yeniden tetikler."
+      },
+      "decree-dragon-echo": {
+        "name": "Ejderha Yankısı",
+        "description": "Tüm Ejderha taşlarını yeniden tetikler."
+      },
+      "decree-wind-echo": {
+        "name": "Rüzgâr Yankısı",
+        "description": "Tüm Rüzgâr taşlarını yeniden tetikler."
+      },
+      "decree-golden-ratio": {
+        "name": "Altın Oran",
+        "description": "Sahip olduğunuz her 5 Altın için +1 Çarpan (en fazla +10)."
+      },
+      "decree-tax-collector": {
+        "name": "Vergi Tahsildarı",
+        "description": "Tur sonunda +4 Altın."
+      },
+      "decree-garden-keeper": {
+        "name": "Bahçe Bekçisi",
+        "description": "Toplanan her Çiçek için +4 Çarpan."
+      },
+      "decree-blossom-storm": {
+        "name": "Çiçek Fırtınası",
+        "description": "Toplanan her Çiçek için Çarpan ×1,2."
+      },
+      "decree-seasonal-wind": {
+        "name": "Mevsim Rüzgârı",
+        "description": "Etkin her Mevsim için +50 Puan."
+      },
+      "decree-slow-burn": {
+        "name": "Yavaş Yanış",
+        "description": "Bu perdede oynanan her tur için +2 Çarpan."
+      },
+      "decree-momentum": {
+        "name": "İvme",
+        "description": "Bu tur oynanan her el için +15 Puan."
+      },
+      "decree-crescendo": {
+        "name": "Kreşendo",
+        "description": "Bu tur oynanan her el için Çarpan ×1,1."
+      },
+      "decree-waste-not": {
+        "name": "İsraf Etme",
+        "description": "Bu tur hiç taş atma hakkı kullanılmadıysa +5 Çarpan."
+      },
+      "decree-recycler": {
+        "name": "Geri Dönüştürücü",
+        "description": "Bu tur kullanılan her taş atma hakkı için +20 Puan."
+      },
+      "decree-yakuhai-zealot": {
+        "name": "Yakuhai Fanatiği",
+        "description": "Yakuhai puan kazandırdığında Çarpan ×1,5."
+      },
+      "decree-toitoi-titan": {
+        "name": "Toitoi Devi",
+        "description": "Toitoi puan kazandırdığında Çarpan ×1,5."
+      },
+      "decree-ittsu-initiate": {
+        "name": "Ittsu Müridi",
+        "description": "Ittsu puan kazandırdığında Çarpan ×1,5."
+      },
+      "decree-chinitsu-champion": {
+        "name": "Chinitsu Şampiyonu",
+        "description": "Chinitsu puan kazandırdığında Çarpan ×2,0."
+      },
+      "decree-veteran": {
+        "name": "Tecrübeli Savaşçı",
+        "description": "Tamamlanan her Perde için +10 Puan."
+      },
+      "decree-experience": {
+        "name": "Deneyim",
+        "description": "Tamamlanan her Perde için +2 Çarpan."
+      },
+      "decree-greater-jade": {
+        "name": "Yüce Yeşim",
+        "description": "+80 Puan."
+      },
+      "decree-blazing-banner": {
+        "name": "Alevli Sancak",
+        "description": "+10 Çarpan."
+      },
+      "decree-flame": {
+        "name": "Alev",
+        "description": "Çarpan ×1,5."
+      },
+      "decree-wind-dragon": {
+        "name": "Rüzgâr ve Ejderha",
+        "description": "Elde hem Rüzgâr hem Ejderha varsa +5 Çarpan."
+      },
+      "decree-all-suits": {
+        "name": "Tüm Türler",
+        "description": "Elde 3 türün tümü varsa +8 Çarpan."
+      },
+      "decree-bookends": {
+        "name": "İki Uç",
+        "description": "Elde hem 1 hem 9 varsa +60 Puan."
+      },
+      "decree-expansive-grip": {
+        "name": "Engin Kavrayış",
+        "description": "El kapasitesi +2."
+      },
+      "decree-careful-player": {
+        "name": "Dikkatli Oyuncu",
+        "description": "Tur başına +2 taş atma hakkı."
+      },
+      "decree-inferno": {
+        "name": "Cehennem Ateşi",
+        "description": "Çarpan ×2,0."
+      },
+      "decree-supernova": {
+        "name": "Süpernova",
+        "description": "Bu hamle, Süpernova ve Mükemmeliyetçi bonusları uygulanmadan tur puanını hedefin en az iki katına çıkarırsa Çarpan ×2,5."
+      },
+      "decree-perfectionist": {
+        "name": "Mükemmeliyetçi",
+        "description": "İlk hamle, Süpernova ve Mükemmeliyetçi bonusları uygulanmadan turu geçerse Çarpan ×3."
+      },
+      "decree-compound-interest": {
+        "name": "Bileşik Faiz",
+        "description": "Sahip olduğunuz her 10 Altın için +2 Çarpan."
+      },
+      "decree-wealth-engine": {
+        "name": "Servet Çarkı",
+        "description": "Tur sonunda sahip olduğunuz her Ferman için +1 Altın."
+      },
+      "decree-perpetual-motion": {
+        "name": "Devridaim",
+        "description": "Bu koşuda oynanan her el için +5 Çarpan (en fazla +50)."
+      },
+      "decree-triple-echo": {
+        "name": "Üçlü Yankı",
+        "description": "Puan kazandıran tüm taşları bir kez yeniden tetikler."
+      },
+      "decree-terminal-resonance": {
+        "name": "Uç Taş Rezonansı",
+        "description": "Uç taşları iki kez yeniden tetikler."
+      },
+      "decree-honor-resonance": {
+        "name": "Onur Rezonansı",
+        "description": "Onur taşlarını iki kez yeniden tetikler."
+      },
+      "decree-manzu-monarch": {
+        "name": "Manzu Hükümdarı",
+        "description": "Elin tamamı Manzu ise Çarpan ×2,0."
+      },
+      "decree-pinzu-potentate": {
+        "name": "Pinzu Sultanı",
+        "description": "Elin tamamı Pinzu ise Çarpan ×2,0."
+      },
+      "decree-souzu-sovereign": {
+        "name": "Souzu Egemenliği",
+        "description": "Elin tamamı Souzu ise Çarpan ×2,0."
+      },
+      "decree-flower-emperor": {
+        "name": "Çiçek İmparatoru",
+        "description": "Toplanan her Çiçek için Çarpan ×1,5."
+      },
+      "decree-season-lord": {
+        "name": "Mevsim Efendisi",
+        "description": "Etkin her Mevsim için +10 Çarpan."
+      },
+      "decree-nature-bond": {
+        "name": "Doğayla Bağ",
+        "description": "Her Çiçek için +3 Çarpan, her Mevsim için +30 Puan."
+      },
+      "decree-honitsu-herald": {
+        "name": "Honitsu Habercisi",
+        "description": "Honitsu puan kazandırdığında Çarpan ×2,0."
+      },
+      "decree-sanshoku-sage": {
+        "name": "Sanshoku Bilgesi",
+        "description": "Sanshoku puan kazandırdığında Çarpan ×2,0."
+      },
+      "decree-chanta-champion": {
+        "name": "Chanta Şampiyonu",
+        "description": "Chanta puan kazandırdığında Çarpan ×2,0."
+      },
+      "decree-mandate-breaker": {
+        "name": "Hüküm Bozan",
+        "description": "Boss turlarında +15 Çarpan."
+      },
+      "decree-boss-slayer": {
+        "name": "Boss Avcısı",
+        "description": "Boss turlarında Çarpan ×2,0."
+      },
+      "decree-fortune-and-glory": {
+        "name": "Servet ve Şan",
+        "description": "+60 Puan, +8 Çarpan ve tur başına +3 Altın."
+      },
+      "decree-emperors-blessing": {
+        "name": "İmparatorun Lütfu",
+        "description": "+100 Puan ve +10 Çarpan."
+      },
+      "decree-golden-age": {
+        "name": "Altın Çağ",
+        "description": "Tur sonunda +8 Altın."
+      },
+      "decree-sacrifice": {
+        "name": "Fedakârlık",
+        "description": "Çarpan ×3,0, tur başına taş atma hakkı -1."
+      },
+      "decree-transmuter": {
+        "name": "Dönüştürücü",
+        "description": "Puanlamada tüm basit taşlar uç taşa dönüşür."
+      },
+      "decree-harmonizer": {
+        "name": "Uyum Sağlayıcı",
+        "description": "Seri oluştururken tüm türler birbiriyle eşleşir."
+      },
+      "decree-final-act": {
+        "name": "Son Perde",
+        "description": "4. Perdeden sonraki her Perde için Çarpan ×1,5."
+      },
+      "decree-endless-journey": {
+        "name": "Sonsuz Yolculuk",
+        "description": "Tamamlanan her Perde için +20 Puan."
+      },
+      "decree-master-grip": {
+        "name": "Usta Kavrayışı",
+        "description": "El kapasitesi +3."
+      },
+      "decree-infinite-patience": {
+        "name": "Sonsuz Sabır",
+        "description": "Tur başına +3 taş atma hakkı."
+      },
+      "decree-divine-flame": {
+        "name": "İlahi Alev",
+        "description": "Çarpan ×3,0."
+      },
+      "decree-heavens-wrath": {
+        "name": "Göğün Gazabı",
+        "description": "Elde hiç basit taş yoksa Çarpan ×4,0."
+      },
+      "decree-void-blessing": {
+        "name": "Hiçliğin Lütfu",
+        "description": "Elin tamamı Onur taşlarından oluşuyorsa Çarpan ×5,0."
+      },
+      "decree-eternal-echo": {
+        "name": "Ebedî Yankı",
+        "description": "Puan kazandıran tüm taşları iki kez yeniden tetikler."
+      },
+      "decree-dragon-king": {
+        "name": "Ejderha Kralı",
+        "description": "Ejderha taşlarını 3 kez yeniden tetikler."
+      },
+      "decree-yaku-amplifier": {
+        "name": "Yaku Güçlendirici",
+        "description": "Tüm Yaku çarpanları ×1,5 ile çarpılır."
+      },
+      "decree-yakuman-seeker": {
+        "name": "Yakuman Arayıcısı",
+        "description": "Yakuman puan kazandırdığında +50 Çarpan."
+      },
+      "decree-four-seasons-master": {
+        "name": "Dört Mevsim Ustası",
+        "description": "Etkin her Mevsim için Çarpan ×2,0."
+      },
+      "decree-eternal-garden": {
+        "name": "Ebedî Bahçe",
+        "description": "Her Çiçek için +10 Çarpan; Çiçekler kaybedilemez."
+      },
+      "decree-midas-touch": {
+        "name": "Midas'ın Dokunuşu",
+        "description": "Tur sonunda +20 Altın."
+      },
+      "decree-infinite-wealth": {
+        "name": "Sonsuz Servet",
+        "description": "Sahip olduğunuz her 5 Altın için +1 Çarpan."
+      },
+      "decree-doppelganger": {
+        "name": "İkiz Suret",
+        "description": "Alındığında ve her tur başında kopyalama etkisi olmayan rastgele bir Fermanı kopyalar."
+      },
+      "decree-manzu-god": {
+        "name": "Manzu Tanrısı",
+        "description": "Tüm taşlar Manzu ise Çarpan ×3,0."
+      },
+      "decree-pinzu-god": {
+        "name": "Pinzu Tanrısı",
+        "description": "Tüm taşlar Pinzu ise Çarpan ×3,0."
+      },
+      "decree-souzu-god": {
+        "name": "Souzu Tanrısı",
+        "description": "Tüm taşlar Souzu ise Çarpan ×3,0."
+      },
+      "decree-glass-cannon": {
+        "name": "Cam Top",
+        "description": "Çarpan ×6,0; boss turu kaybedilirse yok olur."
+      },
+      "decree-phoenix": {
+        "name": "Anka",
+        "description": "Koşu başına bir yenilgiyi önler, ardından kendini satar."
+      },
+      "decree-time-lord": {
+        "name": "Zaman Efendisi",
+        "description": "Tur başına +1 ek oynama hakkı."
+      },
+      "decree-exponential": {
+        "name": "Üstel Güç",
+        "description": "Kazanılan her 100 temel puan için Çarpan ×1,3."
+      },
+      "decree-chain-reaction": {
+        "name": "Zincirleme Tepki",
+        "description": "Bu elde puan kazandıran her Yaku için +5 Çarpan."
+      },
+      "decree-cosmic-jade": {
+        "name": "Kozmik Yeşim",
+        "description": "+200 Puan."
+      },
+      "decree-solar-banner": {
+        "name": "Güneş Sancağı",
+        "description": "+25 Çarpan."
+      },
+      "decree-universal-grip": {
+        "name": "Evrensel Kavrayış",
+        "description": "El kapasitesi +4."
+      },
+      "decree-celestial-throne": {
+        "name": "Göksel Taht",
+        "description": "Çarpan ×10,0, el kapasitesi -2, taş atma hakkı -1."
+      },
+      "decree-void-emperor": {
+        "name": "Hiçlik İmparatoru",
+        "description": "Önceki elin puanı 0 ise Çarpan ×8,0."
+      },
+      "decree-echo-dimension": {
+        "name": "Yankı Boyutu",
+        "description": "Tüm yeniden tetikleme etkileri iki kez tetiklenir."
+      },
+      "decree-world-tree": {
+        "name": "Dünya Ağacı",
+        "description": "Her Çiçek için Çarpan ×2,0, her Mevsim için ×1,5."
+      },
+      "decree-dragon-hoard": {
+        "name": "Ejderha Hazinesi",
+        "description": "Sahip olduğunuz her 10 Altın için +2 Çarpan."
+      },
+      "decree-yaku-nexus": {
+        "name": "Yaku Kavşağı",
+        "description": "Tüm Yakular +1 üst kademeden puan kazandırır."
+      },
+      "decree-reality-warp": {
+        "name": "Gerçeklik Bükümü",
+        "description": "Tüm taşlar her türden ve her sayıdan sayılır."
+      },
+      "decree-time-master": {
+        "name": "Zaman Ustası",
+        "description": "Tur başına +2 ek oynama hakkı."
+      },
+      "decree-immortal-decree": {
+        "name": "Ölümsüz Ferman",
+        "description": "Tüm yenilgileri önler, ancak puanı yarıya indirir."
+      },
+      "broken_stair_edict": {
+        "name": "Kırık Merdiven Fermanı",
+        "description": "Seriler bir sayıyı atlayabilir (örneğin 1-3-4 geçerlidir)."
+      },
+      "false_eye_mandate": {
+        "name": "Sahte Göz Hükmü",
+        "description": "Elin geçerliliği denetlenirken bir grup çift yerine sayılabilir."
+      },
+      "honor_transmutation": {
+        "name": "Onur Dönüşümü",
+        "description": "Onur taşları, elinizde en çok bulunan türün sayı taşları yerine sayılabilir."
+      },
+      "celestial_wildcard": {
+        "name": "Göksel Joker",
+        "description": "El başına bir taş, herhangi bir başka taşın yerine geçebilir."
+      },
+      "dead_wall_writ": {
+        "name": "Ölü Duvar Buyruğu",
+        "description": "Tur başına bir kez, duvar yerine atılan taş havuzundan taş çekebilirsiniz."
+      },
+      "shanten_clemency": {
+        "name": "Shanten Merhameti",
+        "description": "1-shanten durumundaki eller %50 puan cezasıyla puan kazandırabilir."
+      },
+      "closed_hand_austerity": {
+        "name": "Kapalı El Disiplini",
+        "description": "Tamamlanmış kapalı eller ×1,5 kazanır. Bu koşuda daha önce tamamlanan her kapalı el için ×1,2 büyür; Çiçek güçlendirmesinden önce en fazla ×4 olur. Taktik hamleler ve Shanten Merhameti sayılmaz."
+      },
+      "terminal_devotion": {
+        "name": "Uç Taş Bağlılığı",
+        "description": "Elinizdeki her uç taş, son puana +%5 ekler."
+      },
+      "yaku_repetition_charter": {
+        "name": "Yaku Tekrarı Fermanı",
+        "description": "Ardışık turlarda puan kazandıran her Yaku, serisindeki önceki her tur için ×1,2 ile bileşik çarpılır (toplam en fazla ×4). O Yaku olmadan biten veya atlanan bir tur seriyi bozar. Sınır, Çiçek güçlendirmesinden öncedir."
       }
     }
   },
@@ -936,6 +1700,98 @@
       "cerulean_bell": {
         "name": "Gök Mavisi Çan",
         "description": "Her çekiş döngüsünden sonra rastgele bir taş oynanmalıdır; önceki kilit kaldırılır."
+      },
+      "the_hook": {
+        "name": "Kanca",
+        "description": "Her çekişten sonra elden rastgele 2 taş atılır."
+      },
+      "the_wall": {
+        "name": "Duvar",
+        "description": "Çok daha yüksek hedef puan gerekir (2× yerine 4×)."
+      },
+      "the_eye": {
+        "name": "Göz",
+        "description": "Bu tur aynı Yaku tekrarlanamaz; her Yaku yalnızca bir kez puan kazandırır."
+      },
+      "the_mouth": {
+        "name": "Ağız",
+        "description": "Bu tur yalnızca tek bir Yaku türü puan kazandırabilir."
+      },
+      "the_flint": {
+        "name": "Çakmaktaşı",
+        "description": "Tüm tur boyunca temel puan ve Çarpan yarıya iner."
+      },
+      "the_needle": {
+        "name": "İğne",
+        "description": "El tam olarak 1 oynama hakkıyla tamamlanmalıdır; yeniden deneme yoktur."
+      },
+      "the_pillar": {
+        "name": "Sütun",
+        "description": "Bu Perdenin önceki turlarında kullanılan taşlar zayıflatılır."
+      },
+      "the_water": {
+        "name": "Su",
+        "description": "Bu tura 0 yeniden çekme hakkıyla başlanır."
+      },
+      "the_arm": {
+        "name": "Kol",
+        "description": "Puanlamada Yaku kademesi 1 düşer."
+      },
+      "the_psychic": {
+        "name": "Medyum",
+        "description": "Her elde tam olarak 5 taş oynanmalıdır."
+      },
+      "the_club": {
+        "name": "Sopa",
+        "description": "Tüm Souzu taşları zayıflatılır."
+      },
+      "the_goad": {
+        "name": "Üvendire",
+        "description": "Tüm Pinzu taşları zayıflatılır."
+      },
+      "the_window": {
+        "name": "Pencere",
+        "description": "Tüm Manzu taşları zayıflatılır."
+      },
+      "the_head": {
+        "name": "Baş",
+        "description": "Tüm Ejderha taşları zayıflatılır."
+      },
+      "the_plant": {
+        "name": "Bitki",
+        "description": "Tüm Onur taşları zayıflatılır."
+      },
+      "the_ox": {
+        "name": "Öküz",
+        "description": "En çok oynanan Yaku oynandığında Altın 0 olur."
+      },
+      "the_house": {
+        "name": "Ev",
+        "description": "İlk elin taşları yüzleri kapalı çekilir."
+      },
+      "the_wheel": {
+        "name": "Çark",
+        "description": "Çekilen her 7 taştan 1'i yüzü kapalı gelir."
+      },
+      "the_fish": {
+        "name": "Balık",
+        "description": "Her elden sonra taşlar yüzleri kapalı çekilir."
+      },
+      "the_serpent": {
+        "name": "Yılan",
+        "description": "Taş oynadıktan veya attıktan sonra her zaman 3 taş çekilir."
+      },
+      "the_tooth": {
+        "name": "Diş",
+        "description": "Oynanan her taş için 1 Altın kaybedilir."
+      },
+      "the_mark": {
+        "name": "İşaret",
+        "description": "Tüm Onur taşları yüzleri kapalı çekilir."
+      },
+      "the_manacle": {
+        "name": "Kelepçe",
+        "description": "El kapasitesi -1."
       }
     },
     "title": "Patron Emri",
@@ -1311,6 +2167,130 @@
       "plentiful_stock": {
         "name": "Bol Stok",
         "description": "Mağazaya +1 eşya yuvası (toplam 4)."
+      },
+      "abundant_stock": {
+        "name": "Bereketli Stok",
+        "description": "Mağazaya +1 eşya yuvası (toplam 3)."
+      },
+      "discount_sale": {
+        "name": "İndirimli Satış",
+        "description": "Tüm mağaza eşyalarında %25 indirim."
+      },
+      "sharp_edge": {
+        "name": "Keskin Kenar",
+        "description": "Özel sürümler 2× daha sık çıkar."
+      },
+      "reroll_surplus": {
+        "name": "Yenileme Fazlası",
+        "description": "Mağaza yenilemeleri 2 Altın daha ucuza gelir."
+      },
+      "crystal_lens": {
+        "name": "Kristal Mercek",
+        "description": "+1 tüketilebilir eşya yuvası."
+      },
+      "star_chart": {
+        "name": "Yıldız Haritası",
+        "description": "Göksel Paketler en çok kullanılan Yaku için bir Küre içerir."
+      },
+      "steady_hand": {
+        "name": "Sağlam El",
+        "description": "Tur başına +1 oynama hakkı."
+      },
+      "frugal_discard": {
+        "name": "Tutumlu Değişim",
+        "description": "Tur başına +1 yeniden çekme hakkı."
+      },
+      "seal_merchant": {
+        "name": "Mühür Tüccarı",
+        "description": "Kader Mühürleri 2× daha sık çıkar."
+      },
+      "orb_merchant": {
+        "name": "Küre Tüccarı",
+        "description": "Göksel Küreler 2× daha sık çıkar."
+      },
+      "seed_pouch": {
+        "name": "Tohum Kesesi",
+        "description": "Faiz sınırı 10 Altına yükselir."
+      },
+      "empty_scroll": {
+        "name": "Boş Parşömen",
+        "description": "Hiçbir etkisi yoktur."
+      },
+      "tile_trading": {
+        "name": "Taş Ticareti",
+        "description": "Mağazadan taş satın alınabilir."
+      },
+      "ancient_script": {
+        "name": "Kadim Yazıt",
+        "description": "Perde sayısı -1, tur başına oynama hakkı -1."
+      },
+      "directors_take": {
+        "name": "Yönetmenin Çekimi",
+        "description": "Perde başına 1 kez Boss Hükmü yenilenebilir (10 Altın)."
+      },
+      "brush_stroke": {
+        "name": "Fırça Darbesi",
+        "description": "El kapasitesi +1."
+      },
+      "liquidation_sale": {
+        "name": "Tasfiye İndirimi",
+        "description": "Tüm mağaza eşyalarında %50 indirim."
+      },
+      "radiant_edge": {
+        "name": "Işıltılı Kenar",
+        "description": "Özel sürümler 4× daha sık çıkar."
+      },
+      "reroll_abundance": {
+        "name": "Yenileme Bolluğu",
+        "description": "Mağaza yenilemeleri 4 Altın daha ucuza gelir."
+      },
+      "omen_lens": {
+        "name": "Alamet Merceği",
+        "description": "Gizem Paketlerinde Hiçlik Yazıtları çıkabilir."
+      },
+      "observatory": {
+        "name": "Gözlemevi",
+        "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik, puan kazanan her Yaku ile eşleşir."
+      },
+      "swift_hand": {
+        "name": "Çevik El",
+        "description": "Tur başına +1 ilave oynama hakkı."
+      },
+      "wasteful_plenty": {
+        "name": "Savurgan Bolluk",
+        "description": "Tur başına +1 ilave yeniden çekme hakkı."
+      },
+      "seal_tycoon": {
+        "name": "Mühür Zengini",
+        "description": "Kader Mühürleri 4× daha sık çıkar."
+      },
+      "orb_tycoon": {
+        "name": "Küre Zengini",
+        "description": "Göksel Küreler 4× daha sık çıkar."
+      },
+      "money_tree": {
+        "name": "Para Ağacı",
+        "description": "Faiz sınırı 20 Altına yükselir."
+      },
+      "void_matter": {
+        "name": "Hiçlik Maddesi",
+        "description": "+1 Ferman yuvası."
+      },
+      "illusion_tiles": {
+        "name": "Yanılsama Taşları",
+        "description": "Mağazadaki taşlar özel sürümlere sahip olabilir."
+      },
+      "stone_script": {
+        "name": "Taş Yazıtı",
+        "description": "Perde sayısı bir kez daha -1, tur başına yeniden çekme hakkı -1."
+      },
+      "final_cut": {
+        "name": "Son Kurgu",
+        "description": "Boss Hükmü sınırsız kez yenilenebilir (her seferinde 10 Altın)."
+      },
+      "full_palette": {
+        "name": "Eksiksiz Palet",
+        "description": "El kapasitesi bir kez daha +1."
       }
     }
   },
@@ -1319,6 +2299,86 @@
       "script_of_ectoplasm": {
         "name": "Ektoplazma Yazıtı",
         "description": "Rastgele bir Fermana Negatif sürüm ekler (+1 Ferman yuvası)."
+      },
+      "script_of_kinship": {
+        "name": "Akrabalık Yazıtı",
+        "description": "Rastgele 1 taşı yok eder; rastgele 3 geliştirilmiş Onur taşı (Rüzgâr/Ejderha) ekler."
+      },
+      "script_of_the_grave": {
+        "name": "Mezar Yazıtı",
+        "description": "Rastgele 1 taşı yok eder; rastgele 2 geliştirilmiş uç taş ekler."
+      },
+      "script_of_incantation": {
+        "name": "Büyü Yazıtı",
+        "description": "Rastgele 1 taşı yok eder; rastgele 4 geliştirilmiş sayı taşı ekler."
+      },
+      "script_of_immolation": {
+        "name": "Kurban Ateşi Yazıtı",
+        "description": "Elden rastgele 5 taşı yok eder. 20 Altın kazandırır."
+      },
+      "script_of_the_cryptid": {
+        "name": "Gizemli Yaratık Yazıtı",
+        "description": "Elden seçilen 1 taşın 2 kopyasını oluşturur."
+      },
+      "script_of_the_gold_seal": {
+        "name": "Altın Mühür Yazıtı",
+        "description": "Seçilen 1 taşa Altın Mühür ekler."
+      },
+      "script_of_deja_vu": {
+        "name": "Dejavu Yazıtı",
+        "description": "Seçilen 1 taşa Kırmızı Mühür ekler (yeniden tetikleme)."
+      },
+      "script_of_the_trance": {
+        "name": "Trans Yazıtı",
+        "description": "1 taşa Mavi Mühür ekler (son el için Küre oluşturur)."
+      },
+      "script_of_the_medium": {
+        "name": "Medyum Yazıtı",
+        "description": "1 taşa Mor Mühür ekler (taş atıldığında Mühür oluşturur)."
+      },
+      "script_of_aura": {
+        "name": "Hale Yazıtı",
+        "description": "Seçilen 1 taşa Folyo, Holografik veya Polikrom sürüm ekler."
+      },
+      "script_of_the_wraith": {
+        "name": "Hayalet Yazıtı",
+        "description": "Rastgele bir Nadir Ferman oluşturur."
+      },
+      "script_of_the_ankh": {
+        "name": "Ankh Yazıtı",
+        "description": "Rastgele bir Fermanı kopyalar, diğer tüm Fermanları yok eder."
+      },
+      "script_of_the_hex": {
+        "name": "Lanet Yazıtı",
+        "description": "Rastgele bir Fermana Polikrom sürüm ekler, diğer tüm Fermanları yok eder."
+      },
+      "script_of_the_sigil": {
+        "name": "Tılsım Yazıtı",
+        "description": "Eldeki TÜM taşları rastgele seçilen tek bir türe dönüştürür."
+      },
+      "script_of_the_ouija": {
+        "name": "Ruh Tahtası Yazıtı",
+        "description": "Eldeki TÜM taşları rastgele seçilen tek bir sayıya dönüştürür."
+      },
+      "script_of_the_soul": {
+        "name": "Ruh Yazıtı",
+        "description": "Efsanevi bir Ferman (Cennetin Emri) oluşturur."
+      },
+      "script_of_the_singularity": {
+        "name": "Tekillik Yazıtı",
+        "description": "Her Yakuyu 1 seviye yükseltir."
+      },
+      "script_of_eclipse": {
+        "name": "Tutulma Yazıtı",
+        "description": "Bu tur 1-shanten durumunda puan kazanılabilir."
+      },
+      "script_of_mirrors": {
+        "name": "Aynalar Yazıtı",
+        "description": "Eldeki bir taşı çoğaltır."
+      },
+      "script_of_silence": {
+        "name": "Sessizlik Yazıtı",
+        "description": "Bu elde geçersiz bir grup yok sayılır."
       }
     }
   },
@@ -1361,42 +2421,56 @@
       "green_felt": {
         "theme": "Klasik",
         "unlock": "Başlangıçtan itibaren açık",
-        "modifiers": { "0": "Özel değiştirici yok" },
+        "modifiers": {
+          "0": "Özel değiştirici yok"
+        },
         "name": "Yeşil Keçe",
         "description": "Sayısız elin aşındırıp pürüzsüzleştirdiği geleneksel yeşil keçeli klasik mahjong masası. Özel değiştirici yok—yalnızca saf beceri."
       },
       "red_lacquer": {
         "theme": "Uğurlu",
         "unlock": "3. perdeyi tamamla",
-        "modifiers": { "0": "Başlangıç ferman yuvası +1" },
+        "modifiers": {
+          "0": "Başlangıç ferman yuvası +1"
+        },
         "name": "Kırmızı Lake",
         "description": "Şans ve refahı simgeleyen parlak kızıl lake kaplı lüks bir masa. Uğurlu rengi ek Fermanları kendine çeker."
       },
       "bamboo_mat": {
         "theme": "Doğal",
         "unlock": "Bir koşuda 4 çiçeğin tümünü topla",
-        "modifiers": { "0": "Çiçek çekme ağırlığı +%25 (aynı 4 çiçek)" },
+        "modifiers": {
+          "0": "Çiçek çekme ağırlığı +%25 (aynı 4 çiçek)"
+        },
         "name": "Bambu Hasır",
         "description": "Bahçe köşkünde alçak bir masaya serilmiş sade bambu hasır. Doğal ortam çiçeklerin daha sık açmasını sağlar."
       },
       "imperial_gold": {
         "theme": "Kraliyet",
         "unlock": "En az 5 fermanla bir koşu kazan",
-        "modifiers": { "0": "Rastgele 1 bölgesel buyrukla başla" },
+        "modifiers": {
+          "0": "Rastgele 1 bölgesel buyrukla başla"
+        },
         "name": "İmparatorluk Altını",
         "description": "İmparatorluk sarayından, altın varak ve yeşim kakmalı görkemli bir masa. Burada oynayanlar kraliyet lütfuna erişir."
       },
       "night_market": {
         "theme": "Sokak",
         "unlock": "Tüm koşularda toplam 20 ferman satın al",
-        "modifiers": { "0": "Mağaza fiyatları −%20", "1": "Ferman yuvası −1" },
+        "modifiers": {
+          "0": "Mağaza fiyatları −%20",
+          "1": "Ferman yuvası −1"
+        },
         "name": "Gece Pazarı",
         "description": "Kâğıt fenerlerle aydınlanan kalabalık gece pazarında kurulmuş geçici bir masa. Satıcılar indirim sunar, ancak alan dardır."
       },
       "temple_stone": {
         "theme": "Sade",
         "unlock": "Hiç çiçek toplamadan bir koşu kazan",
-        "modifiers": { "0": "Çiçek çıkmaz", "1": "Temel puan +%50" },
+        "modifiers": {
+          "0": "Çiçek çıkmaz",
+          "1": "Temel puan +%50"
+        },
         "name": "Tapınak Taşı",
         "description": "Sade bir dağ tapınağındaki soğuk taş masa. Burada çiçek yetişmez, fakat berrak odaklanma temel puanı artırır."
       },
@@ -1681,6 +2755,190 @@
     },
     "flourish": {
       "completion": "Masa tamam"
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "Plüton Küresi",
+        "description": "Riichi Yakusunu güçlendirir. Seviye başına +1 Çarpan, +10 Puan."
+      },
+      "mercury_orb": {
+        "name": "Merkür Küresi",
+        "description": "Tanyao Yakusunu güçlendirir. Seviye başına +1 Çarpan, +15 Puan."
+      },
+      "uranus_orb": {
+        "name": "Uranüs Küresi",
+        "description": "Yakuhai Yakusunu güçlendirir. Seviye başına +1 Çarpan, +20 Puan."
+      },
+      "venus_orb": {
+        "name": "Venüs Küresi",
+        "description": "Pinfu Yakusunu güçlendirir. Seviye başına +2 Çarpan, +20 Puan."
+      },
+      "saturn_orb": {
+        "name": "Satürn Küresi",
+        "description": "Ittsu (Saf Düz) Yakusunu güçlendirir. Seviye başına +3 Çarpan, +30 Puan."
+      },
+      "jupiter_orb": {
+        "name": "Jüpiter Küresi",
+        "description": "Honitsu (Yarım Renk) Yakusunu güçlendirir. Seviye başına +2 Çarpan, +15 Puan."
+      },
+      "earth_orb": {
+        "name": "Dünya Küresi",
+        "description": "Toitoi Yakusunu güçlendirir. Seviye başına +2 Çarpan, +25 Puan."
+      },
+      "mars_orb": {
+        "name": "Mars Küresi",
+        "description": "Chinitsu (Tam Renk) Yakusunu güçlendirir. Seviye başına +3 Çarpan, +30 Puan."
+      },
+      "neptune_orb": {
+        "name": "Neptün Küresi",
+        "description": "Sanshoku (Karışık Üçlü Seri) Yakusunu güçlendirir. Seviye başına +4 Çarpan, +40 Puan."
+      },
+      "planet_x_orb": {
+        "name": "X Gezegeni Küresi",
+        "description": "Yedi Çift Yakusunu güçlendirir. Seviye başına +3 Çarpan, +35 Puan."
+      },
+      "ceres_orb": {
+        "name": "Ceres Küresi",
+        "description": "Chanta (Her Sette Uç/Şeref) Yakusunu güçlendirir. Seviye başına +4 Çarpan, +40 Puan."
+      },
+      "eris_orb": {
+        "name": "Eris Küresi",
+        "description": "Kokushi Musou Yakusunu güçlendirir. Seviye başına +3 Çarpan, +50 Puan."
+      },
+      "black_hole_orb": {
+        "name": "Kara Delik Küresi",
+        "description": "Kullanıldığında TÜM Yakuları 1 seviye yükseltir."
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Yeşil Keçe",
+        "description": "136 taşlı standart başlangıç duvarı."
+      },
+      "red_wall": {
+        "name": "Kırmızı Duvar",
+        "description": "Geliştirilmiş kırmızı dora taşları içeren duvar."
+      },
+      "blue_wall": {
+        "name": "Mavi Duvar",
+        "description": "Pinzu türü taşlara ağırlık veren duvar."
+      },
+      "black_wall": {
+        "name": "Siyah Duvar",
+        "description": "Geliştirilmiş Onur taşları içeren duvar."
+      },
+      "gold_wall": {
+        "name": "Altın Duvar",
+        "description": "Altınla geliştirilmiş taşlar içeren duvar."
+      },
+      "crimson_wall": {
+        "name": "Kızıl Duvar",
+        "description": "Güçlü Ejderha taşları içeren duvar."
+      },
+      "obsidian_wall": {
+        "name": "Obsidyen Duvar",
+        "description": "Rüzgârla geliştirilmiş taşlar içeren duvar."
+      },
+      "jade_wall": {
+        "name": "Yeşim Duvar",
+        "description": "Bambu türü taşlara ağırlık veren duvar."
+      },
+      "ivory_wall": {
+        "name": "Fildişi Duvar",
+        "description": "Uç taş ağırlıklı duvar."
+      },
+      "bamboo_wall": {
+        "name": "Bambu Duvar",
+        "description": "Souzu ağırlıklı duvar."
+      },
+      "cherry_wall": {
+        "name": "Kiraz Duvarı",
+        "description": "Çiçeklerle geliştirilmiş taşlar içeren duvar."
+      },
+      "moon_wall": {
+        "name": "Ay Duvarı",
+        "description": "Mevsimlerle geliştirilmiş taşlar içeren duvar."
+      },
+      "star_wall": {
+        "name": "Yıldız Duvarı",
+        "description": "Göksel bonuslar içeren duvar."
+      },
+      "void_wall": {
+        "name": "Hiçlik Duvarı",
+        "description": "Hiçliğin dokunduğu taşlar içeren duvar."
+      },
+      "imperial_wall": {
+        "name": "İmparatorluk Duvarı",
+        "description": "Kraliyete özgü taş dizilimli duvar."
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Gizem Paketi",
+        "description": "3 Kader Mühründen 1'ini seçin."
+      },
+      "arcana_jumbo": {
+        "name": "Büyük Gizem Paketi",
+        "description": "5 Kader Mühründen 1'ini seçin."
+      },
+      "arcana_mega": {
+        "name": "Dev Gizem Paketi",
+        "description": "5 Kader Mühründen 2'sini seçin."
+      },
+      "celestial_normal": {
+        "name": "Göksel Paket",
+        "description": "3 Göksel Küreden 1'ini seçin."
+      },
+      "celestial_jumbo": {
+        "name": "Büyük Göksel Paket",
+        "description": "5 Göksel Küreden 1'ini seçin."
+      },
+      "celestial_mega": {
+        "name": "Dev Göksel Paket",
+        "description": "5 Göksel Küreden 2'sini seçin."
+      },
+      "tile_normal": {
+        "name": "Taş Paketi",
+        "description": "3 değiştirilmiş taştan 1'ini seçin."
+      },
+      "tile_jumbo": {
+        "name": "Büyük Taş Paketi",
+        "description": "5 değiştirilmiş taştan 1'ini seçin."
+      },
+      "tile_mega": {
+        "name": "Dev Taş Paketi",
+        "description": "5 değiştirilmiş taştan 2'sini seçin."
+      },
+      "decree_normal": {
+        "name": "Ferman Paketi",
+        "description": "3 Fermandan 1'ini seçin."
+      },
+      "decree_jumbo": {
+        "name": "Büyük Ferman Paketi",
+        "description": "5 Fermandan 1'ini seçin."
+      },
+      "decree_mega": {
+        "name": "Dev Ferman Paketi",
+        "description": "5 Fermandan 2'sini seçin."
+      },
+      "void_normal": {
+        "name": "Hiçlik Paketi",
+        "description": "3 Hiçlik Yazıtından 1'ini seçin."
+      },
+      "void_jumbo": {
+        "name": "Büyük Hiçlik Paketi",
+        "description": "5 Hiçlik Yazıtından 1'ini seçin."
+      },
+      "void_mega": {
+        "name": "Dev Hiçlik Paketi",
+        "description": "5 Hiçlik Yazıtından 2'sini seçin."
+      }
     }
   }
 }

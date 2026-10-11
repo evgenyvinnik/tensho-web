@@ -2108,7 +2108,7 @@
       },
       "abundance_omen": {
         "name": "豊穣の兆し",
-        "description": "次の局はツモ+2回で始まる。"
+        "description": "次の局は引き直し回数が+2回になる。"
       },
       "polychrome_omen": {
         "name": "多彩の兆し",

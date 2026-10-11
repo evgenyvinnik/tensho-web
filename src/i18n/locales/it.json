@@ -208,6 +208,98 @@
       "interestBoost": "Limite interessi +{{amount}} oro · round rimanenti: {{rounds}}"
     },
     "items": {
+      "omen_of_crescents": {
+        "name": "Presagio delle falci lunari",
+        "description": "Il prossimo negozio offre sicuramente una Sfera Celeste negli spazi per articoli."
+      },
+      "omen_of_ash": {
+        "name": "Presagio della cenere",
+        "description": "Il prossimo Scritto del Vuoto usato non ha effetti negativi."
+      },
+      "omen_of_rivers": {
+        "name": "Presagio dei fiumi",
+        "description": "Il prossimo round inizia con +1 scarto aggiuntivo."
+      },
+      "speed_omen": {
+        "name": "Presagio della velocità",
+        "description": "Ottieni 5 Oro per ogni round saltato in questa partita."
+      },
+      "throwback_omen": {
+        "name": "Presagio del ritorno",
+        "description": "Ottieni ×0,25 Molt per ogni round saltato, per il resto della partita."
+      },
+      "fortune_omen": {
+        "name": "Presagio della fortuna",
+        "description": "Ottieni subito 10 Oro."
+      },
+      "oracles_omen": {
+        "name": "Presagio dell’oracolo",
+        "description": "Nel prossimo negozio puoi rinnovare le offerte gratis 2 volte."
+      },
+      "merchants_omen": {
+        "name": "Presagio del mercante",
+        "description": "Il prossimo negozio offre uno sconto del 25% su tutti gli articoli."
+      },
+      "seal_omen": {
+        "name": "Presagio del Sigillo",
+        "description": "Il prossimo negozio offre sicuramente un Sigillo del Fato negli spazi per articoli."
+      },
+      "decree_omen": {
+        "name": "Presagio del Decreto",
+        "description": "Il prossimo negozio offre sicuramente un Decreto raro o di rarità superiore."
+      },
+      "void_omen": {
+        "name": "Presagio del vuoto",
+        "description": "Il prossimo negozio offre uno Scritto del Vuoto negli spazi per articoli."
+      },
+      "expansion_omen": {
+        "name": "Presagio dell’espansione",
+        "description": "Ottieni +1 spazio Decreto permanente."
+      },
+      "precision_omen": {
+        "name": "Presagio della precisione",
+        "description": "Nel prossimo round: +2 spazi per tessere in mano."
+      },
+      "abundance_omen": {
+        "name": "Presagio dell’abbondanza",
+        "description": "Il prossimo round inizia con +2 ripescate aggiuntive."
+      },
+      "polychrome_omen": {
+        "name": "Presagio policromo",
+        "description": "Applica l’edizione Policroma a un Decreto casuale che possiedi."
+      },
+      "foil_omen": {
+        "name": "Presagio laminato",
+        "description": "Il prossimo Decreto acquistato ottiene l’edizione Laminata."
+      },
+      "interest_omen": {
+        "name": "Presagio degli interessi",
+        "description": "Il limite degli interessi aumenta di 2 per 3 round."
+      },
+      "score_surge_omen": {
+        "name": "Presagio dell’impennata",
+        "description": "La prossima mano che segna punti ottiene +100 punti base."
+      },
+      "multiplication_omen": {
+        "name": "Presagio della moltiplicazione",
+        "description": "La prossima mano che segna punti ottiene ×1,5 Molt."
+      },
+      "blessing_pack_omen": {
+        "name": "Presagio della benedizione",
+        "description": "Il prossimo negozio include un Pacchetto benedizione gratuito."
+      },
+      "negative_omen": {
+        "name": "Presagio negativo",
+        "description": "Il prossimo Decreto acquistato ottiene l’edizione Negativa (+1 spazio)."
+      },
+      "austerity_omen": {
+        "name": "Presagio dell’austerità",
+        "description": "Ottieni subito 15 Oro, ma non ricevi interessi nel prossimo round."
+      },
+      "holographic_omen": {
+        "name": "Presagio olografico",
+        "description": "Il prossimo Decreto acquistato ottiene l’edizione Olografica."
+      },
       "double_omen": {
         "name": "Presagio doppio",
         "description": "Copia il prossimo presagio non doppio ottenuto saltando un round. Ogni Presagio doppio consecutivo aggiunge una copia."
@@ -216,6 +308,98 @@
   },
   "seals": {
     "items": {
+      "seal_of_the_alchemist": {
+        "name": "Sigillo dell’alchimista",
+        "description": "Potenzia 2 tessere selezionate con il Marchio Fortuna."
+      },
+      "seal_of_the_empress": {
+        "name": "Sigillo dell’imperatrice",
+        "description": "Potenzia 2 tessere selezionate con il Marchio Bonus."
+      },
+      "seal_of_the_sage": {
+        "name": "Sigillo del saggio",
+        "description": "Potenzia 2 tessere selezionate con il Marchio Bonus."
+      },
+      "seal_of_harmony": {
+        "name": "Sigillo dell’armonia",
+        "description": "Converte 1 tessera in Jolly (conta come qualsiasi seme)."
+      },
+      "seal_of_fortitude": {
+        "name": "Sigillo della fortezza",
+        "description": "Potenzia 1 tessera con il Marchio Acciaio (×1,5 Molt mentre resta in mano)."
+      },
+      "seal_of_glass": {
+        "name": "Sigillo del vetro",
+        "description": "Potenzia 1 tessera con il Marchio Vetro (×2 Molt, può rompersi)."
+      },
+      "seal_of_wealth": {
+        "name": "Sigillo della ricchezza",
+        "description": "Potenzia 1 tessera con il Marchio Oro (+3 Oro se resta in mano alla fine del round)."
+      },
+      "seal_of_stone": {
+        "name": "Sigillo della pietra",
+        "description": "Potenzia 1 tessera con il Marchio Pietra (+50 Fiches, segna sempre punti)."
+      },
+      "seal_of_manzu": {
+        "name": "Sigillo dei Manzu",
+        "description": "Converte fino a 3 tessere nel seme Manzu."
+      },
+      "seal_of_pinzu": {
+        "name": "Sigillo dei Pinzu",
+        "description": "Converte fino a 3 tessere nel seme Pinzu."
+      },
+      "seal_of_souzu": {
+        "name": "Sigillo dei Souzu",
+        "description": "Converte fino a 3 tessere nel seme Souzu."
+      },
+      "seal_of_the_oracle": {
+        "name": "Sigillo dell’oracolo",
+        "description": "Crea fino a 2 Sfere Celesti casuali, se c’è spazio."
+      },
+      "seal_of_the_emperor": {
+        "name": "Sigillo dell’imperatore",
+        "description": "Crea fino a 2 Sigilli del Fato casuali, se c’è spazio."
+      },
+      "seal_of_the_fool": {
+        "name": "Sigillo del matto",
+        "description": "Crea l’ultimo Sigillo del Fato o l’ultima Sfera Celeste usati in questa partita."
+      },
+      "seal_of_judgment": {
+        "name": "Sigillo del giudizio",
+        "description": "Crea un Decreto casuale, se c’è spazio."
+      },
+      "seal_of_the_hermit": {
+        "name": "Sigillo dell’eremita",
+        "description": "Raddoppia l’Oro (massimo +20 Oro)."
+      },
+      "seal_of_balance": {
+        "name": "Sigillo dell’equilibrio",
+        "description": "Ottieni il valore di vendita totale di tutti i Decreti (massimo 50 Oro)."
+      },
+      "seal_of_strength": {
+        "name": "Sigillo della forza",
+        "description": "Aumenta di 1 il valore di un massimo di 2 tessere (massimo 9)."
+      },
+      "seal_of_release": {
+        "name": "Sigillo della liberazione",
+        "description": "Distrugge definitivamente fino a 2 tessere selezionate."
+      },
+      "seal_of_transmutation": {
+        "name": "Sigillo della trasmutazione",
+        "description": "Seleziona 2 tessere: quella a sinistra diventa una copia di quella a destra."
+      },
+      "seal_of_fortune": {
+        "name": "Sigillo della fortuna",
+        "description": "Probabilità di 1 su 4 di aggiungere l’edizione Laminata, Olografica o Policroma a un Decreto casuale."
+      },
+      "seal_of_the_immortal": {
+        "name": "Sigillo dell’immortale",
+        "description": "Crea un Decreto mitico, se c’è spazio."
+      },
+      "seal_of_the_void": {
+        "name": "Sigillo del vuoto",
+        "description": "Potenzia ogni Yaku di 1 livello."
+      },
       "seal_of_unity": {
         "name": "Sigillo dell’Unità",
         "description": "Converte fino a 3 tessere numerate in Venti. I valori seguono il ciclo Est, Sud, Ovest, Nord."
@@ -682,6 +866,586 @@
       "mythic": "Ordinanza Celeste"
     },
     "items": {
+      "decree-misty-jade": {
+        "name": "Giada nebulosa",
+        "description": "+30 Fiches."
+      },
+      "decree-bamboo-scroll": {
+        "name": "Pergamena di bambù",
+        "description": "+40 Fiches."
+      },
+      "decree-jade-tablet": {
+        "name": "Tavoletta di giada",
+        "description": "+50 Fiches."
+      },
+      "decree-gentle-breeze": {
+        "name": "Brezza leggera",
+        "description": "+2 Molt."
+      },
+      "decree-rising-sun": {
+        "name": "Sole nascente",
+        "description": "+3 Molt."
+      },
+      "decree-lunar-glow": {
+        "name": "Bagliore lunare",
+        "description": "+4 Molt."
+      },
+      "decree-crimson-banner": {
+        "name": "Stendardo cremisi",
+        "description": "+5 Molt."
+      },
+      "decree-golden-seal": {
+        "name": "Sigillo dorato",
+        "description": "+6 Molt."
+      },
+      "decree-manzu-master": {
+        "name": "Maestro dei Manzu",
+        "description": "+3 Molt se la mano contiene tessere Manzu."
+      },
+      "decree-pinzu-perfectionist": {
+        "name": "Perfezionista dei Pinzu",
+        "description": "+3 Molt se la mano contiene tessere Pinzu."
+      },
+      "decree-souzu-scholar": {
+        "name": "Studioso dei Souzu",
+        "description": "+3 Molt se la mano contiene tessere Souzu."
+      },
+      "decree-wind-walker": {
+        "name": "Viandante dei venti",
+        "description": "+4 Molt se la mano contiene una tessera Vento."
+      },
+      "decree-dragon-disciple": {
+        "name": "Discepolo dei draghi",
+        "description": "+4 Molt se la mano contiene una tessera Drago."
+      },
+      "decree-edge-runner": {
+        "name": "Corridore sul filo",
+        "description": "+20 Fiches per ogni tessera terminale nella mano."
+      },
+      "decree-middle-way": {
+        "name": "Via di mezzo",
+        "description": "+10 Fiches per ogni tessera semplice nella mano."
+      },
+      "decree-green-fortune": {
+        "name": "Fortuna verde",
+        "description": "+15 Fiches per ogni tessera verde (2, 3, 4, 6, 8 di Souzu)."
+      },
+      "decree-coin-collector": {
+        "name": "Collezionista di monete",
+        "description": "+1 Oro alla fine del round."
+      },
+      "decree-merchants-favor": {
+        "name": "Favore del mercante",
+        "description": "+2 Oro alla fine del round."
+      },
+      "decree-lucky-coin": {
+        "name": "Moneta fortunata",
+        "description": "+3 Oro alla fine del round."
+      },
+      "decree-pair-lover": {
+        "name": "Amante delle coppie",
+        "description": "+30 Fiches se la mano contiene una coppia."
+      },
+      "decree-sequence-seeker": {
+        "name": "Cercatore di sequenze",
+        "description": "+30 Fiches se la mano contiene una sequenza."
+      },
+      "decree-triplet-tracker": {
+        "name": "Cacciatore di tris",
+        "description": "+40 Fiches se la mano contiene un tris."
+      },
+      "decree-flower-friend": {
+        "name": "Amico dei fiori",
+        "description": "+10 Fiches per ogni Fiore raccolto."
+      },
+      "decree-seasonal-blessing": {
+        "name": "Benedizione stagionale",
+        "description": "+2 Molt per ogni Stagione attiva."
+      },
+      "decree-wide-grip": {
+        "name": "Presa ampia",
+        "description": "+1 spazio per tessere in mano."
+      },
+      "decree-second-chance": {
+        "name": "Seconda possibilità",
+        "description": "+1 scarto per round."
+      },
+      "decree-balanced-path": {
+        "name": "Sentiero dell’equilibrio",
+        "description": "+15 Fiches e +2 Molt."
+      },
+      "decree-modest-fortune": {
+        "name": "Modesta fortuna",
+        "description": "+20 Fiches e +1 Oro per round."
+      },
+      "decree-humble-power": {
+        "name": "Potere umile",
+        "description": "+2 Molt e +1 Oro per round."
+      },
+      "decree-one-mastery": {
+        "name": "Maestria degli uno",
+        "description": "+25 Fiches per ogni tessera di valore 1 nella mano."
+      },
+      "decree-nine-mastery": {
+        "name": "Maestria dei nove",
+        "description": "+25 Fiches per ogni tessera di valore 9 nella mano."
+      },
+      "decree-five-blessing": {
+        "name": "Benedizione dei cinque",
+        "description": "+35 Fiches per ogni tessera di valore 5 nella mano."
+      },
+      "decree-spark": {
+        "name": "Scintilla",
+        "description": "×1,2 Molt."
+      },
+      "decree-ember": {
+        "name": "Brace",
+        "description": "×1,3 Molt."
+      },
+      "decree-riichi-devotee": {
+        "name": "Devoto del Riichi",
+        "description": "+3 Molt quando realizzi Riichi."
+      },
+      "decree-tanyao-tactician": {
+        "name": "Stratega del Tanyao",
+        "description": "+3 Molt quando realizzi Tanyao."
+      },
+      "decree-pinfu-purist": {
+        "name": "Purista del Pinfu",
+        "description": "+3 Molt quando realizzi Pinfu."
+      },
+      "decree-manzu-emperor": {
+        "name": "Imperatore dei Manzu",
+        "description": "+8 Molt se almeno metà delle tessere nella mano sono Manzu."
+      },
+      "decree-pinzu-princess": {
+        "name": "Principessa dei Pinzu",
+        "description": "+8 Molt se almeno metà delle tessere nella mano sono Pinzu."
+      },
+      "decree-souzu-sage": {
+        "name": "Saggio dei Souzu",
+        "description": "+8 Molt se almeno metà delle tessere nella mano sono Souzu."
+      },
+      "decree-flush-fever": {
+        "name": "Febbre del colore",
+        "description": "×1,5 Molt se la mano è di un solo seme."
+      },
+      "decree-honor-guard": {
+        "name": "Guardia d’onore",
+        "description": "×1,5 Molt se la mano contiene almeno 3 tessere onore."
+      },
+      "decree-terminal-tide": {
+        "name": "Marea dei terminali",
+        "description": "×1,5 Molt se la mano contiene almeno 4 tessere terminali."
+      },
+      "decree-straight-arrow": {
+        "name": "Freccia diritta",
+        "description": "+80 Fiches se la mano contiene 3 sequenze."
+      },
+      "decree-run-master": {
+        "name": "Maestro delle sequenze",
+        "description": "+6 Molt per ogni sequenza nella mano."
+      },
+      "decree-triplet-thunder": {
+        "name": "Tuono dei tris",
+        "description": "+8 Molt per ogni tris nella mano."
+      },
+      "decree-echo-stone": {
+        "name": "Pietra dell’eco",
+        "description": "Riattiva la prima tessera che segna punti."
+      },
+      "decree-mirror-shard": {
+        "name": "Frammento di specchio",
+        "description": "Riattiva l’ultima tessera che segna punti."
+      },
+      "decree-dragon-echo": {
+        "name": "Eco dei draghi",
+        "description": "Riattiva tutte le tessere Drago."
+      },
+      "decree-wind-echo": {
+        "name": "Eco dei venti",
+        "description": "Riattiva tutte le tessere Vento."
+      },
+      "decree-golden-ratio": {
+        "name": "Sezione aurea",
+        "description": "+1 Molt ogni 5 Oro posseduti (massimo +10)."
+      },
+      "decree-tax-collector": {
+        "name": "Esattore",
+        "description": "+4 Oro alla fine del round."
+      },
+      "decree-garden-keeper": {
+        "name": "Custode del giardino",
+        "description": "+4 Molt per ogni Fiore raccolto."
+      },
+      "decree-blossom-storm": {
+        "name": "Tempesta di petali",
+        "description": "×1,2 Molt per ogni Fiore raccolto."
+      },
+      "decree-seasonal-wind": {
+        "name": "Vento stagionale",
+        "description": "+50 Fiches per ogni Stagione attiva."
+      },
+      "decree-slow-burn": {
+        "name": "Fuoco lento",
+        "description": "+2 Molt per ogni round giocato in questo atto."
+      },
+      "decree-momentum": {
+        "name": "Slancio",
+        "description": "+15 Fiches per ogni mano giocata in questo round."
+      },
+      "decree-crescendo": {
+        "name": "Crescendo",
+        "description": "×1,1 Molt per ogni mano giocata in questo round."
+      },
+      "decree-waste-not": {
+        "name": "Nulla va sprecato",
+        "description": "+5 Molt se non hai usato scarti in questo round."
+      },
+      "decree-recycler": {
+        "name": "Riciclatore",
+        "description": "+20 Fiches per ogni scarto usato in questo round."
+      },
+      "decree-yakuhai-zealot": {
+        "name": "Zelota dello Yakuhai",
+        "description": "×1,5 Molt quando realizzi Yakuhai."
+      },
+      "decree-toitoi-titan": {
+        "name": "Titano del Toitoi",
+        "description": "×1,5 Molt quando realizzi Toitoi."
+      },
+      "decree-ittsu-initiate": {
+        "name": "Iniziato dell’Ittsu",
+        "description": "×1,5 Molt quando realizzi Ittsu."
+      },
+      "decree-chinitsu-champion": {
+        "name": "Campione del Chinitsu",
+        "description": "×2,0 Molt quando realizzi Chinitsu."
+      },
+      "decree-veteran": {
+        "name": "Veterano",
+        "description": "+10 Fiches per ogni atto completato."
+      },
+      "decree-experience": {
+        "name": "Esperienza",
+        "description": "+2 Molt per ogni atto completato."
+      },
+      "decree-greater-jade": {
+        "name": "Giada superiore",
+        "description": "+80 Fiches."
+      },
+      "decree-blazing-banner": {
+        "name": "Stendardo ardente",
+        "description": "+10 Molt."
+      },
+      "decree-flame": {
+        "name": "Fiamma",
+        "description": "×1,5 Molt."
+      },
+      "decree-wind-dragon": {
+        "name": "Vento e drago",
+        "description": "+5 Molt se la mano contiene sia un Vento sia un Drago."
+      },
+      "decree-all-suits": {
+        "name": "Tutti i semi",
+        "description": "+8 Molt se la mano contiene tutti e 3 i semi."
+      },
+      "decree-bookends": {
+        "name": "Reggilibri",
+        "description": "+60 Fiches se la mano contiene sia un 1 sia un 9."
+      },
+      "decree-expansive-grip": {
+        "name": "Presa estesa",
+        "description": "+2 spazi per tessere in mano."
+      },
+      "decree-careful-player": {
+        "name": "Giocatore prudente",
+        "description": "+2 scarti per round."
+      },
+      "decree-inferno": {
+        "name": "Inferno",
+        "description": "×2,0 Molt."
+      },
+      "decree-supernova": {
+        "name": "Supernova",
+        "description": "×2,5 Molt se questa giocata porta il punteggio del round ad almeno il doppio dell’obiettivo, prima dei bonus di Supernova e Perfezionista."
+      },
+      "decree-perfectionist": {
+        "name": "Perfezionista",
+        "description": "×3 Molt se la prima giocata supera il round, prima dei bonus di Supernova e Perfezionista."
+      },
+      "decree-compound-interest": {
+        "name": "Interesse composto",
+        "description": "+2 Molt ogni 10 Oro posseduti."
+      },
+      "decree-wealth-engine": {
+        "name": "Motore della ricchezza",
+        "description": "+1 Oro per ogni Decreto posseduto alla fine del round."
+      },
+      "decree-perpetual-motion": {
+        "name": "Moto perpetuo",
+        "description": "+5 Molt per ogni mano giocata in questa partita (massimo +50)."
+      },
+      "decree-triple-echo": {
+        "name": "Tripla eco",
+        "description": "Riattiva una volta tutte le tessere che segnano punti."
+      },
+      "decree-terminal-resonance": {
+        "name": "Risonanza dei terminali",
+        "description": "Riattiva due volte le tessere terminali."
+      },
+      "decree-honor-resonance": {
+        "name": "Risonanza degli onori",
+        "description": "Riattiva due volte le tessere onore."
+      },
+      "decree-manzu-monarch": {
+        "name": "Monarca dei Manzu",
+        "description": "×2,0 Molt se tutta la mano è composta da Manzu."
+      },
+      "decree-pinzu-potentate": {
+        "name": "Potentato dei Pinzu",
+        "description": "×2,0 Molt se tutta la mano è composta da Pinzu."
+      },
+      "decree-souzu-sovereign": {
+        "name": "Sovrano dei Souzu",
+        "description": "×2,0 Molt se tutta la mano è composta da Souzu."
+      },
+      "decree-flower-emperor": {
+        "name": "Imperatore dei fiori",
+        "description": "×1,5 Molt per ogni Fiore raccolto."
+      },
+      "decree-season-lord": {
+        "name": "Signore delle stagioni",
+        "description": "+10 Molt per ogni Stagione attiva."
+      },
+      "decree-nature-bond": {
+        "name": "Legame con la natura",
+        "description": "+3 Molt per ogni Fiore, +30 Fiches per ogni Stagione."
+      },
+      "decree-honitsu-herald": {
+        "name": "Araldo dell’Honitsu",
+        "description": "×2,0 Molt quando realizzi Honitsu."
+      },
+      "decree-sanshoku-sage": {
+        "name": "Saggio del Sanshoku",
+        "description": "×2,0 Molt quando realizzi Sanshoku."
+      },
+      "decree-chanta-champion": {
+        "name": "Campione del Chanta",
+        "description": "×2,0 Molt quando realizzi Chanta."
+      },
+      "decree-mandate-breaker": {
+        "name": "Infrangitore di mandati",
+        "description": "+15 Molt durante i round Boss."
+      },
+      "decree-boss-slayer": {
+        "name": "Sterminatore di boss",
+        "description": "×2,0 Molt durante i round Boss."
+      },
+      "decree-fortune-and-glory": {
+        "name": "Fortuna e gloria",
+        "description": "+60 Fiches, +8 Molt, +3 Oro per round."
+      },
+      "decree-emperors-blessing": {
+        "name": "Benedizione dell’imperatore",
+        "description": "+100 Fiches e +10 Molt."
+      },
+      "decree-golden-age": {
+        "name": "Età dell’oro",
+        "description": "+8 Oro alla fine del round."
+      },
+      "decree-sacrifice": {
+        "name": "Sacrificio",
+        "description": "×3,0 Molt, -1 scarto per round."
+      },
+      "decree-transmuter": {
+        "name": "Trasmutatore",
+        "description": "Tutte le tessere semplici diventano terminali nel calcolo del punteggio."
+      },
+      "decree-harmonizer": {
+        "name": "Armonizzatore",
+        "description": "Tutti i semi contano come lo stesso seme per formare sequenze."
+      },
+      "decree-final-act": {
+        "name": "Atto finale",
+        "description": "×1,5 Molt per ogni atto oltre il 4."
+      },
+      "decree-endless-journey": {
+        "name": "Viaggio senza fine",
+        "description": "+20 Fiches per ogni atto completato."
+      },
+      "decree-master-grip": {
+        "name": "Presa magistrale",
+        "description": "+3 spazi per tessere in mano."
+      },
+      "decree-infinite-patience": {
+        "name": "Pazienza infinita",
+        "description": "+3 scarti per round."
+      },
+      "decree-divine-flame": {
+        "name": "Fiamma divina",
+        "description": "×3,0 Molt."
+      },
+      "decree-heavens-wrath": {
+        "name": "Ira celeste",
+        "description": "×4,0 Molt se la mano non contiene tessere semplici."
+      },
+      "decree-void-blessing": {
+        "name": "Benedizione del vuoto",
+        "description": "×5,0 Molt se la mano è composta solo da Onori."
+      },
+      "decree-eternal-echo": {
+        "name": "Eco eterna",
+        "description": "Riattiva due volte tutte le tessere che segnano punti."
+      },
+      "decree-dragon-king": {
+        "name": "Re dei draghi",
+        "description": "Riattiva le tessere Drago 3 volte."
+      },
+      "decree-yaku-amplifier": {
+        "name": "Amplificatore degli Yaku",
+        "description": "Tutti i moltiplicatori degli Yaku aumentano di ×1,5."
+      },
+      "decree-yakuman-seeker": {
+        "name": "Cercatore di Yakuman",
+        "description": "+50 Molt quando realizzi uno Yakuman."
+      },
+      "decree-four-seasons-master": {
+        "name": "Maestro delle quattro stagioni",
+        "description": "×2,0 Molt per ogni Stagione attiva."
+      },
+      "decree-eternal-garden": {
+        "name": "Giardino eterno",
+        "description": "+10 Molt per ogni Fiore; i Fiori non possono essere persi."
+      },
+      "decree-midas-touch": {
+        "name": "Tocco di Mida",
+        "description": "+20 Oro alla fine del round."
+      },
+      "decree-infinite-wealth": {
+        "name": "Ricchezza infinita",
+        "description": "+1 Molt ogni 5 Oro posseduti."
+      },
+      "decree-doppelganger": {
+        "name": "Sosia",
+        "description": "Copia un Decreto casuale senza effetto di copia all’acquisizione e all’inizio di ogni round."
+      },
+      "decree-manzu-god": {
+        "name": "Divinità dei Manzu",
+        "description": "×3,0 Molt se tutte le tessere sono Manzu."
+      },
+      "decree-pinzu-god": {
+        "name": "Divinità dei Pinzu",
+        "description": "×3,0 Molt se tutte le tessere sono Pinzu."
+      },
+      "decree-souzu-god": {
+        "name": "Divinità dei Souzu",
+        "description": "×3,0 Molt se tutte le tessere sono Souzu."
+      },
+      "decree-glass-cannon": {
+        "name": "Cannone di vetro",
+        "description": "×6,0 Molt; si distrugge se perdi un round Boss."
+      },
+      "decree-phoenix": {
+        "name": "Fenice",
+        "description": "Impedisce una sconfitta per partita, poi si vende da sola."
+      },
+      "decree-time-lord": {
+        "name": "Signore del tempo",
+        "description": "+1 giocata aggiuntiva per round."
+      },
+      "decree-exponential": {
+        "name": "Crescita esponenziale",
+        "description": "×1,3 Molt ogni 100 Fiches base segnate."
+      },
+      "decree-chain-reaction": {
+        "name": "Reazione a catena",
+        "description": "+5 Molt per ogni Yaku realizzato in questa mano."
+      },
+      "decree-cosmic-jade": {
+        "name": "Giada cosmica",
+        "description": "+200 Fiches."
+      },
+      "decree-solar-banner": {
+        "name": "Stendardo solare",
+        "description": "+25 Molt."
+      },
+      "decree-universal-grip": {
+        "name": "Presa universale",
+        "description": "+4 spazi per tessere in mano."
+      },
+      "decree-celestial-throne": {
+        "name": "Trono celeste",
+        "description": "×10,0 Molt, -2 spazi per tessere in mano, -1 scarto."
+      },
+      "decree-void-emperor": {
+        "name": "Imperatore del vuoto",
+        "description": "×8,0 Molt se il punteggio della mano precedente era 0."
+      },
+      "decree-echo-dimension": {
+        "name": "Dimensione dell’eco",
+        "description": "Tutti gli effetti di riattivazione si attivano due volte."
+      },
+      "decree-world-tree": {
+        "name": "Albero del mondo",
+        "description": "×2,0 Molt per ogni Fiore, ×1,5 per ogni Stagione."
+      },
+      "decree-dragon-hoard": {
+        "name": "Tesoro del drago",
+        "description": "+2 Molt ogni 10 Oro posseduti."
+      },
+      "decree-yaku-nexus": {
+        "name": "Nesso degli Yaku",
+        "description": "Tutti gli Yaku segnano punti a una categoria superiore (+1)."
+      },
+      "decree-reality-warp": {
+        "name": "Distorsione della realtà",
+        "description": "Tutte le tessere contano come qualsiasi seme e valore."
+      },
+      "decree-time-master": {
+        "name": "Maestro del tempo",
+        "description": "+2 giocate aggiuntive per round."
+      },
+      "decree-immortal-decree": {
+        "name": "Decreto immortale",
+        "description": "Impedisce tutte le sconfitte, ma dimezza il punteggio."
+      },
+      "broken_stair_edict": {
+        "name": "Editto della Scala Spezzata",
+        "description": "Le sequenze possono saltare un valore (ad esempio, 1-3-4 è valido)."
+      },
+      "false_eye_mandate": {
+        "name": "Mandato del falso occhio",
+        "description": "Un gruppo può fungere da coppia per la validazione della mano."
+      },
+      "honor_transmutation": {
+        "name": "Trasmutazione degli onori",
+        "description": "Le tessere onore possono contare come tessere numerate del seme più presente nella tua mano."
+      },
+      "celestial_wildcard": {
+        "name": "Jolly celeste",
+        "description": "Una tessera per mano può sostituire qualsiasi altra tessera."
+      },
+      "dead_wall_writ": {
+        "name": "Editto del muro morto",
+        "description": "Una volta per round, pesca dagli scarti anziché dal muro."
+      },
+      "shanten_clemency": {
+        "name": "Clemenza Shanten",
+        "description": "Le mani possono segnare punti a 1-shanten con una penalità del 50% al punteggio."
+      },
+      "closed_hand_austerity": {
+        "name": "Austerità della mano chiusa",
+        "description": "Le mani completamente chiuse ottengono un moltiplicatore del punteggio ×1,5."
+      },
+      "terminal_devotion": {
+        "name": "Devozione ai terminali",
+        "description": "Ogni tessera terminale nella mano aggiunge +5% al punteggio finale."
+      },
+      "yaku_repetition_charter": {
+        "name": "Editto della Ripetizione degli Yaku",
+        "description": "Realizzare lo stesso tipo di Yaku in round consecutivi fa crescere i moltiplicatori in modo composto."
+      },
       "decree-blueprint": {
         "name": "Progetto",
         "description": "Copia l’effetto del Decreto a destra."
@@ -917,6 +1681,98 @@
   },
   "mandates": {
     "items": {
+      "the_hook": {
+        "name": "L’Uncino",
+        "description": "Dopo ogni pesca, vengono scartate 2 tessere casuali dalla mano."
+      },
+      "the_wall": {
+        "name": "Il Muro",
+        "description": "Obiettivo di punteggio molto elevato (4× invece di 2×)."
+      },
+      "the_eye": {
+        "name": "L’Occhio",
+        "description": "Non puoi ripetere Yaku in questo round: ciascuno segna punti una sola volta."
+      },
+      "the_mouth": {
+        "name": "La Bocca",
+        "description": "In questo round può segnare punti un solo tipo di Yaku."
+      },
+      "the_flint": {
+        "name": "La Selce",
+        "description": "Punti base e Molt dimezzati per l’intero round."
+      },
+      "the_needle": {
+        "name": "L’Ago",
+        "description": "Devi completare la mano in esattamente 1 giocata, senza altri tentativi."
+      },
+      "the_pillar": {
+        "name": "Il Pilastro",
+        "description": "Le tessere usate nei round precedenti di questo atto sono indebolite."
+      },
+      "the_water": {
+        "name": "L’Acqua",
+        "description": "Inizi questo round con 0 ripescate."
+      },
+      "the_arm": {
+        "name": "Il Braccio",
+        "description": "La categoria degli Yaku diminuisce di 1 nel calcolo del punteggio."
+      },
+      "the_psychic": {
+        "name": "Il Sensitivo",
+        "description": "Devi giocare esattamente 5 tessere per mano."
+      },
+      "the_club": {
+        "name": "La Clava",
+        "description": "Tutte le tessere Souzu sono indebolite."
+      },
+      "the_goad": {
+        "name": "Il Pungolo",
+        "description": "Tutte le tessere Pinzu sono indebolite."
+      },
+      "the_window": {
+        "name": "La Finestra",
+        "description": "Tutte le tessere Manzu sono indebolite."
+      },
+      "the_head": {
+        "name": "La Testa",
+        "description": "Tutte le tessere Drago sono indebolite."
+      },
+      "the_plant": {
+        "name": "La Pianta",
+        "description": "Tutte le tessere onore sono indebolite."
+      },
+      "the_ox": {
+        "name": "Il Bue",
+        "description": "Giocare lo Yaku usato più spesso porta l’Oro a 0."
+      },
+      "the_house": {
+        "name": "La Casa",
+        "description": "La prima mano viene pescata a faccia in giù."
+      },
+      "the_wheel": {
+        "name": "La Ruota",
+        "description": "1 tessera su 7 viene pescata a faccia in giù."
+      },
+      "the_fish": {
+        "name": "Il Pesce",
+        "description": "Dopo ogni mano, le tessere vengono pescate a faccia in giù."
+      },
+      "the_serpent": {
+        "name": "Il Serpente",
+        "description": "Dopo ogni giocata o scarto, peschi sempre 3 tessere."
+      },
+      "the_tooth": {
+        "name": "Il Dente",
+        "description": "Perdi 1 Oro per ogni tessera giocata."
+      },
+      "the_mark": {
+        "name": "Il Marchio",
+        "description": "Tutte le tessere onore vengono pescate a faccia in giù."
+      },
+      "the_manacle": {
+        "name": "La Manetta",
+        "description": "-1 spazio per tessere in mano."
+      },
       "amber_acorn": {
         "name": "Ghianda d’ambra",
         "description": "Tutti i Decreti vengono mescolati e girati a faccia in giù"
@@ -1308,6 +2164,130 @@
   },
   "charters": {
     "items": {
+      "abundant_stock": {
+        "name": "Scorte copiose",
+        "description": "+1 spazio nel negozio (fino a 3)."
+      },
+      "discount_sale": {
+        "name": "Saldi",
+        "description": "Sconto del 25% su tutti gli articoli del negozio."
+      },
+      "sharp_edge": {
+        "name": "Bordo affilato",
+        "description": "Le edizioni compaiono 2× più spesso."
+      },
+      "reroll_surplus": {
+        "name": "Rinnovi in riserva",
+        "description": "Rinnovare le offerte costa 2 Oro in meno."
+      },
+      "crystal_lens": {
+        "name": "Lente di cristallo",
+        "description": "+1 spazio per consumabili."
+      },
+      "star_chart": {
+        "name": "Mappa stellare",
+        "description": "I Pacchetti Celesti contengono una Sfera per lo Yaku usato più spesso."
+      },
+      "steady_hand": {
+        "name": "Mano ferma",
+        "description": "+1 giocata per round."
+      },
+      "frugal_discard": {
+        "name": "Scarto parsimonioso",
+        "description": "+1 ripesca per round."
+      },
+      "seal_merchant": {
+        "name": "Mercante di Sigilli",
+        "description": "I Sigilli del Fato compaiono 2× più spesso."
+      },
+      "orb_merchant": {
+        "name": "Mercante di Sfere",
+        "description": "Le Sfere Celesti compaiono 2× più spesso."
+      },
+      "seed_pouch": {
+        "name": "Sacchetto di semi",
+        "description": "Il limite degli interessi sale a 10 Oro."
+      },
+      "empty_scroll": {
+        "name": "Pergamena vuota",
+        "description": "Non ha alcun effetto."
+      },
+      "tile_trading": {
+        "name": "Commercio di tessere",
+        "description": "Puoi acquistare tessere nel negozio."
+      },
+      "ancient_script": {
+        "name": "Scritto antico",
+        "description": "-1 atto, -1 giocata per round."
+      },
+      "directors_take": {
+        "name": "Ripresa del regista",
+        "description": "Puoi cambiare il Mandato del Boss 1 volta per atto (10 Oro)."
+      },
+      "brush_stroke": {
+        "name": "Pennellata",
+        "description": "+1 spazio per tessere in mano."
+      },
+      "liquidation_sale": {
+        "name": "Liquidazione",
+        "description": "Sconto del 50% su tutti gli articoli del negozio."
+      },
+      "radiant_edge": {
+        "name": "Bordo radioso",
+        "description": "Le edizioni compaiono 4× più spesso."
+      },
+      "reroll_abundance": {
+        "name": "Rinnovi in abbondanza",
+        "description": "Rinnovare le offerte costa 4 Oro in meno."
+      },
+      "omen_lens": {
+        "name": "Lente dei presagi",
+        "description": "Gli Scritti del Vuoto possono comparire nei Pacchetti Arcani."
+      },
+      "observatory": {
+        "name": "Osservatorio",
+        "description": "Le Sfere Celesti conservate conferiscono ×1,5 Molt."
+      },
+      "swift_hand": {
+        "name": "Mano veloce",
+        "description": "+1 giocata aggiuntiva per round."
+      },
+      "wasteful_plenty": {
+        "name": "Abbondanza prodiga",
+        "description": "+1 ripesca aggiuntiva per round."
+      },
+      "seal_tycoon": {
+        "name": "Magnate dei Sigilli",
+        "description": "I Sigilli del Fato compaiono 4× più spesso."
+      },
+      "orb_tycoon": {
+        "name": "Magnate delle Sfere",
+        "description": "Le Sfere Celesti compaiono 4× più spesso."
+      },
+      "money_tree": {
+        "name": "Albero del denaro",
+        "description": "Il limite degli interessi sale a 20 Oro."
+      },
+      "void_matter": {
+        "name": "Materia del vuoto",
+        "description": "+1 spazio Decreto."
+      },
+      "illusion_tiles": {
+        "name": "Tessere illusorie",
+        "description": "Le tessere nel negozio possono avere edizioni."
+      },
+      "stone_script": {
+        "name": "Scritto di pietra",
+        "description": "Un ulteriore -1 atto, -1 ripesca per round."
+      },
+      "final_cut": {
+        "name": "Montaggio finale",
+        "description": "Puoi cambiare il Mandato del Boss un numero illimitato di volte (10 Oro ciascuna)."
+      },
+      "full_palette": {
+        "name": "Tavolozza completa",
+        "description": "Un ulteriore +1 spazio per tessere in mano."
+      },
       "plentiful_stock": {
         "name": "Scorte abbondanti",
         "description": "+1 spazio per articoli nel negozio (fino a 4)."
@@ -1316,9 +2296,273 @@
   },
   "scripts": {
     "items": {
+      "script_of_kinship": {
+        "name": "Scritto della parentela",
+        "description": "Distrugge 1 tessera casuale e aggiunge 3 tessere onore potenziate casuali (Venti/Draghi)."
+      },
+      "script_of_the_grave": {
+        "name": "Scritto della tomba",
+        "description": "Distrugge 1 tessera casuale e aggiunge 2 tessere terminali potenziate casuali."
+      },
+      "script_of_incantation": {
+        "name": "Scritto dell’incantesimo",
+        "description": "Distrugge 1 tessera casuale e aggiunge 4 tessere numerate potenziate casuali."
+      },
+      "script_of_immolation": {
+        "name": "Scritto dell’immolazione",
+        "description": "Distrugge 5 tessere casuali dalla mano. Ottieni 20 Oro."
+      },
+      "script_of_the_cryptid": {
+        "name": "Scritto del criptide",
+        "description": "Crea 2 copie di 1 tessera selezionata nella mano."
+      },
+      "script_of_the_gold_seal": {
+        "name": "Scritto del Sigillo d’Oro",
+        "description": "Aggiunge un Sigillo d’Oro a 1 tessera selezionata."
+      },
+      "script_of_deja_vu": {
+        "name": "Scritto del déjà-vu",
+        "description": "Aggiunge un Sigillo Rosso a 1 tessera selezionata (riattivazione)."
+      },
+      "script_of_the_trance": {
+        "name": "Scritto della trance",
+        "description": "Aggiunge un Sigillo Blu a 1 tessera (crea una Sfera per la mano finale)."
+      },
+      "script_of_the_medium": {
+        "name": "Scritto del medium",
+        "description": "Aggiunge un Sigillo Viola a 1 tessera (crea un Sigillo quando viene scartata)."
+      },
+      "script_of_aura": {
+        "name": "Scritto dell’aura",
+        "description": "Aggiunge l’edizione Laminata, Olografica o Policroma a 1 tessera selezionata."
+      },
+      "script_of_the_wraith": {
+        "name": "Scritto dello spettro",
+        "description": "Crea un Decreto raro casuale."
+      },
+      "script_of_the_ankh": {
+        "name": "Scritto dell’ankh",
+        "description": "Copia un Decreto casuale e distrugge tutti gli altri Decreti."
+      },
+      "script_of_the_hex": {
+        "name": "Scritto della maledizione",
+        "description": "Aggiunge l’edizione Policroma a un Decreto casuale e distrugge tutti gli altri."
+      },
+      "script_of_the_sigil": {
+        "name": "Scritto del simbolo",
+        "description": "Converte TUTTE le tessere nella mano in un unico seme casuale."
+      },
+      "script_of_the_ouija": {
+        "name": "Scritto della ouija",
+        "description": "Converte TUTTE le tessere nella mano a un unico valore casuale."
+      },
+      "script_of_the_soul": {
+        "name": "Scritto dell’anima",
+        "description": "Crea un Decreto leggendario (Ordinanza celeste)."
+      },
+      "script_of_the_singularity": {
+        "name": "Scritto della singolarità",
+        "description": "Potenzia ogni Yaku di 1 livello."
+      },
+      "script_of_eclipse": {
+        "name": "Scritto dell’eclissi",
+        "description": "In questo round puoi segnare punti a 1-shanten."
+      },
+      "script_of_mirrors": {
+        "name": "Scritto degli specchi",
+        "description": "Duplica una tessera nella mano."
+      },
+      "script_of_silence": {
+        "name": "Scritto del silenzio",
+        "description": "Ignora un gruppo non valido in questa mano."
+      },
       "script_of_ectoplasm": {
         "name": "Scritto dell’ectoplasma",
         "description": "Aggiunge l’edizione Negativa a un Decreto casuale (+1 spazio Decreto)."
+      }
+    }
+  },
+  "orbs": {
+    "items": {
+      "pluto_orb": {
+        "name": "Sfera di Plutone",
+        "description": "Si armonizza con lo Yaku Riichi. +1 Molt, +10 Fiches per livello."
+      },
+      "mercury_orb": {
+        "name": "Sfera di Mercurio",
+        "description": "Si armonizza con lo Yaku Tanyao. +1 Molt, +15 Fiches per livello."
+      },
+      "uranus_orb": {
+        "name": "Sfera di Urano",
+        "description": "Si armonizza con lo Yaku Yakuhai. +1 Molt, +20 Fiches per livello."
+      },
+      "venus_orb": {
+        "name": "Sfera di Venere",
+        "description": "Si armonizza con lo Yaku Pinfu. +2 Molt, +20 Fiches per livello."
+      },
+      "saturn_orb": {
+        "name": "Sfera di Saturno",
+        "description": "Si armonizza con lo Yaku Ittsu (Scala Pura). +3 Molt, +30 Fiches per livello."
+      },
+      "jupiter_orb": {
+        "name": "Sfera di Giove",
+        "description": "Si armonizza con lo Yaku Honitsu (Mezzo Colore). +2 Molt, +15 Fiches per livello."
+      },
+      "earth_orb": {
+        "name": "Sfera della Terra",
+        "description": "Si armonizza con lo Yaku Toitoi. +2 Molt, +25 Fiches per livello."
+      },
+      "mars_orb": {
+        "name": "Sfera di Marte",
+        "description": "Si armonizza con lo Yaku Chinitsu (Colore Pieno). +3 Molt, +30 Fiches per livello."
+      },
+      "neptune_orb": {
+        "name": "Sfera di Nettuno",
+        "description": "Si armonizza con lo Yaku Sanshoku (Tripla Sequenza Mista). +4 Molt, +40 Fiches per livello."
+      },
+      "planet_x_orb": {
+        "name": "Sfera del Pianeta X",
+        "description": "Si armonizza con lo Yaku Sette Coppie. +3 Molt, +35 Fiches per livello."
+      },
+      "ceres_orb": {
+        "name": "Sfera di Cerere",
+        "description": "Si armonizza con lo Yaku Chanta (Terminale/Onore in Ogni Set). +4 Molt, +40 Fiches per livello."
+      },
+      "eris_orb": {
+        "name": "Sfera di Eris",
+        "description": "Si armonizza con lo Yaku Kokushi Musou. +3 Molt, +50 Fiches per livello."
+      },
+      "black_hole_orb": {
+        "name": "Sfera del Buco Nero",
+        "description": "Potenzia TUTTI gli Yaku di 1 livello quando viene usata."
+      }
+    }
+  },
+  "walls": {
+    "items": {
+      "green_felt": {
+        "name": "Feltro Verde",
+        "description": "Muro iniziale standard di 136 tessere."
+      },
+      "red_wall": {
+        "name": "Muro rosso",
+        "description": "Muro con tessere dora rosse potenziate."
+      },
+      "blue_wall": {
+        "name": "Muro blu",
+        "description": "Muro incentrato sulle tessere del seme Pinzu."
+      },
+      "black_wall": {
+        "name": "Muro nero",
+        "description": "Muro con tessere onore potenziate."
+      },
+      "gold_wall": {
+        "name": "Muro d’oro",
+        "description": "Muro con tessere potenziate con l’oro."
+      },
+      "crimson_wall": {
+        "name": "Muro cremisi",
+        "description": "Muro con potenti tessere Drago."
+      },
+      "obsidian_wall": {
+        "name": "Muro d’ossidiana",
+        "description": "Muro con tessere Vento potenziate."
+      },
+      "jade_wall": {
+        "name": "Muro di giada",
+        "description": "Muro incentrato sulle tessere del seme Bambù."
+      },
+      "ivory_wall": {
+        "name": "Muro d’avorio",
+        "description": "Muro con una composizione incentrata sui terminali."
+      },
+      "bamboo_wall": {
+        "name": "Muro di bambù",
+        "description": "Muro con una composizione prevalentemente Souzu."
+      },
+      "cherry_wall": {
+        "name": "Muro di ciliegio",
+        "description": "Muro con tessere potenziate dai Fiori."
+      },
+      "moon_wall": {
+        "name": "Muro lunare",
+        "description": "Muro con tessere potenziate dalle Stagioni."
+      },
+      "star_wall": {
+        "name": "Muro stellare",
+        "description": "Muro con bonus celesti."
+      },
+      "void_wall": {
+        "name": "Muro del vuoto",
+        "description": "Muro con tessere toccate dal vuoto."
+      },
+      "imperial_wall": {
+        "name": "Muro imperiale",
+        "description": "Muro dalla composizione regale."
+      }
+    }
+  },
+  "packs": {
+    "items": {
+      "arcana_normal": {
+        "name": "Pacchetto Arcano",
+        "description": "Scegli 1 fra 3 Sigilli del Fato."
+      },
+      "arcana_jumbo": {
+        "name": "Pacchetto Arcano Gigante",
+        "description": "Scegli 1 fra 5 Sigilli del Fato."
+      },
+      "arcana_mega": {
+        "name": "Megapacchetto Arcano",
+        "description": "Scegli 2 fra 5 Sigilli del Fato."
+      },
+      "celestial_normal": {
+        "name": "Pacchetto Celeste",
+        "description": "Scegli 1 fra 3 Sfere Celesti."
+      },
+      "celestial_jumbo": {
+        "name": "Pacchetto Celeste Gigante",
+        "description": "Scegli 1 fra 5 Sfere Celesti."
+      },
+      "celestial_mega": {
+        "name": "Megapacchetto Celeste",
+        "description": "Scegli 2 fra 5 Sfere Celesti."
+      },
+      "tile_normal": {
+        "name": "Pacchetto di Tessere",
+        "description": "Scegli 1 fra 3 tessere modificate."
+      },
+      "tile_jumbo": {
+        "name": "Pacchetto Gigante di Tessere",
+        "description": "Scegli 1 fra 5 tessere modificate."
+      },
+      "tile_mega": {
+        "name": "Megapacchetto di Tessere",
+        "description": "Scegli 2 fra 5 tessere modificate."
+      },
+      "decree_normal": {
+        "name": "Pacchetto di Decreti",
+        "description": "Scegli 1 fra 3 Decreti."
+      },
+      "decree_jumbo": {
+        "name": "Pacchetto Gigante di Decreti",
+        "description": "Scegli 1 fra 5 Decreti."
+      },
+      "decree_mega": {
+        "name": "Megapacchetto di Decreti",
+        "description": "Scegli 2 fra 5 Decreti."
+      },
+      "void_normal": {
+        "name": "Pacchetto del Vuoto",
+        "description": "Scegli 1 fra 3 Scritti del Vuoto."
+      },
+      "void_jumbo": {
+        "name": "Pacchetto Gigante del Vuoto",
+        "description": "Scegli 1 fra 5 Scritti del Vuoto."
+      },
+      "void_mega": {
+        "name": "Megapacchetto del Vuoto",
+        "description": "Scegli 2 fra 5 Scritti del Vuoto."
       }
     }
   },
