@@ -135,6 +135,8 @@ racks and real devices remain open.
     checks pass, plus all 2,947 tests locally and in CI. The first card is partly
     visible on short phones; scrolling is still needed for the full offer. See
     the checkpoint for retained diagnostic failures and verification limits.
+    Reverified with all 26 shop journeys on the combined v1.0.261011-10 release;
+    its CI passes all 2,951 tests. This does not close the gameplay failures below.
 
 13. **Dragons have no index.** Suited tiles show 1–9 and winds carry letters,
     but White/Green/Red Dragons have no hint for newcomers. Add a small

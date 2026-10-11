@@ -16,6 +16,10 @@ economy/save rules change. Published in **v1.0.261011-9**: all 68 final native,
 208 files both locally and in independent CI. Public manifest, tag, runtime and
 artwork checksum agree. Short phones still scroll to read full product offers;
 real-device and newcomer testing and other UI backlog work remain open.
+Concurrent Table Loop/menu/flower-popover work was preserved and deployed in
+**v1.0.261011-10**. Its CI passes all 2,951 tests in 209 files and all 26 hosted
+shop journeys pass again. The other agent's reported gameplay-browser failures
+remain tracked for current-state reproduction; this is not whole-game clearance.
 
 [Illustrated coach comparison](COACH_COMPARISON_IMPLEMENTATION.md) replaces
 truncated chips with short localized labels and an optional exact-score/tile

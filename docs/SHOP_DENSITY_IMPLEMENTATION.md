@@ -1,6 +1,7 @@
 # Compact Tea House
 
-October 11, 2026. Published and hosted-verified in **v1.0.261011-9**.
+October 11, 2026. Published and hosted-verified in **v1.0.261011-9**, then
+reverified after the concurrent **v1.0.261011-10** integration.
 This is not whole-project completion.
 
 ## Player-facing behavior
@@ -115,3 +116,24 @@ serves browser checks; unrelated `.claude/launch.json` edits are excluded.
 Physical-device testing, newcomer enjoyment and other UI backlog work remain
 open. The new ledger does not replace every item icon: Jade Tablet and Seasonal
 Blessing still use existing vector artwork in the inspected shop fixture.
+
+## Concurrent main integration
+
+The verification-document push was safely rejected because another agent had
+published Table Loop/menu/flower-popover changes. Those commits and their
+reported pre-existing gameplay test failures were preserved by an ordinary
+merge; no history was forced and the launch configuration remained untouched.
+
+The combined **v1.0.261011-10** release at
+`44b419e88cacd288a1ce67e930af701117931fdd` passes all **2,951 tests in 209 files**,
+the build and deployment in [run 38165064708](https://github.com/evgenyvinnik/tensho-web/actions/runs/38165064708).
+Public manifest/tag/runtime (`/tensho-web/assets/index-DJ66LMil.js`) match.
+All **26 shop journeys pass again** against that live release without retries
+(`hosted-integrated.log`). Its Spanish phone opening screenshot is byte-identical
+to the visually reviewed production and v9 hosted screenshots (SHA-256
+`26a162898a2d3e51ce11c98c2f6690ef4a7246cc11d13890ea2a0c1c50d6f190`).
+
+This recheck covers the shop integration, not all Table Loop or gameplay UI
+states. The reported stage/return hint interception, duplicate tile selectors,
+discard visibility and other browser failures in the UI backlog still require
+current-state reproduction and resolution.
