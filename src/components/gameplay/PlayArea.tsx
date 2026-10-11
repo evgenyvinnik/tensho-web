@@ -6,18 +6,16 @@
  * @module components/gameplay/PlayArea
  */
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { YakuReveal } from '../effects/YakuReveal'
 import { GlowEffect } from '../effects/GlowEffect'
-import { YakuRevealState } from './gameplayTypes'
 import { YakuDefinition } from '../../rules/YakuDetector'
 import { CoachPanel } from './CoachPanel'
 import type { CoachAdvice } from '../../gameplay/beginnerCoach'
 import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
 import type { ScoredStructure } from '../../rules/ScoringEngine'
 import { ExactScoreDetails } from './ExactScoreDetails'
-import { HandInterpretationDetails } from './HandInterpretationDetails'
+import { playAreaHasContent } from '../../gameplay/playAreaContent'
 import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
 import type { Tile } from '../../core/Tile'
 
@@ -50,7 +48,7 @@ export interface PlayAreaProps {
   /** Number of staged tiles */
   stagedTileCount: number
   /** Total tiles in hand */
-  handTileCount: number
+  handTileCount?: number
   /** Score preview with detected yaku */
   scorePreview: ScorePreviewData | null
   /** Whether selected face-down tiles conceal all preview information. */
@@ -61,10 +59,6 @@ export interface PlayAreaProps {
   remainingToTarget?: number
   /** Hands available to cover the remaining target. */
   handsRemaining?: number
-  /** Active yaku reveal animations */
-  yakuReveals: YakuRevealState[]
-  /** Handler for yaku reveal completion */
-  onYakuComplete: (id: string) => void
   /**
    * Two priced alternatives for this turn, shown while nothing is selected.
    * The idle play area is where the player is deciding, and putting the coach
@@ -138,7 +132,7 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
       <button
         onClick={onToggle}
         className={`
-          rounded-lg px-2 py-1
+          whitespace-nowrap rounded-lg px-2 py-1
           bg-gradient-to-br ${getYakuTierColor(yaku.tier)}
           border shadow-lg
           transform hover:scale-105 transition-transform
@@ -210,25 +204,20 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
 // =============================================================================
 
 /**
- * Central play area for gameplay.
+ * One-line forecast strip for the score bar.
  *
- * Features:
- * - Beautiful score preview panel with detected yaku
- * - Shows selected/staged tile count
- * - Displays yaku reveal animations when hands are scored
- * - Dashed border to indicate the play area
+ * It answers "what would this play score?" in the same place the last play's
+ * equation appears, so points, multiplier and the coach's two suggestions sit
+ * on one line instead of stacking panels over the table.
  */
 export function PlayArea({
   selectedTileCount,
   stagedTileCount,
-  handTileCount,
   scorePreview,
   scorePreviewHidden = false,
   previewLabel = 'Play forecast',
   remainingToTarget = 0,
   handsRemaining = 1,
-  yakuReveals,
-  onYakuComplete,
   coachAdvice = null,
   onCoachChoose,
   onCoachDismiss,
@@ -237,6 +226,7 @@ export function PlayArea({
 }: PlayAreaProps) {
   const { t, i18n } = useTranslation()
   const [selectedYakuId, setSelectedYakuId] = useState<string | null>(null)
+  const paceId = useId()
   const activeTileCount = stagedTileCount || selectedTileCount
   const requiredPerHand = Math.ceil(
     remainingToTarget / Math.max(1, handsRemaining)
@@ -262,97 +252,130 @@ export function PlayArea({
               ).display,
               count: structure.looseTiles,
             })
-
-  const handleYakuToggle = (yakuId: string) => {
-    setSelectedYakuId((prev) => (prev === yakuId ? null : yakuId))
-  }
+  const showing = playAreaHasContent({
+    selectedTileCount,
+    stagedTileCount,
+    scorePreview,
+    scorePreviewHidden,
+    coachAdvice,
+  })
+  const clears = Boolean(
+    scorePreview &&
+    scorePreview.total >= remainingToTarget &&
+    remainingToTarget > 0
+  )
+  const pace = scorePreview
+    ? clears
+      ? t('gameplay.forecast.clears', 'Clears the round')
+      : t(
+          'gameplay.forecast.share',
+          '{{percent}}% of what remains · {{pace}}',
+          {
+            percent: Math.min(
+              999,
+              Math.round(
+                (scorePreview.total / Math.max(1, remainingToTarget)) * 100
+              )
+            ),
+            pace:
+              scorePreview.total >= requiredPerHand
+                ? t('gameplay.forecast.onPace', 'on pace')
+                : t('gameplay.forecast.needPerHand', 'need {{points}}/hand', {
+                    points: scoreNumber(requiredPerHand, i18n.language).display,
+                  }),
+          }
+        )
+    : ''
 
   return (
     <div
       data-tutorial="yaku-display"
-      className="game-play-area mx-3 mb-1 flex min-h-[68px] flex-shrink-0 flex-col items-center justify-center rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)]/70 px-3 py-2 shadow-inner"
+      hidden={!showing}
+      className="game-play-area relative flex min-h-11 min-w-0 flex-1 items-center gap-2 rounded-lg border px-2 py-1"
       style={{
-        borderColor: `${tableThemeColor}80`,
-        background: `linear-gradient(105deg, ${tableAccentColor}24, rgba(12, 38, 29, 0.76) 46%, ${tableThemeColor}18)`,
-        boxShadow: `inset 0 0 28px ${tableThemeColor}18`,
+        borderColor: `${tableThemeColor}66`,
+        background: `linear-gradient(105deg, ${tableAccentColor}24, rgba(12, 38, 29, 0.6) 46%, ${tableThemeColor}14)`,
       }}
       onClick={() => setSelectedYakuId(null)} // Close tooltip when clicking outside
     >
-      {/* Score Preview Panel */}
       {scorePreviewHidden ? (
-        <div
-          className="text-center"
+        <p
+          className="flex min-w-0 items-center gap-2 text-sm"
           aria-label={t('gameplay.previewConcealed', 'Score preview concealed')}
+          title={t(
+            'gameplay.hiddenHandDesc',
+            'Face-down tiles conceal patterns and score until played.'
+          )}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300/70">
+          <span className="text-xs font-semibold uppercase tracking-widest text-amber-300/70">
             {t('gameplay.hiddenHand', 'Hidden hand')}
-          </p>
-          <p className="mt-1 text-4xl font-black text-[var(--color-golden-yellow)]">
+          </span>
+          <span className="text-lg font-black text-[var(--color-golden-yellow)]">
             ???
-          </p>
-          <p className="mt-2 text-sm text-[var(--color-beige-white)] opacity-60">
-            {t(
-              'gameplay.hiddenHandDesc',
-              'Face-down tiles conceal patterns and score until played.'
-            )}
-          </p>
-        </div>
+          </span>
+        </p>
       ) : scorePreview ? (
         <div
-          className="grid w-full min-w-0 grid-cols-2 items-start gap-x-3 gap-y-2"
+          className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1"
           onClick={(event) => event.stopPropagation()}
         >
-          <div className="col-span-2 min-w-0 [overflow-wrap:anywhere]">
-            <div className="flex flex-wrap items-center gap-1.5">
-              <p
-                data-testid="forecast-heading"
-                className="mr-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-metallic-gold)]"
-              >
-                {previewLabel}
-              </p>
-              {scorePreview.yaku && scorePreview.yaku.length > 0 ? (
-                scorePreview.yaku.map((yaku) => (
+          {/* The name and Yaku take a full row on narrow screens, so badges
+              wrap sideways instead of being squeezed into a column. */}
+          <div className="flex min-w-0 flex-[1_1_12rem] flex-col justify-center">
+            <p
+              data-testid="forecast-heading"
+              className="truncate text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-metallic-gold)]"
+            >
+              {previewLabel}
+            </p>
+            {scorePreview.yaku && scorePreview.yaku.length > 0 ? (
+              <div className="flex min-w-0 flex-wrap items-center gap-1">
+                {scorePreview.yaku.map((yaku) => (
                   <YakuBadge
                     key={yaku.id}
                     yaku={yaku}
                     isSelected={selectedYakuId === yaku.id}
-                    onToggle={() => handleYakuToggle(yaku.id)}
+                    onToggle={() =>
+                      setSelectedYakuId((prev) =>
+                        prev === yaku.id ? null : yaku.id
+                      )
+                    }
                   />
-                ))
-              ) : (
-                <span
-                  data-testid="forecast-structure-hint"
-                  className="game-forecast-explainer text-xs text-[var(--color-beige-white)]/60"
-                >
-                  {structureHint}
-                </span>
-              )}
+                ))}
+              </div>
+            ) : (
+              <span
+                data-testid="forecast-structure-hint"
+                title={structureHint}
+                className="game-forecast-explainer truncate text-[11px] text-[var(--color-beige-white)]/60"
+              >
+                {structureHint}
+              </span>
+            )}
+          </div>
+
+          {/* Very large late-run numbers wrap inside their slot rather than
+              push the strip wider than the screen. */}
+          <div className="ml-auto flex min-w-0 items-center gap-2">
+            <div className="flex min-w-0 flex-wrap items-baseline gap-x-1 text-sm tabular-nums">
+              <strong className="min-w-0 text-blue-300 [overflow-wrap:anywhere]">
+                {scoreNumber(scorePreview.points, i18n.language).display}
+              </strong>
+              <span className="text-[var(--color-golden-yellow)]/60">×</span>
+              <strong
+                data-score-preview-mult
+                title={scoreMultiplier(scorePreview.mult, i18n.language).exact}
+                aria-label={
+                  scoreMultiplier(scorePreview.mult, i18n.language).exact
+                }
+                className="min-w-0 text-red-300 [overflow-wrap:anywhere]"
+              >
+                {scoreMultiplier(scorePreview.mult, i18n.language).display}
+              </strong>
             </div>
-          </div>
 
-          <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 text-sm tabular-nums">
-            <strong className="min-w-0 text-blue-300 [overflow-wrap:anywhere]">
-              {scoreNumber(scorePreview.points, i18n.language).display}
-            </strong>
-            <span className="text-[var(--color-golden-yellow)]/60">×</span>
-            <strong
-              data-score-preview-mult
-              title={scoreMultiplier(scorePreview.mult, i18n.language).exact}
-              aria-label={
-                scoreMultiplier(scorePreview.mult, i18n.language).exact
-              }
-              className="min-w-0 text-red-300 [overflow-wrap:anywhere]"
-            >
-              {scoreMultiplier(scorePreview.mult, i18n.language).display}
-            </strong>
-          </div>
-
-          <div className="min-w-0 text-right">
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/45 [overflow-wrap:anywhere]">
-              {t('gameplay.forecast.label', 'Forecast')}
-            </p>
             <GlowEffect
-              className="min-w-0 max-w-full"
+              className="min-w-0"
               variant="gold"
               intensity={0.6}
               pulsing={Boolean(
@@ -361,72 +384,48 @@ export function PlayArea({
             >
               <p
                 data-testid="score-preview-total"
-                title={scoreNumber(scorePreview.total, i18n.language).exact}
+                title={`${scoreNumber(scorePreview.total, i18n.language).exact} · ${pace}`}
                 aria-label={
                   scoreNumber(scorePreview.total, i18n.language).exact
                 }
-                className="text-2xl font-black tabular-nums text-[var(--color-golden-yellow)] [overflow-wrap:anywhere] sm:text-3xl"
+                aria-describedby={paceId}
+                className={`text-xl font-black tabular-nums [overflow-wrap:anywhere] ${
+                  clears
+                    ? 'text-emerald-300'
+                    : 'text-[var(--color-golden-yellow)]'
+                }`}
               >
                 +{scoreNumber(scorePreview.total, i18n.language).display}
               </p>
             </GlowEffect>
-          </div>
+            {/* Pace describes the total for assistive tech and in its tooltip,
+              without a second line in the score bar. */}
+            <p id={paceId} hidden className="game-forecast-pace">
+              {pace}
+            </p>
 
-          <p
-            className={`game-forecast-pace col-span-2 min-w-0 text-xs leading-relaxed [overflow-wrap:anywhere] ${
-              scorePreview.total >= remainingToTarget && remainingToTarget > 0
-                ? 'font-bold text-emerald-300'
-                : 'text-[var(--color-beige-white)]/55'
-            }`}
-          >
-            {scorePreview.total >= remainingToTarget && remainingToTarget > 0
-              ? t('gameplay.forecast.clears', 'Clears the round')
-              : t(
-                  'gameplay.forecast.share',
-                  '{{percent}}% of what remains · {{pace}}',
-                  {
-                    percent: Math.min(
-                      999,
-                      Math.round(
-                        (scorePreview.total / Math.max(1, remainingToTarget)) *
-                          100
-                      )
-                    ),
-                    pace:
-                      scorePreview.total >= requiredPerHand
-                        ? t('gameplay.forecast.onPace', 'on pace')
-                        : t(
-                            'gameplay.forecast.needPerHand',
-                            'need {{points}}/hand',
-                            {
-                              points: scoreNumber(
-                                requiredPerHand,
-                                i18n.language
-                              ).display,
-                            }
-                          ),
-                  }
-                )}
-          </p>
-          <HandInterpretationDetails
-            interpretation={scorePreview.interpretation}
-            skippedSequences={scorePreview.skippedSequences}
-            flowerSequences={scorePreview.flowerSequences}
-          />
-          <ExactScoreDetails
-            entries={[
-              { label: t('scoring.basePoints'), value: scorePreview.points },
-              { label: t('scoring.totalMultiplier'), value: scorePreview.mult },
-              {
-                label: t('gameplay.forecast.label'),
-                value: scorePreview.total,
-              },
-            ]}
-          />
+            <ExactScoreDetails
+              compact
+              entries={[
+                { label: t('scoring.basePoints'), value: scorePreview.points },
+                {
+                  label: t('scoring.totalMultiplier'),
+                  value: scorePreview.mult,
+                },
+                {
+                  label: t('gameplay.forecast.label'),
+                  value: scorePreview.total,
+                },
+              ]}
+            />
+          </div>
         </div>
       ) : coachAdvice && activeTileCount === 0 && onCoachChoose ? (
-        /* Nothing selected: show the two moves worth weighing. */
-        <div className="w-full" onClick={(event) => event.stopPropagation()}>
+        /* Nothing selected: the two moves worth weighing, on the same line. */
+        <div
+          className="w-full min-w-0"
+          onClick={(event) => event.stopPropagation()}
+        >
           <CoachPanel
             advice={coachAdvice}
             onChoose={onCoachChoose}
@@ -434,51 +433,20 @@ export function PlayArea({
           />
         </div>
       ) : (
-        /* Default state when no tiles */
-        <div className="text-center">
-          <p className="text-[var(--color-beige-white)] opacity-50 px-4">
-            {activeTileCount === 1
+        <p className="min-w-0 truncate text-sm text-[var(--color-beige-white)]/70">
+          {activeTileCount === 1
+            ? t(
+                'gameplay.forecast.selectOneMore',
+                'Select one more tile to play this group'
+              )
+            : activeTileCount > 5
               ? t(
-                  'gameplay.forecast.selectOneMore',
-                  'Select one more tile to play this group'
+                  'gameplay.forecast.returnTiles',
+                  'Return tiles until 5 remain, or finish a complete hand'
                 )
-              : activeTileCount > 5
-                ? t(
-                    'gameplay.forecast.notCompleteHand',
-                    'This selection is not a complete Mahjong hand'
-                  )
-                : previewLabel}
-          </p>
-          <p className="text-[var(--color-golden-yellow)] opacity-70 text-sm mt-1">
-            {activeTileCount === 0
-              ? t(
-                  'gameplay.completeToUnlockStage',
-                  'Complete all {{count}} tiles to unlock Stage Hand',
-                  { count: handTileCount }
-                )
-              : activeTileCount > 5
-                ? t(
-                    'gameplay.forecast.returnTiles',
-                    'Return tiles until 5 remain, or finish a complete hand'
-                  )
-                : t(
-                    'gameplay.forecast.groupToScore',
-                    'Group your tiles to score in full; complete hands unlock Yaku'
-                  )}
-          </p>
-        </div>
+              : previewLabel}
+        </p>
       )}
-
-      {/* Yaku Reveal Animations */}
-      {yakuReveals.map((yaku) => (
-        <YakuReveal
-          key={yaku.id}
-          japaneseName={yaku.japaneseName}
-          multiplier={yaku.multiplier}
-          tier={yaku.tier}
-          onComplete={() => onYakuComplete(yaku.id)}
-        />
-      ))}
     </div>
   )
 }

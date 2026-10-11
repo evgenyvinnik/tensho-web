@@ -7,12 +7,18 @@
  * @module components/screens/GameplayScreen
  */
 
-import { useEffect, useCallback, useState, useMemo, useRef } from 'react'
+import {
+  useEffect,
+  useCallback,
+  useState,
+  useMemo,
+  useRef,
+  type CSSProperties,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game/useGameController'
 import { useScorePresentation } from '../../game/useScorePresentation'
-import { useResponsiveTileSize } from '../../hooks/useResponsiveTileSize'
 import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { TablePattern } from '../ui/TablePattern'
 import { PlaySurface } from '../gameplay/PlaySurface'
@@ -28,6 +34,8 @@ import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
 import { YakuUpgradeLedger } from '../gameplay/YakuUpgradeLedger'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
+import { useSettingsStore } from '../../stores/settingsStore'
+import { feltPalette } from '../../utils/feltPalette'
 
 // Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -44,6 +52,9 @@ import { GameplayTopBar } from '../gameplay/GameplayTopBar'
 import { ScorePanel } from '../gameplay/ScorePanel'
 import { ActionBar } from '../gameplay/ActionBar'
 import { PlayArea } from '../gameplay/PlayArea'
+import { playAreaHasContent } from '../../gameplay/playAreaContent'
+import { HandInterpretationDetails } from '../gameplay/HandInterpretationDetails'
+import { YakuReveal } from '../effects/YakuReveal'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
 import { HandBuilder } from '../gameplay/HandBuilder'
@@ -82,9 +93,15 @@ export function GameplayScreen() {
   // Game controller
   const game = useGameController()
   const { service: persistence } = useClassicPersistence()
+  const showTileHints = useSettingsStore((state) => state.showTileHints)
   const itemText = useItemText()
   const currentTableStyle =
     getTableStyleById(game.state.tableStyleId) ?? getDefaultTableStyle()
+  // The chosen cloth colours the table and every panel laid on it.
+  const felt = useMemo(
+    () => feltPalette(currentTableStyle.feltColor),
+    [currentTableStyle.feltColor]
+  )
 
   const beginnerSuggestion = useMemo(
     () =>
@@ -95,9 +112,6 @@ export function GameplayScreen() {
       ),
     [game.handTiles, game.faceDownTileIds, game.partialHandRules]
   )
-
-  // Responsive tile size
-  const tileSize = useResponsiveTileSize()
 
   // Progressive tutorial hints
   const progressiveHints = useMemo(
@@ -142,6 +156,15 @@ export function GameplayScreen() {
   // ==========================================================================
   // EFFECTS - Game lifecycle
   // ==========================================================================
+
+  // The staging board is local to this screen, so a selection left in the
+  // engine (from Settings and back, or a restored run) would show tiles as
+  // chosen with nothing on the board. Start each visit with a clean choice.
+  useEffect(() => {
+    if (game.selectedTileIds.length > 0) game.clearSelection()
+    // Mount only: later selections belong to this screen.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (game.phase === 'shop') {
@@ -482,22 +505,27 @@ export function GameplayScreen() {
     setShowHandBuilder(false)
   }
 
-  const shantenDisplay = useMemo(() => {
+  const shanten = useMemo(() => {
     if (game.handTiles.some((tile) => faceDownTileIds.has(tile.id)))
-      return '???'
+      return { label: '???' }
     const interpretation = game.inspectCompleteHand(
       completeHandSelection ?? game.handTiles.map((tile) => tile.id)
     )
     if (interpretation)
-      return interpretation.naturalComplete
-        ? t('gameplay.completeHand', 'Complete hand')
-        : t('handInterpretation.ready')
+      return {
+        label: interpretation.naturalComplete
+          ? t('gameplay.completeHand', 'Complete hand')
+          : t('handInterpretation.ready'),
+      }
     const result = calculateShanten(game.handTiles, game.state.melds)
     if (result.shanten < 0) {
-      return t('gameplay.completeHand', 'Complete hand')
+      return { label: t('gameplay.completeHand', 'Complete hand') }
     }
-    if (result.shanten === 0) return t('gameplay.tenpai', 'Tenpai')
-    return t('gameplay.shanten', { count: result.shanten })
+    if (result.shanten === 0) return { label: t('gameplay.tenpai', 'Tenpai') }
+    return {
+      label: t('gameplay.shanten', { count: result.shanten }),
+      help: t('gameplay.shantenHelp'),
+    }
   }, [game, completeHandSelection, faceDownTileIds, t])
 
   const previewTileIds =
@@ -611,6 +639,14 @@ export function GameplayScreen() {
     }
   }, [stagedTileIds, game, completeHandSelection, faceDownTileIds])
 
+  const forecastActive = playAreaHasContent({
+    selectedTileCount: game.selectedTileIds.length,
+    stagedTileCount: stagedTileIds.length,
+    scorePreview,
+    scorePreviewHidden,
+    coachAdvice,
+  })
+
   const isCompleteHandSelection =
     previewTileIds.length > 5 &&
     !scorePreviewHidden &&
@@ -680,12 +716,21 @@ export function GameplayScreen() {
       artwork={getTableStyleIllustration(currentTableStyle.id)}
       artworkOpacity={0.68}
       className="viewport-full"
+      colors={felt}
     >
+      {/* The screen never scrolls as a whole: the round header, score, rack
+          and actions stay put, and only the board (inventory, guidance,
+          forecast and staging) scrolls when a short screen cannot hold it. */}
       <div
-        data-gameplay-scroll
-        className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] scroll-pb-24 scroll-pt-3 flex-col overflow-y-auto overscroll-contain border-x border-white/5 bg-black/5 shadow-2xl [&>*]:shrink-0"
+        data-felt={currentTableStyle.feltColor}
+        className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl"
+        style={
+          {
+            '--color-dark-forest': felt.surface,
+            '--color-forest-green': felt.surfaceRaised,
+          } as CSSProperties
+        }
       >
-        {/* Top bar */}
         <GameplayTopBar
           gold={game.gold}
           stake={game.state.stake}
@@ -707,113 +752,11 @@ export function GameplayScreen() {
           t={t}
           onExit={() => setShowExitConfirm(true)}
           onSettings={handleSettings}
+          status={<ClassicSaveNotice inline />}
         />
 
-        <ClassicSaveNotice />
-        <div className="gameplay-inventory-row flex flex-shrink-0 items-center gap-2 px-3 py-1.5">
-          <div
-            data-gameplay-table-identity
-            data-table-style-id={currentTableStyle.id}
-            role="img"
-            aria-label={t('gameplay.activeTable', 'Active table: {{name}}', {
-              name: itemText.name('tableStyles', {
-                ...currentTableStyle,
-                name: currentTableStyle.displayName,
-              }),
-            })}
-            title={itemText.name('tableStyles', {
-              ...currentTableStyle,
-              name: currentTableStyle.displayName,
-            })}
-            className="gameplay-table-chip relative flex h-16 w-16 shrink-0 items-end overflow-hidden rounded-xl border-2 bg-black/45 shadow-lg sm:w-36"
-            style={{
-              borderColor: currentTableStyle.themeColor,
-              boxShadow: `0 0 18px ${currentTableStyle.themeColor}45`,
-            }}
-          >
-            <img
-              src={getTableStyleIllustration(currentTableStyle.id)}
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <span className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
-            <span
-              aria-hidden="true"
-              className="absolute inset-y-0 left-0 w-1"
-              style={{ backgroundColor: currentTableStyle.themeColor }}
-            />
-            <span className="relative hidden min-w-0 px-2 pb-1.5 text-left sm:block">
-              <span className="block text-[9px] font-black uppercase tracking-[0.16em] text-[var(--color-metallic-gold)]">
-                {t('gameplay.activeTableLabel', 'Table')}
-              </span>
-              <span className="block truncate text-xs font-bold text-white drop-shadow">
-                {itemText.name('tableStyles', {
-                  ...currentTableStyle,
-                  name: currentTableStyle.displayName,
-                })}
-              </span>
-            </span>
-          </div>
+        <ClassicSaveNotice errorsOnly />
 
-          {/* Decree bar */}
-          <div
-            data-tutorial="decrees"
-            className="flex min-w-0 flex-1 gap-2 overflow-x-auto py-1"
-          >
-            {displayedDecrees.map((decree, index) => (
-              <DecreeCardCompact
-                key={decree.instanceId ?? `${decree.id}-${index}`}
-                decree={decree}
-                ownedDecrees={ownedDecrees}
-                yakuHistory={game.state}
-                completeConcealedHandsPlayed={
-                  game.state.completeConcealedHandsPlayed
-                }
-                disabledDecreeIds={disabledDecreeIds}
-                faceDown={game.decreesFaceDown}
-                disabledByMandate={isDecreeExcluded(decree, disabledDecreeIds)}
-                onSell={() => handleSellDecree(decreeKey(decree))}
-              />
-            ))}
-            {Array.from({
-              length: Math.max(0, maxDecreeSlots - ownedDecrees.length),
-            }).map((_, i) => (
-              <DecreeSlotEmpty
-                key={`empty-${i}`}
-                isLocked={i >= maxDecreeSlots - ownedDecrees.length}
-              />
-            ))}
-          </div>
-
-          <div className="flex-shrink-0">
-            <ConsumablesBar
-              {...consumables}
-              onUseFateSeal={handleShowFateSeals}
-              onUseCelestialOrb={handleShowCelestialOrbs}
-              onUseVoidScript={handleShowVoidScripts}
-            />
-          </div>
-        </div>
-
-        <DecreeCapacityNotice
-          owned={ownedDecrees.length}
-          slots={maxDecreeSlots}
-        />
-
-        {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
-          <div className="mx-4 mb-2 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
-            Verdant Leaf: all tiles are debuffed. Sell one Decree above to clear
-            it.
-          </div>
-        )}
-
-        <PendingOmens system={game.state.omenSystem} />
-        <div className="flex justify-end px-3 py-1">
-          <YakuUpgradeLedger upgrades={game.yakuUpgrades} />
-        </div>
-
-        {/* Score panel */}
         <ScorePanel
           targetScore={game.targetScore}
           currentScore={game.score}
@@ -822,112 +765,225 @@ export function GameplayScreen() {
           scorePopups={scorePopups}
           onPopupComplete={handlePopupComplete}
           t={t}
-        />
-
-        <ProgressiveHintCard
-          hint={tutorial.currentHint}
-          onDismiss={tutorial.dismissHint}
-          onDisableHints={tutorial.disableHints}
-          queueCount={tutorial.hintQueue.length}
-        />
-
-        {/* Play area */}
-        <PlayArea
-          selectedTileCount={game.selectedTileIds.length}
-          stagedTileCount={stagedTileIds.length}
-          handTileCount={game.handTiles.length}
-          scorePreview={scorePreview}
-          scorePreviewHidden={scorePreviewHidden}
-          previewLabel={forecastHeading(t, {
-            activeTileCount: activePreviewTileIds.length,
-            previewTileCount: previewTileIds.length,
-            stagedTileCount: stagedTileIds.length,
-            isCompleteHand: isCompleteHandSelection,
-            matchedPatternLabel: beginnerSelectionMatches
-              ? beginnerPatternLabel
-              : null,
-            coachPrompt: beginnerPreviewLabel,
-          })}
-          remainingToTarget={Math.max(0, game.targetScore - game.score)}
-          handsRemaining={game.handsRemaining}
-          coachAdvice={coachAdvice}
-          onCoachChoose={handleCoachChoose}
-          onCoachDismiss={() => setCoachDismissed(true)}
-          yakuReveals={yakuReveals}
-          onYakuComplete={handleYakuComplete}
-          tableThemeColor={currentTableStyle.themeColor}
-          tableAccentColor={currentTableStyle.accentColor}
-        />
-
-        {/* Play Surface with Flora panel and Wall display */}
-        <div
-          data-gameplay-surface
-          className="relative mx-2 mb-1 grid flex-1 grid-cols-2 content-start items-start gap-2 md:grid-cols-[auto_minmax(0,1fr)_auto]"
-        >
-          <div data-tutorial="flora" className="order-1 min-w-0">
-            <FloraTrackCompact flora={game.flora} />
-          </div>
-
-          <div
-            data-tutorial="hand"
-            className="order-3 col-span-2 min-w-0 md:order-2 md:col-span-1"
-          >
-            <PlaySurface
-              handTiles={game.handTiles}
-              tileSize={tileSize}
-              selectedIds={new Set(game.selectedTileIds)}
-              highlightedIds={beginnerHighlightedIds}
-              faceDownIds={faceDownTileIds}
-              lockedIds={lockedTileIds}
-              debuffedIds={debuffedTileIds}
-              onTileSelect={handleTileClick}
-              onTileDiscard={handleTileDiscard}
-              onTilesStaged={handleTilesStaged}
-              stageAllRequestId={stageAllRequestId}
-              stageRequestTileIds={stageRequestTileIds}
-              disabled={false}
-              shantenDisplay={shantenDisplay}
+          forecastActive={forecastActive}
+          forecast={
+            <PlayArea
+              selectedTileCount={game.selectedTileIds.length}
+              stagedTileCount={stagedTileIds.length}
+              handTileCount={game.handTiles.length}
+              scorePreview={scorePreview}
+              scorePreviewHidden={scorePreviewHidden}
+              previewLabel={forecastHeading(t, {
+                activeTileCount: activePreviewTileIds.length,
+                previewTileCount: previewTileIds.length,
+                stagedTileCount: stagedTileIds.length,
+                isCompleteHand: isCompleteHandSelection,
+                matchedPatternLabel: beginnerSelectionMatches
+                  ? beginnerPatternLabel
+                  : null,
+                coachPrompt: beginnerPreviewLabel,
+              })}
+              remainingToTarget={Math.max(0, game.targetScore - game.score)}
               handsRemaining={game.handsRemaining}
-              discardsRemaining={game.discardsRemaining}
+              coachAdvice={coachAdvice}
+              onCoachChoose={handleCoachChoose}
+              onCoachDismiss={() => setCoachDismissed(true)}
               tableThemeColor={currentTableStyle.themeColor}
               tableAccentColor={currentTableStyle.accentColor}
-              beginnerSuggestion={
-                beginnerCoachActive ? beginnerSuggestion : null
-              }
-              onOpenBeginnerGuide={handleOpenBeginnerGuide}
-              onOpenHandBuilder={() => setShowHandBuilder(true)}
-              riichiControl={
-                <RiichiControl
-                  status={game.state.riichiStatus}
-                  inspect={game.getRiichiState}
-                  onAction={(type) => game.processAction({ type })}
-                />
-              }
-              t={t}
             />
-          </div>
+          }
+        />
 
-          <div
-            data-tutorial="wall"
-            className="order-2 min-w-0 justify-self-end md:order-3 md:w-48"
-          >
-            <div className="md:hidden">
-              <WallDisplay wallTiles={game.wallTiles} compact />
+        {/* Staging board and rack. Everything above the staging zone is
+            passed in as the board header so it scrolls with the board while
+            the rack stays pinned above the action bar. */}
+        <div
+          data-gameplay-surface
+          className="relative mx-1 flex min-h-0 min-w-0 flex-1 flex-col"
+        >
+          {yakuReveals.length > 0 && (
+            <div className="pointer-events-none absolute inset-x-0 top-2 z-40 flex flex-col items-center gap-2">
+              {yakuReveals.map((yaku) => (
+                <YakuReveal
+                  key={yaku.id}
+                  japaneseName={yaku.japaneseName}
+                  multiplier={yaku.multiplier}
+                  tier={yaku.tier}
+                  onComplete={() => handleYakuComplete(yaku.id)}
+                />
+              ))}
             </div>
-            <div className="hidden md:block">
-              <WallDisplay wallTiles={game.wallTiles} />
-            </div>
-          </div>
+          )}
+          <PlaySurface
+            handTiles={game.handTiles}
+            tileSize="fit"
+            selectedIds={new Set(game.selectedTileIds)}
+            highlightedIds={beginnerHighlightedIds}
+            faceDownIds={faceDownTileIds}
+            lockedIds={lockedTileIds}
+            debuffedIds={debuffedTileIds}
+            onTileSelect={handleTileClick}
+            onTileDiscard={handleTileDiscard}
+            onTilesStaged={handleTilesStaged}
+            stageAllRequestId={stageAllRequestId}
+            stageRequestTileIds={stageRequestTileIds}
+            disabled={false}
+            shantenDisplay={shanten.label}
+            shantenHelp={shanten.help}
+            handsRemaining={game.handsRemaining}
+            discardsRemaining={game.discardsRemaining}
+            tableThemeColor={currentTableStyle.themeColor}
+            tableAccentColor={currentTableStyle.accentColor}
+            beginnerSuggestion={beginnerCoachActive ? beginnerSuggestion : null}
+            onOpenBeginnerGuide={handleOpenBeginnerGuide}
+            onOpenHandBuilder={() => setShowHandBuilder(true)}
+            groupRules={showTileHints ? game.partialHandRules : null}
+            stagingFooter={
+              scorePreview ? (
+                <HandInterpretationDetails
+                  interpretation={scorePreview.interpretation}
+                  skippedSequences={scorePreview.skippedSequences}
+                  flowerSequences={scorePreview.flowerSequences}
+                />
+              ) : null
+            }
+            riichiControl={
+              <RiichiControl
+                status={game.state.riichiStatus}
+                inspect={game.getRiichiState}
+                onAction={(type) => game.processAction({ type })}
+              />
+            }
+            boardHeader={
+              <>
+                {/* Inventory: Decrees, then consumables and run trackers. */}
+                <div className="gameplay-inventory-row scroll-rail flex items-center gap-2 overflow-x-auto px-2 py-0.5">
+                  <div
+                    data-gameplay-table-identity
+                    data-table-style-id={currentTableStyle.id}
+                    role="img"
+                    aria-label={t(
+                      'gameplay.activeTable',
+                      'Active table: {{name}}',
+                      {
+                        name: itemText.name('tableStyles', {
+                          ...currentTableStyle,
+                          name: currentTableStyle.displayName,
+                        }),
+                      }
+                    )}
+                    title={itemText.name('tableStyles', {
+                      ...currentTableStyle,
+                      name: currentTableStyle.displayName,
+                    })}
+                    className="gameplay-table-chip relative hidden h-12 w-12 shrink-0 overflow-hidden rounded-lg border-2 bg-black/45 shadow-lg sm:block"
+                    style={{
+                      borderColor: currentTableStyle.themeColor,
+                      boxShadow: `0 0 18px ${currentTableStyle.themeColor}45`,
+                    }}
+                  >
+                    <img
+                      src={getTableStyleIllustration(currentTableStyle.id)}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
+
+                  {/* Decree bar */}
+                  <div
+                    data-tutorial="decrees"
+                    className="flex shrink-0 gap-1.5 py-0.5"
+                  >
+                    {displayedDecrees.map((decree, index) => (
+                      <DecreeCardCompact
+                        key={decree.instanceId ?? `${decree.id}-${index}`}
+                        decree={decree}
+                        ownedDecrees={ownedDecrees}
+                        yakuHistory={game.state}
+                        completeConcealedHandsPlayed={
+                          game.state.completeConcealedHandsPlayed
+                        }
+                        disabledDecreeIds={disabledDecreeIds}
+                        faceDown={game.decreesFaceDown}
+                        disabledByMandate={isDecreeExcluded(
+                          decree,
+                          disabledDecreeIds
+                        )}
+                        onSell={() => handleSellDecree(decreeKey(decree))}
+                      />
+                    ))}
+                    {Array.from({
+                      length: Math.max(0, maxDecreeSlots - ownedDecrees.length),
+                    }).map((_, i) => (
+                      <DecreeSlotEmpty
+                        key={`empty-${i}`}
+                        isLocked={i >= maxDecreeSlots - ownedDecrees.length}
+                      />
+                    ))}
+                  </div>
+
+                  <div aria-hidden="true" className="min-w-0 flex-1" />
+                  <div className="flex shrink-0 items-center gap-1.5 py-0.5">
+                    <ConsumablesBar
+                      {...consumables}
+                      onUseFateSeal={handleShowFateSeals}
+                      onUseCelestialOrb={handleShowCelestialOrbs}
+                      onUseVoidScript={handleShowVoidScripts}
+                    />
+                    <div data-tutorial="flora" className="shrink-0">
+                      <FloraTrackCompact flora={game.flora} />
+                    </div>
+                    <div data-tutorial="wall" className="shrink-0">
+                      <WallDisplay wallTiles={game.wallTiles} compact />
+                    </div>
+                    <div className="shrink-0">
+                      <YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tips: from tablet width a popup just below the inventory
+                    (so Decrees, consumables and trackers stay usable) over
+                    the empty top of the staging area; in flow on phones,
+                    where a popup would cover staged tiles. */}
+                <div className="sm:relative sm:z-30 sm:h-0">
+                  <ProgressiveHintCard
+                    floating
+                    hint={tutorial.currentHint}
+                    onDismiss={tutorial.dismissHint}
+                    onDisableHints={tutorial.disableHints}
+                    queueCount={tutorial.hintQueue.length}
+                  />
+                </div>
+
+                <DecreeCapacityNotice
+                  owned={ownedDecrees.length}
+                  slots={maxDecreeSlots}
+                />
+
+                {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
+                  <div className="mx-4 mb-2 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
+                    Verdant Leaf: all tiles are debuffed. Sell one Decree above
+                    to clear it.
+                  </div>
+                )}
+
+                <PendingOmens system={game.state.omenSystem} />
+
+                {actionError && (
+                  <div
+                    role="alert"
+                    className="mx-4 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
+                  >
+                    {actionError}
+                  </div>
+                )}
+              </>
+            }
+            t={t}
+          />
         </div>
-
-        {actionError && (
-          <div
-            role="alert"
-            className="mx-4 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
-          >
-            {actionError}
-          </div>
-        )}
 
         {/* Action bar */}
         <ActionBar

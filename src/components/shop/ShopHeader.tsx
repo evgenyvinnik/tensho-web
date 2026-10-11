@@ -9,7 +9,7 @@
  * Uses the game's color palette and maintains minimum touch targets.
  */
 
-import { useCallback } from 'react'
+import { useCallback, type ReactNode } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { GoldIcon } from '../ui/GoldIcon'
@@ -34,6 +34,8 @@ export interface ShopHeaderProps {
   onSettings: () => void
   /** Number of rerolls this visit */
   rerollCount: number
+  /** Compact run status (for example the save indicator). */
+  status?: ReactNode
 }
 
 // =============================================================================
@@ -188,6 +190,7 @@ export function ShopHeader({
   onReroll,
   onSettings,
   rerollCount,
+  status,
 }: ShopHeaderProps) {
   const { t } = useTranslation()
 
@@ -204,6 +207,7 @@ export function ShopHeader({
 
         {/* Actions */}
         <div className="col-start-2 row-start-1 flex items-center gap-1.5 sm:col-start-3 sm:gap-3">
+          {status}
           <RerollButton
             cost={rerollCost}
             canAfford={canAffordReroll}

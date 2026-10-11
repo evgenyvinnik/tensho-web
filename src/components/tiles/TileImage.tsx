@@ -18,8 +18,9 @@ import { tileDetails } from '../../i18n/tileText'
 import { getTileImagePath, getTileBackPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
+import { useSettingsStore } from '../../stores/settingsStore'
 
-export type TileSize = 'small' | 'medium' | 'large' | 'xlarge'
+export type TileSize = keyof typeof tileSizes
 
 export interface TileImageProps {
   /** The tile to display, or null/undefined for face-down */
@@ -90,6 +91,8 @@ export const TileImage: React.FC<TileImageProps> = ({
     !dismissed &&
     ((isHovering && allowHover) || isFocused || detailsVisible)
   const dimensions = tileSizes[size]
+  const showTileHints = useSettingsStore((state) => state.showTileHints)
+  const showIndex = Boolean(showTileHints && tile?.isSuited && !faceDown)
   const src = getTileSrc(tile, faceDown)
   const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
 
@@ -233,6 +236,16 @@ export const TileImage: React.FC<TileImageProps> = ({
         draggable={false}
         loading="lazy"
       />
+      {showIndex && (
+        <span
+          aria-hidden="true"
+          data-tile-index={tile!.rank}
+          className="tile-index"
+          style={{
+            fontSize: Math.max(9, Math.round(dimensions.width * 0.2)),
+          }}
+        />
+      )}
       {/* Selection indicator overlay */}
       {selected && (
         <div className="absolute inset-0 bg-golden-yellow opacity-20 rounded pointer-events-none" />

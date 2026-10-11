@@ -232,7 +232,8 @@ describe('PlaySurface', () => {
         />
       )
 
-      expect(screen.getByText('Guided first move')).toBeInTheDocument()
+      // One instruction on the board; the progressive hint card says the rest.
+      expect(screen.queryByText('Guided first move')).not.toBeInTheDocument()
       expect(screen.getByText('Pair ready')).toBeInTheDocument()
       expect(
         container.querySelector(
@@ -293,6 +294,93 @@ describe('PlaySurface', () => {
       )
 
       expect(screen.getByText('Tenpai!')).toBeInTheDocument()
+    })
+  })
+
+  describe('grouped rack', () => {
+    const groupedRack = () => [
+      new Tile(TileSuit.Manzu, 9, 'loose-nine'),
+      new Tile(TileSuit.Pinzu, 5, 'pair-a'),
+      new Tile(TileSuit.Souzu, 2, 'run-2'),
+      new Tile(TileSuit.Souzu, 3, 'run-3'),
+      new Tile(TileSuit.Souzu, 4, 'run-4'),
+      new Tile(TileSuit.Pinzu, 5, 'pair-b'),
+    ]
+    const rackOrder = (container: HTMLElement) =>
+      Array.from(
+        container.querySelectorAll('[data-play-zone="hand"] [data-play-tile]'),
+        (node) => node.getAttribute('data-play-tile')
+      )
+
+    it('keeps rack order when tile hints are off', () => {
+      const { container } = render(<PlaySurface handTiles={groupedRack()} />)
+
+      expect(container.querySelector('[data-hand-group]')).toBeNull()
+      expect(rackOrder(container)).toEqual([
+        'loose-nine',
+        'pair-a',
+        'run-2',
+        'run-3',
+        'run-4',
+        'pair-b',
+      ])
+    })
+
+    it('labels each scoring group and puts loose tiles last', () => {
+      const { container } = render(
+        <PlaySurface handTiles={groupedRack()} groupRules={{}} />
+      )
+
+      const groups = Array.from(
+        container.querySelectorAll('[data-hand-group]'),
+        (node) => [
+          node.getAttribute('data-hand-group'),
+          node.querySelector('[data-hand-group-label]')?.textContent,
+        ]
+      )
+      expect(groups).toEqual([
+        ['pair', 'Pair +15'],
+        ['sequence', 'Sequence +30'],
+      ])
+      expect(rackOrder(container)).toEqual([
+        'pair-a',
+        'pair-b',
+        'run-2',
+        'run-3',
+        'run-4',
+        'loose-nine',
+      ])
+    })
+
+    it('keeps every position, and drops the group label, once a tile is staged', () => {
+      const tiles = groupedRack()
+      const { container } = render(
+        <PlaySurface handTiles={tiles} groupRules={{}} />
+      )
+      fireEvent.click(container.querySelector('[data-play-tile="pair-a"]')!, {
+        detail: 0,
+      })
+
+      expect(rackOrder(container)).toEqual([
+        'pair-b',
+        'run-2',
+        'run-3',
+        'run-4',
+        'loose-nine',
+      ])
+      expect(
+        Array.from(container.querySelectorAll('[data-hand-group]'), (node) =>
+          node.getAttribute('data-hand-group')
+        )
+      ).toEqual(['sequence'])
+      // The staged tile leaves an empty slot, so nothing shifts under a finger.
+      const rack = container.querySelector('[data-hand-rack]')!
+      const slot = rack.querySelector('[data-rack-slot]')!
+      expect(rack.querySelectorAll('[data-rack-slot]')).toHaveLength(1)
+      expect(slot.nextElementSibling).toHaveAttribute(
+        'data-play-tile',
+        'pair-b'
+      )
     })
   })
 

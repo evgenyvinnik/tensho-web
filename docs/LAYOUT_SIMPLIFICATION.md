@@ -1,0 +1,176 @@
+# Classic layout simplification and readable hands
+
+October 10–11, 2026. Implementation checkpoint; verification is recorded below.
+Follow-up work is listed in [UI improvement backlog](UI_IMPROVEMENT_BACKLOG.md).
+
+## Problem
+
+The Classic play screen stacked about ten full-width rows above the rack: top
+bar, save status, table chip, Decrees and consumables, a separate Yaku ledger
+row, a two-row score panel, the progressive hint, the coach, the forecast, a
+Flora/Wall side column, the staging zone and the rack header. At 1440×800 (a
+MacBook viewport) the content needed ~1,240px inside an 828px canvas, so the
+rack itself started below the fold. At 390×844 no rack tile was visible at all.
+
+Newcomers also had no way to see which tiles belong together. The Chinese
+numerals on Character tiles are unreadable to them, and the existing **Tile
+Hints** setting was stored but never used by gameplay.
+
+## Layout contract
+
+- The screen never scrolls as a whole. The round header, a one-row score panel,
+  the rack and the action bar are always visible.
+- Only the **board** scrolls: inventory, guidance and staging. The rack lives
+  at the end of the board and is pinned (`sticky`) to its bottom while the
+  board keeps at least a 150px window above it; on very short screens
+  (320×568) it scrolls with the board instead of hiding it. When a tile is
+  staged, the board scrolls the staging zone into view, using the pinned
+  rack's height as scroll padding.
+- Inventory is one rail: Decrees, consumables, a Flowers/Seasons chip, a Wall
+  chip (now opening a real breakdown dialog) and an icon-sized Yaku ledger.
+- The rack picks the largest tile size that fits the space it actually has
+  (`fitHandTileSize`): up to 28% of the viewport height and at most three rows,
+  counting group gaps and labels. A laptop keeps a 14–16 tile rack on one row.
+  New intermediate sizes `compact` (42×59) and `regular` (60×84) avoid the
+  large jump between presets. Touch targets stay at least 44px.
+- The rack header is one row everywhere; phones scroll it sideways instead of
+  spending a second row of rack height on secondary buttons. **Learn the
+  tiles** now lives there permanently (icon on phones).
+- The staging zone shows one instruction; the duplicate "Guided first move"
+  kicker is gone, and phones show only its title because the hint card carries
+  the sentence. It grows to its content (`flex: 1 0 auto`), so staged tiles
+  and their coach message can never spill over the inventory above.
+- Exact values sit behind an icon-sized disclosure (ⓘ drawn as generated
+  content, so the summary's text is exactly "Exact values").
+- Shop: the Yaku ledger joins the build panel's heading, save status moves to
+  the header, and the cash-out total is one row on phones.
+- A selection left in the engine (Settings and back, restored runs) is cleared
+  when the play screen mounts, so tiles never appear chosen with an empty board.
+
+## Second pass: one line per job (user review)
+
+- **Tips are a popup.** From tablet width up (≥640px), the progressive hint
+  floats (`ProgressiveHintCard floating`) instead of taking a row. It hangs
+  from a zero-height positioned wrapper placed right after the inventory, so
+  it covers only the empty top of the staging area: Decrees, consumables and
+  trackers stay usable (tips themselves point at them), and it never covers
+  the rack or the actions. Only its card takes input. Phones keep it at the top of the board's scroll: browser
+  checks at 320×568 and 390×844 showed a popup there covered the staged tiles
+  the player needs to tap. The shop keeps its in-flow card, because the shop
+  is a scrolling page and a floating card would cover items.
+- **One scoring line.** The coach's two options ("Points now", "Build toward
+  a Sequence"), the forecast for the current choice and the last play's
+  equation share the score bar's second slot: the forecast or coach shows
+  while there is a choice to make, and the settled equation otherwise. The old
+  forecast panel is gone; its pace sentence is the total's tooltip and its
+  accessible description. Yaku reveals float over the board, and "why this
+  hand works" sits under the staged tiles.
+- **One round chip.** Act, round type and Act progress are one chip, with the
+  progress as a thin track along its lower edge.
+- **Nothing twice.** The action bar no longer repeats the wall, hands and
+  discard counts already on the table. The redraw count, shown nowhere else,
+  is a small badge on the Redraw button.
+- **Stable rack.** A staged tile leaves an empty dashed slot in the rack, so
+  the next tile never moves under the player's finger (the browser check
+  caught exactly that: a centred rack re-flowed after each tap).
+
+## Felt colours
+
+Each table style now has a `feltColor` (green, lacquer red, olive bamboo,
+ochre gold, night-market indigo, slate, ghost violet, ember charcoal).
+`feltPalette` derives the table gradient, the Seigaiha wave stroke, the
+vignette and two panel shades from it in plain hex (the wave pattern is an SVG
+data URI, where CSS colour functions are not reliable). The play screen passes
+the palette to `TablePattern`, which no longer hard-codes green, and overrides
+`--color-dark-forest` / `--color-forest-green` for its subtree, so the score
+bar, rack, action bar and dialogs opened from them all take the cloth. A unit
+test keeps beige text at ≥7:1 contrast on every felt's panels, and every table
+has a distinct cloth.
+
+## Readable hands (Tile Hints, on by default)
+
+- The rack is laid out as the scorer's own groups (`groupHand`, built on
+  `parsePartialHand`), each above a coloured label such as **Pair +15** or
+  **Sequence +30**; loose tiles follow unmarked. Concealed and bonus tiles are
+  never grouped. Groups are read from the whole rack, so tiles neither move
+  nor resize while the player stages them; a partly staged group stays in place
+  without its label.
+- Suited tiles show an Arabic numeral badge, drawn as generated content so it
+  never changes a tile's text or accessible name.
+- The "N away" chip explains itself (tooltip and screen-reader text).
+- Turning **Tile Hints** off restores plain rack order without badges. The
+  setting's description is updated in all thirteen languages, as are the new
+  group-label and shanten-help strings.
+
+The Settings switch was also corrected: the global 44px touch rule had stretched
+every switch into a 48×44 blob with an invisible off state. The button keeps the
+44px target; the visible track is a bordered 48×24 pill.
+
+## Verification
+
+Measured in the dev build with the first-move hint and coach showing:
+
+| Viewport | Before | After |
+| --- | --- | --- |
+| 1440×800 (MacBook) | rack below fold (1,241px in 828px) | everything fits; 16 tiles on one row |
+| 1024×768 (iPad landscape) | — | everything fits; one row |
+| 768×1024 (iPad portrait) | — | everything fits; large tiles, two rows |
+| 390×844 (phone, standalone) | no rack tile visible | everything fits |
+| 390×664 (phone in Safari) | — | rack and actions pinned; board scrolls |
+
+A complete first move (stage the glowing Pair, Play, settle 25 × 1.21 = 30)
+and a round clear into the Tea House were exercised in the browser. After the
+second pass, 390×664 fits with the tip open (board 418px of 416px), the phone
+top bar measures 315/315px, and Night Market and Red Lacquer runs were checked
+for felt colour. Unit tests: 2,848 pass with two workers before the second
+pass; the full suite passes again after it (see below).
+
+Browser-test findings that changed the implementation:
+
+- A floating tip on phones covered staged tiles (320×568, 390×844), so tips
+  float only from 640px up. On desktop, a tip anchored to the board's top
+  covered the consumable buttons (every consumables spec timed out on it),
+  so it now hangs below the inventory. Note: an absolute child of a flex
+  container takes the container's start as its static position, hence the
+  explicit zero-height wrapper.
+- Staged tiles could spill over the inventory when the staging zone's fixed
+  minimum was smaller than its content; it now grows to its content.
+- Visually hidden labels inside sideways-scrolling rails escaped the rails'
+  clipping (the rails were not positioned), widened the game column to
+  ~700px, and `scrollIntoView` then shifted the whole screen left by ~156px
+  at 320×568. `.scroll-rail` is now positioned, and its scroll padding keeps
+  the first item clear of the fade (this also fixed "Hand (16)" being clipped).
+
+- A complete hand with four Yaku at 320px squeezed the forecast's badges into
+  a 50px column ("Menzen Tsumo" broke letter by letter) and the score bar
+  grew until the board vanished. The name-and-Yaku block now takes a full
+  row on narrow screens, badges never break inside a name, and the numbers
+  move to the next row.
+- The Redraw count badge is generated content, so the button's text stays
+  exactly its label.
+
+E2E (installed Chrome, test-mode server, one worker, desktop and mobile
+projects): the layout set passed 101/112 before those fixes. Final runs on a
+freshly started server: 48/48 (flora, hand builder, tutorial layout, Yaku
+ledger, forecast layout) and 158/160 (consumables, interaction, play
+structure, discard layout, secondary scoring, score settlement, progressive
+hints, app, table selector, shop build, hand-builder guards, Riichi, Decree
+details, beginner guide). The two failures are the lazy-image readiness
+checks described below, in screens this work did not change. Unit tests:
+2,858/2,858 in 204 files (two workers). Lint: 0 errors, 211 existing
+warnings. TypeScript: clean.
+
+### Browser test notes
+
+- This machine's Playwright 1.57 has no bundled Chromium (build 1200) cached,
+  and port 4173 is held by another project's preview server. The suite was run
+  against `.claude/launch.json`'s `e2e` server (test mode, port 4273) with the
+  installed Google Chrome channel, from a scratch config that only overrides
+  the browser channel and server.
+- Editing a source file while the dev server runs re-versions importers
+  (`GameOrchestrator.ts?t=…`); specs that `import('/src/game/GameOrchestrator.ts')`
+  then drive a second engine instance and fail. Restart the server after
+  edits, or resolve the loaded URL from `performance` resource entries.
+- With installed Chrome, two image-readiness checks fail because lazy images
+  outside the viewport never load (Japanese beginner guide at 320×568 with a
+  20px font; mobile table selector). Neither touches changed code.

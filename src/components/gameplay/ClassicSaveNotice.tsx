@@ -4,8 +4,11 @@ import { useClassicPersistence } from '../../game/useClassicPersistence'
 
 export function ClassicSaveNotice({
   errorsOnly = false,
+  inline = false,
 }: {
   errorsOnly?: boolean
+  /** Healthy status only, sized for a toolbar; failures render elsewhere. */
+  inline?: boolean
 }) {
   const { t } = useTranslation()
   const { service, status, unsaved, disk } = useClassicPersistence()
@@ -18,6 +21,20 @@ export function ClassicSaveNotice({
       ? disk.kind
       : null
   if (errorsOnly && !error) return null
+  if (inline) {
+    if (error) return null
+    const label = t(`classicSave.${unsaved ? 'saving' : 'saved'}`)
+    return (
+      <p
+        data-classic-save-status={status}
+        title={label}
+        className="flex items-center gap-1 whitespace-nowrap text-[10px] text-[var(--color-beige-white)]/60"
+      >
+        <span aria-hidden="true">{unsaved ? '…' : '✓'}</span>
+        <span className="sr-only sm:not-sr-only">{label}</span>
+      </p>
+    )
+  }
   const retry = async () => {
     setBusy(true)
     try {

@@ -289,7 +289,7 @@
     "gameplay": "Gameplay",
     "language": "Language",
     "tileHints": "Tile Hints",
-    "tileHintsDesc": "Show hints for valid tile placements",
+    "tileHintsDesc": "Show tile numbers and group your hand into Pairs, Sequences and Triplets",
     "animationSpeed": "Animation Speed",
     "reducedMotion": "Reduced Motion",
     "reducedMotionDesc": "Minimize animations for accessibility",
@@ -333,6 +333,7 @@
     "resume": "Resume",
     "tenpai": "Tenpai",
     "shanten": "{{count}} away",
+    "shantenHelp": "How many more useful tiles you need before a single tile can complete your hand",
     "ready": "Ready",
     "deadDraw": "DEAD DRAW",
     "deadWallDraw": "DEAD WALL DRAW",
@@ -410,6 +411,9 @@
     "redraw": "REDRAW",
     "selectRange": "SELECT {{min}}–{{max}}",
     "handCount": "Hand ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Select {{min}}–{{max}} tiles for a tactical play",
     "tacticalHintLong": "Select {{min}}–{{max}} tiles for a tactical play, or complete the hand before declaring it.",
     "sell": "Sell",

@@ -313,7 +313,7 @@
       "normal": "Normal",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Muestra pistas de colocaciones válidas",
+    "tileHintsDesc": "Muestra el número de cada ficha y agrupa tu mano en Pares, Secuencias y Tripletes",
     "visual": "Visual"
   },
   "gameplay": {
@@ -337,6 +337,7 @@
     "resume": "Reanudar",
     "tenpai": "Tenpai",
     "shanten": "{{count}} restantes",
+    "shantenHelp": "Cuántas fichas útiles te faltan para que una sola ficha pueda completar tu mano",
     "ready": "Listo",
     "deadDraw": "ROBO MURO",
     "deadWallDraw": "ROBO DEL MURO MUERTO",
@@ -414,6 +415,9 @@
     "redraw": "RECAMBIAR",
     "selectRange": "ELIGE {{min}}–{{max}}",
     "handCount": "Mano ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Elige {{min}}–{{max}} fichas para una jugada táctica",
     "tacticalHintLong": "Elige {{min}}–{{max}} fichas para una jugada táctica, o completa la mano antes de declararla.",
     "sell": "Vender",

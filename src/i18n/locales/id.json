@@ -393,7 +393,7 @@
       "normal": "Normal",
       "slow": "Lambat"
     },
-    "tileHintsDesc": "Tampilkan petunjuk penempatan ubin yang valid",
+    "tileHintsDesc": "Tampilkan angka ubin dan kelompokkan tanganmu menjadi Pasangan, Urutan, dan Triplet",
     "visual": "Visual"
   },
   "gameplay": {
@@ -417,6 +417,7 @@
     "resume": "Lanjutkan",
     "tenpai": "Tenpai",
     "shanten": "{{count}} lagi",
+    "shantenHelp": "Berapa ubin berguna lagi yang kamu perlukan sebelum satu ubin bisa melengkapi tanganmu",
     "ready": "Siap",
     "deadDraw": "TARIK MATI",
     "deadWallDraw": "TARIK TEMBOK MATI",
@@ -494,6 +495,9 @@
     "redraw": "TARIK ULANG",
     "selectRange": "PILIH {{min}}–{{max}}",
     "handCount": "Tangan ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Pilih {{min}}–{{max}} ubin untuk permainan taktis",
     "tacticalHintLong": "Pilih {{min}}–{{max}} ubin untuk permainan taktis, atau lengkapi tangan sebelum mendeklarasikannya.",
     "sell": "Jual",

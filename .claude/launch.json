@@ -7,6 +7,20 @@
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "dev", "--", "--port", "5290", "--strictPort"],
       "port": 5290
+    },
+    {
+      "name": "e2e",
+      "runtimeExecutable": "./node_modules/.bin/vite",
+      "runtimeArgs": [
+        "--mode",
+        "test",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "4273",
+        "--strictPort"
+      ],
+      "port": 4273
     }
   ]
 }

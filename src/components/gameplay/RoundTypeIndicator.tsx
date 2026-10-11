@@ -9,7 +9,7 @@
 
 import { RoundType, ROUND_TYPE_CONFIG, isCJKLanguage } from './gameplayTypes'
 import { useTranslation } from 'react-i18next'
-import { useId, useState } from 'react'
+import { useId, useState, type ReactNode } from 'react'
 import { Popup } from '../ui/Popup'
 import { getMandateIllustration } from '../../utils/assets'
 
@@ -27,6 +27,10 @@ export interface RoundTypeIndicatorProps {
   mandateName?: string
   mandateId?: string
   mandateDescription?: string
+  /** Shown inside the chip before the round name (for example the Act). */
+  lead?: ReactNode
+  /** A thin progress track drawn along the chip's lower edge. */
+  progress?: ReactNode
 }
 
 // =============================================================================
@@ -48,6 +52,8 @@ export function RoundTypeIndicator({
   mandateName,
   mandateId,
   mandateDescription,
+  lead,
+  progress,
 }: RoundTypeIndicatorProps) {
   const { t } = useTranslation()
   const [detailsOpen, setDetailsOpen] = useState(false)
@@ -61,11 +67,13 @@ export function RoundTypeIndicator({
     <>
       <div
         className={`
-        inline-flex items-center gap-2 px-2 py-1 sm:px-3
+        relative inline-flex items-center gap-2 px-2 py-1 sm:px-3
+        ${progress ? 'pb-1.5' : ''}
         ${config.bgColor} ${config.borderColor}
         border rounded-full
       `}
       >
+        {lead}
         {/* Japanese name, shown for CJK languages unless it duplicates the
           localized label below - in Japanese the two are the same word. */}
         {showCJK && config.japaneseName !== localizedRoundType && (
@@ -75,7 +83,7 @@ export function RoundTypeIndicator({
         )}
 
         {/* Localized round type */}
-        <span className="text-xs text-[var(--color-beige-white)] sm:text-sm">
+        <span className="whitespace-nowrap text-xs text-[var(--color-beige-white)] sm:text-sm">
           {localizedRoundType}
         </span>
 
@@ -97,6 +105,11 @@ export function RoundTypeIndicator({
             )}
             <span className="break-words">{mandateName}</span>
           </button>
+        )}
+        {progress && (
+          <span className="pointer-events-none absolute inset-x-3 bottom-[3px]">
+            {progress}
+          </span>
         )}
       </div>
       {mandateName && (

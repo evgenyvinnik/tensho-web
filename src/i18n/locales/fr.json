@@ -313,7 +313,7 @@
       "normal": "Normale",
       "slow": "Lente"
     },
-    "tileHintsDesc": "Affiche des indices sur les placements valides",
+    "tileHintsDesc": "Affiche le numéro des tuiles et regroupe votre main en Paires, Séquences et Brelans",
     "visual": "Visuel"
   },
   "gameplay": {
@@ -337,6 +337,7 @@
     "resume": "Reprendre",
     "tenpai": "Tenpai",
     "shanten": "{{count}} restants",
+    "shantenHelp": "Nombre de tuiles utiles qu’il vous manque avant qu’une seule tuile puisse compléter votre main",
     "ready": "Prêt",
     "deadDraw": "PIOCHE MORTE",
     "deadWallDraw": "PIOCHE DU MUR MORT",
@@ -414,6 +415,9 @@
     "redraw": "REPIOCHER",
     "selectRange": "CHOISIR {{min}}–{{max}}",
     "handCount": "Main ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Choisissez {{min}} à {{max}} tuiles pour un coup tactique",
     "tacticalHintLong": "Choisissez {{min}} à {{max}} tuiles pour un coup tactique, ou complétez la main avant de la déclarer.",
     "sell": "Vendre",

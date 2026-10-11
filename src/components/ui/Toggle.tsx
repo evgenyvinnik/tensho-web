@@ -73,27 +73,33 @@ export function Toggle({
         disabled={disabled}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className={`
-          relative w-12 h-6 rounded-full
-          transition-colors duration-200
-          focus:outline-none focus:ring-2 focus:ring-golden-yellow focus:ring-opacity-50
-          disabled:opacity-50 disabled:cursor-not-allowed
-          ${checked
-            ? 'bg-[var(--color-vibrant-orange)]'
-            : 'bg-[var(--color-dark-forest)]'
-          }
-        `}
+        className="group relative flex h-11 w-12 shrink-0 items-center justify-center rounded-full focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {/* Toggle knob */}
+        {/* The button keeps a 44px touch target; the visible track stays a
+            pill, with a border so the off state reads on a dark panel. */}
         <span
+          aria-hidden="true"
           className={`
-            absolute top-1 w-4 h-4 rounded-full
-            bg-[var(--color-beige-white)]
-            shadow-md
-            transition-transform duration-200
-            ${checked ? 'translate-x-7' : 'translate-x-1'}
+            relative block h-6 w-12 rounded-full border
+            transition-colors duration-200
+            group-focus-visible:ring-2 group-focus-visible:ring-[var(--color-golden-yellow)]
+            ${checked
+              ? 'border-[var(--color-vibrant-orange)] bg-[var(--color-vibrant-orange)]'
+              : 'border-[var(--color-metallic-gold)]/50 bg-black/30'
+            }
           `}
-        />
+        >
+          {/* Toggle knob */}
+          <span
+            className={`
+              absolute left-0 top-[3px] h-4 w-4 rounded-full
+              bg-[var(--color-beige-white)]
+              shadow-md
+              transition-transform duration-200
+              ${checked ? 'translate-x-7' : 'translate-x-1'}
+            `}
+          />
+        </span>
       </button>
     </div>
   )

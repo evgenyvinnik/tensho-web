@@ -7,6 +7,7 @@
  * @module components/gameplay/GameplayTopBar
  */
 
+import type { ReactNode } from 'react'
 import { TFunction } from 'i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { RoundTypeIndicator } from './RoundTypeIndicator'
@@ -48,6 +49,8 @@ export interface GameplayTopBarProps {
   onExit: () => void
   /** Handler for settings button */
   onSettings: () => void
+  /** Compact run status (for example the save indicator) beside the menu. */
+  status?: ReactNode
 }
 
 // =============================================================================
@@ -104,13 +107,14 @@ export function GameplayTopBar({
   t,
   onExit,
   onSettings,
+  status,
 }: GameplayTopBarProps) {
   const stakeDefinition = getStakeByTier(stake)
 
   return (
     <div
       data-frame-corner-row="top"
-      className="gameplay-frame-corner-row flex items-center justify-between rounded-sm bg-[var(--color-dark-forest)] px-1 py-2 text-[var(--color-beige-white)] sm:px-4"
+      className="gameplay-frame-corner-row flex items-center justify-between rounded-sm bg-[var(--color-dark-forest)] px-1 py-1 text-[var(--color-beige-white)] sm:px-4"
     >
       {/* Gold display */}
       <div className="flex flex-col items-start">
@@ -126,7 +130,7 @@ export function GameplayTopBar({
         </GlowEffect>
         <span
           data-gameplay-top-bar-stake
-          className="text-[9px] font-black uppercase tracking-wider"
+          className="whitespace-nowrap text-[9px] font-black uppercase tracking-wider"
           style={{ color: stakeDefinition?.color }}
           title={stakeDefinition?.description}
         >
@@ -134,7 +138,7 @@ export function GameplayTopBar({
         </span>
         <span
           data-gameplay-top-bar-compact-progress
-          className="hidden text-[9px] font-black uppercase tracking-wider"
+          className="hidden whitespace-nowrap text-[9px] font-black uppercase tracking-wider"
           style={{ color: stakeDefinition?.color }}
           title={stakeDefinition?.description}
         >
@@ -147,38 +151,51 @@ export function GameplayTopBar({
         data-tutorial="act-round"
         className="flex items-center gap-1 sm:gap-2"
       >
-        <div data-gameplay-top-bar-act className="flex flex-col items-center">
-          <span className="text-base leading-tight sm:text-lg">
-            {t('gameplay.act')} {currentAct}
-          </span>
-          {!hasEnteredEndless ? (
-            <div
-              className="mt-1 flex gap-1"
-              aria-label={`Act ${currentAct} of 8`}
-              title={`Act ${currentAct} of 8`}
-            >
-              {Array.from({ length: 8 }, (_, index) => (
-                <span
-                  key={index}
-                  className={`h-1 w-2 rounded-full ${
-                    index < currentAct
-                      ? 'bg-[var(--color-golden-yellow)]'
-                      : 'bg-white/15'
-                  }`}
-                />
-              ))}
-            </div>
-          ) : (
-            <span className="text-[9px] font-bold uppercase tracking-widest text-purple-300">
-              {t('gameplay.endless', 'Endless')}
-            </span>
-          )}
-        </div>
+        {/* One chip: which Act, how far through the run, and this round. */}
         <RoundTypeIndicator
           roundType={roundType}
           mandateName={mandateName}
           mandateId={mandateId}
           mandateDescription={mandateDescription}
+          lead={
+            <span
+              data-gameplay-top-bar-act
+              className="flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <span className="text-sm font-semibold text-[var(--color-beige-white)] sm:text-base">
+                {t('gameplay.act')} {currentAct}
+              </span>
+              {hasEnteredEndless && (
+                <span className="text-[9px] font-bold uppercase tracking-widest text-purple-300">
+                  {t('gameplay.endless', 'Endless')}
+                </span>
+              )}
+              <span aria-hidden="true" className="opacity-40">
+                ·
+              </span>
+            </span>
+          }
+          progress={
+            hasEnteredEndless ? undefined : (
+              <span
+                className="flex gap-0.5"
+                role="img"
+                aria-label={`Act ${currentAct} of 8`}
+                title={`Act ${currentAct} of 8`}
+              >
+                {Array.from({ length: 8 }, (_, index) => (
+                  <span
+                    key={index}
+                    className={`h-0.5 flex-1 rounded-full ${
+                      index < currentAct
+                        ? 'bg-[var(--color-golden-yellow)]'
+                        : 'bg-white/15'
+                    }`}
+                  />
+                ))}
+              </span>
+            )
+          }
         />
         {upcomingMandateName && onRerollMandate && (
           <button
@@ -199,7 +216,13 @@ export function GameplayTopBar({
         )}
       </div>
 
-      <div className="flex items-center gap-0 sm:gap-2">
+      <div className="relative flex items-center gap-0 sm:gap-2">
+        {/* Phones show the status as a badge on the corner, using no width. */}
+        {status && (
+          <div className="pointer-events-none max-sm:absolute max-sm:-top-0.5 max-sm:right-0 max-sm:z-10">
+            {status}
+          </div>
+        )}
         {/* Exit button */}
         <button
           onClick={onExit}

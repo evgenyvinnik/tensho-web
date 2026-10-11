@@ -122,8 +122,6 @@ it('suppresses even a supplied interpretation when the forecast is concealed', (
         ],
       }}
       scorePreviewHidden
-      yakuReveals={[]}
-      onYakuComplete={() => {}}
     />
   )
   expect(container.querySelector('[data-hand-interpretation]')).toBeNull()

@@ -31,6 +31,8 @@ export interface PointsMultDisplayProps {
   total?: number
   /** Whether the score is currently animating */
   isAnimating?: boolean
+  /** One-line form for the gameplay HUD: no captions, tighter boxes. */
+  compact?: boolean
 }
 
 // =============================================================================
@@ -55,6 +57,7 @@ export function PointsMultDisplay({
   adjustment = 0,
   total = Math.floor(points * mult) + adjustment,
   isAnimating = false,
+  compact = false,
 }: PointsMultDisplayProps) {
   const reducedMotion = useReducedMotion()
   const { t, i18n } = useTranslation()
@@ -74,6 +77,11 @@ export function PointsMultDisplay({
       }),
   })
   const shown = reducedMotion ? { points, mult, total } : display
+  const caption = compact ? 'hidden' : 'hidden sm:block'
+  const box = compact ? 'px-2 py-0.5' : 'px-1 py-0.5 sm:px-3 sm:py-1'
+  const operator = compact
+    ? 'text-base font-bold text-[var(--color-golden-yellow)]'
+    : 'text-lg font-bold text-[var(--color-golden-yellow)] sm:text-2xl'
 
   return (
     <div
@@ -87,8 +95,10 @@ export function PointsMultDisplay({
         intensity={isAnimating ? 0.8 : 0.3}
         pulsing={isAnimating && !reducedMotion}
       >
-        <div className="min-w-0 rounded-lg border border-blue-500 bg-blue-900/60 px-1 py-0.5 sm:px-3 sm:py-1">
-          <span className="hidden text-xs font-medium text-blue-300 sm:block">
+        <div
+          className={`min-w-0 rounded-lg border border-blue-500 bg-blue-900/60 ${box}`}
+        >
+          <span className={`${caption} text-xs font-medium text-blue-300`}>
             {t('scoring.subtotal')}
           </span>
           <span
@@ -110,9 +120,7 @@ export function PointsMultDisplay({
       </GlowEffect>
 
       {/* Multiplication symbol */}
-      <span className="text-lg font-bold text-[var(--color-golden-yellow)] sm:text-2xl">
-        ×
-      </span>
+      <span className={operator}>×</span>
 
       {/* Mult section */}
       <GlowEffect
@@ -121,8 +129,10 @@ export function PointsMultDisplay({
         intensity={isAnimating ? 0.8 : 0.3}
         pulsing={isAnimating && !reducedMotion}
       >
-        <div className="min-w-0 rounded-lg border border-red-500 bg-red-900/60 px-1 py-0.5 sm:px-3 sm:py-1">
-          <span className="hidden text-xs font-medium text-red-300 sm:block">
+        <div
+          className={`min-w-0 rounded-lg border border-red-500 bg-red-900/60 ${box}`}
+        >
+          <span className={`${caption} text-xs font-medium text-red-300`}>
             {t('scoring.totalMultiplier')}
           </span>
           <span
@@ -152,9 +162,7 @@ export function PointsMultDisplay({
       )}
 
       {/* Equals symbol */}
-      <span className="text-lg font-bold text-[var(--color-golden-yellow)] sm:text-2xl">
-        =
-      </span>
+      <span className={operator}>=</span>
 
       {/* Result section */}
       <GlowEffect
@@ -167,7 +175,7 @@ export function PointsMultDisplay({
           data-score-result
           title={scoreNumber(total, i18n.language).exact}
           aria-label={scoreNumber(total, i18n.language).exact}
-          className="block font-mono text-lg font-bold text-[var(--color-golden-yellow)] sm:text-xl"
+          className={`block font-mono font-bold text-[var(--color-golden-yellow)] ${compact ? 'text-base' : 'text-lg sm:text-xl'}`}
         >
           {
             scoreNumber(

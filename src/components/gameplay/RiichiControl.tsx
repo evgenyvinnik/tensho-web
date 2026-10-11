@@ -37,7 +37,7 @@ export function RiichiControl({
           setFailed(false)
           setOpen(true)
         }}
-        className="min-h-11 max-w-full rounded-lg border border-amber-200/35 px-2 py-1 text-left text-sm text-amber-200 [overflow-wrap:anywhere]"
+        className="min-h-11 shrink-0 whitespace-nowrap rounded-lg border border-amber-200/35 px-2 py-1 text-left text-sm text-amber-200 sm:max-w-full sm:whitespace-normal sm:[overflow-wrap:anywhere]"
         aria-haspopup="dialog"
       >
         {t(`riichiPledge.${status === 'available' ? 'title' : status}`)}

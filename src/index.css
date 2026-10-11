@@ -233,8 +233,9 @@ a {
  * controls, while larger screens retain the original 28px inset.
  */
 .table-pattern {
-  --table-frame-inset: clamp(8px, 2.2vw, 28px);
-  --table-frame-gap: clamp(4px, 0.65vw, 8px);
+  /* Short laptop screens give the frame back to the game. */
+  --table-frame-inset: clamp(8px, min(2.2vw, 2.2vh), 28px);
+  --table-frame-gap: clamp(4px, min(0.65vw, 0.65vh), 8px);
   --table-frame-content-inset: calc(
     var(--table-frame-inset) + var(--table-frame-gap)
   );
@@ -348,8 +349,16 @@ a {
 
 /* Keep horizontal navigation discoverable without permanently showing a bar. */
 .scroll-rail {
+  /*
+   * Positioned, so visually hidden (absolute) labels inside the rail are
+   * clipped by it. Otherwise they escape to the next positioned ancestor,
+   * widen the game column, and scrollIntoView can shift the screen sideways.
+   */
+  position: relative;
   overscroll-behavior-inline: contain;
   scroll-snap-type: inline proximity;
+  /* Snap items clear of the rail's own padding instead of hiding it. */
+  scroll-padding-inline: 12px;
   scrollbar-width: thin;
   scrollbar-color: color-mix(
       in srgb,
@@ -380,6 +389,43 @@ a {
       transparent 100%
     );
   }
+}
+
+/* Decrees share one inventory row with consumables and run trackers. */
+.gameplay-inventory-row .game-decree-card {
+  width: 2.75rem;
+  height: 3.5rem;
+}
+
+@media (min-width: 640px) {
+  .gameplay-inventory-row .game-decree-card {
+    width: 3rem;
+    height: 4rem;
+  }
+}
+
+/*
+ * Tile hints: an Arabic numeral on suited tiles for players who cannot read
+ * the Chinese numerals or count pips at a glance. Drawn as generated content so
+ * it never becomes part of a tile's text or accessible name.
+ */
+.tile-index {
+  position: absolute;
+  left: 4%;
+  bottom: 3%;
+  min-width: 1.35em;
+  padding: 0.05em 0.25em;
+  border-radius: 0.35em;
+  background: rgba(20, 30, 25, 0.78);
+  color: #fff8e1;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  pointer-events: none;
+}
+
+.tile-index::before {
+  content: attr(data-tile-index);
 }
 
 /* Ultra-compact phones need the full game loop, not a cropped desktop HUD. */

@@ -7,6 +7,7 @@
  * @module components/gameplay/ScorePanel
  */
 
+import type { ReactNode } from 'react'
 import { TFunction } from 'i18next'
 import { GlowEffect } from '../effects/GlowEffect'
 import { ScorePopup } from '../effects/ScorePopup'
@@ -39,6 +40,13 @@ export interface ScorePanelProps {
   onPopupComplete: (id: number) => void
   /** Translation function for i18n */
   t: TFunction
+  /**
+   * Forecast and coaching strip for the current choice. It shares the
+   * last-play slot, so the score bar stays one line: while it has content,
+   * the settled equation steps aside.
+   */
+  forecast?: ReactNode
+  forecastActive?: boolean
 }
 
 // =============================================================================
@@ -63,6 +71,8 @@ export function ScorePanel({
   scorePopups,
   onPopupComplete,
   t,
+  forecast,
+  forecastActive = false,
 }: ScorePanelProps) {
   const { i18n } = useTranslation()
   const hasReachedTarget = currentScore >= targetScore
@@ -77,105 +87,124 @@ export function ScorePanel({
       })
 
   return (
-    <div className="game-score-panel relative mx-3 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-2 text-center shadow-lg">
-      <div className="mx-auto grid max-w-3xl grid-cols-2 items-start gap-3 [overflow-wrap:anywhere]">
-        <div className="min-w-0 text-left">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
-            {t('gameplay.target')}
-          </p>
-          <GlowEffect
-            className="min-w-0 max-w-full"
-            variant="gold"
-            intensity={hasReachedTarget ? 0.8 : 0.4}
-            pulsing={hasReachedTarget}
-          >
+    <div className="game-score-panel relative mx-2 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-1.5 shadow-lg">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 [overflow-wrap:anywhere]">
+        {/* Round progress: score, bar and target on one line. */}
+        <div className="flex min-w-[min(100%,16rem)] flex-[1_1_18rem] items-center gap-3">
+          <div className="min-w-0 shrink-0 text-left">
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
+              {t('gameplay.score')}
+            </p>
             <span
-              data-tutorial="score-target"
-              title={scoreNumber(targetScore, i18n.language).exact}
-              aria-label={scoreNumber(targetScore, i18n.language).exact}
-              className="block text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl"
+              data-tutorial="current-score"
+              title={scoreNumber(currentScore, i18n.language).exact}
+              aria-label={scoreNumber(currentScore, i18n.language).exact}
+              className="block text-lg font-black leading-tight tabular-nums text-[var(--color-golden-yellow)] sm:text-xl"
             >
-              {scoreNumber(targetScore, i18n.language).display}
+              {scoreNumber(currentScore, i18n.language).display}
             </span>
-          </GlowEffect>
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div
+              className="h-2 w-full overflow-hidden rounded-full bg-gray-800"
+              role="progressbar"
+              aria-label={t('gameplay.score')}
+              aria-valuetext={`${t('gameplay.score')}: ${scoreNumber(currentScore, i18n.language).exact}; ${t('gameplay.target')}: ${scoreNumber(targetScore, i18n.language).exact}`}
+              aria-valuenow={Math.max(0, Math.min(currentScore, targetScore))}
+              aria-valuemin={0}
+              aria-valuemax={targetScore}
+            >
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${
+                  hasReachedTarget
+                    ? 'bg-green-500'
+                    : 'bg-[var(--color-vibrant-orange)]'
+                }`}
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+            <p
+              title={remainingExact}
+              aria-label={remainingExact}
+              className={`game-score-remaining mt-0.5 text-center text-[10px] font-semibold tabular-nums [overflow-wrap:anywhere] ${
+                hasReachedTarget
+                  ? 'text-emerald-300'
+                  : 'text-[var(--color-beige-white)]/55'
+              }`}
+            >
+              {hasReachedTarget
+                ? t('gameplay.targetCleared', 'Target cleared')
+                : t('gameplay.pointsToClear', {
+                    count: remainingScore,
+                    formattedCount: remainingNumber.display,
+                    defaultValue: '{{formattedCount}} to clear',
+                  })}
+            </p>
+          </div>
+
+          <div className="min-w-0 shrink-0 text-right">
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
+              {t('gameplay.target')}
+            </p>
+            <GlowEffect
+              className="min-w-0 max-w-full"
+              variant="gold"
+              intensity={hasReachedTarget ? 0.8 : 0.4}
+              pulsing={hasReachedTarget}
+            >
+              <span
+                data-tutorial="score-target"
+                title={scoreNumber(targetScore, i18n.language).exact}
+                aria-label={scoreNumber(targetScore, i18n.language).exact}
+                className="block text-lg font-black leading-tight tabular-nums text-[var(--color-golden-yellow)] sm:text-xl"
+              >
+                {scoreNumber(targetScore, i18n.language).display}
+              </span>
+            </GlowEffect>
+          </div>
         </div>
 
-        <div className="min-w-0 text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
-            {t('gameplay.score')}
-          </p>
-          <span
-            data-tutorial="current-score"
-            title={scoreNumber(currentScore, i18n.language).exact}
-            aria-label={scoreNumber(currentScore, i18n.language).exact}
-            className="block text-xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl"
+        {/* The current choice's forecast, or else the last play's equation. */}
+        <div className="flex min-w-0 flex-[1_1_22rem] items-center gap-2">
+          {forecast}
+          <div
+            data-last-play
+            hidden={forecastActive}
+            className="flex min-w-0 flex-1 items-center gap-2"
           >
-            {scoreNumber(currentScore, i18n.language).display}
-          </span>
+            {/* Narrow phones give the equation the whole row. */}
+            <p className="shrink-0 text-[9px] font-semibold uppercase leading-tight tracking-widest text-[var(--color-beige-white)]/55 max-[399px]:sr-only">
+              {t('scoring.lastPlay')}
+            </p>
+            <div className="min-w-0 flex-1">
+              <PointsMultDisplay
+                compact
+                points={lastPlay.points}
+                mult={lastPlay.multiplier}
+                adjustment={lastPlay.adjustment}
+                total={lastPlay.total}
+                isAnimating={isScoreAnimating}
+              />
+            </div>
+            <ExactScoreDetails
+              always={lastPlay.points !== 0 || lastPlay.adjustment !== 0}
+              compact
+              entries={[
+                { label: t('gameplay.target'), value: targetScore },
+                { label: t('gameplay.score'), value: currentScore },
+                { label: t('scoring.subtotal'), value: lastPlay.points },
+                {
+                  label: t('scoring.totalMultiplier'),
+                  value: lastPlay.multiplier,
+                },
+                { label: t('scoring.adjustments'), value: lastPlay.adjustment },
+                { label: t('scoring.lastPlay'), value: lastPlay.total },
+              ]}
+            />
+          </div>
         </div>
       </div>
-
-      <ExactScoreDetails
-        always={lastPlay.points !== 0 || lastPlay.adjustment !== 0}
-        entries={[
-          { label: t('gameplay.target'), value: targetScore },
-          { label: t('gameplay.score'), value: currentScore },
-          { label: t('scoring.subtotal'), value: lastPlay.points },
-          { label: t('scoring.totalMultiplier'), value: lastPlay.multiplier },
-          { label: t('scoring.adjustments'), value: lastPlay.adjustment },
-          { label: t('scoring.lastPlay'), value: lastPlay.total },
-        ]}
-      />
-
-      <div className="mt-1">
-        <p className="mb-1 text-[10px] text-[var(--color-beige-white)]/55">
-          {t('scoring.lastPlay')}
-        </p>
-        <PointsMultDisplay
-          points={lastPlay.points}
-          mult={lastPlay.multiplier}
-          adjustment={lastPlay.adjustment}
-          total={lastPlay.total}
-          isAnimating={isScoreAnimating}
-        />
-      </div>
-
-      {/* Progress bar */}
-      <div
-        className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-gray-800"
-        role="progressbar"
-        aria-label={t('gameplay.score')}
-        aria-valuetext={`${t('gameplay.score')}: ${scoreNumber(currentScore, i18n.language).exact}; ${t('gameplay.target')}: ${scoreNumber(targetScore, i18n.language).exact}`}
-        aria-valuenow={Math.max(0, Math.min(currentScore, targetScore))}
-        aria-valuemin={0}
-        aria-valuemax={targetScore}
-      >
-        <div
-          className={`h-full rounded-full transition-all duration-500 ${
-            hasReachedTarget
-              ? 'bg-green-500'
-              : 'bg-[var(--color-vibrant-orange)]'
-          }`}
-          style={{ width: `${progressPercentage}%` }}
-        />
-      </div>
-      <p
-        title={remainingExact}
-        aria-label={remainingExact}
-        className={`game-score-remaining mt-1 text-right text-[10px] font-semibold tabular-nums [overflow-wrap:anywhere] ${
-          hasReachedTarget
-            ? 'text-emerald-300'
-            : 'text-[var(--color-beige-white)]/45'
-        }`}
-      >
-        {hasReachedTarget
-          ? t('gameplay.targetCleared', 'Target cleared')
-          : t('gameplay.pointsToClear', {
-              count: remainingScore,
-              formattedCount: remainingNumber.display,
-              defaultValue: '{{formattedCount}} to clear',
-            })}
-      </p>
 
       {/* Score popups */}
       {scorePopups.map((popup) => (

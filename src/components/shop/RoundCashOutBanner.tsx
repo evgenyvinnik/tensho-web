@@ -104,7 +104,7 @@ export function RoundCashOutBanner({
   return (
     <AnimatedSection
       data-testid="round-cash-out"
-      className="mx-3 mt-3 overflow-hidden rounded-2xl border border-[var(--color-golden-yellow)]/70 bg-[linear-gradient(135deg,rgba(19,52,39,0.98),rgba(9,29,22,0.98))] shadow-[0_16px_50px_rgba(0,0,0,0.3)] sm:mx-4"
+      className="mx-3 mt-2 overflow-hidden rounded-2xl border border-[var(--color-golden-yellow)]/70 bg-[linear-gradient(135deg,rgba(19,52,39,0.98),rgba(9,29,22,0.98))] shadow-[0_16px_50px_rgba(0,0,0,0.3)] sm:mx-4"
       style={{
         opacity: entrance.opacity,
         transform: to(
@@ -113,7 +113,7 @@ export function RoundCashOutBanner({
         ),
       }}
     >
-      <div className="grid min-w-0 gap-3 p-4 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">
+      <div className="grid min-w-0 gap-3 px-4 py-3 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300">
             {t('shop.roundCleared')}
@@ -133,7 +133,7 @@ export function RoundCashOutBanner({
           </div>
 
           <div
-            className="mt-3 flex flex-wrap gap-1.5"
+            className="mt-2 flex flex-wrap gap-1.5"
             role="group"
             aria-label={t('shop.payoutBreakdown')}
           >
@@ -163,7 +163,8 @@ export function RoundCashOutBanner({
           </div>
         </div>
 
-        <div className="grid min-w-0 content-center gap-1 rounded-xl border border-white/10 bg-black/20 px-4 py-3 md:text-right">
+        {/* One line on phones; a separate column from tablet width. */}
+        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-black/20 px-4 py-2 md:grid md:content-center md:gap-1 md:text-right">
           <span className="text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50">
             {t('shop.cashOut')}
           </span>
@@ -177,7 +178,7 @@ export function RoundCashOutBanner({
               {totalText}
             </span>
           </strong>
-          <span className="flex min-w-0 flex-wrap gap-x-1 break-words text-xs tabular-nums text-[var(--color-beige-white)]/55 md:justify-end">
+          <span className="ml-auto flex min-w-0 flex-wrap gap-x-1 break-words text-xs tabular-nums text-[var(--color-beige-white)]/55 md:ml-0 md:justify-end">
             <span>{number(summary.goldBefore)}G</span>
             <span> → </span>
             <span>{number(summary.goldAfter)}G</span>
@@ -187,7 +188,7 @@ export function RoundCashOutBanner({
 
       <div className="grid border-t border-white/10 bg-black/15 text-xs md:grid-cols-2">
         <p
-          className="min-w-0 break-words px-4 py-2.5 text-[var(--color-beige-white)]/65"
+          className="min-w-0 break-words px-4 py-2 text-[var(--color-beige-white)]/65"
           data-interest-coach
         >
           <span className="mr-1.5" aria-hidden="true">
@@ -195,7 +196,7 @@ export function RoundCashOutBanner({
           </span>
           {interestCoach}
         </p>
-        <p className="min-w-0 break-words border-t border-white/10 px-4 py-2.5 font-semibold text-[var(--color-metallic-gold)] md:border-l md:border-t-0 md:text-right">
+        <p className="min-w-0 break-words border-t border-white/10 px-4 py-2 font-semibold text-[var(--color-metallic-gold)] md:border-l md:border-t-0 md:text-right">
           {summary.nextRoundType && summary.nextTarget !== null
             ? t('shop.payout.nextRound', {
                 round: t(`rounds.${summary.nextRoundType.toLowerCase()}`),

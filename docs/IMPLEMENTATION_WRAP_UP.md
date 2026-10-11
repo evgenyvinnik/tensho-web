@@ -8,6 +8,22 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Classic layout simplification](LAYOUT_SIMPLIFICATION.md) makes the play screen
+fit without page scrolling at MacBook (1440×800), iPad and phone sizes: the
+score bar and actions stay put, the rack is pinned while the board above it
+keeps a usable window, and inventory is one rail. A second pass after user
+review puts coaching, forecast and last play on one score line, merges Act,
+round and progress into one chip, removes counters the table already shows,
+floats tips over the board from tablet width, keeps rack positions stable
+while tiles are staged, and gives every table its own felt colour. With the
+existing **Tile Hints** setting (now wired and on by default), the rack shows
+the scorer's Pairs, Sequences and Triplets as labelled groups and suited tiles
+carry Arabic numerals. Remaining ideas are handed off in the
+[UI improvement backlog](UI_IMPROVEMENT_BACKLOG.md). All 2,858 unit tests pass;
+206 of 208 layout-related browser checks pass on desktop and mobile projects
+(the two failures are environment-specific lazy-image checks). Unpublished;
+real-device and newcomer playtesting are not claimed.
+
 [Table Loop save ownership](TABLE_SAVE_OWNERSHIP_IMPLEMENTATION.md) now pauses
 stale windows instead of overwriting newer runs, offers explicit localized
 recovery, and coordinates both run writers with confirmed progress reset.

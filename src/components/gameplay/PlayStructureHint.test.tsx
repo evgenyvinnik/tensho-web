@@ -19,8 +19,6 @@ function props(
     selectedTileCount: groupedTiles + looseTiles,
     stagedTileCount: groupedTiles + looseTiles,
     handTileCount: 14,
-    yakuReveals: [],
-    onYakuComplete: () => {},
     scorePreview: {
       points: 45,
       mult: 1,

@@ -183,12 +183,13 @@ export function ShopScreen() {
         onReroll={handleReroll}
         onSettings={handleSettings}
         rerollCount={shopState.rerollsThisVisit}
+        status={<ClassicSaveNotice inline />}
       />
 
       {/* Content area */}
       <div className="relative z-10 min-h-0 flex-1 overflow-y-auto">
         <div className="screen-canvas pb-4">
-          <ClassicSaveNotice />
+          <ClassicSaveNotice errorsOnly />
           {/* Round payoff and next challenge — informative, never modal. */}
           {roundSummary ? (
             <RoundCashOutBanner
@@ -228,16 +229,13 @@ export function ShopScreen() {
               if (result.success) setShopError(null)
               return result
             }}
+            aside={<YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />}
           />
 
-          <div className="mx-3 mt-3 flex justify-end sm:mx-5">
-            <YakuUpgradeLedger upgrades={game.yakuUpgrades} />
-          </div>
-
-          <div className="grid items-start gap-5 px-3 pt-5 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6 lg:pt-6">
+          <div className="grid items-start gap-5 px-3 pt-4 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6">
             {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
             <section className="min-w-0">
-              <div className="flex items-center justify-between mb-4">
+              <div className="mb-3 flex items-center justify-between">
                 <h2 className="min-w-0 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
                   {t('shop.ui.items')}
                   <span className="mt-1 block text-sm font-normal text-[var(--color-metallic-gold)]">
@@ -304,7 +302,7 @@ export function ShopScreen() {
 
             {/* Blessing Packs Section */}
             <section className="min-w-0">
-              <h2 className="mb-4 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
+              <h2 className="mb-3 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
                 {t('shop.ui.packs')}
               </h2>
 

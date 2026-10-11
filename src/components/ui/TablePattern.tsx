@@ -22,6 +22,8 @@ export interface TablePatternColors {
   goldBright: string
   /** Wave pattern color */
   waveColor: string
+  /** Edge shading over the table */
+  vignette?: string
 }
 
 export interface TablePatternProps {
@@ -51,6 +53,7 @@ const defaultColors: TablePatternColors = {
   greenMid: themeColors.forestGreen,
   greenLight: '#4A6B4A',
   waveColor: 'rgba(90, 120, 80, 0.4)',
+  vignette: 'rgba(20, 40, 20, 0.5)',
 }
 
 /**
@@ -192,7 +195,7 @@ export const TablePattern: React.FC<TablePatternProps> = ({
           background: `radial-gradient(
             ellipse 80% 60% at 50% 30%,
             ${colors.greenLight} 0%,
-            #3D5C3D 30%,
+            color-mix(in srgb, ${colors.greenLight} 50%, ${colors.greenMid}) 30%,
             ${colors.greenMid} 60%,
             ${colors.greenDark} 100%
           )`,
@@ -218,7 +221,7 @@ export const TablePattern: React.FC<TablePatternProps> = ({
             ellipse 70% 50% at 50% 40%,
             transparent 0%,
             transparent 40%,
-            rgba(20, 40, 20, 0.5) 100%
+            ${colors.vignette} 100%
           )`,
         }}
       />

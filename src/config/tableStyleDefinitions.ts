@@ -88,6 +88,11 @@ export interface TableStyleDefinition {
   themeColor: string
   /** Secondary accent color (hex) */
   accentColor: string
+  /**
+   * The playing surface itself (hex). Dark enough for light text, so the
+   * table, its panels and its rack all read as this cloth during play.
+   */
+  feltColor: string
   /** Starting modifiers applied when using this table */
   startingModifiers: TableModifier[]
   /** Unlock requirement */
@@ -112,6 +117,7 @@ export const GREEN_FELT: TableStyleDefinition = {
   theme: 'Classic',
   themeColor: '#2D5F4A',
   accentColor: '#1C3A2E',
+  feltColor: '#1F4A38',
   startingModifiers: [
     {
       type: 'none',
@@ -138,6 +144,7 @@ export const RED_LACQUER: TableStyleDefinition = {
   theme: 'Auspicious',
   themeColor: '#C62828',
   accentColor: '#8E0000',
+  feltColor: '#5C1419',
   startingModifiers: [
     {
       type: 'decree_slot',
@@ -166,6 +173,7 @@ export const BAMBOO_MAT: TableStyleDefinition = {
   theme: 'Natural',
   themeColor: '#8BC34A',
   accentColor: '#558B2F',
+  feltColor: '#3B4A1A',
   startingModifiers: [
     {
       type: 'flower_rate',
@@ -194,6 +202,7 @@ export const IMPERIAL_GOLD: TableStyleDefinition = {
   theme: 'Royal',
   themeColor: '#FFD700',
   accentColor: '#B8860B',
+  feltColor: '#4A3A10',
   startingModifiers: [
     {
       type: 'regional_mandate',
@@ -222,6 +231,7 @@ export const NIGHT_MARKET: TableStyleDefinition = {
   theme: 'Street',
   themeColor: '#FF8F00',
   accentColor: '#E65100',
+  feltColor: '#1F2347',
   startingModifiers: [
     {
       type: 'shop_discount',
@@ -256,6 +266,7 @@ export const TEMPLE_STONE: TableStyleDefinition = {
   theme: 'Austere',
   themeColor: '#607D8B',
   accentColor: '#37474F',
+  feltColor: '#2E3A40',
   startingModifiers: [
     {
       type: 'no_flowers',
@@ -288,6 +299,7 @@ export const GHOST_PARLOR: TableStyleDefinition = {
   theme: 'Haunted',
   themeColor: '#7B1FA2',
   accentColor: '#4A0072',
+  feltColor: '#2D1440',
   startingModifiers: [
     {
       type: 'corrupted_seasons',
@@ -315,6 +327,7 @@ export const DRAGONS_DEN: TableStyleDefinition = {
   theme: 'Mythic',
   themeColor: '#D32F2F',
   accentColor: '#B71C1C',
+  feltColor: '#2C1210',
   startingModifiers: [
     {
       type: 'yakuman_multiplier',
@@ -357,16 +370,14 @@ export const TABLE_STYLE_DEFINITIONS: TableStyleDefinition[] = [
 /**
  * Default table styles (available from start)
  */
-export const DEFAULT_TABLE_STYLES: TableStyleDefinition[] = TABLE_STYLE_DEFINITIONS.filter(
-  (style) => style.isDefault
-)
+export const DEFAULT_TABLE_STYLES: TableStyleDefinition[] =
+  TABLE_STYLE_DEFINITIONS.filter((style) => style.isDefault)
 
 /**
  * Unlockable table styles
  */
-export const UNLOCKABLE_TABLE_STYLES: TableStyleDefinition[] = TABLE_STYLE_DEFINITIONS.filter(
-  (style) => !style.isDefault
-)
+export const UNLOCKABLE_TABLE_STYLES: TableStyleDefinition[] =
+  TABLE_STYLE_DEFINITIONS.filter((style) => !style.isDefault)
 
 // =============================================================================
 // LOOKUP UTILITIES
@@ -375,14 +386,18 @@ export const UNLOCKABLE_TABLE_STYLES: TableStyleDefinition[] = TABLE_STYLE_DEFIN
 /**
  * Get a table style by ID
  */
-export function getTableStyleById(id: string): TableStyleDefinition | undefined {
+export function getTableStyleById(
+  id: string
+): TableStyleDefinition | undefined {
   return TABLE_STYLE_DEFINITIONS.find((style) => style.id === id)
 }
 
 /**
  * Get a table style by display name (case-insensitive)
  */
-export function getTableStyleByName(name: string): TableStyleDefinition | undefined {
+export function getTableStyleByName(
+  name: string
+): TableStyleDefinition | undefined {
   return TABLE_STYLE_DEFINITIONS.find(
     (style) => style.displayName.toLowerCase() === name.toLowerCase()
   )
@@ -419,7 +434,10 @@ export function getTableModifiers(styleId: string): TableModifier[] {
 /**
  * Check if a table style has a specific modifier type
  */
-export function hasModifierType(styleId: string, type: TableModifierType): boolean {
+export function hasModifierType(
+  styleId: string,
+  type: TableModifierType
+): boolean {
   const modifiers = getTableModifiers(styleId)
   return modifiers.some((mod) => mod.type === type)
 }
@@ -428,7 +446,10 @@ export function hasModifierType(styleId: string, type: TableModifierType): boole
  * Get the value of a specific modifier type for a table style
  * Returns 0 if the modifier is not present
  */
-export function getModifierValue(styleId: string, type: TableModifierType): number {
+export function getModifierValue(
+  styleId: string,
+  type: TableModifierType
+): number {
   const modifiers = getTableModifiers(styleId)
   const modifier = modifiers.find((mod) => mod.type === type)
   return modifier?.value ?? 0
@@ -563,15 +584,23 @@ export function isUnlockConditionMet(
 /**
  * Get all unlocked table styles based on player statistics
  */
-export function getUnlockedTableStyles(stats: PlayerUnlockStats): TableStyleDefinition[] {
-  return TABLE_STYLE_DEFINITIONS.filter((style) => isUnlockConditionMet(style, stats))
+export function getUnlockedTableStyles(
+  stats: PlayerUnlockStats
+): TableStyleDefinition[] {
+  return TABLE_STYLE_DEFINITIONS.filter((style) =>
+    isUnlockConditionMet(style, stats)
+  )
 }
 
 /**
  * Get all locked table styles based on player statistics
  */
-export function getLockedTableStyles(stats: PlayerUnlockStats): TableStyleDefinition[] {
-  return TABLE_STYLE_DEFINITIONS.filter((style) => !isUnlockConditionMet(style, stats))
+export function getLockedTableStyles(
+  stats: PlayerUnlockStats
+): TableStyleDefinition[] {
+  return TABLE_STYLE_DEFINITIONS.filter(
+    (style) => !isUnlockConditionMet(style, stats)
+  )
 }
 
 /**

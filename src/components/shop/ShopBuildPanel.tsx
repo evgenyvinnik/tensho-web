@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react'
+import { useId, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { OwnedDecree } from '../../systems/types'
 import { decreeKey } from '../../systems/decreeIdentity'
@@ -14,6 +14,8 @@ interface Props {
   decrees: OwnedDecree[]
   maxSlots: number
   onSell: (instanceId: string) => { success: boolean }
+  /** Compact run trackers shown at the end of the heading row. */
+  aside?: ReactNode
 }
 
 /** The player's actual ordered build, not a predicted shopping recommendation. */
@@ -23,6 +25,7 @@ export function ShopBuildPanel({
   onSell,
   yakuHistory,
   completeConcealedHandsPlayed,
+  aside,
 }: Props) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
@@ -40,9 +43,9 @@ export function ShopBuildPanel({
     <section
       data-shop-build
       aria-labelledby={titleId}
-      className="mx-3 mt-4 min-w-0 rounded-xl border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)]/85 p-3 sm:mx-5 sm:p-4"
+      className="mx-3 mt-2 min-w-0 rounded-xl border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)]/85 p-3 sm:mx-5"
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <h2
           id={titleId}
           ref={titleRef}
@@ -60,13 +63,14 @@ export function ShopBuildPanel({
             max: number(maxSlots),
           })}
         </span>
+        {aside && <div className="ml-auto shrink-0">{aside}</div>}
       </div>
       <DecreeCapacityNotice owned={decrees.length} slots={maxSlots} />
       <p className="mt-1 text-sm leading-relaxed text-[var(--color-beige-white)]/75">
         {t('shop.build.help')}
       </p>
       {decrees.length ? (
-        <div data-tutorial="decrees" className="mt-3 flex flex-wrap gap-3 p-1">
+        <div data-tutorial="decrees" className="mt-2 flex flex-wrap gap-3 p-1">
           {decrees.map((decree) => (
             <DecreeCardCompact
               key={decreeKey(decree)}
@@ -85,7 +89,7 @@ export function ShopBuildPanel({
           ))}
         </div>
       ) : (
-        <p className="mt-3 text-sm text-[var(--color-beige-white)]/60">
+        <p className="mt-2 text-sm text-[var(--color-beige-white)]/60">
           {t('shop.build.empty')}
         </p>
       )}

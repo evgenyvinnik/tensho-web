@@ -416,7 +416,7 @@
       "normal": "Normale",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Mostra suggerimenti sulle posizioni valide",
+    "tileHintsDesc": "Mostra il numero delle tessere e raggruppa la mano in Coppie, Sequenze e Tris",
     "visual": "Visivo"
   },
   "gameplay": {
@@ -440,6 +440,7 @@
     "resume": "Riprendi",
     "tenpai": "Tenpai",
     "shanten": "{{count}} mancanti",
+    "shantenHelp": "Quante tessere utili ti mancano prima che una sola tessera possa completare la mano",
     "ready": "Pronto",
     "deadDraw": "PESCA MORTA",
     "deadWallDraw": "PESCA DAL MURO MORTO",
@@ -517,6 +518,9 @@
     "redraw": "RIPESCA",
     "selectRange": "SCEGLI {{min}}–{{max}}",
     "handCount": "Mano ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Scegli da {{min}} a {{max}} tessere per una giocata tattica",
     "tacticalHintLong": "Scegli da {{min}} a {{max}} tessere per una giocata tattica, oppure completa la mano prima di dichiararla.",
     "sell": "Vendi",

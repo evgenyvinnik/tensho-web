@@ -313,7 +313,7 @@
       "normal": "標準",
       "slow": "遅い"
     },
-    "tileHintsDesc": "有効な牌の配置のヒントを表示します",
+    "tileHintsDesc": "牌の数字を表示し、手牌を対子・順子・刻子ごとにまとめます",
     "visual": "表示"
   },
   "gameplay": {
@@ -337,6 +337,7 @@
     "resume": "再開",
     "tenpai": "聴牌",
     "shanten": "{{count}}向聴",
+    "shantenHelp": "あと何枚の有効牌で、1枚で和了できる形（聴牌）になるかを示します",
     "ready": "聴牌",
     "deadDraw": "王牌ツモ",
     "deadWallDraw": "王牌からツモ",
@@ -414,6 +415,9 @@
     "redraw": "引き直し",
     "selectRange": "{{min}}〜{{max}}枚選択",
     "handCount": "手牌 ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "{{min}}〜{{max}}枚を選んで戦術的に打ちます",
     "tacticalHintLong": "{{min}}〜{{max}}枚を選んで打つか、手を完成させてから宣言してください。",
     "sell": "売却",

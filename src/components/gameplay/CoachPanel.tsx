@@ -10,10 +10,9 @@
  * replaces: a coach that ranked one group's structure points and called it the
  * best move.
  *
- * It renders inside the play area's idle state rather than as a row of its own.
- * The gameplay screen has no spare vertical budget: a 54px strip was enough to
- * push the hand zone under the action bar at 720px tall. The idle play area is
- * exactly where a player is deciding, and it already holds placeholder text.
+ * It renders as one line inside the score bar, where the forecast appears once
+ * tiles are chosen. The gameplay screen has no spare vertical budget, and the
+ * score bar is exactly where a player compares numbers.
  *
  * @module components/gameplay/CoachPanel
  */
@@ -79,10 +78,7 @@ export function CoachPanel({ advice, onChoose, onDismiss }: CoachPanelProps) {
   }
 
   return (
-    <div
-      data-testid="coach-panel"
-      className="flex w-full items-center gap-2"
-    >
+    <div data-testid="coach-panel" className="flex w-full items-center gap-2">
       <div className="flex min-w-0 flex-1 gap-1.5">
         {options.map(({ key, title, detail, option }) => {
           return (
@@ -90,19 +86,18 @@ export function CoachPanel({ advice, onChoose, onDismiss }: CoachPanelProps) {
               key={key}
               title={detail}
               onClick={() => onChoose(option.tileIds)}
-              className="min-w-0 flex-1 basis-0 rounded-md border border-[var(--color-metallic-gold)]/25 px-2 py-1 text-left transition-colors hover:border-[var(--color-metallic-gold)]/60"
+              className="min-h-9 min-w-0 flex-1 basis-0 rounded-md border border-[var(--color-metallic-gold)]/25 px-2 py-0.5 text-left transition-colors hover:border-[var(--color-metallic-gold)]/60"
             >
+              {/* One line in the score bar; the reasoning is the tooltip. */}
               <span className="flex items-baseline justify-between gap-1.5">
-                <span className="truncate text-[11px] font-semibold text-[var(--color-beige-white)]">
+                <span className="truncate text-xs font-semibold text-[var(--color-beige-white)]">
                   {title}
                 </span>
-                <span className="flex-shrink-0 text-xs font-black tabular-nums text-[var(--color-golden-yellow)]">
+                <span className="flex-shrink-0 text-sm font-black tabular-nums text-[var(--color-golden-yellow)]">
                   +{option.score.toLocaleString()}
                 </span>
               </span>
-              <span className="mt-0.5 block truncate text-[10px] leading-tight text-[var(--color-beige-white)]/50">
-                {detail}
-              </span>
+              <span className="sr-only">{detail}</span>
             </button>
           )
         })}

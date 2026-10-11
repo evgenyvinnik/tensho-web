@@ -81,7 +81,6 @@ export interface ActionBarProps {
 export function ActionBar({
   wallRemaining,
   handsRemaining,
-  discardsRemaining,
   redrawsRemaining,
   selectedTileCount,
   handTileCount,
@@ -180,44 +179,6 @@ export function ActionBar({
       data-frame-corner-row="bottom"
       className="gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 items-center justify-center gap-1.5 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4"
     >
-      {/* Resource indicators */}
-      <div className="hidden items-center gap-3 text-sm md:flex">
-        {/* Wall remaining */}
-        <div
-          className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title={t('gameplay.tilesInWall', 'Tiles in wall')}
-        >
-          <span className="text-gray-400">📦</span>
-          <span>{wallRemaining}</span>
-        </div>
-
-        {/* Hands remaining */}
-        <div
-          className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title={t('gameplay.handsRemaining', 'Hands remaining')}
-        >
-          <span className="text-blue-400">✋</span>
-          <span>{handsRemaining}</span>
-        </div>
-
-        {/* Discards remaining */}
-        <div
-          className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title={t('gameplay.discardsRemaining', 'Discards remaining')}
-        >
-          <span className="text-red-400">🗑️</span>
-          <span>{discardsRemaining}</span>
-        </div>
-
-        <div
-          className="flex items-center gap-1 text-[var(--color-beige-white)]"
-          title={t('gameplay.redrawsRemaining', 'Redraws remaining')}
-        >
-          <span className="text-purple-300">↻</span>
-          <span>{redrawsRemaining}</span>
-        </div>
-      </div>
-
       {/* Skip button */}
       <Button
         data-game-action="skip"
@@ -237,13 +198,20 @@ export function ActionBar({
         onClick={onRedraw}
         disabled={!canRedraw}
         aria-label={t('gameplay.redrawSelected', 'Redraw selected tiles')}
-        title={t(
+        title={`${t(
           'gameplay.redrawHint',
           'Return up to 3 selected tiles and draw replacements'
-        )}
-        className="!min-w-[44px] max-w-[25%] !px-1 text-[10px] [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4 sm:text-sm"
+        )} · ${t('gameplay.redrawsRemaining', 'Redraws remaining')}: ${redrawsRemaining}`}
+        className="relative !min-w-[44px] max-w-[25%] !px-1 text-[10px] [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4 sm:text-sm"
       >
         <span>{t('gameplay.redraw', 'REDRAW')}</span>
+        {/* The only place redraws are counted; wall, hands and discards
+            are shown once each on the table itself. */}
+        <span
+          data-redraws-remaining={redrawsRemaining}
+          aria-hidden="true"
+          className="pointer-events-none absolute right-1 top-1 rounded-full bg-black/40 px-1 text-[9px] leading-tight tabular-nums before:content-[attr(data-redraws-remaining)]"
+        />
       </Button>
 
       {onDeadWallDraw && (

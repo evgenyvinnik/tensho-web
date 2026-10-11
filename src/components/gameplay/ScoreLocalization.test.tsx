@@ -66,8 +66,6 @@ it.each([true, false])(
           handTileCount={14}
           scorePreview={{ points: 225, mult: 2.6, total: 585 }}
           remainingToTarget={1000}
-          yakuReveals={[]}
-          onYakuComplete={() => {}}
         />
         <PointsMultDisplay points={225} mult={2.6} total={585} />
       </>

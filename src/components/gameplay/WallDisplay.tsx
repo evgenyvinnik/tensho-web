@@ -11,6 +11,7 @@ import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
 import { getTileImagePath } from '../../utils/assets'
+import { Popup } from '../ui/Popup'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -164,13 +165,81 @@ export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
 
   if (compact) {
     return (
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center gap-2 px-3 py-2 bg-[var(--color-dark-forest)] rounded-lg border border-[var(--color-metallic-gold)] border-opacity-40 hover:border-opacity-70 transition-colors"
-      >
-        <span className="text-gray-400 text-sm">{t('gameplay.wall', 'Wall:')}</span>
-        <span className="text-[var(--color-golden-yellow)] font-bold">{wallTiles.length}</span>
-      </button>
+      <>
+        <button
+          type="button"
+          data-wall-chip
+          onClick={() => setIsExpanded(true)}
+          aria-haspopup="dialog"
+          aria-expanded={isExpanded}
+          aria-label={`${t('gameplay.tilesInWall', 'Tiles in wall')}: ${wallTiles.length}`}
+          title={t('gameplay.tilesInWall', 'Tiles in wall')}
+          className="flex min-h-11 items-center gap-1.5 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] px-2.5 py-1 transition-colors hover:border-[var(--color-golden-yellow)]"
+        >
+          <span className="text-xs text-[var(--color-beige-white)]/60">
+            {t('gameplay.wall', 'Wall:')}
+          </span>
+          <span className="font-bold tabular-nums text-[var(--color-golden-yellow)]">
+            {wallTiles.length}
+          </span>
+        </button>
+        <Popup
+          isOpen={isExpanded}
+          onClose={() => setIsExpanded(false)}
+          title={t('gameplay.tilesInWall', 'Tiles in wall')}
+        >
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-3">
+              {suitSummary.map(({ suit, count }) => (
+                <div
+                  key={suit}
+                  className={`flex items-center gap-1 text-xs ${getSuitColorClass(suit)}`}
+                  title={getSuitName(suit)}
+                >
+                  <span className="opacity-60">
+                    {getSuitName(suit).charAt(0)}:
+                  </span>
+                  <span className="font-bold">{count}</span>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-9 gap-1">
+              {tileGroups.map(({ tile, count }) => (
+                <div
+                  key={`${tile.suit}-${tile.rank}`}
+                  className="relative group"
+                  title={`${tile.displayName} (${count} remaining)`}
+                >
+                  <img
+                    src={getTileImagePath(tile.suit, tile.rank)}
+                    alt={tile.displayName}
+                    className={`w-full h-auto rounded ${count === 0 ? 'opacity-30 grayscale' : ''}`}
+                  />
+                  {/* Count badge */}
+                  <div
+                    className={`
+                    absolute -top-1 -right-1 min-w-[18px] h-[18px]
+                    flex items-center justify-center
+                    text-xs font-bold rounded-full
+                    ${
+                      count === 0
+                        ? 'bg-gray-600 text-gray-400'
+                        : count === 1
+                          ? 'bg-red-600 text-white'
+                          : count === 2
+                            ? 'bg-amber-600 text-white'
+                            : 'bg-green-600 text-white'
+                    }
+                  `}
+                  >
+                    {count}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Popup>
+      </>
     )
   }
 
@@ -185,10 +254,16 @@ export function WallDisplay({ wallTiles, compact = false }: WallDisplayProps) {
           <span className="text-[var(--color-metallic-gold)] text-sm font-semibold uppercase tracking-wider">
             Wall
           </span>
-          <span className="text-[var(--color-golden-yellow)] font-bold text-lg">{wallTiles.length}</span>
-          <span className="text-[var(--color-beige-white)] opacity-40 text-xs">tiles remaining</span>
+          <span className="text-[var(--color-golden-yellow)] font-bold text-lg">
+            {wallTiles.length}
+          </span>
+          <span className="text-[var(--color-beige-white)] opacity-40 text-xs">
+            tiles remaining
+          </span>
         </div>
-        <span className={`text-[var(--color-metallic-gold)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+        <span
+          className={`text-[var(--color-metallic-gold)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+        >
           ▼
         </span>
       </button>

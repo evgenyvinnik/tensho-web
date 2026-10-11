@@ -58,9 +58,9 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex min-h-11 w-full min-w-0 flex-col items-center gap-1 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] p-1 text-[var(--color-beige-white)] shadow-lg hover:border-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] md:max-w-36 md:p-2"
+        className="flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] px-2 py-1 text-[var(--color-beige-white)] shadow-lg hover:border-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)]"
       >
-        <span aria-hidden="true" className="flex gap-1">
+        <span aria-hidden="true" className="flex gap-0.5">
           {FLOWERS.map((flower) => (
             <img
               key={flower}
@@ -68,17 +68,17 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
               alt=""
               draggable={false}
               className={
-                'h-7 w-5 object-contain md:h-9 md:w-6 ' +
+                'h-7 w-5 object-contain ' +
                 (collected.has(flower) ? '' : 'opacity-30 grayscale')
               }
             />
           ))}
         </span>
-        <span className="text-[10px] leading-tight">
-          {t('flora.flowers')} {collected.size}/4
+        <span className="whitespace-nowrap text-[10px] leading-tight tabular-nums">
+          {collected.size}/4
         </span>
         {flora.seasons.length > 0 && (
-          <span className="flex max-w-full flex-wrap items-center justify-center gap-1 border-t border-[var(--color-metallic-gold)]/30 pt-1">
+          <span className="flex items-center gap-0.5 border-l border-[var(--color-metallic-gold)]/30 pl-1.5">
             {flora.seasons.slice(0, 2).map((season) => (
               <span
                 key={season.id}
@@ -101,9 +101,11 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                 />
               </span>
             ))}
-            <span className="text-[10px]">
-              {t('flora.seasons')} {flora.seasons.length}
-            </span>
+            {flora.seasons.length > 2 && (
+              <span className="text-[10px] tabular-nums">
+                +{flora.seasons.length - 2}
+              </span>
+            )}
           </span>
         )}
       </button>

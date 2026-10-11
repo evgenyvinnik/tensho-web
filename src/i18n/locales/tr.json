@@ -416,7 +416,7 @@
       "normal": "Normal",
       "slow": "Yavaş"
     },
-    "tileHintsDesc": "Geçerli taş yerleşimleri için ipucu göster",
+    "tileHintsDesc": "Taş numaralarını göster ve elini Çift, Seri ve Üçlü olarak grupla",
     "visual": "Görsel"
   },
   "gameplay": {
@@ -440,6 +440,7 @@
     "resume": "Devam Et",
     "tenpai": "Tenpai",
     "shanten": "{{count}} kaldı",
+    "shantenHelp": "Tek bir taşın elini tamamlayabilmesi için kaç faydalı taşa daha ihtiyacın olduğunu gösterir",
     "ready": "Hazır",
     "deadDraw": "ÖLÜ ÇEKİM",
     "deadWallDraw": "ÖLÜ DUVARDAN ÇEKİM",
@@ -517,6 +518,9 @@
     "redraw": "YENİDEN ÇEK",
     "selectRange": "{{min}}–{{max}} SEÇ",
     "handCount": "El ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Taktik bir oyun için {{min}}–{{max}} taş seçin",
     "tacticalHintLong": "Taktik bir oyun için {{min}}–{{max}} taş seçin ya da bildirmeden önce eli tamamlayın.",
     "sell": "Sat",

@@ -313,7 +313,7 @@
       "normal": "正常",
       "slow": "慢"
     },
-    "tileHintsDesc": "顯示有效出牌位置的提示",
+    "tileHintsDesc": "顯示牌面數字，並把手牌分組為對子、順子和刻子",
     "visual": "顯示"
   },
   "gameplay": {
@@ -337,6 +337,7 @@
     "resume": "繼續",
     "tenpai": "聽牌",
     "shanten": "{{count}}向聽",
+    "shantenHelp": "還需要多少張有效牌，才能做到只差一張就成和（聽牌）",
     "ready": "聽牌",
     "deadDraw": "王牌摸牌",
     "deadWallDraw": "從王牌摸牌",
@@ -414,6 +415,9 @@
     "redraw": "重抽",
     "selectRange": "選擇{{min}}–{{max}}張",
     "handCount": "手牌 ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "選擇{{min}}–{{max}}張牌進行戰術出牌",
     "tacticalHintLong": "選擇{{min}}–{{max}}張牌進行戰術出牌，或先完成手牌再宣言。",
     "sell": "出售",

@@ -313,7 +313,7 @@
       "normal": "보통",
       "slow": "느림"
     },
-    "tileHintsDesc": "유효한 패 배치 힌트를 표시합니다",
+    "tileHintsDesc": "패의 숫자를 표시하고 손패를 또이쯔·순자·커쯔로 묶어 보여줍니다",
     "visual": "화면"
   },
   "gameplay": {
@@ -337,6 +337,7 @@
     "resume": "재개",
     "tenpai": "텐파이",
     "shanten": "{{count}}샹텐",
+    "shantenHelp": "패 한 장으로 손패를 완성할 수 있는 상태(텐파이)까지 필요한 유효패 수입니다",
     "ready": "텐파이",
     "deadDraw": "왕패 뽑기",
     "deadWallDraw": "왕패에서 뽑기",
@@ -414,6 +415,9 @@
     "redraw": "다시 뽑기",
     "selectRange": "{{min}}~{{max}}장 선택",
     "handCount": "손패 ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "전술적 플레이를 위해 {{min}}~{{max}}장을 선택하세요",
     "tacticalHintLong": "전술적 플레이를 위해 {{min}}~{{max}}장을 선택하거나, 손을 완성한 뒤 선언하세요.",
     "sell": "판매",

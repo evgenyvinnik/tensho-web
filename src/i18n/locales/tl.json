@@ -416,7 +416,7 @@
       "normal": "Normal",
       "slow": "Mabagal"
     },
-    "tileHintsDesc": "Ipakita ang pahiwatig sa wastong paglalagay ng tile",
+    "tileHintsDesc": "Ipakita ang numero ng tile at ipangkat ang iyong kamay sa Pares, Sequence at Triplet",
     "visual": "Visual"
   },
   "gameplay": {
@@ -440,6 +440,7 @@
     "resume": "Ipagpatuloy",
     "tenpai": "Tenpai",
     "shanten": "{{count}} kulang",
+    "shantenHelp": "Ilan pang kapaki-pakinabang na tile ang kailangan bago makumpleto ng isang tile ang iyong kamay",
     "ready": "Handa",
     "deadDraw": "DEAD DRAW",
     "deadWallDraw": "DEAD WALL DRAW",
@@ -517,6 +518,9 @@
     "redraw": "MAG-REDRAW",
     "selectRange": "PUMILI NG {{min}}–{{max}}",
     "handCount": "Kamay ({{count}})",
+    "groups": {
+      "label": "{{group}} +{{points}}"
+    },
     "tacticalHint": "Pumili ng {{min}}–{{max}} tile para sa taktikal na laro",
     "tacticalHintLong": "Pumili ng {{min}}–{{max}} tile para sa taktikal na laro, o buuin ang kamay bago ideklara.",
     "sell": "Ibenta",

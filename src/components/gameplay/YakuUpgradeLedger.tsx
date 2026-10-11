@@ -27,8 +27,11 @@ const YAKU_KEYS: Record<YakuCategory, string> = {
 /** Optional run ledger, shared by play and the shop. No automatic overlays. */
 export function YakuUpgradeLedger({
   upgrades,
+  compact = false,
 }: {
   upgrades: ReturnType<GameOrchestrator['getYakuUpgradeState']>
+  /** Icon-and-count trigger for the gameplay inventory row. */
+  compact?: boolean
 }) {
   const { t, i18n } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -42,21 +45,30 @@ export function YakuUpgradeLedger({
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex min-h-11 max-w-full items-center gap-2 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] px-2 py-1 text-left text-[var(--color-beige-white)] hover:border-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-amber-300"
+        title={compact ? title : undefined}
+        className={`flex min-h-11 max-w-full items-center gap-2 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] py-1 text-left text-[var(--color-beige-white)] hover:border-[var(--color-golden-yellow)] focus-visible:outline-2 focus-visible:outline-amber-300 ${compact ? 'px-1.5' : 'px-2'}`}
       >
         <img
           src={illustrationAssets.yakuLedger}
           alt=""
           width={40}
           height={40}
-          className="h-10 w-10 shrink-0 object-contain"
+          className={`${compact ? 'h-8 w-8' : 'h-10 w-10'} shrink-0 object-contain`}
         />
-        <span className="min-w-0 break-words text-xs">
+        <span className={compact ? 'sr-only' : 'min-w-0 break-words text-xs'}>
           <span className="block font-semibold">{title}</span>
           <span className="block opacity-70">
             {t('yakuUpgrades.summary', { total: number(upgrades.length) })}
           </span>
         </span>
+        {compact && (
+          <span
+            aria-hidden="true"
+            className="text-xs font-bold tabular-nums text-[var(--color-golden-yellow)]"
+          >
+            {number(upgrades.length)}
+          </span>
+        )}
       </button>
       <Popup isOpen={open} onClose={() => setOpen(false)} title={title}>
         <div

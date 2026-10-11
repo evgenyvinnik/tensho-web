@@ -65,7 +65,9 @@ export const spacing = {
 // Tile dimensions
 export const tileSizes = {
   small: { width: 35, height: 49 },
+  compact: { width: 42, height: 59 },
   medium: { width: 50, height: 70 },
+  regular: { width: 60, height: 84 },
   large: { width: 70, height: 98 },
   xlarge: { width: 90, height: 126 },
 } as const;

@@ -69,26 +69,39 @@ for (const fixture of [
     const card = page.locator('[data-progressive-hint="guided-first-move-v2"]')
     await expect(card).toBeVisible()
     await noOverflow(card)
-    // Inline geometry is invariant even while the user scrolls the game canvas.
+    // From tablet width the tip floats over the board; phones keep it at the
+    // top of the board's scroll so it cannot cover staged tiles. Either way
+    // it sits below the score bar and never over the rack or the actions.
     const layout = await card.evaluate((node) => {
       const rect = node.getBoundingClientRect()
       return {
-        position: getComputedStyle(node).position,
+        position: getComputedStyle(node.closest('[data-hint-slot]')!).position,
         scoreBottom: document
           .querySelector('.game-score-panel')!
           .getBoundingClientRect().bottom,
-        playTop: document
-          .querySelector('.game-play-area')!
+        rackTop: document
+          .querySelector('[data-play-zone="hand"]')!
           .getBoundingClientRect().top,
         hintTop: rect.top,
         hintBottom: rect.bottom,
-        inCanvas: !!node.closest('[data-gameplay-scroll]'),
+        inSurface: !!node.closest('[data-gameplay-surface]'),
       }
     })
-    expect(layout.inCanvas).toBe(true)
-    expect(layout.position).toBe('static')
+    expect(layout.inSurface).toBe(true)
+    expect(layout.position).toBe(fixture.width >= 640 ? 'absolute' : 'static')
     expect(layout.hintTop).toBeGreaterThanOrEqual(layout.scoreBottom)
-    expect(layout.hintBottom).toBeLessThanOrEqual(layout.playTop)
+    if (fixture.width >= 640)
+      expect(layout.hintBottom).toBeLessThanOrEqual(layout.rackTop + 1)
+    else
+      // Phones: in the board's scroll, so a tall tip can start beneath the
+      // pinned rack, but each control scrolls clear of it and takes taps.
+      for (const name of ['dontShow', 'gotIt'] as const)
+        await assertHitTarget(
+          card.getByRole('button', {
+            name: { en, es, ru }[fixture.language].progressiveHints[name],
+            exact: true,
+          })
+        )
 
     const details = card.locator('details'),
       summary = card.locator('summary')

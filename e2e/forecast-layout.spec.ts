@@ -159,7 +159,9 @@ for (const fixture of [
               '[data-tutorial], [data-score-equation], [data-score-equation] span, .game-score-remaining'
             )
           ).every((el) => {
-            if (getComputedStyle(el).display === 'none') return true
+            // The forecast and the last play share one slot; whichever is
+            // not shown has no layout boxes and cannot overflow.
+            if (el.getClientRects().length === 0) return true
             const rect = el.getBoundingClientRect()
             return (
               el.scrollWidth <= el.clientWidth + 1 &&
@@ -270,7 +272,9 @@ for (const fixture of [
               '[data-score-equation] span, [data-tutorial]'
             )
           ).every((el) => {
-            if (getComputedStyle(el).display === 'none') return true
+            // The forecast and the last play share one slot; whichever is
+            // not shown has no layout boxes and cannot overflow.
+            if (el.getClientRects().length === 0) return true
             const rect = el.getBoundingClientRect()
             return (
               el.scrollWidth <= el.clientWidth + 1 &&
