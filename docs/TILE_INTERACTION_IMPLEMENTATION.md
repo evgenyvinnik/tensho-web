@@ -151,6 +151,23 @@ The runner now strips terminal formatting before recognizing its own URL while
 still requiring an exact built-index response. Success and failure-exit tests
 cover both plain and colored startup output. No game assertion was relaxed.
 
+The corrected independent run `38172486816` (`45ba2a6`) passes all **2,957
+application tests in 209 files**, **17 release/runner checks**, the production
+build and **84/84 browser journeys**, with one worker and zero retries (10.1
+minutes for browsers). Its diagnostics are downloaded to
+`/tmp/tensho-interaction-IE5a7E/ci-passed`; Spanish Table Loop and Japanese
+Classic short-phone screenshots were inspected. The staged tile has no yellow
+selection frame, and the Table Loop pair destination is fully visible.
+
+Main then advanced to v1.0.261011-13 (`d1cd303`), adding scroll margins around
+Table Loop slots/drafts and an unselected-tile paint-position check. Both changes
+are preserved in ordinary merge `3a4e380`: the regression now checks every tile's
+untransformed layout position **and** every unselected tile's painted position.
+Independent combined run `38173552028` also passes the full application suite,
+release/runner checks, build and all 84 production-browser journeys without
+retries. This is the candidate for main publication; the separate Dragon-hint
+follow-up in the working tree is not part of that verified release.
+
 Desktop and Japanese short-phone screenshots were inspected. On short phones
 the board deliberately scrolls; this does not promise simultaneous visibility of
 the full lesson, forecast and every rack row. These checks use Chromium device

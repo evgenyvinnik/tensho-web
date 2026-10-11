@@ -15,8 +15,11 @@ changing during staging. All 172 final-source native browser checks and all
 2,957 unit/component tests in 209 files pass. Concurrent main published the
 Classic fixes in **v1.0.261011-12**, with successful CI/deployment and a matching
 public manifest. The additional Table Loop scroll padding and shared
-production-browser deployment gate remain in verification; hosted recovery
-checks are not yet a completed checkpoint.
+production-browser deployment gate now pass independent CI, including the
+combined v13 main changes: 2,957 application tests, 17 release/runner checks,
+the build and all 84 production-browser journeys with no retries. Main
+publication and hosted recovery checks are still pending; the separate
+Dragon-hint follow-up is not included in this verified candidate.
 
 [Compact Tea House](SHOP_DENSITY_IMPLEMENTATION.md) brings merchandise into
 the opening phone viewport with an illustrated cash-out summary, optional
