@@ -1,6 +1,6 @@
 # Table Loop save ownership and coordinated reset
 
-October 8, 2026. Implementation checkpoint; release verification is recorded below.
+Implemented October 8, 2026; release verification continued October 11.
 
 ## Contract
 
@@ -60,6 +60,11 @@ Evidence directory: `/tmp/tensho-table-save-iQpNr5` (local, not a repository ass
   decode offline. These are fresh test profiles, not the user's browser data.
 - Production build and asset coverage/budget checks pass: 37,826,980 precached
   bytes, below the 40 MiB limit. Thirteen release-workflow tests pass.
+- The save-only production bundle passes **16/16 two-window browser journeys**
+  with the correct `/tensho-web/` preview base. The first production attempt
+  omitted that base from the preview command and all sixteen cases failed to
+  load the game; those results remain in `production.log`. The corrected run
+  is in `production-corrected.log`, with no application change or relaxed test.
 - Full regression: **2,836/2,836 tests in 201 files pass**, with two workers.
   TypeScript and lint pass (0 errors, 211 existing warnings). Publication and
   hosted verification remain pending; local checks alone are not a release claim.
@@ -76,6 +81,31 @@ or conclusively attributed; the final unchanged-source run passes the original
 assertions without retries or longer deadlines. The first baseline fixture build
 ran before its dependency link existed and failed; its completed rerun is the
 fixture used by the successful upgrade suite.
+
+The save checkpoint was committed as `8a7a9f1`. A separate Classic layout
+checkpoint (`e9d2710`) followed on main. Its combined build, regression and
+deployment are verified separately below; save-only evidence does not cover
+the later layout changes.
+
+## Combined October 11 release
+
+- Full current regression passes **2,858/2,858 in 204 files**; production build
+  and the offline budget pass (37,839,293 precached bytes).
+- Combined production browser batch: **27/28 pass**. All sixteen Table Loop
+  two-window checks pass. Eleven of twelve Classic discard-layout checks pass;
+  Russian touch at 320×568 with fonts held fails because the discard target is
+  outside the viewport after scrolling to the final rack tile. The retained
+  trace shows the grouped rack/header overflow; this is recorded in the
+  [UI backlog](UI_IMPROVEMENT_BACKLOG.md), not waived as a successful check.
+- GitHub workflow `38150402750` succeeds, including independent tests, build and
+  deployment. Published version **v1.0.261011-1**, version/tag commit
+  `683d293185321ec51e5deb6b44c7f96028b0418e`; public `release.json` and runtime
+  `/tensho-web/assets/index-14nfL4yM.js` agree. All **16/16 hosted save checks pass**
+  without retries, including desktop/touch English/Spanish conflicts, simultaneous
+  writes, reset races and first-save fencing. Fresh isolated browser profiles
+  were used; no real player data was reset.
+
+This verifies the save checkpoint's publication, not overall layout completion.
 
 ## Limits
 

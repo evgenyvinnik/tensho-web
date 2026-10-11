@@ -12,6 +12,16 @@ reduced motion respected, no hover-only information.
 
 ## P1 — visibly wrong or blocks newcomers
 
+**Release verification finding (October 11):** the combined production batch
+passed 27/28 checks, but Russian at 320×568 with fonts held failed before dragging:
+after scrolling to the last rack tile, the discard target had viewport ratio 0.
+The retained trace shows group labels widening the grouped rack and its header
+scrolling out of view. This is an open layout defect, not a passed drag test or
+merely a lazy-image check. Evidence:
+`/tmp/tensho-table-save-iQpNr5/integrated-production/discard-layout-discard-sta-8cb50-red-during-font-loading-ru--mobile-chrome/trace.zip`.
+Address together with tap-to-discard (item 2) and bounded group labels (item 9),
+then replay the original geometry/resource assertions on short screens.
+
 1. **Action buttons break words on phones.** At 320–360px, "Saltar" and
    "RECAMBIAR" wrap mid-word ("Salt/ar", "RECA/MBIA/R"). Use an icon plus a
    short label, or let Skip/Redraw become icon buttons with accessible names

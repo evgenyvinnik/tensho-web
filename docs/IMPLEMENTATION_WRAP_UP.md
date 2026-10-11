@@ -1,6 +1,6 @@
 # Implementation wrap-up
 
-**Updated:** October 8, 2026
+**Updated:** October 11, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
@@ -21,8 +21,10 @@ the scorer's Pairs, Sequences and Triplets as labelled groups and suited tiles
 carry Arabic numerals. Remaining ideas are handed off in the
 [UI improvement backlog](UI_IMPROVEMENT_BACKLOG.md). All 2,858 unit tests pass;
 206 of 208 layout-related browser checks pass on desktop and mobile projects
-(the two failures are environment-specific lazy-image checks). Unpublished;
-real-device and newcomer playtesting are not claimed.
+(the two failures are environment-specific lazy-image checks). Published in
+**v1.0.261011-1**. The subsequent combined production batch passes 27/28 checks,
+but exposes a Russian short-screen discard-target visibility failure, now recorded
+in the UI backlog. Real-device, complete layout and newcomer verification are not claimed.
 
 [Table Loop save ownership](TABLE_SAVE_OWNERSHIP_IMPLEMENTATION.md) now pauses
 stale windows instead of overwriting newer runs, offers explicit localized
@@ -31,7 +33,9 @@ Unique checkpoint IDs and a reset marker cover repeated identical journals and
 queued first-ever saves. The final 26 native desktop/touch checks and ten real
 previous-release PWA upgrades pass, as do all 2,836 unit/component tests in 201
 files, strict TypeScript, lint (warnings only) and thirteen release checks.
-Publication verification is still in progress; crash-atomic profile reset,
+Published and hosted-verified in **v1.0.261011-1**: all sixteen hosted save checks
+pass; the combined 2,858-test regression passes locally and in CI, deployment
+succeeds and public manifest/tag/runtime match. Crash-atomic profile reset,
 older uncoordinated clients and whole-project completion are not claimed.
 
 [Illustrated asset delivery](ASSET_DELIVERY_IMPLEMENTATION.md) is published and
@@ -1419,7 +1423,7 @@ Resume and Table Loop continuation also passed without JavaScript page errors.
 | Table styles | Classic integration and legacy catalog reconciliation are verified in [Table rules](TABLE_STYLE_RULES.md). The [64-cell table/Stake comparison](CLASSIC_TABLE_STAKE_BALANCE.md) now measures a fixed limited policy; stronger strategies and human balance remain open. Table Loop is a separate mode, not a migration of Classic table mechanics. |
 | Progression and build balance | Shared play validation and the blind fallback resolve the measured legality/no-advice stops. [Observed-build shopping](CLASSIC_BUILD_SHOP_BALANCE.md) now compares 2,560 runs across every table/Stake and produces 25 rescue-free wins versus zero for the control. The [Tea House build panel](SHOP_BUILD_IMPLEMENTATION.md) makes real comparison/sale/replacement accessible to players. Cost-aware destructive/Script strategies and broader Yaku planning remain open; none of those simulated victories used complete hands. Human enjoyment cannot be inferred from simulation clear rates. |
 | End-to-end system integration | Consumable targeting, purchase-to-use, penalty/protection, and cancellation paths have browser coverage. Act 8 win/loss, the default-table Stake unlock, ordinary Act 9 continuation/loss, Ancient Script purchase/rewind/defeat, and once-only completion pass through the live UI using explicit fixtures. Unity now creates valid Winds with an illustrated public mapping. The subsequent physical rank-conversion fix covers Strength and Ouija red-five identity, modifier preservation, and existing costs. Broader table/Stake/effect combinations, Omen-modified shops, bosses, and upgraded-Charter acquisition remain open; see [Run results](RUN_RESULTS_IMPLEMENTATION.md). Fate Seal lifetime and Negative tile ownership are resolved under delegated authority; see [current evidence](RUN_OWNERSHIP_IMPLEMENTATION.md). |
-| Remaining UI and persistence limits | Shared dialogs/Exit and the current-session reset workflow are verified in [Dialog implementation](DIALOG_IMPLEMENTATION.md) and [Progress reset](PROGRESS_RESET_IMPLEMENTATION.md). Multi-tab stale writes and crash-atomic multi-key reset are not guaranteed. Cash-out and shop headings/counts/continuation/confirmation now have all-locale copy; escaped Charter decorations are removed. Tile rewards use canonical/localized modifier text with full wrapping. PackCard motion and the full-stack Flora inspector are verified. Missing tile/catalog translations and edition/sticker labels remain. Season powers, the four Flower interactions/mutations and Yakuman Succession are now published; see the current [Flora ledger](FLORA_IMPLEMENTATION.md). This does not close other item/layout gaps. Physical-device/assistive-technology review and the unexplained historical interaction timeouts remain open. |
+| Remaining UI and persistence limits | Shared dialogs/Exit and progress reset are verified in [Dialog implementation](DIALOG_IMPLEMENTATION.md) and [Progress reset](PROGRESS_RESET_IMPLEMENTATION.md). Current run writers now reject stale windows and coordinate reset; [save ownership](TABLE_SAVE_OWNERSHIP_IMPLEMENTATION.md) records hosted verification. Crash-atomic multi-key reset, old uncoordinated clients and all-tab lifetime-profile consistency remain open. The Classic layout redesign is published, but its later production audit exposes Russian short-screen discard-target visibility; see the [UI backlog](UI_IMPROVEMENT_BACKLOG.md). Missing tile/catalog translations and edition/sticker labels remain. Season powers, Flower interactions/mutations and Yakuman Succession are published; see [Flora](FLORA_IMPLEMENTATION.md). Physical-device/assistive-technology review and unexplained historical timeouts remain open. |
 | Animation and audio | Live music/SFX, generated assets, controls, and native Chromium/mobile playback are verified in [Audio implementation](AUDIO_IMPLEMENTATION.md). Listening/mix review on real speakers and iOS/Safari remains distinct from headless decoding checks. |
 | New-player experience | Observe newcomers using practice and regular play. Verify that they can state a plan and explain its payoff, not merely follow highlights. |
 | Consistent UI and localization | Classic tap interception/double-selection and clipped tile details have targeted fixes and browser coverage. The historical Table Loop first-click miss has not been conclusively attributed to a single cause; retain its diagnostic assertion. Continue later-phase/long-translation review, including tile tooltip prose and pack descriptions. New localized strings have key parity but have not received native-speaker review. |
