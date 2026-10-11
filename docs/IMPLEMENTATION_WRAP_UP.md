@@ -8,6 +8,13 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Tile interaction recovery](TILE_INTERACTION_IMPLEMENTATION.md) fixes duplicate
+Plum rack tiles, desktop lessons intercepting mat clicks, and a short-phone
+discard target scrolling away. It also fixes compact group widths/spacing
+changing during staging. All 172 final-source native browser checks and all
+2,957 unit/component tests in 209 files pass. Production/release verification
+is in progress; these local changes are not yet a published checkpoint.
+
 [Compact Tea House](SHOP_DENSITY_IMPLEMENTATION.md) brings merchandise into
 the opening phone viewport with an illustrated cash-out summary, optional
 guidance and a compact build disclosure. No timer interrupts reading and no

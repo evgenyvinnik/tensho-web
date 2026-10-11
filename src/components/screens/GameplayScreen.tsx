@@ -997,13 +997,11 @@ export function GameplayScreen() {
                   </div>
                 </div>
 
-                {/* Tips: from tablet width a popup just below the inventory
-                    (so Decrees, consumables and trackers stay usable) over
-                    the empty top of the staging area; in flow on phones,
-                    where a popup would cover staged tiles. */}
-                <div className="sm:relative sm:z-30 sm:h-0">
+                {/* Reserve real space for open guidance on every viewport.
+                    The mat is not guaranteed empty: floating lessons used to
+                    intercept taps/clicks on tiles the player was returning. */}
+                <div className="shrink-0">
                   <ProgressiveHintCard
-                    floating
                     hint={tutorial.currentHint}
                     onDismiss={tutorial.dismissHint}
                     onDisableHints={tutorial.disableHints}

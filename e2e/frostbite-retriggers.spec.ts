@@ -127,13 +127,15 @@ for (const language of ['en', 'es'])
       })
     ).toBe(512)
     await page.screenshot({ path: info.outputPath('echo-portrait.png') })
-    await activate(page.locator('[data-tutorial="yaku-display"]'))
+    // A details popover legitimately covers the mat on short phones. Dismiss
+    // through a visible, inert point outside it, not a control underneath it.
+    await activate(page.locator('[data-tutorial="gold"]'))
     await expect(dialog).toHaveCount(0)
     await activate(page.locator('[data-decree-instance]').nth(1))
     await expect(dialog).toContainText(
       copy.decrees.items['decree-treasure-hunter'].description
     )
-    await activate(page.locator('[data-tutorial="yaku-display"]'))
+    await activate(page.locator('[data-tutorial="gold"]'))
     await activate(page.getByTestId('flora-details-trigger'))
     await expect(dialog).toContainText(copy.flora.details.frostbite)
     await expect(dialog).not.toContainText(copy.flora.details.partial)

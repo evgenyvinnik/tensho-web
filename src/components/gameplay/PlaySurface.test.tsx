@@ -391,7 +391,15 @@ describe('PlaySurface', () => {
         container.querySelectorAll<HTMLElement>('[data-rack-group]'),
         (group) => group.style.width
       )
-      expect(widths).toEqual(['104px', '158px'])
+      expect(widths).toEqual([
+        'calc(100px + 1 * var(--rack-group-gap, 4px))',
+        'calc(150px + 2 * var(--rack-group-gap, 4px))',
+      ])
+      for (const row of container.querySelectorAll<HTMLElement>(
+        '[data-rack-group] > div'
+      )) {
+        expect(row.style.gap).toBe('var(--rack-group-gap, 4px)')
+      }
     })
 
     it('keeps every position, and drops the group label, once a tile is staged', () => {
@@ -423,6 +431,42 @@ describe('PlaySurface', () => {
         'data-play-tile',
         'pair-b'
       )
+    })
+
+    it('stages and returns a shared Plum tile through one physical button and slot', () => {
+      const tiles = [1, 2, 3, 4, 5].map(
+        (rank) => new Tile(TileSuit.Manzu, rank, `overlap-${rank}`)
+      )
+      const staged = vi.fn()
+      const { container } = render(
+        <PlaySurface
+          handTiles={tiles}
+          groupRules={{ allowSequenceOverlap: true }}
+          onTilesStaged={staged}
+        />
+      )
+      expect(rackOrder(container)).toEqual(tiles.map((tile) => tile.id))
+      expect(screen.getByText('Sequence ×2 +60')).toBeVisible()
+      const bridge = () =>
+        container.querySelectorAll('[data-play-tile="overlap-3"]')
+      expect(bridge()).toHaveLength(1)
+      fireEvent.keyDown(bridge()[0], { key: 'Enter' })
+      expect(bridge()).toHaveLength(1)
+      expect(container.querySelectorAll('[data-rack-slot]')).toHaveLength(1)
+      expect(rackOrder(container)).toEqual([
+        'overlap-1',
+        'overlap-2',
+        'overlap-4',
+        'overlap-5',
+      ])
+      expect(staged).toHaveBeenLastCalledWith([tiles[2]])
+      expect(screen.getByText('Sequence ×2 +60')).not.toBeVisible()
+      fireEvent.keyDown(bridge()[0], { key: 'Enter' })
+      expect(bridge()).toHaveLength(1)
+      expect(container.querySelectorAll('[data-rack-slot]')).toHaveLength(0)
+      expect(rackOrder(container)).toEqual(tiles.map((tile) => tile.id))
+      expect(screen.getByText('Sequence ×2 +60')).toBeVisible()
+      expect(staged).toHaveBeenLastCalledWith([])
     })
   })
 

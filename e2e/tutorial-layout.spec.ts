@@ -69,9 +69,8 @@ for (const fixture of [
     const card = page.locator('[data-progressive-hint="guided-first-move-v2"]')
     await expect(card).toBeVisible()
     await noOverflow(card)
-    // From tablet width the tip floats over the board; phones keep it at the
-    // top of the board's scroll so it cannot cover staged tiles. Either way
-    // it sits below the score bar and never over the rack or the actions.
+    // Guidance occupies real space above the mat at every width, so it cannot
+    // intercept pointer input on a staged tile. It remains below the score.
     // Short phones open the board on the hand, so the tip is a swipe away.
     if (fixture.width < 640) await card.scrollIntoViewIfNeeded()
     const layout = await card.evaluate((node) => {
@@ -90,7 +89,7 @@ for (const fixture of [
       }
     })
     expect(layout.inSurface).toBe(true)
-    expect(layout.position).toBe(fixture.width >= 640 ? 'absolute' : 'static')
+    expect(layout.position).toBe('static')
     expect(layout.hintTop).toBeGreaterThanOrEqual(layout.scoreBottom)
     if (fixture.width >= 640)
       expect(layout.hintBottom).toBeLessThanOrEqual(layout.rackTop + 1)
