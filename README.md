@@ -110,7 +110,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Features
 
-- **Table Loop (experiment)** — A second three-round core loop where every group you play stays on the table, patterns pay before the table is finished, and each score resolves as a readable chain; playable end to end with the keyboard, opening on an authored practice deal, with an optional offers-row variant
+- **Table Loop Mode** — A second three-round mode on the same table as Classic where every group you play stays on the table, patterns pay before the table is finished, and each score resolves as a readable chain; playable end to end with the keyboard, opening on an authored practice deal, with an optional offers-row variant
 - **Tutorial System** — Dismissible contextual guidance that never blocks gameplay
 - **Drag & Drop** — Intuitive tile arrangement with touch support
 - **Responsive Design** — Mobile-first portrait layout
