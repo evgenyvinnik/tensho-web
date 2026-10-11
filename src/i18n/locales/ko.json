@@ -251,7 +251,7 @@
     "subtitle": "마작 로그라이크",
     "play": "플레이",
     "continue": "계속하기",
-    "newRun": "새 게임",
+    "newRun": "새 클래식 게임",
     "tutorial": "튜토리얼",
     "options": "설정",
     "settings": "설정",
@@ -267,7 +267,7 @@
     "tableStake": "테이블 스테이크",
     "noSpecialModifiers": "특수 수정 없음",
     "promise": "약속",
-    "tableLoop": "테이블 루프 (실험)"
+    "tableLoop": "테이블 루프 모드"
   },
   "settings": {
     "fullUnlock": {
@@ -2789,7 +2789,11 @@
     "hud": {
       "round": "{{total}}국 중 {{current}}국",
       "resources": "배치 {{actions}} · 교환 {{redraws}}",
-      "bridges": "· 가교 {{count}}"
+      "bridges": "· 가교 {{count}}",
+      "gold": "골드 {{gold}}"
+    },
+    "table": {
+      "label": "테이블"
     },
     "river": {
       "choose": "내줄 손패 한 장을 고른 뒤 강의 패를 고르세요. 한 국에 한 번 무료입니다.",

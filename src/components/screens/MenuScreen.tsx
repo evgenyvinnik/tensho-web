@@ -227,6 +227,10 @@ interface NeonButtonProps {
   delay?: number
   show?: boolean
   disabled?: boolean
+  /** The main call to action: taller, warmer, with a tile emblem. */
+  hero?: boolean
+  /** A small tile shown beside the label (decorative). */
+  emblem?: string
 }
 
 /**
@@ -240,6 +244,8 @@ function NeonButton({
   delay = 0,
   show = true,
   disabled = false,
+  hero = false,
+  emblem,
 }: NeonButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
@@ -277,10 +283,10 @@ function NeonButton({
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
       className={`
-        relative w-full rounded-lg font-ui font-bold disabled:cursor-wait disabled:opacity-50
-        ${compact ? 'px-4 py-2.5 text-sm sm:text-base' : 'px-10 py-3.5 text-xl md:text-2xl'}
+        relative w-full font-ui font-bold disabled:cursor-wait disabled:opacity-50
+        ${hero ? 'rounded-xl px-4 py-4 text-xl sm:text-2xl' : compact ? 'rounded-lg px-4 py-2.5 text-sm sm:text-base' : 'rounded-lg px-6 py-3 text-lg md:text-xl'}
         text-[var(--color-beige-white)] uppercase tracking-wider
-        border-2 transition-colors duration-200
+        ${hero ? 'border-[3px]' : 'border-2'} transition-colors duration-200
         ${isPrimary ? 'border-[var(--color-golden-yellow)]' : 'border-[var(--color-metallic-gold)]'}
         ${isPrimary ? 'button-pulse' : ''}
       `}
@@ -289,13 +295,30 @@ function NeonButton({
         transform: spring.scale.to(
           (s) => `scale(${s}) translateY(${spring.y.get()}px)`
         ),
-        backgroundColor: baseColor,
+        background: hero
+          ? 'linear-gradient(135deg, #ff7a45 0%, var(--color-vibrant-orange) 45%, #c2410c 100%)'
+          : baseColor,
         boxShadow: isHovered
           ? `0 0 30px ${glowColor}, 0 0 60px ${glowColor}, inset 0 0 20px rgba(255,255,255,0.1)`
-          : `0 0 15px ${glowColor}, 0 0 30px rgba(0,0,0,0.3)`,
+          : hero
+            ? `0 0 24px ${glowColor}, 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.35)`
+            : `0 0 15px ${glowColor}, 0 0 30px rgba(0,0,0,0.3)`,
       }}
     >
-      <span className="relative z-10 neon-text-subtle">{children}</span>
+      <span className="relative z-10 flex items-center justify-center gap-3">
+        {emblem && (
+          <img
+            src={emblem}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className={`${hero ? 'h-14 w-10' : 'h-10 w-7'} shrink-0 -rotate-6 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.45)]`}
+          />
+        )}
+        <span className="neon-text-subtle min-w-0 leading-tight">
+          {children}
+        </span>
+      </span>
       <div className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
         <div className="absolute inset-0 shimmer opacity-30" />
       </div>
@@ -351,9 +374,11 @@ export function MenuScreen() {
   // saved-run recovery, or update controls. Keep the existing entrance animation.
   useEffect(() => {
     setShowContent(true)
-    void Promise.all([preloadMenuAssets(), preloadTileImages()]).catch((err) => {
-      console.error('Failed to load assets:', err)
-    })
+    void Promise.all([preloadMenuAssets(), preloadTileImages()]).catch(
+      (err) => {
+        console.error('Failed to load assets:', err)
+      }
+    )
   }, [])
 
   // Title animation
@@ -504,6 +529,8 @@ export function MenuScreen() {
                 onClick={handlePlay}
                 disabled={starting}
                 variant="primary"
+                hero
+                emblem={getTileImagePath(TileSuit.Dragon, 3)}
                 delay={650}
                 show={showContent}
               >
@@ -517,10 +544,11 @@ export function MenuScreen() {
               <NeonButton
                 onClick={handleTableLoop}
                 variant="secondary"
+                emblem={getTileImagePath(TileSuit.Souzu, 5)}
                 delay={700}
                 show={showContent}
               >
-                {t('menu.tableLoop', 'Table Loop (experiment)')}
+                {t('menu.tableLoop', 'Table Loop Mode')}
               </NeonButton>
 
               <div className="grid w-full grid-cols-2 gap-3">

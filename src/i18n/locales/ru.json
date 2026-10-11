@@ -354,7 +354,7 @@
     "subtitle": "Маджонг Рогалик",
     "play": "Играть",
     "continue": "Продолжить",
-    "newRun": "Новая игра",
+    "newRun": "Новая классическая игра",
     "tutorial": "Обучение",
     "options": "Настройки",
     "settings": "Настройки",
@@ -370,7 +370,7 @@
     "tableStake": "Ставка стола",
     "noSpecialModifiers": "Особых модификаторов нет",
     "promise": "Обет",
-    "tableLoop": "Цикл стола (эксперимент)"
+    "tableLoop": "Режим «Цикл стола»"
   },
   "settings": {
     "fullUnlock": {
@@ -1550,7 +1550,11 @@
     "hud": {
       "round": "Раунд {{current}} из {{total}}",
       "resources": "{{actions}} действий · {{redraws}} обменов",
-      "bridges": "· мостов: {{count}}"
+      "bridges": "· мостов: {{count}}",
+      "gold": "Золото: {{gold}}"
+    },
+    "table": {
+      "label": "Стол"
     },
     "river": {
       "choose": "Выберите кость на стойке, которую отдадите, затем кость в реке. Бесплатно раз за раунд.",

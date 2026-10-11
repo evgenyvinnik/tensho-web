@@ -15,6 +15,7 @@ import { useState, useId, useRef, useEffect } from 'react'
 import { Tile } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
 import { tileName } from '../../i18n/tileText'
+import type { TileSize } from '../../styles/theme'
 
 export interface RackRowProps {
   tiles: readonly Tile[]
@@ -22,6 +23,8 @@ export interface RackRowProps {
   onToggle: (tileId: string) => void
   /** Disables the whole rack while a round is settling. */
   disabled?: boolean
+  /** Tile size fitted to the space the rack has. */
+  tileSize?: TileSize
 }
 
 export function RackRow({
@@ -29,6 +32,7 @@ export function RackRow({
   selectedIds,
   onToggle,
   disabled = false,
+  tileSize = 'medium',
 }: RackRowProps) {
   const { t } = useTranslation()
   const [focusedId, setFocusedId] = useState<string | null>(null)
@@ -48,9 +52,11 @@ export function RackRow({
       data-testid="table-loop-rack"
       role="group"
       aria-label={t('tableLoop.rack.label', 'Your rack')}
-      className="px-2 pb-1"
+      className="px-1 pb-1 min-[360px]:px-2"
     >
-      <div className="flex flex-wrap justify-center gap-1">
+      {/* The narrowest phones get tighter spacing so twelve tiles still make
+          two rows of six at the 44px touch target. */}
+      <div className="flex flex-wrap justify-center gap-0.5 min-[360px]:gap-1">
         {tiles.map((tile) => {
           const isSelected = selected.has(tile.id)
           return (
@@ -84,7 +90,7 @@ export function RackRow({
             >
               <TileImage
                 tile={tile}
-                size="medium"
+                size={tileSize}
                 detailsVisible={focusedId === tile.id}
                 tooltipId={`${detailsPrefix}-${tile.id}`}
                 allowHover={focusedId === null || focusedId === tile.id}

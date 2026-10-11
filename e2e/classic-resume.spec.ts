@@ -46,7 +46,7 @@ test('a real tile play survives reload and leaving; replacement requires confirm
     .click()
   await expect(page).toHaveURL(/\/en\/?$/)
   await expect(page.locator('[data-classic-resume] img')).toBeVisible()
-  await page.getByRole('button', { name: 'New Run', exact: true }).click()
+  await page.getByRole('button', { name: 'New Classic Run', exact: true }).click()
   const dialog = page.getByRole('dialog', {
     name: 'Start a new run?',
     exact: true,
@@ -64,8 +64,8 @@ test('a real tile play survives reload and leaving; replacement requires confirm
   await page
     .getByRole('button', { name: 'Save and leave', exact: true })
     .click()
-  await page.getByRole('button', { name: 'New Run', exact: true }).click()
-  await dialog.getByRole('button', { name: 'New Run', exact: true }).click()
+  await page.getByRole('button', { name: 'New Classic Run', exact: true }).click()
+  await dialog.getByRole('button', { name: 'New Classic Run', exact: true }).click()
   expect((await saved(page)).runId).not.toBe(before.runId)
 })
 

@@ -354,7 +354,7 @@
     "subtitle": "ไพ่นกกระจอกโร้กไลค์",
     "play": "เล่น",
     "continue": "เล่นต่อ",
-    "newRun": "เกมใหม่",
+    "newRun": "เริ่มคลาสสิกใหม่",
     "tutorial": "บทช่วยสอน",
     "options": "ตั้งค่า",
     "settings": "การตั้งค่า",
@@ -370,7 +370,7 @@
     "tableStake": "เดิมพันโต๊ะ",
     "noSpecialModifiers": "ไม่มีตัวปรับแต่งพิเศษ",
     "promise": "คำมั่น",
-    "tableLoop": "วงจรโต๊ะ (การทดลอง)"
+    "tableLoop": "โหมดวงจรโต๊ะ"
   },
   "settings": {
     "fullUnlock": {
@@ -1547,7 +1547,11 @@
     "hud": {
       "round": "รอบที่ {{current}} จาก {{total}}",
       "resources": "วาง {{actions}} · แลก {{redraws}}",
-      "bridges": "· สะพาน {{count}}"
+      "bridges": "· สะพาน {{count}}",
+      "gold": "ทอง {{gold}}"
+    },
+    "table": {
+      "label": "โต๊ะ"
     },
     "river": {
       "choose": "เลือกไพ่บนรางหนึ่งใบที่จะส่งออก แล้วเลือกไพ่จากแม่น้ำ ฟรีรอบละหนึ่งครั้ง",

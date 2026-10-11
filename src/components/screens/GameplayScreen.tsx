@@ -29,6 +29,7 @@ import { Tile } from '../../core/Tile'
 import { calculateShanten } from '../../rules/ShantenCalculator'
 import { useItemText } from '../../i18n/useItemText'
 import { forecastHeading } from '../../gameplay/forecastGuidance'
+import { parsePartialHand } from '../../rules/PartialHandParser'
 import { PendingOmens } from '../gameplay/PendingOmens'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
@@ -572,6 +573,29 @@ export function GameplayScreen() {
     beginnerSuggestion &&
     selectionMatchesSuggestion(beginnerSuggestion, activePreviewTileIds)
   )
+  // When the choice is exactly one group, the forecast names it the way the
+  // rack's label does ("Pair", "Sequence"), not just "Selected tiles: 2".
+  const selectionShapeLabel = useMemo(() => {
+    if (activePreviewTileIds.length < 2) return null
+    const selected = game.handTiles.filter((tile) =>
+      activePreviewTileIds.includes(tile.id)
+    )
+    if (
+      selected.length !== activePreviewTileIds.length ||
+      selected.some((tile) => faceDownTileIds.has(tile.id))
+    )
+      return null
+    const parsed = parsePartialHand(selected, game.partialHandRules)
+    return parsed.groups.length === 1 && parsed.leftovers.length === 0
+      ? t(`melds.${parsed.groups[0].type}`, parsed.groups[0].type)
+      : null
+  }, [
+    activePreviewTileIds,
+    game.handTiles,
+    game.partialHandRules,
+    faceDownTileIds,
+    t,
+  ])
   const beginnerPatternLabel =
     beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
       ? t(`melds.${beginnerSuggestion.kind}`, beginnerSuggestion.kind)
@@ -800,7 +824,7 @@ export function GameplayScreen() {
                 isCompleteHand: isCompleteHandSelection,
                 matchedPatternLabel: beginnerSelectionMatches
                   ? beginnerPatternLabel
-                  : null,
+                  : selectionShapeLabel,
                 coachPrompt: beginnerPreviewLabel,
               })}
               remainingToTarget={Math.max(0, game.targetScore - game.score)}

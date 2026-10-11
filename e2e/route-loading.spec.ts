@@ -74,7 +74,7 @@ test.describe('on-demand route code', () => {
     )
     await page.goBack()
     await page
-      .getByRole('button', { name: 'Table Loop (experiment)', exact: true })
+      .getByRole('button', { name: 'Table Loop Mode', exact: true })
       .click()
     await expect(
       page.getByRole('heading', { name: en.tableLoop.start.title })

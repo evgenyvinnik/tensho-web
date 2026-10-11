@@ -331,7 +331,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Main",
     "continue": "Lanjutkan",
-    "newRun": "Permainan Baru",
+    "newRun": "Permainan Klasik Baru",
     "tutorial": "Tutorial",
     "options": "Pengaturan",
     "settings": "Pengaturan",
@@ -347,7 +347,7 @@
     "tableStake": "Taruhan meja",
     "noSpecialModifiers": "Tanpa pengubah khusus",
     "promise": "Janji",
-    "tableLoop": "Putaran Meja (eksperimen)"
+    "tableLoop": "Mode Putaran Meja"
   },
   "settings": {
     "fullUnlock": {
@@ -2663,7 +2663,11 @@
     "hud": {
       "round": "Ronde {{current}} dari {{total}}",
       "resources": "{{actions}} aksi · {{redraws}} penukaran",
-      "bridges": "· {{count}} jembatan"
+      "bridges": "· {{count}} jembatan",
+      "gold": "{{gold}} emas"
+    },
+    "table": {
+      "label": "Meja"
     },
     "river": {
       "choose": "Pilih satu ubin di rak untuk dilepas, lalu pilih ubin sungai. Gratis sekali per ronde.",

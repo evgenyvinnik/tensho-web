@@ -354,7 +354,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Maglaro",
     "continue": "Magpatuloy",
-    "newRun": "Bagong Laro",
+    "newRun": "Bagong Klasikong Laro",
     "tutorial": "Tutorial",
     "options": "Mga Opsyon",
     "settings": "Mga Setting",
@@ -370,7 +370,7 @@
     "tableStake": "Table stake",
     "noSpecialModifiers": "Walang espesyal na modifier",
     "promise": "Pangako",
-    "tableLoop": "Ikot ng Mesa (eksperimento)"
+    "tableLoop": "Mode na Ikot ng Mesa"
   },
   "settings": {
     "fullUnlock": {
@@ -1555,7 +1555,11 @@
     "hud": {
       "round": "Round {{current}} ng {{total}}",
       "resources": "{{actions}} aksyon · {{redraws}} palit",
-      "bridges": "· {{count}} tulay"
+      "bridges": "· {{count}} tulay",
+      "gold": "{{gold}} ginto"
+    },
+    "table": {
+      "label": "Mesa"
     },
     "river": {
       "choose": "Pumili ng isang tile sa rack na ibibigay, saka pumili sa ilog. Libre minsan bawat round.",

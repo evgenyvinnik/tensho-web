@@ -251,7 +251,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Play",
     "continue": "Continue",
-    "newRun": "New Run",
+    "newRun": "New Classic Run",
     "codex": "Codex",
     "tutorial": "Tutorial",
     "options": "Options",
@@ -267,7 +267,7 @@
     "tableStake": "Table stake",
     "noSpecialModifiers": "No special modifiers",
     "promise": "Promise",
-    "tableLoop": "Table Loop (experiment)"
+    "tableLoop": "Table Loop Mode"
   },
   "settings": {
     "fullUnlock": {
@@ -2788,7 +2788,11 @@
     "hud": {
       "round": "Round {{current}} of {{total}}",
       "resources": "{{actions}} actions · {{redraws}} exchanges",
-      "bridges": "· {{count}} bridge"
+      "bridges": "· {{count}} bridge",
+      "gold": "{{gold}} gold"
+    },
+    "table": {
+      "label": "Table"
     },
     "river": {
       "choose": "Select one rack tile to give up, then choose a river tile. Free once per round.",

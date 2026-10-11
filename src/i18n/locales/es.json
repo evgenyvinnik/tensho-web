@@ -251,7 +251,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Jugar",
     "continue": "Continuar",
-    "newRun": "Nueva Partida",
+    "newRun": "Nueva partida clásica",
     "tutorial": "Tutorial",
     "options": "Opciones",
     "settings": "Ajustes",
@@ -267,7 +267,7 @@
     "tableStake": "Apuesta de mesa",
     "noSpecialModifiers": "Sin modificadores especiales",
     "promise": "Promesa",
-    "tableLoop": "Bucle de mesa (experimento)"
+    "tableLoop": "Modo Bucle de mesa"
   },
   "settings": {
     "fullUnlock": {
@@ -2802,7 +2802,11 @@
     "hud": {
       "round": "Ronda {{current}} de {{total}}",
       "resources": "{{actions}} acciones · {{redraws}} cambios",
-      "bridges": "· {{count}} puente"
+      "bridges": "· {{count}} puente",
+      "gold": "{{gold}} de oro"
+    },
+    "table": {
+      "label": "Mesa"
     },
     "river": {
       "choose": "Selecciona una ficha del atril para entregar y luego una del río. Gratis una vez por ronda.",

@@ -8,10 +8,13 @@
  * @module components/tableloop/TableSlots
  */
 
+import { useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { TileImage } from '../tiles/TileImage'
 import { PAIR_SLOT_INDEX, type TableSlot } from '../../tableloop/types'
+import { tileSizes, type TileSize } from '../../styles/theme'
+import { fitSlotTileSize, SLOT_TILE_OVERLAP } from './slotTileSize'
 
 export interface TableSlotsProps {
   slots: readonly TableSlot[]
@@ -25,15 +28,52 @@ export interface TableSlotsProps {
   forecasts?: ReadonlyMap<number, number>
   /** Standing multiplier each slot would cost, keyed by slot index. */
   multCosts?: ReadonlyMap<number, number>
+  /** Largest tile size a slot may use; each slot shrinks from it to fit. */
+  maxTileSize?: TileSize
   onPlace: (slotIndex: number) => void
   onRevise: (slotIndex: number) => void
 }
 
-function SlotTiles({ tiles }: { tiles: readonly Tile[] }) {
+function SlotTiles({
+  tiles,
+  size,
+  width,
+}: {
+  tiles: readonly Tile[]
+  size: TileSize
+  width: number
+}) {
+  // A quad in a narrow slot overlaps further rather than spilling out.
+  const tileWidth = tileSizes[size].width
+  const overlap =
+    tiles.length > 1 && width > 0
+      ? Math.max(
+          SLOT_TILE_OVERLAP,
+          Math.ceil((tiles.length * tileWidth - width) / (tiles.length - 1))
+        )
+      : SLOT_TILE_OVERLAP
   return (
-    <div className="flex items-end justify-center -space-x-2">
-      {tiles.map((tile) => (
-        <TileImage key={tile.id} tile={tile} size="small" />
+    <div className="flex items-end justify-center">
+      {tiles.map((tile, index) => (
+        <span key={tile.id} style={{ marginLeft: index ? -overlap : 0 }}>
+          <TileImage tile={tile} size={size} />
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/** Tile-shaped outlines that show how many tiles an empty slot takes. */
+function SlotGhosts({ count, size }: { count: number; size: TileSize }) {
+  const { width, height } = tileSizes[size]
+  return (
+    <div aria-hidden="true" className="flex items-end justify-center gap-1">
+      {Array.from({ length: count }, (_, index) => (
+        <span
+          key={index}
+          className="rounded-md border border-dashed border-[var(--color-beige-white)]/25 bg-white/[0.04]"
+          style={{ width: width * 0.8, height: height * 0.8 }}
+        />
       ))}
     </div>
   )
@@ -46,18 +86,42 @@ export function TableSlots({
   highlighted = [],
   forecasts,
   multCosts,
+  maxTileSize = 'small',
   onPlace,
   onRevise,
 }: TableSlotsProps) {
   const { t } = useTranslation()
+  // Every meld slot shares one width; measure it so tiles never spill out.
+  const gridRef = useRef<HTMLDivElement>(null)
+  const [slotWidth, setSlotWidth] = useState(0)
+  useLayoutEffect(() => {
+    const grid = gridRef.current
+    if (!grid) return
+    const measure = () => {
+      const slot = grid.firstElementChild as HTMLElement | null
+      if (!slot) return
+      const style = getComputedStyle(slot)
+      setSlotWidth(
+        slot.clientWidth -
+          parseFloat(style.paddingLeft) -
+          parseFloat(style.paddingRight)
+      )
+    }
+    measure()
+    const observer =
+      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
+    observer?.observe(grid)
+    return () => observer?.disconnect()
+  }, [])
   const canPlace = new Set(placeable)
   const canRevise = new Set(revisable)
   const lit = new Set(highlighted)
 
   return (
     <div
+      ref={gridRef}
       data-testid="table-slots"
-      className="grid shrink-0 grid-cols-2 items-stretch gap-1.5 px-3 py-1 sm:grid-cols-5"
+      className="grid shrink-0 grid-cols-2 items-stretch gap-1.5 px-2 py-1 sm:grid-cols-5 sm:gap-2 sm:px-3"
     >
       {slots.map((slot) => {
         const isPair = slot.index === PAIR_SLOT_INDEX
@@ -65,6 +129,8 @@ export function TableSlots({
           canPlace.has(slot.index) || canRevise.has(slot.index)
         const forecast = forecasts?.get(slot.index)
         const multCost = multCosts?.get(slot.index) ?? 0
+        const tileCount = slot.group?.tiles.length ?? (isPair ? 2 : 3)
+        const tileSize = fitSlotTileSize(tileCount, slotWidth, maxTileSize)
 
         return (
           <button
@@ -102,40 +168,48 @@ export function TableSlots({
               .filter(Boolean)
               .join(', ')}
             className={`
-              relative flex min-h-[76px] min-w-0 flex-col items-center justify-center
-              rounded-lg border-2 px-1.5 py-1 transition-colors
+              relative flex min-h-[76px] min-w-0 flex-col items-center justify-center gap-0.5
+              rounded-xl border-2 px-1.5 py-1.5 transition-colors
               focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]
               focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)]
-              ${isPair ? 'col-span-2 border-dashed sm:col-span-1' : 'border-solid'}
+              ${isPair ? 'col-span-2 sm:col-span-1' : ''}
+              ${slot.group || interactive ? 'border-solid' : 'border-dashed'}
               ${
                 lit.has(slot.index)
                   ? 'border-[var(--color-golden-yellow)] bg-[var(--color-golden-yellow)]/15'
                   : interactive
-                    ? 'border-emerald-400/80 bg-emerald-500/10'
+                    ? 'border-emerald-400 bg-emerald-500/15 shadow-[0_0_16px_rgba(52,211,153,0.35)]'
                     : slot.group
-                      ? 'border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)]/60'
-                      : 'border-[var(--color-metallic-gold)]/20 bg-black/20'
+                      ? 'border-[var(--color-metallic-gold)]/55 bg-[var(--color-dark-forest)]/80'
+                      : 'border-[var(--color-metallic-gold)]/40 bg-black/30'
               }
             `}
           >
-            <span className="mb-0.5 text-[9px] uppercase tracking-widest text-[var(--color-beige-white)]/45">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-metallic-gold)] sm:text-[11px]">
               {isPair
                 ? t('tableLoop.slot.pairShort', 'Pair')
                 : t('tableLoop.slot.meldShort', 'Meld')}
             </span>
 
             {slot.group ? (
-              <SlotTiles tiles={slot.group.tiles} />
+              <SlotTiles
+                tiles={slot.group.tiles}
+                size={tileSize}
+                width={slotWidth}
+              />
             ) : (
-              <span className="text-[10px] text-[var(--color-beige-white)]/35">
-                {isPair
-                  ? t('tableLoop.slot.emptyPair', 'two alike')
-                  : t('tableLoop.slot.emptyMeld', 'run or set')}
-              </span>
+              <>
+                <SlotGhosts count={isPair ? 2 : 3} size={tileSize} />
+                <span className="text-[11px] text-[var(--color-beige-white)]/60 sm:text-xs">
+                  {isPair
+                    ? t('tableLoop.slot.emptyPair', 'two alike')
+                    : t('tableLoop.slot.emptyMeld', 'run or set')}
+                </span>
+              </>
             )}
 
             {forecast !== undefined && (
-              <span className="mt-0.5 text-[11px] font-bold tabular-nums text-[var(--color-golden-yellow)]">
+              <span className="text-xs font-bold tabular-nums text-[var(--color-golden-yellow)] sm:text-sm">
                 +{forecast.toLocaleString()}
               </span>
             )}

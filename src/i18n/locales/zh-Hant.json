@@ -251,7 +251,7 @@
     "subtitle": "麻將肉鴿",
     "play": "開始遊戲",
     "continue": "繼續遊戲",
-    "newRun": "新遊戲",
+    "newRun": "新的經典對局",
     "tutorial": "教學",
     "options": "選項",
     "settings": "設定",
@@ -267,7 +267,7 @@
     "tableStake": "牌桌賭注",
     "noSpecialModifiers": "無特殊修正",
     "promise": "誓約",
-    "tableLoop": "牌桌循環（實驗）"
+    "tableLoop": "牌桌循環模式"
   },
   "settings": {
     "fullUnlock": {
@@ -2789,7 +2789,11 @@
     "hud": {
       "round": "第 {{current}} 局，共 {{total}} 局",
       "resources": "放置 {{actions}} · 換牌 {{redraws}}",
-      "bridges": "· 搭橋 {{count}}"
+      "bridges": "· 搭橋 {{count}}",
+      "gold": "{{gold}} 金幣"
+    },
+    "table": {
+      "label": "牌桌"
     },
     "river": {
       "choose": "先選擇要交出的一張手牌，再選擇一張河牌。每局免費一次。",

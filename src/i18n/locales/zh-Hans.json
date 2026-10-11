@@ -251,7 +251,7 @@
     "subtitle": "麻将肉鸽",
     "play": "开始游戏",
     "continue": "继续游戏",
-    "newRun": "新游戏",
+    "newRun": "新的经典对局",
     "tutorial": "教程",
     "options": "选项",
     "settings": "设置",
@@ -267,7 +267,7 @@
     "tableStake": "牌桌赌注",
     "noSpecialModifiers": "无特殊修正",
     "promise": "誓约",
-    "tableLoop": "牌桌循环（实验）"
+    "tableLoop": "牌桌循环模式"
   },
   "settings": {
     "fullUnlock": {
@@ -2789,7 +2789,11 @@
     "hud": {
       "round": "第 {{current}} 局，共 {{total}} 局",
       "resources": "放置 {{actions}} · 换牌 {{redraws}}",
-      "bridges": "· 搭桥 {{count}}"
+      "bridges": "· 搭桥 {{count}}",
+      "gold": "{{gold}} 金币"
+    },
+    "table": {
+      "label": "牌桌"
     },
     "river": {
       "choose": "先选择要交出的一张手牌，再选择一张河牌。每局免费一次。",

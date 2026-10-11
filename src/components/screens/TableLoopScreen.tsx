@@ -14,11 +14,30 @@
  * @module components/screens/TableLoopScreen
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useTableLoopStore } from '../../stores/tableLoopStore'
+import { useTableStyleStore } from '../../stores/tableStyleStore'
+import {
+  getDefaultTableStyle,
+  getTableStyleById,
+} from '../../config/tableStyleDefinitions'
+import { getTableStyleIllustration } from '../../utils/assets'
+import { feltPalette } from '../../utils/feltPalette'
+import { useHandTileSize } from '../../hooks/useHandTileSize'
+import { TablePattern } from '../ui/TablePattern'
+import { Button } from '../ui/Button'
+import { GoldIcon } from '../ui/GoldIcon'
 import { RiverRow } from '../tableloop/RiverRow'
 import { DraftRow } from '../tableloop/DraftRow'
 import { PracticeGuide } from '../tableloop/PracticeGuide'
@@ -44,6 +63,12 @@ import type { TableDecreeId } from '../../tableloop/types'
 // =============================================================================
 // SHARED PIECES
 // =============================================================================
+
+/** The classic table's button looks: orange to go on, green to step aside. */
+const PRIMARY_ACTION =
+  'min-h-12 rounded-xl border-2 border-[var(--color-golden-yellow)] bg-[var(--color-vibrant-orange)] px-4 py-3 text-base font-bold text-[var(--color-beige-white)] shadow-[0_6px_18px_rgba(0,0,0,0.35)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-forest)] disabled:cursor-not-allowed disabled:opacity-45'
+const SECONDARY_ACTION =
+  'min-h-11 rounded-xl border-2 border-[var(--color-metallic-gold)]/70 bg-[var(--color-forest-green)] px-4 py-2.5 text-sm font-semibold text-[var(--color-beige-white)] transition hover:border-[var(--color-golden-yellow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] disabled:cursor-not-allowed disabled:opacity-45'
 
 function SaveNotice() {
   const { t } = useTranslation()
@@ -97,7 +122,7 @@ function DecreeCard({
       data-testid={`table-decree-${id}`}
       disabled={disabled}
       onClick={() => onChoose(id)}
-      className={`group flex w-full items-center gap-3 rounded-xl border-2 px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] ${
+      className={`group flex w-full items-center gap-3 rounded-xl border-2 bg-black/25 px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] ${
         disabled
           ? 'border-[var(--color-metallic-gold)]/15 opacity-50'
           : 'border-[var(--color-metallic-gold)]/50 hover:border-[var(--color-golden-yellow)] hover:bg-[var(--color-golden-yellow)]/10'
@@ -129,6 +154,43 @@ function DecreeCard({
   )
 }
 
+/**
+ * The same cloth, artwork and frame as the classic table, coloured by the
+ * table style the player last chose, so both modes read as one game.
+ */
+function TableFelt({ children }: { children: ReactNode }) {
+  const styleId = useTableStyleStore((store) => store.currentStyleId)
+  const style = getTableStyleById(styleId) ?? getDefaultTableStyle()
+  const felt = useMemo(() => feltPalette(style.feltColor), [style.feltColor])
+
+  return (
+    <TablePattern
+      showOrnaments={true}
+      animated={false}
+      patternScale={1}
+      artwork={getTableStyleIllustration(style.id)}
+      artworkOpacity={0.68}
+      className="viewport-full"
+      colors={felt}
+    >
+      <div
+        data-felt={style.feltColor}
+        className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 text-[var(--color-beige-white)] shadow-2xl"
+        style={
+          {
+            '--color-dark-forest': felt.surface,
+            '--color-forest-green': felt.surfaceRaised,
+            '--table-theme': style.themeColor,
+            '--table-accent': style.accentColor,
+          } as CSSProperties
+        }
+      >
+        {children}
+      </div>
+    </TablePattern>
+  )
+}
+
 function Panel({
   title,
   subtitle,
@@ -136,23 +198,27 @@ function Panel({
 }: {
   title: string
   subtitle?: string
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
-    <div className="flex min-h-dvh w-full flex-col items-center justify-center gap-4 overflow-y-auto bg-[var(--color-dark-forest)] px-4 py-6">
-      <SaveNotice />
-      <div className="w-full max-w-md text-center">
-        <h1 className="text-xl font-black text-[var(--color-golden-yellow)]">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-1 text-sm text-[var(--color-beige-white)]/70">
-            {subtitle}
-          </p>
-        )}
+    <TableFelt>
+      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overscroll-contain px-3 py-6">
+        <SaveNotice />
+        <div className="my-auto flex w-full max-w-md flex-col gap-4 rounded-2xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)]/92 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.45)] sm:p-5">
+          <div className="text-center">
+            <h1 className="text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="mt-1 text-sm text-[var(--color-beige-white)]/75">
+                {subtitle}
+              </p>
+            )}
+          </div>
+          <div className="flex w-full flex-col gap-2">{children}</div>
+        </div>
       </div>
-      <div className="flex w-full max-w-md flex-col gap-2">{children}</div>
-    </div>
+    </TableFelt>
   )
 }
 
@@ -268,6 +334,23 @@ export function TableLoopScreen() {
     )
   }, [])
 
+  // Size the rack to the space it actually has, as the classic rack does.
+  // Table tiles stay a step smaller, and each slot shrinks further to fit.
+  const rackAreaRef = useRef<HTMLDivElement>(null)
+  const rackTileSize = useHandTileSize(
+    rackAreaRef,
+    state.rack.length,
+    0,
+    16,
+    state.phase === 'playing'
+  )
+  const slotTileSize =
+    rackTileSize === 'xlarge' || rackTileSize === 'large'
+      ? 'medium'
+      : rackTileSize === 'regular'
+        ? 'compact'
+        : 'small'
+
   // ---------------------------------------------------------------------------
   // PHASES OUTSIDE PLAY
   // ---------------------------------------------------------------------------
@@ -381,16 +464,10 @@ export function TableLoopScreen() {
           { score: state.score, target: state.round.target, gold: state.gold }
         )}
       >
-        <button
-          onClick={store.openShop}
-          className="rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
-        >
+        <button onClick={store.openShop} className={PRIMARY_ACTION}>
           {t('tableLoop.cleared.shop', 'Visit the tea house')}
         </button>
-        <button
-          onClick={store.nextRound}
-          className="rounded-xl border border-[var(--color-metallic-gold)]/40 px-4 py-2.5 text-sm text-[var(--color-beige-white)]/80"
-        >
+        <button onClick={store.nextRound} className={SECONDARY_ACTION}>
           {t('tableLoop.cleared.skipShop', 'Straight to the next round')}
         </button>
       </Panel>
@@ -421,10 +498,7 @@ export function TableLoopScreen() {
             />
           ))
         )}
-        <button
-          onClick={store.nextRound}
-          className="mt-2 rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
-        >
+        <button onClick={store.nextRound} className={`mt-2 ${PRIMARY_ACTION}`}>
           {t('tableLoop.shop.leave', 'Next round')}
         </button>
       </Panel>
@@ -449,13 +523,13 @@ export function TableLoopScreen() {
             setSearchParams({}, { replace: true })
             store.restart()
           }}
-          className="rounded-xl border-2 border-[var(--color-golden-yellow)] px-4 py-3 text-sm font-bold text-[var(--color-golden-yellow)]"
+          className={PRIMARY_ACTION}
         >
           {t('tableLoop.end.again', 'Another run')}
         </button>
         <button
           onClick={() => navigateTo(ROUTES.MENU)}
-          className="rounded-xl border border-[var(--color-metallic-gold)]/40 px-4 py-2.5 text-sm text-[var(--color-beige-white)]/80"
+          className={SECONDARY_ACTION}
         >
           {t('common.mainMenu', 'Main menu')}
         </button>
@@ -479,78 +553,129 @@ export function TableLoopScreen() {
     state.wall.length > 0
 
   return (
-    <div className="relative mx-auto flex min-h-dvh w-full max-w-5xl flex-col bg-[var(--color-dark-forest)] text-[var(--color-beige-white)]">
+    <TableFelt>
       <ResolutionFlourish stages={state.lastResolution} />
       <SaveNotice />
 
-      {/* Header */}
-      <header className="flex-shrink-0 px-3 pt-2">
-        <div className="flex items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={() => navigateTo(ROUTES.MENU)}
-            className="min-h-11 shrink-0 rounded-lg border border-[var(--color-metallic-gold)]/35 px-2 text-xs text-[var(--color-beige-white)] focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
-          >
+      {/* Top bar: the way out, the round, and the purse — as on the classic
+          table. */}
+      <header
+        data-frame-corner-row="top"
+        className="gameplay-frame-corner-row flex flex-shrink-0 items-center justify-between gap-2 rounded-sm bg-[var(--color-dark-forest)] px-1 py-1 sm:px-4"
+      >
+        <button
+          type="button"
+          onClick={() => navigateTo(ROUTES.MENU)}
+          className="flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1 rounded-lg px-2 text-xs font-semibold text-[var(--color-beige-white)]/85 hover:bg-[var(--color-forest-green)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)] sm:text-sm"
+        >
+          <span aria-hidden="true" className="text-base leading-none">
+            ‹
+          </span>
+          <span className="max-[359px]:sr-only">
             {t('common.mainMenu', 'Main menu')}
-          </button>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-bold text-[var(--color-golden-yellow)]">
-              {t(`tableLoop.rounds.${state.round.index}`, state.round.name)}
-            </p>
-            <p className="text-[10px] uppercase tracking-widest text-[var(--color-beige-white)]/45">
+          </span>
+        </button>
+        <div className="min-w-0 text-center">
+          <p className="truncate text-sm font-bold text-[var(--color-golden-yellow)] sm:text-base">
+            {t(`tableLoop.rounds.${state.round.index}`, state.round.name)}
+          </p>
+          <div className="mt-0.5 flex items-center justify-center gap-1.5">
+            <span className="whitespace-nowrap text-[9px] font-black uppercase tracking-widest text-[var(--color-beige-white)]/55">
               {state.practice
                 ? t('tableLoop.practice.label', 'Practice deal')
                 : t('tableLoop.hud.round', 'Round {{current}} of {{total}}', {
                     current: state.roundIndex + 1,
                     total: TABLE_ROUNDS.length,
                   })}
-            </p>
+            </span>
+            {!state.practice && (
+              <span
+                aria-hidden="true"
+                className="flex gap-0.5 max-[359px]:hidden"
+              >
+                {TABLE_ROUNDS.map((_, index) => (
+                  <span
+                    key={index}
+                    className={`h-1 w-3 rounded-full ${
+                      index <= state.roundIndex
+                        ? 'bg-[var(--color-golden-yellow)]'
+                        : 'bg-white/15'
+                    }`}
+                  />
+                ))}
+              </span>
+            )}
           </div>
-          <p className="flex-shrink-0 text-sm font-bold tabular-nums text-emerald-300">
-            ¥{state.gold}
-          </p>
         </div>
+        <p
+          className="inline-flex shrink-0 items-center gap-1 px-1 text-lg font-bold tabular-nums text-[var(--color-golden-yellow)]"
+          aria-label={t('tableLoop.hud.gold', '{{gold}} gold', {
+            gold: state.gold,
+          })}
+        >
+          <GoldIcon className="h-6 w-6" />¥{state.gold}
+        </p>
+      </header>
 
+      {/* Score, target and what is left to spend, on one panel. */}
+      <div className="game-score-panel relative mx-2 my-1 flex-shrink-0 rounded-xl border border-white/5 bg-[var(--color-dark-forest)]/95 px-3 py-1.5 shadow-lg">
         <div
           role="status"
           aria-live="polite"
-          className="mt-1 flex items-baseline gap-2 text-sm tabular-nums"
+          className="flex flex-wrap items-center gap-x-4 gap-y-1"
         >
-          <strong className="text-[var(--color-golden-yellow)]">
-            {state.score.toLocaleString()}
-          </strong>
-          <span className="text-[var(--color-beige-white)]/40">
-            / {state.round.target.toLocaleString()}
-          </span>
-          <span className="ml-auto text-[11px] text-[var(--color-beige-white)]/55">
-            {t(
-              'tableLoop.hud.resources',
-              '{{actions}} actions · {{redraws}} exchanges',
-              {
-                actions: state.placementActionsRemaining,
-                redraws: state.redrawsRemaining,
-              }
-            )}
-            {state.gapBridgesRemaining > 0 && (
-              <span className="ml-1.5 text-sky-300">
-                {t('tableLoop.hud.bridges', '· {{count}} bridge', {
-                  count: state.gapBridgesRemaining,
-                })}
-              </span>
-            )}
-          </span>
-        </div>
-        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-black/40">
-          <div
-            className="h-full rounded-full bg-[var(--color-golden-yellow)] transition-all"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="flex min-w-[min(100%,16rem)] flex-[1_1_18rem] items-center gap-3">
+            <div className="shrink-0">
+              <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-beige-white)]/55">
+                {t('gameplay.score', 'Score')}
+              </p>
+              <p className="text-lg font-black leading-tight tabular-nums sm:text-xl">
+                <strong className="text-[var(--color-golden-yellow)]">
+                  {state.score.toLocaleString()}
+                </strong>
+                <span className="ml-1 text-sm font-semibold text-[var(--color-beige-white)]/45">
+                  / {state.round.target.toLocaleString()}
+                </span>
+              </p>
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-black/45">
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${
+                    remaining === 0
+                      ? 'bg-green-500'
+                      : 'bg-[var(--color-vibrant-orange)]'
+                  }`}
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-semibold tabular-nums">
+            <span className="rounded-full border border-[var(--color-metallic-gold)]/40 bg-black/25 px-2 py-0.5">
+              {t(
+                'tableLoop.hud.resources',
+                '{{actions}} actions · {{redraws}} exchanges',
+                {
+                  actions: state.placementActionsRemaining,
+                  redraws: state.redrawsRemaining,
+                }
+              )}
+              {state.gapBridgesRemaining > 0 && (
+                <span className="ml-1.5 text-sky-300">
+                  {t('tableLoop.hud.bridges', '· {{count}} bridge', {
+                    count: state.gapBridgesRemaining,
+                  })}
+                </span>
+              )}
+            </span>
+          </div>
         </div>
 
         {state.round.bossRule && (
           <p
             data-testid="boss-banner"
-            className="mt-1.5 rounded-md border border-rose-400/50 bg-rose-950/40 px-2 py-1 text-[11px] leading-snug text-rose-100"
+            className="mt-1.5 rounded-md border border-rose-400/50 bg-rose-950/50 px-2 py-1 text-[11px] leading-snug text-rose-100"
           >
             {t(
               `tableLoop.boss.${state.round.bossRule}`,
@@ -558,96 +683,125 @@ export function TableLoopScreen() {
             )}
           </p>
         )}
-      </header>
+      </div>
 
-      <TableDecreeInventory ids={state.ownedDecrees} />
+      {/* The board scrolls on a short screen; the rack and actions stay put. */}
+      <div
+        data-table-loop-board
+        className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain [&>*]:shrink-0"
+      >
+        <TableDecreeInventory ids={state.ownedDecrees} />
 
-      {guideStep && (
-        <PracticeGuide
-          state={state}
-          step={guideStep}
-          onInspect={handleInspect}
-          onTakeDecree={store.takePracticeDecree}
-          onStartRealRun={() => {
-            setSearchParams({}, { replace: true })
-            store.restart(undefined, { practice: false })
+        {guideStep && (
+          <PracticeGuide
+            state={state}
+            step={guideStep}
+            onInspect={handleInspect}
+            onTakeDecree={store.takePracticeDecree}
+            onStartRealRun={() => {
+              setSearchParams({}, { replace: true })
+              store.restart(undefined, { practice: false })
+            }}
+          />
+        )}
+
+        {/* The persistent table, framed like the classic staging zone. */}
+        <section
+          aria-label={t('tableLoop.table.label', 'Table')}
+          className="relative mx-2 my-1 flex flex-[1_0_auto] flex-col justify-center gap-1 rounded-xl border-2 py-2"
+          style={{
+            background:
+              'linear-gradient(145deg, color-mix(in srgb, var(--table-theme) 19%, transparent), color-mix(in srgb, var(--table-accent) 12%, transparent) 48%, rgba(8, 28, 21, 0.62))',
+            borderColor:
+              'color-mix(in srgb, var(--table-theme) 60%, transparent)',
+            boxShadow:
+              'inset 0 0 24px color-mix(in srgb, var(--table-theme) 18%, transparent)',
           }}
-        />
-      )}
-
-      {/* The persistent table */}
-      <TableSlots
-        slots={state.slots}
-        placeable={placeable}
-        revisable={revisable}
-        highlighted={highlightedSlots}
-        forecasts={forecasts}
-        multCosts={multCosts}
-        onPlace={store.place}
-        onRevise={store.revise}
-      />
-
-      <MilestoneTrack
-        slots={state.slots}
-        claimed={state.claimedMilestones}
-        tableMult={state.tableMult}
-      />
-
-      {state.lastResolution.length > 0 && (
-        <CausalChain
-          stages={state.lastResolution}
-          onHighlight={handleHighlight}
-        />
-      )}
-
-      {state.lastError && (
-        <p
-          role="alert"
-          className="mx-3 mt-1 rounded-md border border-red-400/50 bg-red-950/50 px-2 py-1 text-[11px] text-red-100"
         >
-          {state.lastErrorKey
-            ? t(state.lastErrorKey, state.lastError)
-            : state.lastError}
-        </p>
-      )}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1 block h-1 w-16 -translate-x-1/2 rounded-full"
+            style={{
+              backgroundColor: 'var(--table-theme)',
+              boxShadow: '0 0 14px var(--table-theme)',
+            }}
+          />
+          <TableSlots
+            slots={state.slots}
+            placeable={placeable}
+            revisable={revisable}
+            highlighted={highlightedSlots}
+            forecasts={forecasts}
+            multCosts={multCosts}
+            maxTileSize={slotTileSize}
+            onPlace={store.place}
+            onRevise={store.revise}
+          />
 
-      <div className="flex-1" />
+          <MilestoneTrack
+            slots={state.slots}
+            claimed={state.claimedMilestones}
+            tableMult={state.tableMult}
+          />
 
-      {/* Offers (E06) */}
-      <DraftRow
-        tiles={state.draftRow}
-        claimable={state.pendingDraftPick}
-        onClaim={store.claimDraft}
-        onPass={store.passDraft}
-      />
+          {state.lastResolution.length > 0 && (
+            <CausalChain
+              stages={state.lastResolution}
+              onHighlight={handleHighlight}
+            />
+          )}
 
-      <RiverRow
-        tiles={state.river}
-        selectedTile={selectedTiles.length === 1 ? selectedTiles[0] : null}
-        merchantOwned={state.ownedDecrees.includes('river_merchant')}
-        swapsRemaining={state.riverRecoveriesRemaining}
-        onSwap={store.swapWithRiver}
-      />
+          {state.lastError && (
+            <p
+              role="alert"
+              className="mx-3 mt-1 rounded-md border border-red-400/50 bg-red-950/60 px-2 py-1 text-[11px] text-red-100"
+            >
+              {state.lastErrorKey
+                ? t(state.lastErrorKey, state.lastError)
+                : state.lastError}
+            </p>
+          )}
+        </section>
 
-      {/* What you have picked, and what it forms */}
-      <SelectionStrip
-        tiles={selectedTiles}
-        groupType={selection.type}
-        usedGap={selection.usedGap}
-        bestForecast={bestForecast}
-        multCost={bestMultCost}
-        onClear={store.clearSelection}
-      />
+        {/* Offers (E06) */}
+        <DraftRow
+          tiles={state.draftRow}
+          claimable={state.pendingDraftPick}
+          onClaim={store.claimDraft}
+          onPass={store.passDraft}
+        />
 
-      <RackRow
-        tiles={state.rack}
-        selectedIds={selectedTileIds}
-        onToggle={store.toggleTile}
-      />
+        <RiverRow
+          tiles={state.river}
+          selectedTile={selectedTiles.length === 1 ? selectedTiles[0] : null}
+          merchantOwned={state.ownedDecrees.includes('river_merchant')}
+          swapsRemaining={state.riverRecoveriesRemaining}
+          onSwap={store.swapWithRiver}
+        />
+      </div>
 
-      {/* Actions */}
-      <footer className="flex-shrink-0 gap-2 px-3 pb-3 pt-1">
-        <p className="mb-1 text-center text-[11px] leading-snug text-[var(--color-beige-white)]/55">
+      {/* What you have picked, the rack, and the actions. */}
+      <div
+        ref={rackAreaRef}
+        className="flex-shrink-0 border-t border-white/5 bg-[var(--color-dark-forest)]/70 pt-1.5"
+      >
+        <SelectionStrip
+          tiles={selectedTiles}
+          groupType={selection.type}
+          usedGap={selection.usedGap}
+          bestForecast={bestForecast}
+          multCost={bestMultCost}
+          onClear={store.clearSelection}
+        />
+
+        <RackRow
+          tiles={state.rack}
+          selectedIds={selectedTileIds}
+          onToggle={store.toggleTile}
+          tileSize={rackTileSize}
+        />
+
+        <p className="px-3 pb-1 text-center text-[11px] leading-snug text-[var(--color-beige-white)]/65">
           {state.pendingDraftPick
             ? t(
                 'tableLoop.hint.draft',
@@ -668,41 +822,55 @@ export function TableLoopScreen() {
                     'No slot takes that group. Exchange the tiles or pick a different shape.'
                   )}
         </p>
-        <div className="flex gap-2">
-          <button
-            onClick={store.clearSelection}
+
+        <footer
+          data-frame-corner-row="bottom"
+          className="gameplay-frame-corner-row flex items-center justify-center gap-1.5 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4"
+        >
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => store.clearSelection()}
             disabled={selectedTileIds.length === 0}
-            className="flex-1 rounded-lg border border-[var(--color-metallic-gold)]/35 py-2 text-xs uppercase tracking-wider text-[var(--color-beige-white)]/75 disabled:opacity-35"
+            className="!min-w-0 flex-1 !px-2 text-xs sm:max-w-[180px] sm:text-sm"
           >
             {t('tableLoop.action.clear', 'Clear')}
-          </button>
-          <button
+          </Button>
+          <Button
             data-testid="table-loop-exchange"
-            onClick={store.redraw}
+            variant="secondary"
+            size="sm"
+            onClick={() => store.redraw()}
             disabled={!canRedraw}
-            className="flex-1 rounded-lg border border-sky-400/50 py-2 text-xs uppercase tracking-wider text-sky-200 disabled:opacity-35"
+            className="!min-w-0 flex-1 !px-2 text-xs sm:max-w-[220px] sm:text-sm"
           >
             {exchangeCostsAction
               ? t('tableLoop.action.recover', 'Exchange (1 action)')
               : t('tableLoop.action.exchange', 'Exchange ({{left}})', {
                   left: state.redrawsRemaining,
                 })}
-          </button>
-          <button
+          </Button>
+          <Button
             data-testid="table-loop-finish"
-            onClick={store.finishRound}
+            variant="primary"
+            size="sm"
+            onClick={() => store.finishRound()}
             disabled={state.score < state.round.target}
-            className="flex-1 rounded-lg border-2 border-[var(--color-golden-yellow)] py-2 text-xs font-bold uppercase tracking-wider text-[var(--color-golden-yellow)] disabled:opacity-35"
+            className={`!min-w-0 flex-[1.4] !px-2 text-xs sm:max-w-[260px] sm:text-sm ${
+              state.score >= state.round.target
+                ? 'shadow-[0_0_22px_rgba(74,222,128,0.45)]'
+                : ''
+            }`}
           >
             {state.score >= state.round.target
               ? t('tableLoop.action.finish', 'Finish round')
               : t('tableLoop.action.needMore', '{{remaining}} to go', {
                   remaining: remaining.toLocaleString(),
                 })}
-          </button>
-        </div>
-      </footer>
-    </div>
+          </Button>
+        </footer>
+      </div>
+    </TableFelt>
   )
 }
 

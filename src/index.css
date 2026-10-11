@@ -342,6 +342,33 @@ a {
   }
 }
 
+/*
+ * The narrowest phones (320px) fit six 44px tiles per rack row instead of
+ * five, so a 16-tile hand needs three rows rather than four and stays on
+ * screen. Touch targets keep their size; only margins and gaps shrink.
+ */
+@media (max-width: 359px) {
+  [data-gameplay-surface] {
+    margin-inline: 0;
+  }
+
+  [data-play-zone='hand'] {
+    padding-inline: 2px;
+  }
+
+  [data-hand-rack] {
+    column-gap: 2px;
+  }
+
+  [data-hand-group] {
+    margin-inline: 1px;
+  }
+
+  [data-hand-group] > div {
+    gap: 2px;
+  }
+}
+
 /* Shared responsive canvas for full-screen game surfaces. */
 .screen-canvas {
   width: min(100%, 80rem);

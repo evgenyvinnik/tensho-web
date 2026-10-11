@@ -338,7 +338,7 @@ test.describe('Table Loop artwork and recovery', () => {
     )
     await page.getByRole('button', { name: 'Main menu', exact: true }).click()
     await page
-      .getByRole('button', { name: 'Table Loop (experiment)', exact: true })
+      .getByRole('button', { name: 'Table Loop Mode', exact: true })
       .click()
     await expect(page.getByTestId('table-loop-rack')).toBeVisible()
     expect(

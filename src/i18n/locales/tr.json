@@ -354,7 +354,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Oyna",
     "continue": "Devam Et",
-    "newRun": "Yeni Oyun",
+    "newRun": "Yeni Klasik Oyun",
     "tutorial": "Eğitim",
     "options": "Ayarlar",
     "settings": "Ayarlar",
@@ -370,7 +370,7 @@
     "tableStake": "Masa bahsi",
     "noSpecialModifiers": "Özel değiştirici yok",
     "promise": "Yemin",
-    "tableLoop": "Masa Döngüsü (deney)"
+    "tableLoop": "Masa Döngüsü Modu"
   },
   "settings": {
     "fullUnlock": {
@@ -1550,7 +1550,11 @@
     "hud": {
       "round": "{{total}} turdan {{current}}. tur",
       "resources": "{{actions}} hamle · {{redraws}} değişim",
-      "bridges": "· {{count}} köprü"
+      "bridges": "· {{count}} köprü",
+      "gold": "{{gold}} altın"
+    },
+    "table": {
+      "label": "Masa"
     },
     "river": {
       "choose": "Vereceğin bir raf taşını seç, ardından nehirden bir taş seç. Her turda bir kez ücretsiz.",

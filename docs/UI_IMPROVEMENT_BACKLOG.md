@@ -144,6 +144,11 @@ racks and real devices remain open.
 14. **Table Loop wastes desktop space.** Its rack uses small fixed tiles on a
     mostly empty 1440×800 screen. Reuse `fitHandTileSize` for `RackRow`.
     Files: `src/components/tableloop/RackRow.tsx`, `TableLoopScreen.tsx`.
+    **Implemented:** Table Loop Mode now uses the classic table's felt,
+    artwork, frame, top bar, score panel and buttons; the rack is fitted with
+    `useHandTileSize` and pinned above the actions while the board scrolls; each
+    slot sizes its tiles to its measured width. See
+    [Table Loop Mode polish](LAYOUT_SIMPLIFICATION.md#third-pass-modes-flowers-and-table-loop-user-review).
 
 15. **Audit the remaining screens at 1440×800, 768×1024 and 390×664**: Codex,
     Collection, Achievements, Settings, Game Over. Same contract as play: no
@@ -156,10 +161,17 @@ racks and real devices remain open.
   Fitting six tiles per row would need ~14px more rack width (narrower frame
   and padding below 360px, tighter group spacing) without going below 44px
   targets. Files: `src/index.css`, `PlaySurface.tsx`.
+  **Partly implemented:** below 360px the frame margin, rack padding and group
+  spacing tighten (`src/index.css`); 10 of 10 random 320×568 hands showed the
+  whole rack. A fully grouped 16-tile complete hand still overflows because of
+  its yaku badges.
 
 16. **Menu hierarchy.** "TABLE LOOP (EXPERIMENT)" is as large as "NEW RUN".
     Move experiments into a smaller secondary button or a submenu.
     File: `src/components/screens/MenuScreen.tsx`.
+    **Implemented:** a large illustrated **New Classic Run** (or **Play**)
+    hero button, with **Table Loop Mode** as the illustrated secondary entry.
+    No "experiment" wording remains in the interface.
 17. **Tablet tile size.** iPad landscape uses medium tiles with spare board
     height. Let `fitHandTileSize` use the measured board height (not a fixed
     28% of the viewport) so tall boards earn larger tiles.
@@ -172,6 +184,14 @@ racks and real devices remain open.
     sizes. Files: `src/router/*`, `vite.config.ts`.
 
 ## Test and tooling debt (do alongside the above)
+
+- **Failing on `main` (18225c2) before the Table Loop polish**, reproduced on a
+  clean checkout with installed Chrome against a test-mode dev server:
+  `flower-mutations` (both projects; two rack elements share one
+  `data-play-tile` id), `tile-details` stage/return for es/fr/ja (the floating
+  first-move tip intercepts the click on a staged tile), `bamboo-summer` on
+  mobile (discard zone out of view), `frostbite-retriggers` (both projects) and
+  the table selector's `imagesLoaded` check in `app.spec.ts`.
 
 - **Module-URL helper for e2e.** After a source edit, the dev server serves
   `GameOrchestrator.ts?t=…`; specs importing the plain path drive a second
