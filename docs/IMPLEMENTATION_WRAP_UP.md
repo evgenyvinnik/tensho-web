@@ -8,6 +8,18 @@ The requested outcome is to finish the project implementation after the other ag
 
 ## Current implementation
 
+[Tap-to-discard and grouped rack recovery](TAP_DISCARD_IMPLEMENTATION.md)
+reproduce and fix the Russian short-screen defect from the last release. Labels
+are bounded by their tiles, staging retains group geometry, and a stable
+single-tile Discard action uses existing engine permission/payment. All 38 final
+native and 38 production geometry/all-locale keyboard/touch journeys pass, as do
+14 native tutorial/hand-builder checks, build, lint and thirteen release checks.
+The local full suite passed 2,863/2,864 tests; the remaining archive Git-metadata
+failure passes in a 93-test recheck after correcting the verification environment.
+An independent full CI run and publication remain in progress.
+Separate concurrent image-loading and rack-pinning changes are preserved outside
+this checkpoint's verification snapshot.
+
 [Classic layout simplification](LAYOUT_SIMPLIFICATION.md) makes the play screen
 fit without page scrolling at MacBook (1440×800), iPad and phone sizes: the
 score bar and actions stay put, the rack is pinned while the board above it

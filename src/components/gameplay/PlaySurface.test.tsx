@@ -350,6 +350,11 @@ describe('PlaySurface', () => {
         'run-4',
         'loose-nine',
       ])
+      const widths = Array.from(
+        container.querySelectorAll<HTMLElement>('[data-rack-group]'),
+        (group) => group.style.width
+      )
+      expect(widths).toEqual(['104px', '158px'])
     })
 
     it('keeps every position, and drops the group label, once a tile is staged', () => {

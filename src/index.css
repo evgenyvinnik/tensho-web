@@ -320,12 +320,13 @@ a {
     font-size: 0.75rem;
   }
 
-  [data-game-action='skip'] {
+  [data-game-action='skip'],
+  [data-game-action='discard'] {
     flex: 0 0 44px;
   }
 
   [data-game-action='redraw'] {
-    flex: 0 0 58px;
+    flex: 0 0 44px;
   }
 
   [data-game-action='dead-wall'] {

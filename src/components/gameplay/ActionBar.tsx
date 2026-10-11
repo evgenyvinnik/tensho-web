@@ -44,6 +44,9 @@ export interface ActionBarProps {
   playRestriction?: string
   /** Authoritative redraw legality, including tile locks and replacement chains. */
   redrawAllowed?: boolean
+  /** Authoritative single-tile discard legality, including Mandates and locks. */
+  discardAllowed?: boolean
+  onDiscard?: () => void
   /** Current round number (1-3) */
   currentRound: number
   /** Handler for skip action */
@@ -81,6 +84,7 @@ export interface ActionBarProps {
 export function ActionBar({
   wallRemaining,
   handsRemaining,
+  discardsRemaining,
   redrawsRemaining,
   selectedTileCount,
   handTileCount,
@@ -89,6 +93,8 @@ export function ActionBar({
   playAllowed = true,
   playRestriction,
   redrawAllowed = true,
+  discardAllowed = false,
+  onDiscard,
   currentRound,
   onSkip,
   onRedraw,
@@ -123,6 +129,8 @@ export function ActionBar({
     selectedTileCount <= 3 &&
     wallRemaining >= selectedTileCount
   const canSkip = currentRound !== 3 // Can't skip boss rounds
+  const canDiscard =
+    selectedTileCount === 1 && discardAllowed && discardsRemaining > 0
   const mandateDelta =
     requiredPlaySize === undefined ? 0 : requiredPlaySize - mandateCount
   const playLabel = isStageAction
@@ -179,17 +187,62 @@ export function ActionBar({
       data-frame-corner-row="bottom"
       className="gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 items-center justify-center gap-1.5 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:gap-3 sm:px-4"
     >
-      {/* Skip button */}
+      {/* Keep action identities stable: a second discard tap must never skip. */}
       <Button
         data-game-action="skip"
         variant="secondary"
         size="sm"
         onClick={onSkip}
         disabled={!canSkip}
-        className="!min-w-[44px] max-w-[25%] !px-1 [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4"
+        aria-label={t('gameplay.skip', 'SKIP')}
+        title={t('gameplay.skip', 'SKIP')}
+        className="!min-w-[44px] !w-11 shrink-0 !px-1 sm:!w-auto sm:!min-w-[80px] sm:!px-4"
       >
-        {t('gameplay.skip', 'SKIP')}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="mx-auto h-5 w-5 sm:hidden"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m5 5 9 7-9 7V5Zm13 0v14" />
+        </svg>
+        <span className="hidden whitespace-nowrap sm:inline">
+          {t('gameplay.skip', 'SKIP')}
+        </span>
       </Button>
+
+      {onDiscard && (
+        <Button
+          data-game-action="discard"
+          variant="secondary"
+          size="sm"
+          onClick={onDiscard}
+          disabled={!canDiscard}
+          aria-label={t('gameplay.discard', 'Discard')}
+          title={t('gameplay.discard', 'Discard')}
+          className="!min-w-[44px] !w-11 shrink-0 !px-1 sm:!w-auto sm:!min-w-[80px] sm:!px-4"
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="mx-auto h-5 w-5 sm:hidden"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 10v7M14 10v7" />
+          </svg>
+          <span className="hidden whitespace-nowrap sm:inline">
+            {t('gameplay.discard', 'Discard')}
+          </span>
+        </Button>
+      )}
 
       <Button
         data-game-action="redraw"
@@ -202,9 +255,23 @@ export function ActionBar({
           'gameplay.redrawHint',
           'Return up to 3 selected tiles and draw replacements'
         )} · ${t('gameplay.redrawsRemaining', 'Redraws remaining')}: ${redrawsRemaining}`}
-        className="relative !min-w-[44px] max-w-[25%] !px-1 text-[10px] [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[80px] sm:!px-4 sm:text-sm"
+        className="relative !min-w-[44px] !w-11 shrink-0 !px-1 sm:!w-auto sm:!min-w-[80px] sm:!px-4 sm:text-sm"
       >
-        <span>{t('gameplay.redraw', 'REDRAW')}</span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="mx-auto h-5 w-5 sm:hidden"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M20 7v5h-5M4 17v-5h5M5.5 8a7 7 0 0 1 12-2L20 9M4 15l2.5 3a7 7 0 0 0 12-2" />
+        </svg>
+        <span className="hidden whitespace-nowrap sm:inline">
+          {t('gameplay.redraw', 'REDRAW')}
+        </span>
         {/* The only place redraws are counted; wall, hands and discards
             are shown once each on the table itself. */}
         <span
@@ -222,9 +289,22 @@ export function ActionBar({
           onClick={onDeadWallDraw}
           disabled={!canUseDeadWallWrit}
           aria-label={t('gameplay.deadWallDraw', 'DEAD WALL DRAW')}
-          className="!min-w-[44px] max-w-[25%] !px-1 [overflow-wrap:anywhere] sm:max-w-none sm:!min-w-[92px] sm:!px-3"
+          title={t('gameplay.deadWallDraw', 'DEAD WALL DRAW')}
+          className="!min-w-[44px] !w-11 shrink-0 !px-1 sm:!w-auto sm:!min-w-[92px] sm:!px-3"
         >
-          <span className="min-w-0 text-center [overflow-wrap:anywhere]">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="mx-auto h-5 w-5 sm:hidden"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M4 5h6v14H4zM14 4h6v6h-6zM17 13v7m-3-3 3 3 3-3" />
+          </svg>
+          <span className="hidden whitespace-nowrap sm:inline">
             {t('gameplay.deadDraw', 'DEAD DRAW')}
           </span>
         </Button>

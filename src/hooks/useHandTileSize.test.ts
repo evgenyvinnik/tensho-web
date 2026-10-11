@@ -48,9 +48,9 @@ describe('fitHandTileSize', () => {
       tileCount: 16,
       groupCount: 8,
     })
-    // Group labels and gaps cost one size step on the same rack.
+    // Two label lines and group gaps must both fit the same height budget.
     expect(plain).toBe('large')
-    expect(grouped).toBe('regular')
+    expect(grouped).toBe('medium')
   })
 
   it('has a sane default before the rack is measured', () => {

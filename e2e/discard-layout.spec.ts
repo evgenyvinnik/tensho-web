@@ -15,6 +15,9 @@ for (const language of ['en', 'es', 'ru'])
       isMobile,
       baseURL,
     }, testInfo) => {
+      // Reproduce the organically dealt grouped rack from the production
+      // Russian/short-screen failure, rather than hoping a random hand fits.
+      await page.clock.setFixedTime(new Date(1791731727055))
       let releaseFonts = () => {}
       if (change === 'font loading') {
         const ready = new Promise<void>((resolve) => {

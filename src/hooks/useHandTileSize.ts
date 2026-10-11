@@ -22,7 +22,8 @@ const MIN_TARGET = 44
 const TILE_GAP = 4
 const GROUP_GAP = 12
 const ROW_GAP = 6
-const LABEL_HEIGHT = 16
+// Two readable label lines plus border/padding, independent of translated width.
+const LABEL_HEIGHT = 30
 /**
  * Share of the viewport height the rack's tile rows may occupy. Small enough
  * that a laptop keeps a 14–16 tile rack on one row instead of two large ones.

@@ -283,12 +283,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
   const handClusters = useMemo(() => {
     if (!rackGroups)
       return [{ kind: 'loose' as const, tiles: handTiles, structurePoints: 0 }]
-    return rackGroups.map((cluster) =>
-      cluster.tiles.some((tile) => stagedIds.has(tile.id))
-        ? { ...cluster, kind: 'loose' as const, structurePoints: 0 }
-        : cluster
-    )
-  }, [rackGroups, handTiles, stagedIds])
+    return rackGroups
+  }, [rackGroups, handTiles])
 
   // Determine which zone a point is in
   const getDropZone = useCallback((x: number, y: number): DropZone => {
@@ -898,16 +894,31 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   ) : (
                     <div
                       key={`${cluster.kind}-${cluster.tiles[0]?.id ?? index}`}
-                      data-hand-group={cluster.kind}
-                      className="mx-1 flex min-w-0 flex-col items-center"
+                      data-hand-group={
+                        cluster.tiles.some((tile) => stagedIds.has(tile.id))
+                          ? undefined
+                          : cluster.kind
+                      }
+                      data-rack-group
+                      className="mx-1 flex shrink-0 flex-col items-center"
+                      style={{
+                        width:
+                          cluster.tiles.length * tileTargetWidth +
+                          (cluster.tiles.length - 1) * 4,
+                      }}
                     >
                       <div className="flex gap-1">
                         {cluster.tiles.map(rackSlot)}
                       </div>
                       <span
                         data-hand-group-label
-                        className="mt-0.5 w-full whitespace-nowrap border-t-2 pt-0.5 text-center text-[10px] font-bold uppercase leading-none tracking-wider"
+                        className="mt-0.5 h-7 w-full whitespace-normal break-words border-t-2 pt-0.5 text-center text-[10px] font-bold uppercase leading-3 tracking-normal"
                         style={{
+                          visibility: cluster.tiles.some((tile) =>
+                            stagedIds.has(tile.id)
+                          )
+                            ? 'hidden'
+                            : 'visible',
                           borderColor: GROUP_COLORS[cluster.kind],
                           color: GROUP_COLORS[cluster.kind],
                         }}

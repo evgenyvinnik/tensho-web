@@ -19,8 +19,11 @@ The retained trace shows group labels widening the grouped rack and its header
 scrolling out of view. This is an open layout defect, not a passed drag test or
 merely a lazy-image check. Evidence:
 `/tmp/tensho-table-save-iQpNr5/integrated-production/discard-layout-discard-sta-8cb50-red-during-font-loading-ru--mobile-chrome/trace.zip`.
-Address together with tap-to-discard (item 2) and bounded group labels (item 9),
-then replay the original geometry/resource assertions on short screens.
+The [tap-discard checkpoint](TAP_DISCARD_IMPLEMENTATION.md) reproduces its exact
+seed and fixes group-label width and selection reflow. All 38 final native
+geometry/resource and all-locale tap/keyboard checks pass, as do the same 38
+production-browser checks and 14 native tutorial/hand-builder checks. Publication verification
+is still in progress; arbitrary enlarged racks and real devices remain open.
 
 1. **Action buttons break words on phones.** At 320–360px, "Saltar" and
    "RECAMBIAR" wrap mid-word ("Salt/ar", "RECA/MBIA/R"). Use an icon plus a
@@ -28,6 +31,9 @@ then replay the original geometry/resource assertions on short screens.
    below 400px. Files: `src/components/gameplay/ActionBar.tsx`, the
    `max-width: 359px` block in `src/index.css`. Done when no action label
    breaks inside a word in any locale at 320px.
+   **Implemented for secondary controls:** fixed icon slots below 640px, localized
+   accessible names and wide-screen text. Primary restriction copy/rare power
+   combinations remain under review; this is not an all-state closure.
 
 2. **Discarding needs a tap path.** Discard is drag-only (drop on 🗑). On
    touch that is hard to discover and to do. Add "Discard" to the action bar
@@ -35,6 +41,9 @@ then replay the original geometry/resource assertions on short screens.
    `onTileDiscard`. Files: `ActionBar.tsx`, `GameplayScreen.tsx`. Done when a
    tile can be discarded with taps only, and the discard count still shows
    once (the 🗑 zone).
+   **Implemented:** a stable Discard action is enabled for exactly one legal
+   tile, sharing the drag handler and engine checks. Native tests cover all
+   thirteen locales, keyboard/touch, payment and reload; see the checkpoint.
 
 3. **Wall breakdown is English-only.** The Wall dialog's suit names come from
    `getSuitName` and its tile titles say "remaining" in English. Localize them
@@ -73,6 +82,9 @@ then replay the original geometry/resource assertions on short screens.
    three-tile group wider than its tiles. Allow the label to wrap to two short
    lines or use a compact per-locale abbreviation key
    (`gameplay.groups.short.*`). File: `PlaySurface.tsx`, locales.
+   **Implemented:** physical tile widths bound each group; two label lines are
+   reserved and partial staging keeps the same group box and blank tile slots.
+   Thirteen-locale native checks verify label bounds and unchanged positions.
 
 10. **Felt colours stop at the play screen.** Apply `feltPalette` to the Tea
     House, Game Over and the menu's Run Setup preview (a swatch of the cloth

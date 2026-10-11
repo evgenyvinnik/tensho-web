@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import type { TFunction } from 'i18next'
 import type React from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -43,6 +43,53 @@ function renderActionBar(
 }
 
 describe('ActionBar play action', () => {
+  it('offers a deliberate single-tile discard without spending a play or moving Skip', () => {
+    const onDiscard = vi.fn(),
+      onPlayHand = vi.fn(),
+      onSkip = vi.fn()
+    renderActionBar({
+      selectedTileCount: 1,
+      discardAllowed: true,
+      onDiscard,
+      onPlayHand,
+      onSkip,
+    })
+    const discard = screen.getByRole('button', { name: 'Discard' })
+    expect(discard).toBeEnabled()
+    fireEvent.click(discard)
+    expect(onDiscard).toHaveBeenCalledOnce()
+    expect(onPlayHand).not.toHaveBeenCalled()
+    expect(onSkip).not.toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: 'SKIP' })).toBeEnabled()
+  })
+
+  it.each([0, 2, 3])(
+    'never discards an ambiguous selection of %i tiles',
+    (selectedTileCount) => {
+      renderActionBar({
+        selectedTileCount,
+        discardAllowed: true,
+        onDiscard: vi.fn(),
+      })
+      expect(screen.getByRole('button', { name: 'Discard' })).toBeDisabled()
+    }
+  )
+
+  it.each([
+    { discardsRemaining: 0, discardAllowed: true },
+    { discardsRemaining: 3, discardAllowed: false },
+  ])(
+    'honors discard resources and authoritative restrictions: %j',
+    (restriction) => {
+      const onDiscard = vi.fn()
+      renderActionBar({ selectedTileCount: 1, onDiscard, ...restriction })
+      const discard = screen.getByRole('button', { name: 'Discard' })
+      expect(discard).toBeDisabled()
+      fireEvent.click(discard)
+      expect(onDiscard).not.toHaveBeenCalled()
+    }
+  )
+
   it.each([
     { selectedTileCount: 0, expected: 'ELIGE 2–5' },
     {

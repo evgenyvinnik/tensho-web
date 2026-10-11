@@ -1017,6 +1017,20 @@ export function GameplayScreen() {
           requiredPlaySize={requiredPlaySize}
           currentRound={game.currentRound}
           onSkip={handleSkip}
+          onDiscard={() => {
+            if (activePreviewTileIds.length !== 1) return
+            const tile = game.handTiles.find(
+              (tile) => tile.id === activePreviewTileIds[0]
+            )
+            if (tile) handleTileDiscard(tile)
+          }}
+          discardAllowed={
+            activePreviewTileIds.length === 1 &&
+            game.canPerformAction({
+              type: 'discard',
+              tileId: activePreviewTileIds[0],
+            })
+          }
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
           projectedScore={scorePreview?.total}
