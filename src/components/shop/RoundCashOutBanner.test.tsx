@@ -61,7 +61,7 @@ it('starts compact and preserves the chosen receipt state while savings change',
   await waitFor(() => expect(details).toBeVisible())
   rerender(ui(14))
   expect(toggle).toHaveAttribute('aria-expanded', 'true')
-  expect(screen.getByText(/With current savings/)).toHaveTextContent('+2G')
+  expect(screen.getByText(/from current savings/)).toHaveTextContent('+2G')
   expect(toggle).toHaveFocus()
   fireEvent.click(toggle)
   expect(details).not.toBeVisible()
@@ -110,8 +110,8 @@ it('updates savings guidance after spending without changing the settled receipt
       interestCap={5}
     />
   )
-  expect(screen.getByText(/With current savings/)).toHaveTextContent(
-    '+3G interest. Save 3G more for +4G'
+  expect(screen.getByText(/from current savings/)).toHaveTextContent(
+    'Next cash-out: +3G interest from current savings. Save 3G more for +4G'
   )
   rerender(
     <RoundCashOutBanner
@@ -121,8 +121,8 @@ it('updates savings guidance after spending without changing the settled receipt
       interestCap={5}
     />
   )
-  expect(screen.getByText(/With current savings/)).toHaveTextContent(
-    '+2G interest. Save 1G more for +3G'
+  expect(screen.getByText(/from current savings/)).toHaveTextContent(
+    '+2G interest from current savings. Save 1G more for +3G'
   )
   expect(screen.getByTestId('round-cash-out')).toHaveTextContent('10G → 20G')
 })
@@ -137,7 +137,7 @@ it('explains capped interest, including a zero cap, without recommending more sa
     />
   )
   expect(screen.getByTestId('round-cash-out')).toHaveTextContent(
-    'Savings have reached the +5G interest cap.'
+    'Next cash-out: your savings already earn the +5G interest cap.'
   )
   rerender(
     <RoundCashOutBanner
@@ -148,9 +148,35 @@ it('explains capped interest, including a zero cap, without recommending more sa
     />
   )
   expect(screen.getByTestId('round-cash-out')).toHaveTextContent(
-    'Savings have reached the +0G interest cap.'
+    'Next cash-out: your savings already earn the +0G interest cap.'
   )
   expect(screen.queryByText(/Save .*more/)).not.toBeInTheDocument()
+})
+
+it('does not claim capped savings were paid when this cash-out paid +0G interest', () => {
+  // Interest is settled on the Gold held before the payout. A round that
+  // started broke pays +0G even though the payout itself fills the cap.
+  render(
+    <RoundCashOutBanner
+      summary={{
+        ...summary,
+        interest: 0,
+        netGoldChange: 30,
+        goldBefore: 0,
+        goldAfter: 30,
+      }}
+      currentGold={30}
+      nextActNumber={9}
+      interestCap={5}
+    />
+  )
+  const receipt = screen.getByTestId('round-cash-out')
+  expect(receipt.querySelectorAll('[data-payout-value]')[1]).toHaveTextContent(
+    'Interest +0G'
+  )
+  const coach = receipt.querySelector('[data-interest-coach]')!
+  expect(coach).toHaveTextContent(/^◎\s*Next cash-out:/)
+  expect(coach).not.toHaveTextContent(/have reached/i)
 })
 
 it('gives the blocked-interest explanation precedence over savings and caps', () => {

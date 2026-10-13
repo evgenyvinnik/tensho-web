@@ -37,18 +37,26 @@ it.each([
   ['ru', '2,60', '2,6'],
   ['ja', '2.60', '2.6'],
 ])(
-  'formats %s multipliers without changing precision in exact values',
+  'formats %s multipliers to three trimmed decimals without float noise',
   (language, display, exact) => {
     expect(scoreMultiplier(2.6, language)).toEqual({
       display,
       exact,
       isCompact: false,
     })
+    const threeDecimals = new Intl.NumberFormat(language, {
+      maximumFractionDigits: 3,
+    })
     expect(scoreMultiplier(1.23456789, language).exact).toBe(
-      new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(
-        1.23456789
-      )
+      threeDecimals.format(1.235)
     )
+    // Summer ×1.3 with Winter ×0.75: shown as 0.975, never 0.98 or
+    // 0.9750000000000001, so 50 × 0.975 visibly gives 48.75.
+    expect(scoreMultiplier(1.3 * 0.75, language)).toEqual({
+      display: threeDecimals.format(0.975),
+      exact: threeDecimals.format(0.975),
+      isCompact: false,
+    })
     expect(scoreMultiplier(1_234_567.125, language)).toEqual(
       scoreNumber(1_234_567.125, language)
     )

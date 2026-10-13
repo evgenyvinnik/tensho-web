@@ -106,7 +106,7 @@ test('sells the chosen duplicate after reload, preserves its Eternal sibling and
     exact: true,
   })
   const sell = dialog.locator('[data-decree-sell]')
-  await expect(sell).toHaveText('Sell for ¥9')
+  await expect(sell).toHaveText('Sell for 9G')
   await expect(sell).toBeEnabled()
   await page.screenshot({ path: testInfo.outputPath('duplicate-sell.png') })
   await activate(sell, isMobile)
