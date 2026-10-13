@@ -1523,7 +1523,7 @@
     "rules": {
       "base": "Base difficulty: no added penalties.",
       "noSmallRoundReward": "No reward gold from Small Rounds.",
-      "scoreScaling": "Stake score targets: ×{{multiplier}} compared with White. Table modifiers still apply.",
+      "scoreScaling": "Stake score targets: same as White in Act 1, then rising each Act to ×{{multiplier}} compared with White from Act {{act}} on. Table modifiers still apply.",
       "redrawPenalty": "Redraws each round: −{{amount}}.",
       "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
       "perishableChance": "Non-Eternal shop Decrees: {{chance}} chance of Perishable (weakened after {{rounds}} rounds).",

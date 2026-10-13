@@ -1,6 +1,7 @@
 import type { TFunction } from 'i18next'
 import {
   calculateCombinedModifiers,
+  STAKE_SCALING_FULL_ACT,
   STICKER_DEFINITIONS,
 } from '../config/stakeDefinitions'
 
@@ -34,6 +35,7 @@ export function getStakeRules(
     rules.push(
       t('stakes.rules.scoreScaling', {
         multiplier: number.format(modifiers.scoreScaling),
+        act: number.format(STAKE_SCALING_FULL_ACT),
       })
     )
   if (modifiers.redrawPenalty)

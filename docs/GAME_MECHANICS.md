@@ -390,18 +390,23 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 
 **Theme:** Score requirements escalate exponentially through the run.
 
-**Base Score Targets by Act:**
+**Base Score Targets by Act (Small Round):**
 
-| Act | Base Requirement | At Jade Stake+ | At Storm Stake+ |
-|-----|------------------|----------------|-----------------|
+Stake score scaling ramps in: Act 1 uses White targets on every Stake, and the
+cumulative multiplier (×1.3 from Green, ×1.95 from Purple) grows by an equal
+ratio each Act until it applies in full from Act 4. See
+[STAKE_SCORE_RAMP.md](STAKE_SCORE_RAMP.md).
+
+| Act | Base Requirement | At Green Stake+ | At Purple Stake+ |
+|-----|------------------|-----------------|------------------|
 | 1 | 300 | 300 | 300 |
-| 2 | 800 | 900 | 1,000 |
-| 3 | 2,000 | 2,600 | 3,200 |
-| 4 | 5,000 | 8,000 | 9,000 |
-| 5 | 11,000 | 20,000 | 25,000 |
-| 6 | 20,000 | 36,000 | 60,000 |
-| 7 | 35,000 | 60,000 | 110,000 |
-| 8 (Showdown) | 50,000 | 100,000 | 200,000 |
+| 2 | 800 | 873 | 999 |
+| 3 | 2,000 | 2,382 | 3,121 |
+| 4 | 5,000 | 6,500 | 9,750 |
+| 5 | 11,000 | 14,300 | 21,450 |
+| 6 | 20,000 | 26,000 | 39,000 |
+| 7 | 35,000 | 45,500 | 68,250 |
+| 8 (Showdown) | 50,000 | 65,000 | 97,500 |
 
 **Endless Mode (Act 9+):**
 After defeating Act 8, players enter Endless Mode with rapidly scaling requirements:

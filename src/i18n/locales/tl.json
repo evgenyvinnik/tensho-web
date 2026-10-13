@@ -1814,7 +1814,7 @@
     "rules": {
       "base": "Batayang hirap: walang dagdag na parusa.",
       "noSmallRoundReward": "Walang gantimpalang ginto mula sa Maliliit na Round.",
-      "scoreScaling": "Target na puntos: ×{{multiplier}} kumpara sa Puti. Nalalapat pa rin ang mga modifier ng mesa.",
+      "scoreScaling": "Target na puntos: kapareho ng Puti sa Akto 1, saka tumataas bawat Akto hanggang ×{{multiplier}} kumpara sa Puti mula Akto {{act}}. Nalalapat pa rin ang mga modifier ng mesa.",
       "redrawPenalty": "Pagpapalit ng kamay bawat round: −{{amount}}.",
       "eternalChance": "Mga Dekreto sa tindahan: {{chance}} tsansang maging Walang Hanggan (hindi maibebenta o masisira).",
       "perishableChance": "Mga Dekreto sa tindahang hindi Walang Hanggan: {{chance}} tsansang maging Pansamantala (hihina pagkatapos ng {{rounds}} round).",

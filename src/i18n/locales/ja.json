@@ -1527,7 +1527,7 @@
     "rules": {
       "base": "基本難度：追加のペナルティはありません。",
       "noSmallRoundReward": "小ラウンドでは報酬の金を獲得できません。",
-      "scoreScaling": "目標点は白場の{{multiplier}}倍。卓の補正も適用されます。",
+      "scoreScaling": "目標点は第1幕では白場と同じで、幕ごとに上がり、第{{act}}幕以降は白場の{{multiplier}}倍。卓の補正も適用されます。",
       "redrawPenalty": "各ラウンドの手牌交換回数：−{{amount}}。",
       "eternalChance": "店の勅令は{{chance}}の確率で永劫付きになります（売却・破壊不可）。",
       "perishableChance": "永劫が付いていない店の勅令は{{chance}}の確率で腐朽付きになります（{{rounds}}ラウンド後に弱体化）。",

@@ -30,7 +30,8 @@ it('does not mutate a running game when the saved setup preference changes', () 
   useStakeStore.getState().selectStake('green_felt', 1)
   expect(game.getState().tableStyleId).toBe('dragons_den')
   expect(game.getState().stake).toBe(8)
-  expect(game.getState().targetScore).toBe(731)
+  // Act 1 uses White targets on every Stake; Dragon's Den still adds 25%.
+  expect(game.getState().targetScore).toBe(375)
 })
 
 async function reload() {

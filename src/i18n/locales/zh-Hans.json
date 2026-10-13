@@ -1527,7 +1527,7 @@
     "rules": {
       "base": "基础难度：没有额外惩罚。",
       "noSmallRoundReward": "小局不再提供奖励金币。",
-      "scoreScaling": "目标分数为白场的{{multiplier}}倍，牌桌修正仍然生效。",
+      "scoreScaling": "目标分数在第1幕与白场相同，之后每幕提高，自第{{act}}幕起为白场的{{multiplier}}倍，牌桌修正仍然生效。",
       "redrawPenalty": "每局换牌次数：−{{amount}}。",
       "eternalChance": "商店敕令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
       "perishableChance": "没有永恒贴纸的商店敕令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后削弱）。",

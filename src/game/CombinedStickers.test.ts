@@ -21,18 +21,21 @@ it.each([
 ])(
   'retains both stickers from actual shop generation: $types',
   ({ rolls, types }) => {
-    // Item type, rarity, candidate, no edition, three sticker rolls, old cost draw.
+    // Item type, rarity, candidate, no edition, cost draw.
     const random = vi.fn(() => 0.9)
-    for (const value of [0, 0, 0, 0.9, ...rolls, 0.5])
-      random.mockReturnValueOnce(value)
-    const offer = new TeaHouseSystem(8, random).generateShop().itemOfferings[0]
+    for (const value of [0, 0, 0, 0.9, 0.5]) random.mockReturnValueOnce(value)
+    const stickerRandom = vi.fn(() => 0.9)
+    for (const value of rolls) stickerRandom.mockReturnValueOnce(value)
+    const offer = new TeaHouseSystem(8, random, stickerRandom).generateShop()
+      .itemOfferings[0]
     expect(offer.itemType).toBe('Decree')
     expect((offer.item as Decree).stickers?.map((s) => s.type)).toEqual(types)
     expect(offer.baseCost).toBe(1)
     expect(offer.finalCost).toBe(1)
-    // Eight draws for this Decree, one for the Orb item type (its catalog uses
+    // Five draws for this Decree, one for the Orb item type (its catalog uses
     // the run stream), then two type/size draws for each of the two packs.
-    expect(random).toHaveBeenCalledTimes(13)
+    expect(random).toHaveBeenCalledTimes(10)
+    expect(stickerRandom).toHaveBeenCalledTimes(3)
   }
 )
 
@@ -40,7 +43,8 @@ it.each([1, 3, 4, 6, 7, 8])(
   'keeps sticker thresholds and shop RNG draw counts at stake %i',
   (stake) => {
     const random = vi.fn(() => 0)
-    const shop = new TeaHouseSystem(stake, random).generateShop()
+    const stickerRandom = vi.fn(() => 0)
+    const shop = new TeaHouseSystem(stake, random, stickerRandom).generateShop()
     const stickers = (shop.itemOfferings[0].item as Decree).stickers!
     expect(stickers.map((s) => s.type)).toEqual(
       stake < 4 ? [] : stake < 8 ? ['Eternal'] : ['Eternal', 'Rental']
@@ -52,11 +56,11 @@ it.each([1, 3, 4, 6, 7, 8])(
         finalCost: 6,
       })
     }
-    // Two Decrees: type, rarity, candidate, edition, enabled sticker rolls, cost;
-    // each of the two packs then rolls type and size.
-    expect(random).toHaveBeenCalledTimes(
-      14 + (stake >= 4 ? 2 : 0) + (stake >= 7 ? 2 : 0) + (stake >= 8 ? 2 : 0)
-    )
+    // Two Decrees: type, rarity, candidate, edition, cost; each of the two
+    // packs then rolls type and size. Stickers never touch the shop stream.
+    expect(random).toHaveBeenCalledTimes(14)
+    // From Stake 4, each Decree rolls Eternal, Perishable and Rental.
+    expect(stickerRandom).toHaveBeenCalledTimes(stake >= 4 ? 6 : 0)
   }
 )
 
