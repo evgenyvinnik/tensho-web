@@ -67,6 +67,10 @@ test.describe('Application Smoke Tests', () => {
 
     await page.getByRole('button', { name: /Flora/ }).click()
     await expect(image).toHaveAttribute('src', /codex\/flora\.webp$/)
+    // Let the new illustration finish loading before measuring it.
+    await expect
+      .poll(() => image.evaluate((node: HTMLImageElement) => node.complete))
+      .toBe(true)
 
     const layout = await page.evaluate(() => {
       const hero = document.querySelector<HTMLElement>(
@@ -126,11 +130,23 @@ test.describe('Application Smoke Tests', () => {
     })
     await expect(modal).toBeVisible()
     await expect(greenFelt).toBeVisible()
-    await expect(greenFelt.locator('img')).toHaveAttribute(
+    await expect(greenFelt.locator('img[src*="/tables/"]')).toHaveAttribute(
       'src',
       /green_felt\.webp$/
     )
     await expect(page.getByRole('button', { name: 'Confirm' })).toBeVisible()
+    // Let every table illustration finish loading before measuring them.
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          Array.from(
+            document.querySelectorAll<HTMLImageElement>(
+              'img[src*="/illustrations/tables/"]'
+            )
+          ).every((image) => image.complete)
+        )
+      )
+      .toBe(true)
 
     const layout = await page.evaluate(() => {
       const modal = document.querySelector<HTMLElement>(

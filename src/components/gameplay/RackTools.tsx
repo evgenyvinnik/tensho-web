@@ -59,17 +59,12 @@ export function RackTools({
             onClick={() => setExpanded((value) => !value)}
             className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-amber-200/35 text-amber-200 transition-colors hover:bg-white/10 aria-expanded:bg-white/10 sm:hidden"
           >
-            <svg
+            <span
               aria-hidden="true"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+              className="inline-flex h-6 w-6 items-center justify-center text-2xl leading-none"
             >
-              <circle cx="5" cy="12" r="2" />
-              <circle cx="12" cy="12" r="2" />
-              <circle cx="19" cy="12" r="2" />
-            </svg>
+              ⋯
+            </span>
           </button>
         )}
       </div>

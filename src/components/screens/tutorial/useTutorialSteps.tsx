@@ -33,6 +33,7 @@ import {
   DataTable,
   TileLabel,
 } from './TutorialComponents'
+import { ControlIcon } from '../../ui/ControlIcon'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -1482,7 +1483,9 @@ export function useTutorialSteps(): TutorialStep[] {
           <div className="space-y-3">
             <div className="space-y-2">
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>🎯</span>
+                <span>
+                  <ControlIcon name="target" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Focus on shanten
@@ -1494,7 +1497,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>🧩</span>
+                <span>
+                  <ControlIcon name="puzzle" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Build synergies
@@ -1506,7 +1511,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>💰</span>
+                <span>
+                  <ControlIcon name="coin" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Balance economy
@@ -1518,7 +1525,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>🌸</span>
+                <span>
+                  <ControlIcon name="flower" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Collect flowers
@@ -1541,7 +1550,9 @@ export function useTutorialSteps(): TutorialStep[] {
           <div className="space-y-3">
             <div className="space-y-2">
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>📊</span>
+                <span>
+                  <ControlIcon name="chart" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Plan for yaku
@@ -1552,7 +1563,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>⚖️</span>
+                <span>
+                  <ControlIcon name="scales" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Tile efficiency
@@ -1564,7 +1577,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>🎲</span>
+                <span>
+                  <ControlIcon name="dice" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Count remaining tiles
@@ -1575,7 +1590,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
-                <span>🎭</span>
+                <span>
+                  <ControlIcon name="mask" />
+                </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
                     Read mandates early

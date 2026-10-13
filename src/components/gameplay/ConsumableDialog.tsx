@@ -17,7 +17,7 @@ import { useItemText } from '../../i18n/useItemText'
 import {
   getFateSealIllustration,
   getVoidScriptIllustration,
-  illustrationAssets,
+  getCelestialOrbIllustration,
 } from '../../utils/assets'
 import { TileImage } from '../tiles/TileImage'
 import { CharterArtwork } from '../ui/CharterArtwork'
@@ -200,7 +200,7 @@ export function ConsumableDialog({
                   ? getVoidScriptIllustration(candidate.id)
                   : candidate.type === 'FateSeal'
                     ? getFateSealIllustration(candidate.id)
-                    : illustrationAssets.consumables.celestialOrb
+                    : getCelestialOrbIllustration(candidate.id)
               return (
                 <button
                   key={candidate.instanceId}

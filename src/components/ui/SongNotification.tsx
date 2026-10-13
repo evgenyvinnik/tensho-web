@@ -12,7 +12,11 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { AudioTrack, getTrackDisplayName } from '../../utils/assets'
-import { useSettingsStore, selectAnimationMultiplier } from '../../stores/settingsStore'
+import {
+  useSettingsStore,
+  selectAnimationMultiplier,
+} from '../../stores/settingsStore'
+import { ControlIcon } from './ControlIcon'
 
 export interface SongNotificationProps {
   /** The track that is now playing */
@@ -48,13 +52,11 @@ function useIsMobile(breakpoint: number = 768): boolean {
  * Music note icon component
  */
 const MusicNoteIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
+  <ControlIcon
+    name="music"
     className={className}
-    viewBox="0 0 24 24"
-    fill="currentColor"
-  >
-    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-  </svg>
+    style={{ width: undefined, height: undefined }}
+  />
 )
 
 /**
@@ -125,7 +127,8 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
         style={{
           opacity: mobileSpring.opacity,
           transform: mobileSpring.y.to(
-            (y) => `translateX(-50%) translateY(${y}px) scale(${mobileSpring.scale.get()})`
+            (y) =>
+              `translateX(-50%) translateY(${y}px) scale(${mobileSpring.scale.get()})`
           ),
         }}
       >
@@ -134,7 +137,8 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
                      bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]
                      shadow-lg backdrop-blur-sm"
           style={{
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(200, 178, 115, 0.15)',
+            boxShadow:
+              '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(200, 178, 115, 0.15)',
           }}
         >
           {/* Animated music icon */}
@@ -180,7 +184,8 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
                    bg-[var(--color-dark-forest)] border border-[var(--color-metallic-gold)]
                    shadow-xl backdrop-blur-sm"
         style={{
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(200, 178, 115, 0.1)',
+          boxShadow:
+            '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(200, 178, 115, 0.1)',
           minWidth: '240px',
         }}
       >
@@ -194,7 +199,9 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
                 key={i}
                 className="w-1 bg-[var(--color-golden-yellow)] rounded-sm"
                 style={{
-                  animation: reducedMotion ? 'none' : 'audio-bar 0.5s ease-in-out infinite alternate',
+                  animation: reducedMotion
+                    ? 'none'
+                    : 'audio-bar 0.5s ease-in-out infinite alternate',
                   animationDelay: `${i * 0.1}s`,
                   height: '40%',
                 }}
@@ -213,11 +220,13 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
           </span>
         </div>
 
-        {/* Decorative wave icon */}
+        {/* Decorative music badge */}
         <div className="ml-auto opacity-30">
-          <svg className="w-5 h-5 text-[var(--color-golden-yellow)]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
-          </svg>
+          <ControlIcon
+            name="music"
+            size={20}
+            className="text-[var(--color-golden-yellow)]"
+          />
         </div>
       </div>
     </animated.div>

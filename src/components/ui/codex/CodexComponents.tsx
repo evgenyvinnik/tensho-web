@@ -7,6 +7,8 @@
 import React from 'react'
 import { getTileImagePath } from '../../../utils/assets'
 import { TileSuit } from '../../../core/Tile'
+import type { ControlArtId } from '../../../utils/generatedArt'
+import { ControlIcon } from '../../ui/ControlIcon'
 
 /**
  * Codex category definition
@@ -14,7 +16,7 @@ import { TileSuit } from '../../../core/Tile'
 export interface CodexCategory {
   id: string
   title: string
-  icon: string
+  icon: ControlArtId
   sections: CodexSection[]
 }
 
@@ -76,11 +78,16 @@ export function InfoBox({
   const colors = {
     info: 'border-[var(--color-metallic-gold)] bg-[var(--color-forest-green)]',
     tip: 'border-[var(--color-golden-yellow)] bg-[var(--color-dark-forest)]',
-    warning: 'border-[var(--color-vibrant-orange)] bg-[var(--color-dark-forest)]',
+    warning:
+      'border-[var(--color-vibrant-orange)] bg-[var(--color-dark-forest)]',
   }
   return (
     <div className={`border-l-4 ${colors[variant]} p-4 my-4 rounded-r`}>
-      {title && <div className="font-bold text-[var(--color-golden-yellow)] mb-2">{title}</div>}
+      {title && (
+        <div className="font-bold text-[var(--color-golden-yellow)] mb-2">
+          {title}
+        </div>
+      )}
       <div className="text-sm">{children}</div>
     </div>
   )
@@ -89,7 +96,13 @@ export function InfoBox({
 /**
  * Data table component - renders tabular data
  */
-export function DataTable({ headers, rows }: { headers: string[]; rows: string[][] }) {
+export function DataTable({
+  headers,
+  rows,
+}: {
+  headers: string[]
+  rows: string[][]
+}) {
   return (
     <div className="overflow-x-auto my-4">
       <table className="w-full text-sm border-collapse">
@@ -109,10 +122,17 @@ export function DataTable({ headers, rows }: { headers: string[]; rows: string[]
           {rows.map((row, i) => (
             <tr
               key={i}
-              className={i % 2 === 0 ? 'bg-[var(--color-dark-forest)]' : 'bg-[var(--color-forest-green)]/50'}
+              className={
+                i % 2 === 0
+                  ? 'bg-[var(--color-dark-forest)]'
+                  : 'bg-[var(--color-forest-green)]/50'
+              }
             >
               {row.map((cell, j) => (
-                <td key={j} className="border border-[var(--color-metallic-gold)]/50 px-3 py-2">
+                <td
+                  key={j}
+                  className="border border-[var(--color-metallic-gold)]/50 px-3 py-2"
+                >
                   {cell}
                 </td>
               ))}
@@ -143,7 +163,7 @@ export function CodexSidebar({
       {categories.map((category) => (
         <div key={category.id} className="mb-2">
           <div className="px-4 py-2 text-[var(--color-golden-yellow)] font-bold flex items-center gap-2">
-            <span>{category.icon}</span>
+            <ControlIcon name={category.icon} />
             <span>{category.title}</span>
           </div>
           <ul>
@@ -152,7 +172,8 @@ export function CodexSidebar({
                 <button
                   onClick={() => onSelectSection(category.id, section.id)}
                   className={`w-full text-left px-6 py-2 text-sm transition-colors ${
-                    activeCategory === category.id && activeSection === section.id
+                    activeCategory === category.id &&
+                    activeSection === section.id
                       ? 'bg-[var(--color-vibrant-orange)] text-white'
                       : 'text-[var(--color-beige-white)] hover:bg-[var(--color-forest-green)]'
                   }`}

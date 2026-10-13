@@ -10,6 +10,7 @@ import { getCurrentLanguage } from '../../i18n'
 import { getTableStyleIllustration } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { ControlIcon } from '../ui/ControlIcon'
 
 const AnimatedButton = animated('button')
 
@@ -144,9 +145,7 @@ export function TableStyleCard({
         <div className="absolute right-3 top-3 flex min-h-8 min-w-8 items-center justify-center rounded-full border border-white/25 bg-black/65 text-white shadow-lg backdrop-blur-sm">
           {isUnlocked ? (
             isSelected ? (
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-              </svg>
+              <ControlIcon name="check" size={20} />
             ) : (
               <span
                 className="h-2.5 w-2.5 rounded-full"
@@ -154,9 +153,7 @@ export function TableStyleCard({
               />
             )
           ) : (
-            <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm3.1-9H8.9V6a3.1 3.1 0 0 1 6.2 0v2Z" />
-            </svg>
+            <ControlIcon name="lock" size={16} />
           )}
         </div>
 

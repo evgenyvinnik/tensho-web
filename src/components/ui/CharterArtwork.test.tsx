@@ -1,12 +1,10 @@
 import { render } from '@testing-library/react'
-import { expect, it, vi } from 'vitest'
+import { expect, it } from 'vitest'
 import { CharterArtwork } from './CharterArtwork'
 import { ItemCard } from '../collection/ItemCard'
-import { ItemDetailModal } from '../collection/ItemDetailModal'
 import { ArchiveSystem } from '../../systems/ArchiveSystem'
-import { ARCHIVE_CATEGORIES } from '../../config/archiveDefinitions'
 
-it('uses the Money Tree portrait while preserving category artwork for other Charters', () => {
+it('preserves existing portraits, uses new exact-ID art and keeps unknown-key fallback', () => {
   const { container, rerender } = render(
     <CharterArtwork charterId="money_tree" />
   )
@@ -29,7 +27,7 @@ it('uses the Money Tree portrait while preserving category artwork for other Cha
   rerender(<CharterArtwork charterId="seed_pouch" alt="Imperial Charter" />)
   expect(container.querySelector('img')).toHaveAttribute(
     'src',
-    expect.stringMatching(/imperial-charter\.webp$/)
+    expect.stringMatching(/generated\/charters\/seed_pouch\.webp$/)
   )
   expect(container.querySelector('img')).not.toHaveAttribute('aria-hidden')
   rerender(<CharterArtwork charterId="constructor" />)
@@ -74,17 +72,5 @@ it.each([
       view.container.querySelectorAll(`img[src$="${filename}"]`)
     ).toHaveLength(discovered ? 1 : 0)
     view.unmount()
-    render(
-      <ItemDetailModal
-        isOpen
-        onClose={vi.fn()}
-        entry={entry}
-        displayInfo={info}
-        categoryInfo={ARCHIVE_CATEGORIES.charters}
-      />
-    )
-    expect(document.querySelectorAll(`img[src$="${filename}"]`)).toHaveLength(
-      discovered ? 1 : 0
-    )
   }
 )

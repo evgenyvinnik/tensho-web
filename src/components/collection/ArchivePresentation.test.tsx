@@ -1,9 +1,9 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
 import i18n, { loadLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { getAllVoidScripts } from '../../systems/VoidScriptSystem'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
-import { ItemDetailModal } from './ItemDetailModal'
+import { ItemDetails } from './ItemDetails'
 import { ItemCard, type ItemDisplayInfo } from './ItemCard'
 import { CategoryTabs } from './CategoryTabs'
 import {
@@ -41,15 +41,9 @@ it.each(
   await loadLanguage(language)
   await i18n.changeLanguage(language)
   render(
-    <ItemDetailModal
-      isOpen
-      onClose={() => {}}
-      entry={{ ...entry, itemId: script.id, category: 'consumables' }}
-      categoryInfo={null}
-      displayInfo={{ ...script, category: 'consumables' }}
-    />
+    <ItemDetails entry={{ ...entry, itemId: script.id, category: 'consumables' }} displayInfo={{ ...script, category: 'consumables' }} />
   )
-  const dialog = screen.getByRole('dialog')
+  const dialog = document.body
   expect(dialog.querySelector('[data-archive-rarity]')).toHaveTextContent(
     i18n.t(`shop.ui.rarity_${script.rarity.toLowerCase()}`)
   )
@@ -67,15 +61,9 @@ it.each(SUPPORTED_LANGUAGES)(
     await i18n.changeLanguage(language)
 
     render(
-      <ItemDetailModal
-        isOpen
-        onClose={() => {}}
-        entry={entry}
-        categoryInfo={null}
-        displayInfo={displayInfo}
-      />
+      <ItemDetails entry={entry} displayInfo={displayInfo} />
     )
-    const dialog = screen.getByRole('dialog')
+    const dialog = document.body
     expect(dialog.querySelector('[data-archive-rarity]')).toHaveTextContent(
       i18n.t('shop.ui.rarity_rare')
     )
@@ -91,13 +79,7 @@ it.each(SUPPORTED_LANGUAGES)(
     cleanup()
 
     render(
-      <ItemDetailModal
-        isOpen
-        onClose={() => {}}
-        entry={{ ...entry, discoveredAt: 0 }}
-        categoryInfo={null}
-        displayInfo={displayInfo}
-      />
+      <ItemDetails entry={{ ...entry, discoveredAt: 0 }} displayInfo={displayInfo} />
     )
     for (const key of ['discovered', 'starterItem']) {
       const translated = i18n.getResource(
@@ -111,7 +93,7 @@ it.each(SUPPORTED_LANGUAGES)(
           i18n.getResource('en', 'translation', `collection.${key}`)
         )
     }
-    expect(screen.getByRole('dialog')).toHaveTextContent(
+    expect(document.body).toHaveTextContent(
       i18n.t('collection.starterItem')
     )
     cleanup()
@@ -122,16 +104,17 @@ it.each(SUPPORTED_LANGUAGES)(
         displayInfo={displayInfo}
       />
     )
+    // The card is the picture; its statistics and lock live in its popup.
     const card = screen.getByRole('button')
-    const lock = card.querySelector('[data-archive-card-lock]')
-    expect(lock).toHaveTextContent(i18n.t('collection.locked'))
-    expect(lock).not.toHaveClass('absolute')
-    expect(card.textContent).toContain(
-      `${i18n.t('collection.timesUsed')}: ${(12345).toLocaleString(language)}`
+    expect(card.querySelector('[data-archive-card-lock]')).not.toBeNull()
+    fireEvent.click(card, { detail: 1 })
+    const popup = screen.getByRole('dialog')
+    expect(popup.querySelector('[data-archive-unlock]')).toHaveTextContent(
+      i18n.t('collection.locked')
     )
-    expect(card.textContent).toContain(
-      `${i18n.t('collection.runsWon')}: ${(1234).toLocaleString(language)}`
-    )
+    const values = popup.querySelectorAll('[data-archive-stat-value]')
+    expect(values[0].textContent).toBe((12345).toLocaleString(language))
+    expect(values[1].textContent).toBe((1234).toLocaleString(language))
     cleanup()
     const categories = Object.values(ARCHIVE_CATEGORIES)
     const categoryCounts = Object.fromEntries(
@@ -177,30 +160,18 @@ it.each([
   ['legendary', 'legendary'],
 ])('maps the actual %s rarity to %s', (rarity, expected) => {
   render(
-    <ItemDetailModal
-      isOpen
-      onClose={() => {}}
-      entry={entry}
-      categoryInfo={null}
-      displayInfo={{ ...displayInfo, rarity }}
-    />
+    <ItemDetails entry={entry} displayInfo={{ ...displayInfo, rarity }} />
   )
   expect(
-    screen.getByRole('dialog').querySelector('[data-archive-rarity]')
+    document.body.querySelector('[data-archive-rarity]')
   ).toHaveAttribute('data-archive-rarity', expected)
 })
 
 it('does not invent a Standard rarity for a category without one', () => {
   render(
-    <ItemDetailModal
-      isOpen
-      onClose={() => {}}
-      entry={entry}
-      categoryInfo={null}
-      displayInfo={{ ...displayInfo, rarity: undefined }}
-    />
+    <ItemDetails entry={entry} displayInfo={{ ...displayInfo, rarity: undefined }} />
   )
   expect(
-    screen.getByRole('dialog').querySelector('[data-archive-rarity]')
+    document.body.querySelector('[data-archive-rarity]')
   ).toBeNull()
 })

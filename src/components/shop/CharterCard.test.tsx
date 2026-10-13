@@ -4,7 +4,7 @@ import { CharterCard } from './CharterCard'
 import { TEA_HOUSE_BASE_CHARTERS } from '../../systems/TeaHouseSystem'
 import { changeLanguage } from '../../i18n'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { illustrationAssets } from '../../utils/assets'
+import { getGeneratedArt } from '../../utils/generatedArt'
 
 const charter = TEA_HOUSE_BASE_CHARTERS.find(
   (item) => item.id === 'ancient_script'
@@ -29,7 +29,7 @@ it('renders localized Charter art, identity, rules and tier without escape text'
   )
   expect(screen.getByRole('img', { name: 'Carta imperial' })).toHaveAttribute(
     'src',
-    illustrationAssets.imperialCharter
+    getGeneratedArt('charters', 'ancient_script')
   )
   expect(
     screen.getByRole('heading', { name: 'Escritura antigua' })

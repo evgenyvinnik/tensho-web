@@ -8,6 +8,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { useProgressionStore } from './progressionStore'
+import type { AchievementArtId, ControlArtId } from '../utils/generatedArt'
 
 /**
  * Achievement categories based on ARCHITECTURE.MD
@@ -30,7 +31,7 @@ export interface AchievementDefinition {
   descriptionKey: string // i18n key for description
   japaneseTitle: string // Japanese ceremonial name
   category: AchievementCategory
-  icon: string // Emoji or icon identifier
+  icon: AchievementArtId // Generated image identity
   unlocks?: string // What this achievement unlocks (if any)
   condition: {
     type: string
@@ -156,7 +157,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.firstSteps.description',
     japaneseTitle: '初歩',
     category: 'progression',
-    icon: '👣',
+    icon: 'first_steps',
     unlocks: 'Stage Master Decree',
     condition: { type: 'reach_act', target: 4 },
   },
@@ -166,7 +167,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.ascending.description',
     japaneseTitle: '昇進',
     category: 'progression',
-    icon: '⬆️',
+    icon: 'ascending',
     unlocks: 'Flower Pot Decree',
     condition: { type: 'reach_act', target: 8 },
   },
@@ -176,7 +177,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.victory.description',
     japaneseTitle: '勝利',
     category: 'progression',
-    icon: '🏆',
+    icon: 'victory',
     unlocks: 'Blueprint Decree',
     condition: { type: 'win_run' },
   },
@@ -186,7 +187,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.redPath.description',
     japaneseTitle: '赤道',
     category: 'progression',
-    icon: '🔴',
+    icon: 'red_path',
     unlocks: 'Crimson Wall',
     condition: { type: 'win_stake', value: 'red' },
   },
@@ -196,7 +197,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.blackPath.description',
     japaneseTitle: '黒道',
     category: 'progression',
-    icon: '⚫',
+    icon: 'black_path',
     unlocks: 'Obsidian Wall',
     condition: { type: 'win_stake', value: 'black' },
   },
@@ -206,7 +207,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.goldenPath.description',
     japaneseTitle: '金道',
     category: 'progression',
-    icon: '🥇',
+    icon: 'golden_path',
     condition: { type: 'win_stake', value: 'gold' },
   },
 
@@ -217,7 +218,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.tileMaster.description',
     japaneseTitle: '牌師',
     category: 'cumulative',
-    icon: '🀄',
+    icon: 'tile_master',
     unlocks: 'Swift Hand Charter',
     condition: { type: 'tiles_played', target: 2500 },
   },
@@ -227,7 +228,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.discardArtist.description',
     japaneseTitle: '捨牌芸者',
     category: 'cumulative',
-    icon: '🎨',
+    icon: 'discard_artist',
     unlocks: 'Wasteful Plenty Charter',
     condition: { type: 'tiles_discarded', target: 2500 },
   },
@@ -237,7 +238,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.fortuneBuilt.description',
     japaneseTitle: '富豪',
     category: 'cumulative',
-    icon: '💰',
+    icon: 'fortune_built',
     unlocks: 'Satellite Decree',
     condition: { type: 'max_gold', target: 400 },
   },
@@ -249,7 +250,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.wildFlush.description',
     japaneseTitle: '万能清一色',
     category: 'skill',
-    icon: '🃏',
+    icon: 'wild_flush',
     condition: { type: 'special_hand', value: 'honitsu_wild' },
   },
   {
@@ -258,7 +259,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.speedRun.description',
     japaneseTitle: '疾走',
     category: 'skill',
-    icon: '⚡',
+    icon: 'speed_run',
     unlocks: 'Swift Andy Decree',
     condition: { type: 'win_in_rounds', target: 12 },
   },
@@ -268,7 +269,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.charterCollector.description',
     japaneseTitle: '皇勅収集',
     category: 'skill',
-    icon: '📜',
+    icon: 'charter_collector',
     condition: { type: 'charters_by_act', target: 5 },
   },
   {
@@ -277,7 +278,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.shattered.description',
     japaneseTitle: '粉砕',
     category: 'skill',
-    icon: '💔',
+    icon: 'shattered',
     condition: { type: 'break_glass_tiles', target: 2 },
   },
   {
@@ -286,7 +287,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.royalHand.description',
     japaneseTitle: '帝王手',
     category: 'skill',
-    icon: '👑',
+    icon: 'royal_hand',
     condition: { type: 'score_yakuman' },
   },
   {
@@ -295,7 +296,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.retrograde.description',
     japaneseTitle: '逆行',
     category: 'skill',
-    icon: '🔄',
+    icon: 'retrograde',
     condition: { type: 'yaku_level', target: 10 },
   },
   {
@@ -304,7 +305,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.keeperOfWinds.description',
     japaneseTitle: '風守',
     category: 'skill',
-    icon: '🌬️',
+    icon: 'keeper_of_winds',
     condition: { type: 'wind_yaku_in_run', target: 10 },
   },
   {
@@ -313,7 +314,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.masterOfSilence.description',
     japaneseTitle: '沈黙の師',
     category: 'skill',
-    icon: '🤫',
+    icon: 'master_of_silence',
     condition: { type: 'rounds_without_honor_discard', target: 3 },
   },
   {
@@ -322,7 +323,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.sealBearer.description',
     japaneseTitle: '印持ち',
     category: 'skill',
-    icon: '🔮',
+    icon: 'seal_bearer',
     condition: { type: 'fate_seals_used', target: 10 },
   },
 
@@ -333,7 +334,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.score10k.description',
     japaneseTitle: '万点',
     category: 'scoring',
-    icon: '📊',
+    icon: 'score_10k',
     unlocks: 'Lucky Sixes Decree',
     condition: { type: 'single_hand_score', target: 10000 },
   },
@@ -343,7 +344,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.score1m.description',
     japaneseTitle: '百万点',
     category: 'scoring',
-    icon: '💎',
+    icon: 'score_1m',
     unlocks: 'The Idol Decree',
     condition: { type: 'single_hand_score', target: 1000000 },
   },
@@ -353,7 +354,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.score100m.description',
     japaneseTitle: '億点',
     category: 'scoring',
-    icon: '🌟',
+    icon: 'score_100m',
     unlocks: 'Stuntman Decree',
     condition: { type: 'single_hand_score', target: 100000000 },
   },
@@ -365,7 +366,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.sealScholar.description',
     japaneseTitle: '符学者',
     category: 'collection',
-    icon: '📚',
+    icon: 'seal_scholar',
     unlocks: 'Cartomancer Decree',
     condition: { type: 'discover_all_seals' },
   },
@@ -375,7 +376,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.starGazer.description',
     japaneseTitle: '星読み',
     category: 'collection',
-    icon: '🔭',
+    icon: 'star_gazer',
     unlocks: 'Astronomer Decree',
     condition: { type: 'discover_all_orbs' },
   },
@@ -385,7 +386,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.voidWalker.description',
     japaneseTitle: '虚空歩者',
     category: 'collection',
-    icon: '🌑',
+    icon: 'void_walker',
     condition: { type: 'discover_all_scripts' },
   },
   {
@@ -394,7 +395,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.charterComplete.description',
     japaneseTitle: '皇勅全取',
     category: 'collection',
-    icon: '📋',
+    icon: 'charter_complete',
     condition: { type: 'discover_all_charters' },
   },
   {
@@ -403,7 +404,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.archiveComplete.description',
     japaneseTitle: '全録達成',
     category: 'collection',
-    icon: '🏛️',
+    icon: 'archive_complete',
     condition: { type: 'discover_all' },
   },
 
@@ -414,7 +415,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.archiveCompletePlus.description',
     japaneseTitle: '全録達成・極',
     category: 'mastery',
-    icon: '🏛️✨',
+    icon: 'archive_complete_plus',
     condition: { type: 'all_walls_gold_stake' },
   },
   {
@@ -423,7 +424,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.archiveCompletePlusPlus.description',
     japaneseTitle: '全録達成・究',
     category: 'mastery',
-    icon: '🏛️🌟',
+    icon: 'archive_complete_plus_plus',
     condition: { type: 'gold_sticker_all_decrees' },
   },
 
@@ -434,7 +435,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.ruleBender.description',
     japaneseTitle: '曲法者',
     category: 'challenge',
-    icon: '🔧',
+    icon: 'rule_bender',
     condition: { type: 'complete_challenge_run' },
   },
   {
@@ -443,7 +444,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.ruleBreaker.description',
     japaneseTitle: '破法者',
     category: 'challenge',
-    icon: '💥',
+    icon: 'rule_breaker',
     condition: { type: 'complete_all_challenges' },
   },
   {
@@ -452,7 +453,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.deckMinimalist.description',
     japaneseTitle: '極小山',
     category: 'challenge',
-    icon: '📉',
+    icon: 'deck_minimalist',
     condition: { type: 'wall_size_max', target: 20 },
   },
   {
@@ -461,7 +462,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.deckMaximalist.description',
     japaneseTitle: '極大山',
     category: 'challenge',
-    icon: '📈',
+    icon: 'deck_maximalist',
     condition: { type: 'wall_size_min', target: 80 },
   },
   {
@@ -470,7 +471,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     descriptionKey: 'achievements.purist.description',
     japaneseTitle: '無転',
     category: 'challenge',
-    icon: '🧘',
+    icon: 'purist',
     condition: { type: 'win_without_reroll' },
   },
 ]
@@ -592,25 +593,29 @@ export const useAchievementStore = create<AchievementState>()(
               shouldUnlock = stats.totalTilesPlayed >= (condition.target || 0)
               break
             case 'tiles_discarded':
-              shouldUnlock = stats.totalTilesDiscarded >= (condition.target || 0)
+              shouldUnlock =
+                stats.totalTilesDiscarded >= (condition.target || 0)
               break
             case 'max_gold':
               shouldUnlock = stats.maxGoldInRun >= (condition.target || 0)
               break
             case 'single_hand_score':
-              shouldUnlock = stats.highestSingleHandScore >= (condition.target || 0)
+              shouldUnlock =
+                stats.highestSingleHandScore >= (condition.target || 0)
               break
             case 'fate_seals_used':
               shouldUnlock = stats.totalFateSealsUsed >= (condition.target || 0)
               break
             case 'charters_by_act':
-              shouldUnlock = stats.chartersPurchasedByAct4 >= (condition.target || 0)
+              shouldUnlock =
+                stats.chartersPurchasedByAct4 >= (condition.target || 0)
               break
             case 'score_yakuman':
               shouldUnlock = (stats.totalYakumanScored ?? 0) > 0
               break
             case 'wind_yaku_in_run':
-              shouldUnlock = stats.totalWindYakuScored >= (condition.target || 0)
+              shouldUnlock =
+                stats.totalWindYakuScored >= (condition.target || 0)
               break
             case 'discover_all_seals':
               shouldUnlock = stats.fateSealsDiscovered >= 22
@@ -628,7 +633,8 @@ export const useAchievementStore = create<AchievementState>()(
               shouldUnlock = stats.totalItemsDiscovered >= 352
               break
             case 'win_in_rounds':
-              shouldUnlock = stats.fastestWinRounds <= (condition.target || Infinity)
+              shouldUnlock =
+                stats.fastestWinRounds <= (condition.target || Infinity)
               break
             case 'wall_size_max':
               shouldUnlock = stats.minimumWallSize <= (condition.target || 0)
@@ -703,14 +709,18 @@ export const useAchievementStore = create<AchievementState>()(
 /**
  * Get achievement definition by ID
  */
-export function getAchievementDefinition(id: string): AchievementDefinition | undefined {
+export function getAchievementDefinition(
+  id: string
+): AchievementDefinition | undefined {
   return ACHIEVEMENT_DEFINITIONS.find((def) => def.id === id)
 }
 
 /**
  * Get achievements by category
  */
-export function getAchievementsByCategory(category: AchievementCategory): AchievementDefinition[] {
+export function getAchievementsByCategory(
+  category: AchievementCategory
+): AchievementDefinition[] {
   return ACHIEVEMENT_DEFINITIONS.filter((def) => def.category === category)
 }
 
@@ -720,13 +730,29 @@ export function getAchievementsByCategory(category: AchievementCategory): Achiev
 export const ACHIEVEMENT_CATEGORIES: Array<{
   id: AchievementCategory
   nameKey: string
-  icon: string
+  icon: ControlArtId
 }> = [
-  { id: 'progression', nameKey: 'achievements.categories.progression', icon: '📈' },
-  { id: 'cumulative', nameKey: 'achievements.categories.cumulative', icon: '🔢' },
-  { id: 'skill', nameKey: 'achievements.categories.skill', icon: '🎯' },
-  { id: 'scoring', nameKey: 'achievements.categories.scoring', icon: '💯' },
-  { id: 'collection', nameKey: 'achievements.categories.collection', icon: '📚' },
-  { id: 'mastery', nameKey: 'achievements.categories.mastery', icon: '🏆' },
-  { id: 'challenge', nameKey: 'achievements.categories.challenge', icon: '🎮' },
+  {
+    id: 'progression',
+    nameKey: 'achievements.categories.progression',
+    icon: 'chart',
+  },
+  {
+    id: 'cumulative',
+    nameKey: 'achievements.categories.cumulative',
+    icon: 'cumulative',
+  },
+  { id: 'skill', nameKey: 'achievements.categories.skill', icon: 'target' },
+  { id: 'scoring', nameKey: 'achievements.categories.scoring', icon: 'score' },
+  {
+    id: 'collection',
+    nameKey: 'achievements.categories.collection',
+    icon: 'collection',
+  },
+  { id: 'mastery', nameKey: 'achievements.categories.mastery', icon: 'trophy' },
+  {
+    id: 'challenge',
+    nameKey: 'achievements.categories.challenge',
+    icon: 'challenge',
+  },
 ]

@@ -21,6 +21,8 @@ import {
   getSealIcon,
   getEditionIcon,
 } from './constants'
+import { getGeneratedArt } from '../../../utils/generatedArt'
+import { FRAME_REGISTRATION } from './frameRegistration'
 import { useTranslation } from 'react-i18next'
 
 // =============================================================================
@@ -198,91 +200,67 @@ export function ModifierBadge({
   return null
 }
 
-/** Small pictograms for a mark's gem and a seal's stamp — never letters. */
-const MARK_GLYPHS: Partial<Record<EnhancementType, string>> = {
-  [EnhancementType.Bonus]: 'M12 6v12M6 12h12',
-  [EnhancementType.Mult]: 'M7 7l10 10M17 7 7 17',
-  [EnhancementType.Wild]: 'm12 4 2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 16.2 7 19l1.2-5.6L4 9.6l5.6-.6z',
-  [EnhancementType.Glass]: 'M12 3 20 12 12 21 4 12z',
-  [EnhancementType.Steel]: 'M12 3 19 6v6c0 4-3 7-7 9-4-2-7-5-7-9V6z',
-  [EnhancementType.Gold]: 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM10 10h4v4h-4z',
-  [EnhancementType.Lucky]: 'M12 12c-3-5-8-2-5 1M12 12c5-3 2-8-1-5M12 12c3 5 8 2 5-1M12 12c-5 3-2 8 1 5M12 12l3 8',
-}
-
-const SEAL_GLYPHS: Partial<Record<SealType, string>> = {
-  [SealType.Gold]: 'M12 5a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM10.5 10.5h3v3h-3z',
-  [SealType.Red]: 'M7 9a6 6 0 0 1 10 0l1-3M17 15a6 6 0 0 1-10 0l-1 3',
-  [SealType.Blue]: 'M12 5a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM5 12h14',
-  [SealType.Purple]: 'M4 12s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z',
-}
-
-function Glyph({ d }: { d?: string }) {
-  if (!d) return null
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-full w-full"
-    >
-      <path d={d} />
-    </svg>
-  )
-}
-
 /**
- * The look of a special tile. Each layer is a whole-tile treatment, not a
- * corner badge, and the layers combine truthfully:
+ * The look of a special tile, drawn with its generated artwork. The layers
+ * combine truthfully:
  *  - a mark (enhancement) frames the tile in its material — gilded gold,
- *    sapphire, ruby, prismatic, glass, brushed steel, granite, jade — with a
- *    gem showing its pictogram;
- *  - a seal is a wax stamp in its colour, pressed into the lower corner;
- *  - an edition washes the face — foil sheen, holographic rainbow,
- *    shifting polychrome, or a negative.
- * Rank and suit stay readable underneath; the tile's details list the exact
- * combination.
+ *    sapphire, ruby, jade, glass, brushed steel, granite;
+ *  - an edition washes the frame — foil, holographic, polychrome, negative;
+ *  - a seal is a wax stamp in its colour on the upper corner.
+ * Rank and suit stay readable inside the frame (a Stone tile has none); the
+ * tile's details list the exact combination.
  */
 export function ModifierOverlay({
   tile,
   className = '',
 }: ModifierOverlayProps) {
-  const enhancement = tile.enhancement
-  const seal = tile.seal
-  const edition = tile.edition
+  const enhancement = getGeneratedArt('enhancements', tile.enhancement)
+  const edition = getGeneratedArt('editions', tile.edition)
+  const seal = getGeneratedArt('seals', tile.seal)
   return (
     <>
-      {edition !== EditionType.Base && (
-        <div
+      {enhancement && (
+        <span
           aria-hidden="true"
-          data-tile-edition={edition}
-          className={`tile-edition tile-edition--${edition} ${className}`}
+          data-tile-art-layer="enhancement"
+          className={`absolute inset-0 overflow-hidden rounded pointer-events-none ${className}`}
+        >
+          <img
+            src={enhancement}
+            alt=""
+            draggable={false}
+            className="absolute max-w-none"
+            style={FRAME_REGISTRATION[`enhancement:${tile.enhancement}`]}
+          />
+        </span>
+      )}
+      {edition && (
+        <span
+          aria-hidden="true"
+          data-tile-art-layer="edition"
+          className="absolute -inset-0.5 overflow-hidden rounded pointer-events-none"
+        >
+          <img
+            src={edition}
+            alt=""
+            draggable={false}
+            className="absolute max-w-none"
+            style={{
+              ...FRAME_REGISTRATION[`edition:${tile.edition}`],
+              opacity: enhancement ? 0.6 : 1,
+            }}
+          />
+        </span>
+      )}
+      {seal && (
+        <img
+          src={seal}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          data-tile-art-layer="seal"
+          className="absolute -right-1 -top-1 z-10 h-[38%] w-[38%] min-h-4 min-w-4 object-contain pointer-events-none"
         />
-      )}
-      {enhancement !== EnhancementType.None && (
-        <div
-          aria-hidden="true"
-          data-tile-mark={enhancement}
-          className={`tile-mark tile-mark--${enhancement} ${className}`}
-        >
-          {MARK_GLYPHS[enhancement] && (
-            <span className="tile-mark-gem">
-              <Glyph d={MARK_GLYPHS[enhancement]} />
-            </span>
-          )}
-        </div>
-      )}
-      {seal !== SealType.None && (
-        <div
-          aria-hidden="true"
-          data-tile-seal={seal}
-          className={`tile-seal tile-seal--${seal}`}
-        >
-          <Glyph d={SEAL_GLYPHS[seal]} />
-        </div>
       )}
     </>
   )

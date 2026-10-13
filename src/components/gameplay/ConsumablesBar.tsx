@@ -9,7 +9,7 @@
 
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { OrbSVG, ScriptSVG, SealSVG } from '../ui/svg/ConsumableSVG'
+import { illustrationAssets } from '../../utils/assets'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -58,9 +58,9 @@ export interface ConsumablesBarProps {
  * Horizontal bar for accessing consumable items.
  *
  * Displays three consumable types with counts:
- * - Fate Seals (運命) - Purple border, native seal SVG
- * - Celestial Orbs (天球) - Blue border, native orb SVG
- * - Void Scripts (虚空) - Gray border, native script SVG
+ * - Fate Seals (運命) - Purple border, generated seal art
+ * - Celestial Orbs (天球) - Blue border, generated orb art
+ * - Void Scripts (虚空) - Gray border, generated script art
  *
  * Empty categories occupy no space; owned items retain their illustrated controls.
  * Meets 44px minimum touch target requirement.
@@ -79,7 +79,14 @@ export function ConsumablesBar({
       id: 'seal',
       name: t('consumableUse.fateSeals'),
       count: fateSeals,
-      icon: <SealSVG variant="wisdom" size={32} />,
+      icon: (
+        <img
+          src={illustrationAssets.consumables.fateSeal}
+          alt=""
+          aria-hidden="true"
+          className="h-8 w-8 object-contain"
+        />
+      ),
       color: 'border-purple-500',
       onUse: onUseFateSeal,
     },
@@ -87,7 +94,14 @@ export function ConsumablesBar({
       id: 'orb',
       name: t('consumableUse.celestialOrbs'),
       count: celestialOrbs,
-      icon: <OrbSVG variant="neptune" size={32} />,
+      icon: (
+        <img
+          src={illustrationAssets.consumables.celestialOrb}
+          alt=""
+          aria-hidden="true"
+          className="h-8 w-8 object-contain"
+        />
+      ),
       color: 'border-blue-500',
       onUse: onUseCelestialOrb,
     },
@@ -95,7 +109,14 @@ export function ConsumablesBar({
       id: 'script',
       name: t('consumableUse.voidScripts'),
       count: voidScripts,
-      icon: <ScriptSVG size={32} />,
+      icon: (
+        <img
+          src={illustrationAssets.consumables.voidScript}
+          alt=""
+          aria-hidden="true"
+          className="h-8 w-8 object-contain"
+        />
+      ),
       color: 'border-gray-500',
       onUse: onUseVoidScript,
     },

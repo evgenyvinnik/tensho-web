@@ -1,3 +1,4 @@
+import { getGeneratedArt } from '../../utils/generatedArt'
 import { illustrationAssets } from '../../utils/assets'
 
 const portraits: Record<string, string> = {
@@ -23,9 +24,10 @@ export function CharterArtwork({
   return (
     <img
       src={
-        Object.prototype.hasOwnProperty.call(portraits, charterId)
+        getGeneratedArt('charters', charterId) ??
+        (Object.prototype.hasOwnProperty.call(portraits, charterId)
           ? portraits[charterId]
-          : illustrationAssets.imperialCharter
+          : illustrationAssets.imperialCharter)
       }
       alt={alt}
       aria-hidden={alt ? undefined : true}

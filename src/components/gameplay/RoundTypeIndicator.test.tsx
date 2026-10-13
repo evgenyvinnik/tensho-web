@@ -28,11 +28,14 @@ it.each(SHOWDOWN_MANDATES)(
       name: mandate.name,
     })
     expect(dialog).toHaveAccessibleDescription(mandate.description)
-    expect(dialog.querySelector('img')).toHaveAttribute(
-      'src',
-      getMandateIllustration(mandate.id)
+    const portrait = dialog.querySelector(
+      `img[src="${getMandateIllustration(mandate.id)}"]`
     )
-    expect(dialog.querySelector('img')).toHaveAttribute('alt', '')
+    expect(portrait).toHaveAttribute('alt', '')
+    expect(dialog.querySelector('button img')).toHaveAttribute(
+      'src',
+      '/assets/illustrations/generated/controls/close.png'
+    )
   }
 )
 it('opens the illustrated boss rule without making artwork the accessible name', () => {
@@ -62,7 +65,14 @@ it('does not show Bell art on an unrelated mandate or a non-boss round without a
       mandateDescription="Draw rule"
     />
   )
-  expect(container.querySelector('img')).toBeNull()
+  expect(container.querySelector('img')).toHaveAttribute(
+    'src',
+    getMandateIllustration('the_hook')
+  )
+  expect(container.querySelector('img')).not.toHaveAttribute(
+    'src',
+    getMandateIllustration('cerulean_bell')
+  )
   rerender(<RoundTypeIndicator roundType="Small" />)
   expect(screen.queryByRole('button')).toBeNull()
 })

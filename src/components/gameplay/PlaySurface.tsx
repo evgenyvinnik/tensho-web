@@ -29,6 +29,7 @@ import type { PartialHandRules } from '../../rules/PartialHandParser'
 import { groupHand, type HandClusterKind } from '../../gameplay/handGroups'
 import { useHandTileSize } from '../../hooks/useHandTileSize'
 import { RackTools } from './RackTools'
+import { ControlIcon } from '../ui/ControlIcon'
 
 // =============================================================================
 // TYPES
@@ -841,7 +842,11 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
                   title={t('gameplay.handsRemaining', 'Hands remaining')}
                   className="shrink-0 text-sm leading-5 text-blue-400"
                 >
-                  🖐 {handsRemaining}
+                  <ControlIcon name="hand" size={20} />
+                  <span className="sr-only">
+                    {t('gameplay.handsRemaining', 'Hands remaining')}:{' '}
+                  </span>{' '}
+                  {handsRemaining}
                 </span>
               </div>
 
@@ -871,7 +876,12 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
               }}
               title={t('gameplay.discard', 'Discard')}
             >
-              <span aria-hidden="true">🗑️</span>
+              <span aria-hidden="true">
+                <ControlIcon name="redraw" size={20} />
+              </span>
+              <span className="sr-only">
+                {t('gameplay.discard', 'Discard')}:{' '}
+              </span>
               <span
                 data-tutorial="discards-remaining"
                 className="text-xs font-bold text-white"

@@ -15,6 +15,7 @@ import {
   type SupportedLanguage,
 } from '../../i18n'
 import { useAppNavigation } from '../../router'
+import { ControlIcon } from './ControlIcon'
 
 interface LanguageSelectorProps {
   className?: string
@@ -24,7 +25,10 @@ interface LanguageSelectorProps {
 /**
  * Language selector dropdown
  */
-export function LanguageSelector({ className = '', compact = false }: LanguageSelectorProps) {
+export function LanguageSelector({
+  className = '',
+  compact = false,
+}: LanguageSelectorProps) {
   const { t } = useTranslation()
   const { changeLanguage: switchLanguage } = useAppNavigation()
   const [isOpen, setIsOpen] = useState(false)
@@ -35,7 +39,10 @@ export function LanguageSelector({ className = '', compact = false }: LanguageSe
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -87,30 +94,27 @@ export function LanguageSelector({ className = '', compact = false }: LanguageSe
         aria-expanded={isOpen}
         aria-label={t('accessibility.selectLanguage')}
       >
-        {/* Globe Icon */}
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-          />
-        </svg>
+        {/* Compact live language code keeps this control identifiable. */}
+        <span
+          aria-hidden="true"
+          className="inline-flex h-5 min-w-5 items-center justify-center text-[10px] font-semibold leading-none"
+        >
+          {currentLang.toUpperCase()}
+        </span>
 
         {/* Current Language */}
         {!compact && (
-          <span className="hidden sm:inline">{LANGUAGE_NAMES[currentLang]}</span>
+          <span className="hidden sm:inline">
+            {LANGUAGE_NAMES[currentLang]}
+          </span>
         )}
 
         {/* Dropdown Arrow */}
-        <svg
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <ControlIcon
+          name="next"
+          size={16}
+          className={`transition-transform duration-200 ${isOpen ? '-rotate-90' : 'rotate-90'}`}
+        />
       </button>
 
       {/* Dropdown Menu */}
@@ -152,17 +156,17 @@ export function LanguageSelector({ className = '', compact = false }: LanguageSe
               <span className="font-ui text-base">{LANGUAGE_NAMES[lang]}</span>
 
               {/* English Name (for accessibility) */}
-              <span className="text-sm opacity-60">{LANGUAGE_NAMES_EN[lang]}</span>
+              <span className="text-sm opacity-60">
+                {LANGUAGE_NAMES_EN[lang]}
+              </span>
 
               {/* Checkmark for selected */}
               {lang === currentLang && (
-                <svg className="w-5 h-5 text-[var(--color-golden-yellow)]" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <ControlIcon
+                  name="check"
+                  size={20}
+                  className="text-[var(--color-golden-yellow)]"
+                />
               )}
             </button>
           ))}
@@ -175,7 +179,11 @@ export function LanguageSelector({ className = '', compact = false }: LanguageSe
 /**
  * Compact language selector for mobile/small spaces
  */
-export function LanguageSelectorCompact({ className = '' }: { className?: string }) {
+export function LanguageSelectorCompact({
+  className = '',
+}: {
+  className?: string
+}) {
   return <LanguageSelector className={className} compact />
 }
 

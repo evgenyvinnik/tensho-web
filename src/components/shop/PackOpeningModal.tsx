@@ -25,7 +25,8 @@ import {
   getTileImagePath,
   getFateSealIllustration,
   getVoidScriptIllustration,
-  illustrationAssets,
+  getCelestialOrbIllustration,
+  getPackIllustration,
 } from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import type { FateSeal } from '../../systems/FateSealSystem'
@@ -36,6 +37,8 @@ import {
 } from '../../i18n/useItemText'
 import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
 import { tileRewardText } from '../../i18n/tileRewardText'
+import { ControlIcon } from '../ui/ControlIcon'
+import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
 
 const AnimatedDiv = animated('div')
 
@@ -85,7 +88,7 @@ function getContentArtwork(content: PackContent): string | null {
     case 'FateSeal':
       return getFateSealIllustration((content.data as FateSeal).id)
     case 'CelestialOrb':
-      return illustrationAssets.consumables.celestialOrb
+      return getCelestialOrbIllustration((content.data as CelestialOrb).id)
     case 'VoidScript':
       return getVoidScriptIllustration((content.data as VoidScript).id)
     case 'Tile': {
@@ -231,17 +234,11 @@ function PackContentCard({
       {/* Selected checkmark */}
       {isSelected && (
         <div className="absolute top-1 right-1 w-6 h-6 rounded-full bg-[var(--color-golden-yellow)] flex items-center justify-center z-10">
-          <svg
-            className="w-4 h-4 text-[var(--color-dark-forest)]"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <ControlIcon
+            name="check"
+            size={16}
+            className="text-[var(--color-dark-forest)]"
+          />
         </div>
       )}
 
@@ -465,7 +462,7 @@ export function PackOpeningModal({
         <div className="flex-shrink-0 border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
           <div className="relative flex items-center justify-center gap-3 text-center sm:gap-4">
             <img
-              src={illustrationAssets.packs[pack.type]}
+              src={getPackIllustration(pack.type, 'open')}
               alt=""
               aria-hidden="true"
               className={`game-illustration h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20 ${

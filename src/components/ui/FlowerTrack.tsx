@@ -7,31 +7,33 @@
 
 import { useSpring, animated, useTrail } from '@react-spring/web'
 import { FlowerVariant, FlowerTile, FlowerSetBonus } from '../../systems/types'
+import { ControlIcon } from './ControlIcon'
+import { flowerIllustrations } from '../../utils/assets'
 
 /**
  * Flower variant visual data
  */
 const FLOWER_DATA: Record<
   FlowerVariant,
-  { emoji: string; color: string; effect: string }
+  { art: string; color: string; effect: string }
 > = {
   Plum: {
-    emoji: '🌸',
+    art: flowerIllustrations.Plum,
     color: 'from-pink-400 to-pink-600',
     effect: '+5% per sequence',
   },
   Orchid: {
-    emoji: '🌺',
+    art: flowerIllustrations.Orchid,
     color: 'from-purple-400 to-purple-600',
     effect: '+5% per honor',
   },
   Chrysanthemum: {
-    emoji: '🌼',
+    art: flowerIllustrations.Chrysanthemum,
     color: 'from-yellow-400 to-yellow-600',
     effect: '+5% per concealed',
   },
   Bamboo: {
-    emoji: '🎋',
+    art: flowerIllustrations.Bamboo,
     color: 'from-green-400 to-green-600',
     effect: '+5% per terminal',
   },
@@ -40,7 +42,12 @@ const FLOWER_DATA: Record<
 /**
  * Order of flowers for display
  */
-const FLOWER_ORDER: FlowerVariant[] = ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']
+const FLOWER_ORDER: FlowerVariant[] = [
+  'Plum',
+  'Orchid',
+  'Chrysanthemum',
+  'Bamboo',
+]
 
 export interface FlowerTrackProps {
   flowers: FlowerTile[]
@@ -113,7 +120,16 @@ export function FlowerTrack({
               title={`${flowerType}: ${data.effect}`}
             >
               <span className={isCompact ? 'text-lg' : 'text-2xl'}>
-                {isCollected ? data.emoji : '❓'}
+                {isCollected ? (
+                  <img
+                    src={data.art}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-8 w-8 object-contain"
+                  />
+                ) : (
+                  <ControlIcon name="help" />
+                )}
               </span>
 
               {showLabels && !isCompact && (
@@ -125,7 +141,9 @@ export function FlowerTrack({
               {/* Effectiveness multiplier badge */}
               {isCollected && effectiveness > 1 && (
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--color-vibrant-orange)] rounded-full flex items-center justify-center">
-                  <span className="text-[8px] text-white font-bold">×{effectiveness}</span>
+                  <span className="text-[8px] text-white font-bold">
+                    ×{effectiveness}
+                  </span>
                 </div>
               )}
             </animated.div>
@@ -141,8 +159,15 @@ export function FlowerTrack({
               key={flower.id}
               className="flex items-center gap-2 text-[var(--color-beige-white)]"
             >
-              <span>{FLOWER_DATA[flower.type].emoji}</span>
-              <span className="opacity-70">{FLOWER_DATA[flower.type].effect}</span>
+              <img
+                src={FLOWER_DATA[flower.type].art}
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-8 object-contain"
+              />
+              <span className="opacity-70">
+                {FLOWER_DATA[flower.type].effect}
+              </span>
               {effectiveness > 1 && (
                 <span className="text-[var(--color-golden-yellow)]">
                   (×{effectiveness})
@@ -183,7 +208,8 @@ function SetBonusBadge({ bonus }: SetBonusBadgeProps) {
   return (
     <div className="flex items-center gap-2 px-2 py-1 bg-[var(--color-dark-forest)] rounded text-xs">
       <span className="text-[var(--color-golden-yellow)] font-bold">
-        {bonus.requiredCount}🌸
+        {bonus.requiredCount}
+        <ControlIcon name="flower" size={16} />
       </span>
       <span className="text-[var(--color-beige-white)]">
         {bonus.effect.description}
@@ -229,7 +255,18 @@ export function FlowerMini({
       `}
       title={`${type}: ${data.effect}`}
     >
-      <span>{isCollected ? data.emoji : '❓'}</span>
+      <span>
+        {isCollected ? (
+          <img
+            src={data.art}
+            alt=""
+            aria-hidden="true"
+            className="h-8 w-8 object-contain"
+          />
+        ) : (
+          <ControlIcon name="help" />
+        )}
+      </span>
     </div>
   )
 }
@@ -284,7 +321,9 @@ export function FlowerProgress({
 
       {/* Count label */}
       <div className="flex justify-between mt-1 text-xs text-[var(--color-beige-white)]">
-        <span>🌸 {count}/{maxCount}</span>
+        <span>
+          <ControlIcon name="flower" size={16} /> {count}/{maxCount}
+        </span>
         {count >= 4 && (
           <span className="text-[var(--color-golden-yellow)] font-bold">
             ×2 Effectiveness!

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { TileSuit, Tile } from '../../../core/Tile'
 import { TileImage } from '../../tiles/TileImage'
+import { ControlIcon } from '../ControlIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -105,7 +106,7 @@ export interface ArrowProps {
 // =============================================================================
 
 /**
- * Arrow SVG component for tutorial tooltips
+ * Generated directional artwork for tutorial tooltips
  *
  * Renders a directional arrow that points toward the target element.
  * The arrow rotates based on the specified direction.
@@ -115,20 +116,18 @@ export interface ArrowProps {
  */
 export function Arrow({ direction, className }: ArrowProps) {
   const rotations: Record<typeof direction, string> = {
-    top: 'rotate-0',
-    bottom: 'rotate-180',
-    left: '-rotate-90',
-    right: 'rotate-90',
+    top: '-rotate-90',
+    bottom: 'rotate-90',
+    left: 'rotate-180',
+    right: 'rotate-0',
   }
 
   return (
-    <svg
-      className={`w-8 h-8 text-[var(--color-golden-yellow)] ${rotations[direction]} ${className}`}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path d="M12 2L4 14h6v8h4v-8h6L12 2z" />
-    </svg>
+    <ControlIcon
+      name="next"
+      size={32}
+      className={`text-[var(--color-golden-yellow)] ${rotations[direction]} ${className}`}
+    />
   )
 }
 
@@ -210,8 +209,14 @@ export function TutorialTooltip({
     const tooltipWidth = tooltipRef.current?.offsetWidth || 300
     const tooltipHeight = tooltipRef.current?.offsetHeight || 200
 
-    x = Math.max(padding + tooltipWidth / 2, Math.min(window.innerWidth - padding - tooltipWidth / 2, x))
-    y = Math.max(padding + tooltipHeight / 2, Math.min(window.innerHeight - padding - tooltipHeight / 2, y))
+    x = Math.max(
+      padding + tooltipWidth / 2,
+      Math.min(window.innerWidth - padding - tooltipWidth / 2, x)
+    )
+    y = Math.max(
+      padding + tooltipHeight / 2,
+      Math.min(window.innerHeight - padding - tooltipHeight / 2, y)
+    )
 
     setTooltipPosition({ x, y })
   }, [targetRect, step.position, step.arrowDirection])
@@ -223,11 +228,21 @@ export function TutorialTooltip({
       case 'top':
         return { ...base, top: -28, left: '50%', transform: 'translateX(-50%)' }
       case 'bottom':
-        return { ...base, bottom: -28, left: '50%', transform: 'translateX(-50%)' }
+        return {
+          ...base,
+          bottom: -28,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }
       case 'left':
         return { ...base, left: -28, top: '50%', transform: 'translateY(-50%)' }
       case 'right':
-        return { ...base, right: -28, top: '50%', transform: 'translateY(-50%)' }
+        return {
+          ...base,
+          right: -28,
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }
     }
   }
 
@@ -267,7 +282,10 @@ export function TutorialTooltip({
                 {tileRow.map((tileExample, tileIndex) => {
                   const tile = Tile.create(tileExample.suit, tileExample.rank)
                   return (
-                    <div key={tileIndex} className="flex flex-col items-center gap-1">
+                    <div
+                      key={tileIndex}
+                      className="flex flex-col items-center gap-1"
+                    >
                       <TileImage tile={tile} size="small" />
                       {tileExample.label && (
                         <span className="text-xs text-[var(--color-metallic-gold)]">
@@ -358,7 +376,8 @@ export function HighlightOverlay({
           width: width,
           height: height,
           opacity: highlightSpring.opacity,
-          boxShadow: '0 0 30px var(--color-golden-yellow), 0 0 60px var(--color-golden-yellow), inset 0 0 20px rgba(255,213,79,0.3)',
+          boxShadow:
+            '0 0 30px var(--color-golden-yellow), 0 0 60px var(--color-golden-yellow), inset 0 0 20px rgba(255,213,79,0.3)',
         }}
       />
     </>

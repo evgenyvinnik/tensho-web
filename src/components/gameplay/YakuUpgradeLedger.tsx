@@ -1,3 +1,4 @@
+import { YakuArtwork } from '../ui/YakuArtwork'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
@@ -95,6 +96,7 @@ export function YakuUpgradeLedger({
                   className="rounded-lg border border-[var(--color-metallic-gold)]/40 bg-black/20 p-3"
                 >
                   <h3 className="text-sm font-semibold text-[var(--color-golden-yellow)]">
+                    <YakuArtwork id={upgrade.yaku} className="mr-2 h-10 w-10" />
                     {t(`yaku.${YAKU_KEYS[upgrade.yaku]}`)}
                   </h3>
                   <p className="mt-1">

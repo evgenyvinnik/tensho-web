@@ -1,3 +1,4 @@
+import { ControlIcon } from '../ui/ControlIcon'
 import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { CoachAdvice, CoachOption } from '../../gameplay/beginnerCoach'
@@ -118,19 +119,7 @@ export function CoachPanel({
           title={t('gameplay.coach.explain')}
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--color-metallic-gold)] hover:bg-white/10"
         >
-          <svg
-            aria-hidden="true"
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <circle cx="12" cy="12" r="9" />
-            <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4" />
-            <path d="M12 16v1" />
-          </svg>
+          <ControlIcon name="help" size={22} />
         </button>
       </div>
       <Popup

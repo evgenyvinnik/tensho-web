@@ -4,15 +4,31 @@
  * Components for displaying and animating tile hands.
  */
 
-import React, { useCallback, useMemo, useRef, useState, useLayoutEffect } from 'react'
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from 'react'
 import { useTranslation } from 'react-i18next'
-import { animated, useTransition, useSprings, useSpring, to, type SpringValue } from '@react-spring/web'
+import {
+  animated,
+  useTransition,
+  useSprings,
+  useSpring,
+  to,
+  type SpringValue,
+} from '@react-spring/web'
 import { Tile } from '../../../core/Tile'
 import { AnimatedTile } from '../../tiles/AnimatedTile'
 import { TileSize, tileSizes } from '../../../styles/theme'
 import { useSettingsStore } from '../../../stores/settingsStore'
 import { SPRINGS, STAGGER } from '../../../animations/constants'
-import { calculateFannedPositions, calculateStraightPositions } from './positionUtils'
+import {
+  calculateFannedPositions,
+  calculateStraightPositions,
+} from './positionUtils'
 
 /**
  * The animated values the hand transition drives per tile.
@@ -72,7 +88,10 @@ export interface AnimatedHandProps {
 /**
  * Props for HandWithDiscardZone component
  */
-export interface HandWithDiscardZoneProps extends Omit<AnimatedHandProps, 'onDragStart' | 'onDragEnd'> {
+export interface HandWithDiscardZoneProps extends Omit<
+  AnimatedHandProps,
+  'onDragStart' | 'onDragEnd'
+> {
   /** Label for the discard zone */
   discardZoneLabel?: string
 }
@@ -126,7 +145,12 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   // Calculate positions based on layout type
   const positions = useMemo(() => {
     if (fanned) {
-      return calculateFannedPositions(tiles.length, dimensions.width, maxFanAngle, overlap)
+      return calculateFannedPositions(
+        tiles.length,
+        dimensions.width,
+        maxFanAngle,
+        overlap
+      )
     }
     return calculateStraightPositions(tiles.length, dimensions.width, overlap)
   }, [tiles.length, dimensions.width, maxFanAngle, overlap, fanned])
@@ -229,7 +253,8 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
   const containerWidth = useMemo(() => {
     if (tiles.length === 0) return 0
     const overlapFactor = overlap ? 0.7 : 1
-    const totalWidth = (tiles.length - 1) * dimensions.width * overlapFactor + dimensions.width
+    const totalWidth =
+      (tiles.length - 1) * dimensions.width * overlapFactor + dimensions.width
     return totalWidth
   }, [tiles.length, dimensions.width, overlap])
 
@@ -253,7 +278,11 @@ export const AnimatedHand: React.FC<AnimatedHandProps> = ({
       >
         {transitions((values, tile, _, index) => {
           const style = values as unknown as TileTransitionStyle
-          const position = positions[index] || { x: 0, rotation: 0, zIndex: index }
+          const position = positions[index] || {
+            x: 0,
+            rotation: 0,
+            zIndex: index,
+          }
 
           return (
             <animated.div
@@ -309,23 +338,29 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
   }, [])
 
   // Handle drag end - hide discard zone
-  const handleDragEnd = useCallback((_tile: Tile, position: { x: number; y: number }) => {
-    setIsDragging(false)
-    setIsNearZone(false)
-    // Check if near discard zone for visual feedback
-    const viewportHeight = window.innerHeight
-    if (position.y < viewportHeight * 0.4) {
-      // Will be discarded - flash effect handled by parent
-    }
-  }, [])
+  const handleDragEnd = useCallback(
+    (_tile: Tile, position: { x: number; y: number }) => {
+      setIsDragging(false)
+      setIsNearZone(false)
+      // Check if near discard zone for visual feedback
+      const viewportHeight = window.innerHeight
+      if (position.y < viewportHeight * 0.4) {
+        // Will be discarded - flash effect handled by parent
+      }
+    },
+    []
+  )
 
   // Track mouse/touch position to show "near zone" effect
-  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
-    if (!isDragging) return
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
-    const viewportHeight = window.innerHeight
-    setIsNearZone(clientY < viewportHeight * 0.45)
-  }, [isDragging])
+  const handleDragMove = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (!isDragging) return
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+      const viewportHeight = window.innerHeight
+      setIsNearZone(clientY < viewportHeight * 0.45)
+    },
+    [isDragging]
+  )
 
   // Add global move listener when dragging
   React.useEffect(() => {
@@ -369,15 +404,19 @@ export const HandWithDiscardZone: React.FC<HandWithDiscardZoneProps> = ({
             className="px-10 py-5 rounded-xl border-3 border-dashed font-bold text-lg"
             style={{
               borderColor: isNearZone ? '#FF5722' : '#FF8A65',
-              backgroundColor: isNearZone ? 'rgba(255, 87, 34, 0.25)' : 'rgba(255, 87, 34, 0.1)',
+              backgroundColor: isNearZone
+                ? 'rgba(255, 87, 34, 0.25)'
+                : 'rgba(255, 87, 34, 0.1)',
               color: isNearZone ? '#FF5722' : '#FF8A65',
               boxShadow: discardZoneSpring.glowIntensity.to(
-                (i) => `0 0 ${i * 30}px rgba(255, 87, 34, ${i * 0.5}), inset 0 0 ${i * 20}px rgba(255, 87, 34, ${i * 0.2})`
+                (i) =>
+                  `0 0 ${i * 30}px rgba(255, 87, 34, ${i * 0.5}), inset 0 0 ${i * 20}px rgba(255, 87, 34, ${i * 0.2})`
               ),
-              transition: 'border-color 0.15s, background-color 0.15s, color 0.15s',
+              transition:
+                'border-color 0.15s, background-color 0.15s, color 0.15s',
             }}
           >
-            {isNearZone ? '🗑️ Release to Discard!' : discardZoneLabel}
+            {isNearZone ? 'Release to Discard!' : discardZoneLabel}
           </animated.div>
         </animated.div>
       )}
@@ -428,11 +467,7 @@ export const CompactHand: React.FC<CompactHandProps> = ({
             }}
           >
             {tile && !faceDown ? (
-              <AnimatedTile
-                tile={tile}
-                size={size}
-                disabled
-              />
+              <AnimatedTile tile={tile} size={size} disabled />
             ) : (
               <div
                 style={{

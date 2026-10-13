@@ -34,6 +34,7 @@ import {
   type SupportedLanguage,
 } from '../i18n'
 import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
+import { ControlIcon } from '../components/ui/ControlIcon'
 import { APP_BASE_URL, APP_ROUTER_BASENAME } from '../utils/basePath'
 import { audioSystem } from '../systems/AudioSystem'
 import { useUpdateStore } from '../pwa/updateStore'
@@ -155,7 +156,9 @@ export function RouteErrorBoundary() {
     return (
       <div className="viewport-full flex items-center justify-center bg-[var(--color-dark-forest)] p-4">
         <div className="max-w-md w-full text-center">
-          <div className="text-6xl mb-6">🗺️</div>
+          <div className="mb-6 flex justify-center">
+            <ControlIcon name="compass" size={64} />
+          </div>
           <h1 className="text-3xl font-bold text-[var(--color-golden-yellow)] mb-3">
             {error.status === 404 ? 'Page Not Found' : `Error ${error.status}`}
           </h1>

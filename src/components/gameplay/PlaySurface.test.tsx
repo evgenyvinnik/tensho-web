@@ -8,7 +8,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PlaySurface } from './PlaySurface'
-import { Tile, TileSuit } from '../../core/Tile'
+import { Tile, TileSuit, EnhancementType } from '../../core/Tile'
 import { MeldType } from '../../core/Meld'
 
 // Mock the settingsStore with all required exports
@@ -296,7 +296,9 @@ describe('PlaySurface', () => {
       )
 
       // Should show discard icon
-      expect(screen.getByText('🗑️')).toBeInTheDocument()
+      expect(
+        document.querySelector('[data-play-zone="discard"] img')
+      ).toHaveAttribute('src', expect.stringMatching(/controls\/redraw\.png$/))
       // Should show discards remaining count
       expect(screen.getByText('3')).toBeInTheDocument()
     })
@@ -314,7 +316,12 @@ describe('PlaySurface', () => {
         />
       )
 
-      expect(screen.getByText(/🖐 4/)).toBeInTheDocument()
+      expect(
+        document.querySelector('[data-tutorial="hands-remaining"]')
+      ).toHaveTextContent('4')
+      expect(
+        document.querySelector('[data-tutorial="hands-remaining"] img')
+      ).toHaveAttribute('src', expect.stringMatching(/controls\/hand\.png$/))
     })
 
     it('should show shanten display when provided', () => {
@@ -958,4 +965,24 @@ describe('PlaySurface', () => {
       expect(screen.getByText(/Hand \(5\)/)).toBeInTheDocument()
     })
   })
+})
+
+it('announces a Stone tile consistently in the playable stage and return controls', () => {
+  const tile = new Tile(TileSuit.Dragon, 3, 'stone-control').withEnhancement(
+    EnhancementType.Stone
+  )
+  render(
+    <PlaySurface
+      handTiles={[tile]}
+      onTileSelect={vi.fn()}
+      onTileDiscard={vi.fn()}
+      onTilesStaged={vi.fn()}
+    />
+  )
+  const stage = screen.getByRole('button', { name: 'Stage Stone Mark' })
+  expect(stage).not.toHaveAccessibleName(/Dragon/)
+  fireEvent.keyDown(stage, { key: 'Enter' })
+  expect(
+    screen.getByRole('button', { name: 'Return Stone Mark to hand' })
+  ).toBeInTheDocument()
 })

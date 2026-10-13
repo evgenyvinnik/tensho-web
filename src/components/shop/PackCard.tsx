@@ -18,7 +18,7 @@ import { useSpring, animated, to } from '@react-spring/web'
 import { BlessingPack, PackType, PackSize } from '../../systems/types'
 import { PACK_TYPE_DEFINITIONS } from '../../config/packDefinitions'
 import { getCurrentLanguage } from '../../i18n'
-import { illustrationAssets } from '../../utils/assets'
+import { getPackIllustration } from '../../utils/assets'
 import { GoldIcon } from '../ui/GoldIcon'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
@@ -115,7 +115,7 @@ export function PackCard({
   const name = t(
     `packs.items.${pack.type.toLowerCase()}_${pack.size.toLowerCase()}.name`
   )
-  const artwork = illustrationAssets.packs[pack.type]
+  const artwork = getPackIllustration(pack.type)
   const sizeIndicator = getPackSizeIndicator(pack.size, showCJK)
   const gradient = getPackGradient(pack.type)
 

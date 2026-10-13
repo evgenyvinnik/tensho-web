@@ -1,20 +1,19 @@
-import { getDecreeIllustration } from '../../utils/assets'
-import { DecreeUniqueIcon } from './svg/DecreeIcons'
+import { getDecreeIllustration, illustrationAssets } from '../../utils/assets'
 
 /** Optional authored portraits share one mapping across shop, archive and inventory. */
 export function DecreeArtwork({
   decreeId,
   size = 48,
-  color,
+  color: _color,
 }: {
   decreeId: string
   size?: number
   color?: string
 }) {
   const illustration = getDecreeIllustration(decreeId)
-  return illustration ? (
+  return (
     <img
-      src={illustration}
+      src={illustration ?? illustrationAssets.codex.decrees}
       width={size}
       height={size}
       alt=""
@@ -23,7 +22,5 @@ export function DecreeArtwork({
       className="game-illustration shrink-0 object-contain"
       style={{ width: size, height: size }}
     />
-  ) : (
-    <DecreeUniqueIcon decreeId={decreeId} size={size} color={color} />
   )
 }

@@ -23,7 +23,12 @@ import { getCurrentLanguage } from '../../i18n'
 import { DecreeArtwork } from '../ui/DecreeArtwork'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
-import { getFateSealIllustration, illustrationAssets } from '../../utils/assets'
+import {
+  getFateSealIllustration,
+  getCelestialOrbIllustration,
+  getTileImagePath,
+  illustrationAssets,
+} from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import type { FateSeal } from '../../systems/FateSealSystem'
 import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
@@ -36,6 +41,7 @@ import {
 } from '../../i18n/decreeModifiers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 import { getDecreeStickers } from '../../systems/decreeStickers'
+import { ControlIcon } from '../ui/ControlIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -113,26 +119,6 @@ function getRarityDisplayName(rarity: string): string {
   }
 }
 
-/**
- * Get item type icon
- */
-function getItemTypeIcon(itemType: string): string {
-  switch (itemType) {
-    case 'Decree':
-      return '\uD83D\uDCDC' // Scroll
-    case 'FateSeal':
-      return '\uD83D\uDD2E' // Crystal ball
-    case 'CelestialOrb':
-      return '\u2B50' // Star
-    case 'VoidScript':
-      return '\uD83C\uDF0C' // Milky Way
-    case 'Tile':
-      return '\uD83C\uDC04' // Mahjong tile
-    default:
-      return '\u2753' // Question mark
-  }
-}
-
 /** Get generated artwork for the consumable item types that have it. */
 function getItemTypeIllustration(
   itemType: string,
@@ -142,7 +128,7 @@ function getItemTypeIllustration(
     case 'FateSeal':
       return getFateSealIllustration(itemId)
     case 'CelestialOrb':
-      return illustrationAssets.consumables.celestialOrb
+      return getCelestialOrbIllustration(itemId)
     case 'VoidScript':
       return illustrationAssets.consumables.voidScript
     default:
@@ -357,7 +343,6 @@ export function ShopItemCard({
       description = ''
   }
 
-  const icon = getItemTypeIcon(offering.itemType)
   const illustration = getItemTypeIllustration(
     offering.itemType,
     offering.item.id
@@ -450,8 +435,18 @@ export function ShopItemCard({
               aria-hidden="true"
               className="game-illustration mx-auto h-14 w-14 object-contain"
             />
+          ) : offering.itemType === 'Tile' ? (
+            <img
+              src={getTileImagePath(
+                (offering.item as Tile).suit,
+                (offering.item as Tile).rank
+              )}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto h-14 w-14 object-contain"
+            />
           ) : (
-            <span className="text-3xl">{icon}</span>
+            <ControlIcon name="neutral-item" size={48} />
           )}
           {showCJK && (
             <p className="text-xs text-[var(--color-metallic-gold)] mt-1">

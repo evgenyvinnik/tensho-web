@@ -5,7 +5,7 @@
  * Based on ARCHITECTURE.MD Section 30.
  */
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
@@ -20,6 +20,8 @@ import {
 } from '../../stores/achievementStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { useProgressionStore } from '../../stores/progressionStore'
+import { getGeneratedArt, type ControlArtId } from '../../utils/generatedArt'
+import { ControlIcon } from '../ui/ControlIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -85,6 +87,15 @@ function AchievementCard({
         hover:scale-[1.02] active:scale-[0.98]
       `}
       onClick={() => setIsExpanded(!isExpanded)}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          setIsExpanded(!isExpanded)
+        }
+      }}
     >
       {/* Header row */}
       <div className="flex items-start gap-3">
@@ -95,7 +106,12 @@ function AchievementCard({
             ${unlocked ? 'bg-[var(--color-dark-forest)]' : 'bg-[var(--color-forest-green)] grayscale'}
           `}
         >
-          {definition.icon}
+          <img
+            src={getGeneratedArt('achievements', definition.icon)}
+            alt=""
+            aria-hidden="true"
+            className="h-12 w-12 object-contain"
+          />
         </div>
 
         {/* Text content */}
@@ -109,7 +125,7 @@ function AchievementCard({
             >
               {t(definition.nameKey, { defaultValue: fallbackName })}
             </h3>
-            {unlocked && <span className="text-green-400 text-sm">✓</span>}
+            {unlocked && <ControlIcon name="check" size={16} />}
           </div>
 
           <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
@@ -163,7 +179,7 @@ function CategoryTab({
   unlockedCount,
   totalCount,
 }: {
-  category: { id: AchievementCategory; nameKey: string; icon: string }
+  category: { id: AchievementCategory; nameKey: string; icon: ControlArtId }
   isActive: boolean
   onClick: () => void
   unlockedCount: number
@@ -174,6 +190,8 @@ function CategoryTab({
   return (
     <button
       onClick={onClick}
+      aria-label={t(category.nameKey, category.id)}
+      aria-pressed={isActive}
       className={`
         flex-shrink-0 px-4 py-2 rounded-lg font-bold text-sm
         border-2 transition-all duration-200
@@ -185,7 +203,9 @@ function CategoryTab({
         }
       `}
     >
-      <span className="mr-1">{category.icon}</span>
+      <span className="mr-1">
+        <ControlIcon name={category.icon} />
+      </span>
       <span className="hidden sm:inline">
         {t(category.nameKey, category.id)}
       </span>

@@ -26,6 +26,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { ControlIcon } from './ControlIcon'
 
 const TABBABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -255,7 +256,7 @@ export function AnchoredPopover({
           aria-label={t('common.close', 'Close')}
           className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-lg text-[var(--color-beige-white)]/70 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-amber-300"
         >
-          <span aria-hidden="true">✕</span>
+          <ControlIcon name="close" size={18} />
         </button>
       </div>
       {children}

@@ -19,6 +19,7 @@ import { getTileImagePath, getTileBackPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
+import { EnhancementType } from '../../core/TileModifier'
 
 export type TileSize = keyof typeof tileSizes
 
@@ -103,8 +104,14 @@ export const TileImage: React.FC<TileImageProps> = ({
   const dimensions = tileSizes[size]
   // Rank numbers are an opt-in reading aid (Settings), taught in the guide.
   const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
+  // A Stone tile has no rank or suit: its face is the stone itself.
+  const stoneFace = !faceDown && tile?.enhancement === EnhancementType.Stone
+  const enhancedFace =
+    !faceDown && tile && tile.enhancement !== EnhancementType.None
   const indexHint =
-    (showIndex ?? showRankNumbers) ? tileIndexHint(tile, t, faceDown) : null
+    (showIndex ?? showRankNumbers) && !stoneFace
+      ? tileIndexHint(tile, t, faceDown)
+      : null
   const src = getTileSrc(tile, faceDown)
   const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
 
@@ -241,19 +248,32 @@ export const TileImage: React.FC<TileImageProps> = ({
       aria-disabled={disabled}
       aria-describedby={tooltipOpen && isInteractive ? tooltipId : undefined}
     >
-      <img
-        src={src}
-        alt={tileInfo.name}
-        className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
-        draggable={false}
-        loading={loading}
-      />
+      {stoneFace ? (
+        <span
+          role="img"
+          aria-label={t('tileMarks.items.stone.name', 'Stone Mark')}
+          className="absolute inset-0 rounded-md bg-stone-600"
+        />
+      ) : (
+        <img
+          src={src}
+          alt={tileInfo.name}
+          className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
+          draggable={false}
+          loading={loading}
+          style={
+            enhancedFace
+              ? { padding: '12% 10%', backgroundColor: '#eee8d4' }
+              : undefined
+          }
+        />
+      )}
       {indexHint && (
         <span
           aria-hidden="true"
           data-tile-index={indexHint.label}
           data-tile-index-tone={indexHint.tone}
-          className="tile-index"
+          className="tile-index z-20"
           style={{
             fontSize: Math.max(9, Math.round(dimensions.width * 0.2)),
             // Keep meaningful short words (e.g. Tagalog "Berde") readable

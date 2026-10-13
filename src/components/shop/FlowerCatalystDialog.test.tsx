@@ -61,7 +61,11 @@ it.each(['en', 'es'] as const)(
         .getAllByRole('radio')
         .every((radio) => !(radio as HTMLInputElement).checked)
     ).toBe(true)
-    expect(dialog.querySelectorAll('img')).toHaveLength(4)
+    expect(dialog.querySelectorAll('fieldset img')).toHaveLength(4)
+    expect(dialog.querySelector('button img')).toHaveAttribute(
+      'src',
+      '/assets/illustrations/generated/controls/close.png'
+    )
     expect(
       dialog.querySelector('img[src$="chrysanthemum-bloom.webp"]')
     ).not.toBeNull()

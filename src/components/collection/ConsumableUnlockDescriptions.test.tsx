@@ -1,8 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
 import i18n, { loadLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { CONSUMABLE_UNLOCKS } from '../../config/unlockDefinitions'
-import { ItemDetailModal } from './ItemDetailModal'
+import { ItemCard } from './ItemCard'
 import { ArchiveSystem } from '../../systems/ArchiveSystem'
 
 afterEach(async () => {
@@ -24,11 +24,8 @@ it.each(SUPPORTED_LANGUAGES)(
       if (language !== 'en')
         expect(rule).not.toBe(i18n.getResource('en', 'translation', key))
       render(
-        <ItemDetailModal
-          isOpen
-          onClose={() => {}}
+        <ItemCard
           entry={entry}
-          categoryInfo={null}
           displayInfo={{
             id: entry.itemId,
             name: definition.name,
@@ -37,6 +34,7 @@ it.each(SUPPORTED_LANGUAGES)(
           }}
         />
       )
+      fireEvent.click(screen.getByRole('button'), { detail: 1 })
       expect(screen.getByRole('dialog')).toHaveTextContent(rule)
       cleanup()
     }

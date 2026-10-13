@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next'
-import { Tile, TileSuit } from '../core/Tile'
+import { Tile, TileSuit, EnhancementType } from '../core/Tile'
 import { tileModifierEntries } from '../core/tileModifierEntries'
 import { getTilePoints } from '../rules/ScoringEngine'
 import { FLOWER_BASE_EFFECTS } from '../systems/FlowerSystem'
@@ -15,7 +15,8 @@ export function tileIndexHint(
   t: TFunction,
   faceDown = false
 ): { label: string; tone?: (typeof DRAGONS)[number] } | null {
-  if (!tile || faceDown) return null
+  if (!tile || faceDown || tile.enhancement === EnhancementType.Stone)
+    return null
   if (tile.isSuited) return { label: String(tile.rank) }
   if (tile.suit !== TileSuit.Dragon) return null
   const tone = DRAGONS[tile.rank - 1]
@@ -29,6 +30,8 @@ export function tileName(
   faceDown = false
 ): string {
   if (!tile || faceDown) return t('tileDetails.faceDown')
+  if (tile.enhancement === EnhancementType.Stone)
+    return t('tileMarks.items.stone.name', 'Stone Mark')
   if (tile.isSuited) {
     const name = t('tileDetails.suitedName', {
       rank: tile.rank,
@@ -66,7 +69,10 @@ export function tileDetails(
   let points = t('tileDetails.basePoints', {
     points: getTilePoints(tile).toLocaleString(language),
   })
-  if (tile.suit === TileSuit.Flower) {
+  if (tile.enhancement === EnhancementType.Stone) {
+    description = t('tileMarks.items.stone.description', 'No rank or suit')
+    points = ''
+  } else if (tile.suit === TileSuit.Flower) {
     const flower = FLOWERS[tile.rank - 1]
     description =
       t(`flora.details.flower${flower}`, {

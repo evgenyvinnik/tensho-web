@@ -1,8 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
 import i18n, { loadLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { ALL_DECREES } from '../../config/decreeDefinitions'
-import { ItemDetailModal } from './ItemDetailModal'
+import { ItemCard } from './ItemCard'
 import { ArchiveSystem } from '../../systems/ArchiveSystem'
 
 afterEach(async () => {
@@ -31,11 +31,8 @@ it.each(SUPPORTED_LANGUAGES)(
       if (language !== 'en')
         expect(localRule).not.toBe(i18n.getResource('en', 'translation', key))
       render(
-        <ItemDetailModal
-          isOpen
-          onClose={() => {}}
+        <ItemCard
           entry={entry}
-          categoryInfo={null}
           displayInfo={{
             id: decree.id,
             name: localItem.name,
@@ -44,8 +41,10 @@ it.each(SUPPORTED_LANGUAGES)(
           }}
         />
       )
+      // A locked reward stays readable: what it is, does, and needs.
+      fireEvent.click(screen.getByRole('button'), { detail: 1 })
       expect(screen.getByRole('dialog')).toHaveTextContent(localRule)
-      expect(screen.getByRole('dialog')).toHaveAccessibleName(localItem.name)
+      expect(screen.getByRole('dialog')).toHaveTextContent(localItem.name)
       expect(screen.getByRole('dialog')).toHaveTextContent(
         localItem.description
       )

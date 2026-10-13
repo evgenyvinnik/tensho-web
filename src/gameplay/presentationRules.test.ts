@@ -78,7 +78,9 @@ describe('item art', () => {
   )
 
   it('marks shared family art as not the item’s own', () => {
-    expect(getItemArt('orbs', 'pluto_orb').hasOwnArt).toBe(false)
+    expect(getItemArt('omens', 'fortune_omen').hasOwnArt).toBe(false)
+    expect(getItemArt('orbs', 'pluto_orb').hasOwnArt).toBe(true)
+    expect(getItemArt('orbs', 'not_an_orb').hasOwnArt).toBe(false)
     expect(getItemArt('charters', 'observatory').hasOwnArt).toBe(true)
     expect(getItemArt('charters', 'not_a_charter').hasOwnArt).toBe(false)
     expect(getItemArt('packs', 'Decree').hasOwnArt).toBe(true)

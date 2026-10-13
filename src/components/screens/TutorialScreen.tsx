@@ -49,7 +49,9 @@ export function TutorialScreen() {
   const [currentStep, setCurrentStep] = useState(0)
 
   // Track visited steps
-  const [visitedSteps, setVisitedSteps] = useState<Set<number>>(() => new Set([0]))
+  const [visitedSteps, setVisitedSteps] = useState<Set<number>>(
+    () => new Set([0])
+  )
 
   // Mark current step as visited when it changes
   useEffect(() => {
@@ -134,7 +136,11 @@ export function TutorialScreen() {
 
       {/* Mobile category tabs */}
       <div className="lg:hidden px-4 py-3 bg-[var(--color-dark-forest)] border-t border-[var(--color-forest-green)]">
-        <CategoryTabs categories={categories} currentCategory={currentCategory} onCategoryClick={handleCategoryClick} />
+        <CategoryTabs
+          categories={categories}
+          currentCategory={currentCategory}
+          onCategoryClick={handleCategoryClick}
+        />
       </div>
 
       {/* Main content area */}
@@ -143,7 +149,9 @@ export function TutorialScreen() {
         <div className="hidden lg:flex lg:flex-col lg:w-72 bg-[var(--color-dark-forest)] border-r border-[var(--color-forest-green)] overflow-y-auto p-4 gap-2">
           {categories.map((category) => {
             const catSteps = categorySteps[category] || []
-            const completedCount = catSteps.filter((i) => visitedSteps.has(i)).length
+            const completedCount = catSteps.filter((i) =>
+              visitedSteps.has(i)
+            ).length
 
             return (
               <CategoryItem
@@ -172,11 +180,12 @@ export function TutorialScreen() {
                   key={stepIndex}
                   onClick={() => handleStepClick(stepIndex)}
                   className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
-                    ${isActive
-                      ? 'bg-[var(--color-vibrant-orange)] text-white scale-110'
-                      : isVisited
-                        ? 'bg-[var(--color-forest-green)] text-[var(--color-golden-yellow)]'
-                        : 'bg-[var(--color-dark-forest)] text-[var(--color-beige-white)] opacity-50'
+                    ${
+                      isActive
+                        ? 'bg-[var(--color-vibrant-orange)] text-white scale-110'
+                        : isVisited
+                          ? 'bg-[var(--color-forest-green)] text-[var(--color-golden-yellow)]'
+                          : 'bg-[var(--color-dark-forest)] text-[var(--color-beige-white)] opacity-50'
                     }`}
                   title={step.title}
                 >
@@ -192,7 +201,12 @@ export function TutorialScreen() {
             <div className="mb-6">
               {currentStepData.category && (
                 <div className="inline-flex items-center gap-2 px-3 py-1 text-sm rounded-full bg-[var(--color-dark-forest)] text-[var(--color-metallic-gold)] border border-[var(--color-metallic-gold)]/30 mb-3">
-                  <span>{CATEGORY_CONFIG[currentStepData.category]?.icon || '📖'}</span>
+                  <img
+                    src={CATEGORY_CONFIG[currentStepData.category]?.icon}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-8 w-8 object-contain"
+                  />
                   <span>{currentStepData.category}</span>
                 </div>
               )}
@@ -220,16 +234,29 @@ export function TutorialScreen() {
 
             {/* Navigation buttons */}
             <div className="flex justify-between gap-4">
-              <Button variant="secondary" onClick={handlePrev} disabled={isFirstStep} className="flex-1 max-w-[150px]">
+              <Button
+                variant="secondary"
+                onClick={handlePrev}
+                disabled={isFirstStep}
+                className="flex-1 max-w-[150px]"
+              >
                 ← {t('tutorial.previous', 'Back')}
               </Button>
 
               {isLastStep ? (
-                <Button variant="primary" onClick={handleStartPlaying} className="flex-1 max-w-[200px]">
+                <Button
+                  variant="primary"
+                  onClick={handleStartPlaying}
+                  className="flex-1 max-w-[200px]"
+                >
                   {t('tutorial.finish', 'Start Playing!')}
                 </Button>
               ) : (
-                <Button variant="primary" onClick={handleNext} className="flex-1 max-w-[150px]">
+                <Button
+                  variant="primary"
+                  onClick={handleNext}
+                  className="flex-1 max-w-[150px]"
+                >
                   {t('tutorial.next', 'Next')} →
                 </Button>
               )}

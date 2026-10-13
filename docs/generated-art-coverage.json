@@ -1,0 +1,34 @@
+{
+  "sourceCommit": "fc4239905a8030949416cccb591cfab0d237e7dc",
+  "generatedRuntimeImageCount": 350,
+  "categoryCounts": {
+    "achievements": 33,
+    "charters": 25,
+    "controls": 39,
+    "decrees": 145,
+    "editions": 4,
+    "enhancements": 8,
+    "fateSeals": 23,
+    "mandates": 23,
+    "orbs": 13,
+    "reveals": 14,
+    "seals": 4,
+    "yaku": 19
+  },
+  "runtimeImageBytes": 3525064,
+  "retainedExisting": {
+    "activeDecreePortraits": 19,
+    "legacyRiichiDecreePortrait": 1,
+    "charters": 7,
+    "fateSeals": 1,
+    "mandates": 5,
+    "voidScripts": 21,
+    "flowersAndSeasons": "Existing illustrations reused"
+  },
+  "catalogNotes": [
+    "Pluto remains in the source catalog: its generated identity is wired and its current effect is unchanged.",
+    "No new Riichi Decree portrait or Skip-reward/TableLoop artwork was generated or added.",
+    "Two draw-bag states and three reveal overlays are included as prepared assets; main has no matching draw-bag interface, so no new mechanic was invented.",
+    "All pack families have sealed/open art; Arcana sealed reuses the existing illustration."
+  ]
+}

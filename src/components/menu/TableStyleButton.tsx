@@ -14,6 +14,7 @@ import { useStakeStore } from '../../stores/stakeStore'
 import { getStakeByTier } from '../../config/stakeDefinitions'
 import { getTableStyleIllustration } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
+import { ControlIcon } from '../ui/ControlIcon'
 
 const AnimatedButton = animated('button')
 
@@ -118,7 +119,10 @@ export function TableStyleButton({
             {t('tableStyle.table', 'Run setup')}
           </span>
           <span className="max-w-full truncate text-[var(--color-beige-white)] drop-shadow-lg">
-            {itemText.name('tableStyles', { ...currentStyle, name: currentStyle.displayName })}
+            {itemText.name('tableStyles', {
+              ...currentStyle,
+              name: currentStyle.displayName,
+            })}
           </span>
         </div>
 
@@ -142,19 +146,11 @@ export function TableStyleButton({
         </span>
 
         {/* Chevron icon */}
-        <svg
-          className="relative h-5 w-5 shrink-0 text-[var(--color-metallic-gold)]"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        <ControlIcon
+          name="next"
+          size={20}
+          className="relative shrink-0 rotate-90 text-[var(--color-metallic-gold)]"
+        />
 
         <div className="absolute inset-0 overflow-hidden rounded-lg pointer-events-none">
           <div className="absolute inset-0 shimmer opacity-20" />

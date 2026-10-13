@@ -1,8 +1,8 @@
 /**
  * DecreeReveal: a new Decree comes out of its bag.
  *
- * A short sequence — the bag shakes, bursts open, and the scroll rises in its
- * rarity's light with its name and effect — for Decrees bought directly,
+ * A short sequence — the draw-bag shakes, bursts open, and the scroll rises in
+ * its rarity's light with its name and effect — for Decrees bought directly,
  * starting Decrees and Decrees created by items. (Pack rewards are revealed by
  * the opened pack itself.) The Decree is already owned before this plays: a
  * tap skips straight to the result, reduced motion shows the result at once,
@@ -16,10 +16,9 @@ import { useTranslation } from 'react-i18next'
 import { useDecreeRevealQueue } from '../../game/decreeRevealQueue'
 import { useItemText } from '../../i18n/useItemText'
 import { getItemArt } from '../../utils/itemArt'
-import {
-  getDecreeScrollIllustration,
-  illustrationAssets,
-} from '../../utils/assets'
+import { getDecreeScrollIllustration } from '../../utils/assets'
+import { getGeneratedArt } from '../../utils/generatedArt'
+import type { DecreeRarity } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_ICON_COLORS } from '../gameplay/gameplayTypes'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -30,6 +29,14 @@ const RARITY_KEYS = {
   ImperialDecree: 'rare',
   HeavenlyOrdinance: 'mythic',
 } as const
+
+/** The light the scroll rises in. */
+const RARITY_GLOW: Record<DecreeRarity, string> = {
+  LocalEdict: 'reveal_overlay_ordinary',
+  RegionalMandate: 'reveal_overlay_ordinary',
+  ImperialDecree: 'reveal_overlay_rare',
+  HeavenlyOrdinance: 'reveal_overlay_legendary',
+}
 
 export function DecreeReveal({ paused = false }: { paused?: boolean }) {
   const { t } = useTranslation()
@@ -67,12 +74,21 @@ export function DecreeReveal({ paused = false }: { paused?: boolean }) {
       onClick={() => (stage === 'bag' ? setStage('scroll') : dismiss())}
     >
       {stage === 'bag' ? (
-        <img
-          src={illustrationAssets.packs.Decree}
-          alt=""
+        <span
           aria-hidden="true"
-          className="decree-bag-shake game-illustration h-40 w-40 object-contain drop-shadow-[0_0_30px_rgba(255,213,79,0.6)]"
-        />
+          className="decree-bag-shake relative h-40 w-40 drop-shadow-[0_0_30px_rgba(255,213,79,0.6)]"
+        >
+          <img
+            src={getGeneratedArt('reveals', 'decree_drawbag_closed')}
+            alt=""
+            className="game-illustration absolute inset-0 h-full w-full object-contain"
+          />
+          <img
+            src={getGeneratedArt('reveals', 'decree_drawbag_open')}
+            alt=""
+            className="decree-bag-open game-illustration absolute inset-0 h-full w-full object-contain"
+          />
+        </span>
       ) : (
         <div
           className={`w-full max-w-xs rounded-2xl border-2 bg-[#0b1b15]/95 p-5 text-center shadow-2xl ${
@@ -89,6 +105,13 @@ export function DecreeReveal({ paused = false }: { paused?: boolean }) {
             )}
           </p>
           <div className="relative mx-auto my-3 flex h-32 w-28 items-center justify-center">
+            <img
+              src={getGeneratedArt('reveals', RARITY_GLOW[decree.rarity])}
+              alt=""
+              aria-hidden="true"
+              data-decree-reveal-glow={RARITY_GLOW[decree.rarity]}
+              className="pointer-events-none absolute left-1/2 top-1/2 h-36 w-36 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+            />
             <img
               src={art.hasOwnArt ? art.src : getDecreeScrollIllustration(decree.rarity)}
               alt=""

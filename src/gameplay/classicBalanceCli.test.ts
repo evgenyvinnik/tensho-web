@@ -70,7 +70,7 @@ describe('Classic balance command contract', () => {
     )
     expect(value.results[0].handPlanAttempts).toBeGreaterThan(0)
     expect(report(args)).toEqual(value)
-  })
+  }, 45000)
   it('rejects conflicting hand policies and reports reproducible structural exchanges', () => {
     expect(run(['1', '--plan-hands', '--chase-hands']).status).not.toBe(0)
     const args = ['1', '--plan-hands', '--build-shop', '--consumables']

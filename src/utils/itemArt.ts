@@ -2,10 +2,11 @@
  * Artwork for any game item, by kind and id.
  *
  * Every item resolves to an image — never an emoji. In order:
- *   1. its own generated portrait, when `itemArtManifest.json` lists the id
+ *   1. its own portrait, when `itemArtManifest.json` lists the id
  *      (files live at `assets/illustrations/items/<kind>/<id>.webp`);
- *   2. an older bespoke portrait already in the game;
- *   3. its family's shared artwork (all Orbs share the orb, and so on).
+ *   2. its generated portrait from the delivered art set
+ *      (`src/utils/generatedArt.ts`), or an older bespoke portrait;
+ *   3. its family's shared artwork (all Omens share the omen, and so on).
  *
  * `hasOwnArt` tells a caller whether the image is unique to this item, so a
  * shared family image can be paired with the item's unique icon.
@@ -15,12 +16,15 @@ import manifest from '../config/itemArtManifest.json'
 import { withBasePath } from './basePath'
 import {
   flowerIllustrations,
+  getCelestialOrbIllustration,
   getDecreeIllustration,
   getFateSealIllustration,
   getMandateIllustration,
+  getPackIllustration,
   getVoidScriptIllustration,
   illustrationAssets,
 } from './assets'
+import { getGeneratedArt, getYakuIllustration } from './generatedArt'
 import type { FlowerVariant, PackType } from '../systems/types'
 
 export type ItemArtKind =
@@ -51,6 +55,17 @@ const CHARTER_PORTRAITS: Record<string, string> = {
   plentiful_stock: illustrationAssets.plentifulStockCharter,
 }
 
+const UPGRADE_ORBS: Record<string, string> = {
+  Pairs: 'pluto_orb',
+  All: 'black_hole_orb',
+}
+
+const TILE_LAYERS: Record<string, 'enhancements' | 'seals' | 'editions'> = {
+  mark: 'enhancements',
+  seal: 'seals',
+  edition: 'editions',
+}
+
 export interface ItemArt {
   src: string
   /** False when the image is the family's shared artwork. */
@@ -75,12 +90,20 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
       const src = getFateSealIllustration(id)
       return { src, hasOwnArt: src !== illustrationAssets.consumables.fateSeal }
     }
-    case 'orbs':
-      return { src: illustrationAssets.consumables.celestialOrb, hasOwnArt: false }
-    case 'charters':
-      return Object.prototype.hasOwnProperty.call(CHARTER_PORTRAITS, id)
-        ? { src: CHARTER_PORTRAITS[id], hasOwnArt: true }
+    case 'orbs': {
+      const src = getCelestialOrbIllustration(id)
+      return { src, hasOwnArt: src !== illustrationAssets.consumables.celestialOrb }
+    }
+    case 'charters': {
+      const src =
+        getGeneratedArt('charters', id) ??
+        (Object.prototype.hasOwnProperty.call(CHARTER_PORTRAITS, id)
+          ? CHARTER_PORTRAITS[id]
+          : undefined)
+      return src
+        ? { src, hasOwnArt: true }
         : { src: illustrationAssets.imperialCharter, hasOwnArt: false }
+    }
     case 'mandates': {
       const portrait = getMandateIllustration(id)
       return portrait
@@ -92,14 +115,28 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
         src: withBasePath('assets/illustrations/omens/double-omen.webp'),
         hasOwnArt: id === 'double_omen',
       }
-    case 'yakuUpgrades':
-      return { src: illustrationAssets.yakuLedger, hasOwnArt: false }
+    case 'yakuUpgrades': {
+      // A family is pictured by its hand; Pairs and All by the Orb that
+      // levels them.
+      const src =
+        getYakuIllustration(id) ??
+        getGeneratedArt('orbs', UPGRADE_ORBS[id])
+      return src
+        ? { src, hasOwnArt: true }
+        : { src: illustrationAssets.yakuLedger, hasOwnArt: false }
+    }
     case 'packs':
       return id in illustrationAssets.packs
-        ? { src: illustrationAssets.packs[id as PackType], hasOwnArt: true }
+        ? { src: getPackIllustration(id as PackType), hasOwnArt: true }
         : { src: illustrationAssets.packs.Arcana, hasOwnArt: false }
-    case 'tileMarks':
-      return { src: illustrationAssets.tableTools, hasOwnArt: false }
+    case 'tileMarks': {
+      // `gold` or `mark-gold` is a mark; `seal-red` and `edition-foil` too.
+      const [layer, value] = id.includes('-') ? id.split('-', 2) : ['mark', id]
+      const src = getGeneratedArt(TILE_LAYERS[layer] ?? 'enhancements', value)
+      return src
+        ? { src, hasOwnArt: true }
+        : { src: illustrationAssets.tableTools, hasOwnArt: false }
+    }
   }
 }
 

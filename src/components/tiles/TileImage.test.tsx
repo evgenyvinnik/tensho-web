@@ -147,3 +147,40 @@ it('keeps keyboard details and selection independent, including after a locale c
   fireEvent.keyDown(button, { key: 'Enter' })
   expect(onClick).toHaveBeenCalledExactlyOnceWith(tile)
 })
+
+it('composes all three generated modifier layers without replacing a normal face', () => {
+  const tile = new Tile(TileSuit.Pinzu, 9, 'three-layers', false, {
+    enhancement: EnhancementType.Gold,
+    seal: SealType.Red,
+    edition: EditionType.Foil,
+  })
+  showRankNumbers()
+  const { container, rerender } = render(<TileImage tile={tile} />)
+  expect(screen.getByRole('img')).toHaveAccessibleName(/9/)
+  expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(3)
+  expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
+  expect(
+    container.querySelector('[data-tile-art-layer="enhancement"] img')
+  ).toHaveAttribute('src', expect.stringMatching(/enhancements\/gold\.webp$/))
+  rerender(<TileImage tile={tile} faceDown />)
+  expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(0)
+  expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
+})
+
+it('shows Stone as rankless artwork and never leaks its original face or rank hint', () => {
+  const tile = new Tile(TileSuit.Dragon, 3, 'stone', false, {
+    enhancement: EnhancementType.Stone,
+    seal: SealType.None,
+    edition: EditionType.Base,
+  })
+  const { container } = render(<TileImage tile={tile} detailsVisible />)
+  expect(screen.getByRole('img')).toHaveAccessibleName(
+    i18n.t('tileMarks.items.stone.name')
+  )
+  expect(container.querySelector('img[src*="Dragons"]')).toBeNull()
+  expect(container.querySelector('[data-tile-index]')).toBeNull()
+  expect(screen.getByRole('tooltip')).toHaveTextContent(
+    i18n.t('tileMarks.items.stone.description')
+  )
+  expect(screen.getByRole('tooltip')).not.toHaveTextContent('Red Dragon')
+})

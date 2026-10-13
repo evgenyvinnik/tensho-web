@@ -19,7 +19,7 @@ it.each([
   ['decree-phoenix', /phoenix\.webp$/],
   ['decree-polished-stone', /polished-stone\.webp$/],
 ] as const)(
-  'uses a decorative contained portrait for %s with the existing icon fallback',
+  'uses a decorative contained portrait for %s with a generated category fallback',
   (id, path) => {
     const { container, rerender } = render(
       <DecreeArtwork decreeId={id} size={48} />
@@ -30,7 +30,10 @@ it.each([
     expect(image).toHaveAttribute('aria-hidden', 'true')
     expect(image).toHaveStyle({ width: '48px', height: '48px' })
     rerender(<DecreeArtwork decreeId="missing-artwork" size={32} />)
-    expect(container.querySelector('img')).toBeNull()
-    expect(container.querySelector('svg')).not.toBeNull()
+    expect(container.querySelector('img')).toHaveAttribute(
+      'src',
+      '/assets/illustrations/codex/decrees.webp'
+    )
+    expect(container.querySelector('svg')).toBeNull()
   }
 )

@@ -36,7 +36,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.actRound.title', 'Acts & Rounds'),
       content: t(
         'gameTutorial.actRound.content',
-        'You\'re in Act 1. Each Act has 3 rounds: Small (1×), Large (1.5×), and Boss (2×). Complete all 8 Acts to win the run!'
+        "You're in Act 1. Each Act has 3 rounds: Small (1×), Large (1.5×), and Boss (2×). Complete all 8 Acts to win the run!"
       ),
       highlightPadding: 10,
     },
@@ -158,10 +158,10 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.draw.title', 'Draw a Tile'),
       content: t(
         'gameTutorial.draw.content',
-        'Tap Draw to take a tile from the wall. You\'ll then need to discard one tile to maintain 13 tiles.'
+        "Tap Draw to take a tile from the wall. You'll then need to discard one tile to maintain 13 tiles."
       ),
       waitForAction: true,
-      actionHint: t('gameTutorial.draw.hint', '👆 Tap Draw to continue...'),
+      actionHint: t('gameTutorial.draw.hint', 'Tap Draw to continue...'),
       highlightPadding: 10,
     },
 
@@ -173,10 +173,13 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.discard.title', 'Discard a Tile'),
       content: t(
         'gameTutorial.discard.content',
-        'Now select a tile you don\'t need and discard it. Think about what patterns you\'re building!'
+        "Now select a tile you don't need and discard it. Think about what patterns you're building!"
       ),
       waitForAction: true,
-      actionHint: t('gameTutorial.discard.hint', '👆 Select a tile and tap Discard...'),
+      actionHint: t(
+        'gameTutorial.discard.hint',
+        'Select a tile and tap Discard...'
+      ),
       highlightPadding: 12,
     },
 
@@ -227,7 +230,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.decrees.title', 'Decrees'),
       content: t(
         'gameTutorial.decrees.content',
-        'Decrees are powerful rule modifiers that last your entire run. They can change what\'s legal, boost multipliers, or alter tile behavior.'
+        "Decrees are powerful rule modifiers that last your entire run. They can change what's legal, boost multipliers, or alter tile behavior."
       ),
       highlightPadding: 12,
     },
@@ -289,7 +292,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       id: 'complete',
       position: { x: 50, y: 45 },
       arrowDirection: 'top',
-      title: t('gameTutorial.complete.title', 'You\'re Ready!'),
+      title: t('gameTutorial.complete.title', "You're Ready!"),
       content: t(
         'gameTutorial.complete.content',
         'Build winning hands, stack Yaku for multipliers, collect Decrees from the Tea House, and reach Act 8 to complete your run. Good luck!'

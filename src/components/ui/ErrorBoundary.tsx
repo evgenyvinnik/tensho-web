@@ -9,6 +9,7 @@ import React, { Component, ReactNode, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { APP_BASE_URL } from '../../utils/basePath'
 import { APP_VERSION, FORMATTED_APP_VERSION } from '../../utils/version'
+import { ControlIcon } from '../ui/ControlIcon'
 
 // =============================================================================
 // ERROR REPORTING
@@ -30,7 +31,10 @@ export interface ErrorReport {
 /**
  * Report an error to console and optionally to external service
  */
-export function reportError(error: Error, componentStack?: string): ErrorReport {
+export function reportError(
+  error: Error,
+  componentStack?: string
+): ErrorReport {
   const report: ErrorReport = {
     message: error.message,
     stack: error.stack,
@@ -42,7 +46,10 @@ export function reportError(error: Error, componentStack?: string): ErrorReport 
   }
 
   // Log to console with styling
-  console.group('%c🚨 Tensho Error Report', 'color: #FF5722; font-weight: bold; font-size: 14px')
+  console.group(
+    '%cTensho Error Report',
+    'color: #FF5722; font-weight: bold; font-size: 14px'
+  )
   console.error('Error:', error.message)
   if (error.stack) {
     console.error('Stack:', error.stack)
@@ -56,12 +63,17 @@ export function reportError(error: Error, componentStack?: string): ErrorReport 
 
   // Store in localStorage for debugging (keep last 10 errors)
   try {
-    const storedErrors = JSON.parse(localStorage.getItem('tensho_error_log') || '[]')
+    const storedErrors = JSON.parse(
+      localStorage.getItem('tensho_error_log') || '[]'
+    )
     storedErrors.unshift({
       ...report,
       timestamp: report.timestamp.toISOString(),
     })
-    localStorage.setItem('tensho_error_log', JSON.stringify(storedErrors.slice(0, 10)))
+    localStorage.setItem(
+      'tensho_error_log',
+      JSON.stringify(storedErrors.slice(0, 10))
+    )
   } catch {
     // Ignore storage errors
   }
@@ -148,13 +160,18 @@ export function ErrorFallback({
     return (
       <div className="p-6 bg-[var(--color-dark-forest)] border-2 border-red-500/50 rounded-xl">
         <div className="flex items-start gap-4">
-          <div className="text-4xl">⚠️</div>
+          <div className="text-4xl">
+            <ControlIcon name="warning" size={40} />
+          </div>
           <div className="flex-1">
             <h3 className="text-lg font-bold text-red-400 mb-2">
               {t('error.componentError', 'Component Error')}
             </h3>
             <p className="text-[var(--color-beige-white)] text-sm mb-4">
-              {t('error.componentErrorDesc', 'This part of the app encountered an error.')}
+              {t(
+                'error.componentErrorDesc',
+                'This part of the app encountered an error.'
+              )}
             </p>
             <div className="flex gap-3">
               {onRetry && (
@@ -172,7 +189,9 @@ export function ErrorFallback({
                            text-[var(--color-beige-white)] rounded-lg text-sm transition-colors
                            border border-[var(--color-metallic-gold)]"
               >
-                {showDetails ? t('error.hideDetails', 'Hide Details') : t('error.showDetails', 'Show Details')}
+                {showDetails
+                  ? t('error.hideDetails', 'Hide Details')
+                  : t('error.showDetails', 'Show Details')}
               </button>
             </div>
             {showDetails && (
@@ -196,7 +215,7 @@ export function ErrorFallback({
           <div className="absolute inset-0 bg-red-500/20 rounded-full animate-pulse" />
           <div className="absolute inset-2 bg-red-500/30 rounded-full" />
           <div className="absolute inset-0 flex items-center justify-center text-5xl">
-            💥
+            <ControlIcon name="warning" size={56} />
           </div>
         </div>
 
@@ -207,7 +226,10 @@ export function ErrorFallback({
 
         {/* Description */}
         <p className="text-[var(--color-beige-white)] mb-6">
-          {t('error.description', "We're sorry, but something unexpected happened. The error has been logged.")}
+          {t(
+            'error.description',
+            "We're sorry, but something unexpected happened. The error has been logged."
+          )}
         </p>
 
         {/* Error message preview */}
@@ -246,7 +268,9 @@ export function ErrorFallback({
           onClick={() => setShowDetails(!showDetails)}
           className="mt-6 text-sm text-[var(--color-metallic-gold)] hover:text-[var(--color-golden-yellow)] transition-colors"
         >
-          {showDetails ? t('error.hideDetails', 'Hide technical details') : t('error.showDetails', 'Show technical details')}
+          {showDetails
+            ? t('error.hideDetails', 'Hide technical details')
+            : t('error.showDetails', 'Show technical details')}
         </button>
 
         {/* Technical details */}
@@ -258,7 +282,9 @@ export function ErrorFallback({
             </pre>
             {errorInfo?.componentStack && (
               <>
-                <p className="text-xs text-gray-400 mt-4 mb-2">Component stack:</p>
+                <p className="text-xs text-gray-400 mt-4 mb-2">
+                  Component stack:
+                </p>
                 <pre className="text-xs text-yellow-300 whitespace-pre-wrap break-all">
                   {errorInfo.componentStack}
                 </pre>
@@ -315,7 +341,10 @@ interface ErrorBoundaryState {
  *
  * Catches JavaScript errors in child component tree and displays a fallback UI.
  */
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = {
@@ -454,11 +483,7 @@ export function ComponentErrorBoundary({
  * Silent error boundary - logs errors but shows nothing
  */
 export function SilentErrorBoundary({ children }: { children: ReactNode }) {
-  return (
-    <ErrorBoundary fallback={null}>
-      {children}
-    </ErrorBoundary>
-  )
+  return <ErrorBoundary fallback={null}>{children}</ErrorBoundary>
 }
 
 export default ErrorBoundary

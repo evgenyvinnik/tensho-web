@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
+import { ControlIcon } from '../ui/ControlIcon'
 
 export function ClassicSaveNotice({
   errorsOnly = false,
@@ -30,7 +31,11 @@ export function ClassicSaveNotice({
         title={label}
         className="flex items-center gap-1 whitespace-nowrap text-[10px] text-[var(--color-beige-white)]/60"
       >
-        <span aria-hidden="true">{unsaved ? '…' : '✓'}</span>
+        {unsaved ? (
+          <span aria-hidden="true">…</span>
+        ) : (
+          <ControlIcon name="check" size={12} className="opacity-70" />
+        )}
         <span className="sr-only sm:not-sr-only">{label}</span>
       </p>
     )

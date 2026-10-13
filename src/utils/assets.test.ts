@@ -66,7 +66,7 @@ it('ships a compact transparent Transmutation seal with safe generic fallbacks',
   expect(webp.readUIntLE(24, 3) + 1).toBe(512)
   expect(webp.readUIntLE(27, 3) + 1).toBe(512)
   expect(webp.length).toBeLessThan(100_000)
-  for (const id of [undefined, 'missing', '__proto__', 'seal_of_unity'])
+  for (const id of [undefined, 'missing', '__proto__'])
     expect(getFateSealIllustration(id)).toBe(
       illustrationAssets.consumables.fateSeal
     )
@@ -115,14 +115,7 @@ it('uses unique Showdown assets and never substitutes an unrelated or inherited-
       )
     ).size
   ).toBe(5)
-  for (const id of [
-    undefined,
-    '',
-    'the_hook',
-    'missing',
-    'toString',
-    '__proto__',
-  ])
+  for (const id of [undefined, '', 'missing', 'toString', '__proto__'])
     expect(getMandateIllustration(id)).toBeUndefined()
 })
 

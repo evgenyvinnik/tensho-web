@@ -1,3 +1,4 @@
+import { ControlIcon } from '../ui/ControlIcon'
 import { useId, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { OwnedDecree } from '../../systems/types'
@@ -81,18 +82,11 @@ export function ShopBuildPanel({
             onClick={() => setExpanded((value) => !value)}
             className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[var(--color-metallic-gold)]/40 text-[var(--color-metallic-gold)] sm:hidden"
           >
-            <svg
-              aria-hidden="true"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className={expanded ? 'rotate-180' : ''}
-            >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
+            <ControlIcon
+              name="next"
+              size={20}
+              className={expanded ? '-rotate-90' : 'rotate-90'}
+            />
           </button>
         )}
       </div>

@@ -46,6 +46,7 @@ import {
   getDecreeIllustration,
   getDecreeScrollIllustration,
 } from '../../utils/assets'
+import { ControlIcon } from '../ui/ControlIcon'
 
 // =============================================================================
 // DECREE CARD COMPACT
@@ -338,17 +339,11 @@ export function DecreeCardCompact({
 
         {isSuppressed && (
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg bg-black/45">
-            <svg
-              aria-hidden="true"
-              className="h-8 w-8 text-red-300 drop-shadow"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-            >
-              <circle cx="12" cy="12" r="8.5" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <ControlIcon
+              name="ban"
+              size={32}
+              className="text-red-300 drop-shadow"
+            />
           </span>
         )}
       </button>
@@ -543,6 +538,7 @@ export interface DecreeSlotEmptyProps {
  * or lock icon (requires unlock).
  */
 export function DecreeSlotEmpty({ isLocked = false }: DecreeSlotEmptyProps) {
+  const { t } = useTranslation()
   return (
     <div
       className={`
@@ -555,16 +551,10 @@ export function DecreeSlotEmpty({ isLocked = false }: DecreeSlotEmptyProps) {
       `}
     >
       {isLocked ? (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="h-5 w-5 text-gray-500"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z" />
-        </svg>
+        <span className="text-xl text-gray-500">
+          <ControlIcon name="lock" />
+          <span className="sr-only">{t('collection.locked', 'Locked')}</span>
+        </span>
       ) : (
         <span className="text-2xl text-[var(--color-metallic-gold)]">+</span>
       )}

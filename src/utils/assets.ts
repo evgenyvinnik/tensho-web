@@ -7,6 +7,7 @@ import { TileSuit } from '../core/Tile'
 import { tileFaceAsset } from './tileFaceAsset'
 import type { DecreeRarity, PackType, FlowerVariant } from '../systems/types'
 import { withBasePath } from './basePath'
+import { getGeneratedArt } from './generatedArt'
 
 // Base paths for assets
 const ASSET_BASE = withBasePath('assets')
@@ -76,8 +77,7 @@ export const popupAssets = {
 /**
  * Generated miniature illustrations used for high-value game concepts.
  *
- * These stay separate from small functional controls, which should continue
- * to use SVG so they remain crisp at every size.
+ * Functional controls use their own generated PNG family.
  */
 export const illustrationAssets = {
   settlementLedger: `${ASSET_BASE}/illustrations/settlement-ledger.webp`,
@@ -180,14 +180,17 @@ export const flowerIllustrations: Record<FlowerVariant, string> = {
 
 /** Return bespoke Decree art where available; generic scrolls remain the fallback. */
 export function getDecreeIllustration(decreeId: string): string | undefined {
-  return Object.prototype.hasOwnProperty.call(
-    illustrationAssets.decreePortraits,
-    decreeId
+  return (
+    getGeneratedArt('decrees', decreeId) ??
+    (Object.prototype.hasOwnProperty.call(
+      illustrationAssets.decreePortraits,
+      decreeId
+    )
+      ? illustrationAssets.decreePortraits[
+          decreeId as keyof typeof illustrationAssets.decreePortraits
+        ]
+      : undefined)
   )
-    ? illustrationAssets.decreePortraits[
-        decreeId as keyof typeof illustrationAssets.decreePortraits
-      ]
-    : undefined
 }
 
 /** Return the illustrated scroll frame for a Decree rarity. */
@@ -197,12 +200,14 @@ export function getDecreeScrollIllustration(rarity: DecreeRarity): string {
 
 /** No fallback portrait: an unrelated boss must not inherit another's identity. */
 export function getMandateIllustration(id?: string): string | undefined {
-  return id &&
-    Object.prototype.hasOwnProperty.call(illustrationAssets.mandates, id)
-    ? illustrationAssets.mandates[
-        id as keyof typeof illustrationAssets.mandates
-      ]
-    : undefined
+  return (
+    getGeneratedArt('mandates', id) ??
+    (id && Object.prototype.hasOwnProperty.call(illustrationAssets.mandates, id)
+      ? illustrationAssets.mandates[
+          id as keyof typeof illustrationAssets.mandates
+        ]
+      : undefined)
+  )
 }
 
 export type IllustratedTableStyleId = keyof typeof illustrationAssets.tables
@@ -264,9 +269,12 @@ const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([
 
 /** Return a seal-specific illustration, with the generic ritual seal as fallback. */
 export function getFateSealIllustration(sealId?: string): string {
-  return sealId === 'seal_of_transmutation'
-    ? `${ASSET_BASE}/illustrations/seal-transmutation.webp`
-    : illustrationAssets.consumables.fateSeal
+  return (
+    getGeneratedArt('fateSeals', sealId) ??
+    (sealId === 'seal_of_transmutation'
+      ? `${ASSET_BASE}/illustrations/seal-transmutation.webp`
+      : illustrationAssets.consumables.fateSeal)
+  )
 }
 
 /** Return a script-specific illustration, with the generic scroll as fallback. */
@@ -429,4 +437,22 @@ export async function preloadAllUIAssets(): Promise<void> {
  */
 export async function preloadAllAssets(): Promise<void> {
   await Promise.all([preloadTileImages(), preloadAllUIAssets()])
+}
+
+/** Exact orb identity, with category art only for unknown/retired catalog entries. */
+export function getCelestialOrbIllustration(id?: string): string {
+  return (
+    getGeneratedArt('orbs', id) ?? illustrationAssets.consumables.celestialOrb
+  )
+}
+
+/** Generated pack states retain all live size, price, and selection text. */
+export function getPackIllustration(
+  type: PackType,
+  state: 'sealed' | 'open' = 'sealed'
+): string {
+  return (
+    getGeneratedArt('reveals', `pack_${type.toLowerCase()}_${state}`) ??
+    illustrationAssets.packs[type]
+  )
 }

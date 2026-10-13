@@ -8,6 +8,7 @@
 import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSpring, animated } from '@react-spring/web'
+import { ControlIcon } from '../ui/ControlIcon'
 
 // Import from extracted codex modules
 import { CodexProps, CodexSidebar } from './codex/CodexComponents'
@@ -22,7 +23,9 @@ export function Codex({ isOpen, onClose }: CodexProps) {
   const { t } = useTranslation()
   const categories = useCodexContent()
   const [activeCategory, setActiveCategory] = useState(categories[0]?.id || '')
-  const [activeSection, setActiveSection] = useState(categories[0]?.sections[0]?.id || '')
+  const [activeSection, setActiveSection] = useState(
+    categories[0]?.sections[0]?.id || ''
+  )
 
   const spring = useSpring({
     opacity: isOpen ? 1 : 0,
@@ -30,14 +33,19 @@ export function Codex({ isOpen, onClose }: CodexProps) {
     config: { tension: 300, friction: 25 },
   })
 
-  const handleSelectSection = useCallback((categoryId: string, sectionId: string) => {
-    setActiveCategory(categoryId)
-    setActiveSection(sectionId)
-  }, [])
+  const handleSelectSection = useCallback(
+    (categoryId: string, sectionId: string) => {
+      setActiveCategory(categoryId)
+      setActiveSection(sectionId)
+    },
+    []
+  )
 
   // Find current section content
   const currentCategory = categories.find((c) => c.id === activeCategory)
-  const currentSection = currentCategory?.sections.find((s) => s.id === activeSection)
+  const currentSection = currentCategory?.sections.find(
+    (s) => s.id === activeSection
+  )
 
   if (!isOpen) return null
 
@@ -50,7 +58,7 @@ export function Codex({ isOpen, onClose }: CodexProps) {
         {/* Header */}
         <header className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-metallic-gold)]/30 flex-shrink-0">
           <h1 className="text-2xl font-bold text-[var(--color-golden-yellow)] flex items-center gap-2">
-            📚 {t('codex.title', 'Tensho Codex')}
+            <ControlIcon name="archive" /> {t('codex.title', 'Tensho Codex')}
           </h1>
           <button
             onClick={onClose}
@@ -58,9 +66,7 @@ export function Codex({ isOpen, onClose }: CodexProps) {
                        border-2 border-[var(--color-metallic-gold)] text-[var(--color-beige-white)]
                        transition-all hover:scale-105 min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <ControlIcon name="close" size={24} />
           </button>
         </header>
 

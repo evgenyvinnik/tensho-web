@@ -6,6 +6,7 @@
  */
 
 import { CONSUMABLE_UNLOCK_CONDITIONS } from './consumableUnlocks'
+import type { ControlArtId } from '../utils/generatedArt'
 
 // =============================================================================
 // UNLOCK TYPES
@@ -112,7 +113,7 @@ export interface UnlockDefinition {
   /** Whether this is unlocked by default */
   unlockedByDefault?: boolean
   /** Icon for display */
-  icon?: string
+  icon?: ControlArtId
 }
 
 // =============================================================================
@@ -131,11 +132,9 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     japaneseName: '舞台師',
     description: 'Unlocked by reaching Act 4',
     category: 'decree',
-    conditions: [
-      { type: 'reach_act', target: 4, description: 'Reach Act 4' },
-    ],
+    conditions: [{ type: 'reach_act', target: 4, description: 'Reach Act 4' }],
     unlocksId: 'stage_master',
-    icon: '🎭',
+    icon: 'mask',
   },
   {
     id: 'unlock_flower_pot',
@@ -143,11 +142,9 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     japaneseName: '花瓶',
     description: 'Unlocked by reaching Act 8',
     category: 'decree',
-    conditions: [
-      { type: 'reach_act', target: 8, description: 'Reach Act 8' },
-    ],
+    conditions: [{ type: 'reach_act', target: 8, description: 'Reach Act 8' }],
     unlocksId: 'flower_pot',
-    icon: '🌸',
+    icon: 'flower',
   },
   {
     id: 'unlock_blueprint',
@@ -155,11 +152,9 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     japaneseName: '設計図',
     description: 'Unlocked by winning a run',
     category: 'decree',
-    conditions: [
-      { type: 'win_run', description: 'Win a run' },
-    ],
+    conditions: [{ type: 'win_run', description: 'Win a run' }],
     unlocksId: 'decree-blueprint',
-    icon: '📐',
+    icon: 'puzzle',
   },
 
   // Score-based decree unlocks
@@ -170,10 +165,14 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Score 10,000 points in one hand',
     category: 'decree',
     conditions: [
-      { type: 'single_hand_score', target: 10000, description: 'Score 10,000 points in one hand' },
+      {
+        type: 'single_hand_score',
+        target: 10000,
+        description: 'Score 10,000 points in one hand',
+      },
     ],
     unlocksId: 'lucky_sixes',
-    icon: '🎲',
+    icon: 'dice',
   },
   {
     id: 'unlock_the_idol',
@@ -182,10 +181,14 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Score 1,000,000 points in one hand',
     category: 'decree',
     conditions: [
-      { type: 'single_hand_score', target: 1000000, description: 'Score 1,000,000 points in one hand' },
+      {
+        type: 'single_hand_score',
+        target: 1000000,
+        description: 'Score 1,000,000 points in one hand',
+      },
     ],
     unlocksId: 'the_idol',
-    icon: '🗿',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_stuntman',
@@ -194,10 +197,14 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Score 100,000,000 points in one hand',
     category: 'decree',
     conditions: [
-      { type: 'single_hand_score', target: 100000000, description: 'Score 100,000,000 points in one hand' },
+      {
+        type: 'single_hand_score',
+        target: 100000000,
+        description: 'Score 100,000,000 points in one hand',
+      },
     ],
     unlocksId: 'stuntman',
-    icon: '🎬',
+    icon: 'play',
   },
 
   // Collection-based decree unlocks
@@ -208,10 +215,14 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Discover every Fate Seal',
     category: 'decree',
     conditions: [
-      { type: 'discovery', value: 'all_fate_seals', description: 'Discover every Fate Seal' },
+      {
+        type: 'discovery',
+        value: 'all_fate_seals',
+        description: 'Discover every Fate Seal',
+      },
     ],
     unlocksId: 'cartomancer',
-    icon: '🔮',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_astronomer',
@@ -220,10 +231,14 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Discover every Celestial Orb',
     category: 'decree',
     conditions: [
-      { type: 'discovery', value: 'all_celestial_orbs', description: 'Discover every Celestial Orb' },
+      {
+        type: 'discovery',
+        value: 'all_celestial_orbs',
+        description: 'Discover every Celestial Orb',
+      },
     ],
     unlocksId: 'astronomer',
-    icon: '🔭',
+    icon: 'search',
   },
 
   // Skill-based decree unlocks
@@ -234,10 +249,14 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win in 12 or fewer rounds',
     category: 'decree',
     conditions: [
-      { type: 'rounds_completed', target: 12, description: 'Win in 12 or fewer rounds' },
+      {
+        type: 'rounds_completed',
+        target: 12,
+        description: 'Win in 12 or fewer rounds',
+      },
     ],
     unlocksId: 'swift_andy',
-    icon: '⚡',
+    icon: 'score',
   },
   {
     id: 'unlock_satellite',
@@ -246,10 +265,15 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     description: 'Have 400+ gold in one run',
     category: 'decree',
     conditions: [
-      { type: 'collect_items', target: 400, value: 'gold', description: 'Have 400+ gold in one run' },
+      {
+        type: 'collect_items',
+        target: 400,
+        value: 'gold',
+        description: 'Have 400+ gold in one run',
+      },
     ],
     unlocksId: 'satellite',
-    icon: '🛰️',
+    icon: 'compass',
   },
 
   // Act progression-based
@@ -259,11 +283,9 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     japaneseName: '帝秘',
     description: 'Reach Act 6 to unlock advanced decrees',
     category: 'decree',
-    conditions: [
-      { type: 'reach_act', target: 6, description: 'Reach Act 6' },
-    ],
+    conditions: [{ type: 'reach_act', target: 6, description: 'Reach Act 6' }],
     unlocksId: 'imperial_decree_pool',
-    icon: '👑',
+    icon: 'trophy',
   },
 ]
 
@@ -286,7 +308,7 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     conditions: [],
     unlocksId: 'green_felt',
     unlockedByDefault: true,
-    icon: '🟢',
+    icon: 'challenge',
   },
 
   // Progression-based unlocks
@@ -300,7 +322,7 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
       { type: 'complete_act', target: 3, description: 'Complete Act 3' },
     ],
     unlocksId: 'red_lacquer',
-    icon: '🔴',
+    icon: 'challenge',
   },
 
   // Collection-based unlocks
@@ -311,10 +333,13 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Collect all 4 flowers in a single run',
     category: 'table_style',
     conditions: [
-      { type: 'collect_all_flowers', description: 'Collect all 4 flowers in a single run' },
+      {
+        type: 'collect_all_flowers',
+        description: 'Collect all 4 flowers in a single run',
+      },
     ],
     unlocksId: 'bamboo_mat',
-    icon: '🎋',
+    icon: 'flower',
   },
 
   // Gameplay-based unlocks
@@ -329,7 +354,7 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
       { type: 'win_run', description: 'Win a run' },
     ],
     unlocksId: 'imperial_gold',
-    icon: '✨',
+    icon: 'score',
   },
   {
     id: 'unlock_night_market',
@@ -338,10 +363,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Purchase 20 decrees across all runs',
     category: 'table_style',
     conditions: [
-      { type: 'total_decrees_purchased', target: 20, description: 'Purchase 20 decrees total' },
+      {
+        type: 'total_decrees_purchased',
+        target: 20,
+        description: 'Purchase 20 decrees total',
+      },
     ],
     unlocksId: 'night_market',
-    icon: '🌙',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_temple_stone',
@@ -350,10 +379,13 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win without collecting any flowers',
     category: 'table_style',
     conditions: [
-      { type: 'win_without_flowers', description: 'Win without collecting any flowers' },
+      {
+        type: 'win_without_flowers',
+        description: 'Win without collecting any flowers',
+      },
     ],
     unlocksId: 'temple_stone',
-    icon: '🏛️',
+    icon: 'home',
   },
   {
     id: 'unlock_ghost_parlor',
@@ -362,10 +394,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Survive 3 corrupted seasons in one run',
     category: 'table_style',
     conditions: [
-      { type: 'survive_corrupted_seasons', target: 3, description: 'Survive 3 corrupted seasons' },
+      {
+        type: 'survive_corrupted_seasons',
+        target: 3,
+        description: 'Survive 3 corrupted seasons',
+      },
     ],
     unlocksId: 'ghost_parlor',
-    icon: '👻',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_dragons_den',
@@ -373,11 +409,9 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     japaneseName: '龙窟',
     description: 'Score a yakuman',
     category: 'table_style',
-    conditions: [
-      { type: 'yakuman_scored', description: 'Score a yakuman' },
-    ],
+    conditions: [{ type: 'yakuman_scored', description: 'Score a yakuman' }],
     unlocksId: 'dragons_den',
-    icon: '🐉',
+    icon: 'challenge',
   },
 
   // Stake-based wall unlocks (from stakeDefinitions)
@@ -388,10 +422,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Red Stake or higher',
     category: 'table_style',
     conditions: [
-      { type: 'win_stake', value: 'red', description: 'Win on Red Stake or higher' },
+      {
+        type: 'win_stake',
+        value: 'red',
+        description: 'Win on Red Stake or higher',
+      },
     ],
     unlocksId: 'crimson_wall',
-    icon: '🟥',
+    icon: 'challenge',
   },
   {
     id: 'unlock_jade_wall',
@@ -400,10 +438,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Green Stake or higher',
     category: 'table_style',
     conditions: [
-      { type: 'win_stake', value: 'green', description: 'Win on Green Stake or higher' },
+      {
+        type: 'win_stake',
+        value: 'green',
+        description: 'Win on Green Stake or higher',
+      },
     ],
     unlocksId: 'jade_wall',
-    icon: '🟩',
+    icon: 'challenge',
   },
   {
     id: 'unlock_obsidian_wall',
@@ -412,10 +454,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Black Stake or higher',
     category: 'table_style',
     conditions: [
-      { type: 'win_stake', value: 'black', description: 'Win on Black Stake or higher' },
+      {
+        type: 'win_stake',
+        value: 'black',
+        description: 'Win on Black Stake or higher',
+      },
     ],
     unlocksId: 'obsidian_wall',
-    icon: '⬛',
+    icon: 'challenge',
   },
   {
     id: 'unlock_azure_wall',
@@ -424,10 +470,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Blue Stake or higher',
     category: 'table_style',
     conditions: [
-      { type: 'win_stake', value: 'blue', description: 'Win on Blue Stake or higher' },
+      {
+        type: 'win_stake',
+        value: 'blue',
+        description: 'Win on Blue Stake or higher',
+      },
     ],
     unlocksId: 'azure_wall',
-    icon: '🟦',
+    icon: 'challenge',
   },
   {
     id: 'unlock_sunset_wall',
@@ -436,10 +486,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Orange Stake or higher',
     category: 'table_style',
     conditions: [
-      { type: 'win_stake', value: 'orange', description: 'Win on Orange Stake or higher' },
+      {
+        type: 'win_stake',
+        value: 'orange',
+        description: 'Win on Orange Stake or higher',
+      },
     ],
     unlocksId: 'sunset_wall',
-    icon: '🟧',
+    icon: 'challenge',
   },
 ]
 
@@ -459,11 +513,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Spend 2500 Gold total',
     category: 'charter',
     conditions: [
-      { type: 'total_gold_spent', target: 2500, description: 'Spend 2500 Gold total' },
-      { type: 'charter_purchased', value: 'abundant_stock', description: 'Purchase Abundant Stock' },
+      {
+        type: 'total_gold_spent',
+        target: 2500,
+        description: 'Spend 2500 Gold total',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'abundant_stock',
+        description: 'Purchase Abundant Stock',
+      },
     ],
     unlocksId: 'plentiful_stock',
-    icon: '📦',
+    icon: 'collection',
   },
   {
     id: 'unlock_liquidation_sale',
@@ -472,11 +534,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Redeem 10 Charters in one run',
     category: 'charter',
     conditions: [
-      { type: 'charters_in_run', target: 10, description: 'Redeem 10 Charters in one run' },
-      { type: 'charter_purchased', value: 'discount_sale', description: 'Purchase Discount Sale' },
+      {
+        type: 'charters_in_run',
+        target: 10,
+        description: 'Redeem 10 Charters in one run',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'discount_sale',
+        description: 'Purchase Discount Sale',
+      },
     ],
     unlocksId: 'liquidation_sale',
-    icon: '💸',
+    icon: 'coin',
   },
   {
     id: 'unlock_radiant_edge',
@@ -485,11 +555,20 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Have 5+ edition Decrees',
     category: 'charter',
     conditions: [
-      { type: 'collect_items', target: 5, value: 'edition_decrees', description: 'Have 5+ edition Decrees' },
-      { type: 'charter_purchased', value: 'sharp_edge', description: 'Purchase Sharp Edge' },
+      {
+        type: 'collect_items',
+        target: 5,
+        value: 'edition_decrees',
+        description: 'Have 5+ edition Decrees',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'sharp_edge',
+        description: 'Purchase Sharp Edge',
+      },
     ],
     unlocksId: 'radiant_edge',
-    icon: '✨',
+    icon: 'score',
   },
   {
     id: 'unlock_reroll_abundance',
@@ -498,11 +577,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Reroll 100 times total',
     category: 'charter',
     conditions: [
-      { type: 'total_rerolls', target: 100, description: 'Reroll 100 times total' },
-      { type: 'charter_purchased', value: 'reroll_surplus', description: 'Purchase Reroll Surplus' },
+      {
+        type: 'total_rerolls',
+        target: 100,
+        description: 'Reroll 100 times total',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'reroll_surplus',
+        description: 'Purchase Reroll Surplus',
+      },
     ],
     unlocksId: 'reroll_abundance',
-    icon: '🔄',
+    icon: 'redraw',
   },
   {
     id: 'unlock_omen_lens',
@@ -511,11 +598,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Use 25 Fate Seals from packs',
     category: 'charter',
     conditions: [
-      { type: 'pack_fate_seals_used', target: 25, description: 'Use 25 Fate Seals from packs' },
-      { type: 'charter_purchased', value: 'crystal_lens', description: 'Purchase Crystal Lens' },
+      {
+        type: 'pack_fate_seals_used',
+        target: 25,
+        description: 'Use 25 Fate Seals from packs',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'crystal_lens',
+        description: 'Purchase Crystal Lens',
+      },
     ],
     unlocksId: 'omen_lens',
-    icon: '🔮',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_observatory',
@@ -524,11 +619,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Use 25 Celestial Orbs from packs',
     category: 'charter',
     conditions: [
-      { type: 'pack_celestial_orbs_used', target: 25, description: 'Use 25 Celestial Orbs from packs' },
-      { type: 'charter_purchased', value: 'star_chart', description: 'Purchase Star Chart' },
+      {
+        type: 'pack_celestial_orbs_used',
+        target: 25,
+        description: 'Use 25 Celestial Orbs from packs',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'star_chart',
+        description: 'Purchase Star Chart',
+      },
     ],
     unlocksId: 'observatory',
-    icon: '🔭',
+    icon: 'search',
   },
   {
     id: 'unlock_swift_hand',
@@ -537,11 +640,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Play 2500 tiles',
     category: 'charter',
     conditions: [
-      { type: 'total_tiles_played', target: 2500, description: 'Play 2500 tiles' },
-      { type: 'charter_purchased', value: 'steady_hand', description: 'Purchase Steady Hand' },
+      {
+        type: 'total_tiles_played',
+        target: 2500,
+        description: 'Play 2500 tiles',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'steady_hand',
+        description: 'Purchase Steady Hand',
+      },
     ],
     unlocksId: 'swift_hand',
-    icon: '🖐️',
+    icon: 'hand',
   },
   {
     id: 'unlock_wasteful_plenty',
@@ -550,11 +661,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Discard 2500 tiles',
     category: 'charter',
     conditions: [
-      { type: 'total_tiles_discarded', target: 2500, description: 'Discard 2500 tiles' },
-      { type: 'charter_purchased', value: 'frugal_discard', description: 'Purchase Frugal Discard' },
+      {
+        type: 'total_tiles_discarded',
+        target: 2500,
+        description: 'Discard 2500 tiles',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'frugal_discard',
+        description: 'Purchase Frugal Discard',
+      },
     ],
     unlocksId: 'wasteful_plenty',
-    icon: '🗑️',
+    icon: 'redraw',
   },
   {
     id: 'unlock_seal_tycoon',
@@ -563,11 +682,20 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Buy 50 Fate Seals from shop',
     category: 'charter',
     conditions: [
-      { type: 'collect_items', target: 50, value: 'fate_seals_bought', description: 'Buy 50 Fate Seals from shop' },
-      { type: 'charter_purchased', value: 'seal_merchant', description: 'Purchase Seal Merchant' },
+      {
+        type: 'collect_items',
+        target: 50,
+        value: 'fate_seals_bought',
+        description: 'Buy 50 Fate Seals from shop',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'seal_merchant',
+        description: 'Purchase Seal Merchant',
+      },
     ],
     unlocksId: 'seal_tycoon',
-    icon: '🎴',
+    icon: 'collection',
   },
   {
     id: 'unlock_orb_tycoon',
@@ -576,11 +704,20 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Buy 50 Celestial Orbs from shop',
     category: 'charter',
     conditions: [
-      { type: 'collect_items', target: 50, value: 'celestial_orbs_bought', description: 'Buy 50 Celestial Orbs from shop' },
-      { type: 'charter_purchased', value: 'orb_merchant', description: 'Purchase Orb Merchant' },
+      {
+        type: 'collect_items',
+        target: 50,
+        value: 'celestial_orbs_bought',
+        description: 'Buy 50 Celestial Orbs from shop',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'orb_merchant',
+        description: 'Purchase Orb Merchant',
+      },
     ],
     unlocksId: 'orb_tycoon',
-    icon: '🔵',
+    icon: 'challenge',
   },
   {
     id: 'unlock_money_tree',
@@ -589,11 +726,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Max interest for 10 consecutive rounds',
     category: 'charter',
     conditions: [
-      { type: 'max_interest_rounds', target: 10, description: 'Max interest for 10 consecutive rounds' },
-      { type: 'charter_purchased', value: 'seed_pouch', description: 'Purchase Seed Pouch' },
+      {
+        type: 'max_interest_rounds',
+        target: 10,
+        description: 'Max interest for 10 consecutive rounds',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'seed_pouch',
+        description: 'Purchase Seed Pouch',
+      },
     ],
     unlocksId: 'money_tree',
-    icon: '🌳',
+    icon: 'flower',
   },
   {
     id: 'unlock_void_matter',
@@ -602,11 +747,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Redeem Empty Scroll 10 times total',
     category: 'charter',
     conditions: [
-      { type: 'empty_scroll_redeemed', target: 10, description: 'Redeem Empty Scroll 10 times total' },
-      { type: 'charter_purchased', value: 'empty_scroll', description: 'Purchase Empty Scroll' },
+      {
+        type: 'empty_scroll_redeemed',
+        target: 10,
+        description: 'Redeem Empty Scroll 10 times total',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'empty_scroll',
+        description: 'Purchase Empty Scroll',
+      },
     ],
     unlocksId: 'void_matter',
-    icon: '🕳️',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_illusion_tiles',
@@ -615,11 +768,19 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Buy 20 tiles from shop',
     category: 'charter',
     conditions: [
-      { type: 'tiles_bought', target: 20, description: 'Buy 20 tiles from shop' },
-      { type: 'charter_purchased', value: 'tile_trading', description: 'Purchase Tile Trading' },
+      {
+        type: 'tiles_bought',
+        target: 20,
+        description: 'Buy 20 tiles from shop',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'tile_trading',
+        description: 'Purchase Tile Trading',
+      },
     ],
     unlocksId: 'illusion_tiles',
-    icon: '🀄',
+    icon: 'tiles',
   },
   {
     id: 'unlock_stone_script',
@@ -629,10 +790,14 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     category: 'charter',
     conditions: [
       { type: 'reach_act', target: 12, description: 'Reach Act 12' },
-      { type: 'charter_purchased', value: 'ancient_script', description: 'Purchase Ancient Script' },
+      {
+        type: 'charter_purchased',
+        value: 'ancient_script',
+        description: 'Purchase Ancient Script',
+      },
     ],
     unlocksId: 'stone_script',
-    icon: '🗿',
+    icon: 'neutral-item',
   },
   {
     id: 'unlock_final_cut',
@@ -641,11 +806,20 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Discover 25 Mandates',
     category: 'charter',
     conditions: [
-      { type: 'discovery', value: 'mandates', target: 25, description: 'Discover 25 Mandates' },
-      { type: 'charter_purchased', value: 'directors_take', description: "Purchase Director's Take" },
+      {
+        type: 'discovery',
+        value: 'mandates',
+        target: 25,
+        description: 'Discover 25 Mandates',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'directors_take',
+        description: "Purchase Director's Take",
+      },
     ],
     unlocksId: 'final_cut',
-    icon: '🎬',
+    icon: 'play',
   },
   {
     id: 'unlock_full_palette',
@@ -654,11 +828,20 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     description: 'Reduce hand size to 5 tiles',
     category: 'charter',
     conditions: [
-      { type: 'collect_items', target: 5, value: 'min_hand_size', description: 'Reduce hand size to 5 tiles' },
-      { type: 'charter_purchased', value: 'brush_stroke', description: 'Purchase Brush Stroke' },
+      {
+        type: 'collect_items',
+        target: 5,
+        value: 'min_hand_size',
+        description: 'Reduce hand size to 5 tiles',
+      },
+      {
+        type: 'charter_purchased',
+        value: 'brush_stroke',
+        description: 'Purchase Brush Stroke',
+      },
     ],
     unlocksId: 'full_palette',
-    icon: '🎨',
+    icon: 'collection',
   },
 ]
 
@@ -681,7 +864,7 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
       { type: 'win_stake', value: 'white', description: 'Win on White Stake' },
     ],
     unlocksId: 'red_stake',
-    icon: '🔴',
+    icon: 'challenge',
   },
   {
     id: 'unlock_green_stake',
@@ -693,7 +876,7 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
       { type: 'win_stake', value: 'red', description: 'Win on Red Stake' },
     ],
     unlocksId: 'green_stake',
-    icon: '🟢',
+    icon: 'challenge',
   },
   {
     id: 'unlock_black_stake',
@@ -705,7 +888,7 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
       { type: 'win_stake', value: 'green', description: 'Win on Green Stake' },
     ],
     unlocksId: 'black_stake',
-    icon: '⚫',
+    icon: 'challenge',
   },
   {
     id: 'unlock_blue_stake',
@@ -717,7 +900,7 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
       { type: 'win_stake', value: 'black', description: 'Win on Black Stake' },
     ],
     unlocksId: 'blue_stake',
-    icon: '🔵',
+    icon: 'challenge',
   },
   {
     id: 'unlock_purple_stake',
@@ -729,7 +912,7 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
       { type: 'win_stake', value: 'blue', description: 'Win on Blue Stake' },
     ],
     unlocksId: 'purple_stake',
-    icon: '🟣',
+    icon: 'challenge',
   },
   {
     id: 'unlock_orange_stake',
@@ -738,10 +921,14 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Purple Stake',
     category: 'stake',
     conditions: [
-      { type: 'win_stake', value: 'purple', description: 'Win on Purple Stake' },
+      {
+        type: 'win_stake',
+        value: 'purple',
+        description: 'Win on Purple Stake',
+      },
     ],
     unlocksId: 'orange_stake',
-    icon: '🟠',
+    icon: 'challenge',
   },
   {
     id: 'unlock_gold_stake',
@@ -750,10 +937,14 @@ export const STAKE_UNLOCKS: UnlockDefinition[] = [
     description: 'Win on Orange Stake',
     category: 'stake',
     conditions: [
-      { type: 'win_stake', value: 'orange', description: 'Win on Orange Stake' },
+      {
+        type: 'win_stake',
+        value: 'orange',
+        description: 'Win on Orange Stake',
+      },
     ],
     unlocksId: 'gold_stake',
-    icon: '🥇',
+    icon: 'trophy',
   },
 ]
 
@@ -887,7 +1078,9 @@ export function getUnlocksForItem(itemId: string): UnlockDefinition[] {
 /**
  * Get unlocks by category
  */
-export function getUnlocksByCategory(category: UnlockCategory): UnlockDefinition[] {
+export function getUnlocksByCategory(
+  category: UnlockCategory
+): UnlockDefinition[] {
   return ALL_UNLOCKS.filter((u) => u.category === category)
 }
 
@@ -923,6 +1116,15 @@ export function getStakeTierFromName(name: string): number {
  * Get stake name from tier
  */
 export function getStakeNameFromTier(tier: number): string {
-  const names = ['white', 'red', 'green', 'black', 'blue', 'purple', 'orange', 'gold']
+  const names = [
+    'white',
+    'red',
+    'green',
+    'black',
+    'blue',
+    'purple',
+    'orange',
+    'gold',
+  ]
   return names[tier - 1] ?? 'white'
 }

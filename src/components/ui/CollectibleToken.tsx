@@ -13,9 +13,9 @@
  * @module components/ui/CollectibleToken
  */
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnchoredPopover } from './AnchoredPopover'
+import { usePreviewPopover } from './usePreviewPopover'
 
 export interface CollectibleTokenProps {
   /** Accessible name; also the details panel's title. */
@@ -56,37 +56,10 @@ export function CollectibleToken({
   open: controlledOpen,
   onOpenChange,
 }: CollectibleTokenProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
-  const open = controlledOpen ?? uncontrolledOpen
-  const setOpen = useCallback(
-    (next: boolean) => {
-      setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [onOpenChange]
-  )
-  const [keyboardOpened, setKeyboardOpened] = useState(false)
-  const pinned = useRef(false)
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const anchorRef = useRef<HTMLButtonElement>(null)
-  const panelId = useId()
-
-  const cancelClose = useCallback(() => {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-    closeTimer.current = null
-  }, [])
-  const close = useCallback(() => {
-    cancelClose()
-    pinned.current = false
-    setKeyboardOpened(false)
-    setOpen(false)
-  }, [cancelClose, setOpen])
-  const scheduleClose = useCallback(() => {
-    if (pinned.current) return
-    cancelClose()
-    closeTimer.current = setTimeout(close, 150)
-  }, [cancelClose, close])
-  useEffect(() => cancelClose, [cancelClose])
+  const { anchorRef, triggerProps, popoverProps } = usePreviewPopover({
+    open: controlledOpen,
+    onOpenChange,
+  })
 
   return (
     <>
@@ -97,39 +70,7 @@ export function CollectibleToken({
         data-collectible-token=""
         {...data}
         aria-label={label}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls={open ? panelId : undefined}
-        onPointerEnter={(event) => {
-          if (
-            event.pointerType !== 'mouse' ||
-            !window.matchMedia?.('(any-hover: hover)').matches
-          )
-            return
-          cancelClose()
-          setOpen(true)
-        }}
-        onPointerLeave={scheduleClose}
-        onClick={(event) => {
-          cancelClose()
-          // Keyboard or assistive activation: open and move into the panel.
-          if (event.detail === 0) {
-            pinned.current = true
-            setKeyboardOpened(true)
-            setOpen(true)
-            return
-          }
-          // A click on a hover-opened panel pins it; otherwise toggle.
-          if (open && !pinned.current) {
-            pinned.current = true
-            return
-          }
-          if (open) close()
-          else {
-            pinned.current = true
-            setOpen(true)
-          }
-        }}
+        {...triggerProps}
         className={`collectible-token relative flex shrink-0 items-center justify-center rounded-lg border-2 bg-black/30 shadow-md transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] ${
           shape === 'portrait' ? 'collectible-token--portrait' : ''
         } ${dimmed ? 'opacity-60 grayscale' : ''}`}
@@ -165,16 +106,7 @@ export function CollectibleToken({
           </span>
         )}
       </button>
-      <AnchoredPopover
-        open={open}
-        anchorRef={anchorRef}
-        id={panelId}
-        title={label}
-        onClose={close}
-        focusOnOpen={keyboardOpened}
-        onPointerEnter={cancelClose}
-        onPointerLeave={scheduleClose}
-      >
+      <AnchoredPopover {...popoverProps} title={label}>
         {children}
       </AnchoredPopover>
     </>

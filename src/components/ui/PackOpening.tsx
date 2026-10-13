@@ -28,6 +28,7 @@ import {
 } from '../../utils/assets'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import { VoidScriptArtwork } from './VoidScriptArtwork'
+import { ControlIcon } from './ControlIcon'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -182,19 +183,11 @@ function ContentCard({
       {isSelected && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
           <div className="w-10 h-10 bg-[var(--color-golden-yellow)] rounded-full flex items-center justify-center shadow-lg">
-            <svg
-              className="w-6 h-6 text-[var(--color-dark-forest)]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={3}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+            <ControlIcon
+              name="check"
+              size={24}
+              className="text-[var(--color-dark-forest)]"
+            />
           </div>
         </div>
       )}
@@ -567,7 +560,9 @@ export function PackCard({
         <div className="mt-auto">
           {isPurchased ? (
             <div className="text-center py-1">
-              <span className="text-xs text-gray-400">{t('shop.purchased', 'Purchased')}</span>
+              <span className="text-xs text-gray-400">
+                {t('shop.purchased', 'Purchased')}
+              </span>
             </div>
           ) : (
             <button

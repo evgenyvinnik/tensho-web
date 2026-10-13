@@ -10,7 +10,7 @@ afterEach(async () => {
 })
 
 describe('ConsumablesBar illustrations', () => {
-  it('uses native SVG artwork for every compact consumable', () => {
+  it('uses generated image artwork for every compact consumable', () => {
     render(<ConsumablesBar fateSeals={2} celestialOrbs={1} voidScripts={3} />)
 
     const names = ['Fate Seals', 'Celestial Orbs', 'Void Scripts'] as const
@@ -19,9 +19,14 @@ describe('ConsumablesBar illustrations', () => {
       const button = screen.getByRole('button', {
         name: new RegExp(`${name} \\(`),
       })
-      const icon = button.querySelector('svg')
+      const icon = button.querySelector('img')
 
-      expect(icon).not.toBeNull()
+      expect(icon).toHaveAttribute('alt', '')
+      expect(icon).toHaveAttribute('aria-hidden', 'true')
+      expect(icon).toHaveAttribute(
+        'src',
+        expect.stringMatching(/illustrations\/.+\.webp$/)
+      )
       expect(button).not.toHaveTextContent(/[🎴🔮📜]/u)
     }
   })

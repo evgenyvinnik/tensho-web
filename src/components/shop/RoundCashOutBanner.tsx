@@ -1,3 +1,4 @@
+import { ControlIcon } from '../ui/ControlIcon'
 import { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { animated, useSpring, to } from '@react-spring/web'
@@ -164,18 +165,11 @@ export function RoundCashOutBanner({
             </span>
           )}
         </span>
-        <svg
-          aria-hidden="true"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          className={`shrink-0 text-[var(--color-metallic-gold)] ${expanded ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <ControlIcon
+          name="next"
+          size={20}
+          className={`shrink-0 text-[var(--color-metallic-gold)] ${expanded ? '-rotate-90' : 'rotate-90'}`}
+        />
       </button>
       <div id={detailsId} data-payout-details hidden={!expanded}>
         <div className="grid min-w-0 gap-3 px-4 py-3 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">

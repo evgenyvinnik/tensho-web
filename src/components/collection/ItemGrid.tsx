@@ -9,14 +9,11 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import { ItemCard, ItemDisplayInfo } from './ItemCard'
+import { ControlIcon } from '../ui/ControlIcon'
 
 export interface ItemGridProps {
   entries: ArchiveEntry[]
   displayInfoMap: Map<string, ItemDisplayInfo>
-  onItemClick: (
-    entry: ArchiveEntry,
-    displayInfo: ItemDisplayInfo | null
-  ) => void
   isLoading?: boolean
 }
 
@@ -26,7 +23,6 @@ export interface ItemGridProps {
 export function ItemGrid({
   entries,
   displayInfoMap,
-  onItemClick,
   isLoading = false,
 }: ItemGridProps) {
   const { t } = useTranslation()
@@ -48,11 +44,11 @@ export function ItemGrid({
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6">
         {Array.from({ length: 12 }).map((_, index) => (
           <div
             key={index}
-            className="h-[120px] rounded-lg bg-[var(--color-dark-forest)] border-2 border-[var(--color-metallic-gold)] animate-pulse"
+            className="aspect-[4/5] rounded-lg bg-[var(--color-dark-forest)] border-2 border-[var(--color-metallic-gold)] animate-pulse"
           />
         ))}
       </div>
@@ -63,19 +59,11 @@ export function ItemGrid({
     return (
       <div className="text-center py-12">
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--color-dark-forest)] flex items-center justify-center">
-          <svg
-            className="w-8 h-8 text-[var(--color-metallic-gold)]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-            />
-          </svg>
+          <ControlIcon
+            name="archive"
+            size={32}
+            className="text-[var(--color-metallic-gold)]"
+          />
         </div>
         <p className="text-[var(--color-metallic-gold)]">
           {t('collection.empty', 'No items in this category')}
@@ -85,7 +73,7 @@ export function ItemGrid({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+    <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6">
       {sortedEntries.map((entry) => {
         const displayInfo = displayInfoMap.get(entry.itemId) || null
 
@@ -94,7 +82,6 @@ export function ItemGrid({
             key={entry.key}
             entry={entry}
             displayInfo={displayInfo}
-            onClick={() => onItemClick(entry, displayInfo)}
           />
         )
       })}

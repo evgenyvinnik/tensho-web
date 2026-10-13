@@ -56,21 +56,14 @@ for (const language of ['es', 'ru']) {
     await page.goto(`${baseURL!.replace(/\/$/, '')}/${language}/collection`)
     const blueprint = card(copy.decrees.items['decree-blueprint'].name)
     await expect(blueprint).toBeVisible()
+    // A card is the item's picture and name; its details open in a popup.
     const expectCardFits = async (node: Locator) => {
       expect(
         await node.evaluate(
           (element) => element.scrollWidth <= element.clientWidth
         )
       ).toBe(true)
-      await expect(node.locator('[data-archive-card-stats]')).toBeVisible()
-      const lock = node.locator('[data-archive-card-lock]')
-      if (await lock.count()) {
-        const notice = await lock.boundingBox()
-        const stats = await node
-          .locator('[data-archive-card-stats]')
-          .boundingBox()
-        expect(notice!.y).toBeGreaterThanOrEqual(stats!.y + stats!.height)
-      }
+      await expect(node.locator('[data-archive-card-art]')).toBeVisible()
     }
     await expectCardFits(blueprint)
     await blueprint.screenshot({ path: info.outputPath('blueprint-card.png') })
@@ -85,9 +78,7 @@ for (const language of ['es', 'ru']) {
     const before = await page.evaluate(() =>
       localStorage.getItem('tensho-archive')
     )
-    await activate(blueprint)
-    let dialog = page.getByRole('dialog')
-    const image = dialog.locator('img[src$="/blueprint.webp"]')
+    const image = blueprint.locator('img[src$="/blueprint.webp"]')
     await expect(image).toBeVisible()
     expect(
       await image.evaluate(async (node: HTMLImageElement) => {
@@ -95,6 +86,8 @@ for (const language of ['es', 'ru']) {
         return node.naturalWidth
       })
     ).toBe(512)
+    await activate(blueprint)
+    let dialog = page.getByRole('dialog')
     await expect(dialog.locator('[data-archive-rarity]')).toHaveText(
       copy.shop.ui.rarity_rare
     )
@@ -121,9 +114,7 @@ for (const language of ['es', 'ru']) {
     const second = await stats.nth(1).boundingBox()
     expect(first).not.toBeNull()
     expect(second).not.toBeNull()
-    if (isMobile)
-      expect(second!.y).toBeGreaterThanOrEqual(first!.y + first!.height)
-    else expect(second!.y).toBe(first!.y)
+    expect(second!.y).toBe(first!.y)
     await dialog.screenshot({ path: info.outputPath('blueprint-archive.png') })
     await activate(
       dialog.getByRole('button', { name: copy.common.close, exact: true })

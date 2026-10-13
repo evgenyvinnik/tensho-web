@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { Button } from '../ui/Button'
 import { BackButton } from '../ui/BackButton'
+import { ControlIcon } from '../ui/ControlIcon'
 
 // Import from extracted tutorial modules (reused for Codex)
 import {
@@ -134,7 +135,7 @@ export function CodexScreen() {
         <div className="screen-canvas flex items-center justify-between px-3 py-3 sm:px-5 sm:py-4">
           <BackButton onClick={goBack} ariaLabel={t('common.back')} />
           <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
-            📜 {t('codex.title', 'Codex')}
+            <ControlIcon name="archive" /> {t('codex.title', 'Codex')}
           </h1>
           <div className="w-[44px]" />
         </div>

@@ -19,6 +19,7 @@ import { ExactScoreDetails } from './ExactScoreDetails'
 import { playAreaHasContent } from '../../gameplay/playAreaContent'
 import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
 import type { Tile } from '../../core/Tile'
+import { YakuArtwork } from '../ui/YakuArtwork'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -147,6 +148,7 @@ function YakuBadge({ yaku, isSelected, onToggle }: YakuBadgeProps) {
           ${isSelected ? 'ring-2 ring-white ring-opacity-70' : ''}
         `}
       >
+        <YakuArtwork id={yaku.id} className="mr-1 h-7 w-7" />
         <span className="text-xs font-bold text-white drop-shadow-sm">
           {yaku.name}
         </span>

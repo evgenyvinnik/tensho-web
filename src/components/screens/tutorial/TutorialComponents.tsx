@@ -18,6 +18,7 @@ import {
 import { TileSuit } from '../../../core/Tile'
 import { useTranslation } from 'react-i18next'
 import { useCategoryLabel } from '../../../i18n/categoryLabel'
+import { ControlIcon } from '../../ui/ControlIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -51,7 +52,7 @@ export interface TutorialStep {
 export interface CategoryConfig {
   /** Unique identifier for the category */
   id: string
-  /** Emoji or icon character to display */
+  /** Generated category illustration URL */
   icon: string
   /** Tailwind CSS color class for the icon */
   color: string
@@ -67,17 +68,50 @@ export const CATEGORY_CONFIG: Record<
   string,
   Omit<CategoryConfig, 'id' | 'label'>
 > = {
-  Introduction: { icon: '🏯', color: 'text-amber-400' },
-  Tiles: { icon: '🀄', color: 'text-blue-400' },
-  'Hand Building': { icon: '🤲', color: 'text-green-400' },
-  'How to Play': { icon: '🎮', color: 'text-purple-400' },
-  Scoring: { icon: '📊', color: 'text-yellow-400' },
-  Progression: { icon: '📈', color: 'text-orange-400' },
-  Decrees: { icon: '📜', color: 'text-indigo-400' },
-  Flora: { icon: '🌸', color: 'text-pink-400' },
-  Economy: { icon: '💰', color: 'text-emerald-400' },
-  Strategy: { icon: '🧠', color: 'text-cyan-400' },
-  'Ready!': { icon: '🎯', color: 'text-red-400' },
+  Introduction: {
+    icon: getCodexCategoryIllustration('Introduction'),
+    color: 'text-amber-400',
+  },
+  Tiles: {
+    icon: getCodexCategoryIllustration('Tiles'),
+    color: 'text-blue-400',
+  },
+  'Hand Building': {
+    icon: getCodexCategoryIllustration('Hand Building'),
+    color: 'text-green-400',
+  },
+  'How to Play': {
+    icon: getCodexCategoryIllustration('How to Play'),
+    color: 'text-purple-400',
+  },
+  Scoring: {
+    icon: getCodexCategoryIllustration('Scoring'),
+    color: 'text-yellow-400',
+  },
+  Progression: {
+    icon: getCodexCategoryIllustration('Progression'),
+    color: 'text-orange-400',
+  },
+  Decrees: {
+    icon: getCodexCategoryIllustration('Decrees'),
+    color: 'text-indigo-400',
+  },
+  Flora: {
+    icon: getCodexCategoryIllustration('Flora'),
+    color: 'text-pink-400',
+  },
+  Economy: {
+    icon: getCodexCategoryIllustration('Economy'),
+    color: 'text-emerald-400',
+  },
+  Strategy: {
+    icon: getCodexCategoryIllustration('Strategy'),
+    color: 'text-cyan-400',
+  },
+  'Ready!': {
+    icon: getCodexCategoryIllustration('Ready!'),
+    color: 'text-red-400',
+  },
 }
 
 // =============================================================================
@@ -125,10 +159,11 @@ export function InfoBox({
     tip: 'bg-green-900/30 border-green-400/50',
     warning: 'bg-orange-900/30 border-orange-400/50',
   }
-  const icons = { info: 'ℹ️', tip: '💡', warning: '⚠️' }
   return (
     <div className={`p-3 rounded-lg border ${styles[type]} mt-2`}>
-      <span className="mr-2">{icons[type]}</span>
+      <span className="mr-2">
+        <ControlIcon name={type} size={20} />
+      </span>
       {children}
     </div>
   )
@@ -393,7 +428,7 @@ export function CategoryItem({
   const { t } = useTranslation()
   const categoryLabel = useCategoryLabel()
   const config = CATEGORY_CONFIG[category] || {
-    icon: '📖',
+    icon: getCodexCategoryIllustration(),
     color: 'text-gray-400',
   }
   const isComplete = completedCount >= stepCount
@@ -409,7 +444,12 @@ export function CategoryItem({
         }`}
     >
       <span className={`text-xl ${!isActive ? config.color : ''}`}>
-        {config.icon}
+        <img
+          src={config.icon}
+          alt=""
+          aria-hidden="true"
+          className="inline-block h-8 w-8 shrink-0 object-contain"
+        />
       </span>
       <div className="flex-1 min-w-0">
         <p className="font-medium truncate">{categoryLabel(category)}</p>
@@ -420,7 +460,7 @@ export function CategoryItem({
           })}
         </p>
       </div>
-      {isComplete && <span className="text-green-400">✓</span>}
+      {isComplete && <ControlIcon name="check" size={16} />}
     </button>
   )
 }
@@ -449,7 +489,7 @@ export function CategoryTabs({
       <div className="flex min-w-max gap-2 px-1">
         {categories.map((cat) => {
           const config = CATEGORY_CONFIG[cat] || {
-            icon: '📖',
+            icon: getCodexCategoryIllustration(),
             color: 'text-gray-400',
           }
           const isActive = cat === currentCategory
@@ -466,7 +506,12 @@ export function CategoryTabs({
               }`}
             >
               <span className={!isActive ? config.color : ''}>
-                {config.icon}
+                <img
+                  src={config.icon}
+                  alt=""
+                  aria-hidden="true"
+                  className="inline-block h-8 w-8 shrink-0 object-contain"
+                />
               </span>
               <span className="whitespace-nowrap">{categoryLabel(cat)}</span>
             </button>

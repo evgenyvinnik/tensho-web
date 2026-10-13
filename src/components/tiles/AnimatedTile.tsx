@@ -18,6 +18,7 @@ import {
   useTileDragAnimation,
 } from '../../animations/useTileAnimation'
 import { SPRINGS, ANIMATION_COLORS } from '../../animations/constants'
+import { ControlIcon } from '../ui/ControlIcon'
 
 // Minimum distance (px) before drag activates to distinguish from taps
 const DRAG_THRESHOLD = 5
@@ -336,7 +337,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
           aria-hidden="true"
         >
           <span className="absolute left-1 top-1 rounded bg-slate-950/90 px-1 text-xs text-slate-100">
-            🚫
+            <ControlIcon name="ban" size={16} />
           </span>
         </div>
       )}
@@ -348,11 +349,19 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
           aria-hidden="true"
         >
           <span className="absolute right-0.5 top-0.5 rounded bg-cyan-950/90 px-1 text-xs text-cyan-100">
-            🔒
+            <ControlIcon name="lock" size={16} />
           </span>
         </div>
       )}
 
+      {locked && (
+        <span className="sr-only">
+          {t('tiles.lockedMustPlay', 'Locked tile: must be played')}
+        </span>
+      )}
+      {debuffed && (
+        <span className="sr-only">{t('tiles.debuffed', 'Debuffed tile')}</span>
+      )}
       {/* Glow overlay */}
       {glowing && (
         <animated.div

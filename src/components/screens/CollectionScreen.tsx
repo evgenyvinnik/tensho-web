@@ -28,11 +28,9 @@ import { ALL_MANDATES } from '../../config/mandateDefinitions'
 import { getAllFateSeals } from '../../systems/FateSealSystem'
 import { getAllCelestialOrbs } from '../../systems/CelestialOrbSystem'
 import { getAllVoidScripts } from '../../systems/VoidScriptSystem'
-import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 
 import { CategoryTabs } from '../collection/CategoryTabs'
 import { ItemGrid } from '../collection/ItemGrid'
-import { ItemDetailModal } from '../collection/ItemDetailModal'
 import type { ItemDisplayInfo } from '../collection/ItemCard'
 import { useItemText, type ItemText } from '../../i18n/useItemText'
 
@@ -218,10 +216,6 @@ export function CollectionScreen() {
   // Local state
   const [activeCategory, setActiveCategory] =
     useState<ArchiveCategory>('decrees')
-  const [selectedEntry, setSelectedEntry] = useState<ArchiveEntry | null>(null)
-  const [selectedDisplayInfo, setSelectedDisplayInfo] =
-    useState<ItemDisplayInfo | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Get all categories
   const categories = useMemo(() => getAllArchiveCategories(), [])
@@ -275,19 +269,6 @@ export function CollectionScreen() {
     width: `${stats.completionPercentage}%`,
     config: { tension: 100, friction: 20 },
   })
-
-  // Handle item click
-  const handleItemClick = (
-    entry: ArchiveEntry,
-    displayInfo: ItemDisplayInfo | null
-  ) => {
-    // Only open modal for discovered items or if we have display info
-    if (entry.discoveredAt !== null || displayInfo) {
-      setSelectedEntry(entry)
-      setSelectedDisplayInfo(displayInfo)
-      setIsModalOpen(true)
-    }
-  }
 
   // Handle back navigation
   const handleBack = () => {
@@ -390,7 +371,6 @@ export function CollectionScreen() {
             <ItemGrid
               entries={categoryEntries}
               displayInfoMap={displayInfoMap}
-              onItemClick={handleItemClick}
             />
 
             {recentDiscoveries.length > 0 && (
@@ -428,14 +408,6 @@ export function CollectionScreen() {
         </div>
       </div>
 
-      {/* Item detail modal */}
-      <ItemDetailModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        entry={selectedEntry}
-        displayInfo={selectedDisplayInfo}
-        categoryInfo={activeCategoryInfo}
-      />
     </div>
   )
 }

@@ -10,15 +10,20 @@ import { useSpring, animated } from '@react-spring/web'
 import { Decree, OwnedDecree, DecreeRarity } from '../../systems/types'
 import { DecreeArtwork } from './DecreeArtwork'
 import { useItemText } from '../../i18n/useItemText'
+import { ControlIcon } from '../ui/ControlIcon'
 
 /**
  * Rarity color mapping
  */
 const RARITY_COLORS: Record<DecreeRarity, string> = {
-  LocalEdict: 'border-gray-400 bg-gradient-to-b from-gray-500/20 to-gray-600/20',
-  RegionalMandate: 'border-green-500 bg-gradient-to-b from-green-500/20 to-green-600/20',
-  ImperialDecree: 'border-blue-500 bg-gradient-to-b from-blue-500/20 to-blue-600/20',
-  HeavenlyOrdinance: 'border-purple-500 bg-gradient-to-b from-purple-500/20 to-purple-600/20',
+  LocalEdict:
+    'border-gray-400 bg-gradient-to-b from-gray-500/20 to-gray-600/20',
+  RegionalMandate:
+    'border-green-500 bg-gradient-to-b from-green-500/20 to-green-600/20',
+  ImperialDecree:
+    'border-blue-500 bg-gradient-to-b from-blue-500/20 to-blue-600/20',
+  HeavenlyOrdinance:
+    'border-purple-500 bg-gradient-to-b from-purple-500/20 to-purple-600/20',
 }
 
 /**
@@ -209,24 +214,28 @@ export function DecreeCard({
             </button>
           )}
 
-          {mode === 'inventory' && onSell && !decree.sticker?.type?.includes('Eternal') && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onSell()
-              }}
-              className="w-full py-1 rounded text-xs font-bold bg-[var(--color-forest-green)] text-[var(--color-beige-white)] hover:opacity-90 transition-colors"
-            >
-              Sell ¥{sellValue}
-            </button>
-          )}
+          {mode === 'inventory' &&
+            onSell &&
+            !decree.sticker?.type?.includes('Eternal') && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onSell()
+                }}
+                className="w-full py-1 rounded text-xs font-bold bg-[var(--color-forest-green)] text-[var(--color-beige-white)] hover:opacity-90 transition-colors"
+              >
+                Sell ¥{sellValue}
+              </button>
+            )}
         </div>
       </div>
 
       {/* Debuff overlay */}
       {isDebuffed && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg">
-          <span className="text-2xl">🚫</span>
+          <span className="text-2xl">
+            <ControlIcon name="ban" />
+          </span>
         </div>
       )}
 
@@ -234,7 +243,7 @@ export function DecreeCard({
       {decree.flowerRequirement && (
         <div className="absolute bottom-8 right-1">
           <span className="text-xs bg-pink-500/30 text-pink-300 px-1 rounded">
-            🌸×{decree.flowerRequirement}
+            <ControlIcon name="flower" size={16} />×{decree.flowerRequirement}
           </span>
         </div>
       )}
@@ -251,7 +260,11 @@ export interface DecreeSlotProps {
   className?: string
 }
 
-export function DecreeSlot({ isLocked = false, onClick, className = '' }: DecreeSlotProps) {
+export function DecreeSlot({
+  isLocked = false,
+  onClick,
+  className = '',
+}: DecreeSlotProps) {
   return (
     <div
       className={`
@@ -273,7 +286,9 @@ export function DecreeSlot({ isLocked = false, onClick, className = '' }: Decree
       }}
     >
       {isLocked ? (
-        <span className="text-2xl">🔒</span>
+        <span className="text-2xl">
+          <ControlIcon name="lock" />
+        </span>
       ) : (
         <span className="text-2xl text-[var(--color-metallic-gold)]">+</span>
       )}

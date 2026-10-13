@@ -1,23 +1,21 @@
 /**
  * ItemCard Component for Collection Screen
  *
- * Displays a single archive item in the collection grid.
- * Shows discovered items with full details, undiscovered as silhouettes.
+ * One Archive item as its picture, named underneath. Hovering previews its
+ * details in a popup; a tap or click pins the popup, and the keyboard opens
+ * it. Undiscovered items are silhouettes. A locked reward stays readable in
+ * its popup — what it does and how to unlock it — while anything else
+ * undiscovered keeps its secret.
  */
 
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSpring, animated, to } from '@react-spring/web'
-import { useSettingsStore } from '../../stores/settingsStore'
 import type { ArchiveEntry } from '../../systems/ArchiveSystem'
 import type { ArchiveCategory } from '../../config/archiveDefinitions'
-import { DecreeArtwork } from '../ui/DecreeArtwork'
-import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
-import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
-import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
-import { CharterArtwork } from '../ui/CharterArtwork'
-
-const AnimatedDiv = animated('div')
+import { AnchoredPopover } from '../ui/AnchoredPopover'
+import { ControlIcon } from '../ui/ControlIcon'
+import { usePreviewPopover } from '../ui/usePreviewPopover'
+import { getArchiveIllustration } from './ArchiveArtwork'
+import { ItemDetails } from './ItemDetails'
 
 /**
  * Item info for display (from definition files)
@@ -35,28 +33,6 @@ export interface ItemDisplayInfo {
 export interface ItemCardProps {
   entry: ArchiveEntry
   displayInfo: ItemDisplayInfo | null
-  onClick?: () => void
-}
-
-/**
- * Get rarity icon color
- */
-function getRarityIconColor(rarity?: string): string {
-  switch (rarity) {
-    case 'HeavenlyOrdinance':
-    case 'mythic':
-      return '#A855F7' // purple-500
-    case 'ImperialDecree':
-    case 'rare':
-      return '#3B82F6' // blue-500
-    case 'RegionalMandate':
-    case 'uncommon':
-      return '#22C55E' // green-500
-    case 'legendary':
-      return '#A855F7' // purple-500
-    default:
-      return '#9CA3AF' // gray-400
-  }
 }
 
 /**
@@ -85,168 +61,78 @@ function getRarityColor(rarity?: string): string {
 /**
  * ItemCard - Single item display in collection grid
  */
-export function ItemCard({ entry, displayInfo, onClick }: ItemCardProps) {
-  const { t, i18n } = useTranslation()
-  const [isHovered, setIsHovered] = useState(false)
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+export function ItemCard({ entry, displayInfo }: ItemCardProps) {
+  const { t } = useTranslation()
+  const { anchorRef, triggerProps, popoverProps } = usePreviewPopover()
 
-  const isDiscovered = entry.discoveredAt !== null
   const isLocked = !entry.isUnlocked
-
-  const spring = useSpring({
-    opacity: 1,
-    scale: isHovered ? 1.04 : 1,
-    y: 0,
-    config: { tension: 200, friction: 20 },
-    immediate: reducedMotion,
-  })
-
-  const rarityClass = isDiscovered
-    ? getRarityColor(displayInfo?.rarity)
-    : 'border-gray-600 bg-gray-800/50'
-  const voidScript = displayInfo ? VOID_SCRIPTS[displayInfo.id] : undefined
+  const known = entry.discoveredAt !== null ? displayInfo : null
+  const details = known ?? (isLocked ? displayInfo : null)
+  const label = known
+    ? known.name
+    : isLocked
+      ? t('collection.locked', 'Locked')
+      : t('collection.undiscovered', 'Undiscovered')
+  const art = known
+    ? getArchiveIllustration(known.category, known.id)
+    : undefined
 
   return (
-    <AnimatedDiv
-      className={`
-        relative min-w-0 rounded-lg border-2 p-2.5 cursor-pointer sm:p-3
-        transition-all duration-200 min-h-[128px]
-        ${rarityClass}
-        ${isLocked ? 'opacity-50' : ''}
-        hover:shadow-lg
-      `}
-      style={{
-        opacity: spring.opacity,
-        transform: to(
-          [spring.scale, spring.y],
-          (scale, y) => `scale(${scale}) translateY(${y}px)`
-        ),
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-        if ((e.key === 'Enter' || e.key === ' ') && onClick) {
-          e.preventDefault()
-          onClick()
-        }
-      }}
-    >
-      {isDiscovered && displayInfo ? (
-        <>
-          {/* Decree icon for decree category items */}
-          {displayInfo.category === 'decrees' && (
-            <div className="absolute top-2 right-2">
-              <DecreeArtwork
-                decreeId={displayInfo.id}
-                size={24}
-                color={getRarityIconColor(displayInfo.rarity)}
-              />
-            </div>
-          )}
-
-          {voidScript && (
-            <VoidScriptArtwork
-              script={voidScript}
-              name={displayInfo.name}
-              description={displayInfo.description}
-              focusable={false}
-              className="absolute right-1 top-1 h-16 w-16 sm:right-2 sm:top-2"
+    <>
+      <button
+        ref={anchorRef}
+        type="button"
+        data-archive-card={entry.itemId}
+        aria-label={label}
+        {...triggerProps}
+        className={`group relative flex min-w-0 flex-col items-center rounded-lg border-2 p-1.5 text-center transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] sm:p-2 ${
+          known ? getRarityColor(known.rarity) : 'border-gray-600 bg-gray-800/50'
+        } ${isLocked ? 'opacity-60' : ''}`}
+      >
+        <span className="flex aspect-square w-full items-center justify-center">
+          {art ? (
+            <img
+              src={art}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              data-archive-card-art
+              className="game-illustration h-full w-full object-contain transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
             />
-          )}
-
-          {displayInfo.category === 'omens' &&
-            displayInfo.id === 'double_omen' && (
-              <DoubleOmenArtwork className="mb-2 h-16 w-16" />
-            )}
-
-          {/* Item Name */}
-          {displayInfo.category === 'charters' && (
-            <CharterArtwork
-              charterId={displayInfo.id}
-              className="mb-2 h-16 w-16"
-            />
-          )}
-          <h3
-            className={`mb-1 line-clamp-2 text-sm font-bold text-[var(--color-beige-white)] ${voidScript ? 'pr-14 sm:pr-16' : displayInfo.category === 'decrees' ? 'pr-8' : ''}`}
-          >
-            {displayInfo.name}
-          </h3>
-
-          {/* Japanese Name */}
-          {displayInfo.japaneseName && (
-            <p className="text-xs text-[var(--color-metallic-gold)] font-tile mb-2">
-              {displayInfo.japaneseName}
-            </p>
-          )}
-
-          {/* Description (truncated) */}
-          <p
-            className={`line-clamp-2 text-xs text-[var(--color-beige-white)] opacity-70 ${voidScript ? 'pr-12 sm:pr-14' : ''}`}
-          >
-            {displayInfo.description}
-          </p>
-
-          {/* Stats indicator */}
-          {(entry.timesUsed > 0 || entry.timesWonWith > 0) && (
-            <div
-              data-archive-card-stats
-              className="mt-2 grid gap-1 text-xs [overflow-wrap:anywhere]"
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex h-3/5 w-3/5 items-center justify-center rounded-lg bg-gray-700 text-3xl text-gray-500"
             >
-              {entry.timesUsed > 0 && (
-                <span className="text-[var(--color-golden-yellow)]">
-                  {t('collection.timesUsed')}:{' '}
-                  {entry.timesUsed.toLocaleString(i18n.language)}
-                </span>
-              )}
-              {entry.timesWonWith > 0 && (
-                <span className="text-green-400">
-                  {t('collection.runsWon')}:{' '}
-                  {entry.timesWonWith.toLocaleString(i18n.language)}
-                </span>
-              )}
-            </div>
+              ?
+            </span>
           )}
-        </>
-      ) : (
-        /* Undiscovered item - silhouette */
-        <div className="flex flex-col items-center justify-center h-full text-center">
-          <div className="w-12 h-12 rounded-lg bg-gray-700 flex items-center justify-center mb-2">
-            <span className="text-2xl text-gray-500">?</span>
-          </div>
-          <span className="text-xs text-gray-500">
-            {isLocked
-              ? t('collection.locked', 'Locked')
-              : t('collection.undiscovered', 'Undiscovered')}
-          </span>
-        </div>
-      )}
-      {/* Known locked rewards remain inspectable; never obscure their copy. */}
-      {isDiscovered && isLocked && (
-        <div
-          data-archive-card-lock
-          className="mt-2 flex items-start gap-1 border-t border-gray-500/40 pt-2 text-xs text-gray-300 [overflow-wrap:anywhere]"
+        </span>
+        <h3
+          className={`mt-1 line-clamp-2 w-full text-xs font-bold leading-tight [overflow-wrap:anywhere] sm:text-sm ${
+            known ? 'text-[var(--color-beige-white)]' : 'text-gray-500'
+          }`}
         >
-          <svg
-            aria-hidden="true"
-            className="h-4 w-4 shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          {label}
+        </h3>
+        {/* Known locked rewards stay inspectable; the lock marks them. */}
+        {known && isLocked && (
+          <span
+            data-archive-card-lock
+            className="absolute right-1 top-1 rounded-full bg-black/60 p-1"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            />
-          </svg>
-          <span>{t('collection.locked', 'Locked')}</span>
-        </div>
-      )}
-    </AnimatedDiv>
+            <ControlIcon name="lock" size={16} />
+          </span>
+        )}
+      </button>
+      <AnchoredPopover {...popoverProps} title={label}>
+        <ItemDetails
+          entry={entry}
+          displayInfo={details}
+          showName={!known}
+        />
+      </AnchoredPopover>
+    </>
   )
 }
 

@@ -5,7 +5,11 @@
  */
 
 import React from 'react'
-import { EnhancementType, SealType, EditionType } from '../../../core/TileModifier'
+import {
+  EnhancementType,
+  SealType,
+  EditionType,
+} from '../../../core/TileModifier'
 import {
   EnhancementBonusIcon,
   EnhancementMultIcon,
@@ -28,8 +32,15 @@ import {
 /**
  * Color scheme for enhancement types
  */
-export const ENHANCEMENT_COLORS: Record<EnhancementType, { bg: string; border: string; text: string }> = {
-  [EnhancementType.None]: { bg: 'transparent', border: 'transparent', text: '#888' },
+export const ENHANCEMENT_COLORS: Record<
+  EnhancementType,
+  { bg: string; border: string; text: string }
+> = {
+  [EnhancementType.None]: {
+    bg: 'transparent',
+    border: 'transparent',
+    text: '#888',
+  },
   [EnhancementType.Bonus]: { bg: '#3B82F6', border: '#2563EB', text: '#FFF' },
   [EnhancementType.Mult]: { bg: '#EF4444', border: '#DC2626', text: '#FFF' },
   [EnhancementType.Wild]: { bg: '#8B5CF6', border: '#7C3AED', text: '#FFF' },
@@ -54,54 +65,96 @@ export const SEAL_COLORS: Record<SealType, { bg: string; border: string }> = {
 /**
  * Visual effects for edition types
  */
-export const EDITION_EFFECTS: Record<EditionType, { className: string; overlay: string }> = {
+export const EDITION_EFFECTS: Record<
+  EditionType,
+  { className: string; overlay: string }
+> = {
   [EditionType.Base]: { className: '', overlay: '' },
-  [EditionType.Foil]: { className: 'edition-foil', overlay: 'bg-gradient-to-br from-gray-100/30 to-gray-400/30' },
-  [EditionType.Holographic]: { className: 'edition-holo', overlay: 'bg-gradient-to-br from-pink-300/30 via-blue-300/30 to-green-300/30' },
-  [EditionType.Polychrome]: { className: 'edition-poly', overlay: 'bg-gradient-to-br from-red-300/30 via-yellow-300/30 via-green-300/30 via-blue-300/30 to-purple-300/30' },
-  [EditionType.Negative]: { className: 'edition-negative', overlay: 'bg-gradient-to-br from-gray-900/50 to-gray-700/50 invert' },
+  [EditionType.Foil]: {
+    className: 'edition-foil',
+    overlay: 'bg-gradient-to-br from-gray-100/30 to-gray-400/30',
+  },
+  [EditionType.Holographic]: {
+    className: 'edition-holo',
+    overlay:
+      'bg-gradient-to-br from-pink-300/30 via-blue-300/30 to-green-300/30',
+  },
+  [EditionType.Polychrome]: {
+    className: 'edition-poly',
+    overlay:
+      'bg-gradient-to-br from-red-300/30 via-yellow-300/30 via-green-300/30 via-blue-300/30 to-purple-300/30',
+  },
+  [EditionType.Negative]: {
+    className: 'edition-negative',
+    overlay: 'bg-gradient-to-br from-gray-900/50 to-gray-700/50 invert',
+  },
 }
 
 /**
  * Get SVG icon component for enhancement type
  */
-export function getEnhancementIcon(enhancement: EnhancementType): React.FC<{ className?: string; color?: string }> | null {
+export function getEnhancementIcon(
+  enhancement: EnhancementType
+): React.FC<{ className?: string; color?: string }> | null {
   switch (enhancement) {
-    case EnhancementType.Bonus: return EnhancementBonusIcon
-    case EnhancementType.Mult: return EnhancementMultIcon
-    case EnhancementType.Wild: return EnhancementWildIcon
-    case EnhancementType.Glass: return EnhancementGlassIcon
-    case EnhancementType.Steel: return EnhancementSteelIcon
-    case EnhancementType.Stone: return EnhancementStoneIcon
-    case EnhancementType.Gold: return EnhancementGoldIcon
-    case EnhancementType.Lucky: return EnhancementLuckyIcon
-    default: return null
+    case EnhancementType.Bonus:
+      return EnhancementBonusIcon
+    case EnhancementType.Mult:
+      return EnhancementMultIcon
+    case EnhancementType.Wild:
+      return EnhancementWildIcon
+    case EnhancementType.Glass:
+      return EnhancementGlassIcon
+    case EnhancementType.Steel:
+      return EnhancementSteelIcon
+    case EnhancementType.Stone:
+      return EnhancementStoneIcon
+    case EnhancementType.Gold:
+      return EnhancementGoldIcon
+    case EnhancementType.Lucky:
+      return EnhancementLuckyIcon
+    default:
+      return null
   }
 }
 
 /**
  * Get SVG icon component for seal type
  */
-export function getSealIcon(seal: SealType): React.FC<{ className?: string; color?: string }> | null {
+export function getSealIcon(
+  seal: SealType
+): React.FC<{ className?: string; color?: string }> | null {
   switch (seal) {
-    case SealType.Gold: return SealGoldIcon
-    case SealType.Red: return SealRedIcon
-    case SealType.Blue: return SealBlueIcon
-    case SealType.Purple: return SealPurpleIcon
-    default: return null
+    case SealType.Gold:
+      return SealGoldIcon
+    case SealType.Red:
+      return SealRedIcon
+    case SealType.Blue:
+      return SealBlueIcon
+    case SealType.Purple:
+      return SealPurpleIcon
+    default:
+      return null
   }
 }
 
 /**
  * Get SVG icon component for edition type
  */
-export function getEditionIcon(edition: EditionType): React.FC<{ className?: string; color?: string }> | null {
+export function getEditionIcon(
+  edition: EditionType
+): React.FC<{ className?: string; color?: string }> | null {
   switch (edition) {
-    case EditionType.Foil: return EditionFoilIcon
-    case EditionType.Holographic: return EditionHoloIcon
-    case EditionType.Polychrome: return EditionPolyIcon
-    case EditionType.Negative: return EditionNegativeIcon
-    default: return null
+    case EditionType.Foil:
+      return EditionFoilIcon
+    case EditionType.Holographic:
+      return EditionHoloIcon
+    case EditionType.Polychrome:
+      return EditionPolyIcon
+    case EditionType.Negative:
+      return EditionNegativeIcon
+    default:
+      return null
   }
 }
 
@@ -110,15 +163,24 @@ export function getEditionIcon(edition: EditionType): React.FC<{ className?: str
  */
 export function getEnhancementIconText(enhancement: EnhancementType): string {
   switch (enhancement) {
-    case EnhancementType.Bonus: return '+'
-    case EnhancementType.Mult: return '×'
-    case EnhancementType.Wild: return '★'
-    case EnhancementType.Glass: return '◇'
-    case EnhancementType.Steel: return '■'
-    case EnhancementType.Stone: return '●'
-    case EnhancementType.Gold: return '¥'
-    case EnhancementType.Lucky: return '♣'
-    default: return ''
+    case EnhancementType.Bonus:
+      return '+'
+    case EnhancementType.Mult:
+      return '×'
+    case EnhancementType.Wild:
+      return '*'
+    case EnhancementType.Glass:
+      return '◇'
+    case EnhancementType.Steel:
+      return '■'
+    case EnhancementType.Stone:
+      return '●'
+    case EnhancementType.Gold:
+      return '¥'
+    case EnhancementType.Lucky:
+      return 'Lucky'
+    default:
+      return ''
   }
 }
 
@@ -127,11 +189,16 @@ export function getEnhancementIconText(enhancement: EnhancementType): string {
  */
 export function getSealIconText(seal: SealType): string {
   switch (seal) {
-    case SealType.Gold: return '¥'
-    case SealType.Red: return '↻'
-    case SealType.Blue: return '☆'
-    case SealType.Purple: return '♦'
-    default: return ''
+    case SealType.Gold:
+      return '¥'
+    case SealType.Red:
+      return '↻'
+    case SealType.Blue:
+      return '○'
+    case SealType.Purple:
+      return 'Purple'
+    default:
+      return ''
   }
 }
 
@@ -140,10 +207,15 @@ export function getSealIconText(seal: SealType): string {
  */
 export function getEditionIconText(edition: EditionType): string {
   switch (edition) {
-    case EditionType.Foil: return '◈'
-    case EditionType.Holographic: return '◎'
-    case EditionType.Polychrome: return '◉'
-    case EditionType.Negative: return '◐'
-    default: return ''
+    case EditionType.Foil:
+      return '◈'
+    case EditionType.Holographic:
+      return '◎'
+    case EditionType.Polychrome:
+      return '◉'
+    case EditionType.Negative:
+      return '◐'
+    default:
+      return ''
   }
 }
