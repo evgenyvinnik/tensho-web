@@ -16,7 +16,7 @@ import { ScorePopupState } from './gameplayTypes'
 import { useTranslation } from 'react-i18next'
 import { scoreNumber } from '../../utils/scoreNumber'
 import { ExactScoreDetails } from './ExactScoreDetails'
-import type { ScoreEquation } from '../../rules/ScoreEquation'
+import { scoreRounding, type ScoreEquation } from '../../rules/ScoreEquation'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -79,6 +79,7 @@ export function ScorePanel({
   const progressPercentage = Math.min(100, (currentScore / targetScore) * 100)
   const remainingScore = Math.max(0, targetScore - currentScore)
   const remainingNumber = scoreNumber(remainingScore, i18n.language)
+  const lastPlayRounding = scoreRounding(lastPlay.points, lastPlay.multiplier)
   const remainingExact = hasReachedTarget
     ? t('gameplay.targetCleared')
     : t('gameplay.pointsToClear', {
@@ -198,6 +199,14 @@ export function ScorePanel({
                   label: t('scoring.totalMultiplier'),
                   value: lastPlay.multiplier,
                 },
+                ...(lastPlayRounding.roundedDown
+                  ? [
+                      {
+                        label: t('scoring.beforeRounding'),
+                        value: lastPlayRounding.product,
+                      },
+                    ]
+                  : []),
                 { label: t('scoring.adjustments'), value: lastPlay.adjustment },
                 { label: t('scoring.lastPlay'), value: lastPlay.total },
               ]}

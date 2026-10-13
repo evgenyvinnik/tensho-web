@@ -390,24 +390,29 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 
 **Theme:** Score requirements escalate exponentially through the run.
 
-**Base Score Targets by Act:**
+**Base Score Targets by Act (Small Round):**
 
-| Act | Small (×1) | Large (×1.5) | Boss (×2) |
-|-----|-----------:|-------------:|----------:|
-| 1 | 300 | 450 | 600 |
-| 2 | 800 | 1,200 | 1,600 |
-| 3 | 2,000 | 3,000 | 4,000 |
-| 4 | 6,000 | 9,000 | 12,000 |
-| 5 | 15,000 | 22,500 | 30,000 |
-| 6 | 30,000 | 45,000 | 60,000 |
-| 7 | 55,000 | 82,500 | 110,000 |
-| 8 (Showdown) | 90,000 | 135,000 | 180,000 |
+| Act | Small (×1) | Large (×1.5) | Boss (×2) | Small at Green Stake+ | Small at Purple Stake+ |
+|-----|-----------:|-------------:|----------:|----------------------:|-----------------------:|
+| 1 | 300 | 450 | 600 | 300 | 300 |
+| 2 | 800 | 1,200 | 1,600 | 873 | 999 |
+| 3 | 2,000 | 3,000 | 4,000 | 2,382 | 3,121 |
+| 4 | 6,000 | 9,000 | 12,000 | 7,800 | 11,700 |
+| 5 | 15,000 | 22,500 | 30,000 | 19,500 | 29,250 |
+| 6 | 30,000 | 45,000 | 60,000 | 39,000 | 58,500 |
+| 7 | 55,000 | 82,500 | 110,000 | 71,500 | 107,250 |
+| 8 (Showdown) | 90,000 | 135,000 | 180,000 | 117,000 | 175,500 |
 
 Acts 4–8 were raised in October 2026 when the Turns budget, six-tile plays and
 pattern Mult made scores much larger; Acts 1–3 stayed as they were so a first
-run stays approachable. Table Stakes multiply these targets (from ×1.3 at Green
-Stake to ×1.95 at Gold), and some tables add their own modifiers. The same-seed
-measurement is in [docs/balance/2026-10-12-player-feedback-balance.md](balance/2026-10-12-player-feedback-balance.md).
+run stays approachable. The same-seed measurement is in
+[docs/balance/2026-10-12-player-feedback-balance.md](balance/2026-10-12-player-feedback-balance.md).
+
+Stake score scaling ramps in: Act 1 uses White targets on every Stake, and the
+cumulative multiplier (×1.3 from Green, ×1.95 from Purple) grows by an equal
+ratio each Act until it applies in full from Act 4. See
+[STAKE_SCORE_RAMP.md](STAKE_SCORE_RAMP.md). Some tables add their own
+modifiers on top.
 
 **Endless Mode (Act 9+):**
 After defeating Act 8, players enter Endless Mode with rapidly scaling requirements:

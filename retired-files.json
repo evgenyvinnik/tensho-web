@@ -46,6 +46,7 @@
     "src/components/shop/CharterCard.tsx",
     "src/components/shop/CharterCard.test.tsx",
     "src/components/shop/PackCard.tsx",
-    "src/components/shop/PackCard.test.tsx"
+    "src/components/shop/PackCard.test.tsx",
+    "src/components/gameplay/ScoreEquationConsistency.test.tsx"
   ]
 }

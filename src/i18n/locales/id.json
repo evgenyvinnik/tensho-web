@@ -582,7 +582,7 @@
     "requiredTiles": "{{count}} UBIN",
     "completeToUnlockStage": "Lengkapi {{count}} ubin untuk membuka Tangan Siap",
     "tilesRange": "{{min}}–{{max}} UBIN",
-    "sellFor": "Jual seharga ¥{{value}}",
+    "sellFor": "Jual seharga {{value}}G",
     "sellHidden": "Jual Dekrit tersembunyi",
     "sellNamed": "Jual {{name}}",
     "hiddenDecree": "Dekrit tersembunyi",
@@ -701,8 +701,8 @@
       "bonus": "Penyesuaian hadiah",
       "rentals": "Sewa",
       "interestBlocked": "Bunga saat ini diblokir.",
-      "interestCap": "Batas bunga {{interest}}G telah tercapai.",
-      "interestSave": "Dengan tabungan saat ini: bunga {{interest}}G. Tabung {{needed}}G lagi untuk mendapat {{next}}G.",
+      "interestCap": "Pencairan berikutnya: tabunganmu sudah mencapai batas bunga {{interest}}G.",
+      "interestSave": "Pencairan berikutnya: bunga {{interest}}G dari tabungan saat ini. Tabung {{needed}}G lagi untuk mendapat {{next}}G.",
       "nextRound": "Berikutnya: {{round}} · target {{target}}",
       "nextAct": "Berikutnya: Babak {{act}}",
       "omenEarned": "Pertanda: {{name}}",
@@ -722,7 +722,7 @@
     "buy": "Beli",
     "sell": "Jual",
     "reroll": "Acak Ulang",
-    "rerollCost": "Acak Ulang ({{cost}}E)",
+    "rerollCost": "Acak Ulang ({{cost}}G)",
     "nextAct": "Babak Berikutnya",
     "sold": "Terjual",
     "cantAfford": "Emas tidak cukup",
@@ -843,15 +843,15 @@
       },
       "decree-coin-collector": {
         "name": "Pengumpul Koin",
-        "description": "+1E akhir ronde"
+        "description": "+1G akhir ronde"
       },
       "decree-merchants-favor": {
         "name": "Kemurahan Pedagang",
-        "description": "+2E akhir ronde"
+        "description": "+2G akhir ronde"
       },
       "decree-lucky-coin": {
         "name": "Koin Keberuntungan",
-        "description": "+3E akhir ronde"
+        "description": "+3G akhir ronde"
       },
       "decree-pair-lover": {
         "name": "Pecinta Pasangan",
@@ -887,11 +887,11 @@
       },
       "decree-modest-fortune": {
         "name": "Keberuntungan Sederhana",
-        "description": "+20 Chip dan +1E per ronde"
+        "description": "+20 Chip dan +1G per ronde"
       },
       "decree-humble-power": {
         "name": "Kekuatan Rendah Hati",
-        "description": "+2 Mult dan +1E per ronde"
+        "description": "+2 Mult dan +1G per ronde"
       },
       "decree-one-mastery": {
         "name": "Penguasaan Satu",
@@ -983,7 +983,7 @@
       },
       "decree-golden-ratio": {
         "name": "Rasio Emas",
-        "description": "+1 Mult per 5E (maks +10)"
+        "description": "+1 Mult per 5G (maks +10)"
       },
       "decree-treasure-hunter": {
         "name": "Pemburu Harta",
@@ -991,7 +991,7 @@
       },
       "decree-tax-collector": {
         "name": "Pemungut Pajak",
-        "description": "+4E akhir ronde"
+        "description": "+4G akhir ronde"
       },
       "decree-garden-keeper": {
         "name": "Penjaga Taman",
@@ -1095,11 +1095,11 @@
       },
       "decree-compound-interest": {
         "name": "Bunga Majemuk",
-        "description": "+2 Mult per 10E"
+        "description": "+2 Mult per 10G"
       },
       "decree-wealth-engine": {
         "name": "Mesin Kekayaan",
-        "description": "+1E per Dekrit akhir ronde"
+        "description": "+1G per Dekrit akhir ronde"
       },
       "decree-perpetual-motion": {
         "name": "Gerak Abadi",
@@ -1163,7 +1163,7 @@
       },
       "decree-fortune-and-glory": {
         "name": "Keberuntungan dan Kemuliaan",
-        "description": "+60 Chip, +8 Mult, +3E per ronde"
+        "description": "+60 Chip, +8 Mult, +3G per ronde"
       },
       "decree-emperors-blessing": {
         "name": "Berkah Kaisar",
@@ -1171,7 +1171,7 @@
       },
       "decree-golden-age": {
         "name": "Zaman Keemasan",
-        "description": "+8E akhir ronde"
+        "description": "+8G akhir ronde"
       },
       "decree-blueprint": {
         "name": "Cetak Biru",
@@ -1251,11 +1251,11 @@
       },
       "decree-midas-touch": {
         "name": "Sentuhan Midas",
-        "description": "+20E akhir ronde"
+        "description": "+10G akhir ronde"
       },
       "decree-infinite-wealth": {
         "name": "Kekayaan Tak Terbatas",
-        "description": "+1 Mult per 5E"
+        "description": "+1 Mult per 5G"
       },
       "decree-brainstorm": {
         "name": "Curah Gagasan",
@@ -1343,7 +1343,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Harta Naga",
-        "description": "+2 Mult per 10E"
+        "description": "+2 Mult per 10G"
       },
       "decree-yaku-nexus": {
         "name": "Nexus Yaku",
@@ -1724,7 +1724,7 @@
     "rules": {
       "base": "Kesulitan dasar: tanpa penalti tambahan.",
       "noSmallRoundReward": "Ronde Kecil tidak memberi hadiah emas.",
-      "scoreScaling": "Target skor tingkat ini: ×{{multiplier}} dibanding Putih. Pengubah meja tetap berlaku.",
+      "scoreScaling": "Target skor tingkat ini: sama dengan Putih di Babak 1, lalu naik setiap babak hingga ×{{multiplier}} dibanding Putih mulai Babak {{act}}. Pengubah meja tetap berlaku.",
       "redrawPenalty": "Giliran per ronde: −{{amount}}.",
       "eternalChance": "Dekret toko: peluang {{chance}} mendapat Abadi (tidak dapat dijual atau dihancurkan).",
       "perishableChance": "Dekret toko yang tidak Abadi: peluang {{chance}} mendapat Sementara (melemah setelah {{rounds}} ronde).",
@@ -2005,6 +2005,8 @@
     "lastPlay": "Permainan terakhir",
     "adjustments": "Efek setelah skor",
     "exactValues": "Nilai tepat",
+    "roundedDown": "{{product}} dibulatkan ke bawah menjadi {{rounded}}",
+    "beforeRounding": "Sebelum pembulatan",
     "basePoints": "Poin dasar",
     "totalScore": "Skor total",
     "subtotal": "Subtotal",

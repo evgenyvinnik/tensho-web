@@ -26,6 +26,8 @@ function current(): Snapshot {
 function versionTwo(
   resources = { hands: 3, allowance: 4, discards: 2, redraws: 1 }
 ) {
+  // An older save is plain JSON in a shape the current types no longer allow.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saved = current() as unknown as Record<string, any>
   saved.version = 2
   Object.assign(saved.config, {

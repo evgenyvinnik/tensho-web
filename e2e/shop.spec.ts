@@ -391,7 +391,7 @@ for (const [lang, heading, bonus, next] of [
     await expect(receipt).toContainText(bonus)
     await expect(receipt).toContainText(next)
     await expect(receipt).not.toContainText(
-      /Gold tiles|Rentals|With current savings|Next:/
+      /Gold tiles|Rentals|current savings|Next cash-out|Next:/
     )
     expect(
       await receipt

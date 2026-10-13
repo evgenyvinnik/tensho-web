@@ -661,7 +661,7 @@
     "requiredTiles": "{{count}} TESSERE",
     "completeToUnlockStage": "Completa tutte le {{count}} tessere per sbloccare la Mano Pronta",
     "tilesRange": "{{min}}–{{max}} TESSERE",
-    "sellFor": "Vendi per ¥{{value}}",
+    "sellFor": "Vendi per {{value}}G",
     "sellHidden": "Vendi il Decreto nascosto",
     "sellNamed": "Vendi {{name}}",
     "hiddenDecree": "Decreto nascosto",
@@ -780,8 +780,8 @@
       "bonus": "Rettifica ricompensa",
       "rentals": "Affitti",
       "interestBlocked": "Gli interessi sono attualmente bloccati.",
-      "interestCap": "Hai raggiunto il limite di interessi di {{interest}}G.",
-      "interestSave": "Con i risparmi attuali: {{interest}}G di interessi. Risparmia altri {{needed}}G per ottenere {{next}}G.",
+      "interestCap": "Prossimo incasso: i tuoi risparmi rendono già il limite di interessi di {{interest}}G.",
+      "interestSave": "Prossimo incasso: {{interest}}G di interessi con i risparmi attuali. Risparmia altri {{needed}}G per ottenere {{next}}G.",
       "nextRound": "Prossimo: {{round}} · obiettivo {{target}}",
       "nextAct": "Prossimo: Atto {{act}}",
       "omenEarned": "Presagio: {{name}}",
@@ -801,7 +801,7 @@
     "buy": "Compra",
     "sell": "Vendi",
     "reroll": "Rigenera",
-    "rerollCost": "Rigenera ({{cost}}O)",
+    "rerollCost": "Rigenera ({{cost}}G)",
     "nextAct": "Prossimo Atto",
     "sold": "Venduto",
     "cantAfford": "Oro insufficiente",
@@ -1302,7 +1302,7 @@
       },
       "decree-midas-touch": {
         "name": "Tocco di Mida",
-        "description": "+20 Oro alla fine del round."
+        "description": "+10 Oro alla fine del round."
       },
       "decree-infinite-wealth": {
         "name": "Ricchezza infinita",
@@ -1803,7 +1803,7 @@
     "rules": {
       "base": "Difficoltà base: nessuna penalità aggiuntiva.",
       "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
-      "scoreScaling": "Obiettivi di punteggio del livello: ×{{multiplier}} rispetto al Bianco. Si applicano anche i modificatori del tavolo.",
+      "scoreScaling": "Obiettivi di punteggio del livello: uguali al Bianco nell’Atto 1, poi crescono a ogni atto fino a ×{{multiplier}} rispetto al Bianco dall’Atto {{act}} in poi. Si applicano anche i modificatori del tavolo.",
       "redrawPenalty": "Turni per round: −{{amount}}.",
       "eternalChance": "Decreti nel negozio: {{chance}} di probabilità di Eterno (non può essere venduto o distrutto).",
       "perishableChance": "Decreti non Eterni nel negozio: {{chance}} di probabilità di Deperibile (indebolito dopo {{rounds}} round).",
@@ -2084,6 +2084,8 @@
     "lastPlay": "Ultima giocata",
     "adjustments": "Effetti successivi",
     "exactValues": "Valori esatti",
+    "roundedDown": "{{product}} arrotondato per difetto a {{rounded}}",
+    "beforeRounding": "Prima dell’arrotondamento",
     "basePoints": "Punti base",
     "totalScore": "Punteggio totale",
     "subtotal": "Subtotale",

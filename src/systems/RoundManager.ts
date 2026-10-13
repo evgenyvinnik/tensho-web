@@ -13,6 +13,7 @@ import { RoundState, ActState, RoundType, BossMandate } from './types'
 
 import {
   calculateCombinedModifiers,
+  getActScoreScaling,
   type CombinedStakeModifiers,
 } from '../config/stakeDefinitions'
 import { STANDARD_MANDATES as COMPLETE_STANDARD_MANDATES } from '../config/mandateDefinitions'
@@ -355,9 +356,7 @@ export class RoundManager {
    */
   startAct(actNumber: number): ActState {
     const baseTargets = this.getScoreTargetsForAct(actNumber)
-    // Use cumulative score scaling from stake modifiers
-    const stakeMultiplier =
-      this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
+    const stakeMultiplier = this.getTargetMultiplier(actNumber)
 
     const rounds: RoundState[] = [
       this.createRound(
@@ -436,6 +435,17 @@ export class RoundManager {
   }
 
   /**
+   * Stake scaling ramps in over the first Acts; the table multiplier (Dragon's
+   * Den) is a flat rule of the table and applies from Act 1 as before.
+   */
+  private getTargetMultiplier(actNumber: number): number {
+    return (
+      getActScoreScaling(this.stakeModifiers.scoreScaling, actNumber) *
+      this.tableTargetMultiplier
+    )
+  }
+
+  /**
    * Get score targets for an act
    */
   private getScoreTargetsForAct(actNumber: number): number[] {
@@ -504,8 +514,7 @@ export class RoundManager {
 
     bossRound.bossMandate = replacement
     const baseTargets = this.getScoreTargetsForAct(this.currentAct.actNumber)
-    const stakeMultiplier =
-      this.stakeModifiers.scoreScaling * this.tableTargetMultiplier
+    const stakeMultiplier = this.getTargetMultiplier(this.currentAct.actNumber)
     bossRound.scoreTarget = Math.floor(baseTargets[2] * stakeMultiplier)
     if (replacement.effect.type === 'score_multiplier') {
       bossRound.scoreTarget = Math.floor(

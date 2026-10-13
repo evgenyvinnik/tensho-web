@@ -374,7 +374,7 @@
     "requiredTiles": "{{count}} TUILES",
     "completeToUnlockStage": "Complétez les {{count}} tuiles pour débloquer la Main Préparée",
     "tilesRange": "{{min}}–{{max}} TUILES",
-    "sellFor": "Vendre pour ¥{{value}}",
+    "sellFor": "Vendre pour {{value}}G",
     "sellHidden": "Vendre le Décret caché",
     "sellNamed": "Vendre {{name}}",
     "hiddenDecree": "Décret caché",
@@ -493,8 +493,8 @@
       "bonus": "Ajustement de récompense",
       "rentals": "Locations",
       "interestBlocked": "Les intérêts sont actuellement bloqués.",
-      "interestCap": "Le plafond d’intérêts de {{interest}}G est atteint.",
-      "interestSave": "Avec vos économies actuelles : {{interest}}G d’intérêts. Économisez encore {{needed}}G pour obtenir {{next}}G.",
+      "interestCap": "Prochain encaissement : vos économies rapportent déjà le plafond d’intérêts de {{interest}}G.",
+      "interestSave": "Prochain encaissement : {{interest}}G d’intérêts avec vos économies actuelles. Économisez encore {{needed}}G pour obtenir {{next}}G.",
       "nextRound": "Suite : {{round}} · objectif {{target}}",
       "nextAct": "Suite : Acte {{act}}",
       "omenEarned": "Présage : {{name}}",
@@ -514,7 +514,7 @@
     "buy": "Acheter",
     "sell": "Vendre",
     "reroll": "Relancer",
-    "rerollCost": "Relancer ({{cost}}O)",
+    "rerollCost": "Relancer ({{cost}}G)",
     "nextAct": "Acte Suivant",
     "sold": "Vendu",
     "cantAfford": "Or insuffisant",
@@ -635,15 +635,15 @@
       },
       "decree-coin-collector": {
         "name": "Collecteur de Pièces",
-        "description": "+1O en fin de manche"
+        "description": "+1G en fin de manche"
       },
       "decree-merchants-favor": {
         "name": "Faveur du Marchand",
-        "description": "+2O en fin de manche"
+        "description": "+2G en fin de manche"
       },
       "decree-lucky-coin": {
         "name": "Pièce Porte-Bonheur",
-        "description": "+3O en fin de manche"
+        "description": "+3G en fin de manche"
       },
       "decree-pair-lover": {
         "name": "Amateur de Paires",
@@ -679,11 +679,11 @@
       },
       "decree-modest-fortune": {
         "name": "Fortune Modeste",
-        "description": "+20 Jetons et +1O par manche"
+        "description": "+20 Jetons et +1G par manche"
       },
       "decree-humble-power": {
         "name": "Pouvoir Humble",
-        "description": "+2 Mult et +1O par manche"
+        "description": "+2 Mult et +1G par manche"
       },
       "decree-one-mastery": {
         "name": "Maîtrise du Un",
@@ -775,15 +775,15 @@
       },
       "decree-golden-ratio": {
         "name": "Nombre d'Or",
-        "description": "+1 Mult par 5O (max +10)"
+        "description": "+1 Mult par 5G (max +10)"
       },
       "decree-treasure-hunter": {
         "name": "Chasseur de Trésors",
-        "description": "+1O par famille distincte restant en main à la victoire d’une manche. Vents et Dragons comptent séparément."
+        "description": "+1G par famille distincte restant en main à la victoire d’une manche. Vents et Dragons comptent séparément."
       },
       "decree-tax-collector": {
         "name": "Percepteur",
-        "description": "+4O en fin de manche"
+        "description": "+4G en fin de manche"
       },
       "decree-garden-keeper": {
         "name": "Gardien du Jardin",
@@ -887,11 +887,11 @@
       },
       "decree-compound-interest": {
         "name": "Intérêts Composés",
-        "description": "+2 Mult par 10O"
+        "description": "+2 Mult par 10G"
       },
       "decree-wealth-engine": {
         "name": "Machine à Richesse",
-        "description": "+1O par Décret possédé"
+        "description": "+1G par Décret possédé"
       },
       "decree-perpetual-motion": {
         "name": "Mouvement Perpétuel",
@@ -955,7 +955,7 @@
       },
       "decree-fortune-and-glory": {
         "name": "Fortune et Gloire",
-        "description": "+60 Jetons, +8 Mult, +3O par manche"
+        "description": "+60 Jetons, +8 Mult, +3G par manche"
       },
       "decree-emperors-blessing": {
         "name": "Bénédiction de l'Empereur",
@@ -963,7 +963,7 @@
       },
       "decree-golden-age": {
         "name": "Âge d'Or",
-        "description": "+8O en fin de manche"
+        "description": "+8G en fin de manche"
       },
       "decree-blueprint": {
         "name": "Plan",
@@ -1043,11 +1043,11 @@
       },
       "decree-midas-touch": {
         "name": "Toucher de Midas",
-        "description": "+20O en fin de manche"
+        "description": "+10G en fin de manche"
       },
       "decree-infinite-wealth": {
         "name": "Richesse Infinie",
-        "description": "+1 Mult par 5O"
+        "description": "+1 Mult par 5G"
       },
       "decree-brainstorm": {
         "name": "Remue-Méninges",
@@ -1135,7 +1135,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Trésor du Dragon",
-        "description": "+2 Mult par 10O"
+        "description": "+2 Mult par 10G"
       },
       "decree-yaku-nexus": {
         "name": "Nexus de Yaku",
@@ -1516,7 +1516,7 @@
     "rules": {
       "base": "Difficulté de base : aucune pénalité supplémentaire.",
       "noSmallRoundReward": "Les petites manches ne donnent pas d’or en récompense.",
-      "scoreScaling": "Objectifs de score du palier : ×{{multiplier}} par rapport au Blanc. Les modificateurs de table s’appliquent aussi.",
+      "scoreScaling": "Objectifs de score du palier : identiques au Blanc à l’Acte 1, puis en hausse à chaque acte jusqu’à ×{{multiplier}} par rapport au Blanc à partir de l’Acte {{act}}. Les modificateurs de table s’appliquent aussi.",
       "redrawPenalty": "Tours par manche : −{{amount}}.",
       "eternalChance": "Décrets en boutique : {{chance}} de chance d’être Éternels (impossibles à vendre ou détruire).",
       "perishableChance": "Décrets non Éternels en boutique : {{chance}} de chance d’être Périssables (affaiblis après {{rounds}} manches).",
@@ -1797,6 +1797,8 @@
     "lastPlay": "Dernier coup",
     "adjustments": "Effets après calcul",
     "exactValues": "Valeurs exactes",
+    "roundedDown": "{{product}} arrondi par défaut à {{rounded}}",
+    "beforeRounding": "Avant arrondi",
     "basePoints": "Points de base",
     "totalScore": "Score total",
     "subtotal": "Sous-total",

@@ -11,6 +11,7 @@ import {
   STAKE_DEFINITIONS,
   STICKER_DEFINITIONS,
   calculateCombinedModifiers,
+  getActScoreScaling,
   rollForStickers,
   getPrimarySticker,
   getStakeByTier,
@@ -139,11 +140,17 @@ export class TableStakeSystem {
 
   /**
    * Get scaled score requirement for an act
-   * Applies score scaling from current stake modifiers
+   * Applies the stake's score scaling as ramped in for that act
    */
-  getScaledScoreRequirement(baseScore: number, stakeTier: number): number {
+  getScaledScoreRequirement(
+    baseScore: number,
+    stakeTier: number,
+    actNumber: number
+  ): number {
     const modifiers = this.getModifiers(stakeTier)
-    return Math.floor(baseScore * modifiers.scoreScaling)
+    return Math.floor(
+      baseScore * getActScoreScaling(modifiers.scoreScaling, actNumber)
+    )
   }
 
   /**

@@ -661,7 +661,7 @@
     "requiredTiles": "{{count}} TAŞ",
     "completeToUnlockStage": "Hazır El'i açmak için {{count}} taşın tamamını tamamlayın",
     "tilesRange": "{{min}}–{{max}} TAŞ",
-    "sellFor": "¥{{value}} karşılığında sat",
+    "sellFor": "{{value}}G karşılığında sat",
     "sellHidden": "Gizli Kararnameyi sat",
     "sellNamed": "{{name}} sat",
     "hiddenDecree": "gizli Kararname",
@@ -780,8 +780,8 @@
       "bonus": "Ödül düzeltmesi",
       "rentals": "Kiralar",
       "interestBlocked": "Faiz şu anda engelleniyor.",
-      "interestCap": "{{interest}}G faiz sınırına ulaşıldı.",
-      "interestSave": "Mevcut birikimle: {{interest}}G faiz. {{next}}G için {{needed}}G daha biriktir.",
+      "interestCap": "Sonraki ödeme: mevcut birikimin zaten {{interest}}G faiz sınırını kazandırıyor.",
+      "interestSave": "Sonraki ödeme: mevcut birikimle {{interest}}G faiz. {{next}}G için {{needed}}G daha biriktir.",
       "nextRound": "Sıradaki: {{round}} · hedef {{target}}",
       "nextAct": "Sıradaki: Perde {{act}}",
       "omenEarned": "Alamet: {{name}}",
@@ -801,7 +801,7 @@
     "buy": "Satın Al",
     "sell": "Sat",
     "reroll": "Yenile",
-    "rerollCost": "Yenile ({{cost}}A)",
+    "rerollCost": "Yenile ({{cost}}G)",
     "nextAct": "Sonraki Perde",
     "sold": "Satıldı",
     "cantAfford": "Yetersiz altın",
@@ -1382,7 +1382,7 @@
       },
       "decree-midas-touch": {
         "name": "Midas'ın Dokunuşu",
-        "description": "Tur sonunda +20 Altın."
+        "description": "Tur sonunda +10 Altın."
       },
       "decree-infinite-wealth": {
         "name": "Sonsuz Servet",
@@ -1803,7 +1803,7 @@
     "rules": {
       "base": "Temel zorluk: ek ceza yok.",
       "noSmallRoundReward": "Küçük turlar ödül altını vermez.",
-      "scoreScaling": "Puan hedefleri Beyaz kademenin {{multiplier}} katıdır. Masa değiştiricileri de uygulanır.",
+      "scoreScaling": "Puan hedefleri Perde 1’de Beyaz kademeyle aynıdır; ardından her perdede artar ve Perde {{act}} itibarıyla Beyaz kademenin {{multiplier}} katına ulaşır. Masa değiştiricileri de uygulanır.",
       "redrawPenalty": "Tur başına hamle: −{{amount}}.",
       "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
       "perishableChance": "Ebedî olmayan mağaza Fermanları: {{chance}} olasılıkla Geçici ({{rounds}} tur sonra zayıflar).",
@@ -2084,6 +2084,8 @@
     "lastPlay": "Son hamle",
     "adjustments": "Puan sonrası etkiler",
     "exactValues": "Kesin değerler",
+    "roundedDown": "{{product}}, {{rounded}} olarak aşağı yuvarlandı",
+    "beforeRounding": "Yuvarlamadan önce",
     "basePoints": "Temel puan",
     "totalScore": "Toplam puan",
     "subtotal": "Ara toplam",

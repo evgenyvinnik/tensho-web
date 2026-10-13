@@ -374,7 +374,7 @@
     "requiredTiles": "{{count}} FICHAS",
     "completeToUnlockStage": "Completa las {{count}} fichas para desbloquear Mano Preparada",
     "tilesRange": "{{min}}–{{max}} FICHAS",
-    "sellFor": "Vender por ¥{{value}}",
+    "sellFor": "Vender por {{value}}G",
     "sellHidden": "Vender Decreto oculto",
     "sellNamed": "Vender {{name}}",
     "hiddenDecree": "Decreto oculto",
@@ -493,8 +493,8 @@
       "bonus": "Ajuste de recompensa",
       "rentals": "Alquileres",
       "interestBlocked": "Los intereses están bloqueados actualmente.",
-      "interestCap": "Has alcanzado el límite de intereses de {{interest}}G.",
-      "interestSave": "Con tus ahorros actuales: {{interest}}G de intereses. Guarda {{needed}}G más para obtener {{next}}G.",
+      "interestCap": "Próximo cobro: tus ahorros ya rinden el límite de intereses de {{interest}}G.",
+      "interestSave": "Próximo cobro: {{interest}}G de intereses con tus ahorros actuales. Guarda {{needed}}G más para obtener {{next}}G.",
       "nextRound": "Siguiente: {{round}} · objetivo {{target}}",
       "nextAct": "Siguiente: Acto {{act}}",
       "omenEarned": "Presagio: {{name}}",
@@ -514,7 +514,7 @@
     "buy": "Comprar",
     "sell": "Vender",
     "reroll": "Renovar",
-    "rerollCost": "Renovar ({{cost}}O)",
+    "rerollCost": "Renovar ({{cost}}G)",
     "nextAct": "Siguiente Acto",
     "sold": "Vendido",
     "cantAfford": "Oro insuficiente",
@@ -635,15 +635,15 @@
       },
       "decree-coin-collector": {
         "name": "Colector de Monedas",
-        "description": "+1O al final de la ronda"
+        "description": "+1G al final de la ronda"
       },
       "decree-merchants-favor": {
         "name": "Favor del Mercader",
-        "description": "+2O al final de la ronda"
+        "description": "+2G al final de la ronda"
       },
       "decree-lucky-coin": {
         "name": "Moneda de la Suerte",
-        "description": "+3O al final de la ronda"
+        "description": "+3G al final de la ronda"
       },
       "decree-pair-lover": {
         "name": "Amante de Pares",
@@ -679,11 +679,11 @@
       },
       "decree-modest-fortune": {
         "name": "Fortuna Modesta",
-        "description": "+20 Fichas y +1O por ronda"
+        "description": "+20 Fichas y +1G por ronda"
       },
       "decree-humble-power": {
         "name": "Poder Humilde",
-        "description": "+2 Mult y +1O por ronda"
+        "description": "+2 Mult y +1G por ronda"
       },
       "decree-one-mastery": {
         "name": "Maestría del Uno",
@@ -775,15 +775,15 @@
       },
       "decree-golden-ratio": {
         "name": "Proporción Áurea",
-        "description": "+1 Mult por cada 5O (máx +10)"
+        "description": "+1 Mult por cada 5G (máx +10)"
       },
       "decree-treasure-hunter": {
         "name": "Cazador de Tesoros",
-        "description": "+1O por cada palo distinto que quede en tu mano al ganar una ronda. Vientos y Dragones cuentan por separado."
+        "description": "+1G por cada palo distinto que quede en tu mano al ganar una ronda. Vientos y Dragones cuentan por separado."
       },
       "decree-tax-collector": {
         "name": "Recaudador",
-        "description": "+4O al final de la ronda"
+        "description": "+4G al final de la ronda"
       },
       "decree-garden-keeper": {
         "name": "Guardián del Jardín",
@@ -887,7 +887,7 @@
       },
       "decree-compound-interest": {
         "name": "Interés Compuesto",
-        "description": "+2 Mult por cada 10O"
+        "description": "+2 Mult por cada 10G"
       },
       "decree-wealth-engine": {
         "name": "Motor de Riqueza",
@@ -955,7 +955,7 @@
       },
       "decree-fortune-and-glory": {
         "name": "Fortuna y Gloria",
-        "description": "+60 Fichas, +8 Mult, +3O por ronda"
+        "description": "+60 Fichas, +8 Mult, +3G por ronda"
       },
       "decree-emperors-blessing": {
         "name": "Bendición del Emperador",
@@ -963,7 +963,7 @@
       },
       "decree-golden-age": {
         "name": "Era Dorada",
-        "description": "+8O al final de la ronda"
+        "description": "+8G al final de la ronda"
       },
       "decree-blueprint": {
         "name": "Plano",
@@ -1043,11 +1043,11 @@
       },
       "decree-midas-touch": {
         "name": "Toque de Midas",
-        "description": "+20O al final de la ronda"
+        "description": "+10G al final de la ronda"
       },
       "decree-infinite-wealth": {
         "name": "Riqueza Infinita",
-        "description": "+1 Mult por cada 5O"
+        "description": "+1 Mult por cada 5G"
       },
       "decree-brainstorm": {
         "name": "Tormenta de Ideas",
@@ -1135,7 +1135,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Tesoro del Dragón",
-        "description": "+2 Mult por cada 10O"
+        "description": "+2 Mult por cada 10G"
       },
       "decree-yaku-nexus": {
         "name": "Nexo de Yaku",
@@ -1516,7 +1516,7 @@
     "rules": {
       "base": "Dificultad básica: sin penalizaciones añadidas.",
       "noSmallRoundReward": "Las rondas pequeñas no dan oro de recompensa.",
-      "scoreScaling": "Objetivos de puntuación del nivel: ×{{multiplier}} respecto al Blanco. Los modificadores de la mesa también se aplican.",
+      "scoreScaling": "Objetivos de puntuación del nivel: iguales al Blanco en el Acto 1; luego suben en cada acto hasta ×{{multiplier}} respecto al Blanco desde el Acto {{act}}. Los modificadores de la mesa también se aplican.",
       "redrawPenalty": "Turnos por ronda: −{{amount}}.",
       "eternalChance": "Decretos de la tienda: {{chance}} de probabilidad de Eterno (no se puede vender ni destruir).",
       "perishableChance": "Decretos no Eternos de la tienda: {{chance}} de probabilidad de Perecedero (se debilita tras {{rounds}} rondas).",
@@ -1797,6 +1797,8 @@
     "lastPlay": "Última jugada",
     "adjustments": "Efectos posteriores",
     "exactValues": "Valores exactos",
+    "roundedDown": "{{product}} redondeado hacia abajo a {{rounded}}",
+    "beforeRounding": "Antes de redondear",
     "basePoints": "Puntos base",
     "totalScore": "Puntuación total",
     "subtotal": "Subtotal",

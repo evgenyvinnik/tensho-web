@@ -153,7 +153,8 @@ export function GameplayScreen() {
           pattern: data.pattern,
           points: data.equation.points,
           mult: data.equation.multiplier,
-          total: data.score,
+          adjustment: data.equation.adjustment,
+          total: data.equation.total,
         })
         setToast({
           id: ++toastCounter.current,
@@ -214,14 +215,14 @@ export function GameplayScreen() {
     selectedIds.length > 0 && !previewHidden
       ? game.previewScore(selectedIds)
       : null
+  // The settled equation, exactly as the play will pay it.
   const preview: HandScoreValue | null = breakdown
     ? {
         pattern: breakdown.pattern.id,
-        points: breakdown.equation?.points ?? breakdown.subtotal,
-        mult:
-          breakdown.equation?.multiplier ??
-          breakdown.yakuMultiplier + breakdown.pattern.mult,
-        total: breakdown.finalScore,
+        points: breakdown.equation.points,
+        mult: breakdown.equation.multiplier,
+        adjustment: breakdown.equation.adjustment,
+        total: breakdown.equation.total,
       }
     : null
 

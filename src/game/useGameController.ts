@@ -14,7 +14,6 @@ import {
   gameOrchestrator,
 } from './GameOrchestrator'
 import { PlayerAction, ActionResult } from './ActionProcessor'
-import type { ScoreBreakdown } from '../rules/ScoringEngine'
 import type { Decree, ImperialCharter } from '../systems/types'
 import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
@@ -147,7 +146,7 @@ export interface GameController {
   isCompleteHand: (tileIds: string[]) => boolean
   inspectCompleteHand: GameOrchestrator['inspectCompleteHand']
   findCompleteHandSelection: GameOrchestrator['findCompleteHandSelection']
-  previewScore: (tileIds: string[]) => ScoreBreakdown | null
+  previewScore: GameOrchestrator['previewScore']
   resetGame: () => void
   endRun: () => void
 }

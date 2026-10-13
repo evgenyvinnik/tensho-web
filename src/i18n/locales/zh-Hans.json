@@ -374,7 +374,7 @@
     "requiredTiles": "{{count}}张",
     "completeToUnlockStage": "集齐{{count}}张即可解锁预备手牌",
     "tilesRange": "{{min}}–{{max}}张",
-    "sellFor": "以¥{{value}}出售",
+    "sellFor": "以{{value}}G出售",
     "sellHidden": "出售隐藏法令",
     "sellNamed": "出售{{name}}",
     "hiddenDecree": "隐藏法令",
@@ -493,8 +493,8 @@
       "bonus": "奖励调整",
       "rentals": "租金",
       "interestBlocked": "当前无法获得利息。",
-      "interestCap": "已达到利息上限{{interest}}G。",
-      "interestSave": "按当前存款可得利息{{interest}}G。再存{{needed}}G即可获得{{next}}G。",
+      "interestCap": "下次结算：当前存款已可获得利息上限{{interest}}G。",
+      "interestSave": "下次结算：按当前存款可得利息{{interest}}G。再存{{needed}}G即可获得{{next}}G。",
       "nextRound": "下一局：{{round}} · 目标{{target}}",
       "nextAct": "下一幕：第{{act}}幕",
       "omenEarned": "征兆：{{name}}",
@@ -514,7 +514,7 @@
     "buy": "购买",
     "sell": "出售",
     "reroll": "刷新",
-    "rerollCost": "刷新 ({{cost}}金)",
+    "rerollCost": "刷新 ({{cost}}G)",
     "nextAct": "下一幕",
     "sold": "已售出",
     "cantAfford": "金币不足",
@@ -1043,7 +1043,7 @@
       },
       "decree-midas-touch": {
         "name": "点金手",
-        "description": "回合结束时+20金"
+        "description": "回合结束时+10金"
       },
       "decree-infinite-wealth": {
         "name": "无限财富",
@@ -1516,7 +1516,7 @@
     "rules": {
       "base": "基础难度：没有额外惩罚。",
       "noSmallRoundReward": "小局不再提供奖励金币。",
-      "scoreScaling": "目标分数为白场的{{multiplier}}倍，牌桌修正仍然生效。",
+      "scoreScaling": "目标分数在第1幕与白场相同，之后每幕提高，自第{{act}}幕起为白场的{{multiplier}}倍，牌桌修正仍然生效。",
       "redrawPenalty": "每回合行动：−{{amount}}。",
       "eternalChance": "商店敕令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
       "perishableChance": "没有永恒贴纸的商店敕令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后削弱）。",
@@ -1797,6 +1797,8 @@
     "lastPlay": "上次出牌",
     "adjustments": "计分后效果",
     "exactValues": "精确数值",
+    "roundedDown": "{{product}} 向下取整为 {{rounded}}",
+    "beforeRounding": "取整前",
     "basePoints": "基础点数",
     "totalScore": "总分",
     "subtotal": "小计",

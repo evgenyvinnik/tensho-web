@@ -1,7 +1,12 @@
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { scoreNumber } from '../../utils/scoreNumber'
 
-/** Native, keyboard/touch-operable disclosure; no hover-only information. */
+/**
+ * Native, keyboard/touch-operable disclosure; no hover-only information.
+ * Escape closes it. The compact form opens over neighbouring controls, so it
+ * also closes when the player presses anywhere outside it.
+ */
 export function ExactScoreDetails({
   entries,
   always = false,
@@ -13,14 +18,41 @@ export function ExactScoreDetails({
   compact?: boolean
 }) {
   const { t, i18n } = useTranslation()
+  const detailsRef = useRef<HTMLDetailsElement>(null)
   const numbers = entries.map((entry) => ({
     ...entry,
     ...scoreNumber(entry.value, i18n.language),
   }))
-  if (!always && !numbers.some((number) => number.isCompact)) return null
+  const shown = always || numbers.some((number) => number.isCompact)
+
+  useEffect(() => {
+    const details = detailsRef.current
+    if (!details) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !details.open) return
+      event.stopPropagation()
+      const hadFocus = details.contains(document.activeElement)
+      details.open = false
+      if (hadFocus)
+        details.querySelector('summary')?.focus({ preventScroll: true })
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      if (details.open && !details.contains(event.target as Node))
+        details.open = false
+    }
+    document.addEventListener('keydown', onKey)
+    if (compact) document.addEventListener('pointerdown', onPointerDown)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onPointerDown)
+    }
+  }, [compact, shown])
+
+  if (!shown) return null
   if (compact)
     return (
       <details
+        ref={detailsRef}
         data-exact-score-details
         className="relative shrink-0 text-left text-xs text-[var(--color-beige-white)]/75 [overflow-wrap:anywhere]"
       >
@@ -44,6 +76,7 @@ export function ExactScoreDetails({
     )
   return (
     <details
+      ref={detailsRef}
       data-exact-score-details
       className="col-span-2 min-w-0 text-left text-xs text-[var(--color-beige-white)]/75 [overflow-wrap:anywhere]"
     >

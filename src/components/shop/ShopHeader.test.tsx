@@ -30,7 +30,7 @@ it('localizes the current balance and reroll cost without count-up or hover scal
   )
   expect(screen.getByRole('heading', { level: 1 })).not.toHaveClass('truncate')
   const reroll = screen.getByRole('button', { name: 'Renovar' })
-  expect(reroll).toHaveAccessibleDescription('Renovar (5O)')
+  expect(reroll).toHaveAccessibleDescription('Renovar (5G)')
   expect(reroll).not.toHaveClass('hover:scale-105')
   expect(screen.getByLabelText('Renovaciones usadas: 2')).toBeVisible()
 })

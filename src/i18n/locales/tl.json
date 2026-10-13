@@ -661,7 +661,7 @@
     "requiredTiles": "{{count}} TILE",
     "completeToUnlockStage": "Buuin ang lahat ng {{count}} tile para ma-unlock ang Stage Hand",
     "tilesRange": "{{min}}–{{max}} TILE",
-    "sellFor": "Ibenta sa ¥{{value}}",
+    "sellFor": "Ibenta sa {{value}}G",
     "sellHidden": "Ibenta ang nakatagong Decree",
     "sellNamed": "Ibenta ang {{name}}",
     "hiddenDecree": "nakatagong Decree",
@@ -780,8 +780,8 @@
       "bonus": "Pagsasaayos ng gantimpala",
       "rentals": "Upa",
       "interestBlocked": "Naka-block ang interes sa ngayon.",
-      "interestCap": "Naabot na ang limitasyon ng interes na {{interest}}G.",
-      "interestSave": "Sa kasalukuyang ipon: {{interest}}G na interes. Mag-ipon pa ng {{needed}}G para sa {{next}}G.",
+      "interestCap": "Susunod na cash-out: naaabot na ng ipon mo ang limitasyon ng interes na {{interest}}G.",
+      "interestSave": "Susunod na cash-out: {{interest}}G na interes mula sa kasalukuyang ipon. Mag-ipon pa ng {{needed}}G para sa {{next}}G.",
       "nextRound": "Susunod: {{round}} · target na {{target}}",
       "nextAct": "Susunod: Akto {{act}}",
       "omenEarned": "Pangitain: {{name}}",
@@ -1382,7 +1382,7 @@
       },
       "decree-midas-touch": {
         "name": "Haplos ni Midas",
-        "description": "+20 Ginto sa katapusan ng round."
+        "description": "+10 Ginto sa katapusan ng round."
       },
       "decree-infinite-wealth": {
         "name": "Walang Hanggang Kayamanan",
@@ -1803,7 +1803,7 @@
     "rules": {
       "base": "Batayang hirap: walang dagdag na parusa.",
       "noSmallRoundReward": "Walang gantimpalang ginto mula sa Maliliit na Round.",
-      "scoreScaling": "Target na puntos: ×{{multiplier}} kumpara sa Puti. Nalalapat pa rin ang mga modifier ng mesa.",
+      "scoreScaling": "Target na puntos: kapareho ng Puti sa Akto 1, saka tumataas bawat Akto hanggang ×{{multiplier}} kumpara sa Puti mula Akto {{act}}. Nalalapat pa rin ang mga modifier ng mesa.",
       "redrawPenalty": "Mga turno bawat round: −{{amount}}.",
       "eternalChance": "Mga Dekreto sa tindahan: {{chance}} tsansang maging Walang Hanggan (hindi maibebenta o masisira).",
       "perishableChance": "Mga Dekreto sa tindahang hindi Walang Hanggan: {{chance}} tsansang maging Pansamantala (hihina pagkatapos ng {{rounds}} round).",
@@ -2084,6 +2084,8 @@
     "lastPlay": "Huling laro",
     "adjustments": "Mga epekto pagkatapos ng puntos",
     "exactValues": "Eksaktong halaga",
+    "roundedDown": "{{product}}, binilog pababa sa {{rounded}}",
+    "beforeRounding": "Bago bilugin",
     "basePoints": "Batayang puntos",
     "totalScore": "Kabuuang puntos",
     "subtotal": "Subtotal",

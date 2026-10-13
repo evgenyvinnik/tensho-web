@@ -83,10 +83,10 @@ export interface StickerRollResult {
  * |------|------|----------|--------------|---------|
  * | 1 | White Stake | 白場 | Base difficulty | Starting tier |
  * | 2 | Red Stake | 赤場 | Small Round gives no reward Gold | Crimson Wall |
- * | 3 | Green Stake | 緑場 | Required score scales faster | Jade Wall |
+ * | 3 | Green Stake | 緑場 | Score targets ramp to ×1.3 by Act 4 | Jade Wall |
  * | 4 | Black Stake | 黒場 | 30% Eternal stickers on shop Decrees | Obsidian Wall |
  * | 5 | Blue Stake | 青場 | -1 Redraw per round | Azure Wall |
- * | 6 | Purple Stake | 紫場 | Score scales even faster | - |
+ * | 6 | Purple Stake | 紫場 | Score targets ramp to ×1.95 by Act 4 | - |
  * | 7 | Orange Stake | 橙場 | 30% Perishable stickers | Sunset Wall |
  * | 8 | Gold Stake | 金場 | 30% Rental stickers | - |
  */
@@ -114,7 +114,8 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Green Stake',
     japaneseName: '緑場',
     color: '#43A047',
-    description: 'Score targets are 30% higher than White Stake',
+    description:
+      'Score targets match White in Act 1, then rise each Act to 30% higher from Act 4',
     modifier: { scoreScaling: 1.3 },
     unlocksWall: 'jade_wall',
   },
@@ -141,7 +142,8 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Purple Stake',
     japaneseName: '紫場',
     color: '#8E24AA',
-    description: 'Score targets are a further 50% higher (stacks with Green)',
+    description:
+      'Score targets rise each Act to a further 50% higher from Act 4 (stacks with Green)',
     modifier: { scoreScaling: 1.5 },
     unlocksWall: undefined,
   },
@@ -289,6 +291,31 @@ export function calculateCombinedModifiers(stakeTier: number): CombinedStakeModi
   }
 
   return combined
+}
+
+/**
+ * Act from which a Stake's cumulative score scaling applies in full.
+ *
+ * Act 1 always uses White targets, so a Stake cannot end a run before the
+ * player has visited a shop. See docs/STAKE_SCORE_RAMP.md for the measurement.
+ */
+export const STAKE_SCALING_FULL_ACT = 4
+
+/**
+ * Stake score multiplier for one Act.
+ *
+ * Grows by the same ratio each Act from ×1 at Act 1 to the full cumulative
+ * `scoreScaling` at STAKE_SCALING_FULL_ACT, then holds, including Endless.
+ */
+export function getActScoreScaling(
+  scoreScaling: number,
+  actNumber: number
+): number {
+  const progress = Math.min(
+    1,
+    Math.max(0, (actNumber - 1) / (STAKE_SCALING_FULL_ACT - 1))
+  )
+  return scoreScaling ** progress
 }
 
 /**
@@ -478,7 +505,9 @@ export function getStakeModifierDescriptions(tier: number): string[] {
   }
   if (mod.scoreScaling) {
     const percent = Math.round((mod.scoreScaling - 1) * 100)
-    descriptions.push(`Score requirements +${percent}% scaling`)
+    descriptions.push(
+      `Score requirements +${percent}% scaling, ramping in from Act 1 to Act ${STAKE_SCALING_FULL_ACT}`
+    )
   }
   if (mod.eternalChance) {
     descriptions.push(`${Math.round(mod.eternalChance * 100)}% Eternal stickers on shop Decrees`)

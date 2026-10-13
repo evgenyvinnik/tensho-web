@@ -17,7 +17,9 @@ it.each(['decree-immortal-decree', 'decree-glass-cannon'])(
     vi.spyOn(DecreeSystem, 'getShopCandidates').mockReturnValue([
       ALL_DECREES.find((d) => d.id === id)!,
     ])
-    const offer = new TeaHouseSystem(8, () => 0).generateShop().itemOfferings[0]
+    const zero = () => 0
+    const shop = new TeaHouseSystem(8, zero, zero)
+    const offer = shop.generateShop().itemOfferings[0]
     expect((offer.item as Decree).stickers?.map((s) => s.type)).toEqual([
       'Eternal',
       'Rental',
@@ -63,14 +65,17 @@ it.each([
   ({ rolls, types }) => {
     vi.spyOn(DecreeSystem, 'getShopCandidates').mockReturnValue([phoenix])
     const random = vi.fn(() => 0.9)
-    for (const value of [0, 0, 0, 0.9, ...rolls, 0.5])
-      random.mockReturnValueOnce(value)
-    const offer = new TeaHouseSystem(8, random).generateShop().itemOfferings[0]
+    for (const value of [0, 0, 0, 0.9, 0.5]) random.mockReturnValueOnce(value)
+    const stickerRandom = vi.fn(() => 0.9)
+    for (const value of rolls) stickerRandom.mockReturnValueOnce(value)
+    const offer = new TeaHouseSystem(8, random, stickerRandom).generateShop()
+      .itemOfferings[0]
     expect((offer.item as Decree).id).toBe(phoenix.id)
     expect((offer.item as Decree).stickers?.map((s) => s.type)).toEqual(types)
     if (types.includes('Rental')) expect(offer.baseCost).toBe(1)
     // Eligibility must not shift the cost draw or later seeded offers.
-    expect(random).toHaveBeenCalledTimes(13)
+    expect(random).toHaveBeenCalledTimes(10)
+    expect(stickerRandom).toHaveBeenCalledTimes(3)
   }
 )
 

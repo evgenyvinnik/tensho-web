@@ -370,7 +370,7 @@
     "requiredTiles": "{{count}} TILES",
     "completeToUnlockStage": "Complete all {{count}} tiles to unlock Stage Hand",
     "tilesRange": "{{min}}–{{max}} TILES",
-    "sellFor": "Sell for ¥{{value}}",
+    "sellFor": "Sell for {{value}}G",
     "sellHidden": "Sell hidden Decree",
     "sellNamed": "Sell {{name}}",
     "hiddenDecree": "hidden Decree",
@@ -489,8 +489,8 @@
       "bonus": "Reward adjustment",
       "rentals": "Rentals",
       "interestBlocked": "Interest is currently blocked.",
-      "interestCap": "Savings have reached the {{interest}}G interest cap.",
-      "interestSave": "With current savings: {{interest}}G interest. Save {{needed}}G more for {{next}}G.",
+      "interestCap": "Next cash-out: your savings already earn the {{interest}}G interest cap.",
+      "interestSave": "Next cash-out: {{interest}}G interest from current savings. Save {{needed}}G more for {{next}}G.",
       "nextRound": "Next: {{round}} · {{target}} target",
       "nextAct": "Next: Act {{act}} ascent",
       "omenEarned": "Omen: {{name}}",
@@ -1039,7 +1039,7 @@
       },
       "decree-midas-touch": {
         "name": "Midas Touch",
-        "description": "+20G at end of round"
+        "description": "+10G at end of round"
       },
       "decree-infinite-wealth": {
         "name": "Infinite Wealth",
@@ -1512,7 +1512,7 @@
     "rules": {
       "base": "Base difficulty: no added penalties.",
       "noSmallRoundReward": "No reward gold from Small Rounds.",
-      "scoreScaling": "Stake score targets: ×{{multiplier}} compared with White. Table modifiers still apply.",
+      "scoreScaling": "Stake score targets: same as White in Act 1, then rising each Act to ×{{multiplier}} compared with White from Act {{act}} on. Table modifiers still apply.",
       "redrawPenalty": "Turns each round: −{{amount}}.",
       "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
       "perishableChance": "Non-Eternal shop Decrees: {{chance}} chance of Perishable (weakened after {{rounds}} rounds).",
@@ -2276,6 +2276,8 @@
     "lastPlay": "Last play",
     "adjustments": "After-score effects",
     "exactValues": "Exact values",
+    "roundedDown": "{{product}} rounded down to {{rounded}}",
+    "beforeRounding": "Before rounding",
     "basePoints": "Base Points",
     "totalScore": "Total Score",
     "subtotal": "Subtotal",

@@ -1,0 +1,3991 @@
+{
+ "schema": 1,
+ "measuredAt": "2026-10-12",
+ "source": "docs/LEGENDARY_DECREE_TIER.md",
+ "command": "bun scripts/classic-balance.mts 30 --shop --build-shop --resources --plan-hands --consumables --table=<table> --stake=1 --json",
+ "policy": "resources-and-hand-plan+consumables",
+ "shoppingPolicy": "observed-build",
+ "stake": 1,
+ "firstSeed": 1,
+ "runsPerTable": 30,
+ "before": {
+  "tree": "v1.0.261011-15 (fc42399)",
+  "tables": {
+   "green_felt": {
+    "outcomes": {
+     "loss": 29,
+     "win": 1
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 332537,
+      "goldSpent": 163,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2291,
+      "goldSpent": 21,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 97328,
+      "goldSpent": 118,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1226,
+      "goldSpent": 18,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1393,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 50429,
+      "goldSpent": 103,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 190300,
+      "goldSpent": 115,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 374287,
+      "goldSpent": 149,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1806785,
+      "goldSpent": 143,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 386610,
+      "goldSpent": 176,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 185205,
+      "goldSpent": 112,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4969,
+      "goldSpent": 43,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 764514,
+      "goldSpent": 159,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5419,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1383,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 641946,
+      "goldSpent": 191,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 296843,
+      "goldSpent": 248,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2176,
+      "goldSpent": 30,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 148884,
+      "goldSpent": 118,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 192802,
+      "goldSpent": 134,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 52779,
+      "goldSpent": 119,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 142582,
+      "goldSpent": 119,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3425,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 138393,
+      "goldSpent": 126,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "red_lacquer": {
+    "outcomes": {
+     "loss": 24,
+     "win": 6
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 615512,
+      "goldSpent": 203,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2291,
+      "goldSpent": 21,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 98541,
+      "goldSpent": 122,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1226,
+      "goldSpent": 18,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1393,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 51855,
+      "goldSpent": 104,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 745338,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 400226,
+      "goldSpent": 155,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 781597,
+      "goldSpent": 129,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 414196,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 769499,
+      "goldSpent": 169,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4969,
+      "goldSpent": 43,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 606621,
+      "goldSpent": 150,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5419,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1383,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1097235,
+      "goldSpent": 182,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 374020,
+      "goldSpent": 263,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2176,
+      "goldSpent": 30,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 242406,
+      "goldSpent": 134,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 838192,
+      "goldSpent": 174,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 155847,
+      "goldSpent": 115,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 142582,
+      "goldSpent": 119,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3425,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 888678,
+      "goldSpent": 205,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "bamboo_mat": {
+    "outcomes": {
+     "loss": 28,
+     "win": 2
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 743,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 2104838,
+      "goldSpent": 166,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 950818,
+      "goldSpent": 156,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 100431,
+      "goldSpent": 112,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1219,
+      "goldSpent": 14,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1357,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 78457,
+      "goldSpent": 96,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 46945,
+      "goldSpent": 67,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 78339,
+      "goldSpent": 106,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 362163,
+      "goldSpent": 152,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 527848,
+      "goldSpent": 126,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 521220,
+      "goldSpent": 197,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 780052,
+      "goldSpent": 145,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1360,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 108069,
+      "goldSpent": 130,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 372234,
+      "goldSpent": 123,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 106575,
+      "goldSpent": 106,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1410,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 199244,
+      "goldSpent": 137,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 444151,
+      "goldSpent": 166,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 271959,
+      "goldSpent": 155,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 582538,
+      "goldSpent": 322,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2169,
+      "goldSpent": 34,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 269,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 976884,
+      "goldSpent": 179,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 145416,
+      "goldSpent": 130,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 783680,
+      "goldSpent": 238,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 40167,
+      "goldSpent": 92,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3365,
+      "goldSpent": 23,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 285524,
+      "goldSpent": 148,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "imperial_gold": {
+    "outcomes": {
+     "loss": 25,
+     "win": 5
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5325,
+      "goldSpent": 43,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 400181,
+      "goldSpent": 174,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1551,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 16170,
+      "goldSpent": 93,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 99365,
+      "goldSpent": 147,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 391657,
+      "goldSpent": 111,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 54837,
+      "goldSpent": 134,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 110967,
+      "goldSpent": 100,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1267846,
+      "goldSpent": 171,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1276,
+      "goldSpent": 10,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 401337,
+      "goldSpent": 196,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 645706,
+      "goldSpent": 179,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 92013,
+      "goldSpent": 124,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 369093,
+      "goldSpent": 147,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 105878,
+      "goldSpent": 108,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 661010,
+      "goldSpent": 195,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3601,
+      "goldSpent": 36,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 19757,
+      "goldSpent": 70,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 941371,
+      "goldSpent": 219,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2185,
+      "goldSpent": 30,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 19324,
+      "goldSpent": 77,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 895839,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 198390,
+      "goldSpent": 138,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 171323,
+      "goldSpent": 163,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 675287,
+      "goldSpent": 224,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4604,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 138393,
+      "goldSpent": 154,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "night_market": {
+    "outcomes": {
+     "loss": 28,
+     "win": 2
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 286055,
+      "goldSpent": 175,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3858,
+      "goldSpent": 36,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 108060,
+      "goldSpent": 135,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1169,
+      "goldSpent": 16,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 45575,
+      "goldSpent": 71,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 50571,
+      "goldSpent": 98,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 5,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 318075,
+      "goldSpent": 151,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 451405,
+      "goldSpent": 145,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 1283229,
+      "goldSpent": 176,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 171503,
+      "goldSpent": 132,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 274077,
+      "goldSpent": 132,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1324,
+      "goldSpent": 20,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4876,
+      "goldSpent": 44,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 191862,
+      "goldSpent": 136,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 115342,
+      "goldSpent": 100,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 261836,
+      "goldSpent": 121,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 10,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 17117,
+      "goldSpent": 67,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 286672,
+      "goldSpent": 187,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2184,
+      "goldSpent": 28,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 870209,
+      "goldSpent": 176,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 901416,
+      "goldSpent": 185,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 40363,
+      "goldSpent": 88,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 576610,
+      "goldSpent": 172,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3425,
+      "goldSpent": 24,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 133674,
+      "goldSpent": 123,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "temple_stone": {
+    "outcomes": {
+     "loss": 30
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 151377,
+      "goldSpent": 167,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 186897,
+      "goldSpent": 133,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1415,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 42616,
+      "goldSpent": 94,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 101064,
+      "goldSpent": 114,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 45364,
+      "goldSpent": 73,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 38110,
+      "goldSpent": 84,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 11789,
+      "goldSpent": 44,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 111012,
+      "goldSpent": 111,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 185255,
+      "goldSpent": 122,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2392,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 249919,
+      "goldSpent": 166,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 99296,
+      "goldSpent": 92,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1473,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 6121,
+      "goldSpent": 47,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 363816,
+      "goldSpent": 193,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3777,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3717,
+      "goldSpent": 27,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 107070,
+      "goldSpent": 115,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 7588,
+      "goldSpent": 61,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 15212,
+      "goldSpent": 76,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 17062,
+      "goldSpent": 67,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2369,
+      "goldSpent": 34,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 208851,
+      "goldSpent": 147,
+      "legendaryHeld": [
+       "decree-cosmic-jade"
+      ]
+     },
+     {
+      "seed": 25,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 34494,
+      "goldSpent": 86,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 92348,
+      "goldSpent": 85,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 89484,
+      "goldSpent": 142,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 14766,
+      "goldSpent": 64,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2891,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 68429,
+      "goldSpent": 95,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "ghost_parlor": {
+    "outcomes": {
+     "loss": 25,
+     "win": 5
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 816,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 670691,
+      "goldSpent": 195,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 2266643,
+      "goldSpent": 154,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 761,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1237,
+      "goldSpent": 18,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1332,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1008691,
+      "goldSpent": 202,
+      "legendaryHeld": [
+       "decree-cosmic-jade"
+      ]
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 728,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 228325,
+      "goldSpent": 123,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 374319,
+      "goldSpent": 149,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 553233,
+      "goldSpent": 128,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 338894,
+      "goldSpent": 191,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 689624,
+      "goldSpent": 165,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 812,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 85487,
+      "goldSpent": 113,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 538287,
+      "goldSpent": 143,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4594,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3667,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5475,
+      "goldSpent": 45,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 164312,
+      "goldSpent": 161,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 690829,
+      "goldSpent": 234,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 277,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 261,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 825186,
+      "goldSpent": 178,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 11405,
+      "goldSpent": 46,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 184665,
+      "goldSpent": 181,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 36704,
+      "goldSpent": 70,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3721,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 78420,
+      "goldSpent": 95,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "dragons_den": {
+    "outcomes": {
+     "loss": 29,
+     "win": 1
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 298728,
+      "goldSpent": 148,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 958,
+      "goldSpent": 4,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 61858,
+      "goldSpent": 96,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 994,
+      "goldSpent": 8,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 906,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 8377,
+      "goldSpent": 35,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 344,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 340,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 982638,
+      "goldSpent": 169,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2765,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 763200,
+      "goldSpent": 216,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 904,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1686,
+      "goldSpent": 17,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 801085,
+      "goldSpent": 139,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 989,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1574,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1696,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 126237,
+      "goldSpent": 160,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 831,
+      "goldSpent": 10,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 761924,
+      "goldSpent": 207,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1689,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 36300,
+      "goldSpent": 93,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1022,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4155,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 141994,
+      "goldSpent": 157,
+      "legendaryHeld": []
+     }
+    ]
+   }
+  }
+ },
+ "after": {
+  "tree": "legendary -> HeavenlyOrdinance, Tea House fallback hardening, Midas Touch +10G",
+  "tables": {
+   "green_felt": {
+    "outcomes": {
+     "loss": 28,
+     "win": 2
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 332537,
+      "goldSpent": 163,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3165,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 97328,
+      "goldSpent": 118,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1226,
+      "goldSpent": 18,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1393,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 50429,
+      "goldSpent": 103,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 190300,
+      "goldSpent": 115,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 374287,
+      "goldSpent": 149,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1935441,
+      "goldSpent": 144,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 386610,
+      "goldSpent": 176,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1073942,
+      "goldSpent": 146,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4969,
+      "goldSpent": 43,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 764514,
+      "goldSpent": 159,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5419,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1383,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 641946,
+      "goldSpent": 191,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 296843,
+      "goldSpent": 248,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2176,
+      "goldSpent": 30,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 146201,
+      "goldSpent": 118,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 192532,
+      "goldSpent": 134,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 52779,
+      "goldSpent": 119,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 142582,
+      "goldSpent": 119,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3425,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 138393,
+      "goldSpent": 126,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "red_lacquer": {
+    "outcomes": {
+     "loss": 26,
+     "win": 4
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 615512,
+      "goldSpent": 203,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3165,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 98541,
+      "goldSpent": 122,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1226,
+      "goldSpent": 18,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1393,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 51855,
+      "goldSpent": 104,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 582210,
+      "goldSpent": 170,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 400226,
+      "goldSpent": 155,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 781597,
+      "goldSpent": 129,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 414196,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1093721,
+      "goldSpent": 153,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4969,
+      "goldSpent": 43,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 606621,
+      "goldSpent": 150,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5419,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1383,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1097235,
+      "goldSpent": 182,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 374020,
+      "goldSpent": 263,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2176,
+      "goldSpent": 30,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 242406,
+      "goldSpent": 134,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 856902,
+      "goldSpent": 177,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 155847,
+      "goldSpent": 115,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 142582,
+      "goldSpent": 119,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3425,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 961806,
+      "goldSpent": 213,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "bamboo_mat": {
+    "outcomes": {
+     "loss": 27,
+     "win": 3
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 743,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 2104838,
+      "goldSpent": 166,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2256,
+      "goldSpent": 22,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 100431,
+      "goldSpent": 112,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1219,
+      "goldSpent": 14,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1357,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 78457,
+      "goldSpent": 96,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 46945,
+      "goldSpent": 67,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 78339,
+      "goldSpent": 106,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 362163,
+      "goldSpent": 152,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 527848,
+      "goldSpent": 126,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 521220,
+      "goldSpent": 197,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1258497,
+      "goldSpent": 145,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1360,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 108069,
+      "goldSpent": 130,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 372234,
+      "goldSpent": 123,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 106575,
+      "goldSpent": 106,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1410,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 90553,
+      "goldSpent": 99,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 444151,
+      "goldSpent": 166,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 271959,
+      "goldSpent": 155,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 582538,
+      "goldSpent": 322,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2169,
+      "goldSpent": 34,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 269,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 976884,
+      "goldSpent": 179,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 145416,
+      "goldSpent": 130,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 783680,
+      "goldSpent": 238,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 40167,
+      "goldSpent": 92,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3365,
+      "goldSpent": 23,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 285524,
+      "goldSpent": 148,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "imperial_gold": {
+    "outcomes": {
+     "loss": 25,
+     "win": 5
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5325,
+      "goldSpent": 43,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 400181,
+      "goldSpent": 174,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1551,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 16170,
+      "goldSpent": 93,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 513731,
+      "goldSpent": 201,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 391657,
+      "goldSpent": 111,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 54837,
+      "goldSpent": 134,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 110967,
+      "goldSpent": 100,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1267846,
+      "goldSpent": 171,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1276,
+      "goldSpent": 10,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 401337,
+      "goldSpent": 196,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1050719,
+      "goldSpent": 144,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 92013,
+      "goldSpent": 124,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 369093,
+      "goldSpent": 147,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 105878,
+      "goldSpent": 108,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 543822,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 464281,
+      "goldSpent": 168,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 19757,
+      "goldSpent": 70,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 935045,
+      "goldSpent": 219,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2185,
+      "goldSpent": 30,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 19779,
+      "goldSpent": 65,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 895839,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 198390,
+      "goldSpent": 138,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 171323,
+      "goldSpent": 163,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 758441,
+      "goldSpent": 205,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4604,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 138393,
+      "goldSpent": 154,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "night_market": {
+    "outcomes": {
+     "loss": 27,
+     "win": 3
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 286055,
+      "goldSpent": 175,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3858,
+      "goldSpent": 27,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 108060,
+      "goldSpent": 135,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1169,
+      "goldSpent": 16,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 45575,
+      "goldSpent": 71,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 50571,
+      "goldSpent": 98,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 678,
+      "goldSpent": 5,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 318075,
+      "goldSpent": 151,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 451405,
+      "goldSpent": 145,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 222310,
+      "goldSpent": 124,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 171503,
+      "goldSpent": 132,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 3246391,
+      "goldSpent": 157,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1324,
+      "goldSpent": 20,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4876,
+      "goldSpent": 44,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 191862,
+      "goldSpent": 136,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 115342,
+      "goldSpent": 100,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 261836,
+      "goldSpent": 121,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 10,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 17117,
+      "goldSpent": 67,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 286672,
+      "goldSpent": 187,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2184,
+      "goldSpent": 28,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 870209,
+      "goldSpent": 176,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 721778,
+      "goldSpent": 188,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 40363,
+      "goldSpent": 88,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1194316,
+      "goldSpent": 195,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3425,
+      "goldSpent": 24,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 133674,
+      "goldSpent": 123,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "temple_stone": {
+    "outcomes": {
+     "loss": 30
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 151377,
+      "goldSpent": 167,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 186897,
+      "goldSpent": 133,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1415,
+      "goldSpent": 11,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 42616,
+      "goldSpent": 94,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 124986,
+      "goldSpent": 120,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 45364,
+      "goldSpent": 73,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 38110,
+      "goldSpent": 84,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 11789,
+      "goldSpent": 44,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 111012,
+      "goldSpent": 111,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 185255,
+      "goldSpent": 122,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2392,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 249919,
+      "goldSpent": 166,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 40529,
+      "goldSpent": 78,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1473,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 6121,
+      "goldSpent": 47,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 363816,
+      "goldSpent": 193,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3777,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3717,
+      "goldSpent": 27,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 104133,
+      "goldSpent": 118,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 99519,
+      "goldSpent": 158,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 15212,
+      "goldSpent": 76,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 17062,
+      "goldSpent": 67,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2369,
+      "goldSpent": 34,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 19516,
+      "goldSpent": 63,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 34494,
+      "goldSpent": 86,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 92348,
+      "goldSpent": 85,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 89484,
+      "goldSpent": 142,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 14766,
+      "goldSpent": 64,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2891,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 68429,
+      "goldSpent": 95,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "ghost_parlor": {
+    "outcomes": {
+     "loss": 27,
+     "win": 3
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 816,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 670691,
+      "goldSpent": 195,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5388,
+      "goldSpent": 28,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 761,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1237,
+      "goldSpent": 18,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1332,
+      "goldSpent": 9,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 664494,
+      "goldSpent": 207,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 728,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 228325,
+      "goldSpent": 123,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 374319,
+      "goldSpent": 149,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 553233,
+      "goldSpent": 128,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 338894,
+      "goldSpent": 191,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 1586504,
+      "goldSpent": 178,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 812,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 85487,
+      "goldSpent": 113,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 538287,
+      "goldSpent": 143,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4594,
+      "goldSpent": 29,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3667,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 5475,
+      "goldSpent": 45,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 164312,
+      "goldSpent": 161,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 748556,
+      "goldSpent": 226,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 277,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 261,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 825186,
+      "goldSpent": 178,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 3,
+      "outcome": "loss",
+      "runScore": 11405,
+      "goldSpent": 46,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 184665,
+      "goldSpent": 181,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 36704,
+      "goldSpent": 70,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 3721,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 78420,
+      "goldSpent": 95,
+      "legendaryHeld": []
+     }
+    ]
+   },
+   "dragons_den": {
+    "outcomes": {
+     "loss": 29,
+     "win": 1
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 799,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 2,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 298728,
+      "goldSpent": 148,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 958,
+      "goldSpent": 4,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 61858,
+      "goldSpent": 96,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 5,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 994,
+      "goldSpent": 8,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 906,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 8377,
+      "goldSpent": 35,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 344,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 9,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 340,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 10,
+      "act": 8,
+      "outcome": "win",
+      "runScore": 982638,
+      "goldSpent": 169,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 11,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 2765,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 12,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 763200,
+      "goldSpent": 216,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 13,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 904,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 14,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 700,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 15,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1686,
+      "goldSpent": 17,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 16,
+      "act": 7,
+      "outcome": "loss",
+      "runScore": 801085,
+      "goldSpent": 139,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 17,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 989,
+      "goldSpent": 7,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 18,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1574,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 19,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 278,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 20,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 902,
+      "goldSpent": 6,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 21,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1696,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 22,
+      "act": 5,
+      "outcome": "loss",
+      "runScore": 126237,
+      "goldSpent": 160,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 831,
+      "goldSpent": 10,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 24,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 273,
+      "goldSpent": 0,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 25,
+      "act": 8,
+      "outcome": "loss",
+      "runScore": 761924,
+      "goldSpent": 207,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 26,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1689,
+      "goldSpent": 15,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 27,
+      "act": 4,
+      "outcome": "loss",
+      "runScore": 36300,
+      "goldSpent": 93,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 28,
+      "act": 1,
+      "outcome": "loss",
+      "runScore": 1022,
+      "goldSpent": 3,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 29,
+      "act": 2,
+      "outcome": "loss",
+      "runScore": 4155,
+      "goldSpent": 25,
+      "legendaryHeld": []
+     },
+     {
+      "seed": 30,
+      "act": 6,
+      "outcome": "loss",
+      "runScore": 141994,
+      "goldSpent": 157,
+      "legendaryHeld": []
+     }
+    ]
+   }
+  }
+ }
+}

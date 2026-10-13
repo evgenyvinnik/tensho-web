@@ -69,6 +69,7 @@ export function restoreSeededRandom(state: unknown): SeededRandom {
 export type RandomStream =
   | 'wall'
   | 'shop'
+  | 'shopStickers'
   | 'packs'
   | 'consumables'
   | 'decrees'
@@ -81,6 +82,7 @@ export type RandomStream =
 const RANDOM_STREAMS: readonly RandomStream[] = [
   'wall',
   'shop',
+  'shopStickers',
   'packs',
   'consumables',
   'decrees',

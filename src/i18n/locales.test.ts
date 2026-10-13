@@ -326,6 +326,36 @@ const LOCALES: Record<string, Locale> = {
   'zh-Hant': zhHant,
 }
 
+it('prices Decree sales, shop amounts and Decree income in one currency label', () => {
+  // Price tags and the cash-out render amounts as "{n}G" in every language, so
+  // a number-attached currency in these strings must be that same G.
+  const strings = (value: unknown, path: string): [string, string][] =>
+    typeof value === 'string'
+      ? [[path, value]]
+      : value && typeof value === 'object'
+        ? Object.entries(value).flatMap(([key, child]) =>
+            strings(child, `${path}.${key}`)
+          )
+        : []
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const gameplay = locale.gameplay as Record<string, string>
+    expect(gameplay.sellFor, language).toContain('{{value}}G')
+    const shop = locale.shop as Record<string, unknown>
+    expect(shop.rerollCost, language).toContain('{{cost}}G')
+    for (const [path, text] of [
+      ...strings(gameplay, 'gameplay'),
+      ...strings(shop, 'shop'),
+      ...strings((locale.decrees as Record<string, unknown>).items, 'decrees'),
+    ]) {
+      expect(text, `${language}:${path}`).not.toContain('¥')
+      // Abbreviations a translation once used beside a "G" price tag.
+      expect(text, `${language}:${path}`).not.toMatch(
+        /(\}\}|\d)(O|E|З|A|ท)(?![\p{L}\p{M}])/u
+      )
+    }
+  }
+})
+
 it('provides every Classic save/recovery message and its placeholders in all locales', () => {
   for (const [language, locale] of Object.entries(LOCALES)) {
     const copy = locale.classicSave as Record<string, string>

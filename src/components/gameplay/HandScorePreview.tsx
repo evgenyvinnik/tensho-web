@@ -11,13 +11,17 @@
 
 import { useTranslation } from 'react-i18next'
 import type { PlayPatternId } from '../../rules/PlayPattern'
+import { scoreRounding } from '../../rules/ScoreEquation'
 import { scoreNumber } from '../../utils/scoreNumber'
 import { DoomFire } from '../effects/DoomFire'
 
 export interface HandScoreValue {
   pattern: PlayPatternId
   points: number
+  /** The true multiplier, never total ÷ points. */
   mult: number
+  /** After-score effects such as Decay; zero when there are none. */
+  adjustment?: number
   total: number
 }
 
@@ -44,8 +48,19 @@ export function HandScorePreview({
   const language = i18n.resolvedLanguage ?? i18n.language
   const shown = preview ?? lastPlay
   const isLast = !preview && !!lastPlay
-  const multText = (value: number) =>
-    value.toLocaleString(language, { maximumFractionDigits: 2 })
+  // Up to three trimmed decimals: ×2.2, ×0.975 — enough to multiply out.
+  const multText = (value: number) => scoreNumber(value, language).exact
+  // The engine pays floor(points × Mult) + adjustment. When the product has a
+  // fraction, an arrow and a note show where it went, so the numbers add up.
+  const rounding =
+    !hidden && shown ? scoreRounding(shown.points, shown.mult) : null
+  const roundingNote = rounding?.roundedDown
+    ? t('scoring.roundedDown', {
+        product: scoreNumber(rounding.product, language).exact,
+        rounded: scoreNumber(rounding.rounded, language).exact,
+      })
+    : undefined
+  const adjustment = !hidden && shown ? (shown.adjustment ?? 0) : 0
   const label = hidden
     ? t('gameplay.handScore', 'Hand score')
     : isLast
@@ -55,7 +70,9 @@ export function HandScorePreview({
   return (
     <section
       data-hand-score
-      data-hand-score-state={hidden ? 'hidden' : preview ? 'preview' : isLast ? 'last' : 'empty'}
+      data-hand-score-state={
+        hidden ? 'hidden' : preview ? 'preview' : isLast ? 'last' : 'empty'
+      }
       aria-live="polite"
       aria-label={label}
       className="relative mx-auto flex w-full max-w-[20rem] flex-col items-center overflow-hidden rounded-xl border border-[var(--color-metallic-gold)]/35 bg-black/35 px-3 py-1.5 text-center shadow-inner"
@@ -74,7 +91,9 @@ export function HandScorePreview({
       <p
         data-hand-score-pattern
         className={`relative min-h-5 text-sm font-bold leading-5 [overflow-wrap:anywhere] ${
-          isLast ? 'text-[var(--color-beige-white)]/60' : 'text-[var(--color-golden-yellow)]'
+          isLast
+            ? 'text-[var(--color-beige-white)]/60'
+            : 'text-[var(--color-golden-yellow)]'
         }`}
       >
         {hidden
@@ -103,13 +122,32 @@ export function HandScorePreview({
         >
           {!hidden && shown ? multText(shown.mult) : '—'}
         </span>
-        <span aria-hidden="true" className="text-[var(--color-beige-white)]/70">
-          =
+        {adjustment !== 0 && (
+          <span
+            data-hand-score-adjustment
+            title={t('scoring.adjustments')}
+            className="text-sm text-amber-200"
+          >
+            {adjustment > 0 ? '+' : '−'}
+            {scoreNumber(Math.abs(adjustment), language).display}
+          </span>
+        )}
+        <span
+          data-score-operator
+          title={roundingNote}
+          className="text-[var(--color-beige-white)]/70"
+        >
+          <span aria-hidden="true">{rounding?.roundedDown ? '→' : '='}</span>
+          {roundingNote && <span className="sr-only">{roundingNote}</span>}
         </span>
         <span
           data-hand-score-total
           className="min-w-[3rem] text-left text-[var(--color-golden-yellow)] drop-shadow"
-          title={!hidden && shown ? scoreNumber(shown.total, language).exact : undefined}
+          title={
+            !hidden && shown
+              ? scoreNumber(shown.total, language).exact
+              : undefined
+          }
         >
           {!hidden && shown ? scoreNumber(shown.total, language).display : '—'}
         </span>

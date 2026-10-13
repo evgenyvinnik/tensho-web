@@ -845,7 +845,7 @@
     "requiredTiles": "{{count}} ใบ",
     "completeToUnlockStage": "ทำครบ {{count}} ใบเพื่อปลดล็อก Stage Hand",
     "tilesRange": "{{min}}–{{max}} ใบ",
-    "sellFor": "ขายในราคา ¥{{value}}",
+    "sellFor": "ขายในราคา {{value}}G",
     "sellHidden": "ขายประกาศิตที่ซ่อนอยู่",
     "sellNamed": "ขาย {{name}}",
     "hiddenDecree": "ประกาศิตที่ซ่อนอยู่",
@@ -964,8 +964,8 @@
       "bonus": "การปรับรางวัล",
       "rentals": "ค่าเช่า",
       "interestBlocked": "ขณะนี้ไม่สามารถรับดอกเบี้ยได้",
-      "interestCap": "ถึงขีดจำกัดดอกเบี้ย {{interest}}G แล้ว",
-      "interestSave": "เงินออมปัจจุบันให้ดอกเบี้ย {{interest}}G ออมเพิ่มอีก {{needed}}G เพื่อรับ {{next}}G",
+      "interestCap": "การรับเงินครั้งถัดไป: เงินออมปัจจุบันได้ดอกเบี้ยเต็มเพดาน {{interest}}G แล้ว",
+      "interestSave": "การรับเงินครั้งถัดไป: เงินออมปัจจุบันให้ดอกเบี้ย {{interest}}G ออมเพิ่มอีก {{needed}}G เพื่อรับ {{next}}G",
       "nextRound": "ถัดไป: {{round}} · เป้าหมาย {{target}}",
       "nextAct": "ถัดไป: องก์ {{act}}",
       "omenEarned": "ลาง: {{name}}",
@@ -985,7 +985,7 @@
     "buy": "ซื้อ",
     "sell": "ขาย",
     "reroll": "สุ่มใหม่",
-    "rerollCost": "สุ่มใหม่ ({{cost}}ท)",
+    "rerollCost": "สุ่มใหม่ ({{cost}}G)",
     "nextAct": "องก์ถัดไป",
     "sold": "ขายแล้ว",
     "cantAfford": "ทองไม่พอ",
@@ -1566,7 +1566,7 @@
       },
       "decree-midas-touch": {
         "name": "สัมผัสไมดาส",
-        "description": "+20 ทองเมื่อจบรอบ"
+        "description": "+10 ทองเมื่อจบรอบ"
       },
       "decree-infinite-wealth": {
         "name": "ความมั่งคั่งไร้ขอบเขต",
@@ -1987,7 +1987,7 @@
     "rules": {
       "base": "ความยากพื้นฐาน: ไม่มีบทลงโทษเพิ่มเติม",
       "noSmallRoundReward": "รอบเล็กไม่ให้ทองรางวัล",
-      "scoreScaling": "เป้าหมายคะแนนเป็น {{multiplier}} เท่าของระดับขาว โดยยังใช้ตัวปรับของโต๊ะด้วย",
+      "scoreScaling": "เป้าหมายคะแนนในองก์ 1 เท่ากับระดับขาว จากนั้นเพิ่มขึ้นทุกองก์จนเป็น {{multiplier}} เท่าของระดับขาวตั้งแต่องก์ {{act}} โดยยังใช้ตัวปรับของโต๊ะด้วย",
       "redrawPenalty": "ตาต่อรอบ: −{{amount}}",
       "eternalChance": "พระราชกฤษฎีกาในร้านมีโอกาส {{chance}} ติดนิรันดร์ (ขายหรือทำลายไม่ได้)",
       "perishableChance": "พระราชกฤษฎีกาในร้านที่ไม่มีนิรันดร์มีโอกาส {{chance}} ติดเสื่อมสลาย (อ่อนแอลงหลัง {{rounds}} รอบ)",
@@ -2268,6 +2268,8 @@
     "lastPlay": "การเล่นครั้งล่าสุด",
     "adjustments": "ผลหลังคำนวณคะแนน",
     "exactValues": "ค่าที่แน่นอน",
+    "roundedDown": "{{product}} ปัดลงเป็น {{rounded}}",
+    "beforeRounding": "ก่อนปัดเศษ",
     "basePoints": "คะแนนพื้นฐาน",
     "totalScore": "คะแนนรวม",
     "subtotal": "ยอดรวมย่อย",

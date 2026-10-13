@@ -294,14 +294,20 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 
 ### Rarity Distribution
 
-| Rarity | Count | Shop Weight | Base Cost |
-|--------|-------|-------------|-----------|
-| Common | 40 | 45% | ¥4 |
-| Uncommon | 40 | 30% | ¥6 |
-| Rare | 35 | 18% | ¥8 |
-| Legendary | 25 | 6% | ¥10 |
-| Mythic | 15 | 1% | ¥15 |
-| **Total** | **155** | — | — |
+| Rarity | Count | Engine Tier | Tea House Weight | Base Cost |
+|--------|-------|-------------|------------------|-----------|
+| Common | 39 | Local Edict | 70% | ¥4 |
+| Uncommon | 39 | Regional Mandate | 25% | ¥6 |
+| Rare | 33 | Imperial Decree | 5% | ¥8 |
+| Legendary | 24 | Heavenly Ordinance | — (special sources) | ¥10 |
+| Mythic | 15 | Heavenly Ordinance | — (special sources) | ¥15 |
+| **Total** | **150** | — | — | — |
+
+The 15 rule-bending Decrees in `src/systems/DecreeSystem.ts` share these tiers
+(165 in all). The Tea House gives Heavenly Ordinance weight 0, so these
+Decrees come from a Blessing Pack's legendary roll, Script of the Soul, Seal of
+the Immortal, or a Rare+ Omen once no Rare is left. See
+[docs/LEGENDARY_DECREE_TIER.md](docs/LEGENDARY_DECREE_TIER.md).
 
 ### Common Decrees (Tier 1)
 
@@ -450,7 +456,7 @@ Very powerful, often unique effects.
 | Yakuman Seeker | 役満求道者 | +50 Mult on Yakuman |
 | Four Seasons Master | 四季達人 | ×2.0 Mult per Season |
 | Eternal Garden | 永遠庭園 | +10 Mult/Flower, protected |
-| Midas Touch | 黄金の手 | +¥20 at end of round |
+| Midas Touch | 黄金の手 | +¥10 at end of round |
 | Infinite Wealth | 無限財宝 | +1 Mult per ¥5 |
 | Brainstorm | 脳嵐 | Copies leftmost Decree |
 | Doppelganger | 分身 | Copies a seeded random non-copy Decree on acquisition and each round start; target stays fixed for the round. See [target rules](docs/DOPPELGANGER_IMPLEMENTATION.md). |

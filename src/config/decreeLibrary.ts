@@ -31,12 +31,16 @@ import type {
   ScalingSource,
 } from '../systems/types'
 
-/** Library rarities are a five-tier scale; the engine uses four. */
+/**
+ * Library rarities are a five-tier scale; the engine uses four. Legendary and
+ * mythic share the special-sources-only tier, so neither is sold as an
+ * ordinary Rare. docs/LEGENDARY_DECREE_TIER.md records why.
+ */
 const RARITY_MAP: Record<LibraryRarity, DecreeRarity> = {
   common: 'LocalEdict',
   uncommon: 'RegionalMandate',
   rare: 'ImperialDecree',
-  legendary: 'ImperialDecree',
+  legendary: 'HeavenlyOrdinance',
   mythic: 'HeavenlyOrdinance',
 }
 

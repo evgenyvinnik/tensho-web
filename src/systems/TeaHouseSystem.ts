@@ -257,6 +257,7 @@ export class TeaHouseSystem {
   private flowerCountForVisit = 0
   private pricingCalculator: PricingCalculator
   private readonly random: () => number
+  private readonly stickerRandom: () => number
   private itemSlotCount: number = TEA_HOUSE_BASE_ITEM_SLOTS
   private discountPercentage: number = 0
   private rerollDiscount: number = 0
@@ -289,12 +290,18 @@ export class TeaHouseSystem {
   private visitDiscountPercentage: number = 0
   private freeRerollsThisVisit: number = 0
 
+  /**
+   * Stickers draw from their own stream. Stakes 1–3 roll none, so sharing the
+   * shop stream would hand Stakes 4+ a different shop on the same seed.
+   */
   constructor(
     stake: number = 1,
-    random: () => number = () => runRandom.next('shop')
+    random: () => number = () => runRandom.next('shop'),
+    stickerRandom: () => number = () => runRandom.next('shopStickers')
   ) {
     this.currentStake = stake
     this.random = random
+    this.stickerRandom = stickerRandom
     this.pricingCalculator = new PricingCalculator(0) // Will update discount via applyCharters
   }
 
@@ -535,7 +542,11 @@ export class TeaHouseSystem {
     // Find available decrees of this rarity
     let candidates = pool.filter((d) => d.rarity === rarity)
 
-    // Fallback to any available decree if none of the selected rarity
+    // Fall back to the other shop-weighted rarities first, so an exhausted tier
+    // does not leak a special-sources-only Decree into an ordinary slot.
+    if (candidates.length === 0) {
+      candidates = pool.filter((d) => (weights[d.rarity] ?? 0) > 0)
+    }
     if (candidates.length === 0) {
       candidates = pool
     }
@@ -549,8 +560,8 @@ export class TeaHouseSystem {
     // Determine edition (random chance for special editions)
     const edition = this.generateRandomEdition()
 
-    // Roll every enabled sticker before eligibility filtering, preserving the
-    // seeded stream. An ineligible Eternal must not suppress Perishable.
+    // Filter after rolling, so eligibility never changes the sticker draws.
+    // An ineligible Eternal must not suppress Perishable.
     const rolledStickers = this.generateStickers()
     const eligible = rolledStickers.filter(
       (entry) => entry.type !== 'Eternal' || canReceiveEternal(decree)
@@ -563,15 +574,13 @@ export class TeaHouseSystem {
 
     // Calculate costs
     const costRange = DECREE_BASE_COST_RANGES[decree.rarity]
-    // Keep the legacy cost draw when the first sticker is not Rental, so
-    // retaining a second sticker does not shift subsequent seeded shop rolls.
+    // Always draw the cost, so a Rental sticker does not shift subsequent
+    // seeded shop rolls.
     const rolledCost =
-      rolledStickers[0]?.type === 'Rental'
-        ? 1 // Rental items cost only 1 Gold
-        : Math.floor(this.random() * (costRange.max - costRange.min + 1)) +
-          costRange.min
+      Math.floor(this.random() * (costRange.max - costRange.min + 1)) +
+      costRange.min
     const baseCost = stickers.some((entry) => entry.type === 'Rental')
-      ? 1
+      ? 1 // Rental items cost only 1 Gold
       : rolledCost
 
     const { finalCost, editionCost, sellValue } =
@@ -947,19 +956,24 @@ export class TeaHouseSystem {
 
     const stickerChance = 0.3
     const stickers: StickerType[] = []
+    // Draw all three rolls whichever are enabled, so one offer rolls the same
+    // Eternal on Stakes 4–8 and higher Stakes only add stickers to it.
+    const eternalRoll = this.stickerRandom()
+    const perishableRoll = this.stickerRandom()
+    const rentalRoll = this.stickerRandom()
 
     // Eternal at stake 4+ (Black Stake)
-    if (this.currentStake >= 4 && this.random() < stickerChance) {
+    if (this.currentStake >= 4 && eternalRoll < stickerChance) {
       stickers.push('Eternal')
     }
 
     // Perishable at stake 7+ (Orange Stake)
-    if (this.currentStake >= 7 && this.random() < stickerChance) {
+    if (this.currentStake >= 7 && perishableRoll < stickerChance) {
       stickers.push('Perishable')
     }
 
     // Rental at stake 8+ (Gold Stake)
-    if (this.currentStake >= 8 && this.random() < stickerChance) {
+    if (this.currentStake >= 8 && rentalRoll < stickerChance) {
       stickers.push('Rental')
     }
 
@@ -1282,12 +1296,17 @@ export class TeaHouseSystem {
     },
     options: {
       random?: () => number
+      stickerRandom?: () => number
       isCharterUnlocked?: CharterUnlockResolver
       isDecreeUnlocked?: DecreeUnlockResolver
       isConsumableUnlocked?: ConsumableUnlockResolver
     } = {}
   ): TeaHouseSystem {
-    const system = new TeaHouseSystem(state.currentStake, options.random)
+    const system = new TeaHouseSystem(
+      state.currentStake,
+      options.random,
+      options.stickerRandom
+    )
     if (options.isDecreeUnlocked)
       system.setDecreeUnlockResolver(options.isDecreeUnlocked)
     if (options.isConsumableUnlocked)
