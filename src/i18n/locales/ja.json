@@ -1061,7 +1061,7 @@
       },
       "decree-midas-touch": {
         "name": "黄金の手",
-        "description": "ラウンド終了時+20金貨"
+        "description": "ラウンド終了時+10金貨"
       },
       "decree-infinite-wealth": {
         "name": "無限財宝",

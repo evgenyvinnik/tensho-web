@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { Tile } from '../core/Tile'
+import { ALL_DECREES } from './DecreeSystem'
 import {
   TeaHouseSystem,
   TEA_HOUSE_BASE_CHARTERS,
   TEA_HOUSE_UPGRADED_CHARTERS,
 } from './TeaHouseSystem'
+import type { Decree } from './types'
 
 function charter(id: string) {
   const result = [...TEA_HOUSE_BASE_CHARTERS, ...TEA_HOUSE_UPGRADED_CHARTERS]
@@ -113,5 +115,67 @@ describe('TeaHouseSystem visit modifiers', () => {
     expect(decree.edition).toBe('Negative')
     expect(decree.finalCost).toBe(0)
     expect('edition' in decree.item && decree.item.edition).toBe('Negative')
+  })
+})
+
+/** Small deterministic stream so shop rolls cover every rarity branch. */
+function seeded(seed: number): () => number {
+  let state = seed >>> 0
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0
+    let t = state
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function decreeOffers(
+  teaHouse: TeaHouseSystem,
+  visits: number,
+  ownedDecreeIds: string[] = []
+): Decree[] {
+  const offers: Decree[] = []
+  for (let visit = 0; visit < visits; visit++) {
+    const shop = teaHouse.generateShop(ownedDecreeIds, false, {
+      flowerCount: 5,
+    })
+    offers.push(
+      ...shop.itemOfferings
+        .filter((offering) => offering.itemType === 'Decree')
+        .map((offering) => offering.item as Decree)
+    )
+  }
+  return offers
+}
+
+describe('TeaHouseSystem Decree tiers', () => {
+  it('never stocks a special-sources-only Decree in an ordinary slot', () => {
+    const teaHouse = new TeaHouseSystem(1, seeded(17))
+    teaHouse.setDecreeUnlockResolver(() => true)
+    const offers = decreeOffers(teaHouse, 300)
+
+    expect(offers.some((decree) => decree.rarity === 'ImperialDecree')).toBe(
+      true
+    )
+    expect(
+      offers.filter((decree) => decree.rarity === 'HeavenlyOrdinance')
+    ).toEqual([])
+    expect(offers.map((decree) => decree.id)).not.toContain(
+      'decree-midas-touch'
+    )
+  })
+
+  it('falls back to another shop tier when the rolled tier is exhausted', () => {
+    const keep = 'decree-golden-age'
+    const owned = ALL_DECREES.filter(
+      (decree) => decree.rarity !== 'HeavenlyOrdinance' && decree.id !== keep
+    ).map((decree) => decree.id)
+    const teaHouse = new TeaHouseSystem(1, seeded(3))
+    teaHouse.setDecreeUnlockResolver(() => true)
+    const offers = decreeOffers(teaHouse, 30, owned)
+
+    expect(offers.length).toBeGreaterThan(0)
+    expect(new Set(offers.map((decree) => decree.id))).toEqual(new Set([keep]))
   })
 })

@@ -1061,7 +1061,7 @@
       },
       "decree-midas-touch": {
         "name": "點金手",
-        "description": "回合結束時+20金"
+        "description": "回合結束時+10金"
       },
       "decree-infinite-wealth": {
         "name": "無限財富",

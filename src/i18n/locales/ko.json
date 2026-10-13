@@ -1061,7 +1061,7 @@
       },
       "decree-midas-touch": {
         "name": "황금 손",
-        "description": "라운드 종료 시 +20골드"
+        "description": "라운드 종료 시 +10골드"
       },
       "decree-infinite-wealth": {
         "name": "무한 재물",
