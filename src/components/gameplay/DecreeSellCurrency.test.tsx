@@ -33,6 +33,6 @@ it.each(SUPPORTED_LANGUAGES)(
     expect(sell).toHaveTextContent(`${sellValue}G`)
     expect(dialog).not.toHaveTextContent('¥')
     if (language === 'en')
-      expect(dialog).toHaveTextContent('+20G at end of round')
+      expect(dialog).toHaveTextContent('+10G at end of round')
   }
 )
