@@ -14,7 +14,6 @@ import {
   gameOrchestrator,
 } from './GameOrchestrator'
 import { PlayerAction, ActionResult } from './ActionProcessor'
-import type { ScoreBreakdown } from '../rules/ScoringEngine'
 import type { Decree, ImperialCharter } from '../systems/types'
 import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
@@ -151,7 +150,7 @@ export interface GameController {
   getHandBuildingAdvice: GameOrchestrator['getHandBuildingAdvice']
   getRiichiState: GameOrchestrator['getRiichiState']
   findCompleteHandSelection: GameOrchestrator['findCompleteHandSelection']
-  previewScore: (tileIds: string[]) => ScoreBreakdown | null
+  previewScore: GameOrchestrator['previewScore']
   resetGame: () => void
   endRun: () => void
 }

@@ -666,14 +666,15 @@ export function GameplayScreen() {
     const breakdown = game.previewScore(previewTiles.map((tile) => tile.id))
     if (!breakdown) return null
 
-    const points = breakdown.basePoints + breakdown.additiveBonus
-    const mult =
-      points > 0 ? breakdown.finalScore / points : breakdown.yakuMultiplier
+    // The forecast shows the same settled equation the last-play panel will:
+    // the true multiplier plus after-score effects, never total ÷ points.
+    const { equation } = breakdown
 
     return {
-      points,
-      mult,
-      total: breakdown.finalScore,
+      points: equation.points,
+      mult: equation.multiplier,
+      adjustment: equation.adjustment,
+      total: equation.total,
       yaku: breakdown.detectedYaku.map((detected) => detected.definition),
       structure: breakdown.structure,
       structurePoints: breakdown.structurePoints,

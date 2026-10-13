@@ -1898,7 +1898,9 @@ export class GameOrchestrator {
    * plays are limited to five tiles; larger selections must form a complete
    * hand under the active rules.
    */
-  previewScore(tileIds: string[]): ScoreBreakdown | null {
+  previewScore(
+    tileIds: string[]
+  ): (ScoreBreakdown & { equation: ScoreEquation }) | null {
     if (!this.validatePlaySelection(tileIds).isValid) return null
     const selectedTiles = this.state.handTiles.filter((tile) =>
       tileIds.includes(tile.id)

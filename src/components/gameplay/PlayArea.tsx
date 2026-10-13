@@ -14,6 +14,7 @@ import { CoachPanel } from './CoachPanel'
 import type { CoachAdvice } from '../../gameplay/beginnerCoach'
 import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
 import type { ScoredStructure } from '../../rules/ScoringEngine'
+import { scoreRounding } from '../../rules/ScoreEquation'
 import { ExactScoreDetails } from './ExactScoreDetails'
 import { playAreaHasContent } from '../../gameplay/playAreaContent'
 import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
@@ -27,8 +28,12 @@ import type { Tile } from '../../core/Tile'
  * Score preview data with detected yaku
  */
 export interface ScorePreviewData {
+  /** The settled equation's subtotal, as the last-play panel shows it. */
   points: number
+  /** The true multiplier, never total ÷ points. */
   mult: number
+  /** Post-multiplication effects; rounding down is shown separately. */
+  adjustment?: number
   total: number
   yaku?: YakuDefinition[]
   /** Supplied by the scored parse; absence must not imply that tiles are loose. */
@@ -255,6 +260,16 @@ export function PlayArea({
               ).display,
               count: structure.looseTiles,
             })
+  const adjustment = scorePreview?.adjustment ?? 0
+  const rounding = scorePreview
+    ? scoreRounding(scorePreview.points, scorePreview.mult)
+    : null
+  const roundingNote = rounding?.roundedDown
+    ? t('scoring.roundedDown', {
+        product: scoreNumber(rounding.product, i18n.language).exact,
+        rounded: scoreNumber(rounding.rounded, i18n.language).exact,
+      })
+    : null
   const showing = playAreaHasContent({
     selectedTileCount,
     stagedTileCount,
@@ -360,21 +375,55 @@ export function PlayArea({
           {/* Very large late-run numbers wrap inside their slot rather than
               push the strip wider than the screen. */}
           <div className="ml-auto flex min-w-0 items-center gap-2">
-            <div className="flex min-w-0 flex-wrap items-baseline gap-x-1 text-sm tabular-nums">
-              <strong className="min-w-0 text-blue-300 [overflow-wrap:anywhere]">
-                {scoreNumber(scorePreview.points, i18n.language).display}
-              </strong>
-              <span className="text-[var(--color-golden-yellow)]/60">×</span>
-              <strong
-                data-score-preview-mult
-                title={scoreMultiplier(scorePreview.mult, i18n.language).exact}
-                aria-label={
-                  scoreMultiplier(scorePreview.mult, i18n.language).exact
-                }
-                className="min-w-0 text-red-300 [overflow-wrap:anywhere]"
-              >
-                {scoreMultiplier(scorePreview.mult, i18n.language).display}
-              </strong>
+            {/* The same equation the last-play panel settles: true
+                multiplier, after-score effects, then any rounding down. */}
+            <div className="flex min-w-0 flex-col items-end">
+              <div className="flex min-w-0 flex-wrap items-baseline justify-end gap-x-1 text-sm tabular-nums">
+                <strong
+                  data-score-preview-points
+                  className="min-w-0 text-blue-300 [overflow-wrap:anywhere]"
+                >
+                  {scoreNumber(scorePreview.points, i18n.language).display}
+                </strong>
+                <span className="text-[var(--color-golden-yellow)]/60">×</span>
+                <strong
+                  data-score-preview-mult
+                  title={
+                    scoreMultiplier(scorePreview.mult, i18n.language).exact
+                  }
+                  aria-label={
+                    scoreMultiplier(scorePreview.mult, i18n.language).exact
+                  }
+                  className="min-w-0 text-red-300 [overflow-wrap:anywhere]"
+                >
+                  {scoreMultiplier(scorePreview.mult, i18n.language).display}
+                </strong>
+                {adjustment !== 0 && (
+                  <span
+                    data-score-preview-adjustment
+                    title={t('scoring.adjustments')}
+                    className="min-w-0 text-[var(--color-beige-white)] [overflow-wrap:anywhere]"
+                  >
+                    {adjustment < 0 ? '−' : '+'}
+                    {scoreNumber(Math.abs(adjustment), i18n.language).display}
+                  </span>
+                )}
+                <span
+                  data-score-preview-operator
+                  title={roundingNote ?? undefined}
+                  className="text-[var(--color-golden-yellow)]/60"
+                >
+                  {roundingNote ? '→' : '='}
+                </span>
+              </div>
+              {roundingNote && (
+                <span
+                  data-score-preview-rounding
+                  className="text-[10px] leading-tight text-[var(--color-beige-white)]/65"
+                >
+                  {roundingNote}
+                </span>
+              )}
             </div>
 
             <GlowEffect
@@ -410,11 +459,22 @@ export function PlayArea({
             <ExactScoreDetails
               compact
               entries={[
-                { label: t('scoring.basePoints'), value: scorePreview.points },
+                { label: t('scoring.subtotal'), value: scorePreview.points },
                 {
                   label: t('scoring.totalMultiplier'),
                   value: scorePreview.mult,
                 },
+                ...(rounding?.roundedDown
+                  ? [
+                      {
+                        label: t('scoring.beforeRounding'),
+                        value: rounding.product,
+                      },
+                    ]
+                  : []),
+                ...(adjustment !== 0
+                  ? [{ label: t('scoring.adjustments'), value: adjustment }]
+                  : []),
                 {
                   label: t('gameplay.forecast.label'),
                   value: scorePreview.total,

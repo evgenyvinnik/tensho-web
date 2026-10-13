@@ -13,6 +13,7 @@ import { GlowEffect } from '../effects/GlowEffect'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useTranslation } from 'react-i18next'
 import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
+import { scoreRounding } from '../../rules/ScoreEquation'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -24,8 +25,9 @@ import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
 export interface PointsMultDisplayProps {
   /** Base points value */
   points: number
-  /** Multiplier value */
+  /** The true multiplier, never total ÷ points. */
   mult: number
+  /** Post-multiplication effects; rounding down is shown separately. */
   adjustment?: number
   /** Already settled by the engine; zero is a valid paid result. */
   total?: number
@@ -44,6 +46,10 @@ export interface PointsMultDisplayProps {
  *
  * Displays the scoring formula in a visual format:
  * [POINTS: XXX] × [MULT: X.XX] = [TOTAL]
+ *
+ * When the product has a fraction the engine drops, the equals sign becomes an
+ * arrow and a note names the rounding, so every number shown adds up:
+ * 50 × 0.975 → 48 (48.75 rounded down to 48).
  *
  * Features:
  * - Animated number counters using react-spring
@@ -77,6 +83,13 @@ export function PointsMultDisplay({
       }),
   })
   const shown = reducedMotion ? { points, mult, total } : display
+  const rounding = scoreRounding(points, mult)
+  const roundingNote = rounding.roundedDown
+    ? t('scoring.roundedDown', {
+        product: scoreNumber(rounding.product, i18n.language).exact,
+        rounded: scoreNumber(rounding.rounded, i18n.language).exact,
+      })
+    : null
   const caption = compact ? 'hidden' : 'hidden sm:block'
   const box = compact ? 'px-2 py-0.5' : 'px-1 py-0.5 sm:px-3 sm:py-1'
   const operator = compact
@@ -161,8 +174,14 @@ export function PointsMultDisplay({
         </div>
       )}
 
-      {/* Equals symbol */}
-      <span className={operator}>=</span>
+      {/* Equals, or an arrow when the product was rounded down. */}
+      <span
+        className={operator}
+        title={roundingNote ?? undefined}
+        data-score-operator
+      >
+        {roundingNote ? '→' : '='}
+      </span>
 
       {/* Result section */}
       <GlowEffect
@@ -185,6 +204,15 @@ export function PointsMultDisplay({
           }
         </span>
       </GlowEffect>
+
+      {roundingNote && (
+        <p
+          data-score-rounding
+          className="col-span-full min-w-0 text-right text-[10px] leading-tight text-[var(--color-beige-white)]/65"
+        >
+          {roundingNote}
+        </p>
+      )}
     </div>
   )
 }

@@ -1,3 +1,6 @@
+/** Decimal places shown for fractional scores and multipliers. */
+export const SCORE_FRACTION_DIGITS = 3
+
 const formatters = new Map<
   string,
   {
@@ -11,14 +14,18 @@ function getFormatters(language: string) {
   let formatter = formatters.get(language)
   if (!formatter) {
     formatter = {
-      exact: new Intl.NumberFormat(language, { maximumFractionDigits: 20 }),
+      // Inspection precision: enough to check a multiplier such as 0.975 by
+      // hand, without exposing float noise like 0.9750000000000001.
+      exact: new Intl.NumberFormat(language, {
+        maximumFractionDigits: SCORE_FRACTION_DIGITS,
+      }),
       compact: new Intl.NumberFormat(language, {
         notation: 'compact',
         maximumFractionDigits: 2,
       }),
       multiplier: new Intl.NumberFormat(language, {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        maximumFractionDigits: SCORE_FRACTION_DIGITS,
       }),
     }
     formatters.set(language, formatter)
@@ -26,7 +33,10 @@ function getFormatters(language: string) {
   return formatter
 }
 
-/** Compact presentation never changes the score or the exact inspection value. */
+/**
+ * Compact presentation never changes the score. `exact` is the inspection
+ * value: whole numbers in full, fractions to three trimmed decimals.
+ */
 export function scoreNumber(value: number, language = 'en') {
   const formatter = getFormatters(language)
   const exact = formatter.exact.format(value)
@@ -42,7 +52,10 @@ export function scoreNumber(value: number, language = 'en') {
   }
 }
 
-/** Match forecast and payment notation; retain the unrounded value for inspection. */
+/**
+ * Match forecast and payment notation. A multiplier keeps its third decimal
+ * (×0.975, not ×0.98), so the equation on screen multiplies out.
+ */
 export function scoreMultiplier(value: number, language = 'en') {
   const number = scoreNumber(value, language)
   return {

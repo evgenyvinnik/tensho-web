@@ -21,3 +21,19 @@ export function settleScoreEquation(
 }
 
 export const EMPTY_SCORE_EQUATION = settleScoreEquation(0, 1, 0)
+
+/**
+ * Where a play's whole-number rounding falls. A total is
+ * `floor(points × multiplier) + adjustment`, so showing the dropped fraction is
+ * what lets "50 × 0.975 → 48" add up on screen.
+ */
+export function scoreRounding(points: number, multiplier: number) {
+  const product = points * multiplier
+  const rounded = Math.floor(product)
+  return {
+    product,
+    rounded,
+    // Float noise such as 65.00000000000001 is not a rounding to explain.
+    roundedDown: product - rounded >= 0.0005,
+  }
+}

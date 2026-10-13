@@ -475,7 +475,7 @@ export function DecreeCardCompact({
                     {canSell
                       ? faceDown
                         ? t('gameplay.sellHidden', 'Sell hidden Decree')
-                        : t('gameplay.sellFor', 'Sell for ¥{{value}}', {
+                        : t('gameplay.sellFor', 'Sell for {{value}}G', {
                             value: sellValue,
                           })
                       : t('decreeModifiers.eternalCannotSell')}
