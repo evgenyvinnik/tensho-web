@@ -534,7 +534,11 @@ export class TeaHouseSystem {
     // Find available decrees of this rarity
     let candidates = pool.filter((d) => d.rarity === rarity)
 
-    // Fallback to any available decree if none of the selected rarity
+    // Fall back to the other shop-weighted rarities first, so an exhausted tier
+    // does not leak a special-sources-only Decree into an ordinary slot.
+    if (candidates.length === 0) {
+      candidates = pool.filter((d) => (weights[d.rarity] ?? 0) > 0)
+    }
     if (candidates.length === 0) {
       candidates = pool
     }

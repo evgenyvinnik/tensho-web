@@ -1264,9 +1264,9 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     id: 'decree-midas-touch',
     name: 'Midas Touch',
     japaneseName: '黄金の手',
-    description: '+¥20 at end of round',
+    description: '+¥10 at end of round',
     rarity: 'legendary',
-    effects: [createEffect('gold_gain', 20)],
+    effects: [createEffect('gold_gain', 10)],
     baseSellValue: 12,
   },
   {
