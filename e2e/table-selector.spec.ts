@@ -159,6 +159,6 @@ for (const [language, copy] of [
           target: state.targetScore,
         }
       })
-    ).toEqual({ table: 'dragons_den', stake: 8, target: 731 })
+    ).toEqual({ table: 'dragons_den', stake: 8, target: 375 })
   })
 }

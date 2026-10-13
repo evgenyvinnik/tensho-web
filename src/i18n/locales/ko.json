@@ -1527,7 +1527,7 @@
     "rules": {
       "base": "기본 난도: 추가 불이익이 없습니다.",
       "noSmallRoundReward": "소형 라운드에서 보상 골드를 받지 못합니다.",
-      "scoreScaling": "목표 점수는 백색 단계의 {{multiplier}}배입니다. 테이블 보정도 적용됩니다.",
+      "scoreScaling": "목표 점수는 1막에서는 백색 단계와 같고, 막마다 올라 {{act}}막부터 백색 단계의 {{multiplier}}배가 됩니다. 테이블 보정도 적용됩니다.",
       "redrawPenalty": "라운드마다 패 교체 횟수: −{{amount}}.",
       "eternalChance": "상점 칙령에 {{chance}} 확률로 영구 스티커가 붙습니다(판매 및 파괴 불가).",
       "perishableChance": "영구 스티커가 없는 상점 칙령에 {{chance}} 확률로 부패 스티커가 붙습니다({{rounds}}라운드 후 약화).",

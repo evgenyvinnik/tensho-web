@@ -1814,7 +1814,7 @@
     "rules": {
       "base": "Difficoltà base: nessuna penalità aggiuntiva.",
       "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
-      "scoreScaling": "Obiettivi di punteggio del livello: ×{{multiplier}} rispetto al Bianco. Si applicano anche i modificatori del tavolo.",
+      "scoreScaling": "Obiettivi di punteggio del livello: uguali al Bianco nell’Atto 1, poi crescono a ogni atto fino a ×{{multiplier}} rispetto al Bianco dall’Atto {{act}} in poi. Si applicano anche i modificatori del tavolo.",
       "redrawPenalty": "Cambi di mano per round: −{{amount}}.",
       "eternalChance": "Decreti nel negozio: {{chance}} di probabilità di Eterno (non può essere venduto o distrutto).",
       "perishableChance": "Decreti non Eterni nel negozio: {{chance}} di probabilità di Deperibile (indebolito dopo {{rounds}} round).",

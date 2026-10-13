@@ -1814,7 +1814,7 @@
     "rules": {
       "base": "Temel zorluk: ek ceza yok.",
       "noSmallRoundReward": "Küçük turlar ödül altını vermez.",
-      "scoreScaling": "Puan hedefleri Beyaz kademenin {{multiplier}} katıdır. Masa değiştiricileri de uygulanır.",
+      "scoreScaling": "Puan hedefleri Perde 1’de Beyaz kademeyle aynıdır; ardından her perdede artar ve Perde {{act}} itibarıyla Beyaz kademenin {{multiplier}} katına ulaşır. Masa değiştiricileri de uygulanır.",
       "redrawPenalty": "Tur başına el yenileme hakkı: −{{amount}}.",
       "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
       "perishableChance": "Ebedî olmayan mağaza Fermanları: {{chance}} olasılıkla Geçici ({{rounds}} tur sonra zayıflar).",

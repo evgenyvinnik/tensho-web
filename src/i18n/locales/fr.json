@@ -1527,7 +1527,7 @@
     "rules": {
       "base": "Difficulté de base : aucune pénalité supplémentaire.",
       "noSmallRoundReward": "Les petites manches ne donnent pas d’or en récompense.",
-      "scoreScaling": "Objectifs de score du palier : ×{{multiplier}} par rapport au Blanc. Les modificateurs de table s’appliquent aussi.",
+      "scoreScaling": "Objectifs de score du palier : identiques au Blanc à l’Acte 1, puis en hausse à chaque acte jusqu’à ×{{multiplier}} par rapport au Blanc à partir de l’Acte {{act}}. Les modificateurs de table s’appliquent aussi.",
       "redrawPenalty": "Renouvellements de main par manche : −{{amount}}.",
       "eternalChance": "Décrets en boutique : {{chance}} de chance d’être Éternels (impossibles à vendre ou détruire).",
       "perishableChance": "Décrets non Éternels en boutique : {{chance}} de chance d’être Périssables (affaiblis après {{rounds}} manches).",
