@@ -140,4 +140,5 @@ after.
 - No base target, round multiplier, Boss Mandate multiplier, reward, sticker,
   price or table modifier changed.
 - The sticker roll's effect on the shop stream is noted, not fixed. Fixing it
-  would change every Stake 4+ seed's shop and belongs in its own change.
+  would change every Stake 4+ seed's shop and belongs in its own change. See
+  [SHOP_STICKER_STREAM.md](SHOP_STICKER_STREAM.md).
