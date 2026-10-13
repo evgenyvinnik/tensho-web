@@ -248,7 +248,7 @@ const mutations: [string, (s: ClassicRunSnapshot) => void][] = [
   [
     'unsupported version',
     (s) => {
-      Object.assign(s, { version: 3 })
+      Object.assign(s, { version: 99 })
     },
   ],
   [
@@ -267,20 +267,6 @@ const mutations: [string, (s: ClassicRunSnapshot) => void][] = [
     'Omen action overwrite',
     (s) => {
       Object.assign(s.omens, { clearForNewRun: 'not a function' })
-    },
-  ],
-  [
-    'unknown nested rule',
-    (s) => {
-      Object.assign(s.state.decreeSystem.ownedDecrees[0].effect, {
-        injected: true,
-      })
-    },
-  ],
-  [
-    'changed rule',
-    (s) => {
-      s.state.decreeSystem.ownedDecrees[0].cost++
     },
   ],
   [
@@ -448,7 +434,7 @@ describe('untrusted save boundary', () => {
     }
   )
 
-  it('requires mandatory fields while accepting the explicitly optional legacy Riichi field', () => {
+  it('requires mandatory fields while accepting the explicitly optional legacy fields', () => {
     const saved = json(start().captureRun())
     for (const key of Object.keys(saved)) {
       const damaged = { ...saved } as Record<string, unknown>
@@ -461,26 +447,40 @@ describe('untrusted save boundary', () => {
         state: { ...saved.state } as Record<string, unknown>,
       }
       delete damaged.state[key]
-      if (key === 'riichiStatus') {
-        expect(
-          parseClassicRunSnapshot(damaged).state.riichiStatus
-        ).toBeUndefined()
+      // Counters added with the Turns budget are absent from older saves.
+      if (['playsThisRound', 'tilesRedrawnThisRound'].includes(key)) {
+        expect(() => parseClassicRunSnapshot(damaged), key).not.toThrow()
         continue
       }
       expect(() => parseClassicRunSnapshot(damaged), key).toThrow()
     }
   })
 
-  it('detaches parsed data and allows wording-only catalog updates', () => {
+  it('detaches parsed data and reads catalog wording over saved wording', () => {
     const saved = json(start().captureRun())
+    const current = saved.state.decreeSystem.ownedDecrees[0].description
     saved.state.decreeSystem.ownedDecrees[0].description =
       'Older translated wording'
     const parsed = parseClassicRunSnapshot(saved)
     parsed.state.handTiles[0].rank = 9
     expect(parsed.state.handTiles[0]).not.toBe(saved.state.handTiles[0])
     expect(parsed.state.decreeSystem.ownedDecrees[0].description).toBe(
-      'Older translated wording'
+      current
     )
+  })
+
+  it('re-reads tampered rules from the catalog instead of trusting the save', () => {
+    const game = start()
+    const saved = json(game.captureRun())
+    const owned = saved.state.decreeSystem.ownedDecrees[0]
+    const tampered = json(saved)
+    Object.assign(tampered.state.decreeSystem.ownedDecrees[0].effect, {
+      injected: true,
+    })
+    tampered.state.decreeSystem.ownedDecrees[0].cost = owned.cost + 50
+    const parsed = parseClassicRunSnapshot(tampered)
+    expect(parsed.state.decreeSystem.ownedDecrees[0]).toEqual(owned)
+    expect(parsed).toEqual(parseClassicRunSnapshot(saved))
   })
 
   it('rejects inconsistent paid-pack selection/payment state', () => {

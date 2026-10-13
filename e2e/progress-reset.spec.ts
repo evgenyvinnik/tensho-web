@@ -15,11 +15,10 @@ async function snapshot(page: Page) {
       '/src/stores/tableStyleStore.ts',
       '/src/stores/stakeStore.ts',
       '/src/stores/archiveStore.ts',
-      '/src/stores/tableLoopStore.ts',
       '/src/game/GameOrchestrator.ts',
       '/src/game/resetProgress.ts',
     ]
-    const [a, p, t, s, c, l, g, reset] = await Promise.all(
+    const [a, p, t, s, c, g, reset] = await Promise.all(
       paths.map((path) => {
         const url = performance
           .getEntriesByType('resource')
@@ -35,7 +34,6 @@ async function snapshot(page: Page) {
     const tables = t.useTableStyleStore.getState()
     const stakes = s.useStakeStore.getState()
     const archive = c.useArchiveStore.getState()
-    const loop = l.useTableLoopStore.getState()
     const game = g.gameOrchestrator.getState()
     return JSON.parse(
       JSON.stringify(
@@ -69,12 +67,8 @@ async function snapshot(page: Page) {
             tiles: game.handTiles.map((tile: { id: string }) => tile.id),
             pending: g.gameOrchestrator.shop.pendingPack !== null,
           },
-          table: {
-            phase: loop.state.phase,
-            owned: loop.state.ownedDecrees,
-            draft: loop.state.draftEnabled,
-            selected: loop.selectedTileIds,
-          },
+          // A run saved by the retired Table Loop mode, kept until a reset.
+          legacyTableLoop: localStorage.getItem('tensho-table-loop-v1'),
           preferences: localStorage.getItem('tensho-settings'),
           language: localStorage.getItem('tensho-language'),
           unrelated: localStorage.getItem('unrelated-project'),
@@ -103,11 +97,10 @@ async function seedProgress(page: Page) {
       '/src/stores/tableStyleStore.ts',
       '/src/stores/stakeStore.ts',
       '/src/stores/archiveStore.ts',
-      '/src/stores/tableLoopStore.ts',
       '/src/stores/settingsStore.ts',
       '/src/game/resetProgress.ts',
     ]
-    const [g, e, t, s, c, l, settings, reset] = await Promise.all(
+    const [g, e, t, s, c, settings, reset] = await Promise.all(
       paths.map((path) => {
         const url = performance
           .getEntriesByType('resource')
@@ -124,10 +117,7 @@ async function seedProgress(page: Page) {
     t.useTableStyleStore.getState().selectStyle('red_lacquer')
     s.useStakeStore.getState().recordVictory(5000, 8, 'red_lacquer', 2)
     c.useArchiveStore.getState().unlockAll()
-    l.useTableLoopStore.getState().restart(7, { draftEnabled: true })
-    l.useTableLoopStore.getState().chooseStarter('echoing_bamboo')
-    if (!(await l.useTableLoopStore.getState().retrySave()))
-      throw new Error('Expected a durable Table Loop setup checkpoint')
+    localStorage.setItem('tensho-table-loop-v1', '{"legacy":true}')
     for (const key of reset.TUTORIAL_PROGRESS_KEYS)
       localStorage.setItem(key, 'true')
     settings.useSettingsStore.setState({
@@ -147,7 +137,7 @@ async function seedProgress(page: Page) {
   })
 }
 
-test('reset confirmation clears all earned systems and both runs, survives reload, and preserves preferences', async ({
+test('reset confirmation clears all earned systems and saved runs, survives reload, and preserves preferences', async ({
   page,
 }) => {
   await page.goto('/en/settings')
@@ -156,7 +146,7 @@ test('reset confirmation clears all earned systems and both runs, survives reloa
   const before = await snapshot(page)
   expect(before.meta.tables.unlocked).toContain('red_lacquer')
   expect(before.classic.pending).toBe(true)
-  expect(before.table.owned).toEqual(['echoing_bamboo'])
+  expect(before.legacyTableLoop).toBe('{"legacy":true}')
   const opener = page.getByRole('button', {
     name: 'Reset All Progress',
     exact: true,
@@ -183,7 +173,7 @@ test('reset confirmation clears all earned systems and both runs, survives reloa
     tiles: [],
     pending: false,
   })
-  expect(after.table).toEqual(baseline.table)
+  expect(after.legacyTableLoop).toBeNull()
   expect(after.preferences).toBe(before.preferences)
   expect(after.language).toBe(before.language)
   expect(after.unrelated).toBe('keep me')
@@ -194,11 +184,8 @@ test('reset confirmation clears all earned systems and both runs, survives reloa
   const reloaded = await snapshot(page)
   expect(reloaded.meta).toEqual(baseline.meta)
   expect(reloaded.classic).toEqual(after.classic)
-  expect(reloaded.table).toEqual(after.table)
+  expect(reloaded.legacyTableLoop).toBeNull()
   expect(reloaded.preferences).toBe(before.preferences)
-  await page.goto('/en/table-loop')
-  await expect(page.getByTestId('table-loop-rack')).toHaveCount(0)
-  await expect(page.locator('[data-testid^="table-decree-"]')).toHaveCount(3)
 })
 
 test('tutorial-only reset retains earned progression and active runs', async ({
@@ -221,10 +208,7 @@ test('tutorial-only reset retains earned progression and active runs', async ({
   const after = await snapshot(page)
   expect(after.meta).toEqual(before.meta)
   expect(after.classic).toEqual(before.classic)
-  expect(after.table).toEqual(before.table)
-  expect(after.raw['tensho-table-loop-v1']).toBe(
-    before.raw['tensho-table-loop-v1']
-  )
+  expect(after.legacyTableLoop).toBe(before.legacyTableLoop)
   expect(after.raw['tensho_codex_completed']).toBeNull()
 })
 

@@ -92,10 +92,8 @@ export interface GameController {
   startNewRun: (seed?: number, stake?: number, wallVariant?: string) => void
   processAction: (action: PlayerAction) => ActionResult
   draw: () => ActionResult
-  discard: (tileId: string) => ActionResult
   playHand: (tileIds?: string[]) => ActionResult
   redraw: (tileIds?: string[]) => ActionResult
-  skipRound: () => ActionResult
   sellDecree: (decreeId: string) => ActionResult
 
   // Consumable actions
@@ -148,8 +146,6 @@ export interface GameController {
   validateConsumableAction: GameOrchestrator['validateConsumableAction']
   isCompleteHand: (tileIds: string[]) => boolean
   inspectCompleteHand: GameOrchestrator['inspectCompleteHand']
-  getHandBuildingAdvice: GameOrchestrator['getHandBuildingAdvice']
-  getRiichiState: GameOrchestrator['getRiichiState']
   findCompleteHandSelection: GameOrchestrator['findCompleteHandSelection']
   previewScore: (tileIds: string[]) => ScoreBreakdown | null
   resetGame: () => void
@@ -181,7 +177,6 @@ export function useGameController(
       'roundStart',
       'roundEnd',
       'handPlayed',
-      'riichiChanged',
       'scoreUpdate',
       'goldChanged',
       'tileDrawn',
@@ -255,13 +250,6 @@ export function useGameController(
     return orchestrator.processAction({ type: 'draw' })
   }, [orchestrator])
 
-  const discard = useCallback(
-    (tileId: string) => {
-      return orchestrator.processAction({ type: 'discard', tileId })
-    },
-    [orchestrator]
-  )
-
   const playHand = useCallback(
     (tileIds?: string[]) => {
       const ids = tileIds ?? orchestrator.getSelectedTileIds()
@@ -277,10 +265,6 @@ export function useGameController(
     },
     [orchestrator]
   )
-
-  const skipRound = useCallback(() => {
-    return orchestrator.processAction({ type: 'skip' })
-  }, [orchestrator])
 
   const sellDecree = useCallback(
     (decreeId: string) => orchestrator.sellDecree(decreeId),
@@ -480,18 +464,8 @@ export function useGameController(
     GameOrchestrator['inspectCompleteHand']
   >((tileIds) => orchestrator.inspectCompleteHand(tileIds), [orchestrator])
 
-  const getHandBuildingAdvice = useCallback(
-    () => orchestrator.getHandBuildingAdvice(),
-    [orchestrator]
-  )
-
   const findCompleteHandSelection = useCallback(
     () => orchestrator.findCompleteHandSelection(),
-    [orchestrator]
-  )
-
-  const getRiichiState = useCallback(
-    () => orchestrator.getRiichiState(),
     [orchestrator]
   )
 
@@ -552,10 +526,8 @@ export function useGameController(
     startNewRun,
     processAction,
     draw,
-    discard,
     playHand,
     redraw,
-    skipRound,
     sellDecree,
 
     // Consumable actions
@@ -596,8 +568,6 @@ export function useGameController(
     validateConsumableAction,
     isCompleteHand,
     inspectCompleteHand,
-    getHandBuildingAdvice,
-    getRiichiState,
     findCompleteHandSelection,
     previewScore,
     resetGame,

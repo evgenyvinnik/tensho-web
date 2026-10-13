@@ -600,7 +600,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大秘術袋',
     type: 'Arcana',
     size: 'Jumbo',
-    description: 'Choose 1 from 5 Fate Seals',
+    description: 'Choose up to 2 from 5 Fate Seals',
   },
   {
     id: 'arcana_mega',
@@ -608,7 +608,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大秘術袋',
     type: 'Arcana',
     size: 'Mega',
-    description: 'Choose 2 from 5 Fate Seals',
+    description: 'Choose up to 3 from 6 Fate Seals',
   },
   // Celestial Packs
   {
@@ -625,7 +625,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大天球袋',
     type: 'Celestial',
     size: 'Jumbo',
-    description: 'Choose 1 from 5 Celestial Orbs',
+    description: 'Choose up to 2 from 5 Celestial Orbs',
   },
   {
     id: 'celestial_mega',
@@ -633,7 +633,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大天球袋',
     type: 'Celestial',
     size: 'Mega',
-    description: 'Choose 2 from 5 Celestial Orbs',
+    description: 'Choose up to 3 from 6 Celestial Orbs',
   },
   // Tile Packs
   {
@@ -650,7 +650,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大牌袋',
     type: 'Tile',
     size: 'Jumbo',
-    description: 'Choose 1 from 5 modified tiles',
+    description: 'Choose up to 2 from 5 modified tiles',
   },
   {
     id: 'tile_mega',
@@ -658,7 +658,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大牌袋',
     type: 'Tile',
     size: 'Mega',
-    description: 'Choose 2 from 5 modified tiles',
+    description: 'Choose up to 3 from 6 modified tiles',
   },
   // Decree Packs
   {
@@ -675,7 +675,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大法令袋',
     type: 'Decree',
     size: 'Jumbo',
-    description: 'Choose 1 from 5 Decrees',
+    description: 'Choose up to 2 from 5 Decrees',
   },
   {
     id: 'decree_mega',
@@ -683,7 +683,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大法令袋',
     type: 'Decree',
     size: 'Mega',
-    description: 'Choose 2 from 5 Decrees',
+    description: 'Choose up to 3 from 6 Decrees',
   },
   // Void Packs
   {
@@ -700,7 +700,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大虚空袋',
     type: 'Void',
     size: 'Jumbo',
-    description: 'Choose 1 from 5 Void Scripts',
+    description: 'Choose up to 2 from 5 Void Scripts',
   },
   {
     id: 'void_mega',
@@ -708,7 +708,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大虚空袋',
     type: 'Void',
     size: 'Mega',
-    description: 'Choose 2 from 5 Void Scripts',
+    description: 'Choose up to 3 from 6 Void Scripts',
   },
 ]
 

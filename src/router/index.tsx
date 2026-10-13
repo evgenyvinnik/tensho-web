@@ -4,7 +4,7 @@
  * Implements language-prefixed routes for i18n support:
  * - /:lang/ - Menu (default)
  * - /:lang/play - Gameplay
- * - /:lang/table-loop - Table Loop prototype (persistent-table experiment)
+ * - /:lang/table-loop - Retired Table Loop mode; redirects to the menu
  * - /:lang/shop - Tea House shop
  * - /:lang/game-over - Game over screen
  * - /:lang/codex - Codex (game reference guide)
@@ -36,6 +36,7 @@ import {
 import { ErrorFallback, reportError } from '../components/ui/ErrorBoundary'
 import { APP_BASE_URL, APP_ROUTER_BASENAME } from '../utils/basePath'
 import { audioSystem } from '../systems/AudioSystem'
+import { useUpdateStore } from '../pwa/updateStore'
 import { RouteLoading } from '../components/ui/RouteLoading'
 import { ROUTES, type RoutePath } from './routeManifest'
 import { useGameRouteIndexing } from './useGameRouteIndexing'
@@ -196,9 +197,14 @@ export function RouteErrorBoundary() {
 export function LanguageLayout() {
   const { pathname } = useLocation()
   useGameRouteIndexing(pathname)
+  // Leaving a run (or opening the app on the menu) is a safe moment for a
+  // downloaded update to apply itself; inside a run the attempt waits.
+  useEffect(() => {
+    void useUpdateStore.getState().attempt()
+  }, [pathname])
   useEffect(() => {
     const screen = pathname.replace(/\/$/, '').split('/').at(-1)
-    if (screen === 'play' || screen === 'table-loop') audioSystem.playMusic('gameplay')
+    if (screen === 'play') audioSystem.playMusic('gameplay')
     else if (screen === 'shop') audioSystem.playMusic('shop')
     else if (screen !== 'game-over') audioSystem.playMusic('menu')
   }, [pathname])
@@ -219,7 +225,6 @@ export function LanguageLayout() {
 export function createAppRouter(routes: {
   MenuScreen: React.ComponentType
   GameplayScreen: React.ComponentType
-  TableLoopScreen?: React.ComponentType
   ShopScreen: React.ComponentType
   GameOverScreen: React.ComponentType
   CodexScreen?: React.ComponentType
@@ -231,7 +236,6 @@ export function createAppRouter(routes: {
   const {
     MenuScreen,
     GameplayScreen,
-    TableLoopScreen,
     ShopScreen,
     GameOverScreen,
     CodexScreen,
@@ -278,13 +282,10 @@ export function createAppRouter(routes: {
           errorElement: <RouteErrorBoundary />,
         },
         {
+          // Table Loop was retired. Old bookmarks and guide links land on the
+          // menu, where New Run starts the game.
           path: ROUTES.TABLE_LOOP,
-          element: TableLoopScreen ? (
-            <TableLoopScreen />
-          ) : (
-            <PlaceholderScreen title="Table Loop" />
-          ),
-          errorElement: <RouteErrorBoundary />,
+          element: <Navigate to=".." replace />,
         },
         {
           path: ROUTES.SHOP,

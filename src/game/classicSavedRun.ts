@@ -54,10 +54,12 @@ export function parseClassicSavedRun(raw: string): ClassicSavedRun {
       parseClassicRunSnapshot(snapshot)
     },
   })(value, 'save')
-  const saved = value as ClassicSavedRun
-  if (saved.updatedAt < saved.createdAt)
+  const record = value as ClassicSavedRun
+  if (record.updatedAt < record.createdAt)
     throw new Error('Invalid Classic save timestamps')
-  return saved
+  // An older run is read as its upgrade to the current rules. The stored text
+  // is untouched until the next checkpoint writes the upgraded run.
+  return { ...record, snapshot: parseClassicRunSnapshot(record.snapshot) }
 }
 
 interface SaveOptions {

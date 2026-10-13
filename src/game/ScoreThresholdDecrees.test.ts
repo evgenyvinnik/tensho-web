@@ -37,6 +37,8 @@ function fixture(ids: string[], target: number, current = 0, handsPlayed = 0) {
   state.targetScore = target
   state.score = current
   state.handsRemaining = state.handsAllowance - handsPlayed
+  // "First hand" counts Plays, not Turns spent on REDRAW.
+  state.playsThisRound = handsPlayed
   const round = state.roundManager.getCurrentRound()!
   round.scoreTarget = target
   round.currentScore = current

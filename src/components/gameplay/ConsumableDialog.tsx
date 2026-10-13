@@ -42,6 +42,8 @@ export interface ConsumableDialogProps {
   onClose: () => void
   /** A persistent inventory control when the last item removes its trigger. */
   fallbackFocusRef?: RefObject<HTMLElement | null>
+  /** Open straight to this item's targets (its token was tapped). */
+  initialItemId?: string
 }
 
 /** A private target selection: inspecting/cancelling never changes staged play. */
@@ -58,12 +60,15 @@ export function ConsumableDialog({
   onUse,
   onClose,
   fallbackFocusRef,
+  initialItemId,
 }: ConsumableDialogProps) {
   const { t } = useTranslation()
   const itemText = useItemText()
   const headingId = useId()
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(
+    initialItemId ?? null
+  )
   const [targetIds, setTargetIds] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
   const busy = useRef(false)

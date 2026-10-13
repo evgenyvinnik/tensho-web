@@ -1,46 +1,39 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
-import { useGameController } from '../../game/useGameController'
-import { classicDestination } from '../../game/classicPersistenceApp'
+import {
+  classicDestination,
+  resumableRun,
+} from '../../game/classicPersistenceApp'
 import { useAppNavigation } from '../../router'
 import { getTableStyleById } from '../../config/tableStyleDefinitions'
 import { getTableStyleIllustration } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { Button } from '../ui/Button'
-import { ConfirmPopup } from '../ui/Popup'
 
-function downloadBackup(raw: string) {
-  const url = URL.createObjectURL(new Blob([raw], { type: 'application/json' }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'tensho-classic-backup.json'
-  link.click()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
-
+/**
+ * Resume for a run that is still being played. A lost or finished run is a
+ * result, so it is never offered here; New Run simply replaces it.
+ */
 export function ClassicResumeCard() {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
   const { navigateTo } = useAppNavigation()
   const { service, disk } = useClassicPersistence()
-  const game = useGameController()
   const [busy, setBusy] = useState(false)
-  const [discardRaw, setDiscardRaw] = useState<string | null>(null)
-  const local = service.hasLocalRun
-  const run = local
-    ? game.state
-    : disk.kind === 'ready'
-      ? disk.saved.snapshot.state
-      : null
+  const run = resumableRun(service, disk)
   const table = run ? getTableStyleById(run.tableStyleId) : null
-  const raw = disk.kind === 'ready' || disk.kind === 'invalid' ? disk.raw : null
-  if (!run && raw === null && disk.kind !== 'unavailable') return null
+  // Storage failures still need to be visible before the player starts over.
+  const storageProblem = disk.kind === 'unavailable' || disk.kind === 'invalid'
+  if (!run && !storageProblem) return null
   const resume = async () => {
     setBusy(true)
     try {
-      if (local || (disk.kind === 'ready' && (await service.resume(disk.raw))))
+      if (
+        service.hasLocalRun ||
+        (disk.kind === 'ready' && (await service.resume(disk.raw)))
+      )
         navigateTo(classicDestination())
     } finally {
       setBusy(false)
@@ -93,44 +86,6 @@ export function ClassicResumeCard() {
         </>
       )}
       <ClassicSaveNotice errorsOnly />
-      {raw !== null && (
-        <div className="mt-2 flex flex-wrap justify-between gap-x-3">
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => downloadBackup(raw)}
-            className="min-h-11 text-xs underline underline-offset-4"
-          >
-            {t('classicSave.backup')}
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={async () => {
-              await service.flush()
-              const current = service.getSnapshot().disk
-              if (current.kind === 'ready' || current.kind === 'invalid')
-                setDiscardRaw(current.raw)
-            }}
-            className="min-h-11 text-xs underline underline-offset-4"
-          >
-            {t('classicSave.discard')}
-          </button>
-        </div>
-      )}
-      <ConfirmPopup
-        isOpen={discardRaw !== null}
-        onClose={() => setDiscardRaw(null)}
-        title={t('classicSave.discardTitle')}
-        message={t('classicSave.discardBody')}
-        confirmText={t('classicSave.discard')}
-        onConfirm={() => {
-          if (discardRaw !== null) {
-            setBusy(true)
-            void service.discard(discardRaw).finally(() => setBusy(false))
-          }
-        }}
-      />
     </section>
   )
 }

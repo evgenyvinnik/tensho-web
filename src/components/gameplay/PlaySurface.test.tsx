@@ -363,7 +363,7 @@ describe('PlaySurface', () => {
       ])
     })
 
-    it('labels each scoring group and puts loose tiles last', () => {
+    it('labels each scoring group and keeps suits together', () => {
       const { container } = render(
         <PlaySurface handTiles={groupedRack()} groupRules={{}} />
       )
@@ -380,13 +380,17 @@ describe('PlaySurface', () => {
         ['sequence', 'Sequence +30'],
       ])
       expect(rackOrder(container)).toEqual([
+        'loose-nine',
         'pair-a',
         'pair-b',
         'run-2',
         'run-3',
         'run-4',
-        'loose-nine',
       ])
+      // Characters, Dots and Bamboo are each set apart by a wider gap.
+      expect(container.querySelectorAll('[data-rack-suit-break]')).toHaveLength(
+        2
+      )
       const widths = Array.from(
         container.querySelectorAll<HTMLElement>('[data-rack-group]'),
         (group) => group.style.width
@@ -412,11 +416,11 @@ describe('PlaySurface', () => {
       })
 
       expect(rackOrder(container)).toEqual([
+        'loose-nine',
         'pair-b',
         'run-2',
         'run-3',
         'run-4',
-        'loose-nine',
       ])
       expect(
         Array.from(container.querySelectorAll('[data-hand-group]'), (node) =>

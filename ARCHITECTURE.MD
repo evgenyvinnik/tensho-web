@@ -1,6 +1,6 @@
 # Tensho (天翔) — Mahjong Roguelike
 
-> *"Heavenly Ascent"* — A single-player roguelike that reinterprets Riichi Mahjong as a scoring-driven optimization game.
+> *"Heavenly Ascent"* — A single-player roguelike that plays poker-style hands with Mahjong tiles: a scoring-driven optimization game in the spirit of Balatro.
 
 ---
 
@@ -60,14 +60,14 @@ This hierarchy governs **conflict resolution** and **effect stacking order**.
 | **Testing** | Vitest + Playwright |
 | **i18n** | i18next (13 locales) |
 
-**Core Concept:** Replace multiplayer opposition with systemic pressure, rule mutation, and probabilistic risk management while preserving Mahjong's combinatorial depth.
+**Core Concept:** Replace multiplayer opposition with systemic pressure, rule mutation, and probabilistic risk management, using Mahjong tiles for their look, families and combinatorial depth.
 
 ### Design Pillars
 
-1. **Mahjong-first authenticity** — Traditional terminology, no card-game abstractions
+1. **Poker-style hands, Mahjong tiles** — Tiles, art and names come from Mahjong, but a play is read as a poker-style hand (Pair, Two Pairs, Sequence, Straight, Triplet, Quad, Mahjong…) rather than by standard Mahjong rules. Players do not need to know Mahjong. *(Supersedes the earlier “Mahjong-first authenticity” pillar, October 2026.)*
 2. **Roguelike structure** — Run-based progression with meta-unlocks
 3. **Rule-bending through authority** — Decrees alter rules explicitly, not randomly
-4. **Mobile clarity** — Progressive disclosure, touch-first, iconography over text
+4. **Mobile clarity** — Two actions, numbers over explanations, one icon per owned item, details on tap or hover
 
 ---
 
@@ -286,18 +286,19 @@ React screens must not independently draw/refill tiles, advance rounds, deduct r
 stateDiagram-v2
   [*] --> menu
   menu --> gameplay: startNewRun
-  gameplay --> gameplay: draw / discard / redraw / play
+  gameplay --> gameplay: draw / REDRAW / play
   gameplay --> shop: target reached
-  gameplay --> gameplay: skip Small or Large
-  gameplay --> gameOver: hands exhausted below target
+  gameplay --> gameOver: Turns exhausted below target
   shop --> gameplay: exitShop
   gameOver --> gameplay: play again
   gameOver --> menu: reset
 ```
 
-Every completed Small, Large, or Boss round enters the Tea House. Exiting advances to the next round; exiting after a Boss advances to the next Act first. A skipped Small/Large round awards an Omen and advances directly without visiting the Tea House.
+Every completed Small, Large, or Boss round enters the Tea House. Exiting advances to the next round; exiting after a Boss advances to the next Act first. Rounds cannot be skipped: a Small or Large round cleared with two or more Turns to spare (a *swift clear*) earns that round's Omen as well as its payout.
 
-For each play, discard, or redraw, validation, resource consumption, tile movement, replacement draws, effect execution, and event emission happen in the orchestrator before control returns to React.
+Each round gives a shared budget of **Turns** (`TURNS_PER_ROUND`). *Play hand* and *REDRAW* each spend one; free redraws from items are spent first, and the last Turn is always kept for a play. REDRAW sends any number of selected tiles to the river and draws replacements.
+
+For each play or REDRAW, validation, resource consumption, tile movement, replacement draws, effect execution, and event emission happen in the orchestrator before control returns to React.
 
 ### Event Bus Pattern
 
@@ -338,8 +339,14 @@ See [GAME_MECHANICS.md](docs/GAME_MECHANICS.md) for complete glossary.
 ### Scoring Formula
 
 ```
-Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
+Score = Points × Mult
+Points = tile points + group bonuses + additive bonuses   (loose tiles score half)
+Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per grouped Dragon,
+         then Decrees in order (+N adds, ×N multiplies), then ×-layers
+Pattern Mult = (groups − 1) + Triplet/4-Straight 1, Quad/5-Straight 2; Mahjong +4
 ```
+
+Tile points: suited 5 (terminals 10), Winds 50, Dragons 15. Group bonus: Pair 15, Sequence 30, Triplet 40, Straight 45 (four) / 60 (five), Quad 65. A play holds up to six tiles unless it is a complete Mahjong hand. See [docs/RULE_RESOLUTION.md](docs/RULE_RESOLUTION.md#player-feedback-rules-october-2026).
 
 ### Round Structure
 
@@ -361,7 +368,7 @@ Grammar → Yaku       (scoring language)
 
 - Portrait orientation as default
 - Bottom-aligned hand area
-- Drag-to-discard interaction
+- Two actions only: Play hand and REDRAW, with Turns left beside them
 - Collapsible panels for Decrees and modifiers
 - Icons + numbers instead of text blocks
 - Tap-to-expand for deep explanations

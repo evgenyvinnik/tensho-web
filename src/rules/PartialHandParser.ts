@@ -19,9 +19,12 @@ import {
   type SequenceRules,
 } from './sequenceShapes'
 import {
-  STRUCTURE_POINTS_BY_TYPE,
   getMeldStructurePoints,
+  getTilePoints,
+  structurePointsFor,
+  UNGROUPED_TILE_SHARE,
 } from './ScoringEngine'
+import { classifyPlay, DRAGON_GROUP_MULT } from './PlayPattern'
 
 export type PartialHandRules = Omit<SequenceRules, 'suitsMatchForSequences'>
 
@@ -231,7 +234,7 @@ function solveSuit(
     const rest = solveSuit(counts, suit, memo, rules)
     for (const r of ranks) counts[r] += 1
 
-    const total = STRUCTURE_POINTS_BY_TYPE[type] + rest.points
+    const total = structurePointsFor(type, ranks.length) + rest.points
     if (total > best.points) {
       best = { points: total, plan: [{ type, suit, ranks }, ...rest.plan] }
     }
@@ -240,10 +243,17 @@ function solveSuit(
   if (counts[rank] >= 4) consider(MeldType.Quad, [rank, rank, rank, rank])
   if (counts[rank] >= 3) consider(MeldType.Triplet, [rank, rank, rank])
   if (counts[rank] >= 2) consider(MeldType.Pair, [rank, rank])
-  if (isSuitedSuit(suit))
+  if (isSuitedSuit(suit)) {
     for (const [a, b] of sequenceOffsets(rank, rules))
       if (counts[rank + a] > 0 && counts[rank + b] > 0)
         consider(MeldType.Sequence, [rank, rank + a, rank + b])
+    // Straights are always consecutive; no Season or Flower widens them.
+    for (const length of [4, 5]) {
+      const ranks = Array.from({ length }, (_, i) => rank + i)
+      if (ranks.every((r) => r <= MAX_RANK && counts[r] > 0))
+        consider(MeldType.Straight, ranks)
+    }
+  }
 
   // Leave this tile ungrouped.
   counts[rank] -= 1
@@ -255,4 +265,128 @@ function solveSuit(
 
   memo.set(key, best)
   return best
+}
+
+/**
+ * The scorer's reading of a tactical play: of every way to split the chosen
+ * tiles into groups, the one that pays most before items apply, judged as
+ * (tile points + structure) × (1 + pattern Mult + Dragon Mult).
+ *
+ * Plays are small (a handful of tiles), so every split is tried; ties keep the
+ * first split found in a fixed tile order, which makes the reading
+ * deterministic. The forecast and the payment both use this one answer.
+ */
+export function parsePlay(
+  tiles: Tile[],
+  rules: PartialHandRules = {}
+): PartialParse {
+  const scoringTiles = tiles.filter((tile) => !tile.isBonus)
+  // Larger selections are complete-hand candidates or rack views, where the
+  // structure search is the established reading.
+  if (scoringTiles.length > MAX_ENUMERATED_PLAY)
+    return parsePartialHand(tiles, rules)
+  const ordered = [...scoringTiles].sort(Tile.compare)
+  let best: PartialParse | null = null
+  let bestValue = -1
+  const visit = (groups: Meld[]) => {
+    const candidate = partialResult(groups, scoringTiles)
+    const value = playValue(candidate)
+    if (value > bestValue) {
+      best = candidate
+      bestValue = value
+    }
+  }
+  enumerateSplits(ordered, [], rules, visit)
+  // Plum's shared-tile reading is not a disjoint split; compare it as well.
+  if (rules.allowSequenceOverlap) visit(parsePartialHand(tiles, rules).groups)
+  return best ?? partialResult([], scoringTiles)
+}
+
+/** Selections up to this size are split exhaustively. */
+const MAX_ENUMERATED_PLAY = 8
+
+function playValue(parse: PartialParse): number {
+  // Plum may share one tile between two sequences: count each tile once.
+  const grouped = new Map<string, Tile>()
+  for (const group of parse.groups)
+    for (const tile of group.tiles) grouped.set(tile.id, tile)
+  const tilePoints =
+    [...grouped.values()].reduce((sum, tile) => sum + getTilePoints(tile), 0) +
+    parse.leftovers.reduce(
+      (sum, tile) =>
+        sum + Math.floor(getTilePoints(tile) * UNGROUPED_TILE_SHARE),
+      0
+    )
+  const dragons = [...grouped.values()].filter(
+    (tile) => tile.suit === TileSuit.Dragon
+  ).length
+  const mult = 1 + classifyPlay(parse.groups).mult + dragons * DRAGON_GROUP_MULT
+  // Grouped tiles break exact ties toward the reading that explains more.
+  return (tilePoints + parse.structurePoints) * mult * 64 + grouped.size
+}
+
+/** Every split of `tiles` into disjoint groups and loose tiles. */
+function enumerateSplits(
+  tiles: Tile[],
+  groups: Meld[],
+  rules: PartialHandRules,
+  visit: (groups: Meld[]) => void
+): void {
+  if (tiles.length === 0) {
+    visit(groups)
+    return
+  }
+  const [first, ...rest] = tiles
+  // Leave the first tile loose.
+  enumerateSplits(rest, groups, rules, visit)
+  const same = rest.filter((tile) => tile.matches(first))
+  for (const [type, size] of [
+    [MeldType.Pair, 2],
+    [MeldType.Triplet, 3],
+    [MeldType.Quad, 4],
+  ] as const) {
+    if (same.length < size - 1) continue
+    const members = [first, ...same.slice(0, size - 1)]
+    enumerateSplits(
+      without(rest, members),
+      [...groups, new Meld(type, members, true)],
+      rules,
+      visit
+    )
+  }
+  if (!isSuitedSuit(first.suit)) return
+  const at = (rank: number) =>
+    rest.find((tile) => tile.suit === first.suit && tile.rank === rank)
+  for (const [a, b] of sequenceOffsets(first.rank, rules)) {
+    const second = at(first.rank + a)
+    const third = at(first.rank + b)
+    if (!second || !third) continue
+    const members = [first, second, third]
+    enumerateSplits(
+      without(rest, members),
+      [...groups, new Meld(MeldType.Sequence, members, true)],
+      rules,
+      visit
+    )
+  }
+  for (const length of [4, 5]) {
+    const members = [first]
+    for (let i = 1; i < length; i++) {
+      const next = at(first.rank + i)
+      if (!next) break
+      members.push(next)
+    }
+    if (members.length !== length) continue
+    enumerateSplits(
+      without(rest, members),
+      [...groups, new Meld(MeldType.Straight, members, true)],
+      rules,
+      visit
+    )
+  }
+}
+
+function without(tiles: Tile[], removed: Tile[]): Tile[] {
+  const ids = new Set(removed.map((tile) => tile.id))
+  return tiles.filter((tile) => !ids.has(tile.id))
 }

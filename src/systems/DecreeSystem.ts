@@ -116,7 +116,8 @@ function countScalingSource(
     case 'rounds_this_act':
       return Math.max(0, round.roundNumber - 1)
     case 'discards_used':
-      return Math.max(0, round.maxDiscards - round.discardsRemaining)
+      // REDRAW replaced Discard: count the tiles it sent to the river.
+      return round.tilesRedrawn ?? 0
     case 'acts_completed':
       return Math.max(0, round.actNumber - 1)
     case 'acts_beyond_four':
@@ -238,6 +239,12 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
       return (
         meldCount(MeldType.Pair) > 0 || context.hand?.pair?.tiles.length === 2
       )
+    case 'two_plus_pairs':
+      return (
+        meldCount(MeldType.Pair) +
+          (context.hand?.pair?.tiles.length === 2 ? 1 : 0) >=
+        2
+      )
     case 'contains_sequence':
       return meldCount(MeldType.Sequence) > 0
     case 'contains_triplet':
@@ -250,7 +257,7 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
     case 'boss_round':
       return context.round.roundType === 'Boss'
     case 'no_discards_used':
-      return context.round.discardsRemaining >= context.round.maxDiscards
+      return (context.round.tilesRedrawn ?? 0) === 0
     case 'first_hand':
       return (
         context.round.handsPlayed === 0 &&
@@ -299,38 +306,39 @@ function matchRetriggerTargets(tiles: Tile[], target: RetriggerTarget): Tile[] {
 // =============================================================================
 
 /**
- * River Tax (Common) - Gain 1 Gold per tile discarded
+ * River Tax (Common) - Gain 2 Gold each REDRAW. Per action, not per tile: one
+ * REDRAW can send a whole rack to the river.
  */
 export const RIVER_TAX: Decree = {
   id: 'river_tax',
   name: 'River Tax',
-  description: 'Gain 1 Gold per tile discarded this round.',
+  description: 'Gain 2 Gold each time you REDRAW.',
   category: 'Entropy',
   rarity: 'LocalEdict',
   cost: 4,
   effect: {
     type: 'gold',
     trigger: 'OnDiscard',
-    description: '+1 Gold per discard',
-    amount: 1,
-    perTile: true,
+    description: '+2 Gold per REDRAW',
+    amount: 2,
+    perTile: false,
   },
 }
 
 /**
- * Extended Hand Grant (Common) - +3 plays per round
+ * Extended Hand Grant (Common) - +3 Turns per round
  */
 export const EXTENDED_HAND_GRANT: Decree = {
   id: 'extended_hand_grant',
   name: 'Extended Hand Grant',
-  description: '+3 plays per round. Does not add tiles or redraws.',
+  description: '+3 Turns per round.',
   category: 'Entropy',
   rarity: 'LocalEdict',
   cost: 5,
   effect: {
     type: 'draw',
     trigger: 'Passive',
-    description: '+3 plays per round',
+    description: '+3 Turns per round',
     additionalDraws: 3,
   },
 }
@@ -497,7 +505,7 @@ export const DEAD_WALL_WRIT: Decree = {
   id: 'dead_wall_writ',
   name: 'Dead Wall Writ',
   description:
-    'Once per round, draw from the discard pool instead of the wall.',
+    'Once per round, swap one selected tile for a Dead Wall tile without spending a Turn.',
   category: 'Entropy',
   rarity: 'RegionalMandate',
   cost: 6,

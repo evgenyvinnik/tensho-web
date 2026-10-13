@@ -59,17 +59,9 @@ afterEach(() => {
   runRandom.reset()
 })
 
-it('executes the published two-tile example for one redraw and declares the illustrated hand', () => {
+it('executes the published two-tile example for one REDRAW and plays the illustrated hand', () => {
   const { game, state, keep, exchange } = fixture()
   expect(isCompleteHand(state.handTiles)).toBe(false)
-  const before = game.captureRun()
-  const advice = game.getHandBuildingAdvice()
-  expect(advice.kind).toBe('redraw')
-  if (advice.kind !== 'redraw') throw Error('No hand-building advice')
-  expect(advice.exchange).toEqual(exchange)
-  expect(advice.keep).toEqual(keep)
-  expect(advice.needed).toBe(2)
-  expect(game.captureRun()).toEqual(before)
   const hands = state.handsRemaining
   expect(
     game.processAction({ type: 'redraw', tileIds: exchange.map((t) => t.id) })
@@ -83,7 +75,7 @@ it('executes the published two-tile example for one redraw and declares the illu
     faces(tiles(example.complete, 'complete'))
   )
   expect(isCompleteHand(state.handTiles)).toBe(true)
-  expect(game.getHandBuildingAdvice()).toEqual({ kind: 'complete' })
+  expect(game.findCompleteHandSelection()).not.toBeNull()
   const ids = state.handTiles.map((t) => t.id)
   const forecast = game.previewScore(ids)!
   expect(forecast.finalScore).toBeGreaterThan(0)

@@ -5,6 +5,13 @@
  */
 
 import { test, expect } from '@playwright/test'
+import {
+  rackTiles,
+  selectTiles,
+  settleReveals,
+  startRun,
+  turnBudget,
+} from './helpers/table'
 
 test.describe('Application Smoke Tests', () => {
   test('should load the home page', async ({ page }) => {
@@ -19,7 +26,7 @@ test.describe('Application Smoke Tests', () => {
 
     // Wait for the menu to be visible
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // Look for common menu elements
@@ -33,7 +40,7 @@ test.describe('Application Smoke Tests', () => {
 
     // Wait for the app to load
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // Missing navigation must fail, not silently skip the only action.
@@ -99,7 +106,7 @@ test.describe('Application Smoke Tests', () => {
 
     await page.goto('/')
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // The page should still be functional on mobile
@@ -204,7 +211,7 @@ test.describe('Application Smoke Tests', () => {
     ).toContainText('+50% a la puntuación base')
   })
 
-  test('carries a chosen table into gameplay rules, illustration, and staging colors', async ({
+  test('carries a chosen table into gameplay rules and illustration, without a felt icon', async ({
     page,
   }) => {
     await page.addInitScript(() => {
@@ -223,17 +230,15 @@ test.describe('Application Smoke Tests', () => {
     await page.getByRole('button', { name: 'Choose table and stake' }).click()
     await page.locator('[data-table-style-card="dragons_den"]').click()
     await page.getByRole('button', { name: 'Confirm', exact: true }).click()
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
-    await expect(
-      page.locator('[data-gameplay-table-identity]')
-    ).toHaveAttribute('data-table-style-id', 'dragons_den')
-    await expect(
-      page.locator('[data-gameplay-table-identity] img')
-    ).toHaveAttribute('src', /dragons_den\.webp$/)
-    await expect(page.locator('[data-play-zone="staging"]')).toHaveAttribute(
-      'data-table-theme-color',
-      '#D32F2F'
+    await page.getByRole('button', { name: 'New Run', exact: true }).click()
+    await expect(page.locator('[data-table-style-id]')).toHaveAttribute(
+      'data-table-style-id',
+      'dragons_den'
     )
+    // The table is the backdrop; it is not repeated as an icon in the header.
+    await expect(
+      page.locator('[data-run-header] img[src*="/tables/"]')
+    ).toHaveCount(0)
     await expect(page.locator('[data-tutorial="score-target"]')).toHaveText(
       '375'
     )
@@ -260,9 +265,10 @@ test.describe('Application Smoke Tests', () => {
       )
     })
     await page.goto('/en/play')
-    await expect(
-      page.locator('[data-gameplay-table-identity]')
-    ).toHaveAttribute('data-table-style-id', 'imperial_gold')
+    await expect(page.locator('[data-table-style-id]')).toHaveAttribute(
+      'data-table-style-id',
+      'imperial_gold'
+    )
     await expect(page.locator('[data-decree-scroll]')).toHaveCount(3)
     // Ordinary starters can themselves be Regional Mandates. The table grants
     // an additional third scroll, rather than replacing those two starters.
@@ -274,54 +280,22 @@ test.describe('Application Smoke Tests', () => {
 })
 
 test.describe('Game Navigation', () => {
-  test('teaches a first scoring move with real tiles and a visual primer', async ({
+  test('opens the illustrated hand guide on a first run, and again from the ? beside Exit', async ({
     page,
   }) => {
+    await page.addInitScript(() =>
+      localStorage.removeItem('tensho_hand_guide_seen')
+    )
     await page.goto('/')
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await page.getByRole('button', { name: 'New Run', exact: true }).click()
     await expect(page).toHaveURL(/\/en\/play$/)
-
-    const coach = page.locator('[data-beginner-coach]').first()
-    await expect(coach).toBeVisible()
-    const suggestion = await coach.getAttribute('data-beginner-suggestion')
-    expect(suggestion).toMatch(/^(pair|sequence|triplet|quad|redraw)$/)
-
-    const highlightedHandTiles = page.locator(
-      '[data-play-zone="hand"] [data-beginner-highlighted="true"]'
-    )
-    await expect(highlightedHandTiles.first()).toBeVisible()
-    expect(await highlightedHandTiles.count()).toBeGreaterThanOrEqual(2)
-
-    const firstMoveHint = page.getByRole('status')
-    await expect(firstMoveHint).toContainText('Your first move')
-    const hintBounds = await firstMoveHint.boundingBox()
-    const handBounds = await page
-      .locator('[data-tutorial="hand"]')
-      .boundingBox()
-    expect(hintBounds).not.toBeNull()
-    expect(handBounds).not.toBeNull()
-    expect(hintBounds!.y + hintBounds!.height).toBeLessThanOrEqual(
-      handBounds!.y + 1
-    )
-    await page.getByRole('button', { name: 'Got it' }).click()
-
-    await page.getByRole('button', { name: 'Learn the tiles' }).click()
     const guide = page.locator('[data-beginner-guide]')
     await expect(
-      page.getByRole('heading', { name: 'Mahjong in one minute' })
+      page.getByRole('heading', { name: 'How to play', exact: true })
     ).toBeVisible()
-    await expect(guide).toContainText('Read the tile families')
-    await expect(guide).toContainText('The shapes to spot')
-    await expect(guide).toContainText('Your turn, every time')
-    await expect(guide.locator('img')).toHaveCount(21)
-    const dragons = guide.locator('[data-guide-dragons]')
-    await expect(dragons.locator('img')).toHaveCount(3)
-    for (const name of ['White Dragon', 'Green Dragon', 'Red Dragon']) {
-      await expect(dragons.getByRole('img', { name, exact: true })).toHaveCount(
-        1
-      )
-    }
-
+    await expect(guide.locator('[data-guide-pattern]')).toHaveCount(11)
+    await expect(guide).toContainText('Winds are worth 50 points each')
+    await expect(guide).toContainText('Each round gives you 6 Turns')
     const guideLayout = await page
       .locator('dialog [data-popup-scroll]')
       .evaluate((element) => {
@@ -342,82 +316,86 @@ test.describe('Game Navigation', () => {
       fitsViewport: true,
       scrollable: true,
     })
+    await page.getByRole('button', { name: /^Let.s play$/ }).click()
+    await expect(guide).toHaveCount(0)
+    await settleReveals(page)
 
-    await page.getByRole('button', { name: 'Show me a move' }).click()
-    while ((await highlightedHandTiles.count()) > 0) {
-      await highlightedHandTiles.last().click()
-    }
-
-    const stagedCoach = page.locator(
-      '[data-play-zone="staging"] [data-beginner-coach]'
-    )
-    await expect(stagedCoach).toBeVisible()
-    if (suggestion === 'redraw') {
-      await expect(stagedCoach).toContainText('press Redraw')
-      await expect(page.locator('[data-game-action="redraw"]')).toBeEnabled()
-    } else {
-      await expect(stagedCoach).toContainText(/Beautiful|shape points/)
-      await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
-    }
+    // "?" sits immediately before Exit and Settings.
+    const controls = await page
+      .locator('[data-run-header] button[aria-label]')
+      .evaluateAll((buttons) =>
+        buttons.map((button) => button.getAttribute('aria-label'))
+      )
+    expect(controls.slice(-3)).toEqual(['How to play', 'Exit', 'Settings'])
+    await page.getByRole('button', { name: 'How to play', exact: true }).click()
+    await expect(guide).toBeVisible()
   })
 
   test('opens illustrated Decree details and keeps Sell contextual', async ({
     page,
   }) => {
-    await page.goto('/')
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
-    await expect(page).toHaveURL(/\/en\/play$/)
+    await startRun(page)
 
     const firstDecree = page.locator('[data-decree-scroll]').first()
     await expect(firstDecree).toBeVisible()
-    await expect(firstDecree.locator('img')).toHaveAttribute(
+    await expect(firstDecree.locator('img').first()).toHaveAttribute(
       'src',
-      /\/illustrations\/decrees\/.+\.(png|webp)$/
+      /\/illustrations\/(decrees|items\/decrees)\/.+\.(png|webp)$/
     )
-    expect(
-      await firstDecree
-        .locator('img')
-        .evaluate(async (img: HTMLImageElement) => {
-          await img.decode()
-          return img.naturalWidth > 0
-        })
-    ).toBe(true)
     await expect(page.getByRole('button', { name: /^Sell / })).toHaveCount(0)
 
     await firstDecree.click()
-    const details = page.locator('[role="dialog"]')
+    const details = page.getByRole('dialog')
     await expect(details).toBeVisible()
     const sellButton = details.getByRole('button', { name: /^Sell / })
     await expect(sellButton).toBeVisible()
 
     const bounds = await details.boundingBox()
-    const sellBounds = await sellButton.boundingBox()
     const viewport = page.viewportSize()
-    expect(bounds).not.toBeNull()
-    expect(sellBounds).not.toBeNull()
-    expect(viewport).not.toBeNull()
     expect(bounds!.x).toBeGreaterThanOrEqual(0)
     expect(bounds!.y).toBeGreaterThanOrEqual(0)
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport!.width)
     expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport!.height)
-    expect(sellBounds!.width).toBeLessThan(bounds!.width * 0.65)
-    expect(sellBounds!.height).toBeLessThanOrEqual(48)
   })
 
-  test('starts a real round and resolves a play through the core loop', async ({
+  test('starts a real round and resolves a play through the two actions', async ({
     page,
   }) => {
-    await page.goto('/')
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
+    await startRun(page)
+    await expect(page.locator('[data-tutorial="score-target"]')).toHaveText(
+      '300'
+    )
+    // Act/round and score/target share one header row.
+    const header = await page.locator('[data-run-header]').evaluate((el) => {
+      const round = el.querySelector('[data-run-header-round]')!
+      const score = el.querySelector('[data-run-header-score]')!
+      const a = round.getBoundingClientRect()
+      const b = score.getBoundingClientRect()
+      return {
+        sameRow: Math.abs(a.top + a.height / 2 - (b.top + b.height / 2)) < 12,
+        round: round.textContent,
+      }
+    })
+    expect(header).toEqual({ sameRow: true, round: 'Act 1 · Small' })
 
-    await expect(page).toHaveURL(/\/en\/play$/)
-    await expect(page.getByText('300', { exact: true })).toBeVisible()
-    // Ordinary rack capacity includes actually drawn Spring powers.
-    const expectRefilledRack = async () => {
+    // Exactly two actions, with stable labels.
+    const actions = page.locator('[data-action-bar] button')
+    await expect(actions).toHaveCount(2)
+    await expect(page.locator('[data-game-action="redraw"]')).toContainText(
+      'REDRAW'
+    )
+    await expect(page.locator('[data-game-action="play"]')).toHaveText(
+      'Play hand'
+    )
+    await expect(page.getByRole('button', { name: /skip|discard/i })).toHaveCount(
+      0
+    )
+
+    const rackSize = async () => {
       await expect(
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
-      const size = await page.evaluate(() => {
+      return page.evaluate(() => {
         const saved = JSON.parse(localStorage.getItem('tensho-classic-run-v1')!)
         const springs = saved.snapshot.state.seasonSystem.seasonStack.filter(
           (season: { type: string; isCorrupted: boolean }) =>
@@ -425,219 +403,71 @@ test.describe('Game Navigation', () => {
         ).length
         return 14 + 2 * springs
       })
-      await expect(
-        page.getByText(`Hand (${size})`, { exact: true })
-      ).toBeVisible()
-      await expect(
-        page.locator('[data-play-zone="hand"] [data-play-tile]')
-      ).toHaveCount(size)
     }
-    await expectRefilledRack()
-    const activeTable = page.locator('[data-gameplay-table-identity]')
-    await expect(activeTable).toHaveAttribute(
-      'data-table-style-id',
-      'green_felt'
-    )
-    await expect(activeTable.locator('img')).toHaveAttribute(
-      'src',
-      /green_felt\.webp$/
-    )
+    await expect(rackTiles(page)).toHaveCount(await rackSize())
+    const turnsLeft = async () => (await turnBudget(page)).turns
+    const initialTurns = await turnsLeft()
+    // Six, plus any a starting Decree grants.
+    expect(initialTurns).toBeGreaterThanOrEqual(6)
 
-    const stagingZone = page.locator('[data-play-zone="staging"]')
-    await expect(stagingZone).toHaveAttribute(
-      'data-table-theme-color',
-      '#2D5F4A'
+    // Selecting shows the hand score; the labels do not change.
+    await selectTiles(page, 2)
+    await expect(page.locator('[data-hand-score-state]')).toHaveAttribute(
+      'data-hand-score-state',
+      'preview'
     )
-    await expect(page.locator('[data-table-stage-accent]')).toHaveCSS(
-      'background-color',
-      'rgb(45, 95, 74)'
+    await expect(page.locator('[data-game-action="play"]')).toHaveText(
+      'Play hand'
     )
-    await expect(page.locator('[data-beginner-coach]').first()).toBeVisible()
-    await expect(page.locator('.game-play-instruction')).toHaveText(
-      /ready|Refresh isolated tiles/
+    const before = await rackTiles(page).evaluateAll((tiles) =>
+      tiles.map((tile) => tile.getAttribute('data-play-tile'))
     )
-    await expect(page.locator('.game-play-area')).not.toContainText(/2[–-]5/)
-    await expect(page.locator('[data-game-action="play"]')).toContainText(
-      /2[–-]5/
-    )
-
-    const frameBounds = await page.locator('[data-table-frame]').boundingBox()
-    const gameplayBounds = await page
-      .locator('[data-table-content] > :first-child')
-      .boundingBox()
-    expect(frameBounds).not.toBeNull()
-    expect(gameplayBounds).not.toBeNull()
-    expect(gameplayBounds!.x).toBeGreaterThanOrEqual(frameBounds!.x)
-    expect(gameplayBounds!.y).toBeGreaterThanOrEqual(frameBounds!.y)
-    expect(gameplayBounds!.x + gameplayBounds!.width).toBeLessThanOrEqual(
-      frameBounds!.x + frameBounds!.width
-    )
-    expect(gameplayBounds!.y + gameplayBounds!.height).toBeLessThanOrEqual(
-      frameBounds!.y + frameBounds!.height
-    )
-
-    const topBarBounds = await page
-      .locator('[data-frame-corner-row="top"]')
-      .boundingBox()
-    const bottomBarBounds = await page
-      .locator('[data-frame-corner-row="bottom"]')
-      .boundingBox()
-    const topLeftOrnamentBounds = await page
-      .locator('[data-table-ornament="top-left"]')
-      .boundingBox()
-    const topRightOrnamentBounds = await page
-      .locator('[data-table-ornament="top-right"]')
-      .boundingBox()
-    const bottomLeftOrnamentBounds = await page
-      .locator('[data-table-ornament="bottom-left"]')
-      .boundingBox()
-    const bottomRightOrnamentBounds = await page
-      .locator('[data-table-ornament="bottom-right"]')
-      .boundingBox()
-
-    expect(topBarBounds).not.toBeNull()
-    expect(bottomBarBounds).not.toBeNull()
-    expect(topLeftOrnamentBounds).not.toBeNull()
-    expect(topRightOrnamentBounds).not.toBeNull()
-    expect(bottomLeftOrnamentBounds).not.toBeNull()
-    expect(bottomRightOrnamentBounds).not.toBeNull()
-
-    const expectRowToClearCorners = (
-      row: NonNullable<typeof topBarBounds>,
-      left: NonNullable<typeof topLeftOrnamentBounds>,
-      right: NonNullable<typeof topRightOrnamentBounds>
-    ) => {
-      const roundingTolerance = 0.5
-      expect(row.x + roundingTolerance).toBeGreaterThanOrEqual(
-        left.x + left.width
-      )
-      expect(row.x + row.width).toBeLessThanOrEqual(right.x + roundingTolerance)
-    }
-
-    expectRowToClearCorners(
-      topBarBounds!,
-      topLeftOrnamentBounds!,
-      topRightOrnamentBounds!
-    )
-    expectRowToClearCorners(
-      bottomBarBounds!,
-      bottomLeftOrnamentBounds!,
-      bottomRightOrnamentBounds!
-    )
-
-    const topBarContentWidth = await page
-      .locator('[data-frame-corner-row="top"]')
-      .evaluate((element) => ({
-        clientWidth: element.clientWidth,
-        scrollWidth: element.scrollWidth,
-      }))
-    expect(topBarContentWidth.scrollWidth).toBeLessThanOrEqual(
-      topBarContentWidth.clientWidth
-    )
-    const bottomBarContentWidth = await page
-      .locator('[data-frame-corner-row="bottom"]')
-      .evaluate((element) => ({
-        clientWidth: element.clientWidth,
-        scrollWidth: element.scrollWidth,
-      }))
-    expect(bottomBarContentWidth.scrollWidth).toBeLessThanOrEqual(
-      bottomBarContentWidth.clientWidth
-    )
-
-    const topBarButtonBounds = await page
-      .locator('[data-frame-corner-row="top"] button')
-      .evaluateAll((buttons) =>
-        buttons.map((button) => {
-          const rect = button.getBoundingClientRect()
-          return { left: rect.left, right: rect.right }
-        })
-      )
-    for (const button of topBarButtonBounds) {
-      expect(button.left + 0.5).toBeGreaterThanOrEqual(topBarBounds!.x)
-      expect(button.right).toBeLessThanOrEqual(
-        topBarBounds!.x + topBarBounds!.width + 0.5
-      )
-    }
-
-    const viewport = page.viewportSize()
-    const playButtonBounds = await page
-      .locator('[data-game-action="play"]')
-      .boundingBox()
-    expect(playButtonBounds).not.toBeNull()
-    expect(playButtonBounds!.y + playButtonBounds!.height).toBeLessThanOrEqual(
-      viewport!.height
-    )
-
-    const handBounds = await page
-      .locator(
-        'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
-      )
-      .evaluateAll((images) =>
-        images.map((image) => {
-          const rect = image.getBoundingClientRect()
-          return { left: rect.left, right: rect.right }
-        })
-      )
-    expect(
-      Math.min(...handBounds.map((bounds) => bounds.left))
-    ).toBeGreaterThanOrEqual(0)
-    expect(
-      Math.max(...handBounds.map((bounds) => bounds.right))
-    ).toBeLessThanOrEqual(viewport!.width)
-    const initialHands = Number(
-      (
-        await page.locator('[data-tutorial="hands-remaining"]').textContent()
-      )?.match(/\d+/)?.[0]
-    )
-    expect(initialHands).toBeGreaterThan(0)
-
-    const tutorialDismiss = page.getByRole('button', { name: 'Got it' })
-    if (await tutorialDismiss.isVisible()) {
-      await tutorialDismiss.click()
-    }
-
-    const initialTileLabels = await page
-      .locator(
-        'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
-      )
-      .evaluateAll((images) => images.map((image) => image.getAttribute('alt')))
-
-    const handTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
-    await handTiles.last().click()
-    await handTiles.last().click()
-    await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
     await page.locator('[data-game-action="play"]').click()
+    await expect(page.locator('[data-play-toast]')).toBeVisible()
 
     await expect(async () => {
-      const path = new URL(page.url()).pathname
-      if (path.endsWith('/shop')) {
+      if (new URL(page.url()).pathname.endsWith('/shop')) {
         await expect(page.getByTestId('round-cash-out')).toBeVisible()
         return
       }
-
-      await expectRefilledRack()
-      await expect(
-        page.locator('[data-tutorial="hands-remaining"]')
-      ).toContainText(String(initialHands - 1))
-      const nextTileLabels = await page
-        .locator(
-          'img[alt$="Characters"], img[alt$="Circles"], img[alt$="Bamboo"], img[alt$="Wind"], img[alt$="Dragon"]'
-        )
-        .evaluateAll((images) =>
-          images.map((image) => image.getAttribute('alt'))
-        )
-      expect(nextTileLabels).not.toEqual(initialTileLabels)
+      await settleReveals(page)
+      await expect(rackTiles(page)).toHaveCount(await rackSize())
+      expect(await turnsLeft()).toBe(initialTurns - 1)
+      const after = await rackTiles(page).evaluateAll((tiles) =>
+        tiles.map((tile) => tile.getAttribute('data-play-tile'))
+      )
+      expect(after).not.toEqual(before)
+      await expect(page.locator('[data-hand-score-state]')).toHaveAttribute(
+        'data-hand-score-state',
+        'last'
+      )
     }).toPass()
+  })
+
+  test('REDRAW replaces any number of tiles with one Turn', async ({ page }) => {
+    await startRun(page)
+    const { turns, free } = await turnBudget(page)
+    const chosen = await rackTiles(page)
+      .evaluateAll((tiles) =>
+        tiles.slice(0, 7).map((tile) => tile.getAttribute('data-play-tile'))
+      )
+    for (const id of chosen)
+      await page.locator(`[data-play-tile="${id}"]`).click()
+    await page.locator('[data-game-action="redraw"]').click()
+    await settleReveals(page)
+    for (const id of chosen)
+      await expect(page.locator(`[data-play-tile="${id}"]`)).toHaveCount(0)
+    await expect(page.locator('[data-turns-left]')).toHaveAttribute(
+      'data-turns-left',
+      String(free > 0 ? turns : turns - 1)
+    )
   })
 
   test('keeps the ornamental corners free on a 320px phone', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 568 })
-    await page.goto('/')
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
-    await expect(page).toHaveURL(/\/en\/play$/)
-    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+    await startRun(page)
 
     const layout = await page.evaluate(() => {
       const rect = (selector: string) => {
@@ -737,40 +567,25 @@ test.describe('Game Navigation', () => {
     expect(layout.overflowY).toBeLessThanOrEqual(1)
   })
 
-  test('pays at least what the score preview forecast', async ({ page }) => {
-    await page.goto('/')
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
-    await expect(page).toHaveURL(/\/en\/play$/)
-
-    const tutorialDismiss = page.getByRole('button', { name: 'Got it' })
-    if (await tutorialDismiss.isVisible().catch(() => false)) {
-      await tutorialDismiss.click()
-    }
-
+  test('pays at least what the hand score forecast', async ({ page }) => {
+    await startRun(page)
     const readScore = async () =>
       Number(
         (
           await page.locator('[data-tutorial="current-score"]').textContent()
         )?.replace(/[^\d]/g, '') ?? '0'
       )
-
-    const handTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
-    await handTiles.last().click()
-    await handTiles.last().click()
-
-    // The panel forecasts the exact tactical group that will be committed.
-    const previewTotal = page.getByTestId('score-preview-total')
-    await expect(previewTotal).toBeVisible()
+    await selectTiles(page, 2)
+    const previewTotal = page.locator('[data-hand-score-total]')
+    await expect(previewTotal).toHaveAttribute('title', /\d/)
     const previewed = Number(
-      (await previewTotal.textContent())?.replace(/[^\d]/g, '') ?? '0'
+      (await previewTotal.getAttribute('title'))?.replace(/[^\d]/g, '') ?? '0'
     )
     expect(previewed).toBeGreaterThan(0)
-
     const scoreBefore = await readScore()
     await page.locator('[data-game-action="play"]').click()
-
-    // The preview resolves chance-based tile effects to their guaranteed
-    // outcome, so it is a floor the real play never undercuts.
+    // Chance-based tile effects resolve to their guaranteed outcome in the
+    // forecast, so it is a floor the real play never undercuts.
     await expect(async () => {
       const path = new URL(page.url()).pathname
       const scoreAfter = path.endsWith('/shop') ? previewed : await readScore()
@@ -783,7 +598,7 @@ test.describe('Game Navigation', () => {
   test('should have clickable buttons', async ({ page }) => {
     await page.goto('/')
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // Find all buttons on the page
@@ -796,21 +611,17 @@ test.describe('Game Navigation', () => {
     }
   })
 
-  test('shows a dismissible contextual tip without disabling gameplay', async ({
+  test('keeps the table quiet: no coach tips or ready labels', async ({
     page,
   }) => {
     await page.addInitScript(() => {
       localStorage.removeItem('tensho_progressive_hints_shown')
       localStorage.removeItem('tensho_hints_disabled')
     })
-    await page.goto('/')
-    await page.getByRole('button', { name: 'Play', exact: true }).click()
-
-    const tip = page.getByRole('status')
-    await expect(tip).toBeVisible({ timeout: 5_000 })
-    await expect(page.locator('[data-game-action="skip"]')).toBeEnabled()
-    await page.getByRole('button', { name: 'Got it', exact: true }).click()
-    await expect(tip).toBeHidden()
+    await startRun(page)
+    await expect(page.locator('[data-beginner-coach]')).toHaveCount(0)
+    await expect(page.getByText(/ready|Your first move/i)).toHaveCount(0)
+    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
   })
 
   test('should not have console errors on load', async ({ page }) => {
@@ -824,7 +635,7 @@ test.describe('Game Navigation', () => {
 
     await page.goto('/')
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // Filter out known acceptable errors (like missing resources during dev)
@@ -841,7 +652,7 @@ test.describe('Accessibility', () => {
   test('should have proper heading structure', async ({ page }) => {
     await page.goto('/')
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // Check for at least one heading
@@ -852,7 +663,7 @@ test.describe('Accessibility', () => {
   test('should have visible focus indicators', async ({ page }) => {
     await page.goto('/')
     await expect(
-      page.getByRole('button', { name: 'Play', exact: true })
+      page.getByRole('button', { name: 'New Run', exact: true })
     ).toBeVisible()
 
     // Tab to the first focusable element

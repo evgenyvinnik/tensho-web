@@ -15,7 +15,7 @@ import type { BeginnerPatternKind } from '../gameplay/beginnerCoach'
 export type TutorialTrigger =
   | 'gameStart' // Show immediately on first game
   | 'firstDraw' // Before player's first draw
-  | 'firstDiscard' // After first draw, before discard
+  | 'firstDiscard' // Before the first REDRAW
   | 'firstHandPlayed' // After playing first hand
   | 'roundComplete' // After completing a round
   | 'flowerDrawn' // When player draws a flower/season
@@ -95,7 +95,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.discard.title', 'Improve your hand'),
       content: t(
         'progressiveHints.discard.content',
-        'Discard replaces one tile and spends a discard, not a play. Redraw swaps up to three selected tiles for one redraw. A lower shanten number means you are closer to a complete hand.'
+        'REDRAW sends any number of selected tiles to the river and draws new ones. It costs a Turn unless you have a free redraw.'
       ),
       priority: 1,
     },
@@ -137,7 +137,7 @@ export function getProgressiveHints(
       title: t('progressiveHints.shop.title', 'The Tea House'),
       content: t(
         'progressiveHints.shop.content',
-        'The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Ordinary purchases are immediate; Charters ask for confirmation.'
+        'The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Tap any item to see what it does before you buy it.'
       ),
       priority: 1,
     },

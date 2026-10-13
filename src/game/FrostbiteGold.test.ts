@@ -167,20 +167,21 @@ it('weakens only the Decree multiplier on a Fate Seal reward', () => {
   expect(state.gold).toBe(25) // Hermit's +10 stays intact; Stone adds half its +10.
 })
 
+// River Tax pays +2 per REDRAW; Frostbite halves it and the Stone's bonus.
 it.each([
-  [0, 2],
-  [1, 0],
+  [0, 4],
+  [1, 1],
   [2, 0],
 ])('settles River Tax and Stone once with %i Frostbites', (count, paid) => {
   const { game, state, add } = setup(count)
   add('river_tax')
   add('decree-philosophers-stone')
-  const discardsBefore = state.discardsRemaining
+  state.redrawsRemaining = 1
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.gold).toBe(10 + paid)
-  expect(state.discardsRemaining).toBe(discardsBefore - 1)
+  expect(state.redrawsRemaining).toBe(0)
 })
 
 it('aggregates fractional Decree rewards before whole-gold settlement', () => {
@@ -189,9 +190,9 @@ it('aggregates fractional Decree rewards before whole-gold settlement', () => {
   add('river_tax')
   add('decree-philosophers-stone')
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
-  expect(state.gold).toBe(11) // floor((1 + 1) × .5 × 1.5), not two separately floored rewards.
+  expect(state.gold).toBe(13) // floor((2 + 2) × .5 × 1.5), not two separately floored rewards.
 })
 
 it.each([
@@ -243,11 +244,11 @@ it('does not pay disabled Decrees or apply a disabled gold multiplier', () => {
     ],
   })
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.gold).toBe(10)
   state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
-  // Locate the actually modified tile after the discard's sort/refill.
+  // Locate the actually modified tile after the REDRAW's sort/refill.
   const tileId = state.handTiles[0].id
   const selection = [tileId, ids.find((id) => id !== tileId)!]
   expect(game.previewScore(selection)!.goldEarned).toBe(3)

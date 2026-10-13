@@ -13,10 +13,14 @@ import { useSettingsStore } from '../../stores/settingsStore'
 
 afterEach(async () => {
   await act(async () => {
-    useSettingsStore.getState().setShowTileHints(true)
+    useSettingsStore.getState().setShowRankNumbers(false)
     await i18n.changeLanguage('en')
   })
 })
+
+/** Corner rank numbers are an opt-in setting. */
+const showRankNumbers = () =>
+  act(() => useSettingsStore.getState().setShowRankNumbers(true))
 
 it('localizes the tile identity, rules and modifier explanations in Spanish', async () => {
   await loadLanguage('es')
@@ -75,6 +79,7 @@ it.each([
 ] as const)(
   'adds a distinct, non-interactive hint for Dragon rank %s',
   (rank, tone, label, name) => {
+    showRankNumbers()
     const { container } = render(
       <TileImage tile={new Tile(TileSuit.Dragon, rank, `dragon-${rank}`)} />
     )
@@ -88,20 +93,25 @@ it.each([
   }
 )
 
-it('responds to the tile-hints setting and never reveals a hidden Dragon', () => {
+it('shows rank numbers only when asked and never reveals a hidden Dragon', () => {
   const tile = new Tile(TileSuit.Dragon, 2, 'green')
   const { container, rerender } = render(<TileImage tile={tile} />)
-  expect(container.querySelector('[data-tile-index]')).not.toBeNull()
-  act(() => useSettingsStore.getState().setShowTileHints(false))
   expect(container.querySelector('[data-tile-index]')).toBeNull()
-  act(() => useSettingsStore.getState().setShowTileHints(true))
+  showRankNumbers()
   expect(container.querySelector('[data-tile-index]')).not.toBeNull()
+  act(() => useSettingsStore.getState().setShowRankNumbers(false))
+  expect(container.querySelector('[data-tile-index]')).toBeNull()
+  // A teaching surface can show them regardless of the setting.
+  rerender(<TileImage tile={tile} showIndex />)
+  expect(container.querySelector('[data-tile-index]')).not.toBeNull()
+  showRankNumbers()
   rerender(<TileImage tile={tile} faceDown />)
   expect(container.querySelector('[data-tile-index]')).toBeNull()
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
 })
 
 it('updates Dragon hints with the locale without changing their full accessible names', async () => {
+  showRankNumbers()
   const { container } = render(
     <TileImage tile={new Tile(TileSuit.Dragon, 1, 'white')} />
   )

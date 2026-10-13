@@ -1,21 +1,28 @@
 import { test, expect, type Page } from '@playwright/test'
+import { clearReveals, openTable } from './helpers/table'
+
+/** Every offer opens its details on tap; Buy is the only purchase step. */
+async function buyOffer(page: Page, offerId: string) {
+  const card = page.locator(`[data-shop-offer="${offerId}"]`)
+  await card.scrollIntoViewIfNeeded()
+  await card.click()
+  await page.locator(`[data-shop-buy="${offerId}"]`).click()
+}
 
 for (const upgraded of [false, true]) {
-  test(`illustrated Spanish Charter stays readable and accessible (${upgraded ? 'upgraded' : 'base'})`, async ({
+  test(`illustrated Spanish Charter sits in the shop row and buys without a second step (${upgraded ? 'upgraded' : 'base'})`, async ({
     page,
   }, testInfo) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.setViewportSize({ width: 320, height: 568 })
-    await page.goto('/es/play')
-    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-    await page.evaluate(async (upgraded) => {
-      const gamePath = '/src/game/GameOrchestrator.ts'
-      const shopPath = '/src/systems/TeaHouseSystem.ts'
-      const eventPath = '/src/game/EventBus.ts'
-      const { gameOrchestrator: game } = await import(gamePath)
+    await openTable(page, '/es/play')
+    const charterOffer = await page.evaluate(async (upgraded) => {
+      const { gameOrchestrator: game } = await import(
+        '/src/game/GameOrchestrator.ts'
+      )
       const { TEA_HOUSE_BASE_CHARTERS, TEA_HOUSE_UPGRADED_CHARTERS } =
-        await import(shopPath)
-      const { eventBus } = await import(eventPath)
+        await import('/src/systems/TeaHouseSystem.ts')
+      const { eventBus } = await import('/src/game/EventBus.ts')
       game.startNewRun(7)
       Object.assign(game.getState(), {
         phase: 'shop',
@@ -33,78 +40,60 @@ for (const upgraded of [false, true]) {
           )
       game.shop.state.charterOffering.finalCost = 10
       eventBus.emit('shopUpdated', { isOpen: true })
+      return game.shop.state.charterOffering.id as string
     }, upgraded)
+    await clearReveals(page)
     await expect(page).toHaveURL(/\/es\/shop$/)
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      'Casa de Té'
-    )
-    await expect(
-      page.getByRole('heading', { name: 'Objetos', exact: false })
-    ).toContainText('Disponibles: 2')
-    await expect(
-      page.getByRole('heading', {
-        name: 'Paquetes de bendiciones',
-        exact: true,
-      })
-    ).toBeAttached()
-    await expect(
-      page.getByRole('button', {
-        name: 'Continuar a la siguiente ronda',
-        exact: true,
-      })
-    ).toBeInViewport()
-    const card = page.getByTestId('charter-card')
-    const title = upgraded ? 'Abundancia de renovación' : 'Escritura antigua'
-    await expect(card.getByRole('heading')).toHaveText(title)
-    await expect(
-      card.getByText(upgraded ? 'Mejorado' : 'Edición básica', { exact: true })
-    ).toBeVisible()
-    const art = card.getByRole('img', { name: 'Carta imperial' })
-    expect(
-      await art.evaluate(async (node: HTMLImageElement) => {
-        await node.decode()
-        return node.naturalWidth
-      })
-    ).toBeGreaterThan(0)
+    // The title is centred and explains the Tea House on tap.
+    const title = page.getByRole('heading', { level: 1 })
+    await expect(title).toContainText('Casa de Té')
+    await title.getByRole('button').click()
+    await expect(page.getByRole('dialog')).toBeVisible()
+    await page.keyboard.press('Escape')
+    const row = page.locator('[data-shop-row]')
+    const card = row.locator(`[data-shop-offer="${charterOffer}"]`)
+    await expect(card).toHaveAttribute('data-shop-offer-type', 'ImperialCharter')
+    // Items, packs and the Charter are the same size.
+    const sizes = await row
+      .locator('[data-shop-offer]')
+      .evaluateAll((cards) =>
+        cards.map((c) => {
+          const r = c.getBoundingClientRect()
+          return [Math.round(r.width), Math.round(r.height)]
+        })
+      )
+    expect(new Set(sizes.map((size) => size.join('x'))).size).toBe(1)
+    const title2 = upgraded ? 'Abundancia de renovación' : 'Escritura antigua'
+    await expect(card).toHaveAccessibleName(new RegExp(title2))
+    await expect(card).not.toContainText(/\p{Extended_Pictographic}/u)
     for (const width of [320, 640]) {
       await page.setViewportSize({ width, height: 568 })
       await card.scrollIntoViewIfNeeded()
-      await expect(card.getByRole('button')).toBeInViewport()
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth
         )
       ).toBe(true)
-      expect(
-        await card.evaluate((node) =>
-          Array.from(
-            node.querySelectorAll<HTMLElement>('h3,p,span,button,img')
-          ).every((child) => {
-            const rect = child.getBoundingClientRect()
-            return (
-              rect.left >= 0 &&
-              rect.right <= innerWidth &&
-              child.scrollWidth <= child.clientWidth + 1
-            )
-          })
-        )
-      ).toBe(true)
-      await expect(card).not.toContainText(
-        /\\u[0-9a-f]{4}|Imperial Charter|Base edition/i
-      )
       await page.screenshot({
         path: testInfo.outputPath(
           `charter-${upgraded ? 'upgraded' : 'base'}-${width}.png`
         ),
       })
     }
+    await card.click()
+    const buy = page.locator(`[data-shop-buy="${charterOffer}"]`)
+    // The panel is titled with the Charter and explains what a Charter is.
+    const panel = page.getByRole('dialog', { name: title2 })
+    await expect(panel).toBeVisible()
+    await expect(panel).toContainText('Una Carta imperial es una mejora permanente')
     if (upgraded) {
-      await expect(card.getByRole('button')).toBeDisabled()
+      await expect(buy).toBeDisabled()
     } else {
       const readPurchase = () =>
         page.evaluate(async () => {
-          const path = '/src/game/GameOrchestrator.ts'
-          const { gameOrchestrator: game } = await import(path)
+          const { gameOrchestrator: game } = await import(
+            '/src/game/GameOrchestrator.ts'
+          )
           return {
             gold: game.getState().gold,
             owned: [...game.getState().charterSystem.getPurchasedIds()],
@@ -112,20 +101,11 @@ for (const upgraded of [false, true]) {
           }
         })
       const before = await readPurchase()
-      await card.getByRole('button').click()
-      const dialog = page.getByRole('dialog', {
-        name: 'Confirmar compra',
-        exact: true,
-      })
-      await expect(dialog).toHaveAccessibleDescription(
-        '¿Comprar Escritura antigua por 10G?'
-      )
-      await dialog
-        .getByRole('button', { name: 'Cancelar', exact: true })
-        .click()
-      expect(await readPurchase()).toEqual(before)
-      await card.getByRole('button').click()
-      await dialog.getByRole('button', { name: 'Comprar', exact: true }).click()
+      await buy.click()
+      // Charters buy like everything else: no extra confirmation.
+      await expect(
+        page.getByRole('dialog', { name: 'Confirmar compra' })
+      ).toHaveCount(0)
       expect(await readPurchase()).toEqual({
         gold: before.gold - 10,
         owned: [...before.owned, 'ancient_script'],
@@ -141,8 +121,7 @@ test('Spanish shop shows the actual Seal and Orb before purchase and updates ava
 }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 320, height: 568 })
-  await page.goto('/es/play')
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  await openTable(page, '/es/play')
   const offers = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const sealPath = '/src/systems/FateSealSystem.ts'
@@ -186,38 +165,31 @@ test('Spanish shop shows the actual Seal and Orb before purchase and updates ava
       (offer: { id: string }) => offer.id
     )
   })
+  await clearReveals(page)
   const text = await page.evaluate(async () => {
     const path = '/src/i18n/locales/es.json'
     const { default: locale } = await import(path)
     return [locale.seals.items.seal_of_the_sage, locale.orbs.items.mercury_orb]
   })
   for (let index = 0; index < 2; index++) {
-    const card = page.locator(`[data-shop-item="${offers[index]}"]`)
+    const card = page.locator(`[data-shop-offer="${offers[index]}"]`)
     await card.scrollIntoViewIfNeeded()
-    await expect(card.getByRole('heading')).toHaveText(text[index].name)
-    await expect(
-      card.getByText(text[index].description, { exact: true })
-    ).toBeVisible()
+    await expect(card).toHaveAccessibleName(new RegExp(text[index].name))
+    await card.click()
+    const details = page.locator(`[data-shop-offer-details="${offers[index]}"]`)
+    await expect(details).toContainText(text[index].description)
     expect(
-      await card.evaluate((node) =>
-        Array.from(node.querySelectorAll<HTMLElement>('h3,p,button')).every(
-          (child) =>
-            child.scrollHeight <= child.clientHeight + 1 &&
-            child.scrollWidth <= child.clientWidth + 1
-        )
+      await details.evaluate(
+        (node) => node.scrollWidth <= node.clientWidth + 1
       )
     ).toBe(true)
     await page.screenshot({
       path: testInfo.outputPath(`specific-stock-${index}.png`),
     })
+    await page.keyboard.press('Escape')
   }
-  await page
-    .locator(`[data-shop-item="${offers[0]}"]`)
-    .getByRole('button')
-    .click()
-  await expect(
-    page.getByRole('heading', { name: 'Objetos', exact: false })
-  ).toContainText('Disponibles: 1')
+  await buyOffer(page, offers[0])
+  await expect(page.locator(`[data-shop-offer="${offers[0]}"]`)).toHaveCount(0)
   expect(
     await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
@@ -234,9 +206,8 @@ test('Spanish shop shows the actual Seal and Orb before purchase and updates ava
  * artificial win-rate evidence, or substitute purchase/claim implementation.
  */
 async function openPackFixture(page: Page, lang = 'en') {
-  await page.goto(`/${lang}/play`)
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-  return page.evaluate(async () => {
+  await openTable(page, `/${lang}/play`)
+  const fixture = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const packsPath = '/src/systems/BlessingPackSystem.ts'
     const { gameOrchestrator: game } = await import(gamePath)
@@ -270,8 +241,10 @@ async function openPackFixture(page: Page, lang = 'en') {
     const eventPath = '/src/game/EventBus.ts'
     const { eventBus } = await import(eventPath)
     eventBus.emit('shopUpdated', { isOpen: true })
-    return { packId: offer.item.id }
+    return { packId: offer.item.id as string, offerId: offer.id as string }
   })
+  await clearReveals(page)
+  return fixture
 }
 
 test('Tile Pack rules identify the real modified tiles and a Spanish phone can claim them once', async ({
@@ -279,7 +252,7 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
 }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 320, height: 568 })
-  const { packId } = await openPackFixture(page, 'es')
+  const { offerId } = await openPackFixture(page, 'es')
   await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const tilePath = '/src/core/Tile.ts'
@@ -309,7 +282,7 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
     )
     eventBus.emit('shopUpdated', { isOpen: true })
   })
-  await page.locator(`[data-shop-pack="${packId}"]`).click()
+  await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog')
   const choices = dialog.locator('[role="button"][aria-pressed]')
   await expect(choices).toHaveCount(2)
@@ -371,7 +344,7 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
     ],
     pending: false,
   })
-  await expect(page.locator(`[data-shop-pack="${packId}"]`)).toHaveCount(0)
+  await expect(page.locator(`[data-shop-offer="${offerId}"]`)).toHaveCount(0)
 })
 
 for (const [lang, heading, bonus, next] of [
@@ -440,7 +413,7 @@ for (const [lang, heading, bonus, next] of [
         const frame = node.getBoundingClientRect()
         return Array.from(
           node.querySelectorAll<HTMLElement>(
-            'h2, p, strong, [data-payout-value], [data-payout-total]'
+            '[data-payout-round], p, strong, [data-payout-value], [data-payout-total]'
           )
         )
           .filter((child) => {
@@ -489,7 +462,7 @@ for (const [lang, heading, bonus, next] of [
       expect(pageGeometry, JSON.stringify(pageGeometry)).toMatchObject({
         fits: true,
       })
-      await receipt.locator('h2').scrollIntoViewIfNeeded()
+      await receipt.locator('[data-payout-round]').scrollIntoViewIfNeeded()
       await page.screenshot({
         path: testInfo.outputPath(`payout-${lang}-${width}-top.png`),
       })
@@ -508,11 +481,7 @@ for (const preference of ['app', 'system'] as const) {
   }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' })
     await page.setViewportSize({ width: 320, height: 568 })
-    const { packId } = await openPackFixture(page)
-    const card = page.locator(`[data-shop-pack-card="${packId}"]`)
-    await card.hover()
-    // Normal motion remains available until either preference is enabled.
-    await expect(card.locator('[style*="shimmer"]')).toHaveCount(1)
+    const { offerId } = await openPackFixture(page)
     async function setPreference(reduce: boolean) {
       if (preference === 'system') {
         await page.emulateMedia({
@@ -527,11 +496,7 @@ for (const preference of ['app', 'system'] as const) {
       }
     }
     await setPreference(true)
-    await expect(card).toHaveCSS('transform', 'none')
-    await expect(card.locator('[style*="shimmer"]')).toHaveCount(0)
-    const buy = card.getByRole('button')
-    await expect(buy).not.toHaveClass(/active:scale-95/)
-    await buy.click()
+    await buyOffer(page, offerId)
     const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
     await expect(dialog).toHaveCSS('transform', 'none')
     const choice = dialog.locator('[aria-pressed]').first()
@@ -556,7 +521,7 @@ for (const preference of ['app', 'system'] as const) {
       seals: 3,
       pending: false,
     })
-    await expect(page.locator(`[data-shop-pack="${packId}"]`)).toHaveCount(0)
+    await expect(page.locator(`[data-shop-offer="${offerId}"]`)).toHaveCount(0)
   })
 }
 
@@ -576,8 +541,8 @@ async function inventory(page: Page) {
 test('a route revisit restores the paid pack without generating or charging again', async ({
   page,
 }) => {
-  const { packId } = await openPackFixture(page)
-  await page.locator(`[data-shop-pack="${packId}"]`).click()
+  const { offerId } = await openPackFixture(page)
+  await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
   await expect(dialog).toBeVisible()
   const before = await inventory(page)
@@ -598,9 +563,9 @@ test('a route revisit restores the paid pack without generating or charging agai
 test('Mega pack capacity is checked before confirmation and rewards are granted once', async ({
   page,
 }) => {
-  const { packId } = await openPackFixture(page)
+  const { offerId } = await openPackFixture(page)
   await expect(page).toHaveURL(/\/en\/shop$/)
-  await page.locator(`[data-shop-pack="${packId}"]`).click()
+  await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
   await expect(dialog).toBeVisible()
   const choices = dialog.locator('[aria-pressed]')
@@ -633,7 +598,7 @@ test('Mega pack capacity is checked before confirmation and rewards are granted 
     pending: false,
     purchases: 1,
   })
-  await expect(page.locator(`[data-shop-pack="${packId}"]`)).toHaveCount(0)
+  await expect(page.locator(`[data-shop-offer="${offerId}"]`)).toHaveCount(0)
   await page.getByRole('button', { name: 'Continue to Next Round' }).click()
   await expect(page).toHaveURL(/\/en\/play$/)
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
@@ -643,8 +608,8 @@ test('pack choices work with the keyboard and trap focus until explicitly settle
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  const { packId } = await openPackFixture(page)
-  await page.locator(`[data-shop-pack="${packId}"]`).click()
+  const { offerId } = await openPackFixture(page)
+  await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
   await expect(dialog).toBeFocused()
   await page.keyboard.press('Tab')
@@ -667,8 +632,8 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 568 })
-  const { packId } = await openPackFixture(page, 'es')
-  await page.locator(`[data-shop-pack="${packId}"]`).click()
+  const { offerId } = await openPackFixture(page, 'es')
+  await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog')
   await expect(dialog).toBeVisible()
   await expect(dialog).toContainText('Elige hasta 2 de 5 recompensas')

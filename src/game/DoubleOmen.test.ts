@@ -5,6 +5,10 @@ import { OmenTagSystem } from '../systems/OmenTagSystem'
 import { GameOrchestrator } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
+import { clearRound } from '../test/roundHelpers'
+import { SWIFT_CLEAR_SPARE_TURNS } from './playRules'
+
+const swift = { spareTurns: SWIFT_CLEAR_SPARE_TURNS }
 
 afterEach(() => {
   useOmenStore.getState().clearForNewRun()
@@ -109,28 +113,31 @@ it.each([
   [459, 'speed_omen'],
   [105, 'decree_omen'],
 ] as const)(
-  'earns Double then %s through real seeded game skips',
+  'earns Double then %s through real seeded swift clears',
   (seed, id) => {
     const game = new GameOrchestrator()
     game.startNewRun(seed)
     const state = game.getState()
-    const goldBefore = state.gold
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    clearRound(game, swift)
     expect(
       state.omenSystem.getActiveOmens().map((o) => o.definitionId)
     ).toEqual(['double_omen'])
-    expect(state.gold).toBe(goldBefore)
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    expect(state.lastRoundSummary!.omenGold).toBe(0)
+    game.exitShop()
+    clearRound(game, swift)
+    expect(state.lastRoundSummary!.roundType).toBe('Large')
     expect(useOmenStore.getState().hasDoubleOmenActive).toBe(false)
-    expect(state.currentRound).toBe(3)
-    expect(game.processAction({ type: 'skip' }).success).toBe(false)
-    if (id === 'omen_of_rivers') expect(state.omenDiscardBonus).toBe(2)
-    if (id === 'speed_omen') expect(state.gold - goldBefore).toBe(20)
+    if (id === 'speed_omen') expect(state.lastRoundSummary!.omenGold).toBe(20)
+    // The Decree Omen waits for the next Tea House; the others are spent by
+    // the time the Boss round is dealt.
     if (id === 'decree_omen')
       expect(
         state.omenSystem.getActiveOmens().map((o) => o.definitionId)
       ).toEqual([id, id])
-    else
+    game.exitShop()
+    expect(state.currentRound).toBe(3)
+    if (id === 'omen_of_rivers') expect(state.omenDiscardBonus).toBe(2)
+    if (id !== 'decree_omen')
       expect(
         state.omenSystem.getOmenHistory().filter((o) => o.definitionId === id)
       ).toHaveLength(2)

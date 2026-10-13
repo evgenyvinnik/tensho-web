@@ -116,6 +116,7 @@ export type GateCondition =
   | 'wind_and_dragon'
   // Structure of the played hand
   | 'contains_pair'
+  | 'two_plus_pairs'
   | 'contains_sequence'
   | 'contains_triplet'
   | 'two_plus_triplets'
@@ -595,10 +596,15 @@ export interface RoundState {
   roundType: RoundType
   scoreTarget: number
   currentScore: number
+  /** Plays made this round. */
   handsPlayed: number
+  /** Turns granted this round (Play and REDRAW share them). */
   maxHands: number
+  /** Retired discard budget, kept for callers that still read it. */
   discardsRemaining: number
   maxDiscards: number
+  /** Tiles REDRAW sent to the river this round. */
+  tilesRedrawn?: number
   bossMandate?: BossMandate
   isCompleted: boolean
   isWon: boolean

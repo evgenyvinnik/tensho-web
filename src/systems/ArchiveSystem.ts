@@ -64,7 +64,8 @@ export type DiscoveryTrigger =
   | 'purchase' // Bought from shop
   | 'pack_open' // Opened from pack
   | 'mandate_encounter' // Encountered boss mandate
-  | 'skip_reward' // Awarded from skipping round
+  | 'skip_reward' // Legacy: awarded by the retired round Skip
+  | 'swift_clear' // Earned by clearing a round with Turns to spare
   | 'win' // Discovered upon winning
   | 'starting' // Pre-discovered on new profile
   | 'unlock' // Unlocked via achievement/condition
@@ -602,6 +603,7 @@ export function getDiscoveryTriggerName(trigger: DiscoveryTrigger): string {
     pack_open: 'Opened from Pack',
     mandate_encounter: 'Mandate Encountered',
     skip_reward: 'Skip Reward',
+    swift_clear: 'Swift Clear',
     win: 'Victory Bonus',
     starting: 'Starter Item',
     unlock: 'Unlocked',
@@ -620,6 +622,7 @@ export function getDiscoveryTriggerJapaneseName(
     pack_open: '開封',
     mandate_encounter: '局遭遇',
     skip_reward: '見送り報酬',
+    swift_clear: '速攻報酬',
     win: '勝利報酬',
     starting: '初期所持',
     unlock: '解放',

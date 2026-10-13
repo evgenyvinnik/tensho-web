@@ -13,8 +13,8 @@
  *
  * Pack Sizes:
  * - Normal: 4 Gold, 3 options, choose 1
- * - Jumbo: 6 Gold, 5 options, choose 1
- * - Mega: 8 Gold, 5 options, choose up to 2
+ * - Jumbo: 6 Gold, 5 options, choose up to 2
+ * - Mega: 8 Gold, 6 options, choose up to 3
  */
 
 import { PackType, PackSize } from '../systems/types'
@@ -48,7 +48,7 @@ export const PACK_TYPE_DEFINITIONS: Record<PackType, PackTypeDefinition> = {
     type: 'Celestial',
     name: 'Celestial Pack',
     japaneseName: '天球袋',
-    description: 'Contains Celestial Orbs that permanently upgrade yaku families.',
+    description: 'Contains Celestial Orbs that permanently upgrade families of hands.',
     contentType: 'immediate',
     iconColor: '#2196F3', // Blue for celestial
   },
@@ -108,16 +108,16 @@ export const PACK_SIZE_DEFINITIONS: Record<PackSize, PackSizeDefinition> = {
     name: 'Jumbo',
     cost: 6,
     choiceCount: 5,
-    selectCount: 1,
-    description: 'Choose 1 from 5 options',
+    selectCount: 2,
+    description: 'Choose up to 2 from 5 options',
   },
   Mega: {
     size: 'Mega',
     name: 'Mega',
     cost: 8,
-    choiceCount: 5,
-    selectCount: 2,
-    description: 'Choose up to 2 from 5 options',
+    choiceCount: 6,
+    selectCount: 3,
+    description: 'Choose up to 3 from 6 options',
   },
 }
 

@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { clearReveals, openTable } from './helpers/table'
 
 // Explicit development-only fixtures establish ownership/edge cases. Every use
 // still goes through the rendered controls and the production orchestrator.
@@ -8,9 +9,8 @@ async function fixture(
   id = 'seal_of_the_alchemist',
   lang = 'en'
 ) {
-  await page.goto(`/${lang}/play`)
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-  return page.evaluate(
+  await openTable(page, `/${lang}/play`)
+  const result = await page.evaluate(
     async ({ kind, id }) => {
       const gamePath = '/src/game/GameOrchestrator.ts'
       const tilePath = '/src/core/Tile.ts'
@@ -68,6 +68,8 @@ async function fixture(
     },
     { kind, id }
   )
+  await clearReveals(page)
+  return result
 }
 
 async function snapshot(page: Page) {
@@ -99,7 +101,7 @@ async function snapshot(page: Page) {
       orbs: state.celestialOrbs.length,
       sealUses: state.consumableSystem.getFateSealUsesRemaining(),
       scriptUses: state.consumableSystem.getVoidScriptUsesRemaining(),
-      level: state.celestialOrbSystem.getYakuLevel('Riichi'),
+      level: state.celestialOrbSystem.getYakuLevel('Pairs'),
     }
   })
 }

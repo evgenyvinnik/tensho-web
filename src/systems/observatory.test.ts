@@ -5,7 +5,6 @@ import { observatoryMultiplier } from './observatory'
 const orb = (id: string) =>
   CelestialOrbSystem.createCelestialOrbInstance(CELESTIAL_ORBS[id])
 it.each([
-  ['pluto_orb', 'riichi'],
   ['mercury_orb', 'tanyao'],
   ['uranus_orb', 'yakuhai'],
   ['venus_orb', 'pinfu'],
@@ -24,6 +23,17 @@ it.each([
   expect(observatoryMultiplier(held, [yaku], 1.5)).toBe(1.5)
   expect(observatoryMultiplier(held, [yaku], 1)).toBe(1)
   expect(observatoryMultiplier(held, [], 1.5)).toBe(1)
+})
+it.each([
+  // Plays level the same families as the Yaku they echo.
+  ['pluto_orb', 'Pairs'],
+  ['venus_orb', 'Pinfu'],
+  ['saturn_orb', 'Ittsu'],
+  ['earth_orb', 'Toitoi'],
+] as const)('attunes %s to a played %s pattern family', (id, family) => {
+  const held = [orb(id)]
+  expect(observatoryMultiplier(held, [], 1.5, [family])).toBe(1.5)
+  expect(observatoryMultiplier(held, [], 1, [family])).toBe(1)
 })
 it('counts each held Orb once even when several matching patterns score', () => {
   const held = [orb('neptune_orb'), orb('neptune_orb'), orb('black_hole_orb')]

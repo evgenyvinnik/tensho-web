@@ -2,10 +2,14 @@ import { describe, expect, it, vi } from 'vitest'
 import { chooseBlindSelection } from './blindSelection'
 
 describe('identity-only concealed-rack fallback', () => {
-  it('uses visible positions and includes required physical tiles before filling to five', () => {
+  it('uses visible positions and includes required physical tiles before filling to six', () => {
     expect(
-      chooseBlindSelection(['a', 'b', 'c', 'd', 'e', 'f'], ['f'], () => true)
-    ).toEqual(['f', 'a', 'b', 'c', 'd'])
+      chooseBlindSelection(
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+        ['f'],
+        () => true
+      )
+    ).toEqual(['f', 'a', 'b', 'c', 'd', 'e'])
   })
   it('respects an exact-size mandate through the authoritative validator', () => {
     const validate = vi.fn((ids: string[]) => ids.length === 3)
@@ -19,8 +23,8 @@ describe('identity-only concealed-rack fallback', () => {
     expect(chooseBlindSelection(['a', 'b'], ['missing'], () => true)).toBeNull()
     expect(
       chooseBlindSelection(
-        ['a', 'b', 'c', 'd', 'e', 'f'],
-        ['a', 'b', 'c', 'd', 'e', 'f'],
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
         () => true
       )
     ).toBeNull()

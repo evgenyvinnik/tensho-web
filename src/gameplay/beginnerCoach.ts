@@ -17,7 +17,7 @@
 
 import { MeldType } from '../core/Meld'
 import { Tile } from '../core/Tile'
-import { STRUCTURE_POINTS_BY_TYPE, getTilePoints } from '../rules/ScoringEngine'
+import { getMeldStructurePoints, getTilePoints } from '../rules/ScoringEngine'
 import {
   parsePartialHand,
   type PartialHandRules,
@@ -45,6 +45,7 @@ const TEACHING_PRIORITY: Record<MeldType, number> = {
   [MeldType.Triplet]: 3,
   [MeldType.Pair]: 2,
   [MeldType.Quad]: 1,
+  [MeldType.Straight]: 0,
 }
 
 /**
@@ -68,7 +69,7 @@ export function findBeginnerSuggestion(
   const parsed = parsePartialHand(visibleTiles, rules)
   const group = [...parsed.groups].sort((left, right) => {
     const pointDifference =
-      STRUCTURE_POINTS_BY_TYPE[right.type] - STRUCTURE_POINTS_BY_TYPE[left.type]
+      getMeldStructurePoints(right) - getMeldStructurePoints(left)
     return pointDifference !== 0
       ? pointDifference
       : TEACHING_PRIORITY[right.type] - TEACHING_PRIORITY[left.type]
@@ -78,7 +79,7 @@ export function findBeginnerSuggestion(
     return {
       kind: group.type,
       tileIds: group.tiles.map((tile) => tile.id),
-      structurePoints: STRUCTURE_POINTS_BY_TYPE[group.type],
+      structurePoints: getMeldStructurePoints(group),
     }
   }
 
@@ -195,6 +196,16 @@ function enumerateGroups(tiles: Tile[], rules: PartialHandRules): Tile[][] {
       }
       if (run.length === 3) remember(run)
     }
+    // Straights of four and five.
+    const straight: Tile[] = [anchor]
+    for (let rank = anchor.rank + 1; straight.length < 5; rank++) {
+      const next = suited.find(
+        (tile) => tile.suit === anchor.suit && tile.rank === rank
+      )
+      if (!next) break
+      straight.push(next)
+      if (straight.length >= 4) remember([...straight])
+    }
   }
 
   return [...byIdentity.values()]
@@ -262,12 +273,16 @@ function candidateSelections(
     }
   }
 
-  // Two groups together, when they fit inside one play.
+  // Two or three groups together, when they fit inside one play.
   for (let i = 0; i < groups.length; i += 1) {
     for (let j = i + 1; j < groups.length; j += 1) {
       const combined = [...groups[i], ...groups[j]]
       if (combined.length > MAX_TACTICAL_PLAY_TILES) continue
       offer(combined)
+      for (let k = j + 1; k < groups.length; k += 1) {
+        const triple = [...combined, ...groups[k]]
+        if (triple.length <= MAX_TACTICAL_PLAY_TILES) offer(triple)
+      }
     }
   }
 

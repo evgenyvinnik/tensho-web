@@ -49,7 +49,7 @@ afterEach(() => {
 
 it('keeps a two-sided finish instead of a disconnected Honor', () => {
   expect(chooseClassicHandAction(fixture())).toEqual({
-    action: { type: 'discard', tileId: 'spare' },
+    action: { type: 'redraw', tileIds: ['spare'] },
     reason: 'hand-plan',
     shanten: 0,
     improvingTypes: [
@@ -140,8 +140,8 @@ it('replans across two observed draws without seeing future tiles', () => {
   ]) {
     const choice = chooseClassicHandAction(c)!
     expect(choice.shanten).toBe(distance)
-    if (choice.action.type !== 'discard') throw new Error('Expected discard')
-    const id = choice.action.tileId
+    expect(choice.action.tileIds).toHaveLength(1)
+    const [id] = choice.action.tileIds
     expect(c.visibleTiles.find((t) => t.id === id)?.suit).toBe(TileSuit.Dragon)
     c.visibleTiles = [
       ...c.visibleTiles.filter((t) => t.id !== id),
@@ -234,8 +234,11 @@ it.each([false, true])(
   (batchRedraws) => {
     const game = new GameOrchestrator()
     game.startNewRun(7)
+    // Every REDRAW spends a free redraw or a Turn, keeping the last Turn.
+    const budget =
+      game.getState().handsRemaining - 1 + game.getState().redrawsRemaining
     let decisions = 0
-    for (let step = 0; step < 10; step++) {
+    for (let step = 0; step < 20; step++) {
       const state = game.getState(),
         c = fixture()
       Object.assign(c, {
@@ -264,8 +267,9 @@ it.each([false, true])(
       expect(random).not.toHaveBeenCalled()
       random.mockRestore()
       if (!result) {
+        const autumnGrants = state.seasonSystem.getAdditionalDiscards()
         expect(decisions).toBeGreaterThan(0)
-        expect(decisions).toBeLessThanOrEqual(6)
+        expect(decisions).toBeLessThanOrEqual(budget + autumnGrants)
         return
       }
       expect(game.processAction(result.action).success).toBe(true)

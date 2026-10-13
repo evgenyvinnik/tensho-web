@@ -1,4 +1,10 @@
 import { expect, test, type Page } from '@playwright/test'
+import {
+  clearReveals,
+  openTable,
+  parkMouse,
+  settleReveals,
+} from './helpers/table'
 import type {
   GameOrchestrator,
   OrchestratorState,
@@ -18,8 +24,7 @@ async function prepareFinalPlay(
   lang = 'en',
   rental = false
 ) {
-  await page.goto(`/${lang}/play`)
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  await openTable(page, `/${lang}/play`)
   await page.evaluate(
     async ({ victory, rental }) => {
       const path = '/src/game/GameOrchestrator.ts'
@@ -66,6 +71,7 @@ async function prepareFinalPlay(
     },
     { victory, rental }
   )
+  await clearReveals(page)
   await page.locator('[data-game-action="play"]').click()
   await expect(page).toHaveURL(/\/game-over$/)
   await expect(page.getByText('Round Complete!', { exact: true })).toHaveCount(
@@ -102,9 +108,10 @@ async function snapshot(page: Page) {
 }
 
 async function stageFinalEndlessPlay(page: Page, isMobile: boolean) {
-  // Only author the deadline/target. Selection must travel through the mat's
-  // real staging interaction, not a separate engine-only selection fixture.
+  // Only author the deadline/target. Selection must travel through the rack's
+  // real interaction, not a separate engine-only selection fixture.
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  await settleReveals(page, 1_500)
   const ids = await page.evaluate(() => {
     const state = window.__resultFixtureGame.getState() as OrchestratorState
     state.targetScore = 1e12
@@ -193,9 +200,13 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
     completed: 1,
     nextStake: true,
   })
+  // A finished run is a result, not a table to resume.
+  await expect(
+    page.getByRole('button', { name: 'New Run', exact: true })
+  ).toBeVisible()
   await expect(
     page.getByRole('button', { name: 'Resume run', exact: true })
-  ).toBeVisible()
+  ).toHaveCount(0)
 })
 
 test('Act 8 defeat offers a fresh run, not Endless or a Stake victory', async ({
@@ -314,7 +325,7 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
   await expect(
     page.getByText('Next: Act 9 ascent', { exact: true })
   ).toBeVisible()
-  await page.evaluate(async () => {
+  const charterOffer = await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
     const shopPath = '/src/systems/TeaHouseSystem.ts'
     const eventPath = '/src/game/EventBus.ts'
@@ -328,12 +339,11 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
       (charter: { id: string }) => charter.id === 'ancient_script'
     )
     eventBus.emit('shopUpdated', { isOpen: true })
+    return offer.id as string
   })
-  await page.getByText('Ancient Script', { exact: true }).click()
-  await expect(
-    page.getByRole('heading', { name: 'Confirm Purchase', exact: true })
-  ).toBeVisible()
-  await page.getByRole('button', { name: 'Buy', exact: true }).click()
+  await parkMouse(page)
+  await page.locator(`[data-shop-offer="${charterOffer}"]`).click()
+  await page.locator(`[data-shop-buy="${charterOffer}"]`).click()
   expect((await snapshot(page)).gold).toBe(before.gold - 10)
   await expect(
     page.getByText('Next: Act 8 ascent', { exact: true })
@@ -351,10 +361,9 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
     // Preserve starter Decree bonuses; the Charter removes exactly one hand.
     hands: before.handAllowance - 1,
   })
+  await settleReveals(page, 1_500)
   await expect(
-    page
-      .locator('[data-gameplay-top-bar-act]')
-      .getByText('Endless', { exact: true })
+    page.locator('[data-run-header-round]').getByText('Endless', { exact: true })
   ).toBeVisible()
   await expect(page.getByLabel('Act 8 of 8', { exact: true })).toHaveCount(0)
   await stageFinalEndlessPlay(page, isMobile)

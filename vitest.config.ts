@@ -7,6 +7,7 @@
 
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
+import retired from './retired-files.json' with { type: 'json' }
 
 export default defineConfig({
   plugins: [react()],
@@ -24,7 +25,12 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
 
     // Exclude patterns
-    exclude: ['node_modules', 'dist', 'e2e'],
+    exclude: [
+      'node_modules',
+      'dist',
+      'e2e',
+      ...retired.paths.flatMap((path) => [path, `${path}/**`]),
+    ],
 
     // Coverage configuration
     coverage: {

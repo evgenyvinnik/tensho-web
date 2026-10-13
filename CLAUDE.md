@@ -207,17 +207,33 @@ Strict mode with enhanced linting:
 ### Scoring Formula
 
 ```
-Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
+Score  = Points × Mult
+Points = tile points + group bonuses + additive bonuses
+Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per grouped Dragon,
+         then Decrees in order (+N adds, ×N multiplies), then ×-layers
 ```
 
-Base points: Terminals (1,9) = 10, Simples (2-8) = 5, Honors = 15
-Structure: Pair +15, Sequence +30, Triplet +40, Quad +65
+Tile points: suited 5, terminals (1, 9) 10, Winds 50, Dragons 15.
+Group bonuses: Pair +15, Sequence +30, Triplet +40, Straight +45 (four) / +60
+(five), Quad +65.
 
-In a tactical play, a tile that belongs to no group scores half its tile points.
-Complete hands are unaffected: every tile in one is already in a meld or the
-pair. `STRUCTURE_POINTS_BY_TYPE` in `ScoringEngine` is the single source for
-those values — `PartialHandParser` searches with them and the coach ranks with
-them, so do not copy the table.
+A play holds up to six tiles (`MAX_TACTICAL_PLAY_TILES`) unless it is a complete
+Mahjong hand. `parsePlay` splits it into the disjoint groups that pay the most,
+and `classifyPlay` (`src/rules/PlayPattern.ts`) names the pattern: Pattern Mult
+= (groups − 1) + Triplet/Straight-of-four 1, Quad/Straight-of-five 2; a complete
+Mahjong hand adds a flat +4. A tile that belongs to no group scores half its
+tile points. `STRUCTURE_POINTS_BY_TYPE` in `ScoringEngine` is the single source
+for group values — `PartialHandParser` searches with them and the coach ranks
+with them, so do not copy the table.
+
+### Turns
+
+Each round grants a shared budget of Turns (`TURNS_PER_ROUND` in
+`src/game/playRules.ts`, stored as `handsRemaining`). Play hand and REDRAW each
+spend one; free redraws (`redrawsRemaining`) are spent first, and the last Turn
+is always a play. REDRAW sends any number of selected tiles to the river. There
+is no Skip and no single-tile Discard: a Small or Large round cleared with two
+Turns to spare earns its Omen. See `docs/RULE_RESOLUTION.md`.
 
 ### Five-Layer Authority Hierarchy
 
@@ -229,7 +245,7 @@ Higher layers override lower in conflict resolution.
 
 ### Round Structure
 
-Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). Acts 1-8 have defined targets; Act 9+ uses endless mode scaling.
+Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). Acts 1-8 have defined targets (`BASE_SCORE_TARGETS`); Act 9+ uses endless mode scaling. Saved runs carry a snapshot version; `migrateClassicSnapshot.ts` upgrades older saves and re-reads every saved item from the catalog, so content edits need no per-item migration.
 
 ## Domain Terminology
 

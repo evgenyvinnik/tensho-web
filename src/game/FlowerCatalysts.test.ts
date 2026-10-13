@@ -379,12 +379,14 @@ it('earns the four-type profile unlock through real draws across catalyst consum
     (_, i) => new Tile(TileSuit.Wind, 1, `replacement-${i}`)
   )
   state.drawIndex = 0
-  const discard = () =>
+  const redraw = () =>
     expect(
-      game.processAction({ type: 'discard', tileId: game.getHandTiles()[0].id })
-        .success
+      game.processAction({
+        type: 'redraw',
+        tileIds: [game.getHandTiles()[0].id],
+      }).success
     ).toBe(true)
-  for (let i = 0; i < 3; i++) discard()
+  for (let i = 0; i < 3; i++) redraw()
   expect(state.flowerSystem.getFlowerCount()).toBe(3)
   expect(useProgressionStore.getState().isItemUnlocked('bamboo_mat')).toBe(
     false
@@ -427,7 +429,7 @@ it('earns the four-type profile unlock through real draws across catalyst consum
     ...tail('next-tail'),
   ]
   next.drawIndex = 0
-  discard()
+  redraw()
   expect(next.flowerSystem.getFlowerCount()).toBe(3)
   expect(next.flowerSystem.canRebloom()).toBe(true)
   expect(useProgressionStore.getState().isItemUnlocked('bamboo_mat')).toBe(true)
@@ -437,6 +439,6 @@ it('earns the four-type profile unlock through real draws across catalyst consum
     ...tail('duplicate-tail'),
   ]
   next.drawIndex = 0
-  discard()
+  redraw()
   expect(next.flowerSystem.hasMutation('bamboo_wild_anchor')).toBe(true)
 })

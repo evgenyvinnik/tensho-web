@@ -1,47 +1,7 @@
 {
-  "riichiPledge": {
-    "title": "Riichi taahhüdü",
-    "active": "Riichi taahhüdü etkin",
-    "spent": "Bu tur Riichi kullanıldı",
-    "intro": "Elinizi tamamlamadan önce 1 Altın ödeyin. Tur başına bir kez.",
-    "risk": "Taahhüt sürerken yalnızca gerçek, tamamlanmış kapalı bir el puan kazanabilir. Taş yenileme, atma ve eşyalar kullanılabilir.",
-    "reward": "Sonraki tamamlanmış kapalı eliniz Riichi puanı kazanır (Yaku ×1,2); boss ve Yakuman kuralları geçerlidir. Plüton ve Riichi Adanmışı yalnızca Riichi puanlandığında uygulanır.",
-    "declare": "Taahhüt et · 1 Altın",
-    "abandon": "Taahhütten vazgeç",
-    "abandonNote": "Vazgeçmek taktik oyunu geri açar. Bu tur iade veya ikinci taahhüt yoktur.",
-    "gold": "En az 1 Altın gerekir.",
-    "hidden": "Taahhüt vermeden önce elinizdeki tüm taşları açın.",
-    "open": "Riichi, açık grupları olmayan kapalı bir el gerektirir.",
-    "boss": "Bu boss sabit oynama boyutu ister; Riichi kullanılamaz.",
-    "complete": "Eliniz zaten tamamlanmış. Oynayın; sonraki el tamamlanmadan taahhüt verin.",
-    "inactive": "Taahhüt yalnızca aktif turda, oynanacak el kaldığında verilebilir.",
-    "failed": "Masa değişti. Koşulları kontrol edip yeniden deneyin.",
-    "restriction": "Kapalı bir eli tamamlayın veya taahhütten vazgeçin."
-  },
   "observatory": {
     "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik, puan kazanan her Yaku ile eşleşir.",
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
-  },
-  "handBuilder": {
-    "title": "El oluştur",
-    "intro": "Yararlı grupları koruyup fazlalık taşları değiştir. Bu olası bir yol; en iyi hamle garantisi değil.",
-    "standard": "Dört grup + bir çift.",
-    "sevenPairs": "Yedi farklı çift.",
-    "kokushi": "13 uç ve Onur türünün tümü + bir tekrar.",
-    "distance": "Korunan yapının tamamlanması için en az {{needed}} yararlı taş gerekiyor.",
-    "keep": "Bu taşları koru",
-    "exchange": "Değiştirmeyi düşünebilirsin",
-    "cost": "{{tiles}} taşı değiştirmek, kalan {{remaining}} yeniden çekme hakkından 1'ini kullanır. İade edilen taşlar yenileri çekildikten sonra duvara döner.",
-    "improving": "Yardımcı olabilecek taş türleri ({{types}})",
-    "possibilities": "Bu örnekler korunan yapıyı bir adım iyileştirir. Çekilecek taşları, duvardaki sayıları veya tamamlanmayı garanti etmez.",
-    "caution": "Plan normal yapıları ele alır; gelecekteki puanları veya çekmeyle tetiklenen etkileri hesaplamaz. Tam el peşinde koşmak raundu kaybettirebilir; önce puan seçeneklerini karşılaştır.",
-    "stage": "Bu değişimi seç",
-    "confirm": "Seçim ücretsizdir. Tahtadaki taşları incele, ardından bir hak harcamak için {{action}} bas.",
-    "hidden": "Bazı taşlar gizli. Yüzleri kapalıyken el oluşturma planı gösterilmez.",
-    "unsupported": "Bu araç şu an yalnızca normal kurallı, açılmamış 14 taşlık elleri destekler. Elin veya etkin kurallar başka bir yaklaşım gerektiriyor; puan önizlemesini ve taş rehberini kullan.",
-    "complete": "Zaten tam bir elin var. Değiştirmek yerine puanını incele, tahtaya yerleştir ve oynamayı onayla.",
-    "clear": "Bilinen bir hamle bu raundu geçebilir. Yeniden çekme hakkı harcamadan önce puan seçeneklerini incele.",
-    "unavailable": "Şu an desteklenen yasal bir değişim planı yok. Kalan yeniden çekme haklarını, kilitli taşları ve duvarı kontrol et."
   },
   "closedHandAusterity": {
     "name": "Kapalı El Disiplini",
@@ -50,14 +10,14 @@
   },
   "yakuRepetition": {
     "name": "Yaku Tekrarı Fermanı",
-    "description": "Ardışık turlarda puan kazandıran her Yaku, serisindeki önceki her tur için ×1,2 ile bileşik çarpılır (toplam en fazla ×4). O Yaku olmadan biten veya atlanan bir tur seriyi bozar. Sınır, Çiçek güçlendirmesinden öncedir.",
+    "description": "Art arda turlarda puanlanan her Yaku, serisindeki her önceki tur için ×1.2 birikir (en fazla ×4). Bir turu kaçırmak seriyi bozar. Sınır, Çiçek güçlendirmesinden öncedir.",
     "title": "Tekrarlanacak desenler",
     "streak": "{{name}} · önceki {{rounds}} ardışık tur",
     "empty": "Önceki seri yok. Başlamak için bu tur bir Yaku ile puan kazan."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Bir Yakuman ile puan kazan.",
-    "seal_of_the_void": "Tek bir koşuda 21 Yaku türünün tümüyle puan kazan.",
+    "seal_of_the_void": "Tek bir koşuda 20 Yaku türünün tümüyle puan kazan.",
     "planet_x_orb": "Yedi Çift ile puan kazan.",
     "ceres_orb": "Chanta ile puan kazan.",
     "eris_orb": "Kokushi ile puan kazan.",
@@ -108,29 +68,19 @@
     "help": "Bu bonuslar hakkında",
     "title": "Yaku geliştirmeleri",
     "summary": "Geliştirilen: {{total}}",
-    "intro": "Bu bonuslar koşu boyunca sürer ve eşleşen yaku tamamlanmış bir elde puan kazandırdığında uygulanır.",
+    "intro": "Bu bonuslar oyun boyunca sürer ve eşleşen bir el her puan aldığında uygulanır.",
     "baseline": "1. seviye başlangıçtır: Küre bonusu yoktur.",
     "empty": "Henüz yaku geliştirmesi yok. İlgili puan düzenini güçlendirmek için bir Göksel Küre kullanın.",
     "level": "Seviye {{level}} / {{max}}",
     "bonus": "+{{chips}} temel puan · +{{mult}} Çarpan",
     "triggers": "Puan kazandırma sayısı: {{total}}",
-    "note": "Yalnızca Kürelerin temel eklemeleri gösterilir. Diğer kurallar son puanı değiştirebilir; toplam için oyun tahminine bakın."
-  },
-  "handInterpretation": {
-    "ready": "Kural destekli el",
-    "why": "Bu el neden geçerli?",
-    "assisted": "Etkin kurallar bu ele izin veriyor.",
-    "sequenceSkip": "Kış veya Kırık Merdiven, aynı türdeki bir serinin bir sayı atlamasına izin verir. Bu tahminde kullanılan gruplar bunlardır.",
-    "substitution": "Bu oyunda {{from}}, {{to}} olarak sayılır.",
-    "virtual": "Sanal tamamlayıcı taş: {{tile}}.",
-    "penalty": "Bu sanal tamamlama el puanını yarıya indirir. Tahmin bu cezayı zaten içerir.",
-    "unchanged": "Bunlar puanlama için geçici kimliklerdir. Fiziksel taşların değişmez ve yeni taş oluşturulmaz.",
-    "allWild": "Bu oyunda her taş herhangi bir tür ve sayı yerine geçebilir."
+    "note": "Yalnızca Kürelerin temel eklemeleri gösterilir. Diğer kurallar son puanı değiştirebilir; toplam için oyun tahminine bakın.",
+    "fromOrb": "{{orb}} ile geliştirilir"
   },
   "progressiveHints": {
     "discard": {
       "title": "Elini geliştir",
-      "content": "At, bir taşı değiştirir ve oynama hakkı yerine bir atma hakkı harcar. Yeniden Çek, bir hak karşılığında seçili en fazla üç taşı değiştirir. Şanten sayısı küçüldükçe tamamlanmış bir ele yaklaşırsın."
+      "content": "YENİDEN ÇEK, seçtiğin taşlardan istediğin kadarını nehre atar ve yenilerini çeker. Ücretsiz bir yeniden çekişin yoksa bir hamle harcar."
     },
     "yaku": {
       "title": "Desenler ve çarpanlar",
@@ -142,7 +92,7 @@
     },
     "shop": {
       "title": "Çay Evi",
-      "content": "Kazanç dökümü Altının nereden geldiğini gösterir. Birlikte iyi çalışan eşyalar al veya faiz için biriktir. Normal alışverişler anında gerçekleşir; Fermanlar onay ister."
+      "content": "Hesap kesimi altınının nereden geldiğini gösterir. Birbiriyle uyumlu eşyalar al ya da faiz için biriktir. Satın almadan önce ne yaptığını görmek için bir eşyaya dokun."
     },
     "decrees": {
       "title": "Kararnameler",
@@ -162,21 +112,11 @@
     "eternalName": "Ebedi",
     "eternalDescription": "Satılamaz veya yok edilemez.",
     "perishableName": "Süreli",
-    "perishableDescription": "Geri sayım bittiğinde etkin etkilerini kaybeder. Atlanan turlar sayılmaz.",
+    "perishableDescription": "Geri sayımı bitince etkilerini yitirir.",
     "remaining": "{{remaining}} tur daha tamamlanınca süresi dolar.",
     "expired": "Süresi doldu — etkin etkileri devre dışı.",
     "rentalName": "Kiralık",
     "rentalDescription": "Her turun sonunda {{amount}} altın tutar."
-  },
-  "appUpdate": {
-    "available": "Güncelleme hazır",
-    "description": "Yeni sürüm hazır. Sayfayı yeniden yüklemeden önce ilerlemeni kaydedeceğiz.",
-    "later": "Daha sonra",
-    "updating": "Güncelleniyor…",
-    "accept": "Kaydet ve güncelle",
-    "save": "Son ilerlemen kaydedilemedi. Bu sekmeyi açık tut ve tekrar dene.",
-    "update": "Güncelleme uygulanamadı. Oyunun hâlâ burada; tekrar dene.",
-    "tabs": "Diğer oyunları kesintiye uğratmamak için diğer Tensho sekmelerini veya pencerelerini kapatıp tekrar dene."
   },
   "classicSave": {
     "savedTitle": "Klasik oyununuz",
@@ -190,11 +130,6 @@
     "retry": "Kaydetmeyi tekrar dene",
     "refresh": "Tekrar kontrol et",
     "backup": "Yedek indir",
-    "discard": "Oyunu sil",
-    "replaceTitle": "Yeni oyun başlatılsın mı?",
-    "replaceBody": "Bu işlem mevcut veya kayıtlı Klasik oyununuzu değiştirir. Table Loop ve açtığınız içerikler korunur.",
-    "discardTitle": "Bu oyun silinsin mi?",
-    "discardBody": "Kayıtlı Klasik oyun ve bu sekmedeki mevcut oyun silinsin mi? Table Loop ve açtığınız içerikler korunur.",
     "leaveTitle": "Masadan ayrılsın mı?",
     "leaveBody": "Oyunu kaydedip menüye dönün. Daha sonra devam edebilirsiniz.",
     "saveLeave": "Kaydet ve çık"
@@ -210,7 +145,7 @@
     "items": {
       "double_omen": {
         "name": "Çifte Alamet",
-        "description": "Bir tur atlayarak kazanılan sonraki Çifte olmayan Alameti kopyalar. Art arda kazanılan her Çifte Alamet bir kopya ekler."
+        "description": "Kazandığın bir sonraki Çift olmayan Alameti kopyalar. Art arda her Çift Alamet bir kopya ekler."
       },
       "omen_of_crescents": {
         "name": "Hilal Alameti",
@@ -222,15 +157,15 @@
       },
       "omen_of_rivers": {
         "name": "Nehir Alameti",
-        "description": "Sonraki tura +1 ek taş atma hakkıyla başlanır."
+        "description": "Sonraki tur +1 bedava yeniden çekmeyle başlar."
       },
       "speed_omen": {
         "name": "Hız Alameti",
-        "description": "Bu koşuda atlanan her tur için 5 Altın verir."
+        "description": "Bu oyundaki her hızlı geçiş için 5 altın verir."
       },
       "throwback_omen": {
         "name": "Geçmişin Alameti",
-        "description": "Koşunun geri kalanında, atlanan her tur için Çarpana 0,25× eklenir."
+        "description": "Oyunun geri kalanında her hızlı geçiş için ×0.25 Çarpan."
       },
       "fortune_omen": {
         "name": "Servet Alameti",
@@ -266,7 +201,7 @@
       },
       "abundance_omen": {
         "name": "Bolluk Alameti",
-        "description": "Sonraki tura +2 ek yeniden çekme hakkıyla başlanır."
+        "description": "Sonraki tur +2 bedava yeniden çekmeyle başlar."
       },
       "polychrome_omen": {
         "name": "Polikrom Alameti",
@@ -482,7 +417,7 @@
       },
       "purple": {
         "name": "Mor Mühür",
-        "description": "Bu taş atıldığında veya değiştirildiğinde yer varsa rastgele bir Kader Mührü oluşturur."
+        "description": "Bu taş yeniden çekildiğinde yer varsa rastgele bir Kader Mühürü yaratır."
       }
     }
   },
@@ -517,7 +452,8 @@
     "confirm": "Eşyayı kullan",
     "fateSeals": "Kader Mühürleri",
     "celestialOrbs": "Göksel Küreler",
-    "voidScripts": "Hiçlik Tomarları"
+    "voidScripts": "Hiçlik Tomarları",
+    "chooseTargets": "Taş seç"
   },
   "common": {
     "exit": "Çık",
@@ -539,7 +475,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Oyna",
     "continue": "Devam Et",
-    "newRun": "Yeni Klasik Oyun",
+    "newRun": "Yeni Oyun",
     "tutorial": "Eğitim",
     "options": "Ayarlar",
     "settings": "Ayarlar",
@@ -554,8 +490,7 @@
     "tableStakeDifficulty": "Masa Bahsi · Zorluk",
     "tableStake": "Masa bahsi",
     "noSpecialModifiers": "Özel değiştirici yok",
-    "promise": "Yemin",
-    "tableLoop": "Masa Döngüsü Modu"
+    "promise": "Yemin"
   },
   "settings": {
     "fullUnlock": {
@@ -602,7 +537,10 @@
       "slow": "Yavaş"
     },
     "tileHintsDesc": "Taş numaralarını ve Ejderha etiketlerini göster; elini Çift, Seri ve Üçlü olarak grupla",
-    "visual": "Görsel"
+    "visual": "Görsel",
+    "rankNumbers": "Taşlarda sayılar",
+    "rankNumbersDesc": "Taş yüzlerini öğrenirken sayılı taşlarda küçük 1–9 ve Ejderhalarda bir harf göster.",
+    "unreadableSave": "Kayıtlı oyunun okunamadı. Onun yerini alacak Yeni Oyun’a başlamadan önce dosya olarak indirebilirsin."
   },
   "gameplay": {
     "actProgress": "Perde {{current}} / {{total}}",
@@ -617,13 +555,10 @@
     "target": "Hedef",
     "gold": "Altın",
     "hands": "El",
-    "discards": "At",
     "draw": "Çek",
-    "discard": "At",
     "declare": "Beyan Et",
     "win": "Kazan",
     "tsumo": "Tsumo",
-    "skip": "Atla",
     "pause": "Duraklat",
     "resume": "Devam Et",
     "tenpai": "Tenpai",
@@ -631,11 +566,10 @@
     "shantenHelp": "Tek bir taşın elini tamamlayabilmesi için kaç faydalı taşa daha ihtiyacın olduğunu gösterir",
     "ready": "Hazır",
     "deadDraw": "ÖLÜ ÇEKİM",
-    "deadWallDraw": "ÖLÜ DUVARDAN ÇEKİM",
+    "deadWallDraw": "Ölü duvardan çek",
     "winsRound": "Turu kazanır",
     "tilesInWall": "Duvardaki taşlar",
     "handsRemaining": "Kalan el",
-    "discardsRemaining": "Kalan atma",
     "redrawsRemaining": "Kalan yeniden çekiş",
     "redrawSelected": "Seçili taşları yeniden çek",
     "redrawHint": "En fazla 3 seçili taşı geri verip yenisini çeker",
@@ -752,7 +686,27 @@
       "buildTowardPlain": "Bir şekle doğru kur",
       "shapeCost": "Tam bir grupla şimdi {{difference}} puan daha az kazandırır. Sonraki çekilişleri tahmin etmez.",
       "tradeoff": "Taşları ve puanları karşılaştır. Bir öneri yalnızca taşları seçer; oynama hakkı harcamaz."
-    }
+    },
+    "roundTitle": "Perde {{act}} · {{round}}",
+    "scoreOfTarget": "{{target}} puanın {{score}} kadarı",
+    "help": "Nasıl oynanır",
+    "handScore": "El puanı",
+    "lastHand": "Son el",
+    "hiddenScore": "Kapalı taşlar",
+    "turnsLeft_one": "{{formattedCount}} hamle kaldı",
+    "turnsLeft_other": "{{formattedCount}} hamle kaldı",
+    "freeRedraws": "+{{formattedCount}} bedava",
+    "playHand": "Eli oyna",
+    "reasonExact": "Tam {{count}} taş oynayın",
+    "reasonMinimum": "En az {{count}} taş seçin",
+    "reasonMaximum": "En fazla {{count}} taş ya da tam bir Mahjong eli",
+    "reasonUnavailable": "Bu oyun şu an yapılamaz",
+    "reasonLastTurn": "Son hamle bir oynama olmalı",
+    "reasonNoReplacements": "Duvarda yeterli taş kalmadı",
+    "yourTiles": "Taşların",
+    "collection": "Eşyaların",
+    "deadWallHint": "Tek bir taş seçin ve ölü duvardan bir taşla değiştirin. Tur başına bir kez, bedava.",
+    "turnsLabel": "Kalan hamle"
   },
   "rounds": {
     "small": "Küçük Tur",
@@ -760,7 +714,10 @@
     "boss": "Patron Turu",
     "smallJp": "小局",
     "largeJp": "大局",
-    "bossJp": "親局"
+    "bossJp": "親局",
+    "smallShort": "Küçük",
+    "largeShort": "Büyük",
+    "bossShort": "Patron"
   },
   "shop": {
     "catalyst": {
@@ -811,7 +768,8 @@
       "purchasePrompt": "{{name}}, {{cost}}G karşılığında satın alınsın mı?",
       "baseEdition": "Temel Sürüm",
       "goldBalance": "{{amount}} altın",
-      "rerollsUsed": "Kullanılan yenileme: {{count}}"
+      "rerollsUsed": "Kullanılan yenileme: {{count}}",
+      "forSale": "Satışta"
     },
     "payout": {
       "heading": "Perde {{act}} · {{round}}",
@@ -825,7 +783,10 @@
       "interestCap": "{{interest}}G faiz sınırına ulaşıldı.",
       "interestSave": "Mevcut birikimle: {{interest}}G faiz. {{next}}G için {{needed}}G daha biriktir.",
       "nextRound": "Sıradaki: {{round}} · hedef {{target}}",
-      "nextAct": "Sıradaki: Perde {{act}}"
+      "nextAct": "Sıradaki: Perde {{act}}",
+      "omenEarned": "Alamet: {{name}}",
+      "omen": "Alamet",
+      "balance": "Altın"
     },
     "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
     "packInventoryFull": "Bu seçim için yeterli yer yok. Daha az veya farklı ödüller seçin ya da paketi atlayın.",
@@ -851,7 +812,28 @@
     "cashOut": "Bozdur",
     "payoutBreakdown": "Tur ödemesi dökümü",
     "selectionConfirmed": "Seçim Onaylandı!",
-    "packSkipped": "Paket Atlandı"
+    "packSkipped": "Paket Atlandı",
+    "kinds": {
+      "decree": "Kararname · {{rarity}}",
+      "decreeHelp": "Kararname bu oyun için kalıcı bir kuraldır. Bir kararname yuvası kaplar; istediğin zaman satabilirsin.",
+      "seal": "Kader Mühürü · tur içinde kullanılır",
+      "orb": "Göksel Küre · bir el ailesini geliştirir",
+      "script": "Hiçlik Tomarı · güçlü ama bedelli",
+      "consumableHelp": "Kullanana dek eşyalarında kalır. Kullanmak için masada ona dokun.",
+      "tile": "Taş · duvarına eklenir",
+      "tileHelp": "Bu taşı oyunun sonuna kadar duvarına ekler.",
+      "pack": "Paket · {{from}} içinden {{choose}} seç",
+      "charter": "İmparatorluk Fermanı · kalıcı oyun geliştirmesi",
+      "charterHelp": "İmparatorluk Fermanı oyunun geri kalanı için kalıcı bir geliştirmedir. Yuva kaplamaz ve satılamaz."
+    },
+    "offerLabel": "{{name}}, {{price}} altın",
+    "buyFor": "Satın al · {{price}} altın",
+    "help": {
+      "what": "Çay Evi, turlar arasındaki dükkândır.",
+      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Kararnameler kuralları değiştirir, tüketilebilirler turda kullanılır, Paketler ödül seçtirir ve Fermanlar tüm oyunu geliştirir.",
+      "interest": "Elinde tuttuğun altın faiz getirir: tur sonunda her 5 altın için +1, en fazla +{{cap}}.",
+      "cashOut": "Üstteki satır son turun ödediği altını gösterir; ayrıntı için aç. Her alım kendi Satın Al düğmesiyle yapılır."
+    }
   },
   "decrees": {
     "title": "Kararnameler",
@@ -900,11 +882,11 @@
       },
       "river_tax": {
         "name": "Nehir Vergisi",
-        "description": "Bu tur atılan her taş için 1 Altın kazan."
+        "description": "Her YENİDEN ÇEKİŞTE 2 altın kazan."
       },
       "extended_hand_grant": {
         "name": "Ek Oynama Hakkı",
-        "description": "Tur başına +3 oynama hakkı. Taş veya yeniden çekme hakkı eklemez."
+        "description": "Tur başına +3 hamle."
       },
       "tanyao_dispensation": {
         "name": "Tanyao İstisnası",
@@ -1048,7 +1030,7 @@
       },
       "decree-second-chance": {
         "name": "İkinci Şans",
-        "description": "Tur başına +1 taş atma hakkı."
+        "description": "Tur başına +1 bedava yeniden çekme"
       },
       "decree-balanced-path": {
         "name": "Dengeli Yol",
@@ -1083,8 +1065,8 @@
         "description": "Çarpan ×1,3."
       },
       "decree-riichi-devotee": {
-        "name": "Riichi Adanmışı",
-        "description": "Riichi puan kazandırdığında +3 Çarpan."
+        "name": "Çift Müridi",
+        "description": "Oyunda iki veya daha fazla çift varsa +4 Çarpan"
       },
       "decree-tanyao-tactician": {
         "name": "Tanyao Taktikçisi",
@@ -1180,11 +1162,11 @@
       },
       "decree-waste-not": {
         "name": "İsraf Etme",
-        "description": "Bu tur hiç taş atma hakkı kullanılmadıysa +5 Çarpan."
+        "description": "Bu tur YENİDEN ÇEKMEDİYSEN +5 Çarpan"
       },
       "decree-recycler": {
         "name": "Geri Dönüştürücü",
-        "description": "Bu tur kullanılan her taş atma hakkı için +20 Puan."
+        "description": "Bu tur yeniden çekilen her taş için +10 fiş"
       },
       "decree-yakuhai-zealot": {
         "name": "Yakuhai Fanatiği",
@@ -1240,7 +1222,7 @@
       },
       "decree-careful-player": {
         "name": "Dikkatli Oyuncu",
-        "description": "Tur başına +2 taş atma hakkı."
+        "description": "Tur başına +2 bedava yeniden çekme"
       },
       "decree-inferno": {
         "name": "Cehennem Ateşi",
@@ -1336,7 +1318,7 @@
       },
       "decree-sacrifice": {
         "name": "Fedakârlık",
-        "description": "Çarpan ×3,0, tur başına taş atma hakkı -1."
+        "description": "×3.0 Çarpan, tur başına −1 hamle"
       },
       "decree-transmuter": {
         "name": "Dönüştürücü",
@@ -1360,7 +1342,7 @@
       },
       "decree-infinite-patience": {
         "name": "Sonsuz Sabır",
-        "description": "Tur başına +3 taş atma hakkı."
+        "description": "Tur başına +3 bedava yeniden çekme"
       },
       "decree-divine-flame": {
         "name": "İlahi Alev",
@@ -1432,7 +1414,7 @@
       },
       "decree-time-lord": {
         "name": "Zaman Efendisi",
-        "description": "Tur başına +1 ek oynama hakkı."
+        "description": "Tur başına +1 hamle"
       },
       "decree-exponential": {
         "name": "Üstel Güç",
@@ -1456,7 +1438,7 @@
       },
       "decree-celestial-throne": {
         "name": "Göksel Taht",
-        "description": "Çarpan ×10,0, el kapasitesi -2, taş atma hakkı -1."
+        "description": "×10.0 Çarpan, −2 ıstaka, tur başına −1 hamle"
       },
       "decree-void-emperor": {
         "name": "Hiçlik İmparatoru",
@@ -1484,7 +1466,7 @@
       },
       "decree-time-master": {
         "name": "Zaman Ustası",
-        "description": "Tur başına +2 ek oynama hakkı."
+        "description": "Tur başına +2 hamle"
       },
       "decree-immortal-decree": {
         "name": "Ölümsüz Ferman",
@@ -1508,7 +1490,7 @@
       },
       "dead_wall_writ": {
         "name": "Ölü Duvar Buyruğu",
-        "description": "Tur başına bir kez, duvar yerine atılan taş havuzundan taş çekebilirsiniz."
+        "description": "Tur başına bir kez, seçili bir taşı hamle harcamadan ölü duvardan bir taşla değiştir."
       },
       "shanten_clemency": {
         "name": "Shanten Merhameti",
@@ -1553,11 +1535,11 @@
       "spring": "Bu tur elde +2 yer açılır ve canlı duvardan doldurulur. Etkiler birikir; Yılan hâlâ yalnızca 3 taş yeniler.",
       "summer": "Puan ×1,3. Bu tur için kalan canlı duvarın %20’sini ayırır (kullanılabilir taş sayısı aşağı yuvarlanır).",
       "summerSheltered": "Puan ×1,3. Bambu koruması kazanıldı: Yaz bu turda duvarı artık küçültemez.",
-      "autumn": "Yaku çarpanı +%20. Çekilen her normal Sonbahar bu tur için 1 taş atma hakkı ekler.",
+      "autumn": "Yaku çarpanı +%20. Çekilen her normal Sonbahar bu tur 1 bedava YENİDEN ÇEKME verir.",
       "winter": "Aynı türdeki seriler bir sayı atlayabilir (1–2–4 veya 1–3–4). Puan ×0,75.",
       "drought": "Korunmayan çiçeklerin puan bonuslarını bastırır.",
       "frostbite": "Her Donma, Fermanların puan, çarpan, altın ve yeniden tetikleme ödüllerini tekrar yarıya indirir. Taşların kendi etkileri, kural izinleri, kapasiteler, eylem hakları ve maliyetler değişmez.",
-      "decay": "Bu turda atılan her taş için −10 puan; puan sıfırın altına düşmez.",
+      "decay": "Bu turdaki her YENİDEN ÇEKME için −10 puan, sıfırın altına inmez.",
       "droughtName": "Kuraklık",
       "monsoonName": "Muson",
       "monsoon": "Bu turda normal taş çekişlerini ve bonus taşların yerine çekilen taşları rastgele seçer.",
@@ -1582,7 +1564,12 @@
     "spring": "İlkbahar",
     "summer": "Yaz",
     "autumn": "Sonbahar",
-    "winter": "Kış"
+    "winter": "Kış",
+    "duration": {
+      "run": "Oyun boyunca sürer",
+      "round": "Bu tur boyunca"
+    },
+    "setProgress": "Toplanan çiçek: {{count}}/4"
   },
   "yaku": {
     "title": "Yaku",
@@ -1645,13 +1632,15 @@
     "edition": "Sürüm",
     "debuffed": "Zayıflatılmış taş",
     "lockedMustPlay": "Kilitli taş: oynanmalı",
-    "tileRow": "Taş sırası"
+    "tileRow": "Taş sırası",
+    "honors": "Onur taşları"
   },
   "melds": {
     "pair": "Çift",
     "sequence": "Seri",
     "triplet": "Üçlü",
-    "quad": "Dörtlü"
+    "quad": "Dörtlü",
+    "straight": "Sıra"
   },
   "results": {
     "roundDetails": "Son tur",
@@ -1703,7 +1692,7 @@
       },
       "the_hook": {
         "name": "Kanca",
-        "description": "Her çekişten sonra elden rastgele 2 taş atılır."
+        "description": "Her çekişten sonra ıstakandan rastgele 2 taş nehre gider"
       },
       "the_wall": {
         "name": "Duvar",
@@ -1719,11 +1708,11 @@
       },
       "the_flint": {
         "name": "Çakmaktaşı",
-        "description": "Tüm tur boyunca temel puan ve Çarpan yarıya iner."
+        "description": "Bu turdaki her oyun yarım puan alır"
       },
       "the_needle": {
         "name": "İğne",
-        "description": "El tam olarak 1 oynama hakkıyla tamamlanmalıdır; yeniden deneme yoktur."
+        "description": "Bu tur yalnızca bir oynama (YENİDEN ÇEKME serbest)"
       },
       "the_pillar": {
         "name": "Sütun",
@@ -1731,7 +1720,7 @@
       },
       "the_water": {
         "name": "Su",
-        "description": "Bu tura 0 yeniden çekme hakkıyla başlanır."
+        "description": "Bu tur YENİDEN ÇEKME yok"
       },
       "the_arm": {
         "name": "Kol",
@@ -1739,7 +1728,7 @@
       },
       "the_psychic": {
         "name": "Medyum",
-        "description": "Her elde tam olarak 5 taş oynanmalıdır."
+        "description": "Her oyun tam 5 taş kullanmalı"
       },
       "the_club": {
         "name": "Sopa",
@@ -1779,7 +1768,7 @@
       },
       "the_serpent": {
         "name": "Yılan",
-        "description": "Taş oynadıktan veya attıktan sonra her zaman 3 taş çekilir."
+        "description": "Oynadıktan ya da YENİDEN ÇEKTİKTEN sonra hep tam 3 taş çek"
       },
       "the_tooth": {
         "name": "Diş",
@@ -1791,7 +1780,7 @@
       },
       "the_manacle": {
         "name": "Kelepçe",
-        "description": "El kapasitesi -1."
+        "description": "Istakan 1 taş eksik alır"
       }
     },
     "title": "Patron Emri",
@@ -1815,7 +1804,7 @@
       "base": "Temel zorluk: ek ceza yok.",
       "noSmallRoundReward": "Küçük turlar ödül altını vermez.",
       "scoreScaling": "Puan hedefleri Beyaz kademenin {{multiplier}} katıdır. Masa değiştiricileri de uygulanır.",
-      "redrawPenalty": "Tur başına el yenileme hakkı: −{{amount}}.",
+      "redrawPenalty": "Tur başına hamle: −{{amount}}.",
       "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
       "perishableChance": "Ebedî olmayan mağaza Fermanları: {{chance}} olasılıkla Geçici ({{rounds}} tur sonra zayıflar).",
       "rentalChance": "Mağaza Fermanları: {{chance}} olasılıkla Kiralık (satın almak {{price}} altın, ardından her tur {{fee}} altın)."
@@ -1839,43 +1828,19 @@
     "finish": "Oynamaya Başla!",
     "welcome": {
       "title": "Tensho'ya Hoş Geldiniz!",
-      "content": "Tensho, Japon Riichi Mahjong'u temel alan bir roguelike oyunudur. Amacınız puanlı eller oluşturmak ve her turda hedef puanı tutturmaktır.",
-      "p1": "<0>Tensho (天翔)</0> Japoncada «Göklere Yükseliş» demektir. Klasik taş oyunu <6>Riichi Mahjong</6> üzerine kurulmuş bir <3>roguelike</3> oyundur.",
+      "p1": "<0>Tensho (天翔)</0> Japoncada «Göklere Yükseliş» demektir. Mahjong taşlarıyla <6>poker tarzı eller</6> oynanan bir <3>roguelike</3> oyundur.",
       "p2": "Amaç basit: <2>puan getiren eller kurun</2> ve her turun hedef puanına ulaşın. Ulaşamazsanız oyununuz sona erer.",
       "note1": "Daha önce hiç Mahjong oynamadıysanız endişelenmeyin! Bu öğretici bilmeniz gereken her şeyi adım adım anlatır."
     },
-    "tiles": {
-      "title": "Mahjong Taşları",
-      "content1": "Üç ana seri vardır: Karakterler (萬), Daireler (筒) ve Bambular (索), her biri 1-9 arası numaralıdır."
-    },
-    "honors": {
-      "title": "Şeref Taşları",
-      "content": "Şeref taşları Rüzgarları (Doğu, Güney, Batı, Kuzey) ve Ejderhaları (Beyaz, Yeşil, Kırmızı) içerir. Bu taşlar seri oluşturamaz, sadece üçlü yapabilir."
-    },
     "hands": {
-      "title": "El Oluşturma",
-      "content1": "Kazanan bir el 4 grup (kombinasyon) artı 1 çiftten oluşur.",
-      "content2": "Gruplar seri (1-2-3) veya üçlü (3-3-3) olabilir."
-    },
-    "yaku": {
-      "title": "Yaku - Puanlama Kalıpları",
-      "content1": "Yaku'lar puanınızı çoğaltan özel kalıplardır. Her yaku'nun 1-4 arası bir seviyesi vardır.",
-      "content2": "Örnekler: Tüm Basitler (uç/şeref yok), Tüm Üçlüler, Tam Renk (tek seri)."
-    },
-    "decrees": {
-      "title": "Kararnameler - Kural Değiştiriciler",
-      "content1": "Kararnameler kuralları değiştiren ve puanınızı artıran özel kartlardır.",
-      "content2": "Turlar arasında Çay Evi'nden (dükkan) güçlü kararnameler toplayın."
-    },
-    "scoring": {
-      "title": "Puanlama Formülü",
-      "formula": "Puan = (Taban + Bonuslar) × Çarpanlar",
-      "content": "İlerlemek için her turda hedef puanı tutturun. Daha yüksek perdeler daha yüksek puanlar gerektirir!"
+      "title": "Oynayabileceğin eller",
+      "p1": "Bir oyunda en fazla {{max}} taş olabilir. Taşların oluşturduğu en iyi el olarak puan alır:",
+      "headerHand": "El",
+      "headerMeaning": "Nedir",
+      "mahjong": "Tam bir Mahjong eli, Yaku’larına ek olarak Çarpana +{{mult}} ekler."
     },
     "ready": {
       "title": "Hazırsınız!",
-      "content1": "Yolculuğunuzda iyi şanslar!",
-      "content2": "İlk oyununuza başlamak için OYNA'ya basın.",
       "note1": "Dükkândaki ürünleri 5 altına <1>yenileyebilirsiniz</1>. Her yenileme 1 altın daha pahalıdır.",
       "note2": "<1>25 ve üzeri altın</1> tutmak faizi en üst düzeye çıkarır! Yine de iyi Kararnamelere harcamak çoğunlukla daha kârlıdır.",
       "p1": "Her şeyi ezberlemeye çalışmayın; oynadıkça öğreneceksiniz!",
@@ -1902,7 +1867,7 @@
     "wind_tiles": {
       "note1": "Uç taşlar sade taşların iki katı değerindedir! Birçok yaku da onları özellikle ister ya da dışlar.",
       "p1": "Ana yönleri temsil eden <1>dört Rüzgâr taşı</1> vardır:",
-      "p2": "Rüzgâr taşları <1>Onur taşıdır</1> ve her biri <4>15 puan</4> değerindedir — en yüksek temel değer!"
+      "p2": "Rüzgâr taşları <1>Onur taşıdır</1> ve her biri <4>50 puan</4> değerindedir — en yüksek temel değer!"
     },
     "dragon_tiles": {
       "note1": "Rüzgârlar sıra oluşturamaz. Yalnızca üçlü ya da çift yapabilirler.",
@@ -1910,7 +1875,7 @@
       "p2": "<0>白 (Beyaz Ejderha / Haku)</0> — Boş ya da çerçeveli taş; saflığı veya boşluğu temsil eder",
       "p3": "<0>發 (Yeşil Ejderha / Hatsu)</0> — Yeşil 發 karakteri; «bereket» ya da «yayılmak» anlamına gelir",
       "p4": "<0>中 (Kırmızı Ejderha / Chun)</0> — Kırmızı 中 karakteri; «merkez» anlamına gelir",
-      "p5": "Rüzgârlar gibi Ejderhalar da <1>Onur taşıdır</1>, <4>15 puan</4> eder ve sıra oluşturamaz."
+      "p5": "Ejderhalar <1>Onur taşıdır</1>, <4>15 puan</4> eder ve bir grupta puan alan her Ejderha Çarpana +2 ekler. Sıra oluşturamazlar."
     },
     "bonus_tiles": {
       "p1": "<0>Bonus taşlar</0>, elinizin parçası olmayan özel taşlardır:"
@@ -1946,70 +1911,38 @@
       "p2": "Her standart kazanan el <2>tam olarak bir çift</2> gerektirir. Buna bazen elin «başı» (雀頭) denir."
     },
     "winning_hand": {
-      "note1": "Üçlüler <1>+30 puan</1> eder — sıralardan (+20) fazla! Ancak tamamlaması daha zordur: 3 aynı taş gerekir ve her taş oyunda yalnızca 4 kez bulunur.",
-      "li1": "<1>+50 puan</1> eder — tüm gruplar içinde en yükseği",
+      "note1": "Üçlüler <1>+40 puan</1> eder — sıralardan (+30) fazla! Ancak tamamlaması daha zordur: 3 aynı taş gerekir ve her taş oyunda yalnızca 4 kez bulunur.",
+      "li1": "<1>+65 puan</1> eder — tüm gruplar içinde en yükseği",
       "li2": "4 taşı olmasına rağmen tek grup sayılır",
       "li3": "Bildirildiğinde yerine bir taş çekersiniz",
       "p1": "Standart bir kazanan el şunlardan oluşur:"
     },
     "gameplay_overview": {
-      "note1": "Çift <1>+10 puan</1> eder. Herhangi bir taş çift yapabilir — sayı, rüzgâr ya da ejderha.",
+      "note1": "Çift <1>+15 puan</1> eder. Herhangi bir taş çift yapabilir — sayı, rüzgâr ya da ejderha.",
       "li1": "Daireler 1-2-3 (sıra)",
       "li2": "Bambu 5-5-5 (üçlü)",
       "li3": "Karakterler 6-7-8 (sıra)",
       "li4": "Doğu-Doğu-Doğu (üçlü)",
-      "li5": "Kırmızı Ejderha çifti",
-      "p1": "Her tur basit bir döngü izler:"
+      "li5": "Kırmızı Ejderha çifti"
     },
     "special_hands": {
       "p1": "İki özel el yapısı «4 grup + 1 çift» kuralına uymaz:"
     },
-    "discarding": {
-      "li1": "Elinizde 13 taşla <0>başlayın</0>",
-      "li2": "Duvardan bir taş <0>çekin</0>",
-      "li3": "<1>Kazanıp</1> kazanamayacağınızı kontrol edin (geçerli el + hedef puan)",
-      "li4": "Kazanamıyorsanız ihtiyacınız olmayan bir taşı <1>atın</1>",
-      "p1": "Çektikten sonra (kazanmadıysanız) 13 taşa dönmek için <2>bir taş atmalısınız</2>.",
-      "p2": "<0>Nasıl atılır:</0>"
-    },
-    "shanten": {
-      "li1": "Kazanana ya da duvar bitene kadar tekrarlayın",
-      "p1": "<0>Shanten (向聴)</0>, kazanan bir eli tamamlamak için değiştirmeniz gereken taş sayısıdır."
-    },
-    "scoring_overview": {
-      "note1": "Kazanan bir eli tamamlamadan duvar biterse tur <1>başarısızlıkla</1> sonuçlanır ve oyununuz biter!",
-      "p1": "Puanınız şu formülle hesaplanır:"
-    },
     "drawing": {
-      "p1": "Sıranızın başında duvardan <2>bir taş çekersiniz</2>. Böylece geçici olarak 14 taşınız olur.",
       "p2": "<1>Duvar</1>, ölü duvar ayrıldıktan sonra 70 çekilebilir taşla başlar. Kalan taş sayacını izleyin!"
     },
     "base_points": {
-      "note1": "<1>Bonus taş</1> (Çiçek ya da Mevsim) çektiğinizde otomatik olarak açılır ve yerine bir taş çekersiniz. Bu bir sıra harcamaz!",
-      "li1": "Bir taşı seçmek için <0>dokunun ya da tıklayın</0>",
-      "li2": "Atma bölgesine <0>yukarı sürükleyin</0>",
-      "li3": "Atılan taşlar <1>Ölü Havuza</1> gider",
-      "p1": "Kazanan elinizdeki her taş <2>temel puan</2> katar:"
+      "note1": "<1>Bonus taş</1> (Çiçek ya da Mevsim) çektiğinizde otomatik olarak açılır ve yerine bir taş çekersiniz. Bu bir sıra harcamaz!"
     },
     "yaku_intro": {
-      "note1": "Atılan taşlar <2>sonsuza dek gider</2> — hangi taşı attığınızı dikkatle seçin!",
-      "li1": "<0>Temel puan</0> — Taşların kendisinden",
-      "li2": "<0>Yapı puanı</0> — Gruplarınızdan ve çiftinizden",
-      "li3": "<0>Çarpanlar</0> — Yaku, Kararname ve etkilerden",
       "p1": "<0>Yaku (役)</0>, <3>puanınızı katlayan</3> özel desenlerdir. Büyük puanlar buradan gelir!",
-      "p2": "Tensho'da 4 kademeye ayrılmış <1>21 yaku</1> vardır:"
+      "p2": "Tensho'da 4 kademeye ayrılmış <1>20 yaku</1> vardır:"
     },
     "yaku_examples": {
-      "note1": "Oyun güncel shanten değerinizi gösterir. Düşük olması iyidir! Her elde onu azaltmaya çalışın.",
       "p1": "Sık karşılaşacağınız bazı yaku'lar:"
     },
     "boss_mandates": {
-      "note1": "Onur taşları sade taşlardan <1>3 kat fazla puan</1> verir! Onur taşlarıyla dolu bir elin temel puanı çok daha yüksek olur.",
       "p1": "Her <1>Boss turunda</1> özel bir <3>Ferman</3> bulunur — bir kısıtlama ya da meydan okuma:"
-    },
-    "structure_points": {
-      "p1": "Gruplarınız temel puana <1>yapı puanı</1> ekler:",
-      "p2": "<0>Örnek:</0> 2 sıra, 2 üçlü ve bir çiftten oluşan bir el:"
     },
     "decree_categories": {
       "note1": "Yaku'lar <1>çarpılarak birikir</1>! ×1,3 ve ×2,0 yaku içeren bir el toplamda ×2,6 alır. Devasa puanlar için kombinasyon kurun!",
@@ -2026,16 +1959,7 @@
       "li3": "<0>Yetenek vermek</0> — Ek çekiş, yeniden çekiş ya da etkiler",
       "p1": "Sınırlı sayıda <1>Kararname yuvanız</1> vardır. <3>5 yuvayla</3> başlarsınız ve şu yollarla artırabilirsiniz:"
     },
-    "skipping": {
-      "p1": "Boss ile karşılaşmadan önce Küçük ya da Büyük turu <1>atlayabilirsiniz</1>. Bunu neden yapasınız?"
-    },
     "decree_rarities": {
-      "li1": "Bir Alâmet İşareti alırsınız",
-      "li2": "Süreli Kararnameleri korursunuz",
-      "li3": "Elverişsiz duvarlardan kaçınırsınız",
-      "li4": "Dükkâna erişim yok",
-      "li5": "Altın kazanılmaz",
-      "li6": "Faiz artmaz",
       "p1": "Kararnameler <1>4 nadirlik kademesinde</1> gelir:"
     },
     "decrees_intro": {
@@ -2075,6 +1999,55 @@
     },
     "gold_economy": {
       "p1": "<1>Altını</1> birkaç yolla kazanırsınız:"
+    },
+    "turns": {
+      "title": "Bir tur nasıl oynanır",
+      "p1": "Her tur sana {{turns}} hamle verir. Her hamle iki eylemden biridir:",
+      "play": "seçili taşlarla puan al: en fazla {{max}} taş ya da tam bir Mahjong eli.",
+      "redraw": "seçtiğin taşları istediğin kadar nehre gönder ve yenilerini çek.",
+      "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
+      "warning": "Hedefin altında hamlelerin biterse oyun sona erer."
+    },
+    "refill": {
+      "title": "Taş çekmek",
+      "p1": "Her oyundan ve her yeniden çekişten sonra rafın duvardan dolar; böylece hep tam bir elden seçersin."
+    },
+    "redraw": {
+      "title": "YENİDEN ÇEK",
+      "p1": "İstemediğin taşları, istediğin kadar seç ve YENİDEN ÇEK’e bas. Nehre giderler ve yerlerini yeni taşlar alır.",
+      "li1": "Önce eşyalardan gelen ücretsiz çekişler kullanılır; yoksa bir yeniden çekiş bir hamleye mal olur.",
+      "li2": "Yeniden çekilen taşlar tur bitene kadar nehirde kalır.",
+      "note": "Zaten grup oluşturan taşları tut, yalnız kalanları yeniden çek."
+    },
+    "score": {
+      "title": "Puanlama nasıl işler",
+      "p1": "Her oyunun puanı:",
+      "note": "Büyük eller, Ejderhalar, Küreler ve Kararnameler Çarpanı yükseltir; Çarpan da her şeyi çarpar."
+    },
+    "points": {
+      "title": "Taş puanları",
+      "p1": "Bir gruptaki her taş kendi puanını alır:",
+      "headerTile": "Taş",
+      "headerPoints": "Puan",
+      "simples": "Sadeler (2–8)",
+      "terminals": "Uçlar (1 ve 9)",
+      "dragonValue": "{{points}}, grupta Çarpana +{{mult}}",
+      "note": "Rüzgârlar sade bir taşın on katı eder; Ejderhalar ise Çarpanı yükseltir. Hiçbir grupta olmayan taş yarı puan alır."
+    },
+    "groups": {
+      "title": "Grup bonusları",
+      "p1": "Her grup, taşlarının üstüne bonus puan ekler:",
+      "headerGroup": "Grup",
+      "headerMeaning": "Taşlar",
+      "headerBonus": "Bonus",
+      "example": "Örnek: İki çift = {{pair}} + {{pair}} = +{{total}} bonus puan, ikinci grup da Çarpana +1 ekler."
+    },
+    "swift": {
+      "title": "Hızlı galibiyet",
+      "p1": "Turlar atlanamaz. Küçük ya da Büyük turu {{spare}} veya daha fazla hamle artırarak geçersen bir Alamet kazanırsın.",
+      "li1": "Turun altınını yine alır, Çay Evi’ne de uğrarsın.",
+      "li2": "Patron turları asla Alamet vermez.",
+      "note": "Erken gelen güçlü bir el hamle kazandırır; artan hamleler Alamete dönüşür."
     }
   },
   "accessibility": {
@@ -2154,7 +2127,7 @@
       },
       "omens": {
         "name": "Alametler",
-        "description": "Tur atlayarak kazanılan tek kullanımlık ödüller."
+        "description": "Turu hamle artırarak geçmenin tek seferlik ödülleri"
       },
       "mandates": {
         "name": "Hükümler",
@@ -2194,11 +2167,11 @@
       },
       "steady_hand": {
         "name": "Sağlam El",
-        "description": "Tur başına +1 oynama hakkı."
+        "description": "Tur başına +1 hamle"
       },
       "frugal_discard": {
-        "name": "Tutumlu Değişim",
-        "description": "Tur başına +1 yeniden çekme hakkı."
+        "name": "Tutumlu Yeniden Çekme",
+        "description": "Tur başına +1 bedava yeniden çekme"
       },
       "seal_merchant": {
         "name": "Mühür Tüccarı",
@@ -2222,7 +2195,7 @@
       },
       "ancient_script": {
         "name": "Kadim Yazıt",
-        "description": "Perde sayısı -1, tur başına oynama hakkı -1."
+        "description": "−1 perde, tur başına −1 hamle"
       },
       "directors_take": {
         "name": "Yönetmenin Çekimi",
@@ -2254,11 +2227,11 @@
       },
       "swift_hand": {
         "name": "Çevik El",
-        "description": "Tur başına +1 ilave oynama hakkı."
+        "description": "Tur başına +1 hamle daha"
       },
       "wasteful_plenty": {
         "name": "Savurgan Bolluk",
-        "description": "Tur başına +1 ilave yeniden çekme hakkı."
+        "description": "Tur başına +1 bedava yeniden çekme daha"
       },
       "seal_tycoon": {
         "name": "Mühür Zengini",
@@ -2282,7 +2255,7 @@
       },
       "stone_script": {
         "name": "Taş Yazıtı",
-        "description": "Perde sayısı bir kez daha -1, tur başına yeniden çekme hakkı -1."
+        "description": "Bir −1 perde daha, tur başına −1 hamle"
       },
       "final_cut": {
         "name": "Son Kurgu",
@@ -2334,7 +2307,7 @@
       },
       "script_of_the_medium": {
         "name": "Medyum Yazıtı",
-        "description": "1 taşa Mor Mühür ekler (taş atıldığında Mühür oluşturur)."
+        "description": "1 taşa Mor Mühür ekler (yeniden çekilince Kader Mühürü yaratır)"
       },
       "script_of_aura": {
         "name": "Hale Yazıtı",
@@ -2495,289 +2468,27 @@
       }
     }
   },
-  "tableLoop": {
-    "save": {
-      "invalid": "Önceki kayıt geri yüklenemedi. Yerine yenisini kaydetmek için yeni bir koşu başlatın.",
-      "unavailable": "Bu cihazda ilerleme kaydedilemiyor. Devam etmek için bu sekmeyi açık tutun.",
-      "conflictTitle": "Masa başka bir pencerede değişti",
-      "conflict": "Kayıtlı oyun başka bir pencerede değiştiği için bu masa duraklatıldı. Daha yeni kaydın üzerine yazılmadı.",
-      "loadLatest": "Son kaydı yükle",
-      "loadConfirm": "Bu masa son kayıtlı oyunla değiştirilsin mi? Bu penceredeki kaydedilmemiş hamleler kaybolacak. Kayıt silindiyse yeni bir masa açılacak.",
-      "loadFailed": "Son kayıt yüklenemedi. Hiçbir şey değiştirilmedi. Bu pencereyi açık tutup tekrar deneyin."
-    },
-    "slot": {
-      "meld": "Grup yuvası {{number}}",
-      "pair": "Çift yuvası",
-      "meldShort": "Grup",
-      "pairShort": "Çift",
-      "emptyMeld": "seri ya da üçlü",
-      "emptyPair": "iki aynı",
-      "replace": "Değiştir",
-      "filled": "içinde bir {{type}} var",
-      "empty": "boş",
-      "forecast": "{{total}} puan getirir",
-      "multCost": "ve {{mult}} Çarpana mal olur"
-    },
-    "milestones": {
-      "title": "Şekiller",
-      "momentum": "Masa ivmesi +{{mult}} Çarpan",
-      "claimed": "alındı",
-      "twin_sequence": {
-        "name": "İkiz Seri",
-        "description": "Aynı seriden iki tanesi masada yan yana durur."
-      },
-      "pure_suit": {
-        "name": "Saf Renk",
-        "description": "İki ya da daha çok grup, hepsi aynı renkten."
-      },
-      "three_suit_sequence": {
-        "name": "Üç Renkli Seri",
-        "description": "Aynı üçlü sayı dizisi, her renkte birer kez."
-      },
-      "dragon_duet": {
-        "name": "Ejderha İkilisi",
-        "description": "İki farklı Ejderha masayı tutar."
-      },
-      "dragon_court": {
-        "name": "Ejderha Sarayı",
-        "description": "Üç Ejderha da birbirine karşılık verir."
-      },
-      "four_sequences": {
-        "name": "Dört Seri",
-        "description": "Her grup yuvasında bir seri var ve çift de yerleştirildi."
-      }
-    },
-    "decrees": {
-      "echoing_bamboo": {
-        "name": "Yankılanan Bambu",
-        "description": "Bir Bambu serisi yerleştirdiğinde iki kez puan verir."
-      },
-      "patient_pair": {
-        "name": "Sabırlı Çift",
-        "description": "Masada duran her grup için çift +30 kazanır."
-      },
-      "watch_fire": {
-        "name": "Nöbet Ateşi",
-        "description": "Bir üçlü ya da dörtlü +0,5 Çarpan alır ve yuvasını yakar. Yanan bir yuvanın yanındaki grup +0,5 Çarpan alır."
-      },
-      "twin_flame": {
-        "name": "İkiz Alev",
-        "description": "Şekil ödülleri iki katı puan öder."
-      },
-      "river_merchant": {
-        "name": "Fısıldayan Tüccar",
-        "description": "Her turda bir kez, raftan seçtiğin bir taşı nehirdeki bir taşla takas et. Aksiyon harcamaz."
-      },
-      "jade_ledger": {
-        "name": "Yeşim Defteri",
-        "description": "Yerleştirdiğin her grup için ¥2 kazan. Her tura bir değişim eksiğiyle başla."
-      },
-      "honor_court": {
-        "name": "Onur Sarayı",
-        "description": "Rüzgâr ya da Ejderha grupları her taşı için +0,3 Çarpan alır."
-      },
-      "terminal_gate": {
-        "name": "Uç Taş Kapısı",
-        "description": "İçinde 1 ya da 9 bulunan grup +40 kazanır."
-      },
-      "wide_rack": {
-        "name": "Geniş Raf",
-        "description": "Rafında iki taş daha tut."
-      },
-      "gap_bridge": {
-        "name": "Köprü",
-        "description": "Turda bir kez, bir seri bir sayı atlayabilir: 3·4·6 seri sayılır."
-      }
-    },
-    "chain": {
-      "title": "Puan nasıl oluştu",
-      "skip": "Atla"
-    },
-    "stage": {
-      "group": {
-        "sequence": "Seri yerleştirildi — {{tiles}}",
-        "triplet": "Üçlü yerleştirildi — {{tiles}}",
-        "quad": "Dörtlü yerleştirildi — {{tiles}}",
-        "pair": "Çift yerleştirildi — {{tiles}}"
-      },
-      "frostMagistrate": "Kırağı Yargıcı: onur taşları yarım puan",
-      "momentum": "Masa ivmesi +{{mult}} Çarpan",
-      "terminalGate": "Uç Taş Kapısı +{{bonus}}",
-      "honorCourt": "Onur Sarayı +{{mult}} Çarpan",
-      "patientPair": "Sabırlı Çift +{{bonus}} (bekleyen grup: {{melds}})",
-      "watchFire": "Nöbet Ateşi, yanan yuvadan +{{mult}} Çarpan",
-      "echoingBamboo": "Yankılanan Bambu: bu seri iki kez puan verir",
-      "milestone": "{{name}} +{{points}}, şekil durdukça +{{mult}} Çarpan",
-      "completion": "Masa tamam — {{base}} × {{mult}}",
-      "total": "Hedefe ekleniyor",
-      "milestoneBroken": "{{name}} bozuldu — {{mult}} Çarpan kayboldu",
-      "replaces": "{{tiles}} yerine geçer — {{points}} zaten ödendi",
-      "watchFireSet": "Nöbet Ateşi üçlü için +{{mult}} Çarpan"
-    },
-    "roundEnd": {
-      "target": "Tur güvenceye alındı",
-      "completed": "Masa tamamlandı",
-      "exhausted": "Kaynaklar tükendi"
-    },
-    "rounds": {
-      "0": "İlk Işık",
-      "1": "Yükselen Saray",
-      "2": "Kırağı Yargıcı"
-    },
-    "boss": {
-      "frost_magistrate": "Kırağı Yargıcı: bu turda onur taşları puanlarının yarısını verir."
-    },
-    "hud": {
-      "round": "{{total}} turdan {{current}}. tur",
-      "resources": "{{actions}} hamle · {{redraws}} değişim",
-      "bridges": "· {{count}} köprü",
-      "gold": "{{gold}} altın"
-    },
-    "table": {
-      "label": "Masa"
-    },
-    "river": {
-      "choose": "Vereceğin bir raf taşını seç, ardından nehirden bir taş seç. Her turda bir kez ücretsiz.",
-      "ready": "{{tile}} taşını bir nehir taşıyla takas et. Aksiyon harcamaz.",
-      "used": "Tüccar takası bu tur kullanıldı.",
-      "swapLabel": "{{give}} taşını {{take}} ile takas et",
-      "title": "Nehir",
-      "recover": "Nehir: birini geri almak için dokun"
-    },
-    "hint": {
-      "select": "Taşlara dokunup bir seri, üçlü ya da çift kur, sonra bir yuva seç.",
-      "choose": "Onaylamak için vurgulanan yuvaya dokun.",
-      "noSlot": "Hiçbir yuva bu grubu almıyor. Taşları değiştir ya da başka bir şekil seç.",
-      "draft": "Bir teklif al ya da duvardan çek. Başka bir şey yaparsan duvardaki taş gelir."
-    },
-    "action": {
-      "clear": "Temizle",
-      "exchange": "Değiştir ({{left}})",
-      "recover": "Değiştir (1 hamle)",
-      "finish": "Turu bitir",
-      "needMore": "{{remaining}} kaldı"
-    },
-    "start": {
-      "title": "Nasıl oynayacağını seç",
-      "subtitle": "İlk taştan önce seçilen tek bir Kararname. Hangi taşları istediğini değiştirmeli.",
-      "take": "Bununla başla"
-    },
-    "cleared": {
-      "title": "Tur geçildi",
-      "subtitle": "{{target}} hedefine karşı {{score}}. Kese: ¥{{gold}}.",
-      "shop": "Çay evine uğra",
-      "skipShop": "Doğrudan sonraki tura"
-    },
-    "shop": {
-      "title": "Çay Evi",
-      "subtitle": "Kese: ¥{{gold}}",
-      "empty": "Rafta bir şey kalmadı.",
-      "buy": "Satın al",
-      "leave": "Sonraki tur"
-    },
-    "end": {
-      "won": "Üç tur, hepsi geçildi",
-      "lost": "Masa tükendi",
-      "summary": "Tur toplamı {{score}}",
-      "again": "Bir tur daha"
-    },
-    "reject": {
-      "tooFew": "Grup oluşturan en az iki taş seç.",
-      "tooMany": "Bir grup en fazla dört taştır.",
-      "bonusTile": "Çiçek ve mevsim taşları grup olarak yerleştirilemez.",
-      "notAGroup": "Bu taşlar seri, üçlü, dörtlü ya da çift oluşturmuyor.",
-      "notChoosing": "Açılış seçimi zaten yapıldı.",
-      "notOffered": "O Kararname sunulmadı.",
-      "notPlaying": "Tur bitti.",
-      "noActions": "Yerleştirme hamlesi kalmadı.",
-      "noSlot": "Böyle bir yuva yok.",
-      "slotTaken": "O yuvada zaten bir grup var.",
-      "slotEmpty": "O yuvada değiştirilecek bir şey yok.",
-      "notInRack": "O taşlar rafında değil.",
-      "pairSlotOnly": "Çift yuvası yalnızca çift alır.",
-      "meldSlotOnly": "Grup yuvası seri, üçlü ya da dörtlü alır.",
-      "illegalPlacement": "O grup oraya konamaz.",
-      "noRedraws": "Değişim hakkı kalmadı.",
-      "redrawSize": "Bir ile üç taş arasında değiştir.",
-      "wallEmpty": "Duvar boş.",
-      "noRecoveries": "Bu turda nehirden geri alma hakkı kalmadı.",
-      "rackFull": "Rafın dolu; önce yerleştir ya da değiştir.",
-      "notInRiver": "O taş nehirde değil.",
-      "targetNotMet": "Turu bitirmeden önce hedefe ulaş.",
-      "notBetweenRounds": "Dükkân turlar arasında açılır.",
-      "shopClosed": "Dükkân kapalı.",
-      "tooExpensive": "Buna paran yetmiyor.",
-      "noDraftPick": "Tekliflerden seçebilmek için önce bir grup yerleştir.",
-      "notInDraft": "O taş tekliflerin arasında değil.",
-      "notPractice": "O teklif alıştırma dağıtımına aittir.",
-      "alreadyOwned": "Zaten sende var."
-    },
-    "rack": {
-      "label": "Rafın"
-    },
-    "selection": {
-      "noGroup": "Henüz bir grup değil · {{tiles}}",
-      "multCost": "bir şekli bozar · −{{mult}} Çarpan",
-      "bridged": "{{type}} (köprülü) · {{tiles}}"
-    },
-    "draft": {
-      "title": "Teklifler",
-      "claimable": "Teklifler: bu tamamlama için birini al",
-      "pass": "Duvardan",
-      "variant": "Varyant: teklif sırası",
-      "variantHint": "Açık duran üç taş. Yerleştirdiğin her grup, bir tamamlamanın duvar yerine buradan gelmesine izin verir.",
-      "on": "Açık",
-      "off": "Kapalı"
-    },
-    "practice": {
-      "label": "Alıştırma dağıtımı",
-      "begin": "İlk kez mi? Önce alıştırma dağıtımını oyna",
-      "inspectRun": "Seriyi göster · {{slot}}",
-      "inspectPair": "Çifti göster · {{slot}}",
-      "takeDecree": "{{name}} al",
-      "startReal": "Gerçek bir tur başlat",
-      "choose": {
-        "title": "İki hamle, ve aynı hamle değiller",
-        "body": "Rafında bir bambu serisi ve bir dokuzlu çift var. Seri bir grup yuvasına, çift ise yalnızca çift yuvasına girer. Bir grup seç, sonra yanan yuvaya dokun: yuvadaki tahmin, tam olarak vereceği puandır."
-      },
-      "interact": {
-        "title": "Grupların birbirine karşılık verebilir",
-        "body": "O grup turun sonuna kadar masada kalır. Birincisinin aynısı olan ikinci bir seri ara: yan yana duran iki özdeş seri, tek başlarına olduklarından daha değerlidir."
-      },
-      "upgrade": {
-        "title": "İşte bu bir İkiz Seriydi",
-        "body": "Bir kez ödedi ve bundan sonra yerleştireceğin her şeyin çarpanını yükseltti. Yankılanan Bambu böyle bir masaya yakışır: bir bambu serisi, koyduğun anda iki kez puan verir."
-      },
-      "ready": {
-        "title": "Döngünün tamamı bu",
-        "body": "Grupları yerleştir, birbirlerine karşılık verişlerini izle ve kazandığını kurduğun masaya yakışan Kararnamelere harca. Alıştırma dağıtımı yazılmıştır; gerçek bir tur karıştırılmış duvardan dağıtılır."
-      }
-    },
-    "flourish": {
-      "completion": "Masa tamam"
-    }
-  },
   "orbs": {
     "items": {
       "pluto_orb": {
         "name": "Plüton Küresi",
-        "description": "Riichi Yakusunu güçlendirir. Seviye başına +1 Çarpan, +10 Puan."
+        "description": "Çiftleri geliştirir: Çift, İki çift ve Üç çift. Seviye başına +1 Çarpan, +10 fiş."
       },
       "mercury_orb": {
         "name": "Merkür Küresi",
-        "description": "Tanyao Yakusunu güçlendirir. Seviye başına +1 Çarpan, +15 Puan."
+        "description": "Hep basiti geliştirir: yalnız 2–8 taşlı oyunlar ve Tanyao eli. Seviye başına +1 Çarpan, +15 fiş."
       },
       "uranus_orb": {
         "name": "Uranüs Küresi",
-        "description": "Yakuhai Yakusunu güçlendirir. Seviye başına +1 Çarpan, +20 Puan."
+        "description": "Onur taşlarını geliştirir: her Rüzgar veya Ejderha grubu ve Yakuhai eli. Seviye başına +1 Çarpan, +20 fiş."
       },
       "venus_orb": {
         "name": "Venüs Küresi",
-        "description": "Pinfu Yakusunu güçlendirir. Seviye başına +2 Çarpan, +20 Puan."
+        "description": "Serileri geliştirir: Seri, Seri + Çift, İki seri ve Pinfu eli. Seviye başına +2 Çarpan, +20 fiş."
       },
       "saturn_orb": {
         "name": "Satürn Küresi",
-        "description": "Ittsu (Saf Düz) Yakusunu güçlendirir. Seviye başına +3 Çarpan, +30 Puan."
+        "description": "Sıraları geliştirir: dörtlü ve beşli sıralar ve Saf sıra eli. Seviye başına +3 Çarpan, +30 fiş."
       },
       "jupiter_orb": {
         "name": "Jüpiter Küresi",
@@ -2785,7 +2496,7 @@
       },
       "earth_orb": {
         "name": "Dünya Küresi",
-        "description": "Toitoi Yakusunu güçlendirir. Seviye başına +2 Çarpan, +25 Puan."
+        "description": "Üçlü ve dörtlü oyunlarını ve Hep üçlü elini geliştirir. Seviye başına +2 Çarpan, +25 fiş."
       },
       "mars_orb": {
         "name": "Mars Küresi",
@@ -2885,11 +2596,11 @@
       },
       "arcana_jumbo": {
         "name": "Büyük Gizem Paketi",
-        "description": "5 Kader Mühründen 1'ini seçin."
+        "description": "5 Kader Mühründen 2'sini seçin."
       },
       "arcana_mega": {
         "name": "Dev Gizem Paketi",
-        "description": "5 Kader Mühründen 2'sini seçin."
+        "description": "6 Kader Mühründen 3'ünü seçin."
       },
       "celestial_normal": {
         "name": "Göksel Paket",
@@ -2897,11 +2608,11 @@
       },
       "celestial_jumbo": {
         "name": "Büyük Göksel Paket",
-        "description": "5 Göksel Küreden 1'ini seçin."
+        "description": "5 Göksel Küreden 2'sini seçin."
       },
       "celestial_mega": {
         "name": "Dev Göksel Paket",
-        "description": "5 Göksel Küreden 2'sini seçin."
+        "description": "6 Göksel Küreden 3'ünü seçin."
       },
       "tile_normal": {
         "name": "Taş Paketi",
@@ -2909,11 +2620,11 @@
       },
       "tile_jumbo": {
         "name": "Büyük Taş Paketi",
-        "description": "5 değiştirilmiş taştan 1'ini seçin."
+        "description": "5 değiştirilmiş taştan 2'sini seçin."
       },
       "tile_mega": {
         "name": "Dev Taş Paketi",
-        "description": "5 değiştirilmiş taştan 2'sini seçin."
+        "description": "6 değiştirilmiş taştan 3'ünü seçin."
       },
       "decree_normal": {
         "name": "Ferman Paketi",
@@ -2921,11 +2632,11 @@
       },
       "decree_jumbo": {
         "name": "Büyük Ferman Paketi",
-        "description": "5 Fermandan 1'ini seçin."
+        "description": "5 Fermandan 2'sini seçin."
       },
       "decree_mega": {
         "name": "Dev Ferman Paketi",
-        "description": "5 Fermandan 2'sini seçin."
+        "description": "6 Fermandan 3'ünü seçin."
       },
       "void_normal": {
         "name": "Hiçlik Paketi",
@@ -2933,12 +2644,203 @@
       },
       "void_jumbo": {
         "name": "Büyük Hiçlik Paketi",
-        "description": "5 Hiçlik Yazıtından 1'ini seçin."
+        "description": "5 Hiçlik Yazıtından 2'sini seçin."
       },
       "void_mega": {
         "name": "Dev Hiçlik Paketi",
-        "description": "5 Hiçlik Yazıtından 2'sini seçin."
+        "description": "6 Hiçlik Yazıtından 3'ünü seçin."
       }
     }
+  },
+  "patterns": {
+    "toast": "{{name}}!",
+    "loose": {
+      "name": "Dağınık taşlar",
+      "explain": "Grup yok: her taş puanının yarısını verir."
+    },
+    "pair": {
+      "name": "Çift",
+      "explain": "İki aynı taş."
+    },
+    "sequence": {
+      "name": "Seri",
+      "explain": "Aynı türden art arda üç sayı."
+    },
+    "triplet": {
+      "name": "Üçlü",
+      "explain": "Üç aynı taş."
+    },
+    "quad": {
+      "name": "Dörtlü",
+      "explain": "Dört aynı taş."
+    },
+    "straight4": {
+      "name": "Dörtlü sıra",
+      "explain": "Aynı türden art arda dört sayı."
+    },
+    "straight5": {
+      "name": "Beşli sıra",
+      "explain": "Aynı türden art arda beş sayı."
+    },
+    "two_pairs": {
+      "name": "İki çift",
+      "explain": "Tek oyunda iki farklı çift."
+    },
+    "three_pairs": {
+      "name": "Üç çift",
+      "explain": "Tek oyunda üç çift."
+    },
+    "two_sequences": {
+      "name": "İki seri",
+      "explain": "Tek oyunda iki seri (altı taş)."
+    },
+    "two_triplets": {
+      "name": "İki üçlü",
+      "explain": "Tek oyunda iki üçlü."
+    },
+    "sequence_pair": {
+      "name": "Seri + Çift",
+      "explain": "Bir seri ve bir çift birlikte."
+    },
+    "triplet_pair": {
+      "name": "Full house",
+      "explain": "Bir üçlü ve bir çift birlikte."
+    },
+    "triplet_sequence": {
+      "name": "Üçlü + Seri",
+      "explain": "Bir üçlü ve bir seri birlikte."
+    },
+    "quad_pair": {
+      "name": "Dörtlü + Çift",
+      "explain": "Bir dörtlü ve bir çift birlikte."
+    },
+    "straight_pair": {
+      "name": "Sıra + Çift",
+      "explain": "Dörtlü sıra ve bir çift birlikte."
+    },
+    "mahjong": {
+      "name": "Mahjong",
+      "explain": "Tam el: dört grup ve bir çift, genelde 14 taş. Yaku puanı katlar."
+    },
+    "combination": {
+      "name": "Kombinasyon",
+      "explain": "Aynı anda birkaç grup."
+    }
+  },
+  "guide": {
+    "title": "Nasıl oynanır",
+    "intro": "Tensho, Mahjong taşlarıyla oynanan poker tarzı bir oyun. El oluşturan taşları seç, puan için oyna ve her turun hedefine ulaş.",
+    "turnsTitle": "Senin hamlen",
+    "playHelp": "seçili taşlarla puan alır.",
+    "redrawHelp": "seçili taşlardan istediğin kadarını nehre atar ve yenilerini çeker.",
+    "turnsHelp": "Her tur {{turns}} hamle verir. Eli oynamak ve YENİDEN ÇEKMEK birer hamle harcar. Küçük ya da büyük turu {{spare}} hamle artırarak geçersen bir alamet kazanırsın.",
+    "scoreTitle": "Puanın",
+    "points": "Puan",
+    "mult": "Çarpan",
+    "score": "Puan",
+    "scoreHelp": "Puan, taşların değeri artı her grubun bonusudur. Çarpan 1’den başlar; büyük eller, Ejderhalar, Küreler ve Kararnamelerle artar. Grup dışındaki taşlar yarım puan verir.",
+    "handsTitle": "Eller",
+    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1, dörtlüler ve beşli sıralar +2 ekler. Her taş bir kez sayılır; tam Mahjong eli dışında oyun başına en fazla 6 taş.",
+    "tilesTitle": "Taşlar",
+    "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
+    "honorsHelp": "Her Rüzgar {{wind}} puan değerindedir. Bir gruptaki her Ejderha +{{dragon}} Çarpan ekler.",
+    "specialTitle": "Özel taşlar",
+    "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Ne yaptığını görmek için taşın üzerine gel veya odaklan.",
+    "close": "Hadi oynayalım"
+  },
+  "mandateConsequence": {
+    "discard_after_draw": "Her çekişte −{{count}} rastgele taş",
+    "score_multiplier": "Hedef ×{{value}}",
+    "no_repeat_yaku": "Tekrarlanan Yaku yok",
+    "single_yaku_type": "Tek tür Yaku",
+    "halve_score": "Puan ×½",
+    "single_hand": "Sadece 1 oynama",
+    "debuff_used_tiles": "Kullanılan taşlar 0 puan",
+    "no_discards": "YENİDEN ÇEKME yok",
+    "decrease_yaku_tier": "Yaku −{{count}} kademe",
+    "fixed_hand_size": "Tam {{count}} taş oyna",
+    "debuff_suit": "{{target}} 0 puan",
+    "debuff_tile_type": "{{target}} 0 puan",
+    "hand_size_reduction": "Istaka −{{count}} taş",
+    "gold_per_tile": "Oynanan taş başına −{{count}} altın",
+    "most_played_yaku_zeroes_gold": "En çok oynanan Yaku tüm altını alır",
+    "first_hand_face_down": "İlk ıstaka kapalı",
+    "tiles_face_down_ratio": "{{count}} taştan 1’i kapalı",
+    "tiles_face_down_after_play": "Yeni taşlar kapalı",
+    "fixed_draw_count": "Hep {{count}} çek",
+    "honor_tiles_face_down": "Onur taşları kapalı",
+    "shuffle_decrees": "Kararnameler gizli",
+    "debuff_until_sell": "Bir Kararname satana dek tüm taşlar 0",
+    "disable_random_decree": "Her oyunda 1 Kararname kapalı",
+    "lock_random_tile": "Her çekişte bir taş kilitlenir"
+  },
+  "upgradeFamilies": {
+    "Pairs": {
+      "name": "Çiftler",
+      "covers": "Çift, İki çift ve Üç çift"
+    },
+    "Pinfu": {
+      "name": "Seriler",
+      "covers": "Seri, Seri + Çift, İki seri ve Pinfu eli"
+    },
+    "Ittsu": {
+      "name": "Sıralar",
+      "covers": "Dörtlü ve beşli sıralar, ve Saf sıra eli"
+    },
+    "Toitoi": {
+      "name": "Üçlü ve dörtlüler",
+      "covers": "Üçlü veya dörtlü içeren her oyun ve Hep üçlü eli"
+    },
+    "Yakuhai": {
+      "name": "Onur taşları",
+      "covers": "Her Rüzgar veya Ejderha grubu ve Yakuhai elleri"
+    },
+    "Tanyao": {
+      "name": "Hep basit",
+      "covers": "Yalnızca 2–8 taşlarıyla oyunlar ve Tanyao eli"
+    },
+    "Honitsu": {
+      "name": "Yarı renk",
+      "covers": "Tek tür artı onur taşlı tam eller"
+    },
+    "Chinitsu": {
+      "name": "Tam renk",
+      "covers": "Tek türden tam eller"
+    },
+    "Sanshoku": {
+      "name": "Üç renk",
+      "covers": "Üç türde aynı seri olan tam eller"
+    },
+    "SevenPairs": {
+      "name": "Yedi çift",
+      "covers": "Yedi çift eli"
+    },
+    "Chanta": {
+      "name": "Dış el",
+      "covers": "Her grupta uç ya da onur taşı olan tam eller"
+    },
+    "Kokushi": {
+      "name": "On üç yetim",
+      "covers": "On üç yetim eli"
+    },
+    "All": {
+      "name": "Tüm aileler",
+      "covers": "Tüm geliştirme aileleri",
+      "upgrade": "Tüm aileler +1 seviye"
+    },
+    "levelChange": "{{family}}: seviye {{from}} → {{to}}",
+    "tokenLabel": "{{family}} geliştirmesi, seviye {{level}}"
+  },
+  "floraReveal": {
+    "flowerTitle": "Çiçek çekildi: {{name}}",
+    "seasonTitle": "Mevsim çekildi: {{name}}",
+    "drawn": "Duvardan çekildi. Bonus taşlar doğrudan koleksiyonuna gider ve yerine yeni bir taş çekilir.",
+    "next": "Sonraki ({{count}} tane daha)",
+    "done": "Tamam"
+  },
+  "decreeReveal": {
+    "title": "Yeni Kararname: {{name}}",
+    "starting": "Başlangıç Kararnamesi",
+    "acquired": "Yeni Kararname"
   }
 }

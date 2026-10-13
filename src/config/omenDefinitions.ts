@@ -1,7 +1,9 @@
 /**
  * Omen Tag Definitions for Tensho Mahjong Roguelike
  *
- * Omen Tags are one-time destiny modifiers awarded when skipping Small/Large Rounds.
+ * Omen Tags are one-time destiny modifiers earned by a swift clear: a Small or
+ * Large round cleared with Turns to spare. (Rounds can no longer be skipped;
+ * internal names such as `awardedFromSkip` keep their historical wording.)
  * They trigger once, then vanish. Some can lock the next Season type as a trade-off.
  *
  * Based on ARCHITECTURE.MD Section 7 (Omen Tags) and Section 20 (Skipping Rounds).
@@ -51,13 +53,13 @@ export type OmenTrigger =
  * Omen effect types
  */
 export type OmenEffectType =
-  | 'copy_next_omen' // Bank one copy of the next non-Double skip reward
+  | 'copy_next_omen' // Bank one copy of the next non-Double Omen earned
   | 'guaranteed_item' // Guarantees specific item type in shop
   | 'gold_bonus' // Flat gold bonus
-  | 'gold_per_skip' // Gold per round skipped this run
+  | 'gold_per_skip' // Gold per swift clear this run
   | 'mult_bonus' // Multiplier bonus
-  | 'mult_per_skip' // Multiplier per round skipped
-  | 'discard_refund' // Additional discards
+  | 'mult_per_skip' // Multiplier per swift clear
+  | 'discard_refund' // Free redraws next round
   | 'draw_bonus' // Additional draws
   | 'consumable_upgrade' // Upgrades consumable effects
   | 'free_reroll' // Free shop rerolls
@@ -124,7 +126,7 @@ export interface OmenDefinition {
   trigger: OmenTrigger
   effect: OmenEffect
   tradeoff: OmenTradeoff
-  /** Round types that can award this omen when skipped */
+  /** Round types whose swift clear can award this omen */
   awardedFromSkip: ('Small' | 'Large')[]
 }
 
@@ -181,20 +183,20 @@ export const OMEN_OF_ASH: OmenDefinition = {
 }
 
 /**
- * Omen of Rivers - Next round starts with +1 discard refund
+ * Omen of Rivers - Next round starts with +1 free Redraw
  */
 export const OMEN_OF_RIVERS: OmenDefinition = {
   id: 'omen_of_rivers',
   name: 'Omen of Rivers',
   japaneseName: '河流の兆',
-  description: 'Next round starts with +1 additional discard.',
+  description: 'Next round starts with +1 free Redraw.',
   category: 'Hand',
   rarity: 'Common',
   trigger: 'OnNextRound',
   effect: {
     type: 'discard_refund',
     value: 1,
-    description: '+1 discard in next round',
+    description: '+1 free Redraw next round',
   },
   tradeoff: {
     type: 'none',
@@ -204,20 +206,20 @@ export const OMEN_OF_RIVERS: OmenDefinition = {
 }
 
 /**
- * Speed Omen - Grants 5 Gold per round skipped this run
+ * Speed Omen - Grants 5 Gold per swift clear this run
  */
 export const SPEED_OMEN: OmenDefinition = {
   id: 'speed_omen',
   name: 'Speed Omen',
   japaneseName: '疾走の兆',
-  description: 'Grants 5 Gold per round skipped this run.',
+  description: 'Grants 5 Gold per swift clear this run.',
   category: 'Economy',
   rarity: 'Uncommon',
   trigger: 'OnAcquire',
   effect: {
     type: 'gold_per_skip',
     value: 5,
-    description: '+5 Gold per skipped round',
+    description: '+5 Gold per swift clear',
     scalesWithSkips: true,
   },
   tradeoff: {
@@ -228,20 +230,20 @@ export const SPEED_OMEN: OmenDefinition = {
 }
 
 /**
- * Throwback Omen - Gains x0.25 Mult per skipped round
+ * Throwback Omen - Gains x0.25 Mult per swift clear
  */
 export const THROWBACK_OMEN: OmenDefinition = {
   id: 'throwback_omen',
   name: 'Throwback Omen',
   japaneseName: '回帰の兆',
-  description: 'Gains x0.25 Mult per skipped round for the rest of the run.',
+  description: 'Gains x0.25 Mult per swift clear for the rest of the run.',
   category: 'Scaling',
   rarity: 'Rare',
   trigger: 'Passive',
   effect: {
     type: 'mult_per_skip',
     value: 0.25,
-    description: '+0.25x Mult per skip',
+    description: '+0.25x Mult per swift clear',
     scalesWithSkips: true,
   },
   tradeoff: {
@@ -443,20 +445,20 @@ export const PRECISION_OMEN: OmenDefinition = {
 }
 
 /**
- * Abundance Omen - Next round starts with +2 redraw actions
+ * Abundance Omen - Next round starts with +2 free Redraws
  */
 export const ABUNDANCE_OMEN: OmenDefinition = {
   id: 'abundance_omen',
   name: 'Abundance Omen',
   japaneseName: '豊穣の兆',
-  description: 'Next round starts with +2 additional redraws.',
+  description: 'Next round starts with +2 free Redraws.',
   category: 'Hand',
   rarity: 'Common',
   trigger: 'OnNextRound',
   effect: {
     type: 'draw_bonus',
     value: 2,
-    description: '+2 redraws in next round',
+    description: '+2 free Redraws next round',
   },
   tradeoff: {
     type: 'none',
@@ -689,7 +691,7 @@ export const DOUBLE_OMEN: OmenDefinition = {
   name: 'Double Omen',
   japaneseName: '双子の兆',
   description:
-    'Copies the next non-Double Omen earned by skipping. Consecutive Double Omens each add one copy.',
+    'Copies the next non-Double Omen you earn. Consecutive Double Omens each add one copy.',
   category: 'Scaling',
   rarity: 'Rare',
   trigger: 'Passive',
@@ -733,14 +735,14 @@ export const ALL_OMENS: OmenDefinition[] = [
 ]
 
 /**
- * Omens available when skipping Small Rounds
+ * Omens a swift Small Round clear can earn
  */
 export const SMALL_ROUND_OMENS: OmenDefinition[] = ALL_OMENS.filter((o) =>
   o.awardedFromSkip.includes('Small')
 )
 
 /**
- * Omens available when skipping Large Rounds
+ * Omens a swift Large Round clear can earn
  */
 export const LARGE_ROUND_OMENS: OmenDefinition[] = ALL_OMENS.filter((o) =>
   o.awardedFromSkip.includes('Large')

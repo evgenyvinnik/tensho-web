@@ -9,6 +9,7 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { clearRound } from '../test/roundHelpers'
 
 afterEach(() => {
   eventBus.clear()
@@ -294,7 +295,7 @@ describe('Winter interaction through authoritative scoring', () => {
     state.seasonSystem.addSeason(
       Tile.createSeason(SeasonType.Winter, 'winter-again')
     )
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    clearRound(game)
     expect(state.seasonSystem.getSeasonStack()).toHaveLength(0)
     expect(state.flowerSystem.hasFlowerType('Chrysanthemum')).toBe(true)
   })

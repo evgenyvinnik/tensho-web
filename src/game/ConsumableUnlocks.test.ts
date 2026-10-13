@@ -188,25 +188,28 @@ it.each([
 })
 
 it('requires unique canonical Yaku in one run, persists progress, and resets only the current run', () => {
-  RUN_YAKU_IDS.slice(0, 20).forEach(score)
+  const all = RUN_YAKU_IDS.length
+  const last = RUN_YAKU_IDS[all - 1]
+  RUN_YAKU_IDS.slice(0, all - 1).forEach(score)
+  // Retired and unknown Yaku never count.
   score('riichi')
   score('not_a_yaku')
-  expect(profile().stats.currentRunYakuIds).toHaveLength(20)
+  expect(profile().stats.currentRunYakuIds).toHaveLength(all - 1)
   expect(profile().isItemUnlocked('seal_of_the_void')).toBe(false)
   const saved = JSON.parse(
     JSON.stringify(metaProgressionSystem.serializeStats(profile().stats))
   )
   profile().updateStats(metaProgressionSystem.deserializeStats(saved))
   profile().processEvent({ type: 'run_started' })
-  score(RUN_YAKU_IDS[20])
-  expect(profile().stats.currentRunYakuIds).toEqual([RUN_YAKU_IDS[20]])
-  expect(profile().stats.maxYakuTypesInRun).toBe(20)
+  score(last)
+  expect(profile().stats.currentRunYakuIds).toEqual([last])
+  expect(profile().stats.maxYakuTypesInRun).toBe(all - 1)
   expect(profile().isItemUnlocked('seal_of_the_void')).toBe(false)
-  RUN_YAKU_IDS.slice(0, 20).forEach(score)
+  RUN_YAKU_IDS.slice(0, all - 1).forEach(score)
   expect(profile().isItemUnlocked('seal_of_the_void')).toBe(true)
   profile().processEvent({ type: 'run_started' })
   expect(profile().stats.currentRunYakuIds).toEqual([])
-  expect(profile().stats.maxYakuTypesInRun).toBe(21)
+  expect(profile().stats.maxYakuTypesInRun).toBe(all)
   expect(profile().isItemUnlocked('seal_of_the_void')).toBe(true)
 })
 

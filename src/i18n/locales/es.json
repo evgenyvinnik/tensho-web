@@ -1,47 +1,7 @@
 {
-  "riichiPledge": {
-    "title": "Compromiso de Riichi",
-    "active": "Riichi comprometido",
-    "spent": "Riichi usado esta ronda",
-    "intro": "Paga 1 de Oro antes de completar la mano. Una vez por ronda.",
-    "risk": "Mientras mantengas el compromiso, solo puntúa una mano completa oculta real. Puedes seguir cambiando y descartando fichas y usando objetos.",
-    "reward": "Tu próxima mano completa oculta puntúa Riichi (Yaku ×1,2), según las reglas del jefe y de Yakuman. Plutón y Devoto de Riichi solo se aplican si puntúa Riichi.",
-    "declare": "Comprometer · 1 de Oro",
-    "abandon": "Abandonar compromiso",
-    "abandonNote": "Abandonar permite volver al juego táctico. Sin reembolso ni segundo compromiso esta ronda.",
-    "gold": "Necesitas al menos 1 de Oro.",
-    "hidden": "Revela todas las fichas de tu mano antes de comprometerte.",
-    "open": "Riichi requiere una mano oculta, sin grupos abiertos.",
-    "boss": "Este jefe exige un tamaño fijo de jugada; Riichi no está disponible.",
-    "complete": "Tu mano ya está completa. Juégala; comprométete antes de completar otra mano.",
-    "inactive": "Solo puedes comprometerte durante una ronda activa con jugadas restantes.",
-    "failed": "La mesa ha cambiado. Revisa los requisitos e inténtalo de nuevo.",
-    "restriction": "Completa una mano oculta o abandona el compromiso."
-  },
   "observatory": {
     "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. Agujero Negro coincide con cualquier Yaku puntuado.",
     "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."
-  },
-  "handBuilder": {
-    "title": "Construye una mano",
-    "intro": "Conserva los grupos útiles y cambia las fichas sobrantes. Esta es una ruta posible, no la mejor jugada garantizada.",
-    "standard": "Cuatro grupos + una pareja.",
-    "sevenPairs": "Siete parejas distintas.",
-    "kokushi": "Los 13 tipos de terminales y Honores + un duplicado.",
-    "distance": "La estructura conservada necesita al menos {{needed}} fichas útiles para completarse.",
-    "keep": "Conserva estas fichas",
-    "exchange": "Considera cambiar estas fichas",
-    "cost": "Cuesta 1 de tus {{remaining}} cambios para reemplazar {{tiles}} fichas. Las devueltas vuelven al muro después de robar los reemplazos.",
-    "improving": "Tipos de ficha que podrían ayudar ({{types}})",
-    "possibilities": "Estos ejemplos mejoran un paso la estructura conservada. No predicen robos, existencias en el muro ni una mano completa.",
-    "caution": "El plan considera estructuras normales, no puntuaciones futuras ni efectos al robar. Buscar una mano completa puede costarte la ronda; compara primero tus opciones de puntuación.",
-    "stage": "Seleccionar este cambio",
-    "confirm": "Seleccionar es gratis. Revisa las fichas del tablero y pulsa {{action}} para gastar una carga.",
-    "hidden": "Hay fichas ocultas. No se muestra un plan mientras sus caras estén ocultas.",
-    "unsupported": "Este taller admite manos normales de 14 fichas, sin grupos declarados. Tu mano o las reglas activas requieren otro enfoque; consulta la previsión de puntos y la guía de fichas.",
-    "complete": "Ya tienes una mano completa. Revisa sus puntos, colócala en el tablero y confirma la jugada en lugar de cambiar fichas.",
-    "clear": "Una jugada conocida puede superar esta ronda. Revisa tus opciones antes de gastar un cambio.",
-    "unavailable": "No hay un plan de cambio legal compatible ahora. Revisa los cambios restantes, las fichas bloqueadas y el muro."
   },
   "closedHandAusterity": {
     "name": "Austeridad de mano cerrada",
@@ -50,14 +10,14 @@
   },
   "yakuRepetition": {
     "name": "Edicto de Repetición de Yaku",
-    "description": "Cada Yaku puntuado en rondas consecutivas multiplica por ×1,2 por cada ronda anterior de su racha (máximo ×4 en total). Una ronda sin ese Yaku o saltada rompe su racha. El límite se aplica antes del refuerzo de las Flores.",
+    "description": "Cada yaku que puntúa en rondas consecutivas acumula ×1.2 por ronda previa de su racha (hasta ×4). Fallar una ronda rompe la racha. El tope se aplica antes del potenciador de Flores.",
     "title": "Patrones para repetir",
     "streak": "{{name}} · {{rounds}} rondas anteriores consecutivas",
     "empty": "No hay rachas previas. Puntúa un Yaku esta ronda para iniciar una."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Puntúa un Yakuman.",
-    "seal_of_the_void": "Puntúa los 21 tipos de Yaku en una sola partida.",
+    "seal_of_the_void": "Puntúa los 20 tipos de Yaku en una sola partida.",
     "planet_x_orb": "Puntúa Siete Pares.",
     "ceres_orb": "Puntúa Chanta.",
     "eris_orb": "Puntúa Kokushi.",
@@ -108,29 +68,19 @@
     "help": "Acerca de estas bonificaciones",
     "title": "Mejoras de yaku",
     "summary": "Mejorados: {{total}}",
-    "intro": "Estas bonificaciones duran toda la partida y se aplican cuando el yaku correspondiente puntúa en una mano completa.",
+    "intro": "Estas bonificaciones duran toda la partida y se aplican cada vez que puntúa una mano que coincide.",
     "baseline": "El nivel 1 es el inicial: no otorga bonificación de orbe.",
     "empty": "Aún no hay mejoras de yaku. Usa un Orbe Celestial para potenciar su patrón de puntuación.",
     "level": "Nivel {{level}} / {{max}}",
     "bonus": "+{{chips}} puntos base · +{{mult}} Mult",
     "triggers": "Veces puntuado: {{total}}",
-    "note": "Solo muestra las bonificaciones base de los orbes. Otras reglas pueden cambiar la puntuación final; consulta la previsión de la jugada."
-  },
-  "handInterpretation": {
-    "ready": "Mano asistida por reglas",
-    "why": "Por qué funciona esta mano",
-    "assisted": "Las reglas activas permiten esta mano.",
-    "sequenceSkip": "Invierno o Escalera Rota permite saltar un número en una secuencia del mismo palo. Estos son los grupos usados en esta previsión.",
-    "substitution": "{{from}} cuenta como {{to}} en esta jugada.",
-    "virtual": "Ficha virtual para completar: {{tile}}.",
-    "penalty": "Esta ficha virtual reduce a la mitad la puntuación de la mano. La previsión ya incluye la penalización.",
-    "unchanged": "Son identidades temporales para puntuar. Tus fichas físicas no cambian y no se crea ninguna ficha.",
-    "allWild": "Cada ficha puede representar cualquier palo y valor en esta jugada."
+    "note": "Solo muestra las bonificaciones base de los orbes. Otras reglas pueden cambiar la puntuación final; consulta la previsión de la jugada.",
+    "fromOrb": "Mejorado con {{orb}}"
   },
   "progressiveHints": {
     "discard": {
       "title": "Mejora tu mano",
-      "content": "Descartar cambia una ficha y gasta un descarte, no una jugada. Recambiar cambia hasta tres fichas seleccionadas por un recambio. Cuanto menor sea el número shanten, más cerca estarás de una mano completa."
+      "content": "RECAMBIAR manda al río las fichas elegidas que quieras y roba otras nuevas. Cuesta un turno salvo que tengas un recambio gratis."
     },
     "yaku": {
       "title": "Patrones y multiplicadores",
@@ -142,7 +92,7 @@
     },
     "shop": {
       "title": "La Casa de Té",
-      "content": "El resumen de ganancias muestra de dónde viene tu Oro. Compra objetos que se complementen o ahorra para obtener intereses. Las compras normales son inmediatas; las Cartas requieren confirmación."
+      "content": "La liquidación muestra de dónde salió tu oro. Compra objetos que combinen o ahorra para obtener intereses. Toca cualquier objeto para ver qué hace antes de comprarlo."
     },
     "decrees": {
       "title": "Decretos",
@@ -162,21 +112,11 @@
     "eternalName": "Eterno",
     "eternalDescription": "No se puede vender ni destruir.",
     "perishableName": "Perecedero",
-    "perishableDescription": "Pierde sus efectos activos cuando termina la cuenta atrás. Las rondas saltadas no cuentan.",
+    "perishableDescription": "Pierde sus efectos cuando termina su cuenta atrás.",
     "remaining": "Rondas restantes: {{remaining}}.",
     "expired": "Caducado: sus efectos activos están deshabilitados.",
     "rentalName": "Alquiler",
     "rentalDescription": "Cuesta {{amount}} de oro al final de cada ronda."
-  },
-  "appUpdate": {
-    "available": "Actualización disponible",
-    "description": "Hay una nueva versión. Guardaremos tu progreso antes de recargar.",
-    "later": "Más tarde",
-    "updating": "Actualizando…",
-    "accept": "Guardar y actualizar",
-    "save": "No se pudo guardar tu progreso más reciente. Mantén esta pestaña abierta e inténtalo de nuevo.",
-    "update": "No se pudo aplicar la actualización. Tu partida sigue aquí; inténtalo de nuevo.",
-    "tabs": "Cierra las otras pestañas o ventanas de Tensho e inténtalo de nuevo para no interrumpir sus partidas."
   },
   "classicSave": {
     "savedTitle": "Tu partida clásica",
@@ -190,11 +130,6 @@
     "retry": "Reintentar guardado",
     "refresh": "Comprobar de nuevo",
     "backup": "Descargar copia",
-    "discard": "Descartar partida",
-    "replaceTitle": "¿Empezar otra partida?",
-    "replaceBody": "Esto reemplaza tu partida clásica actual o guardada. Table Loop y los desbloqueos obtenidos se conservan.",
-    "discardTitle": "¿Descartar esta partida?",
-    "discardBody": "¿Eliminar la partida clásica guardada y la actual de esta pestaña? Table Loop y los desbloqueos obtenidos se conservan.",
     "leaveTitle": "¿Dejar la mesa?",
     "leaveBody": "Guarda tu partida y vuelve al menú. Podrás continuarla más tarde.",
     "saveLeave": "Guardar y salir"
@@ -230,7 +165,8 @@
     "confirm": "Usar objeto",
     "fateSeals": "Sellos del Destino",
     "celestialOrbs": "Orbes Celestiales",
-    "voidScripts": "Escritos del Vacío"
+    "voidScripts": "Escritos del Vacío",
+    "chooseTargets": "Elegir fichas"
   },
   "common": {
     "exit": "Salir",
@@ -252,7 +188,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Jugar",
     "continue": "Continuar",
-    "newRun": "Nueva partida clásica",
+    "newRun": "Nueva partida",
     "tutorial": "Tutorial",
     "options": "Opciones",
     "settings": "Ajustes",
@@ -267,8 +203,7 @@
     "tableStakeDifficulty": "Apuesta de mesa · Dificultad",
     "tableStake": "Apuesta de mesa",
     "noSpecialModifiers": "Sin modificadores especiales",
-    "promise": "Promesa",
-    "tableLoop": "Modo Bucle de mesa"
+    "promise": "Promesa"
   },
   "settings": {
     "fullUnlock": {
@@ -315,7 +250,10 @@
       "slow": "Lenta"
     },
     "tileHintsDesc": "Muestra números y etiquetas de Dragones; agrupa tu mano en Pares, Secuencias y Tripletes",
-    "visual": "Visual"
+    "visual": "Visual",
+    "rankNumbers": "Números en las fichas",
+    "rankNumbersDesc": "Muestra un pequeño 1–9 en las fichas numeradas y una letra en los Dragones mientras aprendes las caras.",
+    "unreadableSave": "No se pudo leer tu partida guardada. Puedes descargarla como archivo antes de empezar una Nueva partida, que la reemplazará."
   },
   "gameplay": {
     "actProgress": "Acto {{current}} de {{total}}",
@@ -330,13 +268,10 @@
     "target": "Objetivo",
     "gold": "Oro",
     "hands": "Manos",
-    "discards": "Descartes",
     "draw": "Robar",
-    "discard": "Descartar",
     "declare": "Declarar",
     "win": "Ganar",
     "tsumo": "Tsumo",
-    "skip": "Saltar",
     "pause": "Pausar",
     "resume": "Reanudar",
     "tenpai": "Tenpai",
@@ -344,11 +279,10 @@
     "shantenHelp": "Cuántas fichas útiles te faltan para que una sola ficha pueda completar tu mano",
     "ready": "Listo",
     "deadDraw": "ROBO MURO",
-    "deadWallDraw": "ROBO DEL MURO MUERTO",
+    "deadWallDraw": "Robar del muro muerto",
     "winsRound": "Gana la ronda",
     "tilesInWall": "Fichas en el muro",
     "handsRemaining": "Manos restantes",
-    "discardsRemaining": "Descartes restantes",
     "redrawsRemaining": "Recambios restantes",
     "redrawSelected": "Recambiar fichas seleccionadas",
     "redrawHint": "Devuelve hasta 3 fichas seleccionadas y roba reemplazos",
@@ -465,7 +399,27 @@
       "buildTowardPlain": "Construir hacia una figura",
       "shapeCost": "Da {{difference}} puntos menos ahora con un grupo completo. No predice los próximos robos.",
       "tradeoff": "Compara las fichas y los puntos. Una sugerencia solo selecciona fichas; no gasta una jugada."
-    }
+    },
+    "roundTitle": "Acto {{act}} · {{round}}",
+    "scoreOfTarget": "{{score}} de {{target}} puntos",
+    "help": "Cómo jugar",
+    "handScore": "Puntos de la mano",
+    "lastHand": "Última mano",
+    "hiddenScore": "Fichas boca abajo",
+    "turnsLeft_one": "Queda {{formattedCount}} turno",
+    "turnsLeft_other": "Quedan {{formattedCount}} turnos",
+    "freeRedraws": "+{{formattedCount}} gratis",
+    "playHand": "Jugar mano",
+    "reasonExact": "Juega exactamente {{count}} fichas",
+    "reasonMinimum": "Elige al menos {{count}} fichas",
+    "reasonMaximum": "Hasta {{count}} fichas, o una mano de Mahjong completa",
+    "reasonUnavailable": "Esta jugada no está permitida ahora",
+    "reasonLastTurn": "Tu último turno debe ser una jugada",
+    "reasonNoReplacements": "No quedan suficientes fichas en el muro",
+    "yourTiles": "Tus fichas",
+    "collection": "Tus objetos",
+    "deadWallHint": "Elige una sola ficha y cámbiala por una del muro muerto. Una vez por ronda, gratis.",
+    "turnsLabel": "Turnos"
   },
   "rounds": {
     "small": "Ronda Pequeña",
@@ -473,7 +427,10 @@
     "boss": "Ronda de Jefe",
     "smallJp": "小局",
     "largeJp": "大局",
-    "bossJp": "親局"
+    "bossJp": "親局",
+    "smallShort": "Pequeña",
+    "largeShort": "Grande",
+    "bossShort": "Jefe"
   },
   "shop": {
     "catalyst": {
@@ -524,7 +481,8 @@
       "purchasePrompt": "¿Comprar {{name}} por {{cost}}G?",
       "baseEdition": "Edición básica",
       "goldBalance": "{{amount}} de oro",
-      "rerollsUsed": "Renovaciones usadas: {{count}}"
+      "rerollsUsed": "Renovaciones usadas: {{count}}",
+      "forSale": "A la venta"
     },
     "payout": {
       "heading": "Acto {{act}} · {{round}}",
@@ -538,7 +496,10 @@
       "interestCap": "Has alcanzado el límite de intereses de {{interest}}G.",
       "interestSave": "Con tus ahorros actuales: {{interest}}G de intereses. Guarda {{needed}}G más para obtener {{next}}G.",
       "nextRound": "Siguiente: {{round}} · objetivo {{target}}",
-      "nextAct": "Siguiente: Acto {{act}}"
+      "nextAct": "Siguiente: Acto {{act}}",
+      "omenEarned": "Presagio: {{name}}",
+      "omen": "Presagio",
+      "balance": "Oro"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
     "packInventoryFull": "No hay espacio para esta selección. Elige menos recompensas u otras distintas, o salta el paquete.",
@@ -564,7 +525,28 @@
     "cashOut": "Cobrar",
     "payoutBreakdown": "Desglose del pago de ronda",
     "selectionConfirmed": "¡Selección confirmada!",
-    "packSkipped": "Sobre omitido"
+    "packSkipped": "Sobre omitido",
+    "kinds": {
+      "decree": "Decreto · {{rarity}}",
+      "decreeHelp": "Un decreto es una regla permanente para esta partida. Ocupa un espacio de decreto y puedes venderlo cuando quieras.",
+      "seal": "Sello del Destino · se usa en una ronda",
+      "orb": "Orbe Celestial · mejora una familia de manos",
+      "script": "Escrito del Vacío · poderoso, con un precio",
+      "consumableHelp": "Se guarda con tus objetos hasta usarlo. Tócalo en la mesa para usarlo.",
+      "tile": "Ficha · se añade a tu muro",
+      "tileHelp": "Añade esta ficha a tu muro el resto de la partida.",
+      "pack": "Paquete · elige {{choose}} de {{from}}",
+      "charter": "Carta imperial · mejora permanente",
+      "charterHelp": "Una Carta imperial es una mejora permanente para el resto de la partida. No ocupa espacio y no se puede vender."
+    },
+    "offerLabel": "{{name}}, {{price}} de oro",
+    "buyFor": "Comprar · {{price}} de oro",
+    "help": {
+      "what": "La Casa de Té es la tienda entre rondas.",
+      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los consumibles se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
+      "interest": "El oro que guardas genera interés: +1 por cada 5 que tengas al acabar una ronda, hasta +{{cap}}.",
+      "cashOut": "La línea superior muestra el oro que pagó la última ronda; ábrela para ver el desglose. Cada compra se hace con su propio botón Comprar."
+    }
   },
   "decrees": {
     "title": "Decretos",
@@ -689,7 +671,7 @@
       },
       "decree-second-chance": {
         "name": "Segunda Oportunidad",
-        "description": "+1 Descarte por ronda"
+        "description": "+1 recambio gratis por ronda"
       },
       "decree-balanced-path": {
         "name": "Camino Equilibrado",
@@ -724,8 +706,8 @@
         "description": "x1.3 Mult"
       },
       "decree-riichi-devotee": {
-        "name": "Devoto del Riichi",
-        "description": "+3 Mult al puntuar Riichi"
+        "name": "Devoto de los pares",
+        "description": "+4 Mult si la jugada tiene dos o más pares"
       },
       "decree-tanyao-tactician": {
         "name": "Táctico Tanyao",
@@ -829,11 +811,11 @@
       },
       "decree-waste-not": {
         "name": "Sin Desperdiciar",
-        "description": "+5 Mult si no hay descartes esta ronda"
+        "description": "+5 Mult si no has usado RECAMBIAR esta ronda"
       },
       "decree-recycler": {
         "name": "Reciclador",
-        "description": "+20 Fichas por descarte usado esta ronda"
+        "description": "+10 fichas de puntos por ficha recambiada esta ronda"
       },
       "decree-yakuhai-zealot": {
         "name": "Fanático Yakuhai",
@@ -889,7 +871,7 @@
       },
       "decree-careful-player": {
         "name": "Jugador Cuidadoso",
-        "description": "+2 Descartes por ronda"
+        "description": "+2 recambios gratis por ronda"
       },
       "decree-inferno": {
         "name": "Infierno",
@@ -997,7 +979,7 @@
       },
       "decree-sacrifice": {
         "name": "Sacrificio",
-        "description": "x3.0 Mult, -1 Descarte por ronda"
+        "description": "×3.0 Mult, −1 turno por ronda"
       },
       "decree-transmuter": {
         "name": "Transmutador",
@@ -1021,7 +1003,7 @@
       },
       "decree-infinite-patience": {
         "name": "Paciencia Infinita",
-        "description": "+3 Descartes por ronda"
+        "description": "+3 recambios gratis por ronda"
       },
       "decree-divine-flame": {
         "name": "Llama Divina",
@@ -1097,7 +1079,7 @@
       },
       "decree-time-lord": {
         "name": "Señor del Tiempo",
-        "description": "+1 mano extra por ronda"
+        "description": "+1 turno por ronda"
       },
       "decree-exponential": {
         "name": "Exponencial",
@@ -1125,7 +1107,7 @@
       },
       "decree-celestial-throne": {
         "name": "Trono Celestial",
-        "description": "x10.0 Mult, -2 Tamaño, -1 Descarte"
+        "description": "×10.0 Mult, −2 de atril, −1 turno por ronda"
       },
       "decree-void-emperor": {
         "name": "Emperador del Vacío",
@@ -1169,7 +1151,7 @@
       },
       "decree-time-master": {
         "name": "Maestro del Tiempo",
-        "description": "+2 manos extra por ronda"
+        "description": "+2 turnos por ronda"
       },
       "decree-immortal-decree": {
         "name": "Decreto Inmortal",
@@ -1181,11 +1163,11 @@
       },
       "river_tax": {
         "name": "Impuesto del Río",
-        "description": "Ganas 1 de oro por cada ficha descartada esta ronda."
+        "description": "Ganas 2 de oro cada vez que RECAMBIAS."
       },
       "extended_hand_grant": {
         "name": "Concesión de Mano Extendida",
-        "description": "+3 jugadas por ronda. No añade fichas ni recambios."
+        "description": "+3 turnos por ronda."
       },
       "tanyao_dispensation": {
         "name": "Dispensa de Tanyao",
@@ -1221,7 +1203,7 @@
       },
       "dead_wall_writ": {
         "name": "Auto del Muro Muerto",
-        "description": "Una vez por ronda, roba del descarte en vez del muro."
+        "description": "Una vez por ronda, cambia una ficha elegida por una del muro muerto sin gastar turno."
       },
       "shanten_clemency": {
         "name": "Clemencia de Shanten",
@@ -1266,11 +1248,11 @@
       "spring": "+2 espacios en la mano esta ronda. Los nuevos espacios se llenan desde el muro vivo. Se acumula; Serpiente sigue reponiendo solo 3 fichas.",
       "summer": "Puntuación ×1,3. Aparta el 20% del muro vivo restante durante esta ronda (las fichas disponibles se redondean hacia abajo).",
       "summerSheltered": "Puntuación ×1,3. Protección de Bambú obtenida: Verano ya no puede reducir el muro esta ronda.",
-      "autumn": "Multiplicador de yaku +20%. Cada Otoño normal robado añade 1 descarte para esta ronda.",
+      "autumn": "Multiplicador de yaku +20%. Cada Otoño normal robado da 1 RECAMBIO gratis esta ronda.",
       "winter": "Las secuencias del mismo palo pueden saltar un número (1–2–4 o 1–3–4). Puntuación ×0,75.",
       "drought": "Anula las bonificaciones de puntuación de flores no protegidas.",
       "frostbite": "Cada Congelación vuelve a reducir a la mitad las recompensas de puntos, multiplicador, oro y repeticiones de los Decretos. No cambia los efectos propios de las fichas, permisos, capacidades, acciones ni costes.",
-      "decay": "−10 puntos por ficha descartada en esta ronda, sin bajar de cero.",
+      "decay": "−10 de puntuación por cada RECAMBIO de esta ronda, nunca por debajo de cero.",
       "droughtName": "Sequía",
       "monsoonName": "Monzón",
       "monsoon": "Aleatoriza los robos normales y las reposiciones de fichas de bonificación durante esta ronda.",
@@ -1295,7 +1277,12 @@
     "spring": "Primavera",
     "summer": "Verano",
     "autumn": "Otoño",
-    "winter": "Invierno"
+    "winter": "Invierno",
+    "duration": {
+      "run": "Dura toda la partida",
+      "round": "Dura esta ronda"
+    },
+    "setProgress": "Flores reunidas: {{count}}/4"
   },
   "yaku": {
     "title": "Yaku",
@@ -1358,13 +1345,15 @@
     "edition": "Edición",
     "debuffed": "Ficha debilitada",
     "lockedMustPlay": "Ficha bloqueada: debe jugarse",
-    "tileRow": "Fila de fichas"
+    "tileRow": "Fila de fichas",
+    "honors": "Honores"
   },
   "melds": {
     "pair": "Par",
     "sequence": "Secuencia",
     "triplet": "Triplete",
-    "quad": "Cuarteto"
+    "quad": "Cuarteto",
+    "straight": "Escalera"
   },
   "results": {
     "roundDetails": "Última ronda",
@@ -1406,7 +1395,7 @@
     "items": {
       "the_hook": {
         "name": "El Anzuelo",
-        "description": "Se descartan 2 fichas al azar tras cada robo"
+        "description": "Tras cada robo, 2 fichas al azar van de tu atril al río"
       },
       "the_wall": {
         "name": "El Muro",
@@ -1422,11 +1411,11 @@
       },
       "the_flint": {
         "name": "El Pedernal",
-        "description": "Puntos base y Mult a la mitad toda la ronda"
+        "description": "Cada jugada de esta ronda puntúa la mitad"
       },
       "the_needle": {
         "name": "La Aguja",
-        "description": "Debes completar la mano en exactamente 1 mano (sin reintentos)"
+        "description": "Solo una jugada esta ronda (RECAMBIAR sí está permitido)"
       },
       "the_pillar": {
         "name": "El Pilar",
@@ -1434,7 +1423,7 @@
       },
       "the_water": {
         "name": "El Agua",
-        "description": "Empiezas la ronda con 0 recambios"
+        "description": "Sin RECAMBIAR esta ronda"
       },
       "the_arm": {
         "name": "El Brazo",
@@ -1442,7 +1431,7 @@
       },
       "the_psychic": {
         "name": "El Vidente",
-        "description": "Debes jugar exactamente 5 fichas por mano"
+        "description": "Cada jugada debe usar exactamente 5 fichas"
       },
       "the_club": {
         "name": "La Porra",
@@ -1482,7 +1471,7 @@
       },
       "the_serpent": {
         "name": "La Serpiente",
-        "description": "Tras jugar o descartar, siempre robas 3 fichas"
+        "description": "Tras jugar o RECAMBIAR, siempre robas exactamente 3 fichas"
       },
       "the_tooth": {
         "name": "El Diente",
@@ -1494,7 +1483,7 @@
       },
       "the_manacle": {
         "name": "El Grillete",
-        "description": "-1 al tamaño de la mano"
+        "description": "Tu atril tiene 1 ficha menos"
       },
       "amber_acorn": {
         "name": "Bellota de Ámbar",
@@ -1528,7 +1517,7 @@
       "base": "Dificultad básica: sin penalizaciones añadidas.",
       "noSmallRoundReward": "Las rondas pequeñas no dan oro de recompensa.",
       "scoreScaling": "Objetivos de puntuación del nivel: ×{{multiplier}} respecto al Blanco. Los modificadores de la mesa también se aplican.",
-      "redrawPenalty": "Cambios de mano por ronda: −{{amount}}.",
+      "redrawPenalty": "Turnos por ronda: −{{amount}}.",
       "eternalChance": "Decretos de la tienda: {{chance}} de probabilidad de Eterno (no se puede vender ni destruir).",
       "perishableChance": "Decretos no Eternos de la tienda: {{chance}} de probabilidad de Perecedero (se debilita tras {{rounds}} rondas).",
       "rentalChance": "Decretos de la tienda: {{chance}} de probabilidad de Alquiler ({{price}} de oro al comprar y {{fee}} de oro por ronda)."
@@ -1552,43 +1541,19 @@
     "finish": "¡Comenzar a Jugar!",
     "welcome": {
       "title": "¡Bienvenido a Tensho!",
-      "content": "Tensho es un juego roguelike basado en el Mahjong Riichi japonés. Tu objetivo es formar manos puntuables y alcanzar la puntuación objetivo en cada ronda.",
-      "p1": "<0>Tensho (天翔)</0> significa «Ascenso Celestial» en japonés. Es un <3>roguelike</3> construido sobre el clásico juego de fichas <6>Riichi Mahjong</6>.",
+      "p1": "<0>Tensho (天翔)</0> significa «Ascenso Celestial» en japonés. Es un <3>roguelike</3> de <6>manos al estilo del póker</6> jugado con fichas de Mahjong.",
       "p2": "El objetivo es simple: <2>forma manos que puntúen</2> y alcanza la puntuación objetivo de cada ronda. Si no la alcanzas, tu partida termina.",
       "note1": "¡No te preocupes si nunca has jugado al Mahjong! Este tutorial te enseñará todo lo necesario, paso a paso."
     },
-    "tiles": {
-      "title": "Fichas de Mahjong",
-      "content1": "Hay tres palos principales: Caracteres (萬), Círculos (筒) y Bambúes (索), cada uno numerado del 1 al 9."
-    },
-    "honors": {
-      "title": "Fichas de Honor",
-      "content": "Las fichas de honor incluyen Vientos (Este, Sur, Oeste, Norte) y Dragones (Blanco, Verde, Rojo). Estas fichas no pueden formar secuencias, solo tripletes."
-    },
     "hands": {
-      "title": "Formando Manos",
-      "content1": "Una mano ganadora consiste en 4 grupos (combinaciones) más 1 par.",
-      "content2": "Los grupos pueden ser secuencias (1-2-3) o tripletes (3-3-3)."
-    },
-    "yaku": {
-      "title": "Yaku - Patrones de Puntuación",
-      "content1": "Los yaku son patrones especiales que multiplican tu puntuación. Cada yaku tiene un nivel del 1 al 4.",
-      "content2": "Ejemplos: Todos Simples (sin terminales/honores), Todos Tripletes, Color Completo (un solo palo)."
-    },
-    "decrees": {
-      "title": "Decretos - Modificadores de Reglas",
-      "content1": "Los decretos son cartas especiales que modifican las reglas y aumentan tu puntuación.",
-      "content2": "Colecciona decretos poderosos en la Casa de Té (tienda) entre rondas."
-    },
-    "scoring": {
-      "title": "Fórmula de Puntuación",
-      "formula": "Puntuación = (Base + Bonos) × Multiplicadores",
-      "content": "Alcanza la puntuación objetivo en cada ronda para avanzar. ¡Los actos más altos requieren puntuaciones más altas!"
+      "title": "Manos que puedes jugar",
+      "p1": "Una jugada puede tener hasta {{max}} fichas. Puntúa como la mejor mano que formen:",
+      "headerHand": "Mano",
+      "headerMeaning": "Qué es",
+      "mahjong": "Una mano de Mahjong completa suma +{{mult}} al Mult, además de sus Yaku."
     },
     "ready": {
       "title": "¡Estás Listo!",
-      "content1": "¡Buena suerte en tu viaje!",
-      "content2": "Presiona JUGAR para comenzar tu primera partida.",
       "note1": "Puedes <1>renovar</1> la oferta de la tienda por 5 de oro. Cada renovación cuesta 1 más.",
       "note2": "¡Guardar <1>25 o más de oro</1> maximiza los intereses! Aunque gastar en buenos decretos suele rendir más.",
       "p1": "No te preocupes por memorizarlo todo: ¡aprenderás jugando!",
@@ -1615,7 +1580,7 @@
     "wind_tiles": {
       "note1": "¡Los terminales valen el doble que los simples! Muchos yaku también los exigen o los excluyen expresamente.",
       "p1": "Hay <1>cuatro fichas de Viento</1>, que representan los puntos cardinales:",
-      "p2": "Las fichas de Viento son <1>fichas de Honor</1> y valen <4>15 puntos</4> cada una: ¡el valor base más alto!"
+      "p2": "Las fichas de Viento son <1>fichas de Honor</1> y valen <4>50 puntos</4> cada una: ¡el valor base más alto!"
     },
     "dragon_tiles": {
       "note1": "Los Vientos no pueden formar escaleras. Solo tríos o parejas.",
@@ -1623,7 +1588,7 @@
       "p2": "<0>白 (Dragón Blanco / Haku)</0> — Una ficha en blanco o enmarcada, que representa la pureza o el vacío",
       "p3": "<0>發 (Dragón Verde / Hatsu)</0> — El carácter 發 en verde, que significa «prosperidad» o «emitir»",
       "p4": "<0>中 (Dragón Rojo / Chun)</0> — El carácter 中 en rojo, que significa «centro»",
-      "p5": "Como los Vientos, los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4> y no pueden formar escaleras."
+      "p5": "Los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4>, y cada Dragón que puntúa dentro de un grupo suma +2 al Mult. No pueden formar escaleras."
     },
     "bonus_tiles": {
       "p1": "Las <0>fichas de bonificación</0> son fichas especiales que no forman parte de tu mano:"
@@ -1659,70 +1624,38 @@
       "p2": "Toda mano ganadora estándar necesita <2>exactamente una pareja</2>. A veces se la llama la «cabeza» (雀頭) de la mano."
     },
     "winning_hand": {
-      "note1": "Los tríos valen <1>+30 puntos</1>, más que las escaleras (+20). Sin embargo, son más difíciles de completar: necesitas 3 fichas iguales y cada ficha solo aparece 4 veces.",
-      "li1": "Vale <1>+50 puntos</1>: lo máximo de cualquier grupo",
+      "note1": "Los tríos valen <1>+40 puntos</1>, más que las escaleras (+30). Sin embargo, son más difíciles de completar: necesitas 3 fichas iguales y cada ficha solo aparece 4 veces.",
+      "li1": "Vale <1>+65 puntos</1>: lo máximo de cualquier grupo",
       "li2": "Cuenta como un solo grupo pese a tener 4 fichas",
       "li3": "Al declararlo, robas una ficha de reemplazo",
       "p1": "Una mano ganadora estándar se compone de:"
     },
     "gameplay_overview": {
-      "note1": "La pareja vale <1>+10 puntos</1>. Cualquier ficha puede formar pareja: numeradas, vientos o dragones.",
+      "note1": "La pareja vale <1>+15 puntos</1>. Cualquier ficha puede formar pareja: numeradas, vientos o dragones.",
       "li1": "1-2-3 de Círculos (escalera)",
       "li2": "5-5-5 de Bambú (trío)",
       "li3": "6-7-8 de Caracteres (escalera)",
       "li4": "Este-Este-Este (trío)",
-      "li5": "Pareja de Dragón Rojo",
-      "p1": "Cada ronda sigue un ciclo sencillo:"
+      "li5": "Pareja de Dragón Rojo"
     },
     "special_hands": {
       "p1": "Dos estructuras especiales no siguen la regla de 4 grupos + 1 pareja:"
     },
-    "discarding": {
-      "li1": "<0>Empieza</0> con 13 fichas en la mano",
-      "li2": "<0>Roba</0> una ficha del muro",
-      "li3": "Comprueba si puedes <1>ganar</1> (mano válida + puntuación objetivo)",
-      "li4": "Si no, <1>descarta</1> una ficha que no necesites",
-      "p1": "Tras robar (si no has ganado), debes <2>descartar una ficha</2> para volver a 13.",
-      "p2": "<0>Cómo descartar:</0>"
-    },
-    "shanten": {
-      "li1": "Repite hasta ganar o hasta que el muro se agote",
-      "p1": "El <0>shanten (向聴)</0> es el número de fichas que debes cambiar para completar una mano ganadora."
-    },
-    "scoring_overview": {
-      "note1": "Si el muro se agota antes de completar una mano ganadora, la ronda termina en <1>derrota</1> y tu partida acaba.",
-      "p1": "Tu puntuación se calcula con esta fórmula:"
-    },
     "drawing": {
-      "p1": "Al inicio de tu turno, <2>robas una ficha</2> del muro. Así tienes 14 fichas temporalmente.",
       "p2": "El <1>muro</1> empieza con 70 fichas robables (tras reservar el muro muerto). ¡Vigila el contador de fichas restantes!"
     },
     "base_points": {
-      "note1": "Cuando robas una <1>ficha de bonificación</1> (Flor o Estación), se revela automáticamente y robas otra. ¡No cuesta turno!",
-      "li1": "<0>Toca o haz clic</0> en una ficha para seleccionarla",
-      "li2": "<0>Arrastra hacia arriba</0> hasta la zona de descarte",
-      "li3": "Las fichas descartadas van al <1>Pozo Muerto</1>",
-      "p1": "Cada ficha de tu mano ganadora aporta <2>puntos base</2>:"
+      "note1": "Cuando robas una <1>ficha de bonificación</1> (Flor o Estación), se revela automáticamente y robas otra. ¡No cuesta turno!"
     },
     "yaku_intro": {
-      "note1": "Las fichas descartadas <2>se pierden para siempre</2>: ¡elige con cuidado qué descartas!",
-      "li1": "<0>Puntos base</0> — De las propias fichas",
-      "li2": "<0>Puntos de estructura</0> — De tus grupos y tu pareja",
-      "li3": "<0>Multiplicadores</0> — De Yaku, Decretos y efectos",
       "p1": "Los <0>Yaku (役)</0> son patrones especiales que <3>multiplican tu puntuación</3>. ¡De aquí salen los grandes puntos!",
-      "p2": "Hay <1>21 yaku</1> en Tensho, organizados en 4 niveles:"
+      "p2": "Hay <1>20 yaku</1> en Tensho, organizados en 4 niveles:"
     },
     "yaku_examples": {
-      "note1": "El juego muestra tu shanten actual. ¡Cuanto más bajo, mejor! Intenta reducirlo cada turno.",
       "p1": "Estos son algunos yaku que encontrarás a menudo:"
     },
     "boss_mandates": {
-      "note1": "¡Las fichas de Honor dan <1>3 veces más puntos</1> que las simples! Una mano llena de honores tendrá una base mucho más alta.",
       "p1": "Cada <1>ronda de Jefe</1> tiene un <3>Mandato</3> especial: una restricción o un desafío."
-    },
-    "structure_points": {
-      "p1": "Tus grupos añaden <1>puntos de estructura</1> a la base:",
-      "p2": "<0>Ejemplo:</0> una mano con 2 escaleras, 2 tríos y una pareja:"
     },
     "decree_categories": {
       "note1": "¡Los yaku <1>se acumulan multiplicando</1>! Una mano con yaku ×1,3 y ×2,0 obtiene ×2,6 en total. ¡Combina para puntuaciones enormes!",
@@ -1739,16 +1672,7 @@
       "li3": "<0>Otorgar habilidades</0> — Robos extra, recambios o efectos",
       "p1": "Tienes un número limitado de <1>ranuras de Decreto</1>. Empiezas con <3>5 ranuras</3> y puedes conseguir más mediante:"
     },
-    "skipping": {
-      "p1": "Puedes <1>saltarte</1> la ronda Pequeña o la Grande antes de enfrentarte al Jefe. ¿Por qué harías eso?"
-    },
     "decree_rarities": {
-      "li1": "Recibes una Marca de Presagio",
-      "li2": "Conservas Decretos con temporizador",
-      "li3": "Evitas muros desfavorables",
-      "li4": "Sin acceso a la tienda",
-      "li5": "Sin ganancia de oro",
-      "li6": "Sin crecimiento de intereses",
       "p1": "Los Decretos tienen <1>4 niveles de rareza</1>:"
     },
     "decrees_intro": {
@@ -1788,6 +1712,55 @@
     },
     "gold_economy": {
       "p1": "Ganas <1>oro</1> de varias formas:"
+    },
+    "turns": {
+      "title": "Cómo funciona una ronda",
+      "p1": "Cada ronda te da {{turns}} turnos. Cada turno es una de dos acciones:",
+      "play": "puntúa las fichas elegidas: hasta {{max}}, o una mano de Mahjong completa.",
+      "redraw": "envía al río las fichas elegidas que quieras y roba otras nuevas.",
+      "p2": "Alcanza el objetivo de la ronda antes de quedarte sin turnos. Tu último turno siempre es una jugada, y algunos objetos dan recambios gratis que no gastan turno.",
+      "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina."
+    },
+    "refill": {
+      "title": "Robar fichas",
+      "p1": "Tu atril se rellena desde el muro después de cada jugada y cada recambio, así que siempre eliges entre una mano completa."
+    },
+    "redraw": {
+      "title": "RECAMBIAR",
+      "p1": "Elige las fichas que no quieras, tantas como quieras, y pulsa RECAMBIAR. Van al río y fichas nuevas ocupan su lugar.",
+      "li1": "Primero se usan los recambios gratis de los objetos; si no hay, un recambio cuesta un turno.",
+      "li2": "Las fichas recambiadas se quedan en el río el resto de la ronda.",
+      "note": "Conserva las fichas que ya forman grupo y recambia las sueltas."
+    },
+    "score": {
+      "title": "Cómo se puntúa",
+      "p1": "Cada jugada puntúa:",
+      "note": "Las manos mayores, los Dragones, los Orbes y los Decretos suben el Mult, y el Mult lo multiplica todo."
+    },
+    "points": {
+      "title": "Puntos de las fichas",
+      "p1": "Cada ficha dentro de un grupo puntúa lo que vale:",
+      "headerTile": "Ficha",
+      "headerPoints": "Puntos",
+      "simples": "Simples (2–8)",
+      "terminals": "Terminales (1 y 9)",
+      "dragonValue": "{{points}}, y +{{mult}} al Mult en un grupo",
+      "note": "Los Vientos valen diez veces una ficha simple; los Dragones suben el Mult. Una ficha fuera de todo grupo puntúa la mitad."
+    },
+    "groups": {
+      "title": "Bonos de grupo",
+      "p1": "Cada grupo suma puntos extra además de sus fichas:",
+      "headerGroup": "Grupo",
+      "headerMeaning": "Fichas",
+      "headerBonus": "Bono",
+      "example": "Ejemplo: Doble par = {{pair}} + {{pair}} = +{{total}} puntos de bono, y el segundo grupo suma +1 al Mult."
+    },
+    "swift": {
+      "title": "Rondas veloces",
+      "p1": "Las rondas no se pueden saltar. Supera una Ronda Pequeña o Grande con {{spare}} turnos o más de sobra y ganarás un Presagio.",
+      "li1": "Aun así cobras el oro de la ronda y visitas la Casa de Té.",
+      "li2": "Las rondas de Jefe nunca dan un Presagio.",
+      "note": "Una buena mano temprana ahorra turnos, y los turnos ahorrados se convierten en Presagios."
     }
   },
   "accessibility": {
@@ -1893,11 +1866,11 @@
       },
       "steady_hand": {
         "name": "Mano firme",
-        "description": "+1 mano por ronda"
+        "description": "+1 turno por ronda"
       },
       "frugal_discard": {
-        "name": "Descarte frugal",
-        "description": "+1 recambio por ronda"
+        "name": "Recambio frugal",
+        "description": "+1 recambio gratis por ronda"
       },
       "seal_merchant": {
         "name": "Mercader de sellos",
@@ -1921,7 +1894,7 @@
       },
       "ancient_script": {
         "name": "Escritura antigua",
-        "description": "-1 Acto, -1 mano por ronda"
+        "description": "−1 acto, −1 turno por ronda"
       },
       "directors_take": {
         "name": "Parte del director",
@@ -1957,11 +1930,11 @@
       },
       "swift_hand": {
         "name": "Mano veloz",
-        "description": "+1 mano adicional por ronda"
+        "description": "+1 turno más por ronda"
       },
       "wasteful_plenty": {
         "name": "Derroche",
-        "description": "+1 recambio adicional por ronda"
+        "description": "+1 recambio gratis más por ronda"
       },
       "seal_tycoon": {
         "name": "Magnate de sellos",
@@ -1985,7 +1958,7 @@
       },
       "stone_script": {
         "name": "Escritura en piedra",
-        "description": "-1 Acto otra vez, -1 recambio por ronda"
+        "description": "−1 acto más, −1 turno por ronda"
       },
       "final_cut": {
         "name": "Corte final",
@@ -2001,23 +1974,23 @@
     "items": {
       "pluto_orb": {
         "name": "Orbe de Plutón",
-        "description": "Se afina con el yaku Riichi. +1 Mult, +10 Fichas por nivel."
+        "description": "Mejora los pares: Par, Doble par y Tres pares. +1 Mult y +10 fichas por nivel."
       },
       "mercury_orb": {
         "name": "Orbe de Mercurio",
-        "description": "Se afina con el yaku Tanyao. +1 Mult, +15 Fichas por nivel."
+        "description": "Mejora Todo simples: jugadas solo de 2 a 8 y la mano Tanyao. +1 Mult y +15 fichas por nivel."
       },
       "uranus_orb": {
         "name": "Orbe de Urano",
-        "description": "Se afina con el yaku Yakuhai. +1 Mult, +20 Fichas por nivel."
+        "description": "Mejora los Honores: cualquier grupo de Vientos o Dragones y la mano Yakuhai. +1 Mult y +20 fichas por nivel."
       },
       "venus_orb": {
         "name": "Orbe de Venus",
-        "description": "Se afina con el yaku Pinfu. +2 Mult, +20 Fichas por nivel."
+        "description": "Mejora las secuencias: Secuencia, Secuencia + Par, Dos secuencias y la mano Pinfu. +2 Mult y +20 fichas por nivel."
       },
       "saturn_orb": {
         "name": "Orbe de Saturno",
-        "description": "Se afina con el yaku Ittsu (Escalera). +3 Mult, +30 Fichas por nivel."
+        "description": "Mejora las escaleras: de cuatro y de cinco, y la mano Escalera pura. +3 Mult y +30 fichas por nivel."
       },
       "jupiter_orb": {
         "name": "Orbe de Júpiter",
@@ -2025,7 +1998,7 @@
       },
       "earth_orb": {
         "name": "Orbe de la Tierra",
-        "description": "Se afina con el yaku Toitoi. +2 Mult, +25 Fichas por nivel."
+        "description": "Mejora los grupos iguales: jugadas con triplete o cuarteto y la mano Todo tripletes. +2 Mult y +25 fichas por nivel."
       },
       "mars_orb": {
         "name": "Orbe de Marte",
@@ -2064,7 +2037,7 @@
     "items": {
       "double_omen": {
         "name": "Presagio Doble",
-        "description": "Copia el próximo presagio que no sea Doble obtenido al saltar una ronda. Cada Presagio Doble consecutivo añade una copia."
+        "description": "Copia el siguiente presagio no doble que ganes. Cada presagio doble consecutivo añade una copia."
       },
       "omen_of_crescents": {
         "name": "Presagio de Crecientes",
@@ -2076,15 +2049,15 @@
       },
       "omen_of_rivers": {
         "name": "Presagio de Ríos",
-        "description": "La próxima ronda empieza con +1 descarte adicional."
+        "description": "La próxima ronda empieza con +1 recambio gratis."
       },
       "speed_omen": {
         "name": "Presagio de Velocidad",
-        "description": "Otorga 5 de oro por cada ronda saltada en esta partida."
+        "description": "Da 5 de oro por cada victoria rápida de la partida."
       },
       "throwback_omen": {
         "name": "Presagio de Retorno",
-        "description": "Gana ×0,25 Mult por ronda saltada durante el resto de la partida."
+        "description": "Gana ×0.25 Mult por victoria rápida el resto de la partida."
       },
       "fortune_omen": {
         "name": "Presagio de Fortuna",
@@ -2120,7 +2093,7 @@
       },
       "abundance_omen": {
         "name": "Presagio de Abundancia",
-        "description": "La próxima ronda empieza con +2 recambios de fichas adicionales."
+        "description": "La próxima ronda empieza con +2 recambios gratis."
       },
       "polychrome_omen": {
         "name": "Presagio Policromo",
@@ -2296,7 +2269,7 @@
       },
       "script_of_the_medium": {
         "name": "Guion del Médium",
-        "description": "Añade el Sello Púrpura a 1 ficha (crea un Sello al descartar)"
+        "description": "Añade un Sello Púrpura a 1 ficha (crea un Sello del Destino al recambiarla)"
       },
       "script_of_aura": {
         "name": "Guion del Aura",
@@ -2384,7 +2357,7 @@
       },
       "omens": {
         "name": "Marcas de Presagio",
-        "description": "Modificadores de destino de un solo uso por saltar rondas"
+        "description": "Recompensas únicas por superar una ronda con turnos de sobra"
       },
       "mandates": {
         "name": "Mandatos",
@@ -2508,7 +2481,7 @@
       },
       "purple": {
         "name": "Sello Púrpura",
-        "description": "Crea un Sello del Destino al azar al descartar o cambiar esta ficha, si hay espacio."
+        "description": "Crea un Sello del Destino al azar al recambiar esta ficha, si hay espacio."
       }
     }
   },
@@ -2544,11 +2517,11 @@
       },
       "arcana_jumbo": {
         "name": "Paquete de Arcanos Grande",
-        "description": "Elige 1 de 5 Sellos del Destino"
+        "description": "Elige 2 de 5 Sellos del Destino"
       },
       "arcana_mega": {
         "name": "Paquete de Arcanos Mega",
-        "description": "Elige 2 de 5 Sellos del Destino"
+        "description": "Elige 3 de 6 Sellos del Destino"
       },
       "celestial_normal": {
         "name": "Paquete Celeste",
@@ -2556,11 +2529,11 @@
       },
       "celestial_jumbo": {
         "name": "Paquete Celeste Grande",
-        "description": "Elige 1 de 5 Orbes Celestes"
+        "description": "Elige 2 de 5 Orbes Celestes"
       },
       "celestial_mega": {
         "name": "Paquete Celeste Mega",
-        "description": "Elige 2 de 5 Orbes Celestes"
+        "description": "Elige 3 de 6 Orbes Celestes"
       },
       "tile_normal": {
         "name": "Paquete de Fichas",
@@ -2568,11 +2541,11 @@
       },
       "tile_jumbo": {
         "name": "Paquete de Fichas Grande",
-        "description": "Elige 1 de 5 fichas modificadas"
+        "description": "Elige 2 de 5 fichas modificadas"
       },
       "tile_mega": {
         "name": "Paquete de Fichas Mega",
-        "description": "Elige 2 de 5 fichas modificadas"
+        "description": "Elige 3 de 6 fichas modificadas"
       },
       "decree_normal": {
         "name": "Paquete de Decretos",
@@ -2580,11 +2553,11 @@
       },
       "decree_jumbo": {
         "name": "Paquete de Decretos Grande",
-        "description": "Elige 1 de 5 Decretos"
+        "description": "Elige 2 de 5 Decretos"
       },
       "decree_mega": {
         "name": "Paquete de Decretos Mega",
-        "description": "Elige 2 de 5 Decretos"
+        "description": "Elige 3 de 6 Decretos"
       },
       "void_normal": {
         "name": "Paquete del Vacío",
@@ -2592,11 +2565,11 @@
       },
       "void_jumbo": {
         "name": "Paquete del Vacío Grande",
-        "description": "Elige 1 de 5 Guiones del Vacío"
+        "description": "Elige 2 de 5 Guiones del Vacío"
       },
       "void_mega": {
         "name": "Paquete del Vacío Mega",
-        "description": "Elige 2 de 5 Guiones del Vacío"
+        "description": "Elige 3 de 6 Guiones del Vacío"
       }
     }
   },
@@ -2605,14 +2578,18 @@
       "green_felt": {
         "theme": "Clásico",
         "unlock": "Disponible desde el inicio",
-        "modifiers": { "0": "Sin modificadores especiales" },
+        "modifiers": {
+          "0": "Sin modificadores especiales"
+        },
         "name": "Fieltro Verde",
         "description": "La mesa de mahjong clásica. Una superficie tradicional de fieltro verde, pulida por incontables manos. Sin modificadores especiales: solo destreza."
       },
       "red_lacquer": {
         "theme": "Afortunado",
         "unlock": "Completa el acto 3",
-        "modifiers": { "0": "+1 espacio inicial para decretos" },
+        "modifiers": {
+          "0": "+1 espacio inicial para decretos"
+        },
         "name": "Laca Roja",
         "description": "Una mesa lujosa acabada en brillante laca bermellón, símbolo de riqueza y buena fortuna."
       },
@@ -2628,7 +2605,9 @@
       "imperial_gold": {
         "theme": "Real",
         "unlock": "Gana una partida con 5 o más decretos",
-        "modifiers": { "0": "Empieza con 1 mandato regional aleatorio" },
+        "modifiers": {
+          "0": "Empieza con 1 mandato regional aleatorio"
+        },
         "name": "Oro Imperial",
         "description": "Una mesa magnífica del palacio imperial, con incrustaciones de pan de oro y jade."
       },
@@ -2673,266 +2652,195 @@
       }
     }
   },
-  "tableLoop": {
-    "save": {
-      "invalid": "No se pudo restaurar la partida guardada. Inicia una nueva para reemplazarla.",
-      "unavailable": "No se puede guardar el progreso en este dispositivo. Mantén esta pestaña abierta para continuar.",
-      "conflictTitle": "La mesa cambió en otra ventana",
-      "conflict": "Esta mesa está en pausa porque la partida guardada cambió en otra ventana. No se ha sobrescrito la partida más reciente.",
-      "loadLatest": "Cargar la última partida",
-      "loadConfirm": "¿Reemplazar esta mesa por la última partida guardada? Se perderán las jugadas sin guardar de esta ventana. Si se eliminó la partida, se abrirá una mesa nueva.",
-      "loadFailed": "No se pudo cargar la última partida. No se ha reemplazado nada. Mantén esta ventana abierta e inténtalo de nuevo."
+  "patterns": {
+    "toast": "¡{{name}}!",
+    "loose": {
+      "name": "Fichas sueltas",
+      "explain": "Sin grupo: cada ficha da la mitad de sus puntos."
     },
-    "slot": {
-      "meld": "Casilla de grupo {{number}}",
-      "pair": "Casilla del par",
-      "meldShort": "Grupo",
-      "pairShort": "Par",
-      "emptyMeld": "secuencia o trío",
-      "emptyPair": "dos iguales",
-      "replace": "Sustituir",
-      "filled": "contiene un {{type}}",
-      "empty": "vacía",
-      "forecast": "sumaría {{total}}",
-      "multCost": "y costaría {{mult}} de Mult"
+    "pair": {
+      "name": "Par",
+      "explain": "Dos fichas iguales."
     },
-    "milestones": {
-      "title": "Figuras",
-      "momentum": "Impulso de mesa +{{mult}} Mult",
-      "claimed": "cobrada",
-      "twin_sequence": {
-        "name": "Secuencia Gemela",
-        "description": "Dos secuencias idénticas se alzan juntas en la mesa."
-      },
-      "pure_suit": {
-        "name": "Palo Puro",
-        "description": "Dos grupos o más, todos del mismo palo."
-      },
-      "three_suit_sequence": {
-        "name": "Secuencia de Tres Palos",
-        "description": "La misma tirada de tres números, una vez en cada palo."
-      },
-      "dragon_duet": {
-        "name": "Dúo de Dragones",
-        "description": "Dos Dragones distintos dominan la mesa."
-      },
-      "dragon_court": {
-        "name": "Corte de Dragones",
-        "description": "Los tres Dragones se responden entre sí."
-      },
-      "four_sequences": {
-        "name": "Cuatro Secuencias",
-        "description": "Cada casilla de grupo guarda una secuencia y el par ya está puesto."
-      }
+    "sequence": {
+      "name": "Secuencia",
+      "explain": "Tres números seguidos del mismo palo."
     },
-    "decrees": {
-      "echoing_bamboo": {
-        "name": "Bambú que Resuena",
-        "description": "Una secuencia de Bambúes puntúa dos veces al colocarla."
-      },
-      "patient_pair": {
-        "name": "Par Paciente",
-        "description": "El par suma +30 por cada grupo que ya esté en la mesa."
-      },
-      "watch_fire": {
-        "name": "Fuego de Guardia",
-        "description": "Un trío o cuarteto suma +0,5 Mult y enciende su casilla. Un grupo junto a una casilla encendida gana +0,5 Mult."
-      },
-      "twin_flame": {
-        "name": "Llama Gemela",
-        "description": "Las recompensas de figura pagan el doble de puntos."
-      },
-      "river_merchant": {
-        "name": "Mercader que Susurra",
-        "description": "Una vez por ronda, cambia una ficha elegida de tu atril por una del río. No cuesta acciones."
-      },
-      "jade_ledger": {
-        "name": "Libro de Jade",
-        "description": "Gana ¥2 por cada grupo que coloques. Empieza cada ronda con un cambio menos."
-      },
-      "honor_court": {
-        "name": "Corte de Honores",
-        "description": "Los grupos de Vientos o Dragones ganan +0,3 Mult por cada una de sus fichas."
-      },
-      "terminal_gate": {
-        "name": "Puerta Terminal",
-        "description": "Un grupo que contenga un 1 o un 9 suma +40."
-      },
-      "wide_rack": {
-        "name": "Atril Amplio",
-        "description": "Sostén dos fichas más en tu atril."
-      },
-      "gap_bridge": {
-        "name": "Puente",
-        "description": "Una vez por ronda, una escalera puede saltarse un número: 3·4·6 cuenta como secuencia."
-      }
+    "triplet": {
+      "name": "Triplete",
+      "explain": "Tres fichas iguales."
     },
-    "chain": {
-      "title": "Cómo puntuó",
-      "skip": "Saltar"
+    "quad": {
+      "name": "Cuarteto",
+      "explain": "Cuatro fichas iguales."
     },
-    "stage": {
-      "group": {
-        "sequence": "Secuencia colocada — {{tiles}}",
-        "triplet": "Trío colocado — {{tiles}}",
-        "quad": "Cuarteto colocado — {{tiles}}",
-        "pair": "Par colocado — {{tiles}}"
-      },
-      "frostMagistrate": "Magistrado de Escarcha: los honores puntúan la mitad",
-      "momentum": "Impulso de mesa +{{mult}} Mult",
-      "terminalGate": "Puerta Terminal +{{bonus}}",
-      "honorCourt": "Corte de Honores +{{mult}} Mult",
-      "patientPair": "Par Paciente +{{bonus}} ({{melds}} grupos esperando)",
-      "watchFire": "Fuego de Guardia +{{mult}} Mult desde la casilla encendida",
-      "echoingBamboo": "Bambú que Resuena: esta secuencia puntúa dos veces",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Mult mientras se mantenga",
-      "completion": "Mesa completa — {{base}} × {{mult}}",
-      "total": "Cae sobre el objetivo",
-      "milestoneBroken": "{{name}} deshecho: se pierden {{mult}} de Mult",
-      "replaces": "Sustituye {{tiles}}: {{points}} ya pagados",
-      "watchFireSet": "Fuego de Guardia +{{mult}} Mult por el trío"
+    "straight4": {
+      "name": "Escalera de cuatro",
+      "explain": "Cuatro números seguidos del mismo palo."
     },
-    "roundEnd": {
-      "target": "Ronda asegurada",
-      "completed": "Mesa terminada",
-      "exhausted": "Recursos agotados"
+    "straight5": {
+      "name": "Escalera de cinco",
+      "explain": "Cinco números seguidos del mismo palo."
     },
-    "rounds": {
-      "0": "Primera Luz",
-      "1": "Corte Naciente",
-      "2": "Magistrado de Escarcha"
+    "two_pairs": {
+      "name": "Doble par",
+      "explain": "Dos pares distintos en una jugada."
     },
-    "boss": {
-      "frost_magistrate": "Magistrado de Escarcha: esta ronda las fichas de honor puntúan la mitad."
+    "three_pairs": {
+      "name": "Tres pares",
+      "explain": "Tres pares en una jugada."
     },
-    "hud": {
-      "round": "Ronda {{current}} de {{total}}",
-      "resources": "{{actions}} acciones · {{redraws}} cambios",
-      "bridges": "· {{count}} puente",
-      "gold": "{{gold}} de oro"
+    "two_sequences": {
+      "name": "Dos secuencias",
+      "explain": "Dos secuencias en una jugada (seis fichas)."
     },
-    "table": {
-      "label": "Mesa"
+    "two_triplets": {
+      "name": "Dos tripletes",
+      "explain": "Dos tripletes en una jugada."
     },
-    "river": {
-      "choose": "Selecciona una ficha del atril para entregar y luego una del río. Gratis una vez por ronda.",
-      "ready": "Entrega {{tile}} por una ficha del río. Sin coste de acción.",
-      "used": "Ya usaste el intercambio del Mercader en esta ronda.",
-      "swapLabel": "Cambiar {{give}} por {{take}}",
-      "title": "Río",
-      "recover": "Río: toca para recuperar una ficha"
+    "sequence_pair": {
+      "name": "Secuencia + Par",
+      "explain": "Una secuencia y un par juntos."
     },
-    "hint": {
-      "select": "Toca fichas para formar una secuencia, un trío o un par, y luego elige una casilla.",
-      "choose": "Toca una casilla resaltada para confirmarla.",
-      "noSlot": "Ninguna casilla acepta ese grupo. Cambia las fichas o elige otra figura.",
-      "draft": "Toma una oferta o roba del muro. Cualquier otra acción se queda con la ficha del muro."
+    "triplet_pair": {
+      "name": "Full",
+      "explain": "Un triplete y un par juntos."
     },
-    "action": {
-      "clear": "Limpiar",
-      "exchange": "Cambiar ({{left}})",
-      "recover": "Cambiar (1 acción)",
-      "finish": "Terminar ronda",
-      "needMore": "Faltan {{remaining}}"
+    "triplet_sequence": {
+      "name": "Triplete + Secuencia",
+      "explain": "Un triplete y una secuencia juntos."
     },
-    "start": {
-      "title": "Elige cómo vas a jugar",
-      "subtitle": "Un Decreto, elegido antes de la primera ficha. Debería cambiar qué fichas quieres.",
-      "take": "Empezar con este"
+    "quad_pair": {
+      "name": "Cuarteto + Par",
+      "explain": "Un cuarteto y un par juntos."
     },
-    "cleared": {
-      "title": "Ronda superada",
-      "subtitle": "{{score}} frente a un objetivo de {{target}}. Bolsa: ¥{{gold}}.",
-      "shop": "Pasar por la casa de té",
-      "skipShop": "Directo a la siguiente ronda"
+    "straight_pair": {
+      "name": "Escalera + Par",
+      "explain": "Una escalera de cuatro y un par juntos."
     },
-    "shop": {
-      "title": "Casa de Té",
-      "subtitle": "Bolsa: ¥{{gold}}",
-      "empty": "No queda nada en el estante.",
-      "buy": "Comprar",
-      "leave": "Siguiente ronda"
+    "mahjong": {
+      "name": "Mahjong",
+      "explain": "Una mano completa: cuatro grupos y un par, normalmente 14 fichas. Sus yaku multiplican la puntuación."
     },
-    "end": {
-      "won": "Tres rondas, superadas",
-      "lost": "La mesa se quedó sin recursos",
-      "summary": "Puntuación de la partida {{score}}",
-      "again": "Otra partida"
-    },
-    "reject": {
-      "tooFew": "Selecciona al menos dos fichas que formen un grupo.",
-      "tooMany": "Un grupo tiene como mucho cuatro fichas.",
-      "bonusTile": "Las flores y las estaciones no se pueden colocar como grupo.",
-      "notAGroup": "Estas fichas no forman una secuencia, un trío, un cuarteto ni un par.",
-      "notChoosing": "La elección de apertura ya está hecha.",
-      "notOffered": "Ese Decreto no se ofreció.",
-      "notPlaying": "La ronda ha terminado.",
-      "noActions": "No quedan acciones de colocación.",
-      "noSlot": "Esa casilla no existe.",
-      "slotTaken": "Esa casilla ya tiene un grupo.",
-      "slotEmpty": "No hay nada que sustituir en esa casilla.",
-      "notInRack": "Esas fichas no están en tu atril.",
-      "pairSlotOnly": "La casilla del par solo acepta un par.",
-      "meldSlotOnly": "Una casilla de grupo acepta una secuencia, un trío o un cuarteto.",
-      "illegalPlacement": "Ese grupo no puede ir ahí.",
-      "noRedraws": "No quedan cambios.",
-      "redrawSize": "Cambia de una a tres fichas.",
-      "wallEmpty": "El muro está vacío.",
-      "noRecoveries": "No quedan recuperaciones del río en esta ronda.",
-      "rackFull": "Tu atril está lleno; coloca o cambia primero.",
-      "notInRiver": "Esa ficha no está en el río.",
-      "targetNotMet": "Alcanza el objetivo antes de terminar la ronda.",
-      "notBetweenRounds": "La tienda abre entre rondas.",
-      "shopClosed": "La tienda está cerrada.",
-      "tooExpensive": "No puedes permitírtelo.",
-      "noDraftPick": "Coloca un grupo para ganar una elección entre las ofertas.",
-      "notInDraft": "Esa ficha no está entre las ofertas.",
-      "notPractice": "Esa oferta pertenece al reparto de práctica.",
-      "alreadyOwned": "Ya lo tienes."
-    },
-    "rack": {
-      "label": "Tu atril"
-    },
-    "selection": {
-      "noGroup": "Todavía no es un grupo · {{tiles}}",
-      "multCost": "rompe una figura · −{{mult}} Mult",
-      "bridged": "{{type}} (con puente) · {{tiles}}"
-    },
-    "draft": {
-      "title": "Ofertas",
-      "claimable": "Ofertas: toma una para esta reposición",
-      "pass": "Del muro",
-      "variant": "Variante: fila de ofertas",
-      "variantHint": "Tres fichas boca arriba. Cada grupo que coloques permite que una reposición venga de aquí en vez del muro.",
-      "on": "Sí",
-      "off": "No"
-    },
-    "practice": {
-      "label": "Reparto de práctica",
-      "begin": "¿Es tu primera vez? Empieza por el reparto de práctica",
-      "inspectRun": "Enséñame la secuencia · {{slot}}",
-      "inspectPair": "Enséñame el par · {{slot}}",
-      "takeDecree": "Quedarte con {{name}}",
-      "startReal": "Empezar una partida de verdad",
-      "choose": {
-        "title": "Dos jugadas, y no son la misma jugada",
-        "body": "Tu atril tiene una secuencia de bambúes y un par de nueves. Una secuencia va a una casilla de grupo; un par solo cabe en la casilla del par. Toca un grupo y luego la casilla que se ilumine: la previsión de la casilla es exactamente lo que pagará."
-      },
-      "interact": {
-        "title": "Tus grupos pueden responderse entre sí",
-        "body": "Ese grupo se queda en la mesa el resto de la ronda. Busca una segunda secuencia igual que la primera: dos secuencias idénticas juntas valen más que cualquiera de ellas por separado."
-      },
-      "upgrade": {
-        "title": "Eso ha sido una Secuencia Gemela",
-        "body": "Ha pagado una vez y ha subido el multiplicador de todo lo que coloques a partir de ahora. Bambú que Resuena encaja con una mesa así: una secuencia de bambúes puntúa dos veces en cuanto la colocas."
-      },
-      "ready": {
-        "title": "Eso es el bucle entero",
-        "body": "Coloca grupos, mira cómo se responden y gasta lo que ganes en Decretos que encajen con la mesa que estás construyendo. El reparto de práctica está escrito; una partida de verdad se reparte de un muro barajado."
-      }
-    },
-    "flourish": {
-      "completion": "Mesa completa"
+    "combination": {
+      "name": "Combinación",
+      "explain": "Varios grupos a la vez."
     }
+  },
+  "guide": {
+    "title": "Cómo jugar",
+    "intro": "Tensho es un juego estilo póquer con fichas de Mahjong. Elige fichas que formen una mano, juégala para sumar puntos y alcanza el objetivo de cada ronda.",
+    "turnsTitle": "Tu turno",
+    "playHelp": "puntúa las fichas elegidas.",
+    "redrawHelp": "manda al río cualquier número de fichas elegidas y roba nuevas.",
+    "turnsHelp": "Cada ronda te da {{turns}} turnos. Jugar mano y RECAMBIAR cuestan uno cada uno. Supera una ronda pequeña o grande con {{spare}} turnos de sobra para ganar un presagio.",
+    "scoreTitle": "Tu puntuación",
+    "points": "Puntos",
+    "mult": "Mult",
+    "score": "Puntuación",
+    "scoreHelp": "Los puntos son el valor de las fichas más el bono de cada grupo. El Mult empieza en 1 y crece con manos más grandes, Dragones, Orbes y Decretos. Las fichas fuera de un grupo dan la mitad.",
+    "handsTitle": "Las manos",
+    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Cada ficha cuenta una vez; hasta 6 fichas por jugada salvo una mano de Mahjong completa.",
+    "tilesTitle": "Las fichas",
+    "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
+    "honorsHelp": "Cada Viento vale {{wind}} puntos. Cada Dragón dentro de un grupo suma +{{dragon}} Mult.",
+    "specialTitle": "Fichas especiales",
+    "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Pasa el cursor o enfoca una ficha para leer qué hace.",
+    "close": "¡A jugar!"
+  },
+  "mandateConsequence": {
+    "discard_after_draw": "−{{count}} fichas al azar por robo",
+    "score_multiplier": "Objetivo ×{{value}}",
+    "no_repeat_yaku": "Sin yaku repetidos",
+    "single_yaku_type": "Solo un tipo de yaku",
+    "halve_score": "Puntuación ×½",
+    "single_hand": "Solo 1 jugada",
+    "debuff_used_tiles": "Fichas usadas dan 0",
+    "no_discards": "Sin RECAMBIAR",
+    "decrease_yaku_tier": "Yaku −{{count}} nivel",
+    "fixed_hand_size": "Juega exactamente {{count}}",
+    "debuff_suit": "{{target}} dan 0",
+    "debuff_tile_type": "{{target}} dan 0",
+    "hand_size_reduction": "Atril −{{count}} ficha",
+    "gold_per_tile": "−{{count}} de oro por ficha jugada",
+    "most_played_yaku_zeroes_gold": "El yaku más usado vacía tu oro",
+    "first_hand_face_down": "Primer atril boca abajo",
+    "tiles_face_down_ratio": "1 de cada {{count}} boca abajo",
+    "tiles_face_down_after_play": "Fichas nuevas boca abajo",
+    "fixed_draw_count": "Siempre robas {{count}}",
+    "honor_tiles_face_down": "Honores boca abajo",
+    "shuffle_decrees": "Decretos ocultos",
+    "debuff_until_sell": "Todas las fichas dan 0 hasta vender un decreto",
+    "disable_random_decree": "1 decreto apagado por jugada",
+    "lock_random_tile": "Una ficha se bloquea por robo"
+  },
+  "upgradeFamilies": {
+    "Pairs": {
+      "name": "Pares",
+      "covers": "Par, Doble par y Tres pares"
+    },
+    "Pinfu": {
+      "name": "Secuencias",
+      "covers": "Secuencia, Secuencia + Par, Dos secuencias y la mano Pinfu"
+    },
+    "Ittsu": {
+      "name": "Escaleras",
+      "covers": "Escaleras de cuatro y cinco, y la mano Escalera pura"
+    },
+    "Toitoi": {
+      "name": "Grupos iguales",
+      "covers": "Cualquier jugada con triplete o cuarteto, y la mano Todo tripletes"
+    },
+    "Yakuhai": {
+      "name": "Honores",
+      "covers": "Cualquier grupo de Vientos o Dragones, y las manos Yakuhai"
+    },
+    "Tanyao": {
+      "name": "Todo simples",
+      "covers": "Jugadas solo con fichas de 2 a 8, y la mano Tanyao"
+    },
+    "Honitsu": {
+      "name": "Medio color",
+      "covers": "Manos completas de un palo más Honores"
+    },
+    "Chinitsu": {
+      "name": "Color puro",
+      "covers": "Manos completas de un solo palo"
+    },
+    "Sanshoku": {
+      "name": "Triple mixto",
+      "covers": "Manos completas con la misma secuencia en los tres palos"
+    },
+    "SevenPairs": {
+      "name": "Siete pares",
+      "covers": "La mano Siete pares"
+    },
+    "Chanta": {
+      "name": "Mano exterior",
+      "covers": "Manos completas con un terminal u Honor en cada grupo"
+    },
+    "Kokushi": {
+      "name": "Trece huérfanos",
+      "covers": "La mano Trece huérfanos"
+    },
+    "All": {
+      "name": "Todas las familias",
+      "covers": "Todas las familias de mejora",
+      "upgrade": "Todas las familias +1 nivel"
+    },
+    "levelChange": "{{family}}: nivel {{from}} → {{to}}",
+    "tokenLabel": "Mejora de {{family}}, nivel {{level}}"
+  },
+  "floraReveal": {
+    "flowerTitle": "Flor robada: {{name}}",
+    "seasonTitle": "Estación robada: {{name}}",
+    "drawn": "Robada del muro. Las fichas de bonificación van directas a tu colección y robas una ficha de reemplazo.",
+    "next": "Siguiente ({{count}} más)",
+    "done": "Entendido"
+  },
+  "decreeReveal": {
+    "title": "Nuevo decreto: {{name}}",
+    "starting": "Decreto inicial",
+    "acquired": "Nuevo decreto"
   }
 }

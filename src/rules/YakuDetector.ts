@@ -48,7 +48,6 @@ export interface YakuContext {
   declaredMelds: Meld[]
   isConcealed: boolean
   isTsumo: boolean // Self-draw win
-  isRiichi: boolean // Declared riichi
   seatWind: WindType
   roundWind: WindType
   winningTile: Tile | null
@@ -59,16 +58,6 @@ export interface YakuContext {
 // ============================================================================
 // TIER 1 YAKU DEFINITIONS
 // ============================================================================
-
-export const RIICHI: YakuDefinition = {
-  id: 'riichi',
-  name: 'Riichi',
-  japaneseName: '立直',
-  tier: 1,
-  multiplier: 1.2,
-  requiresConcealed: true,
-  description: 'Declared riichi before winning',
-}
 
 export const TANYAO: YakuDefinition = {
   id: 'tanyao',
@@ -288,7 +277,6 @@ export const CHUUREN_POUTOU: YakuDefinition = {
 
 export const ALL_YAKU: YakuDefinition[] = [
   // Tier 1
-  RIICHI,
   TANYAO,
   PINFU,
   YAKUHAI,
@@ -751,10 +739,6 @@ export function detectYaku(context: YakuContext): DetectedYaku[] {
   }
 
   // Tier 1
-  if (context.isRiichi) {
-    detected.push({ definition: RIICHI, isApplicable: true })
-  }
-
   if (context.isTsumo && context.isConcealed) {
     detected.push({ definition: MENZEN_TSUMO, isApplicable: true })
   }

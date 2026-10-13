@@ -17,6 +17,8 @@ function fixture(seed = 1, monsoon = true) {
   state.targetScore = 1e9
   state.roundManager.getCurrentRound()!.scoreTarget = 1e9
   state.seasonSystem.clear()
+  // Cleared Seasons take their extra spaces with them.
+  state.handTiles = state.handTiles.slice(0, 14)
   if (monsoon) state.seasonSystem.forceSetSeason('Spring', true)
   state.wall = [tile(1), tile(2), tile(3), tile(4), tile(5)]
   state.deadWall = []
@@ -218,12 +220,14 @@ describe('Monsoon through actual actions', () => {
           ...state.wall.slice(state.drawIndex),
           ...state.deadWall,
           ...state.summerReserve,
+          ...state.discards,
         ]
           .filter((t) => !t.isSeason && !t.isFlower)
           .map((t) => t.id)
           .sort()
       const before = identities()
       const handSize = state.handTiles.length
+      state.redrawsRemaining = 3
       const action = {
         type: 'redraw' as const,
         tileIds: state.handTiles.slice(0, count).map((t) => t.id),

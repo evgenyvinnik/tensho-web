@@ -131,6 +131,7 @@ const GATE_CONDITIONS: Record<string, GateCondition> = {
   'if Wind and Dragon': 'wind_and_dragon',
   // Hand structure
   'if hand contains pair': 'contains_pair',
+  'if 2+ pairs': 'two_plus_pairs',
   'if hand contains sequence': 'contains_sequence',
   'if hand contains triplet': 'contains_triplet',
   'if 2+ triplets': 'two_plus_triplets',

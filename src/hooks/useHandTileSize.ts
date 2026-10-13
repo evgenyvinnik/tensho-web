@@ -21,6 +21,8 @@ const CANDIDATES: TileSize[] = [
 const MIN_TARGET = 44
 const TILE_GAP = 4
 const GROUP_GAP = 12
+/** Spacer between suits; it also adds one more tile gap to the row. */
+const SUIT_GAP = 8
 const ROW_GAP = 6
 // Two readable label lines plus border/padding, independent of translated width.
 const LABEL_HEIGHT = 30
@@ -38,6 +40,8 @@ export interface HandFit {
   tileCount: number
   /** Number of labelled groups (including the loose cluster), if grouped. */
   groupCount?: number
+  /** Spacers between suits in a grouped rack. */
+  suitBreaks?: number
 }
 
 export function fitHandTileSize({
@@ -45,17 +49,20 @@ export function fitHandTileSize({
   viewportHeight,
   tileCount,
   groupCount = 0,
+  suitBreaks = 0,
 }: HandFit): TileSize {
   if (availableWidth <= 0 || tileCount <= 0) return 'medium'
   const budget = viewportHeight * HEIGHT_SHARE
   const label = groupCount > 0 ? LABEL_HEIGHT : 0
-  const extraGaps = Math.max(0, groupCount - 1) * (GROUP_GAP - TILE_GAP)
+  const extraGaps =
+    Math.max(0, groupCount - 1) * (GROUP_GAP - TILE_GAP) +
+    suitBreaks * (SUIT_GAP + TILE_GAP)
 
   for (const size of CANDIDATES) {
     const tile = tileSizes[size]
     const slot = Math.max(MIN_TARGET, tile.width) + TILE_GAP
     const perRow = Math.max(1, Math.floor((availableWidth + TILE_GAP) / slot))
-    // Wider gaps between groups cost space wherever the rows break, so count
+    // Wider gaps between groups and suits cost space wherever the rows break, so count
     // them as fractional tiles rather than charging them all to one row.
     const rows = Math.ceil((tileCount + extraGaps / slot) / perRow)
     const height = rows * (Math.max(MIN_TARGET, tile.height) + ROW_GAP + label)
@@ -73,7 +80,8 @@ export function useHandTileSize(
   groupCount = 0,
   /** Horizontal padding between `ref` and the rack's tiles. */
   inset = 0,
-  enabled = true
+  enabled = true,
+  suitBreaks = 0
 ): TileSize {
   const [size, setSize] = useState<TileSize>('medium')
 
@@ -87,6 +95,7 @@ export function useHandTileSize(
           viewportHeight: window.innerHeight,
           tileCount,
           groupCount,
+          suitBreaks,
         })
       )
     refit()
@@ -98,7 +107,7 @@ export function useHandTileSize(
       observer?.disconnect()
       window.removeEventListener('resize', refit)
     }
-  }, [ref, tileCount, groupCount, inset, enabled])
+  }, [ref, tileCount, groupCount, inset, enabled, suitBreaks])
 
   return size
 }

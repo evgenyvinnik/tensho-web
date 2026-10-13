@@ -110,18 +110,28 @@ it('localizes complete-hand readiness without a fallback in every language', () 
   }
 })
 
-it('supplies every hand explanation and its placeholders without English fallback', () => {
+it('names and explains every play pattern without English fallback', () => {
+  const { toast, ...patterns } = en.patterns
+  expect(toast).toContain('{{name}}')
   for (const [language, locale] of Object.entries(LOCALES)) {
-    for (const [key, english] of Object.entries(en.handInterpretation)) {
-      const translated = (
-        locale.handInterpretation as typeof en.handInterpretation
-      )[key as keyof typeof en.handInterpretation]
-      expect(translated, `${language}: ${key}`).toBeTruthy()
-      expect(translated.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
-        english.match(/{{\w+}}/g)?.sort() ?? []
-      )
-      if (language !== 'en') expect(translated).not.toBe(english)
+    const translated = locale.patterns as typeof en.patterns
+    expect(translated.toast, language).toContain('{{name}}')
+    for (const [id, english] of Object.entries(patterns)) {
+      const copy = translated[id as keyof typeof patterns]
+      expect(copy?.name, `${language}: ${id}.name`).toBeTruthy()
+      expect(copy?.explain, `${language}: ${id}.explain`).toBeTruthy()
+      if (language !== 'en') expect(copy.explain).not.toBe(english.explain)
     }
+  }
+})
+
+it('retires the Riichi pledge, hand builder, Table Loop and update prompt copy', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const root = locale as Record<string, unknown>
+    for (const key of ['handInterpretation', 'appUpdate', 'tableLoop'])
+      expect(root[key], `${language}: ${key}`).toBeUndefined()
+    const menu = locale.menu as Record<string, unknown>
+    expect(menu.tableLoop, language).toBeUndefined()
   }
 })
 
@@ -216,7 +226,7 @@ it('provides names and rules for every illustrated starter in every locale', () 
     expect(items.extended_hand_grant.description).toContain('3')
   }
   expect(en.decrees.items.extended_hand_grant.description).toBe(
-    '+3 plays per round. Does not add tiles or redraws.'
+    '+3 Turns per round.'
   )
 })
 
@@ -297,17 +307,6 @@ it('localizes owned-build actions and keeps Polished Stone aligned with its chip
     ].description
     expect(text).toContain('+60')
     expect(text).not.toContain('0.3')
-  }
-})
-
-it('localizes every update decision and recoverable error in all locales', () => {
-  for (const [language, locale] of Object.entries(LOCALES)) {
-    const copy = locale.appUpdate as Record<string, string>
-    expect(Object.keys(copy).sort()).toEqual(Object.keys(en.appUpdate).sort())
-    for (const [key, english] of Object.entries(en.appUpdate)) {
-      expect(copy[key], `${language}: appUpdate.${key}`).toBeTruthy()
-      if (language !== 'en') expect(copy[key]).not.toBe(english)
-    }
   }
 })
 
@@ -437,23 +436,6 @@ it('supplies the shared mobile/desktop play labels in every locale', () => {
   }
 })
 
-it('localizes Merchant swap instructions and preserves their placeholders in every language', () => {
-  for (const [language, locale] of Object.entries(LOCALES)) {
-    const loop = locale.tableLoop as {
-      river: Record<string, string>
-      decrees: { river_merchant: { description: string } }
-    }
-    for (const key of ['choose', 'ready', 'used', 'swapLabel']) {
-      expect(loop.river[key], `${language}: ${key}`).toBeTypeOf('string')
-      expect(loop.river[key].length).toBeGreaterThan(0)
-    }
-    expect(loop.river.ready).toContain('{{tile}}')
-    expect(loop.river.swapLabel).toContain('{{give}}')
-    expect(loop.river.swapLabel).toContain('{{take}}')
-    expect(loop.decrees.river_merchant.description.length).toBeGreaterThan(0)
-  }
-})
-
 it('localizes the reset scope and storage failure outcomes in every language', () => {
   for (const [lang, locale] of Object.entries(LOCALES)) {
     const settings = locale.settings as Record<string, string>
@@ -562,9 +544,7 @@ it('provides Purple Seal names and current trigger descriptions in every locale'
       lang
     ).toBeGreaterThan(0)
   }
-  expect(en.archiveSeals.items.purple.description).toContain(
-    'discarded or redrawn'
-  )
+  expect(en.archiveSeals.items.purple.description).toContain('redrawn')
 })
 
 it('provides the complete consumable picker language contract in every locale', () => {
@@ -780,7 +760,9 @@ describe('tutorial <Trans> markup', () => {
   }
 
   it('gives English a source string for every Trans block', () => {
-    expect(Object.keys(tutorialKeys(en)).length).toBeGreaterThanOrEqual(126)
+    // 108 since the Discard, Shanten and Skip steps were retired (October
+    // 2026); their replacements use plain keys rather than <Trans> markup.
+    expect(Object.keys(tutorialKeys(en)).length).toBeGreaterThanOrEqual(108)
   })
 
   it('keeps every translation on the same tag indices as English', () => {
@@ -868,7 +850,16 @@ describe('translation script purity', () => {
  * For a screen that was translated in full, that silence is what lets coverage
  * rot, so these namespaces are held to exact parity with English.
  */
-const FULLY_TRANSLATED_PATHS = ['tableLoop', 'gameplay.coach', 'flora']
+const FULLY_TRANSLATED_PATHS = [
+  'gameplay.coach',
+  'flora',
+  'patterns',
+  'guide',
+  'mandateConsequence',
+  'floraReveal',
+  'decreeReveal',
+  'upgradeFamilies',
+]
 
 function readPath(locale: Locale, path: string): unknown {
   return path

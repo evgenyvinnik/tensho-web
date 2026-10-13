@@ -216,19 +216,19 @@ export const STAR_CHART: CharterDefinition = {
 }
 
 /**
- * Steady Hand - +1 hand per round
+ * Steady Hand - +1 Turn per round
  */
 export const STEADY_HAND: CharterDefinition = {
   id: 'steady_hand',
   name: 'Steady Hand',
   japaneseName: '定手',
-  description: '+1 hand per round',
+  description: '+1 Turn per round',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'hands',
       value: 1,
-      description: 'Gain 1 additional hand each round',
+      description: 'Gain 1 additional Turn each round',
     },
   ],
   upgradeId: 'swift_hand',
@@ -236,19 +236,19 @@ export const STEADY_HAND: CharterDefinition = {
 }
 
 /**
- * Frugal Discard - +1 redraw per round
+ * Frugal Redraw - +1 free Redraw per round
  */
 export const FRUGAL_DISCARD: CharterDefinition = {
   id: 'frugal_discard',
-  name: 'Frugal Discard',
+  name: 'Frugal Redraw',
   japaneseName: '倹捨',
-  description: '+1 redraw per round',
+  description: '+1 free Redraw per round',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'redraws',
       value: 1,
-      description: 'Gain 1 additional redraw each round',
+      description: 'Gain 1 free Redraw each round',
     },
   ],
   upgradeId: 'wasteful_plenty',
@@ -356,13 +356,13 @@ export const TILE_TRADING: CharterDefinition = {
 }
 
 /**
- * Ancient Script - -1 Act, -1 hand per round
+ * Ancient Script - -1 Act, -1 Turn per round
  */
 export const ANCIENT_SCRIPT: CharterDefinition = {
   id: 'ancient_script',
   name: 'Ancient Script',
   japaneseName: '古文',
-  description: '-1 Act, -1 hand per round',
+  description: '-1 Act, -1 Turn per round',
   cost: CHARTER_COST,
   effects: [
     {
@@ -373,7 +373,7 @@ export const ANCIENT_SCRIPT: CharterDefinition = {
     {
       type: 'hands_penalty',
       value: -1,
-      description: 'Lose 1 hand per round',
+      description: 'Lose 1 Turn per round',
     },
   ],
   upgradeId: 'stone_script',
@@ -575,19 +575,19 @@ export const OBSERVATORY: CharterDefinition = {
 }
 
 /**
- * Swift Hand - +1 additional hand per round
+ * Swift Hand - +1 more Turn per round
  */
 export const SWIFT_HAND: CharterDefinition = {
   id: 'swift_hand',
   name: 'Swift Hand',
   japaneseName: '迅手',
-  description: '+1 additional hand per round',
+  description: '+1 more Turn per round',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'hands',
       value: 1,
-      description: 'Gain 1 more additional hand each round',
+      description: 'Gain 1 more Turn each round',
     },
   ],
   baseId: 'steady_hand',
@@ -600,19 +600,19 @@ export const SWIFT_HAND: CharterDefinition = {
 }
 
 /**
- * Wasteful Plenty - +1 additional redraw per round
+ * Wasteful Plenty - +1 more free Redraw per round
  */
 export const WASTEFUL_PLENTY: CharterDefinition = {
   id: 'wasteful_plenty',
   name: 'Wasteful Plenty',
   japaneseName: '惜捨',
-  description: '+1 additional redraw per round',
+  description: '+1 more free Redraw per round',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'redraws',
       value: 1,
-      description: 'Gain 1 more additional redraw each round',
+      description: 'Gain 1 more free Redraw each round',
     },
   ],
   baseId: 'frugal_discard',
@@ -750,13 +750,13 @@ export const ILLUSION_TILES: CharterDefinition = {
 }
 
 /**
- * Stone Script - -1 Act again, -1 redraw per round
+ * Stone Script - -1 Act again, -1 Turn per round
  */
 export const STONE_SCRIPT: CharterDefinition = {
   id: 'stone_script',
   name: 'Stone Script',
   japaneseName: '石文',
-  description: '-1 Act again, -1 redraw per round',
+  description: '-1 Act again, -1 Turn per round',
   cost: CHARTER_COST,
   effects: [
     {
@@ -767,7 +767,7 @@ export const STONE_SCRIPT: CharterDefinition = {
     {
       type: 'redraws_penalty',
       value: -1,
-      description: 'Lose 1 redraw per round',
+      description: 'Lose 1 Turn per round',
     },
   ],
   baseId: 'ancient_script',

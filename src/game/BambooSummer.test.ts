@@ -9,6 +9,7 @@ import { protectSummerWall, applySeasonWallEffect } from './seasonWall'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { advanceRound } from '../test/roundHelpers'
 
 afterEach(() => {
   eventBus.clear()
@@ -258,13 +259,15 @@ it('loads legacy saves without granting protection, and rejects malformed flags/
   const old = JSON.parse(JSON.stringify(game.captureRun()))
   old.version = 1
   delete old.state.bambooSummerProtection
-  expect(parseClassicRunSnapshot(old)).toEqual(old)
-  game.restoreRun(old)
+  // Reading an old save upgrades it to the current rules first.
+  const upgraded = parseClassicRunSnapshot(old)
+  expect(upgraded.version).toBe(3)
+  expect(upgraded.state.bambooSummerProtection ?? false).toBe(false)
+  game.restoreRun(upgraded)
   expect(game.getState().bambooSummerProtection).toBe(false)
   expect(game.captureRun()).toEqual({
-    ...old,
-    version: 2,
-    state: { ...old.state, bambooSummerProtection: false },
+    ...upgraded,
+    state: { ...upgraded.state, bambooSummerProtection: false },
   })
   for (const value of ['true', 1, null, true]) {
     const bad = JSON.parse(JSON.stringify(game.captureRun()))
@@ -286,8 +289,7 @@ it('expires at the next round and rejects unpaid attempts to earn it', () => {
   expect(game.processAction({ type: 'play', tileIds: quadIds }).success).toBe(
     true
   )
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  game.exitShop()
+  advanceRound(game)
   expect(game.getState().bambooSummerProtection).toBe(false)
   expect(game.getState().seasonSystem.getSeasonStack()).toEqual([])
 })

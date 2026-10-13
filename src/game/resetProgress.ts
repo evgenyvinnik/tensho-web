@@ -3,10 +3,8 @@ import { useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
 import { useStakeStore } from '../stores/stakeStore'
 import { useTableStyleStore } from '../stores/tableStyleStore'
-import { useTableLoopStore } from '../stores/tableLoopStore'
-import { TABLE_SAVE_KEY } from '../tableloop/savedRun'
 import { CLASSIC_SAVE_KEY, CLASSIC_SAVE_LOCK } from './classicSavedRun'
-import { withTableSaveLock } from '../tableloop/saveLock'
+import { LEGACY_TABLE_LOOP_SAVE_KEY } from './legacySaves'
 import { RUN_SAVE_EPOCH_KEY } from './runSaveEpoch'
 import { getClassicPersistence } from './classicPersistenceApp'
 import {
@@ -20,6 +18,7 @@ import {
 } from './MetaProgressionBridge'
 
 export const TUTORIAL_PROGRESS_KEYS = [
+  'tensho_hand_guide_seen',
   'tensho_tutorial_completed',
   'tensho_game_tutorial_completed',
   'tensho_codex_completed',
@@ -40,7 +39,7 @@ export const PROGRESS_STORAGE_KEYS = [
     if (!name) throw new Error('Progress store requires a persistence key')
     return name
   }),
-  TABLE_SAVE_KEY,
+  LEGACY_TABLE_LOOP_SAVE_KEY,
   CLASSIC_SAVE_KEY,
   RUN_SAVE_EPOCH_KEY,
   ...TUTORIAL_PROGRESS_KEYS,
@@ -153,12 +152,12 @@ export async function resetAllProgress(): Promise<ResetProgressResult> {
   try {
     if (!globalThis.navigator?.locks)
       throw new Error('Save locking unavailable')
-    // Stable lock order; neither mode ever takes the other's lock. Capture and
-    // rollback both journals inside the locks, not against a pre-wait snapshot.
+    // Capture and roll back inside the run writers' lock, not against a
+    // pre-wait snapshot.
     return await navigator.locks.request(
       CLASSIC_SAVE_LOCK,
       { mode: 'exclusive' },
-      () => withTableSaveLock(resetAllProgressLocked)
+      resetAllProgressLocked
     )
   } catch {
     return { success: false, restored: true }
@@ -191,8 +190,9 @@ function resetAllProgressLocked(): ResetProgressResult {
     synchronizePersistedMetaState()
     for (const key of TUTORIAL_PROGRESS_KEYS) saved.storage.removeItem(key)
     saved.storage.removeItem(CLASSIC_SAVE_KEY)
-    // Last fallible storage operation, while both run writers are excluded.
-    saved.storage.removeItem(TABLE_SAVE_KEY)
+    // Last fallible storage operation, while the run writer is excluded. The
+    // retired Table Loop record goes only because the player asked for this.
+    saved.storage.removeItem(LEGACY_TABLE_LOOP_SAVE_KEY)
   } catch {
     for (const snapshot of snapshots) {
       try {
@@ -208,7 +208,6 @@ function resetAllProgressLocked(): ResetProgressResult {
     }
   }
   resetMetaProgressionRunContext()
-  useTableLoopStore.getState().forgetAfterReset(stamp)
   getClassicPersistence()?.forgetAfterReset()
   // No runEnd event: deleting progress must not award a loss, win, or unlock.
   gameOrchestrator.resetGame()

@@ -9,6 +9,8 @@ import {
 import { Tile, TileSuit } from '../core/Tile'
 import { buildCoachAdvice } from '../gameplay/beginnerCoach'
 import { eventBus } from './EventBus'
+import { advanceToRound } from '../test/roundHelpers'
+import { MAX_TACTICAL_PLAY_TILES } from './playRules'
 import { useOmenStore } from '../stores/omenStore'
 import {
   SCORE_SURGE_OMEN,
@@ -18,9 +20,8 @@ import {
 function gameWithBoss(mandate: MandateDefinition) {
   const game = new GameOrchestrator()
   game.startNewRun(7)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
   game.getState().roundManager.getCurrentAct()!.rounds[2].bossMandate = mandate
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceToRound(game, 'Boss')
   return game
 }
 
@@ -184,16 +185,22 @@ describe('one authoritative play validator', () => {
     ).toBe(true)
   })
 
-  it('does not let a resource bonus bypass the single-hand mandate', () => {
+  it('allows one Play under The Needle however many Turns remain, but still allows REDRAW', () => {
     const game = gameWithBoss(THE_NEEDLE)
     const state = game.getState() as OrchestratorState
-    // Isolate the rule from automatic round loss: one of two granted hands spent.
-    state.handsAllowance = 2
-    state.handsRemaining = 1
+    // Isolate the rule from automatic round loss: the one Play is spent.
+    state.playsThisRound = 1
+    state.handsRemaining = 3
     expectRejectedWithoutMutation(
       game,
       state.handTiles.slice(0, 3).map((t) => t.id)
     )
+    expect(
+      game.canPerformAction({
+        type: 'redraw',
+        tileIds: [state.handTiles[0].id],
+      })
+    ).toBe(true)
   })
 
   it('considers a complete visible Mahjong hand but still rejects it under the Psychic', () => {
@@ -230,7 +237,7 @@ describe('one authoritative play validator', () => {
       game,
       game
         .getHandTiles()
-        .slice(0, 6)
+        .slice(0, MAX_TACTICAL_PLAY_TILES + 1)
         .map((t) => t.id)
     )
   })

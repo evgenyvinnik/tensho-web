@@ -9,6 +9,7 @@ import {
   type ClassicDestination,
 } from '../../game/classicPersistenceApp'
 import { RouteLoading } from '../ui/RouteLoading'
+import { useCelebrationHold } from '../../game/celebrationHold'
 import { Button } from '../ui/Button'
 
 /** Do not mount a routed game/shop until its authoritative run is ready. */
@@ -26,6 +27,7 @@ export function ClassicRunBoundary({
   const game = useGameController()
   const [ready, setReady] = useState(() => service.hasLocalRun)
   const [busy, setBusy] = useState(false)
+  const celebrating = useCelebrationHold((state) => state.holding)
   useEffect(() => {
     let mounted = true
     void enterClassicRoute(requested).then((destination) => {
@@ -73,7 +75,8 @@ export function ClassicRunBoundary({
     )
   if (game.phase === 'menu') return <Navigate to={`/${lang}`} replace />
   const destination = classicDestination()
-  if (destination !== requested)
+  // A round-ending play finishes its celebration on the table first.
+  if (destination !== requested && !(celebrating && requested === 'play'))
     return <Navigate to={`/${lang}/${destination}`} replace />
   return <>{children}</>
 }

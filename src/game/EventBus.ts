@@ -11,6 +11,7 @@
  * - Event history for debugging
  */
 
+import type { PlayPatternId } from '../rules/PlayPattern'
 import type { ScoreEquation } from '../rules/ScoreEquation'
 import type { ConsumableSource } from '../systems/ConsumableSystem'
 
@@ -33,14 +34,13 @@ export type GameEvent =
   | 'actComplete'
   | 'roundStart'
   | 'roundEnd'
-  | 'roundSkipped'
+  | 'omenEarned'
 
   // Scoring
   | 'handPlayed'
   | 'scoreUpdate'
   | 'yakuScored'
   | 'yakumanScored'
-  | 'riichiChanged'
 
   // Economy
   | 'goldChanged'
@@ -135,7 +135,8 @@ export interface GameEventData {
     target: number
   }
   roundEnd: { won: boolean; score: number; target: number }
-  roundSkipped: { roundType: string; omenTagGranted?: string }
+  /** A swift clear earned the round's Omen. */
+  omenEarned: { roundType: string; omenTagGranted?: string }
 
   // Scoring
   handPlayed: {
@@ -143,11 +144,12 @@ export interface GameEventData {
     score: number
     yakuIds: string[]
     equation: ScoreEquation
+    /** What the play scored as, for the one celebration toast. */
+    pattern: PlayPatternId
   }
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
   yakumanScored: { yakuId: string; yakuName: string; multiplier?: number }
-  riichiChanged: { status: 'active' | 'spent' }
 
   // Economy
   goldChanged: {

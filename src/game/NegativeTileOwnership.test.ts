@@ -64,7 +64,7 @@ it('grants a slot from wall ownership, not a draw or scoring trigger', () => {
   expect(game.addDecree(ordinary)).toBe(false)
   state.handTiles[0] = negative
   expect(
-    game.processAction({ type: 'discard', tileId: negative.id }).success
+    game.processAction({ type: 'redraw', tileIds: [negative.id] }).success
   ).toBe(true)
   expect(state.decreeSystem.getMaxSlots()).toBe(6)
 })
@@ -74,7 +74,7 @@ it('restores derived capacity without baking it into base slots or accumulating 
   expect(state.decreeSystem.toState().maxSlots).toBe(5)
   const saved = game.captureRun()
   const parsed = parseClassicRunSnapshot(JSON.parse(JSON.stringify(saved)))
-  expect(parsed.version).toBe(2)
+  expect(parsed.version).toBe(3)
   for (let i = 0; i < 3; i++) {
     game.restoreRun(JSON.parse(JSON.stringify(saved)))
     expect(game.getState().decreeSystem.getMaxSlots()).toBe(6)

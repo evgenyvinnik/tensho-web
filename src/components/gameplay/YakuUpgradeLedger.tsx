@@ -9,7 +9,7 @@ import { illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
 
 const YAKU_KEYS: Record<YakuCategory, string> = {
-  Riichi: 'riichi',
+  Pairs: 'pairs',
   Tanyao: 'tanyao',
   Yakuhai: 'yakuhai',
   Pinfu: 'pinfu',

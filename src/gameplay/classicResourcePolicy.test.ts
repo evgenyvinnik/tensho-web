@@ -68,40 +68,25 @@ describe('read-only Classic resource policy', () => {
     expect(check).not.toHaveBeenCalled()
   })
 
-  it('preserves the current scoring tiles and exchanges at most three spares when behind pace', () => {
+  it('preserves the current scoring tiles and redraws the weaker half of the spares when behind pace', () => {
     const c = context()
     const result = chooseClassicResourceAction(c)!
     expect(result.reason).toBe('behind-pace')
     expect(result.action.type).toBe('redraw')
-    if (result.action.type !== 'redraw') throw new Error('Expected a redraw')
-    expect(result.action.tileIds).toHaveLength(3)
+    // Three spares (6, 8, 9): one REDRAW sends the two least connected.
+    expect(result.action.tileIds).toHaveLength(2)
     expect(
       result.action.tileIds.every((id) => !c.advice!.best.tileIds.includes(id))
     ).toBe(true)
-    expect(new Set(result.action.tileIds).size).toBe(3)
+    expect(new Set(result.action.tileIds).size).toBe(2)
   })
 
-  it('falls back through smaller legal redraw sizes before discarding', () => {
+  it('falls back to a single-tile REDRAW when a larger one is illegal', () => {
     const result = chooseClassicResourceAction(
-      context({
-        canPerform: (action) =>
-          action.type === 'redraw' && action.tileIds.length <= 2,
-      })
+      context({ canPerform: (action) => action.tileIds.length <= 1 })
     )!
-    expect(result.action).toMatchObject({
-      type: 'redraw',
-      tileIds: expect.any(Array),
-    })
-    if (result.action.type === 'redraw')
-      expect(result.action.tileIds).toHaveLength(2)
-  })
-
-  it('uses a real discard when redraws are unavailable', () => {
-    expect(
-      chooseClassicResourceAction(
-        context({ canPerform: (action) => action.type === 'discard' })
-      )?.action.type
-    ).toBe('discard')
+    expect(result.action.type).toBe('redraw')
+    expect(result.action.tileIds).toHaveLength(1)
   })
 
   it('does not spend resources when the immediate play keeps pace', () => {
@@ -136,7 +121,8 @@ describe('read-only Classic resource policy', () => {
     const result = chooseClassicResourceAction(oneAwayContext())!
     expect(result.reason).toBe('one-away')
     // Either singleton can become the pair; no future draw is inspected.
-    expect(result.action.type).toBe('discard')
+    expect(result.action.type).toBe('redraw')
+    expect(result.action.tileIds).toHaveLength(1)
     expect(result.completion).toBeDefined()
   })
 
@@ -180,9 +166,9 @@ describe('read-only Classic resource policy', () => {
   it('terminates finite resource decisions and leaves a real legal play', () => {
     const game = new GameOrchestrator()
     game.startNewRun(7)
+    const turns = game.getState().handsRemaining
     let exchanges = 0
-    let discards = 0
-    for (let turn = 0; turn < 20; turn++) {
+    for (let turn = 0; turn < 40; turn++) {
       const state = game.getState()
       const advice = buildCoachAdvice({
         tiles: state.handTiles,
@@ -205,8 +191,10 @@ describe('read-only Classic resource policy', () => {
         canPerform: (action) => game.canPerformAction(action),
       })
       if (!result) {
-        expect(exchanges).toBe(3)
-        expect(discards).toBe(3)
+        // Every Turn but the last went to REDRAW; the last is a Play.
+        expect(exchanges).toBeGreaterThanOrEqual(turns - 1)
+        expect(state.handsRemaining).toBe(1)
+        expect(state.redrawsRemaining).toBe(0)
         expect(advice).not.toBeNull()
         expect(
           game.processAction({ type: 'play', tileIds: advice!.best.tileIds })
@@ -215,8 +203,7 @@ describe('read-only Classic resource policy', () => {
         return
       }
       expect(game.processAction(result.action).success).toBe(true)
-      if (result.action.type === 'redraw') exchanges++
-      else discards++
+      exchanges++
     }
     throw new Error(
       'Resource policy did not stop after exhausting its allowances'

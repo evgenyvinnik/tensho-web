@@ -3,8 +3,9 @@ import type { Tile } from '../core/Tile'
 import type { PlayerAction } from '../game/ActionProcessor'
 import { calculateShanten, getEffectiveTiles } from '../rules/ShantenCalculator'
 import { getTilePoints } from '../rules/ScoringEngine'
+import { MAX_TACTICAL_PLAY_TILES } from '../game/playRules'
 
-type CycleAction = Extract<PlayerAction, { type: 'redraw' | 'discard' }>
+type CycleAction = Extract<PlayerAction, { type: 'redraw' }>
 export interface HandShapeContext {
   visibleTiles: readonly Tile[]
   handTileCount: number
@@ -29,7 +30,7 @@ export interface HandPlanDecision {
  * distinct types improve it, then by the discarded tile's base points.
  * Replan after each actual draw. No hypothetical effect execution, wall, seed,
  * unseen tile identity or run RNG is supplied. Costs/locks are checked by the
- * real action validator. One discard is preferred to a one-tile redraw.
+ * real action validator.
  */
 export function chooseHandShapeAction(
   context: HandShapeContext,
@@ -40,7 +41,7 @@ export function chooseHandShapeAction(
     (!advice && !options.fullHandPledge) ||
     (advice &&
       (advice.best.score >= context.remainingToTarget ||
-        advice.best.tileIds.length > 5))
+        advice.best.tileIds.length > MAX_TACTICAL_PLAY_TILES))
   )
     return null
   if (
@@ -60,14 +61,8 @@ export function chooseHandShapeAction(
   let best: { decision: HandPlanDecision; tile: Tile } | null = null
   for (const tile of visibleTiles) {
     if (context.lockedTileIds.includes(tile.id)) continue
-    const discard = { type: 'discard' as const, tileId: tile.id }
-    const redraw = { type: 'redraw' as const, tileIds: [tile.id] }
-    const action = canPerform(discard)
-      ? discard
-      : canPerform(redraw)
-        ? redraw
-        : null
-    if (!action) continue
+    const action = { type: 'redraw' as const, tileIds: [tile.id] }
+    if (!canPerform(action)) continue
     const retained = visibleTiles.filter((t) => t.id !== tile.id)
     const key = retained
       .map((t) => t.typeKey)
@@ -100,7 +95,7 @@ export function chooseHandShapeAction(
   if (!best || !options.batchRedraws || best.decision.action.type !== 'redraw')
     return best?.decision ?? null
 
-  // A redraw spends one charge for up to three tiles. Preserve the best
+  // A REDRAW spends one Turn for any number of tiles. Preserve the best
   // single-exchange distance while replacing more unneeded tiles. This is a
   // structural heuristic, not an expected-value calculation or wall forecast.
   const targetDistance = best.decision.shanten

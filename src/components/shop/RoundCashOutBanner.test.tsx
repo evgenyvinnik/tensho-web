@@ -86,7 +86,13 @@ it.each(SUPPORTED_LANGUAGES)(
       name: i18n.t('shop.payoutBreakdown'),
     })
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    expect(toggle).toHaveTextContent(i18n.t('shop.cashOut'))
+    // The compact receipt names the round it settles, not a generic heading.
+    expect(toggle).toHaveTextContent(
+      i18n.t('shop.payout.heading', {
+        act: new Intl.NumberFormat(language).format(8),
+        round: i18n.t('rounds.large'),
+      })
+    )
     expect(toggle).toHaveAccessibleDescription(
       new Intl.NumberFormat(language, { signDisplay: 'always' }).format(10) +
         'G'
@@ -321,7 +327,8 @@ it('localizes every payout category and round heading in Spanish', async () => {
   ])
     expect(receipt).toHaveTextContent(label)
   expect(receipt).toHaveTextContent('Siguiente: Ronda de Jefe')
-  expect(receipt).toHaveTextContent(
+  // The compact receipt settles gold; the round's score is not repeated.
+  expect(receipt).not.toHaveTextContent(
     new Intl.NumberFormat('es').format(summary.score)
   )
   expect(receipt).not.toHaveTextContent(/Gold tiles|Rentals|Save |Next:/)

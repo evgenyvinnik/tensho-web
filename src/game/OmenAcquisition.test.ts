@@ -5,6 +5,12 @@ import { useOmenStore } from '../stores/omenStore'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import type { Decree } from '../systems/types'
+import { advanceRound, clearRound } from '../test/roundHelpers'
+import { SWIFT_CLEAR_SPARE_TURNS } from './playRules'
+
+// Omens are earned by a swift clear: a Small or Large round cleared with
+// Turns to spare. The round still pays out and opens the Tea House.
+const swift = { spareTurns: SWIFT_CLEAR_SPARE_TURNS }
 
 afterEach(() => {
   eventBus.clear()
@@ -22,31 +28,45 @@ function start(seed: number) {
   return { game, state }
 }
 
-it('skipping clears round-scoped Seasons and discard penalties without a payout or shop', () => {
+it('a swift clear clears round-scoped Seasons and REDRAW penalties, pays out and names the Omen', () => {
   const { game, state } = start(3)
   state.seasonSystem.forceSetSeason('Autumn', true)
   state.seasonSystem.onDiscard()
   state.seasonSystem.onDiscard()
   state.gold = 100
   eventBus.enableHistory()
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(state.currentRound).toBe(2)
-  expect(state.phase).toBe('gameplay')
-  expect(state.gold).toBe(100)
-  expect(state.lastRoundSummary).toBeNull()
-  expect(game.shop.isOpen).toBe(false)
+  clearRound(game, swift)
+  expect(state.phase).toBe('shop')
+  expect(state.gold).toBeGreaterThan(100)
+  expect(state.lastRoundSummary?.omenId).toBe('blessing_pack_omen')
   expect(state.seasonSystem.getSeasonStack()).toEqual([])
   expect(state.seasonSystem.toState().discardCount).toBe(0)
   expect(
     useOmenStore.getState().activeTags.map((tag) => tag.definitionId)
   ).toEqual(['blessing_pack_omen'])
-  expect(eventBus.getHistoryByEvent('roundEnd')).toEqual([])
+  expect(eventBus.getHistoryByEvent('roundEnd')).toHaveLength(1)
+  expect(eventBus.getHistoryByEvent('omenEarned')).toEqual([
+    expect.objectContaining({
+      data: { roundType: 'Small', omenTagGranted: 'blessing_pack_omen' },
+    }),
+  ])
+  game.exitShop()
+  expect(state.currentRound).toBe(2)
+})
+
+it('a clear on the last Turn earns no Omen', () => {
+  const { game, state } = start(3)
+  clearRound(game, { spareTurns: SWIFT_CLEAR_SPARE_TURNS - 1 })
+  expect(state.phase).toBe('shop')
+  expect(state.lastRoundSummary?.omenId).toBeNull()
+  expect(useOmenStore.getState().activeTags).toHaveLength(0)
+  expect(state.omenSystem.getTotalSkippedRounds()).toBe(0)
 })
 
 it('an earned Season lock appends the actual drawn tile without clearing prior Seasons or Decay', () => {
   const { game, state } = start(13)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game, swift)
+  advanceRound(game, swift)
   expect(state.omenSystem.getLockedSeason()).toBe('Winter')
   expect(
     useOmenStore
@@ -54,7 +74,7 @@ it('an earned Season lock appends the actual drawn tile without clearing prior S
       .activeTags.some((tag) => tag.definitionId === 'omen_of_ash')
   ).toBe(true)
 
-  // Deliberate draw fixture after real skip acquisition: Decay already exists,
+  // Deliberate draw fixture after real swift-clear acquisition: Decay already exists,
   // then a Spring tile must become Winter and a second Season stays Summer.
   state.seasonSystem.forceSetSeason('Autumn', true)
   state.seasonSystem.onDiscard()
@@ -101,31 +121,26 @@ it('an earned Season lock appends the actual drawn tile without clearing prior S
   expect(state.omenSystem.hasVoidScriptDownsideProtection()).toBe(true)
 })
 
-it('awards immediate Fortune gold exactly once through skipping, without a round payout', () => {
+it('awards immediate Fortune gold exactly once through a swift clear, on top of the round payout', () => {
   const { game, state } = start(6)
   const before = state.gold
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(state.gold).toBe(before + 10)
-  expect(state.lastRoundSummary).toBeNull()
+  clearRound(game, swift)
+  const summary = state.lastRoundSummary!
+  expect(summary.omenId).toBe('fortune_omen')
+  expect(summary.omenGold).toBe(10)
+  expect(state.gold).toBe(before + summary.netGoldChange)
+  expect(summary.goldAfter - summary.goldBefore).toBe(summary.netGoldChange)
   expect(
     useOmenStore.getState().consumedTags.map((tag) => tag.definitionId)
   ).toEqual(['fortune_omen'])
   expect(useOmenStore.getState().activeTags).toHaveLength(0)
 })
 
-it('earns a Rare+ Omen by skipping and charges it only after winning the Boss and opening its shop', () => {
+it('earns a Rare+ Omen by a swift clear and charges it only when the next Tea House opens', () => {
   const { game, state } = start(73)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game, swift)
   // Keep the fixture focused on reward settlement, not random boss restrictions.
   state.roundManager.getCurrentAct()!.rounds[2].bossMandate = undefined
-  const before = state.gold
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(state.gold).toBe(before)
-  expect(
-    useOmenStore
-      .getState()
-      .activeTags.some((tag) => tag.definitionId === 'decree_omen')
-  ).toBe(true)
   state.targetScore = 1
   state.roundManager.getCurrentRound()!.scoreTarget = 1
   state.handTiles = [
@@ -133,10 +148,16 @@ it('earns a Rare+ Omen by skipping and charges it only after winning the Boss an
     new Tile(TileSuit.Pinzu, 2, 'b'),
   ]
   state.selectedTileIds.clear()
+  state.handsRemaining = SWIFT_CLEAR_SPARE_TURNS + 1
   expect(
     game.processAction({ type: 'play', tileIds: ['a', 'b'] }).success
   ).toBe(true)
   expect(state.phase).toBe('shop')
+  expect(
+    useOmenStore
+      .getState()
+      .activeTags.some((tag) => tag.definitionId === 'decree_omen')
+  ).toBe(true)
   const settledGold = state.gold
   expect(game.shop.open()).toBe(true)
   expect(state.gold).toBe(settledGold - 5)
@@ -153,17 +174,16 @@ it('earns a Rare+ Omen by skipping and charges it only after winning the Boss an
   ).toHaveLength(1)
 })
 
-it('Boss skip availability and execution agree and rejected skips leave Omens untouched', () => {
+it('a Boss round earns no Omen however many Turns are spared', () => {
   const { game, state } = start(3)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  const before = JSON.stringify(useOmenStore.getState())
+  advanceRound(game)
+  advanceRound(game)
   expect(state.currentRound).toBe(3)
-  expect(game.canPerformAction({ type: 'skip' })).toBe(false)
   expect(game.getAvailableActions()).not.toContain('skip')
-  expect(game.processAction({ type: 'skip' }).success).toBe(false)
-  expect(state.currentRound).toBe(3)
-  expect(JSON.stringify(useOmenStore.getState())).toBe(before)
+  clearRound(game, { spareTurns: 5 })
+  expect(state.lastRoundSummary?.roundType).toBe('Boss')
+  expect(state.lastRoundSummary?.omenId).toBeNull()
+  expect(state.omenSystem.getTotalSkippedRounds()).toBe(0)
 })
 
 it.each([
@@ -194,8 +214,7 @@ it.each([
     const { game, state } = start(seed)
     for (const decree of state.decreeSystem.getOwnedDecrees())
       state.decreeSystem.removeDecree(decree.id)
-    for (let i = 0; i < skips; i++)
-      expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    for (let i = 0; i < skips; i++) advanceRound(game, swift)
     expect(state[field]).toBe(amount)
     if (field === 'omenHandSizeBonus') expect(state.handTiles).toHaveLength(16)
     expect(

@@ -7,22 +7,26 @@ import { eventBus } from './EventBus'
 
 afterEach(() => eventBus.clear())
 
-it('renders pledge abandonment without depending on a gold or tile event', () => {
+it('renders the Turn a REDRAW spends', () => {
   const game = new GameOrchestrator()
   game.startNewRun(7)
-  function PledgeView() {
+  Object.assign(game.getState(), { redrawsRemaining: 0 })
+  function TurnsView() {
     const controller = useGameController(game)
-    return <output>{controller.state.riichiStatus}</output>
+    return <output>{controller.state.handsRemaining}</output>
   }
-  const view = render(<PledgeView />)
+  const view = render(<TurnsView />)
+  const turns = game.getState().handsRemaining
+  expect(screen.getByRole('status')).toHaveTextContent(String(turns))
   act(() => {
-    expect(game.processAction({ type: 'declareRiichi' }).success).toBe(true)
+    expect(
+      game.processAction({
+        type: 'redraw',
+        tileIds: [game.getHandTiles()[0].id],
+      }).success
+    ).toBe(true)
   })
-  expect(screen.getByRole('status')).toHaveTextContent('active')
-  act(() => {
-    expect(game.processAction({ type: 'abandonRiichi' }).success).toBe(true)
-  })
-  expect(screen.getByRole('status')).toHaveTextContent('spent')
+  expect(screen.getByRole('status')).toHaveTextContent(String(turns - 1))
   view.unmount()
 })
 

@@ -52,11 +52,13 @@ function setup(flowers: FlowerType[]) {
     { length: 20 },
     (_, i) => new Tile(TileSuit.Wind, (i % 4) + 1, `replacement-${i}`)
   )
-  state.discardsRemaining = 20
+  state.redrawsRemaining = 20
   const drawFlower = () =>
     expect(
-      game.processAction({ type: 'discard', tileId: game.getHandTiles()[0].id })
-        .success
+      game.processAction({
+        type: 'redraw',
+        tileIds: [game.getHandTiles()[0].id],
+      }).success
     ).toBe(true)
   return { game, state, drawFlower }
 }

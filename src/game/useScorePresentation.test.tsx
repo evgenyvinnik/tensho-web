@@ -21,6 +21,7 @@ function paid(points: number, multiplier: number, total: number) {
       yakuIds: [],
       score: total,
       equation,
+      pattern: 'pair',
     })
   )
   return equation

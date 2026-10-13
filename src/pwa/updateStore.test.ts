@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createUpdateStore } from './updateStore'
+import { createUpdateStore, isOutsideRunPath } from './updateStore'
 import { prepareForReload, registerReloadGuard } from './reloadGuards'
 import { UpdateError } from './registerUpdates'
 
-describe('explicit update consent', () => {
-  it('waits for saves and ignores repeat clicks', async () => {
+describe('automatic updates', () => {
+  it('applies a downloaded update by itself once saves finish, ignoring repeats', async () => {
     let saved!: (value: boolean) => void
     const prepare = vi.fn(
       () =>
@@ -13,61 +13,104 @@ describe('explicit update consent', () => {
         })
     )
     const activate = vi.fn().mockResolvedValue(undefined)
-    const store = createUpdateStore(prepare)
-    await store.getState().accept()
+    const store = createUpdateStore(prepare, () => true)
+    await store.getState().attempt()
     expect(prepare).not.toHaveBeenCalled()
     store.getState().announce(activate)
-    expect(activate).not.toHaveBeenCalled()
-    const pending = store.getState().accept()
-    await store.getState().accept()
+    expect(prepare).toHaveBeenCalledOnce()
+    await store.getState().attempt()
     expect(prepare).toHaveBeenCalledOnce()
     expect(activate).not.toHaveBeenCalled()
     saved(true)
-    await pending
-    expect(activate).toHaveBeenCalledOnce()
+    await vi.waitFor(() => expect(activate).toHaveBeenCalledOnce())
     expect(store.getState().busy).toBe(true)
   })
 
+  it('waits inside a run and applies at the next safe boundary', async () => {
+    let safe = false
+    const prepare = vi.fn().mockResolvedValue(true)
+    const activate = vi.fn().mockResolvedValue(undefined)
+    const store = createUpdateStore(prepare, () => safe)
+    store.getState().announce(activate)
+    await store.getState().attempt()
+    expect(prepare).not.toHaveBeenCalled()
+    expect(store.getState()).toMatchObject({ available: true, busy: false })
+    safe = true
+    await store.getState().attempt()
+    expect(prepare).toHaveBeenCalledOnce()
+    expect(activate).toHaveBeenCalledOnce()
+  })
+
+  it('does not reload when the player entered a run while saves flushed', async () => {
+    let safe = true
+    const prepare = vi.fn(async () => {
+      safe = false
+      return true
+    })
+    const activate = vi.fn().mockResolvedValue(undefined)
+    const store = createUpdateStore(prepare, () => safe)
+    store.getState().announce(activate)
+    await vi.waitFor(() => expect(store.getState().busy).toBe(false))
+    expect(activate).not.toHaveBeenCalled()
+    expect(store.getState().available).toBe(true)
+  })
+
   it.each(['false', 'throw'])(
-    'blocks failed saves (%s), retaining a working retry',
+    'postpones after a failed save (%s) and retries at the next boundary',
     async (failure) => {
       const prepare = vi.fn().mockResolvedValue(true)
       if (failure === 'throw')
         prepare.mockRejectedValueOnce(new Error('denied'))
       else prepare.mockResolvedValueOnce(false)
       const activate = vi.fn().mockResolvedValue(undefined)
-      const store = createUpdateStore(prepare)
+      const store = createUpdateStore(prepare, () => true)
       store.getState().announce(activate)
-      await store.getState().accept()
-      expect(store.getState()).toMatchObject({
-        available: true,
-        busy: false,
-        error: 'save',
-      })
+      await vi.waitFor(() =>
+        expect(store.getState()).toMatchObject({
+          available: true,
+          busy: false,
+          error: 'save',
+        })
+      )
       expect(activate).not.toHaveBeenCalled()
-      await store.getState().accept()
+      await store.getState().attempt()
       expect(activate).toHaveBeenCalledOnce()
       expect(prepare).toHaveBeenCalledTimes(2)
     }
   )
 
   it.each(['tabs', 'update'] as const)(
-    'rechecks saves after %s failure',
+    'rechecks saves after a %s failure',
     async (reason) => {
       const prepare = vi.fn().mockResolvedValue(true)
       const activate = vi
         .fn()
         .mockRejectedValueOnce(new UpdateError(reason))
         .mockResolvedValue(undefined)
-      const store = createUpdateStore(prepare)
+      const store = createUpdateStore(prepare, () => true)
       store.getState().announce(activate)
-      await store.getState().accept()
-      expect(store.getState()).toMatchObject({ busy: false, error: reason })
-      await store.getState().accept()
+      await vi.waitFor(() =>
+        expect(store.getState()).toMatchObject({ busy: false, error: reason })
+      )
+      await store.getState().attempt()
       expect(prepare).toHaveBeenCalledTimes(2)
       expect(activate).toHaveBeenCalledTimes(2)
     }
   )
+})
+
+describe('safe boundaries', () => {
+  it.each([
+    ['/en', true],
+    ['/tensho-web/ja/', true],
+    ['/en/settings', true],
+    ['/en/codex', true],
+    ['/en/play', false],
+    ['/tensho-web/en/shop/', false],
+    ['/ru/game-over', false],
+  ])('%s is outside a run: %s', (path, outside) => {
+    expect(isOutsideRunPath(path)).toBe(outside)
+  })
 })
 
 describe('reload guards', () => {

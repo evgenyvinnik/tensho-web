@@ -6,6 +6,67 @@ Unanswered older questions are no longer a requirement to stop for individual
 approval. They are not retroactively treated as answered: new decisions must be
 recorded here, implemented through the actual loop, and verified.
 
+## Player-feedback rules (October 2026)
+
+A 41-point player-feedback plan replaced several mechanics. The user confirmed
+four choices directly: one shared Turns budget; REDRAWn tiles go to the river;
+Winds pay 50 points and each grouped Dragon adds +2 Mult; artwork is produced
+separately. Everything else below follows the plan's recommendations. These
+rules supersede any older entry in this file that conflicts with them.
+
+**Turns.** Each round grants `TURNS_PER_ROUND` (6) Turns, adjusted by Charters,
+Stakes and Decrees that used to change hands or redraws. *Play hand* and
+*REDRAW* each spend one. Free redraws (items, Omens, Autumn) are spent before
+Turns. REDRAW is never allowed to spend the last Turn: the last Turn is a play.
+The Water forbids REDRAW (free or paid); The Needle allows one play but keeps
+REDRAW. A round ends when the score reaches the target, or in defeat when the
+Turns run out (or The Needle's play is spent) below it.
+
+**REDRAW.** Any number of selected, unlocked tiles go to the river (Discard
+Pool) and the rack refills under the round's draw rules. It counts once for
+Decay and for River Tax (+2 Gold per REDRAW), and per tile for "per tile
+redrawn" Decrees. Purple Seals still create a Fate Seal when redrawn. There is
+no separate single-tile discard.
+
+**No Skip.** Rounds cannot be skipped. A Small or Large round cleared with at
+least two Turns to spare (*swift clear*) earns the Omen skipping used to grant,
+including its immediate Gold and slot/edition rewards, and still pays out and
+opens the Tea House. Omen scaling and lifetime stats that counted skips count
+swift clears. A Boss round never earns one.
+
+**Patterns.** A play of up to six tiles (more only for a complete Mahjong hand)
+is split into the disjoint groups that pay the most. Its pattern adds Mult:
+`(groups − 1) + Σ group bonus` with Pair 0, Sequence 0, Triplet 1, Straight of
+Four 1, Quad 2, Straight of Five 2. A complete Mahjong hand adds a flat +4 on
+top of its Yaku. Straights (four or five in a row, one suit) score 45 / 60
+group points. Loose tiles still score half. An awakened Plum's overlapping
+sequences never beat the Straight of Five they form, so Plum now matters for
+complete hands.
+
+**Honors.** Winds score 50 points each. Dragons score 15 and add +2 Mult for
+every Dragon scoring inside a group (a loose Dragon adds none).
+
+**Mult.** `Mult = (Yaku or 1) + Orb levels + pattern + grouped Dragons`.
+Decrees then work on that running Mult in order: "+N Mult" adds N and "×N Mult"
+multiplies. (Previously "+N Mult" was added to a separate factor that
+multiplied the whole Mult, so a +2 Decree tripled a Triplet's Mult 2 to 6.)
+Frostbite weakens what Decrees did to the Mult, never the play's own Mult.
+
+**Orb families.** Plays level Orb families as the Yaku they echo: Pairs (Pluto,
+formerly Riichi), Sequences → Pinfu (Venus), Straights → Ittsu (Saturn), sets
+→ Toitoi (Earth); all-Honor groups also level Yakuhai and all-simple plays
+Tanyao.
+
+**Packs.** Jumbo packs offer five and let you take two; Mega packs offer six
+and let you take three.
+
+**Retired.** The Riichi pledge and the Riichi Yaku, the hand builder ("Build a
+Hand"), round Skip, the single-tile Discard action and the Table Loop mode.
+Saved runs of version 1–2 are upgraded on load (version 3): remaining hands and
+redraws become Turns, remaining discards become up to three free redraws, a
+pledge is dropped without refund, and every saved item is re-read from the
+current catalog so content changes cannot strand a run.
+
 ## Previously confirmed choices to preserve
 
 - Cerulean Bell retains only the most recently forced tile.
@@ -16,7 +77,10 @@ recorded here, implemented through the actual loop, and verified.
 
 ## Decisions made under delegated authority
 
-### Optional Riichi pledge (Tensho adaptation)
+### Optional Riichi pledge (Tensho adaptation) — retired October 2026
+
+*Removed with the Riichi Yaku; see [Player-feedback rules](#player-feedback-rules-october-2026).
+Kept for the history of saved runs.*
 
 Before a genuine complete concealed hand is available, pay **1 Gold** to pledge
 once per round. This is not traditional locked-rack/tenpai Riichi: discards,
@@ -165,6 +229,8 @@ bonus. This makes “extra draws” a usable selection advantage, rather than ex
 scoring actions or an unbounded rack. [Implementation](SPRING_IMPLEMENTATION.md).
 
 ### Autumn: grant additional discard actions
+
+*Since October 2026 each grant is a free REDRAW, spent before Turns.*
 
 Each normal Autumn drawn grants one discard action for the current round,
 alongside its existing Yaku modifier. Repeated draws stack; corrupted Autumn

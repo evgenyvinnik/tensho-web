@@ -15,6 +15,8 @@ import {
   DEFAULT_LIFETIME_STATS,
 } from '../systems/MetaProgressionSystem'
 import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
+import { advanceRound } from '../test/roundHelpers'
+import { SWIFT_CLEAR_SPARE_TURNS } from './playRules'
 
 beforeEach(() => {
   shutdownMetaProgressionBridge()
@@ -51,6 +53,8 @@ function win(game: GameOrchestrator, gold: number) {
   state.gold = gold
   state.targetScore = 1
   state.roundManager.getCurrentRound()!.scoreTarget = 1
+  // Cleared on the last Turn, so no swift-clear Omen changes the interest.
+  state.handsRemaining = 1
   state.handTiles = [
     new Tile(TileSuit.Pinzu, 2, 'interest-a'),
     new Tile(TileSuit.Pinzu, 2, 'interest-b'),
@@ -93,16 +97,6 @@ it('zero-interest rounds break the current streak without erasing the lifetime b
   expect(
     useProgressionStore.getState().stats.maxConsecutiveInterestRounds
   ).toBe(2)
-})
-
-it('an accepted skip breaks the streak, while a rejected Boss skip preserves it', () => {
-  const { game } = start()
-  win(game, 25)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(useProgressionStore.getState().stats.currentMaxInterestRounds).toBe(0)
-  useProgressionStore.getState().updateStats({ currentMaxInterestRounds: 2 })
-  expect(game.processAction({ type: 'skip' }).success).toBe(false)
-  expect(useProgressionStore.getState().stats.currentMaxInterestRounds).toBe(2)
 })
 
 it('new runs cannot combine separate interest streaks', () => {
@@ -172,8 +166,9 @@ it('round-trips the current and best streak separately, without extending legacy
 
 it('measures an Omen-boosted cap at payout time, before the duration expires', () => {
   const { game, state } = start(1)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game, { spareTurns: SWIFT_CLEAR_SPARE_TURNS })
   expect(state.omenSystem.getInterestCapBonus()).toBe(2)
+  useProgressionStore.getState().updateStats({ currentMaxInterestRounds: 0 })
   expect(win(game, 25)).toBe(5)
   expect(useProgressionStore.getState().stats.currentMaxInterestRounds).toBe(0)
   expect(win(game, 100)).toBe(7)

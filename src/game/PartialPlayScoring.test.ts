@@ -14,6 +14,7 @@ import { LIBRARY_DECREES, UNSUPPORTED_DECREE_IDS } from '../config/decreeLibrary
 import { ALL_DECREES as AUTHORED_DECREES } from '../config/decreeDefinitions'
 import type { Decree } from '../systems/types'
 import type { ScoreAddedEffect } from './ActionProcessor'
+import { MAX_TACTICAL_PLAY_TILES } from './playRules'
 
 function scoreOf(effects: { type: string }[]): number {
   const effect = effects.find((e) => e.type === 'score_added') as
@@ -140,7 +141,9 @@ describe('partial play scoring', () => {
 
   it('rejects an oversized incomplete play without consuming the hand', () => {
     const before = orchestrator.getState()
-    const tileIds = before.handTiles.slice(0, 6).map((tile) => tile.id)
+    const tileIds = before.handTiles
+      .slice(0, MAX_TACTICAL_PLAY_TILES + 1)
+      .map((tile) => tile.id)
     const handsBefore = before.handsRemaining
     const scoreBefore = before.score
 
@@ -148,7 +151,9 @@ describe('partial play scoring', () => {
     const result = orchestrator.processAction({ type: 'play', tileIds })
 
     expect(result.success).toBe(false)
-    expect(result.errors?.[0]).toContain('limited to 5 tiles')
+    expect(result.errors?.[0]).toContain(
+      `at most ${MAX_TACTICAL_PLAY_TILES} tiles`
+    )
     expect(orchestrator.getState().handsRemaining).toBe(handsBefore)
     expect(orchestrator.getState().score).toBe(scoreBefore)
   })

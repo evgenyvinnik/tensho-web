@@ -91,19 +91,6 @@ it('a purchased Perishable gets five complete scoring/payout rounds, then expire
   }
 })
 
-it('skipping preserves Perishable lifetime and does not charge rent', () => {
-  const game = buy()
-  const before = game.getState().gold
-  const timer = remaining(game)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(remaining(game)).toBe(timer)
-  expect(game.getState().decreeSystem.getActiveDecrees()).toHaveLength(1)
-  // The skip may award an Omen, but never deducts the rental fee.
-  expect(game.getState().gold).toBeGreaterThanOrEqual(before)
-  expect(game.processAction({ type: 'skip' }).success).toBe(false) // Boss
-  expect(remaining(game)).toBe(timer)
-})
-
 it('loss prevention settles and ages the played round exactly once', () => {
   const game = buy()
   const state = game.getState() as OrchestratorState

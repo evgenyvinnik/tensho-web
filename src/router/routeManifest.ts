@@ -20,6 +20,7 @@ export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number]
 export const ROUTES = {
   MENU: '',
   PLAY: 'play',
+  /** Retired mode; kept only so old links redirect to the menu. */
   TABLE_LOOP: 'table-loop',
   SHOP: 'shop',
   GAME_OVER: 'game-over',

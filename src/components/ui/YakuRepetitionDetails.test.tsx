@@ -24,7 +24,9 @@ it.each(SUPPORTED_LANGUAGES)(
       previousRoundYakuStreaks: { ittsu: 3 },
     }
     const { container } = render(<YakuRepetitionDetails history={history} />)
-    expect(container.querySelectorAll('[data-yaku-streak]')).toHaveLength(21)
+    expect(container.querySelectorAll('[data-yaku-streak]')).toHaveLength(
+      RUN_YAKU_IDS.length
+    )
     expect(container).not.toHaveTextContent('menzen_tsumo')
     expect(container).not.toHaveTextContent('seven_pairs')
     expect(container).not.toHaveTextContent('yaku.')

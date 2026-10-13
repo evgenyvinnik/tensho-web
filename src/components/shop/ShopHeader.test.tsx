@@ -22,6 +22,7 @@ it('localizes the current balance and reroll cost without count-up or hover scal
       canAffordReroll
       onReroll={vi.fn()}
       onSettings={vi.fn()}
+      interestCap={5}
     />
   )
   expect(screen.getByLabelText('1.234.567 de oro')).toHaveTextContent(

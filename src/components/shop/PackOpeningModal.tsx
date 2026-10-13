@@ -351,7 +351,7 @@ export function PackOpeningModal({
         () => {
           setIsRevealed(true)
         },
-        reducedMotion ? 0 : 300
+        reducedMotion ? 0 : 700
       )
 
       return () => clearTimeout(timer)
@@ -468,7 +468,9 @@ export function PackOpeningModal({
               src={illustrationAssets.packs[pack.type]}
               alt=""
               aria-hidden="true"
-              className="game-illustration h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
+              className={`game-illustration h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20 ${
+                reducedMotion || isRevealed ? '' : 'pack-bag-open'
+              }`}
               draggable={false}
             />
             <div className="min-w-0">

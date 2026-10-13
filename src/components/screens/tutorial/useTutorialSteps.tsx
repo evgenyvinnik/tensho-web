@@ -8,6 +8,23 @@
 import { useMemo } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
+import { MeldType } from '../../../core/Meld'
+import {
+  DRAGON_TILE_POINTS,
+  STRAIGHT_5_POINTS,
+  STRUCTURE_POINTS_BY_TYPE,
+  WIND_TILE_POINTS,
+} from '../../../rules/ScoringEngine'
+import {
+  DRAGON_GROUP_MULT,
+  MAHJONG_PATTERN_MULT,
+  TAUGHT_PATTERNS,
+} from '../../../rules/PlayPattern'
+import {
+  MAX_TACTICAL_PLAY_TILES,
+  SWIFT_CLEAR_SPARE_TURNS,
+  TURNS_PER_ROUND,
+} from '../../../game/playRules'
 import {
   TutorialStep,
   Highlight,
@@ -29,8 +46,25 @@ import {
 export function useTutorialSteps(): TutorialStep[] {
   const { t } = useTranslation()
 
-  return useMemo(
-    () => [
+  return useMemo(() => {
+    const bonus = (points: number) => `+${points}`
+    const groupRows = [
+      [MeldType.Pair, 'pair'],
+      [MeldType.Sequence, 'sequence'],
+      [MeldType.Triplet, 'triplet'],
+      [MeldType.Straight, 'straight4'],
+      [MeldType.Straight, 'straight5'],
+      [MeldType.Quad, 'quad'],
+    ].map(([type, pattern]) => [
+      <Highlight color="orange">{t(`patterns.${pattern}.name`)}</Highlight>,
+      t(`patterns.${pattern}.explain`),
+      bonus(
+        pattern === 'straight5'
+          ? STRAIGHT_5_POINTS
+          : STRUCTURE_POINTS_BY_TYPE[type as MeldType]
+      ),
+    ])
+    return [
       {
         id: 'welcome',
         category: 'Introduction',
@@ -40,10 +74,10 @@ export function useTutorialSteps(): TutorialStep[] {
             <p>
               <Trans i18nKey="tutorial.welcome.p1">
                 <Highlight>Tensho (天翔)</Highlight> means "Heavenly Ascent" in
-                Japanese. This is a{' '}
-                <Highlight color="orange">roguelike game</Highlight> built
-                around the classic tile game of{' '}
-                <Highlight>Riichi Mahjong</Highlight>.
+                Japanese. It is a{' '}
+                <Highlight color="orange">roguelike game</Highlight> of{' '}
+                <Highlight>poker-style hands</Highlight> played with Mahjong
+                tiles.
               </Trans>
             </p>
             <p>
@@ -261,7 +295,7 @@ export function useTutorialSteps(): TutorialStep[] {
             <p>
               <Trans i18nKey="tutorial.wind_tiles.p2">
                 Wind tiles are <Highlight>Honor tiles</Highlight> and are worth{' '}
-                <Highlight color="orange">15 points</Highlight> each — the
+                <Highlight color="orange">50 points</Highlight> each — the
                 highest base value!
               </Trans>
             </p>
@@ -313,8 +347,9 @@ export function useTutorialSteps(): TutorialStep[] {
             </div>
             <p>
               <Trans i18nKey="tutorial.dragon_tiles.p5">
-                Like Winds, Dragons are <Highlight>Honor tiles</Highlight> worth{' '}
-                <Highlight color="orange">15 points</Highlight> and cannot form
+                Dragons are <Highlight>Honor tiles</Highlight> worth{' '}
+                <Highlight color="orange">15 points</Highlight>, and every
+                Dragon scored inside a group adds +2 Mult. They cannot form
                 sequences.
               </Trans>
             </p>
@@ -381,29 +416,12 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <DataTable
-              headers={['Meld Type', 'Description', 'Points']}
-              rows={[
-                [
-                  <Highlight color="orange">Sequence</Highlight>,
-                  '3 consecutive tiles of same suit',
-                  '+20',
-                ],
-                [
-                  <Highlight color="orange">Triplet</Highlight>,
-                  '3 identical tiles',
-                  '+30',
-                ],
-                [
-                  <Highlight color="orange">Quad</Highlight>,
-                  '4 identical tiles',
-                  '+50',
-                ],
-                [
-                  <Highlight color="orange">Pair</Highlight>,
-                  '2 identical tiles',
-                  '+10',
-                ],
+              headers={[
+                t('tutorial.groups.headerGroup'),
+                t('tutorial.groups.headerMeaning'),
+                t('tutorial.groups.headerBonus'),
               ]}
+              rows={groupRows}
             />
             <p>
               <Trans i18nKey="tutorial.melds_overview.p2">
@@ -508,8 +526,8 @@ export function useTutorialSteps(): TutorialStep[] {
             </ul>
             <InfoBox type="tip">
               <Trans i18nKey="tutorial.winning_hand.note1">
-                Triplets are worth <Highlight>+30 points</Highlight> — more than
-                sequences (+20)! However, they're harder to complete since you
+                Triplets are worth <Highlight>+40 points</Highlight> — more than
+                sequences (+30)! However, they're harder to complete since you
                 need 3 of the same tile, and each tile only appears 4 times in
                 the game.
               </Trans>
@@ -545,7 +563,7 @@ export function useTutorialSteps(): TutorialStep[] {
               <ul className="list-disc list-inside mt-1 text-sm">
                 <li>
                   <Trans i18nKey="tutorial.winning_hand.li1">
-                    Worth <Highlight>+50 points</Highlight> — the most of any
+                    Worth <Highlight>+65 points</Highlight> — the most of any
                     meld
                   </Trans>
                 </li>
@@ -591,7 +609,7 @@ export function useTutorialSteps(): TutorialStep[] {
             </p>
             <InfoBox type="tip">
               <Trans i18nKey="tutorial.gameplay_overview.note1">
-                The pair is worth <Highlight>+10 points</Highlight>. Any tile
+                The pair is worth <Highlight>+15 points</Highlight>. Any tile
                 can form a pair — numbered tiles, winds, or dragons.
               </Trans>
             </InfoBox>
@@ -691,66 +709,32 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'gameplay-overview',
         category: 'How to Play',
-        title: t('tutorial.gameplayOverview.title', 'How a Round Works'),
+        title: t('tutorial.turns.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.gameplay_overview.p1">
-                Each round follows a simple cycle:
-              </Trans>
-            </p>
-            <ol className="list-decimal list-inside space-y-2">
+            <p>{t('tutorial.turns.p1', { turns: TURNS_PER_ROUND })}</p>
+            <ul className="space-y-2">
               <li>
-                <Trans i18nKey="tutorial.discarding.li1">
-                  <Highlight>Start</Highlight> with 13 tiles in your hand
-                </Trans>
+                <Highlight color="orange">{t('gameplay.playHand')}</Highlight>{' '}
+                — {t('tutorial.turns.play', { max: MAX_TACTICAL_PLAY_TILES })}
               </li>
               <li>
-                <Trans i18nKey="tutorial.discarding.li2">
-                  <Highlight color="orange">Draw</Highlight> a tile from the
-                  wall
-                </Trans>
+                <Highlight>{t('gameplay.redraw')}</Highlight> —{' '}
+                {t('tutorial.turns.redraw')}
               </li>
-              <li>
-                <Trans i18nKey="tutorial.discarding.li3">
-                  Check if you can <Highlight color="green">win</Highlight>{' '}
-                  (valid hand + score target)
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.discarding.li4">
-                  If not, <Highlight>discard</Highlight> one tile you don't need
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.shanten.li1">
-                  Repeat until you win or the wall is empty
-                </Trans>
-              </li>
-            </ol>
-            <InfoBox type="warning">
-              <Trans i18nKey="tutorial.scoring_overview.note1">
-                If the wall empties before you complete a winning hand, the
-                round ends in <Highlight color="orange">failure</Highlight> and
-                your run is over!
-              </Trans>
-            </InfoBox>
+            </ul>
+            <p>{t('tutorial.turns.p2')}</p>
+            <InfoBox type="warning">{t('tutorial.turns.warning')}</InfoBox>
           </div>
         ),
       },
       {
         id: 'drawing',
         category: 'How to Play',
-        title: t('tutorial.drawing.title', 'Drawing Tiles'),
+        title: t('tutorial.refill.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.drawing.p1">
-                At the start of your turn, you{' '}
-                <Highlight>draw one tile</Highlight> from the wall. This gives
-                you 14 tiles temporarily.
-              </Trans>
-            </p>
+            <p>{t('tutorial.refill.p1')}</p>
             <p>
               <Trans i18nKey="tutorial.drawing.p2">
                 The <Highlight color="orange">wall</Highlight> starts with 70
@@ -769,87 +753,40 @@ export function useTutorialSteps(): TutorialStep[] {
         ),
       },
       {
-        id: 'discarding',
+        id: 'redraw',
         category: 'How to Play',
-        title: t('tutorial.discarding.title', 'Discarding Tiles'),
+        title: t('tutorial.redraw.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.discarding.p1">
-                After drawing (if you haven't won), you must{' '}
-                <Highlight>discard one tile</Highlight> to return to 13 tiles.
-              </Trans>
-            </p>
-            <p>
-              <Trans i18nKey="tutorial.discarding.p2">
-                <Highlight color="orange">How to discard:</Highlight>
-              </Trans>
-            </p>
+            <p>{t('tutorial.redraw.p1')}</p>
             <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>
-                <Trans i18nKey="tutorial.base_points.li1">
-                  <strong>Tap/click</strong> a tile to select it
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.base_points.li2">
-                  <strong>Drag upward</strong> to the discard zone
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.base_points.li3">
-                  Discarded tiles go to the <Highlight>Dead Pool</Highlight>
-                </Trans>
-              </li>
+              <li>{t('tutorial.redraw.li1')}</li>
+              <li>{t('tutorial.redraw.li2')}</li>
             </ul>
-            <InfoBox type="warning">
-              <Trans i18nKey="tutorial.yaku_intro.note1">
-                Discarded tiles are{' '}
-                <Highlight color="orange">gone forever</Highlight> — you cannot
-                retrieve them! Choose carefully which tiles to discard.
-              </Trans>
-            </InfoBox>
+            <InfoBox type="tip">{t('tutorial.redraw.note')}</InfoBox>
           </div>
         ),
       },
       {
-        id: 'shanten',
+        id: 'hands',
         category: 'How to Play',
-        title: t('tutorial.shanten.title', 'Understanding Shanten'),
+        title: t('tutorial.hands.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.shanten.p1">
-                <Highlight>Shanten (向聴)</Highlight> is the number of tiles you
-                need to change to complete a winning hand.
-              </Trans>
-            </p>
+            <p>{t('tutorial.hands.p1', { max: MAX_TACTICAL_PLAY_TILES })}</p>
             <DataTable
-              headers={['Shanten', 'Meaning']}
-              rows={[
-                [
-                  <Highlight color="orange">3-shanten</Highlight>,
-                  'Need 3 more useful tiles',
-                ],
-                [
-                  <Highlight color="orange">2-shanten</Highlight>,
-                  'Getting closer!',
-                ],
-                [
-                  <Highlight color="orange">1-shanten</Highlight>,
-                  'Almost there!',
-                ],
-                [
-                  <Highlight color="green">Tenpai (0)</Highlight>,
-                  'Ready to win! Just need the right tile',
-                ],
+              headers={[
+                t('tutorial.hands.headerHand'),
+                t('tutorial.hands.headerMeaning'),
               ]}
+              rows={TAUGHT_PATTERNS.map((id) => [
+                <Highlight color="orange">{t(`patterns.${id}.name`)}</Highlight>,
+                t(`patterns.${id}.explain`),
+              ])}
             />
-            <InfoBox type="tip">
-              <Trans i18nKey="tutorial.yaku_examples.note1">
-                The game shows your current shanten. Lower is better! Aim to
-                reduce your shanten quickly each turn.
-              </Trans>
+            <InfoBox type="info">
+              {t('guide.patternRule')}{' '}
+              {t('tutorial.hands.mahjong', { mult: MAHJONG_PATTERN_MULT })}
             </InfoBox>
           </div>
         ),
@@ -857,108 +794,75 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'scoring-overview',
         category: 'Scoring',
-        title: t('tutorial.scoringOverview.title', 'How Scoring Works'),
+        title: t('tutorial.score.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.scoring_overview.p1">
-                Your score is calculated using this formula:
-              </Trans>
-            </p>
-            <Formula>Score = (Base Points + Bonuses) × Multipliers</Formula>
-            <p className="mt-3">There are three components:</p>
-            <ol className="list-decimal list-inside space-y-1">
-              <li>
-                <Trans i18nKey="tutorial.yaku_intro.li1">
-                  <Highlight>Base Points</Highlight> — From your tiles
-                  themselves
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.yaku_intro.li2">
-                  <Highlight color="orange">Structure Points</Highlight> — From
-                  your melds and pair
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.yaku_intro.li3">
-                  <Highlight color="green">Multipliers</Highlight> — From Yaku,
-                  Decrees, and effects
-                </Trans>
-              </li>
-            </ol>
+            <p>{t('tutorial.score.p1')}</p>
+            <Formula>
+              {t('guide.points')} × {t('guide.mult')} = {t('guide.score')}
+            </Formula>
+            <p>{t('guide.scoreHelp')}</p>
+            <InfoBox type="tip">{t('tutorial.score.note')}</InfoBox>
           </div>
         ),
       },
       {
         id: 'base-points',
         category: 'Scoring',
-        title: t('tutorial.basePoints.title', 'Base Points from Tiles'),
+        title: t('tutorial.points.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.base_points.p1">
-                Every tile in your winning hand contributes{' '}
-                <Highlight>base points</Highlight>:
-              </Trans>
-            </p>
+            <p>{t('tutorial.points.p1')}</p>
             <DataTable
-              headers={['Tile Type', 'Points Each']}
+              headers={[
+                t('tutorial.points.headerTile'),
+                t('tutorial.points.headerPoints'),
+              ]}
               rows={[
+                [t('tutorial.points.simples'), <Highlight>5</Highlight>],
                 [
-                  'Terminals (1, 9)',
-                  <Highlight color="orange">10 points</Highlight>,
+                  t('tutorial.points.terminals'),
+                  <Highlight color="orange">10</Highlight>,
                 ],
-                ['Simples (2-8)', <Highlight>5 points</Highlight>],
                 [
-                  'Honor tiles (Winds, Dragons)',
-                  <Highlight color="orange">15 points</Highlight>,
+                  t('tiles.winds'),
+                  <Highlight color="orange">{WIND_TILE_POINTS}</Highlight>,
+                ],
+                [
+                  t('tiles.dragons'),
+                  <Highlight color="green">
+                    {t('tutorial.points.dragonValue', {
+                      points: DRAGON_TILE_POINTS,
+                      mult: DRAGON_GROUP_MULT,
+                    })}
+                  </Highlight>,
                 ],
               ]}
             />
-            <InfoBox type="tip">
-              <Trans i18nKey="tutorial.boss_mandates.note1">
-                Honor tiles give <Highlight>3× more points</Highlight> than
-                simples! A hand full of honors will have a much higher base
-                score.
-              </Trans>
-            </InfoBox>
+            <InfoBox type="tip">{t('tutorial.points.note')}</InfoBox>
           </div>
         ),
       },
       {
         id: 'structure-points',
         category: 'Scoring',
-        title: t(
-          'tutorial.structurePoints.title',
-          'Structure Points from Melds'
-        ),
+        title: t('tutorial.groups.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.structure_points.p1">
-                Your melds add <Highlight>structure points</Highlight> to your
-                base:
-              </Trans>
-            </p>
+            <p>{t('tutorial.groups.p1')}</p>
             <DataTable
-              headers={['Structure', 'Bonus Points']}
-              rows={[
-                ['Pair', <Highlight>+10</Highlight>],
-                ['Sequence', <Highlight>+20</Highlight>],
-                ['Triplet', <Highlight color="orange">+30</Highlight>],
-                ['Quad', <Highlight color="orange">+50</Highlight>],
+              headers={[
+                t('tutorial.groups.headerGroup'),
+                t('tutorial.groups.headerMeaning'),
+                t('tutorial.groups.headerBonus'),
               ]}
+              rows={groupRows}
             />
-            <p>
-              <Trans i18nKey="tutorial.structure_points.p2">
-                <strong>Example:</strong> A hand with 2 sequences, 2 triplets,
-                and a pair:
-              </Trans>
-            </p>
             <p className="font-mono text-sm">
-              20 + 20 + 30 + 30 + 10 ={' '}
-              <Highlight color="green">+110 structure points</Highlight>
+              {t('tutorial.groups.example', {
+                pair: STRUCTURE_POINTS_BY_TYPE[MeldType.Pair],
+                total: 2 * STRUCTURE_POINTS_BY_TYPE[MeldType.Pair],
+              })}
             </p>
           </div>
         ),
@@ -1099,18 +1003,15 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <div className="space-y-2 text-sm">
-              <div className="p-2 bg-red-900/30 rounded border border-red-500/50">
-                <strong>The Hook (鉤)</strong> — 2 random tiles discarded after
-                each draw
-              </div>
-              <div className="p-2 bg-red-900/30 rounded border border-red-500/50">
-                <strong>The Wall (壁)</strong> — Score requirement is ×4 instead
-                of ×2
-              </div>
-              <div className="p-2 bg-red-900/30 rounded border border-red-500/50">
-                <strong>The Water (水)</strong> — Start with 0 redraws this
-                round
-              </div>
+              {['the_hook', 'the_wall', 'the_water'].map((id) => (
+                <div
+                  key={id}
+                  className="p-2 bg-red-900/30 rounded border border-red-500/50"
+                >
+                  <strong>{t(`mandates.items.${id}.name`)}</strong> —{' '}
+                  {t(`mandates.items.${id}.description`)}
+                </div>
+              ))}
             </div>
             <InfoBox type="tip">
               <Trans i18nKey="tutorial.decree_slots.note1">
@@ -1122,59 +1023,17 @@ export function useTutorialSteps(): TutorialStep[] {
         ),
       },
       {
-        id: 'skipping',
+        id: 'swift-clear',
         category: 'Progression',
-        title: t('tutorial.skipping.title', 'Skipping Rounds'),
+        title: t('tutorial.swift.title'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.skipping.p1">
-                You can <Highlight>skip</Highlight> the Small Round or Large
-                Round before facing the Boss. Why would you do this?
-              </Trans>
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="p-2 bg-green-900/30 rounded border border-green-500/50">
-                <p className="font-bold text-green-400">Benefits</p>
-                <ul className="text-xs list-disc list-inside mt-1">
-                  <li>
-                    <Trans i18nKey="tutorial.decree_rarities.li1">
-                      Receive an Omen Tag
-                    </Trans>
-                  </li>
-                  <li>
-                    <Trans i18nKey="tutorial.decree_rarities.li2">
-                      Save Decrees with timers
-                    </Trans>
-                  </li>
-                  <li>
-                    <Trans i18nKey="tutorial.decree_rarities.li3">
-                      Avoid unfavorable walls
-                    </Trans>
-                  </li>
-                </ul>
-              </div>
-              <div className="p-2 bg-red-900/30 rounded border border-red-500/50">
-                <p className="font-bold text-red-400">Costs</p>
-                <ul className="text-xs list-disc list-inside mt-1">
-                  <li>
-                    <Trans i18nKey="tutorial.decree_rarities.li4">
-                      No shop access
-                    </Trans>
-                  </li>
-                  <li>
-                    <Trans i18nKey="tutorial.decree_rarities.li5">
-                      No gold earned
-                    </Trans>
-                  </li>
-                  <li>
-                    <Trans i18nKey="tutorial.decree_rarities.li6">
-                      No interest growth
-                    </Trans>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <p>{t('tutorial.swift.p1', { spare: SWIFT_CLEAR_SPARE_TURNS })}</p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>{t('tutorial.swift.li1')}</li>
+              <li>{t('tutorial.swift.li2')}</li>
+            </ul>
+            <InfoBox type="info">{t('tutorial.swift.note')}</InfoBox>
           </div>
         ),
       },
@@ -1765,7 +1624,6 @@ export function useTutorialSteps(): TutorialStep[] {
           { suit: TileSuit.Dragon, rank: 3 },
         ],
       },
-    ],
-    [t]
-  )
+    ]
+  }, [t])
 }

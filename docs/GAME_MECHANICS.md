@@ -392,16 +392,22 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 
 **Base Score Targets by Act:**
 
-| Act | Base Requirement | At Jade Stake+ | At Storm Stake+ |
-|-----|------------------|----------------|-----------------|
-| 1 | 300 | 300 | 300 |
-| 2 | 800 | 900 | 1,000 |
-| 3 | 2,000 | 2,600 | 3,200 |
-| 4 | 5,000 | 8,000 | 9,000 |
-| 5 | 11,000 | 20,000 | 25,000 |
-| 6 | 20,000 | 36,000 | 60,000 |
-| 7 | 35,000 | 60,000 | 110,000 |
-| 8 (Showdown) | 50,000 | 100,000 | 200,000 |
+| Act | Small (×1) | Large (×1.5) | Boss (×2) |
+|-----|-----------:|-------------:|----------:|
+| 1 | 300 | 450 | 600 |
+| 2 | 800 | 1,200 | 1,600 |
+| 3 | 2,000 | 3,000 | 4,000 |
+| 4 | 6,000 | 9,000 | 12,000 |
+| 5 | 15,000 | 22,500 | 30,000 |
+| 6 | 30,000 | 45,000 | 60,000 |
+| 7 | 55,000 | 82,500 | 110,000 |
+| 8 (Showdown) | 90,000 | 135,000 | 180,000 |
+
+Acts 4–8 were raised in October 2026 when the Turns budget, six-tile plays and
+pattern Mult made scores much larger; Acts 1–3 stayed as they were so a first
+run stays approachable. Table Stakes multiply these targets (from ×1.3 at Green
+Stake to ×1.95 at Gold), and some tables add their own modifiers. The same-seed
+measurement is in [docs/balance/2026-10-12-player-feedback-balance.md](balance/2026-10-12-player-feedback-balance.md).
 
 **Endless Mode (Act 9+):**
 After defeating Act 8, players enter Endless Mode with rapidly scaling requirements:

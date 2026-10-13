@@ -6,6 +6,7 @@ import { THE_HOOK } from '../config/mandateDefinitions'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { ALL_DECREES } from '../systems/DecreeSystem'
+import { clearRound } from '../test/roundHelpers'
 
 afterEach(() => {
   eventBus.clear()
@@ -35,55 +36,47 @@ function fixture() {
   return { game, state }
 }
 
-it('real discards grow Decay and the preview and committed score agree', () => {
+const redraw = (game: GameOrchestrator, tileIds: string[]) =>
+  game.processAction({ type: 'redraw', tileIds }).success
+
+it('each REDRAW grows Decay once, however many tiles it sends, and the preview and committed score agree', () => {
   const { game, state } = fixture()
+  state.redrawsRemaining = 3
   const pair = ['hand-0', 'hand-1']
   const before = game.previewScore(pair)!.finalScore
-  expect(
-    game.processAction({ type: 'discard', tileId: 'hand-2' }).success
-  ).toBe(true)
+  expect(redraw(game, ['hand-2'])).toBe(true)
   expect(state.seasonSystem.getDecayPenalty()).toBe(10)
   expect(game.previewScore(pair)!.finalScore).toBe(before - 10)
-  expect(
-    game.processAction({ type: 'discard', tileId: 'hand-3' }).success
-  ).toBe(true)
+  expect(redraw(game, ['hand-3', 'hand-4', 'hand-5'])).toBe(true)
   expect(state.seasonSystem.getDecayPenalty()).toBe(20)
   const preview = game.previewScore(pair)!.finalScore
   expect(preview).toBe(before - 20)
   const score = state.score
   expect(game.processAction({ type: 'play', tileIds: pair }).success).toBe(true)
   expect(state.score - score).toBe(preview)
-  // Played tiles enter the river but are not discard actions.
+  // Played tiles enter the river but are not REDRAWs.
   expect(state.seasonSystem.getDecayPenalty()).toBe(20)
 })
 
-it('redraws and rejected discards do not grow Decay, while each Hook discard does', () => {
+it('rejected REDRAWs do not grow Decay, while each Hook discard does', () => {
   const { game, state } = fixture()
-  expect(
-    game.processAction({ type: 'discard', tileId: 'missing' }).success
-  ).toBe(false)
-  expect(
-    game.processAction({ type: 'redraw', tileIds: ['hand-2'] }).success
-  ).toBe(true)
+  expect(redraw(game, ['missing'])).toBe(false)
   expect(state.seasonSystem.getDecayPenalty()).toBe(0)
   state.mandateEffectSystem = MandateEffectSystem.fromJSON({
     ...state.mandateEffectSystem.toJSON(),
     activeMandate: THE_HOOK,
   })
-  expect(
-    game.processAction({ type: 'redraw', tileIds: ['hand-3'] }).success
-  ).toBe(true)
-  expect(state.discards).toHaveLength(2)
-  expect(state.seasonSystem.getDecayPenalty()).toBe(20)
+  expect(redraw(game, ['hand-3'])).toBe(true)
+  // The redrawn tile and The Hook's two forced discards.
+  expect(state.discards).toHaveLength(3)
+  expect(state.seasonSystem.getDecayPenalty()).toBe(30)
 })
 
-it('clears the penalty when a skipped round ends', () => {
+it('clears the penalty when the round ends', () => {
   const { game, state } = fixture()
-  expect(
-    game.processAction({ type: 'discard', tileId: 'hand-2' }).success
-  ).toBe(true)
+  expect(redraw(game, ['hand-2'])).toBe(true)
   expect(state.seasonSystem.getDecayPenalty()).toBe(10)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  clearRound(game)
   expect(state.seasonSystem.toState().discardCount).toBe(0)
   expect(state.seasonSystem.getDecayPenalty()).toBe(0)
 })

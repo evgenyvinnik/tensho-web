@@ -10,6 +10,7 @@
  * Separated from TeaHouseSystem for cleaner code organization and testing.
  */
 
+import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
 import {
   DecreeRarity,
   ShopItemType,
@@ -429,8 +430,8 @@ export class ShopGenerator {
       type: packType,
       size: packSize,
       cost: this.pricingCalculator.getPackCost(packSize),
-      choiceCount: packSize === 'Normal' ? 3 : 5,
-      selectCount: packSize === 'Mega' ? 2 : 1,
+      choiceCount: PACK_SIZE_DEFINITIONS[packSize].choiceCount,
+      selectCount: PACK_SIZE_DEFINITIONS[packSize].selectCount,
     }
 
     const pricing = this.pricingCalculator.calculatePackCost(packSize)

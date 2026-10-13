@@ -14,6 +14,7 @@ import { parseClassicRunSnapshot } from './validateClassicRun'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { advanceRound } from '../test/roundHelpers'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -82,19 +83,17 @@ function addDrought(state: OrchestratorState) {
   })
 }
 
-it.each(['draw', 'discard', 'redraw', 'play'] as const)(
+it.each(['draw', 'redraw', 'play'] as const)(
   'earns an extra physical tile through %s without changing normal capacity or previews',
   (type) => {
     const { game, state } = fixture()
     if (type === 'draw') state.handTiles.pop()
     const action =
-      type === 'discard'
-        ? { type, tileId: 'hand-0' }
-        : type === 'play'
-          ? { type, tileIds: ['hand-0', 'hand-1', 'hand-2'] }
-          : type === 'redraw'
-            ? { type, tileIds: ['hand-0'] }
-            : { type }
+      type === 'play'
+        ? { type, tileIds: ['hand-0', 'hand-1', 'hand-2'] }
+        : type === 'redraw'
+          ? { type, tileIds: ['hand-0'] }
+          : { type }
     const before = game.captureRun(),
       identities = physical(state)
     const onDraw = vi.spyOn(state.mandateEffectSystem, 'onDraw')
@@ -201,7 +200,7 @@ it.each([
   const count = state.handTiles.length,
     dead = [...state.deadWall]
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(count)
   expect(state.deadWall).toEqual(dead)
@@ -224,7 +223,7 @@ it.each([false, true])(
         disabledDecreeIds: [owned.instanceId ?? owned.id],
       })
     expect(
-      game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+      game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
     ).toBe(true)
     expect(state.handTiles).toHaveLength(disabled ? 16 : 17)
   }
@@ -273,7 +272,7 @@ it.each([THE_HOOK, THE_FISH, CERULEAN_BELL, THE_SERPENT])(
       game.processAction(
         mandate === THE_FISH
           ? { type: 'play', tileIds: ['hand-0', 'hand-1', 'hand-2'] }
-          : { type: 'discard', tileId: 'hand-0' }
+          : { type: 'redraw', tileIds: ['hand-0'] }
       ).success
     ).toBe(true)
     expect(onDraw).toHaveBeenCalledTimes(1)
@@ -292,12 +291,12 @@ it('does not invent tiles or carry unpaid credits into a later action', () => {
   const { game, state } = fixture()
   state.deadWall = []
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(16)
   state.deadWall = [new Tile(TileSuit.Manzu, 1, 'late-dead')]
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-1' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-1'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(16)
   expect(state.deadWall[0].id).toBe('late-dead')
@@ -311,7 +310,7 @@ it('resolves bonus Flowers and Spring without recursively farming new Honor draw
   ]
   const identities = physical(state)
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(18)
   expect(state.seasonSystem.getDrawBonus()).toBe(4)
@@ -369,8 +368,7 @@ it('normal starting deals grant extra draws and round expiry never replays old c
   vi.spyOn(sources, 'drawFromDeadWall')
     .mockReturnValueOnce(new Tile(TileSuit.Pinzu, 1, 'dealt-replacement'))
     .mockReturnValueOnce(new Tile(TileSuit.Dragon, 1, 'dealt-bonus'))
-  // Skip begins the next round directly (there is no Tea House after a skip).
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game)
   expect(state.seasonSystem.getDrawBonus()).toBe(2)
   expect(game.getState().phase).toBe('gameplay')
   expect(game.getHandTiles()).toHaveLength(17)

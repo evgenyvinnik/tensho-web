@@ -8,7 +8,7 @@ import type { CoachAdvice } from '../../src/gameplay/beginnerCoach'
 import { findOneAwayCompletion } from '../../src/rules/HandValidator'
 import { getTilePoints } from '../../src/rules/ScoringEngine'
 
-type CycleAction = Extract<PlayerAction, { type: 'redraw' | 'discard' }>
+type CycleAction = Extract<PlayerAction, { type: 'redraw' }>
 
 export interface ResourcePolicyContext {
   visibleTiles: readonly Tile[]
@@ -43,9 +43,6 @@ function singleCycle(
   tileId: string,
   canPerform: ResourcePolicyContext['canPerform']
 ): CycleAction | null {
-  // A real discard removes the unwanted tile from future circulation.
-  const discard: CycleAction = { type: 'discard', tileId }
-  if (canPerform(discard)) return discard
   const redraw: CycleAction = { type: 'redraw', tileIds: [tileId] }
   return canPerform(redraw) ? redraw : null
 }
@@ -110,7 +107,9 @@ export function chooseClassicResourceAction(
       connectivity(a, visible) - connectivity(b, visible) ||
       getTilePoints(a) - getTilePoints(b)
   )
-  for (let count = Math.min(3, ranked.length); count >= 2; count--) {
+  // One REDRAW sends any number of tiles: replace every weak spare at once.
+  const spareLimit = Math.min(6, Math.ceil(ranked.length / 2))
+  for (let count = Math.min(spareLimit, ranked.length); count >= 2; count--) {
     const action: CycleAction = {
       type: 'redraw',
       tileIds: ranked.slice(0, count).map((t) => t.id),

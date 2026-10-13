@@ -7,9 +7,14 @@
  * Base points come from tiles and hand structure:
  * - Terminals (1,9): 10 points each
  * - Simples (2-8): 5 points each
- * - Honors: 15 points each
- * - Pair: +15, Sequence: +30, Triplet: +40, Quad: +65
+ * - Winds: 50 points each; Dragons: 15 points each
+ * - Pair: +15, Sequence: +30, Triplet: +40, Quad: +65,
+ *   Straight of 4: +45, Straight of 5: +60
  * - A tile in a tactical play that belongs to no group scores half
+ *
+ * Mult starts at 1 (or the Yaku multiplier of a complete hand) and adds:
+ * - the play pattern's Mult (see PlayPattern.ts)
+ * - +2 for every Dragon that scores inside a group
  *
  * Tile modifiers add:
  * - Enhancement chips/mult (Bonus: +30, Mult: +4, etc.)
@@ -20,7 +25,7 @@
  * - +50 bonus chips per red five when enabled
  */
 
-import { Tile, WindType } from '../core/Tile'
+import { Tile, TileSuit, WindType } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
 import {
@@ -32,6 +37,12 @@ import {
 import { tileModifierSystem } from '../systems/TileModifierSystem'
 import { redFiveSystem, countRedFives } from '../systems/RedFiveSystem'
 import type { ScoreEquation } from './ScoreEquation'
+import {
+  classifyMahjong,
+  classifyPlay,
+  DRAGON_GROUP_MULT,
+  type PlayPattern,
+} from './PlayPattern'
 
 /** Structural classification before numeric bonuses/debuffs, shared with the forecast. */
 export interface ScoredStructure {
@@ -66,6 +77,11 @@ export interface ScoreBreakdown {
   detectedYaku: DetectedYaku[]
   yakuMultiplier: number
 
+  /** What the play scored as, and the Mult its pattern adds. */
+  pattern: PlayPattern
+  /** Mult added by Dragons scoring inside a group (+2 each trigger). */
+  dragonMult: number
+
   // Bonuses from game systems
   additiveBonus: number
 
@@ -94,7 +110,6 @@ export interface ScoringContext {
   declaredMelds: Meld[]
   isConcealed: boolean
   isTsumo: boolean
-  isRiichi: boolean
   seatWind: WindType
   roundWind: WindType
   winningTile: Tile
@@ -142,11 +157,17 @@ export const UNGROUPED_TILE_SHARE = 0.5
  * Get points for a single tile based on its type
  */
 export function getTilePoints(tile: Tile): number {
-  if (tile.isHonor) return 15
+  if (tile.suit === TileSuit.Wind) return WIND_TILE_POINTS
+  if (tile.isHonor) return DRAGON_TILE_POINTS
   if (tile.isTerminal) return 10
   if (tile.isSimple) return 5
   return 0 // Bonus tiles don't count
 }
+
+/** Winds are the big-points honors. */
+export const WIND_TILE_POINTS = 50
+/** Dragons keep modest points; their power is Mult (see DRAGON_GROUP_MULT). */
+export const DRAGON_TILE_POINTS = 15
 
 /**
  * Points a group is worth for being a group.
@@ -166,13 +187,25 @@ export const STRUCTURE_POINTS_BY_TYPE: Record<MeldType, number> = {
   [MeldType.Sequence]: 30,
   [MeldType.Triplet]: 40,
   [MeldType.Quad]: 65,
+  // A four-tile straight; a five-tile straight is worth STRAIGHT_5_POINTS.
+  [MeldType.Straight]: 45,
+}
+
+/** Structure points for a five-tile straight. */
+export const STRAIGHT_5_POINTS = 60
+
+/** Structure points for a group of this type and size. */
+export function structurePointsFor(type: MeldType, size: number): number {
+  return type === MeldType.Straight && size >= 5
+    ? STRAIGHT_5_POINTS
+    : STRUCTURE_POINTS_BY_TYPE[type]
 }
 
 /**
  * Get points for a meld structure
  */
 export function getMeldStructurePoints(meld: Meld): number {
-  return STRUCTURE_POINTS_BY_TYPE[meld.type] ?? 0
+  return structurePointsFor(meld.type, meld.tiles.length) ?? 0
 }
 
 /**
@@ -314,7 +347,6 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     declaredMelds: context.declaredMelds,
     isConcealed: context.isConcealed,
     isTsumo: context.isTsumo,
-    isRiichi: context.isRiichi,
     seatWind: context.seatWind,
     roundWind: context.roundWind,
     winningTile: context.winningTile,
@@ -327,6 +359,31 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   // 5. Calculate yaku multiplier (multiplicative stacking)
   const yakuMultiplier = calculateYakuMultiplier(detectedYaku)
 
+  // 5b. The pattern's Mult, and every grouped Dragon's. Every tile of a
+  // complete hand belongs to its structure; a tactical play's loose Dragons
+  // score only their (halved) points.
+  const pattern = isPartial
+    ? classifyPlay(context.partialMelds!)
+    : classifyMahjong([
+        ...(context.parsedHand?.melds ?? []),
+        ...(context.parsedHand?.pair?.tiles.length
+          ? [context.parsedHand.pair]
+          : []),
+      ])
+  const dragonMult = scoringTiles.reduce(
+    (sum, tile) =>
+      tile.suit === TileSuit.Dragon &&
+      (!groupedTileIds || groupedTileIds.has(tile.id))
+        ? sum +
+          DRAGON_GROUP_MULT *
+            (1 + tile.retriggers) *
+            (1 +
+              Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) *
+                strength)
+        : sum,
+    0
+  )
+
   // 6. Apply additional bonuses from game systems (including red fives)
   const additiveBonus =
     (context.additiveBonus ?? 0) + modifierChips + modifierMult + redFiveChips
@@ -336,7 +393,11 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   // 7. Calculate final score
   // Formula: Final Score = (Base Points + Additive Bonuses) x Multiplicative Multipliers
   const subtotal = basePoints + additiveBonus
-  const finalScore = Math.floor(subtotal * yakuMultiplier * multiplicativeBonus)
+  const finalScore = Math.floor(
+    subtotal *
+      (yakuMultiplier + pattern.mult + dragonMult) *
+      multiplicativeBonus
+  )
 
   return {
     basePoints,
@@ -361,6 +422,8 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     redFiveChips,
     detectedYaku,
     yakuMultiplier,
+    pattern,
+    dragonMult,
     additiveBonus,
     retriggeredTiles,
     shatteredTiles,
@@ -380,7 +443,6 @@ export function createScoringContext(
     declaredMelds?: Meld[]
     isConcealed?: boolean
     isTsumo?: boolean
-    isRiichi?: boolean
     seatWind?: WindType
     roundWind?: WindType
     winningTile?: Tile
@@ -400,7 +462,6 @@ export function createScoringContext(
     declaredMelds: options.declaredMelds ?? [],
     isConcealed: options.isConcealed ?? true,
     isTsumo: options.isTsumo ?? true,
-    isRiichi: options.isRiichi ?? false,
     seatWind: options.seatWind ?? WindType.East,
     roundWind: options.roundWind ?? WindType.East,
     winningTile: options.winningTile ?? tiles[tiles.length - 1],

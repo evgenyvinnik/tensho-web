@@ -573,6 +573,7 @@ describe('gated (conditional) Decrees', () => {
     roundType?: string
     handsPlayed?: number
     discardsRemaining?: number
+    tilesRedrawn?: number
     currentScore?: number
     yakuIds?: string[]
     lastHandScore?: number
@@ -599,6 +600,7 @@ describe('gated (conditional) Decrees', () => {
         maxHands: 4,
         discardsRemaining: options.discardsRemaining ?? 0,
         maxDiscards: 3,
+        tilesRedrawn: options.tilesRedrawn ?? 0,
         isCompleted: false,
         isWon: false,
       },
@@ -740,16 +742,16 @@ describe('gated (conditional) Decrees', () => {
     )
   })
 
-  it('pays a no-discards Decree only on an untouched discard budget', () => {
+  it('pays a no-REDRAW Decree only before any tile is redrawn this round', () => {
     const decree = gatedDecree('no_discards_used')
 
     const untouched = multiplierWith(
       decree,
-      contextFor({ discardsRemaining: 3, decrees: [] })
+      contextFor({ tilesRedrawn: 0, decrees: [] })
     )
     const spent = multiplierWith(
       decree,
-      contextFor({ discardsRemaining: 1, decrees: [] })
+      contextFor({ tilesRedrawn: 2, decrees: [] })
     )
 
     expect(untouched.additive + untouched.mult).toBeGreaterThan(

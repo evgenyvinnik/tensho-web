@@ -1,47 +1,7 @@
 {
-  "riichiPledge": {
-    "title": "Riichi pledge",
-    "active": "Riichi pledged",
-    "spent": "Riichi used this round",
-    "intro": "Pay 1 Gold before your hand is complete. Once per round.",
-    "risk": "While pledged, only a genuine concealed full hand can score. Redraws, discards, and items still work.",
-    "reward": "Your next complete concealed hand scores Riichi (×1.2 Yaku), subject to Boss and Yakuman rules. Pluto and Riichi Devotee apply only if Riichi scores.",
-    "declare": "Pledge · 1 Gold",
-    "abandon": "Abandon pledge",
-    "abandonNote": "Abandoning restores tactical play. No refund or second pledge this round.",
-    "gold": "You need at least 1 Gold.",
-    "hidden": "Reveal all rack tiles before pledging.",
-    "open": "Riichi requires a concealed hand, without open melds.",
-    "boss": "This Boss requires a fixed play size; Riichi is unavailable.",
-    "complete": "Your hand is already complete. Play it; pledge before completing a future hand.",
-    "inactive": "Pledges are only available during an active round with hands remaining.",
-    "failed": "The table changed. Check the pledge requirements and try again.",
-    "restriction": "Complete a concealed hand or abandon the pledge."
-  },
   "observatory": {
     "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. Black Hole matches any scored Yaku.",
     "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."
-  },
-  "handBuilder": {
-    "title": "Build a hand",
-    "intro": "Keep useful groups together and exchange spare tiles. This is one possible route, not a guaranteed best move.",
-    "standard": "Four groups + one pair.",
-    "sevenPairs": "Seven different pairs.",
-    "kokushi": "All 13 terminal and Honor types + one duplicate.",
-    "distance": "The retained shape needs at least {{needed}} helpful tiles to complete.",
-    "keep": "Keep these tiles",
-    "exchange": "Consider redrawing these",
-    "cost": "Costs 1 of your {{remaining}} redraws to replace {{tiles}} tiles. Returned tiles rejoin the wall after replacements are drawn.",
-    "improving": "Tile types that could help ({{types}})",
-    "possibilities": "These examples improve the retained shape by one step. They are not predicted draws, wall counts, or a promise of completion.",
-    "caution": "This plan considers ordinary shapes, not future scores or draw-triggered effects. Chasing a complete hand can lose the round; compare your scoring options first.",
-    "stage": "Select this exchange",
-    "confirm": "Selection is free. Review the tiles on the board, then press {{action}} to spend a charge.",
-    "hidden": "Some tiles are hidden. No hand-building plan is shown while their faces are concealed.",
-    "unsupported": "This workshop currently supports ordinary, fully concealed 14-tile hands. Your rack or active rules need a different approach; use the live score preview and tile guide.",
-    "complete": "You already have a complete hand. Review its score, stage it, and confirm the play instead of exchanging tiles.",
-    "clear": "A known play can clear this round. Check your scoring options before spending a redraw.",
-    "unavailable": "No supported legal redraw plan is available right now. Check your remaining redraws, locked tiles, and the wall."
   },
   "closedHandAusterity": {
     "name": "Closed-Hand Austerity",
@@ -50,14 +10,14 @@
   },
   "yakuRepetition": {
     "name": "Yaku Repetition Charter",
-    "description": "Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing or skipping a round breaks that Yaku’s streak. The cap is before Flower empowerment.",
+    "description": "Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing a round breaks that Yaku’s streak. The cap is before Flower empowerment.",
     "title": "Patterns to repeat",
     "streak": "{{name}} · {{rounds}} consecutive prior rounds",
     "empty": "No prior streaks. Score a Yaku this round to start one."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Score a Yakuman.",
-    "seal_of_the_void": "Score all 21 Yaku types in a single run.",
+    "seal_of_the_void": "Score all 20 Yaku types in a single run.",
     "planet_x_orb": "Score Seven Pairs.",
     "ceres_orb": "Score Chanta.",
     "eris_orb": "Score Kokushi.",
@@ -108,29 +68,19 @@
     "help": "About these bonuses",
     "title": "Yaku upgrades",
     "summary": "Upgraded: {{total}}",
-    "intro": "These bonuses last for this run and apply when the matching Yaku scores in a complete hand.",
+    "intro": "These bonuses last for this run and apply whenever a matching hand scores.",
     "baseline": "Level 1 is the baseline: no Orb bonus.",
     "empty": "No Yaku upgrades yet. Use a Celestial Orb to strengthen its matching scoring pattern.",
     "level": "Level {{level}} / {{max}}",
     "bonus": "+{{chips}} base points · +{{mult}} Mult",
     "triggers": "Times scored: {{total}}",
-    "note": "Base Orb additions only. Other rules can change the final score; use the play forecast for the total."
-  },
-  "handInterpretation": {
-    "ready": "Rule-assisted hand",
-    "why": "Why this hand works",
-    "assisted": "The active rules allow this hand.",
-    "sequenceSkip": "Winter or Broken Stair lets a same-suit sequence skip one rank. These are the groups used by this forecast.",
-    "substitution": "{{from}} counts as {{to}} for this play.",
-    "virtual": "Virtual completion: {{tile}}.",
-    "penalty": "This virtual completion halves the hand score. The forecast includes this penalty.",
-    "unchanged": "These are temporary scoring identities. Your physical tiles stay unchanged; no tile is created.",
-    "allWild": "Every tile can act as any suit and rank for this play."
+    "note": "Base Orb additions only. Other rules can change the final score; use the play forecast for the total.",
+    "fromOrb": "Upgraded by {{orb}}"
   },
   "progressiveHints": {
     "discard": {
       "title": "Improve your hand",
-      "content": "Discard replaces one tile and spends a discard, not a play. Redraw swaps up to three selected tiles for one redraw. A lower shanten number means you are closer to a complete hand."
+      "content": "REDRAW sends any number of selected tiles to the river and draws new ones. It costs a Turn unless you have a free redraw."
     },
     "yaku": {
       "title": "Patterns and multipliers",
@@ -142,7 +92,7 @@
     },
     "shop": {
       "title": "The Tea House",
-      "content": "The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Ordinary purchases are immediate; Charters ask for confirmation."
+      "content": "The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Tap any item to see what it does before you buy it."
     },
     "decrees": {
       "title": "Decrees",
@@ -162,21 +112,11 @@
     "eternalName": "Eternal",
     "eternalDescription": "Cannot be sold or destroyed.",
     "perishableName": "Perishable",
-    "perishableDescription": "Loses its active effects when its countdown expires. Skipped rounds do not count.",
+    "perishableDescription": "Loses its active effects when its countdown expires.",
     "remaining": "Rounds remaining: {{remaining}}.",
     "expired": "Expired — its active effects are disabled.",
     "rentalName": "Rental",
     "rentalDescription": "Costs {{amount}} gold at the end of each round."
-  },
-  "appUpdate": {
-    "available": "Update available",
-    "description": "A new version is ready. We will save your progress before reloading.",
-    "later": "Later",
-    "updating": "Updating…",
-    "accept": "Save and update",
-    "save": "Your latest progress could not be saved. Keep this tab open and try again.",
-    "update": "The update could not be applied. Your game is still here; try again.",
-    "tabs": "Close other Tensho tabs or windows, then try again. This keeps their games from being interrupted."
   },
   "classicSave": {
     "savedTitle": "Your Classic run",
@@ -190,11 +130,6 @@
     "retry": "Retry saving",
     "refresh": "Check again",
     "backup": "Download backup",
-    "discard": "Discard run",
-    "replaceTitle": "Start a new run?",
-    "replaceBody": "This replaces your current or saved Classic run. Table Loop and earned unlocks are kept.",
-    "discardTitle": "Discard this run?",
-    "discardBody": "Delete the saved Classic run and the current Classic run in this tab? Table Loop and earned unlocks are kept.",
     "leaveTitle": "Leave the table?",
     "leaveBody": "Save your run and return to the menu. You can resume it later.",
     "saveLeave": "Save and leave"
@@ -230,7 +165,8 @@
     "confirm": "Use item",
     "fateSeals": "Fate Seals",
     "celestialOrbs": "Celestial Orbs",
-    "voidScripts": "Void Scripts"
+    "voidScripts": "Void Scripts",
+    "chooseTargets": "Choose tiles"
   },
   "common": {
     "exit": "Exit",
@@ -252,7 +188,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Play",
     "continue": "Continue",
-    "newRun": "New Classic Run",
+    "newRun": "New Run",
     "codex": "Codex",
     "tutorial": "Tutorial",
     "options": "Options",
@@ -267,8 +203,7 @@
     "tableStakeDifficulty": "Table Stake · Difficulty",
     "tableStake": "Table stake",
     "noSpecialModifiers": "No special modifiers",
-    "promise": "Promise",
-    "tableLoop": "Table Loop Mode"
+    "promise": "Promise"
   },
   "settings": {
     "fullUnlock": {
@@ -311,7 +246,10 @@
     "resetProgressDesc": "Clear all achievements, statistics, and unlocks",
     "resetProgressConfirm": "Are you sure? This will permanently delete all your achievements, statistics, and unlocks. This action cannot be undone.",
     "resetProgressSuccess": "All progress has been reset.",
-    "dangerZone": "Danger Zone"
+    "dangerZone": "Danger Zone",
+    "rankNumbers": "Numbers on tiles",
+    "rankNumbersDesc": "Show a small 1–9 on numbered tiles and a letter on Dragons, while you learn the tile faces.",
+    "unreadableSave": "Your saved run could not be read. You can download it as a file before starting a New Run, which replaces it."
   },
   "gameplay": {
     "actProgress": "Act {{current}} of {{total}}",
@@ -326,13 +264,10 @@
     "target": "Target",
     "gold": "Gold",
     "hands": "Hands",
-    "discards": "Discards",
     "draw": "Draw",
-    "discard": "Discard",
     "declare": "Declare",
     "win": "Win",
     "tsumo": "Tsumo",
-    "skip": "Skip",
     "pause": "Pause",
     "resume": "Resume",
     "tenpai": "Tenpai",
@@ -340,11 +275,10 @@
     "shantenHelp": "How many more useful tiles you need before a single tile can complete your hand",
     "ready": "Ready",
     "deadDraw": "DEAD DRAW",
-    "deadWallDraw": "DEAD WALL DRAW",
+    "deadWallDraw": "Draw from the Dead Wall",
     "winsRound": "Wins round",
     "tilesInWall": "Tiles in wall",
     "handsRemaining": "Hands remaining",
-    "discardsRemaining": "Discards remaining",
     "redrawsRemaining": "Redraws remaining",
     "redrawSelected": "Redraw selected tiles",
     "redrawHint": "Return up to 3 selected tiles and draw replacements",
@@ -461,7 +395,27 @@
       "buildTowardPlain": "Build toward a shape",
       "shapeCost": "Scores {{difference}} fewer points now with one complete group. It does not predict future draws.",
       "tradeoff": "Compare the tiles and scores. A suggestion only selects tiles; it does not spend a play."
-    }
+    },
+    "roundTitle": "Act {{act}} · {{round}}",
+    "scoreOfTarget": "{{score}} of {{target}} points",
+    "help": "How to play",
+    "handScore": "Hand score",
+    "lastHand": "Last hand",
+    "hiddenScore": "Face-down tiles",
+    "turnsLeft_one": "{{formattedCount}} Turn left",
+    "turnsLeft_other": "{{formattedCount}} Turns left",
+    "freeRedraws": "+{{formattedCount}} free",
+    "playHand": "Play hand",
+    "reasonExact": "Play exactly {{count}} tiles",
+    "reasonMinimum": "Select at least {{count}} tiles",
+    "reasonMaximum": "Up to {{count}} tiles, or a full Mahjong hand",
+    "reasonUnavailable": "This play isn’t allowed right now",
+    "reasonLastTurn": "Your last Turn must be a Play",
+    "reasonNoReplacements": "Not enough tiles left in the wall",
+    "yourTiles": "Your tiles",
+    "collection": "Your items",
+    "deadWallHint": "Select exactly one tile, then swap it for a Dead Wall tile. Once per round, free.",
+    "turnsLabel": "Turns left"
   },
   "rounds": {
     "small": "Small Round",
@@ -469,7 +423,10 @@
     "boss": "Boss Round",
     "smallJp": "小局",
     "largeJp": "大局",
-    "bossJp": "親局"
+    "bossJp": "親局",
+    "smallShort": "Small",
+    "largeShort": "Large",
+    "bossShort": "Boss"
   },
   "shop": {
     "catalyst": {
@@ -520,7 +477,8 @@
       "purchasePrompt": "Buy {{name}} for {{cost}}G?",
       "baseEdition": "Base edition",
       "goldBalance": "{{amount}} gold",
-      "rerollsUsed": "Rerolls used: {{count}}"
+      "rerollsUsed": "Rerolls used: {{count}}",
+      "forSale": "For sale"
     },
     "payout": {
       "heading": "Act {{act}} · {{round}}",
@@ -534,7 +492,10 @@
       "interestCap": "Savings have reached the {{interest}}G interest cap.",
       "interestSave": "With current savings: {{interest}}G interest. Save {{needed}}G more for {{next}}G.",
       "nextRound": "Next: {{round}} · {{target}} target",
-      "nextAct": "Next: Act {{act}} ascent"
+      "nextAct": "Next: Act {{act}} ascent",
+      "omenEarned": "Omen: {{name}}",
+      "omen": "Omen",
+      "balance": "Gold"
     },
     "packChoices": "Choose up to {{max}} from {{count}} rewards",
     "packInventoryFull": "Not enough space for this selection. Choose fewer or different rewards, or skip the pack.",
@@ -560,7 +521,28 @@
     "cashOut": "Cash out",
     "payoutBreakdown": "Round payout breakdown",
     "selectionConfirmed": "Selection Confirmed!",
-    "packSkipped": "Pack Skipped"
+    "packSkipped": "Pack Skipped",
+    "kinds": {
+      "decree": "Decree · {{rarity}}",
+      "decreeHelp": "A Decree is a permanent rule for this run. It takes one Decree slot; you can sell it any time.",
+      "seal": "Fate Seal · use during a round",
+      "orb": "Celestial Orb · upgrades a family of hands",
+      "script": "Void Script · powerful, with a cost",
+      "consumableHelp": "Kept with your items until used. Tap it on the table to use it.",
+      "tile": "Tile · added to your wall",
+      "tileHelp": "Adds this tile to your wall for the rest of the run.",
+      "pack": "Blessing Pack · choose {{choose}} of {{from}}",
+      "charter": "Imperial Charter · permanent run upgrade",
+      "charterHelp": "An Imperial Charter is a permanent upgrade for the rest of this run. It never takes a slot and can’t be sold."
+    },
+    "offerLabel": "{{name}}, {{price}} Gold",
+    "buyFor": "Buy · {{price}} Gold",
+    "help": {
+      "what": "The Tea House is the shop between rounds.",
+      "buy": "Tap any item to see what it does, then press Buy. Decrees change the rules, consumables are used during a round, Packs let you pick rewards, and Charters upgrade the whole run.",
+      "interest": "Gold you keep earns interest: +1 Gold for every 5 you hold when a round ends, up to +{{cap}}.",
+      "cashOut": "The line at the top shows the Gold the last round paid; open it for the breakdown. Every purchase happens with its own Buy button."
+    }
   },
   "decrees": {
     "title": "Decrees",
@@ -685,7 +667,7 @@
       },
       "decree-second-chance": {
         "name": "Second Chance",
-        "description": "+1 Discard per round"
+        "description": "+1 free Redraw per round"
       },
       "decree-balanced-path": {
         "name": "Balanced Path",
@@ -720,8 +702,8 @@
         "description": "x1.3 Mult"
       },
       "decree-riichi-devotee": {
-        "name": "Riichi Devotee",
-        "description": "+3 Mult when scoring Riichi"
+        "name": "Pair Devotee",
+        "description": "+4 Mult if the play has two or more Pairs"
       },
       "decree-tanyao-tactician": {
         "name": "Tanyao Tactician",
@@ -825,11 +807,11 @@
       },
       "decree-waste-not": {
         "name": "Waste Not",
-        "description": "+5 Mult if no discards used this round"
+        "description": "+5 Mult if you have not used REDRAW this round"
       },
       "decree-recycler": {
         "name": "Recycler",
-        "description": "+20 Chips per discard used this round"
+        "description": "+10 Chips per tile redrawn this round"
       },
       "decree-yakuhai-zealot": {
         "name": "Yakuhai Zealot",
@@ -885,7 +867,7 @@
       },
       "decree-careful-player": {
         "name": "Careful Player",
-        "description": "+2 Discards per round"
+        "description": "+2 free Redraws per round"
       },
       "decree-inferno": {
         "name": "Inferno",
@@ -993,7 +975,7 @@
       },
       "decree-sacrifice": {
         "name": "Sacrifice",
-        "description": "x3.0 Mult, -1 Discard per round"
+        "description": "×3.0 Mult, −1 Turn per round"
       },
       "decree-transmuter": {
         "name": "Transmuter",
@@ -1017,7 +999,7 @@
       },
       "decree-infinite-patience": {
         "name": "Infinite Patience",
-        "description": "+3 Discards per round"
+        "description": "+3 free Redraws per round"
       },
       "decree-divine-flame": {
         "name": "Divine Flame",
@@ -1093,7 +1075,7 @@
       },
       "decree-time-lord": {
         "name": "Time Lord",
-        "description": "+1 extra hand per round"
+        "description": "+1 Turn per round"
       },
       "decree-exponential": {
         "name": "Exponential",
@@ -1121,7 +1103,7 @@
       },
       "decree-celestial-throne": {
         "name": "Celestial Throne",
-        "description": "x10.0 Mult, -2 Hand Size, -1 Discard"
+        "description": "×10.0 Mult, −2 Hand Size, −1 Turn per round"
       },
       "decree-void-emperor": {
         "name": "Void Emperor",
@@ -1165,7 +1147,7 @@
       },
       "decree-time-master": {
         "name": "Time Master",
-        "description": "+2 extra hands per round"
+        "description": "+2 Turns per round"
       },
       "decree-immortal-decree": {
         "name": "Immortal Decree",
@@ -1177,11 +1159,11 @@
       },
       "river_tax": {
         "name": "River Tax",
-        "description": "Gain 1 Gold per tile discarded this round."
+        "description": "Gain 2 Gold each time you REDRAW."
       },
       "extended_hand_grant": {
         "name": "Extended Hand Grant",
-        "description": "+3 plays per round. Does not add tiles or redraws."
+        "description": "+3 Turns per round."
       },
       "tanyao_dispensation": {
         "name": "Tanyao Dispensation",
@@ -1217,7 +1199,7 @@
       },
       "dead_wall_writ": {
         "name": "Dead Wall Writ",
-        "description": "Once per round, draw from the discard pool instead of the wall."
+        "description": "Once per round, swap one selected tile for a Dead Wall tile without spending a Turn."
       },
       "shanten_clemency": {
         "name": "Shanten Clemency",
@@ -1262,11 +1244,11 @@
       "spring": "+2 rack spaces this round. New spaces draw from the live wall. Stacks; Serpent still replaces only 3 tiles.",
       "summer": "Score ×1.3. Sets aside 20% of the remaining live wall for this round (retained tiles rounded down).",
       "summerSheltered": "Score ×1.3. Bamboo protection earned: Summer cannot shrink the wall again this round.",
-      "autumn": "Yaku multiplier +20%. Each normal Autumn drawn adds 1 discard for this round.",
+      "autumn": "Yaku multiplier +20%. Each normal Autumn drawn gives 1 free REDRAW this round.",
       "winter": "Same-suit sequences may skip one rank (1–2–4 or 1–3–4). Score ×0.75.",
       "drought": "Suppresses Flower scoring bonuses unless protected.",
       "frostbite": "Each Frostbite halves Decree point, multiplier, gold and retrigger rewards again. Native tile rewards, rule permissions, capacities, action budgets and costs stay unchanged.",
-      "decay": "−10 score per discarded tile this round, with a minimum score of zero.",
+      "decay": "−10 score for each REDRAW this round, never below zero.",
       "droughtName": "Drought",
       "monsoonName": "Monsoon",
       "monsoon": "Randomizes normal draws and bonus replacements this round.",
@@ -1291,7 +1273,12 @@
     "spring": "Spring",
     "summer": "Summer",
     "autumn": "Autumn",
-    "winter": "Winter"
+    "winter": "Winter",
+    "duration": {
+      "run": "Lasts the whole run",
+      "round": "Lasts this round"
+    },
+    "setProgress": "Flowers collected: {{count}}/4"
   },
   "yaku": {
     "title": "Yaku",
@@ -1354,13 +1341,15 @@
     "edition": "Edition",
     "debuffed": "Debuffed tile",
     "lockedMustPlay": "Locked tile: must be played",
-    "tileRow": "Tile row"
+    "tileRow": "Tile row",
+    "honors": "Honors"
   },
   "melds": {
     "pair": "Pair",
     "sequence": "Sequence",
     "triplet": "Triplet",
-    "quad": "Quad"
+    "quad": "Quad",
+    "straight": "Straight"
   },
   "results": {
     "roundDetails": "Last round",
@@ -1402,7 +1391,7 @@
     "items": {
       "the_hook": {
         "name": "The Hook",
-        "description": "2 random tiles discarded from hand after each draw"
+        "description": "After each draw, 2 random tiles go from your rack to the river"
       },
       "the_wall": {
         "name": "The Wall",
@@ -1418,11 +1407,11 @@
       },
       "the_flint": {
         "name": "The Flint",
-        "description": "Base points and Mult halved for entire round"
+        "description": "Every play this round scores half"
       },
       "the_needle": {
         "name": "The Needle",
-        "description": "Must complete hand in exactly 1 hand (no retries)"
+        "description": "Only one Play this round (REDRAW is still allowed)"
       },
       "the_pillar": {
         "name": "The Pillar",
@@ -1430,7 +1419,7 @@
       },
       "the_water": {
         "name": "The Water",
-        "description": "Start with 0 redraws this round"
+        "description": "No REDRAW this round"
       },
       "the_arm": {
         "name": "The Arm",
@@ -1438,7 +1427,7 @@
       },
       "the_psychic": {
         "name": "The Psychic",
-        "description": "Must play exactly 5 tiles per hand"
+        "description": "Every play must use exactly 5 tiles"
       },
       "the_club": {
         "name": "The Club",
@@ -1478,7 +1467,7 @@
       },
       "the_serpent": {
         "name": "The Serpent",
-        "description": "After play/discard, always draw 3 tiles"
+        "description": "After a Play or REDRAW, always draw exactly 3 tiles"
       },
       "the_tooth": {
         "name": "The Tooth",
@@ -1490,7 +1479,7 @@
       },
       "the_manacle": {
         "name": "The Manacle",
-        "description": "-1 Hand Size"
+        "description": "Your rack holds 1 fewer tile"
       },
       "amber_acorn": {
         "name": "Amber Acorn",
@@ -1524,7 +1513,7 @@
       "base": "Base difficulty: no added penalties.",
       "noSmallRoundReward": "No reward gold from Small Rounds.",
       "scoreScaling": "Stake score targets: ×{{multiplier}} compared with White. Table modifiers still apply.",
-      "redrawPenalty": "Redraws each round: −{{amount}}.",
+      "redrawPenalty": "Turns each round: −{{amount}}.",
       "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
       "perishableChance": "Non-Eternal shop Decrees: {{chance}} chance of Perishable (weakened after {{rounds}} rounds).",
       "rentalChance": "Shop Decrees: {{chance}} chance of Rental ({{price}} gold to buy, then {{fee}} gold each round)."
@@ -1548,43 +1537,19 @@
     "finish": "Start Playing!",
     "welcome": {
       "title": "Welcome to Tensho!",
-      "content": "Tensho is a roguelike game built around Japanese Riichi Mahjong. Your goal is to build scoring hands and reach the target score each round.",
-      "p1": "<0>Tensho (天翔)</0> means \"Heavenly Ascent\" in Japanese. This is a <3>roguelike game</3> built around the classic tile game of <6>Riichi Mahjong</6>.",
+      "p1": "<0>Tensho (天翔)</0> means \"Heavenly Ascent\" in Japanese. It is a <3>roguelike game</3> of <6>poker-style hands</6> played with Mahjong tiles.",
       "p2": "Your goal is simple: <2>build scoring hands</2> and reach the target score each round. Fail to reach the target, and your run ends.",
       "note1": "Don't worry if you've never played Mahjong before! This tutorial will teach you everything you need to know, step by step."
     },
-    "tiles": {
-      "title": "Mahjong Tiles",
-      "content1": "There are three main suits: Characters (萬), Circles (筒), and Bamboo (索), each numbered 1-9."
-    },
-    "honors": {
-      "title": "Honor Tiles",
-      "content": "Honor tiles include Winds (East, South, West, North) and Dragons (White, Green, Red). These tiles cannot form sequences, only triplets."
-    },
     "hands": {
-      "title": "Building Hands",
-      "content1": "A winning hand consists of 4 groups (melds) plus 1 pair.",
-      "content2": "Groups can be sequences (1-2-3) or triplets (3-3-3)."
-    },
-    "yaku": {
-      "title": "Yaku - Scoring Patterns",
-      "content1": "Yaku are special patterns that multiply your score. Each yaku has a tier from 1-4.",
-      "content2": "Examples: All Simples (no terminals/honors), All Triplets, Full Flush (single suit)."
-    },
-    "decrees": {
-      "title": "Decrees - Rule Modifiers",
-      "content1": "Decrees are special cards that modify the rules and boost your score.",
-      "content2": "Collect powerful decrees from the Tea House (shop) between rounds."
-    },
-    "scoring": {
-      "title": "Scoring Formula",
-      "formula": "Score = (Base + Bonuses) × Multipliers",
-      "content": "Reach the target score each round to advance. Higher acts require higher scores!"
+      "title": "Hands You Can Play",
+      "p1": "A play can hold up to {{max}} tiles. It scores as the best hand its tiles make:",
+      "headerHand": "Hand",
+      "headerMeaning": "What it is",
+      "mahjong": "A complete Mahjong hand adds +{{mult}} Mult on top of its Yaku."
     },
     "ready": {
       "title": "You're Ready!",
-      "content1": "Good luck on your journey!",
-      "content2": "Press PLAY to begin your first run.",
       "note1": "You can <1>reroll</1> the shop offerings for 5 gold. Each reroll costs +1 more.",
       "note2": "Holding <1>25+ gold</1> maximizes interest! But spending on good decrees is usually worth more.",
       "p1": "Don't worry about memorizing everything — you'll learn by playing!",
@@ -1611,7 +1576,7 @@
     "wind_tiles": {
       "note1": "Terminals are worth double the points of simples! Many yaku also specifically require or exclude terminals.",
       "p1": "There are <1>four Wind tiles</1>, representing the cardinal directions:",
-      "p2": "Wind tiles are <1>Honor tiles</1> and are worth <4>15 points</4> each — the highest base value!"
+      "p2": "Wind tiles are <1>Honor tiles</1> and are worth <4>50 points</4> each — the highest base value!"
     },
     "dragon_tiles": {
       "note1": "Winds cannot form sequences. They can only form triplets or pairs.",
@@ -1619,7 +1584,7 @@
       "p2": "<0>白 (White Dragon / Haku)</0> — A blank or framed tile, representing purity or emptiness",
       "p3": "<0>發 (Green Dragon / Hatsu)</0> — The character 發 in green, meaning \"prosperity\" or \"to emit\"",
       "p4": "<0>中 (Red Dragon / Chun)</0> — The character 中 in red, meaning \"center\" or \"middle\"",
-      "p5": "Like Winds, Dragons are <1>Honor tiles</1> worth <4>15 points</4> and cannot form sequences."
+      "p5": "Dragons are <1>Honor tiles</1> worth <4>15 points</4>, and every Dragon scored inside a group adds +2 Mult. They cannot form sequences."
     },
     "bonus_tiles": {
       "p1": "<0>Bonus tiles</0> are special tiles that don't form part of your hand:"
@@ -1655,70 +1620,38 @@
       "p2": "Every standard winning hand requires <2>exactly one pair</2>. This is sometimes called the \"head\" (雀頭) of the hand."
     },
     "winning_hand": {
-      "note1": "Triplets are worth <1>+30 points</1> — more than sequences (+20)! However, they're harder to complete since you need 3 of the same tile, and each tile only appears 4 times in the game.",
-      "li1": "Worth <1>+50 points</1> — the most of any meld",
+      "note1": "Triplets are worth <1>+40 points</1> — more than sequences (+30)! However, they're harder to complete since you need 3 of the same tile, and each tile only appears 4 times in the game.",
+      "li1": "Worth <1>+65 points</1> — the most of any meld",
       "li2": "Counts as a single meld despite having 4 tiles",
       "li3": "When declared, you draw a replacement tile",
       "p1": "A standard winning hand consists of:"
     },
     "gameplay_overview": {
-      "note1": "The pair is worth <1>+10 points</1>. Any tile can form a pair — numbered tiles, winds, or dragons.",
+      "note1": "The pair is worth <1>+15 points</1>. Any tile can form a pair — numbered tiles, winds, or dragons.",
       "li1": "1-2-3 Circles (sequence)",
       "li2": "5-5-5 Bamboo (triplet)",
       "li3": "6-7-8 Characters (sequence)",
       "li4": "East-East-East (triplet)",
-      "li5": "Red Dragon pair",
-      "p1": "Each round follows a simple cycle:"
+      "li5": "Red Dragon pair"
     },
     "special_hands": {
       "p1": "Two special hand structures don't follow the 4 melds + 1 pair rule:"
     },
-    "discarding": {
-      "li1": "<0>Start</0> with 13 tiles in your hand",
-      "li2": "<0>Draw</0> a tile from the wall",
-      "li3": "Check if you can <1>win</1> (valid hand + score target)",
-      "li4": "If not, <1>discard</1> one tile you don't need",
-      "p1": "After drawing (if you haven't won), you must <2>discard one tile</2> to return to 13 tiles.",
-      "p2": "<0>How to discard:</0>"
-    },
-    "shanten": {
-      "li1": "Repeat until you win or the wall is empty",
-      "p1": "<0>Shanten (向聴)</0> is the number of tiles you need to change to complete a winning hand."
-    },
-    "scoring_overview": {
-      "note1": "If the wall empties before you complete a winning hand, the round ends in <1>failure</1> and your run is over!",
-      "p1": "Your score is calculated using this formula:"
-    },
     "drawing": {
-      "p1": "At the start of your turn, you <2>draw one tile</2> from the wall. This gives you 14 tiles temporarily.",
       "p2": "The <1>wall</1> starts with 70 drawable tiles (after the dead wall is reserved). Watch the remaining tiles counter!"
     },
     "base_points": {
-      "note1": "When you draw a <1>bonus tile</1> (Flower or Season), it's automatically revealed and you draw a replacement. This doesn't cost a turn!",
-      "li1": "<0>Tap/click</0> a tile to select it",
-      "li2": "<0>Drag upward</0> to the discard zone",
-      "li3": "Discarded tiles go to the <1>Dead Pool</1>",
-      "p1": "Every tile in your winning hand contributes <2>base points</2>:"
+      "note1": "When you draw a <1>bonus tile</1> (Flower or Season), it's automatically revealed and you draw a replacement. This doesn't cost a turn!"
     },
     "yaku_intro": {
-      "note1": "Discarded tiles are <2>gone forever</2> — you cannot retrieve them! Choose carefully which tiles to discard.",
-      "li1": "<0>Base Points</0> — From your tiles themselves",
-      "li2": "<0>Structure Points</0> — From your melds and pair",
-      "li3": "<0>Multipliers</0> — From Yaku, Decrees, and effects",
       "p1": "<0>Yaku (役)</0> are special patterns that <3>multiply your score</3>. This is where the big points come from!",
       "p2": "There are <1>21 yaku</1> in Tensho, organized into 4 tiers:"
     },
     "yaku_examples": {
-      "note1": "The game shows your current shanten. Lower is better! Aim to reduce your shanten quickly each turn.",
       "p1": "Here are some yaku you'll encounter often:"
     },
     "boss_mandates": {
-      "note1": "Honor tiles give <1>3× more points</1> than simples! A hand full of honors will have a much higher base score.",
       "p1": "Every <1>Boss Round</1> has a special <3>Mandate</3> — a restriction or challenge:"
-    },
-    "structure_points": {
-      "p1": "Your melds add <1>structure points</1> to your base:",
-      "p2": "<0>Example:</0> A hand with 2 sequences, 2 triplets, and a pair:"
     },
     "decree_categories": {
       "note1": "Yaku <1>stack multiplicatively</1>! A hand with ×1.3 and ×2.0 yaku gets ×2.6 total. Build combos for massive scores!",
@@ -1735,16 +1668,7 @@
       "li3": "<0>Grant abilities</0> — Extra draws, redraws, or effects",
       "p1": "You have a limited number of <1>Decree Slots</1>. You start with <3>5 slots</3> and can earn more through:"
     },
-    "skipping": {
-      "p1": "You can <1>skip</1> the Small Round or Large Round before facing the Boss. Why would you do this?"
-    },
     "decree_rarities": {
-      "li1": "Receive an Omen Tag",
-      "li2": "Save Decrees with timers",
-      "li3": "Avoid unfavorable walls",
-      "li4": "No shop access",
-      "li5": "No gold earned",
-      "li6": "No interest growth",
       "p1": "Decrees come in <1>4 rarity tiers</1>:"
     },
     "decrees_intro": {
@@ -1784,6 +1708,55 @@
     },
     "gold_economy": {
       "p1": "You earn <1>gold</1> in several ways:"
+    },
+    "turns": {
+      "title": "How a Round Works",
+      "p1": "Each round gives you {{turns}} Turns. Every Turn is one of two actions:",
+      "play": "score the selected tiles: up to {{max}}, or a whole Mahjong hand.",
+      "redraw": "send any number of selected tiles to the river and draw new ones.",
+      "p2": "Reach the round's target before your Turns run out. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
+      "warning": "Run out of Turns below the target and the run is over."
+    },
+    "refill": {
+      "title": "Drawing Tiles",
+      "p1": "Your rack refills from the wall after every play and every REDRAW, so you always have a full hand to choose from."
+    },
+    "redraw": {
+      "title": "REDRAW",
+      "p1": "Select the tiles you don't want, as many as you like, and press REDRAW. They go to the river and new tiles take their place.",
+      "li1": "Free redraws from items are used first; otherwise a REDRAW costs one Turn.",
+      "li2": "Redrawn tiles stay in the river for the rest of the round.",
+      "note": "Keep the tiles that already make a group, and redraw the loners."
+    },
+    "score": {
+      "title": "How Scoring Works",
+      "p1": "Every play scores:",
+      "note": "Bigger hands, Dragons, Orbs and Decrees all raise the Mult, and the Mult multiplies everything."
+    },
+    "points": {
+      "title": "Tile Points",
+      "p1": "Every tile in a group scores its points:",
+      "headerTile": "Tile",
+      "headerPoints": "Points",
+      "simples": "Simples (2–8)",
+      "terminals": "Terminals (1 and 9)",
+      "dragonValue": "{{points}}, and +{{mult}} Mult in a group",
+      "note": "Winds are worth ten times a simple tile; Dragons add Mult instead. A tile outside any group scores half."
+    },
+    "groups": {
+      "title": "Group Bonuses",
+      "p1": "Each group adds bonus points on top of its tiles:",
+      "headerGroup": "Group",
+      "headerMeaning": "Tiles",
+      "headerBonus": "Bonus",
+      "example": "Example: Two Pairs = {{pair}} + {{pair}} = +{{total}} bonus points, and the second group adds +1 Mult."
+    },
+    "swift": {
+      "title": "Swift Clears",
+      "p1": "Rounds can't be skipped. Clear a Small or Large round with {{spare}} or more Turns to spare to earn an Omen.",
+      "li1": "You still collect the round's Gold and visit the Tea House.",
+      "li2": "Boss rounds never give an Omen.",
+      "note": "A strong early hand saves Turns, and saved Turns become Omens."
     }
   },
   "codex": {
@@ -1844,11 +1817,11 @@
       },
       "steady_hand": {
         "name": "Steady Hand",
-        "description": "+1 hand per round"
+        "description": "+1 Turn per round"
       },
       "frugal_discard": {
-        "name": "Frugal Discard",
-        "description": "+1 redraw per round"
+        "name": "Frugal Redraw",
+        "description": "+1 free Redraw per round"
       },
       "seal_merchant": {
         "name": "Seal Merchant",
@@ -1872,7 +1845,7 @@
       },
       "ancient_script": {
         "name": "Ancient Script",
-        "description": "-1 Act, -1 hand per round"
+        "description": "−1 Act, −1 Turn per round"
       },
       "directors_take": {
         "name": "Director's Take",
@@ -1908,11 +1881,11 @@
       },
       "swift_hand": {
         "name": "Swift Hand",
-        "description": "+1 additional hand per round"
+        "description": "+1 more Turn per round"
       },
       "wasteful_plenty": {
         "name": "Wasteful Plenty",
-        "description": "+1 additional redraw per round"
+        "description": "+1 more free Redraw per round"
       },
       "seal_tycoon": {
         "name": "Seal Tycoon",
@@ -1936,7 +1909,7 @@
       },
       "stone_script": {
         "name": "Stone Script",
-        "description": "-1 Act again, -1 redraw per round"
+        "description": "−1 Act again, −1 Turn per round"
       },
       "final_cut": {
         "name": "Final Cut",
@@ -1959,7 +1932,7 @@
     "items": {
       "double_omen": {
         "name": "Double Omen",
-        "description": "Copies the next non-Double Omen earned by skipping. Consecutive Double Omens each add one copy."
+        "description": "Copies the next non-Double Omen you earn. Consecutive Double Omens each add one copy."
       },
       "omen_of_crescents": {
         "name": "Omen of Crescents",
@@ -1971,15 +1944,15 @@
       },
       "omen_of_rivers": {
         "name": "Omen of Rivers",
-        "description": "Next round starts with +1 additional discard."
+        "description": "Next round starts with +1 free Redraw."
       },
       "speed_omen": {
         "name": "Speed Omen",
-        "description": "Grants 5 Gold per round skipped this run."
+        "description": "Grants 5 Gold per swift clear this run."
       },
       "throwback_omen": {
         "name": "Throwback Omen",
-        "description": "Gains x0.25 Mult per skipped round for the rest of the run."
+        "description": "Gains ×0.25 Mult per swift clear for the rest of the run."
       },
       "fortune_omen": {
         "name": "Fortune Omen",
@@ -2015,7 +1988,7 @@
       },
       "abundance_omen": {
         "name": "Abundance Omen",
-        "description": "Next round starts with +2 additional redraws."
+        "description": "Next round starts with +2 free Redraws."
       },
       "polychrome_omen": {
         "name": "Polychrome Omen",
@@ -2159,23 +2132,23 @@
     "items": {
       "pluto_orb": {
         "name": "Pluto Orb",
-        "description": "Attunes to Riichi yaku. +1 Mult, +10 Chips per level."
+        "description": "Upgrades Pairs: Pair, Two Pairs and Three Pairs. +1 Mult, +10 Chips per level."
       },
       "mercury_orb": {
         "name": "Mercury Orb",
-        "description": "Attunes to Tanyao yaku. +1 Mult, +15 Chips per level."
+        "description": "Upgrades All Simples: plays of only 2–8 tiles and the Tanyao hand. +1 Mult, +15 Chips per level."
       },
       "uranus_orb": {
         "name": "Uranus Orb",
-        "description": "Attunes to Yakuhai yaku. +1 Mult, +20 Chips per level."
+        "description": "Upgrades Honors: any Wind or Dragon group and the Yakuhai hand. +1 Mult, +20 Chips per level."
       },
       "venus_orb": {
         "name": "Venus Orb",
-        "description": "Attunes to Pinfu yaku. +2 Mult, +20 Chips per level."
+        "description": "Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the Pinfu hand. +2 Mult, +20 Chips per level."
       },
       "saturn_orb": {
         "name": "Saturn Orb",
-        "description": "Attunes to Ittsu (Straight) yaku. +3 Mult, +30 Chips per level."
+        "description": "Upgrades Straights: Straights of Four and Five and the Pure Straight hand. +3 Mult, +30 Chips per level."
       },
       "jupiter_orb": {
         "name": "Jupiter Orb",
@@ -2183,7 +2156,7 @@
       },
       "earth_orb": {
         "name": "Earth Orb",
-        "description": "Attunes to Toitoi yaku. +2 Mult, +25 Chips per level."
+        "description": "Upgrades Sets: any Triplet or Quad play and the All Triplets hand. +2 Mult, +25 Chips per level."
       },
       "mars_orb": {
         "name": "Mars Orb",
@@ -2247,7 +2220,7 @@
       },
       "script_of_the_medium": {
         "name": "Script of the Medium",
-        "description": "Add Purple Seal to 1 tile (creates Seal on discard)"
+        "description": "Add a Purple Seal to 1 tile (creates a Fate Seal when redrawn)"
       },
       "script_of_aura": {
         "name": "Script of Aura",
@@ -2380,7 +2353,7 @@
       },
       "omens": {
         "name": "Omen Tags",
-        "description": "One-time destiny modifiers from skipping rounds"
+        "description": "One-time rewards for clearing a round with Turns to spare"
       },
       "mandates": {
         "name": "Mandates",
@@ -2504,7 +2477,7 @@
       },
       "purple": {
         "name": "Purple Seal",
-        "description": "Creates a random Fate Seal when this tile is discarded or redrawn, if there is room."
+        "description": "Creates a random Fate Seal when this tile is redrawn, if there is room."
       }
     }
   },
@@ -2540,11 +2513,11 @@
       },
       "arcana_jumbo": {
         "name": "Jumbo Arcana Pack",
-        "description": "Choose 1 from 5 Fate Seals"
+        "description": "Choose up to 2 from 5 Fate Seals"
       },
       "arcana_mega": {
         "name": "Mega Arcana Pack",
-        "description": "Choose 2 from 5 Fate Seals"
+        "description": "Choose up to 3 from 6 Fate Seals"
       },
       "celestial_normal": {
         "name": "Celestial Pack",
@@ -2552,11 +2525,11 @@
       },
       "celestial_jumbo": {
         "name": "Jumbo Celestial Pack",
-        "description": "Choose 1 from 5 Celestial Orbs"
+        "description": "Choose up to 2 from 5 Celestial Orbs"
       },
       "celestial_mega": {
         "name": "Mega Celestial Pack",
-        "description": "Choose 2 from 5 Celestial Orbs"
+        "description": "Choose up to 3 from 6 Celestial Orbs"
       },
       "tile_normal": {
         "name": "Tile Pack",
@@ -2564,11 +2537,11 @@
       },
       "tile_jumbo": {
         "name": "Jumbo Tile Pack",
-        "description": "Choose 1 from 5 modified tiles"
+        "description": "Choose up to 2 from 5 modified tiles"
       },
       "tile_mega": {
         "name": "Mega Tile Pack",
-        "description": "Choose 2 from 5 modified tiles"
+        "description": "Choose up to 3 from 6 modified tiles"
       },
       "decree_normal": {
         "name": "Decree Pack",
@@ -2576,11 +2549,11 @@
       },
       "decree_jumbo": {
         "name": "Jumbo Decree Pack",
-        "description": "Choose 1 from 5 Decrees"
+        "description": "Choose up to 2 from 5 Decrees"
       },
       "decree_mega": {
         "name": "Mega Decree Pack",
-        "description": "Choose 2 from 5 Decrees"
+        "description": "Choose up to 3 from 6 Decrees"
       },
       "void_normal": {
         "name": "Void Pack",
@@ -2588,11 +2561,11 @@
       },
       "void_jumbo": {
         "name": "Jumbo Void Pack",
-        "description": "Choose 1 from 5 Void Scripts"
+        "description": "Choose up to 2 from 5 Void Scripts"
       },
       "void_mega": {
         "name": "Mega Void Pack",
-        "description": "Choose 2 from 5 Void Scripts"
+        "description": "Choose up to 3 from 6 Void Scripts"
       }
     }
   },
@@ -2601,49 +2574,65 @@
       "green_felt": {
         "theme": "Classic",
         "unlock": "Available from the start",
-        "modifiers": { "0": "No special modifiers" },
+        "modifiers": {
+          "0": "No special modifiers"
+        },
         "name": "Green Felt",
         "description": "The classic mahjong table. A traditional green felt surface, worn smooth by countless hands. No special modifiers - just pure skill."
       },
       "red_lacquer": {
         "theme": "Auspicious",
         "unlock": "Complete Act 3",
-        "modifiers": { "0": "+1 starting Decree slot" },
+        "modifiers": {
+          "0": "+1 starting Decree slot"
+        },
         "name": "Red Lacquer",
         "description": "A luxurious table finished in brilliant vermillion lacquer, symbolizing good fortune and prosperity. The auspicious color attracts additional decrees."
       },
       "bamboo_mat": {
         "theme": "Natural",
         "unlock": "Collect all 4 Flowers in one run",
-        "modifiers": { "0": "+25% Flower draw weight (same four Flowers)" },
+        "modifiers": {
+          "0": "+25% Flower draw weight (same four Flowers)"
+        },
         "name": "Bamboo Mat",
         "description": "A simple woven bamboo mat spread over a low table in a garden pavilion. The natural setting attracts more flowers to bloom."
       },
       "imperial_gold": {
         "theme": "Royal",
         "unlock": "Win a run with 5+ Decrees",
-        "modifiers": { "0": "Start with 1 random Regional Mandate" },
+        "modifiers": {
+          "0": "Start with 1 random Regional Mandate"
+        },
         "name": "Imperial Gold",
         "description": "A magnificent table from the imperial palace, inlaid with gold leaf and jade. Those who play here receive royal favor."
       },
       "night_market": {
         "theme": "Street",
         "unlock": "Purchase 20 Decrees across all runs",
-        "modifiers": { "0": "Shop prices −20%", "1": "−1 Decree slot" },
+        "modifiers": {
+          "0": "Shop prices −20%",
+          "1": "−1 Decree slot"
+        },
         "name": "Night Market",
         "description": "A makeshift table in the bustling night market, lit by paper lanterns. Vendors offer discounts, but space is limited."
       },
       "temple_stone": {
         "theme": "Austere",
         "unlock": "Win a run without collecting Flowers",
-        "modifiers": { "0": "No Flowers", "1": "+50% base score" },
+        "modifiers": {
+          "0": "No Flowers",
+          "1": "+50% base score"
+        },
         "name": "Temple Stone",
         "description": "A cold stone table in an ascetic mountain temple. No flowers grow in this austere place, but the purity of focus enhances your base scoring."
       },
       "ghost_parlor": {
         "theme": "Haunted",
         "unlock": "Survive 3 Corrupted Seasons in one run",
-        "modifiers": { "0": "Corrupted Seasons can appear from Act I" },
+        "modifiers": {
+          "0": "Corrupted Seasons can appear from Act I"
+        },
         "name": "Ghost Parlor",
         "description": "An abandoned mahjong hall where spirits still play. The veil between worlds is thin here, allowing corrupted seasons to manifest from the very beginning."
       },
@@ -2659,266 +2648,195 @@
       }
     }
   },
-  "tableLoop": {
-    "save": {
-      "invalid": "The previous save could not be restored. Start a new run to replace it.",
-      "unavailable": "Progress cannot be saved on this device. Keep this tab open to continue your run.",
-      "conflictTitle": "Table changed in another window",
-      "conflict": "This window’s table is paused because its saved run changed elsewhere. Your newer save has not been overwritten.",
-      "loadLatest": "Load latest save",
-      "loadConfirm": "Replace this window’s table with the latest saved run? Unsaved moves here will be lost. If the save was removed, a fresh table will open.",
-      "loadFailed": "The latest save could not be loaded. Nothing was replaced. Keep this window open and try again."
+  "patterns": {
+    "toast": "{{name}}!",
+    "loose": {
+      "name": "Loose tiles",
+      "explain": "No group: each tile scores half its points."
     },
-    "slot": {
-      "meld": "Meld slot {{number}}",
-      "pair": "Pair slot",
-      "meldShort": "Meld",
-      "pairShort": "Pair",
-      "emptyMeld": "run or set",
-      "emptyPair": "two alike",
-      "replace": "Replace",
-      "filled": "holds a {{type}}",
-      "empty": "empty",
-      "forecast": "would score {{total}}",
-      "multCost": "and cost {{mult}} Mult"
+    "pair": {
+      "name": "Pair",
+      "explain": "Two identical tiles."
     },
-    "milestones": {
-      "title": "Patterns",
-      "momentum": "Table momentum +{{mult}} Mult",
-      "claimed": "paid",
-      "twin_sequence": {
-        "name": "Twin Sequence",
-        "description": "Two identical sequences stand together on the table."
-      },
-      "pure_suit": {
-        "name": "Pure Suit",
-        "description": "Two or more groups, every one of them in the same suit."
-      },
-      "three_suit_sequence": {
-        "name": "Three-Suit Sequence",
-        "description": "The same run of three ranks, once in every suit."
-      },
-      "dragon_duet": {
-        "name": "Dragon Duet",
-        "description": "Two different Dragons hold the table."
-      },
-      "dragon_court": {
-        "name": "Dragon Court",
-        "description": "All three Dragons answer one another."
-      },
-      "four_sequences": {
-        "name": "Four Sequences",
-        "description": "Every meld slot holds a sequence, and the pair is placed."
-      }
+    "sequence": {
+      "name": "Sequence",
+      "explain": "Three numbers in a row, same suit."
     },
-    "decrees": {
-      "echoing_bamboo": {
-        "name": "Echoing Bamboo",
-        "description": "A Bamboo sequence scores twice when you place it."
-      },
-      "patient_pair": {
-        "name": "Patient Pair",
-        "description": "The pair scores +30 for every meld already on the table."
-      },
-      "watch_fire": {
-        "name": "Watch Fire",
-        "description": "A triplet or quad scores +0.5 Mult and lights its slot. A group beside a lit slot gains +0.5 Mult."
-      },
-      "twin_flame": {
-        "name": "Twin Flame",
-        "description": "Milestone rewards pay double points."
-      },
-      "river_merchant": {
-        "name": "Whispering Merchant",
-        "description": "Once per round, swap one chosen rack tile for a river tile. Costs no action."
-      },
-      "jade_ledger": {
-        "name": "Jade Ledger",
-        "description": "Earn ¥2 for every group you place. Start each round with one fewer redraw."
-      },
-      "honor_court": {
-        "name": "Honor Court",
-        "description": "Groups of Winds or Dragons gain +0.3 Mult for each of their tiles."
-      },
-      "terminal_gate": {
-        "name": "Terminal Gate",
-        "description": "A group containing a 1 or a 9 scores +40."
-      },
-      "wide_rack": {
-        "name": "Wide Rack",
-        "description": "Hold two more tiles in your rack."
-      },
-      "gap_bridge": {
-        "name": "Gap Bridge",
-        "description": "Once a round, a run may skip one rank: 3·4·6 counts as a sequence."
-      }
+    "triplet": {
+      "name": "Triplet",
+      "explain": "Three identical tiles."
     },
-    "chain": {
-      "title": "How it scored",
-      "skip": "Skip"
+    "quad": {
+      "name": "Quad",
+      "explain": "Four identical tiles."
     },
-    "stage": {
-      "group": {
-        "sequence": "Sequence placed — {{tiles}}",
-        "triplet": "Triplet placed — {{tiles}}",
-        "quad": "Quad placed — {{tiles}}",
-        "pair": "Pair placed — {{tiles}}"
-      },
-      "frostMagistrate": "Frost Magistrate — Honor tiles score half",
-      "momentum": "Table momentum +{{mult}} Mult",
-      "terminalGate": "Terminal Gate +{{bonus}}",
-      "honorCourt": "Honor Court +{{mult}} Mult",
-      "patientPair": "Patient Pair +{{bonus}} ({{melds}} melds waiting)",
-      "watchFire": "Watch Fire +{{mult}} Mult from the lit slot",
-      "echoingBamboo": "Echoing Bamboo — this sequence scores twice",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Mult while it stands",
-      "completion": "Table complete — {{base}} × {{mult}}",
-      "total": "Lands on the target",
-      "milestoneBroken": "{{name}} broken — {{mult}} Mult lost",
-      "replaces": "Replaces {{tiles}} — {{points}} already paid",
-      "watchFireSet": "Watch Fire +{{mult}} Mult for the set"
+    "straight4": {
+      "name": "Straight of Four",
+      "explain": "Four numbers in a row, same suit."
     },
-    "roundEnd": {
-      "target": "Round secured",
-      "completed": "Table finished",
-      "exhausted": "Resources spent"
+    "straight5": {
+      "name": "Straight of Five",
+      "explain": "Five numbers in a row, same suit."
     },
-    "rounds": {
-      "0": "First Light",
-      "1": "Rising Court",
-      "2": "Frost Magistrate"
+    "two_pairs": {
+      "name": "Two Pairs",
+      "explain": "Two different pairs in one play."
     },
-    "boss": {
-      "frost_magistrate": "Frost Magistrate — Honor tiles score half their points this round."
+    "three_pairs": {
+      "name": "Three Pairs",
+      "explain": "Three pairs in one play."
     },
-    "hud": {
-      "round": "Round {{current}} of {{total}}",
-      "resources": "{{actions}} actions · {{redraws}} exchanges",
-      "bridges": "· {{count}} bridge",
-      "gold": "{{gold}} gold"
+    "two_sequences": {
+      "name": "Two Sequences",
+      "explain": "Two sequences in one play (six tiles)."
     },
-    "table": {
-      "label": "Table"
+    "two_triplets": {
+      "name": "Two Triplets",
+      "explain": "Two triplets in one play."
     },
-    "river": {
-      "choose": "Select one rack tile to give up, then choose a river tile. Free once per round.",
-      "ready": "Give {{tile}} for a river tile. No action cost.",
-      "used": "Merchant swap used this round.",
-      "swapLabel": "Swap {{give}} for {{take}}",
-      "title": "River",
-      "recover": "River — tap to take one back"
+    "sequence_pair": {
+      "name": "Sequence + Pair",
+      "explain": "A sequence and a pair together."
     },
-    "hint": {
-      "select": "Tap tiles to build a run, a set or a pair, then choose a slot.",
-      "choose": "Tap a highlighted slot to commit it.",
-      "noSlot": "No slot takes that group. Exchange the tiles or pick a different shape.",
-      "draft": "Take an offer, or draw from the wall. Doing anything else takes the wall tile."
+    "triplet_pair": {
+      "name": "Full House",
+      "explain": "A triplet and a pair together."
     },
-    "action": {
-      "clear": "Clear",
-      "exchange": "Exchange ({{left}})",
-      "recover": "Exchange (1 action)",
-      "finish": "Finish round",
-      "needMore": "{{remaining}} to go"
+    "triplet_sequence": {
+      "name": "Triplet + Sequence",
+      "explain": "A triplet and a sequence together."
     },
-    "start": {
-      "title": "Choose how you will play",
-      "subtitle": "One Decree, chosen before the first tile. It should change which tiles you want.",
-      "take": "Begin with this"
+    "quad_pair": {
+      "name": "Quad + Pair",
+      "explain": "A quad and a pair together."
     },
-    "cleared": {
-      "title": "Round cleared",
-      "subtitle": "{{score}} against a target of {{target}}. Purse: ¥{{gold}}.",
-      "shop": "Visit the tea house",
-      "skipShop": "Straight to the next round"
+    "straight_pair": {
+      "name": "Straight + Pair",
+      "explain": "A straight of four and a pair together."
     },
-    "shop": {
-      "title": "Tea house",
-      "subtitle": "Purse: ¥{{gold}}",
-      "empty": "Nothing left on the shelf.",
-      "buy": "Buy",
-      "leave": "Next round"
+    "mahjong": {
+      "name": "Mahjong",
+      "explain": "A complete hand: four groups and a pair, usually 14 tiles. Its Yaku multiply the score."
     },
-    "end": {
-      "won": "Three rounds, cleared",
-      "lost": "The table ran out",
-      "summary": "Run score {{score}}",
-      "again": "Another run"
-    },
-    "reject": {
-      "tooFew": "Select at least two tiles that form a group.",
-      "tooMany": "A group is at most four tiles.",
-      "bonusTile": "Flowers and Seasons cannot be placed as a group.",
-      "notAGroup": "These tiles do not form a sequence, triplet, quad or pair.",
-      "notChoosing": "The opening choice has already been made.",
-      "notOffered": "That Decree was not offered.",
-      "notPlaying": "The round is over.",
-      "noActions": "No placement actions remain.",
-      "noSlot": "That slot does not exist.",
-      "slotTaken": "That slot already holds a group.",
-      "slotEmpty": "There is nothing in that slot to revise.",
-      "notInRack": "Those tiles are not in your rack.",
-      "pairSlotOnly": "The pair slot only takes a pair.",
-      "meldSlotOnly": "A meld slot takes a sequence, triplet or quad.",
-      "illegalPlacement": "That group cannot go there.",
-      "noRedraws": "No exchanges remain.",
-      "redrawSize": "Exchange one to three tiles.",
-      "wallEmpty": "The wall is empty.",
-      "noRecoveries": "No river recoveries remain this round.",
-      "rackFull": "Your rack is full; place or exchange first.",
-      "notInRiver": "That tile is not in the river.",
-      "targetNotMet": "Reach the target before finishing the round.",
-      "notBetweenRounds": "The shop opens between rounds.",
-      "shopClosed": "The shop is closed.",
-      "tooExpensive": "You cannot afford that.",
-      "noDraftPick": "Place a group to earn a pick from the offers.",
-      "notInDraft": "That tile is not one of the offers.",
-      "notPractice": "That offer belongs to the practice deal.",
-      "alreadyOwned": "You already have it."
-    },
-    "rack": {
-      "label": "Your rack"
-    },
-    "selection": {
-      "noGroup": "Not a group yet · {{tiles}}",
-      "multCost": "breaks a pattern · −{{mult}} Mult",
-      "bridged": "{{type}} (bridged) · {{tiles}}"
-    },
-    "draft": {
-      "title": "Offers",
-      "claimable": "Offers — take one for this refill",
-      "pass": "From the wall",
-      "variant": "Variant: offers row",
-      "variantHint": "Three face-up tiles. Each group you place lets one replacement come from them instead of the wall.",
-      "on": "On",
-      "off": "Off"
-    },
-    "practice": {
-      "label": "Practice deal",
-      "begin": "New here? Play the practice deal first",
-      "inspectRun": "Show me the run · {{slot}}",
-      "inspectPair": "Show me the pair · {{slot}}",
-      "takeDecree": "Take {{name}}",
-      "startReal": "Start a real run",
-      "choose": {
-        "title": "Two moves, and they are not the same move",
-        "body": "Your rack holds one run of Bamboo and one pair of nines. A run goes in a meld slot, a pair only fits the pair slot. Tap a group, then tap the slot it lights up — the forecast on the slot is exactly what it will pay."
-      },
-      "interact": {
-        "title": "Your groups can answer each other",
-        "body": "That group stays on the table for the rest of the round. Look for a second run just like the first one: two identical runs standing together are worth more than either of them alone."
-      },
-      "upgrade": {
-        "title": "That was a Twin Sequence",
-        "body": "It paid once, and it raised the multiplier for everything you place afterwards. Echoing Bamboo suits a table built this way: a Bamboo run scores twice the moment you place it."
-      },
-      "ready": {
-        "title": "That is the whole loop",
-        "body": "Place groups, watch them answer each other, and spend what you earn on Decrees that suit the table you are building. The practice deal was authored; a real run is dealt from a shuffled wall."
-      }
-    },
-    "flourish": {
-      "completion": "Table complete"
+    "combination": {
+      "name": "Combination",
+      "explain": "Several groups at once."
     }
+  },
+  "guide": {
+    "title": "How to play",
+    "intro": "Tensho is a poker-style game played with Mahjong tiles. Pick tiles that form a hand, play it for points, and reach each round’s target.",
+    "turnsTitle": "Your turn",
+    "playHelp": "scores the selected tiles.",
+    "redrawHelp": "sends any number of selected tiles to the river and draws new ones.",
+    "turnsHelp": "Each round gives you {{turns}} Turns. Play hand and REDRAW each cost one. Clear a Small or Large round with {{spare}} Turns to spare to earn an Omen.",
+    "scoreTitle": "Your score",
+    "points": "Points",
+    "mult": "Mult",
+    "score": "Score",
+    "scoreHelp": "Points are the tiles’ values plus each group’s bonus. Mult starts at 1 and grows with bigger hands, Dragons, Orbs and Decrees. Tiles outside a group score half.",
+    "handsTitle": "The hands",
+    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Each tile counts once; up to 6 tiles per play unless it is a full Mahjong hand.",
+    "tilesTitle": "The tiles",
+    "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
+    "honorsHelp": "Winds are worth {{wind}} points each. Each Dragon in a group adds +{{dragon}} Mult.",
+    "specialTitle": "Special tiles",
+    "specialHelp": "A coloured frame with a gem is a mark, a wax stamp is a seal, and a shimmer is an edition. Hover or focus a tile to read exactly what it does.",
+    "close": "Let’s play"
+  },
+  "mandateConsequence": {
+    "discard_after_draw": "−{{count}} random tiles per draw",
+    "score_multiplier": "Target ×{{value}}",
+    "no_repeat_yaku": "No repeated Yaku",
+    "single_yaku_type": "One Yaku type only",
+    "halve_score": "Score ×½",
+    "single_hand": "Only 1 Play",
+    "debuff_used_tiles": "Used tiles score 0",
+    "no_discards": "No REDRAW",
+    "decrease_yaku_tier": "Yaku −{{count}} tier",
+    "fixed_hand_size": "Play exactly {{count}} tiles",
+    "debuff_suit": "{{target}} score 0",
+    "debuff_tile_type": "{{target}} score 0",
+    "hand_size_reduction": "Rack −{{count}} tile",
+    "gold_per_tile": "−{{count}} Gold per tile played",
+    "most_played_yaku_zeroes_gold": "Top Yaku costs all Gold",
+    "first_hand_face_down": "First rack face-down",
+    "tiles_face_down_ratio": "1 in {{count}} tiles face-down",
+    "tiles_face_down_after_play": "New tiles face-down",
+    "fixed_draw_count": "Always draw {{count}}",
+    "honor_tiles_face_down": "Honors face-down",
+    "shuffle_decrees": "Decrees hidden",
+    "debuff_until_sell": "All tiles score 0 until you sell a Decree",
+    "disable_random_decree": "1 Decree off each play",
+    "lock_random_tile": "A tile locks each draw"
+  },
+  "upgradeFamilies": {
+    "Pairs": {
+      "name": "Pairs",
+      "covers": "Pair, Two Pairs and Three Pairs"
+    },
+    "Pinfu": {
+      "name": "Sequences",
+      "covers": "Sequence, Sequence + Pair, Two Sequences, and the Pinfu hand"
+    },
+    "Ittsu": {
+      "name": "Straights",
+      "covers": "Straights of Four and Five, and the Pure Straight hand"
+    },
+    "Toitoi": {
+      "name": "Sets",
+      "covers": "Any Triplet or Quad play, and the All Triplets hand"
+    },
+    "Yakuhai": {
+      "name": "Honors",
+      "covers": "Any Wind or Dragon group, and Value-tile hands"
+    },
+    "Tanyao": {
+      "name": "All Simples",
+      "covers": "Plays made only of 2–8 tiles, and the Tanyao hand"
+    },
+    "Honitsu": {
+      "name": "Half Flush",
+      "covers": "Complete hands of one suit plus Honors"
+    },
+    "Chinitsu": {
+      "name": "Full Flush",
+      "covers": "Complete hands of a single suit"
+    },
+    "Sanshoku": {
+      "name": "Mixed Triple",
+      "covers": "Complete hands with the same sequence in all three suits"
+    },
+    "SevenPairs": {
+      "name": "Seven Pairs",
+      "covers": "The Seven Pairs hand"
+    },
+    "Chanta": {
+      "name": "Outside Hand",
+      "covers": "Complete hands with a terminal or Honor in every group"
+    },
+    "Kokushi": {
+      "name": "Thirteen Orphans",
+      "covers": "The Thirteen Orphans hand"
+    },
+    "All": {
+      "name": "Every family",
+      "covers": "All upgrade families",
+      "upgrade": "Every family +1 level"
+    },
+    "levelChange": "{{family}}: level {{from}} → {{to}}",
+    "tokenLabel": "{{family}} upgrade, level {{level}}"
+  },
+  "floraReveal": {
+    "flowerTitle": "Flower drawn: {{name}}",
+    "seasonTitle": "Season drawn: {{name}}",
+    "drawn": "Drawn from the wall. Bonus tiles go straight to your collection, and a replacement tile is drawn into your rack.",
+    "next": "Next ({{count}} more)",
+    "done": "Got it"
+  },
+  "decreeReveal": {
+    "title": "New Decree: {{name}}",
+    "starting": "Starting Decree",
+    "acquired": "New Decree"
   }
 }

@@ -3,7 +3,7 @@ export type ConsumableUnlockResolver = (id: string) => boolean
 
 export const CONSUMABLE_UNLOCK_CONDITIONS: Record<string, string> = {
   seal_of_the_immortal: 'Score a Yakuman',
-  seal_of_the_void: 'Score all 21 Yaku types in a single run',
+  seal_of_the_void: 'Score all 20 Yaku types in a single run',
   planet_x_orb: 'Score Seven Pairs',
   ceres_orb: 'Score Chanta',
   eris_orb: 'Score Kokushi',
@@ -13,7 +13,6 @@ export const CONSUMABLE_UNLOCK_CONDITIONS: Record<string, string> = {
 // Kept lightweight for the profile/menu bundle; catalog parity is tested.
 // These are the live detector's families, not the older YakuDefinition draft.
 export const RUN_YAKU_IDS = [
-  'riichi',
   'tanyao',
   'pinfu',
   'yakuhai',

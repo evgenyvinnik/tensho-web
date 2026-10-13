@@ -53,6 +53,19 @@ describe('fitHandTileSize', () => {
     expect(grouped).toBe('medium')
   })
 
+  it('charges the gaps between suits to the rack width', () => {
+    const fit = (suitBreaks: number) =>
+      fitHandTileSize({
+        availableWidth: 930,
+        viewportHeight: 700,
+        tileCount: 16,
+        groupCount: 4,
+        suitBreaks,
+      })
+    expect(fit(0)).toBe('medium')
+    expect(fit(4)).toBe('compact')
+  })
+
   it('has a sane default before the rack is measured', () => {
     expect(
       fitHandTileSize({ availableWidth: 0, viewportHeight: 800, tileCount: 14 })

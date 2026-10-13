@@ -13,6 +13,7 @@ import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
 import { runRandom } from './RunRandom'
 import { eventBus } from './EventBus'
 import type { PlayerAction } from './ActionProcessor'
+import { advanceToRound } from '../test/roundHelpers'
 
 function fixture(seed = 7) {
   const game = new GameOrchestrator()
@@ -83,25 +84,38 @@ afterEach(() => {
   eventBus.disableHistory()
 })
 
-describe('Classic redraw and discard resources', () => {
-  it('rejects duplicate, missing, empty and oversized selections before mutation', () => {
+describe('Classic REDRAW resources', () => {
+  it('rejects duplicate, missing and empty selections before mutation', () => {
     const { game, state } = fixture()
     const ids = state.handTiles.slice(0, 4).map((t) => t.id)
-    for (const tileIds of [[], [ids[0], ids[0]], [ids[0], 'missing'], ids]) {
+    for (const tileIds of [[], [ids[0], ids[0]], [ids[0], 'missing']]) {
       expectRejected(game, { type: 'redraw', tileIds })
     }
   })
 
-  it('makes locked discard/redraw availability match execution', () => {
+  it('redraws any number of tiles, up to the whole hand', () => {
+    const { game, state } = fixture()
+    const size = state.handTiles.length
+    const all = state.handTiles.map((t) => t.id)
+    expect(game.canPerformAction({ type: 'redraw', tileIds: all })).toBe(true)
+    expect(game.processAction({ type: 'redraw', tileIds: all }).success).toBe(
+      true
+    )
+    expect(state.handTiles).toHaveLength(size)
+    expect(state.handTiles.some((t) => all.includes(t.id))).toBe(false)
+    expect(state.discards.map((t) => t.id)).toEqual(
+      expect.arrayContaining(all)
+    )
+  })
+
+  it('makes locked REDRAW availability match execution', () => {
     const { game, state } = fixture()
     const ids = state.handTiles.map((t) => t.id)
     state.mandateEffectSystem = MandateEffectSystem.fromJSON({
       ...state.mandateEffectSystem.toJSON(),
       lockedTileIds: ids,
     })
-    expectRejected(game, { type: 'discard', tileId: ids[0] })
     expectRejected(game, { type: 'redraw', tileIds: [ids[0]] })
-    expect(game.getAvailableActions()).not.toContain('discard')
     expect(game.getAvailableActions()).not.toContain('redraw')
   })
 
@@ -115,31 +129,34 @@ describe('Classic redraw and discard resources', () => {
     }
   )
 
-  it('rejects exhausted redraws and insufficient wall without spending anything', () => {
+  it('keeps the last Turn for a play and rejects an insufficient wall without spending anything', () => {
     const { game, state } = fixture()
     const tileIds = state.handTiles.slice(0, 2).map((t) => t.id)
     state.redrawsRemaining = 0
+    state.handsRemaining = 1
     expectRejected(game, { type: 'redraw', tileIds })
+    state.handsRemaining = 4
     state.redrawsRemaining = 3
     state.wall = state.wall.slice(state.drawIndex, state.drawIndex + 1)
     state.drawIndex = 0
     expectRejected(game, { type: 'redraw', tileIds })
   })
 
-  it('returns physical tiles to circulation without discard rewards or immediate self-replacement', () => {
+  it('sends tiles to the river, pays REDRAW rewards and conserves physical tiles', () => {
     const { game, state } = fixture()
     expect(state.decreeSystem.acquireDecree(RIVER_TAX)).not.toBeNull()
-    const selected = state.handTiles[0]
-    const other = state.handTiles[1]
-    const replacement = new Tile(TileSuit.Pinzu, 5, 'replacement')
-    // Include a consumed prefix to verify returned identities are not duplicated.
-    state.wall = [selected, other, replacement]
-    state.drawIndex = 2
+    const [selected, other] = state.handTiles
+    const replacements = [
+      new Tile(TileSuit.Pinzu, 5, 'replacement-1'),
+      new Tile(TileSuit.Pinzu, 6, 'replacement-2'),
+    ]
+    state.wall = replacements
+    state.drawIndex = 0
     state.deadWall = []
+    state.redrawsRemaining = 1
     const before = activeTiles(state)
     const gold = state.gold
-    const discards = state.discardsRemaining
-    const hands = state.handsRemaining
+    const turns = state.handsRemaining
     state.selectedTileIds.add(selected.id)
     state.faceDownTileIds.add(selected.id)
     eventBus.enableHistory()
@@ -147,25 +164,27 @@ describe('Classic redraw and discard resources', () => {
       game.processAction({ type: 'redraw', tileIds: [selected.id] }).success
     ).toBe(true)
     expect(state.handTiles.some((t) => t.id === selected.id)).toBe(false)
-    expect(state.handTiles).toContain(replacement)
-    expect(state.wall).toEqual([selected])
-    expect(state.drawIndex).toBe(0)
+    expect(state.handTiles).toContain(replacements[0])
+    expect(state.discards).toContain(selected)
     expect(state.selectedTileIds.has(selected.id)).toBe(false)
     expect(state.faceDownTileIds.has(selected.id)).toBe(false)
     expect(activeTiles(state)).toEqual(before)
-    expect(state.discardsRemaining).toBe(discards)
-    expect(state.handsRemaining).toBe(hands)
-    expect(state.gold).toBe(gold)
-    expect(eventBus.getHistoryByEvent('tileDiscarded')).toEqual([])
+    // The free redraw is spent first; River Tax pays once per REDRAW.
+    expect(state.redrawsRemaining).toBe(0)
+    expect(state.handsRemaining).toBe(turns)
+    expect(state.gold).toBe(gold + 2)
+    expect(eventBus.getHistoryByEvent('tileDiscarded')).toHaveLength(1)
     expect(eventBus.getHistoryByEvent('tileDrawn')).toHaveLength(1)
-    // The same physical tile can be drawn on a later exchange.
+    // Redrawn tiles stay in the river: the next REDRAW draws a new tile.
     expect(
       game.processAction({ type: 'redraw', tileIds: [other.id] }).success
     ).toBe(true)
-    expect(state.handTiles).toContain(selected)
-    expect(state.wall).toEqual([other])
+    expect(state.handTiles).toContain(replacements[1])
+    expect(state.handTiles).not.toContain(selected)
+    expect(state.discards).toEqual(expect.arrayContaining([selected, other]))
+    expect(state.handsRemaining).toBe(turns - 1)
+    expect(state.gold).toBe(gold + 4)
     expect(activeTiles(state)).toEqual(before)
-    expect(state.redrawsRemaining).toBe(1)
   })
 
   it('shuffles reproducibly and does not mutate the wall during availability checks', () => {
@@ -240,7 +259,7 @@ describe('Classic redraw and discard resources', () => {
     ).toBe(true)
   })
 
-  it('creates Purple Seal rewards on redraw, respects capacity, and keeps real discards distinct', () => {
+  it('creates Purple Seal rewards on redraw and respects capacity', () => {
     const { game, state } = fixture()
     expect(state.decreeSystem.acquireDecree(RIVER_TAX)).not.toBeNull()
     const purple = state.handTiles[0].withSeal(SealType.Purple)
@@ -256,7 +275,7 @@ describe('Classic redraw and discard resources', () => {
       game.processAction({ type: 'redraw', tileIds: [purple.id] }).success
     ).toBe(true)
     expect(state.fateSeals).toHaveLength(1)
-    expect(state.gold).toBe(gold)
+    expect(state.gold).toBe(gold + 2)
     while (game.canAddConsumable())
       game.addFateSeal(
         FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_empress)
@@ -268,16 +287,9 @@ describe('Classic redraw and discard resources', () => {
       game.processAction({ type: 'redraw', tileIds: [other.id] }).success
     ).toBe(true)
     expect(state.fateSeals).toHaveLength(capacity)
-    state.fateSeals = []
-    const discarded = state.handTiles[0].withSeal(SealType.Purple)
-    state.handTiles[0] = discarded
-    expect(
-      game.processAction({ type: 'discard', tileId: discarded.id }).success
-    ).toBe(true)
-    expect(state.discards).toContain(discarded)
-    expect(state.wall.slice(state.drawIndex)).not.toContain(discarded)
-    expect(state.fateSeals).toHaveLength(1)
-    expect(state.gold).toBe(gold + 1)
+    expect(state.discards).toEqual(expect.arrayContaining([purple, other]))
+    expect(state.wall.slice(state.drawIndex)).not.toContain(purple)
+    expect(state.gold).toBe(gold + 4)
   })
 
   it.each([CERULEAN_BELL, THE_HOOK])(
@@ -294,19 +306,23 @@ describe('Classic redraw and discard resources', () => {
       expect(onDraw).toHaveBeenCalledTimes(1)
       if (mandate === CERULEAN_BELL)
         expect(state.mandateEffectSystem.getLockedTileIds()).toHaveLength(1)
-      else expect(state.discards).toHaveLength(2)
+      // The Hook sends two more tiles to the river after the redrawn ones.
+      else expect(state.discards).toHaveLength(tileIds.length + 2)
     }
   )
 
-  it('keeps The Water as zero redraws, not a ban on real discards', () => {
+  it('lets The Water forbid every REDRAW, free or paid, but not a play', () => {
     const { game } = fixture()
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
     game.getState().roundManager.getCurrentAct()!.rounds[2].bossMandate =
       THE_WATER
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    advanceToRound(game, 'Boss')
     expect(game.getState().redrawsRemaining).toBe(0)
-    const tileId = game.getHandTiles()[0].id
-    expectRejected(game, { type: 'redraw', tileIds: [tileId] })
-    expect(game.canPerformAction({ type: 'discard', tileId })).toBe(true)
+    expect(game.getState().handsRemaining).toBeGreaterThan(1)
+    const tileIds = game
+      .getHandTiles()
+      .slice(0, 2)
+      .map((t) => t.id)
+    expectRejected(game, { type: 'redraw', tileIds: [tileIds[0]] })
+    expect(game.canPerformAction({ type: 'play', tileIds })).toBe(true)
   })
 })

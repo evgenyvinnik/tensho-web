@@ -1,12 +1,27 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { openTable } from './helpers/table'
+
+// Controlled deals isolate the hand score; payment is through Play hand.
+const DEALS = [
+  { pattern: 'sequence', ranks: [4, 5, 6], points: 45, mult: 1, total: 45 },
+  { pattern: 'two_pairs', ranks: [3, 3, 7, 7], points: 50, mult: 2, total: 100 },
+  { pattern: 'loose', ranks: [1, 4, 8], points: 9, mult: 1, total: 9 },
+  {
+    pattern: 'straight5',
+    ranks: [3, 4, 5, 6, 7],
+    points: 85,
+    mult: 3,
+    total: 255,
+  },
+] as const
 
 for (const [language, copy] of [
   ['en', en],
   ['es', es],
 ] as const) {
-  test(`explains the actual staged group and preserves hidden information (${language})`, async ({
+  test(`names the actual pattern, shows points × Mult and hides face-down tiles (${language})`, async ({
     page,
     isMobile,
   }, testInfo) => {
@@ -14,28 +29,23 @@ for (const [language, copy] of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${language}/play`)
+    await openTable(page, `/${language}/play`)
     const play = page.locator('[data-game-action="play"]')
-    await expect(play).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
-    for (const [kind, ranks, score] of [
-      ['grouped', [4, 5, 6], 45],
-      ['mixed', [4, 5, 6, 9], 50],
-      ['looseTiles', [1, 4, 8], 9],
-    ] as const) {
+    const score = page.locator('[data-hand-score]')
+    for (const deal of DEALS) {
       const ids = await page.evaluate(
-        async ({ ranks, kind }) => {
-          const gamePath = '/src/game/GameOrchestrator.ts',
-            tilePath = '/src/core/Tile.ts',
-            eventPath = '/src/game/EventBus.ts'
-          const { gameOrchestrator: game } = await import(gamePath)
-          const { Tile, TileSuit } = await import(tilePath)
-          const { eventBus } = await import(eventPath)
+        async ({ ranks, pattern }) => {
+          const { gameOrchestrator: game } = await import(
+            '/src/game/GameOrchestrator.ts'
+          )
+          const { Tile, TileSuit } = await import('/src/core/Tile.ts')
+          const { eventBus } = await import('/src/game/EventBus.ts')
+          const { useDecreeRevealQueue } = await import(
+            '/src/game/decreeRevealQueue.ts'
+          )
+          const { useFloraRevealQueue } = await import(
+            '/src/game/floraRevealQueue.ts'
+          )
           game.startNewRun(7)
           const state = game.getState()
           state.flowerSystem.clear()
@@ -45,21 +55,24 @@ for (const [language, copy] of [
             .forEach((d: { id: string }) =>
               state.decreeSystem.removeDecree(d.id)
             )
-          // Controlled deals isolate explanation and staging; payment is through Play.
+          useDecreeRevealQueue.setState({ queue: [] })
+          useFloraRevealQueue.setState({ queue: [] })
           const tiles = ranks.map(
-            (rank, i) => new Tile(TileSuit.Souzu, rank, `${kind}-${i}`)
+            (rank: number, i: number) =>
+              new Tile(TileSuit.Souzu, rank, `${pattern}-${i}`)
           )
           state.handTiles = [
             ...tiles,
             ...Array.from(
               { length: 14 - tiles.length },
               (_, i) =>
-                new Tile(TileSuit.Pinzu, (i % 9) + 1, `other-${kind}-${i}`)
+                new Tile(TileSuit.Pinzu, (i % 9) + 1, `other-${pattern}-${i}`)
             ),
           ]
           state.wall = Array.from(
             { length: 40 },
-            (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${kind}-${i}`)
+            (_, i) =>
+              new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${pattern}-${i}`)
           )
           state.drawIndex = 0
           state.targetScore = 1e9
@@ -67,49 +80,39 @@ for (const [language, copy] of [
           eventBus.emit('tileSelected', { tileId: '', selectedCount: 0 })
           return tiles.map((t: { id: string }) => t.id)
         },
-        { ranks, kind }
+        { ranks: [...deal.ranks], pattern: deal.pattern }
       )
       for (const id of ids) {
-        const tile = page.locator(
-          `[data-play-zone="hand"] [data-play-tile="${id}"]`
-        )
+        const tile = page.locator(`[data-play-tile="${id}"]`)
         if (isMobile) await tile.tap()
         else await tile.click()
       }
-      const hint = page.getByTestId('forecast-structure-hint')
-      await expect(page.getByTestId('forecast-heading')).toHaveText(
-        kind === 'grouped'
-          ? copy.melds.sequence
-          : copy.gameplay.forecast.selectionCount.replace(
-              '{{count}}',
-              String(ranks.length)
-            )
+      const name = copy.patterns[deal.pattern].name
+      await expect(score).toHaveAttribute('data-hand-score-state', 'preview')
+      await expect(score.locator('[data-hand-score-pattern]')).toHaveText(name)
+      await expect(score.locator('[data-hand-score-points]')).toHaveText(
+        String(deal.points)
       )
-      await expect(hint).toHaveText(
-        copy.gameplay.forecast[kind]
-          .replace('{{points}}', '30')
-          .replace('{{count}}', '1')
+      await expect(score.locator('[data-hand-score-mult]')).toHaveText(
+        String(deal.mult)
       )
-      await expect(page.getByTestId('score-preview-total')).toHaveText(
-        `+${score}`
+      await expect(score.locator('[data-hand-score-total]')).toHaveText(
+        String(deal.total)
       )
-      const area = page.locator('.game-play-area')
-      await area.scrollIntoViewIfNeeded()
-      expect(
-        await area.evaluate((node) => ({
-          x: node.scrollWidth <= node.clientWidth + 1,
-          y: node.scrollHeight <= node.clientHeight + 1,
-        }))
-      ).toEqual({ x: true, y: true })
-      await area.screenshot({ path: testInfo.outputPath(`${kind}.png`) })
-      if (kind === 'grouped') {
+      // The button never repeats the score or changes its label.
+      await expect(play).toHaveText(copy.gameplay.playHand)
+      await score.screenshot({
+        path: testInfo.outputPath(`${deal.pattern}.png`),
+      })
+
+      if (deal.pattern === 'sequence') {
         for (const hide of [true, false]) {
           await page.evaluate(
             async ({ id, hide }) => {
-              const gamePath = '/src/game/GameOrchestrator.ts',
-                eventPath = '/src/game/EventBus.ts'
-              const { gameOrchestrator: game } = await import(gamePath)
-              const { eventBus } = await import(eventPath)
+              const { gameOrchestrator: game } = await import(
+                '/src/game/GameOrchestrator.ts'
+              )
+              const { eventBus } = await import('/src/game/EventBus.ts')
               const hidden = game.getState().faceDownTileIds
               if (hide) hidden.add(id)
               else hidden.delete(id)
@@ -118,28 +121,32 @@ for (const [language, copy] of [
             { id: ids[0], hide }
           )
           if (hide) {
-            await expect(hint).toHaveCount(0)
-            await expect(page.getByTestId('score-preview-total')).toHaveCount(0)
-            await expect(
-              page.getByText(copy.gameplay.hiddenHand, { exact: true })
-            ).toBeVisible()
+            await expect(score).toHaveAttribute(
+              'data-hand-score-state',
+              'hidden'
+            )
+            await expect(score).not.toContainText(String(deal.total))
           } else
-            await expect(hint).toHaveText(
-              copy.gameplay.forecast.grouped.replace('{{points}}', '30')
+            await expect(score.locator('[data-hand-score-total]')).toHaveText(
+              String(deal.total)
             )
         }
       }
+
       await play.click()
-      await expect(page.locator('[data-score-result]')).toHaveText(
-        String(score)
-      )
+      const toast = page.locator(`[data-play-toast="${deal.pattern}"]`)
+      await expect(toast).toBeVisible()
+      await expect(toast).toContainText(name)
+      await expect(toast).toContainText(`+${deal.total}`)
       expect(
         await page.evaluate(async () => {
-          const path = '/src/game/GameOrchestrator.ts'
-          const { gameOrchestrator: game } = await import(path)
+          const { gameOrchestrator: game } = await import(
+            '/src/game/GameOrchestrator.ts'
+          )
           return game.getState().score
         })
-      ).toBe(score)
+      ).toBe(deal.total)
+      await expect(toast).toBeHidden({ timeout: 5_000 })
     }
   })
 }

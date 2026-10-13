@@ -9,6 +9,25 @@ import { defineConfig, devices } from '@playwright/test'
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:4173'
 
+/**
+ * A profile that has already seen the onboarding: the first-run "?" guide and
+ * the menu tutorial would otherwise cover the table in every fresh context.
+ * Specs about first-run behaviour opt out with
+ * `test.use({ storageState: { cookies: [], origins: [] } })`.
+ */
+const onboardedProfile = {
+  cookies: [],
+  origins: [
+    {
+      origin: new URL(baseURL).origin,
+      localStorage: [
+        { name: 'tensho_hand_guide_seen', value: 'true' },
+        { name: 'tensho_tutorial_completed', value: 'true' },
+      ],
+    },
+  ],
+}
+
 export default defineConfig({
   // Test directory
   testDir: './e2e',
@@ -32,6 +51,8 @@ export default defineConfig({
   use: {
     // Base URL for tests
     baseURL,
+
+    storageState: onboardedProfile,
 
     // Collect trace when retrying a failed test
     trace: 'on-first-retry',

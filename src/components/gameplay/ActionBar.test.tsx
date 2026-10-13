@@ -1,256 +1,170 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import type { TFunction } from 'i18next'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import type React from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import i18n, { changeLanguage } from '../../i18n'
 import { ActionBar } from './ActionBar'
-import { createInstance } from 'i18next'
-import es from '../../i18n/locales/es.json'
-
-// Mirrors i18next: a missing key resolves to the supplied default string,
-// with {{placeholders}} filled from the interpolation values.
-const t = ((
-  key: string,
-  fallback?: unknown,
-  vars?: Record<string, unknown>
-) => {
-  if (typeof fallback !== 'string') return key
-  return fallback.replace(/\{\{(\w+)\}\}/g, (whole, name: string) =>
-    vars && name in vars ? String(vars[name]) : whole
-  )
-}) as unknown as TFunction
 
 function renderActionBar(
   overrides: Partial<React.ComponentProps<typeof ActionBar>> = {}
 ) {
   return render(
     <ActionBar
-      wallRemaining={114}
-      handsRemaining={4}
-      discardsRemaining={3}
-      redrawsRemaining={3}
-      selectedTileCount={0}
-      handTileCount={14}
-      isCompleteHandSelection={false}
-      currentRound={1}
-      onSkip={vi.fn()}
+      turnsLeft={4}
+      freeRedraws={0}
+      selectedCount={0}
+      playAllowed={false}
+      redrawAllowed={false}
       onRedraw={vi.fn()}
       onPlayHand={vi.fn()}
-      projectedScore={181}
-      t={t}
       {...overrides}
     />
   )
 }
 
-describe('ActionBar play action', () => {
-  it('offers a deliberate single-tile discard without spending a play or moving Skip', () => {
-    const onDiscard = vi.fn(),
-      onPlayHand = vi.fn(),
-      onSkip = vi.fn()
-    renderActionBar({
-      selectedTileCount: 1,
-      discardAllowed: true,
-      onDiscard,
-      onPlayHand,
-      onSkip,
-    })
-    const discard = screen.getByRole('button', { name: 'Discard' })
-    expect(discard).toBeEnabled()
-    fireEvent.click(discard)
-    expect(onDiscard).toHaveBeenCalledOnce()
-    expect(onPlayHand).not.toHaveBeenCalled()
-    expect(onSkip).not.toHaveBeenCalled()
-    expect(screen.getByRole('button', { name: 'SKIP' })).toBeEnabled()
-  })
+const buttons = () => screen.getAllByRole('button')
 
-  it.each([0, 2, 3])(
-    'never discards an ambiguous selection of %i tiles',
-    (selectedTileCount) => {
-      renderActionBar({
-        selectedTileCount,
-        discardAllowed: true,
-        onDiscard: vi.fn(),
-      })
-      expect(screen.getByRole('button', { name: 'Discard' })).toBeDisabled()
-    }
-  )
+afterEach(async () => {
+  await act(() => changeLanguage('en'))
+})
 
-  it.each([
-    { discardsRemaining: 0, discardAllowed: true },
-    { discardsRemaining: 3, discardAllowed: false },
-  ])(
-    'honors discard resources and authoritative restrictions: %j',
-    (restriction) => {
-      const onDiscard = vi.fn()
-      renderActionBar({ selectedTileCount: 1, onDiscard, ...restriction })
-      const discard = screen.getByRole('button', { name: 'Discard' })
-      expect(discard).toBeDisabled()
-      fireEvent.click(discard)
-      expect(onDiscard).not.toHaveBeenCalled()
-    }
-  )
-
-  it.each([
-    { selectedTileCount: 0, expected: 'ELIGE 2–5' },
-    {
-      selectedTileCount: 0,
-      isCompleteHandSelection: true,
-      expected: 'PREPARAR MANO',
-    },
-    { selectedTileCount: 1, expected: 'ELIGE 1 MÁS' },
-    { selectedTileCount: 3, expected: 'JUGAR 3' },
-    {
-      selectedTileCount: 14,
-      isCompleteHandSelection: true,
-      expected: 'CONFIRMAR MANO',
-    },
-    { selectedTileCount: 6, expected: 'INCOMPLETA' },
-    { selectedTileCount: 4, requiredPlaySize: 5, expected: 'ELIGE 1 MÁS' },
-    { selectedTileCount: 5, requiredPlaySize: 3, expected: 'DEVUELVE 2' },
-  ])(
-    'uses one translated label at every breakpoint: $expected',
-    async ({ expected, ...props }) => {
-      const instance = createInstance()
-      await instance.init({ lng: 'es', resources: { es: { translation: es } } })
-      const { container } = renderActionBar({ ...props, t: instance.t })
-      const play = container.querySelector('[data-game-action="play"]')!
-      expect(play.textContent).toBe(`${expected}+181`)
-      expect(play.querySelector('.sm\\:hidden')).toBeNull()
-    }
-  )
-
-  it.each([
-    { selectedTileCount: 0 },
-    { selectedTileCount: 4 },
-    { selectedTileCount: 2, wallRemaining: 1 },
-    { selectedTileCount: 1, redrawsRemaining: 0 },
-    { selectedTileCount: 1, redrawAllowed: false },
-  ])('disables unavailable redraws: %j', (overrides) => {
-    renderActionBar(overrides)
-    expect(
-      screen.getByRole('button', { name: 'Redraw selected tiles' })
-    ).toBeDisabled()
-  })
-
-  it('enables a legal redraw independently of play legality', () => {
-    renderActionBar({
-      selectedTileCount: 1,
-      redrawAllowed: true,
-      playAllowed: false,
-    })
-    expect(
-      screen.getByRole('button', { name: 'Redraw selected tiles' })
-    ).toBeEnabled()
-  })
-  it('disables an otherwise tactical play and displays its locked-tile requirement', () => {
-    renderActionBar({
-      selectedTileCount: 3,
-      playAllowed: false,
-      playRestriction: 'Locked tile: must be played',
-      projectedScore: undefined,
-    })
-    const play = screen.getByRole('button', {
-      name: 'Locked tile: must be played',
-    })
-    expect(play).toBeDisabled()
-    expect(play).toHaveTextContent('Locked tile: must be played')
-  })
-  it('requires a tactical selection when the hand is incomplete', () => {
+describe('ActionBar', () => {
+  it('offers exactly two actions, REDRAW and Play hand', () => {
     renderActionBar()
-
-    const play = screen.getByRole('button', {
-      name: /Select 2 to 5 tiles for a tactical play/i,
-    })
-
-    expect(play).toBeDisabled()
-    expect(play).toHaveTextContent('SELECT 2–5')
+    expect(buttons().map((button) => button.textContent)).toEqual([
+      'REDRAW',
+      'Play hand',
+    ])
+    expect(screen.queryByRole('button', { name: /skip/i })).toBeNull()
+    expect(screen.queryByRole('button', { name: /discard/i })).toBeNull()
   })
 
-  it('stages a complete hand before it can be confirmed', () => {
-    renderActionBar({ isCompleteHandSelection: true })
-
-    const play = screen.getByRole('button', {
-      name: /Move all 14 tiles to the board for confirmation/i,
-    })
-
-    expect(play).toBeEnabled()
-    expect(play).toHaveTextContent('STAGE HAND')
+  it.each([
+    { selectedCount: 0, playAllowed: false },
+    { selectedCount: 1, playAllowed: false },
+    { selectedCount: 3, playAllowed: true },
+    { selectedCount: 6, playAllowed: true, willClear: true },
+  ])('keeps the same labels for every selection: %j', (props) => {
+    renderActionBar(props)
+    expect(
+      screen.getByRole('button', { name: 'Play hand' })
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'REDRAW' })).toBeInTheDocument()
   })
 
-  it('asks for confirmation after a complete hand is staged', () => {
+  it('plays and redraws through separate callbacks', () => {
+    const onPlayHand = vi.fn()
+    const onRedraw = vi.fn()
     renderActionBar({
-      selectedTileCount: 14,
-      isCompleteHandSelection: true,
+      selectedCount: 2,
+      playAllowed: true,
+      redrawAllowed: true,
+      onPlayHand,
+      onRedraw,
     })
-
-    const play = screen.getByRole('button', {
-      name: /Confirm the complete 14-tile hand/i,
-    })
-
-    expect(play).toBeEnabled()
-    expect(play).toHaveTextContent('CONFIRM HAND')
+    fireEvent.click(screen.getByRole('button', { name: 'Play hand' }))
+    expect(onPlayHand).toHaveBeenCalledOnce()
+    expect(onRedraw).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'REDRAW' }))
+    expect(onRedraw).toHaveBeenCalledOnce()
   })
 
-  it('asks for one more tile when only one is selected', () => {
-    renderActionBar({ selectedTileCount: 1, projectedScore: undefined })
-
-    const play = screen.getByRole('button', {
-      name: 'Select one more tile before playing',
-    })
-
+  it('disables what the engine forbids and never calls it', () => {
+    const onPlayHand = vi.fn()
+    const onRedraw = vi.fn()
+    renderActionBar({ selectedCount: 2, onPlayHand, onRedraw })
+    const play = screen.getByRole('button', { name: 'Play hand' })
+    const redraw = screen.getByRole('button', { name: 'REDRAW' })
     expect(play).toBeDisabled()
-    expect(play).toHaveTextContent('SELECT 1 MORE')
+    expect(redraw).toBeDisabled()
+    fireEvent.click(play)
+    fireEvent.click(redraw)
+    expect(onPlayHand).not.toHaveBeenCalled()
+    expect(onRedraw).not.toHaveBeenCalled()
   })
 
-  it('shows how many selected tiles will be played', () => {
-    renderActionBar({ selectedTileCount: 3 })
+  it('redraws independently of play legality', () => {
+    renderActionBar({ selectedCount: 1, redrawAllowed: true })
+    expect(screen.getByRole('button', { name: 'REDRAW' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Play hand' })).toBeDisabled()
+  })
 
-    const play = screen.getByRole('button', {
-      name: /Play 3 selected tiles/i,
+  it('shows the shared Turns counter', () => {
+    const { container } = renderActionBar({ turnsLeft: 1 })
+    const counter = container.querySelector('[data-turns-left]')!
+    expect(counter).toHaveAttribute('data-turns-left', '1')
+    expect(counter).toHaveAttribute('aria-label', '1 Turn left')
+    expect(counter).toHaveTextContent('1Turns left')
+  })
+
+  it('marks free redraws on the REDRAW button', () => {
+    const { container, rerender } = renderActionBar({ freeRedraws: 2 })
+    expect(container.querySelector('[data-free-redraws="2"]')).toHaveTextContent(
+      '+2 free'
+    )
+    rerender(
+      <ActionBar
+        turnsLeft={4}
+        freeRedraws={0}
+        selectedCount={0}
+        playAllowed={false}
+        redrawAllowed={false}
+        onRedraw={vi.fn()}
+        onPlayHand={vi.fn()}
+      />
+    )
+    expect(container.querySelector('[data-free-redraws]')).toBeNull()
+  })
+
+  it('explains a blocked play only once tiles are chosen', () => {
+    const { container, rerender } = renderActionBar({
+      playReason: 'Locked tile: must be played',
     })
+    expect(container.querySelector('[data-action-reason]')).toBeNull()
 
-    expect(play).toBeEnabled()
-    expect(play).toHaveTextContent('PLAY 3')
+    rerender(
+      <ActionBar
+        turnsLeft={4}
+        freeRedraws={0}
+        selectedCount={3}
+        playAllowed={false}
+        redrawAllowed={false}
+        playReason="Locked tile: must be played"
+        onRedraw={vi.fn()}
+        onPlayHand={vi.fn()}
+      />
+    )
+    const reason = screen.getByRole('status')
+    expect(reason).toHaveTextContent('Locked tile: must be played')
+    expect(screen.getByRole('button', { name: 'Play hand' })).toHaveAttribute(
+      'aria-describedby',
+      reason.id
+    )
   })
 
-  it('rejects oversized selections that are not complete hands', () => {
+  it('gives the redraw reason as the disabled button title', () => {
     renderActionBar({
-      selectedTileCount: 6,
-      projectedScore: undefined,
+      selectedCount: 2,
+      redrawReason: 'Not enough Turns to redraw',
     })
-
-    const play = screen.getByRole('button', {
-      name: /not a complete hand/i,
-    })
-
-    expect(play).toBeDisabled()
-    expect(play).toHaveTextContent('NOT COMPLETE')
+    expect(screen.getByRole('button', { name: 'REDRAW' })).toHaveAttribute(
+      'title',
+      'Not enough Turns to redraw'
+    )
   })
 
-  it('describes a winning tactical forecast without renaming the action', () => {
-    renderActionBar({ selectedTileCount: 3, willClear: true })
-
-    const play = screen.getByRole('button', {
-      name: /enough to win the round/i,
-    })
-
-    expect(play).toHaveTextContent('PLAY 3')
-    expect(play).toHaveTextContent('Wins round')
-    expect(play).not.toHaveTextContent(/^CLEAR$/)
+  it('glows when the play would clear the round', () => {
+    renderActionBar({ selectedCount: 3, playAllowed: true, willClear: true })
+    expect(screen.getByRole('button', { name: 'Play hand' }).className).toMatch(
+      /shadow-\[/
+    )
   })
 
-  it('reflects an exact-size Boss Mandate before enabling play', () => {
-    renderActionBar({
-      selectedTileCount: 3,
-      requiredPlaySize: 5,
-      projectedScore: undefined,
-    })
-
-    const play = screen.getByRole('button', {
-      name: /Select 2 more tiles to meet the Boss Mandate/i,
-    })
-
-    expect(play).toBeDisabled()
-    expect(play).toHaveTextContent('SELECT 2 MORE')
+  it('translates the labels without changing them per selection', async () => {
+    await act(() => changeLanguage('es'))
+    renderActionBar({ selectedCount: 3, playAllowed: true, turnsLeft: 2 })
+    const [redraw, play] = buttons()
+    expect(play.textContent).toBe('Jugar mano')
+    expect(redraw.textContent).toBe('RECAMBIAR')
+    expect(i18n.language).toBe('es')
   })
 })

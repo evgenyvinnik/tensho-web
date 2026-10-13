@@ -47,10 +47,10 @@ export const HAND_BUILDING_PANELS: GuideTileExample[] = [
       'Twelve tiles: two finished sequences, two unfinished sequences, and an East pair. These are ordinary same-suit groups, without rule-changing effects.',
   },
   {
-    title: 'One redraw, two exchanged tiles',
+    title: 'One REDRAW, two exchanged tiles',
     groups: HAND_BUILDING_EXAMPLE.exchange,
     caption:
-      'The starting rack also contains these two unmatched Dragons. Exchanging both costs one redraw, not two. A different build might value these Honors; check your effects first.',
+      'The starting rack also contains these two unmatched Dragons. Exchanging both costs one REDRAW, not two. A different build might value these Honors — a grouped Dragon adds Mult; check your effects first.',
   },
   {
     title: 'If the replacements are 1 and 4 of Circles…',

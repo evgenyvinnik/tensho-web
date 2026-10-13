@@ -8,6 +8,7 @@ import { runRandom } from './RunRandom'
 import { buildCoachAdvice } from '../gameplay/beginnerCoach'
 import { SHOWDOWN_MANDATES } from '../systems/RoundManager'
 import { parseClassicRunSnapshot } from './validateClassicRun'
+import { advanceToRound } from '../test/roundHelpers'
 
 afterEach(() => {
   eventBus.clear()
@@ -52,25 +53,27 @@ it('normalizes legacy accumulated Bell locks to their latest insertion without R
   ).toEqual([])
 })
 
-it('allows six real exchanges then a legal tactical play, preserving current lock after restore', () => {
+it('allows every REDRAW the Turns permit, then a legal tactical play, preserving the current lock after restore', () => {
   const game = new GameOrchestrator()
   game.startNewRun(7)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
   game.getState().roundManager.getCurrentAct()!.rounds[2].bossMandate =
     SHOWDOWN_MANDATES.find((m) => m.id === CERULEAN_BELL.id)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  for (let i = 0; i < 6; i++) {
+  advanceToRound(game, 'Boss')
+  let redraws = 0
+  for (;;) {
     const state = game.getState()
     const locked = state.mandateEffectSystem.getLockedTileIds()
     expect(locked).toHaveLength(1)
     const tile = state.handTiles.find((t) => !locked.includes(t.id))!
-    const action =
-      i < 3
-        ? { type: 'discard' as const, tileId: tile.id }
-        : { type: 'redraw' as const, tileIds: [tile.id] }
+    const action = { type: 'redraw' as const, tileIds: [tile.id] }
+    if (!game.canPerformAction(action)) break
     expect(game.processAction(action).success).toBe(true)
     expect(state.mandateEffectSystem.getLockedTileIds()).toHaveLength(1)
+    redraws++
   }
+  // The last Turn is kept for a play.
+  expect(redraws).toBeGreaterThanOrEqual(5)
+  expect(game.getState().handsRemaining).toBe(1)
   const snapshot = game.captureRun()
   parseClassicRunSnapshot(JSON.parse(JSON.stringify(snapshot)))
   const restored = new GameOrchestrator()

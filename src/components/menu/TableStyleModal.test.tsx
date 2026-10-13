@@ -56,7 +56,7 @@ it('shows cumulative engine rules only in an optional disclosure', () => {
   ).toHaveLength(6)
   expect(details).toHaveTextContent('×1.95')
   expect(details).toHaveTextContent('30%')
-  expect(details).toHaveTextContent('Redraws each round: −1')
+  expect(details).toHaveTextContent('Turns each round: −1')
   expect(details).toHaveTextContent('No reward gold from Small Rounds')
   expect(details).not.toHaveTextContent('per Act')
 })

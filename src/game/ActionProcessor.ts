@@ -23,14 +23,6 @@ export interface DrawAction {
 }
 
 /**
- * Discard action - discard a tile to the river
- */
-export interface DiscardAction {
-  type: 'discard'
-  tileId: string
-}
-
-/**
  * Play action - play selected tiles as a hand
  */
 export interface PlayAction {
@@ -39,7 +31,8 @@ export interface PlayAction {
 }
 
 /**
- * Redraw action - return tiles to wall and draw replacements
+ * REDRAW - send any number of selected tiles to the river and refill the rack.
+ * Spends a free redraw if one is left, otherwise a Turn.
  */
 export interface RedrawAction {
   type: 'redraw'
@@ -71,25 +64,15 @@ export interface UseScriptAction {
 }
 
 /**
- * Skip action - skip the current action opportunity
- */
-export interface SkipAction {
-  type: 'skip'
-}
-
-/**
  * Union type for all player actions
  */
 export type PlayerAction =
-  | { type: 'declareRiichi' | 'abandonRiichi' }
   | DrawAction
-  | DiscardAction
   | PlayAction
   | RedrawAction
   | UseSealAction
   | UseOrbAction
   | UseScriptAction
-  | SkipAction
 
 // =============================================================================
 // RESULT TYPES
@@ -265,8 +248,6 @@ export class ActionProcessor {
     switch (action.type) {
       case 'draw':
         return this.validateDraw(state)
-      case 'discard':
-        return this.validateDiscard(action, state)
       case 'play':
         return this.validatePlay(action, state)
       case 'redraw':
@@ -277,17 +258,6 @@ export class ActionProcessor {
         return this.validateUseOrb(action, state)
       case 'useScript':
         return this.validateUseScript(action, state)
-      case 'skip':
-        return state.roundType === 'Small' || state.roundType === 'Large'
-          ? { isValid: true, errors: [] }
-          : {
-              isValid: false,
-              errors: [
-                state.roundType === 'Boss'
-                  ? 'Cannot skip boss rounds'
-                  : 'No active round',
-              ],
-            }
       default:
         return { isValid: false, errors: ['Unknown action type'] }
     }
@@ -305,40 +275,6 @@ export class ActionProcessor {
 
     if (state.handTiles.length >= (state.handSizeLimit ?? 14)) {
       errors.push('Hand is at maximum size')
-    }
-
-    return {
-      isValid: errors.length === 0,
-      errors,
-    }
-  }
-
-  /**
-   * Validate a discard action
-   */
-  private validateDiscard(
-    action: DiscardAction,
-    state: GameStateSnapshot
-  ): ValidationResult {
-    const errors: string[] = []
-
-    // Check mandate restrictions
-    if (state.mandateRestrictions?.noDiscards) {
-      errors.push('Discards are disabled by mandate')
-    }
-    if (state.mandateRestrictions?.lockedTileIds?.includes(action.tileId)) {
-      errors.push('Locked tiles cannot be discarded')
-    }
-
-    // Check if tile exists in hand
-    const tileExists = state.handTiles.some((t) => t.id === action.tileId)
-    if (!tileExists) {
-      errors.push('Tile not found in hand')
-    }
-
-    // Check if discards remaining
-    if (state.discardsRemaining <= 0) {
-      errors.push('No discards remaining')
     }
 
     return {
@@ -395,7 +331,8 @@ export class ActionProcessor {
   }
 
   /**
-   * Validate a redraw action
+   * Validate a REDRAW: any number of distinct, unlocked rack tiles, with a
+   * free redraw or a Turn to spend that still leaves a Turn for a Play.
    */
   private validateRedraw(
     action: RedrawAction,
@@ -403,14 +340,11 @@ export class ActionProcessor {
   ): ValidationResult {
     const errors: string[] = []
 
-    // Check if redraws remaining
-    if (state.redrawsRemaining <= 0) {
-      errors.push('No redraws remaining')
-    }
-
-    // GAME_MECHANICS.md defines redraws as replacing up to 3 tiles.
-    if (action.tileIds.length > 3) {
-      errors.push('Can only redraw up to 3 tiles at once')
+    if (state.mandateRestrictions?.noDiscards) {
+      errors.push('Boss Mandate: no Redraws this round')
+    } else if (state.redrawsRemaining <= 0 && state.handsRemaining < 2) {
+      // The last Turn is always a Play.
+      errors.push('No Redraws left: your last Turn must be a Play')
     }
 
     if (action.tileIds.length === 0) {
@@ -428,15 +362,12 @@ export class ActionProcessor {
       errors.push('Locked tiles cannot be redrawn')
     }
 
-    // Check if all tiles exist in hand
     for (const tileId of action.tileIds) {
-      const tileExists = state.handTiles.some((t) => t.id === tileId)
-      if (!tileExists) {
+      if (!state.handTiles.some((t) => t.id === tileId)) {
         errors.push(`Tile ${tileId} not found in hand`)
       }
     }
 
-    // Check if wall has enough tiles
     if (state.wallRemaining < action.tileIds.length) {
       errors.push('Not enough tiles in wall for redraw')
     } else if (
@@ -558,14 +489,6 @@ export class ActionProcessor {
       available.push('draw')
     }
 
-    if (
-      state.handTiles.some((tile) =>
-        this.canPerform({ type: 'discard', tileId: tile.id }, state)
-      )
-    ) {
-      available.push('discard')
-    }
-
     if (state.handsRemaining > 0 && state.handTiles.length >= 2) {
       available.push('play')
     }
@@ -589,8 +512,6 @@ export class ActionProcessor {
     if (state.voidScriptUsesRemaining > 0 && state.voidScriptIds.length > 0) {
       available.push('useScript')
     }
-
-    if (this.canPerform({ type: 'skip' }, state)) available.push('skip')
 
     return available
   }

@@ -6,6 +6,7 @@ import { LEGACY_AUSTERITY_EFFECT } from '../systems/austerity'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { parseClassicRunSnapshot } from './validateClassicRun'
+import { advanceRound } from '../test/roundHelpers'
 
 afterEach(() => {
   eventBus.clear()
@@ -46,7 +47,11 @@ function deal(game: GameOrchestrator) {
 }
 function factor(game: GameOrchestrator, ids: string[]) {
   const score = game.previewScore(ids)!
-  return score.equation!.multiplier / score.yakuMultiplier
+  // The Decree's factor: the final Mult over its additive parts.
+  return (
+    score.equation!.multiplier /
+    (score.yakuMultiplier + score.pattern.mult + score.dragonMult)
+  )
 }
 it('rewards complete concealed hands with run growth, without growing during preview or reload', () => {
   const game = fixture()
@@ -76,7 +81,7 @@ it('does not reward tactical plays or let them advance mastery', () => {
     game.processAction({ type: 'play', tileIds: ids.slice(0, 3) }).success
   ).toBe(true)
   game.exitShop()
-  expect(factor(game, deal(game))).toBe(1.5)
+  expect(factor(game, deal(game))).toBeCloseTo(1.5)
 })
 
 it('preserves legacy owned effects without trusting altered rules or inventing history', () => {
@@ -90,7 +95,7 @@ it('preserves legacy owned effects without trusting altered rules or inventing h
   delete old.state.completeConcealedHandsPlayed
   game.restoreRun(parseClassicRunSnapshot(old))
   expect(game.captureRun()).toEqual(old)
-  expect(factor(game, ids)).toBe(1.5)
+  expect(factor(game, ids)).toBeCloseTo(1.5)
   for (const count of [-1, 0.1, '2', null, 11]) {
     const bad = structuredClone(old)
     bad.state.completeConcealedHandsPlayed = count
@@ -107,14 +112,14 @@ it('preserves legacy owned effects without trusting altered rules or inventing h
   expect(factor(game, deal(game))).toBeCloseTo(1.8)
 })
 
-it('earns history without owning the Decree, across skips, and resets on a new run', () => {
+it('earns history without owning the Decree, across rounds, and resets on a new run', () => {
   const game = fixture(),
     state = game.getState(),
     ids = deal(game)
   state.decreeSystem.removeDecree('closed_hand_austerity')
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
   game.exitShop()
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game)
   state.decreeSystem.acquireDecree(
     ALL_DECREES.find((d) => d.id === 'closed_hand_austerity')!
   )

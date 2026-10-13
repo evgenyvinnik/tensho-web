@@ -1,309 +1,175 @@
 /**
  * GameplayScreen Component for Tensho Mahjong Roguelike
  *
- * Main gameplay screen that connects to the GameOrchestrator via useGameController.
- * This is the interactive gameplay interface for Tensho Mahjong Roguelike.
+ * The table, top to bottom:
+ *
+ *   RunHeader      Gold · Act and round · score / target · ? Exit Settings
+ *   Decrees        owned Decree scrolls and empty slots
+ *   Hand score     the selection's pattern and points × Mult = total
+ *   Collection     every Flower, Season, Orb, Seal, Script and upgrade
+ *   Rack           your tiles, grouped into the shapes they form
+ *   ActionBar      Turns left · REDRAW · Play hand
+ *
+ * Everything shown is read from the engine; the screen never computes a score
+ * of its own. A committed play celebrates once, from the engine's event.
  *
  * @module components/screens/GameplayScreen
  */
 
 import {
-  useEffect,
   useCallback,
-  useState,
+  useEffect,
   useMemo,
   useRef,
+  useState,
   type CSSProperties,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useGameController, useGameEvent } from '../../game/useGameController'
-import { useScorePresentation } from '../../game/useScorePresentation'
-import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { TablePattern } from '../ui/TablePattern'
-import { PlaySurface } from '../gameplay/PlaySurface'
-import { ProgressiveHintCard } from '../ui/ProgressiveHint'
 import { ConfirmPopup } from '../ui/Popup'
-import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { Tile } from '../../core/Tile'
-import { calculateShanten } from '../../rules/ShantenCalculator'
 import { useItemText } from '../../i18n/useItemText'
-import { forecastHeading } from '../../gameplay/forecastGuidance'
-import { parsePartialHand } from '../../rules/PartialHandParser'
 import { PendingOmens } from '../gameplay/PendingOmens'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
-import { YakuUpgradeLedger } from '../gameplay/YakuUpgradeLedger'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { feltPalette } from '../../utils/feltPalette'
-
-// Extracted gameplay components
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
 import { decreeKey, isDecreeExcluded } from '../../systems/decreeIdentity'
-import { FloraTrackCompact } from '../gameplay/FloraTrackCompact'
-import { ConsumablesBar } from '../gameplay/ConsumablesBar'
 import { ConsumableDialog } from '../gameplay/ConsumableDialog'
 import { getTableStyleIllustration } from '../../utils/assets'
 import {
   getDefaultTableStyle,
   getTableStyleById,
 } from '../../config/tableStyleDefinitions'
-import { GameplayTopBar } from '../gameplay/GameplayTopBar'
-import { ScorePanel } from '../gameplay/ScorePanel'
+import { RunHeader } from '../gameplay/RunHeader'
 import { ActionBar } from '../gameplay/ActionBar'
-import { PlayArea } from '../gameplay/PlayArea'
-import { playAreaHasContent } from '../../gameplay/playAreaContent'
-import { HandInterpretationDetails } from '../gameplay/HandInterpretationDetails'
+import { HandRack } from '../gameplay/HandRack'
+import { CollectibleRail } from '../gameplay/CollectibleRail'
+import {
+  HandScorePreview,
+  type HandScoreValue,
+} from '../gameplay/HandScorePreview'
+import { PlayToast, type PlayToastData } from '../gameplay/PlayToast'
+import { FloraReveal } from '../gameplay/FloraReveal'
 import { YakuReveal } from '../effects/YakuReveal'
+import { DecreeReveal } from '../effects/DecreeReveal'
+import { useDecreeRevealQueue } from '../../game/decreeRevealQueue'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
-import { HandBuilder } from '../gameplay/HandBuilder'
-import { RiichiControl } from '../gameplay/RiichiControl'
+import { scoreSignificance } from '../effects/DoomFire'
+import { useCelebrationHold } from '../../game/celebrationHold'
 import {
-  buildCoachAdvice,
-  findBeginnerSuggestion,
-  selectionMatchesSuggestion,
-} from '../../gameplay/beginnerCoach'
-import {
-  RoundType,
-  ScorePopupState,
-  YakuRevealState,
-} from '../gameplay/gameplayTypes'
+  MAX_TACTICAL_PLAY_TILES,
+  MIN_TACTICAL_PLAY_TILES,
+} from '../../game/playRules'
+import type { FateSeal } from '../../systems/FateSealSystem'
+import type { VoidScript } from '../../systems/VoidScriptSystem'
+import type { RoundType, YakuRevealState } from '../gameplay/gameplayTypes'
+import type { MandateDefinition } from '../../config/mandateDefinitions'
 
-// =============================================================================
-// COMPONENT
-// =============================================================================
+/** The help guide opens by itself once, on the first table ever shown. */
+export const HAND_GUIDE_SEEN_KEY = 'tensho_hand_guide_seen'
 
-/**
- * Main gameplay screen component.
- *
- * Manages the entire gameplay interface including:
- * - Hand tile display and interaction
- * - Score tracking and visualization
- * - Decree bar with owned decrees
- * - Flora track (flowers and seasons)
- * - Consumables bar
- * - Progressive tutorial hints
- * - Round type indicator with boss mandates
- */
+function readGuideSeen(): boolean {
+  try {
+    return window.localStorage.getItem(HAND_GUIDE_SEEN_KEY) === 'true'
+  } catch {
+    return true
+  }
+}
+
+function markGuideSeen(): void {
+  try {
+    window.localStorage.setItem(HAND_GUIDE_SEEN_KEY, 'true')
+  } catch {
+    /* A private window may refuse storage; the guide simply shows again. */
+  }
+}
+
 export function GameplayScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
-
-  // Game controller
   const game = useGameController()
   const { service: persistence } = useClassicPersistence()
   const showTileHints = useSettingsStore((state) => state.showTileHints)
+  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const itemText = useItemText()
   const currentTableStyle =
     getTableStyleById(game.state.tableStyleId) ?? getDefaultTableStyle()
-  // The chosen cloth colours the table and every panel laid on it.
   const felt = useMemo(
     () => feltPalette(currentTableStyle.feltColor),
     [currentTableStyle.feltColor]
   )
 
-  const beginnerSuggestion = useMemo(
-    () =>
-      findBeginnerSuggestion(
-        game.handTiles,
-        new Set(game.faceDownTileIds),
-        game.partialHandRules
-      ),
-    [game.handTiles, game.faceDownTileIds, game.partialHandRules]
-  )
-
-  // Progressive tutorial hints
-  const progressiveHints = useMemo(
-    () => getProgressiveHints(t, beginnerSuggestion?.kind),
-    [t, beginnerSuggestion?.kind]
-  )
-  const tutorial = useProgressiveTutorial(progressiveHints)
-
-  // Tutorial trigger refs
-  const hasTriggeredGameStart = useRef(false)
-  const hasTriggeredFirstDiscard = useRef(false)
-  const hasTriggeredFirstHand = useRef(false)
-  const hasTriggeredBossRound = useRef(false)
-
-  // Local UI state
-  const [scorePopups, setScorePopups] = useState<ScorePopupState[]>([])
-  const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
-  const [stagedTileIds, setStagedTileIds] = useState<string[]>([])
-  const [stageAllRequestId, setStageAllRequestId] = useState(0)
-  const [stageRequestTileIds, setStageRequestTileIds] = useState<string[]>([])
   const [showExitConfirm, setShowExitConfirm] = useState(false)
-  const [showBeginnerGuide, setShowBeginnerGuide] = useState(false)
-  const [showHandBuilder, setShowHandBuilder] = useState(false)
-  const [hasCompletedFirstPlay, setHasCompletedFirstPlay] = useState(false)
-  const [forceBeginnerCoach, setForceBeginnerCoach] = useState(false)
-  // Hides the two-option coach for the rest of the session once the player
-  // says they no longer need it. Manual hints stay available.
-  const [coachDismissed, setCoachDismissed] = useState(false)
-  const [showConsumablesPanel, setShowConsumablesPanel] = useState<
-    'fateSeals' | 'celestialOrbs' | 'voidScripts' | null
-  >(null)
+  const [showGuide, setShowGuide] = useState(() => !readGuideSeen())
+  const decreeRevealPending = useDecreeRevealQueue(
+    (state) => state.queue.length > 0
+  )
   const [actionError, setActionError] = useState<string | null>(null)
-  const popupIdCounterRef = useRef(0)
-
-  // Points/Mult display state
-  const { equation: lastPlay, isAnimating: isScoreAnimating } =
-    useScorePresentation()
-
-  // Consumables from game controller
-  const consumables = game.consumableCounts
-  const wallTriggerRef = useRef<HTMLButtonElement>(null)
+  const [targeting, setTargeting] = useState<FateSeal | VoidScript | null>(null)
+  const [toast, setToast] = useState<PlayToastData | null>(null)
+  const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
+  const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
+  const toastCounter = useRef(0)
   const playButtonRef = useRef<HTMLButtonElement>(null)
-  const coachFocusTarget = useRef<'play' | 'wall' | null>(null)
-  const [coachFocusRequest, setCoachFocusRequest] = useState(0)
+  const wallTriggerRef = useRef<HTMLButtonElement>(null)
 
-  // A coach choice replaces the advice with a forecast. Restore focus only
-  // after that commit and the comparison dialog's cleanup, not to a removed chip.
-  useEffect(() => {
-    const target = coachFocusTarget.current
-    coachFocusTarget.current = null
-    if (!target) return
-    const play = playButtonRef.current
-    const next =
-      target === 'play' && play && !play.disabled
-        ? play
-        : wallTriggerRef.current
-    next?.focus()
-  }, [coachFocusRequest])
-
-  // ==========================================================================
-  // EFFECTS - Game lifecycle
-  // ==========================================================================
-
-  // The staging board is local to this screen, so a selection left in the
-  // engine (from Settings and back, or a restored run) would show tiles as
-  // chosen with nothing on the board. Start each visit with a clean choice.
+  // A selection left in the engine from another screen is cleared on entry.
   useEffect(() => {
     if (game.selectedTileIds.length > 0) game.clearSelection()
     // Mount only: later selections belong to this screen.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const celebrating = useCelebrationHold((state) => state.holding)
+  const holdCelebration = useCelebrationHold((state) => state.hold)
+  const releaseCelebration = useCelebrationHold((state) => state.release)
   useEffect(() => {
-    if (game.phase === 'shop') {
-      navigateTo(ROUTES.SHOP)
-    } else if (game.phase === 'gameOver') {
-      navigateTo(ROUTES.GAME_OVER)
-    }
-  }, [game.phase, navigateTo])
+    // The play that ends a round is celebrated before the table is left.
+    if (celebrating) return
+    if (game.phase === 'shop') navigateTo(ROUTES.SHOP)
+    else if (game.phase === 'gameOver') navigateTo(ROUTES.GAME_OVER)
+  }, [game.phase, navigateTo, celebrating])
+  useEffect(() => releaseCelebration, [releaseCelebration])
+  const finishCelebration = useCallback(() => {
+    setToast(null)
+    releaseCelebration()
+  }, [releaseCelebration])
+  // The table is only for show once the round has ended.
+  const tableClosed = game.phase !== 'gameplay'
 
-  // ==========================================================================
-  // EFFECTS - Tutorial triggers
-  // ==========================================================================
-
-  useEffect(() => {
-    if (
-      game.isRunActive &&
-      beginnerSuggestion &&
-      !hasTriggeredGameStart.current
-    ) {
-      hasTriggeredGameStart.current = true
-      tutorial.triggerHints('gameStart')
-    }
-  }, [beginnerSuggestion, game.isRunActive, tutorial])
-
-  useEffect(() => {
-    if (!game.isRunActive) {
-      hasTriggeredGameStart.current = false
-      hasTriggeredFirstDiscard.current = false
-      hasTriggeredFirstHand.current = false
-      hasTriggeredBossRound.current = false
-      setHasCompletedFirstPlay(false)
-      setForceBeginnerCoach(false)
-    }
-  }, [game.isRunActive])
-
-  useEffect(() => {
-    if (game.currentRound === 3 && !hasTriggeredBossRound.current) {
-      hasTriggeredBossRound.current = true
-      tutorial.triggerHints('bossRound')
-    }
-  }, [game.currentRound, tutorial])
-
-  // ==========================================================================
-  // EVENT HANDLERS - Game events
-  // ==========================================================================
-
-  useGameEvent(
-    'tileDiscarded',
-    useCallback(() => {
-      if (!hasTriggeredFirstDiscard.current) {
-        hasTriggeredFirstDiscard.current = true
-        tutorial.triggerHints('firstDiscard')
-      }
-    }, [tutorial])
-  )
-
+  // One celebration per committed play, from the engine's own event.
   useGameEvent(
     'handPlayed',
-    useCallback(() => {
-      setHasCompletedFirstPlay(true)
-      setForceBeginnerCoach(false)
-      hasTriggeredGameStart.current = true
-      tutorial.completeTrigger('gameStart')
-      if (!hasTriggeredFirstHand.current) {
-        hasTriggeredFirstHand.current = true
-        tutorial.triggerHints('firstHandPlayed')
-      }
-    }, [tutorial])
+    useCallback(
+      (data) => {
+        const target = game.state.targetScore
+        setLastPlay({
+          pattern: data.pattern,
+          points: data.equation.points,
+          mult: data.equation.multiplier,
+          total: data.score,
+        })
+        setToast({
+          id: ++toastCounter.current,
+          pattern: data.pattern,
+          score: data.score,
+          intensity: scoreSignificance(data.score, target),
+        })
+        holdCelebration()
+      },
+      [game.state, holdCelebration]
+    )
   )
-
   useGameEvent(
-    'flowerCollected',
-    useCallback(() => {
-      tutorial.triggerHints('flowerDrawn')
-    }, [tutorial])
+    'roundStart',
+    useCallback(() => setLastPlay(null), [])
   )
-
-  useGameEvent(
-    'scoreUpdate',
-    useCallback((data) => {
-      popupIdCounterRef.current += 1
-      setScorePopups((popups) => [
-        ...popups,
-        {
-          id: popupIdCounterRef.current,
-          score: data.delta,
-          variant:
-            data.delta >= 1000
-              ? 'critical'
-              : data.delta >= 500
-                ? 'bonus'
-                : 'default',
-        },
-      ])
-    }, [])
-  )
-
-  useGameEvent(
-    'yakuScored',
-    useCallback((data) => {
-      const tier =
-        data.multiplier >= 4
-          ? 4
-          : data.multiplier >= 2
-            ? 3
-            : data.multiplier >= 1.5
-              ? 2
-              : 1
-      setYakuReveals((reveals) => [
-        ...reveals,
-        {
-          id: data.yakuId,
-          japaneseName: data.yakuName,
-          multiplier: data.multiplier,
-          tier: tier as 1 | 2 | 3 | 4,
-        },
-      ])
-    }, [])
-  )
-
   useGameEvent(
     'yakumanScored',
     useCallback((data) => {
@@ -319,178 +185,8 @@ export function GameplayScreen() {
     }, [])
   )
 
-  // ==========================================================================
-  // CALLBACKS - UI interaction handlers
-  // ==========================================================================
-
-  const handlePopupComplete = useCallback((id: number) => {
-    setScorePopups((popups) => popups.filter((p) => p.id !== id))
-  }, [])
-
-  const handleYakuComplete = useCallback((id: string) => {
-    setYakuReveals((reveals) => reveals.filter((r) => r.id !== id))
-  }, [])
-
-  const handleTileClick = useCallback(
-    (tile: Tile) => {
-      game.toggleTileSelection(tile.id)
-    },
-    [game]
-  )
-
-  const handleTileDiscard = useCallback(
-    (tile: Tile) => {
-      const result = game.discard(tile.id)
-      setActionError(
-        result.success ? null : (result.errors?.[0] ?? 'Unable to discard tile')
-      )
-    },
-    [game]
-  )
-
-  const handleTilesStaged = useCallback((tiles: Tile[]) => {
-    setStagedTileIds(tiles.map((t) => t.id))
-  }, [])
-
-  const handleSkip = useCallback(() => {
-    const result = game.skipRound()
-    setActionError(
-      result.success ? null : (result.errors?.[0] ?? 'Unable to skip round')
-    )
-  }, [game])
-  const handleSellDecree = useCallback(
-    (decreeId: string) => {
-      const result = game.sellDecree(decreeId)
-      setActionError(
-        result.success ? null : (result.errors?.[0] ?? 'Unable to sell Decree')
-      )
-    },
-    [game]
-  )
-  const handleRerollBossMandate = useCallback(() => {
-    const result = game.rerollBossMandate()
-    setActionError(
-      result.success
-        ? null
-        : (result.errors?.[0] ?? 'Unable to reroll Boss Mandate')
-    )
-  }, [game])
-  const handleDeadWallDraw = useCallback(() => {
-    const tileId = stagedTileIds[0] ?? game.selectedTileIds[0]
-    if (!tileId) return
-    const result = game.useDeadWallWrit(tileId)
-    setActionError(
-      result.success
-        ? null
-        : (result.errors?.[0] ?? 'Unable to draw from Dead Wall')
-    )
-    if (result.success) setStagedTileIds([])
-  }, [game, stagedTileIds])
-  const handleSettings = useCallback(
-    () => navigateTo(ROUTES.SETTINGS),
-    [navigateTo]
-  )
-  const handleOpenBeginnerGuide = useCallback(() => {
-    setForceBeginnerCoach(true)
-    setShowBeginnerGuide(true)
-  }, [])
-
-  const completeHandSelection = useMemo(
-    () => game.findCompleteHandSelection(),
-    [game]
-  )
-
-  const handlePlayHand = useCallback(() => {
-    const currentSelectedIds = game.selectedTileIds
-
-    let tileIds: string[] = []
-    if (stagedTileIds.length > 0) {
-      tileIds = stagedTileIds
-    } else if (currentSelectedIds.length > 0) {
-      tileIds = [...currentSelectedIds]
-    } else {
-      tileIds = completeHandSelection ?? []
-      if (tileIds.length === 0) {
-        setActionError(
-          t(
-            'gameplay.completeOrSelectTactical',
-            t(
-              'gameplay.tacticalHintLong',
-              'Select {{min}}–{{max}} tiles for a tactical play, or complete the hand before declaring it.',
-              { min: 2, max: 5 }
-            )
-          )
-        )
-        return
-      }
-
-      setActionError(null)
-      game.clearSelection()
-      for (const id of tileIds) game.selectTile(id)
-      setStageRequestTileIds(tileIds)
-      setStageAllRequestId((requestId) => requestId + 1)
-      return
-    }
-
-    if (tileIds.length < 2) {
-      setActionError(
-        t('gameplay.selectAtLeastTwo', 'Select at least 2 tiles to play.')
-      )
-      return
-    }
-
-    const result = game.playHand(tileIds)
-
-    if (result?.success) {
-      setActionError(null)
-      if (stagedTileIds.length > 0) setStagedTileIds([])
-      else if (currentSelectedIds.length > 0) game.clearSelection()
-    } else if (result?.errors) {
-      setActionError(result.errors[0])
-    }
-  }, [game, stagedTileIds, completeHandSelection, t])
-
-  const handleRedraw = useCallback(() => {
-    const tileIds =
-      stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
-
-    const result = game.redraw(tileIds)
-    if (result.success) {
-      setActionError(null)
-      setStagedTileIds([])
-      game.clearSelection()
-    } else {
-      setActionError(result.errors?.[0] ?? 'Unable to redraw tiles')
-    }
-  }, [game, stagedTileIds])
-
-  const handleExitGame = useCallback(async () => {
-    if (await persistence.retrySave()) navigateTo(ROUTES.MENU)
-  }, [persistence, navigateTo])
-
-  // Consumable handlers
-  const handleShowFateSeals = useCallback(() => {
-    if (game.consumableCounts.fateSeals > 0) {
-      setShowConsumablesPanel('fateSeals')
-    }
-  }, [game.consumableCounts.fateSeals])
-
-  const handleShowCelestialOrbs = useCallback(() => {
-    if (game.consumableCounts.celestialOrbs > 0) {
-      setShowConsumablesPanel('celestialOrbs')
-    }
-  }, [game.consumableCounts.celestialOrbs])
-
-  const handleShowVoidScripts = useCallback(() => {
-    if (game.consumableCounts.voidScripts > 0) {
-      setShowConsumablesPanel('voidScripts')
-    }
-  }, [game.consumableCounts.voidScripts])
-
-  // ==========================================================================
-  // COMPUTED VALUES
-  // ==========================================================================
-
+  const selectedIds = game.selectedTileIds
+  const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds])
   const faceDownTileIds = useMemo(
     () => new Set(game.faceDownTileIds),
     [game.faceDownTileIds]
@@ -504,204 +200,94 @@ export function GameplayScreen() {
     [game.debuffedTileIds]
   )
 
-  // The bounded search only runs while explicitly open. Recompute from current
-  // engine state on renders, so hidden faces and changed resources cannot leak
-  // through a cached proposal. Staging revalidates once more at the action edge.
-  const handBuildingAdvice = showHandBuilder
-    ? game.getHandBuildingAdvice()
-    : null
-  const handleStageHandPlan = (ids: string[]) => {
-    const current = game.getHandBuildingAdvice()
-    if (
-      current.kind !== 'redraw' ||
-      current.exchange.length !== ids.length ||
-      !current.exchange.every((tile) => ids.includes(tile.id))
-    )
-      return
-    game.clearSelection()
-    setStageRequestTileIds(ids)
-    setStageAllRequestId((id) => id + 1)
-    setShowHandBuilder(false)
-  }
-
-  const shanten = useMemo(() => {
-    if (game.handTiles.some((tile) => faceDownTileIds.has(tile.id)))
-      return { label: '???' }
-    const interpretation = game.inspectCompleteHand(
-      completeHandSelection ?? game.handTiles.map((tile) => tile.id)
-    )
-    if (interpretation)
-      return {
-        label: interpretation.naturalComplete
-          ? t('gameplay.completeHand', 'Complete hand')
-          : t('handInterpretation.ready'),
-      }
-    const result = calculateShanten(game.handTiles, game.state.melds)
-    if (result.shanten < 0) {
-      return { label: t('gameplay.completeHand', 'Complete hand') }
-    }
-    if (result.shanten === 0) return { label: t('gameplay.tenpai', 'Tenpai') }
-    return {
-      label: t('gameplay.shanten', { count: result.shanten }),
-      help: t('gameplay.shantenHelp'),
-    }
-  }, [game, completeHandSelection, faceDownTileIds, t])
-
-  const previewTileIds =
-    stagedTileIds.length > 0
-      ? stagedTileIds
-      : game.selectedTileIds.length > 0
-        ? game.selectedTileIds
-        : (completeHandSelection ?? game.handTiles.map((tile) => tile.id))
-  const activePreviewTileIds =
-    stagedTileIds.length > 0 ? stagedTileIds : game.selectedTileIds
-  const beginnerCoachActive = Boolean(
-    game.state.riichiStatus !== 'active' &&
-    beginnerSuggestion &&
-    (forceBeginnerCoach || (!hasCompletedFirstPlay && !tutorial.isDisabled))
-  )
-  const beginnerHighlightedIds = useMemo(
-    () =>
-      new Set(
-        beginnerCoachActive && beginnerSuggestion
-          ? beginnerSuggestion.tileIds
-          : []
-      ),
-    [beginnerCoachActive, beginnerSuggestion]
-  )
-  const beginnerSelectionMatches = Boolean(
-    beginnerSuggestion &&
-    selectionMatchesSuggestion(beginnerSuggestion, activePreviewTileIds)
-  )
-  // When the choice is exactly one group, the forecast names it the way the
-  // rack's label does ("Pair", "Sequence"), not just "Selected tiles: 2".
-  const selectionShapeLabel = useMemo(() => {
-    if (activePreviewTileIds.length < 2) return null
-    const selected = game.handTiles.filter((tile) =>
-      activePreviewTileIds.includes(tile.id)
-    )
-    if (
-      selected.length !== activePreviewTileIds.length ||
-      selected.some((tile) => faceDownTileIds.has(tile.id))
-    )
-      return null
-    const parsed = parsePartialHand(selected, game.partialHandRules)
-    return parsed.groups.length === 1 && parsed.leftovers.length === 0
-      ? t(`melds.${parsed.groups[0].type}`, parsed.groups[0].type)
-      : null
-  }, [
-    activePreviewTileIds,
-    game.handTiles,
-    game.partialHandRules,
-    faceDownTileIds,
-    t,
-  ])
-  const beginnerPatternLabel =
-    beginnerSuggestion?.kind && beginnerSuggestion.kind !== 'redraw'
-      ? t(`melds.${beginnerSuggestion.kind}`, beginnerSuggestion.kind)
-      : null
-  const beginnerPreviewLabel =
-    beginnerCoachActive && beginnerSuggestion
-      ? beginnerSuggestion.kind === 'redraw'
-        ? t('gameplay.beginnerChooseRedraw', 'Choose the glowing tiles')
-        : t('gameplay.beginnerFindPattern', 'Find the glowing {{pattern}}', {
-            pattern: beginnerPatternLabel,
-          })
-      : null
-  // The coach prices real selections with the game's own preview, so its two
-  // recommendations cannot drift from what a play actually pays.
-  const coachAdvice = useMemo(() => {
-    if (!beginnerCoachActive || coachDismissed) return null
-    return buildCoachAdvice({
-      tiles: game.handTiles,
-      partialRules: game.partialHandRules,
-      concealedIds: faceDownTileIds,
-      requiredTileIds: game.lockedTileIds,
-      completeHandTileIds: completeHandSelection,
-      scoreSelection: (tileIds) =>
-        game.previewScore(tileIds)?.finalScore ?? null,
-      remainingToTarget: Math.max(0, game.targetScore - game.score),
-      handsRemaining: game.handsRemaining,
-    })
-  }, [
-    beginnerCoachActive,
-    coachDismissed,
-    game,
-    completeHandSelection,
-    faceDownTileIds,
-  ])
-
-  const handleCoachChoose = useCallback(
-    (tileIds: string[]) => {
-      setStagedTileIds([])
-      game.clearSelection()
-      for (const tileId of tileIds) game.selectTile(tileId)
-      coachFocusTarget.current = 'play'
-      setCoachFocusRequest((request) => request + 1)
+  const handleToggle = useCallback(
+    (tile: Tile) => {
+      setActionError(null)
+      game.toggleTileSelection(tile.id)
     },
     [game]
   )
 
-  const scorePreviewHidden = previewTileIds.some((tileId) =>
-    faceDownTileIds.has(tileId)
-  )
-  const scorePreview = useMemo(() => {
-    const previewIds =
-      stagedTileIds.length > 0
-        ? stagedTileIds
-        : game.selectedTileIds.length > 0
-          ? game.selectedTileIds
-          : (completeHandSelection ?? game.handTiles.map((tile) => tile.id))
-    const previewTiles = game.handTiles.filter((tile) =>
-      previewIds.includes(tile.id)
-    )
+  // The authoritative preview for exactly the selected tiles.
+  const previewHidden = selectedIds.some((id) => faceDownTileIds.has(id))
+  const breakdown =
+    selectedIds.length > 0 && !previewHidden
+      ? game.previewScore(selectedIds)
+      : null
+  const preview: HandScoreValue | null = breakdown
+    ? {
+        pattern: breakdown.pattern.id,
+        points: breakdown.equation?.points ?? breakdown.subtotal,
+        mult:
+          breakdown.equation?.multiplier ??
+          breakdown.yakuMultiplier + breakdown.pattern.mult,
+        total: breakdown.finalScore,
+      }
+    : null
 
-    if (
-      previewTiles.length === 0 ||
-      previewTiles.some((tile) => faceDownTileIds.has(tile.id))
-    )
-      return null
+  const playAllowed =
+    selectedIds.length > 0 &&
+    game.canPerformAction({ type: 'play', tileIds: selectedIds })
+  const redrawAllowed =
+    selectedIds.length > 0 &&
+    game.canPerformAction({ type: 'redraw', tileIds: selectedIds })
 
-    // Preview runs the real scoring pipeline, so what is shown is what is paid.
-    const breakdown = game.previewScore(previewTiles.map((tile) => tile.id))
-    if (!breakdown) return null
+  const fixedHand =
+    game.state.roundManager.checkMandateEffect('fixed_hand_size')
+  const lockedMissing = game.lockedTileIds.some((id) => !selectedSet.has(id))
+  const playReason = playAllowed
+    ? undefined
+    : lockedMissing
+      ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
+      : fixedHand.active && selectedIds.length !== Number(fixedHand.value)
+        ? t('gameplay.reasonExact', {
+            count: Number(fixedHand.value),
+          })
+        : selectedIds.length < MIN_TACTICAL_PLAY_TILES
+          ? t('gameplay.reasonMinimum', { count: MIN_TACTICAL_PLAY_TILES })
+          : selectedIds.length > MAX_TACTICAL_PLAY_TILES
+            ? t('gameplay.reasonMaximum', { count: MAX_TACTICAL_PLAY_TILES })
+            : t('gameplay.reasonUnavailable', 'This play is not allowed now')
+  const redrawReason = redrawAllowed
+    ? undefined
+    : game.state.roundManager.checkMandateEffect('no_discards').active
+      ? t('mandateConsequence.no_discards')
+      : game.redrawsRemaining <= 0 && game.handsRemaining < 2
+        ? t('gameplay.reasonLastTurn', 'Your last Turn must be a Play')
+        : t('gameplay.reasonNoReplacements', 'Not enough tiles left to draw')
 
-    const points = breakdown.basePoints + breakdown.additiveBonus
-    const mult =
-      points > 0 ? breakdown.finalScore / points : breakdown.yakuMultiplier
+  const handlePlayHand = useCallback(() => {
+    if (selectedIds.length === 0) return
+    const result = game.playHand([...selectedIds])
+    if (result.success) setActionError(null)
+    else setActionError(result.errors?.[0] ?? playReason ?? null)
+  }, [game, selectedIds, playReason])
 
-    return {
-      points,
-      mult,
-      total: breakdown.finalScore,
-      yaku: breakdown.detectedYaku.map((detected) => detected.definition),
-      structure: breakdown.structure,
-      structurePoints: breakdown.structurePoints,
-      skippedSequences: breakdown.skippedSequences,
-      flowerSequences: breakdown.flowerSequences,
-      interpretation: game.inspectCompleteHand(previewIds),
-    }
-  }, [stagedTileIds, game, completeHandSelection, faceDownTileIds])
+  const handleRedraw = useCallback(() => {
+    if (selectedIds.length === 0) return
+    const result = game.redraw([...selectedIds])
+    if (result.success) {
+      setActionError(null)
+      game.clearSelection()
+    } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
+  }, [game, selectedIds, redrawReason])
 
-  const forecastActive = playAreaHasContent({
-    selectedTileCount: game.selectedTileIds.length,
-    stagedTileCount: stagedTileIds.length,
-    scorePreview,
-    scorePreviewHidden,
-    coachAdvice,
-  })
+  // A complete Mahjong hand is the jackpot; offer to select it in one tap.
+  const completeHandSelection = game.findCompleteHandSelection()
+  const selectCompleteHand = () => {
+    if (!completeHandSelection) return
+    game.clearSelection()
+    for (const id of completeHandSelection) game.selectTile(id)
+  }
 
-  const isCompleteHandSelection =
-    previewTileIds.length > 5 &&
-    !scorePreviewHidden &&
-    game.isCompleteHand(previewTileIds)
+  const handleExitGame = useCallback(async () => {
+    if (await persistence.retrySave()) navigateTo(ROUTES.MENU)
+  }, [persistence, navigateTo])
 
   const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
   const displayedDecrees = useMemo(() => {
-    if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0) {
+    if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0)
       return ownedDecrees
-    }
-
     const remaining = [...ownedDecrees]
     const ordered = game.decreeDisplayOrderIds.flatMap((decreeId) => {
       const index = remaining.findIndex(
@@ -714,23 +300,16 @@ export function GameplayScreen() {
   const disabledDecreeIds = new Set(game.disabledDecreeIds)
   const maxDecreeSlots = game.state.decreeSystem.getMaxSlots()
 
-  const roundType: RoundType = useMemo(() => {
-    return game.currentRound === 1
+  const roundType: RoundType =
+    game.currentRound === 1
       ? 'Small'
       : game.currentRound === 2
         ? 'Large'
         : 'Boss'
-  }, [game.currentRound])
-
   const bossMandate =
     roundType === 'Boss'
       ? game.state.roundManager.getCurrentRound()?.bossMandate
       : undefined
-  const fixedHandMandate =
-    game.state.roundManager.checkMandateEffect('fixed_hand_size')
-  const requiredPlaySize = fixedHandMandate.active
-    ? Number(fixedHandMandate.value)
-    : undefined
   const mandateRerollsRemaining =
     game.state.charterSystem.getMandateRerollsRemaining()
   const upcomingMandate =
@@ -738,19 +317,23 @@ export function GameplayScreen() {
       ? game.state.roundManager
           .getCurrentAct()
           ?.rounds.find((round) => round.roundType === 'Boss')?.bossMandate
-          ?.name
       : undefined
-  const hasDeadWallWrit = displayedDecrees.some(
-    (decree) =>
-      decree.effect.type === 'rule_modification' &&
-      decree.effect.ruleId === 'dead_wall_draw' &&
-      !isDecreeExcluded(decree, disabledDecreeIds)
-  )
-  const deadWallTileId = stagedTileIds[0] ?? game.selectedTileIds[0]
 
-  // ==========================================================================
-  // RENDER
-  // ==========================================================================
+  // Dead Wall Writ's once-per-round draw lives in its Decree's panel.
+  const deadWallTileId = selectedIds.length === 1 ? selectedIds[0] : undefined
+  const deadWallAction = {
+    label: t('gameplay.deadWallDraw', 'Draw from the Dead Wall'),
+    hint: t(
+      'gameplay.deadWallHint',
+      'Select exactly one tile, then swap it for a Dead Wall tile (once per round).'
+    ),
+    allowed: !!deadWallTileId && game.canUseDeadWallWrit(deadWallTileId),
+    onRun: () => {
+      if (!deadWallTileId) return
+      const result = game.useDeadWallWrit(deadWallTileId)
+      setActionError(result.success ? null : (result.errors?.[0] ?? null))
+    },
+  }
 
   return (
     <TablePattern
@@ -762,11 +345,9 @@ export function GameplayScreen() {
       className="viewport-full"
       colors={felt}
     >
-      {/* The screen never scrolls as a whole: the round header, score, rack
-          and actions stay put, and only the board (inventory, guidance,
-          forecast and staging) scrolls when a short screen cannot hold it. */}
       <div
         data-felt={currentTableStyle.feltColor}
+        data-table-style-id={currentTableStyle.id}
         className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl"
         style={
           {
@@ -775,342 +356,235 @@ export function GameplayScreen() {
           } as CSSProperties
         }
       >
-        <GameplayTopBar
+        <RunHeader
           gold={game.gold}
           stake={game.state.stake}
           currentAct={game.currentAct}
           hasEnteredEndless={game.hasEnteredEndless}
           roundType={roundType}
-          mandateName={
-            bossMandate ? itemText.name('mandates', bossMandate) : undefined
-          }
-          mandateId={bossMandate?.id}
-          mandateDescription={
+          score={game.score}
+          target={game.targetScore}
+          mandate={
             bossMandate
-              ? itemText.description('mandates', bossMandate)
+              ? {
+                  id: bossMandate.id,
+                  effect: bossMandate.effect as MandateDefinition['effect'],
+                  name: itemText.name('mandates', bossMandate),
+                  description: itemText.description('mandates', bossMandate),
+                }
               : undefined
           }
-          upcomingMandateName={upcomingMandate}
-          canRerollMandate={game.canRerollBossMandate()}
-          onRerollMandate={handleRerollBossMandate}
-          t={t}
+          reroll={
+            upcomingMandate
+              ? {
+                  upcomingName: itemText.name('mandates', upcomingMandate),
+                  allowed: game.canRerollBossMandate(),
+                  onReroll: () => {
+                    const result = game.rerollBossMandate()
+                    setActionError(
+                      result.success ? null : (result.errors?.[0] ?? null)
+                    )
+                  },
+                }
+              : undefined
+          }
+          onHelp={() => setShowGuide(true)}
           onExit={() => setShowExitConfirm(true)}
-          onSettings={handleSettings}
+          onSettings={() => navigateTo(ROUTES.SETTINGS)}
           status={<ClassicSaveNotice inline />}
         />
 
         <ClassicSaveNotice errorsOnly />
 
-        <ScorePanel
-          targetScore={game.targetScore}
-          currentScore={game.score}
-          lastPlay={lastPlay}
-          isScoreAnimating={isScoreAnimating}
-          scorePopups={scorePopups}
-          onPopupComplete={handlePopupComplete}
-          t={t}
-          forecastActive={forecastActive}
-          forecast={
-            <PlayArea
-              selectedTileCount={game.selectedTileIds.length}
-              stagedTileCount={stagedTileIds.length}
-              handTileCount={game.handTiles.length}
-              scorePreview={scorePreview}
-              scorePreviewHidden={scorePreviewHidden}
-              previewLabel={forecastHeading(t, {
-                activeTileCount: activePreviewTileIds.length,
-                previewTileCount: previewTileIds.length,
-                stagedTileCount: stagedTileIds.length,
-                isCompleteHand: isCompleteHandSelection,
-                matchedPatternLabel: beginnerSelectionMatches
-                  ? beginnerPatternLabel
-                  : selectionShapeLabel,
-                coachPrompt: beginnerPreviewLabel,
-              })}
-              remainingToTarget={Math.max(0, game.targetScore - game.score)}
-              handsRemaining={game.handsRemaining}
-              coachAdvice={coachAdvice}
-              coachVisibleTiles={game.handTiles.filter(
-                (tile) => !faceDownTileIds.has(tile.id)
-              )}
-              onCoachChoose={handleCoachChoose}
-              onCoachDismiss={() => {
-                coachFocusTarget.current = 'wall'
-                setCoachDismissed(true)
-                setCoachFocusRequest((request) => request + 1)
-              }}
-              tableThemeColor={currentTableStyle.themeColor}
-              tableAccentColor={currentTableStyle.accentColor}
-            />
-          }
-        />
-
-        {/* Staging board and rack. Everything above the staging zone is
-            passed in as the board header so it scrolls with the board while
-            the rack stays pinned above the action bar. */}
+        {/* The board scrolls on short screens; the rack and actions stay. */}
         <div
-          data-gameplay-surface
-          className="relative mx-1 flex min-h-0 min-w-0 flex-1 flex-col"
+          data-gameplay-scroll
+          className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"
         >
-          {yakuReveals.length > 0 && (
-            <div className="pointer-events-none absolute inset-x-0 top-2 z-40 flex flex-col items-center gap-2">
-              {yakuReveals.map((yaku) => (
-                <YakuReveal
-                  key={yaku.id}
-                  japaneseName={yaku.japaneseName}
-                  multiplier={yaku.multiplier}
-                  tier={yaku.tier}
-                  onComplete={() => handleYakuComplete(yaku.id)}
+          <div className="gameplay-collection grid shrink-0 grid-cols-1 items-center gap-1 px-1 pt-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-3">
+            {/* Decrees */}
+            <div
+              data-tutorial="decrees"
+              className="scroll-rail flex min-w-0 items-center justify-center gap-1.5 overflow-x-auto px-1 py-1 lg:justify-start"
+            >
+              {displayedDecrees.map((decree, index) => (
+                <DecreeCardCompact
+                  key={decree.instanceId ?? `${decree.id}-${index}`}
+                  decree={decree}
+                  ownedDecrees={ownedDecrees}
+                  yakuHistory={game.state}
+                  completeConcealedHandsPlayed={
+                    game.state.completeConcealedHandsPlayed
+                  }
+                  disabledDecreeIds={disabledDecreeIds}
+                  faceDown={game.decreesFaceDown}
+                  disabledByMandate={isDecreeExcluded(
+                    decree,
+                    disabledDecreeIds
+                  )}
+                  onSell={() => {
+                    const result = game.sellDecree(decreeKey(decree))
+                    setActionError(
+                      result.success ? null : (result.errors?.[0] ?? null)
+                    )
+                  }}
+                  action={
+                    decree.effect.type === 'rule_modification' &&
+                    decree.effect.ruleId === 'dead_wall_draw'
+                      ? deadWallAction
+                      : undefined
+                  }
                 />
               ))}
+              {Array.from({
+                length: Math.max(0, maxDecreeSlots - ownedDecrees.length),
+              }).map((_, i) => (
+                <DecreeSlotEmpty key={`empty-${i}`} />
+              ))}
             </div>
-          )}
-          <PlaySurface
-            handTiles={game.handTiles}
-            tileSize="fit"
-            selectedIds={new Set(game.selectedTileIds)}
-            highlightedIds={beginnerHighlightedIds}
-            faceDownIds={faceDownTileIds}
-            lockedIds={lockedTileIds}
-            debuffedIds={debuffedTileIds}
-            onTileSelect={handleTileClick}
-            onTileDiscard={handleTileDiscard}
-            onTilesStaged={handleTilesStaged}
-            stageAllRequestId={stageAllRequestId}
-            stageRequestTileIds={stageRequestTileIds}
-            disabled={false}
-            shantenDisplay={shanten.label}
-            shantenHelp={shanten.help}
-            handsRemaining={game.handsRemaining}
-            discardsRemaining={game.discardsRemaining}
-            tableThemeColor={currentTableStyle.themeColor}
-            tableAccentColor={currentTableStyle.accentColor}
-            beginnerSuggestion={beginnerCoachActive ? beginnerSuggestion : null}
-            onOpenBeginnerGuide={handleOpenBeginnerGuide}
-            onOpenHandBuilder={() => setShowHandBuilder(true)}
-            groupRules={showTileHints ? game.partialHandRules : null}
-            stagingFooter={
-              scorePreview ? (
-                <HandInterpretationDetails
-                  interpretation={scorePreview.interpretation}
-                  skippedSequences={scorePreview.skippedSequences}
-                  flowerSequences={scorePreview.flowerSequences}
-                />
-              ) : null
-            }
-            riichiControl={
-              <RiichiControl
-                status={game.state.riichiStatus}
-                inspect={game.getRiichiState}
-                onAction={(type) => game.processAction({ type })}
+
+            {/* The hand score sits between Decrees and the collection. */}
+            <div className="flex flex-col items-center gap-1 px-2">
+              {completeHandSelection &&
+                selectedIds.length !== completeHandSelection.length && (
+                  <button
+                    type="button"
+                    data-select-mahjong
+                    onClick={selectCompleteHand}
+                    className="min-h-9 rounded-full border-2 border-[var(--color-golden-yellow)] bg-amber-500/25 px-3 text-xs font-black uppercase tracking-wider text-[var(--color-golden-yellow)] shadow-[0_0_16px_rgba(255,213,79,0.45)]"
+                  >
+                    ✦ {t('patterns.mahjong.name')}
+                  </button>
+                )}
+              <HandScorePreview
+                preview={preview}
+                hidden={previewHidden}
+                lastPlay={lastPlay}
+                fire={
+                  toast
+                    ? { intensity: toast.intensity, burst: toast.id }
+                    : undefined
+                }
+                reducedMotion={reducedMotion}
               />
-            }
-            boardHeader={
-              <>
-                {/* Inventory: Decrees, then consumables and run trackers. */}
-                <div className="gameplay-inventory-row scroll-rail flex items-center gap-2 overflow-x-auto px-2 py-0.5">
-                  <div
-                    data-gameplay-table-identity
-                    data-table-style-id={currentTableStyle.id}
-                    role="img"
-                    aria-label={t(
-                      'gameplay.activeTable',
-                      'Active table: {{name}}',
-                      {
-                        name: itemText.name('tableStyles', {
-                          ...currentTableStyle,
-                          name: currentTableStyle.displayName,
-                        }),
-                      }
-                    )}
-                    title={itemText.name('tableStyles', {
-                      ...currentTableStyle,
-                      name: currentTableStyle.displayName,
-                    })}
-                    className="gameplay-table-chip relative hidden h-12 w-12 shrink-0 overflow-hidden rounded-lg border-2 bg-black/45 shadow-lg sm:block"
-                    style={{
-                      borderColor: currentTableStyle.themeColor,
-                      boxShadow: `0 0 18px ${currentTableStyle.themeColor}45`,
-                    }}
-                  >
-                    <img
-                      src={getTableStyleIllustration(currentTableStyle.id)}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                  </div>
+            </div>
 
-                  {/* Decree bar */}
-                  <div
-                    data-tutorial="decrees"
-                    className="flex shrink-0 gap-1.5 py-0.5"
-                  >
-                    {displayedDecrees.map((decree, index) => (
-                      <DecreeCardCompact
-                        key={decree.instanceId ?? `${decree.id}-${index}`}
-                        decree={decree}
-                        ownedDecrees={ownedDecrees}
-                        yakuHistory={game.state}
-                        completeConcealedHandsPlayed={
-                          game.state.completeConcealedHandsPlayed
-                        }
-                        disabledDecreeIds={disabledDecreeIds}
-                        faceDown={game.decreesFaceDown}
-                        disabledByMandate={isDecreeExcluded(
-                          decree,
-                          disabledDecreeIds
-                        )}
-                        onSell={() => handleSellDecree(decreeKey(decree))}
-                      />
-                    ))}
-                    {Array.from({
-                      length: Math.max(0, maxDecreeSlots - ownedDecrees.length),
-                    }).map((_, i) => (
-                      <DecreeSlotEmpty
-                        key={`empty-${i}`}
-                        isLocked={i >= maxDecreeSlots - ownedDecrees.length}
-                      />
-                    ))}
-                  </div>
-
-                  <div aria-hidden="true" className="min-w-0 flex-1" />
-                  <div className="flex shrink-0 items-center gap-1.5 py-0.5">
-                    <ConsumablesBar
-                      {...consumables}
-                      onUseFateSeal={handleShowFateSeals}
-                      onUseCelestialOrb={handleShowCelestialOrbs}
-                      onUseVoidScript={handleShowVoidScripts}
-                    />
-                    <div data-tutorial="flora" className="shrink-0">
-                      <FloraTrackCompact flora={game.flora} />
-                    </div>
-                    <div data-tutorial="wall" className="shrink-0">
-                      <WallDisplay
-                        wallTiles={game.wallTiles}
-                        triggerRef={wallTriggerRef}
-                      />
-                    </div>
-                    <div className="shrink-0">
-                      <YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Reserve real space for open guidance on every viewport.
-                    The mat is not guaranteed empty: floating lessons used to
-                    intercept taps/clicks on tiles the player was returning. */}
-                <div className="shrink-0">
-                  <ProgressiveHintCard
-                    hint={tutorial.currentHint}
-                    onDismiss={tutorial.dismissHint}
-                    onDisableHints={tutorial.disableHints}
-                    queueCount={tutorial.hintQueue.length}
-                  />
-                </div>
-
-                <DecreeCapacityNotice
-                  owned={ownedDecrees.length}
-                  slots={maxDecreeSlots}
+            {/* Every owned Flower, Season, Orb, Seal, Script and upgrade. */}
+            <div className="flex min-w-0 items-center justify-center gap-1.5 lg:justify-end">
+              <CollectibleRail
+                flora={game.flora}
+                fateSeals={game.fateSeals}
+                celestialOrbs={game.celestialOrbs}
+                voidScripts={game.voidScripts}
+                upgrades={game.yakuUpgrades}
+                levelOf={(family) =>
+                  game.state.celestialOrbSystem.getYakuLevel(family)
+                }
+                validateUse={game.validateConsumableAction}
+                onUse={game.processAction}
+                onChooseTargets={setTargeting}
+              />
+              <div data-tutorial="wall" className="shrink-0">
+                <WallDisplay
+                  wallTiles={game.wallTiles}
+                  triggerRef={wallTriggerRef}
                 />
+              </div>
+            </div>
+          </div>
 
-                {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
-                  <div className="mx-4 mb-2 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
-                    Verdant Leaf: all tiles are debuffed. Sell one Decree above
-                    to clear it.
-                  </div>
-                )}
-
-                <PendingOmens system={game.state.omenSystem} />
-
-                {actionError && (
-                  <div
-                    role="alert"
-                    className="mx-4 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
-                  >
-                    {actionError}
-                  </div>
-                )}
-              </>
-            }
-            t={t}
+          <DecreeCapacityNotice
+            owned={ownedDecrees.length}
+            slots={maxDecreeSlots}
           />
+          {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
+            <p className="mx-4 mb-1 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
+              {t('mandateConsequence.debuff_until_sell')}
+            </p>
+          )}
+          <PendingOmens system={game.state.omenSystem} />
+
+          <div
+            data-gameplay-surface
+            className="relative mt-auto flex min-w-0 flex-col"
+          >
+            <PlayToast
+              toast={toast}
+              onDone={finishCelebration}
+              reducedMotion={reducedMotion}
+            />
+            {yakuReveals.length > 0 && (
+              <div className="pointer-events-none absolute inset-x-0 top-14 z-40 flex flex-col items-center gap-2">
+                {yakuReveals.map((yaku) => (
+                  <YakuReveal
+                    key={yaku.id}
+                    japaneseName={yaku.japaneseName}
+                    multiplier={yaku.multiplier}
+                    tier={yaku.tier}
+                    onComplete={() =>
+                      setYakuReveals((reveals) =>
+                        reveals.filter((r) => r.id !== yaku.id)
+                      )
+                    }
+                  />
+                ))}
+              </div>
+            )}
+            {actionError && (
+              <p
+                role="alert"
+                className="mx-4 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-1.5 text-center text-sm text-red-100"
+              >
+                {actionError}
+              </p>
+            )}
+            <div className="px-1 pb-1">
+              <HandRack
+                tiles={game.handTiles}
+                selectedIds={selectedSet}
+                faceDownIds={faceDownTileIds}
+                lockedIds={lockedTileIds}
+                debuffedIds={debuffedTileIds}
+                onToggle={handleToggle}
+                groupRules={showTileHints ? game.partialHandRules : null}
+                disabled={tableClosed}
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Action bar */}
         <ActionBar
           playButtonRef={playButtonRef}
-          wallRemaining={game.wallRemaining}
-          handsRemaining={game.handsRemaining}
-          discardsRemaining={game.discardsRemaining}
-          redrawsRemaining={game.redrawsRemaining}
-          redrawAllowed={game.canPerformAction({
-            type: 'redraw',
-            tileIds: stagedTileIds.length
-              ? stagedTileIds
-              : game.selectedTileIds,
-          })}
-          selectedTileCount={
-            stagedTileIds.length || game.selectedTileIds.length
-          }
-          handTileCount={previewTileIds.length}
-          isCompleteHandSelection={isCompleteHandSelection}
-          playAllowed={game.canPerformAction({
-            type: 'play',
-            tileIds: previewTileIds,
-          })}
-          playRestriction={
-            game.state.riichiStatus === 'active' &&
-            !game.canPerformAction({ type: 'play', tileIds: previewTileIds })
-              ? t('riichiPledge.restriction')
-              : game.lockedTileIds.some((id) => !previewTileIds.includes(id))
-                ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
-                : undefined
-          }
-          requiredPlaySize={requiredPlaySize}
-          currentRound={game.currentRound}
-          onSkip={handleSkip}
-          onDiscard={() => {
-            if (activePreviewTileIds.length !== 1) return
-            const tile = game.handTiles.find(
-              (tile) => tile.id === activePreviewTileIds[0]
-            )
-            if (tile) handleTileDiscard(tile)
-          }}
-          discardAllowed={
-            activePreviewTileIds.length === 1 &&
-            game.canPerformAction({
-              type: 'discard',
-              tileId: activePreviewTileIds[0],
-            })
-          }
+          turnsLeft={game.handsRemaining}
+          freeRedraws={game.redrawsRemaining}
+          selectedCount={selectedIds.length}
+          playAllowed={playAllowed && !tableClosed}
+          redrawAllowed={redrawAllowed && !tableClosed}
+          playReason={playReason}
+          redrawReason={redrawReason}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
-          projectedScore={scorePreview?.total}
           willClear={
-            scorePreview !== null &&
-            scorePreview.total >= Math.max(0, game.targetScore - game.score)
+            preview !== null &&
+            preview.total >= Math.max(0, game.targetScore - game.score)
           }
-          canUseDeadWallWrit={
-            (stagedTileIds.length || game.selectedTileIds.length) === 1 &&
-            game.canUseDeadWallWrit(deadWallTileId)
-          }
-          onDeadWallDraw={hasDeadWallWrit ? handleDeadWallDraw : undefined}
-          t={t}
         />
       </div>
 
       <BeginnerGuide
-        isOpen={showBeginnerGuide}
-        onClose={() => setShowBeginnerGuide(false)}
+        isOpen={showGuide}
+        onClose={() => {
+          markGuideSeen()
+          setShowGuide(false)
+        }}
       />
-      <HandBuilder
-        advice={handBuildingAdvice}
-        onClose={() => setShowHandBuilder(false)}
-        onStage={handleStageHandPlan}
+      {/* One dialog at a time: the guide, then Decrees, then Flora. */}
+      <FloraReveal
+        flora={game.flora}
+        paused={toast !== null || showGuide || decreeRevealPending}
       />
+      <DecreeReveal paused={toast !== null || showGuide} />
 
-      {/* Exit confirmation */}
       <ConfirmPopup
         isOpen={showExitConfirm}
         onClose={() => setShowExitConfirm(false)}
@@ -1121,11 +595,15 @@ export function GameplayScreen() {
         cancelText={t('common.cancel', 'Cancel')}
       />
 
-      {showConsumablesPanel && (
+      {targeting && (
         <ConsumableDialog
-          key={showConsumablesPanel}
-          title={t(`consumableUse.${showConsumablesPanel}`)}
-          items={game[showConsumablesPanel]}
+          key={targeting.instanceId}
+          title={itemText.name(
+            targeting.type === 'FateSeal' ? 'seals' : 'scripts',
+            targeting
+          )}
+          items={[targeting]}
+          initialItemId={targeting.instanceId}
           tiles={game.handTiles}
           concealedIds={faceDownTileIds}
           lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
@@ -1134,7 +612,7 @@ export function GameplayScreen() {
           canUse={game.canPerformAction}
           validateUse={game.validateConsumableAction}
           onUse={game.processAction}
-          onClose={() => setShowConsumablesPanel(null)}
+          onClose={() => setTargeting(null)}
           fallbackFocusRef={wallTriggerRef}
         />
       )}

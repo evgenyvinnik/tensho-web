@@ -3,9 +3,16 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import retired from './retired-files.json' with { type: 'json' }
 
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist'] },
+  {
+    ignores: [
+      'dist',
+      'dev-dist',
+      ...retired.paths.flatMap((path) => [path, `${path}/**`]),
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],

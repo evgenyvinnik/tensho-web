@@ -96,6 +96,7 @@ it('stops all achievement mutations and notifications but preserves earned achie
     score: 1e9,
     equation: { points: 1e9, multiplier: 1, adjustment: 0, total: 1e9 },
     yakuIds: [],
+    pattern: 'pair',
   })
   synchronizePersistedMetaState()
   expect(useAchievementStore.getState().achievements).toEqual(earned)

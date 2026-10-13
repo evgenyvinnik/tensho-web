@@ -4,6 +4,8 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import { useOmenStore } from '../stores/omenStore'
+import { advanceToRound } from '../test/roundHelpers'
+import { TURNS_PER_ROUND } from './playRules'
 import { BOSS_MANDATES } from '../systems/RoundManager'
 import {
   TEA_HOUSE_BASE_CHARTERS,
@@ -72,27 +74,29 @@ function setup(id: string, base?: string, bossVisits = 1) {
   return game
 }
 
+const T = TURNS_PER_ROUND
+
 it.each([
-  ['steady_hand', undefined, 5, 3, 14, 2],
-  ['swift_hand', 'steady_hand', 6, 3, 14, 2],
-  ['frugal_discard', undefined, 4, 4, 14, 2],
-  ['wasteful_plenty', 'frugal_discard', 4, 5, 14, 2],
-  ['brush_stroke', undefined, 4, 3, 15, 2],
-  ['full_palette', 'brush_stroke', 4, 3, 16, 2],
-  ['ancient_script', undefined, 3, 3, 14, 1],
-  ['stone_script', 'ancient_script', 3, 2, 14, 1],
+  ['steady_hand', undefined, T + 1, 0, 14, 2],
+  ['swift_hand', 'steady_hand', T + 2, 0, 14, 2],
+  ['frugal_discard', undefined, T, 1, 14, 2],
+  ['wasteful_plenty', 'frugal_discard', T, 2, 14, 2],
+  ['brush_stroke', undefined, T, 0, 15, 2],
+  ['full_palette', 'brush_stroke', T, 0, 16, 2],
+  ['ancient_script', undefined, T - 1, 0, 14, 1],
+  ['stone_script', 'ancient_script', T - 2, 0, 14, 1],
 ] as const)(
   '%s survives paid acquisition/reload and grants its actual next-round resources',
-  (id, base, hands, redraws, rackSize, act) => {
+  (id, base, turns, freeRedraws, rackSize, act) => {
     const game = setup(id, base)
     const state = game.getState()
     expect(state.currentAct).toBe(act)
     expect(state.currentRound).toBe(1)
     expect(state.pendingActReduction).toBe(0)
-    expect(state.handsRemaining).toBe(hands)
-    expect(state.handsAllowance).toBe(hands)
-    expect(state.redrawsRemaining).toBe(redraws)
-    expect(state.discardsRemaining).toBe(3)
+    expect(state.handsRemaining).toBe(turns)
+    expect(state.handsAllowance).toBe(turns)
+    expect(state.redrawsRemaining).toBe(freeRedraws)
+    expect(state.discardsRemaining).toBe(0)
     expect(game.getHandTiles()).toHaveLength(rackSize)
     // Exercise the resources, including a refill back to the increased capacity.
     Object.assign(state, { targetScore: 1_000_000 })
@@ -103,14 +107,26 @@ it.each([
         tileIds: state.handTiles.slice(0, 2).map((t) => t.id),
       }).success
     ).toBe(true)
-    expect(state.handsRemaining).toBe(hands - 1)
+    expect(state.handsRemaining).toBe(turns - 1)
     expect(game.getHandTiles()).toHaveLength(rackSize)
-    for (let i = 0; i < redraws; i++) {
+    // Free redraws are spent first and leave the Turns alone.
+    for (let i = 0; i < freeRedraws; i++) {
       expect(
         game.processAction({ type: 'redraw', tileIds: [state.handTiles[0].id] })
           .success
       ).toBe(true)
-      expect(state.redrawsRemaining).toBe(redraws - i - 1)
+      expect(state.redrawsRemaining).toBe(freeRedraws - i - 1)
+      expect(state.handsRemaining).toBe(turns - 1)
+      expect(game.getHandTiles()).toHaveLength(rackSize)
+    }
+    // Then each REDRAW spends a Turn, always keeping the last one for a play.
+    while (state.handsRemaining > 1) {
+      const turnsBefore = state.handsRemaining
+      expect(
+        game.processAction({ type: 'redraw', tileIds: [state.handTiles[0].id] })
+          .success
+      ).toBe(true)
+      expect(state.handsRemaining).toBe(turnsBefore - 1)
       expect(game.getHandTiles()).toHaveLength(rackSize)
     }
     const spent = json(game.captureRun())
@@ -134,28 +150,30 @@ it.each([
       }).success
     ).toBe(true)
     game.exitShop()
-    expect(game.getState().handsRemaining).toBe(hands)
-    expect(game.getState().redrawsRemaining).toBe(redraws)
+    expect(game.getState().handsRemaining).toBe(turns)
+    expect(game.getState().redrawsRemaining).toBe(freeRedraws)
     expect(game.getHandTiles()).toHaveLength(rackSize)
     expect(game.getState().currentAct).toBe(act)
     expect(game.getState().currentRound).toBe(2)
     game.startNewRun(8)
+    const decrees = game.getState().decreeSystem
+    const redrawDelta = decrees.getAdditionalDiscards()
     expect(game.getState().handsRemaining).toBe(
-      4 + game.getState().decreeSystem.getAdditionalDraws()
+      T + Math.min(0, redrawDelta) + decrees.getAdditionalDraws()
     )
-    expect(game.getState().redrawsRemaining).toBe(3)
+    expect(game.getState().redrawsRemaining).toBe(Math.max(0, redrawDelta))
     expect(game.getHandTiles()).toHaveLength(14)
     expect(game.getState().charterSystem.getOwnedCharters()).toEqual([])
   }
 )
 
-it('Swift Hand supplies six usable plays, including after resuming beyond the base four', () => {
+it('Swift Hand supplies two extra usable plays, including after resuming beyond the base Turns', () => {
   const game = setup('swift_hand', 'steady_hand')
   Object.assign(game.getState(), { targetScore: 1_000_000 })
   game.getState().roundManager.getCurrentRound()!.scoreTarget = 1_000_000
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < T + 2; i++) {
     expect(game.getState().phase).toBe('gameplay')
-    expect(game.getState().handsRemaining).toBe(6 - i)
+    expect(game.getState().handsRemaining).toBe(T + 2 - i)
     expect(
       game.processAction({
         type: 'play',
@@ -184,25 +202,33 @@ it('Swift Hand supplies six usable plays, including after resuming beyond the ba
   expect(game.captureRun()).toEqual(ended)
 })
 
+// The Needle allows one Play but keeps the Turns for REDRAW; The Water
+// removes REDRAW, free redraws included.
 it.each([
-  ['swift_hand', 'steady_hand', 'the_needle', 1, 3, 14],
-  ['wasteful_plenty', 'frugal_discard', 'the_water', 4, 0, 14],
-  ['full_palette', 'brush_stroke', 'the_manacle', 4, 3, 15],
+  ['swift_hand', 'steady_hand', 'the_needle', T + 2, 0, 14],
+  ['wasteful_plenty', 'frugal_discard', 'the_water', T, 0, 14],
+  ['full_palette', 'brush_stroke', 'the_manacle', T, 0, 15],
 ] as const)(
   '%s retains the %s prerequisite but respects %s restrictions after reload',
-  (id, base, mandate, hands, redraws, rackSize) => {
+  (id, base, mandate, turns, freeRedraws, rackSize) => {
     const game = setup(id, base)
     game.getState().roundManager.getCurrentAct()!.rounds[2].bossMandate =
       BOSS_MANDATES.find((m) => m.id === mandate)!
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    advanceToRound(game, 'Boss')
     const saved = json(game.captureRun())
     game.restoreRun(parseClassicRunSnapshot(saved))
     expect(game.captureRun()).toEqual(saved)
-    expect(game.getState().handsRemaining).toBe(hands)
-    expect(game.getState().handsAllowance).toBe(hands)
-    expect(game.getState().redrawsRemaining).toBe(redraws)
+    expect(game.getState().handsRemaining).toBe(turns)
+    expect(game.getState().handsAllowance).toBe(turns)
+    expect(game.getState().redrawsRemaining).toBe(freeRedraws)
     expect(game.getHandTiles()).toHaveLength(rackSize)
+    if (mandate === 'the_water')
+      expect(
+        game.canPerformAction({
+          type: 'redraw',
+          tileIds: [game.getHandTiles()[0].id],
+        })
+      ).toBe(false)
   }
 )
 
@@ -210,12 +236,11 @@ it('Stone Script applies its own Act reduction only once after Ancient Script wa
   const game = setup('stone_script', 'ancient_script', 4)
   expect(game.getState().currentAct).toBe(3)
   expect(game.getState().pendingActReduction).toBe(0)
-  expect(game.getState().handsRemaining).toBe(3)
-  expect(game.getState().redrawsRemaining).toBe(2)
+  expect(game.getState().handsRemaining).toBe(T - 2)
+  expect(game.getState().redrawsRemaining).toBe(0)
   game.getState().roundManager.getCurrentAct()!.rounds[2].bossMandate =
     BOSS_MANDATES.find((m) => m.id === 'the_wall')!
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceToRound(game, 'Boss')
   Object.assign(game.getState(), { targetScore: 1 })
   game.getState().roundManager.getCurrentRound()!.scoreTarget = 1
   expect(
@@ -231,8 +256,8 @@ it('Stone Script applies its own Act reduction only once after Ancient Script wa
   game.restoreRun(parseClassicRunSnapshot(saved))
   game.exitShop()
   expect(game.getState().currentAct).toBe(4)
-  expect(game.getState().handsRemaining).toBe(3)
-  expect(game.getState().redrawsRemaining).toBe(2)
+  expect(game.getState().handsRemaining).toBe(T - 2)
+  expect(game.getState().redrawsRemaining).toBe(0)
 })
 
 it('Final Cut allows repeated paid boss rerolls after resume but never a free or in-boss reroll', () => {
@@ -258,8 +283,7 @@ it('Final Cut allows repeated paid boss rerolls after resume but never a free or
   expect(game.rerollBossMandate().success).toBe(false)
   expect(game.captureRun()).toEqual(broke)
   Object.assign(game.getState(), { gold: 100 })
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceToRound(game, 'Boss')
   const boss = json(game.captureRun())
   expect(game.canRerollBossMandate()).toBe(false)
   expect(game.rerollBossMandate().success).toBe(false)

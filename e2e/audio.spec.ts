@@ -88,7 +88,7 @@ test('plays native scoring audio, keeps music across navigation, and obeys mute'
       )
     )
     .toBe(true)
-  await page.getByRole('button', { name: 'Play', exact: true }).click()
+  await page.getByRole('button', { name: 'New Run', exact: true }).click()
   await expect(page).toHaveURL(/\/en\/play$/)
   expect(
     await page.evaluate(() =>

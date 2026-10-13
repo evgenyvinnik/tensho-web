@@ -166,13 +166,13 @@ describe('Classic balance command contract', () => {
   it('uses real resources and keeps totals coherent in the paired policy', () => {
     const result = report(['5', '--shop', '--resources'])
     expect(result.policy).toBe('resources')
-    expect(
-      result.results.some((run) => run.redraws > 0 && run.discards > 0)
-    ).toBe(true)
+    // REDRAW is the only exchange; the policy sends at most six tiles.
+    expect(result.results.some((run) => run.redraws > 0)).toBe(true)
+    expect(result.results.every((run) => run.discards === 0)).toBe(true)
     expect(
       result.results.every(
         (run) =>
-          run.redrawnTiles >= run.redraws && run.redrawnTiles <= run.redraws * 3
+          run.redrawnTiles >= run.redraws && run.redrawnTiles <= run.redraws * 6
       )
     ).toBe(true)
     expect(

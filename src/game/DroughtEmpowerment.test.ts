@@ -97,7 +97,8 @@ it('restores empowerment when Drought clears, without removing collected Flowers
   flower(state)
   const normal = game.previewScore(ids)!
   state.seasonSystem.forceSetSeason('Summer', true)
-  expect(game.previewScore(ids)!.equation!.multiplier).toBe(3)
+  // A Triplet's Mult 2, plus Gentle Breeze's unempowered +2.
+  expect(game.previewScore(ids)!.equation!.multiplier).toBe(4)
   state.seasonSystem.clear()
   expect(pay(game, ids).equation).toEqual(normal.equation)
   expect(state.flowerSystem.getFlowerCount()).toBe(1)
@@ -117,7 +118,7 @@ it('uses Eternal Garden protection, but not when the protector is mandate-disabl
     disabledDecreeIds: ['decree-eternal-garden'],
   })
   expect(game.getFloraState().flowersSuppressed).toBe(true)
-  expect(pay(game, ids).equation!.multiplier).toBe(3)
+  expect(pay(game, ids).equation!.multiplier).toBe(4)
 })
 
 it('stacks Drought with Frostbite without halving base tile or shape points', () => {
@@ -133,11 +134,13 @@ it('stacks Drought with Frostbite without halving base tile or shape points', ()
     seasonStack: [...drought.seasonStack, ...frostbite.seasonStack],
   })
   const forecast = pay(game, ids)
+  // Three Winds (50 each) and a Triplet (+40) keep their full points; Frostbite
+  // halves only what Gentle Breeze adds to the Triplet's Mult 2: 2 × 1.5.
   expect(forecast.equation).toEqual({
-    points: 85,
-    multiplier: 2,
+    points: 190,
+    multiplier: 3,
     adjustment: 0,
-    total: 170,
+    total: 570,
   })
 })
 

@@ -112,11 +112,9 @@ for (const [browserExit, color] of [0, 7].flatMap((code) => [
       'bamboo-summer',
       'flower-mutations',
       'frostbite-retriggers',
-      'table-loop-layout',
+      'two-actions',
       'dragon-hints',
       'tile-return-guidance',
-      'tap-discard',
-      'discard-layout',
     ])
       assert.ok(invocation.args.includes(`e2e/${name}.spec.ts`))
     assert.ok(invocation.args.includes('--workers=1'))

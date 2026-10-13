@@ -87,6 +87,17 @@ export interface DecreeCardCompactProps {
   disabledByMandate?: boolean
   /** Sell handler; when supplied the tooltip exposes the run action. */
   onSell?: () => void
+  /**
+   * An optional action this Decree grants (for example Dead Wall Writ's
+   * once-per-round draw). It lives in the Decree's own panel, never as a
+   * third button in the action bar.
+   */
+  action?: {
+    label: string
+    allowed: boolean
+    hint?: string
+    onRun: () => void
+  }
 }
 
 /**
@@ -102,6 +113,7 @@ export function DecreeCardCompact({
   faceDown = false,
   disabledByMandate = false,
   onSell,
+  action,
   ownedDecrees = [],
   disabledDecreeIds,
   yakuHistory,
@@ -261,7 +273,7 @@ export function DecreeCardCompact({
         data-decree-scroll={decree.rarity}
         data-decree-instance={decree.instanceId}
         className={`
-          game-decree-card group relative h-20 w-16 min-h-[44px] min-w-[44px] flex-shrink-0
+          game-decree-card collectible-token--portrait group relative min-h-[44px] min-w-[44px] flex-shrink-0
           overflow-visible rounded-lg border-2 bg-black/20 ${DECREE_RARITY_COLORS[decree.rarity]}
           ${isSuppressed ? 'opacity-60 grayscale' : ''}
           cursor-pointer ${reduceMotion ? '' : 'transition-[transform,filter,box-shadow] duration-200 hover:-translate-y-1 hover:scale-105 hover:drop-shadow-lg'}
@@ -449,6 +461,28 @@ export function DecreeCardCompact({
                 </p>
               )}
 
+              {action && !faceDown && (
+                <div className="mt-3 border-t border-amber-200/15 pt-2">
+                  {action.hint && (
+                    <p className="mb-2 text-xs text-[var(--color-beige-white)]/70">
+                      {action.hint}
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    data-decree-action={decree.id}
+                    disabled={!action.allowed}
+                    onClick={() => {
+                      action.onRun()
+                      closePopover()
+                    }}
+                    className="min-h-11 w-full rounded-md border-2 border-[var(--color-golden-yellow)] bg-[var(--color-vibrant-orange)] px-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-45"
+                  >
+                    {action.label}
+                  </button>
+                </div>
+              )}
+
               {onSell && (
                 <div className="mt-3 flex justify-end border-t border-amber-200/15 pt-2">
                   <button
@@ -512,7 +546,7 @@ export function DecreeSlotEmpty({ isLocked = false }: DecreeSlotEmptyProps) {
   return (
     <div
       className={`
-        game-decree-card flex-shrink-0 w-16 h-20
+        game-decree-card collectible-token--portrait flex-shrink-0
         bg-[var(--color-dark-forest)] rounded-lg
         border-2 border-dashed
         ${isLocked ? 'border-gray-600 opacity-40' : 'border-[var(--color-metallic-gold)] opacity-60'}
@@ -521,7 +555,16 @@ export function DecreeSlotEmpty({ isLocked = false }: DecreeSlotEmptyProps) {
       `}
     >
       {isLocked ? (
-        <span className="text-xl text-gray-500">🔒</span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="h-5 w-5 text-gray-500"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z" />
+        </svg>
       ) : (
         <span className="text-2xl text-[var(--color-metallic-gold)]">+</span>
       )}

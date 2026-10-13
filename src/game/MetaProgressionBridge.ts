@@ -469,10 +469,11 @@ export function initializeMetaProgressionBridge(): () => void {
     checkAchievements()
   })
 
-  subscription.subscribe('roundSkipped', ({ omenTagGranted }) => {
+  subscription.subscribe('omenEarned', ({ omenTagGranted }) => {
+    // A swift clear takes the place of a skipped round in lifetime stats.
     processProgressionEvent({ type: 'round_skipped' })
     if (omenTagGranted)
-      recordArchiveItem('omens', omenTagGranted, 'skip_reward')
+      recordArchiveItem('omens', omenTagGranted, 'swift_clear')
     checkAchievements()
   })
 

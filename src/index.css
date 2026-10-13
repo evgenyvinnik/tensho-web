@@ -298,47 +298,17 @@ a {
  * folding Act into the gold readout instead of shrinking or clipping buttons.
  */
 @media (max-width: 359px) {
-  [data-gameplay-top-bar-stake],
-  [data-gameplay-top-bar-act],
-  [data-gameplay-top-bar-reroll-label] {
-    display: none;
-  }
-
-  [data-gameplay-top-bar-compact-progress],
-  [data-gameplay-top-bar-reroll-compact] {
-    display: block;
-  }
-
   [data-frame-corner-row='bottom'] {
     gap: 4px;
     padding-inline: 4px;
   }
 
+  /* The two actions share the row equally on the narrowest phones. */
   [data-frame-corner-row='bottom'] [data-game-action] {
+    flex: 1 1 0;
     min-width: 0;
-    padding-inline: 6px;
+    padding-inline: 4px;
     font-size: 0.75rem;
-  }
-
-  [data-game-action='skip'],
-  [data-game-action='discard'] {
-    flex: 0 0 44px;
-  }
-
-  [data-game-action='redraw'] {
-    flex: 0 0 44px;
-  }
-
-  [data-game-action='dead-wall'] {
-    flex: 0 0 44px;
-  }
-
-  [data-game-action='play'] {
-    flex: 1 1 auto;
-  }
-
-  [data-game-action-score] {
-    display: none;
   }
 }
 
@@ -359,6 +329,7 @@ a {
   [data-hand-rack] {
     column-gap: 2px;
     --rack-group-gap: 2px;
+    --rack-suit-gap: 4px;
   }
 
   /* This marker survives staging, so choosing a tile cannot change the gap
@@ -418,16 +389,382 @@ a {
   }
 }
 
-/* Decrees share one inventory row with consumables and run trackers. */
-.gameplay-inventory-row .game-decree-card {
-  width: 2.75rem;
-  height: 3.5rem;
+/*
+ * One height for everything a run owns: Decrees, Flowers, Seasons, Orbs,
+ * Seals, Scripts and upgrades. Art keeps its own shape inside the frame;
+ * every token stays a 44px-or-larger tap target.
+ */
+:root {
+  --collectible-h: 52px;
 }
 
 @media (min-width: 640px) {
-  .gameplay-inventory-row .game-decree-card {
-    width: 3rem;
-    height: 4rem;
+  :root {
+    --collectible-h: 60px;
+  }
+}
+
+.collectible-token {
+  height: var(--collectible-h);
+  width: var(--collectible-h);
+}
+
+.collectible-token--portrait {
+  height: var(--collectible-h);
+  width: calc(var(--collectible-h) * 0.8);
+}
+
+/*
+ * Special tiles. Whole-tile treatments sized in % of the tile, so they read
+ * at the rack's 44px tiles as well as in detail panels.
+ */
+.tile-mark,
+.tile-edition {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.375rem;
+  pointer-events: none;
+}
+
+.tile-mark {
+  --mark: #fcd34d;
+  --mark-deep: #92400e;
+  box-shadow:
+    inset 0 0 0 2px var(--mark),
+    inset 0 0 0 4px var(--mark-deep),
+    0 0 10px 1px color-mix(in srgb, var(--mark) 70%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--mark) 38%, transparent) 0%,
+    transparent 30%,
+    transparent 70%,
+    color-mix(in srgb, var(--mark) 38%, transparent) 100%
+  );
+}
+
+.tile-mark-gem {
+  position: absolute;
+  left: 50%;
+  top: -14%;
+  width: 40%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  padding: 7%;
+  border-radius: 9999px;
+  color: #fff;
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--mark) 60%, white),
+    var(--mark-deep) 75%
+  );
+  border: 1px solid color-mix(in srgb, var(--mark) 50%, black);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.tile-mark--gold {
+  --mark: #f6c945;
+  --mark-deep: #8a5a00;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 35%,
+      rgba(255, 244, 190, 0.55) 48%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 215, 0, 0.45) 0%,
+      transparent 32%,
+      transparent 68%,
+      rgba(255, 215, 0, 0.45) 100%
+    );
+  background-size:
+    260% 100%,
+    100% 100%;
+  animation: tile-sheen 3.2s ease-in-out infinite;
+}
+
+.tile-mark--bonus {
+  --mark: #60a5fa;
+  --mark-deep: #1e3a8a;
+}
+
+.tile-mark--mult {
+  --mark: #f87171;
+  --mark-deep: #7f1d1d;
+}
+
+.tile-mark--lucky {
+  --mark: #34d399;
+  --mark-deep: #065f46;
+}
+
+.tile-mark--steel {
+  --mark: #cbd5e1;
+  --mark-deep: #334155;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.22) 0 2px,
+    rgba(100, 116, 139, 0.18) 2px 4px
+  );
+}
+
+.tile-mark--glass {
+  --mark: #a5f3fc;
+  --mark-deep: #0e7490;
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255, 255, 255, 0.55) 0 12%,
+      transparent 12% 55%,
+      rgba(255, 255, 255, 0.35) 55% 60%,
+      transparent 60%
+    ),
+    rgba(165, 243, 252, 0.22);
+}
+
+.tile-mark--stone {
+  --mark: #a8a29e;
+  --mark-deep: #44403c;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(68, 64, 60, 0.35) 0 6%, transparent 7%),
+    radial-gradient(circle at 70% 60%, rgba(68, 64, 60, 0.3) 0 8%, transparent 9%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.25) 0 5%, transparent 6%),
+    rgba(120, 113, 108, 0.42);
+}
+
+.tile-mark--wild {
+  --mark: #e879f9;
+  --mark-deep: #6b21a8;
+  box-shadow: 0 0 12px 2px rgba(232, 121, 249, 0.6);
+}
+
+.tile-mark--wild::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 3px;
+  border-radius: inherit;
+  background: conic-gradient(
+    #f87171,
+    #fbbf24,
+    #34d399,
+    #60a5fa,
+    #a78bfa,
+    #f472b6,
+    #f87171
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: tile-hue 4s linear infinite;
+}
+
+.tile-seal {
+  position: absolute;
+  right: -10%;
+  bottom: -6%;
+  width: 46%;
+  aspect-ratio: 1;
+  padding: 9%;
+  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%;
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    inset 0 -2px 3px rgba(0, 0, 0, 0.35),
+    inset 0 2px 2px rgba(255, 255, 255, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.tile-seal--gold {
+  background: radial-gradient(circle at 35% 30%, #fde68a, #b45309 80%);
+}
+
+.tile-seal--red {
+  background: radial-gradient(circle at 35% 30%, #fca5a5, #991b1b 80%);
+}
+
+.tile-seal--blue {
+  background: radial-gradient(circle at 35% 30%, #bfdbfe, #1d4ed8 80%);
+}
+
+.tile-seal--purple {
+  background: radial-gradient(circle at 35% 30%, #e9d5ff, #6b21a8 80%);
+}
+
+.tile-edition--foil {
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.65) 45%,
+    rgba(203, 213, 225, 0.4) 52%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+  mix-blend-mode: screen;
+  animation: tile-sheen 2.6s ease-in-out infinite;
+}
+
+.tile-edition--holographic {
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(244, 114, 182, 0.45) 0 8%,
+    rgba(96, 165, 250, 0.45) 8% 16%,
+    rgba(52, 211, 153, 0.45) 16% 24%,
+    rgba(251, 191, 36, 0.45) 24% 32%
+  );
+  mix-blend-mode: color-dodge;
+  opacity: 0.75;
+}
+
+.tile-edition--polychrome {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.4),
+    rgba(0, 255, 255, 0.4),
+    rgba(255, 255, 0, 0.4)
+  );
+  mix-blend-mode: color;
+  animation: tile-hue 5s linear infinite;
+}
+
+.tile-edition--negative {
+  background: white;
+  mix-blend-mode: difference;
+  opacity: 0.88;
+}
+
+@keyframes tile-sheen {
+  0%,
+  100% {
+    background-position: 100% 0, 0 0;
+  }
+  50% {
+    background-position: 0% 0, 0 0;
+  }
+}
+
+@keyframes tile-hue {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-mark--gold,
+  .tile-mark--wild::before,
+  .tile-edition--foil,
+  .tile-edition--polychrome {
+    animation: none;
+  }
+}
+
+/* Every Tea House offer is one size, whatever it is. */
+.shop-offer-card {
+  width: 6.75rem;
+  height: 10.5rem;
+}
+
+.shop-offer-art {
+  height: 5.25rem;
+}
+
+@media (min-width: 640px) {
+  .shop-offer-card {
+    width: 8.25rem;
+    height: 12.25rem;
+  }
+
+  .shop-offer-art {
+    height: 6.5rem;
+  }
+}
+
+/* A Decree's bag shakes, bursts, and its scroll rises. */
+.decree-bag-shake {
+  animation: decree-bag 750ms ease-in both;
+}
+
+@keyframes decree-bag {
+  0% {
+    transform: scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1) rotate(-8deg);
+    opacity: 1;
+  }
+  35% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+  65% {
+    transform: rotate(5deg) scale(1.05);
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+    filter: brightness(2.2);
+  }
+}
+
+.decree-scroll-rise {
+  animation: decree-rise 420ms cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+
+@keyframes decree-rise {
+  from {
+    transform: translateY(40px) scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* A bought pack shakes open before its rewards appear. */
+.pack-bag-open {
+  animation: pack-bag 700ms ease-in-out both;
+}
+
+@keyframes pack-bag {
+  0% {
+    transform: scale(0.8) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-9deg);
+  }
+  45% {
+    transform: scale(1.1) rotate(9deg);
+  }
+  65% {
+    transform: scale(1.15) rotate(-5deg);
+    filter: brightness(1.4);
+  }
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+/* The play celebration's entrance. */
+.play-toast-enter {
+  animation: play-toast-in 260ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes play-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -472,14 +809,8 @@ a {
     padding-block: 2px !important;
   }
 
-  .game-decree-card {
-    width: 44px !important;
-    height: 52px !important;
-  }
-
-  .gameplay-table-chip {
-    width: 48px !important;
-    height: 48px !important;
+  :root {
+    --collectible-h: 46px;
   }
 
   .game-score-panel {

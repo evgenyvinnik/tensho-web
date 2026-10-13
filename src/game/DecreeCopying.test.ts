@@ -6,6 +6,7 @@ import { Tile, TileSuit } from '../core/Tile'
 import { ALL_DECREES, DecreeSystem } from '../systems/DecreeSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { useOmenStore } from '../stores/omenStore'
+import { TURNS_PER_ROUND } from './playRules'
 
 afterEach(() => {
   eventBus.clear()
@@ -151,16 +152,19 @@ it('Clone Army grants each copied resource once, without recursion', () => {
   expect(state.decreeSystem.getAdditionalDraws()).toBe(2)
 })
 
+// Extra redraws from Decrees are free redraws; a redraw cost spends Turns.
+const T = TURNS_PER_ROUND
+
 it.each([
-  ['extended_hand_grant', 14, 3, 10],
-  ['decree-wide-grip', 16, 3, 4],
-  ['decree-second-chance', 14, 5, 4],
-  ['decree-time-lord', 14, 3, 6],
-  ['decree-ancient-scroll', 10, 3, 4],
-  ['decree-sacrifice', 14, 1, 4],
+  ['extended_hand_grant', 14, 0, T + 6],
+  ['decree-wide-grip', 16, 0, T],
+  ['decree-second-chance', 14, 2, T],
+  ['decree-time-lord', 14, 0, T + 2],
+  ['decree-ancient-scroll', 10, 0, T],
+  ['decree-sacrifice', 14, 0, T - 2],
 ] as const)(
   'applies copied %s resources through actual round exit/draw',
-  (id, tiles, discards, hands) => {
+  (id, tiles, freeRedraws, turns) => {
     const { game, state } = fixture('decree-blueprint', id)
     state.phase = 'shop'
     state.lastCompletedRoundType = 'Small'
@@ -173,27 +177,30 @@ it.each([
       .filter(
         (season) => season.type === 'Autumn' && !season.isCorrupted
       ).length
-    expect(state.discardsRemaining).toBe(discards + autumns)
-    expect(state.handsRemaining).toBe(hands)
+    expect(state.redrawsRemaining).toBe(freeRedraws + autumns)
+    expect(state.handsRemaining).toBe(turns)
   }
 )
 
-it('Extended Hand Grant adds three plays, not rack tiles or redraw actions', () => {
+it('Extended Hand Grant adds three Turns, not rack tiles or free redraws', () => {
   const { game, state } = fixture('extended_hand_grant')
   state.phase = 'shop'
   state.lastCompletedRoundType = 'Small'
   expect(game.shop.open()).toBe(true)
   game.exitShop()
-  expect(state.handsRemaining).toBe(7)
+  const autumns = state.seasonSystem
+    .getSeasonStack()
+    .filter((season) => season.type === 'Autumn' && !season.isCorrupted).length
+  expect(state.handsRemaining).toBe(T + 3)
   expect(state.handTiles).toHaveLength(14)
-  expect(state.redrawsRemaining).toBe(3)
+  expect(state.redrawsRemaining).toBe(autumns)
   expect(
     game.processAction({
       type: 'play',
       tileIds: state.handTiles.slice(0, 2).map((t) => t.id),
     }).success
   ).toBe(true)
-  expect(state.handsRemaining).toBe(6)
+  expect(state.handsRemaining).toBe(T + 2)
   expect(state.handTiles).toHaveLength(14)
-  expect(state.redrawsRemaining).toBe(3)
+  expect(state.redrawsRemaining).toBe(autumns)
 })

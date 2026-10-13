@@ -6,6 +6,8 @@
  * - Triplet (Koutsu): 3 identical tiles
  * - Quad (Kantsu): 4 identical tiles
  * - Pair (Toitsu): 2 identical tiles (only one per hand, or 7 for Seven Pairs)
+ * - Straight: 4 or 5 consecutive tiles of one suit. Tensho's own shape for
+ *   tactical plays; a complete Mahjong hand never contains one.
  */
 
 import { Tile, TileSuit } from './Tile'
@@ -15,6 +17,7 @@ export enum MeldType {
   Triplet = 'triplet', // Koutsu (刻子)
   Quad = 'quad', // Kantsu (槓子)
   Pair = 'pair', // Toitsu (対子)
+  Straight = 'straight', // 4–5 consecutive tiles of one suit (連)
 }
 
 export interface MeldData {
@@ -112,8 +115,9 @@ export class Meld implements MeldData {
    * Get a unique key for this meld type (for comparison)
    */
   get typeKey(): string {
-    if (this.type === MeldType.Sequence) {
-      return `seq-${this.suit}-${this.tiles.map((tile) => tile.rank).join('-')}`
+    if (this.type === MeldType.Sequence || this.type === MeldType.Straight) {
+      const prefix = this.type === MeldType.Sequence ? 'seq' : 'straight'
+      return `${prefix}-${this.suit}-${this.tiles.map((tile) => tile.rank).join('-')}`
     }
     return `${this.type}-${this.tiles[0].typeKey}`
   }
@@ -141,6 +145,17 @@ export class Meld implements MeldData {
     // Must be consecutive ranks
     const ranks = tiles.map((t) => t.rank).sort((a, b) => a - b)
     return ranks[1] === ranks[0] + 1 && ranks[2] === ranks[1] + 1
+  }
+
+  /**
+   * Check if tiles can form a straight: 4 or 5 consecutive ranks of one suit
+   */
+  static canFormStraight(tiles: Tile[]): boolean {
+    if (tiles.length < 4 || tiles.length > 5) return false
+    const suit = tiles[0].suit
+    if (!tiles[0].isSuited || !tiles.every((t) => t.suit === suit)) return false
+    const ranks = tiles.map((t) => t.rank).sort((a, b) => a - b)
+    return ranks.every((rank, i) => i === 0 || rank === ranks[i - 1] + 1)
   }
 
   /**

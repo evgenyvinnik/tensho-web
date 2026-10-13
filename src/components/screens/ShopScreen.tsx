@@ -21,18 +21,11 @@ import { useProgressiveTutorial } from '../../hooks/useProgressiveTutorial'
 import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { ShopResult } from '../../game/ShopSession'
-import type {
-  BlessingPack,
-  Decree,
-  ImperialCharter,
-  FlowerVariant,
-} from '../../systems/types'
+import type { Decree, FlowerVariant } from '../../systems/types'
 import { Button } from '../ui/Button'
-import { ConfirmPopup } from '../ui/Popup'
 import { ShopHeader } from '../shop/ShopHeader'
-import { ShopItemCard } from '../shop/ShopItemCard'
-import { PackCard } from '../shop/PackCard'
-import { CharterCard } from '../shop/CharterCard'
+import { ShopOfferCard } from '../shop/ShopOfferCard'
+import { DecreeReveal } from '../effects/DecreeReveal'
 import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { ProgressiveHintCard } from '../ui/ProgressiveHint'
@@ -63,9 +56,6 @@ export function ShopScreen() {
   const shop = game.shop
 
   // Local state
-  const [confirmOffering, setConfirmOffering] =
-    useState<TeaHouseOffering | null>(null)
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
   const [catalystReceipt, setCatalystReceipt] = useState<{
     decree: Decree
     flower: FlowerVariant
@@ -101,10 +91,38 @@ export function ShopScreen() {
     game.state.charterSystem.calculateEffects().interestCap +
     game.state.omenSystem.getInterestCapBonus()
 
-  // Handle item selection (tap to view details)
-  const handleItemSelect = useCallback((offering: TeaHouseOffering) => {
-    setSelectedItemId((prev) => (prev === offering.id ? null : offering.id))
-  }, [])
+  const offers: TeaHouseOffering[] = [
+    ...availableItems,
+    ...availablePacks,
+    ...(availableCharter ? [availableCharter] : []),
+  ]
+
+  /** The engine's own refusal, in words, before the player tries to buy. */
+  const unavailableReasonFor = (offering: TeaHouseOffering) => {
+    const check = shop.validatePurchase(offering.id)
+    if (check.success) return undefined
+    switch (check.reason) {
+      case 'notEnoughGold':
+        return t('shop.cantAfford')
+      case 'flowerRequirement':
+        return t('shop.availability.flowerCount', {
+          required: (
+            (offering.item as Decree).flowerRequirement ?? 0
+          ).toLocaleString(i18n.resolvedLanguage),
+          current: game.state.flowerSystem
+            .getFlowerCount()
+            .toLocaleString(i18n.resolvedLanguage),
+        })
+      case 'inventoryFull':
+        return t(
+          offering.itemType === 'Decree'
+            ? 'shop.availability.decreeSpace'
+            : 'shop.availability.consumableSpace'
+        )
+      default:
+        return t('shop.availability.unavailable')
+    }
+  }
 
   const showResult = useCallback(
     (result: ShopResult) => {
@@ -129,13 +147,9 @@ export function ShopScreen() {
     (offering: TeaHouseOffering) => {
       const result = shop.purchase(offering.id)
       showResult(result)
-      if (result.success) setSelectedItemId(null)
-      setConfirmOffering(null)
     },
     [shop, showResult]
   )
-
-  const handlePackPurchase = handleItemPurchase
 
   const handlePackConfirm = useCallback(
     (indices: number[]) => {
@@ -177,6 +191,7 @@ export function ShopScreen() {
 
       {/* Header with gold, reroll, settings */}
       <ShopHeader
+        interestCap={interestCap}
         gold={game.gold}
         rerollCost={rerollCost}
         canAffordReroll={game.gold >= rerollCost}
@@ -237,119 +252,35 @@ export function ShopScreen() {
             aside={<YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />}
           />
 
-          <div className="grid items-start gap-5 px-3 pt-4 sm:px-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)] lg:gap-6">
-            {/* Items Section (Decrees, Fate Seals, Celestial Orbs) */}
-            <section data-shop-items className="min-w-0">
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="min-w-0 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
-                  {t('shop.ui.items')}
-                  <span className="mt-1 block text-sm font-normal text-[var(--color-metallic-gold)]">
-                    {t('shop.ui.availableCount', {
-                      count: availableItems.length,
-                    })}
-                  </span>
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
-                {availableItems.map((offering) => {
-                  const check = shop.validatePurchase(offering.id)
-                  const unavailableReason = check.success
-                    ? undefined
-                    : check.reason === 'notEnoughGold'
-                      ? t('shop.cantAfford')
-                      : check.reason === 'flowerRequirement'
-                        ? t('shop.availability.flowerCount', {
-                            required: (
-                              (offering.item as Decree).flowerRequirement ?? 0
-                            ).toLocaleString(i18n.resolvedLanguage),
-                            current: game.state.flowerSystem
-                              .getFlowerCount()
-                              .toLocaleString(i18n.resolvedLanguage),
-                          })
-                        : check.reason === 'inventoryFull'
-                          ? t(
-                              offering.itemType === 'Decree'
-                                ? 'shop.availability.decreeSpace'
-                                : 'shop.availability.consumableSpace'
-                            )
-                          : t('shop.availability.unavailable')
-                  return (
-                    <ShopItemCard
-                      key={offering.id}
-                      offering={offering}
-                      canAfford={game.gold >= offering.finalCost}
-                      unavailableReason={unavailableReason}
-                      onPurchase={() => handleItemPurchase(offering)}
-                      onOfferFlower={
-                        offering.itemType === 'Decree' &&
-                        acceptsFlowerCatalyst(offering.item as Decree)
-                          ? () => {
-                              setShopError(null)
-                              setCatalystOffering(offering)
-                            }
-                          : undefined
-                      }
-                      onSelect={() => handleItemSelect(offering)}
-                      isSelected={selectedItemId === offering.id}
-                    />
-                  )
-                })}
-                {availableItems.length === 0 && (
-                  <div className="col-span-full w-full py-8 text-center">
-                    <p className="text-[var(--color-beige-white)] opacity-50">
-                      {t('shop.ui.allPurchased')}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </section>
-
-            {/* Blessing Packs Section */}
-            <section className="min-w-0">
-              <h2 className="mb-3 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
-                {t('shop.ui.packs')}
-              </h2>
-
-              <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                {availablePacks.map((offering) => {
-                  const pack = offering.item as BlessingPack
-                  return (
-                    <PackCard
-                      key={offering.id}
-                      pack={pack}
-                      finalCost={offering.finalCost}
-                      canAfford={game.gold >= offering.finalCost}
-                      onPurchase={() => handlePackPurchase(offering)}
-                    />
-                  )
-                })}
-                {availablePacks.length === 0 && (
-                  <div className="col-span-full w-full py-4 text-center">
-                    <p className="text-[var(--color-beige-white)] opacity-50">
-                      {t('shop.ui.noPacks')}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </section>
-          </div>
-
-          {/* Imperial Charter Section (after boss rounds only) */}
-          {availableCharter && (
-            <section className="mx-3 mt-6 mb-4 sm:mx-5">
-              <h2 className="mb-4 break-words text-xl font-bold text-[var(--color-golden-yellow)]">
-                {t('shop.ui.imperialCharter')}
-              </h2>
-
-              <CharterCard
-                charter={availableCharter.item as ImperialCharter}
-                finalCost={availableCharter.finalCost}
-                canAfford={game.gold >= availableCharter.finalCost}
-                onPurchase={() => setConfirmOffering(availableCharter)}
-              />
-            </section>
-          )}
+          {/* One row: items, Blessing Packs and the Imperial Charter alike. */}
+          <section data-shop-row className="mt-3 min-w-0">
+            <h2 className="sr-only">{t('shop.ui.forSale', 'For sale')}</h2>
+            <div className="scroll-rail flex min-w-0 gap-2 overflow-x-auto px-3 py-2 sm:flex-wrap sm:justify-center sm:gap-3 sm:px-5">
+              {offers.map((offering) => (
+                <ShopOfferCard
+                  key={offering.id}
+                  offering={offering}
+                  canAfford={game.gold >= offering.finalCost}
+                  unavailableReason={unavailableReasonFor(offering)}
+                  onBuy={() => handleItemPurchase(offering)}
+                  onOfferFlower={
+                    offering.itemType === 'Decree' &&
+                    acceptsFlowerCatalyst(offering.item as Decree)
+                      ? () => {
+                          setShopError(null)
+                          setCatalystOffering(offering)
+                        }
+                      : undefined
+                  }
+                />
+              ))}
+              {offers.length === 0 && (
+                <p className="w-full py-6 text-center text-[var(--color-beige-white)] opacity-50">
+                  {t('shop.ui.allPurchased')}
+                </p>
+              )}
+            </div>
+          </section>
 
           {/* Spacer for bottom padding */}
           <div className="h-4" />
@@ -392,27 +323,6 @@ export function ShopScreen() {
         </div>
       </div>
 
-      {/* Purchase confirmation popup */}
-      {confirmOffering && (
-        <ConfirmPopup
-          isOpen={true}
-          onClose={() => setConfirmOffering(null)}
-          onConfirm={() => handleItemPurchase(confirmOffering)}
-          title={t('shop.ui.confirmPurchase')}
-          message={t('shop.ui.purchasePrompt', {
-            name: itemText.name(
-              'charters',
-              confirmOffering.item as ImperialCharter
-            ),
-            cost: confirmOffering.finalCost.toLocaleString(
-              i18n.resolvedLanguage
-            ),
-          })}
-          confirmText={t('shop.buy')}
-          cancelText={t('common.cancel', 'Cancel')}
-        />
-      )}
-
       {/* Pack opening modal */}
       {catalystOffering && (
         <FlowerCatalystDialog
@@ -447,12 +357,12 @@ export function ShopScreen() {
                   flower: flower.type,
                 })
               setCatalystOffering(null)
-              setSelectedItemId(null)
             }
           }}
           error={shopError}
         />
       )}
+      <DecreeReveal />
       <PackOpeningModal
         isOpen={currentPackOffering !== null}
         packOffering={currentPackOffering}

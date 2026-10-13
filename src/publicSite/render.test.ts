@@ -22,17 +22,16 @@ describe('static public guides', () => {
         const saves = doc.getElementById('saves')!
         expect(saves.textContent).toContain('Save and leave')
         expect(saves.textContent).toContain('Resume run')
-        expect(saves.textContent).toContain('Unconfirmed staged tiles')
+        expect(saves.textContent).toContain('Selected tiles')
         expect(saves.textContent).not.toContain(
           'current run progress will be lost'
         )
       }
-      expect(doc.body.textContent).toContain(
-        'Practice can replace your saved Table Loop run.'
-      )
+      // The Table Loop experiment is retired; every call to action opens a run.
+      expect(doc.querySelectorAll('a[href*="table-loop"]')).toHaveLength(0)
       expect(
-        doc.querySelectorAll('a[href="/tensho-web/en/table-loop"]')
-      ).toHaveLength(2)
+        doc.querySelectorAll('a.play-link[href="/tensho-web/en/play"]').length
+      ).toBeGreaterThanOrEqual(2)
       expect(doc.title).toBe(`${PUBLIC_PAGES[id].title} | Tensho`)
       expect(
         doc.querySelector('meta[name="description"]')?.getAttribute('content')
@@ -113,7 +112,7 @@ describe('static public guides', () => {
       'not a promised draw or guaranteed round win'
     )
     expect(section.textContent).toContain(
-      'Exchanging both costs one redraw, not two'
+      'Exchanging both costs one REDRAW, not two'
     )
   })
 

@@ -141,7 +141,7 @@ describe('DecreeCardCompact mandate states', () => {
     ).not.toBeInTheDocument()
 
     fireEvent.mouseEnter(decreeButton)
-    expect(screen.getByText(/Gain .*Gold.*discard/i)).toBeInTheDocument()
+    expect(screen.getByText(/Gain .*Gold.*REDRAW/i)).toBeInTheDocument()
     const sellButton = screen.getByRole('button', { name: 'Sell River Tax' })
     expect(sellButton).toHaveAttribute('data-decree-sell')
     expect(sellButton).not.toHaveClass('w-full')

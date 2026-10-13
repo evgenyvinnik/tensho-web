@@ -8,7 +8,6 @@
 import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
-import { UpdateNotice } from '../ui/UpdateNotice'
 import { useAppNavigation } from '../../router'
 import { useSettingsStore } from '../../stores/settingsStore'
 import {
@@ -21,6 +20,16 @@ import { Button } from '../ui/Button'
 import { BackButton } from '../ui/BackButton'
 import { Slider } from '../ui/Slider'
 import { Toggle } from '../ui/Toggle'
+import { useClassicPersistence } from '../../game/useClassicPersistence'
+
+function downloadBackup(raw: string) {
+  const url = URL.createObjectURL(new Blob([raw], { type: 'application/json' }))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'tensho-run-backup.json'
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
 import { LanguageSelector } from '../ui/LanguageSelector'
 import { ConfirmPopup, AlertPopup } from '../ui/Popup'
 
@@ -30,6 +39,7 @@ import { ConfirmPopup, AlertPopup } from '../ui/Popup'
 export function SettingsScreen() {
   const { t } = useTranslation()
   const { goBack } = useAppNavigation()
+  const { disk } = useClassicPersistence()
   const fullUnlockEnabled = useProgressionStore(
     (state) => state.fullUnlockEnabled
   )
@@ -60,6 +70,7 @@ export function SettingsScreen() {
     animationSpeed,
     reducedMotion,
     showTileHints,
+    showRankNumbers,
     setMusicVolume,
     setSfxVolume,
     toggleMusic,
@@ -67,6 +78,7 @@ export function SettingsScreen() {
     setAnimationSpeed,
     setReducedMotion,
     setShowTileHints,
+    setShowRankNumbers,
     resetSettings,
   } = useSettingsStore()
 
@@ -195,6 +207,12 @@ export function SettingsScreen() {
               checked={showTileHints}
               onChange={setShowTileHints}
             />
+            <Toggle
+              label={t('settings.rankNumbers')}
+              description={t('settings.rankNumbersDesc')}
+              checked={showRankNumbers}
+              onChange={setShowRankNumbers}
+            />
           </section>
 
           {/* Data & Progress Section */}
@@ -227,6 +245,23 @@ export function SettingsScreen() {
                 </Button>
               )}
             </div>
+
+            {/* An unreadable saved run can be kept as a file before a New Run
+                replaces it. Routine saves never need this. */}
+            {disk.kind === 'invalid' && (
+              <div className="space-y-2 rounded-lg border border-amber-300/50 p-3">
+                <p className="text-sm leading-relaxed text-[var(--color-beige-white)]">
+                  {t('settings.unreadableSave')}
+                </p>
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={() => downloadBackup(disk.raw)}
+                >
+                  {t('classicSave.backup')}
+                </Button>
+              </div>
+            )}
 
             {/* Reset Tutorial */}
             <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
@@ -296,7 +331,6 @@ export function SettingsScreen() {
           <p className="text-center text-sm text-[var(--color-beige-white)] opacity-50 lg:col-span-2">
             Tensho {FORMATTED_APP_VERSION}
           </p>
-          <UpdateNotice />
         </div>
       </div>
 

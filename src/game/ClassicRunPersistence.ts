@@ -21,9 +21,8 @@ export interface ClassicPersistenceState {
 const CHECKPOINT_EVENTS: GameEvent[] = [
   'roundStart',
   'roundEnd',
-  'roundSkipped',
+  'omenEarned',
   'handPlayed',
-  'riichiChanged',
   'scoreUpdate',
   'goldChanged',
   'itemPurchased',

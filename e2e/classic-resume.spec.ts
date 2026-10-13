@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
+import { openTable, selectTiles, settleReveals } from './helpers/table'
 
 const saveKey = 'tensho-classic-run-v1'
 async function saved(page: Page) {
@@ -21,18 +22,17 @@ async function profile(page: Page) {
   })
 }
 
-test('a real tile play survives reload and leaving; replacement requires confirmation', async ({
+test('a real tile play survives reload and leaving; New Run replaces it at once', async ({
   page,
 }) => {
-  await page.goto('/en/play')
+  await openTable(page)
   await saved(page)
-  const tiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
-  await tiles.last().click()
-  await tiles.last().click()
+  await selectTiles(page, 2)
   await page.locator('[data-game-action="play"]').click()
   await expect
     .poll(async () => (await saved(page)).snapshot.state.handsPlayedThisRun)
     .toBe(1)
+  await settleReveals(page)
   const before = await saved(page)
   const stats = await profile(page)
   await page.reload()
@@ -46,33 +46,50 @@ test('a real tile play survives reload and leaving; replacement requires confirm
     .click()
   await expect(page).toHaveURL(/\/en\/?$/)
   await expect(page.locator('[data-classic-resume] img')).toBeVisible()
-  await page.getByRole('button', { name: 'New Classic Run', exact: true }).click()
-  const dialog = page.getByRole('dialog', {
-    name: 'Start a new run?',
-    exact: true,
-  })
-  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click()
-  expect(
-    await page.evaluate(
-      (key) => JSON.parse(localStorage.getItem(key)!).runId,
-      saveKey
-    )
-  ).toBe(before.runId)
+  // The menu offers no backup or discard for an ordinary saved run.
+  await expect(
+    page.getByRole('button', { name: /Download backup|Discard run/ })
+  ).toHaveCount(0)
   await page.getByRole('button', { name: 'Resume run', exact: true }).click()
   expect((await saved(page)).snapshot).toEqual(after.snapshot)
   await page.getByRole('button', { name: 'Exit', exact: true }).click()
   await page
     .getByRole('button', { name: 'Save and leave', exact: true })
     .click()
-  await page.getByRole('button', { name: 'New Classic Run', exact: true }).click()
-  await dialog.getByRole('button', { name: 'New Classic Run', exact: true }).click()
-  expect((await saved(page)).runId).not.toBe(before.runId)
+  await page.getByRole('button', { name: 'New Run', exact: true }).click()
+  await expect(page).toHaveURL(/\/play$/)
+  await expect.poll(async () => (await saved(page)).runId).not.toBe(before.runId)
+})
+
+test('a finished run is not offered for resuming', async ({ page }) => {
+  await openTable(page)
+  await saved(page)
+  await page.evaluate((key) => {
+    const record = JSON.parse(localStorage.getItem(key)!)
+    record.snapshot.state.phase = 'gameOver'
+    record.snapshot.state.isRunActive = false
+    localStorage.setItem(key, JSON.stringify(record))
+  }, saveKey)
+  await page.goto('/en')
+  await expect(
+    page.getByRole('button', { name: 'New Run', exact: true })
+  ).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Resume run', exact: true })
+  ).toHaveCount(0)
+  // Opening the table starts the next run instead of the finished one.
+  const finished = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!).runId,
+    saveKey
+  )
+  await openTable(page)
+  await expect.poll(async () => (await saved(page)).runId).not.toBe(finished)
 })
 
 test('paid pending pack resumes in the shop without another payment or reward replay', async ({
   page,
 }) => {
-  await page.goto('/en/play')
+  await openTable(page)
   await saved(page)
   await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
@@ -120,6 +137,7 @@ test('paid pending pack resumes in the shop without another payment or reward re
     .getByRole('button', { name: 'Continue to Next Round', exact: true })
     .click()
   await expect(page).toHaveURL(/\/play$/)
+  await settleReveals(page)
   const next = await saved(page)
   await page.reload()
   expect((await saved(page)).snapshot).toEqual(next.snapshot)
@@ -129,16 +147,14 @@ test('native Web Locks transfer ownership and pause the previous tab', async ({
   page,
   context,
 }) => {
-  await page.goto('/en/play')
+  await openTable(page)
   const first = await saved(page)
   const other = await context.newPage()
-  await other.goto('/en/play')
+  await openTable(other)
   const claimed = await saved(other)
   expect(claimed.runId).toBe(first.runId)
   expect(claimed.owner).not.toBe(first.owner)
-  const tiles = other.locator('[data-play-zone="hand"] [data-play-tile]')
-  await tiles.last().click()
-  await tiles.last().click()
+  await selectTiles(other, 2)
   await other.locator('[data-game-action="play"]').click()
   const played = await saved(other)
   const handedOffProfile = await profile(other)
@@ -161,9 +177,8 @@ test('native Web Locks transfer ownership and pause the previous tab', async ({
   await expect(other.getByRole('alert')).toHaveText(
     'Saved progress changed in another tab. This table is paused.'
   )
-  const resumedTiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
-  await resumedTiles.last().click()
-  await resumedTiles.last().click()
+  await settleReveals(page)
+  await selectTiles(page, 2)
   await page.locator('[data-game-action="play"]').click()
   await saved(page)
   expect((await profile(page)).totalTilesPlayed).toBe(
@@ -175,7 +190,7 @@ test('native Web Locks transfer ownership and pause the previous tab', async ({
 test('quota failure preserves the checkpoint and Retry saves the live action', async ({
   page,
 }) => {
-  await page.goto('/en/play')
+  await openTable(page)
   const before = await saved(page)
   await page.evaluate((key) => {
     const original = Storage.prototype.setItem
@@ -190,9 +205,7 @@ test('quota failure preserves the checkpoint and Retry saves the live action', a
       original.call(this, name, value)
     }
   }, saveKey)
-  const tiles = page.locator('[data-play-zone="hand"] [data-play-tile]')
-  await tiles.last().click()
-  await tiles.last().click()
+  await selectTiles(page, 2)
   await page.locator('[data-game-action="play"]').click()
   await expect(page.getByRole('alert')).toContainText('Keep this tab open')
   expect(
@@ -215,7 +228,7 @@ test('quota failure preserves the checkpoint and Retry saves the live action', a
   expect((await saved(page)).snapshot).toEqual(after.snapshot)
 })
 
-test('corrupt data is retained for backup until explicit discard', async ({
+test('an unreadable save is kept, can be backed up from Settings, and New Run replaces it', async ({
   page,
 }) => {
   await page.goto('/en')
@@ -228,38 +241,30 @@ test('corrupt data is retained for backup until explicit discard', async ({
   await expect(page.getByRole('alert')).toContainText(
     'stored checkpoint has not been changed'
   )
+  await expect(
+    page.getByRole('button', { name: /Download backup|Discard run/ })
+  ).toHaveCount(0)
+  await page.getByRole('button', { name: 'Settings', exact: true }).click()
   const download = page.waitForEvent('download')
   await page
     .getByRole('button', { name: 'Download backup', exact: true })
     .click()
-  expect((await download).suggestedFilename()).toBe(
-    'tensho-classic-backup.json'
-  )
+  expect((await download).suggestedFilename()).toBe('tensho-run-backup.json')
   expect(await page.evaluate((key) => localStorage.getItem(key), saveKey)).toBe(
     '{broken checkpoint'
   )
-  await page.getByRole('button', { name: 'Discard run', exact: true }).click()
-  const dialog = page.getByRole('dialog', {
-    name: 'Discard this run?',
-    exact: true,
-  })
-  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click()
-  expect(await page.evaluate((key) => localStorage.getItem(key), saveKey)).toBe(
-    '{broken checkpoint'
-  )
-  await page.getByRole('button', { name: 'Discard run', exact: true }).click()
-  await dialog.getByRole('button', { name: 'Discard run', exact: true }).click()
-  await expect(page.locator('[data-classic-resume]')).toHaveCount(0)
-  expect(
-    await page.evaluate((key) => localStorage.getItem(key), saveKey)
-  ).toBeNull()
+  await page.goto('/en')
+  await page.getByRole('button', { name: 'New Run', exact: true }).click()
+  await expect(page).toHaveURL(/\/play$/)
+  await settleReveals(page)
+  expect((await saved(page)).snapshot.state.phase).toBe('gameplay')
 })
 
 test('localized resume card and leave dialog fit a short phone', async ({
   page,
 }, info) => {
   await page.setViewportSize({ width: 320, height: 568 })
-  await page.goto('/es/play')
+  await openTable(page, '/es/play')
   await saved(page)
   const labels = await page.evaluate(async () => {
     const path = '/src/i18n/locales/es.json'

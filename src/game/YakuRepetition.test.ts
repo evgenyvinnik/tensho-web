@@ -7,6 +7,12 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { parseClassicRunSnapshot } from './validateClassicRun'
+import type { ScoreBreakdown } from '../rules/ScoringEngine'
+
+/** The repetition factor: the final Mult over its additive parts. */
+const repetitionFactor = (score: ScoreBreakdown) =>
+  score.equation!.multiplier /
+  (score.yakuMultiplier + score.pattern.mult + score.dragonMult)
 
 afterEach(() => {
   eventBus.clear()
@@ -56,7 +62,7 @@ it('compounds each matching family over consecutive rounds, without preview/relo
     const forecast = game.previewScore(ids)!
     const families = forecast.detectedYaku.length
     expect(families).toBeGreaterThan(0)
-    expect(forecast.equation!.multiplier / forecast.yakuMultiplier).toBeCloseTo(
+    expect(repetitionFactor(forecast)).toBeCloseTo(
       Math.min(4, 1.2 ** (round * families))
     )
     expect(game.previewScore(ids)).toEqual(forecast)
@@ -93,7 +99,7 @@ it('does not reward Yaku excluded by the Eye', () => {
   })
   const score = game.previewScore(ids)!
   expect(score.detectedYaku).toEqual([])
-  expect(score.equation!.multiplier / score.yakuMultiplier).toBe(1)
+  expect(repetitionFactor(score)).toBe(1)
 })
 
 it('grows only at round settlement, retains unused families during the round, and breaks them after a miss', () => {
@@ -128,21 +134,18 @@ it('grows only at round settlement, retains unused families during the round, an
   expect(game.getState().previousRoundYakuStreaks).toEqual({})
   game.exitShop()
   const forecast = game.previewScore(deal(game))!
-  expect(forecast.equation!.multiplier / forecast.yakuMultiplier).toBe(1)
+  expect(repetitionFactor(forecast)).toBe(1)
 })
 
-it('breaks streaks on an accepted skip and starts a fresh run without history', () => {
+it('starts a fresh run without history', () => {
   const game = fixture()
   expect(
     game.processAction({ type: 'play', tileIds: deal(game) }).success
   ).toBe(true)
-  game.exitShop()
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  expect(game.getState().previousRoundYakuStreaks).toEqual({})
-  expect(game.getState().previousRoundYakuIds.size).toBe(0)
-  const afterSkip = game.captureRun()
-  expect(game.processAction({ type: 'skip' }).success).toBe(false) // Boss cannot be skipped.
-  expect(game.captureRun()).toEqual(afterSkip)
+  expect(
+    Object.keys(game.getState().previousRoundYakuStreaks ?? {}).length
+  ).toBeGreaterThan(0)
+  expect(game.getState().previousRoundYakuIds.size).toBeGreaterThan(0)
   game.startNewRun(8)
   expect(game.getState().previousRoundYakuStreaks).toBeUndefined()
   expect(game.getState().previousRoundYakuIds.size).toBe(0)
@@ -158,9 +161,7 @@ it('preserves legacy history without inventing earlier rounds and validates new 
   game.restoreRun(parseClassicRunSnapshot(legacy))
   expect(game.captureRun()).toEqual(legacy)
   const forecast = game.previewScore(ids)!
-  expect(forecast.equation!.multiplier / forecast.yakuMultiplier).toBeCloseTo(
-    1.2
-  )
+  expect(repetitionFactor(forecast)).toBeCloseTo(1.2)
   for (const history of [
     { ittsu: 0 },
     { ittsu: -1 },
@@ -180,9 +181,7 @@ it('preserves legacy history without inventing earlier rounds and validates new 
   valid.state.previousRoundYakuStreaks = { ittsu: 4 }
   game.restoreRun(parseClassicRunSnapshot(valid))
   expect(game.captureRun()).toEqual(valid)
-  expect(
-    game.previewScore(ids)!.equation!.multiplier / forecast.yakuMultiplier
-  ).toBeCloseTo(1.2 ** 4)
+  expect(repetitionFactor(game.previewScore(ids)!)).toBeCloseTo(1.2 ** 4)
 })
 
 it('caps the bonus, copies it per active Decree, and lets suppression/Frostbite reduce it', () => {
@@ -192,10 +191,7 @@ it('caps the bonus, copies it per active Decree, and lets suppression/Frostbite 
   state.previousRoundYakuIds = new Set(['ittsu'])
   state.previousRoundYakuStreaks = { ittsu: 50 }
   const repetition = state.decreeSystem.getOwnedDecrees()[0]
-  const ratio = () => {
-    const preview = game.previewScore(ids)!
-    return preview.equation!.multiplier / preview.yakuMultiplier
-  }
+  const ratio = () => repetitionFactor(game.previewScore(ids)!)
   expect(ratio()).toBeCloseTo(4)
   state.decreeSystem.acquireDecree(
     ALL_DECREES.find((d) => d.id === 'decree-brainstorm')!

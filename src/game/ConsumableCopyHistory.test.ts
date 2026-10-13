@@ -8,6 +8,7 @@ import {
 import { VOID_SCRIPTS, VoidScriptSystem } from '../systems/VoidScriptSystem'
 import { runRandom } from './RunRandom'
 import { useConsumableStore } from '../stores/consumableStore'
+import { advanceRound } from '../test/roundHelpers'
 
 function fixture() {
   const game = new GameOrchestrator()
@@ -123,7 +124,7 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
       expect(game.getState().fateSealSystem.getLastUsedConsumable()?.id).toBe(
         original.id
       )
-      const level = game.getState().celestialOrbSystem.getYakuLevel('Riichi')
+      const level = game.getState().celestialOrbSystem.getYakuLevel('Pairs')
       const action = addFool(game)
       const random = vi.spyOn(runRandom, 'next')
       expect(game.canPerformAction(action)).toBe(true)
@@ -143,7 +144,7 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
       expect(items[0].instanceId).not.toBe(original.instanceId)
       expect(items[0].instanceId).not.toBe(action.sealId)
       // Creation is not execution: a copied Orb does not upgrade a level yet.
-      expect(game.getState().celestialOrbSystem.getYakuLevel('Riichi')).toBe(
+      expect(game.getState().celestialOrbSystem.getYakuLevel('Pairs')).toBe(
         level
       )
       expect(random).not.toHaveBeenCalled()
@@ -194,7 +195,7 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
     )
     game.addCelestialOrb(orb)
     game.processAction({ type: 'useOrb', orbId: orb.instanceId })
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    advanceRound(game)
     expect(game.getState().fateSealSystem.getLastUsedConsumable()?.id).toBe(
       orb.id
     )

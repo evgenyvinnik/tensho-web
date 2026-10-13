@@ -25,9 +25,7 @@ import {
   classicDestination,
 } from '../../game/classicPersistenceApp'
 import { ClassicResumeCard } from '../menu/ClassicResumeCard'
-import { ConfirmPopup } from '../ui/Popup'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
-import { UpdateNotice } from '../ui/UpdateNotice'
 import { withBasePath } from '../../utils/basePath'
 import { TileSuit } from '../../core/Tile'
 import { useAppNavigation, ROUTES } from '../../router'
@@ -341,9 +339,6 @@ export function MenuScreen() {
   const [floatingTiles] = useState(() => generateFloatingTiles(12))
   const { service, disk } = useClassicPersistence()
   const [starting, setStarting] = useState(false)
-  const [replacement, setReplacement] = useState<{ raw: string | null } | null>(
-    null
-  )
   const tutorial = useTutorial()
   useEffect(() => {
     service.refresh()
@@ -416,25 +411,19 @@ export function MenuScreen() {
     }
   }
 
+  // New Run always starts the configured run. It atomically replaces exactly
+  // the record read here; a failed write leaves that record untouched.
   const handlePlay = () => {
     if (starting) return
-    const raw =
+    void startConfiguredRun(
       disk.kind === 'ready' || disk.kind === 'invalid' ? disk.raw : null
-    if (disk.kind !== 'empty' || service.hasLocalRun) setReplacement({ raw })
-    else void startConfiguredRun(null)
+    )
   }
 
   // Called when tutorial is completed - start the game
   const handleTutorialComplete = () => {
     tutorial.complete()
     handlePlay()
-  }
-
-  // The persistent-table prototype from docs/GAMEPLAY_EXPERIMENTS.md. It runs
-  // beside the classic loop so the two can be compared in one session.
-  const handleTableLoop = () => {
-    audio.play()
-    navigateTo(ROUTES.TABLE_LOOP)
   }
 
   const handleCodex = () => {
@@ -534,21 +523,7 @@ export function MenuScreen() {
                 delay={650}
                 show={showContent}
               >
-                {t(
-                  service.hasLocalRun || disk.kind !== 'empty'
-                    ? 'menu.newRun'
-                    : 'menu.play'
-                )}
-              </NeonButton>
-
-              <NeonButton
-                onClick={handleTableLoop}
-                variant="secondary"
-                emblem={getTileImagePath(TileSuit.Souzu, 5)}
-                delay={700}
-                show={showContent}
-              >
-                {t('menu.tableLoop', 'Table Loop Mode')}
+                {t('menu.newRun')}
               </NeonButton>
 
               <div className="grid w-full grid-cols-2 gap-3">
@@ -649,23 +624,12 @@ export function MenuScreen() {
               <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
                 {FORMATTED_APP_VERSION}
               </span>
-              <UpdateNotice />
             </section>
           </div>
         </div>
       </main>
 
       {/* Tutorial popup */}
-      <ConfirmPopup
-        isOpen={replacement !== null}
-        onClose={() => setReplacement(null)}
-        title={t('classicSave.replaceTitle')}
-        message={t('classicSave.replaceBody')}
-        confirmText={t('menu.newRun')}
-        onConfirm={() => {
-          if (replacement) void startConfiguredRun(replacement.raw)
-        }}
-      />
       <Tutorial
         isOpen={tutorial.isOpen}
         onClose={tutorial.close}

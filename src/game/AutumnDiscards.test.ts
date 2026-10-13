@@ -7,6 +7,9 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { parseClassicRunSnapshot } from './validateClassicRun'
+import { advanceRound } from '../test/roundHelpers'
+
+// Autumn's extra discard is a free REDRAW: it is spent before Turns.
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -37,7 +40,7 @@ function fixture() {
   ]
   state.deadWall = [new Tile(TileSuit.Wind, 1, 'dead-1')]
   state.drawIndex = 0
-  state.discardsRemaining = 3
+  state.redrawsRemaining = 3
   state.faceDownTileIds.clear()
   state.selectedTileIds.clear()
   state.targetScore = 1e9
@@ -45,50 +48,49 @@ function fixture() {
   return { game, state }
 }
 
-it.each(['draw', 'discard', 'redraw', 'play'] as const)(
-  'grants one actual discard on an Autumn drawn through %s, not during availability checks',
+it.each(['draw', 'redraw', 'play'] as const)(
+  'grants one actual free redraw on an Autumn drawn through %s, not during availability checks',
   (type) => {
     const { game, state } = fixture()
     if (type === 'draw') state.handTiles.pop()
     const onDraw = vi.spyOn(state.mandateEffectSystem, 'onDraw')
     const action =
-      type === 'discard'
-        ? { type, tileId: 'hand-0' }
-        : type === 'play'
-          ? { type, tileIds: ['hand-0', 'hand-1', 'hand-2'] }
-          : type === 'redraw'
-            ? { type, tileIds: ['hand-0'] }
-            : { type }
+      type === 'play'
+        ? { type, tileIds: ['hand-0', 'hand-1', 'hand-2'] }
+        : type === 'redraw'
+          ? { type, tileIds: ['hand-0'] }
+          : { type }
     const before = game.captureRun()
     expect(game.canPerformAction(action)).toBe(true)
     expect(game.canPerformAction(action)).toBe(true)
     expect(game.captureRun()).toEqual(before)
     expect(game.processAction(action).success).toBe(true)
-    expect(state.discardsRemaining).toBe(type === 'discard' ? 3 : 4)
+    // A REDRAW spends a free redraw first; the Autumn it draws returns one.
+    expect(state.redrawsRemaining).toBe(type === 'redraw' ? 3 : 4)
     expect(state.seasonSystem.getAdditionalDiscards()).toBe(1)
     expect(state.seasonSystem.calculateYakuBonus()).toBeCloseTo(0.2)
     expect(state.handTiles).toHaveLength(14)
     expect(onDraw).toHaveBeenCalledTimes(1)
-    const resource = state.discardsRemaining
+    const resource = state.redrawsRemaining
     expect(
-      game.processAction({ type: 'discard', tileId: state.handTiles[0].id })
+      game.processAction({ type: 'redraw', tileIds: [state.handTiles[0].id] })
         .success
     ).toBe(true)
-    expect(state.discardsRemaining).toBe(resource - 1)
+    expect(state.redrawsRemaining).toBe(resource - 1)
   }
 )
 
-it('stacks replacement-chain grants once, survives exact restore, and allows the last earned discard', () => {
+it('stacks replacement-chain grants once, survives exact restore, and spends earned redraws before Turns', () => {
   const { game, state } = fixture()
-  state.discardsRemaining = 0
+  state.redrawsRemaining = 0
   state.deadWall.unshift(Tile.createSeason(SeasonType.Autumn, 'autumn-2'))
-  expect(game.canPerformAction({ type: 'discard', tileId: 'hand-0' })).toBe(
-    false
-  )
+  const turns = state.handsRemaining
   expect(
     game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
-  expect(state.discardsRemaining).toBe(2)
+  // With no free redraw, this REDRAW spent a Turn and drew two Autumns.
+  expect(state.handsRemaining).toBe(turns - 1)
+  expect(state.redrawsRemaining).toBe(2)
   expect(state.seasonSystem.calculateYakuBonus()).toBeCloseTo(0.4)
   const saved = parseClassicRunSnapshot(
     JSON.parse(JSON.stringify(game.captureRun()))
@@ -97,17 +99,23 @@ it('stacks replacement-chain grants once, survives exact restore, and allows the
   expect(game.captureRun()).toEqual(saved)
   for (let i = 0; i < 2; i++) {
     expect(
-      game.processAction({ type: 'discard', tileId: game.getHandTiles()[0].id })
-        .success
+      game.processAction({
+        type: 'redraw',
+        tileIds: [game.getHandTiles()[0].id],
+      }).success
     ).toBe(true)
-    expect(game.getState().discardsRemaining).toBe(1 - i)
+    expect(game.getState().redrawsRemaining).toBe(1 - i)
+    expect(game.getState().handsRemaining).toBe(turns - 1)
   }
-  const exhausted = game.captureRun()
+  // Earned redraws spent, the next REDRAW costs a Turn again.
   expect(
-    game.processAction({ type: 'discard', tileId: game.getHandTiles()[0].id })
-      .success
-  ).toBe(false)
-  expect(game.captureRun()).toEqual(exhausted)
+    game.processAction({
+      type: 'redraw',
+      tileIds: [game.getHandTiles()[0].id],
+    }).success
+  ).toBe(true)
+  expect(game.getState().redrawsRemaining).toBe(0)
+  expect(game.getState().handsRemaining).toBe(turns - 2)
 })
 
 it('grants no normal bonus for an actual corrupted Autumn draw', () => {
@@ -118,7 +126,7 @@ it('grants no normal bonus for an actual corrupted Autumn draw', () => {
     game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.seasonSystem.getActiveSeason()?.corruptedType).toBe('Decay')
-  expect(state.discardsRemaining).toBe(3)
+  expect(state.redrawsRemaining).toBe(2)
   expect(state.seasonSystem.calculateYakuBonus()).toBe(0)
 })
 
@@ -135,7 +143,7 @@ it.each(['Autumn', 'Winter'] as const)(
     expect(game.canPerformAction(action)).toBe(true)
     expect(state.omenSystem.getLockedSeason()).toBe(lockedSeasonType)
     expect(game.processAction(action).success).toBe(true)
-    expect(state.discardsRemaining).toBe(lockedSeasonType === 'Autumn' ? 4 : 3)
+    expect(state.redrawsRemaining).toBe(lockedSeasonType === 'Autumn' ? 3 : 2)
     expect(state.omenSystem.applyLockedSeason()).toBeNull()
   }
 )
@@ -147,42 +155,42 @@ it('grants the resource even when its replacement is exhausted, without inventin
   expect(
     game.processAction({ type: 'play', tileIds: ['hand-0', 'hand-1'] }).success
   ).toBe(true)
-  expect(state.discardsRemaining).toBe(4)
+  expect(state.redrawsRemaining).toBe(4)
   expect(state.handTiles).toHaveLength(12)
   expect(state.phase).toBe('gameplay')
 })
 
-it('expires the grant at the next round instead of carrying unused discards forward', () => {
+it('expires the grant at the next round instead of carrying unused redraws forward', () => {
   const { game, state } = fixture()
   state.wallTemplate = state.wallTemplate.filter((t) => !t.isBonus)
   expect(
     game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
-  expect(state.discardsRemaining).toBe(4)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  game.exitShop()
-  expect(game.getState().discardsRemaining).toBe(3)
+  expect(state.redrawsRemaining).toBe(3)
+  advanceRound(game)
+  expect(game.getState().redrawsRemaining).toBe(0)
   expect(game.getState().seasonSystem.getAdditionalDiscards()).toBe(0)
 })
 
 it.each(['decree-recycler', 'decree-waste-not'])(
-  'does not erase a spent discard for %s when Autumn grants a replacement action',
+  'does not erase a spent redraw for %s when Autumn grants a replacement',
   (id) => {
     const { game, state } = fixture()
     const decree = ALL_DECREES.find((d) => d.id === id)!
     expect(state.decreeSystem.acquireDecree(decree)).not.toBeNull()
-    // A one-discard expenditure and one Autumn grant leave the counter at 3.
+    // One free redraw spent and one Autumn grant leave the counter at 3.
     expect(
-      game.processAction({ type: 'discard', tileId: 'hand-13' }).success
+      game.processAction({ type: 'redraw', tileIds: ['hand-13'] }).success
     ).toBe(true)
-    expect(state.discardsRemaining).toBe(3)
+    expect(state.redrawsRemaining).toBe(3)
     const ids = ['hand-0', 'hand-1']
     const forecast = game.previewScore(ids)!
     const noDecree = state.decreeSystem.getOwnedDecrees()[0]
     state.decreeSystem.removeDecree(noDecree.id)
     const base = game.previewScore(ids)!
+    // Recycler pays +10 for the one tile actually redrawn this round.
     expect(forecast.additiveBonus - base.additiveBonus).toBe(
-      id === 'decree-recycler' ? 20 : 0
+      id === 'decree-recycler' ? 10 : 0
     )
     expect(forecast.equation!.multiplier).toBe(base.equation!.multiplier)
     state.decreeSystem.acquireDecree(decree)
@@ -204,8 +212,8 @@ it('includes naturally dealt Autumns in the first-round resource budget', () => 
       .getSeasonStack()
       .filter((s) => s.type === 'Autumn' && !s.isCorrupted).length
     observedAutumns += normalAutumns
-    expect(state.discardsRemaining).toBe(
-      3 + state.decreeSystem.getAdditionalDiscards() + normalAutumns
+    expect(state.redrawsRemaining).toBe(
+      Math.max(0, state.decreeSystem.getAdditionalDiscards()) + normalAutumns
     )
   }
   expect(observedAutumns).toBeGreaterThan(0)

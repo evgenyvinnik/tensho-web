@@ -28,11 +28,6 @@ const GameplayScreen = lazy(() =>
     default: m.GameplayScreen,
   }))
 )
-const TableLoopScreen = lazy(() =>
-  import('./components/screens/TableLoopScreen').then((m) => ({
-    default: m.TableLoopScreen,
-  }))
-)
 const ShopScreen = lazy(() =>
   import('./components/screens/ShopScreen').then((m) => ({
     default: m.ShopScreen,
@@ -91,7 +86,6 @@ function App() {
       createAppRouter({
         MenuScreen,
         GameplayScreen: ResumableGameplay,
-        TableLoopScreen,
         ShopScreen: ResumableShop,
         GameOverScreen: ResumableResult,
         AchievementsScreen,

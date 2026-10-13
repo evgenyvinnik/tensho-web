@@ -4,6 +4,8 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { Tile, TileSuit } from '../core/Tile'
+import { advanceRound, clearRound } from '../test/roundHelpers'
+import { SWIFT_CLEAR_SPARE_TURNS } from './playRules'
 
 afterEach(() => {
   vi.useRealTimers()
@@ -28,6 +30,8 @@ function win(game: GameOrchestrator) {
   state.seasonSystem.clear()
   state.targetScore = 1
   state.roundManager.getCurrentRound()!.scoreTarget = 1
+  // Cleared on the last Turn: no new Omen muddies the durations under test.
+  state.handsRemaining = 1
   state.handTiles = [
     new Tile(TileSuit.Pinzu, 2, 'omen-duration-a'),
     new Tile(TileSuit.Pinzu, 2, 'omen-duration-b'),
@@ -39,45 +43,58 @@ function win(game: GameOrchestrator) {
   expect(result.success).toBe(true)
 }
 
-it('ages the prior round restriction on skip, without spending the freshly earned restriction', () => {
+// Omens are earned by swift clears (a Small or Large round cleared with Turns
+// to spare). Existing durations age at each round's end before a new Omen is
+// earned, so the new one keeps its full duration.
+const swift = { spareTurns: SWIFT_CLEAR_SPARE_TURNS }
+
+it('ages the prior round restriction at the next clear, without spending the freshly earned restriction', () => {
   const { game, state } = start(19)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  clearRound(game, swift)
+  // The Small round settled its interest before earning the restriction.
+  expect(state.lastRoundSummary!.interest).toBe(5)
   expect(state.omenSystem.isInterestBlocked()).toBe(true)
-  expect(state.gold).toBe(115)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  game.exitShop()
+  clearRound(game, swift)
+  expect(state.lastRoundSummary!.interest).toBe(0)
+  expect(state.lastRoundSummary!.omenId).not.toBeNull()
   expect(state.omenSystem.isInterestBlocked()).toBe(false)
-  expect(state.gold).toBe(125) // Speed, not a skipped-round payout.
+  game.exitShop()
   win(game)
   expect(state.lastRoundSummary!.interest).toBe(5)
 })
 
 it('still withholds interest if the restricted incoming round is played, then expires', () => {
   const { game, state } = start(19)
-  game.processAction({ type: 'skip' })
+  advanceRound(game, swift)
   win(game)
   expect(state.lastRoundSummary!.interest).toBe(0)
   expect(state.omenSystem.isInterestBlocked()).toBe(false)
 })
 
-it('counts a skipped round against an earned three-round interest boost', () => {
+it('spends an earned three-round interest boost one round at a time', () => {
   const { game, state } = start(1)
-  game.processAction({ type: 'skip' })
+  advanceRound(game, swift)
   expect(state.omenSystem.getInterestCapBonus()).toBe(2)
-  game.processAction({ type: 'skip' })
-  // Large was skipped: only Boss and the next Small remain boosted.
   win(game)
   expect(state.lastRoundSummary!.interest).toBe(7)
+  game.exitShop()
+  win(game)
+  expect(state.lastRoundSummary!.roundType).toBe('Boss')
+  expect(state.lastRoundSummary!.interest).toBe(7)
+  // Boosted for Large, Boss and the next Small.
   expect(state.omenSystem.getInterestCapBonus()).toBe(2)
   state.omenSystem.onRoundEnd()
   expect(state.omenSystem.getInterestCapBonus()).toBe(0)
 })
 
-it('does not age duration effects on a rejected Boss skip', () => {
+it('earns no Omen at a Boss clear, however many Turns are spared', () => {
   const { game, state } = start(1)
-  game.processAction({ type: 'skip' })
-  game.processAction({ type: 'skip' })
-  expect(game.processAction({ type: 'skip' }).success).toBe(false)
-  state.omenSystem.onRoundEnd()
+  advanceRound(game, swift)
+  advanceRound(game)
+  clearRound(game, { spareTurns: 5 })
+  expect(state.lastRoundSummary!.roundType).toBe('Boss')
+  expect(state.lastRoundSummary!.omenId).toBeNull()
   expect(state.omenSystem.getInterestCapBonus()).toBe(2)
 })
 

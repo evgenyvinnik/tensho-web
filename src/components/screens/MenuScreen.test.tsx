@@ -62,19 +62,21 @@ vi.mock('@react-spring/web', () => {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  useUpdateStore.setState({ available: false, busy: false, error: null })
+  useUpdateStore.setState({ available: false, busy: false })
   vi.mocked(preloadMenuAssets).mockReturnValue(new Promise(() => {}))
   vi.mocked(preloadTileImages).mockReturnValue(new Promise(() => {}))
 })
 afterEach(() => vi.restoreAllMocks())
 
-it('keeps navigation and update controls available while artwork is pending', () => {
-  useUpdateStore.getState().announce(vi.fn())
+it('keeps navigation available while artwork is pending, with no update prompt', () => {
+  // Updates install themselves at a safe moment; the menu never asks.
+  useUpdateStore.setState({ available: true, busy: false })
   render(<MenuScreen />)
   expect(preloadMenuAssets).toHaveBeenCalled()
   expect(preloadTileImages).toHaveBeenCalled()
-  expect(screen.getByRole('button', { name: 'Play' })).toBeEnabled()
-  expect(screen.getByRole('button', { name: 'Update available' })).toBeEnabled()
+  expect(screen.getByRole('button', { name: 'New Run' })).toBeEnabled()
+  expect(screen.queryByRole('button', { name: /update/i })).toBeNull()
+  expect(screen.queryByRole('button', { name: /Table Loop/i })).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
   expect(navigateTo).toHaveBeenCalledWith('/settings')
   expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
@@ -85,7 +87,7 @@ it('keeps the menu usable when background artwork fails', async () => {
   const report = vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.mocked(preloadTileImages).mockRejectedValue(error)
   await act(async () => render(<MenuScreen />))
-  expect(screen.getByRole('button', { name: 'Play' })).toBeEnabled()
+  expect(screen.getByRole('button', { name: 'New Run' })).toBeEnabled()
   fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
   expect(navigateTo).toHaveBeenCalledWith('/settings')
   expect(report).toHaveBeenCalledWith('Failed to load assets:', error)

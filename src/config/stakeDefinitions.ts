@@ -484,7 +484,7 @@ export function getStakeModifierDescriptions(tier: number): string[] {
     descriptions.push(`${Math.round(mod.eternalChance * 100)}% Eternal stickers on shop Decrees`)
   }
   if (mod.redrawPenalty) {
-    descriptions.push(`-${mod.redrawPenalty} Redraw per round`)
+    descriptions.push(`-${mod.redrawPenalty} Turn per round`)
   }
   if (mod.perishableChance) {
     descriptions.push(`${Math.round(mod.perishableChance * 100)}% Perishable stickers on shop Decrees`)

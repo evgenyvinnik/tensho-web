@@ -39,7 +39,7 @@ import {
   REGULAR_TILE_TYPES,
 } from '../rules/CompleteHandSubset'
 import {
-  parsePartialHand,
+  parsePlay,
   toPartialParsedHand,
 } from '../rules/PartialHandParser'
 import { eventBus } from './EventBus'
@@ -48,10 +48,6 @@ import { ascendYaku } from '../rules/yakuAscension'
 import { observatoryMultiplier } from '../systems/observatory'
 import { ShopSession } from './ShopSession'
 import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
-import { buildCoachAdvice } from '../gameplay/beginnerCoach'
-import { chooseHandShapeAction } from '../gameplay/handShapePlan'
-import type { HandBuildingAdvice } from '../gameplay/handBuildingAdvice'
-import { calculateShanten, getEffectiveTiles } from '../rules/ShantenCalculator'
 import {
   ActionProcessor,
   PlayerAction,
@@ -94,6 +90,7 @@ import {
   CelestialOrbSystem,
   CelestialOrb,
   mapYakuIdToCategory,
+  playOrbCategories,
 } from '../systems/CelestialOrbSystem'
 import {
   FATE_SEALS,
@@ -121,7 +118,11 @@ import { DebuffSystem } from './DebuffSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
-import { MAX_TACTICAL_PLAY_TILES } from './playRules'
+import {
+  MAX_TACTICAL_PLAY_TILES,
+  SWIFT_CLEAR_SPARE_TURNS,
+  TURNS_PER_ROUND,
+} from './playRules'
 import { createSeededRandom, runRandom, RunRandom } from './RunRandom'
 import { captureClassicState, restoreClassicState } from './ClassicRunState'
 import {
@@ -160,6 +161,10 @@ export interface RoundCashOutSummary {
   goldAfter: number
   nextRoundType: RoundType | null
   nextTarget: number | null
+  /** Omen earned by a swift clear (Turns to spare), if any. */
+  omenId?: string | null
+  /** Gold the swift-clear Omen paid at once, included in netGoldChange. */
+  omenGold?: number
 }
 
 /**
@@ -204,13 +209,20 @@ export interface OrchestratorState {
   gold: number
 
   // Round state
+  /**
+   * Turns left this round, shared by Play and REDRAW: the one budget the HUD
+   * shows. (The field keeps its historical name for saves.)
+   */
   handsRemaining: number
   /**
-   * Hands granted at the start of this round. Charters, Decrees and Mandates
-   * all move the allowance off the config default, so hands-played must be
-   * measured against this rather than against `config.handsPerRound`.
+   * Turns granted at the start of this round. Charters, Decrees and Mandates
+   * all move the allowance off the config default.
    */
   handsAllowance: number
+  /** Plays made this round. Missing in legacy saves: derived on restore. */
+  playsThisRound?: number
+  /** Tiles REDRAW has sent to the river this round. */
+  tilesRedrawnThisRound?: number
   /**
    * Permanent score multiplier charged by a Decree that refused a loss
    * (Immortal Decree). 1 while no such rescue has happened.
@@ -225,9 +237,14 @@ export interface OrchestratorState {
   handsPlayedThisRun: number
   /** Proven complete concealed plays. Absent legacy history means zero. */
   completeConcealedHandsPlayed?: number
-  /** Round-scoped pledge. Missing legacy state means no declaration was made. */
+  /** Retired Riichi pledge; legacy saves may still carry it. Ignored. */
   riichiStatus?: 'available' | 'active' | 'spent'
+  /** Retired separate discard budget; always 0 (REDRAW replaced Discard). */
   discardsRemaining: number
+  /**
+   * Free redraws granted by items (Charters, Decrees, Omens, Autumn). A REDRAW
+   * spends one of these before it spends a Turn.
+   */
   redrawsRemaining: number
   targetScore: number
 
@@ -307,9 +324,11 @@ interface RoundConfig {
 }
 
 const DEFAULT_ROUND_CONFIG: RoundConfig = {
-  handsPerRound: 4,
-  discardsPerRound: 3,
-  redrawsPerRound: 3,
+  // Turns: Play and REDRAW share this budget.
+  handsPerRound: TURNS_PER_ROUND,
+  // Free redraws come only from items.
+  discardsPerRound: 0,
+  redrawsPerRound: 0,
   startingHandSize: 14,
 }
 
@@ -391,7 +410,7 @@ export class GameOrchestrator {
     if (this.state.phase === 'menu')
       throw new Error('There is no Classic run to save')
     return {
-      version: 2,
+      version: 3,
       state: captureClassicState(this.state),
       config: { ...this.config },
       shop: this.shop.toState(),
@@ -407,7 +426,7 @@ export class GameOrchestrator {
   /** Internal typed restore. Stage every subsystem before touching the live run. */
   restoreRun(saved: ClassicRunSnapshot): void {
     this.assertCheckpointBoundary()
-    if (saved.version !== 1 && saved.version !== 2)
+    if (saved.version !== 3)
       throw new Error('Unsupported Classic run snapshot')
     for (const counter of [
       saved.runtimeItemCounter,
@@ -668,57 +687,57 @@ export class GameOrchestrator {
     })
   }
 
-  /** Calculate the resources granted for the active round. */
+  /**
+   * Calculate the resources granted for the active round.
+   *
+   * Turns are one budget for Play and REDRAW. Everything that used to grant
+   * hands grants Turns. Everything that used to grant discards or redraws
+   * grants free redraws instead, which REDRAW spends before a Turn. Every
+   * penalty, whatever it used to remove, costs Turns.
+   */
   private initializeRoundResources(): void {
     const charterEffects = this.state.charterSystem.calculateEffects()
     const stakePenalty =
       this.state.roundManager.getStakeModifiers().redrawPenalty
+    const decreeRedrawDelta = this.state.decreeSystem.getAdditionalDiscards()
     this.state.deadWallWritUsedThisRound = false
-    this.state.riichiStatus = 'available'
+    delete this.state.riichiStatus
+    this.state.playsThisRound = 0
+    this.state.tilesRedrawnThisRound = 0
 
     this.state.handsRemaining = Math.max(
       1,
       this.config.handsPerRound +
         charterEffects.additionalHands -
-        charterEffects.handsPenalty +
+        charterEffects.handsPenalty -
+        charterEffects.redrawsPenalty -
+        stakePenalty +
+        Math.min(0, decreeRedrawDelta) +
         this.state.decreeSystem.getAdditionalDraws()
     )
-    this.state.discardsRemaining = this.getRoundDiscardAllowance()
+    this.state.discardsRemaining = 0
     this.state.redrawsRemaining = Math.max(
       0,
       this.config.redrawsPerRound +
+        this.config.discardsPerRound +
         this.state.omenRedrawBonus +
-        charterEffects.additionalRedraws -
-        charterEffects.redrawsPenalty -
-        stakePenalty
+        this.state.omenDiscardBonus +
+        charterEffects.additionalRedraws +
+        Math.max(0, decreeRedrawDelta) +
+        this.state.seasonSystem.getAdditionalDiscards()
     )
 
-    const singleHandMandate =
-      this.state.roundManager.checkMandateEffect('single_hand')
-    if (singleHandMandate.active) {
-      this.state.handsRemaining = 1
-    }
-
-    const noDiscardsMandate =
-      this.state.roundManager.checkMandateEffect('no_discards')
-    if (noDiscardsMandate.active) {
+    // The Water: no REDRAW this round, free or paid.
+    if (this.state.roundManager.checkMandateEffect('no_discards').active)
       this.state.redrawsRemaining = 0
-    }
 
     this.state.handsAllowance = this.state.handsRemaining
     this.state.lastHandScore = undefined
   }
 
-  /** Granted discard budget, distinct from unspent actions. */
-  private getRoundDiscardAllowance(): number {
-    return (
-      Math.max(
-        0,
-        this.config.discardsPerRound +
-          this.state.omenDiscardBonus +
-          this.state.decreeSystem.getAdditionalDiscards()
-      ) + this.state.seasonSystem.getAdditionalDiscards()
-    )
+  /** Plays made this round, including legacy saves without the counter. */
+  private getPlaysThisRound(): number {
+    return this.state.playsThisRound ?? 0
   }
 
   /** Shared tactical/complete sequence permission from Seasons and active Decrees. */
@@ -733,71 +752,6 @@ export class GameOrchestrator {
       allowSequenceOverlap:
         !this.areFlowerBonusesSuppressed() &&
         this.state.flowerSystem.hasMutation('plum_overlap'),
-    }
-  }
-
-  /** Explicitly requested workshop, never an automatic action or hidden-wall solver. */
-  getHandBuildingAdvice(): HandBuildingAdvice {
-    const state = this.state
-    const tiles = state.handTiles
-    if (tiles.some((tile) => state.faceDownTileIds.has(tile.id)))
-      return { kind: 'hidden' }
-    if (
-      !state.isRunActive ||
-      state.phase !== 'gameplay' ||
-      state.handsRemaining <= 0
-    )
-      return { kind: 'unavailable' }
-    const fixed = state.roundManager.checkMandateEffect('fixed_hand_size')
-    const requiredPlaySize = fixed.active ? Number(fixed.value) : null
-    if (
-      tiles.length !== 14 ||
-      state.melds.length ||
-      tiles.some((tile) => tile.isBonus) ||
-      Object.values(this.getValidationOptions()).some(Boolean) ||
-      ['all_wild', 'honor_as_suited', 'shanten_clemency'].some((id) =>
-        this.isDecreeRuleActive(id)
-      ) ||
-      (requiredPlaySize !== null && requiredPlaySize !== 14)
-    )
-      return { kind: 'unsupported' }
-    if (this.findCompleteHandSelection()) return { kind: 'complete' }
-    const advice = buildCoachAdvice({
-      tiles,
-      partialRules: this.getPartialHandRules(),
-      concealedIds: state.faceDownTileIds,
-      requiredTileIds: state.mandateEffectSystem.getLockedTileIds(),
-      scoreSelection: (ids) => this.previewScore(ids)?.finalScore ?? null,
-      remainingToTarget: Math.max(0, state.targetScore - state.score),
-      handsRemaining: state.handsRemaining,
-    })
-    if (advice && advice.best.score >= state.targetScore - state.score)
-      return { kind: 'clear' }
-    const plan = chooseHandShapeAction(
-      {
-        visibleTiles: tiles,
-        handTileCount: tiles.length,
-        lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
-        requiredPlaySize,
-        advice,
-        remainingToTarget: Math.max(0, state.targetScore - state.score),
-        // This workshop explains redraws only. Never spends the discard resource.
-        canPerform: (action) =>
-          action.type === 'redraw' && this.canPerformAction(action),
-      },
-      { batchRedraws: true, fullHandPledge: state.riichiStatus === 'active' }
-    )
-    if (!plan || plan.action.type !== 'redraw') return { kind: 'unavailable' }
-    const ids = new Set(plan.action.tileIds)
-    const keep = tiles.filter((tile) => !ids.has(tile.id))
-    return {
-      kind: 'redraw',
-      keep,
-      exchange: tiles.filter((tile) => ids.has(tile.id)),
-      improving: getEffectiveTiles(keep),
-      needed: plan.shanten + 1,
-      form: calculateShanten(keep).bestForm,
-      redrawsRemaining: state.redrawsRemaining,
     }
   }
 
@@ -1256,8 +1210,11 @@ export class GameOrchestrator {
         lockedSeason ?? undefined
       )
       applySeasonWallEffect(this.state, season)
-      this.state.discardsRemaining +=
-        this.state.seasonSystem.getAdditionalDiscards() - previousAutumnDiscards
+      // Autumn's extra discard is a free REDRAW now (none under The Water).
+      if (!this.state.roundManager.checkMandateEffect('no_discards').active)
+        this.state.redrawsRemaining +=
+          this.state.seasonSystem.getAdditionalDiscards() -
+          previousAutumnDiscards
       if (season?.isCorrupted && season.corruptedType) {
         eventBus.emit('seasonCorrupted', {
           corruptedType: season.corruptedType,
@@ -1373,15 +1330,13 @@ export class GameOrchestrator {
 
     // Validate action
     const validation =
-      action.type === 'declareRiichi' || action.type === 'abandonRiichi'
-        ? this.validateRiichiAction(action.type)
-        : action.type === 'play'
-          ? this.validatePlaySelection(action.tileIds)
-          : action.type === 'useSeal' ||
-              action.type === 'useScript' ||
-              action.type === 'useOrb'
-            ? this.validateConsumableAction(action)
-            : this.actionProcessor.validate(action, snapshot)
+      action.type === 'play'
+        ? this.validatePlaySelection(action.tileIds)
+        : action.type === 'useSeal' ||
+            action.type === 'useScript' ||
+            action.type === 'useOrb'
+          ? this.validateConsumableAction(action)
+          : this.actionProcessor.validate(action, snapshot)
     if (!validation.isValid) {
       return {
         success: false,
@@ -1415,9 +1370,13 @@ export class GameOrchestrator {
       selectedTileIds: Array.from(this.state.selectedTileIds),
       wallRemaining: this.state.wall.length - this.state.drawIndex,
       deadWallRemaining: this.state.deadWall.length,
-      redrawReplacementCapacity: this.getRedrawReplacementCapacity(),
+      redrawReplacementCapacity: this.getRedrawReplacementCapacity(
+        this.state.handTiles.length
+      ),
       mandateRestrictions: {
         lockedTileIds: this.state.mandateEffectSystem.getLockedTileIds(),
+        noDiscards:
+          this.state.roundManager.checkMandateEffect('no_discards').active,
       },
       handsRemaining: this.state.handsRemaining,
       discardsRemaining: this.state.discardsRemaining,
@@ -1444,63 +1403,6 @@ export class GameOrchestrator {
     }
   }
 
-  /** This is a Tensho full-hand pledge, not traditional locked-rack Riichi. */
-  getRiichiState() {
-    const status = this.state.riichiStatus ?? 'available'
-    const reason =
-      !this.state.isRunActive ||
-      this.state.phase !== 'gameplay' ||
-      this.state.handsRemaining < 1
-        ? 'inactive'
-        : status === 'active'
-          ? null
-          : status === 'spent'
-            ? 'spent'
-            : this.state.gold < 1
-              ? 'gold'
-              : this.state.faceDownTileIds.size > 0
-                ? 'hidden'
-                : this.state.melds.some((meld) => !meld.isConcealed)
-                  ? 'open'
-                  : this.state.roundManager.checkMandateEffect(
-                        'fixed_hand_size'
-                      ).active
-                    ? 'boss'
-                    : this.findCompleteHandSelection(true)
-                      ? 'complete'
-                      : null
-    return { status, reason, cost: 1 } as const
-  }
-
-  private validateRiichiAction(
-    type: 'declareRiichi' | 'abandonRiichi'
-  ): ValidationResult {
-    const { status, reason } = this.getRiichiState()
-    const valid =
-      reason !== 'inactive' &&
-      (type === 'abandonRiichi'
-        ? status === 'active'
-        : status === 'available' && reason === null)
-    return {
-      isValid: valid,
-      errors: valid ? [] : ['Riichi pledge is unavailable'],
-    }
-  }
-
-  private executeRiichiAction(
-    type: 'declareRiichi' | 'abandonRiichi',
-    effects: Effect[]
-  ): ActionResult {
-    this.state.riichiStatus = type === 'declareRiichi' ? 'active' : 'spent'
-    if (type === 'declareRiichi') this.changeGold(-1, 'Riichi pledge', effects)
-    effects.push({
-      type: 'riichi_changed',
-      description: `Riichi pledge ${this.state.riichiStatus}`,
-    })
-    eventBus.emit('riichiChanged', { status: this.state.riichiStatus })
-    return { success: true, effects }
-  }
-
   /**
    * Execute a validated action
    */
@@ -1508,23 +1410,14 @@ export class GameOrchestrator {
     const effects: Effect[] = []
 
     switch (action.type) {
-      case 'declareRiichi':
-      case 'abandonRiichi':
-        return this.executeRiichiAction(action.type, effects)
       case 'draw':
         return this.executeDraw(effects)
-
-      case 'discard':
-        return this.executeDiscard(action.tileId, effects)
 
       case 'play':
         return this.executePlay(action.tileIds, effects)
 
       case 'redraw':
         return this.executeRedraw(action.tileIds, effects)
-
-      case 'skip':
-        return this.executeSkip(effects)
 
       case 'useSeal':
         return this.executeUseSeal(action.sealId, action.targets, effects)
@@ -1592,64 +1485,6 @@ export class GameOrchestrator {
   }
 
   /**
-   * Execute discard action
-   */
-  private executeDiscard(tileId: string, effects: Effect[]): ActionResult {
-    if (this.state.mandateEffectSystem.isTileLocked(tileId)) {
-      return {
-        success: false,
-        effects,
-        errors: ['Locked tiles cannot be discarded'],
-      }
-    }
-
-    const tileIndex = this.state.handTiles.findIndex((t) => t.id === tileId)
-    if (tileIndex === -1) {
-      return {
-        success: false,
-        effects,
-        errors: ['Tile not found in hand'],
-      }
-    }
-
-    const tile = this.state.handTiles[tileIndex]
-    this.state.handTiles.splice(tileIndex, 1)
-    this.state.discards.push(tile)
-    this.state.discardsRemaining--
-    this.state.seasonSystem.onDiscard()
-    this.state.selectedTileIds.delete(tileId)
-    this.state.faceDownTileIds.delete(tileId)
-
-    const decreeGold = this.state.decreeSystem.calculateDiscardGold(
-      1,
-      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
-    )
-    this.changeGold(decreeGold, 'Discard Decree effect', effects, 'decree')
-
-    effects.push({
-      type: 'tile_removed',
-      description: `Discarded tile: ${tile.displayName}`,
-      tileId,
-    })
-
-    eventBus.emit('tileDiscarded', {
-      tileId,
-      toDeadPool: true,
-    })
-
-    if (tile.modifiers.seal === SealType.Purple) {
-      this.createRandomConsumable('FateSeal', effects)
-    }
-
-    // A discard is a complete cycle: immediately draw its replacement so the
-    // game loop works independently of React timing/effects.
-    this.refillAfterCycle(effects)
-    this.enforcePlayability(effects)
-
-    return { success: true, effects }
-  }
-
-  /**
    * Return whether the selected tiles resolve as a complete hand under the
    * run's active rule-changing Decrees.
    */
@@ -1696,9 +1531,7 @@ export class GameOrchestrator {
       (options.meldMayServeAsPair ? 12 : 14) -
       Number(options.allowSequenceOverlap)
     const clemency =
-      !genuineOnly &&
-      this.state.riichiStatus !== 'active' &&
-      this.isDecreeRuleActive('shanten_clemency')
+      !genuineOnly && this.isDecreeRuleActive('shanten_clemency')
     if (visible.length < minimum - Number(clemency)) return null
     if (this.isDecreeRuleActive('all_wild') && visible.length >= 14) {
       const chosen = [...visible]
@@ -1835,24 +1668,13 @@ export class GameOrchestrator {
     if (!basic.isValid) return basic
 
     const errors: string[] = []
-    if (
-      this.state.riichiStatus === 'active' &&
-      !this.isGenuineConcealedSelection(tileIds)
-    ) {
-      errors.push(
-        'Riichi requires a complete concealed hand; abandon the pledge to play tactically'
-      )
-    }
     const fixed = this.state.roundManager.checkMandateEffect('fixed_hand_size')
     if (fixed.active && tileIds.length !== fixed.value) {
       errors.push(`Boss Mandate: Must play exactly ${fixed.value} tiles`)
     }
     const single = this.state.roundManager.checkMandateEffect('single_hand')
-    if (
-      single.active &&
-      this.state.handsAllowance - this.state.handsRemaining > 0
-    ) {
-      errors.push('Boss Mandate: Only one hand allowed this round')
+    if (single.active && this.getPlaysThisRound() > 0) {
+      errors.push('Boss Mandate: Only one Play allowed this round')
     }
     const mandate = this.state.mandateEffectSystem.validateHandPlay(tileIds)
     if (!mandate.valid)
@@ -1862,7 +1684,7 @@ export class GameOrchestrator {
       !this.isCompleteHand(tileIds)
     ) {
       errors.push(
-        `Incomplete plays are limited to ${MAX_TACTICAL_PLAY_TILES} tiles. Stage a complete Mahjong hand to declare more.`
+        `A play that is not a complete Mahjong hand can use at most ${MAX_TACTICAL_PLAY_TILES} tiles.`
       )
     }
     return { isValid: errors.length === 0, errors }
@@ -1931,7 +1753,7 @@ export class GameOrchestrator {
 
     if (selectedTiles.length > MAX_TACTICAL_PLAY_TILES) return null
 
-    const parse = parsePartialHand(tilesToScore, this.getPartialHandRules())
+    const parse = parsePlay(tilesToScore, this.getPartialHandRules())
     const partial = this.calculateHandScore(
       tilesToScore,
       toPartialParsedHand(parse, tilesToScore),
@@ -2075,7 +1897,7 @@ export class GameOrchestrator {
     this.state.runScore += scoreResult.finalScore
     this.state.lastHandScore = scoreResult.finalScore
     this.state.handsPlayedThisRun++
-    if (this.state.riichiStatus === 'active') this.state.riichiStatus = 'spent'
+    this.state.playsThisRound = this.getPlaysThisRound() + 1
     if (
       !completeHand.usedShantenClemency &&
       completeHand.parsedHand.isConcealed
@@ -2150,6 +1972,7 @@ export class GameOrchestrator {
       score: scoreResult.finalScore,
       equation: scoreResult.equation,
       yakuIds: scoreResult.detectedYaku.map((y) => y.definition.id),
+      pattern: scoreResult.pattern.id,
     })
 
     eventBus.emit('scoreUpdate', {
@@ -2205,7 +2028,7 @@ export class GameOrchestrator {
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
 
-    const parse = parsePartialHand(tilesToScore, this.getPartialHandRules())
+    const parse = parsePlay(tilesToScore, this.getPartialHandRules())
     const parsedHand = toPartialParsedHand(parse, tilesToScore)
 
     const plumRecovery = this.planPlumRecovery(parse.groups, selectedTiles)
@@ -2227,6 +2050,7 @@ export class GameOrchestrator {
     this.state.runScore += finalScore
     this.state.lastHandScore = finalScore
     this.state.handsPlayedThisRun++
+    this.state.playsThisRound = this.getPlaysThisRound() + 1
     this.state.handsRemaining--
 
     if (scoreResult.goldEarned > 0) {
@@ -2285,6 +2109,7 @@ export class GameOrchestrator {
       score: finalScore,
       equation: scoreResult.equation,
       yakuIds: [],
+      pattern: scoreResult.pattern.id,
     })
 
     eventBus.emit('scoreUpdate', {
@@ -2371,7 +2196,12 @@ export class GameOrchestrator {
    * A fork reproduces Monsoon picks and Season corruption without advancing
    * the live random streams, consuming Omen locks, or collecting any rewards.
    */
-  private getRedrawReplacementCapacity(): number {
+  /**
+   * Playable replacements the wall can still supply, up to `limit`, after
+   * resolving the bonus-tile and dead-wall chains a draw would trigger. Runs
+   * on a forked random stream: asking never changes the run.
+   */
+  private getRedrawReplacementCapacity(limit: number): number {
     if (this.state.drawIndex >= this.state.wall.length) return 0
     const random = runRandom.fork()
     const draw = {
@@ -2387,7 +2217,7 @@ export class GameOrchestrator {
     )
     let lockedSeason = this.state.omenSystem.getLockedSeason()
     let capacity = 0
-    while (capacity < 3 && draw.drawIndex < draw.wall.length) {
+    while (capacity < limit && draw.drawIndex < draw.wall.length) {
       let tile = takeWallTile(draw, seasons.areDrawsRandomized(), random)
       while (tile && (tile.isFlower || tile.isSeason)) {
         if (tile.isSeason) {
@@ -2404,98 +2234,55 @@ export class GameOrchestrator {
   }
 
   /**
-   * Execute redraw action
+   * REDRAW: the selected tiles go to the river and the rack refills. Any
+   * number of tiles may go at once. A free redraw (from an item) is spent if
+   * one is left; otherwise the REDRAW spends a Turn.
    */
   private executeRedraw(tileIds: string[], effects: Effect[]): ActionResult {
-    const cycle: DrawCycle = { orchidReplacements: 0, drawnTiles: [] }
-    const beforeLimit = this.getHandSizeLimit()
-    if (
-      tileIds.some((tileId) =>
-        this.state.mandateEffectSystem.isTileLocked(tileId)
-      )
-    ) {
-      return {
-        success: false,
-        effects,
-        errors: ['Locked tiles cannot be redrawn'],
-      }
-    }
-
-    // Remove selected tiles
-    const removedTiles: Tile[] = []
+    const removed: Tile[] = []
     for (const tileId of tileIds) {
-      const idx = this.state.handTiles.findIndex((t) => t.id === tileId)
-      if (idx !== -1) {
-        removedTiles.push(this.state.handTiles[idx])
-        this.state.handTiles.splice(idx, 1)
-        this.state.selectedTileIds.delete(tileId)
-        this.state.faceDownTileIds.delete(tileId)
-        effects.push({
-          type: 'tile_removed',
-          description: `Returned tile: ${removedTiles[removedTiles.length - 1].displayName}`,
-          tileId,
-        })
-      }
+      const index = this.state.handTiles.findIndex((t) => t.id === tileId)
+      if (index === -1) continue
+      const [tile] = this.state.handTiles.splice(index, 1)
+      removed.push(tile)
+      this.state.discards.push(tile)
+      this.state.selectedTileIds.delete(tileId)
+      this.state.faceDownTileIds.delete(tileId)
+      effects.push({
+        type: 'tile_removed',
+        description: `Redrew ${tile.displayName}`,
+        tileId,
+      })
+      eventBus.emit('tileDiscarded', { tileId, toDeadPool: true })
     }
 
-    // Draw replacements
-    for (let i = 0; i < removedTiles.length; i++) {
-      const tile = this.drawTileInternal()
-      if (tile) {
-        if (tile.isFlower || tile.isSeason) {
-          this.handleBonusTile(tile, cycle)
-        } else {
-          this.collectDrawnTile(tile, cycle)
-        }
-      }
-    }
+    if (this.state.redrawsRemaining > 0) this.state.redrawsRemaining--
+    else this.state.handsRemaining--
+    this.state.tilesRedrawnThisRound =
+      (this.state.tilesRedrawnThisRound ?? 0) + removed.length
+    // Decay counts each REDRAW once, however many tiles it sends.
+    this.state.seasonSystem.onDiscard()
 
-    // Spring's new spaces are drawn before returned tiles re-enter circulation.
-    // The redraw below announces every newly held physical tile exactly once.
-    this.fillNewSeasonSlots(beforeLimit, effects, cycle, false)
-    this.resolveOrchidDraws(cycle, effects, false)
-
-    // Return tiles only after replacing them, so they cannot be their own
-    // immediate replacement. Drop the consumed prefix: it is draw history,
-    // not a second physical copy of a tile being returned to circulation.
-    this.state.wall = runRandom.shuffle('wall', [
-      ...this.state.wall.slice(this.state.drawIndex),
-      ...removedTiles,
-    ])
-    this.state.drawIndex = 0
-
-    this.state.handTiles.sort(Tile.compare)
-    this.state.redrawsRemaining--
+    const decreeGold = this.state.decreeSystem.calculateDiscardGold(
+      removed.length,
+      new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+    )
+    this.changeGold(decreeGold, 'Redraw Decree effect', effects, 'decree')
+    for (const tile of removed)
+      if (tile.modifiers.seal === SealType.Purple)
+        this.createRandomConsumable('FateSeal', effects)
 
     effects.push({
       type: 'round_state_changed',
-      description: `Redrawn ${removedTiles.length} tiles`,
+      description: `Redrew ${removed.length} tiles`,
       handsRemaining: this.state.handsRemaining,
       discardsRemaining: this.state.discardsRemaining,
       redrawsRemaining: this.state.redrawsRemaining,
     })
 
-    const drawnTiles = cycle.drawnTiles
-    for (const tile of drawnTiles) {
-      effects.push({
-        type: 'tile_added',
-        description: `Drew tile: ${tile.displayName}`,
-        tile,
-      })
-      eventBus.emit('tileDrawn', {
-        tileId: tile.id,
-        tilesRemaining: this.state.wall.length,
-      })
-    }
-    for (const tile of removedTiles) {
-      if (tile.modifiers.seal === SealType.Purple) {
-        this.createRandomConsumable('FateSeal', effects)
-      }
-    }
-    this.applyMandateDrawState(drawnTiles, effects)
-
+    // Replacements follow the round's draw rule (The Serpent draws three).
+    this.refillAfterCycle(effects)
     this.enforcePlayability(effects)
-
     return { success: true, effects }
   }
 
@@ -2531,77 +2318,6 @@ export class GameOrchestrator {
         description: `Boss Mandate locked ${mandateResult.lockedTileId}`,
       })
     }
-  }
-
-  /**
-   * Execute skip action
-   */
-  private executeSkip(effects: Effect[]): ActionResult {
-    const roundState = this.state.roundManager.getCurrentRound()
-
-    if (!roundState) {
-      return {
-        success: false,
-        effects,
-        errors: ['No active round'],
-      }
-    }
-
-    // Can only skip Small and Large rounds
-    if (roundState.roundType === 'Boss') {
-      return {
-        success: false,
-        effects,
-        errors: ['Cannot skip boss rounds'],
-      }
-    }
-
-    // A skipped round still spends prior duration effects. Age them before
-    // acquisition so this skip's new rewards retain their full duration.
-    this.state.omenSystem.onRoundEnd()
-
-    // Skip the round and award the documented Omen reward.
-    const skipResult = this.state.omenSystem.handleRoundSkip(
-      roundState.roundType
-    )
-    this.state.roundManager.skipRound()
-    // Seasons and their discard penalties belong to the skipped round, not
-    // the incoming deal. Pending Omen season locks live in a separate system.
-    this.state.seasonSystem.clear()
-    this.state.bambooSummerProtection = false
-    this.state.previousRoundYakuIds = new Set()
-    this.state.previousRoundYakuStreaks = {}
-    this.state.currentRoundYakuIds.clear()
-
-    for (let i = 0; i < skipResult.decreeSlotBonus; i++) {
-      this.state.decreeSystem.addSlot()
-    }
-    if (skipResult.immediateDecreeEdition) {
-      const edition = this.normalizeDecreeEdition(
-        skipResult.immediateDecreeEdition
-      )
-      if (edition) this.applyRandomDecreeEdition(edition)
-    }
-
-    if (skipResult.immediateGold > 0) {
-      this.state.gold += skipResult.immediateGold
-      eventBus.emit('goldChanged', {
-        previousGold: this.state.gold - skipResult.immediateGold,
-        newGold: this.state.gold,
-        delta: skipResult.immediateGold,
-        reason: 'Omen skip reward',
-      })
-    }
-
-    eventBus.emit('roundSkipped', {
-      roundType: roundState.roundType,
-      omenTagGranted: skipResult.omen?.id,
-    })
-
-    // Advance to next round
-    this.advanceRound()
-
-    return { success: true, effects }
   }
 
   /**
@@ -3570,10 +3286,11 @@ export class GameOrchestrator {
         roundType: roundState?.roundType ?? 'Small',
         scoreTarget: this.state.targetScore,
         currentScore: this.state.score,
-        handsPlayed: this.state.handsAllowance - this.state.handsRemaining,
+        handsPlayed: this.getPlaysThisRound(),
         maxHands: this.state.handsAllowance,
-        discardsRemaining: this.state.discardsRemaining,
-        maxDiscards: this.getRoundDiscardAllowance(),
+        discardsRemaining: 0,
+        maxDiscards: 0,
+        tilesRedrawn: this.state.tilesRedrawnThisRound ?? 0,
         bossMandate: roundState?.bossMandate,
         isCompleted: false,
         isWon: false,
@@ -3620,7 +3337,6 @@ export class GameOrchestrator {
       this.state.mandateEffectSystem.getDisabledDecreeIds()
     )
     const context = createScoringContext(scoredTiles, parsedHand, {
-      isRiichi: this.state.riichiStatus === 'active' && completeConcealedHand,
       isConcealed: true,
       isTsumo: true,
       additiveBonus: 0,
@@ -3730,9 +3446,12 @@ export class GameOrchestrator {
         : ordinaryYakuMultiplier +
           (boostedYakuMultiplier - ordinaryYakuMultiplier) *
             seasonModifiers.decreeModifier
-    if (this.state.roundManager.checkMandateEffect('halve_score').active) {
-      baseBreakdown.yakuMultiplier *= 0.5
-    }
+    // The Flint halves the whole play, pattern and Dragons included.
+    const mandateHalving = this.state.roundManager.checkMandateEffect(
+      'halve_score'
+    ).active
+      ? 0.5
+      : 1
 
     // Ascension changes classification as well as score, without fabricating a
     // second pattern or moving its Orb family. Frostbite weakens numeric gain,
@@ -3771,14 +3490,38 @@ export class GameOrchestrator {
       celestialOrbChipsBonus += allBonus.chips
     }
 
+    // A tactical play levels through its pattern's families instead of Yaku.
+    const playFamilies = partialMelds
+      ? playOrbCategories(baseBreakdown.pattern.id, partialMelds, scoredTiles)
+      : []
+    for (const category of playFamilies) {
+      const orbBonus = this.state.celestialOrbSystem.calculateYakuBonus(category)
+      celestialOrbMultBonus += orbBonus.mult
+      celestialOrbChipsBonus += orbBonus.chips
+      if (!preview) this.state.celestialOrbSystem.triggerYaku(category)
+    }
+
+    // The play's own Mult: Yaku (or 1) + Orb levels + pattern + grouped
+    // Dragons. Decrees then work on this running Mult in order, Balatro-style:
+    // a "+N Mult" Decree adds N to it and a "×N Mult" Decree multiplies it.
+    const seasonedYakuMultiplier =
+      baseBreakdown.yakuMultiplier * (1 + yakuSeasonBonus)
+    const playMult = Math.max(
+      1,
+      seasonedYakuMultiplier +
+        celestialOrbMultBonus +
+        baseBreakdown.pattern.mult +
+        baseBreakdown.dragonMult
+    )
+
     // Build system breakdown for decree application
     const systemBreakdown: SystemScoreBreakdown = {
       basePoints: baseBreakdown.basePoints,
       tilePoints: baseBreakdown.tilePoints,
       structurePoints: baseBreakdown.structurePoints,
       additiveBonus: baseBreakdown.additiveBonus,
-      yakuMultiplier: baseBreakdown.yakuMultiplier * (1 + yakuSeasonBonus),
-      decreeMultiplier: 1.0,
+      yakuMultiplier: seasonedYakuMultiplier,
+      decreeMultiplier: playMult,
       flowerMultiplier: flowerBonus,
       seasonMultiplier: seasonModifiers.scoreMultiplier,
       finalScore: baseBreakdown.finalScore,
@@ -3790,26 +3533,31 @@ export class GameOrchestrator {
     const orbMultiplier = observatoryMultiplier(
       this.state.celestialOrbs,
       baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id),
-      this.state.charterSystem.calculateEffects().orbMultiplier
+      this.state.charterSystem.calculateEffects().orbMultiplier,
+      playFamilies
     )
     const settle = (decree: SystemScoreBreakdown) => {
       const finalAdditiveBonus =
         systemBreakdown.additiveBonus +
         (decree.additiveBonus - systemBreakdown.additiveBonus) *
           seasonModifiers.decreeModifier
+      // What the Decrees did to the play's Mult, as one factor. Frostbite
+      // weakens that factor, never the play's own Mult.
+      const decreeFactor = decree.decreeMultiplier / playMult
       const finalDecreeMultiplier =
         seasonModifiers.decreeModifier === 1
-          ? decree.decreeMultiplier
-          : 1 + (decree.decreeMultiplier - 1) * seasonModifiers.decreeModifier
+          ? decreeFactor
+          : 1 + (decreeFactor - 1) * seasonModifiers.decreeModifier
       const subtotal =
         baseBreakdown.basePoints + finalAdditiveBonus + celestialOrbChipsBonus
       const finalMultiplier =
         baseBreakdown.modifierMultiplier *
-        (decree.yakuMultiplier + celestialOrbMultBonus) *
+        playMult *
         flowerBonus *
         seasonModifiers.scoreMultiplier *
         finalDecreeMultiplier *
-        orbMultiplier
+        orbMultiplier *
+        mandateHalving
       const calculatedFinalScore = Math.max(
         0,
         Math.floor(
@@ -3863,7 +3611,11 @@ export class GameOrchestrator {
    */
   private checkRoundCompletion(effects: Effect[]): void {
     const roundWon = this.state.score >= this.state.targetScore
-    const handsExhausted = this.state.handsRemaining <= 0
+    // Out of Turns, or The Needle's single Play is spent.
+    const handsExhausted =
+      this.state.handsRemaining <= 0 ||
+      (this.state.roundManager.checkMandateEffect('single_hand').active &&
+        this.getPlaysThisRound() > 0)
 
     if (roundWon) {
       this.handleRoundWin(effects)
@@ -4014,6 +3766,27 @@ export class GameOrchestrator {
   }
 
   /**
+   * A swift clear earns the round's Omen. The award and its immediate rewards
+   * are exactly what skipping the round used to grant, minus the skip.
+   */
+  private awardRoundOmen(roundType: 'Small' | 'Large') {
+    const reward = this.state.omenSystem.handleRoundSkip(roundType)
+    for (let i = 0; i < reward.decreeSlotBonus; i++)
+      this.state.decreeSystem.addSlot()
+    if (reward.immediateDecreeEdition) {
+      const edition = this.normalizeDecreeEdition(
+        reward.immediateDecreeEdition
+      )
+      if (edition) this.applyRandomDecreeEdition(edition)
+    }
+    eventBus.emit('omenEarned', {
+      roundType,
+      omenTagGranted: reward.omen?.id,
+    })
+    return reward
+  }
+
+  /**
    * Handle round win
    */
   private handleRoundWin(effects: Effect[]): void {
@@ -4073,9 +3846,16 @@ export class GameOrchestrator {
     const goldBefore = this.state.gold
     this.state.gold += netGoldChange
     // The last remaining round still earns this Decree's score and payout.
-    // Skips bypass settlement and therefore preserve Perishable lifetime.
     this.state.decreeSystem.onRoundEnd()
+    // Age existing Omens first, so a newly earned one keeps its full duration.
     this.state.omenSystem.onRoundEnd()
+    const swiftOmen =
+      roundState.roundType !== 'Boss' &&
+      this.state.handsRemaining >= SWIFT_CLEAR_SPARE_TURNS
+        ? this.awardRoundOmen(roundState.roundType)
+        : null
+    const omenGold = swiftOmen?.immediateGold ?? 0
+    this.state.gold += omenGold
 
     const upcomingRound = this.state.roundManager.getCurrentRound()
     const hasUpcomingRound =
@@ -4093,11 +3873,13 @@ export class GameOrchestrator {
       decreeGold,
       heldGoldMarkReward,
       rentalCost,
-      netGoldChange,
+      netGoldChange: netGoldChange + omenGold,
       goldBefore,
       goldAfter: this.state.gold,
       nextRoundType: hasUpcomingRound ? upcomingRound.roundType : null,
       nextTarget: hasUpcomingRound ? upcomingRound.scoreTarget : null,
+      omenId: swiftOmen?.omen?.id ?? null,
+      omenGold,
     }
 
     eventBus.emit('roundEnd', {
@@ -4107,9 +3889,9 @@ export class GameOrchestrator {
     })
 
     eventBus.emit('goldChanged', {
-      previousGold: this.state.gold - netGoldChange,
+      previousGold: goldBefore,
       newGold: this.state.gold,
-      delta: netGoldChange,
+      delta: netGoldChange + omenGold,
       reason: 'Round payout, interest, and Decree effects',
     })
 
@@ -4127,8 +3909,8 @@ export class GameOrchestrator {
 
     effects.push({
       type: 'gold_changed',
-      description: `Round economy changed gold by ${netGoldChange}`,
-      delta: netGoldChange,
+      description: `Round economy changed gold by ${netGoldChange + omenGold}`,
+      delta: netGoldChange + omenGold,
       newTotal: this.state.gold,
     })
 
@@ -4258,7 +4040,6 @@ export class GameOrchestrator {
     this.destroyBossLossDecrees(effects)
     this.state.decreeSystem.onRoundEnd()
     this.state.bambooSummerProtection = false
-    if (this.state.riichiStatus === 'active') this.state.riichiStatus = 'spent'
 
     eventBus.emit('roundEnd', {
       won: false,
@@ -4983,12 +4764,7 @@ export class GameOrchestrator {
    */
   getAvailableActions(): PlayerAction['type'][] {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return []
-    const actions = this.actionProcessor.getAvailableActions(
-      this.createStateSnapshot()
-    )
-    for (const type of ['declareRiichi', 'abandonRiichi'] as const)
-      if (this.canPerformAction({ type })) actions.push(type)
-    return actions
+    return this.actionProcessor.getAvailableActions(this.createStateSnapshot())
   }
 
   /**
@@ -4996,8 +4772,6 @@ export class GameOrchestrator {
    */
   canPerformAction(action: PlayerAction): boolean {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return false
-    if (action.type === 'declareRiichi' || action.type === 'abandonRiichi')
-      return this.validateRiichiAction(action.type).isValid
     if (action.type === 'play')
       return this.validatePlaySelection(action.tileIds).isValid
     if (

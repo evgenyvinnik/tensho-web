@@ -17,7 +17,10 @@ export interface SettingsState {
   sfxEnabled: boolean
 
   // Display settings
+  /** Group shapes in the rack (Pairs, Sequences…). */
   showTileHints: boolean
+  /** Arabic rank numbers on tile faces, for players who cannot read them yet. */
+  showRankNumbers: boolean
   animationSpeed: 'slow' | 'normal' | 'fast'
   reducedMotion: boolean
 
@@ -33,6 +36,7 @@ export interface SettingsState {
   toggleMusic: () => void
   toggleSfx: () => void
   setShowTileHints: (show: boolean) => void
+  setShowRankNumbers: (show: boolean) => void
   setAnimationSpeed: (speed: 'slow' | 'normal' | 'fast') => void
   setReducedMotion: (reduced: boolean) => void
   setLanguage: (language: SupportedLanguage) => void
@@ -46,6 +50,7 @@ const DEFAULT_SETTINGS = {
   musicEnabled: true,
   sfxEnabled: true,
   showTileHints: true,
+  showRankNumbers: false,
   animationSpeed: 'normal' as const,
   reducedMotion: false,
   language: 'en' as SupportedLanguage,
@@ -86,6 +91,10 @@ export const useSettingsStore = create<SettingsState>()(
         set({ showTileHints: show })
       },
 
+      setShowRankNumbers: (show: boolean) => {
+        set({ showRankNumbers: show })
+      },
+
       setAnimationSpeed: (speed: 'slow' | 'normal' | 'fast') => {
         set({ animationSpeed: speed })
       },
@@ -118,6 +127,7 @@ export const useSettingsStore = create<SettingsState>()(
         musicEnabled: state.musicEnabled,
         sfxEnabled: state.sfxEnabled,
         showTileHints: state.showTileHints,
+        showRankNumbers: state.showRankNumbers,
         animationSpeed: state.animationSpeed,
         reducedMotion: state.reducedMotion,
         language: state.language,

@@ -254,7 +254,7 @@ describe('MetaProgressionBridge', () => {
       name: 'Test Seal',
       source: 'purchase',
     })
-    eventBus.emit('roundSkipped', {
+    eventBus.emit('omenEarned', {
       roundType: 'Small',
       omenTagGranted: omenId,
     })
@@ -273,6 +273,7 @@ describe('MetaProgressionBridge', () => {
       score: 750,
       equation: { points: 750, multiplier: 1, adjustment: 0, total: 750 },
       yakuIds: [],
+      pattern: 'sequence',
     })
     eventBus.emit('tileDiscarded', { tileId: 'tile-4', toDeadPool: false })
     eventBus.emit('itemPurchased', {

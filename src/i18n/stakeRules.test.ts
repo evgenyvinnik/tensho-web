@@ -17,7 +17,7 @@ it.each([1, 2, 3, 4, 5, 6, 7, 8])(
         `×${new Intl.NumberFormat('en').format(modifiers.scoreScaling)}`
       )
     expect(text.includes('Small Rounds')).toBe(modifiers.noSmallRoundReward)
-    expect(text.includes('Redraws')).toBe(modifiers.redrawPenalty > 0)
+    expect(text.includes('Turns each round')).toBe(modifiers.redrawPenalty > 0)
     expect(text.includes('Eternal')).toBe(modifiers.eternalChance > 0)
     expect(text.includes('Perishable')).toBe(modifiers.perishableChance > 0)
     expect(text.includes('Non-Eternal shop Decrees')).toBe(modifiers.perishableChance > 0)

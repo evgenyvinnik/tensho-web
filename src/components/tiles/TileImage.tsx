@@ -47,6 +47,8 @@ export interface TileImageProps {
   allowHover?: boolean
   /** Additional CSS classes */
   className?: string
+  /** Force the rank number on or off (the guide teaches with it). */
+  showIndex?: boolean
   /**
    * Eager by default. Tiles are small, precached for offline play, and often
    * sit inside scroll boxes (the rack on short phones, dialogs), where a lazy
@@ -81,6 +83,7 @@ export const TileImage: React.FC<TileImageProps> = ({
   tooltipId: suppliedTooltipId,
   allowHover = true,
   className = '',
+  showIndex,
   loading = 'eager',
 }) => {
   const { t, i18n } = useTranslation()
@@ -98,8 +101,10 @@ export const TileImage: React.FC<TileImageProps> = ({
     !dismissed &&
     ((isHovering && allowHover) || isFocused || detailsVisible)
   const dimensions = tileSizes[size]
-  const showTileHints = useSettingsStore((state) => state.showTileHints)
-  const indexHint = showTileHints ? tileIndexHint(tile, t, faceDown) : null
+  // Rank numbers are an opt-in reading aid (Settings), taught in the guide.
+  const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
+  const indexHint =
+    (showIndex ?? showRankNumbers) ? tileIndexHint(tile, t, faceDown) : null
   const src = getTileSrc(tile, faceDown)
   const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
 

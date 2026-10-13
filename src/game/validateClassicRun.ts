@@ -16,6 +16,10 @@ import { calculateCombinedModifiers } from '../config/stakeDefinitions'
 import { resolveTableRules } from './tableStyleRules'
 import { RunRandom, type RunRandomState } from './RunRandom'
 import {
+  CURRENT_SNAPSHOT_VERSION,
+  upgradeClassicRunSnapshot,
+} from './migrateClassicSnapshot'
+import {
   type Check,
   array,
   bool,
@@ -75,6 +79,7 @@ const round = schema<RoundState>({
   maxHands: count,
   discardsRemaining: count,
   maxDiscards: count,
+  tilesRedrawn: optional(count),
   bossMandate: optional(boss),
   isCompleted: bool,
   isWon: bool,
@@ -135,6 +140,8 @@ const roundSummary = schema<RoundCashOutSummary>({
   goldAfter: finite,
   nextRoundType: nullable(roundType),
   nextTarget: nullable(nonnegative),
+  omenId: optional(nullable(omenId)),
+  omenGold: optional(nonnegative),
 })
 const meld: Check = (v, p) => {
   schema<ClassicRunState['melds'][number]>({
@@ -223,6 +230,8 @@ const stateFields = {
   gold: finite,
   handsRemaining: count,
   handsAllowance: count,
+  playsThisRound: optional(count),
+  tilesRedrawnThisRound: optional(count),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),
   handsPlayedThisRun: count,
@@ -438,7 +447,7 @@ const random: Check = (v, p) => {
   RunRandom.fromState(v) // validates stream names without touching the global generator
 }
 const snapshot = schema<ClassicRunSnapshot>({
-  version: choice([1, 2]),
+  version: choice([CURRENT_SNAPSHOT_VERSION]),
   state: object(stateFields),
   shop,
   random,
@@ -465,8 +474,13 @@ const snapshot = schema<ClassicRunSnapshot>({
   consumableInstanceCounter: count,
 })
 
-/** Parse a versioned JSON snapshot without side effects. Fail closed; never repair or delete it here. */
-export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
+/**
+ * Parse a versioned JSON snapshot without side effects. Older versions are
+ * first upgraded to the current rules (see migrateClassicSnapshot); after
+ * that, fail closed: never repair or delete it here.
+ */
+export function parseClassicRunSnapshot(raw: unknown): ClassicRunSnapshot {
+  const value = upgradeClassicRunSnapshot(raw)
   snapshot(value, 'run')
   const saved = value as ClassicRunSnapshot
   const state = saved.state
@@ -494,10 +508,9 @@ export function parseClassicRunSnapshot(value: unknown): ClassicRunSnapshot {
       ))
   )
     invalid('run.state.flowerSystem.collectedTypes')
-  // Only v1 saves may omit a field that did not exist yet. Current saves must
-  // never silently lose earned protection through an absent field.
-  if (saved.version === 2)
-    bool(state.bambooSummerProtection, 'run.state.bambooSummerProtection')
+  // Current saves must never silently lose earned protection through an
+  // absent field (the upgrade supplies it for the oldest saves).
+  bool(state.bambooSummerProtection, 'run.state.bambooSummerProtection')
   const table = resolveTableRules(state.tableStyleId)
   if (table.id !== state.tableStyleId) invalid('run.state.tableStyleId')
   ruleDefinition(

@@ -59,30 +59,27 @@ function pay(game: GameOrchestrator, ids: string[]) {
   return preview
 }
 
-it('Plum pays two overlapping sequences from five unique tiles and never repeats tile chips', () => {
+it('a five-tile run plays as a Straight of Five, with or without Plum, and pays each tile once', () => {
   const { game, state, awaken, ids } = setup(
     ranks(TileSuit.Manzu, [1, 2, 3, 4, 5]),
     FlowerType.Plum,
     'plum_overlap'
   )
   const ordinary = game.previewScore(ids)!
+  expect(ordinary.pattern.id).toBe('straight5')
+  expect(ordinary.structurePoints).toBe(60)
   awaken()
+  // Overlapping sequences never beat the straight in a play.
   const parsed = parsePartialHand(state.handTiles, game.getPartialHandRules())
-  expect(parsed.groups).toHaveLength(2)
+  expect(parsed.groups).toHaveLength(1)
   expect(parsed.structurePoints).toBe(60)
-  expect(
-    new Set(parsed.groups.flatMap((m) => m.tiles.map((t) => t.id))).size
-  ).toBe(5)
   const paid = pay(game, ids)
+  expect(paid.pattern.id).toBe('straight5')
   expect(paid.structurePoints).toBe(60)
-  expect(paid.flowerSequences?.overlapping).toHaveLength(2)
-  expect(paid.flowerSequences?.anchored).toEqual([])
-  expect(paid.skippedSequences).toEqual([])
-  // Two former loose tiles now score fully, but the shared tile only once.
   expect(paid.tilePoints).toBe(
     state.discards.reduce((sum, tile) => sum + getTilePoints(tile), 0)
   )
-  expect(paid.tilePoints).toBeGreaterThan(ordinary.tilePoints)
+  expect(paid.tilePoints).toBe(ordinary.tilePoints)
   expect(state.discards.map((t) => t.id)).toEqual(ids)
 })
 
@@ -197,7 +194,7 @@ it('Plum selection and coach include the forced physical copy, but never reveal 
   expect(coach()).toBeNull()
 })
 
-it('the tactical coach prices a five-tile Plum bridge instead of overlooking it behind valuable spare tiles', () => {
+it('the tactical coach prices a five-tile run instead of overlooking it behind valuable spare tiles', () => {
   const tiles = [
     ...ranks(TileSuit.Manzu, [2, 3, 4, 5, 6]),
     ...ranks(TileSuit.Dragon, [1, 2, 3]),
@@ -222,9 +219,10 @@ it('the tactical coach prices a five-tile Plum bridge instead of overlooking it 
       (ids) => ids.length === 5 && bridge.every((id) => ids.includes(id))
     )
   ).toBe(true)
-  expect(new Set(advice.best.tileIds)).toEqual(new Set(bridge))
+  // The straight, plus one spare Dragon to fill the six-tile play.
+  expect(advice.best.tileIds).toEqual(expect.arrayContaining(bridge))
+  expect(advice.best.tileIds.length).toBeLessThanOrEqual(6)
   expect(advice.best.structurePoints).toBe(60)
-  expect(advice.best.pattern).toBeNull() // Two sequences, not one ordinary named group.
 })
 
 it('Plum cannot share two tiles, use the same sequence twice, or share with a pair', () => {
@@ -234,10 +232,9 @@ it('Plum cannot share two tiles, use the same sequence twice, or share with a pa
     [1, 1, 2, 3],
   ]) {
     const tiles = ranks(TileSuit.Manzu, ns)
+    // One group each: never two sequences sharing two tiles.
     expect(
-      parsePartialHand(tiles, { allowSequenceOverlap: true }).groups.filter(
-        (g) => g.type === 'sequence'
-      )
+      parsePartialHand(tiles, { allowSequenceOverlap: true }).groups
     ).toHaveLength(1)
   }
   const twoBridges = [
@@ -316,14 +313,33 @@ it('Bamboo supports complete-hand validation and subset selection, while ordinar
   )
 })
 
-it.each([FlowerType.Plum, FlowerType.Bamboo])(
+it('Drought suppresses Plum and clearing it restores the saved permission', () => {
+  const tiles = [...ranks(TileSuit.Manzu, [1, 2, 3, 4, 5]), ...rest()]
+  const { game, state, awaken, ids } = setup(
+    tiles,
+    FlowerType.Plum,
+    'plum_overlap'
+  )
+  awaken()
+  expect(game.isCompleteHand(ids)).toBe(true)
+  state.seasonSystem.forceSetSeason('Summer', true)
+  expect(game.isCompleteHand(ids)).toBe(false)
+  const save = parseClassicRunSnapshot(
+    JSON.parse(JSON.stringify(game.captureRun()))
+  )
+  game.restoreRun(save)
+  expect(game.captureRun()).toEqual(save)
+  game.getState().seasonSystem.clear()
+  expect(game.isCompleteHand(ids)).toBe(true)
+})
+
+it.each([FlowerType.Bamboo])(
   'Drought suppresses structural mutation %s and clearing it restores the saved permission',
   (type) => {
-    const isPlum = type === FlowerType.Plum
     const { game, state, awaken, ids } = setup(
-      ranks(TileSuit.Manzu, isPlum ? [1, 2, 3, 4, 5] : [1, 5, 6]),
+      ranks(TileSuit.Manzu, [1, 5, 6]),
       type,
-      isPlum ? 'plum_overlap' : 'bamboo_wild_anchor'
+      'bamboo_wild_anchor'
     )
     awaken()
     const mutated = game.previewScore(ids)!
@@ -360,7 +376,12 @@ it('Orchid doubles Dragons in Honor counts and Honor gates, not physical scoring
   const preview = game.previewScore(ids)!
   expect(preview.tilePoints).toBe(ordinary.tilePoints)
   expect(preview.structurePoints).toBe(ordinary.structurePoints)
-  expect(preview.equation!.multiplier).toBeCloseTo(1.2 * 1.44 * 1.5)
+  // Orchid adds no physical Dragon triggers; only the Honor gates change.
+  expect(preview.dragonMult).toBe(ordinary.dragonMult)
+  expect(
+    preview.equation!.multiplier /
+      (preview.yakuMultiplier + preview.pattern.mult + preview.dragonMult)
+  ).toBeCloseTo(1.2 * 1.44 * 1.5)
   pay(game, ids)
   expect(state.discards).toHaveLength(2)
 })

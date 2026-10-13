@@ -15,6 +15,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { CERULEAN_BELL } from '../config/mandateDefinitions'
+import { advanceRound } from '../test/roundHelpers'
 
 afterEach(() => {
   eventBus.clear()
@@ -214,8 +215,7 @@ it('expires round legality and does not reactivate it while loading the next rou
   const { game, state } = fixture()
   state.wallTemplate = state.wallTemplate.filter((tile) => !tile.isBonus)
   activate(game)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
-  game.exitShop()
+  advanceRound(game)
   expect(game.getPartialHandRules().allowSequenceSkip).toBe(false)
   const saved = parseClassicRunSnapshot(
     JSON.parse(JSON.stringify(game.captureRun()))

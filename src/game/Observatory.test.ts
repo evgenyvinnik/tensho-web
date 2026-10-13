@@ -77,12 +77,21 @@ it.each([
   expect(game.getState().score).toBe(forecast.finalScore)
   expect(game.getCelestialOrbs()).toHaveLength(orbs.length)
 })
-it('does not reward unrelated tactical plays or Boss-blocked Yaku, including Black Hole', () => {
+it('rewards a tactical play only through its own pattern family; Black Hole matches any', () => {
+  const plain = fixture([], false)
+  const sequence = (f: ReturnType<typeof fixture>) =>
+    f.game.previewScore(f.ids.slice(0, 3))!.finalScore
+  // A Sequence levels the Pinfu family: Saturn (Ittsu) is unrelated.
+  expect(sequence(fixture(['saturn_orb']))).toBe(sequence(plain))
+  expect(sequence(fixture(['venus_orb']))).toBeGreaterThan(sequence(plain))
+  expect(sequence(fixture(['black_hole_orb']))).toBeGreaterThan(
+    sequence(plain)
+  )
+})
+
+it('does not reward Boss-blocked Yaku, including Black Hole', () => {
   const { game, state, ids } = fixture(['saturn_orb', 'black_hole_orb'])
   const plain = fixture([], false)
-  expect(game.previewScore(ids.slice(0, 3))!.finalScore).toBe(
-    plain.game.previewScore(plain.ids.slice(0, 3))!.finalScore
-  )
   const scored = game
     .previewScore(ids)!
     .detectedYaku.map((y) => y.definition.id)

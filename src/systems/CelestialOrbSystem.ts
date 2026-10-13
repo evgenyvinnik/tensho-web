@@ -30,16 +30,21 @@ import {
   calculateSellValue,
 } from './ConsumableSystem'
 import { runRandom } from '../game/RunRandom'
+import type { PlayPatternId } from '../rules/PlayPattern'
+import type { Meld } from '../core/Meld'
+import type { Tile } from '../core/Tile'
 
 // =============================================================================
 // CELESTIAL ORB TYPES
 // =============================================================================
 
 /**
- * Yaku categories that orbs can attune to
+ * Upgrade families that orbs level. Most are complete-hand Yaku; several also
+ * cover the tactical play patterns that share their shape (see
+ * `playOrbCategories`). 'Pairs' replaced the retired Riichi family.
  */
 export type YakuCategory =
-  | 'Riichi'
+  | 'Pairs'
   | 'Tanyao'
   | 'Yakuhai'
   | 'Pinfu'
@@ -109,17 +114,18 @@ export const CELESTIAL_ORBS: Record<
     name: 'Pluto Orb',
     japaneseName: '冥王星',
     planetName: 'Pluto',
-    description: 'Attunes to Riichi yaku. +1 Mult, +10 Chips per level.',
+    description:
+      'Upgrades Pairs: Pair, Two Pairs and Three Pairs. +1 Mult, +10 Chips per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
     sellValue: 1,
     maxLevel: DEFAULT_ORB_MAX_LEVEL,
     effect: {
-      targetYaku: 'Riichi',
+      targetYaku: 'Pairs',
       multPerLevel: 1,
       chipsPerLevel: 10,
-      description: '+1 Mult, +10 Chips per level when Riichi is scored',
+      description: '+1 Mult, +10 Chips per level when Pairs are scored',
     },
   },
 
@@ -129,7 +135,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Mercury Orb',
     japaneseName: '水星',
     planetName: 'Mercury',
-    description: 'Attunes to Tanyao yaku. +1 Mult, +15 Chips per level.',
+    description:
+      'Upgrades All Simples: plays of only 2–8 tiles and the Tanyao hand. +1 Mult, +15 Chips per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -149,7 +156,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Uranus Orb',
     japaneseName: '天王星',
     planetName: 'Uranus',
-    description: 'Attunes to Yakuhai yaku. +1 Mult, +20 Chips per level.',
+    description:
+      'Upgrades Honors: any Wind or Dragon group and the Yakuhai hand. +1 Mult, +20 Chips per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -169,7 +177,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Venus Orb',
     japaneseName: '金星',
     planetName: 'Venus',
-    description: 'Attunes to Pinfu yaku. +2 Mult, +20 Chips per level.',
+    description:
+      'Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the Pinfu hand. +2 Mult, +20 Chips per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -190,7 +199,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '土星',
     planetName: 'Saturn',
     description:
-      'Attunes to Ittsu (Straight) yaku. +3 Mult, +30 Chips per level.',
+      'Upgrades Straights: Straights of Four and Five and the Pure Straight hand. +3 Mult, +30 Chips per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -231,7 +240,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Earth Orb',
     japaneseName: '地球',
     planetName: 'Earth',
-    description: 'Attunes to Toitoi yaku. +2 Mult, +25 Chips per level.',
+    description:
+      'Upgrades Sets: any Triplet or Quad play and the All Triplets hand. +2 Mult, +25 Chips per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -424,7 +434,7 @@ export class CelestialOrbSystem {
    */
   private initializeYakuCategories(): void {
     const categories: YakuCategory[] = [
-      'Riichi',
+      'Pairs',
       'Tanyao',
       'Yakuhai',
       'Pinfu',
@@ -743,13 +753,26 @@ export class CelestialOrbSystem {
    * Restore from serialized state
    */
   static fromState(state: {
-    orbLevels: [YakuCategory, number][]
-    yakuTriggerCounts: [YakuCategory, number][]
+    orbLevels: [YakuCategory | 'Riichi', number][]
+    yakuTriggerCounts: [YakuCategory | 'Riichi', number][]
     activeOrbs: CelestialOrb[]
   }): CelestialOrbSystem {
     const system = new CelestialOrbSystem()
-    system.orbLevels = new Map(state.orbLevels)
-    system.yakuTriggerCounts = new Map(state.yakuTriggerCounts)
+    // The retired Riichi family's levels carry over to Pairs, Pluto's target.
+    const renamed = (category: YakuCategory | 'Riichi'): YakuCategory =>
+      category === 'Riichi' ? 'Pairs' : category
+    system.orbLevels = new Map([
+      ...system.orbLevels,
+      ...state.orbLevels.map(
+        ([category, level]) => [renamed(category), level] as const
+      ),
+    ])
+    system.yakuTriggerCounts = new Map([
+      ...system.yakuTriggerCounts,
+      ...state.yakuTriggerCounts.map(
+        ([category, count]) => [renamed(category), count] as const
+      ),
+    ])
     system.activeOrbs = [...state.activeOrbs]
     return system
   }
@@ -764,7 +787,6 @@ export class CelestialOrbSystem {
  */
 export function mapYakuIdToCategory(yakuId: string): YakuCategory | null {
   const mapping: Record<string, YakuCategory> = {
-    riichi: 'Riichi',
     tanyao: 'Tanyao',
     yakuhai: 'Yakuhai',
     pinfu: 'Pinfu',
@@ -792,7 +814,7 @@ export function mapYakuIdToCategory(yakuId: string): YakuCategory | null {
  */
 export function getYakuCategoryJapaneseName(category: YakuCategory): string {
   const names: Record<YakuCategory, string> = {
-    Riichi: '立直',
+    Pairs: '対子',
     Tanyao: '断幺九',
     Yakuhai: '役牌',
     Pinfu: '平和',
@@ -815,7 +837,7 @@ export function getYakuCategoryJapaneseName(category: YakuCategory): string {
  */
 export function getYakuCategoryDisplayName(category: YakuCategory): string {
   const names: Record<YakuCategory, string> = {
-    Riichi: 'Riichi',
+    Pairs: 'Pairs',
     Tanyao: 'All Simples',
     Yakuhai: 'Value Tiles',
     Pinfu: 'No Points',
@@ -831,4 +853,42 @@ export function getYakuCategoryDisplayName(category: YakuCategory): string {
   }
 
   return names[category]
+}
+
+/**
+ * Upgrade families a tactical play belongs to: its pattern's own family, plus
+ * Value Tiles when a group is made of Winds or Dragons, plus All Simples when
+ * every tile is a 2–8. Complete hands use their Yaku instead.
+ */
+export function playOrbCategories(
+  patternId: PlayPatternId,
+  groups: readonly Meld[],
+  tiles: readonly Tile[]
+): YakuCategory[] {
+  const categories: YakuCategory[] = []
+  const family = PATTERN_FAMILIES[patternId]
+  if (family) categories.push(family)
+  if (groups.some((group) => group.tiles.every((tile) => tile.isHonor)))
+    categories.push('Yakuhai')
+  if (groups.length > 0 && tiles.every((tile) => tile.isSimple))
+    categories.push('Tanyao')
+  return categories
+}
+
+const PATTERN_FAMILIES: Partial<Record<PlayPatternId, YakuCategory>> = {
+  pair: 'Pairs',
+  two_pairs: 'Pairs',
+  three_pairs: 'Pairs',
+  sequence: 'Pinfu',
+  sequence_pair: 'Pinfu',
+  two_sequences: 'Pinfu',
+  straight4: 'Ittsu',
+  straight5: 'Ittsu',
+  straight_pair: 'Ittsu',
+  triplet: 'Toitoi',
+  triplet_pair: 'Toitoi',
+  two_triplets: 'Toitoi',
+  triplet_sequence: 'Toitoi',
+  quad: 'Toitoi',
+  quad_pair: 'Toitoi',
 }

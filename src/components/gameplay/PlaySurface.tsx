@@ -182,12 +182,20 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     () => (groupRules ? groupHand(handTiles, faceDownIds, groupRules) : null),
     [handTiles, faceDownIds, groupRules]
   )
+  const handClusters = rackGroups ?? []
+  const suitBreaks = handClusters.filter(
+    (cluster, index) =>
+      index > 0 && cluster.suit !== handClusters[index - 1].suit
+  ).length
   const fittedTileSize = useHandTileSize(
     containerRef,
     handTiles.length,
-    rackGroups?.length ?? 0,
+    rackGroups
+      ? rackGroups.filter((cluster) => cluster.kind !== 'loose').length + 1
+      : 0,
     24,
-    requestedTileSize === 'fit'
+    requestedTileSize === 'fit',
+    suitBreaks
   )
   const tileSize =
     requestedTileSize === 'fit' ? fittedTileSize : requestedTileSize
@@ -312,12 +320,6 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
     () => new Set(stagedTiles.map((tile) => tile.id)),
     [stagedTiles]
   )
-  const handClusters = useMemo(() => {
-    if (!rackGroups)
-      return [{ kind: 'loose' as const, tiles: handTiles, structurePoints: 0 }]
-    return rackGroups
-  }, [rackGroups, handTiles])
-
   // Determine which zone a point is in
   const getDropZone = useCallback((x: number, y: number): DropZone => {
     // Check discard zone first (it's a small square, need precise detection)
@@ -881,7 +883,8 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
 
           {/* Wrap whole tiles instead of hiding identities beneath a fan. With
             tile hints on, each group the scorer would pay for sits together
-            above a labelled underline, and loose tiles follow unmarked. */}
+            above a labelled underline among the unmarked loose tiles of its
+            suit, and a wider gap separates one suit from the next. */}
           <div
             data-hand-rack
             className={`flex w-full flex-wrap items-start justify-center py-1 ${
@@ -890,55 +893,68 @@ export const PlaySurface: React.FC<PlaySurfaceProps> = ({
             style={{ minHeight: dimensions.height + 8 }}
           >
             {groupRules
-              ? handClusters.map((cluster, index) =>
-                  cluster.kind === 'loose' ? (
-                    // Loose tiles wrap one by one so rows stay full.
-                    cluster.tiles.map(rackSlot)
-                  ) : (
-                    <div
-                      key={`${cluster.kind}-${cluster.tiles[0]?.id ?? index}`}
-                      data-hand-group={
-                        cluster.tiles.some((tile) => stagedIds.has(tile.id))
-                          ? undefined
-                          : cluster.kind
-                      }
-                      data-rack-group
-                      data-hand-group-count={cluster.groupCount}
-                      className="mx-1 flex shrink-0 flex-col items-center"
-                      style={{
-                        width:
-                          `calc(${cluster.tiles.length * tileTargetWidth}px + ` +
-                          `${cluster.tiles.length - 1} * var(--rack-group-gap, 4px))`,
-                      }}
-                    >
-                      <div
-                        className="flex"
-                        style={{ gap: 'var(--rack-group-gap, 4px)' }}
-                      >
-                        {cluster.tiles.map(rackSlot)}
-                      </div>
-                      <span
-                        data-hand-group-label
-                        className="mt-0.5 h-7 w-full whitespace-normal break-words border-t-2 pt-0.5 text-center text-[10px] font-bold uppercase leading-3 tracking-normal"
-                        style={{
-                          visibility: cluster.tiles.some((tile) =>
-                            stagedIds.has(tile.id)
-                          )
-                            ? 'hidden'
-                            : 'visible',
-                          borderColor: GROUP_COLORS[cluster.kind],
-                          color: GROUP_COLORS[cluster.kind],
-                        }}
-                      >
-                        {groupLabel(
-                          cluster.kind,
-                          cluster.structurePoints,
-                          cluster.groupCount
-                        )}
-                      </span>
-                    </div>
-                  )
-                )
+              ? // One flat, keyed list: a tile keeps its element (and focus)
+                // when a draw moves it along the rack.
+                handClusters.flatMap((cluster, index) => [
+                  ...(index > 0 && cluster.suit !== handClusters[index - 1].suit
+                    ? [
+                        <span
+                          key={`suit-break-${cluster.suit ?? 'concealed'}`}
+                          data-rack-suit-break
+                          aria-hidden="true"
+                          className="shrink-0"
+                          style={{ width: 'var(--rack-suit-gap, 8px)' }}
+                        />,
+                      ]
+                    : []),
+                  ...(cluster.kind === 'loose'
+                    ? // Loose tiles wrap one by one so rows stay full.
+                      cluster.tiles.map(rackSlot)
+                    : [
+                        <div
+                          key={`${cluster.kind}-${cluster.tiles[0].id}`}
+                          data-hand-group={
+                            cluster.tiles.some((tile) => stagedIds.has(tile.id))
+                              ? undefined
+                              : cluster.kind
+                          }
+                          data-rack-group
+                          data-hand-group-count={cluster.groupCount}
+                          className="mx-1 flex shrink-0 flex-col items-center"
+                          style={{
+                            width:
+                              `calc(${cluster.tiles.length * tileTargetWidth}px + ` +
+                              `${cluster.tiles.length - 1} * var(--rack-group-gap, 4px))`,
+                          }}
+                        >
+                          <div
+                            className="flex"
+                            style={{ gap: 'var(--rack-group-gap, 4px)' }}
+                          >
+                            {cluster.tiles.map(rackSlot)}
+                          </div>
+                          <span
+                            data-hand-group-label
+                            className="mt-0.5 h-7 w-full whitespace-normal break-words border-t-2 pt-0.5 text-center text-[10px] font-bold uppercase leading-3 tracking-normal"
+                            style={{
+                              visibility: cluster.tiles.some((tile) =>
+                                stagedIds.has(tile.id)
+                              )
+                                ? 'hidden'
+                                : 'visible',
+                              borderColor: GROUP_COLORS[cluster.kind],
+                              color: GROUP_COLORS[cluster.kind],
+                            }}
+                          >
+                            {groupLabel(
+                              cluster.kind,
+                              cluster.structurePoints,
+                              cluster.groupCount
+                            )}
+                          </span>
+                        </div>,
+                      ]),
+                ])
               : handTiles.map(rackSlot)}
           </div>
         </animated.div>

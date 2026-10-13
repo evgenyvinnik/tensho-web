@@ -1,0 +1,13 @@
+{
+  "_comment": "Item ids whose own generated artwork exists at public/assets/illustrations/items/<kind>/<id>.webp. Add an id here when its file lands. Ids not listed use their family artwork (src/utils/itemArt.ts). See docs/ART_PRODUCTION_MANIFEST.md for the full production list.",
+  "decrees": [],
+  "orbs": [],
+  "seals": [],
+  "scripts": [],
+  "charters": [],
+  "mandates": [],
+  "omens": [],
+  "yakuUpgrades": [],
+  "tileMarks": [],
+  "packs": []
+}

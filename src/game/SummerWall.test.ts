@@ -5,6 +5,7 @@ import { applySeasonWallEffect } from './seasonWall'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { advanceRound } from '../test/roundHelpers'
 
 const tiles = (count: number, prefix: string) =>
   Array.from(
@@ -165,7 +166,7 @@ describe('Summer wall tradeoff', () => {
     expect(game.processAction({ type: 'draw' }).success).toBe(true)
     const reserved = state.summerReserve.map((t) => t.id)
     const template = state.wallTemplate.map((t) => t.id).sort()
-    expect(game.processAction({ type: 'skip' }).success).toBe(true)
+    advanceRound(game)
     const physical = [
       ...state.handTiles,
       ...state.wall.slice(state.drawIndex),

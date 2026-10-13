@@ -46,6 +46,8 @@ import {
 } from '../systems/DecreeSystem'
 import type { ActionResult, Effect } from './ActionProcessor'
 import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
+import { MAX_TACTICAL_PLAY_TILES, TURNS_PER_ROUND } from './playRules'
+import { advanceRound, advanceToRound, clearRound } from '../test/roundHelpers'
 
 let decreeFixtureCounter = 0
 
@@ -95,7 +97,7 @@ function enterBossWithMandate(
   game: GameOrchestrator,
   mandate: MandateDefinition
 ): void {
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game)
   const act = game.getState().roundManager.getCurrentAct()!
   act.rounds[2].bossMandate = {
     id: mandate.id,
@@ -105,7 +107,7 @@ function enterBossWithMandate(
     effect: mandate.effect,
     minAct: mandate.minAct,
   }
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  advanceRound(game)
   expect(game.getState().currentRound).toBe(3)
 }
 
@@ -230,7 +232,9 @@ describe('GameOrchestrator', () => {
       })
 
       expect(result.success).toBe(false)
-      expect(result.errors?.[0]).toContain('limited to 5 tiles')
+      expect(result.errors?.[0]).toContain(
+        `at most ${MAX_TACTICAL_PLAY_TILES} tiles`
+      )
     })
 
     it('should reduce hands remaining after playing', () => {
@@ -321,7 +325,7 @@ describe('GameOrchestrator', () => {
       game.processAction({ type: 'play', tileIds: tilesToPlay })
 
       expect(game.getHandTiles()).toHaveLength(14)
-      expect(game.getState().handsRemaining).toBe(3)
+      expect(game.getState().handsRemaining).toBe(TURNS_PER_ROUND - 1)
     })
 
     it('should return effects with score information', () => {
@@ -368,94 +372,81 @@ describe('GameOrchestrator', () => {
     })
   })
 
-  describe('discard action', () => {
+  describe('REDRAW action', () => {
     beforeEach(() => {
       game.startNewRun(12345)
     })
 
-    it('should discard a tile from hand', () => {
-      const handTiles = game.getHandTiles()
-      const tileToDiscard = handTiles[0]
+    const redraw = (ids: string[]) =>
+      game.processAction({ type: 'redraw', tileIds: ids })
 
-      const result = game.processAction({
-        type: 'discard',
-        tileId: tileToDiscard.id,
-      })
+    it('sends any number of selected tiles to the river and refills the hand', () => {
+      const ids = game
+        .getHandTiles()
+        .slice(0, 8)
+        .map((t) => t.id)
+      const riverBefore = game.getState().discards.length
 
-      expect(result.success).toBe(true)
-    })
-
-    it('should remove discarded tile from hand', () => {
-      const handTiles = game.getHandTiles()
-      const tileToDiscard = handTiles[0]
-
-      game.processAction({ type: 'discard', tileId: tileToDiscard.id })
-
-      const newHand = game.getHandTiles()
-      const stillExists = newHand.some((t) => t.id === tileToDiscard.id)
-      expect(stillExists).toBe(false)
-    })
-
-    it('should reduce discards remaining', () => {
-      const discardsBefore = game.getState().discardsRemaining
-      const handTiles = game.getHandTiles()
-
-      game.processAction({ type: 'discard', tileId: handTiles[0].id })
-
-      expect(game.getState().discardsRemaining).toBe(discardsBefore - 1)
-    })
-
-    it('should complete the discard-draw cycle and refill the hand', () => {
-      const handTiles = game.getHandTiles()
-
-      game.processAction({ type: 'discard', tileId: handTiles[0].id })
+      expect(redraw(ids).success).toBe(true)
 
       expect(game.getHandTiles()).toHaveLength(14)
-      expect(
-        game.getHandTiles().some((tile) => tile.id === handTiles[0].id)
-      ).toBe(false)
+      expect(game.getHandTiles().some((t) => ids.includes(t.id))).toBe(false)
+      expect(game.getState().discards.length).toBe(riverBefore + ids.length)
     })
 
-    it('should fail when discarding a non-existent tile', () => {
-      const result = game.processAction({
-        type: 'discard',
-        tileId: 'fake-tile-id',
-      })
+    it('spends a free redraw before a Turn', () => {
+      const state = game.getState() as OrchestratorState
+      state.redrawsRemaining = 1
+      const turns = state.handsRemaining
 
+      expect(redraw([game.getHandTiles()[0].id]).success).toBe(true)
+      expect(game.getState().redrawsRemaining).toBe(0)
+      expect(game.getState().handsRemaining).toBe(turns)
+
+      expect(redraw([game.getHandTiles()[0].id]).success).toBe(true)
+      expect(game.getState().handsRemaining).toBe(turns - 1)
+    })
+
+    it('keeps the last Turn for a play', () => {
+      const state = game.getState() as OrchestratorState
+      state.redrawsRemaining = 0
+      state.handsRemaining = 1
+      const result = redraw([game.getHandTiles()[0].id])
       expect(result.success).toBe(false)
+      expect(game.getState().handsRemaining).toBe(1)
+    })
+
+    it('rejects an empty selection or a tile not in hand', () => {
+      expect(redraw([]).success).toBe(false)
+      expect(redraw(['fake-tile-id']).success).toBe(false)
     })
   })
 
-  describe('skip action', () => {
+  describe('swift clear', () => {
     beforeEach(() => {
       game.startNewRun(12345)
     })
 
-    it('should skip Small rounds', () => {
-      // First round is Small
-      expect(game.getState().currentRound).toBe(1)
-
-      const result = game.processAction({ type: 'skip' })
-
-      expect(result.success).toBe(true)
-    })
-
-    it('should advance to next round after skip', () => {
-      const roundBefore = game.getState().currentRound
-
-      game.processAction({ type: 'skip' })
-
-      // Should advance (could be next round or next act)
-      const roundAfter = game.getState().currentRound
-      expect(roundAfter).not.toBe(roundBefore)
-    })
-
-    it('should award an omen when skipping a non-boss round', () => {
-      const result = game.processAction({ type: 'skip' })
-
-      expect(result.success).toBe(true)
+    it('earns the Omen when a Small round is cleared with two Turns to spare', () => {
+      clearRound(game, { spareTurns: 2 })
+      expect(game.getState().phase).toBe('shop')
       expect(game.getState().omenSystem.getTotalSkippedRounds()).toBe(1)
-      expect(game.getState().currentRound).toBe(2)
+    })
+
+    it('earns nothing extra for a clear on the last Turns', () => {
+      clearRound(game, { spareTurns: 1 })
+      expect(game.getState().phase).toBe('shop')
+      expect(game.getState().omenSystem.getTotalSkippedRounds()).toBe(0)
+    })
+
+    it('never earns an Omen in a Boss round', () => {
+      advanceToRound(game, 'Boss')
+      clearRound(game, { spareTurns: 5 })
+      expect(game.getState().omenSystem.getTotalSkippedRounds()).toBe(0)
+    })
+
+    it('offers no way to skip a round', () => {
+      expect(game.getAvailableActions()).not.toContain('skip')
     })
   })
 
@@ -626,8 +617,7 @@ describe('GameOrchestrator', () => {
 
     it('applies Ancient Script Act reduction once at the next Boss exit', () => {
       clearDecrees(game)
-      expect(game.processAction({ type: 'skip' }).success).toBe(true)
-      expect(game.processAction({ type: 'skip' }).success).toBe(true)
+      advanceToRound(game, 'Boss')
       const state = game.getState() as OrchestratorState
       state.targetScore = 1
       state.roundManager.getCurrentRound()!.scoreTarget = 1
@@ -653,7 +643,8 @@ describe('GameOrchestrator', () => {
       expect(game.getState().currentAct).toBe(1)
       expect(game.getState().currentRound).toBe(1)
       expect(game.getState().pendingActReduction).toBe(0)
-      expect(game.getState().handsRemaining).toBe(3)
+      // Ancient Script also costs one Turn per round.
+      expect(game.getState().handsRemaining).toBe(TURNS_PER_ROUND - 1)
     })
 
     it('rejects gameplay actions while the shop is open', () => {
@@ -670,9 +661,11 @@ describe('GameOrchestrator', () => {
           .map((tile) => tile.id),
       })
 
-      const result = game.processAction({ type: 'skip' })
+      const result = game.processAction({
+        type: 'redraw',
+        tileIds: [game.getHandTiles()[0].id],
+      })
       expect(result.success).toBe(false)
-      expect(result.errors?.[0]).toContain('active round')
     })
   })
 
@@ -899,7 +892,7 @@ describe('GameOrchestrator', () => {
       ).toHaveLength(0)
     })
 
-    it('applies next-round hand and discard Omens before dealing', () => {
+    it('applies next-round redraw and hand-size Omens before dealing', () => {
       useOmenStore.getState().addTag(OMEN_OF_RIVERS.id)
       useOmenStore.getState().addTag(PRECISION_OMEN.id)
       const mutableState = game.getState() as OrchestratorState
@@ -916,12 +909,12 @@ describe('GameOrchestrator', () => {
       })
       game.exitShop()
 
-      expect(game.getState().discardsRemaining).toBe(4)
+      expect(game.getState().redrawsRemaining).toBe(1)
       expect(game.getHandTiles()).toHaveLength(16)
     })
 
     it('selects and applies extended mandates from the canonical library', () => {
-      game.processAction({ type: 'skip' })
+      advanceRound(game)
       const act = game.getState().roundManager.getCurrentAct()!
       act.rounds[2].bossMandate = {
         id: THE_MANACLE.id,
@@ -932,7 +925,7 @@ describe('GameOrchestrator', () => {
         minAct: THE_MANACLE.minAct,
       }
 
-      game.processAction({ type: 'skip' })
+      advanceRound(game)
 
       expect(game.getState().currentRound).toBe(3)
       const springs = game
@@ -1016,9 +1009,6 @@ describe('GameOrchestrator', () => {
       expect(game.getHandTiles().some((tile) => tile.id === lockedId)).toBe(
         true
       )
-      expect(
-        game.processAction({ type: 'discard', tileId: lockedId }).errors?.[0]
-      ).toContain('Locked')
       expect(
         game.processAction({ type: 'redraw', tileIds: [lockedId] }).errors?.[0]
       ).toContain('Locked')

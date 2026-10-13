@@ -44,8 +44,11 @@ export function captureOmenRunState(): OmenRunSnapshot {
 
 /** Complete internal snapshot; storage accepts it only through its validation boundary. */
 export interface ClassicRunSnapshot {
-  /** v2 requires the earned Bamboo/Summer flag; v1 is read-only legacy input. */
-  version: 1 | 2
+  /**
+   * v3: shared Turns budget and the current item catalog. v1/v2 are legacy
+   * input, upgraded by migrateClassicSnapshot before validation.
+   */
+  version: 3
   state: ClassicRunState
   config: ClassicRoundConfig
   shop: ShopSessionState

@@ -5,12 +5,8 @@ import { useProgressionStore } from '../stores/progressionStore'
 import { useStakeStore } from '../stores/stakeStore'
 import { useTableStyleStore } from '../stores/tableStyleStore'
 import { useSettingsStore } from '../stores/settingsStore'
-import {
-  useTableLoopStore,
-  createTableLoopStore,
-} from '../stores/tableLoopStore'
 import { ArchiveSystem } from '../systems/ArchiveSystem'
-import { TABLE_SAVE_KEY } from '../tableloop/savedRun'
+import { LEGACY_TABLE_LOOP_SAVE_KEY } from './legacySaves'
 import { CLASSIC_SAVE_KEY } from './classicSavedRun'
 import { RUN_SAVE_EPOCH_KEY } from './runSaveEpoch'
 import { gameOrchestrator as game } from './GameOrchestrator'
@@ -47,12 +43,8 @@ describe('explicit progress reset', () => {
     useTableStyleStore.getState().selectStyle('red_lacquer')
     useStakeStore.getState().recordVictory(5000, 8, 'red_lacquer', 2)
     useArchiveStore.getState().unlockAll()
-    useTableLoopStore.getState().restart(7, { draftEnabled: true })
-    useTableLoopStore.getState().chooseStarter('echoing_bamboo')
-    await useTableLoopStore.getState().retrySave()
-    useTableLoopStore
-      .getState()
-      .toggleTile(useTableLoopStore.getState().state.rack[0].id)
+    // A dormant record left by the retired Table Loop mode.
+    localStorage.setItem(LEGACY_TABLE_LOOP_SAVE_KEY, 'retired table journal')
     for (const key of TUTORIAL_PROGRESS_KEYS) localStorage.setItem(key, 'true')
     useSettingsStore.setState({
       language: 'es',
@@ -96,12 +88,7 @@ describe('explicit progress reset', () => {
       isRunActive: false,
       handTiles: [],
     })
-    expect(useTableLoopStore.getState()).toMatchObject({
-      selectedTileIds: [],
-      targetSlot: null,
-      state: { phase: 'choosingStart', draftEnabled: false, ownedDecrees: [] },
-    })
-    expect(localStorage.getItem(TABLE_SAVE_KEY)).toBeNull()
+    expect(localStorage.getItem(LEGACY_TABLE_LOOP_SAVE_KEY)).toBeNull()
     expect(localStorage.getItem(CLASSIC_SAVE_KEY)).toBeNull()
     for (const key of TUTORIAL_PROGRESS_KEYS)
       expect(localStorage.getItem(key)).toBeNull()
@@ -127,30 +114,17 @@ describe('explicit progress reset', () => {
     expect(useStakeStore.getState().globalHighestCompleted).toBe(0)
   })
 
-  it('starts a new Table Loop journal rather than resurrecting removed actions', async () => {
-    expect((await resetAllProgress()).success).toBe(true)
-    useTableLoopStore.getState().chooseStarter('patient_pair')
-    await useTableLoopStore.getState().retrySave()
-    const restored = createTableLoopStore(localStorage).getState()
-    expect(restored.state.ownedDecrees).toEqual(['patient_pair'])
-    expect(
-      JSON.parse(localStorage.getItem(TABLE_SAVE_KEY)!).actions
-    ).toHaveLength(1)
-  })
-
   it('rolls back stores and exact saved values when the final run deletion fails', async () => {
     const before = new Map(data)
     const run = game.getState()
-    const table = useTableLoopStore.getState()
     const archive = useArchiveStore.getState()
     vi.mocked(localStorage.removeItem).mockImplementation((key) => {
-      if (key === TABLE_SAVE_KEY) throw new Error('denied')
+      if (key === LEGACY_TABLE_LOOP_SAVE_KEY) throw new Error('denied')
       data.delete(key)
     })
     expect(await resetAllProgress()).toEqual({ success: false, restored: true })
     expect(data).toEqual(before)
     expect(game.getState()).toBe(run)
-    expect(useTableLoopStore.getState()).toBe(table)
     expect(useArchiveStore.getState()).toBe(archive)
   })
 
@@ -168,10 +142,9 @@ describe('explicit progress reset', () => {
     expect(game.getState()).toBe(run)
   })
 
-  it('preserves both live engines and rolls back the profile when Classic deletion fails', async () => {
+  it('preserves the live run and rolls back the profile when Classic deletion fails', async () => {
     const before = new Map(data)
     const classic = game.getState()
-    const table = useTableLoopStore.getState()
     vi.mocked(localStorage.removeItem).mockImplementation((key) => {
       if (key === CLASSIC_SAVE_KEY) throw new Error('Denied')
       data.delete(key)
@@ -179,7 +152,6 @@ describe('explicit progress reset', () => {
     expect(await resetAllProgress()).toEqual({ success: false, restored: true })
     expect(data).toEqual(before)
     expect(game.getState()).toBe(classic)
-    expect(useTableLoopStore.getState()).toBe(table)
   })
 
   it('does not change anything if the backup cannot be read', async () => {
@@ -193,10 +165,9 @@ describe('explicit progress reset', () => {
     expect(game.getState()).toBe(run)
   })
 
-  it('does not discard either live run when writing the reset marker is denied', async () => {
+  it('does not discard the live run when writing the reset marker is denied', async () => {
     const before = new Map(data)
     const run = game.getState()
-    const table = useTableLoopStore.getState()
     vi.mocked(localStorage.setItem).mockImplementation((key, value) => {
       if (key === RUN_SAVE_EPOCH_KEY) throw new Error('Marker denied')
       data.set(key, value)
@@ -204,7 +175,6 @@ describe('explicit progress reset', () => {
     expect(await resetAllProgress()).toEqual({ success: false, restored: true })
     expect(data).toEqual(before)
     expect(game.getState()).toBe(run)
-    expect(useTableLoopStore.getState()).toBe(table)
   })
 
   it('tutorial-only reset leaves all gameplay and earned progression untouched', async () => {

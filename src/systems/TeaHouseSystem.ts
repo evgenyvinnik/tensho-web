@@ -25,6 +25,7 @@
  * - Legendary: Special sources only
  */
 
+import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
 import {
   ShopItemType,
   BlessingPack,
@@ -844,8 +845,8 @@ export class TeaHouseSystem {
       type: packType,
       size: packSize,
       cost: this.pricingCalculator.getPackCost(packSize),
-      choiceCount: packSize === 'Normal' ? 3 : 5,
-      selectCount: packSize === 'Mega' ? 2 : 1,
+      choiceCount: PACK_SIZE_DEFINITIONS[packSize].choiceCount,
+      selectCount: PACK_SIZE_DEFINITIONS[packSize].selectCount,
     }
 
     const { finalCost, sellValue } =

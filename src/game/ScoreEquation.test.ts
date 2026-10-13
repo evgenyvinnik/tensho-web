@@ -74,19 +74,20 @@ function pay(game: GameOrchestrator, ids: string[]) {
   return equation
 }
 
+// A complete hand's Mult is its Yaku (2.6 here) plus Mahjong's flat +4.
 it('settles complete, repeated complete, partial, and zero-paid plays independently', () => {
   const game = fixture()
   expect(pay(game, deal(game, true))).toEqual({
     points: 225,
-    multiplier: 2.6,
+    multiplier: 6.6,
     adjustment: 0,
-    total: 585,
+    total: 1485,
   })
   expect(pay(game, deal(game, true))).toEqual({
     points: 225,
-    multiplier: 2.6,
+    multiplier: 6.6,
     adjustment: 0,
-    total: 585,
+    total: 1485,
   })
   expect(pay(game, deal(game, false))).toEqual({
     points: 45,
@@ -102,7 +103,7 @@ it('settles complete, repeated complete, partial, and zero-paid plays independen
     adjustment: -45,
     total: 0,
   })
-  expect(game.getState().score).toBe(1215)
+  expect(game.getState().score).toBe(1485 * 2 + 45)
 })
 
 it('includes season and loss-prevention multipliers in the receipt, not just Yaku', () => {

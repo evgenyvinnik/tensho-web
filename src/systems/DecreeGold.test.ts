@@ -45,9 +45,10 @@ describe('catalog gold effects', () => {
     expect(system.calculateRoundEndGold()).toBe(6)
   })
 
-  it('copies discard rewards and multiplicative gold powers', () => {
+  it('copies REDRAW rewards and multiplicative gold powers', () => {
+    // River Tax pays 2 per REDRAW; Blueprint copies it.
     const river = setup('decree-blueprint', 'river_tax')
-    expect(river.calculateDiscardGold()).toBe(2)
+    expect(river.calculateDiscardGold()).toBe(4)
     const stone = setup('decree-philosophers-stone', 'decree-brainstorm')
     expect(stone.getGoldMultiplier()).toBe(4)
   })

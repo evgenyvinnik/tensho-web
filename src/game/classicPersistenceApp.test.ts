@@ -3,6 +3,8 @@ import {
   initializeClassicPersistence,
   shutdownClassicPersistence,
   enterClassicRoute,
+  isResumablePhase,
+  resumableRun,
   startConfiguredClassicRun,
 } from './classicPersistenceApp'
 import {
@@ -237,4 +239,42 @@ it('a failed full reset rolls back the checkpoint and retains the live save leas
   game.selectTile(game.getHandTiles()[0].id)
   expect(await service.retrySave()).toBe(true)
   expect(data.get(CLASSIC_SAVE_KEY)).not.toBe(before)
+})
+
+it.each([
+  ['gameplay', true],
+  ['shop', true],
+  ['menu', false],
+  ['gameOver', false],
+  [undefined, false],
+] as const)('treats a %s run as resumable: %s', (phase, expected) => {
+  expect(isResumablePhase(phase)).toBe(expected)
+})
+
+it('offers to resume a run in play, but never a finished one', async () => {
+  const service = initializeClassicPersistence()
+  expect(resumableRun(service, service.getSnapshot().disk)).toBeNull()
+  await startConfiguredClassicRun(null)
+  expect(resumableRun(service, service.getSnapshot().disk)).toMatchObject({
+    phase: 'gameplay',
+    currentAct: 1,
+    currentRound: 1,
+  })
+  ;(game.getState() as OrchestratorState).phase = 'gameOver'
+  expect(resumableRun(service, service.getSnapshot().disk)).toBeNull()
+})
+
+it('opens the table on a fresh run when the saved run has already ended', async () => {
+  await startConfiguredClassicRun(null)
+  await initializeClassicPersistence().flush()
+  // The stored record of a run that has since ended.
+  const record = JSON.parse(data.get(CLASSIC_SAVE_KEY)!)
+  Object.assign(record.snapshot.state, { phase: 'gameOver', isRunActive: false })
+  const finished = JSON.stringify(record)
+  data.set(CLASSIC_SAVE_KEY, finished)
+  shutdownClassicPersistence()
+  game.resetGame()
+  expect(await enterClassicRoute('play')).toBe('play')
+  expect(game.getState().phase).toBe('gameplay')
+  expect(data.get(CLASSIC_SAVE_KEY)).not.toBe(finished)
 })

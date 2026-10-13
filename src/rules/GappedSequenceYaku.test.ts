@@ -35,7 +35,6 @@ function context(melds: Meld[]): YakuContext {
     declaredMelds: [],
     isConcealed: true,
     isTsumo: true,
-    isRiichi: false,
     seatWind: WindType.East,
     roundWind: WindType.East,
     winningTile,

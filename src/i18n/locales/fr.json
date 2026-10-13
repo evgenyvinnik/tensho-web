@@ -1,47 +1,7 @@
 {
-  "riichiPledge": {
-    "title": "Engagement Riichi",
-    "active": "Riichi engagé",
-    "spent": "Riichi utilisé ce tour",
-    "intro": "Payez 1 Or avant de compléter votre main. Une fois par manche.",
-    "risk": "Pendant l’engagement, seule une véritable main complète cachée peut marquer. Échanges, défausses et objets restent disponibles.",
-    "reward": "Votre prochaine main complète cachée marque Riichi (Yaku ×1,2), selon les règles du boss et des Yakuman. Pluton et Dévot de Riichi ne s’appliquent que si Riichi marque.",
-    "declare": "S’engager · 1 Or",
-    "abandon": "Abandonner l’engagement",
-    "abandonNote": "Abandonner rétablit le jeu tactique. Aucun remboursement ni second engagement cette manche.",
-    "gold": "Il vous faut au moins 1 Or.",
-    "hidden": "Révélez toutes les tuiles de votre main avant de vous engager.",
-    "open": "Riichi exige une main cachée, sans groupes ouverts.",
-    "boss": "Ce boss impose une taille de jeu fixe ; Riichi est indisponible.",
-    "complete": "Votre main est déjà complète. Jouez-la ; engagez-vous avant de compléter une prochaine main.",
-    "inactive": "Les engagements nécessitent une manche active avec des mains restantes.",
-    "failed": "La table a changé. Vérifiez les conditions et réessayez.",
-    "restriction": "Complétez une main cachée ou abandonnez l’engagement."
-  },
   "observatory": {
     "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. Trou noir correspond à tout Yaku qui marque.",
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
-  },
-  "handBuilder": {
-    "title": "Construire une main",
-    "intro": "Gardez les groupes utiles et échangez les tuiles superflues. C'est une piste possible, pas un meilleur coup garanti.",
-    "standard": "Quatre groupes + une paire.",
-    "sevenPairs": "Sept paires différentes.",
-    "kokushi": "Les 13 types de terminales et d'Honneurs + un doublon.",
-    "distance": "La structure conservée nécessite au moins {{needed}} tuiles utiles pour être complète.",
-    "keep": "Tuiles à conserver",
-    "exchange": "Échange à envisager",
-    "cost": "Remplacer {{tiles}} tuiles coûte 1 de vos {{remaining}} repioches. Les tuiles rendues rejoignent le mur après la pioche des remplaçantes.",
-    "improving": "Types de tuiles pouvant aider ({{types}})",
-    "possibilities": "Ces exemples améliorent d'un cran la structure conservée. Ce ne sont ni des tirages prédits, ni un décompte du mur, ni une garantie de complétion.",
-    "caution": "Ce plan considère les formes ordinaires, pas les scores futurs ni les effets de pioche. Viser une main complète peut coûter la manche ; comparez d'abord vos options de score.",
-    "stage": "Sélectionner cet échange",
-    "confirm": "La sélection est gratuite. Vérifiez les tuiles sur le plateau, puis appuyez sur {{action}} pour utiliser une charge.",
-    "hidden": "Certaines tuiles sont cachées. Aucun plan n'est affiché tant que leurs faces restent masquées.",
-    "unsupported": "Cet atelier prend en charge les mains ordinaires de 14 tuiles, sans groupes déclarés. Votre main ou les règles actives exigent une autre approche ; consultez l'aperçu du score et le guide.",
-    "complete": "Votre main est déjà complète. Vérifiez son score, posez-la sur le plateau et confirmez le coup au lieu d'échanger.",
-    "clear": "Un coup connu peut gagner cette manche. Vérifiez vos options de score avant de dépenser une repioche.",
-    "unavailable": "Aucun échange légal pris en charge n'est disponible. Vérifiez les repioches restantes, les tuiles verrouillées et le mur."
   },
   "closedHandAusterity": {
     "name": "Ascèse de la main fermée",
@@ -50,14 +10,14 @@
   },
   "yakuRepetition": {
     "name": "Décret de Répétition des Yaku",
-    "description": "Chaque Yaku marqué lors de manches consécutives multiplie par ×1,2 pour chaque manche précédente de sa série (maximum ×4 au total). Une manche sans ce Yaku ou passée rompt sa série. Le plafond s’applique avant le renforcement des Fleurs.",
+    "description": "Chaque yaku marqué sur des manches consécutives cumule ×1,2 par manche de sa série (jusqu’à ×4). Manquer une manche brise la série. Le plafond s’applique avant le renfort des Fleurs.",
     "title": "Figures à répéter",
     "streak": "{{name}} · {{rounds}} manches précédentes consécutives",
     "empty": "Aucune série précédente. Marquez un Yaku cette manche pour en commencer une."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Marquez un Yakuman.",
-    "seal_of_the_void": "Marquez les 21 types de Yaku en une seule partie.",
+    "seal_of_the_void": "Marquez les 20 types de Yaku en une seule partie.",
     "planet_x_orb": "Marquez Sept Paires.",
     "ceres_orb": "Marquez Chanta.",
     "eris_orb": "Marquez Kokushi.",
@@ -108,29 +68,19 @@
     "help": "À propos de ces bonus",
     "title": "Améliorations des yaku",
     "summary": "Améliorés : {{total}}",
-    "intro": "Ces bonus durent toute la partie et s’appliquent lorsque le yaku correspondant marque dans une main complète.",
+    "intro": "Ces bonus durent toute la partie et s’appliquent chaque fois qu’une main correspondante marque.",
     "baseline": "Le niveau 1 est le niveau initial, sans bonus d’orbe.",
     "empty": "Aucun yaku amélioré. Utilisez un Orbe céleste pour renforcer son motif de score.",
     "level": "Niveau {{level}} / {{max}}",
     "bonus": "+{{chips}} points de base · +{{mult}} Mult",
     "triggers": "Occurrences marquées : {{total}}",
-    "note": "Seuls les ajouts de base des orbes sont indiqués. Les autres règles peuvent modifier le score final ; consultez la prévision de la main."
-  },
-  "handInterpretation": {
-    "ready": "Main aidée par les règles",
-    "why": "Pourquoi cette main fonctionne",
-    "assisted": "Les règles actives permettent cette main.",
-    "sequenceSkip": "Hiver ou Escalier brisé permet de sauter un rang dans une suite de la même famille. Voici les groupes utilisés par cette prévision.",
-    "substitution": "{{from}} compte comme {{to}} pour ce coup.",
-    "virtual": "Tuile virtuelle de complément : {{tile}}.",
-    "penalty": "Ce complément virtuel divise le score de la main par deux. La prévision inclut cette pénalité.",
-    "unchanged": "Ces identités sont temporaires et servent au calcul du score. Vos tuiles physiques restent inchangées ; aucune tuile n’est créée.",
-    "allWild": "Chaque tuile peut représenter n’importe quelle famille et valeur pour ce coup."
+    "note": "Seuls les ajouts de base des orbes sont indiqués. Les autres règles peuvent modifier le score final ; consultez la prévision de la main.",
+    "fromOrb": "Amélioré par {{orb}}"
   },
   "progressiveHints": {
     "discard": {
       "title": "Améliorez votre main",
-      "content": "Défausser remplace une tuile et dépense une défausse, pas une main jouée. Repiocher échange jusqu’à trois tuiles sélectionnées contre une repioche. Plus le nombre shanten est bas, plus vous êtes proche d’une main complète."
+      "content": "REPIOCHER envoie à la rivière autant de tuiles choisies que vous voulez et en pioche de nouvelles. Cela coûte un tour, sauf si vous avez une repioche gratuite."
     },
     "yaku": {
       "title": "Combinaisons et multiplicateurs",
@@ -142,7 +92,7 @@
     },
     "shop": {
       "title": "La Maison de Thé",
-      "content": "Le bilan des gains indique d’où vient votre Or. Achetez des objets complémentaires ou économisez pour toucher des intérêts. Les achats ordinaires sont immédiats ; les Chartes demandent confirmation."
+      "content": "Le bilan montre d'où vient votre or. Achetez des objets qui se complètent, ou épargnez pour les intérêts. Touchez un objet pour voir son effet avant de l'acheter."
     },
     "decrees": {
       "title": "Décrets",
@@ -162,21 +112,11 @@
     "eternalName": "Éternel",
     "eternalDescription": "Ne peut être ni vendu ni détruit.",
     "perishableName": "Périssable",
-    "perishableDescription": "Perd ses effets actifs à la fin du compte à rebours. Les manches sautées ne comptent pas.",
+    "perishableDescription": "Perd ses effets quand son compte à rebours expire.",
     "remaining": "Expire après {{remaining}} manches terminées supplémentaires.",
     "expired": "Expiré : ses effets actifs sont désactivés.",
     "rentalName": "Location",
     "rentalDescription": "Coûte {{amount}} pièces d’or à la fin de chaque manche."
-  },
-  "appUpdate": {
-    "available": "Mise à jour disponible",
-    "description": "Une nouvelle version est prête. Nous sauvegarderons votre progression avant de recharger.",
-    "later": "Plus tard",
-    "updating": "Mise à jour…",
-    "accept": "Sauvegarder et actualiser",
-    "save": "Votre progression récente n’a pas pu être sauvegardée. Gardez cet onglet ouvert et réessayez.",
-    "update": "La mise à jour a échoué. Votre partie est toujours ici ; réessayez.",
-    "tabs": "Fermez les autres onglets ou fenêtres de Tensho, puis réessayez pour ne pas interrompre leurs parties."
   },
   "classicSave": {
     "savedTitle": "Votre partie classique",
@@ -190,11 +130,6 @@
     "retry": "Réessayer la sauvegarde",
     "refresh": "Vérifier à nouveau",
     "backup": "Télécharger la sauvegarde",
-    "discard": "Abandonner la partie",
-    "replaceTitle": "Commencer une nouvelle partie ?",
-    "replaceBody": "Cela remplace votre partie classique actuelle ou sauvegardée. Table Loop et les éléments débloqués sont conservés.",
-    "discardTitle": "Abandonner cette partie ?",
-    "discardBody": "Supprimer la partie classique sauvegardée et celle de cet onglet ? Table Loop et les éléments débloqués sont conservés.",
     "leaveTitle": "Quitter la table ?",
     "leaveBody": "Sauvegardez votre partie et revenez au menu. Vous pourrez la reprendre plus tard.",
     "saveLeave": "Sauvegarder et quitter"
@@ -230,7 +165,8 @@
     "confirm": "Utiliser",
     "fateSeals": "Sceaux du Destin",
     "celestialOrbs": "Orbes Célestes",
-    "voidScripts": "Écrits du Vide"
+    "voidScripts": "Écrits du Vide",
+    "chooseTargets": "Choisir des tuiles"
   },
   "common": {
     "exit": "Quitter",
@@ -252,7 +188,7 @@
     "subtitle": "Mahjong Roguelike",
     "play": "Jouer",
     "continue": "Continuer",
-    "newRun": "Nouvelle partie classique",
+    "newRun": "Nouvelle partie",
     "tutorial": "Tutoriel",
     "options": "Options",
     "settings": "Paramètres",
@@ -267,8 +203,7 @@
     "tableStakeDifficulty": "Mise de table · Difficulté",
     "tableStake": "Mise de table",
     "noSpecialModifiers": "Aucun modificateur spécial",
-    "promise": "Promesse",
-    "tableLoop": "Mode Boucle de table"
+    "promise": "Promesse"
   },
   "settings": {
     "fullUnlock": {
@@ -315,7 +250,10 @@
       "slow": "Lente"
     },
     "tileHintsDesc": "Affiche les numéros et les repères des Dragons, et regroupe votre main en Paires, Séquences et Brelans",
-    "visual": "Visuel"
+    "visual": "Visuel",
+    "rankNumbers": "Nombres sur les tuiles",
+    "rankNumbersDesc": "Affiche un petit 1–9 sur les tuiles numérotées et une lettre sur les Dragons, le temps d’apprendre les faces.",
+    "unreadableSave": "Votre partie sauvegardée est illisible. Vous pouvez la télécharger avant de lancer une Nouvelle partie, qui la remplacera."
   },
   "gameplay": {
     "actProgress": "Acte {{current}} sur {{total}}",
@@ -330,13 +268,10 @@
     "target": "Objectif",
     "gold": "Or",
     "hands": "Mains",
-    "discards": "Défausses",
     "draw": "Piocher",
-    "discard": "Défausser",
     "declare": "Déclarer",
     "win": "Gagner",
     "tsumo": "Tsumo",
-    "skip": "Passer",
     "pause": "Pause",
     "resume": "Reprendre",
     "tenpai": "Tenpai",
@@ -344,11 +279,10 @@
     "shantenHelp": "Nombre de tuiles utiles qu’il vous manque avant qu’une seule tuile puisse compléter votre main",
     "ready": "Prêt",
     "deadDraw": "PIOCHE MORTE",
-    "deadWallDraw": "PIOCHE DU MUR MORT",
+    "deadWallDraw": "Piocher dans le mur mort",
     "winsRound": "Gagne la manche",
     "tilesInWall": "Tuiles dans le mur",
     "handsRemaining": "Mains restantes",
-    "discardsRemaining": "Défausses restantes",
     "redrawsRemaining": "Repioches restantes",
     "redrawSelected": "Repiocher les tuiles sélectionnées",
     "redrawHint": "Rend jusqu'à 3 tuiles sélectionnées et en pioche autant",
@@ -465,7 +399,27 @@
       "buildTowardPlain": "Construire vers une figure",
       "shapeCost": "Rapporte {{difference}} points de moins avec un groupe complet. Ne prédit pas les prochaines pioches.",
       "tradeoff": "Comparez les tuiles et les scores. Une suggestion sélectionne seulement des tuiles, sans dépenser de coup."
-    }
+    },
+    "roundTitle": "Acte {{act}} · {{round}}",
+    "scoreOfTarget": "{{score}} sur {{target}} points",
+    "help": "Comment jouer",
+    "handScore": "Score de la main",
+    "lastHand": "Dernière main",
+    "hiddenScore": "Tuiles face cachée",
+    "turnsLeft_one": "{{formattedCount}} tour restant",
+    "turnsLeft_other": "{{formattedCount}} tours restants",
+    "freeRedraws": "+{{formattedCount}} offert",
+    "playHand": "Jouer la main",
+    "reasonExact": "Jouez exactement {{count}} tuiles",
+    "reasonMinimum": "Choisissez au moins {{count}} tuiles",
+    "reasonMaximum": "{{count}} tuiles maximum, ou une main de Mahjong complète",
+    "reasonUnavailable": "Ce coup n’est pas autorisé pour l’instant",
+    "reasonLastTurn": "Votre dernier tour doit être une main jouée",
+    "reasonNoReplacements": "Plus assez de tuiles dans le mur",
+    "yourTiles": "Vos tuiles",
+    "collection": "Vos objets",
+    "deadWallHint": "Choisissez une seule tuile et échangez-la contre une du mur mort. Une fois par manche, gratuit.",
+    "turnsLabel": "Tours restants"
   },
   "rounds": {
     "small": "Petite Manche",
@@ -473,7 +427,10 @@
     "boss": "Manche Boss",
     "smallJp": "小局",
     "largeJp": "大局",
-    "bossJp": "親局"
+    "bossJp": "親局",
+    "smallShort": "Petite",
+    "largeShort": "Grande",
+    "bossShort": "Boss"
   },
   "shop": {
     "catalyst": {
@@ -524,7 +481,8 @@
       "purchasePrompt": "Acheter {{name}} pour {{cost}}G ?",
       "baseEdition": "Édition de base",
       "goldBalance": "{{amount}} pièces d’or",
-      "rerollsUsed": "Renouvellements utilisés : {{count}}"
+      "rerollsUsed": "Renouvellements utilisés : {{count}}",
+      "forSale": "En vente"
     },
     "payout": {
       "heading": "Acte {{act}} · {{round}}",
@@ -538,7 +496,10 @@
       "interestCap": "Le plafond d’intérêts de {{interest}}G est atteint.",
       "interestSave": "Avec vos économies actuelles : {{interest}}G d’intérêts. Économisez encore {{needed}}G pour obtenir {{next}}G.",
       "nextRound": "Suite : {{round}} · objectif {{target}}",
-      "nextAct": "Suite : Acte {{act}}"
+      "nextAct": "Suite : Acte {{act}}",
+      "omenEarned": "Présage : {{name}}",
+      "omen": "Présage",
+      "balance": "Or"
     },
     "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
     "packInventoryFull": "Pas assez de place pour cette sélection. Choisissez moins de récompenses, d’autres récompenses, ou passez le paquet.",
@@ -564,7 +525,28 @@
     "cashOut": "Encaisser",
     "payoutBreakdown": "Détail des gains de la manche",
     "selectionConfirmed": "Sélection confirmée !",
-    "packSkipped": "Paquet ignoré"
+    "packSkipped": "Paquet ignoré",
+    "kinds": {
+      "decree": "Décret · {{rarity}}",
+      "decreeHelp": "Un Décret est une règle permanente pour cette partie. Il occupe un emplacement et peut être vendu à tout moment.",
+      "seal": "Sceau du Destin · à utiliser en manche",
+      "orb": "Orbe Céleste · améliore une famille de mains",
+      "script": "Écrit du Vide · puissant, avec un prix",
+      "consumableHelp": "Gardé avec vos objets jusqu’à utilisation. Touchez-le sur la table pour l’utiliser.",
+      "tile": "Tuile · ajoutée à votre mur",
+      "tileHelp": "Ajoute cette tuile à votre mur jusqu’à la fin de la partie.",
+      "pack": "Paquet · choisissez {{choose}} parmi {{from}}",
+      "charter": "Charte impériale · amélioration permanente",
+      "charterHelp": "Une Charte impériale est une amélioration permanente pour le reste de la partie. Elle n’occupe aucun emplacement et ne se vend pas."
+    },
+    "offerLabel": "{{name}}, {{price}} or",
+    "buyFor": "Acheter · {{price}} or",
+    "help": {
+      "what": "La Maison de Thé est la boutique entre les manches.",
+      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les consommables s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
+      "interest": "L’or conservé rapporte des intérêts : +1 pour chaque tranche de 5 en fin de manche, jusqu’à +{{cap}}.",
+      "cashOut": "La ligne du haut indique l’or rapporté par la dernière manche ; ouvrez-la pour le détail. Chaque achat se fait avec son propre bouton Acheter."
+    }
   },
   "decrees": {
     "title": "Décrets",
@@ -689,7 +671,7 @@
       },
       "decree-second-chance": {
         "name": "Seconde Chance",
-        "description": "+1 Défausse par manche"
+        "description": "+1 repioche gratuite par manche"
       },
       "decree-balanced-path": {
         "name": "Chemin Équilibré",
@@ -724,8 +706,8 @@
         "description": "x1.3 Mult"
       },
       "decree-riichi-devotee": {
-        "name": "Dévot du Riichi",
-        "description": "+3 Mult en scorant Riichi"
+        "name": "Dévot des paires",
+        "description": "+4 Mult si la main contient au moins deux paires"
       },
       "decree-tanyao-tactician": {
         "name": "Tacticien Tanyao",
@@ -829,11 +811,11 @@
       },
       "decree-waste-not": {
         "name": "Rien Gaspillé",
-        "description": "+5 Mult si aucune défausse cette manche"
+        "description": "+5 Mult si vous n’avez pas repioché cette manche"
       },
       "decree-recycler": {
         "name": "Recycleur",
-        "description": "+20 Jetons par défausse utilisée"
+        "description": "+10 jetons par tuile repiochée cette manche"
       },
       "decree-yakuhai-zealot": {
         "name": "Zélote Yakuhai",
@@ -889,7 +871,7 @@
       },
       "decree-careful-player": {
         "name": "Joueur Prudent",
-        "description": "+2 Défausses par manche"
+        "description": "+2 repioches gratuites par manche"
       },
       "decree-inferno": {
         "name": "Inferno",
@@ -997,7 +979,7 @@
       },
       "decree-sacrifice": {
         "name": "Sacrifice",
-        "description": "x3.0 Mult, -1 Défausse par manche"
+        "description": "×3.0 Mult, −1 tour par manche"
       },
       "decree-transmuter": {
         "name": "Transmuteur",
@@ -1021,7 +1003,7 @@
       },
       "decree-infinite-patience": {
         "name": "Patience Infinie",
-        "description": "+3 Défausses par manche"
+        "description": "+3 repioches gratuites par manche"
       },
       "decree-divine-flame": {
         "name": "Flamme Divine",
@@ -1097,7 +1079,7 @@
       },
       "decree-time-lord": {
         "name": "Seigneur du Temps",
-        "description": "+1 main supplémentaire par manche"
+        "description": "+1 tour par manche"
       },
       "decree-exponential": {
         "name": "Exponentiel",
@@ -1125,7 +1107,7 @@
       },
       "decree-celestial-throne": {
         "name": "Trône Céleste",
-        "description": "x10.0 Mult, -2 Taille, -1 Défausse"
+        "description": "×10.0 Mult, −2 au chevalet, −1 tour par manche"
       },
       "decree-void-emperor": {
         "name": "Empereur du Vide",
@@ -1169,7 +1151,7 @@
       },
       "decree-time-master": {
         "name": "Maître du Temps",
-        "description": "+2 mains supplémentaires par manche"
+        "description": "+2 tours par manche"
       },
       "decree-immortal-decree": {
         "name": "Décret Immortel",
@@ -1181,11 +1163,11 @@
       },
       "river_tax": {
         "name": "Taxe de la Rivière",
-        "description": "Vous gagnez 1 pièce d'or par tuile défaussée cette manche."
+        "description": "Gagnez 2 or à chaque REPIOCHE."
       },
       "extended_hand_grant": {
         "name": "Octroi de Main Étendue",
-        "description": "+3 coups par manche. N'ajoute ni tuiles ni échanges."
+        "description": "+3 tours par manche."
       },
       "tanyao_dispensation": {
         "name": "Dispense de Tanyao",
@@ -1221,7 +1203,7 @@
       },
       "dead_wall_writ": {
         "name": "Acte du Mur Mort",
-        "description": "Une fois par manche, piochez dans la défausse plutôt que dans le mur."
+        "description": "Une fois par manche, échangez une tuile choisie contre une du mur mort sans dépenser de tour."
       },
       "shanten_clemency": {
         "name": "Clémence de Shanten",
@@ -1266,11 +1248,11 @@
       "spring": "+2 places en main pour cette manche, remplies depuis le mur vivant. Effet cumulable ; le Serpent ne remplace toujours que 3 tuiles.",
       "summer": "Score ×1,3. Met de côté 20% du mur vivant restant pour cette manche (nombre de tuiles conservées arrondi à l’entier inférieur).",
       "summerSheltered": "Score ×1,3. Protection du Bambou acquise : Été ne peut plus réduire le mur pendant cette manche.",
-      "autumn": "Multiplicateur de yaku +20 %. Chaque Automne normal pioché ajoute 1 défausse pour cette manche.",
+      "autumn": "Multiplicateur de yaku +20 %. Chaque Automne normal pioché donne 1 REPIOCHE gratuite cette manche.",
       "winter": "Les suites de la même famille peuvent sauter un rang (1–2–4 ou 1–3–4). Score ×0,75.",
       "drought": "Neutralise les bonus de score des fleurs non protégées.",
       "frostbite": "Chaque Gel divise à nouveau par deux les gains de points, de multiplicateur, d’or et de répétition des Décrets. Les effets propres des tuiles, permissions, capacités, actions et coûts restent inchangés.",
-      "decay": "−10 points par tuile défaussée dans cette manche, sans descendre sous zéro.",
+      "decay": "−10 points par REPIOCHE cette manche, jamais en dessous de zéro.",
       "droughtName": "Sécheresse",
       "monsoonName": "Mousson",
       "monsoon": "Rend aléatoires les pioches normales et les remplacements de tuiles bonus pendant cette manche.",
@@ -1295,7 +1277,12 @@
     "spring": "Printemps",
     "summer": "Été",
     "autumn": "Automne",
-    "winter": "Hiver"
+    "winter": "Hiver",
+    "duration": {
+      "run": "Dure toute la partie",
+      "round": "Dure cette manche"
+    },
+    "setProgress": "Fleurs réunies : {{count}}/4"
   },
   "yaku": {
     "title": "Yaku",
@@ -1358,13 +1345,15 @@
     "edition": "Édition",
     "debuffed": "Tuile affaiblie",
     "lockedMustPlay": "Tuile verrouillée : doit être jouée",
-    "tileRow": "Rangée de tuiles"
+    "tileRow": "Rangée de tuiles",
+    "honors": "Honneurs"
   },
   "melds": {
     "pair": "Paire",
     "sequence": "Séquence",
     "triplet": "Brelan",
-    "quad": "Carré"
+    "quad": "Carré",
+    "straight": "Suite"
   },
   "results": {
     "roundDetails": "Dernière manche",
@@ -1406,7 +1395,7 @@
     "items": {
       "the_hook": {
         "name": "L'Hameçon",
-        "description": "2 tuiles au hasard sont défaussées après chaque pioche"
+        "description": "Après chaque pioche, 2 tuiles au hasard partent à la rivière"
       },
       "the_wall": {
         "name": "Le Mur",
@@ -1422,11 +1411,11 @@
       },
       "the_flint": {
         "name": "Le Silex",
-        "description": "Points de base et Mult réduits de moitié toute la manche"
+        "description": "Chaque main de cette manche marque moitié moins"
       },
       "the_needle": {
         "name": "L'Aiguille",
-        "description": "La main doit être bouclée en exactement 1 main (sans reprise)"
+        "description": "Une seule main jouée cette manche (la REPIOCHE reste permise)"
       },
       "the_pillar": {
         "name": "Le Pilier",
@@ -1434,7 +1423,7 @@
       },
       "the_water": {
         "name": "L'Eau",
-        "description": "La manche commence avec 0 repioche"
+        "description": "Pas de REPIOCHE cette manche"
       },
       "the_arm": {
         "name": "Le Bras",
@@ -1442,7 +1431,7 @@
       },
       "the_psychic": {
         "name": "Le Médium",
-        "description": "Il faut jouer exactement 5 tuiles par main"
+        "description": "Chaque main doit utiliser exactement 5 tuiles"
       },
       "the_club": {
         "name": "La Massue",
@@ -1482,7 +1471,7 @@
       },
       "the_serpent": {
         "name": "Le Serpent",
-        "description": "Après avoir joué ou défaussé, vous piochez toujours 3 tuiles"
+        "description": "Après une main ou une REPIOCHE, piochez toujours exactement 3 tuiles"
       },
       "the_tooth": {
         "name": "La Dent",
@@ -1494,7 +1483,7 @@
       },
       "the_manacle": {
         "name": "L'Entrave",
-        "description": "-1 à la taille de la main"
+        "description": "Votre chevalet contient 1 tuile de moins"
       },
       "amber_acorn": {
         "name": "Gland d'Ambre",
@@ -1528,7 +1517,7 @@
       "base": "Difficulté de base : aucune pénalité supplémentaire.",
       "noSmallRoundReward": "Les petites manches ne donnent pas d’or en récompense.",
       "scoreScaling": "Objectifs de score du palier : ×{{multiplier}} par rapport au Blanc. Les modificateurs de table s’appliquent aussi.",
-      "redrawPenalty": "Renouvellements de main par manche : −{{amount}}.",
+      "redrawPenalty": "Tours par manche : −{{amount}}.",
       "eternalChance": "Décrets en boutique : {{chance}} de chance d’être Éternels (impossibles à vendre ou détruire).",
       "perishableChance": "Décrets non Éternels en boutique : {{chance}} de chance d’être Périssables (affaiblis après {{rounds}} manches).",
       "rentalChance": "Décrets en boutique : {{chance}} de chance d’être en Location ({{price}} or à l’achat, puis {{fee}} or par manche)."
@@ -1552,43 +1541,19 @@
     "finish": "Commencer à Jouer !",
     "welcome": {
       "title": "Bienvenue dans Tensho !",
-      "content": "Tensho est un jeu roguelike basé sur le Mahjong Riichi japonais. Votre objectif est de former des mains gagnantes et d'atteindre le score cible à chaque manche.",
-      "p1": "<0>Tensho (天翔)</0> signifie « Ascension céleste » en japonais. C'est un <3>roguelike</3> bâti autour du jeu de tuiles classique qu'est le <6>Riichi Mahjong</6>.",
+      "p1": "<0>Tensho (天翔)</0> signifie « Ascension céleste » en japonais. C'est un <3>roguelike</3> de <6>mains façon poker</6> joué avec des tuiles de Mahjong.",
       "p2": "Le but est simple : <2>composer des mains qui marquent</2> et atteindre le score cible de chaque manche. À défaut, la partie s'arrête.",
       "note1": "Ne vous inquiétez pas si vous n'avez jamais joué au Mahjong ! Ce tutoriel vous apprendra tout, étape par étape."
     },
-    "tiles": {
-      "title": "Tuiles de Mahjong",
-      "content1": "Il y a trois familles principales : Caractères (萬), Cercles (筒) et Bambous (索), chacune numérotée de 1 à 9."
-    },
-    "honors": {
-      "title": "Tuiles d'Honneur",
-      "content": "Les tuiles d'honneur comprennent les Vents (Est, Sud, Ouest, Nord) et les Dragons (Blanc, Vert, Rouge). Ces tuiles ne peuvent pas former de séquences, seulement des brelans."
-    },
     "hands": {
-      "title": "Former des Mains",
-      "content1": "Une main gagnante se compose de 4 groupes (combinaisons) plus 1 paire.",
-      "content2": "Les groupes peuvent être des séquences (1-2-3) ou des brelans (3-3-3)."
-    },
-    "yaku": {
-      "title": "Yaku - Motifs de Score",
-      "content1": "Les yaku sont des motifs spéciaux qui multiplient votre score. Chaque yaku a un niveau de 1 à 4.",
-      "content2": "Exemples : Tout Simples (sans terminaux/honneurs), Tout Brelans, Couleur Pure (une seule famille)."
-    },
-    "decrees": {
-      "title": "Décrets - Modificateurs de Règles",
-      "content1": "Les décrets sont des cartes spéciales qui modifient les règles et augmentent votre score.",
-      "content2": "Collectez des décrets puissants à la Maison de Thé (boutique) entre les manches."
-    },
-    "scoring": {
-      "title": "Formule de Score",
-      "formula": "Score = (Base + Bonus) × Multiplicateurs",
-      "content": "Atteignez le score cible à chaque manche pour progresser. Les actes supérieurs nécessitent des scores plus élevés !"
+      "title": "Les mains jouables",
+      "p1": "Une main jouée compte jusqu'à {{max}} tuiles. Elle marque comme la meilleure main que ses tuiles forment :",
+      "headerHand": "Main",
+      "headerMeaning": "Ce que c’est",
+      "mahjong": "Une main de Mahjong complète ajoute +{{mult}} au Mult en plus de ses Yaku."
     },
     "ready": {
       "title": "Vous Êtes Prêt !",
-      "content1": "Bonne chance dans votre aventure !",
-      "content2": "Appuyez sur JOUER pour commencer votre première partie.",
       "note1": "Vous pouvez <1>relancer</1> l'offre de la boutique pour 5 pièces d'or. Chaque relance coûte 1 de plus.",
       "note2": "Conserver <1>25 pièces d'or ou plus</1> maximise les intérêts ! Mais investir dans de bons Décrets rapporte souvent davantage.",
       "p1": "Inutile de tout retenir : vous apprendrez en jouant !",
@@ -1615,7 +1580,7 @@
     "wind_tiles": {
       "note1": "Les terminales valent le double des simples ! De nombreux yaku les exigent ou les excluent explicitement.",
       "p1": "Il existe <1>quatre tuiles de Vent</1>, représentant les points cardinaux :",
-      "p2": "Les Vents sont des <1>tuiles d'Honneur</1> et valent <4>15 points</4> chacune — la valeur de base la plus élevée !"
+      "p2": "Les Vents sont des <1>tuiles d'Honneur</1> et valent <4>50 points</4> chacune — la valeur de base la plus élevée !"
     },
     "dragon_tiles": {
       "note1": "Les Vents ne peuvent pas former de suites. Uniquement des brelans ou des paires.",
@@ -1623,7 +1588,7 @@
       "p2": "<0>白 (Dragon Blanc / Haku)</0> — Une tuile vierge ou encadrée, symbole de pureté ou de vide",
       "p3": "<0>發 (Dragon Vert / Hatsu)</0> — Le caractère 發 en vert, signifiant « prospérité » ou « émettre »",
       "p4": "<0>中 (Dragon Rouge / Chun)</0> — Le caractère 中 en rouge, signifiant « centre »",
-      "p5": "Comme les Vents, les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4> et ne peuvent pas former de suites."
+      "p5": "Les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4>, et chaque Dragon marqué dans un groupe ajoute +2 au Mult. Ils ne peuvent pas former de suites."
     },
     "bonus_tiles": {
       "p1": "Les <0>tuiles bonus</0> sont des tuiles spéciales qui ne font pas partie de votre main :"
@@ -1659,70 +1624,38 @@
       "p2": "Toute main gagnante standard exige <2>exactement une paire</2>. On l'appelle parfois la « tête » (雀頭) de la main."
     },
     "winning_hand": {
-      "note1": "Les brelans valent <1>+30 points</1>, davantage que les suites (+20) ! Ils sont toutefois plus durs à réunir : il faut 3 tuiles identiques, et chaque tuile n'existe qu'en 4 exemplaires.",
-      "li1": "Vaut <1>+50 points</1> — le maximum pour une combinaison",
+      "note1": "Les brelans valent <1>+40 points</1>, davantage que les suites (+30) ! Ils sont toutefois plus durs à réunir : il faut 3 tuiles identiques, et chaque tuile n'existe qu'en 4 exemplaires.",
+      "li1": "Vaut <1>+65 points</1> — le maximum pour une combinaison",
       "li2": "Compte pour une seule combinaison malgré ses 4 tuiles",
       "li3": "À la déclaration, vous piochez une tuile de remplacement",
       "p1": "Une main gagnante standard se compose de :"
     },
     "gameplay_overview": {
-      "note1": "La paire vaut <1>+10 points</1>. N'importe quelle tuile peut former une paire : numérotée, vent ou dragon.",
+      "note1": "La paire vaut <1>+15 points</1>. N'importe quelle tuile peut former une paire : numérotée, vent ou dragon.",
       "li1": "1-2-3 Cercles (suite)",
       "li2": "5-5-5 Bambous (brelan)",
       "li3": "6-7-8 Caractères (suite)",
       "li4": "Est-Est-Est (brelan)",
-      "li5": "Paire de Dragon Rouge",
-      "p1": "Chaque manche suit un cycle simple :"
+      "li5": "Paire de Dragon Rouge"
     },
     "special_hands": {
       "p1": "Deux structures spéciales ne suivent pas la règle des 4 combinaisons + 1 paire :"
     },
-    "discarding": {
-      "li1": "<0>Commencez</0> avec 13 tuiles en main",
-      "li2": "<0>Piochez</0> une tuile dans le mur",
-      "li3": "Vérifiez si vous pouvez <1>gagner</1> (main valide + score cible)",
-      "li4": "Sinon, <1>défaussez</1> une tuile dont vous n'avez pas besoin",
-      "p1": "Après la pioche (si vous n'avez pas gagné), vous devez <2>défausser une tuile</2> pour revenir à 13.",
-      "p2": "<0>Comment défausser :</0>"
-    },
-    "shanten": {
-      "li1": "Répétez jusqu'à la victoire ou l'épuisement du mur",
-      "p1": "Le <0>shanten (向聴)</0> est le nombre de tuiles à changer pour compléter une main gagnante."
-    },
-    "scoring_overview": {
-      "note1": "Si le mur s'épuise avant que vous ne complétiez une main gagnante, la manche se solde par un <1>échec</1> et la partie s'arrête !",
-      "p1": "Votre score est calculé avec cette formule :"
-    },
     "drawing": {
-      "p1": "Au début de votre tour, vous <2>piochez une tuile</2> dans le mur. Vous avez alors 14 tuiles temporairement.",
       "p2": "Le <1>mur</1> commence avec 70 tuiles piochables (une fois le mur mort réservé). Surveillez le compteur !"
     },
     "base_points": {
-      "note1": "Quand vous piochez une <1>tuile bonus</1> (Fleur ou Saison), elle est révélée automatiquement et vous piochez une remplaçante. Cela ne coûte pas de tour !",
-      "li1": "<0>Touchez ou cliquez</0> une tuile pour la sélectionner",
-      "li2": "<0>Faites glisser vers le haut</0> jusqu'à la zone de défausse",
-      "li3": "Les tuiles défaussées rejoignent la <1>Réserve des morts</1>",
-      "p1": "Chaque tuile de votre main gagnante apporte des <2>points de base</2> :"
+      "note1": "Quand vous piochez une <1>tuile bonus</1> (Fleur ou Saison), elle est révélée automatiquement et vous piochez une remplaçante. Cela ne coûte pas de tour !"
     },
     "yaku_intro": {
-      "note1": "Les tuiles défaussées sont <2>perdues à jamais</2> — choisissez soigneusement !",
-      "li1": "<0>Points de base</0> — Des tuiles elles-mêmes",
-      "li2": "<0>Points de structure</0> — De vos combinaisons et de votre paire",
-      "li3": "<0>Multiplicateurs</0> — Des Yaku, Décrets et effets",
       "p1": "Les <0>Yaku (役)</0> sont des motifs spéciaux qui <3>multiplient votre score</3>. C'est de là que viennent les gros points !",
-      "p2": "Tensho compte <1>21 yaku</1>, répartis en 4 paliers :"
+      "p2": "Tensho compte <1>20 yaku</1>, répartis en 4 paliers :"
     },
     "yaku_examples": {
-      "note1": "Le jeu affiche votre shanten actuel. Plus il est bas, mieux c'est ! Cherchez à le réduire à chaque tour.",
       "p1": "Voici quelques yaku que vous rencontrerez souvent :"
     },
     "boss_mandates": {
-      "note1": "Les tuiles d'Honneur rapportent <1>3 fois plus de points</1> que les simples ! Une main pleine d'honneurs aura une base bien plus élevée.",
       "p1": "Chaque <1>manche de Boss</1> impose un <3>Mandat</3> spécial — une restriction ou un défi :"
-    },
-    "structure_points": {
-      "p1": "Vos combinaisons ajoutent des <1>points de structure</1> à votre base :",
-      "p2": "<0>Exemple :</0> une main avec 2 suites, 2 brelans et une paire :"
     },
     "decree_categories": {
       "note1": "Les yaku <1>se cumulent en multipliant</1> ! Une main avec des yaku ×1,3 et ×2,0 obtient ×2,6 au total. Combinez pour des scores massifs !",
@@ -1739,16 +1672,7 @@
       "li3": "<0>Accorder des capacités</0> — Pioches, repioches ou effets supplémentaires",
       "p1": "Vous disposez d'un nombre limité d'<1>emplacements de Décret</1>. Vous commencez avec <3>5 emplacements</3> et pouvez en gagner via :"
     },
-    "skipping": {
-      "p1": "Vous pouvez <1>sauter</1> la manche Petite ou Grande avant d'affronter le Boss. Pourquoi le faire ?"
-    },
     "decree_rarities": {
-      "li1": "Recevoir une Marque de Présage",
-      "li2": "Préserver des Décrets à minuterie",
-      "li3": "Éviter des murs défavorables",
-      "li4": "Aucun accès à la boutique",
-      "li5": "Aucun or gagné",
-      "li6": "Aucune croissance des intérêts",
       "p1": "Les Décrets existent en <1>4 niveaux de rareté</1> :"
     },
     "decrees_intro": {
@@ -1788,6 +1712,55 @@
     },
     "gold_economy": {
       "p1": "Vous gagnez de l'<1>or</1> de plusieurs façons :"
+    },
+    "turns": {
+      "title": "Le déroulement d'une manche",
+      "p1": "Chaque manche vous donne {{turns}} tours. Chaque tour est l’une de deux actions :",
+      "play": "marquer les tuiles choisies : jusqu'à {{max}}, ou une main de Mahjong complète.",
+      "redraw": "envoyer à la rivière autant de tuiles choisies que vous voulez et en piocher de nouvelles.",
+      "p2": "Atteignez l'objectif de la manche avant d'être à court de tours. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
+      "warning": "À court de tours sous l'objectif, la partie est terminée."
+    },
+    "refill": {
+      "title": "Piocher des tuiles",
+      "p1": "Votre chevalet se remplit depuis le mur après chaque main jouée et chaque repioche : vous choisissez toujours parmi une main complète."
+    },
+    "redraw": {
+      "title": "REPIOCHER",
+      "p1": "Choisissez les tuiles dont vous ne voulez pas, autant que vous voulez, et appuyez sur REPIOCHER. Elles vont à la rivière et de nouvelles tuiles les remplacent.",
+      "li1": "Les repioches gratuites des objets passent en premier ; sinon, une repioche coûte un tour.",
+      "li2": "Les tuiles repiochées restent dans la rivière jusqu’à la fin de la manche.",
+      "note": "Gardez les tuiles qui forment déjà un groupe et repiochez les isolées."
+    },
+    "score": {
+      "title": "Le calcul du score",
+      "p1": "Chaque main jouée marque :",
+      "note": "Les grandes mains, les Dragons, les Orbes et les Décrets augmentent le Mult, et le Mult multiplie tout."
+    },
+    "points": {
+      "title": "Les points des tuiles",
+      "p1": "Chaque tuile dans un groupe marque ses points :",
+      "headerTile": "Tuile",
+      "headerPoints": "Points",
+      "simples": "Simples (2–8)",
+      "terminals": "Terminales (1 et 9)",
+      "dragonValue": "{{points}}, et +{{mult}} au Mult dans un groupe",
+      "note": "Les Vents valent dix fois une tuile simple ; les Dragons ajoutent plutôt du Mult. Une tuile hors de tout groupe marque la moitié."
+    },
+    "groups": {
+      "title": "Les bonus de groupe",
+      "p1": "Chaque groupe ajoute des points bonus à ceux de ses tuiles :",
+      "headerGroup": "Groupe",
+      "headerMeaning": "Tuiles",
+      "headerBonus": "Bonus",
+      "example": "Exemple : Double paire = {{pair}} + {{pair}} = +{{total}} points bonus, et le second groupe ajoute +1 au Mult."
+    },
+    "swift": {
+      "title": "Victoires éclair",
+      "p1": "On ne peut pas passer une manche. Remportez une Petite ou une Grande Manche avec {{spare}} tours d'avance ou plus pour gagner un Présage.",
+      "li1": "Vous touchez quand même l'or de la manche et passez par la Maison de Thé.",
+      "li2": "Les Manches Boss ne donnent jamais de Présage.",
+      "note": "Une bonne main en début de manche économise des tours, et les tours économisés deviennent des Présages."
     }
   },
   "accessibility": {
@@ -1893,11 +1866,11 @@
       },
       "steady_hand": {
         "name": "Main sûre",
-        "description": "+1 main par manche"
+        "description": "+1 tour par manche"
       },
       "frugal_discard": {
-        "name": "Défausse frugale",
-        "description": "+1 repioche par manche"
+        "name": "Repioche frugale",
+        "description": "+1 repioche gratuite par manche"
       },
       "seal_merchant": {
         "name": "Marchand de sceaux",
@@ -1921,7 +1894,7 @@
       },
       "ancient_script": {
         "name": "Écriture ancienne",
-        "description": "-1 Acte, -1 main par manche"
+        "description": "−1 acte, −1 tour par manche"
       },
       "directors_take": {
         "name": "Part du directeur",
@@ -1957,11 +1930,11 @@
       },
       "swift_hand": {
         "name": "Main preste",
-        "description": "+1 main supplémentaire par manche"
+        "description": "+1 tour de plus par manche"
       },
       "wasteful_plenty": {
         "name": "Abondance gaspillée",
-        "description": "+1 repioche supplémentaire par manche"
+        "description": "+1 repioche gratuite de plus par manche"
       },
       "seal_tycoon": {
         "name": "Magnat des sceaux",
@@ -1985,7 +1958,7 @@
       },
       "stone_script": {
         "name": "Écriture sur pierre",
-        "description": "-1 Acte de nouveau, -1 repioche par manche"
+        "description": "−1 acte de plus, −1 tour par manche"
       },
       "final_cut": {
         "name": "Montage final",
@@ -2001,23 +1974,23 @@
     "items": {
       "pluto_orb": {
         "name": "Orbe de Pluton",
-        "description": "S'accorde au yaku Riichi. +1 Mult, +10 Jetons par niveau."
+        "description": "Améliore les paires : Paire, Double paire et Trois paires. +1 Mult et +10 jetons par niveau."
       },
       "mercury_orb": {
         "name": "Orbe de Mercure",
-        "description": "S'accorde au yaku Tanyao. +1 Mult, +15 Jetons par niveau."
+        "description": "Améliore Tout simples : mains uniquement de 2 à 8 et la main Tanyao. +1 Mult et +15 jetons par niveau."
       },
       "uranus_orb": {
         "name": "Orbe d'Uranus",
-        "description": "S'accorde au yaku Yakuhai. +1 Mult, +20 Jetons par niveau."
+        "description": "Améliore les Honneurs : tout groupe de Vents ou de Dragons et la main Yakuhai. +1 Mult et +20 jetons par niveau."
       },
       "venus_orb": {
         "name": "Orbe de Vénus",
-        "description": "S'accorde au yaku Pinfu. +2 Mult, +20 Jetons par niveau."
+        "description": "Améliore les séquences : Séquence, Séquence + Paire, Deux séquences et la main Pinfu. +2 Mult et +20 jetons par niveau."
       },
       "saturn_orb": {
         "name": "Orbe de Saturne",
-        "description": "S'accorde au yaku Ittsu (Suite). +3 Mult, +30 Jetons par niveau."
+        "description": "Améliore les suites : de quatre et de cinq, et la main Suite pure. +3 Mult et +30 jetons par niveau."
       },
       "jupiter_orb": {
         "name": "Orbe de Jupiter",
@@ -2025,7 +1998,7 @@
       },
       "earth_orb": {
         "name": "Orbe de la Terre",
-        "description": "S'accorde au yaku Toitoi. +2 Mult, +25 Jetons par niveau."
+        "description": "Améliore brelans et carrés, et la main Tout brelans. +2 Mult et +25 jetons par niveau."
       },
       "mars_orb": {
         "name": "Orbe de Mars",
@@ -2064,7 +2037,7 @@
     "items": {
       "double_omen": {
         "name": "Présage double",
-        "description": "Copie le prochain présage non double obtenu en passant une manche. Chaque Présage double consécutif ajoute une copie."
+        "description": "Copie le prochain présage non double obtenu. Chaque présage double consécutif ajoute une copie."
       },
       "omen_of_crescents": {
         "name": "Présage des Croissants",
@@ -2076,15 +2049,15 @@
       },
       "omen_of_rivers": {
         "name": "Présage des Rivières",
-        "description": "La prochaine manche commence avec +1 défausse supplémentaire."
+        "description": "La prochaine manche commence avec +1 repioche gratuite."
       },
       "speed_omen": {
         "name": "Présage de Vitesse",
-        "description": "Octroie 5 pièces d'or par manche sautée dans cette partie."
+        "description": "Donne 5 or par victoire éclair de la partie."
       },
       "throwback_omen": {
         "name": "Présage du Retour",
-        "description": "Gagne ×0,25 Mult par manche sautée pour le reste de la partie."
+        "description": "Gagne ×0.25 Mult par victoire éclair jusqu’à la fin de la partie."
       },
       "fortune_omen": {
         "name": "Présage de Fortune",
@@ -2120,7 +2093,7 @@
       },
       "abundance_omen": {
         "name": "Présage d'Abondance",
-        "description": "La prochaine manche commence avec +2 repioches supplémentaires."
+        "description": "La prochaine manche commence avec +2 repioches gratuites."
       },
       "polychrome_omen": {
         "name": "Présage Polychrome",
@@ -2296,7 +2269,7 @@
       },
       "script_of_the_medium": {
         "name": "Guide du Médium",
-        "description": "Ajoute le Sceau Violet à 1 tuile (crée un Sceau à la défausse)"
+        "description": "Ajoute un Sceau violet à 1 tuile (crée un Sceau du Destin quand elle est repiochée)"
       },
       "script_of_aura": {
         "name": "Guide de l'Aura",
@@ -2384,7 +2357,7 @@
       },
       "omens": {
         "name": "Marques de Présage",
-        "description": "Modificateurs de destin à usage unique obtenus en sautant des manches"
+        "description": "Récompenses uniques pour une manche gagnée avec des tours d’avance"
       },
       "mandates": {
         "name": "Mandats",
@@ -2508,7 +2481,7 @@
       },
       "purple": {
         "name": "Sceau Violet",
-        "description": "Crée un Sceau du Destin aléatoire lorsque cette tuile est défaussée ou échangée, s’il reste de la place."
+        "description": "Crée un Sceau du Destin aléatoire quand cette tuile est repiochée, s’il y a de la place."
       }
     }
   },
@@ -2544,11 +2517,11 @@
       },
       "arcana_jumbo": {
         "name": "Grand Paquet d'Arcanes",
-        "description": "Choisissez 1 Sceau du Destin parmi 5"
+        "description": "Choisissez 2 Sceaux du Destin parmi 5"
       },
       "arcana_mega": {
         "name": "Méga Paquet d'Arcanes",
-        "description": "Choisissez 2 Sceaux du Destin parmi 5"
+        "description": "Choisissez 3 Sceaux du Destin parmi 6"
       },
       "celestial_normal": {
         "name": "Paquet Céleste",
@@ -2556,11 +2529,11 @@
       },
       "celestial_jumbo": {
         "name": "Grand Paquet Céleste",
-        "description": "Choisissez 1 Orbe céleste parmi 5"
+        "description": "Choisissez 2 Orbes célestes parmi 5"
       },
       "celestial_mega": {
         "name": "Méga Paquet Céleste",
-        "description": "Choisissez 2 Orbes célestes parmi 5"
+        "description": "Choisissez 3 Orbes célestes parmi 6"
       },
       "tile_normal": {
         "name": "Paquet de Tuiles",
@@ -2568,11 +2541,11 @@
       },
       "tile_jumbo": {
         "name": "Grand Paquet de Tuiles",
-        "description": "Choisissez 1 tuile modifiée parmi 5"
+        "description": "Choisissez 2 tuiles modifiées parmi 5"
       },
       "tile_mega": {
         "name": "Méga Paquet de Tuiles",
-        "description": "Choisissez 2 tuiles modifiées parmi 5"
+        "description": "Choisissez 3 tuiles modifiées parmi 6"
       },
       "decree_normal": {
         "name": "Paquet de Décrets",
@@ -2580,11 +2553,11 @@
       },
       "decree_jumbo": {
         "name": "Grand Paquet de Décrets",
-        "description": "Choisissez 1 Décret parmi 5"
+        "description": "Choisissez 2 Décrets parmi 5"
       },
       "decree_mega": {
         "name": "Méga Paquet de Décrets",
-        "description": "Choisissez 2 Décrets parmi 5"
+        "description": "Choisissez 3 Décrets parmi 6"
       },
       "void_normal": {
         "name": "Paquet du Vide",
@@ -2592,11 +2565,11 @@
       },
       "void_jumbo": {
         "name": "Grand Paquet du Vide",
-        "description": "Choisissez 1 Guide du Vide parmi 5"
+        "description": "Choisissez 2 Guides du Vide parmi 5"
       },
       "void_mega": {
         "name": "Méga Paquet du Vide",
-        "description": "Choisissez 2 Guides du Vide parmi 5"
+        "description": "Choisissez 3 Guides du Vide parmi 6"
       }
     }
   },
@@ -2605,14 +2578,18 @@
       "green_felt": {
         "theme": "Classique",
         "unlock": "Disponible dès le départ",
-        "modifiers": { "0": "Aucun modificateur spécial" },
+        "modifiers": {
+          "0": "Aucun modificateur spécial"
+        },
         "name": "Feutre Vert",
         "description": "La table de mahjong classique. Une surface traditionnelle en feutre vert, polie par d'innombrables mains. Aucun modificateur particulier : rien que l'adresse."
       },
       "red_lacquer": {
         "theme": "Propice",
         "unlock": "Terminez l’acte 3",
-        "modifiers": { "0": "+1 emplacement de décret au départ" },
+        "modifiers": {
+          "0": "+1 emplacement de décret au départ"
+        },
         "name": "Laque Rouge",
         "description": "Une table luxueuse finie d'une laque vermillon éclatante, symbole de richesse et de bonne fortune."
       },
@@ -2628,7 +2605,9 @@
       "imperial_gold": {
         "theme": "Royal",
         "unlock": "Gagnez avec au moins 5 décrets",
-        "modifiers": { "0": "Commencez avec 1 mandat régional aléatoire" },
+        "modifiers": {
+          "0": "Commencez avec 1 mandat régional aléatoire"
+        },
         "name": "Or Impérial",
         "description": "Une table magnifique du palais impérial, incrustée de feuille d'or et de jade."
       },
@@ -2645,14 +2624,19 @@
       "temple_stone": {
         "theme": "Austère",
         "unlock": "Gagnez sans récolter de fleurs",
-        "modifiers": { "0": "Aucune fleur", "1": "+50% au score de base" },
+        "modifiers": {
+          "0": "Aucune fleur",
+          "1": "+50% au score de base"
+        },
         "name": "Pierre du Temple",
         "description": "Une table de pierre froide dans un temple ascétique de montagne. Aucune fleur n'y pousse."
       },
       "ghost_parlor": {
         "theme": "Hanté",
         "unlock": "Survivez à 3 saisons corrompues en une partie",
-        "modifiers": { "0": "Saisons corrompues possibles dès l’acte I" },
+        "modifiers": {
+          "0": "Saisons corrompues possibles dès l’acte I"
+        },
         "name": "Salon des Fantômes",
         "description": "Une salle de mahjong abandonnée où les esprits jouent encore. Le voile entre les mondes y est mince."
       },
@@ -2668,266 +2652,195 @@
       }
     }
   },
-  "tableLoop": {
-    "save": {
-      "invalid": "La sauvegarde précédente n’a pas pu être restaurée. Lancez une nouvelle partie pour la remplacer.",
-      "unavailable": "La progression ne peut pas être sauvegardée sur cet appareil. Gardez cet onglet ouvert pour continuer.",
-      "conflictTitle": "Table modifiée dans une autre fenêtre",
-      "conflict": "Cette table est en pause car la sauvegarde a changé dans une autre fenêtre. La sauvegarde la plus récente n’a pas été écrasée.",
-      "loadLatest": "Charger la dernière sauvegarde",
-      "loadConfirm": "Remplacer cette table par la dernière sauvegarde ? Les coups non sauvegardés ici seront perdus. Si la sauvegarde a été supprimée, une nouvelle table s’ouvrira.",
-      "loadFailed": "Impossible de charger la dernière sauvegarde. Rien n’a été remplacé. Gardez cette fenêtre ouverte et réessayez."
+  "patterns": {
+    "toast": "{{name}} !",
+    "loose": {
+      "name": "Tuiles isolées",
+      "explain": "Aucun groupe : chaque tuile rapporte la moitié de ses points."
     },
-    "slot": {
-      "meld": "Emplacement de combinaison {{number}}",
-      "pair": "Emplacement de la paire",
-      "meldShort": "Combinaison",
-      "pairShort": "Paire",
-      "emptyMeld": "séquence ou brelan",
-      "emptyPair": "deux identiques",
-      "replace": "Remplacer",
-      "filled": "contient un {{type}}",
-      "empty": "vide",
-      "forecast": "rapporterait {{total}}",
-      "multCost": "et coûterait {{mult}} Mult"
+    "pair": {
+      "name": "Paire",
+      "explain": "Deux tuiles identiques."
     },
-    "milestones": {
-      "title": "Figures",
-      "momentum": "Élan de la table +{{mult}} Mult",
-      "claimed": "acquise",
-      "twin_sequence": {
-        "name": "Séquence Jumelle",
-        "description": "Deux séquences identiques se dressent côte à côte sur la table."
-      },
-      "pure_suit": {
-        "name": "Famille Pure",
-        "description": "Deux combinaisons ou plus, toutes de la même famille."
-      },
-      "three_suit_sequence": {
-        "name": "Séquence des Trois Familles",
-        "description": "La même suite de trois rangs, une fois dans chaque famille."
-      },
-      "dragon_duet": {
-        "name": "Duo de Dragons",
-        "description": "Deux Dragons différents tiennent la table."
-      },
-      "dragon_court": {
-        "name": "Cour des Dragons",
-        "description": "Les trois Dragons se répondent."
-      },
-      "four_sequences": {
-        "name": "Quatre Séquences",
-        "description": "Chaque emplacement de combinaison porte une séquence, et la paire est posée."
-      }
+    "sequence": {
+      "name": "Séquence",
+      "explain": "Trois nombres qui se suivent, même famille."
     },
-    "decrees": {
-      "echoing_bamboo": {
-        "name": "Bambou qui Résonne",
-        "description": "Une séquence de Bambous compte deux fois quand vous la posez."
-      },
-      "patient_pair": {
-        "name": "Paire Patiente",
-        "description": "La paire gagne +30 pour chaque combinaison déjà sur la table."
-      },
-      "watch_fire": {
-        "name": "Feu de Garde",
-        "description": "Un brelan ou un carré gagne +0,5 Mult et allume son emplacement. Une combinaison posée à côté d’un emplacement allumé gagne +0,5 Mult."
-      },
-      "twin_flame": {
-        "name": "Flamme Jumelle",
-        "description": "Les récompenses de figure versent le double de points."
-      },
-      "river_merchant": {
-        "name": "Marchand qui Chuchote",
-        "description": "Une fois par manche, échangez une tuile choisie de votre chevalet contre une de la rivière. Sans coût en action."
-      },
-      "jade_ledger": {
-        "name": "Registre de Jade",
-        "description": "Gagnez ¥2 pour chaque combinaison posée. Commencez chaque manche avec un échange de moins."
-      },
-      "honor_court": {
-        "name": "Cour des Honneurs",
-        "description": "Les combinaisons de Vents ou de Dragons gagnent +0,3 Mult par tuile."
-      },
-      "terminal_gate": {
-        "name": "Porte Terminale",
-        "description": "Une combinaison contenant un 1 ou un 9 gagne +40."
-      },
-      "wide_rack": {
-        "name": "Chevalet Large",
-        "description": "Gardez deux tuiles de plus sur votre chevalet."
-      },
-      "gap_bridge": {
-        "name": "Passerelle",
-        "description": "Une fois par manche, une suite peut sauter un rang : 3·4·6 compte comme une séquence."
-      }
+    "triplet": {
+      "name": "Brelan",
+      "explain": "Trois tuiles identiques."
     },
-    "chain": {
-      "title": "Comment ça a compté",
-      "skip": "Passer"
+    "quad": {
+      "name": "Carré",
+      "explain": "Quatre tuiles identiques."
     },
-    "stage": {
-      "group": {
-        "sequence": "Séquence posée — {{tiles}}",
-        "triplet": "Brelan posé — {{tiles}}",
-        "quad": "Carré posé — {{tiles}}",
-        "pair": "Paire posée — {{tiles}}"
-      },
-      "frostMagistrate": "Magistrat de Givre : les honneurs comptent moitié",
-      "momentum": "Élan de la table +{{mult}} Mult",
-      "terminalGate": "Porte Terminale +{{bonus}}",
-      "honorCourt": "Cour des Honneurs +{{mult}} Mult",
-      "patientPair": "Paire Patiente +{{bonus}} ({{melds}} combinaisons en attente)",
-      "watchFire": "Feu de Garde +{{mult}} Mult depuis l’emplacement allumé",
-      "echoingBamboo": "Bambou qui Résonne : cette séquence compte deux fois",
-      "milestone": "{{name}} +{{points}}, +{{mult}} Mult tant qu’elle tient",
-      "completion": "Table complète — {{base}} × {{mult}}",
-      "total": "Se pose sur l’objectif",
-      "milestoneBroken": "{{name}} rompue — {{mult}} Mult perdus",
-      "replaces": "Remplace {{tiles}} — {{points}} déjà payés",
-      "watchFireSet": "Feu de Garde +{{mult}} Mult pour le brelan"
+    "straight4": {
+      "name": "Suite de quatre",
+      "explain": "Quatre nombres qui se suivent, même famille."
     },
-    "roundEnd": {
-      "target": "Manche assurée",
-      "completed": "Table achevée",
-      "exhausted": "Ressources épuisées"
+    "straight5": {
+      "name": "Suite de cinq",
+      "explain": "Cinq nombres qui se suivent, même famille."
     },
-    "rounds": {
-      "0": "Première Lueur",
-      "1": "Cour Montante",
-      "2": "Magistrat de Givre"
+    "two_pairs": {
+      "name": "Double paire",
+      "explain": "Deux paires différentes en un coup."
     },
-    "boss": {
-      "frost_magistrate": "Magistrat de Givre : cette manche, les tuiles d’honneur ne comptent que la moitié de leurs points."
+    "three_pairs": {
+      "name": "Trois paires",
+      "explain": "Trois paires en un coup."
     },
-    "hud": {
-      "round": "Manche {{current}} sur {{total}}",
-      "resources": "{{actions}} actions · {{redraws}} échanges",
-      "bridges": "· {{count}} passerelle",
-      "gold": "{{gold}} pièces d'or"
+    "two_sequences": {
+      "name": "Deux séquences",
+      "explain": "Deux séquences en un coup (six tuiles)."
     },
-    "table": {
-      "label": "Table"
+    "two_triplets": {
+      "name": "Deux brelans",
+      "explain": "Deux brelans en un coup."
     },
-    "river": {
-      "choose": "Sélectionnez une tuile du chevalet à céder, puis une de la rivière. Gratuit une fois par manche.",
-      "ready": "Cédez {{tile}} contre une tuile de la rivière. Sans coût en action.",
-      "used": "Échange du Marchand utilisé pour cette manche.",
-      "swapLabel": "Échanger {{give}} contre {{take}}",
-      "title": "Rivière",
-      "recover": "Rivière : touchez pour en reprendre une"
+    "sequence_pair": {
+      "name": "Séquence + Paire",
+      "explain": "Une séquence et une paire ensemble."
     },
-    "hint": {
-      "select": "Touchez des tuiles pour former une séquence, un brelan ou une paire, puis choisissez un emplacement.",
-      "choose": "Touchez un emplacement mis en avant pour valider.",
-      "noSlot": "Aucun emplacement n’accepte cette combinaison. Échangez les tuiles ou choisissez une autre figure.",
-      "draft": "Prenez une offre, ou piochez au mur. Toute autre action prend la tuile du mur."
+    "triplet_pair": {
+      "name": "Full",
+      "explain": "Un brelan et une paire ensemble."
     },
-    "action": {
-      "clear": "Effacer",
-      "exchange": "Échanger ({{left}})",
-      "recover": "Échanger (1 action)",
-      "finish": "Terminer la manche",
-      "needMore": "Encore {{remaining}}"
+    "triplet_sequence": {
+      "name": "Brelan + Séquence",
+      "explain": "Un brelan et une séquence ensemble."
     },
-    "start": {
-      "title": "Choisissez votre façon de jouer",
-      "subtitle": "Un Décret, choisi avant la première tuile. Il doit changer les tuiles que vous voulez.",
-      "take": "Commencer avec celui-ci"
+    "quad_pair": {
+      "name": "Carré + Paire",
+      "explain": "Un carré et une paire ensemble."
     },
-    "cleared": {
-      "title": "Manche réussie",
-      "subtitle": "{{score}} pour un objectif de {{target}}. Bourse : ¥{{gold}}.",
-      "shop": "Passer à la maison de thé",
-      "skipShop": "Directement à la manche suivante"
+    "straight_pair": {
+      "name": "Suite + Paire",
+      "explain": "Une suite de quatre et une paire ensemble."
     },
-    "shop": {
-      "title": "Maison de Thé",
-      "subtitle": "Bourse : ¥{{gold}}",
-      "empty": "Il ne reste rien sur l’étagère.",
-      "buy": "Acheter",
-      "leave": "Manche suivante"
+    "mahjong": {
+      "name": "Mahjong",
+      "explain": "Une main complète : quatre groupes et une paire, en général 14 tuiles. Ses yaku multiplient le score."
     },
-    "end": {
-      "won": "Trois manches, toutes franchies",
-      "lost": "La table s’est épuisée",
-      "summary": "Score de la partie {{score}}",
-      "again": "Une autre partie"
-    },
-    "reject": {
-      "tooFew": "Sélectionnez au moins deux tuiles qui forment une combinaison.",
-      "tooMany": "Une combinaison compte au plus quatre tuiles.",
-      "bonusTile": "Les fleurs et les saisons ne peuvent pas être posées comme combinaison.",
-      "notAGroup": "Ces tuiles ne forment ni séquence, ni brelan, ni carré, ni paire.",
-      "notChoosing": "Le choix d’ouverture est déjà fait.",
-      "notOffered": "Ce Décret n’a pas été proposé.",
-      "notPlaying": "La manche est terminée.",
-      "noActions": "Il ne reste plus d’action de pose.",
-      "noSlot": "Cet emplacement n’existe pas.",
-      "slotTaken": "Cet emplacement contient déjà une combinaison.",
-      "slotEmpty": "Il n’y a rien à remplacer dans cet emplacement.",
-      "notInRack": "Ces tuiles ne sont pas dans votre chevalet.",
-      "pairSlotOnly": "L’emplacement de la paire n’accepte qu’une paire.",
-      "meldSlotOnly": "Un emplacement de combinaison accepte une séquence, un brelan ou un carré.",
-      "illegalPlacement": "Cette combinaison ne peut pas aller là.",
-      "noRedraws": "Il ne reste plus d’échange.",
-      "redrawSize": "Échangez une à trois tuiles.",
-      "wallEmpty": "Le mur est vide.",
-      "noRecoveries": "Plus aucune reprise dans la rivière pour cette manche.",
-      "rackFull": "Votre chevalet est plein ; posez ou échangez d’abord.",
-      "notInRiver": "Cette tuile n’est pas dans la rivière.",
-      "targetNotMet": "Atteignez l’objectif avant de terminer la manche.",
-      "notBetweenRounds": "La boutique ouvre entre les manches.",
-      "shopClosed": "La boutique est fermée.",
-      "tooExpensive": "Vous ne pouvez pas vous le permettre.",
-      "noDraftPick": "Posez une combinaison pour gagner un choix parmi les offres.",
-      "notInDraft": "Cette tuile ne fait pas partie des offres.",
-      "notPractice": "Cette offre appartient à la donne d’entraînement.",
-      "alreadyOwned": "Vous l’avez déjà."
-    },
-    "rack": {
-      "label": "Votre chevalet"
-    },
-    "selection": {
-      "noGroup": "Pas encore une combinaison · {{tiles}}",
-      "multCost": "rompt une figure · −{{mult}} Mult",
-      "bridged": "{{type}} (avec passerelle) · {{tiles}}"
-    },
-    "draft": {
-      "title": "Offres",
-      "claimable": "Offres : prenez-en une pour ce remplacement",
-      "pass": "Du mur",
-      "variant": "Variante : rangée d’offres",
-      "variantHint": "Trois tuiles face visible. Chaque combinaison posée permet à un remplacement de venir d’ici plutôt que du mur.",
-      "on": "Oui",
-      "off": "Non"
-    },
-    "practice": {
-      "label": "Donne d’entraînement",
-      "begin": "Première fois ? Commencez par la donne d’entraînement",
-      "inspectRun": "Montrez-moi la séquence · {{slot}}",
-      "inspectPair": "Montrez-moi la paire · {{slot}}",
-      "takeDecree": "Prendre {{name}}",
-      "startReal": "Commencer une vraie partie",
-      "choose": {
-        "title": "Deux coups, et ce ne sont pas les mêmes",
-        "body": "Votre chevalet contient une séquence de bambous et une paire de neuf. Une séquence va dans un emplacement de combinaison, une paire n’entre que dans celui de la paire. Touchez une combinaison, puis l’emplacement qui s’allume : la prévision affichée est exactement ce qu’il rapportera."
-      },
-      "interact": {
-        "title": "Vos combinaisons peuvent se répondre",
-        "body": "Cette combinaison reste sur la table jusqu’à la fin de la manche. Cherchez une deuxième séquence identique à la première : deux séquences identiques côte à côte valent plus que chacune séparément."
-      },
-      "upgrade": {
-        "title": "C’était une Séquence Jumelle",
-        "body": "Elle a payé une fois, et elle a relevé le multiplicateur de tout ce que vous poserez ensuite. Bambou qui Résonne convient à une table bâtie ainsi : une séquence de bambous compte deux fois dès que vous la posez."
-      },
-      "ready": {
-        "title": "Voilà toute la boucle",
-        "body": "Posez des combinaisons, regardez-les se répondre, et dépensez vos gains en Décrets adaptés à la table que vous construisez. La donne d’entraînement est écrite ; une vraie partie est distribuée d’un mur mélangé."
-      }
-    },
-    "flourish": {
-      "completion": "Table complète"
+    "combination": {
+      "name": "Combinaison",
+      "explain": "Plusieurs groupes à la fois."
     }
+  },
+  "guide": {
+    "title": "Comment jouer",
+    "intro": "Tensho est un jeu façon poker avec des tuiles de Mahjong. Choisissez des tuiles qui forment une main, jouez-la pour marquer et atteignez l’objectif de chaque manche.",
+    "turnsTitle": "Votre tour",
+    "playHelp": "marque des points avec les tuiles choisies.",
+    "redrawHelp": "envoie autant de tuiles choisies que vous voulez à la rivière et en pioche de nouvelles.",
+    "turnsHelp": "Chaque manche vous donne {{turns}} tours. Jouer la main et REPIOCHER en coûtent un chacun. Terminez une petite ou grande manche avec {{spare}} tours d’avance pour gagner un présage.",
+    "scoreTitle": "Votre score",
+    "points": "Points",
+    "mult": "Mult",
+    "score": "Score",
+    "scoreHelp": "Les points sont la valeur des tuiles plus le bonus de chaque groupe. Le Mult part de 1 et grandit avec les grosses mains, les Dragons, les Orbes et les Décrets. Une tuile hors groupe compte pour moitié.",
+    "handsTitle": "Les mains",
+    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1, les carrés et suites de cinq +2. Chaque tuile compte une fois ; 6 tuiles maximum par coup, sauf une main de Mahjong complète.",
+    "tilesTitle": "Les tuiles",
+    "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
+    "honorsHelp": "Chaque Vent vaut {{wind}} points. Chaque Dragon dans un groupe ajoute +{{dragon}} Mult.",
+    "specialTitle": "Tuiles spéciales",
+    "specialHelp": "Un cadre coloré avec une gemme est une marque, un cachet de cire est un sceau et un reflet est une édition. Survolez ou sélectionnez une tuile pour lire son effet.",
+    "close": "C’est parti"
+  },
+  "mandateConsequence": {
+    "discard_after_draw": "−{{count}} tuiles au hasard par pioche",
+    "score_multiplier": "Objectif ×{{value}}",
+    "no_repeat_yaku": "Pas de yaku répété",
+    "single_yaku_type": "Un seul type de yaku",
+    "halve_score": "Score ×½",
+    "single_hand": "Une seule main jouée",
+    "debuff_used_tiles": "Tuiles utilisées : 0 point",
+    "no_discards": "Pas de REPIOCHE",
+    "decrease_yaku_tier": "Yaku −{{count}} rang",
+    "fixed_hand_size": "Jouez exactement {{count}}",
+    "debuff_suit": "{{target}} : 0 point",
+    "debuff_tile_type": "{{target}} : 0 point",
+    "hand_size_reduction": "Chevalet −{{count}} tuile",
+    "gold_per_tile": "−{{count}} or par tuile jouée",
+    "most_played_yaku_zeroes_gold": "Le yaku le plus joué vide votre or",
+    "first_hand_face_down": "Premier chevalet face cachée",
+    "tiles_face_down_ratio": "1 tuile sur {{count}} face cachée",
+    "tiles_face_down_after_play": "Nouvelles tuiles face cachée",
+    "fixed_draw_count": "Piochez toujours {{count}}",
+    "honor_tiles_face_down": "Honneurs face cachée",
+    "shuffle_decrees": "Décrets cachés",
+    "debuff_until_sell": "Toutes les tuiles valent 0 jusqu’à la vente d’un Décret",
+    "disable_random_decree": "1 Décret désactivé par main",
+    "lock_random_tile": "Une tuile se verrouille à chaque pioche"
+  },
+  "upgradeFamilies": {
+    "Pairs": {
+      "name": "Paires",
+      "covers": "Paire, Double paire et Trois paires"
+    },
+    "Pinfu": {
+      "name": "Séquences",
+      "covers": "Séquence, Séquence + Paire, Deux séquences et la main Pinfu"
+    },
+    "Ittsu": {
+      "name": "Suites",
+      "covers": "Suites de quatre et cinq, et la main Suite pure"
+    },
+    "Toitoi": {
+      "name": "Brelans et carrés",
+      "covers": "Toute main avec brelan ou carré, et la main Tout brelans"
+    },
+    "Yakuhai": {
+      "name": "Honneurs",
+      "covers": "Tout groupe de Vents ou de Dragons, et les mains Yakuhai"
+    },
+    "Tanyao": {
+      "name": "Tout simples",
+      "covers": "Mains uniquement de 2 à 8, et la main Tanyao"
+    },
+    "Honitsu": {
+      "name": "Semi-couleur",
+      "covers": "Mains complètes d’une famille plus des Honneurs"
+    },
+    "Chinitsu": {
+      "name": "Couleur pure",
+      "covers": "Mains complètes d’une seule famille"
+    },
+    "Sanshoku": {
+      "name": "Triple mixte",
+      "covers": "Mains complètes avec la même séquence dans les trois familles"
+    },
+    "SevenPairs": {
+      "name": "Sept paires",
+      "covers": "La main Sept paires"
+    },
+    "Chanta": {
+      "name": "Main extérieure",
+      "covers": "Mains complètes avec un terminal ou un Honneur dans chaque groupe"
+    },
+    "Kokushi": {
+      "name": "Treize orphelins",
+      "covers": "La main Treize orphelins"
+    },
+    "All": {
+      "name": "Toutes les familles",
+      "covers": "Toutes les familles d’amélioration",
+      "upgrade": "Toutes les familles +1 niveau"
+    },
+    "levelChange": "{{family}} : niveau {{from}} → {{to}}",
+    "tokenLabel": "Amélioration {{family}}, niveau {{level}}"
+  },
+  "floraReveal": {
+    "flowerTitle": "Fleur piochée : {{name}}",
+    "seasonTitle": "Saison piochée : {{name}}",
+    "drawn": "Piochée dans le mur. Les tuiles bonus vont directement dans votre collection et une tuile de remplacement est piochée.",
+    "next": "Suivant ({{count}} de plus)",
+    "done": "Compris"
+  },
+  "decreeReveal": {
+    "title": "Nouveau Décret : {{name}}",
+    "starting": "Décret de départ",
+    "acquired": "Nouveau Décret"
   }
 }

@@ -1,6 +1,6 @@
 import { ClassicRunPersistence } from './ClassicRunPersistence'
-import { gameOrchestrator } from './GameOrchestrator'
-import { CLASSIC_SAVE_KEY } from './classicSavedRun'
+import { gameOrchestrator, type OrchestratorState } from './GameOrchestrator'
+import { CLASSIC_SAVE_KEY, type ClassicSaveRead } from './classicSavedRun'
 import { useProgressionStore } from '../stores/progressionStore'
 import { useStakeStore } from '../stores/stakeStore'
 import { useTableStyleStore } from '../stores/tableStyleStore'
@@ -105,6 +105,36 @@ export function shutdownClassicPersistence(): void {
 }
 
 export type ClassicDestination = 'play' | 'shop' | 'game-over'
+
+/**
+ * Only a run still being played can be resumed. A loss, and a victory whose
+ * player has not chosen Endless, are results: their record stays on disk for
+ * the result screen until a New Run replaces it, but never offers Resume.
+ */
+export function isResumablePhase(
+  phase: OrchestratorState['phase'] | undefined
+): boolean {
+  return phase === 'gameplay' || phase === 'shop'
+}
+
+export type ResumableRunSummary = Pick<
+  OrchestratorState,
+  'phase' | 'tableStyleId' | 'currentAct' | 'currentRound'
+>
+
+/** The resumable run shown on the menu, from this tab or from disk. */
+export function resumableRun(
+  service: ClassicRunPersistence,
+  disk: ClassicSaveRead
+): ResumableRunSummary | null {
+  const run = service.hasLocalRun
+    ? gameOrchestrator.getState()
+    : disk.kind === 'ready'
+      ? disk.saved.snapshot.state
+      : null
+  return run && isResumablePhase(run.phase) ? run : null
+}
+
 export function classicDestination(): ClassicDestination {
   const phase = gameOrchestrator.getState().phase
   return phase === 'shop' ? 'shop' : phase === 'gameOver' ? 'game-over' : 'play'
@@ -143,12 +173,20 @@ export function enterClassicRoute(
     if (service.hasLocalRun) return classicDestination()
     service.refresh()
     const { disk } = service.getSnapshot()
-    if (disk.kind === 'ready') {
-      if (await service.resume(disk.raw)) return classicDestination()
-    } else if (disk.kind === 'empty' && requested === 'play') {
-      return (await startConfiguredClassicRun(null))
+    const result =
+      disk.kind === 'ready' &&
+      !isResumablePhase(disk.saved.snapshot.state.phase)
+    if (requested === 'play' && (disk.kind === 'empty' || result)) {
+      // A finished run is a result, not a table to sit back down at: opening
+      // the table starts the configured run, replacing exactly that record.
+      return (await startConfiguredClassicRun(
+        disk.kind === 'ready' ? disk.raw : null
+      ))
         ? classicDestination()
         : null
+    }
+    if (disk.kind === 'ready') {
+      if (await service.resume(disk.raw)) return classicDestination()
     }
     return null
   })()

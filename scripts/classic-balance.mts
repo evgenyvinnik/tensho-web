@@ -19,6 +19,7 @@
  */
 
 import { GameOrchestrator } from '../src/game/GameOrchestrator.ts'
+import { MAX_TACTICAL_PLAY_TILES } from '../src/game/playRules.ts'
 import { eventBus } from '../src/game/EventBus.ts'
 import { buildCoachAdvice } from '../src/gameplay/beginnerCoach.ts'
 import { chooseBlindSelection } from '../src/gameplay/blindSelection.ts'
@@ -366,7 +367,7 @@ function playRun(seed: number): RunResult {
       if (shopSamples.length > 6) shopSamples.shift()
     }
     if (!advice) blindHands += 1
-    if (selection.length > 5) completeHands++
+    if (selection.length > MAX_TACTICAL_PLAY_TILES) completeHands++
     for (const effect of result.effects) {
       if (effect.type !== 'score_added' || !('breakdown' in effect)) continue
       for (const yaku of (effect.breakdown as ScoreBreakdown).detectedYaku) {
@@ -527,7 +528,7 @@ const outcomes = results.reduce<Record<string, number>>((counts, run) => {
 }, {})
 const limitations = [
   'Heuristic candidate search, not exhaustive or optimal play.',
-  'completeHands is the historical count of plays larger than five tiles, including assisted completions. completeConcealedHands records actual complete concealed hands without Shanten Clemency.',
+  'completeHands counts plays larger than the tactical limit (six tiles), including assisted completions. completeConcealedHands records actual complete concealed hands without Shanten Clemency.',
   'Table and Stake entry are selected directly. No persistent player profile is loaded; Decree, Charter and consumable unlock resolvers remain at engine defaults.',
   RESOURCES
     ? 'Cycles low-connectivity spare tiles when behind the required score pace.'

@@ -6,6 +6,7 @@ import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { THE_SERPENT, CERULEAN_BELL } from '../config/mandateDefinitions'
 import { parseClassicRunSnapshot } from './validateClassicRun'
+import { clearRound } from '../test/roundHelpers'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -44,7 +45,7 @@ function fixture() {
   return { game, state }
 }
 
-it.each(['draw', 'discard', 'redraw', 'play'] as const)(
+it.each(['draw', 'redraw', 'play'] as const)(
   'fills new Spring spaces through actual %s, settling one Mandate cycle',
   (type) => {
     const { game, state } = fixture()
@@ -53,13 +54,11 @@ it.each(['draw', 'discard', 'redraw', 'play'] as const)(
     const onDraw = vi.spyOn(state.mandateEffectSystem, 'onDraw')
     const before = JSON.stringify(game.captureRun())
     const action =
-      type === 'discard'
-        ? { type, tileId: 'hand-0' }
-        : type === 'play'
-          ? { type, tileIds: ['hand-0', 'hand-1', 'hand-2'] }
-          : type === 'redraw'
-            ? { type, tileIds: ['hand-0'] }
-            : { type }
+      type === 'play'
+        ? { type, tileIds: ['hand-0', 'hand-1', 'hand-2'] }
+        : type === 'redraw'
+          ? { type, tileIds: ['hand-0'] }
+          : { type }
     expect(game.canPerformAction(action)).toBe(true)
     expect(game.canPerformAction(action)).toBe(true)
     expect(JSON.stringify(game.captureRun())).toBe(before)
@@ -71,9 +70,14 @@ it.each(['draw', 'discard', 'redraw', 'play'] as const)(
     expect(onDraw).toHaveBeenCalledTimes(1)
     if (type === 'redraw') {
       expect(state.handTiles.some((t) => t.id === 'hand-0')).toBe(false)
-      expect(state.wall.some((t) => t.id === 'hand-0')).toBe(true)
-      const additions = result.effects.filter((e) => e.type === 'tile_added')
-      expect(additions).toHaveLength(3)
+      // A redrawn tile goes to the river, not back into the wall.
+      expect(state.discards.some((t) => t.id === 'hand-0')).toBe(true)
+      expect(state.wall.some((t) => t.id === 'hand-0')).toBe(false)
+      // Spring is announced as a bonus draw; its dead-wall replacement fills
+      // the redrawn space and the live wall fills Spring's two new spaces.
+      const types = result.effects.map((e) => e.type)
+      expect(types.filter((t) => t === 'bonus_tile_drawn')).toHaveLength(1)
+      expect(types.filter((t) => t === 'tile_added')).toHaveLength(2)
     }
   }
 )
@@ -83,7 +87,7 @@ it('stacks Springs drawn in a replacement chain and keeps the expanded rack stab
   state.wall.unshift(Tile.createSeason(SeasonType.Spring, 'spring-1'))
   state.deadWall.unshift(Tile.createSeason(SeasonType.Spring, 'spring-2'))
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(18)
   expect(state.seasonSystem.getDrawBonus()).toBe(4)
@@ -108,7 +112,7 @@ it('does not grant the normal draw bonus for corrupted Spring (Monsoon)', () => 
   const { game, state } = fixture()
   state.seasonSystem.forceSetSeason('Spring', true)
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.seasonSystem.getDrawBonus()).toBe(0)
   expect(state.handTiles).toHaveLength(14)
@@ -119,7 +123,7 @@ it('does not invent tiles when the live wall cannot fill Spring spaces', () => {
   state.wall = [Tile.createSeason(SeasonType.Spring, 'spring')]
   state.deadWall = [new Tile(TileSuit.Wind, 1, 'last-replacement')]
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(14)
   expect(state.handTiles.some((t) => t.id === 'last-replacement')).toBe(true)
@@ -160,10 +164,10 @@ it('expires Spring capacity with the round rather than permanently changing the 
   state.seasonSystem.forceSetSeason('Spring')
   state.wallTemplate = state.wallTemplate.filter((t) => !t.isBonus)
   expect(
-    game.processAction({ type: 'discard', tileId: 'hand-0' }).success
+    game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.handTiles).toHaveLength(16)
-  expect(game.processAction({ type: 'skip' }).success).toBe(true)
+  clearRound(game)
   expect(state.seasonSystem.getDrawBonus()).toBe(0)
   game.exitShop()
   expect(game.getState().phase).toBe('gameplay')

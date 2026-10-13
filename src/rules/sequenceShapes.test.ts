@@ -161,7 +161,18 @@ it('does not multiply candidate work by interchangeable physical copies on enlar
 
 it('describes only the actual special groups and never attributes ordinary/Winter sequences to Bamboo', () => {
   const tiles = rack([1, 2, 3, 4, 5])
-  const groups = parsePartialHand(tiles, { allowSequenceOverlap: true }).groups
+  // A play reads this run as a Straight of Five, which overlaps nothing.
+  const straight = parsePartialHand(tiles, { allowSequenceOverlap: true })
+    .groups
+  expect(straight.map((group) => group.type)).toEqual([MeldType.Straight])
+  expect(
+    describeFlowerSequences(straight, { allowSequenceOverlap: true })
+  ).toBeUndefined()
+  // Plum's overlap still describes two sequences that share a tile.
+  const groups = [
+    new Meld(MeldType.Sequence, tiles.slice(0, 3), true),
+    new Meld(MeldType.Sequence, tiles.slice(2, 5), true),
+  ]
   expect(
     describeFlowerSequences(groups, { allowSequenceOverlap: true })?.overlapping
   ).toEqual(groups.map((group) => group.tiles))

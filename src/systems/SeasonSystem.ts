@@ -7,14 +7,14 @@
  * Base Seasons:
  * - Spring: +2 rack spaces this round, filled on activation and normal refills
  * - Summer: Base score +30%, wall size -20%
- * - Autumn: Yaku multipliers +20%, +1 discard action on activation
+ * - Autumn: Yaku multipliers +20%, +1 free REDRAW on activation
  * - Winter: Same-suit sequences may skip one rank, score -25%
  *
  * Corrupted Seasons (Act II+):
  * - Drought: Flowers are suppressed
  * - Monsoon: Draw order is randomized
  * - Frostbite: Decree scoring/gold rewards are halved; discrete rules remain
- * - Decay: Each discard reduces score floor
+ * - Decay: Each REDRAW reduces score floor
  */
 
 import { Tile, TileSuit } from '../core/Tile'
@@ -53,7 +53,7 @@ export const SEASON_BASE_EFFECTS: Record<SeasonVariant, SeasonEffect> = {
     type: 'yaku_modifier',
     value: 0.2, // +20% to yaku multipliers
     description:
-      'Yaku multipliers +20%, +1 discard action this round on activation',
+      'Yaku multipliers +20%, +1 free REDRAW this round on activation',
   },
   Winter: {
     type: 'legality_modifier',
@@ -87,7 +87,7 @@ export const CORRUPTED_SEASON_EFFECTS: Record<
   Decay: {
     type: 'discard_penalty',
     severity: 10, // Points lost per discard
-    description: 'Each discard reduces score floor',
+    description: 'Each REDRAW reduces score floor',
   },
 }
 

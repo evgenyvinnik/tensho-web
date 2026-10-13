@@ -289,10 +289,11 @@ it.each([0, 2])(
     expect(forecast.structure.kind).toBe('complete')
     expect(forecast.detectedYaku.length).toBeGreaterThan(0)
     expect(forecast.modifierMultiplier).toBe(1.5 + 0.75 * 0.5 ** count)
+    // Mahjong's flat pattern Mult joins the Yaku before the tile layer.
     expect(forecast.finalScore).toBe(
       Math.floor(
         (forecast.basePoints + forecast.additiveBonus) *
-          forecast.yakuMultiplier *
+          (forecast.yakuMultiplier + forecast.pattern.mult) *
           forecast.modifierMultiplier
       )
     )

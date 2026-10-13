@@ -80,7 +80,8 @@ export function RoundCashOutBanner({
     summary.baseReward -
     summary.interest -
     summary.decreeGold -
-    summary.heldGoldMarkReward
+    summary.heldGoldMarkReward -
+    (summary.omenGold ?? 0)
 
   useEffect(() => {
     setHasEntered(true)
@@ -134,8 +135,14 @@ export function RoundCashOutBanner({
           className="h-11 w-11 shrink-0 object-contain"
         />
         <span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-0.5">
-          <span className="min-w-0 text-xs font-semibold text-[var(--color-beige-white)] [overflow-wrap:anywhere]">
-            {t('shop.cashOut')}
+          <span
+            data-payout-round
+            className="min-w-0 text-sm font-bold text-[var(--color-golden-yellow)] [overflow-wrap:anywhere]"
+          >
+            {t('shop.payout.heading', {
+              act: number(summary.actNumber),
+              round: t(`rounds.${summary.roundType.toLowerCase()}`),
+            })}
           </span>
           <strong
             id={totalId}
@@ -146,6 +153,16 @@ export function RoundCashOutBanner({
           >
             {totalText}
           </strong>
+          {summary.omenId && (
+            <span
+              data-payout-omen={summary.omenId}
+              className="rounded-full border border-purple-300/60 bg-purple-950/60 px-2 py-0.5 text-[11px] font-bold text-purple-100"
+            >
+              {t('shop.payout.omenEarned', {
+                name: t(`omens.items.${summary.omenId}.name`),
+              })}
+            </span>
+          )}
         </span>
         <svg
           aria-hidden="true"
@@ -163,25 +180,8 @@ export function RoundCashOutBanner({
       <div id={detailsId} data-payout-details hidden={!expanded}>
         <div className="grid min-w-0 gap-3 px-4 py-3 md:grid-cols-[minmax(0,1fr)_minmax(10rem,0.55fr)]">
           <div className="min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-300">
-              {t('shop.roundCleared')}
-            </p>
-            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h2 className="min-w-0 break-words text-xl font-black text-[var(--color-golden-yellow)] sm:text-2xl">
-                {t('shop.payout.heading', {
-                  act: number(summary.actNumber),
-                  round: t(`rounds.${summary.roundType.toLowerCase()}`),
-                })}
-              </h2>
-              <span className="flex min-w-0 flex-wrap gap-x-1 break-words text-sm tabular-nums text-[var(--color-beige-white)]/65">
-                <span>{number(summary.score)}</span>
-                <span> / </span>
-                <span>{number(summary.target)}</span>
-              </span>
-            </div>
-
             <div
-              className="mt-2 flex flex-wrap gap-1.5"
+              className="flex flex-wrap gap-1.5"
               role="group"
               aria-label={t('shop.payoutBreakdown')}
             >
@@ -208,13 +208,17 @@ export function RoundCashOutBanner({
                 label={t('shop.payout.rentals')}
                 value={-summary.rentalCost}
               />
+              <PayoutChip
+                label={t('shop.payout.omen')}
+                value={summary.omenGold ?? 0}
+              />
             </div>
           </div>
 
           {/* Settled balance, distinct from the live savings guidance below. */}
           <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-black/20 px-4 py-2 md:grid md:content-center md:gap-1 md:text-right">
             <span className="text-xs uppercase tracking-widest text-[var(--color-beige-white)]/50">
-              {t('shop.cashOut')}
+              {t('shop.payout.balance')}
             </span>
             <span className="ml-auto flex min-w-0 flex-wrap gap-x-1 break-words text-xs tabular-nums text-[var(--color-beige-white)]/55 md:ml-0 md:justify-end">
               <span>{number(summary.goldBefore)}G</span>

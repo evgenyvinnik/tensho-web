@@ -198,47 +198,90 @@ export function ModifierBadge({
   return null
 }
 
+/** Small pictograms for a mark's gem and a seal's stamp — never letters. */
+const MARK_GLYPHS: Partial<Record<EnhancementType, string>> = {
+  [EnhancementType.Bonus]: 'M12 6v12M6 12h12',
+  [EnhancementType.Mult]: 'M7 7l10 10M17 7 7 17',
+  [EnhancementType.Wild]: 'm12 4 2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 16.2 7 19l1.2-5.6L4 9.6l5.6-.6z',
+  [EnhancementType.Glass]: 'M12 3 20 12 12 21 4 12z',
+  [EnhancementType.Steel]: 'M12 3 19 6v6c0 4-3 7-7 9-4-2-7-5-7-9V6z',
+  [EnhancementType.Gold]: 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM10 10h4v4h-4z',
+  [EnhancementType.Lucky]: 'M12 12c-3-5-8-2-5 1M12 12c5-3 2-8-1-5M12 12c3 5 8 2 5-1M12 12c-5 3-2 8 1 5M12 12l3 8',
+}
+
+const SEAL_GLYPHS: Partial<Record<SealType, string>> = {
+  [SealType.Gold]: 'M12 5a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM10.5 10.5h3v3h-3z',
+  [SealType.Red]: 'M7 9a6 6 0 0 1 10 0l1-3M17 15a6 6 0 0 1-10 0l-1 3',
+  [SealType.Blue]: 'M12 5a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM5 12h14',
+  [SealType.Purple]: 'M4 12s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z',
+}
+
+function Glyph({ d }: { d?: string }) {
+  if (!d) return null
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-full w-full"
+    >
+      <path d={d} />
+    </svg>
+  )
+}
+
 /**
- * Overlay effects applied to modified tiles
+ * The look of a special tile. Each layer is a whole-tile treatment, not a
+ * corner badge, and the layers combine truthfully:
+ *  - a mark (enhancement) frames the tile in its material — gilded gold,
+ *    sapphire, ruby, prismatic, glass, brushed steel, granite, jade — with a
+ *    gem showing its pictogram;
+ *  - a seal is a wax stamp in its colour, pressed into the lower corner;
+ *  - an edition washes the face — foil sheen, holographic rainbow,
+ *    shifting polychrome, or a negative.
+ * Rank and suit stay readable underneath; the tile's details list the exact
+ * combination.
  */
 export function ModifierOverlay({
   tile,
   className = '',
 }: ModifierOverlayProps) {
-  const effects = EDITION_EFFECTS[tile.edition]
-  const sealColors = SEAL_COLORS[tile.seal]
-
+  const enhancement = tile.enhancement
+  const seal = tile.seal
+  const edition = tile.edition
   return (
     <>
-      {/* Edition overlay */}
-      {tile.edition !== EditionType.Base && (
+      {edition !== EditionType.Base && (
         <div
-          className={`absolute inset-0 pointer-events-none rounded ${effects.overlay} ${effects.className} ${className}`}
+          aria-hidden="true"
+          data-tile-edition={edition}
+          className={`tile-edition tile-edition--${edition} ${className}`}
         />
       )}
-
-      {/* Seal border */}
-      {tile.seal !== SealType.None && (
+      {enhancement !== EnhancementType.None && (
         <div
-          className="absolute inset-0 pointer-events-none rounded"
-          style={{
-            border: `3px solid ${sealColors.bg}`,
-            boxShadow: `0 0 8px ${sealColors.bg}`,
-          }}
-        />
-      )}
-
-      {/* Enhancement indicator (bottom-left corner) */}
-      {tile.enhancement !== EnhancementType.None && (
-        <div className="absolute bottom-0 left-0 transform translate-y-1/4 -translate-x-1/4">
-          <ModifierBadge enhancement={tile.enhancement} size="small" />
+          aria-hidden="true"
+          data-tile-mark={enhancement}
+          className={`tile-mark tile-mark--${enhancement} ${className}`}
+        >
+          {MARK_GLYPHS[enhancement] && (
+            <span className="tile-mark-gem">
+              <Glyph d={MARK_GLYPHS[enhancement]} />
+            </span>
+          )}
         </div>
       )}
-
-      {/* Seal indicator (top-right corner) */}
-      {tile.seal !== SealType.None && (
-        <div className="absolute top-0 right-0 transform -translate-y-1/4 translate-x-1/4">
-          <ModifierBadge seal={tile.seal} size="small" />
+      {seal !== SealType.None && (
+        <div
+          aria-hidden="true"
+          data-tile-seal={seal}
+          className={`tile-seal tile-seal--${seal}`}
+        >
+          <Glyph d={SEAL_GLYPHS[seal]} />
         </div>
       )}
     </>
