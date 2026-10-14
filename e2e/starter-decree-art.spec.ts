@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { clearReveals, openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import it from '../src/i18n/locales/it.json' with { type: 'json' }
 
@@ -22,14 +23,7 @@ for (const [language, copy] of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${language}/play`)
-    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
+    await openTable(page, `/${language}/play`)
     const totalCost = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts'
       const decreePath = '/src/systems/DecreeSystem.ts'
@@ -55,6 +49,8 @@ for (const [language, copy] of [
       )
     })
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+    // The fixture's fresh run queued its own starting Decrees for a reveal.
+    await clearReveals(page)
     for (const id of ids) {
       // Present each controlled offer through the existing live offering object.
       // Shop state returns copied arrays; acquisition still uses the paid UI.
@@ -83,7 +79,7 @@ for (const [language, copy] of [
         })
         eventBus.emit('shopUpdated', { isOpen: true })
       }, id)
-      const card = page.locator(`[data-shop-item="starter-${id}"]`)
+      const card = page.locator(`[data-shop-offer="starter-${id}"]`)
       const image = card.locator(`img[src$="${id.replaceAll('_', '-')}.webp"]`)
       expect(
         await image.evaluate(async (node: HTMLImageElement) => {
@@ -91,14 +87,18 @@ for (const [language, copy] of [
           return node.naturalWidth
         })
       ).toBe(512)
-      await expect(card.getByRole('heading')).toHaveText(
-        copy.decrees.items[id].name
-      )
-      const buy = card.getByRole('button', {
-        name: new RegExp(copy.decrees.items[id].name),
-      })
-      if (isMobile) await buy.tap()
-      else await buy.click()
+      await expect(card).toContainText(copy.decrees.items[id].name)
+      // An offer opens its details on tap; Buy is the only purchase step.
+      const buy = page.locator(`[data-shop-buy="starter-${id}"]`)
+      if (isMobile) {
+        await card.tap()
+        await buy.tap()
+      } else {
+        await card.click()
+        await buy.click()
+      }
+      // A bought Decree comes out of its bag before the shop is usable.
+      await settleReveals(page)
     }
     expect(
       await page.evaluate(async () => {
@@ -113,6 +113,8 @@ for (const [language, copy] of [
     await page
       .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       .click()
+    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+    await settleReveals(page)
     for (const id of ids) {
       const button = page.getByRole('button', {
         name: copy.decrees.items[id].name,
