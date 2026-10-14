@@ -1,11 +1,11 @@
 {
   "baseCommit": "fc4239905a8030949416cccb591cfab0d237e7dc",
-  "validatedAtUtc": "2026-10-13T06:10:32.933580+00:00",
+  "validatedAtUtc": "2026-10-13T15:35:22Z",
   "scope": "Local reviewable artwork integration; no push, pull request, merge or deployment",
   "toolchain": {
     "node": "24.19.0",
     "bun": "1.3.3",
-    "install": "Frozen repository lockfile"
+    "install": "Frozen repository Bun lockfile"
   },
   "typescript": {
     "status": "passed",
@@ -13,9 +13,12 @@
   },
   "unitTests": {
     "status": "passed",
-    "files": 212,
-    "tests": 3012,
-    "command": "bun run test:run"
+    "files": 213,
+    "tests": 3063,
+    "command": "bun run test:run",
+    "notes": [
+      "Full run uses Node 24.19.0 and Bun 1.3.3. The extracted review tree has no upstream Git metadata, so an isolated local verification Git snapshot supplies HEAD/status to the balance-matrix test; no remote repository was changed."
+    ]
   },
   "releaseTests": {
     "status": "passed",
@@ -38,20 +41,21 @@
   "offlineAssetVerifier": {
     "status": "passed",
     "command": "node scripts/verify-asset-delivery.mjs",
-    "entries": 788,
-    "precacheBytes": 41639603,
+    "entries": 811,
+    "precacheBytes": 41799291,
     "budgetBytes": 41943040,
-    "headroomBytes": 303437,
-    "headroomPercent": 0.7235,
+    "headroomBytes": 143749,
+    "headroomPercent": 0.3427,
     "cachePolicyChanged": false,
     "notes": [
-      "Headroom is still modest; later asset or bundle growth must rerun the verifier.",
-      "The Vite PWA generation log reports 791 entries; this report uses the repository verifier's counted delivery entries."
+      "All 23 Omen additions remain precached under the unchanged 40 MiB policy.",
+      "Headroom remains modest; rerun the verifier after future additions.",
+      "Workbox reports 814 entries; the repository verifier counts 811 delivery entries."
     ]
   },
   "art": {
-    "generatedRuntimeImages": 350,
-    "runtimeImageBytes": 3525064,
+    "generatedRuntimeImages": 373,
+    "runtimeImageBytes": 3682902,
     "allImagesFullyDecoded": true,
     "allDeliveryHashesVerified": true,
     "allImagesHaveTransparentPixels": true,
@@ -62,19 +66,32 @@
       64
     ],
     "challengeAspectRatioPreserved": true,
-    "cumulativeSourceSha256": "46047e7532df77c4716e9580a4b5754be0787964092aae286fa33ce3be3e286e",
+    "cumulativeSourceSha256": "3cdb23255fae8c58737ca8e5497a4870a502fa09aaee88b17f76708106e13160",
     "criticalCatalogChecks": [
       "All 13 current Orbs covered, including Pluto",
       "All 164 active Decrees covered; existing Riichi Devotee image retained separately",
-      "All current Mandates, Fate Seals, Charters and achievement identities covered"
+      "All current Mandates, Fate Seals, Charters and achievement identities covered",
+      "All 24 Omens covered: 23 newly generated and Double Omen retained unchanged; distinct from edition overlays and Omen Lens Charter"
     ],
     "assetRegressionTests": 4,
-    "newControlWiringRegressionTests": 25
+    "newControlWiringRegressionTests": 25,
+    "newOmenImages": 23,
+    "retainedOmenImages": 1,
+    "omenCoverage": "All 24 live catalog identities mapped to distinct artwork",
+    "newOmenRuntimeBytes": 157838,
+    "newOmenMasterBytes": 20499886,
+    "newOmenMasterDimensions": [
+      1254,
+      1254
+    ],
+    "omenArtworkRegressionTests": 51,
+    "allBuiltAssetsMatchFinalDeliveryHashes": true,
+    "cumulativeSourceSha256Algorithm": "SHA-256 of concatenated sourceSha256 hex strings in manifest asset order"
   },
   "sourceChecks": {
     "emojiScan": "passed: no raw or escaped emoji in production src, including translations",
     "whitespace": "git diff --check passed",
-    "mechanicDefinitionComparison": "Achievement and unlock definitions preserve all non-icon logic/data",
+    "mechanicDefinitionComparison": "Omen definitions, store, effect system, GameOrchestrator and ActionProcessor byte-identical to pinned base; all previous non-icon gameplay data retained",
     "remoteChanges": false
   },
   "visualReview": {
@@ -82,30 +99,33 @@
     "sizes": [
       "24/40 px controls on navy and ivory",
       "64 px representative portraits and complex badges",
-      "48x64 and 90x120 tile/frame composites"
+      "48x64 and 90x120 tile/frame composites",
+      "All 24 Omen runtime images at160px on dark green",
+      "All 24 Omen runtime images at48px on dark green and ivory"
     ],
     "maximumSlotSize": {
       "sourceDerivedPixels": 168,
       "example": "Mega pack hover artwork",
       "browserObserved": false
     },
-    "browserBlocker": "Chromium could not open its process-singleton socket in this environment (Operation not permitted), including a supported elevated attempt.",
+    "browserBlocker": "Bundled Playwright Chromium absent. System Chromium was attempted and failed at process-singleton socket() with Operation not permitted. Browser/mobile layout and actual offline reload remain unverified.",
     "requiredBeforeDeployment": [
       "Browser/mobile layout and clipping",
       "Focus and click/drag behavior",
       "High-DPR image sharpness",
       "Actual offline reload acceptance"
-    ]
+    ],
+    "omenReview": "All 23 final masters and 160/48 px composites visually inspected. Complete silhouettes inside canvas. Some masters retain faint original alpha<16 residue; full-resolution generated pixels preserved unmodified."
   },
   "patchApply": {
     "status": "passed",
     "baseCommit": "fc4239905a8030949416cccb591cfab0d237e7dc",
-    "method": "git apply --check and git apply on a clean git archive of the pinned base, followed by byte-for-byte verification of changed source/doc files and all runtime images"
+    "method": "Reconstructed pinned source by reversing the prior verified patch; cumulative patch applied with whitespace=error and verified byte-for-byte against final source/docs/scripts. Incremental Omen patch also verified against the previous 350-art integration."
   },
   "runtimeArtArchive": {
-    "fileName": "Tensho_Complete_Runtime_Art_350.zip",
-    "bytes": 3918550,
-    "sha256": "d18f0035ec52bf85b7ea5c5acacf1db850a19ff6941cee4db51ef6592fecac49",
-    "libraryFileId": "libfile_9d9d08c8e0288191bf9b652e1600604b"
+    "fileName": "Tensho_Complete_Runtime_Art_373.zip",
+    "bytes": 3777039,
+    "sha256": "b41d0d8340492b63dc25ae34916e3d645b446eff842359adb7209cf5a32a9142",
+    "status": "Local verified archive; Library saving delegated separately"
   }
 }

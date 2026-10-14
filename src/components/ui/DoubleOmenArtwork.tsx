@@ -1,4 +1,4 @@
-import { withBasePath } from '../../utils/basePath'
+import { OmenArtwork } from './OmenArtwork'
 
 /** Decorative illustration; the adjacent localized name supplies the meaning. */
 export function DoubleOmenArtwork({
@@ -6,13 +6,5 @@ export function DoubleOmenArtwork({
 }: {
   className?: string
 }) {
-  return (
-    <img
-      src={withBasePath('assets/illustrations/omens/double-omen.webp')}
-      alt=""
-      aria-hidden="true"
-      draggable={false}
-      className={`object-contain ${className}`}
-    />
-  )
+  return <OmenArtwork omenId="double_omen" className={className} />
 }

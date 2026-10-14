@@ -7,6 +7,7 @@
  * Total Collection: 352 unique items across 10 categories
  */
 
+import { ALL_OMENS } from './omenDefinitions'
 import { TABLE_STYLE_DEFINITIONS } from './tableStyleDefinitions'
 
 // =============================================================================
@@ -121,7 +122,7 @@ export const ARCHIVE_CATEGORIES: Record<
     name: 'Omen Tags',
     japaneseName: '兆符録',
     description: 'One-time destiny modifiers from skipping rounds',
-    expectedCount: 23, // Skip reward markers
+    expectedCount: ALL_OMENS.length, // Every Omen in the catalog
     icon: 'tag',
   },
   mandates: {

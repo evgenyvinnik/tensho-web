@@ -3,6 +3,7 @@ import { useOmenStore } from '../../stores/omenStore'
 import { ALL_OMENS } from '../../config/omenDefinitions'
 import { useItemText } from '../../i18n/useItemText'
 import { DoubleOmenArtwork } from '../ui/DoubleOmenArtwork'
+import { OmenArtwork } from '../ui/OmenArtwork'
 import type { OmenTagSystem } from '../../systems/OmenTagSystem'
 
 /** Optional native disclosure: no timer, overlay, focus change or hover requirement. */
@@ -41,26 +42,34 @@ export function PendingOmens({ system }: { system: OmenTagSystem }) {
             return (
               <li
                 key={tag.id}
-                className="break-words"
+                className="flex min-w-0 items-start gap-2 break-words"
                 data-omen-id={definition.id}
               >
-                <p className="font-semibold text-[var(--color-golden-yellow)]">
-                  {itemText.name('omens', definition)}
-                </p>
-                <p className="leading-relaxed">
-                  {itemText.description('omens', definition)}
-                </p>
-                {definition.trigger === 'OnNextShop' &&
-                  definition.tradeoff.type === 'lose_gold' && (
-                    <p
-                      data-omen-cost
-                      className="mt-1 leading-relaxed text-amber-200"
-                    >
-                      {t('omens.effects.shopFee', {
-                        amount: number(Number(definition.tradeoff.value) || 0),
-                      })}
-                    </p>
-                  )}
+                <OmenArtwork
+                  omenId={definition.id}
+                  className="h-12 w-12 shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-[var(--color-golden-yellow)]">
+                    {itemText.name('omens', definition)}
+                  </p>
+                  <p className="leading-relaxed">
+                    {itemText.description('omens', definition)}
+                  </p>
+                  {definition.trigger === 'OnNextShop' &&
+                    definition.tradeoff.type === 'lose_gold' && (
+                      <p
+                        data-omen-cost
+                        className="mt-1 leading-relaxed text-amber-200"
+                      >
+                        {t('omens.effects.shopFee', {
+                          amount: number(
+                            Number(definition.tradeoff.value) || 0
+                          ),
+                        })}
+                      </p>
+                    )}
+                </div>
               </li>
             )
           })}

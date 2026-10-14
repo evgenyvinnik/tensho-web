@@ -12,6 +12,7 @@ import {
 } from '../../utils/assets'
 import { getGeneratedArt } from '../../utils/generatedArt'
 import { getItemArt } from '../../utils/itemArt'
+import { getOmenIllustration } from '../../utils/omenArt'
 
 /** The picture of any Archive item: its own art, or its family's. */
 export function getArchiveIllustration(
@@ -21,8 +22,9 @@ export function getArchiveIllustration(
   switch (category) {
     case 'decrees':
     case 'charters':
-    case 'omens':
       return getItemArt(category, id).src
+    case 'omens':
+      return getOmenIllustration(id)
     case 'consumables':
       if (id.startsWith('seal_')) return getFateSealIllustration(id)
       if (id.endsWith('_orb')) return getCelestialOrbIllustration(id)

@@ -6,7 +6,7 @@
  *      (files live at `assets/illustrations/items/<kind>/<id>.webp`);
  *   2. its generated portrait from the delivered art set
  *      (`src/utils/generatedArt.ts`), or an older bespoke portrait;
- *   3. its family's shared artwork (all Omens share the omen, and so on).
+ *   3. its family's shared artwork, for an id the catalog does not know.
  *
  * `hasOwnArt` tells a caller whether the image is unique to this item, so a
  * shared family image can be paired with the item's unique icon.
@@ -25,6 +25,7 @@ import {
   illustrationAssets,
 } from './assets'
 import { getGeneratedArt, getYakuIllustration } from './generatedArt'
+import { getOmenIllustration } from './omenArt'
 import type { FlowerVariant, PackType } from '../systems/types'
 
 export type ItemArtKind =
@@ -110,11 +111,15 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
         ? { src: portrait, hasOwnArt: true }
         : { src: illustrationAssets.codex.ascent, hasOwnArt: false }
     }
-    case 'omens':
-      return {
-        src: withBasePath('assets/illustrations/omens/double-omen.webp'),
-        hasOwnArt: id === 'double_omen',
-      }
+    case 'omens': {
+      const src = getOmenIllustration(id)
+      return src
+        ? { src, hasOwnArt: true }
+        : {
+            src: withBasePath('assets/illustrations/omens/double-omen.webp'),
+            hasOwnArt: false,
+          }
+    }
     case 'yakuUpgrades': {
       // A family is pictured by its hand; Pairs and All by the Orb that
       // levels them.

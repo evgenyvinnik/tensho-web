@@ -37,7 +37,18 @@ it.each(SUPPORTED_LANGUAGES)(
     expect(
       details.querySelectorAll('[data-omen-id="omen_of_rivers"]')
     ).toHaveLength(2)
-    expect(details.querySelector('img')).toBeNull()
+    expect(details.querySelector('summary img')).toBeNull()
+    const riverArt = details.querySelectorAll(
+      '[data-omen-id="omen_of_rivers"] img'
+    )
+    expect(riverArt).toHaveLength(2)
+    for (const image of riverArt) {
+      expect(image).toHaveAttribute(
+        'src',
+        expect.stringContaining('/generated/omens/omen_of_rivers.webp')
+      )
+      expect(image).toHaveAttribute('aria-hidden', 'true')
+    }
     act(() => useOmenStore.getState().consumeBossTags())
     expect(screen.queryByTestId('pending-omens')).toBeNull()
   }

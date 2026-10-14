@@ -1,10 +1,11 @@
-import { ControlIcon } from '../ui/ControlIcon'
 import { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { animated, useSpring, to } from '@react-spring/web'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { illustrationAssets } from '../../utils/assets'
+import { ControlIcon } from '../ui/ControlIcon'
+import { OmenArtwork } from '../ui/OmenArtwork'
 
 const AnimatedSection = animated('section')
 
@@ -157,8 +158,9 @@ export function RoundCashOutBanner({
           {summary.omenId && (
             <span
               data-payout-omen={summary.omenId}
-              className="rounded-full border border-purple-300/60 bg-purple-950/60 px-2 py-0.5 text-[11px] font-bold text-purple-100"
+              className="inline-flex items-center gap-1 rounded-full border border-purple-300/60 bg-purple-950/60 py-0.5 pl-1 pr-2 text-[11px] font-bold text-purple-100"
             >
+              <OmenArtwork omenId={summary.omenId} className="h-5 w-5" />
               {t('shop.payout.omenEarned', {
                 name: t(`omens.items.${summary.omenId}.name`),
               })}

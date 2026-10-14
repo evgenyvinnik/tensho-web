@@ -1,6 +1,7 @@
 # Generated artwork integration
 
-The delivered art set (350 runtime images) was prepared as a patch against
+The delivered art set (350 runtime images, then the Omens add-on's 23, for
+373) was prepared as patches against
 `fc4239905a8030949416cccb591cfab0d237e7dc` and integrated into main after the
 player-feedback rework. On main:
 
@@ -9,9 +10,12 @@ player-feedback rework. On main:
 - `getItemArt` (`src/utils/itemArt.ts`), which the table rail, Tea House
   offers and reveals use, prefers this art: Decrees, Orbs, Fate Seals,
   Charters, Mandates, packs, upgrade families (by their hand's medallion;
-  Pairs and Every family by the Pluto and Black Hole Orbs) and tile marks.
-  Omens are the one family still without their own art — see
+  Pairs and Every family by the Pluto and Black Hole Orbs), tile marks and
+  all 24 Omens (`src/utils/omenArt.ts`; Double Omen keeps its original
+  portrait). Every catalog item now has its own picture — see
   `docs/ART_PRODUCTION_MANIFEST.md`.
+- Omens are pictured in the Collection, in the table's pending-Omens list
+  and on the round payout's "Omen earned" chip.
 - Tile marks, seals and editions are drawn as these frames on every tile.
 - Patch changes to components the rework retired (`retired-files.json`)
   were applied as delivered but are not rendered.

@@ -290,6 +290,37 @@ export const generatedArtPaths = {
     terminal_devotion:
       'assets/illustrations/generated/decrees/terminal_devotion.webp',
   },
+  omens: {
+    abundance_omen: 'assets/illustrations/generated/omens/abundance_omen.webp',
+    austerity_omen: 'assets/illustrations/generated/omens/austerity_omen.webp',
+    blessing_pack_omen:
+      'assets/illustrations/generated/omens/blessing_pack_omen.webp',
+    decree_omen: 'assets/illustrations/generated/omens/decree_omen.webp',
+    expansion_omen: 'assets/illustrations/generated/omens/expansion_omen.webp',
+    foil_omen: 'assets/illustrations/generated/omens/foil_omen.webp',
+    fortune_omen: 'assets/illustrations/generated/omens/fortune_omen.webp',
+    holographic_omen:
+      'assets/illustrations/generated/omens/holographic_omen.webp',
+    interest_omen: 'assets/illustrations/generated/omens/interest_omen.webp',
+    merchants_omen: 'assets/illustrations/generated/omens/merchants_omen.webp',
+    multiplication_omen:
+      'assets/illustrations/generated/omens/multiplication_omen.webp',
+    negative_omen: 'assets/illustrations/generated/omens/negative_omen.webp',
+    omen_of_ash: 'assets/illustrations/generated/omens/omen_of_ash.webp',
+    omen_of_crescents:
+      'assets/illustrations/generated/omens/omen_of_crescents.webp',
+    omen_of_rivers: 'assets/illustrations/generated/omens/omen_of_rivers.webp',
+    oracles_omen: 'assets/illustrations/generated/omens/oracles_omen.webp',
+    polychrome_omen:
+      'assets/illustrations/generated/omens/polychrome_omen.webp',
+    precision_omen: 'assets/illustrations/generated/omens/precision_omen.webp',
+    score_surge_omen:
+      'assets/illustrations/generated/omens/score_surge_omen.webp',
+    seal_omen: 'assets/illustrations/generated/omens/seal_omen.webp',
+    speed_omen: 'assets/illustrations/generated/omens/speed_omen.webp',
+    throwback_omen: 'assets/illustrations/generated/omens/throwback_omen.webp',
+    void_omen: 'assets/illustrations/generated/omens/void_omen.webp',
+  },
   mandates: {
     the_arm: 'assets/illustrations/generated/mandates/the_arm.webp',
     the_club: 'assets/illustrations/generated/mandates/the_club.webp',

@@ -33,10 +33,10 @@ const manifest = JSON.parse(
 }
 
 it('keeps every generated runtime image decodable, bounded and linked to its original hash', () => {
-  expect(manifest.assets).toHaveLength(350)
+  expect(manifest.assets).toHaveLength(373)
   expect(
     new Set(manifest.assets.map(({ category, id }) => `${category}:${id}`)).size
-  ).toBe(350)
+  ).toBe(373)
   for (const item of manifest.assets) {
     const bytes = readFileSync(`public/${item.path}`)
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(

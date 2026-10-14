@@ -1,6 +1,6 @@
 {
   "sourceCommit": "fc4239905a8030949416cccb591cfab0d237e7dc",
-  "generatedRuntimeImageCount": 350,
+  "generatedRuntimeImageCount": 373,
   "categoryCounts": {
     "achievements": 33,
     "charters": 25,
@@ -13,9 +13,10 @@
     "orbs": 13,
     "reveals": 14,
     "seals": 4,
-    "yaku": 19
+    "yaku": 19,
+    "omens": 23
   },
-  "runtimeImageBytes": 3525064,
+  "runtimeImageBytes": 3682902,
   "retainedExisting": {
     "activeDecreePortraits": 19,
     "legacyRiichiDecreePortrait": 1,
@@ -23,12 +24,15 @@
     "fateSeals": 1,
     "mandates": 5,
     "voidScripts": 21,
-    "flowersAndSeasons": "Existing illustrations reused"
+    "flowersAndSeasons": "Existing illustrations reused",
+    "omens": 1
   },
   "catalogNotes": [
     "Pluto remains in the source catalog: its generated identity is wired and its current effect is unchanged.",
-    "No new Riichi Decree portrait or Skip-reward/TableLoop artwork was generated or added.",
     "Two draw-bag states and three reveal overlays are included as prepared assets; main has no matching draw-bag interface, so no new mechanic was invented.",
-    "All pack families have sealed/open art; Arcana sealed reuses the existing illustration."
+    "All pack families have sealed/open art; Arcana sealed reuses the existing illustration.",
+    "All 24 live Omens have unique art: 23 new images plus the existing Double Omen. The initial 350-image delivery omission is corrected.",
+    "Omen artwork is separate from edition layers and Omen Lens (a Charter). Current Omen acquisition and gameplay are unchanged; a future Skip removal needs a separate acquisition redesign.",
+    "No new Riichi Decree portrait or TableLoop-specific artwork was generated or added."
   ]
 }
