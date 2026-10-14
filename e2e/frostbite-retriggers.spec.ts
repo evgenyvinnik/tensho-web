@@ -1,5 +1,9 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { settleReveals } from './helpers/table'
+
+/** What this exact Frostbite Echo play pays; the fixture's target is set to it. */
+const ECHO_SCORE = 173
 
 const replayPath = process.env.ECHO_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -34,10 +38,11 @@ for (const language of ['en', 'es'])
           JSON.parse(localStorage.getItem('tensho-classic-run-v1')!).snapshot
       )
     }
+    const number = (value: number) => value.toLocaleString(language)
     await page.goto(`${baseURL!.replace(/\/$/, '')}/${language}/play`)
     await saved()
     if (!replay) {
-      await page.evaluate(async () => {
+      await page.evaluate(async (target) => {
         const loaded = (path: string) => {
           const url = performance
             .getEntriesByType('resource')
@@ -98,13 +103,13 @@ for (const language of ['en', 'es'])
         state.drawIndex = 0
         state.summerReserve = []
         state.bambooSummerProtection = false
-        state.targetScore = 173
-        state.roundManager.getCurrentRound().scoreTarget = 173
+        state.targetScore = target
+        state.roundManager.getCurrentRound().scoreTarget = target
         state.wallTemplate = state.wallTemplate.filter(
           (t: { isBonus: boolean }) => !t.isBonus
         )
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
-      })
+      }, ECHO_SCORE)
       await info.attach('echo-fixture', {
         body: await page.evaluate(
           () => localStorage.getItem('tensho-classic-run-v1')!
@@ -113,6 +118,9 @@ for (const language of ['en', 'es'])
       })
       await page.reload()
     }
+    // The fixture was saved from a fresh run, whose starting reveals may
+    // still be queued.
+    await settleReveals(page)
     const before = await saved()
     await activate(page.locator('[data-decree-instance]').first())
     const dialog = page.getByRole('dialog')
@@ -136,12 +144,11 @@ for (const language of ['en', 'es'])
       copy.decrees.items['decree-treasure-hunter'].description
     )
     await activate(page.locator('[data-tutorial="gold"]'))
-    await activate(page.getByTestId('flora-details-trigger'))
+    await expect(dialog).toHaveCount(0)
+    // The Season's own token explains Frostbite.
+    await activate(page.locator('[data-flora-season]'))
     await expect(dialog).toContainText(copy.flora.details.frostbite)
     await expect(dialog).not.toContainText(copy.flora.details.partial)
-    await dialog
-      .getByText(copy.flora.details.frostbite, { exact: true })
-      .scrollIntoViewIfNeeded()
     expect(
       await dialog.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
     ).toBe(true)
@@ -149,18 +156,22 @@ for (const language of ['en', 'es'])
     await activate(
       dialog.getByRole('button', { name: copy.common.close, exact: true })
     )
+    await expect(dialog).toHaveCount(0)
     expect(await saved()).toEqual(before)
     for (const id of ['echo-4', 'echo-5', 'echo-6'])
       await activate(
         page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
       )
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+173')
+    await expect(page.locator('[data-hand-score-total]')).toHaveText(
+      number(ECHO_SCORE)
+    )
     await page.screenshot({ path: info.outputPath('fractional-forecast.png') })
     await activate(page.locator('[data-game-action="play"]'))
     await expect.poll(async () => (await saved()).state.phase).toBe('shop')
     await expect(page).toHaveURL(/\/shop\/?$/)
     const paid = await saved()
-    expect(paid.state.score - before.state.score).toBe(173)
+    expect(paid.state.score - before.state.score).toBe(ECHO_SCORE)
+    // Treasure Hunter's 5 gold, halved by Frostbite, settles as 2.5.
     expect(paid.state.lastRoundSummary.decreeGold).toBe(2.5)
     expect(
       paid.state.gold -

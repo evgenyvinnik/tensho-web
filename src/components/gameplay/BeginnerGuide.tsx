@@ -251,15 +251,17 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
 
         <section>
           <h3 className={heading}>{t('guide.tilesTitle', 'The tiles')}</h3>
-          <div className="mt-2 grid grid-cols-5 gap-2">
+          {/* Each family is as wide as its name, so names wrap only between
+              words, even on the narrowest phone. */}
+          <div className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-2">
             {families.map(({ label, tile: example }) => (
               <div
                 key={example.id}
                 data-guide-tile-family
-                className="flex min-w-0 flex-col items-center gap-1"
+                className="flex max-w-full flex-col items-center gap-1"
               >
                 <TileImage tile={example} size="small" showTooltip={false} showIndex />
-                <span className="w-full text-center text-[11px] leading-tight text-[var(--color-beige-white)]/75">
+                <span className="text-center text-[11px] leading-tight text-[var(--color-beige-white)]/75 [overflow-wrap:normal]">
                   {label}
                 </span>
               </div>

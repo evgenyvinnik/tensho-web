@@ -1,12 +1,12 @@
 {
   "format": 1,
-  "runId": "b244c346-948b-4a5c-8dbc-309fcd88415d",
-  "owner": "d637d0ea-5280-44ce-9e53-f9892c90d022",
+  "runId": "cdc83ea2-07f4-4b79-84eb-17515bdcb642",
+  "owner": "2b3fcc69-886a-49a8-a18c-27fd30385f08",
   "revision": 1,
-  "createdAt": 1791744694255,
-  "updatedAt": 1791744694255,
+  "createdAt": 1792003720226,
+  "updatedAt": 1792003720226,
   "snapshot": {
-    "version": 2,
+    "version": 3,
     "state": {
       "isRunActive": true,
       "seed": 7,
@@ -30,14 +30,14 @@
       "hasEnteredEndless": false,
       "score": 0,
       "gold": 4,
-      "handsRemaining": 7,
-      "handsAllowance": 7,
+      "handsRemaining": 9,
+      "handsAllowance": 9,
       "lossPreventionScorePenalty": 1,
       "lastHandScore": null,
       "handsPlayedThisRun": 0,
-      "discardsRemaining": 4,
-      "redrawsRemaining": 3,
-      "targetScore": 1000000000,
+      "discardsRemaining": 0,
+      "redrawsRemaining": 4,
+      "targetScore": 10211,
       "handTiles": [
         {
           "suit": "manzu",
@@ -2855,7 +2855,7 @@
               "actNumber": 1,
               "roundNumber": 1,
               "roundType": "Small",
-              "scoreTarget": 1000000000,
+              "scoreTarget": 10211,
               "currentScore": 0,
               "handsPlayed": 0,
               "maxHands": 4,
@@ -2893,7 +2893,7 @@
                 "id": "the_hook",
                 "name": "The Hook",
                 "japaneseName": "鉤",
-                "description": "2 random tiles discarded from hand after each draw",
+                "description": "After each draw, 2 random tiles go from your rack to the river",
                 "effect": {
                   "type": "discard_after_draw",
                   "value": 2
@@ -2910,7 +2910,7 @@
           "actNumber": 1,
           "roundNumber": 1,
           "roundType": "Small",
-          "scoreTarget": 1000000000,
+          "scoreTarget": 10211,
           "currentScore": 0,
           "handsPlayed": 0,
           "maxHands": 4,
@@ -2952,7 +2952,7 @@
       "celestialOrbSystem": {
         "orbLevels": [
           [
-            "Riichi",
+            "Pairs",
             1
           ],
           [
@@ -3002,7 +3002,7 @@
         ],
         "yakuTriggerCounts": [
           [
-            "Riichi",
+            "Pairs",
             0
           ],
           [
@@ -3117,12 +3117,13 @@
       "deadWallWritUsedThisRound": false,
       "pendingActReduction": 0,
       "phase": "gameplay",
-      "riichiStatus": "available"
+      "playsThisRound": 0,
+      "tilesRedrawnThisRound": 0
     },
     "config": {
-      "handsPerRound": 4,
-      "discardsPerRound": 3,
-      "redrawsPerRound": 3,
+      "handsPerRound": 6,
+      "discardsPerRound": 0,
+      "redrawsPerRound": 0,
       "startingHandSize": 14
     },
     "shop": {

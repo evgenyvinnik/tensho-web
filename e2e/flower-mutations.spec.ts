@@ -1,5 +1,12 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { settleReveals } from './helpers/table'
+
+/** What each play pays with all four Flowers awakened. */
+const PAYMENT: Record<string, number> = {
+  'complete-': 10210,
+  'tactical-': 415,
+}
 
 const replayPath = process.env.MUTATIONS_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -43,7 +50,7 @@ for (const language of ['en', 'es'])
     await page.goto(`${baseURL!.replace(/\/$/, '')}/${language}/play`)
     await saved()
     if (!replay) {
-      await page.evaluate(async () => {
+      await page.evaluate(async (target) => {
         const loaded = (path: string) => {
           const url = performance
             .getEntriesByType('resource')
@@ -110,7 +117,9 @@ for (const language of ['en', 'es'])
         )
         state.drawIndex = 0
         state.discards = []
-        state.discardsRemaining = 4
+        // Four free redraws (an item's reward) draw the four duplicates
+        // without spending the round's Turns.
+        state.redrawsRemaining = 4
         state.wallTemplate = state.wallTemplate.filter(
           (t: { isBonus: boolean }) => !t.isBonus
         )
@@ -118,10 +127,11 @@ for (const language of ['en', 'es'])
         state.bambooSummerProtection = false
         state.faceDownTileIds.clear()
         state.selectedTileIds.clear()
-        state.targetScore = 1e9
-        state.roundManager.getCurrentRound().scoreTarget = 1e9
+        // The complete hand leaves the round open; the tactical play clears it.
+        state.targetScore = target
+        state.roundManager.getCurrentRound().scoreTarget = target
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
-      })
+      }, PAYMENT['complete-'] + 1)
       await testInfo.attach('mutations-fixture', {
         body: await page.evaluate(
           () => localStorage.getItem('tensho-classic-run-v1')!
@@ -130,59 +140,28 @@ for (const language of ['en', 'es'])
       })
       await page.reload()
     }
+    // Starting reveals of the fixture's fresh run may still be queued.
+    await settleReveals(page)
     const before = await saved()
     expect(before.state.flowerSystem.unlockedMutations).toEqual([])
     expect(before.state.flowerSystem.rebloomUnlocked).toBe(true)
     for (let i = 0; i < 4; i++) {
       const old = await saved()
-      const discard = old.state.handTiles.find(
+      const redrawn = old.state.handTiles.find(
         (t: { id: string }) => !t.id.startsWith('complete-')
       )
-      // Discard preserves wall order; redraw intentionally reshuffles returns.
-      const tile = page.locator(
-        `[data-play-zone="hand"] [data-play-tile="${discard.id}"]`
-      )
-      const zone = page.locator('[data-play-zone="discard"]')
-      await tile.scrollIntoViewIfNeeded()
-      await expect(zone).toBeInViewport()
-      if (isMobile) {
-        const touch = await page.context().newCDPSession(page)
-        const a = (await tile.boundingBox())!,
-          b = (await zone.boundingBox())!
-        const from = { x: a.x + a.width / 2, y: a.y + a.height / 2 }
-        const to = { x: b.x + b.width / 2, y: b.y + b.height / 2 }
-        await touch.send('Input.dispatchTouchEvent', {
-          type: 'touchStart',
-          touchPoints: [{ ...from, id: 1 }],
-        })
-        for (let step = 1; step <= 8; step++)
-          await touch.send('Input.dispatchTouchEvent', {
-            type: 'touchMove',
-            touchPoints: [
-              {
-                x: from.x + ((to.x - from.x) * step) / 8,
-                y: from.y + ((to.y - from.y) * step) / 8,
-                id: 1,
-              },
-            ],
-          })
-        await touch.send('Input.dispatchTouchEvent', {
-          type: 'touchEnd',
-          touchPoints: [],
-        })
-        await touch.detach()
-      } else await tile.dragTo(zone)
+      // REDRAW refills from the live wall in order: the next duplicate Flower.
+      await stage([redrawn.id])
+      await activate(page.locator('[data-game-action="redraw"]'))
       await expect
         .poll(
           async () =>
             (await saved()).state.flowerSystem.unlockedMutations.length
         )
         .toBe(i + 1)
+      await settleReveals(page)
       const after = await saved()
-      expect(after.state.discardsRemaining).toBe(
-        old.state.discardsRemaining - 1
-      )
-      expect(after.state.redrawsRemaining).toBe(old.state.redrawsRemaining)
+      expect(after.state.redrawsRemaining).toBe(old.state.redrawsRemaining - 1)
       expect(after.state.handsRemaining).toBe(old.state.handsRemaining)
       expect(after.state.handTiles).toHaveLength(14)
       expect(
@@ -192,35 +171,32 @@ for (const language of ['en', 'es'])
       )
     }
     const awakened = await saved()
-    const flora = page.getByTestId('flora-details-trigger')
-    await activate(flora)
+    // Each Flower's own token pictures it and states its awakened rule.
     const dialog = page.getByRole('dialog')
-    await expect(dialog.locator('[data-flora-awakened]')).toHaveCount(4)
-    await expect(
-      dialog.locator('[data-testid="flora-rebloom-guide"]')
-    ).toHaveText(copy.flora.mutations.ready)
     for (const type of ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']) {
+      const token = page.locator(`[data-flora-flower="${type}"]`)
+      expect(
+        await token.locator('img').evaluate(async (img: HTMLImageElement) => {
+          await img.decode()
+          return img.naturalWidth
+        })
+      ).toBe(512)
+      await activate(token)
       const rule = dialog.locator(`[data-flora-mutation="${type}"]`)
-      await rule.scrollIntoViewIfNeeded()
+      await expect(rule).toContainText(copy.flora.mutations.awakened)
       expect(
         await rule.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
       ).toBe(true)
-      expect(
-        await dialog
-          .locator(`[data-flora-flower="${type}"] img`)
-          .evaluate(async (img: HTMLImageElement) => {
-            await img.decode()
-            return img.naturalWidth
-          })
-      ).toBe(512)
+      if (type === 'Orchid')
+        await page.screenshot({
+          path: testInfo.outputPath('awakened-inspector.png'),
+        })
+      await activate(
+        dialog.getByRole('button', { name: copy.common.close, exact: true })
+      )
+      await expect(dialog).toHaveCount(0)
     }
-    await page.screenshot({
-      path: testInfo.outputPath('awakened-inspector.png'),
-    })
     expect(await saved()).toEqual(awakened)
-    await activate(
-      dialog.getByRole('button', { name: copy.common.close, exact: true })
-    )
     await page.reload()
     expect(await saved()).toEqual(awakened)
     for (const prefix of ['complete-', 'tactical-']) {
@@ -230,26 +206,17 @@ for (const language of ['en', 'es'])
         .map((t: { id: string }) => t.id)
       expect(ids).toHaveLength(prefix === 'complete-' ? 13 : 5)
       await stage(ids)
-      const details = page.locator('[data-hand-interpretation]')
-      await activate(details.locator('summary'))
-      await expect(
-        details.locator('[data-overlapping-sequences]')
-      ).toBeVisible()
-      await expect(details.locator('[data-shared-tile="true"]')).toHaveCount(2)
-      expect(
-        await details.evaluate(
-          (node) => node.scrollWidth <= node.clientWidth + 1
-        )
-      ).toBe(true)
-      await page.screenshot({
-        path: testInfo.outputPath(`${prefix}explanation.png`),
-      })
+      await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
       const forecast = Number(
-        (await page.locator('[data-game-action-score]').textContent())!.replace(
+        (await page.locator('[data-hand-score-total]').textContent())!.replace(
           /\D/g,
           ''
         )
       )
+      expect(forecast).toBe(PAYMENT[prefix])
+      await page.screenshot({
+        path: testInfo.outputPath(`${prefix}forecast.png`),
+      })
       await activate(page.locator('[data-game-action="play"]'))
       await expect
         .poll(async () => (await saved()).state.handsRemaining)
@@ -260,10 +227,19 @@ for (const language of ['en', 'es'])
         after.state.discards.filter((t: { id: string }) => ids.includes(t.id))
       ).toHaveLength(ids.length)
       expect(after.state.flowerSystem).toEqual(awakened.state.flowerSystem)
-      await page.reload()
-      expect(await saved()).toEqual(after)
+      if (prefix === 'complete-') {
+        expect(after.state.phase).toBe('gameplay')
+        await page.reload()
+        expect(await saved()).toEqual(after)
+      } else {
+        // The tactical play reaches the target: the round is won.
+        await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
+      }
     }
-    await activate(page.locator('[data-game-action="skip"]'))
+    await activate(
+      page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
+    )
+    await expect(page).toHaveURL(new RegExp(`/${language}/play/?$`))
     await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
     const next = await saved()
     expect(next.state.flowerSystem).toEqual(awakened.state.flowerSystem)

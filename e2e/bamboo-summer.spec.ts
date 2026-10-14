@@ -1,5 +1,15 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { CURRENT_SNAPSHOT_VERSION } from '../src/game/migrateClassicSnapshot'
+import { settleReveals, turnBudget } from './helpers/table'
+
+/** What each shape's sheltering play pays under Summer. */
+const PAYMENT = { quad: 491, complete: 3090 }
+/**
+ * One point above that payment, so the sheltering play leaves the round open
+ * and any later scoring play clears it.
+ */
+const TARGET = { quad: PAYMENT.quad + 1, complete: PAYMENT.complete + 1 }
 
 // Replay mode loads native captured legacy envelopes; production has no source imports.
 const fixtureDir = process.env.BAMBOO_REPLAY_DIR
@@ -64,7 +74,7 @@ for (const language of ['en', 'es'])
       await page.goto(`${baseURL!.replace(/\/$/, '')}/${language}/play`)
       await saved()
       if (!fixture) {
-        await page.evaluate(async (shape) => {
+        await page.evaluate(async ({ shape, target }) => {
           const loadedModule = (path: string) => {
             const url = performance
               .getEntriesByType('resource')
@@ -136,8 +146,8 @@ for (const language of ['en', 'es'])
           state.wallTemplate = state.wallTemplate.filter(
             (t: { isBonus: boolean }) => !t.isBonus
           )
-          state.targetScore = 1e9
-          state.roundManager.getCurrentRound().scoreTarget = 1e9
+          state.targetScore = target
+          state.roundManager.getCurrentRound().scoreTarget = target
           state.selectedTileIds.clear()
           state.faceDownTileIds.clear()
           if (!(await service.saveNewRun(raw)))
@@ -147,7 +157,7 @@ for (const language of ['en', 'es'])
           old.snapshot.version = 1
           delete old.snapshot.state.bambooSummerProtection
           localStorage.setItem('tensho-classic-run-v1', JSON.stringify(old))
-        }, shape)
+        }, { shape, target: TARGET[shape as keyof typeof TARGET] })
         await testInfo.attach(`legacy-${shape}`, {
           body: await page.evaluate(
             () => localStorage.getItem('tensho-classic-run-v1')!
@@ -158,83 +168,40 @@ for (const language of ['en', 'es'])
       }
       const legacy = await saved()
       expect(legacy.state.bambooSummerProtection ?? false).toBe(false)
-      // Discard replaces from the live wall without shuffling its remainder;
-      // redraw would intentionally shuffle away the later Summer's position.
-      const tile = page.locator(
-        '[data-play-zone="hand"] [data-play-tile="hand-9"]'
-      )
-      const zone = page.locator('[data-play-zone="discard"]')
-      await tile.scrollIntoViewIfNeeded()
-      await expect(tile).toBeInViewport()
-      await expect(zone).toBeInViewport()
-      if (isMobile) {
-        const touch = await page.context().newCDPSession(page)
-        const a = (await tile.boundingBox())!,
-          b = (await zone.boundingBox())!
-        const from = { x: a.x + a.width / 2, y: a.y + a.height / 2 }
-        const to = { x: b.x + b.width / 2, y: b.y + b.height / 2 }
-        await touch.send('Input.dispatchTouchEvent', {
-          type: 'touchStart',
-          touchPoints: [{ ...from, id: 1 }],
-        })
-        for (let step = 1; step <= 8; step++)
-          await touch.send('Input.dispatchTouchEvent', {
-            type: 'touchMove',
-            touchPoints: [
-              {
-                x: from.x + ((to.x - from.x) * step) / 8,
-                y: from.y + ((to.y - from.y) * step) / 8,
-                id: 1,
-              },
-            ],
-          })
-        await touch.send('Input.dispatchTouchEvent', {
-          type: 'touchEnd',
-          touchPoints: [],
-        })
-        await touch.detach()
-        await testInfo.attach('initial-touch-gesture', {
-          body: JSON.stringify({
-            from,
-            to,
-            state: await page.evaluate(() => ({
-              events: (window as unknown as { initialGesture: unknown[] })
-                .initialGesture,
-              discard: document
-                .querySelector('[data-play-zone="discard"]')
-                ?.getBoundingClientRect()
-                .toJSON(),
-              tile: document
-                .querySelector('[data-play-tile="hand-9"]')
-                ?.getBoundingClientRect()
-                .toJSON(),
-              fonts: document.fonts.status,
-            })),
-          }),
-          contentType: 'application/json',
-        })
-      } else await tile.dragTo(zone)
+      // Starting reveals of the fixture's fresh run may still be queued.
+      await settleReveals(page)
+      const play = page.locator('[data-game-action="play"]')
+      const select = async (ids: string[]) => {
+        for (const id of ids)
+          await activate(
+            page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
+          )
+      }
+      // REDRAW refills from the live wall in order, so a one-tile REDRAW
+      // draws exactly the next wall tile: the Summer placed there.
+      const turnsBefore = await turnBudget(page)
+      await select(['hand-9'])
+      await activate(page.locator('[data-game-action="redraw"]'))
       await expect
         .poll(async () => (await saved()).state.summerReserve.length)
         .toBe(9)
+      await settleReveals(page)
       const drawn = await saved()
-      expect(drawn.state.discardsRemaining).toBe(
-        legacy.state.discardsRemaining - 1
+      const turnsAfter = await turnBudget(page)
+      expect(turnsAfter.turns + turnsAfter.free).toBe(
+        turnsBefore.turns + turnsBefore.free - 1
       )
-      expect(drawn.version).toBe(2)
+      expect(drawn.version).toBe(CURRENT_SNAPSHOT_VERSION)
       expect(drawn.state.bambooSummerProtection).toBe(false)
       expect(drawn.state.flowerSystem.flowers).toHaveLength(1)
       const reserved = drawn.state.summerReserve.map(
         (t: { id: string }) => t.id
       )
       const liveBefore = drawn.state.wall.length - drawn.state.drawIndex
-      await activate(page.getByTestId('flora-details-trigger'))
-      const dialog = page.getByRole('dialog')
-      await expect(
-        dialog.getByText(copy.flora.details.summer, { exact: true })
-      ).toBeVisible()
-      const art = dialog.locator('img[src*="summer-fan.webp"]').first()
-      await art.scrollIntoViewIfNeeded()
+      // The Summer's own token pictures it and explains the set-aside wall.
+      const summer = page.locator('[data-flora-season]')
+      await expect(summer).toHaveCount(1)
+      const art = summer.locator('img[src*="summer-fan.webp"]')
       await expect
         .poll(() =>
           art.evaluate(
@@ -242,26 +209,28 @@ for (const language of ['en', 'es'])
           )
         )
         .toBe(true)
+      await activate(summer)
+      const dialog = page.getByRole('dialog')
+      await expect(dialog).toContainText(copy.flora.details.summer)
       expect(await saved()).toEqual(drawn)
       await activate(
         dialog.getByRole('button', { name: copy.common.close, exact: true })
       )
-      const play = page.locator('[data-game-action="play"]')
-      if (shape === 'complete') {
-        await activate(play)
-        await expect(play).toContainText(copy.gameplay.confirmHand)
-      } else
-        for (let i = 0; i < 4; i++)
-          await activate(
-            page.locator(
-              `[data-play-zone="hand"] [data-play-tile="terminal-${i}"]`
-            )
+      await expect(dialog).toHaveCount(0)
+      await select(
+        drawn.state.handTiles
+          .map((t: { id: string }) => t.id)
+          .filter(
+            (id: string) => shape === 'complete' || id.startsWith('terminal-')
           )
-      const forecast = Number(
-        (await page
-          .getByTestId('score-preview-total')
-          .getAttribute('aria-label'))!.replace(/\D/g, '')
       )
+      const forecast = Number(
+        (await page.locator('[data-hand-score-total]').textContent())!.replace(
+          /\D/g,
+          ''
+        )
+      )
+      expect(forecast).toBe(PAYMENT[shape as keyof typeof PAYMENT])
       const staged = await saved()
       expect(staged.state.bambooSummerProtection).toBe(false)
       expect(staged.state.summerReserve).toEqual(drawn.state.summerReserve)
@@ -284,35 +253,45 @@ for (const language of ['en', 'es'])
       await page.reload()
       expect(await saved()).toEqual(paid)
       // The next Summer is deliberately in the live draw path, not invoked by test code.
-      await activate(
-        page.locator('[data-play-zone="hand"] [data-play-tile]').first()
-      )
+      const first = await page
+        .locator('[data-play-zone="hand"] [data-play-tile]')
+        .first()
+        .getAttribute('data-play-tile')
+      await select([first!])
       await activate(page.locator('[data-game-action="redraw"]'))
       await expect
         .poll(async () => (await saved()).state.seasonSystem.seasonStack.length)
         .toBe(2)
+      await settleReveals(page)
       const later = await saved()
       expect(later.state.summerReserve).toEqual([])
       expect(later.state.bambooSummerProtection).toBe(true)
-      await activate(page.getByTestId('flora-details-trigger'))
-      await expect(dialog.locator('[data-summer-sheltered]')).toHaveCount(2)
-      await expect(
-        dialog.locator('[data-summer-sheltered]').first()
-      ).toHaveText(copy.flora.details.summerSheltered)
-      await dialog
-        .locator('[data-summer-sheltered]')
-        .first()
-        .scrollIntoViewIfNeeded()
+      await expect(summer).toHaveCount(2)
+      for (const token of await summer.all()) {
+        await activate(token)
+        await expect(dialog).toContainText(copy.flora.details.summerSheltered)
+        await activate(
+          dialog.getByRole('button', { name: copy.common.close, exact: true })
+        )
+        await expect(dialog).toHaveCount(0)
+      }
       await page.screenshot({
         path: testInfo.outputPath('summer-sheltered.png'),
       })
       expect(await saved()).toEqual(later)
-      await activate(
-        dialog.getByRole('button', { name: copy.common.close, exact: true })
-      )
       await page.reload()
       expect(await saved()).toEqual(later)
-      await activate(page.locator('[data-game-action="skip"]'))
+      // Any scoring play now clears the round: the target sits one point
+      // above the first play's payment.
+      await select(
+        later.state.handTiles.slice(0, 2).map((t: { id: string }) => t.id)
+      )
+      await activate(play)
+      await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
+      await activate(
+        page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
+      )
+      await expect(page).toHaveURL(new RegExp(`/${language}/play/?$`))
       await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
       const next = await saved()
       expect(next.state.bambooSummerProtection).toBe(false)
