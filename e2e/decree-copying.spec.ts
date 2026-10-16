@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { buyOffer, offerCard } from './helpers/shop'
+import { clearReveals, handScoreTotal, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -6,10 +8,12 @@ for (const [language, copy] of [
   ['en', en],
   ['es', es],
 ] as const) {
-  for (const [id, rackSize, discards, score] of [
-    ['decree-wide-grip', 16, 3, 45],
-    ['decree-ancient-scroll', 10, 3, 345],
-    ['decree-sacrifice', 14, 1, 405],
+  // Turns are one shared budget: Sacrifice's lost redraw now costs a Turn,
+  // and Blueprint copies it.
+  for (const [id, rackSize, turns, score] of [
+    ['decree-wide-grip', 16, 6, 45],
+    ['decree-ancient-scroll', 10, 6, 345],
+    ['decree-sacrifice', 14, 4, 405],
   ] as const) {
     test(`paid ${id} carries copied benefits and costs (${language})`, async ({
       page,
@@ -22,12 +26,7 @@ for (const [language, copy] of [
       await page.goto(`/${language}/play`)
       const play = page.locator('[data-game-action="play"]')
       await expect(play).toBeVisible()
-      await page
-        .getByRole('button', {
-          name: copy.progressiveHints.dontShow,
-          exact: true,
-        })
-        .click()
+      await settleReveals(page, 2_000)
       const offerInfo = await page.evaluate(async (id) => {
         const gamePath = '/src/game/GameOrchestrator.ts',
           decreePath = '/src/systems/DecreeSystem.ts',
@@ -75,24 +74,28 @@ for (const [language, copy] of [
         return { id: offer.id, cost: item.cost }
       }, id)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-      const card = page.locator(`[data-shop-item="${offerInfo.id}"]`)
-      await expect(card.getByRole('heading')).toHaveText(
-        copy.decrees.items[id].name
-      )
-      if (isMobile) await card.getByRole('button').tap()
-      else await card.getByRole('button').click()
+      // startNewRun queues its starting Decrees for a reveal over the shop.
+      await clearReveals(page)
+      const card = offerCard(page, offerInfo.id)
+      await expect(card).toContainText(copy.decrees.items[id].name)
+      await buyOffer(page, offerInfo.id)
+      await expect(card).toHaveCount(0)
+      // The bought Decree is revealed over the shop.
+      await settleReveals(page)
       await page
         .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
         .click()
       await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       const resources = await page.evaluate(async () => {
         const path = '/src/game/GameOrchestrator.ts'
         const { gameOrchestrator: game } = await import(path)
         const state = game.getState()
         return {
           rack: state.handTiles.length,
-          discards: state.discardsRemaining,
-          hands: state.handsRemaining,
+          redraws: state.redrawsRemaining,
+          turns: state.handsRemaining,
           gold: state.gold,
           decrees: state.decreeSystem
             .getOwnedDecrees()
@@ -101,8 +104,8 @@ for (const [language, copy] of [
       })
       expect(resources).toEqual({
         rack: rackSize,
-        discards,
-        hands: 4,
+        redraws: 0,
+        turns,
         gold: 40 - offerInfo.cost,
         decrees: ['decree-blueprint', id],
       })
@@ -160,13 +163,10 @@ for (const [language, copy] of [
         if (isMobile) await tile.tap()
         else await tile.click()
       }
-      await expect(page.getByTestId('score-preview-total')).toHaveText(
-        `+${score}`
-      )
+      // The forecast and the settled play share the middle of the table.
+      await expect(handScoreTotal(page, 'preview')).toHaveText(String(score))
       await play.click()
-      await expect(page.locator('[data-score-result]')).toHaveText(
-        String(score)
-      )
+      await expect(handScoreTotal(page, 'last')).toHaveText(String(score))
       expect(
         await page.evaluate(async () => {
           const path = '/src/game/GameOrchestrator.ts'
@@ -175,13 +175,13 @@ for (const [language, copy] of [
           return {
             score: state.score,
             rack: state.handTiles.length,
-            discards: state.discardsRemaining,
-            hands: state.handsRemaining,
+            redraws: state.redrawsRemaining,
+            turns: state.handsRemaining,
           }
         })
-      ).toEqual({ score, rack: rackSize, discards, hands: 3 })
+      ).toEqual({ score, rack: rackSize, redraws: 0, turns: turns - 1 })
       await page
-        .locator('.game-score-panel')
+        .locator('[data-hand-score]')
         .screenshot({ path: testInfo.outputPath('copy-paid.png') })
     })
   }

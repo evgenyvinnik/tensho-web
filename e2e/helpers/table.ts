@@ -65,6 +65,15 @@ export async function selectTiles(page: Page, count: number): Promise<string[]> 
   return ids
 }
 
+/**
+ * The total in the middle of the table: the selection's forecast
+ * (`preview`), or the last play once nothing is selected (`last`).
+ */
+export const handScoreTotal = (page: Page, state: 'preview' | 'last') =>
+  page.locator(
+    `[data-hand-score][data-hand-score-state="${state}"] [data-hand-score-total]`
+  )
+
 /** Turns left and free redraws, as the action bar shows them. */
 export async function turnBudget(page: Page) {
   const turns = Number(

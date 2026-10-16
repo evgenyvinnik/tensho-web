@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { buyOffer, offerCard } from './helpers/shop'
+import { clearReveals, openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -14,14 +16,7 @@ for (const [language, copy] of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${language}/play`)
-    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
+    await openTable(page, `/${language}/play`)
     const offerInfo = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts',
         decreePath = '/src/systems/DecreeSystem.ts',
@@ -64,7 +59,9 @@ for (const [language, copy] of [
       return { id: offer.id, cost: item.cost }
     })
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-    const card = page.locator(`[data-shop-item="${offerInfo.id}"]`)
+    // startNewRun queues its starting Decrees for a reveal over the shop.
+    await clearReveals(page)
+    const card = offerCard(page, offerInfo.id)
     const art = card.locator('img[src$="wealth-engine.webp"]')
     expect(
       await art.evaluate(async (img: HTMLImageElement) => {
@@ -72,12 +69,12 @@ for (const [language, copy] of [
         return img.naturalWidth
       })
     ).toBeGreaterThan(0)
-    await expect(card.getByRole('heading')).toHaveText(
+    await expect(card).toContainText(
       copy.decrees.items['decree-wealth-engine'].name
     )
     await card.screenshot({ path: testInfo.outputPath('wealth-shop.png') })
-    if (isMobile) await card.getByRole('button').tap()
-    else await card.getByRole('button').click()
+    await buyOffer(page, offerInfo.id)
+    await expect(card).toHaveCount(0)
     expect(
       await page.evaluate(async () => {
         const path = '/src/game/GameOrchestrator.ts'
@@ -94,10 +91,14 @@ for (const [language, copy] of [
       gold: 20 - offerInfo.cost,
       ids: ['decree-blueprint', 'decree-wealth-engine'],
     })
+    // The bought Decree is revealed over the shop.
+    await settleReveals(page)
     await page
       .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       .click()
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     const before = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts',
         tilePath = '/src/core/Tile.ts',
@@ -124,6 +125,8 @@ for (const [language, copy] of [
       })
       return state.gold
     })
+    // The fixture's Season is announced with a reveal over the table.
+    await settleReveals(page, 2_000)
     const owned = page.getByRole('button', {
       name: copy.decrees.items['decree-wealth-engine'].name,
       exact: true,

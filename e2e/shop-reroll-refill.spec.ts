@@ -1,4 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
+import { buyOffer, itemOffers, offerCard, openOffer } from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 
 for (const lang of ['en', 'es'])
   for (const purchases of [1, 2])
@@ -58,17 +60,19 @@ for (const lang of ['en', 'es'])
         return locale
       }, lang)
       await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
+      // startNewRun queues its starting Decrees for a reveal over the shop.
+      await clearReveals(page)
       const initial = await saved()
       for (const offer of initial.shop.teaHouse.itemOfferings.slice(
         0,
         purchases
       )) {
-        await activate(page.locator(`[data-shop-item="${offer.id}"] button`))
-        await expect(
-          page.locator(`[data-shop-item="${offer.id}"]`)
-        ).toHaveCount(0)
+        await buyOffer(page, offer.id)
+        await expect(offerCard(page, offer.id)).toHaveCount(0)
+        // A bought Decree is revealed over the shop.
+        await settleReveals(page)
       }
-      await expect(page.locator('[data-shop-item]')).toHaveCount(2 - purchases)
+      await expect(itemOffers(page)).toHaveCount(2 - purchases)
       const before = await saved()
       await testInfo.attach('reroll-before', {
         body: await page.evaluate(
@@ -83,7 +87,7 @@ for (const lang of ['en', 'es'])
         exact: true,
       })
       await activate(reroll)
-      await expect(page.locator('[data-shop-item]')).toHaveCount(2)
+      await expect(itemOffers(page)).toHaveCount(2)
       const after = await saved()
       expect(after.state).toEqual({
         ...before.state,
@@ -101,9 +105,7 @@ for (const lang of ['en', 'es'])
         before.shop.spent + 5
       )
       for (const offer of initial.shop.teaHouse.itemOfferings)
-        await expect(
-          page.locator(`[data-shop-item="${offer.id}"]`)
-        ).toHaveCount(0)
+        await expect(offerCard(page, offer.id)).toHaveCount(0)
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth
@@ -117,15 +119,26 @@ for (const lang of ['en', 'es'])
       await expect
         .poll(async () => (await saved()).shop.teaHouse.rerollsThisVisit)
         .toBe(2)
-      await expect(page.locator('[data-shop-item]')).toHaveCount(2)
+      await expect(itemOffers(page)).toHaveCount(2)
       const twice = await saved()
       expect(twice.state.gold).toBe(
         after.state.gold - 6
       )
-      const buy = page.locator('[data-shop-item] button:enabled').first()
-      await expect(buy).toBeVisible()
-      await activate(buy)
-      await expect(page.locator('[data-shop-item]')).toHaveCount(1)
+      // Buy the first refilled item the engine allows.
+      let bought = false
+      for (const offer of twice.shop.teaHouse.itemOfferings) {
+        const details = await openOffer(page, offer.id)
+        const buy = details.locator(`[data-shop-buy="${offer.id}"]`)
+        if (await buy.isEnabled()) {
+          await activate(buy)
+          bought = true
+          break
+        }
+        await page.keyboard.press('Escape')
+      }
+      expect(bought).toBe(true)
+      await expect(itemOffers(page)).toHaveCount(1)
+      await settleReveals(page)
       expect((await saved()).shop.purchases).toBe(purchases + 1)
       await activate(
         page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
