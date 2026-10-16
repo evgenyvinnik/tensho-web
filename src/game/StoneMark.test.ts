@@ -1,7 +1,7 @@
 /**
  * A Stone Mark covers its tile's face: the tile has no rank or suit, joins no
- * group, and pays exactly its +50 — in a tactical play or riding along with a
- * complete hand.
+ * group, and pays exactly its +100 — double a Wind — in a tactical play or
+ * riding along with a complete hand.
  */
 
 import { afterEach, expect, it } from 'vitest'
@@ -11,6 +11,7 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { DecreeSystem } from '../systems/DecreeSystem'
+import { WIND_TILE_POINTS } from '../rules/ScoringEngine'
 import { useOmenStore } from '../stores/omenStore'
 
 afterEach(() => {
@@ -41,7 +42,7 @@ function setup(tiles: Tile[]) {
   return game
 }
 
-it('never pairs with its old face and pays exactly its +50', () => {
+it('never pairs with its old face and pays exactly its +100', () => {
   const game = setup([
     stone(new Tile(TileSuit.Manzu, 3, 'stone')),
     new Tile(TileSuit.Manzu, 3, 'face'),
@@ -53,9 +54,9 @@ it('never pairs with its old face and pays exactly its +50', () => {
     groupedTiles: 0,
     looseTiles: 1,
   })
-  expect(preview.modifierChips).toBe(50)
-  // 50 from the Stone, half of the loose 3-Manzu's 5 points.
-  expect(preview.finalScore).toBe(52)
+  expect(preview.modifierChips).toBe(100)
+  // 100 from the Stone, half of the loose 3-Manzu's 5 points.
+  expect(preview.finalScore).toBe(102)
 
   const before = game.getState().score
   expect(
@@ -77,7 +78,24 @@ it('cannot complete a sequence or lend a Dragon its Mult', () => {
   // Only the plain Dragon pair groups; the Stone Dragon is no Dragon.
   expect(preview.structurePoints).toBe(15)
   expect(preview.dragonMult).toBe(4)
-  expect(preview.modifierChips).toBe(100)
+  expect(preview.modifierChips).toBe(200)
+})
+
+it('outscores a Wind tile, loose or paired', () => {
+  const game = setup([
+    stone(new Tile(TileSuit.Manzu, 7, 'stone-a')),
+    stone(new Tile(TileSuit.Pinzu, 2, 'stone-b')),
+    new Tile(TileSuit.Wind, 1, 'east-a'),
+    new Tile(TileSuit.Wind, 1, 'east-b'),
+    new Tile(TileSuit.Souzu, 3, 'filler'),
+  ])
+  const total = (ids: string[]) => game.previewScore(ids)!.finalScore
+  expect(total(['stone-a', 'filler'])).toBeGreaterThan(
+    total(['east-a', 'filler'])
+  )
+  // Two Stones beat a Wind pair, bonus and all.
+  expect(total(['stone-a', 'stone-b'])).toBe(4 * WIND_TILE_POINTS)
+  expect(total(['east-a', 'east-b'])).toBe(2 * WIND_TILE_POINTS + 15)
 })
 
 it('rides along with a complete hand without being part of it', () => {
@@ -95,7 +113,7 @@ it('rides along with a complete hand without being part of it', () => {
   const plain = game.previewScore(ids)!
   const withStone = game.previewScore([...ids, 'rider'])!
   expect(withStone.structure.kind).toBe('complete')
-  expect(withStone.modifierChips).toBe(50)
+  expect(withStone.modifierChips).toBe(100)
   expect(withStone.finalScore).toBeGreaterThan(plain.finalScore)
 
   // A Stone cannot stand in for a tile the hand needs.

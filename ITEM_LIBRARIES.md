@@ -26,7 +26,7 @@
 | **Seal of Transmutation** | 変容の印 | Select 2 tiles, left becomes copy of right | Death and rebirth |
 | **Seal of Balance** | 均衡の印 | Gives total sell value of all Decrees (max ¥50) | Equilibrium restored |
 | **Seal of Wealth** | 富の印 | Enhances 1 tile to Gold Mark (¥3 if held at round end) | Prosperity granted |
-| **Seal of Stone** | 石の印 | Enhances 1 tile to Stone Mark (+50 Chips, always scores) | Immutable foundation |
+| **Seal of Stone** | 石の印 | Enhances 1 tile to Stone Mark (+100 Chips, always scores) | Immutable foundation |
 | **Seal of Manzu** | 萬子の印 | Converts up to 3 tiles to Manzu suit | Way of Characters |
 | **Seal of Pinzu** | 筒子の印 | Converts up to 3 tiles to Pinzu suit | Way of Circles |
 | **Seal of Souzu** | 索子の印 | Converts up to 3 tiles to Souzu suit | Way of Bamboo |
@@ -137,7 +137,7 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | **Wild Mark** | 万能印 | Counts as every suit simultaneously |
 | **Glass Mark** | 硝子印 | ×2 Mult when scored; 1/4 chance to shatter after |
 | **Steel Mark** | 鋼印 | ×1.5 Mult while held in hand (not played) |
-| **Stone Mark** | 石印 | +50 Chips, always scores, no rank/suit |
+| **Stone Mark** | 石印 | +100 Chips, always scores, no rank/suit |
 | **Gold Mark** | 金印 | ¥3 if held at end of round |
 | **Lucky Mark** | 幸運印 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
 

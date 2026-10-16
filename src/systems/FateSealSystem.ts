@@ -249,7 +249,7 @@ export const FATE_SEALS: Record<
     type: 'FateSeal',
     name: 'Seal of Stone',
     japaneseName: '石の印',
-    description: 'Enhances 1 tile to Stone Mark (+50 Chips, always scores)',
+    description: 'Enhances 1 tile to Stone Mark (+100 Chips, always scores)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,

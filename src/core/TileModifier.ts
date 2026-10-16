@@ -27,7 +27,7 @@ export enum EnhancementType {
   Wild = 'wild', // Counts as every suit
   Glass = 'glass', // ×2 Mult when scored, 1/4 chance to shatter
   Steel = 'steel', // ×1.5 Mult while held in hand (not when played)
-  Stone = 'stone', // +50 Chips, always scores (no rank/suit)
+  Stone = 'stone', // +100 Chips, always scores (no rank/suit)
   Gold = 'gold', // ¥3 at end of round if in hand
   Lucky = 'lucky', // 1/5 chance for +20 Mult, 1/15 chance for ¥20
 }
@@ -124,8 +124,9 @@ export const ENHANCEMENT_DEFINITIONS: Record<
     type: EnhancementType.Stone,
     name: 'Stone Mark',
     japaneseName: '石印',
-    description: '+50 Chips, always scores regardless of hand',
-    chipBonus: 50,
+    description: '+100 Chips, always scores regardless of hand',
+    // Double a Wind tile's 50: a Stone gives up grouping for a sure payout.
+    chipBonus: 100,
     multBonus: 0,
     multMultiplier: 1,
     goldBonus: 0,
