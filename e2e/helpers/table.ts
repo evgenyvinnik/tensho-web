@@ -44,6 +44,14 @@ export async function startRun(page: Page, path = '/en'): Promise<void> {
   await settleReveals(page, 2_000)
 }
 
+/** Leave the Tea House for the next round's table and settle its reveals. */
+export async function continueToNextRound(page: Page): Promise<void> {
+  await page.locator('[data-shop-continue]').click()
+  await expect(page).toHaveURL(/\/play$/)
+  // The new round can open on Flower and Season reveals.
+  await settleReveals(page, 2_000)
+}
+
 /** Open the table directly at /play (starting or resuming a run). */
 export async function openTable(page: Page, path = '/en/play'): Promise<void> {
   await page.goto(path)
