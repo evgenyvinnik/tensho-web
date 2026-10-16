@@ -58,6 +58,7 @@ import { FloraReveal } from '../gameplay/FloraReveal'
 import { YakuReveal } from '../effects/YakuReveal'
 import { DecreeReveal } from '../effects/DecreeReveal'
 import { useDecreeRevealQueue } from '../../game/decreeRevealQueue'
+import { useOmenStore } from '../../stores/omenStore'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
 import { scoreSignificance } from '../effects/DoomFire'
@@ -97,6 +98,11 @@ export function GameplayScreen() {
   const { service: persistence } = useClassicPersistence()
   const showTileHints = useSettingsStore((state) => state.showTileHints)
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  // Omens change outside game events (a reward, a cancelled Script), so the
+  // Script cost shown before use follows the Omen store itself.
+  const scriptDownsideProtected = useOmenStore(() =>
+    game.state.omenSystem.hasVoidScriptDownsideProtection()
+  )
   const itemText = useItemText()
   const currentTableStyle =
     getTableStyleById(game.state.tableStyleId) ?? getDefaultTableStyle()
@@ -507,6 +513,11 @@ export function GameplayScreen() {
                 validateUse={game.validateConsumableAction}
                 onUse={game.processAction}
                 onChooseTargets={setTargeting}
+                lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
+                scriptDownsideProtected={scriptDownsideProtected}
+                observatoryActive={game.state.charterSystem.hasCharter(
+                  'observatory'
+                )}
               />
               <div data-tutorial="wall" className="shrink-0">
                 <WallDisplay
@@ -645,7 +656,7 @@ export function GameplayScreen() {
           tiles={game.handTiles}
           concealedIds={faceDownTileIds}
           lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
-          scriptDownsideProtected={game.state.omenSystem.hasVoidScriptDownsideProtection()}
+          scriptDownsideProtected={scriptDownsideProtected}
           observatoryActive={game.state.charterSystem.hasCharter('observatory')}
           canUse={game.canPerformAction}
           validateUse={game.validateConsumableAction}

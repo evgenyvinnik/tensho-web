@@ -25,6 +25,7 @@ import {
 } from '../../utils/assets'
 import { TileImage } from '../tiles/TileImage'
 import { CharterArtwork } from '../ui/CharterArtwork'
+import { consumableMessage } from './consumableMessages'
 
 type Item = FateSeal | CelestialOrb | VoidScript
 type ConsumableAction = Extract<
@@ -112,25 +113,7 @@ export function ConsumableDialog({
         ]
       : []
 
-  const messageFor = (message: string) => {
-    if (message === 'Choose a suited tile of a different suit')
-      return t('consumableUse.errorSuit')
-    if (message === 'Choose a suited tile whose new rank is between 1 and 9')
-      return t('consumableUse.errorRank')
-    if (message.includes('already at max level'))
-      return t('consumableUse.errorMaxLevel')
-    if (message.startsWith('No room for')) return t('consumableUse.errorNoRoom')
-    if (message.startsWith('No Decrees to'))
-      return t('consumableUse.errorNoDecrees')
-    if (message === 'No Fate Seal or Celestial Orb has been used this run')
-      return t('consumableUse.errorNoPrevious', {
-        seals: t('consumableUse.fateSeals'),
-        orbs: t('consumableUse.celestialOrbs'),
-      })
-    if (message === 'No gold can be generated')
-      return t('consumableUse.errorNoGold')
-    return message
-  }
+  const messageFor = (message: string) => consumableMessage(message, t)
 
   useEffect(() => {
     const dialog = dialogRef.current!

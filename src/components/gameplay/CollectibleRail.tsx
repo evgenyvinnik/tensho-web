@@ -28,11 +28,14 @@ import {
   type YakuCategory,
 } from '../../systems/CelestialOrbSystem'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import type { BaseConsumable } from '../../systems/ConsumableSystem'
 import { consumableTargetRange } from '../../gameplay/consumableTargeting'
 import { useItemText } from '../../i18n/useItemText'
 import { getFlowerArt, getItemArt, getSeasonArt } from '../../utils/itemArt'
 import { CollectibleToken } from '../ui/CollectibleToken'
+import { CharterArtwork } from '../ui/CharterArtwork'
 import { FlowerDetails, SeasonDetails, useSeasonName } from './FloraDetails'
+import { consumableMessage } from './consumableMessages'
 
 type ConsumableAction = Extract<
   PlayerAction,
@@ -52,6 +55,12 @@ export interface CollectibleRailProps {
   onUse: (action: ConsumableAction) => ActionResult
   /** Open target selection for an item that needs chosen tiles. */
   onChooseTargets: (item: FateSeal | VoidScript) => void
+  /** What a copying Seal (the Fool) would create now. */
+  lastCopyableConsumable?: BaseConsumable | null
+  /** An Omen cancels the next Void Script's penalty. */
+  scriptDownsideProtected?: boolean
+  /** The Observatory Charter pays for Orbs held rather than used. */
+  observatoryActive?: boolean
 }
 
 const FAMILY_TONES: Partial<Record<YakuCategory, string>> = {
@@ -95,10 +104,14 @@ function UseButton({
   return (
     <div className="mt-3">
       {!allowed && (
-        <p role="status" className="mb-2 text-xs text-amber-200">
-          {check?.errors[0]?.includes('max level')
-            ? t('consumableUse.errorMaxLevel')
-            : t('consumableUse.unavailable')}
+        <p
+          role="status"
+          data-consumable-availability
+          className="mb-2 text-xs text-amber-200"
+        >
+          {check?.errors
+            .map((error) => consumableMessage(error, t))
+            .join(' ') || t('consumableUse.unavailable')}
         </p>
       )}
       {error && (
@@ -123,7 +136,12 @@ function UseButton({
             // spend a different copy.
             const result = onUse(actionFor(item))
             if (result.success) onUsed()
-            else setError(result.errors?.[0] ?? t('consumableUse.failed'))
+            else
+              setError(
+                result.errors
+                  ?.map((error) => consumableMessage(error, t))
+                  .join(' ') || t('consumableUse.failed')
+              )
           } finally {
             busy.current = false
           }
@@ -148,6 +166,9 @@ export function CollectibleRail({
   validateUse,
   onUse,
   onChooseTargets,
+  lastCopyableConsumable,
+  scriptDownsideProtected = false,
+  observatoryActive = false,
 }: CollectibleRailProps) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
@@ -166,8 +187,7 @@ export function CollectibleRail({
     t(`upgradeFamilies.${family}.name`)
   const consumable = (item: Consumable, kind: 'seals' | 'orbs' | 'scripts') => {
     const name = itemText.name(kind, item)
-    const family =
-      item.type === 'CelestialOrb' ? item.effect.targetYaku : null
+    const family = item.type === 'CelestialOrb' ? item.effect.targetYaku : null
     const level = family && family !== 'All' ? levelOf(family) : null
     return (
       <CollectibleToken
@@ -205,7 +225,9 @@ export function CollectibleRail({
                   : t('upgradeFamilies.levelChange', {
                       family: familyName(family),
                       from: number(level ?? 1),
-                      to: number(Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)),
+                      to: number(
+                        Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                      ),
                     })}
               </p>
             )}
@@ -217,6 +239,54 @@ export function CollectibleRail({
             <p className="mt-1">{itemText.description(kind, item)}</p>
           </div>
         </div>
+        {/* What using it costs, before the one tap that uses it. */}
+        {observatoryActive && item.type === 'CelestialOrb' && (
+          <aside
+            data-observatory-holding
+            className="mt-3 flex items-start gap-3 rounded-lg border border-amber-200/30 bg-black/20 p-2 text-xs leading-relaxed [overflow-wrap:anywhere]"
+          >
+            <CharterArtwork
+              charterId="observatory"
+              className="h-12 w-12 shrink-0"
+            />
+            <div className="min-w-0 space-y-1">
+              <p>{t('observatory.description')}</p>
+              <p data-observatory-cost className="text-amber-100/85">
+                {t('observatory.holdingNote')}
+              </p>
+            </div>
+          </aside>
+        )}
+        {item.type === 'VoidScript' && (
+          <p
+            data-script-cost
+            className="mt-3 rounded-lg border border-red-400/40 p-2 text-xs text-red-200"
+          >
+            {t('consumableUse.cost')}:{' '}
+            {scriptDownsideProtected
+              ? t('consumableUse.protected')
+              : t(`consumableUse.penalty_${item.penalty.type}`, {
+                  count: item.penalty.value || 1,
+                })}
+          </p>
+        )}
+        {item.type === 'FateSeal' &&
+          item.effect.type === 'duplicate_consumable' &&
+          lastCopyableConsumable &&
+          lastCopyableConsumable.type !== 'VoidScript' && (
+            <p
+              role="status"
+              data-consumable-copy-result
+              className="mt-3 text-xs text-amber-200"
+            >
+              {t('consumableUse.copyResult', {
+                name: itemText.name(
+                  lastCopyableConsumable.type === 'FateSeal' ? 'seals' : 'orbs',
+                  lastCopyableConsumable
+                ),
+              })}
+            </p>
+          )}
         <UseButton
           item={item}
           validateUse={validateUse}
@@ -294,7 +364,10 @@ export function CollectibleRail({
           {getCelestialOrbByYaku(upgrade.yaku) && (
             <p className="text-xs opacity-60">
               {t('yakuUpgrades.fromOrb', {
-                orb: itemText.name('orbs', getCelestialOrbByYaku(upgrade.yaku)!),
+                orb: itemText.name(
+                  'orbs',
+                  getCelestialOrbByYaku(upgrade.yaku)!
+                ),
               })}
             </p>
           )}
