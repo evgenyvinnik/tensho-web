@@ -1,13 +1,19 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import {
+  clearReveals,
+  continueToNextRound,
+  openTable,
+  swiftClear,
+} from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
   ['es', es],
 ] as const) {
   for (const kind of ['restriction', 'boost'] as const) {
-    test(`earned interest ${kind} is visible and ages through a skip (${language})`, async ({
+    test(`earned interest ${kind} is visible and ages through a round (${language})`, async ({
       page,
       isMobile,
     }, testInfo) => {
@@ -15,15 +21,7 @@ for (const [language, copy] of [
       await page.setViewportSize(
         isMobile ? { width: 320, height: 568 } : { width: 1280, height: 800 }
       )
-      await page.goto(`/${language}/play`)
-      const skip = page.locator('[data-game-action="skip"]')
-      await expect(skip).toBeVisible()
-      await page
-        .getByRole('button', {
-          name: copy.progressiveHints.dontShow,
-          exact: true,
-        })
-        .click()
+      await openTable(page, `/${language}/play`)
       await page.evaluate(
         async (seed) => {
           const path = '/src/game/GameOrchestrator.ts'
@@ -38,7 +36,12 @@ for (const [language, copy] of [
         },
         kind === 'restriction' ? 19 : 1
       )
-      await skip.click()
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
+      // Skip is gone: a swift clear of the Small round earns its Omen, drawn
+      // in the same seeded order.
+      await swiftClear(page)
+      await continueToNextRound(page)
       const effects = page.getByTestId('pending-omens')
       await expect(effects).not.toHaveAttribute('open')
       // Native summary is operable with keyboard as well as touch.
@@ -60,7 +63,8 @@ for (const [language, copy] of [
       ).toBe(true)
       await effects.screenshot({ path: testInfo.outputPath('live-effect.png') })
       await effects.locator('summary').click()
-      await skip.click()
+      await swiftClear(page)
+      await continueToNextRound(page)
       if (kind === 'restriction') await expect(effects).toHaveCount(0)
       else {
         await effects.locator('summary').click()

@@ -1,5 +1,12 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import {
+  clearReveals,
+  continueToNextRound,
+  handScoreTotal,
+  settleReveals,
+  swiftClear,
+} from './helpers/table'
 
 // Production/hosted verification reuses the exact persisted fixture captured by
 // the native run. No engine imports or test-only production endpoint is needed.
@@ -108,6 +115,8 @@ for (const language of ['en', 'es'])
           if (!(await service.saveNewRun(raw)))
             throw Error('Fixture save failed')
         })
+      // A new run queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-winter', {
         body: await page.evaluate(
@@ -116,25 +125,33 @@ for (const language of ['en', 'es'])
         contentType: 'application/json',
       })
       const play = page.locator('[data-game-action="play"]')
-      await expect(play).not.toContainText(copy.gameplay.stageHand)
+      // The rack's Hand Hints only read 1–2–4 as a sequence under Winter.
+      const gapSequence = page.locator(
+        '[data-play-zone="hand"] [data-hand-group="sequence"] [data-play-tile="gap-0"]'
+      )
+      await expect(page.locator('[data-hand-group]').first()).toBeVisible()
+      await expect(gapSequence).toHaveCount(0)
       await activate(
         page.locator('[data-play-zone="hand"] [data-play-tile="redraw"]')
       )
       await activate(page.locator('[data-game-action="redraw"]'))
-      await expect(play).toContainText(copy.gameplay.stageHand)
+      // The drawn Winter is announced with a reveal over the table.
+      await settleReveals(page, 2_000)
+      await expect(gapSequence).toHaveCount(1)
       const drawn = await saved()
       expect(drawn.state.seasonSystem.seasonStack).toHaveLength(1)
-      expect(drawn.state.handsRemaining).toBe(before.state.handsRemaining)
-      expect(drawn.state.redrawsRemaining).toBe(
-        before.state.redrawsRemaining - 1
-      )
-      await activate(page.getByTestId('flora-details-trigger'))
-      const dialog = page.getByRole('dialog')
+      // No free redraws: the REDRAW spent a Turn.
+      expect(drawn.state.handsRemaining).toBe(before.state.handsRemaining - 1)
+      expect(drawn.state.redrawsRemaining).toBe(before.state.redrawsRemaining)
+      // Winter is its own token on the item rail, with its own details.
+      const winter = page.locator('[data-flora-season]')
+      await expect(winter).toHaveAttribute('aria-label', copy.flora.winter)
+      await activate(winter)
+      const dialog = page.getByRole('dialog', { name: copy.flora.winter })
       await expect(
         dialog.getByText(copy.flora.details.winter, { exact: true })
       ).toBeVisible()
-      const art = dialog.locator('img[src*="winter-pine.webp"]')
-      await art.scrollIntoViewIfNeeded()
+      const art = winter.locator('img[src*="winter-pine.webp"]')
       await expect
         .poll(() =>
           art.evaluate(
@@ -151,54 +168,45 @@ for (const language of ['en', 'es'])
       )
       await page.reload()
       expect(await saved()).toEqual(drawn)
+      const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
       if (shape === 'complete') {
-        await activate(play)
-        await expect(play).toContainText(copy.gameplay.confirmHand)
-        await expect(
-          page.locator('[data-play-zone="staging"] [data-play-tile]')
-        ).toHaveCount(14)
+        // The whole rack goes onto the felt; there is no separate confirm.
+        await activate(page.locator('[data-select-all]'))
+        await expect(felt).toHaveCount(14)
       } else {
         for (const id of ['gap-0', 'gap-1', 'gap-2'])
           await activate(
             page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
           )
-        await expect(
-          page.locator('[data-play-zone="staging"] [data-play-tile]')
-        ).toHaveCount(3)
+        await expect(felt).toHaveCount(3)
       }
       const forecast = Number(
-        (await page
-          .getByTestId('score-preview-total')
-          .getAttribute('aria-label'))!.replace(/\D/g, '')
+        (await handScoreTotal(page, 'preview').getAttribute('title'))!.replace(
+          /\D/g,
+          ''
+        )
       )
       if (shape === 'tactical') expect(forecast).toBe(37)
       else expect(forecast).toBeGreaterThan(37)
       const staged = await saved()
       expect(staged.state.score).toBe(drawn.state.score)
       expect(staged.state.handsRemaining).toBe(drawn.state.handsRemaining)
-      const details = page.locator('[data-hand-interpretation]')
-      await expect(details).not.toHaveAttribute('open', '')
-      if (isMobile) await details.locator('summary').tap()
-      else {
-        await details.locator('summary').focus()
-        await page.keyboard.press('Enter')
-      }
-      await expect(details.locator('[data-skipped-sequences]')).toContainText(
-        copy.handInterpretation.sequenceSkip
-      )
-      await expect(details.locator('[data-skipped-sequences] img')).toHaveCount(
-        3
+      // The hand score names how the Winter-legal play is read.
+      const handScore = page.locator('[data-hand-score]')
+      await expect(handScore.locator('[data-hand-score-pattern]')).toHaveText(
+        shape === 'tactical'
+          ? copy.patterns.sequence.name
+          : copy.patterns.mahjong.name
       )
       expect(await saved()).toEqual(staged)
       expect(
-        await details.evaluate(
+        await handScore.evaluate(
           (node) => node.scrollWidth <= node.clientWidth + 1
         )
       ).toBe(true)
-      await details.screenshot({
+      await handScore.screenshot({
         path: testInfo.outputPath('winter-interpretation.png'),
       })
-      await activate(details.locator('summary'))
       await activate(play)
       await expect
         .poll(async () => (await saved()).state.score)
@@ -220,7 +228,9 @@ for (const language of ['en', 'es'])
       )
       await page.reload()
       expect(await saved()).toEqual(paid)
-      await activate(page.locator('[data-game-action="skip"]'))
+      // Skip is gone: clear the round to reach the next one.
+      await swiftClear(page)
+      await continueToNextRound(page)
       await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
       const next = await saved()
       expect(next.state.seasonSystem.seasonStack).toEqual([])
