@@ -247,7 +247,13 @@ export function GameplayScreen() {
         : selectedIds.length < MIN_TACTICAL_PLAY_TILES
           ? t('gameplay.reasonMinimum', { count: MIN_TACTICAL_PLAY_TILES })
           : selectedIds.length > MAX_TACTICAL_PLAY_TILES
-            ? t('gameplay.reasonMaximum', { count: MAX_TACTICAL_PLAY_TILES })
+            ? // Too many to play is not too many to REDRAW: say so.
+              t(
+                redrawAllowed
+                  ? 'gameplay.reasonMaximumRedraw'
+                  : 'gameplay.reasonMaximum',
+                { count: MAX_TACTICAL_PLAY_TILES }
+              )
             : t('gameplay.reasonUnavailable', 'This play is not allowed now')
   const redrawReason = redrawAllowed
     ? undefined
@@ -272,6 +278,21 @@ export function GameplayScreen() {
       game.clearSelection()
     } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
   }, [game, selectedIds, redrawReason])
+
+  // REDRAW takes any number of tiles, so one tap picks every tile it can take
+  // (a locked tile must be played); a second tap puts them all back.
+  const redrawableIds = game.handTiles
+    .map((tile) => tile.id)
+    .filter((id) => !lockedTileIds.has(id))
+  const allPicked =
+    redrawableIds.length > 0 && redrawableIds.every((id) => selectedSet.has(id))
+  const toggleSelectAll = () => {
+    setActionError(null)
+    if (allPicked) game.clearSelection()
+    else
+      for (const id of redrawableIds)
+        if (!selectedSet.has(id)) game.selectTile(id)
+  }
 
   // A complete Mahjong hand is the jackpot; offer to select it in one tap.
   const completeHandSelection = game.findCompleteHandSelection()
@@ -509,6 +530,20 @@ export function GameplayScreen() {
             data-gameplay-surface
             className="relative mt-auto flex min-w-0 flex-col"
           >
+            {redrawableIds.length > 1 && !tableClosed && (
+              <div className="flex justify-end px-2 pb-1">
+                <button
+                  type="button"
+                  data-select-all
+                  onClick={toggleSelectAll}
+                  className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+                >
+                  {allPicked
+                    ? t('gameplay.clearAll', 'Clear all')
+                    : t('gameplay.selectAll', 'Select all')}
+                </button>
+              </div>
+            )}
             <PlayToast
               toast={toast}
               onDone={finishCelebration}
