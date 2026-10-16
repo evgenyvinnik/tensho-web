@@ -16,47 +16,33 @@ import { createAppRouter, AppRouterProvider } from './router'
 
 const queryClient = new QueryClient()
 
-// Module-scope lazy components keep their identity across renders. Each screen
-// has a separate chunk; the PWA still precaches them for offline navigation.
+// Module-scope lazy components keep their identity across renders. All screens
+// share one chunk (see routedScreens); the PWA still precaches it for offline
+// navigation.
+const screens = () => import('./components/screens/routedScreens')
 const MenuScreen = lazy(() =>
-  import('./components/screens/MenuScreen').then((m) => ({
-    default: m.MenuScreen,
-  }))
+  screens().then((m) => ({ default: m.MenuScreen }))
 )
 const GameplayScreen = lazy(() =>
-  import('./components/screens/GameplayScreen').then((m) => ({
-    default: m.GameplayScreen,
-  }))
+  screens().then((m) => ({ default: m.GameplayScreen }))
 )
 const ShopScreen = lazy(() =>
-  import('./components/screens/ShopScreen').then((m) => ({
-    default: m.ShopScreen,
-  }))
+  screens().then((m) => ({ default: m.ShopScreen }))
 )
 const GameOverScreen = lazy(() =>
-  import('./components/screens/GameOverScreen').then((m) => ({
-    default: m.GameOverScreen,
-  }))
+  screens().then((m) => ({ default: m.GameOverScreen }))
 )
 const AchievementsScreen = lazy(() =>
-  import('./components/screens/AchievementsScreen').then((m) => ({
-    default: m.AchievementsScreen,
-  }))
+  screens().then((m) => ({ default: m.AchievementsScreen }))
 )
 const CodexScreen = lazy(() =>
-  import('./components/screens/CodexScreen').then((m) => ({
-    default: m.CodexScreen,
-  }))
+  screens().then((m) => ({ default: m.CodexScreen }))
 )
 const CollectionScreen = lazy(() =>
-  import('./components/screens/CollectionScreen').then((m) => ({
-    default: m.CollectionScreen,
-  }))
+  screens().then((m) => ({ default: m.CollectionScreen }))
 )
 const SettingsScreen = lazy(() =>
-  import('./components/screens/SettingsScreen').then((m) => ({
-    default: m.SettingsScreen,
-  }))
+  screens().then((m) => ({ default: m.SettingsScreen }))
 )
 
 const ResumableGameplay = () => (

@@ -43,6 +43,32 @@ for (const file of readdirSync(resolve(root, 'assets'), { recursive: true })) {
     assert.ok(cached.has(path), `Offline asset missing: ${path}`)
   }
 }
+// Opening a screen streams one script, never a burst: Chromium compiles each
+// streamed script on its own thread-pool task, and a burst that fills the pool
+// can freeze the page for good (see src/components/screens/routedScreens.ts).
+// Besides the entry, only the routed-screens chunk and the locales are lazy.
+const entry = readFileSync(resolve(root, 'index.html'), 'utf8').match(
+  /<script type="module"[^>]*\/assets\/([^"/]+\.js)"/
+)?.[1]
+assert.ok(entry, 'Entry script not found in index.html')
+const locales = new Set(
+  readdirSync(resolve('src/i18n/locales')).map((file) =>
+    file.replace(/\.json$/, '')
+  )
+)
+const lazyScripts = readdirSync(resolve(root, 'assets')).filter(
+  (file) => file.endsWith('.js') && file !== entry
+)
+const screenChunks = lazyScripts.filter((file) =>
+  /^routedScreens-[\w-]+\.js$/.test(file)
+)
+assert.equal(screenChunks.length, 1, 'Routed screens must ship as one chunk')
+const strayChunks = lazyScripts.filter(
+  (file) =>
+    !screenChunks.includes(file) &&
+    !locales.has(file.match(/^(.+)-[\w-]{8}\.js$/)?.[1] ?? file)
+)
+assert.deepEqual(strayChunks, [], 'Screens must not split into extra chunks')
 const precacheBytes = [...cached].reduce(
   (sum, path) => sum + statSync(resolve(root, path)).size,
   0
