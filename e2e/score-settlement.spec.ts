@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
-import en from '../src/i18n/locales/en.json' with { type: 'json' }
-import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { clearReveals, handScoreTotal, openTable } from './helpers/table'
 
 for (const { language, motion } of [
   { language: 'en', motion: 'reduce' },
@@ -16,17 +15,8 @@ for (const { language, motion } of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: motion })
-    await page.goto(`/${language}/play`)
+    await openTable(page, `/${language}/play`)
     const play = page.locator('[data-game-action="play"]')
-    await expect(play).toBeVisible()
-    // Exercise the real opt-out before deliberate scoring fixtures. A delayed
-    // first-move tip can otherwise cover the result without affecting DOM math.
-    await page
-      .getByRole('button', {
-        name: { en, es }[language].progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
     if (motion === 'no-preference') {
       expect(
         await page.evaluate(async () => {
@@ -76,10 +66,13 @@ for (const { language, motion } of [
       )
       return { score: preview.finalScore, yaku: preview.detectedYaku.length }
     })
+    // startNewRun queues its starting Decrees for a reveal over the table.
+    await clearReveals(page)
     expect(expected.yaku).toBeGreaterThanOrEqual(2)
-    await play.click()
+    // The table offers the complete hand as one tap onto the felt.
+    await page.locator('[data-select-mahjong]').click()
     await expect(
-      page.locator('[data-play-zone="staging"] [data-play-tile]')
+      page.locator('[data-play-zone="felt"] [data-play-tile]')
     ).toHaveCount(14)
     await play.click()
     await expect
@@ -91,7 +84,7 @@ for (const { language, motion } of [
         })
       )
       .toBe(expected.score)
-    await expect(page.locator('[data-score-result]')).toHaveText(
+    await expect(handScoreTotal(page, 'last')).toHaveText(
       expected.score.toLocaleString(language)
     )
     let cumulative = expected.score
@@ -141,31 +134,29 @@ for (const { language, motion } of [
         else await tile.click()
       }
       await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(3)
       await play.click()
       cumulative += score
-      const panel = page.locator('.game-score-panel')
-      await expect(panel.locator('[data-score-result]')).toHaveText(
+      // The settled play stays in the hand score; the run total is in the
+      // header.
+      const panel = page.locator('[data-hand-score]')
+      await expect(handScoreTotal(page, 'last')).toHaveText(
         score.toLocaleString(language)
       )
-      await expect(panel.locator('[data-score-points]')).toHaveText('45')
-      await expect(panel.locator('[data-score-mult]')).toHaveText(
-        (1).toLocaleString(language, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+      await expect(panel.locator('[data-hand-score-points]')).toHaveText('45')
+      await expect(panel.locator('[data-hand-score-mult]')).toHaveText(
+        (1).toLocaleString(language)
       )
-      await expect(panel.locator('[data-tutorial="current-score"]')).toHaveText(
-        cumulative.toLocaleString(language)
-      )
+      await expect(
+        page.locator('[data-run-header] [data-tutorial="current-score"]')
+      ).toHaveText(cumulative.toLocaleString(language))
       if (effect !== 'plain') {
-        await expect(panel.locator('[data-score-adjustment]')).toContainText(
-          effect === 'bonus' ? '+172' : '−45'
-        )
-        await expect(panel.locator('[data-score-popup]')).toHaveCount(0)
+        await expect(
+          panel.locator('[data-hand-score-adjustment]')
+        ).toContainText(effect === 'bonus' ? '+172' : '−45')
         await panel.scrollIntoViewIfNeeded()
-        const result = panel.locator('[data-score-result]')
+        const result = handScoreTotal(page, 'last')
         await expect(result).toBeInViewport()
         expect(
           await result.evaluate((node) => {
@@ -183,7 +174,7 @@ for (const { language, motion } of [
             const bounds = node.getBoundingClientRect()
             return Array.from(
               node.querySelectorAll<HTMLElement>(
-                '[data-score-equation], [data-score-points], [data-score-mult], [data-score-adjustment], [data-score-result]'
+                '[data-hand-score-points], [data-hand-score-mult], [data-hand-score-adjustment], [data-hand-score-total]'
               )
             ).every((el) => {
               const rect = el.getBoundingClientRect()
@@ -204,14 +195,13 @@ for (const { language, motion } of [
       const { gameOrchestrator: game } = await import(path)
       game.startNewRun(12)
     })
-    await expect(page.locator('[data-score-result]')).toHaveText('0')
-    await expect(page.locator('[data-score-points]')).toHaveText('0')
-    await expect(page.locator('[data-score-mult]')).toHaveText(
-      (1).toLocaleString(language, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
-    )
-    await expect(page.locator('[data-score-adjustment]')).toHaveCount(0)
+    await clearReveals(page)
+    // A new run clears the last play: the hand score is empty again.
+    const reset = page.locator('[data-hand-score]')
+    await expect(reset).toHaveAttribute('data-hand-score-state', 'empty')
+    await expect(reset.locator('[data-hand-score-total]')).toHaveText('—')
+    await expect(reset.locator('[data-hand-score-points]')).toHaveText('—')
+    await expect(reset.locator('[data-hand-score-mult]')).toHaveText('—')
+    await expect(reset.locator('[data-hand-score-adjustment]')).toHaveCount(0)
   })
 }
