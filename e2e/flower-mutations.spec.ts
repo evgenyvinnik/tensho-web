@@ -15,6 +15,8 @@ for (const language of ['en', 'es'])
     isMobile,
     baseURL,
   }, testInfo) => {
+    // A whole replayed journey with reloads; phones on CI need the room.
+    test.setTimeout(60_000)
     const copy = JSON.parse(
       readFileSync(`src/i18n/locales/${language}.json`, 'utf8')
     )
