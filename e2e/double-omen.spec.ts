@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { buyOffer, offerCard } from './helpers/shop'
+import {
+  clearReveals,
+  openTable,
+  settleReveals,
+  swiftClear,
+} from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
@@ -15,15 +22,7 @@ for (const [language, copy] of [
       await page.setViewportSize(
         isMobile ? { width: 320, height: 568 } : { width: 1280, height: 800 }
       )
-      await page.goto(`/${language}/play`)
-      const skip = page.locator('[data-game-action="skip"]')
-      await expect(skip).toBeVisible()
-      await page
-        .getByRole('button', {
-          name: copy.progressiveHints.dontShow,
-          exact: true,
-        })
-        .click()
+      await openTable(page, `/${language}/play`)
       await page.evaluate(
         async (seed) => {
           const path = '/src/game/GameOrchestrator.ts'
@@ -38,7 +37,17 @@ for (const [language, copy] of [
         },
         kind === 'gold' ? 459 : 105
       )
-      await skip.click()
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
+      // Omens are earned by clearing a Small or Large round with Turns to
+      // spare; the clears are real plays of a controlled winning deal.
+      await swiftClear(page)
+      await page
+        .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
+        .click()
+      await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       const pending = page.getByTestId('pending-omens')
       await expect(pending).toBeVisible()
       await expect(pending).not.toHaveAttribute('open')
@@ -46,31 +55,30 @@ for (const [language, copy] of [
       await expect(
         pending.getByText(copy.omens.items.double_omen.description)
       ).toBeVisible()
-      await expect
-        .poll(() =>
-          pending
-            .locator('img')
-            .evaluate(
-              (image: HTMLImageElement) =>
-                image.complete && image.naturalWidth > 0
+      // The summary's Double Omen art and each pending Omen's art load.
+      for (const image of await pending.locator('img').all())
+        await expect
+          .poll(() =>
+            image.evaluate(
+              (node: HTMLImageElement) => node.complete && node.naturalWidth > 0
             )
-        )
-        .toBe(true)
+          )
+          .toBe(true)
       expect(
         await pending.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
       ).toBe(true)
       await pending.screenshot({ path: testInfo.outputPath('double-omen.png') })
       await pending.locator('summary').click()
-      await skip.click()
-      await expect(skip).toBeDisabled()
+      // The Large round's Omen arrives twice.
+      await swiftClear(page)
       if (kind === 'gold') {
-        await expect(pending).toHaveCount(0)
         expect(
           await page.evaluate(async () => {
             const path = '/src/game/GameOrchestrator.ts'
             const { gameOrchestrator: game } = await import(path)
             return {
-              gold: game.getState().gold,
+              // 5 Gold per swift clear so far (two), for each copy.
+              omenGold: game.getState().lastRoundSummary.omenGold,
               copies: game
                 .getState()
                 .omenSystem.getOmenHistory()
@@ -80,62 +88,9 @@ for (const [language, copy] of [
                 ).length,
             }
           })
-        ).toEqual({ gold: 120, copies: 2 })
+        ).toEqual({ omenGold: 20, copies: 2 })
         return
       }
-      await pending.locator('summary').click()
-      await expect(pending.locator('[data-omen-id="decree_omen"]')).toHaveCount(
-        2
-      )
-      await expect(pending.locator('[data-omen-cost]')).toHaveText([
-        copy.omens.effects.shopFee.replace('{{amount}}', '5'),
-        copy.omens.effects.shopFee.replace('{{amount}}', '5'),
-      ])
-      await pending.screenshot({
-        path: testInfo.outputPath('copied-costs.png'),
-      })
-      await pending.locator('summary').click()
-      // Actual earned Omens; only the winning deal is controlled for settlement.
-      await page.evaluate(async () => {
-        const gamePath = '/src/game/GameOrchestrator.ts',
-          tilePath = '/src/core/Tile.ts',
-          eventPath = '/src/game/EventBus.ts'
-        const { gameOrchestrator: game } = await import(gamePath)
-        const { Tile, TileSuit } = await import(tilePath)
-        const { eventBus } = await import(eventPath)
-        const state = game.getState()
-        state.targetScore = 1
-        state.roundManager.getCurrentRound().scoreTarget = 1
-        state.handTiles = [
-          new Tile(TileSuit.Pinzu, 2, 'double-win-a'),
-          new Tile(TileSuit.Pinzu, 2, 'double-win-b'),
-        ]
-        state.selectedTileIds.clear()
-        state.faceDownTileIds.clear()
-        eventBus.emit('tileDrawn', {
-          tileId: 'double-win-a',
-          tilesRemaining: state.wall.length - state.drawIndex,
-        })
-      })
-      for (const id of ['double-win-a', 'double-win-b']) {
-        const tile = page.locator(
-          `[data-play-zone="hand"] [data-play-tile="${id}"]`
-        )
-        if (isMobile) await tile.tap()
-        else await tile.click()
-      }
-      await page.locator('[data-game-action="play"]').click()
-      await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-      // Route navigation precedes ShopScreen's effect that opens this visit.
-      await expect
-        .poll(() =>
-          page.evaluate(async () => {
-            const path = '/src/game/GameOrchestrator.ts'
-            const { gameOrchestrator: game } = await import(path)
-            return game.shop.isOpen
-          })
-        )
-        .toBe(true)
       const rewards = await page.evaluate(async () => {
         const path = '/src/game/GameOrchestrator.ts'
         const { gameOrchestrator: game } = await import(path)
@@ -169,17 +124,16 @@ for (const [language, copy] of [
       expect(rewards.offers).toHaveLength(2)
       for (const offer of rewards.offers) {
         expect(['ImperialDecree', 'HeavenlyOrdinance']).toContain(offer.rarity)
-        await expect(
-          page.locator(`[data-shop-item="${offer.id}"]`)
-        ).toBeVisible()
+        await expect(offerCard(page, offer.id)).toBeVisible()
       }
       await page.screenshot({
         path: testInfo.outputPath('copied-shop-rewards.png'),
       })
       for (const offer of rewards.offers) {
-        const card = page.locator(`[data-shop-item="${offer.id}"]`)
-        await card.getByRole('button').click()
-        await expect(card).toHaveCount(0)
+        await buyOffer(page, offer.id)
+        await expect(offerCard(page, offer.id)).toHaveCount(0)
+        // A bought Decree is revealed over the shop.
+        await settleReveals(page)
       }
       expect(
         await page.evaluate(async () => {

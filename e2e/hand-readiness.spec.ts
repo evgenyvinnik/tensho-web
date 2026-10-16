@@ -1,6 +1,10 @@
 import { expect, test } from '@playwright/test'
+import { clearReveals, openTable } from './helpers/table'
 
-test('readiness recognizes overlapping groups without revealing hidden tiles', async ({
+// The table no longer shows a Tenpai readout; the rack's Hand Hints mark the
+// groups the scorer would pay for. They must find overlapping groups and must
+// never place a face-down tile by its hidden identity.
+test('hand hints recognize overlapping groups without revealing hidden tiles', async ({
   page,
   isMobile,
 }) => {
@@ -8,11 +12,7 @@ test('readiness recognizes overlapping groups without revealing hidden tiles', a
     isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
   )
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/en/play')
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-  await page
-    .getByRole('button', { name: "Don't show tips", exact: true })
-    .click()
+  await openTable(page)
 
   // Deliberate shape fixture, not evidence of organically reaching a full hand.
   await page.evaluate(async () => {
@@ -37,16 +37,31 @@ test('readiness recognizes overlapping groups without revealing hidden tiles', a
     state.faceDownTileIds.clear()
     eventBus.emit('tileSelected', { tileId: '', selectedCount: 0 })
   })
+  // startNewRun queues its starting Decrees for a reveal over the table.
+  await clearReveals(page)
 
-  const area = page.locator('[data-play-zone="hand"]')
-  await expect(area.getByText('Tenpai', { exact: true })).toBeVisible()
-  const tile = page.locator('[data-play-zone="hand"] [data-play-tile="pair-0"]')
+  const rack = page.locator('[data-play-zone="hand"]')
+  const group = (kind: string) => rack.locator(`[data-hand-group="${kind}"]`)
+  const inGroup = (id: string) =>
+    rack.locator(`[data-hand-group] [data-play-tile="${id}"]`)
+  // 1-1-1-2-3-4 overlaps: the scorer pays most for 1-1-1 and 2-3-4.
+  const triplet = group('triplet')
+  await expect(triplet).toHaveCount(1)
+  for (const id of ['overlap-0', 'overlap-1', 'overlap-2'])
+    await expect(triplet.locator(`[data-play-tile="${id}"]`)).toHaveCount(1)
+  for (const id of ['overlap-3', 'overlap-4', 'overlap-5'])
+    await expect(inGroup(id)).toHaveCount(1)
+  await expect(group('pair')).toHaveCount(2)
+  await expect(group('sequence')).toHaveCount(2)
+
+  // A tile picked onto the felt leaves the other groups in place.
+  const tile = rack.locator('[data-play-tile="pair-0"]')
   if (isMobile) await tile.tap()
   else await tile.click()
   await expect(
-    page.locator('[data-play-zone="staging"] [data-play-tile="pair-0"]')
+    page.locator('[data-play-zone="felt"] [data-play-tile="pair-0"]')
   ).toBeVisible()
-  await expect(area.getByText('Tenpai', { exact: true })).toBeVisible()
+  await expect(triplet).toHaveCount(1)
 
   for (const hidden of [true, false]) {
     await page.evaluate(async (hidden) => {
@@ -59,10 +74,17 @@ test('readiness recognizes overlapping groups without revealing hidden tiles', a
       else state.faceDownTileIds.clear()
       eventBus.emit('tileSelected', { tileId: '', selectedCount: 0 })
     }, hidden)
-    await expect(
-      area.getByText(hidden ? '???' : 'Tenpai', { exact: true })
-    ).toBeVisible()
-    if (hidden)
-      await expect(area.getByText('Tenpai', { exact: true })).toHaveCount(0)
+    if (hidden) {
+      // Face-down, the 1 is never grouped, so the triplet it would complete
+      // cannot give it away.
+      await expect(
+        rack.locator('[data-play-tile="overlap-0"]')
+      ).toHaveAccessibleName('Face-down tile')
+      await expect(inGroup('overlap-0')).toHaveCount(0)
+      await expect(triplet).toHaveCount(0)
+    } else {
+      await expect(triplet).toHaveCount(1)
+      await expect(inGroup('overlap-0')).toHaveCount(1)
+    }
   }
 })

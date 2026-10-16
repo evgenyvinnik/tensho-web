@@ -150,7 +150,7 @@ for (const phoenix of [false, true]) {
       })
       await page.keyboard.press('Escape')
       await preparePlay(page, phoenix)
-      // Selection toggles in place, so pick two distinct rack tiles.
+      // Pick two distinct rack tiles onto the felt.
       await selectTiles(page, 2)
       await activate(page.locator('[data-game-action="play"]'), isMobile)
       await expect(page).toHaveURL(/\/es\/shop$/)
