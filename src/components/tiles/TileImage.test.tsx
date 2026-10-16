@@ -72,6 +72,17 @@ it('conceals all identity and modifiers and never opens hidden details', () => {
   )
 })
 
+it('draws a face-down tile as its back, never as a blank face', () => {
+  const { container } = render(
+    <TileImage tile={new Tile(TileSuit.Pinzu, 5, 'hidden')} faceDown />
+  )
+  expect(container.querySelector('[data-tile-back]')).toHaveAccessibleName(
+    'Face-down tile'
+  )
+  // The art kit's empty template is indistinguishable from a blank tile.
+  expect(container.querySelector('img')).toBeNull()
+})
+
 it.each([
   [1, 'white', 'W', 'White Dragon'],
   [2, 'green', 'G', 'Green Dragon'],
