@@ -102,8 +102,9 @@ export function HandScorePreview({
             ? t(`patterns.${shown.pattern}.name`)
             : ' '}
       </p>
+      {/* Wraps rather than clipping when large numbers or text don't fit. */}
       <div
-        className={`relative flex items-center gap-1.5 font-mono text-base font-black tabular-nums sm:text-lg ${
+        className={`relative flex max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 font-mono text-base font-black tabular-nums sm:text-lg ${
           isLast ? 'opacity-60' : ''
         }`}
       >
