@@ -1,4 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
+import { offerCard, offerDetails, openOffer, packModal } from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 
 for (const lang of ['en', 'es'])
   for (const upgraded of [false, true]) {
@@ -106,6 +108,8 @@ for (const lang of ['en', 'es'])
         { lang, upgraded }
       )
       await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
+      // startNewRun queues its starting Decrees for a reveal over the shop.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('charter-before', {
         body: await page.evaluate(
@@ -113,29 +117,26 @@ for (const lang of ['en', 'es'])
         ),
         contentType: 'application/json',
       })
-      const card = page.getByTestId('charter-card')
-      await expect(card.getByRole('heading')).toHaveText(
-        info.copy.charters.items[info.id].name
+      // The Charter sells from the same offer card as items and packs.
+      const charterOffer = before.shop.teaHouse.charterOffering.id
+      const card = offerCard(page, charterOffer)
+      await expect(card).toHaveAttribute(
+        'data-shop-offer-type',
+        'ImperialCharter'
       )
-      await activate(card.getByRole('button'))
-      const confirmation = page.getByRole('dialog', {
-        name: info.copy.shop.ui.confirmPurchase,
-        exact: true,
-      })
+      await expect(card).toContainText(info.copy.charters.items[info.id].name)
+      // Its details hold the only Buy step; closing them buys nothing.
+      const details = await openOffer(page, charterOffer)
       await activate(
-        confirmation.getByRole('button', {
-          name: info.copy.common.cancel,
+        details.getByRole('button', {
+          name: info.copy.common.close,
           exact: true,
         })
       )
+      await expect(offerDetails(page, charterOffer)).toHaveCount(0)
       expect(await saved()).toEqual(before)
-      await activate(card.getByRole('button'))
-      await activate(
-        confirmation.getByRole('button', {
-          name: info.copy.shop.buy,
-          exact: true,
-        })
-      )
+      await openOffer(page, charterOffer)
+      await activate(page.locator(`[data-shop-buy="${charterOffer}"]`))
       await expect(card).toHaveCount(0)
       await expect
         .poll(async () => (await saved()).state.gold)
@@ -173,10 +174,14 @@ for (const lang of ['en', 'es'])
           )
         )
       }
-      const buyPack = page.locator(`[data-shop-pack="${info.packId}"]`)
-      await expect(buyPack).toBeEnabled()
-      await expect(buyPack).toContainText(String(info.packCost))
-      await buyPack.scrollIntoViewIfNeeded()
+      const packOffer = discounted.shop.teaHouse.packOfferings.find(
+        (o: { item: { id: string } }) => o.item.id === info.packId
+      ).id
+      const packCard = offerCard(page, packOffer)
+      await expect(packCard.locator('[data-shop-offer-price]')).toHaveText(
+        String(info.packCost)
+      )
+      await packCard.scrollIntoViewIfNeeded()
       await page.screenshot({
         path: testInfo.outputPath('discounted-shop.png'),
       })
@@ -210,15 +215,18 @@ for (const lang of ['en', 'es'])
       )
       await page.reload()
       expect(await saved()).toEqual(discounted)
+      await openOffer(page, packOffer)
+      const buyPack = page.locator(`[data-shop-buy="${packOffer}"]`)
+      await expect(buyPack).toBeEnabled()
       await activate(buyPack)
-      await expect(page.getByRole('dialog')).toBeVisible()
+      await expect(packModal(page)).toBeVisible()
       await expect.poll(async () => (await saved()).state.gold).toBe(0)
       const pending = await saved()
       expect(pending.shop.spent).toBe(info.cost + info.packCost)
       expect(pending.shop.purchases).toBe(2)
       await page.reload()
       expect(await saved()).toEqual(pending)
-      const rewards = page.getByRole('dialog')
+      const rewards = packModal(page)
       await activate(rewards.locator('[aria-pressed]').first())
       await activate(
         rewards.getByRole('button', {
@@ -235,6 +243,8 @@ for (const lang of ['en', 'es'])
         })
       )
       await expect(page).toHaveURL(new RegExp(`/${lang}/play$`))
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       const round = await saved()
       for (const tile of round.state.handTiles.slice(0, 2))
         await activate(

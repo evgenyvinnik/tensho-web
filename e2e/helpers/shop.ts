@@ -10,6 +10,10 @@ export const itemOffers = (page: Page): Locator =>
     '[data-shop-offer]:not([data-shop-offer-type="BlessingPack"]):not([data-shop-offer-type="ImperialCharter"])'
   )
 
+/** The Imperial Charter's card; a visit offers at most one. */
+export const charterCard = (page: Page): Locator =>
+  page.locator('[data-shop-offer][data-shop-offer-type="ImperialCharter"]')
+
 /** The details panel an offer card opens: name, description, Buy. */
 export const offerDetails = (page: Page, offerId: string): Locator =>
   page

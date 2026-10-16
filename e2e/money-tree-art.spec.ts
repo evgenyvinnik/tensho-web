@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { buyOffer, charterCard } from './helpers/shop'
+import { clearReveals } from './helpers/table'
 
 test('Money Tree portrait survives a localized mobile purchase and raises the interest cap', async ({
   page,
@@ -39,8 +41,10 @@ test('Money Tree portrait survives a localized mobile purchase and raises the in
     eventBus.emit('shopUpdated', { isOpen: true })
   })
   await expect(page).toHaveURL(/\/es\/shop$/)
-  const card = page.getByTestId('charter-card')
-  const art = card.getByRole('img', { name: 'Carta imperial' })
+  // startNewRun queues its starting Decrees for a reveal over the shop.
+  await clearReveals(page)
+  const card = charterCard(page)
+  const art = card.locator('.shop-offer-art img')
   await expect(art).toHaveAttribute('src', /charters\/money-tree\.webp$/)
   expect(
     await art.evaluate(async (node: HTMLImageElement) => {
@@ -49,18 +53,15 @@ test('Money Tree portrait survives a localized mobile purchase and raises the in
     })
   ).toBe(512)
   await card.scrollIntoViewIfNeeded()
-  await expect(card.getByRole('button')).toBeInViewport()
+  await expect(card).toBeInViewport()
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth
     )
   ).toBe(true)
   await page.screenshot({ path: testInfo.outputPath('money-tree-320.png') })
-  await card.getByRole('button').click()
-  await page
-    .getByRole('dialog', { name: 'Confirmar compra', exact: true })
-    .getByRole('button', { name: 'Comprar', exact: true })
-    .click()
+  // Charters have no confirmation: Buy sits in the card's details.
+  await buyOffer(page, (await card.getAttribute('data-shop-offer'))!)
   await expect(card).toHaveCount(0)
   expect(
     await page.evaluate(async () => {

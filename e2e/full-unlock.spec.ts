@@ -1,6 +1,8 @@
 import { expect, test, type Page } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { buyOffer, charterCard } from './helpers/shop'
+import { clearReveals } from './helpers/table'
 
 async function profile(page: Page) {
   return page.evaluate(async () => {
@@ -158,11 +160,12 @@ for (const [language, copy] of [
       e.eventBus.emit('shopUpdated', { isOpen: true })
     })
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-    await page.getByTestId('charter-card').getByRole('button').click()
-    await page
-      .getByRole('dialog', { name: copy.shop.ui.confirmPurchase, exact: true })
-      .getByRole('button', { name: copy.shop.buy, exact: true })
-      .click()
+    // startNewRun queues its starting Decrees for a reveal over the shop.
+    await clearReveals(page)
+    // Charters have no confirmation: Buy sits in the card's details.
+    const charter = charterCard(page)
+    await buyOffer(page, (await charter.getAttribute('data-shop-offer'))!)
+    await expect(charter).toHaveCount(0)
     expect(
       await page.evaluate(async () => {
         const path = '/src/game/GameOrchestrator.ts'
