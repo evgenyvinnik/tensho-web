@@ -223,7 +223,7 @@
     "sfxVolume": "効果音",
     "display": "表示",
     "language": "言語",
-    "tileHints": "牌ヒント",
+    "tileHints": "手牌ヒント",
     "animationSpeed": "アニメーション速度",
     "reducedMotion": "モーション軽減",
     "slow": "遅い",
@@ -250,7 +250,7 @@
       "normal": "標準",
       "slow": "遅い"
     },
-    "tileHintsDesc": "牌の数字と三元牌の目印を表示し、手牌を対子・順子・刻子ごとにまとめます",
+    "tileHintsDesc": "手牌を対子・順子・刻子ごとに牌立ての下でまとめ、和了の形がそろったら知らせます",
     "visual": "表示",
     "rankNumbers": "牌に数字を表示",
     "rankNumbersDesc": "牌の絵柄を覚えるまで、数牌に1〜9、三元牌に文字を小さく表示します。",
@@ -421,6 +421,7 @@
     "reasonLastTurn": "最後の手番は打つ必要があります",
     "reasonNoReplacements": "山に牌が足りません",
     "yourTiles": "あなたの牌",
+    "feltTiles": "出す牌",
     "collection": "所持品",
     "deadWallHint": "牌を1枚だけ選び、王牌の1枚と交換します。ラウンドに1回、手番を使いません。",
     "turnsLabel": "残り手番"

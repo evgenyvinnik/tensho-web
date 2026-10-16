@@ -510,7 +510,7 @@
     "sfxVolume": "Ses Efektleri",
     "display": "Görüntü",
     "language": "Dil",
-    "tileHints": "Taş İpuçları",
+    "tileHints": "El İpuçları",
     "animationSpeed": "Animasyon Hızı",
     "reducedMotion": "Azaltılmış Hareket",
     "slow": "Yavaş",
@@ -537,7 +537,7 @@
       "normal": "Normal",
       "slow": "Yavaş"
     },
-    "tileHintsDesc": "Taş numaralarını ve Ejderha etiketlerini göster; elini Çift, Seri ve Üçlü olarak grupla",
+    "tileHintsDesc": "Elini rafın altında Çift, Seri ve Üçlü olarak grupla ve tamamlanmış bir Mahjong elini göster",
     "visual": "Görsel",
     "rankNumbers": "Taşlarda sayılar",
     "rankNumbersDesc": "Taş yüzlerini öğrenirken sayılı taşlarda küçük 1–9 ve Ejderhalarda bir harf göster.",
@@ -708,6 +708,7 @@
     "reasonLastTurn": "Son hamle bir oynama olmalı",
     "reasonNoReplacements": "Duvarda yeterli taş kalmadı",
     "yourTiles": "Taşların",
+    "feltTiles": "Oynanacak taşlar",
     "collection": "Eşyaların",
     "deadWallHint": "Tek bir taş seçin ve ölü duvardan bir taşla değiştirin. Tur başına bir kez, bedava.",
     "turnsLabel": "Kalan hamle"

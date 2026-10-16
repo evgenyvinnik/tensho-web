@@ -223,7 +223,7 @@
     "sfxVolume": "효과음",
     "display": "디스플레이",
     "language": "언어",
-    "tileHints": "패 힌트",
+    "tileHints": "손패 힌트",
     "animationSpeed": "애니메이션 속도",
     "reducedMotion": "모션 줄이기",
     "slow": "느림",
@@ -250,7 +250,7 @@
       "normal": "보통",
       "slow": "느림"
     },
-    "tileHintsDesc": "패의 숫자와 삼원패 표식을 표시하고 손패를 또이쯔·순자·커쯔로 묶어 보여줍니다",
+    "tileHintsDesc": "손패를 패 받침 아래에 또이쯔·순자·커쯔로 묶어 보여주고, 화료 형태가 완성되면 알려줍니다",
     "visual": "화면",
     "rankNumbers": "패에 숫자 표시",
     "rankNumbersDesc": "패 그림을 익히는 동안 수패에 1~9, 삼원패에 글자를 작게 표시해요.",
@@ -421,6 +421,7 @@
     "reasonLastTurn": "마지막 턴은 패를 내야 해요",
     "reasonNoReplacements": "패산에 패가 부족해요",
     "yourTiles": "내 패",
+    "feltTiles": "낼 패",
     "collection": "보유 아이템",
     "deadWallHint": "패를 한 장만 고른 뒤 왕패 한 장과 바꿔요. 라운드당 한 번, 턴을 쓰지 않아요.",
     "turnsLabel": "남은 턴"

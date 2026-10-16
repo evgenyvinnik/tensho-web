@@ -225,8 +225,8 @@
     "visual": "Visual",
     "gameplay": "Gameplay",
     "language": "Language",
-    "tileHints": "Tile Hints",
-    "tileHintsDesc": "Show tile numbers and Dragon labels; group your hand into Pairs, Sequences and Triplets",
+    "tileHints": "Hand Hints",
+    "tileHintsDesc": "Group your hand into Pairs, Sequences and Triplets under the rack, and point out a complete Mahjong hand",
     "animationSpeed": "Animation Speed",
     "reducedMotion": "Reduced Motion",
     "reducedMotionDesc": "Minimize animations for accessibility",
@@ -417,6 +417,7 @@
     "reasonLastTurn": "Your last Turn must be a Play",
     "reasonNoReplacements": "Not enough tiles left in the wall",
     "yourTiles": "Your tiles",
+    "feltTiles": "Tiles to play",
     "collection": "Your items",
     "deadWallHint": "Select exactly one tile, then swap it for a Dead Wall tile. Once per round, free.",
     "turnsLabel": "Turns left"

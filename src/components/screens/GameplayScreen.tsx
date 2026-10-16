@@ -467,7 +467,9 @@ export function GameplayScreen() {
 
             {/* The hand score sits between Decrees and the collection. */}
             <div className="flex flex-col items-center gap-1 px-2">
-              {completeHandSelection &&
+              {/* A hand hint: off with Hand Hints, like the rack's groups. */}
+              {showTileHints &&
+                completeHandSelection &&
                 selectedIds.length !== completeHandSelection.length && (
                   <button
                     type="button"

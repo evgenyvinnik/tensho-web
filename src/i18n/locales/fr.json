@@ -223,7 +223,7 @@
     "sfxVolume": "Effets Sonores",
     "display": "Affichage",
     "language": "Langue",
-    "tileHints": "Indices de Tuiles",
+    "tileHints": "Indices de Main",
     "animationSpeed": "Vitesse d'Animation",
     "reducedMotion": "Mouvement Réduit",
     "slow": "Lent",
@@ -250,7 +250,7 @@
       "normal": "Normale",
       "slow": "Lente"
     },
-    "tileHintsDesc": "Affiche les numéros et les repères des Dragons, et regroupe votre main en Paires, Séquences et Brelans",
+    "tileHintsDesc": "Regroupe votre main en Paires, Séquences et Brelans sous le chevalet, et signale une main de Mahjong complète",
     "visual": "Visuel",
     "rankNumbers": "Nombres sur les tuiles",
     "rankNumbersDesc": "Affiche un petit 1–9 sur les tuiles numérotées et une lettre sur les Dragons, le temps d’apprendre les faces.",
@@ -421,6 +421,7 @@
     "reasonLastTurn": "Votre dernier tour doit être une main jouée",
     "reasonNoReplacements": "Plus assez de tuiles dans le mur",
     "yourTiles": "Vos tuiles",
+    "feltTiles": "Tuiles à jouer",
     "collection": "Vos objets",
     "deadWallHint": "Choisissez une seule tuile et échangez-la contre une du mur mort. Une fois par manche, gratuit.",
     "turnsLabel": "Tours restants"

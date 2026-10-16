@@ -1,6 +1,7 @@
 /**
- * HandRack: the player's tiles. Tap a tile to select it (it lifts); tap again
- * to put it back. Play hand and REDRAW act on the selection.
+ * HandRack: the player's tiles. Tap a tile to move it onto the felt (see
+ * PlayFelt); tap it there to bring it back. Play hand and REDRAW act on the
+ * tiles on the felt.
  *
  * With grouping on, every Pair, Sequence, Straight, Triplet and Quad the
  * scorer would pay for sits together above a bracket in its colour and
@@ -11,7 +12,7 @@
  * @module components/gameplay/HandRack
  */
 
-import { useMemo, useRef, type CSSProperties } from 'react'
+import { useMemo, useRef, type CSSProperties, type RefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
@@ -20,6 +21,13 @@ import { tileName } from '../../i18n/tileText'
 import type { PartialHandRules } from '../../rules/PartialHandParser'
 import { groupHand, type HandClusterKind } from '../../gameplay/handGroups'
 import { useHandTileSize } from '../../hooks/useHandTileSize'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import {
+  recordTilePositions,
+  useKeepInPlace,
+  useTileFlights,
+} from '../../animations/useTileFlights'
+import { PlayFelt } from './PlayFelt'
 
 export interface HandRackProps {
   tiles: Tile[]
@@ -53,6 +61,21 @@ const GROUP_BORDER: Record<HandClusterKind, string> = {
   loose: 'none',
 }
 
+/**
+ * Renders nothing: keeps the rack still while the felt above it changes.
+ * Rendered ahead of the felt so it runs before any flight is measured.
+ */
+function RackAnchor({
+  rack,
+  selection,
+}: {
+  rack: RefObject<HTMLElement | null>
+  selection: string
+}) {
+  useKeepInPlace(rack, selection)
+  return null
+}
+
 export function HandRack({
   tiles,
   selectedIds,
@@ -65,9 +88,26 @@ export function HandRack({
 }: HandRackProps) {
   const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
+  const reducedMotion = useReducedMotion()
+  // In the order they were picked.
+  const feltTiles = useMemo(
+    () =>
+      [...selectedIds].flatMap((id) => tiles.filter((tile) => tile.id === id)),
+    [tiles, selectedIds]
+  )
+  // Grouped from the whole hand: a selected tile leaves an empty slot, so
+  // nothing in the rack shifts under the next tap.
   const clusters = useMemo(
     () => (groupRules ? groupHand(tiles, faceDownIds, groupRules) : null),
     [tiles, faceDownIds, groupRules]
+  )
+  useTileFlights(
+    containerRef,
+    tiles
+      .filter((tile) => !selectedIds.has(tile.id))
+      .map((tile) => tile.id)
+      .join(' '),
+    reducedMotion
   )
   const suitBreaks = (clusters ?? []).filter(
     (cluster, index, all) => index > 0 && cluster.suit !== all[index - 1].suit
@@ -84,28 +124,45 @@ export function HandRack({
   const slotWidth = Math.max(44, dimensions.width)
 
   const renderTile = (tile: Tile) => {
-    const selected = selectedIds.has(tile.id)
+    const slotStyle = {
+      width: slotWidth,
+      minHeight: Math.max(44, dimensions.height) + 10,
+      paddingTop: 10,
+    }
+    // On the felt: its place in the rack waits, empty, for it to come back.
+    if (selectedIds.has(tile.id))
+      return (
+        <span
+          key={tile.id}
+          data-rack-slot={tile.id}
+          aria-hidden="true"
+          className="relative flex shrink-0 items-end justify-center"
+          style={slotStyle}
+        >
+          <span
+            className="rounded-md border-2 border-dashed border-white/20 bg-black/15"
+            style={{ width: dimensions.width, height: dimensions.height }}
+          />
+        </span>
+      )
     return (
       <button
         key={tile.id}
         type="button"
         data-play-tile={tile.id}
-        data-selected={selected ? 'true' : undefined}
-        aria-pressed={selected}
+        aria-pressed={false}
         disabled={disabled}
         aria-label={tileName(tile, t, faceDownIds.has(tile.id))}
-        onClick={() => onToggle(tile)}
-        className="relative flex shrink-0 items-end justify-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
-        style={{
-          width: slotWidth,
-          minHeight: Math.max(44, dimensions.height) + 10,
-          paddingTop: 10,
+        onClick={() => {
+          recordTilePositions()
+          onToggle(tile)
         }}
+        className="relative flex shrink-0 items-end justify-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+        style={slotStyle}
       >
         <AnimatedTile
           tile={tile}
           size={fitted}
-          selected={selected}
           faceDown={faceDownIds.has(tile.id)}
           locked={lockedIds.has(tile.id)}
           debuffed={debuffedIds.has(tile.id)}
@@ -119,70 +176,82 @@ export function HandRack({
     `${t(`melds.${kind}`, kind)}${count > 1 ? ` ×${count}` : ''}`
 
   return (
-    <div
-      ref={containerRef}
-      data-play-zone="hand"
-      data-tutorial="hand"
-      className="w-full"
-    >
+    <>
+      <RackAnchor rack={containerRef} selection={[...selectedIds].join(' ')} />
+      <PlayFelt
+        tiles={feltTiles}
+        faceDownIds={faceDownIds}
+        lockedIds={lockedIds}
+        debuffedIds={debuffedIds}
+        onToggle={onToggle}
+        size={fitted}
+        disabled={disabled}
+      />
       <div
-        data-hand-rack
-        role="group"
-        aria-label={t('gameplay.yourTiles', 'Your tiles')}
-        className={`flex w-full flex-wrap items-start justify-center py-1 ${
-          clusters ? 'gap-x-1 gap-y-1' : 'gap-1'
-        }`}
+        ref={containerRef}
+        data-play-zone="hand"
+        data-tutorial="hand"
+        className="w-full"
       >
-        {clusters
-          ? clusters.flatMap((cluster, index) => [
-              ...(index > 0 && cluster.suit !== clusters[index - 1].suit
-                ? [
-                    <span
-                      key={`suit-break-${cluster.suit ?? 'concealed'}-${index}`}
-                      data-rack-suit-break
-                      aria-hidden="true"
-                      className="shrink-0"
-                      style={{ width: 'var(--rack-suit-gap, 8px)' }}
-                    />,
-                  ]
-                : []),
-              ...(cluster.kind === 'loose'
-                ? cluster.tiles.map(renderTile)
-                : [
-                    <div
-                      key={`${cluster.kind}-${cluster.tiles[0].id}`}
-                      data-hand-group={cluster.kind}
-                      data-rack-group
-                      data-hand-group-count={cluster.groupCount}
-                      className="mx-0.5 flex shrink-0 flex-col items-center"
-                    >
-                      <div
-                        className="flex"
-                        style={{ gap: 'var(--rack-group-gap, 4px)' }}
-                      >
-                        {cluster.tiles.map(renderTile)}
-                      </div>
+        <div
+          data-hand-rack
+          role="group"
+          aria-label={t('gameplay.yourTiles', 'Your tiles')}
+          className={`flex w-full flex-wrap items-start justify-center py-1 ${
+            clusters ? 'gap-x-1 gap-y-1' : 'gap-1'
+          }`}
+        >
+          {clusters
+            ? clusters.flatMap((cluster, index) => [
+                ...(index > 0 && cluster.suit !== clusters[index - 1].suit
+                  ? [
                       <span
-                        data-hand-group-label
+                        key={`suit-break-${cluster.suit ?? 'concealed'}-${index}`}
+                        data-rack-suit-break
                         aria-hidden="true"
-                        className="mt-0.5 w-full rounded-b-md border-x-2 border-b-[3px] pb-0.5 pt-0 text-center text-[9px] font-bold uppercase leading-3 tracking-normal"
-                        style={
-                          {
-                            borderColor: GROUP_COLORS[cluster.kind],
-                            borderStyle: GROUP_BORDER[cluster.kind],
-                            borderTop: 'none',
-                            color: GROUP_COLORS[cluster.kind],
-                          } as CSSProperties
-                        }
+                        className="shrink-0"
+                        style={{ width: 'var(--rack-suit-gap, 8px)' }}
+                      />,
+                    ]
+                  : []),
+                ...(cluster.kind === 'loose'
+                  ? cluster.tiles.map(renderTile)
+                  : [
+                      <div
+                        key={`${cluster.kind}-${cluster.tiles[0].id}`}
+                        data-hand-group={cluster.kind}
+                        data-rack-group
+                        data-hand-group-count={cluster.groupCount}
+                        className="mx-0.5 flex shrink-0 flex-col items-center"
                       >
-                        {groupLabel(cluster.kind, cluster.groupCount)}
-                      </span>
-                    </div>,
-                  ]),
-            ])
-          : tiles.map(renderTile)}
+                        <div
+                          className="flex"
+                          style={{ gap: 'var(--rack-group-gap, 4px)' }}
+                        >
+                          {cluster.tiles.map(renderTile)}
+                        </div>
+                        <span
+                          data-hand-group-label
+                          aria-hidden="true"
+                          className="mt-0.5 w-full rounded-b-md border-x-2 border-b-[3px] pb-0.5 pt-0 text-center text-[9px] font-bold uppercase leading-3 tracking-normal"
+                          style={
+                            {
+                              borderColor: GROUP_COLORS[cluster.kind],
+                              borderStyle: GROUP_BORDER[cluster.kind],
+                              borderTop: 'none',
+                              color: GROUP_COLORS[cluster.kind],
+                            } as CSSProperties
+                          }
+                        >
+                          {groupLabel(cluster.kind, cluster.groupCount)}
+                        </span>
+                      </div>,
+                    ]),
+              ])
+            : tiles.map(renderTile)}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

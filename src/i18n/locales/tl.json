@@ -510,7 +510,7 @@
     "sfxVolume": "Mga Effect ng Tunog",
     "display": "Display",
     "language": "Wika",
-    "tileHints": "Mga Hint ng Tile",
+    "tileHints": "Mga Hint ng Kamay",
     "animationSpeed": "Bilis ng Animation",
     "reducedMotion": "Nabawasang Galaw",
     "slow": "Mabagal",
@@ -537,7 +537,7 @@
       "normal": "Normal",
       "slow": "Mabagal"
     },
-    "tileHintsDesc": "Ipakita ang mga numero at label ng mga Dragon, at ipangkat ang kamay sa Pares, Sequence at Triplet",
+    "tileHintsDesc": "Ipangkat ang kamay sa Pares, Sequence at Triplet sa ilalim ng rack, at ituro ang kumpletong kamay na Mahjong",
     "visual": "Visual",
     "rankNumbers": "Numero sa tile",
     "rankNumbersDesc": "Magpakita ng maliit na 1–9 sa may-numerong tile at titik sa mga Dragon habang inaaral mo ang mga mukha.",
@@ -708,6 +708,7 @@
     "reasonLastTurn": "Ang huling turno ay dapat paglalaro",
     "reasonNoReplacements": "Kulang ang tile sa pader",
     "yourTiles": "Mga tile mo",
+    "feltTiles": "Mga tile na ilalaro",
     "collection": "Mga gamit mo",
     "deadWallHint": "Pumili ng isang tile at ipalit sa tile ng Dead Wall. Isang beses bawat round, libre.",
     "turnsLabel": "Natitirang turno"

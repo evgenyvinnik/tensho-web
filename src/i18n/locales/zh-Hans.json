@@ -223,7 +223,7 @@
     "sfxVolume": "音效音量",
     "display": "显示",
     "language": "语言",
-    "tileHints": "牌提示",
+    "tileHints": "手牌提示",
     "animationSpeed": "动画速度",
     "reducedMotion": "减少动态效果",
     "slow": "慢",
@@ -250,7 +250,7 @@
       "normal": "正常",
       "slow": "慢"
     },
-    "tileHintsDesc": "显示牌面数字和三元牌标记，并把手牌分组为对子、顺子和刻子",
+    "tileHintsDesc": "在牌架下把手牌分组为对子、顺子和刻子，并在凑成和牌时提示",
     "visual": "显示",
     "rankNumbers": "牌上显示数字",
     "rankNumbersDesc": "在熟悉牌面之前，在数牌上显示1–9，在三元牌上显示字母。",
@@ -421,6 +421,7 @@
     "reasonLastTurn": "最后一次行动必须出牌",
     "reasonNoReplacements": "牌墙剩余不足",
     "yourTiles": "你的牌",
+    "feltTiles": "要打出的牌",
     "collection": "你的物品",
     "deadWallHint": "只选一张牌，与岭上的一张交换。每回合一次，不消耗行动。",
     "turnsLabel": "剩余行动"

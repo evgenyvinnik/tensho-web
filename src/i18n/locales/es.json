@@ -223,7 +223,7 @@
     "sfxVolume": "Efectos de Sonido",
     "display": "Pantalla",
     "language": "Idioma",
-    "tileHints": "Pistas de Fichas",
+    "tileHints": "Pistas de Mano",
     "animationSpeed": "Velocidad de Animación",
     "reducedMotion": "Movimiento Reducido",
     "slow": "Lento",
@@ -250,7 +250,7 @@
       "normal": "Normal",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Muestra números y etiquetas de Dragones; agrupa tu mano en Pares, Secuencias y Tripletes",
+    "tileHintsDesc": "Agrupa tu mano en Pares, Secuencias y Tripletes bajo el atril, y señala una mano de Mahjong completa",
     "visual": "Visual",
     "rankNumbers": "Números en las fichas",
     "rankNumbersDesc": "Muestra un pequeño 1–9 en las fichas numeradas y una letra en los Dragones mientras aprendes las caras.",
@@ -421,6 +421,7 @@
     "reasonLastTurn": "Tu último turno debe ser una jugada",
     "reasonNoReplacements": "No quedan suficientes fichas en el muro",
     "yourTiles": "Tus fichas",
+    "feltTiles": "Fichas para jugar",
     "collection": "Tus objetos",
     "deadWallHint": "Elige una sola ficha y cámbiala por una del muro muerto. Una vez por ronda, gratis.",
     "turnsLabel": "Turnos"

@@ -217,12 +217,19 @@ for (const language of ['en', 'es'])
         dialog.getByRole('button', { name: copy.common.close, exact: true })
       )
       await expect(dialog).toHaveCount(0)
-      await select(
-        drawn.state.handTiles
-          .map((t: { id: string }) => t.id)
-          .filter(
-            (id: string) => shape === 'complete' || id.startsWith('terminal-')
-          )
+      const staging: string[] = drawn.state.handTiles
+        .map((t: { id: string }) => t.id)
+        .filter(
+          (id: string) => shape === 'complete' || id.startsWith('terminal-')
+        )
+      await select(staging)
+      // Every tapped tile is on the felt, and the preview prices them all.
+      await expect(
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
+      ).toHaveCount(staging.length)
+      await expect(page.locator('[data-hand-score]')).toHaveAttribute(
+        'data-hand-score-state',
+        'preview'
       )
       const forecast = Number(
         (await page.locator('[data-hand-score-total]').textContent())!.replace(

@@ -431,7 +431,7 @@
     "sfxVolume": "Efek Suara",
     "display": "Tampilan",
     "language": "Bahasa",
-    "tileHints": "Petunjuk Ubin",
+    "tileHints": "Petunjuk Tangan",
     "animationSpeed": "Kecepatan Animasi",
     "reducedMotion": "Kurangi Gerakan",
     "slow": "Lambat",
@@ -458,7 +458,7 @@
       "normal": "Normal",
       "slow": "Lambat"
     },
-    "tileHintsDesc": "Tampilkan angka ubin dan penanda Naga; kelompokkan tanganmu menjadi Pasangan, Urutan, dan Triplet",
+    "tileHintsDesc": "Kelompokkan tanganmu menjadi Pasangan, Urutan, dan Triplet di bawah rak, dan tunjukkan tangan Mahjong yang lengkap",
     "visual": "Visual",
     "rankNumbers": "Angka di ubin",
     "rankNumbersDesc": "Tampilkan 1–9 kecil di ubin angka dan huruf di Naga selagi kamu mempelajari gambarnya.",
@@ -629,6 +629,7 @@
     "reasonLastTurn": "Giliran terakhir harus Mainkan",
     "reasonNoReplacements": "Ubin di dinding tidak cukup",
     "yourTiles": "Ubinmu",
+    "feltTiles": "Ubin untuk dimainkan",
     "collection": "Barangmu",
     "deadWallHint": "Pilih satu ubin, lalu tukar dengan ubin dinding mati. Sekali per ronde, gratis.",
     "turnsLabel": "Sisa giliran"

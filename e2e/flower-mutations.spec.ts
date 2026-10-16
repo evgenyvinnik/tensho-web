@@ -206,6 +206,14 @@ for (const language of ['en', 'es'])
         .map((t: { id: string }) => t.id)
       expect(ids).toHaveLength(prefix === 'complete-' ? 13 : 5)
       await stage(ids)
+      // Every tapped tile is on the felt, and the preview prices them all.
+      await expect(
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
+      ).toHaveCount(ids.length)
+      await expect(page.locator('[data-hand-score]')).toHaveAttribute(
+        'data-hand-score-state',
+        'preview'
+      )
       await expect(page.locator('[data-game-action="play"]')).toBeEnabled()
       const forecast = Number(
         (await page.locator('[data-hand-score-total]').textContent())!.replace(
