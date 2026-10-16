@@ -1,6 +1,13 @@
 import { test, expect, type Page } from '@playwright/test'
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
+import {
+  clearReveals,
+  continueToNextRound,
+  handScoreTotal,
+  settleReveals,
+  swiftClear,
+} from './helpers/table'
 
 async function setup(page: Page, lang: string, stacked: boolean) {
   await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -68,12 +75,16 @@ async function setup(page: Page, lang: string, stacked: boolean) {
       effect: 'Flora fixture',
     })
   }, stacked)
-  const disableTips = page.getByRole('button', {
-    name: (lang === 'es' ? es : en).progressiveHints.dontShow,
-    exact: true,
-  })
-  // Tips remain optional; tests need unobstructed screenshots, not a tutorial bypass.
-  if (await disableTips.isVisible()) await disableTips.click()
+  // The fixture's new run and Season would be revealed over the table.
+  await clearReveals(page)
+}
+
+/** A Flower's or Season's own token on the item rail, and its panel. */
+function floraToken(page: Page, selector: string, name: string) {
+  return {
+    token: page.locator(selector),
+    panel: page.getByRole('dialog', { name }),
+  }
 }
 
 async function snapshot(page: Page) {
@@ -115,11 +126,15 @@ test('Monsoon details and availability probes preserve the seeded tile delivered
       effect: 'Monsoon fixture',
     })
   })
+  await clearReveals(page)
   const before = await snapshot(page)
-  const trigger = page.getByTestId('flora-details-trigger')
+  const { token: trigger, panel: dialog } = floraToken(
+    page,
+    '[data-flora-season]',
+    en.flora.details.monsoonName
+  )
   if (isMobile) await trigger.tap()
   else await trigger.click()
-  const dialog = page.getByRole('dialog', { name: 'Flowers · Seasons' })
   const rule = dialog.getByText(en.flora.details.monsoon, { exact: true })
   await rule.scrollIntoViewIfNeeded()
   await expect(rule).toBeVisible()
@@ -157,8 +172,9 @@ test('Monsoon details and availability probes preserve the seeded tile delivered
     page.locator('[data-play-zone="hand"] [data-play-tile="wall-0"]')
   ).toHaveCount(0)
   const after = await snapshot(page)
-  expect(after.redraws).toBe(before.redraws - 1)
-  expect(after.hands).toBe(before.hands)
+  // No free redraws: the REDRAW spent a Turn.
+  expect(after.redraws).toBe(before.redraws)
+  expect(after.hands).toBe(before.hands - 1)
   expect(after.discards).toBe(before.discards)
   expect(after.score).toBe(before.score)
   expect(after.gold).toBe(before.gold)
@@ -191,6 +207,8 @@ test('Summer costs live-wall tiles on a real redraw and describes the round-only
   if (isMobile) await tile.tap()
   else await tile.click()
   await page.locator('[data-game-action="redraw"]').click()
+  // The drawn Summer is revealed over the table.
+  await settleReveals(page, 2_000)
   await expect(
     page.locator(
       '[data-play-zone="hand"] [data-play-tile="summer-replacement"]'
@@ -208,24 +226,31 @@ test('Summer costs live-wall tiles on a real redraw and describes the round-only
         returned: state.wall
           .slice(state.drawIndex)
           .some((t: { id: string }) => t.id === 'hand-0'),
+        river: state.discards.some((t: { id: string }) => t.id === 'hand-0'),
       }
     })
   ).toEqual({
-    // 16 retained − 1 dead-wall replenishment + 1 exchanged tile returned.
-    remaining: 16,
+    // 16 retained − 1 dead-wall replenishment; REDRAW sends the exchanged
+    // tile to the river, not back into the wall.
+    remaining: 15,
     reserve: ['wall-16', 'wall-17', 'wall-18', 'wall-19'],
     multiplier: 1.3,
-    returned: true,
+    returned: false,
+    river: true,
   })
   const after = await snapshot(page)
-  expect(after.redraws).toBe(before.redraws - 1)
+  expect(after.redraws).toBe(before.redraws)
+  expect(after.hands).toBe(before.hands - 1)
   expect(after.hand.length).toBe(before.hand.length)
   expect(after.gold).toBe(before.gold)
   expect(after.score).toBe(before.score)
-  const trigger = page.getByTestId('flora-details-trigger')
+  const { token: trigger, panel: dialog } = floraToken(
+    page,
+    '[data-flora-season]',
+    en.flora.summer
+  )
   if (isMobile) await trigger.tap()
   else await trigger.click()
-  const dialog = page.getByRole('dialog', { name: 'Flowers · Seasons' })
   const rule = dialog.getByText(en.flora.details.summer, { exact: true })
   await rule.scrollIntoViewIfNeeded()
   await expect(rule).toBeInViewport()
@@ -237,7 +262,7 @@ test('Summer costs live-wall tiles on a real redraw and describes the round-only
   expect(await snapshot(page)).toEqual(after)
 })
 
-test('a third Flower collected through redraw unlocks shop eligibility and explains the set bonus', async ({
+test('a third Flower collected through redraw unlocks shop eligibility and counts the set on its panel', async ({
   page,
   isMobile,
 }, testInfo) => {
@@ -273,6 +298,8 @@ test('a third Flower collected through redraw unlocks shop eligibility and expla
   if (isMobile) await tile.tap()
   else await tile.click()
   await page.locator('[data-game-action="redraw"]').click()
+  // The drawn Flower is revealed over the table.
+  await settleReveals(page, 2_000)
   await expect(
     page.locator(
       '[data-play-zone="hand"] [data-play-tile="flower-replacement"]'
@@ -280,11 +307,18 @@ test('a third Flower collected through redraw unlocks shop eligibility and expla
   ).toBeVisible()
   expect(await eligible()).toBe(7)
   const before = await snapshot(page)
-  const trigger = page.getByTestId('flora-details-trigger')
+  // The drawn Flower's own panel counts the set it completes.
+  const { token: trigger, panel: dialog } = floraToken(
+    page,
+    '[data-flora-flower="Chrysanthemum"]',
+    en.flora.chrysanthemum
+  )
   if (isMobile) await trigger.tap()
   else await trigger.click()
-  const rule = page.getByRole('dialog').getByTestId('flora-flower-unlock')
-  await expect(rule).toHaveText(`✓ ${en.flora.details.setThree}`)
+  const rule = dialog.getByText(
+    en.flora.setProgress.replace('{{count}}', '3'),
+    { exact: false }
+  )
   await rule.scrollIntoViewIfNeeded()
   await expect(rule).toBeInViewport()
   expect(await rule.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(
@@ -347,12 +381,15 @@ for (const language of ['en', 'es']) {
     })
     // A plain 4–5–6 sequence has 45 points: two unprotected Winters leave 25.
     expect(beforeCollection).toEqual({ score: 25, hasFlower: false })
+    await clearReveals(page)
     const give = page.locator(
       '[data-play-zone="hand"] [data-play-tile="hand-0"]'
     )
     if (isMobile) await give.tap()
     else await give.click()
     await page.locator('[data-game-action="redraw"]').click()
+    // The drawn Chrysanthemum is revealed over the table.
+    await settleReveals(page, 2_000)
     await expect(
       page.locator(
         '[data-play-zone="hand"] [data-play-tile="winter-replacement"]'
@@ -371,17 +408,23 @@ for (const language of ['en', 'es']) {
       else await tile.click()
     }
     // Chrysanthemum's own 5% bonus remains; normal Winters no longer cut it.
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+47')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('47')
     const before = await snapshot(page)
-    const trigger = page.getByTestId('flora-details-trigger')
+    const copy = language === 'es' ? es : en
+    const winters = page.locator('[data-flora-season]')
+    await expect(winters).toHaveCount(2)
+    const { token: trigger, panel: dialog } = floraToken(
+      page,
+      '[data-flora-flower="Chrysanthemum"]',
+      copy.flora.chrysanthemum
+    )
     if (isMobile) await trigger.tap()
     else await trigger.click()
-    const dialog = page.getByRole('dialog')
-    await expect(dialog.locator('[data-flora-detail-season]')).toHaveCount(2)
+    await expect(dialog).toBeVisible()
     await expect
       .poll(() =>
-        dialog
-          .locator('img')
+        page
+          .locator('[data-collectible-token] img')
           .evaluateAll((images) =>
             images.every(
               (image) =>
@@ -392,8 +435,9 @@ for (const language of ['en', 'es']) {
       )
       .toBe(true)
     await page.keyboard.press('Escape')
+    await expect(dialog).toHaveCount(0)
     expect(await snapshot(page)).toEqual(before)
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+47')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('47')
     await page.screenshot({
       path: testInfo.outputPath(`winter-chrysanthemum-${language}.png`),
     })
@@ -408,7 +452,7 @@ for (const language of ['en', 'es']) {
   })
 }
 
-test('a Spanish Flora inspector keeps the full ordered stack readable and never spends the selection', async ({
+test('a Spanish item rail keeps the full ordered Season stack readable and never spends the selection', async ({
   page,
   isMobile,
 }, testInfo) => {
@@ -421,38 +465,38 @@ test('a Spanish Flora inspector keeps the full ordered stack readable and never 
     if (isMobile) await tile.tap()
     else await tile.click()
   }
-  await expect(
-    page.locator('[data-play-zone="staging"] [data-play-tile]')
-  ).toHaveCount(2)
+  const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
+  await expect(felt).toHaveCount(2)
   const before = await snapshot(page)
-  const trigger = page.getByTestId('flora-details-trigger')
-  await expect(
-    trigger.locator('[data-flora-season="season-0"]')
-  ).toHaveAttribute('aria-label', es.flora.spring)
-  await expect(
-    trigger.locator('[data-flora-season="season-1"]')
-  ).toHaveAttribute('aria-label', es.flora.details.decayName)
+  // Each Season is its own token on the item rail, in draw order, named for
+  // what it does now.
+  const seasons = page.locator('[data-flora-season]')
+  await expect(seasons).toHaveCount(9)
+  expect(
+    await seasons.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-flora-season'))
+    )
+  ).toEqual(Array.from({ length: 9 }, (_, i) => 'season-' + i))
+  await expect(seasons.nth(0)).toHaveAttribute('aria-label', es.flora.spring)
+  await expect(seasons.nth(1)).toHaveAttribute(
+    'aria-label',
+    es.flora.details.decayName
+  )
+  const trigger = seasons.nth(2)
+  await expect(trigger).toHaveAttribute(
+    'aria-label',
+    es.flora.details.droughtName
+  )
   await trigger.focus()
   await page.keyboard.press('Enter')
   const dialog = page.getByRole('dialog', {
-    name: es.flora.flowers + ' · ' + es.flora.seasons,
+    name: es.flora.details.droughtName,
   })
   await expect(dialog).toBeVisible()
-  await expect(
-    dialog.getByRole('button', { name: es.common.close })
-  ).toBeFocused()
-  await expect(dialog.getByTestId('flora-suppression')).toHaveText(
-    es.flora.details.suppressed
-  )
-  const rows = dialog.locator('[data-flora-detail-season]')
-  await expect(rows).toHaveCount(9)
-  expect(
-    await rows.evaluateAll((nodes) =>
-      nodes.map((node) => node.getAttribute('data-flora-detail-season'))
-    )
-  ).toEqual(Array.from({ length: 9 }, (_, i) => 'season-' + i))
-  await expect(rows.nth(2)).toContainText(es.flora.details.drought)
-  await expect(rows.nth(2)).not.toContainText(es.flora.details.summer)
+  const close = dialog.getByRole('button', { name: es.common.close })
+  await expect(close).toBeFocused()
+  await expect(dialog).toContainText(es.flora.details.drought)
+  await expect(dialog).not.toContainText(es.flora.details.summer)
   for (const size of [
     { width: 320, height: 568 },
     { width: 568, height: 320 },
@@ -469,56 +513,52 @@ test('a Spanish Flora inspector keeps the full ordered stack readable and never 
       }))
       const { frame, close } = geometry
       expect(geometry.viewport).toEqual(size)
-      // The popover stays fully on screen beside the track and scrolls its
-      // own rows; its close control sits at its top edge.
+      // The panel stays fully on screen beside its token; its close control
+      // sits at its top edge.
       expect(frame.x).toBeGreaterThanOrEqual(12)
       expect(frame.right).toBeLessThanOrEqual(size.width - 12)
       expect(frame.y).toBeGreaterThanOrEqual(12)
       expect(frame.bottom).toBeLessThanOrEqual(size.height - 12)
-      expect(frame.height).toBeGreaterThanOrEqual(120)
       expect(close.y).toBeGreaterThanOrEqual(frame.y)
       expect(close.bottom).toBeLessThanOrEqual(frame.y + 72)
     }).toPass({ timeout: 5000 })
-    for (const row of await dialog
-      .locator('[data-flora-flower], [data-flora-detail-season]')
-      .all()) {
-      await row.scrollIntoViewIfNeeded()
-      await expect(row).toBeInViewport()
-      expect(
-        await row.evaluate((node) =>
-          Array.from(node.querySelectorAll<HTMLElement>('h4,p')).every(
-            (child) => child.scrollWidth <= child.clientWidth + 1
-          )
+    expect(
+      await dialog.evaluate((node) =>
+        Array.from(node.querySelectorAll<HTMLElement>('h2,h3,h4,p')).every(
+          (child) => child.scrollWidth <= child.clientWidth + 1
         )
-      ).toBe(true)
-      const bounds = await row.boundingBox()
-      expect(bounds!.x).toBeGreaterThanOrEqual(12)
-      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(size.width - 12)
+      )
+    ).toBe(true)
+    // Every Season token can be brought into view on the rail.
+    for (const season of await seasons.all()) {
+      await season.scrollIntoViewIfNeeded()
+      await expect(season).toBeInViewport()
+      const bounds = await season.boundingBox()
+      expect(bounds!.x).toBeGreaterThanOrEqual(0)
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(size.width)
     }
-    await rows.nth(2).scrollIntoViewIfNeeded()
     await page.screenshot({
       path: testInfo.outputPath('flora-stack-es-' + size.width + '.png'),
     })
   }
-  // Focus survives the resizes, and Tab order runs trigger → popover.
-  const close = dialog.getByRole('button', { name: es.common.close })
-  await close.scrollIntoViewIfNeeded()
-  await expect(close).toBeFocused()
-  await page.keyboard.press('Shift+Tab')
-  await expect(trigger).toBeFocused()
-  await expect(dialog).toBeVisible()
-  await page.keyboard.press('Tab')
+  // Focus survives the resizes, and Escape returns it to the token.
   await expect(close).toBeFocused()
   await page.keyboard.press('Escape')
   await expect(dialog).not.toBeVisible()
   await expect(trigger).toBeFocused()
-  await expect(
-    page.locator('[data-play-zone="staging"] [data-play-tile]')
-  ).toHaveCount(2)
+  // Drought's suppression is explained on each Flower it silences.
+  const plum = page.locator('[data-flora-flower="Plum"]')
+  await plum.focus()
+  await page.keyboard.press('Enter')
+  const plumPanel = page.getByRole('dialog', { name: es.flora.plum })
+  await expect(plumPanel).toContainText(es.flora.details.suppressed)
+  await page.keyboard.press('Escape')
+  await expect(plumPanel).not.toBeVisible()
+  await expect(felt).toHaveCount(2)
   expect(await snapshot(page)).toEqual(before)
 })
 
-test('a pointer discard changes the visible Decay penalty and the real scored play, then Skip clears it', async ({
+test('a REDRAW changes the visible Decay penalty and the real scored play, then a new round clears it', async ({
   page,
   isMobile,
 }) => {
@@ -529,26 +569,30 @@ test('a pointer discard changes the visible Decay penalty and the real scored pl
     const { gameOrchestrator: game } = await import(path)
     return game.previewScore(['hand-0', 'hand-1']).finalScore
   })
+  // Decay counts each REDRAW once, however many tiles it sends to the river.
   const source = page.locator(
     '[data-play-zone="hand"] [data-play-tile="hand-2"]'
   )
-  const discard = page.locator('[data-play-zone="discard"]')
-  await source.scrollIntoViewIfNeeded()
-  await expect(source).toBeInViewport()
-  await expect(discard).toBeInViewport()
-  await source.dragTo(discard)
+  if (isMobile) await source.tap()
+  else await source.click()
+  await page.locator('[data-game-action="redraw"]').click()
   await expect
     .poll(async () => (await snapshot(page)).flora.decayPenalty)
     .toBe(10)
-  const trigger = page.getByTestId('flora-details-trigger')
+  const { token: trigger, panel: dialog } = floraToken(
+    page,
+    '[data-flora-season]',
+    en.flora.details.decayName
+  )
   if (isMobile) await trigger.tap()
   else await trigger.click()
-  const dialog = page.getByRole('dialog', { name: 'Flowers · Seasons' })
-  const penalty = dialog.getByTestId('flora-decay-penalty')
-  await penalty.scrollIntoViewIfNeeded()
+  const penalty = dialog.getByText(
+    en.flora.details.decayPenalty.replace('{{points}}', '10')
+  )
   await expect(penalty).toHaveText('Decay penalty per play: −10 points.')
   await expect(penalty).toBeInViewport()
   await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
   for (const id of ['hand-0', 'hand-1']) {
     const tile = page.locator(
       '[data-play-zone="hand"] [data-play-tile="' + id + '"]'
@@ -562,13 +606,12 @@ test('a pointer discard changes the visible Decay penalty and the real scored pl
     .poll(async () => (await snapshot(page)).score - before.score)
     .toBe(baseline - 10)
   expect((await snapshot(page)).flora.decayPenalty).toBe(10)
-  await page.locator('[data-game-action="skip"]').click()
+  // Skip is gone: clear the round to reach the next one.
+  await swiftClear(page)
+  await continueToNextRound(page)
   await expect
     .poll(async () => (await snapshot(page)).flora.seasons.length)
     .toBe(0)
-  await trigger.click()
-  await expect(
-    page.getByRole('dialog').getByText('No Seasons this round.')
-  ).toBeVisible()
-  await expect(page.getByTestId('flora-decay-penalty')).toHaveCount(0)
+  await expect(page.locator('[data-flora-season]')).toHaveCount(0)
+  expect((await snapshot(page)).flora.decayPenalty).toBe(0)
 })
