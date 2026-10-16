@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { CollectibleRail, type CollectibleRailProps } from './CollectibleRail'
 import { GameOrchestrator } from '../../game/GameOrchestrator'
@@ -10,6 +10,7 @@ import { FATE_SEALS, FateSealSystem } from '../../systems/FateSealSystem'
 import { VOID_SCRIPTS, VoidScriptSystem } from '../../systems/VoidScriptSystem'
 import { eventBus } from '../../game/EventBus'
 import { runRandom } from '../../game/RunRandom'
+import { FlowerType, Tile } from '../../core/Tile'
 
 afterEach(() => {
   eventBus.clear()
@@ -145,5 +146,45 @@ it('explains what using an Orb gives up under the Observatory', () => {
   ).toBeInTheDocument()
   expect(document.querySelector('[data-observatory-cost]')).toHaveTextContent(
     /./
+  )
+})
+
+it('tells an Orchid how many tiles it drew until the round ends', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Orchid))
+  renderRail({ flora: game.getFloraState() })
+  const orchid = () =>
+    fireEvent.click(document.querySelector('[data-flora-flower="Orchid"]')!, {
+      detail: 1,
+    })
+  orchid()
+  expect(document.querySelector('[data-orchid-bloom]')).toBeNull()
+  act(() => eventBus.emit('orchidBloom', { count: 2 }))
+  expect(document.querySelector('[data-orchid-bloom]')).toHaveTextContent(
+    'Orchid drew extra tiles: 2.'
+  )
+  act(() =>
+    eventBus.emit('roundStart', {
+      actNumber: 1,
+      roundNumber: 2,
+      roundType: 'Large',
+      target: 1,
+    })
+  )
+  expect(document.querySelector('[data-orchid-bloom]')).toBeNull()
+})
+
+it('tells a Plum how many tiles it recovered from the river', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Plum))
+  renderRail({ flora: game.getFloraState() })
+  act(() => eventBus.emit('plumRecovery', { count: 1 }))
+  fireEvent.click(document.querySelector('[data-flora-flower="Plum"]')!, {
+    detail: 1,
+  })
+  expect(document.querySelector('[data-plum-recovery]')).toHaveTextContent(
+    'Plum returned tiles from the river: 1.'
   )
 })

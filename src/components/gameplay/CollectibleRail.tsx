@@ -12,9 +12,10 @@
  * @module components/gameplay/CollectibleRail
  */
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
+import { eventBus } from '../../game/EventBus'
 import type {
   ActionResult,
   PlayerAction,
@@ -177,6 +178,23 @@ export function CollectibleRail({
     value.toLocaleString(i18n.resolvedLanguage ?? i18n.language)
   // Closing a used item's panel: its token disappears with the item.
   const [openId, setOpenId] = useState<string | null>(null)
+  // What Orchid drew and Plum recovered on the last play, kept for their
+  // panels until the round ends.
+  const [floraNotes, setFloraNotes] = useState({ bloom: 0, recovered: 0 })
+  useEffect(() => {
+    const reset = () => setFloraNotes({ bloom: 0, recovered: 0 })
+    const subscriptions = [
+      eventBus.on('orchidBloom', ({ count }) =>
+        setFloraNotes((notes) => ({ ...notes, bloom: count }))
+      ),
+      eventBus.on('plumRecovery', ({ count }) =>
+        setFloraNotes((notes) => ({ ...notes, recovered: count }))
+      ),
+      eventBus.on('roundStart', reset),
+      eventBus.on('gameLoaded', reset),
+    ]
+    return () => subscriptions.forEach((unsubscribe) => unsubscribe())
+  }, [])
   const control = (id: string) => ({
     open: openId === id,
     onOpenChange: (open: boolean) =>
@@ -310,7 +328,12 @@ export function CollectibleRail({
         data={{ 'data-flora-flower': flower.type }}
         {...control(flower.id)}
       >
-        <FlowerDetails flower={flower.type} flora={flora} />
+        <FlowerDetails
+          flower={flower.type}
+          flora={flora}
+          orchidBloom={floraNotes.bloom}
+          plumRecovery={floraNotes.recovered}
+        />
       </CollectibleToken>
     )),
     ...flora.seasons.map((season) => (
