@@ -1,9 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { clearReveals, handScoreTotal } from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const shape of ['ordinary', 'pairs', 'orphans', 'clemency'])
-    test(`wildcard ${shape} stages then pays consistently (${language})`, async ({
+    test(`wildcard ${shape} picks then pays consistently (${language})`, async ({
       page,
       isMobile,
     }, testInfo) => {
@@ -131,6 +132,8 @@ for (const language of ['en', 'es'])
           throw new Error('Fixture save failed')
         return { score, category }
       }, shape)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-play', {
         body: await page.evaluate(
@@ -143,9 +146,9 @@ for (const language of ['en', 'es'])
         contentType: 'application/json',
       })
       const play = page.locator('[data-game-action="play"]')
-      await expect(page.locator('[data-play-zone="hand"]')).toContainText(
-        copy.handInterpretation.ready
-      )
+      // The wildcard completes the hand, so the table offers it as one tap.
+      const mahjong = page.locator('[data-select-mahjong]')
+      await expect(mahjong).toHaveText(`✦ ${copy.patterns.mahjong.name}`)
       const art = page
         .locator('img[src$="/decrees/celestial-wildcard.webp"]')
         .first()
@@ -170,48 +173,33 @@ for (const language of ['en', 'es'])
           )
           .toBe(true)
       }
-      await expect(play).toContainText(copy.gameplay.stageHand)
-      await activate(play)
-      await expect(play).toContainText(copy.gameplay.confirmHand)
+      await activate(mahjong)
       await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(before.state.handTiles.length)
       const staged = await saved()
       expect(staged.state.score).toBe(before.state.score)
       expect(staged.state.handsRemaining).toBe(before.state.handsRemaining)
-      await expect(page.getByTestId('score-preview-total')).toHaveAttribute(
-        'aria-label',
-        new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(
+      // The hand score reads the picked tiles as Mahjong at the engine's value.
+      const handScore = page.locator('[data-hand-score]')
+      await expect(handScore.locator('[data-hand-score-pattern]')).toHaveText(
+        copy.patterns.mahjong.name
+      )
+      await expect(handScoreTotal(page, 'preview')).toHaveAttribute(
+        'title',
+        new Intl.NumberFormat(language, { maximumFractionDigits: 3 }).format(
           expected.score
         )
       )
-      const explanation = page.locator('[data-hand-interpretation]')
-      await expect(explanation).not.toHaveAttribute('open', '')
-      await expect(explanation.locator('summary')).toHaveText(
-        copy.handInterpretation.why
-      )
-      if (isMobile) await explanation.locator('summary').tap()
-      else {
-        await explanation.locator('summary').focus()
-        await page.keyboard.press('Enter')
-      }
-      await expect(explanation).toHaveAttribute('open', '')
-      await expect(explanation.locator('[data-interpreted-tile]')).toHaveCount(
-        1
-      )
-      await expect(explanation).toContainText(copy.handInterpretation.unchanged)
-      if (shape === 'clemency')
-        await expect(explanation).toContainText(copy.handInterpretation.penalty)
       expect(
-        await explanation.evaluate(
+        await handScore.evaluate(
           (node) => node.scrollWidth <= node.clientWidth + 1
         )
       ).toBe(true)
       expect(await saved()).toEqual(staged)
-      await explanation.screenshot({
+      await handScore.screenshot({
         path: testInfo.outputPath('interpretation.png'),
       })
-      await activate(explanation.locator('summary'))
       await page.screenshot({ path: testInfo.outputPath('staged.png') })
       await activate(play)
       await expect
