@@ -243,6 +243,14 @@ export class Tile implements TileData {
   }
 
   /**
+   * A Stone tile has no rank or suit: the mark covers its face, so it joins no
+   * group and pays only the mark's own points.
+   */
+  get isStone(): boolean {
+    return checkAlwaysScores(this.modifiers)
+  }
+
+  /**
    * Returns true if this tile can shatter (Glass mark)
    */
   get canShatter(): boolean {
@@ -402,6 +410,8 @@ export class Tile implements TileData {
    * Wild tiles match any suit
    */
   matches(other: Tile): boolean {
+    // A Stone has no face to match.
+    if (this.isStone || other.isStone) return false
     // Wild tiles match any suit (but still need same rank for suited tiles)
     if (this.isWild || other.isWild) {
       if (this.isSuited && other.isSuited) {

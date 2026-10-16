@@ -48,7 +48,7 @@ function tilesToCounts(tiles: Tile[]): TileCounts {
   ]
 
   for (const tile of tiles) {
-    if (tile.isBonus) continue
+    if (tile.isBonus || tile.isStone) continue
 
     if (tile.suit === TileSuit.Manzu) {
       counts[0][tile.rank]++
@@ -75,7 +75,7 @@ export function calculateSevenPairsShanten(tiles: Tile[]): number {
 
   const counts = new Map<string, number>()
   for (const tile of tiles) {
-    if (tile.isBonus) continue
+    if (tile.isBonus || tile.isStone) continue
     const key = tile.typeKey
     counts.set(key, (counts.get(key) ?? 0) + 1)
   }
@@ -110,7 +110,7 @@ export function calculateKokushiShanten(tiles: Tile[]): number {
 
   const counts = new Map<string, number>()
   for (const tile of tiles) {
-    if (tile.isBonus) continue
+    if (tile.isBonus || tile.isStone) continue
     const key = tile.typeKey
     if (kokushiKeys.has(key)) {
       counts.set(key, (counts.get(key) ?? 0) + 1)
@@ -132,7 +132,7 @@ export function calculateStandardShanten(
   tiles: Tile[],
   declaredMelds: Meld[] = []
 ): number {
-  const regularTiles = tiles.filter((t) => !t.isBonus)
+  const regularTiles = tiles.filter((t) => !t.isBonus && !t.isStone)
 
   // Check if already complete
   if (parseStandardForm(regularTiles, declaredMelds).length > 0) {
@@ -266,7 +266,7 @@ export function calculateShanten(
   tiles: Tile[],
   declaredMelds: Meld[] = []
 ): ShantenResult {
-  const regularTiles = tiles.filter((t) => !t.isBonus)
+  const regularTiles = tiles.filter((t) => !t.isBonus && !t.isStone)
 
   // Calculate shanten for each form
   const standardShanten = calculateStandardShanten(regularTiles, declaredMelds)

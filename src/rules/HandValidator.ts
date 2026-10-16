@@ -406,7 +406,9 @@ export function validateHand(
   winningTile?: Tile,
   options: HandValidationOptions = {}
 ): ValidationResult {
-  const tiles = hand.allTiles
+  // A Stone has no rank or suit: the hand is judged without it, and it rides
+  // along to score its mark.
+  const tiles = hand.allTiles.filter((tile) => !tile.isStone)
   const declaredMelds = hand.declaredMelds
   const errors: string[] = []
 
@@ -549,6 +551,7 @@ export function isCompleteHand(
   tiles: Tile[],
   declaredMelds: Meld[] = []
 ): boolean {
+  tiles = tiles.filter((tile) => !tile.isStone)
   const totalTiles =
     tiles.length + declaredMelds.reduce((sum, m) => sum + m.tiles.length, 0)
 

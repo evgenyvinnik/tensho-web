@@ -11,6 +11,7 @@
  * - Pair: +15, Sequence: +30, Triplet: +40, Quad: +65,
  *   Straight of 4: +45, Straight of 5: +60
  * - A tile in a tactical play that belongs to no group scores half
+ * - A Stone tile has no face: it joins no group and scores only its Stone Mark
  *
  * Mult starts at 1 (or the Yaku multiplier of a complete hand) and adds:
  * - the play pattern's Mult (see PlayPattern.ts)
@@ -157,6 +158,8 @@ export const UNGROUPED_TILE_SHARE = 0.5
  * Get points for a single tile based on its type
  */
 export function getTilePoints(tile: Tile): number {
+  // A Stone has no face; its Stone Mark chips are its whole value.
+  if (tile.isStone) return 0
   if (tile.suit === TileSuit.Wind) return WIND_TILE_POINTS
   if (tile.isHonor) return DRAGON_TILE_POINTS
   if (tile.isTerminal) return 10
@@ -281,7 +284,10 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     : null
   // Count tiles in the scored parse, not retriggers or only non-debuffed tiles:
   // suppression changes a tile's value, not whether it belongs to a group.
-  const structureTiles = context.tiles.filter((tile) => !tile.isBonus)
+  // A Stone belongs to no group, but it is not loose either: it always scores.
+  const structureTiles = context.tiles.filter(
+    (tile) => !tile.isBonus && !tile.isStone
+  )
   const looseTiles = groupedTileIds
     ? structureTiles.filter((tile) => !groupedTileIds.has(tile.id)).length
     : 0
@@ -342,7 +348,8 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 4. Create yaku context and detect yaku
   const yakuContext: YakuContext = {
-    tiles: context.tiles,
+    // A Stone has no rank or suit for a Yaku to read.
+    tiles: context.tiles.filter((tile) => !tile.isStone),
     parsedHand: context.parsedHand,
     declaredMelds: context.declaredMelds,
     isConcealed: context.isConcealed,
@@ -373,6 +380,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const dragonMult = scoringTiles.reduce(
     (sum, tile) =>
       tile.suit === TileSuit.Dragon &&
+      !tile.isStone &&
       (!groupedTileIds || groupedTileIds.has(tile.id))
         ? sum +
           DRAGON_GROUP_MULT *

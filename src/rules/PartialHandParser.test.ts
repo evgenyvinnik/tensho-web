@@ -9,7 +9,12 @@ import { describe, it, expect } from 'vitest'
 import { Tile, TileSuit, WindType, DragonType } from '../core/Tile'
 import { MeldType } from '../core/Meld'
 import { getMeldStructurePoints } from './ScoringEngine'
-import { parsePartialHand, toPartialParsedHand } from './PartialHandParser'
+import { EnhancementType } from '../core/TileModifier'
+import {
+  parsePartialHand,
+  parsePlay,
+  toPartialParsedHand,
+} from './PartialHandParser'
 
 function suited(suit: TileSuit, rank: number, index = 0): Tile {
   return new Tile(suit, rank, `${suit}-${rank}-${index}`)
@@ -234,6 +239,23 @@ describe('parsePartialHand', () => {
 
     expect(new Set(usedIds).size).toBe(usedIds.length)
     expect(usedIds.length + parse.leftovers.length).toBe(tiles.length)
+  })
+
+  it('never groups a Stone tile, which has no rank or suit', () => {
+    const tiles = [
+      suited(TileSuit.Pinzu, 4, 0).withEnhancement(EnhancementType.Stone),
+      suited(TileSuit.Pinzu, 4, 1),
+      suited(TileSuit.Pinzu, 3),
+      suited(TileSuit.Pinzu, 5),
+    ]
+    for (const parse of [parsePartialHand(tiles), parsePlay(tiles)]) {
+      expect(parse.groups.map((group) => group.type)).toEqual([
+        MeldType.Sequence,
+      ])
+      expect(parse.groups[0].tiles).not.toContain(tiles[0])
+      // Neither grouped nor loose: a Stone always scores.
+      expect(parse.leftovers).toEqual([])
+    }
   })
 
   it('handles an empty selection without throwing', () => {

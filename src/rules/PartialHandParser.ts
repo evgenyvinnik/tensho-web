@@ -7,7 +7,8 @@
  * of an arbitrary tile selection into quads, triplets, sequences, and pairs.
  *
  * Tiles that belong to no group are still scored for their tile points; they
- * simply contribute no structure points.
+ * simply contribute no structure points. Bonus tiles and Stone tiles (no rank
+ * or suit) never enter the search.
  */
 
 import { Tile, TileSuit } from '../core/Tile'
@@ -53,6 +54,11 @@ interface GroupPlan {
 
 const MAX_RANK = 9
 
+/** Only a tile with a face can join a group. */
+function hasStructureFace(tile: Tile): boolean {
+  return !tile.isBonus && !tile.isStone
+}
+
 /**
  * Find the decomposition of `tiles` that maximises structure points.
  *
@@ -72,7 +78,7 @@ function parseWithMemo(
   rules: PartialHandRules,
   memoBySuit: Map<TileSuit, Map<string, SuitSolution>>
 ): PartialParse {
-  const scoringTiles = tiles.filter((tile) => !tile.isBonus)
+  const scoringTiles = tiles.filter(hasStructureFace)
 
   if (rules.allowSequenceOverlap) {
     const ordinary = { ...rules, allowSequenceOverlap: false }
@@ -280,7 +286,7 @@ export function parsePlay(
   tiles: Tile[],
   rules: PartialHandRules = {}
 ): PartialParse {
-  const scoringTiles = tiles.filter((tile) => !tile.isBonus)
+  const scoringTiles = tiles.filter(hasStructureFace)
   // Larger selections are complete-hand candidates or rack views, where the
   // structure search is the established reading.
   if (scoringTiles.length > MAX_ENUMERATED_PLAY)

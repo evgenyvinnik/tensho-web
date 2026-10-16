@@ -12,6 +12,12 @@ export function findCompleteHandSubset(
   requiredIds: readonly string[] = [],
   options: Omit<HandValidationOptions, 'wildcardCount'> = {}
 ): string[] | null {
+  // A Stone has no face to build a shape with; a required one rides along.
+  const ridingStones = tiles
+    .filter((tile) => tile.isStone && requiredIds.includes(tile.id))
+    .map((tile) => tile.id)
+  tiles = tiles.filter((tile) => !tile.isStone)
+  requiredIds = requiredIds.filter((id) => !ridingStones.includes(id))
   if (
     tiles.some((t) => t.isBonus) ||
     new Set(tiles.map((t) => t.id)).size !== tiles.length
@@ -38,7 +44,10 @@ export function findCompleteHandSubset(
       groups.flatMap((g, i) => g.slice(0, used[i]).map((t) => t.id))
     )
     if (requiredIds.some((id) => !selected.has(id))) return null
-    const ids = tiles.filter((t) => selected.has(t.id)).map((t) => t.id)
+    const ids = [
+      ...tiles.filter((t) => selected.has(t.id)).map((t) => t.id),
+      ...ridingStones,
+    ]
     const key = JSON.stringify(ids)
     if (seen.has(key)) return null
     seen.add(key)
