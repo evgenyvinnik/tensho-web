@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { buyOffer, packModal } from './helpers/shop'
+import { openTable } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -20,17 +22,10 @@ for (const [language, copy] of [
         isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
       )
       await page.emulateMedia({ reducedMotion: 'reduce' })
-      await page.goto(`/${language}/play`)
-      await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+      await openTable(page, `/${language}/play`)
       await expect(
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
-      await page
-        .getByRole('button', {
-          name: copy.progressiveHints.dontShow,
-          exact: true,
-        })
-        .click()
       const fixture = await page.evaluate(async (kind) => {
         const gamePath = '/src/game/GameOrchestrator.ts'
         const decreePath = '/src/systems/DecreeSystem.ts'
@@ -98,7 +93,7 @@ for (const [language, copy] of [
         }
         eventBus.emit('shopUpdated', { isOpen: true })
         return {
-          id: pack.pack.id,
+          offerId: offer.id as string,
           rewards: pack.contents.map(
             (c: { data: { id: string } }) => c.data.id
           ),
@@ -106,13 +101,13 @@ for (const [language, copy] of [
       }, kind)
       if (kind === 'Arcana') expect(new Set(fixture.rewards).size).toBe(5)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-      await page.locator(`[data-shop-pack="${fixture.id}"]`).click()
-      await expect(page.getByRole('dialog')).toBeVisible()
+      await buyOffer(page, fixture.offerId)
+      await expect(packModal(page)).toBeVisible()
       await expect(
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
       await page.reload()
-      const dialog = page.getByRole('dialog')
+      const dialog = packModal(page)
       await expect(dialog).toBeVisible()
       const choices = dialog.locator('[role="button"][aria-pressed]')
       await expect(choices).toHaveCount(5)
@@ -166,7 +161,7 @@ for (const [language, copy] of [
         ids: [fixture.rewards[1], fixture.rewards[4]],
       })
       await page.reload()
-      await expect(page.getByRole('dialog')).toHaveCount(0)
+      await expect(packModal(page)).toHaveCount(0)
       await expect(
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
