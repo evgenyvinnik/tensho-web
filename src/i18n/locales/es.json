@@ -2167,7 +2167,7 @@
       },
       "seal_of_stone": {
         "name": "Sello de Piedra",
-        "description": "Mejora 1 ficha a Marca de Piedra (+50 Fichas, siempre puntúa)"
+        "description": "Mejora 1 ficha a Marca de Piedra (+100 Puntos; sin número ni palo, nunca entra en un grupo, siempre puntúa completa)"
       },
       "seal_of_manzu": {
         "name": "Sello de Manzu",
@@ -2455,7 +2455,7 @@
       },
       "stone": {
         "name": "Marca de Piedra",
-        "description": "Siempre aporta. +50 Fichas, puntúa aunque no esté en la mano ganadora"
+        "description": "+100 Puntos. La ficha no tiene número ni palo, así que nunca entra en un grupo, pero siempre puntúa completa."
       },
       "gold": {
         "name": "Marca de Oro",

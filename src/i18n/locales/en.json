@@ -2060,7 +2060,7 @@
       },
       "seal_of_stone": {
         "name": "Seal of Stone",
-        "description": "Enhances 1 tile to Stone Mark (+50 Chips, always scores)"
+        "description": "Enhances 1 tile to Stone Mark (+100 Points; no rank or suit, never joins a group, always scores in full)"
       },
       "seal_of_manzu": {
         "name": "Seal of Manzu",
@@ -2451,7 +2451,7 @@
       },
       "stone": {
         "name": "Stone Mark",
-        "description": "Always contributes. +50 Chips, always scores even if not in winning hand"
+        "description": "+100 Points. The tile has no rank or suit, so it never joins a group, but it always scores in full."
       },
       "gold": {
         "name": "Gold Mark",

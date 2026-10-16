@@ -273,7 +273,7 @@
       },
       "seal_of_stone": {
         "name": "Sigillo della pietra",
-        "description": "Potenzia 1 tessera con il Marchio Pietra (+50 Fiches, segna sempre punti)."
+        "description": "Potenzia 1 tessera con il Marchio Pietra (+100 Punti; senza valore né seme, non entra mai in un gruppo, segna sempre per intero)."
       },
       "seal_of_manzu": {
         "name": "Sigillo dei Manzu",
@@ -365,7 +365,7 @@
       },
       "stone": {
         "name": "Marchio Pietra",
-        "description": "+50 Punti; contribuisce sempre, anche fuori dalla mano vincente."
+        "description": "+100 Punti. La tessera non ha valore né seme: non entra mai in un gruppo, ma segna sempre per intero."
       },
       "gold": {
         "name": "Marchio Oro",

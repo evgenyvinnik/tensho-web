@@ -2,7 +2,8 @@ import { Tile, TileSuit } from '../core/Tile'
 import type { FlowerCollection } from './types'
 
 /** Honor-count effects share one interpretation; never duplicate physical
- * tiles, retriggers, gold effects, or the members needed to form a Yaku.
+ * tiles, retriggers, gold effects, or the members needed to form a Yaku. A
+ * Stone has no face, so it is never an Honor.
  */
 export function countScoringHonors(context: {
   tiles: readonly Tile[]
@@ -20,7 +21,7 @@ export function countScoringHonors(context: {
   return context.tiles.reduce(
     (count, tile) =>
       count +
-      (tile.isHonor
+      (tile.isHonor && !tile.isStone
         ? doubleDragons && tile.suit === TileSuit.Dragon
           ? 2
           : 1
