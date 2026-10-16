@@ -71,7 +71,8 @@ function countScalingSource(
   context: ScoringContext,
   breakdown: ScoreBreakdown
 ): number {
-  const tiles = context.tiles
+  // Every tile count here reads a face; a Stone has no rank or suit.
+  const tiles = context.tiles.filter((tile) => !tile.isStone)
   const countTiles = (predicate: (tile: Tile) => boolean): number =>
     tiles.filter(predicate).length
   const meldCount = (type: MeldType): number =>
@@ -164,12 +165,13 @@ const YAKU_GATE_IDS: Partial<Record<GateCondition, readonly string[]>> = {
 /**
  * Whether a gated effect is allowed to pay out.
  *
- * Composition gates read the tiles actually played, structure gates read the
- * melds found in them, and round gates read the round in progress. A gate the
+ * Composition gates read the faces actually played (a Stone has no rank or
+ * suit, so it neither meets nor breaks one), structure gates read the melds
+ * found in them, and round gates read the round in progress. A gate the
  * context cannot answer returns false, so an unproven requirement never pays.
  */
 function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
-  const tiles = context.tiles
+  const tiles = context.tiles.filter((tile) => !tile.isStone)
   const suited = tiles.filter((tile) => tile.isSuited)
   const suitsPresent = new Set(suited.map((tile) => tile.suit))
 
@@ -279,8 +281,12 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
   }
 }
 
-/** The played tiles a retrigger effect applies to. */
+/**
+ * The played tiles a retrigger effect applies to. Positional targets can pick
+ * a Stone; targets that name a kind of tile cannot, since a Stone has no face.
+ */
 function matchRetriggerTargets(tiles: Tile[], target: RetriggerTarget): Tile[] {
+  const faced = tiles.filter((tile) => !tile.isStone)
   switch (target) {
     case 'all':
       return tiles
@@ -289,13 +295,13 @@ function matchRetriggerTargets(tiles: Tile[], target: RetriggerTarget): Tile[] {
     case 'last':
       return tiles.slice(-1)
     case 'dragon':
-      return tiles.filter((tile) => tile.suit === TileSuit.Dragon)
+      return faced.filter((tile) => tile.suit === TileSuit.Dragon)
     case 'wind':
-      return tiles.filter((tile) => tile.suit === TileSuit.Wind)
+      return faced.filter((tile) => tile.suit === TileSuit.Wind)
     case 'honor':
-      return tiles.filter((tile) => tile.isHonor)
+      return faced.filter((tile) => tile.isHonor)
     case 'terminal':
-      return tiles.filter((tile) => tile.isTerminal)
+      return faced.filter((tile) => tile.isTerminal)
     default:
       return []
   }
@@ -906,7 +912,9 @@ export class DecreeSystem {
     heldTiles: readonly Tile[] = []
   ): number {
     const heldSuitCount = new Set(
-      heldTiles.filter((tile) => !tile.isBonus).map((tile) => tile.suit)
+      heldTiles
+        .filter((tile) => !tile.isBonus && !tile.isStone)
+        .map((tile) => tile.suit)
     ).size
     return this.getActiveDecrees(excludedIds).reduce((total, decree) => {
       for (const effect of this.resolveEffects(
@@ -1280,7 +1288,7 @@ export class DecreeSystem {
         if (effect.perTileCondition === 'dominant_suit') {
           const suitedCounts = new Map<string, number>()
           for (const tile of context.tiles.filter(
-            (candidate) => candidate.isSuited
+            (candidate) => candidate.isSuited && !candidate.isStone
           )) {
             suitedCounts.set(tile.suit, (suitedCounts.get(tile.suit) ?? 0) + 1)
           }
@@ -1340,7 +1348,7 @@ export class DecreeSystem {
         break
 
       case 'terminal_count':
-        count = context.tiles.filter((t) => t.isTerminal).length
+        count = context.tiles.filter((t) => t.isTerminal && !t.isStone).length
         break
 
       case 'repeated_yaku': {

@@ -301,7 +301,7 @@ export class FlowerSystem {
         return context.melds.filter((m) => m.isConcealed).length
 
       case 'terminal':
-        return context.tiles.filter((t) => t.isTerminal).length
+        return context.tiles.filter((t) => t.isTerminal && !t.isStone).length
 
       default:
         return 0
@@ -395,7 +395,9 @@ export class FlowerSystem {
 
     // Bamboo + Summer: Terminal-heavy hands negate wall shrinkage
     if (seasonType === 'Summer' && this.hasFlowerType('Bamboo')) {
-      const terminalCount = context.tiles.filter((t) => t.isTerminal).length
+      const terminalCount = context.tiles.filter(
+        (t) => t.isTerminal && !t.isStone
+      ).length
       if (terminalCount >= 4) {
         return {
           hasInteraction: true,

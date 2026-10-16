@@ -430,8 +430,9 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
     id: 'stone',
     name: 'Stone Mark',
     japaneseName: '石印',
-    description: 'Always contributes',
-    effect: '+50 Chips, always scores even if not in winning hand',
+    description: 'No rank or suit',
+    effect:
+      '+100 Points. The tile has no rank or suit, so it never joins a group, but it always scores in full.',
   },
   {
     id: 'gold',

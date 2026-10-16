@@ -116,7 +116,10 @@ import {
 } from '../config/decreeUnlocks'
 import { DebuffSystem } from './DebuffSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
-import { MandateEffectSystem } from '../systems/MandateEffectSystem'
+import {
+  MandateEffectSystem,
+  isFaceDebuffTarget,
+} from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
   MAX_TACTICAL_PLAY_TILES,
@@ -859,11 +862,7 @@ export class GameOrchestrator {
 
     if (mandate.effect.type === 'debuff_tile_type') {
       for (const tile of allTiles) {
-        const shouldDebuff =
-          mandate.effect.target === 'dragon'
-            ? tile.suit === TileSuit.Dragon
-            : tile.isHonor
-        if (shouldDebuff) {
+        if (isFaceDebuffTarget(mandate.effect, tile)) {
           this.state.debuffSystem.debuffTile(tile.id, {
             type: 'mandate',
             mandateId: mandate.id,
@@ -1253,6 +1252,7 @@ export class GameOrchestrator {
     if (
       !cycle.resolvingOrchid &&
       tile.isHonor &&
+      !tile.isStone &&
       this.state.flowerSystem.hasFlowerType('Orchid') &&
       !this.areFlowerBonusesSuppressed() &&
       this.state.seasonSystem
@@ -1848,7 +1848,7 @@ export class GameOrchestrator {
 
     if (
       this.isDecreeRuleActive('honor_as_suited') &&
-      selectedTiles.some((tile) => tile.isHonor)
+      selectedTiles.some((tile) => tile.isHonor && !tile.isStone)
     ) {
       effects.push({
         type: 'decree_triggered',
@@ -2883,6 +2883,7 @@ export class GameOrchestrator {
     this.state.deadWall = replace(this.state.deadWall)
     this.state.discards = replace(this.state.discards)
     this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
+    this.state.mandateEffectSystem.refreshFaceDebuffs([replacement])
   }
 
   private destroyTiles(tileIds: string[], effects: Effect[]): void {
@@ -3224,6 +3225,7 @@ export class GameOrchestrator {
     this.state.celestialOrbSystem.useOrb(blackHole)
   }
 
+  /** A Stone has no suit to count and no Honor face to transmute. */
   private transmuteHonorsToDominantSuit(tiles: Tile[]): Tile[] {
     const suitedCounts = new Map<TileSuit, number>([
       [TileSuit.Manzu, 0],
@@ -3231,7 +3233,7 @@ export class GameOrchestrator {
       [TileSuit.Souzu, 0],
     ])
     for (const tile of tiles) {
-      if (tile.isSuited) {
+      if (tile.isSuited && !tile.isStone) {
         suitedCounts.set(tile.suit, (suitedCounts.get(tile.suit) ?? 0) + 1)
       }
     }
@@ -3242,7 +3244,7 @@ export class GameOrchestrator {
     )[0]
 
     return tiles.map((tile) =>
-      tile.isHonor
+      tile.isHonor && !tile.isStone
         ? new Tile(dominantSuit, tile.rank, tile.id, tile.isRed, tile.modifiers)
         : tile
     )
@@ -4703,7 +4705,7 @@ export class GameOrchestrator {
       !this.state.seasonSystem
         .getSeasonStack()
         .some((s) => s.type === 'Summer' && !s.isCorrupted) ||
-      tiles.filter((tile) => tile.isTerminal).length < 4
+      tiles.filter((tile) => tile.isTerminal && !tile.isStone).length < 4
     )
       return
     const restored = protectSummerWall(this.state)

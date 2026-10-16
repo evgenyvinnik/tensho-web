@@ -277,7 +277,7 @@
       },
       "seal_of_stone": {
         "name": "Taş Mührü",
-        "description": "1 taşa Taş İşareti ekler (+50 Puan; her zaman puan kazandırır)."
+        "description": "1 taşa Taş İşareti ekler (+100 Puan; sayısı ve türü yoktur, hiçbir gruba girmez, her zaman tam puan kazandırır)."
       },
       "seal_of_manzu": {
         "name": "Manzu Mührü",
@@ -365,7 +365,7 @@
       },
       "stone": {
         "name": "Taş İşareti",
-        "description": "+50 Puan; kazanan ele dahil olmasa bile puan kazandırır."
+        "description": "+100 Puan. Taşın sayısı ve türü yoktur; hiçbir gruba girmez ama her zaman tam puan kazandırır."
       },
       "gold": {
         "name": "Altın İşareti",

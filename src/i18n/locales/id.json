@@ -286,7 +286,7 @@
       },
       "stone": {
         "name": "Tanda Batu",
-        "description": "+50 Poin; selalu menyumbang skor meski tidak termasuk tangan pemenang."
+        "description": "+100 Poin. Ubin ini tidak punya angka maupun jenis, jadi tidak pernah masuk grup, tetapi selalu mencetak skor penuh."
       },
       "gold": {
         "name": "Tanda Emas",
@@ -2424,7 +2424,7 @@
       },
       "seal_of_stone": {
         "name": "Segel Batu",
-        "description": "Meningkatkan 1 ubin jadi Tanda Batu (+50 Chip, selalu dinilai)"
+        "description": "Meningkatkan 1 ubin jadi Tanda Batu (+100 Poin; tanpa angka maupun jenis, tidak pernah masuk grup, selalu mencetak skor penuh)"
       },
       "seal_of_manzu": {
         "name": "Segel Manzu",

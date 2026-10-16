@@ -34,6 +34,8 @@ export function planPlumRecursion(
       if (
         !reserved.has(tile.id) &&
         !physical.has(tile.id) &&
+        // A Stone in the river shows no face to match.
+        !tile.isStone &&
         group.tiles.some(
           (face) => tile.suit === face.suit && tile.rank === face.rank
         )

@@ -2172,7 +2172,7 @@
       },
       "seal_of_stone": {
         "name": "Sceau de Pierre",
-        "description": "Améliore 1 tuile en Marque de Pierre (+50 Jetons, compte toujours)"
+        "description": "Améliore 1 tuile en Marque de Pierre (+100 Points ; ni valeur ni famille, n'entre jamais dans un groupe, marque toujours en entier)"
       },
       "seal_of_manzu": {
         "name": "Sceau des Caractères",
@@ -2460,7 +2460,7 @@
       },
       "stone": {
         "name": "Marque de Pierre",
-        "description": "Contribue toujours. +50 Jetons, compte même hors de la main gagnante"
+        "description": "+100 Points. La tuile n'a ni valeur ni famille : elle n'entre jamais dans un groupe, mais marque toujours en entier."
       },
       "gold": {
         "name": "Marque d'Or",

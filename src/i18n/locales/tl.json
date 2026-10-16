@@ -277,7 +277,7 @@
       },
       "seal_of_stone": {
         "name": "Selyo ng Bato",
-        "description": "Nilalagyan ng Markang Bato ang 1 tile (+50 batayang puntos, laging nagbibigay ng puntos)."
+        "description": "Nilalagyan ng Markang Bato ang 1 tile (+100 Puntos; walang numero o suit, hindi napapasama sa grupo, laging buo ang puntos)."
       },
       "seal_of_manzu": {
         "name": "Selyo ng Manzu",
@@ -365,7 +365,7 @@
       },
       "stone": {
         "name": "Markang Bato",
-        "description": "+50 Puntos; laging nagbibigay ng puntos kahit wala sa panalong kamay."
+        "description": "+100 Puntos. Walang numero o suit ang tile, kaya hindi ito kailanman napapasama sa grupo, pero laging buo ang puntos nito."
       },
       "gold": {
         "name": "Markang Ginto",
