@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { offerCard, openOffer } from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 
 test('Spanish purchase reasons fit a narrow screen and update with actual requirements', async ({
   page,
@@ -65,23 +67,22 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
     return items.map((o: { id: string }) => o.id)
   })
   await expect(page).toHaveURL(/\/es\/shop$/)
-  const flower = page.locator(`[data-shop-item="${offers[0]}"]`)
-  const seal = page.locator(`[data-shop-item="${offers[1]}"]`)
-  await expect(flower.locator('[data-purchase-blocked]')).toHaveText(
-    'Requiere 3 Flores; tienes 0.'
-  )
-  await expect(seal.locator('[data-purchase-blocked]')).toHaveText(
-    'Los espacios de consumibles están llenos. Usa un objeto durante el juego antes de comprar más.'
-  )
-  for (const card of [flower, seal]) {
-    await expect(card.getByRole('button')).toBeDisabled()
-    await card.scrollIntoViewIfNeeded()
-    if (isMobile) await card.getByRole('heading').tap()
-    else await card.getByRole('heading').click()
-    await expect(card).toContainText('No disponible')
+  // startNewRun queues its starting Decrees for a reveal over the shop.
+  await clearReveals(page)
+  const reasons = [
+    'Requiere 3 Flores; tienes 0.',
+    'Los espacios de consumibles están llenos. Usa un objeto durante el juego antes de comprar más.',
+  ]
+  // Each offer's details hold its Buy button and the engine's reason.
+  for (const [index, id] of offers.slice(0, 2).entries()) {
+    const details = await openOffer(page, id)
+    await expect(details.locator('[data-purchase-blocked]')).toHaveText(
+      reasons[index]
+    )
+    await expect(details.locator(`[data-shop-buy="${id}"]`)).toBeDisabled()
     expect(
-      await card.evaluate((node) =>
-        [...node.querySelectorAll<HTMLElement>('h3,p,button')].every(
+      await details.evaluate((node) =>
+        [...node.querySelectorAll<HTMLElement>('h2,p,button')].every(
           (child) => {
             const r = child.getBoundingClientRect()
             return (
@@ -96,9 +97,11 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
     ).toBe(true)
     await page.screenshot({
       path: testInfo.outputPath(
-        card === flower ? 'flowers.png' : 'consumables.png'
+        index === 0 ? 'flowers.png' : 'consumables.png'
       ),
     })
+    await page.keyboard.press('Escape')
+    await expect(details).toHaveCount(0)
   }
   await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
@@ -117,12 +120,16 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
     game.getState().fateSeals.pop()
     eventBus.emit('shopUpdated', { isOpen: true })
   })
-  for (const card of [flower, seal]) {
-    await expect(card.getByRole('button')).toBeEnabled()
-    await expect(card.locator('[data-purchase-blocked]')).toHaveCount(0)
-    if (isMobile) await card.getByRole('button').tap()
-    else await card.getByRole('button').click()
-    await expect(card).toHaveCount(0)
+  for (const id of offers.slice(0, 2)) {
+    const details = await openOffer(page, id)
+    await expect(details.locator('[data-purchase-blocked]')).toHaveCount(0)
+    const buy = details.locator(`[data-shop-buy="${id}"]`)
+    await expect(buy).toBeEnabled()
+    if (isMobile) await buy.tap()
+    else await buy.click()
+    await expect(offerCard(page, id)).toHaveCount(0)
+    // A bought Decree is revealed over the shop.
+    await settleReveals(page)
   }
   expect(
     await page.evaluate(async () => {

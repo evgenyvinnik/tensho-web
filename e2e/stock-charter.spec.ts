@@ -1,4 +1,12 @@
 import { expect, test, type Locator } from '@playwright/test'
+import {
+  buyOffer,
+  itemOffers,
+  offerCard,
+  offerDetails,
+  openOffer,
+} from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 
 for (const lang of ['en', 'es'])
   for (const upgraded of [false, true])
@@ -94,21 +102,23 @@ for (const lang of ['en', 'es'])
         { lang, upgraded }
       )
       await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
+      // startNewRun queues its starting Decrees for a reveal over the shop.
+      await clearReveals(page)
       const initial = await saved()
-      await activate(
-        page.locator(
-          `[data-shop-item="${initial.shop.teaHouse.itemOfferings[0].id}"] button`
-        )
-      )
-      await expect(
-        page.locator(
-          `[data-shop-item="${initial.shop.teaHouse.itemOfferings[0].id}"]`
-        )
-      ).toHaveCount(0)
+      const first = initial.shop.teaHouse.itemOfferings[0].id
+      await buyOffer(page, first)
+      await expect(offerCard(page, first)).toHaveCount(0)
+      await settleReveals(page)
       const before = await saved()
       await attach('stock-before')
-      const card = page.getByTestId('charter-card')
-      const art = card.getByRole('img')
+      // The Charter sells from the same offer card as items and packs.
+      const charterOffer = before.shop.teaHouse.charterOffering.id
+      const card = offerCard(page, charterOffer)
+      await expect(card).toHaveAttribute(
+        'data-shop-offer-type',
+        'ImperialCharter'
+      )
+      const art = card.locator('.shop-offer-art img')
       await expect(art).toHaveAttribute(
         'src',
         new RegExp(upgraded ? 'plentiful-stock\\.webp$' : 'abundant-stock\\.webp$')
@@ -122,23 +132,17 @@ for (const lang of ['en', 'es'])
         .toBe(true)
       await card.scrollIntoViewIfNeeded()
       await page.screenshot({ path: testInfo.outputPath('stock-charter.png') })
-      await activate(card.getByRole('button'))
-      const dialog = page.getByRole('dialog', {
-        name: copy.shop.ui.confirmPurchase,
-        exact: true,
-      })
+      // Its details hold the only Buy step; closing them buys nothing.
+      const details = await openOffer(page, charterOffer)
       await activate(
-        dialog.getByRole('button', { name: copy.common.cancel, exact: true })
+        details.getByRole('button', { name: copy.common.close, exact: true })
       )
+      await expect(offerDetails(page, charterOffer)).toHaveCount(0)
       expect(await saved()).toEqual(before)
-      await activate(card.getByRole('button'))
-      await activate(
-        dialog.getByRole('button', { name: copy.shop.buy, exact: true })
-      )
+      await openOffer(page, charterOffer)
+      await activate(page.locator(`[data-shop-buy="${charterOffer}"]`))
       await expect(card).toHaveCount(0)
-      await expect(page.locator('[data-shop-item]')).toHaveCount(
-        upgraded ? 3 : 2
-      )
+      await expect(itemOffers(page)).toHaveCount(upgraded ? 3 : 2)
       const after = await saved()
       expect(after.shop.teaHouse.itemSlotCount).toBe(upgraded ? 4 : 3)
       expect(after.shop.teaHouse.itemOfferings.slice(0, -1)).toEqual(
@@ -163,9 +167,9 @@ for (const lang of ['en', 'es'])
         after.shop.teaHouse.itemOfferings[
           after.shop.teaHouse.itemOfferings.length - 1
         ]
-      const buy = page.locator(`[data-shop-item="${added.id}"] button`)
+      const details2 = await openOffer(page, added.id)
+      const buy = details2.locator(`[data-shop-buy="${added.id}"]`)
       await expect(buy).toBeEnabled()
-      await buy.scrollIntoViewIfNeeded()
       await page.screenshot({ path: testInfo.outputPath('extra-offer.png') })
       expect(
         await page.evaluate(
@@ -173,16 +177,15 @@ for (const lang of ['en', 'es'])
         )
       ).toBe(true)
       await activate(buy)
-      await expect(buy).toHaveCount(0)
+      await expect(offerCard(page, added.id)).toHaveCount(0)
+      await settleReveals(page)
       expect((await saved()).state.gold).toBe(
         after.state.gold - added.finalCost
       )
       await activate(
         page.getByRole('button', { name: copy.shop.reroll, exact: true })
       )
-      await expect(page.locator('[data-shop-item]')).toHaveCount(
-        upgraded ? 4 : 3
-      )
+      await expect(itemOffers(page)).toHaveCount(upgraded ? 4 : 3)
       const rerolled = await saved()
       await page.reload()
       expect(await saved()).toEqual(rerolled)
@@ -190,6 +193,8 @@ for (const lang of ['en', 'es'])
         page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       )
       await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       const round = await saved()
       for (const tile of round.state.handTiles.slice(0, 2))
         await activate(

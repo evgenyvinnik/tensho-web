@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { CollectibleRail, type CollectibleRailProps } from './CollectibleRail'
 import { GameOrchestrator } from '../../game/GameOrchestrator'
@@ -7,8 +7,10 @@ import {
   CelestialOrbSystem,
 } from '../../systems/CelestialOrbSystem'
 import { FATE_SEALS, FateSealSystem } from '../../systems/FateSealSystem'
+import { VOID_SCRIPTS, VoidScriptSystem } from '../../systems/VoidScriptSystem'
 import { eventBus } from '../../game/EventBus'
 import { runRandom } from '../../game/RunRandom'
+import { FlowerType, Tile } from '../../core/Tile'
 
 afterEach(() => {
   eventBus.clear()
@@ -83,4 +85,121 @@ it('shows the engine’s reason when a use fails', () => {
   open(orb.instanceId)
   fireEvent.click(screen.getByRole('button', { name: 'Use item' }))
   expect(screen.getByRole('alert')).toHaveTextContent('No room')
+})
+
+it('names the engine’s specific reason for a refused use', () => {
+  const { orb } = renderRail({
+    validateUse: () => ({
+      isValid: false,
+      errors: ['No room for the created Decree'],
+    }),
+  })
+  open(orb.instanceId)
+  expect(screen.getByRole('status')).toHaveTextContent(
+    'Make space for the reward before using this item.'
+  )
+})
+
+it('shows a Void Script’s cost before the tap that uses it', () => {
+  const script = VoidScriptSystem.createVoidScriptInstance(
+    VOID_SCRIPTS.script_of_the_wraith
+  )
+  renderRail({ voidScripts: [script] })
+  open(script.instanceId)
+  expect(document.querySelector('[data-script-cost]')).toHaveTextContent(
+    'Void cost: Lose all gold.'
+  )
+})
+
+it('shows when an Omen cancels a Void Script’s cost', () => {
+  const script = VoidScriptSystem.createVoidScriptInstance(
+    VOID_SCRIPTS.script_of_the_wraith
+  )
+  renderRail({ voidScripts: [script], scriptDownsideProtected: true })
+  open(script.instanceId)
+  expect(document.querySelector('[data-script-cost]')).toHaveTextContent(
+    'Omen protection cancels the additional penalty.'
+  )
+})
+
+it('previews what the Fool would create', () => {
+  const fool = FateSealSystem.createFateSealInstance(
+    FATE_SEALS.seal_of_the_fool
+  )
+  renderRail({
+    fateSeals: [fool],
+    lastCopyableConsumable: CelestialOrbSystem.createCelestialOrbInstance(
+      CELESTIAL_ORBS.pluto_orb
+    ),
+  })
+  open(fool.instanceId)
+  expect(
+    document.querySelector('[data-consumable-copy-result]')
+  ).toHaveTextContent('Creates: Pluto Orb')
+})
+
+it('explains what using an Orb gives up under the Observatory', () => {
+  const { orb } = renderRail({ observatoryActive: true })
+  open(orb.instanceId)
+  expect(
+    document.querySelector('[data-observatory-holding]')
+  ).toBeInTheDocument()
+  expect(document.querySelector('[data-observatory-cost]')).toHaveTextContent(
+    /./
+  )
+})
+
+it('tells an Orchid how many tiles it drew until the round ends', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Orchid))
+  renderRail({ flora: game.getFloraState() })
+  const orchid = () =>
+    fireEvent.click(document.querySelector('[data-flora-flower="Orchid"]')!, {
+      detail: 1,
+    })
+  orchid()
+  expect(document.querySelector('[data-orchid-bloom]')).toBeNull()
+  act(() => eventBus.emit('orchidBloom', { count: 2 }))
+  expect(document.querySelector('[data-orchid-bloom]')).toHaveTextContent(
+    'Orchid drew extra tiles: 2.'
+  )
+  act(() =>
+    eventBus.emit('roundStart', {
+      actNumber: 1,
+      roundNumber: 2,
+      roundType: 'Large',
+      target: 1,
+    })
+  )
+  expect(document.querySelector('[data-orchid-bloom]')).toBeNull()
+})
+
+it('tells a Plum how many tiles it recovered from the river', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Plum))
+  renderRail({ flora: game.getFloraState() })
+  act(() => eventBus.emit('plumRecovery', { count: 1 }))
+  fireEvent.click(document.querySelector('[data-flora-flower="Plum"]')!, {
+    detail: 1,
+  })
+  expect(document.querySelector('[data-plum-recovery]')).toHaveTextContent(
+    'Plum returned tiles from the river: 1.'
+  )
+})
+
+it('tells a Flower when a Decree shields it from Drought', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Plum))
+  renderRail({
+    flora: { ...game.getFloraState(), flowersProtected: true },
+  })
+  fireEvent.click(document.querySelector('[data-flora-flower="Plum"]')!, {
+    detail: 1,
+  })
+  expect(screen.getByRole('dialog', { name: 'Plum' })).toHaveTextContent(
+    'A Decree protects your Flower bonuses from Drought.'
+  )
 })

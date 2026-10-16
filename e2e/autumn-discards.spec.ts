@@ -1,9 +1,16 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import {
+  clearReveals,
+  continueToNextRound,
+  handScoreTotal,
+  settleReveals,
+  swiftClear,
+} from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const autumns of [1, 2])
-    test(`Autumn ${autumns} grants usable discards, expires, and reloads (${language})`, async ({
+    test(`Autumn ${autumns} grants usable free redraws, expires, and reloads (${language})`, async ({
       page,
       isMobile,
     }, testInfo) => {
@@ -76,6 +83,8 @@ for (const language of ['en', 'es'])
         state.faceDownTileIds.clear()
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
       }, autumns)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-autumn', {
         body: await page.evaluate(
@@ -83,29 +92,42 @@ for (const language of ['en', 'es'])
         ),
         contentType: 'application/json',
       })
-      const counter = page.locator(
-        '[data-play-zone="discard"] [data-tutorial="discards-remaining"]'
+      // Autumn's extra discard is a free REDRAW now, shown on the button.
+      const free = page.locator(
+        '[data-game-action="redraw"] [data-free-redraws]'
       )
-      await expect(counter).toHaveText('0')
+      await expect(free).toHaveCount(0)
+      expect(before.state.redrawsRemaining).toBe(0)
+      const redrawFirstTile = async () => {
+        await activate(
+          page.locator('[data-play-zone="hand"] [data-play-tile]').first()
+        )
+        await activate(page.locator('[data-game-action="redraw"]'))
+      }
       await activate(
         page.locator('[data-play-zone="hand"] [data-play-tile="hand-0"]')
       )
       await activate(page.locator('[data-game-action="redraw"]'))
-      await expect(counter).toHaveText(String(autumns))
+      // Each Autumn drawn is announced with a reveal over the table.
+      await settleReveals(page, 2_000)
+      await expect(free).toHaveAttribute('data-free-redraws', String(autumns))
       const drawn = await saved()
-      expect(drawn.state.discardsRemaining).toBe(autumns)
-      expect(drawn.state.handsRemaining).toBe(before.state.handsRemaining)
-      expect(drawn.state.redrawsRemaining).toBe(
-        before.state.redrawsRemaining - 1
-      )
+      expect(drawn.state.redrawsRemaining).toBe(autumns)
+      expect(drawn.state.discardsRemaining).toBe(0)
+      // The REDRAW that drew the Autumn had no free redraw to spend.
+      expect(drawn.state.handsRemaining).toBe(before.state.handsRemaining - 1)
       expect(drawn.state.seasonSystem.seasonStack).toHaveLength(autumns)
-      await activate(page.getByTestId('flora-details-trigger'))
-      const dialog = page.getByRole('dialog')
+      // Each Autumn is its own token on the item rail, with its own details.
+      const autumnTokens = page.locator('[data-flora-season]')
+      await expect(autumnTokens).toHaveCount(autumns)
+      for (const token of await autumnTokens.all())
+        await expect(token).toHaveAttribute('aria-label', copy.flora.autumn)
+      await activate(autumnTokens.first())
+      const dialog = page.getByRole('dialog', { name: copy.flora.autumn })
       await expect(
         dialog.getByText(copy.flora.details.autumn, { exact: true })
-      ).toHaveCount(autumns)
-      const art = dialog.locator('img[src*="autumn-maple.webp"]').first()
-      await art.scrollIntoViewIfNeeded()
+      ).toBeVisible()
+      const art = autumnTokens.first().locator('img[src*="autumn-maple.webp"]')
       await expect
         .poll(() =>
           art.evaluate(
@@ -120,72 +142,56 @@ for (const language of ['en', 'es'])
       await activate(
         dialog.getByRole('button', { name: copy.common.close, exact: true })
       )
+      await expect(dialog).toHaveCount(0)
       await page.reload()
       expect(await saved()).toEqual(drawn)
-      const touch = isMobile ? await page.context().newCDPSession(page) : null
-      const discardTile = async () => {
-        const tile = page
-          .locator('[data-play-zone="hand"] [data-play-tile]')
-          .first()
-        const zone = page.locator('[data-play-zone="discard"]')
-        await tile.scrollIntoViewIfNeeded()
-        await expect(tile).toBeInViewport()
-        await expect(zone).toBeInViewport()
-        if (!touch) return tile.dragTo(zone)
-        const a = (await tile.boundingBox())!,
-          b = (await zone.boundingBox())!
-        const from = { x: a.x + a.width / 2, y: a.y + a.height / 2 }
-        const to = { x: b.x + b.width / 2, y: b.y + b.height / 2 }
-        await touch.send('Input.dispatchTouchEvent', {
-          type: 'touchStart',
-          touchPoints: [{ ...from, id: 1 }],
-        })
-        for (let step = 1; step <= 8; step++)
-          await touch.send('Input.dispatchTouchEvent', {
-            type: 'touchMove',
-            touchPoints: [
-              {
-                x: from.x + ((to.x - from.x) * step) / 8,
-                y: from.y + ((to.y - from.y) * step) / 8,
-                id: 1,
-              },
-            ],
-          })
-        await touch.send('Input.dispatchTouchEvent', {
-          type: 'touchEnd',
-          touchPoints: [],
-        })
-      }
+      // Each free redraw is spent before a Turn.
       for (let remaining = autumns - 1; remaining >= 0; remaining--) {
-        await discardTile()
-        await expect(counter).toHaveText(String(remaining))
-        expect((await saved()).state.discardsRemaining).toBe(remaining)
+        await redrawFirstTile()
+        if (remaining)
+          await expect(free).toHaveText(new RegExp(String(remaining)))
+        else await expect(free).toHaveCount(0)
+        const state = (await saved()).state
+        expect(state.redrawsRemaining).toBe(remaining)
+        expect(state.handsRemaining).toBe(drawn.state.handsRemaining)
         await expect(page.getByRole('dialog')).toHaveCount(0)
       }
       const spent = await saved()
-      await discardTile()
-      expect(await saved()).toEqual(spent)
-      if (touch) await touch.detach()
+      // With none left, a REDRAW costs a Turn again.
+      await redrawFirstTile()
+      await expect
+        .poll(async () => (await saved()).state.handsRemaining)
+        .toBe(spent.state.handsRemaining - 1)
+      const redrawn = await saved()
+      expect(redrawn.state.redrawsRemaining).toBe(0)
       for (let i = 0; i < 2; i++)
         await activate(
           page.locator('[data-play-zone="hand"] [data-play-tile]').first()
         )
-      const preview = page.getByTestId('score-preview-total')
       const forecast = Number(
-        (await preview.getAttribute('aria-label'))!.replace(/\D/g, '')
+        (await handScoreTotal(page, 'preview').getAttribute('title'))!.replace(
+          /\D/g,
+          ''
+        )
       )
       await activate(page.locator('[data-game-action="play"]'))
+      await expect
+        .poll(async () => (await saved()).state.score - redrawn.state.score)
+        .toBe(forecast)
       const paid = await saved()
-      expect(paid.state.score - spent.state.score).toBe(forecast)
-      expect(paid.state.discardsRemaining).toBe(0)
+      expect(paid.state.redrawsRemaining).toBe(0)
       await page.reload()
       expect(await saved()).toEqual(paid)
-      await activate(page.locator('[data-game-action="skip"]'))
-      await expect(counter).not.toHaveText('0')
+      // Skip is gone: clear the round to reach the next one.
+      await swiftClear(page)
+      await continueToNextRound(page)
       const next = await saved()
       expect(next.state.currentRound).toBe(2)
       expect(next.state.seasonSystem.seasonStack).toEqual([])
-      expect(next.state.discardsRemaining).toBe(3 + next.state.omenDiscardBonus)
+      // Autumn's free redraws end with its round.
+      expect(next.state.redrawsRemaining).toBe(
+        next.state.omenRedrawBonus + next.state.omenDiscardBonus
+      )
       await page.reload()
       expect(await saved()).toEqual(next)
       expect(

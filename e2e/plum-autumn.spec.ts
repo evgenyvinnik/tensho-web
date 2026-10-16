@@ -1,5 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import {
+  continueToNextRound,
+  handScoreTotal,
+  swiftClear,
+} from './helpers/table'
 
 const replayPath = process.env.PLUM_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -106,7 +111,7 @@ for (const language of ['en', 'es'])
         page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
       )
     const forecast = Number(
-      (await page.locator('[data-game-action-score]').textContent())!.replace(
+      (await handScoreTotal(page, 'preview').getAttribute('title'))!.replace(
         /\D/g,
         ''
       )
@@ -129,14 +134,15 @@ for (const language of ['en', 'es'])
     expect(after.state.handsRemaining).toBe(before.state.handsRemaining - 1)
     expect(after.state.discardsRemaining).toBe(before.state.discardsRemaining)
     expect(after.state.redrawsRemaining).toBe(before.state.redrawsRemaining)
-    const flora = page.getByTestId('flora-details-trigger')
+    // The Plum's own token on the item rail explains the recovered tile.
+    const flora = page.locator('[data-flora-flower="Plum"]')
     await activate(flora)
-    const dialog = page.getByRole('dialog')
+    const dialog = page.getByRole('dialog', { name: copy.flora.plum })
     await expect(dialog.locator('[data-plum-recovery]')).toHaveText(
       copy.flora.details.plumRecovery.replace('{{count}}', '1')
     )
     expect(
-      await dialog
+      await flora
         .locator('img[src*="plum-bloom.webp"]')
         .evaluate(async (img: HTMLImageElement) => {
           await img.decode()
@@ -157,11 +163,10 @@ for (const language of ['en', 'es'])
     await page.reload()
     expect(await saved()).toEqual(after)
     await activate(flora)
+    await expect(dialog).toBeVisible()
     await expect(page.locator('[data-plum-recovery]')).toHaveCount(0)
     await activate(
-      page
-        .getByRole('dialog')
-        .getByRole('button', { name: copy.common.close, exact: true })
+      dialog.getByRole('button', { name: copy.common.close, exact: true })
     )
     for (const id of ['hand-3', 'hand-4', 'hand-5'])
       await activate(
@@ -171,7 +176,9 @@ for (const language of ['en', 'es'])
     await expect
       .poll(async () => (await saved()).state.handTiles.length)
       .toBe(14)
-    await activate(page.locator('[data-game-action="skip"]'))
+    // Skip is gone: clear the round to reach the next one.
+    await swiftClear(page)
+    await continueToNextRound(page)
     await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
     const next = await saved()
     expect(next.state.seasonSystem.seasonStack).toEqual([])

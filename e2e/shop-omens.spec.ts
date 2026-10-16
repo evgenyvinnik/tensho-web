@@ -1,4 +1,12 @@
 import { test, expect } from '@playwright/test'
+import {
+  buyOffer,
+  itemOffers,
+  offerCard,
+  openOffer,
+  packModal,
+} from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 
 test('stacked shop Omens deliver Rare+, editions and free packs on a small screen', async ({
   page,
@@ -56,12 +64,15 @@ test('stacked shop Omens deliver Rare+, editions and free packs on a small scree
       packs: game.shop.state.packOfferings.map(
         (item: { id: string; item: { id: string }; finalCost: number }) => ({
           id: item.item.id,
+          offerId: item.id,
           cost: item.finalCost,
         })
       ),
     }
   })
   await expect(page).toHaveURL(/\/en\/shop$/)
+  // startNewRun queues its starting Decrees for a reveal over the shop.
+  await clearReveals(page)
   expect(fixture.types).toEqual([
     'Decree',
     'FateSeal',
@@ -79,32 +90,33 @@ test('stacked shop Omens deliver Rare+, editions and free packs on a small scree
   expect(fixture.packs.every((pack: { cost: number }) => pack.cost === 0)).toBe(
     true
   )
-  await expect(page.locator('[data-shop-item]')).toHaveCount(6)
+  await expect(itemOffers(page)).toHaveCount(6)
+  // Each offer's details fit the small screen.
   for (const id of fixture.ids) {
-    const card = page.locator(`[data-shop-item="${id}"]`)
-    await card.scrollIntoViewIfNeeded()
-    await expect(card.getByRole('heading')).toBeVisible()
+    const details = await openOffer(page, id)
     expect(
-      await card.evaluate((node) =>
-        Array.from(node.querySelectorAll<HTMLElement>('h3,p')).every(
+      await details.evaluate((node) =>
+        Array.from(node.querySelectorAll<HTMLElement>('h2,p')).every(
           (child) =>
             child.scrollHeight <= child.clientHeight + 1 &&
             child.scrollWidth <= child.clientWidth + 1
         )
       )
     ).toBe(true)
+    await page.keyboard.press('Escape')
+    await expect(details).toHaveCount(0)
   }
-  const rareCard = page.locator(`[data-shop-item="${fixture.rare.id}"]`)
-  await rareCard.scrollIntoViewIfNeeded()
+  const rareCard = offerCard(page, fixture.rare.id)
+  await openOffer(page, fixture.rare.id)
   await page.screenshot({
     path: testInfo.outputPath('omen-rare-offer-320.png'),
   })
-  await rareCard.getByRole('button').click()
+  await page.locator(`[data-shop-buy="${fixture.rare.id}"]`).click()
   await expect(rareCard).toHaveCount(0)
-  const pack = page.locator(`[data-shop-pack="${fixture.packs[0].id}"]`)
-  await pack.scrollIntoViewIfNeeded()
-  await pack.click()
-  const dialog = page.getByRole('dialog')
+  // The bought Decree is revealed over the shop.
+  await settleReveals(page)
+  await buyOffer(page, fixture.packs[0].offerId)
+  const dialog = packModal(page)
   await expect(dialog).toBeVisible()
   await dialog
     .getByRole('button', { name: 'Skip rewards', exact: true })
@@ -138,7 +150,7 @@ test('stacked shop Omens deliver Rare+, editions and free packs on a small scree
   })
   await page.getByRole('button', { name: 'Reroll', exact: true }).click()
   // The purchased ordinary slot refills too; one-shot Omen overflow does not.
-  await expect(page.locator('[data-shop-item]')).toHaveCount(2)
+  await expect(itemOffers(page)).toHaveCount(2)
   // Revisit through the client router without regenerating the current shop.
   await page.evaluate(() => {
     history.pushState({}, '', '/en/settings')

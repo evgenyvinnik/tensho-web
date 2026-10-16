@@ -118,13 +118,11 @@ for (const operation of ['copy', 'destroy'] as const)
         await page.reload()
       }
       const before = await saved()
-      await activate(
-        page.getByRole('button', {
-          name: new RegExp(`^${copy.consumableUse.fateSeals} \\(`),
-        })
-      )
+      // The Seal waits on the item rail; Use goes on to choose its tiles.
+      const sealId = before.state.fateSeals[0].instanceId
+      await activate(page.locator(`[data-consumable-instance="${sealId}"]`))
+      await activate(page.locator(`[data-use-item="${sealId}"]`))
       const dialog = page.locator('[data-consumable-dialog]')
-      await activate(dialog.locator('[data-consumable-item]'))
       await expect(dialog.locator('[data-seal-lifetime]')).toHaveText(
         copy.runOwnership.fateSeal
       )

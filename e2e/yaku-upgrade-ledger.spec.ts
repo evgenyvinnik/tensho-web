@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { clearReveals, handScoreTotal, settleReveals } from './helpers/table'
 
 for (const language of ['en', 'es', 'ru'])
   for (const kind of ['single', 'all'])
@@ -79,6 +80,8 @@ for (const language of ['en', 'es', 'ru'])
         if (!(await service.saveNewRun(raw)))
           throw new Error('Fixture save failed')
       }, kind)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-ledger', {
         body: await page.evaluate(
@@ -86,6 +89,74 @@ for (const language of ['en', 'es', 'ru'])
         ),
         contentType: 'application/json',
       })
+      // On the table every upgrade is its own rail token; the full ledger
+      // lives in the Tea House.
+      const upgradeTokens = page.locator(
+        '[data-collectible-rail] [data-yaku-upgrade]'
+      )
+      const pairToken = page.locator(
+        '[data-collectible-rail] [data-yaku-upgrade="SevenPairs"]'
+      )
+      await expect(upgradeTokens).toHaveCount(0)
+      expect(await saved()).toEqual(before)
+      const orbId = before.state.celestialOrbs[0].instanceId
+      await activate(page.locator(`[data-consumable-instance="${orbId}"]`))
+      await activate(page.locator(`[data-use-item="${orbId}"]`))
+      await expect(
+        page.locator(`[data-consumable-instance="${orbId}"]`)
+      ).toHaveCount(0)
+      const used = await saved()
+      expect(used.state.celestialOrbs).toHaveLength(0)
+      expect(
+        used.state.celestialOrbSystem.orbLevels.find(
+          (x: [string, number]) => x[0] === 'SevenPairs'
+        )[1]
+      ).toBe(2)
+      await expect(upgradeTokens).toHaveCount(kind === 'all' ? 12 : 1)
+      await expect(pairToken).toHaveAccessibleName(
+        copy.upgradeFamilies.tokenLabel
+          .replace('{{family}}', copy.upgradeFamilies.SevenPairs.name)
+          .replace('{{level}}', (2).toLocaleString(language))
+      )
+      const pairPanel = page
+        .getByRole('dialog')
+        .filter({ hasText: copy.upgradeFamilies.SevenPairs.covers })
+      await activate(pairToken)
+      await expect(pairPanel).toContainText(
+        copy.yakuUpgrades.bonus
+          .replace('{{chips}}', '35')
+          .replace('{{mult}}', '3')
+      )
+      await expect(pairPanel).toContainText(
+        copy.yakuUpgrades.triggers.replace('{{total}}', '0')
+      )
+      expect(
+        await pairPanel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
+      ).toBe(true)
+      await page.screenshot({ path: testInfo.outputPath('ledger-play.png') })
+      await page.keyboard.press('Escape')
+      await expect(pairPanel).toHaveCount(0)
+      expect(await saved()).toEqual(used)
+      // Pick the whole Seven Pairs hand onto the felt.
+      for (const tile of used.state.handTiles)
+        await activate(
+          page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
+        )
+      await expect(
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
+      ).toHaveCount(14)
+      const forecast = await handScoreTotal(page, 'preview').getAttribute(
+        'title'
+      )
+      const play = page.locator('[data-game-action="play"]')
+      await activate(play)
+      await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+      const shop = await saved()
+      expect(
+        new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(
+          shop.state.lastHandScore
+        )
+      ).toBe(forecast)
       const trigger = page.getByTestId('yaku-upgrades-trigger')
       const open = async () => {
         await activate(trigger)
@@ -107,30 +178,6 @@ for (const language of ['en', 'es', 'ru'])
         await expect(trigger).toBeFocused()
       }
       let dialog = await open()
-      await expect(dialog).toContainText(copy.yakuUpgrades.empty)
-      expect(await saved()).toEqual(before)
-      await close()
-      await activate(
-        page.getByRole('button', {
-          name: new RegExp(copy.consumableUse.celestialOrbs),
-        })
-      )
-      const consumable = page.getByRole('dialog')
-      await activate(consumable.locator('[data-consumable-item]'))
-      await activate(consumable.locator('[data-consumable-confirm]'))
-      await expect(consumable).toHaveCount(0)
-      const used = await saved()
-      expect(used.state.celestialOrbs).toHaveLength(0)
-      expect(
-        used.state.celestialOrbSystem.orbLevels.find(
-          (x: [string, number]) => x[0] === 'SevenPairs'
-        )[1]
-      ).toBe(2)
-      const play = page.locator('[data-game-action="play"]')
-      await activate(play)
-      await expect(play).toContainText(copy.gameplay.confirmHand)
-      const staging = await saved()
-      dialog = await open()
       await expect(dialog.locator('[data-yaku-upgrade]')).toHaveCount(
         kind === 'all' ? 12 : 1
       )
@@ -157,41 +204,20 @@ for (const language of ['en', 'es', 'ru'])
           .replace('{{mult}}', '3')
       )
       await expect(pair).toContainText(
-        copy.yakuUpgrades.triggers.replace('{{total}}', '0')
+        copy.yakuUpgrades.triggers.replace('{{total}}', '1')
       )
       await pair.scrollIntoViewIfNeeded()
-      await page.screenshot({ path: testInfo.outputPath('ledger-play.png') })
+      await page.screenshot({ path: testInfo.outputPath('ledger-shop.png') })
       const ledger = page.getByTestId('yaku-upgrades-ledger')
       expect(
         await ledger.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
       ).toBe(true)
-      expect(await saved()).toEqual(staging)
       const explanation = dialog.locator('details')
       await expect(explanation).not.toHaveAttribute('open')
       await activate(explanation.locator('summary'))
       await expect(explanation).toHaveAttribute('open')
       await expect(explanation).toContainText(copy.yakuUpgrades.note)
-      expect(await saved()).toEqual(staging)
-      await close()
-      await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
-      ).toHaveCount(14)
-      const forecast = await page
-        .getByTestId('score-preview-total')
-        .getAttribute('aria-label')
-      await activate(play)
-      await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-      const shop = await saved()
-      expect(
-        new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(
-          shop.state.lastHandScore
-        )
-      ).toBe(forecast)
-      dialog = await open()
-      await expect(
-        dialog.locator('[data-yaku-upgrade="SevenPairs"]')
-      ).toContainText(copy.yakuUpgrades.triggers.replace('{{total}}', '1'))
-      await page.screenshot({ path: testInfo.outputPath('ledger-shop.png') })
+      expect(await saved()).toEqual(shop)
       await close()
       expect(await saved()).toEqual(shop)
       await page.reload()
@@ -205,12 +231,14 @@ for (const language of ['en', 'es', 'ru'])
         page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       )
       await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       await saved()
-      dialog = await open()
-      await expect(
-        dialog.locator('[data-yaku-upgrade="SevenPairs"]')
-      ).toContainText(copy.yakuUpgrades.triggers.replace('{{total}}', '1'))
-      await close()
+      await activate(pairToken)
+      await expect(pairPanel).toContainText(
+        copy.yakuUpgrades.triggers.replace('{{total}}', '1')
+      )
+      await page.keyboard.press('Escape')
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth + 1

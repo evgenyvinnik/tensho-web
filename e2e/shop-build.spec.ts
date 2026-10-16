@@ -1,4 +1,6 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
+import { offerCard, offerDetails, openOffer } from './helpers/shop'
+import { clearReveals, parkMouse } from './helpers/table'
 
 async function activate(control: Locator, touch: boolean) {
   if (touch) await control.tap()
@@ -102,24 +104,24 @@ for (const negative of [false, true]) {
       }
     })
     await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
+    // startNewRun queues its starting Decrees for a reveal over the shop.
+    await clearReveals(page)
     const panel = page.locator('[data-shop-build]')
     await expect(panel.getByRole('heading')).toHaveText(
       negative ? 'Tu combinación' : 'Your build'
     )
     await expect(panel.locator('[data-build-slots]')).toContainText('6 / 6')
     const before = await saved(page)
-    const purchase = page.locator(`[data-shop-item="${info.offer}"] button`)
+    // Buy and the engine's reason live in the offer's details.
+    const purchase = page.locator(`[data-shop-buy="${info.offer}"]`)
+    const blocked = offerDetails(page, info.offer).locator(
+      '[data-purchase-blocked]'
+    )
+    await openOffer(page, info.offer)
     await expect(purchase).toBeDisabled()
-    const blocked = page.locator(
-      `[data-shop-item="${info.offer}"] [data-purchase-blocked]`
-    )
     await expect(blocked).toBeVisible()
-    await expect(purchase).toHaveAccessibleDescription(
-      new RegExp(
-        (await blocked.innerText()).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-      )
-    )
     expect(await saved(page)).toEqual(before)
+    await page.keyboard.press('Escape')
     const buildToggle = panel.locator('[data-build-toggle]')
     if (await buildToggle.isVisible()) await activate(buildToggle, isMobile)
     const protectedCard = panel.locator(
@@ -173,10 +175,12 @@ for (const negative of [false, true]) {
         (d: { instanceId: string }) => d.instanceId
       )
     ).toContain(info.eternal)
+    await openOffer(page, info.offer)
     if (negative) {
       await expect(purchase).toBeDisabled()
       await expect(blocked).toBeVisible()
       expect(await saved(page)).toEqual(afterSale)
+      await page.keyboard.press('Escape')
     } else {
       await expect(purchase).toBeEnabled()
       await expect(blocked).toHaveCount(0)
@@ -188,6 +192,8 @@ for (const negative of [false, true]) {
         game.getState().gold = 0
       })
       await activate(purchase, isMobile)
+      // Keep a hover-opened offer from covering the error.
+      await parkMouse(page)
       await expect(page.getByRole('alert')).toBeVisible()
       expect(
         await page.getByRole('alert').evaluate((node) => {
@@ -210,9 +216,10 @@ for (const negative of [false, true]) {
         game.getState().gold = 13
         eventBus.emit('shopUpdated', { isOpen: true })
       })
+      await openOffer(page, info.offer)
       await expect(purchase).toBeEnabled()
       await activate(purchase, isMobile)
-      await expect(purchase).toHaveCount(0)
+      await expect(offerCard(page, info.offer)).toHaveCount(0)
       await expect(panel.locator('[data-build-slots]')).toContainText('6 / 6')
       const afterPurchase = await saved(page)
       expect(afterPurchase.state.gold).toBe(9)

@@ -1,13 +1,17 @@
 import { expect, test } from '@playwright/test'
+import {
+  clearReveals,
+  openTable,
+  settleReveals,
+  swiftClear,
+} from './helpers/table'
 
-test('real skips earn a Rare+ Omen and defer its fee until the Boss reward shop', async ({
+test('swift clears earn a Rare+ Omen and charge its fee in the next shop', async ({
   page,
-  isMobile,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 320, height: 568 })
-  await page.goto('/en/play')
-  await expect(page.locator('[data-game-action="skip"]')).toBeVisible()
+  await openTable(page)
   await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
     const { gameOrchestrator: game } = await import(path)
@@ -18,70 +22,15 @@ test('real skips earn a Rare+ Omen and defer its fee until the Boss reward shop'
     )
     state.roundManager.getCurrentAct().rounds[2].bossMandate = undefined
   })
-  const skip = page.locator('[data-game-action="skip"]')
-  await skip.click()
-  await skip.click()
-  await expect(skip).toBeDisabled()
-  const earned = await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const storePath = '/src/stores/omenStore.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { useOmenStore } = await import(storePath)
-    return {
-      round: game.getState().currentRound,
-      pending: useOmenStore
-        .getState()
-        .activeTags.filter(
-          (tag: { definitionId: string }) => tag.definitionId === 'decree_omen'
-        ).length,
-      consumed: useOmenStore
-        .getState()
-        .consumedTags.filter(
-          (tag: { definitionId: string }) => tag.definitionId === 'decree_omen'
-        ).length,
-      shop: game.shop.isOpen,
-      canSkip: game.canPerformAction({ type: 'skip' }),
-    }
-  })
-  expect(earned).toEqual({
-    round: 3,
-    pending: 1,
-    consumed: 0,
-    shop: false,
-    canSkip: false,
-  })
-  // A deliberate winning-hand fixture isolates payout from reaching the Boss.
-  const ids = await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const tilePath = '/src/core/Tile.ts'
-    const eventPath = '/src/game/EventBus.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { Tile, TileSuit } = await import(tilePath)
-    const { eventBus } = await import(eventPath)
-    const state = game.getState()
-    state.targetScore = 1
-    state.roundManager.getCurrentRound().scoreTarget = 1
-    state.handTiles = [
-      new Tile(TileSuit.Pinzu, 2, 'omen-win-a'),
-      new Tile(TileSuit.Pinzu, 2, 'omen-win-b'),
-    ]
-    state.selectedTileIds.clear()
-    state.faceDownTileIds.clear()
-    eventBus.emit('tileDrawn', {
-      tileId: 'omen-win-a',
-      tilesRemaining: state.wall.length - state.drawIndex,
-    })
-    return state.handTiles.map((tile: { id: string }) => tile.id)
-  })
-  for (const id of ids) {
-    const tile = page.locator(
-      `[data-play-zone="hand"] [data-play-tile="${id}"]`
-    )
-    if (isMobile) await tile.tap()
-    else await tile.click()
-  }
-  await page.locator('[data-game-action="play"]').click()
-  await expect(page).toHaveURL(/\/en\/shop$/)
+  // startNewRun queues its starting Decrees for a reveal over the table.
+  await clearReveals(page)
+  // Skip is gone: clearing the Small and Large rounds with Turns to spare
+  // earns their Omens, drawn in the same seeded order.
+  await swiftClear(page)
+  await page.getByRole('button', { name: 'Continue to Next Round' }).click()
+  await expect(page).toHaveURL(/\/en\/play$/)
+  await settleReveals(page, 2_000)
+  await swiftClear(page)
   expect(
     await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts'
@@ -110,14 +59,13 @@ test('real skips earn a Rare+ Omen and defer its fee until the Boss reward shop'
   ).toEqual({ fee: 5, rare: true, pending: 0, consumed: 1 })
 })
 
-test('skip clears old Seasons and an earned lock preserves the next draw stack through redraw', async ({
+test('a new round clears old Seasons and an earned lock preserves the next draw stack through redraw', async ({
   page,
   isMobile,
 }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 320, height: 568 })
-  await page.goto('/en/play')
-  await expect(page.locator('[data-game-action="skip"]')).toBeVisible()
+  await openTable(page)
   await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const eventPath = '/src/game/EventBus.ts'
@@ -135,14 +83,24 @@ test('skip clears old Seasons and an earned lock preserves the next draw stack t
       effect: 'Fixture Decay',
     })
   })
+  // The fixture's Season is announced with a reveal over the table.
+  await settleReveals(page, 2_000)
   await expect(
     page.locator('[data-flora-season][aria-label="Decay"]')
   ).toBeVisible()
-  await page.locator('[data-game-action="skip"]').click()
+  // Skip is gone: swift clears of the Small and Large rounds earn their
+  // Omens, drawn in the same seeded order.
+  await swiftClear(page)
+  await page.getByRole('button', { name: 'Continue to Next Round' }).click()
+  await expect(page).toHaveURL(/\/en\/play$/)
+  await settleReveals(page, 2_000)
   await expect(
     page.locator('[data-flora-season][aria-label="Decay"]')
   ).toHaveCount(0)
-  await page.locator('[data-game-action="skip"]').click()
+  await swiftClear(page)
+  await page.getByRole('button', { name: 'Continue to Next Round' }).click()
+  await expect(page).toHaveURL(/\/en\/play$/)
+  await settleReveals(page, 2_000)
   const effects = page.getByTestId('pending-omens')
   await effects.locator('summary').click()
   await expect(
@@ -184,6 +142,8 @@ test('skip clears old Seasons and an earned lock preserves the next draw stack t
       ids: state.handTiles.slice(0, 2).map((tile: { id: string }) => tile.id),
     }
   })
+  // The fixture's Season is announced with a reveal over the table.
+  await settleReveals(page, 2_000)
   for (const id of fixture.ids) {
     const tile = page.locator(
       `[data-play-zone="hand"] [data-play-tile="${id}"]`
@@ -226,7 +186,8 @@ test('skip clears old Seasons and an earned lock preserves the next draw stack t
       { id: 'ordinary-draw', type: 'Summer' },
     ],
     active: 'Autumn',
-    discards: 2,
+    // Decay counts the REDRAW itself, on top of the fixture's two discards.
+    discards: 3,
     lock: null,
     protection: true,
     replacements: ['replacement-a', 'replacement-b'],
@@ -234,15 +195,6 @@ test('skip clears old Seasons and an earned lock preserves the next draw stack t
   await expect(
     page.locator('[data-flora-season][aria-label="Decay"]')
   ).toBeVisible()
-  // Keep the post-action screenshot inspectable using the real tutorial control.
-  const disableTips = page.getByRole('button', {
-    name: "Don't show tips",
-    exact: true,
-  })
-  if (await disableTips.isVisible()) {
-    await disableTips.click()
-    await expect(disableTips).toHaveCount(0)
-  }
   await page.screenshot({
     path: testInfo.outputPath('omen-season-redraw-320.png'),
   })

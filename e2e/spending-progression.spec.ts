@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { buyOffer, charterCard } from './helpers/shop'
+import { clearReveals, openTable, settleReveals } from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
@@ -14,14 +16,7 @@ for (const [language, copy] of [
     await page.setViewportSize(
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
-    await page.goto(`/${language}/play`)
-    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
+    await openTable(page, `/${language}/play`)
     // Controlled prerequisite, hand and Boss-shop fixtures; payment, penalty,
     // unlock, acquisition and persisted reload use the real application.
     await page.evaluate(async () => {
@@ -65,6 +60,8 @@ for (const [language, copy] of [
         tilesRemaining: state.wall.length - state.drawIndex,
       })
     })
+    // startNewRun queues its starting Decrees for a reveal over the table.
+    await clearReveals(page)
     for (const rank of [2, 3, 4]) {
       const tile = page.locator(
         `[data-play-zone="hand"] [data-play-tile="spending-${rank}"]`
@@ -101,15 +98,11 @@ for (const [language, copy] of [
       eventBus.emit('shopUpdated', { isOpen: true })
     })
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+    // Charters have no confirmation: Buy sits in the card's details.
     const buyCharter = async () => {
-      await page.getByTestId('charter-card').getByRole('button').click()
-      await page
-        .getByRole('dialog', {
-          name: copy.shop.ui.confirmPurchase,
-          exact: true,
-        })
-        .getByRole('button', { name: copy.shop.buy, exact: true })
-        .click()
+      const card = charterCard(page)
+      await buyOffer(page, (await card.getAttribute('data-shop-offer'))!)
+      await expect(card).toHaveCount(0)
     }
     await buyCharter()
     expect(await progress()).toEqual({ spent: 2500, unlocked: true })
@@ -117,6 +110,8 @@ for (const [language, copy] of [
       .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       .click()
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts'
       const charterPath = '/src/systems/TeaHouseSystem.ts'
@@ -135,7 +130,7 @@ for (const [language, copy] of [
       game.shop.state.charterOffering.finalCost = 10
       eventBus.emit('shopUpdated', { isOpen: true })
     })
-    const card = page.getByTestId('charter-card')
+    const card = charterCard(page)
     const art = card.locator('img[src$="plentiful-stock.webp"]')
     await expect(art).toBeVisible()
     expect(

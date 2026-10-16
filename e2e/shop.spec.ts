@@ -1,13 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
+import { buyOffer } from './helpers/shop'
 import { clearReveals, openTable } from './helpers/table'
-
-/** Every offer opens its details on tap; Buy is the only purchase step. */
-async function buyOffer(page: Page, offerId: string) {
-  const card = page.locator(`[data-shop-offer="${offerId}"]`)
-  await card.scrollIntoViewIfNeeded()
-  await card.click()
-  await page.locator(`[data-shop-buy="${offerId}"]`).click()
-}
 
 for (const upgraded of [false, true]) {
   test(`illustrated Spanish Charter sits in the shop row and buys without a second step (${upgraded ? 'upgraded' : 'base'})`, async ({

@@ -12,7 +12,9 @@ type Flora = ReturnType<GameOrchestrator['getFloraState']>
 
 export function useSeasonName() {
   const { t } = useTranslation()
-  return (season: Pick<SeasonTile, 'type' | 'isCorrupted' | 'corruptedType'>) =>
+  return (
+    season: Pick<SeasonTile, 'type' | 'isCorrupted' | 'corruptedType'>
+  ) =>
     season.isCorrupted
       ? t(
           'flora.details.' +
@@ -25,9 +27,15 @@ export function useSeasonName() {
 export function FlowerDetails({
   flower,
   flora,
+  orchidBloom = 0,
+  plumRecovery = 0,
 }: {
   flower: FlowerVariant
   flora: Flora
+  /** Extra tiles Orchid drew on the last play this round. */
+  orchidBloom?: number
+  /** Tiles Plum returned from the river on the last play this round. */
+  plumRecovery?: number
 }) {
   const { t, i18n } = useTranslation()
   const owned = flora.flowers.flowers.find((entry) => entry.type === flower)
@@ -60,9 +68,23 @@ export function FlowerDetails({
           })}
         </p>
       )}
-      {flora.flowersSuppressed && (
+      {flower === 'Orchid' && orchidBloom > 0 && (
+        <p data-orchid-bloom className="text-[var(--color-golden-yellow)]">
+          {t('flora.details.orchidBloom', { count: orchidBloom })}
+        </p>
+      )}
+      {flower === 'Plum' && plumRecovery > 0 && (
+        <p data-plum-recovery className="text-[var(--color-golden-yellow)]">
+          {t('flora.details.plumRecovery', { count: plumRecovery })}
+        </p>
+      )}
+      {(flora.flowersSuppressed || flora.flowersProtected) && (
         <p className="rounded border border-amber-300/50 p-2 text-xs">
-          {t('flora.details.suppressed')}
+          {t(
+            flora.flowersSuppressed
+              ? 'flora.details.suppressed'
+              : 'flora.details.protected'
+          )}
         </p>
       )}
       <p className="text-xs text-[var(--color-beige-white)]/70">

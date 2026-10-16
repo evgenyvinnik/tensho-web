@@ -1,5 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { offerCard, openOffer } from './helpers/shop'
+import { settleReveals } from './helpers/table'
 
 const replayPath = process.env.CATALYSTS_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -126,12 +128,15 @@ for (const language of ['en', 'es'])
     await expect(page).toHaveURL(/\/shop$/)
     const before = await saved()
     const offerId = before.shop.teaHouse.itemOfferings[0].id
-    const offer = page
-      .locator('[data-shop-item]')
-      .filter({ has: page.locator('[data-offer-flower]') })
-      .first()
-    await activate(offer.locator('[data-offer-flower]'))
-    const dialog = page.getByRole('dialog')
+    // The Flower payment is offered from the Decree's details, beside Buy.
+    const offerFlower = async () => {
+      const details = await openOffer(page, offerId)
+      await activate(details.locator('[data-offer-flower]'))
+    }
+    await offerFlower()
+    const dialog = page
+      .getByRole('dialog')
+      .filter({ has: page.locator('[data-flower-catalyst]') })
     await expect(
       dialog.getByRole('button', { name: copy.common.confirm, exact: true })
     ).toBeDisabled()
@@ -149,7 +154,8 @@ for (const language of ['en', 'es'])
     await expect(dialog.locator('[data-catalyst-consequences]')).toContainText(
       copy.shop.catalyst.loss2
     )
-    for (const img of await dialog.locator('img').all())
+    // The Flower art, not the close button's icon.
+    for (const img of await dialog.locator('[data-flower-catalyst] img').all())
       expect(
         await img.evaluate(async (img: HTMLImageElement) => {
           await img.decode()
@@ -184,7 +190,7 @@ for (const language of ['en', 'es'])
     )
     const afterSale = await saved()
     expect(afterSale.state.gold).toBe(3)
-    await activate(offer.locator('[data-offer-flower]'))
+    await offerFlower()
     await activate(dialog.locator('input[value="catalyst-plum"]'))
     await expect(
       dialog.getByRole('button', { name: confirmText, exact: true })
@@ -218,7 +224,7 @@ for (const language of ['en', 'es'])
     expect(paid.state.flowerSystem.collectedTypes).toEqual(['Plum', 'Orchid'])
     await page.reload()
     expect(await saved()).toEqual(paid)
-    await expect(page.locator(`[data-shop-item="${offerId}"]`)).toHaveCount(0)
+    await expect(offerCard(page, offerId)).toHaveCount(0)
     await expect(
       page.locator('[data-shop-build] [data-decree-instance]')
     ).toHaveCount(5)
@@ -227,6 +233,8 @@ for (const language of ['en', 'es'])
       page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
     )
     await expect(page).toHaveURL(/\/play$/)
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     const next = await saved()
     expect(next.state.flowerSystem).toEqual(paid.state.flowerSystem)
     expect(errors).toEqual([])

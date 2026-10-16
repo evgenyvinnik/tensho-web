@@ -1,5 +1,7 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { offerCard, openOffer } from './helpers/shop'
+import { selectTiles, settleReveals } from './helpers/table'
 
 async function activate(locator: Locator, touch: boolean) {
   if (touch) await locator.tap()
@@ -86,7 +88,7 @@ for (const phoenix of [false, true]) {
   test(
     phoenix
       ? 'Phoenix portrait follows purchase, last-round rescue and exact reload'
-      : 'one-round Perishable survives a skip, pays once, then expires after the actual play',
+      : 'one-round Perishable pays once, then expires after the actual play',
     async ({ page, isMobile }, testInfo) => {
       await page.setViewportSize(
         isMobile ? { width: 320, height: 568 } : { width: 1280, height: 800 }
@@ -98,9 +100,10 @@ for (const phoenix of [false, true]) {
       const id = phoenix ? 'decree-phoenix' : 'decree-tax-collector'
       const name = es.decrees.items[id].name
       const card = page
-        .locator('[data-shop-item]')
-        .filter({ has: page.getByRole('heading', { name, exact: true }) })
+        .locator('[data-shop-offer]')
+        .filter({ hasText: name })
         .first()
+      const offerId = (await card.getAttribute('data-shop-offer'))!
       if (phoenix) {
         const image = card.locator('img[src$="decrees/phoenix.webp"]')
         await expect(image).toBeVisible()
@@ -111,30 +114,23 @@ for (const phoenix of [false, true]) {
           )
         ).toBe(true)
       }
-      await activate(card.getByRole('button'), isMobile)
+      const details = await openOffer(page, offerId)
+      await activate(details.locator(`[data-shop-buy="${offerId}"]`), isMobile)
+      await expect(offerCard(page, offerId)).toHaveCount(0)
       expect((await saved(page)).state.gold).toBe(94)
+      // The bought Decree is revealed over the shop.
+      await settleReveals(page)
       await activate(
         page.getByRole('button', { name: es.shop.ui.nextRound, exact: true }),
         isMobile
       )
       await expect(page).toHaveURL(/\/es\/play$/)
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       expect(
         (await saved(page)).state.decreeSystem.ownedDecrees[0].stickers[0]
           .roundsRemaining
       ).toBe(1)
-      if (!phoenix) {
-        await activate(
-          page.getByRole('button', { name: 'Saltar', exact: true }),
-          isMobile
-        )
-        await expect
-          .poll(async () => (await saved(page)).state.currentRound)
-          .toBe(3)
-        expect(
-          (await saved(page)).state.decreeSystem.ownedDecrees[0].stickers[0]
-            .roundsRemaining
-        ).toBe(1)
-      }
       await activate(page.locator('[data-decree-instance]').first(), isMobile)
       const dialog = page.getByRole('dialog')
       await expect(dialog).toContainText(
@@ -154,11 +150,8 @@ for (const phoenix of [false, true]) {
       })
       await page.keyboard.press('Escape')
       await preparePlay(page, phoenix)
-      for (let i = 0; i < 2; i++)
-        await activate(
-          page.locator('[data-play-zone="hand"] [data-play-tile]').last(),
-          isMobile
-        )
+      // Pick two distinct rack tiles onto the felt.
+      await selectTiles(page, 2)
       await activate(page.locator('[data-game-action="play"]'), isMobile)
       await expect(page).toHaveURL(/\/es\/shop$/)
       // The round-end checkpoint precedes the route effect that opens and

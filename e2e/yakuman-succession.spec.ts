@@ -1,5 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import {
+  continueToNextRound,
+  handScoreTotal,
+  swiftClear,
+} from './helpers/table'
 
 const replayPath = process.env.SUCCESSION_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -118,15 +123,38 @@ for (const language of ['en', 'es'])
     await page.screenshot({ path: testInfo.outputPath('succession-rule.png') })
     expect(await saved()).toEqual(before)
     // This is an outside-dismissed inventory popover, not a modal with Close.
-    await activate(page.locator('[data-tutorial="yaku-display"]'))
+    await activate(page.locator('[data-hand-score]'))
     await expect(dialog).toHaveCount(0)
     for (const tile of before.state.handTiles)
       await activate(
         page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
       )
-    await expect(page.locator('[data-yaku-ascended="chinitsu"]')).toHaveText(
-      copy.gameplay.yakumanAscended
+    // The table's forecast is the engine's, with Chinitsu ascended to a ×4
+    // Yakuman by Succession.
+    const engine = await page.evaluate(
+      async (ids) => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const { gameOrchestrator: game } = await import(path)
+        const preview = game.previewScore(ids)
+        const chinitsu = preview.detectedYaku.find(
+          (yaku: { definition: { id: string } }) =>
+            yaku.definition.id === 'chinitsu'
+        )
+        return {
+          score: preview.finalScore,
+          chinitsu: chinitsu && {
+            ascended: chinitsu.definition.ascended,
+            tier: chinitsu.definition.tier,
+            multiplier: chinitsu.definition.multiplier,
+          },
+        }
+      },
+      before.state.handTiles.map((tile: { id: string }) => tile.id)
     )
+    expect(engine.chinitsu).toEqual({ ascended: true, tier: 4, multiplier: 4 })
+    await expect(
+      page.locator('[data-hand-score] [data-hand-score-pattern]')
+    ).toHaveText(copy.patterns.mahjong.name)
     expect(await saved()).toEqual({
       ...before,
       state: {
@@ -137,12 +165,13 @@ for (const language of ['en', 'es'])
       },
     })
     const forecast = Number(
-      (await page.locator('[data-game-action-score]').textContent())!.replace(
+      (await handScoreTotal(page, 'preview').getAttribute('title'))!.replace(
         /\D/g,
         ''
       )
     )
     expect(forecast).toBeGreaterThan(0)
+    expect(forecast).toBe(engine.score)
     await page.screenshot({
       path: testInfo.outputPath('succession-forecast.png'),
     })
@@ -159,7 +188,9 @@ for (const language of ['en', 'es'])
     ).toHaveLength(14)
     await page.reload()
     expect(await saved()).toEqual(paid)
-    await activate(page.locator('[data-game-action="skip"]'))
+    // Skip is gone: clear the round to reach the next one.
+    await swiftClear(page)
+    await continueToNextRound(page)
     await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
     expect((await saved()).state.flowerSystem).toEqual(paid.state.flowerSystem)
     expect((await saved()).state.decreeSystem.ownedDecrees[0].id).toBe(

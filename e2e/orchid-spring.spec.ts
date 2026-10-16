@@ -1,5 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import {
+  continueToNextRound,
+  handScoreTotal,
+  swiftClear,
+} from './helpers/table'
 
 const fixtureDir = process.env.ORCHID_REPLAY_DIR
 for (const language of ['en', 'es'])
@@ -117,9 +122,8 @@ for (const language of ['en', 'es'])
       const forecast =
         action === 'play'
           ? Number(
-              await page
-                .locator('[data-game-action-score]')
-                .textContent()
+              await handScoreTotal(page, 'preview')
+                .getAttribute('title')
                 .then((s) => s!.replace(/\D/g, ''))
             )
           : null
@@ -131,25 +135,23 @@ for (const language of ['en', 'es'])
       expect(bloomed.state.handTiles.map((t: { id: string }) => t.id)).toEqual(
         expect.arrayContaining(['gift-1', 'gift-2'])
       )
-      expect(bloomed.state.handsRemaining).toBe(
-        before.state.handsRemaining - (action === 'play' ? 1 : 0)
-      )
-      expect(bloomed.state.redrawsRemaining).toBe(
-        before.state.redrawsRemaining - (action === 'redraw' ? 1 : 0)
-      )
+      // Play and REDRAW each spend a Turn; there are no free redraws here.
+      expect(bloomed.state.handsRemaining).toBe(before.state.handsRemaining - 1)
+      expect(bloomed.state.redrawsRemaining).toBe(before.state.redrawsRemaining)
       expect(bloomed.state.discardsRemaining).toBe(
         before.state.discardsRemaining
       )
       if (forecast !== null)
         expect(bloomed.state.score - before.state.score).toBe(forecast)
-      const flora = page.getByTestId('flora-details-trigger')
+      // The Orchid's own token on the item rail explains the extra tiles.
+      const flora = page.locator('[data-flora-flower="Orchid"]')
       await activate(flora)
-      const dialog = page.getByRole('dialog')
+      const dialog = page.getByRole('dialog', { name: copy.flora.orchid })
       await expect(dialog.locator('[data-orchid-bloom]')).toHaveText(
         copy.flora.details.orchidBloom.replace('{{count}}', '2')
       )
       expect(
-        await dialog
+        await flora
           .locator('img[src*="orchid-bloom.webp"]')
           .evaluate(async (img: HTMLImageElement) => {
             await img.decode()
@@ -170,11 +172,10 @@ for (const language of ['en', 'es'])
       await page.reload()
       expect(await saved()).toEqual(bloomed)
       await activate(flora)
+      await expect(dialog).toBeVisible()
       await expect(page.locator('[data-orchid-bloom]')).toHaveCount(0)
       await activate(
-        page
-          .getByRole('dialog')
-          .getByRole('button', { name: copy.common.close, exact: true })
+        dialog.getByRole('button', { name: copy.common.close, exact: true })
       )
       for (const id of ['hand-3', 'hand-4', 'hand-5'])
         await activate(
@@ -184,7 +185,9 @@ for (const language of ['en', 'es'])
       await expect
         .poll(async () => (await saved()).state.handTiles.length)
         .toBe(16)
-      await activate(page.locator('[data-game-action="skip"]'))
+      // Skip is gone: clear the round to reach the next one.
+      await swiftClear(page)
+      await continueToNextRound(page)
       await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
       const next = await saved()
       expect(next.state.handTiles).toHaveLength(14)

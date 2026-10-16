@@ -2,6 +2,8 @@ import { test, expect, type Locator } from '@playwright/test'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import type { ClassicRunSnapshot } from '../src/game/ClassicRunSnapshot'
+import { offerCard } from './helpers/shop'
+import { settleReveals } from './helpers/table'
 
 // A valid, deliberately funded shop fixture, not evidence of an organic win.
 const fixture = execFileSync('bun', ['e2e/fixtures/shop-layout.mts'], {
@@ -78,24 +80,21 @@ for (const [index, language] of languages.entries()) {
     await expect(hint.locator('details')).not.toHaveAttribute('open')
     await expect(next).toBeInViewport({ ratio: 1 })
     // The first product, not just a title, is now discoverable on arrival.
-    await expect(page.locator('[data-shop-item]').first()).toBeInViewport()
-    await expect(receipt.locator('img')).toHaveAttribute(
-      'src',
-      /settlement-ledger\.webp$/
-    )
+    await expect(page.locator('[data-shop-offer]').first()).toBeInViewport()
+    // The ledger leads the receipt; Omen and control icons follow it.
+    const ledger = receipt.locator('img').first()
+    await expect(ledger).toHaveAttribute('src', /settlement-ledger\.webp$/)
     expect(
-      await receipt.locator('img').evaluate(async (node: HTMLImageElement) => {
+      await ledger.evaluate(async (node: HTMLImageElement) => {
         await node.decode()
         return node.naturalWidth
       })
     ).toBe(512)
     await page.screenshot({ path: info.outputPath('shop-compact.png') })
-    const geometry = await page
-      .locator('[data-shop-items]')
-      .evaluate((node) => ({
-        itemsTop: node.getBoundingClientRect().top,
-        pageFits: document.documentElement.scrollWidth <= innerWidth,
-      }))
+    const geometry = await page.locator('[data-shop-row]').evaluate((node) => ({
+      itemsTop: node.getBoundingClientRect().top,
+      pageFits: document.documentElement.scrollWidth <= innerWidth,
+    }))
     expect(geometry.pageFits).toBe(true)
     expect(
       await page.locator('[data-shop-build]').evaluate((node) =>
@@ -159,12 +158,10 @@ for (const [index, language] of languages.entries()) {
       await page.setViewportSize({ width: 1280, height: 800 })
     }
     const offer = before.shop.teaHouse.itemOfferings[0]
-    const buy = page
-      .locator(`[data-shop-item="${offer.id}"]`)
-      .getByRole('button')
-      .first()
-    await activate(buy)
-    await expect(buy).toHaveCount(0)
+    // Buy sits in the offer's details, opened from its card.
+    await activate(offerCard(page, offer.id))
+    await activate(page.locator(`[data-shop-buy="${offer.id}"]`))
+    await expect(offerCard(page, offer.id)).toHaveCount(0)
     await expect(toggle).toHaveAttribute('aria-expanded', 'true')
     const purchased = await saved()
     expect(purchased.state.gold).toBe(46)
@@ -193,6 +190,8 @@ for (const [index, language] of languages.entries()) {
     await expect(next).toBeInViewport({ ratio: 1 })
     await activate(next)
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     const progressed = await saved()
     expect(progressed.state.currentRound).toBe(before.state.currentRound + 1)
     expect(progressed.state.gold).toBe(41)

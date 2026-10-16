@@ -1,9 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { clearReveals, handScoreTotal } from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const shape of ['standard', 'pairs', 'orphans', 'wildcard', 'clemency'])
-    test(`expanded rack ${shape} stages a declaration without its spares (${language})`, async ({
+    test(`expanded rack ${shape} picks a declaration without its spares (${language})`, async ({
       page,
       isMobile,
     }, testInfo) => {
@@ -135,6 +136,8 @@ for (const language of ['en', 'es'])
           throw new Error('Fixture save failed')
         return { ids, score }
       }, shape)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-play', {
         body: await page.evaluate(
@@ -147,18 +150,15 @@ for (const language of ['en', 'es'])
         contentType: 'application/json',
       })
       const play = page.locator('[data-game-action="play"]')
-      await expect(play).toContainText(copy.gameplay.stageHand)
-      await expect(page.locator('[data-play-zone="hand"]')).toContainText(
-        shape === 'wildcard' || shape === 'clemency'
-          ? copy.handInterpretation.ready
-          : copy.gameplay.completeHand
-      )
+      // The table offers the complete hand it found as one tap.
+      const mahjong = page.locator('[data-select-mahjong]')
+      await expect(mahjong).toHaveText(`✦ ${copy.patterns.mahjong.name}`)
       await expect(
         page.locator('[data-play-zone="hand"] [data-play-tile]')
       ).toHaveCount(16)
-      await activate(play)
-      await expect(play).toContainText(copy.gameplay.confirmHand)
-      const staged = page.locator('[data-play-zone="staging"] [data-play-tile]')
+      await activate(mahjong)
+      await expect(mahjong).toHaveCount(0)
+      const staged = page.locator('[data-play-zone="felt"] [data-play-tile]')
       await expect(staged).toHaveCount(expected.ids.length)
       expect(
         await staged.evaluateAll((nodes) =>
@@ -171,9 +171,12 @@ for (const language of ['en', 'es'])
       const staging = await saved()
       expect(staging.state.score).toBe(before.state.score)
       expect(staging.state.handsRemaining).toBe(before.state.handsRemaining)
-      await expect(page.getByTestId('score-preview-total')).toHaveAttribute(
-        'aria-label',
-        new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(
+      await expect(
+        page.locator('[data-hand-score] [data-hand-score-pattern]')
+      ).toHaveText(copy.patterns.mahjong.name)
+      await expect(handScoreTotal(page, 'preview')).toHaveAttribute(
+        'title',
+        new Intl.NumberFormat(language, { maximumFractionDigits: 3 }).format(
           expected.score
         )
       )

@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { buyOffer, packModal } from './helpers/shop'
+import { clearReveals, openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -15,8 +17,7 @@ for (const [language, copy] of [
       await page.setViewportSize(
         isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
       )
-      await page.goto(`/${language}/play`)
-      await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+      await openTable(page, `/${language}/play`)
       const fixture = await page.evaluate(async (kind) => {
         const gamePath = '/src/game/GameOrchestrator.ts'
         const sealPath = '/src/systems/FateSealSystem.ts'
@@ -86,8 +87,10 @@ for (const [language, copy] of [
         pack.maxSelections = 1
         offer.finalCost = 4
         eventBus.emit('shopUpdated', { isOpen: true })
-        return { packId: pack.pack.id, itemId: reward.instanceId }
+        return { offerId: offer.id as string, itemId: reward.instanceId }
       }, kind)
+      // startNewRun queues its starting Decrees for a reveal over the shop.
+      await clearReveals(page)
       const progress = () =>
         page.evaluate(async (kind) => {
           const progressionPath = '/src/stores/progressionStore.ts'
@@ -108,8 +111,8 @@ for (const [language, copy] of [
           }
         }, kind)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-      await page.locator(`[data-shop-pack="${fixture.packId}"]`).click()
-      const packDialog = page.getByRole('dialog')
+      await buyOffer(page, fixture.offerId)
+      const packDialog = packModal(page)
       await packDialog.locator('[role="button"][aria-pressed]').click()
       await packDialog
         .getByRole('button', { name: copy.shop.confirmSelection, exact: true })
@@ -131,29 +134,23 @@ for (const [language, copy] of [
         .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
         .click()
       await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
-      const family =
-        kind === 'seal'
-          ? copy.consumableUse.fateSeals
-          : copy.consumableUse.celestialOrbs
-      await page
-        .getByRole('button', {
-          name: copy.consumableUse.available
-            .replace('{{name}}', family)
-            .replace('{{count}}', '1'),
-          exact: true,
-        })
-        .click()
-      const useDialog = page.getByRole('dialog', { name: family, exact: true })
-      await useDialog
-        .locator(`[data-consumable-item="${fixture.itemId}"]`)
-        .click()
+      await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
+      // The reward waits on the item rail; its details hold the Use step.
+      const token = page.locator(
+        `[data-consumable-instance="${fixture.itemId}"]`
+      )
+      await token.click()
+      const use = page.locator(`[data-use-item="${fixture.itemId}"]`)
+      await expect(use).toBeEnabled()
       expect(await progress()).toEqual({
         count: 24,
         unlocked: false,
         archiveUnlocked: false,
       })
-      await useDialog.locator('[data-consumable-confirm]').click()
-      await expect(useDialog).not.toBeVisible()
+      await use.click()
+      await expect(token).toHaveCount(0)
       expect(await progress()).toEqual({
         count: 25,
         unlocked: true,

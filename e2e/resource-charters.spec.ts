@@ -1,5 +1,8 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { TURNS_PER_ROUND } from '../src/game/playRules'
+import { offerCard, offerDetails, openOffer } from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const charterId of ['swift_hand', 'full_palette'])
@@ -94,6 +97,8 @@ for (const language of ['en', 'es'])
           throw new Error('Fixture save failed')
       }, charterId)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+      // startNewRun queues its starting Decrees for a reveal over the shop.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-charter', {
         body: await page.evaluate(() =>
@@ -104,8 +109,10 @@ for (const language of ['en', 'es'])
         ),
         contentType: 'application/json',
       })
-      const card = page.getByTestId('charter-card'),
-        art = card.getByRole('img')
+      // The Charter sells from the same offer card as items and packs.
+      const charterOffer = before.shop.teaHouse.charterOffering.id
+      const card = offerCard(page, charterOffer),
+        art = card.locator('.shop-offer-art img')
       await expect(art).toHaveAttribute(
         'src',
         new RegExp(`${charterId.replace('_', '-')}.webp$`)
@@ -119,19 +126,15 @@ for (const language of ['en', 'es'])
         .toBe(true)
       await card.scrollIntoViewIfNeeded()
       await page.screenshot({ path: testInfo.outputPath('charter.png') })
-      await activate(card.getByRole('button'))
-      const dialog = page.getByRole('dialog', {
-        name: copy.shop.ui.confirmPurchase,
-        exact: true,
-      })
+      // Its details hold the only Buy step; closing them buys nothing.
+      const details = await openOffer(page, charterOffer)
       await activate(
-        dialog.getByRole('button', { name: copy.common.cancel, exact: true })
+        details.getByRole('button', { name: copy.common.close, exact: true })
       )
+      await expect(offerDetails(page, charterOffer)).toHaveCount(0)
       expect(await saved()).toEqual(before)
-      await activate(card.getByRole('button'))
-      await activate(
-        dialog.getByRole('button', { name: copy.shop.buy, exact: true })
-      )
+      await openOffer(page, charterOffer)
+      await activate(page.locator(`[data-shop-buy="${charterOffer}"]`))
       await expect(card).toHaveCount(0)
       const after = await saved()
       expect(after.state.gold).toBe(
@@ -143,8 +146,11 @@ for (const language of ['en', 'es'])
         page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       )
       await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+      // The new round can open on Flower and Season reveals.
+      await settleReveals(page, 2_000)
       const ready = await saved(),
-        hands = charterId === 'swift_hand' ? 6 : 4,
+        // Steady Hand and Swift Hand each add a Turn to the shared budget.
+        hands = TURNS_PER_ROUND + (charterId === 'swift_hand' ? 2 : 0),
         rackSize = charterId === 'full_palette' ? 16 : 14
       expect(ready.state.handsRemaining).toBe(hands)
       expect(ready.state.handTiles).toHaveLength(rackSize)
@@ -158,8 +164,9 @@ for (const language of ['en', 'es'])
         await activate(
           page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
         )
+      // Picked tiles fly onto the felt above the rack.
       await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(2)
       expect((await saved()).state.handsRemaining).toBe(hands)
       await page.screenshot({ path: testInfo.outputPath('staged.png') })

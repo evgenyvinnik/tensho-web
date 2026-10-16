@@ -1,6 +1,8 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 import ru from '../src/i18n/locales/ru.json' with { type: 'json' }
+import { offerCard, openOffer } from './helpers/shop'
+import { settleReveals } from './helpers/table'
 
 async function activate(locator: Locator, touch: boolean) {
   if (touch) await locator.tap()
@@ -153,39 +155,38 @@ for (const [language, copy] of [
     const errors: string[] = []
     page.on('pageerror', (error) => errors.push(error.message))
     await fixture(page, language, 'shop')
-    const card = page
-      .locator('[data-shop-item]')
-      .filter({
-        has: page.getByRole('heading', {
-          name: copy.decrees.items['decree-half-suited'].name,
-          exact: true,
-        }),
-      })
+    const offerId = (await page
+      .locator('[data-shop-offer]')
+      .filter({ hasText: copy.decrees.items['decree-half-suited'].name })
       .first()
+      .getAttribute('data-shop-offer'))!
     const rental = copy.decreeModifiers.rentalDescription.replace(
       '{{amount}}',
       '0'
     )
-    await expect(card.getByRole('button')).toHaveAccessibleDescription(
-      new RegExp(rental.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-    )
-    await expect(card.locator('[data-decree-modifiers]')).toContainText(
+    // The offer's details explain its modifiers next to its Buy button.
+    const details = await openOffer(page, offerId)
+    const modifiers = details.locator('[data-decree-modifiers]')
+    await expect(modifiers).toContainText(rental)
+    await expect(modifiers).toContainText(
       copy.editions.items.negative.description
     )
-    await expect(card.locator('[data-decree-modifiers]')).toContainText(
-      copy.decreeModifiers.perishableName
-    )
-    await expect(card.locator('[data-decree-modifiers] dt')).toHaveCount(3)
-    await card.scrollIntoViewIfNeeded()
+    await expect(modifiers).toContainText(copy.decreeModifiers.perishableName)
+    await expect(modifiers.locator('dt')).toHaveCount(3)
     await page.screenshot({ path: testInfo.outputPath('shop-modifiers.png') })
-    await activate(card.getByRole('button'), isMobile)
+    await activate(details.locator(`[data-shop-buy="${offerId}"]`), isMobile)
+    await expect(offerCard(page, offerId)).toHaveCount(0)
     const purchased = await saved(page)
     expect(purchased.state.gold).toBe(34)
+    // The bought Decree is revealed over the shop.
+    await settleReveals(page)
     await activate(
       page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true }),
       isMobile
     )
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     const before = await saved(page)
     expect(before.state.decreeSystem.ownedDecrees[0].stickers).toEqual([
       { type: 'Perishable', roundsRemaining: 5 },
@@ -221,6 +222,8 @@ for (const [language, copy] of [
       isMobile
     )
     await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     const before = await saved(page)
     expect(
       before.state.decreeSystem.ownedDecrees[0].stickers[0].roundsRemaining
@@ -275,8 +278,12 @@ test('open details reflow across translation, viewport and motion-preference cha
     isMobile
   )
   await expect(page).toHaveURL(/\/es\/play$/)
+  // The new round can open on Flower and Season reveals.
+  await settleReveals(page, 2_000)
   const before = await saved(page)
   const scroll = page.locator('[data-decree-instance]').first()
+  // The Decree's own art; a debuffed scroll also carries a ban icon.
+  const art = scroll.locator('img[src*="/decrees/"]')
   await activate(scroll, isMobile)
   const dialog = page.getByRole('dialog')
   await expect(dialog).toHaveCSS('opacity', '1')
@@ -294,7 +301,7 @@ test('open details reflow across translation, viewport and motion-preference cha
   await expect(dialog).toContainText(ru.decreeModifiers.expired)
   await visibleTitleInk(dialog)
   await fits(page, dialog)
-  await expect(scroll.locator('img')).toHaveCSS('transform', 'none')
+  await expect(art).toHaveCSS('transform', 'none')
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.evaluate(async () => {
     const path = '/src/stores/settingsStore.ts'
@@ -302,7 +309,7 @@ test('open details reflow across translation, viewport and motion-preference cha
     useSettingsStore.setState({ reducedMotion: true })
   })
   await fits(page, dialog)
-  await expect(scroll.locator('img')).toHaveCSS('transition-duration', '0s')
+  await expect(art).toHaveCSS('transition-duration', '0s')
   await dialog.locator('[data-decree-sell]').scrollIntoViewIfNeeded()
   await expect(dialog.locator('[data-decree-sell]')).toBeInViewport()
   await page.screenshot({

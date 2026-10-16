@@ -44,6 +44,14 @@ export async function startRun(page: Page, path = '/en'): Promise<void> {
   await settleReveals(page, 2_000)
 }
 
+/** Leave the Tea House for the next round's table and settle its reveals. */
+export async function continueToNextRound(page: Page): Promise<void> {
+  await page.locator('[data-shop-continue]').click()
+  await expect(page).toHaveURL(/\/play$/)
+  // The new round can open on Flower and Season reveals.
+  await settleReveals(page, 2_000)
+}
+
 /** Open the table directly at /play (starting or resuming a run). */
 export async function openTable(page: Page, path = '/en/play'): Promise<void> {
   await page.goto(path)
@@ -54,8 +62,11 @@ export async function openTable(page: Page, path = '/en/play'): Promise<void> {
 export const rackTiles = (page: Page) =>
   page.locator('[data-play-zone="hand"] [data-play-tile]')
 
-/** Select the last `count` rack tiles (selection toggles in place). */
-export async function selectTiles(page: Page, count: number): Promise<string[]> {
+/** Pick the last `count` rack tiles onto the felt, in rack order. */
+export async function selectTiles(
+  page: Page,
+  count: number
+): Promise<string[]> {
   const ids = await rackTiles(page).evaluateAll(
     (tiles, n) =>
       tiles.slice(-n).map((tile) => tile.getAttribute('data-play-tile')!),
@@ -64,6 +75,15 @@ export async function selectTiles(page: Page, count: number): Promise<string[]> 
   for (const id of ids) await page.locator(`[data-play-tile="${id}"]`).click()
   return ids
 }
+
+/**
+ * The total in the middle of the table: the selection's forecast
+ * (`preview`), or the last play once nothing is selected (`last`).
+ */
+export const handScoreTotal = (page: Page, state: 'preview' | 'last') =>
+  page.locator(
+    `[data-hand-score][data-hand-score-state="${state}"] [data-hand-score-total]`
+  )
 
 /** Turns left and free redraws, as the action bar shows them. */
 export async function turnBudget(page: Page) {
@@ -107,4 +127,52 @@ export async function clearReveals(page: Page): Promise<void> {
  */
 export async function parkMouse(page: Page): Promise<void> {
   await page.mouse.move(1, 1)
+}
+
+/**
+ * Clear the current round with a real play and Turns to spare. Only the deal
+ * is controlled: a target of 1 and a Pair on the rack. Clearing a Small or
+ * Large round with two Turns left earns its Omen (Skip no longer exists).
+ * Resolves once the round's Tea House is open.
+ */
+export async function swiftClear(page: Page): Promise<void> {
+  const ids = await page.evaluate(async () => {
+    const gamePath = '/src/game/GameOrchestrator.ts'
+    const tilePath = '/src/core/Tile.ts'
+    const eventPath = '/src/game/EventBus.ts'
+    const { gameOrchestrator: game } = await import(gamePath)
+    const { Tile, TileSuit } = await import(tilePath)
+    const { eventBus } = await import(eventPath)
+    const state = game.getState()
+    state.targetScore = 1
+    state.roundManager.getCurrentRound().scoreTarget = 1
+    const round = `${state.currentAct}-${state.currentRound}`
+    state.handTiles = [
+      new Tile(TileSuit.Pinzu, 2, `swift-a-${round}`),
+      new Tile(TileSuit.Pinzu, 2, `swift-b-${round}`),
+    ]
+    state.selectedTileIds.clear()
+    state.faceDownTileIds.clear()
+    eventBus.emit('tileDrawn', {
+      tileId: state.handTiles[0].id,
+      tilesRemaining: state.wall.length - state.drawIndex,
+    })
+    return state.handTiles.map((tile: { id: string }) => tile.id) as string[]
+  })
+  for (const id of ids)
+    await page
+      .locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
+      .click()
+  await page.locator('[data-game-action="play"]').click()
+  await expect(page).toHaveURL(/\/shop$/)
+  // Route navigation precedes ShopScreen's effect that opens this visit.
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const { gameOrchestrator: game } = await import(path)
+        return game.shop.isOpen
+      })
+    )
+    .toBe(true)
 }

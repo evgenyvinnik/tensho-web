@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { evaluateFixture } from './helpers/evaluateFixture'
+import { charterCard, openOffer } from './helpers/shop'
+import { clearReveals, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -71,16 +73,10 @@ for (const [language, copy] of [
         isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
       )
       await page.goto(`/${language}/play`)
-      await expect(page.locator('[data-game-action="skip"]')).toBeVisible()
+      await expect(page.locator('[data-game-action="play"]')).toBeVisible()
       await expect(
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
-      await page
-        .getByRole('button', {
-          name: copy.progressiveHints.dontShow,
-          exact: true,
-        })
-        .click()
       // Isolate the achievement boundary and grant the base Charter. Round
       // payouts, transitions and progression notifications remain real UI work.
       await evaluateFixture(page, async () => {
@@ -125,6 +121,8 @@ for (const [language, copy] of [
       await expect(
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
 
       const payouts = unlock
         ? [[100, 10, 10]]
@@ -145,6 +143,9 @@ for (const [language, copy] of [
             const { eventBus } = await import(eventPath)
             const state = game.getState()
             state.gold = balance
+            // Win on the last Turn: a swift clear would also earn an Omen,
+            // which can change the next round's interest cap.
+            state.handsRemaining = 1
             state.targetScore = 1
             state.roundManager.getCurrentRound().scoreTarget = 1
             state.handTiles = [
@@ -199,6 +200,8 @@ for (const [language, copy] of [
           .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
           .click()
         await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+        // The new round can open on Flower and Season reveals.
+        await settleReveals(page, 2_000)
       }
       // Force only the offer, not eligibility: the runtime must consult the
       // achievement just earned (or still missing) when confirming payment.
@@ -222,14 +225,19 @@ for (const [language, copy] of [
         eventBus.emit('shopUpdated', { isOpen: true })
       })
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-      await page.getByTestId('charter-card').getByRole('button').click()
-      await page
-        .getByRole('dialog', {
-          name: copy.shop.ui.confirmPurchase,
-          exact: true,
-        })
-        .getByRole('button', { name: copy.shop.buy, exact: true })
-        .click()
+      // Charters have no confirmation: Buy sits in the card's details, and
+      // stays disabled while the achievement is still missing.
+      const charter = (await charterCard(page).getAttribute('data-shop-offer'))!
+      const details = await openOffer(page, charter)
+      const buy = details.locator(`[data-shop-buy="${charter}"]`)
+      if (unlock) {
+        await buy.click()
+        await expect(charterCard(page)).toHaveCount(0)
+      } else {
+        await expect(buy).toBeDisabled()
+        await expect(details.locator('[data-purchase-blocked]')).toBeVisible()
+        await page.keyboard.press('Escape')
+      }
       expect(
         await evaluateFixture(page, async () => {
           const path = '/src/game/GameOrchestrator.ts'
@@ -255,7 +263,7 @@ for (const [language, copy] of [
         page.locator('[data-classic-save-status="saved"]')
       ).toBeVisible()
       await page.reload()
-      await expect(page.locator('[data-game-action="skip"]')).toBeVisible()
+      await expect(page.locator('[data-game-action="play"]')).toBeVisible()
       expect(
         await evaluateFixture(page, async () => {
           const progressionPath = '/src/stores/progressionStore.ts'
