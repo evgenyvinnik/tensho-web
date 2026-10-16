@@ -808,10 +808,6 @@ export class GameOrchestrator {
     )
   }
 
-  private getConsumableCapacity(): number {
-    return 3 + this.state.charterSystem.calculateEffects().consumableSlots
-  }
-
   private publishBuildProgress(): void {
     if (this.actionDepth > 0 || !this.state.isRunActive) return
     const decrees = this.state.decreeSystem.getOwnedDecrees()
@@ -1396,10 +1392,6 @@ export class GameOrchestrator {
         script.instanceId,
         script.id,
       ]),
-      fateSealUsesRemaining:
-        this.state.consumableSystem.getFateSealUsesRemaining(),
-      voidScriptUsesRemaining:
-        this.state.consumableSystem.getVoidScriptUsesRemaining(),
     }
   }
 
@@ -2372,7 +2364,6 @@ export class GameOrchestrator {
 
     // Remove the seal from inventory
     this.state.fateSeals.splice(sealIndex, 1)
-    this.state.consumableSystem.markFateSealUsed()
 
     // Apply the system's effect descriptors to authoritative run state.
     for (const effectResult of result.effects) {
@@ -2506,7 +2497,6 @@ export class GameOrchestrator {
 
     // Remove the script from inventory
     this.state.voidScripts.splice(scriptIndex, 1)
-    this.state.consumableSystem.markVoidScriptUsed()
 
     if (downsideProtected) {
       this.state.omenSystem.triggerVoidScriptOmens()
@@ -2622,14 +2612,11 @@ export class GameOrchestrator {
       totalDecreeSellValue: this.state.decreeSystem
         .getOwnedDecrees()
         .reduce((sum, d) => sum + (d.sellValue ?? Math.floor(d.cost / 2)), 0),
-      // Generation can reuse the slot occupied by the consumed Seal.
+      // Only Decrees have slots; consumable inventory is unlimited.
       getAvailableSlots: () =>
         seal.id === 'seal_of_judgment' || seal.id === 'seal_of_the_immortal'
           ? this.state.decreeSystem.getAvailableSlots()
-          : Math.max(
-              0,
-              this.getConsumableCapacity() - this.getTotalConsumableCount() + 1
-            ),
+          : Number.POSITIVE_INFINITY,
     }
   }
 
@@ -2642,14 +2629,6 @@ export class GameOrchestrator {
         this.state.decreeSystem.getAvailableSlots(),
       getDecreeCount: () => this.state.decreeSystem.getOwnedDecrees().length,
     }
-  }
-
-  private getTotalConsumableCount(): number {
-    return (
-      this.state.fateSeals.length +
-      this.state.celestialOrbs.length +
-      this.state.voidScripts.length
-    )
   }
 
   private applyFateSealEffect(
@@ -3089,8 +3068,6 @@ export class GameOrchestrator {
     type: ConsumableType,
     effects: Effect[]
   ): boolean {
-    if (!this.canAddConsumable()) return false
-
     let consumable: BaseConsumable | null = null
     if (type === 'FateSeal') {
       const definition = FateSealSystem.getRandomFateSeal([], (id) =>
@@ -4811,9 +4788,6 @@ export class GameOrchestrator {
     script: VoidScript,
     source: 'purchase' | 'pack_open' | 'generated' = 'purchase'
   ): boolean {
-    if (!this.canAddConsumable()) {
-      return false
-    }
     script.source = source
     this.state.voidScripts.push(script)
     eventBus.emit('consumableAcquired', {
@@ -4844,7 +4818,6 @@ export class GameOrchestrator {
     item: FateSeal | CelestialOrb,
     source: 'purchase' | 'pack_open' | 'generated'
   ): boolean {
-    if (!this.canAddConsumable()) return false
     item.source = source
     if (item.type === 'FateSeal') this.state.fateSeals.push(item)
     else this.state.celestialOrbs.push(item)
@@ -4856,14 +4829,6 @@ export class GameOrchestrator {
       source,
     })
     return true
-  }
-
-  canAddConsumable(): boolean {
-    const total =
-      this.state.fateSeals.length +
-      this.state.celestialOrbs.length +
-      this.state.voidScripts.length
-    return total < this.getConsumableCapacity()
   }
 
   /**

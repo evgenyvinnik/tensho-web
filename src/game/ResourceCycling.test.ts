@@ -259,7 +259,7 @@ describe('Classic REDRAW resources', () => {
     ).toBe(true)
   })
 
-  it('creates Purple Seal rewards on redraw and respects capacity', () => {
+  it('creates a Purple Seal reward on every redraw', () => {
     const { game, state } = fixture()
     expect(state.decreeSystem.acquireDecree(RIVER_TAX)).not.toBeNull()
     const purple = state.handTiles[0].withSeal(SealType.Purple)
@@ -276,17 +276,18 @@ describe('Classic REDRAW resources', () => {
     ).toBe(true)
     expect(state.fateSeals).toHaveLength(1)
     expect(state.gold).toBe(gold + 2)
-    while (game.canAddConsumable())
+    for (let i = 0; i < 5; i++)
       game.addFateSeal(
         FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_empress)
       )
-    const capacity = state.fateSeals.length
+    const held = state.fateSeals.length
     const other = state.handTiles[0].withSeal(SealType.Purple)
     state.handTiles[0] = other
     expect(
       game.processAction({ type: 'redraw', tileIds: [other.id] }).success
     ).toBe(true)
-    expect(state.fateSeals).toHaveLength(capacity)
+    // Consumables have no inventory cap, so every Purple Seal pays out.
+    expect(state.fateSeals).toHaveLength(held + 1)
     expect(state.discards).toEqual(expect.arrayContaining([purple, other]))
     expect(state.wall.slice(state.drawIndex)).not.toContain(purple)
     expect(state.gold).toBe(gold + 4)

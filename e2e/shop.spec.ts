@@ -525,9 +525,48 @@ async function inventory(page: Page) {
     return {
       gold: game.getState().gold,
       seals: game.getState().fateSeals.length,
+      decrees: game.getState().decreeSystem.getOwnedDecrees().length,
       pending: game.shop.pendingPack !== null,
       purchases: game.shop.visitTotals.itemsPurchased,
     }
+  })
+}
+
+/** Turn the fixture into a Mega Decree pack of five choices with one Decree
+ * slot free. Decrees are the only rewards that take a slot.
+ */
+async function useDecreeChoices(page: Page) {
+  await page.evaluate(async () => {
+    const gamePath = '/src/game/GameOrchestrator.ts'
+    const decreePath = '/src/systems/DecreeSystem.ts'
+    const eventPath = '/src/game/EventBus.ts'
+    const { gameOrchestrator: game } = await import(gamePath)
+    const { ALL_DECREES } = await import(decreePath)
+    const { eventBus } = await import(eventPath)
+    const offering = game.shop.state.packOfferings[0]
+    const pack = game.shop.packOfferings.find(
+      (p: { pack: { id: string } }) => p.pack.id === offering.item.id
+    )
+    Object.assign(offering.item, { type: 'Decree' })
+    Object.assign(pack.pack, { type: 'Decree' })
+    const catalog = ALL_DECREES.filter(
+      (d: { flowerRequirement?: number }) => !d.flowerRequirement
+    )
+    pack.contents = catalog
+      .slice(0, 5)
+      .map((decree: { name: string; description: string }, i: number) => ({
+        id: `${pack.pack.id}:choice:${i}`,
+        type: 'Decree',
+        name: decree.name,
+        description: decree.description,
+        rarity: 'common',
+        data: decree,
+      }))
+    const decrees = game.getState().decreeSystem
+    const owned = catalog.slice(5)
+    while (decrees.getAvailableSlots() > 1)
+      decrees.acquireDecree(owned.shift())
+    eventBus.emit('shopUpdated', { isOpen: true })
   })
 }
 
@@ -553,13 +592,42 @@ test('a route revisit restores the paid pack without generating or charging agai
   await expect(dialog).not.toBeVisible()
 })
 
-test('Mega pack capacity is checked before confirmation and rewards are granted once', async ({
+test('a Mega Arcana pack grants both picks however many consumables are held', async ({
   page,
 }) => {
   const { offerId } = await openPackFixture(page)
-  await expect(page).toHaveURL(/\/en\/shop$/)
+  await page.evaluate(async () => {
+    const gamePath = '/src/game/GameOrchestrator.ts'
+    const sealPath = '/src/systems/FateSealSystem.ts'
+    const { gameOrchestrator: game } = await import(gamePath)
+    const { FateSealSystem, FATE_SEALS } = await import(sealPath)
+    // Three held Seals: the old shared limit, which no longer exists.
+    game
+      .getState()
+      .fateSeals.push(
+        FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_sage)
+      )
+  })
   await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
+  const choices = dialog.locator('[aria-pressed]')
+  await choices.nth(0).click()
+  await choices.nth(1).click()
+  await expect(dialog.getByRole('status')).toHaveCount(0)
+  await dialog.getByRole('button', { name: 'Confirm Selection' }).click()
+  await expect(dialog).not.toBeVisible()
+  expect(await inventory(page)).toMatchObject({ seals: 5, pending: false })
+})
+
+test('Mega Decree pack capacity is checked before confirmation and rewards are granted once', async ({
+  page,
+}) => {
+  const { offerId } = await openPackFixture(page)
+  await useDecreeChoices(page)
+  const held = (await inventory(page)).decrees
+  await expect(page).toHaveURL(/\/en\/shop$/)
+  await buyOffer(page, offerId)
+  const dialog = page.getByRole('dialog', { name: 'Mega Decree Pack' })
   await expect(dialog).toBeVisible()
   const choices = dialog.locator('[aria-pressed]')
   await expect(choices).toHaveCount(5)
@@ -567,10 +635,13 @@ test('Mega pack capacity is checked before confirmation and rewards are granted 
   await choices.nth(1).click()
   const confirm = dialog.getByRole('button', { name: 'Confirm Selection' })
   await expect(confirm).toBeDisabled()
-  await expect(dialog.getByRole('status')).toContainText('Not enough space')
+  await expect(dialog.getByRole('status')).toContainText(
+    'Not enough Decree slots'
+  )
   expect(await inventory(page)).toEqual({
     gold: 12,
     seals: 2,
+    decrees: held,
     pending: true,
     purchases: 1,
   })
@@ -587,7 +658,8 @@ test('Mega pack capacity is checked before confirmation and rewards are granted 
   await expect(dialog).not.toBeVisible()
   expect(await inventory(page)).toEqual({
     gold: 12,
-    seals: 3,
+    seals: 2,
+    decrees: held + 1,
     pending: false,
     purchases: 1,
   })
@@ -626,6 +698,8 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
 }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 568 })
   const { offerId } = await openPackFixture(page, 'es')
+  await useDecreeChoices(page)
+  const held = (await inventory(page)).decrees
   await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog')
   await expect(dialog).toBeVisible()
@@ -633,7 +707,9 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
   const choices = dialog.locator('[aria-pressed]')
   await choices.nth(0).click()
   await choices.nth(1).click()
-  await expect(dialog.getByRole('status')).toContainText('No hay espacio')
+  await expect(dialog.getByRole('status')).toContainText(
+    'No hay espacios de Decreto suficientes'
+  )
   await expect(dialog.getByRole('status')).toBeInViewport()
   const skip = dialog.getByRole('button', { name: /Saltar|Omitir/ })
   await expect(skip).toBeInViewport()
@@ -655,6 +731,7 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
   expect(await inventory(page)).toEqual({
     gold: 12,
     seals: 2,
+    decrees: held,
     pending: false,
     purchases: 1,
   })

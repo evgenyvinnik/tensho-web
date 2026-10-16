@@ -117,7 +117,7 @@ export function ShopScreen() {
         return t(
           offering.itemType === 'Decree'
             ? 'shop.availability.decreeSpace'
-            : 'shop.availability.consumableSpace'
+            : 'shop.availability.unavailable'
         )
       default:
         return t('shop.availability.unavailable')

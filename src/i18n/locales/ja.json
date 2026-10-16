@@ -162,7 +162,7 @@
     "replacesModifier": "{{names}}は置き換えられます。牌に付けられる印・封印・エディションは1つだけです。",
     "cost": "虚無の代償",
     "failed": "このアイテムは使用できませんでした。",
-    "unavailable": "対象の牌と、このラウンドの使用回数制限を確認してください。",
+    "unavailable": "このアイテムは今は使用できません。",
     "confirm": "使用する",
     "fateSeals": "運命の印",
     "celestialOrbs": "天球",
@@ -455,7 +455,6 @@
     },
     "availability": {
       "decreeSpace": "勅令枠がありません。所持勅令を確認して空きを作りましょう。",
-      "consumableSpace": "消耗品枠が満杯です。対局中にアイテムを使ってから追加購入しましょう。",
       "flowerCount": "花牌が{{required}}枚必要です。現在{{current}}枚。",
       "flowers": "この勅令には、さらに花牌が必要です。",
       "unavailable": "購入不可"
@@ -507,7 +506,7 @@
       "balance": "金貨"
     },
     "packChoices": "{{count}} 個の報酬から最大 {{max}} 個を選択",
-    "packInventoryFull": "この選択を受け取る空きがありません。報酬を減らすか変更するか、パックをスキップしてください。",
+    "packInventoryFull": "この選択に必要な勅令枠が足りません。勅令を減らすか、パックをスキップしてください。",
     "inventoryFull": "この報酬を受け取る空きがありません。",
     "skipRewards": "報酬をスキップ",
     "purchaseFailed": "購入を完了できませんでした。",
@@ -1853,7 +1852,7 @@
       },
       "crystal_lens": {
         "name": "水晶の眼鏡",
-        "description": "消耗品の枠+1"
+        "description": "秘儀パックの選択肢+1"
       },
       "star_chart": {
         "name": "星図",
@@ -2180,11 +2179,11 @@
       },
       "seal_of_the_oracle": {
         "name": "神託の符",
-        "description": "無作為な天球を最大2つ作る（空きがあれば）"
+        "description": "無作為な天球を2つ作る"
       },
       "seal_of_the_emperor": {
         "name": "皇帝の符",
-        "description": "無作為な運命符を最大2つ作る（空きがあれば）"
+        "description": "無作為な運命符を2つ作る"
       },
       "seal_of_the_fool": {
         "name": "愚者の符",
@@ -2488,7 +2487,7 @@
       },
       "purple": {
         "name": "紫の封",
-        "description": "この牌を引き直すと、空きがあればランダムな運命の印を作る。"
+        "description": "この牌を引き直すと、ランダムな運命の印を作る。"
       }
     }
   },

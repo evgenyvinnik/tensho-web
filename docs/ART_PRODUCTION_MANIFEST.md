@@ -292,7 +292,7 @@ Prompt: *a partially unrolled Imperial Charter with cobalt-blue rollers, gold ca
 | `discount_sale` | Discount Sale | 25% off all shop items | delivered |
 | `sharp_edge` | Sharp Edge | Editions appear 2x more often | delivered |
 | `reroll_surplus` | Reroll Surplus | Rerolls cost 2 Gold less | delivered |
-| `crystal_lens` | Crystal Lens | +1 consumable slot | delivered |
+| `crystal_lens` | Crystal Lens | Arcana Packs offer +1 choice | delivered |
 | `star_chart` | Star Chart | Celestial Packs contain orb for most-used yaku | delivered |
 | `steady_hand` | Steady Hand | +1 Turn per round | delivered |
 | `frugal_discard` | Frugal Redraw | +1 free Redraw per round | delivered |

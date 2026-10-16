@@ -13,7 +13,6 @@ import { advanceRound } from '../test/roundHelpers'
 function fixture() {
   const game = new GameOrchestrator()
   game.startNewRun(7)
-  game.getState().consumableSystem.setMaxSealsPerRound(4)
   return game
 }
 
@@ -76,16 +75,12 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
     useScript(game)
     expect(game.getState().fateSealSystem.getLastUsedConsumable()).toBeNull()
     const action = addFool(game)
-    const uses = game.getState().consumableSystem.getFateSealUsesRemaining()
     const random = vi.spyOn(runRandom, 'next')
     expect(game.canPerformAction(action)).toBe(false)
     expect(game.processAction(action).success).toBe(false)
     expect(game.getFateSeals().map((item) => item.instanceId)).toEqual([
       action.sealId,
     ])
-    expect(game.getState().consumableSystem.getFateSealUsesRemaining()).toBe(
-      uses
-    )
     expect(random).not.toHaveBeenCalled()
   })
 
@@ -165,7 +160,7 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
     expect(system.getLastUsedConsumable()?.id).toBe(orb.id)
   })
 
-  it('retains the existing self-copy rule and charges each confirmed use', () => {
+  it('retains the existing self-copy rule and consumes each confirmed use', () => {
     const game = fixture()
     const orb = CelestialOrbSystem.createCelestialOrbInstance(
       CELESTIAL_ORBS.pluto_orb
@@ -177,14 +172,10 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
       'seal_of_the_fool'
     )
     const action = addFool(game)
-    const before = game.getState().consumableSystem.getFateSealUsesRemaining()
     expect(game.processAction(action).success).toBe(true)
     expect(game.getFateSeals()).toHaveLength(1)
     expect(game.getFateSeals()[0].id).toBe('seal_of_the_fool')
     expect(game.getFateSeals()[0].instanceId).not.toBe(action.sealId)
-    expect(game.getState().consumableSystem.getFateSealUsesRemaining()).toBe(
-      before - 1
-    )
     expect(game.processAction(action).success).toBe(false)
   })
 

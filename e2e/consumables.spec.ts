@@ -627,7 +627,6 @@ for (const language of [
         const orbPath = '/src/systems/CelestialOrbSystem.ts'
         const scriptPath = '/src/systems/VoidScriptSystem.ts'
         const { gameOrchestrator: game } = await import(gamePath)
-        game.getState().consumableSystem.setMaxScriptsPerRound(2)
         if (kind === 'orb') {
           const { CelestialOrbSystem, CELESTIAL_ORBS } = await import(orbPath)
           const item = CelestialOrbSystem.createCelestialOrbInstance(

@@ -210,12 +210,10 @@ export interface GameStateSnapshot {
   // Resources
   gold: number
 
-  // Consumable inventory and round-scoped usage
+  // Consumable inventory
   fateSealIds: string[]
   celestialOrbIds: string[]
   voidScriptIds: string[]
-  fateSealUsesRemaining: number
-  voidScriptUsesRemaining: number
 
   // Restrictions from mandates
   mandateRestrictions?: MandateRestrictions
@@ -398,10 +396,6 @@ export class ActionProcessor {
       errors.push('Seal not found in inventory')
     }
 
-    if (state.fateSealUsesRemaining <= 0) {
-      errors.push('No Fate Seal uses remaining this round')
-    }
-
     errors.push(...this.validateConsumableTargets(action.targets, state))
 
     return {
@@ -423,10 +417,6 @@ export class ActionProcessor {
       errors.push('No script specified')
     } else if (!state.voidScriptIds.includes(action.scriptId)) {
       errors.push('Script not found in inventory')
-    }
-
-    if (state.voidScriptUsesRemaining <= 0) {
-      errors.push('No Void Script uses remaining this round')
     }
 
     errors.push(...this.validateConsumableTargets(action.targets, state))
@@ -501,7 +491,7 @@ export class ActionProcessor {
       available.push('redraw')
     }
 
-    if (state.fateSealUsesRemaining > 0 && state.fateSealIds.length > 0) {
+    if (state.fateSealIds.length > 0) {
       available.push('useSeal')
     }
 
@@ -509,7 +499,7 @@ export class ActionProcessor {
       available.push('useOrb')
     }
 
-    if (state.voidScriptUsesRemaining > 0 && state.voidScriptIds.length > 0) {
+    if (state.voidScriptIds.length > 0) {
       available.push('useScript')
     }
 

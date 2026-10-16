@@ -162,7 +162,7 @@
     "replacesModifier": "Remplace {{names}} : une tuile ne porte qu’une marque, un sceau ou une édition.",
     "cost": "Coût du Vide",
     "failed": "Cet objet n’a pas pu être utilisé.",
-    "unavailable": "Vérifiez les cibles et la limite d’utilisation de cette manche.",
+    "unavailable": "Cet objet ne peut pas être utilisé pour le moment.",
     "confirm": "Utiliser",
     "fateSeals": "Sceaux du Destin",
     "celestialOrbs": "Orbes Célestes",
@@ -455,7 +455,6 @@
     },
     "availability": {
       "decreeSpace": "Aucun emplacement de Décret libre. Vérifiez vos Décrets pour faire de la place.",
-      "consumableSpace": "Les emplacements de consommables sont pleins. Utilisez un objet en jeu avant d’en acheter d’autres.",
       "flowerCount": "Nécessite {{required}} Fleurs ; vous en avez {{current}}.",
       "flowers": "Ce Décret nécessite davantage de Fleurs.",
       "unavailable": "Indisponible"
@@ -507,7 +506,7 @@
       "balance": "Or"
     },
     "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
-    "packInventoryFull": "Pas assez de place pour cette sélection. Choisissez moins de récompenses, d’autres récompenses, ou passez le paquet.",
+    "packInventoryFull": "Pas assez d’emplacements de Décret pour cette sélection. Choisissez moins de Décrets ou passez le paquet.",
     "inventoryFull": "Pas assez de place dans l’inventaire pour cette récompense.",
     "skipRewards": "Passer les récompenses",
     "purchaseFailed": "L’achat n’a pas pu être effectué.",
@@ -1865,7 +1864,7 @@
       },
       "crystal_lens": {
         "name": "Lentille de cristal",
-        "description": "+1 emplacement de consommable"
+        "description": "Les Paquets d'Arcanes proposent +1 choix"
       },
       "star_chart": {
         "name": "Carte du ciel",
@@ -2192,11 +2191,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Sceau de l'Oracle",
-        "description": "Crée jusqu'à 2 Orbes célestes au hasard (si la place le permet)"
+        "description": "Crée 2 Orbes célestes au hasard"
       },
       "seal_of_the_emperor": {
         "name": "Sceau de l'Empereur",
-        "description": "Crée jusqu'à 2 Sceaux du Destin au hasard (si la place le permet)"
+        "description": "Crée 2 Sceaux du Destin au hasard"
       },
       "seal_of_the_fool": {
         "name": "Sceau du Mat",
@@ -2488,7 +2487,7 @@
       },
       "purple": {
         "name": "Sceau Violet",
-        "description": "Crée un Sceau du Destin aléatoire quand cette tuile est repiochée, s’il y a de la place."
+        "description": "Crée un Sceau du Destin aléatoire quand cette tuile est repiochée."
       }
     }
   },

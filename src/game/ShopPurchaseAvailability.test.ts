@@ -111,21 +111,34 @@ it('allows Negative expansion, but does not pretend selling a Negative creates a
   })
 })
 
-it('checks shared consumable capacity and prevents a stale successful preview from paying', () => {
+it('never limits consumables, and a stale successful preview cannot pay', () => {
   const { game, state, offer, shop } = fixture()
   const seal = () =>
     FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_sage)
-  offer.itemType = 'FateSeal'
-  offer.item = seal()
+  const consumable = shop.state.itemOfferings[1]
+  Object.assign(consumable, {
+    itemType: 'FateSeal',
+    item: seal(),
+    finalCost: 4,
+    isPurchased: false,
+    isLocked: false,
+  })
+  state.fateSeals = [seal(), seal(), seal(), seal()]
+  expect(shop.validatePurchase(consumable.id)).toEqual({ success: true })
+  expect(shop.purchase(consumable.id).success).toBe(true)
+  expect(state.fateSeals).toHaveLength(5)
+
   expect(shop.validatePurchase(offer.id)).toEqual({ success: true })
-  state.fateSeals = [seal(), seal(), seal()]
+  state.decreeSystem.acquireDecree(ALL_DECREES[0])
   const before = game.captureRun()
   expect(shop.purchase(offer.id)).toEqual({
     success: false,
     reason: 'inventoryFull',
   })
   expect(game.captureRun()).toEqual(before)
-  state.fateSeals.pop()
+  state.decreeSystem.removeDecree(
+    state.decreeSystem.getOwnedDecrees()[0].instanceId!
+  )
   expect(shop.validatePurchase(offer.id)).toEqual({ success: true })
   expect(shop.purchase(offer.id).success).toBe(true)
   expect(shop.validatePurchase(offer.id)).toEqual({

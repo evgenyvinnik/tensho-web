@@ -1,6 +1,5 @@
-import { expect, test } from '@playwright/test'
-import { offerCard, openOffer } from './helpers/shop'
-import { clearReveals, settleReveals } from './helpers/table'
+import { expect, test, type Locator } from '@playwright/test'
+import { clearReveals, openTable, settleReveals } from './helpers/table'
 
 test('Spanish purchase reasons fit a narrow screen and update with actual requirements', async ({
   page,
@@ -13,28 +12,28 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
   await page.addInitScript(() =>
     localStorage.setItem('tensho_tutorial_completed', 'true')
   )
-  await page.goto('/es/play')
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  await openTable(page, '/es/play')
   const offers = await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const decreePath = '/src/systems/DecreeSystem.ts'
-    const sealPath = '/src/systems/FateSealSystem.ts'
-    const busPath = '/src/game/EventBus.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { ALL_DECREES, DecreeSystem } = await import(decreePath)
-    const { FateSealSystem, FATE_SEALS } = await import(sealPath)
-    const { eventBus } = await import(busPath)
+    // HMR can version a module URL; import the exact instance the app uses.
+    const loaded = (path: string) =>
+      performance
+        .getEntriesByType('resource')
+        .map((entry) => entry.name)
+        .reverse()
+        .find((url) => new URL(url).pathname === path) ?? path
+    const { gameOrchestrator: game } = await import(
+      loaded('/src/game/GameOrchestrator.ts')
+    )
+    const { ALL_DECREES, DecreeSystem } = await import(
+      loaded('/src/systems/DecreeSystem.ts')
+    )
+    const { FateSealSystem, FATE_SEALS } = await import(
+      loaded('/src/systems/FateSealSystem.ts')
+    )
+    const { eventBus } = await import(loaded('/src/game/EventBus.ts'))
     game.startNewRun(7)
     const state = game.getState()
-    state.targetScore = 1
-    state.roundManager.getCurrentRound().scoreTarget = 1
-    if (
-      !game.processAction({
-        type: 'play',
-        tileIds: state.handTiles.slice(0, 2).map((t: { id: string }) => t.id),
-      }).success
-    )
-      throw new Error('Fixture play failed')
+    Object.assign(state, { phase: 'shop', lastCompletedRoundType: 'Small' })
     if (!game.shop.open()) throw new Error('Fixture shop failed')
     // Controlled requirements/inventory, not evidence of natural acquisition.
     state.flowerSystem.clear()
@@ -67,80 +66,100 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
     return items.map((o: { id: string }) => o.id)
   })
   await expect(page).toHaveURL(/\/es\/shop$/)
-  // startNewRun queues its starting Decrees for a reveal over the shop.
   await clearReveals(page)
-  const reasons = [
-    'Requiere 3 Flores; tienes 0.',
-    'Los espacios de consumibles están llenos. Usa un objeto durante el juego antes de comprar más.',
-  ]
-  // Each offer's details hold its Buy button and the engine's reason.
-  for (const [index, id] of offers.slice(0, 2).entries()) {
-    const details = await openOffer(page, id)
-    await expect(details.locator('[data-purchase-blocked]')).toHaveText(
-      reasons[index]
-    )
-    await expect(details.locator(`[data-shop-buy="${id}"]`)).toBeDisabled()
-    expect(
-      await details.evaluate((node) =>
-        [...node.querySelectorAll<HTMLElement>('h2,p,button')].every(
-          (child) => {
-            const r = child.getBoundingClientRect()
-            return (
-              r.left >= 0 &&
-              r.right <= innerWidth &&
-              child.scrollWidth <= child.clientWidth + 1 &&
-              child.scrollHeight <= child.clientHeight + 1
-            )
-          }
-        )
-      )
-    ).toBe(true)
-    await page.screenshot({
-      path: testInfo.outputPath(
-        index === 0 ? 'flowers.png' : 'consumables.png'
-      ),
-    })
-    await page.keyboard.press('Escape')
-    await expect(details).toHaveCount(0)
+  // Every offer opens its details on tap; Buy is the only purchase step.
+  const card = (id: string) => page.locator(`[data-shop-offer="${id}"]`)
+  const details = (id: string) =>
+    page.locator(`[data-shop-offer-details="${id}"]`)
+  const buy = (id: string) => page.locator(`[data-shop-buy="${id}"]`)
+  const press = (target: Locator) => (isMobile ? target.tap() : target.click())
+  const openDetails = async (id: string) => {
+    await card(id).scrollIntoViewIfNeeded()
+    await press(card(id))
+    await expect(details(id)).toBeVisible()
   }
+  const [flower, seal] = offers
+
+  await openDetails(flower)
+  await expect(details(flower).locator('[data-purchase-blocked]')).toHaveText(
+    'Requiere 3 Flores; tienes 0.'
+  )
+  await expect(buy(flower)).toBeDisabled()
+  const panel = page.getByRole('dialog').filter({ has: details(flower) })
+  expect(
+    await panel.evaluate((node) =>
+      [node, ...node.querySelectorAll<HTMLElement>('h2,p,button')].every(
+        (child) => {
+          const r = child.getBoundingClientRect()
+          return (
+            r.left >= 0 &&
+            r.right <= innerWidth &&
+            child.scrollWidth <= child.clientWidth + 1 &&
+            (child === node || child.scrollHeight <= child.clientHeight + 1)
+          )
+        }
+      )
+    )
+  ).toBe(true)
+  await buy(flower).scrollIntoViewIfNeeded()
+  await page.screenshot({ path: testInfo.outputPath('flowers.png') })
+  await page.keyboard.press('Escape')
+  await expect(details(flower)).toHaveCount(0)
+
+  // Only Decrees have slots: three held Seals never block another.
+  await openDetails(seal)
+  await expect(details(seal).locator('[data-purchase-blocked]')).toHaveCount(0)
+  await expect(buy(seal)).toBeEnabled()
+  await page.keyboard.press('Escape')
+  await expect(details(seal)).toHaveCount(0)
+
   await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const tilePath = '/src/core/Tile.ts'
-    const busPath = '/src/game/EventBus.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { Tile, TileSuit } = await import(tilePath)
-    const { eventBus } = await import(busPath)
+    // HMR can version a module URL; import the exact instance the app uses.
+    const loaded = (path: string) =>
+      performance
+        .getEntriesByType('resource')
+        .map((entry) => entry.name)
+        .reverse()
+        .find((url) => new URL(url).pathname === path) ?? path
+    const { gameOrchestrator: game } = await import(
+      loaded('/src/game/GameOrchestrator.ts')
+    )
+    const { Tile, TileSuit } = await import(loaded('/src/core/Tile.ts'))
+    const { eventBus } = await import(loaded('/src/game/EventBus.ts'))
     for (let rank = 1; rank <= 3; rank++)
       game
         .getState()
         .flowerSystem.addFlower(
           new Tile(TileSuit.Flower, rank, `availability-flower-${rank}`)
         )
-    // Fixture release of shared capacity. There is no invented shop-use action.
-    game.getState().fateSeals.pop()
     eventBus.emit('shopUpdated', { isOpen: true })
   })
-  for (const id of offers.slice(0, 2)) {
-    const details = await openOffer(page, id)
-    await expect(details.locator('[data-purchase-blocked]')).toHaveCount(0)
-    const buy = details.locator(`[data-shop-buy="${id}"]`)
-    await expect(buy).toBeEnabled()
-    if (isMobile) await buy.tap()
-    else await buy.click()
-    await expect(offerCard(page, id)).toHaveCount(0)
-    // A bought Decree is revealed over the shop.
+  await clearReveals(page)
+  for (const id of [flower, seal]) {
+    await openDetails(id)
+    await expect(details(id).locator('[data-purchase-blocked]')).toHaveCount(0)
+    await expect(buy(id)).toBeEnabled()
+    await press(buy(id))
+    await expect(card(id)).toHaveCount(0)
+    // A bought Decree is revealed; the player closes it to shop on.
     await settleReveals(page)
   }
   expect(
     await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
-      const { gameOrchestrator: game } = await import(path)
+      const { gameOrchestrator: game } = await import(
+        performance
+          .getEntriesByType('resource')
+          .map((entry) => entry.name)
+          .reverse()
+          .find((url) => new URL(url).pathname === path) ?? path
+      )
       return {
         gold: game.getState().gold,
         seals: game.getState().fateSeals.length,
         decrees: game.getState().decreeSystem.getOwnedDecrees().length,
       }
     })
-  ).toEqual({ gold: 12, seals: 3, decrees: 1 })
+  ).toEqual({ gold: 12, seals: 4, decrees: 1 })
   expect(errors).toEqual([])
 })

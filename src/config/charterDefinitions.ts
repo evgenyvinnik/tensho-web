@@ -20,7 +20,7 @@ export type CharterEffectType =
   | 'discount' // X% off all shop items
   | 'edition_frequency' // Editions appear X times more often
   | 'reroll_discount' // Rerolls cost X Gold less
-  | 'consumable_slots' // +X consumable slots
+  | 'arcana_choices' // +X choices in Arcana Packs
   | 'void_in_arcana' // Void Scripts may appear in Arcana Packs
   | 'celestial_favor' // Celestial Packs favor most-used yaku
   | 'orb_mult' // Held Celestial Orbs give xMult
@@ -176,19 +176,19 @@ export const REROLL_SURPLUS: CharterDefinition = {
 }
 
 /**
- * Crystal Lens - +1 consumable slot
+ * Crystal Lens - Arcana Packs offer +1 choice
  */
 export const CRYSTAL_LENS: CharterDefinition = {
   id: 'crystal_lens',
   name: 'Crystal Lens',
   japaneseName: '水晶',
-  description: '+1 consumable slot',
+  description: 'Arcana Packs offer +1 choice',
   cost: CHARTER_COST,
   effects: [
     {
-      type: 'consumable_slots',
+      type: 'arcana_choices',
       value: 1,
-      description: 'Adds 1 consumable slot',
+      description: 'Arcana Packs show 1 more reward to choose from',
     },
   ],
   upgradeId: 'omen_lens',

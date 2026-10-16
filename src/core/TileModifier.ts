@@ -234,8 +234,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
     type: SealType.Purple,
     name: 'Purple Seal',
     japaneseName: '紫封',
-    description:
-      'Creates a random Fate Seal when discarded or redrawn, if there is room',
+    description: 'Creates a random Fate Seal when discarded or redrawn',
     goldOnPlay: 0,
     retriggers: 0,
     createsConsumable: 'seal',

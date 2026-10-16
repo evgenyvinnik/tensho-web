@@ -289,11 +289,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Sigillo dell’oracolo",
-        "description": "Crea fino a 2 Sfere Celesti casuali, se c’è spazio."
+        "description": "Crea 2 Sfere Celesti casuali."
       },
       "seal_of_the_emperor": {
         "name": "Sigillo dell’imperatore",
-        "description": "Crea fino a 2 Sigilli del Fato casuali, se c’è spazio."
+        "description": "Crea 2 Sigilli del Fato casuali."
       },
       "seal_of_the_fool": {
         "name": "Sigillo del matto",
@@ -417,7 +417,7 @@
       },
       "purple": {
         "name": "Sigillo Viola",
-        "description": "Crea un Sigillo del Destino casuale quando questa tessera viene ripescata, se c’è spazio."
+        "description": "Crea un Sigillo del Destino casuale quando questa tessera viene ripescata."
       }
     }
   },
@@ -449,7 +449,7 @@
     "replacesModifier": "Sostituisce {{names}}: una tessera ha un solo marchio, sigillo o edizione.",
     "cost": "Costo del Vuoto",
     "failed": "Impossibile usare questo oggetto.",
-    "unavailable": "Controlla i bersagli e il limite di utilizzi del round.",
+    "unavailable": "Questo oggetto non può essere usato ora.",
     "confirm": "Usa oggetto",
     "fateSeals": "Sigilli del Destino",
     "celestialOrbs": "Sfere Celesti",
@@ -742,7 +742,6 @@
     },
     "availability": {
       "decreeSpace": "Nessuno spazio Decreto libero. Controlla i tuoi Decreti per fare posto.",
-      "consumableSpace": "Gli spazi consumabili sono pieni. Usa un oggetto durante il gioco prima di acquistarne altri.",
       "flowerCount": "Richiede {{required}} Fiori; ne hai {{current}}.",
       "flowers": "Questo Decreto richiede più Fiori.",
       "unavailable": "Non disponibile"
@@ -794,7 +793,7 @@
       "balance": "Oro"
     },
     "packChoices": "Scegli fino a {{max}} ricompense tra {{count}}",
-    "packInventoryFull": "Spazio insufficiente per questa selezione. Scegli meno ricompense o ricompense diverse, oppure salta il pacchetto.",
+    "packInventoryFull": "Spazi Decreto insufficienti per questa selezione. Scegli meno Decreti oppure salta il pacchetto.",
     "inventoryFull": "Spazio insufficiente nell’inventario per questa ricompensa.",
     "skipRewards": "Salta ricompense",
     "purchaseFailed": "Impossibile completare l’acquisto.",
@@ -2162,7 +2161,7 @@
       },
       "crystal_lens": {
         "name": "Lente di cristallo",
-        "description": "+1 spazio per consumabili."
+        "description": "I Pacchetti Arcani offrono +1 scelta."
       },
       "star_chart": {
         "name": "Mappa stellare",

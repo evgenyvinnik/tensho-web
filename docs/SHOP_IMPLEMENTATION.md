@@ -20,7 +20,7 @@ The session owns generated offerings, pack contents, pending rewards, reroll cos
 
 An offering moves from unopened to opened, then to exactly one terminal state: claimed or skipped. Claiming twice cannot duplicate rewards; skipping twice cannot increase skip counters. Invalid, duplicate, fractional, out-of-range, or empty selections do not settle the pack. Terminal state survives `BlessingPackSystem` serialization. Legacy opened pack records without a terminal marker are conservatively treated as resolved because their prior claim status is unknowable.
 
-The **whole selection** must fit before any grant. This includes shared consumable capacity and the sequential slot expansion of Negative Decrees. If two Mega rewards cannot fit, neither is granted and the pack remains pending; the player may select fewer/different rewards or explicitly skip. Selecting fewer than the maximum is allowed, but an empty confirmation is not.
+The **whole selection** must fit before any grant. Only Decrees take slots (consumables are unlimited), including the sequential slot expansion of Negative Decrees. If two Mega rewards cannot fit, neither is granted and the pack remains pending; the player may select fewer/different rewards or explicitly skip. Selecting fewer than the maximum is allowed, but an empty confirmation is not.
 
 A paid pending pack blocks additional purchases, rerolls, and advancing the round. Navigating away and back restores its contents without charging again. This is in-memory route recovery, **not Classic save/reload persistence**. The current Classic run is still not promised to survive a browser reload.
 

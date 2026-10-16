@@ -709,7 +709,7 @@ Each Charter has a base version and an upgraded version. The upgraded version ca
 | **Discount Sale** | 25% off all shop items | **Liquidation Sale** | 50% off all shop items | Redeem 10 Charters in one run |
 | **Sharp Edge** | Editions appear 2× more often | **Radiant Edge** | Editions appear 4× more often | Have 5+ edition Decrees |
 | **Reroll Surplus** | Rerolls cost 2 Gold less | **Reroll Abundance** | Rerolls cost 4 Gold less | Reroll 100 times total |
-| **Crystal Lens** | +1 consumable slot | **Omen Lens** | Void Scripts may appear in Arcana Packs | Use 25 Fate Seals from packs |
+| **Crystal Lens** | Arcana Packs offer +1 choice | **Omen Lens** | Void Scripts may appear in Arcana Packs | Use 25 Fate Seals from packs |
 | **Star Chart** | Celestial Packs contain orb for most-used yaku | **Observatory** | Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play; Black Hole matches any scored Yaku | Use 25 Celestial Orbs from packs |
 | **Steady Hand** | +1 hand per round | **Swift Hand** | +1 additional hand per round | Play 2500 tiles |
 | **Frugal Discard** | +1 redraw per round | **Wasteful Plenty** | +1 additional redraw per round | Discard 2500 tiles |

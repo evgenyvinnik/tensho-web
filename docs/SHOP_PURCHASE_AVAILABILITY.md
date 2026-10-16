@@ -19,7 +19,7 @@ the engine's read-only purchase preflight to disable that purchase and explain w
   locked/purchased/missing offers, pending packs and reentrant transactions.
   Repeated previews do not mutate the complete run snapshot, RNG or events.
 - Pack/Charter UI is unchanged. Packs are not rejected just because today's
-  inventory is full, and previews neither reveal nor generate paid contents.
+  Decree slots are full, and previews neither reveal nor generate paid contents.
   Pack-selection validation remains authoritative when rewards are chosen.
 - No scoring, acquisition, cost, income, Rental or capacity rule changed. The
   confirmed defeat settlement remains Rental charged, income win-only.

@@ -49,10 +49,6 @@ export interface ConsumableState {
   voidScriptSlots: number
 
   // Usage tracking
-  sealsUsedThisRound: number
-  scriptsUsedThisRound: number
-  maxSealsPerRound: number
-  maxScriptsPerRound: number
 
   // Systems (for tracking state)
   fateSealSystem: FateSealSystem
@@ -95,7 +91,6 @@ export interface ConsumableState {
   getYakuBonus: (yaku: YakuCategory) => { mult: number; chips: number }
 
   // Actions - Round Management
-  onRoundStart: () => void
   onRoundEnd: () => void
   onHandEnd: () => void
 
@@ -119,10 +114,6 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
   voidScriptSlots: DEFAULT_CONSUMABLE_SLOTS,
 
   // Initial state - Usage
-  sealsUsedThisRound: 0,
-  scriptsUsedThisRound: 0,
-  maxSealsPerRound: 1,
-  maxScriptsPerRound: 1,
 
   // Initial state - Systems
   fateSealSystem: new FateSealSystem(),
@@ -303,15 +294,6 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
   useFateSeal: (instanceId: string, context: FateSealContext) => {
     const state = get()
 
-    // Check if we can use a seal this round
-    if (state.sealsUsedThisRound >= state.maxSealsPerRound) {
-      return {
-        success: false,
-        message: 'Already used maximum Fate Seals this round',
-        effects: [],
-      }
-    }
-
     // Find the seal
     const seal = state.fateSeals.find((s) => s.instanceId === instanceId)
     if (!seal) {
@@ -335,10 +317,7 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
     if (result.success) {
       // Mark as used and remove from inventory
       state.removeFateSeal(instanceId)
-      set({
-        sealsUsedThisRound: state.sealsUsedThisRound + 1,
-        lastUsedConsumable: seal,
-      })
+      set({ lastUsedConsumable: seal })
 
       // Update last used consumable in the system
       state.fateSealSystem.setLastUsedConsumable(seal)
@@ -377,15 +356,6 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
   useVoidScript: (instanceId: string, context: VoidScriptContext) => {
     const state = get()
 
-    // Check if we can use a script this round
-    if (state.scriptsUsedThisRound >= state.maxScriptsPerRound) {
-      return {
-        success: false,
-        message: 'Already used maximum Void Scripts this round',
-        effects: [],
-      }
-    }
-
     // Find the script
     const script = state.voidScripts.find((s) => s.instanceId === instanceId)
     if (!script) {
@@ -400,11 +370,8 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
     const result = state.voidScriptSystem.useScript(script, context)
 
     if (result.success) {
-      // Mark as used and remove from inventory
+      // Remove from inventory
       state.removeVoidScript(instanceId)
-      set({
-        scriptsUsedThisRound: state.scriptsUsedThisRound + 1,
-      })
     }
 
     return result
@@ -414,21 +381,9 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
   // QUERIES
   // ===========================================================================
 
-  canUseFateSeal: () => {
-    const state = get()
-    return (
-      state.sealsUsedThisRound < state.maxSealsPerRound &&
-      state.fateSeals.length > 0
-    )
-  },
+  canUseFateSeal: () => get().fateSeals.length > 0,
 
-  canUseVoidScript: () => {
-    const state = get()
-    return (
-      state.scriptsUsedThisRound < state.maxScriptsPerRound &&
-      state.voidScripts.length > 0
-    )
-  },
+  canUseVoidScript: () => get().voidScripts.length > 0,
 
   getAvailableSlots: (type: ConsumableType) => {
     const state = get()
@@ -468,13 +423,6 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
   // ROUND MANAGEMENT
   // ===========================================================================
 
-  onRoundStart: () => {
-    set({
-      sealsUsedThisRound: 0,
-      scriptsUsedThisRound: 0,
-    })
-  },
-
   onRoundEnd: () => {
     const state = get()
     state.voidScriptSystem.onRoundEnd()
@@ -497,10 +445,6 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
       fateSealSlots: DEFAULT_CONSUMABLE_SLOTS,
       celestialOrbSlots: DEFAULT_CONSUMABLE_SLOTS,
       voidScriptSlots: DEFAULT_CONSUMABLE_SLOTS,
-      sealsUsedThisRound: 0,
-      scriptsUsedThisRound: 0,
-      maxSealsPerRound: 1,
-      maxScriptsPerRound: 1,
       fateSealSystem: new FateSealSystem(),
       celestialOrbSystem: new CelestialOrbSystem(),
       voidScriptSystem: new VoidScriptSystem(),

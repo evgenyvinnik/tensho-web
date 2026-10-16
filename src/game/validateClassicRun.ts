@@ -278,10 +278,6 @@ const stateFields = {
       voidScripts: keyed(script, 'instanceId'),
     }),
     currentRound: count,
-    sealsUsedThisRound: count,
-    scriptsUsedThisRound: count,
-    maxSealsPerRound: count,
-    maxScriptsPerRound: count,
   }),
   celestialOrbSystem: schema<ClassicRunState['celestialOrbSystem']>({
     orbLevels: entries(yakuCategory, positive),

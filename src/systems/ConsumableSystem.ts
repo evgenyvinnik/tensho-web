@@ -128,10 +128,6 @@ export function createEmptyInventory(): ConsumableInventory {
 export class ConsumableSystem {
   private inventory: ConsumableInventory
   private currentRound: number = 0
-  private sealsUsedThisRound: number = 0
-  private scriptsUsedThisRound: number = 0
-  private maxSealsPerRound: number = 1
-  private maxScriptsPerRound: number = 1
 
   constructor(initialInventory?: Partial<ConsumableInventory>) {
     this.inventory = {
@@ -335,68 +331,21 @@ export class ConsumableSystem {
   // USAGE
   // ===========================================================================
 
+  // Fate Seals and Void Scripts have no per-round limit: any owned one can be
+  // used, and each is consumed on use.
+
   /**
-   * Check if a Fate Seal can be used this round
+   * Check if a Fate Seal can be used
    */
   canUseFateSeal(): boolean {
-    return (
-      this.sealsUsedThisRound < this.maxSealsPerRound &&
-      this.inventory.fateSeals.length > 0
-    )
+    return this.inventory.fateSeals.length > 0
   }
 
   /**
-   * Check if a Void Script can be used this round
+   * Check if a Void Script can be used
    */
   canUseVoidScript(): boolean {
-    return (
-      this.scriptsUsedThisRound < this.maxScriptsPerRound &&
-      this.inventory.voidScripts.length > 0
-    )
-  }
-
-  /**
-   * Get how many Fate Seals can still be used this round
-   */
-  getFateSealUsesRemaining(): number {
-    return Math.max(0, this.maxSealsPerRound - this.sealsUsedThisRound)
-  }
-
-  /**
-   * Get how many Void Scripts can still be used this round
-   */
-  getVoidScriptUsesRemaining(): number {
-    return Math.max(0, this.maxScriptsPerRound - this.scriptsUsedThisRound)
-  }
-
-  /**
-   * Mark a Fate Seal as used
-   * Called by FateSealSystem after successful use
-   */
-  markFateSealUsed(): void {
-    this.sealsUsedThisRound++
-  }
-
-  /**
-   * Mark a Void Script as used
-   * Called by VoidScriptSystem after successful use
-   */
-  markVoidScriptUsed(): void {
-    this.scriptsUsedThisRound++
-  }
-
-  /**
-   * Set max seals per round (can be modified by Decrees/Charters)
-   */
-  setMaxSealsPerRound(max: number): void {
-    this.maxSealsPerRound = max
-  }
-
-  /**
-   * Set max scripts per round (can be modified by Decrees/Charters)
-   */
-  setMaxScriptsPerRound(max: number): void {
-    this.maxScriptsPerRound = max
+    return this.inventory.voidScripts.length > 0
   }
 
   // ===========================================================================
@@ -408,8 +357,6 @@ export class ConsumableSystem {
    */
   onRoundStart(): void {
     this.currentRound++
-    this.sealsUsedThisRound = 0
-    this.scriptsUsedThisRound = 0
   }
 
   /**
@@ -441,18 +388,10 @@ export class ConsumableSystem {
   toState(): {
     inventory: ConsumableInventory
     currentRound: number
-    sealsUsedThisRound: number
-    scriptsUsedThisRound: number
-    maxSealsPerRound: number
-    maxScriptsPerRound: number
   } {
     return {
       inventory: { ...this.inventory },
       currentRound: this.currentRound,
-      sealsUsedThisRound: this.sealsUsedThisRound,
-      scriptsUsedThisRound: this.scriptsUsedThisRound,
-      maxSealsPerRound: this.maxSealsPerRound,
-      maxScriptsPerRound: this.maxScriptsPerRound,
     }
   }
 
@@ -462,17 +401,9 @@ export class ConsumableSystem {
   static fromState(state: {
     inventory: ConsumableInventory
     currentRound: number
-    sealsUsedThisRound: number
-    scriptsUsedThisRound: number
-    maxSealsPerRound: number
-    maxScriptsPerRound: number
   }): ConsumableSystem {
     const system = new ConsumableSystem(state.inventory)
     system.currentRound = state.currentRound
-    system.sealsUsedThisRound = state.sealsUsedThisRound
-    system.scriptsUsedThisRound = state.scriptsUsedThisRound
-    system.maxSealsPerRound = state.maxSealsPerRound
-    system.maxScriptsPerRound = state.maxScriptsPerRound
     return system
   }
 }

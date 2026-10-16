@@ -171,21 +171,19 @@ describe('public-information consumable preflight', () => {
     }
   )
 
-  it('reuses the consumed Seal slot when creating rewards into a full inventory', () => {
+  it('creates every reward however many consumables are held', () => {
     const { game } = fixture()
     const action = seal(game, 'seal_of_the_emperor')
-    while (game.canAddConsumable())
+    for (let i = 0; i < 6; i++)
       game.addCelestialOrb(
         CelestialOrbSystem.createCelestialOrbInstance(CELESTIAL_ORBS.pluto_orb)
       )
-    const before =
-      game.getState().fateSeals.length + game.getState().celestialOrbs.length
+    const before = game.getState().fateSeals.length
     expect(game.canPerformAction(action)).toBe(true)
     expect(game.processAction(action).success).toBe(true)
-    expect(
-      game.getState().fateSeals.length + game.getState().celestialOrbs.length
-    ).toBe(before)
-    expect(game.canAddConsumable()).toBe(false)
+    // The used Seal leaves; its two new Seals arrive.
+    expect(game.getState().fateSeals).toHaveLength(before + 1)
+    expect(game.getState().celestialOrbs).toHaveLength(6)
   })
 
   it('preserves a copy Seal before any consumable has been used', () => {

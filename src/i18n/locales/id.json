@@ -338,7 +338,7 @@
       },
       "purple": {
         "name": "Segel Ungu",
-        "description": "Membuat Segel Takdir acak saat ubin ini ditarik ulang, jika ada tempat."
+        "description": "Membuat Segel Takdir acak saat ubin ini ditarik ulang."
       }
     }
   },
@@ -370,7 +370,7 @@
     "replacesModifier": "Menggantikan {{names}}: satu ubin hanya memiliki satu tanda, segel, atau edisi.",
     "cost": "Harga Kehampaan",
     "failed": "Item ini tidak dapat digunakan.",
-    "unavailable": "Periksa target dan batas penggunaan pada ronde ini.",
+    "unavailable": "Item ini tidak dapat digunakan sekarang.",
     "confirm": "Gunakan item",
     "fateSeals": "Segel Takdir",
     "celestialOrbs": "Bola Langit",
@@ -663,7 +663,6 @@
     },
     "availability": {
       "decreeSpace": "Slot Dekret penuh. Tinjau Dekret milikmu untuk menyediakan ruang.",
-      "consumableSpace": "Slot item sekali pakai penuh. Gunakan item saat bermain sebelum membeli lagi.",
       "flowerCount": "Memerlukan {{required}} Bunga; kamu punya {{current}}.",
       "flowers": "Dekret ini memerlukan lebih banyak Bunga.",
       "unavailable": "Tidak tersedia"
@@ -715,7 +714,7 @@
       "balance": "Emas"
     },
     "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
-    "packInventoryFull": "Ruang tidak cukup untuk pilihan ini. Pilih lebih sedikit atau hadiah lain, atau lewati paket.",
+    "packInventoryFull": "Slot Dekret tidak cukup untuk pilihan ini. Pilih lebih sedikit Dekret, atau lewati paket.",
     "inventoryFull": "Ruang inventaris tidak cukup untuk hadiah ini.",
     "skipRewards": "Lewati hadiah",
     "purchaseFailed": "Pembelian tidak dapat diselesaikan.",
@@ -2117,7 +2116,7 @@
       },
       "crystal_lens": {
         "name": "Lensa Kristal",
-        "description": "+1 slot barang sekali pakai"
+        "description": "Paket Arcana menawarkan +1 pilihan"
       },
       "star_chart": {
         "name": "Peta Bintang",
@@ -2444,11 +2443,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Segel Sang Peramal",
-        "description": "Membuat hingga 2 Orb Langit acak (bila ada tempat)"
+        "description": "Membuat 2 Orb Langit acak"
       },
       "seal_of_the_emperor": {
         "name": "Segel Sang Kaisar",
-        "description": "Membuat hingga 2 Segel Takdir acak (bila ada tempat)"
+        "description": "Membuat 2 Segel Takdir acak"
       },
       "seal_of_the_fool": {
         "name": "Segel Sang Pandir",

@@ -409,6 +409,17 @@ export class TeaHouseSystem {
     return this.purchasedCharterIds.has(charterId)
   }
 
+  /** Extra Arcana Pack choices (Crystal Lens). Read from the owned ids, not a
+   * saved counter, so runs saved before the Charter changed need no repair.
+   */
+  private getArcanaChoiceBonus(): number {
+    let bonus = 0
+    for (const id of this.purchasedCharterIds)
+      for (const effect of getCharterById(id)?.effects ?? [])
+        if (effect.type === 'arcana_choices') bonus += effect.value as number
+    return bonus
+  }
+
   // ===========================================================================
   // SHOP GENERATION
   // ===========================================================================
@@ -854,7 +865,9 @@ export class TeaHouseSystem {
       type: packType,
       size: packSize,
       cost: this.pricingCalculator.getPackCost(packSize),
-      choiceCount: PACK_SIZE_DEFINITIONS[packSize].choiceCount,
+      choiceCount:
+        PACK_SIZE_DEFINITIONS[packSize].choiceCount +
+        (packType === 'Arcana' ? this.getArcanaChoiceBonus() : 0),
       selectCount: PACK_SIZE_DEFINITIONS[packSize].selectCount,
     }
 

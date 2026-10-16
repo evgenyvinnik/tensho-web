@@ -6,7 +6,7 @@ import {
   TEA_HOUSE_BASE_CHARTERS,
   TEA_HOUSE_UPGRADED_CHARTERS,
 } from './TeaHouseSystem'
-import type { Decree } from './types'
+import type { BlessingPack, Decree } from './types'
 
 function charter(id: string) {
   const result = [...TEA_HOUSE_BASE_CHARTERS, ...TEA_HOUSE_UPGRADED_CHARTERS]
@@ -50,6 +50,39 @@ describe('TeaHouseSystem visit modifiers', () => {
         .filter((offering) => offering.itemType === 'Decree')
         .every((offering) => offering.edition !== undefined)
     ).toBe(true)
+  })
+
+  it('gives Arcana Packs one more choice with Crystal Lens, including restored runs', () => {
+    // 0.5 rolls Arcana for every pack; 0.7 rolls Celestial.
+    const packs = (teaHouse: TeaHouseSystem) =>
+      teaHouse.generateShop().packOfferings.map((o) => o.item as BlessingPack)
+    const baseline = packs(new TeaHouseSystem(1, () => 0.5))
+    expect(baseline.every((pack) => pack.type === 'Arcana')).toBe(true)
+
+    const lens = new TeaHouseSystem(1, () => 0.5)
+    lens.applyCharter(charter('crystal_lens'))
+    expect(packs(lens).map((pack) => pack.choiceCount)).toEqual(
+      baseline.map((pack) => pack.choiceCount + 1)
+    )
+
+    const restored = TeaHouseSystem.fromSerializedState(
+      {
+        ...new TeaHouseSystem().toSerializedState(),
+        purchasedCharterIds: ['crystal_lens'],
+      },
+      { random: () => 0.5 }
+    )
+    expect(packs(restored).map((pack) => pack.choiceCount)).toEqual(
+      baseline.map((pack) => pack.choiceCount + 1)
+    )
+
+    const celestial = new TeaHouseSystem(1, () => 0.7)
+    celestial.applyCharter(charter('crystal_lens'))
+    expect(packs(celestial)).toEqual(
+      packs(new TeaHouseSystem(1, () => 0.7)).map((pack) =>
+        expect.objectContaining({ type: 'Celestial', choiceCount: pack.choiceCount })
+      )
+    )
   })
 
   it('generates purchasable wall tiles with Illusion modifiers', () => {

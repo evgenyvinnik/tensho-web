@@ -162,7 +162,7 @@
     "replacesModifier": "将替换{{names}}：每张牌只能拥有一种印记、封印或版本效果。",
     "cost": "虚空代价",
     "failed": "无法使用此道具。",
-    "unavailable": "请检查目标和本回合的使用次数限制。",
+    "unavailable": "此道具当前无法使用。",
     "confirm": "使用道具",
     "fateSeals": "命运符印",
     "celestialOrbs": "天体宝珠",
@@ -455,7 +455,6 @@
     },
     "availability": {
       "decreeSpace": "敕令槽位已满。查看持有的敕令以腾出空间。",
-      "consumableSpace": "消耗品槽位已满。请在游戏中使用物品后再购买。",
       "flowerCount": "需要{{required}}张花牌；当前持有{{current}}张。",
       "flowers": "此敕令需要更多花牌。",
       "unavailable": "暂不可购买"
@@ -507,7 +506,7 @@
       "balance": "金币"
     },
     "packChoices": "从 {{count}} 个奖励中选择最多 {{max}} 个",
-    "packInventoryFull": "空间不足，无法领取所选奖励。请减少数量、更换奖励或跳过卡包。",
+    "packInventoryFull": "敕令槽位不足，无法领取所选奖励。请减少敕令或跳过卡包。",
     "inventoryFull": "物品栏空间不足，无法领取此奖励。",
     "skipRewards": "跳过奖励",
     "purchaseFailed": "无法完成购买。",
@@ -1865,7 +1864,7 @@
       },
       "crystal_lens": {
         "name": "水晶透镜",
-        "description": "消耗品栏位+1"
+        "description": "秘仪包选项+1"
       },
       "star_chart": {
         "name": "星图",
@@ -2192,11 +2191,11 @@
       },
       "seal_of_the_oracle": {
         "name": "先知之符",
-        "description": "最多创造2个随机天球（若有空位）"
+        "description": "创造2个随机天球"
       },
       "seal_of_the_emperor": {
         "name": "皇帝之符",
-        "description": "最多创造2个随机命运符（若有空位）"
+        "description": "创造2个随机命运符"
       },
       "seal_of_the_fool": {
         "name": "愚者之符",
@@ -2488,7 +2487,7 @@
       },
       "purple": {
         "name": "紫封",
-        "description": "重抽这张牌时，若有空位则生成随机命运符印。"
+        "description": "重抽这张牌时，生成随机命运符印。"
       }
     }
   },

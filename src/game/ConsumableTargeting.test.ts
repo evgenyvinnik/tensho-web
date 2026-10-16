@@ -27,7 +27,6 @@ function snapshot(game: GameOrchestrator) {
     seals: state.fateSeals,
     scripts: state.voidScripts,
     orbs: state.celestialOrbs,
-    uses: state.consumableSystem.getFateSealUsesRemaining(),
     hidden: [...state.faceDownTileIds],
   })
 }
@@ -170,7 +169,22 @@ describe('consumable targeting contract', () => {
     expect(game.getState().faceDownTileIds.has(id)).toBe(true)
   })
 
-  it('preflights Script counts and the once-per-round limit', () => {
+  it('uses any number of Fate Seals in one round', () => {
+    const game = new GameOrchestrator()
+    game.startNewRun(7)
+    for (let use = 0; use < 4; use++) {
+      const seal = FateSealSystem.createFateSealInstance(
+        FATE_SEALS.seal_of_the_hermit
+      )
+      expect(game.addFateSeal(seal)).toBe(true)
+      const action = { type: 'useSeal' as const, sealId: seal.instanceId }
+      expect(game.canPerformAction(action)).toBe(true)
+      expect(game.processAction(action).success).toBe(true)
+    }
+    expect(game.getFateSeals()).toHaveLength(0)
+  })
+
+  it('preflights Script counts and allows any number per round', () => {
     const game = new GameOrchestrator()
     game.startNewRun(7)
     const script = VoidScriptSystem.createVoidScriptInstance(
@@ -190,10 +204,14 @@ describe('consumable targeting contract', () => {
     action.targets = [game.getHandTiles()[0].id]
     expect(game.canPerformAction(action)).toBe(true)
     expect(game.processAction(action).success).toBe(true)
-    expect(
-      game.canPerformAction({ ...action, scriptId: other.instanceId })
-    ).toBe(false)
-    expect(game.getState().voidScripts).toHaveLength(1)
+    const next = {
+      ...action,
+      scriptId: other.instanceId,
+      targets: [game.getHandTiles()[1].id],
+    }
+    expect(game.canPerformAction(next)).toBe(true)
+    expect(game.processAction(next).success).toBe(true)
+    expect(game.getState().voidScripts).toHaveLength(0)
   })
 
   it('consumes an owned Orb once and rejects use outside gameplay', () => {

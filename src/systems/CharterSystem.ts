@@ -45,7 +45,7 @@ export interface CharterEffects {
   discountPercentage: number
   editionFrequencyMultiplier: number
   rerollDiscount: number
-  consumableSlots: number
+  arcanaChoices: number
   voidInArcana: boolean
   celestialFavor: boolean
   orbMultiplier: number
@@ -72,7 +72,7 @@ export const DEFAULT_CHARTER_EFFECTS: CharterEffects = {
   discountPercentage: 0,
   editionFrequencyMultiplier: 1,
   rerollDiscount: 0,
-  consumableSlots: 0,
+  arcanaChoices: 0,
   voidInArcana: false,
   celestialFavor: false,
   orbMultiplier: 1,
@@ -255,8 +255,8 @@ export class CharterSystem {
         effects.rerollDiscount += effect.value as number
         break
 
-      case 'consumable_slots':
-        effects.consumableSlots += effect.value as number
+      case 'arcana_choices':
+        effects.arcanaChoices += effect.value as number
         break
 
       case 'void_in_arcana':

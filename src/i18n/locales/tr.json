@@ -293,11 +293,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Kâhin Mührü",
-        "description": "Yer varsa en fazla 2 rastgele Göksel Küre oluşturur."
+        "description": "2 rastgele Göksel Küre oluşturur."
       },
       "seal_of_the_emperor": {
         "name": "İmparator Mührü",
-        "description": "Yer varsa en fazla 2 rastgele Kader Mührü oluşturur."
+        "description": "2 rastgele Kader Mührü oluşturur."
       },
       "seal_of_the_fool": {
         "name": "Deli Mührü",
@@ -417,7 +417,7 @@
       },
       "purple": {
         "name": "Mor Mühür",
-        "description": "Bu taş yeniden çekildiğinde yer varsa rastgele bir Kader Mühürü yaratır."
+        "description": "Bu taş yeniden çekildiğinde rastgele bir Kader Mühürü yaratır."
       }
     }
   },
@@ -449,7 +449,7 @@
     "replacesModifier": "{{names}} yerine geçer: bir taşta yalnızca bir işaret, mühür ya da baskı olabilir.",
     "cost": "Hiçliğin bedeli",
     "failed": "Bu eşya kullanılamadı.",
-    "unavailable": "Hedefleri ve bu turdaki kullanım sınırını kontrol edin.",
+    "unavailable": "Bu eşya şu anda kullanılamaz.",
     "confirm": "Eşyayı kullan",
     "fateSeals": "Kader Mühürleri",
     "celestialOrbs": "Göksel Küreler",
@@ -742,7 +742,6 @@
     },
     "availability": {
       "decreeSpace": "Boş Ferman yuvası yok. Yer açmak için Fermanlarını gözden geçir.",
-      "consumableSpace": "Tüketilebilir eşya yuvaları dolu. Daha fazla almadan önce oyun sırasında bir eşya kullan.",
       "flowerCount": "{{required}} Çiçek gerekli; sende {{current}} var.",
       "flowers": "Bu Ferman için daha fazla Çiçek gerekiyor.",
       "unavailable": "Kullanılamıyor"
@@ -794,7 +793,7 @@
       "balance": "Altın"
     },
     "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
-    "packInventoryFull": "Bu seçim için yeterli yer yok. Daha az veya farklı ödüller seçin ya da paketi atlayın.",
+    "packInventoryFull": "Bu seçim için yeterli Ferman yuvası yok. Daha az Ferman seçin ya da paketi atlayın.",
     "inventoryFull": "Bu ödül için envanterde yeterli yer yok.",
     "skipRewards": "Ödülleri atla",
     "purchaseFailed": "Satın alma tamamlanamadı.",
@@ -2166,7 +2165,7 @@
       },
       "crystal_lens": {
         "name": "Kristal Mercek",
-        "description": "+1 tüketilebilir eşya yuvası."
+        "description": "Gizem Paketleri +1 seçenek sunar."
       },
       "star_chart": {
         "name": "Yıldız Haritası",

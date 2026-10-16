@@ -10,7 +10,7 @@ The old gameplay popup attempted to use an item immediately when clicked, implic
 - Target selection belongs to the dialog. Inspecting an item, selecting targets, cancelling, or pressing Escape spends nothing and does not change staged gameplay tiles.
 - Target tiles have complete, separate touch targets and numbered selection badges. Copy effects explain that target 1 becomes a copy of target 2.
 - Concealed tiles retain face-down artwork and a generic accessible name. Merely opening or cancelling the picker does not reveal them. The existing successful-targeted-use reveal rule remains in place.
-- Invalid counts and known effect-specific failures disable confirmation. The footer explains the reason before use. Failed effect execution leaves the dialog open with an error, retaining the item and its per-round allowance. After a successful use the dialog closes.
+- Invalid counts and known effect-specific failures disable confirmation. The footer explains the reason before use. Failed effect execution leaves the dialog open with an error, retaining the item. After a successful use the dialog closes.
 - Focus opens on Close, wraps within enabled dialog controls, and returns to the opener when possible. Native modal behavior makes the underlying game inert.
 - Item names/descriptions use the existing translation library. Controls, family/count labels, Script penalty summaries, Omen protection, rank/suit failures, upgrade caps, reward capacity, missing Decrees/copy history, zero-gold effects, and concealed-outcome notices are supplied in all 13 locales. Unmapped engine errors still fall back to authored English; native-speaker review is outstanding.
 
@@ -27,8 +27,8 @@ The old gameplay popup attempted to use an item immediately when clicked, implic
 | No-op rank/suit changes | If no selected tile can change suit or advance within ranks 1–9, the use fails without consuming the Seal. A mixed selection can still change its eligible subset, matching the existing effect behavior. |
 | Script costs | The dialog shows the functional penalty, rather than flavor text such as “Rare find.” Active Omen protection is disclosed and is consumed only on successful use. |
 | Orb levels | Successful use upgrades the authoritative yaku level and consumes the owned Orb once. Capped ordinary Orbs are disabled before confirmation. All-Yaku Orbs, the Void Seal, and the all-Yaku Script are rejected when every category is capped; partially capped all-Yaku upgrades remain valid. |
-| Reward capacity | Decree-generating Seals and Scripts require an available Decree slot. Consumable-generating Seals may reuse their own consumed inventory slot; a full inventory does not incorrectly prevent this replacement. |
-| Missing prerequisites | Decree-edition/copy effects require an owned Decree. The Fool requires a successfully used Fate Seal or Celestial Orb in this run. These failures preserve the item, allowance, Script penalty state, and Omen protection. |
+| Reward capacity | Decree-generating Seals and Scripts require an available Decree slot. Consumables have no inventory cap, so consumable-generating Seals always create their full count. |
+| Missing prerequisites | Decree-edition/copy effects require an owned Decree. The Fool requires a successfully used Fate Seal or Celestial Orb in this run. These failures preserve the item, Script penalty state, and Omen protection. |
 | Zero-gold effects | Hermit/Balance are rejected when the current public state would grant no gold, rather than being consumed for nothing. |
 | Concealed targets | Suit/rank suitability is not inspected when a selection includes concealed tiles. Confirmation remains available with a localized uncertainty notice; only execution checks the actual effect. Rejected use retains the concealed state and item; successful targeted use reveals the affected targets under the existing rule. |
 | Chance effects | A valid Fortune use can still roll no edition and consume the Seal. Inspection does not roll, predict, or retry that chance. Missing Decrees are a known prerequisite failure and do not consume it. |
@@ -58,8 +58,8 @@ create a Script. Four failing regression checks reproduced this mismatch.
   Yaku level until that Orb is separately used.
 - Existing self-copy semantics are retained: a successfully used Fool is itself
   the last Fate Seal. Another Fool can therefore create a fresh Fool. The item
-  library does not state an exclusion. Each confirmation still spends the
-  ordinary allowance; replaying the old consumed instance ID is rejected.
+  library does not state an exclusion. Each confirmation consumes that
+  instance; replaying the old consumed instance ID is rejected.
   Excluding self-copy would be a separate design change, not part of this
   family-eligibility correction.
 

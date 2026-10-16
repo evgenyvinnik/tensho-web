@@ -724,7 +724,7 @@ describe('GameOrchestrator', () => {
       }
     })
 
-    it('applies gold effects and enforces one Fate Seal per round', () => {
+    it('applies gold effects and allows any number of Fate Seals per round', () => {
       const first = FateSealSystem.createFateSealInstance(
         FATE_SEALS.seal_of_the_hermit
       )
@@ -740,31 +740,12 @@ describe('GameOrchestrator', () => {
       ).toBe(true)
       expect(game.getState().gold).toBe(8)
 
-      const secondUse = game.processAction({
-        type: 'useSeal',
-        sealId: second.instanceId,
-      })
-      expect(secondUse.success).toBe(false)
-      expect(secondUse.errors?.[0]).toContain('uses remaining')
-      expect(game.getFateSeals()).toHaveLength(1)
-
-      const mutableState = game.getState() as OrchestratorState
-      const currentRound = mutableState.roundManager.getCurrentRound()!
-      currentRound.scoreTarget = 1
-      mutableState.targetScore = 1
-      game.processAction({
-        type: 'play',
-        tileIds: game
-          .getHandTiles()
-          .slice(0, 2)
-          .map((tile) => tile.id),
-      })
-      game.exitShop()
-
       expect(
         game.processAction({ type: 'useSeal', sealId: second.instanceId })
           .success
       ).toBe(true)
+      expect(game.getState().gold).toBe(16)
+      expect(game.getFateSeals()).toHaveLength(0)
     })
 
     it('applies tile seals and Void Script economy penalties', () => {

@@ -293,11 +293,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Selyo ng Orakulo",
-        "description": "Lumilikha ng hanggang 2 sapalarang Makalangit na Globo (kung may puwang)."
+        "description": "Lumilikha ng 2 sapalarang Makalangit na Globo."
       },
       "seal_of_the_emperor": {
         "name": "Selyo ng Emperador",
-        "description": "Lumilikha ng hanggang 2 sapalarang Selyo ng Tadhana (kung may puwang)."
+        "description": "Lumilikha ng 2 sapalarang Selyo ng Tadhana."
       },
       "seal_of_the_fool": {
         "name": "Selyo ng Hangal",
@@ -417,7 +417,7 @@
       },
       "purple": {
         "name": "Lilang Selyo",
-        "description": "Gumagawa ng random na Selyo ng Kapalaran kapag na-redraw ang tile na ito, kung may puwang."
+        "description": "Gumagawa ng random na Selyo ng Kapalaran kapag na-redraw ang tile na ito."
       }
     }
   },
@@ -449,7 +449,7 @@
     "replacesModifier": "Papalitan ang {{names}}: isang marka, selyo o edisyon lang ang puwede sa isang tile.",
     "cost": "Kapalit ng Kawalan",
     "failed": "Hindi magamit ang item na ito.",
-    "unavailable": "Suriin ang mga target at ang limitasyon ng paggamit sa round na ito.",
+    "unavailable": "Hindi magagamit ang item na ito sa ngayon.",
     "confirm": "Gamitin ang item",
     "fateSeals": "Mga Selyo ng Kapalaran",
     "celestialOrbs": "Mga Orb ng Kalangitan",
@@ -742,7 +742,6 @@
     },
     "availability": {
       "decreeSpace": "Puno ang mga puwesto ng Dekreto. Suriin ang mga Dekreto mo para maglaan ng puwesto.",
-      "consumableSpace": "Puno ang mga puwesto ng consumable. Gumamit ng item habang naglalaro bago bumili pa.",
       "flowerCount": "Kailangan ng {{required}} Bulaklak; mayroon kang {{current}}.",
       "flowers": "Kailangan ng higit pang Bulaklak para sa Dekretong ito.",
       "unavailable": "Hindi available"
@@ -794,7 +793,7 @@
       "balance": "Ginto"
     },
     "packChoices": "Pumili ng hanggang {{max}} sa {{count}} gantimpala",
-    "packInventoryFull": "Kulang ang puwang para sa napiling gantimpala. Bawasan o palitan ang mga napili, o laktawan ang pack.",
+    "packInventoryFull": "Kulang ang puwesto ng Dekreto para sa napiling gantimpala. Bawasan ang mga Dekreto, o laktawan ang pack.",
     "inventoryFull": "Kulang ang puwang sa imbentaryo para sa gantimpalang ito.",
     "skipRewards": "Laktawan ang mga gantimpala",
     "purchaseFailed": "Hindi makumpleto ang pagbili.",
@@ -2166,7 +2165,7 @@
       },
       "crystal_lens": {
         "name": "Lenteng Kristal",
-        "description": "+1 puwesto para sa nauubos na gamit."
+        "description": "+1 pagpipilian sa mga Pakete ng Hiwaga."
       },
       "star_chart": {
         "name": "Mapa ng mga Bituin",

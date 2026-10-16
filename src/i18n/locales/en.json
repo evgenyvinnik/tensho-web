@@ -162,7 +162,7 @@
     "replacesModifier": "Replaces {{names}}: a tile holds one mark, seal or edition.",
     "cost": "Void cost",
     "failed": "This item could not be used.",
-    "unavailable": "Check the targets and this round’s use limit.",
+    "unavailable": "This item can’t be used right now.",
     "confirm": "Use item",
     "fateSeals": "Fate Seals",
     "celestialOrbs": "Celestial Orbs",
@@ -451,7 +451,6 @@
     },
     "availability": {
       "decreeSpace": "No Decree slot. Review your build to make room.",
-      "consumableSpace": "Consumable slots are full. Use an item during play before buying more.",
       "flowerCount": "Requires {{required}} Flowers; you have {{current}}.",
       "flowers": "More Flowers are required for this Decree.",
       "unavailable": "Unavailable"
@@ -503,7 +502,7 @@
       "balance": "Gold"
     },
     "packChoices": "Choose up to {{max}} from {{count}} rewards",
-    "packInventoryFull": "Not enough space for this selection. Choose fewer or different rewards, or skip the pack.",
+    "packInventoryFull": "Not enough Decree slots for this selection. Choose fewer Decrees, or skip the pack.",
     "inventoryFull": "Not enough inventory space for this reward.",
     "skipRewards": "Skip rewards",
     "purchaseFailed": "Purchase could not be completed.",
@@ -1814,7 +1813,7 @@
       },
       "crystal_lens": {
         "name": "Crystal Lens",
-        "description": "+1 consumable slot"
+        "description": "Arcana Packs offer +1 choice"
       },
       "star_chart": {
         "name": "Star Chart",
@@ -2085,11 +2084,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Seal of the Oracle",
-        "description": "Creates up to 2 random Celestial Orbs (if room)"
+        "description": "Creates 2 random Celestial Orbs"
       },
       "seal_of_the_emperor": {
         "name": "Seal of the Emperor",
-        "description": "Creates up to 2 random Fate Seals (if room)"
+        "description": "Creates 2 random Fate Seals"
       },
       "seal_of_the_fool": {
         "name": "Seal of the Fool",
@@ -2484,7 +2483,7 @@
       },
       "purple": {
         "name": "Purple Seal",
-        "description": "Creates a random Fate Seal when this tile is redrawn, if there is room."
+        "description": "Creates a random Fate Seal when this tile is redrawn."
       }
     }
   },

@@ -133,7 +133,6 @@ export interface GameController {
     source?: 'purchase' | 'pack_open' | 'generated'
   ) => boolean
   addTileToWall: (tile: Tile) => boolean
-  canAddConsumable: () => boolean
   canRerollBossMandate: () => boolean
   rerollBossMandate: () => ActionResult
   canUseDeadWallWrit: (tileId?: string) => boolean
@@ -411,10 +410,6 @@ export function useGameController(
     (tile: Tile) => orchestrator.addTileToWall(tile),
     [orchestrator]
   )
-  const canAddConsumable = useCallback(
-    () => orchestrator.canAddConsumable(),
-    [orchestrator]
-  )
   const canRerollBossMandate = useCallback(
     () => orchestrator.canRerollBossMandate(),
     [orchestrator]
@@ -555,7 +550,6 @@ export function useGameController(
     addCelestialOrb,
     addVoidScript,
     addTileToWall,
-    canAddConsumable,
     canRerollBossMandate,
     rerollBossMandate,
     canUseDeadWallWrit,

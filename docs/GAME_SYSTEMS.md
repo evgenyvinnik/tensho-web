@@ -543,7 +543,9 @@ This section defines original, mahjong-themed analogs to several Balatro mechani
 **Theme:** Ritual seals that shape the current hand and the deck being built.
 
 **Core Rules:**
-- One seal can be used per round by default.
+- Seals have no per-round limit: use as many as you own, each consumed on use.
+  (October 15, 2026: the earlier one-per-round cap was removed. Saves that
+  carried it load uncapped.)
 - Seals must pass their targeting and use restrictions; they do not bypass
   Heaven or Mandate rules indiscriminately.
 - Selected physical tile changes also change the persistent wall for this run.
@@ -596,7 +598,9 @@ matching hands earn the reward rather than being a prerequisite XP grind.*
 
 **Core Rules:**
 - Each script has a downside (corruption, lost slot, penalty).
-- Scripts can only be used once per round.
+- Scripts have no per-round limit: use as many as you own, each consumed on
+  use. (October 15, 2026: the earlier one-per-round cap was removed alongside
+  the Fate Seal cap.)
 
 **Mahjong Twist:** Scripts can corrupt Seasons or weaken Decrees temporarily.
 

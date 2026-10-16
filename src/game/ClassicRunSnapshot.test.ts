@@ -145,7 +145,7 @@ it('reattaches Mandate cleanup to the restored Debuff system', () => {
   expect(restored.debuffSystem.isTileDebuffed(tile.id)).toBe(false)
 })
 
-it('retains consumed Seal quota and copy history instead of granting another use', () => {
+it('keeps Seal copy history across a save and still allows another use', () => {
   const game = start()
   const first = FateSealSystem.createFateSealInstance(
     FATE_SEALS.seal_of_the_hermit
@@ -160,13 +160,14 @@ it('retains consumed Seal quota and copy history instead of granting another use
   expect(game.addFateSeal(second)).toBe(true)
   const saved = json(game.captureRun())
   game.restoreRun(saved)
-  expect(
-    game.processAction({ type: 'useSeal', sealId: second.instanceId }).success
-  ).toBe(false)
   expect(json(game.captureRun().state)).toEqual(saved.state)
   expect(game.getState().fateSealSystem.getLastUsedConsumable()?.id).toBe(
     first.id
   )
+  expect(
+    game.processAction({ type: 'useSeal', sealId: second.instanceId }).success
+  ).toBe(true)
+  expect(game.getFateSeals()).toHaveLength(0)
 })
 
 it('resumes a purchased pending tile pack without payment, reroll or a second claim', () => {

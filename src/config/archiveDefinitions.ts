@@ -499,8 +499,7 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
     name: 'Purple Seal',
     japaneseName: '紫封',
     description: 'Creates Fate Seal on discard or redraw',
-    effect:
-      'Creates a random Fate Seal when discarded or redrawn, if there is room',
+    effect: 'Creates a random Fate Seal when discarded or redrawn',
     color: '#8844FF',
   },
 ]

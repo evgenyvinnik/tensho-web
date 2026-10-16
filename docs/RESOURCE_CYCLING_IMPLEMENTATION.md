@@ -25,9 +25,8 @@ the wall could actually supply replacements.
   discard, award River Tax gold, or put the returned tiles into the river.
 - Real discards retain their distinct behavior: the tile enters the discard
   pool, discard allowance is spent, and eligible discard rewards apply.
-- A Purple-sealed tile generates a random Fate Seal on either discard or redraw,
-  subject to shared consumable capacity. No item is created during validation.
-  A full inventory does not invalidate the underlying exchange or discard.
+- A Purple-sealed tile generates a random Fate Seal on either discard or redraw.
+  Consumables have no inventory cap. No item is created during validation.
 - Actual replacement tiles produce `tileDrawn` events and added-tile effects.
   This updates the controller and normal draw feedback without pretending a
   redraw was a discard.

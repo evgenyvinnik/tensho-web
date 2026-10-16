@@ -101,15 +101,30 @@ function refreshDecree(item: unknown): unknown {
   return refresh(item, ALL_DECREES, DECREE_RUNTIME)
 }
 
-function refreshPack(pack: unknown): unknown {
+/** Extra Arcana Pack choices granted by the saved run's Charters. */
+function arcanaChoiceBonus(charterIds: unknown): number {
+  if (!Array.isArray(charterIds)) return 0
+  return ALL_CHARTERS.filter((charter) => charterIds.includes(charter.id))
+    .flatMap((charter) => charter.effects)
+    .filter((effect) => effect.type === 'arcana_choices')
+    .reduce((sum, effect) => sum + (effect.value as number), 0)
+}
+
+function refreshPack(pack: unknown, arcanaBonus: number): unknown {
   if (!isRecord(pack) || typeof pack.size !== 'string') return pack
   const size =
     PACK_SIZE_DEFINITIONS[pack.size as keyof typeof PACK_SIZE_DEFINITIONS]
   if (!size) return pack
+  // Keep a Crystal Lens choice the pack already has, up to what the run's
+  // Charters grant. A pack stocked before the Lens was bought stays as it was.
+  const extra =
+    pack.type === 'Arcana' && typeof pack.choiceCount === 'number'
+      ? Math.min(Math.max(0, pack.choiceCount - size.choiceCount), arcanaBonus)
+      : 0
   // The price paid or quoted stays; only how many rewards it holds changes.
   return {
     ...pack,
-    choiceCount: size.choiceCount,
+    choiceCount: size.choiceCount + extra,
     selectCount: size.selectCount,
   }
 }
@@ -123,7 +138,7 @@ function refreshReward(reward: unknown): unknown {
   return reward
 }
 
-function refreshOffering(offering: unknown): unknown {
+function refreshOffering(offering: unknown, arcanaBonus: number): unknown {
   if (!isRecord(offering)) return offering
   const item = offering.item
   switch (offering.itemType) {
@@ -134,7 +149,7 @@ function refreshOffering(offering: unknown): unknown {
     case 'VoidScript':
       return { ...offering, item: refreshConsumable(item) }
     case 'BlessingPack':
-      return { ...offering, item: refreshPack(item) }
+      return { ...offering, item: refreshPack(item, arcanaBonus) }
     case 'ImperialCharter':
       // Offerings carry the Tea House's own Charter shape, not the catalog's.
       return {
@@ -176,7 +191,16 @@ function refreshContent(snapshot: Json): Json {
       const inventory = { ...state.consumableSystem.inventory }
       for (const key of ['fateSeals', 'celestialOrbs', 'voidScripts'])
         inventory[key] = mapArray(inventory[key], refreshConsumable)
-      state.consumableSystem = { ...state.consumableSystem, inventory }
+      const system: Json = { ...state.consumableSystem, inventory }
+      // Fate Seals and Void Scripts no longer have a per-round use limit.
+      for (const key of [
+        'sealsUsedThisRound',
+        'maxSealsPerRound',
+        'scriptsUsedThisRound',
+        'maxScriptsPerRound',
+      ])
+        delete system[key]
+      state.consumableSystem = system
     }
     if (isRecord(state.celestialOrbSystem))
       state.celestialOrbSystem = {
@@ -246,19 +270,23 @@ function refreshContent(snapshot: Json): Json {
 
   const shop = isRecord(snapshot.shop) ? { ...snapshot.shop } : null
   if (shop) {
+    const bonus = arcanaChoiceBonus(
+      isRecord(shop.teaHouse) ? shop.teaHouse.purchasedCharterIds : undefined
+    )
+    const offering = (item: unknown) => refreshOffering(item, bonus)
     if (isRecord(shop.teaHouse))
       shop.teaHouse = {
         ...shop.teaHouse,
-        itemOfferings: mapArray(shop.teaHouse.itemOfferings, refreshOffering),
-        packOfferings: mapArray(shop.teaHouse.packOfferings, refreshOffering),
-        charterOffering: refreshOffering(shop.teaHouse.charterOffering),
+        itemOfferings: mapArray(shop.teaHouse.itemOfferings, offering),
+        packOfferings: mapArray(shop.teaHouse.packOfferings, offering),
+        charterOffering: offering(shop.teaHouse.charterOffering),
       }
     if (isRecord(shop.packs))
       shop.packs = {
         ...shop.packs,
         currentOfferings: mapArray(shop.packs.currentOfferings, (offer) => {
           if (!isRecord(offer)) return offer
-          const pack = refreshPack(offer.pack)
+          const pack = refreshPack(offer.pack, bonus)
           return {
             ...offer,
             pack,

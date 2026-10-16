@@ -131,20 +131,18 @@ describe('run-owned shop transactions', () => {
     expect(shop.visitTotals).toEqual({ goldSpent: 4, itemsPurchased: 1 })
   })
 
-  it('does not charge or mark an ordinary consumable when the shared inventory is full', () => {
+  it('buys a consumable however many are already held; only Decrees have slots', () => {
     const { shop, state } = visit()
     const contents = seals()
-    state.fateSeals = contents.slice(0, 3).map((c) => c.data as FateSeal)
+    state.fateSeals = contents.slice(0, 4).map((c) => c.data as FateSeal)
     const offer = shop.state.itemOfferings[0]
     offer.itemType = 'FateSeal'
-    offer.item = contents[3].data as FateSeal
-    expect(shop.purchase(offer.id)).toEqual({
-      success: false,
-      reason: 'inventoryFull',
-    })
-    expect(offer.isPurchased).toBe(false)
-    expect(state.gold).toBe(100)
-    expect(state.fateSeals).toHaveLength(3)
+    offer.item = contents[4].data as FateSeal
+    offer.finalCost = 4
+    expect(shop.purchase(offer.id).success).toBe(true)
+    expect(offer.isPurchased).toBe(true)
+    expect(state.gold).toBe(96)
+    expect(state.fateSeals).toHaveLength(5)
   })
 
   it('validates Decree requirements, not just slot capacity', () => {
@@ -158,22 +156,49 @@ describe('run-owned shop transactions', () => {
     expect(offer.isPurchased).toBe(false)
   })
 
-  it('retains a bought Mega pack when its combined rewards cannot fit, without partial grants', () => {
+  it('grants every chosen consumable from a Mega pack however many are held', () => {
     const { game, shop, state } = visit()
     const { offer, contents } = packFixture(game)
-    state.fateSeals = contents.slice(2, 4).map((c) => c.data as FateSeal)
+    state.fateSeals = contents.slice(2, 5).map((c) => c.data as FateSeal)
+    expect(shop.purchase(offer.id).success).toBe(true)
+    expect(shop.validatePackSelection([0, 1])).toEqual({ success: true })
+    expect(shop.confirmPack([0, 1]).success).toBe(true)
+    expect(state.fateSeals).toHaveLength(5)
+    expect(shop.pendingPack).toBeNull()
+  })
+
+  it('retains a bought Mega pack when its combined Decrees cannot fit, without partial grants', () => {
+    const { game, shop, state } = visit()
+    const catalog = ALL_DECREES.filter((d) => !d.flowerRequirement)
+    const { offer, contents } = packFixture(
+      game,
+      catalog.slice(0, 5).map((decree, i) => ({
+        id: `fixture-decree:${i}`,
+        type: 'Decree',
+        name: decree.name,
+        description: decree.description,
+        rarity: 'common',
+        data: decree,
+      }))
+    )
+    const owned = catalog.slice(5)
+    while (state.decreeSystem.getAvailableSlots() > 1)
+      state.decreeSystem.acquireDecree(owned.shift()!)
+    const held = state.decreeSystem.getOwnedDecrees().length
     expect(shop.purchase(offer.id).success).toBe(true)
     const pending = shop.pendingPack
     expect(shop.confirmPack([0, 1])).toEqual({
       success: false,
       reason: 'inventoryFull',
     })
-    expect(state.fateSeals).toHaveLength(2)
+    expect(state.decreeSystem.getOwnedDecrees()).toHaveLength(held)
     expect(state.gold).toBe(92)
     expect(shop.pendingPack).toBe(pending)
     expect(shop.confirmPack([1]).success).toBe(true)
-    expect(state.fateSeals).toHaveLength(3)
-    expect(state.fateSeals[2]).toBe(contents[1].data)
+    expect(state.decreeSystem.getOwnedDecrees()).toHaveLength(held + 1)
+    expect(state.decreeSystem.getOwnedDecrees()[held].id).toBe(
+      (contents[1].data as Decree).id
+    )
     expect(shop.pendingPack).toBeNull()
     expect(shop.confirmPack([0]).success).toBe(false)
     expect(state.gold).toBe(92)

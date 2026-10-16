@@ -111,7 +111,7 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | **Discount Seal** | ¥10 | All shop items 25% off | **Liquidation Order** | All shop items 50% off | Redeem 10 Charters in one run |
 | **Refinement Edict** | ¥10 | Foil/Holo/Prismatic appear 2× more | **Radiance Decree** | Appear 4× more | Have 5 enhanced Decrees |
 | **Reroll Subsidy** | ¥10 | Rerolls cost ¥2 less | **Reroll Grant** | Cost ¥2 less again | Reroll shop 100 times total |
-| **Crystal Sphere** | ¥10 | +1 consumable slot | **Omen Globe** | Void Scripts may appear in Fate Seal packs | Use 25 Fate Seals from packs |
+| **Crystal Sphere** | ¥10 | Arcana Packs offer +1 choice | **Omen Globe** | Void Scripts may appear in Fate Seal packs | Use 25 Fate Seals from packs |
 | **Star Chart** | ¥10 | Celestial Packs always contain Orb for most-played Yaku | **Observatory License** | Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play; Black Hole matches any scored Yaku | Use 25 Orbs from packs |
 | **Extra Hand Writ** | ¥10 | +1 hand per round | **Dual Hand Decree** | +1 more hand per round | Play 2500 tiles total |
 | **Discard Permit** | ¥10 | +1 discard per round | **Recycle Order** | +1 more discard per round | Discard 2500 tiles total |

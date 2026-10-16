@@ -162,7 +162,7 @@
     "replacesModifier": "{{names}}을(를) 대체해요. 패 하나에는 표식, 인장, 에디션 중 하나만 붙어요.",
     "cost": "공허의 대가",
     "failed": "이 아이템을 사용할 수 없습니다.",
-    "unavailable": "대상과 이번 라운드의 사용 횟수 제한을 확인하세요.",
+    "unavailable": "이 아이템은 지금 사용할 수 없습니다.",
     "confirm": "아이템 사용",
     "fateSeals": "운명의 인장",
     "celestialOrbs": "천상의 구슬",
@@ -455,7 +455,6 @@
     },
     "availability": {
       "decreeSpace": "칙령 슬롯이 가득 찼습니다. 보유 칙령을 확인해 공간을 마련하세요.",
-      "consumableSpace": "소모품 슬롯이 가득 찼습니다. 플레이 중 아이템을 사용한 뒤 추가로 구매하세요.",
       "flowerCount": "꽃이 {{required}}개 필요합니다. 현재 {{current}}개를 보유 중입니다.",
       "flowers": "이 칙령에는 꽃이 더 필요합니다.",
       "unavailable": "구매 불가"
@@ -507,7 +506,7 @@
       "balance": "골드"
     },
     "packChoices": "보상 {{count}}개 중 최대 {{max}}개 선택",
-    "packInventoryFull": "선택한 보상을 받을 공간이 부족합니다. 보상 수를 줄이거나 다른 보상을 선택하거나 팩을 건너뛰세요.",
+    "packInventoryFull": "선택한 보상을 받을 칙령 슬롯이 부족합니다. 칙령 수를 줄이거나 팩을 건너뛰세요.",
     "inventoryFull": "이 보상을 받을 인벤토리 공간이 부족합니다.",
     "skipRewards": "보상 건너뛰기",
     "purchaseFailed": "구매를 완료할 수 없습니다.",
@@ -1865,7 +1864,7 @@
       },
       "crystal_lens": {
         "name": "수정 렌즈",
-        "description": "소모품 칸 +1"
+        "description": "비의 팩 선택지 +1"
       },
       "star_chart": {
         "name": "성도",
@@ -2192,11 +2191,11 @@
       },
       "seal_of_the_oracle": {
         "name": "예언자의 부적",
-        "description": "무작위 천구를 최대 2개 생성 (자리가 있으면)"
+        "description": "무작위 천구를 2개 생성"
       },
       "seal_of_the_emperor": {
         "name": "황제의 부적",
-        "description": "무작위 운명 부적을 최대 2개 생성 (자리가 있으면)"
+        "description": "무작위 운명 부적을 2개 생성"
       },
       "seal_of_the_fool": {
         "name": "바보의 부적",
@@ -2488,7 +2487,7 @@
       },
       "purple": {
         "name": "보라 봉인",
-        "description": "이 패를 다시 뽑으면 공간이 있을 때 무작위 운명의 인장을 만들어요."
+        "description": "이 패를 다시 뽑으면 무작위 운명의 인장을 만들어요."
       }
     }
   },

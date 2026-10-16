@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator } from './GameOrchestrator'
 import {
   CURRENT_SNAPSHOT_VERSION,
@@ -8,10 +8,12 @@ import { parseClassicRunSnapshot } from './validateClassicRun'
 import { TURNS_PER_ROUND } from './playRules'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
 
 afterEach(() => {
   useOmenStore.getState().clearForNewRun()
   runRandom.reset()
+  vi.restoreAllMocks()
 })
 
 type Snapshot = ReturnType<GameOrchestrator['captureRun']>
@@ -100,6 +102,22 @@ describe('upgradeClassicRunSnapshot', () => {
     ])
   })
 
+  it('drops the retired Seal and Script round limits from any saved run', () => {
+    const retired = {
+      sealsUsedThisRound: 1,
+      maxSealsPerRound: 1,
+      scriptsUsedThisRound: 1,
+      maxScriptsPerRound: 1,
+    }
+    for (const saved of [current(), versionTwo()]) {
+      Object.assign(saved.state.consumableSystem, retired)
+      const upgraded = upgradeClassicRunSnapshot(saved) as Snapshot
+      for (const key of Object.keys(retired))
+        expect(upgraded.state.consumableSystem).not.toHaveProperty(key)
+      expect(() => parseClassicRunSnapshot(upgraded)).not.toThrow()
+    }
+  })
+
   it('is pure: the input is never changed', () => {
     const saved = versionTwo()
     const before = JSON.stringify(saved)
@@ -112,6 +130,29 @@ describe('upgradeClassicRunSnapshot', () => {
     expect(upgradeClassicRunSnapshot(saved)).toEqual(saved)
     const upgraded = upgradeClassicRunSnapshot(versionTwo())
     expect(upgradeClassicRunSnapshot(upgraded)).toEqual(upgraded)
+  })
+
+  it('keeps a Crystal Lens Arcana choice when a shop visit is saved and loaded', () => {
+    const game = new GameOrchestrator()
+    game.startNewRun(7)
+    const state = game.getState()
+    state.charterSystem.purchaseCharter('crystal_lens')
+    Object.assign(state, { phase: 'shop', lastCompletedRoundType: 'Small' })
+    const next = runRandom.next.bind(runRandom)
+    // A 0.5 shop roll stocks every pack as Arcana.
+    vi.spyOn(runRandom, 'next').mockImplementation((stream) =>
+      stream === 'shop' ? 0.5 : next(stream)
+    )
+    expect(game.shop.open()).toBe(true)
+    vi.restoreAllMocks()
+    const { pack, contents } = game.shop.packOfferings[0]
+    expect(pack.type).toBe('Arcana')
+    expect(contents).toHaveLength(
+      PACK_SIZE_DEFINITIONS[pack.size].choiceCount + 1
+    )
+    const saved = JSON.parse(JSON.stringify(game.captureRun()))
+    expect(upgradeClassicRunSnapshot(saved)).toEqual(saved)
+    expect(() => parseClassicRunSnapshot(saved)).not.toThrow()
   })
 
   it('returns unknown versions and non-objects unchanged for validation to reject', () => {

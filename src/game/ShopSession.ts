@@ -257,7 +257,9 @@ export class ShopSession {
     return this.game.getState().gold < cost ? 'notEnoughGold' : null
   }
 
-  /** Validate the combined reward, including Negative Decree slot expansion. */
+  /** Validate the combined reward, including Negative Decree slot expansion.
+   * Only Decrees have slots; consumables always fit.
+   */
   private canReceive(rewards: Reward[], flowerId?: string): boolean {
     const state = this.game.getState()
     // Capacity simulation must not spend the live copy-selection cursor. The
@@ -274,11 +276,6 @@ export class ShopSession {
       if (!flowers.consumeFlower(flowerId)) return false
       decrees.removeSlots(slots - flowers.getBonusDecreeSlots())
     }
-    let consumables =
-      state.fateSeals.length +
-      state.celestialOrbs.length +
-      state.voidScripts.length
-    const capacity = 3 + state.charterSystem.calculateEffects().consumableSlots
     for (const reward of rewards) {
       switch (reward.type) {
         case 'Decree': {
@@ -298,11 +295,6 @@ export class ShopSession {
             return false
           wallTemplate.push(reward.data)
           decrees.syncWallSlots(wallTemplate)
-          break
-        case 'FateSeal':
-        case 'CelestialOrb':
-        case 'VoidScript':
-          if (++consumables > capacity) return false
           break
       }
     }

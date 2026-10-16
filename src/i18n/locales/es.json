@@ -162,7 +162,7 @@
     "replacesModifier": "Sustituye {{names}}: una ficha solo tiene una marca, un sello o una edición.",
     "cost": "Coste del Vacío",
     "failed": "No se pudo usar este objeto.",
-    "unavailable": "Comprueba los objetivos y el límite de usos de esta ronda.",
+    "unavailable": "Este objeto no se puede usar ahora.",
     "confirm": "Usar objeto",
     "fateSeals": "Sellos del Destino",
     "celestialOrbs": "Orbes Celestiales",
@@ -455,7 +455,6 @@
     },
     "availability": {
       "decreeSpace": "No hay espacio para un Decreto. Revisa tu combinación para hacer sitio.",
-      "consumableSpace": "Los espacios de consumibles están llenos. Usa un objeto durante el juego antes de comprar más.",
       "flowerCount": "Requiere {{required}} Flores; tienes {{current}}.",
       "flowers": "Este Decreto requiere más Flores.",
       "unavailable": "No disponible"
@@ -507,7 +506,7 @@
       "balance": "Oro"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
-    "packInventoryFull": "No hay espacio para esta selección. Elige menos recompensas u otras distintas, o salta el paquete.",
+    "packInventoryFull": "No hay espacios de Decreto suficientes para esta selección. Elige menos Decretos o salta el paquete.",
     "inventoryFull": "No hay espacio en el inventario para esta recompensa.",
     "skipRewards": "Omitir recompensas",
     "purchaseFailed": "No se pudo completar la compra.",
@@ -1865,7 +1864,7 @@
       },
       "crystal_lens": {
         "name": "Lente de cristal",
-        "description": "+1 espacio de consumible"
+        "description": "Los Paquetes de Arcanos ofrecen +1 opción"
       },
       "star_chart": {
         "name": "Carta estelar",
@@ -2192,11 +2191,11 @@
       },
       "seal_of_the_oracle": {
         "name": "Sello del Oráculo",
-        "description": "Crea hasta 2 Orbes Celestes al azar (si hay sitio)"
+        "description": "Crea 2 Orbes Celestes al azar"
       },
       "seal_of_the_emperor": {
         "name": "Sello del Emperador",
-        "description": "Crea hasta 2 Sellos del Destino al azar (si hay sitio)"
+        "description": "Crea 2 Sellos del Destino al azar"
       },
       "seal_of_the_fool": {
         "name": "Sello del Loco",
@@ -2488,7 +2487,7 @@
       },
       "purple": {
         "name": "Sello Púrpura",
-        "description": "Crea un Sello del Destino al azar al recambiar esta ficha, si hay espacio."
+        "description": "Crea un Sello del Destino al azar al recambiar esta ficha."
       }
     }
   },

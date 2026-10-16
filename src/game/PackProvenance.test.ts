@@ -35,7 +35,6 @@ afterEach(() => {
 function start() {
   const game = new GameOrchestrator()
   game.startNewRun(7)
-  game.getState().consumableSystem.setMaxSealsPerRound(10)
   return game
 }
 function item(kind: 'seal' | 'orb') {
@@ -173,7 +172,7 @@ it('does not turn a Fool copy of a pack Orb into another pack reward', () => {
   expect(useProgressionStore.getState().stats.totalCelestialOrbsUsed).toBe(2)
 })
 
-it('does not award pack use on preview, failed targets, or rejected acquisition', () => {
+it('does not award pack use on preview, failed targets, or an unowned item', () => {
   const game = start()
   const seal = FateSealSystem.createFateSealInstance(
     FATE_SEALS.seal_of_the_alchemist
@@ -187,18 +186,8 @@ it('does not award pack use on preview, failed targets, or rejected acquisition'
   expect(game.canPerformAction(action)).toBe(false)
   expect(game.processAction(action).success).toBe(false)
   expect(packCount('seal')).toBe(0)
-  for (let i = 0; i < 2; i++)
-    expect(
-      game.addCelestialOrb(
-        CelestialOrbSystem.createCelestialOrbInstance(CELESTIAL_ORBS.pluto_orb)
-      )
-    ).toBe(true)
-  const rejected = item('orb')
-  expect(
-    rejected.type === 'CelestialOrb' &&
-      game.addCelestialOrb(rejected, 'pack_open')
-  ).toBe(false)
-  expect(use(game, rejected).success).toBe(false)
+  // A pack reward that never reached the inventory cannot be used.
+  expect(use(game, item('orb')).success).toBe(false)
   expect(packCount('orb')).toBe(0)
 })
 
