@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { clearReveals, handScoreTotal, openTable } from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
   ['es', es],
 ] as const) {
-  test(`Yaku Decrees respect Frostbite and Crimson Heart through staged payment (${language})`, async ({
+  test(`Yaku Decrees respect Frostbite and Crimson Heart through forecast and payment (${language})`, async ({
     page,
     isMobile,
   }, testInfo) => {
@@ -14,15 +15,8 @@ for (const [language, copy] of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${language}/play`)
+    await openTable(page, `/${language}/play`)
     const play = page.locator('[data-game-action="play"]')
-    await expect(play).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
     for (const mode of ['frostbite', 'crimson'] as const) {
       const result = await page.evaluate(async (mode) => {
         const gamePath = '/src/game/GameOrchestrator.ts',
@@ -94,14 +88,18 @@ for (const [language, copy] of [
           ).instanceId,
         }
       }, mode)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       if (mode === 'frostbite') {
         expect(result.forecast.yakuMultiplier).toBeCloseTo(
           result.base + (result.boosted - result.base) / 2
         )
-        expect(result.forecast.finalScore).toBe(967)
+        // 225 points × (Yaku 4.3 + 4 for a complete hand) = 1867.5.
+        expect(result.forecast.finalScore).toBe(1867)
       } else {
         expect(result.disabled).toEqual([result.amplifierInstanceId])
-        expect(result.forecast.finalScore).toBe(585)
+        // The disabled Amplifier adds nothing: 225 × (Yaku 2.6 + 4) = 1485.
+        expect(result.forecast.finalScore).toBe(1485)
         const decree = page.getByRole('button', {
           name: copy.decrees.items['decree-yaku-amplifier'].name,
           exact: true,
@@ -116,18 +114,19 @@ for (const [language, copy] of [
           .screenshot({ path: testInfo.outputPath('crimson-disabled.png') })
         await page.keyboard.press('Escape')
       }
-      await play.click()
+      // The table offers the complete hand as one tap onto the felt.
+      await page.locator('[data-select-mahjong]').click()
       await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(14)
-      await expect(page.getByTestId('forecast-heading')).toHaveText(
-        copy.gameplay.forecast.stagedDeclaration.replace('{{count}}', '14')
-      )
-      await expect(page.getByTestId('score-preview-total')).toHaveText(
-        `+${result.forecast.finalScore.toLocaleString(language)}`
+      await expect(
+        page.locator('[data-hand-score] [data-hand-score-pattern]')
+      ).toHaveText(copy.patterns.mahjong.name)
+      await expect(handScoreTotal(page, 'preview')).toHaveText(
+        result.forecast.finalScore.toLocaleString(language)
       )
       await play.click()
-      await expect(page.locator('[data-score-result]')).toHaveText(
+      await expect(handScoreTotal(page, 'last')).toHaveText(
         result.forecast.finalScore.toLocaleString(language)
       )
       expect(
@@ -138,7 +137,7 @@ for (const [language, copy] of [
         })
       ).toBe(result.before + result.forecast.finalScore)
       await page
-        .locator('.game-score-panel')
+        .locator('[data-hand-score]')
         .screenshot({ path: testInfo.outputPath(`${mode}-paid.png`) })
     }
   })

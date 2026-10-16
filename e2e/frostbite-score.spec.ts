@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { clearReveals, handScoreTotal, openTable } from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
@@ -14,15 +15,8 @@ for (const [language, copy] of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${language}/play`)
+    await openTable(page, `/${language}/play`)
     const play = page.locator('[data-game-action="play"]')
-    await expect(play).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
     const forecast = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts'
       const tilePath = '/src/core/Tile.ts'
@@ -73,6 +67,8 @@ for (const [language, copy] of [
       })
       return game.previewScore(['frost-4', 'frost-5', 'frost-6']).equation
     })
+    // The fixture's new run and Season would be revealed over the table.
+    await clearReveals(page)
     // 45 shape/tile base + 50 tile Foil + half of (20 Decree + 50 Decree Foil).
     expect(forecast).toEqual({
       points: 130,
@@ -87,11 +83,18 @@ for (const [language, copy] of [
       if (isMobile) await tile.tap()
       else await tile.click()
     }
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+260')
-    const flora = page.getByTestId('flora-details-trigger')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('260')
+    // Frostbite explains itself on its own rail token.
+    const flora = page.locator('[data-flora-season]')
+    await expect(flora).toHaveAttribute(
+      'aria-label',
+      copy.flora.details.frostbiteName
+    )
     if (isMobile) await flora.tap()
     else await flora.click()
-    const dialog = page.getByRole('dialog')
+    const dialog = page.getByRole('dialog', {
+      name: copy.flora.details.frostbiteName,
+    })
     await expect(dialog).toContainText(copy.flora.details.frostbite)
     const rule = dialog.getByText(copy.flora.details.frostbite, { exact: true })
     await rule.scrollIntoViewIfNeeded()
@@ -103,22 +106,21 @@ for (const [language, copy] of [
       .getByRole('button', { name: copy.common.close, exact: true })
       .click()
     await expect(
-      page.locator('[data-play-zone="staging"] [data-play-tile]')
+      page.locator('[data-play-zone="felt"] [data-play-tile]')
     ).toHaveCount(3)
     if (isMobile) await play.tap()
     else await play.click()
-    const panel = page.locator('.game-score-panel')
-    await expect(panel.locator('[data-score-result]')).toHaveText('260')
-    await expect(panel.locator('[data-score-points]')).toHaveText('130')
-    await expect(panel.locator('[data-score-mult]')).toHaveText(
-      (2).toLocaleString(language, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
+    // The settled play stays in the hand score; the run total is in the header.
+    const panel = page.locator('[data-hand-score]')
+    const runScore = page.locator(
+      '[data-run-header] [data-tutorial="current-score"]'
     )
-    await expect(panel.locator('[data-tutorial="current-score"]')).toHaveText(
-      '260'
+    await expect(handScoreTotal(page, 'last')).toHaveText('260')
+    await expect(panel.locator('[data-hand-score-points]')).toHaveText('130')
+    await expect(panel.locator('[data-hand-score-mult]')).toHaveText(
+      (2).toLocaleString(language)
     )
+    await expect(runScore).toHaveText('260')
     await panel.scrollIntoViewIfNeeded()
     await page.screenshot({ path: testInfo.outputPath('frostbite-paid.png') })
     const stacked = await page.evaluate(async () => {
@@ -157,6 +159,8 @@ for (const [language, copy] of [
       })
       return game.previewScore(['stack-4', 'stack-5', 'stack-6']).equation
     })
+    // The second Frostbite would be revealed over the table.
+    await clearReveals(page)
     expect(stacked).toEqual({
       points: 112.5,
       multiplier: 1.5,
@@ -170,22 +174,17 @@ for (const [language, copy] of [
       if (isMobile) await tile.tap()
       else await tile.click()
     }
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+168')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('168')
     if (isMobile) await play.tap()
     else await play.click()
-    await expect(panel.locator('[data-score-result]')).toHaveText('168')
-    await expect(panel.locator('[data-score-points]')).toHaveText(
+    await expect(handScoreTotal(page, 'last')).toHaveText('168')
+    await expect(panel.locator('[data-hand-score-points]')).toHaveText(
       (112.5).toLocaleString(language)
     )
-    await expect(panel.locator('[data-score-mult]')).toHaveText(
-      (1.5).toLocaleString(language, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
+    await expect(panel.locator('[data-hand-score-mult]')).toHaveText(
+      (1.5).toLocaleString(language)
     )
-    await expect(panel.locator('[data-tutorial="current-score"]')).toHaveText(
-      '428'
-    )
+    await expect(runScore).toHaveText('428')
     await panel.scrollIntoViewIfNeeded()
     await page.screenshot({
       path: testInfo.outputPath('stacked-frostbite-paid.png'),
