@@ -1,6 +1,5 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
-import { offerCard, offerDetails, openOffer } from './helpers/shop'
-import { clearReveals, parkMouse } from './helpers/table'
+import { clearReveals, settleReveals } from './helpers/table'
 
 async function activate(control: Locator, touch: boolean) {
   if (touch) await control.tap()
@@ -33,14 +32,23 @@ for (const negative of [false, true]) {
     await page.goto(`/${lang}/play`)
     await saved(page)
     const info = await page.evaluate(async () => {
+      // HMR can version a module URL; import the exact instance the app uses.
+      const loaded = (path: string) =>
+        performance
+          .getEntriesByType('resource')
+          .map((entry) => entry.name)
+          .reverse()
+          .find((url) => new URL(url).pathname === path) ?? path
       const gamePath = '/src/game/GameOrchestrator.ts'
       const persistencePath = '/src/game/classicPersistenceApp.ts'
       const decreePath = '/src/systems/DecreeSystem.ts'
       const validationPath = '/src/game/validateClassicRun.ts'
-      const { gameOrchestrator: game } = await import(gamePath)
-      const { initializeClassicPersistence } = await import(persistencePath)
-      const { ALL_DECREES, DecreeSystem } = await import(decreePath)
-      const { parseClassicRunSnapshot } = await import(validationPath)
+      const { gameOrchestrator: game } = await import(loaded(gamePath))
+      const { initializeClassicPersistence } = await import(
+        loaded(persistencePath)
+      )
+      const { ALL_DECREES, DecreeSystem } = await import(loaded(decreePath))
+      const { parseClassicRunSnapshot } = await import(loaded(validationPath))
       const service = initializeClassicPersistence()
       const raw = service.getSnapshot().disk.raw
       game.startNewRun(7)
@@ -104,7 +112,6 @@ for (const negative of [false, true]) {
       }
     })
     await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
-    // startNewRun queues its starting Decrees for a reveal over the shop.
     await clearReveals(page)
     const panel = page.locator('[data-shop-build]')
     await expect(panel.getByRole('heading')).toHaveText(
@@ -112,16 +119,27 @@ for (const negative of [false, true]) {
     )
     await expect(panel.locator('[data-build-slots]')).toContainText('6 / 6')
     const before = await saved(page)
-    // Buy and the engine's reason live in the offer's details.
+    // Every offer opens its details on tap; Buy is the only purchase step,
+    // and the reason it is blocked sits beside it in the same panel.
+    const card = page.locator(`[data-shop-offer="${info.offer}"]`)
+    const details = page.locator(`[data-shop-offer-details="${info.offer}"]`)
     const purchase = page.locator(`[data-shop-buy="${info.offer}"]`)
-    const blocked = offerDetails(page, info.offer).locator(
-      '[data-purchase-blocked]'
-    )
-    await openOffer(page, info.offer)
+    const blocked = details.locator('[data-purchase-blocked]')
+    const openOffer = async () => {
+      await card.scrollIntoViewIfNeeded()
+      await activate(card, isMobile)
+      await expect(details).toBeVisible()
+    }
+    const closeOffer = async () => {
+      await page.keyboard.press('Escape')
+      await expect(details).toHaveCount(0)
+    }
+    await openOffer()
     await expect(purchase).toBeDisabled()
     await expect(blocked).toBeVisible()
+    await expect(blocked).not.toHaveText('')
+    await closeOffer()
     expect(await saved(page)).toEqual(before)
-    await page.keyboard.press('Escape')
     const buildToggle = panel.locator('[data-build-toggle]')
     if (await buildToggle.isVisible()) await activate(buildToggle, isMobile)
     const protectedCard = panel.locator(
@@ -175,25 +193,30 @@ for (const negative of [false, true]) {
         (d: { instanceId: string }) => d.instanceId
       )
     ).toContain(info.eternal)
-    await openOffer(page, info.offer)
+    await openOffer()
     if (negative) {
       await expect(purchase).toBeDisabled()
       await expect(blocked).toBeVisible()
+      await closeOffer()
       expect(await saved(page)).toEqual(afterSale)
-      await page.keyboard.press('Escape')
     } else {
       await expect(purchase).toBeEnabled()
       await expect(blocked).toHaveCount(0)
       // Deliberately stale UI: mutate gold without notifying React. The engine
       // must still reject the commit, and its error must paint above the art.
       await page.evaluate(async () => {
+        // HMR can version a module URL; import the exact instance the app uses.
+        const loaded = (path: string) =>
+          performance
+            .getEntriesByType('resource')
+            .map((entry) => entry.name)
+            .reverse()
+            .find((url) => new URL(url).pathname === path) ?? path
         const path = '/src/game/GameOrchestrator.ts'
-        const { gameOrchestrator: game } = await import(path)
+        const { gameOrchestrator: game } = await import(loaded(path))
         game.getState().gold = 0
       })
       await activate(purchase, isMobile)
-      // Keep a hover-opened offer from covering the error.
-      await parkMouse(page)
       await expect(page.getByRole('alert')).toBeVisible()
       expect(
         await page.getByRole('alert').evaluate((node) => {
@@ -209,17 +232,26 @@ for (const negative of [false, true]) {
       const rejected = await saved(page)
       expect(rejected.state.decreeSystem).toEqual(afterSale.state.decreeSystem)
       await page.evaluate(async () => {
+        // HMR can version a module URL; import the exact instance the app uses.
+        const loaded = (path: string) =>
+          performance
+            .getEntriesByType('resource')
+            .map((entry) => entry.name)
+            .reverse()
+            .find((url) => new URL(url).pathname === path) ?? path
         const path = '/src/game/GameOrchestrator.ts'
         const busPath = '/src/game/EventBus.ts'
-        const { gameOrchestrator: game } = await import(path)
-        const { eventBus } = await import(busPath)
+        const { gameOrchestrator: game } = await import(loaded(path))
+        const { eventBus } = await import(loaded(busPath))
         game.getState().gold = 13
         eventBus.emit('shopUpdated', { isOpen: true })
       })
-      await openOffer(page, info.offer)
+      await openOffer()
       await expect(purchase).toBeEnabled()
       await activate(purchase, isMobile)
-      await expect(offerCard(page, info.offer)).toHaveCount(0)
+      await expect(card).toHaveCount(0)
+      // A bought Decree is revealed; the player closes it to shop on.
+      await settleReveals(page)
       await expect(panel.locator('[data-build-slots]')).toContainText('6 / 6')
       const afterPurchase = await saved(page)
       expect(afterPurchase.state.gold).toBe(9)

@@ -1,7 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { RunRandom } from '../src/game/RunRandom'
-import { offerCard, openOffer } from './helpers/shop'
 import { settleReveals } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
@@ -48,6 +47,7 @@ for (const language of ['en', 'es'])
           const url = performance
             .getEntriesByType('resource')
             .map((e) => e.name)
+            .reverse()
             .find((url) => new URL(url).pathname === path)
           if (!url) throw Error(`Missing native module ${path}`)
           return url
@@ -111,25 +111,31 @@ for (const language of ['en', 'es'])
       instanceId: string
     }
     for (let i = 0; i < 2; i++) {
+      // A phone keeps the build folded until the player opens it.
+      const buildToggle = page.locator('[data-shop-build] [data-build-toggle]')
+      if (await buildToggle.isVisible()) await activate(buildToggle)
       await activate(
-        page
-          .locator('[data-shop-build]')
-          .getByRole('button', {
-            name: text.decrees.items['decree-ancient-scroll'].name,
-            exact: true,
-          })
+        page.locator('[data-shop-build]').getByRole('button', {
+          name: text.decrees.items['decree-ancient-scroll'].name,
+          exact: true,
+        })
       )
       await expect(page.getByRole('dialog')).toBeVisible()
       await page.keyboard.press('Escape')
       await page.reload()
       expect(await saved()).toEqual(before)
     }
-    const card = offerCard(page, offer.id)
+    // Every offer opens its details on tap; Buy is the only purchase step.
+    const card = page.locator(`[data-shop-offer="${offer.id}"]`)
     await expect(card).toContainText(
       text.decrees.items['decree-doppelganger'].name
     )
-    const details = await openOffer(page, offer.id)
-    await activate(details.locator(`[data-shop-buy="${offer.id}"]`))
+    await card.scrollIntoViewIfNeeded()
+    await activate(card)
+    await activate(page.locator(`[data-shop-buy="${offer.id}"]`))
+    await expect(card).toHaveCount(0)
+    // A bought Decree is revealed; the player closes it to shop on.
+    await settleReveals(page)
     await expect
       .poll(async () => (await saved()).state.decreeSystem.ownedDecrees.length)
       .toBe(3)
@@ -151,8 +157,6 @@ for (const language of ['en', 'es'])
       page.getByRole('button', { name: text.shop.ui.nextRound, exact: true })
     )
     await expect(page).toHaveURL(/\/play\/?$/)
-    // The new round can open on Flower and Season reveals.
-    await settleReveals(page, 2_000)
     const next = await saved()
     expect(next.state.decreeSystem.ownedDecrees[2].randomCopyTargetId).toBe(
       nextTarget.instanceId

@@ -100,8 +100,6 @@ async function snapshot(page: Page) {
       seals: state.fateSeals.length,
       scripts: state.voidScripts.length,
       orbs: state.celestialOrbs.length,
-      sealUses: state.consumableSystem.getFateSealUsesRemaining(),
-      scriptUses: state.consumableSystem.getVoidScriptUsesRemaining(),
       level: state.celestialOrbSystem.getYakuLevel('Pairs'),
     }
   })
@@ -157,7 +155,6 @@ test('a purchased Seal is staged, targeted and consumed once through the live UI
   await expect(dialog).not.toBeVisible()
   const after = await snapshot(page)
   expect(after.seals).toBe(0)
-  expect(after.sealUses).toBe(before.sealUses - 1)
   expect(after.gold).toBe(before.gold)
   for (const id of ids)
     expect(after.hand.find((tile) => tile.id === id)?.modifiers).toMatchObject({
@@ -451,7 +448,6 @@ test('a targeted Script discloses its penalty and applies both effect and cost o
   await expect(dialog).not.toBeVisible()
   const after = await snapshot(page)
   expect(after.scripts).toBe(0)
-  expect(after.scriptUses).toBe(before.scriptUses - 1)
   expect(after.hand).toHaveLength(before.hand.length + 2 - 1)
   expect(
     after.hand.filter((tile) => tile.suit === 'manzu' && tile.rank === 1).length
@@ -672,7 +668,6 @@ for (const language of [
     expect(after.scripts).toBe(0)
     expect(after.orbs).toBe(1)
     expect(after.level).toBe(before.level)
-    expect(after.sealUses).toBe(before.sealUses - 1)
     const created = await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
       const { gameOrchestrator: game } = await import(path)

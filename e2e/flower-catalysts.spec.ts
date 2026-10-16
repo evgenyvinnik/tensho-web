@@ -1,7 +1,5 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { offerCard, openOffer } from './helpers/shop'
-import { settleReveals } from './helpers/table'
 
 const replayPath = process.env.CATALYSTS_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -128,15 +126,19 @@ for (const language of ['en', 'es'])
     await expect(page).toHaveURL(/\/shop$/)
     const before = await saved()
     const offerId = before.shop.teaHouse.itemOfferings[0].id
-    // The Flower payment is offered from the Decree's details, beside Buy.
+    // The Flower payment sits in the offer's details, beside Buy.
+    const offer = page.locator(`[data-shop-offer="${offerId}"]`)
     const offerFlower = async () => {
-      const details = await openOffer(page, offerId)
-      await activate(details.locator('[data-offer-flower]'))
+      await offer.scrollIntoViewIfNeeded()
+      await activate(offer)
+      await activate(
+        page.locator(
+          `[data-shop-offer-details="${offerId}"] [data-offer-flower]`
+        )
+      )
     }
     await offerFlower()
-    const dialog = page
-      .getByRole('dialog')
-      .filter({ has: page.locator('[data-flower-catalyst]') })
+    const dialog = page.getByRole('dialog')
     await expect(
       dialog.getByRole('button', { name: copy.common.confirm, exact: true })
     ).toBeDisabled()
@@ -154,7 +156,7 @@ for (const language of ['en', 'es'])
     await expect(dialog.locator('[data-catalyst-consequences]')).toContainText(
       copy.shop.catalyst.loss2
     )
-    // The Flower art, not the close button's icon.
+    // The Flower choices show full-size art (the close icon is not one).
     for (const img of await dialog.locator('[data-flower-catalyst] img').all())
       expect(
         await img.evaluate(async (img: HTMLImageElement) => {
@@ -178,6 +180,9 @@ for (const language of ['en', 'es'])
 
     // Sell one exact copy through the real inventory confirmation, still leaving
     // less than the six gold required for a normal purchase.
+    // A phone keeps the build folded until the player opens it.
+    const buildToggle = page.locator('[data-shop-build] [data-build-toggle]')
+    if (await buildToggle.isVisible()) await activate(buildToggle)
     const owned = page
       .locator('[data-shop-build] [data-decree-instance]')
       .first()
@@ -224,7 +229,7 @@ for (const language of ['en', 'es'])
     expect(paid.state.flowerSystem.collectedTypes).toEqual(['Plum', 'Orchid'])
     await page.reload()
     expect(await saved()).toEqual(paid)
-    await expect(offerCard(page, offerId)).toHaveCount(0)
+    await expect(offer).toHaveCount(0)
     await expect(
       page.locator('[data-shop-build] [data-decree-instance]')
     ).toHaveCount(5)
@@ -233,8 +238,6 @@ for (const language of ['en', 'es'])
       page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
     )
     await expect(page).toHaveURL(/\/play$/)
-    // The new round can open on Flower and Season reveals.
-    await settleReveals(page, 2_000)
     const next = await saved()
     expect(next.state.flowerSystem).toEqual(paid.state.flowerSystem)
     expect(errors).toEqual([])
