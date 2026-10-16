@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test'
+import { buyOffer, offerCard } from './helpers/shop'
+import { openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -14,14 +16,7 @@ for (const [language, copy] of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${language}/play`)
-    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-    await page
-      .getByRole('button', {
-        name: copy.progressiveHints.dontShow,
-        exact: true,
-      })
-      .click()
+    await openTable(page, `/${language}/play`)
     const previewGold = await page.evaluate(async () => {
       const gamePath = '/src/game/GameOrchestrator.ts',
         tilePath = '/src/core/Tile.ts',
@@ -73,6 +68,8 @@ for (const [language, copy] of [
       return game.previewScore(['gold-4', 'gold-5', 'gold-6']).goldEarned
     })
     expect(previewGold).toBe(4)
+    // The new run's Decrees and the fixture's Winter are revealed first.
+    await settleReveals(page, 2_000)
     for (const rank of [4, 5, 6]) {
       const tile = page.locator(
         `[data-play-zone="hand"] [data-play-tile="gold-${rank}"]`
@@ -136,11 +133,10 @@ for (const [language, copy] of [
       )
     })
     expect(offer).toBeTruthy()
-    const buy = page
-      .locator(`[data-shop-item="${offer.id}"]`)
-      .getByRole('button')
-    if (isMobile) await buy.tap()
-    else await buy.click()
+    await buyOffer(page, offer.id)
+    await expect(offerCard(page, offer.id)).toHaveCount(0)
+    // A bought Decree is revealed over the shop.
+    await settleReveals(page)
     const after = await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
       const { gameOrchestrator: game } = await import(path)

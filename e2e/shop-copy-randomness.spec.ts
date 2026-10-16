@@ -1,6 +1,8 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { RunRandom } from '../src/game/RunRandom'
+import { offerCard, openOffer } from './helpers/shop'
+import { settleReveals } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es'])
@@ -122,11 +124,12 @@ for (const language of ['en', 'es'])
       await page.reload()
       expect(await saved()).toEqual(before)
     }
-    const card = page.locator(`[data-shop-item="${offer.id}"]`)
-    await expect(card.getByRole('heading')).toHaveText(
+    const card = offerCard(page, offer.id)
+    await expect(card).toContainText(
       text.decrees.items['decree-doppelganger'].name
     )
-    await activate(card.getByRole('button').first())
+    const details = await openOffer(page, offer.id)
+    await activate(details.locator(`[data-shop-buy="${offer.id}"]`))
     await expect
       .poll(async () => (await saved()).state.decreeSystem.ownedDecrees.length)
       .toBe(3)
@@ -148,6 +151,8 @@ for (const language of ['en', 'es'])
       page.getByRole('button', { name: text.shop.ui.nextRound, exact: true })
     )
     await expect(page).toHaveURL(/\/play\/?$/)
+    // The new round can open on Flower and Season reveals.
+    await settleReveals(page, 2_000)
     const next = await saved()
     expect(next.state.decreeSystem.ownedDecrees[2].randomCopyTargetId).toBe(
       nextTarget.instanceId
