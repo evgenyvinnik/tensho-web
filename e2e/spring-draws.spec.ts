@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { clearReveals, handScoreTotal, settleReveals } from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const springs of [1, 2])
@@ -72,6 +73,8 @@ for (const language of ['en', 'es'])
         state.faceDownTileIds.clear()
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
       }, springs)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-spring', {
         body: await page.evaluate(
@@ -83,6 +86,8 @@ for (const language of ['en', 'es'])
         page.locator('[data-play-zone="hand"] [data-play-tile="hand-0"]')
       )
       await activate(page.locator('[data-game-action="redraw"]'))
+      // Each Spring drawn is announced with a reveal over the table.
+      await settleReveals(page, 2_000)
       const count = 14 + springs * 2
       await expect(
         page.locator('[data-play-zone="hand"] [data-play-tile]')
@@ -92,18 +97,27 @@ for (const language of ['en', 'es'])
       expect(
         expanded.state.handTiles.some((t: { id: string }) => t.id === 'hand-0')
       ).toBe(false)
+      // No free redraws: the REDRAW spent a Turn.
       expect(expanded.state.redrawsRemaining).toBe(
-        before.state.redrawsRemaining - 1
+        before.state.redrawsRemaining
       )
-      expect(expanded.state.handsRemaining).toBe(before.state.handsRemaining)
+      expect(expanded.state.handsRemaining).toBe(
+        before.state.handsRemaining - 1
+      )
       expect(expanded.state.seasonSystem.seasonStack).toHaveLength(springs)
-      await activate(page.getByTestId('flora-details-trigger'))
-      const dialog = page.getByRole('dialog')
+      // Each Spring is its own token on the item rail, with its own details.
+      const springTokens = page.locator('[data-flora-season]')
+      await expect(springTokens).toHaveCount(springs)
+      for (const token of await springTokens.all())
+        await expect(token).toHaveAttribute('aria-label', copy.flora.spring)
+      await activate(springTokens.first())
+      const dialog = page.getByRole('dialog', { name: copy.flora.spring })
       await expect(
         dialog.getByText(copy.flora.details.spring, { exact: true })
-      ).toHaveCount(springs)
-      const artwork = dialog.locator('img[src*="spring-blossom.webp"]').first()
-      await artwork.scrollIntoViewIfNeeded()
+      ).toBeVisible()
+      const artwork = springTokens
+        .first()
+        .locator('img[src*="spring-blossom.webp"]')
       await expect
         .poll(() =>
           artwork.evaluate(
@@ -125,10 +139,10 @@ for (const language of ['en', 'es'])
         await activate(
           page.locator('[data-play-zone="hand"] [data-play-tile]').first()
         )
-      const preview = page.getByTestId('score-preview-total')
+      const preview = handScoreTotal(page, 'preview')
       await expect(preview).toBeVisible()
       const forecast = Number(
-        (await preview.getAttribute('aria-label'))!.replace(/\D/g, '')
+        (await preview.getAttribute('title'))!.replace(/\D/g, '')
       )
       await activate(page.locator('[data-game-action="play"]'))
       await expect(

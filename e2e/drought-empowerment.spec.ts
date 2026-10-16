@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { clearReveals, handScoreTotal } from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const protectedFlowers of [false, true])
@@ -89,6 +90,8 @@ for (const language of ['en', 'es'])
             throw Error('Decree grant failed')
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
       }, protectedFlowers)
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       await testInfo.attach('before-drought', {
         body: await page.evaluate(
@@ -105,14 +108,28 @@ for (const language of ['en', 'es'])
       // Three Flowers satisfy Eternal Garden's real acquisition gate.
       // Protected: (45 + 20 * 1.3) * (1 + (2 + 30) * 1.3) * 1.05 = 3175.83.
       const expected = protectedFlowers ? 3175 : 195
-      await expect(page.getByTestId('score-preview-total')).toHaveText(
-        `+${expected.toLocaleString(language)}`
+      await expect(handScoreTotal(page, 'preview')).toHaveText(
+        expected.toLocaleString(language)
       )
       const staged = await saved()
-      await activate(page.getByTestId('flora-details-trigger'))
-      const dialog = page.getByRole('dialog')
+      // Drought explains itself on its own rail token, and each Flower's
+      // panel says whether a Decree shields it.
+      const drought = page.locator('[data-flora-season]')
+      await expect(drought).toHaveAttribute(
+        'aria-label',
+        copy.flora.details.droughtName
+      )
+      await activate(drought)
+      const dialog = page.getByRole('dialog', {
+        name: copy.flora.details.droughtName,
+      })
       await expect(dialog).toContainText(copy.flora.details.drought)
-      await expect(dialog).toContainText(
+      await activate(
+        dialog.getByRole('button', { name: copy.common.close, exact: true })
+      )
+      await activate(page.locator('[data-flora-flower="Plum"]'))
+      const plum = page.getByRole('dialog', { name: copy.flora.plum })
+      await expect(plum).toContainText(
         protectedFlowers
           ? copy.flora.details.protected
           : copy.flora.details.suppressed
@@ -122,13 +139,13 @@ for (const language of ['en', 'es'])
         path: testInfo.outputPath('drought-inspector.png'),
       })
       await activate(
-        dialog.getByRole('button', { name: copy.common.close, exact: true })
+        plum.getByRole('button', { name: copy.common.close, exact: true })
       )
       await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(3)
       await activate(page.locator('[data-game-action="play"]'))
-      await expect(page.locator('[data-score-result]')).toHaveText(
+      await expect(handScoreTotal(page, 'last')).toHaveText(
         expected.toLocaleString(language)
       )
       const after = await saved()

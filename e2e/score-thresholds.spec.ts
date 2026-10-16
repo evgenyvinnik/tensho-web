@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { handScoreTotal } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es'])
@@ -134,11 +135,11 @@ for (const language of ['en', 'es'])
           `[data-play-zone="hand"] [data-play-tile="threshold-${rank}"]`
         )
       )
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+4')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('4')
     await activate(
       page.locator('[data-play-zone="hand"] [data-play-tile="threshold-4"]')
     )
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+337')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('337')
     expect((await saved()).random).toEqual(before.random)
     await activate(page.locator('[data-game-action="play"]'))
     await expect(page).toHaveURL(/\/shop\/?$/)

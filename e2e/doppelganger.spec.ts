@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { handScoreTotal } from './helpers/table'
 import { RunRandom } from '../src/game/RunRandom'
 
 test.use({ serviceWorkers: 'block' })
@@ -117,12 +118,10 @@ for (const language of ['en', 'es'])
       slot: number
     ) => {
       await activate(
-        page
-          .locator('[data-tutorial="decrees"]')
-          .getByRole('button', {
-            name: text.decrees.items['decree-doppelganger'].name,
-            exact: true,
-          })
+        page.locator('[data-tutorial="decrees"]').getByRole('button', {
+          name: text.decrees.items['decree-doppelganger'].name,
+          exact: true,
+        })
       )
       const dialog = page.getByRole('dialog')
       await expect(dialog.locator('[data-random-copy-details]')).toContainText(
@@ -152,7 +151,7 @@ for (const language of ['en', 'es'])
           `[data-play-zone="hand"] [data-play-tile="doppel-${rank}"]`
         )
       )
-    await expect(page.getByTestId('score-preview-total')).toHaveText('+345')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('345')
     expect((await saved()).random).toEqual(before.random)
     await activate(page.locator('[data-game-action="play"]'))
     await expect(page).toHaveURL(/\/shop\/?$/)
@@ -164,8 +163,8 @@ for (const language of ['en', 'es'])
     await page.reload()
     expect(await saved()).toEqual(shop)
     const random = RunRandom.fromState(shop.random)
-      const target = random.pick('decreeCopies', [decrees[0], decrees[2]])!
-      expect(target.instanceId).not.toBe(decrees[0].instanceId)
+    const target = random.pick('decreeCopies', [decrees[0], decrees[2]])!
+    expect(target.instanceId).not.toBe(decrees[0].instanceId)
     await activate(
       page.getByRole('button', { name: text.shop.ui.nextRound, exact: true })
     )
