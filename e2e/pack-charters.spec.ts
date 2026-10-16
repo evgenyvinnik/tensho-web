@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { packModal } from './helpers/shop'
 
 for (const language of ['en', 'es'])
   for (const charterId of ['star_chart', 'omen_lens'])
@@ -126,40 +127,42 @@ for (const language of ['en', 'es'])
         ),
         contentType: 'application/json',
       })
-      const card = page.getByTestId('charter-card')
+      // The Charter sells from the same offer card as items and packs.
+      const charterOffer = before.shop.teaHouse.charterOffering.id
+      const card = page.locator(`[data-shop-offer="${charterOffer}"]`)
+      await expect(card).toHaveAttribute(
+        'data-shop-offer-type',
+        'ImperialCharter'
+      )
       if (charterId === 'star_chart') {
-        await expect(card.getByRole('img')).toHaveAttribute(
-          'src',
-          /charters\/star-chart.webp$/
-        )
+        const art = card.locator('.shop-offer-art img')
+        await expect(art).toHaveAttribute('src', /charters\/star-chart.webp$/)
         await expect
           .poll(() =>
-            card
-              .getByRole('img')
-              .evaluate(
-                (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
-              )
+            art.evaluate(
+              (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+            )
           )
           .toBe(true)
       }
       await card.scrollIntoViewIfNeeded()
       await page.screenshot({ path: testInfo.outputPath('charter.png') })
-      await activate(card.getByRole('button'))
-      const confirmation = page.getByRole('dialog', {
-        name: copy.shop.ui.confirmPurchase,
-        exact: true,
-      })
-      await activate(
-        confirmation.getByRole('button', {
-          name: copy.common.cancel,
-          exact: true,
-        })
+      // Its details hold the only Buy step; closing them buys nothing.
+      const details = page.locator(
+        `[data-shop-offer-details="${charterOffer}"]`
       )
+      await activate(card)
+      await expect(details).toBeVisible()
+      await activate(
+        page
+          .getByRole('dialog')
+          .filter({ has: details })
+          .getByRole('button', { name: copy.common.close, exact: true })
+      )
+      await expect(details).toHaveCount(0)
       expect(await saved()).toEqual(before)
-      await activate(card.getByRole('button'))
-      await activate(
-        confirmation.getByRole('button', { name: copy.shop.buy, exact: true })
-      )
+      await activate(card)
+      await activate(page.locator(`[data-shop-buy="${charterOffer}"]`))
       await expect(card).toHaveCount(0)
       const after = await saved()
       expect(after.state.gold).toBe(
@@ -183,8 +186,12 @@ for (const language of ['en', 'es'])
         ),
         contentType: 'application/json',
       })
-      await activate(page.locator(`[data-shop-pack="${pack.pack.id}"]`))
-      const packDialog = page.getByRole('dialog')
+      const packOffer = after.shop.teaHouse.packOfferings.find(
+        (o: { item: { id: string } }) => o.item.id === pack.pack.id
+      ).id
+      await activate(page.locator(`[data-shop-offer="${packOffer}"]`))
+      await activate(page.locator(`[data-shop-buy="${packOffer}"]`))
+      const packDialog = packModal(page)
       await activate(
         packDialog.locator('[role="button"][aria-pressed]').nth(choiceIndex)
       )
