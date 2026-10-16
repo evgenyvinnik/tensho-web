@@ -164,9 +164,9 @@ for (const language of ['en', 'es'])
         await activate(
           page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
         )
-      // Selected tiles stay in the rack, raised.
+      // Picked tiles fly onto the felt above the rack.
       await expect(
-        page.locator('[data-play-zone="hand"] [data-play-tile][data-selected]')
+        page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(2)
       expect((await saved()).state.handsRemaining).toBe(hands)
       await page.screenshot({ path: testInfo.outputPath('staged.png') })
