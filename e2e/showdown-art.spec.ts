@@ -1,4 +1,5 @@
 import { expect, test, type Locator } from '@playwright/test'
+import { clearReveals } from './helpers/table'
 
 const bosses = [
   ['amber_acorn', 'amber-acorn'],
@@ -56,21 +57,45 @@ for (const [lang, fallbackFonts] of [
           const service = initializeClassicPersistence(),
             raw = service.getSnapshot().disk.raw
           game.startNewRun(7)
-          game.processAction({ type: 'skip' })
-          const act = game.getState().roundManager.getCurrentAct()
+          const state = game.getState()
+          const act = state.roundManager.getCurrentAct()
           act.rounds[2].bossMandate = SHOWDOWN_MANDATES.find(
             (m: { id: string }) => m.id === id
           )
           act.rounds[2].scoreTarget =
             act.rounds[0].scoreTarget * (id === 'violet_vessel' ? 6 : 2)
-          game.processAction({ type: 'skip' })
+          // Controlled targets; both round clears and transitions are real.
+          for (let i = 0; i < 2; i++) {
+            state.targetScore = 1
+            state.roundManager.getCurrentRound().scoreTarget = 1
+            if (
+              !game.processAction({
+                type: 'play',
+                tileIds: state.handTiles
+                  .slice(0, 2)
+                  .map((t: { id: string }) => t.id),
+              }).success ||
+              !game.shop.open()
+            )
+              throw new Error('Fixture round failed')
+            game.exitShop()
+          }
           parseClassicRunSnapshot(JSON.parse(JSON.stringify(game.captureRun())))
           if (!(await service.saveNewRun(raw)))
             throw new Error('Fixture was not saved')
-          return locale.mandates.items[id]
+          const { effect } = act.rounds[2].bossMandate
+          return {
+            ...locale.mandates.items[id],
+            consequence: locale.mandateConsequence[effect.type].replace(
+              '{{value}}',
+              String(effect.value ?? 1)
+            ),
+          }
         },
         { id, lang }
       )
+      // startNewRun queues its starting Decrees for a reveal over the table.
+      await clearReveals(page)
       const before = await saved()
       const firstTile = before.state.handTiles[0].id
       await activate(
@@ -85,16 +110,21 @@ for (const [lang, fallbackFonts] of [
         ...before,
         state: { ...before.state, selectedTileIds: [firstTile] },
       })
-      await expect(opener).toHaveAccessibleName(copy.name)
-      await expect(opener.locator('img')).toHaveAttribute(
-        'src',
-        new RegExp(`${file}\\.webp$`)
+      // The header names the Showdown and its consequence; the art and the
+      // full rule open on tap.
+      const name = `${copy.name}: ${copy.consequence}`
+      await expect(opener).toHaveAccessibleName(name)
+      await expect(opener.locator('[data-mandate-consequence]')).toHaveText(
+        copy.consequence
       )
       await activate(opener)
       const dialog = page.getByRole('dialog', { name: copy.name, exact: true })
-      await expect(dialog).toHaveAccessibleDescription(copy.description)
+      await expect(dialog).toContainText(copy.consequence)
+      await expect(dialog).toContainText(copy.description)
+      const art = dialog.locator(`img[src$="/${file}.webp"]`)
+      await expect(art).toBeVisible()
       expect(
-        await dialog.locator('img').evaluate(async (img: HTMLImageElement) => {
+        await art.evaluate(async (img: HTMLImageElement) => {
           await img.decode()
           return img.naturalWidth
         })
@@ -102,7 +132,9 @@ for (const [lang, fallbackFonts] of [
       expect(
         await dialog
           .locator('p')
-          .evaluate((p) => p.scrollWidth <= p.clientWidth + 1)
+          .evaluateAll((ps) =>
+            ps.every((p) => p.scrollWidth <= p.clientWidth + 1)
+          )
       ).toBe(true)
       expect(
         await page.evaluate(
@@ -113,24 +145,20 @@ for (const [lang, fallbackFonts] of [
       expect(await saved()).toEqual(staged)
       await page.keyboard.press('Escape')
       await expect(opener).toBeFocused()
-      await expect(
-        page.locator(
-          `[data-play-zone="staging"] [data-play-tile="${firstTile}"]`
-        )
-      ).toBeVisible()
+      const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
+      await expect(felt).toHaveCount(1)
+      await expect(felt).toHaveAttribute('data-play-tile', firstTile)
       expect(await saved()).toEqual(staged)
       await page.reload()
-      // Engine selection is saved; temporary board staging is not restored.
+      // The save keeps the selection, but the table opens with nothing picked.
       await expect.poll(saved).toEqual(staged)
-      await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
-      ).toHaveCount(0)
+      await expect(felt).toHaveCount(0)
       await testInfo.attach('showdown-save', {
         body: await page.evaluate(
           () => localStorage.getItem('tensho-classic-run-v1')!
         ),
         contentType: 'application/json',
       })
-      await expect(opener).toHaveAccessibleName(copy.name)
+      await expect(opener).toHaveAccessibleName(name)
       expect(errors).toEqual([])
     })

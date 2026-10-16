@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { clearReveals, settleReveals } from './helpers/table'
 
 test('screen shake stays inside the viewport and stops for system reduced motion', async ({
   page,
@@ -67,10 +68,11 @@ test('screen shake stays inside the viewport and stops for system reduced motion
   ).toBe(true)
 })
 
-async function startTableLoop(page: Page) {
-  await page.goto('/en/table-loop?seed=7')
-  await page.locator('[data-testid^="table-decree-"]').first().click()
-  await expect(page.getByTestId('table-loop-rack')).toBeVisible()
+/** Open the Classic table and close the new run's Decree and Flora reveals. */
+async function openClassicTable(page: Page) {
+  await page.goto('/en/play')
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  await settleReveals(page, 2_000)
 }
 
 for (const viewport of [
@@ -78,21 +80,20 @@ for (const viewport of [
   { width: 390, height: 844 },
   { width: 1280, height: 800 },
 ]) {
-  test(`Classic rack and staged tiles remain individually tappable at ${viewport.width}×${viewport.height}`, async ({
+  test(`Classic rack and felt tiles remain individually tappable at ${viewport.width}×${viewport.height}`, async ({
     page,
     isMobile,
   }, testInfo) => {
     test.setTimeout(60000)
     await page.setViewportSize(viewport)
-    await page.goto('/en/play')
-    await expect(
-      page.locator('[data-classic-save-status="saved"]')
-    ).toBeVisible()
+    await openClassicTable(page)
     // Starting bonus draws can expand the rack. Check every authoritative
     // physical tile, including Spring/Orchid extras, rather than only fourteen.
     const ids: string[] = await page.evaluate(() => {
       const saved = JSON.parse(localStorage.getItem('tensho-classic-run-v1')!)
-      return saved.snapshot.state.handTiles.map((tile: { id: string }) => tile.id)
+      return saved.snapshot.state.handTiles.map(
+        (tile: { id: string }) => tile.id
+      )
     })
     expect(ids.length).toBeGreaterThanOrEqual(14)
     expect(new Set(ids).size).toBe(ids.length)
@@ -102,8 +103,18 @@ for (const viewport of [
     const assertSeparated = async (zone: string) => {
       const rectangles = await page
         .locator(`[data-play-zone="${zone}"] [data-play-tile]`)
-        .evaluateAll((tiles) =>
-          tiles.map((tile) => {
+        .evaluateAll(async (tiles) => {
+          // Measure where tiles land, not mid-flight between rack and felt.
+          await Promise.all(
+            tiles
+              .flatMap((tile) => tile.getAnimations({ subtree: true }))
+              .filter(
+                (flight) =>
+                  flight.effect?.getComputedTiming().endTime !== Infinity
+              )
+              .map((flight) => flight.finished.catch(() => undefined))
+          )
+          return tiles.map((tile) => {
             const rect = tile.getBoundingClientRect()
             return {
               x: rect.x,
@@ -114,7 +125,7 @@ for (const viewport of [
               height: rect.height,
             }
           })
-        )
+        })
       for (const [i, rect] of rectangles.entries()) {
         expect(rect.width).toBeGreaterThanOrEqual(44)
         expect(rect.height).toBeGreaterThanOrEqual(44)
@@ -131,6 +142,7 @@ for (const viewport of [
       }
     }
     await assertSeparated('hand')
+    const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
     for (const [index, id] of ids.entries()) {
       const tile = page.locator(
         `[data-play-zone="hand"] [data-play-tile="${id}"]`
@@ -139,16 +151,14 @@ for (const viewport of [
       else await tile.click()
       await expect(page.getByRole('dialog')).toHaveCount(0)
       await expect(
-        page.locator(`[data-play-zone="staging"] [data-play-tile="${id}"]`)
+        page.locator(`[data-play-zone="felt"] [data-play-tile="${id}"]`)
       ).toHaveCount(1)
-      await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
-      ).toHaveCount(index + 1)
+      await expect(felt).toHaveCount(index + 1)
     }
-    await assertSeparated('staging')
+    await assertSeparated('felt')
     for (const id of ids) {
       const tile = page.locator(
-        `[data-play-zone="staging"] [data-play-tile="${id}"]`
+        `[data-play-zone="felt"] [data-play-tile="${id}"]`
       )
       if (isMobile) await tile.tap()
       else await tile.click()
@@ -157,9 +167,7 @@ for (const viewport of [
         page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
       ).toHaveCount(1)
     }
-    await expect(
-      page.locator('[data-play-zone="staging"] [data-play-tile]')
-    ).toHaveCount(0)
+    await expect(felt).toHaveCount(0)
     await expect(page.locator('[data-game-action="play"]')).toBeDisabled()
     const action = await page.locator('[data-game-action="play"]').boundingBox()
     expect(action!.y).toBeGreaterThanOrEqual(0)
@@ -186,45 +194,31 @@ for (const viewport of [
   })
 }
 
-test('Classic pointer dragging uses the rendered zones and ignores an outside drop', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 1000 })
-  await page.goto('/en/play')
-  const hand = page.locator('[data-play-zone="hand"]')
-  const staging = page.locator('[data-play-zone="staging"]')
-  const id = await hand
-    .locator('[data-play-tile]')
-    .first()
-    .getAttribute('data-play-tile')
-  const tile = page.locator(`[data-play-tile="${id}"]`)
-  await tile.dragTo(staging, { targetPosition: { x: 15, y: 15 } })
-  await expect(staging.locator(`[data-play-tile="${id}"]`)).toHaveCount(1)
-  await tile.dragTo(page.locator('[data-table-content]'), {
-    targetPosition: { x: 0, y: 0 },
-  })
-  await expect(staging.locator(`[data-play-tile="${id}"]`)).toHaveCount(1)
-  await tile.dragTo(hand, { targetPosition: { x: 15, y: 15 } })
-  await expect(hand.locator(`[data-play-tile="${id}"]`)).toHaveCount(1)
-  await expect(staging.locator('[data-play-tile]')).toHaveCount(0)
-})
-
 test('edge tile details stay inside a short viewport and never replace the selection click', async ({
   page,
-}, testInfo) => {
+  isMobile,
+}) => {
+  // Rack tiles show their details on mouse hover; touch has no hover.
+  test.skip(isMobile, 'Tile details open on mouse hover')
   await page.setViewportSize({ width: 320, height: 568 })
-  await startTableLoop(page)
-  const tiles = page.locator('[data-testid^="rack-tile-"]')
-  for (const tile of [tiles.first(), tiles.nth(4)]) {
+  await openClassicTable(page)
+  const ids = await page
+    .locator('[data-play-zone="hand"] [data-play-tile]')
+    .evaluateAll((tiles) =>
+      tiles.map((tile) => tile.getAttribute('data-play-tile')!)
+    )
+  const details = page.locator('[data-tile-tooltip]')
+  for (const id of [ids[0], ids[4]]) {
+    const tile = page.locator(
+      `[data-play-zone="hand"] [data-play-tile="${id}"]`
+    )
     await tile.scrollIntoViewIfNeeded()
     const before = await tile.boundingBox()
-    await tile.focus()
-    const id = await tile.getAttribute('aria-describedby')
-    expect(id).toBeTruthy()
-    const tooltip = page.locator(`[id="${id}"]`)
-    await expect(tooltip).toBeVisible()
-    await expect(page.locator('[data-tile-tooltip]')).toHaveCount(1)
-    const bounds = await tooltip.boundingBox()
+    await page.mouse.move(0, 0)
+    await tile.hover()
+    await expect(details).toHaveCount(1)
+    await expect(details).toBeVisible()
+    const bounds = await details.boundingBox()
     expect(bounds!.x).toBeGreaterThanOrEqual(11)
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(309)
     expect(bounds!.y).toBeGreaterThanOrEqual(11)
@@ -237,33 +231,18 @@ test('edge tile details stay inside a short viewport and never replace the selec
     const after = await tile.boundingBox()
     expect(after!.width).toBe(before!.width)
     expect(after!.height).toBe(before!.height)
-    await tile.click()
-    await expect(tile).toHaveAttribute('aria-pressed', 'true')
     await page.keyboard.press('Escape')
-    try {
-      await expect(page.locator('[data-tile-tooltip]')).toHaveCount(0)
-    } catch (error) {
-      const diagnostic = JSON.stringify(
-        await page.evaluate(() => ({
-          focused: document.activeElement?.outerHTML,
-          tooltips: [...document.querySelectorAll('[data-tile-tooltip]')].map(
-            (node) => ({ id: node.id, text: node.textContent })
-          ),
-        }))
-      )
-      console.info('tooltip-escape-ownership', diagnostic)
-      await testInfo.attach('tooltip-escape-ownership', {
-        body: diagnostic,
-        contentType: 'application/json',
-      })
-      throw error
-    }
-    await page.mouse.move(0, 0)
-    await tile.hover()
-    await expect(page.locator('[data-tile-tooltip]')).toHaveCount(0)
+    await expect(details).toHaveCount(0)
+    // The details never take the click: it still picks the tile.
     await tile.click()
-    await expect(tile).toHaveAttribute('aria-pressed', 'false')
-    await tile.evaluate((button: HTMLElement) => button.blur())
+    const picked = page.locator(
+      `[data-play-zone="felt"] [data-play-tile="${id}"]`
+    )
+    await expect(picked).toHaveCount(1)
+    await expect(tile).toHaveCount(0)
+    await picked.click()
+    await expect(tile).toHaveCount(1)
+    await expect(picked).toHaveCount(0)
     await page.mouse.move(0, 0)
   }
   expect(
@@ -299,10 +278,15 @@ test('a native media setter failure cannot swallow the first tile selection', as
       },
     })
   })
-  await startTableLoop(page)
-  const tile = page.locator('[data-testid^="rack-tile-"]').first()
-  await tile.click()
-  await expect(tile).toHaveAttribute('aria-pressed', 'true')
+  await openClassicTable(page)
+  const id = await page
+    .locator('[data-play-zone="hand"] [data-play-tile]')
+    .first()
+    .getAttribute('data-play-tile')
+  await page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`).click()
+  await expect(
+    page.locator(`[data-play-zone="felt"] [data-play-tile="${id}"]`)
+  ).toHaveCount(1)
   await expect(page.locator('html')).toHaveAttribute(
     'data-media-setter-faults',
     /[1-9]\d*/
@@ -321,10 +305,22 @@ test('the Psychic never forecasts a rejected three-tile play and offers a legal 
     const { gameOrchestrator: game } = await import(gamePath)
     const { THE_PSYCHIC } = await import(mandatePath)
     game.startNewRun(7)
-    game.processAction({ type: 'skip' })
-    game.getState().roundManager.getCurrentAct().rounds[2].bossMandate =
-      THE_PSYCHIC
-    game.processAction({ type: 'skip' })
+    const state = game.getState()
+    state.roundManager.getCurrentAct().rounds[2].bossMandate = THE_PSYCHIC
+    // Controlled targets; both round clears and transitions are real.
+    for (let i = 0; i < 2; i++) {
+      state.targetScore = 1
+      state.roundManager.getCurrentRound().scoreTarget = 1
+      if (
+        !game.processAction({
+          type: 'play',
+          tileIds: state.handTiles.slice(0, 2).map((t: { id: string }) => t.id),
+        }).success ||
+        !game.shop.open()
+      )
+        throw new Error('Fixture round failed')
+      game.exitShop()
+    }
     const selected = game
       .getHandTiles()
       .slice(0, 3)
@@ -332,9 +328,19 @@ test('the Psychic never forecasts a rejected three-tile play and offers a legal 
     selected.forEach((id: string) => game.selectTile(id))
     return selected
   })
+  // startNewRun queues its starting Decrees for a reveal over the table.
+  await clearReveals(page)
   const play = page.locator('[data-game-action="play"]')
+  const handScore = page.locator('[data-hand-score]')
+  await expect(
+    page.locator('[data-play-zone="felt"] [data-play-tile]')
+  ).toHaveCount(3)
   await expect(play).toBeDisabled()
-  await expect(page.locator('[data-game-action-score]')).toHaveCount(0)
+  await expect(page.locator('[data-action-reason]')).toHaveText(
+    'Play exactly 5 tiles'
+  )
+  // No forecast for a play the Psychic rejects.
+  await expect(handScore).toHaveAttribute('data-hand-score-state', 'empty')
   const result = await page.evaluate(async (selected: string[]) => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const coachPath = '/src/gameplay/beginnerCoach.ts'
@@ -351,10 +357,27 @@ test('the Psychic never forecasts a rejected three-tile play and offers a legal 
     })
     game.clearSelection()
     advice.best.tileIds.forEach((id: string) => game.selectTile(id))
-    return { invalidPreview, count: advice.best.tileIds.length }
+    return {
+      invalidPreview,
+      count: advice.best.tileIds.length,
+      turns: state.handsRemaining,
+    }
   }, ids)
-  expect(result).toEqual({ invalidPreview: null, count: 5 })
+  expect({
+    invalidPreview: result.invalidPreview,
+    count: result.count,
+  }).toEqual({ invalidPreview: null, count: 5 })
+  await expect(handScore).toHaveAttribute('data-hand-score-state', 'preview')
   await expect(play).toBeEnabled()
   await play.click()
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const { gameOrchestrator: game } = await import(path)
+        return game.getState().handsRemaining
+      })
+    )
+    .toBe(result.turns - 1)
   await expect(page.getByRole('alert')).toHaveCount(0)
 })

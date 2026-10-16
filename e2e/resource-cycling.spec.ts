@@ -1,13 +1,14 @@
 import { expect, test, type Page } from '@playwright/test'
+import { clearReveals } from './helpers/table'
 
-// Deterministic edge states, followed by real rendered staging and commits.
+// Deterministic edge states, followed by real rendered picks and REDRAWs.
 async function fixture(
   page: Page,
   kind: 'ordinary' | 'locked' | 'bonus-short'
 ) {
   await page.goto('/en/play')
   await expect(page.locator('[data-game-action="redraw"]')).toBeVisible()
-  return page.evaluate(async (kind) => {
+  const id = await page.evaluate(async (kind) => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const tilePath = '/src/core/Tile.ts'
     const modifierPath = '/src/core/TileModifier.ts'
@@ -42,6 +43,9 @@ async function fixture(
     })
     return selected.id as string
   }, kind)
+  // startNewRun queues its starting Decrees for a reveal over the table.
+  await clearReveals(page)
+  return id
 }
 
 async function snapshot(page: Page) {
@@ -64,7 +68,7 @@ async function snapshot(page: Page) {
   })
 }
 
-test('staged redraw returns a tile, grants its seal once, and disables after exhaustion', async ({
+test('redraw sends a sealed tile to the river, grants its seal once, and disables after exhaustion', async ({
   page,
   isMobile,
 }) => {
@@ -76,13 +80,13 @@ test('staged redraw returns a tile, grants its seal once, and disables after exh
   if (isMobile) await tile.tap()
   else await tile.click()
   await expect(
-    page.locator(`[data-play-zone="staging"] [data-play-tile="${id}"]`)
+    page.locator(`[data-play-zone="felt"] [data-play-tile="${id}"]`)
   ).toBeVisible()
   expect(await snapshot(page)).toEqual(before)
   await expect(action).toBeEnabled()
   await action.click()
   await expect(
-    page.locator('[data-play-zone="staging"] [data-play-tile]')
+    page.locator('[data-play-zone="felt"] [data-play-tile]')
   ).toHaveCount(0)
   await expect(
     page.locator('[data-play-zone="hand"] [data-play-tile="replacement"]')
@@ -90,8 +94,9 @@ test('staged redraw returns a tile, grants its seal once, and disables after exh
   const after = await snapshot(page)
   expect(after.hand).toHaveLength(before.hand.length)
   expect(after.hand).not.toContain(id)
-  expect(after.wall).toEqual([id])
-  expect(after.river).toEqual(before.river)
+  // The tile goes to the river; its replacement was the wall's last tile.
+  expect(after.wall).toEqual([])
+  expect(after.river).toEqual([...before.river, id])
   expect(after.gold).toBe(before.gold)
   expect(after.hands).toBe(before.hands)
   expect(after.discards).toBe(before.discards)
@@ -124,7 +129,7 @@ for (const kind of ['locked', 'bonus-short'] as const) {
     if (isMobile) await tile.tap()
     else await tile.click()
     await expect(
-      page.locator(`[data-play-zone="staging"] [data-play-tile="${id}"]`)
+      page.locator(`[data-play-zone="felt"] [data-play-tile="${id}"]`)
     ).toBeVisible()
     await expect(page.locator('[data-game-action="redraw"]')).toBeDisabled()
     expect(await snapshot(page)).toEqual(before)

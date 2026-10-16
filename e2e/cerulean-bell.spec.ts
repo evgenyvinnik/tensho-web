@@ -1,4 +1,5 @@
 import { expect, test, type Locator } from '@playwright/test'
+import { clearReveals } from './helpers/table'
 
 for (const lang of ['en', 'es', 'ru'])
   test(`Bell latest lock, illustrated rules and saved continuation (${lang})`, async ({
@@ -39,26 +40,54 @@ for (const lang of ['en', 'es', 'ru'])
       const service = initializeClassicPersistence(),
         raw = service.getSnapshot().disk.raw
       game.startNewRun(7)
-      game.processAction({ type: 'skip' })
-      game.getState().roundManager.getCurrentAct().rounds[2].bossMandate =
+      const state = game.getState()
+      // No Flowers or Seasons in later deals: every REDRAW draws one tile.
+      state.wallTemplate = state.wallTemplate.filter(
+        (t: { isBonus: boolean }) => !t.isBonus
+      )
+      state.roundManager.getCurrentAct().rounds[2].bossMandate =
         SHOWDOWN_MANDATES.find((m: { id: string }) => m.id === 'cerulean_bell')
-      game.processAction({ type: 'skip' })
+      // Controlled targets; both round clears and transitions are real.
+      for (let i = 0; i < 2; i++) {
+        state.targetScore = 1
+        state.roundManager.getCurrentRound().scoreTarget = 1
+        if (
+          !game.processAction({
+            type: 'play',
+            tileIds: state.handTiles
+              .slice(0, 2)
+              .map((t: { id: string }) => t.id),
+          }).success ||
+          !game.shop.open()
+        )
+          throw new Error('Fixture round failed')
+        game.exitShop()
+      }
       parseClassicRunSnapshot(JSON.parse(JSON.stringify(game.captureRun())))
       if (!(await service.saveNewRun(raw)))
         throw new Error(`Fixture save failed: ${service.getSnapshot().status}`)
     })
+    // startNewRun queues its starting Decrees for a reveal over the table.
+    await clearReveals(page)
     const title = {
       en: 'Cerulean Bell',
       es: 'Campana Cerúlea',
       ru: 'Лазурный колокол',
     }[lang]!
+    const consequence = {
+      en: 'A tile locks each draw',
+      es: 'Una ficha se bloquea por robo',
+      ru: 'Тайл блокируется при доборе',
+    }[lang]!
     const control = page.locator('[data-mandate-details="cerulean_bell"]')
-    await expect(control).toHaveAccessibleName(title)
+    await expect(control).toHaveAccessibleName(`${title}: ${consequence}`)
     await activate(control)
     const dialog = page.getByRole('dialog', { name: title, exact: true })
     await expect(dialog).toBeVisible()
+    const art = dialog.locator('img[src$="/cerulean-bell.webp"]')
+    await expect(art).toBeVisible()
     expect(
-      await dialog.locator('img').evaluate(async (img: HTMLImageElement) => {
+      await art.evaluate(async (img: HTMLImageElement) => {
         await img.decode()
         return img.naturalWidth
       })
@@ -66,7 +95,9 @@ for (const lang of ['en', 'es', 'ru'])
     expect(
       await dialog
         .locator('p')
-        .evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
+        .evaluateAll((nodes) =>
+          nodes.every((node) => node.scrollWidth <= node.clientWidth + 1)
+        )
     ).toBe(true)
     expect(
       await page.evaluate(
@@ -76,6 +107,8 @@ for (const lang of ['en', 'es', 'ru'])
     await page.screenshot({ path: testInfo.outputPath('bell-rules.png') })
     await page.keyboard.press('Escape')
     await expect(control).toBeFocused()
+    const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
+    const redraw = page.locator('[data-game-action="redraw"]')
     for (let i = 0; i < 6; i++) {
       const before = await saved()
       const locks = before.state.mandateEffectSystem.lockedTileIds
@@ -83,66 +116,28 @@ for (const lang of ['en', 'es', 'ru'])
       const tile = before.state.handTiles.find(
         (t: { id: string }) => !locks.includes(t.id)
       )
-      const tileControl = page.locator(
-        `[data-play-zone="hand"] [data-play-tile="${tile.id}"]`
+      await activate(
+        page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
       )
-      if (i < 3) {
-        // Discard uses the rack's drag target, not an ActionBar button.
-        await tileControl.scrollIntoViewIfNeeded()
-        const source = (await tileControl.boundingBox())!
-        const target = (await page
-          .locator('[data-play-zone="discard"]')
-          .boundingBox())!
-        const start = {
-          x: source.x + source.width / 2,
-          y: source.y + source.height / 2,
-        }
-        const end = {
-          x: target.x + target.width / 2,
-          y: target.y + target.height / 2,
-        }
-        if (isMobile) {
-          const cdp = await page.context().newCDPSession(page)
-          await cdp.send('Input.dispatchTouchEvent', {
-            type: 'touchStart',
-            touchPoints: [start],
-          })
-          for (let step = 1; step <= 8; step++)
-            await cdp.send('Input.dispatchTouchEvent', {
-              type: 'touchMove',
-              touchPoints: [
-                {
-                  x: start.x + ((end.x - start.x) * step) / 8,
-                  y: start.y + ((end.y - start.y) * step) / 8,
-                },
-              ],
-            })
-          await cdp.send('Input.dispatchTouchEvent', {
-            type: 'touchEnd',
-            touchPoints: [],
-          })
-          await cdp.detach()
-        } else {
-          await page.mouse.move(start.x, start.y)
-          await page.mouse.down()
-          await page.mouse.move(end.x, end.y, { steps: 8 })
-          await page.mouse.up()
-        }
-        await expect
-          .poll(async () => (await saved()).state.discardsRemaining)
-          .toBe(before.state.discardsRemaining - 1)
-      } else {
-        await activate(tileControl)
-        const action = page.locator('[data-game-action="redraw"]')
-        await expect(action).toBeEnabled()
-        await activate(action)
-      }
-      await expect(
-        page.locator('[data-play-zone="staging"] [data-play-tile]')
-      ).toHaveCount(0)
-      expect(
-        (await saved()).state.mandateEffectSystem.lockedTileIds
-      ).toHaveLength(1)
+      await expect(felt).toHaveCount(1)
+      await expect(redraw).toBeEnabled()
+      await activate(redraw)
+      // One REDRAW: a free redraw while one is left, otherwise a Turn.
+      const { handsRemaining: turns, redrawsRemaining: free } = before.state
+      await expect
+        .poll(async () => {
+          const { handsRemaining, redrawsRemaining } = (await saved()).state
+          return [handsRemaining, redrawsRemaining]
+        })
+        .toEqual(free > 0 ? [turns, free - 1] : [turns - 1, free])
+      await expect(felt).toHaveCount(0)
+      const now = await saved()
+      // The tile went to the river and the Bell moved its one lock.
+      expect(now.state.discards.map((t: { id: string }) => t.id)).toEqual([
+        ...before.state.discards.map((t: { id: string }) => t.id),
+        tile.id,
+      ])
+      expect(now.state.mandateEffectSystem.lockedTileIds).toHaveLength(1)
     }
     const after = await saved()
     await testInfo.attach('bell-save', {
@@ -166,12 +161,11 @@ for (const lang of ['en', 'es', 'ru'])
       )
     const play = page.locator('[data-game-action="play"]')
     await expect(play).toBeEnabled()
+    await expect(felt).toHaveCount(2)
     await activate(play)
-    await expect(
-      page.locator('[data-play-zone="staging"] [data-play-tile]')
-    ).toHaveCount(0)
-    expect((await saved()).state.handsRemaining).toBe(
-      after.state.handsRemaining - 1
-    )
+    await expect(felt).toHaveCount(0)
+    await expect
+      .poll(async () => (await saved()).state.handsRemaining)
+      .toBe(after.state.handsRemaining - 1)
     expect(errors).toEqual([])
   })

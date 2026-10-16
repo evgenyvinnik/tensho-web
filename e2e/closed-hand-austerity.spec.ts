@@ -162,10 +162,14 @@ for (const language of ['en', 'es', 'ru'])
     expect((await saved()).state.completeConcealedHandsPlayed).toEqual(
       before.state.completeConcealedHandsPlayed
     )
-    await activate(page.locator('[data-game-action="play"]'))
+    // The table offers the complete hand as one tap onto the felt.
+    await activate(page.locator('[data-select-mahjong]'))
     await expect(
-      page.locator('[data-play-zone="staging"] [data-play-tile]')
+      page.locator('[data-play-zone="felt"] [data-play-tile]')
     ).toHaveCount(14)
+    await expect
+      .poll(async () => (await saved()).state.selectedTileIds.length)
+      .toBe(14)
     expect((await saved()).state.score).toBe(0)
     await activate(page.locator('[data-game-action="play"]'))
     await expect.poll(async () => (await saved()).state.phase).toBe('shop')
