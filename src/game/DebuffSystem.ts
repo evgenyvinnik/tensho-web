@@ -245,6 +245,7 @@ export class DebuffSystem {
   // ===========================================================================
   // BULK OPERATIONS FOR KNOWN DEBUFF SOURCES
   // ===========================================================================
+  // A Stone has no rank or suit, so no debuff that reads a tile's face hits it.
 
   /**
    * Apply The Drought effect - debuff all simple tiles (2-8)
@@ -257,7 +258,7 @@ export class DebuffSystem {
     }
 
     for (const tile of tiles) {
-      if (tile.isSimple) {
+      if (tile.isSimple && !tile.isStone) {
         this.debuffTile(tile.id, source)
       }
     }
@@ -274,7 +275,7 @@ export class DebuffSystem {
     }
 
     for (const tile of tiles) {
-      if (tile.isHonor) {
+      if (tile.isHonor && !tile.isStone) {
         this.debuffTile(tile.id, source)
       }
     }
@@ -305,7 +306,7 @@ export class DebuffSystem {
     }
 
     for (const tile of tiles) {
-      if (tile.suit === suit) {
+      if (tile.suit === suit && !tile.isStone) {
         this.debuffTile(tile.id, source)
       }
     }

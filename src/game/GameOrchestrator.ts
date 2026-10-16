@@ -116,7 +116,10 @@ import {
 } from '../config/decreeUnlocks'
 import { DebuffSystem } from './DebuffSystem'
 import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
-import { MandateEffectSystem } from '../systems/MandateEffectSystem'
+import {
+  MandateEffectSystem,
+  isFaceDebuffTarget,
+} from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
   MAX_TACTICAL_PLAY_TILES,
@@ -859,11 +862,7 @@ export class GameOrchestrator {
 
     if (mandate.effect.type === 'debuff_tile_type') {
       for (const tile of allTiles) {
-        const shouldDebuff =
-          mandate.effect.target === 'dragon'
-            ? tile.suit === TileSuit.Dragon
-            : tile.isHonor
-        if (shouldDebuff) {
+        if (isFaceDebuffTarget(mandate.effect, tile)) {
           this.state.debuffSystem.debuffTile(tile.id, {
             type: 'mandate',
             mandateId: mandate.id,
@@ -2884,6 +2883,7 @@ export class GameOrchestrator {
     this.state.deadWall = replace(this.state.deadWall)
     this.state.discards = replace(this.state.discards)
     this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
+    this.state.mandateEffectSystem.refreshFaceDebuffs([replacement])
   }
 
   private destroyTiles(tileIds: string[], effects: Effect[]): void {

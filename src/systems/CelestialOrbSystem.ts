@@ -858,7 +858,8 @@ export function getYakuCategoryDisplayName(category: YakuCategory): string {
 /**
  * Upgrade families a tactical play belongs to: its pattern's own family, plus
  * Value Tiles when a group is made of Winds or Dragons, plus All Simples when
- * every tile is a 2–8. Complete hands use their Yaku instead.
+ * every tile is a 2–8. A Stone has no rank, so it neither makes nor breaks All
+ * Simples. Complete hands use their Yaku instead.
  */
 export function playOrbCategories(
   patternId: PlayPatternId,
@@ -870,7 +871,7 @@ export function playOrbCategories(
   if (family) categories.push(family)
   if (groups.some((group) => group.tiles.every((tile) => tile.isHonor)))
     categories.push('Yakuhai')
-  if (groups.length > 0 && tiles.every((tile) => tile.isSimple))
+  if (groups.length > 0 && tiles.every((tile) => tile.isStone || tile.isSimple))
     categories.push('Tanyao')
   return categories
 }

@@ -89,6 +89,53 @@ export interface MandateScoringContext {
 }
 
 // =============================================================================
+// FACE DEBUFFS
+// =============================================================================
+
+const DEBUFF_SUITS: Record<string, TileSuit> = {
+  souzu: TileSuit.Souzu,
+  pinzu: TileSuit.Pinzu,
+  manzu: TileSuit.Manzu,
+}
+
+type MandateEffectRef = { type: string; target?: string }
+
+/** A Mandate that debuffs tiles by what is printed on them. */
+function isFaceDebuffMandate(effect: MandateEffectRef): boolean {
+  return effect.type === 'debuff_suit' || effect.type === 'debuff_tile_type'
+}
+
+/**
+ * Whether a suit or tile-kind Mandate debuffs this tile. A Stone has no rank
+ * or suit for a Mandate to read, so no face debuff reaches it.
+ */
+export function isFaceDebuffTarget(
+  effect: MandateEffectRef,
+  tile: Tile
+): boolean {
+  if (tile.isStone || !effect.target) return false
+  const target = effect.target.toLowerCase()
+
+  if (effect.type === 'debuff_suit') return tile.suit === DEBUFF_SUITS[target]
+  if (effect.type !== 'debuff_tile_type') return false
+
+  switch (target) {
+    case 'dragon':
+      return tile.suit === TileSuit.Dragon
+    case 'wind':
+      return tile.suit === TileSuit.Wind
+    case 'honor':
+      return tile.isHonor
+    case 'terminal':
+      return tile.isTerminal
+    case 'simple':
+      return tile.isSimple
+    default:
+      return false
+  }
+}
+
+// =============================================================================
 // MANDATE EFFECT SYSTEM CLASS
 // =============================================================================
 
@@ -249,20 +296,8 @@ export class MandateEffectSystem {
         break
 
       case 'debuff_suit':
-        result.debuffedTileIds = this.applyDebuffSuit(
-          tiles,
-          mandate.effect.target as string,
-          mandate.id
-        )
-        result.message += ` - All ${mandate.effect.target} tiles debuffed`
-        break
-
       case 'debuff_tile_type':
-        result.debuffedTileIds = this.applyDebuffTileType(
-          tiles,
-          mandate.effect.target as string,
-          mandate.id
-        )
+        result.debuffedTileIds = this.applyFaceDebuff(tiles, mandate)
         result.message += ` - All ${mandate.effect.target} tiles debuffed`
         break
 
@@ -384,78 +419,44 @@ export class MandateEffectSystem {
   // ===========================================================================
 
   /**
-   * Apply debuffs to tiles of a specific suit
+   * Apply a suit or tile-kind debuff (The Club, The Head, ...)
    */
-  private applyDebuffSuit(
-    tiles: Tile[],
-    suit: string,
-    mandateId: string
-  ): string[] {
+  private applyFaceDebuff(tiles: Tile[], mandate: MandateDefinition): string[] {
     if (!this.debuffSystem) return []
 
-    const debuffedIds: string[] = []
-    const source: DebuffSource = { type: 'mandate', mandateId }
-
-    const suitMap: Record<string, TileSuit> = {
-      souzu: TileSuit.Souzu,
-      pinzu: TileSuit.Pinzu,
-      manzu: TileSuit.Manzu,
-    }
-
-    const targetSuit = suitMap[suit.toLowerCase()]
-    if (!targetSuit) return []
-
-    for (const tile of tiles) {
-      if (tile.suit === targetSuit) {
-        this.debuffSystem.debuffTile(tile.id, source)
-        debuffedIds.push(tile.id)
-      }
-    }
+    const debuffedIds = tiles
+      .filter((tile) => isFaceDebuffTarget(mandate.effect, tile))
+      .map((tile) => tile.id)
+    this.debuffSystem.debuffTiles(debuffedIds, {
+      type: 'mandate',
+      mandateId: mandate.id,
+    })
 
     return debuffedIds
   }
 
   /**
-   * Apply debuffs to tiles of a specific type
+   * Re-read a suit or tile-kind debuff after tiles change face mid-round, such
+   * as a Seal of Stone covering a debuffed Manzu. Debuffs from other sources
+   * stay.
    */
-  private applyDebuffTileType(
-    tiles: Tile[],
-    tileType: string,
-    mandateId: string
-  ): string[] {
-    if (!this.debuffSystem) return []
-
-    const debuffedIds: string[] = []
-    const source: DebuffSource = { type: 'mandate', mandateId }
+  refreshFaceDebuffs(tiles: readonly Tile[]): void {
+    const mandate = this.state.activeMandate
+    if (!this.debuffSystem || !mandate || !isFaceDebuffMandate(mandate.effect))
+      return
 
     for (const tile of tiles) {
-      let shouldDebuff = false
-
-      switch (tileType.toLowerCase()) {
-        case 'dragon':
-          shouldDebuff = tile.suit === TileSuit.Dragon
-          break
-        case 'wind':
-          shouldDebuff = tile.suit === TileSuit.Wind
-          break
-        case 'honor':
-          shouldDebuff = tile.isHonor
-          break
-        case 'terminal':
-          shouldDebuff = tile.isTerminal
-          break
-        case 'simple':
-          shouldDebuff = tile.isSimple
-          break
-      }
-
-      if (shouldDebuff) {
-        this.debuffSystem.debuffTile(tile.id, source)
-        debuffedIds.push(tile.id)
+      const source = this.debuffSystem.getDebuffSource('tile', tile.id)
+      if (source && source.type !== 'mandate') continue
+      if (isFaceDebuffTarget(mandate.effect, tile)) {
+        this.debuffSystem.debuffTile(tile.id, {
+          type: 'mandate',
+          mandateId: mandate.id,
+        })
+      } else if (source) {
+        this.debuffSystem.removeDebuffFromTile(tile.id)
       }
     }
-
-    return debuffedIds
   }
 
   /**
@@ -923,7 +924,8 @@ export class MandateEffectSystem {
     if (context.isStartingHand && this.isFirstHandFaceDown()) return true
     if (context.afterHandPlay && this.shouldTilesBeFaceDownAfterPlay())
       return true
-    if (this.areHonorTilesFaceDown() && tile.isHonor) return true
+    if (this.areHonorTilesFaceDown() && tile.isHonor && !tile.isStone)
+      return true
 
     const ratio = this.getFaceDownTileRatio()
     return ratio !== null && ratio > 0 && this.getRandom() < 1 / ratio
