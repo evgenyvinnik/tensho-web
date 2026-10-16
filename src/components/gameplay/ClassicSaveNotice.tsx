@@ -1,26 +1,63 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
+import {
+  classicDestination,
+  startConfiguredClassicRun,
+} from '../../game/classicPersistenceApp'
+import { useAppNavigation } from '../../router'
 import { ControlIcon } from '../ui/ControlIcon'
+import { Button } from '../ui/Button'
 
 export function ClassicSaveNotice({
   errorsOnly = false,
   inline = false,
+  offerNewRun = true,
 }: {
   errorsOnly?: boolean
   /** Healthy status only, sized for a toolbar; failures render elsewhere. */
   inline?: boolean
+  /**
+   * When the run cannot be saved or read, offer a fresh one here. Off where
+   * the screen already has its own New Run.
+   */
+  offerNewRun?: boolean
 }) {
   const { t } = useTranslation()
+  const { navigateTo } = useAppNavigation()
   const { service, status, unsaved, disk } = useClassicPersistence()
   const [busy, setBusy] = useState(false)
-  const failure =
-    status === 'conflict' || status === 'invalid' || status === 'unavailable'
+  // A run that cannot be saved or read is never explained to the player:
+  // there is nothing they can do about it but start again.
+  const unusable = status === 'invalid' || disk.kind === 'invalid'
+  const failure = status === 'conflict' || status === 'unavailable'
   const error = failure
     ? status
-    : disk.kind === 'invalid' || disk.kind === 'unavailable'
+    : disk.kind === 'unavailable'
       ? disk.kind
       : null
+  if (unusable && !error) {
+    if (inline || !offerNewRun) return null
+    const startOver = async () => {
+      setBusy(true)
+      try {
+        // Replaces exactly the record read here, readable or not.
+        const raw =
+          disk.kind === 'ready' || disk.kind === 'invalid' ? disk.raw : null
+        if (await startConfiguredClassicRun(raw))
+          navigateTo(classicDestination())
+      } finally {
+        setBusy(false)
+      }
+    }
+    return (
+      <div data-classic-new-run className="mx-3 my-2 flex justify-center">
+        <Button disabled={busy} onClick={() => void startOver()}>
+          {t('menu.newRun', 'New Run')}
+        </Button>
+      </div>
+    )
+  }
   if (errorsOnly && !error) return null
   if (inline) {
     if (error) return null

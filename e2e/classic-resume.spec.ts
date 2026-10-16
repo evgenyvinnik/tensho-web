@@ -228,7 +228,7 @@ test('quota failure preserves the checkpoint and Retry saves the live action', a
   expect((await saved(page)).snapshot).toEqual(after.snapshot)
 })
 
-test('an unreadable save is kept, can be backed up from Settings, and New Run replaces it', async ({
+test('an unreadable save is not explained: the menu offers New Run, Settings can back it up, and New Run replaces it', async ({
   page,
 }) => {
   await page.goto('/en')
@@ -238,9 +238,12 @@ test('an unreadable save is kept, can be backed up from Settings, and New Run re
   )
   await page.goto('/en/play')
   await expect(page).toHaveURL(/\/en\/?$/)
-  await expect(page.getByRole('alert')).toContainText(
-    'stored checkpoint has not been changed'
-  )
+  // No warning and no resume card: just a fresh start.
+  await expect(
+    page.getByRole('button', { name: 'New Run', exact: true })
+  ).toBeVisible()
+  await expect(page.getByRole('alert')).toHaveCount(0)
+  await expect(page.locator('[data-classic-resume]')).toHaveCount(0)
   await expect(
     page.getByRole('button', { name: /Download backup|Discard run/ })
   ).toHaveCount(0)
