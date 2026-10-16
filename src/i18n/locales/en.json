@@ -159,6 +159,7 @@
     "targets": "Tile targets",
     "count": "Targets: {{selected}} / {{required}}",
     "copyOrder": "Tile 1 becomes a copy of tile 2. Choose the tile to change first.",
+    "replacesModifier": "Replaces {{names}}: a tile holds one mark, seal or edition.",
     "cost": "Void cost",
     "failed": "This item could not be used.",
     "unavailable": "Check the targets and this round’s use limit.",
@@ -2743,7 +2744,7 @@
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
     "honorsHelp": "Winds are worth {{wind}} points each. Each Dragon in a group adds +{{dragon}} Mult.",
     "specialTitle": "Special tiles",
-    "specialHelp": "A coloured frame with a gem is a mark, a wax stamp is a seal, and a shimmer is an edition. Hover or focus a tile to read exactly what it does.",
+    "specialHelp": "A coloured frame with a gem is a mark, a wax stamp is a seal, and a shimmer is an edition. A tile holds only one of them. Hover or focus a tile to read exactly what it does.",
     "close": "Let’s play"
   },
   "mandateConsequence": {

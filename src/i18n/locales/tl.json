@@ -446,6 +446,7 @@
     "targets": "Mga target na tile",
     "count": "Mga target: {{selected}} / {{required}}",
     "copyOrder": "Magiging kopya ng tile 2 ang tile 1. Piliin muna ang tile na babaguhin.",
+    "replacesModifier": "Papalitan ang {{names}}: isang marka, selyo o edisyon lang ang puwede sa isang tile.",
     "cost": "Kapalit ng Kawalan",
     "failed": "Hindi magamit ang item na ito.",
     "unavailable": "Suriin ang mga target at ang limitasyon ng paggamit sa round na ito.",
@@ -2747,7 +2748,7 @@
     "tilesHelp": "Ang Mga Karakter ay may numerong Tsino 一 hanggang 九; ang Bilog at Kawayan ay bilang ang ipinapakita (ibon ang 1 ng Kawayan). Mabubuksan ang numero sa tile sa Settings.",
     "honorsHelp": "Bawat Hangin ay {{wind}} puntos. Bawat Dragon sa isang grupo ay +{{dragon}} Mult.",
     "specialTitle": "Espesyal na tile",
-    "specialHelp": "Ang may-kulay na frame na may hiyas ay marka, ang selyong lacre ay selyo, at ang kinang ay edisyon. I-hover o i-focus ang tile para mabasa ang epekto.",
+    "specialHelp": "Ang may-kulay na frame na may hiyas ay marka, ang selyong lacre ay selyo, at ang kinang ay edisyon. Isa lang sa mga ito ang puwede sa isang tile. I-hover o i-focus ang tile para mabasa ang epekto.",
     "close": "Tara, laro na"
   },
   "mandateConsequence": {

@@ -170,15 +170,17 @@ it.each([EnhancementType.Bonus, EnhancementType.Gold] as const)(
   }
 )
 
-it('retains every stacked modifier and handles plain and Honor reward tiles', () => {
-  const tile = Tile.createNumbered(TileSuit.Souzu, 4)
-    .withEnhancement(EnhancementType.Bonus)
-    .withSeal(SealType.Gold)
-    .withEdition(EditionType.Foil)
-  const text = tileRewardText(tile, i18n.t.bind(i18n))
-  expect(text.name).toBe('4 of Bamboo · Bonus Mark · Gold Seal · Foil')
-  for (const rule of ['+30', '+3', '+50'])
+it('names the one modifier and handles plain and Honor reward tiles', () => {
+  const four = () => Tile.createNumbered(TileSuit.Souzu, 4)
+  for (const [tile, name, rule] of [
+    [four().withEnhancement(EnhancementType.Bonus), 'Bonus Mark', '+30'],
+    [four().withSeal(SealType.Gold), 'Gold Seal', '+3'],
+    [four().withEdition(EditionType.Foil), 'Foil', '+50'],
+  ] as const) {
+    const text = tileRewardText(tile, i18n.t.bind(i18n))
+    expect(text.name).toBe(`4 of Bamboo · ${name}`)
     expect(text.description).toContain(rule)
+  }
   expect(
     tileRewardText(Tile.createNumbered(TileSuit.Souzu, 4), i18n.t.bind(i18n))
   ).toEqual({ name: '4 of Bamboo', description: '' })

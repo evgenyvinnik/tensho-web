@@ -477,7 +477,8 @@ Editions are rare modifications that can appear on individual tiles, providing p
 - Omen Tags can apply editions
 
 **Edition Interactions:**
-- Only one edition per tile
+- A tile holds one modifier: an Edition replaces its Mark or Seal, and a new
+  Mark or Seal replaces its Edition
 - Editions persist until tile is destroyed
 - Debuffing a tile suppresses scoring rewards, but not ownership capacity.
   Negative tiles grant one slot each by unique physical ID, regardless of drawing,

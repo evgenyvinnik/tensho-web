@@ -6,7 +6,7 @@ import {
   suitConversionRank,
   UNITY_WIND_CONVERSIONS,
 } from './tileTransformations'
-import { EnhancementType, EditionType, SealType } from './TileModifier'
+import { EditionType, SealType } from './TileModifier'
 
 describe('physical suit transformations', () => {
   it('keeps rank conversions valid without creating red fives or losing modifiers', () => {
@@ -18,9 +18,7 @@ describe('physical suit transformations', () => {
             sourceRank,
             'physical-rank',
             sourceRank === 5
-          )
-            .withSeal(SealType.Red)
-            .withEdition(EditionType.Foil)
+          ).withSeal(SealType.Red)
           const result = convertSuitedTileRank(tile, rank)
           expect(result).toMatchObject({
             rank,
@@ -62,10 +60,12 @@ describe('physical suit transformations', () => {
         TileSuit.Dragon,
       ])
         for (let rank = 1; rank <= 9; rank++) {
-          const source = new Tile(sourceSuit, rank, 'physical-tile', rank === 5)
-            .withEnhancement(EnhancementType.Bonus)
-            .withSeal(SealType.Red)
-            .withEdition(EditionType.Foil)
+          const source = new Tile(
+            sourceSuit,
+            rank,
+            'physical-tile',
+            rank === 5
+          ).withEdition(EditionType.Foil)
           const before = JSON.stringify(source)
           const result = convertSuitedTile(source, targetSuit)
           const maxRank =

@@ -12,7 +12,11 @@ import type {
   PlayerAction,
   ValidationResult,
 } from '../../game/ActionProcessor'
-import { consumableTargetRange } from '../../gameplay/consumableTargeting'
+import {
+  consumableTargetRange,
+  replacesTileModifier,
+} from '../../gameplay/consumableTargeting'
+import { tileModifierEntries } from '../../core/tileModifierEntries'
 import { useItemText } from '../../i18n/useItemText'
 import {
   getFateSealIllustration,
@@ -90,6 +94,23 @@ export function ConsumableDialog({
     action !== null && (availability ? availability.isValid : canUse(action))
   const countValid = targets.length >= range.min && targets.length <= range.max
   const copy = item?.type === 'FateSeal' && item.effect.type === 'copy_tile'
+  // A tile holds one modifier: name the ones this item would replace.
+  const replaced =
+    item && item.type !== 'CelestialOrb'
+      ? [
+          ...new Set(
+            tiles
+              .filter(
+                (tile) =>
+                  targets.includes(tile.id) &&
+                  !concealedIds.has(tile.id) &&
+                  replacesTileModifier(item.effect, tile)
+              )
+              .flatMap(tileModifierEntries)
+              .map((entry) => itemText.name(entry.kind, entry))
+          ),
+        ]
+      : []
 
   const messageFor = (message: string) => {
     if (message === 'Choose a suited tile of a different suit')
@@ -318,6 +339,17 @@ export function ConsumableDialog({
               {copy && (
                 <p className="mb-3 text-sm text-amber-200">
                   {t('consumableUse.copyOrder')}
+                </p>
+              )}
+              {replaced.length > 0 && (
+                <p
+                  className="mb-3 text-sm text-amber-200"
+                  role="status"
+                  data-consumable-replaces
+                >
+                  {t('consumableUse.replacesModifier', {
+                    names: replaced.join(', '),
+                  })}
                 </p>
               )}
               <div className="flex flex-wrap justify-center gap-2 py-2">

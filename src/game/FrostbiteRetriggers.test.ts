@@ -48,12 +48,13 @@ it('repeats one resolved Lucky reward and keeps previews RNG-pure', () => {
   ).toHaveLength(1)
 })
 
-it('does not pay suppressed physical tile repeats', () => {
+it.each([
+  (tile: Tile) => tile.withEdition(EditionType.Polychrome),
+  (tile: Tile) => tile.withSeal(SealType.Gold),
+])('does not pay suppressed physical tile repeats', (modify) => {
   const f = fixture(1)
   f.add()
-  f.state.handTiles[0] = f.state.handTiles[0]
-    .withEdition(EditionType.Polychrome)
-    .withSeal(SealType.Gold)
+  f.state.handTiles[0] = modify(f.state.handTiles[0])
   f.state.debuffSystem.debuffTile('play-4', {
     type: 'mandate',
     mandateId: 'test',
@@ -221,40 +222,64 @@ function fixture(frostbites = 0) {
 }
 
 it.each([0, 1, 2])(
-  'pays fractional face, Foil and Gold-Seal repeats with %s Frostbites',
+  'pays fractional face and Foil repeats with %s Frostbites',
   (count) => {
     const f = fixture(count)
-    f.state.handTiles[0] = f.state.handTiles[0]
-      .withEdition(EditionType.Foil)
-      .withSeal(SealType.Gold)
+    f.state.handTiles[0] = f.state.handTiles[0].withEdition(EditionType.Foil)
     f.add()
     const paid = f.pay(),
       strength = 0.5 ** count
     expect(paid.tilePoints).toBe(15 + 5 * strength)
     expect(paid.modifierChips).toBe(50 + 50 * strength)
     expect(paid.structurePoints).toBe(30)
-    expect(paid.goldEarned).toBe(Math.floor(3 + 3 * strength))
     expect(paid.finalScore).toBe(Math.floor(95 + 55 * strength))
   }
 )
 
 it.each([0, 1, 2])(
-  'keeps native Polychrome and Red Seal intact while scaling echo gain (%s)',
+  'pays fractional Gold-Seal repeats with %s Frostbites',
   (count) => {
     const f = fixture(count)
-    f.state.handTiles[0] = f.state.handTiles[0]
-      .withEdition(EditionType.Polychrome)
-      .withSeal(SealType.Red)
+    f.state.handTiles[0] = f.state.handTiles[0].withSeal(SealType.Gold)
     f.add()
     const paid = f.pay(),
       strength = 0.5 ** count
-    const native = 1.5 ** 2,
-      full = 1.5 ** 4
+    expect(paid.goldEarned).toBe(Math.floor(3 + 3 * strength))
+    expect(paid.finalScore).toBe(Math.floor(45 + 5 * strength))
+  }
+)
+
+it.each([0, 1, 2])(
+  'keeps a native Red Seal repeat intact while scaling echo gain (%s)',
+  (count) => {
+    const f = fixture(count)
+    f.state.handTiles[0] = f.state.handTiles[0].withSeal(SealType.Red)
+    f.add()
+    const paid = f.pay(),
+      strength = 0.5 ** count
+    // The Red Seal pays the face twice; Echo Stone repeats both, scaled.
+    expect(paid.tilePoints).toBe(20 + 10 * strength)
+    expect(paid.finalScore).toBe(Math.floor(50 + 10 * strength))
+  }
+)
+
+it.each([0, 1, 2])(
+  'keeps native Polychrome intact while scaling echo gain (%s)',
+  (count) => {
+    const f = fixture(count)
+    f.state.handTiles[0] = f.state.handTiles[0].withEdition(
+      EditionType.Polychrome
+    )
+    f.add()
+    const paid = f.pay(),
+      strength = 0.5 ** count
+    const native = 1.5,
+      full = 1.5 ** 2
     expect(paid.modifierMultiplier).toBeCloseTo(
       native + (full - native) * strength
     )
     expect(paid.finalScore).toBe(
-      Math.floor((50 + 10 * strength) * (native + (full - native) * strength))
+      Math.floor((45 + 5 * strength) * (native + (full - native) * strength))
     )
   }
 )

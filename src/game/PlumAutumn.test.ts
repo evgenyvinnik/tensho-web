@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit, FlowerType, SeasonType } from '../core/Tile'
-import { EnhancementType, SealType, EditionType } from '../core/TileModifier'
+import { EnhancementType, EditionType } from '../core/TileModifier'
 import { Meld, MeldType } from '../core/Meld'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -50,11 +50,7 @@ function fixture() {
   state.summerReserve = []
   state.discards = [
     new Tile(TileSuit.Souzu, 1, 'older'),
-    new Tile(TileSuit.Souzu, 3, 'newer').withModifiers({
-      enhancement: EnhancementType.Steel,
-      seal: SealType.Red,
-      edition: EditionType.Foil,
-    }),
+    new Tile(TileSuit.Souzu, 3, 'newer').withEdition(EditionType.Foil),
     new Tile(TileSuit.Manzu, 3, 'wrong-suit'),
     new Tile(TileSuit.Souzu, 9, 'wrong-rank'),
   ]

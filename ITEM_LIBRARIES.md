@@ -128,7 +128,12 @@ Ouija rank changes as well as Unity's conversion to Winds.
 
 ## 🎨 A5) Complete Tile Mark Library (牌印)
 
-### Enhancements (One per tile)
+A tile holds **one** modifier: a Mark, a Seal or an Edition. Applying a new one
+replaces whatever the tile carried (a Lucky tile given a Stone Mark is just
+Stone). Saves from before this rule keep the rarest: Edition, then Mark, then
+Seal.
+
+### Enhancements (Marks)
 
 | Mark | Japanese | Effect |
 |------|----------|--------|
@@ -141,7 +146,7 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | **Gold Mark** | 金印 | ¥3 if held at end of round |
 | **Lucky Mark** | 幸運印 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
 
-### Seals (One per tile, stacks with Enhancement)
+### Seals (replace a Mark or Edition)
 
 | Seal | Japanese | Effect |
 |------|----------|--------|
@@ -150,7 +155,7 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | **Blue Seal** | 青封 | Creates Celestial Orb for final Yaku if held |
 | **Purple Seal** | 紫封 | Creates a Fate Seal when discarded |
 
-### Editions (One per tile/Decree, rarest)
+### Editions (one per tile or Decree, rarest)
 
 | Edition | Japanese | Effect on Tile | Effect on Decree |
 |---------|----------|----------------|------------------|

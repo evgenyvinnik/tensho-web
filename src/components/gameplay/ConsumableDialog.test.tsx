@@ -1,6 +1,10 @@
 import { createRef } from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, it, vi } from 'vitest'
+import i18n from '../../i18n'
+import { Tile, TileSuit } from '../../core/Tile'
+import { EnhancementType, SealType } from '../../core/TileModifier'
+import { FateSealSystem, FATE_SEALS } from '../../systems/FateSealSystem'
 import { ConsumableDialog } from './ConsumableDialog'
 
 it.each([false, true])(
@@ -39,3 +43,38 @@ it.each([false, true])(
     expect(onUse).not.toHaveBeenCalled()
   }
 )
+
+it('names the modifier a target would lose: a tile holds only one', () => {
+  const seal = FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_stone)
+  const plain = new Tile(TileSuit.Manzu, 3, 'plain')
+  const lucky = new Tile(TileSuit.Manzu, 4, 'lucky').withEnhancement(
+    EnhancementType.Lucky
+  )
+  const hidden = new Tile(TileSuit.Manzu, 5, 'hidden').withSeal(SealType.Red)
+  render(
+    <ConsumableDialog
+      title="Items"
+      items={[seal]}
+      tiles={[plain, lucky, hidden]}
+      concealedIds={new Set(['hidden'])}
+      canUse={() => true}
+      onUse={() => ({ success: true, effects: [] })}
+      onClose={() => {}}
+      initialItemId={seal.instanceId}
+    />
+  )
+  const target = (id: string) =>
+    fireEvent.click(document.querySelector(`[data-consumable-target="${id}"]`)!)
+  const hint = () => document.querySelector('[data-consumable-replaces]')
+  target('plain')
+  expect(hint()).toBeNull()
+  target('plain')
+  // A face-down tile never reveals what it carries.
+  target('hidden')
+  expect(hint()).toBeNull()
+  target('hidden')
+  target('lucky')
+  expect(hint()).toHaveTextContent(
+    i18n.t('consumableUse.replacesModifier', { names: 'Lucky Mark' })
+  )
+})

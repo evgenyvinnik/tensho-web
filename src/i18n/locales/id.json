@@ -367,6 +367,7 @@
     "targets": "Ubin target",
     "count": "Target: {{selected}} / {{required}}",
     "copyOrder": "Ubin 1 menjadi salinan ubin 2. Pilih ubin yang ingin diubah terlebih dahulu.",
+    "replacesModifier": "Menggantikan {{names}}: satu ubin hanya memiliki satu tanda, segel, atau edisi.",
     "cost": "Harga Kehampaan",
     "failed": "Item ini tidak dapat digunakan.",
     "unavailable": "Periksa target dan batas penggunaan pada ronde ini.",
@@ -2747,7 +2748,7 @@
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin. Setiap Naga dalam kelompok menambah +{{dragon}} Mult.",
     "specialTitle": "Ubin khusus",
-    "specialHelp": "Bingkai berwarna dengan permata adalah tanda, cap lilin adalah segel, dan kilau adalah edisi. Arahkan atau fokuskan ke ubin untuk membaca efeknya.",
+    "specialHelp": "Bingkai berwarna dengan permata adalah tanda, cap lilin adalah segel, dan kilau adalah edisi. Satu ubin hanya bisa memiliki salah satunya. Arahkan atau fokuskan ke ubin untuk membaca efeknya.",
     "close": "Ayo main"
   },
   "mandateConsequence": {

@@ -446,6 +446,7 @@
     "targets": "Hedef taşlar",
     "count": "Hedefler: {{selected}} / {{required}}",
     "copyOrder": "1. taş, 2. taşın kopyası olur. Önce değiştirmek istediğiniz taşı seçin.",
+    "replacesModifier": "{{names}} yerine geçer: bir taşta yalnızca bir işaret, mühür ya da baskı olabilir.",
     "cost": "Hiçliğin bedeli",
     "failed": "Bu eşya kullanılamadı.",
     "unavailable": "Hedefleri ve bu turdaki kullanım sınırını kontrol edin.",
@@ -2747,7 +2748,7 @@
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan değerindedir. Bir gruptaki her Ejderha +{{dragon}} Çarpan ekler.",
     "specialTitle": "Özel taşlar",
-    "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Ne yaptığını görmek için taşın üzerine gel veya odaklan.",
+    "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Bir taşta bunlardan yalnızca biri olabilir. Ne yaptığını görmek için taşın üzerine gel veya odaklan.",
     "close": "Hadi oynayalım"
   },
   "mandateConsequence": {

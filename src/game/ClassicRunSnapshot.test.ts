@@ -4,7 +4,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
-import { EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { THE_CLUB } from '../config/mandateDefinitions'
 import { useOmenStore } from '../stores/omenStore'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
@@ -60,9 +60,12 @@ afterEach(() => {
 it('round-trips every authoritative collection, modifier and internal subsystem through JSON', () => {
   const game = start(413, 'dragons_den')
   const state = game.getState() as OrchestratorState
-  const tile = new Tile(TileSuit.Pinzu, 5, 'roundtrip-tile', true)
-    .withEnhancement(EnhancementType.Steel)
-    .withSeal(SealType.Red)
+  const tile = new Tile(
+    TileSuit.Pinzu,
+    5,
+    'roundtrip-tile',
+    true
+  ).withEnhancement(EnhancementType.Steel)
   state.handTiles[0] = tile
   state.selectedTileIds.add(tile.id)
   state.faceDownTileIds.add(tile.id)

@@ -159,6 +159,7 @@
     "targets": "Tuiles ciblées",
     "count": "Cibles : {{selected}} / {{required}}",
     "copyOrder": "La tuile 1 devient une copie de la tuile 2. Choisissez d’abord celle à modifier.",
+    "replacesModifier": "Remplace {{names}} : une tuile ne porte qu’une marque, un sceau ou une édition.",
     "cost": "Coût du Vide",
     "failed": "Cet objet n’a pas pu être utilisé.",
     "unavailable": "Vérifiez les cibles et la limite d’utilisation de cette manche.",
@@ -2747,7 +2748,7 @@
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
     "honorsHelp": "Chaque Vent vaut {{wind}} points. Chaque Dragon dans un groupe ajoute +{{dragon}} Mult.",
     "specialTitle": "Tuiles spéciales",
-    "specialHelp": "Un cadre coloré avec une gemme est une marque, un cachet de cire est un sceau et un reflet est une édition. Survolez ou sélectionnez une tuile pour lire son effet.",
+    "specialHelp": "Un cadre coloré avec une gemme est une marque, un cachet de cire est un sceau et un reflet est une édition. Une tuile n’en porte qu’un seul. Survolez ou sélectionnez une tuile pour lire son effet.",
     "close": "C’est parti"
   },
   "mandateConsequence": {

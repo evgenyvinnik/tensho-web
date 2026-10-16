@@ -159,6 +159,7 @@
     "targets": "Fichas objetivo",
     "count": "Objetivos: {{selected}} / {{required}}",
     "copyOrder": "La ficha 1 se convierte en una copia de la ficha 2. Elige primero la que quieres cambiar.",
+    "replacesModifier": "Sustituye {{names}}: una ficha solo tiene una marca, un sello o una edición.",
     "cost": "Coste del Vacío",
     "failed": "No se pudo usar este objeto.",
     "unavailable": "Comprueba los objetivos y el límite de usos de esta ronda.",
@@ -2747,7 +2748,7 @@
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos. Cada Dragón dentro de un grupo suma +{{dragon}} Mult.",
     "specialTitle": "Fichas especiales",
-    "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Pasa el cursor o enfoca una ficha para leer qué hace.",
+    "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Una ficha solo puede tener uno de ellos. Pasa el cursor o enfoca una ficha para leer qué hace.",
     "close": "¡A jugar!"
   },
   "mandateConsequence": {

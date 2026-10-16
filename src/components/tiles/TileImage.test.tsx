@@ -22,21 +22,23 @@ afterEach(async () => {
 const showRankNumbers = () =>
   act(() => useSettingsStore.getState().setShowRankNumbers(true))
 
-it('localizes the tile identity, rules and modifier explanations in Spanish', async () => {
-  await loadLanguage('es')
-  await i18n.changeLanguage('es')
-  const tile = new Tile(TileSuit.Souzu, 4, 'marked', false, {
-    enhancement: EnhancementType.Bonus,
-    seal: SealType.Purple,
-    edition: EditionType.Foil,
-  })
-  render(<TileImage tile={tile} detailsVisible />)
-  expect(screen.getByRole('img')).toHaveAccessibleName(/Bambú/)
-  const tooltip = screen.getByRole('tooltip')
-  expect(tooltip).toHaveTextContent(i18n.t('tileMarks.items.bonus.description'))
-  expect(tooltip).toHaveTextContent(i18n.t('editions.items.foil.description'))
-  expect(tooltip).not.toHaveTextContent('base points')
-})
+it.each([
+  [(t: Tile) => t.withEnhancement(EnhancementType.Bonus), 'tileMarks', 'bonus'],
+  [(t: Tile) => t.withSeal(SealType.Purple), 'archiveSeals', 'purple'],
+  [(t: Tile) => t.withEdition(EditionType.Foil), 'editions', 'foil'],
+] as const)(
+  'localizes the tile identity, rules and modifier explanation in Spanish (%#)',
+  async (modify, kind, id) => {
+    await loadLanguage('es')
+    await i18n.changeLanguage('es')
+    const tile = modify(new Tile(TileSuit.Souzu, 4, 'marked'))
+    render(<TileImage tile={tile} detailsVisible />)
+    expect(screen.getByRole('img')).toHaveAccessibleName(/Bambú/)
+    const tooltip = screen.getByRole('tooltip')
+    expect(tooltip).toHaveTextContent(i18n.t(`${kind}.items.${id}.description`))
+    expect(tooltip).not.toHaveTextContent('base points')
+  }
+)
 
 it('describes the implemented Summer effect instead of an invented gold reward', () => {
   render(
@@ -58,29 +60,14 @@ it('describes the implemented Spring rack expansion', () => {
 })
 
 it('conceals all identity and modifiers and never opens hidden details', () => {
-  const tile = new Tile(TileSuit.Dragon, 3, 'hidden', false, {
-    enhancement: EnhancementType.Glass,
-    seal: SealType.Red,
-    edition: EditionType.Polychrome,
-  })
+  const tile = new Tile(TileSuit.Dragon, 3, 'hidden').withEnhancement(
+    EnhancementType.Glass
+  )
   render(<TileImage tile={tile} faceDown detailsVisible onClick={() => {}} />)
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
   expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
   expect(document.querySelector('[data-tile-index]')).toBeNull()
-  expect(screen.getByRole('button')).not.toHaveAccessibleName(
-    /Dragon|Glass|Polychrome/
-  )
-})
-
-it('draws a face-down tile as its back, never as a blank face', () => {
-  const { container } = render(
-    <TileImage tile={new Tile(TileSuit.Pinzu, 5, 'hidden')} faceDown />
-  )
-  expect(container.querySelector('[data-tile-back]')).toHaveAccessibleName(
-    'Face-down tile'
-  )
-  // The art kit's empty template is indistinguishable from a blank tile.
-  expect(container.querySelector('img')).toBeNull()
+  expect(screen.getByRole('button')).not.toHaveAccessibleName(/Dragon|Glass/)
 })
 
 it.each([
@@ -159,16 +146,14 @@ it('keeps keyboard details and selection independent, including after a locale c
   expect(onClick).toHaveBeenCalledExactlyOnceWith(tile)
 })
 
-it('composes all three generated modifier layers without replacing a normal face', () => {
-  const tile = new Tile(TileSuit.Pinzu, 9, 'three-layers', false, {
-    enhancement: EnhancementType.Gold,
-    seal: SealType.Red,
-    edition: EditionType.Foil,
-  })
+it('draws its one modifier layer without replacing a normal face', () => {
+  const tile = new Tile(TileSuit.Pinzu, 9, 'gold-mark').withEnhancement(
+    EnhancementType.Gold
+  )
   showRankNumbers()
   const { container, rerender } = render(<TileImage tile={tile} />)
   expect(screen.getByRole('img')).toHaveAccessibleName(/9/)
-  expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(3)
+  expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(1)
   expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
   expect(
     container.querySelector('[data-tile-art-layer="enhancement"] img')

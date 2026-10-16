@@ -2,8 +2,12 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { settleReveals } from './helpers/table'
 
-/** What this exact Frostbite Echo play pays; the fixture's target is set to it. */
-const ECHO_SCORE = 173
+/**
+ * What this exact Frostbite Echo play pays; the fixture's target is set to it.
+ * Three faces (15) and their Sequence (30), plus the Echo's half-strength
+ * repeat of the Gold-Sealed first tile (2.5).
+ */
+const ECHO_SCORE = 47
 
 const replayPath = process.env.ECHO_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -56,9 +60,7 @@ for (const language of ['en', 'es'])
           loaded('/src/game/GameOrchestrator.ts')
         )
         const { Tile, TileSuit } = await import(loaded('/src/core/Tile.ts'))
-        const { EditionType, EnhancementType, SealType } = await import(
-          loaded('/src/core/TileModifier.ts')
-        )
+        const { SealType } = await import(loaded('/src/core/TileModifier.ts'))
         const { ALL_DECREES, DecreeSystem } = await import(
           loaded('/src/systems/DecreeSystem.ts')
         )
@@ -83,10 +85,7 @@ for (const language of ['en', 'es'])
         state.handTiles = [4, 5, 6].map(
           (rank) => new Tile(TileSuit.Souzu, rank, `echo-${rank}`)
         )
-        state.handTiles[0] = state.handTiles[0]
-          .withEnhancement(EnhancementType.Bonus)
-          .withEdition(EditionType.Polychrome)
-          .withSeal(SealType.Gold)
+        state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
         state.handTiles.push(
           ...[
             TileSuit.Manzu,

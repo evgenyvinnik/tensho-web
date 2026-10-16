@@ -5,7 +5,7 @@
  * - 136 standard tiles (34 unique × 4 copies)
  * - 8 bonus tiles (4 Flowers + 4 Seasons)
  *
- * With modifier support:
+ * With modifier support (a tile holds one at a time):
  * - Enhancements (Marks): Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky
  * - Seals: Gold, Red, Blue, Purple
  * - Editions: Base, Foil, Holographic, Polychrome, Negative
@@ -28,6 +28,8 @@ import {
   hasHeldEffect as checkHasHeldEffect,
   isLucky as checkIsLucky,
   formatModifiers,
+  singleModifier,
+  changeModifiers,
   ENHANCEMENT_DEFINITIONS,
   SEAL_DEFINITIONS,
   EDITION_DEFINITIONS,
@@ -99,7 +101,7 @@ export class Tile implements TileData {
     this.rank = rank
     this.id = id
     this.isRed = isRed
-    this.modifiers = modifiers
+    this.modifiers = singleModifier(modifiers)
   }
 
   /**
@@ -353,43 +355,38 @@ export class Tile implements TileData {
   // ===========================================================================
 
   /**
-   * Create a new tile with a specific enhancement
+   * Create a new tile with a specific enhancement, replacing any modifier
    */
   withEnhancement(enhancement: EnhancementType): Tile {
-    return new Tile(this.suit, this.rank, this.id, this.isRed, {
-      ...this.modifiers,
-      enhancement,
-    })
+    return this.withModifiers({ enhancement })
   }
 
   /**
-   * Create a new tile with a specific seal
+   * Create a new tile with a specific seal, replacing any modifier
    */
   withSeal(seal: SealType): Tile {
-    return new Tile(this.suit, this.rank, this.id, this.isRed, {
-      ...this.modifiers,
-      seal,
-    })
+    return this.withModifiers({ seal })
   }
 
   /**
-   * Create a new tile with a specific edition
+   * Create a new tile with a specific edition, replacing any modifier
    */
   withEdition(edition: EditionType): Tile {
-    return new Tile(this.suit, this.rank, this.id, this.isRed, {
-      ...this.modifiers,
-      edition,
-    })
+    return this.withModifiers({ edition })
   }
 
   /**
-   * Create a new tile with all modifiers replaced
+   * Create a new tile with a modifier change. A tile holds one modifier, so
+   * setting one replaces the old; clearing one leaves the rest alone.
    */
   withModifiers(modifiers: Partial<TileModifiers>): Tile {
-    return new Tile(this.suit, this.rank, this.id, this.isRed, {
-      ...this.modifiers,
-      ...modifiers,
-    })
+    return new Tile(
+      this.suit,
+      this.rank,
+      this.id,
+      this.isRed,
+      changeModifiers(this.modifiers, modifiers)
+    )
   }
 
   /**
