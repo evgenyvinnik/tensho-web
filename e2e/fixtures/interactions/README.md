@@ -6,8 +6,8 @@ seed-7 setup in `bamboo-summer.spec.ts`, `flower-mutations.spec.ts`, and
 targets to isolate their named interactions. Transport identifiers/timestamps
 are synthetic browser-test metadata.
 
-`echo.json` dates from the `6c8e408` baseline and still restores through the
-saved-run upgrade. `quad.json`, `complete.json` and `mutations.json` were
+`echo.json` was regenerated for the one-modifier rule: its Echo tile now
+carries only its Gold Seal, as the spec's setup builds it. `quad.json`, `complete.json` and `mutations.json` were
 regenerated for the shared Turns budget: a one-tile REDRAW now draws the next
 live-wall tile (the old single discard), `mutations.json` grants four free
 redraws in place of four discards, and each round target sits one point above

@@ -24,8 +24,9 @@ export function ClassicResumeCard() {
   const [busy, setBusy] = useState(false)
   const run = resumableRun(service, disk)
   const table = run ? getTableStyleById(run.tableStyleId) : null
-  // Storage failures still need to be visible before the player starts over.
-  const storageProblem = disk.kind === 'unavailable' || disk.kind === 'invalid'
+  // Storage that cannot be used at all still needs saying before the player
+  // starts. An unreadable run is not shown: New Run, right below, replaces it.
+  const storageProblem = disk.kind === 'unavailable'
   if (!run && !storageProblem) return null
   const resume = async () => {
     setBusy(true)
@@ -85,7 +86,7 @@ export function ClassicResumeCard() {
           </Button>
         </>
       )}
-      <ClassicSaveNotice errorsOnly />
+      <ClassicSaveNotice errorsOnly offerNewRun={false} />
     </section>
   )
 }

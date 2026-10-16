@@ -6,8 +6,8 @@
  * - Seals: Gold, Red, Blue, Purple
  * - Editions: Base, Foil, Holographic, Polychrome, Negative
  *
- * Each tile can have ONE enhancement, ONE seal, and ONE edition.
- * Effects stack multiplicatively where appropriate.
+ * Each tile holds at most ONE modifier: a Mark, a Seal or an Edition.
+ * Applying one replaces whatever the tile carried before.
  */
 
 import { runRandom } from '../game/RunRandom'
@@ -18,7 +18,7 @@ import { runRandom } from '../game/RunRandom'
 
 /**
  * Enhancement types that can be applied to tiles
- * Only ONE enhancement per tile
+ * A tile holds one modifier, so a Mark replaces any Seal or Edition
  */
 export enum EnhancementType {
   None = 'none',
@@ -162,7 +162,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
 
 /**
  * Seal types that can be applied to tiles
- * Only ONE seal per tile, stacks with enhancement
+ * A tile holds one modifier, so a Seal replaces any Mark or Edition
  */
 export enum SealType {
   None = 'none',
@@ -249,7 +249,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
 
 /**
  * Edition types that affect visual appearance and scoring
- * Only ONE edition per tile
+ * A tile holds one modifier, so an Edition replaces any Mark or Seal
  */
 export enum EditionType {
   Base = 'base',
@@ -367,6 +367,33 @@ export function hasModifiers(modifiers: TileModifiers): boolean {
     modifiers.seal !== SealType.None ||
     modifiers.edition !== EditionType.Base
   )
+}
+
+/**
+ * Reduce modifiers to the one a tile may hold, keeping the rarest: Edition,
+ * then Mark, then Seal. Only saves from before the rule carry more than one.
+ */
+export function singleModifier(modifiers: TileModifiers): TileModifiers {
+  const held =
+    Number(modifiers.edition !== EditionType.Base) +
+    Number(modifiers.enhancement !== EnhancementType.None) +
+    Number(modifiers.seal !== SealType.None)
+  if (held <= 1) return modifiers
+  if (modifiers.edition !== EditionType.Base)
+    return { ...DEFAULT_MODIFIERS, edition: modifiers.edition }
+  return { ...DEFAULT_MODIFIERS, enhancement: modifiers.enhancement }
+}
+
+/**
+ * Apply a change to a tile's modifiers. Setting a Mark, Seal or Edition
+ * replaces whatever the tile carried; clearing one leaves the rest alone.
+ */
+export function changeModifiers(
+  current: TileModifiers,
+  change: Partial<TileModifiers>
+): TileModifiers {
+  const added = { ...DEFAULT_MODIFIERS, ...change }
+  return singleModifier(hasModifiers(added) ? added : { ...current, ...change })
 }
 
 /**

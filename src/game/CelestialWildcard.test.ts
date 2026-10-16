@@ -1,7 +1,7 @@
 import { afterEach, expect, it } from 'vitest'
 import { Hand } from '../core/Hand'
 import { Tile, TileSuit, FlowerType } from '../core/Tile'
-import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
+import { SealType } from '../core/TileModifier'
 import { validateHand, findOneAwayCompletion } from '../rules/HandValidator'
 import {
   CELESTIAL_WILDCARD,
@@ -22,10 +22,7 @@ const json = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 const numbered = (suit: TileSuit, ranks: number[], prefix: string) =>
   ranks.map((rank, i) => new Tile(suit, rank, `${prefix}-${i}`))
 const ordinary = () => [
-  new Tile(TileSuit.Manzu, 5, 'wild', true)
-    .withEdition(EditionType.Foil)
-    .withEnhancement(EnhancementType.Bonus)
-    .withSeal(SealType.Red),
+  new Tile(TileSuit.Manzu, 5, 'wild', true).withSeal(SealType.Red),
   ...numbered(
     TileSuit.Pinzu,
     [2, 3, 4, 3, 4, 5, 6, 7, 8, 6, 6, 6, 5],

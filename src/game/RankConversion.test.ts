@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit } from '../core/Tile'
-import { EnhancementType, SealType, EditionType } from '../core/TileModifier'
+import { EditionType } from '../core/TileModifier'
 import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
 import { VoidScriptSystem, VOID_SCRIPTS } from '../systems/VoidScriptSystem'
 import { runRandom } from './RunRandom'
@@ -16,10 +16,9 @@ function fixture(suit = TileSuit.Manzu, rank = 5, red = true) {
   const game = new GameOrchestrator()
   game.startNewRun(7)
   const state = game.getState() as OrchestratorState
-  const source = new Tile(suit, rank, state.handTiles[0].id, red)
-    .withEnhancement(EnhancementType.Bonus)
-    .withSeal(SealType.Red)
-    .withEdition(EditionType.Foil)
+  const source = new Tile(suit, rank, state.handTiles[0].id, red).withEdition(
+    EditionType.Foil
+  )
   for (const key of ['handTiles', 'wallTemplate', 'wall'] as const)
     state[key] = state[key].map((tile) =>
       tile.id === source.id ? source : tile

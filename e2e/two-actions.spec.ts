@@ -97,6 +97,15 @@ for (const language of ['en', 'fr', 'ja'])
       )
     const tile = (id: string) =>
       page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
+    // A picked tile flies onto the felt; its rack slot waits for it.
+    const onFelt = (id: string) =>
+      page.locator(`[data-play-zone="felt"] [data-play-tile="${id}"]`)
+    const anywhere = (id: string) => page.locator(`[data-play-tile="${id}"]`)
+    const picked = async (id: string) => {
+      await expect(onFelt(id)).toHaveAttribute('aria-pressed', 'true')
+      await expect(tile(id)).toHaveCount(0)
+      await expect(page.locator(`[data-rack-slot="${id}"]`)).toHaveCount(1)
+    }
     const play = page.locator('[data-game-action="play"]')
     const redraw = page.locator('[data-game-action="redraw"]')
     const score = page.locator('[data-hand-score]')
@@ -201,7 +210,7 @@ for (const language of ['en', 'fr', 'ja'])
         forecast = value
         break
       }
-      for (const id of candidate) await activate(tile(id))
+      for (const id of candidate) await activate(onFelt(id))
       await expect(score).not.toHaveAttribute(
         'data-hand-score-state',
         'preview'
@@ -214,8 +223,7 @@ for (const language of ['en', 'fr', 'ja'])
     const played = group!
     expect(played.length).toBeGreaterThanOrEqual(2)
     expect(played.length).toBeLessThanOrEqual(6)
-    for (const id of played)
-      await expect(tile(id)).toHaveAttribute('aria-pressed', 'true')
+    for (const id of played) await picked(id)
     await expect(page.locator('[data-hand-score-pattern]')).toHaveText(
       played.length === 2
         ? copy.patterns.pair.name
@@ -239,7 +247,7 @@ for (const language of ['en', 'fr', 'ja'])
     expect(afterPlay.state.score - start.state.score).toBe(forecast)
     expect(afterPlay.state.lastHandScore).toBe(forecast)
     expect(afterPlay.state.redrawsRemaining).toBe(start.state.redrawsRemaining)
-    for (const id of played) await expect(tile(id)).toHaveCount(0)
+    for (const id of played) await expect(anywhere(id)).toHaveCount(0)
     refilledFromWall(start, afterPlay, played)
     await showsRun(afterPlay)
     // The last hand stays on show, at the score it paid.
@@ -250,8 +258,7 @@ for (const language of ['en', 'fr', 'ja'])
     // REDRAW: several tiles at once go to the river for one Turn.
     const sent = ids(afterPlay.state.handTiles.slice(0, 4))
     for (const id of sent) await activate(tile(id))
-    for (const id of sent)
-      await expect(tile(id)).toHaveAttribute('aria-pressed', 'true')
+    for (const id of sent) await picked(id)
     await expect(redraw).toBeEnabled()
     await staged(afterPlay, sent)
     await activate(redraw)
@@ -276,7 +283,7 @@ for (const language of ['en', 'fr', 'ja'])
     )
     // REDRAW never scores.
     expect(afterRedraw.state.score).toBe(afterPlay.state.score)
-    for (const id of sent) await expect(tile(id)).toHaveCount(0)
+    for (const id of sent) await expect(anywhere(id)).toHaveCount(0)
     refilledFromWall(afterPlay, afterRedraw, sent)
     await showsRun(afterRedraw)
     expect(await noOverflow()).toBe(true)

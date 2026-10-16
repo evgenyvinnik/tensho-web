@@ -15,11 +15,12 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { tileDetails, tileIndexHint } from '../../i18n/tileText'
-import { getTileImagePath, getTileBackPath } from '../../utils/assets'
+import { getTileImagePath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { EnhancementType } from '../../core/TileModifier'
+import { TileBack } from './TileBack'
 
 export type TileSize = keyof typeof tileSizes
 
@@ -56,16 +57,6 @@ export interface TileImageProps {
    * image the box is clipping is never fetched and shows as a blank tile.
    */
   loading?: 'lazy' | 'eager'
-}
-
-/**
- * Get the image path for a tile
- */
-function getTileSrc(tile: Tile | null | undefined, faceDown: boolean): string {
-  if (faceDown || !tile) {
-    return getTileBackPath()
-  }
-  return getTileImagePath(tile.suit, tile.rank)
 }
 
 /**
@@ -112,7 +103,6 @@ export const TileImage: React.FC<TileImageProps> = ({
     (showIndex ?? showRankNumbers) && !stoneFace
       ? tileIndexHint(tile, t, faceDown)
       : null
-  const src = getTileSrc(tile, faceDown)
   const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
 
   const handleClick = () => {
@@ -254,9 +244,11 @@ export const TileImage: React.FC<TileImageProps> = ({
           aria-label={t('tileMarks.items.stone.name', 'Stone Mark')}
           className="absolute inset-0 rounded-md bg-stone-600"
         />
+      ) : faceDown || !tile ? (
+        <TileBack label={tileInfo.name} />
       ) : (
         <img
-          src={src}
+          src={getTileImagePath(tile.suit, tile.rank)}
           alt={tileInfo.name}
           className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
           draggable={false}

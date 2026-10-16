@@ -123,12 +123,9 @@ for (const [language, copy] of [
       const storePath = '/src/stores/tableLoopStore.ts'
       const tilePath = '/src/core/Tile.ts'
       const { useTableLoopStore } = await import(storePath)
-      const { EnhancementType, SealType, EditionType } = await import(tilePath)
+      const { SealType } = await import(tilePath)
       const { state } = useTableLoopStore.getState()
-      const modified = state.rack[0]
-        .withEnhancement(EnhancementType.Steel)
-        .withSeal(SealType.Purple)
-        .withEdition(EditionType.Polychrome)
+      const modified = state.rack[0].withSeal(SealType.Purple)
       useTableLoopStore.setState({
         state: { ...state, rack: [modified, ...state.rack.slice(1)] },
       })
@@ -136,12 +133,9 @@ for (const [language, copy] of [
     await page.locator('[data-testid^="rack-tile-"]').first().focus()
     const tooltip = page.getByRole('tooltip')
     await expect(tooltip).toBeVisible()
-    for (const rule of [
-      copy.tileMarks.items.steel.description,
-      copy.archiveSeals.items.purple.description,
-      copy.editions.items.polychrome.description,
-    ])
-      await expect(tooltip).toContainText(rule)
+    await expect(tooltip).toContainText(
+      copy.archiveSeals.items.purple.description
+    )
     const bounds = await tooltip.evaluate((node) => ({
       width: node.clientWidth,
       contentWidth: node.scrollWidth,

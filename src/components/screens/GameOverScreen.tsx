@@ -88,7 +88,7 @@ export function GameOverScreen() {
 
   return (
     <div className="viewport-full relative overflow-x-hidden overflow-y-auto bg-[var(--color-dark-forest)] p-3 safe-area-top safe-area-bottom sm:p-6">
-      <ClassicSaveNotice />
+      <ClassicSaveNotice offerNewRun={false} />
       <div className="pointer-events-none absolute inset-0 opacity-40">
         <TablePattern animated={!reduceMotion} showOrnaments={isFreshVictory} />
       </div>

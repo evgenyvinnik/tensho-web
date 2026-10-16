@@ -19,7 +19,7 @@ for (const language of [
   'th',
   'tl',
 ]) {
-  test(`every physical tile selects and returns in place without spending anything (${language})`, async ({
+  test(`every physical tile flies to the felt and back to its own slot without spending anything (${language})`, async ({
     page,
     baseURL,
     isMobile,
@@ -71,9 +71,7 @@ for (const language of [
       else await tile.click()
     }
     const hand = page.locator('[data-play-zone="hand"] [data-play-tile]')
-    const selected = page.locator(
-      '[data-play-zone="hand"] [data-play-tile][aria-pressed="true"]'
-    )
+    const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
     const ids = before.state.handTiles.map((tile) => tile.id)
     await expect(hand).toHaveCount(ids.length)
     const order = () =>
@@ -87,25 +85,32 @@ for (const language of [
         `[data-play-zone="hand"] [data-play-tile="${id}"]`
       )
       await expect(tile).toHaveCount(1)
-      // A tap selects the tile where it sits; the rack never reorders.
+      // A tap flies the tile onto the felt; its rack slot waits, empty, so
+      // nothing in the rack shifts under the next tap.
       await activate(tile)
-      await expect(tile).toHaveAttribute('aria-pressed', 'true')
-      await expect(selected).toHaveCount(1)
+      const onFelt = page.locator(
+        `[data-play-zone="felt"] [data-play-tile="${id}"]`
+      )
+      await expect(onFelt).toHaveAttribute('aria-pressed', 'true')
+      await expect(felt).toHaveCount(1)
+      await expect(tile).toHaveCount(0)
+      await expect(page.locator(`[data-rack-slot="${id}"]`)).toHaveCount(1)
       await expect(page.locator('[data-game-action="play"]')).toBeInViewport({
         ratio: 1,
       })
       if (index === 0)
         await page.screenshot({
-          path: info.outputPath('selected-in-place.png'),
+          path: info.outputPath('tile-on-the-felt.png'),
         })
-      await activate(tile)
+      // A tap on the felt flies it back.
+      await activate(onFelt)
       await expect(tile).toHaveAttribute('aria-pressed', 'false')
-      await expect(selected).toHaveCount(0)
+      await expect(felt).toHaveCount(0)
       await expect(hand).toHaveCount(ids.length)
     }
     await expect(hand).toHaveCount(ids.length)
     expect(await order()).toEqual(shown)
-    // None of these select/return gestures plays, redraws or pays.
+    // The rack is back in its order, and no flight played, redrew or paid.
     expect(JSON.parse(await raw()).snapshot).toEqual(before)
     expect(
       await page.evaluate(
