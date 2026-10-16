@@ -347,6 +347,26 @@ describe('MetaProgressionBridge', () => {
     expect(achievements.runsWon).toBe(0)
   })
 
+  it('counts a swift clear as a skipped round without breaking the max-interest streak', () => {
+    useProgressionStore.getState().updateStats({
+      currentMaxInterestRounds: 4,
+      maxConsecutiveInterestRounds: 4,
+    })
+    // The order a won round emits: its Omen, the round, then its interest.
+    eventBus.emit('omenEarned', { roundType: 'Small' })
+    expect(useProgressionStore.getState().stats).toMatchObject({
+      totalRoundsSkipped: 1,
+      currentMaxInterestRounds: 4,
+    })
+    eventBus.emit('roundEnd', { won: true, score: 500, target: 300 })
+    eventBus.emit('interestSettled', { amount: 5, cap: 5, goldHeld: 25 })
+    expect(useProgressionStore.getState().stats).toMatchObject({
+      totalRoundsSkipped: 1,
+      currentMaxInterestRounds: 5,
+      maxConsecutiveInterestRounds: 5,
+    })
+  })
+
   it('records the default wall and starter Decrees after run initialization', () => {
     // Re-initialization must be idempotent and must not duplicate event listeners.
     initializeMetaProgressionBridge()

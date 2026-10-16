@@ -470,7 +470,8 @@ export function initializeMetaProgressionBridge(): () => void {
   })
 
   subscription.subscribe('omenEarned', ({ omenTagGranted }) => {
-    // A swift clear takes the place of a skipped round in lifetime stats.
+    // A swift clear takes the place of a skipped round in lifetime stats. It
+    // still wins and pays interest, so it keeps the max-interest streak.
     processProgressionEvent({ type: 'round_skipped' })
     if (omenTagGranted)
       recordArchiveItem('omens', omenTagGranted, 'swift_clear')

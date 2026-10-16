@@ -912,7 +912,8 @@ export function processProgressionEvent(
       break
 
     case 'round_skipped':
-      updates.currentMaxInterestRounds = 0
+      // Only swift clears count here now. They win the round and pay
+      // interest, so interest_collected alone decides the max-interest streak.
       updates.totalRoundsSkipped = stats.totalRoundsSkipped + 1
       break
 

@@ -42,7 +42,11 @@ function start(seed = 7) {
   return { game, state }
 }
 
-function win(game: GameOrchestrator, gold: number) {
+function win(
+  game: GameOrchestrator,
+  gold: number,
+  { spareTurns = 0 }: { spareTurns?: number } = {}
+) {
   const state = game.getState() as OrchestratorState
   state.seasonSystem.clear()
   state.flowerSystem.clear()
@@ -53,8 +57,9 @@ function win(game: GameOrchestrator, gold: number) {
   state.gold = gold
   state.targetScore = 1
   state.roundManager.getCurrentRound()!.scoreTarget = 1
-  // Cleared on the last Turn, so no swift-clear Omen changes the interest.
-  state.handsRemaining = 1
+  // Cleared on the last Turn by default, so no swift-clear Omen changes the
+  // interest. The play spends one Turn, leaving `spareTurns`.
+  state.handsRemaining = spareTurns + 1
   state.handTiles = [
     new Tile(TileSuit.Pinzu, 2, 'interest-a'),
     new Tile(TileSuit.Pinzu, 2, 'interest-b'),
@@ -141,6 +146,34 @@ it('unlocks Money Tree and its Archive entry on the tenth actual capped payout',
   expect(
     useProgressionStore.getState().stats.maxConsecutiveInterestRounds
   ).toBe(10)
+  expect(useProgressionStore.getState().isItemUnlocked('money_tree')).toBe(true)
+})
+
+it('a swift clear at maximum interest keeps and extends the streak', () => {
+  const { game, state } = start()
+  win(game, 100)
+  expect(useProgressionStore.getState().stats.currentMaxInterestRounds).toBe(1)
+  win(game, 100, { spareTurns: SWIFT_CLEAR_SPARE_TURNS })
+  expect(state.lastRoundSummary!.omenId).not.toBeNull()
+  const stats = useProgressionStore.getState().stats
+  expect(stats.totalRoundsSkipped).toBe(1)
+  expect(stats.currentMaxInterestRounds).toBe(2)
+  expect(stats.maxConsecutiveInterestRounds).toBe(2)
+})
+
+it('swift clears can build the ten-round Money Tree streak', () => {
+  const { game } = start()
+  expect(
+    game.addImperialCharter(
+      TEA_HOUSE_BASE_CHARTERS.find((charter) => charter.id === 'seed_pouch')!
+    )
+  ).toBe(true)
+  for (let round = 0; round < 10; round++)
+    win(game, 100, { spareTurns: SWIFT_CLEAR_SPARE_TURNS })
+  const stats = useProgressionStore.getState().stats
+  // Small, Large, Boss three times, then Small: Boss rounds earn no Omen.
+  expect(stats.totalRoundsSkipped).toBe(7)
+  expect(stats.currentMaxInterestRounds).toBe(10)
   expect(useProgressionStore.getState().isItemUnlocked('money_tree')).toBe(true)
 })
 
