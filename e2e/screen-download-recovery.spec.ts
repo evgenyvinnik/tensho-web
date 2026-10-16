@@ -1,10 +1,16 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 
-test.skip(process.env.TEST_PRODUCTION !== '1', 'Requires emitted screen chunks')
+test.skip(
+  process.env.TEST_PRODUCTION !== '1',
+  'Requires the emitted routed-screens chunk'
+)
 test.use({ serviceWorkers: 'block' })
-const chunk = /\/CodexScreen-[^/]+\.js(?:\?|$)/
-const saveKey = 'tensho-table-loop-v1'
+// Every routed screen ships in this one chunk (see routedScreens.ts), so a
+// document downloads it at most once: only its first screen can fail.
+const chunk = /\/routedScreens-[^/]+\.js(?:\?|$)/
+const saveKey = 'tensho-classic-run-v1'
+const replay = readFileSync('e2e/fixtures/interactions/quad.json', 'utf8')
 
 for (const language of ['en', 'es']) {
   for (const failure of ['once', 'persistent', 'redirected', 'save-blocked']) {
@@ -13,16 +19,57 @@ for (const language of ['en', 'es']) {
       isMobile,
       baseURL,
     }, info) => {
+      test.setTimeout(60_000)
       const copy = JSON.parse(
         readFileSync(`src/i18n/locales/${language}.json`, 'utf8')
       )
       const root = `${baseURL!.replace(/\/$/, '')}/${language}`
+      const blocked = failure === 'save-blocked'
       await page.setViewportSize(
         isMobile ? { width: 320, height: 568 } : { width: 1280, height: 800 }
       )
       await page.emulateMedia({ reducedMotion: 'reduce' })
+      await page.addInitScript(
+        ({ key, replay, blocked }) => {
+          localStorage.setItem('tensho_hints_disabled', 'true')
+          if (!blocked) {
+            if (!localStorage.getItem(key)) localStorage.setItem(key, replay)
+            return
+          }
+          // The tab cannot save its run until the test restores storage.
+          if (sessionStorage.getItem('download-test:restored')) return
+          const original = Storage.prototype.setItem
+          Object.assign(window, {
+            restoreDownloadTestStorage: () => {
+              Storage.prototype.setItem = original
+              sessionStorage.setItem('download-test:restored', 'true')
+            },
+          })
+          Storage.prototype.setItem = function (name, value) {
+            if (name === key)
+              throw new DOMException('Test quota failure', 'QuotaExceededError')
+            return original.call(this, name, value)
+          }
+        },
+        { key: saveKey, replay, blocked }
+      )
       const activate = (locator: Locator) =>
         isMobile ? locator.tap() : locator.click()
+      const table = page.locator('[data-game-action="play"]')
+      const savedStatus = page.locator('[data-classic-save-status="saved"]')
+      const save = () =>
+        page.evaluate((key) => localStorage.getItem(key), saveKey)
+
+      // A Classic run in progress, as this release stores the replayed save.
+      // With storage blocked there is none: opening the table starts a run
+      // that this tab cannot save.
+      let before: { snapshot: unknown } | null = null
+      if (!blocked) {
+        await page.goto(`${root}/play`)
+        await expect(savedStatus).toBeVisible()
+        before = JSON.parse((await save())!)
+      }
+
       let documents = 0,
         attempts = 0
       const documentRequests: { url: string; redirectedFrom: string | null }[] =
@@ -39,48 +86,13 @@ for (const language of ['en', 'es']) {
       page.on('requestfailed', (request) =>
         failedRequests.push(`${request.url()}: ${request.failure()?.errorText}`)
       )
-      await page.goto(`${root}/table-loop?seed=7`)
-      await activate(page.locator('[data-testid^="table-decree-"]').first())
-      await expect(page.getByTestId('table-loop-rack')).toBeVisible()
-      const before = await page.evaluate(
-        (key) => localStorage.getItem(key),
-        saveKey
-      )
-      expect(JSON.parse(before!).actions).toHaveLength(1)
-
-      if (failure === 'save-blocked') {
-        await page.evaluate((key) => {
-          const original = Storage.prototype.setItem
-          Object.assign(window, {
-            restoreDownloadTestStorage: () => {
-              Storage.prototype.setItem = original
-            },
-          })
-          Storage.prototype.setItem = function (name, value) {
-            if (name === key)
-              throw new DOMException('Test quota failure', 'QuotaExceededError')
-            return original.call(this, name, value)
-          }
-        }, saveKey)
-        await activate(page.locator('[data-testid^="rack-tile-"]').first())
-        await activate(page.getByTestId('table-loop-exchange'))
-        expect(
-          await page.evaluate((key) => localStorage.getItem(key), saveKey)
-        ).toBe(before)
-      }
-
-      // Stay in the same document so already-loaded modes retain their real
-      // save guards; this is not a synthetic prepareForReload replacement.
-      await activate(
-        page.getByRole('button', { name: copy.common.mainMenu, exact: true })
-      )
-      await expect(
-        page.getByRole('heading', { name: 'TENSHO', exact: true })
-      ).toBeVisible()
       if (failure === 'redirected') {
-        // Reproduce Pages' canonical redirect even on the local preview server.
+        // Reproduce Pages' canonical redirect even on the local preview server:
+        // the recovery reload of the extensionless URL lands on its slash form.
+        let codexDocuments = 0
         await page.route(`${root}/codex`, async (route) => {
-          if (!route.request().isNavigationRequest()) return route.continue()
+          if (!route.request().isNavigationRequest() || codexDocuments++ === 0)
+            return route.continue()
           await route.fulfill({
             status: 301,
             headers: { location: `${root}/codex/` },
@@ -93,38 +105,43 @@ for (const language of ['en', 'es']) {
         if (failure === 'once' && attempts > 1) await route.continue()
         else await route.abort('failed')
       })
-      await activate(page.getByRole('button', { name: /Codex|Códice/ }))
+      const codex = failure === 'redirected'
+      const screen = codex
+        ? page.getByRole('heading', { name: /Codex|Códice/, level: 1 })
+        : table
+      await page.goto(`${root}/${codex ? 'codex' : 'play'}`)
+
       if (failure === 'once') {
-        await expect(
-          page.getByRole('heading', { name: /Codex|Códice/, level: 1 })
-        ).toBeVisible()
+        // One automatic save-and-reload fetches the chunk again.
+        await expect(screen).toBeVisible()
         expect(attempts).toBe(2)
         expect(documents).toBe(2)
       } else {
         const fallback = page.locator('[data-screen-download-error]')
+        const retry = fallback.getByRole('button', {
+          name: copy.screenDownload.retry,
+          exact: true,
+        })
         await expect(fallback).toBeVisible()
         await expect(fallback.getByRole('heading')).toHaveText(
           copy.screenDownload.title
         )
-        expect(attempts).toBe(failure === 'save-blocked' ? 1 : 2)
-        expect(documents).toBe(failure === 'save-blocked' ? 1 : 2)
-        expect(
-          await page.evaluate((key) => localStorage.getItem(key), saveKey)
-        ).toBe(before)
-        if (failure === 'save-blocked') {
+        // A run that cannot be saved is never reloaded away.
+        expect(attempts).toBe(blocked ? 1 : 2)
+        expect(documents).toBe(blocked ? 1 : 2)
+        if (blocked) {
           await expect(fallback.getByRole('status')).toHaveText(
             copy.screenDownload.saveFailed
           )
-          await activate(
-            fallback.getByRole('button', {
-              name: copy.screenDownload.retry,
-              exact: true,
-            })
-          )
+          await activate(retry)
           await expect(fallback.getByRole('status')).toHaveText(
             copy.screenDownload.saveFailed
           )
           expect(documents).toBe(1)
+          expect(await save()).toBeNull()
+        } else {
+          await expect(fallback.getByRole('status')).toHaveText('')
+          expect(JSON.parse((await save())!).snapshot).toEqual(before!.snapshot)
         }
         expect(
           await page.evaluate(
@@ -136,41 +153,34 @@ for (const language of ['en', 'es']) {
           fullPage: true,
         })
         await page.unroute(chunk)
-        if (failure === 'save-blocked')
+        if (blocked)
           await page.evaluate(() =>
             (
               window as unknown as { restoreDownloadTestStorage: () => void }
             ).restoreDownloadTestStorage()
           )
-        await activate(
-          fallback.getByRole('button', {
-            name: copy.screenDownload.retry,
-            exact: true,
-          })
-        )
-        await expect(
-          page.getByRole('heading', { name: /Codex|Códice/, level: 1 })
-        ).toBeVisible()
+        await activate(retry)
+        await expect(screen).toBeVisible()
       }
-      const after = await page.evaluate(
-        (key) => localStorage.getItem(key),
-        saveKey
-      )
-      if (failure === 'save-blocked')
-        expect(JSON.parse(after!).actions).toHaveLength(2)
-      else expect(after).toBe(before)
-      await page.goto(`${root}/table-loop?seed=7`)
-      await expect(page.getByTestId('table-loop-rack')).toBeVisible()
-      expect(
-        await page.evaluate((key) => localStorage.getItem(key), saveKey)
-      ).toBe(after)
+
+      if (codex) await page.goto(`${root}/play`)
+      await expect(table).toBeVisible()
+      await expect(savedStatus).toBeVisible()
+      const after = JSON.parse((await save())!)
+      if (blocked) {
+        // Saved by the tab that started it, before its reload, rather than
+        // replaced by a new run once the table could load.
+        expect(after.createdAt).toBeLessThan(
+          await page.evaluate(() => performance.timeOrigin)
+        )
+      } else expect(after.snapshot).toEqual(before!.snapshot)
       await info.attach('download-recovery', {
         body: JSON.stringify({
           attempts,
           documents,
           documentRequests,
           failedRequests,
-          actions: JSON.parse(after!).actions.length,
+          revision: after.revision,
         }),
         contentType: 'application/json',
       })

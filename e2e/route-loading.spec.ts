@@ -1,6 +1,7 @@
 import { test, expect, type Page, type TestInfo } from '@playwright/test'
-import en from '../src/i18n/locales/en.json' with { type: 'json' }
+import { readFileSync } from 'node:fs'
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { settleReveals } from './helpers/table'
 
 // These checks inspect emitted chunks and a real installed service worker.
 // The ordinary development server cannot establish either production property.
@@ -9,8 +10,22 @@ test.skip(
   'Requires a built production preview'
 )
 
-const chunk = (screen: string) => new RegExp(`/${screen}-[^/]+\\.js(?:\\?|$)`)
-const saveKey = 'tensho-table-loop-v1'
+// Every routed screen ships in this one lazily loaded chunk: opening a screen
+// streams one script, never a burst (see routedScreens.ts).
+const chunk = /\/routedScreens-[^/]+\.js(?:\?|$)/
+const saveKey = 'tensho-classic-run-v1'
+const replay = readFileSync('e2e/fixtures/interactions/quad.json', 'utf8')
+const file = (url: string) => new URL(url).pathname.split('/').at(-1)
+
+/** A Classic run in progress, restored from a captured replay. */
+async function seedRun(page: Page) {
+  await page.addInitScript(
+    ({ key, replay }) => {
+      if (!localStorage.getItem(key)) localStorage.setItem(key, replay)
+    },
+    { key: saveKey, replay }
+  )
+}
 
 async function recordScriptBytes(page: Page, testInfo: TestInfo, name: string) {
   const resources = await page.evaluate(() =>
@@ -34,7 +49,7 @@ test.describe('on-demand route code', () => {
   // scripts requested/evaluated by the current page.
   test.use({ serviceWorkers: 'block' })
 
-  test('loads only the visited screens and navigates without a document reload', async ({
+  test('runs the entry without screen code, then serves every screen from one download', async ({
     page,
   }, testInfo) => {
     const scripts: string[] = []
@@ -43,70 +58,81 @@ test.describe('on-demand route code', () => {
       if (request.resourceType() === 'script') scripts.push(request.url())
       if (request.resourceType() === 'document') documents++
     })
-    await page.goto('en/')
-    await expect(
-      page.getByRole('heading', { name: 'TENSHO', exact: true })
-    ).toBeVisible()
-    expect(scripts.some((url) => chunk('MenuScreen').test(url))).toBe(true)
-    await recordScriptBytes(page, testInfo, 'menu-script-bytes')
-    for (const name of [
-      'GameplayScreen',
-      'TableLoopScreen',
-      'ShopScreen',
-      'GameOverScreen',
-      'AchievementsScreen',
-      'CodexScreen',
-      'CollectionScreen',
-      'SettingsScreen',
-    ]) {
-      expect(
-        scripts.some((url) => chunk(name).test(url)),
-        name
-      ).toBe(false)
+    const html = await (await page.request.get('en/')).text()
+    expect(html).not.toMatch(/routedScreens/)
+    let release!: () => void
+    const held = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    await page.route(chunk, async (route) => {
+      await held
+      await route.continue()
+    })
+    try {
+      await page.goto('en/', { waitUntil: 'commit' })
+      // The entry runs and renders on its own; the screens follow on demand.
+      await expect(page.getByTestId('route-loading')).toBeVisible()
+      expect(scripts.map(file)).toEqual([
+        expect.stringMatching(/^index-[\w-]+\.js$/),
+        expect.stringMatching(/^routedScreens-[\w-]+\.js$/),
+      ])
+    } finally {
+      release()
     }
-    await page.getByRole('button', { name: /Codex/ }).click()
-    await expect(
-      page.getByRole('heading', { name: /Codex/, level: 1 })
-    ).toBeVisible()
-    expect(scripts.some((url) => chunk('CodexScreen').test(url))).toBe(true)
-    expect(scripts.some((url) => chunk('TableLoopScreen').test(url))).toBe(
-      false
-    )
-    await page.goBack()
-    await page
-      .getByRole('button', { name: 'Table Loop Mode', exact: true })
-      .click()
-    await expect(
-      page.getByRole('heading', { name: en.tableLoop.start.title })
-    ).toBeVisible()
-    expect(scripts.some((url) => chunk('TableLoopScreen').test(url))).toBe(true)
+    const menu = page.getByRole('heading', { name: 'TENSHO', exact: true })
+    await expect(menu).toBeVisible()
+    await recordScriptBytes(page, testInfo, 'menu-script-bytes')
+    for (const [button, heading] of [
+      ['Codex', /Codex/],
+      ['Collection', /Collection|Archive of Hands/],
+      ['Achievements', /Accolades/],
+      ['Settings', /Settings/],
+    ] as const) {
+      await page.getByRole('button', { name: button, exact: true }).click()
+      await expect(
+        page.getByRole('heading', { name: heading, level: 1 })
+      ).toBeVisible()
+      await page.goBack()
+      await expect(menu).toBeVisible()
+    }
+    await page.getByRole('button', { name: 'New Run', exact: true }).click()
+    await expect(page).toHaveURL(/\/en\/play$/)
+    await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+    await settleReveals(page, 2_000)
+    // Five screens and a new run: still the entry and that one download.
+    expect(scripts).toHaveLength(2)
     expect(documents).toBe(1)
   })
 
-  test('opens Table Loop without downloading the menu or Classic screens', async ({
+  test("opens a run's table by deep link from the same single download", async ({
     page,
   }, testInfo) => {
+    await seedRun(page)
     const scripts: string[] = []
+    let documents = 0
     page.on('request', (request) => {
       if (request.resourceType() === 'script') scripts.push(request.url())
+      if (request.resourceType() === 'document') documents++
     })
-    await page.goto('en/table-loop?seed=7')
+    await page.goto('en/play')
     await expect(
-      page.getByRole('heading', { name: en.tableLoop.start.title })
+      page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()
-    expect(scripts.some((url) => chunk('TableLoopScreen').test(url))).toBe(true)
-    for (const name of [
-      'MenuScreen',
-      'GameplayScreen',
-      'ShopScreen',
-      'CodexScreen',
-    ]) {
-      expect(
-        scripts.some((url) => chunk(name).test(url)),
-        name
-      ).toBe(false)
-    }
-    await recordScriptBytes(page, testInfo, 'table-loop-script-bytes')
+    expect(scripts.filter((url) => chunk.test(url))).toHaveLength(1)
+    await recordScriptBytes(page, testInfo, 'table-script-bytes')
+    await page.getByRole('button', { name: 'Exit', exact: true }).click()
+    await page
+      .getByRole('button', { name: 'Save and leave', exact: true })
+      .click()
+    await expect(
+      page.getByRole('heading', { name: 'TENSHO', exact: true })
+    ).toBeVisible()
+    await page.getByRole('button', { name: 'Codex', exact: true }).click()
+    await expect(
+      page.getByRole('heading', { name: /Codex/, level: 1 })
+    ).toBeVisible()
+    expect(scripts).toHaveLength(2)
+    expect(documents).toBe(1)
   })
 
   test('shows localized, motion-safe feedback while a direct route is loading', async ({
@@ -118,12 +144,12 @@ test.describe('on-demand route code', () => {
     const held = new Promise<void>((resolve) => {
       release = resolve
     })
-    await page.route(chunk('TableLoopScreen'), async (route) => {
+    await page.route(chunk, async (route) => {
       await held
       await route.continue()
     })
     try {
-      await page.goto('es/table-loop?seed=7', { waitUntil: 'commit' })
+      await page.goto('es/codex', { waitUntil: 'commit' })
       const status = page.getByTestId('route-loading')
       await expect(status).toBeVisible()
       await expect(status).toHaveText(es.common.loading)
@@ -140,55 +166,20 @@ test.describe('on-demand route code', () => {
       release()
     }
     await expect(
-      page.getByRole('heading', { name: es.tableLoop.start.title })
+      page.getByRole('heading', { name: es.codex.title, level: 1 })
     ).toBeVisible()
     await expect(page.getByTestId('route-loading')).toHaveCount(0)
   })
-
-  test('recovers from a failed chunk without deleting the saved run', async ({
-    page,
-  }) => {
-    await page.goto('en/table-loop?seed=7')
-    await page.locator('[data-testid^="table-decree-"]').first().click()
-    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(12)
-    const saved = await page.evaluate(
-      (key) => localStorage.getItem(key),
-      saveKey
-    )
-    expect(JSON.parse(saved!).actions).toHaveLength(1)
-    await page.route(chunk('CodexScreen'), (route) => route.abort('failed'))
-    await page.goto('en/codex')
-    await expect(
-      page.getByRole('heading', { name: en.screenDownload.title })
-    ).toBeVisible()
-    expect(
-      await page.evaluate((key) => localStorage.getItem(key), saveKey)
-    ).toBe(saved)
-    await page.unroute(chunk('CodexScreen'))
-    await page
-      .getByRole('button', { name: en.screenDownload.retry, exact: true })
-      .click()
-    await expect(
-      page.getByRole('heading', { name: /Codex/, level: 1 })
-    ).toBeVisible()
-    expect(
-      await page.evaluate((key) => localStorage.getItem(key), saveKey)
-    ).toBe(saved)
-    await page.goto('en/table-loop?seed=7')
-    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(12)
-    expect(
-      await page.evaluate((key) => localStorage.getItem(key), saveKey)
-    ).toBe(saved)
-  })
 })
 
-test('loads previously unvisited screens, scroll art and guides offline after installation', async ({
+test('opens unvisited screens, tile art, a saved run and guides offline after installation', async ({
   page,
   context,
 }) => {
   // Installing the complete illustrated/audio offline bundle is intentional;
   // this is not a startup-speed benchmark or a worker-upgrade test.
   test.setTimeout(90_000)
+  await seedRun(page)
   await page.goto('en/')
   await expect(
     page.getByRole('heading', { name: 'TENSHO', exact: true })
@@ -219,18 +210,13 @@ test('loads previously unvisited screens, scroll art and guides offline after in
     await expect(
       page.getByRole('heading', { name: /Codex/, level: 1 })
     ).toBeVisible()
-    expect(workerAssets.some((url) => chunk('CodexScreen').test(url))).toBe(
-      true
-    )
-    await page.goto('en/table-loop?seed=7')
+    expect(workerAssets.some((url) => chunk.test(url))).toBe(true)
+    await page.goto('en/play')
     await expect(
-      page.getByRole('heading', { name: en.tableLoop.start.title })
+      page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()
-    expect(workerAssets.some((url) => chunk('TableLoopScreen').test(url))).toBe(
-      true
-    )
-    const art = page.locator('img[src*="illustrations/table-loop/"]')
-    await expect(art).toHaveCount(3)
+    const art = page.locator('[data-play-zone="hand"] img')
+    await expect(art.first()).toBeVisible()
     await expect
       .poll(() =>
         art.evaluateAll((images) =>
@@ -242,22 +228,35 @@ test('loads previously unvisited screens, scroll art and guides offline after in
         )
       )
       .toBe(true)
-    expect(
-      workerAssets.filter((url) =>
-        /illustrations\/table-loop\/.*\.png/.test(url)
-      ).length
-    ).toBeGreaterThanOrEqual(3)
-    await page.locator('[data-testid^="table-decree-"]').first().click()
-    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(12)
-    const saved = await page.evaluate(
-      (key) => localStorage.getItem(key),
-      saveKey
+    expect(workerAssets.some((url) => /\/tiles\/[^/]+\.png$/.test(url))).toBe(
+      true
     )
+    // Play offline: a one-tile REDRAW sends it to the river for one Turn.
+    const tile = page.locator('[data-play-zone="hand"] [data-play-tile]').last()
+    const id = (await tile.getAttribute('data-play-tile'))!
+    const redrawn = () =>
+      page.evaluate(
+        ({ key, id }) => {
+          type Tile = { id: string }
+          const { state } = JSON.parse(localStorage.getItem(key)!).snapshot
+          return {
+            inHand: state.handTiles.some((tile: Tile) => tile.id === id),
+            inRiver: state.discards.some((tile: Tile) => tile.id === id),
+            turns: state.handsRemaining as number,
+          }
+        },
+        { key: saveKey, id }
+      )
+    const { turns } = await redrawn()
+    await tile.click()
+    await page.locator('[data-game-action="redraw"]').click()
+    const played = { inHand: false, inRiver: true, turns: turns - 1 }
+    await expect.poll(redrawn).toEqual(played)
     await page.reload()
-    await expect(page.locator('[data-testid^="rack-tile-"]')).toHaveCount(12)
-    expect(
-      await page.evaluate((key) => localStorage.getItem(key), saveKey)
-    ).toBe(saved)
+    await expect(
+      page.locator('[data-classic-save-status="saved"]')
+    ).toBeVisible()
+    expect(await redrawn()).toEqual(played)
     await page.goto('about/')
     await expect(
       page.getByRole('heading', { name: 'About Tensho: a Mahjong roguelike' })
