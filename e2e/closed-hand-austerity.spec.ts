@@ -150,8 +150,9 @@ for (const language of ['en', 'es', 'ru'])
     await activate(scroll)
     const dialog = page.getByRole('dialog')
     await expect(dialog).toContainText(copy.closedHandAusterity.description)
+    // ×2.16 reads ×2.2, like every multiplier on screen.
     await expect(dialog.locator('[data-austerity-details]')).toContainText(
-      (2.16).toLocaleString(language)
+      (2.2).toLocaleString(language)
     )
     const box = await dialog.boundingBox()
     expect(box!.x).toBeGreaterThanOrEqual(0)

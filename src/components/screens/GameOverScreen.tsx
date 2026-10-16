@@ -17,6 +17,7 @@ import { startConfiguredClassicRun } from '../../game/classicPersistenceApp'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { illustrationAssets } from '../../utils/assets'
 import { ResultRoundDetails } from './ResultRoundDetails'
+import { scoreNumber } from '../../utils/scoreNumber'
 
 const AnimatedMain = animated('main')
 
@@ -35,6 +36,7 @@ export function GameOverScreen() {
     hasEnteredEndless,
     continueEndless,
   } = useGameController()
+  const finalScore = scoreNumber(runScore, i18n.resolvedLanguage)
   const reduceMotion = useReducedMotion()
   const { service, disk } = useClassicPersistence()
   const [starting, setStarting] = useState(false)
@@ -154,9 +156,11 @@ export function GameOverScreen() {
               </p>
               <p
                 data-result-score
+                title={finalScore.exact}
+                aria-label={finalScore.exact}
                 className="mt-1 break-all text-2xl font-black tabular-nums text-[var(--color-golden-yellow)] sm:text-3xl"
               >
-                {runScore.toLocaleString(i18n.resolvedLanguage)}
+                {finalScore.display}
               </p>
             </div>
           </div>

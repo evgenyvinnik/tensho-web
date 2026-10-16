@@ -11,8 +11,11 @@
 
 import { useTranslation } from 'react-i18next'
 import type { PlayPatternId } from '../../rules/PlayPattern'
-import { scoreRounding } from '../../rules/ScoreEquation'
-import { scoreNumber } from '../../utils/scoreNumber'
+import {
+  scoreMultiplier,
+  scoreNumber,
+  shownRounding,
+} from '../../utils/scoreNumber'
 import { DoomFire } from '../effects/DoomFire'
 
 export interface HandScoreValue {
@@ -48,18 +51,11 @@ export function HandScorePreview({
   const language = i18n.resolvedLanguage ?? i18n.language
   const shown = preview ?? lastPlay
   const isLast = !preview && !!lastPlay
-  // Up to three trimmed decimals: ×2.2, ×0.975 — enough to multiply out.
-  const multText = (value: number) => scoreNumber(value, language).exact
   // The engine pays floor(points × Mult) + adjustment. When the product has a
   // fraction, an arrow and a note show where it went, so the numbers add up.
   const rounding =
-    !hidden && shown ? scoreRounding(shown.points, shown.mult) : null
-  const roundingNote = rounding?.roundedDown
-    ? t('scoring.roundedDown', {
-        product: scoreNumber(rounding.product, language).exact,
-        rounded: scoreNumber(rounding.rounded, language).exact,
-      })
-    : undefined
+    !hidden && shown ? shownRounding(shown.points, shown.mult, language) : null
+  const roundingNote = rounding ? t('scoring.roundedDown', rounding) : undefined
   const adjustment = !hidden && shown ? (shown.adjustment ?? 0) : 0
   const label = hidden
     ? t('gameplay.handScore', 'Hand score')
@@ -121,7 +117,9 @@ export function HandScorePreview({
           data-hand-score-mult
           className="min-w-[2.5rem] rounded-md bg-red-700/85 px-2 py-0.5 text-white shadow"
         >
-          {!hidden && shown ? multText(shown.mult) : '—'}
+          {!hidden && shown
+            ? scoreMultiplier(shown.mult, language).display
+            : '—'}
         </span>
         {adjustment !== 0 && (
           <span
@@ -138,7 +136,7 @@ export function HandScorePreview({
           title={roundingNote}
           className="text-[var(--color-beige-white)]/70"
         >
-          <span aria-hidden="true">{rounding?.roundedDown ? '→' : '='}</span>
+          <span aria-hidden="true">{rounding ? '→' : '='}</span>
           {roundingNote && <span className="sr-only">{roundingNote}</span>}
         </span>
         <span

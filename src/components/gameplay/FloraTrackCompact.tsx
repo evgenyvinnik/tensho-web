@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { scoreMultiplier } from '../../utils/scoreNumber'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
 import type { FlowerVariant, SeasonTile } from '../../systems/types'
 import { TileSuit } from '../../core/Tile'
@@ -257,10 +258,10 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                     {awakened && (
                       <p data-flora-mutation={flower} className="mt-2 text-sm">
                         {t('flora.mutations.' + flower.toLowerCase(), {
-                          factor: (
-                            1 +
-                            0.2 * flora.flowers.totalEffectiveness
-                          ).toLocaleString(i18n.language),
+                          factor: scoreMultiplier(
+                            1 + 0.2 * flora.flowers.totalEffectiveness,
+                            i18n.language
+                          ).display,
                         })}
                       </p>
                     )}

@@ -53,7 +53,7 @@ it.each(SUPPORTED_LANGUAGES)(
 )
 
 it.each([true, false])(
-  'localizes forecast and settled multipliers without losing zeros (reduced motion=%s)',
+  'localizes forecast and settled multipliers to one decimal (reduced motion=%s)',
   async (reducedMotion) => {
     await loadLanguage('es')
     await i18n.changeLanguage('es')
@@ -73,9 +73,9 @@ it.each([true, false])(
     await waitFor(
       () => {
         expect(container.querySelector('[data-score-mult]')).toHaveTextContent(
-          /^2,60$/
+          /^2,6$/
         )
-        // Rounding can show 2.60 while the total is still 584.x. Wait for
+        // Rounding can show 2.6 while the total is still 584.x. Wait for
         // both counters before testing that a language change preserves them.
         expect(
           container.querySelector('[data-score-result]')
@@ -85,7 +85,7 @@ it.each([true, false])(
     )
     expect(
       container.querySelectorAll('.game-play-area strong')[1]
-    ).toHaveTextContent(/^2,60$/)
+    ).toHaveTextContent(/^2,6$/)
     expect(container.querySelector('[data-score-mult]')).toHaveAttribute(
       'title',
       '2,6'
@@ -94,11 +94,11 @@ it.each([true, false])(
       await i18n.changeLanguage('en')
     })
     expect(container.querySelector('[data-score-mult]')).toHaveTextContent(
-      /^2\.60$/
+      /^2\.6$/
     )
     expect(
       container.querySelectorAll('.game-play-area strong')[1]
-    ).toHaveTextContent(/^2\.60$/)
+    ).toHaveTextContent(/^2\.6$/)
     expect(container.querySelector('[data-score-result]')).toHaveTextContent(
       /^585$/
     )

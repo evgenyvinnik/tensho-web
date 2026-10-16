@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { scoreMultiplier } from '../../utils/scoreNumber'
 import { austerityMultiplier } from '../../systems/austerity'
 
 export function AusterityDetails({ count }: { count: number }) {
@@ -10,10 +11,8 @@ export function AusterityDetails({ count }: { count: number }) {
     >
       {t('closedHandAusterity.progress', {
         count,
-        factor: austerityMultiplier(count).toLocaleString(
-          i18n.language,
-          { maximumFractionDigits: 3 }
-        ),
+        factor: scoreMultiplier(austerityMultiplier(count), i18n.language)
+          .display,
       })}
     </p>
   )

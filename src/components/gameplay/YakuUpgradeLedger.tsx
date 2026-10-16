@@ -8,6 +8,7 @@ import {
 } from '../../systems/CelestialOrbSystem'
 import { illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
+import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
 
 const YAKU_KEYS: Record<YakuCategory, string> = {
   Pairs: 'pairs',
@@ -107,8 +108,10 @@ export function YakuUpgradeLedger({
                   </p>
                   <p className="mt-2 text-emerald-200">
                     {t('yakuUpgrades.bonus', {
-                      chips: number(upgrade.chips),
-                      mult: number(upgrade.mult),
+                      chips: scoreNumber(upgrade.chips, i18n.resolvedLanguage)
+                        .display,
+                      mult: scoreMultiplier(upgrade.mult, i18n.resolvedLanguage)
+                        .display,
                     })}
                   </p>
                   <p className="mt-1 text-xs opacity-70">

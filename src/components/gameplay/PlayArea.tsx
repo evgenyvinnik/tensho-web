@@ -12,7 +12,11 @@ import { GlowEffect } from '../effects/GlowEffect'
 import { YakuDefinition } from '../../rules/YakuDetector'
 import { CoachPanel } from './CoachPanel'
 import type { CoachAdvice } from '../../gameplay/beginnerCoach'
-import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
+import {
+  scoreMultiplier,
+  scoreNumber,
+  shownRounding,
+} from '../../utils/scoreNumber'
 import type { ScoredStructure } from '../../rules/ScoringEngine'
 import { scoreRounding } from '../../rules/ScoreEquation'
 import { ExactScoreDetails } from './ExactScoreDetails'
@@ -266,12 +270,10 @@ export function PlayArea({
   const rounding = scorePreview
     ? scoreRounding(scorePreview.points, scorePreview.mult)
     : null
-  const roundingNote = rounding?.roundedDown
-    ? t('scoring.roundedDown', {
-        product: scoreNumber(rounding.product, i18n.language).exact,
-        rounded: scoreNumber(rounding.rounded, i18n.language).exact,
-      })
+  const shown = scorePreview
+    ? shownRounding(scorePreview.points, scorePreview.mult, i18n.language)
     : null
+  const roundingNote = shown ? t('scoring.roundedDown', shown) : null
   const showing = playAreaHasContent({
     selectedTileCount,
     stagedTileCount,

@@ -12,8 +12,11 @@ import { useSpring } from '@react-spring/web'
 import { GlowEffect } from '../effects/GlowEffect'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useTranslation } from 'react-i18next'
-import { scoreMultiplier, scoreNumber } from '../../utils/scoreNumber'
-import { scoreRounding } from '../../rules/ScoreEquation'
+import {
+  scoreMultiplier,
+  scoreNumber,
+  shownRounding,
+} from '../../utils/scoreNumber'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -83,13 +86,8 @@ export function PointsMultDisplay({
       }),
   })
   const shown = reducedMotion ? { points, mult, total } : display
-  const rounding = scoreRounding(points, mult)
-  const roundingNote = rounding.roundedDown
-    ? t('scoring.roundedDown', {
-        product: scoreNumber(rounding.product, i18n.language).exact,
-        rounded: scoreNumber(rounding.rounded, i18n.language).exact,
-      })
-    : null
+  const rounding = shownRounding(points, mult, i18n.language)
+  const roundingNote = rounding ? t('scoring.roundedDown', rounding) : null
   const caption = compact ? 'hidden' : 'hidden sm:block'
   const box = compact ? 'px-2 py-0.5' : 'px-1 py-0.5 sm:px-3 sm:py-1'
   const operator = compact

@@ -131,7 +131,7 @@ for (const fixture of fixtures) {
     const formatCompact = (value: number) =>
       new Intl.NumberFormat(fixture.language, {
         notation: 'compact',
-        maximumFractionDigits: 2,
+        maximumFractionDigits: 1,
       })
         .format(value)
         .replace(/[\u00a0\u202f]/g, ' ')
@@ -146,10 +146,13 @@ for (const fixture of fixtures) {
         ? formatCompact(equation.points)
         : formatExact(equation.points)
     )
-    // The multiplier column is always exact, so the equation multiplies out.
+    // The multiplier column reads like the points: compact from a million.
     expect(equation.multiplier).toBe(largeMultiplier ? 1e9 : 1)
+    const shownMultiplier = largeMultiplier
+      ? formatCompact(equation.multiplier)
+      : formatExact(equation.multiplier)
     await expect(handScore.locator('[data-hand-score-mult]')).toHaveText(
-      formatExact(equation.multiplier)
+      shownMultiplier
     )
     /** Everything inside `selector` that is clipped or sticks out of it. */
     const overflowing = (selector: string) =>
@@ -192,7 +195,7 @@ for (const fixture of fixtures) {
     await expect(last).toHaveText(compact)
     await expect(last).toHaveAttribute('title', exact)
     await expect(handScore.locator('[data-hand-score-mult]')).toHaveText(
-      formatExact(equation.multiplier)
+      shownMultiplier
     )
     // The run total and target sit in the header, compact with exact labels.
     const header = page.locator('[data-run-header]')
@@ -202,8 +205,12 @@ for (const fixture of fixtures) {
     await expect(header.locator('[data-tutorial="current-score"]')).toHaveText(
       compact
     )
+    // Past what compact units can name, the target reads 1E15.
     await expect(header.locator('[data-tutorial="score-target"]')).toHaveText(
-      formatCompact(1e15)
+      new Intl.NumberFormat(fixture.language, {
+        notation: 'scientific',
+        maximumFractionDigits: 1,
+      }).format(1e15)
     )
     await expect(header.locator('[data-run-header-score]')).toHaveAttribute(
       'aria-label',

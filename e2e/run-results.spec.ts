@@ -5,6 +5,7 @@ import {
   parkMouse,
   settleReveals,
 } from './helpers/table'
+import { scoreNumber } from '../src/utils/scoreNumber'
 import type {
   GameOrchestrator,
   OrchestratorState,
@@ -263,8 +264,14 @@ test('defeat explains the failed round and Rental debt, with art and reachable p
   )
   await expect(detail('remainingGold')).toHaveText('-2')
   await expect(detail('rentalPaid')).toHaveText('-3')
+  // A score in the billions reads compact; the exact value is its label.
+  const defeatScore = scoreNumber((await snapshot(page)).score, 'en')
   await expect(page.locator('[data-result-score]')).toHaveText(
-    (await snapshot(page)).score.toLocaleString('en')
+    defeatScore.display
+  )
+  await expect(page.locator('[data-result-score]')).toHaveAttribute(
+    'title',
+    defeatScore.exact
   )
   await expect(page.locator('[data-result-art]')).toBeVisible()
   expect(
@@ -401,7 +408,7 @@ test('localized victory details and actions fit a short phone and a compact desk
   ).toBeVisible()
   const finalScore = await snapshot(page)
   await expect(page.locator('[data-result-score]')).toHaveText(
-    finalScore.score.toLocaleString('es')
+    scoreNumber(finalScore.score, 'es').display
   )
   for (const width of [320, 640]) {
     await page.setViewportSize({ width, height: 568 })

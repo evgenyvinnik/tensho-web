@@ -46,9 +46,9 @@ describe('HandScorePreview', () => {
     expect(section).not.toHaveTextContent('110')
   })
 
-  it('shows the true multiplier and names a rounding instead of hiding it', () => {
-    // Summer ×1.3 with Winter ×0.75 is 0.9750000000000001 in floating point
-    // and pays floor(48.75).
+  it('shows the multiplier to one decimal and names a rounding instead of hiding it', () => {
+    // Summer ×1.3 with Winter ×0.75 is 0.9750000000000001 in floating point,
+    // reads ×1, and pays floor(48.75).
     const equation = settleScoreEquation(50, 1.3 * 0.75, 48)
     const { container } = render(
       <HandScorePreview
@@ -64,10 +64,10 @@ describe('HandScorePreview', () => {
       container.querySelector('[data-hand-score-points]')
     ).toHaveTextContent(/^50$/)
     expect(container.querySelector('[data-hand-score-mult]')).toHaveTextContent(
-      /^0\.975$/
+      /^1$/
     )
     expect(container.querySelector('[data-score-operator]')).toHaveTextContent(
-      '→48.75 rounded down to 48'
+      '→48.8 rounded down to 48'
     )
     expect(
       container.querySelector('[data-hand-score-total]')

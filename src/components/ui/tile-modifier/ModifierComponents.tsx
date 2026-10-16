@@ -24,6 +24,7 @@ import {
 import { getGeneratedArt } from '../../../utils/generatedArt'
 import { FRAME_REGISTRATION } from './frameRegistration'
 import { useTranslation } from 'react-i18next'
+import { scoreMultiplier } from '../../../utils/scoreNumber'
 
 // =============================================================================
 // TYPES
@@ -302,7 +303,7 @@ export function ModifierTooltip({
   tile,
   className = '',
 }: ModifierTooltipProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   if (!tile.hasModifiers) {
     return null
   }
@@ -359,7 +360,8 @@ export function ModifierTooltip({
         )}
         {tile.modifierMultiplier !== 1 && (
           <div className="text-purple-400">
-            ×{tile.modifierMultiplier.toFixed(1)} Mult
+            ×{scoreMultiplier(tile.modifierMultiplier, i18n.language).display}{' '}
+            Mult
           </div>
         )}
         {tile.retriggers > 0 && (

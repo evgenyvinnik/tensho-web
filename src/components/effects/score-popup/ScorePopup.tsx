@@ -17,7 +17,7 @@ import {
 import { colors } from '../../../styles/theme'
 import type { ScorePopupProps } from './types'
 import { useTranslation } from 'react-i18next'
-import { scoreNumber } from '../../../utils/scoreNumber'
+import { scoreMultiplier, scoreNumber } from '../../../utils/scoreNumber'
 
 export type { ScorePopupProps }
 
@@ -99,7 +99,7 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
 
   const displayText =
     multiplier && multiplier > 1
-      ? `+${scoreNumber(points, i18n.language).display} x${multiplier.toFixed(1)}`
+      ? `+${scoreNumber(points, i18n.language).display} x${scoreMultiplier(multiplier, i18n.language).display}`
       : `+${scoreNumber(points, i18n.language).display}`
 
   return (
@@ -107,7 +107,7 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
       data-score-popup
       aria-label={
         multiplier && multiplier > 1
-          ? `+${scoreNumber(points, i18n.language).exact} ×${multiplier}`
+          ? `+${scoreNumber(points, i18n.language).exact} ×${scoreMultiplier(multiplier, i18n.language).exact}`
           : `+${scoreNumber(points, i18n.language).exact}`
       }
       className={`absolute pointer-events-none w-max max-w-[70%] text-center font-bold text-xl [overflow-wrap:anywhere] ${className}`}

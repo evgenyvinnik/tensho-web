@@ -37,9 +37,8 @@ it.each(SUPPORTED_LANGUAGES)(
     ).toHaveTextContent(
       i18n.t('closedHandAusterity.progress', {
         count: 2,
-          factor: (2.16).toLocaleString(language, {
-          maximumFractionDigits: 3,
-        }),
+        // ×2.16 reads ×2.2, like every multiplier on screen.
+        factor: (2.2).toLocaleString(language),
       })
     )
     rerender(

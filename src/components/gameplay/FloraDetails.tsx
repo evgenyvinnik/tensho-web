@@ -4,6 +4,7 @@
  */
 
 import { useTranslation } from 'react-i18next'
+import { scoreMultiplier } from '../../utils/scoreNumber'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
 import type { FlowerVariant, SeasonTile } from '../../systems/types'
 import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
@@ -62,9 +63,10 @@ export function FlowerDetails({
             {t('flora.mutations.awakened')}
           </strong>{' '}
           {t('flora.mutations.' + flower.toLowerCase(), {
-            factor: (1 + 0.2 * flora.flowers.totalEffectiveness).toLocaleString(
+            factor: scoreMultiplier(
+              1 + 0.2 * flora.flowers.totalEffectiveness,
               i18n.language
-            ),
+            ).display,
           })}
         </p>
       )}

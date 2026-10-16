@@ -11,6 +11,8 @@ import { SPRINGS, DURATIONS, ANIMATION_Z_INDEX } from '../../../animations/const
 import { colors } from '../../../styles/theme'
 import { YakuTier, YakuDefinition } from '../../../rules/YakuDefinition'
 import { getTierStyles } from './tierStyles'
+import { useTranslation } from 'react-i18next'
+import { scoreMultiplier } from '../../../utils/scoreNumber'
 
 // =============================================================================
 // TYPES
@@ -92,6 +94,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
   onComplete,
   className = '',
 }) => {
+  const { i18n } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const revealYaku: YakuDefinition = yaku ?? {
     id: japaneseName ?? 'yaku',
@@ -252,7 +255,7 @@ export const YakuReveal: React.FC<YakuRevealProps> = ({
             border: `2px solid ${tierStyles.accentColor}`,
           }}
         >
-          x{multiplier.toFixed(1)}
+          x{scoreMultiplier(multiplier, i18n.language).display}
         </span>
       </animated.div>
 
@@ -337,6 +340,7 @@ export const YakuBanner: React.FC<YakuBannerProps> = ({
   onComplete,
   className = '',
 }) => {
+  const { i18n } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const tierStyles = getTierStyles(yaku.tier)
 
@@ -404,7 +408,7 @@ export const YakuBanner: React.FC<YakuBannerProps> = ({
             color: colors.darkForest,
           }}
         >
-          x{multiplier.toFixed(1)}
+          x{scoreMultiplier(multiplier, i18n.language).display}
         </span>
       </div>
     </animated.div>
