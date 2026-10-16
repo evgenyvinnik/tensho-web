@@ -135,14 +135,13 @@ for (const language of ['en', 'es'])
         await page.reload()
       }
       const before = await saved()
-      const trigger = page.getByRole('button', {
-        name: new RegExp(copy.consumableUse.celestialOrbs),
-      })
+      // Each Orb waits on the item rail; its panel explains what using it
+      // gives up and holds the Use step.
+      const orbId = before.state.celestialOrbs[0].instanceId
+      const trigger = page.locator(`[data-consumable-instance="${orbId}"]`)
       await activate(trigger)
-      const dialog = page.getByRole('dialog')
-      const select = dialog.locator('[data-consumable-item]').first()
-      await activate(select)
-      const explanation = dialog.locator('[data-observatory-holding]')
+      const explanation = page.locator('[data-observatory-holding]')
+      const dialog = page.getByRole('dialog').filter({ has: explanation })
       await expect(explanation).toContainText(copy.observatory.description)
       const cost = dialog.locator('[data-observatory-cost]')
       await expect(cost).toHaveText(copy.observatory.holdingNote)
@@ -165,16 +164,15 @@ for (const language of ['en', 'es'])
       ).toBe(true)
       await page.screenshot({ path: info.outputPath('observatory.png') })
       expect(await saved()).toEqual(before)
-      await activate(
-        dialog.getByRole('button', { name: copy.common.cancel, exact: true })
-      )
+      // Closing the panel uses nothing and returns to its token.
+      await page.keyboard.press('Escape')
+      await expect(dialog).toHaveCount(0)
       await expect(trigger).toBeFocused()
       expect(await saved()).toEqual(before)
       if (mode === 'use') {
         await activate(trigger)
-        await activate(select)
-        await activate(dialog.locator('[data-consumable-confirm]'))
-        await expect(dialog).toHaveCount(0)
+        await activate(page.locator(`[data-use-item="${orbId}"]`))
+        await expect(trigger).toHaveCount(0)
         const used = await saved()
         expect(
           used.state.celestialOrbs.map((o: { id: string }) => o.id)
@@ -187,18 +185,20 @@ for (const language of ['en', 'es'])
         expect(used.state.handsRemaining).toBe(before.state.handsRemaining)
       }
       const prePlay = await saved()
-      const play = page.locator('[data-game-action="play"]')
-      await activate(play)
-      await expect(play).toContainText(copy.gameplay.confirmHand)
+      // Pick the whole complete hand onto the felt; picking spends nothing.
+      const ids = prePlay.state.handTiles.map((tile: { id: string }) => tile.id)
+      for (const id of ids)
+        await activate(
+          page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
+        )
+      await expect
+        .poll(async () => (await saved()).state.selectedTileIds)
+        .toEqual(ids)
       expect(await saved()).toEqual({
         ...prePlay,
-        state: {
-          ...prePlay.state,
-          selectedTileIds: prePlay.state.handTiles.map(
-            (tile: { id: string }) => tile.id
-          ),
-        },
+        state: { ...prePlay.state, selectedTileIds: ids },
       })
+      const play = page.locator('[data-game-action="play"]')
       await activate(play)
       await expect
         .poll(async () => (await saved()).state.score)

@@ -1,4 +1,5 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
+import { clearReveals } from './helpers/table'
 
 async function activate(locator: Locator, touch: boolean) {
   if (touch) await locator.tap()
@@ -18,7 +19,7 @@ async function fixture(page: Page, kind: 'sell' | 'heart' | 'ankh' | 'hex') {
   )
   await page.goto('/en/play')
   await saved(page)
-  return page.evaluate(async (kind) => {
+  const info = await page.evaluate(async (kind) => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const persistencePath = '/src/game/classicPersistenceApp.ts'
     const decreePath = '/src/systems/DecreeSystem.ts'
@@ -69,6 +70,9 @@ async function fixture(page: Page, kind: 'sell' | 'heart' | 'ankh' | 'hex') {
       gold: state.gold,
     }
   }, kind)
+  // startNewRun queues its starting Decrees for a reveal over the table.
+  await clearReveals(page)
+  return info
 }
 
 test('sells the chosen duplicate after reload, preserves its Eternal sibling and pays exactly once', async ({
@@ -205,26 +209,19 @@ for (const kind of ['hex', 'ankh'] as const) {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await fixture(page, kind)
     const before = await saved(page)
-    await activate(
-      page.getByRole('button', {
-        name: 'Void Scripts (1 available)',
-        exact: true,
-      }),
-      isMobile
-    )
-    const dialog = page.getByRole('dialog', {
-      name: 'Void Scripts',
-      exact: true,
-    })
-    await activate(dialog.locator('[data-consumable-item]'), isMobile)
-    // Selecting a destructive script is not confirmation.
+    // The Script waits on the item rail; its panel holds the Use step.
+    const scriptId = before.state.voidScripts[0].instanceId
+    const token = page.locator(`[data-consumable-instance="${scriptId}"]`)
+    await activate(token, isMobile)
+    // Opening a destructive script's panel is not confirmation.
     expect(await saved(page)).toEqual(before)
-    await expect(dialog.locator('[data-consumable-confirm]')).toBeEnabled()
+    const use = page.locator(`[data-use-item="${scriptId}"]`)
+    await expect(use).toBeEnabled()
     await page.screenshot({
       path: testInfo.outputPath(`${kind}-confirmation.png`),
     })
-    await activate(dialog.locator('[data-consumable-confirm]'), isMobile)
-    await expect(dialog).toBeHidden()
+    await activate(use, isMobile)
+    await expect(token).toHaveCount(0)
     const after = await saved(page)
     const inventory = after.state.decreeSystem.ownedDecrees
     expect(inventory).toHaveLength(kind === 'hex' ? 1 : 2)
