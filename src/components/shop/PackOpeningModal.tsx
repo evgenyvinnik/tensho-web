@@ -7,38 +7,34 @@
  * - Display all available choices with selection
  * - Allow picking 1 (Normal/Jumbo) or 2 (Mega) items
  * - Skip option for synergy decrees
- * - Rarity-based styling for each item
+ * - Each reward drawn big, glowing by its rarity
+ * - Hover (or focus, or tap) a reward to see its details card
  *
  * Uses React Spring for animations and the game's color palette.
  */
 
-import { useState, useCallback, useEffect, useRef, useId } from 'react'
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useId,
+  type RefObject,
+} from 'react'
 import { useSpring, animated, to } from '@react-spring/web'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { PackContent, PackOffering } from '../../systems/BlessingPackSystem'
 import { PACK_TYPE_DEFINITIONS } from '../../config/packDefinitions'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { DecreeArtwork } from '../ui/DecreeArtwork'
-import { Tile } from '../../core/Tile'
-import {
-  getTileImagePath,
-  getFateSealIllustration,
-  getVoidScriptIllustration,
-  getCelestialOrbIllustration,
-  getPackIllustration,
-} from '../../utils/assets'
-import type { VoidScript } from '../../systems/VoidScriptSystem'
-import type { FateSeal } from '../../systems/FateSealSystem'
-import {
-  useItemText,
-  type ItemKind,
-  type TranslatableItem,
-} from '../../i18n/useItemText'
-import { VoidScriptArtwork } from '../ui/VoidScriptArtwork'
-import { tileRewardText } from '../../i18n/tileRewardText'
+import { getPackIllustration } from '../../utils/assets'
+import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
+import type { Decree } from '../../systems/types'
 import { ControlIcon } from '../ui/ControlIcon'
-import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
+import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
+import { OfferArt } from './OfferArt'
+import { RARITY_COLORS, useOfferText, type OfferText } from './useOfferText'
 
 const AnimatedDiv = animated('div')
 
@@ -62,60 +58,154 @@ export interface PackOpeningModalProps {
 }
 
 // =============================================================================
-// HELPER FUNCTIONS
+// PACK CHOICE DETAILS
 // =============================================================================
 
-/**
- * Get rarity color for content items
- */
-function getRarityColor(rarity: string): string {
-  switch (rarity) {
-    case 'common':
-      return '#A0A0A0' // Gray
-    case 'uncommon':
-      return '#4CAF50' // Green
-    case 'rare':
-      return '#2196F3' // Blue
-    case 'legendary':
-      return '#9C27B0' // Purple
-    default:
-      return '#A0A0A0'
+const DETAILS_WIDTH = 300
+const DETAILS_MARGIN = 12
+const DETAILS_GAP = 10
+
+const clamp = (value: number, low: number, high: number) =>
+  Math.min(Math.max(value, low), Math.max(low, high))
+
+function isFocusVisible(element: Element): boolean {
+  try {
+    return element.matches(':focus-visible')
+  } catch {
+    return false
   }
 }
 
-function getContentArtwork(content: PackContent): string | null {
-  switch (content.type) {
-    case 'FateSeal':
-      return getFateSealIllustration((content.data as FateSeal).id)
-    case 'CelestialOrb':
-      return getCelestialOrbIllustration((content.data as CelestialOrb).id)
-    case 'VoidScript':
-      return getVoidScriptIllustration((content.data as VoidScript).id)
-    case 'Tile': {
-      const tile = content.data as Tile
-      return tile?.suit && tile?.rank
-        ? getTileImagePath(tile.suit, tile.rank)
-        : null
+interface PackChoiceDetailsProps {
+  anchorRef: RefObject<HTMLElement | null>
+  content: PackContent
+  offer: Pick<TeaHouseOffering, 'itemType' | 'item'>
+  text: OfferText
+  rarityColor: string
+  rarityLabel: string
+  animate: boolean
+}
+
+/**
+ * What a reward does, on a card floating beside it: above when there is
+ * room, otherwise below, always on screen. It only shows; the reward itself
+ * is still what the player presses, so the card never takes a click.
+ */
+function PackChoiceDetails({
+  anchorRef,
+  content,
+  offer,
+  text,
+  rarityColor,
+  rarityLabel,
+  animate,
+}: PackChoiceDetailsProps) {
+  const { t } = useTranslation()
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [position, setPosition] = useState<{ left: number; top: number }>()
+
+  const place = useCallback(() => {
+    const anchor = anchorRef.current?.getBoundingClientRect()
+    const card = cardRef.current
+    if (!anchor || !card) return
+    const width = card.offsetWidth
+    const height = card.offsetHeight
+    const above = anchor.top - DETAILS_GAP - height
+    const below = anchor.bottom + DETAILS_GAP
+    setPosition({
+      left: clamp(
+        anchor.left + anchor.width / 2 - width / 2,
+        DETAILS_MARGIN,
+        innerWidth - width - DETAILS_MARGIN
+      ),
+      top:
+        above >= DETAILS_MARGIN
+          ? above
+          : clamp(below, DETAILS_MARGIN, innerHeight - height - DETAILS_MARGIN),
+    })
+  }, [anchorRef])
+
+  useLayoutEffect(() => {
+    place()
+    const observer =
+      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(place)
+    if (cardRef.current) observer?.observe(cardRef.current)
+    window.addEventListener('resize', place)
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', place)
     }
-    default:
-      return null
-  }
-}
+  }, [place])
 
-/**
- * Get rarity glow style
- */
-function getRarityGlow(rarity: string): string {
-  switch (rarity) {
-    case 'legendary':
-      return '0 0 20px rgba(156, 39, 176, 0.6), 0 0 40px rgba(156, 39, 176, 0.3)'
-    case 'rare':
-      return '0 0 15px rgba(33, 150, 243, 0.5), 0 0 30px rgba(33, 150, 243, 0.2)'
-    case 'uncommon':
-      return '0 0 10px rgba(76, 175, 80, 0.4)'
-    default:
-      return 'none'
-  }
+  return createPortal(
+    <div
+      ref={cardRef}
+      aria-hidden="true"
+      data-pack-choice-details={content.id}
+      className={`pointer-events-none fixed z-[60] overflow-hidden rounded-xl border-2 bg-[#0b1b15]/[0.98] text-left text-[var(--color-beige-white)] ${
+        animate ? 'pack-choice-details-enter' : ''
+      }`}
+      style={{
+        width: Math.min(DETAILS_WIDTH, innerWidth - DETAILS_MARGIN * 2),
+        maxHeight: `calc(100dvh - ${DETAILS_MARGIN * 2}px)`,
+        left: position?.left ?? 0,
+        top: position?.top ?? 0,
+        // Measured where it cannot be seen, then placed before paint.
+        visibility: position ? 'visible' : 'hidden',
+        borderColor: rarityColor,
+        boxShadow: `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 28px ${rarityColor}55`,
+      }}
+    >
+      <div
+        className="h-1"
+        style={{
+          background: `linear-gradient(90deg, ${rarityColor}, var(--color-metallic-gold), ${rarityColor})`,
+        }}
+      />
+      <div className="space-y-2 p-3 text-sm [overflow-wrap:anywhere]">
+        <div className="flex items-start gap-3">
+          <span className="flex h-16 w-16 shrink-0 items-center justify-center">
+            <OfferArt offering={offer} tileSize="compact" />
+          </span>
+          <div className="min-w-0">
+            <p className="font-decorative text-base font-bold leading-tight text-[var(--color-golden-yellow)]">
+              {text.name}
+            </p>
+            <p
+              className="mt-1 text-[11px] font-bold uppercase tracking-wider"
+              style={{ color: rarityColor }}
+            >
+              {text.kind}
+            </p>
+            {/* A Decree's kind already names its rarity. */}
+            {content.type !== 'Decree' && (
+              <span
+                className="mt-1 inline-block rounded-full border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide"
+                style={{ borderColor: rarityColor, color: rarityColor }}
+              >
+                {rarityLabel}
+              </span>
+            )}
+          </div>
+        </div>
+        <p className="leading-relaxed">{text.description}</p>
+        {text.cost && (
+          <p className="rounded-lg border border-red-400/35 bg-red-950/45 p-2 text-xs text-red-100">
+            {t('consumableUse.cost')}: {text.cost}
+          </p>
+        )}
+        {text.extra && (
+          <p className="rounded-lg bg-black/25 p-2 text-xs text-[var(--color-beige-white)]/80">
+            {text.extra}
+          </p>
+        )}
+        {content.type === 'Decree' && (
+          <DecreeModifierDetails decree={content.data as Decree} />
+        )}
+      </div>
+    </div>,
+    document.body
+  )
 }
 
 // =============================================================================
@@ -124,48 +214,41 @@ function getRarityGlow(rarity: string): string {
 
 interface PackContentCardProps {
   content: PackContent
-  index: number
   isSelected: boolean
   canSelect: boolean
+  /** This reward's details card is the one showing. */
+  showDetails: boolean
+  /** Show (true) or hide (false) this reward's details card. */
+  onInspect: (show: boolean) => void
   onToggle: () => void
   animationDelay: number
 }
 
 function PackContentCard({
   content,
-  index: _index,
   isSelected,
   canSelect,
+  showDetails,
+  onInspect,
   onToggle,
   animationDelay,
 }: PackContentCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const { t } = useTranslation()
-  const text = useItemText()
   const reducedMotion = useReducedMotion()
-  const kinds: Partial<Record<PackContent['type'], ItemKind>> = {
-    Decree: 'decrees',
-    FateSeal: 'seals',
-    CelestialOrb: 'orbs',
-    VoidScript: 'scripts',
-  }
-  const kind = kinds[content.type]
-  const item = content.data as TranslatableItem
-  const tileText =
-    content.type === 'Tile' && content.data instanceof Tile
-      ? tileRewardText(content.data, t)
-      : null
-  const name = tileText?.name ?? (kind ? text.name(kind, item) : content.name)
-  const description =
-    tileText?.description ??
-    (kind ? text.description(kind, item) : content.description)
+  const anchorRef = useRef<HTMLDivElement>(null)
+  const lastPointer = useRef('mouse')
   const descriptionId = useId()
-
-  const rarityColor = getRarityColor(content.rarity)
-  const artwork = getContentArtwork(content)
-  const voidScript =
-    content.type === 'VoidScript' ? (content.data as VoidScript) : null
-  const glow = getRarityGlow(content.rarity)
+  const offer = {
+    itemType: content.type,
+    item: content.data as TeaHouseOffering['item'],
+  }
+  const text = useOfferText(offer)
+  const rarityColor = RARITY_COLORS[content.rarity] ?? RARITY_COLORS.common
+  const rarityLabel = t(`shop.ui.rarity_${content.rarity}`, content.rarity)
+  const description = text.cost
+    ? `${text.description} ${t('consumableUse.cost')}: ${text.cost}`
+    : text.description
 
   // Entry animation
   const entrySpring = useSpring({
@@ -181,122 +264,133 @@ function PackContentCard({
   // Interaction animation
   const interactionSpring = useSpring({
     immediate: reducedMotion,
-    scale: reducedMotion ? 1 : isSelected ? 1.05 : isHovered ? 1.02 : 1,
-    borderWidth: isSelected ? 4 : 2,
+    scale: reducedMotion ? 1 : isSelected ? 1.05 : isHovered ? 1.03 : 1,
     config: { tension: 400, friction: 30 },
   })
 
   return (
-    <AnimatedDiv
-      role="button"
-      tabIndex={0}
-      aria-pressed={isSelected}
-      aria-disabled={!canSelect && !isSelected}
-      aria-label={name}
-      aria-describedby={descriptionId}
-      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (
-          e.target === e.currentTarget &&
-          (e.key === 'Enter' || e.key === ' ')
-        ) {
-          e.preventDefault()
+    <>
+      <AnimatedDiv
+        ref={anchorRef}
+        role="button"
+        tabIndex={0}
+        data-pack-choice={content.id}
+        aria-pressed={isSelected}
+        aria-disabled={!canSelect && !isSelected}
+        aria-label={text.name}
+        aria-describedby={descriptionId}
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+          if (
+            e.target === e.currentTarget &&
+            (e.key === 'Enter' || e.key === ' ')
+          ) {
+            e.preventDefault()
+            if (canSelect || isSelected) onToggle()
+          }
+        }}
+        className={`
+          relative flex w-full max-w-[10rem] flex-col items-center rounded-2xl border-2 px-2 pb-2 pt-3 text-center outline-none
+          focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] sm:w-40 sm:max-w-none
+          ${isSelected ? 'border-[var(--color-golden-yellow)] bg-[var(--color-golden-yellow)]/10' : 'border-transparent hover:bg-white/5'}
+          ${canSelect || isSelected ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}
+        `}
+        style={{
+          // Static values also cover the first render before springs advance.
+          opacity: reducedMotion ? 1 : entrySpring.opacity,
+          transform: reducedMotion
+            ? 'none'
+            : to(
+                [entrySpring.scale, interactionSpring.scale, entrySpring.y],
+                (entryScale, interactionScale, y) =>
+                  `scale(${entryScale * interactionScale}) translateY(${y}px)`
+              ),
+          boxShadow: isSelected ? '0 0 24px rgba(255, 215, 79, 0.35)' : 'none',
+        }}
+        onPointerEnter={(e: React.PointerEvent<HTMLDivElement>) => {
+          if (e.pointerType !== 'mouse') return
+          setIsHovered(true)
+          onInspect(true)
+        }}
+        onPointerLeave={(e: React.PointerEvent<HTMLDivElement>) => {
+          if (e.pointerType !== 'mouse') return
+          setIsHovered(false)
+          onInspect(false)
+        }}
+        onPointerDown={(e: React.PointerEvent<HTMLDivElement>) => {
+          lastPointer.current = e.pointerType
+        }}
+        onFocus={(e: React.FocusEvent<HTMLDivElement>) => {
+          if (isFocusVisible(e.currentTarget)) onInspect(true)
+        }}
+        onBlur={() => onInspect(false)}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          // A tap has no hover, so it shows the details as it chooses.
+          if (e.detail !== 0 && lastPointer.current !== 'mouse') onInspect(true)
           if (canSelect || isSelected) onToggle()
-        }
-      }}
-      className={`
-        relative w-full max-w-[140px] rounded-xl overflow-hidden
-        ${canSelect || isSelected ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}
-      `}
-      style={{
-        // Static values also cover the first render before springs advance.
-        opacity: reducedMotion ? 1 : entrySpring.opacity,
-        transform: reducedMotion
-          ? 'none'
-          : to(
-              [entrySpring.scale, interactionSpring.scale, entrySpring.y],
-              (entryScale, interactionScale, y) =>
-                `scale(${entryScale * interactionScale}) translateY(${y}px)`
-            ),
-        borderWidth: interactionSpring.borderWidth.to((w) => `${w}px`),
-        borderStyle: 'solid',
-        borderColor: isSelected ? 'var(--color-golden-yellow)' : rarityColor,
-        boxShadow: isSelected
-          ? `0 0 25px rgba(255, 215, 79, 0.5), ${glow}`
-          : glow,
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={() => (canSelect || isSelected) && onToggle()}
-    >
-      {/* Background */}
-      <div className="absolute inset-0 bg-[var(--color-dark-forest)]" />
+        }}
+      >
+        {/* Selected checkmark */}
+        {isSelected && (
+          <div className="absolute right-1.5 top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-golden-yellow)]">
+            <ControlIcon
+              name="check"
+              size={16}
+              className="text-[var(--color-dark-forest)]"
+            />
+          </div>
+        )}
 
-      {/* Selected checkmark */}
-      {isSelected && (
-        <div className="absolute top-1 right-1 w-6 h-6 rounded-full bg-[var(--color-golden-yellow)] flex items-center justify-center z-10">
-          <ControlIcon
-            name="check"
-            size={16}
-            className="text-[var(--color-dark-forest)]"
-          />
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="relative p-3 flex flex-col items-center min-h-[160px]">
-        {/* Icon - Use unique icon for decrees */}
-        <div
-          className={`mb-2 flex items-center justify-center ${voidScript ? 'h-16 w-16' : 'h-12 w-12'}`}
+        {/* The reward itself, big, glowing by its rarity */}
+        <span
+          aria-hidden="true"
+          data-rarity={content.rarity}
+          className={`pack-choice-art ${reducedMotion ? 'pack-choice-art--still' : ''}`}
         >
-          {content.type === 'Decree' ? (
-            <DecreeArtwork decreeId={item.id} size={48} color={rarityColor} />
-          ) : voidScript ? (
-            <VoidScriptArtwork
-              script={voidScript}
-              name={name}
-              description={description}
-              className="h-16 w-16"
-            />
-          ) : artwork ? (
-            <img
-              src={artwork}
-              alt=""
-              aria-hidden="true"
-              className="game-illustration h-full w-full object-contain"
-              draggable={false}
-            />
-          ) : (
-            <span className="text-2xl text-[var(--color-metallic-gold)]">
-              ?
+          <span className="pack-choice-halo" />
+          {content.rarity === 'legendary' && (
+            <span className="pack-choice-rays">
+              <span />
             </span>
           )}
-        </div>
-
-        {/* Rarity indicator */}
-        <div className="flex items-center gap-1 mb-1">
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: rarityColor }}
-          />
-          <span className="text-xs capitalize" style={{ color: rarityColor }}>
-            {t(`shop.ui.rarity_${content.rarity}`, content.rarity)}
+          <span className="pack-choice-figure">
+            <OfferArt offering={offer} tileSize="large" />
           </span>
-        </div>
+        </span>
 
         {/* Name */}
-        <h3 className="text-sm font-bold text-[var(--color-beige-white)] text-center break-words">
-          {name}
+        <h3 className="mt-2 w-full break-words text-sm font-bold leading-tight text-[var(--color-beige-white)]">
+          {text.name}
         </h3>
 
-        {/* Description */}
-        <p
-          id={descriptionId}
-          className="text-xs text-[var(--color-beige-white)] opacity-80 text-center mt-2 break-words flex-1"
+        {/* Rarity */}
+        <span
+          className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider"
+          style={{ color: rarityColor }}
         >
+          <span
+            className="h-1.5 w-1.5 rounded-full"
+            style={{ backgroundColor: rarityColor }}
+          />
+          {rarityLabel}
+        </span>
+
+        {/* Read by assistive technology; sighted players get the card. */}
+        <span id={descriptionId} className="sr-only">
           {description}
-        </p>
-      </div>
-    </AnimatedDiv>
+        </span>
+      </AnimatedDiv>
+      {showDetails && (
+        <PackChoiceDetails
+          anchorRef={anchorRef}
+          content={content}
+          offer={offer}
+          text={text}
+          rarityColor={rarityColor}
+          rarityLabel={rarityLabel}
+          animate={!reducedMotion}
+        />
+      )}
+    </>
   )
 }
 
@@ -318,6 +412,8 @@ export function PackOpeningModal({
 }: PackOpeningModalProps) {
   const { t } = useTranslation()
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
+  /** The reward whose details card is showing. */
+  const [inspected, setInspected] = useState<number | null>(null)
   const [isRevealed, setIsRevealed] = useState(false)
   const reducedMotion = useReducedMotion()
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -335,7 +431,10 @@ export function PackOpeningModal({
 
   // A new pack resets selection; changing presentation preferences must not.
   useEffect(() => {
-    if (isOpen && packOffering) setSelectedIndices([])
+    if (isOpen && packOffering) {
+      setSelectedIndices([])
+      setInspected(null)
+    }
   }, [isOpen, packOffering])
 
   // Reset reveal timing independently from the player's reward choices.
@@ -446,7 +545,7 @@ export function PackOpeningModal({
             first?.focus()
           }
         }}
-        className="relative flex max-h-[calc(100dvh-24px)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl"
+        className="relative flex max-h-[calc(100dvh-24px)] w-full max-w-5xl flex-col overflow-hidden rounded-2xl sm:w-fit sm:min-w-[36rem]"
         style={{
           opacity: reducedMotion ? 1 : modalSpring.opacity,
           transform: reducedMotion
@@ -457,6 +556,11 @@ export function PackOpeningModal({
           boxShadow: `0 0 50px ${typeInfo?.iconColor}40, 0 25px 50px rgba(0, 0, 0, 0.5)`,
         }}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+        onPointerDown={(e: React.PointerEvent<HTMLDivElement>) => {
+          // A tap away from the rewards puts a tapped-open card away.
+          if (!(e.target as Element).closest('[data-pack-choice]'))
+            setInspected(null)
+        }}
       >
         {/* Header */}
         <div className="flex-shrink-0 border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
@@ -488,17 +592,26 @@ export function PackOpeningModal({
         </div>
 
         {/* Content grid */}
-        <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-6">
+        <div
+          className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-6"
+          // A card would drift from its reward as the rewards scroll.
+          onScroll={() => setInspected(null)}
+        >
           <div className="grid grid-cols-2 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
             {packOffering.contents.map((content, index) => (
               <PackContentCard
                 key={`${packOffering.pack.id}:choice:${index}`}
                 content={content}
-                index={index}
                 isSelected={selectedIndices.includes(index)}
                 canSelect={
                   selectedIndices.length < maxSelections ||
                   selectedIndices.includes(index)
+                }
+                showDetails={inspected === index}
+                onInspect={(show) =>
+                  setInspected((current) =>
+                    show ? index : current === index ? null : current
+                  )
                 }
                 onToggle={() => handleToggleSelection(index)}
                 animationDelay={isRevealed ? 100 + index * 100 : 0}

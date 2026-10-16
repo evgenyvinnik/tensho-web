@@ -12,44 +12,12 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
-import type {
-  BlessingPack,
-  Decree,
-  ImperialCharter,
-} from '../../systems/types'
-import type { FateSeal } from '../../systems/FateSealSystem'
-import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
-import type { VoidScript } from '../../systems/VoidScriptSystem'
-import { Tile } from '../../core/Tile'
-import { useItemText } from '../../i18n/useItemText'
-import { tileRewardText } from '../../i18n/tileRewardText'
-import { getItemArt } from '../../utils/itemArt'
-import { getDecreeScrollIllustration } from '../../utils/assets'
+import type { Decree } from '../../systems/types'
+import { RARITY_COLORS, useOfferText } from './useOfferText'
+import { OfferArt } from './OfferArt'
 import { AnchoredPopover } from '../ui/AnchoredPopover'
-import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
-import { TileImage } from '../tiles/TileImage'
 import { GoldIcon } from '../ui/GoldIcon'
-import { DECREE_ICON_COLORS } from '../gameplay/gameplayTypes'
-
-const RARITY_COLORS: Record<string, string> = {
-  common: '#A0A0A0',
-  LocalEdict: '#A0A0A0',
-  uncommon: '#4CAF50',
-  RegionalMandate: '#4CAF50',
-  rare: '#2196F3',
-  ImperialDecree: '#2196F3',
-  legendary: '#9C27B0',
-  mythic: '#9C27B0',
-  HeavenlyOrdinance: '#9C27B0',
-}
-
-const DECREE_RARITY_KEYS: Record<Decree['rarity'], string> = {
-  LocalEdict: 'common',
-  RegionalMandate: 'uncommon',
-  ImperialDecree: 'rare',
-  HeavenlyOrdinance: 'legendary',
-}
 
 export interface ShopOfferCardProps {
   offering: TeaHouseOffering
@@ -59,169 +27,6 @@ export interface ShopOfferCardProps {
   onBuy: () => void
   /** Decrees that accept a Flower as payment. */
   onOfferFlower?: () => void
-}
-
-interface OfferText {
-  name: string
-  kind: string
-  description: string
-  extra?: string
-  rarity: string
-}
-
-function useOfferText(offering: TeaHouseOffering): OfferText {
-  const { t } = useTranslation()
-  const itemText = useItemText()
-  switch (offering.itemType) {
-    case 'Decree': {
-      const decree = offering.item as Decree
-      return {
-        name: itemText.name('decrees', decree),
-        kind: t('shop.kinds.decree', {
-          rarity: t(`shop.ui.rarity_${DECREE_RARITY_KEYS[decree.rarity]}`),
-        }),
-        description: itemText.description('decrees', decree),
-        extra: t('shop.kinds.decreeHelp'),
-        rarity: decree.rarity,
-      }
-    }
-    case 'FateSeal': {
-      const seal = offering.item as FateSeal
-      return {
-        name: itemText.name('seals', seal),
-        kind: t('shop.kinds.seal'),
-        description: itemText.description('seals', seal),
-        extra: t('shop.kinds.consumableHelp'),
-        rarity: seal.rarity.toLowerCase(),
-      }
-    }
-    case 'CelestialOrb': {
-      const orb = offering.item as CelestialOrb
-      return {
-        name: itemText.name('orbs', orb),
-        kind: t('shop.kinds.orb'),
-        description: itemText.description('orbs', orb),
-        extra:
-          orb.effect.targetYaku === 'All'
-            ? undefined
-            : t(`upgradeFamilies.${orb.effect.targetYaku}.covers`),
-        rarity: orb.rarity.toLowerCase(),
-      }
-    }
-    case 'VoidScript': {
-      const script = offering.item as VoidScript
-      return {
-        name: itemText.name('scripts', script),
-        kind: t('shop.kinds.script'),
-        description: itemText.description('scripts', script),
-        extra: t('shop.kinds.consumableHelp'),
-        rarity: script.rarity.toLowerCase(),
-      }
-    }
-    case 'Tile': {
-      const tile = offering.item as Tile
-      const text = tileRewardText(tile, t)
-      return {
-        name: text.name,
-        kind: t('shop.kinds.tile'),
-        description: tile.hasModifiers
-          ? text.description
-          : t('shop.kinds.tileHelp'),
-        rarity: tile.hasModifiers ? 'uncommon' : 'common',
-      }
-    }
-    case 'BlessingPack': {
-      const pack = offering.item as BlessingPack
-      const id = `${pack.type.toLowerCase()}_${pack.size.toLowerCase()}`
-      return {
-        name: t(`packs.items.${id}.name`),
-        kind: t('shop.kinds.pack', {
-          choose: pack.selectCount,
-          from: pack.choiceCount,
-        }),
-        description: t(`packs.items.${id}.description`),
-        rarity: pack.size === 'Mega' ? 'rare' : pack.size === 'Jumbo' ? 'uncommon' : 'common',
-      }
-    }
-    case 'ImperialCharter': {
-      const charter = offering.item as ImperialCharter
-      return {
-        name: itemText.name('charters', charter),
-        kind: t('shop.kinds.charter'),
-        description: itemText.description('charters', charter),
-        extra: t('shop.kinds.charterHelp'),
-        rarity: 'legendary',
-      }
-    }
-  }
-}
-
-/** The offer's picture: its own art, or its family art with its emblem. */
-function OfferArt({
-  offering,
-  large = false,
-}: {
-  offering: TeaHouseOffering
-  large?: boolean
-}) {
-  const size = large ? 'h-24 w-24' : 'h-full w-full'
-  switch (offering.itemType) {
-    case 'Decree': {
-      const decree = offering.item as Decree
-      const art = getItemArt('decrees', decree.id)
-      return (
-        <span className={`relative flex items-center justify-center ${size}`}>
-          <img
-            src={art.hasOwnArt ? art.src : getDecreeScrollIllustration(decree.rarity)}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            className="game-illustration absolute inset-0 h-full w-full object-contain"
-          />
-          {!art.hasOwnArt && (
-            <span className="relative">
-              <DecreeUniqueIcon
-                decreeId={decree.id}
-                size={large ? 40 : 30}
-                color={DECREE_ICON_COLORS[decree.rarity]}
-              />
-            </span>
-          )}
-        </span>
-      )
-    }
-    case 'Tile':
-      return (
-        <span className={`flex items-center justify-center ${size}`}>
-          <TileImage tile={offering.item as Tile} size="small" showTooltip={false} />
-        </span>
-      )
-    default: {
-      const kind =
-        offering.itemType === 'FateSeal'
-          ? 'seals'
-          : offering.itemType === 'CelestialOrb'
-            ? 'orbs'
-            : offering.itemType === 'VoidScript'
-              ? 'scripts'
-              : offering.itemType === 'BlessingPack'
-                ? 'packs'
-                : 'charters'
-      const id =
-        offering.itemType === 'BlessingPack'
-          ? (offering.item as BlessingPack).type
-          : offering.item.id
-      return (
-        <img
-          src={getItemArt(kind, id).src}
-          alt=""
-          aria-hidden="true"
-          draggable={false}
-          className={`game-illustration object-contain ${size}`}
-        />
-      )
-    }
-  }
 }
 
 export function ShopOfferCard({
@@ -351,6 +156,11 @@ export function ShopOfferCard({
               <p className="mt-1 leading-relaxed">{text.description}</p>
             </div>
           </div>
+          {text.cost && (
+            <p className="rounded-lg border border-red-400/35 bg-red-950/45 p-2 text-xs text-red-100">
+              {t('consumableUse.cost')}: {text.cost}
+            </p>
+          )}
           {text.extra && (
             <p className="rounded-lg bg-black/25 p-2 text-xs text-[var(--color-beige-white)]/80">
               {text.extra}

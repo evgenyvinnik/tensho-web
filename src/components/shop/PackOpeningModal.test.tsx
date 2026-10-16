@@ -14,6 +14,10 @@ import { tileRewardText } from '../../i18n/tileRewardText'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { PackOpeningModal } from './PackOpeningModal'
 import { RIVER_TAX } from '../../systems/DecreeSystem'
+import {
+  CELESTIAL_ORBS,
+  CelestialOrbSystem,
+} from '../../systems/CelestialOrbSystem'
 
 afterEach(async () => {
   await act(async () => {
@@ -185,4 +189,65 @@ it('retains every stacked modifier and handles plain and Honor reward tiles', ()
     tileRewardText(new Tile(TileSuit.Dragon, 2, 'green'), i18n.t.bind(i18n))
       .name
   ).toBe('Green Dragon')
+})
+
+it('draws a reward big in its rarity glow and shows its details card on hover or tap', () => {
+  useSettingsStore.setState({ reducedMotion: true })
+  const orb = CelestialOrbSystem.createCelestialOrbInstance(
+    CELESTIAL_ORBS.pluto_orb
+  )
+  const name = i18n.t('orbs.items.pluto_orb.name')
+  const description = i18n.t('orbs.items.pluto_orb.description')
+  render(
+    <PackOpeningModal
+      isOpen
+      onConfirm={vi.fn()}
+      onSkip={vi.fn()}
+      packOffering={{
+        pack: {
+          id: 'orb-pack',
+          type: 'Celestial',
+          size: 'Normal',
+          cost: 4,
+          choiceCount: 3,
+          selectCount: 1,
+        },
+        contents: [
+          {
+            id: 'orb-choice',
+            type: 'CelestialOrb',
+            name: orb.name,
+            description: orb.description,
+            rarity: 'rare',
+            data: orb,
+          },
+        ],
+        isOpened: true,
+        isResolved: false,
+        selectedIndices: [],
+        maxSelections: 1,
+      }}
+    />
+  )
+  const choice = screen.getByRole('button', { name })
+  expect(choice.querySelector('[data-rarity="rare"]')).not.toBeNull()
+  expect(choice).toHaveAccessibleDescription(description)
+  const details = () => document.querySelector('[data-pack-choice-details]')
+  expect(details()).toBeNull()
+
+  fireEvent.pointerEnter(choice, { pointerType: 'mouse' })
+  expect(details()).toHaveTextContent(description)
+  expect(details()).toHaveTextContent(i18n.t('shop.kinds.orb'))
+  // The card only shows; the reward stays the thing to press.
+  expect(details()).toHaveClass('pointer-events-none')
+  fireEvent.pointerLeave(choice, { pointerType: 'mouse' })
+  expect(details()).toBeNull()
+
+  // A touch has no hover: a tap chooses and shows the card together.
+  fireEvent.pointerDown(choice, { pointerType: 'touch' })
+  fireEvent.click(choice, { detail: 1 })
+  expect(choice).toHaveAttribute('aria-pressed', 'true')
+  expect(details()).toHaveTextContent(description)
+  fireEvent.pointerDown(screen.getByRole('dialog'), { pointerType: 'touch' })
+  expect(details()).toBeNull()
 })
