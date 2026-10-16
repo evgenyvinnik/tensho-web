@@ -78,9 +78,13 @@ export function FlowerDetails({
           {t('flora.details.plumRecovery', { count: plumRecovery })}
         </p>
       )}
-      {flora.flowersSuppressed && (
+      {(flora.flowersSuppressed || flora.flowersProtected) && (
         <p className="rounded border border-amber-300/50 p-2 text-xs">
-          {t('flora.details.suppressed')}
+          {t(
+            flora.flowersSuppressed
+              ? 'flora.details.suppressed'
+              : 'flora.details.protected'
+          )}
         </p>
       )}
       <p className="text-xs text-[var(--color-beige-white)]/70">

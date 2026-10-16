@@ -188,3 +188,18 @@ it('tells a Plum how many tiles it recovered from the river', () => {
     'Plum returned tiles from the river: 1.'
   )
 })
+
+it('tells a Flower when a Decree shields it from Drought', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Plum))
+  renderRail({
+    flora: { ...game.getFloraState(), flowersProtected: true },
+  })
+  fireEvent.click(document.querySelector('[data-flora-flower="Plum"]')!, {
+    detail: 1,
+  })
+  expect(screen.getByRole('dialog', { name: 'Plum' })).toHaveTextContent(
+    'A Decree protects your Flower bonuses from Drought.'
+  )
+})
