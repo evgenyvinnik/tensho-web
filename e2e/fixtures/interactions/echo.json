@@ -1,12 +1,12 @@
 {
   "format": 1,
-  "runId": "55bb8914-d788-4ca0-bcf1-179ddf875346",
-  "owner": "cdf29ac6-be90-4a63-9795-43a908202c93",
+  "runId": "c70135db-d1ea-48da-b199-e1c5780bb59d",
+  "owner": "e8420e31-7d65-4231-80ef-c49a055ec053",
   "revision": 1,
-  "createdAt": 1791744705058,
-  "updatedAt": 1791744705058,
+  "createdAt": 1792125290417,
+  "updatedAt": 1792125290417,
   "snapshot": {
-    "version": 2,
+    "version": 3,
     "state": {
       "isRunActive": true,
       "seed": 7,
@@ -30,14 +30,14 @@
       "hasEnteredEndless": false,
       "score": 0,
       "gold": 4,
-      "handsRemaining": 7,
-      "handsAllowance": 7,
+      "handsRemaining": 9,
+      "handsAllowance": 9,
       "lossPreventionScorePenalty": 1,
       "lastHandScore": null,
       "handsPlayedThisRun": 0,
-      "discardsRemaining": 3,
-      "redrawsRemaining": 3,
-      "targetScore": 173,
+      "discardsRemaining": 0,
+      "redrawsRemaining": 0,
+      "targetScore": 47,
       "handTiles": [
         {
           "suit": "souzu",
@@ -45,9 +45,9 @@
           "id": "echo-4",
           "isRed": false,
           "modifiers": {
-            "enhancement": "bonus",
+            "enhancement": "none",
             "seal": "gold",
-            "edition": "polychrome"
+            "edition": "base"
           }
         },
         {
@@ -2612,7 +2612,7 @@
       },
       "seasonSystem": {
         "activeSeason": {
-          "id": "forced-Winter-1791744704966",
+          "id": "forced-Winter-1792125290309",
           "type": "Winter",
           "effect": {
             "type": "legality_modifier",
@@ -2629,7 +2629,7 @@
         },
         "seasonStack": [
           {
-            "id": "forced-Winter-1791744704966",
+            "id": "forced-Winter-1792125290309",
             "type": "Winter",
             "effect": {
               "type": "legality_modifier",
@@ -2657,7 +2657,7 @@
               "actNumber": 1,
               "roundNumber": 1,
               "roundType": "Small",
-              "scoreTarget": 173,
+              "scoreTarget": 47,
               "currentScore": 0,
               "handsPlayed": 0,
               "maxHands": 4,
@@ -2695,7 +2695,7 @@
                 "id": "the_hook",
                 "name": "The Hook",
                 "japaneseName": "鉤",
-                "description": "2 random tiles discarded from hand after each draw",
+                "description": "After each draw, 2 random tiles go from your rack to the river",
                 "effect": {
                   "type": "discard_after_draw",
                   "value": 2
@@ -2712,7 +2712,7 @@
           "actNumber": 1,
           "roundNumber": 1,
           "roundType": "Small",
-          "scoreTarget": 173,
+          "scoreTarget": 47,
           "currentScore": 0,
           "handsPlayed": 0,
           "maxHands": 4,
@@ -2754,7 +2754,7 @@
       "celestialOrbSystem": {
         "orbLevels": [
           [
-            "Riichi",
+            "Pairs",
             1
           ],
           [
@@ -2804,7 +2804,7 @@
         ],
         "yakuTriggerCounts": [
           [
-            "Riichi",
+            "Pairs",
             0
           ],
           [
@@ -2919,12 +2919,13 @@
       "deadWallWritUsedThisRound": false,
       "pendingActReduction": 0,
       "phase": "gameplay",
-      "riichiStatus": "available"
+      "playsThisRound": 0,
+      "tilesRedrawnThisRound": 0
     },
     "config": {
-      "handsPerRound": 4,
-      "discardsPerRound": 3,
-      "redrawsPerRound": 3,
+      "handsPerRound": 6,
+      "discardsPerRound": 0,
+      "redrawsPerRound": 0,
       "startingHandSize": 14
     },
     "shop": {
