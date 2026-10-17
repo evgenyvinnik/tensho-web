@@ -45,11 +45,24 @@ for (const kind of ['legacy', 'fallback', 'disabled'] as const) {
       const service = initializeClassicPersistence()
       const raw = service.getSnapshot().disk.raw
       game.startNewRun(7)
-      if (kind === 'disabled') {
-        game.processAction({ type: 'skip' })
-        game.processAction({ type: 'skip' })
-      }
       const state = game.getState()
+      // Reach the Showdown with two real swift clears at a target of 1.
+      if (kind === 'disabled')
+        for (let i = 0; i < 2; i++) {
+          state.targetScore = 1
+          state.roundManager.getCurrentRound().scoreTarget = 1
+          if (
+            !game.processAction({
+              type: 'play',
+              tileIds: state.handTiles
+                .slice(0, 2)
+                .map((t: { id: string }) => t.id),
+            }).success ||
+            !game.shop.open()
+          )
+            throw new Error('Fixture round failed')
+          game.exitShop()
+        }
       state.decreeSystem = new DecreeSystem()
       const definition = ALL_DECREES.find(
         (d: { id: string }) => d.id === 'decree-phoenix'
@@ -85,7 +98,8 @@ for (const kind of ['legacy', 'fallback', 'disabled'] as const) {
         throw new Error(`Fixture save failed: ${service.getSnapshot().status}`)
     }, kind)
     await page.reload()
-    await saved(page)
+    const start = await saved(page)
+    expect(start.state.handsPlayedThisRun).toBe(kind === 'disabled' ? 2 : 0)
     await activate(page.locator('[data-decree-instance]').first(), isMobile)
     const dialog = page.getByRole('dialog')
     if (kind !== 'disabled') {
@@ -125,7 +139,9 @@ for (const kind of ['legacy', 'fallback', 'disabled'] as const) {
       await expect.poll(async () => (await saved(page)).shop.opened).toBe(true)
     const settled = await saved(page)
     expect(settled.state.phase).toBe(kind === 'fallback' ? 'shop' : 'gameOver')
-    expect(settled.state.handsPlayedThisRun).toBe(1)
+    expect(settled.state.handsPlayedThisRun).toBe(
+      start.state.handsPlayedThisRun + 1
+    )
     expect(settled.state.decreeSystem.ownedDecrees).toHaveLength(1)
     expect(settled.state.decreeSystem.ownedDecrees[0].instanceId).toBe(
       'owned-decree-1'
