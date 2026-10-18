@@ -341,8 +341,9 @@ See [GAME_MECHANICS.md](docs/GAME_MECHANICS.md) for complete glossary.
 ```
 Score = Points × Mult
 Points = tile points + group bonuses + additive bonuses   (loose tiles score half)
-Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per grouped Dragon,
-         then Decrees in order (+N adds, ×N multiplies), then ×-layers
+Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per grouped Dragon
+         + Mark/Edition +Mult, then Decrees in order (+N adds, ×N
+         multiplies), then ×-layers (Glass, Polychrome, ×1.5 per held Steel)
 Pattern Mult = (groups − 1) + Triplet/4-Straight 1, Quad/5-Straight 2; Mahjong +4
 ```
 

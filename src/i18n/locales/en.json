@@ -1307,6 +1307,7 @@
     "numberedRule": "Match identical tiles for a pair or triplet. Three consecutive numbers in one suit form a sequence.",
     "honorRule": "Honors form matching pairs or triplets, not numbered sequences.",
     "basePoints": "{{points}} base points before group bonuses, discounts and other effects.",
+    "dragonMult": "+{{mult}} Mult when it scores inside a group.",
     "bonusTile": "Automatically collected bonus tile",
     "flowerScope": "Base Flower effect; lasts for the run. Collection bonuses and suppression can change it. See Flowers / Seasons for active effects.",
     "stage": "Stage {{tile}}",
@@ -2421,7 +2422,7 @@
     "items": {
       "bonus": {
         "name": "Bonus Mark",
-        "description": "Tile scores extra points. +30 Chips when scored"
+        "description": "Tile scores extra points. +30 Points when scored"
       },
       "mult": {
         "name": "Mult Mark",
@@ -2449,7 +2450,7 @@
       },
       "lucky": {
         "name": "Lucky Mark",
-        "description": "Random bonus chance. 1 in 5 chance for +20 Mult when scored"
+        "description": "Random bonus chance. When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold"
       }
     }
   },
@@ -2465,7 +2466,7 @@
       },
       "blue": {
         "name": "Blue Seal",
-        "description": "Creates Celestial Orb. Creates Celestial Orb for final hand yaku"
+        "description": "Creates a random Celestial Orb when this tile is in the play that clears the round."
       },
       "purple": {
         "name": "Purple Seal",
@@ -2481,7 +2482,7 @@
       },
       "foil": {
         "name": "Foil",
-        "description": "Shimmering metallic finish. +50 Chips when scored"
+        "description": "Shimmering metallic finish. +50 Points when scored"
       },
       "holographic": {
         "name": "Holographic",

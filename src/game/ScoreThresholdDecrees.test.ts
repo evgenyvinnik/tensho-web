@@ -143,7 +143,7 @@ it('rolls Lucky only once when the outcome changes threshold qualification', () 
   expect(game.previewScore(tileIds)!.finalScore).toBe(45)
   expect(random).not.toHaveBeenCalled()
   expect(game.processAction({ type: 'play', tileIds }).success).toBe(true)
-  expect(state.score).toBe(162) // (45 + 20 Lucky chips) × 2.5
+  expect(state.score).toBe(2362) // 45 × (1 + 20 Lucky Mult) × 2.5
   expect(
     random.mock.calls.filter(([stream]) => stream === 'modifiers')
   ).toHaveLength(1)

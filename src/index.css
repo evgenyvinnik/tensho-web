@@ -527,9 +527,21 @@ a {
   --mark: #a8a29e;
   --mark-deep: #44403c;
   background:
-    radial-gradient(circle at 20% 30%, rgba(68, 64, 60, 0.35) 0 6%, transparent 7%),
-    radial-gradient(circle at 70% 60%, rgba(68, 64, 60, 0.3) 0 8%, transparent 9%),
-    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.25) 0 5%, transparent 6%),
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(68, 64, 60, 0.35) 0 6%,
+      transparent 7%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(68, 64, 60, 0.3) 0 8%,
+      transparent 9%
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      rgba(255, 255, 255, 0.25) 0 5%,
+      transparent 6%
+    ),
     rgba(120, 113, 108, 0.42);
 }
 
@@ -639,10 +651,14 @@ a {
 @keyframes tile-sheen {
   0%,
   100% {
-    background-position: 100% 0, 0 0;
+    background-position:
+      100% 0,
+      0 0;
   }
   50% {
-    background-position: 0% 0, 0 0;
+    background-position:
+      0% 0,
+      0 0;
   }
 }
 

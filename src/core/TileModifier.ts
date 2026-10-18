@@ -22,7 +22,7 @@ import { runRandom } from '../game/RunRandom'
  */
 export enum EnhancementType {
   None = 'none',
-  Bonus = 'bonus', // +30 Chips when scored
+  Bonus = 'bonus', // +30 Points when scored
   Mult = 'mult', // +4 Mult when scored
   Wild = 'wild', // Counts as every suit
   Glass = 'glass', // ×2 Mult when scored, 1/4 chance to shatter
@@ -69,7 +69,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
     type: EnhancementType.Bonus,
     name: 'Bonus Mark',
     japaneseName: '増印',
-    description: '+30 Chips when this tile scores',
+    description: '+30 Points when this tile scores',
     chipBonus: 30,
     multBonus: 0,
     multMultiplier: 1,
@@ -124,7 +124,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
     type: EnhancementType.Stone,
     name: 'Stone Mark',
     japaneseName: '石印',
-    description: '+100 Chips, always scores regardless of hand',
+    description: '+100 Points, always scores regardless of hand',
     // Double a Wind tile's 50: a Stone gives up grouping for a sure payout.
     chipBonus: 100,
     multBonus: 0,
@@ -224,7 +224,8 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
     type: SealType.Blue,
     name: 'Blue Seal',
     japaneseName: '青封',
-    description: 'Creates a Celestial Orb if in final winning hand',
+    description:
+      'Creates a random Celestial Orb if in the play that clears the round',
     goldOnPlay: 0,
     retriggers: 0,
     createsConsumable: 'orb',
@@ -252,7 +253,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
  */
 export enum EditionType {
   Base = 'base',
-  Foil = 'foil', // +50 Chips
+  Foil = 'foil', // +50 Points
   Holographic = 'holographic', // +10 Mult
   Polychrome = 'polychrome', // ×1.5 Mult
   Negative = 'negative', // +1 Decree slot
@@ -292,7 +293,7 @@ export const EDITION_DEFINITIONS: Record<EditionType, EditionDefinition> = {
     type: EditionType.Foil,
     name: 'Foil',
     japaneseName: '箔押',
-    description: '+50 Chips',
+    description: '+50 Points',
     chipBonus: 50,
     multBonus: 0,
     multMultiplier: 1,

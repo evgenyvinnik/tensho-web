@@ -26,7 +26,7 @@ import {
 } from './assets'
 import { getGeneratedArt, getYakuIllustration } from './generatedArt'
 import { getOmenIllustration } from './omenArt'
-import type { FlowerVariant, PackType } from '../systems/types'
+import type { FlowerVariant, PackType, SeasonTile } from '../systems/types'
 
 export type ItemArtKind =
   | 'decrees'
@@ -57,7 +57,6 @@ const CHARTER_PORTRAITS: Record<string, string> = {
 }
 
 const UPGRADE_ORBS: Record<string, string> = {
-  Pairs: 'pluto_orb',
   All: 'black_hole_orb',
 }
 
@@ -121,8 +120,10 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
           }
     }
     case 'yakuUpgrades': {
-      // A family is pictured by its hand; Pairs and All by the Orb that
-      // levels them.
+      // Pairs depicts two identical real tile faces, distinct from its Orb
+      // and from the separate Seven Pairs family.
+      if (id === 'Pairs')
+        return { src: illustrationAssets.pairsUpgrade, hasOwnArt: true }
       const src =
         getYakuIllustration(id) ??
         getGeneratedArt('orbs', UPGRADE_ORBS[id])
@@ -157,6 +158,16 @@ const SEASON_ART: Record<string, string> = {
   Winter: illustrationAssets.winterPine,
 }
 
-export function getSeasonArt(season: string): string {
-  return SEASON_ART[season] ?? illustrationAssets.codex.flora
+export function getSeasonArt(
+  season: string | Pick<SeasonTile, 'type' | 'isCorrupted' | 'corruptedType'>
+): string {
+  const type = typeof season === 'string' ? season : season.type
+  if (typeof season !== 'string' && season.isCorrupted && season.corruptedType) {
+    const art = illustrationAssets.corruptedSeasons
+    if (Object.prototype.hasOwnProperty.call(art, season.corruptedType))
+      return art[season.corruptedType]
+  }
+  return Object.prototype.hasOwnProperty.call(SEASON_ART, type)
+    ? SEASON_ART[type]
+    : illustrationAssets.codex.flora
 }

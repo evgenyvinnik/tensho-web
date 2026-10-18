@@ -42,7 +42,7 @@ export function FloraReveal({
   const art =
     current.kind === 'flower'
       ? getFlowerArt(current.flower)
-      : getSeasonArt(current.season.type)
+      : getSeasonArt(current.season)
 
   return (
     <Popup
@@ -58,9 +58,7 @@ export function FloraReveal({
         <img
           src={art}
           alt=""
-          className={`game-illustration mx-auto h-28 w-28 object-contain ${
-            current.kind === 'season' && current.season.isCorrupted ? 'grayscale' : ''
-          }`}
+          className="game-illustration mx-auto h-28 w-28 object-contain"
         />
         <p className="mt-2 text-sm text-[var(--color-beige-white)]/80">
           {t('floraReveal.drawn')}

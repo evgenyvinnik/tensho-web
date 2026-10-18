@@ -2,6 +2,7 @@ import type { TFunction } from 'i18next'
 import { Tile, TileSuit, EnhancementType } from '../core/Tile'
 import { tileModifierEntries } from '../core/tileModifierEntries'
 import { getTilePoints } from '../rules/ScoringEngine'
+import { DRAGON_GROUP_MULT } from '../rules/PlayPattern'
 import { FLOWER_BASE_EFFECTS } from '../systems/FlowerSystem'
 
 const WINDS = ['east', 'south', 'west', 'north'] as const
@@ -69,6 +70,13 @@ export function tileDetails(
   let points = t('tileDetails.basePoints', {
     points: getTilePoints(tile).toLocaleString(language),
   })
+  // A Dragon's real power is Mult, so its card must say so beside its points.
+  if (tile.suit === TileSuit.Dragon)
+    points +=
+      ' ' +
+      t('tileDetails.dragonMult', {
+        mult: DRAGON_GROUP_MULT.toLocaleString(language),
+      })
   if (tile.enhancement === EnhancementType.Stone) {
     description = t('tileMarks.items.stone.description', 'No rank or suit')
     points = ''

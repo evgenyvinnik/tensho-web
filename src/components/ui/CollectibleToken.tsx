@@ -27,7 +27,7 @@ export interface CollectibleTokenProps {
   badge?: ReactNode
   /** Border/glow colour for the item's family. */
   tone?: string
-  /** Inactive (for example a suppressed Flower or a corrupted Season). */
+  /** Inactive (for example a suppressed Flower, not an active Season hazard). */
   dimmed?: boolean
   /** Wider frame for portrait-format art such as scrolls. */
   shape?: 'square' | 'portrait'

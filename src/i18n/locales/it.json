@@ -367,7 +367,7 @@
       },
       "lucky": {
         "name": "Marchio Fortuna",
-        "description": "Probabilità di 1 su 5 di ottenere +20 Moltiplicatore quando segna punti."
+        "description": "Quando segna punti: probabilità di 1 su 5 di ottenere +20 Moltiplicatore e di 1 su 15 di ottenere +20 Oro."
       }
     }
   },
@@ -407,7 +407,7 @@
       },
       "blue": {
         "name": "Sigillo Blu",
-        "description": "Crea una Sfera Celeste per lo yaku della mano vincente finale."
+        "description": "Crea una Sfera Celeste casuale se questa tessera è nella giocata che supera il round."
       },
       "purple": {
         "name": "Sigillo Viola",
@@ -1598,6 +1598,7 @@
     "numberedRule": "Abbina tessere identiche per formare una coppia o un tris. Tre numeri consecutivi dello stesso seme formano una sequenza.",
     "honorRule": "Gli onori formano coppie o tris identici, non sequenze numeriche.",
     "basePoints": "{{points}} punti base prima di bonus dei gruppi, riduzioni e altri effetti.",
+    "dragonMult": "+{{mult}} Mult quando segna dentro un gruppo.",
     "bonusTile": "Tessera bonus raccolta automaticamente",
     "flowerScope": "Effetto base del fiore, valido per la partita. Bonus della collezione e soppressione possono modificarlo. Consulta Fiori / Stagioni per gli effetti attivi.",
     "stage": "Prepara {{tile}}",

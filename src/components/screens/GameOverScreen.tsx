@@ -107,7 +107,13 @@ export function GameOverScreen() {
           style={resultSpring}
         >
           <img
-            src={illustrationAssets.journeyResult}
+            src={
+              isFreshVictory
+                ? illustrationAssets.victoryResult
+                : isEndlessResult
+                  ? illustrationAssets.journeyResult
+                  : illustrationAssets.defeatResult
+            }
             alt=""
             width={1200}
             height={400}

@@ -1311,6 +1311,7 @@
     "numberedRule": "Associez des tuiles identiques pour former une paire ou un brelan. Trois nombres consécutifs de la même famille forment une suite.",
     "honorRule": "Les honneurs forment des paires ou des brelans identiques, pas des suites numériques.",
     "basePoints": "{{points}} points de base avant les bonus de groupe, réductions et autres effets.",
+    "dragonMult": "+{{mult}} Mult quand elle marque dans un groupe.",
     "bonusTile": "Tuile bonus collectée automatiquement",
     "flowerScope": "Effet de base de la fleur, valable pour la partie. Les bonus de collection et la suppression peuvent le modifier. Consultez Fleurs / Saisons pour les effets actifs.",
     "stage": "Préparer {{tile}}",
@@ -2425,7 +2426,7 @@
     "items": {
       "bonus": {
         "name": "Marque de Bonus",
-        "description": "La tuile rapporte davantage. +30 Jetons au décompte"
+        "description": "La tuile rapporte davantage. +30 Points au décompte"
       },
       "mult": {
         "name": "Marque de Mult",
@@ -2453,7 +2454,7 @@
       },
       "lucky": {
         "name": "Marque de Chance",
-        "description": "Bonus aléatoire. 1 chance sur 5 d'obtenir +20 Mult au décompte"
+        "description": "Bonus aléatoire. Au décompte : 1 chance sur 5 d'obtenir +20 Mult, 1 chance sur 15 d'obtenir +20 pièces d'or"
       }
     }
   },
@@ -2469,7 +2470,7 @@
       },
       "blue": {
         "name": "Sceau Bleu",
-        "description": "Crée un Orbe céleste. Crée un Orbe céleste pour le yaku de la dernière main"
+        "description": "Crée un Orbe céleste aléatoire si cette tuile fait partie du coup qui remporte la manche."
       },
       "purple": {
         "name": "Sceau Violet",
@@ -2485,7 +2486,7 @@
       },
       "foil": {
         "name": "Feuille",
-        "description": "Fini métallique chatoyant. +50 Jetons au décompte"
+        "description": "Fini métallique chatoyant. +50 Points au décompte"
       },
       "holographic": {
         "name": "Holographique",

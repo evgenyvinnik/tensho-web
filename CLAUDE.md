@@ -209,8 +209,9 @@ Strict mode with enhanced linting:
 ```
 Score  = Points × Mult
 Points = tile points + group bonuses + additive bonuses
-Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per grouped Dragon,
-         then Decrees in order (+N adds, ×N multiplies), then ×-layers
+Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per grouped Dragon
+         + Mark/Edition +Mult, then Decrees in order (+N adds, ×N
+         multiplies), then ×-layers (Glass, Polychrome, ×1.5 per held Steel)
 ```
 
 Tile points: suited 5, terminals (1, 9) 10, Winds 50, Dragons 15.

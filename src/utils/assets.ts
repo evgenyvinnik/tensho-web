@@ -90,6 +90,15 @@ export const illustrationAssets = {
   autumnMaple: `${ASSET_BASE}/illustrations/autumn-maple.webp`,
   winterPine: `${ASSET_BASE}/illustrations/winter-pine.webp`,
   summerFan: `${ASSET_BASE}/illustrations/summer-fan.webp`,
+  corruptedSeasons: {
+    Monsoon: `${ASSET_BASE}/illustrations/seasons/monsoon.webp`,
+    Drought: `${ASSET_BASE}/illustrations/seasons/drought.webp`,
+    Decay: `${ASSET_BASE}/illustrations/seasons/decay.webp`,
+    Frostbite: `${ASSET_BASE}/illustrations/seasons/frostbite.webp`,
+  },
+  pairsUpgrade: `${ASSET_BASE}/illustrations/upgrades/pairs.webp`,
+  victoryResult: `${ASSET_BASE}/illustrations/results/victory.webp`,
+  defeatResult: `${ASSET_BASE}/illustrations/results/defeat.webp`,
   ceruleanBell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
   mandates: {
     amber_acorn: `${ASSET_BASE}/illustrations/amber-acorn.webp`,

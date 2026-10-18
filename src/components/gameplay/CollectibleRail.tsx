@@ -331,9 +331,8 @@ export function CollectibleRail({
       <CollectibleToken
         key={season.id}
         label={seasonName(season)}
-        art={getSeasonArt(season.type)}
+        art={getSeasonArt(season)}
         tone={season.isCorrupted ? '#fb923c' : '#86efac'}
-        dimmed={season.isCorrupted}
         data={{ 'data-flora-season': season.id }}
         {...control(season.id)}
       >

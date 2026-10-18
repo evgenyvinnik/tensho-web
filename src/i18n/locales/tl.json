@@ -367,7 +367,7 @@
       },
       "lucky": {
         "name": "Markang Suwerte",
-        "description": "1 sa 5 tsansang makakuha ng +20 Multiplier kapag nagbigay ng puntos."
+        "description": "Kapag nagbigay ng puntos: 1 sa 5 tsansang makakuha ng +20 Multiplier, 1 sa 15 tsansang makakuha ng +20 Ginto."
       }
     }
   },
@@ -407,7 +407,7 @@
       },
       "blue": {
         "name": "Asul na Selyo",
-        "description": "Lumilikha ng Celestial Orb para sa yaku ng huling panalong kamay."
+        "description": "Lumilikha ng random na Celestial Orb kapag kasama ang tile na ito sa larong tumapos sa round."
       },
       "purple": {
         "name": "Lilang Selyo",
@@ -1598,6 +1598,7 @@
     "numberedRule": "Pagtambalin ang magkaparehong tile para bumuo ng pares o tatluhan. Tatlong magkakasunod na numero sa parehong suit ang bumubuo ng sunod-sunod.",
     "honorRule": "Ang mga Honor ay bumubuo ng magkaparehong pares o tatluhan, hindi sunod-sunod na numero.",
     "basePoints": "{{points}} batayang puntos bago ang bonus ng grupo, pagbabawas at iba pang epekto.",
+    "dragonMult": "+{{mult}} Mult kapag nakapuntos sa loob ng grupo.",
     "bonusTile": "Bonus tile na awtomatikong kinokolekta",
     "flowerScope": "Batayang epekto ng bulaklak; tumatagal sa buong run. Maaaring baguhin ito ng bonus ng koleksyon at pagsupil. Tingnan ang Bulaklak / Panahon para sa aktibong epekto.",
     "stage": "Ihanda ang {{tile}}",

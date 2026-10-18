@@ -288,7 +288,7 @@
       },
       "lucky": {
         "name": "Tanda Keberuntungan",
-        "description": "Peluang 1 dari 5 untuk +20 Pengali saat mencetak skor."
+        "description": "Saat mencetak skor: peluang 1 dari 5 untuk +20 Pengali, peluang 1 dari 15 untuk +20 Emas."
       }
     }
   },
@@ -328,7 +328,7 @@
       },
       "blue": {
         "name": "Segel Biru",
-        "description": "Menciptakan Orb Surgawi untuk yaku tangan pemenang terakhir."
+        "description": "Membuat Orb Surgawi acak jika ubin ini ada dalam permainan yang menuntaskan ronde."
       },
       "purple": {
         "name": "Segel Ungu",
@@ -1519,6 +1519,7 @@
     "numberedRule": "Cocokkan ubin identik untuk membuat pasangan atau triplet. Tiga angka berurutan dari jenis yang sama membentuk urutan.",
     "honorRule": "Ubin kehormatan membentuk pasangan atau triplet identik, bukan urutan angka.",
     "basePoints": "{{points}} poin dasar sebelum bonus kelompok, pengurangan, dan efek lain.",
+    "dragonMult": "+{{mult}} Mult saat mencetak skor di dalam grup.",
     "bonusTile": "Ubin bonus yang dikumpulkan otomatis",
     "flowerScope": "Efek dasar bunga berlangsung sepanjang permainan. Bonus koleksi dan penekanan dapat mengubahnya. Lihat Bunga / Musim untuk efek aktif.",
     "stage": "Siapkan {{tile}}",

@@ -66,7 +66,7 @@ it('explains the edition and actual rental fee inside the scroll details', () =>
   fireEvent.click(screen.getByRole('button', { name: 'Half Suited' }))
   const dialog = screen.getByRole('dialog')
   expect(dialog).toHaveTextContent('Foil')
-  expect(dialog).toHaveTextContent('+50 Chips')
+  expect(dialog).toHaveTextContent('+50 Points')
   expect(dialog).toHaveTextContent('Costs 0 gold at the end of each round.')
 })
 

@@ -1311,6 +1311,7 @@
     "numberedRule": "Combina fichas idénticas para formar una pareja o un trío. Tres números consecutivos del mismo palo forman una secuencia.",
     "honorRule": "Los honores forman parejas o tríos iguales, no secuencias numéricas.",
     "basePoints": "{{points}} puntos base antes de las bonificaciones de grupo, reducciones y otros efectos.",
+    "dragonMult": "+{{mult}} Mult cuando puntúa dentro de un grupo.",
     "bonusTile": "Ficha de bonificación que se recoge automáticamente",
     "flowerScope": "Efecto base de la flor; dura toda la partida. Las bonificaciones de colección y la supresión pueden cambiarlo. Consulta Flores / Estaciones para ver los efectos activos.",
     "stage": "Preparar {{tile}}",
@@ -2425,7 +2426,7 @@
     "items": {
       "bonus": {
         "name": "Marca de Bonificación",
-        "description": "La ficha puntúa de más. +30 Fichas al puntuar"
+        "description": "La ficha puntúa de más. +30 Puntos al puntuar"
       },
       "mult": {
         "name": "Marca de Mult",
@@ -2453,7 +2454,7 @@
       },
       "lucky": {
         "name": "Marca de Suerte",
-        "description": "Bonificación aleatoria. 1 de cada 5 veces da +20 Mult al puntuar"
+        "description": "Bonificación aleatoria. Al puntuar: 1 de cada 5 veces da +20 Mult y 1 de cada 15, +20 de oro"
       }
     }
   },
@@ -2469,7 +2470,7 @@
       },
       "blue": {
         "name": "Sello Azul",
-        "description": "Crea un Orbe Celeste. Crea un Orbe Celeste para el yaku de la mano final"
+        "description": "Crea un Orbe Celeste al azar si esta ficha está en la jugada que supera la ronda."
       },
       "purple": {
         "name": "Sello Púrpura",
@@ -2485,7 +2486,7 @@
       },
       "foil": {
         "name": "Lámina",
-        "description": "Acabado metálico reluciente. +50 Fichas al puntuar"
+        "description": "Acabado metálico reluciente. +50 Puntos al puntuar"
       },
       "holographic": {
         "name": "Holográfica",

@@ -16,10 +16,11 @@
  * Mult starts at 1 (or the Yaku multiplier of a complete hand) and adds:
  * - the play pattern's Mult (see PlayPattern.ts)
  * - +2 for every Dragon that scores inside a group
+ * - every scored Mark or Edition "+N Mult" (Mult Mark +4, Holo +10, Lucky +20)
  *
- * Tile modifiers add:
- * - Enhancement chips/mult (Bonus: +30, Mult: +4, etc.)
- * - Edition chips/mult (Foil: +50, Holo: +10, Poly: x1.5)
+ * Tile modifiers also add:
+ * - points from Marks and Editions (Bonus: +30, Stone: +100, Foil: +50)
+ * - ×Mult layers (Glass ×2, Polychrome ×1.5, ×1.5 per Steel Mark held in rack)
  * - Seal effects (Gold: ¥3, Red: retrigger, etc.)
  *
  * Red fives (aka-dora) add:
@@ -133,6 +134,8 @@ export interface ScoringContext {
   extraRetriggers?: ReadonlyMap<string, number>
   /** Share of Decree repeat rewards retained; never scales native tile effects. */
   retriggerStrength?: number
+  /** Rack tiles left out of this play; each held Steel Mark multiplies it. */
+  heldTiles?: Tile[]
 }
 
 /**
@@ -324,9 +327,18 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
       retriggerStrength: strength,
     }
   )
+  // Tiles kept in the rack pay only their held ×Mult (Steel). A held Gold
+  // Mark's coins belong to the end of the round, not to every play.
+  const heldMultiplier = tileModifierSystem.scoreTilesWithModifiers(
+    (context.heldTiles ?? []).filter(
+      (tile) => !context.debuffedTileIds?.has(tile.id)
+    ),
+    'held',
+    { preview: context.previewMode }
+  ).totalMultiplier
   const modifierChips = modifierResult.totalChips
   const modifierMult = modifierResult.totalMult
-  const modifierMultiplier = modifierResult.totalMultiplier
+  const modifierMultiplier = modifierResult.totalMultiplier * heldMultiplier
   const goldEarned = modifierResult.totalGold
   const shatteredTiles = [...new Set(modifierResult.shatteredTileIds)]
 
@@ -394,16 +406,17 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 6. Apply additional bonuses from game systems (including red fives)
   const additiveBonus =
-    (context.additiveBonus ?? 0) + modifierChips + modifierMult + redFiveChips
+    (context.additiveBonus ?? 0) + modifierChips + redFiveChips
   const multiplicativeBonus =
     (context.multiplicativeBonus ?? 1) * modifierMultiplier
 
   // 7. Calculate final score
   // Formula: Final Score = (Base Points + Additive Bonuses) x Multiplicative Multipliers
+  // A Mark or Edition's "+N Mult" joins the play's Mult, like a Dragon's.
   const subtotal = basePoints + additiveBonus
   const finalScore = Math.floor(
     subtotal *
-      (yakuMultiplier + pattern.mult + dragonMult) *
+      (yakuMultiplier + pattern.mult + dragonMult + modifierMult) *
       multiplicativeBonus
   )
 
@@ -462,6 +475,7 @@ export function createScoringContext(
     previewMode?: boolean
     extraRetriggers?: ReadonlyMap<string, number>
     retriggerStrength?: number
+    heldTiles?: Tile[]
   } = {}
 ): ScoringContext {
   return {
@@ -481,6 +495,7 @@ export function createScoringContext(
     previewMode: options.previewMode,
     extraRetriggers: options.extraRetriggers,
     retriggerStrength: options.retriggerStrength,
+    heldTiles: options.heldTiles,
   }
 }
 

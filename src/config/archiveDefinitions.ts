@@ -396,7 +396,7 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
     name: 'Bonus Mark',
     japaneseName: '点印',
     description: 'Tile scores extra points',
-    effect: '+30 Chips when scored',
+    effect: '+30 Points when scored',
   },
   {
     id: 'mult',
@@ -446,7 +446,8 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
     name: 'Lucky Mark',
     japaneseName: '運印',
     description: 'Random bonus chance',
-    effect: '1 in 5 chance for +20 Mult when scored',
+    effect:
+      'When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold',
   },
 ]
 
@@ -490,8 +491,8 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
     id: 'blue',
     name: 'Blue Seal',
     japaneseName: '青封',
-    description: 'Creates Celestial Orb',
-    effect: 'Creates Celestial Orb for final hand yaku',
+    description: 'Creates a random Celestial Orb',
+    effect: 'When this tile is in the play that clears the round',
     color: '#4444FF',
   },
   {
@@ -537,7 +538,7 @@ export const EDITION_DEFINITIONS_ARCHIVE: EditionDefinition[] = [
     name: 'Foil',
     japaneseName: '箔押',
     description: 'Shimmering metallic finish',
-    effect: '+50 Chips when scored',
+    effect: '+50 Points when scored',
     visualStyle: 'foil_shimmer',
   },
   {
