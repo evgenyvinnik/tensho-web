@@ -17,6 +17,8 @@ interface Props {
   onSell: (instanceId: string) => { success: boolean }
   /** Compact run trackers shown at the end of the heading row. */
   aside?: ReactNode
+  /** The run's Yaku upgrades, shown under the heading whatever the phone's disclosure. */
+  upgrades?: ReactNode
   /** Keep the build one compact disclosure on phones; desktop stays expanded. */
   compact?: boolean
 }
@@ -29,6 +31,7 @@ export function ShopBuildPanel({
   yakuHistory,
   completeConcealedHandsPlayed,
   aside,
+  upgrades,
   compact = false,
 }: Props) {
   const { t, i18n } = useTranslation()
@@ -90,6 +93,7 @@ export function ShopBuildPanel({
           </button>
         )}
       </div>
+      {upgrades}
       <DecreeCapacityNotice owned={decrees.length} slots={maxSlots} />
       <div
         id={detailsId}
@@ -100,9 +104,6 @@ export function ShopBuildPanel({
         onClickCapture={() => setExpanded(true)}
         className={compact && !expanded ? 'hidden sm:block' : ''}
       >
-        <p className="mt-1 text-sm leading-relaxed text-[var(--color-beige-white)]/75">
-          {t('shop.build.help')}
-        </p>
         {decrees.length ? (
           <div
             data-tutorial="decrees"

@@ -324,14 +324,7 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
     .click()
   await expect(page).toHaveURL(/\/shop$/)
   const before = await snapshot(page)
-  await page.locator('[data-payout-toggle]').click()
-  await expect(page.locator('[data-payout-toggle]')).toHaveAttribute(
-    'aria-expanded',
-    'true'
-  )
-  await expect(
-    page.getByText('Next: Act 9 ascent', { exact: true })
-  ).toBeVisible()
+  expect(before.act).toBe(8)
   const charterOffer = await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
     const shopPath = '/src/systems/TeaHouseSystem.ts'
@@ -352,9 +345,6 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
   await page.locator(`[data-shop-offer="${charterOffer}"]`).click()
   await page.locator(`[data-shop-buy="${charterOffer}"]`).click()
   expect((await snapshot(page)).gold).toBe(before.gold - 10)
-  await expect(
-    page.getByText('Next: Act 8 ascent', { exact: true })
-  ).toBeVisible()
   await page
     .getByRole('button', { name: 'Continue to Next Round', exact: true })
     .click()
@@ -370,7 +360,9 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
   })
   await settleReveals(page, 1_500)
   await expect(
-    page.locator('[data-run-header-round]').getByText('Endless', { exact: true })
+    page
+      .locator('[data-run-header-round]')
+      .getByText('Endless', { exact: true })
   ).toBeVisible()
   await expect(page.getByLabel('Act 8 of 8', { exact: true })).toHaveCount(0)
   await stageFinalEndlessPlay(page, isMobile)

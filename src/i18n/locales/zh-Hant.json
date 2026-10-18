@@ -65,16 +65,10 @@
     "overCapacity": "容量減少：已有敕令不會失去。獲得更多敕令前需騰出空間。"
   },
   "yakuUpgrades": {
-    "help": "關於這些加成",
     "title": "役種升級",
-    "summary": "已升級：{{total}}",
-    "intro": "這些加成在本局遊戲中持續有效，每當對應的牌型得分時生效。",
-    "baseline": "1級為初始狀態，沒有天球加成。",
-    "empty": "尚未升級任何役種。使用天球來強化對應的得分牌型。",
     "level": "等級 {{level}} / {{max}}",
     "bonus": "基礎分 +{{chips}} · 倍率 +{{mult}}",
     "triggers": "計分次數：{{total}}",
-    "note": "僅顯示天球的基礎加成。其他規則可能改變最終得分，請查看出牌預測中的總分。",
     "fromOrb": "由{{orb}}升級"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "茶寮",
-      "content": "結算會顯示金幣的來源。購買相互配合的物品，或存錢賺利息。購買前點按任意物品即可查看其效果。"
+      "content": "進入茶寮時，本局的金幣會進入錢袋，每條提示都說明來源。購買相互配合的物品，或存錢賺利息。購買前點按任意物品即可查看其效果。"
     },
     "decrees": {
       "title": "法令",
@@ -462,7 +456,6 @@
     "build": {
       "title": "持有敕令",
       "slots": "敕令欄位 {{used}} / {{max}}",
-      "help": "比較商品與持有的敕令。打開卷軸可查看規則或出售。",
       "empty": "尚無敕令。購買的卷軸會顯示在這裡。",
       "sellPrompt": "以{{gold}}金幣出售{{name}}？它將從持有的敕令中移除。",
       "sold": "已出售{{name}}。",
@@ -473,7 +466,6 @@
       "rarity_uncommon": "優秀",
       "rarity_rare": "稀有",
       "rarity_legendary": "傳說",
-      "subtitle": "為下一場挑戰做好準備",
       "items": "物品",
       "availableCount": "可用數量：{{count}}",
       "allPurchased": "所有物品均已購買！",
@@ -489,21 +481,13 @@
       "forSale": "出售中"
     },
     "payout": {
-      "heading": "第{{act}}幕 · {{round}}",
-      "clear": "通關獎勵",
       "interest": "利息",
       "decrees": "法令",
       "goldTiles": "金牌",
       "bonus": "獎勵調整",
       "rentals": "租金",
-      "interestBlocked": "目前無法獲得利息。",
-      "interestCap": "下次結算：目前存款已可獲得利息上限{{interest}}G。",
-      "interestSave": "下次結算：按目前存款可得利息{{interest}}G。再存{{needed}}G即可獲得{{next}}G。",
-      "nextRound": "下一局：{{round}} · 目標{{target}}",
-      "nextAct": "下一幕：第{{act}}幕",
       "omenEarned": "徵兆：{{name}}",
-      "omen": "徵兆",
-      "balance": "金幣"
+      "omen": "徵兆"
     },
     "packChoices": "從 {{count}} 個獎勵中選擇最多 {{max}} 個",
     "packInventoryFull": "敕令欄位不足，無法領取所選獎勵。請減少敕令或跳過卡包。",
@@ -541,7 +525,8 @@
       "tileHelp": "將這張牌加入牌牆直到本局結束。",
       "pack": "祝福包 · {{from}}選{{choose}}",
       "charter": "帝國特許狀 · 本局永久升級",
-      "charterHelp": "帝國特許狀是本局剩餘時間的永久升級。不佔欄位，也不能賣出。"
+      "charterHelp": "帝國特許狀是本局剩餘時間的永久升級。不佔欄位，也不能賣出。",
+      "orbHelp": "拿到的那一刻即刻使用：該牌型家族的等級立即提升，並在本局中一直保持。"
     },
     "offerLabel": "{{name}}，{{price}}金幣",
     "buyFor": "購買 · {{price}}金幣",
@@ -549,7 +534,8 @@
       "what": "茶寮是兩局之間的商店。",
       "buy": "點擊任意物品查看效果，再點購買。法令改變規則，消耗品在回合中使用，祝福包可挑選獎勵，特許狀強化整局遊戲。",
       "interest": "保留的金幣會產生利息：回合結束時每持有5金幣+1（最多+{{cap}}）。",
-      "cashOut": "頂部一行顯示上一局獲得的金幣，展開可查看明細。每次購買都透過對應的購買按鈕完成。"
+      "cashOut": "進入茶寮時，上一局的金幣會進入錢袋，每個來源各有一條提示：回合通過、利息、法令、金牌以及扣除的租金。",
+      "build": "「你的配置」列出持有的敕令，打開卷軸可查看規則或出售。每次購買都透過對應的購買按鈕完成。"
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "新法令：{{name}}",
     "starting": "初始法令",
     "acquired": "新法令"
+  },
+  "orbReveal": {
+    "used": "已使用天體寶珠",
+    "title": "已使用{{name}}：役種升級"
   }
 }

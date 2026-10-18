@@ -26,10 +26,18 @@ import { Button } from '../ui/Button'
 import { ShopHeader } from '../shop/ShopHeader'
 import { ShopOfferCard } from '../shop/ShopOfferCard'
 import { DecreeReveal } from '../effects/DecreeReveal'
-import { RoundCashOutBanner } from '../shop/RoundCashOutBanner'
+import { CelestialOrbReveal } from '../effects/CelestialOrbReveal'
+import { CashOutToasts } from '../shop/CashOutToasts'
+import type { CashOutEntry } from '../shop/cashOutEntries'
+import {
+  cashOutKey,
+  markCashOutShown,
+  wasCashOutShown,
+} from '../shop/cashOutArrival'
 import { PackOpeningModal } from '../shop/PackOpeningModal'
 import { ProgressiveHintCard } from '../ui/ProgressiveHint'
-import { YakuUpgradeLedger } from '../gameplay/YakuUpgradeLedger'
+import { YakuUpgradeRow } from '../shop/YakuUpgradeRow'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
@@ -41,6 +49,22 @@ import { acceptsFlowerCatalyst } from '../../systems/flowerCatalysts'
 // MAIN SHOP SCREEN COMPONENT
 // =============================================================================
 
+/** The space the fixed header takes, so the arrival toasts sit just below it. */
+function useHeaderHeight(selector = '[data-shop-header]'): number {
+  const [height, setHeight] = useState(64)
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>(selector)
+    if (!header) return
+    const measure = () => setHeight(header.getBoundingClientRect().height)
+    measure()
+    if (typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(measure)
+    observer.observe(header)
+    return () => observer.disconnect()
+  }, [selector])
+  return height
+}
+
 /**
  * ShopScreen - Tea House between-round shop
  */
@@ -49,6 +73,8 @@ export function ShopScreen() {
   const itemText = useItemText()
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
+  const reducedMotion = useReducedMotion()
+  const headerHeight = useHeaderHeight()
   const tutorialHints = useMemo(() => getProgressiveHints(t), [t])
   const tutorial = useProgressiveTutorial(tutorialHints)
   const { triggerHints } = tutorial
@@ -91,6 +117,47 @@ export function ShopScreen() {
     game.state.charterSystem.calculateEffects().interestCap +
     game.state.omenSystem.getInterestCapBonus()
 
+  // The round's pay arrives on screen once: toasts in the corner, coins into
+  // the purse, and the balance counting up as each lands. The engine settled
+  // it already; `pending` is only what has not landed yet. The count-up
+  // starts from the settled balance only while the purse still holds it: a
+  // run resumed after spending shows its real balance throughout.
+  const arrivalFor = (summary: NonNullable<typeof roundSummary>) => ({
+    key: cashOutKey(summary),
+    pending: game.gold === summary.goldAfter ? summary.netGoldChange : 0,
+  })
+  const [arrival, setArrival] = useState<{
+    key: string
+    pending: number
+  } | null>(() => {
+    if (!roundSummary) return null
+    return wasCashOutShown(cashOutKey(roundSummary))
+      ? null
+      : arrivalFor(roundSummary)
+  })
+  useEffect(() => {
+    if (arrival) markCashOutShown(arrival.key)
+  }, [arrival])
+  // A settlement that arrives after mounting (a resumed run still loading)
+  // is shown once too; a settlement already shown never replays.
+  useEffect(() => {
+    if (arrival || !roundSummary) return
+    if (wasCashOutShown(cashOutKey(roundSummary))) return
+    setArrival(arrivalFor(roundSummary))
+    // `arrivalFor` reads the purse once, when the settlement first shows.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arrival, roundSummary])
+  const [purseBump, setPurseBump] = useState(0)
+  const handleLanded = useCallback((entry: CashOutEntry) => {
+    if (entry.amount === 0) return
+    setArrival((current) =>
+      current ? { ...current, pending: current.pending - entry.amount } : null
+    )
+    setPurseBump((count) => count + 1)
+  }, [])
+  const handleArrivalDone = useCallback(() => setArrival(null), [])
+  const displayGold = game.gold - (arrival?.pending ?? 0)
+
   const offers: TeaHouseOffering[] = [
     ...availableItems,
     ...availablePacks,
@@ -119,6 +186,8 @@ export function ShopScreen() {
             ? 'shop.availability.decreeSpace'
             : 'shop.availability.unavailable'
         )
+      case 'maxLevel':
+        return t('consumableUse.errorMaxLevel')
       default:
         return t('shop.availability.unavailable')
     }
@@ -136,7 +205,9 @@ export function ShopScreen() {
               ? 'shop.availability.flowers'
               : result.reason === 'inventoryFull'
                 ? 'shop.inventoryFull'
-                : 'shop.purchaseFailed'
+                : result.reason === 'maxLevel'
+                  ? 'consumableUse.errorMaxLevel'
+                  : 'shop.purchaseFailed'
         setShopError(t(key))
       }
     },
@@ -192,7 +263,8 @@ export function ShopScreen() {
       {/* Header with gold, reroll, settings */}
       <ShopHeader
         interestCap={interestCap}
-        gold={game.gold}
+        gold={displayGold}
+        purseBump={purseBump}
         rerollCost={rerollCost}
         canAffordReroll={game.gold >= rerollCost}
         onReroll={handleReroll}
@@ -208,26 +280,6 @@ export function ShopScreen() {
       >
         <div className="screen-canvas pb-4">
           <ClassicSaveNotice errorsOnly />
-          {/* Round payoff and next challenge — informative, never modal. */}
-          {roundSummary ? (
-            <RoundCashOutBanner
-              summary={roundSummary}
-              currentGold={game.gold}
-              nextActNumber={game.nextActNumber}
-              interestCap={interestCap}
-              interestBlocked={game.state.omenSystem.isInterestBlocked()}
-            />
-          ) : (
-            <div className="mx-3 mt-3 rounded-xl border border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] p-4 text-center sm:mx-5 sm:mt-4">
-              <p className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative">
-                {t('shop.title', 'Tea House')}
-              </p>
-              <p className="mt-1 text-sm text-[var(--color-beige-white)]/65">
-                {t('shop.ui.subtitle')}
-              </p>
-            </div>
-          )}
-
           <ProgressiveHintCard
             initiallyCollapsed
             hint={tutorial.currentHint}
@@ -249,7 +301,7 @@ export function ShopScreen() {
               if (result.success) setShopError(null)
               return result
             }}
-            aside={<YakuUpgradeLedger upgrades={game.yakuUpgrades} compact />}
+            upgrades={<YakuUpgradeRow upgrades={game.yakuUpgrades} />}
           />
 
           {/* One row: items, Blessing Packs and the Imperial Charter alike. */}
@@ -286,6 +338,18 @@ export function ShopScreen() {
           <div className="h-4" />
         </div>
       </div>
+
+      {/* The last round's pay, arriving in the purse. */}
+      {arrival && roundSummary && (
+        <CashOutToasts
+          key={arrival.key}
+          summary={roundSummary}
+          top={headerHeight + 8}
+          onLanded={handleLanded}
+          onDone={handleArrivalDone}
+          reducedMotion={reducedMotion}
+        />
+      )}
 
       {/* Bottom action bar */}
       {shopError && !catalystOffering && (
@@ -363,6 +427,7 @@ export function ShopScreen() {
         />
       )}
       <DecreeReveal />
+      <CelestialOrbReveal />
       <PackOpeningModal
         isOpen={currentPackOffering !== null}
         packOffering={currentPackOffering}
@@ -373,9 +438,12 @@ export function ShopScreen() {
         }
         selectionError={(indices) => {
           const result = shop.validatePackSelection(indices)
-          return !result.success && result.reason === 'flowerRequirement'
-            ? t('shop.availability.flowers')
-            : null
+          if (result.success) return null
+          if (result.reason === 'flowerRequirement')
+            return t('shop.availability.flowers')
+          if (result.reason === 'maxLevel')
+            return t('consumableUse.errorMaxLevel')
+          return null
         }}
         error={shopError}
       />

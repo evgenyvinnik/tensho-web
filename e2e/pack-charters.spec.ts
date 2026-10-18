@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { packModal } from './helpers/shop'
+import { packModal, savedLevel } from './helpers/shop'
 
 for (const language of ['en', 'es'])
   for (const charterId of ['star_chart', 'omen_lens'])
@@ -203,20 +203,39 @@ for (const language of ['en', 'es'])
         })
       )
       await expect(packDialog).toHaveCount(0)
+      if (charterId === 'star_chart') {
+        // A pack-chosen Orb is used the moment it is claimed: its reveal
+        // shows the favored family rising, and nothing waits on the rail.
+        const reveal = page.locator(`[data-orb-reveal="${choice.data.id}"]`)
+        await expect(reveal).toBeVisible()
+        await expect(
+          reveal.locator(
+            `[data-orb-reveal-level="${choice.data.effect.targetYaku}"]`
+          )
+        ).toHaveAttribute('data-orb-reveal-to', '2')
+        await activate(reveal.getByRole('button').last())
+        await expect(reveal).toHaveCount(0)
+      }
       const claimed = await saved()
-      const inventory =
-        charterId === 'star_chart'
-          ? claimed.state.celestialOrbs
-          : claimed.state.voidScripts
-      expect(inventory).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: choice.data.id,
-            instanceId: choice.data.instanceId,
-            source: 'pack_open',
-          }),
-        ])
-      )
+      if (charterId === 'star_chart') {
+        expect(claimed.state.celestialOrbs).toEqual([])
+        expect(savedLevel(claimed, choice.data.effect.targetYaku)).toBe(2)
+        await expect(
+          page.locator(
+            `[data-shop-build] [data-yaku-upgrade="${choice.data.effect.targetYaku}"]`
+          )
+        ).toBeVisible()
+      } else {
+        expect(claimed.state.voidScripts).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: choice.data.id,
+              instanceId: choice.data.instanceId,
+              source: 'pack_open',
+            }),
+          ])
+        )
+      }
       await page.reload()
       expect(await saved()).toEqual(claimed)
       await activate(

@@ -38,10 +38,7 @@ import {
   findCompleteHandSubset,
   REGULAR_TILE_TYPES,
 } from '../rules/CompleteHandSubset'
-import {
-  parsePlay,
-  toPartialParsedHand,
-} from '../rules/PartialHandParser'
+import { parsePlay, toPartialParsedHand } from '../rules/PartialHandParser'
 import { eventBus } from './EventBus'
 import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ascendYaku } from '../rules/yakuAscension'
@@ -91,6 +88,7 @@ import {
   CelestialOrb,
   mapYakuIdToCategory,
   playOrbCategories,
+  type YakuCategory,
 } from '../systems/CelestialOrbSystem'
 import {
   FATE_SEALS,
@@ -429,8 +427,7 @@ export class GameOrchestrator {
   /** Internal typed restore. Stage every subsystem before touching the live run. */
   restoreRun(saved: ClassicRunSnapshot): void {
     this.assertCheckpointBoundary()
-    if (saved.version !== 3)
-      throw new Error('Unsupported Classic run snapshot')
+    if (saved.version !== 3) throw new Error('Unsupported Classic run snapshot')
     for (const counter of [
       saved.runtimeItemCounter,
       saved.tileIdCounter,
@@ -1522,8 +1519,7 @@ export class GameOrchestrator {
     const minimum =
       (options.meldMayServeAsPair ? 12 : 14) -
       Number(options.allowSequenceOverlap)
-    const clemency =
-      !genuineOnly && this.isDecreeRuleActive('shanten_clemency')
+    const clemency = !genuineOnly && this.isDecreeRuleActive('shanten_clemency')
     if (visible.length < minimum - Number(clemency)) return null
     if (this.isDecreeRuleActive('all_wild') && visible.length >= 14) {
       const chosen = [...visible]
@@ -2403,6 +2399,7 @@ export class GameOrchestrator {
     }
 
     const orb = this.state.celestialOrbs[orbIndex]
+    const before = this.state.celestialOrbSystem.getAllYakuLevels()
     const result = this.state.celestialOrbSystem.useOrb(orb)
     if (!result.success) {
       return {
@@ -2413,14 +2410,55 @@ export class GameOrchestrator {
     }
 
     this.state.celestialOrbs.splice(orbIndex, 1)
-    this.state.fateSealSystem.setLastUsedConsumable(orb)
     for (const effectResult of result.effects) {
       effects.push({
         type: 'consumable_effect',
         description: effectResult.description,
       })
     }
+    this.settleOrbUse(orb, before)
 
+    return { success: true, effects }
+  }
+
+  /**
+   * Use an Orb the moment it is acquired. The Tea House applies a bought or
+   * pack-chosen Orb at once instead of holding it; only Orbs created during a
+   * round still wait on the rail. The upgrade is permanent for this run.
+   */
+  applyCelestialOrb(
+    orb: CelestialOrb,
+    source: 'purchase' | 'pack_open'
+  ): boolean {
+    if (source !== 'pack_open' && !this.isConsumableUnlocked(orb.id)) {
+      return false
+    }
+    const before = this.state.celestialOrbSystem.getAllYakuLevels()
+    const result = this.state.celestialOrbSystem.useOrb(orb)
+    if (!result.success) return false
+    orb.source = source
+    eventBus.emit('consumableAcquired', {
+      consumableType: orb.type,
+      itemId: orb.id,
+      instanceId: orb.instanceId,
+      name: orb.name,
+      source,
+    })
+    this.settleOrbUse(orb, before)
+    return true
+  }
+
+  /** Shared aftermath of a successful Orb use: history and announcement. */
+  private settleOrbUse(
+    orb: CelestialOrb,
+    before: Map<YakuCategory, number>
+  ): void {
+    this.state.fateSealSystem.setLastUsedConsumable(orb)
+    const levels: { yaku: YakuCategory; from: number; to: number }[] = []
+    for (const [yaku, to] of this.state.celestialOrbSystem.getAllYakuLevels()) {
+      const from = before.get(yaku) ?? 1
+      if (to !== from) levels.push({ yaku, from, to })
+    }
     eventBus.emit('celestialOrbUsed', {
       orbId: orb.id,
       source: orb.source,
@@ -2429,9 +2467,8 @@ export class GameOrchestrator {
         orb.effect.targetYaku === 'All'
           ? 0
           : this.state.celestialOrbSystem.getYakuLevel(orb.effect.targetYaku),
+      levels,
     })
-
-    return { success: true, effects }
   }
 
   /**
@@ -3331,6 +3368,9 @@ export class GameOrchestrator {
         scoredTiles,
         disabledDecreeIds
       ),
+      heldTiles: this.state.handTiles.filter(
+        (held) => !tiles.some((played) => played.id === held.id)
+      ),
     })
 
     // Calculate base score
@@ -3476,15 +3516,17 @@ export class GameOrchestrator {
       ? playOrbCategories(baseBreakdown.pattern.id, partialMelds, scoredTiles)
       : []
     for (const category of playFamilies) {
-      const orbBonus = this.state.celestialOrbSystem.calculateYakuBonus(category)
+      const orbBonus =
+        this.state.celestialOrbSystem.calculateYakuBonus(category)
       celestialOrbMultBonus += orbBonus.mult
       celestialOrbChipsBonus += orbBonus.chips
       if (!preview) this.state.celestialOrbSystem.triggerYaku(category)
     }
 
     // The play's own Mult: Yaku (or 1) + Orb levels + pattern + grouped
-    // Dragons. Decrees then work on this running Mult in order, Balatro-style:
-    // a "+N Mult" Decree adds N to it and a "×N Mult" Decree multiplies it.
+    // Dragons + Mark/Edition "+N Mult". Decrees then work on this running Mult
+    // in order, Balatro-style: a "+N Mult" Decree adds N to it and a "×N Mult"
+    // Decree multiplies it.
     const seasonedYakuMultiplier =
       baseBreakdown.yakuMultiplier * (1 + yakuSeasonBonus)
     const playMult = Math.max(
@@ -3492,7 +3534,8 @@ export class GameOrchestrator {
       seasonedYakuMultiplier +
         celestialOrbMultBonus +
         baseBreakdown.pattern.mult +
-        baseBreakdown.dragonMult
+        baseBreakdown.dragonMult +
+        baseBreakdown.modifierMult
     )
 
     // Build system breakdown for decree application
@@ -3755,9 +3798,7 @@ export class GameOrchestrator {
     for (let i = 0; i < reward.decreeSlotBonus; i++)
       this.state.decreeSystem.addSlot()
     if (reward.immediateDecreeEdition) {
-      const edition = this.normalizeDecreeEdition(
-        reward.immediateDecreeEdition
-      )
+      const edition = this.normalizeDecreeEdition(reward.immediateDecreeEdition)
       if (edition) this.applyRandomDecreeEdition(edition)
     }
     eventBus.emit('omenEarned', {

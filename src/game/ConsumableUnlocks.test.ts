@@ -337,7 +337,9 @@ it('rejects unpaid legacy packs without charging and honors already-paid choices
   game.restoreRun(parseClassicRunSnapshot(paid))
   initializeMetaProgressionBridge()
   expect(game.shop.confirmPack([0]).success).toBe(true)
-  expect(game.getCelestialOrbs().map((o) => o.id)).toContain(orb.id)
+  // The paid choice is used the moment it is claimed: every family rose.
+  expect(game.getCelestialOrbs()).toEqual([])
+  expect(game.getYakuUpgradeState()).toHaveLength(12)
   expect(profile().isItemUnlocked(orb.id)).toBe(true)
   const claimed = game.captureRun()
   expect(game.shop.confirmPack([0]).success).toBe(false)

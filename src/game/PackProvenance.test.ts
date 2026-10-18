@@ -138,9 +138,14 @@ it.each(['seal', 'orb'] as const)(
     expect(game.shop.purchase(offer.id).success).toBe(true)
     expect(game.shop.confirmPack([0]).success).toBe(true)
     expect(state.gold).toBe(96)
-    expect(packCount(kind)).toBe(24)
-    game.exitShop()
-    expect(use(game, packed).success).toBe(true)
+    if (kind === 'orb') {
+      // A pack-chosen Orb is used the moment it is claimed.
+      expect(game.getCelestialOrbs()).toEqual([])
+    } else {
+      expect(packCount(kind)).toBe(24)
+      game.exitShop()
+      expect(use(game, packed).success).toBe(true)
+    }
     expect(packCount(kind)).toBe(25)
     expect(useProgressionStore.getState().isItemUnlocked(upgrade)).toBe(true)
     expect(

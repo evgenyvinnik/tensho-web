@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { buyOffer, offerCard } from './helpers/shop'
+import { buyOffer, offerCard, collectCashOut } from './helpers/shop'
 import { clearReveals, openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
@@ -164,11 +164,12 @@ for (const [language, copy] of [
     expect(receipt.goldAfter).toBe(
       before + receipt.baseReward + receipt.interest + 2
     )
-    await expect(page.getByTestId('round-cash-out')).toContainText(
-      `${copy.shop.payout.decrees} +2G`
-    )
-    await page
-      .getByTestId('round-cash-out')
-      .screenshot({ path: testInfo.outputPath('wealth-paid.png') })
+    // The Decree income arrives as its own toast in the Tea House.
+    const seen = await collectCashOut(page, {
+      screenshot: testInfo.outputPath('wealth-paid.png'),
+    })
+    expect(seen.get('decrees')).toMatchObject({ value: 2, fits: true })
+    expect(seen.get('decrees')!.text).toContain(copy.shop.payout.decrees)
+    expect(seen.get('decrees')!.text).toContain('+2G')
   })
 }

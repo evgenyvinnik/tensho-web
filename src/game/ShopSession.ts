@@ -20,6 +20,7 @@ import type { FateSeal } from '../systems/FateSealSystem'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
 import type { VoidScript } from '../systems/VoidScriptSystem'
 import { Tile } from '../core/Tile'
+import { CelestialOrbSystem } from '../systems/CelestialOrbSystem'
 
 export type ShopFailure =
   | 'unavailable'
@@ -27,6 +28,8 @@ export type ShopFailure =
   | 'inventoryFull'
   | 'flowerRequirement'
   | 'invalidSelection'
+  /** A Celestial Orb whose family is already at its maximum level. */
+  | 'maxLevel'
 export type ShopResult =
   | { success: true }
   | { success: false; reason: ShopFailure }
@@ -310,10 +313,28 @@ export class ShopSession {
       case 'FateSeal':
         return this.game.addFateSeal(reward.data as FateSeal, source)
       case 'CelestialOrb':
-        return this.game.addCelestialOrb(reward.data as CelestialOrb, source)
+        // The Tea House uses an Orb the moment it is taken; the upgrade is
+        // the purchase. Nothing waits on the rail to be used later.
+        return this.game.applyCelestialOrb(reward.data as CelestialOrb, source)
       case 'VoidScript':
         return this.game.addVoidScript(reward.data as VoidScript, source)
     }
+  }
+
+  /**
+   * Whether every Orb among these rewards can still raise a level, applied in
+   * order on a detached copy of the run's levels: two Orbs of one family from
+   * a Mega pack need two free levels, not one.
+   */
+  private orbsApplicable(rewards: Reward[]): boolean {
+    const orbs = rewards.filter((reward) => reward.type === 'CelestialOrb')
+    if (orbs.length === 0) return true
+    const levels = CelestialOrbSystem.fromState(
+      this.game.getState().celestialOrbSystem.toState()
+    )
+    return orbs.every(
+      (reward) => levels.useOrb(reward.data as CelestialOrb).success
+    )
   }
 
   private findOffering(id: string): TeaHouseOffering | undefined {
@@ -404,6 +425,15 @@ export class ShopSession {
         )
       )
         return fail('flowerRequirement')
+      // Likewise a Celestial pack whose every Orb is already capped.
+      if (
+        pack.contents.length > 0 &&
+        pack.contents.every(
+          (content) =>
+            content.type === 'CelestialOrb' && !this.orbsApplicable([content])
+        )
+      )
+        return fail('maxLevel')
     } else if (offering.itemType === 'ImperialCharter') {
       if (!this.game.canAddImperialCharter(offering.item as ImperialCharter))
         return fail('unavailable')
@@ -427,6 +457,7 @@ export class ShopSession {
         ((offering.item as Decree).flowerRequirement ?? 0) > flowerCount
       )
         return { success: false, reason: 'flowerRequirement' }
+      if (!this.orbsApplicable([reward])) return fail('maxLevel')
       if (!this.canReceive([reward], flowerId)) return fail('inventoryFull')
     }
     return { success: true, offering, pack, reward, cost, flowerId }
@@ -515,9 +546,9 @@ export class ShopSession {
       )
     )
       return fail('flowerRequirement')
-    return this.canReceive(indices.map((i) => pack.contents[i]))
-      ? OK
-      : fail('inventoryFull')
+    const chosen = indices.map((i) => pack.contents[i])
+    if (!this.orbsApplicable(chosen)) return fail('maxLevel')
+    return this.canReceive(chosen) ? OK : fail('inventoryFull')
   }
 
   confirmPack(indices: number[]): ShopResult {

@@ -203,6 +203,8 @@ export interface GameEventData {
     yakuCategory: string
     newLevel: number
     source?: ConsumableSource
+    /** Every family the Orb levelled, with the level it left and reached. */
+    levels?: { yaku: string; from: number; to: number }[]
   }
   voidScriptUsed: { scriptId: string; effect: string; downside: string }
 

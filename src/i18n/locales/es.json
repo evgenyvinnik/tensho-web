@@ -65,16 +65,10 @@
     "overCapacity": "Capacidad reducida: conservas tus Decretos. Libera espacio antes de conseguir más."
   },
   "yakuUpgrades": {
-    "help": "Acerca de estas bonificaciones",
     "title": "Mejoras de yaku",
-    "summary": "Mejorados: {{total}}",
-    "intro": "Estas bonificaciones duran toda la partida y se aplican cada vez que puntúa una mano que coincide.",
-    "baseline": "El nivel 1 es el inicial: no otorga bonificación de orbe.",
-    "empty": "Aún no hay mejoras de yaku. Usa un Orbe Celestial para potenciar su patrón de puntuación.",
     "level": "Nivel {{level}} / {{max}}",
     "bonus": "+{{chips}} puntos base · +{{mult}} Mult",
     "triggers": "Veces puntuado: {{total}}",
-    "note": "Solo muestra las bonificaciones base de los orbes. Otras reglas pueden cambiar la puntuación final; consulta la previsión de la jugada.",
     "fromOrb": "Mejorado con {{orb}}"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "La Casa de Té",
-      "content": "La liquidación muestra de dónde salió tu oro. Compra objetos que combinen o ahorra para obtener intereses. Toca cualquier objeto para ver qué hace antes de comprarlo."
+      "content": "La paga de la ronda llega a tu bolsa al entrar; cada aviso dice de qué es. Compra objetos que combinen o ahorra para obtener intereses. Toca cualquier objeto para ver qué hace antes de comprarlo."
     },
     "decrees": {
       "title": "Decretos",
@@ -462,7 +456,6 @@
     "build": {
       "title": "Tu combinación",
       "slots": "{{used}} / {{max}} espacios de Decreto",
-      "help": "Compara las ofertas con tus Decretos. Abre un pergamino para leer sus reglas o venderlo.",
       "empty": "Aún no tienes Decretos. Los pergaminos comprados aparecen aquí.",
       "sellPrompt": "¿Vender {{name}} por {{gold}} de oro? Se eliminará de tu combinación.",
       "sold": "Has vendido {{name}}.",
@@ -473,7 +466,6 @@
       "rarity_uncommon": "Poco común",
       "rarity_rare": "Raro",
       "rarity_legendary": "Legendario",
-      "subtitle": "Prepárate para el próximo desafío",
       "items": "Objetos",
       "availableCount": "Disponibles: {{count}}",
       "allPurchased": "¡Todos los objetos comprados!",
@@ -489,21 +481,13 @@
       "forSale": "A la venta"
     },
     "payout": {
-      "heading": "Acto {{act}} · {{round}}",
-      "clear": "Victoria",
       "interest": "Intereses",
       "decrees": "Decretos",
       "goldTiles": "Fichas de oro",
       "bonus": "Ajuste de recompensa",
       "rentals": "Alquileres",
-      "interestBlocked": "Los intereses están bloqueados actualmente.",
-      "interestCap": "Próximo cobro: tus ahorros ya rinden el límite de intereses de {{interest}}G.",
-      "interestSave": "Próximo cobro: {{interest}}G de intereses con tus ahorros actuales. Guarda {{needed}}G más para obtener {{next}}G.",
-      "nextRound": "Siguiente: {{round}} · objetivo {{target}}",
-      "nextAct": "Siguiente: Acto {{act}}",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio",
-      "balance": "Oro"
+      "omen": "Presagio"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
     "packInventoryFull": "No hay espacios de Decreto suficientes para esta selección. Elige menos Decretos o salta el paquete.",
@@ -541,7 +525,8 @@
       "tileHelp": "Añade esta ficha a tu muro el resto de la partida.",
       "pack": "Paquete · elige {{choose}} de {{from}}",
       "charter": "Carta imperial · mejora permanente",
-      "charterHelp": "Una Carta imperial es una mejora permanente para el resto de la partida. No ocupa espacio y no se puede vender."
+      "charterHelp": "Una Carta imperial es una mejora permanente para el resto de la partida. No ocupa espacio y no se puede vender.",
+      "orbHelp": "Se usa en cuanto lo tomas: el nivel de la familia sube al instante y se mantiene toda la partida."
     },
     "offerLabel": "{{name}}, {{price}} de oro",
     "buyFor": "Comprar · {{price}} de oro",
@@ -549,7 +534,8 @@
       "what": "La Casa de Té es la tienda entre rondas.",
       "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los consumibles se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
       "interest": "El oro que guardas genera interés: +1 por cada 5 que tengas al acabar una ronda, hasta +{{cap}}.",
-      "cashOut": "La línea superior muestra el oro que pagó la última ronda; ábrela para ver el desglose. Cada compra se hace con su propio botón Comprar."
+      "cashOut": "La paga de la ronda llega a tu bolsa al entrar, un aviso por cada fuente: la ronda superada, los intereses, los Decretos, las fichas de oro y los alquileres cobrados.",
+      "build": "Tu configuración muestra tus Decretos; abre un pergamino para leer sus reglas o venderlo. Cada compra se hace con su propio botón Comprar."
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "Nuevo decreto: {{name}}",
     "starting": "Decreto inicial",
     "acquired": "Nuevo decreto"
+  },
+  "orbReveal": {
+    "used": "Orbe Celestial usado",
+    "title": "{{name}} usado: yaku mejorado"
   }
 }

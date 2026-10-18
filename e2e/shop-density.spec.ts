@@ -2,7 +2,7 @@ import { test, expect, type Locator } from '@playwright/test'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import type { ClassicRunSnapshot } from '../src/game/ClassicRunSnapshot'
-import { offerCard } from './helpers/shop'
+import { collectCashOut, offerCard } from './helpers/shop'
 import { settleReveals } from './helpers/table'
 
 // A valid, deliberately funded shop fixture, not evidence of an organic win.
@@ -68,21 +68,23 @@ for (const [index, language] of languages.entries()) {
     const before = await saved(),
       untouched = await raw()
     await page.evaluate(() => document.fonts.ready)
-    const receipt = page.getByTestId('round-cash-out')
-    const toggle = receipt.locator('[data-payout-toggle]')
-    const details = receipt.locator('[data-payout-details]')
+    const toasts = page.locator('[data-cash-out-toasts]')
     const hint = page.locator('[data-progressive-hint="shop-intro"]')
     const buildToggle = page.locator('[data-build-toggle]')
     const next = page.locator('[data-shop-continue]')
-    await expect(toggle).toHaveAccessibleName(copy.shop.payoutBreakdown)
-    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    await expect(details).toBeHidden()
+    // The round's pay arrives as toasts in the corner; nothing to open.
+    await expect(toasts).toHaveAttribute(
+      'aria-label',
+      copy.shop.payoutBreakdown
+    )
+    await expect(toasts.locator('[data-cash-out-toast="clear"]')).toBeVisible()
+    await expect(page.getByTestId('round-cash-out')).toHaveCount(0)
     await expect(hint.locator('details')).not.toHaveAttribute('open')
     await expect(next).toBeInViewport({ ratio: 1 })
     // The first product, not just a title, is now discoverable on arrival.
     await expect(page.locator('[data-shop-offer]').first()).toBeInViewport()
-    // The ledger leads the receipt; Omen and control icons follow it.
-    const ledger = receipt.locator('img').first()
+    // The ledger marks each pay toast.
+    const ledger = toasts.locator('img').first()
     await expect(ledger).toHaveAttribute('src', /settlement-ledger\.webp$/)
     expect(
       await ledger.evaluate(async (node: HTMLImageElement) => {
@@ -91,6 +93,18 @@ for (const [index, language] of languages.entries()) {
       })
     ).toBe(512)
     await page.screenshot({ path: info.outputPath('shop-compact.png') })
+    // Every source is paid once, and together they are the settled total.
+    const seen = await collectCashOut(page, {
+      screenshot: info.outputPath('shop-arrival.png'),
+    })
+    expect(
+      [...seen.values()].reduce((sum, toast) => sum + (toast.value ?? 0), 0)
+    ).toBe(before.state.lastRoundSummary!.netGoldChange)
+    expect([...seen.values()].every((toast) => toast.fits)).toBe(true)
+    expect(seen.get('clear')!.text).toContain(copy.shop.roundCleared)
+    // Once gone, the pay does not arrive again on this visit.
+    await expect(toasts).toHaveCount(0)
+    expect(await raw()).toBe(untouched)
     const geometry = await page.locator('[data-shop-row]').evaluate((node) => ({
       itemsTop: node.getBoundingClientRect().top,
       pageFits: document.documentElement.scrollWidth <= innerWidth,
@@ -115,7 +129,6 @@ for (const [index, language] of languages.entries()) {
     })
 
     for (const control of [
-      toggle,
       hint.locator('summary'),
       ...(isMobile ? [buildToggle] : []),
     ]) {
@@ -127,21 +140,6 @@ for (const [index, language] of languages.entries()) {
       expect(await raw()).toBe(untouched)
       await activate(control)
     }
-    await activate(toggle)
-    await expect(details).toBeVisible()
-    expect(
-      await details
-        .locator('[data-payout-value]')
-        .evaluateAll((nodes) =>
-          nodes.reduce(
-            (sum, node) => sum + Number(node.getAttribute('data-payout-value')),
-            0
-          )
-        )
-    ).toBe(before.state.lastRoundSummary!.netGoldChange)
-    await details.locator('[data-interest-coach]').scrollIntoViewIfNeeded()
-    await expect(details.locator('[data-interest-coach]')).toBeInViewport()
-    await page.screenshot({ path: info.outputPath('shop-details.png') })
     if (!isMobile) {
       // A desktop inventory card must not vanish with focus inside it when
       // rotating/narrowing to the compact phone layout.
@@ -162,7 +160,6 @@ for (const [index, language] of languages.entries()) {
     await activate(offerCard(page, offer.id))
     await activate(page.locator(`[data-shop-buy="${offer.id}"]`))
     await expect(offerCard(page, offer.id)).toHaveCount(0)
-    await expect(toggle).toHaveAttribute('aria-expanded', 'true')
     const purchased = await saved()
     expect(purchased.state.gold).toBe(46)
     expect(purchased.state.decreeSystem.ownedDecrees).toHaveLength(
@@ -173,7 +170,9 @@ for (const [index, language] of languages.entries()) {
     )
     await page.reload()
     expect(await saved()).toEqual(purchased)
-    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    // A reload is not a new settlement: the pay is not shown arriving twice.
+    await expect(next).toBeVisible()
+    await expect(toasts).toHaveCount(0)
     await activate(
       page.getByRole('button', { name: copy.shop.reroll, exact: true })
     )

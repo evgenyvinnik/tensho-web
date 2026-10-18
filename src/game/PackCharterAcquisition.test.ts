@@ -109,13 +109,21 @@ it('Star Chart immediately guarantees the most-used Yaku in unopened shelf packs
   expect(game.shop.open()).toBe(true)
   expect(game.captureRun()).toEqual(after)
   const packOffer = game.shop.state.packOfferings[0]
+  const levelBefore = game
+    .getState()
+    .celestialOrbSystem.getYakuLevel(target.effect.targetYaku)
+  const used: unknown[] = []
+  eventBus.on('celestialOrbUsed', (payload) => used.push(payload))
   expect(game.shop.purchase(packOffer.id).success).toBe(true)
   expect(game.shop.confirmPack([0]).success).toBe(true)
-  expect(game.getState().celestialOrbs).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({ id: target.id, source: 'pack_open' }),
-    ])
-  )
+  // A pack-chosen Orb is used the moment it is claimed, not held.
+  expect(game.getState().celestialOrbs).toEqual([])
+  expect(
+    game.getState().celestialOrbSystem.getYakuLevel(target.effect.targetYaku)
+  ).toBe(levelBefore + 1)
+  expect(used).toEqual([
+    expect.objectContaining({ orbId: target.id, source: 'pack_open' }),
+  ])
 })
 
 it.each([0.1, 0.9])(

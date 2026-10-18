@@ -65,16 +65,10 @@
     "overCapacity": "Kapasite azaldı: sahip olduğunuz Fermanları korursunuz. Yenisini almadan önce yer açın."
   },
   "yakuUpgrades": {
-    "help": "Bu bonuslar hakkında",
     "title": "Yaku geliştirmeleri",
-    "summary": "Geliştirilen: {{total}}",
-    "intro": "Bu bonuslar oyun boyunca sürer ve eşleşen bir el her puan aldığında uygulanır.",
-    "baseline": "1. seviye başlangıçtır: Küre bonusu yoktur.",
-    "empty": "Henüz yaku geliştirmesi yok. İlgili puan düzenini güçlendirmek için bir Göksel Küre kullanın.",
     "level": "Seviye {{level}} / {{max}}",
     "bonus": "+{{chips}} temel puan · +{{mult}} Çarpan",
     "triggers": "Puan kazandırma sayısı: {{total}}",
-    "note": "Yalnızca Kürelerin temel eklemeleri gösterilir. Diğer kurallar son puanı değiştirebilir; toplam için oyun tahminine bakın.",
     "fromOrb": "{{orb}} ile geliştirilir"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "Çay Evi",
-      "content": "Hesap kesimi altınının nereden geldiğini gösterir. Birbiriyle uyumlu eşyalar al ya da faiz için biriktir. Satın almadan önce ne yaptığını görmek için bir eşyaya dokun."
+      "content": "Tur ödemesi gelişinde keseye düşer; her bildirim neye karşılık olduğunu söyler. Birbiriyle uyumlu eşyalar al ya da faiz için biriktir. Satın almadan önce ne yaptığını görmek için bir eşyaya dokun."
     },
     "decrees": {
       "title": "Kararnameler",
@@ -749,7 +743,6 @@
     "build": {
       "title": "Fermanların",
       "slots": "{{used}} / {{max}} Ferman yuvası",
-      "help": "Teklifleri sahip olduğun Fermanlarla karşılaştır. Kurallarını okumak veya satmak için parşömeni aç.",
       "empty": "Henüz Ferman yok. Satın aldığın parşömenler burada görünür.",
       "sellPrompt": "{{name}}, {{gold}} altına satılsın mı? Fermanlarından çıkarılacak.",
       "sold": "{{name}} satıldı.",
@@ -760,7 +753,6 @@
       "rarity_uncommon": "Az Bulunan",
       "rarity_rare": "Nadir",
       "rarity_legendary": "Efsanevi",
-      "subtitle": "Sonraki mücadeleye hazırlan",
       "items": "Eşyalar",
       "availableCount": "Mevcut: {{count}}",
       "allPurchased": "Tüm eşyalar satın alındı!",
@@ -776,21 +768,13 @@
       "forSale": "Satışta"
     },
     "payout": {
-      "heading": "Perde {{act}} · {{round}}",
-      "clear": "Zafer",
       "interest": "Faiz",
       "decrees": "Fermanlar",
       "goldTiles": "Altın taşlar",
       "bonus": "Ödül düzeltmesi",
       "rentals": "Kiralar",
-      "interestBlocked": "Faiz şu anda engelleniyor.",
-      "interestCap": "Sonraki ödeme: mevcut birikimin zaten {{interest}}G faiz sınırını kazandırıyor.",
-      "interestSave": "Sonraki ödeme: mevcut birikimle {{interest}}G faiz. {{next}}G için {{needed}}G daha biriktir.",
-      "nextRound": "Sıradaki: {{round}} · hedef {{target}}",
-      "nextAct": "Sıradaki: Perde {{act}}",
       "omenEarned": "Alamet: {{name}}",
-      "omen": "Alamet",
-      "balance": "Altın"
+      "omen": "Alamet"
     },
     "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
     "packInventoryFull": "Bu seçim için yeterli Ferman yuvası yok. Daha az Ferman seçin ya da paketi atlayın.",
@@ -828,7 +812,8 @@
       "tileHelp": "Bu taşı oyunun sonuna kadar duvarına ekler.",
       "pack": "Paket · {{from}} içinden {{choose}} seç",
       "charter": "İmparatorluk Fermanı · kalıcı oyun geliştirmesi",
-      "charterHelp": "İmparatorluk Fermanı oyunun geri kalanı için kalıcı bir geliştirmedir. Yuva kaplamaz ve satılamaz."
+      "charterHelp": "İmparatorluk Fermanı oyunun geri kalanı için kalıcı bir geliştirmedir. Yuva kaplamaz ve satılamaz.",
+      "orbHelp": "Aldığın anda kullanılır: ailenin seviyesi hemen yükselir ve tüm koşu boyunca kalır."
     },
     "offerLabel": "{{name}}, {{price}} altın",
     "buyFor": "Satın al · {{price}} altın",
@@ -836,7 +821,8 @@
       "what": "Çay Evi, turlar arasındaki dükkândır.",
       "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Kararnameler kuralları değiştirir, tüketilebilirler turda kullanılır, Paketler ödül seçtirir ve Fermanlar tüm oyunu geliştirir.",
       "interest": "Elinde tuttuğun altın faiz getirir: tur sonunda her 5 altın için +1, en fazla +{{cap}}.",
-      "cashOut": "Üstteki satır son turun ödediği altını gösterir; ayrıntı için aç. Her alım kendi Satın Al düğmesiyle yapılır."
+      "cashOut": "Tur ödemesi gelişinde keseye düşer; her kaynak için bir bildirim: tamamlanan tur, faiz, Fermanlar, altın taşlar ve kesilen kiralar.",
+      "build": "Yapın sahip olduğun Fermanları listeler; kurallarını okumak veya satmak için parşömeni aç. Her alım kendi Satın Al düğmesiyle yapılır."
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "Yeni Kararname: {{name}}",
     "starting": "Başlangıç Kararnamesi",
     "acquired": "Yeni Kararname"
+  },
+  "orbReveal": {
+    "used": "Göksel Küre kullanıldı",
+    "title": "{{name}} kullanıldı: yaku geliştirildi"
   }
 }

@@ -11,6 +11,7 @@ import {
   FOIL_OMEN,
 } from '../config/omenDefinitions'
 import { parseClassicRunSnapshot } from './validateClassicRun'
+import type { CelestialOrb } from '../systems/CelestialOrbSystem'
 import {
   TeaHouseSystem,
   TEA_HOUSE_BASE_CHARTERS,
@@ -69,10 +70,19 @@ it('records paid consumable prices and a zero-price Omen Decree without changing
   ])
   const quoted = json(offers.map((o) => o.item))
   for (const offer of offers) {
+    const levelsBefore = state.celestialOrbSystem.getAllYakuLevels()
     expect(game.shop.purchase(offer.id).success).toBe(true)
+    if (offer.itemType === 'CelestialOrb') {
+      // A bought Orb is used at once: its family rises, nothing is held.
+      const family = (offer.item as CelestialOrb).effect.targetYaku
+      expect(state.celestialOrbs).toHaveLength(0)
+      expect(state.celestialOrbSystem.getYakuLevel(family)).toBe(
+        (levelsBefore.get(family) ?? 1) + 1
+      )
+      continue
+    }
     const owned = [
       ...state.fateSeals,
-      ...state.celestialOrbs,
       ...state.voidScripts,
       ...state.decreeSystem.getOwnedDecrees(),
     ].find((item) => item.id === offer.item.id)!

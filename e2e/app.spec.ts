@@ -403,9 +403,9 @@ test.describe('Game Navigation', () => {
     await expect(page.locator('[data-game-action="play"]')).toHaveText(
       'Play hand'
     )
-    await expect(page.getByRole('button', { name: /skip|discard/i })).toHaveCount(
-      0
-    )
+    await expect(
+      page.getByRole('button', { name: /skip|discard/i })
+    ).toHaveCount(0)
 
     const rackSize = async () => {
       await expect(
@@ -443,7 +443,7 @@ test.describe('Game Navigation', () => {
 
     await expect(async () => {
       if (new URL(page.url()).pathname.endsWith('/shop')) {
-        await expect(page.getByTestId('round-cash-out')).toBeVisible()
+        await expect(page.locator('[data-shop-continue]')).toBeVisible()
         return
       }
       await settleReveals(page)
@@ -460,13 +460,14 @@ test.describe('Game Navigation', () => {
     }).toPass()
   })
 
-  test('REDRAW replaces any number of tiles with one Turn', async ({ page }) => {
+  test('REDRAW replaces any number of tiles with one Turn', async ({
+    page,
+  }) => {
     await startRun(page)
     const { turns, free } = await turnBudget(page)
-    const chosen = await rackTiles(page)
-      .evaluateAll((tiles) =>
-        tiles.slice(0, 7).map((tile) => tile.getAttribute('data-play-tile'))
-      )
+    const chosen = await rackTiles(page).evaluateAll((tiles) =>
+      tiles.slice(0, 7).map((tile) => tile.getAttribute('data-play-tile'))
+    )
     for (const id of chosen)
       await page.locator(`[data-play-tile="${id}"]`).click()
     await page.locator('[data-game-action="redraw"]').click()

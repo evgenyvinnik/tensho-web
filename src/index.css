@@ -936,6 +936,147 @@ a {
 }
 
 /*
+ * Tea House arrival: the round's pay as toasts in the corner, coins flying
+ * into the purse, and the purse bumping as each lands. Coordinates come from
+ * measured positions as custom properties.
+ */
+.cash-out-toast-enter {
+  animation: cash-out-toast-in 280ms cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+
+@keyframes cash-out-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cash-out-toast-leave {
+  animation: cash-out-toast-out 320ms ease-in both;
+}
+
+@keyframes cash-out-toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+}
+
+.cash-out-coin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: cash-out-coin var(--coin-ms, 640ms) cubic-bezier(0.3, 0.6, 0.4, 1)
+    both;
+  animation-delay: var(--coin-delay, 0ms);
+}
+
+@keyframes cash-out-coin {
+  0% {
+    opacity: 0;
+    transform: translate(var(--from-x), var(--from-y)) scale(0.5);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(var(--from-x), var(--from-y)) scale(1);
+  }
+  55% {
+    opacity: 1;
+    transform: translate(var(--mid-x), var(--mid-y)) scale(1.05) rotate(180deg);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translate(var(--to-x), var(--to-y)) scale(0.45) rotate(360deg);
+  }
+}
+
+.purse-bump {
+  animation: purse-bump 420ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes purse-bump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.28) rotate(-6deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+/* A Yaku upgrade token whose family just rose a level. */
+.yaku-upgrade-flash {
+  display: inline-flex;
+  border-radius: 0.5rem;
+  animation: yaku-upgrade-flash 900ms ease-out both;
+}
+
+@keyframes yaku-upgrade-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 213, 79, 0.9);
+    transform: scale(1);
+  }
+  40% {
+    box-shadow: 0 0 0 10px rgba(255, 213, 79, 0);
+    transform: scale(1.12);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 213, 79, 0);
+    transform: none;
+  }
+}
+
+/* Celestial Orb reveal: the Orb rises, then each family's level pops. */
+.orb-ascend {
+  animation: orb-ascend 750ms cubic-bezier(0.2, 1.2, 0.4, 1) both;
+}
+
+@keyframes orb-ascend {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.orb-level-pop {
+  animation: orb-level-pop 520ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  animation-delay: var(--pop-delay, 0ms);
+}
+
+@keyframes orb-level-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
  * Tile hints: Arabic numerals and localized Dragon identities for players who
  * cannot read the artwork at a glance. Drawn as generated content so
  * it never becomes part of a tile's text or accessible name.

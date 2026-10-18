@@ -8,11 +8,7 @@
 
 import { useTranslation } from 'react-i18next'
 import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
-import type {
-  BlessingPack,
-  Decree,
-  ImperialCharter,
-} from '../../systems/types'
+import type { BlessingPack, Decree, ImperialCharter } from '../../systems/types'
 import type { FateSeal } from '../../systems/FateSealSystem'
 import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
@@ -83,10 +79,14 @@ export function useOfferText(
         name: itemText.name('orbs', orb),
         kind: t('shop.kinds.orb'),
         description: itemText.description('orbs', orb),
-        extra:
+        extra: [
           orb.effect.targetYaku === 'All'
-            ? undefined
+            ? null
             : t(`upgradeFamilies.${orb.effect.targetYaku}.covers`),
+          t('shop.kinds.orbHelp'),
+        ]
+          .filter(Boolean)
+          .join(' · '),
         rarity: orb.rarity.toLowerCase(),
       }
     }
@@ -127,7 +127,12 @@ export function useOfferText(
           from: pack.choiceCount,
         }),
         description: t(`packs.items.${id}.description`),
-        rarity: pack.size === 'Mega' ? 'rare' : pack.size === 'Jumbo' ? 'uncommon' : 'common',
+        rarity:
+          pack.size === 'Mega'
+            ? 'rare'
+            : pack.size === 'Jumbo'
+              ? 'uncommon'
+              : 'common',
       }
     }
     case 'ImperialCharter': {

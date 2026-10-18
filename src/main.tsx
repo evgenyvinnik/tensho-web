@@ -15,12 +15,14 @@ import { initializeMetaProgressionBridge } from './game/MetaProgressionBridge'
 import { initializeClassicPersistence } from './game/classicPersistenceApp'
 import { installFloraRevealQueue } from './game/floraRevealQueue'
 import { installDecreeRevealQueue } from './game/decreeRevealQueue'
+import { installOrbRevealQueue } from './game/orbRevealQueue'
 
 // Install persisted Archive, lifetime progression, and achievement tracking
 // before any run can emit gameplay events.
 initializeMetaProgressionBridge()
 installFloraRevealQueue()
 installDecreeRevealQueue()
+installOrbRevealQueue()
 const persistence = initializeClassicPersistence()
 registerReloadGuard(
   'classic',

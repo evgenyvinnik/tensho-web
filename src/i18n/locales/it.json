@@ -65,16 +65,10 @@
     "overCapacity": "Capacità ridotta: conservi i Decreti posseduti. Libera spazio prima di acquisirne altri."
   },
   "yakuUpgrades": {
-    "help": "Informazioni sui bonus",
     "title": "Potenziamenti yaku",
-    "summary": "Potenziati: {{total}}",
-    "intro": "Questi bonus durano per tutta la partita e si applicano ogni volta che una mano corrispondente fa punti.",
-    "baseline": "Il livello 1 è quello iniziale: nessun bonus da sfera.",
-    "empty": "Nessuno yaku potenziato. Usa una Sfera Celeste per rafforzare il suo schema di punteggio.",
     "level": "Livello {{level}} / {{max}}",
     "bonus": "+{{chips}} punti base · +{{mult}} Mult",
     "triggers": "Volte a segno: {{total}}",
-    "note": "Sono mostrati solo i bonus base delle sfere. Altre regole possono cambiare il punteggio finale: consulta la previsione della giocata.",
     "fromOrb": "Potenziato da {{orb}}"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "La Casa del Tè",
-      "content": "Il resoconto mostra da dove viene il tuo oro. Compra oggetti che funzionano insieme, o risparmia per gli interessi. Tocca un oggetto per vedere cosa fa prima di comprarlo."
+      "content": "La paga del round arriva nella borsa al tuo ingresso; ogni avviso dice da dove viene. Compra oggetti che funzionano insieme, o risparmia per gli interessi. Tocca un oggetto per vedere cosa fa prima di comprarlo."
     },
     "decrees": {
       "title": "Decreti",
@@ -749,7 +743,6 @@
     "build": {
       "title": "I tuoi Decreti",
       "slots": "{{used}} / {{max}} spazi Decreto",
-      "help": "Confronta le offerte con i tuoi Decreti. Apri una pergamena per leggerne le regole o venderla.",
       "empty": "Non hai ancora Decreti. Le pergamene acquistate appaiono qui.",
       "sellPrompt": "Vendere {{name}} per {{gold}} oro? Verrà rimosso dai tuoi Decreti.",
       "sold": "{{name}} venduto.",
@@ -760,7 +753,6 @@
       "rarity_uncommon": "Non comune",
       "rarity_rare": "Raro",
       "rarity_legendary": "Leggendario",
-      "subtitle": "Preparati alla prossima sfida",
       "items": "Oggetti",
       "availableCount": "Disponibili: {{count}}",
       "allPurchased": "Tutti gli oggetti acquistati!",
@@ -776,21 +768,13 @@
       "forSale": "In vendita"
     },
     "payout": {
-      "heading": "Atto {{act}} · {{round}}",
-      "clear": "Vittoria",
       "interest": "Interessi",
       "decrees": "Decreti",
       "goldTiles": "Tessere d’oro",
       "bonus": "Rettifica ricompensa",
       "rentals": "Affitti",
-      "interestBlocked": "Gli interessi sono attualmente bloccati.",
-      "interestCap": "Prossimo incasso: i tuoi risparmi rendono già il limite di interessi di {{interest}}G.",
-      "interestSave": "Prossimo incasso: {{interest}}G di interessi con i risparmi attuali. Risparmia altri {{needed}}G per ottenere {{next}}G.",
-      "nextRound": "Prossimo: {{round}} · obiettivo {{target}}",
-      "nextAct": "Prossimo: Atto {{act}}",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio",
-      "balance": "Oro"
+      "omen": "Presagio"
     },
     "packChoices": "Scegli fino a {{max}} ricompense tra {{count}}",
     "packInventoryFull": "Spazi Decreto insufficienti per questa selezione. Scegli meno Decreti oppure salta il pacchetto.",
@@ -828,7 +812,8 @@
       "tileHelp": "Aggiunge questa tessera al tuo muro per il resto della partita.",
       "pack": "Pacchetto · scegli {{choose}} su {{from}}",
       "charter": "Carta imperiale · potenziamento permanente",
-      "charterHelp": "Una Carta imperiale è un potenziamento permanente per il resto della partita. Non occupa spazi e non si può vendere."
+      "charterHelp": "Una Carta imperiale è un potenziamento permanente per il resto della partita. Non occupa spazi e non si può vendere.",
+      "orbHelp": "Usato nell’istante in cui lo prendi: il livello della famiglia sale subito e resta per tutta la partita."
     },
     "offerLabel": "{{name}}, {{price}} oro",
     "buyFor": "Compra · {{price}} oro",
@@ -836,7 +821,8 @@
       "what": "La Casa del Tè è il negozio tra un round e l’altro.",
       "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, i consumabili si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
       "interest": "L’oro che tieni frutta interessi: +1 ogni 5 posseduti a fine round, fino a +{{cap}}.",
-      "cashOut": "La riga in alto mostra l’oro dato dall’ultimo round; aprila per il dettaglio. Ogni acquisto avviene con il proprio pulsante Compra."
+      "cashOut": "La paga del round arriva nella borsa al tuo ingresso, un avviso per ogni fonte: il round superato, gli interessi, i Decreti, le tessere d’oro e gli affitti addebitati.",
+      "build": "La tua configurazione elenca i tuoi Decreti; apri una pergamena per leggerne le regole o venderla. Ogni acquisto avviene con il proprio pulsante Compra."
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "Nuovo Decreto: {{name}}",
     "starting": "Decreto iniziale",
     "acquired": "Nuovo Decreto"
+  },
+  "orbReveal": {
+    "used": "Sfera Celeste usata",
+    "title": "{{name}} usata: yaku potenziato"
   }
 }

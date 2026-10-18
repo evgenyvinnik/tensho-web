@@ -65,16 +65,10 @@
     "overCapacity": "Nabawasan ang kapasidad: mapapanatili mo ang mga hawak na Dekreto. Magbakante bago kumuha ng dagdag."
   },
   "yakuUpgrades": {
-    "help": "Tungkol sa mga bonus na ito",
     "title": "Mga pag-upgrade ng yaku",
-    "summary": "Na-upgrade: {{total}}",
-    "intro": "Tumatagal ang mga bonus na ito buong laro at gumagana tuwing pumupuntos ang katugmang kamay.",
-    "baseline": "Panimulang antas ang 1: wala pang bonus mula sa orb.",
-    "empty": "Wala pang na-upgrade na yaku. Gumamit ng Celestial Orb para palakasin ang katugmang padron ng pagmamarka.",
     "level": "Antas {{level}} / {{max}}",
     "bonus": "+{{chips}} batayang puntos · +{{mult}} Mult",
     "triggers": "Bilang ng pag-iskor: {{total}}",
-    "note": "Batayang dagdag ng orb lamang ang ipinapakita. Maaaring baguhin ng ibang tuntunin ang huling puntos; tingnan ang tantiya ng laro para sa kabuuan.",
     "fromOrb": "Ina-upgrade ng {{orb}}"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "Bahay ng Tsaa",
-      "content": "Ipinapakita ng cash-out kung saan galing ang iyong Ginto. Bumili ng mga item na nagtutugma, o mag-ipon para sa interes. I-tap ang anumang item para makita ang ginagawa nito bago bilhin."
+      "content": "Pumapasok sa pitaka ang bayad ng round pagdating mo; sinasabi ng bawat abiso kung para saan ito. Bumili ng mga item na nagtutugma, o mag-ipon para sa interes. I-tap ang anumang item para makita ang ginagawa nito bago bilhin."
     },
     "decrees": {
       "title": "Mga Decree",
@@ -749,7 +743,6 @@
     "build": {
       "title": "Mga Dekreto mo",
       "slots": "{{used}} / {{max}} puwesto ng Dekreto",
-      "help": "Ihambing ang mga alok sa mga Dekreto mo. Buksan ang balumbon para basahin ang mga tuntunin o ibenta ito.",
       "empty": "Wala pang Dekreto. Dito lalabas ang mga biniling balumbon.",
       "sellPrompt": "Ibenta ang {{name}} sa halagang {{gold}} ginto? Aalisin ito sa mga Dekreto mo.",
       "sold": "Naibenta ang {{name}}.",
@@ -760,7 +753,6 @@
       "rarity_uncommon": "Di-karaniwan",
       "rarity_rare": "Bihira",
       "rarity_legendary": "Maalamat",
-      "subtitle": "Maghanda para sa susunod na hamon",
       "items": "Mga Item",
       "availableCount": "Available: {{count}}",
       "allPurchased": "Nabili na ang lahat ng item!",
@@ -776,21 +768,13 @@
       "forSale": "Ibinebenta"
     },
     "payout": {
-      "heading": "Akto {{act}} · {{round}}",
-      "clear": "Tagumpay",
       "interest": "Interes",
       "decrees": "Mga Dekreto",
       "goldTiles": "Gintong tile",
       "bonus": "Pagsasaayos ng gantimpala",
       "rentals": "Upa",
-      "interestBlocked": "Naka-block ang interes sa ngayon.",
-      "interestCap": "Susunod na cash-out: naaabot na ng ipon mo ang limitasyon ng interes na {{interest}}G.",
-      "interestSave": "Susunod na cash-out: {{interest}}G na interes mula sa kasalukuyang ipon. Mag-ipon pa ng {{needed}}G para sa {{next}}G.",
-      "nextRound": "Susunod: {{round}} · target na {{target}}",
-      "nextAct": "Susunod: Akto {{act}}",
       "omenEarned": "Pangitain: {{name}}",
-      "omen": "Pangitain",
-      "balance": "Ginto"
+      "omen": "Pangitain"
     },
     "packChoices": "Pumili ng hanggang {{max}} sa {{count}} gantimpala",
     "packInventoryFull": "Kulang ang puwesto ng Dekreto para sa napiling gantimpala. Bawasan ang mga Dekreto, o laktawan ang pack.",
@@ -828,7 +812,8 @@
       "tileHelp": "Idinadagdag ang tile na ito sa pader hanggang matapos ang laro.",
       "pack": "Pakete · pumili ng {{choose}} sa {{from}}",
       "charter": "Imperyal na Kasulatan · permanenteng upgrade",
-      "charterHelp": "Ang Imperyal na Kasulatan ay permanenteng upgrade sa natitirang laro. Walang slot na ginagamit at hindi maibebenta."
+      "charterHelp": "Ang Imperyal na Kasulatan ay permanenteng upgrade sa natitirang laro. Walang slot na ginagamit at hindi maibebenta.",
+      "orbHelp": "Ginagamit sa sandaling kunin mo: agad tumataas ang antas ng pamilya at nananatili sa buong run."
     },
     "offerLabel": "{{name}}, {{price}} ginto",
     "buyFor": "Bilhin · {{price}} ginto",
@@ -836,7 +821,8 @@
       "what": "Ang Bahay ng Tsaa ay tindahan sa pagitan ng mga round.",
       "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Decree ang patakaran, ginagamit sa round ang consumable, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Kasulatan ang buong laro.",
       "interest": "May interes ang gintong itinatabi mo: +1 bawat 5 na hawak mo pagtatapos ng round, hanggang +{{cap}}.",
-      "cashOut": "Ipinapakita ng linya sa itaas ang gintong ibinayad ng huling round; buksan para sa detalye. Bawat bili ay may sariling Bilhin."
+      "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, mga gintong tile, at anumang sinisingil na upa.",
+      "build": "Nakalista sa build mo ang mga Dekreto mo; buksan ang balumbon para basahin ang mga tuntunin o ibenta ito. Bawat bili ay may sariling Bilhin."
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "Bagong Decree: {{name}}",
     "starting": "Panimulang Decree",
     "acquired": "Bagong Decree"
+  },
+  "orbReveal": {
+    "used": "Nagamit ang Orb ng Kalangitan",
+    "title": "Nagamit ang {{name}}: na-upgrade ang yaku"
   }
 }

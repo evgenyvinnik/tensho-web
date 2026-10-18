@@ -193,16 +193,10 @@
     "overCapacity": "Kapasitas berkurang: Dekret yang dimiliki tetap disimpan. Kosongkan tempat sebelum mendapat yang baru."
   },
   "yakuUpgrades": {
-    "help": "Tentang bonus ini",
     "title": "Peningkatan yaku",
-    "summary": "Ditingkatkan: {{total}}",
-    "intro": "Bonus ini berlaku selama permainan dan aktif setiap kali tangan yang cocok mencetak skor.",
-    "baseline": "Level 1 adalah level awal: tanpa bonus Orb.",
-    "empty": "Belum ada peningkatan yaku. Gunakan Orb Langit untuk memperkuat pola poin yang sesuai.",
     "level": "Level {{level}} / {{max}}",
     "bonus": "+{{chips}} poin dasar · +{{mult}} Mult",
     "triggers": "Jumlah pemicu skor: {{total}}",
-    "note": "Hanya bonus dasar Orb yang ditampilkan. Aturan lain dapat mengubah skor akhir; lihat perkiraan permainan untuk totalnya.",
     "fromOrb": "Ditingkatkan oleh {{orb}}"
   },
   "progressiveHints": {
@@ -220,7 +214,7 @@
     },
     "shop": {
       "title": "Rumah Teh",
-      "content": "Rekap menunjukkan asal Emasmu. Beli item yang saling melengkapi, atau menabung demi bunga. Ketuk item mana pun untuk melihat efeknya sebelum membeli."
+      "content": "Bayaran ronde masuk ke dompet saat kamu tiba; tiap notifikasi menyebutkan asalnya. Beli item yang saling melengkapi, atau menabung demi bunga. Ketuk item mana pun untuk melihat efeknya sebelum membeli."
     },
     "decrees": {
       "title": "Dekrit",
@@ -670,7 +664,6 @@
     "build": {
       "title": "Dekret milikmu",
       "slots": "{{used}} / {{max}} slot Dekret",
-      "help": "Bandingkan penawaran dengan Dekret milikmu. Buka gulungan untuk membaca aturan atau menjualnya.",
       "empty": "Belum ada Dekret. Gulungan yang dibeli muncul di sini.",
       "sellPrompt": "Jual {{name}} seharga {{gold}} emas? Dekret ini akan dihapus dari koleksimu dalam permainan ini.",
       "sold": "{{name}} terjual.",
@@ -681,7 +674,6 @@
       "rarity_uncommon": "Tidak Umum",
       "rarity_rare": "Langka",
       "rarity_legendary": "Legendaris",
-      "subtitle": "Bersiaplah untuk tantangan berikutnya",
       "items": "Item",
       "availableCount": "Tersedia: {{count}}",
       "allPurchased": "Semua item sudah dibeli!",
@@ -697,21 +689,13 @@
       "forSale": "Dijual"
     },
     "payout": {
-      "heading": "Babak {{act}} · {{round}}",
-      "clear": "Kemenangan",
       "interest": "Bunga",
       "decrees": "Dekret",
       "goldTiles": "Ubin emas",
       "bonus": "Penyesuaian hadiah",
       "rentals": "Sewa",
-      "interestBlocked": "Bunga saat ini diblokir.",
-      "interestCap": "Pencairan berikutnya: tabunganmu sudah mencapai batas bunga {{interest}}G.",
-      "interestSave": "Pencairan berikutnya: bunga {{interest}}G dari tabungan saat ini. Tabung {{needed}}G lagi untuk mendapat {{next}}G.",
-      "nextRound": "Berikutnya: {{round}} · target {{target}}",
-      "nextAct": "Berikutnya: Babak {{act}}",
       "omenEarned": "Pertanda: {{name}}",
-      "omen": "Pertanda",
-      "balance": "Emas"
+      "omen": "Pertanda"
     },
     "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
     "packInventoryFull": "Slot Dekret tidak cukup untuk pilihan ini. Pilih lebih sedikit Dekret, atau lewati paket.",
@@ -749,7 +733,8 @@
       "tileHelp": "Menambahkan ubin ini ke dindingmu sampai permainan usai.",
       "pack": "Paket · pilih {{choose}} dari {{from}}",
       "charter": "Piagam Kekaisaran · peningkatan permanen",
-      "charterHelp": "Piagam Kekaisaran adalah peningkatan permanen untuk sisa permainan. Tidak memakai slot dan tidak bisa dijual."
+      "charterHelp": "Piagam Kekaisaran adalah peningkatan permanen untuk sisa permainan. Tidak memakai slot dan tidak bisa dijual.",
+      "orbHelp": "Dipakai saat kamu mengambilnya: level keluarga langsung naik dan bertahan sepanjang permainan."
     },
     "offerLabel": "{{name}}, {{price}} emas",
     "buyFor": "Beli · {{price}} emas",
@@ -757,7 +742,8 @@
       "what": "Rumah Teh adalah toko di antara ronde.",
       "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, barang habis pakai dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
       "interest": "Emas yang kamu simpan berbunga: +1 untuk setiap 5 emas saat ronde berakhir, maksimal +{{cap}}.",
-      "cashOut": "Baris atas menunjukkan emas dari ronde terakhir; buka untuk rinciannya. Setiap pembelian lewat tombol Beli masing-masing."
+      "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekret, ubin emas, dan sewa yang ditagih.",
+      "build": "Susunanmu menampilkan Dekret milikmu; buka gulungan untuk membaca aturan atau menjualnya. Setiap pembelian lewat tombol Beli masing-masing."
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "Dekrit baru: {{name}}",
     "starting": "Dekrit awal",
     "acquired": "Dekrit baru"
+  },
+  "orbReveal": {
+    "used": "Bola Langit digunakan",
+    "title": "{{name}} digunakan: yaku ditingkatkan"
   }
 }

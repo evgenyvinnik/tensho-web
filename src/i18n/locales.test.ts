@@ -92,10 +92,7 @@ it('supplies the Yaku upgrade ledger and its placeholders in every locale', () =
       )
       // "Level" is also the natural Indonesian term; literal identity is not
       // evidence of fallback. Require distinct prose, with own keys for all.
-      if (
-        language !== 'en' &&
-        ['title', 'intro', 'empty', 'note'].includes(key)
-      )
+      if (language !== 'en' && ['title', 'triggers'].includes(key))
         expect(translated).not.toBe(english)
     }
   }

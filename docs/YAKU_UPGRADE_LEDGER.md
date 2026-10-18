@@ -1,5 +1,9 @@
 # Illustrated run-wide Yaku upgrade ledger
 
+> October 17, 2026: the Tea House popup described below was replaced by an
+> inline row of upgrade tokens in the build panel, and bought Orbs are now used
+> at once. See [Tea House arrival](TEA_HOUSE_ARRIVAL_IMPLEMENTATION.md).
+
 October 6, 2026 local work date. This closes a progression-visibility gap, not
 the whole implementation or the pending Orb-leveling design conflict.
 

@@ -1,11 +1,12 @@
 import { expect, type Page } from '@playwright/test'
 
-const REVEALS = '[data-decree-reveal], [data-flora-reveal]'
+const REVEALS = '[data-decree-reveal], [data-flora-reveal], [data-orb-reveal]'
 
 /**
- * Close every Decree and Flora reveal on screen. A new run reveals its
- * starting Decrees, and any draw can reveal a Flower or Season; each waits
- * for the player before the table can be used.
+ * Close every Decree, Flora and Orb reveal on screen. A new run reveals its
+ * starting Decrees, any draw can reveal a Flower or Season, and an Orb taken
+ * in the Tea House reveals the family it raised; each waits for the player
+ * before the screen can be used.
  */
 export async function settleReveals(
   page: Page,
@@ -22,11 +23,23 @@ export async function settleReveals(
     }
     // Only one reveal shows at a time.
     const reveal = reveals.filter({ visible: true }).first()
-    if ((await reveal.getAttribute('data-decree-reveal')) !== null) {
-      // A Decree first appears as a closed bag: a tap opens it.
-      if ((await reveal.getByRole('button').count()) === 0)
-        await reveal.click({ position: { x: 4, y: 4 } })
-      await reveal.getByRole('button').first().click()
+    const staged =
+      (await reveal.getAttribute('data-decree-reveal')) !== null ||
+      (await reveal.getAttribute('data-orb-reveal')) !== null
+    if (staged && (await reveal.getByRole('button').count()) === 0) {
+      // A Decree first appears as a closed bag and an Orb rises alone: a tap
+      // shows the result. The stage also advances by itself, so by the time
+      // the tap lands it may already dismiss the result instead; either way
+      // the button is clicked only if it is still there.
+      await reveal.click({ position: { x: 4, y: 4 } })
+      const button = reveal.getByRole('button').last()
+      if (
+        await button.waitFor({ state: 'visible', timeout: 1_500 }).then(
+          () => true,
+          () => false
+        )
+      )
+        await button.click()
     } else {
       await reveal.getByRole('button').last().click()
     }
@@ -111,12 +124,14 @@ export async function clearReveals(page: Page): Promise<void> {
         .map((entry) => entry.name)
         .reverse()
         .find((url) => new URL(url).pathname === path) ?? path
-    const [decrees, flora] = await Promise.all([
+    const [decrees, flora, orbs] = await Promise.all([
       import(loaded('/src/game/decreeRevealQueue.ts')),
       import(loaded('/src/game/floraRevealQueue.ts')),
+      import(loaded('/src/game/orbRevealQueue.ts')),
     ])
     decrees.useDecreeRevealQueue.setState({ queue: [] })
     flora.useFloraRevealQueue.setState({ queue: [] })
+    orbs.useOrbRevealQueue.setState({ queue: [] })
   })
   await parkMouse(page)
 }

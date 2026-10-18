@@ -7,7 +7,10 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../router/routeManifest'
+import {
+  SUPPORTED_LANGUAGES,
+  type SupportedLanguage,
+} from '../router/routeManifest'
 
 // English ships in the main bundle because it is the fallback: every missing
 // key resolves through it, so it has to be present before anything renders.
@@ -101,6 +104,11 @@ export async function loadLanguage(lang: SupportedLanguage): Promise<void> {
     const bundle = await load()
     i18n.addResourceBundle(lang, 'translation', bundle.default, true, true)
     loaded.add(lang)
+    // i18next settled `resolvedLanguage` when the language was chosen, before
+    // these strings existed, and leaves it at the English fallback. Choose
+    // the language again so number and date formatting follow the strings.
+    if (i18n.language === lang && i18n.resolvedLanguage !== lang)
+      await i18n.changeLanguage(lang)
   } catch (error) {
     // Leaving it unloaded is the graceful outcome: English still renders.
     console.error(`Failed to load translations for ${lang}`, error)

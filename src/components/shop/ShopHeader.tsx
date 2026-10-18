@@ -40,6 +40,8 @@ export interface ShopHeaderProps {
   status?: ReactNode
   /** Most interest Gold one round can pay, for the title's help. */
   interestCap: number
+  /** Bumps the purse each time a toast's coins land. */
+  purseBump?: number
 }
 
 // =============================================================================
@@ -48,9 +50,11 @@ export interface ShopHeaderProps {
 
 interface GoldDisplayProps {
   gold: number
+  /** Changes whenever coins land in the purse; the emblem bumps once. */
+  bump?: number
 }
 
-function GoldDisplay({ gold }: GoldDisplayProps) {
+function GoldDisplay({ gold, bump = 0 }: GoldDisplayProps) {
   const { t, i18n } = useTranslation()
   const reduceMotion = useReducedMotion()
   const number = new Intl.NumberFormat(i18n.resolvedLanguage).format
@@ -65,7 +69,13 @@ function GoldDisplay({ gold }: GoldDisplayProps) {
       className="flex min-w-0 items-center gap-1 sm:gap-2"
       aria-label={t('shop.ui.goldBalance', { amount: number(gold) })}
     >
-      <GoldIcon className="h-8 w-8 sm:h-9 sm:w-9" />
+      <span
+        key={bump}
+        data-gold-purse
+        className={`inline-flex shrink-0 ${bump && !reduceMotion ? 'purse-bump' : ''}`}
+      >
+        <GoldIcon className="h-8 w-8 sm:h-9 sm:w-9" />
+      </span>
       <AnimatedSpan className="min-w-0 break-all text-xl font-bold leading-tight tabular-nums text-[var(--color-golden-yellow)] sm:text-2xl">
         {spring.number.to((n) => number(Math.floor(n)))}
       </AnimatedSpan>
@@ -243,14 +253,16 @@ function TeaHouseTitle({ interestCap }: { interestCap: number }) {
           hoverClose.current = setTimeout(() => setOpen(false), 200)
         }}
       >
-        <div data-tea-house-explainer className="space-y-2 text-sm leading-relaxed">
+        <div
+          data-tea-house-explainer
+          className="space-y-2 text-sm leading-relaxed"
+        >
           <p className="font-semibold">{t('shop.help.what')}</p>
           <p>{t('shop.help.buy')}</p>
-          <p>
-            {t('shop.help.interest', { cap: number(interestCap) })}
-          </p>
+          <p>{t('shop.help.interest', { cap: number(interestCap) })}</p>
+          <p>{t('shop.help.cashOut')}</p>
           <p className="text-xs text-[var(--color-beige-white)]/70">
-            {t('shop.help.cashOut')}
+            {t('shop.help.build')}
           </p>
         </div>
       </AnchoredPopover>
@@ -274,13 +286,16 @@ export function ShopHeader({
   rerollCount,
   status,
   interestCap,
+  purseBump,
 }: ShopHeaderProps) {
-
   return (
-    <header className="relative z-10 flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)]/95 safe-area-top backdrop-blur-sm">
+    <header
+      data-shop-header
+      className="relative z-10 flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)]/95 safe-area-top backdrop-blur-sm"
+    >
       <div className="screen-canvas grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 px-2 py-2 sm:gap-2 sm:px-5 sm:py-3">
         {/* Gold display */}
-        <GoldDisplay gold={gold} />
+        <GoldDisplay gold={gold} bump={purseBump} />
 
         {/* Title, centred, with its explanation */}
         <TeaHouseTitle interestCap={interestCap} />

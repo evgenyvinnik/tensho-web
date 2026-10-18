@@ -65,16 +65,10 @@
     "overCapacity": "Capacité réduite : vous conservez vos Décrets. Libérez de la place avant d’en acquérir d’autres."
   },
   "yakuUpgrades": {
-    "help": "À propos de ces bonus",
     "title": "Améliorations des yaku",
-    "summary": "Améliorés : {{total}}",
-    "intro": "Ces bonus durent toute la partie et s’appliquent chaque fois qu’une main correspondante marque.",
-    "baseline": "Le niveau 1 est le niveau initial, sans bonus d’orbe.",
-    "empty": "Aucun yaku amélioré. Utilisez un Orbe céleste pour renforcer son motif de score.",
     "level": "Niveau {{level}} / {{max}}",
     "bonus": "+{{chips}} points de base · +{{mult}} Mult",
     "triggers": "Occurrences marquées : {{total}}",
-    "note": "Seuls les ajouts de base des orbes sont indiqués. Les autres règles peuvent modifier le score final ; consultez la prévision de la main.",
     "fromOrb": "Amélioré par {{orb}}"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "La Maison de Thé",
-      "content": "Le bilan montre d'où vient votre or. Achetez des objets qui se complètent, ou épargnez pour les intérêts. Touchez un objet pour voir son effet avant de l'acheter."
+      "content": "La paie de la manche arrive dans votre bourse à votre entrée ; chaque notification dit d’où elle vient. Achetez des objets qui se complètent, ou épargnez pour les intérêts. Touchez un objet pour voir son effet avant de l’acheter."
     },
     "decrees": {
       "title": "Décrets",
@@ -462,7 +456,6 @@
     "build": {
       "title": "Vos Décrets",
       "slots": "{{used}} / {{max}} emplacements de Décret",
-      "help": "Comparez les offres avec vos Décrets. Ouvrez un parchemin pour lire ses règles ou le vendre.",
       "empty": "Aucun Décret pour le moment. Les parchemins achetés apparaissent ici.",
       "sellPrompt": "Vendre {{name}} pour {{gold}} pièces d’or ? Il sera retiré de vos Décrets.",
       "sold": "{{name}} a été vendu.",
@@ -473,7 +466,6 @@
       "rarity_uncommon": "Peu commun",
       "rarity_rare": "Rare",
       "rarity_legendary": "Légendaire",
-      "subtitle": "Préparez-vous au prochain défi",
       "items": "Objets",
       "availableCount": "Disponibles : {{count}}",
       "allPurchased": "Tous les objets ont été achetés !",
@@ -489,21 +481,13 @@
       "forSale": "En vente"
     },
     "payout": {
-      "heading": "Acte {{act}} · {{round}}",
-      "clear": "Victoire",
       "interest": "Intérêts",
       "decrees": "Décrets",
       "goldTiles": "Tuiles d’or",
       "bonus": "Ajustement de récompense",
       "rentals": "Locations",
-      "interestBlocked": "Les intérêts sont actuellement bloqués.",
-      "interestCap": "Prochain encaissement : vos économies rapportent déjà le plafond d’intérêts de {{interest}}G.",
-      "interestSave": "Prochain encaissement : {{interest}}G d’intérêts avec vos économies actuelles. Économisez encore {{needed}}G pour obtenir {{next}}G.",
-      "nextRound": "Suite : {{round}} · objectif {{target}}",
-      "nextAct": "Suite : Acte {{act}}",
       "omenEarned": "Présage : {{name}}",
-      "omen": "Présage",
-      "balance": "Or"
+      "omen": "Présage"
     },
     "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
     "packInventoryFull": "Pas assez d’emplacements de Décret pour cette sélection. Choisissez moins de Décrets ou passez le paquet.",
@@ -541,7 +525,8 @@
       "tileHelp": "Ajoute cette tuile à votre mur jusqu’à la fin de la partie.",
       "pack": "Paquet · choisissez {{choose}} parmi {{from}}",
       "charter": "Charte impériale · amélioration permanente",
-      "charterHelp": "Une Charte impériale est une amélioration permanente pour le reste de la partie. Elle n’occupe aucun emplacement et ne se vend pas."
+      "charterHelp": "Une Charte impériale est une amélioration permanente pour le reste de la partie. Elle n’occupe aucun emplacement et ne se vend pas.",
+      "orbHelp": "Utilisé dès que vous le prenez : le niveau de la famille monte aussitôt et reste acquis pour toute la partie."
     },
     "offerLabel": "{{name}}, {{price}} or",
     "buyFor": "Acheter · {{price}} or",
@@ -549,7 +534,8 @@
       "what": "La Maison de Thé est la boutique entre les manches.",
       "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les consommables s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
       "interest": "L’or conservé rapporte des intérêts : +1 pour chaque tranche de 5 en fin de manche, jusqu’à +{{cap}}.",
-      "cashOut": "La ligne du haut indique l’or rapporté par la dernière manche ; ouvrez-la pour le détail. Chaque achat se fait avec son propre bouton Acheter."
+      "cashOut": "La paie de la manche arrive dans votre bourse à votre entrée, une notification par source : la manche réussie, les intérêts, les Décrets, les tuiles d’or et les locations prélevées.",
+      "build": "Votre configuration liste vos Décrets ; ouvrez un parchemin pour lire ses règles ou le vendre. Chaque achat se fait avec son propre bouton Acheter."
     }
   },
   "decrees": {
@@ -2848,5 +2834,9 @@
     "title": "Nouveau Décret : {{name}}",
     "starting": "Décret de départ",
     "acquired": "Nouveau Décret"
+  },
+  "orbReveal": {
+    "used": "Orbe Céleste utilisé",
+    "title": "{{name}} utilisé : yaku amélioré"
   }
 }

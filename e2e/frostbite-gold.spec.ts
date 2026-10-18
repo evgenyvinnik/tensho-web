@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { buyOffer, offerCard } from './helpers/shop'
+import { buyOffer, offerCard, collectCashOut } from './helpers/shop'
 import { openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
@@ -79,10 +79,19 @@ for (const [language, copy] of [
     }
     await page.locator('[data-game-action="play"]').click()
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
-    const receipt = page.getByTestId('round-cash-out')
-    await receipt.locator('[data-payout-toggle]').click()
-    await expect(receipt.locator('[data-payout-total]')).toHaveText('+9G')
-    await expect(receipt).toContainText(copy.shop.payout.bonus)
+    // The settlement arrives as toasts: one per source, rentals charged back.
+    const seen = await collectCashOut(page, {
+      screenshot: testInfo.outputPath('frostbite-cash-out.png'),
+    })
+    expect(
+      [...seen.values()].reduce((sum, toast) => sum + (toast.value ?? 0), 0)
+    ).toBe(9)
+    expect(seen.get('rentals')).toMatchObject({ value: -3, fits: true })
+    expect(seen.get('bonus')!.text).toContain(copy.shop.payout.bonus)
+    expect(seen.get('decrees')!.text).toContain(
+      `${(0.5).toLocaleString(language)}G`
+    )
+    expect([...seen.values()].every((toast) => toast.fits)).toBe(true)
     const snapshot = await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
       const { gameOrchestrator: game } = await import(path)
@@ -105,24 +114,6 @@ for (const [language, copy] of [
         netGoldChange: 9,
       },
       seasons: [],
-    })
-    expect(
-      await receipt
-        .locator('[data-payout-value]')
-        .evaluateAll((nodes) =>
-          nodes.reduce(
-            (sum, node) => sum + Number(node.getAttribute('data-payout-value')),
-            0
-          )
-        )
-    ).toBe(9)
-    await expect(receipt).toContainText(`${(0.5).toLocaleString(language)}G`)
-    await receipt.scrollIntoViewIfNeeded()
-    expect(
-      await receipt.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
-    ).toBe(true)
-    await receipt.screenshot({
-      path: testInfo.outputPath('frostbite-cash-out.png'),
     })
     const offer = await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'

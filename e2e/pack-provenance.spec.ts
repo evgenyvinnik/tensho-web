@@ -9,7 +9,7 @@ for (const [language, copy] of [
   ['es', es],
 ] as const) {
   for (const kind of ['seal', 'orb'] as const) {
-    test(`a purchased pack's ${kind} earns its unlock only when used (${language})`, async ({
+    test(`a purchased pack's ${kind} earns its unlock when used (${language})`, async ({
       page,
       isMobile,
     }) => {
@@ -118,18 +118,59 @@ for (const [language, copy] of [
         .getByRole('button', { name: copy.shop.confirmSelection, exact: true })
         .click()
       await expect(packDialog).not.toBeVisible()
+      const gold = () =>
+        page.evaluate(async () => {
+          const path = '/src/game/GameOrchestrator.ts'
+          const { gameOrchestrator: game } = await import(path)
+          return game.getState().gold
+        })
+      if (kind === 'orb') {
+        // A pack-chosen Orb is used the moment it is claimed: the reveal
+        // shows the family rising and the use already counts.
+        const reveal = page.locator('[data-orb-reveal="pluto_orb"]')
+        await expect(reveal).toBeVisible()
+        await expect(
+          reveal.locator('[data-orb-reveal-level="Pairs"]')
+        ).toHaveAttribute('data-orb-reveal-to', '2')
+        expect(await progress()).toEqual({
+          count: 25,
+          unlocked: true,
+          archiveUnlocked: true,
+        })
+        expect(await gold()).toBe(96)
+        await reveal.getByRole('button').last().click()
+        await expect(reveal).toHaveCount(0)
+        await expect(
+          page.locator('[data-shop-build] [data-yaku-upgrade="Pairs"]')
+        ).toBeVisible()
+        await page
+          .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
+          .click()
+        await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
+        await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+        await settleReveals(page, 2_000)
+        // Nothing waits on the rail; the upgrade is its own token.
+        await expect(
+          page.locator(`[data-consumable-instance="${fixture.itemId}"]`)
+        ).toHaveCount(0)
+        await expect(
+          page.locator('[data-collectible-rail] [data-yaku-upgrade="Pairs"]')
+        ).toBeVisible()
+        await page.reload()
+        await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+        expect(await progress()).toEqual({
+          count: 25,
+          unlocked: true,
+          archiveUnlocked: true,
+        })
+        return
+      }
       expect(await progress()).toEqual({
         count: 24,
         unlocked: false,
         archiveUnlocked: false,
       })
-      expect(
-        await page.evaluate(async () => {
-          const path = '/src/game/GameOrchestrator.ts'
-          const { gameOrchestrator: game } = await import(path)
-          return game.getState().gold
-        })
-      ).toBe(96)
+      expect(await gold()).toBe(96)
       await page
         .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
         .click()

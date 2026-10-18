@@ -24,7 +24,6 @@ import type {
 import type { FateSeal } from '../../systems/FateSealSystem'
 import {
   DEFAULT_ORB_MAX_LEVEL,
-  getCelestialOrbByYaku,
   type CelestialOrb,
   type YakuCategory,
 } from '../../systems/CelestialOrbSystem'
@@ -37,6 +36,7 @@ import { CollectibleToken } from '../ui/CollectibleToken'
 import { CharterArtwork } from '../ui/CharterArtwork'
 import { FlowerDetails, SeasonDetails, useSeasonName } from './FloraDetails'
 import { consumableMessage } from './consumableMessages'
+import { YakuUpgradeToken } from './YakuUpgradeToken'
 
 type ConsumableAction = Extract<
   PlayerAction,
@@ -62,15 +62,6 @@ export interface CollectibleRailProps {
   scriptDownsideProtected?: boolean
   /** The Observatory Charter pays for Orbs held rather than used. */
   observatoryActive?: boolean
-}
-
-const FAMILY_TONES: Partial<Record<YakuCategory, string>> = {
-  Pairs: '#7dd3fc',
-  Pinfu: '#6ee7b7',
-  Ittsu: '#a5b4fc',
-  Toitoi: '#fcd34d',
-  Yakuhai: '#fca5a5',
-  Tanyao: '#bef264',
 }
 
 function actionFor(item: Consumable, targets: string[] = []): ConsumableAction {
@@ -353,49 +344,11 @@ export function CollectibleRail({
     ...fateSeals.map((seal) => consumable(seal, 'seals')),
     ...voidScripts.map((script) => consumable(script, 'scripts')),
     ...upgrades.map((upgrade) => (
-      <CollectibleToken
+      <YakuUpgradeToken
         key={`upgrade-${upgrade.yaku}`}
-        label={t('upgradeFamilies.tokenLabel', {
-          family: familyName(upgrade.yaku),
-          level: number(upgrade.level),
-        })}
-        art={getItemArt('yakuUpgrades', upgrade.yaku).src}
-        badge={number(upgrade.level)}
-        tone={FAMILY_TONES[upgrade.yaku] ?? '#facc15'}
-        data={{ 'data-yaku-upgrade': upgrade.yaku }}
+        upgrade={upgrade}
         {...control(`upgrade-${upgrade.yaku}`)}
-      >
-        <div className="space-y-1 text-sm [overflow-wrap:anywhere]">
-          <p className="font-bold text-[var(--color-golden-yellow)]">
-            {t('yakuUpgrades.level', {
-              level: number(upgrade.level),
-              max: number(DEFAULT_ORB_MAX_LEVEL),
-            })}
-          </p>
-          <p className="text-emerald-200">
-            {t('yakuUpgrades.bonus', {
-              chips: number(upgrade.chips),
-              mult: number(upgrade.mult),
-            })}
-          </p>
-          <p className="text-xs opacity-80">
-            {t(`upgradeFamilies.${upgrade.yaku}.covers`)}
-          </p>
-          <p className="text-xs opacity-60">
-            {t('yakuUpgrades.triggers', { total: number(upgrade.timesScored) })}
-          </p>
-          {getCelestialOrbByYaku(upgrade.yaku) && (
-            <p className="text-xs opacity-60">
-              {t('yakuUpgrades.fromOrb', {
-                orb: itemText.name(
-                  'orbs',
-                  getCelestialOrbByYaku(upgrade.yaku)!
-                ),
-              })}
-            </p>
-          )}
-        </div>
-      </CollectibleToken>
+      />
     )),
   ]
 

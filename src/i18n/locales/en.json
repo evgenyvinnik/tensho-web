@@ -65,16 +65,10 @@
     "overCapacity": "Capacity reduced: you keep your owned Decrees. Make room before acquiring more."
   },
   "yakuUpgrades": {
-    "help": "About these bonuses",
     "title": "Yaku upgrades",
-    "summary": "Upgraded: {{total}}",
-    "intro": "These bonuses last for this run and apply whenever a matching hand scores.",
-    "baseline": "Level 1 is the baseline: no Orb bonus.",
-    "empty": "No Yaku upgrades yet. Use a Celestial Orb to strengthen its matching scoring pattern.",
     "level": "Level {{level}} / {{max}}",
     "bonus": "+{{chips}} base points · +{{mult}} Mult",
     "triggers": "Times scored: {{total}}",
-    "note": "Base Orb additions only. Other rules can change the final score; use the play forecast for the total.",
     "fromOrb": "Upgraded by {{orb}}"
   },
   "progressiveHints": {
@@ -92,7 +86,7 @@
     },
     "shop": {
       "title": "The Tea House",
-      "content": "The cash-out shows where your Gold came from. Buy items that work together, or save for interest. Tap any item to see what it does before you buy it."
+      "content": "Your round's pay lands in the purse as you arrive; each toast says what it was for. Buy items that work together, or save for interest. Tap any item to see what it does before you buy it."
     },
     "decrees": {
       "title": "Decrees",
@@ -458,7 +452,6 @@
     "build": {
       "title": "Your build",
       "slots": "{{used}} / {{max}} Decree slots",
-      "help": "Compare offers with your owned Decrees. Open a scroll to read its rules or sell it.",
       "empty": "No Decrees yet. Purchased scrolls appear here.",
       "sellPrompt": "Sell {{name}} for {{gold}} gold? This removes it from your build.",
       "sold": "Sold {{name}}.",
@@ -469,7 +462,6 @@
       "rarity_uncommon": "Uncommon",
       "rarity_rare": "Rare",
       "rarity_legendary": "Legendary",
-      "subtitle": "Prepare for the next challenge",
       "items": "Items",
       "availableCount": "Available: {{count}}",
       "allPurchased": "All items purchased!",
@@ -485,21 +477,13 @@
       "forSale": "For sale"
     },
     "payout": {
-      "heading": "Act {{act}} · {{round}}",
-      "clear": "Clear",
       "interest": "Interest",
       "decrees": "Decrees",
       "goldTiles": "Gold tiles",
       "bonus": "Reward adjustment",
       "rentals": "Rentals",
-      "interestBlocked": "Interest is currently blocked.",
-      "interestCap": "Next cash-out: your savings already earn the {{interest}}G interest cap.",
-      "interestSave": "Next cash-out: {{interest}}G interest from current savings. Save {{needed}}G more for {{next}}G.",
-      "nextRound": "Next: {{round}} · {{target}} target",
-      "nextAct": "Next: Act {{act}} ascent",
       "omenEarned": "Omen: {{name}}",
-      "omen": "Omen",
-      "balance": "Gold"
+      "omen": "Omen"
     },
     "packChoices": "Choose up to {{max}} from {{count}} rewards",
     "packInventoryFull": "Not enough Decree slots for this selection. Choose fewer Decrees, or skip the pack.",
@@ -537,7 +521,8 @@
       "tileHelp": "Adds this tile to your wall for the rest of the run.",
       "pack": "Blessing Pack · choose {{choose}} of {{from}}",
       "charter": "Imperial Charter · permanent run upgrade",
-      "charterHelp": "An Imperial Charter is a permanent upgrade for the rest of this run. It never takes a slot and can’t be sold."
+      "charterHelp": "An Imperial Charter is a permanent upgrade for the rest of this run. It never takes a slot and can’t be sold.",
+      "orbHelp": "Used the moment you take it: the family's level rises at once and stays up for the whole run."
     },
     "offerLabel": "{{name}}, {{price}} Gold",
     "buyFor": "Buy · {{price}} Gold",
@@ -545,7 +530,8 @@
       "what": "The Tea House is the shop between rounds.",
       "buy": "Tap any item to see what it does, then press Buy. Decrees change the rules, consumables are used during a round, Packs let you pick rewards, and Charters upgrade the whole run.",
       "interest": "Gold you keep earns interest: +1 Gold for every 5 you hold when a round ends, up to +{{cap}}.",
-      "cashOut": "The line at the top shows the Gold the last round paid; open it for the breakdown. Every purchase happens with its own Buy button."
+      "cashOut": "Your round's pay lands in the purse as you arrive, one toast per source: the clear itself, interest, Decrees, Gold tiles and any rentals charged.",
+      "build": "Your build lists the Decrees you own; open a scroll to read its rules or sell it. Every purchase happens with its own Buy button."
     }
   },
   "decrees": {
@@ -2844,5 +2830,9 @@
     "title": "New Decree: {{name}}",
     "starting": "Starting Decree",
     "acquired": "New Decree"
+  },
+  "orbReveal": {
+    "used": "Celestial Orb used",
+    "title": "{{name}} used: Yaku upgraded"
   }
 }

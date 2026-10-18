@@ -157,76 +157,44 @@ for (const language of ['en', 'es', 'ru'])
           shop.state.lastHandScore
         )
       ).toBe(forecast)
-      const trigger = page.getByTestId('yaku-upgrades-trigger')
-      const open = async () => {
-        await activate(trigger)
-        const dialog = page.getByRole('dialog', {
-          name: copy.yakuUpgrades.title,
-        })
-        await expect(dialog).toBeVisible()
-        return dialog
-      }
-      const close = async () => {
-        if (isMobile)
-          await activate(
-            page
-              .getByRole('dialog')
-              .getByRole('button', { name: copy.common.close, exact: true })
-          )
-        else await page.keyboard.press('Escape')
-        await expect(page.getByRole('dialog')).toHaveCount(0)
-        await expect(trigger).toBeFocused()
-      }
-      let dialog = await open()
-      await expect(dialog.locator('[data-yaku-upgrade]')).toHaveCount(
-        kind === 'all' ? 12 : 1
+      // The Tea House lists every upgrade inline in the build panel: one
+      // token per family with its level, no popup and no empty-state prose.
+      await expect(page.getByTestId('yaku-upgrades-trigger')).toHaveCount(0)
+      const row = page.locator('[data-shop-build] [data-yaku-upgrades]')
+      await expect(row).toBeVisible()
+      await expect(row).toHaveAccessibleName(copy.yakuUpgrades.title)
+      const shopTokens = row.locator('[data-yaku-upgrade]')
+      await expect(shopTokens).toHaveCount(kind === 'all' ? 12 : 1)
+      const shopPair = row.locator('[data-yaku-upgrade="SevenPairs"]')
+      await expect(shopPair).toHaveAccessibleName(
+        copy.upgradeFamilies.tokenLabel
+          .replace('{{family}}', copy.upgradeFamilies.SevenPairs.name)
+          .replace('{{level}}', (2).toLocaleString(language))
       )
-      // The first actual upgrade must fit without scrolling past explanatory prose.
-      expect(
-        await dialog
-          .locator('[data-yaku-upgrade]')
-          .first()
-          .evaluate((node) => {
-            const card = node.getBoundingClientRect()
-            const viewport = node
-              .closest('[data-popup-scroll]')!
-              .getBoundingClientRect()
-            return (
-              card.top >= viewport.top && card.bottom <= viewport.bottom + 1
-            )
-          })
-      ).toBe(true)
-      const pair = dialog.locator('[data-yaku-upgrade="SevenPairs"]')
-      await expect(pair).toContainText(copy.yaku.chiitoitsu)
-      await expect(pair).toContainText(
+      await activate(shopPair)
+      await expect(pairPanel).toContainText(
         copy.yakuUpgrades.bonus
           .replace('{{chips}}', '35')
           .replace('{{mult}}', '3')
       )
-      await expect(pair).toContainText(
+      await expect(pairPanel).toContainText(
         copy.yakuUpgrades.triggers.replace('{{total}}', '1')
       )
-      await pair.scrollIntoViewIfNeeded()
-      await page.screenshot({ path: testInfo.outputPath('ledger-shop.png') })
-      const ledger = page.getByTestId('yaku-upgrades-ledger')
       expect(
-        await ledger.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
+        await pairPanel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
       ).toBe(true)
-      const explanation = dialog.locator('details')
-      await expect(explanation).not.toHaveAttribute('open')
-      await activate(explanation.locator('summary'))
-      await expect(explanation).toHaveAttribute('open')
-      await expect(explanation).toContainText(copy.yakuUpgrades.note)
-      expect(await saved()).toEqual(shop)
-      await close()
+      await page.screenshot({ path: testInfo.outputPath('ledger-shop.png') })
+      await page.keyboard.press('Escape')
+      await expect(pairPanel).toHaveCount(0)
       expect(await saved()).toEqual(shop)
       await page.reload()
       expect(await saved()).toEqual(shop)
-      dialog = await open()
-      await expect(dialog.locator('[data-yaku-upgrade]')).toHaveCount(
-        kind === 'all' ? 12 : 1
-      )
-      await close()
+      await expect(shopTokens).toHaveCount(kind === 'all' ? 12 : 1)
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth + 1
+        )
+      ).toBe(true)
       await activate(
         page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       )
