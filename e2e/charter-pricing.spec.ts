@@ -1,5 +1,11 @@
 import { expect, test, type Locator } from '@playwright/test'
-import { offerCard, offerDetails, openOffer, packModal } from './helpers/shop'
+import {
+  offerCard,
+  offerDetails,
+  offerName,
+  openOffer,
+  packModal,
+} from './helpers/shop'
 import { clearReveals, settleReveals } from './helpers/table'
 
 for (const lang of ['en', 'es'])
@@ -124,7 +130,9 @@ for (const lang of ['en', 'es'])
         'data-shop-offer-type',
         'ImperialCharter'
       )
-      await expect(card).toContainText(info.copy.charters.items[info.id].name)
+      await expect(card).toHaveAccessibleName(
+        offerName(info.copy.charters.items[info.id].name)
+      )
       // Its details hold the only Buy step; closing them buys nothing.
       const details = await openOffer(page, charterOffer)
       await activate(

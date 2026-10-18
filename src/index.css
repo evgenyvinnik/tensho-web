@@ -661,24 +661,25 @@ a {
   }
 }
 
-/* Every Tea House offer is one size, whatever it is. */
+/* Every Tea House offer is one size, whatever it is: its art, as wide as the
+   card allows, over its price. The name lives in the card's label and popup. */
 .shop-offer-card {
-  width: 6.75rem;
-  height: 10.5rem;
+  width: 7.5rem;
+  height: 9.75rem;
 }
 
 .shop-offer-art {
-  height: 5.25rem;
+  height: 6.75rem;
 }
 
 @media (min-width: 640px) {
   .shop-offer-card {
-    width: 8.25rem;
-    height: 12.25rem;
+    width: 9rem;
+    height: 11.25rem;
   }
 
   .shop-offer-art {
-    height: 6.5rem;
+    height: 8.25rem;
   }
 }
 

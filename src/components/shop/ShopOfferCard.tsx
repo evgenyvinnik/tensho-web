@@ -2,9 +2,10 @@
  * ShopOfferCard: one thing for sale in the Tea House.
  *
  * Every offer — a Decree, an Orb, a Seal, a Script, a tile, a Blessing Pack,
- * an Imperial Charter — is the same size: its picture, its name and its price.
- * Tap it (or hover with a mouse, or focus it) to see what it is; the details
- * panel holds the Buy button, so looking never buys by accident.
+ * an Imperial Charter — is the same size: its picture and its price. Its name
+ * is read out with the card and heads its details. Tap it (or hover with a
+ * mouse, or focus it) to see what it is; the details panel holds the Buy
+ * button, so looking never buys by accident.
  *
  * @module components/shop/ShopOfferCard
  */
@@ -114,20 +115,17 @@ export function ShopOfferCard({
         }}
       >
         <span className="shop-offer-art flex w-full items-center justify-center">
-          <OfferArt offering={offering} />
-        </span>
-        <span className="mt-1 line-clamp-2 min-h-[2.1rem] w-full break-words text-[11px] font-semibold leading-[1.05rem] text-[var(--color-beige-white)]">
-          {text.name}
+          <OfferArt offering={offering} tileSize="large" emblemSize={44} />
         </span>
         <span
           data-shop-offer-price
-          className={`mt-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-black tabular-nums ${
+          className={`mt-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-sm font-black tabular-nums ${
             canAfford
               ? 'bg-amber-400/20 text-[var(--color-golden-yellow)]'
               : 'bg-black/40 text-[var(--color-beige-white)]/50'
           }`}
         >
-          <GoldIcon className="h-3.5 w-3.5" />
+          <GoldIcon className="h-4 w-4" />
           {price}
         </span>
       </button>

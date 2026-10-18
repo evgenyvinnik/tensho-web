@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { offerName } from './helpers/shop'
 import { clearReveals, openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import it from '../src/i18n/locales/it.json' with { type: 'json' }
@@ -87,7 +88,10 @@ for (const [language, copy] of [
           return node.naturalWidth
         })
       ).toBe(512)
-      await expect(card).toContainText(copy.decrees.items[id].name)
+      // The card is art and price; its name is read out and heads its details.
+      await expect(card).toHaveAccessibleName(
+        offerName(copy.decrees.items[id].name)
+      )
       // An offer opens its details on tap; Buy is the only purchase step.
       const buy = page.locator(`[data-shop-buy="starter-${id}"]`)
       if (isMobile) {

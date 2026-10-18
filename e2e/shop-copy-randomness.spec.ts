@@ -1,6 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { RunRandom } from '../src/game/RunRandom'
+import { offerName } from './helpers/shop'
 import { settleReveals } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
@@ -127,8 +128,8 @@ for (const language of ['en', 'es'])
     }
     // Every offer opens its details on tap; Buy is the only purchase step.
     const card = page.locator(`[data-shop-offer="${offer.id}"]`)
-    await expect(card).toContainText(
-      text.decrees.items['decree-doppelganger'].name
+    await expect(card).toHaveAccessibleName(
+      offerName(text.decrees.items['decree-doppelganger'].name)
     )
     await card.scrollIntoViewIfNeeded()
     await activate(card)

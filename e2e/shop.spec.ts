@@ -59,6 +59,8 @@ for (const upgraded of [false, true]) {
     const title2 = upgraded ? 'Abundancia de renovación' : 'Escritura antigua'
     await expect(card).toHaveAccessibleName(new RegExp(title2))
     await expect(card).not.toContainText(/\p{Extended_Pictographic}/u)
+    // The card prints only its price; the name is in its label and details.
+    await expect(card).toHaveText(/^[\d.,\s]+$/)
     for (const width of [320, 640]) {
       await page.setViewportSize({ width, height: 568 })
       await card.scrollIntoViewIfNeeded()

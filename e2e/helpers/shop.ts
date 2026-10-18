@@ -14,6 +14,13 @@ export const itemOffers = (page: Page): Locator =>
 export const charterCard = (page: Page): Locator =>
   page.locator('[data-shop-offer][data-shop-offer-type="ImperialCharter"]')
 
+/**
+ * Matches an offer card's accessible name: its item's name and its price.
+ * The card itself prints only the price under the art.
+ */
+export const offerName = (name: string): RegExp =>
+  new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+
 /** The details panel an offer card opens: name, description, Buy. */
 export const offerDetails = (page: Page, offerId: string): Locator =>
   page

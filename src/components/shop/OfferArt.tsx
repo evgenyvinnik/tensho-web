@@ -19,10 +19,13 @@ export function OfferArt({
   offering,
   large = false,
   tileSize = 'small',
+  emblemSize,
 }: {
   offering: Pick<TeaHouseOffering, 'itemType' | 'item'>
   large?: boolean
   tileSize?: TileSize
+  /** Pixel size of the emblem drawn over a family's shared art. */
+  emblemSize?: number
 }) {
   const size = large ? 'h-24 w-24' : 'h-full w-full'
   switch (offering.itemType) {
@@ -42,7 +45,7 @@ export function OfferArt({
             <span className="relative">
               <DecreeUniqueIcon
                 decreeId={decree.id}
-                size={large ? 40 : 30}
+                size={emblemSize ?? (large ? 40 : 30)}
                 color={DECREE_ICON_COLORS[decree.rarity]}
               />
             </span>
