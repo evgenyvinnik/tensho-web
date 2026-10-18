@@ -854,15 +854,15 @@
     "items": {
       "decree-misty-jade": {
         "name": "Giada nebulosa",
-        "description": "+30 Fiches."
+        "description": "+30 Punti."
       },
       "decree-bamboo-scroll": {
         "name": "Pergamena di bambù",
-        "description": "+40 Fiches."
+        "description": "+40 Punti."
       },
       "decree-jade-tablet": {
         "name": "Tavoletta di giada",
-        "description": "+50 Fiches."
+        "description": "+50 Punti."
       },
       "decree-gentle-breeze": {
         "name": "Brezza leggera",
@@ -906,15 +906,15 @@
       },
       "decree-edge-runner": {
         "name": "Corridore sul filo",
-        "description": "+20 Fiches per ogni tessera terminale nella mano."
+        "description": "+20 Punti per ogni tessera terminale nella mano."
       },
       "decree-middle-way": {
         "name": "Via di mezzo",
-        "description": "+10 Fiches per ogni tessera semplice nella mano."
+        "description": "+10 Punti per ogni tessera semplice nella mano."
       },
       "decree-green-fortune": {
         "name": "Fortuna verde",
-        "description": "+15 Fiches per ogni tessera verde (2, 3, 4, 6, 8 di Souzu)."
+        "description": "+15 Punti per ogni tessera verde (2, 3, 4, 6, 8 di Souzu)."
       },
       "decree-coin-collector": {
         "name": "Collezionista di monete",
@@ -930,19 +930,19 @@
       },
       "decree-pair-lover": {
         "name": "Amante delle coppie",
-        "description": "+30 Fiches se la mano contiene una coppia."
+        "description": "+30 Punti se la mano contiene una coppia."
       },
       "decree-sequence-seeker": {
         "name": "Cercatore di sequenze",
-        "description": "+30 Fiches se la mano contiene una sequenza."
+        "description": "+30 Punti se la mano contiene una sequenza."
       },
       "decree-triplet-tracker": {
         "name": "Cacciatore di tris",
-        "description": "+40 Fiches se la mano contiene un tris."
+        "description": "+40 Punti se la mano contiene un tris."
       },
       "decree-flower-friend": {
         "name": "Amico dei fiori",
-        "description": "+10 Fiches per ogni Fiore raccolto."
+        "description": "+10 Punti per ogni Fiore raccolto."
       },
       "decree-seasonal-blessing": {
         "name": "Benedizione stagionale",
@@ -958,11 +958,11 @@
       },
       "decree-balanced-path": {
         "name": "Sentiero dell’equilibrio",
-        "description": "+15 Fiches e +2 Molt."
+        "description": "+15 Punti e +2 Molt."
       },
       "decree-modest-fortune": {
         "name": "Modesta fortuna",
-        "description": "+20 Fiches e +1 Oro per round."
+        "description": "+20 Punti e +1 Oro per round."
       },
       "decree-humble-power": {
         "name": "Potere umile",
@@ -970,15 +970,15 @@
       },
       "decree-one-mastery": {
         "name": "Maestria degli uno",
-        "description": "+25 Fiches per ogni tessera di valore 1 nella mano."
+        "description": "+25 Punti per ogni tessera di valore 1 nella mano."
       },
       "decree-nine-mastery": {
         "name": "Maestria dei nove",
-        "description": "+25 Fiches per ogni tessera di valore 9 nella mano."
+        "description": "+25 Punti per ogni tessera di valore 9 nella mano."
       },
       "decree-five-blessing": {
         "name": "Benedizione dei cinque",
-        "description": "+35 Fiches per ogni tessera di valore 5 nella mano."
+        "description": "+35 Punti per ogni tessera di valore 5 nella mano."
       },
       "decree-spark": {
         "name": "Scintilla",
@@ -1026,7 +1026,7 @@
       },
       "decree-straight-arrow": {
         "name": "Freccia diritta",
-        "description": "+80 Fiches se la mano contiene 3 sequenze."
+        "description": "+80 Punti se la mano contiene 3 sequenze."
       },
       "decree-run-master": {
         "name": "Maestro delle sequenze",
@@ -1070,7 +1070,7 @@
       },
       "decree-seasonal-wind": {
         "name": "Vento stagionale",
-        "description": "+50 Fiches per ogni Stagione attiva."
+        "description": "+50 Punti per ogni Stagione attiva."
       },
       "decree-slow-burn": {
         "name": "Fuoco lento",
@@ -1078,7 +1078,7 @@
       },
       "decree-momentum": {
         "name": "Slancio",
-        "description": "+15 Fiches per ogni mano giocata in questo round."
+        "description": "+15 Punti per ogni mano giocata in questo round."
       },
       "decree-crescendo": {
         "name": "Crescendo",
@@ -1090,7 +1090,7 @@
       },
       "decree-recycler": {
         "name": "Riciclatore",
-        "description": "+10 fiches per tessera ripescata in questo round"
+        "description": "+10 punti per tessera ripescata in questo round"
       },
       "decree-yakuhai-zealot": {
         "name": "Zelota dello Yakuhai",
@@ -1110,7 +1110,7 @@
       },
       "decree-veteran": {
         "name": "Veterano",
-        "description": "+10 Fiches per ogni atto completato."
+        "description": "+10 Punti per ogni atto completato."
       },
       "decree-experience": {
         "name": "Esperienza",
@@ -1118,7 +1118,7 @@
       },
       "decree-greater-jade": {
         "name": "Giada superiore",
-        "description": "+80 Fiches."
+        "description": "+80 Punti."
       },
       "decree-blazing-banner": {
         "name": "Stendardo ardente",
@@ -1138,7 +1138,7 @@
       },
       "decree-bookends": {
         "name": "Reggilibri",
-        "description": "+60 Fiches se la mano contiene sia un 1 sia un 9."
+        "description": "+60 Punti se la mano contiene sia un 1 sia un 9."
       },
       "decree-expansive-grip": {
         "name": "Presa estesa",
@@ -1206,7 +1206,7 @@
       },
       "decree-nature-bond": {
         "name": "Legame con la natura",
-        "description": "+3 Molt per ogni Fiore, +30 Fiches per ogni Stagione."
+        "description": "+3 Molt per ogni Fiore, +30 Punti per ogni Stagione."
       },
       "decree-honitsu-herald": {
         "name": "Araldo dell’Honitsu",
@@ -1230,11 +1230,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "Fortuna e gloria",
-        "description": "+60 Fiches, +8 Molt, +3 Oro per round."
+        "description": "+60 Punti, +8 Molt, +3 Oro per round."
       },
       "decree-emperors-blessing": {
         "name": "Benedizione dell’imperatore",
-        "description": "+100 Fiches e +10 Molt."
+        "description": "+100 Punti e +10 Molt."
       },
       "decree-golden-age": {
         "name": "Età dell’oro",
@@ -1258,7 +1258,7 @@
       },
       "decree-endless-journey": {
         "name": "Viaggio senza fine",
-        "description": "+20 Fiches per ogni atto completato."
+        "description": "+20 Punti per ogni atto completato."
       },
       "decree-master-grip": {
         "name": "Presa magistrale",
@@ -1342,7 +1342,7 @@
       },
       "decree-exponential": {
         "name": "Crescita esponenziale",
-        "description": "×1,3 Molt ogni 100 Fiches base segnate."
+        "description": "×1,3 Molt ogni 100 punti base segnati."
       },
       "decree-chain-reaction": {
         "name": "Reazione a catena",
@@ -1350,7 +1350,7 @@
       },
       "decree-cosmic-jade": {
         "name": "Giada cosmica",
-        "description": "+200 Fiches."
+        "description": "+200 Punti."
       },
       "decree-solar-banner": {
         "name": "Stendardo solare",
@@ -1486,7 +1486,7 @@
       },
       "decree-half-suited": {
         "name": "Mezzo Colore",
-        "description": "+20 Fiches"
+        "description": "+20 Punti"
       },
       "decree-photograph": {
         "name": "Fotografia",
@@ -1494,19 +1494,19 @@
       },
       "decree-polished-stone": {
         "name": "Pietra Levigata",
-        "description": "+60 Fiches"
+        "description": "+60 Punti"
       },
       "decree-ancient-scroll": {
         "name": "Pergamena Antica",
-        "description": "+30 Fiches per ogni yaku completato"
+        "description": "+150 Punti, −2 spazi per tessere in mano."
       },
       "decree-philosophers-stone": {
         "name": "Pietra Filosofale",
-        "description": "Converte 10 Fiches extra in +1 Molt dopo il calcolo"
+        "description": "Raddoppia tutto l'Oro guadagnato."
       },
       "decree-triple-threat": {
         "name": "Tripla Minaccia",
-        "description": "Raddoppia le Fiches dalla prossima tripla"
+        "description": "+80 Punti se la mano contiene 2+ tris."
       },
       "decree-infinite-loop": {
         "name": "Ciclo Infinito",
@@ -2365,51 +2365,51 @@
     "items": {
       "pluto_orb": {
         "name": "Sfera di Plutone",
-        "description": "Potenzia le coppie: Coppia, Doppia coppia e Tre coppie. +1 Mult e +10 fiches per livello."
+        "description": "Potenzia le coppie: Coppia, Doppia coppia e Tre coppie. +1 Mult e +10 punti per livello."
       },
       "mercury_orb": {
         "name": "Sfera di Mercurio",
-        "description": "Potenzia Tutti semplici: giocate solo da 2 a 8 e la mano Tanyao. +1 Mult e +15 fiches per livello."
+        "description": "Potenzia Tutti semplici: giocate solo da 2 a 8 e la mano Tanyao. +1 Mult e +15 punti per livello."
       },
       "uranus_orb": {
         "name": "Sfera di Urano",
-        "description": "Potenzia gli Onori: ogni gruppo di Venti o Draghi e la mano Yakuhai. +1 Mult e +20 fiches per livello."
+        "description": "Potenzia gli Onori: ogni gruppo di Venti o Draghi e la mano Yakuhai. +1 Mult e +20 punti per livello."
       },
       "venus_orb": {
         "name": "Sfera di Venere",
-        "description": "Potenzia le sequenze: Sequenza, Sequenza + Coppia, Due sequenze e la mano Pinfu. +2 Mult e +20 fiches per livello."
+        "description": "Potenzia le sequenze: Sequenza, Sequenza + Coppia, Due sequenze e la mano Pinfu. +2 Mult e +20 punti per livello."
       },
       "saturn_orb": {
         "name": "Sfera di Saturno",
-        "description": "Potenzia le scale: di quattro e di cinque, e la mano Scala pura. +3 Mult e +30 fiches per livello."
+        "description": "Potenzia le scale: di quattro e di cinque, e la mano Scala pura. +3 Mult e +30 punti per livello."
       },
       "jupiter_orb": {
         "name": "Sfera di Giove",
-        "description": "Si armonizza con lo Yaku Honitsu (Mezzo Colore). +2 Molt, +15 Fiches per livello."
+        "description": "Si armonizza con lo Yaku Honitsu (Mezzo Colore). +2 Molt, +15 Punti per livello."
       },
       "earth_orb": {
         "name": "Sfera della Terra",
-        "description": "Potenzia tris e poker, e la mano Tutti tris. +2 Mult e +25 fiches per livello."
+        "description": "Potenzia tris e poker, e la mano Tutti tris. +2 Mult e +25 punti per livello."
       },
       "mars_orb": {
         "name": "Sfera di Marte",
-        "description": "Si armonizza con lo Yaku Chinitsu (Colore Pieno). +3 Molt, +30 Fiches per livello."
+        "description": "Si armonizza con lo Yaku Chinitsu (Colore Pieno). +3 Molt, +30 Punti per livello."
       },
       "neptune_orb": {
         "name": "Sfera di Nettuno",
-        "description": "Si armonizza con lo Yaku Sanshoku (Tripla Sequenza Mista). +4 Molt, +40 Fiches per livello."
+        "description": "Si armonizza con lo Yaku Sanshoku (Tripla Sequenza Mista). +4 Molt, +40 Punti per livello."
       },
       "planet_x_orb": {
         "name": "Sfera del Pianeta X",
-        "description": "Si armonizza con lo Yaku Sette Coppie. +3 Molt, +35 Fiches per livello."
+        "description": "Si armonizza con lo Yaku Sette Coppie. +3 Molt, +35 Punti per livello."
       },
       "ceres_orb": {
         "name": "Sfera di Cerere",
-        "description": "Si armonizza con lo Yaku Chanta (Terminale/Onore in Ogni Set). +4 Molt, +40 Fiches per livello."
+        "description": "Si armonizza con lo Yaku Chanta (Terminale/Onore in Ogni Set). +4 Molt, +40 Punti per livello."
       },
       "eris_orb": {
         "name": "Sfera di Eris",
-        "description": "Si armonizza con lo Yaku Kokushi Musou. +3 Molt, +50 Fiches per livello."
+        "description": "Si armonizza con lo Yaku Kokushi Musou. +3 Molt, +50 Punti per livello."
       },
       "black_hole_orb": {
         "name": "Sfera del Buco Nero",

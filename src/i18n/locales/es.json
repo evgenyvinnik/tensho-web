@@ -567,23 +567,23 @@
     "items": {
       "decree-half-suited": {
         "name": "Medio Palo",
-        "description": "+20 Fichas"
+        "description": "+20 Puntos"
       },
       "decree-misty-jade": {
         "name": "Jade Brumoso",
-        "description": "+30 Fichas"
+        "description": "+30 Puntos"
       },
       "decree-bamboo-scroll": {
         "name": "Pergamino de Bambú",
-        "description": "+40 Fichas"
+        "description": "+40 Puntos"
       },
       "decree-jade-tablet": {
         "name": "Tableta de Jade",
-        "description": "+50 Fichas"
+        "description": "+50 Puntos"
       },
       "decree-polished-stone": {
         "name": "Piedra Pulida",
-        "description": "+60 Fichas"
+        "description": "+60 Puntos"
       },
       "decree-gentle-breeze": {
         "name": "Brisa Suave",
@@ -627,15 +627,15 @@
       },
       "decree-edge-runner": {
         "name": "Corredor de Bordes",
-        "description": "+20 Fichas por Terminal en mano"
+        "description": "+20 Puntos por Terminal en mano"
       },
       "decree-middle-way": {
         "name": "Camino Medio",
-        "description": "+10 Fichas por Simple en mano"
+        "description": "+10 Puntos por Simple en mano"
       },
       "decree-green-fortune": {
         "name": "Fortuna Verde",
-        "description": "+15 Fichas por ficha verde (2,3,4,6,8 Souzu)"
+        "description": "+15 Puntos por ficha verde (2,3,4,6,8 Souzu)"
       },
       "decree-coin-collector": {
         "name": "Colector de Monedas",
@@ -651,19 +651,19 @@
       },
       "decree-pair-lover": {
         "name": "Amante de Pares",
-        "description": "+30 Fichas si la mano contiene un par"
+        "description": "+30 Puntos si la mano contiene un par"
       },
       "decree-sequence-seeker": {
         "name": "Buscador de Secuencias",
-        "description": "+30 Fichas si la mano contiene una secuencia"
+        "description": "+30 Puntos si la mano contiene una secuencia"
       },
       "decree-triplet-tracker": {
         "name": "Rastreador de Tripletes",
-        "description": "+40 Fichas si la mano contiene un triplete"
+        "description": "+40 Puntos si la mano contiene un triplete"
       },
       "decree-flower-friend": {
         "name": "Amigo de las Flores",
-        "description": "+10 Fichas por Flor recolectada"
+        "description": "+10 Puntos por Flor recolectada"
       },
       "decree-seasonal-blessing": {
         "name": "Bendición Estacional",
@@ -679,11 +679,11 @@
       },
       "decree-balanced-path": {
         "name": "Camino Equilibrado",
-        "description": "+15 Fichas y +2 Mult"
+        "description": "+15 Puntos y +2 Mult"
       },
       "decree-modest-fortune": {
         "name": "Fortuna Modesta",
-        "description": "+20 Fichas y +1G por ronda"
+        "description": "+20 Puntos y +1G por ronda"
       },
       "decree-humble-power": {
         "name": "Poder Humilde",
@@ -691,15 +691,15 @@
       },
       "decree-one-mastery": {
         "name": "Maestría del Uno",
-        "description": "+25 Fichas por ficha de 1 en mano"
+        "description": "+25 Puntos por ficha de 1 en mano"
       },
       "decree-nine-mastery": {
         "name": "Maestría del Nueve",
-        "description": "+25 Fichas por ficha de 9 en mano"
+        "description": "+25 Puntos por ficha de 9 en mano"
       },
       "decree-five-blessing": {
         "name": "Bendición del Cinco",
-        "description": "+35 Fichas por ficha de 5 en mano"
+        "description": "+35 Puntos por ficha de 5 en mano"
       },
       "decree-spark": {
         "name": "Chispa",
@@ -747,7 +747,7 @@
       },
       "decree-straight-arrow": {
         "name": "Flecha Recta",
-        "description": "+80 Fichas si hay 3 secuencias"
+        "description": "+80 Puntos si hay 3 secuencias"
       },
       "decree-run-master": {
         "name": "Maestro de Carreras",
@@ -755,7 +755,7 @@
       },
       "decree-triple-threat": {
         "name": "Triple Amenaza",
-        "description": "+80 Fichas si hay 2+ tripletes"
+        "description": "+80 Puntos si hay 2+ tripletes"
       },
       "decree-triplet-thunder": {
         "name": "Trueno de Tripletes",
@@ -799,7 +799,7 @@
       },
       "decree-seasonal-wind": {
         "name": "Viento Estacional",
-        "description": "+50 Fichas por Estación activa"
+        "description": "+50 Puntos por Estación activa"
       },
       "decree-slow-burn": {
         "name": "Combustión Lenta",
@@ -807,7 +807,7 @@
       },
       "decree-momentum": {
         "name": "Impulso",
-        "description": "+15 Fichas por mano jugada esta ronda"
+        "description": "+15 Puntos por mano jugada esta ronda"
       },
       "decree-crescendo": {
         "name": "Crescendo",
@@ -819,7 +819,7 @@
       },
       "decree-recycler": {
         "name": "Reciclador",
-        "description": "+10 fichas de puntos por ficha recambiada esta ronda"
+        "description": "+10 Puntos por ficha recambiada esta ronda"
       },
       "decree-yakuhai-zealot": {
         "name": "Fanático Yakuhai",
@@ -839,7 +839,7 @@
       },
       "decree-veteran": {
         "name": "Veterano",
-        "description": "+10 Fichas por Acto completado"
+        "description": "+10 Puntos por Acto completado"
       },
       "decree-experience": {
         "name": "Experiencia",
@@ -847,7 +847,7 @@
       },
       "decree-greater-jade": {
         "name": "Gran Jade",
-        "description": "+80 Fichas"
+        "description": "+80 Puntos"
       },
       "decree-blazing-banner": {
         "name": "Estandarte Ardiente",
@@ -867,7 +867,7 @@
       },
       "decree-bookends": {
         "name": "Extremos",
-        "description": "+60 Fichas si hay 1 y 9"
+        "description": "+60 Puntos si hay 1 y 9"
       },
       "decree-expansive-grip": {
         "name": "Agarre Expansivo",
@@ -935,7 +935,7 @@
       },
       "decree-nature-bond": {
         "name": "Vínculo Natural",
-        "description": "+3 Mult por Flor, +30 Fichas por Estación"
+        "description": "+3 Mult por Flor, +30 Puntos por Estación"
       },
       "decree-honitsu-herald": {
         "name": "Heraldo Honitsu",
@@ -959,11 +959,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "Fortuna y Gloria",
-        "description": "+60 Fichas, +8 Mult, +3G por ronda"
+        "description": "+60 Puntos, +8 Mult, +3G por ronda"
       },
       "decree-emperors-blessing": {
         "name": "Bendición del Emperador",
-        "description": "+100 Fichas y +10 Mult"
+        "description": "+100 Puntos y +10 Mult"
       },
       "decree-golden-age": {
         "name": "Era Dorada",
@@ -979,7 +979,7 @@
       },
       "decree-ancient-scroll": {
         "name": "Pergamino Antiguo",
-        "description": "+150 Fichas, -2 Tamaño de Mano"
+        "description": "+150 Puntos, -2 Tamaño de Mano"
       },
       "decree-sacrifice": {
         "name": "Sacrificio",
@@ -999,7 +999,7 @@
       },
       "decree-endless-journey": {
         "name": "Viaje Sin Fin",
-        "description": "+20 Fichas por Acto completado"
+        "description": "+20 Puntos por Acto completado"
       },
       "decree-master-grip": {
         "name": "Agarre Maestro",
@@ -1087,7 +1087,7 @@
       },
       "decree-exponential": {
         "name": "Exponencial",
-        "description": "x1.3 Mult por 100 fichas base"
+        "description": "x1.3 Mult por 100 puntos base"
       },
       "decree-chain-reaction": {
         "name": "Reacción en Cadena",
@@ -1095,7 +1095,7 @@
       },
       "decree-cosmic-jade": {
         "name": "Jade Cósmico",
-        "description": "+200 Fichas"
+        "description": "+200 Puntos"
       },
       "decree-solar-banner": {
         "name": "Estandarte Solar",
@@ -1163,7 +1163,7 @@
       },
       "decree-omega": {
         "name": "Omega",
-        "description": "+500 Fichas, +50 Mult, x2.0 Mult"
+        "description": "+500 Puntos, +50 Mult, x2.0 Mult"
       },
       "river_tax": {
         "name": "Impuesto del Río",
@@ -1980,51 +1980,51 @@
     "items": {
       "pluto_orb": {
         "name": "Orbe de Plutón",
-        "description": "Mejora los pares: Par, Doble par y Tres pares. +1 Mult y +10 fichas por nivel."
+        "description": "Mejora los pares: Par, Doble par y Tres pares. +1 Mult y +10 puntos por nivel."
       },
       "mercury_orb": {
         "name": "Orbe de Mercurio",
-        "description": "Mejora Todo simples: jugadas solo de 2 a 8 y la mano Tanyao. +1 Mult y +15 fichas por nivel."
+        "description": "Mejora Todo simples: jugadas solo de 2 a 8 y la mano Tanyao. +1 Mult y +15 puntos por nivel."
       },
       "uranus_orb": {
         "name": "Orbe de Urano",
-        "description": "Mejora los Honores: cualquier grupo de Vientos o Dragones y la mano Yakuhai. +1 Mult y +20 fichas por nivel."
+        "description": "Mejora los Honores: cualquier grupo de Vientos o Dragones y la mano Yakuhai. +1 Mult y +20 puntos por nivel."
       },
       "venus_orb": {
         "name": "Orbe de Venus",
-        "description": "Mejora las secuencias: Secuencia, Secuencia + Par, Dos secuencias y la mano Pinfu. +2 Mult y +20 fichas por nivel."
+        "description": "Mejora las secuencias: Secuencia, Secuencia + Par, Dos secuencias y la mano Pinfu. +2 Mult y +20 puntos por nivel."
       },
       "saturn_orb": {
         "name": "Orbe de Saturno",
-        "description": "Mejora las escaleras: de cuatro y de cinco, y la mano Escalera pura. +3 Mult y +30 fichas por nivel."
+        "description": "Mejora las escaleras: de cuatro y de cinco, y la mano Escalera pura. +3 Mult y +30 puntos por nivel."
       },
       "jupiter_orb": {
         "name": "Orbe de Júpiter",
-        "description": "Se afina con el yaku Honitsu (Medio color). +2 Mult, +15 Fichas por nivel."
+        "description": "Se afina con el yaku Honitsu (Medio color). +2 Mult, +15 Puntos por nivel."
       },
       "earth_orb": {
         "name": "Orbe de la Tierra",
-        "description": "Mejora los grupos iguales: jugadas con triplete o cuarteto y la mano Todo tripletes. +2 Mult y +25 fichas por nivel."
+        "description": "Mejora los grupos iguales: jugadas con triplete o cuarteto y la mano Todo tripletes. +2 Mult y +25 puntos por nivel."
       },
       "mars_orb": {
         "name": "Orbe de Marte",
-        "description": "Se afina con el yaku Chinitsu (Color puro). +3 Mult, +30 Fichas por nivel."
+        "description": "Se afina con el yaku Chinitsu (Color puro). +3 Mult, +30 Puntos por nivel."
       },
       "neptune_orb": {
         "name": "Orbe de Neptuno",
-        "description": "Se afina con el yaku Sanshoku (Triple mixto). +4 Mult, +40 Fichas por nivel."
+        "description": "Se afina con el yaku Sanshoku (Triple mixto). +4 Mult, +40 Puntos por nivel."
       },
       "planet_x_orb": {
         "name": "Orbe del Planeta X",
-        "description": "Se afina con el yaku Siete Parejas. +3 Mult, +35 Fichas por nivel."
+        "description": "Se afina con el yaku Siete Parejas. +3 Mult, +35 Puntos por nivel."
       },
       "ceres_orb": {
         "name": "Orbe de Ceres",
-        "description": "Se afina con el yaku Chanta (Terminales). +4 Mult, +40 Fichas por nivel."
+        "description": "Se afina con el yaku Chanta (Terminales). +4 Mult, +40 Puntos por nivel."
       },
       "eris_orb": {
         "name": "Orbe de Eris",
-        "description": "Se afina con el yaku Kokushi Musou. +3 Mult, +50 Fichas por nivel."
+        "description": "Se afina con el yaku Kokushi Musou. +3 Mult, +50 Puntos por nivel."
       },
       "black_hole_orb": {
         "name": "Orbe de Agujero Negro",
@@ -2151,7 +2151,7 @@
       },
       "seal_of_the_sage": {
         "name": "Sello del Sabio",
-        "description": "Mejora 2 fichas elegidas con la Marca de Fichas"
+        "description": "Mejora 2 fichas elegidas con la Marca de Bonificación"
       },
       "seal_of_harmony": {
         "name": "Sello de la Armonía",

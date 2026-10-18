@@ -567,23 +567,23 @@
     "items": {
       "decree-half-suited": {
         "name": "半著",
-        "description": "+20籌碼"
+        "description": "+20分"
       },
       "decree-misty-jade": {
         "name": "霧玉",
-        "description": "+30籌碼"
+        "description": "+30分"
       },
       "decree-bamboo-scroll": {
         "name": "竹卷",
-        "description": "+40籌碼"
+        "description": "+40分"
       },
       "decree-jade-tablet": {
         "name": "玉板",
-        "description": "+50籌碼"
+        "description": "+50分"
       },
       "decree-polished-stone": {
         "name": "磨石",
-        "description": "+60籌碼"
+        "description": "+60分"
       },
       "decree-gentle-breeze": {
         "name": "微風",
@@ -627,15 +627,15 @@
       },
       "decree-edge-runner": {
         "name": "端走者",
-        "description": "每張老頭牌+20籌碼"
+        "description": "每張老頭牌+20分"
       },
       "decree-middle-way": {
         "name": "中道",
-        "description": "每張中張牌+10籌碼"
+        "description": "每張中張牌+10分"
       },
       "decree-green-fortune": {
         "name": "綠運",
-        "description": "每張綠牌+15籌碼（2,3,4,6,8索）"
+        "description": "每張綠牌+15分（2,3,4,6,8索）"
       },
       "decree-coin-collector": {
         "name": "錢幣收集者",
@@ -651,19 +651,19 @@
       },
       "decree-pair-lover": {
         "name": "對子愛好者",
-        "description": "含對子時+30籌碼"
+        "description": "含對子時+30分"
       },
       "decree-sequence-seeker": {
         "name": "順子探索者",
-        "description": "含順子時+30籌碼"
+        "description": "含順子時+30分"
       },
       "decree-triplet-tracker": {
         "name": "刻子追蹤者",
-        "description": "含刻子時+40籌碼"
+        "description": "含刻子時+40分"
       },
       "decree-flower-friend": {
         "name": "花友",
-        "description": "每張收集的花牌+10籌碼"
+        "description": "每張收集的花牌+10分"
       },
       "decree-seasonal-blessing": {
         "name": "季節祝福",
@@ -679,11 +679,11 @@
       },
       "decree-balanced-path": {
         "name": "均衡之道",
-        "description": "+15籌碼和+2倍率"
+        "description": "+15分和+2倍率"
       },
       "decree-modest-fortune": {
         "name": "謙遜財運",
-        "description": "+20籌碼和每回合+1金"
+        "description": "+20分和每回合+1金"
       },
       "decree-humble-power": {
         "name": "謙卑力量",
@@ -691,15 +691,15 @@
       },
       "decree-one-mastery": {
         "name": "一極",
-        "description": "每張1牌+25籌碼"
+        "description": "每張1牌+25分"
       },
       "decree-nine-mastery": {
         "name": "九極",
-        "description": "每張9牌+25籌碼"
+        "description": "每張9牌+25分"
       },
       "decree-five-blessing": {
         "name": "五福",
-        "description": "每張5牌+35籌碼"
+        "description": "每張5牌+35分"
       },
       "decree-spark": {
         "name": "火花",
@@ -747,7 +747,7 @@
       },
       "decree-straight-arrow": {
         "name": "直矢",
-        "description": "3組順子時+80籌碼"
+        "description": "3組順子時+80分"
       },
       "decree-run-master": {
         "name": "連續師",
@@ -755,7 +755,7 @@
       },
       "decree-triple-threat": {
         "name": "三重威脅",
-        "description": "2組以上刻子時+80籌碼"
+        "description": "2組以上刻子時+80分"
       },
       "decree-triplet-thunder": {
         "name": "刻子雷",
@@ -799,7 +799,7 @@
       },
       "decree-seasonal-wind": {
         "name": "季節風",
-        "description": "每個活躍季節+50籌碼"
+        "description": "每個活躍季節+50分"
       },
       "decree-slow-burn": {
         "name": "慢燃",
@@ -807,7 +807,7 @@
       },
       "decree-momentum": {
         "name": "勢頭",
-        "description": "本回合每手牌+15籌碼"
+        "description": "本回合每手牌+15分"
       },
       "decree-crescendo": {
         "name": "漸強",
@@ -819,7 +819,7 @@
       },
       "decree-recycler": {
         "name": "回收者",
-        "description": "本回合每重抽一張牌籌碼+10"
+        "description": "本回合每重抽一張牌分數+10"
       },
       "decree-yakuhai-zealot": {
         "name": "役牌狂熱者",
@@ -839,7 +839,7 @@
       },
       "decree-veteran": {
         "name": "老兵",
-        "description": "每完成一幕+10籌碼"
+        "description": "每完成一幕+10分"
       },
       "decree-experience": {
         "name": "經驗",
@@ -847,7 +847,7 @@
       },
       "decree-greater-jade": {
         "name": "大玉",
-        "description": "+80籌碼"
+        "description": "+80分"
       },
       "decree-blazing-banner": {
         "name": "烈火旗",
@@ -867,7 +867,7 @@
       },
       "decree-bookends": {
         "name": "兩端",
-        "description": "同時有1和9時+60籌碼"
+        "description": "同時有1和9時+60分"
       },
       "decree-expansive-grip": {
         "name": "擴展握",
@@ -935,7 +935,7 @@
       },
       "decree-nature-bond": {
         "name": "自然紐帶",
-        "description": "每張花牌+3倍率，每個季節+30籌碼"
+        "description": "每張花牌+3倍率，每個季節+30分"
       },
       "decree-honitsu-herald": {
         "name": "混一色先驅",
@@ -959,11 +959,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "財富與榮耀",
-        "description": "+60籌碼，+8倍率，每回合+3金"
+        "description": "+60分，+8倍率，每回合+3金"
       },
       "decree-emperors-blessing": {
         "name": "皇帝祝福",
-        "description": "+100籌碼和+10倍率"
+        "description": "+100分和+10倍率"
       },
       "decree-golden-age": {
         "name": "黃金時代",
@@ -979,7 +979,7 @@
       },
       "decree-ancient-scroll": {
         "name": "古代卷軸",
-        "description": "+150籌碼，-2手牌上限"
+        "description": "+150分，-2手牌上限"
       },
       "decree-sacrifice": {
         "name": "犧牲",
@@ -999,7 +999,7 @@
       },
       "decree-endless-journey": {
         "name": "無盡旅途",
-        "description": "每完成一幕+20籌碼"
+        "description": "每完成一幕+20分"
       },
       "decree-master-grip": {
         "name": "大師握",
@@ -1087,7 +1087,7 @@
       },
       "decree-exponential": {
         "name": "指數級",
-        "description": "每100基礎籌碼x1.3倍率"
+        "description": "每100基礎分x1.3倍率"
       },
       "decree-chain-reaction": {
         "name": "連鎖反應",
@@ -1095,7 +1095,7 @@
       },
       "decree-cosmic-jade": {
         "name": "宇宙玉",
-        "description": "+200籌碼"
+        "description": "+200分"
       },
       "decree-solar-banner": {
         "name": "太陽旗",
@@ -1163,7 +1163,7 @@
       },
       "decree-omega": {
         "name": "終極",
-        "description": "+500籌碼，+50倍率，x2.0倍率"
+        "description": "+500分，+50倍率，x2.0倍率"
       },
       "yakuman_succession": {
         "name": "役滿承繼",
@@ -2095,7 +2095,7 @@
       },
       "seal_of_the_sage": {
         "name": "賢者之符",
-        "description": "為選中的2張牌附加籌碼印記"
+        "description": "為選中的2張牌附加加分印記"
       },
       "seal_of_harmony": {
         "name": "和諧之符",
@@ -2187,51 +2187,51 @@
     "items": {
       "pluto_orb": {
         "name": "冥王星球",
-        "description": "升級對子類（對子、兩對、三對）。每級倍率+1，籌碼+10。"
+        "description": "升級對子類（對子、兩對、三對）。每級倍率+1，分數+10。"
       },
       "mercury_orb": {
         "name": "水星球",
-        "description": "升級斷么九類（只含2到8的出牌與斷么九）。每級倍率+1，籌碼+15。"
+        "description": "升級斷么九類（只含2到8的出牌與斷么九）。每級倍率+1，分數+15。"
       },
       "uranus_orb": {
         "name": "天王星球",
-        "description": "升級字牌類（風牌或三元牌組合與役牌）。每級倍率+1，籌碼+20。"
+        "description": "升級字牌類（風牌或三元牌組合與役牌）。每級倍率+1，分數+20。"
       },
       "venus_orb": {
         "name": "金星球",
-        "description": "升級順子類（順子、順子+對子、兩組順子與平和）。每級倍率+2，籌碼+20。"
+        "description": "升級順子類（順子、順子+對子、兩組順子與平和）。每級倍率+2，分數+20。"
       },
       "saturn_orb": {
         "name": "土星球",
-        "description": "升級連順類（四連順、五連順與一氣通貫）。每級倍率+3，籌碼+30。"
+        "description": "升級連順類（四連順、五連順與一氣通貫）。每級倍率+3，分數+30。"
       },
       "jupiter_orb": {
         "name": "木星球",
-        "description": "契合混一色役。每級+2倍率、+15籌碼。"
+        "description": "契合混一色役。每級+2倍率、+15分。"
       },
       "earth_orb": {
         "name": "地球球",
-        "description": "升級刻子類（含刻子或槓子的出牌與對對和）。每級倍率+2，籌碼+25。"
+        "description": "升級刻子類（含刻子或槓子的出牌與對對和）。每級倍率+2，分數+25。"
       },
       "mars_orb": {
         "name": "火星球",
-        "description": "契合清一色役。每級+3倍率、+30籌碼。"
+        "description": "契合清一色役。每級+3倍率、+30分。"
       },
       "neptune_orb": {
         "name": "海王星球",
-        "description": "契合三色同順役。每級+4倍率、+40籌碼。"
+        "description": "契合三色同順役。每級+4倍率、+40分。"
       },
       "planet_x_orb": {
         "name": "X行星球",
-        "description": "契合七對子役。每級+3倍率、+35籌碼。"
+        "description": "契合七對子役。每級+3倍率、+35分。"
       },
       "ceres_orb": {
         "name": "穀神星球",
-        "description": "契合混全帶么九役。每級+4倍率、+40籌碼。"
+        "description": "契合混全帶么九役。每級+4倍率、+40分。"
       },
       "eris_orb": {
         "name": "鬩神星球",
-        "description": "契合國士無雙役。每級+3倍率、+50籌碼。"
+        "description": "契合國士無雙役。每級+3倍率、+50分。"
       },
       "black_hole_orb": {
         "name": "黑洞球",

@@ -906,7 +906,7 @@
       },
       "decree-half-suited": {
         "name": "Yarım Renk",
-        "description": "+20 Çip"
+        "description": "+20 Puan"
       },
       "decree-photograph": {
         "name": "Fotoğraf",
@@ -914,19 +914,19 @@
       },
       "decree-polished-stone": {
         "name": "Cilalı Taş",
-        "description": "+60 Fiş"
+        "description": "+60 Puan"
       },
       "decree-ancient-scroll": {
         "name": "Antik Parşömen",
-        "description": "+30 Çip tamamlanan her yaku için"
+        "description": "+150 Puan, el kapasitesi −2."
       },
       "decree-philosophers-stone": {
         "name": "Felsefe Taşı",
-        "description": "Hesaplamadan sonra 10 fazla Çip'i +1 Çarp'a dönüştürür"
+        "description": "Kazanılan tüm Altını ikiye katlar."
       },
       "decree-triple-threat": {
         "name": "Üçlü Tehdit",
-        "description": "Sonraki üçlüden Çipleri ikiye katlar"
+        "description": "Elde 2+ üçlü varsa +80 Puan."
       },
       "decree-infinite-loop": {
         "name": "Sonsuz Döngü",
@@ -1170,7 +1170,7 @@
       },
       "decree-recycler": {
         "name": "Geri Dönüştürücü",
-        "description": "Bu tur yeniden çekilen her taş için +10 fiş"
+        "description": "Bu tur yeniden çekilen her taş için +10 Puan"
       },
       "decree-yakuhai-zealot": {
         "name": "Yakuhai Fanatiği",
@@ -2478,23 +2478,23 @@
     "items": {
       "pluto_orb": {
         "name": "Plüton Küresi",
-        "description": "Çiftleri geliştirir: Çift, İki çift ve Üç çift. Seviye başına +1 Çarpan, +10 fiş."
+        "description": "Çiftleri geliştirir: Çift, İki çift ve Üç çift. Seviye başına +1 Çarpan, +10 Puan."
       },
       "mercury_orb": {
         "name": "Merkür Küresi",
-        "description": "Hep basiti geliştirir: yalnız 2–8 taşlı oyunlar ve Tanyao eli. Seviye başına +1 Çarpan, +15 fiş."
+        "description": "Hep basiti geliştirir: yalnız 2–8 taşlı oyunlar ve Tanyao eli. Seviye başına +1 Çarpan, +15 Puan."
       },
       "uranus_orb": {
         "name": "Uranüs Küresi",
-        "description": "Onur taşlarını geliştirir: her Rüzgar veya Ejderha grubu ve Yakuhai eli. Seviye başına +1 Çarpan, +20 fiş."
+        "description": "Onur taşlarını geliştirir: her Rüzgar veya Ejderha grubu ve Yakuhai eli. Seviye başına +1 Çarpan, +20 Puan."
       },
       "venus_orb": {
         "name": "Venüs Küresi",
-        "description": "Serileri geliştirir: Seri, Seri + Çift, İki seri ve Pinfu eli. Seviye başına +2 Çarpan, +20 fiş."
+        "description": "Serileri geliştirir: Seri, Seri + Çift, İki seri ve Pinfu eli. Seviye başına +2 Çarpan, +20 Puan."
       },
       "saturn_orb": {
         "name": "Satürn Küresi",
-        "description": "Sıraları geliştirir: dörtlü ve beşli sıralar ve Saf sıra eli. Seviye başına +3 Çarpan, +30 fiş."
+        "description": "Sıraları geliştirir: dörtlü ve beşli sıralar ve Saf sıra eli. Seviye başına +3 Çarpan, +30 Puan."
       },
       "jupiter_orb": {
         "name": "Jüpiter Küresi",
@@ -2502,7 +2502,7 @@
       },
       "earth_orb": {
         "name": "Dünya Küresi",
-        "description": "Üçlü ve dörtlü oyunlarını ve Hep üçlü elini geliştirir. Seviye başına +2 Çarpan, +25 fiş."
+        "description": "Üçlü ve dörtlü oyunlarını ve Hep üçlü elini geliştirir. Seviye başına +2 Çarpan, +25 Puan."
       },
       "mars_orb": {
         "name": "Mars Küresi",

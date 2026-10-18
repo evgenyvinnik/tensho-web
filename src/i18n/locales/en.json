@@ -563,23 +563,23 @@
     "items": {
       "decree-half-suited": {
         "name": "Half Suited",
-        "description": "+20 Chips"
+        "description": "+20 Points"
       },
       "decree-misty-jade": {
         "name": "Misty Jade",
-        "description": "+30 Chips"
+        "description": "+30 Points"
       },
       "decree-bamboo-scroll": {
         "name": "Bamboo Scroll",
-        "description": "+40 Chips"
+        "description": "+40 Points"
       },
       "decree-jade-tablet": {
         "name": "Jade Tablet",
-        "description": "+50 Chips"
+        "description": "+50 Points"
       },
       "decree-polished-stone": {
         "name": "Polished Stone",
-        "description": "+60 Chips"
+        "description": "+60 Points"
       },
       "decree-gentle-breeze": {
         "name": "Gentle Breeze",
@@ -623,15 +623,15 @@
       },
       "decree-edge-runner": {
         "name": "Edge Runner",
-        "description": "+20 Chips per Terminal tile in hand"
+        "description": "+20 Points per Terminal tile in hand"
       },
       "decree-middle-way": {
         "name": "Middle Way",
-        "description": "+10 Chips per Simple tile in hand"
+        "description": "+10 Points per Simple tile in hand"
       },
       "decree-green-fortune": {
         "name": "Green Fortune",
-        "description": "+15 Chips per green tile (2,3,4,6,8 Souzu)"
+        "description": "+15 Points per green tile (2,3,4,6,8 Souzu)"
       },
       "decree-coin-collector": {
         "name": "Coin Collector",
@@ -647,19 +647,19 @@
       },
       "decree-pair-lover": {
         "name": "Pair Lover",
-        "description": "+30 Chips if hand contains a pair"
+        "description": "+30 Points if hand contains a pair"
       },
       "decree-sequence-seeker": {
         "name": "Sequence Seeker",
-        "description": "+30 Chips if hand contains a sequence"
+        "description": "+30 Points if hand contains a sequence"
       },
       "decree-triplet-tracker": {
         "name": "Triplet Tracker",
-        "description": "+40 Chips if hand contains a triplet"
+        "description": "+40 Points if hand contains a triplet"
       },
       "decree-flower-friend": {
         "name": "Flower Friend",
-        "description": "+10 Chips per collected Flower"
+        "description": "+10 Points per collected Flower"
       },
       "decree-seasonal-blessing": {
         "name": "Seasonal Blessing",
@@ -675,11 +675,11 @@
       },
       "decree-balanced-path": {
         "name": "Balanced Path",
-        "description": "+15 Chips and +2 Mult"
+        "description": "+15 Points and +2 Mult"
       },
       "decree-modest-fortune": {
         "name": "Modest Fortune",
-        "description": "+20 Chips and +1G per round"
+        "description": "+20 Points and +1G per round"
       },
       "decree-humble-power": {
         "name": "Humble Power",
@@ -687,15 +687,15 @@
       },
       "decree-one-mastery": {
         "name": "One Mastery",
-        "description": "+25 Chips per 1-tile in hand"
+        "description": "+25 Points per 1-tile in hand"
       },
       "decree-nine-mastery": {
         "name": "Nine Mastery",
-        "description": "+25 Chips per 9-tile in hand"
+        "description": "+25 Points per 9-tile in hand"
       },
       "decree-five-blessing": {
         "name": "Five Blessing",
-        "description": "+35 Chips per 5-tile in hand"
+        "description": "+35 Points per 5-tile in hand"
       },
       "decree-spark": {
         "name": "Spark",
@@ -743,7 +743,7 @@
       },
       "decree-straight-arrow": {
         "name": "Straight Arrow",
-        "description": "+80 Chips if hand contains 3 sequences"
+        "description": "+80 Points if hand contains 3 sequences"
       },
       "decree-run-master": {
         "name": "Run Master",
@@ -751,7 +751,7 @@
       },
       "decree-triple-threat": {
         "name": "Triple Threat",
-        "description": "+80 Chips if hand contains 2+ triplets"
+        "description": "+80 Points if hand contains 2+ triplets"
       },
       "decree-triplet-thunder": {
         "name": "Triplet Thunder",
@@ -795,7 +795,7 @@
       },
       "decree-seasonal-wind": {
         "name": "Seasonal Wind",
-        "description": "+50 Chips per active Season"
+        "description": "+50 Points per active Season"
       },
       "decree-slow-burn": {
         "name": "Slow Burn",
@@ -803,7 +803,7 @@
       },
       "decree-momentum": {
         "name": "Momentum",
-        "description": "+15 Chips per hand played this round"
+        "description": "+15 Points per hand played this round"
       },
       "decree-crescendo": {
         "name": "Crescendo",
@@ -815,7 +815,7 @@
       },
       "decree-recycler": {
         "name": "Recycler",
-        "description": "+10 Chips per tile redrawn this round"
+        "description": "+10 Points per tile redrawn this round"
       },
       "decree-yakuhai-zealot": {
         "name": "Yakuhai Zealot",
@@ -835,7 +835,7 @@
       },
       "decree-veteran": {
         "name": "Veteran",
-        "description": "+10 Chips per Act completed"
+        "description": "+10 Points per Act completed"
       },
       "decree-experience": {
         "name": "Experience",
@@ -843,7 +843,7 @@
       },
       "decree-greater-jade": {
         "name": "Greater Jade",
-        "description": "+80 Chips"
+        "description": "+80 Points"
       },
       "decree-blazing-banner": {
         "name": "Blazing Banner",
@@ -863,7 +863,7 @@
       },
       "decree-bookends": {
         "name": "Bookends",
-        "description": "+60 Chips if hand has both 1 and 9"
+        "description": "+60 Points if hand has both 1 and 9"
       },
       "decree-expansive-grip": {
         "name": "Expansive Grip",
@@ -931,7 +931,7 @@
       },
       "decree-nature-bond": {
         "name": "Nature Bond",
-        "description": "+3 Mult per Flower, +30 Chips per Season"
+        "description": "+3 Mult per Flower, +30 Points per Season"
       },
       "decree-honitsu-herald": {
         "name": "Honitsu Herald",
@@ -955,11 +955,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "Fortune and Glory",
-        "description": "+60 Chips, +8 Mult, +3G per round"
+        "description": "+60 Points, +8 Mult, +3G per round"
       },
       "decree-emperors-blessing": {
         "name": "Emperor's Blessing",
-        "description": "+100 Chips and +10 Mult"
+        "description": "+100 Points and +10 Mult"
       },
       "decree-golden-age": {
         "name": "Golden Age",
@@ -975,7 +975,7 @@
       },
       "decree-ancient-scroll": {
         "name": "Ancient Scroll",
-        "description": "+150 Chips, -2 Hand Size"
+        "description": "+150 Points, -2 Hand Size"
       },
       "decree-sacrifice": {
         "name": "Sacrifice",
@@ -995,7 +995,7 @@
       },
       "decree-endless-journey": {
         "name": "Endless Journey",
-        "description": "+20 Chips per Act completed"
+        "description": "+20 Points per Act completed"
       },
       "decree-master-grip": {
         "name": "Master Grip",
@@ -1083,7 +1083,7 @@
       },
       "decree-exponential": {
         "name": "Exponential",
-        "description": "x1.3 Mult per 100 base chips scored"
+        "description": "x1.3 Mult per 100 base points scored"
       },
       "decree-chain-reaction": {
         "name": "Chain Reaction",
@@ -1091,7 +1091,7 @@
       },
       "decree-cosmic-jade": {
         "name": "Cosmic Jade",
-        "description": "+200 Chips"
+        "description": "+200 Points"
       },
       "decree-solar-banner": {
         "name": "Solar Banner",
@@ -1159,7 +1159,7 @@
       },
       "decree-omega": {
         "name": "Omega",
-        "description": "+500 Chips, +50 Mult, x2.0 Mult"
+        "description": "+500 Points, +50 Mult, x2.0 Mult"
       },
       "river_tax": {
         "name": "River Tax",
@@ -2044,7 +2044,7 @@
       },
       "seal_of_the_sage": {
         "name": "Seal of the Sage",
-        "description": "Enhances 2 selected tiles with Bonus Chip Mark"
+        "description": "Enhances 2 selected tiles with Bonus Mark"
       },
       "seal_of_harmony": {
         "name": "Seal of Harmony",
@@ -2136,51 +2136,51 @@
     "items": {
       "pluto_orb": {
         "name": "Pluto Orb",
-        "description": "Upgrades Pairs: Pair, Two Pairs and Three Pairs. +1 Mult, +10 Chips per level."
+        "description": "Upgrades Pairs: Pair, Two Pairs and Three Pairs. +1 Mult, +10 Points per level."
       },
       "mercury_orb": {
         "name": "Mercury Orb",
-        "description": "Upgrades All Simples: plays of only 2–8 tiles and the Tanyao hand. +1 Mult, +15 Chips per level."
+        "description": "Upgrades All Simples: plays of only 2–8 tiles and the Tanyao hand. +1 Mult, +15 Points per level."
       },
       "uranus_orb": {
         "name": "Uranus Orb",
-        "description": "Upgrades Honors: any Wind or Dragon group and the Yakuhai hand. +1 Mult, +20 Chips per level."
+        "description": "Upgrades Honors: any Wind or Dragon group and the Yakuhai hand. +1 Mult, +20 Points per level."
       },
       "venus_orb": {
         "name": "Venus Orb",
-        "description": "Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the Pinfu hand. +2 Mult, +20 Chips per level."
+        "description": "Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the Pinfu hand. +2 Mult, +20 Points per level."
       },
       "saturn_orb": {
         "name": "Saturn Orb",
-        "description": "Upgrades Straights: Straights of Four and Five and the Pure Straight hand. +3 Mult, +30 Chips per level."
+        "description": "Upgrades Straights: Straights of Four and Five and the Pure Straight hand. +3 Mult, +30 Points per level."
       },
       "jupiter_orb": {
         "name": "Jupiter Orb",
-        "description": "Attunes to Honitsu (Half-Flush) yaku. +2 Mult, +15 Chips per level."
+        "description": "Attunes to Honitsu (Half-Flush) yaku. +2 Mult, +15 Points per level."
       },
       "earth_orb": {
         "name": "Earth Orb",
-        "description": "Upgrades Sets: any Triplet or Quad play and the All Triplets hand. +2 Mult, +25 Chips per level."
+        "description": "Upgrades Sets: any Triplet or Quad play and the All Triplets hand. +2 Mult, +25 Points per level."
       },
       "mars_orb": {
         "name": "Mars Orb",
-        "description": "Attunes to Chinitsu (Full Flush) yaku. +3 Mult, +30 Chips per level."
+        "description": "Attunes to Chinitsu (Full Flush) yaku. +3 Mult, +30 Points per level."
       },
       "neptune_orb": {
         "name": "Neptune Orb",
-        "description": "Attunes to Sanshoku (Mixed Triple) yaku. +4 Mult, +40 Chips per level."
+        "description": "Attunes to Sanshoku (Mixed Triple) yaku. +4 Mult, +40 Points per level."
       },
       "planet_x_orb": {
         "name": "Planet X Orb",
-        "description": "Attunes to Seven Pairs yaku. +3 Mult, +35 Chips per level."
+        "description": "Attunes to Seven Pairs yaku. +3 Mult, +35 Points per level."
       },
       "ceres_orb": {
         "name": "Ceres Orb",
-        "description": "Attunes to Chanta (Terminals) yaku. +4 Mult, +40 Chips per level."
+        "description": "Attunes to Chanta (Terminals) yaku. +4 Mult, +40 Points per level."
       },
       "eris_orb": {
         "name": "Eris Orb",
-        "description": "Attunes to Kokushi Musou yaku. +3 Mult, +50 Chips per level."
+        "description": "Attunes to Kokushi Musou yaku. +3 Mult, +50 Points per level."
       },
       "black_hole_orb": {
         "name": "Black Hole Orb",
