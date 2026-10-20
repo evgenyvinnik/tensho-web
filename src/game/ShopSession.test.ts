@@ -10,9 +10,19 @@ import {
   TEA_HOUSE_BASE_CHARTERS,
 } from '../systems/TeaHouseSystem'
 import { ALL_DECREES } from '../systems/DecreeSystem'
-import type { FateSeal } from '../systems/FateSealSystem'
+import {
+  CELESTIAL_ORBS,
+  CelestialOrbSystem,
+} from '../systems/CelestialOrbSystem'
+import {
+  FATE_SEALS,
+  FateSealSystem,
+  type FateSeal,
+} from '../systems/FateSealSystem'
 import type { BlessingPack, Decree } from '../systems/types'
-import { FlowerType, Tile } from '../core/Tile'
+import { FlowerType, Tile, TileSuit } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
+import { firstSealTargets } from '../gameplay/wallSeals'
 
 // Explicit integration fixtures: these isolate transactions, not progression balance.
 function visit(style = 'green_felt', afterBoss = false) {
@@ -37,6 +47,27 @@ function seals(): PackContent[] {
       selectCount: 2,
     },
   ])[0].contents
+}
+
+const seal = (id: string) =>
+  FateSealSystem.createFateSealInstance(FATE_SEALS[id])
+
+function sealContent(item: FateSeal): PackContent {
+  return {
+    id: item.instanceId,
+    type: 'FateSeal',
+    name: item.name,
+    description: item.description,
+    rarity: 'common',
+    data: item,
+  }
+}
+
+/** The first offer, made a Seal at a known price. */
+function sealOffer(shop: GameOrchestrator['shop'], item: FateSeal) {
+  const offer = shop.state.itemOfferings[0]
+  Object.assign(offer, { itemType: 'FateSeal', item, finalCost: 4 })
+  return offer
 }
 
 function packFixture(game: GameOrchestrator, contents = seals()) {
@@ -105,44 +136,153 @@ describe('run-owned shop transactions', () => {
     expect(state.gold).toBe(100)
   })
 
-  it('grants an ordinary item exactly once and publishes only settled inventory', () => {
-    const { shop, state } = visit()
-    const offer = shop.state.itemOfferings[0]
-    offer.itemType = 'FateSeal'
-    offer.item = seals()[0].data as FateSeal
-    offer.finalCost = 4
+  it('uses a bought Seal exactly once on the chosen wall tiles and publishes only settled state', () => {
+    const { game, shop, state } = visit()
+    const offer = sealOffer(shop, seal('seal_of_the_alchemist'))
+    const targets = firstSealTargets(
+      offer.item as FateSeal,
+      game.getSealableWallTiles()
+    )
+    const lucky = () =>
+      state.wallTemplate.filter(
+        (tile) =>
+          targets.includes(tile.id) &&
+          tile.enhancement === EnhancementType.Lucky
+      ).length
     const observer = vi.fn(() => ({
-      inventory: state.fateSeals.length,
+      lucky: lucky(),
+      held: state.fateSeals.length,
       purchased: offer.isPurchased,
-      repeat: shop.purchase(offer.id).success,
+      repeat: shop.purchase(offer.id, { type: 'gold' }, targets).success,
       close: shop.close(),
     }))
     eventBus.on('goldChanged', observer)
-    expect(shop.purchase(offer.id).success).toBe(true)
+    // Before the tiles are chosen it can be bought, but not paid for.
+    expect(shop.validatePurchase(offer.id)).toEqual({ success: true })
+    expect(shop.purchase(offer.id)).toEqual({
+      success: false,
+      reason: 'sealUnusable',
+      detail: 'Select exactly 2 tiles',
+    })
+    expect(state.gold).toBe(100)
+    expect(shop.purchase(offer.id, { type: 'gold' }, targets).success).toBe(
+      true
+    )
     expect(observer).toHaveBeenCalledOnce()
     expect(observer).toHaveReturnedWith({
-      inventory: 1,
+      lucky: 2,
+      held: 0,
       purchased: true,
       repeat: false,
       close: false,
     })
-    expect(shop.purchase(offer.id).success).toBe(false)
+    expect(shop.purchase(offer.id, { type: 'gold' }, targets).success).toBe(
+      false
+    )
     expect(state.gold).toBe(96)
     expect(shop.visitTotals).toEqual({ goldSpent: 4, itemsPurchased: 1 })
   })
 
-  it('buys a consumable however many are already held; only Decrees have slots', () => {
+  it('changes the wall for the rest of the run, through a save and the next round', () => {
+    const { game, shop, state } = visit()
+    const offer = sealOffer(shop, seal('seal_of_manzu'))
+    const targets = game
+      .getSealableWallTiles()
+      .filter((tile) => tile.suit === TileSuit.Souzu && tile.rank === 7)
+      .slice(0, 3)
+      .map((tile) => tile.id)
+    expect(shop.purchase(offer.id, { type: 'gold' }, targets).success).toBe(
+      true
+    )
+    const converted = (tiles: readonly Tile[]) =>
+      tiles
+        .filter((tile) => targets.includes(tile.id))
+        .map((tile) => `${tile.suit}${tile.rank}`)
+    expect(converted(state.wallTemplate)).toEqual([
+      `${TileSuit.Manzu}7`,
+      `${TileSuit.Manzu}7`,
+      `${TileSuit.Manzu}7`,
+    ])
+    const restored = new GameOrchestrator()
+    restored.restoreRun(
+      JSON.parse(JSON.stringify(game.captureRun())) as ReturnType<
+        GameOrchestrator['captureRun']
+      >
+    )
+    expect(converted(restored.getState().wallTemplate)).toEqual(
+      converted(state.wallTemplate)
+    )
+    game.exitShop()
+    const round = game.getState()
+    expect(
+      converted([...round.wall, ...round.deadWall, ...round.handTiles])
+    ).toEqual(converted(state.wallTemplate))
+  })
+
+  it('refuses wall tiles a Seal cannot change without charging or marking the offer', () => {
+    const { game, shop, state } = visit()
+    const offer = sealOffer(shop, seal('seal_of_manzu'))
+    const wall = game.getSealableWallTiles()
+    const manzu = wall.find((tile) => tile.suit === TileSuit.Manzu)!
+    const bonus = state.wallTemplate.find((tile) => tile.isBonus)!
+    for (const targets of [[manzu.id], [bonus.id], ['missing'], []])
+      expect(shop.purchase(offer.id, { type: 'gold' }, targets)).toMatchObject({
+        success: false,
+        reason: 'sealUnusable',
+      })
+    expect(state.gold).toBe(100)
+    expect(offer.isPurchased).toBe(false)
+    expect(state.wallTemplate.find((t) => t.id === manzu.id)).toBe(manzu)
+  })
+
+  it('pays before a Seal works: the Hermit doubles the gold left after its price', () => {
     const { shop, state } = visit()
+    state.gold = 14
+    const offer = sealOffer(shop, seal('seal_of_the_hermit'))
+    expect(shop.purchase(offer.id).success).toBe(true)
+    expect(state.gold).toBe(20)
+    expect(state.fateSeals).toHaveLength(0)
+  })
+
+  it('names why a Seal has nothing to work on before it is bought', () => {
+    const { game, shop, state } = visit()
+    game.setConsumableUnlockResolver(() => true)
+    const fool = sealOffer(shop, seal('seal_of_the_fool'))
+    expect(shop.validatePurchase(fool.id)).toEqual({
+      success: false,
+      reason: 'sealUnusable',
+      detail: 'No Fate Seal or Celestial Orb has been used this run',
+    })
+    while (state.celestialOrbSystem.canUpgradeAnyYaku())
+      state.celestialOrbSystem.useOrb(
+        CelestialOrbSystem.createCelestialOrbInstance(
+          CELESTIAL_ORBS.black_hole_orb
+        )
+      )
+    const voidSeal = sealOffer(shop, seal('seal_of_the_void'))
+    expect(shop.validatePurchase(voidSeal.id)).toEqual({
+      success: false,
+      reason: 'maxLevel',
+    })
+    expect(state.gold).toBe(100)
+  })
+
+  it('buys a consumable however many are already held; only Decrees have slots', () => {
+    const { game, shop, state } = visit()
     const contents = seals()
     state.fateSeals = contents.slice(0, 4).map((c) => c.data as FateSeal)
-    const offer = shop.state.itemOfferings[0]
-    offer.itemType = 'FateSeal'
-    offer.item = contents[4].data as FateSeal
-    offer.finalCost = 4
-    expect(shop.purchase(offer.id).success).toBe(true)
+    const offer = sealOffer(shop, seal('seal_of_glass'))
+    const targets = firstSealTargets(
+      offer.item as FateSeal,
+      game.getSealableWallTiles()
+    )
+    expect(shop.purchase(offer.id, { type: 'gold' }, targets).success).toBe(
+      true
+    )
     expect(offer.isPurchased).toBe(true)
     expect(state.gold).toBe(96)
-    expect(state.fateSeals).toHaveLength(5)
+    // The bought Seal is used at once; the held ones wait for the table.
+    expect(state.fateSeals).toHaveLength(4)
   })
 
   it('validates Decree requirements, not just slot capacity', () => {
@@ -156,15 +296,66 @@ describe('run-owned shop transactions', () => {
     expect(offer.isPurchased).toBe(false)
   })
 
-  it('grants every chosen consumable from a Mega pack however many are held', () => {
+  it('uses both Seals chosen from a Mega pack, the second on the wall the first leaves', () => {
     const { game, shop, state } = visit()
-    const { offer, contents } = packFixture(game)
-    state.fateSeals = contents.slice(2, 5).map((c) => c.data as FateSeal)
+    const release = seal('seal_of_release')
+    const manzu = seal('seal_of_manzu')
+    const { offer } = packFixture(game, [
+      sealContent(release),
+      sealContent(manzu),
+      sealContent(seal('seal_of_glass')),
+    ])
+    state.fateSeals = [seal('seal_of_glass')]
+    const bamboo = game
+      .getSealableWallTiles()
+      .filter((tile) => tile.suit === TileSuit.Souzu)
+      .map((tile) => tile.id)
     expect(shop.purchase(offer.id).success).toBe(true)
     expect(shop.validatePackSelection([0, 1])).toEqual({ success: true })
-    expect(shop.confirmPack([0, 1]).success).toBe(true)
-    expect(state.fateSeals).toHaveLength(5)
+    // Converting a tile the Release has just destroyed is refused whole.
+    const before = JSON.stringify(game.captureRun())
+    expect(
+      shop.confirmPack([0, 1], {
+        0: bamboo.slice(0, 2),
+        1: bamboo.slice(1, 3),
+      })
+    ).toMatchObject({ success: false, reason: 'sealUnusable' })
+    expect(JSON.stringify(game.captureRun())).toBe(before)
+    expect(
+      shop.confirmPack([0, 1], {
+        0: bamboo.slice(0, 2),
+        1: bamboo.slice(2, 5),
+      }).success
+    ).toBe(true)
+    const wall = new Map(state.wallTemplate.map((tile) => [tile.id, tile]))
+    expect(bamboo.slice(0, 2).some((id) => wall.has(id))).toBe(false)
+    expect(bamboo.slice(2, 5).map((id) => wall.get(id)!.suit)).toEqual([
+      TileSuit.Manzu,
+      TileSuit.Manzu,
+      TileSuit.Manzu,
+    ])
+    expect(state.fateSeals).toHaveLength(1)
     expect(shop.pendingPack).toBeNull()
+  })
+
+  it('refuses a pack choice whose Seal has nothing to work on, keeping the pack open', () => {
+    const { game, shop, state } = visit()
+    const { offer } = packFixture(game, [
+      sealContent(seal('seal_of_the_fool')),
+      sealContent(seal('seal_of_the_hermit')),
+    ])
+    expect(shop.purchase(offer.id).success).toBe(true)
+    expect(shop.validatePackSelection([0])).toEqual({
+      success: false,
+      reason: 'sealUnusable',
+      detail: 'No Fate Seal or Celestial Orb has been used this run',
+    })
+    expect(shop.confirmPack([0]).success).toBe(false)
+    expect(shop.pendingPack).not.toBeNull()
+    // A Seal that takes no tiles is used as it is claimed.
+    expect(shop.confirmPack([1]).success).toBe(true)
+    expect(state.gold).toBe(92 + 20)
+    expect(state.fateSeals).toHaveLength(0)
   })
 
   it('retains a bought Mega pack when its combined Decrees cannot fit, without partial grants', () => {

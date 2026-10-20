@@ -181,9 +181,6 @@ for (const language of ['en', 'es'])
 
     // Sell one exact copy through the real inventory confirmation, still leaving
     // less than the six gold required for a normal purchase.
-    // A phone keeps the build folded until the player opens it.
-    const buildToggle = page.locator('[data-shop-build] [data-build-toggle]')
-    if (await buildToggle.isVisible()) await activate(buildToggle)
     const owned = page
       .locator('[data-shop-build] [data-decree-instance]')
       .first()

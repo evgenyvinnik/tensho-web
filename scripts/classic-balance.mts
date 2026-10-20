@@ -23,6 +23,11 @@ import { MAX_TACTICAL_PLAY_TILES } from '../src/game/playRules.ts'
 import { eventBus } from '../src/game/EventBus.ts'
 import { buildCoachAdvice } from '../src/gameplay/beginnerCoach.ts'
 import { chooseBlindSelection } from '../src/gameplay/blindSelection.ts'
+import {
+  firstPackSealTargets,
+  firstSealTargets,
+} from '../src/gameplay/wallSeals.ts'
+import type { FateSeal } from '../src/systems/FateSealSystem.ts'
 import { chooseClassicResourceAction } from './lib/classic-resource-policy.ts'
 import { chooseClassicConsumableAction } from './lib/classic-consumable-policy.ts'
 import { getTableStyleById } from '../src/config/tableStyleDefinitions.ts'
@@ -472,27 +477,37 @@ function buyWhatWeCan(
     buildPurchases += bought.purchases
     sold += bought.sold
   }
+  // A Seal is used as it is taken, on the first wall tiles it can change.
+  const wall = () => orchestrator.getSealableWallTiles()
+  const sealTargets = (indices: number[]) =>
+    firstPackSealTargets(shop.pendingPack!.contents, indices, wall())
   for (const offer of offers) {
     if (BUILD_SHOP && offer.itemType === 'Decree') continue
-    if (!shop.purchase(offer.id).success) continue
+    const targets =
+      offer.itemType === 'FateSeal'
+        ? firstSealTargets(offer.item as FateSeal, wall())
+        : undefined
+    if (!shop.purchase(offer.id, { type: 'gold' }, targets).success) continue
     const pack = shop.pendingPack
     if (!pack) continue
     // Deterministic, deliberately naive choice policy. Validation and grants
     // are the real shop path, not duplicated inventory or pricing logic.
     let selection: number[] | null = null
+    const valid = (indices: number[]) =>
+      shop.validatePackSelection(indices, sealTargets(indices)).success
     for (let i = 0; i < pack.contents.length && !selection; i++) {
       if (pack.maxSelections > 1) {
         for (let j = i + 1; j < pack.contents.length; j++) {
-          if (shop.validatePackSelection([i, j]).success) {
+          if (valid([i, j])) {
             selection = [i, j]
             break
           }
         }
       }
-      if (!selection && shop.validatePackSelection([i]).success) selection = [i]
+      if (!selection && valid([i])) selection = [i]
     }
     if (selection) {
-      if (!shop.confirmPack(selection).success)
+      if (!shop.confirmPack(selection, sealTargets(selection)).success)
         throw new Error('Valid pack claim failed')
       claimed++
     } else {

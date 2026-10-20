@@ -3,7 +3,12 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { ALL_DECREES, DecreeSystem } from '../systems/DecreeSystem'
 import { Tile, TileSuit } from '../core/Tile'
-import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
+import {
+  FateSealSystem,
+  FATE_SEALS,
+  type FateSeal,
+} from '../systems/FateSealSystem'
+import { firstSealTargets } from '../gameplay/wallSeals'
 import { runRandom } from './RunRandom'
 
 afterEach(() => {
@@ -125,8 +130,15 @@ it('never limits consumables, and a stale successful preview cannot pay', () => 
   })
   state.fateSeals = [seal(), seal(), seal(), seal()]
   expect(shop.validatePurchase(consumable.id)).toEqual({ success: true })
-  expect(shop.purchase(consumable.id).success).toBe(true)
-  expect(state.fateSeals).toHaveLength(5)
+  // A bought Seal is used at once on wall tiles; held ones stay untouched.
+  const targets = firstSealTargets(
+    consumable.item as FateSeal,
+    game.getSealableWallTiles()
+  )
+  expect(shop.purchase(consumable.id, { type: 'gold' }, targets).success).toBe(
+    true
+  )
+  expect(state.fateSeals).toHaveLength(4)
 
   expect(shop.validatePurchase(offer.id)).toEqual({ success: true })
   state.decreeSystem.acquireDecree(ALL_DECREES[0])

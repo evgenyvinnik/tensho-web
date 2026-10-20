@@ -112,9 +112,6 @@ for (const language of ['en', 'es'])
       instanceId: string
     }
     for (let i = 0; i < 2; i++) {
-      // A phone keeps the build folded until the player opens it.
-      const buildToggle = page.locator('[data-shop-build] [data-build-toggle]')
-      if (await buildToggle.isVisible()) await activate(buildToggle)
       await activate(
         page.locator('[data-shop-build]').getByRole('button', {
           name: text.decrees.items['decree-ancient-scroll'].name,

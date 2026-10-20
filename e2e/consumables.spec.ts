@@ -122,47 +122,53 @@ async function openAndUse(page: Page, itemId: string) {
 const targetDialog = (page: Page) =>
   page.locator('dialog[data-consumable-dialog]')
 
-test('a purchased Seal is staged, targeted and consumed once through the live UI', async ({
+test('a purchased Seal is used at once on the wall tiles chosen in the Tea House', async ({
   page,
 }) => {
   const { offerId, itemId } = await fixture(page, 'shop')
   await expect(page).toHaveURL(/\/en\/shop$/)
   await buyOffer(page, offerId)
-  expect((await snapshot(page)).gold).toBe(18)
-  expect((await snapshot(page)).seals).toBe(1)
+  // Buying asks for its tiles first; nothing is paid until they are chosen.
+  const picker = page.locator('[data-seal-wall-dialog="seal_of_the_alchemist"]')
+  await expect(picker).toBeVisible()
+  const confirm = picker.locator('[data-seal-wall-confirm]')
+  await expect(confirm).toBeDisabled()
+  expect((await snapshot(page)).gold).toBe(20)
+  await picker.locator('[data-seal-wall-tile="source"]').click()
+  await expect(confirm).toBeDisabled()
+  await picker.locator('[data-seal-wall-tile="target"]').click()
+  // Two chosen: the Seal takes no more until one is let go.
+  await expect(
+    picker.locator('[data-seal-wall-tile]:not([aria-pressed="true"])').first()
+  ).toBeDisabled()
+  await expect(picker.locator('[data-seal-wall-result] li')).toHaveCount(2)
+  await confirm.click()
+  await expect(picker).toHaveCount(0)
+  await expect(
+    page.locator('[data-seal-used="seal_of_the_alchemist"]')
+  ).toBeVisible()
+  const lucky = () =>
+    page.evaluate(async () => {
+      const path = '/src/game/GameOrchestrator.ts'
+      const { gameOrchestrator: game } = await import(path)
+      return game
+        .getState()
+        .wallTemplate.filter((tile: { id: string }) =>
+          ['source', 'target'].includes(tile.id)
+        )
+        .map((tile: { enhancement: string }) => tile.enhancement)
+    })
+  const bought = await snapshot(page)
+  expect(bought.gold).toBe(18)
+  expect(bought.seals).toBe(0)
+  expect(await lucky()).toEqual(['lucky', 'lucky'])
   await page.getByRole('button', { name: 'Continue to Next Round' }).click()
   await expect(page).toHaveURL(/\/en\/play$/)
   // The new round can open on Flower and Season reveals.
   await settleReveals(page, 2_000)
-  const before = await snapshot(page)
-  await openAndUse(page, itemId)
-  const dialog = targetDialog(page)
-  // The Seal arrives chosen; it still needs its tiles.
-  await expect(
-    dialog.locator(`[data-consumable-item="${itemId}"]`)
-  ).toHaveAttribute('aria-pressed', 'true')
-  await expect(dialog.locator('[data-consumable-confirm]')).toBeDisabled()
-  expect(await snapshot(page)).toEqual(before)
-  const targets = dialog.locator('[data-consumable-target]')
-  const ids = await targets.evaluateAll((nodes) =>
-    nodes.slice(0, 2).map((node) => node.getAttribute('data-consumable-target'))
-  )
-  await targets.nth(0).click()
-  await expect(dialog.locator('[data-consumable-confirm]')).toBeDisabled()
-  await targets.nth(1).click()
-  await expect(targets.nth(2)).toBeDisabled()
-  await dialog.locator('[data-consumable-confirm]').click()
-  await expect(dialog).not.toBeVisible()
-  const after = await snapshot(page)
-  expect(after.seals).toBe(0)
-  expect(after.gold).toBe(before.gold)
-  for (const id of ids)
-    expect(after.hand.find((tile) => tile.id === id)?.modifiers).toMatchObject({
-      enhancement: 'lucky',
-    })
+  // The Marks stay on those wall tiles; nothing waits on the rail.
+  expect(await lucky()).toEqual(['lucky', 'lucky'])
   await expect(token(page, itemId)).toHaveCount(0)
-  await expect(page.locator('[data-wall-chip]')).toBeFocused()
-  await expect(page.locator('[data-wall-chip]')).toBeInViewport()
 })
 
 test('inspection and Escape preserve staged tiles, hidden identities and focus', async ({

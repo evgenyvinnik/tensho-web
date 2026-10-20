@@ -222,13 +222,13 @@ export const THE_PSYCHIC: MandateDefinition = {
 }
 
 /**
- * The Club - All Souzu tiles are debuffed
+ * The Club - All Bamboo tiles are debuffed
  */
 export const THE_CLUB: MandateDefinition = {
   id: 'the_club',
   name: 'The Club',
   japaneseName: '棍',
-  description: 'All Souzu tiles are debuffed',
+  description: 'All Bamboo tiles are debuffed',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_suit', target: 'souzu' },
@@ -236,13 +236,13 @@ export const THE_CLUB: MandateDefinition = {
 }
 
 /**
- * The Goad - All Pinzu tiles are debuffed
+ * The Goad - All Circles are debuffed
  */
 export const THE_GOAD: MandateDefinition = {
   id: 'the_goad',
   name: 'The Goad',
   japaneseName: '突棒',
-  description: 'All Pinzu tiles are debuffed',
+  description: 'All Circles are debuffed',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_suit', target: 'pinzu' },
@@ -250,13 +250,13 @@ export const THE_GOAD: MandateDefinition = {
 }
 
 /**
- * The Window - All Manzu tiles are debuffed
+ * The Window - All Characters are debuffed
  */
 export const THE_WINDOW: MandateDefinition = {
   id: 'the_window',
   name: 'The Window',
   japaneseName: '窓',
-  description: 'All Manzu tiles are debuffed',
+  description: 'All Characters are debuffed',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_suit', target: 'manzu' },

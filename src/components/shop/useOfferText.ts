@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { BlessingPack, Decree, ImperialCharter } from '../../systems/types'
 import type { FateSeal } from '../../systems/FateSealSystem'
+import { consumableTargetRange } from '../../gameplay/consumableTargeting'
 import type { CelestialOrb } from '../../systems/CelestialOrbSystem'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import { Tile } from '../../core/Tile'
@@ -69,7 +70,12 @@ export function useOfferText(
         name: itemText.name('seals', seal),
         kind: t('shop.kinds.seal'),
         description: itemText.description('seals', seal),
-        extra: t('shop.kinds.consumableHelp'),
+        // Used as it is taken; one that takes tiles asks which wall tiles.
+        extra: t(
+          consumableTargetRange(seal.effect).max > 0
+            ? 'shop.kinds.sealHelp'
+            : 'shop.kinds.sealHelpInstant'
+        ),
         rarity: seal.rarity.toLowerCase(),
       }
     }

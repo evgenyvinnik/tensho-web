@@ -1,10 +1,11 @@
 /**
  * YakuUpgradeRow: the run's Yaku upgrades, in the Tea House.
  *
- * One token per upgraded family with its level, in a row that scrolls
- * sideways on phones. Nothing shows until an Orb has been used, so a fresh
- * run's build panel stays clean. A family that rises while the shop is open
- * (an Orb just bought) flashes once; opening a token only reads.
+ * One token per upgraded family with its level, wrapping under its label at
+ * the right end of the build's line, across from the Decrees. Nothing shows
+ * until an Orb has been used, so a fresh run's build panel stays clean. A
+ * family that rises while the shop is open (an Orb or a Seal of the Void
+ * just bought) flashes once; opening a token only reads.
  *
  * @module components/shop/YakuUpgradeRow
  */
@@ -44,18 +45,13 @@ export function YakuUpgradeRow({ upgrades }: { upgrades: YakuUpgrade[] }) {
   if (upgrades.length === 0) return null
   const title = t('yakuUpgrades.title')
   return (
-    <div
-      data-yaku-upgrades
-      role="group"
-      aria-label={title}
-      className="mt-2 flex min-w-0 items-center gap-2"
-    >
-      <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-[var(--color-beige-white)]/60">
+    <div data-yaku-upgrades role="group" aria-label={title} className="min-w-0">
+      <span className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-beige-white)]/60">
         {title}
       </span>
       <div
         role="list"
-        className="scroll-rail flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto py-1 pr-1"
+        className="mt-1 flex flex-wrap items-center gap-1.5 p-0.5 sm:gap-2"
       >
         {upgrades.map((upgrade) => (
           <div role="listitem" key={upgrade.yaku} className="shrink-0">

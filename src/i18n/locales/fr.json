@@ -517,7 +517,9 @@
     "kinds": {
       "decree": "Décret · {{rarity}}",
       "decreeHelp": "Un Décret est une règle permanente pour cette partie. Il occupe un emplacement et peut être vendu à tout moment.",
-      "seal": "Sceau du Destin · à utiliser en manche",
+      "seal": "Sceau du Destin · agit aussitôt",
+      "sealHelp": "Utilisé dès que vous le prenez : choisissez les tuiles de votre mur qu’il change ; elles le restent pour toute la partie.",
+      "sealHelpInstant": "Utilisé dès que vous le prenez.",
       "orb": "Orbe Céleste · améliore une famille de mains",
       "script": "Écrit du Vide · puissant, avec un prix",
       "consumableHelp": "Gardé avec vos objets jusqu’à utilisation. Touchez-le sur la table pour l’utiliser.",
@@ -532,10 +534,18 @@
     "buyFor": "Acheter · {{price}} or",
     "help": {
       "what": "La Maison de Thé est la boutique entre les manches.",
-      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les consommables s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
+      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les Orbes et les Sceaux agissent aussitôt (un Sceau vous demande quelles tuiles de votre mur changer), les Écrits s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
       "interest": "L’or conservé rapporte des intérêts : +1 pour chaque tranche de 5 en fin de manche, jusqu’à +{{cap}}.",
       "cashOut": "La paie de la manche arrive dans votre bourse à votre entrée, une notification par source : la manche réussie, les intérêts, les Décrets, les tuiles d’or et les locations prélevées.",
-      "build": "Votre configuration liste vos Décrets ; ouvrez un parchemin pour lire ses règles ou le vendre. Chaque achat se fait avec son propre bouton Acheter."
+      "build": "Votre configuration montre vos Décrets à côté de vos améliorations de yaku : ouvrez un parchemin pour lire ses règles ou le vendre, ou une amélioration pour voir son niveau. Chaque achat se fait avec son propre bouton Acheter."
+    },
+    "sealUsed": "{{name}} utilisé",
+    "sealWall": {
+      "title": "Choisissez des tuiles de votre mur",
+      "step": "{{index}} sur {{total}}",
+      "result": "Résultat",
+      "becomes": "{{from}} devient {{to}}",
+      "destroyed": "{{name}} disparaît"
     }
   },
   "decrees": {
@@ -592,16 +602,16 @@
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
-        "name": "Maître Manzu",
-        "description": "+3 Mult si main contient Manzu"
+        "name": "Maître des Caractères",
+        "description": "+3 Mult si la main contient des Caractères"
       },
       "decree-pinzu-perfectionist": {
-        "name": "Perfectionniste Pinzu",
-        "description": "+3 Mult si main contient Pinzu"
+        "name": "Perfectionniste des Cercles",
+        "description": "+3 Mult si la main contient des Cercles"
       },
       "decree-souzu-scholar": {
-        "name": "Érudit Souzu",
-        "description": "+3 Mult si main contient Souzu"
+        "name": "Érudit des Bambous",
+        "description": "+3 Mult si la main contient des Bambous"
       },
       "decree-wind-walker": {
         "name": "Marcheur du Vent",
@@ -621,7 +631,7 @@
       },
       "decree-green-fortune": {
         "name": "Fortune Verte",
-        "description": "+15 Points par tuile verte (2,3,4,6,8 Souzu)"
+        "description": "+15 Points par tuile verte (2,3,4,6,8 de Bambous)"
       },
       "decree-coin-collector": {
         "name": "Collecteur de Pièces",
@@ -708,16 +718,16 @@
         "description": "+3 Mult en scorant Pinfu"
       },
       "decree-manzu-emperor": {
-        "name": "Empereur Manzu",
-        "description": "+8 Mult si moitié ou plus est Manzu"
+        "name": "Empereur des Caractères",
+        "description": "+8 Mult si la moitié ou plus sont des Caractères"
       },
       "decree-pinzu-princess": {
-        "name": "Princesse Pinzu",
-        "description": "+8 Mult si moitié ou plus est Pinzu"
+        "name": "Princesse des Cercles",
+        "description": "+8 Mult si la moitié ou plus sont des Cercles"
       },
       "decree-souzu-sage": {
-        "name": "Sage Souzu",
-        "description": "+8 Mult si moitié ou plus est Souzu"
+        "name": "Sage des Bambous",
+        "description": "+8 Mult si la moitié ou plus sont des Bambous"
       },
       "decree-flush-fever": {
         "name": "Fièvre de Couleur",
@@ -900,16 +910,16 @@
         "description": "Redéclenche Honneurs deux fois"
       },
       "decree-manzu-monarch": {
-        "name": "Monarque Manzu",
-        "description": "x2.0 Mult si tout est Manzu"
+        "name": "Monarque des Caractères",
+        "description": "x2.0 Mult si toute la main est en Caractères"
       },
       "decree-pinzu-potentate": {
-        "name": "Potentat Pinzu",
-        "description": "x2.0 Mult si tout est Pinzu"
+        "name": "Potentat des Cercles",
+        "description": "x2.0 Mult si toute la main est en Cercles"
       },
       "decree-souzu-sovereign": {
-        "name": "Souverain Souzu",
-        "description": "x2.0 Mult si tout est Souzu"
+        "name": "Souverain des Bambous",
+        "description": "x2.0 Mult si toute la main est en Bambous"
       },
       "decree-flower-emperor": {
         "name": "Empereur des Fleurs",
@@ -1048,16 +1058,16 @@
         "description": "Copie un Décret sans effet de copie à l’acquisition et au début de chaque manche."
       },
       "decree-manzu-god": {
-        "name": "Dieu Manzu",
-        "description": "x3.0 Mult si tout est Manzu"
+        "name": "Dieu des Caractères",
+        "description": "x3.0 Mult si toutes les tuiles sont des Caractères"
       },
       "decree-pinzu-god": {
-        "name": "Dieu Pinzu",
-        "description": "x3.0 Mult si tout est Pinzu"
+        "name": "Dieu des Cercles",
+        "description": "x3.0 Mult si toutes les tuiles sont des Cercles"
       },
       "decree-souzu-god": {
-        "name": "Dieu Souzu",
-        "description": "x3.0 Mult si tout est Souzu"
+        "name": "Dieu des Bambous",
+        "description": "x3.0 Mult si toutes les tuiles sont des Bambous"
       },
       "decree-glass-cannon": {
         "name": "Canon de Verre",

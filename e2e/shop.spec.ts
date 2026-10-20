@@ -182,18 +182,55 @@ test('Spanish shop shows the actual Seal and Orb before purchase and updates ava
     })
     await page.keyboard.press('Escape')
   }
+  // Buying a Seal asks which wall tiles it changes, then uses it at once.
   await buyOffer(page, offers[0])
+  const picker = page.locator('[data-seal-wall-dialog="seal_of_the_sage"]')
+  await expect(picker).toBeVisible()
+  await expect(picker.getByRole('heading', { level: 2 })).toContainText(
+    text[0].name
+  )
+  await expect(
+    picker.locator('[data-seal-wall-suit="manzu"]')
+  ).toHaveAccessibleName('Caracteres')
+  // Nine rank columns fit the narrowest phone without sideways scrolling.
+  for (const suit of await picker.locator('[data-seal-wall-suit]').all()) {
+    const rail = suit.locator('div').first()
+    expect(
+      await rail.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
+    ).toBe(true)
+  }
+  const confirm = picker.locator('[data-seal-wall-confirm]')
+  await expect(confirm).toBeDisabled()
+  const tiles = picker.locator('[data-seal-wall-tile]:not([disabled])')
+  const chosen = [
+    await tiles.nth(0).getAttribute('data-seal-wall-tile'),
+    await tiles.nth(1).getAttribute('data-seal-wall-tile'),
+  ]
+  await tiles.nth(0).click()
+  await tiles.nth(1).click()
+  await expect(picker.locator('[data-seal-wall-result] li')).toHaveCount(2)
+  await page.screenshot({
+    path: testInfo.outputPath('seal-wall-picker-es-320.png'),
+  })
+  await confirm.click()
+  await expect(picker).toHaveCount(0)
   await expect(page.locator(`[data-shop-offer="${offers[0]}"]`)).toHaveCount(0)
   expect(
-    await page.evaluate(async () => {
+    await page.evaluate(async (chosen) => {
       const path = '/src/game/GameOrchestrator.ts'
       const { gameOrchestrator: game } = await import(path)
       return {
         gold: game.getState().gold,
-        seals: game.getState().fateSeals.map((item: { id: string }) => item.id),
+        seals: game.getState().fateSeals.length,
+        marked: game
+          .getState()
+          .wallTemplate.filter((tile: { id: string }) =>
+            chosen.includes(tile.id)
+          )
+          .map((tile: { enhancement: string }) => tile.enhancement),
       }
-    })
-  ).toEqual({ gold: 17, seals: ['seal_of_the_sage'] })
+    }, chosen)
+  ).toEqual({ gold: 17, seals: 0, marked: ['bonus', 'bonus'] })
 })
 
 /** Explicit transaction fixture on the dev server. No production debug hook,
@@ -203,9 +240,9 @@ async function openPackFixture(page: Page, lang = 'en') {
   await openTable(page, `/${lang}/play`)
   const fixture = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
-    const packsPath = '/src/systems/BlessingPackSystem.ts'
+    const sealPath = '/src/systems/FateSealSystem.ts'
     const { gameOrchestrator: game } = await import(gamePath)
-    const { BlessingPackSystem } = await import(packsPath)
+    const { FateSealSystem, FATE_SEALS } = await import(sealPath)
     game.startNewRun(7)
     const state = game.getState()
     state.phase = 'shop'
@@ -223,14 +260,29 @@ async function openPackFixture(page: Page, lang = 'en') {
     const pack = game.shop.packOfferings.find(
       (p: { pack: { id: string } }) => p.pack.id === offer.item.id
     )
-    const fixture = new BlessingPackSystem().generateOfferingsForPacks([
-      offer.item,
-    ])[0]
-    pack.contents = fixture.contents
+    // Fixed choices: the Hermit takes no tiles; the others ask for wall tiles.
+    const seal = (id: string) =>
+      FateSealSystem.createFateSealInstance(FATE_SEALS[id])
+    pack.contents = [
+      'seal_of_the_hermit',
+      'seal_of_the_sage',
+      'seal_of_glass',
+      'seal_of_manzu',
+      'seal_of_strength',
+    ].map((id, index) => {
+      const data = seal(id)
+      return {
+        id: `${offer.item.id}:choice:${index}`,
+        type: 'FateSeal',
+        name: data.name,
+        description: data.description,
+        rarity: 'common',
+        data,
+      }
+    })
     pack.maxSelections = 2
-    state.fateSeals = fixture.contents
-      .slice(2, 4)
-      .map((c: { data: unknown }) => c.data)
+    // Two Seals already held for the table, untouched by the pack.
+    state.fateSeals = [seal('seal_of_glass'), seal('seal_of_manzu')]
     // Notify after fixture setup, just as the real session does after settlement.
     const eventPath = '/src/game/EventBus.ts'
     const { eventBus } = await import(eventPath)
@@ -471,9 +523,10 @@ for (const preference of ['app', 'system'] as const) {
     await expect(confirm).not.toHaveClass(/active:scale-95/)
     await confirm.click()
     await expect(dialog).not.toBeVisible()
+    // The Hermit is used as it is claimed: the 12 gold left doubles.
     expect(await inventory(page)).toMatchObject({
-      gold: 12,
-      seals: 3,
+      gold: 24,
+      seals: 2,
       pending: false,
     })
     await expect(page.locator(`[data-shop-offer="${offerId}"]`)).toHaveCount(0)
@@ -553,7 +606,7 @@ test('a route revisit restores the paid pack without generating or charging agai
   await expect(dialog).not.toBeVisible()
 })
 
-test('a Mega Arcana pack grants both picks however many consumables are held', async ({
+test('a Mega Arcana pack uses both chosen Seals on wall tiles, one after the other', async ({
   page,
 }) => {
   const { offerId } = await openPackFixture(page)
@@ -572,12 +625,69 @@ test('a Mega Arcana pack grants both picks however many consumables are held', a
   await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
   const choices = dialog.locator('[aria-pressed]')
-  await choices.nth(0).click()
+  // Seal of the Sage (two tiles) and Seal of Characters (up to three).
   await choices.nth(1).click()
+  await choices.nth(3).click()
   await expect(dialog.getByRole('status')).toHaveCount(0)
   await dialog.getByRole('button', { name: 'Confirm Selection' }).click()
+
+  const sage = page.locator('[data-seal-wall-dialog="seal_of_the_sage"]')
+  await expect(sage).toBeVisible()
+  await expect(sage.getByRole('heading', { level: 2 })).toContainText('1 of 2')
+  const marked = [
+    await sage
+      .locator('[data-seal-wall-tile]')
+      .nth(0)
+      .getAttribute('data-seal-wall-tile'),
+    await sage
+      .locator('[data-seal-wall-tile]')
+      .nth(1)
+      .getAttribute('data-seal-wall-tile'),
+  ]
+  for (const id of marked)
+    await sage.locator(`[data-seal-wall-tile="${id}"]`).click()
+  await sage.getByRole('button', { name: 'Confirm', exact: true }).click()
+
+  const characters = page.locator('[data-seal-wall-dialog="seal_of_manzu"]')
+  await expect(characters).toBeVisible()
+  await expect(characters.getByRole('heading', { level: 2 })).toContainText(
+    'Seal of Characters'
+  )
+  // Characters are what it makes, so those tiles cannot be chosen.
+  await expect(
+    characters.locator(
+      '[data-seal-wall-suit="manzu"] [data-seal-wall-tile]:not([disabled])'
+    )
+  ).toHaveCount(0)
+  const circle = await characters
+    .locator('[data-seal-wall-suit="pinzu"] [data-seal-wall-tile]')
+    .first()
+    .getAttribute('data-seal-wall-tile')
+  await characters.locator(`[data-seal-wall-tile="${circle}"]`).click()
+  await characters.getByRole('button', { name: 'Use item' }).click()
+  await expect(characters).toHaveCount(0)
   await expect(dialog).not.toBeVisible()
-  expect(await inventory(page)).toMatchObject({ seals: 5, pending: false })
+  expect(await inventory(page)).toMatchObject({ seals: 3, pending: false })
+  expect(
+    await page.evaluate(
+      async ({ marked, circle }) => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const { gameOrchestrator: game } = await import(path)
+        const wall = game.getState().wallTemplate as {
+          id: string
+          suit: string
+          enhancement: string
+        }[]
+        return {
+          marked: wall
+            .filter((tile) => marked.includes(tile.id))
+            .map((tile) => tile.enhancement),
+          converted: wall.find((tile) => tile.id === circle)!.suit,
+        }
+      },
+      { marked, circle }
+    )
+  ).toEqual({ marked: ['bonus', 'bonus'], converted: 'manzu' })
 })
 
 test('Mega Decree pack capacity is checked before confirmation and rewards are granted once', async ({
@@ -651,7 +761,8 @@ test('pack choices work with the keyboard and trap focus until explicitly settle
   await expect(confirm).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(dialog).not.toBeVisible()
-  expect((await inventory(page)).seals).toBe(3)
+  // The Hermit takes no tiles and is used as it is claimed.
+  expect((await inventory(page)).seals).toBe(2)
 })
 
 test('localized pack choices fit a short phone and skipping is an explicit action', async ({

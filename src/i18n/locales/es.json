@@ -517,7 +517,9 @@
     "kinds": {
       "decree": "Decreto · {{rarity}}",
       "decreeHelp": "Un decreto es una regla permanente para esta partida. Ocupa un espacio de decreto y puedes venderlo cuando quieras.",
-      "seal": "Sello del Destino · se usa en una ronda",
+      "seal": "Sello del Destino · actúa al instante",
+      "sealHelp": "Se usa en cuanto lo tomas: elige las fichas de tu muro que cambia, y siguen cambiadas toda la partida.",
+      "sealHelpInstant": "Se usa en cuanto lo tomas.",
       "orb": "Orbe Celestial · mejora una familia de manos",
       "script": "Escrito del Vacío · poderoso, con un precio",
       "consumableHelp": "Se guarda con tus objetos hasta usarlo. Tócalo en la mesa para usarlo.",
@@ -532,10 +534,18 @@
     "buyFor": "Comprar · {{price}} de oro",
     "help": {
       "what": "La Casa de Té es la tienda entre rondas.",
-      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los consumibles se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
+      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los Orbes y los Sellos actúan al instante (un Sello te pregunta qué fichas de tu muro cambiar), los Escritos se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
       "interest": "El oro que guardas genera interés: +1 por cada 5 que tengas al acabar una ronda, hasta +{{cap}}.",
       "cashOut": "La paga de la ronda llega a tu bolsa al entrar, un aviso por cada fuente: la ronda superada, los intereses, los Decretos, las fichas de oro y los alquileres cobrados.",
-      "build": "Tu configuración muestra tus Decretos; abre un pergamino para leer sus reglas o venderlo. Cada compra se hace con su propio botón Comprar."
+      "build": "Tu configuración muestra tus Decretos junto a tus mejoras de yaku: abre un pergamino para leer sus reglas o venderlo, o una mejora para ver su nivel. Cada compra se hace con su propio botón Comprar."
+    },
+    "sealUsed": "{{name}} usado",
+    "sealWall": {
+      "title": "Elige fichas de tu muro",
+      "step": "{{index}} de {{total}}",
+      "result": "Resultado",
+      "becomes": "{{from}} pasa a ser {{to}}",
+      "destroyed": "{{name}} se destruye"
     }
   },
   "decrees": {
@@ -592,16 +602,16 @@
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
-        "name": "Maestro Manzu",
-        "description": "+3 Mult si la mano contiene Manzu"
+        "name": "Maestro de Caracteres",
+        "description": "+3 Mult si la mano contiene Caracteres"
       },
       "decree-pinzu-perfectionist": {
-        "name": "Perfeccionista Pinzu",
-        "description": "+3 Mult si la mano contiene Pinzu"
+        "name": "Perfeccionista de Círculos",
+        "description": "+3 Mult si la mano contiene Círculos"
       },
       "decree-souzu-scholar": {
-        "name": "Erudito Souzu",
-        "description": "+3 Mult si la mano contiene Souzu"
+        "name": "Erudito de Bambúes",
+        "description": "+3 Mult si la mano contiene Bambúes"
       },
       "decree-wind-walker": {
         "name": "Caminante del Viento",
@@ -621,7 +631,7 @@
       },
       "decree-green-fortune": {
         "name": "Fortuna Verde",
-        "description": "+15 Puntos por ficha verde (2,3,4,6,8 Souzu)"
+        "description": "+15 Puntos por ficha verde (2,3,4,6,8 de Bambúes)"
       },
       "decree-coin-collector": {
         "name": "Colector de Monedas",
@@ -708,16 +718,16 @@
         "description": "+3 Mult al puntuar Pinfu"
       },
       "decree-manzu-emperor": {
-        "name": "Emperador Manzu",
-        "description": "+8 Mult si la mitad o más es Manzu"
+        "name": "Emperador de Caracteres",
+        "description": "+8 Mult si la mitad o más son Caracteres"
       },
       "decree-pinzu-princess": {
-        "name": "Princesa Pinzu",
-        "description": "+8 Mult si la mitad o más es Pinzu"
+        "name": "Princesa de Círculos",
+        "description": "+8 Mult si la mitad o más son Círculos"
       },
       "decree-souzu-sage": {
-        "name": "Sabio Souzu",
-        "description": "+8 Mult si la mitad o más es Souzu"
+        "name": "Sabio de Bambúes",
+        "description": "+8 Mult si la mitad o más son Bambúes"
       },
       "decree-flush-fever": {
         "name": "Fiebre de Color",
@@ -900,16 +910,16 @@
         "description": "Reactiva Honores dos veces"
       },
       "decree-manzu-monarch": {
-        "name": "Monarca Manzu",
-        "description": "x2.0 Mult si toda la mano es Manzu"
+        "name": "Monarca de Caracteres",
+        "description": "x2.0 Mult si toda la mano son Caracteres"
       },
       "decree-pinzu-potentate": {
-        "name": "Potentado Pinzu",
-        "description": "x2.0 Mult si toda la mano es Pinzu"
+        "name": "Potentado de Círculos",
+        "description": "x2.0 Mult si toda la mano son Círculos"
       },
       "decree-souzu-sovereign": {
-        "name": "Soberano Souzu",
-        "description": "x2.0 Mult si toda la mano es Souzu"
+        "name": "Soberano de Bambúes",
+        "description": "x2.0 Mult si toda la mano son Bambúes"
       },
       "decree-flower-emperor": {
         "name": "Emperador de las Flores",
@@ -1048,16 +1058,16 @@
         "description": "Copia un Decreto sin efecto de copia al obtenerlo y al iniciar cada ronda."
       },
       "decree-manzu-god": {
-        "name": "Dios Manzu",
-        "description": "x3.0 Mult si todo es Manzu"
+        "name": "Dios de Caracteres",
+        "description": "x3.0 Mult si todas las fichas son Caracteres"
       },
       "decree-pinzu-god": {
-        "name": "Dios Pinzu",
-        "description": "x3.0 Mult si todo es Pinzu"
+        "name": "Dios de Círculos",
+        "description": "x3.0 Mult si todas las fichas son Círculos"
       },
       "decree-souzu-god": {
-        "name": "Dios Souzu",
-        "description": "x3.0 Mult si todo es Souzu"
+        "name": "Dios de Bambúes",
+        "description": "x3.0 Mult si todas las fichas son Bambúes"
       },
       "decree-glass-cannon": {
         "name": "Cañón de Cristal",
@@ -1426,7 +1436,7 @@
       },
       "the_club": {
         "name": "La Porra",
-        "description": "Todas las fichas de Bambú quedan debilitadas"
+        "description": "Todas las fichas de Bambúes quedan debilitadas"
       },
       "the_goad": {
         "name": "La Aguijada",
@@ -2161,16 +2171,16 @@
         "description": "Mejora 1 ficha a Marca de Piedra (+100 Puntos; sin número ni palo, nunca entra en un grupo, siempre puntúa completa)"
       },
       "seal_of_manzu": {
-        "name": "Sello de Manzu",
+        "name": "Sello de Caracteres",
         "description": "Convierte hasta 3 fichas al palo de Caracteres"
       },
       "seal_of_pinzu": {
-        "name": "Sello de Pinzu",
+        "name": "Sello de Círculos",
         "description": "Convierte hasta 3 fichas al palo de Círculos"
       },
       "seal_of_souzu": {
-        "name": "Sello de Souzu",
-        "description": "Convierte hasta 3 fichas al palo de Bambú"
+        "name": "Sello de Bambúes",
+        "description": "Convierte hasta 3 fichas al palo de Bambúes"
       },
       "seal_of_unity": {
         "name": "Sello de la Unidad",
@@ -2390,7 +2400,7 @@
       },
       "jade_wall": {
         "name": "Muro de Jade",
-        "description": "Muro centrado en el palo de Bambú"
+        "description": "Muro centrado en el palo de Bambúes"
       },
       "ivory_wall": {
         "name": "Muro de Marfil",
@@ -2398,7 +2408,7 @@
       },
       "bamboo_wall": {
         "name": "Muro de Bambú",
-        "description": "Muro con composición dominada por Bambú"
+        "description": "Muro con composición dominada por Bambúes"
       },
       "cherry_wall": {
         "name": "Muro Cerezo",

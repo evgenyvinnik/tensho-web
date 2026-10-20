@@ -165,12 +165,17 @@ for (const [language, copy] of [
         })
         return
       }
+      // A pack-chosen Seal is used the moment it is claimed too: the Hermit
+      // doubles the 96 gold left, up to its +20, and the use already counts.
+      await expect(
+        page.locator('[data-seal-used="seal_of_the_hermit"]')
+      ).toBeVisible()
       expect(await progress()).toEqual({
-        count: 24,
-        unlocked: false,
-        archiveUnlocked: false,
+        count: 25,
+        unlocked: true,
+        archiveUnlocked: true,
       })
-      expect(await gold()).toBe(96)
+      expect(await gold()).toBe(116)
       await page
         .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
         .click()
@@ -178,25 +183,10 @@ for (const [language, copy] of [
       await expect(page.locator('[data-game-action="play"]')).toBeVisible()
       // The new round can open on Flower and Season reveals.
       await settleReveals(page, 2_000)
-      // The reward waits on the item rail; its details hold the Use step.
-      const token = page.locator(
-        `[data-consumable-instance="${fixture.itemId}"]`
-      )
-      await token.click()
-      const use = page.locator(`[data-use-item="${fixture.itemId}"]`)
-      await expect(use).toBeEnabled()
-      expect(await progress()).toEqual({
-        count: 24,
-        unlocked: false,
-        archiveUnlocked: false,
-      })
-      await use.click()
-      await expect(token).toHaveCount(0)
-      expect(await progress()).toEqual({
-        count: 25,
-        unlocked: true,
-        archiveUnlocked: true,
-      })
+      // Nothing waits on the rail.
+      await expect(
+        page.locator(`[data-consumable-instance="${fixture.itemId}"]`)
+      ).toHaveCount(0)
       await page.reload()
       await expect(page.locator('[data-game-action="play"]')).toBeVisible()
       expect(await progress()).toEqual({

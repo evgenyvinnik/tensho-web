@@ -8,12 +8,20 @@ import { BlessingPackSystem } from '../systems/BlessingPackSystem'
 import type { BlessingPack } from '../systems/types'
 import { BOSS_MANDATES } from '../systems/RoundManager'
 import { getCelestialOrbsByRarity } from '../systems/CelestialOrbSystem'
+import { firstPackSealTargets } from '../gameplay/wallSeals'
 import {
   TEA_HOUSE_BASE_CHARTERS,
   TEA_HOUSE_UPGRADED_CHARTERS,
 } from '../systems/TeaHouseSystem'
 
 const json = <T>(value: T): T => JSON.parse(JSON.stringify(value))
+/** Seals in the open pack are used as they are claimed, on wall tiles. */
+const claimTargets = (game: GameOrchestrator, indices: number[]) =>
+  firstPackSealTargets(
+    game.shop.pendingPack!.contents,
+    indices,
+    game.getSealableWallTiles()
+  )
 const charter = (id: string) =>
   [...TEA_HOUSE_BASE_CHARTERS, ...TEA_HOUSE_UPGRADED_CHARTERS].find(
     (c) => c.id === id
@@ -153,10 +161,22 @@ it.each([0.1, 0.9])(
     expect(
       game.shop.purchase(game.shop.state.packOfferings[0].id).success
     ).toBe(true)
-    expect(game.shop.confirmPack([0]).success).toBe(true)
-    expect(
-      (roll < 0.2 ? game.getState().voidScripts : game.getState().fateSeals)[0]
-    ).toMatchObject({ source: 'pack_open' })
+    const used = vi.fn()
+    eventBus.on('fateSealUsed', used)
+    expect(game.shop.confirmPack([0], claimTargets(game, [0])).success).toBe(
+      true
+    )
+    if (roll < 0.2)
+      expect(game.getState().voidScripts[0]).toMatchObject({
+        source: 'pack_open',
+      })
+    else {
+      // A chosen Seal is used at once on the wall, not held.
+      expect(game.getState().fateSeals).toEqual([])
+      expect(used).toHaveBeenCalledWith(
+        expect.objectContaining({ source: 'pack_open' })
+      )
+    }
   }
 )
 
@@ -174,7 +194,7 @@ it('does not reroll revealed/claimed packs or mutate packs on rejected Charter p
   const pending = json(game.captureRun())
   expect(game.shop.purchase(offer.id).success).toBe(false)
   expect(game.captureRun()).toEqual(pending)
-  expect(game.shop.confirmPack([0]).success).toBe(true)
+  expect(game.shop.confirmPack([0], claimTargets(game, [0])).success).toBe(true)
   const before = json(game.captureRun())
   vi.spyOn(runRandom, 'next').mockReturnValue(0.1)
   expect(game.shop.purchase(offer.id).success).toBe(true)

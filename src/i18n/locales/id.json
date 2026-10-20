@@ -11,7 +11,7 @@
       },
       "blue_wall": {
         "name": "Dinding Biru",
-        "description": "Dinding yang berfokus pada ubin Pinzu"
+        "description": "Dinding yang berfokus pada ubin Lingkaran"
       },
       "black_wall": {
         "name": "Dinding Hitam",
@@ -31,7 +31,7 @@
       },
       "jade_wall": {
         "name": "Dinding Giok",
-        "description": "Dinding yang berfokus pada ubin bambu"
+        "description": "Dinding yang berfokus pada ubin Bambu"
       },
       "ivory_wall": {
         "name": "Dinding Gading",
@@ -39,7 +39,7 @@
       },
       "bamboo_wall": {
         "name": "Dinding Bambu",
-        "description": "Dinding yang didominasi ubin Souzu"
+        "description": "Dinding yang didominasi ubin Bambu"
       },
       "cherry_wall": {
         "name": "Dinding Sakura",
@@ -725,7 +725,9 @@
     "kinds": {
       "decree": "Dekrit · {{rarity}}",
       "decreeHelp": "Dekrit adalah aturan permanen untuk permainan ini. Memakai satu slot Dekrit; bisa dijual kapan saja.",
-      "seal": "Segel Takdir · dipakai saat ronde",
+      "seal": "Segel Takdir · langsung bekerja",
+      "sealHelp": "Dipakai saat kamu mengambilnya: pilih ubin dinding yang diubah, dan perubahannya bertahan sepanjang permainan.",
+      "sealHelpInstant": "Dipakai saat kamu mengambilnya.",
       "orb": "Bola Langit · meningkatkan satu keluarga tangan",
       "script": "Gulungan Kehampaan · kuat, ada harganya",
       "consumableHelp": "Disimpan bersama barangmu sampai dipakai. Ketuk di meja untuk memakainya.",
@@ -740,10 +742,18 @@
     "buyFor": "Beli · {{price}} emas",
     "help": {
       "what": "Rumah Teh adalah toko di antara ronde.",
-      "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, barang habis pakai dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
+      "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, Bola dan Segel langsung bekerja (Segel menanyakan ubin dinding mana yang diubah), Gulungan dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
       "interest": "Emas yang kamu simpan berbunga: +1 untuk setiap 5 emas saat ronde berakhir, maksimal +{{cap}}.",
       "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekret, ubin emas, dan sewa yang ditagih.",
-      "build": "Susunanmu menampilkan Dekret milikmu; buka gulungan untuk membaca aturan atau menjualnya. Setiap pembelian lewat tombol Beli masing-masing."
+      "build": "Susunanmu menampilkan Dekret milikmu di samping peningkatan yaku: buka gulungan untuk membaca aturan atau menjualnya, atau peningkatan untuk melihat levelnya. Setiap pembelian lewat tombol Beli masing-masing."
+    },
+    "sealUsed": "{{name}} dipakai",
+    "sealWall": {
+      "title": "Pilih ubin dari dindingmu",
+      "step": "{{index}} dari {{total}}",
+      "result": "Hasil",
+      "becomes": "{{from}} menjadi {{to}}",
+      "destroyed": "{{name}} dihancurkan"
     }
   },
   "decrees": {
@@ -800,16 +810,16 @@
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
-        "name": "Master Manzu",
-        "description": "+3 Mult jika ada Manzu"
+        "name": "Master Karakter",
+        "description": "+3 Mult jika ada Karakter"
       },
       "decree-pinzu-perfectionist": {
-        "name": "Perfeksionis Pinzu",
-        "description": "+3 Mult jika ada Pinzu"
+        "name": "Perfeksionis Lingkaran",
+        "description": "+3 Mult jika ada Lingkaran"
       },
       "decree-souzu-scholar": {
-        "name": "Sarjana Souzu",
-        "description": "+3 Mult jika ada Souzu"
+        "name": "Sarjana Bambu",
+        "description": "+3 Mult jika ada Bambu"
       },
       "decree-wind-walker": {
         "name": "Pejalan Angin",
@@ -829,7 +839,7 @@
       },
       "decree-green-fortune": {
         "name": "Keberuntungan Hijau",
-        "description": "+15 Poin per ubin hijau (2,3,4,6,8 Souzu)"
+        "description": "+15 Poin per ubin hijau (2,3,4,6,8 Bambu)"
       },
       "decree-coin-collector": {
         "name": "Pengumpul Koin",
@@ -916,16 +926,16 @@
         "description": "+3 Mult saat skor Pinfu"
       },
       "decree-manzu-emperor": {
-        "name": "Kaisar Manzu",
-        "description": "+8 Mult jika setengah lebih Manzu"
+        "name": "Kaisar Karakter",
+        "description": "+8 Mult jika setengah lebih Karakter"
       },
       "decree-pinzu-princess": {
-        "name": "Putri Pinzu",
-        "description": "+8 Mult jika setengah lebih Pinzu"
+        "name": "Putri Lingkaran",
+        "description": "+8 Mult jika setengah lebih Lingkaran"
       },
       "decree-souzu-sage": {
-        "name": "Orang Bijak Souzu",
-        "description": "+8 Mult jika setengah lebih Souzu"
+        "name": "Orang Bijak Bambu",
+        "description": "+8 Mult jika setengah lebih Bambu"
       },
       "decree-flush-fever": {
         "name": "Demam Flush",
@@ -1108,16 +1118,16 @@
         "description": "Picu ulang Kehormatan dua kali"
       },
       "decree-manzu-monarch": {
-        "name": "Raja Manzu",
-        "description": "x2.0 Mult jika semua Manzu"
+        "name": "Raja Karakter",
+        "description": "x2.0 Mult jika seluruh tangan Karakter"
       },
       "decree-pinzu-potentate": {
-        "name": "Penguasa Pinzu",
-        "description": "x2.0 Mult jika semua Pinzu"
+        "name": "Penguasa Lingkaran",
+        "description": "x2.0 Mult jika seluruh tangan Lingkaran"
       },
       "decree-souzu-sovereign": {
-        "name": "Kedaulatan Souzu",
-        "description": "x2.0 Mult jika semua Souzu"
+        "name": "Kedaulatan Bambu",
+        "description": "x2.0 Mult jika seluruh tangan Bambu"
       },
       "decree-flower-emperor": {
         "name": "Kaisar Bunga",
@@ -1256,16 +1266,16 @@
         "description": "Menyalin Dekrit acak tanpa efek salin saat diperoleh dan pada awal setiap ronde."
       },
       "decree-manzu-god": {
-        "name": "Dewa Manzu",
-        "description": "x3.0 Mult jika semua Manzu"
+        "name": "Dewa Karakter",
+        "description": "x3.0 Mult jika semua ubin Karakter"
       },
       "decree-pinzu-god": {
-        "name": "Dewa Pinzu",
-        "description": "x3.0 Mult jika semua Pinzu"
+        "name": "Dewa Lingkaran",
+        "description": "x3.0 Mult jika semua ubin Lingkaran"
       },
       "decree-souzu-god": {
-        "name": "Dewa Souzu",
-        "description": "x3.0 Mult jika semua Souzu"
+        "name": "Dewa Bambu",
+        "description": "x3.0 Mult jika semua ubin Bambu"
       },
       "decree-glass-cannon": {
         "name": "Meriam Kaca",
@@ -2413,15 +2423,15 @@
         "description": "Meningkatkan 1 ubin jadi Tanda Batu (+100 Poin; tanpa angka maupun jenis, tidak pernah masuk grup, selalu mencetak skor penuh)"
       },
       "seal_of_manzu": {
-        "name": "Segel Manzu",
+        "name": "Segel Karakter",
         "description": "Mengubah hingga 3 ubin jadi Karakter"
       },
       "seal_of_pinzu": {
-        "name": "Segel Pinzu",
+        "name": "Segel Lingkaran",
         "description": "Mengubah hingga 3 ubin jadi Lingkaran"
       },
       "seal_of_souzu": {
-        "name": "Segel Souzu",
+        "name": "Segel Bambu",
         "description": "Mengubah hingga 3 ubin jadi Bambu"
       },
       "seal_of_unity": {

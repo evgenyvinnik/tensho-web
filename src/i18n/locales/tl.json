@@ -274,16 +274,16 @@
         "description": "Nilalagyan ng Markang Bato ang 1 tile (+100 Puntos; walang numero o suit, hindi napapasama sa grupo, laging buo ang puntos)."
       },
       "seal_of_manzu": {
-        "name": "Selyo ng Manzu",
-        "description": "Ginagawang Manzu ang suit ng hanggang 3 tile."
+        "name": "Selyo ng Karakter",
+        "description": "Ginagawang Karakter ang suit ng hanggang 3 tile."
       },
       "seal_of_pinzu": {
-        "name": "Selyo ng Pinzu",
-        "description": "Ginagawang Pinzu ang suit ng hanggang 3 tile."
+        "name": "Selyo ng Bilog",
+        "description": "Ginagawang Bilog ang suit ng hanggang 3 tile."
       },
       "seal_of_souzu": {
-        "name": "Selyo ng Souzu",
-        "description": "Ginagawang Souzu ang suit ng hanggang 3 tile."
+        "name": "Selyo ng Kawayan",
+        "description": "Ginagawang Kawayan ang suit ng hanggang 3 tile."
       },
       "seal_of_the_oracle": {
         "name": "Selyo ng Orakulo",
@@ -804,7 +804,9 @@
     "kinds": {
       "decree": "Decree · {{rarity}}",
       "decreeHelp": "Ang Decree ay permanenteng patakaran sa larong ito. Gumagamit ito ng isang slot at puwedeng ibenta anumang oras.",
-      "seal": "Selyo ng Kapalaran · gamitin sa round",
+      "seal": "Selyo ng Kapalaran · agad gumagana",
+      "sealHelp": "Ginagamit sa sandaling kunin mo: piliin ang mga tile sa pader na babaguhin nito, at mananatili ang pagbabago sa buong run.",
+      "sealHelpInstant": "Ginagamit sa sandaling kunin mo.",
       "orb": "Orb ng Kalangitan · ina-upgrade ang isang pamilya ng kamay",
       "script": "Balumbon ng Kawalan · malakas, may kapalit",
       "consumableHelp": "Nakatabi kasama ng mga gamit mo hanggang gamitin. I-tap ito sa mesa para gamitin.",
@@ -819,10 +821,18 @@
     "buyFor": "Bilhin · {{price}} ginto",
     "help": {
       "what": "Ang Bahay ng Tsaa ay tindahan sa pagitan ng mga round.",
-      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Decree ang patakaran, ginagamit sa round ang consumable, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Kasulatan ang buong laro.",
+      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Decree ang patakaran, agad gumagana ang Orb at Selyo (itatanong ng Selyo kung aling mga tile sa pader mo ang babaguhin), ginagamit sa round ang Balumbon, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Kasulatan ang buong laro.",
       "interest": "May interes ang gintong itinatabi mo: +1 bawat 5 na hawak mo pagtatapos ng round, hanggang +{{cap}}.",
       "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, mga gintong tile, at anumang sinisingil na upa.",
-      "build": "Nakalista sa build mo ang mga Dekreto mo; buksan ang balumbon para basahin ang mga tuntunin o ibenta ito. Bawat bili ay may sariling Bilhin."
+      "build": "Nakalista sa build mo ang mga Dekreto mo katabi ng mga pag-upgrade ng yaku: buksan ang balumbon para basahin ang mga tuntunin o ibenta ito, o ang upgrade para makita ang antas nito. Bawat bili ay may sariling Bilhin."
+    },
+    "sealUsed": "Nagamit ang {{name}}",
+    "sealWall": {
+      "title": "Pumili ng mga tile mula sa pader mo",
+      "step": "{{index}} sa {{total}}",
+      "result": "Resulta",
+      "becomes": "Magiging {{to}} ang {{from}}",
+      "destroyed": "Masisira ang {{name}}"
     }
   },
   "decrees": {
@@ -951,16 +961,16 @@
         "description": "+6 sa multiplikador."
       },
       "decree-manzu-master": {
-        "name": "Dalubhasa sa Manzu",
-        "description": "+3 sa multiplikador kung may Manzu sa kamay."
+        "name": "Dalubhasa sa Karakter",
+        "description": "+3 sa multiplikador kung may Karakter sa kamay."
       },
       "decree-pinzu-perfectionist": {
-        "name": "Maselan sa Pinzu",
-        "description": "+3 sa multiplikador kung may Pinzu sa kamay."
+        "name": "Maselan sa Bilog",
+        "description": "+3 sa multiplikador kung may Bilog sa kamay."
       },
       "decree-souzu-scholar": {
-        "name": "Pantas ng Souzu",
-        "description": "+3 sa multiplikador kung may Souzu sa kamay."
+        "name": "Iskolar ng Kawayan",
+        "description": "+3 sa multiplikador kung may Kawayan sa kamay."
       },
       "decree-wind-walker": {
         "name": "Manlalakad sa Hangin",
@@ -980,7 +990,7 @@
       },
       "decree-green-fortune": {
         "name": "Luntiang Suwerte",
-        "description": "+15 batayang puntos bawat luntiang tile (2,3,4,6,8 ng Souzu)."
+        "description": "+15 batayang puntos bawat luntiang tile (2,3,4,6,8 ng Kawayan)."
       },
       "decree-coin-collector": {
         "name": "Tagapagtipon ng Barya",
@@ -1067,16 +1077,16 @@
         "description": "+3 sa multiplikador kapag umiskor ng Pinfu."
       },
       "decree-manzu-emperor": {
-        "name": "Emperador ng Manzu",
-        "description": "+8 sa multiplikador kung Manzu ang kalahati o higit pa ng kamay."
+        "name": "Emperador ng Karakter",
+        "description": "+8 sa multiplikador kung Karakter ang kalahati o higit pa ng kamay."
       },
       "decree-pinzu-princess": {
-        "name": "Prinsesa ng Pinzu",
-        "description": "+8 sa multiplikador kung Pinzu ang kalahati o higit pa ng kamay."
+        "name": "Prinsesa ng Bilog",
+        "description": "+8 sa multiplikador kung Bilog ang kalahati o higit pa ng kamay."
       },
       "decree-souzu-sage": {
-        "name": "Pantas na Souzu",
-        "description": "+8 sa multiplikador kung Souzu ang kalahati o higit pa ng kamay."
+        "name": "Pantas ng Kawayan",
+        "description": "+8 sa multiplikador kung Kawayan ang kalahati o higit pa ng kamay."
       },
       "decree-flush-fever": {
         "name": "Pagkahumaling sa Iisang Suit",
@@ -1251,16 +1261,16 @@
         "description": "Pinapagana muli nang dalawang beses ang mga Honor na tile."
       },
       "decree-manzu-monarch": {
-        "name": "Monarka ng Manzu",
-        "description": "Multiplikador x2.0 kung Manzu ang buong kamay."
+        "name": "Monarka ng Karakter",
+        "description": "Multiplikador x2.0 kung Karakter ang buong kamay."
       },
       "decree-pinzu-potentate": {
-        "name": "Makapangyarihang Pinuno ng Pinzu",
-        "description": "Multiplikador x2.0 kung Pinzu ang buong kamay."
+        "name": "Makapangyarihang Pinuno ng Bilog",
+        "description": "Multiplikador x2.0 kung Bilog ang buong kamay."
       },
       "decree-souzu-sovereign": {
-        "name": "Soberano ng Souzu",
-        "description": "Multiplikador x2.0 kung Souzu ang buong kamay."
+        "name": "Soberano ng Kawayan",
+        "description": "Multiplikador x2.0 kung Kawayan ang buong kamay."
       },
       "decree-flower-emperor": {
         "name": "Emperador ng mga Bulaklak",
@@ -1383,16 +1393,16 @@
         "description": "Kinokopya ang isang sapalarang Dekretong walang epekto ng pagkopya kapag nakuha at sa simula ng bawat round."
       },
       "decree-manzu-god": {
-        "name": "Diyos ng Manzu",
-        "description": "Multiplikador x3.0 kung Manzu ang lahat ng tile."
+        "name": "Diyos ng Karakter",
+        "description": "Multiplikador x3.0 kung Karakter ang lahat ng tile."
       },
       "decree-pinzu-god": {
-        "name": "Diyos ng Pinzu",
-        "description": "Multiplikador x3.0 kung Pinzu ang lahat ng tile."
+        "name": "Diyos ng Bilog",
+        "description": "Multiplikador x3.0 kung Bilog ang lahat ng tile."
       },
       "decree-souzu-god": {
-        "name": "Diyos ng Souzu",
-        "description": "Multiplikador x3.0 kung Souzu ang lahat ng tile."
+        "name": "Diyos ng Kawayan",
+        "description": "Multiplikador x3.0 kung Kawayan ang lahat ng tile."
       },
       "decree-glass-cannon": {
         "name": "Kanyong Salamin",
@@ -1723,15 +1733,15 @@
       },
       "the_club": {
         "name": "Ang Pamalo",
-        "description": "Pinahihina ang lahat ng tile na Souzu."
+        "description": "Pinahihina ang lahat ng tile na Kawayan."
       },
       "the_goad": {
         "name": "Ang Pantulak",
-        "description": "Pinahihina ang lahat ng tile na Pinzu."
+        "description": "Pinahihina ang lahat ng tile na Bilog."
       },
       "the_window": {
         "name": "Ang Bintana",
-        "description": "Pinahihina ang lahat ng tile na Manzu."
+        "description": "Pinahihina ang lahat ng tile na Karakter."
       },
       "the_head": {
         "name": "Ang Ulo",
@@ -2529,7 +2539,7 @@
       },
       "blue_wall": {
         "name": "Asul na Pader",
-        "description": "Pader na nakatuon sa mga tile na Pinzu."
+        "description": "Pader na nakatuon sa mga tile na Bilog."
       },
       "black_wall": {
         "name": "Itim na Pader",
@@ -2549,7 +2559,7 @@
       },
       "jade_wall": {
         "name": "Pader na Jade",
-        "description": "Pader na nakatuon sa mga tile ng suit na Kawayan."
+        "description": "Pader na nakatuon sa mga tile na Kawayan."
       },
       "ivory_wall": {
         "name": "Pader na Garing",
@@ -2557,7 +2567,7 @@
       },
       "bamboo_wall": {
         "name": "Pader na Kawayan",
-        "description": "Pader na mas marami ang mga tile na Souzu."
+        "description": "Pader na mas marami ang mga tile na Kawayan."
       },
       "cherry_wall": {
         "name": "Pader ng Seresa",

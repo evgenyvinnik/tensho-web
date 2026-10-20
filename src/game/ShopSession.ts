@@ -21,6 +21,7 @@ import type { CelestialOrb } from '../systems/CelestialOrbSystem'
 import type { VoidScript } from '../systems/VoidScriptSystem'
 import { Tile } from '../core/Tile'
 import { CelestialOrbSystem } from '../systems/CelestialOrbSystem'
+import { wallAfterSeal } from '../gameplay/wallSeals'
 
 export type ShopFailure =
   | 'unavailable'
@@ -30,10 +31,24 @@ export type ShopFailure =
   | 'invalidSelection'
   /** A Celestial Orb whose family is already at its maximum level. */
   | 'maxLevel'
+  /** A Fate Seal with nothing to work on, or wall tiles it cannot take. */
+  | 'sealUnusable'
 export type ShopResult =
   | { success: true }
-  | { success: false; reason: ShopFailure }
-type Reward = { type: PackContent['type']; data: unknown }
+  | {
+      success: false
+      reason: ShopFailure
+      /** The engine's own words for a Seal it refuses. */
+      detail?: string
+    }
+/** Wall tiles chosen for each Seal of an open pack, by its index there. */
+export type PackSealTargets = Readonly<Record<number, readonly string[]>>
+type Reward = {
+  type: PackContent['type']
+  data: unknown
+  /** Wall tiles a Seal is laid on as it is used. */
+  targets?: readonly string[]
+}
 export type ShopPayment =
   | { type: 'gold' }
   | { type: 'flower'; flowerId: string }
@@ -49,8 +64,12 @@ type PurchasePlan =
   | Extract<ShopResult, { success: false }>
 const OK: ShopResult = { success: true }
 const fail = (
-  reason: ShopFailure
-): Extract<ShopResult, { success: false }> => ({ success: false, reason })
+  reason: ShopFailure,
+  detail?: string
+): Extract<ShopResult, { success: false }> =>
+  detail === undefined
+    ? { success: false, reason }
+    : { success: false, reason, detail }
 
 export interface ShopSessionState {
   teaHouse: ReturnType<TeaHouseSystem['toSerializedState']>
@@ -311,7 +330,13 @@ export class ShopSession {
       case 'Tile':
         return this.game.addTileToWall(reward.data as Tile)
       case 'FateSeal':
-        return this.game.addFateSeal(reward.data as FateSeal, source)
+        // Like an Orb, a Seal is used the moment it is taken: on the wall
+        // tiles the player chose, for the rest of the run.
+        return this.game.applyFateSeal(
+          reward.data as FateSeal,
+          source,
+          reward.targets
+        )
       case 'CelestialOrb':
         // The Tea House uses an Orb the moment it is taken; the upgrade is
         // the purchase. Nothing waits on the rail to be used later.
@@ -337,6 +362,33 @@ export class ShopSession {
     )
   }
 
+  /**
+   * Why these Seals could not be used in order, or null. Each is checked
+   * against the wall the Seals before it leave, so a Mega pack's second Seal
+   * cannot aim at a tile the first destroys. Without targets, it asks only
+   * whether each Seal has anything to work on.
+   */
+  private sealFailure(
+    rewards: Reward[],
+    gold = this.game.getState().gold
+  ): Extract<ShopResult, { success: false }> | null {
+    let wall: readonly Tile[] = this.game.getState().wallTemplate
+    for (const reward of rewards) {
+      if (reward.type !== 'FateSeal') continue
+      const seal = reward.data as FateSeal
+      const error = this.game.validateWallSeal(seal, reward.targets, {
+        gold,
+        wall,
+      })
+      if (error)
+        return error.includes('max level')
+          ? fail('maxLevel')
+          : fail('sealUnusable', error)
+      if (reward.targets) wall = wallAfterSeal(seal, wall, reward.targets)
+    }
+    return null
+  }
+
   private findOffering(id: string): TeaHouseOffering | undefined {
     const state = this.state
     return [
@@ -346,18 +398,27 @@ export class ShopSession {
     ].find((o) => o.id === id)
   }
 
-  /** Read-only UI preflight. Purchase rechecks this same plan at commitment. */
+  /**
+   * Read-only UI preflight. Purchase rechecks this same plan at commitment.
+   * A Seal that takes tiles passes without `targets` when its wall holds
+   * something it can change; buying it needs the chosen tiles.
+   */
   validatePurchase(
     id: string,
-    payment: ShopPayment = { type: 'gold' }
+    payment: ShopPayment = { type: 'gold' },
+    targets?: readonly string[]
   ): ShopResult {
     if (this.busy || !this.opened || !this.available())
       return fail('unavailable')
-    const plan = this.preparePurchase(id, payment)
+    const plan = this.preparePurchase(id, payment, targets)
     return plan.success ? OK : plan
   }
 
-  private preparePurchase(id: string, payment: ShopPayment): PurchasePlan {
+  private preparePurchase(
+    id: string,
+    payment: ShopPayment,
+    targets?: readonly string[]
+  ): PurchasePlan {
     const offering = this.findOffering(id)
     if (this.pending || !offering || offering.isPurchased || offering.isLocked)
       return fail('unavailable')
@@ -458,14 +519,28 @@ export class ShopSession {
       )
         return { success: false, reason: 'flowerRequirement' }
       if (!this.orbsApplicable([reward])) return fail('maxLevel')
+      if (offering.itemType === 'FateSeal') {
+        reward.targets = targets
+        // A Seal is used after it is paid for: Hermit doubles what is left.
+        const sealFailure = this.sealFailure(
+          [reward],
+          this.game.getState().gold - cost
+        )
+        if (sealFailure) return sealFailure
+      }
       if (!this.canReceive([reward], flowerId)) return fail('inventoryFull')
     }
     return { success: true, offering, pack, reward, cost, flowerId }
   }
 
-  purchase(id: string, payment: ShopPayment = { type: 'gold' }): ShopResult {
+  /** Buy an offer. A Seal that takes tiles is used on the `targets` given. */
+  purchase(
+    id: string,
+    payment: ShopPayment = { type: 'gold' },
+    targets?: readonly string[]
+  ): ShopResult {
     return this.operate(() => {
-      const plan = this.preparePurchase(id, payment)
+      const plan = this.preparePurchase(id, payment, targets ?? [])
       if (!plan.success) return plan
       const { offering, pack, reward, cost, flowerId } = plan
 
@@ -524,7 +599,14 @@ export class ShopSession {
     })
   }
 
-  validatePackSelection(indices: number[]): ShopResult {
+  /**
+   * Read-only check of a pack choice. Without `targets` a chosen Seal only
+   * needs something to work on; claiming it needs its wall tiles.
+   */
+  validatePackSelection(
+    indices: number[],
+    targets?: PackSealTargets
+  ): ShopResult {
     const pack = this.pending
     if (!this.available() || !this.opened || !pack || pack.isResolved)
       return fail('unavailable')
@@ -546,24 +628,42 @@ export class ShopSession {
       )
     )
       return fail('flowerRequirement')
-    const chosen = indices.map((i) => pack.contents[i])
+    const chosen = this.packRewards(pack, indices, targets)
     if (!this.orbsApplicable(chosen)) return fail('maxLevel')
+    const sealFailure = this.sealFailure(chosen)
+    if (sealFailure) return sealFailure
     return this.canReceive(chosen) ? OK : fail('inventoryFull')
   }
 
-  confirmPack(indices: number[]): ShopResult {
+  /** The chosen contents in choice order, each Seal with its wall tiles. */
+  private packRewards(
+    pack: PackOffering,
+    indices: number[],
+    targets?: PackSealTargets
+  ): Reward[] {
+    return indices.map((i) => {
+      const content = pack.contents[i]
+      return content.type === 'FateSeal' && targets
+        ? { ...content, targets: targets[i] ?? [] }
+        : content
+    })
+  }
+
+  /** Claim a pack's choice; each chosen Seal is used on its `targets`. */
+  confirmPack(indices: number[], targets: PackSealTargets = {}): ShopResult {
     return this.operate(() => {
-      const validation = this.validatePackSelection(indices)
+      const validation = this.validatePackSelection(indices, targets)
       if (!validation.success) return validation
       const pack = this.pending!
+      const rewards = this.packRewards(pack, indices, targets)
       for (const index of [...pack.selectedIndices])
         this.packs.deselectContent(pack.pack.id, index)
       for (const index of indices) this.packs.selectContent(pack.pack.id, index)
       const contents = this.packs.confirmSelection(pack.pack.id)
       if (contents.length !== indices.length)
         throw new Error('Validated pack selection could not be settled')
-      for (const content of contents) {
-        if (!this.grant(content, 'pack_open'))
+      for (const reward of rewards) {
+        if (!this.grant(reward, 'pack_open'))
           throw new Error('Validated pack reward could not be granted')
       }
       this.pending = null

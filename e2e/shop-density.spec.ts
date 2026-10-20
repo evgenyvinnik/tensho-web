@@ -70,7 +70,6 @@ for (const [index, language] of languages.entries()) {
     await page.evaluate(() => document.fonts.ready)
     const toasts = page.locator('[data-cash-out-toasts]')
     const hint = page.locator('[data-progressive-hint="shop-intro"]')
-    const buildToggle = page.locator('[data-build-toggle]')
     const next = page.locator('[data-shop-continue]')
     // The round's pay arrives as toasts in the corner; nothing to open.
     await expect(toasts).toHaveAttribute(
@@ -128,10 +127,11 @@ for (const [index, language] of languages.entries()) {
       contentType: 'application/json',
     })
 
-    for (const control of [
-      hint.locator('summary'),
-      ...(isMobile ? [buildToggle] : []),
-    ]) {
+    // The whole build shows on phones too: Decrees left, upgrades right.
+    await expect(
+      page.locator('[data-shop-build-content] [data-decree-instance]').first()
+    ).toBeVisible()
+    for (const control of [hint.locator('summary')]) {
       const bounds = (await control.boundingBox())!
       expect(bounds.width).toBeGreaterThanOrEqual(44)
       expect(bounds.height).toBeGreaterThanOrEqual(44)
@@ -142,7 +142,7 @@ for (const [index, language] of languages.entries()) {
     }
     if (!isMobile) {
       // A desktop inventory card must not vanish with focus inside it when
-      // rotating/narrowing to the compact phone layout.
+      // rotating/narrowing to the phone layout.
       const card = page
         .locator('[data-shop-build-content] [data-decree-instance]')
         .first()
@@ -150,7 +150,6 @@ for (const [index, language] of languages.entries()) {
       await page.setViewportSize({ width: 320, height: 568 })
       await expect(card).toBeVisible()
       await expect(card).toBeFocused()
-      await expect(buildToggle).toHaveAttribute('aria-expanded', 'true')
       await expect(next).toBeInViewport({ ratio: 1 })
       expect(await raw()).toBe(untouched)
       await page.setViewportSize({ width: 1280, height: 800 })

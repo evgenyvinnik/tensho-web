@@ -274,16 +274,16 @@
         "description": "1 taşa Taş İşareti ekler (+100 Puan; sayısı ve türü yoktur, hiçbir gruba girmez, her zaman tam puan kazandırır)."
       },
       "seal_of_manzu": {
-        "name": "Manzu Mührü",
-        "description": "En fazla 3 taşı Manzu türüne dönüştürür."
+        "name": "Karakterlerin Mührü",
+        "description": "En fazla 3 taşı Karakterler türüne dönüştürür."
       },
       "seal_of_pinzu": {
-        "name": "Pinzu Mührü",
-        "description": "En fazla 3 taşı Pinzu türüne dönüştürür."
+        "name": "Dairelerin Mührü",
+        "description": "En fazla 3 taşı Daireler türüne dönüştürür."
       },
       "seal_of_souzu": {
-        "name": "Souzu Mührü",
-        "description": "En fazla 3 taşı Souzu türüne dönüştürür."
+        "name": "Bambuların Mührü",
+        "description": "En fazla 3 taşı Bambular türüne dönüştürür."
       },
       "seal_of_the_oracle": {
         "name": "Kâhin Mührü",
@@ -804,7 +804,9 @@
     "kinds": {
       "decree": "Kararname · {{rarity}}",
       "decreeHelp": "Kararname bu oyun için kalıcı bir kuraldır. Bir kararname yuvası kaplar; istediğin zaman satabilirsin.",
-      "seal": "Kader Mühürü · tur içinde kullanılır",
+      "seal": "Kader Mühürü · hemen etki eder",
+      "sealHelp": "Aldığın anda kullanılır: değiştireceği duvar taşlarını seç; tüm koşu boyunca öyle kalırlar.",
+      "sealHelpInstant": "Aldığın anda kullanılır.",
       "orb": "Göksel Küre · bir el ailesini geliştirir",
       "script": "Hiçlik Tomarı · güçlü ama bedelli",
       "consumableHelp": "Kullanana dek eşyalarında kalır. Kullanmak için masada ona dokun.",
@@ -819,10 +821,18 @@
     "buyFor": "Satın al · {{price}} altın",
     "help": {
       "what": "Çay Evi, turlar arasındaki dükkândır.",
-      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Kararnameler kuralları değiştirir, tüketilebilirler turda kullanılır, Paketler ödül seçtirir ve Fermanlar tüm oyunu geliştirir.",
+      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Kararnameler kuralları değiştirir, Küreler ve Mühürler hemen etki eder (bir Mühür duvarındaki hangi taşları değiştireceğini sorar), Tomarlar turda kullanılır, Paketler ödül seçtirir ve Fermanlar tüm oyunu geliştirir.",
       "interest": "Elinde tuttuğun altın faiz getirir: tur sonunda her 5 altın için +1, en fazla +{{cap}}.",
       "cashOut": "Tur ödemesi gelişinde keseye düşer; her kaynak için bir bildirim: tamamlanan tur, faiz, Fermanlar, altın taşlar ve kesilen kiralar.",
-      "build": "Yapın sahip olduğun Fermanları listeler; kurallarını okumak veya satmak için parşömeni aç. Her alım kendi Satın Al düğmesiyle yapılır."
+      "build": "Yapın sahip olduğun Fermanları Yaku geliştirmelerinin yanında gösterir: kurallarını okumak veya satmak için parşömeni, seviyesini görmek için geliştirmeyi aç. Her alım kendi Satın Al düğmesiyle yapılır."
+    },
+    "sealUsed": "{{name}} kullanıldı",
+    "sealWall": {
+      "title": "Duvarından taş seç",
+      "step": "{{index}} / {{total}}",
+      "result": "Sonuç",
+      "becomes": "{{from}}, {{to}} olur",
+      "destroyed": "{{name}} yok edilir"
     }
   },
   "decrees": {
@@ -951,16 +961,16 @@
         "description": "+6 Çarpan."
       },
       "decree-manzu-master": {
-        "name": "Manzu Ustası",
-        "description": "Elde Manzu varsa +3 Çarpan."
+        "name": "Karakterlerin Ustası",
+        "description": "Elde Karakterler varsa +3 Çarpan."
       },
       "decree-pinzu-perfectionist": {
-        "name": "Pinzu Mükemmeliyetçisi",
-        "description": "Elde Pinzu varsa +3 Çarpan."
+        "name": "Dairelerin Mükemmeliyetçisi",
+        "description": "Elde Daireler varsa +3 Çarpan."
       },
       "decree-souzu-scholar": {
-        "name": "Souzu Âlimi",
-        "description": "Elde Souzu varsa +3 Çarpan."
+        "name": "Bambuların Âlimi",
+        "description": "Elde Bambular varsa +3 Çarpan."
       },
       "decree-wind-walker": {
         "name": "Rüzgâr Gezgini",
@@ -980,7 +990,7 @@
       },
       "decree-green-fortune": {
         "name": "Yeşil Talih",
-        "description": "Her yeşil taş için +15 Puan (Souzu 2, 3, 4, 6, 8)."
+        "description": "Her yeşil taş için +15 Puan (Bambular 2, 3, 4, 6, 8)."
       },
       "decree-coin-collector": {
         "name": "Sikke Koleksiyoncusu",
@@ -1067,16 +1077,16 @@
         "description": "Pinfu puan kazandırdığında +3 Çarpan."
       },
       "decree-manzu-emperor": {
-        "name": "Manzu İmparatoru",
-        "description": "Elin en az yarısı Manzu ise +8 Çarpan."
+        "name": "Karakterlerin İmparatoru",
+        "description": "Elin en az yarısı Karakterler ise +8 Çarpan."
       },
       "decree-pinzu-princess": {
-        "name": "Pinzu Prensesi",
-        "description": "Elin en az yarısı Pinzu ise +8 Çarpan."
+        "name": "Dairelerin Prensesi",
+        "description": "Elin en az yarısı Daireler ise +8 Çarpan."
       },
       "decree-souzu-sage": {
-        "name": "Souzu Bilgesi",
-        "description": "Elin en az yarısı Souzu ise +8 Çarpan."
+        "name": "Bambuların Bilgesi",
+        "description": "Elin en az yarısı Bambular ise +8 Çarpan."
       },
       "decree-flush-fever": {
         "name": "Tek Tür Tutkusu",
@@ -1251,16 +1261,16 @@
         "description": "Onur taşlarını iki kez yeniden tetikler."
       },
       "decree-manzu-monarch": {
-        "name": "Manzu Hükümdarı",
-        "description": "Elin tamamı Manzu ise Çarpan ×2,0."
+        "name": "Karakterlerin Hükümdarı",
+        "description": "Elin tamamı Karakterler ise Çarpan ×2,0."
       },
       "decree-pinzu-potentate": {
-        "name": "Pinzu Sultanı",
-        "description": "Elin tamamı Pinzu ise Çarpan ×2,0."
+        "name": "Dairelerin Sultanı",
+        "description": "Elin tamamı Daireler ise Çarpan ×2,0."
       },
       "decree-souzu-sovereign": {
-        "name": "Souzu Egemenliği",
-        "description": "Elin tamamı Souzu ise Çarpan ×2,0."
+        "name": "Bambuların Egemeni",
+        "description": "Elin tamamı Bambular ise Çarpan ×2,0."
       },
       "decree-flower-emperor": {
         "name": "Çiçek İmparatoru",
@@ -1383,16 +1393,16 @@
         "description": "Alındığında ve her tur başında kopyalama etkisi olmayan rastgele bir Fermanı kopyalar."
       },
       "decree-manzu-god": {
-        "name": "Manzu Tanrısı",
-        "description": "Tüm taşlar Manzu ise Çarpan ×3,0."
+        "name": "Karakterlerin Tanrısı",
+        "description": "Tüm taşlar Karakterler ise Çarpan ×3,0."
       },
       "decree-pinzu-god": {
-        "name": "Pinzu Tanrısı",
-        "description": "Tüm taşlar Pinzu ise Çarpan ×3,0."
+        "name": "Dairelerin Tanrısı",
+        "description": "Tüm taşlar Daireler ise Çarpan ×3,0."
       },
       "decree-souzu-god": {
-        "name": "Souzu Tanrısı",
-        "description": "Tüm taşlar Souzu ise Çarpan ×3,0."
+        "name": "Bambuların Tanrısı",
+        "description": "Tüm taşlar Bambular ise Çarpan ×3,0."
       },
       "decree-glass-cannon": {
         "name": "Cam Top",
@@ -1723,15 +1733,15 @@
       },
       "the_club": {
         "name": "Sopa",
-        "description": "Tüm Souzu taşları zayıflatılır."
+        "description": "Tüm Bambular zayıflatılır."
       },
       "the_goad": {
         "name": "Üvendire",
-        "description": "Tüm Pinzu taşları zayıflatılır."
+        "description": "Tüm Daireler zayıflatılır."
       },
       "the_window": {
         "name": "Pencere",
-        "description": "Tüm Manzu taşları zayıflatılır."
+        "description": "Tüm Karakterler zayıflatılır."
       },
       "the_head": {
         "name": "Baş",
@@ -2529,7 +2539,7 @@
       },
       "blue_wall": {
         "name": "Mavi Duvar",
-        "description": "Pinzu türü taşlara ağırlık veren duvar."
+        "description": "Daireler türü taşlara ağırlık veren duvar."
       },
       "black_wall": {
         "name": "Siyah Duvar",
@@ -2549,7 +2559,7 @@
       },
       "jade_wall": {
         "name": "Yeşim Duvar",
-        "description": "Bambu türü taşlara ağırlık veren duvar."
+        "description": "Bambular türü taşlara ağırlık veren duvar."
       },
       "ivory_wall": {
         "name": "Fildişi Duvar",
@@ -2557,7 +2567,7 @@
       },
       "bamboo_wall": {
         "name": "Bambu Duvar",
-        "description": "Souzu ağırlıklı duvar."
+        "description": "Bambular ağırlıklı duvar."
       },
       "cherry_wall": {
         "name": "Kiraz Duvarı",

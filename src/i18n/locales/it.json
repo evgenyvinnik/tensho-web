@@ -270,16 +270,16 @@
         "description": "Potenzia 1 tessera con il Marchio Pietra (+100 Punti; senza valore né seme, non entra mai in un gruppo, segna sempre per intero)."
       },
       "seal_of_manzu": {
-        "name": "Sigillo dei Manzu",
-        "description": "Converte fino a 3 tessere nel seme Manzu."
+        "name": "Sigillo dei Caratteri",
+        "description": "Converte fino a 3 tessere nel seme dei Caratteri."
       },
       "seal_of_pinzu": {
-        "name": "Sigillo dei Pinzu",
-        "description": "Converte fino a 3 tessere nel seme Pinzu."
+        "name": "Sigillo dei Cerchi",
+        "description": "Converte fino a 3 tessere nel seme dei Cerchi."
       },
       "seal_of_souzu": {
-        "name": "Sigillo dei Souzu",
-        "description": "Converte fino a 3 tessere nel seme Souzu."
+        "name": "Sigillo dei Bambù",
+        "description": "Converte fino a 3 tessere nel seme dei Bambù."
       },
       "seal_of_the_oracle": {
         "name": "Sigillo dell’oracolo",
@@ -804,7 +804,9 @@
     "kinds": {
       "decree": "Decreto · {{rarity}}",
       "decreeHelp": "Un Decreto è una regola permanente per questa partita. Occupa uno spazio Decreto e puoi venderlo quando vuoi.",
-      "seal": "Sigillo del Destino · da usare nel round",
+      "seal": "Sigillo del Destino · agisce subito",
+      "sealHelp": "Usato nell’istante in cui lo prendi: scegli le tessere del tuo muro da cambiare, e restano cambiate per tutta la partita.",
+      "sealHelpInstant": "Usato nell’istante in cui lo prendi.",
       "orb": "Sfera Celeste · potenzia una famiglia di mani",
       "script": "Scritto del Vuoto · potente, con un prezzo",
       "consumableHelp": "Resta tra i tuoi oggetti finché non lo usi. Toccalo sul tavolo per usarlo.",
@@ -819,10 +821,18 @@
     "buyFor": "Compra · {{price}} oro",
     "help": {
       "what": "La Casa del Tè è il negozio tra un round e l’altro.",
-      "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, i consumabili si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
+      "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, Sfere e Sigilli agiscono subito (un Sigillo chiede quali tessere del tuo muro cambiare), gli Scritti si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
       "interest": "L’oro che tieni frutta interessi: +1 ogni 5 posseduti a fine round, fino a +{{cap}}.",
       "cashOut": "La paga del round arriva nella borsa al tuo ingresso, un avviso per ogni fonte: il round superato, gli interessi, i Decreti, le tessere d’oro e gli affitti addebitati.",
-      "build": "La tua configurazione elenca i tuoi Decreti; apri una pergamena per leggerne le regole o venderla. Ogni acquisto avviene con il proprio pulsante Compra."
+      "build": "La tua configurazione mostra i tuoi Decreti accanto ai potenziamenti yaku: apri una pergamena per leggerne le regole o venderla, o un potenziamento per vederne il livello. Ogni acquisto avviene con il proprio pulsante Compra."
+    },
+    "sealUsed": "{{name}} usato",
+    "sealWall": {
+      "title": "Scegli le tessere dal tuo muro",
+      "step": "{{index}} di {{total}}",
+      "result": "Risultato",
+      "becomes": "{{from}} diventa {{to}}",
+      "destroyed": "{{name}} sparisce"
     }
   },
   "decrees": {
@@ -871,16 +881,16 @@
         "description": "+6 Molt."
       },
       "decree-manzu-master": {
-        "name": "Maestro dei Manzu",
-        "description": "+3 Molt se la mano contiene tessere Manzu."
+        "name": "Maestro dei Caratteri",
+        "description": "+3 Molt se la mano contiene tessere di Caratteri."
       },
       "decree-pinzu-perfectionist": {
-        "name": "Perfezionista dei Pinzu",
-        "description": "+3 Molt se la mano contiene tessere Pinzu."
+        "name": "Perfezionista dei Cerchi",
+        "description": "+3 Molt se la mano contiene tessere di Cerchi."
       },
       "decree-souzu-scholar": {
-        "name": "Studioso dei Souzu",
-        "description": "+3 Molt se la mano contiene tessere Souzu."
+        "name": "Studioso dei Bambù",
+        "description": "+3 Molt se la mano contiene tessere di Bambù."
       },
       "decree-wind-walker": {
         "name": "Viandante dei venti",
@@ -900,7 +910,7 @@
       },
       "decree-green-fortune": {
         "name": "Fortuna verde",
-        "description": "+15 Punti per ogni tessera verde (2, 3, 4, 6, 8 di Souzu)."
+        "description": "+15 Punti per ogni tessera verde (2, 3, 4, 6, 8 di Bambù)."
       },
       "decree-coin-collector": {
         "name": "Collezionista di monete",
@@ -987,16 +997,16 @@
         "description": "+3 Molt quando realizzi Pinfu."
       },
       "decree-manzu-emperor": {
-        "name": "Imperatore dei Manzu",
-        "description": "+8 Molt se almeno metà delle tessere nella mano sono Manzu."
+        "name": "Imperatore dei Caratteri",
+        "description": "+8 Molt se almeno metà delle tessere nella mano sono Caratteri."
       },
       "decree-pinzu-princess": {
-        "name": "Principessa dei Pinzu",
-        "description": "+8 Molt se almeno metà delle tessere nella mano sono Pinzu."
+        "name": "Principessa dei Cerchi",
+        "description": "+8 Molt se almeno metà delle tessere nella mano sono Cerchi."
       },
       "decree-souzu-sage": {
-        "name": "Saggio dei Souzu",
-        "description": "+8 Molt se almeno metà delle tessere nella mano sono Souzu."
+        "name": "Saggio dei Bambù",
+        "description": "+8 Molt se almeno metà delle tessere nella mano sono Bambù."
       },
       "decree-flush-fever": {
         "name": "Febbre del colore",
@@ -1171,16 +1181,16 @@
         "description": "Riattiva due volte le tessere onore."
       },
       "decree-manzu-monarch": {
-        "name": "Monarca dei Manzu",
-        "description": "×2,0 Molt se tutta la mano è composta da Manzu."
+        "name": "Monarca dei Caratteri",
+        "description": "×2,0 Molt se tutta la mano è composta da Caratteri."
       },
       "decree-pinzu-potentate": {
-        "name": "Potentato dei Pinzu",
-        "description": "×2,0 Molt se tutta la mano è composta da Pinzu."
+        "name": "Potentato dei Cerchi",
+        "description": "×2,0 Molt se tutta la mano è composta da Cerchi."
       },
       "decree-souzu-sovereign": {
-        "name": "Sovrano dei Souzu",
-        "description": "×2,0 Molt se tutta la mano è composta da Souzu."
+        "name": "Sovrano dei Bambù",
+        "description": "×2,0 Molt se tutta la mano è composta da Bambù."
       },
       "decree-flower-emperor": {
         "name": "Imperatore dei fiori",
@@ -1303,16 +1313,16 @@
         "description": "Copia un Decreto casuale senza effetto di copia all’acquisizione e all’inizio di ogni round."
       },
       "decree-manzu-god": {
-        "name": "Divinità dei Manzu",
-        "description": "×3,0 Molt se tutte le tessere sono Manzu."
+        "name": "Divinità dei Caratteri",
+        "description": "×3,0 Molt se tutte le tessere sono Caratteri."
       },
       "decree-pinzu-god": {
-        "name": "Divinità dei Pinzu",
-        "description": "×3,0 Molt se tutte le tessere sono Pinzu."
+        "name": "Divinità dei Cerchi",
+        "description": "×3,0 Molt se tutte le tessere sono Cerchi."
       },
       "decree-souzu-god": {
-        "name": "Divinità dei Souzu",
-        "description": "×3,0 Molt se tutte le tessere sono Souzu."
+        "name": "Divinità dei Bambù",
+        "description": "×3,0 Molt se tutte le tessere sono Bambù."
       },
       "decree-glass-cannon": {
         "name": "Cannone di vetro",
@@ -1703,15 +1713,15 @@
       },
       "the_club": {
         "name": "La Clava",
-        "description": "Tutte le tessere Souzu sono indebolite."
+        "description": "Tutte le tessere di Bambù sono indebolite."
       },
       "the_goad": {
         "name": "Il Pungolo",
-        "description": "Tutte le tessere Pinzu sono indebolite."
+        "description": "Tutte le tessere di Cerchi sono indebolite."
       },
       "the_window": {
         "name": "La Finestra",
-        "description": "Tutte le tessere Manzu sono indebolite."
+        "description": "Tutte le tessere di Caratteri sono indebolite."
       },
       "the_head": {
         "name": "La Testa",
@@ -2416,7 +2426,7 @@
       },
       "blue_wall": {
         "name": "Muro blu",
-        "description": "Muro incentrato sulle tessere del seme Pinzu."
+        "description": "Muro incentrato sulle tessere del seme dei Cerchi."
       },
       "black_wall": {
         "name": "Muro nero",
@@ -2436,7 +2446,7 @@
       },
       "jade_wall": {
         "name": "Muro di giada",
-        "description": "Muro incentrato sulle tessere del seme Bambù."
+        "description": "Muro incentrato sulle tessere del seme dei Bambù."
       },
       "ivory_wall": {
         "name": "Muro d’avorio",
@@ -2444,7 +2454,7 @@
       },
       "bamboo_wall": {
         "name": "Muro di bambù",
-        "description": "Muro con una composizione prevalentemente Souzu."
+        "description": "Muro con una composizione prevalentemente di Bambù."
       },
       "cherry_wall": {
         "name": "Muro di ciliegio",

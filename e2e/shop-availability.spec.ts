@@ -140,6 +140,15 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
     await expect(details(id).locator('[data-purchase-blocked]')).toHaveCount(0)
     await expect(buy(id)).toBeEnabled()
     await press(buy(id))
+    if (id === seal) {
+      // A Seal is used at once: it first asks which wall tiles it marks.
+      const picker = page.locator('[data-seal-wall-dialog]')
+      const tiles = picker.locator('[data-seal-wall-tile]:not([disabled])')
+      await press(tiles.nth(0))
+      await press(tiles.nth(1))
+      await press(picker.locator('[data-seal-wall-confirm]'))
+      await expect(picker).toHaveCount(0)
+    }
     await expect(card(id)).toHaveCount(0)
     // A bought Decree is revealed; the player closes it to shop on.
     await settleReveals(page)
@@ -160,6 +169,6 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
         decrees: game.getState().decreeSystem.getOwnedDecrees().length,
       }
     })
-  ).toEqual({ gold: 12, seals: 4, decrees: 1 })
+  ).toEqual({ gold: 12, seals: 3, decrees: 1 })
   expect(errors).toEqual([])
 })

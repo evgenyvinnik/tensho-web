@@ -27,9 +27,9 @@
 | **Seal of Balance** | 均衡の印 | Gives total sell value of all Decrees (max ¥50) | Equilibrium restored |
 | **Seal of Wealth** | 富の印 | Enhances 1 tile to Gold Mark (¥3 if held at round end) | Prosperity granted |
 | **Seal of Stone** | 石の印 | Enhances 1 tile to Stone Mark (+100 Chips, always scores) | Immutable foundation |
-| **Seal of Manzu** | 萬子の印 | Converts up to 3 tiles to Manzu suit | Way of Characters |
-| **Seal of Pinzu** | 筒子の印 | Converts up to 3 tiles to Pinzu suit | Way of Circles |
-| **Seal of Souzu** | 索子の印 | Converts up to 3 tiles to Souzu suit | Way of Bamboo |
+| **Seal of Characters** | 萬子の印 | Converts up to 3 tiles to Characters | Way of Characters |
+| **Seal of Circles** | 筒子の印 | Converts up to 3 tiles to Circles | Way of Circles |
+| **Seal of Bamboo** | 索子の印 | Converts up to 3 tiles to Bamboo | Way of Bamboo |
 | **Seal of Judgment** | 審判の印 | Creates a random Decree (if room) | Court decides |
 | **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps tile modifiers, removes red-five status |
 
@@ -166,7 +166,10 @@ Seal.
 | **Negative** | 負極 | +1 Decree slot while this physical tile remains in the run wall | +1 Decree slot while owned |
 
 Fate Seal tile changes persist for the current run, including future rounds and
-save/reload. New runs start fresh. Negative tile capacity follows ownership, not
+save/reload. New runs start fresh. A Seal bought in the Tea House or chosen from
+an Arcana Pack is used at once: the player picks its targets from every tile of
+the run's wall (Flowers and Seasons excluded), and Seals that take no tiles act
+immediately. Seals created during a round still wait on the rail for the hand. Negative tile capacity follows ownership, not
 draws or scoring; destruction or edition replacement removes its slot without
 deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEMENTATION.md).
 
@@ -233,12 +236,12 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | **The Wall** | 壁 | 4× base score requirement | 2 |
 | **The Wheel** | 輪 | 1/7 tiles drawn face-down | 2 |
 | **The Arm** | 腕 | Decrease level of played Yaku by 1 | 2 |
-| **The Club** | 棍 | All Souzu tiles debuffed | 1 |
+| **The Club** | 棍 | All Bamboo tiles debuffed | 1 |
 | **The Fish** | 魚 | Tiles drawn face-down after each hand | 2 |
 | **The Psychic** | 霊能者 | Must play exactly 5 tiles per hand | 1 |
-| **The Goad** | 突棒 | All Pinzu tiles debuffed | 1 |
+| **The Goad** | 突棒 | All Circles debuffed | 1 |
 | **The Water** | 水 | Start with 0 discards | 2 |
-| **The Window** | 窓 | All Manzu tiles debuffed | 1 |
+| **The Window** | 窓 | All Characters debuffed | 1 |
 | **The Manacle** | 枷 | −1 Hand Size | 1 |
 | **The Eye** | 目 | No repeat Yaku types this round | 3 |
 | **The Mouth** | 口 | Only one Yaku type can score this round | 2 |
@@ -330,9 +333,9 @@ Basic, reliable effects with no conditions.
 | Lunar Glow | 月光 | +4 Mult |
 | Crimson Banner | 紅旗 | +5 Mult |
 | Golden Seal | 金印 | +6 Mult |
-| Manzu Master | 萬子師 | +3 Mult if hand contains Manzu |
-| Pinzu Perfectionist | 筒子匠 | +3 Mult if hand contains Pinzu |
-| Souzu Scholar | 索子学 | +3 Mult if hand contains Souzu |
+| Master of Characters | 萬子師 | +3 Mult if hand contains Characters |
+| Perfectionist of Circles | 筒子匠 | +3 Mult if hand contains Circles |
+| Scholar of Bamboo | 索子学 | +3 Mult if hand contains Bamboo |
 | Wind Walker | 風歩者 | +4 Mult if hand contains Wind |
 | Dragon Disciple | 竜弟子 | +4 Mult if hand contains Dragon |
 | Edge Runner | 端走者 | +20 Chips per Terminal tile |
@@ -366,9 +369,9 @@ Conditional effects with stronger bonuses.
 
 | Decree | Japanese | Effect |
 |--------|----------|--------|
-| Manzu Emperor | 萬子皇帝 | +8 Mult if hand is half Manzu |
-| Pinzu Princess | 筒子姫 | +8 Mult if hand is half Pinzu |
-| Souzu Sage | 索子賢者 | +8 Mult if hand is half Souzu |
+| Emperor of Characters | 萬子皇帝 | +8 Mult if hand is half Characters |
+| Princess of Circles | 筒子姫 | +8 Mult if hand is half Circles |
+| Sage of Bamboo | 索子賢者 | +8 Mult if hand is half Bamboo |
 | Flush Fever | 一色熱 | ×1.5 Mult if single suit |
 | Honor Guard | 字牌守護 | ×1.5 Mult if 3+ Honors |
 | Terminal Tide | 端牌潮流 | ×1.5 Mult if 4+ Terminals |
@@ -421,9 +424,9 @@ Powerful effects with significant impact.
 | Triple Echo | 三重響 | Retrigger all scoring tiles once |
 | Terminal Resonance | 端牌共鳴 | Retrigger Terminals twice |
 | Honor Resonance | 字牌共鳴 | Retrigger Honors twice |
-| Manzu Monarch | 萬子王 | ×2.0 Mult if all Manzu |
-| Pinzu Potentate | 筒子君主 | ×2.0 Mult if all Pinzu |
-| Souzu Sovereign | 索子主権 | ×2.0 Mult if all Souzu |
+| Monarch of Characters | 萬子王 | ×2.0 Mult if all Characters |
+| Potentate of Circles | 筒子君主 | ×2.0 Mult if all Circles |
+| Sovereign of Bamboo | 索子主権 | ×2.0 Mult if all Bamboo |
 | Flower Emperor | 花帝 | ×1.5 Mult per Flower |
 | Season Lord | 季節主 | +10 Mult per Season |
 | Nature Bond | 自然絆 | +3 Mult/Flower, +30 Chips/Season |
@@ -465,9 +468,9 @@ Very powerful, often unique effects.
 | Infinite Wealth | 無限財宝 | +1 Mult per ¥5 |
 | Brainstorm | 脳嵐 | Copies leftmost Decree |
 | Doppelganger | 分身 | Copies a seeded random non-copy Decree on acquisition and each round start; target stays fixed for the round. See [target rules](docs/DOPPELGANGER_IMPLEMENTATION.md). |
-| Manzu God | 萬子神 | ×3.0 Mult if all Manzu |
-| Pinzu God | 筒子神 | ×3.0 Mult if all Pinzu |
-| Souzu God | 索子神 | ×3.0 Mult if all Souzu |
+| God of Characters | 萬子神 | ×3.0 Mult if all Characters |
+| God of Circles | 筒子神 | ×3.0 Mult if all Circles |
+| God of Bamboo | 索子神 | ×3.0 Mult if all Bamboo |
 | Glass Cannon | 硝子砲 | ×6.0 Mult, destroyed on loss |
 | Phoenix | 鳳凰 | Prevents one loss |
 | Time Lord | 時の主 | +1 extra hand per round |

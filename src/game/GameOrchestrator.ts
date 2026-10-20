@@ -44,7 +44,11 @@ import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ascendYaku } from '../rules/yakuAscension'
 import { observatoryMultiplier } from '../systems/observatory'
 import { ShopSession } from './ShopSession'
-import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
+import {
+  consumableTargetRange,
+  validateConsumableTargetCount,
+} from '../gameplay/consumableTargeting'
+import { sealableWallTiles, wallSealTargetError } from '../gameplay/wallSeals'
 import {
   ActionProcessor,
   PlayerAction,
@@ -2448,6 +2452,85 @@ export class GameOrchestrator {
     return true
   }
 
+  /** The wall tiles a Tea House Seal can be laid on, in display order. */
+  getSealableWallTiles(): Tile[] {
+    return sealableWallTiles(this.state.wallTemplate).sort(Tile.compare)
+  }
+
+  /**
+   * Why a Seal could not be used in the Tea House now, or null when it can.
+   * Targets are wall tiles; with none given, this only asks whether the Seal
+   * has anything to work on. `gold` is the purse after paying for it, and
+   * `wall` a wall another Seal of the same pack has already changed.
+   */
+  validateWallSeal(
+    seal: FateSeal,
+    targets?: readonly string[],
+    options: { gold?: number; wall?: readonly Tile[] } = {}
+  ): string | null {
+    const wall = options.wall ?? this.state.wallTemplate
+    const targetError = wallSealTargetError(seal, wall, targets)
+    if (targetError) return targetError
+    if (
+      seal.id === 'seal_of_the_void' &&
+      !this.state.celestialOrbSystem.canUpgradeAnyYaku()
+    )
+      return 'All Yaku are already at max level'
+    const selected = (targets ?? []).map(
+      (id) => wall.find((tile) => tile.id === id)!
+    )
+    const context = {
+      ...this.createFateSealContext(seal, selected),
+      currentGold: options.gold ?? this.state.gold,
+    }
+    // Before the player has chosen, a Seal that takes tiles needs only some
+    // tile it can change, which the wall check above has found.
+    if (!targets && consumableTargetRange(seal.effect).max > 0) return null
+    return this.state.fateSealSystem.validateUse(seal, context)
+  }
+
+  /**
+   * Use a Seal the moment it is acquired. The Tea House never holds a bought
+   * or pack-chosen Seal: it works at once, on the wall tiles the player chose,
+   * and the change lasts for the rest of the run. Seals made during a round
+   * still wait on the rail for the hand.
+   */
+  applyFateSeal(
+    seal: FateSeal,
+    source: 'purchase' | 'pack_open',
+    targets: readonly string[] = []
+  ): boolean {
+    if (source !== 'pack_open' && !this.isConsumableUnlocked(seal.id)) {
+      return false
+    }
+    if (this.validateWallSeal(seal, targets)) return false
+    const selected = targets.map(
+      (id) => this.state.wallTemplate.find((tile) => tile.id === id)!
+    )
+    const result = this.state.fateSealSystem.useSeal(
+      seal,
+      this.createFateSealContext(seal, selected)
+    )
+    if (!result.success) return false
+    seal.source = source
+    eventBus.emit('consumableAcquired', {
+      consumableType: seal.type,
+      itemId: seal.id,
+      instanceId: seal.instanceId,
+      name: seal.name,
+      source,
+    })
+    const effects: Effect[] = []
+    for (const effectResult of result.effects)
+      this.applyFateSealEffect(seal, effectResult, effects)
+    eventBus.emit('fateSealUsed', {
+      sealId: seal.id,
+      effect: seal.effect.description,
+      source,
+    })
+    return true
+  }
+
   /** Shared aftermath of a successful Orb use: history and announcement. */
   private settleOrbUse(
     orb: CelestialOrb,
@@ -2708,7 +2791,7 @@ export class GameOrchestrator {
         break
       case 'tile_copied': {
         const [targetId, sourceId] = tileIds
-        const source = this.state.handTiles.find((tile) => tile.id === sourceId)
+        const source = this.findRunTile(sourceId)
         if (targetId && source) {
           this.replaceTileById(
             targetId,
@@ -2875,14 +2958,20 @@ export class GameOrchestrator {
     }
   }
 
+  /** A tile of this run: in the hand, or (for a Tea House Seal) the wall. */
+  private findRunTile(tileId: string | undefined): Tile | undefined {
+    return (
+      this.state.handTiles.find((tile) => tile.id === tileId) ??
+      this.state.wallTemplate.find((tile) => tile.id === tileId)
+    )
+  }
+
   private transformTiles(
     tileIds: string[],
     transform: (tile: Tile) => Tile
   ): void {
     for (const tileId of tileIds) {
-      const tile = this.state.handTiles.find(
-        (candidate) => candidate.id === tileId
-      )
+      const tile = this.findRunTile(tileId)
       if (tile) this.replaceTileById(tileId, transform(tile))
     }
     this.state.handTiles.sort(Tile.compare)
@@ -2904,9 +2993,7 @@ export class GameOrchestrator {
 
   private destroyTiles(tileIds: string[], effects: Effect[]): void {
     for (const tileId of new Set(tileIds)) {
-      const tile = this.state.handTiles.find(
-        (candidate) => candidate.id === tileId
-      )
+      const tile = this.findRunTile(tileId)
       if (!tile) continue
 
       this.removeTileEverywhere(tileId)

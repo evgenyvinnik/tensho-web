@@ -11,41 +11,43 @@ afterEach(async () => {
   })
 })
 
-it('offers a read-only phone disclosure and keeps capacity information outside it', () => {
+it('shows owned Decrees and the Yaku upgrades on one line, nothing behind a toggle', () => {
   const system = new DecreeSystem()
   system.acquireDecree(stone)
   const sell = vi.fn()
   const { container, rerender } = render(
     <ShopBuildPanel
-      compact
       decrees={system.getOwnedDecrees()}
       maxSlots={0}
       onSell={sell}
+      upgrades={<div data-testid="upgrades">upgrades</div>}
     />
   )
-  const toggle = screen.getByRole('button', { name: 'Your build' })
-  const content = container.querySelector('[data-shop-build-content]')!
-  expect(toggle).toHaveAttribute('aria-expanded', 'false')
-  expect(toggle).toHaveAttribute('aria-controls', content.id)
-  expect(content).toHaveClass('hidden', 'sm:block')
-  expect(content.querySelector('[data-decree-capacity-notice]')).toBeNull()
+  const row = container.querySelector('[data-shop-build-row]')!
+  const [decrees, upgrades] = Array.from(row.children)
+  // Decrees first (left), the upgrades after them (right).
+  expect(decrees).toHaveAttribute('data-shop-build-content')
+  expect(decrees).toContainElement(
+    screen.getByRole('button', { name: 'Polished Stone' })
+  )
+  expect(upgrades).toContainElement(screen.getByTestId('upgrades'))
+  expect(screen.queryByRole('button', { name: 'Your build' })).toBeNull()
+  expect(decrees).not.toHaveClass('hidden')
+  // Capacity information stays outside the Decree column.
+  expect(decrees.querySelector('[data-decree-capacity-notice]')).toBeNull()
   expect(
     container.querySelector('[data-decree-capacity-notice]')
   ).toBeInTheDocument()
-  fireEvent.click(toggle)
-  expect(content).not.toHaveClass('hidden')
   rerender(
     <ShopBuildPanel
-      compact
       decrees={system.getOwnedDecrees()}
       maxSlots={5}
       onSell={sell}
     />
   )
-  expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  // No upgrades yet: the Decrees have the line to themselves.
+  expect(row.children).toHaveLength(1)
   expect(sell).not.toHaveBeenCalled()
-  fireEvent.click(toggle)
-  expect(content).toHaveClass('hidden', 'sm:block')
 })
 
 it('shows an empty build without fabricated cards or recommendations', () => {

@@ -283,7 +283,7 @@ export const LEGACY_WALL_DEFINITIONS: WallDefinition[] = [
     id: 'blue_wall',
     name: 'Blue Wall',
     japaneseName: '藍山',
-    description: 'Wall focused on Pinzu suit tiles',
+    description: 'Wall focused on Circles',
     unlockCondition: 'Win on Red Stake',
   },
   {
@@ -318,7 +318,7 @@ export const LEGACY_WALL_DEFINITIONS: WallDefinition[] = [
     id: 'jade_wall',
     name: 'Jade Wall',
     japaneseName: '翡翠山',
-    description: 'Wall focused on bamboo suit tiles',
+    description: 'Wall focused on Bamboo',
     unlockCondition: 'Discover all consumables',
   },
   {
@@ -332,7 +332,7 @@ export const LEGACY_WALL_DEFINITIONS: WallDefinition[] = [
     id: 'bamboo_wall',
     name: 'Bamboo Wall',
     japaneseName: '竹山',
-    description: 'Wall with Souzu-dominant composition',
+    description: 'Wall made mostly of Bamboo',
     unlockCondition: 'Score 1 million points in a single hand',
   },
   {

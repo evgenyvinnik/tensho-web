@@ -12,6 +12,8 @@ import {
 } from '../config/omenDefinitions'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import type { CelestialOrb } from '../systems/CelestialOrbSystem'
+import type { FateSeal } from '../systems/FateSealSystem'
+import { firstSealTargets } from '../gameplay/wallSeals'
 import {
   TeaHouseSystem,
   TEA_HOUSE_BASE_CHARTERS,
@@ -71,7 +73,18 @@ it('records paid consumable prices and a zero-price Omen Decree without changing
   const quoted = json(offers.map((o) => o.item))
   for (const offer of offers) {
     const levelsBefore = state.celestialOrbSystem.getAllYakuLevels()
-    expect(game.shop.purchase(offer.id).success).toBe(true)
+    const targets =
+      offer.itemType === 'FateSeal'
+        ? firstSealTargets(offer.item as FateSeal, game.getSealableWallTiles())
+        : undefined
+    expect(
+      game.shop.purchase(offer.id, { type: 'gold' }, targets).success
+    ).toBe(true)
+    if (offer.itemType === 'FateSeal') {
+      // A bought Seal is used at once on the wall: nothing is held.
+      expect(state.fateSeals).toHaveLength(0)
+      continue
+    }
     if (offer.itemType === 'CelestialOrb') {
       // A bought Orb is used at once: its family rises, nothing is held.
       const family = (offer.item as CelestialOrb).effect.targetYaku

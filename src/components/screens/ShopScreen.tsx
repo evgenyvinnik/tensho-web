@@ -22,6 +22,15 @@ import { getProgressiveHints } from '../../config/progressiveTutorialHints'
 import { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { ShopResult } from '../../game/ShopSession'
 import type { Decree, FlowerVariant } from '../../systems/types'
+import type { FateSeal } from '../../systems/FateSealSystem'
+import type { Tile } from '../../core/Tile'
+import { consumableTargetRange } from '../../gameplay/consumableTargeting'
+import {
+  previewWallSeal,
+  wallAfterSeal,
+  type SealedTile,
+} from '../../gameplay/wallSeals'
+import { consumableMessage } from '../gameplay/consumableMessages'
 import { Button } from '../ui/Button'
 import { ShopHeader } from '../shop/ShopHeader'
 import { ShopOfferCard } from '../shop/ShopOfferCard'
@@ -43,7 +52,22 @@ import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { ShopBuildPanel } from '../shop/ShopBuildPanel'
 import { FlowerCatalystDialog } from '../shop/FlowerCatalystDialog'
+import { SealWallDialog } from '../shop/SealWallDialog'
+import { SealUsedToast } from '../shop/SealUsedToast'
 import { acceptsFlowerCatalyst } from '../../systems/flowerCatalysts'
+
+/** A Seal that is laid on wall tiles, so buying it first asks which. */
+const takesWallTiles = (seal: FateSeal) =>
+  consumableTargetRange(seal.effect).max > 0
+
+/** A pack claim waiting on the wall tiles for each of its chosen Seals. */
+interface PackSealSteps {
+  indices: number[]
+  /** Pack indices of the chosen Seals that take tiles, in claim order. */
+  seals: number[]
+  step: number
+  targets: Record<number, string[]>
+}
 
 // =============================================================================
 // MAIN SHOP SCREEN COMPONENT
@@ -90,6 +114,18 @@ export function ShopScreen() {
     useState<TeaHouseOffering | null>(null)
   const currentPackOffering = shop.pendingPack
   const [shopError, setShopError] = useState<string | null>(null)
+  // A Seal is used as it is bought; one that takes tiles asks which first.
+  const [sealOffering, setSealOffering] = useState<TeaHouseOffering | null>(
+    null
+  )
+  const [packSeals, setPackSeals] = useState<PackSealSteps | null>(null)
+  const [sealError, setSealError] = useState<string | null>(null)
+  const [sealUsed, setSealUsed] = useState<{
+    key: number
+    seals: FateSeal[]
+    changes: SealedTile[]
+  } | null>(null)
+  const handleSealToastDone = useCallback(() => setSealUsed(null), [])
 
   useEffect(() => {
     triggerHints('shopEntered')
@@ -188,45 +224,156 @@ export function ShopScreen() {
         )
       case 'maxLevel':
         return t('consumableUse.errorMaxLevel')
+      case 'sealUnusable':
+        return check.detail
+          ? consumableMessage(check.detail, t)
+          : t('consumableUse.unavailable')
       default:
         return t('shop.availability.unavailable')
     }
   }
 
+  /** A refusal in words, for whichever panel the player is looking at. */
+  const messageFor = useCallback(
+    (result: Extract<ShopResult, { success: false }>) =>
+      result.reason === 'notEnoughGold'
+        ? t('shop.cantAfford')
+        : result.reason === 'flowerRequirement'
+          ? t('shop.availability.flowers')
+          : result.reason === 'inventoryFull'
+            ? t('shop.inventoryFull')
+            : result.reason === 'maxLevel'
+              ? t('consumableUse.errorMaxLevel')
+              : result.reason === 'sealUnusable'
+                ? result.detail
+                  ? consumableMessage(result.detail, t)
+                  : t('consumableUse.unavailable')
+                : t('shop.purchaseFailed'),
+    [t]
+  )
+
   const showResult = useCallback(
     (result: ShopResult) => {
-      if (result.success) {
-        setShopError(null)
-      } else {
-        const key =
-          result.reason === 'notEnoughGold'
-            ? 'shop.cantAfford'
-            : result.reason === 'flowerRequirement'
-              ? 'shop.availability.flowers'
-              : result.reason === 'inventoryFull'
-                ? 'shop.inventoryFull'
-                : result.reason === 'maxLevel'
-                  ? 'consumableUse.errorMaxLevel'
-                  : 'shop.purchaseFailed'
-        setShopError(t(key))
-      }
+      setShopError(result.success ? null : messageFor(result))
     },
-    [t]
+    [messageFor]
+  )
+
+  /** Announce Seals that have just worked, with what they made of the wall. */
+  const announceSeals = useCallback(
+    (used: { seal: FateSeal; changes: SealedTile[] }[]) => {
+      if (used.length === 0) return
+      setSealUsed({
+        key: Date.now(),
+        seals: used.map((entry) => entry.seal),
+        changes: used.flatMap((entry) => entry.changes),
+      })
+    },
+    []
   )
 
   const handleItemPurchase = useCallback(
     (offering: TeaHouseOffering) => {
+      if (
+        offering.itemType === 'FateSeal' &&
+        takesWallTiles(offering.item as FateSeal)
+      ) {
+        setShopError(null)
+        setSealError(null)
+        setSealOffering(offering)
+        return
+      }
       const result = shop.purchase(offering.id)
       showResult(result)
+      if (result.success && offering.itemType === 'FateSeal')
+        announceSeals([{ seal: offering.item as FateSeal, changes: [] }])
     },
-    [shop, showResult]
+    [shop, showResult, announceSeals]
+  )
+
+  const handleSealPurchase = useCallback(
+    (targets: string[]) => {
+      if (!sealOffering) return
+      const seal = sealOffering.item as FateSeal
+      const changes = previewWallSeal(seal, game.state.wallTemplate, targets)
+      const result = shop.purchase(sealOffering.id, { type: 'gold' }, targets)
+      if (!result.success) {
+        setSealError(messageFor(result))
+        return
+      }
+      setSealOffering(null)
+      setSealError(null)
+      setShopError(null)
+      announceSeals([{ seal, changes }])
+    },
+    [sealOffering, game.state.wallTemplate, shop, messageFor, announceSeals]
+  )
+
+  /** Claim a pack's choice: each chosen Seal is used on its wall tiles. */
+  const claimPack = useCallback(
+    (indices: number[], targets: Record<number, string[]> = {}) => {
+      const contents = shop.pendingPack?.contents ?? []
+      let wall: readonly Tile[] = game.state.wallTemplate
+      const used = indices
+        .filter((i) => contents[i]?.type === 'FateSeal')
+        .map((i) => {
+          const seal = contents[i].data as FateSeal
+          const changes = previewWallSeal(seal, wall, targets[i] ?? [])
+          wall = wallAfterSeal(seal, wall, targets[i] ?? [])
+          return { seal, changes }
+        })
+      const result = shop.confirmPack(indices, targets)
+      showResult(result)
+      if (result.success) announceSeals(used)
+      return result
+    },
+    [shop, game.state.wallTemplate, showResult, announceSeals]
   )
 
   const handlePackConfirm = useCallback(
     (indices: number[]) => {
-      showResult(shop.confirmPack(indices))
+      const contents = shop.pendingPack?.contents ?? []
+      const seals = indices.filter(
+        (i) =>
+          contents[i]?.type === 'FateSeal' &&
+          takesWallTiles(contents[i].data as FateSeal)
+      )
+      if (seals.length === 0) {
+        claimPack(indices)
+        return
+      }
+      setSealError(null)
+      setPackSeals({ indices, seals, step: 0, targets: {} })
     },
-    [shop, showResult]
+    [shop, claimPack]
+  )
+
+  // A pack's later Seal finds the wall its earlier Seals leave.
+  const packSealWall =
+    packSeals && currentPackOffering
+      ? packSeals.seals
+          .slice(0, packSeals.step)
+          .reduce<
+            readonly Tile[]
+          >((wall, index) => wallAfterSeal(currentPackOffering.contents[index].data as FateSeal, wall, packSeals.targets[index] ?? []), game.state.wallTemplate)
+      : null
+
+  const handlePackSealTargets = useCallback(
+    (targets: string[]) => {
+      if (!packSeals) return
+      const index = packSeals.seals[packSeals.step]
+      const next = { ...packSeals.targets, [index]: targets }
+      if (packSeals.step + 1 < packSeals.seals.length) {
+        setPackSeals({ ...packSeals, step: packSeals.step + 1, targets: next })
+        return
+      }
+      const result = claimPack(packSeals.indices, next)
+      if (result.success) {
+        setPackSeals(null)
+        setSealError(null)
+      } else setSealError(messageFor(result))
+    },
+    [packSeals, claimPack, messageFor]
   )
 
   const handlePackSkip = useCallback(() => {
@@ -289,7 +436,6 @@ export function ShopScreen() {
           />
 
           <ShopBuildPanel
-            compact
             yakuHistory={game.state}
             completeConcealedHandsPlayed={
               game.state.completeConcealedHandsPlayed
@@ -301,7 +447,11 @@ export function ShopScreen() {
               if (result.success) setShopError(null)
               return result
             }}
-            upgrades={<YakuUpgradeRow upgrades={game.yakuUpgrades} />}
+            upgrades={
+              game.yakuUpgrades.length > 0 ? (
+                <YakuUpgradeRow upgrades={game.yakuUpgrades} />
+              ) : undefined
+            }
           />
 
           {/* One row: items, Blessing Packs and the Imperial Charter alike. */}
@@ -351,8 +501,18 @@ export function ShopScreen() {
         />
       )}
 
+      {sealUsed && (
+        <SealUsedToast
+          key={sealUsed.key}
+          seals={sealUsed.seals}
+          changes={sealUsed.changes}
+          top={headerHeight + 8}
+          onDone={handleSealToastDone}
+        />
+      )}
+
       {/* Bottom action bar */}
-      {shopError && !catalystOffering && (
+      {shopError && !catalystOffering && !sealOffering && !packSeals && (
         <div
           role="alert"
           className="screen-canvas relative z-10 mb-2 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-2 text-center text-sm text-red-100"
@@ -426,6 +586,44 @@ export function ShopScreen() {
           error={shopError}
         />
       )}
+      {sealOffering && (
+        <SealWallDialog
+          key={sealOffering.id}
+          seal={sealOffering.item as FateSeal}
+          wall={game.state.wallTemplate}
+          confirmLabel={t('shop.buyFor', {
+            price: sealOffering.finalCost.toLocaleString(i18n.resolvedLanguage),
+          })}
+          error={sealError}
+          onConfirm={handleSealPurchase}
+          onClose={() => {
+            setSealOffering(null)
+            setSealError(null)
+          }}
+        />
+      )}
+      {packSeals && currentPackOffering && packSealWall && (
+        <SealWallDialog
+          key={`${currentPackOffering.pack.id}:${packSeals.step}`}
+          seal={
+            currentPackOffering.contents[packSeals.seals[packSeals.step]]
+              .data as FateSeal
+          }
+          wall={packSealWall}
+          step={{ index: packSeals.step, count: packSeals.seals.length }}
+          confirmLabel={t(
+            packSeals.step + 1 < packSeals.seals.length
+              ? 'common.confirm'
+              : 'consumableUse.confirm'
+          )}
+          error={sealError}
+          onConfirm={handlePackSealTargets}
+          onClose={() => {
+            setPackSeals(null)
+            setSealError(null)
+          }}
+        />
+      )}
       <DecreeReveal />
       <CelestialOrbReveal />
       <PackOpeningModal
@@ -443,6 +641,7 @@ export function ShopScreen() {
             return t('shop.availability.flowers')
           if (result.reason === 'maxLevel')
             return t('consumableUse.errorMaxLevel')
+          if (result.reason === 'sealUnusable') return messageFor(result)
           return null
         }}
         error={shopError}

@@ -11,6 +11,8 @@ import {
   FOIL_OMEN,
 } from '../config/omenDefinitions'
 import { BOSS_MANDATES } from '../systems/RoundManager'
+import type { FateSeal } from '../systems/FateSealSystem'
+import { firstSealTargets } from '../gameplay/wallSeals'
 import {
   TeaHouseSystem,
   TEA_HOUSE_BASE_CHARTERS,
@@ -95,9 +97,20 @@ for (const upgraded of [false, true])
       Object.assign(offer, {
         item: charter(upgraded ? 'plentiful_stock' : 'abundant_stock'),
       })
-      // Purchase one real ordinary offer before expanding; its receipt/reward stays.
+      // Purchase one real ordinary offer before expanding; its receipt/reward
+      // stays. A Seal is used at once, on the first wall tiles it can take.
+      const first = game.shop.state.itemOfferings[0]
       expect(
-        game.shop.purchase(game.shop.state.itemOfferings[0].id).success
+        game.shop.purchase(
+          first.id,
+          { type: 'gold' },
+          first.itemType === 'FateSeal'
+            ? firstSealTargets(
+                first.item as FateSeal,
+                game.getSealableWallTiles()
+              )
+            : undefined
+        ).success
       ).toBe(true)
       const before = json(game.captureRun())
       const cost = offer.finalCost

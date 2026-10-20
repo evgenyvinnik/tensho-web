@@ -513,7 +513,9 @@
     "kinds": {
       "decree": "Decree · {{rarity}}",
       "decreeHelp": "A Decree is a permanent rule for this run. It takes one Decree slot; you can sell it any time.",
-      "seal": "Fate Seal · use during a round",
+      "seal": "Fate Seal · works at once",
+      "sealHelp": "Used the moment you take it: choose the wall tiles it changes, and they stay changed for the whole run.",
+      "sealHelpInstant": "Used the moment you take it.",
       "orb": "Celestial Orb · upgrades a family of hands",
       "script": "Void Script · powerful, with a cost",
       "consumableHelp": "Kept with your items until used. Tap it on the table to use it.",
@@ -528,10 +530,18 @@
     "buyFor": "Buy · {{price}} Gold",
     "help": {
       "what": "The Tea House is the shop between rounds.",
-      "buy": "Tap any item to see what it does, then press Buy. Decrees change the rules, consumables are used during a round, Packs let you pick rewards, and Charters upgrade the whole run.",
+      "buy": "Tap any item to see what it does, then press Buy. Decrees change the rules, Orbs and Seals work at once (a Seal asks which wall tiles to change), Scripts are used during a round, Packs let you pick rewards, and Charters upgrade the whole run.",
       "interest": "Gold you keep earns interest: +1 Gold for every 5 you hold when a round ends, up to +{{cap}}.",
       "cashOut": "Your round's pay lands in the purse as you arrive, one toast per source: the clear itself, interest, Decrees, Gold tiles and any rentals charged.",
-      "build": "Your build lists the Decrees you own; open a scroll to read its rules or sell it. Every purchase happens with its own Buy button."
+      "build": "Your build shows the Decrees you own beside your Yaku upgrades: open a scroll to read its rules or sell it, or an upgrade to see its level. Every purchase happens with its own Buy button."
+    },
+    "sealUsed": "{{name}} used",
+    "sealWall": {
+      "title": "Choose tiles from your wall",
+      "step": "{{index}} of {{total}}",
+      "result": "Result",
+      "becomes": "{{from}} becomes {{to}}",
+      "destroyed": "{{name}} is destroyed"
     }
   },
   "decrees": {
@@ -588,16 +598,16 @@
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
-        "name": "Manzu Master",
-        "description": "+3 Mult if hand contains Manzu"
+        "name": "Master of Characters",
+        "description": "+3 Mult if hand contains Characters"
       },
       "decree-pinzu-perfectionist": {
-        "name": "Pinzu Perfectionist",
-        "description": "+3 Mult if hand contains Pinzu"
+        "name": "Perfectionist of Circles",
+        "description": "+3 Mult if hand contains Circles"
       },
       "decree-souzu-scholar": {
-        "name": "Souzu Scholar",
-        "description": "+3 Mult if hand contains Souzu"
+        "name": "Scholar of Bamboo",
+        "description": "+3 Mult if hand contains Bamboo"
       },
       "decree-wind-walker": {
         "name": "Wind Walker",
@@ -617,7 +627,7 @@
       },
       "decree-green-fortune": {
         "name": "Green Fortune",
-        "description": "+15 Points per green tile (2,3,4,6,8 Souzu)"
+        "description": "+15 Points per green tile (2,3,4,6,8 of Bamboo)"
       },
       "decree-coin-collector": {
         "name": "Coin Collector",
@@ -704,16 +714,16 @@
         "description": "+3 Mult when scoring Pinfu"
       },
       "decree-manzu-emperor": {
-        "name": "Manzu Emperor",
-        "description": "+8 Mult if hand is half or more Manzu"
+        "name": "Emperor of Characters",
+        "description": "+8 Mult if hand is half or more Characters"
       },
       "decree-pinzu-princess": {
-        "name": "Pinzu Princess",
-        "description": "+8 Mult if hand is half or more Pinzu"
+        "name": "Princess of Circles",
+        "description": "+8 Mult if hand is half or more Circles"
       },
       "decree-souzu-sage": {
-        "name": "Souzu Sage",
-        "description": "+8 Mult if hand is half or more Souzu"
+        "name": "Sage of Bamboo",
+        "description": "+8 Mult if hand is half or more Bamboo"
       },
       "decree-flush-fever": {
         "name": "Flush Fever",
@@ -896,16 +906,16 @@
         "description": "Retrigger Honor tiles twice"
       },
       "decree-manzu-monarch": {
-        "name": "Manzu Monarch",
-        "description": "x2.0 Mult if entire hand is Manzu"
+        "name": "Monarch of Characters",
+        "description": "x2.0 Mult if entire hand is Characters"
       },
       "decree-pinzu-potentate": {
-        "name": "Pinzu Potentate",
-        "description": "x2.0 Mult if entire hand is Pinzu"
+        "name": "Potentate of Circles",
+        "description": "x2.0 Mult if entire hand is Circles"
       },
       "decree-souzu-sovereign": {
-        "name": "Souzu Sovereign",
-        "description": "x2.0 Mult if entire hand is Souzu"
+        "name": "Sovereign of Bamboo",
+        "description": "x2.0 Mult if entire hand is Bamboo"
       },
       "decree-flower-emperor": {
         "name": "Flower Emperor",
@@ -1044,16 +1054,16 @@
         "description": "Copies a random non-copy Decree on acquisition and at each round start."
       },
       "decree-manzu-god": {
-        "name": "Manzu God",
-        "description": "x3.0 Mult if all tiles are Manzu"
+        "name": "God of Characters",
+        "description": "x3.0 Mult if all tiles are Characters"
       },
       "decree-pinzu-god": {
-        "name": "Pinzu God",
-        "description": "x3.0 Mult if all tiles are Pinzu"
+        "name": "God of Circles",
+        "description": "x3.0 Mult if all tiles are Circles"
       },
       "decree-souzu-god": {
-        "name": "Souzu God",
-        "description": "x3.0 Mult if all tiles are Souzu"
+        "name": "God of Bamboo",
+        "description": "x3.0 Mult if all tiles are Bamboo"
       },
       "decree-glass-cannon": {
         "name": "Glass Cannon",
@@ -1422,15 +1432,15 @@
       },
       "the_club": {
         "name": "The Club",
-        "description": "All Souzu tiles are debuffed"
+        "description": "All Bamboo tiles are debuffed"
       },
       "the_goad": {
         "name": "The Goad",
-        "description": "All Pinzu tiles are debuffed"
+        "description": "All Circles are debuffed"
       },
       "the_window": {
         "name": "The Window",
-        "description": "All Manzu tiles are debuffed"
+        "description": "All Characters are debuffed"
       },
       "the_head": {
         "name": "The Head",
@@ -2054,16 +2064,16 @@
         "description": "Enhances 1 tile to Stone Mark (+100 Points; no rank or suit, never joins a group, always scores in full)"
       },
       "seal_of_manzu": {
-        "name": "Seal of Manzu",
-        "description": "Converts up to 3 tiles to Manzu suit"
+        "name": "Seal of Characters",
+        "description": "Converts up to 3 tiles to Characters"
       },
       "seal_of_pinzu": {
-        "name": "Seal of Pinzu",
-        "description": "Converts up to 3 tiles to Pinzu suit"
+        "name": "Seal of Circles",
+        "description": "Converts up to 3 tiles to Circles"
       },
       "seal_of_souzu": {
-        "name": "Seal of Souzu",
-        "description": "Converts up to 3 tiles to Souzu suit"
+        "name": "Seal of Bamboo",
+        "description": "Converts up to 3 tiles to Bamboo"
       },
       "seal_of_unity": {
         "name": "Seal of Unity",
@@ -2366,7 +2376,7 @@
       },
       "blue_wall": {
         "name": "Blue Wall",
-        "description": "Wall focused on Pinzu suit tiles"
+        "description": "Wall focused on Circles"
       },
       "black_wall": {
         "name": "Black Wall",
@@ -2386,7 +2396,7 @@
       },
       "jade_wall": {
         "name": "Jade Wall",
-        "description": "Wall focused on bamboo suit tiles"
+        "description": "Wall focused on Bamboo"
       },
       "ivory_wall": {
         "name": "Ivory Wall",
@@ -2394,7 +2404,7 @@
       },
       "bamboo_wall": {
         "name": "Bamboo Wall",
-        "description": "Wall with Souzu-dominant composition"
+        "description": "Wall made mostly of Bamboo"
       },
       "cherry_wall": {
         "name": "Cherry Wall",

@@ -140,8 +140,6 @@ for (const negative of [false, true]) {
     await expect(blocked).not.toHaveText('')
     await closeOffer()
     expect(await saved(page)).toEqual(before)
-    const buildToggle = panel.locator('[data-build-toggle]')
-    if (await buildToggle.isVisible()) await activate(buildToggle, isMobile)
     const protectedCard = panel.locator(
       `[data-decree-instance="${info.eternal}"]`
     )
