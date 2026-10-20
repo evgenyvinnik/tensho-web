@@ -89,8 +89,8 @@
       "content": "Tur ödemesi gelişinde keseye düşer; her bildirim neye karşılık olduğunu söyler. Birbiriyle uyumlu eşyalar al ya da faiz için biriktir. Satın almadan önce ne yaptığını görmek için bir eşyaya dokun."
     },
     "decrees": {
-      "title": "Kararnameler",
-      "content": "Kararnameler seninle kalır; puanları, parayı, taşları veya izin verilen elleri değiştirebilir. Stratejini onlara göre kurmadan veya onları satmadan önce açıklamalarını incele."
+      "title": "Fermanlar",
+      "content": "Fermanlar seninle kalır; puanları, parayı, taşları veya izin verilen elleri değiştirebilir. Stratejini onlara göre kurmadan veya onları satmadan önce açıklamalarını incele."
     },
     "boss": {
       "title": "Boss turu",
@@ -539,7 +539,7 @@
   },
   "gameplay": {
     "actProgress": "Perde {{current}} / {{total}}",
-    "rerollMandate": "{{cost}} altın karşılığında sıradaki patronun {{name}} fermanını yeniden çek",
+    "rerollMandate": "{{cost}} altın karşılığında sıradaki patronun {{name}} hükmünü yeniden çek",
     "moreTools": "Diğer masa araçları",
     "yakumanAscended": "Yakuman'a yükseldi",
     "beginnerShapeBonus": "+{{points}} şekil bonusu",
@@ -657,9 +657,9 @@
     "completeToUnlockStage": "Hazır El'i açmak için {{count}} taşın tamamını tamamlayın",
     "tilesRange": "{{min}}–{{max}} TAŞ",
     "sellFor": "{{value}}G karşılığında sat",
-    "sellHidden": "Gizli Kararnameyi sat",
+    "sellHidden": "Gizli Fermanı sat",
     "sellNamed": "{{name}} sat",
-    "hiddenDecree": "gizli Kararname",
+    "hiddenDecree": "gizli Ferman",
     "coach": {
       "pointsShort": "Şimdi puan",
       "shapeShort": "Tek grup",
@@ -758,7 +758,7 @@
       "allPurchased": "Tüm eşyalar satın alındı!",
       "packs": "Bereket Paketleri",
       "noPacks": "Mevcut paket yok",
-      "imperialCharter": "İmparatorluk Fermanı",
+      "imperialCharter": "İmparatorluk Beratı",
       "nextRound": "Sonraki Tura Geç",
       "confirmPurchase": "Satın Almayı Onayla",
       "purchasePrompt": "{{name}}, {{cost}}G karşılığında satın alınsın mı?",
@@ -802,8 +802,8 @@
     "selectionConfirmed": "Seçim Onaylandı!",
     "packSkipped": "Paket Atlandı",
     "kinds": {
-      "decree": "Kararname · {{rarity}}",
-      "decreeHelp": "Kararname bu oyun için kalıcı bir kuraldır. Bir kararname yuvası kaplar; istediğin zaman satabilirsin.",
+      "decree": "Ferman · {{rarity}}",
+      "decreeHelp": "Ferman bu oyun için kalıcı bir kuraldır. Bir Ferman yuvası kaplar; istediğin zaman satabilirsin.",
       "seal": "Kader Mühürü · hemen etki eder",
       "sealHelp": "Aldığın anda kullanılır: değiştireceği duvar taşlarını seç; tüm koşu boyunca öyle kalırlar.",
       "sealHelpInstant": "Aldığın anda kullanılır.",
@@ -813,15 +813,15 @@
       "tile": "Taş · duvarına eklenir",
       "tileHelp": "Bu taşı oyunun sonuna kadar duvarına ekler.",
       "pack": "Paket · {{from}} içinden {{choose}} seç",
-      "charter": "İmparatorluk Fermanı · kalıcı oyun geliştirmesi",
-      "charterHelp": "İmparatorluk Fermanı oyunun geri kalanı için kalıcı bir geliştirmedir. Yuva kaplamaz ve satılamaz.",
+      "charter": "İmparatorluk Beratı · kalıcı oyun geliştirmesi",
+      "charterHelp": "İmparatorluk Beratı oyunun geri kalanı için kalıcı bir geliştirmedir. Yuva kaplamaz ve satılamaz.",
       "orbHelp": "Aldığın anda kullanılır: ailenin seviyesi hemen yükselir ve tüm koşu boyunca kalır."
     },
     "offerLabel": "{{name}}, {{price}} altın",
     "buyFor": "Satın al · {{price}} altın",
     "help": {
       "what": "Çay Evi, turlar arasındaki dükkândır.",
-      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Kararnameler kuralları değiştirir, Küreler ve Mühürler hemen etki eder (bir Mühür duvarındaki hangi taşları değiştireceğini sorar), Tomarlar turda kullanılır, Paketler ödül seçtirir ve Fermanlar tüm oyunu geliştirir.",
+      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Fermanlar kuralları değiştirir, Küreler ve Mühürler hemen etki eder (bir Mühür duvarındaki hangi taşları değiştireceğini sorar), Tomarlar turda kullanılır, Paketler ödül seçtirir ve Beratlar tüm oyunu geliştirir.",
       "interest": "Elinde tuttuğun altın faiz getirir: tur sonunda her 5 altın için +1, en fazla +{{cap}}.",
       "cashOut": "Tur ödemesi gelişinde keseye düşer; her kaynak için bir bildirim: tamamlanan tur, faiz, Fermanlar, altın taşlar ve kesilen kiralar.",
       "build": "Yapın sahip olduğun Fermanları Yaku geliştirmelerinin yanında gösterir: kurallarını okumak veya satmak için parşömeni, seviyesini görmek için geliştirmeyi aç. Her alım kendi Satın Al düğmesiyle yapılır."
@@ -836,14 +836,14 @@
     }
   },
   "decrees": {
-    "title": "Kararnameler",
+    "title": "Fermanlar",
     "titleJp": "法令",
-    "slots": "Kararname Yuvaları",
+    "slots": "Ferman Yuvaları",
     "empty": "Boş Yuva",
     "rarity": {
       "common": "Yerel Ferman",
       "uncommon": "Bölgesel Yetki",
-      "rare": "İmparatorluk Kararnamesi",
+      "rare": "İmparatorluk Fermanı",
       "legendary": "Efsanevi Ferman",
       "mythic": "Cennetin Emri"
     },
@@ -878,7 +878,7 @@
       },
       "yakuman_succession": {
         "name": "Yakuman Veraseti",
-        "description": "En az 2 Çiçek taşırken Honitsu, Chinitsu, Ryanpeikou, Junchan ve Yedi Çift, Yakuman olur (her biri ×4). Ferman ile seviyesi düşürülen desenler yükselemez. Kopyalar birikmez."
+        "description": "En az 2 Çiçek taşırken Honitsu, Chinitsu, Ryanpeikou, Junchan ve Yedi Çift, Yakuman olur (her biri ×4). Hüküm ile seviyesi düşürülen desenler yükselemez. Kopyalar birikmez."
       },
       "river_tax": {
         "name": "Nehir Vergisi",
@@ -926,7 +926,7 @@
       },
       "decree-infinite-loop": {
         "name": "Sonsuz Döngü",
-        "description": "Her Perdenin sonunda, tüm kararname şarjlarını yeniler"
+        "description": "Her Perdenin sonunda, tüm Ferman şarjlarını yeniler"
       },
       "decree-misty-jade": {
         "name": "Sisli Yeşim",
@@ -1673,11 +1673,11 @@
     "items": {
       "amber_acorn": {
         "name": "Kehribar Palamut",
-        "description": "Tüm Kararnameler karıştırılır ve yüzleri aşağı çevrilir"
+        "description": "Tüm Fermanlar karıştırılır ve yüzleri aşağı çevrilir"
       },
       "verdant_leaf": {
         "name": "Yeşil Yaprak",
-        "description": "1 Kararname satılana kadar tüm taşlar zayıflatılır"
+        "description": "1 Ferman satılana kadar tüm taşlar zayıflatılır"
       },
       "violet_vessel": {
         "name": "Mor Vazo",
@@ -1685,7 +1685,7 @@
       },
       "crimson_heart": {
         "name": "Kızıl Kalp",
-        "description": "Her el döngüsünde rastgele bir Kararname devre dışı bırakılır"
+        "description": "Her el döngüsünde rastgele bir Ferman devre dışı bırakılır"
       },
       "cerulean_bell": {
         "name": "Gök Mavisi Çan",
@@ -1843,14 +1843,14 @@
     "ready": {
       "title": "Hazırsınız!",
       "note1": "Dükkândaki ürünleri 5 altına <1>yenileyebilirsiniz</1>. Her yenileme 1 altın daha pahalıdır.",
-      "note2": "<1>25 ve üzeri altın</1> tutmak faizi en üst düzeye çıkarır! Yine de iyi Kararnamelere harcamak çoğunlukla daha kârlıdır.",
+      "note2": "<1>25 ve üzeri altın</1> tutmak faizi en üst düzeye çıkarır! Yine de iyi Fermanlara harcamak çoğunlukla daha kârlıdır.",
       "p1": "Her şeyi ezberlemeye çalışmayın; oynadıkça öğreneceksiniz!",
       "note3": "Tazelemek isterseniz bu kodekse ayarlar menüsünden istediğiniz zaman dönebilirsiniz."
     },
     "game_concept": {
       "p1": "Rakiplere karşı oynanan geleneksel Mahjong'un aksine Tensho bir <1>tek kişilik bulmaca oyunudur</1>. Rakibiniz diğer oyuncular değil, hedef puandır.",
       "p2": "Her oyun birden çok <2>Perde</2>den oluşur ve her Perdede <5>3 tur</5> vardır. Hedef puanlar ilerledikçe yükselir.",
-      "p3": "Turlar arasında <2>Çayevi</2>ni (dükkân) ziyaret ederek kuralları değiştiren ve puan potansiyelinizi artıran güçlü <5>Kararnameler</5> edinirsiniz."
+      "p3": "Turlar arasında <2>Çayevi</2>ni (dükkân) ziyaret ederek kuralları değiştiren ve puan potansiyelinizi artıran güçlü <5>Fermanlar</5> edinirsiniz."
     },
     "tiles_overview": {
       "p1": "Oyunda toplam <1>144 taş</1> kullanılır:"
@@ -1943,47 +1943,47 @@
       "p1": "Sık karşılaşacağınız bazı yaku'lar:"
     },
     "boss_mandates": {
-      "p1": "Her <1>Boss turunda</1> özel bir <3>Ferman</3> bulunur — bir kısıtlama ya da meydan okuma:"
+      "p1": "Her <1>Boss turunda</1> özel bir <3>Hüküm</3> bulunur — bir kısıtlama ya da meydan okuma:"
     },
     "decree_categories": {
       "note1": "Yaku'lar <1>çarpılarak birikir</1>! ×1,3 ve ×2,0 yaku içeren bir el toplamda ×2,6 alır. Devasa puanlar için kombinasyon kurun!",
-      "p1": "Kararnameler <1>5 kategoriye</1> ayrılır:"
+      "p1": "Fermanlar <1>5 kategoriye</1> ayrılır:"
     },
     "acts_rounds": {
       "p1": "Oyununuz <1>Perdelere</1> bölünür ve her Perde <3>3 tur</3> içerir:",
       "p2": "Hedef puanlar her Perdede yükselir. 1. Perde kolaydır ama 8. Perdede hayatta kalmak için güçlü kombinasyonlar gerekir!"
     },
     "decree_slots": {
-      "note1": "Bazı Kararnameler belirli fermanlara karşı işe yarar. Yapınızı buna göre planlayın!",
+      "note1": "Bazı Fermanlar belirli hükümlere karşı işe yarar. Yapınızı buna göre planlayın!",
       "li1": "<0>Puanlamayı değiştirmek</0> — Çarpan ya da sabit bonus eklemek",
       "li2": "<0>Kuralları esnetmek</0> — Neyin geçerli el sayıldığını değiştirmek",
       "li3": "<0>Yetenek vermek</0> — Ek çekiş, yeniden çekiş ya da etkiler",
-      "p1": "Sınırlı sayıda <1>Kararname yuvanız</1> vardır. <3>5 yuvayla</3> başlarsınız ve şu yollarla artırabilirsiniz:"
+      "p1": "Sınırlı sayıda <1>Ferman yuvanız</1> vardır. <3>5 yuvayla</3> başlarsınız ve şu yollarla artırabilirsiniz:"
     },
     "decree_rarities": {
-      "p1": "Kararnameler <1>4 nadirlik kademesinde</1> gelir:"
+      "p1": "Fermanlar <1>4 nadirlik kademesinde</1> gelir:"
     },
     "decrees_intro": {
-      "p1": "<0>Kararnameler (法令)</0>, oyun boyunca kalan ve kuralları değiştiren kartlardır. Onları Balatro'daki «Jokerlerin» karşılığı olarak düşünün.",
-      "p2": "Kararnameler şunları yapabilir:"
+      "p1": "<0>Fermanlar (法令)</0>, oyun boyunca kalan ve kuralları değiştiren kartlardır. Onları Balatro'daki «Jokerlerin» karşılığı olarak düşünün.",
+      "p2": "Fermanlar şunları yapabilir:"
     },
     "flowers_system": {
       "li1": "<0>Altın üretmek</0> — Ekonomiyi güçlendirir",
       "p1": "<0>Çiçekler</0>, oyun boyunca süren <3>kalıcı bonuslar</3> verir:",
-      "p2": "Birden çok çiçek toplamak <2>set bonuslarını</2> açar: 2 çiçek = +1 Kararname yuvası, 4 çiçek = çiçek etkisi iki katı!"
+      "p2": "Birden çok çiçek toplamak <2>set bonuslarını</2> açar: 2 çiçek = +1 Ferman yuvası, 4 çiçek = çiçek etkisi iki katı!"
     },
     "interest": {
-      "note1": "Nadirliği yüksek Kararnameler daha pahalıdır ve dükkânda daha seyrek çıkar. Birden çok sıradan Kararname arasındaki uyum da güçlü kombinasyonlar kurar!",
+      "note1": "Nadirliği yüksek Fermanlar daha pahalıdır ve dükkânda daha seyrek çıkar. Birden çok sıradan Ferman arasındaki uyum da güçlü kombinasyonlar kurar!",
       "p1": "Her turun sonunda biriktirdiğiniz altına <2>faiz</2> işler:"
     },
     "hierarchy": {
       "li1": "<1>Çiçek setleri</1> toplamak (2+ çiçek = +1 yuva)",
       "li2": "<1>İmparatorluk Beratları</1> satın almak",
-      "li3": "Belirli <1>Kararname etkileri</1>",
+      "li3": "Belirli <1>Ferman etkileri</1>",
       "p1": "Etkiler çakıştığında Tensho bir <2>yetki sıradüzeni</2> uygular:"
     },
     "tips": {
-      "note1": "Kararnameleri altın karşılığında <1>satabilirsiniz</1>. Bu bir yuva boşaltır ve alış fiyatının yarısını geri verir."
+      "note1": "Fermanları altın karşılığında <1>satabilirsiniz</1>. Bu bir yuva boşaltır ve alış fiyatının yarısını geri verir."
     },
     "seasons_system": {
       "p1": "<0>Mevsimler</0>, yalnızca içinde bulunulan tur süren <3>geçici değiştiricilerdir</3>:"
@@ -1992,8 +1992,8 @@
       "note1": "2. Perdeden itibaren olumsuz etkileri olan <2>Bozulmuş Mevsimler</2> çıkabilir!",
       "li1": "<0>Tur kazanmak</0> — Temel ödeme puana göre ölçeklenir",
       "li2": "<0>Faiz</0> — Biriken her 5 altın için 1 altın (tur başına en çok 5)",
-      "li3": "<0>Kararname satmak</0> — Alış fiyatının yarısını alırsınız",
-      "li4": "<0>Kararname etkileri</0> — Bazıları altın üretir"
+      "li3": "<0>Ferman satmak</0> — Alış fiyatının yarısını alırsınız",
+      "li4": "<0>Ferman etkileri</0> — Bazıları altın üretir"
     },
     "tea_house": {
       "p1": "Her turdan sonra altınınızı harcamak için <2>Çayevi (茶寮)</2>ni ziyaret edersiniz:"
@@ -2023,7 +2023,7 @@
     "score": {
       "title": "Puanlama nasıl işler",
       "p1": "Her oyunun puanı:",
-      "note": "Büyük eller, Ejderhalar, Küreler ve Kararnameler Çarpanı yükseltir; Çarpan da her şeyi çarpar."
+      "note": "Büyük eller, Ejderhalar, Küreler ve Fermanlar Çarpanı yükseltir; Çarpan da her şeyi çarpar."
     },
     "points": {
       "title": "Taş puanları",
@@ -2058,7 +2058,7 @@
     "toggleSound": "Sesi Aç/Kapat"
   },
   "codex": {
-    "decrees": "Kararnameler",
+    "decrees": "Fermanlar",
     "economy": "Ekonomi",
     "finish": "Oynamaya Başla!",
     "flora": "Flora",
@@ -2741,7 +2741,7 @@
     "points": "Puan",
     "mult": "Çarpan",
     "score": "Puan",
-    "scoreHelp": "Puan, taşların değeri artı her grubun bonusudur. Çarpan 1’den başlar; büyük eller, Ejderhalar, Küreler ve Kararnamelerle artar. Grup dışındaki taşlar yarım puan verir.",
+    "scoreHelp": "Puan, taşların değeri artı her grubun bonusudur. Çarpan 1’den başlar; büyük eller, Ejderhalar, Küreler ve Fermanlarla artar. Grup dışındaki taşlar yarım puan verir.",
     "handsTitle": "Eller",
     "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1, dörtlüler ve beşli sıralar +2 ekler. Her taş bir kez sayılır; tam Mahjong eli dışında oyun başına en fazla 6 taş.",
     "tilesTitle": "Taşlar",
@@ -2772,9 +2772,9 @@
     "tiles_face_down_after_play": "Yeni taşlar kapalı",
     "fixed_draw_count": "Hep {{count}} çek",
     "honor_tiles_face_down": "Onur taşları kapalı",
-    "shuffle_decrees": "Kararnameler gizli",
-    "debuff_until_sell": "Bir Kararname satana dek tüm taşlar 0",
-    "disable_random_decree": "Her oyunda 1 Kararname kapalı",
+    "shuffle_decrees": "Fermanlar gizli",
+    "debuff_until_sell": "Bir Ferman satana dek tüm taşlar 0",
+    "disable_random_decree": "Her oyunda 1 Ferman kapalı",
     "lock_random_tile": "Her çekişte bir taş kilitlenir"
   },
   "upgradeFamilies": {
@@ -2842,9 +2842,9 @@
     "done": "Tamam"
   },
   "decreeReveal": {
-    "title": "Yeni Kararname: {{name}}",
-    "starting": "Başlangıç Kararnamesi",
-    "acquired": "Yeni Kararname"
+    "title": "Yeni Ferman: {{name}}",
+    "starting": "Başlangıç Fermanı",
+    "acquired": "Yeni Ferman"
   },
   "orbReveal": {
     "used": "Göksel Küre kullanıldı",
