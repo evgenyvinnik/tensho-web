@@ -3,7 +3,7 @@ import { createElement } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { MenuScreen } from './MenuScreen'
-import { preloadMenuAssets, preloadTileImages } from '../../utils/assets'
+import { preloadTileImages } from '../../utils/assets'
 import { useUpdateStore } from '../../pwa/updateStore'
 
 const { navigateTo, refresh } = vi.hoisted(() => ({
@@ -36,7 +36,6 @@ vi.mock('../ui/Tutorial', () => ({
 }))
 vi.mock('../../utils/assets', async (original) => ({
   ...(await original<typeof import('../../utils/assets')>()),
-  preloadMenuAssets: vi.fn(),
   preloadTileImages: vi.fn(),
 }))
 // Test navigation/loading behavior; native browser checks cover animations.
@@ -63,7 +62,6 @@ vi.mock('@react-spring/web', () => {
 beforeEach(() => {
   vi.clearAllMocks()
   useUpdateStore.setState({ available: false, busy: false })
-  vi.mocked(preloadMenuAssets).mockReturnValue(new Promise(() => {}))
   vi.mocked(preloadTileImages).mockReturnValue(new Promise(() => {}))
 })
 afterEach(() => vi.restoreAllMocks())
@@ -72,7 +70,6 @@ it('keeps navigation available while artwork is pending, with no update prompt',
   // Updates install themselves at a safe moment; the menu never asks.
   useUpdateStore.setState({ available: true, busy: false })
   render(<MenuScreen />)
-  expect(preloadMenuAssets).toHaveBeenCalled()
   expect(preloadTileImages).toHaveBeenCalled()
   expect(screen.getByRole('button', { name: 'New Run' })).toBeEnabled()
   expect(screen.queryByRole('button', { name: /update/i })).toBeNull()
