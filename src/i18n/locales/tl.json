@@ -892,7 +892,7 @@
       },
       "decree-half-suited": {
         "name": "Kalahating Suit",
-        "description": "+20 Chips"
+        "description": "+20 batayang puntos"
       },
       "decree-photograph": {
         "name": "Larawan",
@@ -900,19 +900,19 @@
       },
       "decree-polished-stone": {
         "name": "Pinakintab na Bato",
-        "description": "+60 Chips"
+        "description": "+60 batayang puntos"
       },
       "decree-ancient-scroll": {
         "name": "Sinaunang Scroll",
-        "description": "+30 Chips bawat yaku na nakumpleto"
+        "description": "+150 batayang puntos, −2 sa kapasidad ng kamay."
       },
       "decree-philosophers-stone": {
         "name": "Bato ng Pilosopo",
-        "description": "Kino-convert ang 10 sobrang Chips sa +1 Mult pagkatapos ng kalkulasyon"
+        "description": "Dinodoble ang lahat ng Gintong nakukuha."
       },
       "decree-triple-threat": {
         "name": "Tripleng Banta",
-        "description": "Dinoble ang Chips mula sa susunod na triplet"
+        "description": "+80 batayang puntos kung may 2+ tatluhan sa kamay."
       },
       "decree-infinite-loop": {
         "name": "Walang Hanggang Loop",
@@ -1156,7 +1156,7 @@
       },
       "decree-recycler": {
         "name": "Tagagamit Muli",
-        "description": "+10 Chips bawat tile na na-redraw ngayong round"
+        "description": "+10 batayang puntos bawat tile na na-redraw ngayong round"
       },
       "decree-yakuhai-zealot": {
         "name": "Masugid na Alagad ng Yakuhai",
@@ -2465,23 +2465,23 @@
     "items": {
       "pluto_orb": {
         "name": "Globo ng Pluto",
-        "description": "Ina-upgrade ang Pares: Pares, Dalawang pares at Tatlong pares. +1 Mult, +10 Chips bawat antas."
+        "description": "Ina-upgrade ang Pares: Pares, Dalawang pares at Tatlong pares. +1 Mult, +10 batayang puntos bawat antas."
       },
       "mercury_orb": {
         "name": "Globo ng Merkuryo",
-        "description": "Ina-upgrade ang All Simples: mga larong 2–8 lang at ang kamay na Tanyao. +1 Mult, +15 Chips bawat antas."
+        "description": "Ina-upgrade ang All Simples: mga larong 2–8 lang at ang kamay na Tanyao. +1 Mult, +15 batayang puntos bawat antas."
       },
       "uranus_orb": {
         "name": "Globo ng Uranus",
-        "description": "Ina-upgrade ang Honors: anumang grupo ng Hangin o Dragon at ang kamay na Yakuhai. +1 Mult, +20 Chips bawat antas."
+        "description": "Ina-upgrade ang Honors: anumang grupo ng Hangin o Dragon at ang kamay na Yakuhai. +1 Mult, +20 batayang puntos bawat antas."
       },
       "venus_orb": {
         "name": "Globo ng Venus",
-        "description": "Ina-upgrade ang Sequence: Sequence, Sequence + Pares, Dalawang sequence at ang kamay na Pinfu. +2 Mult, +20 Chips bawat antas."
+        "description": "Ina-upgrade ang Sequence: Sequence, Sequence + Pares, Dalawang sequence at ang kamay na Pinfu. +2 Mult, +20 batayang puntos bawat antas."
       },
       "saturn_orb": {
         "name": "Globo ng Saturno",
-        "description": "Ina-upgrade ang Straight: na apat at lima, at ang kamay na Pure Straight. +3 Mult, +30 Chips bawat antas."
+        "description": "Ina-upgrade ang Straight: na apat at lima, at ang kamay na Pure Straight. +3 Mult, +30 batayang puntos bawat antas."
       },
       "jupiter_orb": {
         "name": "Globo ng Hupiter",
@@ -2489,7 +2489,7 @@
       },
       "earth_orb": {
         "name": "Globo ng Daigdig",
-        "description": "Ina-upgrade ang Set: anumang larong may triplet o quad at ang kamay na All Triplets. +2 Mult, +25 Chips bawat antas."
+        "description": "Ina-upgrade ang Set: anumang larong may triplet o quad at ang kamay na All Triplets. +2 Mult, +25 batayang puntos bawat antas."
       },
       "mars_orb": {
         "name": "Globo ng Marte",

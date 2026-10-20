@@ -553,23 +553,23 @@
     "items": {
       "decree-half-suited": {
         "name": "Demi-Couleur",
-        "description": "+20 Jetons"
+        "description": "+20 Points"
       },
       "decree-misty-jade": {
         "name": "Jade Brumeux",
-        "description": "+30 Jetons"
+        "description": "+30 Points"
       },
       "decree-bamboo-scroll": {
         "name": "Rouleau de Bambou",
-        "description": "+40 Jetons"
+        "description": "+40 Points"
       },
       "decree-jade-tablet": {
         "name": "Tablette de Jade",
-        "description": "+50 Jetons"
+        "description": "+50 Points"
       },
       "decree-polished-stone": {
         "name": "Pierre Polie",
-        "description": "+60 Jetons"
+        "description": "+60 Points"
       },
       "decree-gentle-breeze": {
         "name": "Brise Légère",
@@ -613,15 +613,15 @@
       },
       "decree-edge-runner": {
         "name": "Coureur de Bords",
-        "description": "+20 Jetons par Terminal"
+        "description": "+20 Points par Terminal"
       },
       "decree-middle-way": {
         "name": "Voie du Milieu",
-        "description": "+10 Jetons par Simple"
+        "description": "+10 Points par Simple"
       },
       "decree-green-fortune": {
         "name": "Fortune Verte",
-        "description": "+15 Jetons par tuile verte (2,3,4,6,8 Souzu)"
+        "description": "+15 Points par tuile verte (2,3,4,6,8 Souzu)"
       },
       "decree-coin-collector": {
         "name": "Collecteur de Pièces",
@@ -637,19 +637,19 @@
       },
       "decree-pair-lover": {
         "name": "Amateur de Paires",
-        "description": "+30 Jetons si main contient une paire"
+        "description": "+30 Points si main contient une paire"
       },
       "decree-sequence-seeker": {
         "name": "Chercheur de Séquences",
-        "description": "+30 Jetons si main contient une séquence"
+        "description": "+30 Points si main contient une séquence"
       },
       "decree-triplet-tracker": {
         "name": "Traqueur de Brelans",
-        "description": "+40 Jetons si main contient un brelan"
+        "description": "+40 Points si main contient un brelan"
       },
       "decree-flower-friend": {
         "name": "Ami des Fleurs",
-        "description": "+10 Jetons par Fleur collectée"
+        "description": "+10 Points par Fleur collectée"
       },
       "decree-seasonal-blessing": {
         "name": "Bénédiction Saisonnière",
@@ -665,11 +665,11 @@
       },
       "decree-balanced-path": {
         "name": "Chemin Équilibré",
-        "description": "+15 Jetons et +2 Mult"
+        "description": "+15 Points et +2 Mult"
       },
       "decree-modest-fortune": {
         "name": "Fortune Modeste",
-        "description": "+20 Jetons et +1G par manche"
+        "description": "+20 Points et +1G par manche"
       },
       "decree-humble-power": {
         "name": "Pouvoir Humble",
@@ -677,15 +677,15 @@
       },
       "decree-one-mastery": {
         "name": "Maîtrise du Un",
-        "description": "+25 Jetons par tuile de 1"
+        "description": "+25 Points par tuile de 1"
       },
       "decree-nine-mastery": {
         "name": "Maîtrise du Neuf",
-        "description": "+25 Jetons par tuile de 9"
+        "description": "+25 Points par tuile de 9"
       },
       "decree-five-blessing": {
         "name": "Bénédiction du Cinq",
-        "description": "+35 Jetons par tuile de 5"
+        "description": "+35 Points par tuile de 5"
       },
       "decree-spark": {
         "name": "Étincelle",
@@ -733,7 +733,7 @@
       },
       "decree-straight-arrow": {
         "name": "Flèche Droite",
-        "description": "+80 Jetons si 3 séquences"
+        "description": "+80 Points si 3 séquences"
       },
       "decree-run-master": {
         "name": "Maître des Suites",
@@ -741,7 +741,7 @@
       },
       "decree-triple-threat": {
         "name": "Triple Menace",
-        "description": "+80 Jetons si 2+ brelans"
+        "description": "+80 Points si 2+ brelans"
       },
       "decree-triplet-thunder": {
         "name": "Tonnerre de Brelans",
@@ -785,7 +785,7 @@
       },
       "decree-seasonal-wind": {
         "name": "Vent Saisonnier",
-        "description": "+50 Jetons par Saison active"
+        "description": "+50 Points par Saison active"
       },
       "decree-slow-burn": {
         "name": "Combustion Lente",
@@ -793,7 +793,7 @@
       },
       "decree-momentum": {
         "name": "Élan",
-        "description": "+15 Jetons par main jouée cette manche"
+        "description": "+15 Points par main jouée cette manche"
       },
       "decree-crescendo": {
         "name": "Crescendo",
@@ -805,7 +805,7 @@
       },
       "decree-recycler": {
         "name": "Recycleur",
-        "description": "+10 jetons par tuile repiochée cette manche"
+        "description": "+10 points par tuile repiochée cette manche"
       },
       "decree-yakuhai-zealot": {
         "name": "Zélote Yakuhai",
@@ -825,7 +825,7 @@
       },
       "decree-veteran": {
         "name": "Vétéran",
-        "description": "+10 Jetons par Acte complété"
+        "description": "+10 Points par Acte complété"
       },
       "decree-experience": {
         "name": "Expérience",
@@ -833,7 +833,7 @@
       },
       "decree-greater-jade": {
         "name": "Grand Jade",
-        "description": "+80 Jetons"
+        "description": "+80 Points"
       },
       "decree-blazing-banner": {
         "name": "Bannière Flamboyante",
@@ -853,7 +853,7 @@
       },
       "decree-bookends": {
         "name": "Extrémités",
-        "description": "+60 Jetons si 1 et 9 présents"
+        "description": "+60 Points si 1 et 9 présents"
       },
       "decree-expansive-grip": {
         "name": "Prise Expansive",
@@ -921,7 +921,7 @@
       },
       "decree-nature-bond": {
         "name": "Lien Naturel",
-        "description": "+3 Mult par Fleur, +30 Jetons par Saison"
+        "description": "+3 Mult par Fleur, +30 Points par Saison"
       },
       "decree-honitsu-herald": {
         "name": "Héraut Honitsu",
@@ -945,11 +945,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "Fortune et Gloire",
-        "description": "+60 Jetons, +8 Mult, +3G par manche"
+        "description": "+60 Points, +8 Mult, +3G par manche"
       },
       "decree-emperors-blessing": {
         "name": "Bénédiction de l'Empereur",
-        "description": "+100 Jetons et +10 Mult"
+        "description": "+100 Points et +10 Mult"
       },
       "decree-golden-age": {
         "name": "Âge d'Or",
@@ -965,7 +965,7 @@
       },
       "decree-ancient-scroll": {
         "name": "Rouleau Ancien",
-        "description": "+150 Jetons, -2 Taille de Main"
+        "description": "+150 Points, -2 Taille de Main"
       },
       "decree-sacrifice": {
         "name": "Sacrifice",
@@ -985,7 +985,7 @@
       },
       "decree-endless-journey": {
         "name": "Voyage Sans Fin",
-        "description": "+20 Jetons par Acte complété"
+        "description": "+20 Points par Acte complété"
       },
       "decree-master-grip": {
         "name": "Prise Maître",
@@ -1073,7 +1073,7 @@
       },
       "decree-exponential": {
         "name": "Exponentiel",
-        "description": "x1.3 Mult par 100 jetons de base"
+        "description": "x1.3 Mult par 100 points de base"
       },
       "decree-chain-reaction": {
         "name": "Réaction en Chaîne",
@@ -1081,7 +1081,7 @@
       },
       "decree-cosmic-jade": {
         "name": "Jade Cosmique",
-        "description": "+200 Jetons"
+        "description": "+200 Points"
       },
       "decree-solar-banner": {
         "name": "Bannière Solaire",
@@ -1149,7 +1149,7 @@
       },
       "decree-omega": {
         "name": "Oméga",
-        "description": "+500 Jetons, +50 Mult, x2.0 Mult"
+        "description": "+500 Points, +50 Mult, x2.0 Mult"
       },
       "river_tax": {
         "name": "Taxe de la Rivière",
@@ -1967,51 +1967,51 @@
     "items": {
       "pluto_orb": {
         "name": "Orbe de Pluton",
-        "description": "Améliore les paires : Paire, Double paire et Trois paires. +1 Mult et +10 jetons par niveau."
+        "description": "Améliore les paires : Paire, Double paire et Trois paires. +1 Mult et +10 points par niveau."
       },
       "mercury_orb": {
         "name": "Orbe de Mercure",
-        "description": "Améliore Tout simples : mains uniquement de 2 à 8 et la main Tanyao. +1 Mult et +15 jetons par niveau."
+        "description": "Améliore Tout simples : mains uniquement de 2 à 8 et la main Tanyao. +1 Mult et +15 points par niveau."
       },
       "uranus_orb": {
         "name": "Orbe d'Uranus",
-        "description": "Améliore les Honneurs : tout groupe de Vents ou de Dragons et la main Yakuhai. +1 Mult et +20 jetons par niveau."
+        "description": "Améliore les Honneurs : tout groupe de Vents ou de Dragons et la main Yakuhai. +1 Mult et +20 points par niveau."
       },
       "venus_orb": {
         "name": "Orbe de Vénus",
-        "description": "Améliore les séquences : Séquence, Séquence + Paire, Deux séquences et la main Pinfu. +2 Mult et +20 jetons par niveau."
+        "description": "Améliore les séquences : Séquence, Séquence + Paire, Deux séquences et la main Pinfu. +2 Mult et +20 points par niveau."
       },
       "saturn_orb": {
         "name": "Orbe de Saturne",
-        "description": "Améliore les suites : de quatre et de cinq, et la main Suite pure. +3 Mult et +30 jetons par niveau."
+        "description": "Améliore les suites : de quatre et de cinq, et la main Suite pure. +3 Mult et +30 points par niveau."
       },
       "jupiter_orb": {
         "name": "Orbe de Jupiter",
-        "description": "S'accorde au yaku Honitsu (Demi-couleur). +2 Mult, +15 Jetons par niveau."
+        "description": "S'accorde au yaku Honitsu (Demi-couleur). +2 Mult, +15 Points par niveau."
       },
       "earth_orb": {
         "name": "Orbe de la Terre",
-        "description": "Améliore brelans et carrés, et la main Tout brelans. +2 Mult et +25 jetons par niveau."
+        "description": "Améliore brelans et carrés, et la main Tout brelans. +2 Mult et +25 points par niveau."
       },
       "mars_orb": {
         "name": "Orbe de Mars",
-        "description": "S'accorde au yaku Chinitsu (Couleur pure). +3 Mult, +30 Jetons par niveau."
+        "description": "S'accorde au yaku Chinitsu (Couleur pure). +3 Mult, +30 Points par niveau."
       },
       "neptune_orb": {
         "name": "Orbe de Neptune",
-        "description": "S'accorde au yaku Sanshoku (Triple mixte). +4 Mult, +40 Jetons par niveau."
+        "description": "S'accorde au yaku Sanshoku (Triple mixte). +4 Mult, +40 Points par niveau."
       },
       "planet_x_orb": {
         "name": "Orbe de la Planète X",
-        "description": "S'accorde au yaku Sept Paires. +3 Mult, +35 Jetons par niveau."
+        "description": "S'accorde au yaku Sept Paires. +3 Mult, +35 Points par niveau."
       },
       "ceres_orb": {
         "name": "Orbe de Cérès",
-        "description": "S'accorde au yaku Chanta (Terminales). +4 Mult, +40 Jetons par niveau."
+        "description": "S'accorde au yaku Chanta (Terminales). +4 Mult, +40 Points par niveau."
       },
       "eris_orb": {
         "name": "Orbe d'Éris",
-        "description": "S'accorde au yaku Kokushi Musou. +3 Mult, +50 Jetons par niveau."
+        "description": "S'accorde au yaku Kokushi Musou. +3 Mult, +50 Points par niveau."
       },
       "black_hole_orb": {
         "name": "Orbe du Trou Noir",
@@ -2138,7 +2138,7 @@
       },
       "seal_of_the_sage": {
         "name": "Sceau du Sage",
-        "description": "Améliore 2 tuiles choisies avec la Marque de Jetons"
+        "description": "Améliore 2 tuiles choisies avec la Marque de Bonus"
       },
       "seal_of_harmony": {
         "name": "Sceau de l'Harmonie",

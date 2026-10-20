@@ -553,23 +553,23 @@
     "items": {
       "decree-half-suited": {
         "name": "半着",
-        "description": "+20チップ"
+        "description": "+20点"
       },
       "decree-misty-jade": {
         "name": "霧玉",
-        "description": "+30チップ"
+        "description": "+30点"
       },
       "decree-bamboo-scroll": {
         "name": "竹巻",
-        "description": "+40チップ"
+        "description": "+40点"
       },
       "decree-jade-tablet": {
         "name": "玉板",
-        "description": "+50チップ"
+        "description": "+50点"
       },
       "decree-polished-stone": {
         "name": "磨石",
-        "description": "+60チップ"
+        "description": "+60点"
       },
       "decree-gentle-breeze": {
         "name": "微風",
@@ -613,15 +613,15 @@
       },
       "decree-edge-runner": {
         "name": "端走者",
-        "description": "老頭牌1枚につき+20チップ"
+        "description": "老頭牌1枚につき+20点"
       },
       "decree-middle-way": {
         "name": "中道",
-        "description": "中張牌1枚につき+10チップ"
+        "description": "中張牌1枚につき+10点"
       },
       "decree-green-fortune": {
         "name": "緑運",
-        "description": "緑牌1枚につき+15チップ（2,3,4,6,8索）"
+        "description": "緑牌1枚につき+15点（2,3,4,6,8索）"
       },
       "decree-coin-collector": {
         "name": "銭集",
@@ -637,19 +637,19 @@
       },
       "decree-pair-lover": {
         "name": "対好者",
-        "description": "対子を含む場合+30チップ"
+        "description": "対子を含む場合+30点"
       },
       "decree-sequence-seeker": {
         "name": "順子求",
-        "description": "順子を含む場合+30チップ"
+        "description": "順子を含む場合+30点"
       },
       "decree-triplet-tracker": {
         "name": "刻子追",
-        "description": "刻子を含む場合+40チップ"
+        "description": "刻子を含む場合+40点"
       },
       "decree-flower-friend": {
         "name": "花友",
-        "description": "収集した花牌1枚につき+10チップ"
+        "description": "収集した花牌1枚につき+10点"
       },
       "decree-seasonal-blessing": {
         "name": "季福",
@@ -665,11 +665,11 @@
       },
       "decree-balanced-path": {
         "name": "均衡道",
-        "description": "+15チップと+2倍率"
+        "description": "+15点と+2倍率"
       },
       "decree-modest-fortune": {
         "name": "謙運",
-        "description": "+20チップとラウンドごとに+1金貨"
+        "description": "+20点とラウンドごとに+1金貨"
       },
       "decree-humble-power": {
         "name": "謙力",
@@ -677,15 +677,15 @@
       },
       "decree-one-mastery": {
         "name": "壱極",
-        "description": "1牌1枚につき+25チップ"
+        "description": "1牌1枚につき+25点"
       },
       "decree-nine-mastery": {
         "name": "九極",
-        "description": "9牌1枚につき+25チップ"
+        "description": "9牌1枚につき+25点"
       },
       "decree-five-blessing": {
         "name": "五福",
-        "description": "5牌1枚につき+35チップ"
+        "description": "5牌1枚につき+35点"
       },
       "decree-spark": {
         "name": "火花",
@@ -733,7 +733,7 @@
       },
       "decree-straight-arrow": {
         "name": "直矢",
-        "description": "順子3組の場合+80チップ"
+        "description": "順子3組の場合+80点"
       },
       "decree-run-master": {
         "name": "連続師",
@@ -741,7 +741,7 @@
       },
       "decree-triple-threat": {
         "name": "三重脅威",
-        "description": "刻子2組以上の場合+80チップ"
+        "description": "刻子2組以上の場合+80点"
       },
       "decree-triplet-thunder": {
         "name": "刻子雷",
@@ -785,7 +785,7 @@
       },
       "decree-seasonal-wind": {
         "name": "季節風",
-        "description": "有効な季節1つにつき+50チップ"
+        "description": "有効な季節1つにつき+50点"
       },
       "decree-slow-burn": {
         "name": "遅火",
@@ -793,7 +793,7 @@
       },
       "decree-momentum": {
         "name": "勢い",
-        "description": "このラウンドでプレイした手ごとに+15チップ"
+        "description": "このラウンドでプレイした手ごとに+15点"
       },
       "decree-crescendo": {
         "name": "漸強",
@@ -805,7 +805,7 @@
       },
       "decree-recycler": {
         "name": "再利用者",
-        "description": "このラウンドで引き直した牌1枚ごとにチップ+10"
+        "description": "このラウンドで引き直した牌1枚ごとに点数+10"
       },
       "decree-yakuhai-zealot": {
         "name": "役牌狂信者",
@@ -825,7 +825,7 @@
       },
       "decree-veteran": {
         "name": "古参",
-        "description": "完了した幕ごとに+10チップ"
+        "description": "完了した幕ごとに+10点"
       },
       "decree-experience": {
         "name": "経験",
@@ -833,7 +833,7 @@
       },
       "decree-greater-jade": {
         "name": "大玉",
-        "description": "+80チップ"
+        "description": "+80点"
       },
       "decree-blazing-banner": {
         "name": "烈火旗",
@@ -853,7 +853,7 @@
       },
       "decree-bookends": {
         "name": "端揃",
-        "description": "1と9両方がある場合+60チップ"
+        "description": "1と9両方がある場合+60点"
       },
       "decree-expansive-grip": {
         "name": "拡張握",
@@ -921,7 +921,7 @@
       },
       "decree-nature-bond": {
         "name": "自然絆",
-        "description": "花牌1枚につき+3倍率、季節1つにつき+30チップ"
+        "description": "花牌1枚につき+3倍率、季節1つにつき+30点"
       },
       "decree-honitsu-herald": {
         "name": "混一色先駆",
@@ -945,11 +945,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "運と栄光",
-        "description": "+60チップ、+8倍率、ラウンドごとに+3金貨"
+        "description": "+60点、+8倍率、ラウンドごとに+3金貨"
       },
       "decree-emperors-blessing": {
         "name": "皇帝祝福",
-        "description": "+100チップと+10倍率"
+        "description": "+100点と+10倍率"
       },
       "decree-golden-age": {
         "name": "黄金時代",
@@ -965,7 +965,7 @@
       },
       "decree-ancient-scroll": {
         "name": "古代巻物",
-        "description": "+150チップ、-2手牌サイズ"
+        "description": "+150点、-2手牌サイズ"
       },
       "decree-sacrifice": {
         "name": "犠牲",
@@ -985,7 +985,7 @@
       },
       "decree-endless-journey": {
         "name": "無限旅",
-        "description": "完了した幕ごとに+20チップ"
+        "description": "完了した幕ごとに+20点"
       },
       "decree-master-grip": {
         "name": "達人握",
@@ -1073,7 +1073,7 @@
       },
       "decree-exponential": {
         "name": "指数的",
-        "description": "基本チップ100ごとにx1.3倍率"
+        "description": "基礎点100ごとにx1.3倍率"
       },
       "decree-chain-reaction": {
         "name": "連鎖反応",
@@ -1081,7 +1081,7 @@
       },
       "decree-cosmic-jade": {
         "name": "宇宙玉",
-        "description": "+200チップ"
+        "description": "+200点"
       },
       "decree-solar-banner": {
         "name": "太陽旗",
@@ -1149,7 +1149,7 @@
       },
       "decree-omega": {
         "name": "終極",
-        "description": "+500チップ、+50倍率、x2.0倍率"
+        "description": "+500点、+50倍率、x2.0倍率"
       },
       "yakuman_succession": {
         "name": "役満継承",
@@ -1955,51 +1955,51 @@
     "items": {
       "pluto_orb": {
         "name": "冥王星球",
-        "description": "対子系を強化（対子・二対子・三対子）。レベルごとに倍率+1、チップ+10。"
+        "description": "対子系を強化（対子・二対子・三対子）。レベルごとに倍率+1、点数+10。"
       },
       "mercury_orb": {
         "name": "水星球",
-        "description": "断幺九系を強化（2〜8だけの打牌と断幺九）。レベルごとに倍率+1、チップ+15。"
+        "description": "断幺九系を強化（2〜8だけの打牌と断幺九）。レベルごとに倍率+1、点数+15。"
       },
       "uranus_orb": {
         "name": "天王星球",
-        "description": "字牌系を強化（風牌・三元牌の面子と役牌）。レベルごとに倍率+1、チップ+20。"
+        "description": "字牌系を強化（風牌・三元牌の面子と役牌）。レベルごとに倍率+1、点数+20。"
       },
       "venus_orb": {
         "name": "金星球",
-        "description": "順子系を強化（順子・順子＋対子・二順子と平和）。レベルごとに倍率+2、チップ+20。"
+        "description": "順子系を強化（順子・順子＋対子・二順子と平和）。レベルごとに倍率+2、点数+20。"
       },
       "saturn_orb": {
         "name": "土星球",
-        "description": "連順系を強化（四連順・五連順と一気通貫）。レベルごとに倍率+3、チップ+30。"
+        "description": "連順系を強化（四連順・五連順と一気通貫）。レベルごとに倍率+3、点数+30。"
       },
       "jupiter_orb": {
         "name": "木星球",
-        "description": "混一色の役に感応。1段階につき+2倍率、+15チップ。"
+        "description": "混一色の役に感応。1段階につき+2倍率、+15点。"
       },
       "earth_orb": {
         "name": "地球球",
-        "description": "刻子系を強化（刻子・槓子を含む打牌と対々和）。レベルごとに倍率+2、チップ+25。"
+        "description": "刻子系を強化（刻子・槓子を含む打牌と対々和）。レベルごとに倍率+2、点数+25。"
       },
       "mars_orb": {
         "name": "火星球",
-        "description": "清一色の役に感応。1段階につき+3倍率、+30チップ。"
+        "description": "清一色の役に感応。1段階につき+3倍率、+30点。"
       },
       "neptune_orb": {
         "name": "海王星球",
-        "description": "三色同順の役に感応。1段階につき+4倍率、+40チップ。"
+        "description": "三色同順の役に感応。1段階につき+4倍率、+40点。"
       },
       "planet_x_orb": {
         "name": "惑星X球",
-        "description": "七対子の役に感応。1段階につき+3倍率、+35チップ。"
+        "description": "七対子の役に感応。1段階につき+3倍率、+35点。"
       },
       "ceres_orb": {
         "name": "ケレス球",
-        "description": "混全帯么九の役に感応。1段階につき+4倍率、+40チップ。"
+        "description": "混全帯么九の役に感応。1段階につき+4倍率、+40点。"
       },
       "eris_orb": {
         "name": "エリス球",
-        "description": "国士無双の役に感応。1段階につき+3倍率、+50チップ。"
+        "description": "国士無双の役に感応。1段階につき+3倍率、+50点。"
       },
       "black_hole_orb": {
         "name": "黒洞球",
@@ -2126,7 +2126,7 @@
       },
       "seal_of_the_sage": {
         "name": "賢者の符",
-        "description": "選んだ2枚をチップの印にする"
+        "description": "選んだ2枚を加点の印にする"
       },
       "seal_of_harmony": {
         "name": "調和の符",

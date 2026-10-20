@@ -761,23 +761,23 @@
     "items": {
       "decree-half-suited": {
         "name": "Setengah Warna",
-        "description": "+20 Chip"
+        "description": "+20 Poin"
       },
       "decree-misty-jade": {
         "name": "Giok Berkabut",
-        "description": "+30 Chip"
+        "description": "+30 Poin"
       },
       "decree-bamboo-scroll": {
         "name": "Gulungan Bambu",
-        "description": "+40 Chip"
+        "description": "+40 Poin"
       },
       "decree-jade-tablet": {
         "name": "Tablet Giok",
-        "description": "+50 Chip"
+        "description": "+50 Poin"
       },
       "decree-polished-stone": {
         "name": "Batu Poles",
-        "description": "+60 Chip"
+        "description": "+60 Poin"
       },
       "decree-gentle-breeze": {
         "name": "Angin Sepoi",
@@ -821,15 +821,15 @@
       },
       "decree-edge-runner": {
         "name": "Pelari Tepi",
-        "description": "+20 Chip per Terminal"
+        "description": "+20 Poin per Terminal"
       },
       "decree-middle-way": {
         "name": "Jalan Tengah",
-        "description": "+10 Chip per Sederhana"
+        "description": "+10 Poin per Sederhana"
       },
       "decree-green-fortune": {
         "name": "Keberuntungan Hijau",
-        "description": "+15 Chip per ubin hijau (2,3,4,6,8 Souzu)"
+        "description": "+15 Poin per ubin hijau (2,3,4,6,8 Souzu)"
       },
       "decree-coin-collector": {
         "name": "Pengumpul Koin",
@@ -845,19 +845,19 @@
       },
       "decree-pair-lover": {
         "name": "Pecinta Pasangan",
-        "description": "+30 Chip jika ada pasangan"
+        "description": "+30 Poin jika ada pasangan"
       },
       "decree-sequence-seeker": {
         "name": "Pencari Urutan",
-        "description": "+30 Chip jika ada urutan"
+        "description": "+30 Poin jika ada urutan"
       },
       "decree-triplet-tracker": {
         "name": "Pelacak Triplet",
-        "description": "+40 Chip jika ada triplet"
+        "description": "+40 Poin jika ada triplet"
       },
       "decree-flower-friend": {
         "name": "Teman Bunga",
-        "description": "+10 Chip per Bunga"
+        "description": "+10 Poin per Bunga"
       },
       "decree-seasonal-blessing": {
         "name": "Berkah Musim",
@@ -873,11 +873,11 @@
       },
       "decree-balanced-path": {
         "name": "Jalan Seimbang",
-        "description": "+15 Chip dan +2 Mult"
+        "description": "+15 Poin dan +2 Mult"
       },
       "decree-modest-fortune": {
         "name": "Keberuntungan Sederhana",
-        "description": "+20 Chip dan +1G per ronde"
+        "description": "+20 Poin dan +1G per ronde"
       },
       "decree-humble-power": {
         "name": "Kekuatan Rendah Hati",
@@ -885,15 +885,15 @@
       },
       "decree-one-mastery": {
         "name": "Penguasaan Satu",
-        "description": "+25 Chip per ubin 1"
+        "description": "+25 Poin per ubin 1"
       },
       "decree-nine-mastery": {
         "name": "Penguasaan Sembilan",
-        "description": "+25 Chip per ubin 9"
+        "description": "+25 Poin per ubin 9"
       },
       "decree-five-blessing": {
         "name": "Berkah Lima",
-        "description": "+35 Chip per ubin 5"
+        "description": "+35 Poin per ubin 5"
       },
       "decree-spark": {
         "name": "Percik",
@@ -941,7 +941,7 @@
       },
       "decree-straight-arrow": {
         "name": "Panah Lurus",
-        "description": "+80 Chip jika 3 urutan"
+        "description": "+80 Poin jika 3 urutan"
       },
       "decree-run-master": {
         "name": "Master Urutan",
@@ -949,7 +949,7 @@
       },
       "decree-triple-threat": {
         "name": "Ancaman Tiga",
-        "description": "+80 Chip jika 2+ triplet"
+        "description": "+80 Poin jika 2+ triplet"
       },
       "decree-triplet-thunder": {
         "name": "Guntur Triplet",
@@ -993,7 +993,7 @@
       },
       "decree-seasonal-wind": {
         "name": "Angin Musim",
-        "description": "+50 Chip per Musim aktif"
+        "description": "+50 Poin per Musim aktif"
       },
       "decree-slow-burn": {
         "name": "Bakar Lambat",
@@ -1001,7 +1001,7 @@
       },
       "decree-momentum": {
         "name": "Momentum",
-        "description": "+15 Chip per tangan ronde ini"
+        "description": "+15 Poin per tangan ronde ini"
       },
       "decree-crescendo": {
         "name": "Crescendo",
@@ -1013,7 +1013,7 @@
       },
       "decree-recycler": {
         "name": "Pendaur Ulang",
-        "description": "+10 Chip per ubin yang ditarik ulang ronde ini"
+        "description": "+10 Poin per ubin yang ditarik ulang ronde ini"
       },
       "decree-yakuhai-zealot": {
         "name": "Fanatik Yakuhai",
@@ -1033,7 +1033,7 @@
       },
       "decree-veteran": {
         "name": "Veteran",
-        "description": "+10 Chip per Babak selesai"
+        "description": "+10 Poin per Babak selesai"
       },
       "decree-experience": {
         "name": "Pengalaman",
@@ -1041,7 +1041,7 @@
       },
       "decree-greater-jade": {
         "name": "Giok Besar",
-        "description": "+80 Chip"
+        "description": "+80 Poin"
       },
       "decree-blazing-banner": {
         "name": "Panji Menyala",
@@ -1061,7 +1061,7 @@
       },
       "decree-bookends": {
         "name": "Ujung Buku",
-        "description": "+60 Chip jika ada 1 dan 9"
+        "description": "+60 Poin jika ada 1 dan 9"
       },
       "decree-expansive-grip": {
         "name": "Genggaman Luas",
@@ -1129,7 +1129,7 @@
       },
       "decree-nature-bond": {
         "name": "Ikatan Alam",
-        "description": "+3 Mult per Bunga, +30 Chip per Musim"
+        "description": "+3 Mult per Bunga, +30 Poin per Musim"
       },
       "decree-honitsu-herald": {
         "name": "Pelopor Honitsu",
@@ -1153,11 +1153,11 @@
       },
       "decree-fortune-and-glory": {
         "name": "Keberuntungan dan Kemuliaan",
-        "description": "+60 Chip, +8 Mult, +3G per ronde"
+        "description": "+60 Poin, +8 Mult, +3G per ronde"
       },
       "decree-emperors-blessing": {
         "name": "Berkah Kaisar",
-        "description": "+100 Chip dan +10 Mult"
+        "description": "+100 Poin dan +10 Mult"
       },
       "decree-golden-age": {
         "name": "Zaman Keemasan",
@@ -1173,7 +1173,7 @@
       },
       "decree-ancient-scroll": {
         "name": "Gulungan Kuno",
-        "description": "+150 Chip, -2 Ukuran Tangan"
+        "description": "+150 Poin, -2 Ukuran Tangan"
       },
       "decree-sacrifice": {
         "name": "Pengorbanan",
@@ -1193,7 +1193,7 @@
       },
       "decree-endless-journey": {
         "name": "Perjalanan Tanpa Akhir",
-        "description": "+20 Chip per Babak selesai"
+        "description": "+20 Poin per Babak selesai"
       },
       "decree-master-grip": {
         "name": "Genggaman Master",
@@ -1281,7 +1281,7 @@
       },
       "decree-exponential": {
         "name": "Eksponensial",
-        "description": "x1.3 Mult per 100 chip dasar"
+        "description": "x1.3 Mult per 100 poin dasar"
       },
       "decree-chain-reaction": {
         "name": "Reaksi Berantai",
@@ -1289,7 +1289,7 @@
       },
       "decree-cosmic-jade": {
         "name": "Giok Kosmik",
-        "description": "+200 Chip"
+        "description": "+200 Poin"
       },
       "decree-solar-banner": {
         "name": "Panji Matahari",
@@ -1357,7 +1357,7 @@
       },
       "decree-omega": {
         "name": "Omega",
-        "description": "+500 Chip, +50 Mult, x2.0 Mult"
+        "description": "+500 Poin, +50 Mult, x2.0 Mult"
       },
       "yakuman_succession": {
         "name": "Suksesi Yakuman",
@@ -2219,51 +2219,51 @@
     "items": {
       "pluto_orb": {
         "name": "Orb Pluto",
-        "description": "Meningkatkan Pasangan: Pasangan, Dua pasangan, dan Tiga pasangan. +1 Mult, +10 Chip per level."
+        "description": "Meningkatkan Pasangan: Pasangan, Dua pasangan, dan Tiga pasangan. +1 Mult, +10 Poin per level."
       },
       "mercury_orb": {
         "name": "Orb Merkurius",
-        "description": "Meningkatkan Semua Sederhana: mainan hanya ubin 2–8 dan tangan Tanyao. +1 Mult, +15 Chip per level."
+        "description": "Meningkatkan Semua Sederhana: mainan hanya ubin 2–8 dan tangan Tanyao. +1 Mult, +15 Poin per level."
       },
       "uranus_orb": {
         "name": "Orb Uranus",
-        "description": "Meningkatkan Kehormatan: kelompok Angin atau Naga dan tangan Yakuhai. +1 Mult, +20 Chip per level."
+        "description": "Meningkatkan Kehormatan: kelompok Angin atau Naga dan tangan Yakuhai. +1 Mult, +20 Poin per level."
       },
       "venus_orb": {
         "name": "Orb Venus",
-        "description": "Meningkatkan Urutan: Urutan, Urutan + Pasangan, Dua urutan dan tangan Pinfu. +2 Mult, +20 Chip per level."
+        "description": "Meningkatkan Urutan: Urutan, Urutan + Pasangan, Dua urutan dan tangan Pinfu. +2 Mult, +20 Poin per level."
       },
       "saturn_orb": {
         "name": "Orb Saturnus",
-        "description": "Meningkatkan Lurus: lurus empat dan lima serta tangan Lurus Murni. +3 Mult, +30 Chip per level."
+        "description": "Meningkatkan Lurus: lurus empat dan lima serta tangan Lurus Murni. +3 Mult, +30 Poin per level."
       },
       "jupiter_orb": {
         "name": "Orb Jupiter",
-        "description": "Selaras dengan yaku Honitsu (Setengah Warna). +2 Pengali, +15 Chip per level."
+        "description": "Selaras dengan yaku Honitsu (Setengah Warna). +2 Pengali, +15 Poin per level."
       },
       "earth_orb": {
         "name": "Orb Bumi",
-        "description": "Meningkatkan Set: mainan dengan triplet atau kuartet dan tangan Semua Triplet. +2 Mult, +25 Chip per level."
+        "description": "Meningkatkan Set: mainan dengan triplet atau kuartet dan tangan Semua Triplet. +2 Mult, +25 Poin per level."
       },
       "mars_orb": {
         "name": "Orb Mars",
-        "description": "Selaras dengan yaku Chinitsu (Warna Penuh). +3 Pengali, +30 Chip per level."
+        "description": "Selaras dengan yaku Chinitsu (Warna Penuh). +3 Pengali, +30 Poin per level."
       },
       "neptune_orb": {
         "name": "Orb Neptunus",
-        "description": "Selaras dengan yaku Sanshoku (Tiga Warna). +4 Pengali, +40 Chip per level."
+        "description": "Selaras dengan yaku Sanshoku (Tiga Warna). +4 Pengali, +40 Poin per level."
       },
       "planet_x_orb": {
         "name": "Orb Planet X",
-        "description": "Selaras dengan yaku Tujuh Pasang. +3 Pengali, +35 Chip per level."
+        "description": "Selaras dengan yaku Tujuh Pasang. +3 Pengali, +35 Poin per level."
       },
       "ceres_orb": {
         "name": "Orb Ceres",
-        "description": "Selaras dengan yaku Chanta (Terminal). +4 Pengali, +40 Chip per level."
+        "description": "Selaras dengan yaku Chanta (Terminal). +4 Pengali, +40 Poin per level."
       },
       "eris_orb": {
         "name": "Orb Eris",
-        "description": "Selaras dengan yaku Kokushi Musou. +3 Pengali, +50 Chip per level."
+        "description": "Selaras dengan yaku Kokushi Musou. +3 Pengali, +50 Poin per level."
       },
       "black_hole_orb": {
         "name": "Orb Lubang Hitam",
@@ -2390,7 +2390,7 @@
       },
       "seal_of_the_sage": {
         "name": "Segel Sang Bijak",
-        "description": "Meningkatkan 2 ubin terpilih dengan Tanda Bonus Chip"
+        "description": "Meningkatkan 2 ubin terpilih dengan Tanda Bonus"
       },
       "seal_of_harmony": {
         "name": "Segel Keselarasan",
