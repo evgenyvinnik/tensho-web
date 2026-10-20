@@ -109,14 +109,14 @@ export function GameOverScreen() {
           <img
             src={
               isFreshVictory
-                ? illustrationAssets.victoryResult
+                ? illustrationAssets.results.victory
                 : isEndlessResult
-                  ? illustrationAssets.journeyResult
-                  : illustrationAssets.defeatResult
+                  ? illustrationAssets.results.endlessCompletion
+                  : illustrationAssets.results.defeat
             }
             alt=""
-            width={1200}
-            height={400}
+            width={960}
+            height={320}
             className="mb-4 aspect-[3/1] w-full rounded-xl object-cover sm:mb-5"
             data-result-art
           />

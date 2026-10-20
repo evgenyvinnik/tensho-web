@@ -5,7 +5,13 @@
 
 import { TileSuit } from '../core/Tile'
 import { tileFaceAsset } from './tileFaceAsset'
-import type { DecreeRarity, PackType, FlowerVariant } from '../systems/types'
+import type {
+  CorruptedSeasonVariant,
+  DecreeRarity,
+  FlowerVariant,
+  PackType,
+  StickerType,
+} from '../systems/types'
 import { withBasePath } from './basePath'
 import { getGeneratedArt } from './generatedArt'
 
@@ -91,14 +97,28 @@ export const illustrationAssets = {
   winterPine: `${ASSET_BASE}/illustrations/winter-pine.webp`,
   summerFan: `${ASSET_BASE}/illustrations/summer-fan.webp`,
   corruptedSeasons: {
-    Monsoon: `${ASSET_BASE}/illustrations/seasons/monsoon.webp`,
-    Drought: `${ASSET_BASE}/illustrations/seasons/drought.webp`,
-    Decay: `${ASSET_BASE}/illustrations/seasons/decay.webp`,
-    Frostbite: `${ASSET_BASE}/illustrations/seasons/frostbite.webp`,
+    Monsoon: `${ASSET_BASE}/illustrations/states/seasons/monsoon.webp`,
+    Drought: `${ASSET_BASE}/illustrations/states/seasons/drought.webp`,
+    Decay: `${ASSET_BASE}/illustrations/states/seasons/decay.webp`,
+    Frostbite: `${ASSET_BASE}/illustrations/states/seasons/frostbite.webp`,
+  } satisfies Record<CorruptedSeasonVariant, string>,
+  awakenedFlowers: {
+    Plum: `${ASSET_BASE}/illustrations/states/flowers/plum-awakened.webp`,
+    Orchid: `${ASSET_BASE}/illustrations/states/flowers/orchid-awakened.webp`,
+    Chrysanthemum: `${ASSET_BASE}/illustrations/states/flowers/chrysanthemum-awakened.webp`,
+    Bamboo: `${ASSET_BASE}/illustrations/states/flowers/bamboo-awakened.webp`,
+  } satisfies Record<FlowerVariant, string>,
+  decreeStickers: {
+    Eternal: `${ASSET_BASE}/illustrations/states/badges/eternal.webp`,
+    Perishable: `${ASSET_BASE}/illustrations/states/badges/perishable.webp`,
+    Rental: `${ASSET_BASE}/illustrations/states/badges/rental.webp`,
+  } satisfies Record<StickerType, string>,
+  results: {
+    victory: `${ASSET_BASE}/illustrations/states/results/victory.webp`,
+    defeat: `${ASSET_BASE}/illustrations/states/results/defeat.webp`,
+    endlessCompletion: `${ASSET_BASE}/illustrations/states/results/endless-completion.webp`,
   },
   pairsUpgrade: `${ASSET_BASE}/illustrations/upgrades/pairs.webp`,
-  victoryResult: `${ASSET_BASE}/illustrations/results/victory.webp`,
-  defeatResult: `${ASSET_BASE}/illustrations/results/defeat.webp`,
   ceruleanBell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
   mandates: {
     amber_acorn: `${ASSET_BASE}/illustrations/amber-acorn.webp`,
@@ -107,7 +127,6 @@ export const illustrationAssets = {
     crimson_heart: `${ASSET_BASE}/illustrations/crimson-heart.webp`,
     cerulean_bell: `${ASSET_BASE}/illustrations/cerulean-bell.webp`,
   },
-  journeyResult: `${ASSET_BASE}/illustrations/journey-result.webp`,
   beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.webp`,
   tableTools: `${ASSET_BASE}/illustrations/table-tools.webp`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.webp`,

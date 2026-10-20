@@ -156,14 +156,15 @@ for (const language of ['en', 'es'])
     await expect(dialog.locator('[data-catalyst-consequences]')).toContainText(
       copy.shop.catalyst.loss2
     )
-    // The Flower choices show full-size art (the close icon is not one).
+    // The Flower choices show art sharp at 2x (the close icon is not one);
+    // awakened portraits ship at 224px, base blooms at 512px.
     for (const img of await dialog.locator('[data-flower-catalyst] img').all())
       expect(
         await img.evaluate(async (img: HTMLImageElement) => {
           await img.decode()
-          return img.naturalWidth
+          return img.naturalWidth >= 224 && img.naturalWidth >= 2 * img.width
         })
-      ).toBe(512)
+      ).toBe(true)
     expect(
       await dialog
         .locator('[data-flower-catalyst]')

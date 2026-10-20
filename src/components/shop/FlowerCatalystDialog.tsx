@@ -4,7 +4,7 @@ import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { Decree, FlowerCollection } from '../../systems/types'
 import type { ShopResult } from '../../game/ShopSession'
 import { useItemText } from '../../i18n/useItemText'
-import { flowerIllustrations } from '../../utils/assets'
+import { getFlowerArt } from '../../utils/itemArt'
 import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
 import { Popup } from '../ui/Popup'
 import { Button } from '../ui/Button'
@@ -90,7 +90,7 @@ export function FlowerCatalystDialog({
                   className="h-5 w-5 shrink-0 accent-amber-300"
                 />
                 <img
-                  src={flowerIllustrations[flower.type]}
+                  src={getFlowerArt(flower)}
                   alt=""
                   aria-hidden="true"
                   width={48}

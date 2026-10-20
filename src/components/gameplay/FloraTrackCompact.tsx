@@ -6,11 +6,8 @@ import type { FlowerVariant, SeasonTile } from '../../systems/types'
 import { TileSuit } from '../../core/Tile'
 import { FLOWER_BASE_EFFECTS } from '../../systems/FlowerSystem'
 import { FLOWER_DATA, SEASON_DATA } from './gameplayTypes'
-import {
-  getTileImagePath,
-  illustrationAssets,
-  flowerIllustrations,
-} from '../../utils/assets'
+import { getTileImagePath } from '../../utils/assets'
+import { getFlowerArt, getSeasonArt } from '../../utils/itemArt'
 import { AnchoredPopover } from '../ui/AnchoredPopover'
 import { eventBus } from '../../game/EventBus'
 
@@ -206,9 +203,10 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
           )}
           <ul className="space-y-3">
             {FLOWERS.map((flower) => {
-              const awakened = flora.flowers.flowers.some(
-                (owned) => owned.type === flower && owned.mutation?.isUnlocked
+              const owned = flora.flowers.flowers.find(
+                (entry) => entry.type === flower
               )
+              const awakened = !!owned?.mutation?.isUnlocked
               return (
                 <li
                   key={flower}
@@ -217,7 +215,7 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                   className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
                 >
                   <img
-                    src={flowerIllustrations[flower]}
+                    src={getFlowerArt(owned ?? flower)}
                     alt=""
                     aria-hidden="true"
                     draggable={false}
@@ -333,27 +331,11 @@ export function FloraTrackCompact({ flora }: FloraTrackCompactProps) {
                   className="flex min-w-0 gap-2 rounded-lg bg-black/15 p-2"
                 >
                   <img
-                    src={
-                      effect === 'Spring'
-                        ? illustrationAssets.springBlossom
-                        : effect === 'Summer'
-                          ? illustrationAssets.summerFan
-                          : effect === 'Autumn'
-                            ? illustrationAssets.autumnMaple
-                            : effect === 'Winter'
-                              ? illustrationAssets.winterPine
-                              : getTileImagePath(
-                                  TileSuit.Season,
-                                  SEASON_DATA[season.type].rank
-                                )
-                    }
+                    src={getSeasonArt(season)}
                     alt=""
                     aria-hidden="true"
                     draggable={false}
-                    className={
-                      'h-14 w-10 shrink-0 object-contain ' +
-                      (season.isCorrupted ? 'grayscale' : '')
-                    }
+                    className="h-14 w-10 shrink-0 object-contain"
                   />
                   <div className="min-w-0 flex-1">
                     <h4

@@ -7,6 +7,8 @@ declare global {
     __artGame: import('../src/game/GameOrchestrator').GameOrchestrator
     __artEvents: typeof import('../src/game/EventBus').eventBus
     __artOrbs: typeof import('../src/systems/CelestialOrbSystem')
+    __artTile: typeof import('../src/core/Tile')
+    __artDecrees: typeof import('../src/systems/DecreeSystem')
     __artClear: () => void
   }
 }
@@ -22,12 +24,16 @@ async function prepareArtFixture(page: Page) {
     import { gameOrchestrator } from '/src/game/GameOrchestrator.ts';
     import { eventBus } from '/src/game/EventBus.ts';
     import * as orbs from '/src/systems/CelestialOrbSystem.ts';
+    import * as tile from '/src/core/Tile.ts';
+    import * as decrees from '/src/systems/DecreeSystem.ts';
     import { useDecreeRevealQueue } from '/src/game/decreeRevealQueue.ts';
     import { useFloraRevealQueue } from '/src/game/floraRevealQueue.ts';
     import { useOrbRevealQueue } from '/src/game/orbRevealQueue.ts';
     window.__artGame = gameOrchestrator;
     window.__artEvents = eventBus;
     window.__artOrbs = orbs;
+    window.__artTile = tile;
+    window.__artDecrees = decrees;
     window.__artClear = () => {
       useDecreeRevealQueue.setState({ queue: [] });
       useFloraRevealQueue.setState({ queue: [] });
@@ -71,13 +77,13 @@ for (const width of [320, 390, 1280]) {
       const reveal = page.locator('[data-flora-reveal] img')
       await expect(reveal).toHaveAttribute(
         'src',
-        new RegExp(`/seasons/${corruption}.webp$`)
+        new RegExp(`/states/seasons/${corruption}.webp$`)
       )
       await expect(reveal).not.toHaveClass(/grayscale/)
       expect(
         await reveal.evaluate(async (img: HTMLImageElement) => {
           await img.decode()
-          return img.naturalWidth === 256
+          return img.naturalWidth === 224
         })
       ).toBe(true)
       await clearArtReveals(page)
@@ -85,7 +91,7 @@ for (const width of [320, 390, 1280]) {
       await token.scrollIntoViewIfNeeded()
       await expect(token.locator('img')).toHaveAttribute(
         'src',
-        new RegExp(`/seasons/${corruption}.webp$`)
+        new RegExp(`/states/seasons/${corruption}.webp$`)
       )
       await expect(token).not.toHaveClass(/grayscale/)
       expect(
@@ -160,6 +166,106 @@ for (const width of [320, 390, 1280]) {
     await page.screenshot({ path: testInfo.outputPath('pairs.png') })
   })
 
+  test(`awakened Flower and Decree sticker art remain usable at ${width}px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize({ width, height: 740 })
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await prepareArtFixture(page)
+    // Collecting all four Flowers lets a duplicate Plum awaken the one held.
+    await page.evaluate(() => {
+      const { Tile, FlowerType } = window.__artTile
+      const flowers = window.__artGame.getState().flowerSystem
+      for (const type of [
+        FlowerType.Plum,
+        FlowerType.Orchid,
+        FlowerType.Chrysanthemum,
+        FlowerType.Bamboo,
+        FlowerType.Plum,
+      ])
+        flowers.addFlower(Tile.createFlower(type))
+      window.__artEvents.emit('flowerCollected', {
+        flowerType: String(FlowerType.Plum),
+        totalFlowers: 4,
+      })
+    })
+    const reveal = page.locator('[data-flora-reveal="flower"] img')
+    await expect(reveal).toHaveAttribute(
+      'src',
+      /\/states\/flowers\/plum-awakened.webp$/
+    )
+    expect(
+      await reveal.evaluate(async (img: HTMLImageElement) => {
+        await img.decode()
+        return img.naturalWidth === 224
+      })
+    ).toBe(true)
+    await clearArtReveals(page)
+    const plum = page.locator('[data-flora-flower="Plum"]')
+    await plum.scrollIntoViewIfNeeded()
+    await expect(plum.locator('img')).toHaveAttribute(
+      'src',
+      /\/states\/flowers\/plum-awakened.webp$/
+    )
+    await expect(
+      page.locator('[data-flora-flower="Orchid"] img')
+    ).toHaveAttribute('src', /\/orchid-bloom.webp$/)
+
+    await page.evaluate(() => {
+      const game = window.__artGame
+      const decree = window.__artDecrees.ALL_DECREES.find(
+        (d) => d.id === 'river_tax'
+      )!
+      const added = game.addDecree(
+        {
+          ...decree,
+          stickers: [
+            { type: 'Eternal' },
+            { type: 'Perishable', roundsRemaining: 4 },
+            { type: 'Rental', goldPerRound: 2 },
+          ],
+        },
+        'generated'
+      )
+      if (!added) throw new Error('Decree fixture failed')
+    })
+    await clearArtReveals(page)
+    const badges = page.locator('[data-decree-instance] [data-sticker-badge]')
+    await expect(badges).toHaveCount(3)
+    await expect(badges.nth(1)).toHaveText('4')
+    await expect(badges.nth(2)).toHaveText('2')
+    for (const badge of await badges.all()) {
+      expect(
+        await badge.evaluate(async (el) => {
+          const img = el.querySelector('img')!
+          await img.decode()
+          const r = el.getBoundingClientRect()
+          const art = img.getBoundingClientRect()
+          return (
+            img.naturalWidth === 64 &&
+            art.width >= 18 &&
+            r.left >= 0 &&
+            r.right <= innerWidth
+          )
+        })
+      ).toBe(true)
+    }
+    const card = page
+      .locator('[data-decree-instance]')
+      .filter({ has: page.locator('[data-sticker-badge]') })
+    await card.click()
+    const details = page.getByRole('dialog').locator('[data-decree-modifiers]')
+    await expect(details.locator('[data-sticker-badge] img')).toHaveCount(3)
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth
+      )
+    ).toBe(true)
+    await page.screenshot({
+      path: testInfo.outputPath('awakened-stickers.png'),
+    })
+  })
+
   for (const outcome of ['victory', 'defeat', 'endless']) {
     test(`${outcome} ending art at ${width}px`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 740 })
@@ -190,17 +296,17 @@ for (const width of [320, 390, 1280]) {
       const art = page.locator('[data-result-art]')
       await expect(art).toHaveAttribute(
         'src',
-        outcome === 'endless'
-          ? /journey-result.webp$/
-          : new RegExp(`/results/${outcome}.webp$`)
+        new RegExp(
+          `/states/results/${outcome === 'endless' ? 'endless-completion' : outcome}.webp$`
+        )
       )
       expect(
         await art.evaluate(async (img: HTMLImageElement) => {
           await img.decode()
           const r = img.getBoundingClientRect()
           return (
-            img.naturalWidth === 1200 &&
-            img.naturalHeight === 400 &&
+            img.naturalWidth === 960 &&
+            img.naturalHeight === 320 &&
             r.left >= 0 &&
             r.right <= innerWidth
           )

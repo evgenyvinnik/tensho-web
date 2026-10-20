@@ -281,7 +281,11 @@ test('defeat explains the failed round and Rental debt, with art and reachable p
         await img.decode()
         return [img.naturalWidth, img.naturalHeight]
       })
-  ).toEqual([1200, 400])
+  ).toEqual([960, 320])
+  await expect(page.locator('[data-result-art]')).toHaveAttribute(
+    'src',
+    /\/states\/results\/defeat\.webp$/
+  )
   await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
   const settled = await snapshot(page)
   await page.reload()

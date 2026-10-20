@@ -115,7 +115,12 @@ export function ShopOfferCard({
         }}
       >
         <span className="shop-offer-art flex w-full items-center justify-center">
-          <OfferArt offering={offering} tileSize="large" emblemSize={44} />
+          <OfferArt
+            offering={offering}
+            tileSize="large"
+            emblemSize={44}
+            showStickers
+          />
         </span>
         <span
           data-shop-offer-price

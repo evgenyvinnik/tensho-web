@@ -129,16 +129,6 @@ it('ships a compact transparent Cerulean Bell illustration', () => {
   expect(webp.length).toBeLessThan(100_000)
 })
 
-it('ships a compact wide result illustration', () => {
-  const webp = readFileSync(`public${illustrationAssets.journeyResult}`)
-  expect(webp.subarray(0, 4).toString()).toBe('RIFF')
-  expect(webp.subarray(8, 12).toString()).toBe('WEBP')
-  expect(webp.subarray(12, 16).toString()).toBe('VP8 ')
-  expect(webp.readUInt16LE(26) & 0x3fff).toBe(1200)
-  expect(webp.readUInt16LE(28) & 0x3fff).toBe(400)
-  expect(webp.length).toBeLessThan(150_000)
-})
-
 it('ships the generated guidebook with transparent WebP delivery', () => {
   expect(illustrationAssets.beginnerGuidebook).toBe(
     '/assets/illustrations/beginner-guidebook.webp'

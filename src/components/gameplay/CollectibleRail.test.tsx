@@ -11,6 +11,7 @@ import { VOID_SCRIPTS, VoidScriptSystem } from '../../systems/VoidScriptSystem'
 import { eventBus } from '../../game/EventBus'
 import { runRandom } from '../../game/RunRandom'
 import { FlowerType, Tile } from '../../core/Tile'
+import { illustrationAssets } from '../../utils/assets'
 
 afterEach(() => {
   eventBus.clear()
@@ -187,6 +188,28 @@ it('tells a Plum how many tiles it recovered from the river', () => {
   expect(document.querySelector('[data-plum-recovery]')).toHaveTextContent(
     'Plum returned tiles from the river: 1.'
   )
+})
+
+it('pictures a Flower as awakened only once its own duplicate awakens it', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  const flowers = game.getState().flowerSystem
+  for (const type of [
+    FlowerType.Plum,
+    FlowerType.Orchid,
+    FlowerType.Chrysanthemum,
+    FlowerType.Bamboo,
+    FlowerType.Plum,
+  ])
+    flowers.addFlower(Tile.createFlower(type))
+  renderRail({ flora: game.getFloraState() })
+  const art = (type: string) =>
+    document
+      .querySelector(`[data-flora-flower="${type}"] img`)!
+      .getAttribute('src')
+  expect(art('Plum')).toBe(illustrationAssets.awakenedFlowers.Plum)
+  expect(art('Orchid')).toBe(illustrationAssets.orchidBloom)
+  expect(art('Bamboo')).toBe(illustrationAssets.bambooBloom)
 })
 
 it('tells a Flower when a Decree shields it from Drought', () => {

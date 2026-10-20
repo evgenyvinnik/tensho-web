@@ -26,7 +26,13 @@ import {
 } from './assets'
 import { getGeneratedArt, getYakuIllustration } from './generatedArt'
 import { getOmenIllustration } from './omenArt'
-import type { FlowerVariant, PackType, SeasonTile } from '../systems/types'
+import type {
+  FlowerTile,
+  FlowerVariant,
+  PackType,
+  SeasonTile,
+  StickerType,
+} from '../systems/types'
 
 export type ItemArtKind =
   | 'decrees'
@@ -146,9 +152,17 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
   }
 }
 
-/** Flower and Season art (both already have their own illustrations). */
-export function getFlowerArt(flower: FlowerVariant): string {
-  return flowerIllustrations[flower]
+/**
+ * Flower and Season art. A Flower shows its awakened portrait only while its
+ * own mutation is unlocked; a bare variant always resolves to the base bloom.
+ */
+export function getFlowerArt(
+  flower: FlowerVariant | Pick<FlowerTile, 'type' | 'mutation'>
+): string {
+  if (typeof flower === 'string') return flowerIllustrations[flower]
+  return flower.mutation?.isUnlocked
+    ? illustrationAssets.awakenedFlowers[flower.type]
+    : flowerIllustrations[flower.type]
 }
 
 const SEASON_ART: Record<string, string> = {
@@ -170,4 +184,9 @@ export function getSeasonArt(
   return Object.prototype.hasOwnProperty.call(SEASON_ART, type)
     ? SEASON_ART[type]
     : illustrationAssets.codex.flora
+}
+
+/** Emblem for a Decree sticker; its countdown or fee stays live text. */
+export function getStickerArt(sticker: StickerType): string {
+  return illustrationAssets.decreeStickers[sticker]
 }

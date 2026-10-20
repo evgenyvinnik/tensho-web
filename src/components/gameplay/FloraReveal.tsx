@@ -39,9 +39,14 @@ export function FloraReveal({
     current.kind === 'flower'
       ? t('flora.' + current.flower.toLowerCase())
       : seasonName(current.season)
+  // The collected Flower carries the awakening, which a duplicate can unlock.
   const art =
     current.kind === 'flower'
-      ? getFlowerArt(current.flower)
+      ? getFlowerArt(
+          flora.flowers.flowers.find(
+            (owned) => owned.type === current.flower
+          ) ?? current.flower
+        )
       : getSeasonArt(current.season)
 
   return (

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { DecreeCardCompact } from './DecreeBar'
 import type { OwnedDecree } from '../../systems/types'
 import { ALL_DECREES, STARTER_DECREES } from '../../systems/DecreeSystem'
-import { getDecreeIllustration } from '../../utils/assets'
+import { getDecreeIllustration, illustrationAssets } from '../../utils/assets'
 
 const decree: OwnedDecree = {
   id: 'river_tax',
@@ -69,6 +69,34 @@ describe('DecreeCardCompact mandate states', () => {
     ).toBeNull()
     expect(screen.queryByTitle(/Rental/)).not.toBeInTheDocument()
     expect(onSell).not.toHaveBeenCalled()
+  })
+  it('draws each sticker emblem with its live countdown and fee, hidden face-down', () => {
+    const owned: OwnedDecree = {
+      ...decree,
+      stickers: [
+        { type: 'Eternal' },
+        { type: 'Perishable', roundsRemaining: 2 },
+        { type: 'Rental', goldPerRound: 5 },
+      ],
+    }
+    const { container, rerender } = render(<DecreeCardCompact decree={owned} />)
+    const badges = Array.from(
+      container.querySelectorAll<HTMLElement>('[data-sticker-badge]')
+    )
+    expect(
+      badges.map((badge) => [
+        badge.dataset.stickerBadge,
+        badge.querySelector('img')!.getAttribute('src'),
+        badge.textContent,
+      ])
+    ).toEqual([
+      ['Eternal', illustrationAssets.decreeStickers.Eternal, ''],
+      ['Perishable', illustrationAssets.decreeStickers.Perishable, '2'],
+      ['Rental', illustrationAssets.decreeStickers.Rental, '5'],
+    ])
+    expect(badges[2]).toHaveAttribute('title', expect.stringContaining('5'))
+    rerender(<DecreeCardCompact decree={owned} faceDown />)
+    expect(container.querySelector('[data-sticker-badge]')).toBeNull()
   })
   it.each([
     ...STARTER_DECREES,

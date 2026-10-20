@@ -2,10 +2,28 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { SeasonSystem } from '../systems/SeasonSystem'
-import { illustrationAssets } from './assets'
-import { getItemArt, getSeasonArt } from './itemArt'
+import { FLOWER_MUTATIONS } from '../systems/FlowerSystem'
+import type { FlowerVariant, StickerType } from '../systems/types'
+import { flowerIllustrations, illustrationAssets } from './assets'
+import {
+  getFlowerArt,
+  getItemArt,
+  getSeasonArt,
+  getStickerArt,
+} from './itemArt'
 
-describe('Season and upgrade artwork', () => {
+/** A transparent square WebP of the given edge, small enough for the cache. */
+function expectTransparentSquare(path: string, edge: number, maxBytes: number) {
+  const bytes = readFileSync(`public${path}`)
+  expect(bytes.subarray(8, 12).toString()).toBe('WEBP')
+  expect(bytes.subarray(12, 16).toString()).toBe('VP8X')
+  expect(bytes[20] & 0x10).toBe(0x10)
+  expect(bytes.readUIntLE(24, 3) + 1).toBe(edge)
+  expect(bytes.readUIntLE(27, 3) + 1).toBe(edge)
+  expect(bytes.length).toBeLessThan(maxBytes)
+}
+
+describe('Season, Flower, sticker and result artwork', () => {
   it.each(['Spring', 'Summer', 'Autumn', 'Winter'] as const)(
     'distinguishes healthy and corrupted %s without losing identity',
     (type) => {
@@ -14,7 +32,7 @@ describe('Season and upgrade artwork', () => {
       const season = seasons.getSeasonStack()[0]
       const art = getSeasonArt(season)
       expect(art).toContain(
-        `/seasons/${season.corruptedType!.toLowerCase()}.webp`
+        `/states/seasons/${season.corruptedType!.toLowerCase()}.webp`
       )
       expect(getSeasonArt({ ...season, isCorrupted: false })).toBe(
         getSeasonArt(type)
@@ -22,13 +40,38 @@ describe('Season and upgrade artwork', () => {
       expect(getSeasonArt({ ...season, corruptedType: undefined })).toBe(
         getSeasonArt(type)
       )
-      const bytes = readFileSync(`public${art}`)
-      expect(bytes.subarray(8, 12).toString()).toBe('WEBP')
-      expect(bytes.subarray(12, 16).toString()).toBe('VP8X')
-      expect(bytes[20] & 0x10).toBe(0x10)
-      expect(bytes.readUIntLE(24, 3) + 1).toBe(256)
-      expect(bytes.readUIntLE(27, 3) + 1).toBe(256)
-      expect(bytes.length).toBeLessThan(80_000)
+      expectTransparentSquare(art, 224, 40_000)
+    }
+  )
+
+  it.each(['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo'] as const)(
+    'shows awakened %s only while its own mutation is unlocked',
+    (type: FlowerVariant) => {
+      const base = flowerIllustrations[type]
+      const mutation = FLOWER_MUTATIONS[type]
+      expect(getFlowerArt(type)).toBe(base)
+      expect(getFlowerArt({ type })).toBe(base)
+      expect(
+        getFlowerArt({ type, mutation: { ...mutation, isUnlocked: false } })
+      ).toBe(base)
+      const awakened = getFlowerArt({
+        type,
+        mutation: { ...mutation, isUnlocked: true },
+      })
+      expect(awakened).toBe(illustrationAssets.awakenedFlowers[type])
+      expect(awakened).toContain(
+        `/states/flowers/${type.toLowerCase()}-awakened.webp`
+      )
+      expectTransparentSquare(awakened, 224, 40_000)
+    }
+  )
+
+  it.each(['Eternal', 'Perishable', 'Rental'] as const)(
+    'ships a tiny transparent %s sticker emblem',
+    (type: StickerType) => {
+      const art = getStickerArt(type)
+      expect(art).toContain(`/states/badges/${type.toLowerCase()}.webp`)
+      expectTransparentSquare(art, 64, 5_000)
     }
   )
 
@@ -44,17 +87,14 @@ describe('Season and upgrade artwork', () => {
   })
 
   it('ships three different compact ending scenes', () => {
-    const paths = [
-      illustrationAssets.victoryResult,
-      illustrationAssets.defeatResult,
-      illustrationAssets.journeyResult,
-    ]
-    const hashes = paths.map((path) => {
+    const { victory, defeat, endlessCompletion } = illustrationAssets.results
+    const hashes = [victory, defeat, endlessCompletion].map((path) => {
       const bytes = readFileSync(`public${path}`)
       expect(bytes.subarray(8, 12).toString()).toBe('WEBP')
-      expect(bytes.readUInt16LE(26) & 0x3fff).toBe(1200)
-      expect(bytes.readUInt16LE(28) & 0x3fff).toBe(400)
-      expect(bytes.length).toBeLessThan(150_000)
+      expect(bytes.subarray(12, 16).toString()).toBe('VP8 ')
+      expect(bytes.readUInt16LE(26) & 0x3fff).toBe(960)
+      expect(bytes.readUInt16LE(28) & 0x3fff).toBe(320)
+      expect(bytes.length).toBeLessThan(100_000)
       return createHash('sha256').update(bytes).digest('hex')
     })
     expect(new Set(hashes).size).toBe(3)

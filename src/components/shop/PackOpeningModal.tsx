@@ -353,7 +353,7 @@ function PackContentCard({
             </span>
           )}
           <span className="pack-choice-figure">
-            <OfferArt offering={offer} tileSize="large" />
+            <OfferArt offering={offer} tileSize="large" showStickers />
           </span>
         </span>
 

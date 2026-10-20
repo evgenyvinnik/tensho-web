@@ -312,7 +312,7 @@ export function CollectibleRail({
       <CollectibleToken
         key={flower.id}
         label={t('flora.' + flower.type.toLowerCase())}
-        art={getFlowerArt(flower.type)}
+        art={getFlowerArt(flower)}
         tone="#f9a8d4"
         dimmed={flora.flowersSuppressed}
         badge={flower.mutation?.isUnlocked ? '✦' : undefined}

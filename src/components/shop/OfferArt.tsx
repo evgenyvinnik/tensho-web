@@ -7,6 +7,7 @@
 
 import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
 import type { BlessingPack, Decree } from '../../systems/types'
+import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { getItemArt } from '../../utils/itemArt'
 import { getDecreeScrollIllustration } from '../../utils/assets'
@@ -14,18 +15,23 @@ import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { TileImage } from '../tiles/TileImage'
 import type { TileSize } from '../../styles/theme'
 import { DECREE_ICON_COLORS } from '../gameplay/gameplayTypes'
+import { decreeModifierText } from '../../i18n/decreeModifiers'
+import { StickerBadge } from '../ui/StickerBadge'
 
 export function OfferArt({
   offering,
   large = false,
   tileSize = 'small',
   emblemSize,
+  showStickers = false,
 }: {
   offering: Pick<TeaHouseOffering, 'itemType' | 'item'>
   large?: boolean
   tileSize?: TileSize
   /** Pixel size of the emblem drawn over a family's shared art. */
   emblemSize?: number
+  /** Pin a Decree's stickers to the corner; details panels list them instead. */
+  showStickers?: boolean
 }) {
   const size = large ? 'h-24 w-24' : 'h-full w-full'
   switch (offering.itemType) {
@@ -50,6 +56,7 @@ export function OfferArt({
               />
             </span>
           )}
+          {showStickers && <DecreeStickers decree={decree} />}
         </span>
       )
     }
@@ -85,6 +92,31 @@ export function OfferArt({
       )
     }
   }
+}
+
+/** A Decree's stickers, pinned to the art's corner; the details name them. */
+function DecreeStickers({ decree }: { decree: Decree }) {
+  const { t, i18n } = useTranslation()
+  const stickers = decreeModifierText(decree, t, i18n.language).filter(
+    (entry) => entry.kind === 'sticker'
+  )
+  if (!stickers.length) return null
+  return (
+    <span
+      data-offer-stickers
+      aria-hidden="true"
+      className="absolute right-0 top-0 flex flex-col items-end gap-0.5"
+    >
+      {stickers.map((entry) => (
+        <StickerBadge
+          key={entry.id}
+          type={entry.id}
+          value={entry.value}
+          size={20}
+        />
+      ))}
+    </span>
+  )
 }
 
 export default OfferArt

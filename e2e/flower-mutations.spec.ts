@@ -173,16 +173,20 @@ for (const language of ['en', 'es'])
       )
     }
     const awakened = await saved()
-    // Each Flower's own token pictures it and states its awakened rule.
+    // Each Flower's own token pictures it awakened and states its rule.
     const dialog = page.getByRole('dialog')
     for (const type of ['Plum', 'Orchid', 'Chrysanthemum', 'Bamboo']) {
       const token = page.locator(`[data-flora-flower="${type}"]`)
+      await expect(token.locator('img')).toHaveAttribute(
+        'src',
+        new RegExp(`/states/flowers/${type.toLowerCase()}-awakened\\.webp$`)
+      )
       expect(
         await token.locator('img').evaluate(async (img: HTMLImageElement) => {
           await img.decode()
           return img.naturalWidth
         })
-      ).toBe(512)
+      ).toBe(224)
       await activate(token)
       const rule = dialog.locator(`[data-flora-mutation="${type}"]`)
       await expect(rule).toContainText(copy.flora.mutations.awakened)

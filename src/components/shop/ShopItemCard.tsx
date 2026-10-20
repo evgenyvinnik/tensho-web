@@ -40,6 +40,7 @@ import {
   type DecreeModifierSource,
 } from '../../i18n/decreeModifiers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
+import { StickerBadge } from '../ui/StickerBadge'
 import { getDecreeStickers } from '../../systems/decreeStickers'
 import { ControlIcon } from '../ui/ControlIcon'
 
@@ -205,44 +206,16 @@ interface StickerIndicatorProps {
 function StickerIndicator({ sticker }: StickerIndicatorProps) {
   const { t, i18n } = useTranslation()
   const details = decreeModifierText({ sticker }, t, i18n.language)[0]
-  const getStyle = (): {
-    bg: string
-    text: string
-  } => {
-    switch (sticker.type) {
-      case 'Eternal':
-        return {
-          bg: 'bg-blue-600',
-          text: 'text-blue-100',
-        }
-      case 'Perishable':
-        return {
-          bg: 'bg-orange-600',
-          text: 'text-orange-100',
-        }
-      case 'Rental':
-        return {
-          bg: 'bg-yellow-600',
-          text: 'text-yellow-100',
-        }
-      default:
-        return {
-          bg: 'bg-gray-600',
-          text: 'text-gray-100',
-        }
-    }
-  }
-
-  const style = getStyle()
-
+  if (details?.kind !== 'sticker') return null
   return (
-    <div
-      className={`px-1.5 py-0.5 rounded text-xs font-bold ${style.bg} ${style.text}`}
-      title={`${details.name}: ${details.description}`}
-      aria-hidden="true"
-    >
-      {details.badge}
-    </div>
+    <span aria-hidden="true">
+      <StickerBadge
+        type={details.id}
+        value={details.value}
+        size={20}
+        title={`${details.name}: ${details.description}`}
+      />
+    </span>
   )
 }
 

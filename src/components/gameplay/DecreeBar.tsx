@@ -34,6 +34,7 @@ import { useItemText } from '../../i18n/useItemText'
 import { decreeModifierText } from '../../i18n/decreeModifiers'
 import { hasDecreeSticker } from '../../systems/decreeStickers'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
+import { StickerBadge } from '../ui/StickerBadge'
 import { RandomCopyDetails } from '../ui/RandomCopyDetails'
 import { CopyCostDetails } from '../ui/CopyCostDetails'
 import { AusterityDetails } from '../ui/AusterityDetails'
@@ -322,17 +323,17 @@ export function DecreeCardCompact({
 
         {!!stickerText.length && !faceDown && (
           <span
-            className="absolute right-0 top-0 flex gap-0.5"
+            className="absolute -right-1 -top-1 flex flex-col items-end gap-0.5"
             aria-hidden="true"
           >
             {stickerText.map((entry) => (
-              <span
+              <StickerBadge
                 key={entry.id}
+                type={entry.id}
+                value={entry.value}
+                size={18}
                 title={`${entry.name}: ${entry.description}`}
-                className="flex h-4 min-w-4 items-center justify-center rounded-full border border-amber-200/80 bg-[#14251d] px-1 text-[9px] font-black text-amber-100 shadow"
-              >
-                {entry.badge}
-              </span>
+              />
             ))}
           </span>
         )}

@@ -3,6 +3,7 @@ import {
   decreeModifierText,
   type DecreeModifierSource,
 } from '../../i18n/decreeModifiers'
+import { StickerBadge } from './StickerBadge'
 
 export function DecreeModifierDetails({
   decree,
@@ -22,7 +23,10 @@ export function DecreeModifierDetails({
     >
       {entries.map((entry) => (
         <div key={entry.id}>
-          <dt className="font-bold text-[var(--color-golden-yellow)]">
+          <dt className="flex items-center gap-1.5 font-bold text-[var(--color-golden-yellow)]">
+            {entry.kind === 'sticker' && (
+              <StickerBadge type={entry.id} size={20} />
+            )}
             {entry.name}
           </dt>
           <dd className="text-[var(--color-beige-white)]/90">
