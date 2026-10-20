@@ -1231,7 +1231,7 @@
       "missing": "Sin recoger",
       "noSeasons": "No hay estaciones en esta ronda.",
       "suppressed": "La Sequía anula las bonificaciones de puntuación de tus flores.",
-      "protected": "Un edicto protege tus flores de la Sequía.",
+      "protected": "Un Decreto protege tus flores de la Sequía.",
       "decayPenalty": "Penalización por jugada de Decadencia: −{{points}} puntos.",
       "partial": "Algunas reglas estacionales siguen en desarrollo. Solo se muestran los efectos actuales.",
       "unwired": "Aún no implementado.",
@@ -1254,7 +1254,7 @@
       "orchidBloom": "La orquídea robó fichas adicionales: {{count}}. Los robos adicionales no se encadenan.",
       "flowerChrysanthemum": "+{{percent}}% de puntuación por grupo oculto.",
       "flowerBamboo": "+{{percent}}% de puntuación por ficha terminal.",
-      "setTwo": "2 flores: +1 espacio de edicto.",
+      "setTwo": "2 flores: +1 espacio de Decreto.",
       "setThree": "3 flores: desbloquean Decretos potenciados por flores en la tienda y los sobres de Decretos.",
       "setFour": "4 flores: bonificaciones de flores dobles."
     },

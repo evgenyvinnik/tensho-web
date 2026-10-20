@@ -25,7 +25,7 @@
   },
   "decreeUnlocks": {
     "decree-blueprint": "赢得一局挑战。",
-    "decree-brainstorm": "持有至少五道敕令并赢得挑战。",
+    "decree-brainstorm": "持有至少五个法令并赢得挑战。",
     "decree-heavenly-ordinance": "以役满得分。",
     "decree-clone-army": "在黄金底注下赢得挑战。",
     "decree-yakuman-blessing": "在同一次挑战中以三个役满牌型得分。",
@@ -61,8 +61,8 @@
   },
   "runOwnership": {
     "fateSeal": "牌的变化会持续整个本局，包括后续回合。新开一局会重置。",
-    "negativeTile": "只要这张负片牌仍属于你的牌山，就提供+1敕令槽位。摸牌或弃牌不会移除槽位；销毁此牌或更换版本会移除槽位。",
-    "overCapacity": "容量减少：已有敕令不会丢失。获得更多敕令前需腾出空间。"
+    "negativeTile": "只要这张负片牌仍属于你的牌山，就提供+1法令槽位。摸牌或弃牌不会移除槽位；销毁此牌或更换版本会移除槽位。",
+    "overCapacity": "容量减少：已有法令不会丢失。获得更多法令前需腾出空间。"
   },
   "yakuUpgrades": {
     "title": "役种升级",
@@ -102,7 +102,7 @@
   "decreeModifiers": {
     "eternalCannotSell": "永恒 · 无法出售",
     "eternalCannotSellNamed": "{{name}}具有永恒贴纸，无法出售",
-    "eternalConflictDescription": "无法阻止失败：永恒贴纸使此敕令无法消耗自身。",
+    "eternalConflictDescription": "无法阻止失败：永恒贴纸使此法令无法消耗自身。",
     "eternalName": "永恒",
     "eternalDescription": "无法出售或摧毁。",
     "perishableName": "易逝",
@@ -448,18 +448,18 @@
       "confirm": "消耗{{flower}}并购买"
     },
     "availability": {
-      "decreeSpace": "敕令槽位已满。查看持有的敕令以腾出空间。",
+      "decreeSpace": "法令槽位已满。查看持有的法令以腾出空间。",
       "flowerCount": "需要{{required}}张花牌；当前持有{{current}}张。",
-      "flowers": "此敕令需要更多花牌。",
+      "flowers": "此法令需要更多花牌。",
       "unavailable": "暂不可购买"
     },
     "build": {
-      "title": "持有敕令",
-      "slots": "敕令槽位 {{used}} / {{max}}",
-      "empty": "尚无敕令。购买的卷轴会显示在这里。",
-      "sellPrompt": "以{{gold}}金币出售{{name}}？它将从持有的敕令中移除。",
+      "title": "持有法令",
+      "slots": "法令槽位 {{used}} / {{max}}",
+      "empty": "尚无法令。购买的卷轴会显示在这里。",
+      "sellPrompt": "以{{gold}}金币出售{{name}}？它将从持有的法令中移除。",
       "sold": "已出售{{name}}。",
-      "saleFailed": "无法出售敕令。持有的敕令未改变。"
+      "saleFailed": "无法出售法令。持有的法令未改变。"
     },
     "ui": {
       "rarity_common": "普通",
@@ -490,7 +490,7 @@
       "omen": "征兆"
     },
     "packChoices": "从 {{count}} 个奖励中选择最多 {{max}} 个",
-    "packInventoryFull": "敕令槽位不足，无法领取所选奖励。请减少敕令或跳过卡包。",
+    "packInventoryFull": "法令槽位不足，无法领取所选奖励。请减少法令或跳过卡包。",
     "inventoryFull": "物品栏空间不足，无法领取此奖励。",
     "skipRewards": "跳过奖励",
     "purchaseFailed": "无法完成购买。",
@@ -535,7 +535,7 @@
       "buy": "点击任意物品查看效果，再点购买。法令改变规则，消耗品在回合中使用，祝福包可挑选奖励，特许状强化整局游戏。",
       "interest": "保留的金币会产生利息：回合结束时每持有5金币+1（最多+{{cap}}）。",
       "cashOut": "进入茶寮时，上一局的金币会进入钱袋，每个来源各有一条提示：回合通过、利息、法令、金牌以及扣除的租金。",
-      "build": "“你的配置”列出持有的敕令，打开卷轴可查看规则或出售。每次购买都通过对应的购买按钮完成。"
+      "build": "“你的配置”列出持有的法令，打开卷轴可查看规则或出售。每次购买都通过对应的购买按钮完成。"
     }
   },
   "decrees": {
@@ -1144,7 +1144,7 @@
         "description": "每回合行动+2"
       },
       "decree-immortal-decree": {
-        "name": "不死勅令",
+        "name": "不死法令",
         "description": "防止所有失败（但分数减半）"
       },
       "decree-omega": {
@@ -1219,7 +1219,7 @@
       "ready": "再开花已解锁。再次摸到已拥有的花牌，会使其在本局冒险中觉醒。",
       "awakened": "已觉醒",
       "plum": "每次出牌最多让两组顺子共用一张牌。完整手牌可以只用13张。",
-      "orchid": "龙牌在花牌和敕令计分时按两张字牌计算。不会复制牌或役的面子。",
+      "orchid": "龙牌在花牌和法令计分时按两张字牌计算。不会复制牌或役的面子。",
       "chrysanthemum": "暗手每组面子获得×{{factor}}，替代菊花的普通加成。对子不计入。",
       "bamboo": "1或9可以与两个相邻点数组成顺子。牌面和牌的分值保持不变。"
     },
@@ -1241,7 +1241,7 @@
       "autumn": "役种倍率+20%。每摸到一张普通的秋，本回合免费重抽+1。",
       "winter": "同花色顺子可跳过一个数字（1–2–4或1–3–4）。得分 ×0.75。",
       "drought": "压制未受保护的花牌得分加成。",
-      "frostbite": "每层冻伤都会再次减半敕令带来的点数、倍率、金币和重复触发奖励。牌本身的效果、规则许可、容量、行动次数与费用不变。",
+      "frostbite": "每层冻伤都会再次减半法令带来的点数、倍率、金币和重复触发奖励。牌本身的效果、规则许可、容量、行动次数与费用不变。",
       "decay": "本回合每次重抽得分−10，最低为0。",
       "droughtName": "干旱",
       "monsoonName": "季风",
@@ -1255,7 +1255,7 @@
       "flowerChrysanthemum": "每组暗面子得分 +{{percent}}%。",
       "flowerBamboo": "每张老头牌得分 +{{percent}}%。",
       "setTwo": "2 种花牌：+1 法令槽。",
-      "setThree": "3 种花牌：在商店和敕令包中解锁由花牌强化的敕令。",
+      "setThree": "3 种花牌：在商店和法令包中解锁由花牌强化的法令。",
       "setFour": "4 种花牌：花牌加成翻倍。"
     },
     "flowers": "花牌",
@@ -1353,7 +1353,7 @@
     "shortfall": "差额分数",
     "remainingGold": "剩余金币",
     "rentalPaid": "扣除租金",
-    "defeatIncome": "失败时仍会扣除租金，但不会发放轮次奖励、利息、敕令收益或手中金牌的收益。",
+    "defeatIncome": "失败时仍会扣除租金，但不会发放轮次奖励、利息、法令收益或手中金牌的收益。",
     "endlessComplete": "无尽攀登结束",
     "victorySubtitle": "你已赢得第8幕的决战。胜利已被记录。",
     "endlessSubtitle": "本次攀登虽已结束，你的胜利记录仍然保留。",
@@ -1509,9 +1509,9 @@
       "noSmallRoundReward": "小局不再提供奖励金币。",
       "scoreScaling": "目标分数在第1幕与白场相同，之后每幕提高，自第{{act}}幕起为白场的{{multiplier}}倍，牌桌修正仍然生效。",
       "redrawPenalty": "每回合行动：−{{amount}}。",
-      "eternalChance": "商店敕令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
-      "perishableChance": "没有永恒贴纸的商店敕令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后削弱）。",
-      "rentalChance": "商店敕令有{{chance}}的概率带有租赁贴纸（购买花费{{price}}金币，之后每局支付{{fee}}金币）。"
+      "eternalChance": "商店法令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
+      "perishableChance": "没有永恒贴纸的商店法令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后削弱）。",
+      "rentalChance": "商店法令有{{chance}}的概率带有租赁贴纸（购买花费{{price}}金币，之后每局支付{{fee}}金币）。"
     },
     "title": "难度等级",
     "white": "白级",
@@ -2599,7 +2599,7 @@
         "theme": "皇家",
         "unlock": "持有至少5个法令并获胜",
         "modifiers": {
-          "0": "携带1个随机地区敕令开始"
+          "0": "携带1个随机区域令开始"
         },
         "name": "御金台",
         "description": "出自宫廷的华美之桌，镶嵌金箔与美玉。"

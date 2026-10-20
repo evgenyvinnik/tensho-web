@@ -89,8 +89,8 @@
       "content": "Pumapasok sa pitaka ang bayad ng round pagdating mo; sinasabi ng bawat abiso kung para saan ito. Bumili ng mga item na nagtutugma, o mag-ipon para sa interes. I-tap ang anumang item para makita ang ginagawa nito bago bilhin."
     },
     "decrees": {
-      "title": "Mga Decree",
-      "content": "Nananatili sa iyo ang mga Decree at maaaring magbago ng puntos, pera, mga tile, o mga kamay na pinapayagan. Basahin ang paglalarawan bago ibatay ang diskarte sa mga ito o ibenta ang mga ito."
+      "title": "Mga Dekreto",
+      "content": "Nananatili sa iyo ang mga Dekreto at maaaring magbago ng puntos, pera, mga tile, o mga kamay na pinapayagan. Basahin ang paglalarawan bago ibatay ang diskarte sa mga ito o ibenta ang mga ito."
     },
     "boss": {
       "title": "Round ng boss",
@@ -657,9 +657,9 @@
     "completeToUnlockStage": "Buuin ang lahat ng {{count}} tile para ma-unlock ang Stage Hand",
     "tilesRange": "{{min}}–{{max}} TILE",
     "sellFor": "Ibenta sa {{value}}G",
-    "sellHidden": "Ibenta ang nakatagong Decree",
+    "sellHidden": "Ibenta ang nakatagong Dekreto",
     "sellNamed": "Ibenta ang {{name}}",
-    "hiddenDecree": "nakatagong Decree",
+    "hiddenDecree": "nakatagong Dekreto",
     "coach": {
       "pointsShort": "Puntos ngayon",
       "shapeShort": "Isang grupo",
@@ -725,13 +725,13 @@
       "prompt": "Ipagpalit ang isang Bulaklak sa {{name}} sa halip na {{cost}}G.",
       "choose": "Piliin ang Bulaklak na gagamitin.",
       "empty": "Kumuha muna ng Bulaklak bago makipagpalitan.",
-      "warning": "Mauubos ang Bulaklak; babalik ang kapangyarihan nito kapag nakuha muli. Mananatili ang paggising nito sa run na ito. Maibebenta ang Kautusang ito sa 0G.",
+      "warning": "Mauubos ang Bulaklak; babalik ang kapangyarihan nito kapag nakuha muli. Mananatili ang paggising nito sa run na ito. Maibebenta ang Dekretong ito sa 0G.",
       "givenUp": "Mga kapangyarihang isusuko",
-      "slots": "Mga puwesto ng Kautusan pagkatapos: {{used}} / {{max}}.",
-      "loss2": "Mas kaunti sa dalawang Bulaklak: mawawala ang dagdag na puwesto ng Kautusan.",
+      "slots": "Mga puwesto ng Dekreto pagkatapos: {{used}} / {{max}}.",
+      "loss2": "Mas kaunti sa dalawang Bulaklak: mawawala ang dagdag na puwesto ng Dekreto.",
       "loss3": "Mas kaunti sa tatlong Bulaklak: muling malala-lock ang mga pagpipiliang gumagamit ng Bulaklak sa tindahan at mga pack.",
       "loss4": "Mas kaunti sa apat na Bulaklak: babalik sa normal ang bisa ng mga Bulaklak.",
-      "noSpace": "Maglaan ng puwesto para sa Kautusang ito matapos mawala ang puwesto mula sa Bulaklak.",
+      "noSpace": "Maglaan ng puwesto para sa Dekretong ito matapos mawala ang puwesto mula sa Bulaklak.",
       "confirm": "Gamitin ang {{flower}} at bumili"
     },
     "availability": {
@@ -802,8 +802,8 @@
     "selectionConfirmed": "Nakumpirma ang Pinili!",
     "packSkipped": "Nilaktawan ang Pack",
     "kinds": {
-      "decree": "Decree · {{rarity}}",
-      "decreeHelp": "Ang Decree ay permanenteng patakaran sa larong ito. Gumagamit ito ng isang slot at puwedeng ibenta anumang oras.",
+      "decree": "Dekreto · {{rarity}}",
+      "decreeHelp": "Ang Dekreto ay permanenteng patakaran sa larong ito. Gumagamit ito ng isang slot at puwedeng ibenta anumang oras.",
       "seal": "Selyo ng Kapalaran · gamitin sa round",
       "orb": "Orb ng Kalangitan · ina-upgrade ang isang pamilya ng kamay",
       "script": "Balumbon ng Kawalan · malakas, may kapalit",
@@ -819,16 +819,16 @@
     "buyFor": "Bilhin · {{price}} ginto",
     "help": {
       "what": "Ang Bahay ng Tsaa ay tindahan sa pagitan ng mga round.",
-      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Decree ang patakaran, ginagamit sa round ang consumable, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Kasulatan ang buong laro.",
+      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Dekreto ang patakaran, ginagamit sa round ang consumable, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Kasulatan ang buong laro.",
       "interest": "May interes ang gintong itinatabi mo: +1 bawat 5 na hawak mo pagtatapos ng round, hanggang +{{cap}}.",
       "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, mga gintong tile, at anumang sinisingil na upa.",
       "build": "Nakalista sa build mo ang mga Dekreto mo; buksan ang balumbon para basahin ang mga tuntunin o ibenta ito. Bawat bili ay may sariling Bilhin."
     }
   },
   "decrees": {
-    "title": "Mga Decree",
+    "title": "Mga Dekreto",
     "titleJp": "法令",
-    "slots": "Mga Slot ng Decree",
+    "slots": "Mga Slot ng Dekreto",
     "empty": "Walang Laman na Slot",
     "rarity": {
       "common": "Lokal na Edikto",
@@ -916,7 +916,7 @@
       },
       "decree-infinite-loop": {
         "name": "Walang Hanggang Loop",
-        "description": "Sa dulo ng bawat Akto, nire-regenerate ang lahat ng decree charge"
+        "description": "Sa dulo ng bawat Akto, nire-regenerate ang lahat ng charge ng Dekreto"
       },
       "decree-misty-jade": {
         "name": "Jade sa Hamog",
@@ -1518,7 +1518,7 @@
       "missing": "Hindi pa nakolekta",
       "noSeasons": "Walang season sa round na ito.",
       "suppressed": "Pinipigil ng Tagtuyot ang mga bonus sa puntos ng bulaklak.",
-      "protected": "Pinoprotektahan ng isang kautusan ang mga bonus ng bulaklak mula sa Tagtuyot.",
+      "protected": "Pinoprotektahan ng isang Dekreto ang mga bonus ng bulaklak mula sa Tagtuyot.",
       "decayPenalty": "Bawas ng Pagkabulok sa bawat laro ng kamay: −{{points}} puntos.",
       "partial": "Ginagawa pa ang ilang tuntunin ng season. Mga kasalukuyang epekto lang ang ipinapakita.",
       "unwired": "Hindi pa naipapatupad.",
@@ -1541,7 +1541,7 @@
       "orchidBloom": "Dagdag na tile na nabunot ng Orkidyas: {{count}}. Hindi nagkakadena ang dagdag na bunot.",
       "flowerChrysanthemum": "+{{percent}}% puntos sa bawat nakatagong grupo.",
       "flowerBamboo": "+{{percent}}% puntos sa bawat terminal tile.",
-      "setTwo": "2 bulaklak: +1 puwesto ng kautusan.",
+      "setTwo": "2 bulaklak: +1 puwesto ng Dekreto.",
       "setThree": "3 bulaklak: binubuksan ang mga Dekretong pinapalakas ng bulaklak sa tindahan at mga pakete ng Dekreto.",
       "setFour": "4 bulaklak: doble ang mga bonus ng bulaklak."
     },
@@ -1663,11 +1663,11 @@
     "items": {
       "amber_acorn": {
         "name": "Bungang Akorn na Ambar",
-        "description": "Binabalasa at itinataob ang lahat ng Decree"
+        "description": "Binabalasa at itinataob ang lahat ng Dekreto"
       },
       "verdant_leaf": {
         "name": "Dahong Luntian",
-        "description": "Mahina ang lahat ng tile hanggang makapagbenta ng 1 Decree"
+        "description": "Mahina ang lahat ng tile hanggang makapagbenta ng 1 Dekreto"
       },
       "violet_vessel": {
         "name": "Sisidlang Lila",
@@ -1675,7 +1675,7 @@
       },
       "crimson_heart": {
         "name": "Pusong Pula",
-        "description": "Isang random na Decree ang hindi gumagana sa bawat siklo ng paglalaro"
+        "description": "Isang random na Dekreto ang hindi gumagana sa bawat siklo ng paglalaro"
       },
       "cerulean_bell": {
         "name": "Asul na Kampana",
@@ -1833,14 +1833,14 @@
     "ready": {
       "title": "Handa Ka Na!",
       "note1": "Puwede mong <1>i-reroll</1> ang alok ng tindahan sa halagang 5 ginto. Bawat reroll ay dagdag ng 1.",
-      "note2": "Ang pag-iipon ng <1>25 ginto pataas</1> ang nagpapalaki ng interes! Pero kadalasan mas sulit ang gastusin ito sa magagandang Decree.",
+      "note2": "Ang pag-iipon ng <1>25 ginto pataas</1> ang nagpapalaki ng interes! Pero kadalasan mas sulit ang gastusin ito sa magagandang Dekreto.",
       "p1": "Huwag mo nang isaulo ang lahat — matututo ka habang naglalaro!",
       "note3": "Puwede kang bumalik sa kodeks na ito mula sa menu ng mga setting kapag kailangan mong magbalik-aral."
     },
     "game_concept": {
       "p1": "Hindi tulad ng tradisyunal na Mahjong na nilalaro laban sa kalaban, ang Tensho ay <1>palaisipang pang-isahan</1>. Ang kalaban mo ay ang target na iskor, hindi ibang manlalaro.",
       "p2": "Binubuo ang bawat takbo ng ilang <2>Yugto</2>, at may <5>3 round</5> ang bawat Yugto. Tumataas ang target na iskor habang sumusulong ka.",
-      "p3": "Sa pagitan ng mga round, bibisita ka sa <2>Bahay ng Tsaa</2> (tindahan) para kumuha ng malalakas na <5>Decree</5> na bumabago ng patakaran at nagpapataas ng iyong puntos."
+      "p3": "Sa pagitan ng mga round, bibisita ka sa <2>Bahay ng Tsaa</2> (tindahan) para kumuha ng malalakas na <5>Dekreto</5> na bumabago ng patakaran at nagpapataas ng iyong puntos."
     },
     "tiles_overview": {
       "p1": "Gumagamit ang laro ng kabuuang <1>144 tile</1>:"
@@ -1937,43 +1937,43 @@
     },
     "decree_categories": {
       "note1": "<1>Nagpaparami</1> ang mga yaku kapag nagsalansan! Ang kamay na may yaku na ×1.3 at ×2.0 ay nagiging ×2.6 lahat. Bumuo ng kombinasyon para sa malalaking iskor!",
-      "p1": "Nakaayos ang mga Decree sa <1>5 kategorya</1>:"
+      "p1": "Nakaayos ang mga Dekreto sa <1>5 kategorya</1>:"
     },
     "acts_rounds": {
       "p1": "Nahahati ang takbo mo sa mga <1>Yugto</1>, at may <3>3 round</3> ang bawat Yugto:",
       "p2": "Tumataas ang target bawat Yugto. Madali ang Yugto 1, pero pagsapit ng Yugto 8 kailangan mo ng malalakas na kombinasyon para mabuhay!"
     },
     "decree_slots": {
-      "note1": "May mga Decree na tumutulong laban sa tiyak na mandato. Planuhin ang build mo nang naaayon!",
+      "note1": "May mga Dekreto na tumutulong laban sa tiyak na mandato. Planuhin ang build mo nang naaayon!",
       "li1": "<0>Baguhin ang pagpuntos</0> — Magdagdag ng multiplier o tiyak na bonus",
       "li2": "<0>Baluktutin ang patakaran</0> — Baguhin kung ano ang wastong kamay",
       "li3": "<0>Magbigay ng kakayahan</0> — Dagdag na pagbunot, muling pagbunot, o epekto",
-      "p1": "May limitadong bilang ka ng <1>slot ng Decree</1>. Nagsisimula ka sa <3>5 slot</3> at makadaragdag sa pamamagitan ng:"
+      "p1": "May limitadong bilang ka ng <1>slot ng Dekreto</1>. Nagsisimula ka sa <3>5 slot</3> at makadaragdag sa pamamagitan ng:"
     },
     "decree_rarities": {
-      "p1": "May <1>4 na antas ng kabihiraan</1> ang mga Decree:"
+      "p1": "May <1>4 na antas ng kabihiraan</1> ang mga Dekreto:"
     },
     "decrees_intro": {
-      "p1": "Ang <0>mga Decree (法令)</0> ay mga baraha na bumabago ng patakaran at nananatili sa buong takbo. Ituring mo silang katumbas ng «Jokers» sa Balatro.",
-      "p2": "Kaya ng mga Decree na:"
+      "p1": "Ang <0>mga Dekreto (法令)</0> ay mga baraha na bumabago ng patakaran at nananatili sa buong takbo. Ituring mo silang katumbas ng «Jokers» sa Balatro.",
+      "p2": "Kaya ng mga Dekreto na:"
     },
     "flowers_system": {
       "li1": "<0>Gumawa ng ginto</0> — Pampalakas ng ekonomiya",
       "p1": "Nagbibigay ang <0>mga Bulaklak</0> ng <3>permanenteng bonus</3> na tumatagal sa buong takbo:",
-      "p2": "Ang pagkolekta ng maraming bulaklak ay nagbubukas ng <2>set bonus</2>: 2 bulaklak = +1 slot ng Decree, 4 na bulaklak = doble ang bisa ng bulaklak!"
+      "p2": "Ang pagkolekta ng maraming bulaklak ay nagbubukas ng <2>set bonus</2>: 2 bulaklak = +1 slot ng Dekreto, 4 na bulaklak = doble ang bisa ng bulaklak!"
     },
     "interest": {
-      "note1": "Mas bihira ang Decree, mas mahal at mas madalang sa tindahan. Ang sinerhiya ng ilang karaniwang Decree ay nakabubuo rin ng malakas na kombinasyon!",
+      "note1": "Mas bihira ang Dekreto, mas mahal at mas madalang sa tindahan. Ang sinerhiya ng ilang karaniwang Dekreto ay nakabubuo rin ng malakas na kombinasyon!",
       "p1": "Sa katapusan ng bawat round, kumikita ka ng <2>interes</2> sa naipong ginto:"
     },
     "hierarchy": {
       "li1": "Kolektahin ang <1>set ng Bulaklak</1> (2+ bulaklak = +1 slot)",
       "li2": "Bumili ng <1>Imperyal na Kartilya</1>",
-      "li3": "Ilang <1>epekto ng Decree</1>",
+      "li3": "Ilang <1>epekto ng Dekreto</1>",
       "p1": "Kapag nagsalungat ang mga epekto, gumagamit ang Tensho ng <2>hirarkiya ng awtoridad</2>:"
     },
     "tips": {
-      "note1": "Puwede mong <1>ibenta</1> ang mga Decree para sa ginto. Nagbabakante ito ng slot at ibinabalik ang kalahati ng presyo."
+      "note1": "Puwede mong <1>ibenta</1> ang mga Dekreto para sa ginto. Nagbabakante ito ng slot at ibinabalik ang kalahati ng presyo."
     },
     "seasons_system": {
       "p1": "Ang <0>mga Panahon</0> ay <3>pansamantalang modifier</3> na tumatagal lamang sa kasalukuyang round:"
@@ -1982,8 +1982,8 @@
       "note1": "Mula Yugto 2, puwedeng lumitaw ang <2>Nasirang Panahon</2> na may negatibong epekto!",
       "li1": "<0>Panalo sa round</0> — Lumalaki ang batayang bayad kasabay ng iskor",
       "li2": "<0>Interes</0> — 1 ginto kada 5 gintong naipon (hanggang 5 kada round)",
-      "li3": "<0>Pagbebenta ng Decree</0> — Makukuha ang kalahati ng presyo",
-      "li4": "<0>Epekto ng Decree</0> — May ilang gumagawa ng ginto"
+      "li3": "<0>Pagbebenta ng Dekreto</0> — Makukuha ang kalahati ng presyo",
+      "li4": "<0>Epekto ng Dekreto</0> — May ilang gumagawa ng ginto"
     },
     "tea_house": {
       "p1": "Pagkatapos ng bawat round, bibisita ka sa <2>Bahay ng Tsaa (茶寮)</2> para gastusin ang ginto mo:"
@@ -2013,7 +2013,7 @@
     "score": {
       "title": "Paano nagpupuntos",
       "p1": "Bawat laro ay nagpupuntos:",
-      "note": "Ang mas malalaking kamay, Dragon, Globo at Decree ay nagpapataas ng Mult, at ang Mult ang nagpaparami sa lahat."
+      "note": "Ang mas malalaking kamay, Dragon, Globo at Dekreto ay nagpapataas ng Mult, at ang Mult ang nagpaparami sa lahat."
     },
     "points": {
       "title": "Puntos ng tile",
@@ -2048,7 +2048,7 @@
     "toggleSound": "I-toggle ang Tunog"
   },
   "codex": {
-    "decrees": "Mga Decree",
+    "decrees": "Mga Dekreto",
     "economy": "Ekonomiya",
     "finish": "Simulan ang Laro!",
     "flora": "Flora",
@@ -2397,10 +2397,10 @@
         "theme": "Mapalad",
         "unlock": "Tapusin ang yugto 3",
         "modifiers": {
-          "0": "+1 puwesto ng kautusan sa simula"
+          "0": "+1 puwesto ng Dekreto sa simula"
         },
         "name": "Pulang Barnis",
-        "description": "Isang marangyang mesa na binalutan ng matingkad na pulang barnis, sagisag ng suwerte at kasaganaan. Humihikayat ang mapalad na kulay ng dagdag na mga Decree."
+        "description": "Isang marangyang mesa na binalutan ng matingkad na pulang barnis, sagisag ng suwerte at kasaganaan. Humihikayat ang mapalad na kulay ng dagdag na mga Dekreto."
       },
       "bamboo_mat": {
         "theme": "Likas",
@@ -2413,7 +2413,7 @@
       },
       "imperial_gold": {
         "theme": "Maharlika",
-        "unlock": "Manalo na may 5 o higit pang kautusan",
+        "unlock": "Manalo na may 5 o higit pang Dekreto",
         "modifiers": {
           "0": "Magsimula sa 1 random na panrehiyong mandato"
         },
@@ -2422,10 +2422,10 @@
       },
       "night_market": {
         "theme": "Lansangan",
-        "unlock": "Bumili ng kabuuang 20 kautusan sa lahat ng pagtakbo",
+        "unlock": "Bumili ng kabuuang 20 Dekreto sa lahat ng pagtakbo",
         "modifiers": {
           "0": "Presyo sa tindahan −20%",
-          "1": "−1 puwesto ng kautusan"
+          "1": "−1 puwesto ng Dekreto"
         },
         "name": "Pamilihan sa Gabi",
         "description": "Isang pansamantalang mesa sa mataong pamilihan sa gabi na sinisindihan ng mga parolang papel. May diskuwento ang mga tindero, ngunit limitado ang espasyo."
@@ -2731,7 +2731,7 @@
     "points": "Puntos",
     "mult": "Mult",
     "score": "Puntos",
-    "scoreHelp": "Ang puntos ay halaga ng mga tile dagdag ang bonus ng bawat grupo. Nagsisimula sa 1 ang Mult at lumalaki sa mas malalaking kamay, Dragon, Orb at Decree. Kalahati lang ang tile na wala sa grupo.",
+    "scoreHelp": "Ang puntos ay halaga ng mga tile dagdag ang bonus ng bawat grupo. Nagsisimula sa 1 ang Mult at lumalaki sa mas malalaking kamay, Dragon, Orb at Dekreto. Kalahati lang ang tile na wala sa grupo.",
     "handsTitle": "Mga kamay",
     "patternRule": "Bawat grupo pagkatapos ng una ay +1 Mult. Ang triplet at straight na apat ay +1 pa, ang quad at straight na lima ay +2. Isang beses lang bibilangin ang bawat tile; hanggang 6 na tile bawat laro maliban sa buong kamay ng Mahjong.",
     "tilesTitle": "Mga tile",
@@ -2762,9 +2762,9 @@
     "tiles_face_down_after_play": "Nakataob ang bagong tile",
     "fixed_draw_count": "Laging kumuha ng {{count}}",
     "honor_tiles_face_down": "Nakataob ang Honors",
-    "shuffle_decrees": "Nakatago ang mga Decree",
-    "debuff_until_sell": "0 lahat ng tile hanggang magbenta ng Decree",
-    "disable_random_decree": "1 Decree patay bawat laro",
+    "shuffle_decrees": "Nakatago ang mga Dekreto",
+    "debuff_until_sell": "0 lahat ng tile hanggang magbenta ng Dekreto",
+    "disable_random_decree": "1 Dekreto patay bawat laro",
     "lock_random_tile": "May tile na naka-lock bawat kuha"
   },
   "upgradeFamilies": {
@@ -2832,9 +2832,9 @@
     "done": "Sige"
   },
   "decreeReveal": {
-    "title": "Bagong Decree: {{name}}",
-    "starting": "Panimulang Decree",
-    "acquired": "Bagong Decree"
+    "title": "Bagong Dekreto: {{name}}",
+    "starting": "Panimulang Dekreto",
+    "acquired": "Bagong Dekreto"
   },
   "orbReveal": {
     "used": "Nagamit ang Orb ng Kalangitan",
