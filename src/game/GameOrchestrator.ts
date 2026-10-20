@@ -2416,7 +2416,7 @@ export class GameOrchestrator {
         description: effectResult.description,
       })
     }
-    this.settleOrbUse(orb, before)
+    this.settleOrbUse(orb, before, false)
 
     return { success: true, effects }
   }
@@ -2444,14 +2444,19 @@ export class GameOrchestrator {
       name: orb.name,
       source,
     })
-    this.settleOrbUse(orb, before)
+    this.settleOrbUse(orb, before, true)
     return true
   }
 
-  /** Shared aftermath of a successful Orb use: history and announcement. */
+  /**
+   * Shared aftermath of a successful Orb use: history and announcement.
+   * `onAcquire` marks a Tea House use as the Orb is taken; a rail use keeps
+   * the Orb's provenance in `source` but is not one.
+   */
   private settleOrbUse(
     orb: CelestialOrb,
-    before: Map<YakuCategory, number>
+    before: Map<YakuCategory, number>,
+    onAcquire: boolean
   ): void {
     this.state.fateSealSystem.setLastUsedConsumable(orb)
     const levels: { yaku: YakuCategory; from: number; to: number }[] = []
@@ -2468,6 +2473,7 @@ export class GameOrchestrator {
           ? 0
           : this.state.celestialOrbSystem.getYakuLevel(orb.effect.targetYaku),
       levels,
+      onAcquire,
     })
   }
 

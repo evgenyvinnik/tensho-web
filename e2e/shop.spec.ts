@@ -288,7 +288,7 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
     '5 de Bambúes · Marca de Oro'
   )
   await expect(choices.nth(0)).toHaveAccessibleDescription(
-    'La ficha puntúa de más. +30 Fichas al puntuar'
+    'La ficha puntúa de más. +30 Puntos al puntuar'
   )
   await expect(choices.nth(1)).toHaveAccessibleDescription(
     'Genera oro. +3 de oro si la conservas al final de la ronda'

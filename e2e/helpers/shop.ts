@@ -88,7 +88,15 @@ export async function collectCashOut(
       .locator('[data-cash-out-toast]')
       .evaluateAll((nodes) =>
         nodes.map((node) => {
-          const rect = node.getBoundingClientRect()
+          // The resting box, not the transformed one: a toast slides in from
+          // past the screen edge, clipped there, and that is not overflow.
+          // A toast hidden for a moment has no offset parent and no box.
+          const toast = node as HTMLElement
+          const origin = toast.offsetParent?.getBoundingClientRect().left ?? 0
+          const rect = {
+            left: origin + toast.offsetLeft,
+            right: origin + toast.offsetLeft + toast.offsetWidth,
+          }
           return {
             id: node.getAttribute('data-cash-out-toast')!,
             value: node.getAttribute('data-payout-value'),

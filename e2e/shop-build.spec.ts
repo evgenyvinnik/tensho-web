@@ -151,7 +151,7 @@ for (const negative of [false, true]) {
     const target = panel.locator(
       `[data-decree-instance="${negative ? info.negative : info.ordinary}"]`
     )
-    const stoneImage = protectedCard.locator('img')
+    const stoneImage = protectedCard.locator('img.game-illustration')
     expect(
       await stoneImage.evaluate(async (img: HTMLImageElement) => {
         await img.decode()

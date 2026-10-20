@@ -205,6 +205,8 @@ export interface GameEventData {
     source?: ConsumableSource
     /** Every family the Orb levelled, with the level it left and reached. */
     levels?: { yaku: string; from: number; to: number }[]
+    /** Applied by the Tea House as it was bought or chosen, not from the rail. */
+    onAcquire?: boolean
   }
   voidScriptUsed: { scriptId: string; effect: string; downside: string }
 
