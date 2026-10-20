@@ -15,7 +15,6 @@ import { TableStyleButton } from '../menu/TableStyleButton'
 import {
   backgroundAssets,
   getTileImagePath,
-  preloadMenuAssets,
   preloadTileImages,
 } from '../../utils/assets'
 import { useAudio } from '../../hooks/useAudio'
@@ -371,11 +370,9 @@ export function MenuScreen() {
   // saved-run recovery, or update controls. Keep the existing entrance animation.
   useEffect(() => {
     setShowContent(true)
-    void Promise.all([preloadMenuAssets(), preloadTileImages()]).catch(
-      (err) => {
-        console.error('Failed to load assets:', err)
-      }
-    )
+    void preloadTileImages().catch((err) => {
+      console.error('Failed to load assets:', err)
+    })
   }, [])
 
   // Title animation

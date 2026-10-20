@@ -44,40 +44,10 @@ export function getTileBackPath(): string {
 // UI Asset Paths
 // ============================================================================
 
-export const menuAssets = {
-  background: `${MAHJONG_PNG_BASE}/menu screen/BG.png`,
-  title: `${MAHJONG_PNG_BASE}/menu screen/Title.png`,
-  playButton: `${MAHJONG_PNG_BASE}/menu screen/Play Button.png`,
-  optionButton: `${MAHJONG_PNG_BASE}/menu screen/Option Button.png`,
-  bottom: `${MAHJONG_PNG_BASE}/menu screen/Botom.png`,
-} as const
-
-export const gameScreenAssets = {
-  background: `${MAHJONG_PNG_BASE}/game screen/BG.png`,
-  barTop: `${MAHJONG_PNG_BASE}/game screen/Bar Top.png`,
-  barBottom: `${MAHJONG_PNG_BASE}/game screen/Bar Bottom.png`,
-  bar1: `${MAHJONG_PNG_BASE}/game screen/Bar (1).png`,
-  bar2: `${MAHJONG_PNG_BASE}/game screen/Bar (2).png`,
-  button1: `${MAHJONG_PNG_BASE}/game screen/Button (1).png`,
-  button2: `${MAHJONG_PNG_BASE}/game screen/Button (2).png`,
-  icon1: `${MAHJONG_PNG_BASE}/game screen/Icon (1).png`,
-  icon2: `${MAHJONG_PNG_BASE}/game screen/Icon (2).png`,
-  icon3: `${MAHJONG_PNG_BASE}/game screen/Icon (3).png`,
-  star: `${MAHJONG_PNG_BASE}/game screen/Star.png`,
-  textArea: `${MAHJONG_PNG_BASE}/game screen/Text Area.png`,
-} as const
-
+// Only the scroll frame survives from the pack's UI; its other screens and
+// buttons were never shown and are no longer shipped or precached.
 export const popupAssets = {
   background: `${MAHJONG_PNG_BASE}/popup/BG.png`,
-  button1: `${MAHJONG_PNG_BASE}/popup/Button (1).png`,
-  button2: `${MAHJONG_PNG_BASE}/popup/Button (2).png`,
-  button3: `${MAHJONG_PNG_BASE}/popup/Button (3).png`,
-  button4: `${MAHJONG_PNG_BASE}/popup/Button (4).png`,
-  button5: `${MAHJONG_PNG_BASE}/popup/Button (5).png`,
-  button6: `${MAHJONG_PNG_BASE}/popup/Button (6).png`,
-  checkboxOn: `${MAHJONG_PNG_BASE}/popup/CheckBox ON.png`,
-  checkboxOff: `${MAHJONG_PNG_BASE}/popup/CheckBox OFF.png`,
-  star: `${MAHJONG_PNG_BASE}/popup/Star.png`,
 } as const
 
 /**
@@ -433,38 +403,6 @@ export async function preloadTileImages(): Promise<void> {
   tilePaths.push(getTileBackPath())
 
   await preloadImages(tilePaths)
-}
-
-/**
- * Preload menu screen assets
- */
-export async function preloadMenuAssets(): Promise<void> {
-  await preloadImages([...Object.values(menuAssets), backgroundAssets.menu])
-}
-
-/**
- * Preload game screen assets
- */
-export async function preloadGameScreenAssets(): Promise<void> {
-  await preloadImages(Object.values(gameScreenAssets))
-}
-
-/**
- * Preload all UI assets
- */
-export async function preloadAllUIAssets(): Promise<void> {
-  await Promise.all([
-    preloadMenuAssets(),
-    preloadGameScreenAssets(),
-    preloadImages(Object.values(popupAssets)),
-  ])
-}
-
-/**
- * Preload all game assets (tiles + UI)
- */
-export async function preloadAllAssets(): Promise<void> {
-  await Promise.all([preloadTileImages(), preloadAllUIAssets()])
 }
 
 /** Exact orb identity, with category art only for unknown/retired catalog entries. */
