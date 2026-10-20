@@ -2,7 +2,7 @@ import { useMemo, useState, type Ref } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
 import { tileName } from '../../i18n/tileText'
-import { getTileImagePath } from '../../utils/assets'
+import { getTileImagePath, illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
 
 export interface WallDisplayProps {
@@ -64,9 +64,14 @@ export function WallDisplay({ wallTiles, triggerRef }: WallDisplayProps) {
         title={t('gameplay.tilesInWall')}
         className="flex min-h-11 items-center gap-1.5 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] px-2.5 py-1 transition-colors hover:border-[var(--color-golden-yellow)]"
       >
-        <span className="text-xs text-[var(--color-beige-white)]/60">
-          {t('gameplay.wall')}
-        </span>
+        {/* Where each deal comes from (see WallDraw). */}
+        <img
+          src={illustrationAssets.wall}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          className="h-6 w-auto object-contain drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]"
+        />
         <span className="font-bold tabular-nums text-[var(--color-golden-yellow)]">
           {wallTiles.length.toLocaleString(i18n.language)}
         </span>

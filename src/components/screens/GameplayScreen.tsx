@@ -54,10 +54,10 @@ import {
   type HandScoreValue,
 } from '../gameplay/HandScorePreview'
 import { PlayToast, type PlayToastData } from '../gameplay/PlayToast'
-import { FloraReveal } from '../gameplay/FloraReveal'
+import { WallDraw } from '../gameplay/WallDraw'
 import { YakuReveal } from '../effects/YakuReveal'
 import { DecreeReveal } from '../effects/DecreeReveal'
-import { useDecreeRevealQueue } from '../../game/decreeRevealQueue'
+import { useFloraRevealQueue } from '../../game/floraRevealQueue'
 import { useOmenStore } from '../../stores/omenStore'
 import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
@@ -113,9 +113,7 @@ export function GameplayScreen() {
 
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showGuide, setShowGuide] = useState(() => !readGuideSeen())
-  const decreeRevealPending = useDecreeRevealQueue(
-    (state) => state.queue.length > 0
-  )
+  const wallDrawPending = useFloraRevealQueue((state) => state.queue.length > 0)
   const [actionError, setActionError] = useState<string | null>(null)
   const [targeting, setTargeting] = useState<FateSeal | VoidScript | null>(null)
   const [toast, setToast] = useState<PlayToastData | null>(null)
@@ -620,19 +618,18 @@ export function GameplayScreen() {
         />
       </div>
 
+      {/* One thing at a time: the deal, then the guide, then Decrees. */}
+      <WallDraw flora={game.flora} paused={toast !== null || tableClosed} />
       <BeginnerGuide
-        isOpen={showGuide}
+        isOpen={showGuide && !wallDrawPending}
         onClose={() => {
           markGuideSeen()
           setShowGuide(false)
         }}
       />
-      {/* One dialog at a time: the guide, then Decrees, then Flora. */}
-      <FloraReveal
-        flora={game.flora}
-        paused={toast !== null || showGuide || decreeRevealPending}
+      <DecreeReveal
+        paused={toast !== null || showGuide || wallDrawPending}
       />
-      <DecreeReveal paused={toast !== null || showGuide} />
 
       <ConfirmPopup
         isOpen={showExitConfirm}

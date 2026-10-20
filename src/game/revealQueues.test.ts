@@ -3,6 +3,7 @@ import { eventBus } from './EventBus'
 import { gameOrchestrator } from './GameOrchestrator'
 import {
   installFloraRevealQueue,
+  nextWallDraw,
   useFloraRevealQueue,
 } from './floraRevealQueue'
 import {
@@ -73,6 +74,57 @@ describe('Flora reveal queue', () => {
 
   it('installs once', () => {
     expect(installFloraRevealQueue()).toBe(uninstall[0])
+  })
+})
+
+describe('Wall draw batches', () => {
+  const kinds = () =>
+    useFloraRevealQueue.getState().queue.map((entry) => entry.kind)
+
+  it('queues a deal for each round start, after the bonus tiles it drew', () => {
+    gameOrchestrator.startNewRun(7)
+    const queue = useFloraRevealQueue.getState().queue
+    expect(queue.at(-1)?.kind).toBe('deal')
+    expect(
+      queue.slice(0, -1).every((entry) => entry.kind !== 'deal')
+    ).toBe(true)
+  })
+
+  it('shows a deal with its bonus tiles, then the bonus tiles after it', () => {
+    eventBus.emit('flowerCollected', { flowerType: '1', totalFlowers: 1 })
+    eventBus.emit('roundStart', {
+      actNumber: 1,
+      roundNumber: 2,
+      roundType: 'Large',
+      target: 450,
+    })
+    eventBus.emit('flowerCollected', { flowerType: '3', totalFlowers: 2 })
+    expect(kinds()).toEqual(['flower', 'deal', 'flower'])
+
+    const deal = nextWallDraw(useFloraRevealQueue.getState().queue)!
+    expect(deal.deal).toBe(true)
+    expect(deal.flora.map((entry) => entry.kind)).toEqual(['flower'])
+    useFloraRevealQueue.getState().dismissThrough(deal.lastKey)
+    expect(kinds()).toEqual(['flower'])
+
+    const bonus = nextWallDraw(useFloraRevealQueue.getState().queue)!
+    expect(bonus.deal).toBe(false)
+    expect(
+      bonus.flora.map((entry) => entry.kind === 'flower' && entry.flower)
+    ).toEqual(['Chrysanthemum'])
+    useFloraRevealQueue.getState().dismissThrough(bonus.lastKey)
+    expect(nextWallDraw(useFloraRevealQueue.getState().queue)).toBeNull()
+  })
+
+  it('forgets a pending deal when a save loads', () => {
+    eventBus.emit('roundStart', {
+      actNumber: 1,
+      roundNumber: 1,
+      roundType: 'Small',
+      target: 300,
+    })
+    eventBus.emit('gameLoaded', { timestamp: 0 })
+    expect(kinds()).toEqual([])
   })
 })
 

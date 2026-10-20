@@ -39,6 +39,8 @@ async function prepareArtFixture(page: Page) {
       useFloraRevealQueue.setState({ queue: [] });
       useOrbRevealQueue.setState({ queue: [] });
     };
+    // A drawn Flower or Season leaves by itself; keep it until inspected.
+    useFloraRevealQueue.setState({ dismissThrough: () => {} });
   `,
   })
   await page.waitForFunction(() => !!window.__artOrbs)
@@ -74,7 +76,7 @@ for (const width of [320, 390, 1280]) {
           effect: 'Art fixture',
         })
       }, type)
-      const reveal = page.locator('[data-flora-reveal] img')
+      const reveal = page.locator('[data-flora-reveal-art]')
       await expect(reveal).toHaveAttribute(
         'src',
         new RegExp(`/states/seasons/${corruption}.webp$`)
@@ -189,7 +191,9 @@ for (const width of [320, 390, 1280]) {
         totalFlowers: 4,
       })
     })
-    const reveal = page.locator('[data-flora-reveal="flower"] img')
+    const reveal = page.locator(
+      '[data-flora-reveal="flower"] [data-flora-reveal-art]'
+    )
     await expect(reveal).toHaveAttribute(
       'src',
       /\/states\/flowers\/plum-awakened.webp$/

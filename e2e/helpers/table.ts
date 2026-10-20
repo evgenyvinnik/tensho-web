@@ -1,12 +1,14 @@
 import { expect, type Page } from '@playwright/test'
 
-const REVEALS = '[data-decree-reveal], [data-flora-reveal], [data-orb-reveal]'
+const REVEALS =
+  '[data-wall-draw], [data-decree-reveal], [data-orb-reveal]'
 
 /**
- * Close every Decree, Flora and Orb reveal on screen. A new run reveals its
- * starting Decrees, any draw can reveal a Flower or Season, and an Orb taken
- * in the Tea House reveals the family it raised; each waits for the player
- * before the screen can be used.
+ * Close every wall draw, Decree and Orb reveal on screen. Each round opens
+ * with its deal from the Wall and any draw can fly a Flower or Season to the
+ * collection (both end by themselves; a tap skips them), a new run reveals
+ * its starting Decrees, and an Orb taken in the Tea House reveals the family
+ * it raised; the reveals wait for the player before the screen can be used.
  */
 export async function settleReveals(
   page: Page,
@@ -21,8 +23,18 @@ export async function settleReveals(
     } catch {
       return
     }
+    const wallDraw = page.locator('[data-wall-draw]')
+    if (await wallDraw.isVisible()) {
+      // A tap anywhere skips the draw; it may already have ended by itself.
+      await wallDraw
+        .dispatchEvent('pointerdown', undefined, { timeout: 1_000 })
+        .catch(() => undefined)
+      await wallDraw.waitFor({ state: 'detached', timeout: 3_000 })
+      continue
+    }
     // Only one reveal shows at a time.
     const reveal = reveals.filter({ visible: true }).first()
+    if ((await reveal.count()) === 0) continue
     const staged =
       (await reveal.getAttribute('data-decree-reveal')) !== null ||
       (await reveal.getAttribute('data-orb-reveal')) !== null

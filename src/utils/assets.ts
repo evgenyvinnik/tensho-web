@@ -99,6 +99,7 @@ export const illustrationAssets = {
   },
   beginnerGuidebook: `${ASSET_BASE}/illustrations/beginner-guidebook.webp`,
   tableTools: `${ASSET_BASE}/illustrations/table-tools.webp`,
+  wall: `${ASSET_BASE}/illustrations/wall.webp`,
   imperialCharter: `${ASSET_BASE}/illustrations/charters/imperial-charter.webp`,
   abundantStockCharter: `${ASSET_BASE}/illustrations/charters/abundant-stock.webp`,
   starChartCharter: `${ASSET_BASE}/illustrations/charters/star-chart.webp`,

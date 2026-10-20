@@ -163,8 +163,9 @@ for (const language of ['en', 'fr', 'ja'])
     }
 
     /**
-     * A Flower or Season drawn by the refill is revealed once the action's
-     * animation ends; closing the reveal changes nothing in the run.
+     * A Flower or Season drawn by the refill flies from the Wall to the
+     * collection once the action's animation ends; skipping it changes
+     * nothing in the run.
      */
     const settleDraw = async (
       before: ClassicRunSnapshot,
