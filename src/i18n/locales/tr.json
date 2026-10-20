@@ -94,7 +94,7 @@
     },
     "boss": {
       "title": "Boss turu",
-      "content": "Boss, buyruk adı verilen özel bir kural ekler. Taşlarını seçmeden önce oku; alıştığın planı değiştirmen gerekebilir."
+      "content": "Boss, hüküm adı verilen özel bir kural ekler. Taşlarını seçmeden önce oku; alıştığın planı değiştirmen gerekebilir."
     },
     "gotIt": "Anladım",
     "dontShow": "İpuçlarını gösterme"
@@ -1784,7 +1784,7 @@
         "description": "Istakan 1 taş eksik alır"
       }
     },
-    "title": "Patron Emri",
+    "title": "Patron Hükmü",
     "theHook": "Kanca",
     "theWall": "Duvar",
     "theEye": "Göz",
@@ -2425,7 +2425,7 @@
         "theme": "Kraliyet",
         "unlock": "En az 5 fermanla bir koşu kazan",
         "modifiers": {
-          "0": "Rastgele 1 bölgesel buyrukla başla"
+          "0": "Rastgele 1 Bölgesel Yetki ile başla"
         },
         "name": "İmparatorluk Altını",
         "description": "İmparatorluk sarayından, altın varak ve yeşim kakmalı görkemli bir masa. Burada oynayanlar kraliyet lütfuna erişir."

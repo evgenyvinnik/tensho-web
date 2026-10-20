@@ -539,7 +539,7 @@
   },
   "gameplay": {
     "actProgress": "Yugto {{current}} sa {{total}}",
-    "rerollMandate": "Palitan ang susunod na Mandate ng Boss na {{name}} sa halagang {{cost}} ginto",
+    "rerollMandate": "Palitan ang susunod na Mandato ng Boss na {{name}} sa halagang {{cost}} ginto",
     "moreTools": "Iba pang gamit sa mesa",
     "yakumanAscended": "Umakyat sa Yakuman",
     "beginnerShapeBonus": "+{{points}} bonus sa hugis",
@@ -758,7 +758,7 @@
       "allPurchased": "Nabili na ang lahat ng item!",
       "packs": "Mga Pakete ng Biyaya",
       "noPacks": "Walang available na pakete",
-      "imperialCharter": "Imperyal na Kasulatan",
+      "imperialCharter": "Imperyal na Karta",
       "nextRound": "Magpatuloy sa Susunod na Round",
       "confirmPurchase": "Kumpirmahin ang Pagbili",
       "purchasePrompt": "Bilhin ang {{name}} sa halagang {{cost}}G?",
@@ -813,15 +813,15 @@
       "tile": "Tile · idinadagdag sa pader",
       "tileHelp": "Idinadagdag ang tile na ito sa pader hanggang matapos ang laro.",
       "pack": "Pakete · pumili ng {{choose}} sa {{from}}",
-      "charter": "Imperyal na Kasulatan · permanenteng upgrade",
-      "charterHelp": "Ang Imperyal na Kasulatan ay permanenteng upgrade sa natitirang laro. Walang slot na ginagamit at hindi maibebenta.",
+      "charter": "Imperyal na Karta · permanenteng upgrade",
+      "charterHelp": "Ang Imperyal na Karta ay permanenteng upgrade sa natitirang laro. Walang slot na ginagamit at hindi maibebenta.",
       "orbHelp": "Ginagamit sa sandaling kunin mo: agad tumataas ang antas ng pamilya at nananatili sa buong run."
     },
     "offerLabel": "{{name}}, {{price}} ginto",
     "buyFor": "Bilhin · {{price}} ginto",
     "help": {
       "what": "Ang Bahay ng Tsaa ay tindahan sa pagitan ng mga round.",
-      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Dekreto ang patakaran, agad gumagana ang Orb at Selyo (itatanong ng Selyo kung aling mga tile sa pader mo ang babaguhin), ginagamit sa round ang Balumbon, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Kasulatan ang buong laro.",
+      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Dekreto ang patakaran, agad gumagana ang Orb at Selyo (itatanong ng Selyo kung aling mga tile sa pader mo ang babaguhin), ginagamit sa round ang Balumbon, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Karta ang buong laro.",
       "interest": "May interes ang gintong itinatabi mo: +1 bawat 5 na hawak mo pagtatapos ng round, hanggang +{{cap}}.",
       "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, mga gintong tile, at anumang sinisingil na upa.",
       "build": "Nakalista sa build mo ang mga Dekreto mo katabi ng mga pag-upgrade ng yaku: buksan ang balumbon para basahin ang mga tuntunin o ibenta ito, o ang upgrade para makita ang antas nito. Bawat bili ay may sariling Bilhin."
@@ -1978,7 +1978,7 @@
     },
     "hierarchy": {
       "li1": "Kolektahin ang <1>set ng Bulaklak</1> (2+ bulaklak = +1 slot)",
-      "li2": "Bumili ng <1>Imperyal na Kartilya</1>",
+      "li2": "Bumili ng <1>Imperyal na Karta</1>",
       "li3": "Ilang <1>epekto ng Dekreto</1>",
       "p1": "Kapag nagsalungat ang mga epekto, gumagamit ang Tensho ng <2>hirarkiya ng awtoridad</2>:"
     },
