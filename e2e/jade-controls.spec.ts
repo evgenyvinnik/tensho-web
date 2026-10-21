@@ -8,7 +8,7 @@ for (const width of [320, 390, 1280]) {
   }, testInfo) => {
     await page.setViewportSize({ width, height: 800 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('/en')
+    await page.goto('en')
     const sound = page.getByRole('button', {
       name: 'Toggle Music',
       exact: true,

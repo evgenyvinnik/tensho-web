@@ -25,7 +25,7 @@ for (const language of [
     )
     const copy = locale.achievements
     await page.setViewportSize({ width: 320, height: 568 })
-    await page.goto(`/${language}/achievements`)
+    await page.goto(`${language}/achievements`)
     await expect(page.locator('.pavilion-heading h1')).toContainText(
       copy.shortTitle
     )
@@ -123,7 +123,7 @@ for (const width of [320, 390, 1280]) {
     }, info) => {
       await page.setViewportSize({ width, height: width === 320 ? 568 : 800 })
       await page.emulateMedia({ reducedMotion: 'reduce' })
-      await page.goto(`/en/${route}`)
+      await page.goto(`en/${route}`)
       const shell = page.locator(`[data-pavilion="${route}"]`)
       await expect(shell).toBeVisible()
       await expect(shell.locator('h1')).toBeVisible()

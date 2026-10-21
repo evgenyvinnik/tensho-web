@@ -1,7 +1,6 @@
 import { expect, type Page } from '@playwright/test'
 
-const REVEALS =
-  '[data-wall-draw], [data-decree-reveal], [data-orb-reveal]'
+const REVEALS = '[data-wall-draw], [data-decree-reveal], [data-orb-reveal]'
 
 /**
  * Close every wall draw, Decree and Orb reveal on screen. Each round opens
@@ -42,8 +41,11 @@ export async function settleReveals(
   throw new Error('Reveals kept appearing')
 }
 
-/** Start a new run from the menu and wait for the table. */
-export async function startRun(page: Page, path = '/en'): Promise<void> {
+/**
+ * Start a new run from the menu and wait for the table. Default paths have no
+ * leading slash so they resolve under the production gate's /tensho-web/ base.
+ */
+export async function startRun(page: Page, path = 'en'): Promise<void> {
   await page.goto(path)
   await page.getByRole('button', { name: 'New Run', exact: true }).click()
   await expect(page).toHaveURL(/\/play$/)
@@ -61,7 +63,7 @@ export async function continueToNextRound(page: Page): Promise<void> {
 }
 
 /** Open the table directly at /play (starting or resuming a run). */
-export async function openTable(page: Page, path = '/en/play'): Promise<void> {
+export async function openTable(page: Page, path = 'en/play'): Promise<void> {
   await page.goto(path)
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
   await settleReveals(page, 2_000)

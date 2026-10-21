@@ -3,8 +3,11 @@ import { readFileSync } from 'node:fs'
 import { CURRENT_SNAPSHOT_VERSION } from '../src/game/migrateClassicSnapshot'
 import { settleReveals, turnBudget } from './helpers/table'
 
-/** What each shape's sheltering play pays under Summer. */
-const PAYMENT = { quad: 491, complete: 3090 }
+/**
+ * What each shape's sheltering play pays under Summer. The complete hand's
+ * East Wind pair pays 100 a tile inside its group.
+ */
+const PAYMENT = { quad: 491, complete: 3985 }
 /**
  * One point above that payment, so the sheltering play leaves the round open
  * and any later scoring play clears it.

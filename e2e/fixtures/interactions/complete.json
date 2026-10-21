@@ -37,7 +37,7 @@
       "handsPlayedThisRun": 0,
       "discardsRemaining": 0,
       "redrawsRemaining": 0,
-      "targetScore": 3091,
+      "targetScore": 3986,
       "handTiles": [
         {
           "suit": "manzu",
@@ -2211,7 +2211,7 @@
               "actNumber": 1,
               "roundNumber": 1,
               "roundType": "Small",
-              "scoreTarget": 3091,
+              "scoreTarget": 3986,
               "currentScore": 0,
               "handsPlayed": 0,
               "maxHands": 4,
@@ -2266,7 +2266,7 @@
           "actNumber": 1,
           "roundNumber": 1,
           "roundType": "Small",
-          "scoreTarget": 3091,
+          "scoreTarget": 3986,
           "currentScore": 0,
           "handsPlayed": 0,
           "maxHands": 4,

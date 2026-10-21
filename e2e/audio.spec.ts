@@ -144,7 +144,7 @@ test('persisted mute blocks playback and settings can independently enable SFX',
   page,
 }) => {
   await observeAudio(page, true)
-  await page.goto('/en/settings')
+  await page.goto('en/settings')
   const sfx = page.getByRole('switch', {
     name: 'Mute Sound Effects',
     exact: true,

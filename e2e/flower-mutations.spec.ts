@@ -2,9 +2,12 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { settleReveals } from './helpers/table'
 
-/** What each play pays with all four Flowers awakened. */
+/**
+ * What each play pays with all four Flowers awakened. The complete hand's
+ * East Wind pair pays 100 a tile inside its group.
+ */
 const PAYMENT: Record<string, number> = {
-  'complete-': 10210,
+  'complete-': 13672,
   'tactical-': 415,
 }
 
