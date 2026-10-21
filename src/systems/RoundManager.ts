@@ -101,8 +101,9 @@ export const BOSS_MANDATES: BossMandate[] = [
     id: 'the_mouth',
     name: 'The Mouth',
     japaneseName: '口',
-    description: 'Only one yaku type can be scored this round',
-    effect: { type: 'single_yaku_type' },
+    description:
+      'Your first play sets this round’s hand type. Any other hand scores 0',
+    effect: { type: 'single_play_pattern' },
     minAct: 2,
   },
   {

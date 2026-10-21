@@ -146,6 +146,8 @@ export interface GameEventData {
     equation: ScoreEquation
     /** What the play scored as, for the one celebration toast. */
     pattern: PlayPatternId
+    /** The Boss forbade this hand type, so it scored nothing. */
+    blocked?: boolean
   }
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }

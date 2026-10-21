@@ -102,6 +102,8 @@ export interface ScoreBreakdown {
   // Final
   subtotal: number
   finalScore: number
+  /** The Boss forbade this play's hand type (The Mouth): it scored 0. */
+  blockedByMandate?: boolean
   /** Present after the orchestrator applies all gameplay-system layers. */
   equation?: ScoreEquation
 }

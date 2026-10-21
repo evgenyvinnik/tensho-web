@@ -398,6 +398,7 @@
     "handScore": "Hand score",
     "lastHand": "Last hand",
     "hiddenScore": "Face-down tiles",
+    "notAllowed": "Not allowed",
     "turnsLeft_one": "{{formattedCount}} Turn left",
     "turnsLeft_other": "{{formattedCount}} Turns left",
     "freeRedraws": "+{{formattedCount}} free",
@@ -1406,7 +1407,7 @@
       },
       "the_mouth": {
         "name": "The Mouth",
-        "description": "Only one yaku type can be scored this round"
+        "description": "Your first play sets this round’s hand type. Any other hand scores 0"
       },
       "the_flint": {
         "name": "The Flint",
@@ -2754,7 +2755,8 @@
     "discard_after_draw": "−{{count}} random tiles per draw",
     "score_multiplier": "Target ×{{value}}",
     "no_repeat_yaku": "No repeated Yaku",
-    "single_yaku_type": "One Yaku type only",
+    "single_play_pattern": "One hand type only",
+    "single_play_pattern_locked": "Only {{pattern}} scores",
     "halve_score": "Score ×½",
     "single_hand": "Only 1 Play",
     "debuff_used_tiles": "Used tiles score 0",

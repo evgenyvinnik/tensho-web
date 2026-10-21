@@ -244,7 +244,7 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | **The Window** | 窓 | All Characters debuffed | 1 |
 | **The Manacle** | 枷 | −1 Hand Size | 1 |
 | **The Eye** | 目 | No repeat Yaku types this round | 3 |
-| **The Mouth** | 口 | Only one Yaku type can score this round | 2 |
+| **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 | 2 |
 | **The Plant** | 草 | All Honor tiles debuffed | 4 |
 | **The Serpent** | 蛇 | After play/discard, always draw 3 tiles | 5 |
 | **The Pillar** | 柱 | Tiles played earlier this Ante are debuffed | 1 |

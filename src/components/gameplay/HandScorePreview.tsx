@@ -5,6 +5,8 @@
  *
  * With nothing selected it shows the last hand played, dimmed and labelled as
  * such, so the forecast is never confused with the round's running score.
+ * A hand the Boss forbids (The Mouth) is named and marked "Not allowed", with
+ * no points or Mult, since it scores nothing.
  *
  * @module components/gameplay/HandScorePreview
  */
@@ -26,6 +28,8 @@ export interface HandScoreValue {
   /** After-score effects such as Decay; zero when there are none. */
   adjustment?: number
   total: number
+  /** The Boss forbids this hand type, so it scores 0. */
+  blocked?: boolean
 }
 
 export interface HandScorePreviewProps {
@@ -51,12 +55,16 @@ export function HandScorePreview({
   const language = i18n.resolvedLanguage ?? i18n.language
   const shown = preview ?? lastPlay
   const isLast = !preview && !!lastPlay
+  const blocked = !hidden && !!shown?.blocked
+  // A forbidden hand has no points or Mult to show, only its zero total.
+  const factors = !hidden && shown && !blocked ? shown : null
   // The engine pays floor(points × Mult) + adjustment. When the product has a
   // fraction, an arrow and a note show where it went, so the numbers add up.
-  const rounding =
-    !hidden && shown ? shownRounding(shown.points, shown.mult, language) : null
+  const rounding = factors
+    ? shownRounding(factors.points, factors.mult, language)
+    : null
   const roundingNote = rounding ? t('scoring.roundedDown', rounding) : undefined
-  const adjustment = !hidden && shown ? (shown.adjustment ?? 0) : 0
+  const adjustment = factors ? (factors.adjustment ?? 0) : 0
   const label = hidden
     ? t('gameplay.handScore', 'Hand score')
     : isLast
@@ -69,6 +77,7 @@ export function HandScorePreview({
       data-hand-score-state={
         hidden ? 'hidden' : preview ? 'preview' : isLast ? 'last' : 'empty'
       }
+      data-hand-score-blocked={blocked || undefined}
       aria-live="polite"
       aria-label={label}
       className="relative mx-auto flex w-full max-w-[20rem] flex-col items-center overflow-hidden rounded-xl border border-[var(--color-metallic-gold)]/35 bg-black/35 px-3 py-1.5 text-center shadow-inner"
@@ -97,6 +106,14 @@ export function HandScorePreview({
           : shown
             ? t(`patterns.${shown.pattern}.name`)
             : ' '}
+        {blocked && (
+          <span
+            data-hand-score-not-allowed
+            className="ml-1.5 rounded bg-red-800/90 px-1.5 text-xs uppercase tracking-wider text-red-50"
+          >
+            {t('gameplay.notAllowed')}
+          </span>
+        )}
       </p>
       {/* Wraps rather than clipping when large numbers or text don't fit. */}
       <div
@@ -108,7 +125,7 @@ export function HandScorePreview({
           data-hand-score-points
           className="min-w-[3.25rem] rounded-md bg-sky-700/85 px-2 py-0.5 text-white shadow"
         >
-          {!hidden && shown ? scoreNumber(shown.points, language).display : '—'}
+          {factors ? scoreNumber(factors.points, language).display : '—'}
         </span>
         <span aria-hidden="true" className="text-[var(--color-beige-white)]/70">
           ×
@@ -117,9 +134,7 @@ export function HandScorePreview({
           data-hand-score-mult
           className="min-w-[2.5rem] rounded-md bg-red-700/85 px-2 py-0.5 text-white shadow"
         >
-          {!hidden && shown
-            ? scoreMultiplier(shown.mult, language).display
-            : '—'}
+          {factors ? scoreMultiplier(factors.mult, language).display : '—'}
         </span>
         {adjustment !== 0 && (
           <span

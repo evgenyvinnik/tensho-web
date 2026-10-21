@@ -402,6 +402,7 @@
     "handScore": "本手得分",
     "lastHand": "上一手",
     "hiddenScore": "含暗牌",
+    "notAllowed": "不允許",
     "turnsLeft_one": "剩餘行動 {{formattedCount}}",
     "turnsLeft_other": "剩餘行動 {{formattedCount}}",
     "freeRedraws": "免費+{{formattedCount}}",
@@ -1410,7 +1411,7 @@
       },
       "the_mouth": {
         "name": "口",
-        "description": "本回合只能計一種役"
+        "description": "首次出牌決定本回合的牌型，其他牌型得0分"
       },
       "the_flint": {
         "name": "燧石",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "每次摸牌棄{{count}}張",
     "score_multiplier": "目標×{{value}}",
     "no_repeat_yaku": "役種不能重複",
-    "single_yaku_type": "只能一種役",
+    "single_play_pattern": "只能一種牌型",
+    "single_play_pattern_locked": "只有{{pattern}}得分",
     "halve_score": "得分×½",
     "single_hand": "只能出牌1次",
     "debuff_used_tiles": "用過的牌得0分",

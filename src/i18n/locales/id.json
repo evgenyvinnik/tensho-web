@@ -610,6 +610,7 @@
     "handScore": "Skor tangan",
     "lastHand": "Tangan terakhir",
     "hiddenScore": "Ubin tertutup",
+    "notAllowed": "Tidak boleh",
     "turnsLeft_one": "Sisa {{formattedCount}} giliran",
     "turnsLeft_other": "Sisa {{formattedCount}} giliran",
     "freeRedraws": "+{{formattedCount}} gratis",
@@ -1618,7 +1619,7 @@
       },
       "the_mouth": {
         "name": "Sang Mulut",
-        "description": "Hanya satu jenis yaku yang dapat dihitung ronde ini"
+        "description": "Mainan pertamamu menentukan jenis tangan ronde ini. Tangan lain bernilai 0"
       },
       "the_flint": {
         "name": "Sang Batu Api",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "−{{count}} ubin acak tiap tarik",
     "score_multiplier": "Target ×{{value}}",
     "no_repeat_yaku": "Yaku tak boleh berulang",
-    "single_yaku_type": "Hanya satu jenis yaku",
+    "single_play_pattern": "Hanya satu jenis tangan",
+    "single_play_pattern_locked": "Hanya {{pattern}} yang dihitung",
     "halve_score": "Skor ×½",
     "single_hand": "Hanya 1 kali Mainkan",
     "debuff_used_tiles": "Ubin terpakai bernilai 0",

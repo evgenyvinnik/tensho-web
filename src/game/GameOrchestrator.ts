@@ -39,6 +39,7 @@ import {
   REGULAR_TILE_TYPES,
 } from '../rules/CompleteHandSubset'
 import { parsePlay, toPartialParsedHand } from '../rules/PartialHandParser'
+import { classifyPlay } from '../rules/PlayPattern'
 import { eventBus } from './EventBus'
 import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ascendYaku } from '../rules/yakuAscension'
@@ -1967,6 +1968,7 @@ export class GameOrchestrator {
       equation: scoreResult.equation,
       yakuIds: scoreResult.detectedYaku.map((y) => y.definition.id),
       pattern: scoreResult.pattern.id,
+      blocked: scoreResult.blockedByMandate === true,
     })
 
     eventBus.emit('scoreUpdate', {
@@ -2104,6 +2106,7 @@ export class GameOrchestrator {
       equation: scoreResult.equation,
       yakuIds: [],
       pattern: scoreResult.pattern.id,
+      blocked: scoreResult.blockedByMandate === true,
     })
 
     eventBus.emit('scoreUpdate', {
@@ -2128,6 +2131,11 @@ export class GameOrchestrator {
     score: ScoreBreakdown & { equation: ScoreEquation },
     preview = false
   ): void {
+    // A play the Boss forbade scored nothing, so no "hand scored" Omen fires.
+    if (score.blockedByMandate) {
+      if (!preview) this.state.omenSystem.recordHandPlayed()
+      return
+    }
     const omenScore = preview
       ? this.state.omenSystem.peekHandScoredOmens()
       : this.state.omenSystem.triggerHandScoredOmens()
@@ -3372,6 +3380,29 @@ export class GameOrchestrator {
     preview: boolean = false,
     completeConcealedHand: boolean = false
   ): ScoreBreakdown & { equation: ScoreEquation } {
+    // The Mouth: once the round's first play has set the hand type, any other
+    // type scores nothing. Nothing in it triggers - no Decree, Orb, Mark,
+    // gold or Glass - and its tiles are read only to name the play.
+    const patternId = partialMelds ? classifyPlay(partialMelds).id : 'mahjong'
+    if (!this.state.mandateEffectSystem.allowsPlayPattern(patternId, preview)) {
+      const named = calculateScore(
+        createScoringContext(tiles, parsedHand, {
+          partialMelds,
+          previewMode: true,
+        })
+      )
+      return {
+        ...named,
+        detectedYaku: [],
+        retriggeredTiles: [],
+        shatteredTiles: [],
+        goldEarned: 0,
+        finalScore: 0,
+        blockedByMandate: true,
+        equation: settleScoreEquation(0, 0, 0),
+      }
+    }
+
     // Build the full ScoringContext for system integrations
     const roundState = this.state.roundManager.getCurrentRound()
     // One effective decision governs direct bonuses, Decree empowerment and

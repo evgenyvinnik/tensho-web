@@ -402,6 +402,7 @@
     "handScore": "Puntos de la mano",
     "lastHand": "Última mano",
     "hiddenScore": "Fichas boca abajo",
+    "notAllowed": "No permitida",
     "turnsLeft_one": "Queda {{formattedCount}} turno",
     "turnsLeft_other": "Quedan {{formattedCount}} turnos",
     "freeRedraws": "+{{formattedCount}} gratis",
@@ -1410,7 +1411,7 @@
       },
       "the_mouth": {
         "name": "La Boca",
-        "description": "Solo se puede puntuar un tipo de yaku esta ronda"
+        "description": "Tu primera jugada fija el tipo de mano de esta ronda. Cualquier otra mano puntúa 0"
       },
       "the_flint": {
         "name": "El Pedernal",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "−{{count}} fichas al azar por robo",
     "score_multiplier": "Objetivo ×{{value}}",
     "no_repeat_yaku": "Sin yaku repetidos",
-    "single_yaku_type": "Solo un tipo de yaku",
+    "single_play_pattern": "Solo un tipo de mano",
+    "single_play_pattern_locked": "Solo puntúa {{pattern}}",
     "halve_score": "Puntuación ×½",
     "single_hand": "Solo 1 jugada",
     "debuff_used_tiles": "Fichas usadas dan 0",

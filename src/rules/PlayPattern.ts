@@ -47,6 +47,30 @@ export type PlayPatternId =
   /** Groups the named list does not cover (only reachable through Decrees). */
   | 'combination'
 
+/** Every pattern id; the record makes a new id fail to compile until listed. */
+const PATTERN_ID_SET: Record<PlayPatternId, true> = {
+  loose: true,
+  pair: true,
+  sequence: true,
+  triplet: true,
+  quad: true,
+  straight4: true,
+  straight5: true,
+  two_pairs: true,
+  three_pairs: true,
+  two_sequences: true,
+  two_triplets: true,
+  sequence_pair: true,
+  triplet_pair: true,
+  triplet_sequence: true,
+  quad_pair: true,
+  straight_pair: true,
+  mahjong: true,
+  combination: true,
+}
+
+export const PLAY_PATTERN_IDS = Object.keys(PATTERN_ID_SET) as PlayPatternId[]
+
 export interface PlayPattern {
   id: PlayPatternId
   /** Additive Mult the pattern contributes. */

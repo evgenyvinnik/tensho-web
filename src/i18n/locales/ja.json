@@ -402,6 +402,7 @@
     "handScore": "役の得点",
     "lastHand": "前の手",
     "hiddenScore": "伏せ牌あり",
+    "notAllowed": "禁止",
     "turnsLeft_one": "残り手番 {{formattedCount}}",
     "turnsLeft_other": "残り手番 {{formattedCount}}",
     "freeRedraws": "無料+{{formattedCount}}",
@@ -1410,7 +1411,7 @@
       },
       "the_mouth": {
         "name": "口",
-        "description": "この局は一種類の役しか計上できない"
+        "description": "最初に打った役でこのラウンドの役が決まる。ほかの役は0点"
       },
       "the_flint": {
         "name": "燧石",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "引くたびに{{count}}枚捨てられる",
     "score_multiplier": "目標×{{value}}",
     "no_repeat_yaku": "同じ役は1回まで",
-    "single_yaku_type": "役は1種類のみ",
+    "single_play_pattern": "役は1種類のみ",
+    "single_play_pattern_locked": "{{pattern}}のみ得点",
     "halve_score": "得点×½",
     "single_hand": "打てるのは1回だけ",
     "debuff_used_tiles": "使った牌は0点",

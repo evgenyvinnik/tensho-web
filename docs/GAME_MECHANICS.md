@@ -362,7 +362,7 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 | **The Hook** | 鉤 | 2 random tiles discarded from hand after each draw |
 | **The Wall** | 壁 | Extra large score requirement (4× instead of 2×) |
 | **The Eye** | 目 | No repeat yaku this round (each yaku only scores once) |
-| **The Mouth** | 口 | Only one yaku type can be scored this round |
+| **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 |
 | **The Flint** | 火打石 | Base points and Mult halved for entire round |
 | **The Needle** | 針 | Must complete hand in exactly 1 draw cycle |
 | **The Pillar** | 柱 | Tiles used in previous rounds this Act are debuffed |

@@ -873,6 +873,7 @@
     "handScore": "Очки руки",
     "lastHand": "Прошлая рука",
     "hiddenScore": "Закрытые тайлы",
+    "notAllowed": "Запрещено",
     "turnsLeft_one": "Остался {{formattedCount}} ход",
     "turnsLeft_other": "Осталось {{formattedCount}} ходов",
     "freeRedraws": "+{{formattedCount}} бесплатно",
@@ -1873,7 +1874,7 @@
       },
       "the_mouth": {
         "name": "Рот",
-        "description": "В этом раунде можно получать очки только за один вид яку"
+        "description": "Первый розыгрыш задаёт тип руки на раунд. Любая другая рука даёт 0 очков"
       },
       "the_flint": {
         "name": "Кремень",
@@ -2760,7 +2761,8 @@
     "discard_after_draw": "−{{count}} случайных тайла за добор",
     "score_multiplier": "Цель ×{{value}}",
     "no_repeat_yaku": "Яку не повторяются",
-    "single_yaku_type": "Только один вид яку",
+    "single_play_pattern": "Только один тип руки",
+    "single_play_pattern_locked": "Очки только за: {{pattern}}",
     "halve_score": "Очки ×½",
     "single_hand": "Только 1 розыгрыш",
     "debuff_used_tiles": "Использованные тайлы — 0 очков",

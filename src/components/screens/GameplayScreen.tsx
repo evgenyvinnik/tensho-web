@@ -159,11 +159,13 @@ export function GameplayScreen() {
           mult: data.equation.multiplier,
           adjustment: data.equation.adjustment,
           total: data.equation.total,
+          blocked: data.blocked,
         })
         setToast({
           id: ++toastCounter.current,
           pattern: data.pattern,
           score: data.score,
+          blocked: data.blocked,
           intensity: scoreSignificance(data.score, target),
         })
         holdCelebration()
@@ -227,6 +229,7 @@ export function GameplayScreen() {
         mult: breakdown.equation.multiplier,
         adjustment: breakdown.equation.adjustment,
         total: breakdown.equation.total,
+        blocked: breakdown.blockedByMandate,
       }
     : null
 
@@ -397,6 +400,8 @@ export function GameplayScreen() {
                   effect: bossMandate.effect as MandateDefinition['effect'],
                   name: itemText.name('mandates', bossMandate),
                   description: itemText.description('mandates', bossMandate),
+                  lockedPattern:
+                    game.state.mandateEffectSystem.getLockedPattern(),
                 }
               : undefined
           }

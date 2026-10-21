@@ -402,6 +402,7 @@
     "handScore": "Score de la main",
     "lastHand": "Dernière main",
     "hiddenScore": "Tuiles face cachée",
+    "notAllowed": "Interdit",
     "turnsLeft_one": "{{formattedCount}} tour restant",
     "turnsLeft_other": "{{formattedCount}} tours restants",
     "freeRedraws": "+{{formattedCount}} offert",
@@ -1410,7 +1411,7 @@
       },
       "the_mouth": {
         "name": "La Bouche",
-        "description": "Un seul type de yaku peut compter cette manche"
+        "description": "Votre premier coup fixe le type de main de la manche. Toute autre main rapporte 0"
       },
       "the_flint": {
         "name": "Le Silex",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "−{{count}} tuiles au hasard par pioche",
     "score_multiplier": "Objectif ×{{value}}",
     "no_repeat_yaku": "Pas de yaku répété",
-    "single_yaku_type": "Un seul type de yaku",
+    "single_play_pattern": "Un seul type de main",
+    "single_play_pattern_locked": "Uniquement {{pattern}}",
     "halve_score": "Score ×½",
     "single_hand": "Une seule main jouée",
     "debuff_used_tiles": "Tuiles utilisées : 0 point",

@@ -257,15 +257,21 @@ function refreshContent(snapshot: Json): Json {
       manager.currentRound = refreshRound(manager.currentRound)
       state.roundManager = manager
     }
-    if (isRecord(state.mandateEffectSystem))
-      state.mandateEffectSystem = {
+    if (isRecord(state.mandateEffectSystem)) {
+      const system: Json = {
         ...state.mandateEffectSystem,
+        // The Mouth once locked a Yaku; it now locks the first play's hand
+        // type, and a Yaku names none, so a run saved mid-round starts afresh.
+        lockedPatternId: state.mandateEffectSystem.lockedPatternId ?? null,
         activeMandate: refresh(
           state.mandateEffectSystem.activeMandate,
           ALL_MANDATES,
           NO_RUNTIME
         ),
       }
+      delete system.firstYakuType
+      state.mandateEffectSystem = system
+    }
   }
 
   const shop = isRecord(snapshot.shop) ? { ...snapshot.shop } : null

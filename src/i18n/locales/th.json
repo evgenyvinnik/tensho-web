@@ -873,6 +873,7 @@
     "handScore": "คะแนนมือ",
     "lastHand": "มือล่าสุด",
     "hiddenScore": "มีไพ่คว่ำ",
+    "notAllowed": "ไม่อนุญาต",
     "turnsLeft_one": "เหลือ {{formattedCount}} ตา",
     "turnsLeft_other": "เหลือ {{formattedCount}} ตา",
     "freeRedraws": "ฟรี +{{formattedCount}}",
@@ -1891,7 +1892,7 @@
       },
       "the_mouth": {
         "name": "ปาก",
-        "description": "ทำคะแนนด้วยยาคุได้เพียงชนิดเดียวในรอบนี้"
+        "description": "การลงครั้งแรกกำหนดประเภทมือของรอบนี้ มืออื่นได้ 0 คะแนน"
       },
       "the_flint": {
         "name": "หินเหล็กไฟ",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "ทิ้งสุ่ม {{count}} ใบทุกการจั่ว",
     "score_multiplier": "เป้าหมาย ×{{value}}",
     "no_repeat_yaku": "ยาคุซ้ำไม่ได้",
-    "single_yaku_type": "ยาคุได้ชนิดเดียว",
+    "single_play_pattern": "มือได้ประเภทเดียว",
+    "single_play_pattern_locked": "ได้คะแนนเฉพาะ{{pattern}}",
     "halve_score": "คะแนน ×½",
     "single_hand": "ลงไพ่ได้ครั้งเดียว",
     "debuff_used_tiles": "ไพ่ที่ใช้แล้วได้ 0",

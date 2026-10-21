@@ -11,6 +11,7 @@ import type { ActiveOmenTag, OmenHistoryEntry } from '../stores/omenStore'
 import type { RoundState, ActState } from '../systems/types'
 import type { DebuffSource } from './DebuffSystem'
 import { MeldType } from '../core/Meld'
+import { PLAY_PATTERN_IDS } from '../rules/PlayPattern'
 import { FLOWER_MUTATIONS } from '../systems/FlowerSystem'
 import { calculateCombinedModifiers } from '../config/stakeDefinitions'
 import { resolveTableRules } from './tableStyleRules'
@@ -322,7 +323,7 @@ const stateFields = {
     activeMandate: nullable(mandate),
     isDefeated: bool,
     scoredYakuIds: uniqueIds,
-    firstYakuType: nullable(id),
+    lockedPatternId: nullable(choice(PLAY_PATTERN_IDS)),
     handsPlayed: count,
     lockedTileIds: uniqueIds,
     disabledDecreeIds: uniqueIds,

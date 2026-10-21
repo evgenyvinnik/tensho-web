@@ -19,6 +19,8 @@ export interface PlayToastData {
   score: number
   /** 0–1: how big the play was for this round. */
   intensity: number
+  /** The Boss forbade this hand type (The Mouth): it scored nothing. */
+  blocked?: boolean
 }
 
 export function PlayToast({
@@ -43,6 +45,7 @@ export function PlayToast({
       key={toast.id}
       role="status"
       data-play-toast={toast.pattern}
+      data-play-toast-blocked={toast.blocked || undefined}
       className={`pointer-events-none absolute inset-x-0 top-2 z-40 flex justify-center ${
         reducedMotion ? '' : 'play-toast-enter'
       }`}
@@ -59,10 +62,17 @@ export function PlayToast({
             big ? 'text-3xl' : 'text-2xl'
           }`}
         >
-          {t('patterns.toast', {
-            name: t(`patterns.${toast.pattern}.name`),
-          })}
+          {toast.blocked
+            ? t(`patterns.${toast.pattern}.name`)
+            : t('patterns.toast', {
+                name: t(`patterns.${toast.pattern}.name`),
+              })}
         </p>
+        {toast.blocked && (
+          <p className="text-sm font-black uppercase tracking-wider text-red-300">
+            {t('gameplay.notAllowed')}
+          </p>
+        )}
         <p className="text-sm font-black tabular-nums text-white">
           +{scoreNumber(toast.score, i18n.resolvedLanguage ?? i18n.language).display}
         </p>

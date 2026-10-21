@@ -26,7 +26,7 @@ export type MandateEffectType =
   | 'discard_after_draw' // The Hook: Random tiles discarded after draw
   | 'score_multiplier' // The Wall/Violet Vessel: Increased score requirement
   | 'no_repeat_yaku' // The Eye: Each yaku only scores once
-  | 'single_yaku_type' // The Mouth: Only one yaku type per round
+  | 'single_play_pattern' // The Mouth: Only the first play's hand type scores
   | 'halve_score' // The Flint: Base points and mult halved
   | 'single_hand' // The Needle: Must complete in 1 hand
   | 'debuff_used_tiles' // The Pillar: Previously used tiles debuffed
@@ -124,16 +124,17 @@ export const THE_EYE: MandateDefinition = {
 }
 
 /**
- * The Mouth - Only one yaku type can be scored
+ * The Mouth - The first play fixes the round's hand type
  */
 export const THE_MOUTH: MandateDefinition = {
   id: 'the_mouth',
   name: 'The Mouth',
   japaneseName: '口',
-  description: 'Only one yaku type can be scored this round',
+  description:
+    'Your first play sets this round’s hand type. Any other hand scores 0',
   category: 'Standard',
   difficulty: 'Hard',
-  effect: { type: 'single_yaku_type' },
+  effect: { type: 'single_play_pattern' },
   minAct: 2,
 }
 
@@ -660,7 +661,7 @@ export function isScoringMandate(mandate: MandateDefinition): boolean {
     'score_multiplier',
     'halve_score',
     'no_repeat_yaku',
-    'single_yaku_type',
+    'single_play_pattern',
     'decrease_yaku_tier',
   ].includes(mandate.effect.type)
 }

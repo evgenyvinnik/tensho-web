@@ -21,6 +21,7 @@ import { getStakeRules } from '../../i18n/stakeRules'
 import { scoreNumber } from '../../utils/scoreNumber'
 import { getMandateIllustration } from '../../utils/assets'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
+import type { PlayPatternId } from '../../rules/PlayPattern'
 import { mandateConsequence } from '../../gameplay/mandateConsequence'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import type { RoundType } from './gameplayTypes'
@@ -36,6 +37,8 @@ export interface RunHeaderProps {
   mandate?: Pick<MandateDefinition, 'id' | 'effect'> & {
     name: string
     description: string
+    /** The hand type The Mouth fixed with the round's first play. */
+    lockedPattern?: PlayPatternId | null
   }
   /** A Charter lets the player reroll the upcoming Boss for 10 Gold. */
   reroll?: {
@@ -273,14 +276,12 @@ export function BossMandateBadge({
   const nameId = useId()
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState(false)
-  const consequence = mandateConsequence(mandate.effect)
+  const consequence = mandateConsequence(mandate.effect, mandate.lockedPattern)
+  const { targetKey, patternKey } = consequence.values
   const text = t(`mandateConsequence.${consequence.key}`, {
     ...consequence.values,
-    target:
-      typeof consequence.values.targetKey === 'string' &&
-      consequence.values.targetKey
-        ? t(consequence.values.targetKey)
-        : '',
+    target: typeof targetKey === 'string' && targetKey ? t(targetKey) : '',
+    pattern: typeof patternKey === 'string' ? t(patternKey) : '',
   })
   const art = getMandateIllustration(mandate.id)
 

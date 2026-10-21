@@ -5,10 +5,11 @@
  */
 
 import type { MandateEffectType } from '../config/mandateDefinitions'
+import type { PlayPatternId } from '../rules/PlayPattern'
 
 export interface MandateConsequence {
   /** i18n key under `mandateConsequence`. */
-  key: MandateEffectType
+  key: MandateEffectType | 'single_play_pattern_locked'
   /** Interpolation values for the key. */
   values: Record<string, string | number>
 }
@@ -21,12 +22,21 @@ const SUIT_KEYS: Record<string, string> = {
   honor: 'tiles.honors',
 }
 
-export function mandateConsequence(effect: {
-  type: MandateEffectType
-  value?: number | string
-  target?: string
-}): MandateConsequence {
+export function mandateConsequence(
+  effect: {
+    type: MandateEffectType
+    value?: number | string
+    target?: string
+  },
+  /** The hand type The Mouth has fixed, once the round's first play sets it. */
+  lockedPattern?: PlayPatternId | null
+): MandateConsequence {
   const count = typeof effect.value === 'number' ? effect.value : 1
+  if (effect.type === 'single_play_pattern' && lockedPattern)
+    return {
+      key: 'single_play_pattern_locked',
+      values: { patternKey: `patterns.${lockedPattern}.name` },
+    }
   return {
     key: effect.type,
     values: {

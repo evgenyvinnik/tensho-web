@@ -689,6 +689,7 @@
     "handScore": "Puntos ng kamay",
     "lastHand": "Huling kamay",
     "hiddenScore": "Mga tile na nakataob",
+    "notAllowed": "Bawal",
     "turnsLeft_one": "{{formattedCount}} turno na lang",
     "turnsLeft_other": "{{formattedCount}} turno pa",
     "freeRedraws": "+{{formattedCount}} libre",
@@ -1707,7 +1708,7 @@
       },
       "the_mouth": {
         "name": "Ang Bibig",
-        "description": "Isang uri lang ng Yaku ang maaaring makapuntos sa round na ito."
+        "description": "Ang unang laro mo ang magtatakda ng uri ng kamay sa round na ito. 0 ang ibang kamay"
       },
       "the_flint": {
         "name": "Ang Batong Apoy",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "−{{count}} random tile bawat kuha",
     "score_multiplier": "Target ×{{value}}",
     "no_repeat_yaku": "Walang inulit na Yaku",
-    "single_yaku_type": "Isang uri lang ng Yaku",
+    "single_play_pattern": "Isang uri lang ng kamay",
+    "single_play_pattern_locked": "{{pattern}} lang ang may puntos",
     "halve_score": "Puntos ×½",
     "single_hand": "1 laro lang",
     "debuff_used_tiles": "0 puntos ang nagamit na tile",

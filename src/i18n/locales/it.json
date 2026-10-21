@@ -689,6 +689,7 @@
     "handScore": "Punti della mano",
     "lastHand": "Ultima mano",
     "hiddenScore": "Tessere coperte",
+    "notAllowed": "Non consentita",
     "turnsLeft_one": "Resta {{formattedCount}} turno",
     "turnsLeft_other": "Restano {{formattedCount}} turni",
     "freeRedraws": "+{{formattedCount}} gratis",
@@ -1687,7 +1688,7 @@
       },
       "the_mouth": {
         "name": "La Bocca",
-        "description": "In questo round può segnare punti un solo tipo di Yaku."
+        "description": "La prima giocata fissa il tipo di mano del round. Ogni altra mano vale 0"
       },
       "the_flint": {
         "name": "La Selce",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "−{{count}} tessere a caso per pescata",
     "score_multiplier": "Obiettivo ×{{value}}",
     "no_repeat_yaku": "Niente yaku ripetuti",
-    "single_yaku_type": "Un solo tipo di yaku",
+    "single_play_pattern": "Un solo tipo di mano",
+    "single_play_pattern_locked": "Vale solo {{pattern}}",
     "halve_score": "Punteggio ×½",
     "single_hand": "Solo 1 giocata",
     "debuff_used_tiles": "Tessere usate: 0 punti",

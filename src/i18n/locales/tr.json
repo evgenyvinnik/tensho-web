@@ -689,6 +689,7 @@
     "handScore": "El puanı",
     "lastHand": "Son el",
     "hiddenScore": "Kapalı taşlar",
+    "notAllowed": "İzin yok",
     "turnsLeft_one": "{{formattedCount}} hamle kaldı",
     "turnsLeft_other": "{{formattedCount}} hamle kaldı",
     "freeRedraws": "+{{formattedCount}} bedava",
@@ -1707,7 +1708,7 @@
       },
       "the_mouth": {
         "name": "Ağız",
-        "description": "Bu tur yalnızca tek bir Yaku türü puan kazandırabilir."
+        "description": "İlk oyunun bu turun el türünü belirler. Başka her el 0 puan alır"
       },
       "the_flint": {
         "name": "Çakmaktaşı",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "Her çekişte −{{count}} rastgele taş",
     "score_multiplier": "Hedef ×{{value}}",
     "no_repeat_yaku": "Tekrarlanan Yaku yok",
-    "single_yaku_type": "Tek tür Yaku",
+    "single_play_pattern": "Tek el türü",
+    "single_play_pattern_locked": "Yalnızca {{pattern}} puan alır",
     "halve_score": "Puan ×½",
     "single_hand": "Sadece 1 oynama",
     "debuff_used_tiles": "Kullanılan taşlar 0 puan",

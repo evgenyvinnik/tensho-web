@@ -402,6 +402,7 @@
     "handScore": "패 점수",
     "lastHand": "지난 패",
     "hiddenScore": "뒷면 패 포함",
+    "notAllowed": "불가",
     "turnsLeft_one": "남은 턴 {{formattedCount}}",
     "turnsLeft_other": "남은 턴 {{formattedCount}}",
     "freeRedraws": "무료 +{{formattedCount}}",
@@ -1410,7 +1411,7 @@
       },
       "the_mouth": {
         "name": "입",
-        "description": "이번 라운드에는 한 종류의 역만 계산 가능"
+        "description": "처음 낸 족보가 이번 라운드의 족보가 돼요. 다른 족보는 0점이에요"
       },
       "the_flint": {
         "name": "부싯돌",
@@ -2758,7 +2759,8 @@
     "discard_after_draw": "뽑을 때마다 {{count}}장 버려짐",
     "score_multiplier": "목표 ×{{value}}",
     "no_repeat_yaku": "같은 역은 한 번만",
-    "single_yaku_type": "역은 한 종류만",
+    "single_play_pattern": "족보는 한 종류만",
+    "single_play_pattern_locked": "{{pattern}}만 득점",
     "halve_score": "점수 ×½",
     "single_hand": "패 내기 1번만",
     "debuff_used_tiles": "쓴 패는 0점",

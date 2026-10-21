@@ -20,6 +20,7 @@ import {
   MandateDefinition,
   selectRandomMandate,
 } from '../config/mandateDefinitions'
+import type { PlayPatternId } from '../rules/PlayPattern'
 import {
   createSeededRandom,
   restoreSeededRandom,
@@ -40,8 +41,8 @@ export interface MandateState {
   isDefeated: boolean
   /** Yaku IDs that have already been scored this round (for The Eye) */
   scoredYakuIds: Set<string>
-  /** The first yaku type scored this round (for The Mouth) */
-  firstYakuType: string | null
+  /** The hand type the round's first play set (for The Mouth) */
+  lockedPatternId: PlayPatternId | null
   /** Number of hands played this round (for The Needle) */
   handsPlayed: number
   /** Tile IDs that are force-locked (for Cerulean Bell) */
@@ -159,7 +160,7 @@ export class MandateEffectSystem {
       activeMandate: null,
       isDefeated: false,
       scoredYakuIds: new Set(),
-      firstYakuType: null,
+      lockedPatternId: null,
       handsPlayed: 0,
       lockedTileIds: new Set(),
       disabledDecreeIds: new Set(),
@@ -263,9 +264,9 @@ export class MandateEffectSystem {
         result.message += ' - Each yaku can only score once'
         break
 
-      case 'single_yaku_type':
+      case 'single_play_pattern':
         // Tracked during scoring
-        result.message += ' - Only one yaku type can be scored'
+        result.message += " - Only the first play's hand type scores"
         break
 
       case 'decrease_yaku_tier':
@@ -389,7 +390,7 @@ export class MandateEffectSystem {
     this.state.activeMandate = null
     this.state.isDefeated = false
     this.state.scoredYakuIds.clear()
-    this.state.firstYakuType = null
+    this.state.lockedPatternId = null
     this.state.lockedTileIds.clear()
     this.state.disabledDecreeIds.clear()
     this.state.decreesShuffled = false
@@ -660,21 +661,28 @@ export class MandateEffectSystem {
           return true
         })
         break
-
-      case 'single_yaku_type':
-        if (result.yakuIds.length > 0) {
-          const firstYakuType = this.state.firstYakuType ?? result.yakuIds[0]
-          if (!previewMode && !this.state.firstYakuType) {
-            // First yaku scored - set the type
-            this.state.firstYakuType = firstYakuType
-          }
-          // Filter to only matching yaku type
-          result.yakuIds = result.yakuIds.filter((id) => id === firstYakuType)
-        }
-        break
     }
 
     return result
+  }
+
+  /**
+   * The Mouth: whether a play of this hand type may score. The round's first
+   * committed play sets the type, so it always scores; a preview never sets it.
+   */
+  allowsPlayPattern(pattern: PlayPatternId, previewMode = false): boolean {
+    if (this.state.activeMandate?.effect.type !== 'single_play_pattern')
+      return true
+    const locked = this.state.lockedPatternId ?? pattern
+    if (!previewMode) this.state.lockedPatternId = locked
+    return locked === pattern
+  }
+
+  /** The hand type The Mouth has fixed for this round, once one is played. */
+  getLockedPattern(): PlayPatternId | null {
+    return this.state.activeMandate?.effect.type === 'single_play_pattern'
+      ? this.state.lockedPatternId
+      : null
   }
 
   /**
@@ -952,7 +960,7 @@ export class MandateEffectSystem {
     activeMandate: MandateDefinition | null
     isDefeated: boolean
     scoredYakuIds: string[]
-    firstYakuType: string | null
+    lockedPatternId: PlayPatternId | null
     handsPlayed: number
     lockedTileIds: string[]
     disabledDecreeIds: string[]
@@ -969,7 +977,7 @@ export class MandateEffectSystem {
       activeMandate: this.state.activeMandate,
       isDefeated: this.state.isDefeated,
       scoredYakuIds: Array.from(this.state.scoredYakuIds),
-      firstYakuType: this.state.firstYakuType,
+      lockedPatternId: this.state.lockedPatternId,
       handsPlayed: this.state.handsPlayed,
       lockedTileIds: Array.from(this.state.lockedTileIds),
       disabledDecreeIds: Array.from(this.state.disabledDecreeIds),
@@ -991,7 +999,7 @@ export class MandateEffectSystem {
     activeMandate: MandateDefinition | null
     isDefeated: boolean
     scoredYakuIds: string[]
-    firstYakuType: string | null
+    lockedPatternId: PlayPatternId | null
     handsPlayed: number
     lockedTileIds: string[]
     disabledDecreeIds: string[]
@@ -1010,7 +1018,7 @@ export class MandateEffectSystem {
       activeMandate: data.activeMandate,
       isDefeated: data.isDefeated,
       scoredYakuIds: new Set(data.scoredYakuIds),
-      firstYakuType: data.firstYakuType,
+      lockedPatternId: data.lockedPatternId,
       handsPlayed: data.handsPlayed,
       // Legacy Bell saves stored locks in insertion order. Keep the latest
       // without drawing randomness or changing other mandate state.
