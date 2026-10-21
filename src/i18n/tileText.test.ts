@@ -12,9 +12,10 @@ import {
 import {
   DRAGON_TILE_POINTS,
   getTilePoints,
+  WIND_GROUP_POINTS,
   WIND_TILE_POINTS,
 } from '../rules/ScoringEngine'
-import { DRAGON_GROUP_MULT } from '../rules/PlayPattern'
+import { DRAGON_GROUP_MULT, DRAGON_MULT } from '../rules/PlayPattern'
 import { tileName, tileDetails, tileIndexHint } from './tileText'
 import { tileRewardText } from './tileRewardText'
 import { FLOWER_BASE_EFFECTS } from '../systems/FlowerSystem'
@@ -79,7 +80,11 @@ it('covers every valid tile face with a localized name and authoritative base po
       const base = t('tileDetails.basePoints', { points: getTilePoints(tile) })
       if (suit === TileSuit.Dragon)
         expect(info.points).toBe(
-          `${base} ${t('tileDetails.dragonMult', { mult: DRAGON_GROUP_MULT })}`
+          `${base} ${t('tileDetails.dragonMult', { mult: DRAGON_MULT, groupMult: DRAGON_GROUP_MULT })}`
+        )
+      else if (suit === TileSuit.Wind)
+        expect(info.points).toBe(
+          `${base} ${t('tileDetails.windGroup', { points: WIND_GROUP_POINTS })}`
         )
       else if (!tile.isBonus) expect(info.points).toBe(base)
       expect(JSON.stringify(tile)).toEqual(before)
@@ -92,9 +97,11 @@ it('states the honor payouts: Winds are big points, Dragons add Mult', async () 
   const wind = tileDetails(new Tile(TileSuit.Wind, 1, 'east'), t, 'en')
   const dragon = tileDetails(new Tile(TileSuit.Dragon, 3, 'red'), t, 'en')
   expect(wind.points).toContain(`${WIND_TILE_POINTS} base points`)
+  expect(wind.points).toContain(`${WIND_GROUP_POINTS} when it scores inside a group`)
   expect(wind.points).not.toContain('Mult')
   expect(dragon.points).toContain(`${DRAGON_TILE_POINTS} base points`)
-  expect(dragon.points).toContain(`+${DRAGON_GROUP_MULT} Mult`)
+  expect(dragon.points).toContain(`+${DRAGON_MULT} Mult`)
+  expect(dragon.points).toContain(`+${DRAGON_GROUP_MULT} when it scores inside a group`)
 })
 
 it('distinguishes red fives from ordinary fives without promising unsupported bonus scoring', async () => {

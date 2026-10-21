@@ -15,7 +15,8 @@
  * share one tile between two sequences; that still reads as two sequences).
  *
  * Honor tiles add their own effect independent of the pattern: every Dragon
- * that scores inside a group adds +2 Mult (see `DRAGON_GROUP_MULT`).
+ * that scores adds +2 Mult, and +4 inside a group (see `dragonMultFor` in
+ * ScoringEngine).
  *
  * Pure and deterministic: the same groups always give the same pattern, and
  * the classifier never decides which grouping a selection has — the parser
@@ -79,8 +80,11 @@ export const EXTRA_GROUP_MULT = 1
 /** A complete Mahjong hand's flat bonus Mult, in place of the group formula. */
 export const MAHJONG_PATTERN_MULT = 4
 
-/** Every Dragon tile scoring inside a group adds this Mult. */
-export const DRAGON_GROUP_MULT = 2
+/** Every Dragon tile that scores adds this Mult, grouped or not. */
+export const DRAGON_MULT = 2
+
+/** A Dragon scoring inside a pair or bigger group adds this Mult instead. */
+export const DRAGON_GROUP_MULT = 4
 
 export function groupKind(meld: Meld): GroupKind {
   return groupKindFor(meld.type, meld.tiles.length)

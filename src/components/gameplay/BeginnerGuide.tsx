@@ -7,10 +7,15 @@
 import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
 import { Meld, MeldType } from '../../core/Meld'
-import { getMeldStructurePoints, WIND_TILE_POINTS } from '../../rules/ScoringEngine'
+import {
+  getMeldStructurePoints,
+  WIND_GROUP_POINTS,
+  WIND_TILE_POINTS,
+} from '../../rules/ScoringEngine'
 import {
   classifyPlay,
   DRAGON_GROUP_MULT,
+  DRAGON_MULT,
   MAHJONG_PATTERN_MULT,
   TAUGHT_PATTERNS,
   type PlayPatternId,
@@ -273,7 +278,9 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
           <p className="mt-1 text-xs leading-relaxed text-[var(--color-golden-yellow)]">
             {t('guide.honorsHelp', {
               wind: WIND_TILE_POINTS,
-              dragon: DRAGON_GROUP_MULT,
+              windGroup: WIND_GROUP_POINTS,
+              dragon: DRAGON_MULT,
+              dragonGroup: DRAGON_GROUP_MULT,
             })}
           </p>
         </section>

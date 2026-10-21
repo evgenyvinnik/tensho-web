@@ -89,7 +89,7 @@ describe('BeginnerGuide', () => {
     expect(screen.getByText(/Each round gives you 6 Turns/)).toBeInTheDocument()
     expect(
       screen.getByText(
-        'Winds are worth 50 points each. Each Dragon in a group adds +2 Mult.'
+        'Winds are worth 50 points each, 100 in a group. Each Dragon adds +2 Mult, +4 in a group.'
       )
     ).toBeInTheDocument()
     // The tile families teach their numbers even with rank numbers off.

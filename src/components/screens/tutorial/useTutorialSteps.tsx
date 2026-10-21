@@ -13,10 +13,12 @@ import {
   DRAGON_TILE_POINTS,
   STRAIGHT_5_POINTS,
   STRUCTURE_POINTS_BY_TYPE,
+  WIND_GROUP_POINTS,
   WIND_TILE_POINTS,
 } from '../../../rules/ScoringEngine'
 import {
   DRAGON_GROUP_MULT,
+  DRAGON_MULT,
   MAHJONG_PATTERN_MULT,
   TAUGHT_PATTERNS,
 } from '../../../rules/PlayPattern'
@@ -296,8 +298,8 @@ export function useTutorialSteps(): TutorialStep[] {
             <p>
               <Trans i18nKey="tutorial.wind_tiles.p2">
                 Wind tiles are <Highlight>Honor tiles</Highlight> and are worth{' '}
-                <Highlight color="orange">50 points</Highlight> each — the
-                highest base value!
+                <Highlight color="orange">50 points</Highlight> each, 100 inside
+                a group — the highest base value!
               </Trans>
             </p>
             <InfoBox type="info">
@@ -350,8 +352,8 @@ export function useTutorialSteps(): TutorialStep[] {
               <Trans i18nKey="tutorial.dragon_tiles.p5">
                 Dragons are <Highlight>Honor tiles</Highlight> worth{' '}
                 <Highlight color="orange">15 points</Highlight>, and every
-                Dragon scored inside a group adds +2 Mult. They cannot form
-                sequences.
+                Dragon that scores adds +2 Mult, +4 inside a group. They cannot
+                form sequences.
               </Trans>
             </p>
           </div>
@@ -827,14 +829,20 @@ export function useTutorialSteps(): TutorialStep[] {
                 ],
                 [
                   t('tiles.winds'),
-                  <Highlight color="orange">{WIND_TILE_POINTS}</Highlight>,
+                  <Highlight color="orange">
+                    {t('tutorial.points.windValue', {
+                      points: WIND_TILE_POINTS,
+                      groupPoints: WIND_GROUP_POINTS,
+                    })}
+                  </Highlight>,
                 ],
                 [
                   t('tiles.dragons'),
                   <Highlight color="green">
                     {t('tutorial.points.dragonValue', {
                       points: DRAGON_TILE_POINTS,
-                      mult: DRAGON_GROUP_MULT,
+                      mult: DRAGON_MULT,
+                      groupMult: DRAGON_GROUP_MULT,
                     })}
                   </Highlight>,
                 ],

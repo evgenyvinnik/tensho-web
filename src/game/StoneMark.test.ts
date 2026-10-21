@@ -11,7 +11,8 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { DecreeSystem } from '../systems/DecreeSystem'
-import { WIND_TILE_POINTS } from '../rules/ScoringEngine'
+import { WIND_GROUP_POINTS } from '../rules/ScoringEngine'
+import { DRAGON_GROUP_MULT } from '../rules/PlayPattern'
 import { useOmenStore } from '../stores/omenStore'
 
 afterEach(() => {
@@ -53,6 +54,7 @@ it('never pairs with its old face and pays exactly its +100', () => {
     kind: 'tactical',
     groupedTiles: 0,
     looseTiles: 1,
+    halvedTiles: 1,
   })
   expect(preview.modifierChips).toBe(100)
   // 100 from the Stone, half of the loose 3-Manzu's 5 points.
@@ -77,11 +79,11 @@ it('cannot complete a sequence or lend a Dragon its Mult', () => {
   const preview = game.previewScore(['s3', 's4', 's5', 'd1', 'd2', 'd3'])!
   // Only the plain Dragon pair groups; the Stone Dragon is no Dragon.
   expect(preview.structurePoints).toBe(15)
-  expect(preview.dragonMult).toBe(4)
+  expect(preview.dragonMult).toBe(2 * DRAGON_GROUP_MULT)
   expect(preview.modifierChips).toBe(200)
 })
 
-it('outscores a Wind tile, loose or paired', () => {
+it('outscores a loose Wind tile; a Wind pair now edges past two Stones', () => {
   const game = setup([
     stone(new Tile(TileSuit.Manzu, 7, 'stone-a')),
     stone(new Tile(TileSuit.Pinzu, 2, 'stone-b')),
@@ -93,9 +95,10 @@ it('outscores a Wind tile, loose or paired', () => {
   expect(total(['stone-a', 'filler'])).toBeGreaterThan(
     total(['east-a', 'filler'])
   )
-  // Two Stones beat a Wind pair, bonus and all.
-  expect(total(['stone-a', 'stone-b'])).toBe(4 * WIND_TILE_POINTS)
-  expect(total(['east-a', 'east-b'])).toBe(2 * WIND_TILE_POINTS + 15)
+  // A Stone pays what a grouped Wind does; the pair bonus tips a Wind pair
+  // past two Stones.
+  expect(total(['stone-a', 'stone-b'])).toBe(2 * WIND_GROUP_POINTS)
+  expect(total(['east-a', 'east-b'])).toBe(2 * WIND_GROUP_POINTS + 15)
 })
 
 it('rides along with a complete hand without being part of it', () => {

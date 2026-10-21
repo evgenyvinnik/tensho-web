@@ -197,7 +197,7 @@ it('Plum selection and coach include the forced physical copy, but never reveal 
 it('the tactical coach prices a five-tile run instead of overlooking it behind valuable spare tiles', () => {
   const tiles = [
     ...ranks(TileSuit.Manzu, [2, 3, 4, 5, 6]),
-    ...ranks(TileSuit.Dragon, [1, 2, 3]),
+    ...ranks(TileSuit.Wind, [1, 2, 3]),
   ]
   const { game, state, awaken } = setup(tiles, FlowerType.Plum, 'plum_overlap')
   awaken()
@@ -219,7 +219,8 @@ it('the tactical coach prices a five-tile run instead of overlooking it behind v
       (ids) => ids.length === 5 && bridge.every((id) => ids.includes(id))
     )
   ).toBe(true)
-  // The straight, plus one spare Dragon to fill the six-tile play.
+  // The straight, plus one spare Wind (50 points even loose) to fill the
+  // six-tile play.
   expect(advice.best.tileIds).toEqual(expect.arrayContaining(bridge))
   expect(advice.best.tileIds.length).toBeLessThanOrEqual(6)
   expect(advice.best.structurePoints).toBe(60)

@@ -1,8 +1,8 @@
 import type { TFunction } from 'i18next'
 import { Tile, TileSuit, EnhancementType } from '../core/Tile'
 import { tileModifierEntries } from '../core/tileModifierEntries'
-import { getTilePoints } from '../rules/ScoringEngine'
-import { DRAGON_GROUP_MULT } from '../rules/PlayPattern'
+import { getTilePoints, WIND_GROUP_POINTS } from '../rules/ScoringEngine'
+import { DRAGON_GROUP_MULT, DRAGON_MULT } from '../rules/PlayPattern'
 import { FLOWER_BASE_EFFECTS } from '../systems/FlowerSystem'
 
 const WINDS = ['east', 'south', 'west', 'north'] as const
@@ -70,12 +70,20 @@ export function tileDetails(
   let points = t('tileDetails.basePoints', {
     points: getTilePoints(tile).toLocaleString(language),
   })
-  // A Dragon's real power is Mult, so its card must say so beside its points.
+  // A Dragon's real power is Mult, so its card must say so beside its points;
+  // a Wind's card says what a group adds to them.
   if (tile.suit === TileSuit.Dragon)
     points +=
       ' ' +
       t('tileDetails.dragonMult', {
-        mult: DRAGON_GROUP_MULT.toLocaleString(language),
+        mult: DRAGON_MULT.toLocaleString(language),
+        groupMult: DRAGON_GROUP_MULT.toLocaleString(language),
+      })
+  else if (tile.suit === TileSuit.Wind)
+    points +=
+      ' ' +
+      t('tileDetails.windGroup', {
+        points: WIND_GROUP_POINTS.toLocaleString(language),
       })
   if (tile.enhancement === EnhancementType.Stone) {
     description = t('tileMarks.items.stone.description', 'No rank or suit')

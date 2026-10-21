@@ -13,7 +13,8 @@ afterEach(async () => {
 function props(
   kind: 'tactical' | 'complete',
   groupedTiles: number,
-  looseTiles: number
+  looseTiles: number,
+  halvedTiles = looseTiles
 ): PlayAreaProps {
   return {
     selectedTileCount: groupedTiles + looseTiles,
@@ -24,7 +25,7 @@ function props(
       mult: 1,
       total: 45,
       yaku: [],
-      structure: { kind, groupedTiles, looseTiles },
+      structure: { kind, groupedTiles, looseTiles, halvedTiles },
       structurePoints: groupedTiles > 0 ? 30 : 0,
     },
   }
@@ -48,8 +49,16 @@ it.each(SUPPORTED_LANGUAGES)(
     expect(hint).toHaveTextContent(
       i18n.t('gameplay.forecast.mixed', { points: '30', count: 1 })
     )
+    // Only the halved, numbered loose tiles are counted.
+    rerender(<PlayArea {...props('tactical', 2, 2, 1)} />)
+    expect(hint).toHaveTextContent(
+      i18n.t('gameplay.forecast.mixed', { points: '30', count: 1 })
+    )
     rerender(<PlayArea {...props('tactical', 0, 3)} />)
     expect(hint).toHaveTextContent(i18n.t('gameplay.forecast.looseTiles'))
+    // Loose Honors pay in full, so the hint must not promise a half.
+    rerender(<PlayArea {...props('tactical', 0, 2, 0)} />)
+    expect(hint).toHaveTextContent(i18n.t('gameplay.forecast.looseHonors'))
     // A suppressed Yaku does not turn a complete hand into a loose-tile play.
     rerender(<PlayArea {...props('complete', 14, 0)} />)
     expect(hint).toHaveTextContent(i18n.t('gameplay.forecast.complete'))

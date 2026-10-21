@@ -3616,8 +3616,8 @@ export class GameOrchestrator {
       if (!preview) this.state.celestialOrbSystem.triggerYaku(category)
     }
 
-    // The play's own Mult: Yaku (or 1) + Orb levels + pattern + grouped
-    // Dragons + Mark/Edition "+N Mult". Decrees then work on this running Mult
+    // The play's own Mult: Yaku (or 1) + Orb levels + pattern + Dragons +
+    // Mark/Edition "+N Mult". Decrees then work on this running Mult
     // in order, Balatro-style: a "+N Mult" Decree adds N to it and a "×N Mult"
     // Decree multiplies it.
     const seasonedYakuMultiplier =

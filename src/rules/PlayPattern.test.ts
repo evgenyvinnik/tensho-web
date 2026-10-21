@@ -5,6 +5,7 @@ import {
   classifyMahjong,
   classifyPlay,
   DRAGON_GROUP_MULT,
+  DRAGON_MULT,
   MAHJONG_PATTERN_MULT,
   type PlayPatternId,
 } from './PlayPattern'
@@ -13,6 +14,7 @@ import {
   calculateScore,
   createScoringContext,
   getTilePoints,
+  WIND_GROUP_POINTS,
   WIND_TILE_POINTS,
 } from './ScoringEngine'
 
@@ -109,19 +111,46 @@ describe('reading a play', () => {
     )
   })
 
-  it('scores Winds at their own points and Dragons in a group with extra Mult', () => {
-    const winds = tiles(TileSuit.Wind, [1, 1])
-    expect(winds.map(getTilePoints)).toEqual([
-      WIND_TILE_POINTS,
-      WIND_TILE_POINTS,
+  it('pays a loose Wind its full points and a Wind pair double', () => {
+    const lone = play(tiles(TileSuit.Wind, [1]))
+    expect(lone.pattern.id).toBe('loose')
+    expect(lone.tilePoints).toBe(WIND_TILE_POINTS)
+    expect(lone.structure.halvedTiles).toBe(0)
+    // Two different Winds stay loose and still pay in full.
+    expect(play(tiles(TileSuit.Wind, [1, 2])).tilePoints).toBe(
+      2 * WIND_TILE_POINTS
+    )
+    const pair = play(tiles(TileSuit.Wind, [1, 1]))
+    expect(pair.pattern.id).toBe('pair')
+    expect(pair.tilePoints).toBe(2 * WIND_GROUP_POINTS)
+    expect(pair.dragonMult).toBe(0)
+    expect(play(tiles(TileSuit.Wind, [3, 3, 3])).tilePoints).toBe(
+      3 * WIND_GROUP_POINTS
+    )
+  })
+
+  it('adds Dragon Mult loose, and more inside a group', () => {
+    const lone = play([...tiles(TileSuit.Dragon, [1]), ...tiles(P, [5, 5])])
+    expect(lone.dragonMult).toBe(DRAGON_MULT)
+    // The Dragon keeps its full points; only the numbered tiles are halved.
+    expect(lone.tilePoints).toBe(getTilePoints(new Tile(TileSuit.Dragon, 1, 'd')) + 10)
+    expect(play(tiles(TileSuit.Dragon, [1, 2])).dragonMult).toBe(2 * DRAGON_MULT)
+    const pair = play(tiles(TileSuit.Dragon, [3, 3]))
+    expect(pair.pattern.id).toBe('pair')
+    expect(pair.dragonMult).toBe(2 * DRAGON_GROUP_MULT)
+    expect(play(tiles(TileSuit.Dragon, [2, 2, 2])).dragonMult).toBe(
+      3 * DRAGON_GROUP_MULT
+    )
+  })
+
+  it('halves only the numbered tiles left out of a group', () => {
+    const score = play([
+      ...tiles(TileSuit.Wind, [2]),
+      ...tiles(M, [9]),
+      ...tiles(P, [5, 5]),
     ])
-    expect(play(winds).dragonMult).toBe(0)
-    const dragons = tiles(TileSuit.Dragon, [3, 3])
-    const score = play(dragons)
-    expect(score.pattern.id).toBe('pair')
-    expect(score.dragonMult).toBe(2 * DRAGON_GROUP_MULT)
-    // A loose Dragon adds nothing.
-    expect(play([...tiles(TileSuit.Dragon, [1]), ...tiles(P, [5, 5])]).dragonMult).toBe(0)
+    expect(score.structure).toMatchObject({ looseTiles: 2, halvedTiles: 1 })
+    expect(score.tilePoints).toBe(WIND_TILE_POINTS + 5 + 10)
   })
 
   it('pays points × (1 + pattern + Dragons) with no Yaku', () => {

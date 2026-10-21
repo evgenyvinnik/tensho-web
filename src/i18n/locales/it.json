@@ -577,9 +577,10 @@
     "hiddenHandDesc": "Le tessere coperte nascondono schemi e punteggio finché non vengono giocate.",
     "basePlayHint": "Giocata base · completa uno schema per sbloccare gli Yaku",
     "forecast": {
-      "looseTiles": "Le tessere isolate danno metà dei punti base · prova a formare un gruppo",
+      "looseTiles": "Le tessere numerate isolate danno metà dei punti base · prova a formare un gruppo",
+      "looseHonors": "Gli Onori isolati valgono per intero · un gruppo li raddoppia",
       "grouped": "Tutte le tessere sono raggruppate · +{{points}} punti base di forma",
-      "mixed": "+{{points}} punti base di forma · tessere isolate: {{count}} (metà dei punti base)",
+      "mixed": "+{{points}} punti base di forma · tessere numerate isolate: {{count}} (metà dei punti base)",
       "complete": "Mano completa · la previsione include le regole attive",
       "selectionCount": "Tessere selezionate: {{count}}",
       "stagedDeclaration": "Tessere preparate: {{count}} · conferma la dichiarazione",
@@ -1608,7 +1609,8 @@
     "numberedRule": "Abbina tessere identiche per formare una coppia o un tris. Tre numeri consecutivi dello stesso seme formano una sequenza.",
     "honorRule": "Gli onori formano coppie o tris identici, non sequenze numeriche.",
     "basePoints": "{{points}} punti base prima di bonus dei gruppi, riduzioni e altri effetti.",
-    "dragonMult": "+{{mult}} Mult quando segna dentro un gruppo.",
+    "dragonMult": "+{{mult}} Mult, o +{{groupMult}} quando segna dentro un gruppo.",
+    "windGroup": "{{points}} quando segna dentro un gruppo.",
     "bonusTile": "Tessera bonus raccolta automaticamente",
     "flowerScope": "Effetto base del fiore, valido per la partita. Bonus della collezione e soppressione possono modificarlo. Consulta Fiori / Stagioni per gli effetti attivi.",
     "stage": "Prepara {{tile}}",
@@ -1868,7 +1870,7 @@
     "wind_tiles": {
       "note1": "Le terminali valgono il doppio delle semplici! Molti yaku le richiedono o le escludono esplicitamente.",
       "p1": "Ci sono <1>quattro tessere del Vento</1>, che rappresentano i punti cardinali:",
-      "p2": "Le tessere del Vento sono <1>tessere d'Onore</1> e valgono <4>50 punti</4> ciascuna: il valore base più alto!"
+      "p2": "Le tessere del Vento sono <1>tessere d'Onore</1> e valgono <4>50 punti</4> ciascuna, 100 dentro un gruppo: il valore base più alto!"
     },
     "dragon_tiles": {
       "note1": "I Venti non possono formare scale. Solo tris o coppie.",
@@ -1876,7 +1878,7 @@
       "p2": "<0>白 (Drago Bianco / Haku)</0> — Una tessera vuota o incorniciata, che rappresenta purezza o vuoto",
       "p3": "<0>發 (Drago Verde / Hatsu)</0> — Il carattere 發 in verde, che significa «prosperità» o «emettere»",
       "p4": "<0>中 (Drago Rosso / Chun)</0> — Il carattere 中 in rosso, che significa «centro»",
-      "p5": "I Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4>, e ogni Drago che segna dentro un gruppo aggiunge +2 al Mult. Non possono formare scale."
+      "p5": "I Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4>, e ogni Drago che segna aggiunge +2 al Mult, +4 dentro un gruppo. Non possono formare scale."
     },
     "bonus_tiles": {
       "p1": "Le <0>tessere bonus</0> sono tessere speciali che non fanno parte della mano:"
@@ -2032,8 +2034,9 @@
       "headerPoints": "Punti",
       "simples": "Semplici (2–8)",
       "terminals": "Terminali (1 e 9)",
-      "dragonValue": "{{points}}, e +{{mult}} al Mult in un gruppo",
-      "note": "I Venti valgono dieci volte una tessera semplice; i Draghi invece alzano il Mult. Una tessera fuori da ogni gruppo segna la metà."
+      "dragonValue": "{{points}}, e +{{mult}} al Mult (+{{groupMult}} in un gruppo)",
+      "windValue": "{{points}} ({{groupPoints}} in un gruppo)",
+      "note": "I Venti valgono dieci volte una tessera semplice; i Draghi invece alzano il Mult. Una coppia o un gruppo più grande li raddoppia entrambi. Una tessera numerata fuori da ogni gruppo segna la metà."
     },
     "groups": {
       "title": "Bonus dei gruppi",
@@ -2659,7 +2662,7 @@
     "toast": "{{name}}!",
     "loose": {
       "name": "Tessere sciolte",
-      "explain": "Nessun gruppo: ogni tessera vale metà dei suoi punti."
+      "explain": "Nessun gruppo: ogni tessera numerata vale metà dei suoi punti, gli Onori per intero."
     },
     "pair": {
       "name": "Coppia",
@@ -2741,12 +2744,12 @@
     "points": "Punti",
     "mult": "Mult",
     "score": "Punteggio",
-    "scoreHelp": "I punti sono il valore delle tessere più il bonus di ogni gruppo. Il Mult parte da 1 e cresce con mani più grandi, Draghi, Sfere e Decreti. Le tessere fuori da un gruppo valgono metà.",
+    "scoreHelp": "I punti sono il valore delle tessere più il bonus di ogni gruppo. Il Mult parte da 1 e cresce con mani più grandi, Draghi, Sfere e Decreti. Le tessere numerate fuori da un gruppo valgono metà.",
     "handsTitle": "Le mani",
     "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1, poker e scale di cinque +2. Ogni tessera conta una volta; massimo 6 tessere per giocata, salvo una mano di Mahjong completa.",
     "tilesTitle": "Le tessere",
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
-    "honorsHelp": "Ogni Vento vale {{wind}} punti. Ogni Drago in un gruppo aggiunge +{{dragon}} Mult.",
+    "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",
     "specialTitle": "Tessere speciali",
     "specialHelp": "Una cornice colorata con gemma è un marchio, un timbro di ceralacca è un sigillo e uno scintillio è un’edizione. Una tessera ne può avere solo uno. Passa sopra o seleziona una tessera per leggerne l’effetto.",
     "close": "Giochiamo"

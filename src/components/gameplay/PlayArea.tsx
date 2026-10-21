@@ -257,15 +257,17 @@ export function PlayArea({
               i18n.language
             ).display,
           })
-        : structure.groupedTiles === 0
-          ? t('gameplay.forecast.looseTiles')
-          : t('gameplay.forecast.mixed', {
-              points: scoreNumber(
-                scorePreview?.structurePoints ?? 0,
-                i18n.language
-              ).display,
-              count: structure.looseTiles,
-            })
+        : structure.halvedTiles === 0
+          ? t('gameplay.forecast.looseHonors')
+          : structure.groupedTiles === 0
+            ? t('gameplay.forecast.looseTiles')
+            : t('gameplay.forecast.mixed', {
+                points: scoreNumber(
+                  scorePreview?.structurePoints ?? 0,
+                  i18n.language
+                ).display,
+                count: structure.halvedTiles,
+              })
   const adjustment = scorePreview?.adjustment ?? 0
   const rounding = scorePreview
     ? scoreRounding(scorePreview.points, scorePreview.mult)

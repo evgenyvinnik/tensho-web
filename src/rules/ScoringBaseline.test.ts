@@ -6,6 +6,10 @@
  * sequence can score less than a player who taps three unrelated Honor tiles.
  * These tests pin the comparison so the rule that fixes it cannot quietly
  * regress, and so the cases the document says should *stay* possible do.
+ *
+ * Honors were later exempted by the user's call (October 2026): a Wind pays its
+ * 50 and a Dragon its +2 Mult even loose, so the comparison now holds for
+ * numbered tiles only.
  */
 
 import { describe, it, expect } from 'vitest'
@@ -38,8 +42,18 @@ const looseHonors = () => [
 ]
 
 describe('the section 1.1 comparison', () => {
-  it('pays a recognised sequence more than three unrelated Honors', () => {
-    expect(scorePartial(bambooRun())).toBeGreaterThan(scorePartial(looseHonors()))
+  it('pays a recognised sequence more than three unrelated numbered tiles', () => {
+    const strangers = [
+      t(TileSuit.Souzu, 3),
+      t(TileSuit.Pinzu, 7),
+      t(TileSuit.Manzu, 5),
+    ]
+    expect(scorePartial(bambooRun())).toBeGreaterThan(scorePartial(strangers))
+  })
+
+  it('pays loose Honors in full: Winds their points, Dragons their Mult', () => {
+    // (15 + 15 + 50) × (1 + 2 + 2): nothing halved, each Dragon +2 Mult.
+    expect(scorePartial(looseHonors())).toBe(400)
   })
 
   it('pays a pair of simples more than the same two tiles unrelated', () => {

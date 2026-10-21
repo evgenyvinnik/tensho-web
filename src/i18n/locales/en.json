@@ -286,9 +286,10 @@
     "hiddenHandDesc": "Face-down tiles conceal patterns and score until played.",
     "basePlayHint": "Base play · complete a pattern to unlock Yaku",
     "forecast": {
-      "looseTiles": "Ungrouped tiles earn half their base points · try making a group",
+      "looseTiles": "Ungrouped numbered tiles earn half their base points · try making a group",
+      "looseHonors": "Honors outside a group pay in full · a group doubles them",
       "grouped": "All tiles grouped · +{{points}} base shape points",
-      "mixed": "+{{points}} base shape points · ungrouped: {{count}} (half base points)",
+      "mixed": "+{{points}} base shape points · ungrouped numbered: {{count}} (half base points)",
       "complete": "Complete hand · the forecast includes active rules",
       "selectionCount": "Selected tiles: {{count}}",
       "stagedDeclaration": "Staged tiles: {{count}} · confirm declaration",
@@ -1317,7 +1318,8 @@
     "numberedRule": "Match identical tiles for a pair or triplet. Three consecutive numbers in one suit form a sequence.",
     "honorRule": "Honors form matching pairs or triplets, not numbered sequences.",
     "basePoints": "{{points}} base points before group bonuses, discounts and other effects.",
-    "dragonMult": "+{{mult}} Mult when it scores inside a group.",
+    "dragonMult": "+{{mult}} Mult, or +{{groupMult}} when it scores inside a group.",
+    "windGroup": "{{points}} when it scores inside a group.",
     "bonusTile": "Automatically collected bonus tile",
     "flowerScope": "Base Flower effect; lasts for the run. Collection bonuses and suppression can change it. See Flowers / Seasons for active effects.",
     "stage": "Stage {{tile}}",
@@ -1577,7 +1579,7 @@
     "wind_tiles": {
       "note1": "Terminals are worth double the points of simples! Many yaku also specifically require or exclude terminals.",
       "p1": "There are <1>four Wind tiles</1>, representing the cardinal directions:",
-      "p2": "Wind tiles are <1>Honor tiles</1> and are worth <4>50 points</4> each — the highest base value!"
+      "p2": "Wind tiles are <1>Honor tiles</1> and are worth <4>50 points</4> each, 100 inside a group — the highest base value!"
     },
     "dragon_tiles": {
       "note1": "Winds cannot form sequences. They can only form triplets or pairs.",
@@ -1585,7 +1587,7 @@
       "p2": "<0>白 (White Dragon / Haku)</0> — A blank or framed tile, representing purity or emptiness",
       "p3": "<0>發 (Green Dragon / Hatsu)</0> — The character 發 in green, meaning \"prosperity\" or \"to emit\"",
       "p4": "<0>中 (Red Dragon / Chun)</0> — The character 中 in red, meaning \"center\" or \"middle\"",
-      "p5": "Dragons are <1>Honor tiles</1> worth <4>15 points</4>, and every Dragon scored inside a group adds +2 Mult. They cannot form sequences."
+      "p5": "Dragons are <1>Honor tiles</1> worth <4>15 points</4>, and every Dragon that scores adds +2 Mult, +4 inside a group. They cannot form sequences."
     },
     "bonus_tiles": {
       "p1": "<0>Bonus tiles</0> are special tiles that don't form part of your hand:"
@@ -1741,8 +1743,9 @@
       "headerPoints": "Points",
       "simples": "Simples (2–8)",
       "terminals": "Terminals (1 and 9)",
-      "dragonValue": "{{points}}, and +{{mult}} Mult in a group",
-      "note": "Winds are worth ten times a simple tile; Dragons add Mult instead. A tile outside any group scores half."
+      "dragonValue": "{{points}}, and +{{mult}} Mult (+{{groupMult}} in a group)",
+      "windValue": "{{points}} ({{groupPoints}} in a group)",
+      "note": "Winds are worth ten times a simple tile; Dragons add Mult instead. A pair or bigger group doubles either. A numbered tile outside any group scores half."
     },
     "groups": {
       "title": "Group Bonuses",
@@ -2655,7 +2658,7 @@
     "toast": "{{name}}!",
     "loose": {
       "name": "Loose tiles",
-      "explain": "No group: each tile scores half its points."
+      "explain": "No group: numbered tiles score half their points, Honors in full."
     },
     "pair": {
       "name": "Pair",
@@ -2737,12 +2740,12 @@
     "points": "Points",
     "mult": "Mult",
     "score": "Score",
-    "scoreHelp": "Points are the tiles’ values plus each group’s bonus. Mult starts at 1 and grows with bigger hands, Dragons, Orbs and Decrees. Tiles outside a group score half.",
+    "scoreHelp": "Points are the tiles’ values plus each group’s bonus. Mult starts at 1 and grows with bigger hands, Dragons, Orbs and Decrees. Numbered tiles outside a group score half.",
     "handsTitle": "The hands",
     "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Each tile counts once; up to 6 tiles per play unless it is a full Mahjong hand.",
     "tilesTitle": "The tiles",
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
-    "honorsHelp": "Winds are worth {{wind}} points each. Each Dragon in a group adds +{{dragon}} Mult.",
+    "honorsHelp": "Winds are worth {{wind}} points each, {{windGroup}} in a group. Each Dragon adds +{{dragon}} Mult, +{{dragonGroup}} in a group.",
     "specialTitle": "Special tiles",
     "specialHelp": "A coloured frame with a gem is a mark, a wax stamp is a seal, and a shimmer is an edition. A tile holds only one of them. Hover or focus a tile to read exactly what it does.",
     "close": "Let’s play"

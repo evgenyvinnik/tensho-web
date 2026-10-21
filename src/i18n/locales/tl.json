@@ -577,9 +577,10 @@
     "hiddenHandDesc": "Tinatago ng mga nakataob na tile ang pattern at puntos hanggang malaro.",
     "basePlayHint": "Batayang laro · buuin ang pattern para ma-unlock ang Yaku",
     "forecast": {
-      "looseTiles": "Kalahati ng base points ang tiles na walang grupo · subukang bumuo ng grupo",
+      "looseTiles": "Kalahati ng base points ang may-numerong tiles na walang grupo · subukang bumuo ng grupo",
+      "looseHonors": "Buo ang puntos ng Honors kahit walang grupo · dinodoble ito ng grupo",
       "grouped": "Lahat ng tiles ay may grupo · +{{points}} base points ng hugis",
-      "mixed": "+{{points}} base points ng hugis · walang grupo: {{count}} (kalahating base points)",
+      "mixed": "+{{points}} base points ng hugis · may-numerong walang grupo: {{count}} (kalahating base points)",
       "complete": "Kumpletong hand · kasama sa tantiya ang aktibong mga tuntunin",
       "selectionCount": "Napiling tiles: {{count}}",
       "stagedDeclaration": "Nakahandang tiles: {{count}} · kumpirmahin ang deklarasyon",
@@ -1608,7 +1609,8 @@
     "numberedRule": "Pagtambalin ang magkaparehong tile para bumuo ng pares o tatluhan. Tatlong magkakasunod na numero sa parehong suit ang bumubuo ng sunod-sunod.",
     "honorRule": "Ang mga Honor ay bumubuo ng magkaparehong pares o tatluhan, hindi sunod-sunod na numero.",
     "basePoints": "{{points}} batayang puntos bago ang bonus ng grupo, pagbabawas at iba pang epekto.",
-    "dragonMult": "+{{mult}} Mult kapag nakapuntos sa loob ng grupo.",
+    "dragonMult": "+{{mult}} Mult, o +{{groupMult}} kapag nakapuntos sa loob ng grupo.",
+    "windGroup": "{{points}} kapag nakapuntos sa loob ng grupo.",
     "bonusTile": "Bonus tile na awtomatikong kinokolekta",
     "flowerScope": "Batayang epekto ng bulaklak; tumatagal sa buong run. Maaaring baguhin ito ng bonus ng koleksyon at pagsupil. Tingnan ang Bulaklak / Panahon para sa aktibong epekto.",
     "stage": "Ihanda ang {{tile}}",
@@ -1868,7 +1870,7 @@
     "wind_tiles": {
       "note1": "Doble ang halaga ng terminal kaysa sa simple! Marami ring yaku ang partikular na humihingi o nagbabawal sa kanila.",
       "p1": "May <1>apat na tile ng Hangin</1> na kumakatawan sa mga direksyon:",
-      "p2": "Ang mga tile ng Hangin ay <1>tile ng Karangalan</1> at nagkakahalaga ng <4>50 puntos</4> bawat isa — ang pinakamataas na batayang halaga!"
+      "p2": "Ang mga tile ng Hangin ay <1>tile ng Karangalan</1> at nagkakahalaga ng <4>50 puntos</4> bawat isa, 100 sa loob ng grupo — ang pinakamataas na batayang halaga!"
     },
     "dragon_tiles": {
       "note1": "Hindi makabubuo ng sunuran ang Hangin. Tripleta o pares lamang.",
@@ -1876,7 +1878,7 @@
       "p2": "<0>白 (Puting Dragon / Haku)</0> — Blangko o may kuwadradong tile, sumasagisag sa kadalisayan o kawalan",
       "p3": "<0>發 (Berdeng Dragon / Hatsu)</0> — Ang karakter na 發 sa berde, ibig sabihin ay «kasaganaan» o «pagsibol»",
       "p4": "<0>中 (Pulang Dragon / Chun)</0> — Ang karakter na 中 sa pula, ibig sabihin ay «gitna»",
-      "p5": "Ang mga Dragon ay <1>tile ng Karangalan</1> na nagkakahalaga ng <4>15 puntos</4>, at bawat Dragon na nakapuntos sa loob ng grupo ay nagdaragdag ng +2 Mult. Hindi sila makabubuo ng sunuran."
+      "p5": "Ang mga Dragon ay <1>tile ng Karangalan</1> na nagkakahalaga ng <4>15 puntos</4>, at bawat Dragon na nakapuntos ay nagdaragdag ng +2 Mult, +4 sa loob ng grupo. Hindi sila makabubuo ng sunuran."
     },
     "bonus_tiles": {
       "p1": "Ang <0>mga bonus tile</0> ay espesyal na tile na hindi bahagi ng kamay mo:"
@@ -2032,8 +2034,9 @@
       "headerPoints": "Puntos",
       "simples": "Simple (2–8)",
       "terminals": "Terminal (1 at 9)",
-      "dragonValue": "{{points}}, at +{{mult}} Mult sa loob ng grupo",
-      "note": "Sampung beses ng isang simpleng tile ang halaga ng Hangin; ang Dragon naman ay nagdaragdag ng Mult. Kalahati lang ang puntos ng tile na wala sa anumang grupo."
+      "dragonValue": "{{points}}, at +{{mult}} Mult (+{{groupMult}} sa loob ng grupo)",
+      "windValue": "{{points}} ({{groupPoints}} sa loob ng grupo)",
+      "note": "Sampung beses ng isang simpleng tile ang halaga ng Hangin; ang Dragon naman ay nagdaragdag ng Mult. Dinodoble ng pares o mas malaking grupo ang alinman sa dalawa. Kalahati lang ang puntos ng may-numerong tile na wala sa anumang grupo."
     },
     "groups": {
       "title": "Bonus ng grupo",
@@ -2659,7 +2662,7 @@
     "toast": "{{name}}!",
     "loose": {
       "name": "Mga solong tile",
-      "explain": "Walang grupo: kalahati lang ng puntos ng bawat tile."
+      "explain": "Walang grupo: kalahati lang ng puntos ng bawat may-numerong tile, buo ang sa Honors."
     },
     "pair": {
       "name": "Pares",
@@ -2741,12 +2744,12 @@
     "points": "Puntos",
     "mult": "Mult",
     "score": "Puntos",
-    "scoreHelp": "Ang puntos ay halaga ng mga tile dagdag ang bonus ng bawat grupo. Nagsisimula sa 1 ang Mult at lumalaki sa mas malalaking kamay, Dragon, Orb at Dekreto. Kalahati lang ang tile na wala sa grupo.",
+    "scoreHelp": "Ang puntos ay halaga ng mga tile dagdag ang bonus ng bawat grupo. Nagsisimula sa 1 ang Mult at lumalaki sa mas malalaking kamay, Dragon, Orb at Dekreto. Kalahati lang ang may-numerong tile na wala sa grupo.",
     "handsTitle": "Mga kamay",
     "patternRule": "Bawat grupo pagkatapos ng una ay +1 Mult. Ang triplet at straight na apat ay +1 pa, ang quad at straight na lima ay +2. Isang beses lang bibilangin ang bawat tile; hanggang 6 na tile bawat laro maliban sa buong kamay ng Mahjong.",
     "tilesTitle": "Mga tile",
     "tilesHelp": "Ang Mga Karakter ay may numerong Tsino 一 hanggang 九; ang Bilog at Kawayan ay bilang ang ipinapakita (ibon ang 1 ng Kawayan). Mabubuksan ang numero sa tile sa Settings.",
-    "honorsHelp": "Bawat Hangin ay {{wind}} puntos. Bawat Dragon sa isang grupo ay +{{dragon}} Mult.",
+    "honorsHelp": "Bawat Hangin ay {{wind}} puntos, {{windGroup}} sa loob ng grupo. Bawat Dragon ay +{{dragon}} Mult, +{{dragonGroup}} sa loob ng grupo.",
     "specialTitle": "Espesyal na tile",
     "specialHelp": "Ang may-kulay na frame na may hiyas ay marka, ang selyong lacre ay selyo, at ang kinang ay edisyon. Isa lang sa mga ito ang puwede sa isang tile. I-hover o i-focus ang tile para mabasa ang epekto.",
     "close": "Tara, laro na"

@@ -498,9 +498,10 @@
     "hiddenHandDesc": "Ubin tertelungkup menyembunyikan pola dan skor sampai dimainkan.",
     "basePlayHint": "Permainan dasar · lengkapi pola untuk membuka Yaku",
     "forecast": {
-      "looseTiles": "Ubin tanpa kelompok mendapat separuh poin dasar · coba buat kelompok",
+      "looseTiles": "Ubin berangka tanpa kelompok mendapat separuh poin dasar · coba buat kelompok",
+      "looseHonors": "Ubin kehormatan tanpa kelompok bernilai penuh · kelompok menggandakannya",
       "grouped": "Semua ubin berkelompok · +{{points}} poin dasar pola",
-      "mixed": "+{{points}} poin dasar pola · tanpa kelompok: {{count}} (separuh poin dasar)",
+      "mixed": "+{{points}} poin dasar pola · ubin berangka tanpa kelompok: {{count}} (separuh poin dasar)",
       "complete": "Tangan lengkap · perkiraan mencakup aturan aktif",
       "selectionCount": "Ubin dipilih: {{count}}",
       "stagedDeclaration": "Ubin disiapkan: {{count}} · konfirmasi deklarasi",
@@ -1529,7 +1530,8 @@
     "numberedRule": "Cocokkan ubin identik untuk membuat pasangan atau triplet. Tiga angka berurutan dari jenis yang sama membentuk urutan.",
     "honorRule": "Ubin kehormatan membentuk pasangan atau triplet identik, bukan urutan angka.",
     "basePoints": "{{points}} poin dasar sebelum bonus kelompok, pengurangan, dan efek lain.",
-    "dragonMult": "+{{mult}} Mult saat mencetak skor di dalam grup.",
+    "dragonMult": "+{{mult}} Mult, atau +{{groupMult}} saat mencetak skor di dalam grup.",
+    "windGroup": "{{points}} saat mencetak skor di dalam grup.",
     "bonusTile": "Ubin bonus yang dikumpulkan otomatis",
     "flowerScope": "Efek dasar bunga berlangsung sepanjang permainan. Bonus koleksi dan penekanan dapat mengubahnya. Lihat Bunga / Musim untuk efek aktif.",
     "stage": "Siapkan {{tile}}",
@@ -1789,7 +1791,7 @@
     "wind_tiles": {
       "note1": "Ubin terminal bernilai dua kali lipat ubin sederhana! Banyak yaku juga secara khusus mensyaratkan atau melarangnya.",
       "p1": "Ada <1>empat ubin Angin</1> yang melambangkan arah mata angin:",
-      "p2": "Ubin Angin adalah <1>ubin Kehormatan</1> dan bernilai <4>50 poin</4> masing-masing — nilai dasar tertinggi!"
+      "p2": "Ubin Angin adalah <1>ubin Kehormatan</1> dan bernilai <4>50 poin</4> masing-masing, 100 di dalam grup — nilai dasar tertinggi!"
     },
     "dragon_tiles": {
       "note1": "Angin tidak bisa membentuk urutan. Hanya tripel atau pasangan.",
@@ -1797,7 +1799,7 @@
       "p2": "<0>白 (Naga Putih / Haku)</0> — Ubin kosong atau berbingkai, melambangkan kemurnian atau kekosongan",
       "p3": "<0>發 (Naga Hijau / Hatsu)</0> — Karakter 發 berwarna hijau, berarti «kemakmuran» atau «memancar»",
       "p4": "<0>中 (Naga Merah / Chun)</0> — Karakter 中 berwarna merah, berarti «pusat»",
-      "p5": "Naga adalah <1>ubin Kehormatan</1> bernilai <4>15 poin</4>, dan setiap Naga yang dihitung di dalam grup menambah Mult +2. Naga tidak bisa membentuk urutan."
+      "p5": "Naga adalah <1>ubin Kehormatan</1> bernilai <4>15 poin</4>, dan setiap Naga yang dihitung menambah Mult +2, atau +4 di dalam grup. Naga tidak bisa membentuk urutan."
     },
     "bonus_tiles": {
       "p1": "<0>Ubin bonus</0> adalah ubin khusus yang bukan bagian dari tanganmu:"
@@ -1953,8 +1955,9 @@
       "headerPoints": "Poin",
       "simples": "Ubin sederhana (2–8)",
       "terminals": "Ubin ujung (1 dan 9)",
-      "dragonValue": "{{points}}, dan Mult +{{mult}} di dalam grup",
-      "note": "Angin bernilai sepuluh kali ubin sederhana; Naga justru menaikkan Mult. Ubin di luar grup mana pun mencetak setengahnya."
+      "dragonValue": "{{points}}, dan Mult +{{mult}} (+{{groupMult}} di dalam grup)",
+      "windValue": "{{points}} ({{groupPoints}} di dalam grup)",
+      "note": "Angin bernilai sepuluh kali ubin sederhana; Naga justru menaikkan Mult. Pasangan atau grup yang lebih besar menggandakan keduanya. Ubin berangka di luar grup mana pun mencetak setengahnya."
     },
     "groups": {
       "title": "Bonus grup",
@@ -2659,7 +2662,7 @@
     "toast": "{{name}}!",
     "loose": {
       "name": "Ubin lepas",
-      "explain": "Tanpa kelompok: tiap ubin bernilai setengah poinnya."
+      "explain": "Tanpa kelompok: tiap ubin berangka bernilai setengah poinnya, ubin kehormatan penuh."
     },
     "pair": {
       "name": "Pasangan",
@@ -2741,12 +2744,12 @@
     "points": "Poin",
     "mult": "Mult",
     "score": "Skor",
-    "scoreHelp": "Poin adalah nilai ubin ditambah bonus tiap kelompok. Mult mulai dari 1 dan naik lewat tangan besar, Naga, Bola, dan Dekrit. Ubin di luar kelompok bernilai setengah.",
+    "scoreHelp": "Poin adalah nilai ubin ditambah bonus tiap kelompok. Mult mulai dari 1 dan naik lewat tangan besar, Naga, Bola, dan Dekrit. Ubin berangka di luar kelompok bernilai setengah.",
     "handsTitle": "Tangan-tangan",
     "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2. Tiap ubin dihitung sekali; maksimal 6 ubin per mainan kecuali tangan Mahjong lengkap.",
     "tilesTitle": "Ubin",
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
-    "honorsHelp": "Setiap Angin bernilai {{wind}} poin. Setiap Naga dalam kelompok menambah +{{dragon}} Mult.",
+    "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",
     "specialTitle": "Ubin khusus",
     "specialHelp": "Bingkai berwarna dengan permata adalah tanda, cap lilin adalah segel, dan kilau adalah edisi. Satu ubin hanya bisa memiliki salah satunya. Arahkan atau fokuskan ke ubin untuk membaca efeknya.",
     "close": "Ayo main"

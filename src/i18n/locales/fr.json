@@ -290,9 +290,10 @@
     "hiddenHandDesc": "Les tuiles face cachée dissimulent motifs et score jusqu'à leur jeu.",
     "basePlayHint": "Jeu de base · complétez un motif pour débloquer un Yaku",
     "forecast": {
-      "looseTiles": "Les tuiles isolées donnent la moitié de leurs points de base · essayez de les grouper",
+      "looseTiles": "Les tuiles numérotées isolées donnent la moitié de leurs points de base · essayez de les grouper",
+      "looseHonors": "Les Honneurs isolés rapportent tous leurs points · un groupe les double",
       "grouped": "Toutes les tuiles sont groupées · +{{points}} points de forme de base",
-      "mixed": "+{{points}} points de forme de base · tuiles isolées : {{count}} (moitié des points de base)",
+      "mixed": "+{{points}} points de forme de base · tuiles numérotées isolées : {{count}} (moitié des points de base)",
       "complete": "Main complète · la prévision inclut les règles actives",
       "selectionCount": "Tuiles sélectionnées : {{count}}",
       "stagedDeclaration": "Tuiles préparées : {{count}} · confirmez la déclaration",
@@ -1321,7 +1322,8 @@
     "numberedRule": "Associez des tuiles identiques pour former une paire ou un brelan. Trois nombres consécutifs de la même famille forment une suite.",
     "honorRule": "Les honneurs forment des paires ou des brelans identiques, pas des suites numériques.",
     "basePoints": "{{points}} points de base avant les bonus de groupe, réductions et autres effets.",
-    "dragonMult": "+{{mult}} Mult quand elle marque dans un groupe.",
+    "dragonMult": "+{{mult}} Mult, ou +{{groupMult}} quand elle marque dans un groupe.",
+    "windGroup": "{{points}} quand elle marque dans un groupe.",
     "bonusTile": "Tuile bonus collectée automatiquement",
     "flowerScope": "Effet de base de la fleur, valable pour la partie. Les bonus de collection et la suppression peuvent le modifier. Consultez Fleurs / Saisons pour les effets actifs.",
     "stage": "Préparer {{tile}}",
@@ -1581,7 +1583,7 @@
     "wind_tiles": {
       "note1": "Les terminales valent le double des simples ! De nombreux yaku les exigent ou les excluent explicitement.",
       "p1": "Il existe <1>quatre tuiles de Vent</1>, représentant les points cardinaux :",
-      "p2": "Les Vents sont des <1>tuiles d'Honneur</1> et valent <4>50 points</4> chacune — la valeur de base la plus élevée !"
+      "p2": "Les Vents sont des <1>tuiles d'Honneur</1> et valent <4>50 points</4> chacune, 100 dans un groupe — la valeur de base la plus élevée !"
     },
     "dragon_tiles": {
       "note1": "Les Vents ne peuvent pas former de suites. Uniquement des brelans ou des paires.",
@@ -1589,7 +1591,7 @@
       "p2": "<0>白 (Dragon Blanc / Haku)</0> — Une tuile vierge ou encadrée, symbole de pureté ou de vide",
       "p3": "<0>發 (Dragon Vert / Hatsu)</0> — Le caractère 發 en vert, signifiant « prospérité » ou « émettre »",
       "p4": "<0>中 (Dragon Rouge / Chun)</0> — Le caractère 中 en rouge, signifiant « centre »",
-      "p5": "Les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4>, et chaque Dragon marqué dans un groupe ajoute +2 au Mult. Ils ne peuvent pas former de suites."
+      "p5": "Les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4>, et chaque Dragon qui marque ajoute +2 au Mult, +4 dans un groupe. Ils ne peuvent pas former de suites."
     },
     "bonus_tiles": {
       "p1": "Les <0>tuiles bonus</0> sont des tuiles spéciales qui ne font pas partie de votre main :"
@@ -1745,8 +1747,9 @@
       "headerPoints": "Points",
       "simples": "Simples (2–8)",
       "terminals": "Terminales (1 et 9)",
-      "dragonValue": "{{points}}, et +{{mult}} au Mult dans un groupe",
-      "note": "Les Vents valent dix fois une tuile simple ; les Dragons ajoutent plutôt du Mult. Une tuile hors de tout groupe marque la moitié."
+      "dragonValue": "{{points}}, et +{{mult}} au Mult (+{{groupMult}} dans un groupe)",
+      "windValue": "{{points}} ({{groupPoints}} dans un groupe)",
+      "note": "Les Vents valent dix fois une tuile simple ; les Dragons ajoutent plutôt du Mult. Une paire ou un groupe plus grand double l'un comme l'autre. Une tuile numérotée hors de tout groupe marque la moitié."
     },
     "groups": {
       "title": "Les bonus de groupe",
@@ -2659,7 +2662,7 @@
     "toast": "{{name}} !",
     "loose": {
       "name": "Tuiles isolées",
-      "explain": "Aucun groupe : chaque tuile rapporte la moitié de ses points."
+      "explain": "Aucun groupe : chaque tuile numérotée rapporte la moitié de ses points, les Honneurs tous leurs points."
     },
     "pair": {
       "name": "Paire",
@@ -2741,12 +2744,12 @@
     "points": "Points",
     "mult": "Mult",
     "score": "Score",
-    "scoreHelp": "Les points sont la valeur des tuiles plus le bonus de chaque groupe. Le Mult part de 1 et grandit avec les grosses mains, les Dragons, les Orbes et les Décrets. Une tuile hors groupe compte pour moitié.",
+    "scoreHelp": "Les points sont la valeur des tuiles plus le bonus de chaque groupe. Le Mult part de 1 et grandit avec les grosses mains, les Dragons, les Orbes et les Décrets. Une tuile numérotée hors groupe compte pour moitié.",
     "handsTitle": "Les mains",
     "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1, les carrés et suites de cinq +2. Chaque tuile compte une fois ; 6 tuiles maximum par coup, sauf une main de Mahjong complète.",
     "tilesTitle": "Les tuiles",
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
-    "honorsHelp": "Chaque Vent vaut {{wind}} points. Chaque Dragon dans un groupe ajoute +{{dragon}} Mult.",
+    "honorsHelp": "Chaque Vent vaut {{wind}} points, {{windGroup}} dans un groupe. Chaque Dragon ajoute +{{dragon}} Mult, +{{dragonGroup}} dans un groupe.",
     "specialTitle": "Tuiles spéciales",
     "specialHelp": "Un cadre coloré avec une gemme est une marque, un cachet de cire est un sceau et un reflet est une édition. Une tuile n’en porte qu’un seul. Survolez ou sélectionnez une tuile pour lire son effet.",
     "close": "C’est parti"

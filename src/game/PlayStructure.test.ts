@@ -47,6 +47,7 @@ it.each([
       kind: 'tactical',
       groupedTiles,
       looseTiles,
+      halvedTiles: looseTiles,
     })
     expect(preview.structurePoints).toBe(points)
     expect(game.previewScore(ids)).toEqual(preview)
@@ -62,16 +63,19 @@ it.each([
 
 it('reports transformed Honor groups instead of reparsing the visible tiles in the UI', () => {
   const { game, state, ids } = fixture([1, 2, 3], TileSuit.Wind)
+  // Loose Winds pay in full, so none of them is halved.
   expect(game.previewScore(ids)!.structure).toEqual({
     kind: 'tactical',
     groupedTiles: 0,
     looseTiles: 3,
+    halvedTiles: 0,
   })
   state.decreeSystem.acquireDecree(HONOR_TRANSMUTATION)
   expect(game.previewScore(ids)!.structure).toEqual({
     kind: 'tactical',
     groupedTiles: 3,
     looseTiles: 0,
+    halvedTiles: 0,
   })
 })
 
@@ -81,6 +85,7 @@ it('distinguishes a complete hand from an all-grouped tactical play', () => {
     kind: 'complete',
     groupedTiles: 14,
     looseTiles: 0,
+    halvedTiles: 0,
   })
 })
 
@@ -95,6 +100,7 @@ it('does not relabel suppressed tiles as loose when their structure still scores
     kind: 'tactical',
     groupedTiles: 3,
     looseTiles: 0,
+    halvedTiles: 0,
   })
   expect(preview.tilePoints).toBe(0)
   expect(preview.structurePoints).toBe(30)

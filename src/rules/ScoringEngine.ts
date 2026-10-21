@@ -7,15 +7,15 @@
  * Base points come from tiles and hand structure:
  * - Terminals (1,9): 10 points each
  * - Simples (2-8): 5 points each
- * - Winds: 50 points each; Dragons: 15 points each
+ * - Winds: 50 points each, 100 inside a group; Dragons: 15 points each
  * - Pair: +15, Sequence: +30, Triplet: +40, Quad: +65,
  *   Straight of 4: +45, Straight of 5: +60
- * - A tile in a tactical play that belongs to no group scores half
+ * - A numbered tile in a tactical play that belongs to no group scores half
  * - A Stone tile has no face: it joins no group and scores only its Stone Mark
  *
  * Mult starts at 1 (or the Yaku multiplier of a complete hand) and adds:
  * - the play pattern's Mult (see PlayPattern.ts)
- * - +2 for every Dragon that scores inside a group
+ * - +2 for every Dragon that scores, +4 for one inside a group
  * - every scored Mark or Edition "+N Mult" (Mult Mark +4, Holo +10, Lucky +20)
  *
  * Tile modifiers also add:
@@ -43,6 +43,7 @@ import {
   classifyMahjong,
   classifyPlay,
   DRAGON_GROUP_MULT,
+  DRAGON_MULT,
   type PlayPattern,
 } from './PlayPattern'
 
@@ -51,6 +52,8 @@ export interface ScoredStructure {
   kind: 'tactical' | 'complete'
   groupedTiles: number
   looseTiles: number
+  /** Loose tiles scoring at half: the numbered ones, since Honors pay in full. */
+  halvedTiles: number
 }
 
 /**
@@ -81,7 +84,7 @@ export interface ScoreBreakdown {
 
   /** What the play scored as, and the Mult its pattern adds. */
   pattern: PlayPattern
-  /** Mult added by Dragons scoring inside a group (+2 each trigger). */
+  /** Mult added by Dragons (+2 each trigger, +4 inside a group). */
   dragonMult: number
 
   // Bonuses from game systems
@@ -172,8 +175,31 @@ export function getTilePoints(tile: Tile): number {
 
 /** Winds are the big-points honors. */
 export const WIND_TILE_POINTS = 50
-/** Dragons keep modest points; their power is Mult (see DRAGON_GROUP_MULT). */
+/** A Wind inside a pair or bigger group scores this instead. */
+export const WIND_GROUP_POINTS = 100
+/** Dragons keep modest points; their power is Mult (see `dragonMultFor`). */
 export const DRAGON_TILE_POINTS = 15
+
+/**
+ * Points a tile scores in a play, grouped or loose.
+ *
+ * Honors pay their own effect wherever they sit, so a lone Wind is worth its
+ * 50 and only numbered tiles take the loose-tile discount. A Wind inside a
+ * group pays more, which is what makes a Wind pair worth chasing.
+ */
+export function playedTilePoints(tile: Tile, grouped: boolean): number {
+  const base = getTilePoints(tile)
+  if (tile.suit === TileSuit.Wind && !tile.isStone && grouped)
+    return WIND_GROUP_POINTS
+  if (grouped || tile.isHonor) return base
+  return Math.floor(base * UNGROUPED_TILE_SHARE)
+}
+
+/** Mult a Dragon adds each time it scores: some loose, more in a group. */
+export function dragonMultFor(tile: Tile, grouped: boolean): number {
+  if (tile.suit !== TileSuit.Dragon || tile.isStone) return 0
+  return grouped ? DRAGON_GROUP_MULT : DRAGON_MULT
+}
 
 /**
  * Points a group is worth for being a group.
@@ -291,19 +317,17 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const structureTiles = context.tiles.filter(
     (tile) => !tile.isBonus && !tile.isStone
   )
-  const looseTiles = groupedTileIds
-    ? structureTiles.filter((tile) => !groupedTileIds.has(tile.id)).length
-    : 0
-  const tilePointsFor = (tile: Tile): number => {
-    const base = getTilePoints(tile)
-    if (!groupedTileIds || groupedTileIds.has(tile.id)) return base
-    return Math.floor(base * UNGROUPED_TILE_SHARE)
-  }
+  const loose = groupedTileIds
+    ? structureTiles.filter((tile) => !groupedTileIds.has(tile.id))
+    : []
+  const looseTiles = loose.length
+  const isGrouped = (tile: Tile): boolean =>
+    !groupedTileIds || groupedTileIds.has(tile.id)
 
   const tilePoints = scoringTiles.reduce(
     (sum, tile) =>
       sum +
-      tilePointsFor(tile) *
+      playedTilePoints(tile, isGrouped(tile)) *
         (1 + tile.retriggers) *
         (1 +
           Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) * strength),
@@ -378,9 +402,8 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   // 5. Calculate yaku multiplier (multiplicative stacking)
   const yakuMultiplier = calculateYakuMultiplier(detectedYaku)
 
-  // 5b. The pattern's Mult, and every grouped Dragon's. Every tile of a
-  // complete hand belongs to its structure; a tactical play's loose Dragons
-  // score only their (halved) points.
+  // 5b. The pattern's Mult, and every Dragon's. Every tile of a complete
+  // hand belongs to its structure; a tactical play's loose Dragons add less.
   const pattern = isPartial
     ? classifyPlay(context.partialMelds!)
     : classifyMahjong([
@@ -391,16 +414,11 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
       ])
   const dragonMult = scoringTiles.reduce(
     (sum, tile) =>
-      tile.suit === TileSuit.Dragon &&
-      !tile.isStone &&
-      (!groupedTileIds || groupedTileIds.has(tile.id))
-        ? sum +
-          DRAGON_GROUP_MULT *
-            (1 + tile.retriggers) *
-            (1 +
-              Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) *
-                strength)
-        : sum,
+      sum +
+      dragonMultFor(tile, isGrouped(tile)) *
+        (1 + tile.retriggers) *
+        (1 +
+          Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) * strength),
     0
   )
 
@@ -435,6 +453,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
       kind: isPartial ? 'tactical' : 'complete',
       groupedTiles: structureTiles.length - looseTiles,
       looseTiles,
+      halvedTiles: loose.filter((tile) => !tile.isHonor).length,
     },
     modifierChips,
     modifierMult,

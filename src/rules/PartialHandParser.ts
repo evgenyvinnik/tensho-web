@@ -20,14 +20,13 @@ import {
   type SequenceRules,
 } from './sequenceShapes'
 import {
+  dragonMultFor,
   getMeldStructurePoints,
-  getTilePoints,
+  playedTilePoints,
   structurePointsFor,
-  UNGROUPED_TILE_SHARE,
 } from './ScoringEngine'
 import {
   classifyPlay,
-  DRAGON_GROUP_MULT,
   GROUP_MULT,
   groupKind,
   groupKindFor,
@@ -353,17 +352,19 @@ function playValue(parse: PartialParse): number {
   const grouped = new Map<string, Tile>()
   for (const group of parse.groups)
     for (const tile of group.tiles) grouped.set(tile.id, tile)
-  const tilePoints =
-    [...grouped.values()].reduce((sum, tile) => sum + getTilePoints(tile), 0) +
-    parse.leftovers.reduce(
-      (sum, tile) =>
-        sum + Math.floor(getTilePoints(tile) * UNGROUPED_TILE_SHARE),
-      0
-    )
-  const dragons = [...grouped.values()].filter(
-    (tile) => tile.suit === TileSuit.Dragon
-  ).length
-  const mult = 1 + classifyPlay(parse.groups).mult + dragons * DRAGON_GROUP_MULT
+  const scored = [
+    ...[...grouped.values()].map((tile) => [tile, true] as const),
+    ...parse.leftovers.map((tile) => [tile, false] as const),
+  ]
+  const tilePoints = scored.reduce(
+    (sum, [tile, isGrouped]) => sum + playedTilePoints(tile, isGrouped),
+    0
+  )
+  const dragonMult = scored.reduce(
+    (sum, [tile, isGrouped]) => sum + dragonMultFor(tile, isGrouped),
+    0
+  )
+  const mult = 1 + classifyPlay(parse.groups).mult + dragonMult
   // Grouped tiles break exact ties toward the reading that explains more.
   return (tilePoints + parse.structurePoints) * mult * 64 + grouped.size
 }

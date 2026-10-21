@@ -39,14 +39,16 @@ is split into the disjoint groups that pay the most. Its pattern adds Mult:
 `(groups − 1) + Σ group bonus` with Pair 0, Sequence 0, Triplet 1, Straight of
 Four 1, Quad 2, Straight of Five 2. A complete Mahjong hand adds a flat +4 on
 top of its Yaku. Straights (four or five in a row, one suit) score 45 / 60
-group points. Loose tiles still score half. An awakened Plum's overlapping
-sequences never beat the Straight of Five they form, so Plum now matters for
-complete hands.
+group points. Loose numbered tiles still score half; Honors do not. An
+awakened Plum's overlapping sequences never beat the Straight of Five they
+form, so Plum now matters for complete hands.
 
-**Honors.** Winds score 50 points each. Dragons score 15 and add +2 Mult for
-every Dragon scoring inside a group (a loose Dragon adds none).
+**Honors.** Winds score 50 points each and Dragons score 15 and add +2 Mult,
+loose or grouped: the loose-tile half does not touch them. Inside a pair or
+bigger group both double — a Wind scores 100 and a Dragon adds +4 Mult — so an
+honor pair is worth chasing (the user's call, October 2026).
 
-**Mult.** `Mult = (Yaku or 1) + Orb levels + pattern + grouped Dragons`.
+**Mult.** `Mult = (Yaku or 1) + Orb levels + pattern + Dragons`.
 Decrees then work on that running Mult in order: "+N Mult" adds N and "×N Mult"
 multiplies. (Previously "+N Mult" was added to a separate factor that
 multiplied the whole Mult, so a +2 Decree tripled a Triplet's Mult 2 to 6.)

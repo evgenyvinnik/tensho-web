@@ -290,9 +290,10 @@
     "hiddenHandDesc": "Las fichas boca abajo ocultan patrones y puntos hasta jugarse.",
     "basePlayHint": "Jugada base · completa un patrón para desbloquear Yaku",
     "forecast": {
-      "looseTiles": "Las fichas sin grupo dan la mitad de sus puntos base · intenta agruparlas",
+      "looseTiles": "Las fichas numeradas sin grupo dan la mitad de sus puntos base · intenta agruparlas",
+      "looseHonors": "Los Honores sin grupo puntúan completos · un grupo los duplica",
       "grouped": "Todas las fichas agrupadas · +{{points}} puntos base de figura",
-      "mixed": "+{{points}} puntos base de figura · sin grupo: {{count}} (mitad de puntos base)",
+      "mixed": "+{{points}} puntos base de figura · numeradas sin grupo: {{count}} (mitad de puntos base)",
       "complete": "Mano completa · la previsión incluye las reglas activas",
       "selectionCount": "Fichas seleccionadas: {{count}}",
       "stagedDeclaration": "Fichas preparadas: {{count}} · confirma la declaración",
@@ -1321,7 +1322,8 @@
     "numberedRule": "Combina fichas idénticas para formar una pareja o un trío. Tres números consecutivos del mismo palo forman una secuencia.",
     "honorRule": "Los honores forman parejas o tríos iguales, no secuencias numéricas.",
     "basePoints": "{{points}} puntos base antes de las bonificaciones de grupo, reducciones y otros efectos.",
-    "dragonMult": "+{{mult}} Mult cuando puntúa dentro de un grupo.",
+    "dragonMult": "+{{mult}} Mult, o +{{groupMult}} cuando puntúa dentro de un grupo.",
+    "windGroup": "{{points}} cuando puntúa dentro de un grupo.",
     "bonusTile": "Ficha de bonificación que se recoge automáticamente",
     "flowerScope": "Efecto base de la flor; dura toda la partida. Las bonificaciones de colección y la supresión pueden cambiarlo. Consulta Flores / Estaciones para ver los efectos activos.",
     "stage": "Preparar {{tile}}",
@@ -1581,7 +1583,7 @@
     "wind_tiles": {
       "note1": "¡Los terminales valen el doble que los simples! Muchos yaku también los exigen o los excluyen expresamente.",
       "p1": "Hay <1>cuatro fichas de Viento</1>, que representan los puntos cardinales:",
-      "p2": "Las fichas de Viento son <1>fichas de Honor</1> y valen <4>50 puntos</4> cada una: ¡el valor base más alto!"
+      "p2": "Las fichas de Viento son <1>fichas de Honor</1> y valen <4>50 puntos</4> cada una, 100 dentro de un grupo: ¡el valor base más alto!"
     },
     "dragon_tiles": {
       "note1": "Los Vientos no pueden formar escaleras. Solo tríos o parejas.",
@@ -1589,7 +1591,7 @@
       "p2": "<0>白 (Dragón Blanco / Haku)</0> — Una ficha en blanco o enmarcada, que representa la pureza o el vacío",
       "p3": "<0>發 (Dragón Verde / Hatsu)</0> — El carácter 發 en verde, que significa «prosperidad» o «emitir»",
       "p4": "<0>中 (Dragón Rojo / Chun)</0> — El carácter 中 en rojo, que significa «centro»",
-      "p5": "Los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4>, y cada Dragón que puntúa dentro de un grupo suma +2 al Mult. No pueden formar escaleras."
+      "p5": "Los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4>, y cada Dragón que puntúa suma +2 al Mult, +4 dentro de un grupo. No pueden formar escaleras."
     },
     "bonus_tiles": {
       "p1": "Las <0>fichas de bonificación</0> son fichas especiales que no forman parte de tu mano:"
@@ -1745,8 +1747,9 @@
       "headerPoints": "Puntos",
       "simples": "Simples (2–8)",
       "terminals": "Terminales (1 y 9)",
-      "dragonValue": "{{points}}, y +{{mult}} al Mult en un grupo",
-      "note": "Los Vientos valen diez veces una ficha simple; los Dragones suben el Mult. Una ficha fuera de todo grupo puntúa la mitad."
+      "dragonValue": "{{points}}, y +{{mult}} al Mult (+{{groupMult}} en un grupo)",
+      "windValue": "{{points}} ({{groupPoints}} en un grupo)",
+      "note": "Los Vientos valen diez veces una ficha simple; los Dragones suben el Mult. Una pareja o un grupo mayor duplica ambos. Una ficha numerada fuera de todo grupo puntúa la mitad."
     },
     "groups": {
       "title": "Bonos de grupo",
@@ -2659,7 +2662,7 @@
     "toast": "¡{{name}}!",
     "loose": {
       "name": "Fichas sueltas",
-      "explain": "Sin grupo: cada ficha da la mitad de sus puntos."
+      "explain": "Sin grupo: cada ficha numerada da la mitad de sus puntos; los Honores, completos."
     },
     "pair": {
       "name": "Par",
@@ -2741,12 +2744,12 @@
     "points": "Puntos",
     "mult": "Mult",
     "score": "Puntuación",
-    "scoreHelp": "Los puntos son el valor de las fichas más el bono de cada grupo. El Mult empieza en 1 y crece con manos más grandes, Dragones, Orbes y Decretos. Las fichas fuera de un grupo dan la mitad.",
+    "scoreHelp": "Los puntos son el valor de las fichas más el bono de cada grupo. El Mult empieza en 1 y crece con manos más grandes, Dragones, Orbes y Decretos. Las fichas numeradas fuera de un grupo dan la mitad.",
     "handsTitle": "Las manos",
     "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Cada ficha cuenta una vez; hasta 6 fichas por jugada salvo una mano de Mahjong completa.",
     "tilesTitle": "Las fichas",
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
-    "honorsHelp": "Cada Viento vale {{wind}} puntos. Cada Dragón dentro de un grupo suma +{{dragon}} Mult.",
+    "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",
     "specialTitle": "Fichas especiales",
     "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Una ficha solo puede tener uno de ellos. Pasa el cursor o enfoca una ficha para leer qué hace.",
     "close": "¡A jugar!"

@@ -577,9 +577,10 @@
     "hiddenHandDesc": "Kapalı taşlar, oynanana dek deseni ve puanı gizler.",
     "basePlayHint": "Temel oyun · Yaku açmak için bir deseni tamamlayın",
     "forecast": {
-      "looseTiles": "Grupsuz taşlar temel puanlarının yarısını verir · bir grup oluşturmayı dene",
+      "looseTiles": "Grupsuz sayı taşları temel puanlarının yarısını verir · bir grup oluşturmayı dene",
+      "looseHonors": "Grupsuz Onur taşları tam puan verir · grup bunu ikiye katlar",
       "grouped": "Tüm taşlar gruplandı · +{{points}} temel şekil puanı",
-      "mixed": "+{{points}} temel şekil puanı · grup dışı: {{count}} (temel puanın yarısı)",
+      "mixed": "+{{points}} temel şekil puanı · grup dışı sayı taşı: {{count}} (temel puanın yarısı)",
       "complete": "Tamamlanmış el · tahmin etkin kuralları içerir",
       "selectionCount": "Seçilen taşlar: {{count}}",
       "stagedDeclaration": "Hazırlanan taşlar: {{count}} · ilanı onayla",
@@ -1608,7 +1609,8 @@
     "numberedRule": "Aynı taşlarla çift veya üçlü oluştur. Aynı türden ardışık üç sayı bir seri oluşturur.",
     "honorRule": "Onur taşları aynı taşlardan çift veya üçlü oluşturur, sayısal seri oluşturmaz.",
     "basePoints": "Grup bonusları, azaltmalar ve diğer etkilerden önce {{points}} temel puan.",
-    "dragonMult": "Bir grupta puan kazandırdığında Çarpana +{{mult}}.",
+    "dragonMult": "Çarpana +{{mult}}; bir grupta puan kazandırdığında +{{groupMult}}.",
+    "windGroup": "Bir grupta puan kazandırdığında {{points}}.",
     "bonusTile": "Otomatik toplanan bonus taşı",
     "flowerScope": "Çiçeğin temel etkisi koşu boyunca sürer. Koleksiyon bonusları ve baskılama bunu değiştirebilir. Etkin etkiler için Çiçekler / Mevsimler bölümüne bak.",
     "stage": "Hazırla: {{tile}}",
@@ -1868,7 +1870,7 @@
     "wind_tiles": {
       "note1": "Uç taşlar sade taşların iki katı değerindedir! Birçok yaku da onları özellikle ister ya da dışlar.",
       "p1": "Ana yönleri temsil eden <1>dört Rüzgâr taşı</1> vardır:",
-      "p2": "Rüzgâr taşları <1>Onur taşıdır</1> ve her biri <4>50 puan</4> değerindedir — en yüksek temel değer!"
+      "p2": "Rüzgâr taşları <1>Onur taşıdır</1> ve her biri <4>50 puan</4>, grupta 100 puan değerindedir — en yüksek temel değer!"
     },
     "dragon_tiles": {
       "note1": "Rüzgârlar sıra oluşturamaz. Yalnızca üçlü ya da çift yapabilirler.",
@@ -1876,7 +1878,7 @@
       "p2": "<0>白 (Beyaz Ejderha / Haku)</0> — Boş ya da çerçeveli taş; saflığı veya boşluğu temsil eder",
       "p3": "<0>發 (Yeşil Ejderha / Hatsu)</0> — Yeşil 發 karakteri; «bereket» ya da «yayılmak» anlamına gelir",
       "p4": "<0>中 (Kırmızı Ejderha / Chun)</0> — Kırmızı 中 karakteri; «merkez» anlamına gelir",
-      "p5": "Ejderhalar <1>Onur taşıdır</1>, <4>15 puan</4> eder ve bir grupta puan alan her Ejderha Çarpana +2 ekler. Sıra oluşturamazlar."
+      "p5": "Ejderhalar <1>Onur taşıdır</1>, <4>15 puan</4> eder ve puan alan her Ejderha Çarpana +2, grupta +4 ekler. Sıra oluşturamazlar."
     },
     "bonus_tiles": {
       "p1": "<0>Bonus taşlar</0>, elinizin parçası olmayan özel taşlardır:"
@@ -2032,8 +2034,9 @@
       "headerPoints": "Puan",
       "simples": "Sadeler (2–8)",
       "terminals": "Uçlar (1 ve 9)",
-      "dragonValue": "{{points}}, grupta Çarpana +{{mult}}",
-      "note": "Rüzgârlar sade bir taşın on katı eder; Ejderhalar ise Çarpanı yükseltir. Hiçbir grupta olmayan taş yarı puan alır."
+      "dragonValue": "{{points}}, Çarpana +{{mult}} (grupta +{{groupMult}})",
+      "windValue": "{{points}} (grupta {{groupPoints}})",
+      "note": "Rüzgârlar sade bir taşın on katı eder; Ejderhalar ise Çarpanı yükseltir. Çift ya da daha büyük bir grup ikisini de ikiye katlar. Hiçbir grupta olmayan sayı taşı yarı puan alır."
     },
     "groups": {
       "title": "Grup bonusları",
@@ -2659,7 +2662,7 @@
     "toast": "{{name}}!",
     "loose": {
       "name": "Dağınık taşlar",
-      "explain": "Grup yok: her taş puanının yarısını verir."
+      "explain": "Grup yok: her sayı taşı puanının yarısını, Onur taşları tamamını verir."
     },
     "pair": {
       "name": "Çift",
@@ -2741,12 +2744,12 @@
     "points": "Puan",
     "mult": "Çarpan",
     "score": "Puan",
-    "scoreHelp": "Puan, taşların değeri artı her grubun bonusudur. Çarpan 1’den başlar; büyük eller, Ejderhalar, Küreler ve Fermanlarla artar. Grup dışındaki taşlar yarım puan verir.",
+    "scoreHelp": "Puan, taşların değeri artı her grubun bonusudur. Çarpan 1’den başlar; büyük eller, Ejderhalar, Küreler ve Fermanlarla artar. Grup dışındaki sayı taşları yarım puan verir.",
     "handsTitle": "Eller",
     "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1, dörtlüler ve beşli sıralar +2 ekler. Her taş bir kez sayılır; tam Mahjong eli dışında oyun başına en fazla 6 taş.",
     "tilesTitle": "Taşlar",
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
-    "honorsHelp": "Her Rüzgar {{wind}} puan değerindedir. Bir gruptaki her Ejderha +{{dragon}} Çarpan ekler.",
+    "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",
     "specialTitle": "Özel taşlar",
     "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Bir taşta bunlardan yalnızca biri olabilir. Ne yaptığını görmek için taşın üzerine gel veya odaklan.",
     "close": "Hadi oynayalım"
