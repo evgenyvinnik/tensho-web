@@ -23,10 +23,12 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      # The currently deployed release, not a second build of the candidate.
+      # Live release.json verified October 21: v1.0.261021-3.
+      # Pin its commit, not a second build of the candidate; refresh this baseline
+      # when the live manifest changes before the next completion candidate.
       - uses: actions/checkout@v6
         with:
-          ref: v1.0.261011-14
+          ref: ac708417521b1f0373b8608c8c34fb94ee894e5b
           path: .verification-baseline
           persist-credentials: false
       - uses: actions/setup-node@v6
@@ -138,7 +140,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Verify release safeguards and browser runner
-        run: node --test scripts/deployment-versioning.test.mjs scripts/gameplay-browser.test.mjs
+        run: node --test scripts/deployment-versioning.test.mjs scripts/gameplay-browser.test.mjs scripts/illustration-delivery.test.mjs
       - name: Verify application tests
         run: bun run test:run --maxWorkers=2
       - name: Build project site

@@ -1,0 +1,134 @@
+{
+  "generator": "Built-in image_gen; model identifier not exposed",
+  "transparent_background": true,
+  "prompt": "Use case: background-extraction. Image 1 is the edit target: an existing Tensho game Script inventory illustration. Repair ONLY its alpha/background extraction. Remove the ragged white/light-gray cutout fringe and opaque white cast-shadow residue around the scroll, ropes, charms and magical wisps. Output genuine transparent alpha outside the object, including holes between tassels and detached ornaments. Preserve the exact unique central emblem, jade/black lacquer body, gold fittings, red cords, perspective, diagonal orientation, silhouette, proportions, and painterly style. Keep intentional purple/blue/green magical effects but let their translucent outer edges fade into alpha without white matting. Keep highlights ON the object; do not recolor, redesign or add details. Center the full object within a square canvas with a small transparent safety margin, no clipping. No floor, background, white border, checkerboard pattern, halo, new text or new objects. This will be displayed on very dark green felt, so the edge must be clean against dark backgrounds.",
+  "conversion": "cwebp -q 84 -m 6 -resize 256 256; preserve generated alpha, no thresholding or matte flattening",
+  "assets": [
+    {
+      "id": "script_of_aura",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_aura.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-102a1903-c566-4c57-ba47-e7ffd440bdcb.png",
+      "path": "public/assets/illustrations/scripts/script_of_aura.webp"
+    },
+    {
+      "id": "script_of_deja_vu",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_deja_vu.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-399bdd46-e46a-4fc2-a5cc-91e06299b772.png",
+      "path": "public/assets/illustrations/scripts/script_of_deja_vu.webp"
+    },
+    {
+      "id": "script_of_eclipse",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_eclipse.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-ff408e6c-87ed-413e-a7f2-f918388e053b.png",
+      "path": "public/assets/illustrations/scripts/script_of_eclipse.webp"
+    },
+    {
+      "id": "script_of_ectoplasm",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_ectoplasm.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-fc714b71-b5f3-4eb8-8403-ec28d89c0b01.png",
+      "path": "public/assets/illustrations/scripts/script_of_ectoplasm.webp"
+    },
+    {
+      "id": "script_of_immolation",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_immolation.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-4276c4a3-251b-41d0-aedd-50cf45363655.png",
+      "path": "public/assets/illustrations/scripts/script_of_immolation.webp"
+    },
+    {
+      "id": "script_of_incantation",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_incantation.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-fd2e21a6-b75f-437c-98a2-4b5cd2ab587e.png",
+      "path": "public/assets/illustrations/scripts/script_of_incantation.webp"
+    },
+    {
+      "id": "script_of_kinship",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_kinship.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-37498fd6-b64a-445c-81b2-1df23bf3501c.png",
+      "path": "public/assets/illustrations/scripts/script_of_kinship.webp"
+    },
+    {
+      "id": "script_of_mirrors",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_mirrors.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-58daace6-e4f0-49bb-979d-fb9671d0fecc.png",
+      "path": "public/assets/illustrations/scripts/script_of_mirrors.webp"
+    },
+    {
+      "id": "script_of_silence",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_silence.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-e7cb435a-28de-47d1-94f2-66c38a27f83f.png",
+      "path": "public/assets/illustrations/scripts/script_of_silence.webp"
+    },
+    {
+      "id": "script_of_the_ankh",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_ankh.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-a20e132b-4155-4038-8e82-a319fc47a58b.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_ankh.webp"
+    },
+    {
+      "id": "script_of_the_cryptid",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_cryptid.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-6ac7b364-e6ab-4cc6-9ec6-f73c45e9c2f8.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_cryptid.webp"
+    },
+    {
+      "id": "script_of_the_gold_seal",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_gold_seal.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-c98c4802-6640-44a3-91d2-74399e7e5502.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_gold_seal.webp"
+    },
+    {
+      "id": "script_of_the_grave",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_grave.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-350f8529-f474-44d1-9f40-c6a594045e09.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_grave.webp"
+    },
+    {
+      "id": "script_of_the_hex",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_hex.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-0c94c002-271a-4b52-b4c3-61385fa45b37.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_hex.webp"
+    },
+    {
+      "id": "script_of_the_medium",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_medium.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-a970da33-e45b-43b6-9f61-fe0ca04372af.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_medium.webp"
+    },
+    {
+      "id": "script_of_the_ouija",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_ouija.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-45a14242-4397-4754-9cf7-a9e4821d304d.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_ouija.webp"
+    },
+    {
+      "id": "script_of_the_sigil",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_sigil.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-7d7287d6-cc16-450d-92b7-2ddfcdec6311.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_sigil.webp"
+    },
+    {
+      "id": "script_of_the_singularity",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_singularity.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-1d21c770-6b28-4f6e-8170-9998e78e6100.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_singularity.webp"
+    },
+    {
+      "id": "script_of_the_soul",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_soul.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-5c46e120-e9a7-433c-958e-6e70b0b04977.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_soul.webp"
+    },
+    {
+      "id": "script_of_the_trance",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_trance.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-32f18e1f-fcd5-4177-a538-07bbdfaf0a90.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_trance.webp"
+    },
+    {
+      "id": "script_of_the_wraith",
+      "input": "/Users/evgenyvinnik/Documents/GitHub/tensho-web/public/assets/illustrations/scripts/script_of_the_wraith.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-983a308d-0e87-4a6a-afc5-2e422c9110ec.png",
+      "path": "public/assets/illustrations/scripts/script_of_the_wraith.webp"
+    }
+  ]
+}

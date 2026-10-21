@@ -35,7 +35,7 @@ jobs:
           package-manager-cache: false
 
       - name: Verify release workflow
-        run: node --test scripts/deployment-versioning.test.mjs scripts/gameplay-browser.test.mjs
+        run: node --test scripts/deployment-versioning.test.mjs scripts/gameplay-browser.test.mjs scripts/illustration-delivery.test.mjs
 
       - name: Calculate deployment version
         id: version

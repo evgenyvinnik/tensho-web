@@ -1,24 +1,38 @@
 import { readFileSync } from 'node:fs'
 import { expect, it } from 'vitest'
+import repairs from '../../docs/script-alpha-repair-manifest.json'
 
 const sources: string[] = JSON.parse(
   readFileSync('scripts/illustration-sources.json', 'utf8')
+)
+const repairedSources = new Set(
+  repairs.assets.map(({ id }) => `scripts/${id}.png`)
 )
 
 it('keeps an explicit, unique migration inventory', () => {
   expect(sources).toHaveLength(51)
   expect(new Set(sources).size).toBe(sources.length)
   expect(sources.every((s) => /^[\w/-]+\.png$/.test(s))).toBe(true)
+  expect(repairedSources.size).toBe(21)
+  for (const asset of repairs.assets) {
+    expect(sources).toContain(`scripts/${asset.id}.png`)
+    expect(asset.path).toBe(
+      `public/assets/illustrations/scripts/${asset.id}.webp`
+    )
+  }
 })
 
 it.each(sources)(
-  'retains the source and a bounded, aspect-preserving delivery copy for %s',
+  'retains the legacy source and bounded delivery art for %s',
   (source) => {
     const png = readFileSync(`public/assets/illustrations/${source}`)
     expect(png.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
     const width = png.readUInt32BE(16)
     const height = png.readUInt32BE(20)
-    const sizes = source.startsWith('site/') ? [768, 1536] : [512]
+    const repaired = repairedSources.has(source)
+    const sizes = source.startsWith('site/')
+      ? [768, 1536]
+      : [repaired ? 256 : 512]
     for (const size of sizes) {
       const path = source.replace(
         '.png',
@@ -35,15 +49,18 @@ it.each(sources)(
         ? webp.readUIntLE(27, 3) + 1
         : webp.readUInt16LE(28) & 0x3fff
       const scale = Math.min(1, size / Math.max(width, height))
-      expect([w, h]).toEqual([
-        Math.round(width * scale),
-        Math.round(height * scale),
-      ])
+      expect([w, h]).toEqual(
+        repaired
+          ? [256, 256]
+          : [Math.round(width * scale), Math.round(height * scale)]
+      )
       if (!source.startsWith('site/')) {
         expect(extended).toBe(true)
         expect(webp[20] & 0x10).toBe(0x10)
       }
-      expect(webp.length).toBeLessThan(size === 512 ? 120_000 : 350_000)
+      expect(webp.length).toBeLessThan(
+        repaired ? 32_000 : size === 512 ? 120_000 : 350_000
+      )
       expect(webp.length).toBeLessThan(png.length / 4)
     }
   }

@@ -26,7 +26,12 @@ for (const { source, copies } of illustrationCopies) {
     const body = readFileSync(resolve(root, path))
     assert.equal(body.toString('ascii', 8, 12), 'WEBP', path)
     assert.ok(
-      body.length <= (maxDimension === 512 ? 120_000 : 350_000),
+      body.length <=
+        (maxDimension === 256
+          ? 32_000
+          : maxDimension === 512
+            ? 120_000
+            : 350_000),
       `Oversized delivery asset: ${path}`
     )
     deliveryBytes += body.length
