@@ -1408,7 +1408,7 @@
       },
       "the_eye": {
         "name": "眼",
-        "description": "この局は役の重複不可（各役は一度だけ計上）"
+        "description": "このラウンドでは同じ役は一度だけ得点。2回目以降は0点"
       },
       "the_mouth": {
         "name": "口",
@@ -1432,7 +1432,7 @@
       },
       "the_arm": {
         "name": "腕",
-        "description": "計上時に役の階級が1下がる"
+        "description": "打つたびに、その役のレベルが得点前に1下がる"
       },
       "the_psychic": {
         "name": "霊視者",
@@ -1460,7 +1460,7 @@
       },
       "the_ox": {
         "name": "牛",
-        "description": "最も多く使った役を打つとゴールドが0になる"
+        "description": "最も多く打った役を打つとゴールドが0になる"
       },
       "the_house": {
         "name": "家",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "引くたびに{{count}}枚捨てられる",
     "score_multiplier": "目標×{{value}}",
-    "no_repeat_yaku": "同じ役は1回まで",
+    "no_repeat_pattern": "同じ役は1回まで",
     "single_play_pattern": "役は1種類のみ",
     "single_play_pattern_locked": "{{pattern}}のみ得点",
     "halve_score": "得点×½",
     "single_hand": "打てるのは1回だけ",
     "debuff_used_tiles": "使った牌は0点",
     "no_discards": "引き直し不可",
-    "decrease_yaku_tier": "役の段階−{{count}}",
+    "decrease_play_level": "役のレベル−{{count}}",
     "fixed_hand_size": "ちょうど{{count}}枚で打つ",
     "debuff_suit": "{{target}}は0点",
     "debuff_tile_type": "{{target}}は0点",
     "hand_size_reduction": "手牌−{{count}}枚",
     "gold_per_tile": "打った牌1枚ごとに金貨−{{count}}",
-    "most_played_yaku_zeroes_gold": "最多の役で金貨が0に",
+    "most_played_pattern_zeroes_gold": "最多の役で金貨が0に",
+    "most_played_pattern_named": "{{pattern}}で金貨が0に",
     "first_hand_face_down": "最初の手牌は伏せ牌",
     "tiles_face_down_ratio": "{{count}}枚に1枚が伏せ牌",
     "tiles_face_down_after_play": "新しい牌は伏せ牌",

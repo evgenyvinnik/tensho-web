@@ -77,7 +77,7 @@ it('round-trips every authoritative collection, modifier and internal subsystem 
       false
     ),
   ]
-  state.yakuPlayCounts.set('tanyao', 4)
+  state.patternPlayCounts.set('pair', 4)
   state.currentRoundYakuIds.add('tanyao')
   state.previousRoundYakuIds.add('yakuhai')
   state.temporaryDecreeSlotPenalty = 1

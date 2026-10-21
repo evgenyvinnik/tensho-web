@@ -547,11 +547,19 @@ export class CelestialOrbSystem {
     return new Map(this.orbLevels)
   }
 
+  /** The Arm: lose levels, never below the unupgraded level 1. */
+  lowerYakuLevel(yaku: YakuCategory, levels = 1): void {
+    const level = this.orbLevels.get(yaku)
+    if (level !== undefined)
+      this.orbLevels.set(yaku, Math.max(1, level - levels))
+  }
+
   /**
-   * Calculate bonus mult for a yaku based on orb levels
+   * Calculate bonus mult for a yaku based on orb levels. `levelDrop` prices
+   * it as if it had that many fewer levels, never below level 1.
    */
-  calculateYakuMult(yaku: YakuCategory): number {
-    const level = this.getYakuLevel(yaku)
+  calculateYakuMult(yaku: YakuCategory, levelDrop = 0): number {
+    const level = Math.max(1, this.getYakuLevel(yaku) - levelDrop)
     const orbDef = getCelestialOrbByYaku(yaku)
 
     if (!orbDef) {
@@ -566,8 +574,8 @@ export class CelestialOrbSystem {
   /**
    * Calculate bonus chips for a yaku based on orb levels
    */
-  calculateYakuChips(yaku: YakuCategory): number {
-    const level = this.getYakuLevel(yaku)
+  calculateYakuChips(yaku: YakuCategory, levelDrop = 0): number {
+    const level = Math.max(1, this.getYakuLevel(yaku) - levelDrop)
     const orbDef = getCelestialOrbByYaku(yaku)
 
     if (!orbDef) {
@@ -580,10 +588,13 @@ export class CelestialOrbSystem {
   /**
    * Calculate total bonus for a scored yaku
    */
-  calculateYakuBonus(yaku: YakuCategory): { mult: number; chips: number } {
+  calculateYakuBonus(
+    yaku: YakuCategory,
+    levelDrop = 0
+  ): { mult: number; chips: number } {
     return {
-      mult: this.calculateYakuMult(yaku),
-      chips: this.calculateYakuChips(yaku),
+      mult: this.calculateYakuMult(yaku, levelDrop),
+      chips: this.calculateYakuChips(yaku, levelDrop),
     }
   }
 

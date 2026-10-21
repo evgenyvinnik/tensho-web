@@ -3,7 +3,7 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { Tile, TileSuit, WindType, DragonType } from '../core/Tile'
-import { CRIMSON_HEART, THE_ARM } from '../config/mandateDefinitions'
+import { CRIMSON_HEART } from '../config/mandateDefinitions'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -195,20 +195,6 @@ it('copies Echo Dimension amplification and disables its copies with the source'
   expect(game.previewScore(ids)!.basePoints).toBe(75)
   suppress('decree-echo-dimension')
   expect(pay().basePoints).toBe(60)
-})
-
-it('keeps The Arm tier reduction as the baseline for Frostbite', () => {
-  const { game, state, ids, add, frost, pay } = fixture()
-  state.mandateEffectSystem.activateMandate(THE_ARM, state.handTiles, [])
-  const base = game.previewScore(ids)!
-  add('decree-yaku-nexus')
-  expect(game.previewScore(ids)!.yakuMultiplier).toBe(base.yakuMultiplier)
-  add('decree-yaku-amplifier')
-  const enhanced = game.previewScore(ids)!
-  frost()
-  expect(pay().yakuMultiplier).toBeCloseTo(
-    base.yakuMultiplier + (enhanced.yakuMultiplier - base.yakuMultiplier) / 2
-  )
 })
 
 it('preserves Dragon’s Den native Yakuman benefit while weakening its Decree boost', () => {

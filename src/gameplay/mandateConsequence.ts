@@ -9,7 +9,10 @@ import type { PlayPatternId } from '../rules/PlayPattern'
 
 export interface MandateConsequence {
   /** i18n key under `mandateConsequence`. */
-  key: MandateEffectType | 'single_play_pattern_locked'
+  key:
+    | MandateEffectType
+    | 'single_play_pattern_locked'
+    | 'most_played_pattern_named'
   /** Interpolation values for the key. */
   values: Record<string, string | number>
 }
@@ -28,13 +31,21 @@ export function mandateConsequence(
     value?: number | string
     target?: string
   },
-  /** The hand type The Mouth has fixed, once the round's first play sets it. */
+  /**
+   * The hand type the Boss names: The Mouth's, once the round's first play
+   * sets it, or The Ox's most-played one.
+   */
   lockedPattern?: PlayPatternId | null
 ): MandateConsequence {
   const count = typeof effect.value === 'number' ? effect.value : 1
   if (effect.type === 'single_play_pattern' && lockedPattern)
     return {
       key: 'single_play_pattern_locked',
+      values: { patternKey: `patterns.${lockedPattern}.name` },
+    }
+  if (effect.type === 'most_played_pattern_zeroes_gold' && lockedPattern)
+    return {
+      key: 'most_played_pattern_named',
       values: { patternKey: `patterns.${lockedPattern}.name` },
     }
   return {

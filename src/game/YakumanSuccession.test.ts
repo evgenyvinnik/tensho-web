@@ -9,7 +9,6 @@ import {
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
-import { THE_ARM } from '../config/mandateDefinitions'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { parseClassicRunSnapshot } from './validateClassicRun'
@@ -186,19 +185,10 @@ it.each([1, 2])(
   }
 )
 
-it('The Arm prevents ascension; Nexus cannot promote lower-tier candidates into it', () => {
-  const f = fixture()
-  f.add()
-  f.add('decree-yaku-nexus')
-  f.state.mandateEffectSystem.activateMandate(
-    THE_ARM,
-    f.state.handTiles,
-    f.state.decreeSystem.getOwnedDecrees()
-  )
-  expect(f.pay().detectedYaku.some((y) => y.definition.ascended)).toBe(false)
+it('ascends only native tier-3 Yaku', () => {
   for (const definition of YAKU_DEFINITIONS.filter((y) => y.tier !== 3)) {
     const detected = { definition, isApplicable: true }
-    expect(ascendYaku(detected, true, 3)).toBe(detected)
+    expect(ascendYaku(detected, true)).toBe(detected)
   }
 })
 

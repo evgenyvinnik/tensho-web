@@ -1616,7 +1616,7 @@
       },
       "the_eye": {
         "name": "Sang Mata",
-        "description": "Tidak boleh yaku berulang ronde ini (tiap yaku dihitung sekali)"
+        "description": "Tiap jenis tangan hanya dihitung sekali ronde ini. Pengulangan bernilai 0"
       },
       "the_mouth": {
         "name": "Sang Mulut",
@@ -1640,7 +1640,7 @@
       },
       "the_arm": {
         "name": "Sang Lengan",
-        "description": "Tingkat yaku turun 1 saat penilaian"
+        "description": "Setiap mainan menurunkan level jenis tangannya 1 sebelum dihitung"
       },
       "the_psychic": {
         "name": "Sang Cenayang",
@@ -1668,7 +1668,7 @@
       },
       "the_ox": {
         "name": "Sang Lembu",
-        "description": "Memainkan yaku yang paling sering dipakai membuat emas jadi 0"
+        "description": "Memainkan jenis tangan yang paling sering kamu mainkan membuat emasmu jadi 0"
       },
       "the_house": {
         "name": "Sang Rumah",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} ubin acak tiap tarik",
     "score_multiplier": "Target ×{{value}}",
-    "no_repeat_yaku": "Yaku tak boleh berulang",
+    "no_repeat_pattern": "Jenis tangan tak boleh berulang",
     "single_play_pattern": "Hanya satu jenis tangan",
     "single_play_pattern_locked": "Hanya {{pattern}} yang dihitung",
     "halve_score": "Skor ×½",
     "single_hand": "Hanya 1 kali Mainkan",
     "debuff_used_tiles": "Ubin terpakai bernilai 0",
     "no_discards": "Tak bisa TARIK ULANG",
-    "decrease_yaku_tier": "Yaku −{{count}} tingkat",
+    "decrease_play_level": "Jenis tangan −{{count}} level",
     "fixed_hand_size": "Mainkan tepat {{count}}",
     "debuff_suit": "{{target}} bernilai 0",
     "debuff_tile_type": "{{target}} bernilai 0",
     "hand_size_reduction": "Rak −{{count}} ubin",
     "gold_per_tile": "−{{count}} emas per ubin dimainkan",
-    "most_played_yaku_zeroes_gold": "Yaku tersering menghabiskan emas",
+    "most_played_pattern_zeroes_gold": "Jenis tangan tersering menghabiskan emas",
+    "most_played_pattern_named": "{{pattern}} menghabiskan emas",
     "first_hand_face_down": "Rak pertama tertutup",
     "tiles_face_down_ratio": "1 dari {{count}} ubin tertutup",
     "tiles_face_down_after_play": "Ubin baru tertutup",

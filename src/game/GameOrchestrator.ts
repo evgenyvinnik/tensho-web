@@ -39,7 +39,7 @@ import {
   REGULAR_TILE_TYPES,
 } from '../rules/CompleteHandSubset'
 import { parsePlay, toPartialParsedHand } from '../rules/PartialHandParser'
-import { classifyPlay } from '../rules/PlayPattern'
+import { classifyPlay, type PlayPatternId } from '../rules/PlayPattern'
 import { eventBus } from './EventBus'
 import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
 import { ascendYaku } from '../rules/yakuAscension'
@@ -303,8 +303,8 @@ export interface OrchestratorState {
   omenDiscardBonus: number
   omenRedrawBonus: number
 
-  // Run-wide yaku history used by late-Act mandate effects.
-  yakuPlayCounts: Map<string, number>
+  /** How often each hand type has been played this run (for The Ox). */
+  patternPlayCounts: Map<PlayPatternId, number>
   /** Yaku scored in the active round and in the immediately previous round. */
   currentRoundYakuIds: Set<string>
   previousRoundYakuIds: Set<string>
@@ -535,7 +535,7 @@ export class GameOrchestrator {
       omenHandSizeBonus: 0,
       omenDiscardBonus: 0,
       omenRedrawBonus: 0,
-      yakuPlayCounts: new Map(),
+      patternPlayCounts: new Map(),
       currentRoundYakuIds: new Set(),
       previousRoundYakuIds: new Set(),
       deadWallWritUsedThisRound: false,
@@ -846,7 +846,8 @@ export class GameOrchestrator {
       this.state.mandateEffectSystem.activateMandate(
         definition,
         allTiles,
-        this.state.decreeSystem.getOwnedDecrees()
+        this.state.decreeSystem.getOwnedDecrees(),
+        this.state.patternPlayCounts
       )
     }
 
@@ -1920,6 +1921,7 @@ export class GameOrchestrator {
 
     this.applyPlayedTileMandates(
       tileIds,
+      scoreResult.pattern.id,
       scoreResult.detectedYaku.map((yaku) => yaku.definition.id),
       effects
     )
@@ -2067,7 +2069,7 @@ export class GameOrchestrator {
     }
 
     const tileIds = selectedTiles.map((tile) => tile.id)
-    this.applyPlayedTileMandates(tileIds, [], effects)
+    this.applyPlayedTileMandates(tileIds, scoreResult.pattern.id, [], effects)
 
     if (scoreResult.shatteredTiles.length > 0) {
       this.destroyTiles(scoreResult.shatteredTiles, effects)
@@ -2156,10 +2158,10 @@ export class GameOrchestrator {
 
   private applyPlayedTileMandates(
     tileIds: string[],
+    patternId: PlayPatternId,
     yakuIds: string[],
     effects: Effect[]
   ): void {
-    const previousCounts = new Map(this.state.yakuPlayCounts)
     this.state.mandateEffectSystem.onHandPlayed(
       tileIds,
       this.state.decreeSystem.getOwnedDecrees()
@@ -2170,25 +2172,15 @@ export class GameOrchestrator {
       this.changeGold(-goldPerTile * tileIds.length, 'The Tooth', effects)
     }
 
-    if (this.state.mandateEffectSystem.shouldZeroGoldForMostPlayedYaku()) {
-      const mostPlayedCount = Math.max(0, ...previousCounts.values())
-      const mostPlayedYaku = new Set(
-        [...previousCounts.entries()]
-          .filter(([, count]) => count === mostPlayedCount && count > 0)
-          .map(([id]) => id)
-      )
-      if (yakuIds.some((id) => mostPlayedYaku.has(id))) {
-        this.changeGold(-this.state.gold, 'The Ox', effects)
-      }
-    }
+    if (this.state.mandateEffectSystem.zeroesGoldFor(patternId))
+      this.changeGold(-this.state.gold, 'The Ox', effects)
 
-    for (const yakuId of yakuIds) {
-      this.state.yakuPlayCounts.set(
-        yakuId,
-        (this.state.yakuPlayCounts.get(yakuId) ?? 0) + 1
-      )
-      this.state.currentRoundYakuIds.add(yakuId)
-    }
+    // Every committed play counts, including one a Boss kept from scoring.
+    this.state.patternPlayCounts.set(
+      patternId,
+      (this.state.patternPlayCounts.get(patternId) ?? 0) + 1
+    )
+    for (const yakuId of yakuIds) this.state.currentRoundYakuIds.add(yakuId)
   }
 
   /**
@@ -3457,8 +3449,9 @@ export class GameOrchestrator {
     completeConcealedHand: boolean = false
   ): ScoreBreakdown & { equation: ScoreEquation } {
     // The Mouth: once the round's first play has set the hand type, any other
-    // type scores nothing. Nothing in it triggers - no Decree, Orb, Mark,
-    // gold or Glass - and its tiles are read only to name the play.
+    // type scores nothing. The Eye: a hand type already played this round
+    // scores nothing. Nothing in a blocked play triggers - no Decree, Orb,
+    // Mark, gold or Glass - and its tiles are read only to name the play.
     const patternId = partialMelds ? classifyPlay(partialMelds).id : 'mahjong'
     if (!this.state.mandateEffectSystem.allowsPlayPattern(patternId, preview)) {
       const named = calculateScore(
@@ -3583,26 +3576,8 @@ export class GameOrchestrator {
       partialMelds ?? parsedHand.melds,
       this.getPartialHandRules()
     )
-    const mandateScoring = this.state.mandateEffectSystem.applyToScoring(
-      {
-        basePoints: baseBreakdown.basePoints,
-        multiplier: baseBreakdown.yakuMultiplier,
-        yakuIds: baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id),
-        yakuTiers: new Map(
-          baseBreakdown.detectedYaku.map((yaku) => [
-            yaku.definition.id,
-            yaku.definition.tier,
-          ])
-        ),
-      },
-      preview
-    )
-    const allowedYakuIds = new Set(mandateScoring.yakuIds)
-    baseBreakdown.detectedYaku = baseBreakdown.detectedYaku.filter((yaku) =>
-      allowedYakuIds.has(yaku.definition.id)
-    )
-    // A blocked pattern cannot earn a repetition bonus. Legacy saves prove
-    // only the immediately preceding round, never a longer inferred streak.
+    // Legacy saves prove only the immediately preceding round, never a longer
+    // inferred streak.
     systemContext.yakuMultipliers = new Map(
       baseBreakdown.detectedYaku.map(({ definition: { id } }) => [
         id,
@@ -3611,8 +3586,7 @@ export class GameOrchestrator {
           : 0,
       ])
     )
-    baseBreakdown.basePoints =
-      mandateScoring.basePoints * this.state.tableModifiers.baseScoreMultiplier
+    baseBreakdown.basePoints *= this.state.tableModifiers.baseScoreMultiplier
     // Yaku Nexus scores each yaku as if it ranked higher; Yaku Amplifier scales
     // the combined multiplier. Both are Court authority over Grammar.
     const yakuDecreeModifiers = this.state.decreeSystem.getYakuModifiers(
@@ -3621,28 +3595,17 @@ export class GameOrchestrator {
     )
     const ordinaryYaku = baseBreakdown.detectedYaku
     const ascendedYaku = ordinaryYaku.map((yaku) =>
-      ascendYaku(
-        yaku,
-        yakuDecreeModifiers.ascendAdvanced,
-        mandateScoring.yakuTiers.get(yaku.definition.id) ?? yaku.definition.tier
-      )
+      ascendYaku(yaku, yakuDecreeModifiers.ascendAdvanced)
     )
     const yakuProduct = (tierBonus: number, yakuList = ordinaryYaku) =>
       yakuList.reduce((multiplier, yaku) => {
-        const adjustedTier = yaku.definition.ascended
-          ? 4
-          : mandateScoring.yakuTiers.get(yaku.definition.id)
-        // The table adds to each surviving Yakuman's multiplier, not to every
-        // hand and not as a second multiplier over the whole final score.
+        // The table adds to each Yakuman's multiplier, not to every hand and
+        // not as a second multiplier over the whole final score.
         const yakuMultiplier =
           yaku.definition.multiplier +
-          (yaku.definition.tier === 4 && (adjustedTier ?? 4) === 4
+          (yaku.definition.tier === 4
             ? this.state.tableModifiers.yakumanMultiplierBonus
             : 0)
-        if (adjustedTier !== undefined && adjustedTier < yaku.definition.tier) {
-          const tierRatio = adjustedTier / yaku.definition.tier
-          return multiplier * (1 + (yakuMultiplier - 1) * tierRatio)
-        }
         if (tierBonus > 0) {
           // A tier is worth its share of the yaku's own multiplier, so a tier
           // bonus lifts weak yaku by the same proportion it lifts strong ones.
@@ -3658,16 +3621,17 @@ export class GameOrchestrator {
       (baseBreakdown.detectedYaku.length > 0
         ? yakuDecreeModifiers.multiplier
         : 1)
-    // Frostbite scales only the combined Decree contribution. Native Yaku,
-    // table bonuses and Mandate tier reductions remain the baseline; tiers
-    // themselves stay discrete rather than creating fractional Yaku identities.
+    // Frostbite scales only the combined Decree contribution. Native Yaku and
+    // table bonuses remain the baseline; tiers themselves stay discrete rather
+    // than creating fractional Yaku identities.
     baseBreakdown.yakuMultiplier =
       seasonModifiers.decreeModifier === 1
         ? boostedYakuMultiplier
         : ordinaryYakuMultiplier +
           (boostedYakuMultiplier - ordinaryYakuMultiplier) *
             seasonModifiers.decreeModifier
-    // The Flint halves the whole play, pattern and Dragons included.
+    // The Flint halves the whole play, pattern and Dragons included. It is
+    // the only halving: base points and Mult are left whole until here.
     const mandateHalving = this.state.roundManager.checkMandateEffect(
       'halve_score'
     ).active
@@ -3676,7 +3640,7 @@ export class GameOrchestrator {
 
     // Ascension changes classification as well as score, without fabricating a
     // second pattern or moving its Orb family. Frostbite weakens numeric gain,
-    // not the discrete identity. A Mandate-lowered tier never ascends.
+    // not the discrete identity.
     baseBreakdown.detectedYaku = ascendedYaku
     systemContext.detectedYakumanIds = new Set(
       ascendedYaku
@@ -3684,18 +3648,42 @@ export class GameOrchestrator {
         .map((yaku) => yaku.definition.id)
     )
 
-    // Gates that ask "did this hand score X?" must see the final yaku list,
-    // after Mandates have removed any they suppress.
+    // Gates that ask "did this hand score X?" must see the final yaku list.
     systemContext.detectedYakuIds = new Set(
       baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id)
     )
+
+    // A tactical play levels through its pattern's families instead of Yaku.
+    const playFamilies = partialMelds
+      ? playOrbCategories(baseBreakdown.pattern.id, partialMelds, scoredTiles)
+      : []
+    // The Arm: every family this play levels loses a level before it scores.
+    // Payment spends the levels; a preview prices the drop without it.
+    const levelDrop = this.state.mandateEffectSystem.getPlayLevelDrop()
+    const droppedFamilies = new Set<YakuCategory>(
+      levelDrop > 0
+        ? [
+            ...baseBreakdown.detectedYaku.flatMap(
+              (yaku) => mapYakuIdToCategory(yaku.definition.id) ?? []
+            ),
+            ...playFamilies,
+          ]
+        : []
+    )
+    if (!preview)
+      for (const family of droppedFamilies)
+        this.state.celestialOrbSystem.lowerYakuLevel(family, levelDrop)
+    const orbBonusFor = (category: YakuCategory) =>
+      this.state.celestialOrbSystem.calculateYakuBonus(
+        category,
+        preview && droppedFamilies.has(category) ? levelDrop : 0
+      )
 
     // Apply celestial orb bonuses for each detected yaku
     for (const detectedYaku of baseBreakdown.detectedYaku) {
       const category = mapYakuIdToCategory(detectedYaku.definition.id)
       if (category) {
-        const orbBonus =
-          this.state.celestialOrbSystem.calculateYakuBonus(category)
+        const orbBonus = orbBonusFor(category)
         celestialOrbMultBonus += orbBonus.mult
         celestialOrbChipsBonus += orbBonus.chips
 
@@ -3711,13 +3699,8 @@ export class GameOrchestrator {
       celestialOrbChipsBonus += allBonus.chips
     }
 
-    // A tactical play levels through its pattern's families instead of Yaku.
-    const playFamilies = partialMelds
-      ? playOrbCategories(baseBreakdown.pattern.id, partialMelds, scoredTiles)
-      : []
     for (const category of playFamilies) {
-      const orbBonus =
-        this.state.celestialOrbSystem.calculateYakuBonus(category)
+      const orbBonus = orbBonusFor(category)
       celestialOrbMultBonus += orbBonus.mult
       celestialOrbChipsBonus += orbBonus.chips
       if (!preview) this.state.celestialOrbSystem.triggerYaku(category)

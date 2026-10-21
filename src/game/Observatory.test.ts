@@ -89,23 +89,17 @@ it('rewards a tactical play only through its own pattern family; Black Hole matc
   )
 })
 
-it('does not reward Boss-blocked Yaku, including Black Hole', () => {
+it('pays no Orb bonus on a Boss-blocked hand, including Black Hole', () => {
   const { game, state, ids } = fixture(['saturn_orb', 'black_hole_orb'])
-  const plain = fixture([], false)
-  const scored = game
-    .previewScore(ids)!
-    .detectedYaku.map((y) => y.definition.id)
-  for (const target of [state, plain.state]) {
-    target.mandateEffectSystem.activateMandate(THE_EYE, target.handTiles, [])
-    target.mandateEffectSystem = MandateEffectSystem.fromJSON({
-      ...target.mandateEffectSystem.toJSON(),
-      scoredYakuIds: scored,
-    })
-  }
-  expect(game.previewScore(ids)!.detectedYaku).toEqual([])
-  expect(game.previewScore(ids)!.finalScore).toBe(
-    plain.game.previewScore(plain.ids)!.finalScore
-  )
+  state.mandateEffectSystem.activateMandate(THE_EYE, state.handTiles, [])
+  state.mandateEffectSystem = MandateEffectSystem.fromJSON({
+    ...state.mandateEffectSystem.toJSON(),
+    playedPatternIds: ['mahjong'],
+  })
+  const blocked = game.previewScore(ids)!
+  expect(blocked.blockedByMandate).toBe(true)
+  expect(blocked.detectedYaku).toEqual([])
+  expect(blocked.finalScore).toBe(0)
 })
 it('consuming a matching Orb removes its held bonus but preserves the earned family upgrade', () => {
   const { game, ids } = fixture(['saturn_orb'])

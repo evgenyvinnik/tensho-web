@@ -1889,7 +1889,7 @@
       },
       "the_eye": {
         "name": "ตา",
-        "description": "ห้ามทำคะแนนด้วยยาคุซ้ำในรอบนี้ (ยาคุแต่ละชนิดทำคะแนนได้เพียงครั้งเดียว)"
+        "description": "ประเภทมือแต่ละแบบทำคะแนนได้ครั้งเดียวในรอบนี้ ลงซ้ำได้ 0 คะแนน"
       },
       "the_mouth": {
         "name": "ปาก",
@@ -1913,7 +1913,7 @@
       },
       "the_arm": {
         "name": "แขน",
-        "description": "ระดับยาคุลดลง 1 ระดับเมื่อคิดคะแนน"
+        "description": "ทุกการลงจะลดระดับของประเภทมือนั้นลง 1 ก่อนคิดคะแนน"
       },
       "the_psychic": {
         "name": "ผู้หยั่งรู้",
@@ -1941,7 +1941,7 @@
       },
       "the_ox": {
         "name": "วัว",
-        "description": "การเล่นยาคุที่ใช้บ่อยที่สุดจะทำให้ทองเหลือ 0"
+        "description": "การลงประเภทมือที่ใช้บ่อยที่สุดจะทำให้ทองเหลือ 0"
       },
       "the_house": {
         "name": "บ้าน",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "ทิ้งสุ่ม {{count}} ใบทุกการจั่ว",
     "score_multiplier": "เป้าหมาย ×{{value}}",
-    "no_repeat_yaku": "ยาคุซ้ำไม่ได้",
+    "no_repeat_pattern": "ประเภทมือซ้ำไม่ได้",
     "single_play_pattern": "มือได้ประเภทเดียว",
     "single_play_pattern_locked": "ได้คะแนนเฉพาะ{{pattern}}",
     "halve_score": "คะแนน ×½",
     "single_hand": "ลงไพ่ได้ครั้งเดียว",
     "debuff_used_tiles": "ไพ่ที่ใช้แล้วได้ 0",
     "no_discards": "จั่วใหม่ไม่ได้",
-    "decrease_yaku_tier": "ยาคุลด {{count}} ระดับ",
+    "decrease_play_level": "ประเภทมือลด {{count}} ระดับ",
     "fixed_hand_size": "ต้องลงพอดี {{count}} ใบ",
     "debuff_suit": "{{target}} ได้ 0",
     "debuff_tile_type": "{{target}} ได้ 0",
     "hand_size_reduction": "ราง −{{count}} ใบ",
     "gold_per_tile": "เสียทอง {{count}} ต่อไพ่ที่ลง",
-    "most_played_yaku_zeroes_gold": "ยาคุที่ใช้บ่อยสุดทำให้ทองเป็น 0",
+    "most_played_pattern_zeroes_gold": "ประเภทมือที่ใช้บ่อยสุดทำให้ทองเป็น 0",
+    "most_played_pattern_named": "{{pattern}} ทำให้ทองเป็น 0",
     "first_hand_face_down": "มือแรกคว่ำหน้า",
     "tiles_face_down_ratio": "1 ใน {{count}} ใบคว่ำหน้า",
     "tiles_face_down_after_play": "ไพ่ใหม่คว่ำหน้า",

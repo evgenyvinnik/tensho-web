@@ -233,9 +233,10 @@ it('activates Pluto and Riichi Devotee only when the declared Yaku survives Boss
   state.mandateEffectSystem.activateMandate(THE_EYE, state.handTiles, [])
   state.mandateEffectSystem = MandateEffectSystem.fromJSON({
     ...state.mandateEffectSystem.toJSON(),
-    scoredYakuIds: ['riichi'],
+    playedPatternIds: ['mahjong'],
   })
   const blocked = game.previewScore(ids)!
+  expect(blocked.blockedByMandate).toBe(true)
   expect(blocked.detectedYaku.map((y) => y.definition.id)).not.toContain(
     'riichi'
   )
@@ -273,7 +274,7 @@ it('reads legacy saves without inventing a pledge and rejects malformed new stat
 })
 
 it.each([THE_EYE, THE_MOUTH])(
-  '$name previews never spend Boss Yaku eligibility',
+  '$name previews never spend Boss hand-type eligibility',
   (mandate) => {
     const { game, state, declare, complete } = fixture()
     expect(declare().success).toBe(true)

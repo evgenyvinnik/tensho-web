@@ -263,6 +263,9 @@ function refreshContent(snapshot: Json): Json {
         // The Mouth once locked a Yaku; it now locks the first play's hand
         // type, and a Yaku names none, so a run saved mid-round starts afresh.
         lockedPatternId: state.mandateEffectSystem.lockedPatternId ?? null,
+        // The Eye once barred repeated Yaku; it now bars repeated hand types,
+        // which a Yaku list cannot name, so it too starts afresh.
+        playedPatternIds: state.mandateEffectSystem.playedPatternIds ?? [],
         activeMandate: refresh(
           state.mandateEffectSystem.activeMandate,
           ALL_MANDATES,
@@ -270,8 +273,13 @@ function refreshContent(snapshot: Json): Json {
         ),
       }
       delete system.firstYakuType
+      delete system.scoredYakuIds
       state.mandateEffectSystem = system
     }
+    // The Ox once counted Yaku; it now counts hand types, which older runs
+    // never recorded, so the count starts here.
+    state.patternPlayCounts ??= []
+    delete state.yakuPlayCounts
   }
 
   const shop = isRecord(snapshot.shop) ? { ...snapshot.shop } : null

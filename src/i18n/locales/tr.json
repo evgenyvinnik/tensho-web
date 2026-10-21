@@ -1705,7 +1705,7 @@
       },
       "the_eye": {
         "name": "Göz",
-        "description": "Bu tur aynı Yaku tekrarlanamaz; her Yaku yalnızca bir kez puan kazandırır."
+        "description": "Bu tur her el türü yalnızca bir kez puan alır. Tekrarı 0 puan alır"
       },
       "the_mouth": {
         "name": "Ağız",
@@ -1729,7 +1729,7 @@
       },
       "the_arm": {
         "name": "Kol",
-        "description": "Puanlamada Yaku kademesi 1 düşer."
+        "description": "Her oyun, el türünün seviyesini puanlamadan önce 1 düşürür"
       },
       "the_psychic": {
         "name": "Medyum",
@@ -1757,7 +1757,7 @@
       },
       "the_ox": {
         "name": "Öküz",
-        "description": "En çok oynanan Yaku oynandığında Altın 0 olur."
+        "description": "En çok oynadığın el türünü oynamak Altını 0 yapar"
       },
       "the_house": {
         "name": "Ev",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "Her çekişte −{{count}} rastgele taş",
     "score_multiplier": "Hedef ×{{value}}",
-    "no_repeat_yaku": "Tekrarlanan Yaku yok",
+    "no_repeat_pattern": "Tekrarlanan el türü yok",
     "single_play_pattern": "Tek el türü",
     "single_play_pattern_locked": "Yalnızca {{pattern}} puan alır",
     "halve_score": "Puan ×½",
     "single_hand": "Sadece 1 oynama",
     "debuff_used_tiles": "Kullanılan taşlar 0 puan",
     "no_discards": "YENİDEN ÇEKME yok",
-    "decrease_yaku_tier": "Yaku −{{count}} kademe",
+    "decrease_play_level": "El türü −{{count}} seviye",
     "fixed_hand_size": "Tam {{count}} taş oyna",
     "debuff_suit": "{{target}} 0 puan",
     "debuff_tile_type": "{{target}} 0 puan",
     "hand_size_reduction": "Istaka −{{count}} taş",
     "gold_per_tile": "Oynanan taş başına −{{count}} altın",
-    "most_played_yaku_zeroes_gold": "En çok oynanan Yaku tüm altını alır",
+    "most_played_pattern_zeroes_gold": "En çok oynanan el türü tüm altını alır",
+    "most_played_pattern_named": "{{pattern}} tüm altını alır",
     "first_hand_face_down": "İlk ıstaka kapalı",
     "tiles_face_down_ratio": "{{count}} taştan 1’i kapalı",
     "tiles_face_down_after_play": "Yeni taşlar kapalı",

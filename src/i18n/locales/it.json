@@ -1685,7 +1685,7 @@
       },
       "the_eye": {
         "name": "L’Occhio",
-        "description": "Non puoi ripetere Yaku in questo round: ciascuno segna punti una sola volta."
+        "description": "Ogni tipo di mano vale una sola volta in questo round. Una ripetizione vale 0"
       },
       "the_mouth": {
         "name": "La Bocca",
@@ -1709,7 +1709,7 @@
       },
       "the_arm": {
         "name": "Il Braccio",
-        "description": "La categoria degli Yaku diminuisce di 1 nel calcolo del punteggio."
+        "description": "Ogni giocata abbassa di 1 il livello del suo tipo di mano prima del punteggio"
       },
       "the_psychic": {
         "name": "Il Sensitivo",
@@ -1737,7 +1737,7 @@
       },
       "the_ox": {
         "name": "Il Bue",
-        "description": "Giocare lo Yaku usato più spesso porta l’Oro a 0."
+        "description": "Giocare il tipo di mano usato più spesso porta l’Oro a 0"
       },
       "the_house": {
         "name": "La Casa",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} tessere a caso per pescata",
     "score_multiplier": "Obiettivo ×{{value}}",
-    "no_repeat_yaku": "Niente yaku ripetuti",
+    "no_repeat_pattern": "Niente tipi di mano ripetuti",
     "single_play_pattern": "Un solo tipo di mano",
     "single_play_pattern_locked": "Vale solo {{pattern}}",
     "halve_score": "Punteggio ×½",
     "single_hand": "Solo 1 giocata",
     "debuff_used_tiles": "Tessere usate: 0 punti",
     "no_discards": "Niente RIPESCA",
-    "decrease_yaku_tier": "Yaku −{{count}} livello",
+    "decrease_play_level": "Tipo di mano −{{count}} livello",
     "fixed_hand_size": "Gioca esattamente {{count}}",
     "debuff_suit": "{{target}}: 0 punti",
     "debuff_tile_type": "{{target}}: 0 punti",
     "hand_size_reduction": "Leggio −{{count}} tessera",
     "gold_per_tile": "−{{count}} oro per tessera giocata",
-    "most_played_yaku_zeroes_gold": "Lo yaku più usato azzera l’oro",
+    "most_played_pattern_zeroes_gold": "Il tipo di mano più usato azzera l’oro",
+    "most_played_pattern_named": "{{pattern}} azzera l’oro",
     "first_hand_face_down": "Primo leggio coperto",
     "tiles_face_down_ratio": "1 tessera su {{count}} coperta",
     "tiles_face_down_after_play": "Nuove tessere coperte",

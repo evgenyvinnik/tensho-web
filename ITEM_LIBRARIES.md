@@ -234,11 +234,11 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | Mandate | Japanese | Effect | Min Ante |
 |---------|----------|--------|----------|
 | **The Hook** | 鉤 | Discards 2 random tiles from hand after each play | 1 |
-| **The Ox** | 牛 | Playing most-played Yaku sets gold to ¥0 | 6 |
+| **The Ox** | 牛 | Names your most-played hand type as the round starts; playing it sets gold to ¥0 | 6 |
 | **The House** | 家 | First hand drawn face-down | 2 |
 | **The Wall** | 壁 | 4× base score requirement | 2 |
 | **The Wheel** | 輪 | 1/7 tiles drawn face-down | 2 |
-| **The Arm** | 腕 | Decrease level of played Yaku by 1 | 2 |
+| **The Arm** | 腕 | Each play lowers every Orb family it levels by 1 (never below level 1) before it scores | 2 |
 | **The Club** | 棍 | All Bamboo tiles debuffed | 1 |
 | **The Fish** | 魚 | Tiles drawn face-down after each hand | 2 |
 | **The Psychic** | 霊能者 | Must play exactly 5 tiles per hand | 1 |
@@ -246,7 +246,7 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | **The Water** | 水 | Start with 0 discards | 2 |
 | **The Window** | 窓 | All Characters debuffed | 1 |
 | **The Manacle** | 枷 | −1 Hand Size | 1 |
-| **The Eye** | 目 | No repeat Yaku types this round | 3 |
+| **The Eye** | 目 | Each hand type scores once this round; a repeat scores 0 | 3 |
 | **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 | 2 |
 | **The Plant** | 草 | All Honor tiles debuffed | 4 |
 | **The Serpent** | 蛇 | After play/discard, always draw 3 tiles | 5 |
@@ -254,7 +254,7 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | **The Needle** | 針 | Play only 1 hand (precision required) | 2 |
 | **The Head** | 頭 | All Dragon tiles debuffed | 1 |
 | **The Tooth** | 歯 | Lose ¥1 per tile played | 3 |
-| **The Flint** | 火打石 | Base Chips and Mult halved | 2 |
+| **The Flint** | 火打石 | Every play scores half | 2 |
 | **The Mark** | 印 | All Honor tiles drawn face-down | 2 |
 
 ### Showdown Mandates (Ante 8, 16, 24...)

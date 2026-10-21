@@ -1705,7 +1705,7 @@
       },
       "the_eye": {
         "name": "Ang Mata",
-        "description": "Bawal ulitin ang Yaku sa round na ito (isang beses lang makakapuntos ang bawat Yaku)."
+        "description": "Isang beses lang makakapuntos ang bawat uri ng kamay sa round na ito. 0 ang inulit"
       },
       "the_mouth": {
         "name": "Ang Bibig",
@@ -1729,7 +1729,7 @@
       },
       "the_arm": {
         "name": "Ang Braso",
-        "description": "Ibinababa ng 1 baitang ang Yaku sa pagbilang ng puntos."
+        "description": "Ibinababa ng bawat laro ng 1 antas ang uri ng kamay nito bago bilangin ang puntos"
       },
       "the_psychic": {
         "name": "Ang Manghuhula",
@@ -1757,7 +1757,7 @@
       },
       "the_ox": {
         "name": "Ang Baka",
-        "description": "Ginagawang 0 ang iyong Ginto kapag nilaro ang pinakamadalas mong laruin na Yaku."
+        "description": "Ginagawang 0 ang iyong Ginto kapag nilaro ang pinakamadalas mong laruin na uri ng kamay"
       },
       "the_house": {
         "name": "Ang Bahay",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} random tile bawat kuha",
     "score_multiplier": "Target ×{{value}}",
-    "no_repeat_yaku": "Walang inulit na Yaku",
+    "no_repeat_pattern": "Walang inulit na uri ng kamay",
     "single_play_pattern": "Isang uri lang ng kamay",
     "single_play_pattern_locked": "{{pattern}} lang ang may puntos",
     "halve_score": "Puntos ×½",
     "single_hand": "1 laro lang",
     "debuff_used_tiles": "0 puntos ang nagamit na tile",
     "no_discards": "Walang REDRAW",
-    "decrease_yaku_tier": "Yaku −{{count}} antas",
+    "decrease_play_level": "Uri ng kamay −{{count}} antas",
     "fixed_hand_size": "Eksaktong {{count}} tile",
     "debuff_suit": "0 puntos ang {{target}}",
     "debuff_tile_type": "0 puntos ang {{target}}",
     "hand_size_reduction": "Rack −{{count}} tile",
     "gold_per_tile": "−{{count}} ginto bawat tile na nilaro",
-    "most_played_yaku_zeroes_gold": "Ubos ang ginto sa pinakamadalas na Yaku",
+    "most_played_pattern_zeroes_gold": "Ubos ang ginto sa pinakamadalas na uri ng kamay",
+    "most_played_pattern_named": "Ubos ang ginto sa {{pattern}}",
     "first_hand_face_down": "Nakataob ang unang rack",
     "tiles_face_down_ratio": "1 sa {{count}} tile nakataob",
     "tiles_face_down_after_play": "Nakataob ang bagong tile",

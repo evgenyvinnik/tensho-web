@@ -1408,7 +1408,7 @@
       },
       "the_eye": {
         "name": "眼",
-        "description": "本回合不得重复役（每种役只计一次）"
+        "description": "本回合每种牌型只计分一次，重复的牌型得0分"
       },
       "the_mouth": {
         "name": "口",
@@ -1432,7 +1432,7 @@
       },
       "the_arm": {
         "name": "臂",
-        "description": "计分时役的等级降低1"
+        "description": "每次出牌前，该牌型的等级降低1"
       },
       "the_psychic": {
         "name": "灵视者",
@@ -1460,7 +1460,7 @@
       },
       "the_ox": {
         "name": "牛",
-        "description": "打出最常用的役会使金币归零"
+        "description": "打出最常用的牌型会使金币归零"
       },
       "the_house": {
         "name": "屋",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "每次摸牌弃{{count}}张",
     "score_multiplier": "目标×{{value}}",
-    "no_repeat_yaku": "役种不能重复",
+    "no_repeat_pattern": "牌型不能重复",
     "single_play_pattern": "只能一种牌型",
     "single_play_pattern_locked": "只有{{pattern}}得分",
     "halve_score": "得分×½",
     "single_hand": "只能出牌1次",
     "debuff_used_tiles": "用过的牌得0分",
     "no_discards": "不能重抽",
-    "decrease_yaku_tier": "役种等级−{{count}}",
+    "decrease_play_level": "牌型等级−{{count}}",
     "fixed_hand_size": "每次正好{{count}}张",
     "debuff_suit": "{{target}}得0分",
     "debuff_tile_type": "{{target}}得0分",
     "hand_size_reduction": "手牌−{{count}}张",
     "gold_per_tile": "每打一张牌金币−{{count}}",
-    "most_played_yaku_zeroes_gold": "打出最常用役种时金币归零",
+    "most_played_pattern_zeroes_gold": "打出最常用牌型时金币归零",
+    "most_played_pattern_named": "打出{{pattern}}时金币归零",
     "first_hand_face_down": "首轮手牌背面朝上",
     "tiles_face_down_ratio": "每{{count}}张有1张背面朝上",
     "tiles_face_down_after_play": "新牌背面朝上",

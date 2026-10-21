@@ -17,6 +17,7 @@ import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { DebuffSystem } from './DebuffSystem'
 import type { CharterUnlockResolver } from '../config/charterDefinitions'
 import type { OrchestratorState } from './GameOrchestrator'
+import type { PlayPatternId } from '../rules/PlayPattern'
 
 type SystemStates = {
   decreeSystem: ReturnType<DecreeSystem['toState']>
@@ -48,7 +49,7 @@ type Collections = {
   }[]
   selectedTileIds: string[]
   faceDownTileIds: string[]
-  yakuPlayCounts: [string, number][]
+  patternPlayCounts: [PlayPatternId, number][]
   currentRoundYakuIds: string[]
   previousRoundYakuIds: string[]
   lastHandScore: number | null
@@ -70,7 +71,7 @@ export function captureClassicState(
     lastHandScore: state.lastHandScore ?? null,
     selectedTileIds: [...state.selectedTileIds],
     faceDownTileIds: [...state.faceDownTileIds],
-    yakuPlayCounts: [...state.yakuPlayCounts],
+    patternPlayCounts: [...state.patternPlayCounts],
     currentRoundYakuIds: [...state.currentRoundYakuIds],
     previousRoundYakuIds: [...state.previousRoundYakuIds],
     decreeSystem: state.decreeSystem.toState(),
@@ -127,7 +128,7 @@ export function restoreClassicState(
     ),
     selectedTileIds: new Set(copy.selectedTileIds),
     faceDownTileIds: new Set(copy.faceDownTileIds),
-    yakuPlayCounts: new Map(copy.yakuPlayCounts),
+    patternPlayCounts: new Map(copy.patternPlayCounts),
     currentRoundYakuIds: new Set(copy.currentRoundYakuIds),
     previousRoundYakuIds: new Set(copy.previousRoundYakuIds),
     decreeSystem,

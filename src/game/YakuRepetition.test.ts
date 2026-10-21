@@ -81,7 +81,7 @@ it('compounds each matching family over consecutive rounds, without preview/relo
   }
 })
 
-it('does not reward Yaku excluded by the Eye', () => {
+it('pays no repetition bonus on a hand the Eye blocks', () => {
   const game = fixture()
   const ids = deal(game, false)
   const state = game.getState() as OrchestratorState
@@ -95,11 +95,12 @@ it('does not reward Yaku excluded by the Eye', () => {
   )
   state.mandateEffectSystem = MandateEffectSystem.fromJSON({
     ...state.mandateEffectSystem.toJSON(),
-    scoredYakuIds: [...state.previousRoundYakuIds],
+    playedPatternIds: ['mahjong'],
   })
   const score = game.previewScore(ids)!
+  expect(score.blockedByMandate).toBe(true)
   expect(score.detectedYaku).toEqual([])
-  expect(repetitionFactor(score)).toBe(1)
+  expect(score.finalScore).toBe(0)
 })
 
 it('grows only at round settlement, retains unused families during the round, and breaks them after a miss', () => {

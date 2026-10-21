@@ -25,19 +25,19 @@ export type MandateEffectType =
   // Standard Mandates
   | 'discard_after_draw' // The Hook: Random tiles discarded after draw
   | 'score_multiplier' // The Wall/Violet Vessel: Increased score requirement
-  | 'no_repeat_yaku' // The Eye: Each yaku only scores once
+  | 'no_repeat_pattern' // The Eye: Each hand type only scores once
   | 'single_play_pattern' // The Mouth: Only the first play's hand type scores
-  | 'halve_score' // The Flint: Base points and mult halved
+  | 'halve_score' // The Flint: Every play scores half
   | 'single_hand' // The Needle: Must complete in 1 hand
   | 'debuff_used_tiles' // The Pillar: Previously used tiles debuffed
   | 'no_discards' // The Water: 0 redraws this round
-  | 'decrease_yaku_tier' // The Arm: Yaku tier decreased by 1
+  | 'decrease_play_level' // The Arm: Each play lowers its hand type's level
   | 'fixed_hand_size' // The Psychic: Must play exactly N tiles
   | 'debuff_suit' // The Club/Goad/Window: Specific suit debuffed
   | 'debuff_tile_type' // The Head/Plant: Specific tile type debuffed
   | 'hand_size_reduction' // The Manacle: Reduce hand size by N
   | 'gold_per_tile' // The Tooth: Lose gold per tile played
-  | 'most_played_yaku_zeroes_gold' // The Ox: Playing most-played yaku sets gold to 0
+  | 'most_played_pattern_zeroes_gold' // The Ox: Playing the most-played hand type sets gold to 0
   | 'first_hand_face_down' // The House: First hand drawn face-down
   | 'tiles_face_down_ratio' // The Wheel: 1 in N tiles drawn face-down
   | 'tiles_face_down_after_play' // The Fish: Tiles face-down after each hand
@@ -110,16 +110,16 @@ export const THE_WALL: MandateDefinition = {
 }
 
 /**
- * The Eye - No repeat yaku this round
+ * The Eye - Each hand type scores only once this round
  */
 export const THE_EYE: MandateDefinition = {
   id: 'the_eye',
   name: 'The Eye',
   japaneseName: '目',
-  description: 'No repeat yaku this round (each yaku only scores once)',
+  description: 'Each hand type scores only once this round. A repeat scores 0',
   category: 'Standard',
   difficulty: 'Medium',
-  effect: { type: 'no_repeat_yaku' },
+  effect: { type: 'no_repeat_pattern' },
   minAct: 3,
 }
 
@@ -139,7 +139,7 @@ export const THE_MOUTH: MandateDefinition = {
 }
 
 /**
- * The Flint - Base points and Mult halved
+ * The Flint - Every play scores half
  */
 export const THE_FLINT: MandateDefinition = {
   id: 'the_flint',
@@ -195,16 +195,16 @@ export const THE_WATER: MandateDefinition = {
 }
 
 /**
- * The Arm - Yaku tier decreased by 1 for scoring
+ * The Arm - Each play lowers its hand type's level by 1
  */
 export const THE_ARM: MandateDefinition = {
   id: 'the_arm',
   name: 'The Arm',
   japaneseName: '腕',
-  description: 'Yaku tier decreased by 1 for scoring',
+  description: 'Every play lowers its hand type’s level by 1 before it scores',
   category: 'Standard',
   difficulty: 'Medium',
-  effect: { type: 'decrease_yaku_tier', value: 1 },
+  effect: { type: 'decrease_play_level', value: 1 },
   minAct: 2,
 }
 
@@ -293,16 +293,16 @@ export const THE_PLANT: MandateDefinition = {
 }
 
 /**
- * The Ox - Playing most-played Yaku sets gold to 0
+ * The Ox - Playing the most-played hand type sets gold to 0
  */
 export const THE_OX: MandateDefinition = {
   id: 'the_ox',
   name: 'The Ox',
   japaneseName: '牛',
-  description: 'Playing most-played Yaku sets gold to 0',
+  description: 'Playing your most-played hand type sets your Gold to 0',
   category: 'Standard',
   difficulty: 'Hard',
-  effect: { type: 'most_played_yaku_zeroes_gold' },
+  effect: { type: 'most_played_pattern_zeroes_gold' },
   minAct: 6,
 }
 
@@ -660,9 +660,9 @@ export function isScoringMandate(mandate: MandateDefinition): boolean {
   return [
     'score_multiplier',
     'halve_score',
-    'no_repeat_yaku',
+    'no_repeat_pattern',
     'single_play_pattern',
-    'decrease_yaku_tier',
+    'decrease_play_level',
   ].includes(mandate.effect.type)
 }
 

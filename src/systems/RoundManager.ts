@@ -16,7 +16,11 @@ import {
   getActScoreScaling,
   type CombinedStakeModifiers,
 } from '../config/stakeDefinitions'
-import { STANDARD_MANDATES as COMPLETE_STANDARD_MANDATES } from '../config/mandateDefinitions'
+import {
+  STANDARD_MANDATES,
+  SHOWDOWN_MANDATE_DEFINITIONS,
+  type MandateDefinition,
+} from '../config/mandateDefinitions'
 
 // =============================================================================
 // SCORE REQUIREMENTS
@@ -69,194 +73,34 @@ export const DEFAULT_DISCARDS_PER_ROUND = 3
 // BOSS MANDATES
 // =============================================================================
 
-/**
- * Standard boss mandates
- */
-export const BOSS_MANDATES: BossMandate[] = [
-  {
-    id: 'the_hook',
-    name: 'The Hook',
-    japaneseName: '鉤',
-    description: 'After each draw, 2 random tiles go from your rack to the river',
-    effect: { type: 'discard_after_draw', value: 2 },
-    minAct: 1,
-  },
-  {
-    id: 'the_wall',
-    name: 'The Wall',
-    japaneseName: '壁',
-    description: 'Extra large score requirement (4x instead of 2x)',
-    effect: { type: 'score_multiplier', value: 4 },
-    minAct: 2,
-  },
-  {
-    id: 'the_eye',
-    name: 'The Eye',
-    japaneseName: '目',
-    description: 'No repeat yaku this round (each yaku only scores once)',
-    effect: { type: 'no_repeat_yaku' },
-    minAct: 3,
-  },
-  {
-    id: 'the_mouth',
-    name: 'The Mouth',
-    japaneseName: '口',
-    description:
-      'Your first play sets this round’s hand type. Any other hand scores 0',
-    effect: { type: 'single_play_pattern' },
-    minAct: 2,
-  },
-  {
-    id: 'the_flint',
-    name: 'The Flint',
-    japaneseName: '火打石',
-    description: 'Every play this round scores half',
-    effect: { type: 'halve_score', value: 0.5 },
-    minAct: 2,
-  },
-  {
-    id: 'the_needle',
-    name: 'The Needle',
-    japaneseName: '針',
-    description: 'Only one Play this round (REDRAW is still allowed)',
-    effect: { type: 'single_hand' },
-    minAct: 2,
-  },
-  {
-    id: 'the_pillar',
-    name: 'The Pillar',
-    japaneseName: '柱',
-    description: 'Tiles used in previous rounds this Act are debuffed',
-    effect: { type: 'debuff_used_tiles' },
-    minAct: 1,
-  },
-  {
-    id: 'the_water',
-    name: 'The Water',
-    japaneseName: '水',
-    description: 'No REDRAW this round',
-    effect: { type: 'no_discards' },
-    minAct: 2,
-  },
-  {
-    id: 'the_arm',
-    name: 'The Arm',
-    japaneseName: '腕',
-    description: 'Yaku tier decreased by 1 for scoring',
-    effect: { type: 'decrease_yaku_tier', value: 1 },
-    minAct: 2,
-  },
-  {
-    id: 'the_psychic',
-    name: 'The Psychic',
-    japaneseName: '霊能者',
-    description: 'Every play must use exactly 5 tiles',
-    effect: { type: 'fixed_hand_size', value: 5 },
-    minAct: 1,
-  },
-  {
-    id: 'the_club',
-    name: 'The Club',
-    japaneseName: '棍',
-    description: 'All Bamboo tiles are debuffed',
-    effect: { type: 'debuff_suit', target: 'souzu' },
-    minAct: 1,
-  },
-  {
-    id: 'the_goad',
-    name: 'The Goad',
-    japaneseName: '突棒',
-    description: 'All Circles are debuffed',
-    effect: { type: 'debuff_suit', target: 'pinzu' },
-    minAct: 1,
-  },
-  {
-    id: 'the_window',
-    name: 'The Window',
-    japaneseName: '窓',
-    description: 'All Characters are debuffed',
-    effect: { type: 'debuff_suit', target: 'manzu' },
-    minAct: 1,
-  },
-  {
-    id: 'the_head',
-    name: 'The Head',
-    japaneseName: '頭',
-    description: 'All Dragon tiles are debuffed',
-    effect: { type: 'debuff_tile_type', target: 'dragon' },
-    minAct: 1,
-  },
-  {
-    id: 'the_plant',
-    name: 'The Plant',
-    japaneseName: '草',
-    description: 'All Honor tiles are debuffed',
-    effect: { type: 'debuff_tile_type', target: 'honor' },
-    minAct: 4,
-  },
-]
+/** The shorter shape a round carries for its Boss. */
+const toBossMandate = ({
+  id,
+  name,
+  japaneseName,
+  description,
+  effect,
+  minAct,
+}: MandateDefinition): BossMandate => ({
+  id,
+  name,
+  japaneseName,
+  description,
+  effect,
+  minAct,
+})
 
-// RoundManager historically carried only the original 15 definitions. Include
-// the extended canonical library so later-Act bosses can actually be selected.
-for (const mandate of COMPLETE_STANDARD_MANDATES) {
-  if (!BOSS_MANDATES.some((candidate) => candidate.id === mandate.id)) {
-    BOSS_MANDATES.push({
-      id: mandate.id,
-      name: mandate.name,
-      japaneseName: mandate.japaneseName,
-      description: mandate.description,
-      effect: mandate.effect,
-      minAct: mandate.minAct,
-    })
-  }
-}
+/**
+ * Standard boss mandates, read from the catalog so their rules have one
+ * source. The order is the catalog's, which seeded Boss selection depends on.
+ */
+export const BOSS_MANDATES: BossMandate[] = STANDARD_MANDATES.map(toBossMandate)
 
 /**
  * Showdown mandates (Act 8+)
  */
-export const SHOWDOWN_MANDATES: BossMandate[] = [
-  {
-    id: 'amber_acorn',
-    name: 'Amber Acorn',
-    japaneseName: '琥珀の実',
-    description: 'All Decrees are shuffled and face-down',
-    effect: { type: 'shuffle_decrees' },
-    minAct: 8,
-  },
-  {
-    id: 'verdant_leaf',
-    name: 'Verdant Leaf',
-    japaneseName: '翠緑の葉',
-    description: 'All tiles debuffed until 1 Decree is sold',
-    effect: { type: 'debuff_until_sell' },
-    minAct: 8,
-  },
-  {
-    id: 'violet_vessel',
-    name: 'Violet Vessel',
-    japaneseName: '紫水瓶',
-    description: 'Extra-extra large target (6x instead of 2x)',
-    effect: { type: 'score_multiplier', value: 6 },
-    minAct: 8,
-  },
-  {
-    id: 'crimson_heart',
-    name: 'Crimson Heart',
-    japaneseName: '深紅の心',
-    description: 'One random Decree disabled every hand cycle',
-    effect: { type: 'disable_random_decree' },
-    minAct: 8,
-  },
-  {
-    id: 'cerulean_bell',
-    name: 'Cerulean Bell',
-    japaneseName: '青藍の鈴',
-    description:
-      'After each draw cycle, one random tile must be played; the previous lock is released',
-    effect: { type: 'lock_random_tile' },
-    minAct: 8,
-  },
-]
+export const SHOWDOWN_MANDATES: BossMandate[] =
+  SHOWDOWN_MANDATE_DEFINITIONS.map(toBossMandate)
 
 // =============================================================================
 // ROUND MANAGER CLASS

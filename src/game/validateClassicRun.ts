@@ -113,6 +113,11 @@ const roundManager: Check = (v, p) => {
     tableTargetMultiplier: nonnegative,
   })(v, p)
 }
+/** Distinct hand-type ids. */
+const patternIds: Check = (v, p) => {
+  uniqueIds(v, p)
+  array(choice(PLAY_PATTERN_IDS))(v, p)
+}
 const debuffSource: Check = (v, p) => {
   const data = record(v, p)
   const variants: Record<DebuffSource['type'], Check> = {
@@ -322,7 +327,7 @@ const stateFields = {
     randomCursor: nullable(uint32),
     activeMandate: nullable(mandate),
     isDefeated: bool,
-    scoredYakuIds: uniqueIds,
+    playedPatternIds: patternIds,
     lockedPatternId: nullable(choice(PLAY_PATTERN_IDS)),
     handsPlayed: count,
     lockedTileIds: uniqueIds,
@@ -344,7 +349,7 @@ const stateFields = {
   omenHandSizeBonus: count,
   omenDiscardBonus: count,
   omenRedrawBonus: count,
-  yakuPlayCounts: entries(id, count),
+  patternPlayCounts: entries(choice(PLAY_PATTERN_IDS), count),
   currentRoundYakuIds: uniqueIds,
   previousRoundYakuIds: uniqueIds,
   previousRoundYakuStreaks: optional((v, p) => {

@@ -20,7 +20,7 @@ import {
   MandateDefinition,
   selectRandomMandate,
 } from '../config/mandateDefinitions'
-import type { PlayPatternId } from '../rules/PlayPattern'
+import { PLAY_PATTERN_IDS, type PlayPatternId } from '../rules/PlayPattern'
 import {
   createSeededRandom,
   restoreSeededRandom,
@@ -39,9 +39,12 @@ export interface MandateState {
   activeMandate: MandateDefinition | null
   /** Whether the mandate has been defeated/cleared */
   isDefeated: boolean
-  /** Yaku IDs that have already been scored this round (for The Eye) */
-  scoredYakuIds: Set<string>
-  /** The hand type the round's first play set (for The Mouth) */
+  /** Hand types already played this round (for The Eye) */
+  playedPatternIds: Set<PlayPatternId>
+  /**
+   * The hand type the Boss names: the one the round's first play set (for
+   * The Mouth), or the run's most-played one when the round began (for The Ox)
+   */
   lockedPatternId: PlayPatternId | null
   /** Number of hands played this round (for The Needle) */
   handsPlayed: number
@@ -77,16 +80,6 @@ export interface MandateApplicationResult {
   debuffedTileIds?: string[]
   disabledDecreeIds?: string[]
   lockedTileIds?: string[]
-}
-
-/**
- * Context for scoring with mandate effects
- */
-export interface MandateScoringContext {
-  basePoints: number
-  multiplier: number
-  yakuIds: string[]
-  yakuTiers: Map<string, number>
 }
 
 // =============================================================================
@@ -136,6 +129,20 @@ export function isFaceDebuffTarget(
   }
 }
 
+/**
+ * The Ox: the run's most-played hand type, or none before any play. A tie
+ * goes to the type listed first in `PLAY_PATTERN_IDS`.
+ */
+function mostPlayedPattern(
+  counts: ReadonlyMap<PlayPatternId, number>
+): PlayPatternId | null {
+  let best: PlayPatternId | null = null
+  for (const pattern of PLAY_PATTERN_IDS)
+    if ((counts.get(pattern) ?? 0) > (best ? (counts.get(best) ?? 0) : 0))
+      best = pattern
+  return best
+}
+
 // =============================================================================
 // MANDATE EFFECT SYSTEM CLASS
 // =============================================================================
@@ -159,7 +166,7 @@ export class MandateEffectSystem {
     return {
       activeMandate: null,
       isDefeated: false,
-      scoredYakuIds: new Set(),
+      playedPatternIds: new Set(),
       lockedPatternId: null,
       handsPlayed: 0,
       lockedTileIds: new Set(),
@@ -200,19 +207,26 @@ export class MandateEffectSystem {
   // ===========================================================================
 
   /**
-   * Activate a mandate for a boss round
+   * Activate a mandate for a boss round. `patternPlayCounts` is how often each
+   * hand type has been played this run, which The Ox reads.
    */
   activateMandate(
     mandate: MandateDefinition,
     tiles: Tile[],
-    decrees: OwnedDecree[]
+    decrees: OwnedDecree[],
+    patternPlayCounts: ReadonlyMap<PlayPatternId, number> = new Map()
   ): MandateApplicationResult {
     // Reset state for new mandate
     this.state = this.createInitialState()
     this.state.activeMandate = mandate
 
     // Apply immediate mandate effects
-    return this.applyMandateOnActivation(mandate, tiles, decrees)
+    return this.applyMandateOnActivation(
+      mandate,
+      tiles,
+      decrees,
+      patternPlayCounts
+    )
   }
 
   /**
@@ -241,7 +255,8 @@ export class MandateEffectSystem {
   private applyMandateOnActivation(
     mandate: MandateDefinition,
     tiles: Tile[],
-    decrees: OwnedDecree[]
+    decrees: OwnedDecree[],
+    patternPlayCounts: ReadonlyMap<PlayPatternId, number>
   ): MandateApplicationResult {
     const result: MandateApplicationResult = {
       success: true,
@@ -256,12 +271,12 @@ export class MandateEffectSystem {
 
       case 'halve_score':
         // Handled in score calculation
-        result.message += ' - Base points and multiplier halved'
+        result.message += ' - Every play scores half'
         break
 
-      case 'no_repeat_yaku':
+      case 'no_repeat_pattern':
         // Tracked during scoring
-        result.message += ' - Each yaku can only score once'
+        result.message += ' - Each hand type can only score once'
         break
 
       case 'single_play_pattern':
@@ -269,9 +284,9 @@ export class MandateEffectSystem {
         result.message += " - Only the first play's hand type scores"
         break
 
-      case 'decrease_yaku_tier':
+      case 'decrease_play_level':
         // Handled in score calculation
-        result.message += ` - Yaku tiers decreased by ${mandate.effect.value}`
+        result.message += ` - Each play lowers its hand type's level by ${mandate.effect.value}`
         break
 
       case 'single_hand':
@@ -344,9 +359,10 @@ export class MandateEffectSystem {
         result.message += ` - Lose ${mandate.effect.value} gold per tile played`
         break
 
-      case 'most_played_yaku_zeroes_gold':
-        // Handled during scoring
-        result.message += ' - Playing most-played Yaku sets gold to 0'
+      case 'most_played_pattern_zeroes_gold':
+        // The hand type is named now and stays fixed for the round.
+        this.state.lockedPatternId = mostPlayedPattern(patternPlayCounts)
+        result.message += ' - Playing the most-played hand type sets gold to 0'
         break
 
       case 'first_hand_face_down':
@@ -389,7 +405,7 @@ export class MandateEffectSystem {
 
     this.state.activeMandate = null
     this.state.isDefeated = false
-    this.state.scoredYakuIds.clear()
+    this.state.playedPatternIds.clear()
     this.state.lockedPatternId = null
     this.state.lockedTileIds.clear()
     this.state.disabledDecreeIds.clear()
@@ -624,65 +640,50 @@ export class MandateEffectSystem {
   // ===========================================================================
 
   /**
-   * Apply mandate effects to scoring
-   */
-  applyToScoring(
-    context: MandateScoringContext,
-    previewMode = false
-  ): MandateScoringContext {
-    if (!this.state.activeMandate) return context
-
-    const mandate = this.state.activeMandate
-    const result = { ...context }
-
-    switch (mandate.effect.type) {
-      case 'halve_score':
-        result.basePoints = Math.floor(result.basePoints * 0.5)
-        result.multiplier = result.multiplier * 0.5
-        break
-
-      case 'decrease_yaku_tier': {
-        const tierDecrease = mandate.effect.value as number
-        const adjustedTiers = new Map<string, number>()
-        for (const [yakuId, tier] of result.yakuTiers) {
-          adjustedTiers.set(yakuId, Math.max(0, tier - tierDecrease))
-        }
-        result.yakuTiers = adjustedTiers
-        break
-      }
-
-      case 'no_repeat_yaku':
-        // Filter out already scored yaku
-        result.yakuIds = result.yakuIds.filter((id) => {
-          if (this.state.scoredYakuIds.has(id)) {
-            return false
-          }
-          if (!previewMode) this.state.scoredYakuIds.add(id)
-          return true
-        })
-        break
-    }
-
-    return result
-  }
-
-  /**
-   * The Mouth: whether a play of this hand type may score. The round's first
-   * committed play sets the type, so it always scores; a preview never sets it.
+   * Whether a play of this hand type may score. The Mouth: the round's first
+   * committed play sets the type, so it always scores. The Eye: each type
+   * scores once, so a repeat does not. A preview never records a play.
    */
   allowsPlayPattern(pattern: PlayPatternId, previewMode = false): boolean {
-    if (this.state.activeMandate?.effect.type !== 'single_play_pattern')
+    const effect = this.state.activeMandate?.effect.type
+    if (effect === 'no_repeat_pattern') {
+      if (this.state.playedPatternIds.has(pattern)) return false
+      if (!previewMode) this.state.playedPatternIds.add(pattern)
       return true
+    }
+    if (effect !== 'single_play_pattern') return true
     const locked = this.state.lockedPatternId ?? pattern
     if (!previewMode) this.state.lockedPatternId = locked
     return locked === pattern
   }
 
-  /** The hand type The Mouth has fixed for this round, once one is played. */
+  /**
+   * The hand type the Boss names: The Mouth's, once a play has set it, or
+   * The Ox's for the whole round.
+   */
   getLockedPattern(): PlayPatternId | null {
-    return this.state.activeMandate?.effect.type === 'single_play_pattern'
+    const effect = this.state.activeMandate?.effect.type
+    return effect === 'single_play_pattern' ||
+      effect === 'most_played_pattern_zeroes_gold'
       ? this.state.lockedPatternId
       : null
+  }
+
+  /** The Arm: how many levels each play's hand type loses before it scores. */
+  getPlayLevelDrop(): number {
+    const effect = this.state.activeMandate?.effect
+    return effect?.type === 'decrease_play_level'
+      ? ((effect.value as number) ?? 0)
+      : 0
+  }
+
+  /** The Ox: whether playing this hand type sets gold to 0. */
+  zeroesGoldFor(pattern: PlayPatternId): boolean {
+    return (
+      this.state.activeMandate?.effect.type ===
+        'most_played_pattern_zeroes_gold' &&
+      this.state.lockedPatternId === pattern
+    )
   }
 
   /**
@@ -860,16 +861,6 @@ export class MandateEffectSystem {
   }
 
   /**
-   * Check if playing most-played yaku should zero gold (The Ox)
-   */
-  shouldZeroGoldForMostPlayedYaku(): boolean {
-    if (!this.state.activeMandate) return false
-    return (
-      this.state.activeMandate.effect.type === 'most_played_yaku_zeroes_gold'
-    )
-  }
-
-  /**
    * Check if first hand should be face-down (The House)
    */
   isFirstHandFaceDown(): boolean {
@@ -959,7 +950,7 @@ export class MandateEffectSystem {
     randomCursor: number | null
     activeMandate: MandateDefinition | null
     isDefeated: boolean
-    scoredYakuIds: string[]
+    playedPatternIds: PlayPatternId[]
     lockedPatternId: PlayPatternId | null
     handsPlayed: number
     lockedTileIds: string[]
@@ -976,7 +967,7 @@ export class MandateEffectSystem {
       randomCursor: this.seededRandom?.toState() ?? null,
       activeMandate: this.state.activeMandate,
       isDefeated: this.state.isDefeated,
-      scoredYakuIds: Array.from(this.state.scoredYakuIds),
+      playedPatternIds: Array.from(this.state.playedPatternIds),
       lockedPatternId: this.state.lockedPatternId,
       handsPlayed: this.state.handsPlayed,
       lockedTileIds: Array.from(this.state.lockedTileIds),
@@ -998,7 +989,7 @@ export class MandateEffectSystem {
     randomCursor?: number | null
     activeMandate: MandateDefinition | null
     isDefeated: boolean
-    scoredYakuIds: string[]
+    playedPatternIds: PlayPatternId[]
     lockedPatternId: PlayPatternId | null
     handsPlayed: number
     lockedTileIds: string[]
@@ -1017,7 +1008,7 @@ export class MandateEffectSystem {
     system.state = {
       activeMandate: data.activeMandate,
       isDefeated: data.isDefeated,
-      scoredYakuIds: new Set(data.scoredYakuIds),
+      playedPatternIds: new Set(data.playedPatternIds),
       lockedPatternId: data.lockedPatternId,
       handsPlayed: data.handsPlayed,
       // Legacy Bell saves stored locks in insertion order. Keep the latest

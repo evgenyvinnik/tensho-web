@@ -1408,7 +1408,7 @@
       },
       "the_eye": {
         "name": "눈",
-        "description": "이번 라운드 역 중복 불가 (각 역은 한 번만 계산)"
+        "description": "이번 라운드에 같은 족보는 한 번만 득점해요. 반복하면 0점이에요"
       },
       "the_mouth": {
         "name": "입",
@@ -1432,7 +1432,7 @@
       },
       "the_arm": {
         "name": "팔",
-        "description": "계산 시 역의 등급이 1 낮아짐"
+        "description": "낼 때마다 그 족보의 레벨이 득점 전에 1 낮아져요"
       },
       "the_psychic": {
         "name": "영매",
@@ -1460,7 +1460,7 @@
       },
       "the_ox": {
         "name": "황소",
-        "description": "가장 많이 쓴 역을 내면 골드가 0이 됨"
+        "description": "가장 많이 낸 족보를 내면 골드가 0이 돼요"
       },
       "the_house": {
         "name": "집",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "뽑을 때마다 {{count}}장 버려짐",
     "score_multiplier": "목표 ×{{value}}",
-    "no_repeat_yaku": "같은 역은 한 번만",
+    "no_repeat_pattern": "같은 족보는 한 번만",
     "single_play_pattern": "족보는 한 종류만",
     "single_play_pattern_locked": "{{pattern}}만 득점",
     "halve_score": "점수 ×½",
     "single_hand": "패 내기 1번만",
     "debuff_used_tiles": "쓴 패는 0점",
     "no_discards": "다시 뽑기 불가",
-    "decrease_yaku_tier": "역 단계 −{{count}}",
+    "decrease_play_level": "족보 레벨 −{{count}}",
     "fixed_hand_size": "정확히 {{count}}장 내기",
     "debuff_suit": "{{target}} 0점",
     "debuff_tile_type": "{{target}} 0점",
     "hand_size_reduction": "패 −{{count}}장",
     "gold_per_tile": "낸 패 한 장마다 골드 −{{count}}",
-    "most_played_yaku_zeroes_gold": "최다 역을 내면 골드 0",
+    "most_played_pattern_zeroes_gold": "최다 족보를 내면 골드 0",
+    "most_played_pattern_named": "{{pattern}} 내면 골드 0",
     "first_hand_face_down": "첫 패는 뒷면",
     "tiles_face_down_ratio": "{{count}}장 중 1장 뒷면",
     "tiles_face_down_after_play": "새 패는 뒷면",

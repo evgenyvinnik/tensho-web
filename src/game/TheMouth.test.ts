@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
 import { DEFAULT_MODIFIERS, SealType } from '../core/TileModifier'
-import { THE_EYE, THE_MOUTH } from '../config/mandateDefinitions'
+import { THE_FLINT, THE_MOUTH } from '../config/mandateDefinitions'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { parseClassicRunSnapshot } from './validateClassicRun'
@@ -199,7 +199,7 @@ describe('MandateEffectSystem hand-type lock', () => {
   it('allows every hand type without The Mouth, and never locks', () => {
     const system = new MandateEffectSystem()
     expect(system.allowsPlayPattern('pair')).toBe(true)
-    system.activateMandate(THE_EYE, [], [])
+    system.activateMandate(THE_FLINT, [], [])
     expect(system.allowsPlayPattern('pair')).toBe(true)
     expect(system.allowsPlayPattern('sequence')).toBe(true)
     expect(system.getLockedPattern()).toBeNull()

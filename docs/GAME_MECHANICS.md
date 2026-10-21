@@ -361,13 +361,13 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 |---------|----------|--------|
 | **The Hook** | 鉤 | 2 random tiles discarded from hand after each draw |
 | **The Wall** | 壁 | Extra large score requirement (4× instead of 2×) |
-| **The Eye** | 目 | No repeat yaku this round (each yaku only scores once) |
+| **The Eye** | 目 | Each hand type scores once this round; a repeat scores 0 |
 | **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 |
-| **The Flint** | 火打石 | Base points and Mult halved for entire round |
+| **The Flint** | 火打石 | Every play this round scores half |
 | **The Needle** | 針 | Must complete hand in exactly 1 draw cycle |
 | **The Pillar** | 柱 | Tiles used in previous rounds this Act are debuffed |
 | **The Water** | 水 | Start with 0 redraws this round |
-| **The Arm** | 腕 | Yaku tier decreased by 1 for scoring |
+| **The Arm** | 腕 | Each play lowers every Orb family it levels by 1 (never below level 1) before it scores |
 
 **Showdown Mandates (Act 8+):**
 

@@ -326,9 +326,9 @@ const mutations: [string, (s: ClassicRunSnapshot) => void][] = [
   [
     'duplicate map entry',
     (s) => {
-      s.state.yakuPlayCounts = [
-        ['tanyao', 1],
-        ['tanyao', 2],
+      s.state.patternPlayCounts = [
+        ['pair', 1],
+        ['pair', 2],
       ]
     },
   ],
@@ -447,8 +447,14 @@ describe('untrusted save boundary', () => {
         state: { ...saved.state } as Record<string, unknown>,
       }
       delete damaged.state[key]
-      // Counters added with the Turns budget are absent from older saves.
-      if (['playsThisRound', 'tilesRedrawnThisRound'].includes(key)) {
+      // Additive counters are absent from older saves.
+      if (
+        [
+          'playsThisRound',
+          'tilesRedrawnThisRound',
+          'patternPlayCounts',
+        ].includes(key)
+      ) {
         expect(() => parseClassicRunSnapshot(damaged), key).not.toThrow()
         continue
       }

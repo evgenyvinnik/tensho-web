@@ -1404,7 +1404,7 @@
       },
       "the_eye": {
         "name": "The Eye",
-        "description": "No repeat yaku this round (each yaku only scores once)"
+        "description": "Each hand type scores only once this round. A repeat scores 0"
       },
       "the_mouth": {
         "name": "The Mouth",
@@ -1428,7 +1428,7 @@
       },
       "the_arm": {
         "name": "The Arm",
-        "description": "Yaku tier decreased by 1 for scoring"
+        "description": "Every play lowers its hand type’s level by 1 before it scores"
       },
       "the_psychic": {
         "name": "The Psychic",
@@ -1456,7 +1456,7 @@
       },
       "the_ox": {
         "name": "The Ox",
-        "description": "Playing most-played Yaku sets gold to 0"
+        "description": "Playing your most-played hand type sets your Gold to 0"
       },
       "the_house": {
         "name": "The House",
@@ -2766,20 +2766,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} random tiles per draw",
     "score_multiplier": "Target ×{{value}}",
-    "no_repeat_yaku": "No repeated Yaku",
+    "no_repeat_pattern": "No repeated hand type",
     "single_play_pattern": "One hand type only",
     "single_play_pattern_locked": "Only {{pattern}} scores",
     "halve_score": "Score ×½",
     "single_hand": "Only 1 Play",
     "debuff_used_tiles": "Used tiles score 0",
     "no_discards": "No REDRAW",
-    "decrease_yaku_tier": "Yaku −{{count}} tier",
+    "decrease_play_level": "Hand type −{{count}} level",
     "fixed_hand_size": "Play exactly {{count}} tiles",
     "debuff_suit": "{{target}} score 0",
     "debuff_tile_type": "{{target}} score 0",
     "hand_size_reduction": "Rack −{{count}} tile",
     "gold_per_tile": "−{{count}} Gold per tile played",
-    "most_played_yaku_zeroes_gold": "Top Yaku costs all Gold",
+    "most_played_pattern_zeroes_gold": "Top hand type costs all Gold",
+    "most_played_pattern_named": "{{pattern}} costs all Gold",
     "first_hand_face_down": "First rack face-down",
     "tiles_face_down_ratio": "1 in {{count}} tiles face-down",
     "tiles_face_down_after_play": "New tiles face-down",

@@ -1408,7 +1408,7 @@
       },
       "the_eye": {
         "name": "El Ojo",
-        "description": "Sin yaku repetidos esta ronda (cada yaku puntúa una vez)"
+        "description": "Cada tipo de mano puntúa una sola vez esta ronda. Repetirlo puntúa 0"
       },
       "the_mouth": {
         "name": "La Boca",
@@ -1432,7 +1432,7 @@
       },
       "the_arm": {
         "name": "El Brazo",
-        "description": "El nivel de yaku baja 1 al puntuar"
+        "description": "Cada jugada baja 1 nivel su tipo de mano antes de puntuar"
       },
       "the_psychic": {
         "name": "El Vidente",
@@ -1460,7 +1460,7 @@
       },
       "the_ox": {
         "name": "El Buey",
-        "description": "Jugar el yaku más usado deja el oro a 0"
+        "description": "Jugar tu tipo de mano más usado deja tu oro a 0"
       },
       "the_house": {
         "name": "La Casa",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} fichas al azar por robo",
     "score_multiplier": "Objetivo ×{{value}}",
-    "no_repeat_yaku": "Sin yaku repetidos",
+    "no_repeat_pattern": "Sin tipos de mano repetidos",
     "single_play_pattern": "Solo un tipo de mano",
     "single_play_pattern_locked": "Solo puntúa {{pattern}}",
     "halve_score": "Puntuación ×½",
     "single_hand": "Solo 1 jugada",
     "debuff_used_tiles": "Fichas usadas dan 0",
     "no_discards": "Sin RECAMBIAR",
-    "decrease_yaku_tier": "Yaku −{{count}} nivel",
+    "decrease_play_level": "Tipo de mano −{{count}} nivel",
     "fixed_hand_size": "Juega exactamente {{count}}",
     "debuff_suit": "{{target}} dan 0",
     "debuff_tile_type": "{{target}} dan 0",
     "hand_size_reduction": "Atril −{{count}} ficha",
     "gold_per_tile": "−{{count}} de oro por ficha jugada",
-    "most_played_yaku_zeroes_gold": "El yaku más usado vacía tu oro",
+    "most_played_pattern_zeroes_gold": "El tipo de mano más usado vacía tu oro",
+    "most_played_pattern_named": "{{pattern}} vacía tu oro",
     "first_hand_face_down": "Primer atril boca abajo",
     "tiles_face_down_ratio": "1 de cada {{count}} boca abajo",
     "tiles_face_down_after_play": "Fichas nuevas boca abajo",

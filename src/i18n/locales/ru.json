@@ -1871,7 +1871,7 @@
       },
       "the_eye": {
         "name": "Глаз",
-        "description": "В этом раунде каждое яку приносит очки только один раз"
+        "description": "В этом раунде каждый тип руки приносит очки только один раз. Повтор даёт 0"
       },
       "the_mouth": {
         "name": "Рот",
@@ -1895,7 +1895,7 @@
       },
       "the_arm": {
         "name": "Рука",
-        "description": "Уровень яку при подсчёте очков снижается на 1"
+        "description": "Каждый розыгрыш снижает уровень своего типа руки на 1 перед подсчётом"
       },
       "the_psychic": {
         "name": "Ясновидец",
@@ -1923,7 +1923,7 @@
       },
       "the_ox": {
         "name": "Бык",
-        "description": "Розыгрыш самого частого яку обнуляет золото"
+        "description": "Розыгрыш самого частого типа руки обнуляет золото"
       },
       "the_house": {
         "name": "Дом",
@@ -2772,20 +2772,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} случайных тайла за добор",
     "score_multiplier": "Цель ×{{value}}",
-    "no_repeat_yaku": "Яку не повторяются",
+    "no_repeat_pattern": "Типы рук не повторяются",
     "single_play_pattern": "Только один тип руки",
     "single_play_pattern_locked": "Очки только за: {{pattern}}",
     "halve_score": "Очки ×½",
     "single_hand": "Только 1 розыгрыш",
     "debuff_used_tiles": "Использованные тайлы — 0 очков",
     "no_discards": "Без пересдачи",
-    "decrease_yaku_tier": "Яку −{{count}} уровень",
+    "decrease_play_level": "Тип руки −{{count}} уровень",
     "fixed_hand_size": "Ровно {{count}} тайлов",
     "debuff_suit": "{{target}} — 0 очков",
     "debuff_tile_type": "{{target}} — 0 очков",
     "hand_size_reduction": "Стойка −{{count}} тайл",
     "gold_per_tile": "−{{count}} золота за тайл",
-    "most_played_yaku_zeroes_gold": "Частое яку обнуляет золото",
+    "most_played_pattern_zeroes_gold": "Частый тип руки обнуляет золото",
+    "most_played_pattern_named": "{{pattern}} обнуляет золото",
     "first_hand_face_down": "Первая рука закрыта",
     "tiles_face_down_ratio": "1 из {{count}} тайлов закрыт",
     "tiles_face_down_after_play": "Новые тайлы закрыты",

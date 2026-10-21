@@ -1408,7 +1408,7 @@
       },
       "the_eye": {
         "name": "L'Œil",
-        "description": "Aucun yaku répété cette manche (chaque yaku ne compte qu'une fois)"
+        "description": "Chaque type de main ne rapporte qu'une fois cette manche. Une répétition rapporte 0"
       },
       "the_mouth": {
         "name": "La Bouche",
@@ -1432,7 +1432,7 @@
       },
       "the_arm": {
         "name": "Le Bras",
-        "description": "Le palier de yaku baisse de 1 au décompte"
+        "description": "Chaque coup fait perdre 1 niveau à son type de main avant le décompte"
       },
       "the_psychic": {
         "name": "Le Médium",
@@ -1460,7 +1460,7 @@
       },
       "the_ox": {
         "name": "Le Bœuf",
-        "description": "Jouer le yaku le plus utilisé ramène l'or à 0"
+        "description": "Jouer votre type de main le plus joué ramène votre or à 0"
       },
       "the_house": {
         "name": "La Maison",
@@ -2770,20 +2770,21 @@
   "mandateConsequence": {
     "discard_after_draw": "−{{count}} tuiles au hasard par pioche",
     "score_multiplier": "Objectif ×{{value}}",
-    "no_repeat_yaku": "Pas de yaku répété",
+    "no_repeat_pattern": "Pas de type de main répété",
     "single_play_pattern": "Un seul type de main",
     "single_play_pattern_locked": "Uniquement {{pattern}}",
     "halve_score": "Score ×½",
     "single_hand": "Une seule main jouée",
     "debuff_used_tiles": "Tuiles utilisées : 0 point",
     "no_discards": "Pas de REPIOCHE",
-    "decrease_yaku_tier": "Yaku −{{count}} rang",
+    "decrease_play_level": "Type de main −{{count}} niveau",
     "fixed_hand_size": "Jouez exactement {{count}}",
     "debuff_suit": "{{target}} : 0 point",
     "debuff_tile_type": "{{target}} : 0 point",
     "hand_size_reduction": "Chevalet −{{count}} tuile",
     "gold_per_tile": "−{{count}} or par tuile jouée",
-    "most_played_yaku_zeroes_gold": "Le yaku le plus joué vide votre or",
+    "most_played_pattern_zeroes_gold": "Le type de main le plus joué vide votre or",
+    "most_played_pattern_named": "{{pattern}} vide votre or",
     "first_hand_face_down": "Premier chevalet face cachée",
     "tiles_face_down_ratio": "1 tuile sur {{count}} face cachée",
     "tiles_face_down_after_play": "Nouvelles tuiles face cachée",
