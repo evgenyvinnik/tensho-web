@@ -824,9 +824,13 @@ describe('translation script purity', () => {
   // Lowercase runs only: an uppercase UI label such as PLAY is a deliberate
   // reference to a button, while "competing" left mid-sentence is a mistake.
   const STRAY_ENGLISH = /\b[a-z]{3,}\b/
-  // {{count}} and friends are interpolation slots, not prose.
+  // Interpolation slots and the known Trans component names are markup, not
+  // prose. Strip only tags, retaining their content so actual English leaks
+  // inside a translated sentence are still rejected.
   const withoutPlaceholders = (value: string): string =>
-    value.replace(/\{\{[^}]*\}\}/g, '')
+    value
+      .replace(/\{\{[^}]*\}\}/g, '')
+      .replace(/<\/?(?:strong|melds|pair|tiles)>/g, '')
 
   const stringsOf = (locale: Locale): Array<[string, string]> => {
     const out: Array<[string, string]> = []
@@ -863,6 +867,18 @@ describe('translation script purity', () => {
       }
     }
     expect(leaks).toEqual([])
+  })
+
+  it('ignores named translation markup without hiding English prose', () => {
+    expect(
+      STRAY_ENGLISH.test(withoutPlaceholders('牌<strong>{{points}}</strong>'))
+    ).toBe(false)
+    expect(
+      STRAY_ENGLISH.test(withoutPlaceholders('牌<strong>competing</strong>'))
+    ).toBe(true)
+    expect(
+      STRAY_ENGLISH.test(withoutPlaceholders('牌<unexpected>文字</unexpected>'))
+    ).toBe(true)
   })
 })
 

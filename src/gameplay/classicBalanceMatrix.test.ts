@@ -1,5 +1,6 @@
 import { expect, it } from 'vitest'
 import { spawnSync } from 'node:child_process'
+import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import {
   matrixOptions,
   validateMatrixCell,
@@ -33,9 +34,14 @@ function cell() {
   }
 }
 
-it('defaults to all 64 combinations with the same bounded seed range', () => {
+it('defaults to every playable table/stake combination with the same bounded seed range', () => {
   const options = matrixOptions([])
-  expect(options.tables).toHaveLength(8)
+  expect(options.tables).toEqual(
+    TABLE_STYLE_DEFINITIONS.map((table) => table.id)
+  )
+  expect(options.tables).toEqual(
+    expect.arrayContaining(['crimson_wall', 'obsidian_wall'])
+  )
   expect(options.stakes).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
   expect(options.runs).toBe(20)
   expect(options.seed).toBe(1)

@@ -6,9 +6,9 @@
  *   RunHeader      Gold · Act and round · score / target · ? Exit Settings
  *   Decrees        owned Decree scrolls and empty slots
  *   Hand score     the selection's pattern and points × Mult = total
- *   Collection     every Flower, Season, Orb, Seal, Script and upgrade
+ *   Collection     every Flower, Season, Orb, Seal and Script
  *   Rack           your tiles, grouped into the shapes they form
- *   ActionBar      Turns left · REDRAW · Play hand
+ *   ActionBar      Turns left · Wall · REDRAW · Play hand
  *
  * Everything shown is read from the engine; the screen never computes a score
  * of its own. A committed play celebrates once, from the engine's event.
@@ -527,13 +527,12 @@ export function GameplayScreen() {
               />
             </div>
 
-            {/* Every owned Flower, Season, Orb, Seal, Script and upgrade. */}
-            <div className="flex min-w-0 items-center justify-center gap-1.5 lg:justify-end">
+            {/* Flowers, Seasons and held consumables; upgrades are in the Tea House. */}
+            <div className="gameplay-collection-items -mx-1 min-w-0 lg:mx-0">
               <CollectibleRail
                 flora={game.flora}
                 celestialOrbs={game.celestialOrbs}
                 voidScripts={game.voidScripts}
-                upgrades={game.yakuUpgrades}
                 levelOf={(family) =>
                   game.state.celestialOrbSystem.getYakuLevel(family)
                 }
@@ -545,12 +544,6 @@ export function GameplayScreen() {
                   'observatory'
                 )}
               />
-              <div data-tutorial="wall" className="shrink-0">
-                <WallDisplay
-                  wallTiles={game.wallTiles}
-                  triggerRef={wallTriggerRef}
-                />
-              </div>
             </div>
           </div>
 
@@ -645,6 +638,14 @@ export function GameplayScreen() {
 
         <ActionBar
           playButtonRef={playButtonRef}
+          wall={
+            <div data-tutorial="wall" className="shrink-0">
+              <WallDisplay
+                wallTiles={game.wallTiles}
+                triggerRef={wallTriggerRef}
+              />
+            </div>
+          }
           turnsLeft={game.handsRemaining}
           freeRedraws={game.redrawsRemaining}
           selectedCount={selectedIds.length}

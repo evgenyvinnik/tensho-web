@@ -72,6 +72,9 @@ it('keeps navigation available while artwork is pending, with no update prompt',
   render(<MenuScreen />)
   expect(preloadTileImages).toHaveBeenCalled()
   expect(screen.getByRole('button', { name: 'New Run' })).toBeEnabled()
+  expect(
+    screen.getByRole('button', { name: 'Codex' }).querySelector('img')
+  ).toHaveAttribute('src', '/assets/illustrations/pavilion/codex.webp')
   expect(screen.queryByRole('button', { name: /update/i })).toBeNull()
   expect(screen.queryByRole('button', { name: /Table Loop/i })).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: 'Settings' }))

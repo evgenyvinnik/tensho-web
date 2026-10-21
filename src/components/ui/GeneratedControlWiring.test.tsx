@@ -22,11 +22,11 @@ afterEach(async () => {
 
 describe('generated control wiring', () => {
   it.each([
-    ['Settings', ['settings']],
-    ['VolumeOn', ['sound']],
-    ['VolumeOff', ['sound', 'ban']],
-    ['Close', ['close']],
-    ['Refresh', ['redraw']],
+    ['Settings', ['controls-jade/settings.webp']],
+    ['VolumeOn', ['controls-jade/sound.webp']],
+    ['VolumeOff', ['controls-jade/sound-off.webp']],
+    ['Close', ['generated/controls/close.png']],
+    ['Refresh', ['generated/controls/redraw.png']],
   ] as const)(
     'keeps %s decorative and preserves its owning button',
     (name, assets) => {
@@ -40,7 +40,7 @@ describe('generated control wiring', () => {
       images.forEach((image, index) => {
         expect(image).toHaveAttribute(
           'src',
-          expect.stringContaining(`/controls/${assets[index]}.png`)
+          expect.stringContaining(`/illustrations/${assets[index]}`)
         )
         expect(image).toHaveAttribute('alt', '')
         expect(image).toHaveAttribute('aria-hidden', 'true')
@@ -119,7 +119,7 @@ describe('language control text fallback', () => {
     const selected = screen.getByRole('option', { selected: true })
     expect(selected.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringContaining('/controls/check.png')
+      expect.stringContaining('/controls-jade/check.webp')
     )
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(button).toHaveAttribute('aria-expanded', 'false')

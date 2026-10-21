@@ -11,7 +11,7 @@ import type {
   ArchiveCategoryDefinition,
 } from '../../config/archiveDefinitions'
 import { useItemText } from '../../i18n/useItemText'
-import { ControlIcon } from '../ui/ControlIcon'
+import { PavilionIcon } from '../ui/PavilionIcon'
 
 export interface CategoryTabsProps {
   categories: ArchiveCategoryDefinition[]
@@ -49,7 +49,7 @@ export function CategoryTabs({
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
               aria-pressed={isActive}
-              className={`
+              className={`pavilion-tab
                 flex-shrink-0 px-3 py-2 rounded-lg font-bold text-sm
                 border-2 transition-all duration-200
                 min-h-[44px] min-w-[44px]
@@ -65,7 +65,7 @@ export function CategoryTabs({
             >
               {/* Categories without matching generated art use their live label. */}
               {category.icon === 'challenge' && (
-                <ControlIcon name="challenge" size={16} />
+                <PavilionIcon name="challenge" size={24} />
               )}
 
               {/* Keep categories understandable in the selected language at

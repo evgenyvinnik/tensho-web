@@ -390,6 +390,7 @@ export function ShopItemCard({
             <div className="flex justify-center">
               <DecreeArtwork
                 decreeId={decreeId}
+                edition={decreeModifiers?.edition}
                 size={48}
                 color={rarityColor}
               />

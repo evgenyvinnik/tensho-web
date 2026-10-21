@@ -10,7 +10,7 @@ afterEach(async () => {
   await i18n.changeLanguage('en')
 })
 it.each(SUPPORTED_LANGUAGES)(
-  'explains all six locked Decrees in %s',
+  'explains every locked Decree in %s',
   async (language) => {
     await loadLanguage(language)
     await i18n.changeLanguage(language)
@@ -43,7 +43,11 @@ it.each(SUPPORTED_LANGUAGES)(
       )
       // A locked reward stays readable: what it is, does, and needs.
       fireEvent.click(screen.getByRole('button'), { detail: 1 })
-      expect(screen.getByRole('dialog')).toHaveTextContent(localRule)
+      // The matcher normalizes rendered NBSP/narrow-NBSP as ordinary spaces.
+      // Preserve localized typography while comparing equivalent visible text.
+      expect(screen.getByRole('dialog')).toHaveTextContent(
+        localRule.replace(/\s+/g, ' ')
+      )
       expect(screen.getByRole('dialog')).toHaveTextContent(localItem.name)
       expect(screen.getByRole('dialog')).toHaveTextContent(
         localItem.description

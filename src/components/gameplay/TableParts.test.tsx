@@ -165,6 +165,19 @@ describe('RunHeader', () => {
       .getAllByRole('button')
       .map((b) => b.getAttribute('aria-label'))
     expect(buttons).toEqual(['How to play', 'Exit', 'Settings'])
+    for (const [name, icon] of [
+      ['How to play', 'help'],
+      ['Exit', 'exit'],
+      ['Settings', 'settings'],
+    ]) {
+      const img = screen.getByRole('button', { name }).querySelector('img')
+      expect(img).toHaveAttribute(
+        'src',
+        `/assets/illustrations/controls-jade/${icon}.webp`
+      )
+      expect(img).toHaveAttribute('alt', '')
+      expect(img).toHaveAttribute('aria-hidden', 'true')
+    }
     fireEvent.click(screen.getByRole('button', { name: 'How to play' }))
     expect(p.onHelp).toHaveBeenCalledOnce()
   })

@@ -1,13 +1,12 @@
 /**
- * CollectibleRail: everything the run owns besides Decrees, one icon each.
+ * CollectibleRail: the table's Flowers, Seasons and held consumables.
  *
- * Three Orbs are three icons; a Flower and a Season are separate icons; each
- * upgraded family is its own icon with its level. Every icon is the same
- * height and opens its own small panel. An Orb's panel is its use
+ * Three Orbs are three icons; a Flower and a Season are separate icons.
+ * Every icon is the same height and opens its own small panel. An Orb's panel is its use
  * confirmation: one tap to look, one tap to use that exact Orb.
  *
- * The rail scrolls sideways on narrow screens instead of shrinking icons
- * below a comfortable tap size.
+ * Eight tiles fit across when space permits; narrower screens wrap without
+ * shrinking below a comfortable tap size. Upgrades live in the Tea House.
  *
  * @module components/gameplay/CollectibleRail
  */
@@ -35,7 +34,6 @@ import { CollectibleToken } from '../ui/CollectibleToken'
 import { CharterArtwork } from '../ui/CharterArtwork'
 import { FlowerDetails, SeasonDetails, useSeasonName } from './FloraDetails'
 import { consumableMessage } from './consumableMessages'
-import { YakuUpgradeToken } from './YakuUpgradeToken'
 
 type ConsumableAction = Extract<
   PlayerAction,
@@ -48,7 +46,6 @@ export interface CollectibleRailProps {
   flora: ReturnType<GameOrchestrator['getFloraState']>
   celestialOrbs: readonly CelestialOrb[]
   voidScripts: readonly VoidScript[]
-  upgrades: ReturnType<GameOrchestrator['getYakuUpgradeState']>
   /** Current level of an upgrade family (1 is the baseline). */
   levelOf: (family: YakuCategory) => number
   validateUse: (action: ConsumableAction) => ValidationResult
@@ -147,7 +144,6 @@ export function CollectibleRail({
   flora,
   celestialOrbs,
   voidScripts,
-  upgrades,
   levelOf,
   validateUse,
   onUse,
@@ -320,13 +316,6 @@ export function CollectibleRail({
     )),
     ...celestialOrbs.map((orb) => consumable(orb, 'orbs')),
     ...voidScripts.map((script) => consumable(script, 'scripts')),
-    ...upgrades.map((upgrade) => (
-      <YakuUpgradeToken
-        key={`upgrade-${upgrade.yaku}`}
-        upgrade={upgrade}
-        {...control(`upgrade-${upgrade.yaku}`)}
-      />
-    )),
   ]
 
   if (owned.length === 0) return null
@@ -336,7 +325,7 @@ export function CollectibleRail({
       data-tutorial="flora"
       role="list"
       aria-label={t('gameplay.collection', 'Your items')}
-      className="scroll-rail flex min-w-0 max-w-full items-center gap-1.5 overflow-x-auto px-1 py-1.5"
+      className="gameplay-collectible-rail relative flex w-full min-w-0 flex-wrap items-center justify-center gap-px px-px py-1.5 sm:gap-0.5 sm:px-1 lg:justify-end"
     >
       {owned.map((token) => (
         <div role="listitem" key={token.key} className="shrink-0">

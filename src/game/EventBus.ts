@@ -14,6 +14,7 @@
 import type { PlayPatternId, SecretPatternId } from '../rules/PlayPattern'
 import type { ScoreEquation } from '../rules/ScoreEquation'
 import type { ConsumableSource } from '../systems/ConsumableSystem'
+import type { RunMetaSnapshot } from './RunMetaContext'
 
 // =============================================================================
 // EVENT TYPES
@@ -41,6 +42,7 @@ export type GameEvent =
   | 'scoreUpdate'
   | 'yakuScored'
   | 'yakumanScored'
+  | 'yakuLevelsChanged'
   | 'secretPatternDiscovered'
 
   // Economy
@@ -53,6 +55,8 @@ export type GameEvent =
   // Items
   | 'decreeAcquired'
   | 'buildProgressChanged'
+  | 'wallCompositionChanged'
+  | 'paidTurnSpent'
   | 'decreeTriggered'
   | 'decreeDebuffed'
   | 'flowerCollected'
@@ -117,12 +121,18 @@ export interface GameEventData {
   // Game lifecycle
   gameInitialized: { timestamp: number }
   runStart: { seed: number; stake: number; wallVariant: string }
+  /** Permanent collection size, not the number of undrawn tiles. */
+  wallCompositionChanged: { tileCount: number }
+  /** Emitted at the actual resource debit; free REDRAWs do not emit it. */
+  paidTurnSpent: { action: 'play' | 'redraw' }
   runEnd: {
     victory: boolean
     score: number
     act: number
     round: number
     decreesOwned?: number
+    /** Catalog identities physically held at the canonical victory. */
+    decreeIds?: string[]
   }
   gameOver: { reason: 'victory' | 'defeat' | 'quit'; finalScore: number }
 
@@ -135,13 +145,25 @@ export interface GameEventData {
     roundType: string
     target: number
   }
-  roundEnd: { won: boolean; score: number; target: number }
+  roundEnd: {
+    won: boolean
+    score: number
+    target: number
+    /** Absent when restoring legacy rounds with unrecorded discard history. */
+    honorDiscards?: number
+  }
   /** A swift clear earned the round's Omen. */
   omenEarned: { roundType: string; omenTagGranted?: string }
 
   // Scoring
   handPlayed: {
     tiles: string[]
+    /** Physical Glass tiles broken in this paid play, excluding retriggers. */
+    glassTilesBroken?: number
+    /** Every physical tile submitted in this paid play carried a Wild mark. */
+    allPlayedTilesWild?: boolean
+    /** Scored Wind Yakuhai occurrences; seat and round Wind can stack. */
+    windYakuScored?: number
     score: number
     yakuIds: string[]
     equation: ScoreEquation
@@ -153,6 +175,8 @@ export interface GameEventData {
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
   yakumanScored: { yakuId: string; yakuName: string; multiplier?: number }
+  /** A successful upgrade from an Orb, Seal, or Script; never a preview. */
+  yakuLevelsChanged: { highestLevel: number }
   /** A secret hand was played for the first time on this profile. */
   secretPatternDiscovered: { pattern: SecretPatternId }
 
@@ -228,7 +252,12 @@ export interface GameEventData {
 
   // Save/Load
   gameSaved: { timestamp: number; slotId?: string }
-  gameLoaded: { timestamp: number; slotId?: string }
+  gameLoaded: {
+    timestamp: number
+    slotId?: string
+    /** Observed-only context for older victory/Endless saves that dropped it. */
+    endlessContext?: NonNullable<RunMetaSnapshot>
+  }
   autoSaveTriggered: { timestamp: number }
 
   // UI Events

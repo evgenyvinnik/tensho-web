@@ -42,7 +42,7 @@ describe('MetaProgressionBridge', () => {
     shutdownMetaProgressionBridge()
   })
 
-  it('catalogs exactly the eight playable tables and preserves retired wall history', () => {
+  it('catalogs exactly the current playable tables and preserves retired wall history', () => {
     const system = new ArchiveSystem()
     const old = {
       ...system.getEntry('walls', 'green_felt')!,
@@ -66,7 +66,7 @@ describe('MetaProgressionBridge', () => {
       .initializeEntries(restored.toState().entries.map(([, entry]) => entry))
     expect(
       useArchiveStore.getState().getEntriesByCategory('walls')
-    ).toHaveLength(8)
+    ).toHaveLength(TABLE_STYLE_DEFINITIONS.length)
     expect(
       useArchiveStore
         .getState()
@@ -75,7 +75,7 @@ describe('MetaProgressionBridge', () => {
     ).toBe(false)
     expect(
       useArchiveStore.getState().getStats().categoryCounts.walls.total
-    ).toBe(8)
+    ).toBe(TABLE_STYLE_DEFINITIONS.length)
   })
 
   it('makes an earned table selectable immediately and restores persisted unlocks idempotently', () => {
@@ -361,7 +361,7 @@ describe('MetaProgressionBridge', () => {
     expect(achievements.totalDecreesPurchased).toBe(1)
     expect(achievements.fateSealsDiscovered).toBe(1)
     expect(achievements.chartersDiscovered).toBe(1)
-    expect(achievements.chartersPurchasedByAct4).toBe(1)
+    expect(achievements.maxChartersPurchasedByAct5).toBe(1)
     expect(achievements.runsCompleted).toBe(1)
     expect(achievements.runsWon).toBe(0)
   })

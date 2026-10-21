@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "Le principe de base",
+    "titleTilesOverview": "Comprendre les tuiles",
+    "titleSuits": "Les trois familles numérotées",
+    "titleTerminals": "Terminales et simples",
+    "titleWinds": "Les tuiles de Vent",
+    "titleDragons": "Les tuiles de Dragon",
+    "titleBonus": "Tuiles bonus : Fleurs et Saisons",
+    "titleMeldsOverview": "Qu’est-ce qu’un groupe ?",
+    "titleSequences": "Séquences (順子 / Shuntsu)",
+    "titleTriplets": "Brelans (刻子 / Koutsu)",
+    "titleQuads": "Carrés (槓子 / Kantsu)",
+    "titlePairs": "Paires (雀頭 / Jantou)",
+    "titleWinningHand": "La structure d’une main gagnante",
+    "titleSpecialHands": "Les formes gagnantes spéciales",
+    "titleYakuIntro": "Yaku — Les multiplicateurs de score",
+    "titleYakuExamples": "Exemples de Yaku courants",
+    "titleActsRounds": "Actes et manches",
+    "titleBossMandates": "Mandats de Boss",
+    "titleDecreesIntro": "Que sont les Décrets ?",
+    "titleDecreeCategories": "Catégories de Décrets",
+    "titleDecreeRarities": "Raretés des Décrets",
+    "titleDecreeSlots": "Gérer les emplacements de Décrets",
+    "titleHierarchy": "La hiérarchie à cinq niveaux",
+    "titleTips": "Conseils pour réussir",
+    "titleMoreTips": "Conseils avancés",
+    "category": "Catégorie",
+    "types": "Types",
+    "count": "Nombre",
+    "numberedSuits": "Familles numérotées",
+    "numberedComposition": "3 familles × 9 valeurs × 4 exemplaires",
+    "windComposition": "4 vents × 4 exemplaires",
+    "dragonComposition": "3 dragons × 4 exemplaires",
+    "bonusTiles": "Tuiles bonus",
+    "bonusComposition": "4 fleurs + 4 saisons",
+    "tileSet": "Le jeu de tuiles standard compte 144 tuiles. Le Mur choisi et les effets de la partie peuvent en modifier la composition :",
+    "terminalRanks": "Tuiles de valeur <strong>1 ou 9</strong>",
+    "simpleRanks": "Tuiles de valeur <strong>2 à 8</strong>",
+    "tileValue": "Valent <strong>{{points}} points</strong> chacune dans un groupe",
+    "windOrder": "Les Vents sont présentés dans l’ordre Est, Sud, Ouest, Nord. Tous les quatre ont les mêmes valeurs de points de base.",
+    "windPoints": "Les Vents sont des tuiles d’Honneur valant {{points}} points chacune, ou {{groupPoints}} par tuile dans un groupe.",
+    "honorGroups": "Les Honneurs ne peuvent pas former de séquences numérotées. Des Honneurs identiques peuvent former des paires, des brelans ou des carrés.",
+    "dragonPoints": "Les Dragons sont des tuiles d’Honneur valant {{points}} points chacune. Chaque Dragon qui marque ajoute +{{mult}} au Mult, ou +{{groupMult}} au Mult dans un groupe. Ils ne peuvent pas former de séquences numérotées.",
+    "flowerDuration": "Restent actives pendant toute la partie",
+    "seasonDuration": "Actives uniquement pendant la manche en cours",
+    "importantRules": "Règles importantes :",
+    "quadMechanics": "Fonctionnement des carrés :",
+    "quadBonus": "Ajoute +{{points}} points de groupe et +{{mult}} au Mult de la combinaison, avant les effets des tuiles.",
+    "quadRefill": "Jouez un carré dans votre main sélectionnée. Le chevalet se remplit après la main jouée ; il n’existe pas d’action distincte pour déclarer un carré.",
+    "winningFormula": "<melds>4 groupes</melds> + <pair>1 paire</pair> = <tiles>14 tuiles hors suppléments des carrés</tiles>",
+    "winningExample": "Les quatre groupes peuvent être des séquences, des brelans ou des carrés. Chaque carré ajoute une tuile à la structure habituelle de 14 tuiles. Voici un exemple sans carré :",
+    "sevenPairs": "Exactement <strong>7 paires différentes</strong> : 14 tuiles, sans avoir besoin de brelans ni de séquences.",
+    "thirteenOrphans": "Une tuile de chaque terminale et de chaque Honneur (13 tuiles différentes), plus un doublon : une main <strong>Yakuman</strong> de 14 tuiles.",
+    "wallSize": "Le mur fournit les tuiles de remplacement. Le nombre restant dépend de votre Mur, du chevalet de départ et des effets ; surveillez le compteur de tuiles restantes.",
+    "yakuTiers": "Le catalogue actuel compte {{count}} Yaku répartis en quatre niveaux. Voici leurs multiplicateurs de base, avant les améliorations et les effets :",
+    "tier": "Niveau",
+    "tierNumber": "Niveau {{tier}}",
+    "yakumanTier": "Niveau {{tier}} (Yakuman)",
+    "multiplierRange": "Plage des multiplicateurs de base",
+    "example": "Exemple",
+    "allSimples": "Ne contient que des tuiles numérotées de 2 à 8, sans terminales ni Honneurs.",
+    "allTriplets": "Les quatre groupes sont des brelans ou des carrés, avec une paire et aucune séquence.",
+    "fullFlush": "Ne contient qu’une seule famille numérotée, sans Honneurs.",
+    "roundType": "Type de manche",
+    "japanese": "Japonais",
+    "targetMultiplier": "Multiplicateur de l’objectif",
+    "baseTarget": "×{{mult}} (objectif de base)",
+    "structural": "Structure (形法令)",
+    "structuralHelp": "Modifie les critères d’une main valide",
+    "tileIdentity": "Identité des tuiles (变牌法令)",
+    "tileIdentityHelp": "Change la classification des tuiles",
+    "yakuDoctrine": "Doctrine des Yaku (役变法令)",
+    "yakuDoctrineHelp": "Modifie les règles des Yaku",
+    "entropy": "Entropie et destin (天运法令)",
+    "entropyHelp": "Modifie la pioche et le rythme de jeu",
+    "scaling": "Progression (修行法令)",
+    "scalingHelp": "Récompense certains styles de jeu",
+    "rarity": "Rareté",
+    "name": "Nom",
+    "powerLevel": "Niveau de puissance",
+    "localPower": "Petits bonus",
+    "regionalPower": "Effets modérés",
+    "imperialPower": "Modifications majeures des règles",
+    "heavenlyPower": "Puissance qui façonne toute la partie",
+    "raritySources": "La rareté influe sur la disponibilité et le prix en boutique. Les Ordonnances célestes proviennent de sources spéciales, et non des offres ordinaires de la boutique. Créez des synergies et vérifiez le prix réel de chaque offre.",
+    "slotBaseline": "Vous disposez par défaut de 5 emplacements de Décrets, mais la table choisie et les effets de la partie peuvent modifier ce nombre. Des emplacements supplémentaires peuvent provenir de :",
+    "heaven": "Ciel (Saisons)",
+    "court": "Cour (Décrets)",
+    "nature": "Nature (Fleurs)",
+    "table": "Table (Tuiles)",
+    "grammar": "Grammaire (Yaku)",
+    "hierarchyOverride": "Lorsque des règles entrent en conflit, celles de plus haute autorité priment sur celles de moindre autorité. Vérifiez les conditions propres à chaque effet.",
+    "tipScoreTitle": "Faites des coups utiles",
+    "tipScore": "Comparez l’aperçu du score pour des groupes allant jusqu’à {{max}} tuiles ou pour une main de Mahjong complète. Utilisez vos tours pour progresser vers l’objectif au lieu d’attendre uniquement une main parfaite.",
+    "tipSynergyTitle": "Créez des synergies",
+    "tipSynergy": "Des Décrets qui se complètent peuvent être plus forts que des Décrets puissants pris isolément.",
+    "tipEconomyTitle": "Équilibrez votre économie",
+    "tipEconomy": "L’or économisé rapporte des intérêts lorsqu’une manche est réussie, mais dépensez-le si une amélioration vous aide à atteindre le prochain objectif. Vérifiez les prix réels et les valeurs de vente.",
+    "tipFlowersTitle": "Collectionnez les fleurs",
+    "tipFlowers": "Les Fleurs restent actives pendant toute la partie. Deux Fleurs différentes accordent un emplacement de Décret ; réunir les quatre renforce leurs effets.",
+    "tipYakuTitle": "Planifiez vos Yaku",
+    "tipYaku": "Choisissez des Yaku adaptés à votre chevalet et à vos Décrets. Une main de Mahjong complète peut combiner des Yaku pour obtenir de meilleurs scores.",
+    "tipEfficiencyTitle": "Tirez parti de vos tuiles",
+    "tipEfficiency": "Gardez les tuiles qui peuvent compléter plusieurs groupes. Utilisez REPIOCHER pour remplacer les tuiles isolées, en tenant compte du coût en tours et des repioches gratuites disponibles.",
+    "tipWallTitle": "Comptez les tuiles restantes",
+    "tipWall": "Vérifiez la rivière et ce qu’il reste du mur avant de chercher une tuile précise. Les tuiles remplacées par une repioche restent dans la rivière jusqu’à la fin de la manche.",
+    "tipMandateTitle": "Lisez les mandats à l’avance",
+    "tipMandate": "Lisez le prochain Mandat de Boss et préparez une combinaison d’effets capable de marquer malgré sa restriction.",
+    "congratulations": "<strong>Félicitations !</strong> Vous connaissez maintenant les bases de Tensho.",
+    "farewell": "Que les tuiles vous soient favorables dans votre ascension céleste !"
+  },
+  "codexEconomy": {
+    "payout": "La récompense de base d’une manche réussie est de 3 pièces d’or pour une Petite, 5 pour une Grande et 10 pour un Boss ; dépasser davantage l’objectif ne l’augmente pas. Les mises peuvent supprimer la récompense Petite ; les Décrets et Présages peuvent modifier le paiement final.",
+    "interest": "Les intérêts utilisent l’or détenu avant le paiement de la manche : 1 pour 5, avec un plafond initial de 5. Chartes et Présages peuvent relever ce plafond ; certains Présages bloquent les intérêts. Une défaite ne rapporte aucun intérêt.",
+    "sale": "Consultez le bouton Vendre d’un Décret pour connaître sa valeur réelle. Les Décrets payés en Fleurs ou obtenus gratuitement peuvent se vendre pour 0 pièce d’or ; les Éternels sont invendables. Vendre retire leurs effets et libère l’emplacement occupé.",
+    "prices": "Consultez le prix de chaque offre et le coût actuel du renouvellement. Réductions, éditions, Chartes et autres effets peuvent modifier les prix. Renouveler ne rétablit ni les Chartes achetées ni l’offre gratuite du Cartomancien."
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "Premiers pas",
+      "description": "Atteignez l’Acte 4."
+    },
+    "ascending": {
+      "name": "Ascension",
+      "description": "Atteignez l’Acte 8."
+    },
+    "victory": {
+      "name": "Victoire",
+      "description": "Gagnez une partie."
+    },
+    "redPath": {
+      "name": "La voie rouge",
+      "description": "Gagnez une partie au Niveau Rouge ou supérieur."
+    },
+    "blackPath": {
+      "name": "La voie noire",
+      "description": "Gagnez une partie au Niveau Noir ou supérieur."
+    },
+    "goldenPath": {
+      "name": "La voie dorée",
+      "description": "Gagnez une partie au Niveau Or."
+    },
+    "tileMaster": {
+      "name": "Maître des tuiles",
+      "description": "Jouez 2 500 tuiles au fil de vos parties."
+    },
+    "discardArtist": {
+      "name": "L’art de l’échange",
+      "description": "Échangez 2 500 tuiles au fil de vos parties."
+    },
+    "fortuneBuilt": {
+      "name": "Fortune amassée",
+      "description": "Possédez 400 pièces d’or dans une même partie."
+    },
+    "wildFlush": {
+      "name": "Couleur sauvage",
+      "description": "Marquez avec une Semi-Couleur composée uniquement de tuiles Joker."
+    },
+    "speedRun": {
+      "name": "À toute vitesse",
+      "description": "Gagnez une partie en dépensant au plus 48 tours. Les repioches gratuites ne comptent pas."
+    },
+    "charterCollector": {
+      "name": "Collectionneur de chartes",
+      "description": "Achetez 5 Chartes dans une seule partie avant la fin de l’Acte 5."
+    },
+    "shattered": {
+      "name": "En éclats",
+      "description": "Brisez 2 tuiles de Verre en un seul coup."
+    },
+    "royalHand": {
+      "name": "Main royale",
+      "description": "Marquez un Yakuman."
+    },
+    "retrograde": {
+      "name": "Rétrograde",
+      "description": "Montez un Yaku au niveau 10."
+    },
+    "keeperOfWinds": {
+      "name": "Gardien des vents",
+      "description": "Marquez 10 Yaku de Vent au cours d’une même partie."
+    },
+    "masterOfSilence": {
+      "name": "Maître du silence",
+      "description": "Gagnez 3 manches sans défausser de tuile d’Honneur."
+    },
+    "sealBearer": {
+      "name": "Porteur de sceaux",
+      "description": "Utilisez 10 Sceaux du Destin."
+    },
+    "score10k": {
+      "name": "Dix mille",
+      "description": "Marquez 10 000 points en un seul coup."
+    },
+    "score1m": {
+      "name": "Un million",
+      "description": "Marquez 1 000 000 points en un seul coup."
+    },
+    "score100m": {
+      "name": "Cent millions",
+      "description": "Marquez 100 000 000 points en un seul coup."
+    },
+    "sealScholar": {
+      "name": "Érudit des sceaux",
+      "description": "Découvrez tous les Sceaux du Destin."
+    },
+    "starGazer": {
+      "name": "Observateur des étoiles",
+      "description": "Découvrez tous les Orbes Célestes."
+    },
+    "voidWalker": {
+      "name": "Marcheur du vide",
+      "description": "Découvrez tous les Écrits du Vide."
+    },
+    "charterComplete": {
+      "name": "Toutes les chartes",
+      "description": "Découvrez toutes les Chartes."
+    },
+    "archiveComplete": {
+      "name": "Archive complète",
+      "description": "Découvrez l’intégralité de l’Archive."
+    },
+    "archiveCompletePlus": {
+      "name": "Archive complète +",
+      "description": "Gagnez au Niveau Or avec chaque Mur."
+    },
+    "archiveCompletePlusPlus": {
+      "name": "Archive complète ++",
+      "description": "Obtenez un autocollant d’or sur chaque Décret."
+    },
+    "ruleBender": {
+      "name": "Règles assouplies",
+      "description": "Terminez une partie Défi."
+    },
+    "ruleBreaker": {
+      "name": "Règles brisées",
+      "description": "Terminez tous les Défis."
+    },
+    "deckMinimalist": {
+      "name": "Mur minimaliste",
+      "description": "Réduisez votre Mur à 20 tuiles ou moins."
+    },
+    "deckMaximalist": {
+      "name": "Mur maximaliste",
+      "description": "Agrandissez votre Mur jusqu’à au moins 80 tuiles."
+    },
+    "purist": {
+      "name": "Puriste",
+      "description": "Gagnez une partie sans renouveler la boutique."
+    },
+    "title": "Distinctions célestes",
+    "shortTitle": "Succès",
+    "progress": "Progression",
+    "earned": "Succès débloqué",
+    "unlocks": "Débloque",
+    "categories": {
+      "progression": "Parcours",
+      "cumulative": "Jalons",
+      "skill": "Habileté",
+      "scoring": "Score",
+      "collection": "Collection",
+      "mastery": "Maîtrise",
+      "challenge": "Défi"
+    }
+  },
   "observatory": {
     "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. Trou noir correspond à tout Yaku qui marque.",
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
@@ -24,6 +289,15 @@
     "black_hole_orb": "Découvrez les 12 autres Orbes Célestes."
   },
   "decreeUnlocks": {
+    "stage_master": "Atteignez l’Acte 4.",
+    "flower_pot": "Atteignez l’Acte 8.",
+    "satellite": "Possédez 400 pièces d’or dans une même partie.",
+    "swift_andy": "Gagnez une partie en dépensant au plus 48 tours. Les repioches gratuites ne comptent pas.",
+    "lucky_sixes": "Marquez 10 000 points en un seul coup.",
+    "the_idol": "Marquez 1 000 000 points en un seul coup.",
+    "stuntman": "Marquez 100 000 000 points en un seul coup.",
+    "cartomancer": "Découvrez tous les Sceaux du Destin.",
+    "astronomer": "Découvrez tous les Orbes Célestes.",
     "decree-blueprint": "Remportez une partie.",
     "decree-brainstorm": "Remportez une partie avec au moins cinq Décrets.",
     "decree-heavenly-ordinance": "Marquez un Yakuman.",
@@ -563,6 +837,42 @@
       "mythic": "Ordonnance Céleste"
     },
     "items": {
+      "stage_master": {
+        "name": "Maître de Scène",
+        "description": "+25 Points et +1 Mult par Acte terminé."
+      },
+      "flower_pot": {
+        "name": "Pot de Fleurs",
+        "description": "×3 Mult tant que vous possédez les quatre Fleurs différentes."
+      },
+      "satellite": {
+        "name": "Satellite",
+        "description": "+1 Or par famille d’Orbes au-dessus du niveau 1 à la fin de chaque manche gagnée."
+      },
+      "swift_andy": {
+        "name": "Andy l’Agile",
+        "description": "+2 utilisations gratuites de REPIOCHER par manche ; −2 à la taille du chevalet."
+      },
+      "lucky_sixes": {
+        "name": "Six Porte-Bonheur",
+        "description": "+6 Mult par tuile numérotée 6 jouée. Les tuiles de Pierre ne comptent pas."
+      },
+      "the_idol": {
+        "name": "L’Idole",
+        "description": "×3 Mult si vous jouez au moins deux tuiles et qu’elles portent toutes la même couleur et le même rang imprimés. Les tuiles de Pierre annulent la condition ; les tuiles Joker conservent leur identité imprimée."
+      },
+      "stuntman": {
+        "name": "Cascadeur",
+        "description": "+250 Points ; −3 à la taille du chevalet."
+      },
+      "cartomancer": {
+        "name": "Cartomancien",
+        "description": "Ajoute une offre gratuite d’un Sceau du Destin à l’entrée dans la Maison de Thé. Relancer la boutique ne renouvelle pas cette offre."
+      },
+      "astronomer": {
+        "name": "Astronome",
+        "description": "Ajoute une offre gratuite d’un Orbe Céleste à l’entrée dans la Maison de Thé. Relancer la boutique ne renouvelle pas cette offre."
+      },
       "decree-half-suited": {
         "name": "Demi-Couleur",
         "description": "+20 Points"
@@ -1225,6 +1535,23 @@
       }
     }
   },
+  "codexFlora": {
+    "empowerment": "Chaque Fleur conservée renforce aussi les récompenses numériques des Décrets de 10 %. Les bonus de collection comptent les types distincts actuellement détenus, pas toutes les Fleurs déjà recueillies.",
+    "awakeningLifecycle": "Le déblocage de la refloraison persiste entre les parties. Le premier exemplaire est ordinaire ; une fois la refloraison débloquée, un doublon éveille cette Fleur pour la partie. Les doublons suivants ne cumulent ni pouvoirs ni emplacements. Une nouvelle partie réinitialise les éveils, pas le déblocage.",
+    "chrysanthemumSet": "Avec les quatre Fleurs, le facteur éveillé passe à ×{{factor}} par groupe caché. Les paires et les tuiles isolées n’ajoutent aucun palier.",
+    "drought": "La Sécheresse suspend les pouvoirs des Fleurs, y compris les éveils et le renforcement des Décrets, sauf si un Jardin éternel actif les protège. Elle ne supprime ni Fleurs, ni éveils acquis, ni emplacements de collection.",
+    "distinction": "Les Fleurs s’éveillent ; les Saisons, non. Une Saison est normale ou corrompue. Les tuiles bonus piochées sont révélées puis remplacées automatiquement, sans dépenser de Tour.",
+    "corruption": "À partir de l’Acte 2, une Saison peut être corrompue au lieu d’accorder son effet normal. Le Salon fantôme autorise la corruption dès l’Acte 1. Les Saisons corrompues ne durent que cette manche ; ce ne sont pas des Saisons éveillées.",
+    "interactionsTitle": "Interactions entre Fleurs et Saisons",
+    "interactionsIntro": "Ces combinaisons exigent que le pouvoir de la Fleur et la Saison normale soient actifs ensemble. Aucun éveil n’est nécessaire. Ouvrez une association pour consulter sa recette facultative ; un simple aperçu n’accorde rien.",
+    "orchidSpring": "Piocher un Vent ou un Dragon avec Orchidée et Printemps actifs donne une pioche supplémentaire dans le Mur mort. Ces pioches ne s’enchaînent pas et un Mur mort vide ne crée aucune tuile. Les tuiles supplémentaires peuvent dépasser temporairement la capacité du chevalet.",
+    "bambooSummer": "Jouez au moins quatre terminales physiques (uns ou neufs de couleur) avec Bambou et Été actifs. Les tuiles réservées par Été retournent au mur actif et les Étés suivants ne peuvent plus le réduire pendant cette manche. Le bonus de score reste actif.",
+    "plumAutumn": "Chaque séquence physique marquée peut ramener la tuile correspondante la plus récente de la rivière si la manche continue. Seules les tuiles déjà présentes avant le coup comptent. Chacune est récupérée une fois, jamais copiée ; les faces virtuelles ou substituées ne comptent pas.",
+    "chrysanthemumWinter": "Avec Chrysanthème actif, les coups cachés ignorent la pénalité d’Hiver tout en conservant sa règle de séquences sautant un rang. Les coups ouverts subissent toujours la pénalité. La Sécheresse bloque cette protection sauf si la Fleur est protégée.",
+    "catalystsTitle": "Payer avec une Fleur",
+    "catalystsIntro": "Certaines offres directes de Décrets de la Maison de thé acceptent une Fleur à la place de l’Or. Choisissez précisément une Fleur détenue et confirmez : ce choix est facultatif, jamais automatique.",
+    "catalystsCost": "Perdre la Fleur réduit aussi ses bonus de collection. L’achat est bloqué si les emplacements restants ne suffisent pas. La recueillir à nouveau restaure son éveil pour cette partie. Succession Yakuman exige toujours deux Fleurs : en sacrifier une nécessite donc d’en détenir au moins trois avant l’achat."
+  },
   "flora": {
     "mutations": {
       "locked": "Réunissez les quatre types de Fleurs en une partie pour débloquer la refloraison. Puis piochez à nouveau une Fleur possédée pour l’éveiller.",
@@ -1820,6 +2147,7 @@
     "effect": "Effet",
     "voidCost": "Coût du vide",
     "timesUsed": "Fois utilisé",
+    "stakeVictory": "Victoire au {{stake}}",
     "runsWon": "Parties gagnées",
     "unlock": "Déblocage :",
     "title": "Archive des Mains",
@@ -2583,6 +2911,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "Mur Cramoisi",
+        "theme": "Dragon",
+        "description": "La laque cramoisie et les dragons dorés favorisent une stratégie axée sur les Dragons, avec moins de place pour les Décrets.",
+        "unlock": "Gagnez au Niveau Rouge ou supérieur",
+        "modifiers": {
+          "0": "Les Dragons de départ portent des Marques de Mult (+4 Mult au décompte)",
+          "1": "−1 emplacement de Décret au départ"
+        }
+      },
+      "obsidian_wall": {
+        "name": "Mur d'Obsidienne",
+        "theme": "Vent",
+        "description": "La pierre sombre et les vents sculptés argentés récompensent une stratégie axée sur les Vents, avec moins de place pour les Décrets.",
+        "unlock": "Gagnez au Niveau Noir ou supérieur",
+        "modifiers": {
+          "0": "Les Vents de départ portent des Marques de Bonus (+30 Points au décompte)",
+          "1": "−1 emplacement de Décret au départ"
+        }
+      },
       "green_felt": {
         "theme": "Classique",
         "unlock": "Disponible dès le départ",

@@ -206,12 +206,19 @@ export interface TeaHouseOffering {
   isLocked: boolean
 }
 
+export interface TeaHouseGuaranteedItem {
+  itemType: string
+  minDecreeRarity?: DecreeRarity
+  /** Price this exact generated reward, regardless of preceding failed offers. */
+  free?: boolean
+}
+
 export interface TeaHouseVisitModifiers {
   flowerCount?: number
   discountPercentage?: number
   freeRerolls?: number
   guaranteedItemTypes?: string[]
-  guaranteedItems?: { itemType: string; minDecreeRarity?: DecreeRarity }[]
+  guaranteedItems?: TeaHouseGuaranteedItem[]
   decreeEdition?: EditionType
   decreeEditions?: EditionType[]
 }
@@ -768,13 +775,13 @@ export class TeaHouseSystem {
   }
 
   private applyGuaranteedItems(
-    items: { itemType: string; minDecreeRarity?: DecreeRarity }[],
+    items: TeaHouseGuaranteedItem[],
     ownedDecreeIds: string[]
   ): void {
     let itemSlot = 0
     let packSlot = 0
 
-    for (const { itemType, minDecreeRarity } of items) {
+    for (const { itemType, minDecreeRarity, free } of items) {
       if (itemType === 'BlessingPack') {
         const index = packSlot++
         const pack =
@@ -804,7 +811,13 @@ export class TeaHouseSystem {
         offering = this.generateTileOffering(itemSlot)
       }
 
-      if (offering) this.itemOfferings[itemSlot++] = offering
+      if (offering) {
+        if (free) {
+          offering.finalCost = 0
+          offering.sellValue = 0
+        }
+        this.itemOfferings[itemSlot++] = offering
+      }
     }
   }
 
@@ -832,6 +845,8 @@ export class TeaHouseSystem {
       (offering, slot) => offering.itemType === 'Decree' && !usedSlots.has(slot)
     )
     if (index === -1) {
+      // Item guarantees may fill or overflow the shelf. Append rather than
+      // replacing a promised Seal/Orb when an edition needs a new Decree.
       index = this.itemOfferings.length
       const decreeOffering = this.generateDecreeOffering(index, ownedDecreeIds)
       if (!decreeOffering) return

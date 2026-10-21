@@ -9,6 +9,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { getWonStakeTiers } from '../utils/stakeMastery'
 import {
   ArchiveCategory,
   createArchiveKey,
@@ -54,6 +55,7 @@ export interface ArchiveState {
   unlockItem: (category: ArchiveCategory, itemId: string) => boolean
   incrementUsage: (category: ArchiveCategory, itemId: string) => void
   incrementWins: (itemKeys: string[]) => void
+  recordStakeVictory: (itemKeys: string[], tier: number) => void
   addToCurrentRun: (category: ArchiveCategory, itemId: string) => void
   clearCurrentRun: () => void
 
@@ -302,6 +304,29 @@ export const useArchiveStore = create<ArchiveState>()(
             },
           })
         }
+      },
+
+      recordStakeVictory: (itemKeys, tier) => {
+        if (!Number.isInteger(tier) || tier < 1 || tier > 8) return
+        const entries = { ...get().entries }
+        let changed = false
+        for (const key of new Set(itemKeys)) {
+          const entry = entries[key]
+          if (
+            !entry ||
+            !['decrees', 'walls'].includes(entry.category) ||
+            !isActiveArchiveItem(entry.category, entry.itemId)
+          )
+            continue
+          const tiers = getWonStakeTiers(entry)
+          if (tiers.includes(tier)) continue
+          entries[key] = {
+            ...entry,
+            wonStakeTiers: [...tiers, tier].sort((a, b) => a - b),
+          }
+          changed = true
+        }
+        if (changed) set({ entries })
       },
 
       addToCurrentRun: (category: ArchiveCategory, itemId: string): void => {

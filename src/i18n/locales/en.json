@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "The Core Concept",
+    "titleTilesOverview": "Understanding Tiles",
+    "titleSuits": "The Three Numbered Suits",
+    "titleTerminals": "Terminals vs Simples",
+    "titleWinds": "Wind Tiles",
+    "titleDragons": "Dragon Tiles",
+    "titleBonus": "Bonus Tiles: Flowers & Seasons",
+    "titleMeldsOverview": "What is a Meld?",
+    "titleSequences": "Sequences (順子 / Shuntsu)",
+    "titleTriplets": "Triplets (刻子 / Koutsu)",
+    "titleQuads": "Quads (槓子 / Kantsu)",
+    "titlePairs": "Pairs (雀頭 / Jantou)",
+    "titleWinningHand": "The Winning Hand Structure",
+    "titleSpecialHands": "Special Winning Forms",
+    "titleYakuIntro": "Yaku — The Scoring Multipliers",
+    "titleYakuExamples": "Common Yaku Examples",
+    "titleActsRounds": "Acts and Rounds",
+    "titleBossMandates": "Boss Mandates",
+    "titleDecreesIntro": "What are Decrees?",
+    "titleDecreeCategories": "Decree Categories",
+    "titleDecreeRarities": "Decree Rarities",
+    "titleDecreeSlots": "Managing Decree Slots",
+    "titleHierarchy": "The Five-Layer Hierarchy",
+    "titleTips": "Tips for Success",
+    "titleMoreTips": "Advanced Tips",
+    "category": "Category",
+    "types": "Types",
+    "count": "Count",
+    "numberedSuits": "Numbered Suits",
+    "numberedComposition": "3 suits × 9 ranks × 4 copies",
+    "windComposition": "4 winds × 4 copies",
+    "dragonComposition": "3 dragons × 4 copies",
+    "bonusTiles": "Bonus Tiles",
+    "bonusComposition": "4 flowers + 4 seasons",
+    "tileSet": "The standard tile set has 144 tiles. Your chosen Wall and run effects can change its composition:",
+    "terminalRanks": "Tiles ranked <strong>1 or 9</strong>",
+    "simpleRanks": "Tiles ranked <strong>2 through 8</strong>",
+    "tileValue": "Worth <strong>{{points}} points</strong> each when grouped",
+    "windOrder": "The Winds are listed in East, South, West, North order. All four use the same base point values.",
+    "windPoints": "Winds are Honor tiles worth {{points}} points each, or {{groupPoints}} per tile inside a group.",
+    "honorGroups": "Honors cannot form numbered sequences. Identical Honors can form pairs, triplets or quads.",
+    "dragonPoints": "Dragons are Honor tiles worth {{points}} points each. Every scoring Dragon adds +{{mult}} Mult, or +{{groupMult}} Mult inside a group. They cannot form numbered sequences.",
+    "flowerDuration": "Persist across your entire run",
+    "seasonDuration": "Active only for the current round",
+    "importantRules": "Important rules:",
+    "quadMechanics": "Quad mechanics:",
+    "quadBonus": "Adds +{{points}} group points and +{{mult}} pattern Mult, before tile effects.",
+    "quadRefill": "Play a quad as part of your selected hand. The rack refills after the play; there is no separate quad declaration action.",
+    "winningFormula": "<melds>4 Melds</melds> + <pair>1 Pair</pair> = <tiles>14 Tiles before quads</tiles>",
+    "winningExample": "The four melds can be sequences, triplets or quads. Each quad adds one tile to the usual 14-tile structure. Here is an example without quads:",
+    "sevenPairs": "Exactly <strong>7 different pairs</strong>: 14 tiles, with no triplets or sequences needed.",
+    "thirteenOrphans": "One of each terminal and Honor (13 unique tiles), plus one duplicate: a 14-tile <strong>Yakuman</strong> hand.",
+    "wallSize": "The wall supplies replacement tiles. Its remaining size depends on your Wall, starting rack and effects; watch the remaining tiles counter.",
+    "yakuTiers": "The current catalog has {{count}} Yaku in four tiers. These are their base multipliers, before upgrades and effects:",
+    "tier": "Tier",
+    "tierNumber": "Tier {{tier}}",
+    "yakumanTier": "Tier {{tier}} (Yakuman)",
+    "multiplierRange": "Base multiplier range",
+    "example": "Example",
+    "allSimples": "Contains only numbered tiles 2–8, with no terminals or Honors.",
+    "allTriplets": "All four melds are triplets or quads, with one pair and no sequences.",
+    "fullFlush": "Contains only one numbered suit, with no Honors.",
+    "roundType": "Round Type",
+    "japanese": "Japanese",
+    "targetMultiplier": "Target Multiplier",
+    "baseTarget": "×{{mult}} (base target)",
+    "structural": "Structural (形法令)",
+    "structuralHelp": "Alter what makes a legal hand",
+    "tileIdentity": "Tile Identity (变牌法令)",
+    "tileIdentityHelp": "Change how tiles are classified",
+    "yakuDoctrine": "Yaku Doctrine (役变法令)",
+    "yakuDoctrineHelp": "Modify Yaku rules",
+    "entropy": "Entropy & Fate (天运法令)",
+    "entropyHelp": "Alter draws and tempo",
+    "scaling": "Scaling (修行法令)",
+    "scalingHelp": "Reward specific playstyles",
+    "rarity": "Rarity",
+    "name": "Name",
+    "powerLevel": "Power Level",
+    "localPower": "Small bonuses",
+    "regionalPower": "Moderate effects",
+    "imperialPower": "Strong rule-bending",
+    "heavenlyPower": "Run-defining power",
+    "raritySources": "Rarity affects shop availability and price. Heavenly Ordinances come from special sources, not ordinary shop offers. Build synergies and check each offer's actual price.",
+    "slotBaseline": "The default is 5 Decree slots, but your chosen table and run effects can change that. Extra slots can come from:",
+    "heaven": "Heaven (Seasons)",
+    "court": "Court (Decrees)",
+    "nature": "Nature (Flowers)",
+    "table": "Table (Tiles)",
+    "grammar": "Grammar (Yaku)",
+    "hierarchyOverride": "When rules conflict, higher-authority rules take precedence over lower-authority rules. Check each effect's specific conditions.",
+    "tipScoreTitle": "Make useful plays",
+    "tipScore": "Compare the score preview for groups of up to {{max}} tiles, or a complete Mahjong hand. Spend Turns on progress toward the target instead of waiting only for a perfect hand.",
+    "tipSynergyTitle": "Build synergies",
+    "tipSynergy": "Decrees that work together can be stronger than powerful standalone Decrees.",
+    "tipEconomyTitle": "Balance economy",
+    "tipEconomy": "Saving Gold earns interest on a clear, but spend when an upgrade helps you reach the next target. Check actual prices and Sell values.",
+    "tipFlowersTitle": "Collect flowers",
+    "tipFlowers": "Flowers persist for the run. Two distinct Flowers grant a Decree slot; collecting all four strengthens their effects.",
+    "tipYakuTitle": "Plan for Yaku",
+    "tipYaku": "Choose Yaku that fit your rack and Decrees. A complete Mahjong hand can combine Yaku for larger scores.",
+    "tipEfficiencyTitle": "Tile efficiency",
+    "tipEfficiency": "Keep tiles that can complete several groups. Use REDRAW to replace isolated tiles, allowing for its Turn cost and any free redraws.",
+    "tipWallTitle": "Count remaining tiles",
+    "tipWall": "Check the river and remaining wall before chasing a specific tile. Redrawn tiles stay in the river for the rest of the round.",
+    "tipMandateTitle": "Read mandates early",
+    "tipMandate": "Read the upcoming Boss Mandate and prepare a build that can score under its restriction.",
+    "congratulations": "<strong>Congratulations!</strong> You now understand the fundamentals of Tensho.",
+    "farewell": "May the tiles favor you on your heavenly ascent!"
+  },
+  "codexEconomy": {
+    "payout": "Base clear rewards are 3 Gold for Small, 5 for Large and 10 for Boss rounds, not based on excess score. Stakes can remove the Small reward; Decrees and Omens can change the final payout.",
+    "interest": "Interest uses Gold held before the clear payout: 1 per 5, capped at 5 by default. Charters and Omens can raise the cap; some Omens block interest. Defeat pays no interest.",
+    "sale": "Inspect a Decree’s Sell button for its actual value. Flower-paid and free reward Decrees can sell for 0 Gold; Eternal Decrees cannot be sold. Selling removes its effects and frees the slot it used.",
+    "prices": "Use each offer’s displayed price and the current Reroll cost. Discounts, editions, Charters and other effects can change prices. Rerolls do not refresh purchased Charters or the free Cartomancer offer."
+  },
+  "achievements": {
+    "title": "Heavenly Accolades",
+    "shortTitle": "Accolades",
+    "progress": "Progress",
+    "earned": "Achievement unlocked",
+    "unlocks": "Unlocks",
+    "categories": {
+      "progression": "Journey",
+      "cumulative": "Milestones",
+      "skill": "Skill",
+      "scoring": "Scoring",
+      "collection": "Collection",
+      "mastery": "Mastery",
+      "challenge": "Challenge"
+    },
+    "firstSteps": {
+      "name": "First Steps",
+      "description": "Reach Act 4."
+    },
+    "ascending": {
+      "name": "Ascending",
+      "description": "Reach Act 8."
+    },
+    "victory": {
+      "name": "Victory",
+      "description": "Win a run."
+    },
+    "redPath": {
+      "name": "The Red Path",
+      "description": "Win a run on Red Stake or higher."
+    },
+    "blackPath": {
+      "name": "The Black Path",
+      "description": "Win a run on Black Stake or higher."
+    },
+    "goldenPath": {
+      "name": "The Golden Path",
+      "description": "Win a run on Gold Stake."
+    },
+    "tileMaster": {
+      "name": "Tile Master",
+      "description": "Play 2,500 tiles across your runs."
+    },
+    "discardArtist": {
+      "name": "Discard Artist",
+      "description": "Redraw 2,500 tiles across your runs."
+    },
+    "fortuneBuilt": {
+      "name": "Fortune Built",
+      "description": "Hold 400 Gold in a single run."
+    },
+    "wildFlush": {
+      "name": "Wild Flush",
+      "description": "Score a Half Flush made entirely of Wild tiles."
+    },
+    "speedRun": {
+      "name": "Speed Run",
+      "description": "Win a run spending 48 Turns or fewer. Free REDRAWs do not count."
+    },
+    "charterCollector": {
+      "name": "Charter Collector",
+      "description": "Purchase 5 Charters in one run by the end of Act 5."
+    },
+    "shattered": {
+      "name": "Shattered",
+      "description": "Break 2 Glass tiles in a single play."
+    },
+    "royalHand": {
+      "name": "Royal Hand",
+      "description": "Score a Yakuman."
+    },
+    "retrograde": {
+      "name": "Retrograde",
+      "description": "Raise a Yaku to level 10."
+    },
+    "keeperOfWinds": {
+      "name": "Keeper of Winds",
+      "description": "Score 10 Wind Yaku in a single run."
+    },
+    "masterOfSilence": {
+      "name": "Master of Silence",
+      "description": "Win 3 rounds without discarding any Honor tiles."
+    },
+    "sealBearer": {
+      "name": "Seal Bearer",
+      "description": "Use 10 Fate Seals."
+    },
+    "score10k": {
+      "name": "Ten Thousand",
+      "description": "Score 10,000 points in a single play."
+    },
+    "score1m": {
+      "name": "One Million",
+      "description": "Score 1,000,000 points in a single play."
+    },
+    "score100m": {
+      "name": "One Hundred Million",
+      "description": "Score 100,000,000 points in a single play."
+    },
+    "sealScholar": {
+      "name": "Seal Scholar",
+      "description": "Discover all Fate Seals."
+    },
+    "starGazer": {
+      "name": "Star Gazer",
+      "description": "Discover all Celestial Orbs."
+    },
+    "voidWalker": {
+      "name": "Void Walker",
+      "description": "Discover all Void Scripts."
+    },
+    "charterComplete": {
+      "name": "Charter Complete",
+      "description": "Discover all Charters."
+    },
+    "archiveComplete": {
+      "name": "Archive Complete",
+      "description": "Discover the entire Archive."
+    },
+    "archiveCompletePlus": {
+      "name": "Archive Complete +",
+      "description": "Win on Gold Stake with every Wall."
+    },
+    "archiveCompletePlusPlus": {
+      "name": "Archive Complete ++",
+      "description": "Earn a Gold sticker on every Decree."
+    },
+    "ruleBender": {
+      "name": "Rule Bender",
+      "description": "Complete a Challenge run."
+    },
+    "ruleBreaker": {
+      "name": "Rule Breaker",
+      "description": "Complete every Challenge."
+    },
+    "deckMinimalist": {
+      "name": "Wall Minimalist",
+      "description": "Reduce your Wall to 20 tiles or fewer."
+    },
+    "deckMaximalist": {
+      "name": "Wall Maximalist",
+      "description": "Grow your Wall to at least 80 tiles."
+    },
+    "purist": {
+      "name": "Purist",
+      "description": "Win a run without rerolling the shop."
+    }
+  },
   "observatory": {
     "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. Black Hole matches any scored Yaku.",
     "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."
@@ -24,6 +289,15 @@
     "black_hole_orb": "Discover all 12 other Celestial Orbs."
   },
   "decreeUnlocks": {
+    "stage_master": "Reach Act 4.",
+    "flower_pot": "Reach Act 8.",
+    "satellite": "Hold 400 Gold in a single run.",
+    "swift_andy": "Win a run spending 48 Turns or fewer. Free REDRAWs do not count.",
+    "lucky_sixes": "Score 10,000 points in a single play.",
+    "the_idol": "Score 1,000,000 points in a single play.",
+    "stuntman": "Score 100,000,000 points in a single play.",
+    "cartomancer": "Discover all Fate Seals.",
+    "astronomer": "Discover all Celestial Orbs.",
     "decree-blueprint": "Win a run.",
     "decree-brainstorm": "Win a run with at least five Decrees owned.",
     "decree-heavenly-ordinance": "Score a Yakuman.",
@@ -559,6 +833,42 @@
       "mythic": "Heavenly Ordinance"
     },
     "items": {
+      "stage_master": {
+        "name": "Stage Master",
+        "description": "+25 Points and +1 Mult per completed Act."
+      },
+      "flower_pot": {
+        "name": "Flower Pot",
+        "description": "×3 Mult while you own all four different Flowers."
+      },
+      "satellite": {
+        "name": "Satellite",
+        "description": "+1 Gold per Orb family above level 1 at the end of each won round."
+      },
+      "swift_andy": {
+        "name": "Swift Andy",
+        "description": "+2 free REDRAWs each round; −2 rack size."
+      },
+      "lucky_sixes": {
+        "name": "Lucky Sixes",
+        "description": "+6 Mult per played numbered 6. Stones do not count."
+      },
+      "the_idol": {
+        "name": "The Idol",
+        "description": "×3 Mult when at least two played tiles all have the same printed suit and rank. Stones break the condition; Wild tiles keep their printed identity."
+      },
+      "stuntman": {
+        "name": "Stuntman",
+        "description": "+250 Points; −3 rack size."
+      },
+      "cartomancer": {
+        "name": "Cartomancer",
+        "description": "Adds one free Fate Seal offer when you enter the Tea House. Rerolls do not refresh it."
+      },
+      "astronomer": {
+        "name": "Astronomer",
+        "description": "Adds one free Celestial Orb offer when you enter the Tea House. Rerolls do not refresh it."
+      },
       "decree-half-suited": {
         "name": "Half Suited",
         "description": "+20 Points"
@@ -1220,6 +1530,23 @@
         "description": "Scoring the same yaku type in consecutive rounds compounds multipliers."
       }
     }
+  },
+  "codexFlora": {
+    "empowerment": "Each held Flower also empowers numerical Decree rewards by 10%. Set bonuses use distinct Flowers currently held, not every Flower ever collected.",
+    "awakeningLifecycle": "Rebloom eligibility carries into future runs. The first copy is ordinary; once eligible, a duplicate awakens that Flower for this run. More duplicates do not stack powers or add slots. A new run resets awakenings, not eligibility.",
+    "chrysanthemumSet": "With all four Flowers held, the awakened factor becomes ×{{factor}} per concealed meld instead. Pairs and loose tiles add no steps.",
+    "drought": "Drought suspends Flower powers, including awakenings and Decree empowerment, unless an active Eternal Garden protects them. It does not delete Flowers, earned awakenings or collection slots.",
+    "distinction": "Flowers awaken; Seasons do not. A Season is either normal or corrupted. Drawn bonus tiles are revealed and replaced automatically, without spending a Turn.",
+    "corruption": "From Act 2, a Season may be corrupted instead of granting its normal effect. Ghost Parlor permits corruption from Act 1. Corrupted Seasons last only this round; they are not awakened Seasons.",
+    "interactionsTitle": "Flower–Season interactions",
+    "interactionsIntro": "These combinations need the Flower's powers and the normal Season to be active together. No awakening is required. Open a pairing for its optional recipe; merely previewing a play earns nothing.",
+    "orchidSpring": "Drawing a Wind or Dragon while Orchid and Spring are active earns one extra Dead Wall draw. Extra draws do not chain, and an empty Dead Wall creates no tile. Extra tiles may temporarily exceed rack capacity.",
+    "bambooSummer": "Play at least four physical terminal tiles (suited 1s or 9s) with Bamboo and Summer active. Summer-reserved tiles return to the live wall, and later Summers cannot shrink it again this round. The score bonus remains.",
+    "plumAutumn": "Each scored physical sequence can return the most recent matching tile from the river, if the round continues. Only tiles already in the river before the play qualify. Each is recovered once, never copied; virtual or substituted faces do not qualify.",
+    "chrysanthemumWinter": "With Chrysanthemum active, concealed plays ignore Winter's score penalty while keeping its one-rank-gap sequence rule. Open plays still pay the penalty. Drought blocks this protection unless the Flower is protected.",
+    "catalystsTitle": "Paying with a Flower",
+    "catalystsIntro": "Selected direct Decree offers in the Tea House allow a Flower instead of Gold. Choose the exact owned Flower and confirm; this is optional and never an automatic sacrifice.",
+    "catalystsCost": "Losing the Flower also reduces its set bonuses. The purchase is blocked if your remaining slots cannot hold the build. Recollecting it restores its earned awakening for this run. Yakuman Succession still needs two held Flowers, so paying with one requires at least three beforehand."
   },
   "flora": {
     "mutations": {
@@ -2299,6 +2626,7 @@
     "effect": "Effect",
     "voidCost": "Void cost",
     "timesUsed": "Times Used",
+    "stakeVictory": "Victory on {{stake}}",
     "runsWon": "Runs Won",
     "unlock": "Unlock:",
     "undiscovered": "Undiscovered",
@@ -2579,6 +2907,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "Crimson Wall",
+        "theme": "Dragon",
+        "description": "Crimson lacquer and golden dragons favor a Dragon-led strategy, with less room for Decrees.",
+        "unlock": "Win on Red Stake or higher",
+        "modifiers": {
+          "0": "Starting Dragons have Mult Marks (+4 Mult when scored)",
+          "1": "−1 starting Decree slot"
+        }
+      },
+      "obsidian_wall": {
+        "name": "Obsidian Wall",
+        "theme": "Wind",
+        "description": "Dark stone and silver wind carvings reward a Wind-led strategy, with less room for Decrees.",
+        "unlock": "Win on Black Stake or higher",
+        "modifiers": {
+          "0": "Starting Winds have Bonus Marks (+30 Points when scored)",
+          "1": "−1 starting Decree slot"
+        }
+      },
       "green_felt": {
         "theme": "Classic",
         "unlock": "Available from the start",

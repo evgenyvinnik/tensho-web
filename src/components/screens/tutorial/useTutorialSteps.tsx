@@ -19,9 +19,12 @@ import {
 import {
   DRAGON_GROUP_MULT,
   DRAGON_MULT,
+  GROUP_MULT,
   MAHJONG_PATTERN_MULT,
   TAUGHT_PATTERNS,
 } from '../../../rules/PlayPattern'
+import { ALL_YAKU, CHINITSU, TANYAO, TOITOI } from '../../../rules/YakuDetector'
+import { ROUND_TYPE_DEFINITIONS } from '../../../config/mandateDefinitions'
 import {
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
@@ -35,7 +38,9 @@ import {
   DataTable,
   TileLabel,
 } from './TutorialComponents'
-import { ControlIcon } from '../../ui/ControlIcon'
+import { PavilionIcon } from '../../ui/PavilionIcon'
+import { FloraCodex, FLORA_CODEX_SECTIONS } from './FloraCodex'
+import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -71,7 +76,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'welcome',
         category: 'Introduction',
-        title: t('tutorial.welcome.title', 'Welcome to Tensho!'),
+        title: t('tutorial.welcome.title'),
         content: (
           <div className="space-y-3">
             <p>
@@ -108,7 +113,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'game-concept',
         category: 'Introduction',
-        title: t('tutorial.concept.title', 'The Core Concept'),
+        title: t('codexReference.titleConcept'),
         content: (
           <div className="space-y-3">
             <p>
@@ -140,21 +145,33 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'tiles-overview',
         category: 'Tiles',
-        title: t('tutorial.tilesOverview.title', 'Understanding Tiles'),
+        title: t('codexReference.titleTilesOverview'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.tiles_overview.p1">
-                The game uses <Highlight>144 tiles</Highlight> in total:
-              </Trans>
-            </p>
+            <p>{t('codexReference.tileSet')}</p>
             <DataTable
-              headers={['Category', 'Types', 'Count']}
+              headers={[
+                t('codexReference.category'),
+                t('codexReference.types'),
+                t('codexReference.count'),
+              ]}
               rows={[
-                ['Numbered Suits', '3 suits × 9 ranks × 4 copies', '108'],
-                ['Wind Tiles', '4 winds × 4 copies', '16'],
-                ['Dragon Tiles', '3 dragons × 4 copies', '12'],
-                ['Bonus Tiles', '4 flowers + 4 seasons', '8'],
+                [
+                  t('codexReference.numberedSuits'),
+                  t('codexReference.numberedComposition'),
+                  '108',
+                ],
+                [t('tiles.winds'), t('codexReference.windComposition'), '16'],
+                [
+                  t('tiles.dragons'),
+                  t('codexReference.dragonComposition'),
+                  '12',
+                ],
+                [
+                  t('codexReference.bonusTiles'),
+                  t('codexReference.bonusComposition'),
+                  '8',
+                ],
               ]}
             />
             <InfoBox type="info">
@@ -169,7 +186,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'numbered-suits',
         category: 'Tiles',
-        title: t('tutorial.suits.title', 'The Three Numbered Suits'),
+        title: t('codexReference.titleSuits'),
         content: (
           <div className="space-y-3">
             <p>
@@ -218,7 +235,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'terminals-simples',
         category: 'Tiles',
-        title: t('tutorial.terminals.title', 'Terminals vs Simples'),
+        title: t('codexReference.titleTerminals'),
         content: (
           <div className="space-y-3">
             <p>
@@ -229,24 +246,42 @@ export function useTutorialSteps(): TutorialStep[] {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg border border-[var(--color-golden-yellow)]">
                 <p className="font-bold text-[var(--color-golden-yellow)] mb-2">
-                  Terminals (端牌)
+                  {t('tutorial.points.terminals')}
                 </p>
                 <p className="text-sm">
-                  Tiles ranked <Highlight>1 or 9</Highlight>
+                  <Trans
+                    i18nKey="codexReference.terminalRanks"
+                    components={{ strong: <Highlight>{null}</Highlight> }}
+                  />
                 </p>
                 <p className="text-sm mt-1">
-                  Worth <Highlight color="orange">10 points</Highlight> each
+                  <Trans
+                    i18nKey="codexReference.tileValue"
+                    values={{ points: 10 }}
+                    components={{
+                      strong: <Highlight color="orange">{null}</Highlight>,
+                    }}
+                  />
                 </p>
               </div>
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg border border-[var(--color-metallic-gold)]">
                 <p className="font-bold text-[var(--color-metallic-gold)] mb-2">
-                  Simples (中張牌)
+                  {t('tutorial.points.simples')}
                 </p>
                 <p className="text-sm">
-                  Tiles ranked <Highlight>2 through 8</Highlight>
+                  <Trans
+                    i18nKey="codexReference.simpleRanks"
+                    components={{ strong: <Highlight>{null}</Highlight> }}
+                  />
                 </p>
                 <p className="text-sm mt-1">
-                  Worth <Highlight color="orange">5 points</Highlight> each
+                  <Trans
+                    i18nKey="codexReference.tileValue"
+                    values={{ points: 5 }}
+                    components={{
+                      strong: <Highlight color="orange">{null}</Highlight>,
+                    }}
+                  />
                 </p>
               </div>
             </div>
@@ -269,7 +304,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'wind-tiles',
         category: 'Tiles',
-        title: t('tutorial.winds.title', 'Wind Tiles'),
+        title: t('codexReference.titleWinds'),
         content: (
           <div className="space-y-3">
             <p>
@@ -279,35 +314,28 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div>
-                <Highlight color="orange">東 (East)</Highlight> — The most
-                prestigious wind
-              </div>
-              <div>
-                <Highlight color="orange">南 (South)</Highlight> — Second in
-                order
-              </div>
-              <div>
-                <Highlight color="orange">西 (West)</Highlight> — Third in order
-              </div>
-              <div>
-                <Highlight color="orange">北 (North)</Highlight> — Fourth in
-                order
-              </div>
+              {(['east', 'south', 'west', 'north'] as const).map(
+                (wind, index) => (
+                  <div key={wind}>
+                    <Highlight color="orange">
+                      <TileLabel
+                        suit={TileSuit.Wind}
+                        rank={index + 1}
+                        label={t(`tiles.${wind}`)}
+                      />
+                    </Highlight>
+                  </div>
+                )
+              )}
             </div>
+            <p>{t('codexReference.windOrder')}</p>
             <p>
-              <Trans i18nKey="tutorial.wind_tiles.p2">
-                Wind tiles are <Highlight>Honor tiles</Highlight> and are worth{' '}
-                <Highlight color="orange">50 points</Highlight> each, 100 inside
-                a group — the highest base value!
-              </Trans>
+              {t('codexReference.windPoints', {
+                points: WIND_TILE_POINTS,
+                groupPoints: WIND_GROUP_POINTS,
+              })}
             </p>
-            <InfoBox type="info">
-              <Trans i18nKey="tutorial.dragon_tiles.note1">
-                Winds cannot form sequences. They can only form triplets or
-                pairs.
-              </Trans>
-            </InfoBox>
+            <InfoBox type="info">{t('codexReference.honorGroups')}</InfoBox>
           </div>
         ),
         showTiles: [
@@ -320,7 +348,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'dragon-tiles',
         category: 'Tiles',
-        title: t('tutorial.dragons.title', 'Dragon Tiles'),
+        title: t('codexReference.titleDragons'),
         content: (
           <div className="space-y-3">
             <p>
@@ -349,12 +377,11 @@ export function useTutorialSteps(): TutorialStep[] {
               </p>
             </div>
             <p>
-              <Trans i18nKey="tutorial.dragon_tiles.p5">
-                Dragons are <Highlight>Honor tiles</Highlight> worth{' '}
-                <Highlight color="orange">15 points</Highlight>, and every
-                Dragon that scores adds +2 Mult, +4 inside a group. They cannot
-                form sequences.
-              </Trans>
+              {t('codexReference.dragonPoints', {
+                points: DRAGON_TILE_POINTS,
+                mult: DRAGON_MULT,
+                groupMult: DRAGON_GROUP_MULT,
+              })}
             </p>
           </div>
         ),
@@ -367,7 +394,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'bonus-tiles',
         category: 'Tiles',
-        title: t('tutorial.bonus.title', 'Bonus Tiles: Flowers & Seasons'),
+        title: t('codexReference.titleBonus'),
         content: (
           <div className="space-y-3">
             <p>
@@ -379,20 +406,36 @@ export function useTutorialSteps(): TutorialStep[] {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg">
                 <p className="font-bold text-pink-400 mb-2">
-                  <TileLabel suit={TileSuit.Flower} rank={1} label="Flowers" />
+                  <TileLabel
+                    suit={TileSuit.Flower}
+                    rank={1}
+                    label={t('flora.flowers')}
+                  />
                 </p>
-                <p className="text-sm">Plum, Orchid, Chrysanthemum, Bamboo</p>
+                <p className="text-sm">
+                  {['plum', 'orchid', 'chrysanthemum', 'bamboo']
+                    .map((flower) => t(`flora.${flower}`))
+                    .join(' · ')}
+                </p>
                 <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
-                  Persist across your entire run
+                  {t('codexReference.flowerDuration')}
                 </p>
               </div>
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg">
                 <p className="font-bold text-cyan-400 mb-2">
-                  <TileLabel suit={TileSuit.Season} rank={3} label="Seasons" />
+                  <TileLabel
+                    suit={TileSuit.Season}
+                    rank={3}
+                    label={t('flora.seasons')}
+                  />
                 </p>
-                <p className="text-sm">Spring, Summer, Autumn, Winter</p>
+                <p className="text-sm">
+                  {['spring', 'summer', 'autumn', 'winter']
+                    .map((season) => t(`flora.${season}`))
+                    .join(' · ')}
+                </p>
                 <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
-                  Active only for the current round
+                  {t('codexReference.seasonDuration')}
                 </p>
               </div>
             </div>
@@ -409,7 +452,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'melds-overview',
         category: 'Hand Building',
-        title: t('tutorial.meldsOverview.title', 'What is a Meld?'),
+        title: t('codexReference.titleMeldsOverview'),
         content: (
           <div className="space-y-3">
             <p>
@@ -438,7 +481,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'sequences',
         category: 'Hand Building',
-        title: t('tutorial.sequences.title', 'Sequences (順子 / Shuntsu)'),
+        title: t('codexReference.titleSequences'),
         content: (
           <div className="space-y-3">
             <p>
@@ -469,7 +512,7 @@ export function useTutorialSteps(): TutorialStep[] {
               </li>
             </ul>
             <InfoBox type="warning">
-              <strong>Important rules:</strong>
+              <strong>{t('codexReference.importantRules')}</strong>
               <ul className="list-disc list-inside mt-1 text-sm">
                 <li>
                   <Trans i18nKey="tutorial.quads.li1">
@@ -502,7 +545,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'triplets',
         category: 'Hand Building',
-        title: t('tutorial.triplets.title', 'Triplets (刻子 / Koutsu)'),
+        title: t('codexReference.titleTriplets'),
         content: (
           <div className="space-y-3">
             <p>
@@ -546,7 +589,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'quads',
         category: 'Hand Building',
-        title: t('tutorial.quads.title', 'Quads (槓子 / Kantsu)'),
+        title: t('codexReference.titleQuads'),
         content: (
           <div className="space-y-3">
             <p>
@@ -562,24 +605,20 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <InfoBox type="info">
-              <strong>Quad mechanics:</strong>
+              <strong>{t('codexReference.quadMechanics')}</strong>
               <ul className="list-disc list-inside mt-1 text-sm">
                 <li>
-                  <Trans i18nKey="tutorial.winning_hand.li1">
-                    Worth <Highlight>+65 points</Highlight> — the most of any
-                    meld
-                  </Trans>
+                  {t('codexReference.quadBonus', {
+                    points: STRUCTURE_POINTS_BY_TYPE[MeldType.Quad],
+                    mult: GROUP_MULT.quad,
+                  })}
                 </li>
                 <li>
                   <Trans i18nKey="tutorial.winning_hand.li2">
                     Counts as a single meld despite having 4 tiles
                   </Trans>
                 </li>
-                <li>
-                  <Trans i18nKey="tutorial.winning_hand.li3">
-                    When declared, you draw a replacement tile
-                  </Trans>
-                </li>
+                <li>{t('codexReference.quadRefill')}</li>
               </ul>
             </InfoBox>
           </div>
@@ -594,7 +633,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'pairs',
         category: 'Hand Building',
-        title: t('tutorial.pairs.title', 'Pairs (雀頭 / Jantou)'),
+        title: t('codexReference.titlePairs'),
         content: (
           <div className="space-y-3">
             <p>
@@ -626,7 +665,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'winning-hand',
         category: 'Hand Building',
-        title: t('tutorial.winningHand.title', 'The Winning Hand Structure'),
+        title: t('codexReference.titleWinningHand'),
         content: (
           <div className="space-y-3">
             <p>
@@ -635,14 +674,16 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <Formula>
-              <Highlight>4 Melds</Highlight> +{' '}
-              <Highlight color="orange">1 Pair</Highlight> ={' '}
-              <Highlight color="green">14 Tiles</Highlight>
+              <Trans
+                i18nKey="codexReference.winningFormula"
+                components={{
+                  melds: <Highlight>{null}</Highlight>,
+                  pair: <Highlight color="orange">{null}</Highlight>,
+                  tiles: <Highlight color="green">{null}</Highlight>,
+                }}
+              />
             </Formula>
-            <p className="mt-3">
-              The 4 melds can be any combination of sequences, triplets, or
-              quads. Here's an example:
-            </p>
+            <p className="mt-3">{t('codexReference.winningExample')}</p>
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <Trans i18nKey="tutorial.gameplay_overview.li1">
@@ -676,7 +717,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'special-hands',
         category: 'Hand Building',
-        title: t('tutorial.specialHands.title', 'Special Winning Forms'),
+        title: t('codexReference.titleSpecialHands'),
         content: (
           <div className="space-y-3">
             <p>
@@ -688,21 +729,26 @@ export function useTutorialSteps(): TutorialStep[] {
             <div className="space-y-3">
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg border border-purple-400/50">
                 <p className="font-bold text-purple-400">
-                  Seven Pairs (七対子 / Chiitoitsu)
+                  {t('yaku.chiitoitsu')}
                 </p>
                 <p className="text-sm mt-1">
-                  Exactly <Highlight>7 different pairs</Highlight>. No melds,
-                  just pairs!
+                  <Trans
+                    i18nKey="codexReference.sevenPairs"
+                    components={{ strong: <Highlight>{null}</Highlight> }}
+                  />
                 </p>
               </div>
               <div className="p-3 bg-[var(--color-forest-green)] rounded-lg border border-red-400/50">
                 <p className="font-bold text-red-400">
-                  Thirteen Orphans (国士無双 / Kokushi)
+                  {t('yaku.kokushiMusou')}
                 </p>
                 <p className="text-sm mt-1">
-                  One of each terminal and honor (13 unique tiles) plus one
-                  duplicate. A legendary{' '}
-                  <Highlight color="orange">Yakuman</Highlight>!
+                  <Trans
+                    i18nKey="codexReference.thirteenOrphans"
+                    components={{
+                      strong: <Highlight color="orange">{null}</Highlight>,
+                    }}
+                  />
                 </p>
               </div>
             </div>
@@ -718,8 +764,8 @@ export function useTutorialSteps(): TutorialStep[] {
             <p>{t('tutorial.turns.p1', { turns: TURNS_PER_ROUND })}</p>
             <ul className="space-y-2">
               <li>
-                <Highlight color="orange">{t('gameplay.playHand')}</Highlight>{' '}
-                — {t('tutorial.turns.play', { max: MAX_TACTICAL_PLAY_TILES })}
+                <Highlight color="orange">{t('gameplay.playHand')}</Highlight> —{' '}
+                {t('tutorial.turns.play', { max: MAX_TACTICAL_PLAY_TILES })}
               </li>
               <li>
                 <Highlight>{t('gameplay.redraw')}</Highlight> —{' '}
@@ -738,13 +784,7 @@ export function useTutorialSteps(): TutorialStep[] {
         content: (
           <div className="space-y-3">
             <p>{t('tutorial.refill.p1')}</p>
-            <p>
-              <Trans i18nKey="tutorial.drawing.p2">
-                The <Highlight color="orange">wall</Highlight> starts with 70
-                drawable tiles (after the dead wall is reserved). Watch the
-                remaining tiles counter!
-              </Trans>
-            </p>
+            <p>{t('codexReference.wallSize')}</p>
             <InfoBox type="tip">
               <Trans i18nKey="tutorial.base_points.note1">
                 When you draw a <Highlight>bonus tile</Highlight> (Flower or
@@ -783,7 +823,9 @@ export function useTutorialSteps(): TutorialStep[] {
                 t('tutorial.hands.headerMeaning'),
               ]}
               rows={TAUGHT_PATTERNS.map((id) => [
-                <Highlight color="orange">{t(`patterns.${id}.name`)}</Highlight>,
+                <Highlight color="orange">
+                  {t(`patterns.${id}.name`)}
+                </Highlight>,
                 t(`patterns.${id}.explain`),
               ])}
             />
@@ -879,7 +921,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'yaku-intro',
         category: 'Scoring',
-        title: t('tutorial.yakuIntro.title', 'Yaku — The Scoring Multipliers'),
+        title: t('codexReference.titleYakuIntro'),
         content: (
           <div className="space-y-3">
             <p>
@@ -889,24 +931,34 @@ export function useTutorialSteps(): TutorialStep[] {
                 is where the big points come from!
               </Trans>
             </p>
-            <p>
-              <Trans i18nKey="tutorial.yaku_intro.p2">
-                There are <Highlight>21 yaku</Highlight> in Tensho, organized
-                into 4 tiers:
-              </Trans>
-            </p>
+            <p>{t('codexReference.yakuTiers', { count: ALL_YAKU.length })}</p>
             <DataTable
-              headers={['Tier', 'Multiplier Range', 'Example']}
-              rows={[
-                ['Tier 1', '×1.2 - ×1.3', 'All Simples, All Sequences'],
-                ['Tier 2', '×1.6 - ×2.2', 'All Triplets, 1–9 Straight'],
-                ['Tier 3', '×2.5 - ×3.2', 'Half Flush, Full Flush'],
-                [
-                  'Tier 4 (Yakuman)',
-                  '×4.0 - ×5.5',
-                  'Thirteen Orphans, Nine Gates',
-                ],
+              headers={[
+                t('codexReference.tier'),
+                t('codexReference.multiplierRange'),
+                t('codexReference.example'),
               ]}
+              rows={[
+                ['tanyao', 'pinfu'],
+                ['toitoi', 'ittsu'],
+                ['honitsu', 'chinitsu'],
+                ['kokushiMusou', 'chuurenPoutou'],
+              ].map((examples, index) => {
+                const tier = index + 1
+                const multipliers = ALL_YAKU.filter(
+                  (yaku) => yaku.tier === tier
+                ).map((yaku) => yaku.multiplier)
+                return [
+                  t(
+                    tier === 4
+                      ? 'codexReference.yakumanTier'
+                      : 'codexReference.tierNumber',
+                    { tier }
+                  ),
+                  `×${Math.min(...multipliers)} – ×${Math.max(...multipliers)}`,
+                  examples.map((id) => t(`yaku.${id}`)).join(' · '),
+                ]
+              })}
             />
           </div>
         ),
@@ -914,7 +966,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'yaku-examples',
         category: 'Scoring',
-        title: t('tutorial.yakuExamples.title', 'Common Yaku Examples'),
+        title: t('codexReference.titleYakuExamples'),
         content: (
           <div className="space-y-3">
             <p>
@@ -924,30 +976,24 @@ export function useTutorialSteps(): TutorialStep[] {
             </p>
             <div className="space-y-2 text-sm">
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">
-                  All Simples (断么九 / Tanyao)
-                </Highlight>{' '}
-                — ×1.3
+                <Highlight color="orange">{t('yaku.tanyao')}</Highlight> — ×
+                {TANYAO.multiplier}
                 <p className="text-xs text-[var(--color-metallic-gold)]">
-                  Hand contains only tiles 2-8, no terminals or honors
+                  {t('codexReference.allSimples')}
                 </p>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">
-                  All Triplets (対々和 / Toitoi)
-                </Highlight>{' '}
-                — ×2.0
+                <Highlight color="orange">{t('yaku.toitoi')}</Highlight> — ×
+                {TOITOI.multiplier}
                 <p className="text-xs text-[var(--color-metallic-gold)]">
-                  All 4 melds are triplets (no sequences)
+                  {t('codexReference.allTriplets')}
                 </p>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">
-                  Full Flush (清一色 / Chinitsu)
-                </Highlight>{' '}
-                — ×3.0
+                <Highlight color="orange">{t('yaku.chinitsu')}</Highlight> — ×
+                {CHINITSU.multiplier}
                 <p className="text-xs text-[var(--color-metallic-gold)]">
-                  Hand contains only one suit (no honors)
+                  {t('codexReference.fullFlush')}
                 </p>
               </div>
             </div>
@@ -964,7 +1010,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'acts-rounds',
         category: 'Progression',
-        title: t('tutorial.actsRounds.title', 'Acts and Rounds'),
+        title: t('codexReference.titleActsRounds'),
         content: (
           <div className="space-y-3">
             <p>
@@ -974,18 +1020,28 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <DataTable
-              headers={['Round Type', 'Japanese', 'Score Multiplier']}
+              headers={[
+                t('codexReference.roundType'),
+                t('codexReference.japanese'),
+                t('codexReference.targetMultiplier'),
+              ]}
               rows={[
                 [
-                  <Highlight>Small Round</Highlight>,
-                  '小局',
-                  '×1.0 (base target)',
+                  <Highlight>{t('rounds.small')}</Highlight>,
+                  t('rounds.smallJp'),
+                  t('codexReference.baseTarget', {
+                    mult: ROUND_TYPE_DEFINITIONS.Small.scoreMultiplier,
+                  }),
                 ],
-                [<Highlight>Large Round</Highlight>, '大局', '×1.5'],
                 [
-                  <Highlight color="orange">Boss Round</Highlight>,
-                  '親局',
-                  '×2.0',
+                  <Highlight>{t('rounds.large')}</Highlight>,
+                  t('rounds.largeJp'),
+                  `×${ROUND_TYPE_DEFINITIONS.Large.scoreMultiplier}`,
+                ],
+                [
+                  <Highlight color="orange">{t('rounds.boss')}</Highlight>,
+                  t('rounds.bossJp'),
+                  `×${ROUND_TYPE_DEFINITIONS.Boss.scoreMultiplier}`,
                 ],
               ]}
             />
@@ -1001,7 +1057,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'boss-mandates',
         category: 'Progression',
-        title: t('tutorial.bossMandates.title', 'Boss Mandates'),
+        title: t('codexReference.titleBossMandates'),
         content: (
           <div className="space-y-3">
             <p>
@@ -1049,7 +1105,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'decrees-intro',
         category: 'Decrees',
-        title: t('tutorial.decreesIntro.title', 'What are Decrees?'),
+        title: t('codexReference.titleDecreesIntro'),
         content: (
           <div className="space-y-3">
             <p>
@@ -1094,7 +1150,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'decree-categories',
         category: 'Decrees',
-        title: t('tutorial.decreeCategories.title', 'Decree Categories'),
+        title: t('codexReference.titleDecreeCategories'),
         content: (
           <div className="space-y-3">
             <p>
@@ -1104,24 +1160,34 @@ export function useTutorialSteps(): TutorialStep[] {
             </p>
             <div className="space-y-2 text-sm">
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">Structural (形法令)</Highlight> —
-                Alter what makes a legal hand
+                <Highlight color="orange">
+                  {t('codexReference.structural')}
+                </Highlight>{' '}
+                — {t('codexReference.structuralHelp')}
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">Tile Identity (变牌法令)</Highlight> —
-                Change how tiles are classified
+                <Highlight color="orange">
+                  {t('codexReference.tileIdentity')}
+                </Highlight>{' '}
+                — {t('codexReference.tileIdentityHelp')}
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">Yaku Doctrine (役变法令)</Highlight> —
-                Modify yaku rules
+                <Highlight color="orange">
+                  {t('codexReference.yakuDoctrine')}
+                </Highlight>{' '}
+                — {t('codexReference.yakuDoctrineHelp')}
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">Entropy & Fate (天运法令)</Highlight>{' '}
-                — Alter draws and tempo
+                <Highlight color="orange">
+                  {t('codexReference.entropy')}
+                </Highlight>{' '}
+                — {t('codexReference.entropyHelp')}
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded">
-                <Highlight color="orange">Scaling (修行法令)</Highlight> —
-                Reward specific playstyles
+                <Highlight color="orange">
+                  {t('codexReference.scaling')}
+                </Highlight>{' '}
+                — {t('codexReference.scalingHelp')}
               </div>
             </div>
           </div>
@@ -1130,7 +1196,7 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'decree-rarities',
         category: 'Decrees',
-        title: t('tutorial.decreeRarities.title', 'Decree Rarities'),
+        title: t('codexReference.titleDecreeRarities'),
         content: (
           <div className="space-y-3">
             <p>
@@ -1139,53 +1205,45 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <DataTable
-              headers={['Rarity', 'Name', 'Power Level']}
+              headers={[
+                t('codexReference.rarity'),
+                t('codexReference.name'),
+                t('codexReference.powerLevel'),
+              ]}
               rows={[
                 [
                   <span className="text-gray-400">●</span>,
-                  'Local Edict',
-                  'Small bonuses',
+                  t('decrees.rarity.common'),
+                  t('codexReference.localPower'),
                 ],
                 [
                   <span className="text-green-400">●</span>,
-                  'Regional Mandate',
-                  'Moderate effects',
+                  t('decrees.rarity.uncommon'),
+                  t('codexReference.regionalPower'),
                 ],
                 [
                   <span className="text-blue-400">●</span>,
-                  'Imperial Decree',
-                  'Strong rule-bending',
+                  t('decrees.rarity.rare'),
+                  t('codexReference.imperialPower'),
                 ],
                 [
                   <span className="text-purple-400">●</span>,
-                  'Heavenly Ordinance',
-                  'Run-defining power',
+                  t('decrees.rarity.mythic'),
+                  t('codexReference.heavenlyPower'),
                 ],
               ]}
             />
-            <InfoBox type="tip">
-              <Trans i18nKey="tutorial.interest.note1">
-                Higher rarity decrees are more expensive and rarer in the shop.
-                Build synergies between multiple common decrees for powerful
-                combos!
-              </Trans>
-            </InfoBox>
+            <InfoBox type="tip">{t('codexReference.raritySources')}</InfoBox>
           </div>
         ),
       },
       {
         id: 'decree-slots',
         category: 'Decrees',
-        title: t('tutorial.decreeSlots.title', 'Managing Decree Slots'),
+        title: t('codexReference.titleDecreeSlots'),
         content: (
           <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.decree_slots.p1">
-                You have a limited number of <Highlight>Decree Slots</Highlight>
-                . You start with <Highlight color="orange">5 slots</Highlight>{' '}
-                and can earn more through:
-              </Trans>
-            </p>
+            <p>{t('codexReference.slotBaseline')}</p>
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <Trans i18nKey="tutorial.hierarchy.li1">
@@ -1204,156 +1262,20 @@ export function useTutorialSteps(): TutorialStep[] {
                 </Trans>
               </li>
             </ul>
-            <InfoBox type="info">
-              <Trans i18nKey="tutorial.tips.note1">
-                You can <Highlight color="orange">sell</Highlight> Decrees for
-                gold. This frees up a slot and gives you half the purchase price
-                back.
-              </Trans>
-            </InfoBox>
+            <InfoBox type="info">{t('codexEconomy.sale')}</InfoBox>
           </div>
         ),
       },
-      {
-        id: 'flowers-system',
+      ...FLORA_CODEX_SECTIONS.map(([id, titleKey, section]) => ({
+        id,
         category: 'Flora',
-        title: t('tutorial.flowersSystem.title', 'The Flower System'),
-        content: (
-          <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.flowers_system.p1">
-                <Highlight>Flowers</Highlight> provide{' '}
-                <Highlight color="orange">permanent bonuses</Highlight> that
-                last your entire run:
-              </Trans>
-            </p>
-            <DataTable
-              headers={['Flower', 'Japanese', 'Effect']}
-              rows={[
-                [
-                  <TileLabel
-                    suit={TileSuit.Flower}
-                    rank={1}
-                    label="Plum"
-                    className="text-pink-400"
-                  />,
-                  '梅',
-                  '+5% score per sequence',
-                ],
-                [
-                  <TileLabel
-                    suit={TileSuit.Flower}
-                    rank={2}
-                    label="Orchid"
-                    className="text-purple-400"
-                  />,
-                  '兰',
-                  '+5% score per honor tile',
-                ],
-                [
-                  <TileLabel
-                    suit={TileSuit.Flower}
-                    rank={3}
-                    label="Chrysanthemum"
-                    className="text-yellow-400"
-                  />,
-                  '菊',
-                  '+5% score per concealed meld',
-                ],
-                [
-                  <TileLabel
-                    suit={TileSuit.Flower}
-                    rank={4}
-                    label="Bamboo"
-                    className="text-green-400"
-                  />,
-                  '竹',
-                  '+5% score per terminal',
-                ],
-              ]}
-            />
-            <p>
-              <Trans i18nKey="tutorial.flowers_system.p2">
-                Collecting multiple flowers unlocks{' '}
-                <Highlight>set bonuses</Highlight>: 2 flowers = +1 decree slot,
-                4 flowers = double flower effectiveness!
-              </Trans>
-            </p>
-          </div>
-        ),
-      },
-      {
-        id: 'seasons-system',
-        category: 'Flora',
-        title: t('tutorial.seasonsSystem.title', 'The Season System'),
-        content: (
-          <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.seasons_system.p1">
-                <Highlight>Seasons</Highlight> are{' '}
-                <Highlight color="orange">temporary modifiers</Highlight> that
-                last only for the current round:
-              </Trans>
-            </p>
-            <DataTable
-              headers={['Season', 'Japanese', 'Effect']}
-              rows={[
-                [
-                  <TileLabel
-                    suit={TileSuit.Season}
-                    rank={1}
-                    label="Spring"
-                    className="text-green-300"
-                  />,
-                  '春',
-                  '+2 draws per hand',
-                ],
-                [
-                  <TileLabel
-                    suit={TileSuit.Season}
-                    rank={2}
-                    label="Summer"
-                    className="text-yellow-300"
-                  />,
-                  '夏',
-                  '+30% base score, -20% wall size',
-                ],
-                [
-                  <TileLabel
-                    suit={TileSuit.Season}
-                    rank={3}
-                    label="Autumn"
-                    className="text-orange-300"
-                  />,
-                  '秋',
-                  '+20% yaku multipliers',
-                ],
-                [
-                  <TileLabel
-                    suit={TileSuit.Season}
-                    rank={4}
-                    label="Winter"
-                    className="text-blue-300"
-                  />,
-                  '冬',
-                  'Looser hand rules, -25% score',
-                ],
-              ]}
-            />
-            <InfoBox type="warning">
-              <Trans i18nKey="tutorial.more_tips.note1">
-                From Act 2 onward,{' '}
-                <Highlight color="orange">Corrupted Seasons</Highlight> can
-                appear with negative effects!
-              </Trans>
-            </InfoBox>
-          </div>
-        ),
-      },
+        title: t(titleKey),
+        content: <FloraCodex section={section} />,
+      })),
       {
         id: 'hierarchy',
         category: 'Flora',
-        title: t('tutorial.hierarchy.title', 'The Five-Layer Hierarchy'),
+        title: t('codexReference.titleHierarchy'),
         content: (
           <div className="space-y-3">
             <p>
@@ -1363,187 +1285,80 @@ export function useTutorialSteps(): TutorialStep[] {
               </Trans>
             </p>
             <div className="font-mono text-sm bg-[var(--color-forest-green)] p-3 rounded text-center">
-              <div className="text-cyan-400">Heaven (Seasons)</div>
+              <div className="text-cyan-400">{t('codexReference.heaven')}</div>
               <div>↓</div>
-              <div className="text-purple-400">Court (Decrees)</div>
+              <div className="text-purple-400">{t('codexReference.court')}</div>
               <div>↓</div>
-              <div className="text-pink-400">Nature (Flowers)</div>
+              <div className="text-pink-400">{t('codexReference.nature')}</div>
               <div>↓</div>
-              <div className="text-yellow-400">Table (Tiles)</div>
+              <div className="text-yellow-400">{t('codexReference.table')}</div>
               <div>↓</div>
-              <div className="text-gray-400">Grammar (Yaku)</div>
+              <div className="text-gray-400">{t('codexReference.grammar')}</div>
             </div>
-            <p className="text-sm">
-              Higher layers <Highlight>override</Highlight> lower layers.
-            </p>
+            <p className="text-sm">{t('codexReference.hierarchyOverride')}</p>
+            <InfoBox type="info">{t('guide.specialHelp')}</InfoBox>
           </div>
         ),
       },
-      {
-        id: 'tea-house',
+      ...ECONOMY_CODEX_SECTIONS.map(([id, titleKey, section]) => ({
+        id,
         category: 'Economy',
-        title: t('tutorial.teaHouse.title', 'The Tea House (Shop)'),
-        content: (
-          <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.tea_house.p1">
-                After each round, you visit the{' '}
-                <Highlight>Tea House (茶寮)</Highlight> to spend your gold:
-              </Trans>
-            </p>
-            <DataTable
-              headers={['Item', 'Typical Cost']}
-              rows={[
-                ['Decrees', '1-10 gold (by rarity)'],
-                ['Fate Seals', '3 gold'],
-                ['Celestial Orbs', '3 gold'],
-                ['Blessing Packs', '4-8 gold'],
-                ['Imperial Charters', '10 gold'],
-              ]}
-            />
-            <InfoBox type="tip">
-              <Trans i18nKey="tutorial.ready.note1">
-                You can <Highlight color="orange">reroll</Highlight> the shop
-                offerings for 5 gold. Each reroll costs +1 more.
-              </Trans>
-            </InfoBox>
-          </div>
-        ),
-      },
-      {
-        id: 'gold-economy',
-        category: 'Economy',
-        title: t('tutorial.goldEconomy.title', 'Earning Gold'),
-        content: (
-          <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.gold_economy.p1">
-                You earn <Highlight>gold</Highlight> in several ways:
-              </Trans>
-            </p>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>
-                <Trans i18nKey="tutorial.more_tips.li1">
-                  <Highlight color="orange">Winning rounds</Highlight> — Base
-                  payout scales with score
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.more_tips.li2">
-                  <Highlight color="orange">Interest</Highlight> — 1 gold per 5
-                  gold saved (max 5/round)
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.more_tips.li3">
-                  <Highlight color="orange">Selling Decrees</Highlight> — Get
-                  half the purchase price
-                </Trans>
-              </li>
-              <li>
-                <Trans i18nKey="tutorial.more_tips.li4">
-                  <Highlight color="orange">Decree effects</Highlight> — Some
-                  generate gold
-                </Trans>
-              </li>
-            </ul>
-          </div>
-        ),
-      },
-      {
-        id: 'interest',
-        category: 'Economy',
-        title: t('tutorial.interest.title', 'The Interest System'),
-        content: (
-          <div className="space-y-3">
-            <p>
-              <Trans i18nKey="tutorial.interest.p1">
-                At the end of each round, you earn{' '}
-                <Highlight>interest</Highlight> on saved gold:
-              </Trans>
-            </p>
-            <Formula>+1 gold per 5 gold held (max +5)</Formula>
-            <DataTable
-              headers={['Gold Held', 'Interest Earned']}
-              rows={[
-                ['0-4', '+0'],
-                ['5-9', '+1'],
-                ['10-14', '+2'],
-                ['15-19', '+3'],
-                ['20-24', '+4'],
-                ['25+', '+5 (max)'],
-              ]}
-            />
-            <InfoBox type="tip">
-              <Trans i18nKey="tutorial.ready.note2">
-                Holding <Highlight>25+ gold</Highlight> maximizes interest! But
-                spending on good decrees is usually worth more.
-              </Trans>
-            </InfoBox>
-          </div>
-        ),
-      },
+        title: t(titleKey),
+        content: <EconomyCodex section={section} />,
+      })),
       {
         id: 'tips',
         category: 'Strategy',
-        title: t('tutorial.tips.title', 'Tips for Success'),
+        title: t('codexReference.titleTips'),
         content: (
           <div className="space-y-3">
             <div className="space-y-2">
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="target" />
+                  <PavilionIcon name="target" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Focus on shanten
+                    {t('codexReference.tipScoreTitle')}
                   </p>
                   <p className="text-xs">
-                    Reduce shanten quickly. Don't hold onto tiles hoping for
-                    perfect hands.
+                    {t('codexReference.tipScore', {
+                      max: MAX_TACTICAL_PLAY_TILES,
+                    })}
                   </p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="puzzle" />
+                  <PavilionIcon name="puzzle" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Build synergies
+                    {t('codexReference.tipSynergyTitle')}
                   </p>
-                  <p className="text-xs">
-                    Decrees that work together are stronger than powerful
-                    standalone decrees.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipSynergy')}</p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="coin" />
+                  <PavilionIcon name="coin" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Balance economy
+                    {t('codexReference.tipEconomyTitle')}
                   </p>
-                  <p className="text-xs">
-                    Save for interest early, but invest in strong decrees before
-                    Act 4.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipEconomy')}</p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="flower" />
+                  <PavilionIcon name="flower" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Collect flowers
+                    {t('codexReference.tipFlowersTitle')}
                   </p>
-                  <p className="text-xs">
-                    Flower bonuses compound. Getting all 4 is extremely
-                    powerful.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipFlowers')}</p>
                 </div>
               </div>
             </div>
@@ -1553,61 +1368,52 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'more-tips',
         category: 'Strategy',
-        title: t('tutorial.moreTips.title', 'Advanced Tips'),
+        title: t('codexReference.titleMoreTips'),
         content: (
           <div className="space-y-3">
             <div className="space-y-2">
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="chart" />
+                  <PavilionIcon name="chart" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Plan for yaku
+                    {t('codexReference.tipYakuTitle')}
                   </p>
-                  <p className="text-xs">
-                    Know which yaku you're aiming for before the round starts.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipYaku')}</p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="scales" />
+                  <PavilionIcon name="scales" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Tile efficiency
+                    {t('codexReference.tipEfficiencyTitle')}
                   </p>
-                  <p className="text-xs">
-                    Keep tiles that can complete multiple melds. Isolated
-                    terminals are often safe to discard.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipEfficiency')}</p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="dice" />
+                  <PavilionIcon name="dice" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Count remaining tiles
+                    {t('codexReference.tipWallTitle')}
                   </p>
-                  <p className="text-xs">
-                    If 3 of a tile are in the dead pool, the 4th is rare.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipWall')}</p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
                 <span>
-                  <ControlIcon name="mask" />
+                  <PavilionIcon name="mask" />
                 </span>
                 <div>
                   <p className="font-bold text-[var(--color-golden-yellow)]">
-                    Read mandates early
+                    {t('codexReference.tipMandateTitle')}
                   </p>
-                  <p className="text-xs">
-                    Check the Boss Mandate before entering an Act.
-                  </p>
+                  <p className="text-xs">{t('codexReference.tipMandate')}</p>
                 </div>
               </div>
             </div>
@@ -1617,12 +1423,14 @@ export function useTutorialSteps(): TutorialStep[] {
       {
         id: 'ready',
         category: 'Ready!',
-        title: t('tutorial.ready.title', "You're Ready to Play!"),
+        title: t('tutorial.ready.title'),
         content: (
           <div className="space-y-4 text-center">
             <p className="text-xl">
-              <Highlight>Congratulations!</Highlight> You now understand the
-              fundamentals of Tensho.
+              <Trans
+                i18nKey="codexReference.congratulations"
+                components={{ strong: <Highlight>{null}</Highlight> }}
+              />
             </p>
             <p>
               <Trans i18nKey="tutorial.ready.p1">
@@ -1632,7 +1440,7 @@ export function useTutorialSteps(): TutorialStep[] {
             </p>
             <div className="py-4">
               <p className="text-[var(--color-metallic-gold)]">
-                May the tiles favor you on your heavenly ascent!
+                {t('codexReference.farewell')}
               </p>
             </div>
             <InfoBox type="tip">

@@ -149,15 +149,15 @@ for (const [language, copy] of [
         await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
         await settleReveals(page, 2_000)
-        // Nothing waits on the rail; the upgrade is its own token.
+        // The applied upgrade stays in the Tea House; the gameplay rail is
+        // reserved for Flowers, Seasons and items still waiting to be used.
         await expect(
           page.locator(`[data-consumable-instance="${fixture.itemId}"]`)
         ).toHaveCount(0)
-        await expect(
-          page.locator('[data-collectible-rail] [data-yaku-upgrade="Pairs"]')
-        ).toBeVisible()
+        await expect(page.locator('[data-yaku-upgrade]')).toHaveCount(0)
         await page.reload()
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+        await expect(page.locator('[data-yaku-upgrade]')).toHaveCount(0)
         expect(await progress()).toEqual({
           count: 25,
           unlocked: true,

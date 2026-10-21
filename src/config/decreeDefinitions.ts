@@ -11,6 +11,7 @@ import type {
   DecreeEffectType,
 } from '../stores/decreeStore'
 import { runRandom } from '../game/RunRandom'
+import { ACHIEVEMENT_REWARD_DECREES } from './achievementRewardDecrees'
 
 /**
  * Decree definition blueprint
@@ -430,6 +431,7 @@ export const COMMON_DECREES: DecreeDefinition[] = [
 // ============================================================================
 
 export const UNCOMMON_DECREES: DecreeDefinition[] = [
+  ...ACHIEVEMENT_REWARD_DECREES.filter((decree) => decree.rarity === 'uncommon'),
   // Suit Specialists
   {
     id: 'decree-manzu-emperor',
@@ -819,6 +821,7 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
 // ============================================================================
 
 export const RARE_DECREES: DecreeDefinition[] = [
+  ...ACHIEVEMENT_REWARD_DECREES.filter((decree) => decree.rarity === 'rare'),
   // Powerful Multipliers
   {
     id: 'decree-inferno',

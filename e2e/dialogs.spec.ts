@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
+import { clearReveals, openTable } from './helpers/table'
 
 async function gameSnapshot(page: Page) {
   return page.evaluate(async () => {
@@ -19,7 +20,7 @@ async function gameSnapshot(page: Page) {
 test('exit confirmation contains focus, blocks background focus, and restores its opener on Escape', async ({
   page,
 }, testInfo) => {
-  await page.goto('/en/play')
+  await openTable(page)
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
   const before = await gameSnapshot(page)
   const opener = page.getByRole('button', { name: 'Exit', exact: true })
@@ -59,7 +60,7 @@ test('exit confirmation contains focus, blocks background focus, and restores it
 test('Enter defaults to cancellation; explicitly leaving preserves a resumable run', async ({
   page,
 }) => {
-  await page.goto('/en/play')
+  await openTable(page)
   const opener = page.getByRole('button', { name: 'Exit', exact: true })
   await opener.click()
   const dialog = page.getByRole('dialog', {
@@ -118,12 +119,12 @@ test('tutorial reset hands focus to its success alert and returns to the origina
   await expect(opener).toBeFocused()
 })
 
-test('keyboard purchase can be cancelled without payment and explicitly bought once', async ({
+test('keyboard Charter inspection can be cancelled, then bought once without a second confirmation', async ({
   page,
 }) => {
-  await page.goto('/en/play')
+  await openTable(page)
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-  await page.evaluate(async () => {
+  const offerId = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const shopPath = '/src/systems/TeaHouseSystem.ts'
     const eventPath = '/src/game/EventBus.ts'
@@ -140,13 +141,13 @@ test('keyboard purchase can be cancelled without payment and explicitly bought o
     game.shop.state.charterOffering.item = TEA_HOUSE_BASE_CHARTERS.find(
       (charter: { id: string }) => charter.id === 'ancient_script'
     )
+    game.shop.state.charterOffering.finalCost = 10
     eventBus.emit('shopUpdated', { isOpen: true })
+    return game.shop.state.charterOffering.id
   })
+  await clearReveals(page)
   await expect(page).toHaveURL(/\/en\/shop$/)
-  const purchase = page.getByRole('button', {
-    name: 'Ancient Script 10G',
-    exact: true,
-  })
+  const purchase = page.locator(`[data-shop-offer="${offerId}"]`)
   const snapshot = () =>
     page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
@@ -161,25 +162,26 @@ test('keyboard purchase can be cancelled without payment and explicitly bought o
   await purchase.focus()
   await page.keyboard.press('Enter')
   const dialog = page.getByRole('dialog', {
-    name: 'Confirm Purchase',
+    name: 'Ancient Script',
     exact: true,
   })
-  await expect(dialog).toHaveAccessibleDescription(
-    'Buy Ancient Script for 10G?'
-  )
-  await expect(dialog.getByRole('button', { name: 'Cancel' })).toBeFocused()
-  await page.keyboard.press('Enter')
+  await expect(dialog).toBeVisible()
+  await expect(dialog).toContainText('Ancient Script')
+  await page.keyboard.press('Escape')
   await expect(dialog).toHaveCount(0)
   await expect(purchase).toBeFocused()
   expect(await snapshot()).toEqual(before)
   await page.keyboard.press('Enter')
   await expect(dialog).toBeVisible()
-  await page.keyboard.press('Tab')
-  await expect(
-    dialog.getByRole('button', { name: 'Buy', exact: true })
-  ).toBeFocused()
+  const buy = dialog.locator(`[data-shop-buy="${offerId}"]`)
+  await buy.focus()
+  await expect(buy).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(dialog).toHaveCount(0)
+  await expect(
+    page.getByRole('dialog', { name: 'Confirm Purchase' })
+  ).toHaveCount(0)
+  await expect(purchase).toHaveCount(0)
   const after = await snapshot()
   expect(after).toEqual({
     gold: before.gold - 10,

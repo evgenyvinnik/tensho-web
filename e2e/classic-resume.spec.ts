@@ -1,7 +1,38 @@
 import { expect, test, type Page } from '@playwright/test'
 import { openTable, selectTiles, settleReveals } from './helpers/table'
+import type { ClassicRunSnapshot } from '../src/game/ClassicRunSnapshot'
 
 const saveKey = 'tensho-classic-run-v1'
+async function prepareCheckpoint(page: Page, target: number, turns = 6) {
+  await openTable(page)
+  await saved(page)
+  // Change a checkpoint only before startup. Mutating localStorage beneath a
+  // live writer can be undone by its pagehide flush and never test the fixture.
+  await page.addInitScript(
+    ({ key, target, turns }) => {
+      if (sessionStorage.getItem('classic-checkpoint-fixture')) return
+      const record = JSON.parse(localStorage.getItem(key)!) as {
+        snapshot: ClassicRunSnapshot
+      }
+      const state = record.snapshot.state
+      state.targetScore = target
+      state.roundManager.currentRound!.scoreTarget = target
+      const round = state.roundManager.currentAct!.rounds.find(
+        (round) => round.roundNumber === state.currentRound
+      )!
+      round.scoreTarget = target
+      state.handsRemaining = turns
+      // No random loss-prevention Decree can defeat the authored deadline.
+      state.decreeSystem.ownedDecrees = []
+      localStorage.setItem(key, JSON.stringify(record))
+      sessionStorage.setItem('classic-checkpoint-fixture', 'true')
+    },
+    { key: saveKey, target, turns }
+  )
+  await page.reload()
+  await settleReveals(page)
+  expect((await saved(page)).snapshot.state.targetScore).toBe(target)
+}
 async function saved(page: Page) {
   await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
   return page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), saveKey)
@@ -25,7 +56,7 @@ async function profile(page: Page) {
 test('a real tile play survives reload and leaving; New Run replaces it at once', async ({
   page,
 }) => {
-  await openTable(page)
+  await prepareCheckpoint(page, 1e12)
   await saved(page)
   await selectTiles(page, 2)
   await page.locator('[data-game-action="play"]').click()
@@ -58,18 +89,22 @@ test('a real tile play survives reload and leaving; New Run replaces it at once'
     .click()
   await page.getByRole('button', { name: 'New Run', exact: true }).click()
   await expect(page).toHaveURL(/\/play$/)
-  await expect.poll(async () => (await saved(page)).runId).not.toBe(before.runId)
+  await expect
+    .poll(async () => (await saved(page)).runId)
+    .not.toBe(before.runId)
 })
 
 test('a finished run is not offered for resuming', async ({ page }) => {
-  await openTable(page)
-  await saved(page)
-  await page.evaluate((key) => {
-    const record = JSON.parse(localStorage.getItem(key)!)
-    record.snapshot.state.phase = 'gameOver'
-    record.snapshot.state.isRunActive = false
-    localStorage.setItem(key, JSON.stringify(record))
-  }, saveKey)
+  await prepareCheckpoint(page, 1e12, 1)
+  await selectTiles(page, 2)
+  await page.locator('[data-game-action="play"]').click()
+  await expect(page).toHaveURL(/\/game-over$/)
+  const finished = await saved(page)
+  expect(finished.snapshot.state).toMatchObject({
+    phase: 'gameOver',
+    isRunActive: false,
+    handsPlayedThisRun: 1,
+  })
   await page.goto('/en')
   await expect(
     page.getByRole('button', { name: 'New Run', exact: true })
@@ -78,12 +113,10 @@ test('a finished run is not offered for resuming', async ({ page }) => {
     page.getByRole('button', { name: 'Resume run', exact: true })
   ).toHaveCount(0)
   // Opening the table starts the next run instead of the finished one.
-  const finished = await page.evaluate(
-    (key) => JSON.parse(localStorage.getItem(key)!).runId,
-    saveKey
-  )
-  await openTable(page)
-  await expect.poll(async () => (await saved(page)).runId).not.toBe(finished)
+  await page.getByRole('button', { name: 'New Run', exact: true }).click()
+  await expect
+    .poll(async () => (await saved(page)).runId)
+    .not.toBe(finished.runId)
 })
 
 test('paid pending pack resumes in the shop without another payment or reward replay', async ({
@@ -147,7 +180,7 @@ test('native Web Locks transfer ownership and pause the previous tab', async ({
   page,
   context,
 }) => {
-  await openTable(page)
+  await prepareCheckpoint(page, 1e12)
   const first = await saved(page)
   const other = await context.newPage()
   await openTable(other)
@@ -187,46 +220,61 @@ test('native Web Locks transfer ownership and pause the previous tab', async ({
   await other.close()
 })
 
-test('quota failure preserves the checkpoint and Retry saves the live action', async ({
-  page,
-}) => {
-  await openTable(page)
-  const before = await saved(page)
-  await page.evaluate((key) => {
-    const original = Storage.prototype.setItem
-    Object.assign(window, {
-      restoreClassicStorage: () => {
-        Storage.prototype.setItem = original
-      },
+for (const outcome of ['continue', 'win'] as const) {
+  test(`quota failure preserves the checkpoint and Retry saves the live action (${outcome})`, async ({
+    page,
+  }) => {
+    await prepareCheckpoint(page, outcome === 'win' ? 1 : 1e12)
+    const before = await saved(page)
+    await page.evaluate((key) => {
+      const original = Storage.prototype.setItem
+      Object.assign(window, {
+        restoreClassicStorage: () => {
+          Storage.prototype.setItem = original
+        },
+      })
+      Storage.prototype.setItem = function (name, value) {
+        if (name === key)
+          throw new DOMException('Test quota denial', 'QuotaExceededError')
+        original.call(this, name, value)
+      }
+    }, saveKey)
+    await selectTiles(page, 2)
+    await page.locator('[data-game-action="play"]').click()
+    await expect(page.getByRole('alert')).toContainText('Keep this tab open')
+    expect(
+      await page.evaluate(
+        (key) => JSON.parse(localStorage.getItem(key)!).snapshot,
+        saveKey
+      )
+    ).toEqual(before.snapshot)
+    await page.evaluate(() => {
+      ;(
+        window as unknown as { restoreClassicStorage: () => void }
+      ).restoreClassicStorage()
     })
-    Storage.prototype.setItem = function (name, value) {
-      if (name === key)
-        throw new DOMException('Test quota denial', 'QuotaExceededError')
-      original.call(this, name, value)
+    await page
+      .getByRole('button', { name: 'Retry saving', exact: true })
+      .click()
+    if (outcome === 'win') {
+      // A won play first saves an unopened Tea House during the celebration.
+      // Compare the settled visit, not that checkpoint to legitimately opened stock.
+      await expect(page).toHaveURL(/\/shop$/)
+      await expect
+        .poll(async () => (await saved(page)).snapshot.shop.opened)
+        .toBe(true)
+    } else {
+      await settleReveals(page)
+      await expect(page).toHaveURL(/\/play$/)
     }
-  }, saveKey)
-  await selectTiles(page, 2)
-  await page.locator('[data-game-action="play"]').click()
-  await expect(page.getByRole('alert')).toContainText('Keep this tab open')
-  expect(
-    await page.evaluate(
-      (key) => JSON.parse(localStorage.getItem(key)!).snapshot,
-      saveKey
+    const after = await saved(page)
+    expect(after.snapshot.state.handsPlayedThisRun).toBe(
+      before.snapshot.state.handsPlayedThisRun + 1
     )
-  ).toEqual(before.snapshot)
-  await page.evaluate(() => {
-    ;(
-      window as unknown as { restoreClassicStorage: () => void }
-    ).restoreClassicStorage()
+    await page.reload()
+    expect((await saved(page)).snapshot).toEqual(after.snapshot)
   })
-  await page.getByRole('button', { name: 'Retry saving', exact: true }).click()
-  const after = await saved(page)
-  expect(after.snapshot.state.handsPlayedThisRun).toBe(
-    before.snapshot.state.handsPlayedThisRun + 1
-  )
-  await page.reload()
-  expect((await saved(page)).snapshot).toEqual(after.snapshot)
-})
+}
 
 test('an unreadable save is not explained: the menu offers New Run, Settings can back it up, and New Run replaces it', async ({
   page,

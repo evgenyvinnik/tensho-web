@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "La idea principal",
+    "titleTilesOverview": "Conoce las fichas",
+    "titleSuits": "Los tres palos numerados",
+    "titleTerminals": "Terminales y simples",
+    "titleWinds": "Fichas de Viento",
+    "titleDragons": "Fichas de Dragón",
+    "titleBonus": "Fichas de bonificación: Flores y Estaciones",
+    "titleMeldsOverview": "¿Qué es un grupo?",
+    "titleSequences": "Secuencias (順子 / Shuntsu)",
+    "titleTriplets": "Tripletes (刻子 / Koutsu)",
+    "titleQuads": "Cuartetos (槓子 / Kantsu)",
+    "titlePairs": "Pares (雀頭 / Jantou)",
+    "titleWinningHand": "La estructura de una mano ganadora",
+    "titleSpecialHands": "Formas ganadoras especiales",
+    "titleYakuIntro": "Yaku: los multiplicadores de puntuación",
+    "titleYakuExamples": "Ejemplos de Yaku comunes",
+    "titleActsRounds": "Actos y rondas",
+    "titleBossMandates": "Mandatos de Jefe",
+    "titleDecreesIntro": "¿Qué son los Decretos?",
+    "titleDecreeCategories": "Categorías de Decretos",
+    "titleDecreeRarities": "Rarezas de los Decretos",
+    "titleDecreeSlots": "Gestionar las ranuras de Decretos",
+    "titleHierarchy": "La jerarquía de cinco niveles",
+    "titleTips": "Consejos para ganar",
+    "titleMoreTips": "Consejos avanzados",
+    "category": "Categoría",
+    "types": "Tipos",
+    "count": "Cantidad",
+    "numberedSuits": "Palos numerados",
+    "numberedComposition": "3 palos × 9 valores × 4 copias",
+    "windComposition": "4 vientos × 4 copias",
+    "dragonComposition": "3 dragones × 4 copias",
+    "bonusTiles": "Fichas de bonificación",
+    "bonusComposition": "4 flores + 4 estaciones",
+    "tileSet": "El conjunto estándar tiene 144 fichas. El Muro elegido y los efectos de la partida pueden cambiar su composición:",
+    "terminalRanks": "Fichas con valor <strong>1 o 9</strong>",
+    "simpleRanks": "Fichas con valores <strong>del 2 al 8</strong>",
+    "tileValue": "Cada una vale <strong>{{points}} puntos</strong> dentro de un grupo",
+    "windOrder": "Los Vientos aparecen en el orden Este, Sur, Oeste y Norte. Los cuatro tienen los mismos valores de puntos base.",
+    "windPoints": "Los Vientos son fichas de Honor que valen {{points}} puntos cada una, o {{groupPoints}} por ficha dentro de un grupo.",
+    "honorGroups": "Los Honores no pueden formar secuencias numéricas. Los Honores idénticos pueden formar pares, tripletes o cuartetos.",
+    "dragonPoints": "Los Dragones son fichas de Honor que valen {{points}} puntos cada una. Cada Dragón que puntúa suma +{{mult}} al Mult, o +{{groupMult}} al Mult dentro de un grupo. No pueden formar secuencias numéricas.",
+    "flowerDuration": "Permanecen durante toda la partida",
+    "seasonDuration": "Solo están activas durante la ronda actual",
+    "importantRules": "Reglas importantes:",
+    "quadMechanics": "Cómo funcionan los cuartetos:",
+    "quadBonus": "Añade +{{points}} puntos de grupo y +{{mult}} al Mult del patrón, antes de aplicar los efectos de las fichas.",
+    "quadRefill": "Juega un cuarteto como parte de tu mano seleccionada. El atril se rellena después de la jugada; no hay una acción aparte para declarar cuartetos.",
+    "winningFormula": "<melds>4 grupos</melds> + <pair>1 par</pair> = <tiles>14 fichas sin contar las adicionales de los cuartetos</tiles>",
+    "winningExample": "Los cuatro grupos pueden ser secuencias, tripletes o cuartetos. Cada cuarteto añade una ficha a la estructura habitual de 14 fichas. Este es un ejemplo sin cuartetos:",
+    "sevenPairs": "Exactamente <strong>7 pares diferentes</strong>: 14 fichas, sin necesidad de tripletes ni secuencias.",
+    "thirteenOrphans": "Una ficha de cada terminal y Honor (13 fichas distintas), más un duplicado: una mano <strong>Yakuman</strong> de 14 fichas.",
+    "wallSize": "El muro proporciona las fichas de reemplazo. La cantidad restante depende de tu Muro, tu atril inicial y los efectos; vigila el contador de fichas restantes.",
+    "yakuTiers": "El catálogo actual tiene {{count}} Yaku en cuatro niveles. Estos son sus multiplicadores base, antes de mejoras y efectos:",
+    "tier": "Nivel",
+    "tierNumber": "Nivel {{tier}}",
+    "yakumanTier": "Nivel {{tier}} (Yakuman)",
+    "multiplierRange": "Rango de multiplicadores base",
+    "example": "Ejemplo",
+    "allSimples": "Contiene solo fichas numeradas del 2 al 8, sin terminales ni Honores.",
+    "allTriplets": "Los cuatro grupos son tripletes o cuartetos, con un par y sin secuencias.",
+    "fullFlush": "Contiene solo un palo numerado, sin Honores.",
+    "roundType": "Tipo de ronda",
+    "japanese": "Japonés",
+    "targetMultiplier": "Multiplicador del objetivo",
+    "baseTarget": "×{{mult}} (objetivo base)",
+    "structural": "Estructurales (形法令)",
+    "structuralHelp": "Cambian qué se considera una mano válida",
+    "tileIdentity": "Identidad de fichas (变牌法令)",
+    "tileIdentityHelp": "Cambian cómo se clasifican las fichas",
+    "yakuDoctrine": "Doctrina Yaku (役变法令)",
+    "yakuDoctrineHelp": "Modifican las reglas de los Yaku",
+    "entropy": "Entropía y destino (天运法令)",
+    "entropyHelp": "Modifican los robos y el ritmo de juego",
+    "scaling": "Crecimiento (修行法令)",
+    "scalingHelp": "Recompensan estilos de juego concretos",
+    "rarity": "Rareza",
+    "name": "Nombre",
+    "powerLevel": "Nivel de poder",
+    "localPower": "Pequeñas bonificaciones",
+    "regionalPower": "Efectos moderados",
+    "imperialPower": "Grandes cambios en las reglas",
+    "heavenlyPower": "Poder que define la partida",
+    "raritySources": "La rareza afecta a la disponibilidad y al precio en la tienda. Las Ordenanzas Celestiales se obtienen de fuentes especiales, no de las ofertas habituales de la tienda. Busca sinergias y comprueba el precio real de cada oferta.",
+    "slotBaseline": "Por defecto hay 5 ranuras de Decretos, pero la mesa elegida y los efectos de la partida pueden cambiar esa cantidad. Puedes obtener más ranuras mediante:",
+    "heaven": "Cielo (Estaciones)",
+    "court": "Corte (Decretos)",
+    "nature": "Naturaleza (Flores)",
+    "table": "Mesa (Fichas)",
+    "grammar": "Gramática (Yaku)",
+    "hierarchyOverride": "Cuando las reglas entran en conflicto, las de mayor autoridad tienen prioridad sobre las de menor autoridad. Comprueba las condiciones específicas de cada efecto.",
+    "tipScoreTitle": "Haz jugadas útiles",
+    "tipScore": "Compara la previsión de puntuación de grupos de hasta {{max}} fichas o de una mano de Mahjong completa. Usa los turnos para acercarte al objetivo en lugar de esperar solo una mano perfecta.",
+    "tipSynergyTitle": "Crea sinergias",
+    "tipSynergy": "Los Decretos que se complementan pueden ser más fuertes que otros Decretos poderosos por separado.",
+    "tipEconomyTitle": "Equilibra tu economía",
+    "tipEconomy": "Ahorrar oro da intereses al superar una ronda, pero conviene gastarlo cuando una mejora te ayuda a alcanzar el siguiente objetivo. Comprueba los precios reales y los valores de venta.",
+    "tipFlowersTitle": "Colecciona flores",
+    "tipFlowers": "Las Flores duran toda la partida. Dos Flores distintas otorgan una ranura de Decreto; reunir las cuatro potencia sus efectos.",
+    "tipYakuTitle": "Planifica tus Yaku",
+    "tipYaku": "Elige Yaku que encajen con tu atril y tus Decretos. Una mano de Mahjong completa puede combinar Yaku para obtener más puntos.",
+    "tipEfficiencyTitle": "Aprovecha las fichas",
+    "tipEfficiency": "Conserva las fichas que puedan completar varios grupos. Usa RECAMBIAR para sustituir fichas aisladas, teniendo en cuenta su coste en turnos y los recambios gratis disponibles.",
+    "tipWallTitle": "Cuenta las fichas restantes",
+    "tipWall": "Revisa el río y lo que queda del muro antes de buscar una ficha concreta. Las fichas recambiadas permanecen en el río el resto de la ronda.",
+    "tipMandateTitle": "Lee los mandatos con antelación",
+    "tipMandate": "Lee el próximo Mandato de Jefe y prepara una combinación de recursos que pueda puntuar bajo esa restricción.",
+    "congratulations": "<strong>¡Enhorabuena!</strong> Ya conoces los fundamentos de Tensho.",
+    "farewell": "¡Que las fichas te acompañen en tu ascenso celestial!"
+  },
+  "codexEconomy": {
+    "payout": "La recompensa base por superar una ronda es de 3 de oro en Pequeña, 5 en Grande y 10 en Jefe; no depende de cuánto superes el objetivo. Las apuestas pueden eliminar la recompensa Pequeña; los Decretos y Presagios pueden modificar el pago final.",
+    "interest": "El interés usa el oro que tenías antes del pago por superar la ronda: 1 por cada 5, con un límite inicial de 5. Las Cartas y los Presagios pueden aumentar ese límite; algunos Presagios bloquean el interés. Una derrota no paga intereses.",
+    "sale": "Consulta el botón Vender de cada Decreto para ver su valor real. Los Decretos pagados con Flores y los obtenidos gratis pueden venderse por 0 de oro; los Eternos no se pueden vender. Vender elimina sus efectos y libera el espacio que ocupaba.",
+    "prices": "Consulta el precio de cada oferta y el coste actual de renovar. Los descuentos, ediciones, Cartas y otros efectos pueden cambiar los precios. Renovar no repone las Cartas compradas ni la oferta gratuita de Cartomante."
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "Primeros pasos",
+      "description": "Llega al Acto 4."
+    },
+    "ascending": {
+      "name": "Ascenso",
+      "description": "Llega al Acto 8."
+    },
+    "victory": {
+      "name": "Victoria",
+      "description": "Gana una partida."
+    },
+    "redPath": {
+      "name": "El camino rojo",
+      "description": "Gana una partida en Nivel Rojo o superior."
+    },
+    "blackPath": {
+      "name": "El camino negro",
+      "description": "Gana una partida en Nivel Negro o superior."
+    },
+    "goldenPath": {
+      "name": "El camino dorado",
+      "description": "Gana una partida en Nivel Oro."
+    },
+    "tileMaster": {
+      "name": "Maestro de las fichas",
+      "description": "Juega 2.500 fichas entre todas tus partidas."
+    },
+    "discardArtist": {
+      "name": "Artista del cambio",
+      "description": "Cambia 2.500 fichas entre todas tus partidas."
+    },
+    "fortuneBuilt": {
+      "name": "Fortuna acumulada",
+      "description": "Acumula 400 de oro en una sola partida."
+    },
+    "wildFlush": {
+      "name": "Color salvaje",
+      "description": "Puntúa un Medio Color formado solo por fichas Comodín."
+    },
+    "speedRun": {
+      "name": "A toda velocidad",
+      "description": "Gana una partida gastando 48 turnos o menos. Los cambios de fichas gratuitos no cuentan."
+    },
+    "charterCollector": {
+      "name": "Coleccionista de cartas",
+      "description": "Compra 5 Cartas Imperiales en una misma partida antes de terminar el Acto 5."
+    },
+    "shattered": {
+      "name": "Hecho añicos",
+      "description": "Rompe 2 fichas de Cristal en una sola jugada."
+    },
+    "royalHand": {
+      "name": "Mano real",
+      "description": "Puntúa un Yakuman."
+    },
+    "retrograde": {
+      "name": "Retrógrado",
+      "description": "Sube un Yaku al nivel 10."
+    },
+    "keeperOfWinds": {
+      "name": "Guardián de los vientos",
+      "description": "Puntúa 10 Yaku de Viento en una sola partida."
+    },
+    "masterOfSilence": {
+      "name": "Maestro del silencio",
+      "description": "Gana 3 rondas sin descartar ninguna ficha de Honor."
+    },
+    "sealBearer": {
+      "name": "Portador de sellos",
+      "description": "Usa 10 Sellos del Destino."
+    },
+    "score10k": {
+      "name": "Diez mil",
+      "description": "Consigue 10.000 puntos en una sola jugada."
+    },
+    "score1m": {
+      "name": "Un millón",
+      "description": "Consigue 1.000.000 puntos en una sola jugada."
+    },
+    "score100m": {
+      "name": "Cien millones",
+      "description": "Consigue 100.000.000 puntos en una sola jugada."
+    },
+    "sealScholar": {
+      "name": "Erudito de los sellos",
+      "description": "Descubre todos los Sellos del Destino."
+    },
+    "starGazer": {
+      "name": "Observador de estrellas",
+      "description": "Descubre todos los Orbes Celestiales."
+    },
+    "voidWalker": {
+      "name": "Caminante del vacío",
+      "description": "Descubre todos los Escritos del Vacío."
+    },
+    "charterComplete": {
+      "name": "Cartas completas",
+      "description": "Descubre todas las Cartas Imperiales."
+    },
+    "archiveComplete": {
+      "name": "Archivo completo",
+      "description": "Descubre todo el Archivo."
+    },
+    "archiveCompletePlus": {
+      "name": "Archivo completo +",
+      "description": "Gana en Nivel Oro con cada Muro."
+    },
+    "archiveCompletePlusPlus": {
+      "name": "Archivo completo ++",
+      "description": "Consigue una pegatina de oro en cada Decreto."
+    },
+    "ruleBender": {
+      "name": "Reglas flexibles",
+      "description": "Completa una partida de Desafío."
+    },
+    "ruleBreaker": {
+      "name": "Sin reglas",
+      "description": "Completa todos los Desafíos."
+    },
+    "deckMinimalist": {
+      "name": "Muro minimalista",
+      "description": "Reduce tu Muro a 20 fichas o menos."
+    },
+    "deckMaximalist": {
+      "name": "Muro maximalista",
+      "description": "Amplía tu Muro hasta al menos 80 fichas."
+    },
+    "purist": {
+      "name": "Purista",
+      "description": "Gana una partida sin renovar la tienda."
+    },
+    "title": "Honores celestiales",
+    "shortTitle": "Honores",
+    "progress": "Progreso",
+    "earned": "Logro desbloqueado",
+    "unlocks": "Desbloquea",
+    "categories": {
+      "progression": "Camino",
+      "cumulative": "Hitos",
+      "skill": "Habilidad",
+      "scoring": "Puntuación",
+      "collection": "Colección",
+      "mastery": "Maestría",
+      "challenge": "Desafío"
+    }
+  },
   "observatory": {
     "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. Agujero Negro coincide con cualquier Yaku puntuado.",
     "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."
@@ -24,6 +289,15 @@
     "black_hole_orb": "Descubre los otros 12 Orbes Celestiales."
   },
   "decreeUnlocks": {
+    "stage_master": "Llega al Acto 4.",
+    "flower_pot": "Llega al Acto 8.",
+    "satellite": "Acumula 400 de oro en una sola partida.",
+    "swift_andy": "Gana una partida gastando 48 turnos o menos. Los cambios de fichas gratuitos no cuentan.",
+    "lucky_sixes": "Consigue 10.000 puntos en una sola jugada.",
+    "the_idol": "Consigue 1.000.000 puntos en una sola jugada.",
+    "stuntman": "Consigue 100.000.000 puntos en una sola jugada.",
+    "cartomancer": "Descubre todos los Sellos del Destino.",
+    "astronomer": "Descubre todos los Orbes Celestiales.",
     "decree-blueprint": "Gana una partida.",
     "decree-brainstorm": "Gana una partida con al menos cinco Decretos.",
     "decree-heavenly-ordinance": "Puntúa un Yakuman.",
@@ -563,6 +837,42 @@
       "mythic": "Ordenanza Celestial"
     },
     "items": {
+      "stage_master": {
+        "name": "Maestro de Escena",
+        "description": "+25 Puntos y +1 Mult por cada Acto completado."
+      },
+      "flower_pot": {
+        "name": "Maceta",
+        "description": "×3 Mult mientras tengas las cuatro Flores distintas."
+      },
+      "satellite": {
+        "name": "Satélite",
+        "description": "+1 de Oro por cada familia de Orbes por encima del nivel 1 al final de cada ronda ganada."
+      },
+      "swift_andy": {
+        "name": "Andy Veloz",
+        "description": "+2 usos gratuitos de RECAMBIAR por ronda; −2 al tamaño del atril."
+      },
+      "lucky_sixes": {
+        "name": "Seises de la Suerte",
+        "description": "+6 Mult por cada ficha numérica de valor 6 jugada. Las fichas de Piedra no cuentan."
+      },
+      "the_idol": {
+        "name": "El Ídolo",
+        "description": "×3 Mult si juegas al menos dos fichas y todas tienen el mismo palo y valor impresos. Las fichas de Piedra invalidan la condición; las fichas Comodín conservan su identidad impresa."
+      },
+      "stuntman": {
+        "name": "Doble de Riesgo",
+        "description": "+250 Puntos; −3 al tamaño del atril."
+      },
+      "cartomancer": {
+        "name": "Cartomante",
+        "description": "Añade una oferta gratuita de un Sello del Destino al entrar en la Casa de Té. Renovar la tienda no repone esta oferta."
+      },
+      "astronomer": {
+        "name": "Astrónomo",
+        "description": "Añade una oferta gratuita de un Orbe Celestial al entrar en la Casa de Té. Renovar la tienda no repone esta oferta."
+      },
       "decree-half-suited": {
         "name": "Medio Palo",
         "description": "+20 Puntos"
@@ -1225,6 +1535,23 @@
       }
     }
   },
+  "codexFlora": {
+    "empowerment": "Cada Flor conservada también potencia las recompensas numéricas de los Decretos un 10%. Los bonos de conjunto cuentan los tipos distintos que conservas, no todas las Flores recogidas.",
+    "awakeningLifecycle": "El desbloqueo del rebrote se conserva en futuras partidas. La primera copia es normal; una vez desbloqueado, una copia repetida despierta esa Flor durante esta partida. Más copias no acumulan poderes ni añaden espacios. Una partida nueva reinicia los despertares, no el desbloqueo.",
+    "chrysanthemumSet": "Con las cuatro Flores, el factor despertado pasa a ×{{factor}} por grupo oculto. Las parejas y fichas sueltas no añaden pasos.",
+    "drought": "La Sequía suspende los poderes de las Flores, incluidos los despertares y la potenciación de Decretos, salvo que un Jardín Eterno activo las proteja. No elimina Flores, despertares obtenidos ni espacios de colección.",
+    "distinction": "Las Flores despiertan; las Estaciones no. Una Estación puede ser normal o corrupta. Las fichas de bonificación robadas se revelan y reemplazan automáticamente sin gastar un Turno.",
+    "corruption": "Desde el Acto 2, una Estación puede corromperse en lugar de otorgar su efecto normal. El Salón Fantasma permite la corrupción desde el Acto 1. Las Estaciones corruptas duran solo esta ronda; no son Estaciones despertadas.",
+    "interactionsTitle": "Interacciones entre Flores y Estaciones",
+    "interactionsIntro": "Estas combinaciones necesitan que el poder de la Flor y la Estación normal estén activos a la vez. No requieren despertar. Abre una pareja para consultar su receta opcional; una vista previa no otorga recompensas.",
+    "orchidSpring": "Robar un Viento o Dragón con Orquídea y Primavera activas otorga un robo adicional del Muro Muerto. Estos robos no se encadenan y un Muro Muerto vacío no crea fichas. Las fichas adicionales pueden superar temporalmente la capacidad del soporte.",
+    "bambooSummer": "Juega al menos cuatro terminales físicos (unos o nueves de palo) con Bambú y Verano activos. Las fichas reservadas por Verano vuelven al muro activo y los siguientes Veranos no podrán reducirlo durante esta ronda. Se mantiene el bono de puntuación.",
+    "plumAutumn": "Cada secuencia física puntuada puede devolver la ficha coincidente más reciente del río si la ronda continúa. Solo cuentan fichas que ya estaban en el río antes de jugar. Cada una se recupera una vez, sin copiarse; no cuentan caras virtuales o sustituidas.",
+    "chrysanthemumWinter": "Con Crisantemo activo, las jugadas ocultas ignoran la penalización de Invierno y conservan su regla de secuencias con un rango omitido. Las jugadas abiertas siguen pagando la penalización. La Sequía bloquea esta protección salvo que la Flor esté protegida.",
+    "catalystsTitle": "Pagar con una Flor",
+    "catalystsIntro": "Ciertas ofertas directas de Decretos en la Casa de Té permiten pagar una Flor en lugar de Oro. Elige la Flor que posees y confirma; es opcional y nunca se sacrifica automáticamente.",
+    "catalystsCost": "Perder la Flor también reduce los bonos de conjunto. La compra se bloquea si los espacios restantes no pueden contener tu colección. Al recogerla de nuevo recuperas su despertar durante esta partida. Sucesión Yakuman sigue necesitando dos Flores, así que pagar con una exige tener al menos tres antes."
+  },
   "flora": {
     "mutations": {
       "locked": "Reúne los cuatro tipos de flores en una partida para desbloquear la refloración. Después, roba otra vez una flor que ya tengas para despertarla.",
@@ -1820,6 +2147,7 @@
     "effect": "Efecto",
     "voidCost": "Coste de vacío",
     "timesUsed": "Veces usado",
+    "stakeVictory": "Victoria en {{stake}}",
     "runsWon": "Partidas ganadas",
     "unlock": "Desbloqueo:",
     "title": "Archivo de Manos",
@@ -2583,6 +2911,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "Muro Carmesí",
+        "theme": "Dragón",
+        "description": "La laca carmesí y los dragones dorados favorecen una estrategia centrada en Dragones, con menos espacio para Decretos.",
+        "unlock": "Gana en el Nivel Rojo o superior",
+        "modifiers": {
+          "0": "Los Dragones iniciales tienen Marcas de Mult (+4 Mult al puntuar)",
+          "1": "−1 espacio inicial de Decreto"
+        }
+      },
+      "obsidian_wall": {
+        "name": "Muro de Obsidiana",
+        "theme": "Viento",
+        "description": "La piedra oscura y los relieves plateados de viento recompensan una estrategia centrada en Vientos, con menos espacio para Decretos.",
+        "unlock": "Gana en el Nivel Negro o superior",
+        "modifiers": {
+          "0": "Los Vientos iniciales tienen Marcas de Bonificación (+30 Puntos al puntuar)",
+          "1": "−1 espacio inicial de Decreto"
+        }
+      },
       "green_felt": {
         "theme": "Clásico",
         "unlock": "Disponible desde el inicio",

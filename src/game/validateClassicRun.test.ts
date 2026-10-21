@@ -452,6 +452,7 @@ describe('untrusted save boundary', () => {
         [
           'playsThisRound',
           'tilesRedrawnThisRound',
+          'honorDiscardsThisRound',
           'patternPlayCounts',
         ].includes(key)
       ) {

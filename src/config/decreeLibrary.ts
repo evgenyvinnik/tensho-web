@@ -73,6 +73,7 @@ const SCALING_CONDITIONS: Record<string, ScalingSource> = {
   'per green tile': 'green_tiles',
   'per 1-tile': 'rank_one_tiles',
   'per 5-tile': 'rank_five_tiles',
+  'per natural suited 6-tile': 'rank_six_tiles',
   'per 9-tile': 'rank_nine_tiles',
   // Hand structure
   'per sequence': 'sequences',
@@ -114,6 +115,8 @@ function splitCap(condition: string | undefined): {
  * the difference between a conditional reward and an unconditional one.
  */
 const GATE_CONDITIONS: Record<string, GateCondition> = {
+  'if all four Flower variants': 'all_flower_variants',
+  'if identical natural faces': 'identical_natural_faces',
   // Tile composition
   'if all Manzu': 'all_manzu',
   'if all Pinzu': 'all_pinzu',
@@ -187,6 +190,20 @@ const SPECIAL_EFFECTS: Record<
   string,
   (value: number, description: string) => DecreeEffect
 > = {
+  'free Fate Seal on shop entry': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'shop_entry_offer',
+    modification: { itemType: 'FateSeal' },
+  }),
+  'free Celestial Orb on shop entry': (_value, description) => ({
+    type: 'rule_modification',
+    trigger: 'Passive',
+    description,
+    ruleId: 'shop_entry_offer',
+    modification: { itemType: 'CelestialOrb' },
+  }),
   'all Yaku ×1.5': (value, description) => ({
     type: 'yaku_modifier',
     trigger: 'Independent',
@@ -373,7 +390,9 @@ function convertEffect(
             ? 'owned_decrees'
             : effect.condition === 'per unique suit'
               ? 'held_suits'
-              : undefined,
+              : effect.condition === 'per upgraded Orb family'
+                ? 'upgraded_orb_families'
+                : undefined,
       }
 
     // Hand size and discard counts are round resources, carried as rule

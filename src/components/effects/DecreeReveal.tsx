@@ -23,6 +23,8 @@ import type { DecreeRarity } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
 import { DECREE_ICON_COLORS } from '../gameplay/gameplayTypes'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { DecreePortrait } from '../ui/DecreePortrait'
+import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 
 const RARITY_KEYS = {
   LocalEdict: 'common',
@@ -92,7 +94,7 @@ export function DecreeReveal({ paused = false }: { paused?: boolean }) {
         </span>
       ) : (
         <div
-          className={`w-full max-w-xs rounded-2xl border-2 bg-[#0b1b15]/95 p-5 text-center shadow-2xl ${
+          className={`max-h-[calc(100dvh-2rem)] w-full max-w-xs overflow-y-auto rounded-2xl border-2 bg-[#0b1b15]/95 p-5 text-center shadow-2xl ${
             reducedMotion ? '' : 'decree-scroll-rise'
           }`}
           style={{ borderColor: color, boxShadow: `0 0 40px ${color}80` }}
@@ -113,27 +115,38 @@ export function DecreeReveal({ paused = false }: { paused?: boolean }) {
               data-decree-reveal-glow={RARITY_GLOW[decree.rarity]}
               className="pointer-events-none absolute left-1/2 top-1/2 h-36 w-36 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
             />
-            <img
-              src={art.hasOwnArt ? art.src : getDecreeScrollIllustration(decree.rarity)}
-              alt=""
-              aria-hidden="true"
-              className="game-illustration absolute inset-0 h-full w-full object-contain"
+            <DecreePortrait
+              src={
+                art.hasOwnArt
+                  ? art.src
+                  : getDecreeScrollIllustration(decree.rarity)
+              }
+              edition={decree.edition}
+              className="absolute inset-0 h-full w-full"
             />
             {!art.hasOwnArt && (
               <span className="relative">
-                <DecreeUniqueIcon decreeId={decree.id} size={44} color={color} />
+                <DecreeUniqueIcon
+                  decreeId={decree.id}
+                  size={44}
+                  color={color}
+                />
               </span>
             )}
           </div>
           <h2 className="font-decorative text-xl font-bold text-[var(--color-golden-yellow)]">
             {name}
           </h2>
-          <p className="mt-1 text-xs font-black uppercase tracking-widest" style={{ color }}>
+          <p
+            className="mt-1 text-xs font-black uppercase tracking-widest"
+            style={{ color }}
+          >
             {t(`decrees.rarity.${RARITY_KEYS[decree.rarity]}`)}
           </p>
           <p className="mt-3 text-sm leading-relaxed text-[var(--color-beige-white)]">
             {itemText.description('decrees', decree)}
           </p>
+          <DecreeModifierDetails decree={decree} />
           <button
             type="button"
             autoFocus

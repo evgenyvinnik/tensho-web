@@ -194,7 +194,9 @@ for (const language of ['en', 'fr', 'ja'])
     await showsRun(start)
     expect(start.state.handTiles).toHaveLength(rackSize(start))
     // Exactly the two actions, labelled in the player's language.
-    await expect(page.locator('[data-action-bar] button')).toHaveCount(2)
+    await expect(
+      page.locator('[data-action-bar] [data-game-action]')
+    ).toHaveCount(2)
     await expect(play).toHaveText(copy.gameplay.playHand)
     await expect(redraw).toContainText(copy.gameplay.redraw)
     expect(await noOverflow()).toBe(true)

@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "Temel Fikir",
+    "titleTilesOverview": "Taşları Tanıyalım",
+    "titleSuits": "Üç Sayılı Taş Türü",
+    "titleTerminals": "Uç Taşlar ve Sade Taşlar",
+    "titleWinds": "Rüzgâr Taşları",
+    "titleDragons": "Ejderha Taşları",
+    "titleBonus": "Bonus Taşları: Çiçekler ve Mevsimler",
+    "titleMeldsOverview": "Grup Nedir?",
+    "titleSequences": "Seriler (順子 / Shuntsu)",
+    "titleTriplets": "Üçlüler (刻子 / Koutsu)",
+    "titleQuads": "Dörtlüler (槓子 / Kantsu)",
+    "titlePairs": "Çiftler (雀頭 / Jantou)",
+    "titleWinningHand": "Kazanan Elin Yapısı",
+    "titleSpecialHands": "Özel Kazanan El Biçimleri",
+    "titleYakuIntro": "Yaku — Puan Çarpanları",
+    "titleYakuExamples": "Yaygın Yaku Örnekleri",
+    "titleActsRounds": "Perdeler ve Turlar",
+    "titleBossMandates": "Patron Hükümleri",
+    "titleDecreesIntro": "Ferman Nedir?",
+    "titleDecreeCategories": "Ferman Kategorileri",
+    "titleDecreeRarities": "Ferman Nadirlikleri",
+    "titleDecreeSlots": "Ferman Yuvalarını Yönetmek",
+    "titleHierarchy": "Beş Katmanlı Hiyerarşi",
+    "titleTips": "Başarı İçin İpuçları",
+    "titleMoreTips": "İleri Düzey İpuçları",
+    "category": "Kategori",
+    "types": "Türler",
+    "count": "Sayı",
+    "numberedSuits": "Sayılı Taş Türleri",
+    "numberedComposition": "3 tür × 9 sayı × 4 kopya",
+    "windComposition": "4 rüzgâr × 4 kopya",
+    "dragonComposition": "3 ejderha × 4 kopya",
+    "bonusTiles": "Bonus Taşları",
+    "bonusComposition": "4 çiçek + 4 mevsim",
+    "tileSet": "Standart takımda 144 taş bulunur. Seçtiğiniz Duvar ve koşu etkileri, takımın içeriğini değiştirebilir:",
+    "terminalRanks": "Üzerinde <strong>1 veya 9</strong> olan taşlar",
+    "simpleRanks": "Üzerinde <strong>2 ile 8 arasında sayı</strong> olan taşlar",
+    "tileValue": "Grup içindeyken her biri <strong>{{points}} puan</strong> değerindedir",
+    "windOrder": "Rüzgârlar Doğu, Güney, Batı, Kuzey sırasıyla gösterilir. Dördünün de temel puan değerleri aynıdır.",
+    "windPoints": "Rüzgârlar, her biri {{points}} puan değerinde olan Onur taşlarıdır. Bir grubun içindeyken taş başına {{groupPoints}} puan verirler.",
+    "honorGroups": "Onur taşları sayı serileri oluşturamaz. Aynı Onur taşları çift, üçlü veya dörtlü oluşturabilir.",
+    "dragonPoints": "Ejderhalar, her biri {{points}} puan değerinde olan Onur taşlarıdır. Puanlanan her Ejderha Çarpana +{{mult}}, grup içindeyse +{{groupMult}} ekler. Sayı serileri oluşturamazlar.",
+    "flowerDuration": "Koşunun tamamı boyunca kalır",
+    "seasonDuration": "Yalnızca mevcut turda etkindir",
+    "importantRules": "Önemli kurallar:",
+    "quadMechanics": "Dörtlünün işleyişi:",
+    "quadBonus": "Taş etkilerinden önce +{{points}} grup puanı ve +{{mult}} şekil Çarpanı ekler.",
+    "quadRefill": "Dörtlüyü seçtiğiniz elin bir parçası olarak oynayın. Oynadıktan sonra ıstaka yeniden doldurulur; dörtlü ilan etmek için ayrı bir eylem yoktur.",
+    "winningFormula": "<melds>4 Grup</melds> + <pair>1 Çift</pair> = <tiles>Dörtlülerin ek taşları hariç 14 Taş</tiles>",
+    "winningExample": "Dört grup; seri, üçlü veya dörtlü olabilir. Her dörtlü, normal 14 taşlık yapıya bir taş ekler. İşte dörtlü içermeyen bir örnek:",
+    "sevenPairs": "Tam olarak <strong>7 farklı çift</strong>: üçlü veya seri gerektirmeyen 14 taş.",
+    "thirteenOrphans": "Her uç taşından ve Onur taşından birer tane (13 farklı taş), ayrıca bunlardan birinin eşi: 14 taşlık bir <strong>Yakuman</strong> eli.",
+    "wallSize": "Duvar, oynanan veya değiştirilen taşların yerine yenilerini sağlar. Kalan taş sayısı Duvarınıza, başlangıç ıstakanıza ve etkilere bağlıdır; kalan taş sayacını izleyin.",
+    "yakuTiers": "Mevcut katalogda dört kademeye ayrılmış {{count}} Yaku bulunur. Yükseltmeler ve etkiler uygulanmadan önceki temel çarpanları şöyledir:",
+    "tier": "Kademe",
+    "tierNumber": "Kademe {{tier}}",
+    "yakumanTier": "Kademe {{tier}} (Yakuman)",
+    "multiplierRange": "Temel çarpan aralığı",
+    "example": "Örnek",
+    "allSimples": "Yalnızca 2–8 sayılı taşları içerir; uç taşı veya Onur taşı içermez.",
+    "allTriplets": "Dört grubun hepsi üçlü veya dörtlüdür; yanında bir çift bulunur ve hiç seri yoktur.",
+    "fullFlush": "Yalnızca tek bir sayılı taş türünü içerir; Onur taşı içermez.",
+    "roundType": "Tur Türü",
+    "japanese": "Japonca",
+    "targetMultiplier": "Hedef Çarpanı",
+    "baseTarget": "×{{mult}} (temel hedef)",
+    "structural": "Yapısal (形法令)",
+    "structuralHelp": "Geçerli el koşullarını değiştirir",
+    "tileIdentity": "Taş Kimliği (变牌法令)",
+    "tileIdentityHelp": "Taşların nasıl sınıflandırıldığını değiştirir",
+    "yakuDoctrine": "Yaku Öğretisi (役变法令)",
+    "yakuDoctrineHelp": "Yaku kurallarını değiştirir",
+    "entropy": "Entropi ve Kader (天运法令)",
+    "entropyHelp": "Taş çekmeyi ve tempoyu değiştirir",
+    "scaling": "Gelişim (修行法令)",
+    "scalingHelp": "Belirli oyun tarzlarını ödüllendirir",
+    "rarity": "Nadirlik",
+    "name": "Ad",
+    "powerLevel": "Güç Düzeyi",
+    "localPower": "Küçük bonuslar",
+    "regionalPower": "Orta düzey etkiler",
+    "imperialPower": "Kurallarda güçlü değişiklikler",
+    "heavenlyPower": "Koşunun gidişatını belirleyen güç",
+    "raritySources": "Nadirlik, dükkânda bulunma olasılığını ve fiyatı etkiler. Cennetin Emri, sıradan dükkân tekliflerinden değil, özel kaynaklardan gelir. Birbirini destekleyen etkiler oluşturun ve her teklifin gerçek fiyatını kontrol edin.",
+    "slotBaseline": "Varsayılan olarak 5 Ferman yuvası vardır, ancak seçtiğiniz masa ve koşu etkileri bunu değiştirebilir. Ek yuvalar şu kaynaklardan gelebilir:",
+    "heaven": "Gök (Mevsimler)",
+    "court": "Saray (Fermanlar)",
+    "nature": "Doğa (Çiçekler)",
+    "table": "Masa (Taşlar)",
+    "grammar": "Dilbilgisi (Yaku)",
+    "hierarchyOverride": "Kurallar çeliştiğinde, daha yüksek yetkili kurallar daha düşük yetkili olanlardan önce gelir. Her etkinin özel koşullarını kontrol edin.",
+    "tipScoreTitle": "İşe yarayan eller oynayın",
+    "tipScore": "En fazla {{max}} taştan oluşan grupların veya tam bir Mahjong elinin puan önizlemelerini karşılaştırın. Yalnızca mükemmel eli beklemek yerine Hamlelerinizi hedefe yaklaşmak için kullanın.",
+    "tipSynergyTitle": "Birbirini destekleyen etkiler kurun",
+    "tipSynergy": "Birlikte çalışan Fermanlar, tek başına güçlü olan Fermanlardan daha etkili olabilir.",
+    "tipEconomyTitle": "Ekonomiyi dengeleyin",
+    "tipEconomy": "Altın biriktirmek, turu tamamladığınızda faiz kazandırır; ancak bir yükseltme sonraki hedefe ulaşmanızı sağlayacaksa harcayın. Gerçek fiyatları ve Sat değerlerini kontrol edin.",
+    "tipFlowersTitle": "Çiçek toplayın",
+    "tipFlowers": "Çiçekler koşu boyunca kalır. İki farklı Çiçek bir Ferman yuvası verir; dördünü de toplamak etkilerini güçlendirir.",
+    "tipYakuTitle": "Yaku için plan yapın",
+    "tipYaku": "Istakanıza ve Fermanlarınıza uygun Yakular seçin. Tam bir Mahjong eli, daha yüksek puanlar için Yakuları birleştirebilir.",
+    "tipEfficiencyTitle": "Taş verimliliği",
+    "tipEfficiency": "Birden fazla grubu tamamlayabilecek taşları tutun. Tek kalan taşları değiştirmek için YENİDEN ÇEK kullanın; Hamle bedelini ve ücretsiz yeniden çekişlerinizi hesaba katın.",
+    "tipWallTitle": "Kalan taşları sayın",
+    "tipWall": "Belirli bir taşın peşine düşmeden önce nehri ve duvarda kalan taşları kontrol edin. Yeniden çekişle değiştirilen taşlar turun sonuna kadar nehirde kalır.",
+    "tipMandateTitle": "Hükümleri erkenden okuyun",
+    "tipMandate": "Yaklaşan Patron Hükmünü okuyun ve onun kısıtlaması altında puan kazanabilecek bir düzen hazırlayın.",
+    "congratulations": "<strong>Tebrikler!</strong> Artık Tensho'nun temellerini biliyorsunuz.",
+    "farewell": "Göğe yükselişinizde taşlar sizden yana olsun!"
+  },
+  "codexEconomy": {
+    "payout": "Tur tamamlama temel ödülü Küçük için 3, Büyük için 5, Patron için 10 Altındır; hedefi aşan puana göre artmaz. Bahisler Küçük ödülünü kaldırabilir; Fermanlar ve Alametler son ödemeyi değiştirebilir.",
+    "interest": "Faiz, tur ödülü ödenmeden önceki Altından hesaplanır: her 5 Altına 1, başlangıç üst sınırı 5. Beratlar ve Alametler sınırı yükseltebilir; bazı Alametler faizi engeller. Yenilgide faiz ödenmez.",
+    "sale": "Bir Fermanın gerçek değerini Sat düğmesinden kontrol edin. Çiçekle ödenen veya ücretsiz alınan Fermanlar 0 Altına satılabilir; Ebedi Fermanlar satılamaz. Satmak etkilerini kaldırır ve kullandığı yuvayı boşaltır.",
+    "prices": "Her teklifin görünen fiyatını ve güncel yenileme ücretini esas alın. İndirimler, sürümler, Beratlar ve diğer etkiler fiyatları değiştirebilir. Yenileme, alınmış Beratları veya Kart Falcısının ücretsiz teklifini geri getirmez."
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "İlk Adımlar",
+      "description": "Perde 4’e ulaşın."
+    },
+    "ascending": {
+      "name": "Yükseliş",
+      "description": "Perde 8’e ulaşın."
+    },
+    "victory": {
+      "name": "Zafer",
+      "description": "Bir koşu kazanın."
+    },
+    "redPath": {
+      "name": "Kızıl Yol",
+      "description": "Kırmızı Seviye veya üzerinde bir koşu kazanın."
+    },
+    "blackPath": {
+      "name": "Kara Yol",
+      "description": "Siyah Seviye veya üzerinde bir koşu kazanın."
+    },
+    "goldenPath": {
+      "name": "Altın Yol",
+      "description": "Altın Seviyede bir koşu kazanın."
+    },
+    "tileMaster": {
+      "name": "Taş Ustası",
+      "description": "Tüm koşularınızda toplam 2.500 taş oynayın."
+    },
+    "discardArtist": {
+      "name": "Değişim Sanatçısı",
+      "description": "Tüm koşularınızda toplam 2.500 taşı yeniden çekin."
+    },
+    "fortuneBuilt": {
+      "name": "Biriken Servet",
+      "description": "Tek koşuda 400 altın bulundurun."
+    },
+    "wildFlush": {
+      "name": "Jokerli Renk",
+      "description": "Tamamı Joker taşlardan oluşan bir Yarı Renk ile puan kazanın."
+    },
+    "speedRun": {
+      "name": "Hızlı Koşu",
+      "description": "En fazla 48 hamle harcayarak bir koşu kazanın. Ücretsiz taş yenilemeleri sayılmaz."
+    },
+    "charterCollector": {
+      "name": "Berat Koleksiyoncusu",
+      "description": "Tek bir koşuda Perde 5 bitene kadar 5 İmparatorluk Beratı satın alın."
+    },
+    "shattered": {
+      "name": "Paramparça",
+      "description": "Tek bir hamlede 2 Cam taşı kırın."
+    },
+    "royalHand": {
+      "name": "Kraliyet Eli",
+      "description": "Bir Yakuman ile puan kazanın."
+    },
+    "retrograde": {
+      "name": "Geri Hareket",
+      "description": "Bir Yaku’yu 10. seviyeye yükseltin."
+    },
+    "keeperOfWinds": {
+      "name": "Rüzgârların Bekçisi",
+      "description": "Tek bir koşuda toplam 10 Rüzgâr Yaku’su ile puan kazanın."
+    },
+    "masterOfSilence": {
+      "name": "Sessizliğin Ustası",
+      "description": "Hiç Onur taşı atmadan 3 tur kazanın."
+    },
+    "sealBearer": {
+      "name": "Mühür Taşıyıcısı",
+      "description": "10 Kader Mührü kullanın."
+    },
+    "score10k": {
+      "name": "On Bin",
+      "description": "Tek oynayışta 10.000 puan kazanın."
+    },
+    "score1m": {
+      "name": "Bir Milyon",
+      "description": "Tek oynayışta 1.000.000 puan kazanın."
+    },
+    "score100m": {
+      "name": "Yüz Milyon",
+      "description": "Tek oynayışta 100.000.000 puan kazanın."
+    },
+    "sealScholar": {
+      "name": "Mühür Bilgini",
+      "description": "Tüm Kader Mühürlerini keşfedin."
+    },
+    "starGazer": {
+      "name": "Yıldız Gözlemcisi",
+      "description": "Tüm Göksel Küreleri keşfedin."
+    },
+    "voidWalker": {
+      "name": "Hiçlik Gezgini",
+      "description": "Tüm Hiçlik Tomarlarını keşfedin."
+    },
+    "charterComplete": {
+      "name": "Tüm Beratlar",
+      "description": "Tüm İmparatorluk Beratlarını keşfedin."
+    },
+    "archiveComplete": {
+      "name": "Tam Arşiv",
+      "description": "Arşivin tamamını keşfedin."
+    },
+    "archiveCompletePlus": {
+      "name": "Tam Arşiv +",
+      "description": "Her Masayla Altın Seviyede kazanın."
+    },
+    "archiveCompletePlusPlus": {
+      "name": "Tam Arşiv ++",
+      "description": "Her Ferman için altın çıkartma kazanın."
+    },
+    "ruleBender": {
+      "name": "Kuralları Esneten",
+      "description": "Bir Mücadele koşusunu tamamlayın."
+    },
+    "ruleBreaker": {
+      "name": "Kuralları Yıkan",
+      "description": "Tüm Mücadeleleri tamamlayın."
+    },
+    "deckMinimalist": {
+      "name": "Küçük Duvar",
+      "description": "Duvarınızı 20 veya daha az taşa indirin."
+    },
+    "deckMaximalist": {
+      "name": "Büyük Duvar",
+      "description": "Duvarınızı en az 80 taşa çıkarın."
+    },
+    "purist": {
+      "name": "Safçı",
+      "description": "Mağazayı yenilemeden bir koşu kazanın."
+    },
+    "title": "Göksel Ödüller",
+    "shortTitle": "Ödüller",
+    "progress": "İlerleme",
+    "earned": "Başarım açıldı",
+    "unlocks": "Açılan ödül",
+    "categories": {
+      "progression": "Yolculuk",
+      "cumulative": "Dönüm noktaları",
+      "skill": "Beceri",
+      "scoring": "Puan",
+      "collection": "Koleksiyon",
+      "mastery": "Ustalık",
+      "challenge": "Meydan okuma"
+    }
+  },
   "observatory": {
     "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik, puan kazanan her Yaku ile eşleşir.",
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
@@ -24,6 +289,15 @@
     "black_hole_orb": "Diğer 12 Göksel Kürenin tümünü keşfet."
   },
   "decreeUnlocks": {
+    "stage_master": "Perde 4’e ulaşın.",
+    "flower_pot": "Perde 8’e ulaşın.",
+    "satellite": "Tek koşuda 400 altın bulundurun.",
+    "swift_andy": "En fazla 48 hamle harcayarak bir koşu kazanın. Ücretsiz taş yenilemeleri sayılmaz.",
+    "lucky_sixes": "Tek oynayışta 10.000 puan kazanın.",
+    "the_idol": "Tek oynayışta 1.000.000 puan kazanın.",
+    "stuntman": "Tek oynayışta 100.000.000 puan kazanın.",
+    "cartomancer": "Tüm Kader Mühürlerini keşfedin.",
+    "astronomer": "Tüm Göksel Küreleri keşfedin.",
     "decree-blueprint": "Bir koşuyu kazan.",
     "decree-brainstorm": "En az beş Fermanın varken bir koşuyu kazan.",
     "decree-heavenly-ordinance": "Bir Yakuman ile puan kazan.",
@@ -850,6 +1124,42 @@
       "mythic": "Cennetin Emri"
     },
     "items": {
+      "stage_master": {
+        "name": "Sahne Ustası",
+        "description": "Tamamlanan her Perde için +25 Puan ve +1 Çarpan."
+      },
+      "flower_pot": {
+        "name": "Çiçek Saksısı",
+        "description": "Dört farklı Çiçeğin tümüne sahipken Çarpan ×3."
+      },
+      "satellite": {
+        "name": "Uydu",
+        "description": "Kazanılan her turun sonunda, seviyesi 1’in üzerinde olan her Göksel Küre ailesi için +1 Altın."
+      },
+      "swift_andy": {
+        "name": "Çevik Andy",
+        "description": "Her tur +2 ücretsiz YENİDEN ÇEK hakkı; ıstaka kapasitesi −2."
+      },
+      "lucky_sixes": {
+        "name": "Şanslı Altılılar",
+        "description": "Oynanan her 6 numaralı sayı taşı için +6 Çarpan. Taş İşaretli taşlar sayılmaz."
+      },
+      "the_idol": {
+        "name": "Put",
+        "description": "En az iki taş oynandığında ve oynanan tüm taşların basılı türü ve değeri aynı olduğunda Çarpan ×3. Taş İşaretli taşlar koşulu bozar; Joker taşlar basılı kimliklerini korur."
+      },
+      "stuntman": {
+        "name": "Dublör",
+        "description": "+250 Puan; ıstaka kapasitesi −3."
+      },
+      "cartomancer": {
+        "name": "Kart Falcısı",
+        "description": "Çay Evi’ne girdiğinde bir ücretsiz Kader Mührü teklifi ekler. Mağazayı yenilemek bu teklifi yenilemez."
+      },
+      "astronomer": {
+        "name": "Gökbilimci",
+        "description": "Çay Evi’ne girdiğinde bir ücretsiz Göksel Küre teklifi ekler. Mağazayı yenilemek bu teklifi yenilemez."
+      },
       "decree-blueprint": {
         "name": "Taslak",
         "description": "Sağındaki Fermanın etkisini kopyalar."
@@ -1511,6 +1821,23 @@
         "description": "Ardışık turlarda puan kazandıran her Yaku, serisindeki önceki her tur için ×1,2 ile bileşik çarpılır (toplam en fazla ×4). O Yaku olmadan biten veya atlanan bir tur seriyi bozar. Sınır, Çiçek güçlendirmesinden öncedir."
       }
     }
+  },
+  "codexFlora": {
+    "empowerment": "Elde tutulan her Çiçek, Fermanların sayısal ödüllerini de %10 güçlendirir. Set bonusları şimdiye kadar toplanan tüm Çiçekleri değil, şu anda elde bulunan farklı türleri sayar.",
+    "awakeningLifecycle": "Yeniden çiçeklenme erişimi sonraki koşularda da korunur. İlk kopya normaldir; erişim açıldıktan sonra aynı Çiçeği yeniden çekmek onu bu koşu için uyandırır. Sonraki kopyalar güçleri biriktirmez veya yuva eklemez. Yeni koşu uyanışları sıfırlar, erişimi değil.",
+    "chrysanthemumSet": "Dört Çiçeğin tümü eldeyken uyanmış çarpan, her kapalı grup için ×{{factor}} olur. Çiftler ve tek taşlar kademe eklemez.",
+    "drought": "Kuraklık, etkin bir Ebedi Bahçe korumuyorsa uyanışlar ve Ferman güçlendirmesi dahil Çiçek güçlerini baskılar. Çiçekleri, kazanılmış uyanışları veya koleksiyon yuvalarını silmez.",
+    "distinction": "Çiçekler uyanır; Mevsimler uyanmaz. Bir Mevsim normal veya yozlaşmış olabilir. Çekilen bonus taşları Hamle harcamadan otomatik olarak açılır ve yerlerine yenileri çekilir.",
+    "corruption": "Perde 2’den itibaren bir Mevsim normal etkisini vermek yerine yozlaşabilir. Hayalet Salonu yozlaşmaya Perde 1’den itibaren izin verir. Yozlaşmış Mevsimler yalnızca bu raundu etkiler; uyanmış Mevsimler değildir.",
+    "interactionsTitle": "Çiçek–Mevsim etkileşimleri",
+    "interactionsIntro": "Bu birleşimler, Çiçeğin gücü ve normal Mevsimin aynı anda etkin olmasını gerektirir. Uyanış gerekmez. İsteğe bağlı ayrıntıları görmek için eşleşmeyi açın; yalnızca önizleme yapmak ödül kazandırmaz.",
+    "orchidSpring": "Orkide ve İlkbahar etkinken bir Rüzgâr veya Ejderha çekmek, Ölü Duvardan bir ek çekiş verir. Ek çekişler zincir oluşturmaz; boş Ölü Duvar taş yaratmaz. Ek taşlar, raf kapasitesini geçici olarak aşabilir.",
+    "bambooSummer": "Bambu ve Yaz etkinken en az dört fiziksel uç taşı (sayı renklerinin birleri veya dokuzları) oynayın. Yazın ayırdığı taşlar canlı duvara döner ve sonraki Yazlar bu rauntta duvarı tekrar küçültemez. Puan bonusu korunur.",
+    "plumAutumn": "Puanlanan her fiziksel sıra, raunt devam ederse nehirdeki en son eşleşen taşı geri getirebilir. Yalnızca oyun öncesinde nehirde bulunan taşlar uygundur. Her taş bir kez geri alınır, kopyalanmaz; sanal veya değiştirilmiş yüzler sayılmaz.",
+    "chrysanthemumWinter": "Kasımpatı etkinken kapalı oyunlar, Kışın bir sayı atlayan sıra kuralını koruyarak puan cezasını yok sayar. Açık oyunlar cezayı almaya devam eder. Çiçek korunmuyorsa Kuraklık bu korumayı engeller.",
+    "catalystsTitle": "Çiçekle ödeme",
+    "catalystsIntro": "Çayhanedeki bazı doğrudan Ferman teklifleri Altın yerine Çiçek kabul eder. Sahip olduğunuz belirli bir Çiçeği seçip onaylayın; bu isteğe bağlıdır ve asla otomatik bir fedakârlık değildir.",
+    "catalystsCost": "Çiçeği kaybetmek set bonuslarını da azaltır. Kalan yuvalar düzeninizi taşıyamıyorsa satın alma engellenir. Çiçeği tekrar toplamak, bu koşuda kazandığı uyanışı geri getirir. Yakuman Veraseti hâlâ iki Çiçek gerektirir; biriyle ödemek için önceden en az üç Çiçek gerekir."
   },
   "flora": {
     "mutations": {
@@ -2371,6 +2698,7 @@
     "effect": "Etki",
     "voidCost": "Boşluk maliyeti",
     "timesUsed": "Kullanım sayısı",
+    "stakeVictory": "Zafer: {{stake}}",
     "runsWon": "Kazanılan oyun",
     "unlock": "Kilit açma:",
     "title": "Eller Arşivi",
@@ -2399,6 +2727,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "Kızıl Duvar",
+        "theme": "Ejderha",
+        "description": "Kızıl lake ve altın ejderhalar, Fermanlara daha az yer bırakarak Ejderha odaklı bir stratejiyi destekler.",
+        "unlock": "Kırmızı Seviye veya üstünde kazan",
+        "modifiers": {
+          "0": "Başlangıç Ejderhalarında Çarpan İşareti bulunur (puan kazandırdıklarında +4 Çarpan)",
+          "1": "Başlangıç Ferman yuvası −1"
+        }
+      },
+      "obsidian_wall": {
+        "name": "Obsidyen Duvar",
+        "theme": "Rüzgâr",
+        "description": "Koyu taş ve gümüş rüzgâr oymaları, Fermanlara daha az yer bırakarak Rüzgâr odaklı bir stratejiyi ödüllendirir.",
+        "unlock": "Siyah Seviye veya üstünde kazan",
+        "modifiers": {
+          "0": "Başlangıç Rüzgârlarında Bonus İşareti bulunur (puan kazandırdıklarında +30 Puan)",
+          "1": "Başlangıç Ferman yuvası −1"
+        }
+      },
       "green_felt": {
         "theme": "Klasik",
         "unlock": "Başlangıçtan itibaren açık",

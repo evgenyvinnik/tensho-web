@@ -7,6 +7,10 @@
 import { useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
 import { CodexCategory, TileGroup, InfoBox, DataTable } from './CodexComponents'
+import {
+  FloraCodex,
+  FLORA_CODEX_SECTIONS,
+} from '../../screens/tutorial/FloraCodex'
 
 /**
  * Build codex categories and content
@@ -894,5 +898,17 @@ export function useCodexContent(): CodexCategory[] {
     },
   ]
 
-  return categories
+  return [
+    ...categories,
+    {
+      id: 'flora',
+      title: t('codex.flora'),
+      icon: 'flower',
+      sections: FLORA_CODEX_SECTIONS.map(([id, key, section]) => ({
+        id,
+        title: t(key),
+        content: <FloraCodex section={section} />,
+      })),
+    },
+  ]
 }

@@ -6,9 +6,43 @@ import {
   type PublicPageId,
 } from './content'
 import { getTileIdCounter } from '../core/Tile'
+import { SWIFT_CLEAR_SPARE_TURNS } from '../game/playRules'
 import { normalizeSiteUrl, renderPublicPage, renderSitemap } from './render'
 
 describe('static public guides', () => {
+  it('numbers the current learning sequence continuously and states the Honor exception', () => {
+    expect(
+      PUBLIC_PAGES['how-to-play'].sections.map((section) =>
+        Number(section.title.split('.')[0])
+      )
+    ).toEqual([1, 2, 3, 4, 5, 6])
+    const doc = new DOMParser().parseFromString(
+      renderPublicPage('how-to-play'),
+      'text/html'
+    )
+    expect(doc.getElementById('play')?.textContent).toContain(
+      'Loose numbered tiles score half their base points, rounded down'
+    )
+    expect(doc.getElementById('play')?.textContent).toContain(
+      'Winds and Dragons keep their base points even when ungrouped'
+    )
+  })
+
+  it('limits swift-clear rewards to non-Boss rounds and excludes deferred modes', () => {
+    const about = new DOMParser().parseFromString(
+      renderPublicPage('about'),
+      'text/html'
+    )
+    expect(about.getElementById('the-round')?.textContent).toContain(
+      `Small or Large round with at least ${SWIFT_CLEAR_SPARE_TURNS} Turns left`
+    )
+    expect(about.getElementById('the-round')?.textContent).toContain(
+      'Boss rounds do not grant this swift-clear reward'
+    )
+    expect(renderPublicPage('faq')).toContain(
+      'Challenge Runs are not available in this release'
+    )
+  })
   it.each(Object.keys(PUBLIC_PAGES) as PublicPageId[])(
     '%s contains readable content, canonical metadata and valid local assets',
     (id) => {

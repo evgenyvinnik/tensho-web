@@ -51,6 +51,8 @@ export interface ArchiveEntry {
   timesUsed: number
   /** Number of runs won with this item active/owned */
   timesWonWith: number
+  /** Proven victory tiers while held at settlement; absent in older profiles. */
+  wonStakeTiers?: number[]
   /** Whether the item is unlocked for appearance */
   isUnlocked: boolean
   /** Optional unlock condition description */

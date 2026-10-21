@@ -17,6 +17,7 @@ import type { TileSize } from '../../styles/theme'
 import { DECREE_ICON_COLORS } from '../gameplay/gameplayTypes'
 import { decreeModifierText } from '../../i18n/decreeModifiers'
 import { StickerBadge } from '../ui/StickerBadge'
+import { DecreePortrait } from '../ui/DecreePortrait'
 
 export function OfferArt({
   offering,
@@ -25,7 +26,7 @@ export function OfferArt({
   emblemSize,
   showStickers = false,
 }: {
-  offering: Pick<TeaHouseOffering, 'itemType' | 'item'>
+  offering: Pick<TeaHouseOffering, 'itemType' | 'item' | 'edition'>
   large?: boolean
   tileSize?: TileSize
   /** Pixel size of the emblem drawn over a family's shared art. */
@@ -40,12 +41,14 @@ export function OfferArt({
       const art = getItemArt('decrees', decree.id)
       return (
         <span className={`relative flex items-center justify-center ${size}`}>
-          <img
-            src={art.hasOwnArt ? art.src : getDecreeScrollIllustration(decree.rarity)}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            className="game-illustration absolute inset-0 h-full w-full object-contain"
+          <DecreePortrait
+            src={
+              art.hasOwnArt
+                ? art.src
+                : getDecreeScrollIllustration(decree.rarity)
+            }
+            edition={decree.edition ?? offering.edition}
+            className="absolute inset-0 h-full w-full"
           />
           {!art.hasOwnArt && (
             <span className="relative">
@@ -63,7 +66,11 @@ export function OfferArt({
     case 'Tile':
       return (
         <span className={`flex items-center justify-center ${size}`}>
-          <TileImage tile={offering.item as Tile} size={tileSize} showTooltip={false} />
+          <TileImage
+            tile={offering.item as Tile}
+            size={tileSize}
+            showTooltip={false}
+          />
         </span>
       )
     default: {

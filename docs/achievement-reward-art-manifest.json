@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-21",
+  "generator": "built-in image_gen; backend model ID not exposed",
+  "mode": "new image, one call per asset",
+  "processing": "cwebp only: 384×384 quality 88, preserve alpha for Decrees; 1280×720 quality 84 for table environments. Generated originals retained at their tool-returned paths.",
+  "assets": [
+    {
+      "id": "stage_master",
+      "path": "assets/illustrations/rewards/stage_master.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-60774eb8-8aa0-4ff9-92e9-b1fb4eeef5ba.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Stage Master, an ornate miniature Asian theater mask in warm ivory and crimson lacquer, framed by a curling jade-and-gold theatrical fan. A small stepped gold stage plinth joins the mask into one compact collectible. Emphasize the mask as the large focal silhouette."
+    },
+    {
+      "id": "flower_pot",
+      "path": "assets/illustrations/rewards/flower_pot.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-2efcdfb3-be13-49e7-89a8-3c4ac67dd902.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Flower Pot, a rounded ornate dark jade planter with gold cloud handles holding one harmonious bouquet of pink plum blossom, ivory orchid, golden chrysanthemum and slender bamboo leaves. The flower arrangement and pot form a compact single silhouette, distinct floral crown, large readable blossoms."
+    },
+    {
+      "id": "satellite",
+      "path": "assets/illustrations/rewards/satellite.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-3cfd95c6-927b-4dfd-8ba5-70ad01ca606d.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Satellite, an antique miniature celestial orrery, a large creamy jade moon held within two golden orbit rings, with three tiny luminous moon pearls around it, standing on a compact dark jade imperial pedestal. An ancient astronomer's magical instrument, not a modern spacecraft."
+    },
+    {
+      "id": "swift_andy",
+      "path": "assets/illustrations/rewards/swift_andy.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-4b983f5b-688b-41ab-9299-cfb4aa80e65e.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Swift Andy, a tiny ivory-and-jade crane with elegant swept-back golden wings flying above a curl of crimson silk, a golden wind spiral unifies the silhouette. A charming carved good-luck talisman conveying swift movement, no human figure, no lettering."
+    },
+    {
+      "id": "lucky_sixes",
+      "path": "assets/illustrations/rewards/lucky_sixes.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-1095b336-b3fb-476e-b723-d10ce3c343a3.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Lucky Sixes, one chunky ivory mahjong tile with exactly six deep jade circular pips arranged in two columns of three, cradled in an ornate warm gold lucky-knot frame with a short crimson tassel. The six circular pips must be large and readable; no numbers or text."
+    },
+    {
+      "id": "the_idol",
+      "path": "assets/illustrations/rewards/the_idol.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-00abcde6-d0bd-4504-9994-45adf40b4552.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: The Idol, a small original guardian-lion idol carved from luminous ivory and dark jade, sitting symmetrically on a gold lotus plinth. It holds two identical tiny ivory tiles with matching jade round inlays together at its chest, representing matching faces. Benign majestic face, sculpted curling mane, not a real religious figure."
+    },
+    {
+      "id": "stuntman",
+      "path": "assets/illustrations/rewards/stuntman.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-4f70aa76-1334-46b0-8b1f-d89a8c44bcc9.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Stuntman, an elegant miniature jade-and-ivory acrobat figurine balancing confidently on one hand atop a small golden pedestal, curved crimson sash joining the figure and base in a dramatic compact arc. Clearly human-shaped carved toy, one head, two arms, two legs, full figure visible, readable strong silhouette."
+    },
+    {
+      "id": "cartomancer",
+      "path": "assets/illustrations/rewards/cartomancer.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-9b7aa597-190a-485a-bd14-ad2a9e68cb3a.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Cartomancer, a fan of three ivory fortune-scroll tablets emerging from a small jade lacquer case, with a crimson sealing cord and gold tassel. One large luminous circular seal is the focal point on the central tablet, abstract cloud and star decoration only, no writing or lettering. Magical scholarly artifact, clear compact silhouette."
+    },
+    {
+      "id": "astronomer",
+      "path": "assets/illustrations/rewards/astronomer.webp",
+      "transparent": true,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-7051f947-fab5-485b-8f45-0450ed83fad1.png",
+      "prompt": "Use case: stylized-concept. Asset type: transparent illustrated collectible for Tensho, an Asian-inspired mahjong roguelike. Premium hand-painted storybook game art with rich deep jade enamel, aged warm gold filigree, ivory porcelain, and restrained vermilion accents. Rounded tactile materials, strong readable silhouette, softly lit detailed brushwork, not photorealistic, not vector or emoji. One self-contained object centered with 10% transparent breathing room, square canvas, designed to remain recognizable at 64px. No text, lettering, words, watermarks, background scene or extra unrelated props. Subject: Astronomer, a short antique brass telescope with deep jade enamel barrel on a small ornate tripod, angled upward toward one luminous blue-white pearl held in a crescent-shaped golden bracket. Scholarly celestial instrument, distinct from an orrery, strong telescope silhouette, no writing."
+    },
+    {
+      "id": "crimson_wall",
+      "path": "assets/illustrations/tables/crimson_wall.webp",
+      "transparent": false,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-099eff30-2445-49f1-8aa5-9f8678076d3f.png",
+      "prompt": "Use case: stylized-concept. Asset type: cinematic illustrated mahjong table environment, wide landscape 16:9 composition. Premium painterly Asian-inspired fantasy tea-house aesthetic matching Tensho: richly tactile lacquer, carved wood and stone, warm gold details, atmospheric lantern light, realistic perspective but clearly illustrated, elegant not cartoon. A single large empty square mahjong table dominates foreground seen from an elevated three-quarter view. Keep its broad playing surface clean, dark and mostly unpatterned for readable UI. Decorative motifs stay on the rim, legs and surrounding room. No people, no tiles, no written characters, numbers, UI, logos or watermarks. Subject: Crimson Wall table, dark burgundy-red playing cloth within a thick crimson lacquer rim, carved golden dragons curling along the outer table rails and legs. An intimate imperial chamber with warm vermilion lanterns and distant carved dragon wall panels, lavish but restrained. The table center stays empty and dark burgundy, no giant central emblem. A distinct dramatic dragon-themed parlor, landscape 16:9."
+    },
+    {
+      "id": "obsidian_wall",
+      "path": "assets/illustrations/tables/obsidian_wall.webp",
+      "transparent": false,
+      "originalPath": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-ca6a58e8-8cec-4d62-ae6d-703e6af2eb4b.png",
+      "prompt": "Use case: stylized-concept. Asset type: cinematic illustrated mahjong table environment, wide landscape 16:9 composition. Premium painterly Asian-inspired fantasy tea-house aesthetic matching Tensho: richly tactile lacquer, carved wood and stone, warm gold details, atmospheric lantern light, realistic perspective but clearly illustrated, elegant not cartoon. A single large empty square mahjong table dominates foreground seen from an elevated three-quarter view. Keep its broad playing surface clean, dark and mostly unpatterned for readable UI. Decorative motifs stay on the rim, legs and surrounding room. No people, no tiles, no written characters, numbers, UI, logos or watermarks. Subject: Obsidian Wall table, near-black blue-grey stone playing surface bordered with luminous teal inlay and silver carved swirling wind motifs. An airy mountain pavilion at dusk, thin mist beyond open latticework, pale teal silk banners moving in a breeze, warm lanterns as small accents. The table center stays empty and dark, no central emblem. Elegant calm wind-themed parlor, landscape 16:9."
+    }
+  ]
+}

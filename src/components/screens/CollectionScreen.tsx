@@ -7,10 +7,9 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
 import { useArchiveStore } from '../../stores/archiveStore'
-import { BackButton } from '../ui/BackButton'
+import { PavilionScreen } from '../ui/PavilionScreen'
 import {
   getAllArchiveCategories,
   getArchiveCategory,
@@ -33,8 +32,6 @@ import { CategoryTabs } from '../collection/CategoryTabs'
 import { ItemGrid } from '../collection/ItemGrid'
 import type { ItemDisplayInfo } from '../collection/ItemCard'
 import { useItemText, type ItemText } from '../../i18n/useItemText'
-
-const AnimatedDiv = animated('div')
 
 /**
  * Build display info map for a category
@@ -257,89 +254,34 @@ export function CollectionScreen() {
     [activeCategory]
   )
 
-  // Header animation
-  const headerSpring = useSpring({
-    opacity: 1,
-    y: 0,
-    config: { tension: 200, friction: 20 },
-  })
-
-  // Progress bar animation
-  const progressSpring = useSpring({
-    width: `${stats.completionPercentage}%`,
-    config: { tension: 100, friction: 20 },
-  })
-
   // Handle back navigation
   const handleBack = () => {
     navigateTo(ROUTES.MENU)
   }
 
   return (
-    <div className="viewport-full flex flex-col bg-[var(--color-dark-forest)]">
-      {/* Header */}
-      <AnimatedDiv
-        style={headerSpring}
-        className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-forest-green)]"
-      >
-        <div className="screen-canvas grid gap-3 px-3 py-3 sm:px-5 md:grid-cols-[minmax(260px,0.7fr)_minmax(380px,1.3fr)] md:items-center md:gap-6 md:py-4">
-          <div className="flex items-center justify-between">
-            <BackButton
-              onClick={handleBack}
-              ariaLabel={t('common.back', 'Back')}
-            />
-
-            <div className="text-center">
-              <h1 className="text-base font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-xl">
-                <span className="sm:hidden">
-                  {t('menu.collection', 'Collection')}
-                </span>
-                <span className="hidden sm:inline">
-                  {t('collection.title', 'Archive of Hands')}
-                </span>
-              </h1>
-              <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
-                手牌録
-              </p>
-            </div>
-
-            <div className="w-[44px]" />
+    <PavilionScreen
+      page="collection"
+      title={t('collection.title', 'Archive of Hands')}
+      shortTitle={t('menu.collection', 'Collection')}
+      onBack={handleBack}
+      summary={
+        <>
+          <div className="pavilion-progress">
+            <span>{t('collection.progress', 'Collection Progress')}</span>
+            <span>
+              {stats.totalDiscovered} / {stats.totalItems}
+            </span>
           </div>
-
-          <div className="rounded-lg bg-[var(--color-dark-forest)] px-3 py-2.5">
-            <div className="mb-1.5 flex justify-between text-sm">
-              <span className="text-[var(--color-beige-white)]">
-                {t('collection.progress', 'Collection Progress')}
-              </span>
-              <span className="text-[var(--color-golden-yellow)]">
-                {stats.totalDiscovered} / {stats.totalItems}
-              </span>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-[var(--color-forest-green)]">
-              <AnimatedDiv
-                className="h-full bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)]"
-                style={progressSpring}
-              />
-            </div>
-            <div className="mt-1 hidden justify-between text-xs text-[var(--color-metallic-gold)] sm:flex">
-              <span>
-                {t('collection.percentComplete', '{{percent}}% Complete', {
-                  percent: stats.completionPercentage.toFixed(1),
-                })}
-              </span>
-              <span>
-                {t('collection.remaining', '{{count}} remaining', {
-                  count: stats.totalItems - stats.totalDiscovered,
-                })}
-              </span>
-            </div>
+          <div className="pavilion-meter">
+            <span style={{ width: `${stats.completionPercentage}%` }} />
           </div>
-        </div>
-      </AnimatedDiv>
-
+        </>
+      }
+    >
       {/* Category tabs */}
-      <div className="flex-shrink-0 border-b border-[var(--color-forest-green)]">
-        <div className="screen-canvas px-2 py-2.5 sm:px-5 lg:py-3">
+      <div className="mb-3">
+        <div className="min-w-0">
           <CategoryTabs
             categories={categories}
             activeCategory={activeCategory}
@@ -349,10 +291,10 @@ export function CollectionScreen() {
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="min-w-0">
         <div className="screen-canvas">
           {activeCategoryInfo && (
-            <div className="border-b border-white/5 bg-[var(--color-forest-green)]/30 px-3 py-2.5 sm:px-5">
+            <div className="pavilion-panel mb-4 px-4 py-3">
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span className="text-sm font-bold text-[var(--color-golden-yellow)]">
                   {itemText.name('archiveCategories', activeCategoryInfo)}
@@ -361,20 +303,23 @@ export function CollectionScreen() {
                   {activeCategoryInfo.japaneseName}
                 </span>
                 <p className="w-full text-xs text-[var(--color-beige-white)]/70 sm:w-auto sm:flex-1">
-                  {itemText.description('archiveCategories', activeCategoryInfo)}
+                  {itemText.description(
+                    'archiveCategories',
+                    activeCategoryInfo
+                  )}
                 </p>
               </div>
             </div>
           )}
 
-          <div className="px-3 py-3 sm:px-5 sm:py-5">
+          <div className="pb-3">
             <ItemGrid
               entries={categoryEntries}
               displayInfoMap={displayInfoMap}
             />
 
             {recentDiscoveries.length > 0 && (
-              <aside className="mt-5 rounded-xl border border-[var(--color-saddle-brown)]/70 bg-[var(--color-forest-green)]/60 p-3">
+              <aside className="pavilion-panel mt-5 p-4">
                 <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[var(--color-metallic-gold)]">
                   {t('collection.recentDiscoveries', 'Recent Discoveries')}
                 </p>
@@ -407,8 +352,7 @@ export function CollectionScreen() {
           </div>
         </div>
       </div>
-
-    </div>
+    </PavilionScreen>
   )
 }
 

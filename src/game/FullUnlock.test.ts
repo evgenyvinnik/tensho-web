@@ -247,11 +247,25 @@ it.each([Infinity, 12])(
     await useAchievementStore.persist.rehydrate()
     expect(useAchievementStore.getState().stats.fastestWinRounds).toBe(rounds)
     useAchievementStore.getState().checkAchievements()
-    const speed = ACHIEVEMENT_DEFINITIONS.find(
-      (definition) => definition.condition.type === 'win_in_rounds'
-    )!
-    expect(useAchievementStore.getState().achievements[speed.id].unlocked).toBe(
-      rounds <= speed.condition.target!
+    // Legacy round records remain readable but cannot prove Turn efficiency.
+    expect(useAchievementStore.getState().achievements.speed_run.unlocked).toBe(
+      false
+    )
+  }
+)
+
+it.each([Infinity, 0, 48, 49])(
+  'preserves paid-Turn victory statistics through JSON hydration (%s)',
+  async (turns) => {
+    useAchievementStore.getState().setStat('fastestWinPaidTurns', turns)
+    useProgressionStore.getState().setStat('fastestWinPaidTurns', turns)
+    await useProgressionStore.persist.rehydrate()
+    await useAchievementStore.persist.rehydrate()
+    expect(useProgressionStore.getState().stats.fastestWinPaidTurns).toBe(turns)
+    expect(useAchievementStore.getState().stats.fastestWinPaidTurns).toBe(turns)
+    useAchievementStore.getState().checkAchievements()
+    expect(useAchievementStore.getState().achievements.speed_run.unlocked).toBe(
+      turns > 0 && turns <= 48
     )
   }
 )

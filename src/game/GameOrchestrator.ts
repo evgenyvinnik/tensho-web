@@ -60,7 +60,11 @@ import {
   createActionProcessor,
 } from './ActionProcessor'
 import { RoundManager } from '../systems/RoundManager'
-import { flowerWeightedWall, resolveTableRules } from './tableStyleRules'
+import {
+  applyTableStartingEnhancements,
+  flowerWeightedWall,
+  resolveTableRules,
+} from './tableStyleRules'
 import type { ActiveTableModifiers } from '../systems/TableStyleSystem'
 import {
   ALL_DECREES,
@@ -138,6 +142,7 @@ import {
 import {
   captureMetaProgressionRunContext,
   restoreMetaProgressionRunContext,
+  type RunMetaSnapshot,
 } from './RunMetaContext'
 import { useOmenStore } from '../stores/omenStore'
 import { useProgressionStore } from '../stores/progressionStore'
@@ -229,6 +234,8 @@ export interface OrchestratorState {
   playsThisRound?: number
   /** Tiles REDRAW has sent to the river this round. */
   tilesRedrawnThisRound?: number
+  /** Missing in legacy saves: unknown eligibility until the next round. */
+  honorDiscardsThisRound?: number
   /**
    * Permanent score multiplier charged by a Decree that refused a loss
    * (Immortal Decree). 1 while no such rescue has happened.
@@ -455,6 +462,33 @@ export class GameOrchestrator {
       throw new Error('Run seed and random state disagree')
     const omens = structuredClone(saved.omens)
     const meta = structuredClone(saved.meta)
+    let endlessContext: NonNullable<RunMetaSnapshot> | undefined
+    if (
+      !meta &&
+      state.hasWonRun &&
+      (!state.hasEnteredEndless || state.isRunActive)
+    ) {
+      // Older victories discarded their context, including active Endless saves.
+      // Reconnect only proven identities/Flowers and future scoring. The win was
+      // already paid; neither runStart nor runEnd may be replayed on restoration.
+      const flowers = state.flowerSystem.toState()
+      const flowerTypes = [
+        ...new Set(
+          (
+            flowers.collectedTypes ??
+            flowers.flowers.map((flower) => flower.type)
+          ).map((type) => String(FlowerType[type]))
+        ),
+      ]
+      endlessContext = {
+        stake: state.stake,
+        wallId: state.tableStyleId,
+        hadFlowers: flowerTypes.length > 0,
+        flowerTypes,
+        pendingCorruptedSeasons: 0,
+        windYakuScored: 0,
+      }
+    }
 
     // Everything fallible above is staged independently. Domain events are not
     // replayed. Publish the Omen store only after all engine references are live.
@@ -467,7 +501,11 @@ export class GameOrchestrator {
     restoreConsumableInstanceCounter(saved.consumableInstanceCounter)
     restoreMetaProgressionRunContext(meta)
     useOmenStore.setState(omens)
-    eventBus.emit('gameLoaded', { timestamp: Date.now() })
+    eventBus.emit('gameLoaded', {
+      timestamp: Date.now(),
+      ...(endlessContext ? { endlessContext } : {}),
+    })
+    if (state.isRunActive) this.publishWallComposition()
   }
 
   // ===========================================================================
@@ -667,6 +705,7 @@ export class GameOrchestrator {
     this.applyMandateDebuffs()
     this.drawStartingHand()
 
+    this.publishWallComposition()
     eventBus.emit('roundStart', {
       actNumber: this.state.currentAct,
       roundNumber: this.state.currentRound,
@@ -709,6 +748,7 @@ export class GameOrchestrator {
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
     this.state.tilesRedrawnThisRound = 0
+    this.state.honorDiscardsThisRound = 0
 
     this.state.handsRemaining = Math.max(
       1,
@@ -821,6 +861,14 @@ export class GameOrchestrator {
     })
   }
 
+  private publishWallComposition(): void {
+    // Only settled operations count; a Script may remove and create tiles.
+    if (this.actionDepth > 0) return
+    eventBus.emit('wallCompositionChanged', {
+      tileCount: this.state.wallTemplate.length,
+    })
+  }
+
   /** Resolve a Decree rule while respecting per-hand mandate suppression. */
   private isDecreeRuleActive(ruleId: string): boolean {
     return (
@@ -890,7 +938,10 @@ export class GameOrchestrator {
     // The wall composition persists for the run so pack additions and tile
     // transformations survive the round reshuffle.
     if (this.state.wallTemplate.length === 0) {
-      this.state.wallTemplate = this.createFullTileSet()
+      this.state.wallTemplate = applyTableStartingEnhancements(
+        this.createFullTileSet(),
+        this.state.tableStyleId
+      )
     }
 
     // Shuffle with seed
@@ -1353,7 +1404,11 @@ export class GameOrchestrator {
     } finally {
       this.actionDepth--
     }
-    if (result.success) this.publishBuildProgress()
+    if (result.success) {
+      this.publishBuildProgress()
+      // Include a final play's destruction even if it ended the run.
+      this.publishWallComposition()
+    }
     return result
   }
 
@@ -1900,7 +1955,7 @@ export class GameOrchestrator {
     )
       this.state.completeConcealedHandsPlayed =
         (this.state.completeConcealedHandsPlayed ?? 0) + 1
-    this.state.handsRemaining--
+    this.spendTurn('play')
 
     if (scoreResult.goldEarned > 0) {
       const previousGold = this.state.gold
@@ -1967,6 +2022,11 @@ export class GameOrchestrator {
     eventBus.emit('handPlayed', {
       tiles: tileIds,
       score: scoreResult.finalScore,
+      glassTilesBroken: scoreResult.shatteredTiles.length,
+      allPlayedTilesWild: selectedTiles.every((tile) => tile.isWild),
+      windYakuScored: scoreResult.detectedYaku.filter(
+        (yaku) => yaku.isApplicable && yaku.honorSource === 'wind'
+      ).length,
       equation: scoreResult.equation,
       yakuIds: scoreResult.detectedYaku.map((y) => y.definition.id),
       pattern: scoreResult.pattern.id,
@@ -2049,7 +2109,7 @@ export class GameOrchestrator {
     this.state.lastHandScore = finalScore
     this.state.handsPlayedThisRun++
     this.state.playsThisRound = this.getPlaysThisRound() + 1
-    this.state.handsRemaining--
+    this.spendTurn('play')
 
     if (scoreResult.goldEarned > 0) {
       const previousGold = this.state.gold
@@ -2105,6 +2165,7 @@ export class GameOrchestrator {
     eventBus.emit('handPlayed', {
       tiles: tileIds,
       score: finalScore,
+      glassTilesBroken: scoreResult.shatteredTiles.length,
       equation: scoreResult.equation,
       yakuIds: [],
       pattern: scoreResult.pattern.id,
@@ -2227,6 +2288,12 @@ export class GameOrchestrator {
     return capacity
   }
 
+  /** Debit before settlement so the winning play is included in run history. */
+  private spendTurn(action: 'play' | 'redraw'): void {
+    this.state.handsRemaining--
+    eventBus.emit('paidTurnSpent', { action })
+  }
+
   /**
    * REDRAW: the selected tiles go to the river and the rack refills. Any
    * number of tiles may go at once. A free redraw (from an item) is spent if
@@ -2239,6 +2306,7 @@ export class GameOrchestrator {
       if (index === -1) continue
       const [tile] = this.state.handTiles.splice(index, 1)
       removed.push(tile)
+      this.recordHonorDiscard(tile)
       this.state.discards.push(tile)
       this.state.selectedTileIds.delete(tileId)
       this.state.faceDownTileIds.delete(tileId)
@@ -2251,7 +2319,7 @@ export class GameOrchestrator {
     }
 
     if (this.state.redrawsRemaining > 0) this.state.redrawsRemaining--
-    else this.state.handsRemaining--
+    else this.spendTurn('redraw')
     this.state.tilesRedrawnThisRound =
       (this.state.tilesRedrawnThisRound ?? 0) + removed.length
     // Decay counts each REDRAW once, however many tiles it sends.
@@ -2280,6 +2348,17 @@ export class GameOrchestrator {
     return { success: true, effects }
   }
 
+  /** Record actual discards; a Stone covers its former Honor identity. */
+  private recordHonorDiscard(tile: Tile): void {
+    if (
+      this.state.honorDiscardsThisRound !== undefined &&
+      tile.isHonor &&
+      tile.modifiers.enhancement !== EnhancementType.Stone
+    ) {
+      this.state.honorDiscardsThisRound++
+    }
+  }
+
   /** Apply mandate effects that resolve after one completed draw cycle. */
   private applyPostDrawMandate(drawnTile: Tile, effects: Effect[]): void {
     const mandateResult = this.state.mandateEffectSystem.onDraw(
@@ -2291,6 +2370,7 @@ export class GameOrchestrator {
       const index = this.state.handTiles.findIndex((tile) => tile.id === tileId)
       if (index === -1) continue
       const [tile] = this.state.handTiles.splice(index, 1)
+      this.recordHonorDiscard(tile)
       this.state.discards.push(tile)
       this.state.seasonSystem.onDiscard()
       this.state.selectedTileIds.delete(tile.id)
@@ -2582,6 +2662,7 @@ export class GameOrchestrator {
       effect: seal.effect.description,
       source: seal.source,
     })
+    if (this.state.isRunActive) this.publishWallComposition()
     return true
   }
 
@@ -2611,6 +2692,16 @@ export class GameOrchestrator {
           : this.state.celestialOrbSystem.getYakuLevel(orb.effect.targetYaku),
       levels,
       onAcquire,
+    })
+    this.announceYakuLevels()
+  }
+
+  private announceYakuLevels(): void {
+    eventBus.emit('yakuLevelsChanged', {
+      highestLevel: Math.max(
+        1,
+        ...this.state.celestialOrbSystem.getAllYakuLevels().values()
+      ),
     })
   }
 
@@ -3157,6 +3248,7 @@ export class GameOrchestrator {
     if (index === -1) return
 
     const [tile] = this.state.handTiles.splice(index, 1)
+    this.recordHonorDiscard(tile)
     this.state.discards.push(tile)
     this.state.selectedTileIds.delete(tileId)
     this.state.faceDownTileIds.delete(tileId)
@@ -3405,7 +3497,9 @@ export class GameOrchestrator {
     const blackHole = CelestialOrbSystem.createCelestialOrbInstance(
       CELESTIAL_ORBS.black_hole_orb
     )
-    this.state.celestialOrbSystem.useOrb(blackHole)
+    if (this.state.celestialOrbSystem.useOrb(blackHole).success) {
+      this.announceYakuLevels()
+    }
   }
 
   /** A Stone has no suit to count and no Honor face to transmute. */
@@ -4033,7 +4127,12 @@ export class GameOrchestrator {
         )
     const rawDecreeGold = this.state.decreeSystem.calculateRoundEndGold(
       new Set(this.state.mandateEffectSystem.getDisabledDecreeIds()),
-      this.state.handTiles
+      this.state.handTiles,
+      {
+        upgradedOrbFamilies: this.state.celestialOrbSystem
+          .toState()
+          .orbLevels.filter(([, level]) => level > 1).length,
+      }
     )
     const heldGoldMarkReward =
       this.state.handTiles.filter(
@@ -4089,6 +4188,7 @@ export class GameOrchestrator {
 
     eventBus.emit('roundEnd', {
       won: true,
+      honorDiscards: this.state.honorDiscardsThisRound,
       score: this.state.score,
       target: this.state.targetScore,
     })
@@ -4165,6 +4265,7 @@ export class GameOrchestrator {
         victory: true,
         score: this.state.runScore,
         decreesOwned: this.state.decreeSystem.getOwnedDecrees().length,
+        decreeIds: this.state.decreeSystem.getOwnedDecrees().map(decree => decree.id),
         act: this.state.currentAct,
         round: this.state.currentRound,
       })
@@ -4248,6 +4349,7 @@ export class GameOrchestrator {
 
     eventBus.emit('roundEnd', {
       won: false,
+      honorDiscards: this.state.honorDiscardsThisRound,
       score: this.state.score,
       target: this.state.targetScore,
     })
@@ -4741,6 +4843,7 @@ export class GameOrchestrator {
       (tile) => tile.id === tileId
     )
     const [discarded] = this.state.handTiles.splice(tileIndex, 1)
+    this.recordHonorDiscard(discarded)
     this.state.discards.push(discarded)
     this.state.faceDownTileIds.delete(tileId)
     this.state.selectedTileIds.clear()
@@ -4792,6 +4895,7 @@ export class GameOrchestrator {
     if (tile.isFlower && this.state.tableModifiers.flowersDisabled) return false
     this.state.wallTemplate.push(tile)
     this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
+    if (this.state.isRunActive) this.publishWallComposition()
     return true
   }
 

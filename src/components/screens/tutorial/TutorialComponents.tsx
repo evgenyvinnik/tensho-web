@@ -10,7 +10,7 @@
 
 import React from 'react'
 import { useSpring, animated } from '@react-spring/web'
-import { useSettingsStore } from '../../../stores/settingsStore'
+import { useReducedMotion } from '../../../hooks/useReducedMotion'
 import {
   getCodexCategoryIllustration,
   getTileImagePath,
@@ -272,7 +272,7 @@ export function TileDisplay({
 }: {
   tiles: Array<{ suit: TileSuit; rank: number }>
 }) {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const reducedMotion = useReducedMotion()
   const spring = useSpring({
     from: { opacity: 0, y: 20 },
     to: { opacity: 1, y: 0 },
@@ -314,7 +314,7 @@ export function CodexCategoryHero({
   title: string
 }) {
   const categoryLabel = useCategoryLabel()
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const reducedMotion = useReducedMotion()
   const spring = useSpring({
     from: { opacity: 0, scale: 1.035 },
     to: { opacity: 1, scale: 1 },
@@ -326,13 +326,13 @@ export function CodexCategoryHero({
   return (
     <AnimatedDiv
       data-codex-category-hero
-      className="relative mb-5 h-32 overflow-hidden rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)] shadow-xl sm:h-40 md:h-44"
+      className="relative mb-5 flex min-h-32 flex-col justify-end overflow-hidden rounded-xl border border-[var(--color-metallic-gold)]/45 bg-[var(--color-dark-forest)] shadow-xl sm:min-h-40 md:min-h-44"
       style={{ opacity: spring.opacity }}
     >
       <animated.img
         data-codex-category-image
         src={getCodexCategoryIllustration(category)}
-        alt={`${category}: ${title}`}
+        alt={`${categoryLabel(category)}: ${title}`}
         className="absolute inset-0 h-full w-full object-cover"
         style={{ transform: spring.scale.to((scale) => `scale(${scale})`) }}
         draggable={false}
@@ -340,11 +340,11 @@ export function CodexCategoryHero({
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[var(--color-dark-forest)]/95 to-transparent" />
 
-      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+      <div className="relative p-4 sm:p-5">
         <div className="mb-1 text-[0.65rem] font-bold uppercase tracking-[0.24em] text-[var(--color-metallic-gold)] sm:text-xs">
           {categoryLabel(category)}
         </div>
-        <h2 className="max-w-2xl font-decorative text-2xl font-bold leading-tight text-[var(--color-golden-yellow)] drop-shadow-lg sm:text-3xl">
+        <h2 className="max-w-2xl font-decorative text-xl font-bold leading-tight text-[var(--color-golden-yellow)] drop-shadow-lg [overflow-wrap:anywhere] sm:text-3xl">
           {title}
         </h2>
       </div>
@@ -436,7 +436,8 @@ export function CategoryItem({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left
+      aria-pressed={isActive}
+      className={`pavilion-tab w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left
         ${
           isActive
             ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)]'
@@ -452,7 +453,9 @@ export function CategoryItem({
         />
       </span>
       <div className="flex-1 min-w-0">
-        <p className="font-medium truncate">{categoryLabel(category)}</p>
+        <p className="font-medium whitespace-normal">
+          {categoryLabel(category)}
+        </p>
         <p className="text-xs opacity-70">
           {t('codex.stepsCount', '{{done}}/{{total}} steps', {
             done: completedCount,
@@ -498,7 +501,8 @@ export function CategoryTabs({
             <button
               key={cat}
               onClick={() => onCategoryClick(cat)}
-              className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm
+              aria-pressed={isActive}
+              className={`pavilion-tab flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm
               ${
                 isActive
                   ? 'bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)]'
@@ -533,7 +537,7 @@ export function CategoryTabs({
  * @param step - The tutorial step data to render
  */
 export function StepContent({ step }: { step: TutorialStep }) {
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const reducedMotion = useReducedMotion()
   const spring = useSpring({
     from: { opacity: 0, x: 20 },
     to: { opacity: 1, x: 0 },

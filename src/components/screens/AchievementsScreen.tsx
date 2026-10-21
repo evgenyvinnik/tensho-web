@@ -1,15 +1,8 @@
-/**
- * Achievements Screen - Heavenly Accolades (天賞)
- *
- * Displays player achievements organized by category.
- * Based on ARCHITECTURE.MD Section 30.
- */
-
-import { useState, useMemo, type KeyboardEvent } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSpring, animated } from '@react-spring/web'
 import { useAppNavigation, ROUTES } from '../../router'
-import { BackButton } from '../ui/BackButton'
+import { PavilionScreen } from '../ui/PavilionScreen'
+import { ControlIcon } from '../ui/ControlIcon'
 import {
   useAchievementStore,
   ACHIEVEMENT_DEFINITIONS,
@@ -17,392 +10,185 @@ import {
   getAchievementsByCategory,
   type AchievementCategory,
   type AchievementDefinition,
+  type AchievementStats,
 } from '../../stores/achievementStore'
-import { useSettingsStore } from '../../stores/settingsStore'
 import { useProgressionStore } from '../../stores/progressionStore'
-import { getGeneratedArt, type ControlArtId } from '../../utils/generatedArt'
-import { ControlIcon } from '../ui/ControlIcon'
+import { getGeneratedArt } from '../../utils/generatedArt'
+import { useArchiveStore } from '../../stores/archiveStore'
+import { getGoldDecreeProgress } from '../../utils/stakeMastery'
 
-const AnimatedDiv = animated('div')
-
-function humanizeIdentifier(value: string): string {
-  return value
-    .split('_')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ')
+const statByCondition: Record<string, keyof AchievementStats> = {
+  reach_act: 'highestActReached',
+  tiles_played: 'totalTilesPlayed',
+  tiles_discarded: 'totalTilesDiscarded',
+  max_gold: 'maxGoldInRun',
+  single_hand_score: 'highestSingleHandScore',
+  fate_seals_used: 'totalFateSealsUsed',
+  break_glass_tiles: 'maxGlassTilesBrokenInHand',
+  yaku_level: 'highestYakuLevel',
+  rounds_without_honor_discard: 'roundsWonWithoutHonorDiscards',
+  charters_by_act: 'maxChartersPurchasedByAct5',
+  wind_yaku_in_run: 'maxWindYakuInRun',
 }
 
-function getFallbackDescription(definition: AchievementDefinition): string {
-  const { type, target, value } = definition.condition
-  const suffix =
-    target !== undefined
-      ? ` · ${target.toLocaleString()}`
-      : value
-        ? ` · ${humanizeIdentifier(value)}`
-        : ''
-  return `${humanizeIdentifier(type)}${suffix}`
-}
-
-/**
- * Single achievement card component
- */
 function AchievementCard({
   definition,
   unlocked,
   progress,
+  target = definition.condition.target,
 }: {
   definition: AchievementDefinition
   unlocked: boolean
   progress?: number
+  target?: number
 }) {
-  const { t } = useTranslation()
-  const [isExpanded, setIsExpanded] = useState(false)
-  const reducedMotion = useSettingsStore((state) => state.reducedMotion)
-
-  const spring = useSpring({
-    opacity: 1,
-    y: 0,
-    config: { tension: 200, friction: 20 },
-    immediate: reducedMotion,
-  })
-
-  const target = definition.condition.target
-  const progressPercent =
-    target && progress !== undefined
-      ? Math.min((progress / target) * 100, 100)
-      : 0
-  const fallbackName = humanizeIdentifier(definition.id)
-  const fallbackDescription = getFallbackDescription(definition)
-
+  const { t, i18n } = useTranslation()
+  const number = (value: number) => value.toLocaleString(i18n.resolvedLanguage)
   return (
-    <AnimatedDiv
-      style={spring}
-      className={`
-        p-4 rounded-lg border-2 cursor-pointer transition-all duration-200
-        ${
-          unlocked
-            ? 'bg-[var(--color-forest-green)] border-[var(--color-golden-yellow)]'
-            : 'bg-[var(--color-dark-forest)] border-[var(--color-metallic-gold)] opacity-70'
-        }
-        hover:scale-[1.02] active:scale-[0.98]
-      `}
-      onClick={() => setIsExpanded(!isExpanded)}
-      role="button"
-      tabIndex={0}
-      aria-expanded={isExpanded}
-      onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault()
-          setIsExpanded(!isExpanded)
-        }
-      }}
+    <article
+      className="pavilion-panel accolade-card"
+      data-unlocked={unlocked}
+      data-achievement-card={definition.id}
     >
-      {/* Header row */}
-      <div className="flex items-start gap-3">
-        {/* Icon */}
-        <div
-          className={`
-            text-3xl flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-lg
-            ${unlocked ? 'bg-[var(--color-dark-forest)]' : 'bg-[var(--color-forest-green)] grayscale'}
-          `}
-        >
-          <img
-            src={getGeneratedArt('achievements', definition.icon)}
-            alt=""
-            aria-hidden="true"
-            className="h-12 w-12 object-contain"
-          />
-        </div>
-
-        {/* Text content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3
-              className={`
-                font-bold text-base truncate
-                ${unlocked ? 'text-[var(--color-golden-yellow)]' : 'text-[var(--color-beige-white)]'}
-              `}
-            >
-              {t(definition.nameKey, { defaultValue: fallbackName })}
-            </h3>
-            {unlocked && <ControlIcon name="check" size={16} />}
+      <img
+        src={getGeneratedArt('achievements', definition.icon)}
+        alt=""
+        aria-hidden="true"
+        className="accolade-art"
+        width={92}
+        height={92}
+        loading="lazy"
+      />
+      <h2 className="accolade-title">
+        {t(definition.nameKey)}
+        <ControlIcon name={unlocked ? 'check' : 'lock'} size={18} />
+      </h2>
+      <p className="mt-1 text-xs text-[var(--color-metallic-gold)] font-tile">
+        {definition.japaneseTitle}
+      </p>
+      <p className="accolade-description">{t(definition.descriptionKey)}</p>
+      {target && !unlocked && progress !== undefined && (
+        <div className="mt-4">
+          <div
+            className="pavilion-meter"
+            role="progressbar"
+            aria-label={t(definition.nameKey)}
+            aria-valuemin={0}
+            aria-valuemax={target}
+            aria-valuenow={Math.min(target, Math.max(0, progress))}
+          >
+            <span
+              style={{
+                width: `${Math.min(100, Math.max(0, (progress / target) * 100))}%`,
+              }}
+            />
           </div>
-
-          <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
-            {definition.japaneseTitle}
+          <p className="mt-2 text-xs text-[var(--color-metallic-gold)]">
+            {number(progress)} / {number(target)}
           </p>
-
-          {/* Progress bar for cumulative achievements */}
-          {target && !unlocked && progress !== undefined && (
-            <div className="mt-2">
-              <div className="h-1.5 bg-[var(--color-dark-forest)] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[var(--color-vibrant-orange)] transition-all duration-300"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <p className="text-xs text-[var(--color-metallic-gold)] mt-1">
-                {progress.toLocaleString()} / {target.toLocaleString()}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Expanded details */}
-      {isExpanded && (
-        <div className="mt-3 pt-3 border-t border-[var(--color-forest-green)]">
-          <p className="text-sm text-[var(--color-beige-white)]">
-            {t(definition.descriptionKey, {
-              defaultValue: fallbackDescription,
-            })}
-          </p>
-
-          {definition.unlocks && (
-            <p className="text-xs text-[var(--color-golden-yellow)] mt-2">
-              {t('achievements.unlocks', 'Unlocks')}: {definition.unlocks}
-            </p>
-          )}
         </div>
       )}
-    </AnimatedDiv>
+      {definition.reward && (
+        <p
+          data-achievement-reward
+          className="mt-3 text-xs text-[var(--color-golden-yellow)]"
+        >
+          {t('achievements.unlocks', 'Unlocks')}:{' '}
+          {t(
+            `${definition.reward.category}.items.${definition.reward.itemId}.name`
+          )}
+        </p>
+      )}
+    </article>
   )
 }
 
-/**
- * Category tab button
- */
-function CategoryTab({
-  category,
-  isActive,
-  onClick,
-  unlockedCount,
-  totalCount,
-}: {
-  category: { id: AchievementCategory; nameKey: string; icon: ControlArtId }
-  isActive: boolean
-  onClick: () => void
-  unlockedCount: number
-  totalCount: number
-}) {
-  const { t } = useTranslation()
-
-  return (
-    <button
-      onClick={onClick}
-      aria-label={t(category.nameKey, category.id)}
-      aria-pressed={isActive}
-      className={`
-        flex-shrink-0 px-4 py-2 rounded-lg font-bold text-sm
-        border-2 transition-all duration-200
-        min-h-[44px] min-w-[44px]
-        ${
-          isActive
-            ? 'bg-[var(--color-vibrant-orange)] border-[var(--color-golden-yellow)] text-[var(--color-beige-white)]'
-            : 'bg-[var(--color-dark-forest)] border-[var(--color-metallic-gold)] text-[var(--color-metallic-gold)] hover:bg-[var(--color-forest-green)]'
-        }
-      `}
-    >
-      <span className="mr-1">
-        <ControlIcon name={category.icon} />
-      </span>
-      <span className="hidden sm:inline">
-        {t(category.nameKey, category.id)}
-      </span>
-      <span className="ml-1 text-xs opacity-70">
-        {unlockedCount}/{totalCount}
-      </span>
-    </button>
-  )
-}
-
-/**
- * Main Achievements Screen
- */
 export function AchievementsScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const [activeCategory, setActiveCategory] =
     useState<AchievementCategory>('progression')
-
   const achievements = useAchievementStore((state) => state.achievements)
-  const fullUnlockEnabled = useProgressionStore(
-    (state) => state.fullUnlockEnabled
-  )
   const stats = useAchievementStore((state) => state.stats)
-
-  // Calculate total progress
-  const totalUnlocked = useMemo(
-    () => Object.values(achievements).filter((a) => a.unlocked).length,
-    [achievements]
-  )
-
-  // Get achievements for active category
-  const categoryAchievements = useMemo(
-    () => getAchievementsByCategory(activeCategory),
-    [activeCategory]
-  )
-
-  // Calculate category counts
-  const categoryCounts = useMemo(() => {
-    const counts: Record<
-      AchievementCategory,
-      { unlocked: number; total: number }
-    > = {
-      progression: { unlocked: 0, total: 0 },
-      cumulative: { unlocked: 0, total: 0 },
-      skill: { unlocked: 0, total: 0 },
-      scoring: { unlocked: 0, total: 0 },
-      collection: { unlocked: 0, total: 0 },
-      mastery: { unlocked: 0, total: 0 },
-      challenge: { unlocked: 0, total: 0 },
-    }
-
-    for (const def of ACHIEVEMENT_DEFINITIONS) {
-      counts[def.category].total++
-      if (achievements[def.id]?.unlocked) {
-        counts[def.category].unlocked++
-      }
-    }
-
-    return counts
-  }, [achievements])
-
-  // Get progress value for an achievement
-  const getProgress = (def: AchievementDefinition): number | undefined => {
-    switch (def.condition.type) {
-      case 'reach_act':
-        return stats.highestActReached
-      case 'tiles_played':
-        return stats.totalTilesPlayed
-      case 'tiles_discarded':
-        return stats.totalTilesDiscarded
-      case 'max_gold':
-        return stats.maxGoldInRun
-      case 'single_hand_score':
-        return stats.highestSingleHandScore
-      case 'fate_seals_used':
-        return stats.totalFateSealsUsed
-      default:
-        return achievements[def.id]?.progress
-    }
-  }
-
-  // Header animation
-  const headerSpring = useSpring({
-    opacity: 1,
-    y: 0,
-    config: { tension: 200, friction: 20 },
-  })
-
-  // Progress bar animation
-  const progressSpring = useSpring({
-    width: `${(totalUnlocked / ACHIEVEMENT_DEFINITIONS.length) * 100}%`,
-    config: { tension: 100, friction: 20 },
-  })
-
-  const handleBack = () => {
-    navigateTo(ROUTES.MENU)
-  }
-
+  const fullUnlock = useProgressionStore((state) => state.fullUnlockEnabled)
+  const archiveEntries = useArchiveStore((state) => state.entries)
+  const goldMastery = getGoldDecreeProgress(archiveEntries)
+  const unlocked = ACHIEVEMENT_DEFINITIONS.filter(
+    (def) => achievements[def.id]?.unlocked
+  ).length
+  const total = ACHIEVEMENT_DEFINITIONS.length
   return (
-    <div className="viewport-full flex flex-col bg-[var(--color-dark-forest)]">
-      {/* Header */}
-      <AnimatedDiv
-        style={headerSpring}
-        className="flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-forest-green)]"
-      >
-        <div className="screen-canvas grid gap-3 px-3 py-3 sm:px-5 md:grid-cols-[minmax(260px,0.7fr)_minmax(380px,1.3fr)] md:items-center md:gap-6 md:py-4">
-          <div className="flex items-center justify-between">
-            <BackButton
-              onClick={handleBack}
-              ariaLabel={t('common.back', 'Back')}
-            />
-
-            <div className="text-center">
-              <h1 className="text-base font-bold text-[var(--color-golden-yellow)] font-decorative sm:text-xl">
-                <span className="sm:hidden">
-                  {t('achievements.shortTitle', 'Accolades')}
-                </span>
-                <span className="hidden sm:inline">
-                  {t('achievements.title', 'Heavenly Accolades')}
-                </span>
-              </h1>
-              <p className="text-xs text-[var(--color-metallic-gold)] font-tile">
-                天賞
-              </p>
-            </div>
-
-            <div className="w-[44px]" />
+    <PavilionScreen
+      page="achievements"
+      title={t('achievements.title', 'Heavenly Accolades')}
+      shortTitle={t('achievements.shortTitle', 'Accolades')}
+      onBack={() => navigateTo(ROUTES.MENU)}
+      summary={
+        <>
+          <div className="pavilion-progress">
+            <span>{t('achievements.progress', 'Progress')}</span>
+            <span>
+              {unlocked} / {total}
+            </span>
           </div>
-
-          <div className="rounded-lg bg-[var(--color-dark-forest)] px-3 py-2.5">
-            <div className="mb-1.5 flex justify-between text-sm">
-              <span className="text-[var(--color-beige-white)]">
-                {t('achievements.progress', 'Progress')}
-              </span>
-              <span className="text-[var(--color-golden-yellow)]">
-                {totalUnlocked} / {ACHIEVEMENT_DEFINITIONS.length}
-              </span>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-[var(--color-forest-green)]">
-              <AnimatedDiv
-                className="h-full bg-gradient-to-r from-[var(--color-vibrant-orange)] to-[var(--color-golden-yellow)]"
-                style={progressSpring}
-              />
-            </div>
+          <div className="pavilion-meter">
+            <span style={{ width: `${(unlocked / total) * 100}%` }} />
           </div>
-        </div>
-      </AnimatedDiv>
-
-      {/* Category tabs */}
-      <div className="scroll-rail flex-shrink-0 overflow-x-auto border-b border-white/5 lg:overflow-visible">
-        <div className="screen-canvas flex min-w-max gap-2 px-3 py-2.5 sm:px-5 lg:min-w-0 lg:flex-wrap lg:py-3">
-          {ACHIEVEMENT_CATEGORIES.map((category) => (
-            <CategoryTab
+        </>
+      }
+    >
+      <nav className="pavilion-tabs" aria-label={t('achievements.title')}>
+        {ACHIEVEMENT_CATEGORIES.map((category) => {
+          const definitions = getAchievementsByCategory(category.id)
+          const count = definitions.filter(
+            (def) => achievements[def.id]?.unlocked
+          ).length
+          return (
+            <button
               key={category.id}
-              category={category}
-              isActive={activeCategory === category.id}
+              className="pavilion-tab"
+              aria-pressed={activeCategory === category.id}
               onClick={() => setActiveCategory(category.id)}
-              unlockedCount={categoryCounts[category.id].unlocked}
-              totalCount={categoryCounts[category.id].total}
-            />
-          ))}
-        </div>
+            >
+              <ControlIcon name={category.icon} size={22} />
+              <span>{t(category.nameKey)}</span>
+              <span className="text-xs opacity-75">
+                {count}/{definitions.length}
+              </span>
+            </button>
+          )
+        })}
+      </nav>
+      {fullUnlock && (
+        <p
+          role="status"
+          className="mb-4 text-sm text-[var(--color-golden-yellow)]"
+        >
+          {t('settings.fullUnlock.active')}
+        </p>
+      )}
+      <div className="pavilion-achievements">
+        {getAchievementsByCategory(activeCategory).map((definition) => (
+          <AchievementCard
+            key={definition.id}
+            definition={definition}
+            unlocked={achievements[definition.id]?.unlocked ?? false}
+            progress={
+              definition.condition.type === 'gold_sticker_all_decrees'
+                ? goldMastery.completed
+                : statByCondition[definition.condition.type]
+                  ? stats[statByCondition[definition.condition.type]]
+                  : achievements[definition.id]?.progress
+            }
+            target={
+              definition.condition.type === 'gold_sticker_all_decrees'
+                ? goldMastery.total
+                : definition.condition.target
+            }
+          />
+        ))}
       </div>
-
-      {/* Achievement list */}
-      <div className="min-h-0 flex-1 overflow-y-auto">
-        {fullUnlockEnabled && (
-          <p
-            role="status"
-            className="screen-canvas px-3 pt-3 text-sm leading-relaxed text-[var(--color-golden-yellow)] sm:px-5"
-          >
-            {t('settings.fullUnlock.active')}
-          </p>
-        )}
-        <div className="screen-canvas grid gap-3 px-3 py-3 sm:grid-cols-2 sm:px-5 sm:py-5 lg:grid-cols-3">
-          {categoryAchievements.map((def) => (
-            <AchievementCard
-              key={def.id}
-              definition={def}
-              unlocked={achievements[def.id]?.unlocked || false}
-              progress={getProgress(def)}
-            />
-          ))}
-        </div>
-
-        {categoryAchievements.length === 0 && (
-          <div className="screen-canvas py-12 text-center text-[var(--color-metallic-gold)]">
-            {t(
-              'achievements.noAchievements',
-              'No achievements in this category'
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+    </PavilionScreen>
   )
 }
-
 export default AchievementsScreen

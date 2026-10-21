@@ -1,0 +1,114 @@
+.achievement-toast-region {
+  position: fixed;
+  z-index: 90;
+  top: max(90px, calc(env(safe-area-inset-top) + 72px));
+  right: max(16px, env(safe-area-inset-right));
+  width: min(400px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.achievement-toast {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 18px 40px 18px 14px;
+  border: 1px solid #edcf86;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 0 50%, #a489393b, transparent 65%),
+    linear-gradient(140deg, #183b30, #0c211c);
+  box-shadow:
+    0 16px 48px #0008,
+    inset 0 0 0 4px #c8b27318;
+  color: #f1e7ce;
+  pointer-events: auto;
+  animation: accolade-arrive 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.achievement-toast-art {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px #d8b86660);
+  animation: accolade-glow 1.4s ease-out both;
+}
+.achievement-toast-copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.achievement-toast-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #d6c087;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.achievement-toast-copy h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffe3a3;
+}
+.achievement-toast-description {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.achievement-toast-close {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.achievement-toast-close:hover {
+  background: #fff1;
+}
+.achievement-toast-close:focus-visible {
+  outline: 2px solid #ffe3a3;
+  outline-offset: -4px;
+}
+@keyframes accolade-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes accolade-glow {
+  from {
+    filter: drop-shadow(0 0 22px #ffdc8ac0);
+  }
+  to {
+    filter: drop-shadow(0 0 12px #d8b86660);
+  }
+}
+.achievement-toast[data-reduced-motion='true'],
+.achievement-toast[data-reduced-motion='true'] * {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .achievement-toast,
+  .achievement-toast * {
+    animation: none;
+  }
+}
+@media (max-width: 359px) {
+  .achievement-toast {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 10px;
+    padding-left: 10px;
+  }
+  .achievement-toast-art {
+    width: 56px;
+    height: 56px;
+  }
+}

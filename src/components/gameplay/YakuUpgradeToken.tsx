@@ -1,8 +1,7 @@
 /**
  * YakuUpgradeToken: one upgraded family as an icon with its level.
  *
- * Shared by the table's item rail and the Tea House's build panel, so an
- * upgrade looks and reads the same everywhere. Its panel holds the level,
+ * Shown in the Tea House's build panel. Its panel holds the level,
  * the bonus a matching score earns, what the family covers, how often it has
  * scored and the Orb that levels it. A family that has just risen flashes
  * once; nothing in the token changes the run.
@@ -17,9 +16,9 @@ import {
   getCelestialOrbByYaku,
 } from '../../systems/CelestialOrbSystem'
 import { useItemText } from '../../i18n/useItemText'
-import { getItemArt } from '../../utils/itemArt'
 import { CollectibleToken } from '../ui/CollectibleToken'
 import { DEFAULT_FAMILY_TONE, FAMILY_TONES } from './yakuFamilyTones'
+import { YakuUpgradeArtwork } from './YakuUpgradeArtwork'
 
 export type YakuUpgrade = ReturnType<
   GameOrchestrator['getYakuUpgradeState']
@@ -54,7 +53,7 @@ export function YakuUpgradeToken({
           family: t(`upgradeFamilies.${upgrade.yaku}.name`),
           level: number(upgrade.level),
         })}
-        art={getItemArt('yakuUpgrades', upgrade.yaku).src}
+        icon={<YakuUpgradeArtwork family={upgrade.yaku} />}
         badge={number(upgrade.level)}
         tone={FAMILY_TONES[upgrade.yaku] ?? DEFAULT_FAMILY_TONE}
         data={{ 'data-yaku-upgrade': upgrade.yaku }}

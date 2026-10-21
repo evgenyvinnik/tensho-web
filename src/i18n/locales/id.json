@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "Konsep Dasar",
+    "titleTilesOverview": "Mengenal Ubin",
+    "titleSuits": "Tiga Jenis Ubin Berangka",
+    "titleTerminals": "Ubin Ujung dan Ubin Sederhana",
+    "titleWinds": "Ubin Angin",
+    "titleDragons": "Ubin Naga",
+    "titleBonus": "Ubin Bonus: Bunga dan Musim",
+    "titleMeldsOverview": "Apa Itu Rangkaian?",
+    "titleSequences": "Urutan (順子 / Shuntsu)",
+    "titleTriplets": "Triplet (刻子 / Koutsu)",
+    "titleQuads": "Kuartet (槓子 / Kantsu)",
+    "titlePairs": "Pasangan (雀頭 / Jantou)",
+    "titleWinningHand": "Susunan Tangan Pemenang",
+    "titleSpecialHands": "Bentuk Tangan Pemenang Khusus",
+    "titleYakuIntro": "Yaku — Pengali Skor",
+    "titleYakuExamples": "Contoh Yaku Umum",
+    "titleActsRounds": "Babak dan Ronde",
+    "titleBossMandates": "Mandat Bos",
+    "titleDecreesIntro": "Apa Itu Dekrit?",
+    "titleDecreeCategories": "Kategori Dekrit",
+    "titleDecreeRarities": "Kelangkaan Dekrit",
+    "titleDecreeSlots": "Mengelola Slot Dekrit",
+    "titleHierarchy": "Hierarki Lima Lapisan",
+    "titleTips": "Kiat untuk Menang",
+    "titleMoreTips": "Kiat Lanjutan",
+    "category": "Kategori",
+    "types": "Jenis",
+    "count": "Jumlah",
+    "numberedSuits": "Jenis Berangka",
+    "numberedComposition": "3 jenis × 9 angka × 4 salinan",
+    "windComposition": "4 angin × 4 salinan",
+    "dragonComposition": "3 naga × 4 salinan",
+    "bonusTiles": "Ubin Bonus",
+    "bonusComposition": "4 bunga + 4 musim",
+    "tileSet": "Set ubin standar berisi 144 ubin. Tembok pilihanmu dan efek selama permainan dapat mengubah komposisinya:",
+    "terminalRanks": "Ubin berangka <strong>1 atau 9</strong>",
+    "simpleRanks": "Ubin berangka <strong>2 hingga 8</strong>",
+    "tileValue": "Masing-masing bernilai <strong>{{points}} poin</strong> saat berada dalam grup",
+    "windOrder": "Angin ditampilkan dalam urutan Timur, Selatan, Barat, Utara. Keempatnya memiliki nilai poin dasar yang sama.",
+    "windPoints": "Angin adalah ubin Kehormatan yang masing-masing bernilai {{points}} poin, atau {{groupPoints}} per ubin saat berada dalam grup.",
+    "honorGroups": "Ubin Kehormatan tidak bisa membentuk urutan angka. Ubin Kehormatan yang identik bisa membentuk pasangan, triplet, atau kuartet.",
+    "dragonPoints": "Naga adalah ubin Kehormatan yang masing-masing bernilai {{points}} poin. Setiap Naga yang dihitung dalam skor menambah +{{mult}} Mult, atau +{{groupMult}} Mult saat berada dalam grup. Naga tidak bisa membentuk urutan angka.",
+    "flowerDuration": "Bertahan sepanjang permainanmu",
+    "seasonDuration": "Aktif hanya selama ronde ini",
+    "importantRules": "Aturan penting:",
+    "quadMechanics": "Cara kerja kuartet:",
+    "quadBonus": "Menambah +{{points}} poin grup dan +{{mult}} Mult pola, sebelum efek ubin diterapkan.",
+    "quadRefill": "Mainkan kuartet sebagai bagian dari tangan yang kamu pilih. Rak diisi kembali setelah tangan dimainkan; tidak ada aksi deklarasi kuartet terpisah.",
+    "winningFormula": "<melds>4 Rangkaian</melds> + <pair>1 Pasangan</pair> = <tiles>14 Ubin sebelum tambahan kuartet</tiles>",
+    "winningExample": "Keempat rangkaian bisa berupa urutan, triplet, atau kuartet. Setiap kuartet menambah satu ubin pada susunan biasa yang berisi 14 ubin. Berikut contoh tanpa kuartet:",
+    "sevenPairs": "Tepat <strong>7 pasangan berbeda</strong>: 14 ubin, tanpa memerlukan triplet atau urutan.",
+    "thirteenOrphans": "Satu ubin dari setiap jenis ubin ujung dan Kehormatan (13 ubin unik), ditambah satu duplikat: tangan <strong>Yakuman</strong> berisi 14 ubin.",
+    "wallSize": "Tembok menyediakan ubin pengganti. Jumlah yang tersisa bergantung pada Tembok pilihanmu, rak awal, dan efek yang berlaku; perhatikan penghitung sisa ubin.",
+    "yakuTiers": "Katalog saat ini memuat {{count}} Yaku dalam empat tingkatan. Berikut pengali dasarnya, sebelum peningkatan dan efek diterapkan:",
+    "tier": "Tingkat",
+    "tierNumber": "Tingkat {{tier}}",
+    "yakumanTier": "Tingkat {{tier}} (Yakuman)",
+    "multiplierRange": "Rentang pengali dasar",
+    "example": "Contoh",
+    "allSimples": "Hanya berisi ubin berangka 2–8, tanpa ubin ujung atau Kehormatan.",
+    "allTriplets": "Keempat rangkaian berupa triplet atau kuartet, dengan satu pasangan dan tanpa urutan.",
+    "fullFlush": "Hanya berisi satu jenis ubin berangka, tanpa Kehormatan.",
+    "roundType": "Jenis Ronde",
+    "japanese": "Bahasa Jepang",
+    "targetMultiplier": "Pengali Target",
+    "baseTarget": "×{{mult}} (target dasar)",
+    "structural": "Struktur (形法令)",
+    "structuralHelp": "Mengubah syarat tangan yang sah",
+    "tileIdentity": "Identitas Ubin (变牌法令)",
+    "tileIdentityHelp": "Mengubah penggolongan ubin",
+    "yakuDoctrine": "Doktrin Yaku (役变法令)",
+    "yakuDoctrineHelp": "Mengubah aturan Yaku",
+    "entropy": "Entropi dan Takdir (天运法令)",
+    "entropyHelp": "Mengubah pengambilan ubin dan tempo",
+    "scaling": "Pertumbuhan (修行法令)",
+    "scalingHelp": "Memberi imbalan untuk gaya bermain tertentu",
+    "rarity": "Kelangkaan",
+    "name": "Nama",
+    "powerLevel": "Tingkat Kekuatan",
+    "localPower": "Bonus kecil",
+    "regionalPower": "Efek sedang",
+    "imperialPower": "Perubahan aturan yang kuat",
+    "heavenlyPower": "Kekuatan yang menentukan arah permainan",
+    "raritySources": "Kelangkaan memengaruhi ketersediaan dan harga di toko. Perintah Surgawi berasal dari sumber khusus, bukan penawaran toko biasa. Bangun sinergi dan periksa harga sebenarnya dari setiap penawaran.",
+    "slotBaseline": "Jumlah awal adalah 5 slot Dekrit, tetapi meja pilihanmu dan efek selama permainan dapat mengubahnya. Slot tambahan bisa diperoleh dari:",
+    "heaven": "Langit (Musim)",
+    "court": "Istana (Dekrit)",
+    "nature": "Alam (Bunga)",
+    "table": "Meja (Ubin)",
+    "grammar": "Tata Bahasa (Yaku)",
+    "hierarchyOverride": "Saat aturan bertentangan, aturan dengan kewenangan lebih tinggi didahulukan daripada aturan berkewenangan lebih rendah. Periksa syarat khusus setiap efek.",
+    "tipScoreTitle": "Mainkan tangan yang berguna",
+    "tipScore": "Bandingkan pratinjau skor untuk grup berisi hingga {{max}} ubin, atau satu tangan Mahjong lengkap. Gunakan Giliran untuk mendekati target, bukan hanya menunggu tangan sempurna.",
+    "tipSynergyTitle": "Bangun sinergi",
+    "tipSynergy": "Dekrit yang saling mendukung bisa lebih kuat daripada Dekrit hebat yang bekerja sendiri.",
+    "tipEconomyTitle": "Seimbangkan ekonomi",
+    "tipEconomy": "Menyimpan Emas menghasilkan bunga saat menuntaskan ronde, tetapi belanjakan jika suatu peningkatan membantumu mencapai target berikutnya. Periksa harga sebenarnya dan nilai Jual.",
+    "tipFlowersTitle": "Kumpulkan bunga",
+    "tipFlowers": "Bunga bertahan sepanjang permainan. Dua Bunga berbeda memberi satu slot Dekrit; mengumpulkan keempatnya memperkuat efeknya.",
+    "tipYakuTitle": "Rencanakan Yaku",
+    "tipYaku": "Pilih Yaku yang sesuai dengan ubin di rak dan Dekritmu. Tangan Mahjong lengkap bisa menggabungkan Yaku untuk meraih skor lebih besar.",
+    "tipEfficiencyTitle": "Efisiensi ubin",
+    "tipEfficiency": "Simpan ubin yang bisa melengkapi beberapa grup. Gunakan TARIK ULANG untuk mengganti ubin yang menyendiri, dengan memperhitungkan biaya Giliran dan tarik ulang gratis yang tersedia.",
+    "tipWallTitle": "Hitung sisa ubin",
+    "tipWall": "Periksa sungai dan sisa tembok sebelum mengejar ubin tertentu. Ubin yang diganti lewat tarik ulang tetap di sungai hingga ronde berakhir.",
+    "tipMandateTitle": "Baca mandat lebih awal",
+    "tipMandate": "Baca Mandat Bos yang akan datang dan siapkan susunan yang bisa mencetak skor di bawah batasannya.",
+    "congratulations": "<strong>Selamat!</strong> Kini kamu memahami dasar-dasar Tensho.",
+    "farewell": "Semoga ubin berpihak padamu dalam perjalananmu menuju langit!"
+  },
+  "codexEconomy": {
+    "payout": "Hadiah dasar menuntaskan ronde adalah 3 Emas untuk Kecil, 5 untuk Besar, dan 10 untuk Bos, bukan berdasarkan skor di atas target. Taruhan dapat meniadakan hadiah Kecil; Dekret dan Pertanda dapat mengubah pembayaran akhir.",
+    "interest": "Bunga dihitung dari Emas sebelum pembayaran ronde: 1 per 5, dengan batas awal 5. Piagam dan Pertanda dapat menaikkan batas; beberapa Pertanda memblokir bunga. Kekalahan tidak membayar bunga.",
+    "sale": "Lihat tombol Jual pada Dekret untuk nilai sebenarnya. Dekret yang dibayar dengan Bunga atau diperoleh gratis dapat bernilai jual 0 Emas; Dekret Abadi tidak bisa dijual. Menjual menghapus efeknya dan mengosongkan slot yang dipakai.",
+    "prices": "Gunakan harga yang ditampilkan pada tiap penawaran dan biaya pengacakan saat ini. Diskon, edisi, Piagam, dan efek lain dapat mengubah harga. Pengacakan tidak mengisi ulang Piagam yang sudah dibeli atau penawaran gratis Peramal Kartu."
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "Langkah Pertama",
+      "description": "Capai Babak 4."
+    },
+    "ascending": {
+      "name": "Pendakian",
+      "description": "Capai Babak 8."
+    },
+    "victory": {
+      "name": "Kemenangan",
+      "description": "Menangkan satu permainan."
+    },
+    "redPath": {
+      "name": "Jalur Merah",
+      "description": "Menangkan permainan pada Tingkat Merah atau lebih tinggi."
+    },
+    "blackPath": {
+      "name": "Jalur Hitam",
+      "description": "Menangkan permainan pada Tingkat Hitam atau lebih tinggi."
+    },
+    "goldenPath": {
+      "name": "Jalur Emas",
+      "description": "Menangkan permainan pada Tingkat Emas."
+    },
+    "tileMaster": {
+      "name": "Ahli Ubin",
+      "description": "Mainkan total 2.500 ubin di seluruh permainanmu."
+    },
+    "discardArtist": {
+      "name": "Seniman Tukar",
+      "description": "Tarik ulang total 2.500 ubin di seluruh permainanmu."
+    },
+    "fortuneBuilt": {
+      "name": "Harta Terkumpul",
+      "description": "Miliki 400 emas dalam satu permainan."
+    },
+    "wildFlush": {
+      "name": "Warna Liar",
+      "description": "Cetak skor Setengah Warna yang seluruhnya terdiri dari ubin Liar."
+    },
+    "speedRun": {
+      "name": "Laju Kilat",
+      "description": "Menangkan permainan dengan memakai paling banyak 48 giliran. Penggantian ubin gratis tidak dihitung."
+    },
+    "charterCollector": {
+      "name": "Kolektor Piagam",
+      "description": "Beli 5 Piagam Kekaisaran dalam satu permainan sebelum Babak 5 berakhir."
+    },
+    "shattered": {
+      "name": "Pecah Berkeping",
+      "description": "Pecahkan 2 ubin Kaca dalam satu kali bermain."
+    },
+    "royalHand": {
+      "name": "Tangan Raja",
+      "description": "Cetak skor Yakuman."
+    },
+    "retrograde": {
+      "name": "Retrograde",
+      "description": "Naikkan satu Yaku ke level 10."
+    },
+    "keeperOfWinds": {
+      "name": "Penjaga Angin",
+      "description": "Cetak skor dengan total 10 Yaku Angin dalam satu perjalanan."
+    },
+    "masterOfSilence": {
+      "name": "Ahli Keheningan",
+      "description": "Menangkan 3 ronde tanpa membuang ubin Kehormatan."
+    },
+    "sealBearer": {
+      "name": "Pembawa Segel",
+      "description": "Gunakan 10 Segel Takdir."
+    },
+    "score10k": {
+      "name": "Sepuluh Ribu",
+      "description": "Cetak 10.000 poin dalam sekali main."
+    },
+    "score1m": {
+      "name": "Satu Juta",
+      "description": "Cetak 1.000.000 poin dalam sekali main."
+    },
+    "score100m": {
+      "name": "Seratus Juta",
+      "description": "Cetak 100.000.000 poin dalam sekali main."
+    },
+    "sealScholar": {
+      "name": "Cendekia Segel",
+      "description": "Temukan semua Segel Takdir."
+    },
+    "starGazer": {
+      "name": "Pengamat Bintang",
+      "description": "Temukan semua Bola Langit."
+    },
+    "voidWalker": {
+      "name": "Penjelajah Kehampaan",
+      "description": "Temukan semua Gulungan Kehampaan."
+    },
+    "charterComplete": {
+      "name": "Piagam Lengkap",
+      "description": "Temukan semua Piagam Kekaisaran."
+    },
+    "archiveComplete": {
+      "name": "Arsip Lengkap",
+      "description": "Temukan seluruh isi Arsip."
+    },
+    "archiveCompletePlus": {
+      "name": "Arsip Lengkap +",
+      "description": "Menang pada Tingkat Emas dengan setiap Meja."
+    },
+    "archiveCompletePlusPlus": {
+      "name": "Arsip Lengkap ++",
+      "description": "Dapatkan stiker emas pada setiap Dekrit."
+    },
+    "ruleBender": {
+      "name": "Pelentur Aturan",
+      "description": "Selesaikan satu permainan Tantangan."
+    },
+    "ruleBreaker": {
+      "name": "Pendobrak Aturan",
+      "description": "Selesaikan semua Tantangan."
+    },
+    "deckMinimalist": {
+      "name": "Dinding Minimalis",
+      "description": "Kurangi Dindingmu menjadi 20 ubin atau kurang."
+    },
+    "deckMaximalist": {
+      "name": "Dinding Maksimalis",
+      "description": "Perbesar Dindingmu hingga setidaknya 80 ubin."
+    },
+    "purist": {
+      "name": "Puristis",
+      "description": "Menangkan permainan tanpa menyegarkan toko."
+    },
+    "title": "Penghargaan Langit",
+    "shortTitle": "Penghargaan",
+    "progress": "Progres",
+    "earned": "Pencapaian terbuka",
+    "unlocks": "Membuka",
+    "categories": {
+      "progression": "Perjalanan",
+      "cumulative": "Tonggak",
+      "skill": "Keahlian",
+      "scoring": "Skor",
+      "collection": "Koleksi",
+      "mastery": "Penguasaan",
+      "challenge": "Tantangan"
+    }
+  },
   "walls": {
     "items": {
       "green_felt": {
@@ -152,6 +417,15 @@
     "black_hole_orb": "Temukan semua 12 Bola Langit lainnya."
   },
   "decreeUnlocks": {
+    "stage_master": "Capai Babak 4.",
+    "flower_pot": "Capai Babak 8.",
+    "satellite": "Miliki 400 emas dalam satu permainan.",
+    "swift_andy": "Menangkan permainan dengan memakai paling banyak 48 giliran. Penggantian ubin gratis tidak dihitung.",
+    "lucky_sixes": "Cetak 10.000 poin dalam sekali main.",
+    "the_idol": "Cetak 1.000.000 poin dalam sekali main.",
+    "stuntman": "Cetak 100.000.000 poin dalam sekali main.",
+    "cartomancer": "Temukan semua Segel Takdir.",
+    "astronomer": "Temukan semua Bola Langit.",
     "decree-blueprint": "Menangkan satu putaran permainan.",
     "decree-brainstorm": "Menangkan permainan dengan memiliki setidaknya lima Dekrit.",
     "decree-heavenly-ordinance": "Raih skor dengan Yakuman.",
@@ -771,6 +1045,42 @@
       "mythic": "Perintah Surgawi"
     },
     "items": {
+      "stage_master": {
+        "name": "Ahli Panggung",
+        "description": "+25 Poin dan +1 Pengali per Babak yang diselesaikan."
+      },
+      "flower_pot": {
+        "name": "Pot Bunga",
+        "description": "×3 Pengali selama kamu memiliki keempat Bunga yang berbeda."
+      },
+      "satellite": {
+        "name": "Satelit",
+        "description": "+1 Emas per keluarga Bola Langit di atas level 1 pada akhir setiap ronde yang dimenangkan."
+      },
+      "swift_andy": {
+        "name": "Andy Gesit",
+        "description": "+2 penggunaan TARIK ULANG gratis setiap ronde; ukuran rak −2."
+      },
+      "lucky_sixes": {
+        "name": "Enam Keberuntungan",
+        "description": "+6 Pengali per ubin bernomor 6 yang dimainkan. Ubin Batu tidak dihitung."
+      },
+      "the_idol": {
+        "name": "Sang Idola",
+        "description": "×3 Pengali jika setidaknya dua ubin dimainkan dan semuanya memiliki jenis dan angka tercetak yang sama. Ubin Batu membatalkan syarat ini; ubin Liar tetap memakai identitas tercetaknya."
+      },
+      "stuntman": {
+        "name": "Pemeran Pengganti",
+        "description": "+250 Poin; ukuran rak −3."
+      },
+      "cartomancer": {
+        "name": "Peramal Kartu",
+        "description": "Menambahkan satu penawaran Segel Takdir gratis saat memasuki Rumah Teh. Acak Ulang tidak mengisi ulang penawaran ini."
+      },
+      "astronomer": {
+        "name": "Astronom",
+        "description": "Menambahkan satu penawaran Bola Langit gratis saat memasuki Rumah Teh. Acak Ulang tidak mengisi ulang penawaran ini."
+      },
       "decree-half-suited": {
         "name": "Setengah Warna",
         "description": "+20 Poin"
@@ -1433,6 +1743,23 @@
       }
     }
   },
+  "codexFlora": {
+    "empowerment": "Setiap Bunga yang dimiliki juga memperkuat hadiah numerik Dekret sebesar 10%. Bonus set menghitung jenis Bunga berbeda yang sedang dimiliki, bukan semua Bunga yang pernah dikumpulkan.",
+    "awakeningLifecycle": "Akses mekar kembali tetap terbuka pada permainan berikutnya. Salinan pertama biasa; setelah akses terbuka, menarik duplikat membangkitkan Bunga itu untuk permainan ini. Duplikat berikutnya tidak menumpuk kekuatan atau menambah slot. Permainan baru menghapus kebangkitan, bukan aksesnya.",
+    "chrysanthemumSet": "Jika keempat Bunga dimiliki, faktor kebangkitan menjadi ×{{factor}} per kelompok tertutup. Pasangan dan ubin lepas tidak menambah tingkatan.",
+    "drought": "Kekeringan menekan kekuatan Bunga, termasuk kebangkitan dan penguatan Dekret, kecuali dilindungi Taman Abadi yang aktif. Bunga, kebangkitan yang diperoleh, dan slot koleksi tidak dihapus.",
+    "distinction": "Bunga dapat bangkit; Musim tidak. Musim bisa normal atau rusak. Ubin bonus yang ditarik diperlihatkan dan diganti otomatis tanpa menghabiskan Giliran.",
+    "corruption": "Mulai Babak 2, Musim dapat rusak alih-alih memberikan efek normal. Ruang Hantu memungkinkan kerusakan sejak Babak 1. Musim rusak hanya berlangsung selama ronde ini; bukan Musim yang bangkit.",
+    "interactionsTitle": "Interaksi Bunga dan Musim",
+    "interactionsIntro": "Kombinasi ini memerlukan kekuatan Bunga dan Musim normal aktif bersamaan. Kebangkitan tidak diperlukan. Buka pasangan untuk membaca resep opsionalnya; pratinjau saja tidak memberi hadiah.",
+    "orchidSpring": "Menarik Angin atau Naga saat Anggrek dan Musim Semi aktif memberikan satu tarikan tambahan dari Dinding Mati. Tarikan tambahan tidak berantai, dan Dinding Mati kosong tidak menciptakan ubin. Ubin tambahan dapat sementara melebihi kapasitas rak.",
+    "bambooSummer": "Mainkan setidaknya empat ubin terminal fisik (satu atau sembilan bersetelan) saat Bambu dan Musim Panas aktif. Ubin yang disisihkan Musim Panas kembali ke dinding aktif, dan Musim Panas berikutnya tidak dapat mengecilkannya lagi pada ronde ini. Bonus skor tetap berlaku.",
+    "plumAutumn": "Setiap urutan fisik yang menghasilkan skor dapat mengembalikan ubin cocok terbaru dari sungai jika ronde berlanjut. Hanya ubin yang sudah ada di sungai sebelum permainan yang dihitung. Setiap ubin dipulihkan sekali, bukan disalin; wajah virtual atau pengganti tidak memenuhi syarat.",
+    "chrysanthemumWinter": "Saat Krisan aktif, permainan tertutup mengabaikan penalti skor Musim Dingin tetapi tetap memakai aturan urutan yang melompati satu angka. Permainan terbuka tetap terkena penalti. Kekeringan meniadakan perlindungan ini kecuali Bunganya dilindungi.",
+    "catalystsTitle": "Membayar dengan Bunga",
+    "catalystsIntro": "Penawaran Dekret langsung tertentu di Rumah Teh memungkinkan pembayaran dengan Bunga sebagai ganti Emas. Pilih tepat satu Bunga yang dimiliki lalu konfirmasi; ini opsional dan tidak pernah menjadi pengorbanan otomatis.",
+    "catalystsCost": "Kehilangan Bunga juga mengurangi bonus set. Pembelian diblokir jika slot tersisa tidak cukup untuk koleksi. Mengumpulkannya kembali memulihkan kebangkitannya dalam permainan ini. Suksesi Yakuman tetap membutuhkan dua Bunga, jadi membayar satu membutuhkan setidaknya tiga Bunga sebelumnya."
+  },
   "flora": {
     "mutations": {
       "locked": "Kumpulkan keempat jenis Bunga dalam satu petualangan untuk membuka mekar kembali. Lalu tarik lagi Bunga yang sudah dimiliki untuk membangkitkannya.",
@@ -2072,6 +2399,7 @@
     "effect": "Efek",
     "voidCost": "Biaya kehampaan",
     "timesUsed": "Kali digunakan",
+    "stakeVictory": "Kemenangan pada {{stake}}",
     "runsWon": "Permainan dimenangkan",
     "unlock": "Buka kunci:",
     "title": "Arsip Tangan",
@@ -2583,6 +2911,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "Dinding Merah Tua",
+        "theme": "Naga",
+        "description": "Pernis merah kirmizi dan naga emas mendukung strategi berpusat pada Naga, dengan ruang lebih sedikit untuk Dekrit.",
+        "unlock": "Menang pada Tingkat Merah atau lebih tinggi",
+        "modifiers": {
+          "0": "Ubin Naga awal memiliki Tanda Pengali (+4 Pengali saat mencetak skor)",
+          "1": "Slot Dekrit awal −1"
+        }
+      },
+      "obsidian_wall": {
+        "name": "Dinding Obsidian",
+        "theme": "Angin",
+        "description": "Batu gelap dan ukiran angin perak menguntungkan strategi berpusat pada Angin, dengan ruang lebih sedikit untuk Dekrit.",
+        "unlock": "Menang pada Tingkat Hitam atau lebih tinggi",
+        "modifiers": {
+          "0": "Ubin Angin awal memiliki Tanda Bonus (+30 Poin saat mencetak skor)",
+          "1": "Slot Dekrit awal −1"
+        }
+      },
       "green_felt": {
         "theme": "Klasik",
         "unlock": "Tersedia sejak awal",

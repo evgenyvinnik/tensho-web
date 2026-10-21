@@ -1,7 +1,7 @@
 /**
  * ActionBar: the two things you can do with your Turn.
  *
- *   Turns left 4        [ REDRAW ]  [ Play hand ]
+ *   Turns left 4   Wall   [ REDRAW ]  [ Play hand ]
  *
  * Play hand scores the selected tiles. REDRAW sends any number of selected
  * tiles to the river and draws replacements. Each spends one Turn (a free
@@ -13,13 +13,15 @@
  * @module components/gameplay/ActionBar
  */
 
-import type { Ref } from 'react'
+import type { ReactNode, Ref } from 'react'
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../ui/Button'
 
 export interface ActionBarProps {
   playButtonRef?: Ref<HTMLButtonElement>
+  /** Wall inventory, kept beside the Turn count. */
+  wall?: ReactNode
   /** Turns left this round (Play and REDRAW share them). */
   turnsLeft: number
   /** Free redraws granted by items, spent before Turns. */
@@ -42,6 +44,7 @@ export interface ActionBarProps {
 
 export function ActionBar({
   playButtonRef,
+  wall,
   turnsLeft,
   freeRedraws,
   selectedCount,
@@ -65,7 +68,7 @@ export function ActionBar({
     <div
       data-frame-corner-row="bottom"
       data-action-bar
-      className="gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 flex-col gap-1 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:px-4"
+      className="gameplay-action-bar gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 flex-col gap-1 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:px-4"
     >
       {reason && (
         <p
@@ -77,7 +80,7 @@ export function ActionBar({
           {reason}
         </p>
       )}
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="gameplay-action-controls items-center gap-1.5 sm:gap-3">
         <p
           data-turns-left={turnsLeft}
           data-tutorial="hands-remaining"
@@ -85,7 +88,7 @@ export function ActionBar({
             count: turnsLeft,
             formattedCount: number(turnsLeft),
           })}
-          className="flex w-[3.25rem] shrink-0 flex-col items-center text-center leading-none text-[var(--color-beige-white)] sm:w-[4.25rem]"
+          className="flex w-11 shrink-0 flex-col items-center text-center leading-none text-[var(--color-beige-white)] sm:w-[4.25rem]"
         >
           <span
             aria-hidden="true"
@@ -101,6 +104,12 @@ export function ActionBar({
           </span>
         </p>
 
+        {wall && (
+          <div data-action-wall className="shrink-0">
+            {wall}
+          </div>
+        )}
+
         <Button
           data-game-action="redraw"
           variant="secondary"
@@ -110,11 +119,13 @@ export function ActionBar({
           title={!redrawAllowed && selectedCount > 0 ? redrawReason : undefined}
           className="flex !min-h-11 min-w-0 flex-1 flex-col items-center justify-center !px-1 text-[13px] font-black uppercase leading-tight tracking-normal sm:!px-2 sm:text-sm sm:tracking-wide"
         >
-          <span>{t('gameplay.redraw', 'REDRAW')}</span>
+          <span className="max-w-full [overflow-wrap:anywhere]">
+            {t('gameplay.redraw', 'REDRAW')}
+          </span>
           {freeRedraws > 0 && (
             <span
               data-free-redraws={freeRedraws}
-              className="whitespace-nowrap text-[10px] font-black normal-case leading-none tracking-normal text-emerald-200"
+              className="max-w-full text-[10px] font-black normal-case leading-none tracking-normal text-emerald-200 [overflow-wrap:anywhere]"
             >
               {t('gameplay.freeRedraws', {
                 count: freeRedraws,
@@ -138,7 +149,9 @@ export function ActionBar({
               : ''
           }`}
         >
-          {t('gameplay.playHand', 'Play hand')}
+          <span className="[overflow-wrap:anywhere]">
+            {t('gameplay.playHand', 'Play hand')}
+          </span>
         </Button>
       </div>
     </div>

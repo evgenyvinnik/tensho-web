@@ -236,10 +236,30 @@ export class ShopSession {
         const ownedDecreeIds = state.decreeSystem
           .getOwnedDecrees()
           .map((d) => d.id)
+        const visitModifiers = this.game.prepareShopVisit()
+        // Snapshot entry rewards once. Acquisitions, rerolls and restored open
+        // visits must not regenerate these offers or overwrite Omen rewards.
+        const decreeOffers = state.decreeSystem
+          .getRuleContributions(
+            'shop_entry_offer',
+            new Set(state.mandateEffectSystem.getDisabledDecreeIds())
+          )
+          .flatMap(({ effect }) => {
+            const itemType = effect.modification.itemType
+            return itemType === 'FateSeal' || itemType === 'CelestialOrb'
+              ? [{ itemType, free: true }]
+              : []
+          })
         const shop = this.teaHouse.generateShop(
           ownedDecreeIds,
           state.lastCompletedRoundType === 'Boss',
-          this.game.prepareShopVisit()
+          {
+            ...visitModifiers,
+            guaranteedItems: [
+              ...(visitModifiers.guaranteedItems ?? []),
+              ...decreeOffers,
+            ],
+          }
         )
         const effects = state.charterSystem.calculateEffects()
         const favoredOrb = effects.celestialFavor

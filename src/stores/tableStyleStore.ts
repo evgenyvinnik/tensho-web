@@ -47,6 +47,8 @@ export interface TableStyleUnlock {
  * Player statistics tracked for unlock conditions
  */
 export interface TableStyleStats {
+  /** Highest tier actually won; legacy profiles may not have this statistic. */
+  highestTierWon?: number
   /** Highest act completed */
   highestActCompleted: number
   /** Maximum flowers collected in a single run */
@@ -121,6 +123,7 @@ export interface TableStyleState {
 const DEFAULT_STYLE_ID = 'green_felt'
 
 const DEFAULT_STATS: TableStyleStats = {
+  highestTierWon: 0,
   highestActCompleted: 0,
   maxFlowersInRun: 0,
   maxDecreesInWin: 0,
@@ -252,6 +255,10 @@ export const useTableStyleStore = create<TableStyleState>()(
           ...stats,
           ...updates,
           // For max values, take the greater of old and new
+          highestTierWon: Math.max(
+            stats.highestTierWon ?? 0,
+            updates.highestTierWon ?? 0
+          ),
           highestActCompleted: Math.max(
             stats.highestActCompleted,
             updates.highestActCompleted ?? 0

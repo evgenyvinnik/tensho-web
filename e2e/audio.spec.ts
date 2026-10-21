@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { openTable, selectTiles, settleReveals } from './helpers/table'
 
 type AudioProbe = {
   elements: HTMLMediaElement[]
@@ -45,6 +46,34 @@ async function observeAudio(page: Page, muted = false) {
   )
 }
 
+/** Keep this audio check mid-round even when a random opening deal scores well. */
+async function openAudioRound(page: Page) {
+  // Apply only the target fixture during the next navigation, before the app
+  // takes save ownership. No live engine imports: this also runs on a frozen
+  // production build and cannot accidentally select a stale HMR singleton.
+  await page.addInitScript(() => {
+    if (sessionStorage.getItem('audio-target-fixture')) return
+    const raw = localStorage.getItem('tensho-classic-run-v1')
+    if (!raw) return
+    const saved = JSON.parse(raw)
+    const state = saved.snapshot.state
+    state.targetScore = 1e9
+    state.roundManager.currentRound.scoreTarget = 1e9
+    const round = state.roundManager.currentAct.rounds.find(
+      (entry: { roundNumber: number }) =>
+        entry.roundNumber === state.currentRound
+    )
+    round.scoreTarget = 1e9
+    localStorage.setItem('tensho-classic-run-v1', JSON.stringify(saved))
+    sessionStorage.setItem('audio-target-fixture', 'true')
+  })
+  await openTable(page)
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  await page.reload()
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  await settleReveals(page)
+}
+
 test('plays native scoring audio, keeps music across navigation, and obeys mute', async ({
   page,
 }) => {
@@ -54,9 +83,9 @@ test('plays native scoring audio, keeps music across navigation, and obeys mute'
     if (response.url().includes('/sfx/') && !response.ok())
       missing.push(response.url())
   })
-  await page.goto('/en/table-loop?practice=1')
-  await page.getByTestId('practice-inspect-run').click()
-  await page.getByTestId('table-slot-0').click()
+  await openAudioRound(page)
+  await selectTiles(page, 2)
+  await page.locator('[data-game-action="play"]').click()
   await expect
     .poll(() =>
       page.evaluate(() =>
@@ -76,7 +105,11 @@ test('plays native scoring audio, keeps music across navigation, and obeys mute'
       )
     )
     .toBe(true)
-  await page.getByRole('button', { name: 'Main menu', exact: true }).click()
+  await settleReveals(page)
+  await page.getByRole('button', { name: 'Exit', exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Save and leave', exact: true })
+    .click()
   await expect(page.getByRole('heading', { name: 'TENSHO' })).toBeVisible()
   await page.getByRole('button', { name: 'Toggle Music', exact: true }).click()
   await expect
@@ -146,13 +179,13 @@ test('persisted mute blocks playback and settings can independently enable SFX',
     .toBe(true)
 })
 
-test('a saved Table Loop does not replay sounds on reload', async ({
+test('a saved game preserves its paid play without replaying scoring audio on reload', async ({
   page,
 }) => {
   await observeAudio(page)
-  await page.goto('/en/table-loop?practice=1')
-  await page.getByTestId('practice-inspect-run').click()
-  await page.getByTestId('table-slot-0').click()
+  await openAudioRound(page)
+  await selectTiles(page, 2)
+  await page.locator('[data-game-action="play"]').click()
   await expect
     .poll(() =>
       page.evaluate(() =>
@@ -162,10 +195,25 @@ test('a saved Table Loop does not replay sounds on reload', async ({
       )
     )
     .toBe(true)
+  await settleReveals(page)
+  const saved = () =>
+    page.evaluate(
+      () => JSON.parse(localStorage.getItem('tensho-classic-run-v1')!).snapshot
+    )
+  await expect
+    .poll(async () => (await saved()).state.handsPlayedThisRun)
+    .toBe(1)
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  const before = await saved()
   await page.reload()
-  await expect(page.getByTestId('practice-guide')).toHaveAttribute(
-    'data-practice-step',
-    'interact'
-  )
-  expect(await page.evaluate(() => window.__audioProbe.started)).toEqual([])
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  expect(await saved()).toEqual(before)
+  // Music may resume, but restoring a receipt must not replay paid-play SFX.
+  expect(
+    await page.evaluate(() =>
+      window.__audioProbe.started.filter((src) =>
+        src.endsWith('/game_hand_played.wav')
+      )
+    )
+  ).toEqual([])
 })

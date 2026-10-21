@@ -14,8 +14,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppNavigation, ROUTES } from '../../router'
 import { Button } from '../ui/Button'
-import { BackButton } from '../ui/BackButton'
-import { ControlIcon } from '../ui/ControlIcon'
+import { PavilionScreen } from '../ui/PavilionScreen'
 
 // Import from extracted tutorial modules (reused for Codex)
 import {
@@ -129,149 +128,98 @@ export function CodexScreen() {
   const isLastStep = currentStep === steps.length - 1
 
   return (
-    <div className="viewport-full flex flex-col bg-[var(--color-forest-green)]">
-      {/* Header */}
-      <div className="flex-shrink-0 bg-[var(--color-dark-forest)] shadow-lg">
-        <div className="screen-canvas flex items-center justify-between px-3 py-3 sm:px-5 sm:py-4">
-          <BackButton onClick={goBack} ariaLabel={t('common.back')} />
-          <h1 className="text-xl font-bold text-[var(--color-golden-yellow)]">
-            <ControlIcon name="archive" /> {t('codex.title', 'Codex')}
-          </h1>
-          <div className="w-[44px]" />
-        </div>
-      </div>
-
-      {/* Mobile category tabs */}
-      <div className="lg:hidden border-t border-[var(--color-forest-green)] bg-[var(--color-dark-forest)] px-2 py-2">
+    <PavilionScreen
+      page="codex"
+      title={t('codex.title', 'Codex')}
+      onBack={goBack}
+    >
+      <div className="pavilion-codex-mobile">
         <CategoryTabs
           categories={categories}
           currentCategory={currentCategory}
           onCategoryClick={handleCategoryClick}
         />
       </div>
-
-      {/* Main content area */}
-      <div className="screen-canvas flex min-h-0 flex-1 overflow-hidden border-x border-white/5">
-        {/* Desktop sidebar */}
-        <aside className="hidden bg-[var(--color-dark-forest)] lg:flex lg:w-64 lg:flex-col lg:gap-2 lg:overflow-y-auto lg:border-r lg:border-[var(--color-forest-green)] lg:p-4 xl:w-72">
+      <div className="pavilion-codex">
+        <aside className="pavilion-panel pavilion-codex-sidebar">
           {categories.map((category) => {
             const catSteps = categorySteps[category] || []
-            const completedCount = catSteps.filter((i) =>
-              visitedSteps.has(i)
-            ).length
-
             return (
               <CategoryItem
                 key={category}
                 category={category}
                 isActive={category === currentCategory}
                 stepCount={catSteps.length}
-                completedCount={completedCount}
+                completedCount={
+                  catSteps.filter((i) => visitedSteps.has(i)).length
+                }
                 onClick={() => handleCategoryClick(category)}
               />
             )
           })}
         </aside>
-
-        {/* Content area */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Step indicators for current category */}
-          <div className="scroll-rail flex items-center gap-2 overflow-x-auto bg-[var(--color-dark-forest)] px-3 py-2 sm:px-4">
-            {currentCategorySteps.map((stepIndex, i) => {
-              const step = steps[stepIndex]
-              const isActive = stepIndex === currentStep
-              const isVisited = visitedSteps.has(stepIndex)
-
-              return (
-                <button
-                  key={stepIndex}
-                  onClick={() => handleStepClick(stepIndex)}
-                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all
-                    ${
-                      isActive
-                        ? 'bg-[var(--color-vibrant-orange)] text-white scale-110'
-                        : isVisited
-                          ? 'bg-[var(--color-forest-green)] text-[var(--color-golden-yellow)]'
-                          : 'bg-[var(--color-dark-forest)] text-[var(--color-beige-white)] opacity-50'
-                    }`}
-                  title={step.title}
-                >
-                  {i + 1}
-                </button>
-              )
-            })}
+        <section className="pavilion-panel pavilion-codex-content">
+          <nav
+            className="pavilion-codex-steps"
+            aria-label={categoryLabel(currentCategory)}
+          >
+            {currentCategorySteps.map((stepIndex, i) => (
+              <button
+                key={stepIndex}
+                onClick={() => handleStepClick(stepIndex)}
+                aria-current={stepIndex === currentStep ? 'step' : undefined}
+                aria-label={steps[stepIndex].title}
+                title={steps[stepIndex].title}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </nav>
+          <CodexCategoryHero
+            key={currentStepData.id}
+            category={currentCategory}
+            title={currentStepData.title}
+          />
+          <div className="prose prose-invert max-w-none text-[var(--color-beige-white)]">
+            <StepContent key={currentStep} step={currentStepData} />
           </div>
-
-          {/* Scrollable content */}
-          <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-5 md:p-6">
-            <div className="mx-auto w-full max-w-4xl">
-              <CodexCategoryHero
-                key={`${currentCategory}-${currentStepData.id}`}
-                category={currentCategory}
-                title={currentStepData.title}
-              />
-
-              {/* Step content */}
-              <div className="prose prose-invert max-w-none text-[var(--color-beige-white)]">
-                <StepContent key={currentStep} step={currentStepData} />
-              </div>
+          <footer className="pavilion-codex-footer">
+            <ProgressBar
+              current={currentStep}
+              total={steps.length}
+              categoryProgress={t(
+                'codex.categoryProgress',
+                '{{category}}: {{current}}/{{total}}',
+                {
+                  category: categoryLabel(currentCategory),
+                  current: stepIndexInCategory + 1,
+                  total: currentCategorySteps.length,
+                }
+              )}
+            />
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <Button
+                variant="secondary"
+                onClick={handlePrev}
+                disabled={isFirstStep}
+                className="min-w-0 px-2"
+              >
+                {t('codex.previous', 'Back')}
+              </Button>
+              <Button
+                variant="primary"
+                onClick={isLastStep ? handleStartPlaying : handleNext}
+                className="min-w-0 px-2"
+              >
+                {isLastStep
+                  ? t('codex.finish', 'Start Playing!')
+                  : t('codex.next', 'Next')}
+              </Button>
             </div>
-          </div>
-
-          {/* Bottom navigation */}
-          <div className="safe-area-bottom border-t border-[var(--color-forest-green)] bg-[var(--color-dark-forest)] px-3 py-3 sm:px-5 sm:py-4">
-            <div className="mx-auto w-full max-w-4xl">
-              {/* Progress bar */}
-              <div className="mb-4">
-                <ProgressBar
-                  current={currentStep}
-                  total={steps.length}
-                  categoryProgress={t(
-                    'codex.categoryProgress',
-                    '{{category}}: {{current}}/{{total}}',
-                    {
-                      category: categoryLabel(currentStepData.category || ''),
-                      current: stepIndexInCategory + 1,
-                      total: currentCategorySteps.length,
-                    }
-                  )}
-                />
-              </div>
-
-              {/* Navigation buttons */}
-              <div className="flex justify-between gap-4">
-                <Button
-                  variant="secondary"
-                  onClick={handlePrev}
-                  disabled={isFirstStep}
-                  className="flex-1 max-w-[150px]"
-                >
-                  ← {t('codex.previous', 'Back')}
-                </Button>
-
-                {isLastStep ? (
-                  <Button
-                    variant="primary"
-                    onClick={handleStartPlaying}
-                    className="flex-1 max-w-[200px]"
-                  >
-                    {t('codex.finish', 'Start Playing!')}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="primary"
-                    onClick={handleNext}
-                    className="flex-1 max-w-[150px]"
-                  >
-                    {t('codex.next', 'Next')} →
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+          </footer>
+        </section>
       </div>
-    </div>
+    </PavilionScreen>
   )
 }
 

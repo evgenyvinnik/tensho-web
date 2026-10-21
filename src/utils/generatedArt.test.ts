@@ -59,15 +59,40 @@ it('keeps every generated runtime image decodable, bounded and linked to its ori
   }
 })
 
-it('uses all 39 generated controls and never accepts prototype keys', () => {
-  expect(Object.keys(generatedArtPaths.controls)).toHaveLength(39)
-  expect(getControlArt('lock')).toMatch(/\/controls\/lock\.png$/)
+it('uses all 41 generated controls and never accepts prototype keys', () => {
+  expect(Object.keys(generatedArtPaths.controls)).toHaveLength(41)
+  expect(getControlArt('lock')).toMatch(/\/controls-jade\/lock\.webp$/)
   for (const category of Object.keys(generatedArtPaths) as Array<
     keyof typeof generatedArtPaths
   >) {
     for (const key of [undefined, 'missing', 'toString', '__proto__'])
       expect(getGeneratedArt(category, key)).toBeUndefined()
   }
+})
+
+it.each([
+  'sound',
+  'sound-off',
+  'settings',
+  'exit',
+  'help',
+  'language',
+  'archive',
+  'lock',
+  'tip',
+  'info',
+  'warning',
+  'check',
+] as const)('ships a compact transparent jade %s control', (id) => {
+  const path = getControlArt(id)
+  expect(path).toMatch(/controls-jade\/.+\.webp$/)
+  const bytes = readFileSync(`public${path}`)
+  expect(bytes.subarray(8, 12).toString()).toBe('WEBP')
+  expect(bytes.subarray(12, 16).toString()).toBe('VP8X')
+  expect(bytes[20] & 0x10).toBe(0x10)
+  expect(bytes.readUIntLE(24, 3) + 1).toBe(128)
+  expect(bytes.readUIntLE(27, 3) + 1).toBe(128)
+  expect(bytes.length).toBeLessThan(16_000)
 })
 
 it('covers active catalog identities while retaining existing artwork', () => {

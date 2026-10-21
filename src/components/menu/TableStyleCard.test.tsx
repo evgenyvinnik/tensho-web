@@ -51,6 +51,10 @@ describe('TableStyleCard', () => {
       name: 'Red Lacquer, locked: Complete Act 3',
     })
     expect(option).toBeDisabled()
+    const lock = option.querySelector('img[src$="controls-jade/lock.webp"]')
+    expect(lock).toHaveAttribute('alt', '')
+    expect(lock).toHaveAttribute('aria-hidden', 'true')
+    expect(lock).toHaveStyle({ width: '24px', height: '24px' })
     expect(
       screen.getByRole('progressbar', { name: 'Progress toward Red Lacquer' })
     ).toHaveAttribute('aria-valuenow', '50')

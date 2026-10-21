@@ -16,6 +16,8 @@ import { ControlIcon } from '../ui/ControlIcon'
 import { usePreviewPopover } from '../ui/usePreviewPopover'
 import { getArchiveIllustration } from './ArchiveArtwork'
 import { ItemDetails } from './ItemDetails'
+import { getWonStakeTiers } from '../../utils/stakeMastery'
+import { StakeVictoryMarker } from './StakeVictoryMarker'
 
 /**
  * Item info for display (from definition files)
@@ -76,6 +78,7 @@ export function ItemCard({ entry, displayInfo }: ItemCardProps) {
   const art = known
     ? getArchiveIllustration(known.category, known.id)
     : undefined
+  const bestStake = getWonStakeTiers(entry).at(-1)
 
   return (
     <>
@@ -84,9 +87,12 @@ export function ItemCard({ entry, displayInfo }: ItemCardProps) {
         type="button"
         data-archive-card={entry.itemId}
         aria-label={label}
+        data-known={Boolean(known)}
         {...triggerProps}
-        className={`group relative flex min-w-0 flex-col items-center rounded-lg border-2 p-1.5 text-center transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] sm:p-2 ${
-          known ? getRarityColor(known.rarity) : 'border-gray-600 bg-gray-800/50'
+        className={`pavilion-archive-card group relative flex min-w-0 flex-col items-center rounded-lg border-2 p-1.5 text-center transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] sm:p-2 ${
+          known
+            ? getRarityColor(known.rarity)
+            : 'border-gray-600 bg-gray-800/50'
         } ${isLocked ? 'opacity-60' : ''}`}
       >
         <span className="flex aspect-square w-full items-center justify-center">
@@ -102,9 +108,9 @@ export function ItemCard({ entry, displayInfo }: ItemCardProps) {
           ) : (
             <span
               aria-hidden="true"
-              className="flex h-3/5 w-3/5 items-center justify-center rounded-lg bg-gray-700 text-3xl text-gray-500"
+              className="flex h-3/5 w-3/5 items-center justify-center"
             >
-              ?
+              <ControlIcon name={isLocked ? 'lock' : 'archive'} size={64} />
             </span>
           )}
         </span>
@@ -116,6 +122,11 @@ export function ItemCard({ entry, displayInfo }: ItemCardProps) {
           {label}
         </h3>
         {/* Known locked rewards stay inspectable; the lock marks them. */}
+        {known && bestStake !== undefined && (
+          <span className="absolute left-1 top-1">
+            <StakeVictoryMarker tier={bestStake} compact />
+          </span>
+        )}
         {known && isLocked && (
           <span
             data-archive-card-lock
@@ -126,11 +137,7 @@ export function ItemCard({ entry, displayInfo }: ItemCardProps) {
         )}
       </button>
       <AnchoredPopover {...popoverProps} title={label}>
-        <ItemDetails
-          entry={entry}
-          displayInfo={details}
-          showName={!known}
-        />
+        <ItemDetails entry={entry} displayInfo={details} showName={!known} />
       </AnchoredPopover>
     </>
   )

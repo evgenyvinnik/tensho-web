@@ -80,6 +80,27 @@ const readSave = (page, key) =>
 const act = async (locator, mobile) =>
   mobile ? locator.tap() : locator.click()
 
+// The live release now introduces starting Decrees and drawn bonuses. Complete
+// their real UI before manipulating the rack; never click through an overlay.
+async function settleReveals(page, mobile) {
+  const reveals = page.locator('[data-wall-draw], [data-decree-reveal], [data-orb-reveal]')
+  for (let guard = 0; guard < 24; guard++) {
+    const visible = await reveals.first().waitFor({ state: 'visible', timeout: guard === 0 ? 2000 : 800 })
+      .then(() => true, () => false)
+    if (!visible) return
+    const wall = page.locator('[data-wall-draw]')
+    if (await wall.isVisible()) {
+      // Reduced-motion deals finish by themselves, without input synthesis.
+      await wall.waitFor({ state: 'detached', timeout: 3000 })
+      continue
+    }
+    const reveal = reveals.filter({ visible: true }).first()
+    // Both staged reveals advance to their confirmation button automatically.
+    await act(reveal.getByRole('button').last(), mobile)
+  }
+  throw new Error('Reveal queue did not settle')
+}
+
 try {
   for (const mobile of [false, true]) {
     for (const failure of ['saved', 'write-failure']) {
@@ -96,7 +117,7 @@ try {
         hasTouch: mobile,
         reducedMotion: 'reduce',
       })
-      // Record API timing without duplicating the complete 70 MB offline
+      // Record API timing without duplicating the complete offline
       // cache in every trace. Explicit UI screenshots are retained below.
       await context.tracing.start({ screenshots: false, snapshots: false })
       const page = await context.newPage()
@@ -147,15 +168,21 @@ try {
       // Updates are silent: no screen may ever offer or announce one.
       const expectNoUpdateUi = () =>
         expect(page.getByText(/update available/i)).toHaveCount(0)
+      let controlledDocument
       const stillBefore = async () => {
         // Give a would-be activation time to reload the document.
         await page.waitForTimeout(1500)
-        await expect(page.locator('body')).toContainText('pwa-before')
+        // Gameplay deliberately omits the version badge. Check the actual
+        // loaded entry and document identity instead of requiring menu chrome.
+        assert.deepEqual(await page.evaluate(() => ({
+          entry: document.querySelector('script[type="module"][src]').getAttribute('src'),
+          timeOrigin: performance.timeOrigin,
+        })), controlledDocument)
       }
       try {
         await page.goto(root + 'en/')
         await expect(page.locator('body')).toContainText('pwa-before')
-        // Installation is a complete ~70 MB precache, not a click timeout.
+        // Installation is a complete precache, not a click timeout.
         await expect
           .poll(
             () =>
@@ -171,6 +198,10 @@ try {
         await page.waitForFunction(() =>
           Boolean(navigator.serviceWorker.controller)
         )
+        controlledDocument = await page.evaluate(() => ({
+          entry: document.querySelector('script[type="module"][src]').getAttribute('src'),
+          timeOrigin: performance.timeOrigin,
+        }))
         console.log(JSON.stringify({ label, stage: 'installed-and-controlled' }))
         await page.getByRole('button', { name: 'New Run', exact: true }).click()
         await expect(
@@ -178,6 +209,7 @@ try {
         ).toBeVisible()
         // The "?" guide opens by itself on a first run.
         await page.getByRole('button', { name: /^Let.s play$/ }).click()
+        await settleReveals(page, mobile)
         const previous = await readSave(page, classicKey)
         if (failSave)
           await page.evaluate((key) => {
@@ -197,6 +229,7 @@ try {
             mobile
           )
         await page.locator('[data-game-action="play"]').click()
+        await settleReveals(page, mobile)
         if (failSave)
           await expect(
             page.locator('[data-classic-save-status="unavailable"]')
@@ -296,9 +329,44 @@ try {
         ).toBeVisible()
         await page.goto(root + 'en/play')
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+        // The live baseline predates Mouth/Eye/Ox pattern-ID histories. This
+        // Act-1 fixture has no lock or history; require those exact empty
+        // legacy values before admitting their documented migration.
+        const resumedSnapshot = structuredClone(durable.snapshot)
+        const mandate = resumedSnapshot.state.mandateEffectSystem
+        if (Object.hasOwn(mandate, 'firstYakuType')) {
+          assert.equal(mandate.firstYakuType, null)
+          assert.ok(!Object.hasOwn(mandate, 'lockedPatternId'))
+          delete mandate.firstYakuType
+          mandate.lockedPatternId = null
+        }
+        if (Object.hasOwn(mandate, 'scoredYakuIds')) {
+          assert.deepEqual(mandate.scoredYakuIds, [])
+          assert.ok(!Object.hasOwn(mandate, 'playedPatternIds'))
+          delete mandate.scoredYakuIds
+          mandate.playedPatternIds = []
+        }
+        if (Object.hasOwn(resumedSnapshot.state, 'yakuPlayCounts')) {
+          assert.deepEqual(resumedSnapshot.state.yakuPlayCounts, [])
+          assert.ok(!Object.hasOwn(resumedSnapshot.state, 'patternPlayCounts'))
+          delete resumedSnapshot.state.yakuPlayCounts
+          resumedSnapshot.state.patternPlayCounts = []
+        }
+        // Catalog text is refreshed on load. Admit only the two reviewed
+        // terminology changes; effects, ownership and runtime fields stay exact.
+        for (const decree of resumedSnapshot.state.decreeSystem.ownedDecrees) {
+          if (decree.id === 'tanyao_dispensation' && decree.name === 'Tanyao Dispensation') {
+            assert.equal(decree.description, 'Terminal tiles (1s and 9s) are allowed in Tanyao hands.')
+            decree.name = 'Simples Dispensation'
+            decree.description = 'Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not.'
+          }
+          if (decree.id === 'yakuman_succession' && decree.description === 'While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.') {
+            decree.description = 'While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.'
+          }
+        }
         assert.deepEqual(
           (await readSave(page, classicKey)).snapshot,
-          durable.snapshot
+          resumedSnapshot
         )
         await page.screenshot({
           path: resolve(artifacts, `${label}-resumed.png`),

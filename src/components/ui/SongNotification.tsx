@@ -8,14 +8,11 @@
  * Auto-dismisses after a configurable duration.
  */
 
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { AudioTrack, getTrackDisplayName } from '../../utils/assets'
-import {
-  useSettingsStore,
-  selectAnimationMultiplier,
-} from '../../stores/settingsStore'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { ControlIcon } from './ControlIcon'
 
 export interface SongNotificationProps {
@@ -71,29 +68,56 @@ export const SongNotification: React.FC<SongNotificationProps> = ({
   const [isVisible, setIsVisible] = useState(false)
   const [displayTrack, setDisplayTrack] = useState<AudioTrack | null>(null)
   const isMobile = useIsMobile()
-  const reducedMotion = useSettingsStore(selectAnimationMultiplier) === 0
+  const reducedMotion = useReducedMotion()
+  const dismissRef = useRef(onDismiss)
+  const reducedMotionRef = useRef(reducedMotion)
+  const finishRef = useRef<(() => void) | null>(null)
+
+  useEffect(() => {
+    dismissRef.current = onDismiss
+    reducedMotionRef.current = reducedMotion
+    if (reducedMotion) finishRef.current?.()
+  }, [onDismiss, reducedMotion])
 
   // Handle track changes
   useEffect(() => {
-    if (track) {
-      setDisplayTrack(track)
-      setIsVisible(true)
-
-      const timer = setTimeout(() => {
-        setIsVisible(false)
-      }, duration)
-
-      return () => clearTimeout(timer)
+    if (!track) {
+      setDisplayTrack(null)
+      setIsVisible(false)
+      return
+    }
+    setDisplayTrack(track)
+    setIsVisible(true)
+    let visible = true
+    let completed = false
+    let fallback: ReturnType<typeof setTimeout> | undefined
+    const finish = () => {
+      if (visible || completed) return
+      completed = true
+      clearTimeout(fallback)
+      setDisplayTrack(null)
+      dismissRef.current?.()
+    }
+    finishRef.current = finish
+    const timer = setTimeout(() => {
+      visible = false
+      setIsVisible(false)
+      if (reducedMotionRef.current) finish()
+      // Removal cannot depend on frame delivery in hidden/throttled tabs.
+      else fallback = setTimeout(finish, 500)
+    }, duration)
+    return () => {
+      completed = true
+      clearTimeout(timer)
+      clearTimeout(fallback)
+      if (finishRef.current === finish) finishRef.current = null
     }
   }, [track, duration])
 
   // Handle dismiss after animation completes
   const handleAnimationRest = useCallback(() => {
-    if (!isVisible && displayTrack) {
-      setDisplayTrack(null)
-      onDismiss?.()
-    }
-  }, [isVisible, displayTrack, onDismiss])
+    finishRef.current?.()
+  }, [])
 
   // Animation spring - different for mobile vs desktop
   const mobileSpring = useSpring({

@@ -54,6 +54,7 @@ export type UnlockConditionType =
   | 'survive_corrupted_seasons' // Survive X corrupted seasons in one run
   | 'skip_rounds' // Skip X rounds total
   | 'rounds_completed' // Complete X rounds in one run
+  | 'win_paid_turns' // Win using at most X paid Turns
   | 'win_with_few_decrees' // Win owning at most X decrees
 
   // Cumulative stats
@@ -246,13 +247,13 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     id: 'unlock_swift_andy',
     name: 'Swift Andy',
     japaneseName: '迅速',
-    description: 'Win in 12 or fewer rounds',
+    description: 'Win using 48 paid Turns or fewer',
     category: 'decree',
     conditions: [
       {
-        type: 'rounds_completed',
-        target: 12,
-        description: 'Win in 12 or fewer rounds',
+        type: 'win_paid_turns',
+        target: 48,
+        description: 'Win using 48 paid Turns or fewer',
       },
     ],
     unlocksId: 'swift_andy',

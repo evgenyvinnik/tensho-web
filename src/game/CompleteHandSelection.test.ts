@@ -104,18 +104,32 @@ it.each([
   }
 )
 
-it('shows the coach the complete subset instead of only tactical plays', () => {
+it('prices the complete subset alongside tactical plays and recommends the highest score', () => {
   const tiles = [...spares(), ...pairs()],
     game = setup(tiles)
   const before = json(game.captureRun())
+  const evaluated: { ids: string[]; score: number }[] = []
   const advice = buildCoachAdvice({
     tiles,
-    scoreSelection: (ids) => game.previewScore(ids)?.finalScore ?? null,
+    scoreSelection: (ids) => {
+      const score = game.previewScore(ids)?.finalScore ?? null
+      if (score !== null) evaluated.push({ ids: [...ids], score })
+      return score
+    },
     remainingToTarget: 1e9,
     handsRemaining: 4,
   })!
-  expect(advice.best.tileIds).toHaveLength(14)
-  expect(game.isCompleteHand(advice.best.tileIds)).toBe(true)
+  // Stronger grouped Honors can make a tactical play beat Seven Pairs. The
+  // coach must consider the complete hand, not force it over a higher payout.
+  expect(
+    evaluated.some(({ ids }) => ids.length === 14 && game.isCompleteHand(ids))
+  ).toBe(true)
+  expect(advice.best.score).toBe(
+    Math.max(...evaluated.map(({ score }) => score))
+  )
+  expect(game.previewScore(advice.best.tileIds)?.finalScore).toBe(
+    advice.best.score
+  )
   expect(game.captureRun()).toEqual(before)
 })
 

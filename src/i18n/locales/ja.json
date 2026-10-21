@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "ゲームの基本",
+    "titleTilesOverview": "牌を知ろう",
+    "titleSuits": "3種類の数牌",
+    "titleTerminals": "老頭牌と中張牌",
+    "titleWinds": "風牌",
+    "titleDragons": "三元牌",
+    "titleBonus": "ボーナス牌：花と季節",
+    "titleMeldsOverview": "面子とは？",
+    "titleSequences": "順子（シュンツ）",
+    "titleTriplets": "刻子（コーツ）",
+    "titleQuads": "槓子（カンツ）",
+    "titlePairs": "対子（雀頭）",
+    "titleWinningHand": "和了形の構成",
+    "titleSpecialHands": "特殊な和了形",
+    "titleYakuIntro": "役 — 得点を伸ばす倍率",
+    "titleYakuExamples": "よく使う役の例",
+    "titleActsRounds": "幕とラウンド",
+    "titleBossMandates": "ボスの勅命",
+    "titleDecreesIntro": "法令とは？",
+    "titleDecreeCategories": "法令の分類",
+    "titleDecreeRarities": "法令のレアリティ",
+    "titleDecreeSlots": "法令スロットの管理",
+    "titleHierarchy": "5段階の優先順位",
+    "titleTips": "攻略のヒント",
+    "titleMoreTips": "一歩進んだ攻略のヒント",
+    "category": "分類",
+    "types": "種類",
+    "count": "枚数",
+    "numberedSuits": "数牌",
+    "numberedComposition": "3種類 × 9つの数字 × 各4枚",
+    "windComposition": "4種類の風牌 × 各4枚",
+    "dragonComposition": "3種類の三元牌 × 各4枚",
+    "bonusTiles": "ボーナス牌",
+    "bonusComposition": "花4種類 + 季節4種類",
+    "tileSet": "標準の牌セットは144枚です。選んだ牌山や挑戦中の効果によって構成が変わることがあります：",
+    "terminalRanks": "数字が<strong>1または9</strong>の牌",
+    "simpleRanks": "数字が<strong>2〜8</strong>の牌",
+    "tileValue": "組に含まれると1枚につき<strong>{{points}}点</strong>",
+    "windOrder": "風牌は東・南・西・北の順に並んでいます。4種類とも基本点は同じです。",
+    "windPoints": "風牌は字牌で、1枚につき{{points}}点、組に含まれると1枚につき{{groupPoints}}点です。",
+    "honorGroups": "字牌は順子にはできません。同じ字牌をそろえると、対子・刻子・槓子を作れます。",
+    "dragonPoints": "三元牌は字牌で、1枚につき{{points}}点です。得点する三元牌1枚ごとに倍率+{{mult}}、組に含まれる場合は倍率+{{groupMult}}となります。順子にはできません。",
+    "flowerDuration": "挑戦が終わるまで持続",
+    "seasonDuration": "現在のラウンドでのみ有効",
+    "importantRules": "重要なルール：",
+    "quadMechanics": "槓子の仕組み：",
+    "quadBonus": "牌の効果を適用する前に、組の点数+{{points}}、形の倍率+{{mult}}が加算されます。",
+    "quadRefill": "槓子は、選んだ牌の一部として打ちます。打った後に手牌が補充され、槓子だけを宣言する別の操作はありません。",
+    "winningFormula": "<melds>4面子</melds> + <pair>1対子</pair> = <tiles>槓子がなければ14枚</tiles>",
+    "winningExample": "4つの面子には順子・刻子・槓子を使えます。槓子1つにつき、通常の14枚構成に1枚加わります。以下は槓子を含まない例です：",
+    "sevenPairs": "ちょうど<strong>7種類の対子</strong>で構成する14枚の手です。刻子や順子は必要ありません。",
+    "thirteenOrphans": "老頭牌と字牌を各1枚ずつ（13種類）、さらにそのうちの1枚を加えた、14枚の<strong>役満</strong>の手です。",
+    "wallSize": "牌山から補充の牌を引きます。残り枚数は選んだ牌山、最初の手牌、各種効果によって変わるので、残り牌のカウンターを確認しましょう。",
+    "yakuTiers": "現在の一覧には、4段階に分かれた{{count}}種類の役があります。以下は強化や効果を適用する前の基本倍率です：",
+    "tier": "段階",
+    "tierNumber": "第{{tier}}段階",
+    "yakumanTier": "第{{tier}}段階（役満）",
+    "multiplierRange": "基本倍率の範囲",
+    "example": "例",
+    "allSimples": "2〜8の数牌だけで構成し、老頭牌や字牌を含みません。",
+    "allTriplets": "4つの面子すべてが刻子または槓子で、対子が1組あり、順子を含みません。",
+    "fullFlush": "1種類の数牌だけで構成し、字牌を含みません。",
+    "roundType": "ラウンドの種類",
+    "japanese": "日本語名",
+    "targetMultiplier": "目標倍率",
+    "baseTarget": "×{{mult}}（基本目標）",
+    "structural": "手の構造（形法令）",
+    "structuralHelp": "成立する手の条件を変える",
+    "tileIdentity": "牌の性質（变牌法令）",
+    "tileIdentityHelp": "牌の分類を変える",
+    "yakuDoctrine": "役の規定（役变法令）",
+    "yakuDoctrineHelp": "役のルールを変える",
+    "entropy": "運と運命（天运法令）",
+    "entropyHelp": "ツモやプレイのテンポを変える",
+    "scaling": "成長（修行法令）",
+    "scalingHelp": "特定のプレイスタイルに報酬を与える",
+    "rarity": "レアリティ",
+    "name": "名前",
+    "powerLevel": "効果の強さ",
+    "localPower": "小さなボーナス",
+    "regionalPower": "中程度の効果",
+    "imperialPower": "ルールを大きく変える効果",
+    "heavenlyPower": "挑戦全体を左右する力",
+    "raritySources": "レアリティは店での出現率と価格に影響します。天命は特別な入手先から得られ、通常の店頭商品には並びません。効果の相乗作用を考え、各商品の実際の価格を確認しましょう。",
+    "slotBaseline": "法令スロットは基本5枠ですが、選んだ卓や挑戦中の効果によって変わります。以下の方法で枠を増やせます：",
+    "heaven": "天（季節）",
+    "court": "朝廷（法令）",
+    "nature": "自然（花）",
+    "table": "卓（牌）",
+    "grammar": "文法（役）",
+    "hierarchyOverride": "ルールが衝突するときは、権限が上位のルールが下位のルールに優先します。各効果の具体的な条件を確認してください。",
+    "tipScoreTitle": "目標に近づく一手を打とう",
+    "tipScore": "最大{{max}}枚の組み合わせ、または完成した和了形の得点プレビューを比べましょう。完璧な手を待つだけでなく、手番を使って目標点へ近づきましょう。",
+    "tipSynergyTitle": "相乗効果を狙おう",
+    "tipSynergy": "相性のよい法令の組み合わせは、単体で強力な法令を上回ることがあります。",
+    "tipEconomyTitle": "貯金と投資のバランスを取ろう",
+    "tipEconomy": "金貨を貯めるとクリア時に利息を得られますが、次の目標達成に役立つ強化には使いましょう。実際の価格と売却額を確認してください。",
+    "tipFlowersTitle": "花を集めよう",
+    "tipFlowers": "花は挑戦中ずっと残ります。異なる2種類の花で法令スロットが1枠増え、4種類すべて集めると花の効果が強まります。",
+    "tipYakuTitle": "役を見据えて組もう",
+    "tipYaku": "手牌と法令に合った役を選びましょう。完成した和了形では役を組み合わせ、より高い得点を狙えます。",
+    "tipEfficiencyTitle": "牌を効率よく使おう",
+    "tipEfficiency": "複数の組を完成させられる牌を残しましょう。孤立した牌は「引き直し」で交換し、手番の消費と無料の引き直し回数も考慮しましょう。",
+    "tipWallTitle": "残り牌を数えよう",
+    "tipWall": "特定の牌を狙う前に、河と牌山の残りを確認しましょう。引き直しで手放した牌は、そのラウンドが終わるまで河に残ります。",
+    "tipMandateTitle": "勅命は早めに確認しよう",
+    "tipMandate": "次のボスの勅命を読み、その制約の下でも得点できる構成を準備しましょう。",
+    "congratulations": "<strong>おめでとうございます！</strong>これで天翔の基本を身につけました。",
+    "farewell": "天へ昇るあなたの旅に、牌の加護がありますように！"
+  },
+  "codexEconomy": {
+    "payout": "クリア時の基本報酬は小ラウンドが3ゴールド、大ラウンドが5、ボスが10です。目標を超えた点数では増えません。ステークによって小ラウンド報酬がなくなる場合があり、法令や兆しは最終的な支払額を変えます。",
+    "interest": "利息はクリア報酬を受け取る前の所持金で計算します。5ゴールドにつき1、初期上限は5です。勅許や兆しで上限が上がり、一部の兆しでは利息が無効になります。敗北時は利息を得られません。",
+    "sale": "法令の実際の売却額は売却ボタンで確認してください。花で支払った法令や無料報酬の法令は0ゴールドの場合があり、永続ステッカー付きの法令は売却できません。売却すると効果がなくなり、使用していた枠が空きます。",
+    "prices": "各商品の表示価格と現在の更新費用を確認してください。割引、エディション、勅許などで価格は変わります。更新しても購入済みの勅許や札占い師の無料商品は復活しません。"
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "最初の一歩",
+      "description": "第4幕に到達する。"
+    },
+    "ascending": {
+      "name": "昇進",
+      "description": "第8幕に到達する。"
+    },
+    "victory": {
+      "name": "勝利",
+      "description": "ランに勝利する。"
+    },
+    "redPath": {
+      "name": "赤の道",
+      "description": "赤場以上の難度でランに勝利する。"
+    },
+    "blackPath": {
+      "name": "黒の道",
+      "description": "黒場以上の難度でランに勝利する。"
+    },
+    "goldenPath": {
+      "name": "金の道",
+      "description": "金場でランに勝利する。"
+    },
+    "tileMaster": {
+      "name": "牌の達人",
+      "description": "全ランの合計で2,500枚の牌をプレイする。"
+    },
+    "discardArtist": {
+      "name": "交換の名手",
+      "description": "全ランの合計で2,500枚の牌を引き直す。"
+    },
+    "fortuneBuilt": {
+      "name": "築いた財産",
+      "description": "一回のランで金400を所持する。"
+    },
+    "wildFlush": {
+      "name": "ワイルド混一色",
+      "description": "すべて万能牌で構成された混一色で得点する。"
+    },
+    "speedRun": {
+      "name": "疾走",
+      "description": "消費ターン数48以下でランに勝利する。無料の引き直しは数えない。"
+    },
+    "charterCollector": {
+      "name": "勅許の収集家",
+      "description": "一度の挑戦で、第5幕終了までに勅許状を5枚購入する。"
+    },
+    "shattered": {
+      "name": "粉砕",
+      "description": "一度のプレイで硝子牌を2枚割る。"
+    },
+    "royalHand": {
+      "name": "王者の手",
+      "description": "役満で得点する。"
+    },
+    "retrograde": {
+      "name": "逆行",
+      "description": "役のレベルを10に上げる。"
+    },
+    "keeperOfWinds": {
+      "name": "風の守り手",
+      "description": "一度の挑戦で風の役を合計10個成立させる。"
+    },
+    "masterOfSilence": {
+      "name": "静寂の達人",
+      "description": "字牌を捨てずに3ラウンド勝利する。"
+    },
+    "sealBearer": {
+      "name": "印の使い手",
+      "description": "運命の印を10回使う。"
+    },
+    "score10k": {
+      "name": "万点",
+      "description": "一回のプレイで10,000点を獲得する。"
+    },
+    "score1m": {
+      "name": "百万点",
+      "description": "一回のプレイで1,000,000点を獲得する。"
+    },
+    "score100m": {
+      "name": "億点",
+      "description": "一回のプレイで100,000,000点を獲得する。"
+    },
+    "sealScholar": {
+      "name": "印の学者",
+      "description": "すべての運命の印を発見する。"
+    },
+    "starGazer": {
+      "name": "星読み",
+      "description": "すべての天球を発見する。"
+    },
+    "voidWalker": {
+      "name": "虚空の旅人",
+      "description": "すべての虚無の書を発見する。"
+    },
+    "charterComplete": {
+      "name": "勅許の完全収集",
+      "description": "すべての勅許状を発見する。"
+    },
+    "archiveComplete": {
+      "name": "手牌録完成",
+      "description": "手牌録の全項目を発見する。"
+    },
+    "archiveCompletePlus": {
+      "name": "手牌録完成＋",
+      "description": "すべての牌山で金場に勝利する。"
+    },
+    "archiveCompletePlusPlus": {
+      "name": "手牌録完成＋＋",
+      "description": "すべての法令で金のステッカーを獲得する。"
+    },
+    "ruleBender": {
+      "name": "規則を曲げる者",
+      "description": "チャレンジのランを完了する。"
+    },
+    "ruleBreaker": {
+      "name": "規則を破る者",
+      "description": "すべてのチャレンジを完了する。"
+    },
+    "deckMinimalist": {
+      "name": "小さな牌山",
+      "description": "牌山を20枚以下に減らす。"
+    },
+    "deckMaximalist": {
+      "name": "大きな牌山",
+      "description": "牌山を80枚以上に増やす。"
+    },
+    "purist": {
+      "name": "純粋主義者",
+      "description": "ショップを再抽選せずにランに勝利する。"
+    },
+    "title": "天の栄誉",
+    "shortTitle": "栄誉",
+    "progress": "進捗",
+    "earned": "実績を解除",
+    "unlocks": "解放されるもの",
+    "categories": {
+      "progression": "歩み",
+      "cumulative": "積み重ね",
+      "skill": "技量",
+      "scoring": "得点",
+      "collection": "収集",
+      "mastery": "熟練",
+      "challenge": "挑戦"
+    }
+  },
   "observatory": {
     "description": "所持する各オーブは、対応する役の系統が得点になると倍率×1.5。1回のプレイにつき各オーブ1回だけ適用されます。ブラックホールは得点になった任意の役に対応します。",
     "holdingNote": "天文台はこのオーブの所持にボーナスを与えます。使用すると永続強化を得ますが、所持ボーナスは失われます。"
@@ -24,6 +289,15 @@
     "black_hole_orb": "ほかの12種類の天体の珠をすべて発見する。"
   },
   "decreeUnlocks": {
+    "stage_master": "第4幕に到達する。",
+    "flower_pot": "第8幕に到達する。",
+    "satellite": "一回のランで金400を所持する。",
+    "swift_andy": "消費ターン数48以下でランに勝利する。無料の引き直しは数えない。",
+    "lucky_sixes": "一回のプレイで10,000点を獲得する。",
+    "the_idol": "一回のプレイで1,000,000点を獲得する。",
+    "stuntman": "一回のプレイで100,000,000点を獲得する。",
+    "cartomancer": "すべての運命の印を発見する。",
+    "astronomer": "すべての天球を発見する。",
     "decree-blueprint": "ランをクリアする。",
     "decree-brainstorm": "法令を5枚以上所持してランをクリアする。",
     "decree-heavenly-ordinance": "役満で得点する。",
@@ -563,6 +837,42 @@
       "mythic": "天命"
     },
     "items": {
+      "stage_master": {
+        "name": "舞台の達人",
+        "description": "クリアした幕ごとに+25点、+1倍率。"
+      },
+      "flower_pot": {
+        "name": "植木鉢",
+        "description": "異なる四種類の花牌をすべて所持している間、倍率×3。"
+      },
+      "satellite": {
+        "name": "衛星",
+        "description": "勝利した各ラウンドの終了時、レベル1を超えている天球の系統ごとに+1金貨。"
+      },
+      "swift_andy": {
+        "name": "俊足のアンディ",
+        "description": "毎ラウンド、無料の引き直し回数+2。手牌上限−2。"
+      },
+      "lucky_sixes": {
+        "name": "幸運の六",
+        "description": "打った数字6の数牌ごとに+6倍率。石の牌は数えない。"
+      },
+      "the_idol": {
+        "name": "偶像",
+        "description": "二枚以上の牌を打ち、そのすべての牌面に印刷された種類と数字が同じなら倍率×3。石の牌があると条件を満たさない。万能牌も印刷された牌面のまま判定する。"
+      },
+      "stuntman": {
+        "name": "スタントマン",
+        "description": "+250点。手牌上限−3。"
+      },
+      "cartomancer": {
+        "name": "札占い師",
+        "description": "茶寮に入ると、無料の運命の印の品枠が一つ追加される。店の商品を更新しても、この無料枠は補充されない。"
+      },
+      "astronomer": {
+        "name": "天文学者",
+        "description": "茶寮に入ると、無料の天球の品枠が一つ追加される。店の商品を更新しても、この無料枠は補充されない。"
+      },
       "decree-half-suited": {
         "name": "半着",
         "description": "+20点"
@@ -1225,6 +1535,23 @@
       }
     }
   },
+  "codexFlora": {
+    "empowerment": "所持する花牌ごとに、勅令の数値報酬も10%強化されます。セットボーナスは現在持っている異なる花牌の種類数で決まり、過去に集めた総数ではありません。",
+    "awakeningLifecycle": "再開花の解放は次の挑戦にも引き継がれます。最初の一枚は通常状態で、解放後に所持済みの花牌を再び引くと、その挑戦中は覚醒します。さらに重複しても能力や枠は増えません。新しい挑戦では覚醒だけがリセットされ、解放は残ります。",
+    "chrysanthemumSet": "四種類すべての花牌を所持していると、覚醒倍率は伏せた面子ごとに×{{factor}}になります。対子や単独の牌は段階を増やしません。",
+    "drought": "干ばつは、覚醒や勅令の強化を含む花牌の能力を停止します。有効な永遠の庭があれば保護されます。花牌、獲得した覚醒、コレクション枠は失われません。",
+    "distinction": "覚醒するのは花牌であり、季節牌ではありません。季節牌には通常と汚染の二種類の状態があります。引いたボーナス牌は自動で公開・補充され、ターンは消費しません。",
+    "corruption": "第2幕以降、季節牌は通常の効果の代わりに汚染されることがあります。幽霊の間では第1幕から汚染が起こります。汚染季節牌の効果はそのラウンド限りで、覚醒季節牌ではありません。",
+    "interactionsTitle": "花牌と季節牌の相互作用",
+    "interactionsIntro": "これらの組み合わせには、花牌の能力と通常の季節牌が同時に有効である必要があります。覚醒は不要です。組み合わせを開くと任意で詳しい条件を確認できます。プレビューだけでは報酬は得られません。",
+    "orchidSpring": "蘭と春が有効な間に風牌か三元牌を引くと、王牌から追加で一枚引けます。追加のドローは連鎖せず、王牌が空なら牌は生まれません。追加牌により一時的に手牌上限を超えることがあります。",
+    "bambooSummer": "竹と夏が有効な間に、実物の老頭牌（一・九の数牌）を四枚以上プレイします。夏が取り置いた牌が生牌山へ戻り、そのラウンドでは後から夏を引いても牌山が縮みません。得点ボーナスは残ります。",
+    "plumAutumn": "ラウンドが続く場合、得点した実物の順子ごとに、河から最も新しい一致牌を戻せます。プレイ前から河にあった牌だけが対象です。各牌は一度だけ戻り、複製されません。仮想牌や置き換えられた牌面は対象外です。",
+    "chrysanthemumWinter": "菊が有効な間、伏せたプレイは冬の得点ペナルティを受けず、一つ飛ばしの順子ルールは利用できます。公開されたプレイにはペナルティが残ります。花牌が保護されていなければ、干ばつでこの保護は停止します。",
+    "catalystsTitle": "花牌で支払う",
+    "catalystsIntro": "茶屋の一部の勅令の直接販売では、金の代わりに花牌で支払えます。所持する花牌を一枚選んで確認してください。任意の選択であり、自動で消費されることはありません。",
+    "catalystsCost": "花牌を失うとセットボーナスも減ります。残る枠にコレクションが収まらなければ購入できません。再取得すると、その挑戦中に得た覚醒も戻ります。役満継承には二枚の花牌が必要なので、一枚を支払うには事前に三枚以上必要です。"
+  },
   "flora": {
     "mutations": {
       "locked": "1回のランで4種類の花を集めると再開花が解放されます。その後、持っている花を再び引くと覚醒します。",
@@ -1820,6 +2147,7 @@
     "effect": "効果",
     "voidCost": "虚無コスト",
     "timesUsed": "使用回数",
+    "stakeVictory": "{{stake}}で勝利",
     "runsWon": "勝利数",
     "unlock": "解放条件:",
     "title": "手牌録",
@@ -2583,6 +2911,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "緋の山",
+        "theme": "三元牌",
+        "description": "深紅の漆と金の竜が三元牌を軸にした戦略を後押しするが、法令を置く余地は少ない。",
+        "unlock": "赤場以上で勝利する",
+        "modifiers": {
+          "0": "初期の三元牌に倍率の印が付く（計上時に+4倍率）",
+          "1": "初期法令スロット−1"
+        }
+      },
+      "obsidian_wall": {
+        "name": "黒曜の山",
+        "theme": "風牌",
+        "description": "暗い石と銀の風の彫刻が風牌を軸にした戦略に報いるが、法令を置く余地は少ない。",
+        "unlock": "黒場以上で勝利する",
+        "modifiers": {
+          "0": "初期の風牌に加点の印が付く（計上時に+30点）",
+          "1": "初期法令スロット−1"
+        }
+      },
       "green_felt": {
         "theme": "伝統",
         "unlock": "最初から利用可能",

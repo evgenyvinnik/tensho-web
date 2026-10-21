@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "게임의 핵심 개념",
+    "titleTilesOverview": "패 이해하기",
+    "titleSuits": "세 가지 수패 종류",
+    "titleTerminals": "노두패와 중장패",
+    "titleWinds": "풍패",
+    "titleDragons": "삼원패",
+    "titleBonus": "보너스 패: 꽃과 계절",
+    "titleMeldsOverview": "멘츠란?",
+    "titleSequences": "순자 (順子 / 슌쯔)",
+    "titleTriplets": "커쯔 (刻子 / 코쯔)",
+    "titleQuads": "깡쯔 (槓子 / 칸쯔)",
+    "titlePairs": "또이쯔와 머리 (雀頭 / 잔토)",
+    "titleWinningHand": "화료패의 구성",
+    "titleSpecialHands": "특수 화료 형태",
+    "titleYakuIntro": "역 — 점수를 높이는 배수",
+    "titleYakuExamples": "자주 쓰는 역의 예시",
+    "titleActsRounds": "막과 라운드",
+    "titleBossMandates": "보스 칙령",
+    "titleDecreesIntro": "법령이란?",
+    "titleDecreeCategories": "법령 분류",
+    "titleDecreeRarities": "법령 희귀도",
+    "titleDecreeSlots": "법령 슬롯 관리",
+    "titleHierarchy": "다섯 단계의 우선순위",
+    "titleTips": "성공을 위한 팁",
+    "titleMoreTips": "심화 전략 팁",
+    "category": "분류",
+    "types": "종류",
+    "count": "장수",
+    "numberedSuits": "수패",
+    "numberedComposition": "3종류 × 숫자 9개 × 각 4장",
+    "windComposition": "풍패 4종류 × 각 4장",
+    "dragonComposition": "삼원패 3종류 × 각 4장",
+    "bonusTiles": "보너스 패",
+    "bonusComposition": "꽃 4장 + 계절 4장",
+    "tileSet": "표준 패 세트는 144장입니다. 선택한 패산과 도전 중 적용되는 효과에 따라 구성이 달라질 수 있습니다:",
+    "terminalRanks": "숫자가 <strong>1 또는 9</strong>인 패",
+    "simpleRanks": "숫자가 <strong>2~8</strong>인 패",
+    "tileValue": "묶음 안에서는 한 장당 <strong>{{points}}점</strong>",
+    "windOrder": "풍패는 동, 남, 서, 북 순서로 표시됩니다. 네 종류 모두 기본 점수가 같습니다.",
+    "windPoints": "풍패는 자패이며 한 장당 {{points}}점, 묶음 안에서는 한 장당 {{groupPoints}}점입니다.",
+    "honorGroups": "자패로는 숫자가 이어지는 순자를 만들 수 없습니다. 같은 자패끼리는 또이쯔, 커쯔, 깡쯔를 만들 수 있습니다.",
+    "dragonPoints": "삼원패는 자패이며 한 장당 {{points}}점입니다. 득점하는 삼원패마다 배수 +{{mult}}, 묶음 안에서는 배수 +{{groupMult}}가 더해집니다. 숫자가 이어지는 순자는 만들 수 없습니다.",
+    "flowerDuration": "도전 내내 유지됩니다",
+    "seasonDuration": "현재 라운드에서만 활성화됩니다",
+    "importantRules": "중요 규칙:",
+    "quadMechanics": "깡쯔의 작동 방식:",
+    "quadBonus": "패 효과를 적용하기 전에 묶음 점수 +{{points}}, 형태 배수 +{{mult}}가 더해집니다.",
+    "quadRefill": "깡쯔는 선택한 패의 일부로 냅니다. 패를 낸 뒤 손패가 보충되며, 깡쯔만 따로 선언하는 행동은 없습니다.",
+    "winningFormula": "<melds>멘츠 4개</melds> + <pair>또이쯔 1개</pair> = <tiles>깡쯔가 없으면 14장</tiles>",
+    "winningExample": "멘츠 네 개는 순자, 커쯔, 깡쯔로 구성할 수 있습니다. 깡쯔 하나마다 보통의 14장 구성에 패 한 장이 추가됩니다. 다음은 깡쯔가 없는 예시입니다:",
+    "sevenPairs": "정확히 <strong>서로 다른 또이쯔 7개</strong>로 이루어진 14장입니다. 커쯔나 순자는 필요하지 않습니다.",
+    "thirteenOrphans": "모든 노두패와 자패를 한 장씩 모은 13종류에, 그중 하나를 한 장 더한 14장의 <strong>역만</strong> 패입니다.",
+    "wallSize": "보충할 패는 패산에서 가져옵니다. 남은 장수는 선택한 패산, 시작 손패, 적용 효과에 따라 달라지므로 남은 패 수를 확인하세요.",
+    "yakuTiers": "현재 목록에는 네 등급으로 나뉜 {{count}}가지 역이 있습니다. 다음은 업그레이드와 효과를 적용하기 전의 기본 배수입니다:",
+    "tier": "등급",
+    "tierNumber": "{{tier}}등급",
+    "yakumanTier": "{{tier}}등급 (역만)",
+    "multiplierRange": "기본 배수 범위",
+    "example": "예시",
+    "allSimples": "2~8의 수패만 포함하며, 노두패나 자패는 없습니다.",
+    "allTriplets": "멘츠 네 개가 모두 커쯔 또는 깡쯔이고, 또이쯔 하나가 있으며 순자는 없습니다.",
+    "fullFlush": "한 종류의 수패만 포함하며, 자패는 없습니다.",
+    "roundType": "라운드 유형",
+    "japanese": "일본어 명칭",
+    "targetMultiplier": "목표 배수",
+    "baseTarget": "×{{mult}} (기본 목표)",
+    "structural": "구조 (形法令)",
+    "structuralHelp": "유효한 패 구성의 조건을 바꿉니다",
+    "tileIdentity": "패 정체성 (变牌法令)",
+    "tileIdentityHelp": "패를 분류하는 방식을 바꿉니다",
+    "yakuDoctrine": "역 규정 (役变法令)",
+    "yakuDoctrineHelp": "역의 규칙을 바꿉니다",
+    "entropy": "무작위성과 운명 (天运法令)",
+    "entropyHelp": "패 뽑기와 진행 속도를 바꿉니다",
+    "scaling": "성장 (修行法令)",
+    "scalingHelp": "특정 플레이 방식에 보상을 줍니다",
+    "rarity": "희귀도",
+    "name": "이름",
+    "powerLevel": "효과의 강도",
+    "localPower": "작은 보너스",
+    "regionalPower": "중간 수준의 효과",
+    "imperialPower": "규칙을 크게 바꾸는 효과",
+    "heavenlyPower": "도전의 방향을 결정하는 힘",
+    "raritySources": "희귀도는 상점 출현과 가격에 영향을 줍니다. 천명은 일반 상점 상품이 아닌 특별한 경로로 얻습니다. 효과의 조합을 고려하고 각 상품의 실제 가격을 확인하세요.",
+    "slotBaseline": "법령 슬롯은 기본 5개지만, 선택한 테이블과 도전 중 적용되는 효과에 따라 달라질 수 있습니다. 다음 방법으로 슬롯을 늘릴 수 있습니다:",
+    "heaven": "하늘 (계절)",
+    "court": "조정 (법령)",
+    "nature": "자연 (꽃)",
+    "table": "탁자 (패)",
+    "grammar": "문법 (역)",
+    "hierarchyOverride": "규칙이 충돌하면 권한이 높은 규칙이 낮은 규칙보다 우선합니다. 각 효과의 구체적인 조건을 확인하세요.",
+    "tipScoreTitle": "목표에 도움이 되는 패를 내세요",
+    "tipScore": "최대 {{max}}장의 조합이나 완성된 화료패의 점수 미리보기를 비교하세요. 완벽한 패만 기다리기보다 턴을 사용해 목표 점수에 다가가세요.",
+    "tipSynergyTitle": "시너지를 만드세요",
+    "tipSynergy": "서로 잘 맞는 법령의 조합은 단독으로 강력한 법령보다 더 강할 수 있습니다.",
+    "tipEconomyTitle": "경제의 균형을 잡으세요",
+    "tipEconomy": "골드를 모으면 클리어 시 이자를 받지만, 다음 목표 달성에 도움이 되는 업그레이드에는 투자하세요. 실제 가격과 판매가를 확인하세요.",
+    "tipFlowersTitle": "꽃을 모으세요",
+    "tipFlowers": "꽃은 도전 내내 유지됩니다. 서로 다른 꽃 두 종류를 모으면 법령 슬롯 하나를 얻고, 네 종류를 모두 모으면 꽃의 효과가 강해집니다.",
+    "tipYakuTitle": "역을 계획하세요",
+    "tipYaku": "손패와 법령에 맞는 역을 선택하세요. 완성된 화료패에서는 여러 역을 조합해 더 큰 점수를 얻을 수 있습니다.",
+    "tipEfficiencyTitle": "패를 효율적으로 쓰세요",
+    "tipEfficiency": "여러 묶음을 완성하는 데 쓸 수 있는 패를 남기세요. 떨어져 있는 패는 '다시 뽑기'로 교체하되, 턴 비용과 무료 다시 뽑기 횟수를 고려하세요.",
+    "tipWallTitle": "남은 패를 세세요",
+    "tipWall": "특정 패를 노리기 전에 버림패 더미와 남은 패산을 확인하세요. 다시 뽑기로 내보낸 패는 해당 라운드가 끝날 때까지 버림패 더미에 남습니다.",
+    "tipMandateTitle": "칙령을 미리 읽으세요",
+    "tipMandate": "다가오는 보스 칙령을 읽고 그 제약 아래에서도 득점할 수 있는 구성을 준비하세요.",
+    "congratulations": "<strong>축하합니다!</strong> 이제 텐쇼의 기본을 익혔습니다.",
+    "farewell": "하늘로 향하는 여정에 패의 행운이 함께하기를!"
+  },
+  "codexEconomy": {
+    "payout": "라운드 클리어 기본 보상은 소형 3골드, 대형 5골드, 보스 10골드이며 목표 초과 점수로 늘어나지 않습니다. 스테이크에 따라 소형 보상이 없어질 수 있고, 칙령과 징조는 최종 지급액을 바꿀 수 있습니다.",
+    "interest": "이자는 클리어 보상을 받기 전의 보유 골드로 계산합니다. 5골드당 1골드이며 기본 상한은 5입니다. 헌장과 징조로 상한이 높아질 수 있고, 일부 징조는 이자를 막습니다. 패배 시에는 이자가 없습니다.",
+    "sale": "칙령의 실제 판매가는 판매 버튼에서 확인하세요. 꽃으로 지불하거나 무료로 얻은 칙령은 0골드에 팔릴 수 있으며 영원 칙령은 팔 수 없습니다. 판매하면 효과가 사라지고 사용하던 슬롯이 비워집니다.",
+    "prices": "각 상품의 표시 가격과 현재 새로고침 비용을 확인하세요. 할인, 에디션, 헌장 등의 효과로 가격이 바뀔 수 있습니다. 새로고침해도 구매한 헌장이나 카드 점술가의 무료 상품은 다시 생기지 않습니다."
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "첫걸음",
+      "description": "4막에 도달하세요."
+    },
+    "ascending": {
+      "name": "상승",
+      "description": "8막에 도달하세요."
+    },
+    "victory": {
+      "name": "승리",
+      "description": "런에서 승리하세요."
+    },
+    "redPath": {
+      "name": "붉은 길",
+      "description": "빨강 단계 이상의 난이도에서 런을 승리하세요."
+    },
+    "blackPath": {
+      "name": "검은 길",
+      "description": "검정 단계 이상의 난이도에서 런을 승리하세요."
+    },
+    "goldenPath": {
+      "name": "황금빛 길",
+      "description": "금색 단계에서 런을 승리하세요."
+    },
+    "tileMaster": {
+      "name": "패의 달인",
+      "description": "여러 런에 걸쳐 패 2,500개를 플레이하세요."
+    },
+    "discardArtist": {
+      "name": "교환의 예술가",
+      "description": "여러 런에 걸쳐 패 2,500개를 다시 뽑으세요."
+    },
+    "fortuneBuilt": {
+      "name": "쌓아 올린 부",
+      "description": "한 런에서 골드 400을 보유하세요."
+    },
+    "wildFlush": {
+      "name": "만능 혼이쯔",
+      "description": "만능 패로만 구성된 혼이쯔로 득점하세요."
+    },
+    "speedRun": {
+      "name": "질주",
+      "description": "48턴 이하를 소모해 런에서 승리하세요. 무료 다시 뽑기는 세지 않습니다."
+    },
+    "charterCollector": {
+      "name": "칙허 수집가",
+      "description": "한 번의 도전에서 5막이 끝날 때까지 황실 칙허장 5개를 구매하세요."
+    },
+    "shattered": {
+      "name": "산산조각",
+      "description": "한 번의 플레이에서 유리 패 2개를 깨뜨리세요."
+    },
+    "royalHand": {
+      "name": "왕의 손패",
+      "description": "역만으로 득점하세요."
+    },
+    "retrograde": {
+      "name": "역행",
+      "description": "역의 레벨을 10으로 올리세요."
+    },
+    "keeperOfWinds": {
+      "name": "바람의 수호자",
+      "description": "한 번의 도전에서 풍패 역을 총 10개 완성하세요."
+    },
+    "masterOfSilence": {
+      "name": "침묵의 달인",
+      "description": "자패를 버리지 않고 3라운드에서 승리하세요."
+    },
+    "sealBearer": {
+      "name": "인장의 소유자",
+      "description": "운명의 인장 10개를 사용하세요."
+    },
+    "score10k": {
+      "name": "만 점",
+      "description": "한 번의 플레이로 10,000점을 획득하세요."
+    },
+    "score1m": {
+      "name": "백만 점",
+      "description": "한 번의 플레이로 1,000,000점을 획득하세요."
+    },
+    "score100m": {
+      "name": "억 점",
+      "description": "한 번의 플레이로 100,000,000점을 획득하세요."
+    },
+    "sealScholar": {
+      "name": "인장 학자",
+      "description": "모든 운명의 인장을 발견하세요."
+    },
+    "starGazer": {
+      "name": "별을 보는 자",
+      "description": "모든 천상의 구슬을 발견하세요."
+    },
+    "voidWalker": {
+      "name": "공허의 방랑자",
+      "description": "모든 공허의 두루마리를 발견하세요."
+    },
+    "charterComplete": {
+      "name": "칙허 완성",
+      "description": "모든 황실 칙허장을 발견하세요."
+    },
+    "archiveComplete": {
+      "name": "기록 완성",
+      "description": "기록의 모든 항목을 발견하세요."
+    },
+    "archiveCompletePlus": {
+      "name": "기록 완성 +",
+      "description": "모든 패산으로 금색 단계에서 승리하세요."
+    },
+    "archiveCompletePlusPlus": {
+      "name": "기록 완성 ++",
+      "description": "모든 법령에 금색 스티커를 획득하세요."
+    },
+    "ruleBender": {
+      "name": "규칙을 굽히는 자",
+      "description": "도전 런을 완료하세요."
+    },
+    "ruleBreaker": {
+      "name": "규칙을 깨는 자",
+      "description": "모든 도전을 완료하세요."
+    },
+    "deckMinimalist": {
+      "name": "작은 패산",
+      "description": "패산을 20개 이하로 줄이세요."
+    },
+    "deckMaximalist": {
+      "name": "거대한 패산",
+      "description": "패산을 80개 이상으로 늘리세요."
+    },
+    "purist": {
+      "name": "순수주의자",
+      "description": "상점을 새로고침하지 않고 런에서 승리하세요."
+    },
+    "title": "천상의 영예",
+    "shortTitle": "영예",
+    "progress": "진행도",
+    "earned": "업적 달성",
+    "unlocks": "해금 보상",
+    "categories": {
+      "progression": "여정",
+      "cumulative": "이정표",
+      "skill": "기술",
+      "scoring": "점수",
+      "collection": "수집",
+      "mastery": "숙련",
+      "challenge": "도전"
+    }
+  },
   "observatory": {
     "description": "보유한 각 오브는 해당 역 계열이 득점하면 배수 ×1.5를 부여합니다. 플레이당 오브마다 한 번만 적용됩니다. 블랙홀은 득점한 모든 역에 대응합니다.",
     "holdingNote": "천문대는 이 오브를 보유하면 보너스를 줍니다. 사용하면 영구 강화를 얻지만 보유 보너스는 사라집니다."
@@ -24,6 +289,15 @@
     "black_hole_orb": "나머지 12종류의 천체 구슬을 모두 발견하세요."
   },
   "decreeUnlocks": {
+    "stage_master": "4막에 도달하세요.",
+    "flower_pot": "8막에 도달하세요.",
+    "satellite": "한 런에서 골드 400을 보유하세요.",
+    "swift_andy": "48턴 이하를 소모해 런에서 승리하세요. 무료 다시 뽑기는 세지 않습니다.",
+    "lucky_sixes": "한 번의 플레이로 10,000점을 획득하세요.",
+    "the_idol": "한 번의 플레이로 1,000,000점을 획득하세요.",
+    "stuntman": "한 번의 플레이로 100,000,000점을 획득하세요.",
+    "cartomancer": "모든 운명의 인장을 발견하세요.",
+    "astronomer": "모든 천상의 구슬을 발견하세요.",
     "decree-blueprint": "런을 승리하세요.",
     "decree-brainstorm": "법령을 5개 이상 보유한 채 런을 승리하세요.",
     "decree-heavenly-ordinance": "역만으로 점수를 얻으세요.",
@@ -563,6 +837,42 @@
       "mythic": "천명"
     },
     "items": {
+      "stage_master": {
+        "name": "무대의 달인",
+        "description": "완료한 막마다 +25점 및 +1 배율."
+      },
+      "flower_pot": {
+        "name": "꽃 화분",
+        "description": "서로 다른 꽃 네 종류를 모두 보유한 동안 배율 ×3."
+      },
+      "satellite": {
+        "name": "위성",
+        "description": "승리한 각 라운드가 끝날 때 레벨 1을 초과한 천상의 구슬 계열마다 +1골드."
+      },
+      "swift_andy": {
+        "name": "날쌘 앤디",
+        "description": "매 라운드 무료 다시 뽑기 횟수 +2; 패 받침대 크기 −2."
+      },
+      "lucky_sixes": {
+        "name": "행운의 육",
+        "description": "낸 숫자 6 수패마다 +6 배율. 돌 패는 세지 않습니다."
+      },
+      "the_idol": {
+        "name": "우상",
+        "description": "패를 두 장 이상 내고 모든 패에 인쇄된 문양과 숫자가 같으면 배율 ×3. 돌 패가 있으면 조건이 깨지며, 만능 패는 인쇄된 원래 정체성으로 판정합니다."
+      },
+      "stuntman": {
+        "name": "스턴트맨",
+        "description": "+250점; 패 받침대 크기 −3."
+      },
+      "cartomancer": {
+        "name": "카드 점술가",
+        "description": "찻집에 들어갈 때 무료 운명의 인장 상품 하나가 추가됩니다. 상점을 새로고침해도 이 무료 상품은 보충되지 않습니다."
+      },
+      "astronomer": {
+        "name": "천문학자",
+        "description": "찻집에 들어갈 때 무료 천상의 구슬 상품 하나가 추가됩니다. 상점을 새로고침해도 이 무료 상품은 보충되지 않습니다."
+      },
       "decree-half-suited": {
         "name": "반색",
         "description": "+20점"
@@ -1225,6 +1535,23 @@
       }
     }
   },
+  "codexFlora": {
+    "empowerment": "보유한 꽃마다 칙령의 수치 보상도 10% 강화됩니다. 세트 보너스는 지금 보유한 서로 다른 꽃 종류를 세며, 지금까지 모은 모든 꽃을 세지 않습니다.",
+    "awakeningLifecycle": "재개화 해금은 다음 도전에도 유지됩니다. 첫 꽃은 일반 상태이며, 해금 후 보유한 꽃을 다시 뽑으면 이번 도전 동안 각성합니다. 추가 중복은 능력이나 슬롯을 중첩하지 않습니다. 새 도전에서는 각성만 초기화되고 해금은 유지됩니다.",
+    "chrysanthemumSet": "네 종류의 꽃을 모두 보유하면 각성 배율이 숨겨진 몸통마다 ×{{factor}}가 됩니다. 쌍과 낱개 패는 단계를 늘리지 않습니다.",
+    "drought": "가뭄은 각성과 칙령 강화를 포함한 꽃의 능력을 억제합니다. 활성화된 영원의 정원이 있으면 보호됩니다. 꽃, 획득한 각성, 수집 슬롯은 사라지지 않습니다.",
+    "distinction": "각성하는 것은 꽃이며 계절은 아닙니다. 계절은 일반 또는 타락 상태입니다. 뽑은 보너스 패는 턴을 쓰지 않고 자동으로 공개되고 보충됩니다.",
+    "corruption": "2막부터 계절은 일반 효과 대신 타락할 수 있습니다. 유령 살롱에서는 1막부터 타락이 가능합니다. 타락한 계절은 이번 라운드에만 적용되며 각성한 계절이 아닙니다.",
+    "interactionsTitle": "꽃과 계절의 상호작용",
+    "interactionsIntro": "이 조합은 꽃의 능력과 일반 계절이 동시에 활성화되어야 합니다. 각성은 필요 없습니다. 조합을 펼치면 선택적으로 상세 조건을 볼 수 있습니다. 미리보기만으로는 보상을 얻지 않습니다.",
+    "orchidSpring": "난초와 봄이 활성화된 상태에서 풍패나 삼원패를 뽑으면 왕패에서 한 장을 추가로 뽑습니다. 추가 뽑기는 연쇄되지 않으며 빈 왕패에서 패가 생기지 않습니다. 추가 패로 일시적으로 패 받침의 정원을 넘을 수 있습니다.",
+    "bambooSummer": "대나무와 여름이 활성화된 상태에서 실제 노두패(수패의 일 또는 구)를 네 장 이상 플레이하세요. 여름이 따로 둔 패가 살아 있는 패산으로 돌아오며, 이후의 여름은 이번 라운드에 패산을 줄일 수 없습니다. 점수 보너스는 유지됩니다.",
+    "plumAutumn": "라운드가 계속되면 점수를 얻은 실제 순자마다 버림패에서 가장 최근의 일치하는 패를 가져올 수 있습니다. 플레이 전에 버림패에 있던 패만 해당합니다. 각 패는 한 번만 회수되며 복제되지 않습니다. 가상 패나 바뀐 패면은 해당하지 않습니다.",
+    "chrysanthemumWinter": "국화가 활성화되어 있으면 숨겨진 플레이는 겨울의 점수 페널티를 무시하며 한 숫자를 건너뛰는 순자 규칙은 유지합니다. 공개된 플레이에는 페널티가 적용됩니다. 꽃이 보호되지 않으면 가뭄이 이 보호를 막습니다.",
+    "catalystsTitle": "꽃으로 지불하기",
+    "catalystsIntro": "찻집의 일부 칙령 직접 판매에서는 금 대신 꽃으로 지불할 수 있습니다. 보유한 꽃을 정확히 선택하고 확인하세요. 선택 사항이며 자동으로 희생되지 않습니다.",
+    "catalystsCost": "꽃을 잃으면 세트 보너스도 줄어듭니다. 남은 슬롯에 구성을 담을 수 없다면 구매가 차단됩니다. 다시 모으면 이번 도전에서 얻은 각성이 복구됩니다. 역만 계승에는 여전히 꽃 두 개가 필요하므로 하나를 지불하려면 미리 세 개 이상 있어야 합니다."
+  },
   "flora": {
     "mutations": {
       "locked": "한 번의 도전에서 꽃 네 종류를 모으면 재개화가 해금됩니다. 이후 보유한 꽃을 다시 뽑으면 각성합니다.",
@@ -1820,6 +2147,7 @@
     "effect": "효과",
     "voidCost": "공허 비용",
     "timesUsed": "사용 횟수",
+    "stakeVictory": "{{stake}}에서 승리",
     "runsWon": "승리한 판",
     "unlock": "해제 조건:",
     "title": "패의 기록",
@@ -2583,6 +2911,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "진홍 패산",
+        "theme": "삼원패",
+        "description": "진홍빛 옻칠과 금빛 용이 삼원패 중심 전략을 돕지만, 법령을 놓을 공간은 줄어듭니다.",
+        "unlock": "빨간색 스테이크 이상에서 승리",
+        "modifiers": {
+          "0": "시작 삼원패에 배수 표식 부여 (계산 시 +4 배율)",
+          "1": "시작 법령 슬롯 −1"
+        }
+      },
+      "obsidian_wall": {
+        "name": "흑요석 패산",
+        "theme": "풍패",
+        "description": "어두운 돌과 은빛 바람 조각이 풍패 중심 전략에 보상을 주지만, 법령을 놓을 공간은 줄어듭니다.",
+        "unlock": "검은색 스테이크 이상에서 승리",
+        "modifiers": {
+          "0": "시작 풍패에 보너스 표식 부여 (계산 시 +30점)",
+          "1": "시작 법령 슬롯 −1"
+        }
+      },
       "green_felt": {
         "theme": "전통",
         "unlock": "처음부터 이용 가능",

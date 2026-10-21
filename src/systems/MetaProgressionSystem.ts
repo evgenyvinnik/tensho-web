@@ -20,6 +20,8 @@ import {
   getDefaultUnlocks,
   getStakeTierFromName,
 } from '../config/unlockDefinitions'
+import { getAllFateSeals } from './FateSealSystem'
+import { getAllCelestialOrbs } from './CelestialOrbSystem'
 
 // =============================================================================
 // TYPES
@@ -39,6 +41,7 @@ export interface LifetimeStats {
   totalRoundsCompleted: number
   totalRoundsSkipped: number
   fastestWinRounds: number
+  fastestWinPaidTurns: number
 
   // Scoring statistics
   highestSingleHandScore: number
@@ -168,6 +171,7 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   totalRoundsCompleted: 0,
   totalRoundsSkipped: 0,
   fastestWinRounds: Infinity,
+  fastestWinPaidTurns: Infinity,
   highestSingleHandScore: 0,
   highestRoundScore: 0,
   highestRunScore: 0,
@@ -291,10 +295,15 @@ export class MetaProgressionSystem {
       case 'win_stake': {
         const stakeName = condition.value ?? 'white'
         const stakeTier = getStakeTierFromName(stakeName)
-        // Check if any wall has this stake completed
+        // Named stake milestones accept actual victories at this tier or higher.
+        // Reject malformed legacy tiers rather than trusting summary fields.
         let hasWon = false
         for (const victories of Object.values(stats.stakeVictories)) {
-          if (victories.includes(stakeTier)) {
+          if (
+            victories.some(
+              (tier) => Number.isInteger(tier) && tier >= stakeTier && tier <= 8
+            )
+          ) {
             hasWon = true
             break
           }
@@ -420,9 +429,16 @@ export class MetaProgressionSystem {
         break
 
       case 'rounds_completed':
-        // For speed runs, check if won in fewer rounds
+        // Legacy round-count conditions; current Speed Run uses paid Turns.
         current =
           stats.fastestWinRounds === Infinity ? 0 : stats.fastestWinRounds
+        isMet = current > 0 && current <= target
+        break
+
+      case 'win_paid_turns':
+        current = Number.isSafeInteger(stats.fastestWinPaidTurns)
+          ? stats.fastestWinPaidTurns
+          : 0
         isMet = current > 0 && current <= target
         break
 
@@ -525,18 +541,24 @@ export class MetaProgressionSystem {
       case 'discovery': {
         const discoveryType = condition.value ?? ''
         switch (discoveryType) {
-          case 'all_fate_seals':
-            // Assume 22 fate seals total
-            current = stats.fateSealsDiscovered.size
-            target = 22
-            isMet = current >= target
+          case 'all_fate_seals': {
+            const catalog = getAllFateSeals()
+            current = catalog.filter(({ id }) =>
+              stats.fateSealsDiscovered.has(id)
+            ).length
+            target = catalog.length
+            isMet = target > 0 && current === target
             break
-          case 'all_celestial_orbs':
-            // Assume 13 celestial orbs total
-            current = stats.celestialOrbsDiscovered.size
-            target = 13
-            isMet = current >= target
+          }
+          case 'all_celestial_orbs': {
+            const catalog = getAllCelestialOrbs()
+            current = catalog.filter(({ id }) =>
+              stats.celestialOrbsDiscovered.has(id)
+            ).length
+            target = catalog.length
+            isMet = target > 0 && current === target
             break
+          }
           case 'all_void_scripts':
             // Assume 20 void scripts total
             current = stats.voidScriptsDiscovered.size
@@ -768,6 +790,7 @@ export class MetaProgressionSystem {
       // JSON encodes the unset Infinity sentinel as null. Restore it so a
       // first real win can establish a record instead of comparing against 0.
       fastestWinRounds: serialized.fastestWinRounds ?? Infinity,
+      fastestWinPaidTurns: serialized.fastestWinPaidTurns ?? Infinity,
       fewestDecreesInWin: serialized.fewestDecreesInWin ?? Infinity,
       fateSealsDiscovered: new Set(serialized.fateSealsDiscovered),
       celestialOrbsDiscovered: new Set(serialized.celestialOrbsDiscovered),
@@ -847,6 +870,7 @@ export interface ProgressionEventPayload {
   wasMaxInterest?: boolean
   hadFlowers?: boolean
   roundsCompleted?: number
+  paidTurns?: number
   decreesOwned?: number
   editionDecreeCount?: number
   handSizeLimit?: number
@@ -885,6 +909,15 @@ export function processProgressionEvent(
 
     case 'run_won':
       updates.totalRunsWon = stats.totalRunsWon + 1
+      if (
+        event.paidTurns !== undefined &&
+        Number.isSafeInteger(event.paidTurns) &&
+        event.paidTurns > 0
+      )
+        updates.fastestWinPaidTurns = Math.min(
+          stats.fastestWinPaidTurns,
+          event.paidTurns
+        )
       updates.maxDecreesInWin = Math.max(
         stats.maxDecreesInWin,
         event.decreesOwned ?? 0

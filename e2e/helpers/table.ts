@@ -35,26 +35,9 @@ export async function settleReveals(
     // Only one reveal shows at a time.
     const reveal = reveals.filter({ visible: true }).first()
     if ((await reveal.count()) === 0) continue
-    const staged =
-      (await reveal.getAttribute('data-decree-reveal')) !== null ||
-      (await reveal.getAttribute('data-orb-reveal')) !== null
-    if (staged && (await reveal.getByRole('button').count()) === 0) {
-      // A Decree first appears as a closed bag and an Orb rises alone: a tap
-      // shows the result. The stage also advances by itself, so by the time
-      // the tap lands it may already dismiss the result instead; either way
-      // the button is clicked only if it is still there.
-      await reveal.click({ position: { x: 4, y: 4 } })
-      const button = reveal.getByRole('button').last()
-      if (
-        await button.waitFor({ state: 'visible', timeout: 1_500 }).then(
-          () => true,
-          () => false
-        )
-      )
-        await button.click()
-    } else {
-      await reveal.getByRole('button').last().click()
-    }
+    // Staged reveals advance to a result automatically. Await its real button
+    // rather than clicking the overlay while its stage/contents are changing.
+    await reveal.getByRole('button').last().click()
   }
   throw new Error('Reveals kept appearing')
 }

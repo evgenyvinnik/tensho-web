@@ -303,12 +303,11 @@ a {
     padding-inline: 4px;
   }
 
-  /* The two actions share the row equally on the narrowest phones. */
+  /* Container-based action layout below handles the narrowest phones. */
   [data-frame-corner-row='bottom'] [data-game-action] {
     flex: 1 1 0;
     min-width: 0;
     padding-inline: 4px;
-    font-size: 0.75rem;
   }
 }
 
@@ -404,6 +403,34 @@ a {
   }
 }
 
+/* Reflow according to the usable frame width, not the device width. Keep
+ * localized action names readable without stealing the counters' space. */
+.gameplay-action-bar {
+  container: game-actions / inline-size;
+}
+
+.gameplay-action-controls {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+}
+
+.gameplay-action-controls > [data-turns-left],
+.gameplay-action-controls > [data-action-wall] {
+  grid-row: 1 / span 2;
+}
+
+.gameplay-action-controls > [data-game-action] {
+  grid-column: 3;
+  min-width: 0;
+  width: 100%;
+}
+
+@container game-actions (min-width: 320px) {
+  .gameplay-action-controls {
+    display: flex;
+  }
+}
+
 .collectible-token {
   height: var(--collectible-h);
   width: var(--collectible-h);
@@ -412,6 +439,22 @@ a {
 .collectible-token--portrait {
   height: var(--collectible-h);
   width: calc(var(--collectible-h) * 0.8);
+}
+
+/* Reserve room for eight table items, with wrapping on the smallest phones.
+ * The container is the collection's actual column, including on desktop. */
+.gameplay-collection-items {
+  container-type: inline-size;
+}
+
+.gameplay-collectible-rail {
+  --collectible-h: clamp(44px, calc((100cqw - 9px) / 8), 60px);
+}
+
+@media (min-width: 640px) {
+  .gameplay-collectible-rail {
+    --collectible-h: clamp(44px, calc((100cqw - 22px) / 8), 60px);
+  }
 }
 
 /*

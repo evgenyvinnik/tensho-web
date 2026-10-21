@@ -8,7 +8,7 @@ import React from 'react'
 import { getTileImagePath } from '../../../utils/assets'
 import { TileSuit } from '../../../core/Tile'
 import type { ControlArtId } from '../../../utils/generatedArt'
-import { ControlIcon } from '../../ui/ControlIcon'
+import { PavilionIcon } from '../PavilionIcon'
 
 /**
  * Codex category definition
@@ -163,7 +163,7 @@ export function CodexSidebar({
       {categories.map((category) => (
         <div key={category.id} className="mb-2">
           <div className="px-4 py-2 text-[var(--color-golden-yellow)] font-bold flex items-center gap-2">
-            <ControlIcon name={category.icon} />
+            <PavilionIcon name={category.icon} />
             <span>{category.title}</span>
           </div>
           <ul>

@@ -238,6 +238,7 @@ const stateFields = {
   handsAllowance: count,
   playsThisRound: optional(count),
   tilesRedrawnThisRound: optional(count),
+  honorDiscardsThisRound: optional(count),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),
   handsPlayedThisRun: count,
@@ -469,6 +470,10 @@ const snapshot = schema<ClassicRunSnapshot>({
       // not FlowerSystem's display variants such as "Plum".
       flowerTypes: uniqueIds,
       pendingCorruptedSeasons: count,
+      windYakuScored: optional(count),
+      shopRerolls: optional(count),
+      paidTurns: optional(count),
+      chartersPurchasedByAct5: optional(count),
     })
   ),
   runtimeItemCounter: count,

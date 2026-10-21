@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
+import { PUBLIC_GUIDE_REVIEW_DATE } from '../src/publicSite/content'
+import { settleReveals } from './helpers/table'
 
-test('menu guides lead to static pages and back to practice', async ({
+test('menu guides lead to static pages and into the current game', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 740 })
@@ -12,11 +14,15 @@ test('menu guides lead to static pages and back to practice', async ({
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'About Tensho: a Mahjong roguelike'
   )
-  await page.getByRole('link', { name: 'Try the practice table' }).click()
+  await page
+    .getByRole('link', { name: 'Start a run', exact: true })
+    .first()
+    .click()
   // Static hosts may canonicalize a directory entry with a trailing slash.
-  await expect(page).toHaveURL(/\/en\/table-loop\/?\?practice=1$/)
-  await expect(page.getByTestId('practice-start')).toHaveCount(0)
-  await expect(page.locator('body')).toContainText('Practice deal')
+  await expect(page).toHaveURL(/\/en\/play\/?$/)
+  await settleReveals(page, 2_000)
+  await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+  await expect(page.locator('[data-game-action="redraw"]')).toBeVisible()
 })
 
 test.describe('public guides without JavaScript', () => {
@@ -41,7 +47,7 @@ test.describe('public guides without JavaScript', () => {
       )
       await expect(page.locator('time')).toHaveAttribute(
         'datetime',
-        '2026-10-08'
+        PUBLIC_GUIDE_REVIEW_DATE
       )
       if (path === 'how-to-play') {
         const workshop = page.locator('#build-a-hand')
@@ -56,7 +62,7 @@ test.describe('public guides without JavaScript', () => {
           workshop.getByRole('img', { name: 'Red Dragon', exact: true })
         ).toHaveAttribute('src', /Dragons%20\(1\)\.png$/)
         const classic = workshop.getByRole('link', {
-          name: 'Open Classic to try Build a hand',
+          name: 'Open Tensho to try it',
         })
         expect(
           (await request.get((await classic.getAttribute('href'))!)).status()
@@ -108,12 +114,12 @@ test.describe('public guides without JavaScript', () => {
       await expect(page.locator('main')).toBeFocused()
       await page.keyboard.press('Tab')
       await expect(
-        page.getByRole('link', { name: 'Try the practice table' })
+        page.getByRole('link', { name: 'Start a run', exact: true }).first()
       ).toBeFocused()
-      const play = page.getByRole('link', { name: 'Try the practice table' })
-      expect(await play.getAttribute('href')).toMatch(
-        /\/en\/table-loop\?practice=1$/
-      )
+      const play = page
+        .getByRole('link', { name: 'Start a run', exact: true })
+        .first()
+      expect(await play.getAttribute('href')).toMatch(/\/en\/play$/)
       for (const a of await page.locator('header nav a').all()) {
         const href = await a.getAttribute('href')
         expect((await request.get(href!)).status()).toBe(200)

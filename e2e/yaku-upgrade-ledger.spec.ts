@@ -89,14 +89,9 @@ for (const language of ['en', 'es', 'ru'])
         ),
         contentType: 'application/json',
       })
-      // On the table every upgrade is its own rail token; the full ledger
-      // lives in the Tea House.
-      const upgradeTokens = page.locator(
-        '[data-collectible-rail] [data-yaku-upgrade]'
-      )
-      const pairToken = page.locator(
-        '[data-collectible-rail] [data-yaku-upgrade="SevenPairs"]'
-      )
+      // The table reserves its collectible space for Flowers, Seasons and
+      // held items. Applied upgrades are inspected in the Tea House.
+      const upgradeTokens = page.locator('[data-yaku-upgrade]')
       await expect(upgradeTokens).toHaveCount(0)
       expect(await saved()).toEqual(before)
       const orbId = before.state.celestialOrbs[0].instanceId
@@ -112,31 +107,15 @@ for (const language of ['en', 'es', 'ru'])
           (x: [string, number]) => x[0] === 'SevenPairs'
         )[1]
       ).toBe(2)
-      await expect(upgradeTokens).toHaveCount(kind === 'all' ? 12 : 1)
-      await expect(pairToken).toHaveAccessibleName(
-        copy.upgradeFamilies.tokenLabel
-          .replace('{{family}}', copy.upgradeFamilies.SevenPairs.name)
-          .replace('{{level}}', (2).toLocaleString(language))
-      )
+      await expect(upgradeTokens).toHaveCount(0)
       const pairPanel = page
         .getByRole('dialog')
         .filter({ hasText: copy.upgradeFamilies.SevenPairs.covers })
-      await activate(pairToken)
-      await expect(pairPanel).toContainText(
-        copy.yakuUpgrades.bonus
-          .replace('{{chips}}', '35')
-          .replace('{{mult}}', '3')
-      )
-      await expect(pairPanel).toContainText(
-        copy.yakuUpgrades.triggers.replace('{{total}}', '0')
-      )
-      expect(
-        await pairPanel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
-      ).toBe(true)
       await page.screenshot({ path: testInfo.outputPath('ledger-play.png') })
-      await page.keyboard.press('Escape')
-      await expect(pairPanel).toHaveCount(0)
+      await page.reload()
+      await settleReveals(page, 2_000)
       expect(await saved()).toEqual(used)
+      await expect(upgradeTokens).toHaveCount(0)
       // Pick the whole Seven Pairs hand onto the felt.
       for (const tile of used.state.handTiles)
         await activate(
@@ -186,6 +165,11 @@ for (const language of ['en', 'es', 'ru'])
       await page.screenshot({ path: testInfo.outputPath('ledger-shop.png') })
       await page.keyboard.press('Escape')
       await expect(pairPanel).toHaveCount(0)
+      await page.mouse.move(1, 1)
+      await expect(page.locator('[data-cash-out-toasts]')).toHaveCount(0)
+      await page.locator('[data-shop-build]').screenshot({
+        path: testInfo.outputPath('build-upgrades.png'),
+      })
       expect(await saved()).toEqual(shop)
       await page.reload()
       expect(await saved()).toEqual(shop)
@@ -201,12 +185,15 @@ for (const language of ['en', 'es', 'ru'])
       await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
       // The new round can open on Flower and Season reveals.
       await settleReveals(page, 2_000)
-      await saved()
-      await activate(pairToken)
-      await expect(pairPanel).toContainText(
-        copy.yakuUpgrades.triggers.replace('{{total}}', '1')
+      const nextRound = await saved()
+      expect(nextRound.state.celestialOrbSystem).toEqual(
+        shop.state.celestialOrbSystem
       )
-      await page.keyboard.press('Escape')
+      await expect(upgradeTokens).toHaveCount(0)
+      await page.reload()
+      await settleReveals(page, 2_000)
+      expect(await saved()).toEqual(nextRound)
+      await expect(upgradeTokens).toHaveCount(0)
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth + 1

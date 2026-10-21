@@ -37,6 +37,8 @@ export interface YakuDefinition {
 export interface DetectedYaku {
   definition: YakuDefinition
   isApplicable: boolean
+  /** Preserve the scoring source while sharing the Yakuhai upgrade family. */
+  honorSource?: 'wind' | 'dragon'
 }
 
 /**
@@ -359,9 +361,13 @@ export function checkPinfu(context: YakuContext): boolean {
  * Check for Yakuhai (value tiles)
  */
 export function checkYakuhai(context: YakuContext): number {
-  if (!context.parsedHand) return 0
+  return getYakuhaiSources(context).length
+}
 
-  let yakuhaiCount = 0
+function getYakuhaiSources(context: YakuContext): Array<'wind' | 'dragon'> {
+  if (!context.parsedHand) return []
+
+  const sources: Array<'wind' | 'dragon'> = []
   const allMelds = [...context.parsedHand.melds, ...context.declaredMelds]
 
   for (const meld of allMelds) {
@@ -371,21 +377,21 @@ export function checkYakuhai(context: YakuContext): number {
 
     // Dragons are always yakuhai
     if (tile.suit === TileSuit.Dragon) {
-      yakuhaiCount++
+      sources.push('dragon')
     }
 
     // Seat wind
     if (tile.suit === TileSuit.Wind && tile.rank === context.seatWind) {
-      yakuhaiCount++
+      sources.push('wind')
     }
 
     // Round wind (can stack with seat wind)
     if (tile.suit === TileSuit.Wind && tile.rank === context.roundWind) {
-      yakuhaiCount++
+      sources.push('wind')
     }
   }
 
-  return yakuhaiCount
+  return sources
 }
 
 /**
@@ -751,9 +757,8 @@ export function detectYaku(context: YakuContext): DetectedYaku[] {
     detected.push({ definition: PINFU, isApplicable: true })
   }
 
-  const yakuhaiCount = checkYakuhai(context)
-  for (let i = 0; i < yakuhaiCount; i++) {
-    detected.push({ definition: YAKUHAI, isApplicable: true })
+  for (const honorSource of getYakuhaiSources(context)) {
+    detected.push({ definition: YAKUHAI, isApplicable: true, honorSource })
   }
 
   // Tier 2

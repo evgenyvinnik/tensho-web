@@ -62,7 +62,7 @@ export function WallDisplay({ wallTiles, triggerRef }: WallDisplayProps) {
         aria-expanded={isExpanded}
         aria-label={`${t('gameplay.tilesInWall')}: ${wallTiles.length.toLocaleString(i18n.language)}`}
         title={t('gameplay.tilesInWall')}
-        className="flex min-h-11 items-center gap-1.5 rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] px-2.5 py-1 transition-colors hover:border-[var(--color-golden-yellow)]"
+        className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg border border-[var(--color-metallic-gold)]/40 bg-[var(--color-dark-forest)] py-0.5 transition-colors hover:border-[var(--color-golden-yellow)]"
       >
         {/* Where each deal comes from (see WallDraw). */}
         <img
@@ -70,9 +70,9 @@ export function WallDisplay({ wallTiles, triggerRef }: WallDisplayProps) {
           alt=""
           aria-hidden="true"
           draggable={false}
-          className="h-6 w-auto object-contain drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]"
+          className="h-5 w-auto object-contain drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]"
         />
-        <span className="font-bold tabular-nums text-[var(--color-golden-yellow)]">
+        <span className="text-xs font-bold leading-4 tabular-nums text-[var(--color-golden-yellow)]">
           {wallTiles.length.toLocaleString(i18n.language)}
         </span>
       </button>

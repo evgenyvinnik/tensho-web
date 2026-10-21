@@ -71,6 +71,7 @@ export type ScalingSource =
   | 'green_tiles' // Souzu 2/3/4/6/8 and the Green Dragon
   | 'rank_one_tiles'
   | 'rank_five_tiles'
+  | 'rank_six_tiles'
   | 'rank_nine_tiles'
   // Structure of the played hand
   | 'sequences'
@@ -95,6 +96,8 @@ export type ScalingSource =
  * the round state satisfies them.
  */
 export type GateCondition =
+  | 'all_flower_variants'
+  | 'identical_natural_faces'
   // Composition of the played tiles
   | 'all_manzu'
   | 'all_pinzu'
@@ -176,7 +179,7 @@ export interface GoldEffect extends BaseEffect {
   type: 'gold'
   amount: number
   /** Inventory count includes the paying Decree and suppressed owned Decrees. */
-  scaleBy?: 'owned_decrees' | 'held_suits'
+  scaleBy?: 'owned_decrees' | 'held_suits' | 'upgraded_orb_families'
   perTile?: boolean // If true, amount is per tile
   condition?: string // Optional condition description
 }

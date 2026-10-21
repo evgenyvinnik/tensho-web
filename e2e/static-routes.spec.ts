@@ -30,7 +30,7 @@ test('all known locale routes have real HTTP 200 entry documents and initial ind
   expect((await request.get('not-a-real-language/play/')).status()).toBe(404)
 })
 
-test('menu navigation restores indexing and direct practice preserves its query', async ({
+test('menu navigation restores indexing and retired practice bookmarks return to the menu', async ({
   page,
   isMobile,
 }) => {
@@ -54,10 +54,12 @@ test('menu navigation restores indexing and direct practice preserves its query'
   await expect(robots).toHaveAttribute('content', 'index, follow')
   const practice = await page.goto('en/table-loop?practice=1')
   expect(practice?.status()).toBe(200)
-  await expect(page).toHaveURL(/\/en\/table-loop\/?\?practice=1$/)
-  await expect(page.locator('body')).toContainText('Practice deal')
-  await expect(robots).toHaveAttribute('content', 'noindex, follow')
+  await expect(page).toHaveURL(/\/en\/?$/)
+  await expect(
+    page.getByRole('button', { name: 'New Run', exact: true })
+  ).toBeVisible()
+  await expect(robots).toHaveAttribute('content', 'index, follow')
   await page.reload()
-  await expect(robots).toHaveAttribute('content', 'noindex, follow')
+  await expect(robots).toHaveAttribute('content', 'index, follow')
   expect(errors).toEqual([])
 })

@@ -1,4 +1,5 @@
 import { TileSuit } from '../core/Tile'
+import { SWIFT_CLEAR_SPARE_TURNS } from '../game/playRules'
 import { HAND_BUILDING_PANELS, type GuideTileExample } from './handExample'
 
 export interface GuideSection {
@@ -10,7 +11,7 @@ export interface GuideSection {
 }
 
 // Editorial review date, not automatically advanced by deployments.
-export const PUBLIC_GUIDE_REVIEW_DATE = '2026-10-12'
+export const PUBLIC_GUIDE_REVIEW_DATE = '2026-10-21'
 
 export const PUBLIC_PAGES = {
   about: {
@@ -33,7 +34,7 @@ export const PUBLIC_PAGES = {
         id: 'the-round',
         title: 'Two actions, one budget of Turns',
         paragraphs: [
-          'Each round gives you a target score and a handful of Turns. Every Turn is one of two actions: Play hand scores the tiles you selected, and REDRAW sends any tiles you choose to the river and draws new ones. Reach the target before the Turns run out and you move on; clear a round with Turns to spare and you also earn an Omen.',
+          `Each round gives you a target score and a handful of Turns. Every Turn is one of two actions: Play hand scores the tiles you selected, and REDRAW sends any tiles you choose to the river and draws new ones. Reach the target before the Turns run out and you move on. Clear a Small or Large round with at least ${SWIFT_CLEAR_SPARE_TURNS} Turns left to earn an Omen; Boss rounds do not grant this swift-clear reward.`,
           'A play is worth its points times its Mult. Points come from the tiles and the groups they make; Mult grows with bigger hands, Dragons, Orbs and Decrees. Winds are worth a lot of points, Dragons add Mult, and big plays are meant to feel big. Between rounds, the Tea House offers Decrees, Orbs and other items that can reshape your run.',
         ],
       },
@@ -102,7 +103,7 @@ export const PUBLIC_PAGES = {
         title: '2. Select tiles and read the hand score',
         paragraphs: [
           'Tap rack tiles to select them. The hand score in the middle of the table shows what the selection would score right now: the hand it makes, its points and its Mult. Selecting is free; nothing is spent until you press a button.',
-          'A play holds up to six tiles, or a whole Mahjong hand. The game reads your selection as the best hand it makes, so Two Pairs or a Sequence and a Pair score more than either group alone. A tile that belongs to no group still scores half its points.',
+          'A play holds up to six tiles, or a whole Mahjong hand. The game reads your selection as the best hand it makes, so Two Pairs or a Sequence and a Pair score more than either group alone. Loose numbered tiles score half their base points, rounded down; Winds and Dragons keep their base points even when ungrouped. Groups still add bonuses.',
           'Compare a few selections before you commit. The interesting question is not only which score is larger, but which useful tiles will remain for your next Turn.',
         ],
       },
@@ -126,7 +127,7 @@ export const PUBLIC_PAGES = {
       },
       {
         id: 'upgrades',
-        title: '6. Buy an upgrade with a job to do',
+        title: '5. Buy an upgrade with a job to do',
         paragraphs: [
           'When you enter a shop, read the actual item and price. Ask, “What would I keep or play differently if I owned this?” A cheaper upgrade that supports a plan you can execute may be more useful than an impressive description you cannot activate.',
           'Consumables have their own use and targeting rules. Tap an item to read it and use it from there; choose tiles only when its effect needs them. Opening details or closing a panel is not the same as buying or using the item.',
@@ -134,7 +135,7 @@ export const PUBLIC_PAGES = {
       },
       {
         id: 'next-run',
-        title: '7. Use a loss to find the next question',
+        title: '6. Use a loss to find the next question',
         paragraphs: [
           'After a round, look for one decision you would change: an exchange used too early, a tile kept without a purpose, or an upgrade whose effect you never used. You do not need to solve every system at once. Start the next run with one thing to try.',
           'If you cannot tell why a move was rejected or what produced the final score, that is useful feedback for this developing game. Include the seed if available, language, screen size and the move you attempted when reporting it. Avoid sharing personal information from other browser tabs.',
@@ -204,7 +205,7 @@ export const PUBLIC_PAGES = {
         id: 'finished',
         title: 'Is every documented mechanic finished?',
         paragraphs: [
-          'Not every design proposal is a shipped feature. The game connects its normal and corrupted Season powers, Flower interactions, awakenings and eligible Flower-paid Decrees. The Table Loop experiment has been retired. Balance, newcomer experience, artwork for every item and broader device testing remain ongoing. The repository implementation notes separate published behavior, earlier checkpoints, proposals and verification gaps.',
+          'Not every design proposal is a shipped feature. The game connects its normal and corrupted Season powers, Flower interactions, awakenings and eligible Flower-paid Decrees. The Table Loop experiment has been retired. Challenge Runs are not available in this release. Balance, newcomer experience, artwork for every item and broader device testing remain ongoing. The repository implementation notes separate published behavior, earlier checkpoints, proposals and verification gaps.',
         ],
       },
       {

@@ -12,6 +12,8 @@ import { formatDiscoveryDate } from '../../systems/ArchiveSystem'
 import type { ItemDisplayInfo } from './ItemCard'
 import { VOID_SCRIPTS } from '../../systems/VoidScriptSystem'
 import { ControlIcon } from '../ui/ControlIcon'
+import { getWonStakeTiers } from '../../utils/stakeMastery'
+import { StakeVictoryMarker } from './StakeVictoryMarker'
 
 export interface ItemDetailsProps {
   entry: ArchiveEntry
@@ -127,6 +129,14 @@ export function ItemDetails({
           <p className="mt-2 text-xs italic text-[var(--color-metallic-gold)]">
             {voidScript.mahjongTwist}
           </p>
+        </div>
+      )}
+
+      {isDiscovered && getWonStakeTiers(entry).length > 0 && (
+        <div className="flex flex-wrap gap-2" data-archive-victories>
+          {getWonStakeTiers(entry).map((tier) => (
+            <StakeVictoryMarker key={tier} tier={tier} />
+          ))}
         </div>
       )}
 

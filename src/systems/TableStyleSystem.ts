@@ -138,7 +138,9 @@ export class TableStyleSystem {
     initialStyleId?: string,
     initialUnlockedStyles?: string[]
   ) {
-    this.currentStyleId = initialStyleId ?? getDefaultTableStyle().id
+    this.currentStyleId =
+      (initialStyleId && getTableStyleById(initialStyleId)?.id) ||
+      getDefaultTableStyle().id
     this.unlockedStyles = new Set(
       initialUnlockedStyles ?? [getDefaultTableStyle().id]
     )

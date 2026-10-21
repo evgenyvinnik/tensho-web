@@ -1,4 +1,5 @@
-import type { Tile } from '../core/Tile'
+import { TileSuit, type Tile } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
 import {
   areFlowersDisabled,
   getBaseScoreModifier,
@@ -10,6 +11,7 @@ import {
   getYakumanMultiplierModifier,
   grantsRegionalMandate,
   hasEarlyCorruptedSeasons,
+  hasModifierType,
 } from '../config/tableStyleDefinitions'
 import type { ActiveTableModifiers } from '../systems/TableStyleSystem'
 
@@ -33,6 +35,29 @@ export function resolveTableRules(requestedId: string): {
       grantRegionalMandate: grantsRegionalMandate(id),
     }),
   }
+}
+
+/**
+ * Apply once when constructing the initial permanent wall, before assignment
+ * to wallTemplate and shuffling. These are ordinary, replaceable tile Marks,
+ * not passive scoring bonuses. Never reapply on reshuffle, restore, or additions.
+ * Tile identity and input tiles are preserved; enhanced tiles are new instances.
+ */
+export function applyTableStartingEnhancements(
+  tiles: readonly Tile[],
+  tableStyleId: string
+): Tile[] {
+  const dragonMult = hasModifierType(tableStyleId, 'starting_dragon_mult')
+  const windBonus = hasModifierType(tableStyleId, 'starting_wind_bonus')
+  return tiles.map((tile) => {
+    if (dragonMult && tile.suit === TileSuit.Dragon) {
+      return tile.withEnhancement(EnhancementType.Mult)
+    }
+    if (windBonus && tile.suit === TileSuit.Wind) {
+      return tile.withEnhancement(EnhancementType.Bonus)
+    }
+    return tile
+  })
 }
 
 /**

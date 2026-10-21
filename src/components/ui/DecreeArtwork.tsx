@@ -1,26 +1,26 @@
 import { getDecreeIllustration, illustrationAssets } from '../../utils/assets'
+import type { DecreeEdition } from '../../systems/types'
+import { DecreePortrait } from './DecreePortrait'
 
 /** Optional authored portraits share one mapping across shop, archive and inventory. */
 export function DecreeArtwork({
   decreeId,
   size = 48,
   color: _color,
+  edition,
 }: {
   decreeId: string
   size?: number
   color?: string
+  edition?: DecreeEdition
 }) {
   const illustration = getDecreeIllustration(decreeId)
   return (
-    <img
+    <DecreePortrait
       src={illustration ?? illustrationAssets.codex.decrees}
-      width={size}
-      height={size}
-      alt=""
-      aria-hidden="true"
-      draggable={false}
-      className="game-illustration shrink-0 object-contain"
-      style={{ width: size, height: size }}
+      edition={edition}
+      size={size}
+      className="relative inline-block shrink-0"
     />
   )
 }

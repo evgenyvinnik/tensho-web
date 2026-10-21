@@ -48,6 +48,7 @@ import {
   getDecreeScrollIllustration,
 } from '../../utils/assets'
 import { ControlIcon } from '../ui/ControlIcon'
+import { DecreePortrait } from '../ui/DecreePortrait'
 
 // =============================================================================
 // DECREE CARD COMPACT
@@ -296,12 +297,11 @@ export function DecreeCardCompact({
         aria-expanded={showPopover}
         aria-controls={showPopover ? popoverId : undefined}
       >
-        <img
+        <DecreePortrait
           src={illustration ?? getDecreeScrollIllustration(decree.rarity)}
-          alt=""
-          aria-hidden="true"
-          className={`game-illustration absolute inset-0 h-full w-full scale-[1.18] object-contain drop-shadow-[0_4px_5px_rgba(0,0,0,0.55)] ${reduceMotion ? '' : 'transition-transform duration-200 group-hover:scale-[1.23]'}`}
-          draggable={false}
+          edition={faceDown ? undefined : decree.edition}
+          className="absolute inset-0 h-full w-full"
+          imageClassName={`scale-[1.18] drop-shadow-[0_4px_5px_rgba(0,0,0,0.55)] ${reduceMotion ? '' : 'transition-transform duration-200 group-hover:scale-[1.23]'}`}
           style={
             reduceMotion ? { transform: 'none', transition: 'none' } : undefined
           }
@@ -385,13 +385,13 @@ export function DecreeCardCompact({
             <div className="p-3.5">
               <div className="flex items-start gap-3">
                 <span className="relative flex h-[76px] w-[60px] shrink-0 items-center justify-center">
-                  <img
+                  <DecreePortrait
                     src={
                       illustration ?? getDecreeScrollIllustration(decree.rarity)
                     }
-                    alt=""
-                    aria-hidden="true"
-                    className="game-illustration absolute inset-0 h-full w-full object-contain drop-shadow-md"
+                    edition={faceDown ? undefined : decree.edition}
+                    className="absolute inset-0 h-full w-full"
+                    imageClassName="drop-shadow-md"
                   />
                   <span className="relative mt-[-2px]">
                     {faceDown ? (

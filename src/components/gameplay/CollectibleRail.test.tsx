@@ -30,7 +30,6 @@ function renderRail(overrides: Partial<CollectibleRailProps> = {}) {
     flora: game.getFloraState(),
     celestialOrbs: [orb],
     voidScripts: [],
-    upgrades: game.getYakuUpgradeState(),
     levelOf: () => 1,
     validateUse: () => ({ isValid: true, errors: [] }),
     onUse: vi.fn(() => ({ success: true, effects: [] })),

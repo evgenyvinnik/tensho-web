@@ -1,0 +1,83 @@
+.decree-portrait {
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.decree-portrait__frame,
+.decree-portrait__finish {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.decree-portrait__frame {
+  z-index: 2;
+  object-fit: fill;
+}
+
+.decree-portrait__finish {
+  z-index: 1;
+  border-radius: 12%;
+  opacity: 0.28;
+  background-size: 200% 200%;
+  background-position: 45% 50%;
+  transition: background-position 800ms ease-out;
+}
+
+button:hover .decree-portrait__finish,
+button:focus-visible .decree-portrait__finish {
+  background-position: 90% 50%;
+}
+
+[data-decree-edition-art='Foil'] .decree-portrait__image {
+  filter: saturate(0.65) contrast(1.08);
+}
+[data-decree-edition-art='Foil'] .decree-portrait__finish {
+  background-image: linear-gradient(
+    125deg,
+    transparent 20%,
+    #c4dded 40%,
+    #fff 48%,
+    transparent 62%
+  );
+}
+[data-decree-edition-art='Holographic'] .decree-portrait__finish {
+  background-image: linear-gradient(
+    130deg,
+    #b0faff66,
+    #c6a1ff 40%,
+    #f3d5ff 50%,
+    #7fe6ed 65%,
+    transparent
+  );
+}
+[data-decree-edition-art='Polychrome'] .decree-portrait__finish {
+  background-image: linear-gradient(
+    125deg,
+    #ff725e88,
+    #ffdf70,
+    #59e6a2,
+    #7ca5ff,
+    #dc80f5,
+    transparent
+  );
+}
+[data-decree-edition-art='Negative'] .decree-portrait__image {
+  filter: saturate(0.35) brightness(0.8) contrast(1.25);
+}
+[data-decree-edition-art='Negative'] .decree-portrait__finish {
+  background-image: radial-gradient(
+    ellipse at center,
+    transparent 25%,
+    #431d7e 70%,
+    #e7ceff
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decree-portrait__finish {
+    transition: none;
+  }
+}

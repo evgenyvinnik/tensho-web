@@ -1,4 +1,269 @@
 {
+  "codexReference": {
+    "titleConcept": "核心玩法",
+    "titleTilesOverview": "認識麻將牌",
+    "titleSuits": "三種數牌花色",
+    "titleTerminals": "老頭牌與中張牌",
+    "titleWinds": "風牌",
+    "titleDragons": "三元牌",
+    "titleBonus": "獎勵牌：花與季節",
+    "titleMeldsOverview": "什麼是面子？",
+    "titleSequences": "順子（順子 / Shuntsu）",
+    "titleTriplets": "刻子（刻子 / Koutsu）",
+    "titleQuads": "槓子（槓子 / Kantsu）",
+    "titlePairs": "對子（雀頭 / Jantou）",
+    "titleWinningHand": "和牌的結構",
+    "titleSpecialHands": "特殊和牌形式",
+    "titleYakuIntro": "役——得分倍率的來源",
+    "titleYakuExamples": "常見役的範例",
+    "titleActsRounds": "幕與回合",
+    "titleBossMandates": "首領敕令",
+    "titleDecreesIntro": "什麼是法令？",
+    "titleDecreeCategories": "法令類別",
+    "titleDecreeRarities": "法令稀有度",
+    "titleDecreeSlots": "管理法令欄位",
+    "titleHierarchy": "五層優先順序",
+    "titleTips": "通關技巧",
+    "titleMoreTips": "進階技巧",
+    "category": "類別",
+    "types": "種類",
+    "count": "數量",
+    "numberedSuits": "數牌",
+    "numberedComposition": "3種花色 × 9個數字 × 各4張",
+    "windComposition": "4種風牌 × 各4張",
+    "dragonComposition": "3種三元牌 × 各4張",
+    "bonusTiles": "獎勵牌",
+    "bonusComposition": "4張花牌 + 4張季節牌",
+    "tileSet": "標準牌組共有144張牌。所選牌山和本次挑戰中的效果可能改變其組成：",
+    "terminalRanks": "數字為<strong>1或9</strong>的牌",
+    "simpleRanks": "數字為<strong>2至8</strong>的牌",
+    "tileValue": "成組時每張價值<strong>{{points}}分</strong>",
+    "windOrder": "風牌按東、南、西、北排列。四種風牌的基礎分值相同。",
+    "windPoints": "風牌屬於字牌，每張價值{{points}}分；在組合中，每張價值{{groupPoints}}分。",
+    "honorGroups": "字牌不能組成數字連續的順子。相同的字牌可以組成對子、刻子或槓子。",
+    "dragonPoints": "三元牌屬於字牌，每張價值{{points}}分。每張參與計分的三元牌使倍率+{{mult}}，在組合中則使倍率+{{groupMult}}。三元牌不能組成數字連續的順子。",
+    "flowerDuration": "持續整個挑戰",
+    "seasonDuration": "僅在目前回合生效",
+    "importantRules": "重要規則：",
+    "quadMechanics": "槓子的機制：",
+    "quadBonus": "在結算牌的效果之前，增加{{points}}組合分數和{{mult}}牌型倍率。",
+    "quadRefill": "將槓子作為所選牌的一部分打出。出牌後手牌會補滿，不存在單獨的宣槓行動。",
+    "winningFormula": "<melds>4組面子</melds> + <pair>1組對子</pair> = <tiles>不含槓子時共14張牌</tiles>",
+    "winningExample": "四組面子可以是順子、刻子或槓子。每組槓子都會讓通常的14張結構多出一張牌。以下是不含槓子的範例：",
+    "sevenPairs": "恰好由<strong>7種不同的對子</strong>組成，共14張牌，不需要刻子或順子。",
+    "thirteenOrphans": "每種老頭牌與字牌各一張（共13種），再加一張其中任意一種牌，組成14張的<strong>役滿</strong>牌型。",
+    "wallSize": "牌山提供補充牌。剩餘張數取決於所選牌山、起始手牌和各種效果，請留意剩餘牌數。",
+    "yakuTiers": "目前圖鑑收錄了{{count}}種役，分為四個層級。以下是升級和其他效果生效前的基礎倍率：",
+    "tier": "層級",
+    "tierNumber": "第{{tier}}級",
+    "yakumanTier": "第{{tier}}級（役滿）",
+    "multiplierRange": "基礎倍率範圍",
+    "example": "範例",
+    "allSimples": "僅含數字2至8的數牌，不含老頭牌或字牌。",
+    "allTriplets": "四組面子全是刻子或槓子，另有一組對子，不含順子。",
+    "fullFlush": "僅含一種花色的數牌，不含字牌。",
+    "roundType": "回合類型",
+    "japanese": "日文名稱",
+    "targetMultiplier": "目標倍率",
+    "baseTarget": "×{{mult}}（基礎目標）",
+    "structural": "結構類（形法令）",
+    "structuralHelp": "改變有效牌型的構成條件",
+    "tileIdentity": "牌的身分（变牌法令）",
+    "tileIdentityHelp": "改變牌的分類方式",
+    "yakuDoctrine": "役的規則（役变法令）",
+    "yakuDoctrineHelp": "調整役的規則",
+    "entropy": "隨機與命運（天运法令）",
+    "entropyHelp": "改變摸牌與行動節奏",
+    "scaling": "成長類（修行法令）",
+    "scalingHelp": "獎勵特定玩法",
+    "rarity": "稀有度",
+    "name": "名稱",
+    "powerLevel": "效果強度",
+    "localPower": "小幅加成",
+    "regionalPower": "中等效果",
+    "imperialPower": "大幅改變規則",
+    "heavenlyPower": "足以決定整場挑戰走向的力量",
+    "raritySources": "稀有度影響商店出現率與價格。天命來自特殊途徑，不會作為普通商店商品出現。搭配能相互增益的效果，並查看每件商品的實際價格。",
+    "slotBaseline": "預設有5個法令欄位，但所選牌桌和本次挑戰中的效果可能改變這個數量。額外欄位可透過以下途徑獲得：",
+    "heaven": "天（季節）",
+    "court": "朝廷（法令）",
+    "nature": "自然（花）",
+    "table": "牌桌（牌）",
+    "grammar": "語法（役）",
+    "hierarchyOverride": "規則衝突時，權威層級更高的規則優先於較低層級的規則。請查看每個效果的具體條件。",
+    "tipScoreTitle": "讓每次出牌都有價值",
+    "tipScore": "比較最多{{max}}張牌的不同組合，或一整副和牌的得分預覽。利用行動逐步接近目標，不要只等待完美的手牌。",
+    "tipSynergyTitle": "搭配協同效果",
+    "tipSynergy": "能夠相互配合的法令，可能比單獨使用的強力法令更有效。",
+    "tipEconomyTitle": "平衡儲蓄與投入",
+    "tipEconomy": "存下金幣可在通關時獲得利息，但如果升級有助於達到下一個目標，就值得花錢。請查看實際價格與出售價值。",
+    "tipFlowersTitle": "收集花",
+    "tipFlowers": "花會保留到本次挑戰結束。持有兩種不同的花可增加一個法令欄位；集齊四種花會強化它們的效果。",
+    "tipYakuTitle": "圍繞役規劃手牌",
+    "tipYaku": "選擇適合目前手牌和法令的役。完整的和牌可以組合多個役，獲得更高分數。",
+    "tipEfficiencyTitle": "提高牌的利用率",
+    "tipEfficiency": "保留能幫助完成多種組合的牌。使用「重抽」替換孤立牌，同時考慮消耗的行動次數與可用的免費重抽。",
+    "tipWallTitle": "留意剩餘牌數",
+    "tipWall": "追求特定牌之前，先查看牌河與剩餘牌山。重抽換掉的牌會在本回合剩餘時間裡留在牌河中。",
+    "tipMandateTitle": "提前閱讀敕令",
+    "tipMandate": "閱讀即將到來的首領敕令，準備一套在其限制下仍能得分的配置。",
+    "congratulations": "<strong>恭喜！</strong>你已經掌握了天翔的基礎玩法。",
+    "farewell": "願麻將牌為你的升天之旅帶來好運！"
+  },
+  "codexEconomy": {
+    "payout": "通關基礎獎勵為小輪3金幣、大輪5金幣、首領輪10金幣，不隨超出目標的分數增加。賭注可能取消小輪獎勵；法令和預兆可能改變最終收益。",
+    "interest": "利息按領取通關獎勵前的金幣計算：每5金幣獲得1金幣，預設上限為5。特許和預兆可提高上限；某些預兆會阻止利息。失敗時不支付利息。",
+    "sale": "法令的實際售價請查看出售按鈕。以花支付或免費獲得的法令可能只能賣0金幣；永恆法令無法出售。出售會移除其效果，並釋放它佔用的欄位。",
+    "prices": "請以各商品的標價和目前刷新費用為準。折扣、版本、特許及其他效果會改變價格。刷新不會補回已購買的特許或紙牌占卜師的免費商品。"
+  },
+  "achievements": {
+    "firstSteps": {
+      "name": "初出茅廬",
+      "description": "到達第4幕。"
+    },
+    "ascending": {
+      "name": "步步高升",
+      "description": "到達第8幕。"
+    },
+    "victory": {
+      "name": "凱旋",
+      "description": "贏得一次冒險。"
+    },
+    "redPath": {
+      "name": "赤色之路",
+      "description": "在紅級或更高難度贏得一次冒險。"
+    },
+    "blackPath": {
+      "name": "黑色之路",
+      "description": "在黑級或更高難度贏得一次冒險。"
+    },
+    "goldenPath": {
+      "name": "黃金之路",
+      "description": "在金級難度贏得一次冒險。"
+    },
+    "tileMaster": {
+      "name": "牌藝大師",
+      "description": "跨冒險累計打出2,500張牌。"
+    },
+    "discardArtist": {
+      "name": "換牌藝術家",
+      "description": "跨冒險累計重抽2,500張牌。"
+    },
+    "fortuneBuilt": {
+      "name": "財富積累",
+      "description": "在一次冒險中持有400金幣。"
+    },
+    "wildFlush": {
+      "name": "百搭混一色",
+      "description": "用全部由萬能牌組成的混一色得分。"
+    },
+    "speedRun": {
+      "name": "疾速通關",
+      "description": "消耗不超過48個行動回合贏得一次冒險。免費換牌不計入。"
+    },
+    "charterCollector": {
+      "name": "敕令收藏家",
+      "description": "在同一局中，第5幕結束前購買5項帝國特許狀。"
+    },
+    "shattered": {
+      "name": "粉碎",
+      "description": "在一次出牌中打碎2張玻璃牌。"
+    },
+    "royalHand": {
+      "name": "王者之手",
+      "description": "以役滿得分。"
+    },
+    "retrograde": {
+      "name": "逆行",
+      "description": "將一種役提升到10級。"
+    },
+    "keeperOfWinds": {
+      "name": "風之守護者",
+      "description": "在單次挑戰中累計以10個風牌役得分。"
+    },
+    "masterOfSilence": {
+      "name": "寂靜大師",
+      "description": "在不棄掉字牌的情況下贏得3局。"
+    },
+    "sealBearer": {
+      "name": "印記持有者",
+      "description": "使用10個命運符印。"
+    },
+    "score10k": {
+      "name": "萬分",
+      "description": "一次出牌獲得10,000分。"
+    },
+    "score1m": {
+      "name": "百萬分",
+      "description": "一次出牌獲得1,000,000分。"
+    },
+    "score100m": {
+      "name": "億分",
+      "description": "一次出牌獲得100,000,000分。"
+    },
+    "sealScholar": {
+      "name": "印記學者",
+      "description": "發現全部命運符印。"
+    },
+    "starGazer": {
+      "name": "觀星者",
+      "description": "發現全部天體寶珠。"
+    },
+    "voidWalker": {
+      "name": "虛空行者",
+      "description": "發現全部虛空卷軸。"
+    },
+    "charterComplete": {
+      "name": "敕令全收集",
+      "description": "發現全部帝國特許狀。"
+    },
+    "archiveComplete": {
+      "name": "手牌錄完成",
+      "description": "發現手牌錄中的全部內容。"
+    },
+    "archiveCompletePlus": {
+      "name": "手牌錄完成＋",
+      "description": "使用每種牌山贏得金級難度。"
+    },
+    "archiveCompletePlusPlus": {
+      "name": "手牌錄完成＋＋",
+      "description": "讓每個法令都獲得金色貼紙。"
+    },
+    "ruleBender": {
+      "name": "規則變通者",
+      "description": "完成一次挑戰冒險。"
+    },
+    "ruleBreaker": {
+      "name": "規則打破者",
+      "description": "完成全部挑戰。"
+    },
+    "deckMinimalist": {
+      "name": "精簡牌牆",
+      "description": "將牌山縮減至20張牌或更少。"
+    },
+    "deckMaximalist": {
+      "name": "龐大牌牆",
+      "description": "將牌山擴充至至少80張牌。"
+    },
+    "purist": {
+      "name": "純粹主義者",
+      "description": "不刷新商店，贏得一次冒險。"
+    },
+    "title": "天賜榮譽",
+    "shortTitle": "榮譽",
+    "progress": "進度",
+    "earned": "成就已解鎖",
+    "unlocks": "解鎖獎勵",
+    "categories": {
+      "progression": "征途",
+      "cumulative": "里程碑",
+      "skill": "技巧",
+      "scoring": "得分",
+      "collection": "收藏",
+      "mastery": "精通",
+      "challenge": "挑戰"
+    }
+  },
   "observatory": {
     "description": "每顆持有的天球在對應役種得分時提供×1.5倍率，每次出牌每顆僅生效一次。黑洞可對應任何已得分的役。",
     "holdingNote": "天文台獎勵持有這顆天球。使用後可獲得永久升級，但會失去這顆天球的持有加成。"
@@ -24,6 +289,15 @@
     "black_hole_orb": "發現其餘全部12種天體寶珠。"
   },
   "decreeUnlocks": {
+    "stage_master": "到達第4幕。",
+    "flower_pot": "到達第8幕。",
+    "satellite": "在一次冒險中持有400金幣。",
+    "swift_andy": "消耗不超過48個行動回合贏得一次冒險。免費換牌不計入。",
+    "lucky_sixes": "一次出牌獲得10,000分。",
+    "the_idol": "一次出牌獲得1,000,000分。",
+    "stuntman": "一次出牌獲得100,000,000分。",
+    "cartomancer": "發現全部命運符印。",
+    "astronomer": "發現全部天體寶珠。",
     "decree-blueprint": "贏得一局挑戰。",
     "decree-brainstorm": "持有至少五個法令並贏得挑戰。",
     "decree-heavenly-ordinance": "以役滿得分。",
@@ -563,6 +837,42 @@
       "mythic": "天命"
     },
     "items": {
+      "stage_master": {
+        "name": "舞臺大師",
+        "description": "每完成一幕，+25分和+1倍率。"
+      },
+      "flower_pot": {
+        "name": "花盆",
+        "description": "持有全部四種不同花牌時，倍率×3。"
+      },
+      "satellite": {
+        "name": "衛星",
+        "description": "每個獲勝回合結束時，每個等級高於1的天體寶珠牌型家族提供+1金幣。"
+      },
+      "swift_andy": {
+        "name": "迅捷安迪",
+        "description": "每回合免費重抽次數+2；牌架容量−2。"
+      },
+      "lucky_sixes": {
+        "name": "幸運六",
+        "description": "每打出一張數字為6的數牌，+6倍率。磐石牌不計入。"
+      },
+      "the_idol": {
+        "name": "偶像",
+        "description": "打出至少兩張牌，且所有打出牌的印刷花色與點數均相同時，倍率×3。磐石牌會破壞此條件；萬能牌仍按其原本印刷的牌面判定。"
+      },
+      "stuntman": {
+        "name": "特技演員",
+        "description": "+250分；牌架容量−3。"
+      },
+      "cartomancer": {
+        "name": "紙牌占卜師",
+        "description": "進入茶寮時，增加一個免費的命運符印商品。重新整理商店不會補充此免費商品。"
+      },
+      "astronomer": {
+        "name": "天文學家",
+        "description": "進入茶寮時，增加一個免費的天體寶珠商品。重新整理商店不會補充此免費商品。"
+      },
       "decree-half-suited": {
         "name": "半著",
         "description": "+20分"
@@ -1225,6 +1535,23 @@
       }
     }
   },
+  "codexFlora": {
+    "empowerment": "每朵持有的花還會讓法令的數值獎勵提高10%。套裝加成只計算目前持有的不同花種，不計算曾經收集過的所有花。",
+    "awakeningLifecycle": "再綻放資格會保留到後續對局。第一朵花是普通狀態；解鎖後，再次摸到已持有的花就會使其在本局覺醒。更多重複花不會疊加能力或增加欄位。新對局會重置覺醒，但保留解鎖資格。",
+    "chrysanthemumSet": "持有全部四種花時，覺醒倍率改為每個暗面子×{{factor}}。對子和散牌不增加倍率層數。",
+    "drought": "乾旱會壓制花的能力，包括覺醒和法令強化；生效中的永恆花園可提供保護。花、已獲得的覺醒和收藏欄位不會被刪除。",
+    "distinction": "花可以覺醒，季節不會。季節分為普通和腐化狀態。摸到的獎勵牌會自動展示並補牌，不消耗回合行動。",
+    "corruption": "從第2幕開始，季節可能腐化，不再提供普通效果。幽靈牌館從第1幕就允許腐化。腐化季節僅持續本輪，並不是覺醒季節。",
+    "interactionsTitle": "花與季節的聯動",
+    "interactionsIntro": "這些組合需要花的能力與普通季節同時生效，無需覺醒。展開組合即可選擇查看具體條件；僅預覽出牌不會獲得獎勵。",
+    "orchidSpring": "蘭與春生效時，摸到風牌或三元牌會額外從王牌摸一張。額外摸牌不會連鎖，王牌為空時也不會創造牌。額外牌可以暫時超過手牌架容量。",
+    "bambooSummer": "竹與夏生效時，打出至少四張實體老頭牌（數牌的一或九）。夏保留的牌會回到活牌牆，且本輪後續的夏不再縮減牌牆。得分加成仍然保留。",
+    "plumAutumn": "若本輪繼續，每個計分的實體順子可以從河中收回最近的一張匹配牌。只計算出牌前已在河中的牌。每張只收回一次，不會複製；虛擬或替換後的牌面不算。",
+    "chrysanthemumWinter": "菊生效時，暗手出牌無視冬的得分懲罰，同時保留跳過一個點數的順子規則。明手仍承受懲罰。若花沒有保護，乾旱會阻止此效果。",
+    "catalystsTitle": "用花支付",
+    "catalystsIntro": "茶館的部分法令直接報價允許用一朵花代替金幣。請選擇具體持有的花並確認；這是可選支付，絕不會自動獻祭。",
+    "catalystsCost": "失去花也會減少套裝加成。如果剩餘欄位無法容納目前配置，就不能購買。重新收集該花會恢復它在本局獲得的覺醒。役滿繼承仍需持有兩朵花，因此用一朵支付前至少要有三朵。"
+  },
   "flora": {
     "mutations": {
       "locked": "在一局冒險中集齊四種花牌可解鎖再開花。之後再次摸到已擁有的花牌即可覺醒。",
@@ -1820,6 +2147,7 @@
     "effect": "效果",
     "voidCost": "虛空消耗",
     "timesUsed": "使用次數",
+    "stakeVictory": "{{stake}}勝利",
     "runsWon": "獲勝局數",
     "unlock": "解鎖條件：",
     "title": "手牌錄",
@@ -2583,6 +2911,26 @@
   },
   "tableStyles": {
     "items": {
+      "crimson_wall": {
+        "name": "緋紅牌山",
+        "theme": "三元牌",
+        "description": "朱紅漆面與金龍裝飾利於以三元牌為核心的策略，但法令空間更少。",
+        "unlock": "在紅級或更高難度獲勝",
+        "modifiers": {
+          "0": "初始三元牌帶有倍率印記（計分時+4倍率）",
+          "1": "初始法令欄位−1"
+        }
+      },
+      "obsidian_wall": {
+        "name": "黑曜牌山",
+        "theme": "風牌",
+        "description": "暗色石面與銀色風紋雕刻獎勵以風牌為核心的策略，但法令空間更少。",
+        "unlock": "在黑級或更高難度獲勝",
+        "modifiers": {
+          "0": "初始風牌帶有加分印記（計分時+30分）",
+          "1": "初始法令欄位−1"
+        }
+      },
       "green_felt": {
         "theme": "經典",
         "unlock": "初始可用",

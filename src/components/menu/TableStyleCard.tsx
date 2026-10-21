@@ -153,7 +153,7 @@ export function TableStyleCard({
               />
             )
           ) : (
-            <ControlIcon name="lock" size={16} />
+            <ControlIcon name="lock" size={24} />
           )}
         </div>
 

@@ -395,7 +395,7 @@ test.describe('Game Navigation', () => {
     expect(header).toEqual({ sameRow: true, round: 'Act 1 · Small' })
 
     // Exactly two actions, with stable labels.
-    const actions = page.locator('[data-action-bar] button')
+    const actions = page.locator('[data-action-bar] [data-game-action]')
     await expect(actions).toHaveCount(2)
     await expect(page.locator('[data-game-action="redraw"]')).toContainText(
       'REDRAW'

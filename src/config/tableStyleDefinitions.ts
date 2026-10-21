@@ -30,6 +30,8 @@ export type TableModifierType =
   | 'corrupted_seasons'
   | 'yakuman_multiplier'
   | 'score_target'
+  | 'starting_dragon_mult'
+  | 'starting_wind_bonus'
 
 /**
  * Starting modifier configuration for a table style
@@ -57,6 +59,7 @@ export type UnlockRequirementType =
   | 'win_with_few_decrees'
   | 'survive_corrupted_seasons'
   | 'score_yakuman'
+  | 'win_at_tier'
 
 /**
  * Unlock requirement for a table style
@@ -352,6 +355,76 @@ export const DRAGONS_DEN: TableStyleDefinition = {
 }
 
 // =============================================================================
+// ACHIEVEMENT REWARD TABLES
+// =============================================================================
+
+/** Crimson Wall retains the original achievement reward ID. */
+export const CRIMSON_WALL: TableStyleDefinition = {
+  id: 'crimson_wall',
+  displayName: 'Crimson Wall',
+  japaneseName: '紅蓮の牌山',
+  description:
+    'A crimson-and-gold table where every Dragon in your starting wall carries a Mult Mark. Powerful beginnings come at the cost of one Decree slot.',
+  theme: 'Crimson',
+  themeColor: '#B51F42',
+  accentColor: '#D4AF37',
+  feltColor: '#481424',
+  startingModifiers: [
+    {
+      type: 'starting_dragon_mult',
+      value: 4,
+      description: 'All starting Dragons have Mult (+4 Mult when scored)',
+      isBenefit: true,
+    },
+    {
+      type: 'decree_slot',
+      value: -1,
+      description: '-1 starting Decree slot',
+      isBenefit: false,
+    },
+  ],
+  unlockCondition: {
+    type: 'win_at_tier',
+    threshold: 2,
+    description: 'Win a run at tier 2 or higher',
+  },
+  isDefault: false,
+}
+
+/** Obsidian Wall retains the original achievement reward ID. */
+export const OBSIDIAN_WALL: TableStyleDefinition = {
+  id: 'obsidian_wall',
+  displayName: 'Obsidian Wall',
+  japaneseName: '黒曜の牌山',
+  description:
+    'An obsidian table edged in teal and silver, where every Wind in your starting wall carries a Bonus Mark. One fewer Decree slot rewards a focused strategy.',
+  theme: 'Obsidian',
+  themeColor: '#258F91',
+  accentColor: '#C3CCD5',
+  feltColor: '#121C24',
+  startingModifiers: [
+    {
+      type: 'starting_wind_bonus',
+      value: 30,
+      description: 'All starting Winds have Bonus (+30 Points when scored)',
+      isBenefit: true,
+    },
+    {
+      type: 'decree_slot',
+      value: -1,
+      description: '-1 starting Decree slot',
+      isBenefit: false,
+    },
+  ],
+  unlockCondition: {
+    type: 'win_at_tier',
+    threshold: 4,
+    description: 'Win a run at tier 4 or higher',
+  },
+  isDefault: false,
+}
+
+// =============================================================================
 // TABLE STYLE COLLECTIONS
 // =============================================================================
 
@@ -367,6 +440,8 @@ export const TABLE_STYLE_DEFINITIONS: TableStyleDefinition[] = [
   TEMPLE_STONE,
   GHOST_PARLOR,
   DRAGONS_DEN,
+  CRIMSON_WALL,
+  OBSIDIAN_WALL,
 ]
 
 /**
@@ -528,6 +603,8 @@ export function grantsRegionalMandate(styleId: string): boolean {
  * Check if unlock conditions are met based on player statistics
  */
 export interface PlayerUnlockStats {
+  /** Highest tier actually won, not merely unlocked or attempted. Absent in legacy saves. */
+  highestTierWon?: number
   /** Highest act completed */
   highestActCompleted: number
   /** Maximum flowers collected in a single run */
@@ -588,6 +665,9 @@ export function isUnlockConditionMet(
 
     case 'score_yakuman':
       return stats.hasScoredYakuman
+
+    case 'win_at_tier':
+      return (stats.highestTierWon ?? 0) >= (condition.threshold ?? 1)
 
     default:
       return false
@@ -651,6 +731,9 @@ export function getUnlockProgress(
 
     case 'score_yakuman':
       return stats.hasScoredYakuman ? 1 : 0
+
+    case 'win_at_tier':
+      return Math.min(1, Math.max(0, stats.highestTierWon ?? 0) / threshold)
 
     default:
       return 0

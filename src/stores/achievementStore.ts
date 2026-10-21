@@ -8,7 +8,20 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { useProgressionStore } from './progressionStore'
+import { useArchiveStore } from './archiveStore'
+import { useStakeStore } from './stakeStore'
+import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
+import { isDiscoveryAchievementComplete } from '../utils/achievementDiscovery'
+import { getGoldDecreeProgress } from '../utils/stakeMastery'
 import type { AchievementArtId, ControlArtId } from '../utils/generatedArt'
+import { getAllFateSeals } from '../systems/FateSealSystem'
+import { getAllCelestialOrbs } from '../systems/CelestialOrbSystem'
+
+const ACHIEVEMENT_STAKE_TIERS: Readonly<Record<string, number>> = {
+  red: 2,
+  black: 4,
+  gold: 8,
+}
 
 /**
  * Achievement categories based on ARCHITECTURE.MD
@@ -32,7 +45,10 @@ export interface AchievementDefinition {
   japaneseTitle: string // Japanese ceremonial name
   category: AchievementCategory
   icon: AchievementArtId // Generated image identity
-  unlocks?: string // What this achievement unlocks (if any)
+  reward?: {
+    category: 'decrees' | 'charters' | 'tableStyles'
+    itemId: string
+  }
   condition: {
     type: string
     target?: number
@@ -68,16 +84,22 @@ export interface AchievementStats {
   totalFateSealsUsed: number
   totalCelestialOrbsUsed: number
   totalDecreesPurchased: number
+  maxGlassTilesBrokenInHand: number
 
   // Scoring
   highestSingleHandScore: number
   totalWindYakuScored: number
+  maxWindYakuInRun: number
   totalDragonYakuScored: number
   totalYakumanScored: number
+  highestYakuLevel: number
+  wildHalfFlushesScored: number
+  roundsWonWithoutHonorDiscards: number
 
   // Skill
   fastestWinRounds: number
-  chartersPurchasedByAct4: number
+  fastestWinPaidTurns: number
+  maxChartersPurchasedByAct5: number
 
   // Collection
   fateSealsDiscovered: number
@@ -87,7 +109,7 @@ export interface AchievementStats {
   totalItemsDiscovered: number
 
   // Challenge
-  challengeRunsCompleted: number
+  challengeRunsCompleted: number // Historical save field; Challenge Runs deferred.
   minimumWallSize: number
   maximumWallSize: number
   winsWithoutReroll: number
@@ -129,20 +151,26 @@ const DEFAULT_STATS: AchievementStats = {
   totalFateSealsUsed: 0,
   totalCelestialOrbsUsed: 0,
   totalDecreesPurchased: 0,
+  maxGlassTilesBrokenInHand: 0,
   highestSingleHandScore: 0,
   totalWindYakuScored: 0,
+  maxWindYakuInRun: 0,
   totalDragonYakuScored: 0,
   totalYakumanScored: 0,
+  highestYakuLevel: 1,
+  wildHalfFlushesScored: 0,
+  roundsWonWithoutHonorDiscards: 0,
   fastestWinRounds: Infinity,
-  chartersPurchasedByAct4: 0,
+  fastestWinPaidTurns: Infinity,
+  maxChartersPurchasedByAct5: 0,
   fateSealsDiscovered: 0,
   celestialOrbsDiscovered: 0,
   voidScriptsDiscovered: 0,
   chartersDiscovered: 0,
   totalItemsDiscovered: 0,
   challengeRunsCompleted: 0,
-  minimumWallSize: 136,
-  maximumWallSize: 136,
+  minimumWallSize: Number.MAX_SAFE_INTEGER,
+  maximumWallSize: 0,
   winsWithoutReroll: 0,
 }
 
@@ -158,7 +186,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '初歩',
     category: 'progression',
     icon: 'first_steps',
-    unlocks: 'Stage Master Decree',
+    reward: { category: 'decrees', itemId: 'stage_master' },
     condition: { type: 'reach_act', target: 4 },
   },
   {
@@ -168,7 +196,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '昇進',
     category: 'progression',
     icon: 'ascending',
-    unlocks: 'Flower Pot Decree',
+    reward: { category: 'decrees', itemId: 'flower_pot' },
     condition: { type: 'reach_act', target: 8 },
   },
   {
@@ -178,7 +206,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '勝利',
     category: 'progression',
     icon: 'victory',
-    unlocks: 'Blueprint Decree',
+    reward: { category: 'decrees', itemId: 'decree-blueprint' },
     condition: { type: 'win_run' },
   },
   {
@@ -188,7 +216,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '赤道',
     category: 'progression',
     icon: 'red_path',
-    unlocks: 'Crimson Wall',
+    reward: { category: 'tableStyles', itemId: 'crimson_wall' },
     condition: { type: 'win_stake', value: 'red' },
   },
   {
@@ -198,7 +226,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '黒道',
     category: 'progression',
     icon: 'black_path',
-    unlocks: 'Obsidian Wall',
+    reward: { category: 'tableStyles', itemId: 'obsidian_wall' },
     condition: { type: 'win_stake', value: 'black' },
   },
   {
@@ -219,7 +247,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '牌師',
     category: 'cumulative',
     icon: 'tile_master',
-    unlocks: 'Swift Hand Charter',
+    reward: { category: 'charters', itemId: 'swift_hand' },
     condition: { type: 'tiles_played', target: 2500 },
   },
   {
@@ -229,7 +257,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '捨牌芸者',
     category: 'cumulative',
     icon: 'discard_artist',
-    unlocks: 'Wasteful Plenty Charter',
+    reward: { category: 'charters', itemId: 'wasteful_plenty' },
     condition: { type: 'tiles_discarded', target: 2500 },
   },
   {
@@ -239,7 +267,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '富豪',
     category: 'cumulative',
     icon: 'fortune_built',
-    unlocks: 'Satellite Decree',
+    reward: { category: 'decrees', itemId: 'satellite' },
     condition: { type: 'max_gold', target: 400 },
   },
 
@@ -260,8 +288,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '疾走',
     category: 'skill',
     icon: 'speed_run',
-    unlocks: 'Swift Andy Decree',
-    condition: { type: 'win_in_rounds', target: 12 },
+    reward: { category: 'decrees', itemId: 'swift_andy' },
+    condition: { type: 'win_paid_turns', target: 48 },
   },
   {
     id: 'charter_collector',
@@ -335,7 +363,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '万点',
     category: 'scoring',
     icon: 'score_10k',
-    unlocks: 'Lucky Sixes Decree',
+    reward: { category: 'decrees', itemId: 'lucky_sixes' },
     condition: { type: 'single_hand_score', target: 10000 },
   },
   {
@@ -345,7 +373,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '百万点',
     category: 'scoring',
     icon: 'score_1m',
-    unlocks: 'The Idol Decree',
+    reward: { category: 'decrees', itemId: 'the_idol' },
     condition: { type: 'single_hand_score', target: 1000000 },
   },
   {
@@ -355,7 +383,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '億点',
     category: 'scoring',
     icon: 'score_100m',
-    unlocks: 'Stuntman Decree',
+    reward: { category: 'decrees', itemId: 'stuntman' },
     condition: { type: 'single_hand_score', target: 100000000 },
   },
 
@@ -367,7 +395,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '符学者',
     category: 'collection',
     icon: 'seal_scholar',
-    unlocks: 'Cartomancer Decree',
+    reward: { category: 'decrees', itemId: 'cartomancer' },
     condition: { type: 'discover_all_seals' },
   },
   {
@@ -377,7 +405,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     japaneseTitle: '星読み',
     category: 'collection',
     icon: 'star_gazer',
-    unlocks: 'Astronomer Decree',
+    reward: { category: 'decrees', itemId: 'astronomer' },
     condition: { type: 'discover_all_orbs' },
   },
   {
@@ -428,25 +456,9 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     condition: { type: 'gold_sticker_all_decrees' },
   },
 
-  // === CHALLENGE ACCOLADES ===
-  {
-    id: 'rule_bender',
-    nameKey: 'achievements.ruleBender.name',
-    descriptionKey: 'achievements.ruleBender.description',
-    japaneseTitle: '曲法者',
-    category: 'challenge',
-    icon: 'rule_bender',
-    condition: { type: 'complete_challenge_run' },
-  },
-  {
-    id: 'rule_breaker',
-    nameKey: 'achievements.ruleBreaker.name',
-    descriptionKey: 'achievements.ruleBreaker.description',
-    japaneseTitle: '破法者',
-    category: 'challenge',
-    icon: 'rule_breaker',
-    condition: { type: 'complete_all_challenges' },
-  },
+  // === CHALLENGE ACCOLADES (regular-run feats) ===
+  // Challenge Runs and Rule Bender/Breaker are deferred. Persisted historical
+  // records remain readable, but are not part of the active award catalog.
   {
     id: 'deck_minimalist',
     nameKey: 'achievements.deckMinimalist.name',
@@ -503,6 +515,7 @@ export const useAchievementStore = create<AchievementState>()(
 
       unlockAchievement: (id: string) => {
         if (useProgressionStore.getState().fullUnlockEnabled) return
+        if (!getAchievementDefinition(id)) return
         const { achievements } = get()
         if (achievements[id] && !achievements[id].unlocked) {
           set({
@@ -536,6 +549,7 @@ export const useAchievementStore = create<AchievementState>()(
 
       updateProgress: (id: string, progress: number) => {
         if (useProgressionStore.getState().fullUnlockEnabled) return
+        if (!getAchievementDefinition(id)) return
         const { achievements } = get()
         if (achievements[id]) {
           set({
@@ -575,6 +589,7 @@ export const useAchievementStore = create<AchievementState>()(
       checkAchievements: () => {
         if (useProgressionStore.getState().fullUnlockEnabled) return
         const { stats, achievements, unlockAchievement } = get()
+        const lifetime = useProgressionStore.getState().stats
 
         for (const def of ACHIEVEMENT_DEFINITIONS) {
           if (achievements[def.id]?.unlocked) continue
@@ -584,11 +599,60 @@ export const useAchievementStore = create<AchievementState>()(
 
           switch (condition.type) {
             case 'reach_act':
-              shouldUnlock = stats.highestActReached >= (condition.target || 0)
+              shouldUnlock =
+                Math.max(stats.highestActReached, lifetime.highestActReached) >=
+                (condition.target || 0)
               break
             case 'win_run':
               shouldUnlock = (stats.runsWon ?? 0) > 0
               break
+            case 'win_stake': {
+              const tier = ACHIEVEMENT_STAKE_TIERS[condition.value ?? '']
+              // Red/Black Path accept the named difficulty or higher (GAME_MECHANICS).
+              // Selection/unlock summaries are not evidence of a completed run.
+              shouldUnlock =
+                tier !== undefined &&
+                (Object.entries(useStakeStore.getState().wallProgress).some(
+                  ([wallId, progress]) =>
+                    progress.victories.some(
+                      (win) =>
+                        win.wallId === wallId &&
+                        Number.isInteger(win.stakeTier) &&
+                        win.stakeTier >= tier &&
+                        win.stakeTier <= 8
+                    )
+                ) ||
+                  Object.values(lifetime.stakeVictories).some((victories) =>
+                    victories.some(
+                      (wonTier) =>
+                        Number.isInteger(wonTier) &&
+                        wonTier >= tier &&
+                        wonTier <= 8
+                    )
+                  ))
+              break
+            }
+            case 'all_walls_gold_stake': {
+              const { wallProgress } = useStakeStore.getState()
+              // Retired walls remain in history, but mastery follows playable tables.
+              shouldUnlock =
+                TABLE_STYLE_DEFINITIONS.length > 0 &&
+                TABLE_STYLE_DEFINITIONS.every(({ id }) =>
+                  wallProgress[id]?.victories.some(
+                    (win) =>
+                      win.wallId === id &&
+                      win.stakeTier === ACHIEVEMENT_STAKE_TIERS.gold
+                  )
+                )
+              break
+            }
+            case 'gold_sticker_all_decrees': {
+              const { completed, total } = getGoldDecreeProgress(
+                useArchiveStore.getState().entries
+              )
+              shouldUnlock = total > 0 && completed === total
+              break
+            }
             case 'tiles_played':
               shouldUnlock = stats.totalTilesPlayed >= (condition.target || 0)
               break
@@ -596,45 +660,82 @@ export const useAchievementStore = create<AchievementState>()(
               shouldUnlock =
                 stats.totalTilesDiscarded >= (condition.target || 0)
               break
+            case 'break_glass_tiles':
+              shouldUnlock =
+                stats.maxGlassTilesBrokenInHand >= (condition.target || 0)
+              break
             case 'max_gold':
-              shouldUnlock = stats.maxGoldInRun >= (condition.target || 0)
+              shouldUnlock =
+                Math.max(stats.maxGoldInRun, lifetime.maxGoldInRun) >=
+                (condition.target || 0)
               break
             case 'single_hand_score':
               shouldUnlock =
-                stats.highestSingleHandScore >= (condition.target || 0)
+                Math.max(
+                  stats.highestSingleHandScore,
+                  lifetime.highestSingleHandScore
+                ) >= (condition.target || 0)
               break
             case 'fate_seals_used':
               shouldUnlock = stats.totalFateSealsUsed >= (condition.target || 0)
               break
             case 'charters_by_act':
               shouldUnlock =
-                stats.chartersPurchasedByAct4 >= (condition.target || 0)
+                stats.maxChartersPurchasedByAct5 >= (condition.target || 0)
               break
             case 'score_yakuman':
               shouldUnlock = (stats.totalYakumanScored ?? 0) > 0
               break
-            case 'wind_yaku_in_run':
+            case 'special_hand':
               shouldUnlock =
-                stats.totalWindYakuScored >= (condition.target || 0)
+                condition.value === 'honitsu_wild' &&
+                stats.wildHalfFlushesScored > 0
+              break
+            case 'yaku_level':
+              shouldUnlock = stats.highestYakuLevel >= (condition.target || 0)
+              break
+            case 'wind_yaku_in_run':
+              shouldUnlock = stats.maxWindYakuInRun >= (condition.target || 0)
+              break
+            case 'rounds_without_honor_discard':
+              shouldUnlock =
+                stats.roundsWonWithoutHonorDiscards >= (condition.target || 0)
               break
             case 'discover_all_seals':
-              shouldUnlock = stats.fateSealsDiscovered >= 22
-              break
-            case 'discover_all_orbs':
-              shouldUnlock = stats.celestialOrbsDiscovered >= 13
-              break
-            case 'discover_all_scripts':
-              shouldUnlock = stats.voidScriptsDiscovered >= 20
-              break
-            case 'discover_all_charters':
-              shouldUnlock = stats.chartersDiscovered >= 32
-              break
-            case 'discover_all':
-              shouldUnlock = stats.totalItemsDiscovered >= 352
-              break
-            case 'win_in_rounds':
+            case 'discover_all_orbs': {
+              const seals = condition.type === 'discover_all_seals'
+              const catalog = seals ? getAllFateSeals() : getAllCelestialOrbs()
+              const discovered = seals
+                ? lifetime.fateSealsDiscovered
+                : lifetime.celestialOrbsDiscovered
+              const entries = useArchiveStore.getState().entries
               shouldUnlock =
-                stats.fastestWinRounds <= (condition.target || Infinity)
+                catalog.length > 0 &&
+                catalog.every(
+                  ({ id }) =>
+                    discovered.has(id) ||
+                    entries[`consumables:${id}`]?.discoveredAt != null
+                )
+              break
+            }
+            case 'discover_all_scripts':
+            case 'discover_all_charters':
+            case 'discover_all':
+              shouldUnlock = isDiscoveryAchievementComplete(
+                condition.type,
+                useArchiveStore.getState().entries
+              )
+              break
+            case 'win_paid_turns':
+              shouldUnlock = [
+                stats.fastestWinPaidTurns,
+                lifetime.fastestWinPaidTurns,
+              ].some(
+                (turns) =>
+                  Number.isSafeInteger(turns) &&
+                  turns > 0 &&
+                  turns <= (condition.target || 0)
+              )
               break
             case 'wall_size_max':
               shouldUnlock = stats.minimumWallSize <= (condition.target || 0)
@@ -644,9 +745,6 @@ export const useAchievementStore = create<AchievementState>()(
               break
             case 'win_without_reroll':
               shouldUnlock = stats.winsWithoutReroll > 0
-              break
-            case 'complete_challenge_run':
-              shouldUnlock = stats.challengeRunsCompleted > 0
               break
           }
 
@@ -658,15 +756,17 @@ export const useAchievementStore = create<AchievementState>()(
 
       getUnlockedCount: () => {
         const { achievements } = get()
-        return Object.values(achievements).filter((a) => a.unlocked).length
+        return ACHIEVEMENT_DEFINITIONS.filter(
+          (def) => achievements[def.id]?.unlocked
+        ).length
       },
 
       getUnseenUnlocks: () => {
         if (useProgressionStore.getState().fullUnlockEnabled) return []
         const { achievements } = get()
-        return Object.values(achievements)
-          .filter((a) => a.unlocked && !a.seen)
-          .map((a) => a.id)
+        return ACHIEVEMENT_DEFINITIONS.filter(
+          (def) => achievements[def.id]?.unlocked && !achievements[def.id]?.seen
+        ).map((def) => def.id)
       },
 
       resetAchievements: () => {
@@ -678,7 +778,33 @@ export const useAchievementStore = create<AchievementState>()(
     }),
     {
       name: 'tensho-achievements',
-      version: 2,
+      version: 4,
+      migrate: (persisted, version) => {
+        const saved = persisted as Partial<
+          Pick<AchievementState, 'achievements' | 'stats'>
+        >
+        // Versions <=2 never observed wall composition: both counters were
+        // fixed placeholders. Preserve earned awards, not fabricated history.
+        return {
+          achievements: {
+            ...createInitialAchievements(),
+            ...saved.achievements,
+          },
+          stats: {
+            ...DEFAULT_STATS,
+            ...saved.stats,
+            ...(version < 3
+              ? {
+                  minimumWallSize: DEFAULT_STATS.minimumWallSize,
+                  maximumWallSize: DEFAULT_STATS.maximumWallSize,
+                }
+              : {}),
+            // The old Act-4 counter accumulated across runs. It cannot prove
+            // progress toward the new single-run rule; retain earned awards.
+            maxChartersPurchasedByAct5: 0,
+          },
+        }
+      },
       partialize: (state) => ({
         achievements: state.achievements,
         stats: state.stats,
@@ -699,6 +825,7 @@ export const useAchievementStore = create<AchievementState>()(
             // JSON serializes the unset Infinity sentinel as null. It must not
             // become a zero-round win when achievement conditions compare it.
             fastestWinRounds: saved.stats?.fastestWinRounds ?? Infinity,
+            fastestWinPaidTurns: saved.stats?.fastestWinPaidTurns ?? Infinity,
           },
         }
       },

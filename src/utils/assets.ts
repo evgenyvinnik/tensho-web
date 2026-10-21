@@ -167,6 +167,8 @@ export const illustrationAssets = {
     temple_stone: `${ASSET_BASE}/illustrations/tables/temple_stone.webp`,
     ghost_parlor: `${ASSET_BASE}/illustrations/tables/ghost_parlor.webp`,
     dragons_den: `${ASSET_BASE}/illustrations/tables/dragons_den.webp`,
+    crimson_wall: `${ASSET_BASE}/illustrations/tables/crimson_wall.webp`,
+    obsidian_wall: `${ASSET_BASE}/illustrations/tables/obsidian_wall.webp`,
   },
 } as const
 

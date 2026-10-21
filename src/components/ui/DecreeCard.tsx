@@ -129,6 +129,7 @@ export function DecreeCard({
       <div className="absolute top-1 left-1">
         <DecreeArtwork
           decreeId={decree.id}
+          edition={decree.edition}
           size={mode === 'compact' ? 20 : 28}
           color={RARITY_ICON_COLORS[decree.rarity]}
         />

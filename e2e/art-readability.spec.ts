@@ -1,4 +1,5 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
+import { swiftClear } from './helpers/table'
 
 test.setTimeout(60_000)
 
@@ -15,7 +16,9 @@ declare global {
 
 async function prepareArtFixture(page: Page) {
   await page.goto('/en/play')
-  await expect(page.locator('[data-game-action="play"]')).toBeVisible({ timeout: 20_000 })
+  await expect(page.locator('[data-game-action="play"]')).toBeVisible({
+    timeout: 20_000,
+  })
   // A module script avoids Chromium collecting dynamic-import promises in
   // Runtime.evaluate ("Promise was collected", reported as navigation).
   await page.addScriptTag({
@@ -138,12 +141,21 @@ for (const width of [320, 390, 1280]) {
     await activate(orb)
     await activate(page.locator('[data-use-item]'))
     await clearArtReveals(page)
-    const pairs = page.locator('[data-yaku-upgrade="Pairs"]')
+    await expect(page.locator('[data-yaku-upgrade]')).toHaveCount(0)
+    await swiftClear(page)
+    await clearArtReveals(page)
+    const pairs = page.locator('[data-shop-build] [data-yaku-upgrade="Pairs"]')
     await pairs.scrollIntoViewIfNeeded()
-    await expect(pairs.locator('img')).toHaveAttribute(
-      'src',
-      /upgrades\/pairs.webp$/
-    )
+    await expect(
+      pairs.locator('[data-upgrade-orb="pluto_orb"]')
+    ).toHaveAttribute('src', /orbs\/pluto_orb.webp$/)
+    await expect(pairs.locator('[data-upgrade-pattern="Pairs"]')).toBeVisible()
+    expect(
+      await pairs.evaluate((el) => {
+        const bounds = el.getBoundingClientRect()
+        return bounds.width >= 44 && bounds.height >= 44
+      })
+    ).toBe(true)
     await activate(pairs)
     const pairPanel = page.getByRole('dialog', { name: /Pairs/ })
     await expect(pairPanel).toHaveCSS('opacity', '1')

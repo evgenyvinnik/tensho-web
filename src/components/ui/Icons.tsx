@@ -55,18 +55,7 @@ export const InfoIcon = control('info')
 export const CoinIcon = control('coin')
 export const StarIcon = control('score')
 export const CheckIcon = control('check')
-export const VolumeMutedIcon: FC<IconProps> = ({
-  className = 'w-6 h-6',
-  size,
-}) => (
-  <span
-    className={`relative inline-block ${className}`}
-    style={{ width: size, height: size }}
-  >
-    <ControlIcon name="sound" size="100%" />
-    <ControlIcon name="ban" size="55%" className="absolute bottom-0 right-0" />
-  </span>
-)
+export const VolumeMutedIcon = control('sound-off')
 export const PauseIcon: FC<IconProps> = ({ className = 'w-6 h-6', size }) => (
   <span
     aria-hidden="true"

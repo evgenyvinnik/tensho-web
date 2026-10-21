@@ -31,6 +31,7 @@ import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
 import { VolumeMutedIcon } from '../ui/Icons'
 import { ControlIcon } from '../ui/ControlIcon'
+import { PavilionIcon } from '../ui/PavilionIcon'
 
 // Create animated components for React 19 compatibility
 const AnimatedDiv = animated('div')
@@ -533,7 +534,8 @@ export function MenuScreen() {
                   delay={750}
                   show={showContent}
                 >
-                  <ControlIcon name="archive" /> {t('menu.codex', 'Codex')}
+                  <PavilionIcon name="archive" size={32} />{' '}
+                  {t('menu.codex', 'Codex')}
                 </NeonButton>
 
                 <NeonButton

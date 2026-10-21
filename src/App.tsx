@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { VFXProvider } from './hooks/useVFX'
 import { useAudioLifecycle } from './hooks/useAudioLifecycle'
 import { ClassicRunBoundary } from './components/gameplay/ClassicRunBoundary'
+import { AchievementToast } from './components/ui/AchievementToast'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
@@ -86,6 +87,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <VFXProvider>
         <AppRouterProvider router={router} />
+        <AchievementToast />
       </VFXProvider>
     </QueryClientProvider>
   )

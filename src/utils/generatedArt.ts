@@ -3,6 +3,15 @@ import { withBasePath } from './basePath'
 
 export const generatedArtPaths = {
   decrees: {
+    stage_master: 'assets/illustrations/rewards/stage_master.webp',
+    flower_pot: 'assets/illustrations/rewards/flower_pot.webp',
+    satellite: 'assets/illustrations/rewards/satellite.webp',
+    swift_andy: 'assets/illustrations/rewards/swift_andy.webp',
+    lucky_sixes: 'assets/illustrations/rewards/lucky_sixes.webp',
+    the_idol: 'assets/illustrations/rewards/the_idol.webp',
+    stuntman: 'assets/illustrations/rewards/stuntman.webp',
+    cartomancer: 'assets/illustrations/rewards/cartomancer.webp',
+    astronomer: 'assets/illustrations/rewards/astronomer.webp',
     broken_stair_edict:
       'assets/illustrations/generated/decrees/broken_stair_edict.webp',
     dead_wall_writ:
@@ -493,6 +502,7 @@ export const generatedArtPaths = {
     wild_flush: 'assets/illustrations/generated/achievements/wild_flush.webp',
   },
   yaku: {
+    yaku_pairs: 'assets/illustrations/upgrades/pairs.webp',
     yaku_chanta: 'assets/illustrations/generated/yaku/yaku_chanta.webp',
     yaku_chinitsu: 'assets/illustrations/generated/yaku/yaku_chinitsu.webp',
     yaku_chinroutou: 'assets/illustrations/generated/yaku/yaku_chinroutou.webp',
@@ -569,12 +579,12 @@ export const generatedArtPaths = {
       'assets/illustrations/generated/reveals/reveal_overlay_rare.webp',
   },
   controls: {
-    archive: 'assets/illustrations/generated/controls/archive.png',
+    archive: 'assets/illustrations/controls-jade/archive.webp',
     back: 'assets/illustrations/generated/controls/back.png',
     ban: 'assets/illustrations/generated/controls/ban.png',
     challenge: 'assets/illustrations/generated/controls/challenge.png',
     chart: 'assets/illustrations/generated/controls/chart.png',
-    check: 'assets/illustrations/generated/controls/check.png',
+    check: 'assets/illustrations/controls-jade/check.webp',
     close: 'assets/illustrations/generated/controls/close.png',
     coin: 'assets/illustrations/generated/controls/coin.png',
     collection: 'assets/illustrations/generated/controls/collection.png',
@@ -582,14 +592,15 @@ export const generatedArtPaths = {
     cumulative: 'assets/illustrations/generated/controls/cumulative.png',
     dice: 'assets/illustrations/generated/controls/dice.png',
     download: 'assets/illustrations/generated/controls/download.png',
-    exit: 'assets/illustrations/generated/controls/exit.png',
+    exit: 'assets/illustrations/controls-jade/exit.webp',
     flower: 'assets/illustrations/generated/controls/flower.png',
     fullscreen: 'assets/illustrations/generated/controls/fullscreen.png',
     hand: 'assets/illustrations/generated/controls/hand.png',
-    help: 'assets/illustrations/generated/controls/help.png',
+    help: 'assets/illustrations/controls-jade/help.webp',
     home: 'assets/illustrations/generated/controls/home.png',
-    info: 'assets/illustrations/generated/controls/info.png',
-    lock: 'assets/illustrations/generated/controls/lock.png',
+    info: 'assets/illustrations/controls-jade/info.webp',
+    language: 'assets/illustrations/controls-jade/language.webp',
+    lock: 'assets/illustrations/controls-jade/lock.webp',
     mask: 'assets/illustrations/generated/controls/mask.png',
     music: 'assets/illustrations/generated/controls/music.png',
     'neutral-item': 'assets/illustrations/generated/controls/neutral-item.png',
@@ -600,14 +611,15 @@ export const generatedArtPaths = {
     scales: 'assets/illustrations/generated/controls/scales.png',
     score: 'assets/illustrations/generated/controls/score.png',
     search: 'assets/illustrations/generated/controls/search.png',
-    settings: 'assets/illustrations/generated/controls/settings.png',
-    sound: 'assets/illustrations/generated/controls/sound.png',
+    settings: 'assets/illustrations/controls-jade/settings.webp',
+    sound: 'assets/illustrations/controls-jade/sound.webp',
+    'sound-off': 'assets/illustrations/controls-jade/sound-off.webp',
     target: 'assets/illustrations/generated/controls/target.png',
     tiles: 'assets/illustrations/generated/controls/tiles.png',
-    tip: 'assets/illustrations/generated/controls/tip.png',
+    tip: 'assets/illustrations/controls-jade/tip.webp',
     trophy: 'assets/illustrations/generated/controls/trophy.png',
     unlock: 'assets/illustrations/generated/controls/unlock.png',
-    warning: 'assets/illustrations/generated/controls/warning.png',
+    warning: 'assets/illustrations/controls-jade/warning.webp',
   },
 } as const
 
@@ -630,6 +642,8 @@ export function getControlArt(id: ControlArtId): string {
 
 /** Yaku and upgrade-family ids (any casing in use) to their hand art. */
 const YAKU_ART: Readonly<Record<string, string>> = {
+  Pairs: 'yaku_pairs',
+  pairs: 'yaku_pairs',
   Tanyao: 'yaku_tanyao',
   tanyao: 'yaku_tanyao',
   Yakuhai: 'yaku_yakuhai',

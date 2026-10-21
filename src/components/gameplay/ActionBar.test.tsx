@@ -28,6 +28,23 @@ afterEach(async () => {
 })
 
 describe('ActionBar', () => {
+  it('owns a direct grid item for the Wall even when the control has a tutorial wrapper', () => {
+    const { container } = renderActionBar({
+      wall: (
+        <div data-tutorial="wall">
+          <button data-wall-chip>Wall</button>
+        </div>
+      ),
+    })
+    const slot = container.querySelector(
+      '.gameplay-action-controls > [data-action-wall]'
+    )
+    expect(slot).not.toBeNull()
+    expect(slot?.querySelector('[data-wall-chip]')).toBe(
+      screen.getByRole('button', { name: 'Wall' })
+    )
+  })
+
   it('offers exactly two actions, REDRAW and Play hand', () => {
     renderActionBar()
     expect(buttons().map((button) => button.textContent)).toEqual([
@@ -98,9 +115,9 @@ describe('ActionBar', () => {
 
   it('marks free redraws on the REDRAW button', () => {
     const { container, rerender } = renderActionBar({ freeRedraws: 2 })
-    expect(container.querySelector('[data-free-redraws="2"]')).toHaveTextContent(
-      '+2 free'
-    )
+    expect(
+      container.querySelector('[data-free-redraws="2"]')
+    ).toHaveTextContent('+2 free')
     rerender(
       <ActionBar
         turnsLeft={4}

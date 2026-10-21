@@ -134,13 +134,13 @@ it('stacks Drought with Frostbite without halving base tile or shape points', ()
     seasonStack: [...drought.seasonStack, ...frostbite.seasonStack],
   })
   const forecast = pay(game, ids)
-  // Three Winds (50 each) and a Triplet (+40) keep their full points; Frostbite
-  // halves only what Gentle Breeze adds to the Triplet's Mult 2: 2 × 1.5.
+  // Three grouped Winds (100 each) and a Triplet (+40) keep their full points;
+  // Frostbite halves only Gentle Breeze's +2, leaving the Triplet's Mult 2.
   expect(forecast.equation).toEqual({
-    points: 190,
+    points: 340,
     multiplier: 3,
     adjustment: 0,
-    total: 570,
+    total: 1020,
   })
 })
 
