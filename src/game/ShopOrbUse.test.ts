@@ -77,6 +77,7 @@ it('uses a bought Orb at once: the family rises, nothing is held, and the run re
       yakuCategory: 'Pairs',
       newLevel: 2,
       levels: [{ yaku: 'Pairs', from: 1, to: 2 }],
+      onAcquire: true,
     },
   ])
   expect(game.shop.state.itemOfferings[0].isPurchased).toBe(true)
@@ -231,6 +232,25 @@ it('leaves Orbs created during a round on the rail for the player to use', () =>
     expect.objectContaining({
       source: 'generated',
       levels: [{ yaku: 'Pairs', from: 1, to: 2 }],
+      onAcquire: false,
     }),
+  ])
+})
+
+it('keeps the provenance of a bought Orb still held on the rail but does not call its use an acquisition', () => {
+  const game = new GameOrchestrator()
+  game.setConsumableUnlockResolver(() => true)
+  game.startNewRun(7)
+  // Runs saved before bought Orbs applied at once can still hold one.
+  const orb: CelestialOrb = CelestialOrbSystem.createCelestialOrbInstance(
+    CELESTIAL_ORBS.pluto_orb
+  )
+  expect(game.addCelestialOrb(orb, 'purchase')).toBe(true)
+  const used = listen('celestialOrbUsed')
+  expect(
+    game.processAction({ type: 'useOrb', orbId: orb.instanceId }).success
+  ).toBe(true)
+  expect(used).toEqual([
+    expect.objectContaining({ source: 'purchase', onAcquire: false }),
   ])
 })

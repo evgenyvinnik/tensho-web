@@ -27,6 +27,16 @@ it('queues only Tea House uses that changed a level, and forgets them on load', 
       newLevel: 2,
       source: 'generated',
       levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+      onAcquire: false,
+    })
+    // A bought Orb from an older save, used from the rail at the table.
+    eventBus.emit('celestialOrbUsed', {
+      orbId: 'pluto_orb',
+      yakuCategory: 'SevenPairs',
+      newLevel: 2,
+      source: 'purchase',
+      levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+      onAcquire: false,
     })
     eventBus.emit('celestialOrbUsed', {
       orbId: 'pluto_orb',
@@ -34,6 +44,7 @@ it('queues only Tea House uses that changed a level, and forgets them on load', 
       newLevel: 2,
       source: 'purchase',
       levels: [],
+      onAcquire: true,
     })
     expect(useOrbRevealQueue.getState().queue).toEqual([])
     eventBus.emit('celestialOrbUsed', {
@@ -42,12 +53,14 @@ it('queues only Tea House uses that changed a level, and forgets them on load', 
       newLevel: 2,
       source: 'purchase',
       levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+      onAcquire: true,
     })
     eventBus.emit('celestialOrbUsed', {
       orbId: 'black_hole_orb',
       yakuCategory: 'All',
       newLevel: 0,
       source: 'pack_open',
+      onAcquire: true,
       levels: [
         { yaku: 'Pairs', from: 1, to: 2 },
         { yaku: 'Tanyao', from: 3, to: 4 },
@@ -77,6 +90,7 @@ it('shows the family rising to its new level with its bonus, then dismisses', ()
       newLevel: 3,
       source: 'purchase',
       levels: [{ yaku: 'SevenPairs', from: 2, to: 3 }],
+      onAcquire: true,
     })
     render(<CelestialOrbReveal />)
     const dialog = screen.getByRole('dialog', {

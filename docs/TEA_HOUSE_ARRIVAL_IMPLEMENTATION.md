@@ -43,7 +43,9 @@ Yaku upgrades popup, and changes how a bought Celestial Orb works.
   it shares with `CollectibleRail`.
 - `GameOrchestrator.applyCelestialOrb` applies an Orb without holding it and
   announces `consumableAcquired` then `celestialOrbUsed`; the event now carries
-  `levels` (every family changed, from → to). `ShopSession` routes Orb rewards
+  `levels` (every family changed, from → to) and `onAcquire: true`, which a
+  rail use never sets even for a bought Orb an older save still holds.
+  `ShopSession` routes Orb rewards
   through it and refuses capped Orbs with the new `maxLevel` reason, simulated
   on a detached copy of the levels so two pack copies need two free levels.
 - `src/game/orbRevealQueue.ts` and

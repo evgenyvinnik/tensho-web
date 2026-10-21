@@ -44,8 +44,10 @@ let installed: (() => void) | null = null
 export function installOrbRevealQueue(): () => void {
   if (installed) return installed
   const offs = [
-    eventBus.on('celestialOrbUsed', ({ orbId, source, levels }) => {
-      if (source !== 'purchase' && source !== 'pack_open') return
+    eventBus.on('celestialOrbUsed', ({ orbId, onAcquire, levels }) => {
+      // `source` is where the Orb came from: one bought before Orbs applied
+      // at once can still sit on the rail, and its use there is no reveal.
+      if (!onAcquire) return
       if (!levels || levels.length === 0) return
       const orb = getAllCelestialOrbs().find((entry) => entry.id === orbId)
       if (!orb) return
