@@ -4,8 +4,9 @@
  * The engine grants a Decree first and announces it after; this queue only
  * listens. The reveal is presentation: skipping it, reduced motion or a reload
  * can neither lose nor duplicate the Decree, and a loaded save never replays
- * old reveals. Pack rewards are revealed by the pack itself, so only direct
- * purchases, starting Decrees and Decrees created by other items queue here.
+ * old reveals. Only starting Decrees and Decrees created by other items queue
+ * here: pack rewards are revealed by the pack itself, and a Decree bought
+ * directly was chosen in plain sight, so it goes straight into the build.
  */
 
 import { create } from 'zustand'
@@ -16,7 +17,7 @@ import type { OwnedDecree } from '../systems/types'
 export interface DecreeRevealEntry {
   key: number
   decree: OwnedDecree
-  source: 'starting' | 'purchase' | 'generated'
+  source: 'starting' | 'generated'
 }
 
 interface DecreeRevealState {
@@ -36,7 +37,7 @@ export function installDecreeRevealQueue(): () => void {
   if (installed) return installed
   const offs = [
     eventBus.on('decreeAcquired', ({ decreeId, source }) => {
-      if (source === 'pack_open') return
+      if (source !== 'starting' && source !== 'generated') return
       // The newest owned copy of this Decree is the one just granted.
       const decree = [...gameOrchestrator.getState().decreeSystem.getOwnedDecrees()]
         .reverse()
@@ -48,7 +49,7 @@ export function installDecreeRevealQueue(): () => void {
           {
             key: ++nextKey,
             decree: { ...decree },
-            source: source === 'starting' || source === 'generated' ? source : 'purchase',
+            source,
           },
         ],
       }))

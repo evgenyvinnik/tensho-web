@@ -2,11 +2,12 @@
  * DecreeReveal: a new Decree comes out of its bag.
  *
  * A short sequence — the draw-bag shakes, bursts open, and the scroll rises in
- * its rarity's light with its name and effect — for Decrees bought directly,
- * starting Decrees and Decrees created by items. (Pack rewards are revealed by
- * the opened pack itself.) The Decree is already owned before this plays: a
- * tap skips straight to the result, reduced motion shows the result at once,
- * and closing it changes nothing.
+ * its rarity's light with its name and effect — for starting Decrees and
+ * Decrees created by items. (Pack rewards are revealed by the opened pack
+ * itself, and a Decree bought directly goes straight into the build.) The
+ * Decree is already owned before this plays: a tap skips straight to the
+ * result, reduced motion shows the result at once, and closing it changes
+ * nothing.
  *
  * @module components/effects/DecreeReveal
  */

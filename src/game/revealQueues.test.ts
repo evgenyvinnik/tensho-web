@@ -131,25 +131,28 @@ describe('Wall draw batches', () => {
 describe('Decree reveal queue', () => {
   const decree = ALL_DECREES.find((d) => d.id === 'river_tax')!
 
-  it('reveals a bought Decree from the owned copy, but not a pack reward', () => {
+  it('reveals a created Decree from the owned copy, but not a bought one or a pack reward', () => {
     const owned = gameOrchestrator
       .getState()
       .decreeSystem.acquireDecree(decree)!
-    eventBus.emit('decreeAcquired', {
-      decreeId: decree.id,
-      decreeName: 'Decree',
-      rarity: 'common',
-      source: 'pack_open',
-    })
+    // Both were chosen in plain sight: the pack shows its own reward and a
+    // bought Decree goes straight into the build.
+    for (const source of ['pack_open', 'purchase'] as const)
+      eventBus.emit('decreeAcquired', {
+        decreeId: decree.id,
+        decreeName: 'Decree',
+        rarity: 'common',
+        source,
+      })
     expect(useDecreeRevealQueue.getState().queue).toEqual([])
     eventBus.emit('decreeAcquired', {
       decreeId: decree.id,
       decreeName: 'Decree',
       rarity: 'common',
-      source: 'purchase',
+      source: 'generated',
     })
     const [entry] = useDecreeRevealQueue.getState().queue
-    expect(entry.source).toBe('purchase')
+    expect(entry.source).toBe('generated')
     expect(entry.decree.instanceId).toBe(owned.instanceId)
     // A snapshot: later changes to the owned Decree do not rewrite the reveal.
     expect(entry.decree).not.toBe(owned)
@@ -160,7 +163,7 @@ describe('Decree reveal queue', () => {
       decreeId: 'not-owned',
       decreeName: 'Decree',
       rarity: 'common',
-      source: 'purchase',
+      source: 'generated',
     })
     expect(useDecreeRevealQueue.getState().queue).toEqual([])
     const [starter] = gameOrchestrator.getState().decreeSystem.getOwnedDecrees()
