@@ -492,7 +492,7 @@
       "omen": "徵兆"
     },
     "packChoices": "從 {{count}} 個獎勵中選擇最多 {{max}} 個",
-    "packInventoryFull": "法令欄位不足，無法領取所選獎勵。請減少法令或跳過卡包。",
+    "packInventoryFull": "法令欄位不足，無法領取所選獎勵。請出售法令、減少選擇或跳過卡包。",
     "inventoryFull": "物品欄空間不足，無法領取此獎勵。",
     "skipRewards": "跳過獎勵",
     "purchaseFailed": "無法完成購買。",

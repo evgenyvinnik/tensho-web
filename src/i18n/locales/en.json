@@ -488,7 +488,7 @@
       "omen": "Omen"
     },
     "packChoices": "Choose up to {{max}} from {{count}} rewards",
-    "packInventoryFull": "Not enough Decree slots for this selection. Choose fewer Decrees, or skip the pack.",
+    "packInventoryFull": "Not enough Decree slots for this selection. Sell a Decree, choose fewer, or skip the pack.",
     "inventoryFull": "Not enough inventory space for this reward.",
     "skipRewards": "Skip rewards",
     "purchaseFailed": "Purchase could not be completed.",

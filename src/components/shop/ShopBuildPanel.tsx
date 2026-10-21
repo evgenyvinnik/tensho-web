@@ -1,12 +1,9 @@
-import { useId, useRef, useState, type ReactNode } from 'react'
+import { useId, useRef, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { OwnedDecree } from '../../systems/types'
-import { decreeKey } from '../../systems/decreeIdentity'
-import { useItemText } from '../../i18n/useItemText'
-import { DecreeCardCompact } from '../gameplay/DecreeBar'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
-import { ConfirmPopup } from '../ui/Popup'
 import type { YakuRepetitionHistory } from '../ui/YakuRepetitionDetails'
+import { SellableDecrees } from './SellableDecrees'
 
 interface Props {
   yakuHistory?: YakuRepetitionHistory
@@ -36,15 +33,8 @@ export function ShopBuildPanel({
   upgrades,
 }: Props) {
   const { t, i18n } = useTranslation()
-  const itemText = useItemText()
   const titleId = useId()
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const [pendingId, setPendingId] = useState<string | null>(null)
-  const [feedback, setFeedback] = useState<{
-    name: string
-    failed: boolean
-  } | null>(null)
-  const pending = decrees.find((d) => decreeKey(d) === pendingId)
   const number = (value: number) => value.toLocaleString(i18n.resolvedLanguage)
 
   return (
@@ -76,33 +66,21 @@ export function ShopBuildPanel({
               max: number(maxSlots),
             })}
           </p>
-          {decrees.length ? (
-            <div
-              data-tutorial="decrees"
-              className="mt-1 flex flex-wrap gap-1.5 p-0.5 sm:gap-2"
-            >
-              {decrees.map((decree) => (
-                <DecreeCardCompact
-                  key={decreeKey(decree)}
-                  decree={decree}
-                  ownedDecrees={decrees}
-                  yakuHistory={yakuHistory}
-                  completeConcealedHandsPlayed={completeConcealedHandsPlayed}
-                  onSell={() => {
-                    // A stable focus return target survives removal of the sold card
-                    // and the transient detail popover that launched confirmation.
-                    titleRef.current?.focus({ preventScroll: true })
-                    setFeedback(null)
-                    setPendingId(decreeKey(decree))
-                  }}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="mt-1 text-sm text-[var(--color-beige-white)]/60">
-              {t('shop.build.empty')}
-            </p>
-          )}
+          <SellableDecrees
+            decrees={decrees}
+            onSell={onSell}
+            // A stable focus return target survives removal of the sold card
+            // and the transient detail popover that launched confirmation.
+            focusTarget={titleRef}
+            yakuHistory={yakuHistory}
+            completeConcealedHandsPlayed={completeConcealedHandsPlayed}
+            tutorialTarget="decrees"
+            empty={
+              <p className="mt-1 text-sm text-[var(--color-beige-white)]/60">
+                {t('shop.build.empty')}
+              </p>
+            }
+          />
         </div>
         {upgrades && (
           <div className="min-w-0 flex-[0_1_auto] border-l border-[var(--color-metallic-gold)]/25 pl-3">
@@ -110,38 +88,6 @@ export function ShopBuildPanel({
           </div>
         )}
       </div>
-      <p
-        role="status"
-        aria-live="polite"
-        className="text-sm text-[var(--color-beige-white)]"
-      >
-        {feedback
-          ? t(feedback.failed ? 'shop.build.saleFailed' : 'shop.build.sold', {
-              name: feedback.name,
-            })
-          : ''}
-      </p>
-      {pending && (
-        <ConfirmPopup
-          isOpen
-          onClose={() => setPendingId(null)}
-          title={t('gameplay.sellNamed', {
-            name: itemText.name('decrees', pending),
-          })}
-          message={t('shop.build.sellPrompt', {
-            name: itemText.name('decrees', pending),
-            gold: number(pending.sellValue ?? Math.floor(pending.cost / 2)),
-          })}
-          confirmText={t('common.confirm')}
-          onConfirm={() => {
-            const result = onSell(decreeKey(pending))
-            setFeedback({
-              name: itemText.name('decrees', pending),
-              failed: !result.success,
-            })
-          }}
-        />
-      )}
     </section>
   )
 }

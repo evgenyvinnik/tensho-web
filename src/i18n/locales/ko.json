@@ -492,7 +492,7 @@
       "omen": "징조"
     },
     "packChoices": "보상 {{count}}개 중 최대 {{max}}개 선택",
-    "packInventoryFull": "선택한 보상을 받을 법령 슬롯이 부족합니다. 법령 수를 줄이거나 팩을 건너뛰세요.",
+    "packInventoryFull": "선택한 보상을 받을 법령 슬롯이 부족합니다. 법령을 판매하거나, 선택을 줄이거나, 팩을 건너뛰세요.",
     "inventoryFull": "이 보상을 받을 인벤토리 공간이 부족합니다.",
     "skipRewards": "보상 건너뛰기",
     "purchaseFailed": "구매를 완료할 수 없습니다.",

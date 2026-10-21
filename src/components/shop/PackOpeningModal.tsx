@@ -9,6 +9,7 @@
  * - Skip option for synergy decrees
  * - Each reward drawn big, glowing by its rarity
  * - Hover (or focus, or tap) a reward to see its details card
+ * - A pack offering Decrees shows the owned ones, which can be sold for room
  *
  * Uses React Spring for animations and the game's color palette.
  */
@@ -30,10 +31,11 @@ import { PACK_TYPE_DEFINITIONS } from '../../config/packDefinitions'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { getPackIllustration } from '../../utils/assets'
 import type { TeaHouseOffering } from '../../systems/TeaHouseSystem'
-import type { Decree } from '../../systems/types'
+import type { Decree, OwnedDecree } from '../../systems/types'
 import { ControlIcon } from '../ui/ControlIcon'
 import { DecreeModifierDetails } from '../ui/DecreeModifierDetails'
 import { OfferArt } from './OfferArt'
+import { SellableDecrees } from './SellableDecrees'
 import { RARITY_COLORS, useOfferText, type OfferText } from './useOfferText'
 
 const AnimatedDiv = animated('div')
@@ -55,6 +57,14 @@ export interface PackOpeningModalProps {
   canConfirmSelection?: (indices: number[]) => boolean
   selectionError?: (indices: number[]) => string | null
   error?: string | null
+  /** The Decrees already owned, which a pack offering Decrees can sell. */
+  build?: PackBuild
+}
+
+export interface PackBuild {
+  decrees: OwnedDecree[]
+  maxSlots: number
+  onSell: (instanceId: string) => { success: boolean }
 }
 
 // =============================================================================
@@ -395,6 +405,46 @@ function PackContentCard({
 }
 
 // =============================================================================
+// OWNED DECREES
+// =============================================================================
+
+/**
+ * The Decrees already owned, under a pack that offers more: selling one
+ * here makes room for the choice without giving up the pack.
+ */
+function PackBuildRow({ decrees, maxSlots, onSell }: PackBuild) {
+  const { t, i18n } = useTranslation()
+  const titleId = useId()
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const number = (value: number) => value.toLocaleString(i18n.resolvedLanguage)
+
+  return (
+    <section
+      data-pack-build
+      aria-labelledby={titleId}
+      className="flex-shrink-0 border-t border-[var(--color-metallic-gold)] border-opacity-30 px-3 py-2 sm:px-4"
+    >
+      <h3
+        id={titleId}
+        ref={titleRef}
+        tabIndex={-1}
+        className="text-xs font-semibold uppercase tracking-wider text-[var(--color-beige-white)]/60 focus-visible:outline focus-visible:outline-2"
+      >
+        {t('shop.build.slots', {
+          used: number(decrees.length),
+          max: number(maxSlots),
+        })}
+      </h3>
+      <SellableDecrees
+        decrees={decrees}
+        onSell={onSell}
+        focusTarget={titleRef}
+      />
+    </section>
+  )
+}
+
+// =============================================================================
 // PACK OPENING MODAL COMPONENT
 // =============================================================================
 
@@ -409,6 +459,7 @@ export function PackOpeningModal({
   canConfirmSelection,
   selectionError,
   error,
+  build,
 }: PackOpeningModalProps) {
   const { t } = useTranslation()
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
@@ -520,6 +571,9 @@ export function PackOpeningModal({
         aria-labelledby={titleId}
         tabIndex={-1}
         onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+          // A Decree's details and its sale confirmation are portals that
+          // handle their own keys, Escape included.
+          if (!dialogRef.current?.contains(e.target as Node)) return
           // Paid rewards require an explicit claim or Skip, not accidental dismissal.
           if (e.key === 'Escape') {
             e.preventDefault()
@@ -619,6 +673,11 @@ export function PackOpeningModal({
             ))}
           </div>
         </div>
+
+        {build &&
+          packOffering.contents.some(
+            (content) => content.type === 'Decree'
+          ) && <PackBuildRow {...build} />}
 
         {/* Keep the reason for a disabled confirmation next to its action. */}
         <div className="flex-shrink-0 border-t border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">

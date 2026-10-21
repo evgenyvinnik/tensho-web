@@ -779,7 +779,7 @@
       "omen": "Alamet"
     },
     "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
-    "packInventoryFull": "Bu seçim için yeterli Ferman yuvası yok. Daha az Ferman seçin ya da paketi atlayın.",
+    "packInventoryFull": "Bu seçim için yeterli Ferman yuvası yok. Bir Ferman satarak yer açın, daha az seçin ya da paketi atlayın.",
     "inventoryFull": "Bu ödül için envanterde yeterli yer yok.",
     "skipRewards": "Ödülleri atla",
     "purchaseFailed": "Satın alma tamamlanamadı.",

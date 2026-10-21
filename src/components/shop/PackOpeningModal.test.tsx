@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import i18n from 'i18next'
 import {
@@ -13,7 +13,11 @@ import es from '../../i18n/locales/es.json'
 import { tileRewardText } from '../../i18n/tileRewardText'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { PackOpeningModal } from './PackOpeningModal'
-import { RIVER_TAX } from '../../systems/DecreeSystem'
+import {
+  ALL_DECREES,
+  DecreeSystem,
+  RIVER_TAX,
+} from '../../systems/DecreeSystem'
 import {
   CELESTIAL_ORBS,
   CelestialOrbSystem,
@@ -252,4 +256,80 @@ it('draws a reward big in its rarity glow and shows its details card on hover or
   expect(details()).toHaveTextContent(description)
   fireEvent.pointerDown(screen.getByRole('dialog'), { pointerType: 'touch' })
   expect(details()).toBeNull()
+})
+
+it('shows the owned Decrees under a Decree pack, where one can be sold for room', () => {
+  useSettingsStore.setState({ reducedMotion: true })
+  const system = new DecreeSystem()
+  const stone = ALL_DECREES.find((d) => d.id === 'decree-polished-stone')!
+  const owned = system.acquireDecree(stone)!
+  const onSell = vi.fn(() => ({ success: true }))
+  const pack = (type: 'Decree' | 'Tile') => ({
+    pack: {
+      id: `${type}-pack`,
+      type,
+      size: 'Mega' as const,
+      cost: 8,
+      choiceCount: 5,
+      selectCount: 2,
+    },
+    contents: [
+      type === 'Decree'
+        ? {
+            id: 'decree-choice',
+            type,
+            name: RIVER_TAX.name,
+            description: RIVER_TAX.description,
+            rarity: 'common' as const,
+            data: RIVER_TAX,
+          }
+        : {
+            id: 'tile-choice',
+            type,
+            name: '4 of Bamboo',
+            description: '',
+            rarity: 'common' as const,
+            data: Tile.createNumbered(TileSuit.Souzu, 4),
+          },
+    ],
+    isOpened: true,
+    isResolved: false,
+    selectedIndices: [],
+    maxSelections: 2,
+  })
+  const view = render(
+    <PackOpeningModal
+      isOpen
+      onConfirm={vi.fn()}
+      onSkip={vi.fn()}
+      packOffering={pack('Decree')}
+      build={{ decrees: system.getOwnedDecrees(), maxSlots: 1, onSell }}
+    />
+  )
+  const build = document.querySelector<HTMLElement>('[data-pack-build]')!
+  expect(within(build).getByRole('heading')).toHaveTextContent(
+    '1 / 1 Decree slots'
+  )
+  fireEvent.click(within(build).getByRole('button', { name: 'Polished Stone' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Sell Polished Stone' }))
+  expect(onSell).not.toHaveBeenCalled()
+  fireEvent.click(screen.getByRole('button', { name: 'Confirm' }))
+  expect(onSell).toHaveBeenCalledExactlyOnceWith(owned.instanceId)
+  expect(within(build).getByRole('status')).toHaveTextContent(
+    'Sold Polished Stone.'
+  )
+  // The pack stays open for its choice.
+  expect(screen.getByRole('button', { name: 'River Tax' })).toBeVisible()
+
+  // Nothing in a Tile pack takes a Decree slot.
+  view.rerender(
+    <PackOpeningModal
+      isOpen
+      onConfirm={vi.fn()}
+      onSkip={vi.fn()}
+      packOffering={pack('Tile')}
+      build={{ decrees: system.getOwnedDecrees(), maxSlots: 1, onSell }}
+    />
+  )
+  expect(document.querySelector('[data-pack-build]')).toBeNull()
 })

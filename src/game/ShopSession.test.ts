@@ -10,6 +10,7 @@ import {
   TEA_HOUSE_BASE_CHARTERS,
 } from '../systems/TeaHouseSystem'
 import { ALL_DECREES } from '../systems/DecreeSystem'
+import { decreeKey } from '../systems/decreeIdentity'
 import {
   CELESTIAL_ORBS,
   CelestialOrbSystem,
@@ -79,6 +80,26 @@ function packFixture(game: GameOrchestrator, contents = seals()) {
   pack.maxSelections = 2
   offer.finalCost = 8
   return { offer, pack, contents }
+}
+
+/** A Mega pack of five Decrees, with one Decree slot left free. */
+function decreePackFixture(game: GameOrchestrator, state: OrchestratorState) {
+  const catalog = ALL_DECREES.filter((d) => !d.flowerRequirement)
+  const fixture = packFixture(
+    game,
+    catalog.slice(0, 5).map((decree, i) => ({
+      id: `fixture-decree:${i}`,
+      type: 'Decree',
+      name: decree.name,
+      description: decree.description,
+      rarity: 'common',
+      data: decree,
+    }))
+  )
+  const owned = catalog.slice(5)
+  while (state.decreeSystem.getAvailableSlots() > 1)
+    state.decreeSystem.acquireDecree(owned.shift()!)
+  return fixture
 }
 
 afterEach(() => {
@@ -360,21 +381,7 @@ describe('run-owned shop transactions', () => {
 
   it('retains a bought Mega pack when its combined Decrees cannot fit, without partial grants', () => {
     const { game, shop, state } = visit()
-    const catalog = ALL_DECREES.filter((d) => !d.flowerRequirement)
-    const { offer, contents } = packFixture(
-      game,
-      catalog.slice(0, 5).map((decree, i) => ({
-        id: `fixture-decree:${i}`,
-        type: 'Decree',
-        name: decree.name,
-        description: decree.description,
-        rarity: 'common',
-        data: decree,
-      }))
-    )
-    const owned = catalog.slice(5)
-    while (state.decreeSystem.getAvailableSlots() > 1)
-      state.decreeSystem.acquireDecree(owned.shift()!)
+    const { offer, contents } = decreePackFixture(game, state)
     const held = state.decreeSystem.getOwnedDecrees().length
     expect(shop.purchase(offer.id).success).toBe(true)
     const pending = shop.pendingPack
@@ -393,6 +400,30 @@ describe('run-owned shop transactions', () => {
     expect(shop.pendingPack).toBeNull()
     expect(shop.confirmPack([0]).success).toBe(false)
     expect(state.gold).toBe(92)
+  })
+
+  it('frees a slot for both Decrees of an open Mega pack when an owned one is sold', () => {
+    const { game, shop, state } = visit()
+    const { offer, contents } = decreePackFixture(game, state)
+    const held = state.decreeSystem.getOwnedDecrees().length
+    expect(shop.purchase(offer.id).success).toBe(true)
+    const pending = shop.pendingPack
+    expect(shop.validatePackSelection([0, 1])).toEqual({
+      success: false,
+      reason: 'inventoryFull',
+    })
+    const [sold] = state.decreeSystem.getOwnedDecrees()
+    expect(game.sellDecree(decreeKey(sold)).success).toBe(true)
+    expect(state.gold).toBe(92 + (sold.sellValue ?? Math.floor(sold.cost / 2)))
+    // The paid pack waits through the sale, and the freed slot takes its pair.
+    expect(shop.pendingPack).toBe(pending)
+    expect(shop.confirmPack([0, 1]).success).toBe(true)
+    const owned = state.decreeSystem.getOwnedDecrees()
+    expect(owned).toHaveLength(held + 1)
+    expect(owned.slice(-2).map((d) => d.id)).toEqual(
+      contents.slice(0, 2).map((content) => (content.data as Decree).id)
+    )
+    expect(shop.pendingPack).toBeNull()
   })
 
   it.each([[0, 0], [], [NaN], [0.5], [-1], [99], [0, 1, 2]])(

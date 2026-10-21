@@ -779,7 +779,7 @@
       "omen": "Pangitain"
     },
     "packChoices": "Pumili ng hanggang {{max}} sa {{count}} gantimpala",
-    "packInventoryFull": "Kulang ang puwesto ng Dekreto para sa napiling gantimpala. Bawasan ang mga Dekreto, o laktawan ang pack.",
+    "packInventoryFull": "Kulang ang puwesto ng Dekreto para sa napiling gantimpala. Magbenta ng Dekreto, bawasan ang pinili, o laktawan ang pack.",
     "inventoryFull": "Kulang ang puwang sa imbentaryo para sa gantimpalang ito.",
     "skipRewards": "Laktawan ang mga gantimpala",
     "purchaseFailed": "Hindi makumpleto ang pagbili.",

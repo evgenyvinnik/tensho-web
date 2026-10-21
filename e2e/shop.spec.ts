@@ -693,9 +693,9 @@ test('Mega Decree pack capacity is checked before confirmation and rewards are g
   await choices.nth(1).click()
   const confirm = dialog.getByRole('button', { name: 'Confirm Selection' })
   await expect(confirm).toBeDisabled()
-  await expect(dialog.getByRole('status')).toContainText(
-    'Not enough Decree slots'
-  )
+  await expect(
+    dialog.getByRole('status').filter({ hasText: 'Not enough Decree slots' })
+  ).toBeVisible()
   expect(await inventory(page)).toEqual({
     gold: 12,
     seals: 0,
@@ -725,6 +725,61 @@ test('Mega Decree pack capacity is checked before confirmation and rewards are g
   await page.getByRole('button', { name: 'Continue to Next Round' }).click()
   await expect(page).toHaveURL(/\/en\/play$/)
   await expect(page.locator('[data-game-action="play"]')).toBeVisible()
+})
+
+test('a Decree sold inside a Mega Decree pack makes room for both choices', async ({
+  page,
+}) => {
+  const { offerId } = await openPackFixture(page)
+  await useDecreeChoices(page)
+  const held = (await inventory(page)).decrees
+  await buyOffer(page, offerId)
+  const dialog = page.getByRole('dialog', { name: 'Mega Decree Pack' })
+  await expect(dialog).toBeVisible()
+  const choices = dialog.locator('[aria-pressed]')
+  await choices.nth(0).click()
+  await choices.nth(1).click()
+  const confirm = dialog.getByRole('button', { name: 'Confirm Selection' })
+  await expect(confirm).toBeDisabled()
+
+  // The owned Decrees sit under the pack's, each sold from its details.
+  const build = dialog.locator('[data-pack-build]')
+  await expect(build).toContainText(`${held} / ${held + 1} Decree slots`)
+  const owned = build.locator('[data-decree-instance]')
+  await expect(owned).toHaveCount(held)
+  const sold = await owned.first().getAttribute('data-decree-instance')
+  const value = await page.evaluate(async (id) => {
+    const path = '/src/game/GameOrchestrator.ts'
+    const { gameOrchestrator: game } = await import(path)
+    const decree = game.getState().decreeSystem.getOwnedDecree(id)
+    return (decree.sellValue ?? Math.floor(decree.cost / 2)) as number
+  }, sold)
+  await owned.first().click()
+  await page.locator('[data-decree-sell]').click()
+  const confirmation = page.locator('dialog[open]')
+  await expect(confirmation).toContainText(`${value} gold`)
+  await confirmation
+    .getByRole('button', { name: 'Confirm', exact: true })
+    .click()
+  await expect(confirmation).toHaveCount(0)
+  await expect(owned).toHaveCount(held - 1)
+  await expect(build.getByRole('status')).toContainText('Sold')
+
+  // The pack and its choice wait through the sale, and now both fit.
+  await expect(choices.nth(0)).toHaveAttribute('aria-pressed', 'true')
+  await expect(choices.nth(1)).toHaveAttribute('aria-pressed', 'true')
+  await expect(
+    dialog.getByRole('status').filter({ hasText: 'Not enough Decree slots' })
+  ).toHaveCount(0)
+  await confirm.click()
+  await expect(dialog).not.toBeVisible()
+  expect(await inventory(page)).toEqual({
+    gold: 12 + value,
+    seals: 0,
+    decrees: held + 1,
+    pending: false,
+    purchases: 1,
+  })
 })
 
 test('pack choices work with the keyboard and trap focus until explicitly settled', async ({
@@ -766,10 +821,11 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
   const choices = dialog.locator('[aria-pressed]')
   await choices.nth(0).click()
   await choices.nth(1).click()
-  await expect(dialog.getByRole('status')).toContainText(
-    'No hay espacios de Decreto suficientes'
-  )
-  await expect(dialog.getByRole('status')).toBeInViewport()
+  const capacity = dialog
+    .getByRole('status')
+    .filter({ hasText: 'No hay espacios de Decreto suficientes' })
+  await expect(capacity).toBeVisible()
+  await expect(capacity).toBeInViewport()
   const skip = dialog.getByRole('button', { name: /Saltar|Omitir/ })
   await expect(skip).toBeInViewport()
   const confirm = dialog.getByRole('button', { name: 'Confirmar selección' })

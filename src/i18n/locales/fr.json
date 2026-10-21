@@ -492,7 +492,7 @@
       "omen": "Présage"
     },
     "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
-    "packInventoryFull": "Pas assez d’emplacements de Décret pour cette sélection. Choisissez moins de Décrets ou passez le paquet.",
+    "packInventoryFull": "Pas assez d’emplacements de Décret pour cette sélection. Vendez un Décret, choisissez-en moins ou passez le paquet.",
     "inventoryFull": "Pas assez de place dans l’inventaire pour cette récompense.",
     "skipRewards": "Passer les récompenses",
     "purchaseFailed": "L’achat n’a pas pu être effectué.",

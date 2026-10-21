@@ -492,7 +492,7 @@
       "omen": "兆し"
     },
     "packChoices": "{{count}} 個の報酬から最大 {{max}} 個を選択",
-    "packInventoryFull": "この選択に必要な法令枠が足りません。法令を減らすか、パックをスキップしてください。",
+    "packInventoryFull": "この選択に必要な法令枠が足りません。法令を売却するか、選ぶ数を減らすか、パックをスキップしてください。",
     "inventoryFull": "この報酬を受け取る空きがありません。",
     "skipRewards": "報酬をスキップ",
     "purchaseFailed": "購入を完了できませんでした。",

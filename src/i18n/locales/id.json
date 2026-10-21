@@ -700,7 +700,7 @@
       "omen": "Pertanda"
     },
     "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
-    "packInventoryFull": "Slot Dekrit tidak cukup untuk pilihan ini. Pilih lebih sedikit Dekrit, atau lewati paket.",
+    "packInventoryFull": "Slot Dekrit tidak cukup untuk pilihan ini. Jual Dekrit, pilih lebih sedikit, atau lewati paket.",
     "inventoryFull": "Ruang inventaris tidak cukup untuk hadiah ini.",
     "skipRewards": "Lewati hadiah",
     "purchaseFailed": "Pembelian tidak dapat diselesaikan.",

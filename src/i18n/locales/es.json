@@ -492,7 +492,7 @@
       "omen": "Presagio"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
-    "packInventoryFull": "No hay espacios de Decreto suficientes para esta selección. Elige menos Decretos o salta el paquete.",
+    "packInventoryFull": "No hay espacios de Decreto suficientes para esta selección. Vende un Decreto, elige menos o salta el paquete.",
     "inventoryFull": "No hay espacio en el inventario para esta recompensa.",
     "skipRewards": "Omitir recompensas",
     "purchaseFailed": "No se pudo completar la compra.",

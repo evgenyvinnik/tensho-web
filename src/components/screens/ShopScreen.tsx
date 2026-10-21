@@ -372,6 +372,16 @@ export function ShopScreen() {
     showResult(shop.skipPack())
   }, [shop, showResult])
 
+  // Also offered inside a Decree pack, to make room for its choice.
+  const handleSellDecree = useCallback(
+    (id: string) => {
+      const result = game.sellDecree(id)
+      if (result.success) setShopError(null)
+      return result
+    },
+    [game]
+  )
+
   const handleReroll = useCallback(() => {
     showResult(shop.reroll())
   }, [shop, showResult])
@@ -434,11 +444,7 @@ export function ShopScreen() {
             }
             decrees={game.state.decreeSystem.getOwnedDecrees()}
             maxSlots={game.state.decreeSystem.getMaxSlots()}
-            onSell={(id) => {
-              const result = game.sellDecree(id)
-              if (result.success) setShopError(null)
-              return result
-            }}
+            onSell={handleSellDecree}
             upgrades={
               game.yakuUpgrades.length > 0 ? (
                 <YakuUpgradeRow upgrades={game.yakuUpgrades} />
@@ -649,6 +655,11 @@ export function ShopScreen() {
           return null
         }}
         error={shopError}
+        build={{
+          decrees: game.state.decreeSystem.getOwnedDecrees(),
+          maxSlots: game.state.decreeSystem.getMaxSlots(),
+          onSell: handleSellDecree,
+        }}
       />
     </div>
   )
