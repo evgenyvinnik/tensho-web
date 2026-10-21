@@ -48,6 +48,13 @@ loose or grouped: the loose-tile half does not touch them. Inside a pair or
 bigger group both double — a Wind scores 100 and a Dragon adds +4 Mult — so an
 honor pair is worth chasing (the user's call, October 2026).
 
+**Secret hands.** One of every Dragon (Three Dragons, +60 group points) and one
+of every Wind (Four Winds, +65) are groups worth Quad Mult (group bonus 2), and
+a play holding one is named after it. They are hidden: the guide lists one only
+after this profile has played it, and rack groups and the coach never point
+them out (only `parsePlay` reads them, not `parsePartialHand`). A complete
+Mahjong hand never contains one; Daisangen and Daisuushii remain its Yaku.
+
 **Mult.** `Mult = (Yaku or 1) + Orb levels + pattern + Dragons`.
 Decrees then work on that running Mult in order: "+N Mult" adds N and "×N Mult"
 multiplies. (Previously "+N Mult" was added to a separate factor that

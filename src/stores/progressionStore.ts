@@ -28,6 +28,7 @@ import {
   getDefaultUnlocks,
   ALL_UNLOCKS,
 } from '../config/unlockDefinitions'
+import { isSecretPattern, type SecretPatternId } from '../rules/PlayPattern'
 
 // =============================================================================
 // TYPES
@@ -95,6 +96,10 @@ export interface ProgressionState {
 
   // Discovery tracking
   discoverItem: (itemId: string, itemType: 'fateSeal' | 'celestialOrb' | 'voidScript' | 'decree' | 'mandate') => void
+  /** Secret hands played at least once; the guide shows only these. */
+  discoveredPatterns: SecretPatternId[]
+  /** Record a secret hand's first play; true only the first time. */
+  discoverPattern: (id: SecretPatternId) => boolean
 
   // Run lifecycle
   startRun: () => void
@@ -172,6 +177,7 @@ export const useProgressionStore = create<ProgressionState>()(
       stats: { ...DEFAULT_LIFETIME_STATS },
       unlocks: createInitialUnlocks(),
       recentUnlocks: [],
+      discoveredPatterns: [],
       fullUnlockEnabled: false,
       enableFullUnlock: () => {
         const unlocks = { ...get().unlocks }
@@ -411,6 +417,13 @@ export const useProgressionStore = create<ProgressionState>()(
         })
       },
 
+      discoverPattern: (id) => {
+        const { discoveredPatterns } = get()
+        if (discoveredPatterns.includes(id)) return false
+        set({ discoveredPatterns: [...discoveredPatterns, id] })
+        return true
+      },
+
       // =====================================================================
       // RUN LIFECYCLE
       // =====================================================================
@@ -451,6 +464,7 @@ export const useProgressionStore = create<ProgressionState>()(
           stats: { ...DEFAULT_LIFETIME_STATS },
           unlocks: createInitialUnlocks(),
           recentUnlocks: [],
+          discoveredPatterns: [],
         })
       },
     }),
@@ -461,12 +475,14 @@ export const useProgressionStore = create<ProgressionState>()(
         fullUnlockEnabled: state.fullUnlockEnabled,
         stats: serializeStatsForStorage(state.stats),
         unlocks: state.unlocks,
+        discoveredPatterns: state.discoveredPatterns,
       }),
       merge: (persisted, current) => {
         const persistedState = persisted as {
           fullUnlockEnabled?: boolean
           stats: SerializableLifetimeStats
           unlocks: Record<string, UnlockRecord>
+          discoveredPatterns?: unknown
         }
 
         return {
@@ -476,6 +492,9 @@ export const useProgressionStore = create<ProgressionState>()(
             ? deserializeStatsFromStorage(persistedState.stats)
             : current.stats,
           unlocks: persistedState?.unlocks ?? current.unlocks,
+          discoveredPatterns: Array.isArray(persistedState?.discoveredPatterns)
+            ? persistedState.discoveredPatterns.filter(isSecretPattern)
+            : current.discoveredPatterns,
         }
       },
     }

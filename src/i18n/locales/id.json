@@ -1565,7 +1565,8 @@
     "sequence": "Urutan",
     "triplet": "Triplet",
     "quad": "Kuartet",
-    "straight": "Lurus"
+    "straight": "Lurus",
+    "honors": "Set kehormatan"
   },
   "results": {
     "roundDetails": "Ronde terakhir",
@@ -2729,6 +2730,14 @@
       "name": "Mahjong",
       "explain": "Tangan lengkap: empat kelompok dan satu pasangan, biasanya 14 ubin. Yaku-nya melipatkan skor."
     },
+    "three_dragons": {
+      "name": "Tiga Naga",
+      "explain": "Satu Naga Putih, satu Hijau, dan satu Merah. Tangan rahasia."
+    },
+    "four_winds": {
+      "name": "Empat Angin",
+      "explain": "Satu Timur, satu Selatan, satu Barat, dan satu Utara. Tangan rahasia."
+    },
     "combination": {
       "name": "Kombinasi",
       "explain": "Beberapa kelompok sekaligus."
@@ -2747,6 +2756,9 @@
     "score": "Skor",
     "scoreHelp": "Poin adalah nilai ubin ditambah bonus tiap kelompok. Mult mulai dari 1 dan naik lewat tangan besar, Naga, Bola, dan Dekrit. Ubin berangka di luar kelompok bernilai setengah.",
     "handsTitle": "Tangan-tangan",
+    "secretTitle": "Tangan rahasia",
+    "secretFound": "Tangan rahasia ditemukan",
+    "secretInGuide": "Kini ada di panduan ?.",
     "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2. Tiap ubin dihitung sekali; maksimal 6 ubin per mainan kecuali tangan Mahjong lengkap.",
     "tilesTitle": "Ubin",
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",

@@ -8,7 +8,11 @@
  *
  *   Pattern Mult = (groups − 1) + Σ group bonus
  *   group bonus:  Pair 0 · Sequence 0 · Triplet 1 · 4-Straight 1
- *                 Quad 2 · 5-Straight 2
+ *                 Quad 2 · 5-Straight 2 · Three Dragons 2 · Four Winds 2
+ *
+ * Two groups are secret hands: Three Dragons (one White, one Green, one Red)
+ * and Four Winds (one of each Wind). The guide leaves them out until the
+ * player has played one, and a play holding one is named after it.
  *
  * A complete Mahjong hand earns a flat Mahjong bonus instead, on top of its
  * Yaku. Each physical tile belongs to at most one group (an awakened Plum may
@@ -44,6 +48,9 @@ export type PlayPatternId =
   | 'quad_pair'
   | 'straight_pair'
   | 'mahjong'
+  /** Secret hands: a play holding one is named after it. */
+  | 'three_dragons'
+  | 'four_winds'
   /** Groups the named list does not cover (only reachable through Decrees). */
   | 'combination'
 
@@ -66,6 +73,8 @@ const PATTERN_ID_SET: Record<PlayPatternId, true> = {
   quad_pair: true,
   straight_pair: true,
   mahjong: true,
+  three_dragons: true,
+  four_winds: true,
   combination: true,
 }
 
@@ -79,7 +88,7 @@ export interface PlayPattern {
   groups: GroupKind[]
 }
 
-/** A group as the pattern sees it: straights are split by length. */
+/** A group as the pattern sees it: straights are split by length, honors by suit. */
 export type GroupKind =
   | 'pair'
   | 'sequence'
@@ -87,6 +96,8 @@ export type GroupKind =
   | 'quad'
   | 'straight4'
   | 'straight5'
+  | 'three_dragons'
+  | 'four_winds'
 
 /** Mult each group adds by itself. */
 export const GROUP_MULT: Record<GroupKind, number> = {
@@ -96,6 +107,8 @@ export const GROUP_MULT: Record<GroupKind, number> = {
   straight4: 1,
   quad: 2,
   straight5: 2,
+  three_dragons: 2,
+  four_winds: 2,
 }
 
 /** Every group after the first adds this much Mult. */
@@ -117,10 +130,22 @@ export function groupKind(meld: Meld): GroupKind {
 /** The kind of a group of this type and size. */
 export function groupKindFor(type: MeldType, size: number): GroupKind {
   if (type === MeldType.Straight) return size >= 5 ? 'straight5' : 'straight4'
+  if (type === MeldType.Honors) return size >= 4 ? 'four_winds' : 'three_dragons'
   return type
 }
 
+/** Secret hands, which the guide shows only once they have been played. */
+export const SECRET_PATTERNS = ['three_dragons', 'four_winds'] as const
+
+export type SecretPatternId = (typeof SECRET_PATTERNS)[number]
+
+export function isSecretPattern(id: PlayPatternId): id is SecretPatternId {
+  return (SECRET_PATTERNS as readonly PlayPatternId[]).includes(id)
+}
+
 const KIND_ORDER: GroupKind[] = [
+  'four_winds',
+  'three_dragons',
   'quad',
   'straight5',
   'straight4',
@@ -157,7 +182,10 @@ export function classifyPlay(groups: readonly Meld[]): PlayPattern {
   const mult =
     (kinds.length - 1) * EXTRA_GROUP_MULT +
     kinds.reduce((sum, kind) => sum + GROUP_MULT[kind], 0)
-  return { id: NAMED[kinds.join('+')] ?? 'combination', mult, groups: kinds }
+  // A secret group sorts first, and names the play whatever joins it.
+  const secret = SECRET_PATTERNS.find((id) => id === kinds[0])
+  const id = secret ?? NAMED[kinds.join('+')] ?? 'combination'
+  return { id, mult, groups: kinds }
 }
 
 /** A complete Mahjong hand: its groups for the record, a flat bonus Mult. */

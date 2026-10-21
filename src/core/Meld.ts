@@ -8,6 +8,8 @@
  * - Pair (Toitsu): 2 identical tiles (only one per hand, or 7 for Seven Pairs)
  * - Straight: 4 or 5 consecutive tiles of one suit. Tensho's own shape for
  *   tactical plays; a complete Mahjong hand never contains one.
+ * - Honors: one of every Dragon, or one of every Wind. Tensho's secret shape
+ *   for tactical plays; a complete Mahjong hand never contains one either.
  */
 
 import { Tile, TileSuit } from './Tile'
@@ -18,6 +20,14 @@ export enum MeldType {
   Quad = 'quad', // Kantsu (槓子)
   Pair = 'pair', // Toitsu (対子)
   Straight = 'straight', // 4–5 consecutive tiles of one suit (連)
+  Honors = 'honors', // Every Dragon (三元) or every Wind (四喜), one of each
+}
+
+/** The ranks an Honors group of this suit holds; none outside the honors. */
+export function honorSetRanks(suit: TileSuit): readonly number[] {
+  if (suit === TileSuit.Dragon) return [1, 2, 3]
+  if (suit === TileSuit.Wind) return [1, 2, 3, 4]
+  return []
 }
 
 export interface MeldData {

@@ -1353,7 +1353,8 @@
     "sequence": "Sequence",
     "triplet": "Triplet",
     "quad": "Quad",
-    "straight": "Straight"
+    "straight": "Straight",
+    "honors": "Honor set"
   },
   "results": {
     "roundDetails": "Last round",
@@ -2725,6 +2726,14 @@
       "name": "Mahjong",
       "explain": "A complete hand: four groups and a pair, usually 14 tiles. Its Yaku multiply the score."
     },
+    "three_dragons": {
+      "name": "Three Dragons",
+      "explain": "One White, one Green and one Red Dragon. A secret hand."
+    },
+    "four_winds": {
+      "name": "Four Winds",
+      "explain": "One each of East, South, West and North. A secret hand."
+    },
     "combination": {
       "name": "Combination",
       "explain": "Several groups at once."
@@ -2743,6 +2752,9 @@
     "score": "Score",
     "scoreHelp": "Points are the tiles’ values plus each group’s bonus. Mult starts at 1 and grows with bigger hands, Dragons, Orbs and Decrees. Numbered tiles outside a group score half.",
     "handsTitle": "The hands",
+    "secretTitle": "Secret hands",
+    "secretFound": "Secret hand found",
+    "secretInGuide": "Now listed in the ? guide.",
     "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Each tile counts once; up to 6 tiles per play unless it is a full Mahjong hand.",
     "tilesTitle": "The tiles",
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",

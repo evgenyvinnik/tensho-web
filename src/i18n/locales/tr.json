@@ -1644,7 +1644,8 @@
     "sequence": "Seri",
     "triplet": "Üçlü",
     "quad": "Dörtlü",
-    "straight": "Sıra"
+    "straight": "Sıra",
+    "honors": "Onur takımı"
   },
   "results": {
     "roundDetails": "Son tur",
@@ -2729,6 +2730,14 @@
       "name": "Mahjong",
       "explain": "Tam el: dört grup ve bir çift, genelde 14 taş. Yaku puanı katlar."
     },
+    "three_dragons": {
+      "name": "Üç Ejderha",
+      "explain": "Birer Beyaz, Yeşil ve Kırmızı Ejderha. Gizli bir el."
+    },
+    "four_winds": {
+      "name": "Dört Rüzgar",
+      "explain": "Birer Doğu, Güney, Batı ve Kuzey. Gizli bir el."
+    },
     "combination": {
       "name": "Kombinasyon",
       "explain": "Aynı anda birkaç grup."
@@ -2747,6 +2756,9 @@
     "score": "Puan",
     "scoreHelp": "Puan, taşların değeri artı her grubun bonusudur. Çarpan 1’den başlar; büyük eller, Ejderhalar, Küreler ve Fermanlarla artar. Grup dışındaki sayı taşları yarım puan verir.",
     "handsTitle": "Eller",
+    "secretTitle": "Gizli eller",
+    "secretFound": "Gizli el bulundu",
+    "secretInGuide": "Artık ? rehberinde.",
     "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1, dörtlüler ve beşli sıralar +2 ekler. Her taş bir kez sayılır; tam Mahjong eli dışında oyun başına en fazla 6 taş.",
     "tilesTitle": "Taşlar",
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",

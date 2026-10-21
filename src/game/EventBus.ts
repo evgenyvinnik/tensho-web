@@ -11,7 +11,7 @@
  * - Event history for debugging
  */
 
-import type { PlayPatternId } from '../rules/PlayPattern'
+import type { PlayPatternId, SecretPatternId } from '../rules/PlayPattern'
 import type { ScoreEquation } from '../rules/ScoreEquation'
 import type { ConsumableSource } from '../systems/ConsumableSystem'
 
@@ -41,6 +41,7 @@ export type GameEvent =
   | 'scoreUpdate'
   | 'yakuScored'
   | 'yakumanScored'
+  | 'secretPatternDiscovered'
 
   // Economy
   | 'goldChanged'
@@ -152,6 +153,8 @@ export interface GameEventData {
   scoreUpdate: { previousScore: number; newScore: number; delta: number }
   yakuScored: { yakuId: string; yakuName: string; multiplier: number }
   yakumanScored: { yakuId: string; yakuName: string; multiplier?: number }
+  /** A secret hand was played for the first time on this profile. */
+  secretPatternDiscovered: { pattern: SecretPatternId }
 
   // Economy
   goldChanged: {

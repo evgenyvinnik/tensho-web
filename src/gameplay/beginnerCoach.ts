@@ -46,6 +46,8 @@ const TEACHING_PRIORITY: Record<MeldType, number> = {
   [MeldType.Pair]: 2,
   [MeldType.Quad]: 1,
   [MeldType.Straight]: 0,
+  // Secret: parsePartialHand never finds one, so the coach never teaches it.
+  [MeldType.Honors]: 0,
 }
 
 /**

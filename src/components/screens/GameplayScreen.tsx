@@ -54,6 +54,8 @@ import {
   type HandScoreValue,
 } from '../gameplay/HandScorePreview'
 import { PlayToast, type PlayToastData } from '../gameplay/PlayToast'
+import { SecretPatternReveal } from '../gameplay/SecretPatternReveal'
+import type { SecretPatternId } from '../../rules/PlayPattern'
 import { WallDraw } from '../gameplay/WallDraw'
 import { YakuReveal } from '../effects/YakuReveal'
 import { DecreeReveal } from '../effects/DecreeReveal'
@@ -119,6 +121,10 @@ export function GameplayScreen() {
   const [toast, setToast] = useState<PlayToastData | null>(null)
   const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
+  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(
+    null
+  )
+  const clearSecretReveal = useCallback(() => setSecretReveal(null), [])
   const toastCounter = useRef(0)
   const playButtonRef = useRef<HTMLButtonElement>(null)
   const wallTriggerRef = useRef<HTMLButtonElement>(null)
@@ -190,6 +196,10 @@ export function GameplayScreen() {
         },
       ])
     }, [])
+  )
+  useGameEvent(
+    'secretPatternDiscovered',
+    useCallback(({ pattern }) => setSecretReveal(pattern), [])
   )
 
   const selectedIds = game.selectedTileIds
@@ -552,8 +562,18 @@ export function GameplayScreen() {
               onDone={finishCelebration}
               reducedMotion={reducedMotion}
             />
-            {yakuReveals.length > 0 && (
+            {(yakuReveals.length > 0 || secretReveal) && (
               <div className="pointer-events-none absolute inset-x-0 top-14 z-40 flex flex-col items-center gap-2">
+                {/* Below the play's toast, which keeps its score in view. */}
+                {secretReveal && (
+                  <div className="mt-8">
+                    <SecretPatternReveal
+                      pattern={secretReveal}
+                      onDone={clearSecretReveal}
+                      reducedMotion={reducedMotion}
+                    />
+                  </div>
+                )}
                 {yakuReveals.map((yaku) => (
                   <YakuReveal
                     key={yaku.id}

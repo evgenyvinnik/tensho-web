@@ -1357,7 +1357,8 @@
     "sequence": "Séquence",
     "triplet": "Brelan",
     "quad": "Carré",
-    "straight": "Suite"
+    "straight": "Suite",
+    "honors": "Série d’honneurs"
   },
   "results": {
     "roundDetails": "Dernière manche",
@@ -2729,6 +2730,14 @@
       "name": "Mahjong",
       "explain": "Une main complète : quatre groupes et une paire, en général 14 tuiles. Ses yaku multiplient le score."
     },
+    "three_dragons": {
+      "name": "Trois Dragons",
+      "explain": "Un Dragon Blanc, un Vert et un Rouge. Une main secrète."
+    },
+    "four_winds": {
+      "name": "Quatre Vents",
+      "explain": "Un Est, un Sud, un Ouest et un Nord. Une main secrète."
+    },
     "combination": {
       "name": "Combinaison",
       "explain": "Plusieurs groupes à la fois."
@@ -2747,6 +2756,9 @@
     "score": "Score",
     "scoreHelp": "Les points sont la valeur des tuiles plus le bonus de chaque groupe. Le Mult part de 1 et grandit avec les grosses mains, les Dragons, les Orbes et les Décrets. Une tuile numérotée hors groupe compte pour moitié.",
     "handsTitle": "Les mains",
+    "secretTitle": "Mains secrètes",
+    "secretFound": "Main secrète découverte",
+    "secretInGuide": "Désormais dans le guide ?.",
     "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1, les carrés et suites de cinq +2. Chaque tuile compte une fois ; 6 tuiles maximum par coup, sauf une main de Mahjong complète.",
     "tilesTitle": "Les tuiles",
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",

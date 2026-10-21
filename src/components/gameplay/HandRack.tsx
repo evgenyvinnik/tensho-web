@@ -57,6 +57,8 @@ export const GROUP_COLORS: Record<HandClusterKind, string> = {
   straight: '#a5b4fc',
   triplet: '#fcd34d',
   quad: '#f0abfc',
+  // Secret: rack groups never show one (see parsePartialHand).
+  honors: '#c4b5fd',
   loose: 'transparent',
 }
 
@@ -67,6 +69,7 @@ const GROUP_BORDER: Record<HandClusterKind, string> = {
   straight: 'double',
   triplet: 'solid',
   quad: 'double',
+  honors: 'dotted',
   loose: 'none',
 }
 

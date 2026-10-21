@@ -1357,7 +1357,8 @@
     "sequence": "Secuencia",
     "triplet": "Triplete",
     "quad": "Cuarteto",
-    "straight": "Escalera"
+    "straight": "Escalera",
+    "honors": "Juego de honores"
   },
   "results": {
     "roundDetails": "Última ronda",
@@ -2729,6 +2730,14 @@
       "name": "Mahjong",
       "explain": "Una mano completa: cuatro grupos y un par, normalmente 14 fichas. Sus yaku multiplican la puntuación."
     },
+    "three_dragons": {
+      "name": "Tres Dragones",
+      "explain": "Un Dragón Blanco, uno Verde y uno Rojo. Una mano secreta."
+    },
+    "four_winds": {
+      "name": "Cuatro Vientos",
+      "explain": "Un Este, un Sur, un Oeste y un Norte. Una mano secreta."
+    },
     "combination": {
       "name": "Combinación",
       "explain": "Varios grupos a la vez."
@@ -2747,6 +2756,9 @@
     "score": "Puntuación",
     "scoreHelp": "Los puntos son el valor de las fichas más el bono de cada grupo. El Mult empieza en 1 y crece con manos más grandes, Dragones, Orbes y Decretos. Las fichas numeradas fuera de un grupo dan la mitad.",
     "handsTitle": "Las manos",
+    "secretTitle": "Manos secretas",
+    "secretFound": "Mano secreta descubierta",
+    "secretInGuide": "Ya aparece en la guía ?.",
     "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Cada ficha cuenta una vez; hasta 6 fichas por jugada salvo una mano de Mahjong completa.",
     "tilesTitle": "Las fichas",
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",

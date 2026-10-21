@@ -1,12 +1,13 @@
 /**
  * The "?" guide: Tensho on one page. Tiles, the hands you can play with an
  * example of each, how a score is made, Turns, and what special tiles look
- * like. Every number shown comes from the scoring tables themselves.
+ * like. Every number shown comes from the scoring tables themselves. A secret
+ * hand joins the list only once this profile has played it.
  */
 
 import { useTranslation } from 'react-i18next'
 import { Tile, TileSuit } from '../../core/Tile'
-import { Meld, MeldType } from '../../core/Meld'
+import { honorSetRanks, Meld, MeldType } from '../../core/Meld'
 import {
   getMeldStructurePoints,
   WIND_GROUP_POINTS,
@@ -17,9 +18,11 @@ import {
   DRAGON_GROUP_MULT,
   DRAGON_MULT,
   MAHJONG_PATTERN_MULT,
+  SECRET_PATTERNS,
   TAUGHT_PATTERNS,
   type PlayPatternId,
 } from '../../rules/PlayPattern'
+import { useProgressionStore } from '../../stores/progressionStore'
 import {
   EditionType,
   EnhancementType,
@@ -42,6 +45,11 @@ const run = (suit: TileSuit, from: number, length: number) =>
   Array.from({ length }, (_, i) => tile(suit, from + i))
 const same = (suit: TileSuit, rank: number, count: number) =>
   Array.from({ length: count }, () => tile(suit, rank))
+const honors = (suit: TileSuit) =>
+  new Meld(
+    MeldType.Honors,
+    honorSetRanks(suit).map((rank) => tile(suit, rank))
+  )
 
 const M = TileSuit.Manzu
 const P = TileSuit.Pinzu
@@ -84,6 +92,8 @@ const EXAMPLES: Record<PlayPatternId, Meld[]> = {
   triplet_sequence: [],
   quad_pair: [],
   straight_pair: [],
+  three_dragons: [honors(TileSuit.Dragon)],
+  four_winds: [honors(TileSuit.Wind)],
   combination: [],
 }
 
@@ -167,6 +177,8 @@ function SpecialTile({
 
 export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
   const { t } = useTranslation()
+  const discovered = useProgressionStore((state) => state.discoveredPatterns)
+  const secrets = SECRET_PATTERNS.filter((id) => discovered.includes(id))
 
   const families = [
     { label: t('tiles.manzu', 'Characters'), tile: tile(M, 4) },
@@ -252,6 +264,16 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
           <p className="mt-2 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
             {t('guide.patternRule')}
           </p>
+          {secrets.length > 0 && (
+            <div data-guide-secrets>
+              <h4 className={`${heading} mt-4`}>{t('guide.secretTitle')}</h4>
+              <ul className="mt-2 space-y-2">
+                {secrets.map((id) => (
+                  <PatternRow key={id} id={id} />
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
         <section>

@@ -12,7 +12,7 @@
  */
 
 import { Tile, TileSuit } from '../core/Tile'
-import { Meld, MeldType } from '../core/Meld'
+import { honorSetRanks, Meld, MeldType } from '../core/Meld'
 import { ParsedHand, WaitType } from '../core/Hand'
 import {
   sequenceOffsets,
@@ -75,6 +75,9 @@ function hasStructureFace(tile: Tile): boolean {
  * Melds never span suits, so each suit is solved independently and the results
  * are concatenated. A face-count memo is shared across overlap candidates so
  * enlarged racks do not repeat the same suit search for interchangeable copies.
+ *
+ * It never reads the secret Honors group: only `parsePlay` does, so rack
+ * groups and the coach never point a player at a secret hand.
  */
 export function parsePartialHand(
   tiles: Tile[],
@@ -394,6 +397,20 @@ function enumerateSplits(
     enumerateSplits(
       without(rest, members),
       [...groups, new Meld(type, members, true)],
+      rules,
+      visit
+    )
+  }
+  // A secret hand: one of every Dragon, or one of every Wind.
+  const honors = honorSetRanks(first.suit).map((rank) =>
+    rank === first.rank
+      ? first
+      : rest.find((tile) => tile.suit === first.suit && tile.rank === rank)
+  )
+  if (honors.length > 0 && honors.every((tile) => tile !== undefined)) {
+    enumerateSplits(
+      without(rest, honors),
+      [...groups, new Meld(MeldType.Honors, honors, true)],
       rules,
       visit
     )

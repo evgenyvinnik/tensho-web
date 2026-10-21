@@ -32,6 +32,7 @@ import { metaProgressionSystem } from '../systems/MetaProgressionSystem'
 import type { DiscoveryTrigger } from '../systems/ArchiveSystem'
 import { createEventSubscription, eventBus } from './EventBus'
 import { runMetaContext } from './RunMetaContext'
+import { isSecretPattern } from '../rules/PlayPattern'
 
 const UNLOCK_ARCHIVE_CATEGORIES: Partial<
   Record<UnlockCategory, ArchiveCategory>
@@ -333,12 +334,17 @@ export function initializeMetaProgressionBridge(): () => void {
     checkAchievements()
   })
 
-  subscription.subscribe('handPlayed', ({ tiles, score }) => {
+  subscription.subscribe('handPlayed', ({ tiles, score, pattern }) => {
     processProgressionEvent({ type: 'hand_scored', value: score })
     processProgressionEvent({ type: 'tile_played', value: tiles.length })
     maximizeAchievementStat('highestSingleHandScore', score)
     incrementAchievementStat('totalTilesPlayed', tiles.length)
     checkAchievements()
+    if (
+      isSecretPattern(pattern) &&
+      useProgressionStore.getState().discoverPattern(pattern)
+    )
+      eventBus.emit('secretPatternDiscovered', { pattern })
   })
 
   subscription.subscribe('tileDiscarded', () => {

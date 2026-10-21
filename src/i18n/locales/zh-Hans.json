@@ -1357,7 +1357,8 @@
     "sequence": "顺子",
     "triplet": "刻子",
     "quad": "杠子",
-    "straight": "连顺"
+    "straight": "连顺",
+    "honors": "字牌组"
   },
   "results": {
     "roundDetails": "最后一轮",
@@ -2729,6 +2730,14 @@
       "name": "和牌",
       "explain": "完整的一手：四组面子加一对（通常十四张）。役种会让得分翻倍。"
     },
+    "three_dragons": {
+      "name": "三元齐",
+      "explain": "白、发、中各一张。秘密牌型。"
+    },
+    "four_winds": {
+      "name": "四风齐",
+      "explain": "东、南、西、北各一张。秘密牌型。"
+    },
     "combination": {
       "name": "组合",
       "explain": "一次打出多组面子。"
@@ -2747,6 +2756,9 @@
     "score": "得分",
     "scoreHelp": "分数 = 牌面分 + 每组面子的加成。倍率从1开始，随大牌型、三元牌、宝珠和法令提升。不在组合里的数牌只得一半。",
     "handsTitle": "牌型",
+    "secretTitle": "秘密牌型",
+    "secretFound": "发现秘密牌型",
+    "secretInGuide": "已加入“?”指南。",
     "patternRule": "从第二组起，每多一组倍率+1。刻子和四连顺再+1，杠子和五连顺+2。每张牌只计一次；除完整和牌外，每次最多6张。",
     "tilesTitle": "牌的种类",
     "tilesHelp": "万子用汉字一到九表示，筒子和索子用数量表示（一索是一只鸟）。可在设置中打开牌上的数字。",

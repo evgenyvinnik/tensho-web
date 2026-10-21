@@ -229,6 +229,13 @@ half its tile points; Honors pay in full loose and double inside a group
 `ScoringEngine` is the single source for group values — `PartialHandParser`
 searches with them and the coach ranks with them, so do not copy the table.
 
+Secret hands: Three Dragons (one of each Dragon, +60) and Four Winds (one of
+each Wind, +65) are `MeldType.Honors` groups with group bonus 2. Only
+`parsePlay` finds them (never `parsePartialHand`, so rack groups and the coach
+stay quiet), and a play holding one is named after it. The guide lists one
+only once `MetaProgressionBridge` records its first play in
+`progressionStore.discoveredPatterns`.
+
 ### Turns
 
 Each round grants a shared budget of Turns (`TURNS_PER_ROUND` in

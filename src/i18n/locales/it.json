@@ -1644,7 +1644,8 @@
     "sequence": "Sequenza",
     "triplet": "Tris",
     "quad": "Poker",
-    "straight": "Scala"
+    "straight": "Scala",
+    "honors": "Serie di onori"
   },
   "results": {
     "roundDetails": "Ultimo round",
@@ -2729,6 +2730,14 @@
       "name": "Mahjong",
       "explain": "Una mano completa: quattro gruppi e una coppia, di solito 14 tessere. I suoi yaku moltiplicano il punteggio."
     },
+    "three_dragons": {
+      "name": "Tre Draghi",
+      "explain": "Un Drago Bianco, uno Verde e uno Rosso. Una mano segreta."
+    },
+    "four_winds": {
+      "name": "Quattro Venti",
+      "explain": "Un Est, un Sud, un Ovest e un Nord. Una mano segreta."
+    },
     "combination": {
       "name": "Combinazione",
       "explain": "Più gruppi insieme."
@@ -2747,6 +2756,9 @@
     "score": "Punteggio",
     "scoreHelp": "I punti sono il valore delle tessere più il bonus di ogni gruppo. Il Mult parte da 1 e cresce con mani più grandi, Draghi, Sfere e Decreti. Le tessere numerate fuori da un gruppo valgono metà.",
     "handsTitle": "Le mani",
+    "secretTitle": "Mani segrete",
+    "secretFound": "Mano segreta scoperta",
+    "secretInGuide": "Ora è nella guida ?.",
     "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1, poker e scale di cinque +2. Ogni tessera conta una volta; massimo 6 tessere per giocata, salvo una mano di Mahjong completa.",
     "tilesTitle": "Le tessere",
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
