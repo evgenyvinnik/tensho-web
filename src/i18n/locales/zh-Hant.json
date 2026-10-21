@@ -801,7 +801,7 @@
       },
       "decree-slow-burn": {
         "name": "慢燃",
-        "description": "本幕每回合+2倍率"
+        "description": "本局每回合+2倍率"
       },
       "decree-momentum": {
         "name": "勢頭",
@@ -837,11 +837,11 @@
       },
       "decree-veteran": {
         "name": "老兵",
-        "description": "每完成一幕+10分"
+        "description": "每完成一幕+30分"
       },
       "decree-experience": {
         "name": "經驗",
-        "description": "每完成一幕+2倍率"
+        "description": "每完成一幕x1.1倍率"
       },
       "decree-greater-jade": {
         "name": "大玉",
@@ -897,7 +897,7 @@
       },
       "decree-perpetual-motion": {
         "name": "永動機",
-        "description": "本局每手牌+5倍率（最高+50）"
+        "description": "本局每手牌+2倍率"
       },
       "decree-triple-echo": {
         "name": "三重迴響",
@@ -949,7 +949,7 @@
       },
       "decree-mandate-breaker": {
         "name": "令破壞者",
-        "description": "Boss回合中+15倍率"
+        "description": "Boss回合中+15倍率，x1.5倍率"
       },
       "decree-boss-slayer": {
         "name": "親衛殺手",
@@ -997,7 +997,7 @@
       },
       "decree-endless-journey": {
         "name": "無盡旅途",
-        "description": "每完成一幕+20分"
+        "description": "每完成一幕x1.2倍率"
       },
       "decree-master-grip": {
         "name": "大師握",
@@ -1033,7 +1033,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "役滿求道者",
-        "description": "役滿得分時+50倍率"
+        "description": "役滿得分時x5.0倍率"
       },
       "decree-four-seasons-master": {
         "name": "四季達人",
@@ -1049,7 +1049,7 @@
       },
       "decree-infinite-wealth": {
         "name": "無限財富",
-        "description": "每5金+1倍率"
+        "description": "每10金x1.1倍率"
       },
       "decree-brainstorm": {
         "name": "腦風暴",
@@ -1089,15 +1089,15 @@
       },
       "decree-chain-reaction": {
         "name": "連鎖反應",
-        "description": "本手每個役+5倍率"
+        "description": "本手每個役x1.5倍率"
       },
       "decree-cosmic-jade": {
         "name": "宇宙玉",
-        "description": "+200分"
+        "description": "+200分，x1.5倍率"
       },
       "decree-solar-banner": {
         "name": "太陽旗",
-        "description": "+25倍率"
+        "description": "+25倍率，x2.0倍率"
       },
       "decree-universal-grip": {
         "name": "萬能握",
@@ -1137,7 +1137,7 @@
       },
       "decree-dragon-hoard": {
         "name": "龍之寶庫",
-        "description": "每10金+2倍率"
+        "description": "每10金x1.2倍率"
       },
       "decree-yaku-nexus": {
         "name": "役結點",

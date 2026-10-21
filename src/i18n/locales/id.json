@@ -1009,7 +1009,7 @@
       },
       "decree-slow-burn": {
         "name": "Bakar Lambat",
-        "description": "+2 Mult per ronde babak ini"
+        "description": "+2 Mult per ronde permainan ini"
       },
       "decree-momentum": {
         "name": "Momentum",
@@ -1045,11 +1045,11 @@
       },
       "decree-veteran": {
         "name": "Veteran",
-        "description": "+10 Poin per Babak selesai"
+        "description": "+30 Poin per Babak selesai"
       },
       "decree-experience": {
         "name": "Pengalaman",
-        "description": "+2 Mult per Babak selesai"
+        "description": "x1.1 Mult per Babak selesai"
       },
       "decree-greater-jade": {
         "name": "Giok Besar",
@@ -1105,7 +1105,7 @@
       },
       "decree-perpetual-motion": {
         "name": "Gerak Abadi",
-        "description": "+5 Mult per tangan (maks +50)"
+        "description": "+2 Mult per tangan permainan ini"
       },
       "decree-triple-echo": {
         "name": "Gema Tiga",
@@ -1157,7 +1157,7 @@
       },
       "decree-mandate-breaker": {
         "name": "Pemecah Mandat",
-        "description": "+15 Mult di ronde Bos"
+        "description": "+15 Mult, x1.5 Mult di ronde Bos"
       },
       "decree-boss-slayer": {
         "name": "Pembunuh Bos",
@@ -1205,7 +1205,7 @@
       },
       "decree-endless-journey": {
         "name": "Perjalanan Tanpa Akhir",
-        "description": "+20 Poin per Babak selesai"
+        "description": "x1.2 Mult per Babak selesai"
       },
       "decree-master-grip": {
         "name": "Genggaman Master",
@@ -1241,7 +1241,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "Pencari Yakuman",
-        "description": "+50 Mult saat skor Yakuman"
+        "description": "x5.0 Mult saat skor Yakuman"
       },
       "decree-four-seasons-master": {
         "name": "Master Empat Musim",
@@ -1257,7 +1257,7 @@
       },
       "decree-infinite-wealth": {
         "name": "Kekayaan Tak Terbatas",
-        "description": "+1 Mult per 5G"
+        "description": "x1.1 Mult per 10G"
       },
       "decree-brainstorm": {
         "name": "Curah Gagasan",
@@ -1297,15 +1297,15 @@
       },
       "decree-chain-reaction": {
         "name": "Reaksi Berantai",
-        "description": "+5 Mult per Yaku diskor"
+        "description": "x1.5 Mult per Yaku diskor"
       },
       "decree-cosmic-jade": {
         "name": "Giok Kosmik",
-        "description": "+200 Poin"
+        "description": "+200 Poin, x1.5 Mult"
       },
       "decree-solar-banner": {
         "name": "Panji Matahari",
-        "description": "+25 Mult"
+        "description": "+25 Mult, x2.0 Mult"
       },
       "decree-universal-grip": {
         "name": "Genggaman Universal",
@@ -1345,7 +1345,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Harta Naga",
-        "description": "+2 Mult per 10G"
+        "description": "x1.2 Mult per 10G"
       },
       "decree-yaku-nexus": {
         "name": "Nexus Yaku",

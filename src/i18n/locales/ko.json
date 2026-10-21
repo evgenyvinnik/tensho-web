@@ -801,7 +801,7 @@
       },
       "decree-slow-burn": {
         "name": "서서히 타오름",
-        "description": "이번 막 라운드당 +2 배율"
+        "description": "이번 런 라운드당 +2 배율"
       },
       "decree-momentum": {
         "name": "추진력",
@@ -837,11 +837,11 @@
       },
       "decree-veteran": {
         "name": "베테랑",
-        "description": "완료한 막당 +10점"
+        "description": "완료한 막당 +30점"
       },
       "decree-experience": {
         "name": "경험",
-        "description": "완료한 막당 +2 배율"
+        "description": "완료한 막당 x1.1 배율"
       },
       "decree-greater-jade": {
         "name": "대옥",
@@ -897,7 +897,7 @@
       },
       "decree-perpetual-motion": {
         "name": "영구 운동",
-        "description": "이번 런 플레이한 패당 +5 배율 (최대 +50)"
+        "description": "이번 런 플레이한 패당 +2 배율"
       },
       "decree-triple-echo": {
         "name": "삼중 반향",
@@ -949,7 +949,7 @@
       },
       "decree-mandate-breaker": {
         "name": "명령 파괴자",
-        "description": "보스 라운드 중 +15 배율"
+        "description": "보스 라운드 중 +15 배율, x1.5 배율"
       },
       "decree-boss-slayer": {
         "name": "보스 슬레이어",
@@ -997,7 +997,7 @@
       },
       "decree-endless-journey": {
         "name": "끝없는 여정",
-        "description": "완료한 막당 +20점"
+        "description": "완료한 막당 x1.2 배율"
       },
       "decree-master-grip": {
         "name": "달인 손",
@@ -1033,7 +1033,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "야쿠만 구도자",
-        "description": "야쿠만 점수 시 +50 배율"
+        "description": "야쿠만 점수 시 x5.0 배율"
       },
       "decree-four-seasons-master": {
         "name": "사계 달인",
@@ -1049,7 +1049,7 @@
       },
       "decree-infinite-wealth": {
         "name": "무한 재물",
-        "description": "5골드당 +1 배율"
+        "description": "10골드당 x1.1 배율"
       },
       "decree-brainstorm": {
         "name": "브레인스톰",
@@ -1089,15 +1089,15 @@
       },
       "decree-chain-reaction": {
         "name": "연쇄 반응",
-        "description": "이번 패 야쿠당 +5 배율"
+        "description": "이번 패 야쿠당 x1.5 배율"
       },
       "decree-cosmic-jade": {
         "name": "우주 옥",
-        "description": "+200점"
+        "description": "+200점, x1.5 배율"
       },
       "decree-solar-banner": {
         "name": "태양 깃발",
-        "description": "+25 배율"
+        "description": "+25 배율, x2.0 배율"
       },
       "decree-universal-grip": {
         "name": "만능 손",
@@ -1137,7 +1137,7 @@
       },
       "decree-dragon-hoard": {
         "name": "용의 보물",
-        "description": "10골드당 +2 배율"
+        "description": "10골드당 x1.2 배율"
       },
       "decree-yaku-nexus": {
         "name": "야쿠 넥서스",

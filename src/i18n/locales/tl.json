@@ -1152,7 +1152,7 @@
       },
       "decree-slow-burn": {
         "name": "Mabagal na Pagliyab",
-        "description": "+2 sa multiplikador bawat round na nilaro sa Aktong ito."
+        "description": "+2 sa multiplikador bawat round na nilaro sa run na ito."
       },
       "decree-momentum": {
         "name": "Buwelo",
@@ -1188,11 +1188,11 @@
       },
       "decree-veteran": {
         "name": "Beterano",
-        "description": "+10 batayang puntos bawat natapos na Akto."
+        "description": "+30 batayang puntos bawat natapos na Akto."
       },
       "decree-experience": {
         "name": "Karanasan",
-        "description": "+2 sa multiplikador bawat natapos na Akto."
+        "description": "Multiplikador x1.1 bawat natapos na Akto."
       },
       "decree-greater-jade": {
         "name": "Dakilang Jade",
@@ -1248,7 +1248,7 @@
       },
       "decree-perpetual-motion": {
         "name": "Walang Tigilang Galaw",
-        "description": "+5 sa multiplikador bawat kamay na nilaro sa run na ito (hanggang +50)."
+        "description": "+2 sa multiplikador bawat kamay na nilaro sa run na ito."
       },
       "decree-triple-echo": {
         "name": "Tripleng Alingawngaw",
@@ -1300,7 +1300,7 @@
       },
       "decree-mandate-breaker": {
         "name": "Tagasira ng Mandato",
-        "description": "+15 sa multiplikador sa mga round ng Boss."
+        "description": "+15 sa multiplikador, saka multiplikador x1.5 sa mga round ng Boss."
       },
       "decree-boss-slayer": {
         "name": "Tagagapi ng Boss",
@@ -1336,7 +1336,7 @@
       },
       "decree-endless-journey": {
         "name": "Walang Hanggang Paglalakbay",
-        "description": "+20 batayang puntos bawat natapos na Akto."
+        "description": "Multiplikador x1.2 bawat natapos na Akto."
       },
       "decree-master-grip": {
         "name": "Bihasang Hawak",
@@ -1372,7 +1372,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "Tagahanap ng Yakuman",
-        "description": "+50 sa multiplikador kapag umiskor ng Yakuman."
+        "description": "Multiplikador x5.0 kapag umiskor ng Yakuman."
       },
       "decree-four-seasons-master": {
         "name": "Dalubhasa sa Apat na Panahon",
@@ -1388,7 +1388,7 @@
       },
       "decree-infinite-wealth": {
         "name": "Walang Hanggang Kayamanan",
-        "description": "+1 sa multiplikador bawat 5 Gintong hawak mo."
+        "description": "Multiplikador x1.1 bawat 10 Gintong hawak mo."
       },
       "decree-doppelganger": {
         "name": "Kalukalike",
@@ -1424,15 +1424,15 @@
       },
       "decree-chain-reaction": {
         "name": "Sunod-sunod na Reaksiyon",
-        "description": "+5 sa multiplikador bawat Yaku na umiskor sa kamay na ito."
+        "description": "Multiplikador x1.5 bawat Yaku na umiskor sa kamay na ito."
       },
       "decree-cosmic-jade": {
         "name": "Jade ng Kalawakan",
-        "description": "+200 batayang puntos."
+        "description": "+200 batayang puntos, saka multiplikador x1.5."
       },
       "decree-solar-banner": {
         "name": "Bandila ng Araw",
-        "description": "+25 sa multiplikador."
+        "description": "+25 sa multiplikador, saka multiplikador x2.0."
       },
       "decree-universal-grip": {
         "name": "Hawak na Walang Hangganan",
@@ -1456,7 +1456,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Kayamanan ng Dragon",
-        "description": "+2 sa multiplikador bawat 10 Gintong hawak mo."
+        "description": "Multiplikador x1.2 bawat 10 Gintong hawak mo."
       },
       "decree-yaku-nexus": {
         "name": "Tagpuan ng Yaku",

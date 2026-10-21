@@ -1152,7 +1152,7 @@
       },
       "decree-slow-burn": {
         "name": "Yavaş Yanış",
-        "description": "Bu perdede oynanan her tur için +2 Çarpan."
+        "description": "Bu koşuda oynanan her tur için +2 Çarpan."
       },
       "decree-momentum": {
         "name": "İvme",
@@ -1188,11 +1188,11 @@
       },
       "decree-veteran": {
         "name": "Tecrübeli Savaşçı",
-        "description": "Tamamlanan her Perde için +10 Puan."
+        "description": "Tamamlanan her Perde için +30 Puan."
       },
       "decree-experience": {
         "name": "Deneyim",
-        "description": "Tamamlanan her Perde için +2 Çarpan."
+        "description": "Tamamlanan her Perde için Çarpan ×1,1."
       },
       "decree-greater-jade": {
         "name": "Yüce Yeşim",
@@ -1248,7 +1248,7 @@
       },
       "decree-perpetual-motion": {
         "name": "Devridaim",
-        "description": "Bu koşuda oynanan her el için +5 Çarpan (en fazla +50)."
+        "description": "Bu koşuda oynanan her el için +2 Çarpan."
       },
       "decree-triple-echo": {
         "name": "Üçlü Yankı",
@@ -1300,7 +1300,7 @@
       },
       "decree-mandate-breaker": {
         "name": "Hüküm Bozan",
-        "description": "Boss turlarında +15 Çarpan."
+        "description": "Boss turlarında +15 Çarpan, ardından Çarpan ×1,5."
       },
       "decree-boss-slayer": {
         "name": "Boss Avcısı",
@@ -1336,7 +1336,7 @@
       },
       "decree-endless-journey": {
         "name": "Sonsuz Yolculuk",
-        "description": "Tamamlanan her Perde için +20 Puan."
+        "description": "Tamamlanan her Perde için Çarpan ×1,2."
       },
       "decree-master-grip": {
         "name": "Usta Kavrayışı",
@@ -1372,7 +1372,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "Yakuman Arayıcısı",
-        "description": "Yakuman puan kazandırdığında +50 Çarpan."
+        "description": "Yakuman puan kazandırdığında Çarpan ×5,0."
       },
       "decree-four-seasons-master": {
         "name": "Dört Mevsim Ustası",
@@ -1388,7 +1388,7 @@
       },
       "decree-infinite-wealth": {
         "name": "Sonsuz Servet",
-        "description": "Sahip olduğunuz her 5 Altın için +1 Çarpan."
+        "description": "Sahip olduğunuz her 10 Altın için Çarpan ×1,1."
       },
       "decree-doppelganger": {
         "name": "İkiz Suret",
@@ -1424,15 +1424,15 @@
       },
       "decree-chain-reaction": {
         "name": "Zincirleme Tepki",
-        "description": "Bu elde puan kazandıran her Yaku için +5 Çarpan."
+        "description": "Bu elde puan kazandıran her Yaku için Çarpan ×1,5."
       },
       "decree-cosmic-jade": {
         "name": "Kozmik Yeşim",
-        "description": "+200 Puan."
+        "description": "+200 Puan, Çarpan ×1,5."
       },
       "decree-solar-banner": {
         "name": "Güneş Sancağı",
-        "description": "+25 Çarpan."
+        "description": "+25 Çarpan, ardından Çarpan ×2,0."
       },
       "decree-universal-grip": {
         "name": "Evrensel Kavrayış",
@@ -1456,7 +1456,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Ejderha Hazinesi",
-        "description": "Sahip olduğunuz her 10 Altın için +2 Çarpan."
+        "description": "Sahip olduğunuz her 10 Altın için Çarpan ×1,2."
       },
       "decree-yaku-nexus": {
         "name": "Yaku Kavşağı",

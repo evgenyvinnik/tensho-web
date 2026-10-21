@@ -83,6 +83,7 @@ const SCALING_CONDITIONS: Record<string, ScalingSource> = {
   'per hand this round': 'hands_this_round',
   'per hand this run': 'hands_this_run',
   'per round this act': 'rounds_this_act',
+  'per round this run': 'rounds_this_run',
   'per discard used': 'discards_used',
   'per Act completed': 'acts_completed',
   'per Act beyond 4': 'acts_beyond_four',

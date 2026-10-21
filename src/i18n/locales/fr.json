@@ -801,7 +801,7 @@
       },
       "decree-slow-burn": {
         "name": "Combustion Lente",
-        "description": "+2 Mult par manche jouée cet acte"
+        "description": "+2 Mult par manche jouée dans cette partie"
       },
       "decree-momentum": {
         "name": "Élan",
@@ -837,11 +837,11 @@
       },
       "decree-veteran": {
         "name": "Vétéran",
-        "description": "+10 Points par Acte complété"
+        "description": "+30 Points par Acte complété"
       },
       "decree-experience": {
         "name": "Expérience",
-        "description": "+2 Mult par Acte complété"
+        "description": "x1.1 Mult par Acte complété"
       },
       "decree-greater-jade": {
         "name": "Grand Jade",
@@ -897,7 +897,7 @@
       },
       "decree-perpetual-motion": {
         "name": "Mouvement Perpétuel",
-        "description": "+5 Mult par main jouée (max +50)"
+        "description": "+2 Mult par main jouée dans cette partie"
       },
       "decree-triple-echo": {
         "name": "Triple Écho",
@@ -949,7 +949,7 @@
       },
       "decree-mandate-breaker": {
         "name": "Briseur de Mandats",
-        "description": "+15 Mult en manches Boss"
+        "description": "+15 Mult, x1.5 Mult en manches Boss"
       },
       "decree-boss-slayer": {
         "name": "Tueur de Boss",
@@ -997,7 +997,7 @@
       },
       "decree-endless-journey": {
         "name": "Voyage Sans Fin",
-        "description": "+20 Points par Acte complété"
+        "description": "x1.2 Mult par Acte complété"
       },
       "decree-master-grip": {
         "name": "Prise Maître",
@@ -1033,7 +1033,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "Chercheur de Yakuman",
-        "description": "+50 Mult en scorant Yakuman"
+        "description": "x5.0 Mult en scorant Yakuman"
       },
       "decree-four-seasons-master": {
         "name": "Maître des Saisons",
@@ -1049,7 +1049,7 @@
       },
       "decree-infinite-wealth": {
         "name": "Richesse Infinie",
-        "description": "+1 Mult par 5G"
+        "description": "x1.1 Mult par 10G"
       },
       "decree-brainstorm": {
         "name": "Remue-Méninges",
@@ -1089,15 +1089,15 @@
       },
       "decree-chain-reaction": {
         "name": "Réaction en Chaîne",
-        "description": "+5 Mult par Yaku scoré"
+        "description": "x1.5 Mult par Yaku scoré"
       },
       "decree-cosmic-jade": {
         "name": "Jade Cosmique",
-        "description": "+200 Points"
+        "description": "+200 Points, x1.5 Mult"
       },
       "decree-solar-banner": {
         "name": "Bannière Solaire",
-        "description": "+25 Mult"
+        "description": "+25 Mult, x2.0 Mult"
       },
       "decree-universal-grip": {
         "name": "Prise Universelle",
@@ -1137,7 +1137,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Trésor du Dragon",
-        "description": "+2 Mult par 10G"
+        "description": "x1.2 Mult par 10G"
       },
       "decree-yaku-nexus": {
         "name": "Nexus de Yaku",

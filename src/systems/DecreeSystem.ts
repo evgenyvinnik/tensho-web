@@ -116,6 +116,10 @@ function countScalingSource(
       return context.handsPlayedThisRun ?? 0
     case 'rounds_this_act':
       return Math.max(0, round.roundNumber - 1)
+    case 'rounds_this_run':
+      // Every Act has three rounds and none can be skipped, so the rounds
+      // finished before this one follow from the Act and round alone.
+      return Math.max(0, (round.actNumber - 1) * 3 + round.roundNumber - 1)
     case 'discards_used':
       // REDRAW replaced Discard: count the tiles it sent to the river.
       return round.tilesRedrawn ?? 0

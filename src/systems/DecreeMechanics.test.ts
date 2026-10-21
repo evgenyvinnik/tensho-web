@@ -502,6 +502,76 @@ describe('per-count scaling Decrees', () => {
     expect(act1.additive + act1.mult).toBeLessThan(act5.additive + act5.mult)
   })
 
+  it('compounds Endless Journey once per act completed', () => {
+    const decree = LIBRARY_DECREES.find((d) => d.id === 'decree-endless-journey')!
+
+    expect(apply(decree, ctx({ actNumber: 1 })).mult).toBe(1)
+    expect(apply(decree, ctx({ actNumber: 4 })).mult).toBeCloseTo(1.2 ** 3)
+    expect(apply(decree, ctx({ actNumber: 8 })).mult).toBeCloseTo(1.2 ** 7)
+    expect(apply(decree, ctx({ actNumber: 8 })).additive).toBe(0)
+  })
+
+  describe('late-game Decrees keep growing', () => {
+    const byId = (id: string) => LIBRARY_DECREES.find((d) => d.id === id)!
+
+    it('compounds Experience once per act completed', () => {
+      const decree = byId('decree-experience')
+
+      expect(apply(decree, ctx({ actNumber: 1 })).mult).toBe(1)
+      expect(apply(decree, ctx({ actNumber: 8 })).mult).toBeCloseTo(1.1 ** 7)
+    })
+
+    it('counts Slow Burn rounds across the whole run', () => {
+      const decree = byId('decree-slow-burn')
+
+      expect(apply(decree, ctx({ actNumber: 1, roundNumber: 1 })).mult).toBe(1)
+      // Act 3, Large round: six rounds of Acts 1-2 and the Small round before it.
+      expect(apply(decree, ctx({ actNumber: 3, roundNumber: 2 })).mult).toBe(
+        1 + 2 * 7
+      )
+    })
+
+    it('lets Perpetual Motion grow without a cap', () => {
+      const decree = byId('decree-perpetual-motion')
+
+      expect(apply(decree, ctx({ handsPlayedThisRun: 100 })).mult).toBe(
+        1 + 2 * 100
+      )
+    })
+
+    it('adds Mandate Breaker Mult then multiplies, only in Boss rounds', () => {
+      const decree = byId('decree-mandate-breaker')
+      const boss = ctx({})
+      boss.round.roundType = 'Boss'
+
+      expect(apply(decree, ctx({})).mult).toBe(1)
+      expect(apply(decree, boss).mult).toBe((1 + 15) * 1.5)
+    })
+
+    it('compounds the gold Decrees per ¥10 held', () => {
+      expect(apply(byId('decree-infinite-wealth'), ctx({ gold: 50 })).mult).toBeCloseTo(1.1 ** 5)
+      expect(apply(byId('decree-dragon-hoard'), ctx({ gold: 50 })).mult).toBeCloseTo(1.2 ** 5)
+    })
+
+    it('compounds Chain Reaction per Yaku scored', () => {
+      const decree = byId('decree-chain-reaction')
+
+      expect(apply(decree, ctx({ yakuIds: [] })).mult).toBe(1)
+      expect(
+        apply(decree, ctx({ yakuIds: ['tanyao', 'pinfu', 'riichi'] })).mult
+      ).toBeCloseTo(1.5 ** 3)
+    })
+
+    it('gives the flat legendaries a multiplier', () => {
+      const banner = apply(byId('decree-solar-banner'), ctx({}))
+      const jade = apply(byId('decree-cosmic-jade'), ctx({}))
+
+      expect(banner.mult).toBe((1 + 25) * 2)
+      expect(jade.additive).toBe(200)
+      expect(jade.mult).toBe(1.5)
+    })
+  })
+
   it('scales with base chips in hundreds', () => {
     const decree = scaledDecree('base_chips_per_100')
 

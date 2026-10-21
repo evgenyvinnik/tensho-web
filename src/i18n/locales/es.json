@@ -801,7 +801,7 @@
       },
       "decree-slow-burn": {
         "name": "Combustión Lenta",
-        "description": "+2 Mult por ronda jugada este acto"
+        "description": "+2 Mult por ronda jugada esta partida"
       },
       "decree-momentum": {
         "name": "Impulso",
@@ -837,11 +837,11 @@
       },
       "decree-veteran": {
         "name": "Veterano",
-        "description": "+10 Puntos por Acto completado"
+        "description": "+30 Puntos por Acto completado"
       },
       "decree-experience": {
         "name": "Experiencia",
-        "description": "+2 Mult por Acto completado"
+        "description": "x1.1 Mult por Acto completado"
       },
       "decree-greater-jade": {
         "name": "Gran Jade",
@@ -897,7 +897,7 @@
       },
       "decree-perpetual-motion": {
         "name": "Movimiento Perpetuo",
-        "description": "+5 Mult por mano jugada (máx +50)"
+        "description": "+2 Mult por mano jugada esta partida"
       },
       "decree-triple-echo": {
         "name": "Triple Eco",
@@ -949,7 +949,7 @@
       },
       "decree-mandate-breaker": {
         "name": "Rompe Mandatos",
-        "description": "+15 Mult en rondas de Jefe"
+        "description": "+15 Mult, x1.5 Mult en rondas de Jefe"
       },
       "decree-boss-slayer": {
         "name": "Mata Jefes",
@@ -997,7 +997,7 @@
       },
       "decree-endless-journey": {
         "name": "Viaje Sin Fin",
-        "description": "+20 Puntos por Acto completado"
+        "description": "x1.2 Mult por Acto completado"
       },
       "decree-master-grip": {
         "name": "Agarre Maestro",
@@ -1033,7 +1033,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "Buscador de Yakuman",
-        "description": "+50 Mult al puntuar Yakuman"
+        "description": "x5.0 Mult al puntuar Yakuman"
       },
       "decree-four-seasons-master": {
         "name": "Maestro de las Estaciones",
@@ -1049,7 +1049,7 @@
       },
       "decree-infinite-wealth": {
         "name": "Riqueza Infinita",
-        "description": "+1 Mult por cada 5G"
+        "description": "x1.1 Mult por cada 10G"
       },
       "decree-brainstorm": {
         "name": "Tormenta de Ideas",
@@ -1089,15 +1089,15 @@
       },
       "decree-chain-reaction": {
         "name": "Reacción en Cadena",
-        "description": "+5 Mult por Yaku puntuado"
+        "description": "x1.5 Mult por Yaku puntuado"
       },
       "decree-cosmic-jade": {
         "name": "Jade Cósmico",
-        "description": "+200 Puntos"
+        "description": "+200 Puntos, x1.5 Mult"
       },
       "decree-solar-banner": {
         "name": "Estandarte Solar",
-        "description": "+25 Mult"
+        "description": "+25 Mult, x2.0 Mult"
       },
       "decree-universal-grip": {
         "name": "Agarre Universal",
@@ -1137,7 +1137,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Tesoro del Dragón",
-        "description": "+2 Mult por cada 10G"
+        "description": "x1.2 Mult por cada 10G"
       },
       "decree-yaku-nexus": {
         "name": "Nexo de Yaku",

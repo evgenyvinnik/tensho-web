@@ -392,7 +392,7 @@ Conditional effects with stronger bonuses.
 | Garden Keeper | 庭師 | +4 Mult per Flower |
 | Blossom Storm | 花嵐 | ×1.2 Mult per Flower |
 | Seasonal Wind | 季節風 | +50 Chips per Season |
-| Slow Burn | 遅火 | +2 Mult per round this act |
+| Slow Burn | 遅火 | +2 Mult per round this run |
 | Momentum | 勢い | +15 Chips per hand this round |
 | Crescendo | 漸強 | ×1.1 Mult per hand this round |
 | Waste Not | 無駄無 | +5 Mult if no discards used |
@@ -401,8 +401,8 @@ Conditional effects with stronger bonuses.
 | Triplet Titan | 対々巨人 | ×1.5 Mult when scoring an All Triplets hand |
 | Ninefold Initiate | 一通入門 | ×1.5 Mult when scoring a 1–9 Straight hand |
 | Full Flush Champion | 清一色王者 | ×2.0 Mult when scoring a Full Flush hand |
-| Veteran | 古参 | +10 Chips per Act completed |
-| Experience | 経験 | +2 Mult per Act completed |
+| Veteran | 古参 | +30 Chips per Act completed |
+| Experience | 経験 | ×1.1 Mult per Act completed |
 | Greater Jade | 大玉 | +80 Chips |
 | Blazing Banner | 烈火旗 | +10 Mult |
 | Flame | 炎 | ×1.5 Mult |
@@ -423,7 +423,7 @@ Powerful effects with significant impact.
 | Perfectionist | 完璧主義 | ×3.0 Mult if the first play clears the round, before Supernova/Perfectionist bonuses |
 | Compound Interest | 複利 | +2 Mult per ¥10 |
 | Wealth Engine | 富の機関 | +¥1 per Decree owned |
-| Perpetual Motion | 永久機関 | +5 Mult per hand this run (max +50) |
+| Perpetual Motion | 永久機関 | +2 Mult per hand this run |
 | Triple Echo | 三重響 | Retrigger all scoring tiles once |
 | Terminal Resonance | 端牌共鳴 | Retrigger Terminals twice |
 | Honor Resonance | 字牌共鳴 | Retrigger Honors twice |
@@ -436,7 +436,7 @@ Powerful effects with significant impact.
 | Half Flush Herald | 混一色先駆 | ×2.0 Mult when scoring a Half Flush hand |
 | Triple Sequence Sage | 三色賢者 | ×2.0 Mult when scoring a Mixed Triple Sequence hand |
 | Outside Hand Champion | 全帯幺王者 | ×2.0 Mult when scoring an Outside Hand or Pure Outside Hand |
-| Mandate Breaker | 令破壊者 | +15 Mult during Boss rounds |
+| Mandate Breaker | 令破壊者 | +15 Mult, ×1.5 Mult during Boss rounds |
 | Boss Slayer | 親衛殺し | ×2.0 Mult during Boss rounds |
 | Fortune and Glory | 運と栄光 | +60 Chips, +8 Mult, +¥3/round |
 | Emperor's Blessing | 皇帝祝福 | +100 Chips and +10 Mult |
@@ -448,7 +448,7 @@ Powerful effects with significant impact.
 | Transmuter | 変成者 | Simples become Terminals |
 | Harmonizer | 調和者 | Suits match for sequences |
 | Final Act | 終幕 | ×1.5 Mult per Act beyond 4 |
-| Endless Journey | 無限旅 | +20 Chips per Act completed |
+| Endless Journey | 無限旅 | ×1.2 Mult per Act completed |
 | Master Grip | 達人握 | +3 Hand Size |
 | Infinite Patience | 無限忍耐 | +3 Discards per round |
 
@@ -464,11 +464,11 @@ Very powerful, often unique effects.
 | Eternal Echo | 永遠響 | Retrigger all scoring tiles twice |
 | Dragon King | 竜王 | Retrigger Dragons 3 times |
 | Yaku Amplifier | 役増幅器 | All Yaku ×1.5 |
-| Yakuman Seeker | 役満求道者 | +50 Mult on Yakuman |
+| Yakuman Seeker | 役満求道者 | ×5.0 Mult on Yakuman |
 | Four Seasons Master | 四季達人 | ×2.0 Mult per Season |
 | Eternal Garden | 永遠庭園 | +10 Mult/Flower, protected |
 | Midas Touch | 黄金の手 | +¥10 at end of round |
-| Infinite Wealth | 無限財宝 | +1 Mult per ¥5 |
+| Infinite Wealth | 無限財宝 | ×1.1 Mult per ¥10 |
 | Brainstorm | 脳嵐 | Copies leftmost Decree |
 | Doppelganger | 分身 | Copies a seeded random non-copy Decree on acquisition and each round start; target stays fixed for the round. See [target rules](docs/DOPPELGANGER_IMPLEMENTATION.md). |
 | God of Characters | 萬子神 | ×3.0 Mult if all Characters |
@@ -478,9 +478,9 @@ Very powerful, often unique effects.
 | Phoenix | 鳳凰 | Prevents one loss |
 | Time Lord | 時の主 | +1 extra hand per round |
 | Exponential | 指数的 | ×1.3 Mult per 100 chips |
-| Chain Reaction | 連鎖反応 | +5 Mult per Yaku this hand |
-| Cosmic Jade | 宇宙玉 | +200 Chips |
-| Solar Banner | 太陽旗 | +25 Mult |
+| Chain Reaction | 連鎖反応 | ×1.5 Mult per Yaku this hand |
+| Cosmic Jade | 宇宙玉 | +200 Chips, ×1.5 Mult |
+| Solar Banner | 太陽旗 | +25 Mult, ×2.0 Mult |
 | Universal Grip | 万能握 | +4 Hand Size |
 
 ### Mythic Decrees (Tier 5)
@@ -497,7 +497,7 @@ Game-changing, run-defining effects.
 | Clone Army | 複製軍 | Copies effects of all Decrees | Win on Gold Stake |
 | World Tree | 世界樹 | ×2.0/Flower, ×1.5/Season | — |
 | Philosopher's Stone | 賢者の石 | Double all gold gained | — |
-| Dragon Hoard | 竜の宝庫 | +2 Mult per ¥10 | — |
+| Dragon Hoard | 竜の宝庫 | ×1.2 Mult per ¥10 | — |
 | Yaku Nexus | 役結節 | All Yaku score at +1 tier | — |
 | Yakuman Blessing | 役満祝福 | ×10.0 Mult on Yakuman | 3 Yakuman in one run |
 | Reality Warp | 現実歪曲 | All tiles are wild | — |

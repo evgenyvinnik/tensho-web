@@ -103,7 +103,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-garden-keeper` | Garden Keeper | +4 Mult per collected Flower | delivered |
 | `decree-blossom-storm` | Blossom Storm | x1.2 Mult per collected Flower | delivered |
 | `decree-seasonal-wind` | Seasonal Wind | +50 Chips per active Season | delivered |
-| `decree-slow-burn` | Slow Burn | +2 Mult per round played this act | delivered |
+| `decree-slow-burn` | Slow Burn | +2 Mult per round played this run | delivered |
 | `decree-momentum` | Momentum | +15 Chips per hand played this round | delivered |
 | `decree-crescendo` | Crescendo | x1.1 Mult per hand played this round | delivered |
 | `decree-waste-not` | Waste Not | +5 Mult if you have not used REDRAW this round | delivered |
@@ -112,8 +112,8 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-toitoi-titan` | Toitoi Titan | x1.5 Mult when scoring Toitoi | delivered |
 | `decree-ittsu-initiate` | Ittsu Initiate | x1.5 Mult when scoring Ittsu | delivered |
 | `decree-chinitsu-champion` | Chinitsu Champion | x2.0 Mult when scoring Chinitsu | delivered |
-| `decree-veteran` | Veteran | +10 Chips per Act completed | delivered |
-| `decree-experience` | Experience | +2 Mult per Act completed | delivered |
+| `decree-veteran` | Veteran | +30 Points per Act completed | delivered |
+| `decree-experience` | Experience | x1.1 Mult per Act completed | delivered |
 | `decree-greater-jade` | Greater Jade | +80 Chips | delivered |
 | `decree-blazing-banner` | Blazing Banner | +10 Mult | delivered |
 | `decree-flame` | Flame | x1.5 Mult | delivered |
@@ -127,7 +127,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-perfectionist` | Perfectionist | ×3 Mult if the first play clears the round, before Supernova and Perfectionist bonuses. | delivered |
 | `decree-compound-interest` | Compound Interest | +2 Mult per 10G you have | delivered |
 | `decree-wealth-engine` | Wealth Engine | +1G per Decree owned at end of round | delivered |
-| `decree-perpetual-motion` | Perpetual Motion | +5 Mult per hand played this run (max +50) | delivered |
+| `decree-perpetual-motion` | Perpetual Motion | +2 Mult per hand played this run | delivered |
 | `decree-triple-echo` | Triple Echo | Retrigger all scoring tiles once | delivered |
 | `decree-terminal-resonance` | Terminal Resonance | Retrigger Terminal tiles twice | delivered |
 | `decree-honor-resonance` | Honor Resonance | Retrigger Honor tiles twice | delivered |
@@ -140,7 +140,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-honitsu-herald` | Honitsu Herald | x2.0 Mult when scoring Honitsu | delivered |
 | `decree-sanshoku-sage` | Sanshoku Sage | x2.0 Mult when scoring Sanshoku | delivered |
 | `decree-chanta-champion` | Chanta Champion | x2.0 Mult when scoring Chanta | delivered |
-| `decree-mandate-breaker` | Mandate Breaker | +15 Mult during Boss rounds | delivered |
+| `decree-mandate-breaker` | Mandate Breaker | +15 Mult, x1.5 Mult during Boss rounds | delivered |
 | `decree-boss-slayer` | Boss Slayer | x2.0 Mult during Boss rounds | delivered |
 | `decree-fortune-and-glory` | Fortune and Glory | +60 Chips, +8 Mult, +3G per round | delivered |
 | `decree-emperors-blessing` | Emperor's Blessing | +100 Chips and +10 Mult | delivered |
@@ -152,7 +152,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-transmuter` | Transmuter | All Simples become Terminals in scoring | delivered |
 | `decree-harmonizer` | Harmonizer | All suits count as matching for sequences | delivered |
 | `decree-final-act` | Final Act | x1.5 Mult per Act beyond 4 | delivered |
-| `decree-endless-journey` | Endless Journey | +20 Chips per Act completed | delivered |
+| `decree-endless-journey` | Endless Journey | x1.2 Mult per Act completed | delivered |
 | `decree-master-grip` | Master Grip | +3 Hand Size | delivered |
 | `decree-infinite-patience` | Infinite Patience | +3 free Redraws per round | delivered |
 | `decree-divine-flame` | Divine Flame | x3.0 Mult | delivered |
@@ -161,11 +161,11 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-eternal-echo` | Eternal Echo | Retrigger all scoring tiles twice | delivered |
 | `decree-dragon-king` | Dragon King | Retrigger Dragon tiles 3 times | delivered |
 | `decree-yaku-amplifier` | Yaku Amplifier | All Yaku multipliers increased by x1.5 | delivered |
-| `decree-yakuman-seeker` | Yakuman Seeker | +50 Mult when scoring Yakuman | delivered |
+| `decree-yakuman-seeker` | Yakuman Seeker | x5.0 Mult when scoring Yakuman | delivered |
 | `decree-four-seasons-master` | Four Seasons Master | x2.0 Mult per active Season | delivered |
 | `decree-eternal-garden` | Eternal Garden | +10 Mult per Flower, Flowers cannot be lost | delivered |
 | `decree-midas-touch` | Midas Touch | +10G at end of round | delivered |
-| `decree-infinite-wealth` | Infinite Wealth | +1 Mult per 5G you have | delivered |
+| `decree-infinite-wealth` | Infinite Wealth | x1.1 Mult per 10G you have | delivered |
 | `decree-brainstorm` | Brainstorm | Copies effect of leftmost Decree | delivered |
 | `decree-doppelganger` | Doppelganger | Copies a random non-copy Decree on acquisition and at each round start. | delivered |
 | `decree-manzu-god` | Manzu God | x3.0 Mult if all tiles are Manzu | delivered |
@@ -175,9 +175,9 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-phoenix` | Phoenix | Prevents one loss per run, then sells itself | delivered |
 | `decree-time-lord` | Time Lord | +1 Turn per round | delivered |
 | `decree-exponential` | Exponential | x1.3 Mult per 100 base chips scored | delivered |
-| `decree-chain-reaction` | Chain Reaction | +5 Mult per Yaku scored this hand | delivered |
-| `decree-cosmic-jade` | Cosmic Jade | +200 Chips | delivered |
-| `decree-solar-banner` | Solar Banner | +25 Mult | delivered |
+| `decree-chain-reaction` | Chain Reaction | x1.5 Mult per Yaku scored this hand | delivered |
+| `decree-cosmic-jade` | Cosmic Jade | +200 Points, x1.5 Mult | delivered |
+| `decree-solar-banner` | Solar Banner | +25 Mult, x2.0 Mult | delivered |
 | `decree-universal-grip` | Universal Grip | +4 Hand Size | delivered |
 | `decree-heavenly-ordinance` | Heavenly Ordinance | x5.0 Mult | delivered |
 | `decree-celestial-throne` | Celestial Throne | ×10.0 Mult, −2 Hand Size, −1 Turn per round | delivered |
@@ -187,7 +187,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-clone-army` | Clone Army | Copies effects of all other Decrees | delivered |
 | `decree-world-tree` | World Tree | x2.0 Mult per Flower, x1.5 per Season | delivered |
 | `decree-philosophers-stone` | Philosopher's Stone | Double all gold gained | delivered |
-| `decree-dragon-hoard` | Dragon Hoard | +2 Mult per 10G you have | delivered |
+| `decree-dragon-hoard` | Dragon Hoard | x1.2 Mult per 10G you have | delivered |
 | `decree-yaku-nexus` | Yaku Nexus | All Yaku score at +1 tier | delivered |
 | `decree-yakuman-blessing` | Yakuman Blessing | x10.0 Mult when scoring Yakuman | delivered |
 | `decree-reality-warp` | Reality Warp | All tiles count as every suit and rank | delivered |

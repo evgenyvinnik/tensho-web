@@ -1072,7 +1072,7 @@
       },
       "decree-slow-burn": {
         "name": "Fuoco lento",
-        "description": "+2 Molt per ogni round giocato in questo atto."
+        "description": "+2 Molt per ogni round giocato in questa partita."
       },
       "decree-momentum": {
         "name": "Slancio",
@@ -1108,11 +1108,11 @@
       },
       "decree-veteran": {
         "name": "Veterano",
-        "description": "+10 Punti per ogni atto completato."
+        "description": "+30 Punti per ogni atto completato."
       },
       "decree-experience": {
         "name": "Esperienza",
-        "description": "+2 Molt per ogni atto completato."
+        "description": "×1,1 Molt per ogni atto completato."
       },
       "decree-greater-jade": {
         "name": "Giada superiore",
@@ -1168,7 +1168,7 @@
       },
       "decree-perpetual-motion": {
         "name": "Moto perpetuo",
-        "description": "+5 Molt per ogni mano giocata in questa partita (massimo +50)."
+        "description": "+2 Molt per ogni mano giocata in questa partita."
       },
       "decree-triple-echo": {
         "name": "Tripla eco",
@@ -1220,7 +1220,7 @@
       },
       "decree-mandate-breaker": {
         "name": "Infrangitore di mandati",
-        "description": "+15 Molt durante i round Boss."
+        "description": "+15 Molt e ×1,5 Molt durante i round Boss."
       },
       "decree-boss-slayer": {
         "name": "Sterminatore di boss",
@@ -1256,7 +1256,7 @@
       },
       "decree-endless-journey": {
         "name": "Viaggio senza fine",
-        "description": "+20 Punti per ogni atto completato."
+        "description": "×1,2 Molt per ogni atto completato."
       },
       "decree-master-grip": {
         "name": "Presa magistrale",
@@ -1292,7 +1292,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "Cercatore di Yakuman",
-        "description": "+50 Molt quando realizzi uno Yakuman."
+        "description": "×5,0 Molt quando realizzi uno Yakuman."
       },
       "decree-four-seasons-master": {
         "name": "Maestro delle quattro stagioni",
@@ -1308,7 +1308,7 @@
       },
       "decree-infinite-wealth": {
         "name": "Ricchezza infinita",
-        "description": "+1 Molt ogni 5 Oro posseduti."
+        "description": "×1,1 Molt ogni 10 Oro posseduti."
       },
       "decree-doppelganger": {
         "name": "Sosia",
@@ -1344,15 +1344,15 @@
       },
       "decree-chain-reaction": {
         "name": "Reazione a catena",
-        "description": "+5 Molt per ogni Yaku realizzato in questa mano."
+        "description": "×1,5 Molt per ogni Yaku realizzato in questa mano."
       },
       "decree-cosmic-jade": {
         "name": "Giada cosmica",
-        "description": "+200 Punti."
+        "description": "+200 Punti, ×1,5 Molt."
       },
       "decree-solar-banner": {
         "name": "Stendardo solare",
-        "description": "+25 Molt."
+        "description": "+25 Molt, ×2,0 Molt."
       },
       "decree-universal-grip": {
         "name": "Presa universale",
@@ -1376,7 +1376,7 @@
       },
       "decree-dragon-hoard": {
         "name": "Tesoro del drago",
-        "description": "+2 Molt ogni 10 Oro posseduti."
+        "description": "×1,2 Molt ogni 10 Oro posseduti."
       },
       "decree-yaku-nexus": {
         "name": "Nesso degli Yaku",

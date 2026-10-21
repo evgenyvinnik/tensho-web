@@ -81,6 +81,7 @@ export type ScalingSource =
   | 'hands_this_round'
   | 'hands_this_run'
   | 'rounds_this_act'
+  | 'rounds_this_run'
   | 'discards_used'
   | 'acts_completed'
   | 'acts_beyond_four'

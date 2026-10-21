@@ -1336,7 +1336,7 @@
       },
       "decree-slow-burn": {
         "name": "ไฟค่อยคุ",
-        "description": "+2 ตัวคูณต่อรอบที่เล่นในองก์นี้"
+        "description": "+2 ตัวคูณต่อรอบที่เล่นในการเล่นครั้งนี้"
       },
       "decree-momentum": {
         "name": "แรงส่ง",
@@ -1372,11 +1372,11 @@
       },
       "decree-veteran": {
         "name": "ผู้ช่ำชอง",
-        "description": "+10 แต้มต่อองก์ที่ผ่านแล้ว"
+        "description": "+30 แต้มต่อองก์ที่ผ่านแล้ว"
       },
       "decree-experience": {
         "name": "ประสบการณ์",
-        "description": "+2 ตัวคูณต่อองก์ที่ผ่านแล้ว"
+        "description": "ตัวคูณ x1.1 ต่อองก์ที่ผ่านแล้ว"
       },
       "decree-greater-jade": {
         "name": "มหาหยก",
@@ -1432,7 +1432,7 @@
       },
       "decree-perpetual-motion": {
         "name": "การเคลื่อนไหวไม่สิ้นสุด",
-        "description": "+5 ตัวคูณต่อมือที่เล่นในการเล่นครั้งนี้ (สูงสุด +50)"
+        "description": "+2 ตัวคูณต่อมือที่เล่นในการเล่นครั้งนี้"
       },
       "decree-triple-echo": {
         "name": "เสียงสะท้อนสามชั้น",
@@ -1484,7 +1484,7 @@
       },
       "decree-mandate-breaker": {
         "name": "ผู้ฝ่าบัญชา",
-        "description": "+15 ตัวคูณในรอบบอส"
+        "description": "+15 ตัวคูณ และตัวคูณ x1.5 ในรอบบอส"
       },
       "decree-boss-slayer": {
         "name": "ผู้พิชิตบอส",
@@ -1520,7 +1520,7 @@
       },
       "decree-endless-journey": {
         "name": "การเดินทางไม่สิ้นสุด",
-        "description": "+20 แต้มต่อองก์ที่ผ่านแล้ว"
+        "description": "ตัวคูณ x1.2 ต่อองก์ที่ผ่านแล้ว"
       },
       "decree-master-grip": {
         "name": "มือปรมาจารย์",
@@ -1556,7 +1556,7 @@
       },
       "decree-yakuman-seeker": {
         "name": "ผู้แสวงหายาคุมัน",
-        "description": "+50 ตัวคูณ เมื่อทำคะแนนด้วยยาคุมัน"
+        "description": "ตัวคูณ x5.0 เมื่อทำคะแนนด้วยยาคุมัน"
       },
       "decree-four-seasons-master": {
         "name": "ปรมาจารย์สี่ฤดู",
@@ -1572,7 +1572,7 @@
       },
       "decree-infinite-wealth": {
         "name": "ความมั่งคั่งไร้ขอบเขต",
-        "description": "+1 ตัวคูณต่อทองทุก 5 ที่มี"
+        "description": "ตัวคูณ x1.1 ต่อทองทุก 10 ที่มี"
       },
       "decree-doppelganger": {
         "name": "เงาร่างแฝด",
@@ -1608,15 +1608,15 @@
       },
       "decree-chain-reaction": {
         "name": "ปฏิกิริยาลูกโซ่",
-        "description": "+5 ตัวคูณต่อยาคุแต่ละชนิดที่ทำคะแนนในมือนี้"
+        "description": "ตัวคูณ x1.5 ต่อยาคุแต่ละชนิดที่ทำคะแนนในมือนี้"
       },
       "decree-cosmic-jade": {
         "name": "หยกจักรวาล",
-        "description": "+200 แต้ม"
+        "description": "+200 แต้ม และตัวคูณ x1.5"
       },
       "decree-solar-banner": {
         "name": "ธงสุริยัน",
-        "description": "+25 ตัวคูณ"
+        "description": "+25 ตัวคูณ และตัวคูณ x2.0"
       },
       "decree-universal-grip": {
         "name": "มือครอบจักรวาล",
@@ -1640,7 +1640,7 @@
       },
       "decree-dragon-hoard": {
         "name": "ขุมทรัพย์มังกร",
-        "description": "+2 ตัวคูณต่อทองทุก 10 ที่มี"
+        "description": "ตัวคูณ x1.2 ต่อทองทุก 10 ที่มี"
       },
       "decree-yaku-nexus": {
         "name": "ศูนย์รวมยาคุ",
