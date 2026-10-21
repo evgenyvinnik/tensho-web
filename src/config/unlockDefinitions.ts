@@ -54,7 +54,7 @@ export type UnlockConditionType =
   | 'survive_corrupted_seasons' // Survive X corrupted seasons in one run
   | 'skip_rounds' // Skip X rounds total
   | 'rounds_completed' // Complete X rounds in one run
-  | 'win_without_flowers' // Win without collecting flowers
+  | 'win_with_few_decrees' // Win owning at most X decrees
 
   // Cumulative stats
   | 'total_gold_spent' // Spend X gold lifetime
@@ -376,12 +376,13 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     id: 'unlock_temple_stone',
     name: 'Temple Stone',
     japaneseName: '石庙',
-    description: 'Win without collecting any flowers',
+    description: 'Win a run owning 3 or fewer decrees',
     category: 'table_style',
     conditions: [
       {
-        type: 'win_without_flowers',
-        description: 'Win without collecting any flowers',
+        type: 'win_with_few_decrees',
+        target: 3,
+        description: 'Win owning 3 or fewer decrees',
       },
     ],
     unlocksId: 'temple_stone',
@@ -407,9 +408,14 @@ export const TABLE_STYLE_UNLOCKS: UnlockDefinition[] = [
     id: 'unlock_dragons_den',
     name: "Dragon's Den",
     japaneseName: '龙窟',
-    description: 'Score a yakuman',
+    description: 'Score a Yakuman (a Tier 4 Yaku)',
     category: 'table_style',
-    conditions: [{ type: 'yakuman_scored', description: 'Score a yakuman' }],
+    conditions: [
+      {
+        type: 'yakuman_scored',
+        description: 'Score a Yakuman (a Tier 4 Yaku)',
+      },
+    ],
     unlocksId: 'dragons_den',
     icon: 'challenge',
   },

@@ -54,7 +54,7 @@ export type UnlockRequirementType =
   | 'collect_all_flowers'
   | 'win_with_decrees'
   | 'purchase_decrees'
-  | 'win_without_flowers'
+  | 'win_with_few_decrees'
   | 'survive_corrupted_seasons'
   | 'score_yakuman'
 
@@ -178,7 +178,8 @@ export const BAMBOO_MAT: TableStyleDefinition = {
     {
       type: 'flower_rate',
       value: 25,
-      description: '+25% Flower draw weight (same four Flowers)',
+      description:
+        'Flowers come up 25% more often (still only four in the wall)',
       isBenefit: true,
     },
   ],
@@ -207,7 +208,7 @@ export const IMPERIAL_GOLD: TableStyleDefinition = {
     {
       type: 'regional_mandate',
       value: 1,
-      description: 'Start with 1 random Regional Mandate',
+      description: 'Start with 1 extra random Regional Mandate Decree',
       isBenefit: true,
     },
   ],
@@ -276,13 +277,14 @@ export const TEMPLE_STONE: TableStyleDefinition = {
     {
       type: 'base_score',
       value: 50,
-      description: '+50% base score',
+      description: '+50% base Points (tiles and groups)',
       isBenefit: true,
     },
   ],
   unlockCondition: {
-    type: 'win_without_flowers',
-    description: 'Win a run without collecting any Flowers',
+    type: 'win_with_few_decrees',
+    threshold: 3,
+    description: 'Win a run owning 3 or fewer Decrees',
   },
   isDefault: false,
 }
@@ -332,7 +334,7 @@ export const DRAGONS_DEN: TableStyleDefinition = {
     {
       type: 'yakuman_multiplier',
       value: 1.0,
-      description: 'Yakuman multipliers +1.0x',
+      description: 'Yakuman (Tier 4 Yaku) multipliers +1.0×',
       isBenefit: true,
     },
     {
@@ -344,7 +346,7 @@ export const DRAGONS_DEN: TableStyleDefinition = {
   ],
   unlockCondition: {
     type: 'score_yakuman',
-    description: 'Score a Yakuman',
+    description: 'Score a Yakuman (a Tier 4 Yaku, such as Big Three Dragons)',
   },
   isDefault: false,
 }
@@ -534,12 +536,23 @@ export interface PlayerUnlockStats {
   maxDecreesInWin: number
   /** Total decrees purchased across all runs */
   totalDecreesPurchased: number
-  /** Whether player has won without collecting flowers */
-  hasWonWithoutFlowers: boolean
+  /** Fewest Decrees owned at the end of a winning run. Absent until a win. */
+  fewestDecreesInWin?: number
   /** Maximum corrupted seasons survived in one run */
   maxCorruptedSeasonsSurvived: number
   /** Whether player has scored a yakuman */
   hasScoredYakuman: boolean
+}
+
+/** Zero Decrees is a real record, so only a recorded win can satisfy this. */
+function hasWonWithFewDecrees(
+  stats: PlayerUnlockStats,
+  limit: number
+): boolean {
+  return (
+    Number.isSafeInteger(stats.fewestDecreesInWin) &&
+    (stats.fewestDecreesInWin ?? Infinity) <= limit
+  )
 }
 
 /**
@@ -567,8 +580,8 @@ export function isUnlockConditionMet(
     case 'purchase_decrees':
       return stats.totalDecreesPurchased >= (condition.threshold ?? 0)
 
-    case 'win_without_flowers':
-      return stats.hasWonWithoutFlowers
+    case 'win_with_few_decrees':
+      return hasWonWithFewDecrees(stats, condition.threshold ?? 0)
 
     case 'survive_corrupted_seasons':
       return stats.maxCorruptedSeasonsSurvived >= (condition.threshold ?? 0)
@@ -630,8 +643,8 @@ export function getUnlockProgress(
     case 'purchase_decrees':
       return Math.min(1, stats.totalDecreesPurchased / threshold)
 
-    case 'win_without_flowers':
-      return stats.hasWonWithoutFlowers ? 1 : 0
+    case 'win_with_few_decrees':
+      return hasWonWithFewDecrees(stats, threshold) ? 1 : 0
 
     case 'survive_corrupted_seasons':
       return Math.min(1, stats.maxCorruptedSeasonsSurvived / threshold)

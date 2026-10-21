@@ -2605,7 +2605,7 @@
         "theme": "Alami",
         "unlock": "Kumpulkan keempat jenis bunga dalam satu perjalanan",
         "modifiers": {
-          "0": "+25% bobot pengambilan bunga (tetap 4 bunga yang sama)"
+          "0": "Bunga muncul 25% lebih sering (tetap 4 bunga di tembok)"
         },
         "name": "Tikar Bambu",
         "description": "Tikar bambu anyaman sederhana yang dibentangkan di atas meja rendah dalam paviliun taman. Suasana alaminya membuat bunga lebih sering bermekaran."
@@ -2614,7 +2614,7 @@
         "theme": "Kerajaan",
         "unlock": "Menang dengan minimal 5 Dekrit",
         "modifiers": {
-          "0": "Mulai dengan 1 mandat regional acak"
+          "0": "Mulai dengan 1 Dekrit Mandat Regional acak tambahan"
         },
         "name": "Emas Kekaisaran",
         "description": "Meja megah dari istana kekaisaran, bertatahkan daun emas dan giok. Mereka yang bermain di sini menerima restu kerajaan."
@@ -2631,10 +2631,10 @@
       },
       "temple_stone": {
         "theme": "Sederhana",
-        "unlock": "Menang tanpa mengumpulkan bunga",
+        "unlock": "Menang dengan maksimal 3 Dekrit",
         "modifiers": {
           "0": "Tidak ada bunga",
-          "1": "+50% skor dasar"
+          "1": "+50% Poin dasar (ubin dan grup)"
         },
         "name": "Batu Kuil",
         "description": "Meja batu dingin di kuil gunung yang asketis. Tidak ada bunga yang tumbuh di sini, tetapi kejernihan fokus meningkatkan skor dasar."
@@ -2650,9 +2650,9 @@
       },
       "dragons_den": {
         "theme": "Mitos",
-        "unlock": "Raih yakuman",
+        "unlock": "Raih yakuman (Yaku Tingkat 4, seperti Tiga Naga Besar)",
         "modifiers": {
-          "0": "Pengali yakuman +1,0×",
+          "0": "Pengali yakuman (Yaku Tingkat 4) +1,0×",
           "1": "Target skor +25%"
         },
         "name": "Sarang Naga",

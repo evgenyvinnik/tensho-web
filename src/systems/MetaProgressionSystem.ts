@@ -97,6 +97,8 @@ export interface LifetimeStats {
   corruptedSeasonsSurvived: number
   highestActCompleted: number
   maxDecreesInWin: number
+  /** Fewest Decrees owned when a run was won; Infinity until a win. */
+  fewestDecreesInWin: number
   winsWithoutFlowers: number
   editionDecreesOwned: number
 
@@ -208,6 +210,7 @@ export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   corruptedSeasonsSurvived: 0,
   highestActCompleted: 0,
   maxDecreesInWin: 0,
+  fewestDecreesInWin: Infinity,
   winsWithoutFlowers: 0,
   editionDecreesOwned: 0,
   stakeVictories: {},
@@ -423,8 +426,13 @@ export class MetaProgressionSystem {
         isMet = current > 0 && current <= target
         break
 
-      case 'win_without_flowers':
-        current = stats.winsWithoutFlowers
+      case 'win_with_few_decrees':
+        // Zero Decrees is a real record; only the Infinity sentinel is no win.
+        current =
+          Number.isSafeInteger(stats.fewestDecreesInWin) &&
+          stats.fewestDecreesInWin <= target
+            ? 1
+            : 0
         target = 1
         isMet = current >= target
         break
@@ -760,6 +768,7 @@ export class MetaProgressionSystem {
       // JSON encodes the unset Infinity sentinel as null. Restore it so a
       // first real win can establish a record instead of comparing against 0.
       fastestWinRounds: serialized.fastestWinRounds ?? Infinity,
+      fewestDecreesInWin: serialized.fewestDecreesInWin ?? Infinity,
       fateSealsDiscovered: new Set(serialized.fateSealsDiscovered),
       celestialOrbsDiscovered: new Set(serialized.celestialOrbsDiscovered),
       voidScriptsDiscovered: new Set(serialized.voidScriptsDiscovered),
@@ -880,6 +889,15 @@ export function processProgressionEvent(
         stats.maxDecreesInWin,
         event.decreesOwned ?? 0
       )
+      if (
+        event.decreesOwned !== undefined &&
+        Number.isSafeInteger(event.decreesOwned) &&
+        event.decreesOwned >= 0
+      )
+        updates.fewestDecreesInWin = Math.min(
+          stats.fewestDecreesInWin,
+          event.decreesOwned
+        )
       if (event.roundsCompleted !== undefined) {
         if (event.roundsCompleted < stats.fastestWinRounds) {
           updates.fastestWinRounds = event.roundsCompleted

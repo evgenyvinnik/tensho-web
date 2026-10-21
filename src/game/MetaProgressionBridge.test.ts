@@ -201,21 +201,40 @@ describe('MetaProgressionBridge', () => {
     ).toBe(3)
   })
 
-  it('unlocks Dragon’s Den from a Yakuman and Temple Stone only from a flower-free win', () => {
+  it('unlocks Dragon’s Den from a Yakuman and Temple Stone only from a win with 3 or fewer Decrees', () => {
     eventBus.emit('runStart', { seed: 7, stake: 1, wallVariant: 'green_felt' })
     eventBus.emit('yakumanScored', {
       yakuId: 'kokushi',
       yakuName: 'Thirteen Orphans',
     })
     expect(useTableStyleStore.getState().selectStyle('dragons_den')).toBe(true)
+    const win = (decreesOwned?: number) =>
+      eventBus.emit('runEnd', {
+        victory: true,
+        score: 100,
+        act: 8,
+        round: 3,
+        decreesOwned,
+      })
+    // Flowers no longer matter, and a win without a Decree count proves nothing.
     eventBus.emit('flowerCollected', { flowerType: 'Plum', totalFlowers: 1 })
-    eventBus.emit('runEnd', { victory: true, score: 100, act: 8, round: 3 })
+    win()
+    win(4)
+    eventBus.emit('runEnd', {
+      victory: false,
+      score: 0,
+      act: 2,
+      round: 1,
+      decreesOwned: 0,
+    })
     expect(useTableStyleStore.getState().isStyleUnlocked('temple_stone')).toBe(
       false
     )
+    expect(useTableStyleStore.getState().stats.fewestDecreesInWin).toBe(4)
     eventBus.emit('runStart', { seed: 8, stake: 1, wallVariant: 'green_felt' })
-    eventBus.emit('runEnd', { victory: true, score: 100, act: 8, round: 3 })
+    win(3)
     expect(useTableStyleStore.getState().selectStyle('temple_stone')).toBe(true)
+    expect(useTableStyleStore.getState().stats.fewestDecreesInWin).toBe(3)
   })
 
   it('initializes the Archive and records gameplay in every persisted meta system', () => {

@@ -55,8 +55,8 @@ export interface TableStyleStats {
   maxDecreesInWin: number
   /** Total decrees purchased across all runs */
   totalDecreesPurchased: number
-  /** Whether player has won without collecting flowers */
-  hasWonWithoutFlowers: boolean
+  /** Fewest Decrees owned at the end of a winning run. Absent until a win. */
+  fewestDecreesInWin?: number
   /** Maximum corrupted seasons survived in one run */
   maxCorruptedSeasonsSurvived: number
   /** Whether player has scored a yakuman */
@@ -125,9 +125,17 @@ const DEFAULT_STATS: TableStyleStats = {
   maxFlowersInRun: 0,
   maxDecreesInWin: 0,
   totalDecreesPurchased: 0,
-  hasWonWithoutFlowers: false,
   maxCorruptedSeasonsSurvived: 0,
   hasScoredYakuman: false,
+}
+
+/** Keep the smaller recorded count; a missing or malformed record is no win. */
+function fewestRecorded(...counts: (number | undefined)[]): number | undefined {
+  const recorded = counts.filter(
+    (count): count is number =>
+      typeof count === 'number' && Number.isSafeInteger(count) && count >= 0
+  )
+  return recorded.length > 0 ? Math.min(...recorded) : undefined
 }
 
 /**
@@ -260,13 +268,15 @@ export const useTableStyleStore = create<TableStyleState>()(
             stats.maxCorruptedSeasonsSurvived,
             updates.maxCorruptedSeasonsSurvived ?? 0
           ),
+          // For min values, keep the smaller recorded win
+          fewestDecreesInWin: fewestRecorded(
+            stats.fewestDecreesInWin,
+            updates.fewestDecreesInWin
+          ),
           // For accumulating values, add to existing
           totalDecreesPurchased:
             stats.totalDecreesPurchased + (updates.totalDecreesPurchased ?? 0),
           // For boolean flags, OR them
-          hasWonWithoutFlowers:
-            stats.hasWonWithoutFlowers ||
-            (updates.hasWonWithoutFlowers ?? false),
           hasScoredYakuman:
             stats.hasScoredYakuman || (updates.hasScoredYakuman ?? false),
         }

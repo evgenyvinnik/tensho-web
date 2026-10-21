@@ -2605,7 +2605,7 @@
         "theme": "Natural",
         "unlock": "Reúne las 4 flores en una partida",
         "modifiers": {
-          "0": "+25% al peso de robo de flores (las mismas 4 flores)"
+          "0": "Las flores salen un 25% más a menudo (siguen siendo 4 en el muro)"
         },
         "name": "Estera de Bambú",
         "description": "Una sencilla estera de bambú tejido, extendida sobre una mesa baja en un pabellón del jardín."
@@ -2614,7 +2614,7 @@
         "theme": "Real",
         "unlock": "Gana una partida con 5 o más decretos",
         "modifiers": {
-          "0": "Empieza con 1 mandato regional aleatorio"
+          "0": "Empieza con 1 decreto de Mandato Regional aleatorio adicional"
         },
         "name": "Oro Imperial",
         "description": "Una mesa magnífica del palacio imperial, con incrustaciones de pan de oro y jade."
@@ -2631,10 +2631,10 @@
       },
       "temple_stone": {
         "theme": "Austero",
-        "unlock": "Gana sin recoger flores",
+        "unlock": "Gana una partida con 3 decretos o menos",
         "modifiers": {
           "0": "No aparecen flores",
-          "1": "+50% a la puntuación base"
+          "1": "+50% a los Puntos base (fichas y grupos)"
         },
         "name": "Piedra del Templo",
         "description": "Una fría mesa de piedra en un templo ascético de montaña. Aquí no crecen flores."
@@ -2650,9 +2650,9 @@
       },
       "dragons_den": {
         "theme": "Mítico",
-        "unlock": "Consigue un yakuman",
+        "unlock": "Consigue un yakuman (un Yaku de nivel 4, como Tres Grandes Dragones)",
         "modifiers": {
-          "0": "Multiplicadores de yakuman +1,0×",
+          "0": "Multiplicadores de yakuman (Yaku de nivel 4) +1,0×",
           "1": "+25% a las puntuaciones objetivo"
         },
         "name": "Guarida del Dragón",

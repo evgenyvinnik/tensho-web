@@ -2421,7 +2421,7 @@
         "theme": "Likas",
         "unlock": "Kolektahin ang lahat ng 4 na bulaklak sa isang pagtakbo",
         "modifiers": {
-          "0": "+25% timbang sa pagbunot ng bulaklak (parehong 4 na bulaklak)"
+          "0": "Mas madalas lumabas nang 25% ang mga bulaklak (4 pa rin sa pader)"
         },
         "name": "Habas na Kawayan",
         "description": "Isang payak na hinabing banig na kawayan sa mababang mesa ng pavilion sa hardin. Mas madalas mamukadkad ang mga bulaklak sa likas na paligid."
@@ -2430,7 +2430,7 @@
         "theme": "Maharlika",
         "unlock": "Manalo na may 5 o higit pang Dekreto",
         "modifiers": {
-          "0": "Magsimula sa 1 random na panrehiyong mandato"
+          "0": "Magsimula sa 1 dagdag na random na Dekretong Rehiyonal na Mandato"
         },
         "name": "Gintong Imperyal",
         "description": "Isang maringal na mesa mula sa palasyo, may palamuting gintong dahon at jade. Tumatanggap ng pabor ng hari ang mga naglalaro rito."
@@ -2447,10 +2447,10 @@
       },
       "temple_stone": {
         "theme": "Payak",
-        "unlock": "Manalo nang walang nakolektang bulaklak",
+        "unlock": "Manalo na may 3 o mas kaunting Dekreto",
         "modifiers": {
           "0": "Walang bulaklak",
-          "1": "+50% batayang puntos"
+          "1": "+50% batayang Puntos (tile at grupo)"
         },
         "name": "Batong Templo",
         "description": "Isang malamig na mesang bato sa payak na templo sa bundok. Walang bulaklak dito, ngunit pinatataas ng dalisay na pokus ang batayang puntos."
@@ -2466,9 +2466,9 @@
       },
       "dragons_den": {
         "theme": "Maalamat",
-        "unlock": "Makabuo ng yakuman",
+        "unlock": "Makabuo ng yakuman (Yaku na Antas 4, tulad ng Tatlong Malalaking Dragon)",
         "modifiers": {
-          "0": "Multiplier ng yakuman +1.0×",
+          "0": "Multiplier ng yakuman (Yaku na Antas 4) +1.0×",
           "1": "Target na puntos +25%"
         },
         "name": "Yungib ng Dragon",

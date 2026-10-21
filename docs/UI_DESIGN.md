@@ -158,11 +158,11 @@ interface TableStyle {
 | **Green Felt (默认)** | Classic | None (default) |
 | **Red Lacquer (朱漆)** | Auspicious | +1 starting Decree slot |
 | **Bamboo Mat (竹席)** | Natural | Flowers appear 25% more often |
-| **Imperial Gold (金殿)** | Royal | Start with 1 random Regional Mandate |
+| **Imperial Gold (金殿)** | Royal | Start with 1 extra random Regional Mandate Decree |
 | **Night Market (夜市)** | Street | Shop prices −20%, but −1 Decree slot |
-| **Temple Stone (石庙)** | Austere | No Flowers, but +50% base score |
+| **Temple Stone (石庙)** | Austere | No Flowers, but +50% base Points |
 | **Ghost Parlor (幽亭)** | Haunted | Corrupted Seasons can appear from Act I |
-| **Dragon's Den (龙窟)** | Mythic | Yakuman multipliers +1.0×, but higher targets |
+| **Dragon's Den (龙窟)** | Mythic | Yakuman (Tier 4 Yaku) multipliers +1.0×, but higher targets |
 
 ### Unlockable Table Styles
 
@@ -172,9 +172,9 @@ interface TableStyle {
 | **Bamboo Mat** | Collect all 4 Flowers in a single run |
 | **Imperial Gold** | Win a run with 5+ Decrees |
 | **Night Market** | Purchase 20 Decrees across all runs |
-| **Temple Stone** | Win without collecting any Flowers |
+| **Temple Stone** | Win a run owning 3 or fewer Decrees |
 | **Ghost Parlor** | Survive 3 Corrupted Seasons in one run |
-| **Dragon's Den** | Score a Yakuman |
+| **Dragon's Den** | Score a Yakuman (a Tier 4 Yaku) |
 
 ### Visual Theming per Table
 

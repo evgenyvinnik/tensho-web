@@ -100,7 +100,9 @@ function syncTableProgress(): void {
       0,
       stats.totalDecreesPurchased - tables.stats.totalDecreesPurchased
     ),
-    hasWonWithoutFlowers: stats.winsWithoutFlowers > 0,
+    fewestDecreesInWin: Number.isSafeInteger(stats.fewestDecreesInWin)
+      ? stats.fewestDecreesInWin
+      : undefined,
     maxCorruptedSeasonsSurvived: stats.corruptedSeasonsSurvived,
     hasScoredYakuman: stats.yakumanScored > 0,
   })

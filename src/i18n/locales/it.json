@@ -2605,7 +2605,7 @@
         "theme": "Naturale",
         "unlock": "Raccogli tutti e 4 i fiori in una partita",
         "modifiers": {
-          "0": "+25% al peso di pesca dei fiori (sempre gli stessi 4 fiori)"
+          "0": "I fiori escono il 25% più spesso (sempre 4 nel muro)"
         },
         "name": "Stuoia di Bambù",
         "description": "Una semplice stuoia di bambù intrecciato su un tavolo basso in un padiglione da giardino. L'ambiente naturale fa sbocciare più fiori."
@@ -2614,7 +2614,7 @@
         "theme": "Regale",
         "unlock": "Vinci con almeno 5 decreti",
         "modifiers": {
-          "0": "Inizia con 1 mandato regionale casuale"
+          "0": "Inizia con 1 decreto Mandato Regionale casuale in più"
         },
         "name": "Oro Imperiale",
         "description": "Un magnifico tavolo del palazzo imperiale, intarsiato con foglia d'oro e giada. Chi gioca qui riceve il favore reale."
@@ -2631,10 +2631,10 @@
       },
       "temple_stone": {
         "theme": "Austero",
-        "unlock": "Vinci senza raccogliere fiori",
+        "unlock": "Vinci con al massimo 3 decreti",
         "modifiers": {
           "0": "Nessun fiore",
-          "1": "+50% al punteggio base"
+          "1": "+50% ai Punti base (tessere e gruppi)"
         },
         "name": "Pietra del Tempio",
         "description": "Un freddo tavolo di pietra in un austero tempio di montagna. Qui non crescono fiori, ma la purezza della concentrazione aumenta il punteggio base."
@@ -2650,9 +2650,9 @@
       },
       "dragons_den": {
         "theme": "Mitico",
-        "unlock": "Realizza uno yakuman",
+        "unlock": "Realizza uno yakuman (uno Yaku di livello 4, come Tre Grandi Draghi)",
         "modifiers": {
-          "0": "Moltiplicatori yakuman +1,0×",
+          "0": "Moltiplicatori yakuman (Yaku di livello 4) +1,0×",
           "1": "Obiettivi di punteggio +25%"
         },
         "name": "Tana del Drago",

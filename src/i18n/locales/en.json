@@ -2601,7 +2601,7 @@
         "theme": "Natural",
         "unlock": "Collect all 4 Flowers in one run",
         "modifiers": {
-          "0": "+25% Flower draw weight (same four Flowers)"
+          "0": "Flowers come up 25% more often (still only four in the wall)"
         },
         "name": "Bamboo Mat",
         "description": "A simple woven bamboo mat spread over a low table in a garden pavilion. The natural setting attracts more flowers to bloom."
@@ -2610,7 +2610,7 @@
         "theme": "Royal",
         "unlock": "Win a run with 5+ Decrees",
         "modifiers": {
-          "0": "Start with 1 random Regional Mandate"
+          "0": "Start with 1 extra random Regional Mandate Decree"
         },
         "name": "Imperial Gold",
         "description": "A magnificent table from the imperial palace, inlaid with gold leaf and jade. Those who play here receive royal favor."
@@ -2627,10 +2627,10 @@
       },
       "temple_stone": {
         "theme": "Austere",
-        "unlock": "Win a run without collecting Flowers",
+        "unlock": "Win a run owning 3 or fewer Decrees",
         "modifiers": {
           "0": "No Flowers",
-          "1": "+50% base score"
+          "1": "+50% base Points (tiles and groups)"
         },
         "name": "Temple Stone",
         "description": "A cold stone table in an ascetic mountain temple. No flowers grow in this austere place, but the purity of focus enhances your base scoring."
@@ -2646,9 +2646,9 @@
       },
       "dragons_den": {
         "theme": "Mythic",
-        "unlock": "Score a Yakuman",
+        "unlock": "Score a Yakuman (a Tier 4 Yaku, such as Big Three Dragons)",
         "modifiers": {
-          "0": "Yakuman multipliers +1.0×",
+          "0": "Yakuman (Tier 4 Yaku) multipliers +1.0×",
           "1": "+25% score targets"
         },
         "name": "Dragon's Den",

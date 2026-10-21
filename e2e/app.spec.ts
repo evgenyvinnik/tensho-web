@@ -221,10 +221,10 @@ test.describe('Application Smoke Tests', () => {
     await expect(bamboo).toHaveAccessibleName(
       /Reúne las 4 flores en una partida/
     )
-    await expect(bamboo).toContainText('+25% al peso de robo de flores')
+    await expect(bamboo).toContainText('Las flores salen un 25% más a menudo')
     await expect(
       page.locator('[data-table-style-card="temple_stone"]')
-    ).toContainText('+50% a la puntuación base')
+    ).toContainText('+50% a los Puntos base')
   })
 
   test('carries a chosen table into gameplay rules and illustration, without a felt icon', async ({

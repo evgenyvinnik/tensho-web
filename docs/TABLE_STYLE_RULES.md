@@ -16,9 +16,9 @@ The selected table is resolved once when a run starts. Both gameplay and its ill
 | Bamboo Mat | Flower draw weight ×1.25 during seeded wall ordering | Collect all four distinct Flower types in one run |
 | Imperial Gold | Two ordinary starter Decrees plus one seeded, unowned Regional Mandate | Own at least five Decrees when winning a run |
 | Night Market | Shop prices ×0.8 and four base Decree slots | Purchase 20 Decrees across runs |
-| Temple Stone | No Flowers; base scoring ×1.5 | Win without collecting a Flower |
+| Temple Stone | No Flowers; base Points (tiles and groups) ×1.5 | Win a run owning three or fewer Decrees (Flowers are drawn automatically, so a Flower-free win is not a choice) |
 | Ghost Parlor | Corrupted Seasons can appear in Act I, starting at 20% probability | Survive three Corrupted Seasons within one run |
-| Dragon's Den | +1.0 to a surviving Yakuman's multiplier; round targets ×1.25 | Score a Yakuman |
+| Dragon's Den | +1.0 to a surviving Yakuman's (Tier 4 Yaku) multiplier; round targets ×1.25 | Score a Yakuman |
 
 ## Important details
 

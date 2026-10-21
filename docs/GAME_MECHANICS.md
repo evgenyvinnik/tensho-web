@@ -170,7 +170,7 @@ If all redraws are used, players may "play through" unwanted tiles by including 
 | **Seed Money Charter** | Interest cap increased to 10 Gold (requires 50 Gold) |
 | **Money Tree Charter** | Interest cap increased to 20 Gold (requires 100 Gold) |
 | **Fortune Decree** | +1 Gold interest per 5 Gold held |
-| **Temple Stone Table** | No Flowers, but +50% base score |
+| **Temple Stone Table** | No Flowers, but +50% base Points |
 
 **Economy Timing:**
 - Interest is calculated BEFORE end-of-round payouts

@@ -2605,7 +2605,7 @@
         "theme": "Naturel",
         "unlock": "Réunissez les 4 fleurs en une partie",
         "modifiers": {
-          "0": "+25% au poids de tirage des fleurs (toujours 4 fleurs)"
+          "0": "Les fleurs sortent 25% plus souvent (toujours 4 dans le mur)"
         },
         "name": "Natte de Bambou",
         "description": "Une simple natte de bambou tressé étalée sur une table basse dans un pavillon de jardin."
@@ -2614,7 +2614,7 @@
         "theme": "Royal",
         "unlock": "Gagnez avec au moins 5 décrets",
         "modifiers": {
-          "0": "Commencez avec 1 mandat régional aléatoire"
+          "0": "Commencez avec 1 décret Mandat Régional aléatoire en plus"
         },
         "name": "Or Impérial",
         "description": "Une table magnifique du palais impérial, incrustée de feuille d'or et de jade."
@@ -2631,10 +2631,10 @@
       },
       "temple_stone": {
         "theme": "Austère",
-        "unlock": "Gagnez sans récolter de fleurs",
+        "unlock": "Gagnez avec au plus 3 décrets",
         "modifiers": {
           "0": "Aucune fleur",
-          "1": "+50% au score de base"
+          "1": "+50% aux Points de base (tuiles et groupes)"
         },
         "name": "Pierre du Temple",
         "description": "Une table de pierre froide dans un temple ascétique de montagne. Aucune fleur n'y pousse."
@@ -2650,9 +2650,9 @@
       },
       "dragons_den": {
         "theme": "Mythique",
-        "unlock": "Réalisez un yakuman",
+        "unlock": "Réalisez un yakuman (un Yaku de niveau 4, comme Trois Grands Dragons)",
         "modifiers": {
-          "0": "Multiplicateurs de yakuman +1,0×",
+          "0": "Multiplicateurs de yakuman (Yaku de niveau 4) +1,0×",
           "1": "Objectifs de score +25%"
         },
         "name": "Antre du Dragon",
