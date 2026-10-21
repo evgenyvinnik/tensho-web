@@ -160,7 +160,7 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
     expect(system.getLastUsedConsumable()?.id).toBe(orb.id)
   })
 
-  it('retains the existing self-copy rule and consumes each confirmed use', () => {
+  it('never records the Fool, so each Fool copies the item before it', () => {
     const game = fixture()
     const orb = CelestialOrbSystem.createCelestialOrbInstance(
       CELESTIAL_ORBS.pluto_orb
@@ -169,14 +169,24 @@ describe('Fool history follows the authored Seal-or-Orb rule', () => {
     game.processAction({ type: 'useOrb', orbId: orb.instanceId })
     expect(game.processAction(addFool(game)).success).toBe(true)
     expect(game.getState().fateSealSystem.getLastUsedConsumable()?.id).toBe(
-      'seal_of_the_fool'
+      orb.id
     )
     const action = addFool(game)
     expect(game.processAction(action).success).toBe(true)
-    expect(game.getFateSeals()).toHaveLength(1)
-    expect(game.getFateSeals()[0].id).toBe('seal_of_the_fool')
-    expect(game.getFateSeals()[0].instanceId).not.toBe(action.sealId)
+    expect(game.getCelestialOrbs().map((item) => item.id)).toEqual([
+      orb.id,
+      orb.id,
+    ])
+    expect(game.getFateSeals()).toHaveLength(0)
     expect(game.processAction(action).success).toBe(false)
+  })
+
+  it('ignores a Fool restored as copy history from an older save', () => {
+    const system = new FateSealSystem()
+    system.setLastUsedConsumable(
+      FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_fool)
+    )
+    expect(system.getLastUsedConsumable()).toBeNull()
   })
 
   it('keeps history across a round boundary and clears it for a new run', () => {

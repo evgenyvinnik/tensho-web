@@ -97,6 +97,8 @@ export interface GameController {
 
   // Consumable actions
   useFateSeal: (sealId: string, targetTileIds?: string[]) => ActionResult
+  /** Lay a made Seal that waits on wall tiles; why it was refused, or null. */
+  settleHeldFateSeal: (instanceId: string, targets: string[]) => string | null
   useCelestialOrb: (orbId: string) => ActionResult
   useVoidScript: (scriptId: string, targetTileIds?: string[]) => ActionResult
 
@@ -281,6 +283,15 @@ export function useGameController(
           ? orchestrator.getSelectedTileIds()
           : [])
       return orchestrator.processAction({ type: 'useSeal', sealId, targets })
+    },
+    [orchestrator]
+  )
+
+  const settleHeldFateSeal = useCallback(
+    (instanceId: string, targets: string[]) => {
+      const error = orchestrator.settleHeldFateSeal(instanceId, targets)
+      if (!error) setTick((tick) => tick + 1)
+      return error
     },
     [orchestrator]
   )
@@ -526,6 +537,7 @@ export function useGameController(
 
     // Consumable actions
     useFateSeal,
+    settleHeldFateSeal,
     useCelestialOrb,
     useVoidScript,
 

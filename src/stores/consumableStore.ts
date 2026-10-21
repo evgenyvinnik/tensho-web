@@ -317,10 +317,11 @@ export const useConsumableStore = create<ConsumableState>()((set, get) => ({
     if (result.success) {
       // Mark as used and remove from inventory
       state.removeFateSeal(instanceId)
-      set({ lastUsedConsumable: seal })
-
-      // Update last used consumable in the system
+      // The system decides what counts as copy history (never the Fool).
       state.fateSealSystem.setLastUsedConsumable(seal)
+      set({
+        lastUsedConsumable: state.fateSealSystem.getLastUsedConsumable(),
+      })
     }
 
     return result

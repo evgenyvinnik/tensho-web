@@ -135,9 +135,40 @@ for (const [language, copy] of [
       await expect(choices.nth(4)).toHaveAttribute('aria-pressed', 'true')
       await expect(choices.nth(0)).toHaveAttribute('aria-pressed', 'false')
       await page.screenshot({ path: testInfo.outputPath('selected-pack.png') })
+      // A Seal is used as it is claimed, so record which ones work.
+      await page.evaluate(async () => {
+        const path = '/src/game/EventBus.ts'
+        const { eventBus } = await import(path)
+        const used: string[] = []
+        Object.assign(window, { sealsUsed: used })
+        eventBus.on(
+          'fateSealUsed',
+          ({ sealId, source }: { sealId: string; source?: string }) => {
+            if (source !== 'generated') used.push(sealId)
+          }
+        )
+      })
       await dialog
         .getByRole('button', { name: copy.shop.confirmSelection, exact: true })
         .click()
+      // Each chosen Seal that takes tiles asks for its wall tiles in turn.
+      const picker = page.locator('[data-seal-wall-dialog]')
+      while (
+        await picker.waitFor({ state: 'visible', timeout: 1_500 }).then(
+          () => true,
+          () => false
+        )
+      ) {
+        const confirm = picker.locator('[data-seal-wall-confirm]')
+        const tiles = picker.locator('[data-seal-wall-tile]:not([disabled])')
+        for (let i = 0; !(await confirm.isEnabled()); i++)
+          await tiles.nth(i).click()
+        const step = await picker.getAttribute('data-seal-wall-dialog')
+        await confirm.click()
+        await expect(
+          page.locator(`[data-seal-wall-dialog="${step}"]`)
+        ).toHaveCount(0)
+      }
       await expect(dialog).not.toBeVisible()
       await expect(
         page.locator('[data-classic-save-status="saved"]')
@@ -149,15 +180,19 @@ for (const [language, copy] of [
         return {
           gold: state.gold,
           pending: game.shop.pendingPack,
-          ids: (kind === 'Decree'
-            ? state.decreeSystem.getOwnedDecrees()
-            : state.fateSeals
-          ).map((item: { id: string }) => item.id),
+          held: state.fateSeals.length,
+          ids:
+            kind === 'Decree'
+              ? state.decreeSystem
+                  .getOwnedDecrees()
+                  .map((item: { id: string }) => item.id)
+              : (window as unknown as { sealsUsed: string[] }).sealsUsed,
         }
       }, kind)
       expect(snapshot).toEqual({
         gold: 92,
         pending: null,
+        held: 0,
         ids: [fixture.rewards[1], fixture.rewards[4]],
       })
       await page.reload()

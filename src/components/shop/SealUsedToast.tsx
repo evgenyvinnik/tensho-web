@@ -62,10 +62,11 @@ export function SealUsedToast({
       </span>
       {changes.length > 0 && (
         <span aria-hidden="true" className="flex shrink-0 items-center gap-0.5">
-          {changes.map(({ before, after }) =>
+          {/* Two Seals may change one tile, so a change is keyed by place. */}
+          {changes.map(({ before, after }, index) =>
             after ? (
               <TileImage
-                key={before.id}
+                key={`${before.id}:${index}`}
                 tile={after}
                 size="small"
                 showTooltip={false}

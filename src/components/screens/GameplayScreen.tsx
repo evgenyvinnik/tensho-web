@@ -40,6 +40,9 @@ import { feltPalette } from '../../utils/feltPalette'
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
 import { decreeKey, isDecreeExcluded } from '../../systems/decreeIdentity'
 import { ConsumableDialog } from '../gameplay/ConsumableDialog'
+import { MadeSealPrompt, type UsedSeal } from '../shop/MadeSealPrompt'
+import { SealUsedToast } from '../shop/SealUsedToast'
+import { useHeaderHeight } from '../../hooks/useHeaderHeight'
 import { getTableStyleIllustration } from '../../utils/assets'
 import {
   getDefaultTableStyle,
@@ -69,7 +72,6 @@ import {
   MAX_TACTICAL_PLAY_TILES,
   MIN_TACTICAL_PLAY_TILES,
 } from '../../game/playRules'
-import type { FateSeal } from '../../systems/FateSealSystem'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import type { RoundType, YakuRevealState } from '../gameplay/gameplayTypes'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
@@ -117,7 +119,20 @@ export function GameplayScreen() {
   const [showGuide, setShowGuide] = useState(() => !readGuideSeen())
   const wallDrawPending = useFloraRevealQueue((state) => state.queue.length > 0)
   const [actionError, setActionError] = useState<string | null>(null)
-  const [targeting, setTargeting] = useState<FateSeal | VoidScript | null>(null)
+  const [targeting, setTargeting] = useState<VoidScript | null>(null)
+  // A Seal the run makes here (a redrawn Purple tile) is used at once.
+  const [sealUsed, setSealUsed] = useState<{
+    key: number
+    used: UsedSeal[]
+  } | null>(null)
+  const announceSeals = useCallback((used: UsedSeal[]) => {
+    setSealUsed((shown) => ({
+      key: Date.now(),
+      used: [...(shown?.used ?? []), ...used],
+    }))
+  }, [])
+  const handleSealToastDone = useCallback(() => setSealUsed(null), [])
+  const headerHeight = useHeaderHeight('[data-run-header]')
   const [toast, setToast] = useState<PlayToastData | null>(null)
   const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
@@ -516,7 +531,6 @@ export function GameplayScreen() {
             <div className="flex min-w-0 items-center justify-center gap-1.5 lg:justify-end">
               <CollectibleRail
                 flora={game.flora}
-                fateSeals={game.fateSeals}
                 celestialOrbs={game.celestialOrbs}
                 voidScripts={game.voidScripts}
                 upgrades={game.yakuUpgrades}
@@ -526,7 +540,6 @@ export function GameplayScreen() {
                 validateUse={game.validateConsumableAction}
                 onUse={game.processAction}
                 onChooseTargets={setTargeting}
-                lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
                 scriptDownsideProtected={scriptDownsideProtected}
                 observatoryActive={game.state.charterSystem.hasCharter(
                   'observatory'
@@ -671,18 +684,33 @@ export function GameplayScreen() {
         cancelText={t('common.cancel', 'Cancel')}
       />
 
+      <MadeSealPrompt
+        seals={game.fateSeals}
+        wall={game.state.wallTemplate}
+        paused={
+          toast !== null || showGuide || wallDrawPending || targeting !== null
+        }
+        settle={game.settleHeldFateSeal}
+        onUsed={announceSeals}
+      />
+      {sealUsed && (
+        <SealUsedToast
+          key={sealUsed.key}
+          seals={sealUsed.used.map((entry) => entry.seal)}
+          changes={sealUsed.used.flatMap((entry) => entry.changes)}
+          top={headerHeight + 8}
+          onDone={handleSealToastDone}
+        />
+      )}
+
       {targeting && (
         <ConsumableDialog
           key={targeting.instanceId}
-          title={itemText.name(
-            targeting.type === 'FateSeal' ? 'seals' : 'scripts',
-            targeting
-          )}
+          title={itemText.name('scripts', targeting)}
           items={[targeting]}
           initialItemId={targeting.instanceId}
           tiles={game.handTiles}
           concealedIds={faceDownTileIds}
-          lastCopyableConsumable={game.state.fateSealSystem.getLastUsedConsumable()}
           scriptDownsideProtected={scriptDownsideProtected}
           observatoryActive={game.state.charterSystem.hasCharter('observatory')}
           canUse={game.canPerformAction}

@@ -14,11 +14,15 @@ async function fixture(
     const modifierPath = '/src/core/TileModifier.ts'
     const mandatePath = '/src/systems/MandateEffectSystem.ts'
     const eventPath = '/src/game/EventBus.ts'
+    const sealPath = '/src/systems/FateSealSystem.ts'
     const { gameOrchestrator: game } = await import(gamePath)
     const { Tile, TileSuit, FlowerType } = await import(tilePath)
     const { SealType } = await import(modifierPath)
     const { MandateEffectSystem } = await import(mandatePath)
     const { eventBus } = await import(eventPath)
+    const { FateSealSystem, FATE_SEALS } = await import(sealPath)
+    // The Purple tile's Seal is Glass, which asks for one wall tile.
+    FateSealSystem.getRandomFateSeal = () => FATE_SEALS.seal_of_glass
     game.startNewRun(7)
     const state = game.getState()
     state.targetScore = 1e9
@@ -68,7 +72,7 @@ async function snapshot(page: Page) {
   })
 }
 
-test('redraw sends a sealed tile to the river, grants its seal once, and disables after exhaustion', async ({
+test('redraw sends a sealed tile to the river, uses its Seal at once, and disables after exhaustion', async ({
   page,
   isMobile,
 }) => {
@@ -85,6 +89,18 @@ test('redraw sends a sealed tile to the river, grants its seal once, and disable
   expect(await snapshot(page)).toEqual(before)
   await expect(action).toBeEnabled()
   await action.click()
+  // The Seal it makes is used now: its wall picker opens and cannot be put
+  // away, so nothing is ever held for later.
+  const picker = page.locator('[data-seal-wall-dialog="seal_of_glass"]')
+  await expect(picker).toBeVisible()
+  await expect(picker.locator('[data-seal-wall-close]')).toHaveCount(0)
+  await page.keyboard.press('Escape')
+  await expect(picker).toBeVisible()
+  expect((await snapshot(page)).seals).toBe(before.seals + 1)
+  await picker.locator('[data-seal-wall-tile]:not([disabled])').first().click()
+  await picker.locator('[data-seal-wall-confirm]').click()
+  await expect(picker).toHaveCount(0)
+  await expect(page.locator('[data-seal-used="seal_of_glass"]')).toBeVisible()
   await expect(
     page.locator('[data-play-zone="felt"] [data-play-tile]')
   ).toHaveCount(0)
@@ -101,7 +117,7 @@ test('redraw sends a sealed tile to the river, grants its seal once, and disable
   expect(after.hands).toBe(before.hands)
   expect(after.discards).toBe(before.discards)
   expect(after.redraws).toBe(0)
-  expect(after.seals).toBe(before.seals + 1)
+  expect(after.seals).toBe(before.seals)
   const next = page.locator(
     '[data-play-zone="hand"] [data-play-tile="replacement"]'
   )

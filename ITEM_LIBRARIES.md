@@ -10,11 +10,11 @@
 
 | Seal | Japanese | Effect | Mahjong Twist |
 |------|----------|--------|---------------|
-| **Seal of the Fool** | 愚者の印 | Creates the last Fate Seal or Celestial Orb used this run | Mirrors The Fool |
+| **Seal of the Fool** | 愚者の印 | Creates the last Fate Seal or Celestial Orb used this run (never a Fool); a copied Seal is used at once | Mirrors The Fool |
 | **Seal of the Alchemist** | 錬金術師の印 | Enhances 2 selected tiles with Lucky Mark | Tiles shimmer with fortune |
 | **Seal of the Oracle** | 巫女の印 | Creates up to 2 random Celestial Orbs (if room) | Commune with stars |
 | **Seal of the Empress** | 女帝の印 | Enhances 2 selected tiles with Score Bonus Mark | Imperial blessing |
-| **Seal of the Emperor** | 皇帝の印 | Creates up to 2 random Fate Seals (if room) | Royal decree |
+| **Seal of the Emperor** | 皇帝の印 | Creates 2 random Fate Seals, each used at once (never an Emperor or a Fool) | Royal decree |
 | **Seal of the Sage** | 賢者の印 | Enhances 2 selected tiles with Bonus Chip Mark | Ancient wisdom |
 | **Seal of Harmony** | 和の印 | Converts 1 tile to Wild (counts as any suit) | Balance of elements |
 | **Seal of Fortitude** | 剛の印 | Enhances 1 tile to Steel Mark (+×1.5 Mult when held) | Unbreakable resolve |
@@ -166,10 +166,13 @@ Seal.
 | **Negative** | 負極 | +1 Decree slot while this physical tile remains in the run wall | +1 Decree slot while owned |
 
 Fate Seal tile changes persist for the current run, including future rounds and
-save/reload. New runs start fresh. A Seal bought in the Tea House or chosen from
-an Arcana Pack is used at once: the player picks its targets from every tile of
-the run's wall (Flowers and Seasons excluded), and Seals that take no tiles act
-immediately. Seals created during a round still wait on the rail for the hand. Negative tile capacity follows ownership, not
+save/reload. New runs start fresh. A Seal is never held: one bought in the Tea
+House or chosen from an Arcana Pack is used at once, the player picking its
+targets from every tile of the run's wall (Flowers and Seasons excluded), and
+Seals that take no tiles act immediately. A Seal the run makes (a redrawn Purple
+tile, the Emperor, the Fool) is used the same way as it is made, at the table or
+in the Tea House: one that takes tiles opens the wall picker at once, with no
+cancel, and only a Seal that can work then is made. Negative tile capacity follows ownership, not
 draws or scoring; destruction or edition replacement removes its slot without
 deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEMENTATION.md).
 

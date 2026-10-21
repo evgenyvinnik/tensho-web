@@ -41,7 +41,6 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
     state.gold = 20
     const seal = () =>
       FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_sage)
-    state.fateSeals = [seal(), seal(), seal()]
     const decree = ALL_DECREES.find(
       (d: { flowerRequirement?: number }) => d.flowerRequirement === 3
     )
@@ -106,7 +105,7 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
   await page.keyboard.press('Escape')
   await expect(details(flower)).toHaveCount(0)
 
-  // Only Decrees have slots: three held Seals never block another.
+  // Only Decrees have slots: nothing limits a Seal, used as it is bought.
   await openDetails(seal)
   await expect(details(seal).locator('[data-purchase-blocked]')).toHaveCount(0)
   await expect(buy(seal)).toBeEnabled()
@@ -169,6 +168,6 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
         decrees: game.getState().decreeSystem.getOwnedDecrees().length,
       }
     })
-  ).toEqual({ gold: 12, seals: 3, decrees: 1 })
+  ).toEqual({ gold: 12, seals: 0, decrees: 1 })
   expect(errors).toEqual([])
 })

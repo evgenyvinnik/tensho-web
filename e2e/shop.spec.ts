@@ -281,8 +281,6 @@ async function openPackFixture(page: Page, lang = 'en') {
       }
     })
     pack.maxSelections = 2
-    // Two Seals already held for the table, untouched by the pack.
-    state.fateSeals = [seal('seal_of_glass'), seal('seal_of_manzu')]
     // Notify after fixture setup, just as the real session does after settlement.
     const eventPath = '/src/game/EventBus.ts'
     const { eventBus } = await import(eventPath)
@@ -526,7 +524,7 @@ for (const preference of ['app', 'system'] as const) {
     // The Hermit is used as it is claimed: the 12 gold left doubles.
     expect(await inventory(page)).toMatchObject({
       gold: 24,
-      seals: 2,
+      seals: 0,
       pending: false,
     })
     await expect(page.locator(`[data-shop-offer="${offerId}"]`)).toHaveCount(0)
@@ -610,18 +608,6 @@ test('a Mega Arcana pack uses both chosen Seals on wall tiles, one after the oth
   page,
 }) => {
   const { offerId } = await openPackFixture(page)
-  await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const sealPath = '/src/systems/FateSealSystem.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { FateSealSystem, FATE_SEALS } = await import(sealPath)
-    // Three held Seals: the old shared limit, which no longer exists.
-    game
-      .getState()
-      .fateSeals.push(
-        FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_sage)
-      )
-  })
   await buyOffer(page, offerId)
   const dialog = page.getByRole('dialog', { name: 'Mega Arcana Pack' })
   const choices = dialog.locator('[aria-pressed]')
@@ -667,7 +653,8 @@ test('a Mega Arcana pack uses both chosen Seals on wall tiles, one after the oth
   await characters.getByRole('button', { name: 'Use item' }).click()
   await expect(characters).toHaveCount(0)
   await expect(dialog).not.toBeVisible()
-  expect(await inventory(page)).toMatchObject({ seals: 3, pending: false })
+  // No Seal is ever held: both worked on the wall.
+  expect(await inventory(page)).toMatchObject({ seals: 0, pending: false })
   expect(
     await page.evaluate(
       async ({ marked, circle }) => {
@@ -711,7 +698,7 @@ test('Mega Decree pack capacity is checked before confirmation and rewards are g
   )
   expect(await inventory(page)).toEqual({
     gold: 12,
-    seals: 2,
+    seals: 0,
     decrees: held,
     pending: true,
     purchases: 1,
@@ -729,7 +716,7 @@ test('Mega Decree pack capacity is checked before confirmation and rewards are g
   await expect(dialog).not.toBeVisible()
   expect(await inventory(page)).toEqual({
     gold: 12,
-    seals: 2,
+    seals: 0,
     decrees: held + 1,
     pending: false,
     purchases: 1,
@@ -762,7 +749,7 @@ test('pack choices work with the keyboard and trap focus until explicitly settle
   await page.keyboard.press('Enter')
   await expect(dialog).not.toBeVisible()
   // The Hermit takes no tiles and is used as it is claimed.
-  expect((await inventory(page)).seals).toBe(2)
+  expect((await inventory(page)).seals).toBe(0)
 })
 
 test('localized pack choices fit a short phone and skipping is an explicit action', async ({
@@ -802,7 +789,7 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
   await expect(dialog).not.toBeVisible()
   expect(await inventory(page)).toEqual({
     gold: 12,
-    seals: 2,
+    seals: 0,
     decrees: held,
     pending: false,
     purchases: 1,

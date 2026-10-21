@@ -2484,6 +2484,17 @@ export class GameOrchestrator {
       !this.state.celestialOrbSystem.canUpgradeAnyYaku()
     )
       return 'All Yaku are already at max level'
+    // The Fool's copy is used as it is made, so it must be able to work now.
+    if (seal.effect.type === 'duplicate_consumable') {
+      const copy = this.state.fateSealSystem.getLastUsedConsumable()
+      if (copy?.type === 'FateSeal') {
+        const copyError = this.validateWallSeal(copy as FateSeal, undefined, {
+          ...options,
+          wall,
+        })
+        if (copyError) return copyError
+      }
+    }
     const selected = (targets ?? []).map(
       (id) => wall.find((tile) => tile.id === id)!
     )
@@ -2498,20 +2509,63 @@ export class GameOrchestrator {
   }
 
   /**
-   * Use a Seal the moment it is acquired. The Tea House never holds a bought
-   * or pack-chosen Seal: it works at once, on the wall tiles the player chose,
-   * and the change lasts for the rest of the run. Seals made during a round
-   * still wait on the rail for the hand.
+   * Use a Seal the moment it is acquired. No Seal is ever held: one bought or
+   * chosen from a pack works at once, on the wall tiles the player chose, and
+   * the change lasts for the rest of the run. A Seal the run makes uses this
+   * as it is made when it needs no tiles (see `grantGeneratedSeal`).
    */
   applyFateSeal(
     seal: FateSeal,
-    source: 'purchase' | 'pack_open',
+    source: 'purchase' | 'pack_open' | 'generated',
     targets: readonly string[] = []
   ): boolean {
-    if (source !== 'pack_open' && !this.isConsumableUnlocked(seal.id)) {
+    if (source === 'purchase' && !this.isConsumableUnlocked(seal.id)) {
       return false
     }
     if (this.validateWallSeal(seal, targets)) return false
+    seal.source = source
+    return this.layFateSeal(seal, targets, true)
+  }
+
+  /**
+   * Use a Seal the run made that waits on its wall tiles, the only Seal
+   * `fateSeals` ever holds; the table and the Tea House ask for the tiles at
+   * once. Returns why these targets were refused, or null once the Seal is
+   * gone. A Seal left with nothing to work on is spent without effect.
+   */
+  settleHeldFateSeal(
+    instanceId: string,
+    targets: readonly string[] = []
+  ): string | null {
+    const index = this.state.fateSeals.findIndex(
+      (seal) => seal.instanceId === instanceId
+    )
+    if (index === -1) return 'Seal not found in inventory'
+    const seal = this.state.fateSeals[index]
+    const workable = this.validateWallSeal(seal) === null
+    if (workable) {
+      const error = this.validateWallSeal(seal, targets)
+      if (error) return error
+    }
+    this.state.fateSeals.splice(index, 1)
+    if (workable) {
+      this.layFateSeal(seal, targets, false)
+      // A tile seen through a Seal stays revealed for the rest of the hand.
+      for (const id of targets) this.state.faceDownTileIds.delete(id)
+    }
+    this.publishBuildProgress()
+    return null
+  }
+
+  /**
+   * Lay a checked Seal on these wall tiles. `acquired` announces it as taken
+   * before its effects settle, as a Seal used on acquisition is.
+   */
+  private layFateSeal(
+    seal: FateSeal,
+    targets: readonly string[],
+    acquired: boolean
+  ): boolean {
     const selected = targets.map(
       (id) => this.state.wallTemplate.find((tile) => tile.id === id)!
     )
@@ -2520,21 +2574,21 @@ export class GameOrchestrator {
       this.createFateSealContext(seal, selected)
     )
     if (!result.success) return false
-    seal.source = source
-    eventBus.emit('consumableAcquired', {
-      consumableType: seal.type,
-      itemId: seal.id,
-      instanceId: seal.instanceId,
-      name: seal.name,
-      source,
-    })
+    if (acquired)
+      eventBus.emit('consumableAcquired', {
+        consumableType: seal.type,
+        itemId: seal.id,
+        instanceId: seal.instanceId,
+        name: seal.name,
+        source: seal.source ?? 'generated',
+      })
     const effects: Effect[] = []
     for (const effectResult of result.effects)
       this.applyFateSealEffect(seal, effectResult, effects)
     eventBus.emit('fateSealUsed', {
       sealId: seal.id,
       effect: seal.effect.description,
-      source,
+      source: seal.source,
     })
     return true
   }
@@ -3199,17 +3253,29 @@ export class GameOrchestrator {
 
     const type = seal.effect.consumableType
     if (!type) return
-    for (let i = 0; i < count; i++) this.createRandomConsumable(type, effects)
+    // The Emperor's Seals work at once, so it makes other Seals: no more
+    // Emperors, and no Fool, which would copy it.
+    for (let i = 0; i < count; i++)
+      this.createRandomConsumable(type, effects, [seal.id, 'seal_of_the_fool'])
   }
 
   private createRandomConsumable(
     type: ConsumableType,
-    effects: Effect[]
+    effects: Effect[],
+    excludeIds: string[] = []
   ): boolean {
     let consumable: BaseConsumable | null = null
     if (type === 'FateSeal') {
-      const definition = FateSealSystem.getRandomFateSeal([], (id) =>
-        this.isConsumableUnlocked(id)
+      // A made Seal is used as it is made: only one that can work now.
+      const definition = FateSealSystem.getRandomFateSeal(
+        excludeIds,
+        (id) =>
+          this.isConsumableUnlocked(id) &&
+          !this.validateWallSeal({
+            ...FATE_SEALS[id],
+            instanceId: id,
+            isUsed: false,
+          })
       )
       if (definition)
         consumable = FateSealSystem.createFateSealInstance(definition)
@@ -3228,7 +3294,7 @@ export class GameOrchestrator {
     if (!consumable) return false
     const added =
       consumable.type === 'FateSeal'
-        ? this.addFateSeal(consumable as FateSeal, 'generated')
+        ? this.grantGeneratedSeal(consumable as FateSeal)
         : consumable.type === 'CelestialOrb'
           ? this.addCelestialOrb(consumable as CelestialOrb, 'generated')
           : this.addVoidScript(consumable as VoidScript, 'generated')
@@ -3242,17 +3308,27 @@ export class GameOrchestrator {
     return added
   }
 
+  /**
+   * A Seal the run makes (a Purple tile, the Emperor, the Fool) is used as it
+   * is made, like one bought. One that needs no tiles works now; one that
+   * takes tiles waits in `fateSeals` only until the player picks them on the
+   * wall, which the table and the Tea House ask at once.
+   */
+  private grantGeneratedSeal(seal: FateSeal): boolean {
+    if (consumableTargetRange(seal.effect).max === 0)
+      return this.applyFateSeal(seal, 'generated')
+    return this.grantConsumable(seal, 'generated')
+  }
+
   private duplicateConsumable(definitionId: string): boolean {
-    // This private path is reached only from a validated Fool use. The Seal
-    // system has already advanced copy history to the Fool itself, so preserve
-    // the prior owned item's rights when granting the promised copy.
+    // This private path is reached only from a validated Fool use, so the
+    // copy keeps the copied item's rights and skips the unlock check.
     const fateDefinition = Object.values(FATE_SEALS).find(
       (definition) => definition.id === definitionId
     )
     if (fateDefinition) {
-      return this.grantConsumable(
-        FateSealSystem.createFateSealInstance(fateDefinition),
-        'generated'
+      return this.grantGeneratedSeal(
+        FateSealSystem.createFateSealInstance(fateDefinition)
       )
     }
 

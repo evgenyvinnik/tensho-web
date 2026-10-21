@@ -22,14 +22,12 @@ import type {
   PlayerAction,
   ValidationResult,
 } from '../../game/ActionProcessor'
-import type { FateSeal } from '../../systems/FateSealSystem'
 import {
   DEFAULT_ORB_MAX_LEVEL,
   type CelestialOrb,
   type YakuCategory,
 } from '../../systems/CelestialOrbSystem'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
-import type { BaseConsumable } from '../../systems/ConsumableSystem'
 import { consumableTargetRange } from '../../gameplay/consumableTargeting'
 import { useItemText } from '../../i18n/useItemText'
 import { getFlowerArt, getItemArt, getSeasonArt } from '../../utils/itemArt'
@@ -43,11 +41,11 @@ type ConsumableAction = Extract<
   PlayerAction,
   { type: 'useSeal' | 'useOrb' | 'useScript' }
 >
-type Consumable = FateSeal | CelestialOrb | VoidScript
+// Seals are used the moment they are obtained, so the rail never holds one.
+type Consumable = CelestialOrb | VoidScript
 
 export interface CollectibleRailProps {
   flora: ReturnType<GameOrchestrator['getFloraState']>
-  fateSeals: readonly FateSeal[]
   celestialOrbs: readonly CelestialOrb[]
   voidScripts: readonly VoidScript[]
   upgrades: ReturnType<GameOrchestrator['getYakuUpgradeState']>
@@ -56,9 +54,7 @@ export interface CollectibleRailProps {
   validateUse: (action: ConsumableAction) => ValidationResult
   onUse: (action: ConsumableAction) => ActionResult
   /** Open target selection for an item that needs chosen tiles. */
-  onChooseTargets: (item: FateSeal | VoidScript) => void
-  /** What a copying Seal (the Fool) would create now. */
-  lastCopyableConsumable?: BaseConsumable | null
+  onChooseTargets: (item: VoidScript) => void
   /** An Omen cancels the next Void Script's penalty. */
   scriptDownsideProtected?: boolean
   /** The Observatory Charter pays for Orbs held rather than used. */
@@ -66,11 +62,9 @@ export interface CollectibleRailProps {
 }
 
 function actionFor(item: Consumable, targets: string[] = []): ConsumableAction {
-  return item.type === 'FateSeal'
-    ? { type: 'useSeal', sealId: item.instanceId, targets }
-    : item.type === 'VoidScript'
-      ? { type: 'useScript', scriptId: item.instanceId, targets }
-      : { type: 'useOrb', orbId: item.instanceId }
+  return item.type === 'VoidScript'
+    ? { type: 'useScript', scriptId: item.instanceId, targets }
+    : { type: 'useOrb', orbId: item.instanceId }
 }
 
 /** Direct use from an item's own panel, guarded against double taps. */
@@ -119,7 +113,7 @@ function UseButton({
         onClick={() => {
           if (busy.current) return
           if (needsTargets) {
-            onChooseTargets(item as FateSeal | VoidScript)
+            onChooseTargets(item as VoidScript)
             onUsed()
             return
           }
@@ -151,7 +145,6 @@ function UseButton({
 
 export function CollectibleRail({
   flora,
-  fateSeals,
   celestialOrbs,
   voidScripts,
   upgrades,
@@ -159,7 +152,6 @@ export function CollectibleRail({
   validateUse,
   onUse,
   onChooseTargets,
-  lastCopyableConsumable,
   scriptDownsideProtected = false,
   observatoryActive = false,
 }: CollectibleRailProps) {
@@ -198,7 +190,7 @@ export function CollectibleRail({
 
   const familyName = (family: YakuCategory) =>
     t(`upgradeFamilies.${family}.name`)
-  const consumable = (item: Consumable, kind: 'seals' | 'orbs' | 'scripts') => {
+  const consumable = (item: Consumable, kind: 'orbs' | 'scripts') => {
     const name = itemText.name(kind, item)
     const family = item.type === 'CelestialOrb' ? item.effect.targetYaku : null
     const level = family && family !== 'All' ? levelOf(family) : null
@@ -207,13 +199,7 @@ export function CollectibleRail({
         key={item.instanceId}
         label={name}
         art={getItemArt(kind, item.id).src}
-        tone={
-          item.type === 'FateSeal'
-            ? '#c084fc'
-            : item.type === 'VoidScript'
-              ? '#9ca3af'
-              : '#60a5fa'
-        }
+        tone={item.type === 'VoidScript' ? '#9ca3af' : '#60a5fa'}
         data={{
           'data-consumable-instance': item.instanceId,
           'data-consumable-type': item.type,
@@ -283,23 +269,6 @@ export function CollectibleRail({
                 })}
           </p>
         )}
-        {item.type === 'FateSeal' &&
-          item.effect.type === 'duplicate_consumable' &&
-          lastCopyableConsumable &&
-          lastCopyableConsumable.type !== 'VoidScript' && (
-            <p
-              role="status"
-              data-consumable-copy-result
-              className="mt-3 text-xs text-amber-200"
-            >
-              {t('consumableUse.copyResult', {
-                name: itemText.name(
-                  lastCopyableConsumable.type === 'FateSeal' ? 'seals' : 'orbs',
-                  lastCopyableConsumable
-                ),
-              })}
-            </p>
-          )}
         <UseButton
           item={item}
           validateUse={validateUse}
@@ -350,7 +319,6 @@ export function CollectibleRail({
       </CollectibleToken>
     )),
     ...celestialOrbs.map((orb) => consumable(orb, 'orbs')),
-    ...fateSeals.map((seal) => consumable(seal, 'seals')),
     ...voidScripts.map((script) => consumable(script, 'scripts')),
     ...upgrades.map((upgrade) => (
       <YakuUpgradeToken

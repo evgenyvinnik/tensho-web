@@ -175,7 +175,7 @@ test('inspection and Escape preserve staged tiles, hidden identities and focus',
   page,
   isMobile,
 }) => {
-  const { itemId } = await fixture(page)
+  const { itemId } = await fixture(page, 'script', 'script_of_the_cryptid')
   await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
     const { gameOrchestrator: game } = await import(path)
@@ -203,7 +203,6 @@ test('inspection and Escape preserve staged tiles, hidden identities and focus',
     dialog.locator('[data-consumable-target="source"]')
   ).toHaveAccessibleName('Face-down tile')
   await dialog.locator('[data-consumable-target="source"]').click()
-  await dialog.locator('[data-consumable-target="target"]').click()
   await dialog.locator('[data-consumable-confirm]').focus()
   await page.keyboard.press('Tab')
   await expect(
@@ -218,50 +217,59 @@ test('inspection and Escape preserve staged tiles, hidden identities and focus',
   await expect(onFelt).toBeVisible()
 })
 
-test('copy targets follow the numbered selection order, not rack order', async ({
+/** The wall picker a Seal made at the table opens at once. */
+const wallPicker = (page: Page, sealId: string) =>
+  page.locator(`[data-seal-wall-dialog="${sealId}"]`)
+
+test('a Seal made at the table asks for its wall tiles at once and cannot be kept', async ({
   page,
 }) => {
-  const { itemId } = await fixture(page, 'seal', 'seal_of_transmutation')
-  await openAndUse(page, itemId)
-  const dialog = targetDialog(page)
-  await expect(dialog).toContainText('Tile 1 becomes a copy of tile 2')
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await dialog.locator('[data-consumable-target="source"]').click()
+  await fixture(page, 'seal', 'seal_of_transmutation')
+  const picker = wallPicker(page, 'seal_of_transmutation')
+  await expect(picker).toBeVisible()
+  await expect(picker.locator('[data-seal-wall-close]')).toHaveCount(0)
   await expect(
-    dialog.locator('[data-consumable-target="target"]')
-  ).toContainText('1')
+    picker.getByRole('button', { name: 'Cancel', exact: true })
+  ).toHaveCount(0)
+  await page.keyboard.press('Escape')
+  await expect(picker).toBeVisible()
+  await expect(page.locator('[data-consumable-type="FateSeal"]')).toHaveCount(0)
+  // Copy targets follow the numbered selection order, not rack order.
+  await expect(picker).toContainText('Tile 1 becomes a copy of tile 2')
+  await picker.locator('[data-seal-wall-tile="target"]').click()
+  await picker.locator('[data-seal-wall-tile="source"]').click()
+  await expect(picker.locator('[data-seal-wall-tile="target"]')).toContainText(
+    '1'
+  )
+  await expect(picker.locator('[data-seal-wall-tile="source"]')).toContainText(
+    '2'
+  )
+  await picker.locator('[data-seal-wall-confirm]').click()
+  await expect(picker).toHaveCount(0)
   await expect(
-    dialog.locator('[data-consumable-target="source"]')
-  ).toContainText('2')
-  await dialog.locator('[data-consumable-confirm]').click()
-  await expect(dialog).not.toBeVisible()
+    page.locator('[data-seal-used="seal_of_transmutation"]')
+  ).toBeVisible()
   const state = await snapshot(page)
-  expect(state.hand.find((tile) => tile.id === 'target')).toMatchObject({
-    suit: 'manzu',
-    rank: 1,
-  })
-  expect(state.hand.find((tile) => tile.id === 'source')).toMatchObject({
-    suit: 'manzu',
-    rank: 1,
-  })
+  expect(state.seals).toBe(0)
+  for (const id of ['target', 'source'])
+    expect(state.hand.find((tile) => tile.id === id)).toMatchObject({
+      suit: 'manzu',
+      rank: 1,
+    })
 })
 
-test('a short localized phone can recover from a no-op target without losing the Seal', async ({
+test('a made Seal on a short localized phone dims tiles it cannot change and fits its picker', async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 568 })
-  const { itemId } = await fixture(page, 'seal', 'seal_of_strength', 'es')
-  await openAndUse(page, itemId)
-  const dialog = targetDialog(page)
-  await expect(dialog.getByRole('status')).toContainText('0 / 1–2')
-  const before = await snapshot(page)
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await expect(dialog.locator('[data-consumable-confirm]')).toBeDisabled()
-  await expect(dialog.locator('[data-consumable-availability]')).toContainText(
-    'entre 1 y 9'
+  await fixture(page, 'seal', 'seal_of_strength', 'es')
+  const picker = wallPicker(page, 'seal_of_strength')
+  await expect(picker.locator('footer [role="status"]').first()).toContainText(
+    '0 / 1–2'
   )
-  expect(await snapshot(page)).toEqual(before)
-  const bounds = await dialog.locator('footer button').evaluateAll((buttons) =>
+  // A Nine cannot rise, so Strength cannot take it.
+  await expect(picker.locator('[data-seal-wall-tile="target"]')).toBeDisabled()
+  const bounds = await picker.locator('footer button').evaluateAll((buttons) =>
     buttons.map((button) => {
       const r = button.getBoundingClientRect()
       return {
@@ -285,131 +293,29 @@ test('a short localized phone can recover from a no-op target without losing the
     expect(b.fits).toBe(true)
   }
   await page.screenshot({
-    path: testInfo.outputPath('consumable-error-phone.png'),
+    path: testInfo.outputPath('seal-wall-phone.png'),
   })
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await dialog.locator('[data-consumable-target="source"]').click()
-  await dialog.locator('[data-consumable-confirm]').click()
-  await expect(dialog).not.toBeVisible()
+  await picker.locator('[data-seal-wall-tile="source"]').click()
+  await picker.locator('[data-seal-wall-confirm]').click()
+  await expect(picker).toHaveCount(0)
   const after = await snapshot(page)
   expect(after.seals).toBe(0)
   expect(after.hand.find((tile) => tile.id === 'source')?.rank).toBe(2)
 })
 
-test('Strength cancellation keeps a red five and confirmation renders an ordinary six', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 320, height: 568 })
-  const { itemId } = await fixture(page, 'seal', 'seal_of_strength')
-  await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const tilePath = '/src/core/Tile.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { Tile, TileSuit } = await import(tilePath)
-    const state = game.getState()
-    const red = new Tile(TileSuit.Manzu, 5, 'source', true)
-    state.handTiles = state.handTiles.map((tile: { id: string }) =>
-      tile.id === red.id ? red : tile
-    )
-    state.wallTemplate = state.wallTemplate.map((tile: { id: string }) =>
-      tile.id === red.id ? red : tile
-    )
-  })
-  const before = await snapshot(page)
-  await openAndUse(page, itemId)
-  const dialog = targetDialog(page)
-  await dialog.locator('[data-consumable-target="source"]').click()
-  await expect(dialog.locator('[data-consumable-confirm]')).toBeEnabled()
-  expect(await snapshot(page)).toEqual(before)
-  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click()
-  expect(await snapshot(page)).toEqual(before)
-  await openAndUse(page, itemId)
-  await dialog.locator('[data-consumable-target="source"]').click()
-  await dialog.locator('[data-consumable-confirm]').click()
-  await expect(dialog).not.toBeVisible()
-  const after = await snapshot(page)
-  expect(after.hand.find((tile) => tile.id === 'source')).toMatchObject({
-    rank: 6,
-    isRed: false,
-  })
-  expect(after.seals).toBe(0)
-  await expect(
-    page.locator('[data-play-tile="source"]').getByRole('img', {
-      name: '6 of Characters',
-      exact: true,
-    })
-  ).toBeVisible()
-})
-
-test('Unity explains its Wind mapping on a small phone, preserves hidden targets on cancel, and creates a playable pair', async ({
+test('Unity made at the table turns two wall tiles into a playable pair of Winds', async ({
   page,
   isMobile,
-}, testInfo) => {
-  await page.setViewportSize({ width: 320, height: 568 })
-  const { itemId } = await fixture(page, 'seal', 'seal_of_unity', 'es')
-  await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const tilePath = '/src/core/Tile.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { Tile, TileSuit } = await import(tilePath)
-    const state = game.getState()
-    const source = new Tile(TileSuit.Manzu, 5, 'source', true)
-    state.handTiles = state.handTiles.map((t: { id: string }) =>
-      t.id === 'source' ? source : t
-    )
-    state.wallTemplate = state.wallTemplate.map((t: { id: string }) =>
-      t.id === 'source' ? source : t
-    )
-    state.faceDownTileIds.add('target')
-  })
-  const before = await snapshot(page)
-  await openAndUse(page, itemId)
-  const dialog = targetDialog(page)
-  const legend = dialog.locator('[data-unity-mapping]')
-  await expect(legend).toContainText('Número original → Viento')
-  await expect(legend.locator('[data-unity-wind]')).toHaveCount(4)
-  await expect(legend.locator('[data-unity-wind="1"]')).toHaveAccessibleName(
-    '1, 5, 9 → Este'
-  )
-  await expect(legend.locator('[data-unity-wind="4"]')).toHaveAccessibleName(
-    '4, 8 → Norte'
-  )
-  for (const img of await legend.locator('img').all())
-    await expect
-      .poll(() =>
-        img.evaluate(
-          (node) =>
-            (node as HTMLImageElement).complete &&
-            (node as HTMLImageElement).naturalWidth > 0
-        )
-      )
-      .toBe(true)
-  const bounds = await legend.evaluate((node) => {
-    const r = node.getBoundingClientRect()
-    return {
-      left: r.left,
-      right: r.right,
-      fits: node.scrollWidth <= node.clientWidth,
-    }
-  })
-  expect(bounds.left).toBeGreaterThanOrEqual(0)
-  expect(bounds.right).toBeLessThanOrEqual(320)
-  expect(bounds.fits).toBe(true)
-  await page.screenshot({
-    path: testInfo.outputPath('unity-mapping-phone.png'),
-  })
-  await dialog.locator('[data-consumable-target="source"]').click()
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await expect(dialog.locator('[data-consumable-confirm]')).toBeEnabled()
-  expect(await snapshot(page)).toEqual(before)
-  await dialog.getByRole('button', { name: 'Cancelar', exact: true }).click()
-  expect(await snapshot(page)).toEqual(before)
-  await openAndUse(page, itemId)
-  await dialog.locator('[data-consumable-target="source"]').click()
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await dialog.locator('[data-consumable-confirm]').click()
-  await expect(dialog).not.toBeVisible()
+}) => {
+  await fixture(page, 'seal', 'seal_of_unity')
+  const picker = wallPicker(page, 'seal_of_unity')
+  await picker.locator('[data-seal-wall-tile="source"]').click()
+  await picker.locator('[data-seal-wall-tile="target"]').click()
+  await expect(picker.locator('[data-seal-wall-result] li')).toHaveCount(2)
+  await picker.locator('[data-seal-wall-confirm]').click()
+  await expect(picker).toHaveCount(0)
   const after = await snapshot(page)
+  // A One and a Nine both map to the East Wind.
   for (const id of ['source', 'target'])
     expect(after.hand.find((t) => t.id === id)).toMatchObject({
       suit: 'wind',
@@ -417,7 +323,6 @@ test('Unity explains its Wind mapping on a small phone, preserves hidden targets
       isRed: false,
     })
   expect(after.seals).toBe(0)
-  expect(after.hidden).not.toContain('target')
   for (const id of ['source', 'target']) {
     const tile = page.locator(
       `[data-play-zone="hand"] [data-play-tile="${id}"]`
@@ -498,33 +403,6 @@ test('an Orb needs confirmation, upgrades the real level, and prevents capped us
   expect(await snapshot(page)).toEqual(capped)
 })
 
-test('a full Decree inventory explains why a reward Seal cannot be used', async ({
-  page,
-}) => {
-  const { itemId } = await fixture(page, 'seal', 'seal_of_judgment')
-  await page.evaluate(async () => {
-    const gamePath = '/src/game/GameOrchestrator.ts'
-    const decreePath = '/src/systems/DecreeSystem.ts'
-    const { gameOrchestrator: game } = await import(gamePath)
-    const { ALL_DECREES } = await import(decreePath)
-    const system = game.getState().decreeSystem
-    for (const item of ALL_DECREES) {
-      if (system.getAvailableSlots() === 0) break
-      system.acquireDecree(item)
-    }
-    if (system.getAvailableSlots() !== 0) throw new Error('Fixture not full')
-  })
-  const before = await snapshot(page)
-  await token(page, itemId).click()
-  await expect(page.locator(`[data-use-item="${itemId}"]`)).toBeDisabled()
-  await expect(page.locator('[data-consumable-availability]')).toHaveText(
-    'Make space for the reward before using this item.'
-  )
-  await page.keyboard.press('Escape')
-  await expect(page.locator(`[data-use-item="${itemId}"]`)).toHaveCount(0)
-  expect(await snapshot(page)).toEqual(before)
-})
-
 test('a Script with no Decree to modify explains the missing target without charging its penalty', async ({
   page,
 }) => {
@@ -546,148 +424,61 @@ test('a Script with no Decree to modify explains the missing target without char
   expect(await snapshot(page)).toEqual(before)
 })
 
-test('concealed suitability stays unknown until confirmation and a rejected use preserves the tile', async ({
+test('a made Fool works at once, copying the last Orb despite an intervening Script', async ({
   page,
 }) => {
-  const { itemId } = await fixture(page, 'seal', 'seal_of_strength')
-  await page.evaluate(async () => {
-    const path = '/src/game/GameOrchestrator.ts'
-    const { gameOrchestrator: game } = await import(path)
-    game.getState().faceDownTileIds.add('source')
-    game.getState().faceDownTileIds.add('target')
-  })
-  const before = await snapshot(page)
-  await openAndUse(page, itemId)
-  const dialog = targetDialog(page)
-  const confirm = dialog.locator('[data-consumable-confirm]')
-  // Both a legal rank 1 and an ineffective rank 9 have identical public
-  // suitability. Selecting either must not reveal its identity through state.
-  for (const id of ['source', 'target']) {
-    const tile = dialog.locator(`[data-consumable-target="${id}"]`)
-    await expect(tile).toHaveAccessibleName('Face-down tile')
-    await tile.click()
-    await expect(confirm).toBeEnabled()
-    await expect(dialog.locator('[data-consumable-uncertainty]')).toHaveText(
-      'The outcome for concealed targets is checked only when you confirm.'
-    )
-    await expect(dialog.locator('[data-consumable-availability]')).toHaveCount(
-      0
-    )
-    expect(await snapshot(page)).toEqual(before)
-    await tile.click()
+  const { itemId: orbId } = await fixture(page, 'orb', 'pluto_orb')
+  // Untargeted items are used straight from their rail panel.
+  const use = async (itemId: string) => {
+    await openAndUse(page, itemId)
+    await expect(token(page, itemId)).toHaveCount(0)
+    // The Wraith's new Decree is revealed over the table.
+    await settleReveals(page)
   }
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await confirm.click()
-  await expect(dialog.getByRole('alert')).toContainText('between 1 and 9')
-  expect(await snapshot(page)).toEqual(before)
-  await dialog.locator('[data-consumable-target="target"]').click()
-  await dialog.locator('[data-consumable-target="source"]').click()
-  await confirm.click()
-  await expect(dialog).not.toBeVisible()
+  await use(orbId)
+  const scriptId = await page.evaluate(async () => {
+    const gamePath = '/src/game/GameOrchestrator.ts'
+    const scriptPath = '/src/systems/VoidScriptSystem.ts'
+    const { gameOrchestrator: game } = await import(gamePath)
+    const { VoidScriptSystem, VOID_SCRIPTS } = await import(scriptPath)
+    const item = VoidScriptSystem.createVoidScriptInstance(
+      VOID_SCRIPTS.script_of_the_wraith
+    )
+    game.addVoidScript(item)
+    return item.instanceId as string
+  })
+  await use(scriptId)
+  const before = await snapshot(page)
+  await page.evaluate(async () => {
+    const gamePath = '/src/game/GameOrchestrator.ts'
+    const sealPath = '/src/systems/FateSealSystem.ts'
+    const { gameOrchestrator: game } = await import(gamePath)
+    const { FateSealSystem, FATE_SEALS } = await import(sealPath)
+    game.addFateSeal(
+      FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_fool)
+    )
+  })
+  await expect(
+    page.locator('[data-seal-used="seal_of_the_fool"]')
+  ).toBeVisible()
   const after = await snapshot(page)
   expect(after.seals).toBe(0)
-  expect(after.hidden).toEqual(['target'])
-  expect(after.hand.find((tile) => tile.id === 'source')?.rank).toBe(2)
-})
-
-for (const language of [
-  {
-    lang: 'en',
-    missing: 'First use an item from Fate Seals or Celestial Orbs.',
-    result: 'Creates: Pluto Orb',
-  },
-  {
-    lang: 'es',
-    missing: 'Primero usa un objeto de Sellos del Destino o Orbes Celestiales.',
-    result: 'Crea: Orbe de Plutón',
-  },
-]) {
-  test(`the Fool previews and creates the last eligible item despite intervening Scripts (${language.lang})`, async ({
-    page,
-  }) => {
-    const { itemId: fool } = await fixture(
-      page,
-      'seal',
-      'seal_of_the_fool',
-      language.lang
-    )
-    // Untargeted items are used straight from their rail panel.
-    const use = async (itemId: string) => {
-      await openAndUse(page, itemId)
-      await expect(token(page, itemId)).toHaveCount(0)
-      // The Wraith's new Decree is revealed over the table.
-      await settleReveals(page)
-    }
-    const close = async () => {
-      await page.keyboard.press('Escape')
-      await expect(page.locator(`[data-use-item="${fool}"]`)).toHaveCount(0)
-    }
-    const copyResult = page.locator('[data-consumable-copy-result]')
-    const add = async (kind: 'orb' | 'script') =>
-      page.evaluate(async (kind) => {
-        const gamePath = '/src/game/GameOrchestrator.ts'
-        const orbPath = '/src/systems/CelestialOrbSystem.ts'
-        const scriptPath = '/src/systems/VoidScriptSystem.ts'
-        const { gameOrchestrator: game } = await import(gamePath)
-        if (kind === 'orb') {
-          const { CelestialOrbSystem, CELESTIAL_ORBS } = await import(orbPath)
-          const item = CelestialOrbSystem.createCelestialOrbInstance(
-            CELESTIAL_ORBS.pluto_orb
-          )
-          if (!game.addCelestialOrb(item))
-            throw new Error('Orb fixture has no room')
-          return item.instanceId as string
-        }
-        const { VoidScriptSystem, VOID_SCRIPTS } = await import(scriptPath)
-        const item = VoidScriptSystem.createVoidScriptInstance(
-          VOID_SCRIPTS.script_of_the_wraith
-        )
-        if (!game.addVoidScript(item))
-          throw new Error('Script fixture has no room')
-        return item.instanceId as string
-      }, kind)
-
-    await use(await add('script'))
-    await token(page, fool).click()
-    await expect(page.locator(`[data-use-item="${fool}"]`)).toBeDisabled()
-    await expect(page.locator('[data-consumable-availability]')).toHaveText(
-      language.missing
-    )
-    await expect(copyResult).toHaveCount(0)
-    await close()
-
-    const usedOrbId = await add('orb')
-    await use(usedOrbId)
-    await use(await add('script'))
-    const before = await snapshot(page)
-    await token(page, fool).click()
-    await expect(copyResult).toHaveText(language.result)
-    expect(await snapshot(page)).toEqual(before)
-    await close()
-    expect(await snapshot(page)).toEqual(before)
-    await token(page, fool).click()
-    await expect(copyResult).toHaveText(language.result)
-    await page.locator(`[data-use-item="${fool}"]`).click()
-    await expect(token(page, fool)).toHaveCount(0)
-    const after = await snapshot(page)
-    expect(after.seals).toBe(0)
-    expect(after.scripts).toBe(0)
-    expect(after.orbs).toBe(1)
-    expect(after.level).toBe(before.level)
-    const created = await page.evaluate(async () => {
-      const path = '/src/game/GameOrchestrator.ts'
-      const { gameOrchestrator: game } = await import(path)
-      return game
-        .getCelestialOrbs()
-        .map((item: { id: string; instanceId: string }) => ({
-          id: item.id,
-          instanceId: item.instanceId,
-        }))
-    })
-    expect(created[0].id).toBe('pluto_orb')
-    expect(created[0].instanceId).not.toBe(usedOrbId)
+  expect(after.orbs).toBe(1)
+  // The copied Orb is created, not used: it waits on the rail.
+  expect(after.level).toBe(before.level)
+  const created = await page.evaluate(async () => {
+    const path = '/src/game/GameOrchestrator.ts'
+    const { gameOrchestrator: game } = await import(path)
+    return game
+      .getCelestialOrbs()
+      .map((item: { id: string; instanceId: string }) => ({
+        id: item.id,
+        instanceId: item.instanceId,
+      }))
   })
-}
+  expect(created[0].id).toBe('pluto_orb')
+  expect(created[0].instanceId).not.toBe(orbId)
+})
 
 test('Omen protection is disclosed and preserved on cancel, then consumed with a successful Script', async ({
   page,

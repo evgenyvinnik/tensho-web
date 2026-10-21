@@ -54,6 +54,8 @@ import { ShopBuildPanel } from '../shop/ShopBuildPanel'
 import { FlowerCatalystDialog } from '../shop/FlowerCatalystDialog'
 import { SealWallDialog } from '../shop/SealWallDialog'
 import { SealUsedToast } from '../shop/SealUsedToast'
+import { MadeSealPrompt } from '../shop/MadeSealPrompt'
+import { useHeaderHeight } from '../../hooks/useHeaderHeight'
 import { acceptsFlowerCatalyst } from '../../systems/flowerCatalysts'
 
 /** A Seal that is laid on wall tiles, so buying it first asks which. */
@@ -73,22 +75,6 @@ interface PackSealSteps {
 // MAIN SHOP SCREEN COMPONENT
 // =============================================================================
 
-/** The space the fixed header takes, so the arrival toasts sit just below it. */
-function useHeaderHeight(selector = '[data-shop-header]'): number {
-  const [height, setHeight] = useState(64)
-  useEffect(() => {
-    const header = document.querySelector<HTMLElement>(selector)
-    if (!header) return
-    const measure = () => setHeight(header.getBoundingClientRect().height)
-    measure()
-    if (typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(measure)
-    observer.observe(header)
-    return () => observer.disconnect()
-  }, [selector])
-  return height
-}
-
 /**
  * ShopScreen - Tea House between-round shop
  */
@@ -98,7 +84,7 @@ export function ShopScreen() {
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
   const reducedMotion = useReducedMotion()
-  const headerHeight = useHeaderHeight()
+  const headerHeight = useHeaderHeight('[data-shop-header]')
   const tutorialHints = useMemo(() => getProgressiveHints(t), [t])
   const tutorial = useProgressiveTutorial(tutorialHints)
   const { triggerHints } = tutorial
@@ -259,15 +245,21 @@ export function ShopScreen() {
     [messageFor]
   )
 
-  /** Announce Seals that have just worked, with what they made of the wall. */
+  /**
+   * Announce Seals that have just worked, with what they made of the wall.
+   * Seals they made arrive just after them and join the same note.
+   */
   const announceSeals = useCallback(
     (used: { seal: FateSeal; changes: SealedTile[] }[]) => {
       if (used.length === 0) return
-      setSealUsed({
+      setSealUsed((shown) => ({
         key: Date.now(),
-        seals: used.map((entry) => entry.seal),
-        changes: used.flatMap((entry) => entry.changes),
-      })
+        seals: [...(shown?.seals ?? []), ...used.map((entry) => entry.seal)],
+        changes: [
+          ...(shown?.changes ?? []),
+          ...used.flatMap((entry) => entry.changes),
+        ],
+      }))
     },
     []
   )
@@ -624,6 +616,18 @@ export function ShopScreen() {
           }}
         />
       )}
+      <MadeSealPrompt
+        seals={game.fateSeals}
+        wall={game.state.wallTemplate}
+        paused={
+          sealOffering !== null ||
+          packSeals !== null ||
+          currentPackOffering !== null ||
+          catalystOffering !== null
+        }
+        settle={game.settleHeldFateSeal}
+        onUsed={announceSeals}
+      />
       <DecreeReveal />
       <CelestialOrbReveal />
       <PackOpeningModal

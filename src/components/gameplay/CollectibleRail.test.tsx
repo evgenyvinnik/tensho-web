@@ -6,7 +6,6 @@ import {
   CELESTIAL_ORBS,
   CelestialOrbSystem,
 } from '../../systems/CelestialOrbSystem'
-import { FATE_SEALS, FateSealSystem } from '../../systems/FateSealSystem'
 import { VOID_SCRIPTS, VoidScriptSystem } from '../../systems/VoidScriptSystem'
 import { eventBus } from '../../game/EventBus'
 import { useFloraRevealQueue } from '../../game/floraRevealQueue'
@@ -27,12 +26,8 @@ function renderRail(overrides: Partial<CollectibleRailProps> = {}) {
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
     CELESTIAL_ORBS.pluto_orb
   )
-  const seal = FateSealSystem.createFateSealInstance(
-    FATE_SEALS.seal_of_the_alchemist
-  )
   const props: CollectibleRailProps = {
     flora: game.getFloraState(),
-    fateSeals: [seal],
     celestialOrbs: [orb],
     voidScripts: [],
     upgrades: game.getYakuUpgradeState(),
@@ -43,7 +38,7 @@ function renderRail(overrides: Partial<CollectibleRailProps> = {}) {
     ...overrides,
   }
   render(<CollectibleRail {...props} />)
-  return { props, orb, seal }
+  return { props, orb }
 }
 
 const open = (instanceId: string) =>
@@ -62,11 +57,14 @@ it('uses an Orb straight from its own panel, naming that exact copy', () => {
   })
 })
 
-it('sends a Seal that needs tiles to target selection instead of using it', () => {
-  const { props, seal } = renderRail()
-  open(seal.instanceId)
+it('sends a Script that needs tiles to target selection instead of using it', () => {
+  const script = VoidScriptSystem.createVoidScriptInstance(
+    VOID_SCRIPTS.script_of_the_cryptid
+  )
+  const { props } = renderRail({ voidScripts: [script] })
+  open(script.instanceId)
   fireEvent.click(screen.getByRole('button', { name: 'Choose tiles' }))
-  expect(props.onChooseTargets).toHaveBeenCalledWith(seal)
+  expect(props.onChooseTargets).toHaveBeenCalledWith(script)
   expect(props.onUse).not.toHaveBeenCalled()
 })
 
@@ -124,22 +122,6 @@ it('shows when an Omen cancels a Void Script’s cost', () => {
   expect(document.querySelector('[data-script-cost]')).toHaveTextContent(
     'Omen protection cancels the additional penalty.'
   )
-})
-
-it('previews what the Fool would create', () => {
-  const fool = FateSealSystem.createFateSealInstance(
-    FATE_SEALS.seal_of_the_fool
-  )
-  renderRail({
-    fateSeals: [fool],
-    lastCopyableConsumable: CelestialOrbSystem.createCelestialOrbInstance(
-      CELESTIAL_ORBS.pluto_orb
-    ),
-  })
-  open(fool.instanceId)
-  expect(
-    document.querySelector('[data-consumable-copy-result]')
-  ).toHaveTextContent('Creates: Pluto Orb')
 })
 
 it('explains what using an Orb gives up under the Observatory', () => {

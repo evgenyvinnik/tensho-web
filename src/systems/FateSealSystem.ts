@@ -748,9 +748,7 @@ export class FateSealSystem {
         success = false
     }
 
-    if (success) {
-      this.lastUsedConsumable = seal
-    }
+    if (success) this.setLastUsedConsumable(seal)
 
     return { success, message, effects }
   }
@@ -1275,11 +1273,17 @@ export class FateSealSystem {
   }
 
   /**
-   * Record eligible copy history. Scripts do not replace a previous Seal/Orb.
-   * The authored rule does not exclude the Fool itself; retain that behavior.
+   * Record eligible copy history. Scripts do not replace a previous Seal/Orb,
+   * and neither does the Fool, as in Balatro: its copy is used as it is made,
+   * and a Fool copying a Fool would never end.
    */
   setLastUsedConsumable(consumable: BaseConsumable): void {
     if (consumable.type === 'VoidScript') return
+    if (
+      consumable.type === 'FateSeal' &&
+      (consumable as FateSeal).effect.type === 'duplicate_consumable'
+    )
+      return
     this.lastUsedConsumable = consumable
   }
 

@@ -118,14 +118,13 @@ for (const operation of ['copy', 'destroy'] as const)
         await page.reload()
       }
       const before = await saved()
-      // The Seal waits on the item rail; Use goes on to choose its tiles.
-      const sealId = before.state.fateSeals[0].instanceId
-      await activate(page.locator(`[data-consumable-instance="${sealId}"]`))
-      await activate(page.locator(`[data-use-item="${sealId}"]`))
-      const dialog = page.locator('[data-consumable-dialog]')
+      // A Seal never waits on the rail: its wall picker is already open.
+      const sealId = before.state.fateSeals[0].id
+      const dialog = page.locator(`[data-seal-wall-dialog="${sealId}"]`)
       await expect(dialog.locator('[data-seal-lifetime]')).toHaveText(
         copy.runOwnership.fateSeal
       )
+      await expect(dialog.locator('[data-seal-wall-close]')).toHaveCount(0)
       if (operation === 'copy') {
         const art = dialog.locator('img[src$="seal-transmutation.webp"]')
         expect(
@@ -134,11 +133,9 @@ for (const operation of ['copy', 'destroy'] as const)
             return img.naturalWidth
           })
         ).toBe(512)
-        await activate(dialog.locator('[data-consumable-target="copy-target"]'))
+        await activate(dialog.locator('[data-seal-wall-tile="copy-target"]'))
       }
-      await activate(
-        dialog.locator('[data-consumable-target="negative-source"]')
-      )
+      await activate(dialog.locator('[data-seal-wall-tile="negative-source"]'))
       expect(await saved()).toEqual(before)
       expect(
         await dialog.evaluate(
@@ -146,7 +143,7 @@ for (const operation of ['copy', 'destroy'] as const)
         )
       ).toBe(true)
       await page.screenshot({ path: info.outputPath('seal-targets.png') })
-      await activate(dialog.locator('[data-consumable-confirm]'))
+      await activate(dialog.locator('[data-seal-wall-confirm]'))
       await expect(dialog).toHaveCount(0)
       const changed = await saved()
       expect(changed.state.fateSeals).toHaveLength(0)

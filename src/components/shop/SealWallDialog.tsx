@@ -1,12 +1,13 @@
 /**
- * SealWallDialog: lay a Tea House Seal on tiles of your wall.
+ * SealWallDialog: lay a Seal on tiles of your wall.
  *
- * A Seal bought or chosen from a pack is used at once, on the run's wall
- * rather than a hand. Every wall tile is shown, suit by suit, a column per
- * rank with its copies stacked, so the player sees the whole wall and picks
- * exactly the tiles to change; tiles the Seal cannot change are dimmed. The
- * chosen tiles and what they become stay in view above the confirm button.
- * Cancelling changes nothing.
+ * A Seal is used the moment it is obtained, on the run's wall rather than a
+ * hand: bought or chosen from a pack in the Tea House, or made by the run at
+ * the table. Every wall tile is shown, suit by suit, a column per rank with
+ * its copies stacked, so the player sees the whole wall and picks exactly the
+ * tiles to change; tiles the Seal cannot change are dimmed. The chosen tiles
+ * and what they become stay in view above the confirm button. Cancelling a
+ * purchase changes nothing; a Seal the run made has no cancel.
  *
  * @module components/shop/SealWallDialog
  */
@@ -50,7 +51,8 @@ export interface SealWallDialogProps {
   /** The engine's refusal of the last confirm, in the player's language. */
   error?: string | null
   onConfirm: (targets: string[]) => void
-  onClose: () => void
+  /** Leave without using it; omitted for a Seal the run made. */
+  onClose?: () => void
 }
 
 export function SealWallDialog({
@@ -134,7 +136,7 @@ export function SealWallDialog({
       data-seal-wall-dialog={seal.id}
       onCancel={(event) => {
         event.preventDefault()
-        onClose()
+        onClose?.()
       }}
       className="m-auto w-[calc(100vw-16px)] max-w-2xl max-h-[calc(100dvh-16px)] overflow-hidden rounded-xl border-2 border-[var(--color-metallic-gold)] bg-[var(--color-dark-forest)] p-0 text-[var(--color-beige-white)] shadow-2xl backdrop:bg-black/70"
     >
@@ -164,19 +166,24 @@ export function SealWallDialog({
             <p className="mt-1 text-sm leading-snug opacity-85">
               {itemText.description('seals', seal)}
             </p>
-            <p className="mt-1 text-xs leading-snug text-amber-100/75">
+            <p
+              data-seal-lifetime
+              className="mt-1 text-xs leading-snug text-amber-100/75"
+            >
               {t('runOwnership.fateSeal')}
             </p>
           </div>
-          <button
-            type="button"
-            data-seal-wall-close
-            onClick={onClose}
-            aria-label={t('common.close')}
-            className="absolute right-2 top-2 min-h-11 min-w-11 rounded-lg border border-white/20"
-          >
-            ×
-          </button>
+          {onClose && (
+            <button
+              type="button"
+              data-seal-wall-close
+              onClick={onClose}
+              aria-label={t('common.close')}
+              className="absolute right-2 top-2 min-h-11 min-w-11 rounded-lg border border-white/20"
+            >
+              ×
+            </button>
+          )}
         </header>
 
         <div className="min-h-0 overflow-y-auto overscroll-contain px-2 py-3 sm:px-5">
@@ -322,14 +329,16 @@ export function SealWallDialog({
               {error}
             </p>
           )}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="min-h-12 rounded-lg border border-[var(--color-metallic-gold)] px-2"
-            >
-              {t('common.cancel')}
-            </button>
+          <div className={`grid gap-3 ${onClose ? 'grid-cols-2' : ''}`}>
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="min-h-12 rounded-lg border border-[var(--color-metallic-gold)] px-2"
+              >
+                {t('common.cancel')}
+              </button>
+            )}
             <button
               type="button"
               data-seal-wall-confirm
