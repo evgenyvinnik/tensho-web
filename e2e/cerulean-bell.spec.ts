@@ -80,10 +80,16 @@ for (const lang of ['en', 'es', 'ru'])
       ru: 'Тайл блокируется при доборе',
     }[lang]!
     const control = page.locator('[data-mandate-details="cerulean_bell"]')
-    await expect(control).toHaveAccessibleName(`${title}: ${consequence}`)
-    await activate(control)
-    const dialog = page.getByRole('dialog', { name: title, exact: true })
+    // A phone opens the Bell's rule on tap; wider screens write it inline.
+    await expect(control).toHaveAccessibleName(
+      isMobile ? `${title}: ${consequence}` : title
+    )
+    if (isMobile) await activate(control)
+    const dialog = isMobile
+      ? page.getByRole('dialog', { name: title, exact: true })
+      : control
     await expect(dialog).toBeVisible()
+    await expect(dialog).toContainText(consequence)
     const art = dialog.locator('img[src$="/cerulean-bell.webp"]')
     await expect(art).toBeVisible()
     expect(
@@ -105,8 +111,10 @@ for (const lang of ['en', 'es', 'ru'])
       )
     ).toBe(true)
     await page.screenshot({ path: testInfo.outputPath('bell-rules.png') })
-    await page.keyboard.press('Escape')
-    await expect(control).toBeFocused()
+    if (isMobile) {
+      await page.keyboard.press('Escape')
+      await expect(control).toBeFocused()
+    }
     const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
     const redraw = page.locator('[data-game-action="redraw"]')
     for (let i = 0; i < 6; i++) {

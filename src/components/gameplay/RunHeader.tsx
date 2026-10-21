@@ -3,7 +3,8 @@
  *
  *   [Gold]  Act 1 · Small Round   120 / 300   [?] [Exit] [Settings]
  *   ───────────────── round progress ─────────────────
- *   [boss icon] The Manacle · Rack −1                 (Boss rounds only)
+ *   [boss art] The Manacle · Rack −1                  (Boss rounds only)
+ *              The full rule (tablet and desktop; on a phone, on tap)
  *
  * Long translations wrap inside the label instead of pushing the controls
  * off screen; scores use compact numbers with the exact value on hover and
@@ -12,7 +13,7 @@
  * @module components/gameplay/RunHeader
  */
 
-import { useRef, useState, type ReactNode } from 'react'
+import { useId, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GoldIcon } from '../ui/GoldIcon'
 import { AnchoredPopover } from '../ui/AnchoredPopover'
@@ -21,7 +22,7 @@ import { scoreNumber } from '../../utils/scoreNumber'
 import { getMandateIllustration } from '../../utils/assets'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
 import { mandateConsequence } from '../../gameplay/mandateConsequence'
-import { MandateEffectIcon } from './MandateEffectIcon'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import type { RoundType } from './gameplayTypes'
 
 export interface RunHeaderProps {
@@ -252,13 +253,24 @@ export function RunHeader({
   )
 }
 
-/** The Boss's effect as an icon and a few words; details on tap or hover. */
+/** From tablet width up the header has room for the Boss's full rule. */
+const INLINE_RULES_QUERY = '(min-width: 640px)'
+
+const BADGE_FRAME =
+  'border border-red-400/60 bg-red-950/50 text-left text-red-100 shadow-[0_0_14px_rgba(248,113,113,0.25)]'
+
+/**
+ * The Boss's portrait, name and consequence. On tablets and desktops the full
+ * rule is written beside them; on a phone it opens on tap.
+ */
 export function BossMandateBadge({
   mandate,
 }: {
   mandate: NonNullable<RunHeaderProps['mandate']>
 }) {
   const { t } = useTranslation()
+  const inline = useMediaQuery(INLINE_RULES_QUERY)
+  const nameId = useId()
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState(false)
   const consequence = mandateConsequence(mandate.effect)
@@ -271,6 +283,40 @@ export function BossMandateBadge({
         : '',
   })
   const art = getMandateIllustration(mandate.id)
+
+  if (inline)
+    return (
+      <section
+        data-mandate-details={mandate.id}
+        data-mandate-effect={mandate.effect.type}
+        aria-labelledby={nameId}
+        className={`flex min-w-0 max-w-xl items-center gap-3 rounded-2xl py-1 pl-1.5 pr-4 ${BADGE_FRAME}`}
+      >
+        {art && (
+          <img src={art} alt="" className="h-14 w-14 shrink-0 object-contain" />
+        )}
+        <div className="min-w-0 [overflow-wrap:anywhere]">
+          <p className="text-sm leading-tight">
+            <span id={nameId} className="font-bold">
+              {mandate.name}
+            </span>
+            <span aria-hidden="true" className="mx-1.5 text-red-300/70">
+              ·
+            </span>
+            <span data-mandate-consequence className="font-bold text-red-200">
+              {text}
+            </span>
+          </p>
+          <p
+            data-mandate-description
+            className="mt-0.5 text-xs leading-snug text-[var(--color-beige-white)]"
+          >
+            {mandate.description}
+          </p>
+        </div>
+      </section>
+    )
+
   return (
     <>
       <button
@@ -282,11 +328,11 @@ export function BossMandateBadge({
         aria-expanded={open}
         aria-label={`${mandate.name}: ${text}`}
         onClick={() => setOpen((value) => !value)}
-        className="flex min-h-11 min-w-0 items-center gap-2 rounded-full border border-red-400/60 bg-red-950/50 py-1 pl-1 pr-3 text-left text-xs text-red-100 shadow-[0_0_14px_rgba(248,113,113,0.25)] focus-visible:outline-2 focus-visible:outline-[var(--color-golden-yellow)]"
+        className={`flex min-h-11 min-w-0 items-center gap-2 rounded-full py-0.5 pl-1 pr-3 text-xs focus-visible:outline-2 focus-visible:outline-[var(--color-golden-yellow)] ${BADGE_FRAME}`}
       >
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-900/70 text-red-200">
-          <MandateEffectIcon type={mandate.effect.type} />
-        </span>
+        {art && (
+          <img src={art} alt="" className="h-10 w-10 shrink-0 object-contain" />
+        )}
         <span className="min-w-0 leading-tight [overflow-wrap:anywhere]">
           <span className="block font-bold">{mandate.name}</span>
           <span data-mandate-consequence className="block text-red-200">
@@ -301,19 +347,12 @@ export function BossMandateBadge({
         onClose={() => setOpen(false)}
       >
         <div className="flex items-start gap-3">
-          {art ? (
+          {art && (
             <img
               src={art}
               alt=""
               className="h-20 w-20 shrink-0 object-contain"
             />
-          ) : (
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-red-900/60 text-red-200">
-              <MandateEffectIcon
-                type={mandate.effect.type}
-                className="h-10 w-10"
-              />
-            </span>
           )}
           <div className="min-w-0 [overflow-wrap:anywhere]">
             <p className="font-bold text-red-200">{text}</p>

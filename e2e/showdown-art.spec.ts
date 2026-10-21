@@ -110,15 +110,20 @@ for (const [lang, fallbackFonts] of [
         ...before,
         state: { ...before.state, selectedTileIds: [firstTile] },
       })
-      // The header names the Showdown and its consequence; the art and the
-      // full rule open on tap.
-      const name = `${copy.name}: ${copy.consequence}`
+      // The header names the Showdown and its consequence beside its art. On
+      // wider screens the full rule is written there too; a phone opens it on
+      // tap.
+      const name = isMobile ? `${copy.name}: ${copy.consequence}` : copy.name
       await expect(opener).toHaveAccessibleName(name)
       await expect(opener.locator('[data-mandate-consequence]')).toHaveText(
         copy.consequence
       )
-      await activate(opener)
-      const dialog = page.getByRole('dialog', { name: copy.name, exact: true })
+      await expect(opener.locator(`img[src$="/${file}.webp"]`)).toBeVisible()
+      if (isMobile) await activate(opener)
+      else await expect(opener).toHaveRole('region')
+      const dialog = isMobile
+        ? page.getByRole('dialog', { name: copy.name, exact: true })
+        : opener
       await expect(dialog).toContainText(copy.consequence)
       await expect(dialog).toContainText(copy.description)
       const art = dialog.locator(`img[src$="/${file}.webp"]`)
@@ -143,8 +148,10 @@ for (const [lang, fallbackFonts] of [
       ).toBe(true)
       await page.screenshot({ path: testInfo.outputPath('showdown-rules.png') })
       expect(await saved()).toEqual(staged)
-      await page.keyboard.press('Escape')
-      await expect(opener).toBeFocused()
+      if (isMobile) {
+        await page.keyboard.press('Escape')
+        await expect(opener).toBeFocused()
+      }
       const felt = page.locator('[data-play-zone="felt"] [data-play-tile]')
       await expect(felt).toHaveCount(1)
       await expect(felt).toHaveAttribute('data-play-tile', firstTile)
