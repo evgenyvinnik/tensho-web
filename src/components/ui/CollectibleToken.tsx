@@ -29,6 +29,8 @@ export interface CollectibleTokenProps {
   tone?: string
   /** Inactive (for example a suppressed Flower, not an active Season hazard). */
   dimmed?: boolean
+  /** Still flying in from the Wall: keeps its place, unseen, until it lands. */
+  arriving?: boolean
   /** Wider frame for portrait-format art such as scrolls. */
   shape?: 'square' | 'portrait'
   /** Panel content. */
@@ -49,6 +51,7 @@ export function CollectibleToken({
   badge,
   tone = 'var(--color-metallic-gold)',
   dimmed = false,
+  arriving = false,
   shape = 'square',
   children,
   testId,
@@ -73,7 +76,7 @@ export function CollectibleToken({
         {...triggerProps}
         className={`collectible-token relative flex shrink-0 items-center justify-center rounded-lg border-2 bg-black/30 shadow-md transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] ${
           shape === 'portrait' ? 'collectible-token--portrait' : ''
-        } ${dimmed ? 'opacity-60 grayscale' : ''}`}
+        } ${dimmed ? 'opacity-60 grayscale' : ''} ${arriving ? 'invisible' : ''}`}
         style={{ borderColor: tone, boxShadow: `0 0 10px ${tone}40` }}
       >
         {art ? (

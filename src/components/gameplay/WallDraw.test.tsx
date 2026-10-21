@@ -126,10 +126,17 @@ describe('WallDraw', () => {
     )
     expect(tiles[0].keyframes[0]).toMatchObject({ opacity: 0 })
     expect(tiles[0].keyframes.at(-1)).toMatchObject({ transform: 'none' })
-    // The Flower's token answers when the tile lands; the chip takes the Wall.
-    expect(
-      recorded.some((a) => a.element.matches('[data-flora-flower="Plum"]'))
-    ).toBe(true)
+    // The Flower's token stays unseen until its tile lands, then holds lit
+    // past the draw's end, when the rail shows it; the chip takes the Wall.
+    const token = recorded.find((a) =>
+      a.element.matches('[data-flora-flower="Plum"]')
+    )!
+    expect(token.keyframes[0]).toMatchObject({ opacity: 0 })
+    expect(token.keyframes.at(-1)).toMatchObject({
+      opacity: 1,
+      visibility: 'visible',
+    })
+    expect(token.options.duration).toBeGreaterThan(wallDrawTimeline(3, 2).end)
     expect(recorded.some((a) => a.element.matches('[data-wall-chip]'))).toBe(
       true
     )

@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
 import { eventBus } from '../../game/EventBus'
+import { useFloraRevealQueue } from '../../game/floraRevealQueue'
 import type {
   ActionResult,
   PlayerAction,
@@ -172,6 +173,9 @@ export function CollectibleRail({
   // What Orchid drew and Plum recovered on the last play, kept for their
   // panels until the round ends.
   const [floraNotes, setFloraNotes] = useState({ bloom: 0, recovered: 0 })
+  // A drawn Flower or Season shows once its tile has flown here from the
+  // Wall (see WallDraw), not while the draw still waits or plays.
+  const drawing = useFloraRevealQueue((state) => state.queue)
   useEffect(() => {
     const reset = () => setFloraNotes({ bloom: 0, recovered: 0 })
     const subscriptions = [
@@ -315,6 +319,9 @@ export function CollectibleRail({
         art={getFlowerArt(flower)}
         tone="#f9a8d4"
         dimmed={flora.flowersSuppressed}
+        arriving={drawing.some(
+          (entry) => entry.kind === 'flower' && entry.flower === flower.type
+        )}
         badge={flower.mutation?.isUnlocked ? '✦' : undefined}
         data={{ 'data-flora-flower': flower.type }}
         {...control(flower.id)}
@@ -333,6 +340,9 @@ export function CollectibleRail({
         label={seasonName(season)}
         art={getSeasonArt(season)}
         tone={season.isCorrupted ? '#fb923c' : '#86efac'}
+        arriving={drawing.some(
+          (entry) => entry.kind === 'season' && entry.season.id === season.id
+        )}
         data={{ 'data-flora-season': season.id }}
         {...control(season.id)}
       >

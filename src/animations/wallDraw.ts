@@ -27,6 +27,11 @@ export const FLORA_FLY_MS = 420
 const FLORA_GAP_MS = 170
 /** The Wall tucks back into the wall chip. */
 const WALL_OUT_MS = 340
+/**
+ * A landed token stays lit this long past the draw, so the rail is showing
+ * it before the animation lets go.
+ */
+const TOKEN_HANDOFF_MS = 250
 /** Height over width of the Wall icon (illustrations/wall.webp). */
 const WALL_ASPECT = 323 / 480
 /** Reduced motion: drawn bonus tiles fade in place and stay this long. */
@@ -391,21 +396,34 @@ export function playWallDraw({
       ],
       { duration: span, delay: start, fill: 'both' }
     )
-    // Its token waits, dimmed, and lights up as the tile lands in it.
-    const settle = lands + 360
-    const waiting = { opacity: 0.3, transform: 'scale(0.85)', filter: 'none' }
+    // Its token stays unseen (the rail hides it until the draw ends) and
+    // lights up as the tile lands in it, holding until the rail takes over.
+    const settle = Math.max(lands + 360, total + TOKEN_HANDOFF_MS)
+    const waiting = {
+      visibility: 'visible',
+      opacity: 0,
+      transform: 'scale(0.85)',
+      filter: 'none',
+    }
+    const lit = { visibility: 'visible', opacity: 1 }
     run(
       find(element.dataset.target),
       [
         waiting,
         { ...waiting, offset: (lands - 60) / settle },
         {
-          opacity: 1,
+          ...lit,
           transform: 'scale(1.3)',
           filter: 'drop-shadow(0 0 10px rgba(255, 213, 79, 0.95))',
           offset: (lands + 110) / settle,
         },
-        { opacity: 1, transform: 'none', filter: 'none' },
+        {
+          ...lit,
+          transform: 'none',
+          filter: 'none',
+          offset: (lands + 360) / settle,
+        },
+        { ...lit, transform: 'none', filter: 'none' },
       ],
       { duration: settle },
       afterglow

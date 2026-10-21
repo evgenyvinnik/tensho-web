@@ -9,13 +9,16 @@ import {
 import { FATE_SEALS, FateSealSystem } from '../../systems/FateSealSystem'
 import { VOID_SCRIPTS, VoidScriptSystem } from '../../systems/VoidScriptSystem'
 import { eventBus } from '../../game/EventBus'
+import { useFloraRevealQueue } from '../../game/floraRevealQueue'
 import { runRandom } from '../../game/RunRandom'
 import { FlowerType, Tile } from '../../core/Tile'
 import { illustrationAssets } from '../../utils/assets'
+import type { SeasonTile } from '../../systems/types'
 
 afterEach(() => {
   eventBus.clear()
   runRandom.reset()
+  act(() => useFloraRevealQueue.setState({ queue: [] }))
 })
 
 function renderRail(overrides: Partial<CollectibleRailProps> = {}) {
@@ -210,6 +213,35 @@ it('pictures a Flower as awakened only once its own duplicate awakens it', () =>
   expect(art('Plum')).toBe(illustrationAssets.awakenedFlowers.Plum)
   expect(art('Orchid')).toBe(illustrationAssets.orchidBloom)
   expect(art('Bamboo')).toBe(illustrationAssets.bambooBloom)
+})
+
+it('keeps a drawn Flower and Season unseen until their tiles land', () => {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  game.getState().flowerSystem.addFlower(Tile.createFlower(FlowerType.Plum))
+  const autumn: SeasonTile = {
+    id: 'season-1',
+    type: 'Autumn',
+    effect: { type: 'yaku_modifier', value: 1.2, description: '' },
+    isCorrupted: false,
+  }
+  useFloraRevealQueue.setState({
+    queue: [
+      { kind: 'flower', flower: 'Plum', key: 1 },
+      { kind: 'season', season: autumn, key: 2 },
+    ],
+  })
+  renderRail({ flora: { ...game.getFloraState(), seasons: [autumn] } })
+  const plum = document.querySelector('[data-flora-flower="Plum"]')
+  const season = document.querySelector('[data-flora-season="season-1"]')
+  // Each keeps its place for its tile to fly into, and shows once it lands.
+  expect(plum).toHaveClass('invisible')
+  expect(season).toHaveClass('invisible')
+  act(() => useFloraRevealQueue.getState().dismissThrough(1))
+  expect(plum).not.toHaveClass('invisible')
+  expect(season).toHaveClass('invisible')
+  act(() => useFloraRevealQueue.getState().dismissThrough(2))
+  expect(season).not.toHaveClass('invisible')
 })
 
 it('tells a Flower when a Decree shields it from Drought', () => {
