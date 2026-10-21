@@ -12,7 +12,13 @@
  * @module components/gameplay/HandRack
  */
 
-import { useMemo, useRef, type CSSProperties, type RefObject } from 'react'
+import {
+  useMemo,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
@@ -21,6 +27,7 @@ import { tileName } from '../../i18n/tileText'
 import type { PartialHandRules } from '../../rules/PartialHandParser'
 import { groupHand, type HandClusterKind } from '../../gameplay/handGroups'
 import { useHandTileSize } from '../../hooks/useHandTileSize'
+import { useNoLoneTile } from '../../hooks/useNoLoneTile'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   recordTilePositions,
@@ -39,6 +46,8 @@ export interface HandRackProps {
   /** Group rules when grouping is on; null shows the rack in plain order. */
   groupRules?: PartialHandRules | null
   disabled?: boolean
+  /** Shown between the felt and the rack, e.g. Select all. */
+  rackHeader?: ReactNode
 }
 
 /** Bracket colour per group; the bracket's style also differs by kind. */
@@ -85,9 +94,11 @@ export function HandRack({
   onToggle,
   groupRules = null,
   disabled = false,
+  rackHeader,
 }: HandRackProps) {
   const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
+  const rackRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
   // In the order they were picked.
   const feltTiles = useMemo(
@@ -101,14 +112,6 @@ export function HandRack({
     () => (groupRules ? groupHand(tiles, faceDownIds, groupRules) : null),
     [tiles, faceDownIds, groupRules]
   )
-  useTileFlights(
-    containerRef,
-    tiles
-      .filter((tile) => !selectedIds.has(tile.id))
-      .map((tile) => tile.id)
-      .join(' '),
-    reducedMotion
-  )
   const suitBreaks = (clusters ?? []).filter(
     (cluster, index, all) => index > 0 && cluster.suit !== all[index - 1].suit
   ).length
@@ -119,6 +122,27 @@ export function HandRack({
     16,
     true,
     suitBreaks
+  )
+  // Ahead of the flights, so tiles fly to the rows they finally take.
+  useNoLoneTile(
+    containerRef,
+    rackRef,
+    [
+      fitted,
+      ...(clusters ?? [{ kind: 'loose', tiles }]).map(
+        (cluster) =>
+          `${cluster.kind}:${cluster.tiles.map((tile) => tile.id).join(',')}`
+      ),
+      [...selectedIds].join(','),
+    ].join(' ')
+  )
+  useTileFlights(
+    containerRef,
+    tiles
+      .filter((tile) => !selectedIds.has(tile.id))
+      .map((tile) => tile.id)
+      .join(' '),
+    reducedMotion
   )
   const dimensions = tileSizes[fitted]
   const slotWidth = Math.max(44, dimensions.width)
@@ -178,15 +202,20 @@ export function HandRack({
   return (
     <>
       <RackAnchor rack={containerRef} selection={[...selectedIds].join(' ')} />
-      <PlayFelt
-        tiles={feltTiles}
-        faceDownIds={faceDownIds}
-        lockedIds={lockedIds}
-        debuffedIds={debuffedIds}
-        onToggle={onToggle}
-        size={fitted}
-        disabled={disabled}
-      />
+      {/* The felt takes the middle of the table's free space, not the edge
+          of the rack, so the play sits near the centre of the screen. */}
+      <div data-felt-area className="flex flex-1 flex-col justify-center">
+        <PlayFelt
+          tiles={feltTiles}
+          faceDownIds={faceDownIds}
+          lockedIds={lockedIds}
+          debuffedIds={debuffedIds}
+          onToggle={onToggle}
+          size={fitted}
+          disabled={disabled}
+        />
+      </div>
+      {rackHeader}
       <div
         ref={containerRef}
         data-play-zone="hand"
@@ -194,6 +223,7 @@ export function HandRack({
         className="w-full"
       >
         <div
+          ref={rackRef}
           data-hand-rack
           role="group"
           aria-label={t('gameplay.yourTiles', 'Your tiles')}

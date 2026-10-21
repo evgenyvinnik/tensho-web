@@ -537,24 +537,11 @@ export function GameplayScreen() {
           )}
           <PendingOmens system={game.state.omenSystem} />
 
+          {/* Fills the free table so the felt can sit in its middle. */}
           <div
             data-gameplay-surface
-            className="relative mt-auto flex min-w-0 flex-col"
+            className="relative flex min-w-0 flex-[1_0_auto] flex-col"
           >
-            {redrawableIds.length > 1 && !tableClosed && (
-              <div className="flex justify-end px-2 pb-1">
-                <button
-                  type="button"
-                  data-select-all
-                  onClick={toggleSelectAll}
-                  className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
-                >
-                  {allPicked
-                    ? t('gameplay.clearAll', 'Clear all')
-                    : t('gameplay.selectAll', 'Select all')}
-                </button>
-              </div>
-            )}
             <PlayToast
               toast={toast}
               onDone={finishCelebration}
@@ -577,15 +564,7 @@ export function GameplayScreen() {
                 ))}
               </div>
             )}
-            {actionError && (
-              <p
-                role="alert"
-                className="mx-4 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-1.5 text-center text-sm text-red-100"
-              >
-                {actionError}
-              </p>
-            )}
-            <div className="px-1 pb-1">
+            <div className="flex flex-1 flex-col px-1 pb-1">
               <HandRack
                 tiles={game.handTiles}
                 selectedIds={selectedSet}
@@ -595,6 +574,32 @@ export function GameplayScreen() {
                 onToggle={handleToggle}
                 groupRules={showTileHints ? game.partialHandRules : null}
                 disabled={tableClosed}
+                rackHeader={
+                  <>
+                    {redrawableIds.length > 1 && !tableClosed && (
+                      <div className="flex justify-end px-1 pb-1">
+                        <button
+                          type="button"
+                          data-select-all
+                          onClick={toggleSelectAll}
+                          className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+                        >
+                          {allPicked
+                            ? t('gameplay.clearAll', 'Clear all')
+                            : t('gameplay.selectAll', 'Select all')}
+                        </button>
+                      </div>
+                    )}
+                    {actionError && (
+                      <p
+                        role="alert"
+                        className="mx-3 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-1.5 text-center text-sm text-red-100"
+                      >
+                        {actionError}
+                      </p>
+                    )}
+                  </>
+                }
               />
             </div>
           </div>
