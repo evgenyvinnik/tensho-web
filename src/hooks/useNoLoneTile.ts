@@ -29,6 +29,13 @@ export interface LoneTileFix {
   margin: number
 }
 
+/** The margins a fix has put on the rack's elements. */
+interface Styled {
+  neighbour: HTMLElement
+  last: HTMLElement
+  margin: number
+}
+
 interface Line {
   start: number
   end: number
@@ -103,23 +110,28 @@ export function useNoLoneTile(
   rack: RefObject<HTMLElement | null>,
   key: string
 ): void {
-  const styled = useRef<HTMLElement[]>([])
+  const styled = useRef<Styled | null>(null)
   useLayoutEffect(() => {
     const outer = frame.current
     const row = rack.current
     if (!outer || !row) return
+    // The fix changes the rack's height, so it triggers the observer below.
+    // Clearing it and measuring again from there dropped it, and the rack
+    // flipped between the two layouts every frame on 320px phones. Measuring
+    // past our own margins gives the same fix whether or not it is applied,
+    // and an unchanged fix writes nothing.
     const fit = () => {
-      for (const element of styled.current) {
-        element.style.marginLeft = ''
-        element.style.marginRight = ''
-      }
-      styled.current = []
+      const applied = styled.current
       const children = [...row.children] as HTMLElement[]
       const margins = children.map((child) => {
         const style = getComputedStyle(child)
         return {
-          left: parseFloat(style.marginLeft) || 0,
-          right: parseFloat(style.marginRight) || 0,
+          left:
+            (parseFloat(style.marginLeft) || 0) -
+            (child === applied?.neighbour ? applied.margin : 0),
+          right:
+            (parseFloat(style.marginRight) || 0) -
+            (child === applied?.last ? applied.margin : 0),
         }
       })
       // Layout widths, not bounding boxes: a tile in flight is transformed.
@@ -134,13 +146,24 @@ export function useNoLoneTile(
         (parseFloat(frameStyle.paddingRight) || 0)
       const gap = parseFloat(getComputedStyle(row).columnGap) || 0
       const fix = loneTileFix(items, gap, available)
-      if (!fix) return
-      const neighbour = children[fix.index]
       const lastIndex = children.length - 1
+      const neighbour = fix ? children[fix.index] : undefined
+      const last = fix ? children[lastIndex] : undefined
+      if (
+        applied?.neighbour === neighbour &&
+        applied?.last === last &&
+        applied?.margin === fix?.margin
+      )
+        return
+      if (applied) {
+        applied.neighbour.style.marginLeft = ''
+        applied.last.style.marginRight = ''
+      }
+      styled.current = null
+      if (!fix || !neighbour || !last) return
       neighbour.style.marginLeft = `${margins[fix.index].left + fix.margin}px`
-      children[lastIndex].style.marginRight =
-        `${margins[lastIndex].right + fix.margin}px`
-      styled.current = [neighbour, children[lastIndex]]
+      last.style.marginRight = `${margins[lastIndex].right + fix.margin}px`
+      styled.current = { neighbour, last, margin: fix.margin }
     }
     fit()
     const observer =
