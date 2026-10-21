@@ -97,6 +97,26 @@ describe('groupHand', () => {
     expect(placed.sort()).toEqual(ids(rack).sort())
   })
 
+  it('shows a Straight of four, not a Sequence and a Pair that pay the same', () => {
+    const rack = [
+      tile(TileSuit.Manzu, 2, 'm2'),
+      tile(TileSuit.Manzu, 3, 'm3'),
+      tile(TileSuit.Manzu, 4, 'm4'),
+      tile(TileSuit.Manzu, 5, 'm5a'),
+      tile(TileSuit.Manzu, 5, 'm5b'),
+      tile(TileSuit.Pinzu, 9, 'p9'),
+    ]
+
+    const clusters = groupHand(rack)
+
+    expect(clusters.map((c) => [c.kind, ids(c.tiles)])).toEqual([
+      [MeldType.Straight, ['m2', 'm3', 'm4', 'm5a']],
+      ['loose', ['m5b']],
+      ['loose', ['p9']],
+    ])
+    expect(clusters[0].structurePoints).toBe(45)
+  })
+
   it('shows a five-tile run as one Straight, with or without Plum, never a duplicate tile', () => {
     const rack = [1, 2, 3, 4, 5].map((rank) =>
       tile(TileSuit.Manzu, rank, `m${rank}`)

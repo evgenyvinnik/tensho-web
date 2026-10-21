@@ -83,9 +83,13 @@ export const MAHJONG_PATTERN_MULT = 4
 export const DRAGON_GROUP_MULT = 2
 
 export function groupKind(meld: Meld): GroupKind {
-  if (meld.type === MeldType.Straight)
-    return meld.tiles.length >= 5 ? 'straight5' : 'straight4'
-  return meld.type
+  return groupKindFor(meld.type, meld.tiles.length)
+}
+
+/** The kind of a group of this type and size. */
+export function groupKindFor(type: MeldType, size: number): GroupKind {
+  if (type === MeldType.Straight) return size >= 5 ? 'straight5' : 'straight4'
+  return type
 }
 
 const KIND_ORDER: GroupKind[] = [

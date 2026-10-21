@@ -5,7 +5,9 @@
  * as the groups the scorer would find: each Pair, Sequence, Triplet and Quad
  * marked where it sits, with the tiles that belong to no group beside it. The
  * decomposition is `parsePartialHand`, the same search that prices plays, so
- * the rack never claims a group the scorer would not pay for.
+ * the rack never claims a group the scorer would not pay for. Where two
+ * readings pay the same structure, the rack shows the stronger groups: a
+ * Straight rather than a Sequence and a Pair.
  *
  * Suits stay together: melds never span suits, so each group sits among the
  * loose tiles of its own suit, in rack order, and the rack still reads as a

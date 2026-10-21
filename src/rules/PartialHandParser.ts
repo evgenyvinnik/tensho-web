@@ -25,7 +25,13 @@ import {
   structurePointsFor,
   UNGROUPED_TILE_SHARE,
 } from './ScoringEngine'
-import { classifyPlay, DRAGON_GROUP_MULT } from './PlayPattern'
+import {
+  classifyPlay,
+  DRAGON_GROUP_MULT,
+  GROUP_MULT,
+  groupKind,
+  groupKindFor,
+} from './PlayPattern'
 
 export type PartialHandRules = Omit<SequenceRules, 'suitsMatchForSequences'>
 
@@ -61,6 +67,11 @@ function hasStructureFace(tile: Tile): boolean {
 
 /**
  * Find the decomposition of `tiles` that maximises structure points.
+ *
+ * Equal totals go to the groups that add more Mult by themselves: 2·3·4·5 + 5
+ * reads as a Straight and a loose 5, not a Sequence and a Pair, and 1–6 as a
+ * five-tile Straight, not two Sequences. A Pair adds nothing alone, so it is
+ * never chosen over a stronger group that pays the same structure.
  *
  * Melds never span suits, so each suit is solved independently and the results
  * are concatenated. A face-count memo is shared across overlap candidates so
@@ -103,7 +114,13 @@ function parseWithMemo(
         memoBySuit
       )
       const candidate = partialResult([...pair, ...rest.groups], scoringTiles)
-      if (candidate.structurePoints > best.structurePoints) best = candidate
+      if (
+        outranks(
+          { points: candidate.structurePoints, bonus: groupBonus(candidate) },
+          { points: best.structurePoints, bonus: groupBonus(best) }
+        )
+      )
+        best = candidate
     }
     return best
   }
@@ -205,7 +222,27 @@ function isSuitedSuit(suit: TileSuit): boolean {
 
 interface SuitSolution {
   points: number
+  /** Mult the groups add by themselves; breaks ties in `points`. */
+  bonus: number
   plan: GroupPlan[]
+}
+
+/** More structure wins; equal structure goes to the stronger groups. */
+function outranks(
+  candidate: Pick<SuitSolution, 'points' | 'bonus'>,
+  best: Pick<SuitSolution, 'points' | 'bonus'>
+): boolean {
+  return (
+    candidate.points > best.points ||
+    (candidate.points === best.points && candidate.bonus > best.bonus)
+  )
+}
+
+function groupBonus(parse: PartialParse): number {
+  return parse.groups.reduce(
+    (sum, group) => sum + GROUP_MULT[groupKind(group)],
+    0
+  )
 }
 
 /**
@@ -228,22 +265,24 @@ function solveSuit(
   let rank = 1
   while (rank <= MAX_RANK && counts[rank] === 0) rank += 1
   if (rank > MAX_RANK) {
-    const empty: SuitSolution = { points: 0, plan: [] }
+    const empty: SuitSolution = { points: 0, bonus: 0, plan: [] }
     memo.set(key, empty)
     return empty
   }
 
-  let best: SuitSolution = { points: 0, plan: [] }
+  let best: SuitSolution = { points: 0, bonus: 0, plan: [] }
 
   const consider = (type: MeldType, ranks: number[]) => {
     for (const r of ranks) counts[r] -= 1
     const rest = solveSuit(counts, suit, memo, rules)
     for (const r of ranks) counts[r] += 1
 
-    const total = structurePointsFor(type, ranks.length) + rest.points
-    if (total > best.points) {
-      best = { points: total, plan: [{ type, suit, ranks }, ...rest.plan] }
+    const candidate: SuitSolution = {
+      points: structurePointsFor(type, ranks.length) + rest.points,
+      bonus: GROUP_MULT[groupKindFor(type, ranks.length)] + rest.bonus,
+      plan: [{ type, suit, ranks }, ...rest.plan],
     }
+    if (outranks(candidate, best)) best = candidate
   }
 
   if (counts[rank] >= 4) consider(MeldType.Quad, [rank, rank, rank, rank])
@@ -265,9 +304,7 @@ function solveSuit(
   counts[rank] -= 1
   const skipped = solveSuit(counts, suit, memo, rules)
   counts[rank] += 1
-  if (skipped.points > best.points) {
-    best = { points: skipped.points, plan: [...skipped.plan] }
-  }
+  if (outranks(skipped, best)) best = { ...skipped, plan: [...skipped.plan] }
 
   memo.set(key, best)
   return best

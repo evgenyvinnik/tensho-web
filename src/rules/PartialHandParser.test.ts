@@ -189,6 +189,29 @@ describe('parsePartialHand', () => {
     ).toBe(true)
   })
 
+  it.each([
+    // A Sequence and a Pair pay 45, the same as the Straight of four.
+    { ranks: [2, 3, 4, 5, 5], straight: [2, 3, 4, 5], loose: [5] },
+    { ranks: [1, 1, 2, 3, 4], straight: [1, 2, 3, 4], loose: [1] },
+    // Two Sequences pay 60, the same as the five-tile Straight.
+    { ranks: [1, 2, 3, 4, 5, 6], straight: [1, 2, 3, 4, 5], loose: [6] },
+  ])(
+    'breaks a structure tie toward the Straight in $ranks',
+    ({ ranks, straight, loose }) => {
+      const tiles = ranks.map((rank, index) =>
+        suited(TileSuit.Manzu, rank, index)
+      )
+      for (const rules of [{}, { allowSequenceOverlap: true }]) {
+        const parse = parsePartialHand(tiles, rules)
+
+        expect(parse.groups).toHaveLength(1)
+        expect(parse.groups[0].type).toBe(MeldType.Straight)
+        expect(parse.groups[0].tiles.map((tile) => tile.rank)).toEqual(straight)
+        expect(parse.leftovers.map((tile) => tile.rank)).toEqual(loose)
+      }
+    }
+  )
+
   it('scores a quad above a triplet plus a loose tile', () => {
     const tiles = [
       suited(TileSuit.Manzu, 9, 0),
