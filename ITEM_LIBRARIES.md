@@ -53,22 +53,22 @@ Ouija rank changes as well as Unity's conversion to Winds.
 | Orb | Japanese | Target Yaku | Base Bonus per Level |
 |-----|----------|-------------|---------------------|
 | **Pluto Orb** | 冥王星 | Riichi | +1 Mult, +10 Chips |
-| **Mercury Orb** | 水星 | Tanyao | +1 Mult, +15 Chips |
-| **Uranus Orb** | 天王星 | Yakuhai | +1 Mult, +20 Chips |
-| **Venus Orb** | 金星 | Pinfu | +2 Mult, +20 Chips |
-| **Saturn Orb** | 土星 | Ittsu (Straight) | +3 Mult, +30 Chips |
-| **Jupiter Orb** | 木星 | Honitsu (Half-Flush) | +2 Mult, +15 Chips |
-| **Earth Orb** | 地球 | Toitoi | +2 Mult, +25 Chips |
-| **Mars Orb** | 火星 | Chinitsu (Full Flush) | +3 Mult, +30 Chips |
-| **Neptune Orb** | 海王星 | Sanshoku (Mixed Triple) | +4 Mult, +40 Chips |
+| **Mercury Orb** | 水星 | All Simples | +1 Mult, +15 Chips |
+| **Uranus Orb** | 天王星 | Honors (Value Tiles) | +1 Mult, +20 Chips |
+| **Venus Orb** | 金星 | Sequences (All Sequences) | +2 Mult, +20 Chips |
+| **Saturn Orb** | 土星 | Straights (1–9 Straight) | +3 Mult, +30 Chips |
+| **Jupiter Orb** | 木星 | Half Flush | +2 Mult, +15 Chips |
+| **Earth Orb** | 地球 | Sets (All Triplets) | +2 Mult, +25 Chips |
+| **Mars Orb** | 火星 | Full Flush | +3 Mult, +30 Chips |
+| **Neptune Orb** | 海王星 | Mixed Triple Sequence | +4 Mult, +40 Chips |
 
 ### Secret Celestial Orbs
 
 | Orb | Target Yaku | Bonus | Unlock Condition |
 |-----|-------------|-------|------------------|
 | **Planet X Orb** | Seven Pairs | +3 Mult, +35 Chips | Play Seven Pairs |
-| **Ceres Orb** | Chanta (Terminals) | +4 Mult, +40 Chips | Play Chanta |
-| **Eris Orb** | Kokushi Musou | +3 Mult, +50 Chips | Score Kokushi |
+| **Ceres Orb** | Outside Hand | +4 Mult, +40 Chips | Score an Outside Hand |
+| **Eris Orb** | Thirteen Orphans | +3 Mult, +50 Chips | Score Thirteen Orphans |
 
 ### Mythic Orb
 
@@ -360,8 +360,8 @@ Basic, reliable effects with no conditions.
 | Spark | 火花 | ×1.2 Mult |
 | Ember | 残火 | ×1.3 Mult |
 | Riichi Devotee | 立直信者 | +3 Mult when scoring Riichi |
-| Tanyao Tactician | 断么戦術家 | +3 Mult when scoring Tanyao |
-| Pinfu Purist | 平和純粋者 | +3 Mult when scoring Pinfu |
+| Simples Tactician | 断么戦術家 | +3 Mult when scoring an All Simples hand |
+| Sequence Purist | 平和純粋者 | +3 Mult when scoring an All Sequences hand |
 
 ### Uncommon Decrees (Tier 2)
 
@@ -394,10 +394,10 @@ Conditional effects with stronger bonuses.
 | Crescendo | 漸強 | ×1.1 Mult per hand this round |
 | Waste Not | 無駄無 | +5 Mult if no discards used |
 | Recycler | 再利用者 | +20 Chips per discard used |
-| Yakuhai Zealot | 役牌狂信者 | ×1.5 Mult when scoring Yakuhai |
-| Toitoi Titan | 対々巨人 | ×1.5 Mult when scoring Toitoi |
-| Ittsu Initiate | 一通入門 | ×1.5 Mult when scoring Ittsu |
-| Chinitsu Champion | 清一色王者 | ×2.0 Mult when scoring Chinitsu |
+| Value Zealot | 役牌狂信者 | ×1.5 Mult when scoring a Value Tiles hand |
+| Triplet Titan | 対々巨人 | ×1.5 Mult when scoring an All Triplets hand |
+| Ninefold Initiate | 一通入門 | ×1.5 Mult when scoring a 1–9 Straight hand |
+| Full Flush Champion | 清一色王者 | ×2.0 Mult when scoring a Full Flush hand |
 | Veteran | 古参 | +10 Chips per Act completed |
 | Experience | 経験 | +2 Mult per Act completed |
 | Greater Jade | 大玉 | +80 Chips |
@@ -430,9 +430,9 @@ Powerful effects with significant impact.
 | Flower Emperor | 花帝 | ×1.5 Mult per Flower |
 | Season Lord | 季節主 | +10 Mult per Season |
 | Nature Bond | 自然絆 | +3 Mult/Flower, +30 Chips/Season |
-| Honitsu Herald | 混一色先駆 | ×2.0 Mult when scoring Honitsu |
-| Sanshoku Sage | 三色賢者 | ×2.0 Mult when scoring Sanshoku |
-| Chanta Champion | 全帯幺王者 | ×2.0 Mult when scoring Chanta |
+| Half Flush Herald | 混一色先駆 | ×2.0 Mult when scoring a Half Flush hand |
+| Triple Sequence Sage | 三色賢者 | ×2.0 Mult when scoring a Mixed Triple Sequence hand |
+| Outside Hand Champion | 全帯幺王者 | ×2.0 Mult when scoring an Outside Hand or Pure Outside Hand |
 | Mandate Breaker | 令破壊者 | +15 Mult during Boss rounds |
 | Boss Slayer | 親衛殺し | ×2.0 Mult during Boss rounds |
 | Fortune and Glory | 運と栄光 | +60 Chips, +8 Mult, +¥3/round |

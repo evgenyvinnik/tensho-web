@@ -136,7 +136,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '水星',
     planetName: 'Mercury',
     description:
-      'Upgrades All Simples: plays of only 2–8 tiles and the Tanyao hand. +1 Mult, +15 Points per level.',
+      'Upgrades All Simples: plays of only 2–8 tiles and the All Simples hand. +1 Mult, +15 Points per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -146,7 +146,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Tanyao',
       multPerLevel: 1,
       chipsPerLevel: 15,
-      description: '+1 Mult, +15 Points per level when Tanyao is scored',
+      description:
+        '+1 Mult, +15 Points per level when the All Simples family scores',
     },
   },
 
@@ -157,7 +158,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '天王星',
     planetName: 'Uranus',
     description:
-      'Upgrades Honors: any Wind or Dragon group and the Yakuhai hand. +1 Mult, +20 Points per level.',
+      'Upgrades Honors: any Wind or Dragon group and the Value Tiles hand. +1 Mult, +20 Points per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -167,7 +168,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Yakuhai',
       multPerLevel: 1,
       chipsPerLevel: 20,
-      description: '+1 Mult, +20 Points per level when Yakuhai is scored',
+      description:
+        '+1 Mult, +20 Points per level when the Honors family scores',
     },
   },
 
@@ -178,7 +180,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '金星',
     planetName: 'Venus',
     description:
-      'Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the Pinfu hand. +2 Mult, +20 Points per level.',
+      'Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the All Sequences hand. +2 Mult, +20 Points per level.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -188,7 +190,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Pinfu',
       multPerLevel: 2,
       chipsPerLevel: 20,
-      description: '+2 Mult, +20 Points per level when Pinfu is scored',
+      description:
+        '+2 Mult, +20 Points per level when the Sequences family scores',
     },
   },
 
@@ -199,7 +202,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '土星',
     planetName: 'Saturn',
     description:
-      'Upgrades Straights: Straights of Four and Five and the Pure Straight hand. +3 Mult, +30 Points per level.',
+      'Upgrades Straights: Straights of Four and Five and the 1–9 Straight hand. +3 Mult, +30 Points per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -209,7 +212,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Ittsu',
       multPerLevel: 3,
       chipsPerLevel: 30,
-      description: '+3 Mult, +30 Points per level when Ittsu is scored',
+      description:
+        '+3 Mult, +30 Points per level when the Straights family scores',
     },
   },
 
@@ -220,7 +224,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '木星',
     planetName: 'Jupiter',
     description:
-      'Attunes to Honitsu (Half-Flush) yaku. +2 Mult, +15 Points per level.',
+      'Upgrades Half Flush: complete hands of one suit plus Honors. +2 Mult, +15 Points per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -230,7 +234,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Honitsu',
       multPerLevel: 2,
       chipsPerLevel: 15,
-      description: '+2 Mult, +15 Points per level when Honitsu is scored',
+      description:
+        '+2 Mult, +15 Points per level when a Half Flush hand scores',
     },
   },
 
@@ -251,7 +256,7 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Toitoi',
       multPerLevel: 2,
       chipsPerLevel: 25,
-      description: '+2 Mult, +25 Points per level when Toitoi is scored',
+      description: '+2 Mult, +25 Points per level when the Sets family scores',
     },
   },
 
@@ -262,7 +267,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '火星',
     planetName: 'Mars',
     description:
-      'Attunes to Chinitsu (Full Flush) yaku. +3 Mult, +30 Points per level.',
+      'Upgrades Full Flush: complete hands of a single suit. +3 Mult, +30 Points per level.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -272,7 +277,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Chinitsu',
       multPerLevel: 3,
       chipsPerLevel: 30,
-      description: '+3 Mult, +30 Points per level when Chinitsu is scored',
+      description:
+        '+3 Mult, +30 Points per level when a Full Flush hand scores',
     },
   },
 
@@ -283,7 +289,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '海王星',
     planetName: 'Neptune',
     description:
-      'Attunes to Sanshoku (Mixed Triple) yaku. +4 Mult, +40 Points per level.',
+      'Upgrades Mixed Triple: complete hands with the same sequence in all three suits. +4 Mult, +40 Points per level.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -293,7 +299,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Sanshoku',
       multPerLevel: 4,
       chipsPerLevel: 40,
-      description: '+4 Mult, +40 Points per level when Sanshoku is scored',
+      description:
+        '+4 Mult, +40 Points per level when a Mixed Triple Sequence hand scores',
     },
   },
 
@@ -306,7 +313,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Planet X Orb',
     japaneseName: '惑星X',
     planetName: 'Planet X',
-    description: 'Attunes to Seven Pairs yaku. +3 Mult, +35 Points per level.',
+    description:
+      'Upgrades Seven Pairs: the Seven Pairs hand. +3 Mult, +35 Points per level.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -316,7 +324,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'SevenPairs',
       multPerLevel: 3,
       chipsPerLevel: 35,
-      description: '+3 Mult, +35 Points per level when Seven Pairs is scored',
+      description:
+        '+3 Mult, +35 Points per level when a Seven Pairs hand scores',
     },
   },
 
@@ -327,7 +336,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: 'ケレス',
     planetName: 'Ceres',
     description:
-      'Attunes to Chanta (Terminals) yaku. +4 Mult, +40 Points per level.',
+      'Upgrades Outside Hand: complete hands with a terminal or Honor in every group. +4 Mult, +40 Points per level.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -337,7 +346,7 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Chanta',
       multPerLevel: 4,
       chipsPerLevel: 40,
-      description: '+4 Mult, +40 Points per level when Chanta is scored',
+      description: '+4 Mult, +40 Points per level when an Outside Hand scores',
     },
   },
 
@@ -347,7 +356,8 @@ export const CELESTIAL_ORBS: Record<
     name: 'Eris Orb',
     japaneseName: 'エリス',
     planetName: 'Eris',
-    description: 'Attunes to Kokushi Musou yaku. +3 Mult, +50 Points per level.',
+    description:
+      'Upgrades Thirteen Orphans: the Thirteen Orphans hand. +3 Mult, +50 Points per level.',
     rarity: 'Legendary',
     edition: 'Base',
     cost: 8,
@@ -357,7 +367,8 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Kokushi',
       multPerLevel: 3,
       chipsPerLevel: 50,
-      description: '+3 Mult, +50 Points per level when Kokushi is scored',
+      description:
+        '+3 Mult, +50 Points per level when a Thirteen Orphans hand scores',
     },
   },
 
@@ -839,15 +850,15 @@ export function getYakuCategoryDisplayName(category: YakuCategory): string {
   const names: Record<YakuCategory, string> = {
     Pairs: 'Pairs',
     Tanyao: 'All Simples',
-    Yakuhai: 'Value Tiles',
-    Pinfu: 'No Points',
-    Ittsu: 'Pure Straight',
+    Yakuhai: 'Honors',
+    Pinfu: 'Sequences',
+    Ittsu: 'Straights',
     Honitsu: 'Half Flush',
-    Toitoi: 'All Triplets',
+    Toitoi: 'Sets',
     Chinitsu: 'Full Flush',
-    Sanshoku: 'Mixed Triple Sequence',
+    Sanshoku: 'Mixed Triple',
     SevenPairs: 'Seven Pairs',
-    Chanta: 'Terminals in All Sets',
+    Chanta: 'Outside Hand',
     Kokushi: 'Thirteen Orphans',
     All: 'All Yaku',
   }

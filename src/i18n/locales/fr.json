@@ -19,8 +19,8 @@
     "seal_of_the_immortal": "Marquez un Yakuman.",
     "seal_of_the_void": "Marquez les 20 types de Yaku en une seule partie.",
     "planet_x_orb": "Marquez Sept Paires.",
-    "ceres_orb": "Marquez Chanta.",
-    "eris_orb": "Marquez Kokushi.",
+    "ceres_orb": "Marquez une Main extérieure.",
+    "eris_orb": "Marquez Treize orphelins.",
     "black_hole_orb": "Découvrez les 12 autres Orbes Célestes."
   },
   "decreeUnlocks": {
@@ -711,12 +711,12 @@
         "description": "+4 Mult si la main contient au moins deux paires"
       },
       "decree-tanyao-tactician": {
-        "name": "Tacticien Tanyao",
-        "description": "+3 Mult en scorant Tanyao"
+        "name": "Tacticien des simples",
+        "description": "+3 Mult en scorant une main Tout simples"
       },
       "decree-pinfu-purist": {
-        "name": "Puriste Pinfu",
-        "description": "+3 Mult en scorant Pinfu"
+        "name": "Puriste des séquences",
+        "description": "+3 Mult en scorant une main Tout séquences"
       },
       "decree-manzu-emperor": {
         "name": "Empereur des Caractères",
@@ -819,20 +819,20 @@
         "description": "+10 points par tuile repiochée cette manche"
       },
       "decree-yakuhai-zealot": {
-        "name": "Zélote Yakuhai",
-        "description": "x1.5 Mult en scorant Yakuhai"
+        "name": "Zélote de la valeur",
+        "description": "x1.5 Mult en scorant une main Tuiles de valeur"
       },
       "decree-toitoi-titan": {
-        "name": "Titan Toitoi",
-        "description": "x1.5 Mult en scorant Toitoi"
+        "name": "Titan des brelans",
+        "description": "x1.5 Mult en scorant une main Tout brelans"
       },
       "decree-ittsu-initiate": {
-        "name": "Initié Ittsu",
-        "description": "x1.5 Mult en scorant Ittsu"
+        "name": "Initié des neuf",
+        "description": "x1.5 Mult en scorant une main Suite 1–9"
       },
       "decree-chinitsu-champion": {
-        "name": "Champion Chinitsu",
-        "description": "x2.0 Mult en scorant Chinitsu"
+        "name": "Champion de la couleur pure",
+        "description": "x2.0 Mult en scorant une main Couleur pure"
       },
       "decree-veteran": {
         "name": "Vétéran",
@@ -935,16 +935,16 @@
         "description": "+3 Mult par Fleur, +30 Points par Saison"
       },
       "decree-honitsu-herald": {
-        "name": "Héraut Honitsu",
-        "description": "x2.0 Mult en scorant Honitsu"
+        "name": "Héraut de la semi-couleur",
+        "description": "x2.0 Mult en scorant une main Semi-couleur"
       },
       "decree-sanshoku-sage": {
-        "name": "Sage Sanshoku",
-        "description": "x2.0 Mult en scorant Sanshoku"
+        "name": "Sage de la triple séquence",
+        "description": "x2.0 Mult en scorant une main Triple séquence mixte"
       },
       "decree-chanta-champion": {
-        "name": "Champion Chanta",
-        "description": "x2.0 Mult en scorant Chanta"
+        "name": "Champion de la main extérieure",
+        "description": "x2.0 Mult en scorant une Main extérieure ou une Main extérieure pure"
       },
       "decree-mandate-breaker": {
         "name": "Briseur de Mandats",
@@ -1171,8 +1171,8 @@
         "description": "+3 tours par manche."
       },
       "tanyao_dispensation": {
-        "name": "Dispense de Tanyao",
-        "description": "Les tuiles terminales (1 et 9) sont autorisées dans les mains Tanyao."
+        "name": "Dispense des simples",
+        "description": "Les tuiles terminales (1 et 9) sont autorisées dans les mains Tout simples ; les Honneurs restent exclus."
       },
       "moonlit_seal": {
         "name": "Sceau de Clair de Lune",
@@ -1196,7 +1196,7 @@
       },
       "yakuman_succession": {
         "name": "Succession Yakuman",
-        "description": "Avec au moins 2 fleurs, Honitsu, Chinitsu, Ryanpeikou, Junchan et Sept Paires deviennent des Yakuman (×4 chacun). Les motifs rétrogradés par un Mandat ne peuvent pas s’élever. Les copies ne se cumulent pas."
+        "description": "Avec au moins 2 fleurs, Semi-couleur, Couleur pure, Double séquence pure doublée, Main extérieure pure et Sept paires deviennent des Yakuman (×4 chacun). Les motifs rétrogradés par un Mandat ne peuvent pas s’élever. Les copies ne se cumulent pas."
       },
       "celestial_wildcard": {
         "name": "Joker Céleste",
@@ -1289,19 +1289,19 @@
     "title": "Yaku",
     "riichi": "Riichi",
     "tanyao": "Tout Simples",
-    "pinfu": "Pinfu",
+    "pinfu": "Tout Séquences",
     "yakuhai": "Tuiles de Valeur",
     "menzenTsumo": "Pioche Cachée",
     "iipeikou": "Double Séquence Pure",
     "sanshokuDoujun": "Triple Séquence Mixte",
-    "ittsu": "Suite Pure",
+    "ittsu": "Suite 1–9",
     "toitoi": "Tout Brelans",
-    "chanta": "Terminal/Honneur dans Chaque Set",
+    "chanta": "Main Extérieure",
     "honroutou": "Tout Terminaux et Honneurs",
-    "honitsu": "Demi-Couleur",
+    "honitsu": "Semi-Couleur",
     "chinitsu": "Couleur Pure",
     "ryanpeikou": "Double Séquence Pure Doublée",
-    "junchan": "Terminal dans Chaque Set",
+    "junchan": "Main Extérieure Pure",
     "chiitoitsu": "Sept Paires",
     "kokushiMusou": "Treize Orphelins",
     "suuAnkou": "Quatre Brelans Cachés",
@@ -1984,23 +1984,23 @@
       },
       "mercury_orb": {
         "name": "Orbe de Mercure",
-        "description": "Améliore Tout simples : mains uniquement de 2 à 8 et la main Tanyao. +1 Mult et +15 points par niveau."
+        "description": "Améliore Tout simples : mains uniquement de 2 à 8 et la main Tout simples. +1 Mult et +15 points par niveau."
       },
       "uranus_orb": {
         "name": "Orbe d'Uranus",
-        "description": "Améliore les Honneurs : tout groupe de Vents ou de Dragons et la main Yakuhai. +1 Mult et +20 points par niveau."
+        "description": "Améliore les Honneurs : tout groupe de Vents ou de Dragons et la main Tuiles de valeur. +1 Mult et +20 points par niveau."
       },
       "venus_orb": {
         "name": "Orbe de Vénus",
-        "description": "Améliore les séquences : Séquence, Séquence + Paire, Deux séquences et la main Pinfu. +2 Mult et +20 points par niveau."
+        "description": "Améliore les séquences : Séquence, Séquence + Paire, Deux séquences et la main Tout séquences. +2 Mult et +20 points par niveau."
       },
       "saturn_orb": {
         "name": "Orbe de Saturne",
-        "description": "Améliore les suites : de quatre et de cinq, et la main Suite pure. +3 Mult et +30 points par niveau."
+        "description": "Améliore les suites : de quatre et de cinq, et la main Suite 1–9. +3 Mult et +30 points par niveau."
       },
       "jupiter_orb": {
         "name": "Orbe de Jupiter",
-        "description": "S'accorde au yaku Honitsu (Demi-couleur). +2 Mult, +15 Points par niveau."
+        "description": "Améliore Semi-couleur : mains complètes d’une famille plus des Honneurs. +2 Mult et +15 points par niveau."
       },
       "earth_orb": {
         "name": "Orbe de la Terre",
@@ -2008,23 +2008,23 @@
       },
       "mars_orb": {
         "name": "Orbe de Mars",
-        "description": "S'accorde au yaku Chinitsu (Couleur pure). +3 Mult, +30 Points par niveau."
+        "description": "Améliore Couleur pure : mains complètes d’une seule famille. +3 Mult et +30 points par niveau."
       },
       "neptune_orb": {
         "name": "Orbe de Neptune",
-        "description": "S'accorde au yaku Sanshoku (Triple mixte). +4 Mult, +40 Points par niveau."
+        "description": "Améliore Triple mixte : mains complètes avec la même séquence dans les trois familles. +4 Mult et +40 points par niveau."
       },
       "planet_x_orb": {
         "name": "Orbe de la Planète X",
-        "description": "S'accorde au yaku Sept Paires. +3 Mult, +35 Points par niveau."
+        "description": "Améliore Sept paires : la main Sept paires. +3 Mult et +35 points par niveau."
       },
       "ceres_orb": {
         "name": "Orbe de Cérès",
-        "description": "S'accorde au yaku Chanta (Terminales). +4 Mult, +40 Points par niveau."
+        "description": "Améliore Main extérieure : mains complètes avec un terminal ou un Honneur dans chaque groupe. +4 Mult et +40 points par niveau."
       },
       "eris_orb": {
         "name": "Orbe d'Éris",
-        "description": "S'accorde au yaku Kokushi Musou. +3 Mult, +50 Points par niveau."
+        "description": "Améliore Treize orphelins : la main Treize orphelins. +3 Mult et +50 points par niveau."
       },
       "black_hole_orb": {
         "name": "Orbe du Trou Noir",
@@ -2787,11 +2787,11 @@
     },
     "Pinfu": {
       "name": "Séquences",
-      "covers": "Séquence, Séquence + Paire, Deux séquences et la main Pinfu"
+      "covers": "Séquence, Séquence + Paire, Deux séquences et la main Tout séquences"
     },
     "Ittsu": {
       "name": "Suites",
-      "covers": "Suites de quatre et cinq, et la main Suite pure"
+      "covers": "Suites de quatre et cinq, et la main Suite 1–9"
     },
     "Toitoi": {
       "name": "Brelans et carrés",
@@ -2799,11 +2799,11 @@
     },
     "Yakuhai": {
       "name": "Honneurs",
-      "covers": "Tout groupe de Vents ou de Dragons, et les mains Yakuhai"
+      "covers": "Tout groupe de Vents ou de Dragons, et les mains Tuiles de valeur"
     },
     "Tanyao": {
       "name": "Tout simples",
-      "covers": "Mains uniquement de 2 à 8, et la main Tanyao"
+      "covers": "Mains uniquement de 2 à 8, et la main Tout simples"
     },
     "Honitsu": {
       "name": "Semi-couleur",

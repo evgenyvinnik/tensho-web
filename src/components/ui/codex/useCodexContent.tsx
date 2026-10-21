@@ -592,25 +592,34 @@ export function useCodexContent(): CodexCategory[] {
                 rows={[
                   [
                     '1',
-                    t('codex.hands.yaku.tier1', 'Tanyao, Yakuhai, Pinfu'),
+                    t(
+                      'codex.hands.yaku.tier1',
+                      'All Simples, Value Tiles, All Sequences'
+                    ),
                     '×1.2 - ×1.3',
                   ],
                   [
                     '2',
-                    t('codex.hands.yaku.tier2', 'Ittsu, Toitoi, Sanshoku'),
+                    t(
+                      'codex.hands.yaku.tier2',
+                      '1–9 Straight, All Triplets, Mixed Triple Sequence'
+                    ),
                     '×1.6 - ×2.2',
                   ],
                   [
                     '3',
                     t(
                       'codex.hands.yaku.tier3',
-                      'Honitsu, Chinitsu, Ryanpeikou'
+                      'Half Flush, Full Flush, Twice Pure Double Sequence'
                     ),
                     '×2.5 - ×3.2',
                   ],
                   [
                     '4',
-                    t('codex.hands.yaku.tier4', 'Kokushi, Suu Ankou, Chuuren'),
+                    t(
+                      'codex.hands.yaku.tier4',
+                      'Thirteen Orphans, Four Concealed Triplets, Nine Gates'
+                    ),
                     '×4.0 - ×5.5',
                   ],
                 ]}
@@ -621,7 +630,7 @@ export function useCodexContent(): CodexCategory[] {
               >
                 {t(
                   'codex.hands.yaku.stackingText',
-                  'Multiple Yaku stack multiplicatively! A hand with ×1.3 Tanyao and ×2.5 Honitsu scores ×3.25 total.'
+                  'Multiple Yaku stack multiplicatively! A hand with ×1.3 All Simples and ×2.5 Half Flush scores ×3.25 total.'
                 )}
               </InfoBox>
             </div>
@@ -685,7 +694,7 @@ export function useCodexContent(): CodexCategory[] {
                     t('codex.items.decrees.doctrineDesc', 'Modify Yaku rules'),
                     t(
                       'codex.items.decrees.doctrineEx',
-                      'Terminals allowed in Tanyao'
+                      'Terminals allowed in All Simples'
                     ),
                   ],
                   [

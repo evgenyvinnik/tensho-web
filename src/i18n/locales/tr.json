@@ -19,8 +19,8 @@
     "seal_of_the_immortal": "Bir Yakuman ile puan kazan.",
     "seal_of_the_void": "Tek bir koşuda 20 Yaku türünün tümüyle puan kazan.",
     "planet_x_orb": "Yedi Çift ile puan kazan.",
-    "ceres_orb": "Chanta ile puan kazan.",
-    "eris_orb": "Kokushi ile puan kazan.",
+    "ceres_orb": "Dış el ile puan kazan.",
+    "eris_orb": "On üç yetim ile puan kazan.",
     "black_hole_orb": "Diğer 12 Göksel Kürenin tümünü keşfet."
   },
   "decreeUnlocks": {
@@ -879,7 +879,7 @@
       },
       "yakuman_succession": {
         "name": "Yakuman Veraseti",
-        "description": "En az 2 Çiçek taşırken Honitsu, Chinitsu, Ryanpeikou, Junchan ve Yedi Çift, Yakuman olur (her biri ×4). Hüküm ile seviyesi düşürülen desenler yükselemez. Kopyalar birikmez."
+        "description": "En az 2 Çiçek taşırken Yarı renk, Tam renk, Çift saf ikili seri, Saf dış el ve Yedi çift, Yakuman olur (her biri ×4). Hüküm ile seviyesi düşürülen desenler yükselemez. Kopyalar birikmez."
       },
       "river_tax": {
         "name": "Nehir Vergisi",
@@ -890,8 +890,8 @@
         "description": "Tur başına +3 hamle."
       },
       "tanyao_dispensation": {
-        "name": "Tanyao İstisnası",
-        "description": "Uç taşlar (1 ve 9) Tanyao ellerinde kullanılabilir."
+        "name": "Basitler İstisnası",
+        "description": "Uç taşlar (1 ve 9) Hep basit ellerinde kullanılabilir; onur taşları yine kullanılamaz."
       },
       "moonlit_seal": {
         "name": "Ay Işığı Mührü",
@@ -1070,12 +1070,12 @@
         "description": "Oyunda iki veya daha fazla çift varsa +4 Çarpan"
       },
       "decree-tanyao-tactician": {
-        "name": "Tanyao Taktikçisi",
-        "description": "Tanyao puan kazandırdığında +3 Çarpan."
+        "name": "Basitler Taktikçisi",
+        "description": "Hep basit eli puan kazandırdığında +3 Çarpan."
       },
       "decree-pinfu-purist": {
-        "name": "Saf Pinfu Ustası",
-        "description": "Pinfu puan kazandırdığında +3 Çarpan."
+        "name": "Seri Ustası",
+        "description": "Hep seri eli puan kazandırdığında +3 Çarpan."
       },
       "decree-manzu-emperor": {
         "name": "Karakterlerin İmparatoru",
@@ -1170,20 +1170,20 @@
         "description": "Bu tur yeniden çekilen her taş için +10 Puan"
       },
       "decree-yakuhai-zealot": {
-        "name": "Yakuhai Fanatiği",
-        "description": "Yakuhai puan kazandırdığında Çarpan ×1,5."
+        "name": "Değer Fanatiği",
+        "description": "Değerli taşlar eli puan kazandırdığında Çarpan ×1,5."
       },
       "decree-toitoi-titan": {
-        "name": "Toitoi Devi",
-        "description": "Toitoi puan kazandırdığında Çarpan ×1,5."
+        "name": "Üçlü Devi",
+        "description": "Hep üçlü eli puan kazandırdığında Çarpan ×1,5."
       },
       "decree-ittsu-initiate": {
-        "name": "Ittsu Müridi",
-        "description": "Ittsu puan kazandırdığında Çarpan ×1,5."
+        "name": "Dokuzlu Müridi",
+        "description": "1–9 sırası eli puan kazandırdığında Çarpan ×1,5."
       },
       "decree-chinitsu-champion": {
-        "name": "Chinitsu Şampiyonu",
-        "description": "Chinitsu puan kazandırdığında Çarpan ×2,0."
+        "name": "Tam Renk Şampiyonu",
+        "description": "Tam renk eli puan kazandırdığında Çarpan ×2,0."
       },
       "decree-veteran": {
         "name": "Tecrübeli Savaşçı",
@@ -1286,16 +1286,16 @@
         "description": "Her Çiçek için +3 Çarpan, her Mevsim için +30 Puan."
       },
       "decree-honitsu-herald": {
-        "name": "Honitsu Habercisi",
-        "description": "Honitsu puan kazandırdığında Çarpan ×2,0."
+        "name": "Yarı Renk Habercisi",
+        "description": "Yarı renk eli puan kazandırdığında Çarpan ×2,0."
       },
       "decree-sanshoku-sage": {
-        "name": "Sanshoku Bilgesi",
-        "description": "Sanshoku puan kazandırdığında Çarpan ×2,0."
+        "name": "Üçlü Seri Bilgesi",
+        "description": "Karışık üçlü seri eli puan kazandırdığında Çarpan ×2,0."
       },
       "decree-chanta-champion": {
-        "name": "Chanta Şampiyonu",
-        "description": "Chanta puan kazandırdığında Çarpan ×2,0."
+        "name": "Dış El Şampiyonu",
+        "description": "Dış el veya Saf dış el puan kazandırdığında Çarpan ×2,0."
       },
       "decree-mandate-breaker": {
         "name": "Hüküm Bozan",
@@ -1575,20 +1575,20 @@
   "yaku": {
     "title": "Yaku",
     "riichi": "Riichi",
-    "tanyao": "Tüm Basitler",
-    "pinfu": "Pinfu",
+    "tanyao": "Hep Basit",
+    "pinfu": "Hep Seri",
     "yakuhai": "Değerli Taşlar",
     "menzenTsumo": "Gizli Çekiş",
     "iipeikou": "Saf Çift Seri",
     "sanshokuDoujun": "Karışık Üçlü Seri",
-    "ittsu": "Saf Düz",
-    "toitoi": "Tüm Üçlüler",
-    "chanta": "Her Sette Uç/Şeref",
+    "ittsu": "1–9 Sırası",
+    "toitoi": "Hep Üçlü",
+    "chanta": "Dış El",
     "honroutou": "Tüm Uçlar ve Şerefler",
-    "honitsu": "Yarım Renk",
+    "honitsu": "Yarı Renk",
     "chinitsu": "Tam Renk",
     "ryanpeikou": "Çift Saf İkili Seri",
-    "junchan": "Her Sette Uç",
+    "junchan": "Saf Dış El",
     "chiitoitsu": "Yedi Çift",
     "kokushiMusou": "On Üç Yetim",
     "suuAnkou": "Dört Gizli Üçlü",
@@ -2482,23 +2482,23 @@
       },
       "mercury_orb": {
         "name": "Merkür Küresi",
-        "description": "Hep basiti geliştirir: yalnız 2–8 taşlı oyunlar ve Tanyao eli. Seviye başına +1 Çarpan, +15 Puan."
+        "description": "Hep basiti geliştirir: yalnız 2–8 taşlı oyunlar ve Hep basit eli. Seviye başına +1 Çarpan, +15 Puan."
       },
       "uranus_orb": {
         "name": "Uranüs Küresi",
-        "description": "Onur taşlarını geliştirir: her Rüzgar veya Ejderha grubu ve Yakuhai eli. Seviye başına +1 Çarpan, +20 Puan."
+        "description": "Onur taşlarını geliştirir: her Rüzgar veya Ejderha grubu ve Değerli taşlar eli. Seviye başına +1 Çarpan, +20 Puan."
       },
       "venus_orb": {
         "name": "Venüs Küresi",
-        "description": "Serileri geliştirir: Seri, Seri + Çift, İki seri ve Pinfu eli. Seviye başına +2 Çarpan, +20 Puan."
+        "description": "Serileri geliştirir: Seri, Seri + Çift, İki seri ve Hep seri eli. Seviye başına +2 Çarpan, +20 Puan."
       },
       "saturn_orb": {
         "name": "Satürn Küresi",
-        "description": "Sıraları geliştirir: dörtlü ve beşli sıralar ve Saf sıra eli. Seviye başına +3 Çarpan, +30 Puan."
+        "description": "Sıraları geliştirir: dörtlü ve beşli sıralar ve 1–9 sırası eli. Seviye başına +3 Çarpan, +30 Puan."
       },
       "jupiter_orb": {
         "name": "Jüpiter Küresi",
-        "description": "Honitsu (Yarım Renk) Yakusunu güçlendirir. Seviye başına +2 Çarpan, +15 Puan."
+        "description": "Yarı rengi geliştirir: tek tür artı onur taşlı tam eller. Seviye başına +2 Çarpan, +15 Puan."
       },
       "earth_orb": {
         "name": "Dünya Küresi",
@@ -2506,23 +2506,23 @@
       },
       "mars_orb": {
         "name": "Mars Küresi",
-        "description": "Chinitsu (Tam Renk) Yakusunu güçlendirir. Seviye başına +3 Çarpan, +30 Puan."
+        "description": "Tam rengi geliştirir: tek türden tam eller. Seviye başına +3 Çarpan, +30 Puan."
       },
       "neptune_orb": {
         "name": "Neptün Küresi",
-        "description": "Sanshoku (Karışık Üçlü Seri) Yakusunu güçlendirir. Seviye başına +4 Çarpan, +40 Puan."
+        "description": "Üç rengi geliştirir: üç türde aynı seri olan tam eller. Seviye başına +4 Çarpan, +40 Puan."
       },
       "planet_x_orb": {
         "name": "X Gezegeni Küresi",
-        "description": "Yedi Çift Yakusunu güçlendirir. Seviye başına +3 Çarpan, +35 Puan."
+        "description": "Yedi çifti geliştirir: Yedi çift eli. Seviye başına +3 Çarpan, +35 Puan."
       },
       "ceres_orb": {
         "name": "Ceres Küresi",
-        "description": "Chanta (Her Sette Uç/Şeref) Yakusunu güçlendirir. Seviye başına +4 Çarpan, +40 Puan."
+        "description": "Dış eli geliştirir: her grupta uç ya da onur taşı olan tam eller. Seviye başına +4 Çarpan, +40 Puan."
       },
       "eris_orb": {
         "name": "Eris Küresi",
-        "description": "Kokushi Musou Yakusunu güçlendirir. Seviye başına +3 Çarpan, +50 Puan."
+        "description": "On üç yetimi geliştirir: On üç yetim eli. Seviye başına +3 Çarpan, +50 Puan."
       },
       "black_hole_orb": {
         "name": "Kara Delik Küresi",
@@ -2787,11 +2787,11 @@
     },
     "Pinfu": {
       "name": "Seriler",
-      "covers": "Seri, Seri + Çift, İki seri ve Pinfu eli"
+      "covers": "Seri, Seri + Çift, İki seri ve Hep seri eli"
     },
     "Ittsu": {
       "name": "Sıralar",
-      "covers": "Dörtlü ve beşli sıralar, ve Saf sıra eli"
+      "covers": "Dörtlü ve beşli sıralar, ve 1–9 sırası eli"
     },
     "Toitoi": {
       "name": "Üçlü ve dörtlüler",
@@ -2799,11 +2799,11 @@
     },
     "Yakuhai": {
       "name": "Onur taşları",
-      "covers": "Her Rüzgar veya Ejderha grubu ve Yakuhai elleri"
+      "covers": "Her Rüzgar veya Ejderha grubu ve Değerli taşlar elleri"
     },
     "Tanyao": {
       "name": "Hep basit",
-      "covers": "Yalnızca 2–8 taşlarıyla oyunlar ve Tanyao eli"
+      "covers": "Yalnızca 2–8 taşlarıyla oyunlar ve Hep basit eli"
     },
     "Honitsu": {
       "name": "Yarı renk",

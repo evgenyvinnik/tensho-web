@@ -191,7 +191,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.yaku.title', 'Yaku - Score Multipliers'),
       content: t(
         'gameTutorial.yaku.content',
-        'Yaku are special patterns that multiply your score. Examples: Tanyao (all simples), Toitoi (all triplets), Chinitsu (one suit only).'
+        'Yaku are special patterns that multiply your score. Examples: All Simples (only 2–8 tiles), All Triplets, Full Flush (one suit only).'
       ),
       highlightPadding: 10,
     },

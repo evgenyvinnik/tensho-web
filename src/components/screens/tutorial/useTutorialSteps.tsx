@@ -898,8 +898,8 @@ export function useTutorialSteps(): TutorialStep[] {
             <DataTable
               headers={['Tier', 'Multiplier Range', 'Example']}
               rows={[
-                ['Tier 1', '×1.2 - ×1.3', 'All Simples, Pinfu'],
-                ['Tier 2', '×1.6 - ×2.2', 'All Triplets, Pure Straight'],
+                ['Tier 1', '×1.2 - ×1.3', 'All Simples, All Sequences'],
+                ['Tier 2', '×1.6 - ×2.2', 'All Triplets, 1–9 Straight'],
                 ['Tier 3', '×2.5 - ×3.2', 'Half Flush, Full Flush'],
                 [
                   'Tier 4 (Yakuman)',

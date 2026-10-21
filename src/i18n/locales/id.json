@@ -146,9 +146,9 @@
   "consumableUnlocks": {
     "seal_of_the_immortal": "Raih skor dengan Yakuman.",
     "seal_of_the_void": "Raih skor dengan semua 20 jenis Yaku dalam satu permainan.",
-    "planet_x_orb": "Raih skor dengan Tujuh Pasang.",
-    "ceres_orb": "Raih skor dengan Chanta.",
-    "eris_orb": "Raih skor dengan Kokushi.",
+    "planet_x_orb": "Raih skor dengan Tujuh pasangan.",
+    "ceres_orb": "Raih skor dengan Tangan luar.",
+    "eris_orb": "Raih skor dengan Tiga belas yatim.",
     "black_hole_orb": "Temukan semua 12 Bola Langit lainnya."
   },
   "decreeUnlocks": {
@@ -919,12 +919,12 @@
         "description": "+4 Mult jika mainan berisi dua pasangan atau lebih"
       },
       "decree-tanyao-tactician": {
-        "name": "Taktisi Tanyao",
-        "description": "+3 Mult saat skor Tanyao"
+        "name": "Taktisi Sederhana",
+        "description": "+3 Mult saat skor tangan Semua sederhana"
       },
       "decree-pinfu-purist": {
-        "name": "Murni Pinfu",
-        "description": "+3 Mult saat skor Pinfu"
+        "name": "Penganut Urutan",
+        "description": "+3 Mult saat skor tangan Semua urutan"
       },
       "decree-manzu-emperor": {
         "name": "Kaisar Karakter",
@@ -1027,20 +1027,20 @@
         "description": "+10 Poin per ubin yang ditarik ulang ronde ini"
       },
       "decree-yakuhai-zealot": {
-        "name": "Fanatik Yakuhai",
-        "description": "x1.5 Mult saat skor Yakuhai"
+        "name": "Fanatik Nilai",
+        "description": "x1.5 Mult saat skor tangan Ubin bernilai"
       },
       "decree-toitoi-titan": {
-        "name": "Titan Toitoi",
-        "description": "x1.5 Mult saat skor Toitoi"
+        "name": "Titan Triplet",
+        "description": "x1.5 Mult saat skor tangan Semua triplet"
       },
       "decree-ittsu-initiate": {
-        "name": "Pemula Ittsu",
-        "description": "x1.5 Mult saat skor Ittsu"
+        "name": "Pemula Sembilan",
+        "description": "x1.5 Mult saat skor tangan Lurus 1–9"
       },
       "decree-chinitsu-champion": {
-        "name": "Juara Chinitsu",
-        "description": "x2.0 Mult saat skor Chinitsu"
+        "name": "Juara Warna Penuh",
+        "description": "x2.0 Mult saat skor tangan Warna penuh"
       },
       "decree-veteran": {
         "name": "Veteran",
@@ -1143,16 +1143,16 @@
         "description": "+3 Mult per Bunga, +30 Poin per Musim"
       },
       "decree-honitsu-herald": {
-        "name": "Pelopor Honitsu",
-        "description": "x2.0 Mult saat skor Honitsu"
+        "name": "Pelopor Setengah Warna",
+        "description": "x2.0 Mult saat skor tangan Setengah warna"
       },
       "decree-sanshoku-sage": {
-        "name": "Bijak Sanshoku",
-        "description": "x2.0 Mult saat skor Sanshoku"
+        "name": "Bijak Tiga Urutan",
+        "description": "x2.0 Mult saat skor tangan Urutan tiga campuran"
       },
       "decree-chanta-champion": {
-        "name": "Juara Chanta",
-        "description": "x2.0 Mult saat skor Chanta"
+        "name": "Juara Tangan Luar",
+        "description": "x2.0 Mult saat skor Tangan luar atau Tangan luar murni"
       },
       "decree-mandate-breaker": {
         "name": "Pemecah Mandat",
@@ -1372,7 +1372,7 @@
       },
       "yakuman_succession": {
         "name": "Suksesi Yakuman",
-        "description": "Saat memiliki sedikitnya 2 Bunga, Honitsu, Chinitsu, Ryanpeikou, Junchan, dan Tujuh Pasang naik menjadi Yakuman (masing-masing ×4). Pola yang diturunkan Mandat tidak dapat naik. Salinan tidak bertumpuk."
+        "description": "Saat memiliki sedikitnya 2 Bunga, Setengah warna, Warna penuh, Urutan ganda murni dua kali, Tangan luar murni, dan Tujuh pasangan naik menjadi Yakuman (masing-masing ×4). Pola yang diturunkan Mandat tidak dapat naik. Salinan tidak bertumpuk."
       },
       "river_tax": {
         "name": "Pajak Sungai",
@@ -1383,8 +1383,8 @@
         "description": "+3 giliran per ronde."
       },
       "tanyao_dispensation": {
-        "name": "Dispensasi Tanyao",
-        "description": "Ubin terminal (1 dan 9) diperbolehkan dalam tangan Tanyao."
+        "name": "Dispensasi Sederhana",
+        "description": "Ubin terminal (1 dan 9) diperbolehkan dalam tangan Semua sederhana; ubin kehormatan tetap tidak."
       },
       "moonlit_seal": {
         "name": "Segel Cahaya Bulan",
@@ -1497,20 +1497,20 @@
     "title": "Yaku",
     "riichi": "Riichi",
     "tanyao": "Semua Sederhana",
-    "pinfu": "Pinfu",
+    "pinfu": "Semua Urutan",
     "yakuhai": "Ubin Bernilai",
     "menzenTsumo": "Ambil Sendiri Tertutup",
     "iipeikou": "Urutan Ganda Murni",
     "sanshokuDoujun": "Urutan Tiga Campuran",
-    "ittsu": "Urutan Murni",
+    "ittsu": "Lurus 1–9",
     "toitoi": "Semua Triplet",
-    "chanta": "Terminal/Kehormatan di Setiap Set",
+    "chanta": "Tangan Luar",
     "honroutou": "Semua Terminal dan Kehormatan",
-    "honitsu": "Setengah Flush",
-    "chinitsu": "Flush Penuh",
+    "honitsu": "Setengah Warna",
+    "chinitsu": "Warna Penuh",
     "ryanpeikou": "Urutan Ganda Murni Dua Kali",
-    "junchan": "Terminal di Setiap Set",
-    "chiitoitsu": "Tujuh Pasang",
+    "junchan": "Tangan Luar Murni",
+    "chiitoitsu": "Tujuh Pasangan",
     "kokushiMusou": "Tiga Belas Yatim",
     "suuAnkou": "Empat Triplet Tertutup",
     "daisangen": "Tiga Naga Besar",
@@ -2236,23 +2236,23 @@
       },
       "mercury_orb": {
         "name": "Orb Merkurius",
-        "description": "Meningkatkan Semua Sederhana: mainan hanya ubin 2–8 dan tangan Tanyao. +1 Mult, +15 Poin per level."
+        "description": "Meningkatkan Semua Sederhana: mainan hanya ubin 2–8 dan tangan Semua sederhana. +1 Mult, +15 Poin per level."
       },
       "uranus_orb": {
         "name": "Orb Uranus",
-        "description": "Meningkatkan Kehormatan: kelompok Angin atau Naga dan tangan Yakuhai. +1 Mult, +20 Poin per level."
+        "description": "Meningkatkan Kehormatan: kelompok Angin atau Naga dan tangan Ubin bernilai. +1 Mult, +20 Poin per level."
       },
       "venus_orb": {
         "name": "Orb Venus",
-        "description": "Meningkatkan Urutan: Urutan, Urutan + Pasangan, Dua urutan dan tangan Pinfu. +2 Mult, +20 Poin per level."
+        "description": "Meningkatkan Urutan: Urutan, Urutan + Pasangan, Dua urutan dan tangan Semua urutan. +2 Mult, +20 Poin per level."
       },
       "saturn_orb": {
         "name": "Orb Saturnus",
-        "description": "Meningkatkan Lurus: lurus empat dan lima serta tangan Lurus Murni. +3 Mult, +30 Poin per level."
+        "description": "Meningkatkan Lurus: lurus empat dan lima serta tangan Lurus 1–9. +3 Mult, +30 Poin per level."
       },
       "jupiter_orb": {
         "name": "Orb Jupiter",
-        "description": "Selaras dengan yaku Honitsu (Setengah Warna). +2 Pengali, +15 Poin per level."
+        "description": "Meningkatkan Setengah warna: tangan lengkap satu jenis ditambah kehormatan. +2 Mult, +15 Poin per level."
       },
       "earth_orb": {
         "name": "Orb Bumi",
@@ -2260,23 +2260,23 @@
       },
       "mars_orb": {
         "name": "Orb Mars",
-        "description": "Selaras dengan yaku Chinitsu (Warna Penuh). +3 Pengali, +30 Poin per level."
+        "description": "Meningkatkan Warna penuh: tangan lengkap satu jenis. +3 Mult, +30 Poin per level."
       },
       "neptune_orb": {
         "name": "Orb Neptunus",
-        "description": "Selaras dengan yaku Sanshoku (Tiga Warna). +4 Pengali, +40 Poin per level."
+        "description": "Meningkatkan Tiga warna: tangan lengkap dengan urutan sama di tiga jenis. +4 Mult, +40 Poin per level."
       },
       "planet_x_orb": {
         "name": "Orb Planet X",
-        "description": "Selaras dengan yaku Tujuh Pasang. +3 Pengali, +35 Poin per level."
+        "description": "Meningkatkan Tujuh pasangan: tangan Tujuh pasangan. +3 Mult, +35 Poin per level."
       },
       "ceres_orb": {
         "name": "Orb Ceres",
-        "description": "Selaras dengan yaku Chanta (Terminal). +4 Pengali, +40 Poin per level."
+        "description": "Meningkatkan Tangan luar: tangan lengkap dengan ubin ujung atau kehormatan di tiap kelompok. +4 Mult, +40 Poin per level."
       },
       "eris_orb": {
         "name": "Orb Eris",
-        "description": "Selaras dengan yaku Kokushi Musou. +3 Pengali, +50 Poin per level."
+        "description": "Meningkatkan Tiga belas yatim: tangan Tiga belas yatim. +3 Mult, +50 Poin per level."
       },
       "black_hole_orb": {
         "name": "Orb Lubang Hitam",
@@ -2787,11 +2787,11 @@
     },
     "Pinfu": {
       "name": "Urutan",
-      "covers": "Urutan, Urutan + Pasangan, Dua urutan, dan tangan Pinfu"
+      "covers": "Urutan, Urutan + Pasangan, Dua urutan, dan tangan Semua urutan"
     },
     "Ittsu": {
       "name": "Lurus",
-      "covers": "Lurus empat dan lima, dan tangan Lurus Murni"
+      "covers": "Lurus empat dan lima, dan tangan Lurus 1–9"
     },
     "Toitoi": {
       "name": "Set",
@@ -2799,11 +2799,11 @@
     },
     "Yakuhai": {
       "name": "Kehormatan",
-      "covers": "Kelompok Angin atau Naga, dan tangan Yakuhai"
+      "covers": "Kelompok Angin atau Naga, dan tangan Ubin bernilai"
     },
     "Tanyao": {
       "name": "Semua sederhana",
-      "covers": "Mainan hanya dengan ubin 2–8, dan tangan Tanyao"
+      "covers": "Mainan hanya dengan ubin 2–8, dan tangan Semua sederhana"
     },
     "Honitsu": {
       "name": "Setengah warna",

@@ -19,8 +19,8 @@
     "seal_of_the_immortal": "Umiskor gamit ang Yakuman.",
     "seal_of_the_void": "Umiskor gamit ang lahat ng 20 uri ng Yaku sa iisang run.",
     "planet_x_orb": "Umiskor gamit ang Pitong Pares.",
-    "ceres_orb": "Umiskor gamit ang Chanta.",
-    "eris_orb": "Umiskor gamit ang Kokushi.",
+    "ceres_orb": "Umiskor gamit ang Panlabas na Kamay.",
+    "eris_orb": "Umiskor gamit ang Labintatlong Ulila.",
     "black_hole_orb": "Tuklasin ang lahat ng 12 iba pang Celestial Orb."
   },
   "decreeUnlocks": {
@@ -879,7 +879,7 @@
       },
       "yakuman_succession": {
         "name": "Pagmamana ng Yakuman",
-        "description": "Habang may hindi bababa sa 2 Bulaklak, nagiging Yakuman ang Honitsu, Chinitsu, Ryanpeikou, Junchan at Pitong Pares (×4 bawat isa). Hindi aangat ang mga padron na ibinaba ng Mandato. Hindi nagsasalansan ang mga kopya."
+        "description": "Habang may hindi bababa sa 2 Bulaklak, nagiging Yakuman ang Kalahating Flush, Buong Flush, Dalawang Beses na Purong Dobleng Sequence, Purong Panlabas na Kamay at Pitong Pares (×4 bawat isa). Hindi aangat ang mga padron na ibinaba ng Mandato. Hindi nagsasalansan ang mga kopya."
       },
       "river_tax": {
         "name": "Buwis sa Ilog",
@@ -890,8 +890,8 @@
         "description": "+3 turno bawat round."
       },
       "tanyao_dispensation": {
-        "name": "Pahintulot sa Tanyao",
-        "description": "Pinapayagan ang terminal na mga tile (1 at 9) sa mga kamay na Tanyao."
+        "name": "Pahintulot sa Simple",
+        "description": "Pinapayagan ang terminal na mga tile (1 at 9) sa mga kamay na Lahat Simple; bawal pa rin ang Honors."
       },
       "moonlit_seal": {
         "name": "Selyo ng Buwan",
@@ -1070,12 +1070,12 @@
         "description": "+4 Mult kung may dalawa o higit pang pares"
       },
       "decree-tanyao-tactician": {
-        "name": "Estratehista ng Tanyao",
-        "description": "+3 sa multiplikador kapag umiskor ng Tanyao."
+        "name": "Estratehista ng Simple",
+        "description": "+3 sa multiplikador kapag umiskor ng kamay na Lahat Simple."
       },
       "decree-pinfu-purist": {
-        "name": "Tagapagtaguyod ng Dalisay na Pinfu",
-        "description": "+3 sa multiplikador kapag umiskor ng Pinfu."
+        "name": "Tagapagtaguyod ng Sequence",
+        "description": "+3 sa multiplikador kapag umiskor ng kamay na Lahat Sequence."
       },
       "decree-manzu-emperor": {
         "name": "Emperador ng Karakter",
@@ -1170,20 +1170,20 @@
         "description": "+10 batayang puntos bawat tile na na-redraw ngayong round"
       },
       "decree-yakuhai-zealot": {
-        "name": "Masugid na Alagad ng Yakuhai",
-        "description": "Multiplikador x1.5 kapag umiskor ng Yakuhai."
+        "name": "Masugid na Alagad ng Halaga",
+        "description": "Multiplikador x1.5 kapag umiskor ng kamay na Mga Tile na May Halaga."
       },
       "decree-toitoi-titan": {
-        "name": "Higante ng Toitoi",
-        "description": "Multiplikador x1.5 kapag umiskor ng Toitoi."
+        "name": "Higante ng Triplet",
+        "description": "Multiplikador x1.5 kapag umiskor ng kamay na Lahat Triplet."
       },
       "decree-ittsu-initiate": {
-        "name": "Baguhang Alagad ng Ittsu",
-        "description": "Multiplikador x1.5 kapag umiskor ng Ittsu."
+        "name": "Baguhang Alagad ng Siyam",
+        "description": "Multiplikador x1.5 kapag umiskor ng kamay na Straight na 1–9."
       },
       "decree-chinitsu-champion": {
-        "name": "Kampeon ng Chinitsu",
-        "description": "Multiplikador x2.0 kapag umiskor ng Chinitsu."
+        "name": "Kampeon ng Buong Flush",
+        "description": "Multiplikador x2.0 kapag umiskor ng kamay na Buong Flush."
       },
       "decree-veteran": {
         "name": "Beterano",
@@ -1286,16 +1286,16 @@
         "description": "+3 sa multiplikador bawat Bulaklak, +30 batayang puntos bawat Panahon."
       },
       "decree-honitsu-herald": {
-        "name": "Tagapagbalita ng Honitsu",
-        "description": "Multiplikador x2.0 kapag umiskor ng Honitsu."
+        "name": "Tagapagbalita ng Kalahating Flush",
+        "description": "Multiplikador x2.0 kapag umiskor ng kamay na Kalahating Flush."
       },
       "decree-sanshoku-sage": {
-        "name": "Pantas ng Sanshoku",
-        "description": "Multiplikador x2.0 kapag umiskor ng Sanshoku."
+        "name": "Pantas ng Tripleng Sequence",
+        "description": "Multiplikador x2.0 kapag umiskor ng kamay na Halong Tripleng Sequence."
       },
       "decree-chanta-champion": {
-        "name": "Kampeon ng Chanta",
-        "description": "Multiplikador x2.0 kapag umiskor ng Chanta."
+        "name": "Kampeon ng Panlabas na Kamay",
+        "description": "Multiplikador x2.0 kapag umiskor ng Panlabas na Kamay o Purong Panlabas na Kamay."
       },
       "decree-mandate-breaker": {
         "name": "Tagasira ng Mandato",
@@ -1576,19 +1576,19 @@
     "title": "Yaku",
     "riichi": "Riichi",
     "tanyao": "Lahat Simple",
-    "pinfu": "Pinfu",
+    "pinfu": "Lahat Sequence",
     "yakuhai": "Mga Tile na May Halaga",
     "menzenTsumo": "Nakatagong Sariling Kuha",
     "iipeikou": "Purong Dobleng Sequence",
     "sanshokuDoujun": "Halong Tripleng Sequence",
-    "ittsu": "Purong Straight",
+    "ittsu": "Straight na 1–9",
     "toitoi": "Lahat Triplet",
-    "chanta": "Terminal/Honor sa Bawat Set",
+    "chanta": "Panlabas na Kamay",
     "honroutou": "Lahat Terminal at Honor",
     "honitsu": "Kalahating Flush",
     "chinitsu": "Buong Flush",
     "ryanpeikou": "Dalawang Beses na Purong Dobleng Sequence",
-    "junchan": "Terminal sa Bawat Set",
+    "junchan": "Purong Panlabas na Kamay",
     "chiitoitsu": "Pitong Pares",
     "kokushiMusou": "Labintatlong Ulila",
     "suuAnkou": "Apat na Nakatagong Triplet",
@@ -2482,47 +2482,47 @@
       },
       "mercury_orb": {
         "name": "Globo ng Merkuryo",
-        "description": "Ina-upgrade ang All Simples: mga larong 2–8 lang at ang kamay na Tanyao. +1 Mult, +15 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Lahat Simple: mga larong 2–8 lang at ang kamay na Lahat Simple. +1 Mult, +15 batayang puntos bawat antas."
       },
       "uranus_orb": {
         "name": "Globo ng Uranus",
-        "description": "Ina-upgrade ang Honors: anumang grupo ng Hangin o Dragon at ang kamay na Yakuhai. +1 Mult, +20 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Honors: anumang grupo ng Hangin o Dragon at ang kamay na Mga Tile na May Halaga. +1 Mult, +20 batayang puntos bawat antas."
       },
       "venus_orb": {
         "name": "Globo ng Venus",
-        "description": "Ina-upgrade ang Sequence: Sequence, Sequence + Pares, Dalawang sequence at ang kamay na Pinfu. +2 Mult, +20 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Sequence: Sequence, Sequence + Pares, Dalawang sequence at ang kamay na Lahat Sequence. +2 Mult, +20 batayang puntos bawat antas."
       },
       "saturn_orb": {
         "name": "Globo ng Saturno",
-        "description": "Ina-upgrade ang Straight: na apat at lima, at ang kamay na Pure Straight. +3 Mult, +30 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Straight: na apat at lima, at ang kamay na Straight na 1–9. +3 Mult, +30 batayang puntos bawat antas."
       },
       "jupiter_orb": {
         "name": "Globo ng Hupiter",
-        "description": "Nakatugma sa Yaku na Honitsu (Iisang Suit na may Honor). +2 sa multiplikador, +15 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Kalahating Flush: buong kamay ng isang suit at Honors. +2 Mult, +15 batayang puntos bawat antas."
       },
       "earth_orb": {
         "name": "Globo ng Daigdig",
-        "description": "Ina-upgrade ang Set: anumang larong may triplet o quad at ang kamay na All Triplets. +2 Mult, +25 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Set: anumang larong may triplet o quad at ang kamay na Lahat Triplet. +2 Mult, +25 batayang puntos bawat antas."
       },
       "mars_orb": {
         "name": "Globo ng Marte",
-        "description": "Nakatugma sa Yaku na Chinitsu (Purong Iisang Suit). +3 sa multiplikador, +30 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Buong Flush: buong kamay ng iisang suit. +3 Mult, +30 batayang puntos bawat antas."
       },
       "neptune_orb": {
         "name": "Globo ng Neptuno",
-        "description": "Nakatugma sa Yaku na Sanshoku (Magkatulad na Pangkat sa Tatlong Suit). +4 sa multiplikador, +40 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Halong Triple: buong kamay na may parehong sequence sa tatlong suit. +4 Mult, +40 batayang puntos bawat antas."
       },
       "planet_x_orb": {
         "name": "Globo ng Planetang X",
-        "description": "Nakatugma sa Yaku na Pitong Pares. +3 sa multiplikador, +35 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Pitong Pares: ang kamay na Pitong Pares. +3 Mult, +35 batayang puntos bawat antas."
       },
       "ceres_orb": {
         "name": "Globo ng Ceres",
-        "description": "Nakatugma sa Yaku na Chanta (Mga Terminal). +4 sa multiplikador, +40 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Panlabas na Kamay: buong kamay na may terminal o Honor sa bawat grupo. +4 Mult, +40 batayang puntos bawat antas."
       },
       "eris_orb": {
         "name": "Globo ng Eris",
-        "description": "Nakatugma sa Yaku na Kokushi Musou. +3 sa multiplikador, +50 batayang puntos bawat antas."
+        "description": "Ina-upgrade ang Labintatlong Ulila: ang kamay na Labintatlong Ulila. +3 Mult, +50 batayang puntos bawat antas."
       },
       "black_hole_orb": {
         "name": "Globo ng Itim na Butas",
@@ -2787,34 +2787,34 @@
     },
     "Pinfu": {
       "name": "Mga Sequence",
-      "covers": "Sequence, Sequence + Pares, Dalawang sequence, at ang kamay na Pinfu"
+      "covers": "Sequence, Sequence + Pares, Dalawang sequence, at ang kamay na Lahat Sequence"
     },
     "Ittsu": {
       "name": "Mga Straight",
-      "covers": "Straight na apat at lima, at ang kamay na Pure Straight"
+      "covers": "Straight na apat at lima, at ang kamay na Straight na 1–9"
     },
     "Toitoi": {
       "name": "Mga Set",
-      "covers": "Anumang larong may triplet o quad, at ang kamay na All Triplets"
+      "covers": "Anumang larong may triplet o quad, at ang kamay na Lahat Triplet"
     },
     "Yakuhai": {
       "name": "Honors",
-      "covers": "Anumang grupo ng Hangin o Dragon, at mga kamay na Yakuhai"
+      "covers": "Anumang grupo ng Hangin o Dragon, at ang kamay na Mga Tile na May Halaga"
     },
     "Tanyao": {
-      "name": "All Simples",
-      "covers": "Mga larong 2–8 lang ang tile, at ang kamay na Tanyao"
+      "name": "Lahat Simple",
+      "covers": "Mga larong 2–8 lang ang tile, at ang kamay na Lahat Simple"
     },
     "Honitsu": {
-      "name": "Half Flush",
+      "name": "Kalahating Flush",
       "covers": "Buong kamay ng isang suit at Honors"
     },
     "Chinitsu": {
-      "name": "Full Flush",
+      "name": "Buong Flush",
       "covers": "Buong kamay ng iisang suit"
     },
     "Sanshoku": {
-      "name": "Mixed Triple",
+      "name": "Halong Triple",
       "covers": "Buong kamay na may parehong sequence sa tatlong suit"
     },
     "SevenPairs": {
@@ -2822,7 +2822,7 @@
       "covers": "Ang kamay na Pitong pares"
     },
     "Chanta": {
-      "name": "Outside Hand",
+      "name": "Panlabas na Kamay",
       "covers": "Buong kamay na may terminal o Honor sa bawat grupo"
     },
     "Kokushi": {

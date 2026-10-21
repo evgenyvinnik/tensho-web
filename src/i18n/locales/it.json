@@ -19,8 +19,8 @@
     "seal_of_the_immortal": "Realizza uno Yakuman.",
     "seal_of_the_void": "Realizza tutti i 20 tipi di Yaku in una sola partita.",
     "planet_x_orb": "Realizza Sette Coppie.",
-    "ceres_orb": "Realizza Chanta.",
-    "eris_orb": "Realizza Kokushi.",
+    "ceres_orb": "Realizza una Mano esterna.",
+    "eris_orb": "Realizza Tredici orfani.",
     "black_hole_orb": "Scopri tutte le altre 12 Sfere Celesti."
   },
   "decreeUnlocks": {
@@ -990,12 +990,12 @@
         "description": "+4 Mult se la giocata ha due o più coppie"
       },
       "decree-tanyao-tactician": {
-        "name": "Stratega del Tanyao",
-        "description": "+3 Molt quando realizzi Tanyao."
+        "name": "Stratega dei semplici",
+        "description": "+3 Molt quando realizzi una mano Tutti semplici."
       },
       "decree-pinfu-purist": {
-        "name": "Purista del Pinfu",
-        "description": "+3 Molt quando realizzi Pinfu."
+        "name": "Purista delle sequenze",
+        "description": "+3 Molt quando realizzi una mano Tutte sequenze."
       },
       "decree-manzu-emperor": {
         "name": "Imperatore dei Caratteri",
@@ -1090,20 +1090,20 @@
         "description": "+10 punti per tessera ripescata in questo round"
       },
       "decree-yakuhai-zealot": {
-        "name": "Zelota dello Yakuhai",
-        "description": "×1,5 Molt quando realizzi Yakuhai."
+        "name": "Zelota del valore",
+        "description": "×1,5 Molt quando realizzi una mano Tessere di valore."
       },
       "decree-toitoi-titan": {
-        "name": "Titano del Toitoi",
-        "description": "×1,5 Molt quando realizzi Toitoi."
+        "name": "Titano dei tris",
+        "description": "×1,5 Molt quando realizzi una mano Tutti tris."
       },
       "decree-ittsu-initiate": {
-        "name": "Iniziato dell’Ittsu",
-        "description": "×1,5 Molt quando realizzi Ittsu."
+        "name": "Iniziato dei nove",
+        "description": "×1,5 Molt quando realizzi una mano Scala 1–9."
       },
       "decree-chinitsu-champion": {
-        "name": "Campione del Chinitsu",
-        "description": "×2,0 Molt quando realizzi Chinitsu."
+        "name": "Campione del colore puro",
+        "description": "×2,0 Molt quando realizzi una mano Colore puro."
       },
       "decree-veteran": {
         "name": "Veterano",
@@ -1206,16 +1206,16 @@
         "description": "+3 Molt per ogni Fiore, +30 Punti per ogni Stagione."
       },
       "decree-honitsu-herald": {
-        "name": "Araldo dell’Honitsu",
-        "description": "×2,0 Molt quando realizzi Honitsu."
+        "name": "Araldo del mezzo colore",
+        "description": "×2,0 Molt quando realizzi una mano Mezzo colore."
       },
       "decree-sanshoku-sage": {
-        "name": "Saggio del Sanshoku",
-        "description": "×2,0 Molt quando realizzi Sanshoku."
+        "name": "Saggio della tripla sequenza",
+        "description": "×2,0 Molt quando realizzi una mano Tripla sequenza mista."
       },
       "decree-chanta-champion": {
-        "name": "Campione del Chanta",
-        "description": "×2,0 Molt quando realizzi Chanta."
+        "name": "Campione della mano esterna",
+        "description": "×2,0 Molt quando realizzi una Mano esterna o una Mano esterna pura."
       },
       "decree-mandate-breaker": {
         "name": "Infrangitore di mandati",
@@ -1459,7 +1459,7 @@
       },
       "yakuman_succession": {
         "name": "Successione Yakuman",
-        "description": "Con almeno 2 fiori, Honitsu, Chinitsu, Ryanpeikou, Junchan e Sette Coppie diventano Yakuman (×4 ciascuno). Le combinazioni declassate da un Mandato non ascendono. Le copie non si sommano."
+        "description": "Con almeno 2 fiori, Mezzo colore, Colore puro, Doppia sequenza pura doppia, Mano esterna pura e Sette coppie diventano Yakuman (×4 ciascuno). Le combinazioni declassate da un Mandato non ascendono. Le copie non si sommano."
       },
       "river_tax": {
         "name": "Tassa fluviale",
@@ -1470,8 +1470,8 @@
         "description": "+3 turni per round."
       },
       "tanyao_dispensation": {
-        "name": "Deroga Tanyao",
-        "description": "Le tessere terminali (1 e 9) sono ammesse nelle mani Tanyao."
+        "name": "Deroga dei semplici",
+        "description": "Le tessere terminali (1 e 9) sono ammesse nelle mani Tutti semplici; gli Onori restano esclusi."
       },
       "moonlit_seal": {
         "name": "Sigillo lunare",
@@ -1576,19 +1576,19 @@
     "title": "Yaku",
     "riichi": "Riichi",
     "tanyao": "Tutti Semplici",
-    "pinfu": "Pinfu",
+    "pinfu": "Tutte Sequenze",
     "yakuhai": "Tessere di Valore",
     "menzenTsumo": "Pesca Nascosta",
     "iipeikou": "Doppia Sequenza Pura",
     "sanshokuDoujun": "Tripla Sequenza Mista",
-    "ittsu": "Scala Pura",
+    "ittsu": "Scala 1–9",
     "toitoi": "Tutti Tris",
-    "chanta": "Terminale/Onore in Ogni Set",
+    "chanta": "Mano Esterna",
     "honroutou": "Tutti Terminali e Onori",
     "honitsu": "Mezzo Colore",
-    "chinitsu": "Colore Pieno",
+    "chinitsu": "Colore Puro",
     "ryanpeikou": "Doppia Sequenza Pura Doppia",
-    "junchan": "Terminale in Ogni Set",
+    "junchan": "Mano Esterna Pura",
     "chiitoitsu": "Sette Coppie",
     "kokushiMusou": "Tredici Orfani",
     "suuAnkou": "Quattro Tris Nascosti",
@@ -2369,23 +2369,23 @@
       },
       "mercury_orb": {
         "name": "Sfera di Mercurio",
-        "description": "Potenzia Tutti semplici: giocate solo da 2 a 8 e la mano Tanyao. +1 Mult e +15 punti per livello."
+        "description": "Potenzia Tutti semplici: giocate solo da 2 a 8 e la mano Tutti semplici. +1 Mult e +15 punti per livello."
       },
       "uranus_orb": {
         "name": "Sfera di Urano",
-        "description": "Potenzia gli Onori: ogni gruppo di Venti o Draghi e la mano Yakuhai. +1 Mult e +20 punti per livello."
+        "description": "Potenzia gli Onori: ogni gruppo di Venti o Draghi e la mano Tessere di valore. +1 Mult e +20 punti per livello."
       },
       "venus_orb": {
         "name": "Sfera di Venere",
-        "description": "Potenzia le sequenze: Sequenza, Sequenza + Coppia, Due sequenze e la mano Pinfu. +2 Mult e +20 punti per livello."
+        "description": "Potenzia le sequenze: Sequenza, Sequenza + Coppia, Due sequenze e la mano Tutte sequenze. +2 Mult e +20 punti per livello."
       },
       "saturn_orb": {
         "name": "Sfera di Saturno",
-        "description": "Potenzia le scale: di quattro e di cinque, e la mano Scala pura. +3 Mult e +30 punti per livello."
+        "description": "Potenzia le scale: di quattro e di cinque, e la mano Scala 1–9. +3 Mult e +30 punti per livello."
       },
       "jupiter_orb": {
         "name": "Sfera di Giove",
-        "description": "Si armonizza con lo Yaku Honitsu (Mezzo Colore). +2 Molt, +15 Punti per livello."
+        "description": "Potenzia Mezzo colore: mani complete di un seme più Onori. +2 Mult e +15 punti per livello."
       },
       "earth_orb": {
         "name": "Sfera della Terra",
@@ -2393,23 +2393,23 @@
       },
       "mars_orb": {
         "name": "Sfera di Marte",
-        "description": "Si armonizza con lo Yaku Chinitsu (Colore Pieno). +3 Molt, +30 Punti per livello."
+        "description": "Potenzia Colore puro: mani complete di un solo seme. +3 Mult e +30 punti per livello."
       },
       "neptune_orb": {
         "name": "Sfera di Nettuno",
-        "description": "Si armonizza con lo Yaku Sanshoku (Tripla Sequenza Mista). +4 Molt, +40 Punti per livello."
+        "description": "Potenzia Triplo misto: mani complete con la stessa sequenza nei tre semi. +4 Mult e +40 punti per livello."
       },
       "planet_x_orb": {
         "name": "Sfera del Pianeta X",
-        "description": "Si armonizza con lo Yaku Sette Coppie. +3 Molt, +35 Punti per livello."
+        "description": "Potenzia Sette coppie: la mano Sette coppie. +3 Mult e +35 punti per livello."
       },
       "ceres_orb": {
         "name": "Sfera di Cerere",
-        "description": "Si armonizza con lo Yaku Chanta (Terminale/Onore in Ogni Set). +4 Molt, +40 Punti per livello."
+        "description": "Potenzia Mano esterna: mani complete con un terminale o Onore in ogni gruppo. +4 Mult e +40 punti per livello."
       },
       "eris_orb": {
         "name": "Sfera di Eris",
-        "description": "Si armonizza con lo Yaku Kokushi Musou. +3 Molt, +50 Punti per livello."
+        "description": "Potenzia Tredici orfani: la mano Tredici orfani. +3 Mult e +50 punti per livello."
       },
       "black_hole_orb": {
         "name": "Sfera del Buco Nero",
@@ -2787,11 +2787,11 @@
     },
     "Pinfu": {
       "name": "Sequenze",
-      "covers": "Sequenza, Sequenza + Coppia, Due sequenze e la mano Pinfu"
+      "covers": "Sequenza, Sequenza + Coppia, Due sequenze e la mano Tutte sequenze"
     },
     "Ittsu": {
       "name": "Scale",
-      "covers": "Scale di quattro e cinque, e la mano Scala pura"
+      "covers": "Scale di quattro e cinque, e la mano Scala 1–9"
     },
     "Toitoi": {
       "name": "Tris e poker",
@@ -2799,11 +2799,11 @@
     },
     "Yakuhai": {
       "name": "Onori",
-      "covers": "Ogni gruppo di Venti o Draghi, e le mani Yakuhai"
+      "covers": "Ogni gruppo di Venti o Draghi, e le mani Tessere di valore"
     },
     "Tanyao": {
       "name": "Tutti semplici",
-      "covers": "Giocate solo con tessere da 2 a 8, e la mano Tanyao"
+      "covers": "Giocate solo con tessere da 2 a 8, e la mano Tutti semplici"
     },
     "Honitsu": {
       "name": "Mezzo colore",

@@ -19,8 +19,8 @@
     "seal_of_the_immortal": "Score a Yakuman.",
     "seal_of_the_void": "Score all 20 Yaku types in a single run.",
     "planet_x_orb": "Score Seven Pairs.",
-    "ceres_orb": "Score Chanta.",
-    "eris_orb": "Score Kokushi.",
+    "ceres_orb": "Score an Outside Hand.",
+    "eris_orb": "Score Thirteen Orphans.",
     "black_hole_orb": "Discover all 12 other Celestial Orbs."
   },
   "decreeUnlocks": {
@@ -707,12 +707,12 @@
         "description": "+4 Mult if the play has two or more Pairs"
       },
       "decree-tanyao-tactician": {
-        "name": "Tanyao Tactician",
-        "description": "+3 Mult when scoring Tanyao"
+        "name": "Simples Tactician",
+        "description": "+3 Mult when scoring an All Simples hand"
       },
       "decree-pinfu-purist": {
-        "name": "Pinfu Purist",
-        "description": "+3 Mult when scoring Pinfu"
+        "name": "Sequence Purist",
+        "description": "+3 Mult when scoring an All Sequences hand"
       },
       "decree-manzu-emperor": {
         "name": "Emperor of Characters",
@@ -815,20 +815,20 @@
         "description": "+10 Points per tile redrawn this round"
       },
       "decree-yakuhai-zealot": {
-        "name": "Yakuhai Zealot",
-        "description": "x1.5 Mult when scoring Yakuhai"
+        "name": "Value Zealot",
+        "description": "x1.5 Mult when scoring a Value Tiles hand"
       },
       "decree-toitoi-titan": {
-        "name": "Toitoi Titan",
-        "description": "x1.5 Mult when scoring Toitoi"
+        "name": "Triplet Titan",
+        "description": "x1.5 Mult when scoring an All Triplets hand"
       },
       "decree-ittsu-initiate": {
-        "name": "Ittsu Initiate",
-        "description": "x1.5 Mult when scoring Ittsu"
+        "name": "Ninefold Initiate",
+        "description": "x1.5 Mult when scoring a 1–9 Straight hand"
       },
       "decree-chinitsu-champion": {
-        "name": "Chinitsu Champion",
-        "description": "x2.0 Mult when scoring Chinitsu"
+        "name": "Full Flush Champion",
+        "description": "x2.0 Mult when scoring a Full Flush hand"
       },
       "decree-veteran": {
         "name": "Veteran",
@@ -931,16 +931,16 @@
         "description": "+3 Mult per Flower, +30 Points per Season"
       },
       "decree-honitsu-herald": {
-        "name": "Honitsu Herald",
-        "description": "x2.0 Mult when scoring Honitsu"
+        "name": "Half Flush Herald",
+        "description": "x2.0 Mult when scoring a Half Flush hand"
       },
       "decree-sanshoku-sage": {
-        "name": "Sanshoku Sage",
-        "description": "x2.0 Mult when scoring Sanshoku"
+        "name": "Triple Sequence Sage",
+        "description": "x2.0 Mult when scoring a Mixed Triple Sequence hand"
       },
       "decree-chanta-champion": {
-        "name": "Chanta Champion",
-        "description": "x2.0 Mult when scoring Chanta"
+        "name": "Outside Hand Champion",
+        "description": "x2.0 Mult when scoring an Outside Hand or Pure Outside Hand"
       },
       "decree-mandate-breaker": {
         "name": "Mandate Breaker",
@@ -1167,8 +1167,8 @@
         "description": "+3 Turns per round."
       },
       "tanyao_dispensation": {
-        "name": "Tanyao Dispensation",
-        "description": "Terminal tiles (1s and 9s) are allowed in Tanyao hands."
+        "name": "Simples Dispensation",
+        "description": "Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not."
       },
       "moonlit_seal": {
         "name": "Moonlit Seal",
@@ -1192,7 +1192,7 @@
       },
       "yakuman_succession": {
         "name": "Yakuman Succession",
-        "description": "While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack."
+        "description": "While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack."
       },
       "celestial_wildcard": {
         "name": "Celestial Wildcard",
@@ -1285,19 +1285,19 @@
     "title": "Yaku",
     "riichi": "Riichi",
     "tanyao": "All Simples",
-    "pinfu": "Pinfu",
+    "pinfu": "All Sequences",
     "yakuhai": "Value Tiles",
     "menzenTsumo": "Concealed Self-Draw",
     "iipeikou": "Pure Double Sequence",
     "sanshokuDoujun": "Mixed Triple Sequence",
-    "ittsu": "Pure Straight",
+    "ittsu": "1–9 Straight",
     "toitoi": "All Triplets",
-    "chanta": "Terminal/Honor in Each Set",
+    "chanta": "Outside Hand",
     "honroutou": "All Terminals and Honors",
     "honitsu": "Half Flush",
     "chinitsu": "Full Flush",
     "ryanpeikou": "Twice Pure Double Sequence",
-    "junchan": "Terminal in Each Set",
+    "junchan": "Pure Outside Hand",
     "chiitoitsu": "Seven Pairs",
     "kokushiMusou": "Thirteen Orphans",
     "suuAnkou": "Four Concealed Triplets",
@@ -2140,23 +2140,23 @@
       },
       "mercury_orb": {
         "name": "Mercury Orb",
-        "description": "Upgrades All Simples: plays of only 2–8 tiles and the Tanyao hand. +1 Mult, +15 Points per level."
+        "description": "Upgrades All Simples: plays of only 2–8 tiles and the All Simples hand. +1 Mult, +15 Points per level."
       },
       "uranus_orb": {
         "name": "Uranus Orb",
-        "description": "Upgrades Honors: any Wind or Dragon group and the Yakuhai hand. +1 Mult, +20 Points per level."
+        "description": "Upgrades Honors: any Wind or Dragon group and the Value Tiles hand. +1 Mult, +20 Points per level."
       },
       "venus_orb": {
         "name": "Venus Orb",
-        "description": "Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the Pinfu hand. +2 Mult, +20 Points per level."
+        "description": "Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the All Sequences hand. +2 Mult, +20 Points per level."
       },
       "saturn_orb": {
         "name": "Saturn Orb",
-        "description": "Upgrades Straights: Straights of Four and Five and the Pure Straight hand. +3 Mult, +30 Points per level."
+        "description": "Upgrades Straights: Straights of Four and Five and the 1–9 Straight hand. +3 Mult, +30 Points per level."
       },
       "jupiter_orb": {
         "name": "Jupiter Orb",
-        "description": "Attunes to Honitsu (Half-Flush) yaku. +2 Mult, +15 Points per level."
+        "description": "Upgrades Half Flush: complete hands of one suit plus Honors. +2 Mult, +15 Points per level."
       },
       "earth_orb": {
         "name": "Earth Orb",
@@ -2164,23 +2164,23 @@
       },
       "mars_orb": {
         "name": "Mars Orb",
-        "description": "Attunes to Chinitsu (Full Flush) yaku. +3 Mult, +30 Points per level."
+        "description": "Upgrades Full Flush: complete hands of a single suit. +3 Mult, +30 Points per level."
       },
       "neptune_orb": {
         "name": "Neptune Orb",
-        "description": "Attunes to Sanshoku (Mixed Triple) yaku. +4 Mult, +40 Points per level."
+        "description": "Upgrades Mixed Triple: complete hands with the same sequence in all three suits. +4 Mult, +40 Points per level."
       },
       "planet_x_orb": {
         "name": "Planet X Orb",
-        "description": "Attunes to Seven Pairs yaku. +3 Mult, +35 Points per level."
+        "description": "Upgrades Seven Pairs: the Seven Pairs hand. +3 Mult, +35 Points per level."
       },
       "ceres_orb": {
         "name": "Ceres Orb",
-        "description": "Attunes to Chanta (Terminals) yaku. +4 Mult, +40 Points per level."
+        "description": "Upgrades Outside Hand: complete hands with a terminal or Honor in every group. +4 Mult, +40 Points per level."
       },
       "eris_orb": {
         "name": "Eris Orb",
-        "description": "Attunes to Kokushi Musou yaku. +3 Mult, +50 Points per level."
+        "description": "Upgrades Thirteen Orphans: the Thirteen Orphans hand. +3 Mult, +50 Points per level."
       },
       "black_hole_orb": {
         "name": "Black Hole Orb",
@@ -2783,11 +2783,11 @@
     },
     "Pinfu": {
       "name": "Sequences",
-      "covers": "Sequence, Sequence + Pair, Two Sequences, and the Pinfu hand"
+      "covers": "Sequence, Sequence + Pair, Two Sequences, and the All Sequences hand"
     },
     "Ittsu": {
       "name": "Straights",
-      "covers": "Straights of Four and Five, and the Pure Straight hand"
+      "covers": "Straights of Four and Five, and the 1–9 Straight hand"
     },
     "Toitoi": {
       "name": "Sets",
@@ -2795,11 +2795,11 @@
     },
     "Yakuhai": {
       "name": "Honors",
-      "covers": "Any Wind or Dragon group, and Value-tile hands"
+      "covers": "Any Wind or Dragon group, and Value Tiles hands"
     },
     "Tanyao": {
       "name": "All Simples",
-      "covers": "Plays made only of 2–8 tiles, and the Tanyao hand"
+      "covers": "Plays made only of 2–8 tiles, and the All Simples hand"
     },
     "Honitsu": {
       "name": "Half Flush",

@@ -5,8 +5,8 @@ export const CONSUMABLE_UNLOCK_CONDITIONS: Record<string, string> = {
   seal_of_the_immortal: 'Score a Yakuman',
   seal_of_the_void: 'Score all 20 Yaku types in a single run',
   planet_x_orb: 'Score Seven Pairs',
-  ceres_orb: 'Score Chanta',
-  eris_orb: 'Score Kokushi',
+  ceres_orb: 'Score an Outside Hand',
+  eris_orb: 'Score Thirteen Orphans',
   black_hole_orb: 'Discover all 12 other Celestial Orbs',
 }
 

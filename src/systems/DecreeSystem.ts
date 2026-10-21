@@ -354,8 +354,9 @@ export const EXTENDED_HAND_GRANT: Decree = {
  */
 export const TANYAO_DISPENSATION: Decree = {
   id: 'tanyao_dispensation',
-  name: 'Tanyao Dispensation',
-  description: 'Terminal tiles (1s and 9s) are allowed in Tanyao hands.',
+  name: 'Simples Dispensation',
+  description:
+    'Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not.',
   category: 'YakuDoctrine',
   rarity: 'RegionalMandate',
   cost: 6,
@@ -494,7 +495,7 @@ export const YAKUMAN_SUCCESSION: Decree = {
   id: 'yakuman_succession',
   name: 'Yakuman Succession',
   description:
-    'While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.',
+    'While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.',
   category: 'YakuDoctrine',
   rarity: 'HeavenlyOrdinance',
   cost: 12,
