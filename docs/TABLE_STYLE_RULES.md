@@ -1,5 +1,14 @@
 # Playable table rules
 
+October 21 expansion: the catalog now includes ten playable tables. Crimson
+Wall unlocks after a tier-2-or-higher win and starts all Dragons with Mult Marks
+(+4 Mult each); Obsidian Wall unlocks after a tier-4-or-higher win and starts all
+Winds with Bonus Marks (+30 Points each). Both have four base Decree slots.
+Marks apply once to the starting permanent wall, remain replaceable, and do not
+spread to later purchases. See [the reward contract](ACHIEVEMENT_REWARD_IMPLEMENTATION.md)
+for current rules and verification. The eight-table counts and dated test
+results below describe the earlier September checkpoint.
+
 September 22 follow-up: [Table setup](TABLE_SETUP_IMPLEMENTATION.md) now provides
 localized cumulative difficulty rules, native dialog/keyboard behavior and
 validated persistence of the confirmed table/stake preference. These changes do

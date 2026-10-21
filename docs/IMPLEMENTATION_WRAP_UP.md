@@ -1,12 +1,316 @@
 # Implementation wrap-up
 
-**Updated:** October 11, 2026
+**Updated:** October 21, 2026
 
 **Status:** In progress. This is an evidence ledger, not a claim that the whole project is finished.
 
+**Release cut — October 21:** the user lifted the release hold and asked for
+the integrated work to ship. Local candidate before push: **3,619/3,619 unit
+tests in 248 files**, TypeScript, lint (zero errors), all 18 release and
+browser-runner safeguards, and the Pages-path build (807 precache entries,
+under the 40 MiB budget). The production browser gate that deploys run
+(`scripts/verify-gameplay-browser.mjs`) first passed 127/138. It caught three
+things the failed v1.0.261021-4/-5 deploys never reached: the newly gated
+audio, jade-controls and pavilion specs navigated outside the `/tensho-web/`
+base; two replayed complete hands still pinned pre-honors payouts (an East
+Wind pair now pays 100 a tile in a group); and a real defect, the 320px rack
+flipping between two layouts every frame because `useNoLoneTile` undid its
+own fix on the resize it caused. After those fixes the full gate passed
+**138/138** (desktop and phone, one worker, no retries). The version number
+and tag come from the deploy workflow on push.
+
+**Frozen final-integration pass — October 21:** snapshot
+`/private/tmp/tensho-final-integration.UxUbe5` captures local HEAD `39e460e` and
+the current uncommitted integration. The 1,552 source/public/browser/script/CI
+and build-config files match the working checkout at capture, aggregate SHA-256
+`ef06776f3516ce48144a1a0170de3d1685cd034a66b685e91a55a214bfaf7503`.
+Its Pages-path production build is `/private/tmp/tensho-final-integration-build`;
+asset verification passes at 804 entries and 40,235,347 bytes. All **32/32**
+production-static checks pass in 2.2 minutes, one worker, zero retries/skips:
+public guides with JavaScript disabled, real routes/indexing, byte-exact artwork,
+and translated catalog details on desktop/phone. Report:
+`/private/tmp/tensho-final-integration-static.json`. Core and native-surface
+checks are still running; this paragraph does not claim their completion.
+
+The latest read-only live check still reports `v1.0.261021-3`, commit
+`ac708417521b1f0373b8608c8c34fb94ee894e5b`; GitHub's latest deploy attempt is
+still failed run `39623145181`, not a new release. The separate chat
+“Fit tea house upgrades in 8 tiles” has a completed layout handoff, but it is
+not enough evidence to identify the originally requested final gameplay
+handoff. User confirmation was requested; release remains on hold. No commit,
+push, workflow dispatch or deployment occurred during this pass.
+
+**Isolated completion audit — October 21:** a copied checkout at
+`/private/tmp/tensho-completion-snapshot.kCYhxA` includes base commit `0653d3d`
+plus the uncommitted integration work, including the new immediate-use Fate Seal
+flow and illustrated Flora reference. Its full unit suite passes **3,515/3,515
+tests in 240 files** (97.16s), with normal test budgets and two workers. Report:
+`/private/tmp/tensho-completion-snapshot-units-verified.json`. The initial copy
+omitted Git metadata, so its provenance-dependent matrix test failed while
+3,514 passed; adding a separate metadata copy fixed that setup failure without
+changing the test. The original report is retained. All 13 release safeguards
+pass; four browser-runner safeguards pass with localhost binding allowed after
+the sandbox rejected their listeners. The full **132/132 native browser cases
+passed** in 14.1 minutes, one worker, no retries/skips. This covers the eight
+named core specs, including both quota-retry paths, paid pending packs, latest
+Seal flows, reset, Act 8 victory/defeat, Endless/Ancient Script and localized
+phone controls. Evidence: `/private/tmp/tensho-completion-snapshot-core.json`.
+The copied source stayed unchanged throughout; its owned port 4313 was stopped.
+
+The live manifest was re-read and still identifies `v1.0.261021-3`, commit
+`ac708417521b1f0373b8608c8c34fb94ee894e5b`; its local tag resolves identically.
+The interaction workflow's obsolete October 11 PWA baseline is now pinned to
+that exact deployed commit. Recheck the live manifest before final publication.
+
+Read-only deployment inspection found the two latest attempts failed. The latest,
+[run 39623145181](https://github.com/evgenyvinnik/tensho-web/actions/runs/39623145181),
+tested committed `0653d3d` and stopped at two old expectations: grouped Winds
+still priced at 50 in `DroughtEmpowerment.test.ts`, and the coach forced to choose
+14 tiles in `CompleteHandSelection.test.ts` even when a six-tile play pays more.
+The already-present local corrections keep exact payout/read-only assertions
+and require the coach to evaluate complete hands and choose the highest actual
+forecast. Both files pass all 27 cases in the isolated 3,515-test result. This
+explains the failed deployment but is not a successful remote rerun; no workflow
+dispatch, commit, push or publication was performed during this audit.
+
+**Codex economy reconciliation:** the current-source follow-up replaces three
+old Economy sections with localized, illustrated shop/acquisition, payout and
+interest explanations. It removes score-scaled cash rewards, a universal
+five-interest ceiling, fixed shop-price promises and universal half-price
+Decree resale. All 13 locales describe immediate Seal/Orb use, pre-payout
+interest, Charter/Omen modifiers, win-only income, Eternal/zero-value sales and
+non-refreshing Charter/Cartomancer offers. Five existing image placements are
+reused. The new reference/locales batch passes **79/79**; TypeScript and scoped
+lint pass. This postdates the isolated full suite, not a claim of another full
+suite pass. The final terminology-aligned build
+`/private/tmp/tensho-economy-reviewed-20261021` verifies 793 precache entries,
+40,191,803 bytes. All **46/46 production-static browser cases passed** in
+5.4 minutes, one worker, no retries: 26 Economy locale/profile checks plus
+public guides, real static routes and artwork delivery. Report:
+`/private/tmp/tensho-economy-static-browser.json`. These ran against the frozen
+Economy build, before the additional reference localization below.
+
+**C4 reference reconciliation:** the remaining routed Codex explanations and 25
+missing titles now use 109 authored `codexReference` keys in all 13 locales.
+User-approved parallel translators handled disjoint locale files; integration
+checks verify exact key/interpolation/tag parity and render the entire Codex with
+English fallback disabled. Quads, Wind/Dragon scoring, Yaku counts/ranges and
+round targets use live constants; misleading fixed-Wall-size, separate quad
+declaration, Heavenly-shop and half-price resale promises are removed. Existing
+illustrations and optional Flora recipes are preserved. Five reference-contract
+tests plus 45 complete-locale/Flora/Economy tests pass. TypeScript, scoped lint,
+formatting and standalone browser-spec typechecking pass. The integrated build
+`/private/tmp/tensho-codex-final-20261021` verifies 793 precache entries and
+40,294,518 bytes, under the 40 MiB budget. Whole-suite and responsive browser
+results will be recorded separately; authored translations are not a substitute
+for native-speaker review.
+
+The first new reference-browser run passed 19/26. Four desktop failures were
+ambiguous test selectors (the localized word for Tiles also occurs in Hand
+Building/Flora); three phone failures exposed genuine long-title overflow in
+English, Spanish and French. The original report/traces are retained at
+`/private/tmp/tensho-codex-reference-browser.json` and its matching directory.
+The selector now matches the exact category label. The header now uses normal
+flow, a minimum rather than fixed height, a smaller phone title and safe word
+wrapping; its image label is localized. Two intermediate repeats were disrupted
+by slow local browser execution (one interrupted after two timeouts, then 36/42
+passed with six timeouts); their reports remain under `/private/tmp/`. The final
+production preview passed **42/42** Codex-reference/pavilion-icon cases, both
+desktop and phone profiles, one worker, zero retries, unchanged time budgets:
+`/private/tmp/tensho-art-polish-reference-browser.json` (2.5 minutes).
+
+The intervening full unit run passed 3,546/3,547: the CJK language-purity test
+mistook known rich-text tag names for English prose. Its helper now removes only
+the supported named tags; regressions still reject English inside tags and
+unknown tag names. All 48 locale tests pass in the focused final batch below.
+This is not a subsequent full-suite pass.
+
+**User-requested artwork polish — October 21:** seven new jade controls now cover
+reference/Collection placeholders, locks, language and callouts. Codex category
+symbols reuse the game's actual artwork; the menu uses its jade-bound book and
+table locks use a 24px painted padlock. Pairs now uses its existing two-tile badge
+in scoring and upgrade tokens. Four generated edition mounts and subtle finishes
+make Foil/Holographic/Polychrome/Negative Decrees recognizable across inventory,
+details, shop/pack choices and acquisition reveals, without leaking face-down
+state. All 21 Script portraits were individually repaired with true alpha to
+remove white cutout fringes, then visually reviewed on dark felt. Runtime Script
+assets are 169,378 bytes smaller; original PNGs are unchanged. Exact prompts and
+paths are linked from [the art ledger](JADE_CONTROL_ART.md).
+
+Final focused batch: **184/184 unit tests**, TypeScript forced rebuild, scoped
+lint (zero errors; one ignored legacy-file warning), and `git diff --check` pass.
+The first TypeScript attempt encountered a concurrently removed temporary probe;
+the forced repeat passed. New edition/Script browser checks pass **4/4** on
+desktop/mobile, including actual shop build/offer/details, Pairs, decoded image
+sizes, transparent corners on all 25 assets, and empty edition-frame centers:
+`/private/tmp/tensho-decree-script-art-browser-final.json`. Before that, Chromium
+was blocked by sandbox permissions; the allowed run passed 3/4 with the first
+desktop case still loading on a cold Vite server. The unchanged four-case repeat
+passed in 12.5s. Both earlier reports are retained, not hidden by retries.
+
+Production build `/private/tmp/tensho-art-polish-20261021` passes asset-delivery
+verification: 804 checked entries, 40,233,352 precache bytes, within 40 MiB.
+Local preview: `http://127.0.0.1:4317/tensho-web/en/`. The user's port 4294 remains
+an older frozen build and was not overwritten. No commit, push, merge, deployment
+or workflow dispatch was performed; release still awaits the agreed handoff.
+
+**Script repair integration follow-up — October 21:** the next full suite passed
+3,590/3,611, with all 21 failures confined to the obsolete assumption that each
+Script WebP is an aspect-preserving resize of its legacy PNG. The delivery
+contract now distinguishes the explicit 21 authored repairs (256px square,
+alpha, under 32 KB) from ordinary resized artwork. The optimizer validates and
+preserves repaired files rather than reintroducing the old white matte. Its
+disposable-fixture regression proves byte-for-byte preservation and fails on a
+corrupt repair; both workflows now run it. The 74 focused image tests, optimizer
+regression, 17 release/browser-runner safeguards, TypeScript forced build, scoped
+lint, formatting and whitespace checks pass.
+
+The corrected whole-suite run passes **3,611/3,611 tests in 248 files** in
+187.59s, two workers, normal time budgets:
+`/private/tmp/tensho-completion-current-units-repaired-20261021.json`. The initial
+21-failure report is retained at
+`/private/tmp/tensho-completion-current-units-20261021.json`. This supersedes the
+earlier targeted-only unit evidence for the current local integration.
+
+The current-source production build at
+`/private/tmp/tensho-completion-pwa-after-20261021` passes the unchanged offline
+budget: 804 checked entries, 40,235,347 bytes. All **4/4** live-baseline upgrade
+scenarios pass (desktop/touch, saved/write-failure), including safe-boundary
+activation, competing-tab deferral, exact resumed state and all 52 optimized
+illustrations decoded offline. Evidence:
+`/private/tmp/tensho-completion-pwa-verified-20261021`. The initial run failed on
+the gameplay agent's documented Eye/Ox history-field migration; the test now
+requires the fixture's exact empty legacy histories before allowing only those
+field replacements. No runtime migration was changed. Original diagnostics are
+retained at `/private/tmp/tensho-completion-pwa-check-20261021`. This is a local
+verification result, not deployment or final gameplay handoff.
+
+**Scope decision — October 21:** the user explicitly deferred Challenge Runs and
+their Rule Bender / Rule Breaker achievements. They are not completion gates for
+this release. The active catalog excludes those two awards while retaining
+historical saved records, artwork and translations. See `RULE_RESOLUTION.md`.
+The deferral passes 146 targeted tests across eight files, including legacy
+profile hydration, gallery totals, toast suppression, Purist and 13-locale
+achievement checks. This is a targeted recheck, not a new full-suite result.
+
+**Local integration checkpoint — October 21:** release is explicitly on hold until
+the gameplay agent's final handoff. The illustrated pavilion/achievement work and
+current progression findings are tracked in [the UI and achievement ledger](PAVILION_UI_ART.md).
+The latest full local recheck passes **3,288 tests in 229 files**, including
+Speed Run's paid-Turn rule, Purist's successful-reroll history, Challenge deferral, localized playable reward
+names, Path thresholds, wall-size migration and Decree stake mastery. TypeScript,
+scoped lint and production bundling/asset checks pass; the preceding checkpoint
+also passed all 13 release-versioning safeguards. Twenty-six production-browser journeys check 13 achievement
+locales at 320px in Chromium desktop/touch profiles, including reward-name
+wrapping, the revised Speed Run rule, the 31-award total and the deferred awards' absence. Earlier checkpoints
+passed 28 Collection victory-marker journeys (including 1280px keyboard use),
+whole-project lint (zero errors; 215 warnings), and the broader pavilion checks;
+those remain separate historical evidence, not reruns of this checkpoint.
+Existing award records are preserved; new awards require actual run evidence.
+These results do not close the remaining achievement/reward discrepancies or
+replace final-source release verification. Nothing from this checkpoint was
+committed, merged, pushed, or deployed.
+
+**Acceptance follow-up — October 21:** the corrected public guides, retired-route
+redirect and production artwork checks pass **20/20 browser journeys** against a
+real static HTTP server, with JavaScript-disabled editorial pages, keyboard use,
+text zoom and responsive layouts covered. The guide copy now distinguishes loose
+numbered tiles (half base points) from Honors (full base points), states the
+Small/Large-only swift-clear Omen threshold, uses continuous step numbering and
+explicitly says Challenge Runs are unavailable. Public-site unit checks pass
+36/36; a subsequent focused deferral/render check passes 18/18. Scoped lint and
+`git diff --check` pass.
+
+The separate **128-journey core browser run is not green: 124 passed, four failed**
+(finished-run resume, quota-retry reload, mobile Decree details and live system
+reduced motion). A traced diagnostic of those four cases in both profiles passed
+7/8 and reproduced quota-retry snapshot inequality: the pre-reload checkpoint had
+an unopened Tea House, while reload opened it and generated stock/consumed its
+pending Omen. This identifies a transition-sensitive comparison, not evidence
+that the played hand was lost; it still needs a deterministic transition/recovery
+check. Passing isolated reruns do not clear the other original failures. Keep
+the candidate unapproved until these are resolved and the final handoff arrives.
+Diagnostic report: `/private/tmp/tensho-core-failure-diagnostic.json`; original
+artifacts: `/private/tmp/tensho-core-completion-browser`. No release action taken.
+
+**Achievement reward expansion — October 21:** the user approved implementing,
+not retiring, all nine missing reward Decrees and both Walls. Catalog mechanics,
+unlock reconciliation, eleven generated illustrations and 13-locale entries are
+now implemented locally. Combined-source regression passes **3,468 tests in 237
+files**, plus TypeScript, scoped lint, the production/offline budget check and
+all 13 release-versioning safeguards. All **16 reward-specific browser journeys**
+pass with no retries/skips (en/es, desktop 1280px/mobile 320px), including unlocks,
+illustrations, popup readability and saved Wall/free-offer state. Visual review
+found the existing Spanish REDRAW label overflowing its 320px ActionBar button;
+that small-screen layout follow-up and the earlier core-browser findings remain
+open. See
+[the implementation contract](ACHIEVEMENT_REWARD_IMPLEMENTATION.md).
+
+**Resolved Charter Collector rule — October 21:** the user confirmed five
+purchases in one run by the end of Act 5, keeping boss-only shops. The bridge
+now tracks saved per-run purchases and retains the highest qualifying count,
+not a cumulative total across runs. All 13 descriptions agree. Legacy earned
+awards remain earned; old cumulative progress is not promoted into a fabricated
+single-run record. Challenge Runs and their awards remain explicitly deferred.
+Final integration/publication still requires the requested handoff confirmation
+and release verification.
+
+**October 21 verification follow-up (before the new Codex reference request):**
+Charter Collector's 19 regression cases pass, including 15 real round/shop
+transitions with controlled scores/funds. Song notifications now dismiss once,
+respect app/system reduced motion and remove their DOM even without spring
+completion. The combined snapshot passes **3,495 tests in 239 files**,
+TypeScript, scoped lint, and all 13 versioning safeguards. The frozen build
+`/private/tmp/tensho-charter-candidate-20261021` verifies 793 precache entries,
+40,125,492 bytes. This is local evidence, not a deployed release.
+
+The 156-case core/layout pass recorded 154 passes and two reproducible lingering
+song notifications; both affected notification journeys subsequently passed.
+The 48-case targeted pass recorded 47 passes, with a startup reveal-helper
+timeout before the remaining quota test reached its save operation. Waiting for
+the actual reveal confirmation replaced the racing overlay click. A subsequent
+16-case persistence run passed 14, with two startup timeouts during concurrent
+verification/shared-checkout edits. The separate static-site pass was 10/12,
+with two request-budget timeouts. Preserve these results and run the final
+candidate in isolation; **do not claim a green final core/static matrix**.
+
+The complete current-live-to-frozen-candidate PWA suite passes **4/4**:
+desktop/touch, normal writes/storage denial, silent deferral while playing or
+another tab is open, exact saved state and offline resume, plus 52 decoded
+offline illustration replacements. Baseline: live manifest
+`v1.0.261021-3`, commit `ac708417521b1f0373b8608c8c34fb94ee894e5b`.
+The harness now acknowledges real starting Decree reveals and checks the loaded
+entry/document identity instead of a version badge absent from gameplay. It
+permits only the reviewed null `firstYakuType` → `lockedPatternId` migration
+and the two catalog terminology changes; remaining runtime data compares
+exactly. Evidence: `/private/tmp/tensho-charter-pwa-reviewed`; earlier failing
+diagnostics remain in the sibling `tensho-charter-pwa-*` directories.
+
+**Completed Codex reference update:** six shared illustrated Flora sections now
+explain awakening, corruption, combinations and catalyst rules in all 13 locales,
+using 28 existing artwork placements. Optional recipes are collapsed disclosures;
+OS reduced motion is honored. All **26/26** frozen-production browser journeys
+passed without retries across desktop/mobile Chromium profiles, including 320px
+and 1280px layouts. Focused reference/rule tests, TypeScript, scoped lint and the
+Pages-path build passed; see `PAVILION_UI_ART.md` for exact overlapping batches
+and retained earlier diagnostics. Evidence:
+`/private/tmp/tensho-codex-flora-production.json`; candidate:
+`/private/tmp/tensho-codex-candidate-20261021` (793 verified precache entries,
+40,177,551 bytes). This source postdates the PWA candidate above, so those worker
+checks are not final-release proof for this build. Release remains on hold for
+the explicitly requested other-agent handoff.
+
+**Resolved Speed Run rule:** under delegated rules authority, the impossible
+12-round target is replaced by a win using at most 48 paid Turns. Free REDRAWs
+do not count; the winning play does. Optional run history prevents unknown
+legacy spending from qualifying, while old earned awards are retained. This
+resolves the reachability/specification discrepancy, not balance acceptance.
+Swift Andy is now included in the reward expansion above. See `RULE_RESOLUTION.md`
+for semantics.
+
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Completion contract — October 11
+## Completion contract — October 11, reconciled October 21
 
 The user has explicitly prioritized **project completion**. This is the active
 work queue; the long chronological ledger below is evidence, not an ever-growing
@@ -14,26 +318,30 @@ release checklist. Finish one release candidate before starting another polish
 checkpoint. A historical failure remains recorded, but only a reproducible
 current defect or an unmet acceptance criterion blocks this candidate.
 
-**Release scope:** the existing Classic game, the existing three-round Table Loop
-mode, their documented content/progression, saves, optional teaching, responsive
+**Release scope:** the existing Classic game and its documented content/progression,
+saves, optional teaching, responsive
 localized interface, illustrated assets, audio, and public About/how-to-play/FAQ
 pages. Preserve the current default mode and all confirmed mechanic decisions.
 Do not introduce another mode, scoring redesign or default-mode migration as
-part of closing this release. The Dragon-hint work already underway is the last
-standalone polish checkpoint; subsequent changes must close a gate below.
+part of closing this release. The player-feedback rules in `RULE_RESOLUTION.md`
+explicitly retired Table Loop, Skip, the Riichi pledge and single-tile Discard;
+the original October 11 contract's Table Loop requirements are superseded by
+that decision, not silently treated as implemented. Challenge Runs and their
+two achievements were explicitly deferred by the user on October 21. Subsequent
+changes must close a gate below, not start another standalone polish checkpoint.
 
 | Gate | Finite acceptance criterion | Current status / next action |
 | --- | --- | --- |
-| C1 — Complete runs | Classic: start, stage/confirm, score/refill, discard/redraw, buy/use/reward, next round/boss, defeat, Act 8 victory, unlock and explicit Endless continuation. Table Loop: paid shop transitions and both terminal outcomes. Rejected actions and repeated settlement must not spend/grant twice. | Implemented with existing engine/browser evidence. Re-run the named core journeys on the candidate, not just opening-tile interaction tests. Late-Act fixtures verify transitions, not organic wins. |
+| C1 — Complete runs | Classic: start, stage/confirm, score/refill, REDRAW, buy/use/reward, next round/boss, defeat, Act 8 victory, unlock and explicit Endless continuation. Rejected actions and repeated settlement must not spend/grant twice. | Implemented with existing engine/browser evidence. Re-run the named core journeys on the candidate, not just opening-tile interaction tests. Late-Act fixtures verify transitions, not organic wins. |
 | C2 — Rules and progression | Each shipped content family has acquisition, authoritative use/trigger, visible explanation and persistence coverage. Reconcile any remaining advertised rule/unlock mismatch with `RULE_RESOLUTION.md`; retain the approved Merchant swap, defeat Rental and latest-only Bell rules. | Existing system coverage and resolved rules are the starting evidence. Audit current catalog/copy discrepancies once; turn only concrete discrepancies into fixes. Full unit suite must pass on the final candidate. |
 | C3 — Save/recovery safety | Reload/resume play and paid pending rewards without loss/replay; protect against stale-window writes; preserve preferences through confirmed reset; verify the supported current-to-candidate PWA update and offline artwork. | Existing coverage; run the named persistence journeys and existing update harness against the candidate. Do not claim support for every historical client or crash-atomic multi-key reset. Any reproduced loss of a supported save is a blocker. |
 | C4 — Usable, teachable interface | At 320px, tablet and desktop: reachable primary actions and close controls, no page-wide overflow or clipped essential rules; hover information also available to touch/keyboard; optional guidance explains selection, commitment and payoff. All 13 game locales have required rules/control text and no raw keys. | Finish verification of the pending Dragon guide, then one bounded screen/locale pass. Fix blocked actions, unreadable rules and incorrect translations; aesthetic variations alone do not reopen this gate. |
 | C5 — Assets and public site | Existing required illustrations decode and have accessible text; audio/motion preferences work. About/how-to-play/FAQ return real HTML with valid links/metadata, and production asset/cache budgets pass. | Reuse the already generated art. Run public-guide/static-route/asset checks. English-only editorial pages remain explicitly labeled; search indexing and future translated articles are not implementation claims. |
-| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | v1.0.261011-14 is live. Candidate `ceb70ed` passes all three verification jobs, including 144 core journeys and all 10 PWA updates. The catalog-completeness follow-up below still needs final-source CI before publication. |
+| C6 — Release and handoff | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions. | Released on user request, October 21: see the release note at the top. October 11's `ceb70ed` evidence (144 core journeys and 10 PWA updates) is historical. Hosted verification of the deployed version follows the deploy workflow. |
 
 ### Execution order and stopping rule
 
-1. Close the Dragon verification and consolidate it into the completion candidate;
+1. Close the concrete rule/catalog discrepancies and consolidate the completion candidate;
    do not publish it separately while a completion blocker remains.
 2. Run C1–C5 once against a fixed candidate. Consolidate failures into one
    prioritized defect list; fix P0/P1 defects before optional visual adjustments.
@@ -45,8 +353,8 @@ standalone polish checkpoint; subsequent changes must close a gate below.
    keep the implementation goal open solely to pursue every future improvement.
 
 Core browser acceptance uses the existing `app`, `play-structure`, `shop`,
-`consumables`, `run-results`, `classic-resume`, `table-loop-run`,
-`table-save-conflicts` and `progress-reset` specs. Several intentionally require
+`consumables`, `run-results`, `classic-resume`, `two-actions` and `progress-reset`
+specs, matching the repository's `test:acceptance` command. Several intentionally require
 native Vite fixtures; run them there and label that evidence accurately. The
 production interaction gate, `public-guides`, `static-routes`, `asset-delivery`
 and the existing PWA update harness exercise the built release separately.

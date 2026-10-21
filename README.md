@@ -109,11 +109,13 @@ Run `bun run sloc` to calculate source lines of code.
 | Omen Tags | 24 |
 | Boss Mandates | 28 (23 standard + 5 showdowns) |
 | Table Stakes | 8 tiers |
-| Decrees | 165 (150 from the authored library + 15 rule-bending) |
+| Decrees | 174 (150 original authored + 9 achievement rewards + 15 rule-bending) |
+| Playable Tables | 10, including the achievement-reward Crimson and Obsidian Walls |
 
 ## Features
 
-- **Table Loop Mode** — A second three-round mode on the same table as Classic where every group you play stays on the table, patterns pay before the table is finished, and each score resolves as a readable chain; playable end to end with the keyboard, opening on an authored practice deal, with an optional offers-row variant
+- **Classic Runs** — The supported mode; the experimental Table Loop route is retired. Challenge Runs remain deferred.
+- **Achievement Rewards** — Earn nine illustrated Decrees and two distinct Wall variants through permanent progression
 - **Tutorial System** — Dismissible contextual guidance that never blocks gameplay
 - **Drag & Drop** — Intuitive tile arrangement with touch support
 - **Responsive Design** — Mobile-first portrait layout
@@ -123,6 +125,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 ## Documentation
 
+- [Achievement reward rules and verification](docs/ACHIEVEMENT_REWARD_IMPLEMENTATION.md) — Mechanics, unlock milestones, localization and generated-art provenance
 - [Completion checklist and current release](docs/IMPLEMENTATION_WRAP_UP.md#completion-contract--october-11) — Six finite acceptance gates, release scope, remaining blockers and the stopping rule
 - [Resolved gameplay rules](docs/RULE_RESOLUTION.md) — Current implementation authority for conflicting drafts, preserving confirmed player choices
 - [Monsoon draw implementation](docs/MONSOON_IMPLEMENTATION.md) — Seeded live/bonus draws and non-mutating redraw previews

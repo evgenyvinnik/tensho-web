@@ -6,6 +6,46 @@ Unanswered older questions are no longer a requirement to stop for individual
 approval. They are not retroactively treated as answered: new decisions must be
 recorded here, implemented through the actual loop, and verified.
 
+## Release scope: Challenge Runs deferred (October 21, 2026)
+
+The user explicitly chose **“Defer Challenge Runs and their achievements.”**
+This release does not require a Challenge mode or challenge catalog. Rule Bender
+and Rule Breaker are removed from the active achievement definitions, gallery,
+totals and unseen-unlock queries; they cannot be newly unlocked or progressed.
+Historical saved entries remain intact through hydration and persistence, and
+their artwork/translations remain available. No save migration or reset is
+required. The Challenge achievement category still contains the regular-run
+Deck Minimalist, Deck Maximalist and Purist feats. Earlier documents describing
+Challenge mode or its two awards are future design, not release blockers.
+This scope decision does not lift the separate final-handoff release hold.
+
+## Speed Run: Turn efficiency, not skipped rounds (October 21, 2026)
+
+Implementation decision under the October 7 delegated rules authority: **win the
+run using at most 48 paid Turns**. The old 12-round condition is impossible in
+the current sequential 24-round, no-Skip loop. Forty-eight permits an average
+of two paid actions per round, preserving an efficiency challenge without
+shortening the run or making every victory qualify. This threshold is a design
+choice, not a claim of completed balance/playtesting.
+
+Both tactical and complete-hand plays spend one Turn. A blocked/zero-score play
+still counts because it still pays. A REDRAW counts once regardless of tile
+count only when it actually spends a Turn; free REDRAWs, previews, rejected
+actions, shop rerolls and consumables do not count. The winning play is included
+before canonical Act 8 settlement. Only a victory updates the best record;
+defeat and Full Unlock do not. Endless never settles the same win again.
+
+New runs initialize optional run metadata `paidTurns` to zero; actual engine
+resource debits increment it and snapshots retain it. Missing legacy metadata
+or a missing counter remains unknown through subsequent actions and cannot
+qualify. Historical round records and already-earned awards are preserved, but
+round counts are never converted into Turn counts. New lifetime records use
+`fastestWinPaidTurns`, with Infinity/null hydration handled as no proven win.
+The legacy Swift Andy unlock record uses the same new threshold. The approved
+[achievement reward expansion](ACHIEVEMENT_REWARD_IMPLEMENTATION.md) now implements
+Swift Andy as a playable Decree with its own artwork and acquisition rules.
+All 13 achievement descriptions explain the new metric and free-redraw exclusion.
+
 ## Player-feedback rules (October 2026)
 
 A 41-point player-feedback plan replaced several mechanics. The user confirmed
@@ -85,6 +125,86 @@ current catalog so content changes cannot strand a run.
   win-only.
 
 ## Decisions made under delegated authority
+
+### Purist: no successful shop reroll before the first victory
+
+Purist requires a canonical Act 8 win with zero successful shop rerolls in
+that run. Paid and free Omen/Charter rerolls both count. Rejected attempts,
+ordinary purchases, automatic shop generation and tile REDRAW do not.
+
+The optional `shopRerolls` field in saved run metadata starts at zero for a
+new observed run and follows successful shop events. Reload preserves it;
+reset/new run replaces it. An older save without this field has unknown
+history, not zero history, and cannot earn Purist on that resumed run. This
+does not remove any previously earned award. Rerolling after the Act 8 win
+in Endless neither revokes Purist nor settles another qualifying victory.
+Defeat and Full Unlock do not award it.
+
+### Decree mastery and cosmetic stake victory markers
+
+At the canonical Act 8 victory, record the actual catalog identities of the
+Decrees still physically owned, and the table used. Each receives that run's
+stake tier as a cosmetic Archive victory marker, as described in
+[Game mechanics](GAME_MECHANICS.md#stake-stickers-victory-markers). Keep all
+earned tiers, without duplicate markers; Collection cards show the highest
+and their hover/tap/keyboard detail panels show every recorded tier.
+
+Sold or destroyed Decrees do not qualify. Multiple physical copies count as one
+catalog identity. These markers are independent of Eternal/Perishable/Rental
+gameplay stickers; a still-owned expired Perishable remains an owned Decree.
+Defeat and Full Unlock grant no markers. Endless continues the run but does
+not settle another victory or credit items acquired after the original win.
+
+Archive Complete++ requires a recorded Gold (tier 8) marker on every current
+`ALL_DECREES` identity. Its progress meter uses that live catalog, not an old
+fixed item count. Historical generic wins, acquisitions and difficulty summaries
+cannot establish which Decrees survived a Gold victory and are not backfilled.
+The optional `wonStakeTiers` field preserves older Archive profiles without a
+destructive migration; profile reset clears the markers with the other history.
+
+### Wall accolades: permanent composition, not remaining draws
+
+Deck/Wall Minimalist (20 or fewer) and Maximalist (80 or more) measure the
+permanent tile collection (`wallTemplate`), including bonus tiles. Moving tiles
+into the rack, river, dead wall, or Summer reserve does not resize that
+collection. Permanent Seal/Script changes, Tile Pack additions and Glass
+destruction do. Observe the final result of an operation, not a Script's
+temporary remove-then-create intermediate state; the last losing play counts.
+
+No run means no observed wall size. Achievement profile version 3 replaces
+the old fixed 136/136 placeholders with unset extrema, preserving every
+already-earned award and unrelated statistic. Loading an active run can prove
+its current composition, not any unrecorded past minimum/maximum.
+
+The documented 80-tile Maximalist threshold is unchanged: current starting
+collections already satisfy it, so it is earned when a real run begins, not
+merely by opening the game. Making this a meaningful growth challenge would
+require a separate balance change; this correction does not silently invent one.
+
+### Path accolades: difficulty thresholds, not exact tiers
+
+Red Path requires a recorded victory on Red Stake (tier 2) **or higher**;
+Black Path requires Black Stake (tier 4) **or higher**. Golden Path requires
+Gold Stake (tier 8). This follows the existing `Red Stake+` / `Black Stake+`
+conditions in [Game mechanics](GAME_MECHANICS.md#progression-accolades), not a
+new balance rule. A Gold victory can therefore earn all three accolades if
+none were previously earned. Selected/unlocked stakes and summary fields
+alone remain insufficient evidence. Existing earned awards and victory records
+are preserved; all 13 localized descriptions state the threshold correctly.
+
+### Wind accolade: one run includes its Endless continuation
+
+Keeper of Winds counts ten scored Wind Yakuhai occurrences in one run, not a
+lifetime sum. The existing seat/round Wind stacking still applies. Previews,
+Dragon Yakuhai, tactical plays, retriggers, and blocked/zero-score plays do not
+add Wind occurrences. The earned single-run maximum remains visible afterward.
+
+Securing Act 8 pays victory once; choosing Endless continues the same proven
+run history. Defeat, quit/reset, or starting another run ends that active
+context. Older victory/Endless saves that discarded it reconnect with their
+known table, stake and Flower identities, but only newly observed Wind scores
+count; no historical scoring or victory rewards are fabricated. See the
+[implementation and verification ledger](PAVILION_UI_ART.md#victory-to-endless-progression-follow-up).
 
 ### Optional Riichi pledge (Tensho adaptation) — retired October 2026
 
@@ -552,6 +672,27 @@ built-production and hosted EN/ES desktop/touch journeys pass 4/4 each;
 independent CI passes all 1,957 tests, build and deployment. These remain
 delegated design choices, not conclusions from organic balance or fun testing.
 [Rules, verification and remaining scope](FLOWER_CATALYSTS_IMPLEMENTATION.md).
+
+### Charter Collector: five purchases by the end of Act 5
+
+Human-confirmed October 21: retain one Charter slot after each boss, with no
+Charter rerolls, and move the achievement deadline from Act 4 to the end of
+Act 5. All five purchases must occur in the same run. The Act-5 boss shop counts;
+Act 6 and later do not. No victory is required after the fifth purchase.
+
+Store the observed count with the run so resume neither resets nor replays it.
+The achievement's progress meter shows the best qualifying count from any one
+run, not the sum across runs. Full Unlock practice does not earn progress.
+Legacy saves without purchase history count only purchases observed after
+resume. Preserve awards already earned by older clients, but do not reinterpret
+the old cross-run Act-4 counter as proof of single-run progress. The profile
+migration retains other observed statistics, including real Wall extrema.
+
+Regression coverage includes all 15 round transitions with actual boss offers,
+payment, rejected repeat purchases, rerolls, snapshots, the Act-5/6 boundary,
+separate runs, practice mode, legacy records and all 13 localized descriptions.
+Controlled score/funds fixtures establish reachability and lifecycle, not organic
+balance or newcomer enjoyment.
 
 ### Yakuman Succession: advanced patterns ascend while two Flowers are held
 

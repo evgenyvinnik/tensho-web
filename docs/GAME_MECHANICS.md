@@ -545,7 +545,8 @@ When completing a run at a specific stake:
 Each Wall (deck variant) has its own stake progression:
 - Must complete current stake to unlock next stake for that specific Wall
 - Progress is tracked independently (completing Gold on Red Wall doesn't unlock Red Stake on Blue Wall)
-- Challenge Runs can only be played on White Stake
+- Challenge Runs are deferred from this release (user decision, October 21, 2026).
+  The proposed White-Stake-only restriction is future design, not a playable mode.
 
 ---
 
@@ -805,8 +806,8 @@ Accolades are permanent badges earned by meeting specific conditions. Some unloc
 | Accolade | Japanese | Condition | Unlocks |
 |----------|----------|-----------|---------|
 | **Wild Flush** | 万能清一色 | Complete Honitsu with all Wild tiles | — |
-| **Speed Run** | 疾走 | Win in 12 or fewer rounds | Swift Andy Decree |
-| **Charter Collector** | 皇勅収集 | Buy 5 Charters by Act 4 | — |
+| **Speed Run** | 疾走 | Win spending at most 48 Turns; free REDRAWs do not count | Swift Andy Decree (legacy reward target; catalog reconciliation pending) |
+| **Charter Collector** | 皇勅収集 | Buy 5 Charters in one run by the end of Act 5 | — |
 | **Shattered** | 粉砕 | Break 2 Glass tiles in one hand | — |
 | **Royal Hand** | 帝王手 | Complete a Yakuman | — |
 | **Retrograde** | 逆行 | Get any yaku to level 10 | — |
@@ -840,15 +841,20 @@ Accolades are permanent badges earned by meeting specific conditions. Some unloc
 
 | Accolade | Japanese | Condition |
 |----------|----------|-----------|
-| **Rule Bender** | 曲法者 | Complete any Challenge Run |
-| **Rule Breaker** | 破法者 | Complete every Challenge Run |
 | **Deck Minimalist** | 極小山 | Thin Wall to 20 or fewer tiles |
 | **Deck Maximalist** | 極大山 | Have 80+ tiles in Wall |
 | **Purist** | 無転 | Win without rerolling the shop |
 
+Challenge Runs and their **Rule Bender** (complete any Challenge Run) and
+**Rule Breaker** (complete every Challenge Run) awards are explicitly deferred
+from this release. They are not shown or counted in the active achievement
+catalog. Existing saved records, translations and artwork are retained for
+compatibility. The three regular-run feats above remain active.
+
 ### Notes
 
-- Accolades cannot be earned during Challenge Runs (except Rule Bender/Breaker)
+- The proposed restriction on earning other accolades in Challenge Runs is also
+  deferred; this release has no Challenge mode.
 - Accolades can be earned after winning a run (continue playing to reach score targets)
 - Some accolades share unlock conditions with specific items
 

@@ -1,0 +1,49 @@
+{
+  "generator": "Built-in image_gen; model identifier not exposed",
+  "transparentBackground": true,
+  "conversion": "cwebp -q 84 -m 6 -resize 128 128",
+  "assets": [
+    {
+      "id": "language",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-1a397870-0e5d-471e-9e42-8339ca25a918.png",
+      "path": "public/assets/illustrations/controls-jade/language.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Primary request: LANGUAGE selector symbol, two overlapping small ivory paper scroll leaves with jade-and-antique-gold rollers, one broad elegant black calligraphy brush laid diagonally across them. The leaves carry only one bold character each: 文 and A, to clearly suggest multilingual writing. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, designed to read at 32px on dark forest green. Avoid: book, globe, emoji, modern flat vector style, large background, floor, external shadow, decorative frame, tiny detail, watermark, any other lettering."
+    },
+    {
+      "id": "archive",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-b0dae333-f46a-4bea-914c-9f7ef78f4bee.png",
+      "path": "public/assets/illustrations/controls-jade/archive.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, readable at 24–44px on dark forest green. Avoid: emoji, flat generic vector style, background, floor, external shadow, enclosing medallion, thin hairlines, tiny details, lettering or watermark. Primary request: a CLOSED cylindrical ivory scroll case, capped with carved jade ends and antique-gold rings, with a short vermilion silk tie knotted around its middle. One compact horizontal scroll case, not a book or file folder. Symbol of undiscovered knowledge, no exposed writing."
+    },
+    {
+      "id": "lock",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-ba35258b-1dc0-41a2-a364-126e5af29d2c.png",
+      "path": "public/assets/illustrations/controls-jade/lock.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, readable at 24–44px on dark forest green. Avoid: emoji, flat generic vector style, background, floor, external shadow, enclosing medallion, thin hairlines, tiny details, lettering or watermark. Primary request: one traditional Chinese horizontal brass longevity padlock, sculptural antique gold body with a central jade inset and a strong clearly visible curved closed shackle. Understated carved auspicious cloud curves; no characters. Unmistakably locked, not a chest or building."
+    },
+    {
+      "id": "tip",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-2862e60f-06b7-4c78-b76e-cfbd8af25a13.png",
+      "path": "public/assets/illustrations/controls-jade/tip.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, readable at 24–44px on dark forest green. Avoid: emoji, flat generic vector style, background, floor, external shadow, enclosing medallion, thin hairlines, tiny details, lettering or watermark. Primary request: one compact traditional East Asian jade-and-gold lantern with a warm ivory glowing center, small curved pagoda cap and short vermilion tassel. No text. Symbol of insight and guidance; no lightbulb. Broad simplified silhouette, only one object."
+    },
+    {
+      "id": "info",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-ffe42ed4-244f-4ec6-89a3-14120f62b066.png",
+      "path": "public/assets/illustrations/controls-jade/info.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, readable at 24–36px on dark forest green. Avoid: emoji, flat generic vector style, background, floor, external shadow, enclosing medallion, thin hairlines, tiny details or watermark. Primary request: one short OPEN ivory parchment scroll with two small jade-and-gold rollers and a single large bold antique-gold lowercase information letter i at its center. The simple information glyph dominates, full scroll short and nearly square. No other text."
+    },
+    {
+      "id": "warning",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-b88c0120-8d82-45c9-9686-6a8db9b82920.png",
+      "path": "public/assets/illustrations/controls-jade/warning.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, readable at 24–36px on dark forest green. Avoid: emoji, flat generic vector style, background, floor, external shadow, enclosing medallion, thin hairlines, tiny details or watermark. Primary request: one vermilion paper talisman with a folded gold-edged top, restrained jade corner ornament, bearing one large bold warm-ivory exclamation mark !. Clearly a warning charm, not an envelope or traffic sign. Compact silhouette. No other text."
+    },
+    {
+      "id": "check",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-77a6a425-4d3f-48e2-b597-bc3c21e221d9.png",
+      "path": "public/assets/illustrations/controls-jade/check.webp",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent painted UI icon for Tensho, an East Asian-inspired Mahjong roguelike. Style: premium hand-painted sculptural game icon, carved emerald jade, warm ivory, antique gold bevels and restrained vermilion lacquer; understated Chinese cloud-scroll ornament, broad highlights, simple bold silhouette. Composition: single centered compact object on square genuinely transparent canvas, full silhouette within 10 percent padding, readable at 24–36px on dark forest green. Avoid: emoji, flat generic vector style, background, floor, external shadow, enclosing medallion, thin hairlines, tiny details or watermark. Primary request: a single large bold jade checkmark with carved antique-gold edging and a restrained cloud-scroll flourish at the short end. One unmistakable checkmark, broad brushstroke-like shape; no enclosing frame, no paper, no text or other object."
+    }
+  ]
+}
