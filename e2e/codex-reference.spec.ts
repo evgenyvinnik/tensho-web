@@ -28,12 +28,18 @@ for (const language of SUPPORTED_LANGUAGES) {
       ['tiles', 'titleDragons'],
       ['handBuilding', 'titleQuads'],
       ['handBuilding', 'titleWinningHand'],
+      ['howToPlay', 'tutorial.select'],
+      ['howToPlay', 'tutorial.saving'],
       ['scoring', 'titleYakuIntro'],
       ['progression', 'titleActsRounds'],
       ['decrees', 'titleDecreeRarities'],
       ['flora', 'titleHierarchy'],
       ['strategy', 'titleMoreTips'],
+      ['strategy', 'titleBiggerHand'],
     ]) {
+      const title = titleKey.startsWith('tutorial.')
+        ? copy.tutorial[titleKey.split('.')[1]].title
+        : copy.codexReference[titleKey]
       const categoryButton = isMobile
         ? categories.getByRole('button', {
             name: copy.codex[category],
@@ -46,21 +52,32 @@ for (const language of SUPPORTED_LANGUAGES) {
       await page
         .locator('.pavilion-codex-steps')
         .getByRole('button', {
-          name: copy.codexReference[titleKey],
+          name: title,
           exact: true,
         })
         .click()
       await expect(
         content.getByRole('heading', {
-          name: copy.codexReference[titleKey],
+          name: title,
           exact: true,
         })
       ).toBeVisible()
-      await expect(content).not.toContainText(/codexReference\.|{{/)
+      await expect(content).not.toContainText(/codexReference\.|tutorial\.|{{/)
+      if (titleKey === 'tutorial.saving') {
+        for (const key of ['saveLeave', 'resume', 'saved', 'retry'])
+          await expect(content).toContainText(copy.classicSave[key])
+        await expect(content).toContainText(copy.tutorial.saving.li3)
+      }
+      if (titleKey === 'titleBiggerHand') {
+        const racks = content.locator('[data-codex-tile-groups]')
+        await expect(racks).toHaveCount(2)
+        for (const rack of await racks.all())
+          await expect(rack.locator('img')).toHaveCount(14)
+      }
       const hero = content.locator('[data-codex-category-hero]')
       await expect(hero.locator('img')).toHaveAttribute(
         'alt',
-        `${copy.codex[category]}: ${copy.codexReference[titleKey]}`
+        `${copy.codex[category]}: ${title}`
       )
       expect(
         await hero.evaluate((element) => {

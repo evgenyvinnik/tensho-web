@@ -28,6 +28,13 @@ test('all known locale routes have real HTTP 200 entry documents and initial ind
   }
   expect((await request.get('en/not-a-real-route/')).status()).toBe(404)
   expect((await request.get('not-a-real-language/play/')).status()).toBe(404)
+  for (const path of ['about/', 'how-to-play/', 'faq/', 'learn.css'])
+    expect((await request.get(path)).status(), path).toBe(404)
+  const sitemap = await request.get('sitemap.xml')
+  expect(sitemap.status()).toBe(200)
+  expect((await sitemap.text()).match(/<loc>[^<]+<\/loc>/g)).toEqual([
+    '<loc>https://evgenyvinnik.github.io/tensho-web/</loc>',
+  ])
 })
 
 test('menu navigation restores indexing and retired practice bookmarks return to the menu', async ({

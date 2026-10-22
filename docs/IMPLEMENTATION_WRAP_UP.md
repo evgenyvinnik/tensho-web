@@ -2,8 +2,46 @@
 
 **Updated:** October 22, 2026
 
-**Status:** Implementation integrated and deployed; final release verification
-is tracked below. Historical checkpoints are not evidence for a newer release.
+**Status:** Integrating the approved Codex handoff (`a7b9e71`, version commit
+`50ac79c`). Final verification is in progress; this candidate is not yet deployed.
+Historical checkpoints are not evidence for a newer release.
+
+**October 22 Codex handoff:** the user approved waiting for and integrating the
+replacement of standalone About/how-to-play/FAQ pages with in-game guidance.
+Those pages and their hero artwork are intentionally retired, not missing
+features. Selection, saving, REDRAW and a worked bigger-hand example now live in
+the localized Codex. Static checks require the retired paths to return 404,
+retain the game routes, and check the root-only sitemap. Browser coverage now
+exercises the new illustrated explanations in all 13 locales on desktop and
+320px screens. Save/update guidance was clarified in all locales: a saved run
+can survive an update after safely leaving the table; the run need not be over.
+
+The handoff deployment failed its stale 51-source artwork inventory assertion
+([run 39848962095](https://github.com/evgenyvinnik/tensho-web/actions/runs/39848962095));
+the current inventory is 50 sources and 50 offline delivery images. The
+integration preserves the authored Script alpha repairs and updates those
+explicit checks without relaxing image decoding or asset budgets. Local
+release safeguards pass **18/18**. The `790c6f3` live baseline to frozen handoff
+candidate passes **4/4** PWA upgrade cases, including quota failure, other-tab
+protection and offline resume (`/private/tmp/tensho-codex-handoff-pwa-261022`).
+The frozen handoff browser suite passes **44/44**; the final copy-corrected
+production build additionally passes **26/26** Codex desktop/320px cases and
+**66/66** focused translation/Codex unit tests. Type checking, scoped lint (one
+existing Fast Refresh warning), formatting and asset budgets pass: 798 checked
+entries, 39,954,281 precache bytes. Reports are
+`/private/tmp/tensho-codex-handoff-browser-261022.json`,
+`/private/tmp/tensho-codex-final-browser-261022.json` and
+`/private/tmp/tensho-codex-final-copy-261022.json`.
+
+The local full-unit report is **3,608 passed, three failed**, not a green run:
+two balance-command subprocesses exceeded their 20-second limits and the
+source-art scan exceeded five seconds under concurrent machine load
+(`/private/tmp/tensho-codex-handoff-units-261022.json`). A serial diagnostic of
+those files passes **75/75** with the original limits
+(`/private/tmp/tensho-codex-timeout-diagnostic-261022.json`): the previously
+failing cases took 3.2 seconds, 2.9 seconds and 1.3 seconds respectively.
+Clean-runner full verification is still required before claiming completion.
+No gameplay rules or test budgets were changed to address these timeouts.
 
 **October 22 completion audit:** the release hold was explicitly lifted by the
 user. The integrated artwork, achievement rewards, Codex and layout work shipped
@@ -357,7 +395,7 @@ for semantics.
 
 The requested outcome is to finish the project implementation after the other agent's work, including new generated artwork. Preserve working gameplay and the established illustrated visual style. The 118 entries in [Gameplay experiments](GAMEPLAY_EXPERIMENTS.md) are a design reservoir, not 118 approved implementation requirements.
 
-## Completion contract — October 11, reconciled October 21
+## Completion contract — October 11, reconciled October 22
 
 The user has explicitly prioritized **project completion**. This is the active
 work queue; the long chronological ledger below is evidence, not an ever-growing
@@ -367,8 +405,9 @@ current defect or an unmet acceptance criterion blocks this candidate.
 
 **Release scope:** the existing Classic game and its documented content/progression,
 saves, optional teaching, responsive
-localized interface, illustrated assets, audio, and public About/how-to-play/FAQ
-pages. Preserve the current default mode and all confirmed mechanic decisions.
+localized interface, illustrated assets, audio, static game routes and in-game
+Codex guidance. The October 22 approved handoff retires standalone
+About/how-to-play/FAQ pages. Preserve the current default mode and all confirmed mechanic decisions.
 Do not introduce another mode, scoring redesign or default-mode migration as
 part of closing this release. The player-feedback rules in `RULE_RESOLUTION.md`
 explicitly retired Table Loop, Skip, the Riichi pledge and single-tile Discard;
@@ -383,7 +422,7 @@ changes must close a gate below, not start another standalone polish checkpoint.
 | C2 — Rules and progression       | Each shipped content family has acquisition, authoritative use/trigger, visible explanation and persistence coverage. Reconcile any remaining advertised rule/unlock mismatch with `RULE_RESOLUTION.md`; retain the approved Merchant swap, defeat Rental and latest-only Bell rules.                                | Existing system coverage and resolved rules are the starting evidence. Audit current catalog/copy discrepancies once; turn only concrete discrepancies into fixes. Full unit suite must pass on the final candidate.                             |
 | C3 — Save/recovery safety        | Reload/resume play and paid pending rewards without loss/replay; protect against stale-window writes; preserve preferences through confirmed reset; verify the supported current-to-candidate PWA update and offline artwork.                                                                                        | Existing coverage; run the named persistence journeys and existing update harness against the candidate. Do not claim support for every historical client or crash-atomic multi-key reset. Any reproduced loss of a supported save is a blocker. |
 | C4 — Usable, teachable interface | At 320px, tablet and desktop: reachable primary actions and close controls, no page-wide overflow or clipped essential rules; hover information also available to touch/keyboard; optional guidance explains selection, commitment and payoff. All 13 game locales have required rules/control text and no raw keys. | Finish verification of the pending Dragon guide, then one bounded screen/locale pass. Fix blocked actions, unreadable rules and incorrect translations; aesthetic variations alone do not reopen this gate.                                      |
-| C5 — Assets and public site      | Existing required illustrations decode and have accessible text; audio/motion preferences work. About/how-to-play/FAQ return real HTML with valid links/metadata, and production asset/cache budgets pass.                                                                                                           | Reuse the already generated art. Run public-guide/static-route/asset checks. English-only editorial pages remain explicitly labeled; search indexing and future translated articles are not implementation claims.                               |
+| C5 — Assets and static delivery | Required illustrations decode and have accessible text; audio/motion preferences work. Static game routes and metadata are valid, retired guide paths return 404, the sitemap lists only the root, and production asset/cache budgets pass. | Reuse generated art. Run Codex/static-route/asset checks. Standalone editorial pages were explicitly retired in the approved October 22 handoff; search indexing is not an implementation claim. |
 | C6 — Release and handoff         | One final candidate passes full units, release safeguards, build, required browser journeys and hosted smoke; main, tag, manifest and served bundle agree. Record the exact release, remaining limitations and concise player instructions.                                                                          | Released on user request, October 21: see the release note at the top. October 11's `ceb70ed` evidence (144 core journeys and 10 PWA updates) is historical. Hosted verification of the deployed version follows the deploy workflow.            |
 
 ### Execution order and stopping rule
@@ -403,7 +442,7 @@ Core browser acceptance uses the existing `app`, `play-structure`, `shop`,
 `consumables`, `run-results`, `classic-resume`, `two-actions` and `progress-reset`
 specs, matching the repository's `test:acceptance` command. Several intentionally require
 native Vite fixtures; run them there and label that evidence accurately. The
-production interaction gate, `public-guides`, `static-routes`, `asset-delivery`
+production interaction gate, `codex-reference`, `static-routes`, `asset-delivery`
 and the existing PWA update harness exercise the built release separately.
 An unexpected skip or interrupted run does not satisfy a gate. Preserve original
 failures and test budgets; investigate failures rather than retrying to erase them.

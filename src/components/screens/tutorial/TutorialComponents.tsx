@@ -312,7 +312,10 @@ export function TileGroups({
   groups: Array<{ suit: TileSuit; ranks: number[] }>
 }) {
   return (
-    <div className="flex flex-wrap justify-center gap-x-3 gap-y-2 py-2">
+    <div
+      data-codex-tile-groups
+      className="flex flex-wrap justify-center gap-x-3 gap-y-2 py-2"
+    >
       {groups.map((group, g) => (
         <div key={g} className="flex gap-0.5">
           {group.ranks.map((rank, r) => (

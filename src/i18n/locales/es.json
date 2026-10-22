@@ -2117,7 +2117,7 @@
       "p1": "Tu partida se guarda en este navegador tras cada acción completada. Elige {{saveLeave}} para volver al menú y luego {{resume}} para seguir en la mesa o en la Casa de Té.",
       "li1": "Espera a ver {{saved}} antes de cerrar la pestaña. Si falla el guardado, mantén la pestaña abierta y pulsa {{retry}}.",
       "li2": "Las partidas guardadas se quedan en este navegador de este dispositivo. Si borras los datos del sitio o cambias de navegador, no estarán.",
-      "li3": "Las fichas seleccionadas y las animaciones no se restauran. Las actualizaciones del juego se instalan entre partidas, nunca a mitad de una."
+      "li3": "Las fichas seleccionadas y las animaciones no se restauran. Las actualizaciones esperan a que salgas de la mesa de forma segura; tu partida guardada se conserva."
     }
   },
   "accessibility": {

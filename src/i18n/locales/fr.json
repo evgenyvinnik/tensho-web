@@ -2117,7 +2117,7 @@
       "p1": "Votre partie est sauvegardée dans ce navigateur après chaque action terminée. Choisissez {{saveLeave}} pour revenir au menu, puis {{resume}} pour continuer à la table ou à la Maison de Thé.",
       "li1": "Attendez {{saved}} avant de fermer l’onglet. Si la sauvegarde échoue, gardez l’onglet ouvert et appuyez sur {{retry}}.",
       "li2": "Les sauvegardes restent dans ce navigateur, sur cet appareil. Effacer les données du site ou changer de navigateur vous en sépare.",
-      "li3": "Les tuiles sélectionnées et les animations ne sont pas restaurées. Les mises à jour du jeu s’installent entre deux parties, jamais au milieu d’une."
+      "li3": "Les tuiles sélectionnées et les animations ne sont pas restaurées. Les mises à jour attendent que vous quittiez la table en toute sécurité ; votre partie sauvegardée est conservée."
     }
   },
   "accessibility": {

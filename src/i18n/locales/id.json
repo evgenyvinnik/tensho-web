@@ -2325,7 +2325,7 @@
       "p1": "Permainanmu disimpan di browser ini setiap kali sebuah aksi selesai. Pilih {{saveLeave}} untuk kembali ke menu, lalu {{resume}} untuk melanjutkan di meja atau di Rumah Teh.",
       "li1": "Tunggu tulisan {{saved}} sebelum menutup tab. Jika penyimpanan gagal, biarkan tab terbuka dan tekan {{retry}}.",
       "li2": "Simpanan hanya ada di browser ini pada perangkat ini. Menghapus data situs atau berganti browser membuatnya tidak terbawa.",
-      "li3": "Ubin yang dipilih dan animasi tidak dipulihkan. Pembaruan game dipasang di antara permainan, tidak pernah di tengah permainan."
+      "li3": "Ubin yang dipilih dan animasi tidak dipulihkan. Pembaruan menunggu sampai kamu meninggalkan meja dengan aman; permainan yang tersimpan tetap tersimpan."
     }
   },
   "accessibility": {

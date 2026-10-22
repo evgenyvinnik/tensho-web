@@ -2404,7 +2404,7 @@
       "p1": "La partita viene salvata in questo browser dopo ogni azione completata. Scegli {{saveLeave}} per tornare al menu, poi {{resume}} per continuare al tavolo o nella Casa del Tè.",
       "li1": "Aspetta {{saved}} prima di chiudere la scheda. Se il salvataggio non riesce, tieni aperta la scheda e premi {{retry}}.",
       "li2": "I salvataggi restano in questo browser su questo dispositivo. Cancellando i dati del sito o cambiando browser non li ritroverai.",
-      "li3": "Le tessere selezionate e le animazioni non vengono ripristinate. Gli aggiornamenti del gioco si installano tra una partita e l’altra, mai a metà."
+      "li3": "Le tessere selezionate e le animazioni non vengono ripristinate. Gli aggiornamenti attendono che tu lasci il tavolo in sicurezza; la partita salvata viene conservata."
     }
   },
   "accessibility": {

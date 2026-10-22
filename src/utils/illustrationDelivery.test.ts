@@ -10,7 +10,8 @@ const repairedSources = new Set(
 )
 
 it('keeps an explicit, unique migration inventory', () => {
-  expect(sources).toHaveLength(51)
+  expect(sources).toHaveLength(50)
+  expect(sources.some((source) => source.startsWith('site/'))).toBe(false)
   expect(new Set(sources).size).toBe(sources.length)
   expect(sources.every((s) => /^[\w/-]+\.png$/.test(s))).toBe(true)
   expect(repairedSources.size).toBe(21)

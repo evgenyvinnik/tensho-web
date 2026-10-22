@@ -23,12 +23,12 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      # Live release.json verified October 22: v1.0.261022-1.
+      # Live release.json verified October 22: v1.0.261022-3.
       # Pin its commit, not a second build of the candidate; refresh this baseline
       # when the live manifest changes before the next completion candidate.
       - uses: actions/checkout@v6
         with:
-          ref: 24a222ce71465600c015aec6374c7e971e90d0a8
+          ref: 790c6f3e1b4fee0dce509188c30d1ba83fb69269
           path: .verification-baseline
           persist-credentials: false
       - uses: actions/setup-node@v6
@@ -59,7 +59,7 @@ jobs:
           VITE_BASE_PATH: /tensho-web/
           VITE_APP_VERSION: pwa-after
         run: bun run build
-      - name: Verify real static routes, public guides and artwork
+      - name: Verify static routes, localized Codex and artwork
         env:
           SKIP_WEB_SERVER: '1'
           VERIFY_STATIC_ROUTES: '1'
@@ -77,7 +77,7 @@ jobs:
           done
           kill -0 "$static_pid"
           cmp "$RUNNER_TEMP/tensho-static-index.html" dist/index.html
-          bunx playwright test e2e/public-guides.spec.ts e2e/static-routes.spec.ts e2e/asset-delivery.spec.ts e2e/catalog-localization.spec.ts --workers=2 --retries=0 --trace=retain-on-failure --output="$RUNNER_TEMP/tensho-surfaces/static-results"
+          bunx playwright test e2e/static-routes.spec.ts e2e/asset-delivery.spec.ts e2e/catalog-localization.spec.ts e2e/codex-reference.spec.ts --workers=2 --retries=0 --trace=retain-on-failure --output="$RUNNER_TEMP/tensho-surfaces/static-results"
       - name: Verify current-to-candidate update and offline recovery
         run: node scripts/verify-pwa-updates.mjs "$RUNNER_TEMP/tensho-pwa-before" "$GITHUB_WORKSPACE/dist" "$RUNNER_TEMP/tensho-surfaces/pwa"
       - name: Preserve release-surface diagnostics

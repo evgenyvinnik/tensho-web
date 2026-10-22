@@ -83,10 +83,17 @@ const act = async (locator, mobile) =>
 // The live release now introduces starting Decrees and drawn bonuses. Complete
 // their real UI before manipulating the rack; never click through an overlay.
 async function settleReveals(page, mobile) {
-  const reveals = page.locator('[data-wall-draw], [data-decree-reveal], [data-orb-reveal]')
+  const reveals = page.locator(
+    '[data-wall-draw], [data-decree-reveal], [data-orb-reveal]'
+  )
   for (let guard = 0; guard < 24; guard++) {
-    const visible = await reveals.first().waitFor({ state: 'visible', timeout: guard === 0 ? 2000 : 800 })
-      .then(() => true, () => false)
+    const visible = await reveals
+      .first()
+      .waitFor({ state: 'visible', timeout: guard === 0 ? 2000 : 800 })
+      .then(
+        () => true,
+        () => false
+      )
     if (!visible) return
     const wall = page.locator('[data-wall-draw]')
     if (await wall.isVisible()) {
@@ -158,7 +165,11 @@ try {
       })
       page.on('console', (message) => {
         if (['warning', 'error'].includes(message.type()))
-          record({ event: 'console', type: message.type(), text: message.text() })
+          record({
+            event: 'console',
+            type: message.type(),
+            text: message.text(),
+          })
       })
       page.on('pageerror', (e) => errors.push(e.message))
       page.on('dialog', (dialog) => {
@@ -174,10 +185,15 @@ try {
         await page.waitForTimeout(1500)
         // Gameplay deliberately omits the version badge. Check the actual
         // loaded entry and document identity instead of requiring menu chrome.
-        assert.deepEqual(await page.evaluate(() => ({
-          entry: document.querySelector('script[type="module"][src]').getAttribute('src'),
-          timeOrigin: performance.timeOrigin,
-        })), controlledDocument)
+        assert.deepEqual(
+          await page.evaluate(() => ({
+            entry: document
+              .querySelector('script[type="module"][src]')
+              .getAttribute('src'),
+            timeOrigin: performance.timeOrigin,
+          })),
+          controlledDocument
+        )
       }
       try {
         await page.goto(root + 'en/')
@@ -199,10 +215,14 @@ try {
           Boolean(navigator.serviceWorker.controller)
         )
         controlledDocument = await page.evaluate(() => ({
-          entry: document.querySelector('script[type="module"][src]').getAttribute('src'),
+          entry: document
+            .querySelector('script[type="module"][src]')
+            .getAttribute('src'),
           timeOrigin: performance.timeOrigin,
         }))
-        console.log(JSON.stringify({ label, stage: 'installed-and-controlled' }))
+        console.log(
+          JSON.stringify({ label, stage: 'installed-and-controlled' })
+        )
         await page.getByRole('button', { name: 'New Run', exact: true }).click()
         await expect(
           page.locator('[data-classic-save-status="saved"]')
@@ -219,7 +239,10 @@ try {
             }
             Storage.prototype.setItem = function (name, value) {
               if (name === key)
-                throw new DOMException('Test quota failure', 'QuotaExceededError')
+                throw new DOMException(
+                  'Test quota failure',
+                  'QuotaExceededError'
+                )
               return original.call(this, name, value)
             }
           }, classicKey)
@@ -252,7 +275,8 @@ try {
                   .handsPlayedThisRun
             )
             .toBe(1)
-        if (failSave) assert.deepEqual(await readSave(page, classicKey), previous)
+        if (failSave)
+          assert.deepEqual(await readSave(page, classicKey), previous)
         const savedBefore = await readSave(page, classicKey)
 
         releaseDir = after
@@ -309,7 +333,9 @@ try {
         })
         await sibling.close()
         // The next safe boundary applies it: open Settings from the menu.
-        await page.getByRole('button', { name: 'Settings', exact: true }).click()
+        await page
+          .getByRole('button', { name: 'Settings', exact: true })
+          .click()
         await expect(page.locator('body')).toContainText('pwa-after', {
           timeout: 30_000,
         })
@@ -321,17 +347,26 @@ try {
         await context.setOffline(true)
         // Decode every replacement, including artwork never visited before
         // upgrading. HTTP 200 alone could be an incorrect HTML fallback.
-        const offlineImages = await page.evaluate(async (paths) => {
-          return Promise.all(paths.map(async (path) => {
-            const response = await fetch(path)
-            if (!response.ok) throw new Error(`Offline asset: ${path}`)
-            const bitmap = await createImageBitmap(await response.blob())
-            const size = [bitmap.width, bitmap.height]
-            bitmap.close()
-            return size
-          }))
-        }, illustrationCopies.flatMap(({ copies }) => copies.map(({ path }) => root + path)))
-        assert.equal(offlineImages.length, 52)
+        const offlineImages = await page.evaluate(
+          async (paths) => {
+            return Promise.all(
+              paths.map(async (path) => {
+                const response = await fetch(path)
+                if (!response.ok) throw new Error(`Offline asset: ${path}`)
+                const bitmap = await createImageBitmap(await response.blob())
+                const size = [bitmap.width, bitmap.height]
+                bitmap.close()
+                return size
+              })
+            )
+          },
+          illustrationCopies.flatMap(({ copies }) =>
+            copies.map(({ path }) => root + path)
+          )
+        )
+        // The two public-guide hero sizes were intentionally retired. Keep
+        // this explicit inventory guard: every remaining image must decode.
+        assert.equal(offlineImages.length, 50)
         assert.ok(offlineImages.every(([w, h]) => w > 0 && h > 0))
         await page.goto(root + 'en/codex')
         await expect(
@@ -365,13 +400,25 @@ try {
         // Catalog text is refreshed on load. Admit only the two reviewed
         // terminology changes; effects, ownership and runtime fields stay exact.
         for (const decree of resumedSnapshot.state.decreeSystem.ownedDecrees) {
-          if (decree.id === 'tanyao_dispensation' && decree.name === 'Tanyao Dispensation') {
-            assert.equal(decree.description, 'Terminal tiles (1s and 9s) are allowed in Tanyao hands.')
+          if (
+            decree.id === 'tanyao_dispensation' &&
+            decree.name === 'Tanyao Dispensation'
+          ) {
+            assert.equal(
+              decree.description,
+              'Terminal tiles (1s and 9s) are allowed in Tanyao hands.'
+            )
             decree.name = 'Simples Dispensation'
-            decree.description = 'Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not.'
+            decree.description =
+              'Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not.'
           }
-          if (decree.id === 'yakuman_succession' && decree.description === 'While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.') {
-            decree.description = 'While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.'
+          if (
+            decree.id === 'yakuman_succession' &&
+            decree.description ===
+              'While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.'
+          ) {
+            decree.description =
+              'While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.'
           }
         }
         assert.deepEqual(
@@ -399,14 +446,18 @@ try {
         // stalled renderer or changing any interaction/assertion deadlines.
         await writeFile(
           resolve(artifacts, `${label}-diagnostics.json`),
-          JSON.stringify({
-            label,
-            errors,
-            url: page.url(),
-            failure: String(error),
-            pendingRequests: [...pendingRequests.values()],
-            events: diagnostics,
-          }, null, 2)
+          JSON.stringify(
+            {
+              label,
+              errors,
+              url: page.url(),
+              failure: String(error),
+              pendingRequests: [...pendingRequests.values()],
+              events: diagnostics,
+            },
+            null,
+            2
+          )
         )
         console.error(
           JSON.stringify({

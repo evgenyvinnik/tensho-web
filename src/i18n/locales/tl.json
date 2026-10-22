@@ -2404,7 +2404,7 @@
       "p1": "Naise-save ang laro mo sa browser na ito pagkatapos ng bawat natapos na aksyon. Piliin ang {{saveLeave}} para bumalik sa menu, pagkatapos ay {{resume}} para magpatuloy sa mesa o sa Bahay ng Tsaa.",
       "li1": "Hintayin ang {{saved}} bago isara ang tab. Kapag pumalya ang pag-save, huwag isara ang tab at pindutin ang {{retry}}.",
       "li2": "Nananatili ang mga save sa browser na ito sa device na ito. Kapag binura mo ang data ng site o lumipat ng browser, hindi mo na sila makikita.",
-      "li3": "Hindi naibabalik ang mga napiling tile at animation. Ini-install ang mga update ng laro sa pagitan ng mga laro, hindi kailanman sa gitna ng isa."
+      "li3": "Hindi naibabalik ang mga napiling tile at animation. Maghihintay ang mga update hanggang ligtas kang makaalis sa mesa; mananatili ang naka-save mong laro."
     }
   },
   "accessibility": {

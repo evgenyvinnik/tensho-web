@@ -2113,7 +2113,7 @@
       "p1": "Your run is saved in this browser after every completed action. Choose {{saveLeave}} to return to the menu, then {{resume}} to continue at the table or in the Tea House.",
       "li1": "Wait for {{saved}} before closing the tab. If saving fails, keep the tab open and press {{retry}}.",
       "li2": "Saves stay in this browser on this device. Clearing site data or switching browsers leaves them behind.",
-      "li3": "Selected tiles and animations are not restored. Game updates install between runs, never in the middle of one."
+      "li3": "Selected tiles and animations are not restored. Updates wait until you leave the table safely; your saved run is kept."
     }
   },
   "codex": {

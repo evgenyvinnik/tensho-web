@@ -2404,7 +2404,7 @@
       "p1": "Oyunun, tamamlanan her eylemden sonra bu tarayıcıya kaydedilir. Menüye dönmek için {{saveLeave}} seçeneğini, masada ya da Çay Evi’nde devam etmek için {{resume}} seçeneğini kullan.",
       "li1": "Sekmeyi kapatmadan önce {{saved}} yazısını bekle. Kayıt başarısız olursa sekmeyi açık tut ve {{retry}} düğmesine bas.",
       "li2": "Kayıtlar bu cihazdaki bu tarayıcıda kalır. Site verilerini silersen ya da başka tarayıcıya geçersen onlara ulaşamazsın.",
-      "li3": "Seçili taşlar ve animasyonlar geri yüklenmez. Oyun güncellemeleri iki oyun arasında kurulur, asla bir oyunun ortasında kurulmaz."
+      "li3": "Seçili taşlar ve animasyonlar geri yüklenmez. Güncellemeler masadan güvenle ayrılmanı bekler; kayıtlı oyunun korunur."
     }
   },
   "accessibility": {
