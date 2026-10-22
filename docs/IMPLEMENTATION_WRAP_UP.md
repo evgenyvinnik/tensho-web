@@ -17,6 +17,16 @@ The live manifest confirms `v1.0.261022-1`, commit
 `24a222ce71465600c015aec6374c7e971e90d0a8`; this exact deployed commit is now
 the pinned saved-game upgrade baseline for the final interaction workflow.
 
+The exact `24a222c` → `4610cad` local upgrade pass completed **4/4** cases:
+desktop/touch, normal/quota-failed saves, deferred activation, other-window
+protection and offline resume with all 52 delivery images. Evidence is in
+`/private/tmp/tensho-release-upgrade-corrected-261022`. The original report in
+`/private/tmp/tensho-release-upgrade-evidence-261022` caught a harness assumption:
+a random opening play can win and reach the shop before the test clicks the
+table's Exit button. The harness now continues through the real shop control
+first, retaining quota failure and exact durable-save assertions throughout.
+This correction changes no application code; the final workflow checks it too.
+
 The original frozen core run completed **132/132**, zero retries/skips
 (`/private/tmp/tensho-final-integration-core.json`, 15.2 minutes). The old surface
 run was **49/60**, not a pass. Its Wall alignment defect is fixed through an

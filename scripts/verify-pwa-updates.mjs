@@ -230,6 +230,16 @@ try {
           )
         await page.locator('[data-game-action="play"]').click()
         await settleReveals(page, mobile)
+        // A random opening pair can already beat the first round. Return to
+        // the table through the real shop control before exercising its Exit
+        // dialog. Keep quota failure injected through this transition too:
+        // the old durable save must still remain untouched until recovery.
+        const advancedFromShop = new URL(page.url()).pathname.endsWith('/shop')
+        if (advancedFromShop) {
+          await act(page.locator('[data-shop-continue]'), mobile)
+          await settleReveals(page, mobile)
+        }
+        await expect(page.locator('[data-game-action="play"]')).toBeVisible()
         if (failSave)
           await expect(
             page.locator('[data-classic-save-status="unavailable"]')
@@ -376,6 +386,7 @@ try {
           JSON.stringify({
             label,
             passed: true,
+            advancedFromShop,
             savedAcrossUpgrade: true,
             deferredDuringPlay: true,
             otherTabsBlocked: true,
