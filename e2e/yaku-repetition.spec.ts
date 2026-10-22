@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { selectCompleteHand } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es', 'ru'])
@@ -161,8 +162,7 @@ for (const language of ['en', 'es', 'ru'])
     expect((await saved()).state.previousRoundYakuStreaks).toEqual(
       before.state.previousRoundYakuStreaks
     )
-    // The table offers the complete hand as one tap onto the felt.
-    await activate(page.locator('[data-select-mahjong]'))
+    await selectCompleteHand(page, isMobile)
     await expect(
       page.locator('[data-play-zone="felt"] [data-play-tile]')
     ).toHaveCount(14)

@@ -1,6 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { clearReveals, handScoreTotal } from './helpers/table'
+import {
+  clearReveals,
+  handScoreTotal,
+  selectCompleteHand,
+} from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const shape of ['ordinary', 'pairs', 'orphans', 'clemency'])
@@ -146,9 +150,6 @@ for (const language of ['en', 'es'])
         contentType: 'application/json',
       })
       const play = page.locator('[data-game-action="play"]')
-      // The wildcard completes the hand, so the table offers it as one tap.
-      const mahjong = page.locator('[data-select-mahjong]')
-      await expect(mahjong).toHaveText(`✦ ${copy.patterns.mahjong.name}`)
       const art = page
         .locator('img[src$="/decrees/celestial-wildcard.webp"]')
         .first()
@@ -173,7 +174,8 @@ for (const language of ['en', 'es'])
           )
           .toBe(true)
       }
-      await activate(mahjong)
+      // The wildcard completes the hand; every rack tile goes to the felt.
+      await selectCompleteHand(page, isMobile)
       await expect(
         page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(before.state.handTiles.length)

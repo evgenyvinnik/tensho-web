@@ -153,7 +153,6 @@ for (const fixture of [
       )
     ).toBe(false)
     await expect(page.locator('[data-hand-group]')).toHaveCount(0)
-    await expect(page.locator('[data-select-mahjong]')).toHaveCount(0)
   })
 }
 

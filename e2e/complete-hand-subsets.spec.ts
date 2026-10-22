@@ -1,6 +1,10 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { clearReveals, handScoreTotal } from './helpers/table'
+import {
+  clearReveals,
+  handScoreTotal,
+  selectCompleteHand,
+} from './helpers/table'
 
 for (const language of ['en', 'es'])
   for (const shape of ['standard', 'pairs', 'orphans', 'wildcard', 'clemency'])
@@ -150,14 +154,10 @@ for (const language of ['en', 'es'])
         contentType: 'application/json',
       })
       const play = page.locator('[data-game-action="play"]')
-      // The table offers the complete hand it found as one tap.
-      const mahjong = page.locator('[data-select-mahjong]')
-      await expect(mahjong).toHaveText(`✦ ${copy.patterns.mahjong.name}`)
       await expect(
         page.locator('[data-play-zone="hand"] [data-play-tile]')
       ).toHaveCount(16)
-      await activate(mahjong)
-      await expect(mahjong).toHaveCount(0)
+      expect(await selectCompleteHand(page, isMobile)).toEqual(expected.ids)
       const staged = page.locator('[data-play-zone="felt"] [data-play-tile]')
       await expect(staged).toHaveCount(expected.ids.length)
       expect(

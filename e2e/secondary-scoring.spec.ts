@@ -1,7 +1,12 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
-import { clearReveals, handScoreTotal, openTable } from './helpers/table'
+import {
+  clearReveals,
+  handScoreTotal,
+  openTable,
+  selectCompleteHand,
+} from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
@@ -114,8 +119,7 @@ for (const [language, copy] of [
           .screenshot({ path: testInfo.outputPath('crimson-disabled.png') })
         await page.keyboard.press('Escape')
       }
-      // The table offers the complete hand as one tap onto the felt.
-      await page.locator('[data-select-mahjong]').click()
+      await selectCompleteHand(page)
       await expect(
         page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(14)

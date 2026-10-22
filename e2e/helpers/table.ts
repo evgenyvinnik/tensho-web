@@ -87,6 +87,29 @@ export async function selectTiles(
 }
 
 /**
+ * Pick the complete Mahjong hand the engine finds on the rack onto the felt,
+ * one tile at a time in the engine's order (`tap` on touch layouts).
+ */
+export async function selectCompleteHand(
+  page: Page,
+  tap = false
+): Promise<string[]> {
+  const ids: string[] | null = await page.evaluate(async () => {
+    const path = '/src/game/GameOrchestrator.ts'
+    const { gameOrchestrator: game } = await import(path)
+    return game.findCompleteHandSelection()
+  })
+  if (!ids) throw new Error('No complete hand on the rack')
+  for (const id of ids) {
+    const tile = page.locator(
+      `[data-play-zone="hand"] [data-play-tile="${id}"]`
+    )
+    await (tap ? tile.tap() : tile.click())
+  }
+  return ids
+}
+
+/**
  * The total in the middle of the table: the selection's forecast
  * (`preview`), or the last play once nothing is selected (`last`).
  */

@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test'
-import { clearReveals, handScoreTotal, openTable } from './helpers/table'
+import {
+  clearReveals,
+  handScoreTotal,
+  openTable,
+  selectCompleteHand,
+} from './helpers/table'
 
 for (const { language, motion } of [
   { language: 'en', motion: 'reduce' },
@@ -69,8 +74,7 @@ for (const { language, motion } of [
     // startNewRun queues its starting Decrees for a reveal over the table.
     await clearReveals(page)
     expect(expected.yaku).toBeGreaterThanOrEqual(2)
-    // The table offers the complete hand as one tap onto the felt.
-    await page.locator('[data-select-mahjong]').click()
+    await selectCompleteHand(page)
     await expect(
       page.locator('[data-play-zone="felt"] [data-play-tile]')
     ).toHaveCount(14)

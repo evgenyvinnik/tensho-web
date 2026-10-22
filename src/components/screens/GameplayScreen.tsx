@@ -326,14 +326,6 @@ export function GameplayScreen() {
         if (!selectedSet.has(id)) game.selectTile(id)
   }
 
-  // A complete Mahjong hand is the jackpot; offer to select it in one tap.
-  const completeHandSelection = game.findCompleteHandSelection()
-  const selectCompleteHand = () => {
-    if (!completeHandSelection) return
-    game.clearSelection()
-    for (const id of completeHandSelection) game.selectTile(id)
-  }
-
   const handleExitGame = useCallback(async () => {
     if (await persistence.retrySave()) navigateTo(ROUTES.MENU)
   }, [persistence, navigateTo])
@@ -501,19 +493,6 @@ export function GameplayScreen() {
 
             {/* The hand score sits between Decrees and the collection. */}
             <div className="flex flex-col items-center gap-1 px-2">
-              {/* A hand hint: off with Hand Hints, like the rack's groups. */}
-              {showTileHints &&
-                completeHandSelection &&
-                selectedIds.length !== completeHandSelection.length && (
-                  <button
-                    type="button"
-                    data-select-mahjong
-                    onClick={selectCompleteHand}
-                    className="min-h-9 rounded-full border-2 border-[var(--color-golden-yellow)] bg-amber-500/25 px-3 text-xs font-black uppercase tracking-wider text-[var(--color-golden-yellow)] shadow-[0_0_16px_rgba(255,213,79,0.45)]"
-                  >
-                    ✦ {t('patterns.mahjong.name')}
-                  </button>
-                )}
               <HandScorePreview
                 preview={preview}
                 hidden={previewHidden}

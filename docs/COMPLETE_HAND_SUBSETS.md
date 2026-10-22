@@ -26,8 +26,9 @@ physical rack subset; there is no arbitrary sixteen-tile cap.
 - Boss restrictions and available plays still apply. The search creates no bonus
   plays, extra draws, new hand grammar or automatic scoring.
 
-The UI previews this declaration, stages only its IDs on the first press, and
-requires a separate confirmation. Unused rack tiles remain held and survive
+The table no longer offers this declaration as a one-tap "✦ Mahjong" button
+(removed on 2026-10-21 as confusing): the player picks its tiles, and the
+hand score names the selection Mahjong. Unused rack tiles remain held and survive
 scoring/refill. Explicit selections continue to take precedence over suggestions.
 The coach and balance harness use the same rule-aware candidate; ordinary coach
 callers without that callback can search natural expanded-rack shapes.
