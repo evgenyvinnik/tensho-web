@@ -172,7 +172,7 @@ test.describe('on-demand route code', () => {
   })
 })
 
-test('opens unvisited screens, tile art, a saved run and guides offline after installation', async ({
+test('opens unvisited screens, tile art and a saved run offline after installation', async ({
   page,
   context,
 }) => {
@@ -257,17 +257,6 @@ test('opens unvisited screens, tile art, a saved run and guides offline after in
       page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()
     expect(await redrawn()).toEqual(played)
-    await page.goto('about/')
-    await expect(
-      page.getByRole('heading', { name: 'About Tensho: a Mahjong roguelike' })
-    ).toBeVisible()
-    await page
-      .getByRole('link', { name: 'How to play', exact: true })
-      .first()
-      .click()
-    await expect(
-      page.getByRole('heading', { name: 'How to play Tensho' })
-    ).toBeVisible()
   } finally {
     await context.setOffline(false)
   }

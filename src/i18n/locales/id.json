@@ -25,6 +25,7 @@
     "titleHierarchy": "Hierarki Lima Lapisan",
     "titleTips": "Kiat untuk Menang",
     "titleMoreTips": "Kiat Lanjutan",
+    "titleBiggerHand": "Membangun tangan yang lebih besar",
     "category": "Kategori",
     "types": "Jenis",
     "count": "Jumlah",
@@ -84,6 +85,7 @@
     "imperialPower": "Perubahan aturan yang kuat",
     "heavenlyPower": "Kekuatan yang menentukan arah permainan",
     "raritySources": "Kelangkaan memengaruhi ketersediaan dan harga di toko. Perintah Surgawi berasal dari sumber khusus, bukan penawaran toko biasa. Bangun sinergi dan periksa harga sebenarnya dari setiap penawaran.",
+    "decreeScrolls": "Setiap Dekrit adalah gulungan bergambar. Ketuk gulungan milikmu untuk membaca efeknya sambil menyusun rencana.",
     "slotBaseline": "Jumlah awal adalah 5 slot Dekrit, tetapi meja pilihanmu dan efek selama permainan dapat mengubahnya. Slot tambahan bisa diperoleh dari:",
     "heaven": "Langit (Musim)",
     "court": "Istana (Dekrit)",
@@ -95,6 +97,8 @@
     "tipScore": "Bandingkan pratinjau skor untuk grup berisi hingga {{max}} ubin, atau satu tangan Mahjong lengkap. Gunakan Giliran untuk mendekati target, bukan hanya menunggu tangan sempurna.",
     "tipSynergyTitle": "Bangun sinergi",
     "tipSynergy": "Dekrit yang saling mendukung bisa lebih kuat daripada Dekrit hebat yang bekerja sendiri.",
+    "tipPurposeTitle": "Beli dengan tujuan",
+    "tipPurpose": "Sebelum membeli, tanyakan apa yang akan kamu simpan atau mainkan berbeda jika memilikinya. Peningkatan yang bisa kamu pakai lebih baik daripada yang lebih kuat tapi tidak bisa kamu picu.",
     "tipEconomyTitle": "Seimbangkan ekonomi",
     "tipEconomy": "Menyimpan Emas menghasilkan bunga saat menuntaskan ronde, tetapi belanjakan jika suatu peningkatan membantumu mencapai target berikutnya. Periksa harga sebenarnya dan nilai Jual.",
     "tipFlowersTitle": "Kumpulkan bunga",
@@ -107,6 +111,12 @@
     "tipWall": "Periksa sungai dan sisa tembok sebelum mengejar ubin tertentu. Ubin yang diganti lewat tarik ulang tetap di sungai hingga ronde berakhir.",
     "tipMandateTitle": "Baca mandat lebih awal",
     "tipMandate": "Baca Mandat Bos yang akan datang dan siapkan susunan yang bisa mencetak skor di bawah batasannya.",
+    "tipLossTitle": "Belajar dari kekalahan",
+    "tipLoss": "Setelah permainan, temukan satu keputusan yang ingin kamu ubah, misalnya tarik ulang yang terlalu cepat atau ubin yang disimpan tanpa rencana, lalu coba di permainan berikutnya.",
+    "biggerHandP1": "Setiap grup setelah yang pertama menambah Mult, dan tangan Mahjong lengkap menambah paling banyak. Daripada memainkan setiap grup kecil begitu muncul, simpan grup yang sudah ada dan tarik ulang ubin sisanya.",
+    "biggerHandRack": "Rak ini berisi dua urutan jadi, dua urutan {{circles}} yang belum jadi, sepasang {{east}}, ditambah dua Naga tanpa pasangan. Satu TARIK ULANG mengirim kedua Naga ke sungai.",
+    "biggerHandComplete": "Jika ubin barunya 1 dan 4 {{circles}}, keempat belas ubin membentuk empat urutan dan satu pasangan. Pilih keempat belasnya lalu mainkan: tangan yang sudah jadi tidak mencetak skor dengan sendirinya.",
+    "biggerHandWarning": "Tarikan ubin itu acak, dan mengejar tangan besar bisa membuatmu kalah di ronde ini. Bandingkan skor yang bisa kamu buat sekarang dengan sisa Giliranmu.",
     "congratulations": "<strong>Selamat!</strong> Kini kamu memahami dasar-dasar Tensho.",
     "farewell": "Semoga ubin berpihak padamu dalam perjalananmu menuju langit!"
   },
@@ -2261,6 +2271,12 @@
       "p2": "Capai target ronde sebelum Giliranmu habis. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
       "warning": "Jika Giliran habis di bawah target, permainan berakhir."
     },
+    "select": {
+      "title": "Memilih ubin",
+      "p1": "Ketuk ubin di rak untuk memilihnya. Skor tangan di tengah meja menunjukkan berapa skor pilihanmu saat ini: tangan yang terbentuk, Poin, dan Mult-nya.",
+      "p2": "Memilih itu gratis: tidak ada yang terpakai sampai kamu menekan Mainkan atau TARIK ULANG. Sebuah permainan dihitung sebagai tangan terbaik yang dibentuk ubinnya, jadi coba beberapa pilihan sebelum memutuskan.",
+      "note": "Skor terbesar belum tentu langkah terbaik. Periksa ubin berguna mana yang tetap di rakmu untuk Giliran berikutnya."
+    },
     "refill": {
       "title": "Mengambil ubin",
       "p1": "Rakmu terisi dari tembok setiap kali kamu memainkan tangan atau menarik ulang, jadi kamu selalu memilih dari tangan penuh."
@@ -2270,6 +2286,7 @@
       "p1": "Pilih ubin yang tidak kamu mau, sebanyak apa pun, lalu tekan TARIK ULANG. Ubin itu masuk ke sungai dan diganti ubin baru.",
       "li1": "Tarik-ulang gratis dari item dipakai lebih dulu; jika tidak ada, satu tarik-ulang memakai satu Giliran.",
       "li2": "Ubin yang ditarik ulang tetap di sungai sampai ronde berakhir.",
+      "li3": "Beberapa Dekrit memberi hadiah setiap tarik ulang, Mandat Bos bisa melarangnya, dan Musim bisa mengubah biayanya. Periksa dulu efek yang aktif.",
       "note": "Simpan ubin yang sudah membentuk grup, dan tarik ulang yang menyendiri."
     },
     "score": {
@@ -2302,6 +2319,13 @@
       "li1": "Kamu tetap menerima Emas ronde dan mampir ke Rumah Teh.",
       "li2": "Ronde Bos tidak pernah memberi Pertanda.",
       "note": "Tangan kuat di awal menghemat Giliran, dan Giliran yang tersisa menjadi Pertanda."
+    },
+    "saving": {
+      "title": "Menyimpan permainan",
+      "p1": "Permainanmu disimpan di browser ini setiap kali sebuah aksi selesai. Pilih {{saveLeave}} untuk kembali ke menu, lalu {{resume}} untuk melanjutkan di meja atau di Rumah Teh.",
+      "li1": "Tunggu tulisan {{saved}} sebelum menutup tab. Jika penyimpanan gagal, biarkan tab terbuka dan tekan {{retry}}.",
+      "li2": "Simpanan hanya ada di browser ini pada perangkat ini. Menghapus data situs atau berganti browser membuatnya tidak terbawa.",
+      "li3": "Ubin yang dipilih dan animasi tidak dipulihkan. Pembaruan game dipasang di antara permainan, tidak pernah di tengah permainan."
     }
   },
   "accessibility": {

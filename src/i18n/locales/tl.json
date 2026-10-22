@@ -25,6 +25,7 @@
     "titleHierarchy": "Ang Limang Antas ng Awtoridad",
     "titleTips": "Mga Payo para Magtagumpay",
     "titleMoreTips": "Mga Mas Masusing Payo",
+    "titleBiggerHand": "Pagbuo ng mas malaking kamay",
     "category": "Kategorya",
     "types": "Mga Uri",
     "count": "Bilang",
@@ -84,6 +85,7 @@
     "imperialPower": "Malakas na pagbabago sa mga tuntunin",
     "heavenlyPower": "Kapangyarihang nagtatakda ng direksyon ng laro",
     "raritySources": "Nakaaapekto ang pagkabihira sa paglitaw sa tindahan at sa presyo. Galing sa mga espesyal na mapagkukunan ang mga Makalangit na Ordinansa, hindi sa karaniwang alok ng tindahan. Bumuo ng mga kombinasyong nagtutulungan at suriin ang aktuwal na presyo ng bawat alok.",
+    "decreeScrolls": "Ang bawat Dekreto ay isang ilustradong balumbon. I-tap ang isang hawak mo para basahin ang epekto nito habang nagpaplano.",
     "slotBaseline": "Karaniwang may 5 puwesto ng Dekreto, pero maaari itong baguhin ng napili mong mesa at mga epekto sa laro. Maaaring manggaling ang dagdag na puwesto sa:",
     "heaven": "Langit (Mga Panahon)",
     "court": "Palasyo (Mga Dekreto)",
@@ -95,6 +97,8 @@
     "tipScore": "Ihambing ang paunang ipinapakitang puntos para sa mga grupong may hanggang {{max}} tile, o isang buong kamay ng Mahjong. Gamitin ang mga turno para lumapit sa target sa halip na maghintay lamang ng perpektong kamay.",
     "tipSynergyTitle": "Bumuo ng nagtutulungang mga epekto",
     "tipSynergy": "Maaaring mas malakas ang mga Dekretong nagtutulungan kaysa sa malalakas na Dekretong hiwa-hiwalay ang epekto.",
+    "tipPurposeTitle": "Bumili nang may layunin",
+    "tipPurpose": "Bago bumili, itanong kung ano ang itatabi mo o lalaruin nang iba kung nasa iyo ito. Mas mabuti ang pagpapahusay na magagamit mo kaysa sa mas malakas na hindi mo mapapagana.",
     "tipEconomyTitle": "Balansehin ang ekonomiya",
     "tipEconomy": "Nagbibigay ng interes ang naipong Ginto kapag nalampasan ang round, pero gumastos kung makatutulong ang isang pagpapahusay para abutin ang susunod na target. Suriin ang aktuwal na presyo at halaga sa Ibenta.",
     "tipFlowersTitle": "Mangolekta ng mga bulaklak",
@@ -107,6 +111,12 @@
     "tipWall": "Suriin ang ilog at natitirang pader bago maghabol ng isang partikular na tile. Nananatili sa ilog ang mga tile na pinalitan sa redraw hanggang matapos ang round.",
     "tipMandateTitle": "Basahin nang maaga ang mga mandato",
     "tipMandate": "Basahin ang paparating na Mandato ng Boss at maghanda ng kombinasyon ng mga tile at gamit na makakapuntos sa ilalim ng restriksyon nito.",
+    "tipLossTitle": "Matuto sa pagkatalo",
+    "tipLoss": "Pagkatapos ng laro, maghanap ng isang desisyong babaguhin mo, gaya ng REDRAW na masyadong maaga o tile na itinabi nang walang plano, at subukan ito sa susunod.",
+    "biggerHandP1": "Bawat grupo pagkatapos ng una ay nagdaragdag ng Mult, at ang buong kamay ng Mahjong ang may pinakamalaking dagdag. Sa halip na laruin agad ang bawat maliit na grupo, itabi ang mga grupong mayroon ka at i-redraw ang mga sobrang tile.",
+    "biggerHandRack": "May dalawang tapos na Sequence, dalawang hindi pa tapos na Sequence ng {{circles}} at isang pares ng {{east}} ang rack na ito, pati dalawang Dragon na walang kapares. Isang MAG-REDRAW lang ang magpapadala sa dalawang Dragon sa ilog.",
+    "biggerHandComplete": "Kung 1 at 4 ng {{circles}} ang mga bagong tile, bubuo ang labing-apat na tile ng apat na Sequence at isang pares. Piliin ang lahat ng labing-apat at laruin: hindi kusang nagkakapuntos ang tapos na kamay.",
+    "biggerHandWarning": "Random ang mga nabubunot, at puwedeng ikatalo mo sa round ang paghahabol ng malaking kamay. Ihambing ang puntos na kaya mo ngayon sa natitira mong mga turno.",
     "congratulations": "<strong>Binabati kita!</strong> Nauunawaan mo na ang mga batayan ng Tensho.",
     "farewell": "Nawa'y pumanig sa iyo ang mga tile sa iyong pag-akyat sa langit!"
   },
@@ -2340,6 +2350,12 @@
       "p2": "Abutin ang target ng round bago maubos ang iyong mga turno. Laging laro ang huling turno, at may mga item na nagbibigay ng libreng redraw na hindi gumagamit ng turno.",
       "warning": "Kapag naubos ang turno na kulang pa sa target, tapos na ang laro."
     },
+    "select": {
+      "title": "Pagpili ng mga tile",
+      "p1": "I-tap ang mga tile sa rack para piliin ang mga ito. Ipinapakita ng Puntos ng kamay sa gitna ng mesa kung ilan ang puntos ng pinili mo ngayon: ang kamay na nabubuo, ang Puntos at ang Mult nito.",
+      "p2": "Libre ang pagpili: walang nagagastos hangga’t hindi mo pinipindot ang Laruin o MAG-REDRAW. Binibilang ang laro bilang pinakamahusay na kamay na nabubuo ng mga tile nito, kaya sumubok ng ilang pagpili bago magpasya.",
+      "note": "Hindi laging pinakamahusay na laro ang pinakamalaking puntos. Tingnan kung aling mga kapaki-pakinabang na tile ang maiiwan sa rack mo para sa susunod na turno."
+    },
     "refill": {
       "title": "Pagbunot ng tile",
       "p1": "Napupuno muli ang iyong rack mula sa pader pagkatapos ng bawat laro at bawat REDRAW, kaya lagi kang pumipili mula sa buong kamay."
@@ -2349,6 +2365,7 @@
       "p1": "Piliin ang mga tile na ayaw mo, kahit ilan, at pindutin ang MAG-REDRAW. Mapupunta sila sa ilog at papalitan ng mga bagong tile.",
       "li1": "Unang ginagamit ang libreng redraw mula sa item; kung wala, isang turno ang halaga ng REDRAW.",
       "li2": "Nananatili sa ilog ang mga tile na ni-redraw hanggang matapos ang round.",
+      "li3": "May mga Dekretong nagbibigay ng gantimpala sa bawat REDRAW, puwede itong ipagbawal ng Mandato ng Boss, at puwedeng baguhin ng mga Panahon ang halaga nito. Suriin muna ang mga aktibong epekto.",
       "note": "Itabi ang mga tile na bumubuo na ng grupo, at i-redraw ang mga nag-iisa."
     },
     "score": {
@@ -2381,6 +2398,13 @@
       "li1": "Matatanggap mo pa rin ang Ginto ng round at makadadaan sa Bahay ng Tsaa.",
       "li2": "Hindi kailanman nagbibigay ng Pangitain ang Boss round.",
       "note": "Nakatitipid ng turno ang malakas na kamay sa simula, at nagiging Pangitain ang natipid na turno."
+    },
+    "saving": {
+      "title": "Pag-save ng laro",
+      "p1": "Naise-save ang laro mo sa browser na ito pagkatapos ng bawat natapos na aksyon. Piliin ang {{saveLeave}} para bumalik sa menu, pagkatapos ay {{resume}} para magpatuloy sa mesa o sa Bahay ng Tsaa.",
+      "li1": "Hintayin ang {{saved}} bago isara ang tab. Kapag pumalya ang pag-save, huwag isara ang tab at pindutin ang {{retry}}.",
+      "li2": "Nananatili ang mga save sa browser na ito sa device na ito. Kapag binura mo ang data ng site o lumipat ng browser, hindi mo na sila makikita.",
+      "li3": "Hindi naibabalik ang mga napiling tile at animation. Ini-install ang mga update ng laro sa pagitan ng mga laro, hindi kailanman sa gitna ng isa."
     }
   },
   "accessibility": {

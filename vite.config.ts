@@ -92,8 +92,6 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         importScripts: ['sw-update.js'],
-        // Public guides have their own HTML. Never replace them with the game shell.
-        navigateFallbackDenylist: [/\/(?:about|how-to-play|faq)(?:\/|$)/],
         globPatterns: [
           '**/*.{js,css,html,ico,png,webp,svg,mp3,wav,ttf,woff,woff2}',
         ],

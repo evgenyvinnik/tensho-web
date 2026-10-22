@@ -25,6 +25,7 @@
     "titleHierarchy": "The Five-Layer Hierarchy",
     "titleTips": "Tips for Success",
     "titleMoreTips": "Advanced Tips",
+    "titleBiggerHand": "Building a Bigger Hand",
     "category": "Category",
     "types": "Types",
     "count": "Count",
@@ -84,6 +85,7 @@
     "imperialPower": "Strong rule-bending",
     "heavenlyPower": "Run-defining power",
     "raritySources": "Rarity affects shop availability and price. Heavenly Ordinances come from special sources, not ordinary shop offers. Build synergies and check each offer's actual price.",
+    "decreeScrolls": "Each Decree is an illustrated scroll. Tap one you own to read its effect while you plan.",
     "slotBaseline": "The default is 5 Decree slots, but your chosen table and run effects can change that. Extra slots can come from:",
     "heaven": "Heaven (Seasons)",
     "court": "Court (Decrees)",
@@ -95,6 +97,8 @@
     "tipScore": "Compare the score preview for groups of up to {{max}} tiles, or a complete Mahjong hand. Spend Turns on progress toward the target instead of waiting only for a perfect hand.",
     "tipSynergyTitle": "Build synergies",
     "tipSynergy": "Decrees that work together can be stronger than powerful standalone Decrees.",
+    "tipPurposeTitle": "Buy with a purpose",
+    "tipPurpose": "Before buying, ask what you would keep or play differently if you owned it. An upgrade you can use beats a stronger one you can't trigger.",
     "tipEconomyTitle": "Balance economy",
     "tipEconomy": "Saving Gold earns interest on a clear, but spend when an upgrade helps you reach the next target. Check actual prices and Sell values.",
     "tipFlowersTitle": "Collect flowers",
@@ -107,6 +111,12 @@
     "tipWall": "Check the river and remaining wall before chasing a specific tile. Redrawn tiles stay in the river for the rest of the round.",
     "tipMandateTitle": "Read mandates early",
     "tipMandate": "Read the upcoming Boss Mandate and prepare a build that can score under its restriction.",
+    "tipLossTitle": "Learn from a loss",
+    "tipLoss": "After a run, find one decision you would change, like a REDRAW spent too early or a tile kept without a plan, and try it next time.",
+    "biggerHandP1": "Every group after the first adds Mult, and a complete Mahjong hand adds the most. Instead of playing each small group as soon as it appears, keep the groups you have and REDRAW the spare tiles.",
+    "biggerHandRack": "This rack holds two finished sequences, two unfinished {{circles}} sequences and an {{east}} pair, plus two unmatched Dragons. One REDRAW sends both Dragons to the river.",
+    "biggerHandComplete": "If the new tiles are 1 and 4 of {{circles}}, the fourteen tiles make four sequences and a pair. Select all fourteen and play them: a finished hand does not score by itself.",
+    "biggerHandWarning": "Draws are random, and chasing a big hand can cost the round. Compare the score you can make now with the Turns you have left.",
     "congratulations": "<strong>Congratulations!</strong> You now understand the fundamentals of Tensho.",
     "farewell": "May the tiles favor you on your heavenly ascent!"
   },
@@ -2049,6 +2059,12 @@
       "p2": "Reach the round's target before your Turns run out. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
       "warning": "Run out of Turns below the target and the run is over."
     },
+    "select": {
+      "title": "Selecting Tiles",
+      "p1": "Tap rack tiles to select them. The Hand score in the middle of the table shows what your selection would score right now: the hand it makes, its Points and its Mult.",
+      "p2": "Selecting is free: nothing is spent until you press Play hand or REDRAW. A play scores as the best hand its tiles make, so try a few selections before you commit.",
+      "note": "The biggest score isn't always the best play. Check which useful tiles would stay on your rack for the next Turn."
+    },
     "refill": {
       "title": "Drawing Tiles",
       "p1": "Your rack refills from the wall after every play and every REDRAW, so you always have a full hand to choose from."
@@ -2058,6 +2074,7 @@
       "p1": "Select the tiles you don't want, as many as you like, and press REDRAW. They go to the river and new tiles take their place.",
       "li1": "Free redraws from items are used first; otherwise a REDRAW costs one Turn.",
       "li2": "Redrawn tiles stay in the river for the rest of the round.",
+      "li3": "Some Decrees reward each REDRAW, a Boss Mandate can forbid it, and Seasons can change its cost. Check the active effects first.",
       "note": "Keep the tiles that already make a group, and redraw the loners."
     },
     "score": {
@@ -2090,6 +2107,13 @@
       "li1": "You still collect the round's Gold and visit the Tea House.",
       "li2": "Boss rounds never give an Omen.",
       "note": "A strong early hand saves Turns, and saved Turns become Omens."
+    },
+    "saving": {
+      "title": "Saving Your Run",
+      "p1": "Your run is saved in this browser after every completed action. Choose {{saveLeave}} to return to the menu, then {{resume}} to continue at the table or in the Tea House.",
+      "li1": "Wait for {{saved}} before closing the tab. If saving fails, keep the tab open and press {{retry}}.",
+      "li2": "Saves stay in this browser on this device. Clearing site data or switching browsers leaves them behind.",
+      "li3": "Selected tiles and animations are not restored. Game updates install between runs, never in the middle of one."
     }
   },
   "codex": {

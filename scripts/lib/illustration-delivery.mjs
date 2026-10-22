@@ -16,24 +16,16 @@ const repairs = JSON.parse(
 const authoredPaths = new Set(
   repairs.assets.map(({ path }) => path.replace(/^public\//, ''))
 )
-export const illustrationCopies = sources.map((name) => ({
-  source: `assets/illustrations/${name}`,
-  copies: name.startsWith('site/')
-    ? [768, 1536].map((size) => ({
-        path: `assets/illustrations/${name.replace('.png', `-${size}.webp`)}`,
-        maxDimension: size,
-      }))
-    : [
-        {
-          path: `assets/illustrations/${name.replace('.png', '.webp')}`,
-          maxDimension: authoredPaths.has(
-            `assets/illustrations/${name.replace('.png', '.webp')}`
-          )
-            ? 256
-            : 512,
-          preserveAuthored: authoredPaths.has(
-            `assets/illustrations/${name.replace('.png', '.webp')}`
-          ),
-        },
-      ],
-}))
+export const illustrationCopies = sources.map((name) => {
+  const path = `assets/illustrations/${name.replace('.png', '.webp')}`
+  return {
+    source: `assets/illustrations/${name}`,
+    copies: [
+      {
+        path,
+        maxDimension: authoredPaths.has(path) ? 256 : 512,
+        preserveAuthored: authoredPaths.has(path),
+      },
+    ],
+  }
+})

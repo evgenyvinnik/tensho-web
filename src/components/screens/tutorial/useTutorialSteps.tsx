@@ -37,10 +37,12 @@ import {
   Formula,
   DataTable,
   TileLabel,
+  TileGroups,
 } from './TutorialComponents'
 import { PavilionIcon } from '../../ui/PavilionIcon'
 import { FloraCodex, FLORA_CODEX_SECTIONS } from './FloraCodex'
 import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
+import { HAND_BUILDING_EXAMPLE } from './handBuildingExample'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -778,6 +780,18 @@ export function useTutorialSteps(): TutorialStep[] {
         ),
       },
       {
+        id: 'selecting',
+        category: 'How to Play',
+        title: t('tutorial.select.title'),
+        content: (
+          <div className="space-y-3">
+            <p>{t('tutorial.select.p1')}</p>
+            <p>{t('tutorial.select.p2')}</p>
+            <InfoBox type="tip">{t('tutorial.select.note')}</InfoBox>
+          </div>
+        ),
+      },
+      {
         id: 'drawing',
         category: 'How to Play',
         title: t('tutorial.refill.title'),
@@ -805,6 +819,7 @@ export function useTutorialSteps(): TutorialStep[] {
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>{t('tutorial.redraw.li1')}</li>
               <li>{t('tutorial.redraw.li2')}</li>
+              <li>{t('tutorial.redraw.li3')}</li>
             </ul>
             <InfoBox type="tip">{t('tutorial.redraw.note')}</InfoBox>
           </div>
@@ -833,6 +848,31 @@ export function useTutorialSteps(): TutorialStep[] {
               {t('guide.patternRule')}{' '}
               {t('tutorial.hands.mahjong', { mult: MAHJONG_PATTERN_MULT })}
             </InfoBox>
+          </div>
+        ),
+      },
+      {
+        id: 'saving',
+        category: 'How to Play',
+        title: t('tutorial.saving.title'),
+        content: (
+          <div className="space-y-3">
+            <p>
+              {t('tutorial.saving.p1', {
+                saveLeave: t('classicSave.saveLeave'),
+                resume: t('classicSave.resume'),
+              })}
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>
+                {t('tutorial.saving.li1', {
+                  saved: t('classicSave.saved'),
+                  retry: t('classicSave.retry'),
+                })}
+              </li>
+              <li>{t('tutorial.saving.li2')}</li>
+              <li>{t('tutorial.saving.li3')}</li>
+            </ul>
           </div>
         ),
       },
@@ -1144,6 +1184,7 @@ export function useTutorialSteps(): TutorialStep[] {
                 </Trans>
               </li>
             </ul>
+            <InfoBox type="tip">{t('codexReference.decreeScrolls')}</InfoBox>
           </div>
         ),
       },
@@ -1307,6 +1348,37 @@ export function useTutorialSteps(): TutorialStep[] {
         content: <EconomyCodex section={section} />,
       })),
       {
+        id: 'bigger-hand',
+        category: 'Strategy',
+        title: t('codexReference.titleBiggerHand'),
+        content: (
+          <div className="space-y-3">
+            <p>{t('codexReference.biggerHandP1')}</p>
+            <p>
+              {t('codexReference.biggerHandRack', {
+                circles: t('tiles.pinzu'),
+                east: t('tiles.east'),
+              })}
+            </p>
+            <TileGroups
+              groups={[
+                ...HAND_BUILDING_EXAMPLE.keep,
+                ...HAND_BUILDING_EXAMPLE.exchange,
+              ]}
+            />
+            <p>
+              {t('codexReference.biggerHandComplete', {
+                circles: t('tiles.pinzu'),
+              })}
+            </p>
+            <TileGroups groups={HAND_BUILDING_EXAMPLE.complete} />
+            <InfoBox type="warning">
+              {t('codexReference.biggerHandWarning')}
+            </InfoBox>
+          </div>
+        ),
+      },
+      {
         id: 'tips',
         category: 'Strategy',
         title: t('codexReference.titleTips'),
@@ -1337,6 +1409,17 @@ export function useTutorialSteps(): TutorialStep[] {
                     {t('codexReference.tipSynergyTitle')}
                   </p>
                   <p className="text-xs">{t('codexReference.tipSynergy')}</p>
+                </div>
+              </div>
+              <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
+                <span>
+                  <PavilionIcon name="collection" />
+                </span>
+                <div>
+                  <p className="font-bold text-[var(--color-golden-yellow)]">
+                    {t('codexReference.tipPurposeTitle')}
+                  </p>
+                  <p className="text-xs">{t('codexReference.tipPurpose')}</p>
                 </div>
               </div>
               <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
@@ -1414,6 +1497,17 @@ export function useTutorialSteps(): TutorialStep[] {
                     {t('codexReference.tipMandateTitle')}
                   </p>
                   <p className="text-xs">{t('codexReference.tipMandate')}</p>
+                </div>
+              </div>
+              <div className="p-2 bg-[var(--color-forest-green)] rounded flex items-start gap-2">
+                <span>
+                  <PavilionIcon name="archive" />
+                </span>
+                <div>
+                  <p className="font-bold text-[var(--color-golden-yellow)]">
+                    {t('codexReference.tipLossTitle')}
+                  </p>
+                  <p className="text-xs">{t('codexReference.tipLoss')}</p>
                 </div>
               </div>
             </div>

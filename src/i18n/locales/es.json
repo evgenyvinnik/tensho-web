@@ -25,6 +25,7 @@
     "titleHierarchy": "La jerarquía de cinco niveles",
     "titleTips": "Consejos para ganar",
     "titleMoreTips": "Consejos avanzados",
+    "titleBiggerHand": "Construir una mano mayor",
     "category": "Categoría",
     "types": "Tipos",
     "count": "Cantidad",
@@ -84,6 +85,7 @@
     "imperialPower": "Grandes cambios en las reglas",
     "heavenlyPower": "Poder que define la partida",
     "raritySources": "La rareza afecta a la disponibilidad y al precio en la tienda. Las Ordenanzas Celestiales se obtienen de fuentes especiales, no de las ofertas habituales de la tienda. Busca sinergias y comprueba el precio real de cada oferta.",
+    "decreeScrolls": "Cada Decreto es un pergamino ilustrado. Toca uno que tengas para leer su efecto mientras planeas.",
     "slotBaseline": "Por defecto hay 5 ranuras de Decretos, pero la mesa elegida y los efectos de la partida pueden cambiar esa cantidad. Puedes obtener más ranuras mediante:",
     "heaven": "Cielo (Estaciones)",
     "court": "Corte (Decretos)",
@@ -95,6 +97,8 @@
     "tipScore": "Compara la previsión de puntuación de grupos de hasta {{max}} fichas o de una mano de Mahjong completa. Usa los turnos para acercarte al objetivo en lugar de esperar solo una mano perfecta.",
     "tipSynergyTitle": "Crea sinergias",
     "tipSynergy": "Los Decretos que se complementan pueden ser más fuertes que otros Decretos poderosos por separado.",
+    "tipPurposeTitle": "Compra con un propósito",
+    "tipPurpose": "Antes de comprar, pregúntate qué conservarías o jugarías distinto si lo tuvieras. Una mejora que puedes usar vale más que otra más fuerte que no puedes activar.",
     "tipEconomyTitle": "Equilibra tu economía",
     "tipEconomy": "Ahorrar oro da intereses al superar una ronda, pero conviene gastarlo cuando una mejora te ayuda a alcanzar el siguiente objetivo. Comprueba los precios reales y los valores de venta.",
     "tipFlowersTitle": "Colecciona flores",
@@ -107,6 +111,12 @@
     "tipWall": "Revisa el río y lo que queda del muro antes de buscar una ficha concreta. Las fichas recambiadas permanecen en el río el resto de la ronda.",
     "tipMandateTitle": "Lee los mandatos con antelación",
     "tipMandate": "Lee el próximo Mandato de Jefe y prepara una combinación de recursos que pueda puntuar bajo esa restricción.",
+    "tipLossTitle": "Aprende de una derrota",
+    "tipLoss": "Tras una partida, busca una decisión que cambiarías, como un recambio demasiado temprano o una ficha guardada sin plan, y pruébala la próxima vez.",
+    "biggerHandP1": "Cada grupo después del primero suma Mult, y una mano de Mahjong completa suma más que nada. En lugar de jugar cada grupo pequeño en cuanto aparece, conserva los grupos que tienes y recambia las fichas sobrantes.",
+    "biggerHandRack": "Este atril tiene dos secuencias terminadas, dos secuencias de {{circles}} sin terminar y un par de {{east}}, además de dos Dragones sueltos. Un solo RECAMBIAR manda los dos Dragones al río.",
+    "biggerHandComplete": "Si las fichas nuevas son el 1 y el 4 de {{circles}}, las catorce fichas forman cuatro secuencias y un par. Selecciona las catorce y júgalas: una mano terminada no puntúa por sí sola.",
+    "biggerHandWarning": "Los robos son aleatorios, y perseguir una mano grande puede costarte la ronda. Compara la puntuación que puedes lograr ahora con los turnos que te quedan.",
     "congratulations": "<strong>¡Enhorabuena!</strong> Ya conoces los fundamentos de Tensho.",
     "farewell": "¡Que las fichas te acompañen en tu ascenso celestial!"
   },
@@ -2053,6 +2063,12 @@
       "p2": "Alcanza el objetivo de la ronda antes de quedarte sin turnos. Tu último turno siempre es una jugada, y algunos objetos dan recambios gratis que no gastan turno.",
       "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina."
     },
+    "select": {
+      "title": "Seleccionar fichas",
+      "p1": "Toca las fichas del atril para seleccionarlas. Los Puntos de la mano, en el centro de la mesa, muestran lo que tu selección puntuaría ahora mismo: la mano que forma, sus Puntos y su Mult.",
+      "p2": "Seleccionar es gratis: no se gasta nada hasta que pulsas Jugar mano o RECAMBIAR. Una jugada puntúa como la mejor mano que forman sus fichas, así que prueba varias selecciones antes de decidirte.",
+      "note": "La puntuación más alta no siempre es la mejor jugada. Comprueba qué fichas útiles quedarían en tu atril para el siguiente turno."
+    },
     "refill": {
       "title": "Robar fichas",
       "p1": "Tu atril se rellena desde el muro después de cada jugada y cada recambio, así que siempre eliges entre una mano completa."
@@ -2062,6 +2078,7 @@
       "p1": "Elige las fichas que no quieras, tantas como quieras, y pulsa RECAMBIAR. Van al río y fichas nuevas ocupan su lugar.",
       "li1": "Primero se usan los recambios gratis de los objetos; si no hay, un recambio cuesta un turno.",
       "li2": "Las fichas recambiadas se quedan en el río el resto de la ronda.",
+      "li3": "Algunos Decretos premian cada recambio, un Mandato de Jefe puede prohibirlo y las Estaciones pueden cambiar su coste. Revisa antes los efectos activos.",
       "note": "Conserva las fichas que ya forman grupo y recambia las sueltas."
     },
     "score": {
@@ -2094,6 +2111,13 @@
       "li1": "Aun así cobras el oro de la ronda y visitas la Casa de Té.",
       "li2": "Las rondas de Jefe nunca dan un Presagio.",
       "note": "Una buena mano temprana ahorra turnos, y los turnos ahorrados se convierten en Presagios."
+    },
+    "saving": {
+      "title": "Guardar la partida",
+      "p1": "Tu partida se guarda en este navegador tras cada acción completada. Elige {{saveLeave}} para volver al menú y luego {{resume}} para seguir en la mesa o en la Casa de Té.",
+      "li1": "Espera a ver {{saved}} antes de cerrar la pestaña. Si falla el guardado, mantén la pestaña abierta y pulsa {{retry}}.",
+      "li2": "Las partidas guardadas se quedan en este navegador de este dispositivo. Si borras los datos del sitio o cambias de navegador, no estarán.",
+      "li3": "Las fichas seleccionadas y las animaciones no se restauran. Las actualizaciones del juego se instalan entre partidas, nunca a mitad de una."
     }
   },
   "accessibility": {

@@ -25,6 +25,7 @@
     "titleHierarchy": "La gerarchia a cinque livelli",
     "titleTips": "Consigli per vincere",
     "titleMoreTips": "Consigli avanzati",
+    "titleBiggerHand": "Costruire una mano più grande",
     "category": "Categoria",
     "types": "Tipi",
     "count": "Quantità",
@@ -84,6 +85,7 @@
     "imperialPower": "Grandi modifiche alle regole",
     "heavenlyPower": "Potenza che definisce la partita",
     "raritySources": "La rarità influisce sulla disponibilità e sul prezzo nel negozio. Le Ordinanze celesti provengono da fonti speciali, non dalle normali offerte del negozio. Crea sinergie e controlla il prezzo effettivo di ogni offerta.",
+    "decreeScrolls": "Ogni Decreto è una pergamena illustrata. Tocca una che possiedi per leggerne l’effetto mentre pianifichi.",
     "slotBaseline": "Di base hai 5 slot per i Decreti, ma il tavolo scelto e gli effetti della partita possono modificarne il numero. Puoi ottenere slot aggiuntivi tramite:",
     "heaven": "Cielo (Stagioni)",
     "court": "Corte (Decreti)",
@@ -95,6 +97,8 @@
     "tipScore": "Confronta l’anteprima del punteggio per gruppi fino a {{max}} tessere o per una mano di Mahjong completa. Usa i turni per avvicinarti all’obiettivo invece di aspettare soltanto una mano perfetta.",
     "tipSynergyTitle": "Crea sinergie",
     "tipSynergy": "Decreti che si completano a vicenda possono essere più forti di Decreti potenti presi singolarmente.",
+    "tipPurposeTitle": "Compra con uno scopo",
+    "tipPurpose": "Prima di comprare, chiediti cosa terresti o giocheresti diversamente se lo avessi. Un potenziamento che puoi usare vale più di uno più forte che non riesci ad attivare.",
     "tipEconomyTitle": "Bilancia l’economia",
     "tipEconomy": "L’oro risparmiato frutta interessi quando superi un round, ma spendilo se un potenziamento ti aiuta a raggiungere il prossimo obiettivo. Controlla i prezzi effettivi e i valori di vendita.",
     "tipFlowersTitle": "Colleziona fiori",
@@ -107,6 +111,12 @@
     "tipWall": "Controlla il fiume e ciò che rimane del muro prima di cercare una tessera specifica. Le tessere sostituite con RIPESCA restano nel fiume per il resto del round.",
     "tipMandateTitle": "Leggi i mandati in anticipo",
     "tipMandate": "Leggi il prossimo Mandato del Boss e prepara una combinazione di risorse capace di segnare punti con quella restrizione.",
+    "tipLossTitle": "Impara da una sconfitta",
+    "tipLoss": "Dopo una partita, trova una decisione che cambieresti, come una ripescata troppo presto o una tessera tenuta senza un piano, e provala la volta dopo.",
+    "biggerHandP1": "Ogni gruppo dopo il primo aggiunge Mult, e una mano di Mahjong completa ne aggiunge più di tutti. Invece di giocare ogni piccolo gruppo appena compare, tieni i gruppi che hai e ripesca le tessere in più.",
+    "biggerHandRack": "Questo leggio ha due sequenze finite, due sequenze di {{circles}} incomplete e una coppia di {{east}}, più due Draghi spaiati. Un solo RIPESCA manda entrambi i Draghi nel fiume.",
+    "biggerHandComplete": "Se le nuove tessere sono l’1 e il 4 di {{circles}}, le quattordici tessere formano quattro sequenze e una coppia. Seleziona tutte e quattordici e giocale: una mano completa non segna da sola.",
+    "biggerHandWarning": "Le pescate sono casuali, e inseguire una mano grande può costarti il round. Confronta il punteggio che puoi fare ora con i turni che ti restano.",
     "congratulations": "<strong>Congratulazioni!</strong> Ora conosci le basi di Tensho.",
     "farewell": "Che le tessere ti siano propizie nella tua ascesa celeste!"
   },
@@ -2340,6 +2350,12 @@
       "p2": "Raggiungi l'obiettivo del round prima di finire i turni. L'ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
       "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita."
     },
+    "select": {
+      "title": "Selezionare le tessere",
+      "p1": "Tocca le tessere sul leggio per selezionarle. I Punti della mano, al centro del tavolo, mostrano quanto segnerebbe ora la tua selezione: la mano che forma, i suoi Punti e il suo Mult.",
+      "p2": "Selezionare è gratis: non spendi nulla finché non premi Gioca mano o RIPESCA. Una giocata vale come la mano migliore che le sue tessere formano, quindi prova più selezioni prima di decidere.",
+      "note": "Il punteggio più alto non è sempre la giocata migliore. Controlla quali tessere utili resterebbero sul leggio per il turno successivo."
+    },
     "refill": {
       "title": "Pescare tessere",
       "p1": "Il leggio si riempie dal muro dopo ogni giocata e ogni ripescata: scegli sempre da una mano completa."
@@ -2349,6 +2365,7 @@
       "p1": "Scegli le tessere che non vuoi, quante ne vuoi, e premi RIPESCA. Vanno nel fiume e tessere nuove ne prendono il posto.",
       "li1": "Prima si usano le ripescate gratuite degli oggetti; altrimenti una ripescata costa un turno.",
       "li2": "Le tessere ripescate restano nel fiume per il resto del round.",
+      "li3": "Alcuni Decreti premiano ogni ripescata, un Mandato del Boss può vietarla e le Stagioni possono cambiarne il costo. Controlla prima gli effetti attivi.",
       "note": "Tieni le tessere che formano già un gruppo e ripesca quelle isolate."
     },
     "score": {
@@ -2381,6 +2398,13 @@
       "li1": "Incassi comunque l'oro del round e passi dalla Casa del Tè.",
       "li2": "I Round Boss non danno mai un Presagio.",
       "note": "Una buona mano iniziale fa risparmiare turni, e i turni risparmiati diventano Presagi."
+    },
+    "saving": {
+      "title": "Salvare la partita",
+      "p1": "La partita viene salvata in questo browser dopo ogni azione completata. Scegli {{saveLeave}} per tornare al menu, poi {{resume}} per continuare al tavolo o nella Casa del Tè.",
+      "li1": "Aspetta {{saved}} prima di chiudere la scheda. Se il salvataggio non riesce, tieni aperta la scheda e premi {{retry}}.",
+      "li2": "I salvataggi restano in questo browser su questo dispositivo. Cancellando i dati del sito o cambiando browser non li ritroverai.",
+      "li3": "Le tessere selezionate e le animazioni non vengono ripristinate. Gli aggiornamenti del gioco si installano tra una partita e l’altra, mai a metà."
     }
   },
   "accessibility": {

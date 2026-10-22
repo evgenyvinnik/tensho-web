@@ -1,5 +1,7 @@
 # Tensho SEO strategy
 
+> **Retired October 22, 2026.** The static About, how-to-play and FAQ pages, their generator, `learn.css` and their sitemap entries were removed. Their player-facing content moved into the localized in-game Codex: selecting tiles and the Hand score, saving and resuming a run, a worked bigger-hand example (still engine-tested in `src/components/screens/tutorial/handBuildingExample.test.ts`) and strategy tips. The build still emits real static route entries (`src/publicSite/gameRoutes.ts`) and a sitemap listing only the game root. The rest of this document is a historical record.
+
 Updated: October 8, 2026. This is a delivery plan and implementation record, not a claim that Google has indexed or ranked the new pages.
 
 October 8 follow-up: the [illustrated hand-building guide](ILLUSTRATED_HAND_GUIDE.md)

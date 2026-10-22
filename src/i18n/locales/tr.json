@@ -25,6 +25,7 @@
     "titleHierarchy": "Beş Katmanlı Hiyerarşi",
     "titleTips": "Başarı İçin İpuçları",
     "titleMoreTips": "İleri Düzey İpuçları",
+    "titleBiggerHand": "Daha büyük bir el kurmak",
     "category": "Kategori",
     "types": "Türler",
     "count": "Sayı",
@@ -84,6 +85,7 @@
     "imperialPower": "Kurallarda güçlü değişiklikler",
     "heavenlyPower": "Koşunun gidişatını belirleyen güç",
     "raritySources": "Nadirlik, dükkânda bulunma olasılığını ve fiyatı etkiler. Cennetin Emri, sıradan dükkân tekliflerinden değil, özel kaynaklardan gelir. Birbirini destekleyen etkiler oluşturun ve her teklifin gerçek fiyatını kontrol edin.",
+    "decreeScrolls": "Her Ferman resimli bir parşömendir. Plan yaparken etkisini okumak için sahip olduğun birine dokun.",
     "slotBaseline": "Varsayılan olarak 5 Ferman yuvası vardır, ancak seçtiğiniz masa ve koşu etkileri bunu değiştirebilir. Ek yuvalar şu kaynaklardan gelebilir:",
     "heaven": "Gök (Mevsimler)",
     "court": "Saray (Fermanlar)",
@@ -95,6 +97,8 @@
     "tipScore": "En fazla {{max}} taştan oluşan grupların veya tam bir Mahjong elinin puan önizlemelerini karşılaştırın. Yalnızca mükemmel eli beklemek yerine Hamlelerinizi hedefe yaklaşmak için kullanın.",
     "tipSynergyTitle": "Birbirini destekleyen etkiler kurun",
     "tipSynergy": "Birlikte çalışan Fermanlar, tek başına güçlü olan Fermanlardan daha etkili olabilir.",
+    "tipPurposeTitle": "Amaçla satın al",
+    "tipPurpose": "Satın almadan önce, ona sahip olsan neyi tutacağını ya da nasıl farklı oynayacağını sor. Kullanabileceğin bir yükseltme, tetikleyemeyeceğin daha güçlü bir yükseltmeden iyidir.",
     "tipEconomyTitle": "Ekonomiyi dengeleyin",
     "tipEconomy": "Altın biriktirmek, turu tamamladığınızda faiz kazandırır; ancak bir yükseltme sonraki hedefe ulaşmanızı sağlayacaksa harcayın. Gerçek fiyatları ve Sat değerlerini kontrol edin.",
     "tipFlowersTitle": "Çiçek toplayın",
@@ -107,6 +111,12 @@
     "tipWall": "Belirli bir taşın peşine düşmeden önce nehri ve duvarda kalan taşları kontrol edin. Yeniden çekişle değiştirilen taşlar turun sonuna kadar nehirde kalır.",
     "tipMandateTitle": "Hükümleri erkenden okuyun",
     "tipMandate": "Yaklaşan Patron Hükmünü okuyun ve onun kısıtlaması altında puan kazanabilecek bir düzen hazırlayın.",
+    "tipLossTitle": "Yenilgiden öğren",
+    "tipLoss": "Bir oyundan sonra değiştireceğin tek bir kararı bul; çok erken yapılan bir yeniden çekiş ya da plansız tutulan bir taş gibi. Sonraki oyunda dene.",
+    "biggerHandP1": "İlkinden sonraki her grup Çarpan ekler; tam bir Mahjong eli en çoğunu ekler. Her küçük grubu ortaya çıkar çıkmaz oynamak yerine elindeki grupları tut ve fazla taşları yeniden çek.",
+    "biggerHandRack": "Bu ıstakada iki tamamlanmış seri, iki yarım {{circles}} serisi ve bir {{east}} çifti ile eşi olmayan iki Ejderha var. Tek bir YENİDEN ÇEK iki Ejderhayı da nehre gönderir.",
+    "biggerHandComplete": "Yeni taşlar {{circles}} 1 ve 4 olursa on dört taş dört seri ve bir çift oluşturur. On dördünü de seçip oyna: tamamlanan bir el kendiliğinden puan getirmez.",
+    "biggerHandWarning": "Çekilen taşlar rastgeledir ve büyük bir elin peşine düşmek tura mal olabilir. Şimdi yapabileceğin puanı kalan hamlelerinle karşılaştır.",
     "congratulations": "<strong>Tebrikler!</strong> Artık Tensho'nun temellerini biliyorsunuz.",
     "farewell": "Göğe yükselişinizde taşlar sizden yana olsun!"
   },
@@ -2340,6 +2350,12 @@
       "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
       "warning": "Hedefin altında hamlelerin biterse oyun sona erer."
     },
+    "select": {
+      "title": "Taş seçmek",
+      "p1": "Seçmek için ıstakandaki taşlara dokun. Masanın ortasındaki El puanı, seçiminin şu anda kaç puan getireceğini gösterir: oluşturduğu el, Puanı ve Çarpanı.",
+      "p2": "Seçmek ücretsizdir: Eli oyna ya da YENİDEN ÇEK’e basana kadar hiçbir şey harcanmaz. Bir oyun, taşlarının oluşturduğu en iyi el olarak puanlanır; karar vermeden önce birkaç seçimi dene.",
+      "note": "En yüksek puan her zaman en iyi oyun değildir. Sonraki hamle için ıstakanda hangi faydalı taşların kalacağına da bak."
+    },
     "refill": {
       "title": "Taş çekmek",
       "p1": "Her oyundan ve her yeniden çekişten sonra rafın duvardan dolar; böylece hep tam bir elden seçersin."
@@ -2349,6 +2365,7 @@
       "p1": "İstemediğin taşları, istediğin kadar seç ve YENİDEN ÇEK’e bas. Nehre giderler ve yerlerini yeni taşlar alır.",
       "li1": "Önce eşyalardan gelen ücretsiz çekişler kullanılır; yoksa bir yeniden çekiş bir hamleye mal olur.",
       "li2": "Yeniden çekilen taşlar tur bitene kadar nehirde kalır.",
+      "li3": "Bazı Fermanlar her yeniden çekişi ödüllendirir, bir Patron Hükmü onu yasaklayabilir, Mevsimler de bedelini değiştirebilir. Önce etkin etkileri kontrol et.",
       "note": "Zaten grup oluşturan taşları tut, yalnız kalanları yeniden çek."
     },
     "score": {
@@ -2381,6 +2398,13 @@
       "li1": "Turun altınını yine alır, Çay Evi’ne de uğrarsın.",
       "li2": "Patron turları asla Alamet vermez.",
       "note": "Erken gelen güçlü bir el hamle kazandırır; artan hamleler Alamete dönüşür."
+    },
+    "saving": {
+      "title": "Oyunu kaydetmek",
+      "p1": "Oyunun, tamamlanan her eylemden sonra bu tarayıcıya kaydedilir. Menüye dönmek için {{saveLeave}} seçeneğini, masada ya da Çay Evi’nde devam etmek için {{resume}} seçeneğini kullan.",
+      "li1": "Sekmeyi kapatmadan önce {{saved}} yazısını bekle. Kayıt başarısız olursa sekmeyi açık tut ve {{retry}} düğmesine bas.",
+      "li2": "Kayıtlar bu cihazdaki bu tarayıcıda kalır. Site verilerini silersen ya da başka tarayıcıya geçersen onlara ulaşamazsın.",
+      "li3": "Seçili taşlar ve animasyonlar geri yüklenmez. Oyun güncellemeleri iki oyun arasında kurulur, asla bir oyunun ortasında kurulmaz."
     }
   },
   "accessibility": {

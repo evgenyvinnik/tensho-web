@@ -25,7 +25,6 @@ import {
 } from '../../game/classicPersistenceApp'
 import { ClassicResumeCard } from '../menu/ClassicResumeCard'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
-import { withBasePath } from '../../utils/basePath'
 import { TileSuit } from '../../core/Tile'
 import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
@@ -590,26 +589,6 @@ export function MenuScreen() {
               </div>
 
               {/* Version */}
-              <nav
-                aria-label="Public guides (English)"
-                lang="en"
-                className="flex flex-wrap justify-center gap-x-4 text-sm text-[var(--color-metallic-gold)]"
-              >
-                {[
-                  ['about/', 'About'],
-                  ['how-to-play/', 'How to play'],
-                  ['faq/', 'FAQ'],
-                ].map(([path, label]) => (
-                  <a
-                    key={path}
-                    href={withBasePath(path)}
-                    hrefLang="en"
-                    className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-                  >
-                    {label} <span className="sr-only">(English)</span>
-                  </a>
-                ))}
-              </nav>
               <span className="text-[var(--color-metallic-gold)] text-xs opacity-50">
                 {FORMATTED_APP_VERSION}
               </span>

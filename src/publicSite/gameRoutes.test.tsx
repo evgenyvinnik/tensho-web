@@ -36,7 +36,6 @@ it('emits every known language/screen from one route manifest, not unknown route
   }
   expect(entries.has('missing/index.html')).toBe(false)
   expect(entries.has('en/missing/index.html')).toBe(false)
-  expect(entries.has('about/index.html')).toBe(false)
 })
 
 it('preserves built entry chunks, base paths, preload and PWA references byte-for-byte', () => {

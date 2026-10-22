@@ -131,8 +131,8 @@ Run `bun run sloc` to calculate source lines of code.
 - [Monsoon draw implementation](docs/MONSOON_IMPLEMENTATION.md) — Seeded live/bonus draws and non-mutating redraw previews
 - [Summer wall tradeoff](docs/SUMMER_IMPLEMENTATION.md) — Round-only wall reduction and physical tile restoration; [earned Bamboo protection](docs/BAMBOO_SUMMER_IMPLEMENTATION.md) closes the original exception
 - [Three-Flower shop unlock](docs/FLOWER_SHOP_IMPLEMENTATION.md) — Eligible offers, packs, Omen guarantees and generated rewards
-- [SEO strategy and public guides](docs/SEO_STRATEGY.md) — Search intent, static About/how-to-play/FAQ pages, localization roadmap, and release checks
-- [New public-page and scroll illustrations](docs/PUBLIC_SITE_ART.md) — Saved assets, exact generation prompts, and provenance
+- [SEO strategy and public guides](docs/SEO_STRATEGY.md) — Historical record of the static About/how-to-play/FAQ pages, retired October 22, 2026 in favor of the in-game Codex
+- [Table Loop scroll illustrations](docs/PUBLIC_SITE_ART.md) — Saved assets, exact generation prompts, and provenance
 - [Flora inspector and Season effects](docs/FLORA_IMPLEMENTATION.md) — Localized full-stack details, real Decay discards, Flower protection, safe touch activation, and the original audit history; later decisions are consolidated in the resolved gameplay rules
 - [Earned Omens and Season lifecycle](docs/OMEN_LIFECYCLE.md) — Real skip acquisition, once-only shop fees, round cleanup, and locked-draw stacking
 - [Double Omen and pending rewards](docs/DOUBLE_OMEN_IMPLEMENTATION.md) — Earned copies, immediate/delayed settlement, optional localized disclosure, and new artwork

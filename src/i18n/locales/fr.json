@@ -25,6 +25,7 @@
     "titleHierarchy": "La hiérarchie à cinq niveaux",
     "titleTips": "Conseils pour réussir",
     "titleMoreTips": "Conseils avancés",
+    "titleBiggerHand": "Construire une plus grande main",
     "category": "Catégorie",
     "types": "Types",
     "count": "Nombre",
@@ -84,6 +85,7 @@
     "imperialPower": "Modifications majeures des règles",
     "heavenlyPower": "Puissance qui façonne toute la partie",
     "raritySources": "La rareté influe sur la disponibilité et le prix en boutique. Les Ordonnances célestes proviennent de sources spéciales, et non des offres ordinaires de la boutique. Créez des synergies et vérifiez le prix réel de chaque offre.",
+    "decreeScrolls": "Chaque Décret est un parchemin illustré. Touchez-en un que vous possédez pour lire son effet pendant que vous planifiez.",
     "slotBaseline": "Vous disposez par défaut de 5 emplacements de Décrets, mais la table choisie et les effets de la partie peuvent modifier ce nombre. Des emplacements supplémentaires peuvent provenir de :",
     "heaven": "Ciel (Saisons)",
     "court": "Cour (Décrets)",
@@ -95,6 +97,8 @@
     "tipScore": "Comparez l’aperçu du score pour des groupes allant jusqu’à {{max}} tuiles ou pour une main de Mahjong complète. Utilisez vos tours pour progresser vers l’objectif au lieu d’attendre uniquement une main parfaite.",
     "tipSynergyTitle": "Créez des synergies",
     "tipSynergy": "Des Décrets qui se complètent peuvent être plus forts que des Décrets puissants pris isolément.",
+    "tipPurposeTitle": "Acheter avec un but",
+    "tipPurpose": "Avant d’acheter, demandez-vous ce que vous garderiez ou joueriez autrement si vous l’aviez. Une amélioration utilisable vaut mieux qu’une plus forte que vous ne pouvez pas déclencher.",
     "tipEconomyTitle": "Équilibrez votre économie",
     "tipEconomy": "L’or économisé rapporte des intérêts lorsqu’une manche est réussie, mais dépensez-le si une amélioration vous aide à atteindre le prochain objectif. Vérifiez les prix réels et les valeurs de vente.",
     "tipFlowersTitle": "Collectionnez les fleurs",
@@ -107,6 +111,12 @@
     "tipWall": "Vérifiez la rivière et ce qu’il reste du mur avant de chercher une tuile précise. Les tuiles remplacées par une repioche restent dans la rivière jusqu’à la fin de la manche.",
     "tipMandateTitle": "Lisez les mandats à l’avance",
     "tipMandate": "Lisez le prochain Mandat de Boss et préparez une combinaison d’effets capable de marquer malgré sa restriction.",
+    "tipLossTitle": "Apprendre d’une défaite",
+    "tipLoss": "Après une partie, trouvez une décision que vous changeriez, comme une repioche trop précoce ou une tuile gardée sans plan, et essayez-la la prochaine fois.",
+    "biggerHandP1": "Chaque groupe après le premier ajoute du Mult, et une main de Mahjong complète en ajoute le plus. Au lieu de jouer chaque petit groupe dès qu’il apparaît, gardez vos groupes et repiochez les tuiles en trop.",
+    "biggerHandRack": "Ce chevalet contient deux séquences terminées, deux séquences de {{circles}} inachevées et une paire d’{{east}}, plus deux Dragons isolés. Un seul REPIOCHER envoie les deux Dragons à la rivière.",
+    "biggerHandComplete": "Si les nouvelles tuiles sont le 1 et le 4 de {{circles}}, les quatorze tuiles forment quatre séquences et une paire. Sélectionnez les quatorze et jouez-les : une main complète ne marque pas toute seule.",
+    "biggerHandWarning": "Les pioches sont aléatoires, et viser une grosse main peut coûter la manche. Comparez le score possible maintenant avec les tours qu’il vous reste.",
     "congratulations": "<strong>Félicitations !</strong> Vous connaissez maintenant les bases de Tensho.",
     "farewell": "Que les tuiles vous soient favorables dans votre ascension céleste !"
   },
@@ -2053,6 +2063,12 @@
       "p2": "Atteignez l'objectif de la manche avant d'être à court de tours. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
       "warning": "À court de tours sous l'objectif, la partie est terminée."
     },
+    "select": {
+      "title": "Sélectionner des tuiles",
+      "p1": "Touchez les tuiles de votre chevalet pour les sélectionner. Le Score de la main, au centre de la table, montre ce que votre sélection marquerait maintenant : la main formée, ses Points et son Mult.",
+      "p2": "Sélectionner ne coûte rien : rien n’est dépensé tant que vous n’appuyez pas sur Jouer la main ou REPIOCHER. Une main jouée compte comme la meilleure main que forment ses tuiles, alors essayez plusieurs sélections avant de vous décider.",
+      "note": "Le plus gros score n’est pas toujours le meilleur coup. Regardez quelles tuiles utiles resteraient sur votre chevalet pour le tour suivant."
+    },
     "refill": {
       "title": "Piocher des tuiles",
       "p1": "Votre chevalet se remplit depuis le mur après chaque main jouée et chaque repioche : vous choisissez toujours parmi une main complète."
@@ -2062,6 +2078,7 @@
       "p1": "Choisissez les tuiles dont vous ne voulez pas, autant que vous voulez, et appuyez sur REPIOCHER. Elles vont à la rivière et de nouvelles tuiles les remplacent.",
       "li1": "Les repioches gratuites des objets passent en premier ; sinon, une repioche coûte un tour.",
       "li2": "Les tuiles repiochées restent dans la rivière jusqu’à la fin de la manche.",
+      "li3": "Certains Décrets récompensent chaque repioche, un Mandat de Boss peut l’interdire et les Saisons peuvent en changer le coût. Vérifiez d’abord les effets actifs.",
       "note": "Gardez les tuiles qui forment déjà un groupe et repiochez les isolées."
     },
     "score": {
@@ -2094,6 +2111,13 @@
       "li1": "Vous touchez quand même l'or de la manche et passez par la Maison de Thé.",
       "li2": "Les Manches Boss ne donnent jamais de Présage.",
       "note": "Une bonne main en début de manche économise des tours, et les tours économisés deviennent des Présages."
+    },
+    "saving": {
+      "title": "Sauvegarder la partie",
+      "p1": "Votre partie est sauvegardée dans ce navigateur après chaque action terminée. Choisissez {{saveLeave}} pour revenir au menu, puis {{resume}} pour continuer à la table ou à la Maison de Thé.",
+      "li1": "Attendez {{saved}} avant de fermer l’onglet. Si la sauvegarde échoue, gardez l’onglet ouvert et appuyez sur {{retry}}.",
+      "li2": "Les sauvegardes restent dans ce navigateur, sur cet appareil. Effacer les données du site ou changer de navigateur vous en sépare.",
+      "li3": "Les tuiles sélectionnées et les animations ne sont pas restaurées. Les mises à jour du jeu s’installent entre deux parties, jamais au milieu d’une."
     }
   },
   "accessibility": {

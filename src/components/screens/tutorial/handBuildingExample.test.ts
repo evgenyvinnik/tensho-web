@@ -1,18 +1,18 @@
 import { afterEach, expect, it } from 'vitest'
-import { Tile, TileSuit, createStandardTileSet } from '../core/Tile'
+import { Tile, TileSuit, createStandardTileSet } from '../../../core/Tile'
 import {
   GameOrchestrator,
   type OrchestratorState,
-} from '../game/GameOrchestrator'
-import { eventBus } from '../game/EventBus'
-import { runRandom } from '../game/RunRandom'
-import { isCompleteHand } from '../rules/HandValidator'
+} from '../../../game/GameOrchestrator'
+import { eventBus } from '../../../game/EventBus'
+import { runRandom } from '../../../game/RunRandom'
+import { isCompleteHand } from '../../../rules/HandValidator'
 import {
   HAND_BUILDING_EXAMPLE as example,
-  type GuideTileGroup,
-} from './handExample'
+  type ExampleTileGroup,
+} from './handBuildingExample'
 
-function tiles(groups: GuideTileGroup[], prefix: string): Tile[] {
+function tiles(groups: ExampleTileGroup[], prefix: string): Tile[] {
   return groups.flatMap((group, g) =>
     group.ranks.map(
       (rank, r) => new Tile(group.suit, rank, `${prefix}-${g}-${r}`)
@@ -59,7 +59,7 @@ afterEach(() => {
   runRandom.reset()
 })
 
-it('executes the published two-tile example for one REDRAW and plays the illustrated hand', () => {
+it('executes the Codex two-tile example for one REDRAW and plays the illustrated hand', () => {
   const { game, state, keep, exchange } = fixture()
   expect(isCompleteHand(state.handTiles)).toBe(false)
   const hands = state.handsRemaining
