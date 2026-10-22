@@ -38,14 +38,19 @@ async function noOverflow(card: Locator) {
 async function assertHitTarget(target: Locator) {
   await target.scrollIntoViewIfNeeded()
   await expect(target).toBeInViewport()
-  expect(
-    await target.evaluate((node) => {
-      const r = node.getBoundingClientRect()
-      return node.contains(
-        document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)
-      )
-    })
-  ).toBe(true)
+  // Moving away from a Decree closes its hover card after a short grace
+  // period. Check reachability after that transition, not during its first
+  // frame; a panel that stays over this control must still fail the test.
+  await expect
+    .poll(() =>
+      target.evaluate((node) => {
+        const r = node.getBoundingClientRect()
+        return node.contains(
+          document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)
+        )
+      })
+    )
+    .toBe(true)
 }
 
 for (const fixture of [
