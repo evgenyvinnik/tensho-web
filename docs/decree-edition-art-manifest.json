@@ -150,10 +150,18 @@
       "name": "Moonlit Seal",
       "edition": "Holographic",
       "input": "public/assets/illustrations/decrees/moonlit-seal.webp",
-      "source": "/Users/evgenyvinnik/.codex/generated_images/01a1657d-9237-73b3-b9cc-758537754cfb/exec-fbe8da69-8885-4b1b-9d80-1d407e7850e7.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-f5a6fa57-d832-4066-bdc4-43b2be64f141.png",
       "path": "public/assets/illustrations/decree-editions/moonlit_seal/holographic.webp",
-      "bytes": 23996,
-      "sha256": "052c5a0161d7adc9a36b9988c547b87c8e9d75b99d48f0aa82e78bf0d4bb97bd"
+      "bytes": 24228,
+      "sha256": "d0a8907c8367c2b18712851ab2199e2dff4bb42714af0b305e071375043795f8",
+      "alphaRepair": {
+        "tool": "built-in image_gen",
+        "previousSource": "/Users/evgenyvinnik/.codex/generated_images/01a1657d-9237-73b3-b9cc-758537754cfb/exec-fbe8da69-8885-4b1b-9d80-1d407e7850e7.png",
+        "previousSha256": "052c5a0161d7adc9a36b9988c547b87c8e9d75b99d48f0aa82e78bf0d4bb97bd",
+        "editTarget": "public/assets/illustrations/decree-editions/moonlit_seal/holographic.webp",
+        "prompt": "Use case: background-extraction. Image 1 is the exact edit target: an existing finished Moonlit Seal Holographic Decree game portrait. This is a tiny alpha-channel repair, NOT a redesign or reillustration. Remove only the stray near-transparent residue outside the object, particularly the top-left corner. Make every exterior background pixel and all four image corners fully transparent alpha=0, not almost transparent. Preserve the complete existing illustration, its exact object silhouette, framing, proportions, colors, opalescent material, highlights, decorations and fine edge details. Do not repaint, recolor, add a frame, crop, add shadows, add a background or add any new marks. Preserve existing transparent space and render a genuinely transparent PNG. Keep the square composition unchanged.",
+        "conversion": "cwebp -q 85 -m 6 -resize 256 256; preserve generated alpha, no thresholding or matte flattening"
+      }
     },
     {
       "id": "moonlit_seal",
@@ -3499,10 +3507,18 @@
       "name": "Triplet Titan",
       "edition": "Holographic",
       "input": "public/assets/illustrations/generated/decrees/decree-toitoi-titan.webp",
-      "source": "/Users/evgenyvinnik/.codex/generated_images/01a16582-d567-7e21-8fd7-2ee4f5c597fc/exec-219e57fa-9a30-4acd-af34-19be44b5d9d1.png",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-e150098b-e1aa-4764-a096-78061c3f18c8.png",
       "path": "public/assets/illustrations/decree-editions/decree-toitoi-titan/holographic.webp",
-      "bytes": 26652,
-      "sha256": "d2d0b131536dc9e603b5601663e34776b50c99175c2eb04814c80e2584311137",
+      "bytes": 26766,
+      "sha256": "f8052d810b36b849471759effa937aaf3e068de2bba4a9a8f4c0068ce6d891cf",
+      "alphaRepair": {
+        "tool": "built-in image_gen",
+        "previousSource": "/Users/evgenyvinnik/.codex/generated_images/01a16582-d567-7e21-8fd7-2ee4f5c597fc/exec-219e57fa-9a30-4acd-af34-19be44b5d9d1.png",
+        "previousSha256": "d2d0b131536dc9e603b5601663e34776b50c99175c2eb04814c80e2584311137",
+        "editTarget": "public/assets/illustrations/decree-editions/decree-toitoi-titan/holographic.webp",
+        "prompt": "Use case: background-extraction. Image 1 is the exact edit target: an existing finished Toitoi Titan Holographic Decree game portrait. This is a tiny alpha-channel repair, NOT a redesign or reillustration. Remove only the stray near-transparent residue outside the object, particularly the top-left corner. Make every exterior background pixel and all four image corners fully transparent alpha=0, not almost transparent. Preserve the complete existing illustration, its exact object silhouette, framing, proportions, colors, opalescent material, highlights, decorations and fine edge details. Do not repaint, recolor, add a frame, crop, add shadows, add a background or add any new marks. Preserve existing transparent space and render a genuinely transparent PNG. Keep the square composition unchanged.",
+        "conversion": "cwebp -q 85 -m 6 -resize 256 256; preserve generated alpha, no thresholding or matte flattening"
+      },
       "promptOverride": "Use case: precise-object-edit. Asset type: transparent miniature game illustration, Triplet Titan Decree, Holographic edition. Input image 1 is the exact edit target. Regenerate the complete illustration, transforming the object's actual physical materials as described below. Preserve this decree's identity: exact subject, silhouette, pose, arrangement, distinctive objects, carved motifs and suit symbols. Keep the same centered composition and clear readable silhouette. HOLOGRAPHIC: Transform primary surfaces to luminous opalescent mother-of-pearl and translucent cyan crystal with broad pale cyan/lavender color shifts, subtle doubled reflections within the material and polished crystal bevels. Silver/pearl fittings and deep blue-violet accents. Bright pearly overall, visibly distinct from dark Negative and saturated Polychrome. Hand-painted East Asian fantasy inventory art matching the reference's craftsmanship, legible at 64 pixels. Keep all contours comfortably inside a square canvas with transparent margins. Genuine alpha transparency outside the isolated object. No added external frame, border, mount, card, badge, large halo, particle cloud, background scene, text, letters, watermark, or new objects. Retain any scroll, rollers or fittings already part of the depicted object; do not turn a non-scroll subject into a scroll. The edition must be visible in the object itself, not an overlay. Identity invariant: three upright blank ivory mahjong tiles mounted side by side across a carved jade fist-like support on one sculpted gold-and-jade plinth. All three tile faces stay blank; retain their contour corner fittings."
     },
     {

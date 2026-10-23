@@ -118,6 +118,11 @@ test('repaired Scripts and edition portraits retain real transparent backgrounds
     ...['foil', 'holographic', 'polychrome', 'negative'].map((id) => ({
       path: `/assets/illustrations/decree-editions/river_tax/${id}.webp`,
     })),
+    // These previously retained alpha=1 in the top-left corner. Require exact
+    // transparency after conversion, not just the presence of an alpha channel.
+    ...['moonlit_seal', 'decree-toitoi-titan'].map((id) => ({
+      path: `/assets/illustrations/decree-editions/${id}/holographic.webp`,
+    })),
   ]
   for (const asset of assets) {
     const result = await page.evaluate(async ({ path }) => {
