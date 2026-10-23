@@ -17,6 +17,7 @@ export function DecreeArtwork({
   const illustration = getDecreeIllustration(decreeId)
   return (
     <DecreePortrait
+      decreeId={decreeId}
       src={illustration ?? illustrationAssets.codex.decrees}
       edition={edition}
       size={size}

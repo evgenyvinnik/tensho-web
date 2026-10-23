@@ -148,8 +148,8 @@ for (const width of [320, 390, 1280]) {
     await pairs.scrollIntoViewIfNeeded()
     await expect(
       pairs.locator('[data-upgrade-orb="pluto_orb"]')
-    ).toHaveAttribute('src', /orbs\/pluto_orb.webp$/)
-    await expect(pairs.locator('[data-upgrade-pattern="Pairs"]')).toBeVisible()
+    ).toHaveAttribute('src', /upgrades\/pairs.webp$/)
+    await expect(pairs.locator('svg')).toHaveCount(0)
     expect(
       await pairs.evaluate((el) => {
         const bounds = el.getBoundingClientRect()

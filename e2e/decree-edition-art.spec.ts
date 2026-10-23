@@ -17,7 +17,7 @@ test('editions stay recognizable in the shop build, offers and details', async (
     const orbPath = '/src/systems/CelestialOrbSystem.ts'
     const eventPath = '/src/game/EventBus.ts'
     const { gameOrchestrator: game } = await import(gamePath)
-    const { STARTER_DECREES } = await import(decreePath)
+    const { RIVER_TAX } = await import(decreePath)
     const { CelestialOrbSystem, getCelestialOrbByYaku } = await import(orbPath)
     const { eventBus } = await import(eventPath)
     game.startNewRun(7)
@@ -31,7 +31,7 @@ test('editions stay recognizable in the shop build, offers and details', async (
       'Polychrome',
       'Negative',
     ]) {
-      if (!state.decreeSystem.acquireDecree({ ...STARTER_DECREES[0], edition }))
+      if (!state.decreeSystem.acquireDecree({ ...RIVER_TAX, edition }))
         throw new Error('Fixture capacity')
     }
     state.celestialOrbSystem.useOrb(
@@ -50,23 +50,31 @@ test('editions stay recognizable in the shop build, offers and details', async (
       (entry: { itemType: string }) => entry.itemType === 'Decree'
     )
     if (!offer) throw new Error('Missing shop fixture offer')
-    offer.item = { ...STARTER_DECREES[0] }
+    offer.item = { ...RIVER_TAX }
     offer.edition = 'Holographic'
     eventBus.emit('shopUpdated', { isOpen: true })
   })
   await clearReveals(page)
   const build = page.locator('[data-shop-build]')
   await expect(build).toBeVisible()
-  await expect(build.locator('[data-decree-edition-frame]')).toHaveCount(4)
+  await expect(build.locator('[data-decree-edition-portrait]')).toHaveCount(4)
+  await expect(page.locator('[data-decree-edition-frame]')).toHaveCount(0)
+  await expect(page.locator('.decree-portrait__finish')).toHaveCount(0)
   for (const edition of ['Foil', 'Holographic', 'Polychrome', 'Negative']) {
-    const frame = build.locator(`[data-decree-edition-frame="${edition}"]`)
-    await expect(frame).toBeVisible()
+    const portrait = build.locator(
+      `[data-decree-edition-portrait="${edition}"]`
+    )
+    await expect(portrait).toBeVisible()
+    await expect(portrait).toHaveAttribute(
+      'src',
+      `/assets/illustrations/decree-editions/river_tax/${edition.toLowerCase()}.webp`
+    )
     expect(
-      await frame.evaluate(async (img: HTMLImageElement) => {
+      await portrait.evaluate(async (img: HTMLImageElement) => {
         await img.decode()
         return img.naturalWidth
       })
-    ).toBe(224)
+    ).toBe(256)
   }
   const pair = build.locator('[data-yaku-upgrade="Pairs"] img')
   await expect(pair).toHaveAttribute('src', /upgrades\/pairs.webp$/)
@@ -77,41 +85,42 @@ test('editions stay recognizable in the shop build, offers and details', async (
     })
   ).toBe(true)
   await expect(
-    page.locator('[data-shop-offer] [data-decree-edition-frame="Holographic"]')
+    page.locator(
+      '[data-shop-offer] [data-decree-edition-portrait="Holographic"]'
+    )
   ).toBeVisible()
   const foil = build
     .locator('button')
-    .filter({ has: page.locator('[data-decree-edition-frame="Foil"]') })
+    .filter({ has: page.locator('[data-decree-edition-portrait="Foil"]') })
   await foil.click()
   const details = page.getByRole('dialog')
   await expect(details).toContainText('Foil')
   await expect(
-    details.locator('[data-decree-edition-frame="Foil"]')
+    details.locator('[data-decree-edition-portrait="Foil"]')
   ).toBeVisible()
   expect(
     await details.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
   ).toBe(true)
   await page.keyboard.press('Escape')
+  await page.getByText('Your build', { exact: true }).click()
   await page.mouse.move(1, 1)
   await build.screenshot({ path: info.outputPath('decree-editions-build.png') })
 })
 
-test('repaired Scripts and edition frames retain real transparent backgrounds', async ({
+test('repaired Scripts and edition portraits retain real transparent backgrounds', async ({
   page,
 }) => {
   await page.goto('/en/')
   const assets = [
     ...scripts.assets.map((asset) => ({
       path: asset.path.replace('public', ''),
-      frame: false,
     })),
     ...['foil', 'holographic', 'polychrome', 'negative'].map((id) => ({
-      path: `/assets/illustrations/decree-editions/${id}.webp`,
-      frame: true,
+      path: `/assets/illustrations/decree-editions/river_tax/${id}.webp`,
     })),
   ]
   for (const asset of assets) {
-    const result = await page.evaluate(async ({ path, frame }) => {
+    const result = await page.evaluate(async ({ path }) => {
       const image = new Image()
       image.src = path
       await image.decode()
@@ -130,11 +139,8 @@ test('repaired Scripts and edition frames retain real transparent backgrounds', 
           alphaAt(0, edge),
           alphaAt(edge, edge),
         ],
-        emptyCenter:
-          !frame || alphaAt(Math.floor(edge / 2), Math.floor(edge / 2)) === 0,
       }
     }, asset)
     expect(result.corners, asset.path).toEqual([0, 0, 0, 0])
-    expect(result.emptyCenter, asset.path).toBe(true)
   }
 })

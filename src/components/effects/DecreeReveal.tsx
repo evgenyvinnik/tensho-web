@@ -116,6 +116,7 @@ export function DecreeReveal({ paused = false }: { paused?: boolean }) {
               className="pointer-events-none absolute left-1/2 top-1/2 h-36 w-36 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
             />
             <DecreePortrait
+              decreeId={decree.id}
               src={
                 art.hasOwnArt
                   ? art.src

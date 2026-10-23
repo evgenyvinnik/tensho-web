@@ -144,6 +144,22 @@ for (const language of ['en', 'es', 'ru'])
       await expect(row).toHaveAccessibleName(copy.yakuUpgrades.title)
       const shopTokens = row.locator('[data-yaku-upgrade]')
       await expect(shopTokens).toHaveCount(kind === 'all' ? 12 : 1)
+      const portraits = row.locator('[data-upgrade-art] img')
+      await expect(portraits).toHaveCount(kind === 'all' ? 12 : 1)
+      const imageSources = await portraits.evaluateAll(async (images) => {
+        await Promise.all(
+          images.map(async (image) => {
+            const img = image as HTMLImageElement
+            await img.decode()
+            if (img.naturalWidth === 0) throw new Error('Missing upgrade art')
+          })
+        )
+        return images.map((image) => image.getAttribute('src')!)
+      })
+      expect(new Set(imageSources).size).toBe(imageSources.length)
+      for (const source of imageSources)
+        expect(source).toMatch(/\/(?:generated\/yaku|upgrades)\/[^/]+\.webp$/)
+      await expect(row.locator('[data-upgrade-art] svg')).toHaveCount(0)
       const shopPair = row.locator('[data-yaku-upgrade="SevenPairs"]')
       await expect(shopPair).toHaveAccessibleName(
         copy.upgradeFamilies.tokenLabel

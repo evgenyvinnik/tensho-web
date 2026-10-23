@@ -1,11 +1,12 @@
 import type { CSSProperties } from 'react'
 import type { DecreeEdition } from '../../systems/types'
-import { withBasePath } from '../../utils/basePath'
+import { getDecreeEditionArt } from '../../utils/decreeEditionArt'
 import './decreePortrait.css'
 
-/** Keep the Decree's identity; its edition changes the finish and painted mount. */
+/** Editions use complete authored portraits, preserving the Decree's identity. */
 export function DecreePortrait({
   src,
+  decreeId,
   edition,
   className = 'relative block h-full w-full',
   imageClassName = '',
@@ -13,12 +14,14 @@ export function DecreePortrait({
   size,
 }: {
   src: string
+  decreeId?: string
   edition?: DecreeEdition
   className?: string
   imageClassName?: string
   style?: CSSProperties
   size?: number
 }) {
+  const editionPortrait = getDecreeEditionArt(decreeId, edition)
   return (
     <span
       aria-hidden="true"
@@ -27,7 +30,8 @@ export function DecreePortrait({
       style={size === undefined ? undefined : { width: size, height: size }}
     >
       <img
-        src={src}
+        src={editionPortrait ?? src}
+        data-decree-edition-portrait={editionPortrait ? edition : undefined}
         alt=""
         aria-hidden="true"
         draggable={false}
@@ -39,21 +43,6 @@ export function DecreePortrait({
           ...(size === undefined ? {} : { width: size, height: size }),
         }}
       />
-      {edition && (
-        <>
-          <span className="decree-portrait__finish" />
-          <img
-            data-decree-edition-frame={edition}
-            src={withBasePath(
-              `assets/illustrations/decree-editions/${edition.toLowerCase()}.webp`
-            )}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            className="decree-portrait__frame"
-          />
-        </>
-      )}
     </span>
   )
 }

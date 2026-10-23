@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { FLOWER_MUTATIONS } from '../systems/FlowerSystem'
+import { CELESTIAL_ORBS } from '../systems/CelestialOrbSystem'
 import type { FlowerVariant, StickerType } from '../systems/types'
 import { flowerIllustrations, illustrationAssets } from './assets'
 import {
@@ -84,6 +85,29 @@ describe('Season, Flower, sticker and result artwork', () => {
     expect(pair.src).not.toBe(getItemArt('orbs', 'pluto_orb').src)
     expect(pair.src).not.toBe(getItemArt('yakuUpgrades', 'SevenPairs').src)
     expect(readFileSync(`public${pair.src}`).length).toBeLessThan(30_000)
+  })
+
+  it('ships a unique transparent illustration for all 12 earned upgrade families', () => {
+    const families = Object.values(CELESTIAL_ORBS)
+      .map((orb) => orb.effect.targetYaku)
+      .filter((family) => family !== 'All')
+    expect(families).toHaveLength(12)
+    const sources = new Set<string>()
+    const hashes = new Set<string>()
+    for (const family of families) {
+      const art = getItemArt('yakuUpgrades', family)
+      expect(art.hasOwnArt, family).toBe(true)
+      expect(art.src, family).not.toBe(illustrationAssets.yakuLedger)
+      expectTransparentSquare(art.src, family === 'Pairs' ? 256 : 128, 30_000)
+      sources.add(art.src)
+      hashes.add(
+        createHash('sha256')
+          .update(readFileSync(`public${art.src}`))
+          .digest('hex')
+      )
+    }
+    expect(sources.size).toBe(12)
+    expect(hashes.size).toBe(12)
   })
 
   it('ships three different compact ending scenes', () => {

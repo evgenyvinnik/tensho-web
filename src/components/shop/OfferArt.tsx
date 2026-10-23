@@ -42,6 +42,7 @@ export function OfferArt({
       return (
         <span className={`relative flex items-center justify-center ${size}`}>
           <DecreePortrait
+            decreeId={decree.id}
             src={
               art.hasOwnArt
                 ? art.src

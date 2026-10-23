@@ -29,7 +29,7 @@ import { animated, useSpring } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { OwnedDecree } from '../../systems/types'
 import { DecreeUniqueIcon } from '../ui/svg/DecreeIcons'
-import { DECREE_RARITY_COLORS, DECREE_ICON_COLORS } from './gameplayTypes'
+import { DECREE_ICON_COLORS } from './gameplayTypes'
 import { useItemText } from '../../i18n/useItemText'
 import { decreeModifierText } from '../../i18n/decreeModifiers'
 import { hasDecreeSticker } from '../../systems/decreeStickers'
@@ -277,7 +277,7 @@ export function DecreeCardCompact({
         data-decree-instance={decree.instanceId}
         className={`
           game-decree-card collectible-token--portrait group relative min-h-[44px] min-w-[44px] flex-shrink-0
-          overflow-visible rounded-lg border-2 bg-black/20 ${DECREE_RARITY_COLORS[decree.rarity]}
+          overflow-visible rounded-lg border-2 border-transparent bg-transparent
           ${isSuppressed ? 'opacity-60 grayscale' : ''}
           cursor-pointer ${reduceMotion ? '' : 'transition-[transform,filter,box-shadow] duration-200 hover:-translate-y-1 hover:scale-105 hover:drop-shadow-lg'}
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]
@@ -298,6 +298,7 @@ export function DecreeCardCompact({
         aria-controls={showPopover ? popoverId : undefined}
       >
         <DecreePortrait
+          decreeId={faceDown ? undefined : decree.id}
           src={illustration ?? getDecreeScrollIllustration(decree.rarity)}
           edition={faceDown ? undefined : decree.edition}
           className="absolute inset-0 h-full w-full"
@@ -386,6 +387,7 @@ export function DecreeCardCompact({
               <div className="flex items-start gap-3">
                 <span className="relative flex h-[76px] w-[60px] shrink-0 items-center justify-center">
                   <DecreePortrait
+                    decreeId={faceDown ? undefined : decree.id}
                     src={
                       illustration ?? getDecreeScrollIllustration(decree.rarity)
                     }

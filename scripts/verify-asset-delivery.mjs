@@ -78,9 +78,23 @@ const precacheBytes = [...cached].reduce(
   (sum, path) => sum + statSync(resolve(root, path)).size,
   0
 )
+// Complete authored portraits replace four reusable frames: 174 identities
+// across four editions. Budget this catalog separately so its addition cannot
+// hide a regression in the existing offline payload.
+const decreeEditionBytes = [...cached]
+  .filter((path) =>
+    /^assets\/illustrations\/decree-editions\/[^/]+\/(?:foil|holographic|polychrome|negative)\.webp$/.test(
+      path
+    )
+  )
+  .reduce((sum, path) => sum + statSync(resolve(root, path)).size, 0)
 assert.ok(
-  precacheBytes < 40 * 1024 * 1024,
-  `Offline payload exceeds 40 MiB: ${precacheBytes}`
+  precacheBytes - decreeEditionBytes < 40 * 1024 * 1024,
+  `Core offline payload exceeds 40 MiB: ${precacheBytes - decreeEditionBytes}`
+)
+assert.ok(
+  decreeEditionBytes < 20 * 1024 * 1024,
+  `Decree edition portraits exceed 20 MiB: ${decreeEditionBytes}`
 )
 assert.ok(deliveryBytes < sourceBytes / 8, 'Illustration delivery regression')
 console.log(
@@ -88,6 +102,7 @@ console.log(
     {
       entries: cached.size,
       precacheBytes,
+      decreeEditionBytes,
       sourceBytes,
       deliveryBytes,
       savedBytes: sourceBytes - deliveryBytes,

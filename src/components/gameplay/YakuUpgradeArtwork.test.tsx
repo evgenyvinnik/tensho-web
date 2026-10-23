@@ -6,7 +6,7 @@ import { YakuUpgradeArtwork } from './YakuUpgradeArtwork'
 
 describe('Yaku upgrade artwork', () => {
   it.each(Object.values(CELESTIAL_ORBS))(
-    'connects $name to the pattern it upgrades',
+    'shows the family illustration for $name without tile overlays',
     (orb) => {
       const family = orb.effect.targetYaku
       const { container } = render(<YakuUpgradeArtwork family={family} />)
@@ -14,15 +14,20 @@ describe('Yaku upgrade artwork', () => {
       expect(art).toHaveAttribute('aria-hidden', 'true')
       expect(art.querySelector('img')).toHaveAttribute(
         'src',
-        family === 'Pairs'
-          ? getItemArt('yakuUpgrades', family).src
-          : getItemArt('orbs', orb.id).src
+        getItemArt('yakuUpgrades', family).src
       )
       expect(art.querySelector('img')).toHaveAttribute('alt', '')
-      if (family !== 'Pairs')
-        expect(
-          art.querySelector(`[data-upgrade-pattern="${family}"]`)
-        ).not.toBeNull()
+      expect(art.querySelector('img')).toHaveAttribute(
+        'data-upgrade-orb',
+        orb.id
+      )
+      expect(art.querySelectorAll('img')).toHaveLength(1)
+      expect(art.querySelector('svg')).toBeNull()
+      expect(art.querySelector('[data-upgrade-pattern-caption]')).toBeNull()
+      if (family !== 'All')
+        expect(art.querySelector('img')?.getAttribute('src')).not.toBe(
+          getItemArt('orbs', orb.id).src
+        )
     }
   )
 
@@ -43,7 +48,13 @@ describe('Yaku upgrade artwork', () => {
       getItemArt('yakuUpgrades', 'Pairs').src
     )
     expect(pairs.querySelector('svg')).toBeNull()
-    expect(sevenPairs).toHaveTextContent('×7')
+    expect(sevenPairs.querySelector('img')).toHaveAttribute(
+      'src',
+      getItemArt('yakuUpgrades', 'SevenPairs').src
+    )
+    expect(pairs.querySelector('img')?.getAttribute('src')).not.toBe(
+      sevenPairs.querySelector('img')?.getAttribute('src')
+    )
     expect(pairs.querySelector('img')).toHaveAttribute(
       'data-upgrade-orb',
       'pluto_orb'
