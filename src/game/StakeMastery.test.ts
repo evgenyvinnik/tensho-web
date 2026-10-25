@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { Tile, TileSuit } from '../core/Tile'
 import { useAchievementStore } from '../stores/achievementStore'
 import { useArchiveStore } from '../stores/archiveStore'
@@ -29,13 +30,13 @@ function start(stake = 8) {
   state.decreeSystem = new DecreeSystem()
   state.flowerSystem.clear()
   state.seasonSystem.clear()
-  state.roundManager.startAct(8)
+  state.roundManager.startAct(NORMAL_RUN_ACTS)
   state.roundManager.skipRound()
   state.roundManager.skipRound()
   state.roundManager.getCurrentRound()!.bossMandate = undefined
   state.mandateEffectSystem.deactivateMandate()
   Object.assign(state, {
-    currentAct: 8,
+    currentAct: NORMAL_RUN_ACTS,
     currentRound: 3,
     score: 0,
     targetScore: 1,
@@ -205,7 +206,7 @@ it('does not infer Decree stickers from legacy victory counts or acquired-then-s
   eventBus.emit('runEnd', {
     victory: true,
     score: 1000,
-    act: 8,
+    act: NORMAL_RUN_ACTS,
     round: 3,
     decreesOwned: 5,
   })

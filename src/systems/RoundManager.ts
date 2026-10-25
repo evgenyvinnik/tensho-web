@@ -10,6 +10,7 @@
  */
 
 import { RoundState, ActState, RoundType, BossMandate } from './types'
+import { NORMAL_RUN_ACTS, isShowdownAct } from '../config/runProgression'
 
 import {
   calculateCombinedModifiers,
@@ -34,12 +35,16 @@ export const BASE_SCORE_TARGETS: Record<number, number> = {
   1: 300,
   2: 800,
   3: 2_000,
-  4: 6_000,
-  5: 15_000,
-  6: 30_000,
-  7: 55_000,
-  8: 90_000,
+  4: 5_000,
+  5: 10_000,
+  6: 18_000,
+  7: 30_000,
+  8: 45_000,
 }
+
+// Endless is an opt-in challenge after a secured victory. Keep its previous
+// Act 9+ anchor independent from the campaign and early Endless targets.
+export const ENDLESS_BASE_SCORE_TARGET = 90_000
 
 /** Small, Large, and Boss target multipliers from GAME_MECHANICS.md. */
 export const ROUND_SCORE_MULTIPLIERS = [1, 1.5, 2] as const
@@ -97,7 +102,7 @@ const toBossMandate = ({
 export const BOSS_MANDATES: BossMandate[] = STANDARD_MANDATES.map(toBossMandate)
 
 /**
- * Showdown mandates (Act 8+)
+ * Showdown mandates (campaign finale and periodic Endless bosses)
  */
 export const SHOWDOWN_MANDATES: BossMandate[] =
   SHOWDOWN_MANDATE_DEFINITIONS.map(toBossMandate)
@@ -302,7 +307,7 @@ export class RoundManager {
     }
 
     // Endless mode scaling for acts beyond 8
-    const baseAct8 = BASE_SCORE_TARGETS[8]
+    const baseAct8 = ENDLESS_BASE_SCORE_TARGET
     const actDiff = actNumber - 8
     const scalingFactor = Math.pow(
       1.6 + 0.75 * actDiff,
@@ -321,8 +326,7 @@ export class RoundManager {
   private selectBossMandate(actNumber: number): BossMandate {
     let availableMandates: BossMandate[]
 
-    if (actNumber >= 8 && actNumber % 8 === 0) {
-      // Showdown mandate every 8 acts
+    if (isShowdownAct(actNumber)) {
       availableMandates = SHOWDOWN_MANDATES
     } else {
       availableMandates = BOSS_MANDATES.filter((m) => m.minAct <= actNumber)
@@ -608,7 +612,7 @@ export class RoundManager {
   /**
    * Check if the game has been won (reached a specific act)
    */
-  isGameWon(targetAct: number = 8): boolean {
+  isGameWon(targetAct: number = NORMAL_RUN_ACTS): boolean {
     if (!this.currentAct) {
       return false
     }

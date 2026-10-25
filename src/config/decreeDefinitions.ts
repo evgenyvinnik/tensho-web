@@ -1594,7 +1594,7 @@ export const MYTHIC_DECREES: DecreeDefinition[] = [
       createEffect('multiplicative_mult', 2.0),
     ],
     baseSellValue: 30,
-    unlockCondition: 'Complete Act 8',
+    unlockCondition: 'Complete Act 8 in optional Endless',
   },
 ]
 

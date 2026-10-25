@@ -4,6 +4,7 @@ import type { OwnedDecree } from '../../systems/types'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
 import type { YakuRepetitionHistory } from '../ui/YakuRepetitionDetails'
 import { SellableDecrees } from './SellableDecrees'
+import { DecreeBuildGuide } from './DecreeBuildGuide'
 
 interface Props {
   yakuHistory?: YakuRepetitionHistory
@@ -88,6 +89,7 @@ export function ShopBuildPanel({
           </div>
         )}
       </div>
+      <DecreeBuildGuide />
     </section>
   )
 }

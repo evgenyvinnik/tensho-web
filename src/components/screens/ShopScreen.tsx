@@ -51,6 +51,7 @@ import { backgroundAssets } from '../../utils/assets'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { ShopBuildPanel } from '../shop/ShopBuildPanel'
+import { RunJourney } from '../shop/RunJourney'
 import { FlowerCatalystDialog } from '../shop/FlowerCatalystDialog'
 import { SealWallDialog } from '../shop/SealWallDialog'
 import { SealUsedToast } from '../shop/SealUsedToast'
@@ -429,6 +430,12 @@ export function ShopScreen() {
       >
         <div className="screen-canvas pb-4">
           <ClassicSaveNotice errorsOnly />
+          <RunJourney
+            act={game.currentAct}
+            round={game.currentRound}
+            nextAct={game.nextActNumber}
+            hasWonRun={game.hasWonRun}
+          />
           <ProgressiveHintCard
             initiallyCollapsed
             hint={tutorial.currentHint}

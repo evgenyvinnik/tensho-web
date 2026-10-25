@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { Tile, TileSuit, FlowerType } from '../core/Tile'
 import { SealType } from '../core/TileModifier'
 import { useAchievementStore } from '../stores/achievementStore'
@@ -239,12 +240,12 @@ it('does not treat a tactical Wind pair as a complete-hand Yaku', () => {
 
 function secureVictory(game: GameOrchestrator) {
   const state = game.getState() as OrchestratorState
-  state.roundManager.startAct(8)
+  state.roundManager.startAct(NORMAL_RUN_ACTS)
   state.roundManager.skipRound()
   state.roundManager.skipRound()
   state.roundManager.getCurrentRound()!.bossMandate = undefined
   state.mandateEffectSystem.deactivateMandate()
-  state.currentAct = 8
+  state.currentAct = NORMAL_RUN_ACTS
   state.currentRound = 3
   state.score = 0
   state.targetScore = 1
@@ -281,7 +282,7 @@ it('carries proven Wind progress through victory, saved results and explicit End
     expect(game.continueEndless()).toBe(true)
     expect(game.continueEndless()).toBe(false)
     game.exitShop()
-    expect(game.getState().currentAct).toBe(9)
+    expect(game.getState().currentAct).toBe(NORMAL_RUN_ACTS + 1)
     playWind(game)
     expect(progress()).toBe(10)
     expect(earned()).toBe(true)

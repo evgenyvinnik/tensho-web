@@ -18,6 +18,7 @@ import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { illustrationAssets } from '../../utils/assets'
 import { ResultRoundDetails } from './ResultRoundDetails'
 import { scoreNumber } from '../../utils/scoreNumber'
+import { NORMAL_RUN_ACTS } from '../../config/runProgression'
 
 const AnimatedMain = animated('main')
 
@@ -46,7 +47,7 @@ export function GameOverScreen() {
   const resultSpring = useSpring({
     from: reduceMotion
       ? { opacity: 1, transform: 'translateY(0px) scale(1)' }
-      : { opacity: 1, transform: 'translateY(0px) scale(1)' },
+      : { opacity: 0, transform: 'translateY(12px) scale(0.97)' },
     to: { opacity: 1, transform: 'translateY(0px) scale(1)' },
     config: { tension: 210, friction: 22 },
   })
@@ -83,7 +84,9 @@ export function GameOverScreen() {
       : t('results.defeat')
 
   const subtitle = isFreshVictory
-    ? t('results.victorySubtitle')
+    ? t('results.victorySubtitle', {
+        act: currentAct.toLocaleString(i18n.resolvedLanguage),
+      })
     : isEndlessResult
       ? t('results.endlessSubtitle')
       : t('results.defeatSubtitle')
@@ -139,6 +142,14 @@ export function GameOverScreen() {
             {subtitle}
           </p>
 
+          {isFreshVictory && (
+            <div className="mb-5 rounded-xl border border-[var(--color-metallic-gold)]/40 bg-amber-400/5 p-3">
+              <p className="font-bold text-[var(--color-golden-yellow)]">
+                {t('runJourney.complete', { total: NORMAL_RUN_ACTS })}
+              </p>
+            </div>
+          )}
+
           <div className="mb-5 grid grid-cols-2 overflow-hidden rounded-2xl border border-[var(--color-metallic-gold)]/25 bg-[var(--color-forest-green)]/55 sm:mb-7">
             <div className="p-3 sm:p-4">
               <p className="text-[10px] uppercase tracking-widest text-[var(--color-metallic-gold)]">
@@ -178,10 +189,10 @@ export function GameOverScreen() {
               <Button
                 variant="primary"
                 size="lg"
-                onClick={handleContinueEndless}
+                onClick={handleReturnToMenu}
                 className="w-full min-w-0 whitespace-normal break-words sm:col-span-2"
               >
-                {t('results.continueEndless')}
+                {t('results.returnToMenu')}
               </Button>
             )}
             <Button
@@ -196,12 +207,21 @@ export function GameOverScreen() {
             <Button
               variant="secondary"
               size="md"
-              onClick={handleReturnToMenu}
+              onClick={
+                isFreshVictory ? handleContinueEndless : handleReturnToMenu
+              }
               className="w-full min-w-0 whitespace-normal break-words"
             >
-              {t('results.returnToMenu')}
+              {isFreshVictory
+                ? t('results.continueEndless')
+                : t('results.returnToMenu')}
             </Button>
           </div>
+          {isFreshVictory && (
+            <p className="mt-4 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
+              {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
+            </p>
+          )}
         </AnimatedMain>
       </div>
     </div>

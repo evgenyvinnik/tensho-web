@@ -133,7 +133,7 @@
     },
     "ascending": {
       "name": "Ascesa",
-      "description": "Raggiungi l’Atto 8."
+      "description": "Raggiungi l’Atto 8 nella modalità infinita facoltativa."
     },
     "victory": {
       "name": "Vittoria",
@@ -300,7 +300,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Raggiungi l’Atto 4.",
-    "flower_pot": "Raggiungi l’Atto 8.",
+    "flower_pot": "Raggiungi l’Atto 8 nella modalità infinita facoltativa.",
     "satellite": "Possiedi 400 monete d’oro in una sola partita.",
     "swift_andy": "Vinci una partita consumando al massimo 48 turni. I ricambi gratuiti non contano.",
     "lucky_sixes": "Segna 10.000 punti in una sola giocata.",
@@ -313,7 +313,7 @@
     "decree-heavenly-ordinance": "Segna un Yakuman.",
     "decree-clone-army": "Vinci una partita alla posta Oro.",
     "decree-yakuman-blessing": "Segna tre schemi Yakuman nella stessa partita.",
-    "decree-omega": "Completa l’atto 8."
+    "decree-omega": "Completa l’atto 8 nella modalità infinita facoltativa."
   },
   "scoreThresholds": {
     "supernova": "×2,5 Mult se questa giocata porta il punteggio del round ad almeno il doppio dell’obiettivo, prima dei bonus di Supernova e Perfezionista.",
@@ -1003,6 +1003,18 @@
     "smallShort": "Piccolo",
     "largeShort": "Grande",
     "bossShort": "Boss"
+  },
+  "runJourney": {
+    "position": "Atto {{act}} / {{total}} · Round {{round}} / 3 superato",
+    "next": "Prossimo: Atto {{act}} · Round {{round}}",
+    "complete": "Tutti i {{total}} Atti completati · Vittoria assicurata",
+    "optional": "La vittoria si ottiene sconfiggendo il Boss dell'Atto {{total}}. La modalità infinita e i Livelli superiori sono sfide facoltative, non requisiti per finire il gioco.",
+    "recommendation": "Per la tua prima vittoria, scegli Feltro Verde e Livello Bianco. I tavoli cambiano le regole, non solo l'aspetto; i Livelli aumentano la difficoltà. Il Livello Rosso mantiene gli obiettivi del Bianco, ma elimina l'Oro di ricompensa dei Round Piccoli.",
+    "guideTitle": "Combina Decreti che lavorano insieme",
+    "guideEarly": "Inizia con bonus affidabili di +Punti e +Molt. Scegli bonus che si attivano con le tessere e le figure che giochi davvero, non con una mano rara che speri di ottenere.",
+    "guideLate": "Prima degli ultimi Atti, cerca Molt che cresca nel corso delle giocate o dei round, poi un Decreto ×Molt per amplificarlo. Aumentare soltanto i Punti fissi potrebbe non bastare.",
+    "guideExample": "Esempio: 100 Punti × (4 Molt + 6 Molt) × 2 = 2.000 punti. +Molt si somma al moltiplicatore; ×Molt lo moltiplica. Combina entrambi.",
+    "guideMatch": "Rispetta le condizioni: un bonus per i tris richiede tris; un bonus per un seme richiede quel seme. Leggi le regole di ogni pergamena. Un effetto potente che non si attiva mai è uno slot sprecato. Conserva Oro per acquisti utili invece di spenderlo tutto per rinnovare il negozio."
   },
   "shop": {
     "catalyst": {
@@ -1993,7 +2005,7 @@
     "rentalPaid": "Affitto addebitato",
     "defeatIncome": "In caso di sconfitta si paga l’affitto, ma non si ricevono premi di round, interessi, entrate dei Decreti o delle tessere Oro conservate.",
     "endlessComplete": "Ascesa infinita conclusa",
-    "victorySubtitle": "Hai vinto il duello dell’atto 8. La tua vittoria è al sicuro.",
+    "victorySubtitle": "Hai vinto il duello dell’atto {{act}}. La tua vittoria è al sicuro.",
     "endlessSubtitle": "La tua vittoria resta, anche se questa ascesa è terminata.",
     "defeatSubtitle": "Prova una strategia diversa nella prossima partita.",
     "showdownCleared": "Duello superato",
@@ -2292,7 +2304,7 @@
     },
     "acts_rounds": {
       "p1": "La partita si divide in <1>Atti</1>, e ogni Atto contiene <3>3 round</3>:",
-      "p2": "Gli obiettivi crescono a ogni Atto. L'Atto 1 è facile, ma all'Atto 8 serviranno combo potenti per sopravvivere!"
+      "p2": "Gli obiettivi crescono a ogni Atto. L'Atto 1 è facile, ma all'Atto 6 serviranno combo potenti per sopravvivere!"
     },
     "decree_slots": {
       "note1": "Alcuni Decreti aiutano a contrastare mandati specifici. Pianifica la build di conseguenza!",

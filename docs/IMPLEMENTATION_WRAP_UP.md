@@ -1,5 +1,12 @@
 # Implementation wrap-up
 
+**October 25 local follow-up:** Approved shorter campaign: six Acts / 18 rounds,
+gentler late targets, localized Tea House journey and Decree-building guidance,
+and an explicit illustrated victory before optional Endless. This is a local
+implementation, not a deployment claim. See the
+[first-win report](balance/2026-10-25-first-win-campaign.md); earlier Act 8
+victory statements below describe their dated release checkpoints.
+
 **Updated:** October 22, 2026
 
 **Status:** Integrating the approved Codex handoff (`a7b9e71`, version commit

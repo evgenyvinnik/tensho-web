@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { eventBus } from '../game/EventBus'
 import {
   initializeMetaProgressionBridge,
@@ -17,7 +18,7 @@ const stakeAwards = [
 ]
 
 function win(wallId: string, tier: number) {
-  useStakeStore.getState().recordVictory(10000, 8, wallId, tier)
+  useStakeStore.getState().recordVictory(10000, NORMAL_RUN_ACTS, wallId, tier)
 }
 
 function earned(id: string) {
@@ -92,7 +93,7 @@ describe.each(stakeAwards)('$id', ({ id, tier }) => {
       eventBus.emit('runEnd', {
         victory: false,
         score: 10000,
-        act: 8,
+        act: NORMAL_RUN_ACTS,
         round: 3,
         decreesOwned: 0,
       })
@@ -105,7 +106,7 @@ describe.each(stakeAwards)('$id', ({ id, tier }) => {
       eventBus.emit('runEnd', {
         victory: true,
         score: 10000,
-        act: 8,
+        act: NORMAL_RUN_ACTS,
         round: 3,
         decreesOwned: 0,
       })
@@ -141,7 +142,7 @@ it('announces all three path awards once for a first recorded Gold win', () => {
     eventBus.emit('runEnd', {
       victory: true,
       score: 10000,
-      act: 8,
+      act: NORMAL_RUN_ACTS,
       round: 3,
       decreesOwned: 0,
     })

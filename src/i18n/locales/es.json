@@ -133,7 +133,7 @@
     },
     "ascending": {
       "name": "Ascenso",
-      "description": "Llega al Acto 8."
+      "description": "Llega al Acto 8 en el modo infinito opcional."
     },
     "victory": {
       "name": "Victoria",
@@ -300,7 +300,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Llega al Acto 4.",
-    "flower_pot": "Llega al Acto 8.",
+    "flower_pot": "Llega al Acto 8 en el modo infinito opcional.",
     "satellite": "Acumula 400 de oro en una sola partida.",
     "swift_andy": "Gana una partida gastando 48 turnos o menos. Los cambios de fichas gratuitos no cuentan.",
     "lucky_sixes": "Consigue 10.000 puntos en una sola jugada.",
@@ -313,7 +313,7 @@
     "decree-heavenly-ordinance": "Puntúa un Yakuman.",
     "decree-clone-army": "Gana una partida en la apuesta de Oro.",
     "decree-yakuman-blessing": "Puntúa tres patrones Yakuman en una misma partida.",
-    "decree-omega": "Completa el acto 8."
+    "decree-omega": "Completa el acto 8 en el modo infinito opcional."
   },
   "scoreThresholds": {
     "supernova": "×2,5 Mult si esta jugada eleva la puntuación de la ronda al menos al doble del objetivo, antes de las bonificaciones de Supernova y Perfeccionista.",
@@ -716,6 +716,18 @@
     "smallShort": "Pequeña",
     "largeShort": "Grande",
     "bossShort": "Jefe"
+  },
+  "runJourney": {
+    "position": "Acto {{act}} / {{total}} · Ronda {{round}} / 3 superada",
+    "next": "Siguiente: Acto {{act}} · Ronda {{round}}",
+    "complete": "Los {{total}} Actos completados · Victoria asegurada",
+    "optional": "La victoria se consigue al derrotar al Jefe del Acto {{total}}. El modo infinito y los Niveles superiores son desafíos opcionales, no requisitos para terminar el juego.",
+    "recommendation": "Para tu primera victoria, elige Fieltro Verde y Nivel Blanco. Las mesas cambian las reglas, no solo la apariencia; los Niveles aumentan la dificultad. El Nivel Rojo mantiene los objetivos del Blanco, pero elimina el Oro de recompensa de las Rondas Pequeñas.",
+    "guideTitle": "Combina Decretos que se complementen",
+    "guideEarly": "Empieza con bonificaciones fiables de +Puntos y +Mult. Elige bonificaciones que se activen con las fichas y patrones que realmente juegas, no con una mano rara que esperas conseguir.",
+    "guideLate": "Antes de los últimos Actos, busca Mult que crezca con las jugadas o rondas y después un Decreto de ×Mult para amplificarlo. Aumentar solo los Puntos fijos puede no ser suficiente.",
+    "guideExample": "Ejemplo: 100 Puntos × (4 Mult + 6 Mult) × 2 = 2.000 puntos. +Mult suma al multiplicador; ×Mult lo multiplica. Combina ambos.",
+    "guideMatch": "Cumple las condiciones: una bonificación de tripletes necesita tripletes; una de palo necesita ese palo. Lee las reglas de cada pergamino. Un efecto potente que nunca se activa desperdicia un espacio. Guarda Oro para compras útiles en vez de gastarlo todo en renovar la tienda."
   },
   "shop": {
     "catalyst": {
@@ -1706,7 +1718,7 @@
     "rentalPaid": "Alquiler cobrado",
     "defeatIncome": "En una derrota se cobra el alquiler, pero no se pagan recompensas de ronda, intereses, ingresos de Decretos ni de fichas de Oro conservadas.",
     "endlessComplete": "Ascenso infinito completado",
-    "victorySubtitle": "Has superado el duelo del acto 8. Tu victoria está asegurada.",
+    "victorySubtitle": "Has superado el duelo del acto {{act}}. Tu victoria está asegurada.",
     "endlessSubtitle": "Tu victoria se mantiene, aunque este ascenso haya terminado.",
     "defeatSubtitle": "Prueba otra estrategia en tu próxima partida.",
     "showdownCleared": "Duelo superado",
@@ -2005,7 +2017,7 @@
     },
     "acts_rounds": {
       "p1": "Tu partida se divide en <1>Actos</1>, y cada Acto contiene <3>3 rondas</3>:",
-      "p2": "Los objetivos suben con cada Acto. El Acto 1 es fácil, ¡pero en el Acto 8 necesitarás combos potentes para sobrevivir!"
+      "p2": "Los objetivos suben con cada Acto. El Acto 1 es fácil, ¡pero en el Acto 6 necesitarás combos potentes para sobrevivir!"
     },
     "decree_slots": {
       "note1": "Algunos Decretos ayudan a contrarrestar mandatos concretos. ¡Planifica tu construcción en consecuencia!",

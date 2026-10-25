@@ -13,6 +13,7 @@ import { TableStyleCard } from './TableStyleCard'
 import { useTableStyleStore } from '../../stores/tableStyleStore'
 import { TABLE_STYLE_DEFINITIONS } from '../../config/tableStyleDefinitions'
 import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
+import { NORMAL_RUN_ACTS } from '../../config/runProgression'
 import { getCurrentLanguage } from '../../i18n'
 import { useStakeStore } from '../../stores/stakeStore'
 import { useProgressionStore } from '../../stores/progressionStore'
@@ -305,6 +306,9 @@ export function TableStyleModal({
               </div>
             </div>
 
+            <p className="mb-3 text-xs leading-relaxed text-[var(--color-beige-white)]/80">
+              {t('runJourney.recommendation')}
+            </p>
             <div
               className="grid grid-cols-4 gap-1.5 sm:grid-cols-8"
               role="radiogroup"
@@ -384,6 +388,9 @@ export function TableStyleModal({
                 {t('stakes.rulesTitle')}
               </summary>
               <p>{t('stakes.cumulative')}</p>
+              <p className="mt-2">
+                {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
+              </p>
               <ul className="mt-2 list-disc space-y-2 pl-5">
                 {activeRules.map((rule, index) => (
                   <li key={index}>{rule}</li>

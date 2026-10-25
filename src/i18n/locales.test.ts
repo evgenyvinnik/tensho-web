@@ -323,6 +323,23 @@ const LOCALES: Record<string, Locale> = {
   'zh-Hant': zhHant,
 }
 
+it('localizes journey and synergy guidance without losing placeholders', () => {
+  for (const [language, locale] of Object.entries(LOCALES)) {
+    const copy = locale.runJourney as typeof en.runJourney
+    expect(Object.keys(copy).sort(), language).toEqual(
+      Object.keys(en.runJourney).sort()
+    )
+    for (const [key, english] of Object.entries(en.runJourney)) {
+      const value = copy[key as keyof typeof en.runJourney]
+      expect(value.trim(), `${language}: ${key}`).not.toBe('')
+      expect(value.match(/{{\w+}}/g)?.sort() ?? []).toEqual(
+        english.match(/{{\w+}}/g)?.sort() ?? []
+      )
+      if (language !== 'en') expect(value).not.toBe(english)
+    }
+  }
+})
+
 it('prices Decree sales, shop amounts and Decree income in one currency label', () => {
   // Price tags and the cash-out render amounts as "{n}G" in every language, so
   // a number-attached currency in these strings must be that same G.

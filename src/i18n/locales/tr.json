@@ -133,7 +133,7 @@
     },
     "ascending": {
       "name": "Yükseliş",
-      "description": "Perde 8’e ulaşın."
+      "description": "İsteğe bağlı Sonsuz Modda Perde 8’e ulaşın."
     },
     "victory": {
       "name": "Zafer",
@@ -300,7 +300,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Perde 4’e ulaşın.",
-    "flower_pot": "Perde 8’e ulaşın.",
+    "flower_pot": "İsteğe bağlı Sonsuz Modda Perde 8’e ulaşın.",
     "satellite": "Tek koşuda 400 altın bulundurun.",
     "swift_andy": "En fazla 48 hamle harcayarak bir koşu kazanın. Ücretsiz taş yenilemeleri sayılmaz.",
     "lucky_sixes": "Tek oynayışta 10.000 puan kazanın.",
@@ -313,7 +313,7 @@
     "decree-heavenly-ordinance": "Bir Yakuman ile puan kazan.",
     "decree-clone-army": "Altın bahiste bir koşuyu kazan.",
     "decree-yakuman-blessing": "Tek koşuda üç Yakuman örüntüsüyle puan kazan.",
-    "decree-omega": "8. Perdeyi tamamla."
+    "decree-omega": "İsteğe bağlı Sonsuz Modda 8. Perdeyi tamamla."
   },
   "scoreThresholds": {
     "supernova": "Bu hamle, Süpernova ve Mükemmeliyetçi bonusları olmadan tur puanını hedefin en az iki katına çıkarırsa ×2,5 Mult.",
@@ -1003,6 +1003,18 @@
     "smallShort": "Küçük",
     "largeShort": "Büyük",
     "bossShort": "Patron"
+  },
+  "runJourney": {
+    "position": "Perde {{act}} / {{total}} · Tur {{round}} / 3 tamamlandı",
+    "next": "Sıradaki: Perde {{act}} · Tur {{round}}",
+    "complete": "{{total}} Perdenin tümü tamamlandı · Zafer kesinleşti",
+    "optional": "Zafer, {{total}}. Perdenin Patronu yenilince kazanılır. Sonsuz Mod ve daha yüksek Seviyeler isteğe bağlı meydan okumalardır; oyunu bitirmek için gerekli değildir.",
+    "recommendation": "İlk zaferin için Yeşil Keçe ve Beyaz Seviye seç. Masalar yalnızca görünümü değil, kuralları da değiştirir; Seviyeler zorluğu artırır. Kırmızı Seviye, Beyazın hedeflerini korur ama Küçük Tur ödülü olan Altını kaldırır.",
+    "guideTitle": "Birbirini destekleyen Fermanlar seç",
+    "guideEarly": "Güvenilir +Puan ve +Çarpan bonuslarıyla başla. Bulmayı umduğun nadir bir el yerine, gerçekten oynadığın taşlar ve şekillerle etkinleşen bonusları seç.",
+    "guideLate": "Son Perdelerden önce, hamleler veya turlar boyunca büyüyen bir Çarpan, ardından bunu güçlendirecek bir ×Çarpan Fermanı ara. Yalnızca sabit Puan eklemek yeterli olmayabilir.",
+    "guideExample": "Örnek: 100 Puan × (4 Çarpan + 6 Çarpan) × 2 = 2.000 puan. +Çarpan, çarpana eklenir; ×Çarpan ise onu çarpar. İkisini birleştir.",
+    "guideMatch": "Koşullara uy: üçlü bonusu üçlüler, bir taş türünün bonusu o türü gerektirir. Her parşömenin kurallarını oku. Hiç etkinleşmeyen güçlü bir etki, boşa harcanan bir yuvadır. Tüm Altınını mağazayı yenilemeye harcamak yerine yararlı alışverişler için sakla."
   },
   "shop": {
     "catalyst": {
@@ -1993,7 +2005,7 @@
     "rentalPaid": "Kesilen kira",
     "defeatIncome": "Yenilgide kira ödenir; tur ödülü, faiz, Ferman geliri ve elde tutulan Altın taşların geliri verilmez.",
     "endlessComplete": "Sonsuz Yükseliş Tamamlandı",
-    "victorySubtitle": "8. Perdenin son düellosunu kazandın. Zaferin kaydedildi.",
+    "victorySubtitle": "{{act}}. Perdenin son düellosunu kazandın. Zaferin kaydedildi.",
     "endlessSubtitle": "Bu yükseliş sona erse de zaferin geçerliliğini koruyor.",
     "defeatSubtitle": "Bir sonraki oyunda farklı bir plan dene.",
     "showdownCleared": "Son düello kazanıldı",
@@ -2292,7 +2304,7 @@
     },
     "acts_rounds": {
       "p1": "Oyununuz <1>Perdelere</1> bölünür ve her Perde <3>3 tur</3> içerir:",
-      "p2": "Hedef puanlar her Perdede yükselir. 1. Perde kolaydır ama 8. Perdede hayatta kalmak için güçlü kombinasyonlar gerekir!"
+      "p2": "Hedef puanlar her Perdede yükselir. 1. Perde kolaydır ama 6. Perdede hayatta kalmak için güçlü kombinasyonlar gerekir!"
     },
     "decree_slots": {
       "note1": "Bazı Fermanlar belirli hükümlere karşı işe yarar. Yapınızı buna göre planlayın!",

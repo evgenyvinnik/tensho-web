@@ -147,7 +147,7 @@
     },
     "ascending": {
       "name": "Ascending",
-      "description": "Reach Act 8."
+      "description": "Reach Act 8 in optional Endless."
     },
     "victory": {
       "name": "Victory",
@@ -300,7 +300,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Reach Act 4.",
-    "flower_pot": "Reach Act 8.",
+    "flower_pot": "Reach Act 8 in optional Endless.",
     "satellite": "Hold 400 Gold in a single run.",
     "swift_andy": "Win a run spending 48 Turns or fewer. Free REDRAWs do not count.",
     "lucky_sixes": "Score 10,000 points in a single play.",
@@ -313,7 +313,7 @@
     "decree-heavenly-ordinance": "Score a Yakuman.",
     "decree-clone-army": "Win a run on Gold Stake.",
     "decree-yakuman-blessing": "Score three Yakuman patterns in one run.",
-    "decree-omega": "Complete Act 8."
+    "decree-omega": "Complete Act 8 in optional Endless."
   },
   "scoreThresholds": {
     "supernova": "×2.5 Mult if this play brings the round score to at least twice the target, before Supernova and Perfectionist bonuses.",
@@ -712,6 +712,18 @@
     "smallShort": "Small",
     "largeShort": "Large",
     "bossShort": "Boss"
+  },
+  "runJourney": {
+    "position": "Act {{act}} / {{total}} · Round {{round}} / 3 cleared",
+    "next": "Next: Act {{act}} · Round {{round}}",
+    "complete": "All {{total}} Acts complete · Victory secured",
+    "optional": "Victory is earned at the Act {{total}} Boss. Endless and higher Stakes are optional challenges, not requirements to finish the game.",
+    "recommendation": "For your first win, choose Green Felt and White Stake. Tables change rules, not just appearance; Stakes add difficulty. Red keeps White's targets but removes Small-round reward Gold.",
+    "guideTitle": "Build Decrees that work together",
+    "guideEarly": "Start with reliable +Points and +Mult. Choose bonuses that trigger on the tiles and patterns you actually play, not a rare hand you hope to find.",
+    "guideLate": "Before the final Acts, look for Mult that grows across plays or rounds, then a ×Mult Decree to amplify it. More flat Points alone may not keep up.",
+    "guideExample": "Example: 100 Points × (4 Mult + 6 Mult) × 2 = 2,000 points. +Mult adds to the multiplier; ×Mult multiplies it. Combine both.",
+    "guideMatch": "Match conditions: a triplet bonus needs triplets; a suit bonus needs that suit. Read each scroll's rules. A powerful effect that never triggers is a wasted slot. Keep Gold for useful purchases instead of spending it all on rerolls."
   },
   "shop": {
     "catalyst": {
@@ -1702,7 +1714,7 @@
     "rentalPaid": "Rental charged",
     "defeatIncome": "On defeat, Rental is charged; round rewards, interest, Decree income and held Gold tile income are not paid.",
     "endlessComplete": "Endless Ascent Complete",
-    "victorySubtitle": "The Act 8 Showdown is yours. Your run is secured.",
+    "victorySubtitle": "The Act {{act}} Showdown is yours. Your run is secured.",
     "endlessSubtitle": "Your victory stands—even though this ascent has ended.",
     "defeatSubtitle": "Try a different plan on your next run.",
     "showdownCleared": "Showdown cleared",
@@ -2001,7 +2013,7 @@
     },
     "acts_rounds": {
       "p1": "Your run is divided into <1>Acts</1>, and each Act contains <3>3 Rounds</3>:",
-      "p2": "Score targets increase with each Act. Act 1 starts easy, but by Act 8 you'll need powerful combos to survive!"
+      "p2": "Score targets increase with each Act. Act 1 starts easy, but by Act 6 you'll need powerful combos to survive!"
     },
     "decree_slots": {
       "note1": "Some Decrees can help counter specific mandates. Plan your build accordingly!",

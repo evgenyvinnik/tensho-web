@@ -23,11 +23,12 @@ async function prepareFinalPlay(
   page: Page,
   victory: boolean,
   lang = 'en',
-  rental = false
+  rental = false,
+  finalAct = 6
 ) {
   await openTable(page, `/${lang}/play`)
   await page.evaluate(
-    async ({ victory, rental }) => {
+    async ({ victory, rental, finalAct }) => {
       const path = '/src/game/GameOrchestrator.ts'
       const appPath = '/src/game/classicPersistenceApp.ts'
       const { gameOrchestrator: game } = await import(path)
@@ -37,10 +38,10 @@ async function prepareFinalPlay(
       const expectedRaw = persistence.getSnapshot().disk.raw
       game.startNewRun(7)
       const state = game.getState()
-      state.roundManager.startAct(8)
+      state.roundManager.startAct(finalAct)
       state.roundManager.skipRound()
       state.roundManager.skipRound()
-      state.currentAct = 8
+      state.currentAct = finalAct
       state.currentRound = 3
       const round = state.roundManager.getCurrentRound()
       // Isolate settlement from specific randomized boss restrictions.
@@ -70,7 +71,7 @@ async function prepareFinalPlay(
         .slice(0, 2)
         .forEach((tile: { id: string }) => game.selectTile(tile.id))
     },
-    { victory, rental }
+    { victory, rental, finalAct }
   )
   await clearReveals(page)
   await page.locator('[data-game-action="play"]').click()
@@ -131,12 +132,24 @@ async function stageFinalEndlessPlay(page: Page, isMobile: boolean) {
   await page.locator('[data-game-action="play"]').click()
 }
 
-test('Act 8 win settles once, unlocks the next Stake, and survives an Endless defeat', async ({
+test('Act 6 win settles once, unlocks the next Stake, and survives an Endless defeat', async ({
   page,
   isMobile,
 }) => {
   await prepareFinalPlay(page, true)
   await expect(page.getByRole('heading', { name: 'Victory!' })).toBeVisible()
+  await expect(
+    page.getByText('All 6 Acts complete · Victory secured')
+  ).toBeVisible()
+  const art = page.locator('[data-result-art]')
+  await expect(art).toHaveAttribute('src', /results\/victory\.webp$/)
+  await expect(art).toBeVisible()
+  await expect
+    .poll(
+      () => art.evaluate((node) => (node as HTMLImageElement).naturalWidth),
+      { timeout: 30000 }
+    )
+    .toBeGreaterThan(0)
   const secured = await snapshot(page)
   expect(secured).toMatchObject({
     phase: 'gameOver',
@@ -170,7 +183,7 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
     .click()
   await expect(page).toHaveURL(/\/play$/)
   expect(await snapshot(page)).toMatchObject({
-    act: 9,
+    act: 7,
     round: 1,
     active: true,
     won: true,
@@ -210,7 +223,30 @@ test('Act 8 win settles once, unlocks the next Stake, and survives an Endless de
   ).toHaveCount(0)
 })
 
-test('Act 8 defeat offers a fresh run, not Endless or a Stake victory', async ({
+test('an older saved Act 8 victory can still enter Endless without paying twice', async ({
+  page,
+}) => {
+  await prepareFinalPlay(page, true, 'en', false, 8)
+  await expect(page.locator('[data-classic-save-status="saved"]')).toBeVisible()
+  const secured = await snapshot(page)
+  await page.reload()
+  await expect(page.getByRole('heading', { name: 'Victory!' })).toBeVisible()
+  await page
+    .getByRole('button', { name: 'Continue into Endless', exact: true })
+    .click()
+  await expect(page).toHaveURL(/\/shop$/)
+  expect(await snapshot(page)).toMatchObject({
+    gold: secured.gold,
+    wins: 1,
+    enteredEndless: true,
+    act: 8,
+  })
+  await expect(page.locator('[data-run-journey]')).toContainText(
+    'Next: Act 9 · Round 1'
+  )
+})
+
+test('Act 6 defeat offers a fresh run, not Endless or a Stake victory', async ({
   page,
 }) => {
   await prepareFinalPlay(page, false)
@@ -328,7 +364,7 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
     .click()
   await expect(page).toHaveURL(/\/shop$/)
   const before = await snapshot(page)
-  expect(before.act).toBe(8)
+  expect(before.act).toBe(6)
   const charterOffer = await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
     const shopPath = '/src/systems/TeaHouseSystem.ts'
@@ -354,7 +390,7 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
     .click()
   await expect(page).toHaveURL(/\/play$/)
   expect(await snapshot(page)).toMatchObject({
-    act: 8,
+    act: 6,
     round: 1,
     won: true,
     active: true,
@@ -368,7 +404,7 @@ test('an Ancient Script purchased after victory rewinds the Act without offering
       .locator('[data-run-header-round]')
       .getByText('Endless', { exact: true })
   ).toBeVisible()
-  await expect(page.getByLabel('Act 8 of 8', { exact: true })).toHaveCount(0)
+  await expect(page.getByLabel('Act 6 of 6', { exact: true })).toHaveCount(0)
   await stageFinalEndlessPlay(page, isMobile)
   await expect(
     page.getByRole('heading', { name: 'Endless Ascent Complete', exact: true })
@@ -398,7 +434,7 @@ test('localized victory details and actions fit a short phone and a compact desk
   ).toBeVisible()
   await expect(
     page.getByText(
-      'Has superado el duelo del acto 8. Tu victoria está asegurada.',
+      'Has superado el duelo del acto 6. Tu victoria está asegurada.',
       { exact: true }
     )
   ).toBeVisible()

@@ -133,7 +133,7 @@
     },
     "ascending": {
       "name": "Ascension",
-      "description": "Atteignez l’Acte 8."
+      "description": "Atteignez l’Acte 8 dans le mode infini facultatif."
     },
     "victory": {
       "name": "Victoire",
@@ -300,7 +300,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Atteignez l’Acte 4.",
-    "flower_pot": "Atteignez l’Acte 8.",
+    "flower_pot": "Atteignez l’Acte 8 dans le mode infini facultatif.",
     "satellite": "Possédez 400 pièces d’or dans une même partie.",
     "swift_andy": "Gagnez une partie en dépensant au plus 48 tours. Les repioches gratuites ne comptent pas.",
     "lucky_sixes": "Marquez 10 000 points en un seul coup.",
@@ -313,7 +313,7 @@
     "decree-heavenly-ordinance": "Marquez un Yakuman.",
     "decree-clone-army": "Remportez une partie à la mise Or.",
     "decree-yakuman-blessing": "Marquez trois figures Yakuman au cours d’une même partie.",
-    "decree-omega": "Terminez l’acte 8."
+    "decree-omega": "Terminez l’acte 8 dans le mode infini facultatif."
   },
   "scoreThresholds": {
     "supernova": "×2,5 Mult si ce coup porte le score de la manche à au moins deux fois l’objectif, avant les bonus de Supernova et Perfectionniste.",
@@ -716,6 +716,18 @@
     "smallShort": "Petite",
     "largeShort": "Grande",
     "bossShort": "Boss"
+  },
+  "runJourney": {
+    "position": "Acte {{act}} / {{total}} · Manche {{round}} / 3 terminée",
+    "next": "À suivre : Acte {{act}} · Manche {{round}}",
+    "complete": "Les {{total}} Actes terminés · Victoire acquise",
+    "optional": "La victoire s'obtient en battant le Boss de l'Acte {{total}}. Le mode infini et les Niveaux supérieurs sont des défis facultatifs, pas des conditions pour terminer le jeu.",
+    "recommendation": "Pour votre première victoire, choisissez Feutre Vert et Niveau Blanc. Les tables changent les règles, pas seulement l'apparence ; les Niveaux augmentent la difficulté. Le Niveau Rouge conserve les objectifs du Blanc, mais supprime l'Or de récompense des Petites Manches.",
+    "guideTitle": "Associez des Décrets complémentaires",
+    "guideEarly": "Commencez par des bonus fiables de +Points et de +Mult. Choisissez des bonus qui s'activent avec les tuiles et les figures que vous jouez réellement, pas avec une main rare que vous espérez obtenir.",
+    "guideLate": "Avant les derniers Actes, cherchez du Mult qui augmente au fil des coups ou des manches, puis un Décret ×Mult pour l'amplifier. Accumuler uniquement des Points fixes risque de ne pas suffire.",
+    "guideExample": "Exemple : 100 Points × (4 Mult + 6 Mult) × 2 = 2 000 points. +Mult s'ajoute au multiplicateur ; ×Mult le multiplie. Combinez les deux.",
+    "guideMatch": "Respectez les conditions : un bonus de brelan nécessite des brelans ; un bonus de couleur nécessite cette couleur. Lisez les règles de chaque parchemin. Un effet puissant qui ne s'active jamais gaspille un emplacement. Gardez de l'Or pour des achats utiles au lieu de tout dépenser en renouvellements de boutique."
   },
   "shop": {
     "catalyst": {
@@ -1706,7 +1718,7 @@
     "rentalPaid": "Location prélevée",
     "defeatIncome": "En cas de défaite, la location est prélevée, mais aucune récompense de manche, aucun intérêt ni revenu des Décrets ou des tuiles Or conservées n’est versé.",
     "endlessComplete": "Ascension infinie terminée",
-    "victorySubtitle": "Vous avez remporté le duel de l’acte 8. Votre victoire est acquise.",
+    "victorySubtitle": "Vous avez remporté le duel de l’acte {{act}}. Votre victoire est acquise.",
     "endlessSubtitle": "Votre victoire reste acquise, même si cette ascension est terminée.",
     "defeatSubtitle": "Essayez une autre stratégie lors de votre prochaine partie.",
     "showdownCleared": "Duel remporté",
@@ -2005,7 +2017,7 @@
     },
     "acts_rounds": {
       "p1": "Votre partie se divise en <1>Actes</1>, et chaque Acte contient <3>3 manches</3> :",
-      "p2": "Les scores cibles montent à chaque Acte. L'Acte 1 est facile, mais à l'Acte 8 il vous faudra de puissantes combinaisons pour survivre !"
+      "p2": "Les scores cibles montent à chaque Acte. L'Acte 1 est facile, mais à l'Acte 6 il vous faudra de puissantes combinaisons pour survivre !"
     },
     "decree_slots": {
       "note1": "Certains Décrets aident à contrer des mandats précis. Planifiez votre build en conséquence !",

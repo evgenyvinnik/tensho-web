@@ -36,7 +36,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.actRound.title', 'Acts & Rounds'),
       content: t(
         'gameTutorial.actRound.content',
-        "You're in Act 1. Each Act has 3 rounds: Small (1×), Large (1.5×), and Boss (2×). Complete all 8 Acts to win the run!"
+        "You're in Act 1. Each Act has 3 rounds: Small (1×), Large (1.5×), and Boss (2×). Defeat the Act 6 Showdown to win the run!"
       ),
       highlightPadding: 10,
     },
@@ -295,7 +295,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
       title: t('gameTutorial.complete.title', "You're Ready!"),
       content: t(
         'gameTutorial.complete.content',
-        'Build winning hands, stack Yaku for multipliers, collect Decrees from the Tea House, and reach Act 8 to complete your run. Good luck!'
+        'Build winning hands, stack Yaku for multipliers, collect Decrees from the Tea House, and defeat the Act 6 Showdown to complete your run. Good luck!'
       ),
     },
   ]

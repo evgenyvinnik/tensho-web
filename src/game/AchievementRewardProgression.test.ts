@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ALL_DECREES } from '../config/decreeDefinitions'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { isDecreeAvailable } from '../config/decreeUnlocks'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { getUnlockById } from '../config/unlockDefinitions'
@@ -44,11 +45,11 @@ const earned = (id: string) =>
 function start(stake = 1) {
   eventBus.emit('runStart', { seed: 7, stake, wallVariant: 'green_felt' })
 }
-function end(victory = true) {
+function end(victory = true, act = NORMAL_RUN_ACTS) {
   eventBus.emit('runEnd', {
     victory,
     score: 100,
-    act: 8,
+    act,
     round: 3,
     decreesOwned: 0,
   })
@@ -65,6 +66,186 @@ beforeEach(() => {
 afterEach(() => {
   shutdownMetaProgressionBridge()
   vi.restoreAllMocks()
+})
+
+it('settles normal victory rewards at six Acts without granting optional Endless milestones', () => {
+  expect(NORMAL_RUN_ACTS).toBe(6)
+  initializeMetaProgressionBridge()
+  start(8) // Gold Stake is still tier 8, independent of campaign length.
+  eventBus.emit('roundStart', {
+    actNumber: NORMAL_RUN_ACTS,
+    roundNumber: 3,
+    roundType: 'Boss',
+    target: 100,
+  })
+  eventBus.emit('actComplete', { actNumber: NORMAL_RUN_ACTS, totalScore: 100 })
+  expect(earned('victory')).toBe(false)
+  expect(unlocked('decree-blueprint')).toBe(false)
+  for (let i = 0; i < 48; i++)
+    eventBus.emit('paidTurnSpent', { action: 'play' })
+  eventBus.emit('runEnd', {
+    victory: true,
+    score: 100,
+    act: NORMAL_RUN_ACTS,
+    round: 3,
+    decreesOwned: 5,
+    decreeIds: ['stage_master'],
+  })
+  for (const id of [
+    'victory',
+    'red_path',
+    'black_path',
+    'golden_path',
+    'speed_run',
+    'purist',
+  ])
+    expect(earned(id), id).toBe(true)
+  for (const id of [
+    'decree-blueprint',
+    'decree-brainstorm',
+    'decree-clone-army',
+    'swift_andy',
+  ])
+    expect(unlocked(id), id).toBe(true)
+  expect(useTableStyleStore.getState().isStyleUnlocked('imperial_gold')).toBe(
+    true
+  )
+  expect(
+    useStakeStore.getState().getWallProgress('green_felt').victories
+  ).toEqual([
+    expect.objectContaining({ actsCompleted: NORMAL_RUN_ACTS, stakeTier: 8 }),
+  ])
+  expect(earned('ascending')).toBe(false)
+  expect(unlocked('flower_pot')).toBe(false)
+  expect(unlocked('decree-omega')).toBe(false)
+
+  for (const actNumber of [7, 8]) {
+    eventBus.emit('roundStart', {
+      actNumber,
+      roundNumber: 1,
+      roundType: 'Small',
+      target: 100,
+    })
+    expect(earned('ascending')).toBe(actNumber === 8)
+    expect(unlocked('flower_pot')).toBe(actNumber === 8)
+    expect(unlocked('decree-omega')).toBe(false)
+  }
+  eventBus.emit('actComplete', { actNumber: 8, totalScore: 100 })
+  expect(unlocked('decree-omega')).toBe(true)
+  expect(isDecreeAvailable('decree-omega', unlocked)).toBe(true)
+  expect(useProgressionStore.getState().stats.totalRunsWon).toBe(1)
+  expect(useAchievementStore.getState().stats.runsWon).toBe(1)
+  expect(getUnlockById('unlock_flower_pot')!.description).toContain(
+    'optional Endless'
+  )
+  expect(getUnlockById('unlock_omega')!.description).toContain(
+    'optional Endless'
+  )
+})
+
+it('does not award victory rewards merely for reaching or losing the final normal Act', () => {
+  initializeMetaProgressionBridge()
+  start()
+  eventBus.emit('roundStart', {
+    actNumber: NORMAL_RUN_ACTS,
+    roundNumber: 3,
+    roundType: 'Boss',
+    target: 100,
+  })
+  eventBus.emit('paidTurnSpent', { action: 'play' })
+  end(false)
+  for (const id of ['victory', 'speed_run', 'purist', 'ascending'])
+    expect(earned(id), id).toBe(false)
+  for (const id of [
+    'decree-blueprint',
+    'swift_andy',
+    'flower_pot',
+    'decree-omega',
+  ])
+    expect(unlocked(id), id).toBe(false)
+  expect(useProgressionStore.getState().stats.totalRunsWon).toBe(0)
+})
+
+it('preserves historical Act-8 wins and earned rewards through profile hydration without replay', async () => {
+  // The shared test setup stubs storage to always return null. Exercise real
+  // persisted JSON here, including the stores' own serializers and mergers.
+  const storage = new Map<string, string>()
+  vi.spyOn(localStorage, 'getItem').mockImplementation(
+    (key) => storage.get(key) ?? null
+  )
+  vi.spyOn(localStorage, 'setItem').mockImplementation((key, value) => {
+    storage.set(key, value)
+  })
+  initializeMetaProgressionBridge()
+  start(4)
+  eventBus.emit('roundStart', {
+    actNumber: 8,
+    roundNumber: 3,
+    roundType: 'Boss',
+    target: 100,
+  })
+  eventBus.emit('actComplete', { actNumber: 8, totalScore: 100 })
+  eventBus.emit('paidTurnSpent', { action: 'play' })
+  end(true, 8) // An already-earned win from the eight-Act campaign.
+  for (const id of [
+    'victory',
+    'ascending',
+    'speed_run',
+    'purist',
+    'red_path',
+    'black_path',
+  ])
+    useAchievementStore.getState().markAsSeen(id)
+  const achievements = useAchievementStore.getState().achievements
+  const unlocks = useProgressionStore.getState().unlocks
+  const victories = useStakeStore
+    .getState()
+    .getWallProgress('green_felt').victories
+  const stores = [
+    useProgressionStore,
+    useAchievementStore,
+    useArchiveStore,
+    useStakeStore,
+    useTableStyleStore,
+  ]
+  const saved = stores.map((store) => {
+    const key = store.persist.getOptions().name
+    if (!key) throw new Error('Expected a named persistence store')
+    const value = localStorage.getItem(key)
+    if (value === null) throw new Error(`Missing persisted profile: ${key}`)
+    return { key, value }
+  })
+  shutdownMetaProgressionBridge()
+  useProgressionStore.getState().resetProgression()
+  useAchievementStore.getState().resetAchievements()
+  useArchiveStore.getState().resetArchive()
+  useStakeStore.getState().resetAllProgress()
+  useTableStyleStore.getState().resetAllProgress()
+  for (const { key, value } of saved) localStorage.setItem(key, value)
+  await Promise.all(stores.map((store) => store.persist.rehydrate()))
+  const notified = vi.fn()
+  const off = eventBus.on('achievementUnlocked', notified)
+  try {
+    initializeMetaProgressionBridge()
+    synchronizePersistedMetaState()
+    expect(useAchievementStore.getState().achievements).toEqual(achievements)
+    expect(useProgressionStore.getState().unlocks).toEqual(unlocks)
+    expect(
+      useStakeStore.getState().getWallProgress('green_felt').victories
+    ).toEqual(victories)
+    expect(victories[0].actsCompleted).toBe(8)
+    expect(useProgressionStore.getState().stats.totalRunsWon).toBe(1)
+    for (const id of [
+      'decree-blueprint',
+      'flower_pot',
+      'decree-omega',
+      'swift_andy',
+    ])
+      expect(isDecreeAvailable(id, unlocked), id).toBe(true)
+    expect(notified).not.toHaveBeenCalled()
+  } finally {
+    off()
+  }
 })
 
 it.each(rewards)(
@@ -406,12 +587,12 @@ it('does not re-award secured rewards during Endless events or reconnect', () =>
   const off = eventBus.on('achievementUnlocked', notified)
   try {
     eventBus.emit('roundStart', {
-      actNumber: 9,
+      actNumber: NORMAL_RUN_ACTS + 1,
       roundNumber: 1,
       roundType: 'Small',
       target: 100,
     })
-    // Act 9 may genuinely earn progression accolades; only secured awards are stable.
+    // Endless can earn progression accolades; only secured awards are stable.
     notified.mockClear()
     eventBus.emit('gameOver', {
       reason: 'defeat',

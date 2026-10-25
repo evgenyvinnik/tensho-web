@@ -750,7 +750,7 @@ export function initializeMetaProgressionBridge(): () => void {
           .incrementWins(useArchiveStore.getState().currentRunItems)
       }
       checkAchievements()
-      // Securing Act 8 settles the win, but the same run may continue in Endless.
+      // Securing the campaign settles the win; the run may continue in Endless.
       // Keep its proven run-local history without replaying runStart or rewards.
       if (!victory) runMetaContext.current = null
     }

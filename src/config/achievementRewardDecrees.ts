@@ -29,7 +29,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
       },
     ],
     baseSellValue: 4,
-    unlockCondition: 'Reach Act 8',
+    unlockCondition: 'Reach Act 8 in optional Endless',
   },
   {
     id: 'satellite',

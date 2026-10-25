@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
 import { ORACLES_OMEN } from '../config/omenDefinitions'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { useAchievementStore } from '../stores/achievementStore'
 import { useArchiveStore } from '../stores/archiveStore'
 import { useOmenStore } from '../stores/omenStore'
@@ -37,7 +38,7 @@ function finish(game: GameOrchestrator, victory = true) {
   if (game.getState().phase === 'shop') game.exitShop()
   const state = game.getState() as OrchestratorState
   const hadWon = state.hasWonRun
-  state.roundManager.startAct(8)
+  state.roundManager.startAct(NORMAL_RUN_ACTS)
   state.roundManager.skipRound()
   state.roundManager.skipRound()
   state.roundManager.getCurrentRound()!.bossMandate = undefined
@@ -46,7 +47,7 @@ function finish(game: GameOrchestrator, victory = true) {
   state.seasonSystem.clear()
   state.mandateEffectSystem.deactivateMandate()
   Object.assign(state, {
-    currentAct: 8,
+    currentAct: NORMAL_RUN_ACTS,
     currentRound: 3,
     score: 0,
     targetScore: victory ? 1 : 1e12,

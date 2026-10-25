@@ -17,7 +17,7 @@ for future offers; it must not silently insert a free item into an active run.
 | Reward | Existing ID | Milestone |
 | --- | --- | --- |
 | Stage Master | `stage_master` | Reach Act 4 |
-| Flower Pot | `flower_pot` | Reach Act 8 |
+| Flower Pot | `flower_pot` | Reach Act 8 in optional Endless |
 | Satellite | `satellite` | Hold at least 400 Gold in one run |
 | Swift Andy | `swift_andy` | Win using at most 48 paid Turns |
 | Lucky Sixes | `lucky_sixes` | Score 10,000 in one hand |
@@ -31,6 +31,14 @@ for future offers; it must not silently insert a free item into an active run.
 The original reward records specify names and milestones, not complete playable
 rules. The following rules were implemented under the user's previous authority
 to resolve underspecified mechanics. Each reward is its own catalog identity.
+
+The October 25 six-Act campaign approval moves normal victory settlement to the
+Act 6 Boss. Victory-based rewards and table/Stake achievements use that secured
+win, with no Act-8 prerequisite. Flower Pot remains an optional Endless reach
+milestone; the separate Omega library reward remains complete Act 8 in Endless.
+Existing earned eight-Act wins and reward records remain valid. Speed Run stays
+at 48 paid Turns or fewer, Charter Collector stays five purchases by the end of
+Act 5, and Challenge achievements remain deferred.
 
 ## Implemented rules
 

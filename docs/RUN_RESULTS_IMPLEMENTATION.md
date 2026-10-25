@@ -1,5 +1,12 @@
 # Run results and animation continuity
 
+**October 25 update:** Normal victory is now the Act 6 Showdown (18 rounds).
+The result screen retains its victory illustration, makes Return to Menu the
+primary first action, and treats Endless as an optional secondary action.
+The older Act 8/9 cases below remain useful legacy evidence; current coverage
+also exercises Act 6/7, old Act 8 saves, and once-only settlement. See the
+[first-win campaign report](balance/2026-10-25-first-win-campaign.md).
+
 **Updated:** September 10, 2026. This closes specific result-flow and presentation
 gaps, not the broader progression or effect-library audit.
 

@@ -6,6 +6,8 @@
 
 import { useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
+import { NORMAL_RUN_ACTS } from '../../../config/runProgression'
+import { BASE_SCORE_TARGETS } from '../../../systems/RoundManager'
 import { CodexCategory, TileGroup, InfoBox, DataTable } from './CodexComponents'
 import {
   FloraCodex,
@@ -16,7 +18,7 @@ import {
  * Build codex categories and content
  */
 export function useCodexContent(): CodexCategory[] {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const categories: CodexCategory[] = [
     {
@@ -131,7 +133,7 @@ export function useCodexContent(): CodexCategory[] {
               <p>
                 {t(
                   'codex.progression.runs.p1',
-                  'Each game is a "run" - a single session where you progress through increasingly difficult Acts. Your goal is to complete all 8 Acts to win.'
+                  'Each game is a "run" - a single session where you progress through increasingly difficult Acts. Defeat the Act 6 Showdown to win.'
                 )}
               </p>
               <p>
@@ -163,7 +165,7 @@ export function useCodexContent(): CodexCategory[] {
               <p>
                 {t(
                   'codex.progression.acts.p1',
-                  'The game is divided into 8 Acts, each with escalating score requirements:'
+                  'A normal run has 6 Acts, each with escalating score requirements:'
                 )}
               </p>
               <DataTable
@@ -172,37 +174,23 @@ export function useCodexContent(): CodexCategory[] {
                   t('codex.baseTarget', 'Base Target'),
                   t('codex.notes', 'Notes'),
                 ]}
-                rows={[
-                  [
-                    '1',
-                    '300',
-                    t('codex.progression.acts.intro', 'Introduction'),
-                  ],
-                  ['2', '800', ''],
-                  ['3', '2,000', ''],
-                  [
-                    '4',
-                    '5,000',
-                    t('codex.progression.acts.midGame', 'Mid-game'),
-                  ],
-                  ['5', '11,000', ''],
-                  ['6', '20,000', ''],
-                  [
-                    '7',
-                    '35,000',
-                    t('codex.progression.acts.lateGame', 'Late-game'),
-                  ],
-                  [
-                    '8',
-                    '50,000',
-                    t('codex.progression.acts.showdown', 'Showdown'),
-                  ],
-                ]}
+                rows={Array.from({ length: NORMAL_RUN_ACTS }, (_, index) => {
+                  const act = index + 1
+                  return [
+                    act.toLocaleString(i18n.resolvedLanguage),
+                    BASE_SCORE_TARGETS[act].toLocaleString(
+                      i18n.resolvedLanguage
+                    ),
+                    act === NORMAL_RUN_ACTS
+                      ? t('codex.progression.acts.showdown', 'Showdown')
+                      : '',
+                  ]
+                })}
               />
               <p>
                 {t(
                   'codex.progression.acts.endless',
-                  'After completing Act 8, you enter Endless Mode with rapidly scaling targets. How far can you go?'
+                  'After defeating the Act 6 Showdown, your victory is secured. You may choose to continue into Endless with rising targets.'
                 )}
               </p>
             </div>

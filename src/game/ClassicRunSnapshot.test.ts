@@ -303,16 +303,16 @@ it('restores meta context without replaying run starts, rewards or persistent st
   expect(starts).not.toHaveBeenCalled()
 })
 
-it('retains a secured victory and enters Endless without paying the win twice', () => {
+it.each([6, 8])('retains a secured Act %i victory and enters Endless without paying the win twice', (act) => {
   const game = start()
   const state = game.getState() as OrchestratorState
-  state.roundManager.startAct(8)
+  state.roundManager.startAct(act)
   state.roundManager.skipRound()
   state.roundManager.skipRound()
   state.roundManager.getCurrentRound()!.bossMandate = undefined
   state.mandateEffectSystem.deactivateMandate()
   Object.assign(state, {
-    currentAct: 8,
+    currentAct: act,
     currentRound: 3,
     score: 0,
     targetScore: 1,

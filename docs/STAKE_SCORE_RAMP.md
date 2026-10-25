@@ -1,5 +1,12 @@
 # Stake score ramp
 
+**October 25 update:** The multiplier ramp below is retained, but the campaign
+now ends after Act 6 and its late targets are gentler. Acts 7+ are optional
+Endless. The numerical table and measurements below describe the historical
+October 12 candidate; use [the current first-win report](balance/2026-10-25-first-win-campaign.md)
+and [Game Mechanics](GAME_MECHANICS.md#9-act-score-requirements-ante-scaling)
+for today's targets and victory milestone.
+
 Measured October 12, 2026 on the release v1.0.261011-15 source. This is a
 **post-release balance change** and needs the owner's approval before it ships.
 

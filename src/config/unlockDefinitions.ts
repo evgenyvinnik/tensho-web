@@ -141,9 +141,15 @@ export const DECREE_UNLOCKS: UnlockDefinition[] = [
     id: 'unlock_flower_pot',
     name: 'Flower Pot',
     japaneseName: '花瓶',
-    description: 'Unlocked by reaching Act 8',
+    description: 'Unlocked by reaching Act 8 in optional Endless',
     category: 'decree',
-    conditions: [{ type: 'reach_act', target: 8, description: 'Reach Act 8' }],
+    conditions: [
+      {
+        type: 'reach_act',
+        target: 8,
+        description: 'Reach Act 8 in optional Endless',
+      },
+    ],
     unlocksId: 'flower_pot',
     icon: 'flower',
   },
@@ -793,10 +799,14 @@ export const CHARTER_UNLOCKS: UnlockDefinition[] = [
     id: 'unlock_stone_script',
     name: 'Stone Script',
     japaneseName: '石文',
-    description: 'Reach Act 12',
+    description: 'Reach Act 12 in optional Endless',
     category: 'charter',
     conditions: [
-      { type: 'reach_act', target: 12, description: 'Reach Act 12' },
+      {
+        type: 'reach_act',
+        target: 12,
+        description: 'Reach Act 12 in optional Endless',
+      },
       {
         type: 'charter_purchased',
         value: 'ancient_script',
@@ -1011,10 +1021,14 @@ export const AUTHORED_DECREE_UNLOCKS: UnlockDefinition[] = [
     id: 'unlock_omega',
     name: 'Omega',
     japaneseName: '終極',
-    description: 'Complete Act 8',
+    description: 'Complete Act 8 in optional Endless',
     category: 'decree',
     conditions: [
-      { type: 'complete_act', target: 8, description: 'Complete Act 8' },
+      {
+        type: 'complete_act',
+        target: 8,
+        description: 'Complete Act 8 in optional Endless',
+      },
     ],
     unlocksId: 'decree-omega',
   },

@@ -60,6 +60,7 @@ import {
   createActionProcessor,
 } from './ActionProcessor'
 import { RoundManager } from '../systems/RoundManager'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import {
   applyTableStartingEnhancements,
   flowerWeightedWall,
@@ -210,7 +211,7 @@ export interface OrchestratorState {
   currentRound: number
   /** Score accumulated across every round in this run. */
   runScore: number
-  /** True after the Act 8 Showdown has been defeated. */
+  /** True after securing the campaign victory, including legacy longer runs. */
   hasWonRun: boolean
   /** Remains true after entering Endless, even when a Charter rewinds Acts. */
   hasEnteredEndless: boolean
@@ -4091,8 +4092,8 @@ export class GameOrchestrator {
   private handleRoundWin(effects: Effect[]): void {
     // Capture the completed round before RoundManager advances its cursor.
     const completedRound = this.state.roundManager.getCurrentRound()
+    if (!completedRound || completedRound.isCompleted) return
     this.state.roundManager.submitScore(this.state.score)
-    if (!completedRound) return
 
     const roundState = completedRound
     let goldReward = 0
@@ -4245,12 +4246,12 @@ export class GameOrchestrator {
       })
     }
 
-    // Act 8 is the canonical victory milestone. Pause on a result screen and
-    // let the player choose whether to bank the win or continue into Endless.
+    // Pause at the campaign finale before optional Endless. Older in-progress
+    // Act 7/8 saves finish their current Boss before securing the same win.
     if (
       roundState.roundType === 'Boss' &&
-      this.state.currentAct === 8 &&
-      this.state.roundManager.isGameWon(8) &&
+      this.state.currentAct >= NORMAL_RUN_ACTS &&
+      this.state.roundManager.isGameWon() &&
       !this.state.hasWonRun
     ) {
       this.state.hasWonRun = true
@@ -4508,13 +4509,14 @@ export class GameOrchestrator {
     }
   }
 
-  /** Resume a completed Act 8 run in Endless Mode through its reward shop. */
+  /** Resume a campaign victory (including older wins) through its reward shop. */
   continueEndless(): boolean {
     if (
       this.state.phase !== 'gameOver' ||
       !this.state.hasWonRun ||
       this.state.hasEnteredEndless ||
-      this.state.currentAct !== 8 ||
+      this.state.currentAct < NORMAL_RUN_ACTS ||
+      !this.state.roundManager.isGameWon() ||
       this.state.lastCompletedRoundType !== 'Boss'
     ) {
       return false

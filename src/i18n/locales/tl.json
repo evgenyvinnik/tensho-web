@@ -133,7 +133,7 @@
     },
     "ascending": {
       "name": "Pag-akyat",
-      "description": "Abutin ang Akto 8."
+      "description": "Abutin ang Akto 8 sa opsyonal na Walang-hanggan."
     },
     "victory": {
       "name": "Tagumpay",
@@ -300,7 +300,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Abutin ang Akto 4.",
-    "flower_pot": "Abutin ang Akto 8.",
+    "flower_pot": "Abutin ang Akto 8 sa opsyonal na Walang-hanggan.",
     "satellite": "Magkaroon ng 400 ginto sa isang run.",
     "swift_andy": "Manalo sa isang run gamit ang 48 turno o mas kaunti. Hindi kasama sa bilang ang libreng pagpapalit ng tile.",
     "lucky_sixes": "Umiskor ng 10,000 puntos sa isang laro ng kamay.",
@@ -313,7 +313,7 @@
     "decree-heavenly-ordinance": "Umiskor gamit ang Yakuman.",
     "decree-clone-army": "Manalo sa isang run sa Gintong Pusta.",
     "decree-yakuman-blessing": "Umiskor gamit ang tatlong Yakuman pattern sa iisang run.",
-    "decree-omega": "Tapusin ang Yugto 8."
+    "decree-omega": "Tapusin ang Yugto 8 sa opsyonal na Walang-hanggan."
   },
   "scoreThresholds": {
     "supernova": "×2.5 Mult kung aabot sa hindi bababa sa doble ng target ang puntos ng round sa larong ito, bago ang bonus ng Supernova at Perfectionist.",
@@ -1003,6 +1003,18 @@
     "smallShort": "Maliit",
     "largeShort": "Malaki",
     "bossShort": "Boss"
+  },
+  "runJourney": {
+    "position": "Akto {{act}} / {{total}} · Round {{round}} / 3 nalampasan",
+    "next": "Susunod: Akto {{act}} · Round {{round}}",
+    "complete": "Natapos ang lahat ng {{total}} Akto · Tiyak na ang panalo",
+    "optional": "Makakamit ang panalo kapag natalo mo ang Boss ng Akto {{total}}. Ang Walang-hanggan at mas matataas na Antas ay mga opsyonal na hamon, hindi mga kailangan para matapos ang laro.",
+    "recommendation": "Para sa una mong panalo, piliin ang Lunting Felt at Puting Antas. Binabago ng mga mesa ang mga tuntunin, hindi lang ang hitsura; pinahihirap ng mga Antas ang laro. Pareho ang mga target ng Pulang Antas at Puting Antas, pero walang gantimpalang Ginto sa Maliit na Round sa Pulang Antas.",
+    "guideTitle": "Pagsamahin ang mga Dekretong nagtutulungan",
+    "guideEarly": "Magsimula sa maaasahang dagdag sa batayang puntos at multiplikador. Pumili ng mga bonus na gumagana sa mga tile at padron na talagang nilalaro mo, hindi sa bihirang kamay na umaasa kang mabuo.",
+    "guideLate": "Bago ang mga huling Akto, humanap ng multiplikador na lumalaki sa bawat paglalaro o round, saka ng Dekretong nagpaparami rito. Maaaring hindi sapat ang dagdag na nakapirming batayang puntos lang.",
+    "guideExample": "Halimbawa: 100 batayang puntos × (4 multiplikador + 6 multiplikador) × 2 = 2,000 puntos. Ang +Multiplikador ay nagdaragdag sa multiplikador; ang ×Multiplikador ay nagpaparami rito. Pagsamahin ang dalawa.",
+    "guideMatch": "Tugunan ang mga kondisyon: kailangan ng tatluhan para sa bonus sa tatluhan, at ng tamang suit para sa bonus sa suit. Basahin ang mga tuntunin ng bawat balumbon. Sayang ang puwesto ng malakas na epektong hindi naman gumagana. Magtabi ng Ginto para sa kapaki-pakinabang na bilihin sa halip na ubusin ito sa pagpapalit ng mga alok sa tindahan."
   },
   "shop": {
     "catalyst": {
@@ -1993,7 +2005,7 @@
     "rentalPaid": "Sinisingil na upa",
     "defeatIncome": "Kapag natalo, sinisingil pa rin ang upa, pero walang gantimpala sa round, interes, kita mula sa mga Dekreto o mga hawak na gintong tile.",
     "endlessComplete": "Natapos ang Walang-hanggang Pag-akyat",
-    "victorySubtitle": "Nanalo ka sa huling laban ng Akto 8. Naitala na ang iyong panalo.",
+    "victorySubtitle": "Nanalo ka sa huling laban ng Akto {{act}}. Naitala na ang iyong panalo.",
     "endlessSubtitle": "Mananatili ang iyong panalo kahit tapos na ang pag-akyat na ito.",
     "defeatSubtitle": "Sumubok ng ibang plano sa susunod na laro.",
     "showdownCleared": "Naipanalo ang huling laban",
@@ -2292,7 +2304,7 @@
     },
     "acts_rounds": {
       "p1": "Nahahati ang takbo mo sa mga <1>Yugto</1>, at may <3>3 round</3> ang bawat Yugto:",
-      "p2": "Tumataas ang target bawat Yugto. Madali ang Yugto 1, pero pagsapit ng Yugto 8 kailangan mo ng malalakas na kombinasyon para mabuhay!"
+      "p2": "Tumataas ang target bawat Yugto. Madali ang Yugto 1, pero pagsapit ng Yugto 6 kailangan mo ng malalakas na kombinasyon para mabuhay!"
     },
     "decree_slots": {
       "note1": "May mga Dekreto na tumutulong laban sa tiyak na mandato. Planuhin ang build mo nang naaayon!",

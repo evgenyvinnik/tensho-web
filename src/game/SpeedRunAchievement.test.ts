@@ -6,6 +6,7 @@ import { useOmenStore } from '../stores/omenStore'
 import { useProgressionStore } from '../stores/progressionStore'
 import { DecreeSystem } from '../systems/DecreeSystem'
 import { THE_MOUTH } from '../config/mandateDefinitions'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { metaProgressionSystem } from '../systems/MetaProgressionSystem'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
@@ -60,12 +61,16 @@ function play(game: GameOrchestrator) {
 
 function finish(game: GameOrchestrator, victory = true) {
   const state = prepare(game, victory ? 1 : 1e12)
-  state.roundManager.startAct(8)
+  state.roundManager.startAct(NORMAL_RUN_ACTS)
   state.roundManager.skipRound()
   state.roundManager.skipRound()
   state.roundManager.getCurrentRound()!.bossMandate = undefined
   state.roundManager.getCurrentRound()!.scoreTarget = state.targetScore
-  Object.assign(state, { currentAct: 8, currentRound: 3, handsRemaining: 1 })
+  Object.assign(state, {
+    currentAct: NORMAL_RUN_ACTS,
+    currentRound: 3,
+    handsRemaining: 1,
+  })
   play(game)
   expect(state.phase).toBe('gameOver')
 }
@@ -119,9 +124,10 @@ it.each([47, 48, 49])(
   }
 )
 
-it('counts all 24 rounds through the public loop and awards a 48-Turn victory', () => {
+it('counts every campaign round through the public loop and awards a two-Turn-per-round victory', () => {
   const game = start()
-  for (let round = 0; round < 24; round++) {
+  const campaignRounds = NORMAL_RUN_ACTS * 3
+  for (let round = 0; round < campaignRounds; round++) {
     const state = prepare(game)
     expect(
       game.processAction({ type: 'redraw', tileIds: [state.handTiles[0].id] })
@@ -132,7 +138,7 @@ it('counts all 24 rounds through the public loop and awards a 48-Turn victory', 
     state.handsRemaining = 1 // Suppress swift-clear Omens in this fixture.
     play(game)
     expect(game.captureRun().meta?.paidTurns).toBe((round + 1) * 2)
-    if (round < 23) {
+    if (round < campaignRounds - 1) {
       expect(state.phase).toBe('shop')
       expect(earned()).toBe(false)
       game.exitShop()
@@ -141,9 +147,9 @@ it('counts all 24 rounds through the public loop and awards a 48-Turn victory', 
   }
   expect(game.getState().hasWonRun).toBe(true)
   expect(useProgressionStore.getState().stats.currentRunRoundsCompleted).toBe(
-    24
+    campaignRounds
   )
-  expect(record()).toBe(48)
+  expect(record()).toBe(campaignRounds * 2)
   expect(earned()).toBe(true)
 })
 

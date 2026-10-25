@@ -200,7 +200,7 @@ it('accepts every owned Charter and its shop adapter without relying on current 
   }
 })
 
-it('accepts terminal defeat and secured victory followed by once-only Endless continuation', () => {
+it.each([6, 7, 8])('accepts terminal defeat and secured Act %i victory followed by once-only Endless continuation', (act) => {
   const lost = start(19)
   const losingState = lost.getState() as OrchestratorState
   losingState.targetScore = 1e12
@@ -220,7 +220,7 @@ it('accepts terminal defeat and secured victory followed by once-only Endless co
 
   const won = shop(7)
   const state = won.getState() as OrchestratorState
-  state.roundManager.startAct(8)
+  state.roundManager.startAct(act)
   state.roundManager.skipRound()
   state.roundManager.skipRound()
   state.roundManager.getCurrentRound()!.bossMandate = undefined

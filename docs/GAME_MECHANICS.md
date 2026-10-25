@@ -369,7 +369,7 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 | **The Water** | 水 | Start with 0 redraws this round |
 | **The Arm** | 腕 | Each play lowers every Orb family it levels by 1 (never below level 1) before it scores |
 
-**Showdown Mandates (Act 8+):**
+**Showdown Mandates (normal finale at Act 6; optional Endless at Acts 8, 16, …):**
 
 | Mandate | Effect |
 |---------|--------|
@@ -397,16 +397,21 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 | 1 | 300 | 450 | 600 | 300 | 300 |
 | 2 | 800 | 1,200 | 1,600 | 873 | 999 |
 | 3 | 2,000 | 3,000 | 4,000 | 2,382 | 3,121 |
-| 4 | 6,000 | 9,000 | 12,000 | 7,800 | 11,700 |
-| 5 | 15,000 | 22,500 | 30,000 | 19,500 | 29,250 |
-| 6 | 30,000 | 45,000 | 60,000 | 39,000 | 58,500 |
-| 7 | 55,000 | 82,500 | 110,000 | 71,500 | 107,250 |
-| 8 (Showdown) | 90,000 | 135,000 | 180,000 | 117,000 | 175,500 |
+| 4 | 5,000 | 7,500 | 10,000 | 6,500 | 9,750 |
+| 5 | 10,000 | 15,000 | 20,000 | 13,000 | 19,500 |
+| 6 (normal finale / Showdown) | 18,000 | 27,000 | 36,000 | 23,400 | 35,100 |
+| 7 (optional Endless) | 30,000 | 45,000 | 60,000 | 39,000 | 58,500 |
+| 8 (optional Endless / Showdown) | 45,000 | 67,500 | 90,000 | 58,500 | 87,750 |
 
-Acts 4–8 were raised in October 2026 when the Turns budget, six-tile plays and
-pattern Mult made scores much larger; Acts 1–3 stayed as they were so a first
-run stays approachable. The same-seed measurement is in
-[docs/balance/2026-10-12-player-feedback-balance.md](balance/2026-10-12-player-feedback-balance.md).
+The October 25 first-win pass lowers Acts 4–8 while preserving Acts 1–3
+and the six-Turn budget. The approved normal campaign now ends after the
+Act 6 Boss: six Acts, three rounds each, 18 rounds total. Red shares White's
+targets but still removes Small-round reward Gold. Higher Stakes inherit the gentler
+base, so moving up does not suddenly restore the old campaign curve.
+Score-target Mandates replace the normal ×2 Boss factor: Violet Vessel's
+×6 requires 108,000 at the Act 6 finale and 270,000 at optional Act 8 on
+White/Red. The previous tuning is recorded in
+[the October 12 report](balance/2026-10-12-player-feedback-balance.md).
 
 Stake score scaling ramps in: Act 1 uses White targets on every Stake, and the
 cumulative multiplier (×1.3 from Green, ×1.95 from Purple) grows by an equal
@@ -414,11 +419,23 @@ ratio each Act until it applies in full from Act 4. See
 [STAKE_SCORE_RAMP.md](STAKE_SCORE_RAMP.md). Some tables add their own
 modifiers on top.
 
-**Endless Mode (Act 9+):**
-After defeating Act 8, players enter Endless Mode with rapidly scaling requirements:
+**Endless Mode (Act 7+):**
+Defeating the Act 6 Boss secures victory. Players may then explicitly opt into
+Endless; neither Endless nor higher Stakes is required to finish a run.
+Acts 7–8 retain the targets above. From Act 9, Endless retains its separate
+pre-rebalance 90,000 anchor and rapidly scaling requirements:
 - Scaling is faster than exponential (polynomial-exponential growth)
 - Showdown Mandates reappear every 8 Acts
 - Theoretical limit around Act 39 due to numerical overflow
+
+Victory-based achievements, Decree rewards and table-specific Stake progress
+settle once at the normal finale, not again in Endless. Previously earned
+eight-Act victories and rewards remain valid; shortening the campaign does not
+rewrite or revoke them. Ascending / Flower Pot (reach Act 8), Omega (complete
+Act 8) and Stone Script (reach Act 12 and purchase Ancient Script) remain
+optional Endless goals, not requirements for a normal win. Speed Run remains
+at most 48 paid Turns; Charter Collector remains five purchases in one run by
+the end of Act 5. Challenge Runs and their achievements remain deferred.
 
 **Scaling Formula (Endless):**
 ```
@@ -787,8 +804,8 @@ Accolades are permanent badges earned by meeting specific conditions. Some unloc
 | Accolade | Japanese | Condition | Unlocks |
 |----------|----------|-----------|---------|
 | **First Steps** | 初歩 | Reach Act 4 | Stage Master Decree |
-| **Ascending** | 昇進 | Reach Act 8 | Flower Pot Decree |
-| **Victory** | 勝利 | Win a Run | Blueprint Decree |
+| **Ascending** | 昇進 | Reach Act 8 in optional Endless | Flower Pot Decree |
+| **Victory** | 勝利 | Defeat the normal Act 6 Boss | Blueprint Decree |
 | **Red Path** | 赤道 | Win on Red Stake+ | Crimson Wall |
 | **Black Path** | 黒道 | Win on Black Stake+ | Obsidian Wall |
 | **Golden Path** | 金道 | Win on Gold Stake | — |

@@ -1,11 +1,12 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 
 afterEach(() => eventBus.clear())
 
 // Late-run fixtures isolate settlement from reach and randomized boss rules.
-function prepareBoss(game: GameOrchestrator, act = 8) {
+function prepareBoss(game: GameOrchestrator, act = NORMAL_RUN_ACTS) {
   const state = game.getState() as OrchestratorState
   state.roundManager.startAct(act)
   state.roundManager.skipRound()
@@ -41,9 +42,9 @@ function win() {
 }
 
 it.each([
-  [0, 9],
-  [1, 8],
-  [2, 7],
+  [0, 7],
+  [1, 6],
+  [2, 5],
   [20, 1],
 ])(
   'forecasts the same Boss-shop destination for reduction %i that exitShop applies',
@@ -116,21 +117,24 @@ it.each([7, 8, 9])(
   }
 )
 
-it('does not record another victory when an Endless run clears the Act 8 boss again', () => {
-  const ended = vi.fn()
-  eventBus.on('runEnd', ended)
-  const game = win()
-  game.continueEndless()
-  game.exitShop()
-  prepareBoss(game)
-  play(game)
-  expect(game.getState()).toMatchObject({
-    phase: 'shop',
-    hasWonRun: true,
-    hasEnteredEndless: true,
-  })
-  expect(ended).toHaveBeenCalledTimes(1)
-  expect(game.continueEndless()).toBe(false)
-  game.exitShop()
-  expect(game.getState().currentAct).toBe(9)
-})
+it.each([6, 8, 16])(
+  'does not record another victory when an Endless run clears the Act %i boss',
+  (act) => {
+    const ended = vi.fn()
+    eventBus.on('runEnd', ended)
+    const game = win()
+    game.continueEndless()
+    game.exitShop()
+    prepareBoss(game, act)
+    play(game)
+    expect(game.getState()).toMatchObject({
+      phase: 'shop',
+      hasWonRun: true,
+      hasEnteredEndless: true,
+    })
+    expect(ended).toHaveBeenCalledTimes(1)
+    expect(game.continueEndless()).toBe(false)
+    game.exitShop()
+    expect(game.getState().currentAct).toBe(act + 1)
+  }
+)

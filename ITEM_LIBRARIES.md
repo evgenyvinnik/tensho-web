@@ -503,4 +503,4 @@ Game-changing, run-defining effects.
 | Reality Warp | 現実歪曲 | All tiles are wild | — |
 | Time Master | 時の支配者 | +2 extra hands per round | — |
 | Immortal Decree | 不死勅令 | Cannot lose (halves score) | — |
-| Omega | 終極 | +500 Chips, +50 Mult, ×2.0 | Complete Act 8 |
+| Omega | 終極 | +500 Chips, +50 Mult, ×2.0 | Complete Act 8 in optional Endless |

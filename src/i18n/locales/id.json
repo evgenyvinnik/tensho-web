@@ -133,7 +133,7 @@
     },
     "ascending": {
       "name": "Pendakian",
-      "description": "Capai Babak 8."
+      "description": "Capai Babak 8 di Mode Tanpa Akhir yang opsional."
     },
     "victory": {
       "name": "Kemenangan",
@@ -428,7 +428,7 @@
   },
   "decreeUnlocks": {
     "stage_master": "Capai Babak 4.",
-    "flower_pot": "Capai Babak 8.",
+    "flower_pot": "Capai Babak 8 di Mode Tanpa Akhir yang opsional.",
     "satellite": "Miliki 400 emas dalam satu permainan.",
     "swift_andy": "Menangkan permainan dengan memakai paling banyak 48 giliran. Penggantian ubin gratis tidak dihitung.",
     "lucky_sixes": "Cetak 10.000 poin dalam sekali main.",
@@ -441,7 +441,7 @@
     "decree-heavenly-ordinance": "Raih skor dengan Yakuman.",
     "decree-clone-army": "Menangkan permainan pada Taruhan Emas.",
     "decree-yakuman-blessing": "Raih skor dari tiga pola Yakuman dalam satu permainan.",
-    "decree-omega": "Selesaikan Babak 8."
+    "decree-omega": "Selesaikan Babak 8 di Mode Tanpa Akhir yang opsional."
   },
   "scoreThresholds": {
     "supernova": "×2,5 Mult jika permainan ini membawa skor ronde setidaknya dua kali target, sebelum bonus Supernova dan Perfeksionis.",
@@ -924,6 +924,18 @@
     "smallShort": "Kecil",
     "largeShort": "Besar",
     "bossShort": "Bos"
+  },
+  "runJourney": {
+    "position": "Babak {{act}} / {{total}} · Ronde {{round}} / 3 selesai",
+    "next": "Berikutnya: Babak {{act}} · Ronde {{round}}",
+    "complete": "Semua {{total}} Babak selesai · Kemenangan dipastikan",
+    "optional": "Kemenangan diraih dengan mengalahkan Bos Babak {{total}}. Mode Tanpa Akhir dan Tingkat yang lebih tinggi adalah tantangan opsional, bukan syarat untuk menamatkan permainan.",
+    "recommendation": "Untuk kemenangan pertamamu, pilih Felt Hijau dan Tingkat Putih. Meja mengubah aturan, bukan hanya tampilan; Tingkat menambah kesulitan. Tingkat Merah mempertahankan target Tingkat Putih, tetapi menghapus hadiah Emas dari Ronde Kecil.",
+    "guideTitle": "Gabungkan Dekrit yang saling mendukung",
+    "guideEarly": "Mulailah dengan bonus +Poin dan +Mult yang andal. Pilih bonus yang terpicu oleh ubin dan pola yang benar-benar kamu mainkan, bukan tangan langka yang kamu harapkan muncul.",
+    "guideLate": "Sebelum Babak terakhir, cari Mult yang tumbuh seiring permainan atau ronde, lalu Dekrit ×Mult untuk memperkuatnya. Menambah Poin tetap saja mungkin tidak cukup.",
+    "guideExample": "Contoh: 100 Poin × (4 Mult + 6 Mult) × 2 = 2.000 poin. +Mult menambah pengali; ×Mult mengalikannya. Gabungkan keduanya.",
+    "guideMatch": "Penuhi syaratnya: bonus triplet membutuhkan triplet; bonus jenis ubin membutuhkan jenis tersebut. Baca aturan setiap gulungan. Efek kuat yang tidak pernah terpicu hanya membuang slot. Simpan Emas untuk pembelian berguna, jangan habiskan semuanya untuk menyegarkan toko."
   },
   "shop": {
     "catalyst": {
@@ -1914,7 +1926,7 @@
     "rentalPaid": "Sewa dikenakan",
     "defeatIncome": "Saat kalah, Sewa tetap dibayar; hadiah ronde, bunga, pendapatan Dekrit, dan pendapatan ubin Emas yang disimpan tidak diberikan.",
     "endlessComplete": "Pendakian Tanpa Akhir Selesai",
-    "victorySubtitle": "Duel Babak 8 telah kamu menangkan. Kemenanganmu sudah tercatat.",
+    "victorySubtitle": "Duel Babak {{act}} telah kamu menangkan. Kemenanganmu sudah tercatat.",
     "endlessSubtitle": "Kemenanganmu tetap berlaku, meski pendakian ini telah berakhir.",
     "defeatSubtitle": "Coba strategi berbeda pada permainan berikutnya.",
     "showdownCleared": "Duel dimenangkan",
@@ -2213,7 +2225,7 @@
     },
     "acts_rounds": {
       "p1": "Permainanmu terbagi menjadi <1>Babak</1>, dan setiap Babak berisi <3>3 ronde</3>:",
-      "p2": "Skor target meningkat tiap Babak. Babak 1 terasa mudah, tetapi di Babak 8 kamu butuh kombinasi kuat untuk bertahan!"
+      "p2": "Skor target meningkat tiap Babak. Babak 1 terasa mudah, tetapi di Babak 6 kamu butuh kombinasi kuat untuk bertahan!"
     },
     "decree_slots": {
       "note1": "Beberapa Dekrit membantu melawan mandat tertentu. Rencanakan susunanmu sesuai itu!",

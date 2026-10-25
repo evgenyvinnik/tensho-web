@@ -1292,15 +1292,15 @@ describe('GameOrchestrator', () => {
   })
 
   describe('round completion', () => {
-    it('records an Act 8 victory and can continue through the Tea House into Endless', () => {
+    it.each([6, 7, 8])('records an Act %i victory and can continue through the Tea House into Endless', (act) => {
       game.startNewRun(12345)
       const state = game.getState() as OrchestratorState
-      state.roundManager.startAct(8)
+      state.roundManager.startAct(act)
       state.roundManager.skipRound()
       state.roundManager.skipRound()
 
       const bossRound = state.roundManager.getCurrentRound()!
-      state.currentAct = 8
+      state.currentAct = act
       state.currentRound = 3
       state.targetScore = bossRound.scoreTarget
       state.score = bossRound.scoreTarget
@@ -1320,7 +1320,7 @@ describe('GameOrchestrator', () => {
       expect(state.isRunActive).toBe(true)
 
       game.exitShop()
-      expect(state.currentAct).toBe(9)
+      expect(state.currentAct).toBe(act + 1)
       expect(state.currentRound).toBe(1)
       expect(state.phase).toBe('gameplay')
     })

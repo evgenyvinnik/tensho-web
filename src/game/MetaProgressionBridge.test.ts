@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { useAchievementStore } from '../stores/achievementStore'
 import { initializeArchive, useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
@@ -122,7 +123,7 @@ describe('MetaProgressionBridge', () => {
     eventBus.emit('runEnd', {
       victory: true,
       score: 100,
-      act: 8,
+      act: NORMAL_RUN_ACTS,
       round: 3,
       decreesOwned: 2,
     })
@@ -144,7 +145,7 @@ describe('MetaProgressionBridge', () => {
     eventBus.emit('runEnd', {
       victory: true,
       score: 100,
-      act: 8,
+      act: NORMAL_RUN_ACTS,
       round: 3,
       decreesOwned: 4,
     })
@@ -155,7 +156,7 @@ describe('MetaProgressionBridge', () => {
     eventBus.emit('runEnd', {
       victory: true,
       score: 100,
-      act: 8,
+      act: NORMAL_RUN_ACTS,
       round: 3,
       decreesOwned: 5,
     })
@@ -212,7 +213,7 @@ describe('MetaProgressionBridge', () => {
       eventBus.emit('runEnd', {
         victory: true,
         score: 100,
-        act: 8,
+        act: NORMAL_RUN_ACTS,
         round: 3,
         decreesOwned,
       })
@@ -413,7 +414,7 @@ describe('MetaProgressionBridge', () => {
     eventBus.emit('runEnd', {
       victory: true,
       score: 48_000,
-      act: 8,
+      act: NORMAL_RUN_ACTS,
       round: 3,
     })
 
@@ -424,7 +425,7 @@ describe('MetaProgressionBridge', () => {
         wallId: 'green_felt',
         stakeTier: 3,
         finalScore: 48_000,
-        actsCompleted: 8,
+        actsCompleted: NORMAL_RUN_ACTS,
       }),
     ])
     expect(

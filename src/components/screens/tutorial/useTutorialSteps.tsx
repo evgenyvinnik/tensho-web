@@ -43,6 +43,8 @@ import { PavilionIcon } from '../../ui/PavilionIcon'
 import { FloraCodex, FLORA_CODEX_SECTIONS } from './FloraCodex'
 import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
 import { HAND_BUILDING_EXAMPLE } from './handBuildingExample'
+import { NORMAL_RUN_ACTS } from '../../../config/runProgression'
+import { DecreeBuildGuide } from '../../shop/DecreeBuildGuide'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -1053,6 +1055,9 @@ export function useTutorialSteps(): TutorialStep[] {
         title: t('codexReference.titleActsRounds'),
         content: (
           <div className="space-y-3">
+            <InfoBox type="tip">
+              {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
+            </InfoBox>
             <p>
               <Trans i18nKey="tutorial.acts_rounds.p1">
                 Your run is divided into <Highlight>Acts</Highlight>, and each
@@ -1088,7 +1093,7 @@ export function useTutorialSteps(): TutorialStep[] {
             <p>
               <Trans i18nKey="tutorial.acts_rounds.p2">
                 Score targets increase with each Act. Act 1 starts easy, but by
-                Act 8 you'll need powerful combos to survive!
+                the final Showdown you'll need powerful combos to survive!
               </Trans>
             </p>
           </div>
@@ -1185,6 +1190,7 @@ export function useTutorialSteps(): TutorialStep[] {
               </li>
             </ul>
             <InfoBox type="tip">{t('codexReference.decreeScrolls')}</InfoBox>
+            <DecreeBuildGuide />
           </div>
         ),
       },

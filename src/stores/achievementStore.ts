@@ -197,6 +197,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     category: 'progression',
     icon: 'ascending',
     reward: { category: 'decrees', itemId: 'flower_pot' },
+    // Optional Endless milestone, not the normal campaign victory condition.
     condition: { type: 'reach_act', target: 8 },
   },
   {

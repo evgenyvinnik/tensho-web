@@ -13,6 +13,7 @@
  */
 
 import { createSeededRandom, runRandom } from '../game/RunRandom'
+import { NORMAL_RUN_ACTS, isShowdownAct } from './runProgression'
 
 // =============================================================================
 // MANDATE EFFECT TYPES
@@ -43,7 +44,7 @@ export type MandateEffectType =
   | 'tiles_face_down_after_play' // The Fish: Tiles face-down after each hand
   | 'fixed_draw_count' // The Serpent: Always draw N tiles after play/discard
   | 'honor_tiles_face_down' // The Mark: All honor tiles drawn face-down
-  // Showdown Mandates (Act 8+)
+  // Showdown Mandates (campaign finale and periodic Endless bosses)
   | 'shuffle_decrees' // Amber Acorn: Decrees shuffled and face-down
   | 'debuff_until_sell' // Verdant Leaf: All tiles debuffed until decree sold
   | 'disable_random_decree' // Crimson Heart: Random decree disabled per hand
@@ -405,7 +406,7 @@ export const THE_MANACLE: MandateDefinition = {
 }
 
 // =============================================================================
-// SHOWDOWN MANDATES (Act 8+)
+// SHOWDOWN MANDATES (campaign finale and periodic Endless bosses)
 // =============================================================================
 
 /**
@@ -419,7 +420,7 @@ export const AMBER_ACORN: MandateDefinition = {
   category: 'Showdown',
   difficulty: 'Hard',
   effect: { type: 'shuffle_decrees' },
-  minAct: 8,
+  minAct: NORMAL_RUN_ACTS,
 }
 
 /**
@@ -433,7 +434,7 @@ export const VERDANT_LEAF: MandateDefinition = {
   category: 'Showdown',
   difficulty: 'Extreme',
   effect: { type: 'debuff_until_sell' },
-  minAct: 8,
+  minAct: NORMAL_RUN_ACTS,
 }
 
 /**
@@ -447,7 +448,7 @@ export const VIOLET_VESSEL: MandateDefinition = {
   category: 'Showdown',
   difficulty: 'Extreme',
   effect: { type: 'score_multiplier', value: 6 },
-  minAct: 8,
+  minAct: NORMAL_RUN_ACTS,
 }
 
 /**
@@ -461,7 +462,7 @@ export const CRIMSON_HEART: MandateDefinition = {
   category: 'Showdown',
   difficulty: 'Hard',
   effect: { type: 'disable_random_decree' },
-  minAct: 8,
+  minAct: NORMAL_RUN_ACTS,
 }
 
 /**
@@ -476,7 +477,7 @@ export const CERULEAN_BELL: MandateDefinition = {
   category: 'Showdown',
   difficulty: 'Hard',
   effect: { type: 'lock_random_tile' },
-  minAct: 8,
+  minAct: NORMAL_RUN_ACTS,
 }
 
 // =============================================================================
@@ -513,7 +514,7 @@ export const STANDARD_MANDATES: MandateDefinition[] = [
 ]
 
 /**
- * All showdown mandates (Act 8+)
+ * All showdown mandates (campaign finale and periodic Endless bosses)
  */
 export const SHOWDOWN_MANDATE_DEFINITIONS: MandateDefinition[] = [
   AMBER_ACORN,
@@ -596,8 +597,7 @@ export function getMandateById(id: string): MandateDefinition | undefined {
  * Get mandates available for a specific act
  */
 export function getMandatesForAct(actNumber: number): MandateDefinition[] {
-  // Showdown mandates only appear at Act 8 and every 8 acts thereafter
-  if (actNumber >= 8 && actNumber % 8 === 0) {
+  if (isShowdownAct(actNumber)) {
     return SHOWDOWN_MANDATE_DEFINITIONS
   }
 

@@ -19,12 +19,31 @@ Deck Minimalist, Deck Maximalist and Purist feats. Earlier documents describing
 Challenge mode or its two awards are future design, not release blockers.
 This scope decision does not lift the separate final-handoff release hold.
 
+## Normal campaign: six Acts (October 25, 2026)
+
+The user approved a six-Act normal campaign: defeating the Act 6 Boss secures
+victory after 18 rounds. `NORMAL_RUN_ACTS` is the shared implementation boundary;
+Endless is an explicit optional continuation into Act 7. Victory-based rewards,
+table/Stake wins and cosmetic victory markers settle once at that boundary.
+Existing eight-Act wins, unlock records and earned achievements remain valid;
+no profile reset, requalification or replayed reward is required.
+
+Ascending / Flower Pot still requires reaching Act 8, Omega still requires
+completing Act 8, and Stone Script still requires reaching Act 12 plus purchasing
+Ancient Script. These are optional Endless goals, not normal-win requirements.
+Their thresholds and saved identities are unchanged. Charter Collector remains
+five purchases in one run by the end of Act 5, including that boss shop. The
+48-paid-Turn Speed Run threshold also remains unchanged; its increased allowance
+per round is not a newly established balance result. Challenge Runs and their
+achievements remain deferred.
+
 ## Speed Run: Turn efficiency, not skipped rounds (October 21, 2026)
 
 Implementation decision under the October 7 delegated rules authority: **win the
 run using at most 48 paid Turns**. The old 12-round condition is impossible in
-the current sequential 24-round, no-Skip loop. Forty-eight permits an average
-of two paid actions per round, preserving an efficiency challenge without
+the then-current sequential 24-round, no-Skip loop (now 18 rounds after the
+six-Act approval above). Forty-eight originally permitted an average of two
+paid actions per round; the unchanged limit now permits 2⅔, without
 shortening the run or making every victory qualify. This threshold is a design
 choice, not a claim of completed balance/playtesting.
 
@@ -32,7 +51,7 @@ Both tactical and complete-hand plays spend one Turn. A blocked/zero-score play
 still counts because it still pays. A REDRAW counts once regardless of tile
 count only when it actually spends a Turn; free REDRAWs, previews, rejected
 actions, shop rerolls and consumables do not count. The winning play is included
-before canonical Act 8 settlement. Only a victory updates the best record;
+before canonical Act 6 settlement. Only a victory updates the best record;
 defeat and Full Unlock do not. Endless never settles the same win again.
 
 New runs initialize optional run metadata `paidTurns` to zero; actual engine
@@ -128,7 +147,7 @@ current catalog so content changes cannot strand a run.
 
 ### Purist: no successful shop reroll before the first victory
 
-Purist requires a canonical Act 8 win with zero successful shop rerolls in
+Purist requires a canonical Act 6 win with zero successful shop rerolls in
 that run. Paid and free Omen/Charter rerolls both count. Rejected attempts,
 ordinary purchases, automatic shop generation and tile REDRAW do not.
 
@@ -136,13 +155,13 @@ The optional `shopRerolls` field in saved run metadata starts at zero for a
 new observed run and follows successful shop events. Reload preserves it;
 reset/new run replaces it. An older save without this field has unknown
 history, not zero history, and cannot earn Purist on that resumed run. This
-does not remove any previously earned award. Rerolling after the Act 8 win
+does not remove any previously earned award. Rerolling after the Act 6 win
 in Endless neither revokes Purist nor settles another qualifying victory.
 Defeat and Full Unlock do not award it.
 
 ### Decree mastery and cosmetic stake victory markers
 
-At the canonical Act 8 victory, record the actual catalog identities of the
+At the canonical Act 6 victory, record the actual catalog identities of the
 Decrees still physically owned, and the table used. Each receives that run's
 stake tier as a cosmetic Archive victory marker, as described in
 [Game mechanics](GAME_MECHANICS.md#stake-stickers-victory-markers). Keep all
@@ -199,7 +218,7 @@ lifetime sum. The existing seat/round Wind stacking still applies. Previews,
 Dragon Yakuhai, tactical plays, retriggers, and blocked/zero-score plays do not
 add Wind occurrences. The earned single-run maximum remains visible afterward.
 
-Securing Act 8 pays victory once; choosing Endless continues the same proven
+Securing Act 6 pays victory once; choosing Endless continues the same proven
 run history. Defeat, quit/reset, or starting another run ends that active
 context. Older victory/Endless saves that discarded it reconnect with their
 known table, stake and Flower identities, but only newly observed Wind scores
@@ -254,7 +273,8 @@ past score is recalculated and no inventory or level migration is fabricated.
 Connect the six explicit library conditions to canonical runtime IDs: Blueprint
 after a victory, Brainstorm after a victory with at least five Decrees, Heavenly
 Ordinance after a paid Yakuman, Clone Army after a Gold Stake victory, Yakuman
-Blessing after three paid Yakuman patterns within one run, and Omega after Act 8.
+Blessing after three paid Yakuman patterns within one run, and Omega after
+completing Act 8 in optional Endless (not at the normal Act 6 victory).
 Multiple qualifying patterns in a single hand count individually; previews do
 not. Persist the run counter, reset it only on a new run, and never derive a
 historical per-run record from a lifetime total.
