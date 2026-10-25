@@ -1,3 +1,5 @@
+// Keep first: in the iOS app it reads localStorage before any store does.
+import { IS_NATIVE_APP, nativeStorageReady } from './native/nativeStorage'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { registerUpdates } from './pwa/registerUpdates'
@@ -38,8 +40,8 @@ document.addEventListener('visibilitychange', () => {
     void useUpdateStore.getState().attempt()
 })
 
-// Register service worker for PWA
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+// Register service worker for PWA. The iOS app updates through the App Store.
+if (import.meta.env.PROD && !IS_NATIVE_APP && 'serviceWorker' in navigator) {
   void registerUpdates(
     navigator.serviceWorker,
     import.meta.env.BASE_URL,
@@ -49,7 +51,8 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
 
 // Only English is bundled up front; the detected language is fetched first so
 // the interface does not render once in English and then again translated.
-void i18nReady.finally(() => {
+// The iOS app first restores saves the OS may have cleared.
+void nativeStorageReady.then(() => i18nReady).finally(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <AppErrorBoundary>

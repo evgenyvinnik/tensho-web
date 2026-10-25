@@ -9,7 +9,10 @@ export default tseslint.config(
   {
     ignores: [
       'dist',
+      'dist-native',
       'dev-dist',
+      // Native project; its App/public is a copy of the built bundle.
+      'ios',
       ...retired.paths.flatMap((path) => [path, `${path}/**`]),
     ],
   },

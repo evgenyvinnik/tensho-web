@@ -30,7 +30,15 @@ bun run lint         # Run ESLint
 bun run format       # Format code with Prettier
 bun run preview      # Preview production build locally
 bun run sloc         # Count source lines of code
+bun run build:ios    # Build the iOS app's web layer (--mode native) and sync it into ios/
+bun run ios:open     # Open the Capacitor Xcode project (ios/App)
 ```
+
+The iOS app wraps `dist-native` with Capacitor 8 (Swift Package Manager, no
+CocoaPods). That build has no service worker and drops the original
+illustration PNGs. `prepare-native-build.mjs` stamps the package version into
+the Xcode project. `src/native/` mirrors localStorage into Preferences, because
+iOS can clear WebView storage, and restores it before the stores hydrate.
 
 ## Testing
 
