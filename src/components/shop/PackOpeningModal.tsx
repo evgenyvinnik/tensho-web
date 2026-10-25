@@ -8,7 +8,8 @@
  * - Allow picking 1 (Normal/Jumbo) or 2 (Mega) items
  * - Skip option for synergy decrees
  * - Each reward drawn big, glowing by its rarity
- * - Hover (or focus, or tap) a reward to see its details card
+ * - A tap chooses a reward; hover, focus or press and hold it to see its
+ *   details card
  * - A pack offering Decrees shows the owned ones, which can be sold for room
  *
  * Uses React Spring for animations and the game's color palette.
@@ -74,6 +75,10 @@ export interface PackBuild {
 const DETAILS_WIDTH = 300
 const DETAILS_MARGIN = 12
 const DETAILS_GAP = 10
+/** How long a touch rests on a reward before it shows the details. */
+const HOLD_MS = 450
+/** How far a resting touch may drift before it counts as a scroll. */
+const HOLD_SLOP = 10
 
 const clamp = (value: number, low: number, high: number) =>
   Math.min(Math.max(value, low), Math.max(low, high))
@@ -248,6 +253,13 @@ function PackContentCard({
   const reducedMotion = useReducedMotion()
   const anchorRef = useRef<HTMLDivElement>(null)
   const lastPointer = useRef('mouse')
+  const hold = useRef<{
+    x: number
+    y: number
+    timer: ReturnType<typeof setTimeout>
+  } | null>(null)
+  /** The last touch rested long enough to show the details, not to choose. */
+  const held = useRef(false)
   const descriptionId = useId()
   const offer = {
     itemType: content.type,
@@ -259,6 +271,12 @@ function PackContentCard({
   const description = text.cost
     ? `${text.description} ${t('consumableUse.cost')}: ${text.cost}`
     : text.description
+
+  const endHold = () => {
+    if (hold.current) clearTimeout(hold.current.timer)
+    hold.current = null
+  }
+  useEffect(() => endHold, [])
 
   // Entry animation
   const entrySpring = useSpring({
@@ -299,7 +317,7 @@ function PackContentCard({
           }
         }}
         className={`
-          relative flex w-full max-w-[10rem] flex-col items-center rounded-2xl border-2 px-2 pb-2 pt-3 text-center outline-none
+          relative flex w-full max-w-[10rem] select-none flex-col items-center rounded-2xl border-2 px-2 pb-2 pt-3 text-center outline-none [-webkit-touch-callout:none] odd:last:col-span-2
           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] sm:w-40 sm:max-w-none
           ${isSelected ? 'border-[var(--color-golden-yellow)] bg-[var(--color-golden-yellow)]/10' : 'border-transparent hover:bg-white/5'}
           ${canSelect || isSelected ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}
@@ -328,14 +346,45 @@ function PackContentCard({
         }}
         onPointerDown={(e: React.PointerEvent<HTMLDivElement>) => {
           lastPointer.current = e.pointerType
+          held.current = false
+          endHold()
+          if (e.pointerType === 'mouse') return
+          // A touch has no hover: a tap only chooses, and resting on the
+          // reward shows what it does.
+          hold.current = {
+            x: e.clientX,
+            y: e.clientY,
+            timer: setTimeout(() => {
+              hold.current = null
+              held.current = true
+              onInspect(true)
+            }, HOLD_MS),
+          }
+        }}
+        onPointerMove={(e: React.PointerEvent<HTMLDivElement>) => {
+          if (
+            hold.current &&
+            Math.hypot(e.clientX - hold.current.x, e.clientY - hold.current.y) >
+              HOLD_SLOP
+          )
+            endHold()
+        }}
+        onPointerUp={endHold}
+        onPointerCancel={endHold}
+        onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => {
+          // A long press is the details, not the browser's menu.
+          if (lastPointer.current !== 'mouse') e.preventDefault()
         }}
         onFocus={(e: React.FocusEvent<HTMLDivElement>) => {
           if (isFocusVisible(e.currentTarget)) onInspect(true)
         }}
         onBlur={() => onInspect(false)}
-        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-          // A tap has no hover, so it shows the details as it chooses.
-          if (e.detail !== 0 && lastPointer.current !== 'mouse') onInspect(true)
+        onClick={() => {
+          // The touch that showed the details does not also choose.
+          if (held.current) {
+            held.current = false
+            return
+          }
           if (canSelect || isSelected) onToggle()
         }}
       >
@@ -372,9 +421,10 @@ function PackContentCard({
           {text.name}
         </h3>
 
-        {/* Rarity */}
+        {/* Rarity, on the card's foot so a row's labels line up however
+            many lines its names wrap to */}
         <span
-          className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider"
+          className="mt-auto inline-flex items-center gap-1 pt-1 text-[11px] font-semibold uppercase tracking-wider"
           style={{ color: rarityColor }}
         >
           <span
@@ -525,17 +575,12 @@ export function PackOpeningModal({
       if (!packOffering) return
 
       setSelectedIndices((prev) => {
-        if (prev.includes(index)) {
-          // Deselect
-          return prev.filter((i) => i !== index)
-        } else {
-          // Check if can select more
-          if (prev.length < packOffering.maxSelections) {
-            return [...prev, index]
-          }
-          // Replace the first selection if at max
-          return [...prev.slice(1), index]
-        }
+        if (prev.includes(index)) return prev.filter((i) => i !== index)
+        // A one-reward pack moves its choice; a fuller choice must be undone first.
+        if (packOffering.maxSelections === 1) return [index]
+        return prev.length < packOffering.maxSelections
+          ? [...prev, index]
+          : prev
       })
     },
     [packOffering]
@@ -611,8 +656,11 @@ export function PackOpeningModal({
         }}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
         onPointerDown={(e: React.PointerEvent<HTMLDivElement>) => {
-          // A tap away from the rewards puts a tapped-open card away.
-          if (!(e.target as Element).closest('[data-pack-choice]'))
+          // A new touch, or a click away from the rewards, puts a card away.
+          if (
+            e.pointerType !== 'mouse' ||
+            !(e.target as Element).closest('[data-pack-choice]')
+          )
             setInspected(null)
         }}
       >
@@ -658,6 +706,7 @@ export function PackOpeningModal({
                 content={content}
                 isSelected={selectedIndices.includes(index)}
                 canSelect={
+                  maxSelections === 1 ||
                   selectedIndices.length < maxSelections ||
                   selectedIndices.includes(index)
                 }

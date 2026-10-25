@@ -114,7 +114,7 @@ function RerollButton({
       onClick={handleClick}
       disabled={!canAfford}
       className={`
-        flex items-center gap-1 px-2 py-2 rounded-lg sm:gap-2 sm:px-4
+        flex shrink-0 items-center gap-1 px-2 py-2 rounded-lg sm:gap-2 sm:px-4
         font-bold text-sm transition-all duration-200
         min-w-[76px] min-h-[44px] justify-center sm:min-w-[100px]
         border-2
@@ -229,7 +229,7 @@ function TeaHouseTitle({ interestCap }: { interestCap: number }) {
             if (pinned.current) return
             hoverClose.current = setTimeout(() => setOpen(false), 200)
           }}
-          className="inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg px-2 font-decorative text-lg font-bold text-[var(--color-golden-yellow)] [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-amber-300 sm:text-2xl"
+          className="inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg px-1 font-decorative text-base font-bold text-[var(--color-golden-yellow)] [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-amber-300 sm:px-2 sm:text-2xl"
         >
           {t('shop.title', 'Tea House')}
           <span
@@ -293,7 +293,10 @@ export function ShopHeader({
       data-shop-header
       className="relative z-10 flex-shrink-0 border-b-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)]/95 safe-area-top backdrop-blur-sm"
     >
-      <div className="screen-canvas grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 px-2 py-2 sm:gap-2 sm:px-5 sm:py-3">
+      {/* A phone cannot centre the title between the purse and the buttons,
+          so the title takes the middle that is left and wraps there; wider
+          screens centre it, and the buttons never squeeze. */}
+      <div className="screen-canvas grid grid-cols-[auto_minmax(5.5rem,1fr)_auto] items-center gap-1 px-2 py-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(max-content,1fr)] sm:gap-2 sm:px-5 sm:py-3">
         {/* Gold display */}
         <GoldDisplay gold={gold} bump={purseBump} />
 

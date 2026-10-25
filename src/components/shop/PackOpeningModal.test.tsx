@@ -197,7 +197,7 @@ it('names the one modifier and handles plain and Honor reward tiles', () => {
   ).toBe('Green Dragon')
 })
 
-it('draws a reward big in its rarity glow and shows its details card on hover or tap', () => {
+it('draws a reward big in its rarity glow and shows its details card on hover or hold', () => {
   useSettingsStore.setState({ reducedMotion: true })
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
     CELESTIAL_ORBS.pluto_orb
@@ -249,13 +249,101 @@ it('draws a reward big in its rarity glow and shows its details card on hover or
   fireEvent.pointerLeave(choice, { pointerType: 'mouse' })
   expect(details()).toBeNull()
 
-  // A touch has no hover: a tap chooses and shows the card together.
+  // A touch has no hover: a tap only chooses, leaving the rewards clear.
   fireEvent.pointerDown(choice, { pointerType: 'touch' })
+  fireEvent.pointerUp(choice, { pointerType: 'touch' })
   fireEvent.click(choice, { detail: 1 })
   expect(choice).toHaveAttribute('aria-pressed', 'true')
+  expect(details()).toBeNull()
+
+  // Resting a touch on it shows the card, and lifting it does not unchoose.
+  vi.useFakeTimers()
+  try {
+    fireEvent.pointerDown(choice, { pointerType: 'touch' })
+    act(() => vi.advanceTimersByTime(450))
+    fireEvent.pointerUp(choice, { pointerType: 'touch' })
+    fireEvent.click(choice, { detail: 1 })
+  } finally {
+    vi.useRealTimers()
+  }
   expect(details()).toHaveTextContent(description)
+  expect(choice).toHaveAttribute('aria-pressed', 'true')
   fireEvent.pointerDown(screen.getByRole('dialog'), { pointerType: 'touch' })
   expect(details()).toBeNull()
+})
+
+it('moves a one-reward choice on tap, while a full pack waits for one to be undone', () => {
+  useSettingsStore.setState({ reducedMotion: true })
+  const ids = ['pluto_orb', 'mercury_orb', 'venus_orb'] as const
+  const contents = ids.map((id) => {
+    const orb = CelestialOrbSystem.createCelestialOrbInstance(
+      CELESTIAL_ORBS[id]
+    )
+    return {
+      id: `orb-pack:choice:${id}`,
+      type: 'CelestialOrb' as const,
+      name: orb.name,
+      description: orb.description,
+      rarity: 'common' as const,
+      data: orb,
+    }
+  })
+  const offering = (maxSelections: number) => ({
+    pack: {
+      id: 'orb-pack',
+      type: 'Celestial' as const,
+      size: 'Normal' as const,
+      cost: 4,
+      choiceCount: 3,
+      selectCount: maxSelections,
+    },
+    contents,
+    isOpened: true,
+    isResolved: false,
+    selectedIndices: [],
+    maxSelections,
+  })
+  const onConfirm = vi.fn()
+  const { rerender } = render(
+    <PackOpeningModal
+      isOpen
+      onConfirm={onConfirm}
+      onSkip={vi.fn()}
+      packOffering={offering(1)}
+    />
+  )
+  const choices = () =>
+    screen.getAllByRole('button').filter((b) => b.hasAttribute('aria-pressed'))
+  const tap = (index: number) => {
+    fireEvent.pointerDown(choices()[index], { pointerType: 'touch' })
+    fireEvent.pointerUp(choices()[index], { pointerType: 'touch' })
+    fireEvent.click(choices()[index], { detail: 1 })
+  }
+  const pressed = () =>
+    choices().map((c) => c.getAttribute('aria-pressed') === 'true')
+
+  tap(0)
+  tap(2)
+  expect(pressed()).toEqual([false, false, true])
+  expect(choices()[0]).toHaveAttribute('aria-disabled', 'false')
+  fireEvent.click(
+    screen.getByRole('button', { name: i18n.t('shop.confirmSelection') })
+  )
+  expect(onConfirm).toHaveBeenCalledWith([2])
+
+  rerender(
+    <PackOpeningModal
+      isOpen
+      onConfirm={onConfirm}
+      onSkip={vi.fn()}
+      packOffering={offering(2)}
+    />
+  )
+  tap(0)
+  tap(1)
+  tap(2)
+  expect(pressed()).toEqual([true, true, false])
+  expect(choices()[2]).toHaveAttribute('aria-disabled', 'true')
 })
 
 it('shows the owned Decrees under a Decree pack, where one can be sold for room', () => {
