@@ -18,6 +18,7 @@ import { initializeClassicPersistence } from './game/classicPersistenceApp'
 import { installFloraRevealQueue } from './game/floraRevealQueue'
 import { installDecreeRevealQueue } from './game/decreeRevealQueue'
 import { installOrbRevealQueue } from './game/orbRevealQueue'
+import { scheduleBossAds } from './native/adBreaks'
 
 // Install persisted Archive, lifetime progression, and achievement tracking
 // before any run can emit gameplay events.
@@ -61,3 +62,12 @@ void nativeStorageReady.then(() => i18nReady).finally(() => {
     </StrictMode>
   )
 })
+
+// The iOS app's ads, after every second Boss. The consent and tracking prompts
+// come after the first frame; the website never loads AdMob.
+if (IS_NATIVE_APP)
+  void nativeStorageReady
+    .then(() => import('./native/admobInterstitials'))
+    .then(({ startAdMob }) => startAdMob())
+    .then((ads) => scheduleBossAds(ads))
+    .catch((error: unknown) => console.warn('Ads unavailable', error))

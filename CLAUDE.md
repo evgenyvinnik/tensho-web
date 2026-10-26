@@ -39,6 +39,10 @@ CocoaPods). That build has no service worker and drops the original
 illustration PNGs. `prepare-native-build.mjs` stamps the package version into
 the Xcode project. `src/native/` mirrors localStorage into Preferences, because
 iOS can clear WebView storage, and restores it before the stores hydrate.
+Ads (iOS only): `src/native/adBreaks.ts` schedules an AdMob interstitial after
+every second Boss, shown on the next screen. `admobInterstitials.ts` handles
+consent, the tracking prompt and loading. They use Google's test IDs until
+`VITE_ADMOB_INTERSTITIAL_IOS` and `GADApplicationIdentifier` (Info.plist) are set.
 
 ## Testing
 
