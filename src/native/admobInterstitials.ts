@@ -17,17 +17,30 @@ const TEST_INTERSTITIAL = 'ca-app-pub-3940256099942544/4411468910'
 const adId: string =
   import.meta.env.VITE_ADMOB_INTERSTITIAL_IOS || TEST_INTERSTITIAL
 
+/** May ads be requested, and must they be non-personalized? */
+async function gatherConsent(): Promise<{ allowed: boolean; npa: boolean }> {
+  try {
+    let consent = await AdMob.requestConsentInfo()
+    if (
+      consent.isConsentFormAvailable &&
+      consent.status === AdmobConsentStatus.REQUIRED
+    )
+      consent = await AdMob.showConsentForm()
+    return { allowed: consent.canRequestAds, npa: false }
+  } catch (error) {
+    // Offline, or no consent message published in AdMob's Privacy &
+    // messaging: keep earning, but with non-personalized ads only.
+    console.warn('Consent unavailable; non-personalized ads only', error)
+    return { allowed: true, npa: true }
+  }
+}
+
 /**
  * Ask for consent where the law requires it (Google's UMP form), then for
  * App Tracking Transparency, then start the SDK. Only loaded in the iOS app.
  */
 export async function startAdMob(): Promise<InterstitialAds> {
-  let consent = await AdMob.requestConsentInfo()
-  if (
-    consent.isConsentFormAvailable &&
-    consent.status === AdmobConsentStatus.REQUIRED
-  )
-    consent = await AdMob.showConsentForm()
+  const consent = await gatherConsent()
   if ((await AdMob.trackingAuthorizationStatus()).status === 'notDetermined')
     await AdMob.requestTrackingAuthorization()
   await AdMob.initialize({
@@ -48,11 +61,12 @@ export async function startAdMob(): Promise<InterstitialAds> {
 
   return {
     async prepare() {
-      if (ready || !consent.canRequestAds) return
+      if (ready || !consent.allowed) return
       try {
         await AdMob.prepareInterstitial({
           adId,
           isTesting: adId === TEST_INTERSTITIAL,
+          npa: consent.npa,
         })
         ready = true
       } catch (error) {
